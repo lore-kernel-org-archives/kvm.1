@@ -1,132 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3F82F8EB8;
-	Thu, 18 Jun 2026 21:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDED14ABE
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 21:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781818928; cv=none; b=kMqx8gejys5q/WTXCWGxP4HuEC6fHR28mT/mgsnjb1oJKDl4Rprph+Syyhd1vLCY+BvDag0UjHzwkevJj1anPg37NovKhMy7oOmc5NFeaG1Hr7q852YWOSWsK8e5UjRgBH650AE5cY9SanmjDXsnCUsROYAAhv0+1JwY6OiietE=
+	t=1781818956; cv=none; b=H+bWbb5ZOXYnKcJGVy7oFFHjb5lX+PqmDNefYnWFqMZ1ajXNWo3ZhOJrx+Cuxten9StN/ZLDEOwUTA+XiqPy3zLzZ4+wgHLBn1LZfPrKZPkKkFqtq+dmUwkwazQPUIYWxEFX/rAPwjGCEx3GGGwNd6I9B0eqGC1afhjC8r/CzAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781818928; c=relaxed/simple;
-	bh=XL0O2ajx2YPVmV2OKV640EsmjX4W7Q6tueNXGSL+CKg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EccOWnK3yrSDAfeAe2ccTLzV1UpzdYZUDAiGpw7GzL/DHmxKFikOfNrDf9QJOTSC3/I1sxemMTWeyhwnfBsDq96PSIgBJuutMn8tA++l55tXfhZpknIQzg5ttJlHygEaP6vaopR1Sq5xAY+djZaDDZdXzGSQIvmK0uNLhchgi2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZqFawcz4; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1781818956; c=relaxed/simple;
+	bh=erAt7Hebe5cIxFrAXhISXrNJA158nQ36dNCzkxhvulM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JACbinmjnJfrBCo4URkiZlzU0lFpnCrl0qA61hc7uf5UGqjxHq0t43HX4E2nWxiqGhYdxuIgU9prtXF6/+suW4slDidJFIeIx6GNeeLHr9ype6kll7DKfmVSrFA3Ry4xGGm07jjErXJqQYule7LV8LGcM5UNBwu5TLZGvVTNDk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=efNiH//p; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZqFawcz4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781818927; x=1813354927;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XL0O2ajx2YPVmV2OKV640EsmjX4W7Q6tueNXGSL+CKg=;
-  b=ZqFawcz48cOi/IdbvyenZakQRbncj0a3/JlMef1ziMbEyOgL32xGMzvn
-   y+mrfvLbAlbpwKxgVHYuXln0WlssqZMv/A+HdBI6YIN91QIK1Npm4TwGY
-   kQ5742kFFDgOh1ovJ+MBaubYcMK/zdQIFrisSpP+UfgwRyhhvChsGbaac
-   S51TMzN4wbDVW+SEJJOKsdU5eDGEDIBdQytkTlOFvkgqQvtY4WqfaPrnN
-   8X80eteOiLDEJ6RIUX57yQuKZWQkVtjPlM66GxFMSvx1MD0mynN4TczYI
-   FmpbzPyXe80YbLpgJaQGRewllp+iOhevId/HlfMTxrwUws81aB7hi0ctf
-   Q==;
-X-CSE-ConnectionGUID: DDMG4UrjQz+7BdNm6eepFg==
-X-CSE-MsgGUID: ak3MxrLySdKnQom0Xbbpyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="82550700"
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; 
-   d="scan'208";a="82550700"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 14:42:04 -0700
-X-CSE-ConnectionGUID: yiI6kEGXTWGMlMupw9y6NQ==
-X-CSE-MsgGUID: iX2QgOy5RxaNqvrvz3SU9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; 
-   d="scan'208";a="245560041"
-Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.125.111.222]) ([10.125.111.222])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 14:42:03 -0700
-Message-ID: <fdf0919f-0576-45e3-8600-72ac40c6f8af@intel.com>
-Date: Thu, 18 Jun 2026 14:42:02 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="efNiH//p"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8422f987f2eso2137758b3a.3
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 14:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781818955; x=1782423755; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V8j94fpKwfXbxZh5xLHwe7ucGfUmxazlRZU8sB7HYkU=;
+        b=efNiH//p9L7qAEeTwRmCwDS7VkNYDD2hnVjyL7LELGostHKh3XUcG9HPLV1C+5siy7
+         MmxeATXyLygCPGvjK+6Z6vUlDGm/yoD3bJBmXQunPbBjdemYHRNSnBhf5F0oIOASInGD
+         ketJMfUb/ZDwkjqfd5Z+3B8TlRCanugN/E0tWGwhjgKyUIVRbaa+43JKNPGr4ypbqG3F
+         LyFZqNaHC/wuExtRIBEdf7IewltVXMYbxqmnE6ROq6ES4Qxg8JQemejgtZ3S1HYM3cWB
+         lTCb7wM6spvg40GK1otDOX3wzrOs25pABZgRAllVqydpkeotNGup1QBKSbu+/WNK/PCH
+         c/RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781818955; x=1782423755;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V8j94fpKwfXbxZh5xLHwe7ucGfUmxazlRZU8sB7HYkU=;
+        b=X1mj75gtTZP/LOzqF/ctxGGGF+GIck7T4YdyBnm2I1BHnPvPmR3D5ZVs+MnFyuUdWQ
+         hRUZrgzvJhEfHi7dBfsl+QiPzvJSB3oVpGDflUNFBhV4a6BfBPypXVKZqhOfFwzF15gq
+         0jNRkWyoXjp7bmCBoY8hN2Oo3iKf7vdF2sIazSfWw94CXhECeNJlIEqus40tN8acKAJW
+         ohwsajfLapjgrZRJNbq5qi+aRxpAbJsJqHYO5VEoVAaq3x9p4O03j8g+qooeDgEcyRDJ
+         XSi4Q86Uur8pxO/olGUbSX2mZK01YvTpiivUcMotkvdlYpITPy78gROGEB23f6KoDzb8
+         2LTg==
+X-Forwarded-Encrypted: i=1; AFNElJ/zCWS+p2r1n7Xpa2JE40h/4qkRGn01rsjvXRZIcS5anCK9jhnQFPU+UHbyqa8rSfkWHuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw26ReJowBoze/LfI5v7MnxqxXaHxFqYdhAt+0V6E7b0JyrgGiq
+	TPMWGaMxOGEbd54fk0gjHF5RPcHcwHpsugkxcBPILsq/LvBIGe8wiDBfudI9QkUHZp72YjVscgJ
+	rmrUGAA==
+X-Received: from pfbjc15.prod.google.com ([2002:a05:6a00:6c8f:b0:82f:20ed:8059])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c9c:b0:845:374f:4ee7
+ with SMTP id d2e1a72fcca58-845507dabc4mr738565b3a.13.1781818954904; Thu, 18
+ Jun 2026 14:42:34 -0700 (PDT)
+Date: Thu, 18 Jun 2026 14:42:34 -0700
+In-Reply-To: <ajRTZNum3u7oVdRa@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 6/7] KVM: SEV: Perform RMP optimizations on SNP guest
- shutdown
-To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <25c3693a59c8f00796e84f1ffa668df6e3b734b5.1781419998.git.ashish.kalra@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <25c3693a59c8f00796e84f1ffa668df6e3b734b5.1781419998.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260613002031.745413-1-seanjc@google.com> <20260613002031.745413-10-seanjc@google.com>
+ <ajRTZNum3u7oVdRa@google.com>
+Message-ID: <ajRmStVr-2-QgqGB@google.com>
+Subject: Re: [PATCH v7 09/20] KVM: selftests: Add VFIO device support to
+ eventfd IRQ test
+From: Sean Christopherson <seanjc@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/15/26 12:50, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+On Thu, Jun 18, 2026, David Matlack wrote:
+> On 2026-06-12 05:20 PM, Sean Christopherson wrote:
+> > From: David Matlack <dmatlack@google.com>
+> > 
+> > Extend the eventfd IRQ test with a '-d' argument that takes a BDF (in the
+> > format segment:bus:device.function) of an interrupt-capable PCI(e) device
+> > bound to VFIO, and use said device to trigger interrupts instead of always
+> > synthesizing interrupts via direct writes to the eventfd.
+> > 
+> > Using a VFIO device to trigger interrupts validates the end-to-end delivery
+> > of IRQs for "real" devices, and when supported by hardware (and KVM), also
+> > validates interrupt delivery via IRQ bypass, i.e. via device posted IRQs.
+> > 
+> > Now that IOMMUFD is a thing, auto-probe IOMMUFD vs. "legacy" VFIO by
+> > temporarily opening /dev/iommufd, and skip the test if neither IOMMUFD nor
+> > legacy VFIO is available.  Add a '-t' option to the user override the probe
+> > logic, e.g. in case IOMMUFD is available but the system is configured for
+> > legacy usage.
+> > 
+> > Note, the device must have a VFIO selftest driver in order to work with
+> > the test.  A helper script to list supported devices will hopefully be
+> > available in the near future at
+> > tools/testing/selftests/vfio/scripts/list_supported_devices.sh[1].
 > 
-> Pages are converted from shared to private as SNP guests are launched.
-> This destroys exisiting RMPOPT optimizations in the regions where
-> pages are converted.
+> > +static int vfio_setup_msi(struct vfio_pci_device *device)
+> > +{
+> > +	const int flags = MAP_SHARED | MAP_ANONYMOUS;
+> > +	const int prot = PROT_READ | PROT_WRITE;
+> > +	struct dma_region *region;
+> > +
+> > +	/* A driver is required to generate an MSI. */
+> > +	TEST_REQUIRE(device->driver.ops);
 > 
-> Conversely, guest pages are converted back to shared during SNP guest
-> termination and their region may become eligible for RMPOPT
-> optimization.
+> This series is probably going to race with merging another VFIO
+> selftests patch to make send_msi() optional [1]. Can you add a check for
+> that here?
+> 
+>   TEST_REQUIRE(device->driver.ops);
+>   TEST_REQUIRE(device->driver.ops->send_msi);
 
-Oh, actually that would be good text for the *previous* patch too. You
-might want to move some of it there.
+Ya, will do.
