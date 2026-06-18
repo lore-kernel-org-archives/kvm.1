@@ -1,100 +1,227 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFBA30675D;
-	Thu, 18 Jun 2026 20:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813497; cv=none; b=Szah8+vuzk2+DZbYWlBqIAs2sU3vEkhWNY1wBvWnohDhQbLO3s0gazkvpNlWJXKoE+bjragVsG+y5L1hBtBBjiFd3nPMvQAj668YQuGI8ktUOFZoKoXdgvqyVmap+waSbE66w63ZtBKK9rndA+pJi3jZCkicvFdUk7jaarlylKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813497; c=relaxed/simple;
-	bh=bR6CgrTL8L9kbMWcBO10mVoLhF34gJMLuouRnWjZ564=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ju001wtmIAEnfZXL1Cv7DdpEG0QxAvIZlwd0KPWmNGPTCgaHjywo0LYMvzid1ID8XOhABAhg/MTAzDEX7ocibhhrHIUKp6AV4yW5ZsmneRvfDx6cs1J6iNLZIhXvQakVWePJEYG5OAx6qEYMRsOQ0s+QSod1yDBUS3ziRYNRjEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DFsDXOVY; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D290F2FA0DF
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781813523; cv=pass; b=dZkWEuwg/MVPkQTiquVVtiX9NV+GaQbWtwCvkMITrLN0Cl3TUobYtLvh4Qvt3UaDNnAuPC1/qZkw+yieQHVsfs0KB7pJqVpVbxFfPa6vT/sFgcYhIfnCwBpFyVNnsEStEVn6+SzIN6RRpZK6DFTwjm6WmoSaMFbdL5x0lRQyHpc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781813523; c=relaxed/simple;
+	bh=MOnpWS2oaTCXhgYkDQHH246CQWEaG8Zx8s1ffl6k9pg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=apovobiaLxId3f4J9e2uIX4kR/rEWB/+MW1FQ8JHy6LcV8FWoW5rpHRXEBQX/4RVv2kiAeUBl9pMho5YgkiD85FgmvOUmn+Zk+sSq00+AH/QLdVm7Ahlil9ZjJRfO5kSM4XI/YmQGHH4sHEFYiJBE5YAUT0LK/qMx4r08sP6D8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImFrUnPd; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DFsDXOVY"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4F09840E02A2;
-	Thu, 18 Jun 2026 20:11:34 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6gZYi2X4M_Mh; Thu, 18 Jun 2026 20:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1781813484; bh=WymufkYy9irEHcYu9yFQ9mnRS4Zsr6ANxKVWzHI9Ae4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DFsDXOVY9N3yVMWpXubiXdLevyL3JPmotJBGGhpNsaC3jyA4SiPH0g1EW3gUfE2hn
-	 IjShW55ybqtjgL8Rt3kIj0PnlLyl9bhKz97huLZdhO6aZMdmtQxqk5HnSb6eqEdi/c
-	 QjG5XnRckfd4NFxJBWitnlSq7uoIEwwOFLJEJSgCwIX1uCIMtb5pfS8WANErCdEyb+
-	 zHnvHx2Zhyuhi+xv2qW+h40lNdWbTJpE9iBw5tdA4cOJEzrLyPMKlEajNQmVP3iWHK
-	 +KFh892XDMCWZUEt0bgjutD3zh63DNo8h7jdDnq3AELf4u3bcBugJ6O2IdXWeA7vU+
-	 pq0ctKvkUsUrldfpE5DAhtmHmPYfjENLI6ZYR4/JHVVP0CR55s7K2lL1YEtYMMlfom
-	 2oC4tu88AjywYSrQPwbauBQtRjWR+rgni6VbbGITBXMEkTbdHZr0rugOJW3V8tcofx
-	 fBlluw+onGgQs8v4Ql8ABw4FVxmRqmnsNR/EdFt4xZtdqhV+gWF6GsxHzPaweNEo8I
-	 YHVKhgEh2ADBsXTHi6IekekoW/+MdYMcyHDwposvnTTvt0WXdqA3K93tGaZhQe3rTL
-	 loX06M5tT1rwL1EIwRU8i5TerLv3Q5lBaXKUCjRPrKpvl+Br2wLVcQpG9Baxk9f68i
-	 6P3sRLxn7rbNldxPhQidBazw=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E77540E01D8;
-	Thu, 18 Jun 2026 20:10:49 +0000 (UTC)
-Date: Thu, 18 Jun 2026 13:10:46 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v8 7/7] x86/sev: Add debugfs support for RMPOPT
-Message-ID: <20260618201046.GGajRQxrh8ekVMeyJS@fat_crate.local>
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <cc9aa9b6cfa2ce826f2ad53f8a13d3b7bf0790b6.1781419998.git.ashish.kalra@amd.com>
- <20260618180814.GCajQ0Dv0CoRMJxbP0@fat_crate.local>
- <5849645c-f701-4768-8cdf-1f9032e3226f@amd.com>
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImFrUnPd"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-30bcdf8232fso3345653eec.0
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 13:12:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781813521; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Im57WleBws5CMitcLyM7P4Dvna8tWLlTmC7AsZ0ylPtQScz1/XNZGk8FuK2Bc1qiym
+         fNSRFRgKbgfGfWQTyYCVuwain4sioqYvpkYzsdwQLpttMv9E2GO72lT1mXrhOiMq4UB4
+         2KdlXUl3+oc4p4/snFyCo/6Wml9KquhDcL9hmZuN0OtzFvzAk8WTD+ravVUN0sigjsI6
+         MReKUQbgtr/b9uBG2Q6xXku7G+7PCKV0oqExETzt1uvuNdAA5f7GbAgdAFT+b29zgEuH
+         JNdVMVdA4I1yzsN8ID1fGPUhTR4OVhl5Me5SEnqPwD8zR0n0hov8fLcnJ5fhwxsDaQF3
+         /w2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
+        fh=saWJfSSxTXdRQOkTAyrzLmMQjIl0bvSASuGEoQG5BQM=;
+        b=GmgOTL/M2ttMZaORv40BQ3S5xB00yI1HEt9go1xEcTpgaBmb3UPxnbTrMuhfNsoJ0+
+         pcx8LiLO/qKMv/d1U7KhsOqAdEO3/oYslb6Sei59H/zzI9ecKm1HiAs2hkiGlpEIfYKN
+         evGXYJ3kJYXXCdREas9iTam7nVP+DQvB79NKAR4D86kqFdiNn6rVPJ/DVbV4XKyykwGC
+         CpoggFh5KudyvpCZc3BE6DNVux1P37AG/bM+i2xVL5EiHHhhPuAs4AZNs4KJVnrzWP0m
+         ran7egzA5YPCrPCDTHWVZVaWTq4MV1hW4LkgN+IW8xdRKPHI0kvtYp4Gcw8cllEEoHEx
+         vNzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781813521; x=1782418321; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
+        b=ImFrUnPdh8L2OQ+vEgoNy5cnoVncVY2LHORljh4cK4NUByn5D+cy0elzKlXWPb7RIY
+         JRl8Dcqgxm6JPwCiE1t3ZqxSf1/mtUOoBBkELp2xbPVr9tc02ZZId+zwQ6FnPQM31PK7
+         t+60J7fTKJQsZFdhd89AhhnmEwQz3GZFRfmumjgMhr1t/vjBXHlxZcLEKPaF2CqEmSK0
+         t74cB8Q7Q3pfJp54YxpfCjBWf839hCtChboZw72clCG3dCgd3klDRZv7xFsnyNllha1J
+         J22zzXAZkxsm1pZmkV1ebhnkBLHHDODLDwb6kzA5x0cCbOCHBgclJqAVM7xT56xzb+TD
+         1V9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781813521; x=1782418321;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
+        b=dwRuVDkihlvzZgg+SmjOC5NqBqW25dN7ON+RQqxQ1nshIR6rK1BDnsMrH2tzkS+9z+
+         HWuWtaLM53kwQIkY1NFqv1O4PHpJS3ui21qqp5eTwIw4Z7AP/op4VdGBEltmoTKdx0t1
+         BLJmsyyzaILvcBbM72S6xNfDle+vOzwLqsmyDUHP2gfmBMsT128lARbFHDDXJzpWFEOR
+         02qOTGB0YWK8EFpvvajwWb6D17eIH1c0fQNsdatu7rYHVehA1IRaK1aLDSFgVA14SadZ
+         jbJvGtyQbsJq8MDygVt89RvXm4abUvphwhaTMqZyurrDSKhS0v6B2IasLPZtPpRTJNPM
+         3/Qg==
+X-Forwarded-Encrypted: i=1; AFNElJ+1e2okNPD9O+xJSaplcRxWyKjH0U7xTn+WWwr0lo0HhtJaAlbMK18+EPFwTGKnsdx1pdg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfsmnFp/jVGTKal7hBdHk3jfa3BHVUhVcW2ppFnY/TAggBXTQ/
+	qzcV6bta2cv1uKTSSKoGlrqM0GBb6O5ZFM+BEeDEx+IrFS0M37yGIpbCKzDGOgkSYFVygLozluG
+	sT4S2OU9nODOAbJOFLcF1ilFELjkR2pw=
+X-Gm-Gg: AfdE7cnkmZaxk4013QeeKGsLe2Ez3BRqos2tu0LIe6hPuL6fyqtLwYMzjt23L7HzZ6+
+	ZVcr6z/jUnS6zwaYIfipf9XDB4iSb1UPezRFqI6TkwJfP59siobutM/SP1/x2ZbzVGY3AFtULdZ
+	6mPrr8Q7ILJ22Bg8P+lWnguzQU8hmUaG2gc21I3ql07ood4r5OBzrcyoSVgvsA6SV7r1UrhlH9T
+	gq/BBcYICLZ2HEJY3Gx2plPhSIOZFEsONJFz31m3VwC1rcRBZskdSObeQICBxzgKkDwU4rp229h
+	CUVOfj9fl6zPfi/TKSPf8E4lXjM+
+X-Received: by 2002:a05:7301:678c:b0:304:2176:a871 with SMTP id
+ 5a478bee46e88-30c06bfca99mr761091eec.0.1781813520818; Thu, 18 Jun 2026
+ 13:12:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5849645c-f701-4768-8cdf-1f9032e3226f@amd.com>
+References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
+In-Reply-To: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Fri, 19 Jun 2026 00:11:48 +0400
+X-Gm-Features: AVVi8CegESbR6ZUD8SxLZ5ge_fQXIzH6szCQH4muF2WdxFR38w89t5-t2aW9E34
+Message-ID: <CAJ+F1CKRvSWDOvKC98e_7uyjgJMuXfhOHP83H0s7a=+ZrYxA1g@mail.gmail.com>
+Subject: Re: [PATCH v5 00/12] Make RamDiscardManager work with multiple
+ sources & virtio-mem
+To: qemu-devel@nongnu.org
+Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@mailo.com>, 
+	qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>, 
+	=?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, Fabiano Rosas <farosas@suse.de>, 
+	Mark Kanda <mark.kanda@oracle.com>, Ben Chaney <bchaney@akamai.com>, 
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
+	"Dr. David Alan Gilbert" <dave@treblig.org>, Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>, 
+	Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 18, 2026 at 02:57:45PM -0500, Kalra, Ashish wrote:
-> Maybe i can add a line to this patch's commit message stating it's a debug-only interface
-> with no stability guarantee.
+Hi
 
-Sounds to me like you didn't really read that article.
+On Thu, Jun 4, 2026 at 5:46=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@redhat.com> wrote:
+>
+> Hi,
+>
+> This is an attempt to fix the incompatibility of virtio-mem with confiden=
+tial
+> VMs. The solution implements what was discussed earlier with D. Hildenbra=
+nd:
+> https://patchwork.ozlabs.org/project/qemu-devel/patch/20250407074939.1865=
+7-5-chenyi.qiang@intel.com/#3502238
+>
+> The first patches are misc cleanups. Then some code refactoring to have s=
+plit a
+> manager/source. And finally, the manager learns to deal with multiple sou=
+rces.
+>
+> This has been tested together with the Linux kernel series from
+> Zhenzhong Duan [1] for TDX guests.
+>
+> (help fix https://issues.redhat.com/browse/RHEL-131968)
 
-> We have to provide some method/interface for users to verify if RMP optimizations
-> are enabled for a GB range of memory.
+Can the patch 1-11 be queued or are we missing something?
+(RFC patch 12 can be dropped for now)
 
-Sounds to me like this wants to be a facility which is present in the kernel
-and it is going to be an ABI.
+thanks
 
-I am unclear on the real use case but I'm open to being persuaded otherwise.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+> v5:
+> - explain why InterfaceClass in rust binding is not needed after
+>   moving RamDiscardSource
+> - drop extraneous added blank line
+> - replaced a runtime "if (has_rdm)"" with an assert()
+> - dropped "RFC: hw/virtio: start virtio-mem guest_memfd regions as
+>   shared", in favour of start-private memory approach from "[RFC PATCH
+>   0/6] Support virtio-mem memory hotplug in TDX guests" [1]
+> - demote "monitor: add 'info ramblock-attributes'" as RFC
+> - rebased and collected trailers
+>
+> v4:
+>  - added "system/physmem: make ram_block_discard_range() handle guest_mem=
+fd"
+>  - added "monitor: add 'info ramblock-attributes' command"
+>  - added "RFC: hw/virtio: start virtio-mem guest_memfd regions as shared"
+>  - skip calling source in notify_populate (it may not have updated its
+>    internal state)
+>  - rebased, collected trailer tags
+>
+> v3: issues found by C=C3=A9dric
+>  - fix assertion error on shutdown, due to rcu-defer cleanup
+>  - fix API doc warnings
+>
+> v2:
+>  - drop replay_{populated,discarded} from source, suggested by Peter Xu
+>  - add extra manager cleanup
+>  - add r-b tags for preliminary patches
+>
+> - Link to v4: https://lore.kernel.org/qemu-devel/20260504-rdm5-v4-0-bdf61=
+e57c1e1@redhat.com
+>
+> [1]: https://lore.kernel.org/lkml/20260604093551.1511079-1-zhenzhong.duan=
+@intel.com/
+>
+> ---
+> Marc-Andr=C3=A9 Lureau (12):
+>       system/memory: split RamDiscardManager into source and manager
+>       system/memory: move RamDiscardManager to separate compilation unit
+>       system/memory: constify section arguments
+>       system/ram-discard-manager: implement replay via is_populated itera=
+tion
+>       virtio-mem: remove replay_populated/replay_discarded implementation
+>       system/ram-discard-manager: drop replay from source interface
+>       system/memory: implement RamDiscardManager multi-source aggregation
+>       system/physmem: destroy ram block attributes before RCU-deferred re=
+claim
+>       system/memory: add RamDiscardManager reference counting and cleanup
+>       tests: add unit tests for RamDiscardManager multi-source aggregatio=
+n
+>       system/physmem: make ram_block_discard_range() handle guest_memfd
+>       RFC: monitor: add 'info ramblock-attributes' command
+>
+>  MAINTAINERS                                 |    4 +
+>  qapi/machine.json                           |   56 ++
+>  include/hw/vfio/vfio-container.h            |    2 +-
+>  include/hw/vfio/vfio-cpr.h                  |    2 +-
+>  include/hw/virtio/virtio-mem.h              |    3 -
+>  include/monitor/hmp.h                       |    1 +
+>  include/system/memory.h                     |  279 +-----
+>  include/system/ram-discard-manager.h        |  358 ++++++++
+>  include/system/ramblock.h                   |    5 +-
+>  accel/kvm/kvm-all.c                         |    2 +-
+>  hw/core/machine-hmp-cmds.c                  |   32 +
+>  hw/vfio/cpr-legacy.c                        |    4 +-
+>  hw/vfio/listener.c                          |   10 +-
+>  hw/virtio/virtio-mem.c                      |  259 +-----
+>  migration/ram.c                             |    6 +-
+>  system/memory.c                             |   88 +-
+>  system/memory_mapping.c                     |    4 +-
+>  system/physmem.c                            |   27 +-
+>  system/ram-block-attributes.c               |  328 +++----
+>  system/ram-discard-manager.c                |  612 +++++++++++++
+>  target/i386/kvm/tdx.c                       |    2 +-
+>  tests/unit/test-ram-discard-manager-stubs.c |   48 ++
+>  tests/unit/test-ram-discard-manager.c       | 1235 +++++++++++++++++++++=
+++++++
+>  hmp-commands-info.hx                        |   13 +
+>  rust/bindings/system-sys/lib.rs             |    2 +-
+>  system/meson.build                          |    1 +
+>  system/trace-events                         |    2 +-
+>  tests/unit/meson.build                      |    8 +-
+>  28 files changed, 2569 insertions(+), 824 deletions(-)
+> ---
+> base-commit: 405c32d2b18a683ba36301351af75125d9afda08
+> change-id: 20260414-rdm5-b6df2366d603
+>
+> Best regards,
+> --
+> Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+>
