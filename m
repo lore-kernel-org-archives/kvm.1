@@ -1,63 +1,64 @@
 Received: from mail-oi1-f202.google.com (mail-oi1-f202.google.com [209.85.167.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A1A330305
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 23:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E292F7EE4
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 23:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781825413; cv=none; b=pGL9K2bIk97WhJcZqZR6HyH9c2FeY6xLl6wGBqxc0C+GDuFQC9gP2CZ+zQ/47DESRU9tNK1kYQ4xM94OVTbL6A67kBoaw6CmO7ccjsFSprCW0lxbtWVoxJtDs35LyzMsShLlIYrb8ffcGySJqipgISzG/MYQPVyB70xom+YyL5s=
+	t=1781825554; cv=none; b=fxBq/Y9y4hoLryBIKQbpmBXgq2HC7ENsMfRvbgTuG/eS+spqRZ6EKAHwQIValYJRuCX31D6fWYOpJX7XS45rfFqVKBQ3XMHzVKE5XEo4GpHSTGpw26DXJIjLypCJ8NwnwsMbwEV3hW7KKxI9/K4FkKElBFqNHY+NeZ5xanFP16s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781825413; c=relaxed/simple;
-	bh=oixVs33DJaRW/AnnIc47KyBAENZW8NUyFFX8YWS2PJU=;
+	s=arc-20240116; t=1781825554; c=relaxed/simple;
+	bh=aOBaHP4DOk4vq3tW3rv9yXUlZFd1+xiTupwDlFmXHKA=;
 	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=RAx0pPWhl20FkblJ9mAG1hSdFcrAF7jtjG67fJHQTxhI83ANRNt+kXWAhR40ywerKnwgI674A0jNvYVtJLTq4RDR/T2VjvxlF9sqn4hAKFvLD5Z6+NcWay90svePqpbvvkBoYcgS7rBftt9qPZX9qGF9vuRSH5tY+8fbb1upOPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sh1us9qN; arc=none smtp.client-ip=209.85.167.202
+	 Content-Type; b=dxQ7KNgE7g2hlDLeN/f8D95zOJD6HFvKIUbYbURRsyChYUNU1ODi2uwNtGwB1vZ1s53zDqsRqqJYpW+zB6BNQENDJDka4Yw3aQHuA/hj3RqSiMzFwHxntBKsbjETSHyBDg45wkuB9IYW/Olc4WkKNKIb1RogeNdoW2iBw52ZSY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iIbBeGKA; arc=none smtp.client-ip=209.85.167.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sh1us9qN"
-Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-48638b48315so3038374b6e.0
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:30:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iIbBeGKA"
+Received: by mail-oi1-f202.google.com with SMTP id 5614622812f47-48638da0e05so1713639b6e.3
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781825411; x=1782430211; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781825552; x=1782430352; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4p6UmVH4InlQHDX0xOai2hxHDLRoZeq2zsnVbO1aygg=;
-        b=Sh1us9qNMDIEiCGrGfO2MZcZsJaslth0yqMH296q0wqh6sjrNyH1ndSC8bG9GLlWwo
-         E0udaFYoTaDJLksUNyRHm+YzJx/hf9zyHBUwpA5Q46p34uEajJufVbGkE2DXy9CU65PO
-         A8g0jUvOIqG6egistm/oPf++2wOimBKsoBSa//rU12+2rduay1lsUgrl6zUc4Fk4nMdh
-         HoXatowiEAJpNEDC1FA+77pa7IqiW1OOX5gTOu3XOkCic0dF76Reda116Tk9UWiNc27q
-         iJskdgveAYI4mXT4K9W/eRyiePIvv4t/lRkcgZUv8t6R7uSn7Vod5/o6Cgh7gO2H7bOg
-         s3xA==
+        bh=cwWYCnxdR0CMlBSotsz1RrmN4O2SDrdrRioZC+xeVso=;
+        b=iIbBeGKAiRPB/YS1s9Oxi9L0oJrB9PN4tcvDyNcyEHh2gMo04HY4O/S8d9I17GBaiL
+         jOnq5tpDfWcB7mmRXo/w8BQB0rC2ZarKIr55zQ8wwaWcS4P1t7SwSa4/jJPjNgiyU/C8
+         4EGaGPyLqA1RRcd/hrWwrCYkyJk+4B9AjU9T8utLbAqSn0agyfqEeCtm+DrbpF+mjg1h
+         qlY+Q/e1epyuca6ImMUQVk8mBSHym0iEGD+TkJwq9YG2n27TjyE1oOT8XUqM33WiFLAY
+         1U6cHnbugFtIQIBCHb69XVpK5Ozl+AFpMzeYVSDMi59Le3/wCpXGzzWeefGtbDx9BRi9
+         KcfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781825411; x=1782430211;
+        d=1e100.net; s=20251104; t=1781825552; x=1782430352;
         h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4p6UmVH4InlQHDX0xOai2hxHDLRoZeq2zsnVbO1aygg=;
-        b=mKKZiAgqUE2HRQNwPu9lPBNhR1UKv4CIybW6PFePf+EzOVHVxQ5U/ajDR/kJMQ0SxL
-         hRbUVnpzdVVq8wEK315Ob0hZrK0NGYTTHO//YDmsmcdjEfvoV/gOZ9clMQ8lJsywg62r
-         MS5eKh5V3aYNPIWwtGYwUcGmItqOtVRo/qWueNi6Nd0FfYh8ITzlB4f3wlv3SA93kIJN
-         7VDI+mdy5ht/enmh3SfhHhxOWdoo7COzMMT3jF4rOU6RO3sQLnzPbwXCAn9X+xVponlq
-         TWfPAnqQev0DGfAdK3jR6ZSLlKqnAXpXzp4OSZcW88uBkxIgCz3EblkWkdc6n+C+rGDv
-         +p0g==
-X-Gm-Message-State: AOJu0Yx8lYgDsfT9ogsJdFr/G0JNoZ6dvLHLGzm/yN0WVoN7eslWhwfa
-	/em6vX8iVZEUFyGwAzDLq+cKamr4nKJNEnUTt0tXXdlIb7xpslNE+U52JjxsE0llOyLJnGMqE80
-	n0Q8PaDa4phn9nLJwJT2lZKCDkg==
-X-Received: from jabjq11.prod.google.com ([2002:a05:6638:8d8b:b0:5e2:40af:256a])
+        bh=cwWYCnxdR0CMlBSotsz1RrmN4O2SDrdrRioZC+xeVso=;
+        b=CbXbtCedAPKw1Z2jmyd2FFLMV58twdyWeEwmSdkVZ4N4f/dKxCEabXcKp35l3oQHxv
+         o8Phmc6Cj9dXq+4SyRIdaFLPvbINVKIGR3wWBj1eVZ1LU1ZbnIOnwYwFRZngfd6zXJju
+         D+NPMVi4IBoX1E7CPsJ6GQ/+T9xgoGKP2IB784tcEgpSjJYCpcOJME3cliisMLk1Dp0H
+         piG9sMVAL2RNpzLeqx/9SO9Wj2aALYNBQPoKFc7Cc3CebT2jDvAr1IVPbosxcUU2ydoB
+         +xnuig0hPIPxes82vDhhL7mFDf0jgl+q3i6mLXDtZ3pn7o1+CV8StD+B9FRwsFzx5TJI
+         0KTA==
+X-Gm-Message-State: AOJu0YweHvwv3omv7tmjluxpjSouTEdJ3fLT3M03rnDjp27psAKULkUX
+	raunvqNK429viNw8QrUe9/0nKo4ol7IQ0M18Ta3hLCXFnQMvrQIbDpt6PpKOwo/nORishH3W095
+	usuba/NQmY7ziYQgsXBVvnbFiAA==
+X-Received: from ilbdv1-n1.prod.google.com ([2002:a05:6e02:4001:10b0:502:e73:d02b])
  (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:2444:b0:467:d71:7f1a with SMTP id 5614622812f47-4896c8a3f7cmr734469b6e.21.1781825411153;
- Thu, 18 Jun 2026 16:30:11 -0700 (PDT)
-Date: Thu, 18 Jun 2026 23:30:10 +0000
-In-Reply-To: <df30b9e0-6938-47f5-bb5d-5b1e67c8879c@huawei.com> (message from
- wuyifan on Tue, 16 Jun 2026 17:07:48 +0800)
+ 2002:a05:6808:1808:b0:46c:e542:cc25 with SMTP id 5614622812f47-489aeaa5634mr180520b6e.9.1781825551504;
+ Thu, 18 Jun 2026 16:32:31 -0700 (PDT)
+Date: Thu, 18 Jun 2026 23:32:30 +0000
+In-Reply-To: <6dca2d6e-54d0-42c4-95df-45a30a473e0b@huawei.com> (message from
+ wuyifan on Thu, 18 Jun 2026 09:53:15 +0800)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Message-ID: <gsntv7bfctq5.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH v7 11/20] KVM: arm64: Enforce PMU event filter at vcpu_load()
+Message-ID: <gsntse6jctm9.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v7 15/20] perf: arm_pmuv3: Handle IRQs for Partitioned PMU
+ guest counters
 From: Colton Lewis <coltonlewis@google.com>
 To: wuyifan <wuyifan50@huawei.com>
 Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
@@ -69,51 +70,36 @@ Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
 	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, wangyushan12@huawei.com, 
-	fanghao11@huawei.com, wangzhou1@hisilicon.com, prime.zeng@hisilicon.com, 
-	xuwei5@huawei.com
+	wangzhou1@hisilicon.com, xuwei5@huawei.com, prime.zeng@hisilicon.com, 
+	fanghao11@huawei.com
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
-
-
-Hi Yifan, thanks for the review.
 
 wuyifan <wuyifan50@huawei.com> writes:
 
 > Hi Colton,
 
 > On 5/5/2026 5:18 AM, Colton Lewis wrote:
->> +	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
->> +		if (i == ARMV8_PMU_CYCLE_IDX) {
->> +			val = __vcpu_sys_reg(vcpu, PMCCFILTR_EL0);
->> +			evsel = ARMV8_PMUV3_PERFCTR_CPU_CYCLES;
->> +		} else {
->> +			val = __vcpu_sys_reg(vcpu, PMEVTYPER0_EL0 + i);
->> +			evsel = val & kvm_pmu_event_mask(vcpu->kvm);
->> +		}
->> +
->> +		guest_include_el2 = (val & ARMV8_PMU_INCLUDE_EL2);
->> +		val &= ~evtyper_clr;
->> +
->> +		if (unlikely(is_hyp_ctxt(vcpu)) && guest_include_el2)
->> +			val &= ~ARMV8_PMU_EXCLUDE_EL1;
->> +
->> +		if (vcpu->kvm->arch.pmu_filter &&
->> +		    !test_bit(evsel, vcpu->kvm->arch.pmu_filter))
->> +			val |= evtyper_set;
->> +
->> +		if (i == ARMV8_PMU_CYCLE_IDX) {
->> +			write_sysreg(val, pmccntr_el0);
-> This should be pmccfiltr_el0.
-> Writing the filter bits to pmccntr_el0 would corrupt the cycle count  
-> value.
+>>    static irqreturn_t armv8pmu_handle_irq(struct arm_pmu *cpu_pmu)
+>>    {
+>> -	u64 pmovsr;
+>>    	struct perf_sample_data data;
+>>    	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
+>>    	struct pt_regs *regs;
+>> +	u64 host_set = kvm_pmu_host_counter_mask(cpu_pmu);
+>> +	u64 pmovsr;
+> kvm_pmu_host_counter_mask() is called from armv8pmu_handle_irq(). This
+> interrupt fires in both host and guest contexts.
 
-Yes it should. I found that and thought I corrected it before I sent out
-the series. Thanks for catching it.
+> However, kvm_pmu_host_counter_mask() dereferences
+> host_data_ptr(nr_event_counters). This indirection requires
+> kvm_arm_hyp_percpu_base[cpu] to be initialized, which only happens during
+> KVM hypervisor setup. When the interrupt fires in a guest kernel where
+> KVM is
+> compiled but not active, the per-CPU base is NULL and the dereference
+> faults.
 
->> +		} else {
->> +			write_sysreg(i, pmselr_el0);
->> +			write_sysreg(val, pmxevtyper_el0);
->> +		}
->> +	}
->> +}
+I will fix that.
+
+
 > Thanks,
 > Yifan
