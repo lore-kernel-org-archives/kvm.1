@@ -1,249 +1,405 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011048.outbound.protection.outlook.com [40.107.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9103128B2
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781815900; cv=none; b=lJHrd673uL+9h3WwobBl+yrLNzFjXZZIMEWJN1oE8fM4k/2QHt2f5dsh5uCHEFVPMJ6enhlJ0BTfu/xSOYCzw2Lbuxy9rSYdu09X5cpR8xce+ojLJWyWV2chbos7tasEheACBFHgXEYebfafgJtBkih0+z10/PTNYRbU6eOAyGw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781815900; c=relaxed/simple;
-	bh=egB1+gVtDSu/TCWNGq2lmnLePogzStV9bQYVBJCdR4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tW5Z2jUuo0K3m/Na+8B+ENnxz8Oa44VeI0cmp+f9UUyJZ5WfvkhlI+1ADQqJRBoq3p0FvxISBkwZdvBpK1EKjSWP+UN+11p+4NVRD+i8MgyXWJ56cbzPcrdUicU6md2PI/rbNMm7CUkCYb5vZYl6VJI8/L5o9I1eOTpkvhdux7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PX/hsXZ6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Fti630gq; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F7E2E06ED;
+	Thu, 18 Jun 2026 21:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781816897; cv=fail; b=dvHjH+LNUqAzBN3kegwpZtbxfZJ5bjtbczxTgzl89Va48hnDAyEX8Xa9yUhjLuG9Fxx80/QMUnfuoIJY08MmKcqpbQytuIR0Qp7DGxV6/rwmMrWVhP9ftYNnnt+8B3/DmCTP1K8TbcXi2Eu133uaBcAxe3Wnwo/4I/ENFHMlE7w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781816897; c=relaxed/simple;
+	bh=QlN7M/J5OvLE2Js/w8E5ialXWkwvbl7HMwJvRSKvZbw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=G/Lc6T7Olr6ynBVHVUZkywS55OeBpt32I3tAzTzqPW562DNUTujWvyHaySuia7fvmYyFO5VgXTsx40H7okyPWTsqif4DabLgkWT4qR84qto6/Swb23LhR7+P/pjNGZ6ygpqzEJ0T9+DUC8K0waKN6p7iIjP8kwqmk1HeO5mQcFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PFzRxbfj; arc=fail smtp.client-ip=40.107.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PX/hsXZ6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Fti630gq"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65IHrjpk1878939
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:51:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ptbe4y4AW6tVSqoarkNqu6Ie+8WvPfZMWpNg1/yxZYs=; b=PX/hsXZ6W8vybzjW
-	wjDZXz0774zSZvPwCe/WVSYLoaaSyjHKmpTLM077UYKgdv0o/SOL/t3/ptEOyJt1
-	ZfYYBUBKtkCgoxYB1eF3aqHqLOuJjmO3aDtNquE89xjLSbTd34GgbUKM+vGWDG0M
-	ActYN0wMbLUNzvZOmkz6rgOL44zRb5FaPOwsp8iuCdCt3qASxALSV8pKwTTzTyO+
-	9L8wonmwPSDJLjTUb9s/jNrkF+do6PvdqMDI1K/XKQHSWVvQePgV48L6PfanF7XK
-	6lHBRwO1h2Ck+zLOZqTfkNGxRcWTfKDQU3lRkPgiC2JrnHsfcDpp3FwdVoqbQfsn
-	PWTyuQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4evkvf18eu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:51:38 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-91574ad681eso236370085a.0
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 13:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781815898; x=1782420698; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ptbe4y4AW6tVSqoarkNqu6Ie+8WvPfZMWpNg1/yxZYs=;
-        b=Fti630gqz7xwRkQrLai7LsU6YvXNCFOCBL5V9LCd5VIcHxVYBckhGJFgcKt4oipNTd
-         8YqwIuo/V5Gq5CmRCOSX/lk+KlbmGy7mhk9XEkvbOlNeyWQfGQHEpueURR58LKZmoaxg
-         GwOOn3/DTQWh7ftBFUdpFS/kKMyAKNFWkuyfvmcQj/Zjbg7bSZyVjY7WSUqFbaA1js7O
-         JAOmnk1p5+s+eQNGoPNp7tdj9Twug9uxQraRsrZSsxVsg+aA6jemA07dOmDNKa7wYVCC
-         kMmhSiGjFV1JDiaiHhng7G+6fBSyOmKXtzHpt4HWqM7nuIqVbHBWAgcCRY5eESS5Mh9a
-         kXmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781815898; x=1782420698;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ptbe4y4AW6tVSqoarkNqu6Ie+8WvPfZMWpNg1/yxZYs=;
-        b=DmybapFqq+fnU1/K8bItufSPgjlIIKEPav3K1RtyBlfyQ/MAeUHCMIzxWFfejtHDd3
-         2sbZpI7xLEkkWHyDP/6LHQcE7xuMf6pzNkdcjYM+LJShE4Mc9o4QC18b2tiO5VGLWTKh
-         dMTDwg9RoZDOVrPAXtKAmFFJbHspBLShaqyqoiqMgPqmixOX16IxERSA/C5Rga2Nu9dS
-         Xk2oYsPUHvDx1p+fEwC6aEtzqeHbZibdUbKt/5WWfbFvvTlZDIy3n5h658b7CtOLUkQ1
-         xWH7DCPbdMe5fOykQhmqEbpA+bn3hmhityQBRb+TOX02LgaMNDCloP3EU6iBmkcLBisM
-         C08A==
-X-Forwarded-Encrypted: i=1; AFNElJ+C4ZDB7/D6qQydgD8LT57jPnMrecxl1VePkeoeES2xivHb1gIpvCOAYXHnc57khTfv2co=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyW0rGQ7+TEU7NbDPOXRwF9IRxrrv/qBT7Z6JN9jk0CQih29m5/
-	I6Xs2bcPSvNkBzycaw3GPIeglNujDtteAusgIV65qU+0IWOYkaMhuNOzRtVOeILVlg2w7tMmsex
-	F8f/dGTOflRgzbizztlcSI9Ylii5Vf2w4P3ynWhDiL484SuzBOvw8jYA=
-X-Gm-Gg: AfdE7cmrkOA1aDiG7qcC4Xlz/ChGkAyTDuTv5+Ojm70/62OJoqG/AmY0XK/KUTWq3zT
-	9hAqJZYUT2FemRKRKliPrQWK1bWbe0SLmWZ2c7ljSFXSPCfVM4CVNBF90ptWifci2+xvwzromwa
-	i4T0pRq429C3K+0VbXFPjORUKamu8nJEzXWCMtss1skk8ZyZX0P0DhORS8lO00xo+xRAR10V40/
-	QmyfC6fSALP8rwgxhSMruaj816xgNaT0TlDaPvR6wM/QcvYOjjTbiz2NA0GewrI6l2GT8Xd5s+s
-	fcIi51pJdF8tT3HOgtO16fAdKmiRzpelwUUIisBMDmEG/PII5FsK1RB1yzP0oJcjXqqIoDXO55H
-	0dhqq6/obU8nso8EsP5+R8hnkxUOdcZfE4keLemixbVLacVqhModWHAXkZ86Low==
-X-Received: by 2002:a05:620a:6493:b0:912:1:b41c with SMTP id af79cd13be357-9208c333b49mr124659185a.0.1781815897609;
-        Thu, 18 Jun 2026 13:51:37 -0700 (PDT)
-X-Received: by 2002:a05:620a:6493:b0:912:1:b41c with SMTP id af79cd13be357-9208c333b49mr124652985a.0.1781815897052;
-        Thu, 18 Jun 2026 13:51:37 -0700 (PDT)
-Received: from [192.168.69.213] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fcb6db0sm11380765e9.0.2026.06.18.13.51.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 13:51:36 -0700 (PDT)
-Message-ID: <8a5fdcc5-c6d1-4baf-8ed6-940006a20a86@oss.qualcomm.com>
-Date: Thu, 18 Jun 2026 22:51:34 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PFzRxbfj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tt0wZ+B5giR8ZDMZ0b8ZSWlIilOWvN+VhAG0SLV1HLTdsrxDYFk9VhFhLCjptkMJieN7xAS3CoOD0beiq00IcXuiO3EICy2dm1UuI6enVTvjgO8j6usF6VcuMGCiDly8+eLcRNNoIQNFWF6L0qaL6aZghMO2aiyCrYqHBTWBYGf5t/Il8M8Rni4cqL+y4qZnqdB+pW5gIWQEe9TMXytQbJ95qYNv3p0/GUjQLyeqdxJnN8QgFBYHKkBnE+HsqRZDxorMmeXAgNEEpG5MDeUQLcB3QzNqgqflKfnh3R1PXuHQ0kfw4LDLYLArF127QeonWpByT2fD7gY+zkKO445AhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SPPSxLBkjWQkJLG2UKfapKboSL3l1wcy98pFWfqmcDw=;
+ b=PJQkftTYydW+wA9fjb4JYAvEfuSojn9kO0Atr2q4botpuTGhxCKQ1c1UE3vKs1lZ4rTtPzV0yPf64ns/8O2IJw9++ffmli6wExA+FPe7zIwY1+Llk4xPQbNRbaJNyleJz7s7LlrQ4wuachB9x4uzf0HKwytzbyx5VcPIiZ4MnNwFYRNMTG1D1QncSZboDgL7O4xcKQvCMJ4Q5kaHbYIB88/RW4RTLkWvx8imkaaC3MP02C5Lx3Xo2DxWwVG0D1CvSDC995U8uTNtCUBWDPL7ql0p9mJqwC/ODgd9Brl0cE16+htZW2ev9sgmB4ML6GLNM/0IfUpUwI40Jpza33DWxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SPPSxLBkjWQkJLG2UKfapKboSL3l1wcy98pFWfqmcDw=;
+ b=PFzRxbfjPPxhDwg7RfdDNI1u1smFalbKlu/3ZnSgd1ZPJadJlfNKFXm60oFyX3gP+NYHFVVP1s6dnnBGRudfZ6d20yddbdzGUxK+XztJyygj8NxqHe+2ciR2Ho9/R/7UVFZTsI9HQVfxpKYghwy5AqveE48V/Jq5g+cU/JeUDEU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
+ by SJ2PR12MB9137.namprd12.prod.outlook.com (2603:10b6:a03:562::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
+ 2026 21:08:10 +0000
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46%4]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
+ 21:08:10 +0000
+Message-ID: <bc4de90e-094b-4695-baf3-2186ce250873@amd.com>
+Date: Thu, 18 Jun 2026 16:08:07 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/7] x86/sev: Initialize RMPOPT configuration MSRs
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1781419998.git.ashish.kalra@amd.com>
+ <6a4d0ec9e037d91c0fdba9c525942ca288e1b1b2.1781419998.git.ashish.kalra@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Content-Language: en-US
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <6a4d0ec9e037d91c0fdba9c525942ca288e1b1b2.1781419998.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9P223CA0021.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:408:10b::26) To SN7PR12MB8131.namprd12.prod.outlook.com
+ (2603:10b6:806:32d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/12] system/memory: split RamDiscardManager into
- source and manager
-Content-Language: en-US
-To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
-        qemu-devel@nongnu.org,
-        =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-        qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>,
-        "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-        Fabiano Rosas <farosas@suse.de>, Mark Kanda <mark.kanda@oracle.com>,
-        Ben Chaney <bchaney@akamai.com>, Marcelo Tosatti <mtosatti@redhat.com>,
-        kvm@vger.kernel.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
-        Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
-        Markus Armbruster <armbru@redhat.com>
-References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
- <20260604-rdm5-v5-1-5768e6a0943d@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-In-Reply-To: <20260604-rdm5-v5-1-5768e6a0943d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDE5MCBTYWx0ZWRfX287Uf8C8ij7Y
- NpnqJ9JmACG/b0SShckde8Pewp6DFjIseEd3dYOe2boWd89dNMjhxm2vEnFSIhvmfW/eVvq3Jem
- vuJDNU+UhdvOnOILeuMohO9lzfVW2DM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDE5MCBTYWx0ZWRfXxgnilMEi8zbd
- FZBSrEFeHVP1EWlcmtumW019PlLtbCXSJeWEzyrA8Ynvwp9p8i5Hnp4soeZ0kinhrDpbNalruBJ
- peU67D3CiqnZQZ4l/Is7ZOfAct8OYjfRdeDBcaajJgj4lqT2UaoL3BIr8lYMRxc+962pSrsnBAj
- nMDybVBjEnKq+IEIQ78PYBJhmGfY26T6es5AcoDHMWVAPGmoKLqEla33KHX2JdHeU9TGYgK++Us
- sS1z+I1smc+sjMG3JMN/iw97Zz0UwcDQnjAmpAjnYW1LXRfGOYdpFHmk8a1V7QFX4AQU6L45efK
- xwVJ6cZQLFjspeBNcfH1fKAJPwojUTN+zka5vlvc+GXTBHCZUTJKhbAbe5GVcUcftc8Hh9dkV+i
- Yi2Vby76l4liyB++tAkSQKWl6lCXlMHlTn7wNoT4mDE/2QXLA8vKaJ9LsFz2CCZQjjjpsmTIQDO
- a6a529+Zpru8ogljFtA==
-X-Authority-Analysis: v=2.4 cv=H/3rBeYi c=1 sm=1 tr=0 ts=6a345a5a cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=A-yEnD0DAcmAWPwwjsgA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: NBBiGkGSdH1Z_lhXm6MtpKE71VR0na4y
-X-Proofpoint-GUID: NBBiGkGSdH1Z_lhXm6MtpKE71VR0na4y
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-18_03,2026-06-18_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0 spamscore=0
- suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180190
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|SJ2PR12MB9137:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18e11a76-ac6c-4d36-faa2-08decd7db3e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|56012099006|11063799006|5023799004|6133799003|3023799007|22082099003|18002099003|4143699003|921020;
+X-Microsoft-Antispam-Message-Info:
+	D+PuBPrYyjGfcMjr2LU2ORXDiBpW1f7WPg6JHzM/+9JjjjDy5xJfwM5XaWpUkENPWrcwqtoD7bf3P8vNKw1zcOTRCMxFul0tLkAqZD0yohh7COHNqtgTXq4bd03XxQioQuofObWUq/GM0+LGZ3EV9eG4vuui8H7hM/2rU/uDOB4Lr3SJmFmSYht5AQPZx6x4AnlO3VNVCHeM/dlkSZfbyovr8D8ATr2ft15jo1d1BaZMYF65YkGIBSJzk+m9hgHCgCxig5TjECNAnqZGK3xMkOscQZQc9SOPYCCaiunQ5N/aXTcCHRnXDWA4any+wDBbMUk1HI/KaxCGu7tUlt+aFmpDHeXdODnayUyV8jxLqRoAQ++TYrxRJdkN4mv+3/cnWo3thmY0FNn5dZghaYD+uILR+GdpiOQZbKnZF2KE/njAapCm9SoeSkReyk7765rM2iDoXDRwIVlDmHq7yvaAELPykizhdnj347p4kTVKEWx5JjdkkdTUxLKLVUkQhheVNrdFZplk+ODtpftcu/hAMbsejKhgarKbWDbrt64u0OkBmDaoaEtOx42DWKcSTRbWpvBnM6IYdc8mAywYxfh9uJGy8TVtsqU2QHhlL7aePTf6VBaM5ZjzZZhDZ/KlWg+BTV1StsYdeBxZtkJkzuzEMVXpRNjidOdq1zxkDaO345vOveEbzq6mXlwGbC6Ga3s6ddRDHgZ9uWts0ortTNbrAw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(56012099006)(11063799006)(5023799004)(6133799003)(3023799007)(22082099003)(18002099003)(4143699003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VVVWUkYwVk44R0lvYUZwdVY3VVdvZ2RBQWxSNWo4YVR6SkVQZVYrSjJjRUJE?=
+ =?utf-8?B?clNiS1ZzRXV2c1BPYVJSbXE0NTZpeDRwbEhQT2d1clBUc2htWHBRS3VBdm5j?=
+ =?utf-8?B?K2pDK2wyVitac2psZlF5VW55SEFsaXd1a2FuRVN5V0RCQ1g5YWxaSm9DT2V5?=
+ =?utf-8?B?VUNtMndhdXQwM3hSRVRraVZwbHZzMG5Oc2ljWWZkc251Q1lmUlBTYW9GMGEw?=
+ =?utf-8?B?WW02OWM3U3ZqM045d1pjZVBENXoweWlPeDFEeXROcE56aDU3aTBISWJpVXln?=
+ =?utf-8?B?S3g2QkZod1dFZVoyZFRFYlNOQXdoaGVhL2dlNThXMTlncjZQQ3dMYWU4Q2Q4?=
+ =?utf-8?B?Vlh1WHI1Z25xb09wT25iV2FRSHNPZmlpQ1RzeTZPWjJ3SDE2ZEFaM1RUUjVa?=
+ =?utf-8?B?Zk8wTXUvbXdhcnNsSXBvcDJkN1BQVFlhblQ3VmtCcm90YktsK2ZFbElBR2Jp?=
+ =?utf-8?B?OTZjK1hqR2N1T2tsN250NlFaMEtuaXkxMFBzQzZvVVM4YzdLUVFsUkRVVVJs?=
+ =?utf-8?B?Z1dQQUEyODB2Q0lEcG5XaUpsNWN3cGtHd0NyUjdEYmdMNnpPNE81Y21WMWd0?=
+ =?utf-8?B?bW5nbmFlUGpmUkVrVzc4VHA2aHppdEx0dzlmU0VaUmVici9hTWM5TlVPRHhz?=
+ =?utf-8?B?MGF4dVRyelR3M0JjSVRkbEtmdDZGVGVKeWY2SEY4T0FCeTNQWWxWeVdsTVRT?=
+ =?utf-8?B?ekNJa3FuOTRZUVV3aU56aW9lb0NxUFhlUzRLRmFKT0ZwNlkyaDRVLzJMdVZv?=
+ =?utf-8?B?SlAxSXVPMDFnQ3VNVEpxWkJ4N09xd0VQaHNTQ1l0Z0pNKzUyRENvbWdlcmVh?=
+ =?utf-8?B?emRWNW5td2lZQmNFN2MzakF4THpLaDlKTjZBR2NyMnV2d0RIakdWZ0hQMVU4?=
+ =?utf-8?B?MXM1bU9Va1lVaHFiOUlBQmlXSS9SdUk0STRwV3JGK2c5U0x5UGJuRVNoZEJC?=
+ =?utf-8?B?cFZ1YURVdVNlVjBlMXFqbDFVamFRcTFiVjlwTEh4Y0NIZk5ucXUwaFRjQzU5?=
+ =?utf-8?B?RUlVZjB2TkRzUm9xdnV5cTNRc25wS0hKMVIybHdUNzRyY2QwWmNjUU54U0Jj?=
+ =?utf-8?B?UGpld2hyVjV3UU9PS0ZEQVRqaW9VbERlM213ZWZkbExrWnFMUzUzY2l0RkU4?=
+ =?utf-8?B?ZWoxRUk3WWZRVDNPbjl6TU82TXNYTXFQZ2lubjVMRnZzZTJHTnNzMytETVBl?=
+ =?utf-8?B?T2o5dnRZKzRiNzNqQjdsdDhoWCtiR000Wms4S1RlbWY5Tk9jVE1waVNoNWF3?=
+ =?utf-8?B?dlpPUFlLaDRTdjlsbFNVdFg4cEFRTVpXWXpseDYvZ0hMdWk0UkVLU3E2ZEYr?=
+ =?utf-8?B?RHA1ZUcwdUxUTVFUU01aenZQdU05MXVEZUpSRlJhb00ydnNNQy8rTUZ0Vitr?=
+ =?utf-8?B?MkZmd1BhWk5UeHhoanlnN0NpQ2FqVXlNdnRmOUxxcy9tREpDODdzbDNoU0xz?=
+ =?utf-8?B?ZUZXbVJJZmNYUG9WZ0ZyR3hRUEl0OVkxdzRrRVRqcTR6L0h1RHVmWjg1Rnh2?=
+ =?utf-8?B?UTlUWFc1cW9PR2U4SUFHeXhWb1ZVNlZVeVpkWHJEaEg2THBrN3BsVkRGRG1P?=
+ =?utf-8?B?b3BSczFiaDRabFNQOURyR2ZnL3dCdHh5VlFuY2o0ZkdRSWR5QUcrSTNuc1JO?=
+ =?utf-8?B?c1AxclJhd1FXVkZqS0xDK2Q3dEtoTzNVWjZBck0vemw0QzB5Y09OM21xUkIy?=
+ =?utf-8?B?VzVCSk1jYmNtUzd3bDZDM3JVSUo1UnhiU2JJTkhCY1BqWGxiYWpkS2twVWhV?=
+ =?utf-8?B?ZzkzcnFCYUQ0d1JhVVJnTjF4RkV3eUQzUTZibDQ5VlQ0TUdmUnB0cU9KVjB3?=
+ =?utf-8?B?T3ExOEFtb214eE5BQ2FpVGxLbmNqNDd3ME9ua25ZSHBvQy8vcGtGM1FrWnBZ?=
+ =?utf-8?B?blRXUkEyVmJMbDc1U3JIVFlmR2svVkMwdTVoM05mL08wQitkR3VHSGhpdkFs?=
+ =?utf-8?B?WTBNMHY2UUlwKzR6YWdJSmZ2R0dnbXRxdTZmMFJBQXg4NUFJR3JoWGFGdHlj?=
+ =?utf-8?B?TzdWalN3SGlYOE5yRzVsR3J6cjRWbWthc25EZVNjOWVzbzlXZzdrU01oWEtF?=
+ =?utf-8?B?MkE5ZkxseGVqdlk2bjVTNlFKVmFqYnhoNG1rYlgwUHBIVE9leTd6enJYWUc1?=
+ =?utf-8?B?Q25MNzAxbmhXWGw2U3YwNUZJeWxjQksxTHREWTZkc3RBb0Myb2wrMlY2OXdu?=
+ =?utf-8?B?aklpNk1vQVRsMWZya3JWU3YySUw5aGI5N2RISytBQXozS1pORG5WVllRdnRx?=
+ =?utf-8?B?YWdEQmc1REpodXA3TE5QSlp6dC9QcHRxRjQzbW53aDV2RDlaVjZoaWc3bUdM?=
+ =?utf-8?Q?73qb8Hk1oH+610Dbu3?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18e11a76-ac6c-4d36-faa2-08decd7db3e6
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 21:08:10.7810
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8i30X54HpiKgGRMVIuxO5wHIZoAfbezO5+rG/JCCw2GV6jaKN1XhSuNepfKrwseqh1KGilgOvFOTWYjUalaqrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9137
 
-On 4/6/26 15:43, Marc-AndrÃ© Lureau wrote:
-> Refactor the RamDiscardManager interface into two distinct components:
-> - RamDiscardSource: An interface that state providers (virtio-mem,
->    RamBlockAttributes) implement to provide discard state information
->    (granularity, populated/discarded ranges, replay callbacks).
-> - RamDiscardManager: A concrete QOM object that wraps a source, owns
->    the listener list, and handles listener registration/unregistration
->    and notifications.
+On 6/15/26 14:48, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> This separation moves the listener management logic from individual
-> source implementations into the central RamDiscardManager, reducing
-> code duplication between virtio-mem and RamBlockAttributes.
+> The new RMPOPT instruction helps manage per-CPU RMP optimization
+> structures inside the CPU. It takes a 1GB-aligned physical address
+> and either returns the status of the optimizations or tries to enable
+> the optimizations.
 > 
-> The change prepares for future work where a RamDiscardManager could
-> aggregate multiple sources.
+> Per-CPU RMPOPT tables support at most 2 TB of addressable memory for
+> RMP optimizations.
 > 
-> Note, the original virtio-mem code had conditions before discard:
->    if (vmem->size) {
->        rdl->notify_discard(rdl, rdl->section);
->    }
-> however, the new code calls discard unconditionally. This is considered
-> safe, since the populate/discard of sections are already asymmetrical
-> (unplug & unregister all listener section unconditionally).
+> Initialize the per-CPU RMPOPT table base to the starting physical
+> address. This enables RMP optimization for up to 2 TB of system RAM on
+> all CPUs.
 > 
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Acked-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Additionally, add support to setup and enable RMPOPT once SNP is
+> enabled and initialized.
+> 
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
->   include/hw/virtio/virtio-mem.h |   3 -
->   include/system/memory.h        | 197 +++++++++++++++++++++----------------
->   include/system/ramblock.h      |   2 -
->   hw/virtio/virtio-mem.c         | 163 ++++++------------------------
->   system/memory.c                | 218 ++++++++++++++++++++++++++++++++++++-----
->   system/ram-block-attributes.c  | 171 ++++++++++----------------------
->   6 files changed, 385 insertions(+), 369 deletions(-)
+>  arch/x86/coco/core.c             |  2 +
+>  arch/x86/include/asm/msr-index.h |  3 ++
+>  arch/x86/include/asm/sev.h       |  4 ++
+>  arch/x86/virt/svm/sev.c          | 70 ++++++++++++++++++++++++++++++++
+>  drivers/crypto/ccp/sev-dev.c     |  3 ++
+>  5 files changed, 82 insertions(+)
+> 
+> diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+> index 989ca9f72ba3..8c1393ddc5df 100644
+> --- a/arch/x86/coco/core.c
+> +++ b/arch/x86/coco/core.c
+> @@ -16,6 +16,7 @@
+>  #include <asm/archrandom.h>
+>  #include <asm/coco.h>
+>  #include <asm/processor.h>
+> +#include <asm/sev.h>
+>  
+>  enum cc_vendor cc_vendor __ro_after_init = CC_VENDOR_NONE;
+>  SYM_PIC_ALIAS(cc_vendor);
+> @@ -172,6 +173,7 @@ static void amd_cc_platform_clear(enum cc_attr attr)
+>  	switch (attr) {
+>  	case CC_ATTR_HOST_SEV_SNP:
+>  		cc_flags.host_sev_snp = 0;
+> +		snp_clear_rmpopt_configured();
+>  		break;
+>  	default:
+>  		break;
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 86554de9a3f5..28540744f1eb 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -761,6 +761,9 @@
+>  #define MSR_AMD64_SEG_RMP_ENABLED_BIT	0
+>  #define MSR_AMD64_SEG_RMP_ENABLED	BIT_ULL(MSR_AMD64_SEG_RMP_ENABLED_BIT)
+>  #define MSR_AMD64_RMP_SEGMENT_SHIFT(x)	(((x) & GENMASK_ULL(13, 8)) >> 8)
+> +#define MSR_AMD64_RMPOPT_BASE		0xc0010139
+> +#define MSR_AMD64_RMPOPT_ENABLE_BIT	0
+> +#define MSR_AMD64_RMPOPT_ENABLE		BIT_ULL(MSR_AMD64_RMPOPT_ENABLE_BIT)
+>  
+>  #define MSR_SVSM_CAA			0xc001f000
+>  
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 594cfa19cbd4..0d662221615a 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -662,6 +662,8 @@ static inline void snp_leak_pages(u64 pfn, unsigned int pages)
+>  	__snp_leak_pages(pfn, pages, true);
+>  }
+>  int snp_prepare(void);
+> +void snp_setup_rmpopt(void);
+> +void snp_clear_rmpopt_configured(void);
+>  void snp_shutdown(void);
+>  #else
+>  static inline bool snp_probe_rmptable_info(void) { return false; }
+> @@ -680,6 +682,8 @@ static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
+>  static inline void kdump_sev_callback(void) { }
+>  static inline void snp_fixup_e820_tables(void) {}
+>  static inline int snp_prepare(void) { return -ENODEV; }
+> +static inline void snp_setup_rmpopt(void) {}
+> +static inline void snp_clear_rmpopt_configured(void) {}
+>  static inline void snp_shutdown(void) {}
+>  #endif
+>  
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index 8bcdce98f6dc..1b5c18408f0b 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -124,6 +124,10 @@ static void *rmp_bookkeeping __ro_after_init;
+>  
+>  static u64 probed_rmp_base, probed_rmp_size;
+>  
+> +static cpumask_t rmpopt_cpumask;
+> +static phys_addr_t rmpopt_pa_start;
+> +static bool rmpopt_configured;
 
+The usage of this isn't doesn't imply what the name says. How about
+changing it to rmpopt_capable ?
 
-> +int ram_discard_manager_notify_populate(RamDiscardManager *rdm,
-> +                                        uint64_t offset, uint64_t size)
+> +
+>  static LIST_HEAD(snp_leaked_pages_list);
+>  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+>  
+> @@ -490,7 +494,12 @@ static bool __init setup_rmptable(void)
+>  	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
+>  		if (!setup_segmented_rmptable())
+>  			return false;
+> +		rmpopt_configured = true;
+>  	} else {
+> +		/*
+> +		 * RMPOPT requires a segmented RMP table, so leave
+> +		 * rmpopt_configured clear on contiguous RMP systems.
+> +		 */
+
+I think this comment should be above where rmpopt_configured is set,
+slightly changed to
+
+	RMPOPT requires a segmented RMP, so indicate that the system
+	is capable of configuring and running RMPOPT.
+
+Thanks,
+Tom
+>  		if (!setup_contiguous_rmptable())
+>  			return false;
+>  	}
+> @@ -555,6 +564,21 @@ int snp_prepare(void)
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
+>  
+> +static void rmpopt_cleanup(void)
 > +{
-> +    RamDiscardListener *rdl, *rdl2;
-> +    int ret = 0;
+> +	int cpu;
 > +
-> +    QLIST_FOREACH(rdl, &rdm->rdl_list, next) {
-> +        MemoryRegionSection tmp = *rdl->section;
+> +	cpus_read_lock();
 > +
-> +        if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-> +            continue;
-> +        }
-> +        ret = rdl->notify_populate(rdl, &tmp);
-> +        if (ret) {
-> +            break;
-> +        }
-> +    }
+> +	for_each_cpu(cpu, &rmpopt_cpumask)
+> +		WARN_ON_ONCE(wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0));
 > +
-> +    if (ret) {
-
-(Pre-existing, reduce scope?)
-
-            RamDiscardListener *rdl2;
-
-> +        /* Notify all already-notified listeners about discard. */
-> +        QLIST_FOREACH(rdl2, &rdm->rdl_list, next) {
-> +            MemoryRegionSection tmp = *rdl2->section;
+> +	cpus_read_unlock();
 > +
-> +            if (rdl2 == rdl) {
-> +                break;
-> +            }
-> +            if (!memory_region_section_intersect_range(&tmp, offset, size)) {
-> +                continue;
-> +            }
-> +            rdl2->notify_discard(rdl2, &tmp);
-> +        }
-> +    }
-> +    return ret;
+> +	cpumask_clear(&rmpopt_cpumask);
+> +	rmpopt_pa_start = 0;
 > +}
-
-
->   void ram_discard_manager_register_listener(RamDiscardManager *rdm,
->                                              RamDiscardListener *rdl,
->                                              MemoryRegionSection *section)
->   {
-> -    RamDiscardManagerClass *rdmc = RAM_DISCARD_MANAGER_GET_CLASS(rdm);
-> +    int ret;
 > +
-> +    g_assert(section->mr == rdm->mr);
+>  void snp_shutdown(void)
+>  {
+>  	u64 syscfg;
+> @@ -563,11 +587,57 @@ void snp_shutdown(void)
+>  	if (syscfg & MSR_AMD64_SYSCFG_SNP_EN)
+>  		return;
+>  
+> +	rmpopt_cleanup();
 > +
-> +    rdl->section = memory_region_section_new_copy(section);
-> +    QLIST_INSERT_HEAD(&rdm->rdl_list, rdl, next);
->   
-> -    g_assert(rdmc->register_listener);
-> -    rdmc->register_listener(rdm, rdl, section);
-> +    ret = ram_discard_source_replay_populated(rdm->rds, rdl->section,
-> +                                              rdm_populate_cb, rdl);
-> +    if (ret) {
-> +        error_report("%s: Replaying populated ranges failed: %s", __func__,
-> +                     strerror(-ret));
-
-Pre-existing, should ram_discard_manager_register_listener propagate
-Error*? For example the current caller provides an errp
-(vfio_ram_discard_register_listener). Can be improved on top of course.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
-
-> +    }
->   }
-
+>  	clear_rmp();
+>  	on_each_cpu(mfd_reconfigure, NULL, 1);
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
+>  
+> +void snp_clear_rmpopt_configured(void)
+> +{
+> +	rmpopt_configured = false;
+> +}
+> +
+> +void snp_setup_rmpopt(void)
+> +{
+> +	u64 rmpopt_base;
+> +	int cpu;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT) || !rmpopt_configured)
+> +		return;
+> +
+> +	cpus_read_lock();
+> +
+> +	/*
+> +	 * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+> +	 * to set up the RMPOPT_BASE MSR.
+> +	 *
+> +	 * Note: only online primary threads are included.  If a core's
+> +	 * primary thread is offline, that core is not covered.  CPU hotplug
+> +	 * is not currently supported with SNP enabled.
+> +	 */
+> +
+> +	for_each_online_cpu(cpu)
+> +		if (topology_is_primary_thread(cpu))
+> +			cpumask_set_cpu(cpu, &rmpopt_cpumask);
+> +
+> +	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+> +	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+> +
+> +	/*
+> +	 * Per-CPU RMPOPT tables support at most 2 TB of addressable memory
+> +	 * for RMP optimizations. Initialize the per-CPU RMPOPT table base
+> +	 * to the starting physical address to enable RMP optimizations for
+> +	 * up to 2 TB of system RAM on all CPUs.
+> +	 */
+> +	for_each_cpu(cpu, &rmpopt_cpumask)
+> +		WARN_ON_ONCE(wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base));
+> +
+> +	cpus_read_unlock();
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
+> +
+>  /*
+>   * Do the necessary preparations which are verified by the firmware as
+>   * described in the SNP_INIT_EX firmware command description in the SNP
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 78f98aee7a66..217b6b19802e 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -1478,6 +1478,9 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
+>  	}
+>  
+>  	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
+> +
+> +	snp_setup_rmpopt();
+> +
+>  	sev->snp_initialized = true;
+>  	dev_dbg(sev->dev, "SEV-SNP firmware initialized, SEV-TIO is %s\n",
+>  		data.tio_en ? "enabled" : "disabled");
 
