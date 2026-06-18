@@ -1,53 +1,53 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741823502A9
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 18:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7F3E2752
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 18:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781808919; cv=none; b=b9z5E3AvuZi1h83V6YUwchGL0J3uvFhMAVnJAmC0bsY9zKcatAfNJLOdcfklbpXvC9y8NX7BeWFBdTANgLzPBdWcU/20rvc8V+fk284G2tIqgN1xZiDS5y9Kui8iz+0LLP7aSz3JhpSI4t3d5+rimGMLKI+AxMnVDKklZ9cV/74=
+	t=1781809004; cv=none; b=Wfd3Jb/J8T3HCaX6W6o4ePJE7LOyUZzOyzsIQwHE1LE7pGYYBRBzhWsEhOmWHDdqcH3in+Zqhhlbqa4DYbWiDrnWhD7pDMXUGHHNVn7EIYLevz5UO/QfaH29T4wBPJUor0oA9ylmr4+bdWEFoviom4Hlt35BgEJkOLS9tmeFudk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781808919; c=relaxed/simple;
-	bh=i8i11/nngs/dJUglrC+fQ2GVXgcr6LpNVf81KzGar1k=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tU3Ez037BATbq15XFjV1e/TUznlx7e5F/xenrJJ4knmPsRl1xv04ZENgVJekt5OGmMimYOuJZTfwT3fFqa9EpF+GWs+ZNUxF61/3dzuiCCZ3BLuOBMwBHiCr7KoZ3rWkElh1K6c4rMlKVt5GJm46KreTV3MUmAv6EPdVXF2EFnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C0zLHQmk; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1781809004; c=relaxed/simple;
+	bh=k7pEB1TrJXrtJVXWHb/y4s/VECamhLF0DoS0yfjjuPw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jpowEWGPiS/CnGdNptM0ej1XinH0vRrW7m6ixOPNI9GCJzrgzp0/ynY0zxlHiJRA56CorF/N2zP6mVV0nswUt8AAYytvnydozvVgOFFMHtdPCTMle5rfwnFeMT1cUN8w88ZAhHJew0wTXJGVXK2yKpSOI7nnkxFjPp5rCeKP8xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R9LcPU4a; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C0zLHQmk"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2c98c1be2so12211995ad.0
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 11:55:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R9LcPU4a"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423f3e4728so780054b3a.2
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 11:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781808917; x=1782413717; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781809003; x=1782413803; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=djztpNcmYyO0c6LtUWKYgTT7dvEa12Fc6/4z0dDfxR4=;
-        b=C0zLHQmkkmHPQte3JUyZH7WJ5umB80YnVcEGXBAh1FuSpp9wfhLndVxZvpIyO5yp2P
-         tClHjO3PE1UMQA5YyEAbs5nvk26PLpjL9vYLxFHfnv0JMPXnOlK0a5o7tFrLzn38Ycul
-         Cmbs6iTw4DkUu9niCKApc6rCoQ+nET4zFy/JzQWe4VgbNEfScFsFHTszgWRN1EJua9EV
-         43pTCt0uKufbaH0/vdvQYzTRRjLz8toOCz1Dc8kc0g25mez6JpP9dikTqe6j/g02vCdu
-         hWYb3EkvcwP4vIPCQHQVs53IT/eVUU7siiety5m1jxDh8Q8oMJ1IqC4VUvjPd9ye6EET
-         7ZEw==
+        bh=BpZX4un/aVSFnNpO1jcVNhucJmMh4JR8uc7m+5+/1dQ=;
+        b=R9LcPU4aqSCHDVzPew1wF1FZ2pJJl7v/ynnmL5xWKcmFbooPtmOnABf6O2ZTujiXOr
+         zNRlmnXqyLR14c1gX57TX+Z1pLMEaMSbNpIWNHu4ecaS2MpjjZ6vlCp7WSFczgt+PzZ8
+         IQpHTCrRD4258NttHYjeDKd7P3MPJPBtUKbkHv1QflB0ujx0hfMr2GVTQJoW8lL5Lnfv
+         LlJ4esVURaBXemibuIwKalXIwYPVExBJPZLf0e4iiFhaa00lm/r4L6vuq5HEPJUxgVRD
+         Jaa1t2ffNHQVskS365eQ3UlkLrnxhBGypSSOPmDu4QnIQMRTIn0Ayt/jK/OhMk16Yq5W
+         /oww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781808917; x=1782413717;
+        d=1e100.net; s=20251104; t=1781809003; x=1782413803;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=djztpNcmYyO0c6LtUWKYgTT7dvEa12Fc6/4z0dDfxR4=;
-        b=Im0vNlxojHuKHEpkyKw0vlQsjkWRXDZtfJKw9cipgmVn2aV3unHqM3wAtCDzFdX0Io
-         Z9hmEG1whrODTbPQjsshe8+bbcUrksdgxLMrANOErLcUupvZjY5vvQD0WeJzAy6u7+Ky
-         +3wl1gZX7tbPYOp3/+jVxslJ3BDnEyLaD9w7ywsx0pexMw2of5w/JOM1cAVyavt/lKAj
-         QcsRcj/lS7ovYmL14TWI7g//Mzue+//sLEVBL01AcaXVJNY3oxKkwmJl7uGdBg1zO/Z4
-         YM7gQzXqA3CYtZTdJQ7125XU05kWgKuJWJj+dR6j8VfEqZ9EzFHxtwN7kw+FYJrCJUcR
-         RUHw==
-X-Gm-Message-State: AOJu0YwPG1Vs9tZqIZPavTNojLoxZOmn1e8muMQ7NZjC1uS4k6/zg/3f
-	SNF8C8IxVvGX1tYmoEKokWkgFY/WgHf50fYvtp/TvjuWcNzYzZiTJ0vqUKP01cHIUp4KyhgfHkb
-	jU3eD2Q==
-X-Received: from plhs15.prod.google.com ([2002:a17:903:320f:b0:2c6:bd76:8706])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54e:b0:2bf:7b62:a038
- with SMTP id d9443c01a7336-2c718ca5fcbmr5654385ad.9.1781808916536; Thu, 18
- Jun 2026 11:55:16 -0700 (PDT)
+        bh=BpZX4un/aVSFnNpO1jcVNhucJmMh4JR8uc7m+5+/1dQ=;
+        b=jkRBwBGMDhPTIiwGjdDiJIxrPg8xBKKGmDtqZQj50PRSxuPr9wwkcwJUYRsUQM8AR/
+         vyitLc5ebBd8ak9jIa0Jqd9XpbJ533HXVACXsj7Bzr2x8ULkftKkhZTwOn2fr9tWTIp9
+         gYtLaHkEjyArkldnU5/jFaxQtavuvmflSCtLviGhcqUhAoxmLm85EzO8EZbYXS1zm6rh
+         781gYvdR7gZn19X6PgI5mozN7A++taDMAMLMJFKzGHBKYhKUTSvbgH+5eg/lYma+O2nU
+         2qkCKzYqBliil7Cg4nWMlj6Nf0xc1PsfHcqZhZLHHARHaU9itXjhGk5Hj3XoimHgTDrs
+         Wj5w==
+X-Gm-Message-State: AOJu0YwI02cXIiUd0xgt51qF8/CHAOTyVxENwFMH6tWNkiwktbTjBv+2
+	NLPs79bibhrSSYqYGyjJvqb3mszGCn/+ewSsHfMYhervypJQZk7/AOg2tSKY1qcACrqQwP+d9km
+	V8mGILg==
+X-Received: from pfob8.prod.google.com ([2002:aa7:8708:0:b0:842:47f8:d51d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1916:b0:842:5b63:610f
+ with SMTP id d2e1a72fcca58-845507a9ea7mr165386b3a.4.1781809002646; Thu, 18
+ Jun 2026 11:56:42 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 18 Jun 2026 11:55:15 -0700
+Date: Thu, 18 Jun 2026 11:56:41 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,46 +55,51 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.55.0.rc0.738.g0c8ab3ebcc-goog
-Message-ID: <20260618185515.2021642-1-seanjc@google.com>
-Subject: [PATCH] KVM: x86: Clamp the EOI vector if its OOB instead of bugging
- the kernel
+Message-ID: <20260618185641.2022368-1-seanjc@google.com>
+Subject: [PATCH] KVM: x86/mmu: Bug the VM, not the host kernel, if KVM
+ write-protects upper SPTEs
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-If KVM handles an I/O APIC EOI exit request with a bad vector, clamp the
-vector to 255 and hope for the best instead of bugging the host.  In all
-likelihood, a missed EOI is survivable for the guest, and it's most
-definitely not remotely fatal to the host, i.e. potentially panicking the
-host is completely unjustified.  Arbitrarily use 255 for the dummy vector,
-the goal is purely to ensure the vector is covered by the bitmap.
-
-Opportunistically ensure the EOI vector isn't negative, as it's a signed
-integer, i.e. the "greater than 255" check won't guard against setting the
-vector to a negative value (KVM uses -1 to say "no IRQ" in many flows).
+WARN and terminate the VM if KVM attempts to write-protect non-leaf SPTEs
+instead of bugging the host kernel, as there is no reason to bring down the
+entire host.  Even termininating the VM is likely overkill, but in theory a
+missed write could corrupt guest memory, so play it safe.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kvm/mmu/tdp_mmu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d9d51803b7b2..fda09e03b960 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11212,7 +11212,10 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		if (kvm_check_request(KVM_REQ_NMI, vcpu))
- 			process_nmi(vcpu);
- 		if (kvm_check_request(KVM_REQ_IOAPIC_EOI_EXIT, vcpu)) {
--			BUG_ON(vcpu->arch.pending_ioapic_eoi > 255);
-+			if (WARN_ON_ONCE(vcpu->arch.pending_ioapic_eoi < 0 ||
-+					 vcpu->arch.pending_ioapic_eoi > 255))
-+				vcpu->arch.pending_ioapic_eoi = 255;
-+
- 			if (test_bit(vcpu->arch.pending_ioapic_eoi,
- 				     vcpu->arch.ioapic_handled_vectors)) {
- 				vcpu->run->exit_reason = KVM_EXIT_IOAPIC_EOI;
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 5b3041138301..c1cbae65d239 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1410,9 +1410,10 @@ static bool wrprot_gfn_range(struct kvm *kvm, struct kvm_mmu_page *root,
+ 	u64 new_spte;
+ 	bool spte_set = false;
+ 
+-	rcu_read_lock();
++	if (KVM_BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL, kvm))
++		return false;
+ 
+-	BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL);
++	rcu_read_lock();
+ 
+ 	for_each_tdp_pte_min_level(iter, kvm, root, min_level, start, end) {
+ retry:
+@@ -1844,7 +1845,8 @@ static bool write_protect_gfn(struct kvm *kvm, struct kvm_mmu_page *root,
+ 	u64 new_spte;
+ 	bool spte_set = false;
+ 
+-	BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL);
++	if (KVM_BUG_ON(min_level > KVM_MAX_HUGEPAGE_LEVEL, kvm))
++		return false;
+ 
+ 	rcu_read_lock();
+ 
 
 base-commit: 9d4853b044beefa21c4ee3e18c40653601a64ced
 -- 
