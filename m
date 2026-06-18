@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9875B3DD851
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 08:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5E3330D3B
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 09:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781773123; cv=none; b=u1lHWeDmxYdHWuKgQHRWN5WmXyc7Xq+g9ryWT1URS3vK4BeX1GVRNFT/mWr4ApS1adwGoR0NyIn4uRi0qGpAq5yPjb5NebvVRVnvE+TSmzUjhXqQ9/4G+9Vw93n8aftlJLSJQzissP26hbSaeLUFa71zY17wH04TtX/vLxQgAxY=
+	t=1781773392; cv=none; b=uzAR0ff52h1CKqHxLC1ur3d/5VQcRGdWf6JLSEdFL1i2DitW2/DCrfprtk0UbpjuLsRuVeReOc8cePKFaBtC1HcDJIcDv6OFYqefTi/pK3pwfIQ6yFVcL2s/n3SOxNFkjhhRwEr2m7Eqi9r6F+t5Uk4G70MRliNLZcytSQCh+6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781773123; c=relaxed/simple;
-	bh=tqcIEmUo1WmgzrFqwhzN7Q3ZtZ3AslAB6vLkkgJnj2w=;
+	s=arc-20240116; t=1781773392; c=relaxed/simple;
+	bh=sLNs9XeuShk4QNWVe7mEqJOaUGTr1oOsgtHdaEHSe8s=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=r+cULW4Sx55IVkaOwMSpeGBQNOTAfcwj1zr/e5dmrLz/j8BqQ89/tpLY1X9VNY+UrpRcX5wgP7shq+NKwTBvZ0fijCu3AMIITgvqoILa+R/c2vMOsZ4Q6+woAN5rNL7DZklNjsLS08ceaT8x+VAyAqK4gFLjQUDofDfwCD5ExdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZJ/i0PL; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=AI2WFD/5ZKMD4iBOwpNzQL+jW6g2+GywALsM48qDsjSsuGSTix6W81Xe6cuy1hOYu+IO1zfoxLu7rspU+E8tfuhqJixkvJns2qZ2uvemXfSTv58ms1R6j/UKT9oXJxgpzRbYMi7syVLAWt6aFBkKxfxeIJ6Mfx2SsYcoZ9HZHeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZjEU9rH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZJ/i0PL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A041F000E9;
-	Thu, 18 Jun 2026 08:58:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZjEU9rH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E9B1F000E9;
+	Thu, 18 Jun 2026 09:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781773115;
-	bh=e0wu3UTiP7/Wx8OwldhHjGUyC5U+a+ocQwIcRfGTX8A=;
+	s=k20260515; t=1781773390;
+	bh=kjR6qt6DjOBCS100w//aIRqZs7A2shazwstL05K3IdQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GZJ/i0PLbEFel7GtGeVGCJ83dlUCzn6lcTUTiLchoantWMyDy1tLxB55mrvAhe4Jw
-	 iFWL2qQMUuQrhPvyf/1du9ig/bcn6HE9VJnStK8EEX/k8+1LZcdh8+XaQCfg0iMJBw
-	 pPpSnvppIkVz4JffUMQE2XOtujJeD80rK1tZuC0ONcn05PnkMZ1zuamB0q1RxeGgUX
-	 kExhtL2Bunam+ag5f+Wymt4ZwX9Vxppw9ow24XO6YFDbdwV02aIXVhAXO8+9g9PU1v
-	 dajvy0iy7OQ1tLTbyt6s5BopPCLeh+MAKxLeb5MHZdxD0ucHCL+UJF5k+aHOx3Q3Pk
-	 ttYsnSHWviSWQ==
+	b=DZjEU9rH5f2rpwRQAbpm0znT+2xt7Ipnp5KUMe1MT5W3LCDGuNAwKCIPCqxVOqUw7
+	 vmQgrHhydu3DTcjgnmTmm5xbW5uC4XHl7qsouK85s3Z2wiKFCbRYpgTHlTmmc28LUi
+	 dK6SrmNSV4LD1035bmlIIS216Km2rXI2lzL4ji+waqfGXzI8Au22RhSTyQ/RNLiGrE
+	 iBSd6BCJfotOoVAU4ZA1d3GSBEU6UzgRtziN7W47BFonoaB7elSM1hiQvtPU9X1dAN
+	 a63+vDvqlUp4BDOMTcvCbVf7RTrTAvcDMvgXCXs+wKvKnGVFWSr/0eaPMCsoGWTrbA
+	 U4vhd32LznV7w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 06/17] x86/virt/tdx: Re-initialize the extensions on
- runtime TDX module update
+Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Xu Yilun" <yilun.xu@linux.intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260618081355.3253581-7-yilun.xu@linux.intel.com>
+In-Reply-To: <20260618081355.3253581-17-yilun.xu@linux.intel.com>
 References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-7-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-17-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 18 Jun 2026 08:58:35 +0000
-Message-Id: <20260618085835.98A041F000E9@smtp.kernel.org>
+Date: Thu, 18 Jun 2026 09:03:09 +0000
+Message-Id: <20260618090310.43E9B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,108 +46,108 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-New issues:
-- [Critical] Infinite loop in `tdx_ext_init()` when an external interrupt b=
-ecomes pending during `stop_machine_cpuslocked()`.
-
-Pre-existing issues:
-- [High] Infinite loop in `tdx_sys_disable()` when an external interrupt be=
-comes pending during a kernel panic or crash.
+- [High] KVM incorrectly returns a hypercall error (TDVMCALL_STATUS_INVALID=
+_OPERAND) when in-kernel quote generation gracefully fails.
+- [High] KVM fails to write the required buffer size back to the guest when=
+ the provided GetQuote buffer is too small.
 --
 
-commit 03507e2a23bf57aa355b6cf99d6b8107f41ea488
-Author: Xu Yilun <yilun.xu@linux.intel.com>
+commit 482cde6e1c4a3f88b17ca20d55ddbc439d933981
+Author: Peter Fang <peter.fang@intel.com>
 
-x86/virt/tdx: Re-initialize the extensions on runtime TDX module update
+KVM: TDX: Add in-kernel Quote generation
 
-Runtime TDX module update introduces a mechanism to update the module
-firmware while preserving and restoring TDX operations. As part of the
-restoration process, the post-update initialization detects if extensions
-are supported, rejects updates requiring additional memory, and
-initializes the extensions via TDH.EXT.INIT.
+Provide an in-kernel path for Quote generation when handling
+TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 900928de373ae..4d2940f4538a2 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 9f7c39e0d4b59..20558b0185b63 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
 
 [ ... ]
 
-> @@ -1308,6 +1308,31 @@ static __init int init_tdx_module_extensions(void)
->  	return tdx_ext_init();
->  }
-> =20
-> +/*
-> + * Mostly the same flow as init_tdx_module_extensions(), but rejects add=
-ing
-> + * more memory.
-> + */
-> +static int update_tdx_module_extensions(void)
+> +static u64 get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req =
+*req,
+> +			    gpa_t req_gpa, size_t total_len)
 > +{
-> +	struct tdx_sys_info_ext sysinfo_ext;
-> +	int ret;
-> +
-> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-> +		return 0;
-> +
-> +	ret =3D get_tdx_sys_info_ext(&sysinfo_ext);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!sysinfo_ext.ext_required)
-> +		return 0;
-> +
-> +	if (sysinfo_ext.memory_pool_required_pages)
-> +		return -EFAULT;
-> +
-> +	return tdx_ext_init();
-
-[Severity: Critical]
-Could this result in an infinite loop during a runtime update?
-
-The tdx_module_run_update() function runs under stop_machine(), meaning
-local interrupts are explicitly disabled. When this calls tdx_ext_init(),=20
-it executes the following polling loop:
-
-    do {
-        r =3D seamcall(TDH_EXT_INIT, &args);
-    } while (r =3D=3D TDX_INTERRUPTED_RESUMABLE);
-
-If an external hardware interrupt becomes pending during the update, the TDX
-module exits to the host and returns TDX_INTERRUPTED_RESUMABLE. Because the
-host CPU has interrupts disabled, it cannot service the interrupt and simply
-continues execution.
-
-Does this mean the loop condition evaluates to true, immediately re-executi=
-ng
-the seamcall, and permanently deadlocking the system?
-
-> +}
-> +
->  static __init int init_tdx_module(void)
->  {
 
 [ ... ]
+
+> +	/* Caller owns the requested quote */
+> +	void *quote_data __free(kvfree) =3D
+> +		tdx_quote_generate(td, req->data, req->in_len, &req->out_len);
+> +
+> +	if (!quote_data)
+> +		return TDX_QUOTE_STATUS_UNAVAILABLE;
+> +
+> +	if ((size_t)req->out_len + TDX_QUOTE_REQ_HDR_SIZE > total_len)
+> +		return TDX_QUOTE_STATUS_ERROR;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but while looking at how
-TDX_INTERRUPTED_RESUMABLE is handled, I noticed a similar pattern in
-tdx_sys_disable():
+If the guest-provided buffer is too small, does this early return skip
+writing the required size back to the guest?
 
-    do {
-        ret =3D seamcall(TDH_SYS_DISABLE, &args);
-    } while (ret =3D=3D TDX_INTERRUPTED_RESUMABLE || ret =3D=3D TDX_SYS_BUS=
-Y);
+When tdx_quote_generate() fails due to an insufficient buffer, it populates
+req->out_len with the required size. By returning TDX_QUOTE_STATUS_ERROR
+immediately here, it seems we bypass the logic that writes req->out_len back
+to the guest.
 
-During a kernel panic or crash, machine_crash_shutdown() executes with local
-interrupts disabled. If an external interrupt becomes pending, the TDX modu=
-le
-exits with TDX_INTERRUPTED_RESUMABLE.
+Will this break a guest's ability to dynamically probe the required quote s=
+ize
+and retry if its initial allocation is too small?
 
-With host interrupts permanently disabled in the panic context, will this
-loop endlessly and prevent the crash dump or kexec process from completing?
+> +
+> +	if (!write_quote_to_guest(vcpu, quote_data, req->out_len, req_gpa))
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	return TDX_QUOTE_STATUS_SUCCESS;
+> +}
+
+[ ... ]
+
+> +static int tdx_get_quote_kernel(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
+> +{
+> +	void *first_page =3D NULL;
+> +	u64 err, qerr;
+> +
+> +	err =3D tdx_get_quote_check_args(vcpu, gpa, size);
+> +	if (err !=3D TDVMCALL_STATUS_SUCCESS)
+> +		goto out;
+> +
+> +	err =3D TDVMCALL_STATUS_INVALID_OPERAND;
+
+[ ... ]
+
+> +	qerr =3D get_quote_kernel(vcpu, first_page, (gpa_t)gpa, size);
+> +
+> +	if (write_quote_status_to_guest(vcpu, qerr, (gpa_t)gpa) &&
+> +	    qerr =3D=3D TDX_QUOTE_STATUS_SUCCESS)
+> +		err =3D TDVMCALL_STATUS_SUCCESS;
+
+[Severity: High]
+Should the hypercall return SUCCESS even if the quote generation itself
+failed gracefully?
+
+If get_quote_kernel() encounters a quote service error (like
+TDX_QUOTE_STATUS_UNAVAILABLE), this condition prevents err from being updat=
+ed
+to TDVMCALL_STATUS_SUCCESS. As a result, the hypercall returns the
+initialized value TDVMCALL_STATUS_INVALID_OPERAND in R10.
+
+Since the hypercall arguments were structurally valid and we successfully
+wrote the error status into the shared memory buffer, shouldn't the hyperca=
+ll
+return SUCCESS to let the guest parse the actual quote status?
+
+> +
+> +out:
+> +	kfree(first_page);
+> +	tdvmcall_set_return_code(vcpu, err);
+> +
+> +	return 1;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618081355.3253=
-581-1-yilun.xu@linux.intel.com?part=3D6
+581-1-yilun.xu@linux.intel.com?part=3D16
