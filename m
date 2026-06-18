@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3202EEE95
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 15:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8FC2D0C98
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781797840; cv=none; b=CE4ILI5GSKMvftREFmuKHvcycttj1welS4d5wzAkFvT/tgjdHjFLqpk9+RgMkv57iadtKXGNg3/s/wFeltihGaBg/fjbUY2dQOa2Vlr5PnxnySDdBv5Rm8Zbv7MNpNw8n1yURIH+ujfHX3lDFkwiSrY9MvjJFQgCVwDEekbp+rc=
+	t=1781797841; cv=none; b=otQqaASPrb36FQzHhHoiw2kthwhtWMJ2iIj+uM+yn/VoHaNxBnYlx2phJHwb4idgp5OP7h+1q1pABOF/7vWYzxdq4i8TNsz8FhPFNQ3TTgSU0L+lGtB9+i7D31pP/NGQMOyuwSIoPy0jv3igj2AfGXQjnT2mHWENv4XBFzgtIIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781797840; c=relaxed/simple;
-	bh=Ko2VFee+16pvwP91baMpmxl8dSwJJTNI/GiDgni5tAg=;
+	s=arc-20240116; t=1781797841; c=relaxed/simple;
+	bh=9hNsmJq6SLjzU6jtsTuH9b/BZQBolGiCo+qZXnf3dHU=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N628g5oKVvVrB6XJXci3JL15+yAuufMDlMu5uAYWfA5Q4A7ByhFxyzISIPZpP1hw8Nucd8ctjc3rtOuQxdCrgPXVeHrsrpAATAVoChwdQ3ep9IYUKXhCO8DEHpJTELLQJssFSQtMJsmzGpdGAFZVTljW4nQYYUOA0i9dotmDbdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FbOJbtQ6; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version:Content-Type; b=nlb9b3jQh+g5z2ji+Qqxgb+ngGdCrpFtsh3nQLMl0pv2s1Mb+/nCMvVrk89Ff+fHSw8EHaQ8QTvDDa/ORAsbgtjd1VWkPENP7qSY2qqsAySkaDq/RSqqk8u7V/fxiwQf/MPkB7kBmGc9lCETMAMSM5Il7P9dOlbDJU/wDH2nMfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tvc9do6p; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FbOJbtQ6"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tvc9do6p"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5284D491F;
-	Thu, 18 Jun 2026 08:50:32 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 046F8491B;
+	Thu, 18 Jun 2026 08:50:34 -0700 (PDT)
 Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 918A63F62B;
-	Thu, 18 Jun 2026 08:50:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 438273F632;
+	Thu, 18 Jun 2026 08:50:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781797836; bh=Ko2VFee+16pvwP91baMpmxl8dSwJJTNI/GiDgni5tAg=;
+	t=1781797838; bh=9hNsmJq6SLjzU6jtsTuH9b/BZQBolGiCo+qZXnf3dHU=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=FbOJbtQ6uvaSmA7sqJTrUyCaIgJp0iIB0zoWhwFEu3FK37bHmNHFTNRF4m+BuZrhP
-	 lsTc8Uy3M5p9eJjUMch7mrMmtJ6toeOffA/4eFXXDzLycAtMkVOobYoUEnoXGIHT75
-	 AuHZ/GawB/49b3bRMM7zmwFkhOQNQ75OVt4UxMz8=
+	b=tvc9do6pypNzDaQ/d3CWrhaHBerWBrVheTMP9Oh9NNBY9ry8wx80xKIskcH6NS/6v
+	 XHHls9scM0j73vDxv5ntApe5R3R7aks1Y+0fP90wtIUdkhfJqrFprMs19fUOm3187/
+	 AaZvDFyWNpIfVeZKvh9v3OKo3mOe4ir/uLiMwxts=
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com,
@@ -37,9 +37,9 @@ To: will@kernel.org,
 	kvm@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev
-Subject: [PATCH kvmtool v2 1/7] x86: Define bioscall only in 32-bit mode
-Date: Thu, 18 Jun 2026 16:49:55 +0100
-Message-ID: <20260618155001.226266-2-alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool v2 2/7] virtio: Do not modify const strings in virtio_9p_rootdir_parser()
+Date: Thu, 18 Jun 2026 16:49:56 +0100
+Message-ID: <20260618155001.226266-3-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260618155001.226266-1-alexandru.elisei@arm.com>
 References: <20260618155001.226266-1-alexandru.elisei@arm.com>
@@ -52,49 +52,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The gcc online docs define the behaviour of the regparm attribute for
-x86-32 targets [1], and there's no mention of the behaviour for the 64-bit
-version of the architecure.
+Even though @arg is of type const char *, virtio_9p_rootdir_parser()
+modifies it it if a tag name is specified, leading to the following
+compilation error on an x86_64 machine with gcc 15.2.1:
 
-gcc version 16.1 throws this error when compiling for x86-64:
+virtio/9p.c:1503:18: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+ 1503 |         tag_name = strstr(arg, ",");
 
-x86/include/kvm/bios.h:91:43: error: ‘regparm’ attribute ignored [-Werror=attributes]
-   91 | extern bioscall void int10_handler(struct biosregs *regs);
-      |                                           ^~~~~~~~
+Fix it by copying @arg to a local string, which can then be modified
+in-place.
 
-but there's no such error with gcc version 14.2.
-
-This patch author assumes that somewhere between gcc 14.2 and 16.1 the
-compiler behaviour was modified to treat the regparm attribute on x86_64
-as unused. Fix the compilation error by using it only for the 32-bit
-version of the x86 architecture.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc-16.1.0/gcc/x86-Attributes.html#index-regparm_002c-x86
+Also use die_perror() if realpath() fails, to provide more information to
+the user.
 
 Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 ---
- x86/include/kvm/bios.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ virtio/9p.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/x86/include/kvm/bios.h b/x86/include/kvm/bios.h
-index 6f4338d50717..76beb2e0a46b 100644
---- a/x86/include/kvm/bios.h
-+++ b/x86/include/kvm/bios.h
-@@ -62,11 +62,15 @@
- #define MB_BIOS_SS			0xfff7
- #define MB_BIOS_SP			0x40
+diff --git a/virtio/9p.c b/virtio/9p.c
+index e6f669c49895..cf3e547d3173 100644
+--- a/virtio/9p.c
++++ b/virtio/9p.c
+@@ -1491,25 +1491,32 @@ struct virtio_ops p9_dev_virtio_ops = {
  
-+#ifdef CONFIG_X86_32
- /*
-  * When interfere with assembler code we need to be sure how
-  * arguments are passed in real mode.
-  */
- #define bioscall __attribute__((regparm(3)))
-+#else
-+#define bioscall
-+#endif
+ int virtio_9p_rootdir_parser(const struct option *opt, const char *arg, int unset)
+ {
+-	char *tag_name;
+-	char tmp[PATH_MAX];
+ 	struct kvm *kvm = opt->ptr;
++	char *tag_name, *copy;
++	char path[PATH_MAX];
  
- #ifndef __ASSEMBLER__
++	copy = strdup(arg);
++	if (!copy)
++		die_perror("strdup");
+ 	/*
+ 	 * 9p dir can be of the form dirname,tag_name or
+ 	 * just dirname. In the later case we use the
+ 	 * default tag name
+ 	 */
+-	tag_name = strstr(arg, ",");
++	tag_name = strstr(copy, ",");
+ 	if (tag_name) {
+ 		*tag_name = '\0';
+ 		tag_name++;
+ 	}
+-	if (realpath(arg, tmp)) {
+-		if (virtio_9p__register(kvm, tmp, tag_name) < 0)
++	if (realpath(copy, path)) {
++		if (virtio_9p__register(kvm, path, tag_name) < 0)
+ 			die("Unable to initialize virtio 9p");
+-	} else
+-		die("Failed resolving 9p path");
++	} else {
++		die_perror("Failed resolving 9p path");
++	}
++
++	free(copy);
++
+ 	return 0;
+ }
  
 -- 
 2.54.0
