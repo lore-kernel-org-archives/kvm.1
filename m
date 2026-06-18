@@ -1,117 +1,116 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A491B2FDC5E
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552172D2397
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781799265; cv=none; b=tqQQDTqgEHMgZ/e0CzbnEy4wktEslp0R4Aqc+I1//ELf3inOeAhXYA1rGW3jFN5rG/soAzA/Tp5/SGF0KBcl83S76uGkLS54wdWS0Ll308xA2ZyBc3N+aNtpexo1tdQ2XxzEYIvtFWBFGdCVUvQoY9SdaAsohQtG7pwUxX3dtiY=
+	t=1781799408; cv=none; b=C+H9BfoJ0Vfd9QqCdoNlAgAcEB1sXnLPAhnNggZ7ow+7W+40wPF1jApTvjLwa/78Ctb3mcg1yQAmi+o0I+Sva0X6xuZLOL4yXDc5huI4d/9kTDJNcpkC0x+ChrvwBNlayDazeFxCp1ms5CEhqIFQ72nmJ3vWj2arA7eY3QuEQbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781799265; c=relaxed/simple;
-	bh=EFrGcqJsUwcALUYIxLLTT8/N8l54sYTR737fc/v/Y6U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XYynmcCU1UPNG5/NNKcY5lwMExyTvKXNL6/VGVFpfNna+SQ53nw9qBNw0L+Af77vssg/ekPOAH9VebNnRow3PJDaGlOyAxfdd7Rba+Hh+uXi600BUsetMd8Fx8rpOzDsxSc5JOTXHOneaIWUM4vVlL78jM3TDiTRv9EgOv1PKYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YFQDVF3w; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1781799408; c=relaxed/simple;
+	bh=9wy/W2L+hLNuPXubuOiBB/zgEIFleeUzIlllml2G+Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lhAe5Cv2ymfbQ0sUzguw9nFboBmr0xEPajpgF0OpC9e8E1fTiCC3YTnTUwdVnwIWtcM33UbQFl2NFkNDWHmIgZnPmbB2ofrrIp9FKmHWKnNvQuK6VdAaNLdiyNvNveaX5P/45unZbdwxl+yL7qYvvnfuEvS83x3f1A8Wx3XoCz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GdiKFpaX; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YFQDVF3w"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8620ee0971so1235183a12.0
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 09:14:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781799264; x=1782404064; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=smkUU1whOoOuP9yEHYoqcF40OmkenmipHC1Q68vdtSI=;
-        b=YFQDVF3wP/Z3j4dO9Z80pFubjqZ7SgI21494KJrmplypdMeZsAmJfdsh8XZXF5365M
-         k3HKMRxp7Q9zv+IzLw3I5CB1svBUhmqpb+4nu2A4M+Bm0wpVPFk/a4HRFGt3hIl9deu9
-         t8ybuTBQdjW18BIcx6ACSjslLYaaxGi7jLYNaNG3GgaDfHT5tktv9r5+YRM+OOytTUlA
-         y4bShga/gGXaCohTL+P3zs+ByvJ0NbDi0ky287v8YzTRpqoZrFLJn81QB3vgPauBAM9H
-         pj03EWvfGoEsBmRISjR1fiYwZtHCC+7/idAifBg/sUMcBsGC0NgpxUI49zZy7TADc4aW
-         mEbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781799264; x=1782404064;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=smkUU1whOoOuP9yEHYoqcF40OmkenmipHC1Q68vdtSI=;
-        b=A8hIPeRTmlgzqEHc6HzldKejTXsWhq3bqAEfh2bSZrEsh/ChXyBLpWXGnmiprNvcpM
-         +RuHPFzNWqgF1xavkWklpSab40qvPu1VJVCIag7W2w+ULSXB5SIJ3c9hSRn5wQFOZOrK
-         hgKsbb34jPCEjKGbUGKrTDxmini6nAO5Hd21brYoi08mx3iSSK2QecMN40iXgyrrtXwE
-         /zJ+MmH8lf+farjApF6gYfTeYvI6ErwjQY1C00L5X3lsbIUMBx4BwP9CBFaRRayNA/wM
-         Zcogh4DFXolu916L4XD70HIwKOyLXgxlHorIJURuJqRTQvH88txMo6gy3nhtUgn9Szor
-         SN9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9cmWtt/xXvVoEcOc3a1VlGmioxYWVtJ5ZfYISBp6zOprGbVVtWK0Islbo7fNJocDRXE5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9/9wXIBX/I2Si3j5NyjN+g5t9cRWUzjtEczLCX2vS8mLfP0JE
-	ECh5R6LcbU8dNG/b+gkBi7b4Vp3O1qL9R1FClHa1eBPfwAyRWygGt+c6850efI9M+cwiAjdusvF
-	Jh9aRdw==
-X-Received: from pfbjt37.prod.google.com ([2002:a05:6a00:91e5:b0:842:6be9:dfb1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1745:b0:841:dca1:8b69
- with SMTP id d2e1a72fcca58-8453b082c51mr4980798b3a.5.1781799263628; Thu, 18
- Jun 2026 09:14:23 -0700 (PDT)
-Date: Thu, 18 Jun 2026 09:14:22 -0700
-In-Reply-To: <tencent_4A39169A103432A565EEB007CCC88D920109@qq.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GdiKFpaX"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09C1C493F;
+	Thu, 18 Jun 2026 09:16:41 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A7DE3F632;
+	Thu, 18 Jun 2026 09:16:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781799405; bh=9wy/W2L+hLNuPXubuOiBB/zgEIFleeUzIlllml2G+Fw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GdiKFpaXB7XTGBc9c6Dlo6D+B+ug4JeO2OxoOpDnTeu3ypmU71pmoDhU05cruhoTo
+	 g0G2o016LXafLLF8TS4WQYJuibzxkG3ko0jlL8pFXXNiyYogC6eqDDEqMQlUx17n5i
+	 Edb5J7DrEh4kIQANMjznUuOrqUzQBKvArVKJus2o=
+Date: Thu, 18 Jun 2026 17:16:41 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>,
+	Eric Auger <eric.auger@redhat.com>, Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Subject: Re: [kvm-unit-tests PATCH] arm: io: Set is_pl011_uart flag in ACPI
+ initialization
+Message-ID: <ajQZ6aKPnybVueJC@raptor>
+References: <20260513211624.2416284-1-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <tencent_2A66410581309346060C5BDC8CD108053005@qq.com>
- <ag8RI8fX1w7jx4sA@google.com> <tencent_4A39169A103432A565EEB007CCC88D920109@qq.com>
-Message-ID: <ajQZXiOEqUU8MAhQ@google.com>
-Subject: Re: [PATCH] KVM: x86: Add tracepoint for vCPU wait/yield paths
-From: Sean Christopherson <seanjc@google.com>
-To: zhanghao <76824143@qq.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513211624.2416284-1-coltonlewis@google.com>
 
-On Fri, May 22, 2026, zhanghao wrote:
-> On Thu, May 21, 2026, Sean Christopherson wrote:
-> > On Thu, May 21, 2026, zhanghao wrote:
-> > > >From 0c8d4428390a1238a956f713c1ddced18eac83da Mon Sep 17 00:00:00 2001
-> > > From: Hao Zhang <zhanghao1@kylinos.cn>
-> > > Date: Thu, 21 May 2026 16:30:37 +0800
-> > > 
-> > > Add a KVM x86 tracepoint that reports when a vCPU reaches selected
-> > > wait/yield handling paths in KVM.
-> > 
-> > Why?
-> 
-> The intent is not to add a scheduling policy hook, but to expose a single
-> observability point for KVM paths that already have wait/yield semantics.
-> 
-> Today userspace can infer parts of this from lower-level tracepoints, but
-> only by stitching together different sources:
-> 
->   - PLE can be inferred from VMX/SVM exit reasons via kvm_exit.
->   - KVM_HC_SCHED_YIELD can be inferred from kvm_hypercall.
->   - Hyper-V and Xen yield/spin-wait paths have their own hypercall paths.
->   - HLT may not be visible as a userspace exit when KVM handles the halt
->     internally, e.g. with in-kernel LAPIC.
-> 
-> Those tracepoints are useful, but they expose lower-level mechanisms rather
-> than the KVM-level point where the vCPU reaches an existing wait/yield
-> handling path.  Consumers that want to correlate vCPU wait/yield behavior
-> with host scheduling activity currently need to understand VMX vs. SVM exit
-> encoding, native KVM hypercall arguments, Hyper-V/Xen hypercall semantics,
-> and HLT handling differences.
-> 
-> This tracepoint is meant to provide that common KVM-level signal:
-> 
->   - ple: KVM reached the PLE handling path
->   - hlt: KVM emulated a guest HLT
->   - pv_yield: KVM reached a paravirtual yield-style path
-> 
-> The tracepoint is informational only.  It does not change KVM scheduling
-> behavior, directed-yield behavior, vCPU placement, or host scheduler state.
-> The target field is also only the guest-supplied value when one exists; it
-> does not imply that the target exists, is runnable, or that a directed yield
-> succeeded.
-> 
-> So the reason for adding a new tracepoint is to avoid requiring userspace
-> observability tools to reconstruct this higher-level wait/yield signal from
-> several unrelated low-level tracepoints and architecture-specific details.
+Hi,
 
-Tracepoints aren't ABI though, and "observability tools" suggest userspace wants
-to build functionality on top of all of this.  If this is for debug purposes,
-then tools like bpftrace are a much better option.
+On Wed, May 13, 2026 at 09:16:24PM +0000, Colton Lewis wrote:
+> When booting via ACPI on ARM64, the SPCR table is parsed to initialize
+> the console UART. However, the code was neglecting to set the
+> is_pl011_uart flag. This caused __getchar() to fall back to treating
+> the UART as a 16550A device, which fails on systems with a PL011.
+> 
+> Tests that wait for serial input (like its-migration) would hang
+> indefinitely because __getchar() would always return -1.
+> 
+> Update uart0_init_acpi() to inspect the SPCR interface_type and set
+> is_pl011_uart accordingly. Also define macros for the first four SPCR
+> interface types in lib/acpi.h based on the Microsoft specification.
+> 
+> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table#table-3-debug-port-types-and-subtypes
+> Assisted-by: Gemini:gemini-3.1-pro
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+>  lib/acpi.h   | 6 ++++++
+>  lib/arm/io.c | 3 +++
+>  2 files changed, 9 insertions(+)
+> 
+> diff --git a/lib/acpi.h b/lib/acpi.h
+> index 66e3062d..29b3edd5 100644
+> --- a/lib/acpi.h
+> +++ b/lib/acpi.h
+> @@ -251,6 +251,12 @@ enum acpi_madt_type {
+>  /* MADT Local APIC flags */
+>  #define ACPI_MADT_ENABLED		(1)	/* 00: Processor is usable if set */
+>  
+> +/* Values for interface_type field in struct spcr_descriptor */
+> +#define ACPI_SPCR_INTERFACE_TYPE_16550		0x0000
+> +#define ACPI_SPCR_INTERFACE_TYPE_16450		0x0001
+> +#define ACPI_SPCR_INTERFACE_TYPE_16550_32BIT	0x0002
+> +#define ACPI_SPCR_INTERFACE_TYPE_ARM_PL011	0x0003
+
+We could also use the defines from the Linux source tree, from
+include/acpi/actbl1.h (look below struct acpi_dbg2_device).
+
+I got a bit confused about the value 2 above, because in the Debug Port
+Table 2 (DBG2) from the link, that value is for a 'MAX311xE SPI UART'. Not
+saying that it's not the same thing as a 32 bit 16550 uart (or that it
+is!), just saying that the names don't appear to be matching.
+
+> +
+>  struct spcr_descriptor {
+>  	ACPI_TABLE_HEADER_DEF	/* ACPI common table header */
+>  	u8 interface_type;	/* 0=full 16550, 1=subset of 16550 */
+> diff --git a/lib/arm/io.c b/lib/arm/io.c
+> index 836fa854..55102bd7 100644
+> --- a/lib/arm/io.c
+> +++ b/lib/arm/io.c
+> @@ -81,6 +81,9 @@ static void uart0_init_acpi(void)
+>  
+>  	assert_msg(spcr, "Unable to find ACPI SPCR");
+>  	uart0_base = ioremap(spcr->serial_port.address, spcr->serial_port.bit_width);
+> +
+> +	if (spcr->interface_type == ACPI_SPCR_INTERFACE_TYPE_ARM_PL011)
+> +		is_pl011_uart = true;
+
+The patch makes sense to me. With or without the Linux define names:
+
+Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
+
+Thanks,
+Alex
