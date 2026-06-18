@@ -1,116 +1,130 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552172D2397
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C324337BAB
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 17:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781799408; cv=none; b=C+H9BfoJ0Vfd9QqCdoNlAgAcEB1sXnLPAhnNggZ7ow+7W+40wPF1jApTvjLwa/78Ctb3mcg1yQAmi+o0I+Sva0X6xuZLOL4yXDc5huI4d/9kTDJNcpkC0x+ChrvwBNlayDazeFxCp1ms5CEhqIFQ72nmJ3vWj2arA7eY3QuEQbs=
+	t=1781804634; cv=none; b=ewRC1TFDJrDqYfIGUnId9fe1Bd2N5bznq35u6z3rx2hDucYRsHxhImDuZKy9zmjxUMu2AiJ9Fqym2n9JO+iGnswxX8JUeuJ0AMhYp6GRifWHzi3JoRXMrantyUIWNCb+xngw0seQvub0F72L3MeU3OaHg3BKI3QvHiY9XSNd6GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781799408; c=relaxed/simple;
-	bh=9wy/W2L+hLNuPXubuOiBB/zgEIFleeUzIlllml2G+Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lhAe5Cv2ymfbQ0sUzguw9nFboBmr0xEPajpgF0OpC9e8E1fTiCC3YTnTUwdVnwIWtcM33UbQFl2NFkNDWHmIgZnPmbB2ofrrIp9FKmHWKnNvQuK6VdAaNLdiyNvNveaX5P/45unZbdwxl+yL7qYvvnfuEvS83x3f1A8Wx3XoCz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GdiKFpaX; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1781804634; c=relaxed/simple;
+	bh=M0t9D3hGgjOl+QfFxAT0o7voSqkMnlLJZ5Qy5T/FmPA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XaZ3wydSV4sfjb5OQIYxo+CiWgyIyXMA7g2BZQ6XP5ZUcfPYYGlU4exavbVa+MfyeplkF4L74RRjWzVuTSE3asnvqbLR3nAqjFN45RPnyS8xq4cvim8UJSk0afOiZNPwY9S0T8MrJSgr6AwhgG5woO1NV/jNoCn8Sb2B/tNHk7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hlL9LT8L; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GdiKFpaX"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09C1C493F;
-	Thu, 18 Jun 2026 09:16:41 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A7DE3F632;
-	Thu, 18 Jun 2026 09:16:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781799405; bh=9wy/W2L+hLNuPXubuOiBB/zgEIFleeUzIlllml2G+Fw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GdiKFpaXB7XTGBc9c6Dlo6D+B+ug4JeO2OxoOpDnTeu3ypmU71pmoDhU05cruhoTo
-	 g0G2o016LXafLLF8TS4WQYJuibzxkG3ko0jlL8pFXXNiyYogC6eqDDEqMQlUx17n5i
-	 Edb5J7DrEh4kIQANMjznUuOrqUzQBKvArVKJus2o=
-Date: Thu, 18 Jun 2026 17:16:41 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Andrew Jones <andrew.jones@linux.dev>,
-	Eric Auger <eric.auger@redhat.com>, Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [kvm-unit-tests PATCH] arm: io: Set is_pl011_uart flag in ACPI
- initialization
-Message-ID: <ajQZ6aKPnybVueJC@raptor>
-References: <20260513211624.2416284-1-coltonlewis@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hlL9LT8L"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf1dece2ecso12688175ad.1
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 10:43:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781804632; x=1782409432; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ORg+SVhYYJ0w5u+smp8MwTjHTHuHXu2DktmOBEIzpE=;
+        b=hlL9LT8LQyo+vewymkFegbzqwr/dykIxtzSQD2fbdOoR0OhpC8p0+M/i3fXXHbtEcy
+         ZVLY/FYUovu+ummCKGektwCNfp+jp3lfAJkS/XO1NbFkqYJse4gNu54ByUIL9X9gkVjx
+         JKD+gIcG/8msYX3ekQhp1G6lJM4eM2pKjIjV2zL9543cwKPKa2iVkK/KXJEGZZbPxSOn
+         P1iUH9McTkB5I9OgwDeNUN1FWxz99OcLL/8f7ICB1jpxouGDC8zfpsPv6ccQ1wqFOPuc
+         LYwoXF9aWehdsTM+oqJmicnOSqNfH4b2DgpT0BezI2rPfVosQQNOgWE+g7TECfPIm0Qb
+         MAOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781804632; x=1782409432;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5ORg+SVhYYJ0w5u+smp8MwTjHTHuHXu2DktmOBEIzpE=;
+        b=JkNUWm5BlkKtZmJdni+u5uKi/70n8TfB38zxgDCy4fmeAsm2BS9vJuhdc42veC0rgf
+         rbKML4rMv29u+OninvgoyYYyAq9GrizSyDRhQgmDNP+byAK4VUldQDWjskJ7+3uteXFj
+         OksiyjGHWRgJfxYffhrqAHO7LDwOZroyWOj0JdNoTKd2i4pQVk6HRLG1ITgSYdjGtQt6
+         oTDOFqwtn35cTkmcLLG5TzgnHcIAwQlERZlor1AcJjWCoqAzvJXMIdOR3IICEaN0TE0h
+         QJZziAgpwV9h7HJ2ZbQ+v1elGz3t2OfENZyLMYk8Sr+11VOKlGjDHVuDqAVINrpZUhLt
+         uQzg==
+X-Gm-Message-State: AOJu0YwOPHzEJd6TRTlYgbkHYLY63C4PSq0fVwLJ8IXW6EjN2KmZY881
+	Cgh7XQF6VAjgDeCHSBfK4qHbewjuq9E5g4sddXaGxXedMfEpTDtydFatBE0GQ5/hhSp+9+PIKjC
+	KK0wM2w==
+X-Received: from plbjb7.prod.google.com ([2002:a17:903:2587:b0:2b0:c9c5:109b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:228e:b0:2c1:737:bed9
+ with SMTP id d9443c01a7336-2c719015708mr1699665ad.30.1781804632062; Thu, 18
+ Jun 2026 10:43:52 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 18 Jun 2026 10:43:46 -0700
+In-Reply-To: <20260618174347.1981064-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513211624.2416284-1-coltonlewis@google.com>
+Mime-Version: 1.0
+References: <20260618174347.1981064-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.rc0.738.g0c8ab3ebcc-goog
+Message-ID: <20260618174347.1981064-2-seanjc@google.com>
+Subject: [PATCH v3 1/2] KVM: VMX: Grab vmcs12 on CR8 interception update iff
+ vCPU is in guest mode
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, "=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+When updating CR8 intercepts, get vmcs12 if and only if the vCPU is in
+guest mode so that a future change can have update CR8 intercepts during
+vCPU creation, without running afoul of get_vmcs12()'s lockdep assertion.
 
-On Wed, May 13, 2026 at 09:16:24PM +0000, Colton Lewis wrote:
-> When booting via ACPI on ARM64, the SPCR table is parsed to initialize
-> the console UART. However, the code was neglecting to set the
-> is_pl011_uart flag. This caused __getchar() to fall back to treating
-> the UART as a 16550A device, which fails on systems with a PL011.
-> 
-> Tests that wait for serial input (like its-migration) would hang
-> indefinitely because __getchar() would always return -1.
-> 
-> Update uart0_init_acpi() to inspect the SPCR interface_type and set
-> is_pl011_uart accordingly. Also define macros for the first four SPCR
-> interface types in lib/acpi.h based on the Microsoft specification.
-> 
-> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table#table-3-debug-port-types-and-subtypes
-> Assisted-by: Gemini:gemini-3.1-pro
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->  lib/acpi.h   | 6 ++++++
->  lib/arm/io.c | 3 +++
->  2 files changed, 9 insertions(+)
-> 
-> diff --git a/lib/acpi.h b/lib/acpi.h
-> index 66e3062d..29b3edd5 100644
-> --- a/lib/acpi.h
-> +++ b/lib/acpi.h
-> @@ -251,6 +251,12 @@ enum acpi_madt_type {
->  /* MADT Local APIC flags */
->  #define ACPI_MADT_ENABLED		(1)	/* 00: Processor is usable if set */
->  
-> +/* Values for interface_type field in struct spcr_descriptor */
-> +#define ACPI_SPCR_INTERFACE_TYPE_16550		0x0000
-> +#define ACPI_SPCR_INTERFACE_TYPE_16450		0x0001
-> +#define ACPI_SPCR_INTERFACE_TYPE_16550_32BIT	0x0002
-> +#define ACPI_SPCR_INTERFACE_TYPE_ARM_PL011	0x0003
+  ------------[ cut here ]------------
+  debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+  WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
+  WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+  RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
+  RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
+  Call Trace:
+   <TASK>
+   apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
+   kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
+   kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
+   kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
+   kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
+   kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-We could also use the defines from the Linux source tree, from
-include/acpi/actbl1.h (look below struct acpi_dbg2_device).
+No functional change intended.
 
-I got a bit confused about the value 2 above, because in the Debug Port
-Table 2 (DBG2) from the link, that value is for a 'MAX311xE SPI UART'. Not
-saying that it's not the same thing as a 32 bit 16550 uart (or that it
-is!), just saying that the names don't appear to be matching.
+Reported-by: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
+Closes: https://lore.kernel.org/all/6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/vmx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> +
->  struct spcr_descriptor {
->  	ACPI_TABLE_HEADER_DEF	/* ACPI common table header */
->  	u8 interface_type;	/* 0=full 16550, 1=subset of 16550 */
-> diff --git a/lib/arm/io.c b/lib/arm/io.c
-> index 836fa854..55102bd7 100644
-> --- a/lib/arm/io.c
-> +++ b/lib/arm/io.c
-> @@ -81,6 +81,9 @@ static void uart0_init_acpi(void)
->  
->  	assert_msg(spcr, "Unable to find ACPI SPCR");
->  	uart0_base = ioremap(spcr->serial_port.address, spcr->serial_port.bit_width);
-> +
-> +	if (spcr->interface_type == ACPI_SPCR_INTERFACE_TYPE_ARM_PL011)
-> +		is_pl011_uart = true;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index a1a5edb39a7e..125994ed3db5 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6872,11 +6872,10 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 
+ void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
+ {
+-	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+ 	int tpr_threshold;
+ 
+ 	if (is_guest_mode(vcpu) &&
+-		nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
++	    nested_cpu_has(get_vmcs12(vcpu), CPU_BASED_TPR_SHADOW))
+ 		return;
+ 
+ 	guard(vmx_vmcs01)(vcpu);
+-- 
+2.55.0.rc0.738.g0c8ab3ebcc-goog
 
-The patch makes sense to me. With or without the Linux define names:
-
-Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
-
-Thanks,
-Alex
