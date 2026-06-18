@@ -1,74 +1,116 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F221E3264DA;
-	Thu, 18 Jun 2026 15:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D242980A8
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 15:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781796695; cv=none; b=UANQJMF20rIBCyW6IiJZTOCUUrDEsDxVMp97m+kjDyotXxzSrT159jokXcQGkj4sNmNjShjfL7M0Mt5XMnUlFJMlh9aHBOucSuwKS/6ae6Ru7EjY1FZN0HQ6QO9AaM3N4fOkVmNtRQ0zA8e7mDnG13CgaCB1kRaWhaAzghfidaM=
+	t=1781797837; cv=none; b=Fj2ZzUGm/m7z8rkd7y1VqSAX7f3Ow1QQQuGet47v/MiRpbp45Q+9wa1sn9HfTS4+wBAj2eddfNZY9nvhshR6pgVcDTt1DzU2XgzTSmJWm9vAWo9BIp3zBhw8VZGRs1qGrNxVtzoe/ZMD+1IkqIxVNZJh7VymAtHXkokT/gOTE/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781796695; c=relaxed/simple;
-	bh=RAAaHoeh/MJumT7Jl018zpIQtLKmhwOXGGNn3ZLlRog=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=moJJeg644vvIp4qYIdbInAkWcSkt/yyen4zZk5i978M+Bf+vDGiaHNIu35lQwhdhHPp7xR/4pOtp12KyqUSgseZiL++3ylJRNaMIfTdP3xSWfUzQRU61JP3xrjYwdMxlBwS4nTy4t7bvRTybxSBI8WXtKp8qO6oBZboxX81rFuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f4b+IXkQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t2jc4irZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1781797837; c=relaxed/simple;
+	bh=bic77GReQxo7E8WOqH1A1QlKgiA3xgkp3/JZUNBdvt4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Qe1l74nBYvcxStmmuig9cFTVtD9QjkcrQREs2ETRyEWNxbA0hboAoIuwvmB5p7d1zmwZ0+kQR1txFS8PI9dyZx5jSc1tWjFxCg8KIeKSeVve513jCJuVsbDfndqkVdyvg7UUUwWQxOTbE0jpZMxPvIFJM1mK7Pi7GO8MxkuC5LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=D6QgHgmf; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f4b+IXkQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t2jc4irZ"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1781796692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RAAaHoeh/MJumT7Jl018zpIQtLKmhwOXGGNn3ZLlRog=;
-	b=f4b+IXkQhTwpjwvjeIS1sST2BLVtsjL1UEdnmxNOL3lPDXGXN8p4pBZTulWxnvylYeKVFG
-	uGbMKdwi+CpjyDB9PBq7i6vVXxyG8S7BCgaClErdpvv1yr9NTz2M+bFLuy8zG75x1SYbaS
-	I5Y9y3yuOPT48X3zoEALahwLSuvgH0Q8Z9+txzIcZmx49i0Hh3TBkpmj6sAJTM29MEshDP
-	D2zBkkEYZ1hnAs7p/LoLBujaAGEGCdM4L0Z33LPyovOnyyDwz00riz8cpvuLnW8BW887CI
-	zRIBZp7UkIF0mKRU2sNooS78DgPMPr5zjfTxECII4a6DfL3Lt7WcjsCvWBnliQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1781796692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RAAaHoeh/MJumT7Jl018zpIQtLKmhwOXGGNn3ZLlRog=;
-	b=t2jc4irZweu5KNBW2cs9NoLMghLuOSyOya4gG6B0vbJPWT7FpL5OwzHy+GB23sGgly2aig
-	sV+QDO9IaCT6MHAA==
-To: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Cc: Charlie Jenkins via B4 Relay
- <devnull+thecharlesjenkins.gmail.com@kernel.org>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti
- <alex@ghiti.fr>, Anup Patel <anup@brainfault.org>, Atish Patra
- <atish.patra@linux.dev>, Conor Dooley <conor@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah
- Khan <shuah@kernel.org>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 04/16] riscv: kprobes: Use generated instruction headers
-In-Reply-To: <ajOezhejx7PcOw_x@blinky>
-References: <20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com>
- <20260407-riscv_insn_table-v1-4-54b4736a1e77@gmail.com>
- <87jys5egum.fsf@yellow.woof> <ajOezhejx7PcOw_x@blinky>
-Date: Thu, 18 Jun 2026 17:31:31 +0200
-Message-ID: <87fr2jq2zw.fsf@yellow.woof>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="D6QgHgmf"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DCAB48FF;
+	Thu, 18 Jun 2026 08:50:30 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E04273F62B;
+	Thu, 18 Jun 2026 08:50:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781797835; bh=bic77GReQxo7E8WOqH1A1QlKgiA3xgkp3/JZUNBdvt4=;
+	h=From:To:Subject:Date:From;
+	b=D6QgHgmflPf/2IE+9MJn435CWxfs5XvlbKZuH6kIWNk0/4ovz1pG871jJ+rWBYam/
+	 kNIOKrpO4793CBV1QSHnjbv321Yd1fCaKOYg+/A3ekvcISxRU4FHcSeunERpFI/hTB
+	 J3au9AIiErjt7l1hHpQv2VAu9KPxV4aZtsjkH7SA=
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com,
+	maz@kernel.org,
+	oupton@kernel.org,
+	jean-philippe.brucker@arm.com,
+	andre.przywara@arm.com,
+	suzuki.poulose@arm.com,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Subject: [PATCH kvmtool v2 0/7] x86 compilation fixes and arm64 PMU improvements
+Date: Thu, 18 Jun 2026 16:49:54 +0100
+Message-ID: <20260618155001.226266-1-alexandru.elisei@arm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Charlie Jenkins <thecharlesjenkins@gmail.com> writes:
-> Since I was checking against the previous version it's not possible to
-> do a straight one-to-one conversion to the kunit. I think it might be
-> possible to do something similar but I will need to mess with that to
-> determine a good way of doing it.
+v1 here [1].
 
-Perhaps not to the existing kunit, but a new kunit which calls the
-simulate_*() functions directly. Just an idea.
+v1 was sent to fix this compilation error:
 
-Nam
+disk/core.c: In function ‘disk_img_name_parser’:
+disk/core.c:27:21: error: assignment discards ‘const’ qualifier from pointer target type [-Werror=discarded-qualifiers]
+   27 |                 sep = strstr(arg, ":");
+      |                     ^
+
+fixed in patches #2 and #3.
+
+Working on v2 found another one:
+
+x86/include/kvm/bios.h:91:43: error: ‘regparm’ attribute ignored [-Werror=attributes]
+   91 | extern bioscall void int10_handler(struct biosregs *regs);
+      |                                           ^~~~~~~~
+
+which is fixed in patch #1.
+
+The remaining of the patches are there to improve PMU initialisation and
+error reporting.
+
+Tested on arm64, with and without hugetlbfs, with and without a PMU. Also
+tested on arm64 using scsi-virtio (got it working in v2, I couldn't get
+scsi-virtio working for v1, most likely user error).
+
+Tested on x86_64 by booting a VM. Don't have an x86_32 machine to do the
+same, but I did cross-compile for x86_32.
+
+Changes in v2:
+
+- Patch #1 ("x86: Define bioscall only in 32-bit mode") is new. The bug
+  that it fixes was probably triggered when I updated the gcc compiler.
+
+- pmu__init() is now called from gic__init_gic() (Will).
+
+- die_perror() prints the original errno is vsnprintf() fails (Will).
+
+[1] https://lore.kernel.org/kvm/20260323150221.49256-1-alexandru.elisei@arm.com/
+
+Alexandru Elisei (7):
+  x86: Define bioscall only in 32-bit mode
+  virtio: Do not modify const strings in virtio_9p_rootdir_parser()
+  disk/core: Do not modify const strings in disk_img_name_parser()
+  arm64: Initialise the PMU after the GIC
+  util: Set exit status to errno in die_perror()
+  util: Allow die_perror() to take a variable list of argument
+  arm64: Improve KVM_ARM_VCPU_PMU_V3_CTRL diagnostics
+
+ arm64/gic.c              |  9 +++++-
+ arm64/include/asm/pmu.h  |  3 ++
+ arm64/pmu.c              | 59 ++++++++++++++++++++++++++++------------
+ disk/core.c              | 44 ++++++++++++++++++++----------
+ include/kvm/disk-image.h |  6 ++--
+ include/kvm/util.h       |  2 +-
+ util/util.c              | 21 ++++++++++++--
+ virtio/9p.c              | 21 +++++++++-----
+ x86/include/kvm/bios.h   |  4 +++
+ 9 files changed, 123 insertions(+), 46 deletions(-)
+
+
+base-commit: 6c2de8d9531c7e9aad7ac6701e848bedb3f1d3a4
+-- 
+2.54.0
+
