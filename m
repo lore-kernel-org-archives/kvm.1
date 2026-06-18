@@ -1,153 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5E3330D3B
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 09:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725A63EEAD7
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 10:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781773392; cv=none; b=uzAR0ff52h1CKqHxLC1ur3d/5VQcRGdWf6JLSEdFL1i2DitW2/DCrfprtk0UbpjuLsRuVeReOc8cePKFaBtC1HcDJIcDv6OFYqefTi/pK3pwfIQ6yFVcL2s/n3SOxNFkjhhRwEr2m7Eqi9r6F+t5Uk4G70MRliNLZcytSQCh+6I=
+	t=1781778011; cv=none; b=B6JupT8A2ZWL9O1EpJu8nyVqOjWgm5ghi+zC1sUhBV1ipo5jABRWopFgkLd+rBkKY6p7C3NcfSjs+z2l4f6VAYWoq9O3lRA/XtxitQsdVlmgj7+Y9k8p6X2vHeD6BZ3JOYpkcIkeJyex9Tdk+xflc1+4meBzHRUg+LPq1nNPrPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781773392; c=relaxed/simple;
-	bh=sLNs9XeuShk4QNWVe7mEqJOaUGTr1oOsgtHdaEHSe8s=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AI2WFD/5ZKMD4iBOwpNzQL+jW6g2+GywALsM48qDsjSsuGSTix6W81Xe6cuy1hOYu+IO1zfoxLu7rspU+E8tfuhqJixkvJns2qZ2uvemXfSTv58ms1R6j/UKT9oXJxgpzRbYMi7syVLAWt6aFBkKxfxeIJ6Mfx2SsYcoZ9HZHeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZjEU9rH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781778011; c=relaxed/simple;
+	bh=9fangGeG4n196Zz3BJvMg9UNdqOmOWQJGg3FWdgaILs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TluSaFP6jYlgPsfyTwmLUwkwhYezqfgxvGJYen1fvJErultvwELip0AerhBajpS3vAPZQY0J5NhjBrFc5rQIz59o41ghLyIDWibAx3hOTSEwo3mx/TZi3ky3ub+VV7pjBJTzJzawJA8RBuD4NjtYGYQwEvXygq38n7F8whIelrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FTidFAd+; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZjEU9rH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E9B1F000E9;
-	Thu, 18 Jun 2026 09:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781773390;
-	bh=kjR6qt6DjOBCS100w//aIRqZs7A2shazwstL05K3IdQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DZjEU9rH5f2rpwRQAbpm0znT+2xt7Ipnp5KUMe1MT5W3LCDGuNAwKCIPCqxVOqUw7
-	 vmQgrHhydu3DTcjgnmTmm5xbW5uC4XHl7qsouK85s3Z2wiKFCbRYpgTHlTmmc28LUi
-	 dK6SrmNSV4LD1035bmlIIS216Km2rXI2lzL4ji+waqfGXzI8Au22RhSTyQ/RNLiGrE
-	 iBSd6BCJfotOoVAU4ZA1d3GSBEU6UzgRtziN7W47BFonoaB7elSM1hiQvtPU9X1dAN
-	 a63+vDvqlUp4BDOMTcvCbVf7RTrTAvcDMvgXCXs+wKvKnGVFWSr/0eaPMCsoGWTrbA
-	 U4vhd32LznV7w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xu Yilun" <yilun.xu@linux.intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260618081355.3253581-17-yilun.xu@linux.intel.com>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-17-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 18 Jun 2026 09:03:09 +0000
-Message-Id: <20260618090310.43E9B1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FTidFAd+"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A4DA2C1D;
+	Thu, 18 Jun 2026 03:19:57 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 503AC3F905;
+	Thu, 18 Jun 2026 03:20:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781778001; bh=9fangGeG4n196Zz3BJvMg9UNdqOmOWQJGg3FWdgaILs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FTidFAd+kMZcLOALCGU7P9wsthueikOo5vkAe+SBemmN/cUXQHiPDzD8fxv/nUROw
+	 7k34i+3w+wt1UVGVGjISKJC1XNSmGNDO/wW6PfMCU1B0SX4PyGl+vSRP5s7NgEadEd
+	 uRiYVbQLsqDbpmk0IETOc3GjeDfoTvACAmH/RUlM=
+Date: Thu, 18 Jun 2026 11:19:56 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Oliver Upton <oupton@kernel.org>
+Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only
+ memslots
+Message-ID: <ajPGTF8p_wFfogn_@raptor>
+References: <20260615155244.183044-1-alexandru.elisei@arm.com>
+ <20260615160901.9A1A61F000E9@smtp.kernel.org>
+ <ajA6ogaNiI3KDv5i@google.com>
+ <ajKcDRqT5m069PXK@raptor>
+ <ajMPvgA2eHQCj-B0@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajMPvgA2eHQCj-B0@google.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM incorrectly returns a hypercall error (TDVMCALL_STATUS_INVALID=
-_OPERAND) when in-kernel quote generation gracefully fails.
-- [High] KVM fails to write the required buffer size back to the guest when=
- the provided GetQuote buffer is too small.
---
+Hi Sean,
 
-commit 482cde6e1c4a3f88b17ca20d55ddbc439d933981
-Author: Peter Fang <peter.fang@intel.com>
+On Wed, Jun 17, 2026 at 02:21:02PM -0700, Sean Christopherson wrote:
+> On Wed, Jun 17, 2026, Alexandru Elisei wrote:
+> > Hi Sean,
+> > 
+> > Thanks for the reply. Just to make sure, once the bugs have been iron out,
+> > you're ok with this idea?
+> > 
+> > On Mon, Jun 15, 2026 at 10:47:14AM -0700, Sean Christopherson wrote:
+> > > On Mon, Jun 15, 2026, sashiko-bot@kernel.org wrote:
+> > > > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > > > --- a/virt/kvm/kvm_main.c
+> > > > > +++ b/virt/kvm/kvm_main.c
+> > > > [ ... ]
+> > > > > @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+> > > > >  			unsigned long hva_start, hva_end;
+> > > > >  
+> > > > >  			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
+> > > > > +
+> > > > > +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
+> > > > > +				continue;
+> > > > > +
+> > > > 
+> > > > [Severity: Critical]
+> > > > Does this change inadvertently introduce a regression in the pfncache retry
+> > > > protocol?
+> > > > 
+> > > > Looking at the pfncache framework, it maps guest memory into kernel space and
+> > > > explicitly drops the page reference after mapping it:
+> > > > 
+> > > > virt/kvm/pfncache.c:hva_to_pfn_retry() {
+> > > >     ...
+> > > >     kvm_release_page_clean(page);
+> > > >     ...
+> > > > }
+> > > > 
+> > > > It appears to rely entirely on KVM's MMU notifiers (kvm->mmu_invalidate_seq)
+> > > > to invalidate the cache when the page is unmapped by the host.
+> > > > 
+> > > > If a VMM defines a guest_memfd-backed memslot with KVM_MEMSLOT_GMEM_ONLY
+> > > > but still provides a valid anonymous user mapping as its userspace_addr,
+> > > > could this regression lead to a use-after-free?
+> > > 
+> > > Sadly, yes.  To land this, we would need to first teach the gfn_to_pfn_cache code
+> > > to be able to pull directly from guest_memfd.  I forget if anyone is working on
+> > > that.
+> > 
+> > I've been trying to wrap my head around this, and I just can't seem to
+> > figure it out.
+> > 
+> > kvm_mmu_notifier_invalidate_range_start(), before handle_hva_range(), calls
+> > gfn_to_pfn_cache_invalidate_start() for the MMU notifier range, and that
+> > marks all caches that overlap the range as invalid. kvm_gpc_check() returns
+> > false for an invalid cache, so how can the memory still be accessed via the
+> > pfncache?
+> 
+> That just forces gpcs to be refreshed, mmu_notifier_retry_cache() still relies
+> on mmu_invalidate_seq being bumped to avoid consuming stale state.
 
-KVM: TDX: Add in-kernel Quote generation
+Yes.
 
-Provide an in-kernel path for Quote generation when handling
-TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+> 
+> > > > By unmapping the anonymous memory, the host would trigger MMU notifiers, but
+> > > > this new check skips the memslot. As a result, kvm->mmu_invalidate_seq
+> > > > wouldn't increment, and KVM might retain a kernel mapping to a freed physical
+> > > > page.
+> > 
+> > kvm->mmu_invalidate_seq is incremented in kvm_mmu_invalidate_end(), I don't see
+> > how that is affected by skipping a memslot in handle_hva_range().
+> 
+> handle_hva_range() only invokes on_lock() if a memslot is found.  By skipping the
+> memslot entirely, kvm_mmu_invalidate_{start,end}() won't be called and so
+> mmu_invalidate_seq won't be bumped.
 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 9f7c39e0d4b59..20558b0185b63 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
+I see it now, for some reason I completely missed the part where
+kvm_mmu_invalidate_{begin,end}() is called on ->lock() :( I was under the
+impression that they are called directly from the
+->invalidate_range_{start,end}() MMU notifier callbacks.
 
-[ ... ]
+> 
+> > > > Could this allow the guest to read or write arbitrary host physical memory?
+> > 
+> > The KVM_MEMSLOT_GMEM_ONLY flag is set if the backing guest_memfd has been
+> > created with GUEST_MEMFD_FLAG_MMAP. The documentation for the flag says
+> > that '[..] the fault will always be consumed from guest_memfd, regardless
+> > of whether it is a shared or private fault'.  As far as I can tell, this
+> > means that, absent a fallocate(FALLOC_FL_PUNCH_HOLE) call, the page is
+> > still in the page cache for the guest_memfd file after userspace has
+> > unmapped it, so the guest will not be accessing a freed page.
+> 
+> KVM_MEMSLOT_GMEM_ONLY is somewhat misleading, it only applies to the KVM's MMU.
+> For other cases where KVM accesses guest memory, KVM still follows the host virtual
+> address, e.g. so that copy_{to,from}_user() Just Works.  But userspace isn't
+> strictly *required* to keep the userspace mapping coherent with guest_memfd, nor
+> is userspace required to make the userspace mapping fully RWX.  And so if
+> userspace modifies the VMA, KVM needs to react accordingly.
+> 
+> When in-place conversion comes along, KVM will also rely on userspace mappings
+> being torn down before allow a SHARED page to become PRIVATE (for all intents
+> and purposes, we're conceptually treating conversions as free()+re-alloc().  So
+> while the page might still be in the page cache, it's effectively been "freed".
+> So in that case, KVM really does need to ensure it handles mmu_notifier events
+> correctly to avoid UAF.
 
-> +static u64 get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req =
-*req,
-> +			    gpa_t req_gpa, size_t total_len)
-> +{
+Everything makes more sense now, thanks for your patience in explaining it.
 
-[ ... ]
-
-> +	/* Caller owns the requested quote */
-> +	void *quote_data __free(kvfree) =3D
-> +		tdx_quote_generate(td, req->data, req->in_len, &req->out_len);
-> +
-> +	if (!quote_data)
-> +		return TDX_QUOTE_STATUS_UNAVAILABLE;
-> +
-> +	if ((size_t)req->out_len + TDX_QUOTE_REQ_HDR_SIZE > total_len)
-> +		return TDX_QUOTE_STATUS_ERROR;
-
-[Severity: High]
-If the guest-provided buffer is too small, does this early return skip
-writing the required size back to the guest?
-
-When tdx_quote_generate() fails due to an insufficient buffer, it populates
-req->out_len with the required size. By returning TDX_QUOTE_STATUS_ERROR
-immediately here, it seems we bypass the logic that writes req->out_len back
-to the guest.
-
-Will this break a guest's ability to dynamically probe the required quote s=
-ize
-and retry if its initial allocation is too small?
-
-> +
-> +	if (!write_quote_to_guest(vcpu, quote_data, req->out_len, req_gpa))
-> +		return TDX_QUOTE_STATUS_ERROR;
-> +
-> +	return TDX_QUOTE_STATUS_SUCCESS;
-> +}
-
-[ ... ]
-
-> +static int tdx_get_quote_kernel(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
-> +{
-> +	void *first_page =3D NULL;
-> +	u64 err, qerr;
-> +
-> +	err =3D tdx_get_quote_check_args(vcpu, gpa, size);
-> +	if (err !=3D TDVMCALL_STATUS_SUCCESS)
-> +		goto out;
-> +
-> +	err =3D TDVMCALL_STATUS_INVALID_OPERAND;
-
-[ ... ]
-
-> +	qerr =3D get_quote_kernel(vcpu, first_page, (gpa_t)gpa, size);
-> +
-> +	if (write_quote_status_to_guest(vcpu, qerr, (gpa_t)gpa) &&
-> +	    qerr =3D=3D TDX_QUOTE_STATUS_SUCCESS)
-> +		err =3D TDVMCALL_STATUS_SUCCESS;
-
-[Severity: High]
-Should the hypercall return SUCCESS even if the quote generation itself
-failed gracefully?
-
-If get_quote_kernel() encounters a quote service error (like
-TDX_QUOTE_STATUS_UNAVAILABLE), this condition prevents err from being updat=
-ed
-to TDVMCALL_STATUS_SUCCESS. As a result, the hypercall returns the
-initialized value TDVMCALL_STATUS_INVALID_OPERAND in R10.
-
-Since the hypercall arguments were structurally valid and we successfully
-wrote the error status into the shared memory buffer, shouldn't the hyperca=
-ll
-return SUCCESS to let the guest parse the actual quote status?
-
-> +
-> +out:
-> +	kfree(first_page);
-> +	tdvmcall_set_return_code(vcpu, err);
-> +
-> +	return 1;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618081355.3253=
-581-1-yilun.xu@linux.intel.com?part=3D16
+Thanks,
+Alex
