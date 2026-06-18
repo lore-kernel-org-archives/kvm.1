@@ -1,227 +1,124 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D290F2FA0DF
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813523; cv=pass; b=dZkWEuwg/MVPkQTiquVVtiX9NV+GaQbWtwCvkMITrLN0Cl3TUobYtLvh4Qvt3UaDNnAuPC1/qZkw+yieQHVsfs0KB7pJqVpVbxFfPa6vT/sFgcYhIfnCwBpFyVNnsEStEVn6+SzIN6RRpZK6DFTwjm6WmoSaMFbdL5x0lRQyHpc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813523; c=relaxed/simple;
-	bh=MOnpWS2oaTCXhgYkDQHH246CQWEaG8Zx8s1ffl6k9pg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=apovobiaLxId3f4J9e2uIX4kR/rEWB/+MW1FQ8JHy6LcV8FWoW5rpHRXEBQX/4RVv2kiAeUBl9pMho5YgkiD85FgmvOUmn+Zk+sSq00+AH/QLdVm7Ahlil9ZjJRfO5kSM4XI/YmQGHH4sHEFYiJBE5YAUT0LK/qMx4r08sP6D8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImFrUnPd; arc=pass smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67829331213
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781814123; cv=none; b=r11Z45QG8kuzmnUhf4NqJ+R3u18+m6Ew7Jo6Nae0+F7AEvjO6nTZmQOWfjD0gNEzC1rBv5trJUrqsqRWTiVR4nhYiwnxvVGlBs1tzihLiOYPYOa7kqdw3oRbqQncKaXCUZSpEG3I4L5hcXI7ijjWZqf5pKhLt9A04DVTG+sBqr0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781814123; c=relaxed/simple;
+	bh=oZHAxpIqUFadijIyqON+Dd9Hmvbr+/PPGnzg5RHUNoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uURIurWH6265G9M69SNC42NwKQoc4hkNwc/BBlwkXDY61OR3e2ywBo1rnprWvooCGsBBvKiZeu5WXIwGkzIMqMcd6ZpWa66JLcOCpoxZfGXQRYflmp6K6z7/lyCyfLp6+IoFXIvtt9IU0+hgtBiXrnxzN/tSwRW7RvZOC066tts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ujUaSZ9C; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImFrUnPd"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-30bcdf8232fso3345653eec.0
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 13:12:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781813521; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Im57WleBws5CMitcLyM7P4Dvna8tWLlTmC7AsZ0ylPtQScz1/XNZGk8FuK2Bc1qiym
-         fNSRFRgKbgfGfWQTyYCVuwain4sioqYvpkYzsdwQLpttMv9E2GO72lT1mXrhOiMq4UB4
-         2KdlXUl3+oc4p4/snFyCo/6Wml9KquhDcL9hmZuN0OtzFvzAk8WTD+ravVUN0sigjsI6
-         MReKUQbgtr/b9uBG2Q6xXku7G+7PCKV0oqExETzt1uvuNdAA5f7GbAgdAFT+b29zgEuH
-         JNdVMVdA4I1yzsN8ID1fGPUhTR4OVhl5Me5SEnqPwD8zR0n0hov8fLcnJ5fhwxsDaQF3
-         /w2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
-        fh=saWJfSSxTXdRQOkTAyrzLmMQjIl0bvSASuGEoQG5BQM=;
-        b=GmgOTL/M2ttMZaORv40BQ3S5xB00yI1HEt9go1xEcTpgaBmb3UPxnbTrMuhfNsoJ0+
-         pcx8LiLO/qKMv/d1U7KhsOqAdEO3/oYslb6Sei59H/zzI9ecKm1HiAs2hkiGlpEIfYKN
-         evGXYJ3kJYXXCdREas9iTam7nVP+DQvB79NKAR4D86kqFdiNn6rVPJ/DVbV4XKyykwGC
-         CpoggFh5KudyvpCZc3BE6DNVux1P37AG/bM+i2xVL5EiHHhhPuAs4AZNs4KJVnrzWP0m
-         ran7egzA5YPCrPCDTHWVZVaWTq4MV1hW4LkgN+IW8xdRKPHI0kvtYp4Gcw8cllEEoHEx
-         vNzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ujUaSZ9C"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8422871b42dso994870b3a.3
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 13:22:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781813521; x=1782418321; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
-        b=ImFrUnPdh8L2OQ+vEgoNy5cnoVncVY2LHORljh4cK4NUByn5D+cy0elzKlXWPb7RIY
-         JRl8Dcqgxm6JPwCiE1t3ZqxSf1/mtUOoBBkELp2xbPVr9tc02ZZId+zwQ6FnPQM31PK7
-         t+60J7fTKJQsZFdhd89AhhnmEwQz3GZFRfmumjgMhr1t/vjBXHlxZcLEKPaF2CqEmSK0
-         t74cB8Q7Q3pfJp54YxpfCjBWf839hCtChboZw72clCG3dCgd3klDRZv7xFsnyNllha1J
-         J22zzXAZkxsm1pZmkV1ebhnkBLHHDODLDwb6kzA5x0cCbOCHBgclJqAVM7xT56xzb+TD
-         1V9g==
+        d=google.com; s=20251104; t=1781814122; x=1782418922; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R8xCK89QfRMaVvrkpnB5YO+Fnx8pGynYV6YoyF7gSgA=;
+        b=ujUaSZ9CRapWP6uS6U4fa+dmeKf9GDu+09hObA58BmiAQr0YR716EzqrDpXj2W9+Zt
+         q5vzucTO5ydIeP2X/E0Fr+dqS4S+f5eb1PB/VOz57hGwOKm7KSn9feqmPjHjo/4WZBD3
+         tgCr5rDSmkaAivOFdPtLBonEkzK3tNv5dyQDkL5uhFWEU5IO0Fonw4fNe6VngzPKC2CY
+         RfzAu73uleo+sXiTdXPFNbrUauYAgVJeCrkYTj02jDq5y2E4pVI1V0WMDGc/tkegkWoo
+         9UvxmbPBHLC2l8tYtPWnmguNI7q87bOZ5upWDU6XHyKqht+AKA878uEovRoTdjvJMbMS
+         4APw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781813521; x=1782418321;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5kYopXboz5kqOzIBlpvq52lfuCitZ+UkaPqUgkNm8aw=;
-        b=dwRuVDkihlvzZgg+SmjOC5NqBqW25dN7ON+RQqxQ1nshIR6rK1BDnsMrH2tzkS+9z+
-         HWuWtaLM53kwQIkY1NFqv1O4PHpJS3ui21qqp5eTwIw4Z7AP/op4VdGBEltmoTKdx0t1
-         BLJmsyyzaILvcBbM72S6xNfDle+vOzwLqsmyDUHP2gfmBMsT128lARbFHDDXJzpWFEOR
-         02qOTGB0YWK8EFpvvajwWb6D17eIH1c0fQNsdatu7rYHVehA1IRaK1aLDSFgVA14SadZ
-         jbJvGtyQbsJq8MDygVt89RvXm4abUvphwhaTMqZyurrDSKhS0v6B2IasLPZtPpRTJNPM
-         3/Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ+1e2okNPD9O+xJSaplcRxWyKjH0U7xTn+WWwr0lo0HhtJaAlbMK18+EPFwTGKnsdx1pdg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfsmnFp/jVGTKal7hBdHk3jfa3BHVUhVcW2ppFnY/TAggBXTQ/
-	qzcV6bta2cv1uKTSSKoGlrqM0GBb6O5ZFM+BEeDEx+IrFS0M37yGIpbCKzDGOgkSYFVygLozluG
-	sT4S2OU9nODOAbJOFLcF1ilFELjkR2pw=
-X-Gm-Gg: AfdE7cnkmZaxk4013QeeKGsLe2Ez3BRqos2tu0LIe6hPuL6fyqtLwYMzjt23L7HzZ6+
-	ZVcr6z/jUnS6zwaYIfipf9XDB4iSb1UPezRFqI6TkwJfP59siobutM/SP1/x2ZbzVGY3AFtULdZ
-	6mPrr8Q7ILJ22Bg8P+lWnguzQU8hmUaG2gc21I3ql07ood4r5OBzrcyoSVgvsA6SV7r1UrhlH9T
-	gq/BBcYICLZ2HEJY3Gx2plPhSIOZFEsONJFz31m3VwC1rcRBZskdSObeQICBxzgKkDwU4rp229h
-	CUVOfj9fl6zPfi/TKSPf8E4lXjM+
-X-Received: by 2002:a05:7301:678c:b0:304:2176:a871 with SMTP id
- 5a478bee46e88-30c06bfca99mr761091eec.0.1781813520818; Thu, 18 Jun 2026
- 13:12:00 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781814122; x=1782418922;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R8xCK89QfRMaVvrkpnB5YO+Fnx8pGynYV6YoyF7gSgA=;
+        b=Z9B49J7IY7S5alCiKyE6RcXFXHf/OXMB07sDhO4YcZn5L0LpwbzGVYubv3/QXuvmez
+         JFuZMqbTpcHJIBiWzzxabh/bTdx8snXtEEv4r6cEt7cdMPRrB5lfbdCI6l4GJVhyoOyt
+         ekDTSZKz4ntGQfz7i7bW7GR4rEaNQDkq4YwsDympRD5GRoIxfgF7kuU1XsrUeG4ZBiMe
+         JEapl5P2R3329mjb4WbJpdu/mIbXgaw1CvW60ONS7YrtQXer3xAJtw8ODlPaO0NxKWfs
+         8VF5QaSMc6kppvaQKtzh9gJhoWymOXHcKC04pt9x6qLrsyb2M+1cAjLWZcgbH8HkVPL3
+         8hwQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/MVQncEslblBwASbFKNkCIn1wxWSnLTvXpnErennWYYF345ia++eZNeOuYKcCGnBnUluQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4VaPqg4fTpgJSiuzUzCiuU6mHll+pPzgQC9013JsaFB9BBMOi
+	1kfZrG4BOJpb+tlAvc1igYh6ehCbS8A74+0fC69A/Wn5WDBPsleaXd4zYH4CwfxxLA==
+X-Gm-Gg: AfdE7cmsPxrBr+7jBMYWeQzH25yJP5Nj3hffYxfCheLDKumegHL19M/oI0qkOEQbjeq
+	WPfyZwXwKAuI/MXZDWPQokpuIGT4BXETSeFKgsZJC5huAaBuqKa8dcj+ueO1NVvccZd7jwoKzKU
+	3Uc2RLU6MO211VvyGygxY3CylWbIBtVs2Y+jOnPVXF0JsC1xDO7ZuRR8J/BAu9caWNPY+U9jRAA
+	vlXwCgeYYjBaKUaWIhOdJeEpMk5d03XUEgOlh6PkIs6QtiPzmzq2qreeY+MRcUKacgvRsOPK3DC
+	L2+dR7F3d/IYxxJyEwOY1PompcP47MTuNtK3hWlRhmaFabg3tT+OY1OkPMGIYwMN3639gNvj2xX
+	4O1DZ/f/FlZ6/Hpzw3Z+c7A6emN2dG7+Ruk19yKi09lmfwxc5/6YJjT2SeExAP62mdYI8POmSG8
+	Ig8u4JCCZs59AU0MwpV5eRdKpYkGfti5LY/+5tRH8zTm4lFD/SlO8=
+X-Received: by 2002:a05:6a00:4fd1:b0:845:17a6:5741 with SMTP id d2e1a72fcca58-8455079c80amr485384b3a.1.1781814121017;
+        Thu, 18 Jun 2026 13:22:01 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8453a8c9770sm3735614b3a.40.2026.06.18.13.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 13:22:00 -0700 (PDT)
+Date: Thu, 18 Jun 2026 20:21:56 +0000
+From: David Matlack <dmatlack@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
+Subject: Re: [PATCH v7 09/20] KVM: selftests: Add VFIO device support to
+ eventfd IRQ test
+Message-ID: <ajRTZNum3u7oVdRa@google.com>
+References: <20260613002031.745413-1-seanjc@google.com>
+ <20260613002031.745413-10-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
-In-Reply-To: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Fri, 19 Jun 2026 00:11:48 +0400
-X-Gm-Features: AVVi8CegESbR6ZUD8SxLZ5ge_fQXIzH6szCQH4muF2WdxFR38w89t5-t2aW9E34
-Message-ID: <CAJ+F1CKRvSWDOvKC98e_7uyjgJMuXfhOHP83H0s7a=+ZrYxA1g@mail.gmail.com>
-Subject: Re: [PATCH v5 00/12] Make RamDiscardManager work with multiple
- sources & virtio-mem
-To: qemu-devel@nongnu.org
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
-	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@mailo.com>, 
-	qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>, 
-	=?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, Fabiano Rosas <farosas@suse.de>, 
-	Mark Kanda <mark.kanda@oracle.com>, Ben Chaney <bchaney@akamai.com>, 
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
-	"Dr. David Alan Gilbert" <dave@treblig.org>, Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>, 
-	Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260613002031.745413-10-seanjc@google.com>
 
-Hi
+On 2026-06-12 05:20 PM, Sean Christopherson wrote:
+> From: David Matlack <dmatlack@google.com>
+> 
+> Extend the eventfd IRQ test with a '-d' argument that takes a BDF (in the
+> format segment:bus:device.function) of an interrupt-capable PCI(e) device
+> bound to VFIO, and use said device to trigger interrupts instead of always
+> synthesizing interrupts via direct writes to the eventfd.
+> 
+> Using a VFIO device to trigger interrupts validates the end-to-end delivery
+> of IRQs for "real" devices, and when supported by hardware (and KVM), also
+> validates interrupt delivery via IRQ bypass, i.e. via device posted IRQs.
+> 
+> Now that IOMMUFD is a thing, auto-probe IOMMUFD vs. "legacy" VFIO by
+> temporarily opening /dev/iommufd, and skip the test if neither IOMMUFD nor
+> legacy VFIO is available.  Add a '-t' option to the user override the probe
+> logic, e.g. in case IOMMUFD is available but the system is configured for
+> legacy usage.
+> 
+> Note, the device must have a VFIO selftest driver in order to work with
+> the test.  A helper script to list supported devices will hopefully be
+> available in the near future at
+> tools/testing/selftests/vfio/scripts/list_supported_devices.sh[1].
 
-On Thu, Jun 4, 2026 at 5:46=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@redhat.com> wrote:
->
-> Hi,
->
-> This is an attempt to fix the incompatibility of virtio-mem with confiden=
-tial
-> VMs. The solution implements what was discussed earlier with D. Hildenbra=
-nd:
-> https://patchwork.ozlabs.org/project/qemu-devel/patch/20250407074939.1865=
-7-5-chenyi.qiang@intel.com/#3502238
->
-> The first patches are misc cleanups. Then some code refactoring to have s=
-plit a
-> manager/source. And finally, the manager learns to deal with multiple sou=
-rces.
->
-> This has been tested together with the Linux kernel series from
-> Zhenzhong Duan [1] for TDX guests.
->
-> (help fix https://issues.redhat.com/browse/RHEL-131968)
+> +static int vfio_setup_msi(struct vfio_pci_device *device)
+> +{
+> +	const int flags = MAP_SHARED | MAP_ANONYMOUS;
+> +	const int prot = PROT_READ | PROT_WRITE;
+> +	struct dma_region *region;
+> +
+> +	/* A driver is required to generate an MSI. */
+> +	TEST_REQUIRE(device->driver.ops);
 
-Can the patch 1-11 be queued or are we missing something?
-(RFC patch 12 can be dropped for now)
+This series is probably going to race with merging another VFIO
+selftests patch to make send_msi() optional [1]. Can you add a check for
+that here?
 
-thanks
+  TEST_REQUIRE(device->driver.ops);
+  TEST_REQUIRE(device->driver.ops->send_msi);
 
->
-> v5:
-> - explain why InterfaceClass in rust binding is not needed after
->   moving RamDiscardSource
-> - drop extraneous added blank line
-> - replaced a runtime "if (has_rdm)"" with an assert()
-> - dropped "RFC: hw/virtio: start virtio-mem guest_memfd regions as
->   shared", in favour of start-private memory approach from "[RFC PATCH
->   0/6] Support virtio-mem memory hotplug in TDX guests" [1]
-> - demote "monitor: add 'info ramblock-attributes'" as RFC
-> - rebased and collected trailers
->
-> v4:
->  - added "system/physmem: make ram_block_discard_range() handle guest_mem=
-fd"
->  - added "monitor: add 'info ramblock-attributes' command"
->  - added "RFC: hw/virtio: start virtio-mem guest_memfd regions as shared"
->  - skip calling source in notify_populate (it may not have updated its
->    internal state)
->  - rebased, collected trailer tags
->
-> v3: issues found by C=C3=A9dric
->  - fix assertion error on shutdown, due to rcu-defer cleanup
->  - fix API doc warnings
->
-> v2:
->  - drop replay_{populated,discarded} from source, suggested by Peter Xu
->  - add extra manager cleanup
->  - add r-b tags for preliminary patches
->
-> - Link to v4: https://lore.kernel.org/qemu-devel/20260504-rdm5-v4-0-bdf61=
-e57c1e1@redhat.com
->
-> [1]: https://lore.kernel.org/lkml/20260604093551.1511079-1-zhenzhong.duan=
-@intel.com/
->
-> ---
-> Marc-Andr=C3=A9 Lureau (12):
->       system/memory: split RamDiscardManager into source and manager
->       system/memory: move RamDiscardManager to separate compilation unit
->       system/memory: constify section arguments
->       system/ram-discard-manager: implement replay via is_populated itera=
-tion
->       virtio-mem: remove replay_populated/replay_discarded implementation
->       system/ram-discard-manager: drop replay from source interface
->       system/memory: implement RamDiscardManager multi-source aggregation
->       system/physmem: destroy ram block attributes before RCU-deferred re=
-claim
->       system/memory: add RamDiscardManager reference counting and cleanup
->       tests: add unit tests for RamDiscardManager multi-source aggregatio=
-n
->       system/physmem: make ram_block_discard_range() handle guest_memfd
->       RFC: monitor: add 'info ramblock-attributes' command
->
->  MAINTAINERS                                 |    4 +
->  qapi/machine.json                           |   56 ++
->  include/hw/vfio/vfio-container.h            |    2 +-
->  include/hw/vfio/vfio-cpr.h                  |    2 +-
->  include/hw/virtio/virtio-mem.h              |    3 -
->  include/monitor/hmp.h                       |    1 +
->  include/system/memory.h                     |  279 +-----
->  include/system/ram-discard-manager.h        |  358 ++++++++
->  include/system/ramblock.h                   |    5 +-
->  accel/kvm/kvm-all.c                         |    2 +-
->  hw/core/machine-hmp-cmds.c                  |   32 +
->  hw/vfio/cpr-legacy.c                        |    4 +-
->  hw/vfio/listener.c                          |   10 +-
->  hw/virtio/virtio-mem.c                      |  259 +-----
->  migration/ram.c                             |    6 +-
->  system/memory.c                             |   88 +-
->  system/memory_mapping.c                     |    4 +-
->  system/physmem.c                            |   27 +-
->  system/ram-block-attributes.c               |  328 +++----
->  system/ram-discard-manager.c                |  612 +++++++++++++
->  target/i386/kvm/tdx.c                       |    2 +-
->  tests/unit/test-ram-discard-manager-stubs.c |   48 ++
->  tests/unit/test-ram-discard-manager.c       | 1235 +++++++++++++++++++++=
-++++++
->  hmp-commands-info.hx                        |   13 +
->  rust/bindings/system-sys/lib.rs             |    2 +-
->  system/meson.build                          |    1 +
->  system/trace-events                         |    2 +-
->  tests/unit/meson.build                      |    8 +-
->  28 files changed, 2569 insertions(+), 824 deletions(-)
-> ---
-> base-commit: 405c32d2b18a683ba36301351af75125d9afda08
-> change-id: 20260414-rdm5-b6df2366d603
->
-> Best regards,
-> --
-> Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
->
+[1] https://lore.kernel.org/kvm/20260609232855.3808971-4-rubind@nvidia.com/
