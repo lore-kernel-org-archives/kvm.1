@@ -1,91 +1,100 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903C2E06EF
-	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 20:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFBA30675D;
+	Thu, 18 Jun 2026 20:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813022; cv=none; b=Ky8nbDFWXJHGS7IZnROTnc8XCR6HJ28azrKKHhd/9NBXa6KB2gTxJpyMIH7dPiwepb71QnAlCfEoxIcfwgFR59JTzQ1Ym+Z6Q6J7rR91TF7xz0DKYzBGdlCJY1Gek1hwDDH59huOHWHg5XZcqOt8zVuENIvMjXCDQP5HPkReo/0=
+	t=1781813497; cv=none; b=Szah8+vuzk2+DZbYWlBqIAs2sU3vEkhWNY1wBvWnohDhQbLO3s0gazkvpNlWJXKoE+bjragVsG+y5L1hBtBBjiFd3nPMvQAj668YQuGI8ktUOFZoKoXdgvqyVmap+waSbE66w63ZtBKK9rndA+pJi3jZCkicvFdUk7jaarlylKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813022; c=relaxed/simple;
-	bh=pBk9kGJqbXRSBiX8wQep4HoR3YvnXTOqulYjM3xplJU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tPaDh94lfoRGzAkX8qu0ZIAY1d0bbFCFM5sKEuJ6XEu0AEg5a9P71CSIQElwgCYHgHqbJVAlTHZubeeeh36hqvtQwSmy8Ui8FZp69eovfiMBZ+dVs2rCq2J5tC4+3shfCkhw/pFzWzLhBLeUBipknhzZjSzKSIUayVBfwZVeGsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lu3CxoO+; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781813497; c=relaxed/simple;
+	bh=bR6CgrTL8L9kbMWcBO10mVoLhF34gJMLuouRnWjZ564=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ju001wtmIAEnfZXL1Cv7DdpEG0QxAvIZlwd0KPWmNGPTCgaHjywo0LYMvzid1ID8XOhABAhg/MTAzDEX7ocibhhrHIUKp6AV4yW5ZsmneRvfDx6cs1J6iNLZIhXvQakVWePJEYG5OAx6qEYMRsOQ0s+QSod1yDBUS3ziRYNRjEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DFsDXOVY; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lu3CxoO+"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490a76757e5so8825465e9.2
-        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 13:03:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781813020; x=1782417820; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pBk9kGJqbXRSBiX8wQep4HoR3YvnXTOqulYjM3xplJU=;
-        b=Lu3CxoO+CtbcHE9O0K1SZnk19gpNRoX9BYyfi+2dCmqE89jZ96ohr+Ru8m7GFiDOS1
-         +HWTcmXAKZdh++lcv2R8bpLS6YTkmZLNfNdkef8s6boi3Y+DpIwbcfNH73qt0gRKZ8zB
-         DgNwY3wmLH9s7mnMP6BsyjXWmut+ogxo4gppqzUhUW0Ngrk6M/r1XmV6P+9TDPaJfApe
-         9RwRA0VmOMBtC9dwjlGvXk9y6AqqdyMetG8awL5Yd5zf8SvJTaTX2/j7kKDPGRsUcDoJ
-         Ua5sOJMdX1eDLNKO4VuqgP32mcHRc0HKzwFeGa6L1iDQ/IhYHw99bPVJknz0p5gQ8kIF
-         3U9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781813020; x=1782417820;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pBk9kGJqbXRSBiX8wQep4HoR3YvnXTOqulYjM3xplJU=;
-        b=fNEF6dVGNZ7LmJ8AVVpWFHrtsxxNvI5egUjETjPPu2ipt/G1XBLy/Y0tl3buQ7kMJs
-         9wNwKIGTf/fjf8fFLj3L7W9kQofLW0k4ffCadO4r4zuk9D7nc4oNXo5N6GpM2MM7NxmZ
-         o/xhbsnYkloCNzLFPlQi11lKVIvnNVuuKkcEv8HWBbJTybOU11rPYesBVSg9UtakOCqc
-         /EiJBTtx0uhotp/XnHE2+ZhDdzMcS5NWA6mHMWpnPJTL4rM9uhK/t6AFkVtOsVcMzKWz
-         TRMPSEQ+WJ+/DNOxUlGAEWuGykTuvR6NQ3XXnRZg5FzMXoMic3f0beaYdrINoDvwDbNu
-         6iVg==
-X-Forwarded-Encrypted: i=1; AFNElJ96is+bw93s5Z1dOJgTlZN/AlYIk0fObz8fQIFxbE673XPufBJuO1J7JueHHPgMYA42O9k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6JZYnNLQ7gbZlxHQaZcFIcDEgTU5LKyoQ36aTiQGwjjX5pdDo
-	yznOcHdnI8c6RPLHfpWPxtHr6IlJCdr40iJeNAy/nUk9ckeZ47ZFshuy
-X-Gm-Gg: AfdE7ckzxj5emrMigfMNzeY6Yq0UIinBzdHgiUeLNsv1/ZcRTAOeCClfjbSoLLW36LG
-	JTUr/ajvbrvxX+dQICYkYZ1pWd4HNUCWE0/XCVac9hW/lDoC+xfRd0OAw5m8L+Tb3j+dXA7IQv8
-	C/FvLXaVazssdSwnIQamgdvpXCI13ZcQnqH9VqSLd1g5EE7+kghiAR9+5PHxb+8rLvour0kjFAz
-	y5rs8CkB+OT40nZmxkCkONe1zmRPSYCuCAVionE3b1aXp9pO2JkiA5HX9nfiXdM75voy6kTArMw
-	rfVvNBqzO9/w/wKLdP+xhg+KRIAuoXV/ExlBiw+jcM3za5hKhiYdulGnSka9QjtPlCgskWvCvzO
-	zysIKd09Grb0ID1bcpvOlTthQnEtD2p2kWSYtYS2cqJreUdrxJNMPopj9P7TeN/PB2wri4sF3aM
-	9d9xFqPEiW9GycJypanwYjKXPDiQW3bdRtJ+cRPeynBqgrQA==
-X-Received: by 2002:a05:600c:4fce:b0:492:1e36:bb04 with SMTP id 5b1f17b1804b1-4923f6ad553mr18204725e9.37.1781813019397;
-        Thu, 18 Jun 2026 13:03:39 -0700 (PDT)
-Received: from [192.168.10.21] ([39.40.61.95])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650b67a248sm1487602f8f.24.2026.06.18.13.03.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jun 2026 13:03:39 -0700 (PDT)
-Message-ID: <60ef7ff6-0aa7-47eb-bcf4-76606ec016da@gmail.com>
-Date: Fri, 19 Jun 2026 01:03:32 +0500
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DFsDXOVY"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4F09840E02A2;
+	Thu, 18 Jun 2026 20:11:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6gZYi2X4M_Mh; Thu, 18 Jun 2026 20:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1781813484; bh=WymufkYy9irEHcYu9yFQ9mnRS4Zsr6ANxKVWzHI9Ae4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DFsDXOVY9N3yVMWpXubiXdLevyL3JPmotJBGGhpNsaC3jyA4SiPH0g1EW3gUfE2hn
+	 IjShW55ybqtjgL8Rt3kIj0PnlLyl9bhKz97huLZdhO6aZMdmtQxqk5HnSb6eqEdi/c
+	 QjG5XnRckfd4NFxJBWitnlSq7uoIEwwOFLJEJSgCwIX1uCIMtb5pfS8WANErCdEyb+
+	 zHnvHx2Zhyuhi+xv2qW+h40lNdWbTJpE9iBw5tdA4cOJEzrLyPMKlEajNQmVP3iWHK
+	 +KFh892XDMCWZUEt0bgjutD3zh63DNo8h7jdDnq3AELf4u3bcBugJ6O2IdXWeA7vU+
+	 pq0ctKvkUsUrldfpE5DAhtmHmPYfjENLI6ZYR4/JHVVP0CR55s7K2lL1YEtYMMlfom
+	 2oC4tu88AjywYSrQPwbauBQtRjWR+rgni6VbbGITBXMEkTbdHZr0rugOJW3V8tcofx
+	 fBlluw+onGgQs8v4Ql8ABw4FVxmRqmnsNR/EdFt4xZtdqhV+gWF6GsxHzPaweNEo8I
+	 YHVKhgEh2ADBsXTHi6IekekoW/+MdYMcyHDwposvnTTvt0WXdqA3K93tGaZhQe3rTL
+	 loX06M5tT1rwL1EIwRU8i5TerLv3Q5lBaXKUCjRPrKpvl+Br2wLVcQpG9Baxk9f68i
+	 6P3sRLxn7rbNldxPhQidBazw=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E77540E01D8;
+	Thu, 18 Jun 2026 20:10:49 +0000 (UTC)
+Date: Thu, 18 Jun 2026 13:10:46 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v8 7/7] x86/sev: Add debugfs support for RMPOPT
+Message-ID: <20260618201046.GGajRQxrh8ekVMeyJS@fat_crate.local>
+References: <cover.1781419998.git.ashish.kalra@amd.com>
+ <cc9aa9b6cfa2ce826f2ad53f8a13d3b7bf0790b6.1781419998.git.ashish.kalra@amd.com>
+ <20260618180814.GCajQ0Dv0CoRMJxbP0@fat_crate.local>
+ <5849645c-f701-4768-8cdf-1f9032e3226f@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/include/linux/types.h: add ulong typedef for musl
- compatibility
-To: pbonzini@redhat.com
-Cc: seanjc@google.com, shuah@kernel.org, me@brighamcampbell.com,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linuxfoundation.org
-References: <20260531144934.403888-3-hisamshar@gmail.com>
-Content-Language: en-US
-From: Hisam Mehboob <hisamshar@gmail.com>
-In-Reply-To: <20260531144934.403888-3-hisamshar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5849645c-f701-4768-8cdf-1f9032e3226f@amd.com>
 
-On 5/31/26 19:49, Hisam Mehboob wrote:
-> Building KVM selftests with musl libc fails across multiple files
-> (e.g. memslot_perf_test.c, cpuid_test.c) with 'ulong' undeclared.
+On Thu, Jun 18, 2026 at 02:57:45PM -0500, Kalra, Ashish wrote:
+> Maybe i can add a line to this patch's commit message stating it's a debug-only interface
+> with no stability guarantee.
 
-Gentle ping. Could I get some feedback on this patch?
+Sounds to me like you didn't really read that article.
 
-Thanks,
-Hisam
+> We have to provide some method/interface for users to verify if RMP optimizations
+> are enabled for a GB range of memory.
+
+Sounds to me like this wants to be a facility which is present in the kernel
+and it is going to be an ABI.
+
+I am unclear on the real use case but I'm open to being persuaded otherwise.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
