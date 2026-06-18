@@ -1,103 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E115B263F5E;
-	Thu, 18 Jun 2026 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4955D2D7DE9
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 15:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781798173; cv=none; b=b6k59s4ypjrqX4MthG2hnFOmY3rTJTvY+va09FZzfs2S/3jK51+m6kh/fnQ/jf+/nfO05ObkryusqFlG1gGz/o5swmXVS7vbcH4gah16RxlV1h5jVgtO4nYYhyj5fy8BgOsIXpty7I27lf+6LxKmFC7LaNCqYagrLa5N2RBK/vw=
+	t=1781798394; cv=none; b=sRdLnshXN2nh6cepmWB/Yr6UwWyWI4R9vieIdbEDCxtt6y/yWQu0DDO1XJIk6nbwdtv5XsPubGgUbBuxhKKO96MpKyea2PTWpar9Ls6XF3+GlbpAPQ20e8tCllNgFOWB7O4wLk4uyxQg2m23sn6er32lopE9KfKZ5ttS4s9v2u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781798173; c=relaxed/simple;
-	bh=ECvNqpLLds/xR3t/zrIA8n39iFk9FOHpuZijVEn8wQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M0sJ9vng5exaABHd3M1KBSrQDJgPheJLu4WAthZJI2qOit3G01mwiGx1AYwOfYGfjVbFauoeSvul9KR34Aix5Aqr+FSDwN3tw7nIFPtFWr2bo44ijVF9rCgeNBzA3zHrdXWhZbBScca57eIMfuR3Xerog/9O8muGxZh3OUU9sLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5Ppr8oT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781798394; c=relaxed/simple;
+	bh=E/y+8JHnTb2d61AU1IWkSWGOzzfnMcc6kvneJqFfPXM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dJVNX/dhsv2Lt6wHTWYb8V0aPDRSuKMfbE3GJdSv0cIyILvgLsuX5XivRpa0AxaGCea84OGdsNMAPoLfNQcFkh/KXeTe4gkvG+f/eKJw9rBsJYMhRyc5Q5NTirtnuTzlJsh5qOqczZfy/aDaQ30uyNsZUvuufIlZCMOIwiZ4pMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5ujQVV2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5Ppr8oT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9B01F000E9;
-	Thu, 18 Jun 2026 15:56:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5ujQVV2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273371F00A3E
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 15:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781798172;
-	bh=0IPDtr0E5+xfAyCrxjr92IdLXpNLF4y4zjRjFT4Sj10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=n5Ppr8oTbsOSG6YshsqBhUNoHlscayzOxfcTXj/PDj5/OnEbF0/qlDY6o7NZNha5m
-	 HgjQSOS/r4R/SKtM82iyRJCAQPfrDYAnCU4z9PtxfI7+eBN932mRCKDXQNtZaAGIAx
-	 UyRPSynU6cGlCR6F4R3o5pzmitLFpjFP3ZDn+cDIDqghlYynP2Y2psERaPm9qceNfy
-	 4XdgjEMq/4X/fxKfNO1B2JaBSZ3+RFh40OMM4M2CB+NTaU8K68b8ic6+PxzjXsVsqb
-	 NS7stYaETFJJGEWippfCuKv23o3Bnf2Mm4hOQ+uZz21mpSRU3I2Aj77ZZMQn9CtWrA
-	 pGcw6v85wavEw==
-Date: Thu, 18 Jun 2026 16:56:06 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Anthony Pighin <anthony.pighin@nokia.com>, 
-	linux-kernel@vger.kernel.org, Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <ajQRY7tHShCEz8vg@lucifer>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org>
- <20260617192928.GB231643@ziepe.ca>
- <ajQDVAu9b-LX8gUQ@lucifer>
- <ajQI5jMJpxyNZCLN@casper.infradead.org>
- <20260618153049.GG231643@ziepe.ca>
+	s=k20260515; t=1781798393;
+	bh=E/y+8JHnTb2d61AU1IWkSWGOzzfnMcc6kvneJqFfPXM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=h5ujQVV2unfhhUt4y37D9VvddJG3uiubKL/E6PIYh5HGICwvn4/W9jVD9qDIRtyer
+	 Aor6nKt33SyXviyzg+R6hmpA1QTgdf4AgvdBgLjIwm4obAKPWd2orntN3xI6SYFpfx
+	 fHeAScNm61TpVUXNqcK7te1RUXawZ9QnD8oYKNI+ZUfZSU+QESqjN70FHD1XaQSpH/
+	 DmEmyR6tPyfEkcKyuR0wf/gAlut+qEUKFI8T/eGim6ucb+v58bksvDkFxcVodm1oBA
+	 PNet5eu+2pnhsPdDkjPl2f7LxagmBm3vFRrDNxS6V9CNYeVXPv1yWfGENZv6vRJMqm
+	 w0rKP4LVoWNjg==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bf046d4da1fso123384066b.3
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 08:59:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8+Uz7I3T9rEjqVOQjDj4ICY1hBZsoMaIwPMeLJ25FrQnxhbhdP1JthUtPdC3/MbEb1WLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMnczJS8yB6TwXtEwyNLF4GLmWzqHBZBs6YsUqYHHAccFOxc4q
+	uwUVj3bKa6WF5gsvuVMHRtYISkFeDG/4rnMwjnu69ymTXZaOm7UOsUR/ygvGlttBfzj8F3ntv0Q
+	gP6Yi1XE41yb/8DmDD1vC0HcLWVGHfAE=
+X-Received: by 2002:a17:907:26cc:b0:bfe:ed06:5a16 with SMTP id
+ a640c23a62f3a-c074e7bdfc7mr268582366b.52.1781798392113; Thu, 18 Jun 2026
+ 08:59:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260618153049.GG231643@ziepe.ca>
+References: <20260616214652.2157032-1-yosry@kernel.org> <20260616214652.2157032-3-yosry@kernel.org>
+ <3551571b85bc94a7b0a9eaf9e3c5561e46c5423f.camel@intel.com>
+In-Reply-To: <3551571b85bc94a7b0a9eaf9e3c5561e46c5423f.camel@intel.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 18 Jun 2026 08:59:40 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO7W+nPQWAzZzqqEWs9c_tHgYpb-wp=5PXXx5x0ePG2Mw@mail.gmail.com>
+X-Gm-Features: AVVi8Cc8lUAhY1yGX9oBQ_QzAfruGIkFYg_kzzB6F_neljHEng7bFmdzI5Pl7bA
+Message-ID: <CAO9r8zO7W+nPQWAzZzqqEWs9c_tHgYpb-wp=5PXXx5x0ePG2Mw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] KVM: nVMX: Decouple INVVPID operand checks from
+ flushing of vpid02
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "seanjc@google.com" <seanjc@google.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 18, 2026 at 12:30:49PM -0300, Jason Gunthorpe wrote:
-> On Thu, Jun 18, 2026 at 04:04:06PM +0100, Matthew Wilcox wrote:
-> > On Thu, Jun 18, 2026 at 03:55:58PM +0100, Lorenzo Stoakes wrote:
-> > > On Wed, Jun 17, 2026 at 04:29:28PM -0300, Jason Gunthorpe wrote:
-> > > > On Wed, Jun 17, 2026 at 07:34:06PM +0100, Matthew Wilcox wrote:
-> > > >
-> > > > > I don't see this as being something that drivers should be involved with
-> > > > > at all.  The MM should be able to get this right without any hints from
-> > > > > the file-provider.  Yes, that means I also want to get rid of the setting
-> > > > > of get_unmapped_area in ext4/xfs/other filesystems.
-> > > > >
-> > > > > Looking at generic_get_unmapped_area_topdown(), I think we can do this by
-> > > > > making an additional call to vm_unmapped_area() before the existing two,
-> > > > > setting info.align_mask and info.align_offset appropriately.
-> > > > >
-> > > > > Now, what's "appropriately"?  I think it's based on length (>= PMD_SIZE,
-> > > > > then >= PUD_SIZE), but we should also take CONTPTE architectures into
-> > > > > account.
-> > > >
-> > > > The info.align_mask and info.align_offset do need information from the
-> > > > driver based on what it intends to map into the VMA that is being
-> > > > created.
+On Thu, Jun 18, 2026 at 3:57=E2=80=AFAM Huang, Kai <kai.huang@intel.com> wr=
+ote:
+>
+> On Tue, 2026-06-16 at 21:46 +0000, Yosry Ahmed wrote:
+> > From: Sean Christopherson <seanjc@google.com>
 > >
-> > What you're saying is that offset 0 of the opened file might correspond
-> > to a PFN that is not aligned in any way?  I had assumed that when trying
-> > to do the mapping of (2MB+4KiB to 64MB), that the offset specified to
-> > mmap was 2MB+4KiB.  But you seem to be saying that the offset in that
-> > case would be 0 and someone needs to know that it corresponds to a PFN
-> > that is misaligned?
+> > Separate the INVVPID operand checks from the actual flushing of vpid02 =
+so
+> > the flushing can be adjusted to do the right thing when vmcs12 was last
 >
-> I do expect that the pgoff space is usually aligned to the pfn space,
-> most drivers do that or could be improved to do that. There will be
-> some off cases, but maybe we don't care, and VFIO should be fine.
+> Nit: vmcs12 or vmcs02?
 
-Some stuff has weird assumptions about pfn=0 at start of the range (DMA for
-instance).
-
-Presumably not applicable to VFIO but that's a thing we need to stop
-doing... (I have some patches I deferred from a while back changing the DMA
-stuff).
+I think vmcs02 is more accurate here, good eye.
 
 >
-> That is certainly an easier place to start.
+> > loaded on a different pCPU, without having to duplicate the logic acros=
+s
+> > multiple case-statements.
+> >
+> > Opportunistically let the VM-Fail paths poke out past 80 chars.
+> >
+> > No functional change intended.
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 >
-> Jason
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
 
-Thanks, Lorenzo
+Thank you!
