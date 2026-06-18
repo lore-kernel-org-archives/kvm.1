@@ -1,131 +1,117 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6EE340410;
-	Thu, 18 Jun 2026 16:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A491B2FDC5E
+	for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 16:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781798803; cv=none; b=Kd2AiZ6tJGXNtC7t/U+pE1MQCCql6um11ARCmubBgdeutIt6yDUbroQ27t+W3QWkKDKVe4kI6krcGNt2IKmVcBPBdqVgs0BI/mUjwEI97jEM/zRrhrbu5MRqHStvxnnQ9UnGjPakzilvqzl9pVGOeHzzaulCZYho8Ch87Ubd604=
+	t=1781799265; cv=none; b=tqQQDTqgEHMgZ/e0CzbnEy4wktEslp0R4Aqc+I1//ELf3inOeAhXYA1rGW3jFN5rG/soAzA/Tp5/SGF0KBcl83S76uGkLS54wdWS0Ll308xA2ZyBc3N+aNtpexo1tdQ2XxzEYIvtFWBFGdCVUvQoY9SdaAsohQtG7pwUxX3dtiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781798803; c=relaxed/simple;
-	bh=mC4DhHSmwvC8eoRNbt8eb72zfa466BLNOTCsh3ohXbs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RJIUwUN3bCmbrF8ii4yrzbtFVc7ebvLp+Mj06jZe6vfO5CFGWLenQrLnB5uuquknWd2q5o9VKPeauhM37IxzpkC4F4vzX9wfkE1KFbteQ39LkhoxUJhe1vCaoDyJqvAh5uu0bxBAQDeJrAUVwp7PSW1ZR4IuzGVPyoiCVRoLey4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=A2sOokYu; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1781799265; c=relaxed/simple;
+	bh=EFrGcqJsUwcALUYIxLLTT8/N8l54sYTR737fc/v/Y6U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XYynmcCU1UPNG5/NNKcY5lwMExyTvKXNL6/VGVFpfNna+SQ53nw9qBNw0L+Af77vssg/ekPOAH9VebNnRow3PJDaGlOyAxfdd7Rba+Hh+uXi600BUsetMd8Fx8rpOzDsxSc5JOTXHOneaIWUM4vVlL78jM3TDiTRv9EgOv1PKYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YFQDVF3w; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="A2sOokYu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1781798799;
-	bh=nT0xci6xmaOOUm65thHxa9cEY6e60prHEPD/nsZss18=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=A2sOokYu0KAx3YqxmulMKI2EgCyBAa0qfekbD+vwpUYn4p0rrGiAHRX3n4nHIrmut
-	 0Mtgi6mUrSIjr8tTnsQArEujPGNV6K3b4p4gCDjWRfEvglLfKvlJz1fXovM/EnftMZ
-	 KDzO/3K86W7nMo6jPXyiY3eA3MV8YdKjU3b1oxvpQkxhdzw/SDO6lmXLngVd28iYlc
-	 tuDQqc6hMqzA1IhK2vC0xTRb1seqmPwmEn4iYbVhV7AM1LagBoyCwHe+A0uimz5qBQ
-	 A8aLKzuIF3iIA2qyeovzgWoB02LtNKximKmKa1pUgTmNcIQurI5KACIs0nHkopJRQw
-	 txy7UV+RmsYQA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gh5FN4FcVz4w0H;
-	Fri, 19 Jun 2026 02:06:32 +1000 (AEST)
-Message-ID: <62970f4b-e624-403f-9cdc-02438c820d23@ozlabs.org>
-Date: Thu, 18 Jun 2026 17:06:27 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YFQDVF3w"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8620ee0971so1235183a12.0
+        for <kvm@vger.kernel.org>; Thu, 18 Jun 2026 09:14:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781799264; x=1782404064; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=smkUU1whOoOuP9yEHYoqcF40OmkenmipHC1Q68vdtSI=;
+        b=YFQDVF3wP/Z3j4dO9Z80pFubjqZ7SgI21494KJrmplypdMeZsAmJfdsh8XZXF5365M
+         k3HKMRxp7Q9zv+IzLw3I5CB1svBUhmqpb+4nu2A4M+Bm0wpVPFk/a4HRFGt3hIl9deu9
+         t8ybuTBQdjW18BIcx6ACSjslLYaaxGi7jLYNaNG3GgaDfHT5tktv9r5+YRM+OOytTUlA
+         y4bShga/gGXaCohTL+P3zs+ByvJ0NbDi0ky287v8YzTRpqoZrFLJn81QB3vgPauBAM9H
+         pj03EWvfGoEsBmRISjR1fiYwZtHCC+7/idAifBg/sUMcBsGC0NgpxUI49zZy7TADc4aW
+         mEbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781799264; x=1782404064;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=smkUU1whOoOuP9yEHYoqcF40OmkenmipHC1Q68vdtSI=;
+        b=A8hIPeRTmlgzqEHc6HzldKejTXsWhq3bqAEfh2bSZrEsh/ChXyBLpWXGnmiprNvcpM
+         +RuHPFzNWqgF1xavkWklpSab40qvPu1VJVCIag7W2w+ULSXB5SIJ3c9hSRn5wQFOZOrK
+         hgKsbb34jPCEjKGbUGKrTDxmini6nAO5Hd21brYoi08mx3iSSK2QecMN40iXgyrrtXwE
+         /zJ+MmH8lf+farjApF6gYfTeYvI6ErwjQY1C00L5X3lsbIUMBx4BwP9CBFaRRayNA/wM
+         Zcogh4DFXolu916L4XD70HIwKOyLXgxlHorIJURuJqRTQvH88txMo6gy3nhtUgn9Szor
+         SN9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9cmWtt/xXvVoEcOc3a1VlGmioxYWVtJ5ZfYISBp6zOprGbVVtWK0Islbo7fNJocDRXE5Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9/9wXIBX/I2Si3j5NyjN+g5t9cRWUzjtEczLCX2vS8mLfP0JE
+	ECh5R6LcbU8dNG/b+gkBi7b4Vp3O1qL9R1FClHa1eBPfwAyRWygGt+c6850efI9M+cwiAjdusvF
+	Jh9aRdw==
+X-Received: from pfbjt37.prod.google.com ([2002:a05:6a00:91e5:b0:842:6be9:dfb1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1745:b0:841:dca1:8b69
+ with SMTP id d2e1a72fcca58-8453b082c51mr4980798b3a.5.1781799263628; Thu, 18
+ Jun 2026 09:14:23 -0700 (PDT)
+Date: Thu, 18 Jun 2026 09:14:22 -0700
+In-Reply-To: <tencent_4A39169A103432A565EEB007CCC88D920109@qq.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
-Content-Language: en-GB
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-7-matt@ozlabs.org> <aixgZQiBQKgS7yIM@google.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <aixgZQiBQKgS7yIM@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <tencent_2A66410581309346060C5BDC8CD108053005@qq.com>
+ <ag8RI8fX1w7jx4sA@google.com> <tencent_4A39169A103432A565EEB007CCC88D920109@qq.com>
+Message-ID: <ajQZXiOEqUU8MAhQ@google.com>
+Subject: Re: [PATCH] KVM: x86: Add tracepoint for vCPU wait/yield paths
+From: Sean Christopherson <seanjc@google.com>
+To: zhanghao <76824143@qq.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Praan,
-
-On 12/06/2026 20:39, Pranjal Shrivastava wrote:
-> On Wed, Jun 10, 2026 at 04:43:20PM +0100, Matt Evans wrote:
->> Previously, vfio_pci_zap_bars() (and the wrapper
->> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
->> calls to vfio_pci_dma_buf_move().
->>
->> This commit replaces them with a unified new function,
->> vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
->> and the unmap_mapping_range(), making it harder for callers to omit
->> one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
->> the write memory_lock before zapping, and adds a new
->> vfio_pci_unrevoke_bars() for the re-enable path.
->>
->> As of "vfio/pci: Convert BAR mmap() to use a DMABUF", the
->> unmap_mapping_range() to zap is no longer performed for vfio-pci since
->> the DMABUFs used for BAR mappings already zap PTEs when the
->> vfio_pci_dma_buf_move() occurs.
->>
->> However, it must be assumed that VFIO drivers which override the .mmap
->> op could create mappings _not_ backed by DMABUFs.  So, the zap is
->> still performed on revoke if .mmap is overridden, using a new
->> zap_bars_on_revoke flag.  A driver can explicitly opt out; the flag is
->> cleared by the hisi_acc_vfio_pci driver, since its .mmap just wraps
->> vfio_pci_core_mmap() and so still uses DMABUFs.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
->> ---
->>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    |  8 +++
->>  drivers/vfio/pci/vfio_pci_config.c            | 30 ++++----
->>  drivers/vfio/pci/vfio_pci_core.c              | 70 +++++++++++++------
->>  drivers/vfio/pci/vfio_pci_priv.h              |  3 +-
->>  include/linux/vfio_pci_core.h                 |  1 +
->>  5 files changed, 73 insertions(+), 39 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> index 86362ec424a5..51990f6d66d5 100644
->> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> @@ -1692,6 +1692,14 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->>  	if (ret)
->>  		goto out_put_vdev;
->>  
->> +	/*
->> +	 * hisi_acc_vfio_pci_mmap() calls down to
->> +	 * vfio_pci_core_mmap(), so BAR mappings are still
->> +	 * DMABUF-backed.  They don't require a zap on revoke, so opt
->> +	 * out:
->> +	 */
->> +	hisi_acc_vdev->core_device.zap_bars_on_revoke = false;
->> +
+On Fri, May 22, 2026, zhanghao wrote:
+> On Thu, May 21, 2026, Sean Christopherson wrote:
+> > On Thu, May 21, 2026, zhanghao wrote:
+> > > >From 0c8d4428390a1238a956f713c1ddced18eac83da Mon Sep 17 00:00:00 2001
+> > > From: Hao Zhang <zhanghao1@kylinos.cn>
+> > > Date: Thu, 21 May 2026 16:30:37 +0800
+> > > 
+> > > Add a KVM x86 tracepoint that reports when a vCPU reaches selected
+> > > wait/yield handling paths in KVM.
+> > 
+> > Why?
 > 
-> This seems to be happening after we vfio_pci_core_register_device, which
-> could be slightly problematic if another device in the same group races 
-> to trigger a hot reset before we can set this to false. Could we 
-> initialize this flag before registration instead?
+> The intent is not to add a scheduling policy hook, but to expose a single
+> observability point for KVM paths that already have wait/yield semantics.
+> 
+> Today userspace can infer parts of this from lower-level tracepoints, but
+> only by stitching together different sources:
+> 
+>   - PLE can be inferred from VMX/SVM exit reasons via kvm_exit.
+>   - KVM_HC_SCHED_YIELD can be inferred from kvm_hypercall.
+>   - Hyper-V and Xen yield/spin-wait paths have their own hypercall paths.
+>   - HLT may not be visible as a userspace exit when KVM handles the halt
+>     internally, e.g. with in-kernel LAPIC.
+> 
+> Those tracepoints are useful, but they expose lower-level mechanisms rather
+> than the KVM-level point where the vCPU reaches an existing wait/yield
+> handling path.  Consumers that want to correlate vCPU wait/yield behavior
+> with host scheduling activity currently need to understand VMX vs. SVM exit
+> encoding, native KVM hypercall arguments, Hyper-V/Xen hypercall semantics,
+> and HLT handling differences.
+> 
+> This tracepoint is meant to provide that common KVM-level signal:
+> 
+>   - ple: KVM reached the PLE handling path
+>   - hlt: KVM emulated a guest HLT
+>   - pv_yield: KVM reached a paravirtual yield-style path
+> 
+> The tracepoint is informational only.  It does not change KVM scheduling
+> behavior, directed-yield behavior, vCPU placement, or host scheduler state.
+> The target field is also only the guest-supplied value when one exists; it
+> does not imply that the target exists, is runnable, or that a directed yield
+> succeeded.
+> 
+> So the reason for adding a new tracepoint is to avoid requiring userspace
+> observability tools to reconstruct this higher-level wait/yield signal from
+> several unrelated low-level tracepoints and architecture-specific details.
 
-Remember it is a safe default, so in the event of a driver not managing
-to opt-out before it's required then all that happens is a redundant
-unmap_mapping_range().  The default-safe was a nice suggestion from Alex
-on v2.
-
-
-Matt
-
+Tracepoints aren't ABI though, and "observability tools" suggest userspace wants
+to build functionality on top of all of this.  If this is for debug purposes,
+then tools like bpftrace are a much better option.
