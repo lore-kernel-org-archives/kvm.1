@@ -1,54 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB431FA859
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E463B14C8
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781882429; cv=none; b=hulJtJaxNQ6iik5G+hzkGmUsoaQQr7jDmZ+sgJYCm+A+wIQJHF9CU5s7W5McVg2O1+xWLQ8imX9++KzjH8/v5ojFsUvsBLoI43RHB7wUnmnUiF+0JxUiltmjQtOfSymNOegohVmLFEbK7J96sHmdCw5T9LR+/t7UBtIZWzGkX/A=
+	t=1781882429; cv=none; b=XJsMSM6KDcvD2u9Hn8mS4aYBu84Tqd7AxRrWksL0QMgWGxFhik/bLgGHXX0NvrSlxXhf4iPVoL1r7LQnYXKL2tH19mobNK25O19w98MWZ1fZEs5Y9wEj7xSvvWI3LscQvAhuCvqRfUeFiSXGdwPRglwVrVZ6oCOcipcp4oCL8Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781882429; c=relaxed/simple;
-	bh=rMpl6zJE8LIlALfkumz/McJQE6oSytsbFrYL8PD0nRQ=;
+	bh=pVQCY/mCheQDsG5xXuTLOHrGtjQVyaFSCAWgwV2UOE8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NItQgTgMxbJzxJFL19XCmoIPcAuibPDAQ1gowqnB0NDPyqJyomF5y7orDEyZN0d/cgddu6f7k/Z+KTvfhbc/HL38z70LSgXBGbdVob3LGjndxQsjbl72kKLiVhE2eM0o9BvC3HSueMz7A4sXJjMLzOXerMhqydsrOTS6i5UEi1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HduAKKD4; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=kEIdvkF2yKAMmDhTnw1+xn5JKQBf/EM62ikQHvYZGYFdRdEd7WyOgJydfAzw2SrUFXym9vzv7Hqn8p3SqKBWwve3RLeUvwrYIJMNFXcOA2DaHThnYKYRsn096YuAx0eRnfYTBTp02ABtMLveEFttF1rnm6uROY61NxHFaYVHUgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p0PC43Ix; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HduAKKD4"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d99181eaaso2566948a91.3
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:20:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p0PC43Ix"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8611b27631so2132342a12.0
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:20:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781882427; x=1782487227; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781882426; x=1782487226; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C8+cVPUrTar714s2C43zoZOlLtXJp8h9CqlUBsNQwWA=;
-        b=HduAKKD4CYYpY+3OyAZwBDzQQ9sXpCDVyCKQEs1w4HW6v/vzQaYuwlqwcWyQpUtWkG
-         I4p4WG/B6O7F00FewnZk5Av3KpslZHZ/A7bnubhSmb7FcvwEFDMiVx2XKeOCSVhxjEFi
-         TYEYMbhuUMNdL+AL+NunrTjdZxTTk4BB5Tphf+kIESJ+o9KEgBE042ibcwb5OjJ7b/fp
-         aE3aQd60iSSeln9JQiw5M+iKmsk8bkTWQ6NYIE6xyQ1n/SeDkF8eQwHCknl20EwqtiE2
-         kq2WqXQbDz2B2ij7T+0ZFMz19qVNfqSoQfYSxkZR947ZPj8LEv72MWvyjhdwkXiYaQwo
-         aN6g==
+        bh=+vw7YYohjD+DTWxJHhhg4uukjaWH//EBPhsjPR2EJ6Y=;
+        b=p0PC43IxsIvwJbbVVsLMP6F/QYFMkxlydK6aIGsC0jScjYDGZbz3p0dLFmlkdmnjAm
+         wRfizLJI3UHfwFJXgzsvUUIsUDSZuVWQQtgIoq0oCvHiqIBkkY6qsfLKrmGS0+xK98Jy
+         jDYjQtTIJbxpmMTP/Tfik3w38/qRHse2zzScVIdVHR+bQIJwB6GJYRcORHP2uG0XdF2D
+         bAAuPAuN9kd2eqWpsy1VjWvviEoo0P/DFWuabkayQMjI+Sbfo28YfnF4RjvYsRca5Ke9
+         dV+xSKHwu7XJyJhzQ1VBH3lqrHV0cnOsfOrMWokLcS3h0z1YqsHGyXTqy4+xcUmjTcLh
+         opHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781882427; x=1782487227;
+        d=1e100.net; s=20251104; t=1781882426; x=1782487226;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C8+cVPUrTar714s2C43zoZOlLtXJp8h9CqlUBsNQwWA=;
-        b=kdS1dAsH6QeFemnVHnDds4wPvUHDlXkVlqaPiib6uRa5zbIVUVZdwuGzV1ycKEKCtx
-         e648OzmTFWa3o2gkcYDhJZwwKYIG+kjdt64XkWrczqJS3csPqon3dgfqBZFZMREYCwfN
-         t8quyd0kPIQxIZ1FtJXcmlFeXiz8+gw4h9qjqx/XS9TVge1dAKdagmdXBzNcEFjjq1pn
-         WgOAissJg56yj1RK0tu/jX6RWksslJHgRwfUzM/q1AxLg6fuUxiBgi1+1dEZyxmykdBb
-         2z+telXmCyiIIi+CbHT/bdKSoftfkModENnAh9YwZ2Hj+akk/lD3wpW5H62DMLvVs4BN
-         DOfw==
-X-Forwarded-Encrypted: i=1; AFNElJ8BIOARHqYRn5v9B+NR9KnvmTaqJgtTGqP8xlLgaMPG8V8bjluF+7RKdDGdh09dRa7gyfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2+8kBKlQSSqQVBUltDMN5wC9XJzzm8tT2GP44kLLkbzdcC2L2
-	ITiJbaqS6TfzOBrU+KWCAZ5KyO0LC/TH+iH0It4W2gxparMVWOefYX3mLESQDfC5JSw9tNK1O/P
-	QviGzb6uYVYLUPg==
-X-Received: from pjbhl11.prod.google.com ([2002:a17:90b:134b:b0:36b:ac0b:8c3b])
+        bh=+vw7YYohjD+DTWxJHhhg4uukjaWH//EBPhsjPR2EJ6Y=;
+        b=CTsAuklOUha0H3/x2KLwJVmrT6Z1a83c3uZHEo/8oS/1BHYSSf9ZerMyCbBYQ7CA/R
+         FDsNbVmZOuw3NyTAfZiA1R1tNm2PBNPaGHBVXK/JSjof7Bfkte+LatJNV6GQaA9BpOfh
+         jynG5rUw2LpGvaXC7CTF25ZsR5glH/Rxe7+pg7qJoHho0TrjNfzbnWoOhzo0IQMEhY6a
+         RfS7hsxQxfphxzT/wzq3gwQkw+MSD75pinw7AsiqyMhWZiKELP2mzb3T4Oc0n23TRDVC
+         4HEQU+OY2goF8BXKdxpVEywiwMG6T4AUuWGmcr+w5MODkSKxE+l0V03FbvDlBG95V7/1
+         vqsQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+UxxZkMJn970k8J2c2h8okF18wx46mWWnrcpnyhjITk1eIcYmu0zswrt7wTSenPHQdhBc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3brDY3HFBJaGA0vS3fsuuNsYjpBRY+pDHX/7PHOBOYGEsO+u/
+	HR8iPAQxo08SivEwsrqVgdCSL9DkK0jXggZTiNrokL1lgPDmjigdyvMtC7yl5luU9B15zQ0R9Kk
+	wYZiVwCp+STQ4/Q==
+X-Received: from pgc9.prod.google.com ([2002:a05:6a02:2f89:b0:c89:dbbc:c841])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:d644:b0:35b:8d89:719b with SMTP id 98e67ed59e1d1-37d15dc1067mr4398703a91.1.1781882426804;
- Fri, 19 Jun 2026 08:20:26 -0700 (PDT)
-Date: Fri, 19 Jun 2026 08:19:27 -0700
+ 2002:a05:6a21:3418:b0:3ba:d7b0:fcac with SMTP id adf61e73a8af0-3bb3364fe09mr3899266637.5.1781882425809;
+ Fri, 19 Jun 2026 08:20:25 -0700 (PDT)
+Date: Fri, 19 Jun 2026 08:19:26 -0700
 In-Reply-To: <20260619152006.3684428-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,57 +58,119 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260619152006.3684428-1-jmattson@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260619152006.3684428-5-jmattson@google.com>
-Subject: [kvm-unit-tests PATCH 4/5] x86/apic: Introduce pv_ipi()
+Message-ID: <20260619152006.3684428-4-jmattson@google.com>
+Subject: [kvm-unit-tests PATCH 3/5] x86/apic: Support subtest selection via
+ command line
 From: Jim Mattson <jmattson@google.com>
 To: pbonzini@redhat.com, kvm@vger.kernel.org
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Extract the inline assembly hypercall from test_pv_ipi() into a new
-helper function, pv_ipi(), to facilitate code sharing.
+Refactor the APIC test suite to support running a subset of tests specified
+via command line arguments (e.g., passed via QEMU's -append option). This
+matches the test selection pattern already established in x86/vmexit.c.
+
+Define 'struct apic_test' to associate a name with each test function and
+leverage the new 'argv_test_wanted()' library helper to filter the
+execution loop.
 
 Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- x86/apic.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ x86/apic.c | 57 ++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 30 insertions(+), 27 deletions(-)
 
 diff --git a/x86/apic.c b/x86/apic.c
-index 65198ecfb3c1..eea0c8d8e0f9 100644
+index fee1b7893185..65198ecfb3c1 100644
 --- a/x86/apic.c
 +++ b/x86/apic.c
-@@ -638,6 +638,18 @@ static void test_apic_change_mode(void)
- 
- #define KVM_HC_SEND_IPI 10
- 
-+static int pv_ipi(unsigned long a0, unsigned long a1, unsigned long a2, unsigned long a3)
-+{
-+	int ret;
-+
-+	if (is_intel())
-+		asm volatile("vmcall"  : "=a"(ret) :"a"(KVM_HC_SEND_IPI), "b"(a0), "c"(a1), "d"(a2), "S"(a3));
-+	else
-+		asm volatile("vmmcall" : "=a"(ret) :"a"(KVM_HC_SEND_IPI), "b"(a0), "c"(a1), "d"(a2), "S"(a3));
-+
-+	return ret;
-+}
-+
- static void test_pv_ipi(void)
- {
- 	int ret;
-@@ -651,10 +663,7 @@ static void test_pv_ipi(void)
- 	if (!test_device_enabled())
- 		return;
- 
--	if (is_intel())
--		asm volatile("vmcall"  : "=a"(ret) :"a"(KVM_HC_SEND_IPI), "b"(a0), "c"(a1), "d"(a2), "S"(a3));
--	else
--		asm volatile("vmmcall" : "=a"(ret) :"a"(KVM_HC_SEND_IPI), "b"(a0), "c"(a1), "d"(a2), "S"(a3));
-+	ret = pv_ipi(a0, a1, a2, a3);
- 	report(!ret, "PV IPIs testing");
+@@ -1,4 +1,5 @@
+ #include "libcflat.h"
++#include "argv.h"
+ #include "apic.h"
+ #include "vm.h"
+ #include "smp.h"
+@@ -905,43 +906,42 @@ static void test_aliased_xapic_physical_ipi(void)
+ 	report(!f, "IPI to aliased xAPIC physical IDs");
  }
  
+-typedef void (*apic_test_fn)(void);
++struct apic_test {
++	const char *name;
++	void (*fn)(void);
++};
+ 
+-int main(void)
++
++
++int main(int argc, char **argv)
+ {
+ 	bool is_x2apic = is_x2apic_enabled();
+ 	u32 spiv = apic_read(APIC_SPIV);
+ 	int i;
+ 
+-	const apic_test_fn tests[] = {
+-		test_lapic_existence,
+-
+-		test_apic_disable,
+-		test_enable_x2apic,
+-
+-		test_self_ipi_xapic,
+-		test_self_ipi_x2apic,
+-		test_physical_broadcast,
+-		test_logical_ipi_xapic,
+-
+-		test_pv_ipi,
+-
+-		test_sti_nmi,
+-		test_multiple_nmi,
+-		test_pending_nmi,
+-
+-		test_apic_timer_one_shot,
+-		test_apic_change_mode,
+-		test_tsc_deadline_timer,
+-
++	const struct apic_test tests[] = {
++		{ "lapic_existence", test_lapic_existence },
++		{ "apic_disable", test_apic_disable },
++		{ "enable_x2apic", test_enable_x2apic },
++		{ "self_ipi_xapic", test_self_ipi_xapic },
++		{ "self_ipi_x2apic", test_self_ipi_x2apic },
++		{ "physical_broadcast", test_physical_broadcast },
++		{ "logical_ipi_xapic", test_logical_ipi_xapic },
++		{ "pv_ipi", test_pv_ipi },
++		{ "sti_nmi", test_sti_nmi },
++		{ "multiple_nmi", test_multiple_nmi },
++		{ "pending_nmi", test_pending_nmi },
++		{ "apic_timer_one_shot", test_apic_timer_one_shot },
++		{ "apic_change_mode", test_apic_change_mode },
++		{ "tsc_deadline_timer", test_tsc_deadline_timer },
+ 		/*
+ 		 * KVM may disable APICv if the APIC ID and/or APIC_BASE is
+ 		 * modified, keep these tests at the end so that the test as a
+ 		 * whole provides coverage for APICv (when it's enabled).
+ 		 */
+-		test_apic_id,
+-		test_apicbase,
+-		test_aliased_xapic_physical_ipi,
++		{ "apic_id", test_apic_id },
++		{ "apicbase", test_apicbase },
++		{ "aliased_xapic_physical_ipi", test_aliased_xapic_physical_ipi },
+ 	};
+ 
+ 	assert_msg(is_apic_hw_enabled() && is_apic_sw_enabled(),
+@@ -953,7 +953,10 @@ int main(void)
+ 	sti();
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+-		tests[i]();
++		if (!argv_test_wanted(tests[i].name, argv + 1, argc - 1))
++			continue;
++
++		tests[i].fn();
+ 
+ 		if (is_x2apic)
+ 			enable_x2apic();
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
