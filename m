@@ -1,166 +1,108 @@
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FCE37AA8B
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781875118; cv=pass; b=KHEuiT2o2phlVlWlIFiBV3enCc2ExqVRWJ6YOenoBbmjrxw5POjVsdLCqjFQT0/dbjJFjl0pAyflW6FOPNLGNvNjzCgnw6E8901IOTlpk3p/zOid+ZkL2vuUHB4SAwwL+4zpvL96SIGm8q5SRsYojj9xzm+DL72fNwVrIudbraU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781875118; c=relaxed/simple;
-	bh=TtTfJunX0gmDNwPXk2Buu8r54gKPY7unP7+hZJHM51s=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D653438BB
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781875356; cv=none; b=hhhZFoM2NHVxlYBY9IXJjXRT1HPrNlWxTqPOMYKCVsW80mjLKMRttJjKWDPfp1Rhah9jwpnlsXc+sBt/FqvtTwGVR9vBriGAdbuFs51FjT2xTqWnv+ttNEiKNIqLt6qz497aPwffASSO6kETRPXKzWTsycK4JAzBsVkiCQnxwJA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781875356; c=relaxed/simple;
+	bh=T6cAHcE2doTEOQHDjqfuv/jaDnjoSBy3geH/6utKmXY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uh7iK5qYafTaqefa7lhtsJCz/3ylrVU9dX3HUz9bpmV4EvIDIZqfwJb3gwDYhdZEuFXM19XXReieNGZQfZhXigSdOCKMEYp+ppjzCdfOUm0L4S/RO01K5r7NLr8xXUdjhwUovhg3FODq2YVAD4qgXMOax74sxE70L8Y0wpeM2tY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w9ucpKRr; arc=pass smtp.client-ip=74.125.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=WjSri/N6G/W/X2JiYYuMuwWGaGST3cu0f06j9ZQ5c9ObWGDAhvwfuyL9slKkgyGytLbt3978ow/lGIPM5FD8faN2V8F7fjRIsNr6PJz9h8PcLNvZn6uQ0Xe/QbHyTCoKRJe4UPvOOKj099+5hKVNLs5LU/5P2tU9UnVAijU5na0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sLdEE6z7; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w9ucpKRr"
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-660e9fef1d4so2223411d50.1
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 06:18:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781875116; cv=none;
-        d=google.com; s=arc-20240605;
-        b=abEg5f0OepIIUhrKkmQz8kRnkTAV9hR4yr3hvdiuEgo4PfqxGgDkUJmT2ooA6rMHDj
-         5tfjkNmbiU0bQMJOEz2viCYDi/KcTI0vkKNRydtc3Vcw9PGQ7M6OiAsRcnHFHtIzAOVv
-         //RTEl4CAbgLLcv01fblagCQwuCF1zPN/yG6ZTvglOHEagMM18aCH8rZ8cEVJsGLM8aJ
-         l/GwslVdcszUzsD8dXnOJlAAIyuRHyuhxqAJLt6G17hZeK7WSGF7XHOjEiIaNnlj8GR5
-         5WEn9AHbF9afekypQfEDKQq/g86PQz+kqkOCofJFdAiN7z5Lr5cVNwL8b2vjKFSXT796
-         6dvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EmEY+cjbJNIBkK9rxxbzV7Ux6b6JpIZ3d2sXR3Gm4OQ=;
-        fh=oGg+sDCB/2rikcsN6mEdGWd3BsWUaKRF76BVTucgdTQ=;
-        b=QjWWdAjUCBJXDP3hiXVjKtNZi9eanqfPTSEC0Vm5652vVi0PJRK+p0sDJte3eDei83
-         DQwpfEnsrMDrGaFX6mGoNXhCd11i2BxvYu5U61BcXFSKKR84eDT0ikxG2VoESW1Wa+k2
-         saAV82uVmk3B+Arj0icPjBNsDNDNkl0XP4Qr+SCRnhKC3RKtrNr8dsc16LCScG0Vkt4X
-         C4UgppLY2L+jtTxO0YKFaCGve6bf3pvnuU2kC6EKb/vZi28RnuYZrb1z17TmMvYwjfwG
-         rCdtV0+b4clkQ7O7yMCEnTHr/0M6QhMVcAuWoa1cOp22ZtliNA+kZHbzknAa2Wy7OF/a
-         AIWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781875116; x=1782479916; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EmEY+cjbJNIBkK9rxxbzV7Ux6b6JpIZ3d2sXR3Gm4OQ=;
-        b=w9ucpKRrCuTqhzP5LcIe4ikuDAgZ2NmsdXMoaHNoK2WDwoAmOv/GpRcHTTB2aVRz2v
-         pYSEctPQ5lOC41WK927GJIv+0AuP+zZcfZxStHG94YlLneEY8fu+EfdpWlyGRqnpkYcG
-         umulPLSguAOUl15w8SkLxAMDZ2LSB+AgLcDxoG5x47Qb42l7+Ers08UcjLbL2IOkZqR5
-         qVdoxaE5zaxIFENgjQcKgW5+9aSxCt0qcKvIgYqvilDH1pFdd6/dBYNsdgEiYM+0jPzf
-         QsvtDlpFpaSRdfCsezKNcwiq9w1L19Pz01uchiZ/34+wuwpf4hD2T0HLX7/v47+kcK32
-         Tvdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781875116; x=1782479916;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EmEY+cjbJNIBkK9rxxbzV7Ux6b6JpIZ3d2sXR3Gm4OQ=;
-        b=FKb8oLTi0mMJjyjG7RD5LoqCcWZ8+ksNJTX/ZQeNGM/jDZQ7o1upiy3kxvHo16DeuH
-         0IPOpJGAHjsGazsIJ7gmnnt/tG3GRk8omxsGOVg0FVAVIbPc8ClNf/9N77hXDZaXygJZ
-         aLKCP2uEB3cyyOTlQm4zThj3yNDkbfUyrYUiyFSXOb0P5AR33y2WEnhhTMPhQQzMUzoe
-         +fxMmxzDAW08SaFagmW4MvWDA2Di9ZjSIVEdVHVByFdzhoV/1x85BKJiKgbTWGNbOubq
-         l5SHVtvqCnchj393O9lE8lCJBAKDEzCzcIxNf26bkOv0yH6yigFvHuYWW2Lvt1li8ZN3
-         5Xrw==
-X-Forwarded-Encrypted: i=1; AFNElJ/uI8Afwed2Vv2DWtNfXPBbzq02MWb/oG2R279hWdrs6b91h5qkdDVgSZi4HMVDHcTOyO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvlemKDI6iyiw7LW/nlLHFa9gYsWBW8Nl6SAxa++4PhjTJxTxY
-	zDB8OkWOrjmh+rfmCWW/05qPDiIKslmwqZchzODuw/rOXCPihTUp8VZ41FrzqQzBBpHiL6c/qU7
-	GLzTnG1Qow2IiD/Iz8zIfRswwjHFGOeHe/4kDQjzkPg==
-X-Gm-Gg: AfdE7cmhBUCLhbqtWZXQPKx/HnXDdYo6K5ukpIIv85uHTIzio5IR47+TmEQe0sbJNDN
-	HXzQXwlc8NllqBMhthRcgkQmaQZlOG8w5Pz+zsH84hqnZZrcZDq0LxWBP9r7g4RRx+NFoLeIp5S
-	SD7HmsVfOaGZEug7S4S/LKB05RQVLtSJLmvpaLYMRE6UinhwvoKM0BapjbpmyGmwFUAY3F/Wgff
-	29DBOTnNhdugTvJImeb6w9z7tcGj6lFlWP0K13ptwFbt2LBPVDYeof7h/Rm4V1Ya28D7hAszJUg
-	C3qauRx+vcnq6ncn0Nfm+vqv/Y/4lPLScFba/pJUVpMR1sidSgH3InEd
-X-Received: by 2002:a05:690e:11ce:b0:660:d512:46dc with SMTP id
- 956f58d0204a3-662fcbb0086mr4092145d50.57.1781875115603; Fri, 19 Jun 2026
- 06:18:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sLdEE6z7"
+X-Gm-Message-State: AOJu0YyVsdwAbbtUaNeM0OQyykWY140JTpgvy3AlArgidXKzrK6WJdAI
+	7g8V9yVL1xKclwHU+mUIb1T+xsicNzxOMPXG1xGxjs/DedJJF1waWdzkyCexNqtKj+Iv/+i4diL
+	Pp0xIzJoy2Pe34BH/smkZJJQoY8kuTXfcaMJIJq2c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781875353;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5MrtgEjreSkQQvk/WxJaOTdpRgzlUpKOdatA6KwnAng=;
+	b=sLdEE6z7UCBhFsFZJEahg+DDOZG8HKGSK1UjqY/CF/faiCsr3YNBHj2hEnvXS03x9S8RQX
+	J5GDF9838heodREXTktIa3o7kIdkFjgyX5sNaM81bKDO4n5PnnGRpP165BT8khA5MKOQMo
+	3RMT/oefB7pDM7lvHW97mLuR25zHcns=
+X-Received: by 2002:ac8:5e0d:0:b0:50f:be7b:923a with SMTP id
+ d75a77b69052e-519e890f9bfmr6702791cf.9.1781875349714; Fri, 19 Jun 2026
+ 06:22:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260619130537.820184-1-alex.bennee@linaro.org> <20260619130537.820184-5-alex.bennee@linaro.org>
-In-Reply-To: <20260619130537.820184-5-alex.bennee@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 Jun 2026 14:18:23 +0100
-X-Gm-Features: AVVi8Cf-7SRrv9WiiLBvbBYNyVc4TY8I_uOR2bV6pZJYEsQtlTzN9wdxrxv20oA
-Message-ID: <CAFEAcA8QWor1P210Td1wHeot2npzga5_XfonNMpPSZeviYCTOQ@mail.gmail.com>
-Subject: Re: [PATCH v8 4/7] target/arm: ensure we create the wxft_timer for
- all modes
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Alexander Graf <agraf@csgraf.de>, 
-	Mohamed Mediouni <mohamed@unpredictable.fr>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Pedro Barbuda <pbarbuda@microsoft.com>, Jamin Lin <jamin_lin@aspeedtech.com>, 
-	Steven Lee <steven_lee@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org, Troy Lee <leetroy@gmail.com>, 
-	=?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
-	Kane Chen <kane_chen@aspeedtech.com>, Tyrone Ting <kfting@nuvoton.com>, kvm@vger.kernel.org, 
-	Hao Wu <wuhaotsh@google.com>
+References: <20260619115415.5475-1-will@kernel.org> <20260619115415.5475-4-will@kernel.org>
+In-Reply-To: <20260619115415.5475-4-will@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 19 Jun 2026 14:21:52 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyG8uPx55LFwD4Xvp2wpv8r=ueKro-boi4PsjA+1Vu1WA@mail.gmail.com>
+X-Gm-Features: AVVi8CetRNZBaor3jQz_Jt_KRo1H_04XyK3SViaZ6UD2XURw4EUgSWNMoJbldcM
+Message-ID: <CA+EHjTyG8uPx55LFwD4Xvp2wpv8r=ueKro-boi4PsjA+1Vu1WA@mail.gmail.com>
+Subject: Re: [PATCH kvmtool 3/4] virtio: Add helper for enabling VIRTIO_F_ACCESS_PLATFORM
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Andre Przywara <andre.przywara@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Marc Zyngier <maz@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 19 Jun 2026 at 14:05, Alex Benn=C3=A9e <alex.bennee@linaro.org> wro=
-te:
+On Fri, 19 Jun 2026 at 12:54, Will Deacon <will@kernel.org> wrote:
 >
-> We don't want to just use it for timeouts as we will calculate which
-> will comes first. Remove the wxft feature test in favour of the
-> broader architecture checks.
+> In preparation for supporting protected guests on arm64, introduce a
+> virtio helper to advertise the VIRTIO_F_ACCESS_PLATFORM feature for the
+> modern transport.
 >
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
+> Signed-off-by: Will Deacon <will@kernel.org>
+
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+
 > ---
-> v8
->   - new commit
-> ---
->  target/arm/cpu.h | 2 +-
->  target/arm/cpu.c | 9 ++++++++-
->  2 files changed, 9 insertions(+), 2 deletions(-)
+>  include/kvm/virtio.h | 1 +
+>  virtio/core.c        | 5 +++++
+>  2 files changed, 6 insertions(+)
 >
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index 31a5567c951..8aa7437a397 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -966,7 +966,7 @@ struct ArchCPU {
->       * pmu_op_finish() - it does not need other handling during migratio=
-n
->       */
->      QEMUTimer *pmu_timer;
-> -    /* Timer used for WFxT timeouts */
-> +    /* Timer used for WFxT timeouts OR event stream events */
->      QEMUTimer *wfxt_timer;
+> diff --git a/include/kvm/virtio.h b/include/kvm/virtio.h
+> index c95183b..dd3117b 100644
+> --- a/include/kvm/virtio.h
+> +++ b/include/kvm/virtio.h
+> @@ -277,6 +277,7 @@ void virtio_vhost_reset_vring(struct kvm *kvm, int vhost_fd, u32 index,
+>  int virtio_vhost_set_features(int vhost_fd, u64 features);
 >
->      /* GPIO outputs for generic timer */
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 597e0626e7f..61945b6e6cc 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2269,7 +2269,14 @@ static void arm_cpu_realizefn(DeviceState *dev, Er=
-ror **errp)
->      }
+>  int virtio_transport_parser(const struct option *opt, const char *arg, int unset);
+> +void virtio_modern_enable_feat_access_platform(void);
+>  u64 virtio_get_modern_transport_features(void);
 >
->  #ifndef CONFIG_USER_ONLY
-> -    if (tcg_enabled() && cpu_isar_feature(aa64_wfxt, cpu)) {
-> +    /*
-> +     * We use the wfxt_timer for timeouts and event stream so we
-> +     * enable from V6K up. There is no event stream on M-profile.
-> +     */
-> +    if (tcg_enabled() &&
-> +        (arm_feature(env, ARM_FEATURE_V6K) ||
-> +         arm_feature(env, ARM_FEATURE_V7) ||
-> +         arm_feature(env, ARM_FEATURE_V8))) {
-
-This code runs after arm_cpu_propagate_feature_implications()
-(which happens at end of instance-init), so you can rely on
-the usual "feature X implies feature Y" stuff being true, and
-just check ARM_FEATURE_V6K -- that is set for anything A or R
-profile that's v6k and up.
-
->          cpu->wfxt_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL,
->                                         arm_wfxt_timer_cb, cpu);
->      }
+>  #endif /* KVM__VIRTIO_H */
+> diff --git a/virtio/core.c b/virtio/core.c
+> index 8c5086d..96bbf96 100644
+> --- a/virtio/core.c
+> +++ b/virtio/core.c
+> @@ -355,6 +355,11 @@ bool virtio_access_config(struct kvm *kvm, struct virtio_device *vdev,
+>
+>  static u64 virtio_modern_transport_features = 1ULL << VIRTIO_F_VERSION_1;
+>
+> +void virtio_modern_enable_feat_access_platform(void)
+> +{
+> +       virtio_modern_transport_features |= 1ULL << VIRTIO_F_ACCESS_PLATFORM;
+> +}
+> +
+>  u64 virtio_get_modern_transport_features(void)
+>  {
+>         return virtio_modern_transport_features;
 > --
-> 2.47.3
-
--- PMM
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
