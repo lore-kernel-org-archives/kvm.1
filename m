@@ -1,223 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B73168E1;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30541EB9E3
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 00:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781829111; cv=none; b=gm2GF7hQusK/wmh+Th18AyDkfozWq5huBALR5Z4caz4g3RowAi7y+hY52QS9Lt5XqeGXatrjkI3ENFkNdorQZGPjMnTs6+HHXHxHL4zc2nUjCsJTzEEddmq9vBBZCr0AmzD9IMQMvp+C6sLyHA8T8v7Q7Xrv5Py2AoL5UBHOGdE=
+	t=1781830159; cv=none; b=sJczWcNrM1DaQtfnasaGiwxJDMxf+iaL17dp5CyevnZ48sYMK37mTyYwFa3pb/a+uODfNJEgxgPql7F+UT3PmZgL3L5tEd7zNLXOdg2qLHCxELuFmtN3isYyvHpsEEMxB4hzpoCcXbV+iE8qHkTzaMhXBFBpPgPSQWtCaJuC8LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781829111; c=relaxed/simple;
-	bh=b0mKXX/PHy90zcft1RMHGmGn/ttpFqaluhBfgviGqEc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iRqyDYw60tEWeuAA32i1CceZCDHNEDc2zkN2EQPm21bf7okCXNxX8HnaxFIY2cc6dtFqMXpDR966SCicRy7Yu5PHg2VjOheV06co4SjdeteD9NWRrcOsc5iVVZTPeRbDsvocGQPJRyp5M+85lv3rLaehNlxbXZ0gb5Davtw/F5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5BWB8ir; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1781830159; c=relaxed/simple;
+	bh=X+J9x+VP3Q/NxqK23eu2o4TfKjI7gtzahQ+m/jxZcmY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oZ56s8N44uvhxvuF9ElQupYEx0vhuwII/dtuudBR0DdPpB4xki9UkdM6+jCsFcDMWyqtSWJ/ipEpNbtkBK/ZbS0+6/ECjlhFdh9+8QQA2aMix1g0fmAUtaTciEgVjY7RPU1HGjb5Dqh6Rxqg4n4hfICYNubv54zmQcwg6ByiFZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6kCAoGl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5BWB8ir"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62168C2BCF6;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781829111;
-	bh=b0mKXX/PHy90zcft1RMHGmGn/ttpFqaluhBfgviGqEc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=u5BWB8irFqLkUHfL/3Tk+UM50VosgwoeBd2gd7XctGdeGs4DgsQrWNJpRYC1spLj8
-	 px8BXMO383I/KIJaikPum/5aZQ1UGejHNXw9vZ0NgOdw8Gacn3zNEqf/52203as9gN
-	 mrSJkKCkBD8jAu+12m7H82WkxsErmHs2d+ux1nL3mKuQJMJCDnG0Vub4VWFaXHPbaS
-	 M94TjIKpajZR776mQVC+KfyQbByt52JpLM1AeWnitax9Irh8WyT00u2PvyS7xqozEI
-	 VkdizeYTBT/S/6Wtxls5Ncpxr6pDpSk1IDIFnnuqjC02V5uKzhzf4Pe4PjyHvDmJp7
-	 0YoIAyDcoCbGg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51B81CD98FA;
-	Fri, 19 Jun 2026 00:31:51 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:32:22 -0700
-Subject: [PATCH v8 45/46] KVM: selftests: Update
- private_mem_conversions_test to mmap() guest_memfd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6kCAoGl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378771F000E9;
+	Fri, 19 Jun 2026 00:49:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781830158;
+	bh=C4XP7fS/RKU6k9VXAlDQxz4O/d1P6SB2Iec2VwhasFU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=X6kCAoGlg0v/RWW7iXSW0hpbsRYoyNo1PFIuQzSEj0xpemN5n4l/WU0UZVY1L/0tf
+	 jhWUMkcC5fADr+h2G3zmcISm0VHn4a/ktoiYI84e8td2o4snlpaq1uQGmVIDFWreu0
+	 nC62UBe4LrXir21igGsemASCz/dm9qbdvCzmKMfHhMdtHjeRByy9sei94c5RLFJjex
+	 ElWheIGt08t+wLc3hxdPEWllfR29dym39RZNMxwdCgUpalTETEKNY+W1dBpA/2vzJ/
+	 cZGMJBpJYA6ik3q6FEDleG6j8wtSFpIh3YzB+BEZ2Lf/9wMwCTTkOdFSp0ljThgymO
+	 VjPOH48hz1qEg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
+ GFN private/shared status
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 19 Jun 2026 00:49:17 +0000
+Message-Id: <20260619004918.378771F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-45-9d2959357853@google.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
- steven.price@arm.com, tabba@google.com, willy@infradead.org, 
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
- Baoquan He <baoquan.he@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=5217;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=EOkmG6Hl5a3ii1VI0IHghu74jvofoo9LxlTkLBxEW10=;
- b=dOnjZkMIDWO9tAQXU5IKBRuDy0dweAurbc4iZ9OYtrYhax8ZN8p0aYOqYeJJ8il4YHlhsSiYq
- e9is7/G2FIrBa1mc0zH8WUUq/pn06bhX/hHbsXFyOXbSeVO8Nsk97Pk
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] `kvm_gmem_is_private()` hardcodes address space 0 by using `gfn_to=
+_memslot(kvm, gfn)`, which breaks multi-address-space vCPUs (e.g., SMM).
+--
 
-Update the private memory conversions selftest to also test conversions
-that are done "in-place" via per-guest_memfd memory attributes. In-place
-conversions require the host to be able to mmap() the guest_memfd so that
-the host and guest can share the same backing physical memory.
+commit 8dfdb2d13d27c9727b32ecdcb6460d23702e6438
+Author: Ackerley Tng <ackerleytng@google.com>
 
-This includes several updates, that are conditioned on the system
-supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+KVM: guest_memfd: Introduce function to check GFN private/shared status
 
-1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+This commit introduces a new KVM utility function to check whether a given
+GFN is backed by private memory. It checks for a guest_memfd file associated
+with the memslot and queries the inode's private memory state.
 
-2. With in-place conversions, the host's mapping points directly to the
-   guest's memory. When the guest converts a region to private, host access
-   to that region is blocked. Update the test to expect a SIGBUS when
-   attempting to access the host virtual address (HVA) of private memory.
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 8101f64e0366f..bca912db5be6e 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct v=
+m_area_struct *vma)
+>  	return 0;
+>  }
+> =20
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> +{
+> +	struct kvm_memory_slot *slot =3D gfn_to_memslot(kvm, gfn);
 
-3. Use vm_mem_set_memory_attributes(), which chooses how to set memory
-   attributes based on whether kvm_has_gmem_attributes.
+[Severity: High]
+Does this code correctly handle multi-address-space vCPUs (such as SMM on
+x86)?
 
-Restrict the test to using VM_MEM_SRC_SHMEM because guest_memfd's required
-mmap() flags and page sizes happens to align with those of
-VM_MEM_SRC_SHMEM. As long as VM_MEM_SRC_SHMEM is used for src_type,
-vm_mem_add() works as intended.
+The call to gfn_to_memslot() internally looks up the memslot tree strictly
+for address space 0. If a vCPU is operating in an alternate address space
+where the memslot layout differs from address space 0, this lookup could
+return an incorrect memslot or no memslot at all.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../kvm/x86/private_mem_conversions_test.c         | 44 ++++++++++++++++++----
- 1 file changed, 36 insertions(+), 8 deletions(-)
+This could cause KVM to incorrectly treat private memory accesses as shared
+for alternate address spaces, potentially leading to incorrect page table
+installations or guest memory corruption. Should this function perhaps take
+the target kvm_vcpu or the kvm_memory_slot directly so it is evaluated
+against the correct address space?
 
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-index 289ad10063fca..4308c67952310 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-@@ -306,9 +306,12 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
- 	if (do_fallocate)
- 		vm_guest_mem_fallocate(vm, gpa, size, map_shared);
- 
--	if (set_attributes)
--		vm_set_memory_attributes(vm, gpa, size,
--					 map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+	if (set_attributes) {
-+		u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-+
-+		vm_mem_set_memory_attributes(vm, gpa, size, attrs);
-+	}
-+
- 	run->hypercall.ret = 0;
- }
- 
-@@ -352,8 +355,20 @@ static void *__test_mem_conversions(void *__vcpu)
- 				size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
- 				u8 *hva = addr_gpa2hva(vm, gpa + i);
- 
--				/* In all cases, the host should observe the shared data. */
--				memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-+				/*
-+				 * When using per-guest_memfd memory attributes,
-+				 * i.e. in-place conversion, host accesses will
-+				 * point at guest memory and should SIGBUS when
-+				 * guest memory is private.  When using per-VM
-+				 * attributes, i.e. separate backing for shared
-+				 * vs. private, the host should always observe
-+				 * the shared data.
-+				 */
-+				if (kvm_has_gmem_attributes &&
-+				    uc.args[0] == SYNC_PRIVATE)
-+					TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
-+				else
-+					memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
- 
- 				/* For shared, write the new pattern to guest memory. */
- 				if (uc.args[0] == SYNC_SHARED)
-@@ -382,6 +397,7 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
- 	const size_t slot_size = memfd_size / nr_memslots;
- 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
- 	pthread_t threads[KVM_MAX_VCPUS];
-+	u64 gmem_flags;
- 	struct kvm_vm *vm;
- 	int memfd, i;
- 
-@@ -397,12 +413,17 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
- 
- 	vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
- 
--	memfd = vm_create_guest_memfd(vm, memfd_size, 0);
-+	if (kvm_has_gmem_attributes)
-+		gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	else
-+		gmem_flags = 0;
-+
-+	memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
- 
- 	for (i = 0; i < nr_memslots; i++)
- 		vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
- 			   BASE_DATA_SLOT + i, slot_size / vm->page_size,
--			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
-+			   KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
- 
- 	for (i = 0; i < nr_vcpus; i++) {
- 		gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
-@@ -452,17 +473,24 @@ static void usage(const char *cmd)
- 
- int main(int argc, char *argv[])
- {
--	enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
-+	enum vm_mem_backing_src_type src_type;
- 	u32 nr_memslots = 1;
- 	u32 nr_vcpus = 1;
- 	int opt;
- 
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
- 
-+	src_type = kvm_has_gmem_attributes ? VM_MEM_SRC_SHMEM :
-+					     DEFAULT_VM_MEM_SRC;
-+
- 	while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
- 		switch (opt) {
- 		case 's':
- 			src_type = parse_backing_src_type(optarg);
-+			TEST_ASSERT(!kvm_has_gmem_attributes ||
-+				    src_type == VM_MEM_SRC_SHMEM,
-+				    "Testing in-place conversions, only %s mem_type supported\n",
-+				    vm_mem_backing_src_alias(VM_MEM_SRC_SHMEM)->name);
- 			break;
- 		case 'n':
- 			nr_vcpus = atoi_positive("nr_vcpus", optarg);
+> +	struct inode *inode;
+> +
+> +	/*
+> +	 * If this gfn has no associated memslot, there's no chance of the gfn
+> +	 * being backed by private memory, since guest_memfd must be used for
+> +	 * private memory, and guest_memfd must be associated with some memslot.
+> +	 */
+> +	if (!slot)
+> +		return 0;
+[ ... ]
 
--- 
-2.55.0.rc0.738.g0c8ab3ebcc-goog
-
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618-gmem-inpla=
+ce-conversion-v8-0-9d2959357853@google.com?part=3D9
