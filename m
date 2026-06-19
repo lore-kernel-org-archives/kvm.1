@@ -1,92 +1,88 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAC82B9BA;
-	Fri, 19 Jun 2026 15:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00857313E17;
+	Fri, 19 Jun 2026 15:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781881465; cv=none; b=e72krWnLOCOJ1b9+ES4eXn6rSWoRlf/+W0NlUTBKqUs6edGXUBDUJiKlQcIVT8uPc6pgR8ePd5MqdMcMj0LiXSzIEiiMFs9qisOBfPLwMNZrr40PfbgoodLvuVAxTqeGp1hNpEbNwWavBaACH9o1oRu/Um6oKeNTFZTZHQ6UYmE=
+	t=1781881494; cv=none; b=GNA2l1GftfszY1dodFSKSP7SyHvBKqLPsXVdPCYFOTjls53qaVuB+llWN5fdmqDBZmNODXk59ao97CmYXd2DJQ36yd43tJlq31Kbowa7+zUIfpYUCAVXC1MpishkOa3TRjxef8lUQ9l1qoA69yRGBWgJFPKw/VfNXw0XW0v9I4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781881465; c=relaxed/simple;
-	bh=KVPM8oTe1yjPB2sYuDI6/O8b4PeAra3PYXJMker2JLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=McWYWCee/zzj/y0H7ZgH9uAtElvl9nHAqwegqE5w1byRHgEwqlkMD+GFpgkQIaSte2AL6heQ3ec77hibYBwlMS0VajfJT7B8utgDX4tD9cuCeLrXQGTokYMh5vyE3NEr9RY/TklviP7jo0//aN/v8eq0mB7v2LzCs4hdGbkLoog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=inj5HqnB; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1781881494; c=relaxed/simple;
+	bh=TWLATS5ZQTlG9+7vcA0bsAeTbyVif3LOHRTzhU5WJH0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rDvFigr5HEWyE5kcekp3bLLsELq/M4c6l4RyFQmYw8D08Cr67MAi3UBu4AJXNmSsLTFVnggvr3st4molVmAfj+NIXMRS0FWHnoYQetO0oGUhypZPKcf91fgih6GAU2QNoDAEhsjCYTFxZtDQtLqzepneeLPA0hIJ9eoOchbJp78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=epzHP0mq; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="inj5HqnB"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 19EFB2681;
-	Fri, 19 Jun 2026 08:04:18 -0700 (PDT)
-Received: from [10.57.95.87] (unknown [10.57.95.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 508733F763;
-	Fri, 19 Jun 2026 08:04:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1781881462; bh=KVPM8oTe1yjPB2sYuDI6/O8b4PeAra3PYXJMker2JLI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=inj5HqnB3HLhB+ZOcTo+EJb6Yle1ZdReFsOucB2IoDGXAbl402HqynAjesZJ7ZyUI
-	 PKZezIX9nr1MxzU5+AYZf+R+ik28jyuv824kIAM0qOe9q6g2fYVmakv5qlPdd8bxb+
-	 k/7AG55oSfmVoe2C82dT4actPwK5wN9OxP/3jGVg=
-Message-ID: <160f8cdf-0d26-43f3-b487-4181e6374782@arm.com>
-Date: Fri, 19 Jun 2026 16:04:18 +0100
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="epzHP0mq"
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 65D41C099E;
+	Fri, 19 Jun 2026 18:02:40 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:13e::1:2f])
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id 62V9QE9ZUa60-RgHMGHrO;
+	Fri, 19 Jun 2026 18:02:39 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1781881359;
+	bh=p2EI4qq2PUmOIQektlZBD1XXkzPURDv3LDgsNp3yuqs=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=epzHP0mqhcPQJQ/7g9b/dliQQF5/lDBMpffB8WlmhqbEKKWJQMIM9lVW7cIU9J6V6
+	 BkCQirC9mvKbb+afxjzLVumZT4fqPcZ6FuhERFl50TPLak8dLyl/3hPYZrWg2Pap2V
+	 EUMQbYHSZJ1OdW1Ti0923XvKGOPHIV/3Ft+wywn8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Kirti Wankhede <kwankhede@nvidia.com>,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Jiacheng Shi <billsjc@sjtu.edu.cn>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.10 5.15] vfio/iommu_type1: replace kfree with kvfree
+Date: Fri, 19 Jun 2026 18:02:06 +0300
+Message-Id: <20260619150206.1719815-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Content-Language: en-GB
-To: Lorenzo Stoakes <ljs@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>,
- Alex Williamson <alex@shazbot.org>, Anthony Pighin
- <anthony.pighin@nokia.com>, linux-kernel@vger.kernel.org,
- Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org,
- linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org> <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org> <20260617192928.GB231643@ziepe.ca>
- <ajQDVAu9b-LX8gUQ@lucifer>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <ajQDVAu9b-LX8gUQ@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18/06/2026 15:55, Lorenzo Stoakes wrote:
-> +cc Ryan for contPMD
-> 
->>
->>> And maybe there's a CONTPMD architecture we should also consider?
->>
->> ARM HW supports "CONTPMD" but I suppose it is not implemented..
-> 
-> Maybe Ryan has thoughts?
+From: Jiacheng Shi <billsjc@sjtu.edu.cn>
 
-Sorry not quite sure what you're asking so will give a generic answer:
+From: Jiacheng Shi <billsjc@sjtu.edu.cn>
 
-Arm arch does indeed support CONTPMD at level 2 in the same way that it supports
-CONTPTE at level 3, as follows:
+commit 2bed2ced40c97b8540ff38df0149e8ecb2bf4c65 upstream.
 
-+-----------+-----------+-----------+-----------+-----------+
-| Page Size |  CONTPTE  |    PMD    |  CONTPMD  |    PUD    |
-+-----------+-----------+-----------+-----------+-----------+
-|    4KB    |   64KB    |    2MB    |    32MB   |    1GB    |
-|   16KB    |    2MB    |   32MB    |     1GB   |           |
-|   64KB    |    2MB    |  512MB    |    16GB   |           |
-+-----------+-----------+-----------+-----------+-----------+
+Variables allocated by kvzalloc should not be freed by kfree.
+Because they may be allocated by vmalloc.
+So we replace kfree with kvfree here.
 
-For HugeTLB, Linux/arm64 support all of the listed sizes today. For !HugeTLB
-(i.e. THP, large file filos) Linux/arm64 supports CONTPTE and PMD only. We could
-(and probably would) extend to support CONTPMD once THP PUDs are supported.
+Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
+Signed-off-by: Jiacheng Shi <billsjc@sjtu.edu.cn>
+Link: https://lore.kernel.org/r/20211212091600.2560-1-billsjc@sjtu.edu.cn
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+---
+ drivers/vfio/vfio_iommu_type1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure if that answers the question?
-
-Thanks,
-Ryan
-
-> 
->>
->> Jason
-> 
-> Thanks, Lorenzo
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index f17490ab238f..9394aa9444c1 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -256,7 +256,7 @@ static int vfio_dma_bitmap_alloc(struct vfio_dma *dma, size_t pgsize)
+ 
+ static void vfio_dma_bitmap_free(struct vfio_dma *dma)
+ {
+-	kfree(dma->bitmap);
++	kvfree(dma->bitmap);
+ 	dma->bitmap = NULL;
+ }
+ 
+-- 
+2.34.1
 
