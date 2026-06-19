@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7382723BCEE;
-	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FBC271468;
+	Fri, 19 Jun 2026 00:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781829108; cv=none; b=bqpgDdZH0lHVZN+nOutRFVzlZ1/IbMFqKhDY1RoUz51fp5qyI/n8f9NYDXpANULDm5Aci8fMyn9C7F2IcCgNpUmUjJzTZZiSq/15YaT9nkg9FEFKTE0Onm63/+MwgDOeQut9F7ugdTOJEIBCMOfGZVFgcBYN+g07tQSVuK4b15U=
+	t=1781829109; cv=none; b=MJU+3d2HbLo7awScswiHg9J5NNG3ZkCmwheZtjGQexeBJcjBZaUccKfBVPG3CNUxf9hwJ/Lw/PU6LabCY2d4hwUnKYITM1frFYDMqzW3ZlBn72HIRqaRdKey8SL5555d0J/5m8zB0Svq71zhIAFwvunQzMhr1necKFVZg2gplGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781829108; c=relaxed/simple;
-	bh=77tno+1BEzOBJ5VyiPmvluDUJLKSOaYf+ccqqrV2opE=;
+	s=arc-20240116; t=1781829109; c=relaxed/simple;
+	bh=Y214D8EYmmgv568dSI8IvVw1cEvRPeVuqU4a72w++2A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XU6+GJJg6Z0fcGTTxPV1W9FeTAIlruATnTbpXRuriosXsVHZUlIy1g13nGmSKwcjhYtuh2BKGnQdmYGj4ELsUCfa3QC8kYJUa+bjebc4TjOi8u5ncMmGZ0io0BWSwFHLcausuje1+88m5BlXdhrUUI5ge9YiBp2GEFMYDo5xb4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jiXcLSdQ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=SDAzGd76eYn/FGmx1nLiRY3kwVHTdhmwYECoCQVHSKUnsOdG9SmNQ05O6hiHzMLMkbjvv/5lz/UNE+Qse1B22eDB8zrRDW3Em3DuFgw1jJII9l0nxCpzTFiNyZJLVdvvSPZyOb2H1GPSD5+SWjPi35BVVBjAepdawez1Jpga67A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlF2jgAE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jiXcLSdQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4FFFEC4AF63;
-	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlF2jgAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 04FF2C2BCC6;
+	Fri, 19 Jun 2026 00:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781829108;
-	bh=77tno+1BEzOBJ5VyiPmvluDUJLKSOaYf+ccqqrV2opE=;
+	s=k20201202; t=1781829109;
+	bh=Y214D8EYmmgv568dSI8IvVw1cEvRPeVuqU4a72w++2A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jiXcLSdQVJ5yO4ecfWTvDsnDGky5JHVZcLf3y5slRlbHhD2/VGTRFoT8hPXhodcwM
-	 fYPLFIF72Y6W7m37/DQiD4xR+Kj/VIGnp08F9Awxk+oN/T7WS6irTQv84K4Ngn9y7L
-	 DZp0aDz1fBzQ8Xi2phYIhUN6YzuGfFvcj5j8eO8znmoJcAR6FGMM6FQ9ALCKnoQfe1
-	 y3oUws0G8Smc5A9hX3iFwhbl+fspjJRmoOgkFzfzeQdfZ58ks/K9Y283WILEJtmIjs
-	 VzbcYzy0+EZ9/5k6IrepB+w1FbZtebPMMfbaiBe/xJ3Fx2zpnKofg6WPX8QnLNk2ec
-	 zJ+mOk3sk3gcg==
+	b=NlF2jgAEgLXc32TObuwkFWM6FDc/MRDYtPW3Pdje7AtJ7TMv2xfqzEfj0C8N5UJoY
+	 ADvhT2NwZ8bRX2k7Y0CU20PNOxpk2TvopxfN4F8UkgCo4D8YcGZI7sSKIOtrhLLvbl
+	 hoDp4kFb/jLnpCS3OoRv5A90K7GUQlGgcWUwDb81I/zz98U3tUWcsSbjOzpoPiZ4vU
+	 tH57XhPE1VSrZLb8FjchEG5AzwapOZwjv7+84kDhqRNb5oDi5Emi8pXdbuhdJgHz5h
+	 wywsOJdL0kySadWdHzQp2Ar78B4Xhkz5xQjtvX8fRFqXlwNEurC1BW0BQEc+5OdMjT
+	 599aDvLRN8r4A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 410CDCD98FA;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF939CD98FA;
 	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:31:53 -0700
-Subject: [PATCH v8 16/46] KVM: guest_memfd: Return early if range already
- has requested attributes
+Date: Thu, 18 Jun 2026 17:31:59 -0700
+Subject: [PATCH v8 22/46] KVM: SEV: Make 'uaddr' parameter optional for
+ KVM_SEV_SNP_LAUNCH_UPDATE
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-16-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-22-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=2581;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=5933;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=XtB3xaNYZoGgLjv/gUxy02ochDW78D95+vPEFAYFilQ=;
- b=8DN2flcUdZvH8IsUjtTwKQwrPHe3JRoPhgMeWB3OXFnqBo/oCJQj5p5x5PXtVI47Jk7xP3NoS
- AvdvXpAVzJeBJFJ3PPfPlZOPbVNtUoRPW7WV6NpG4Zt7fl73nxNK7BC
+ bh=tQi8qJkknAfBcTf104klaFd67JuBPmTFwmizL4oPy4s=;
+ b=cBnNnoLB2QhAJ01EMqCMeHMFVTh1iL/r71OEPnr9gP+uhJkS5miQxdNfBwmLFGOyrFudZ3yq8
+ UKBdIrAZ5GoBQvjOaWCtl+Vff7GXA2/xXhyee4hOFCtbxfJHXEGcS+L
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,87 +87,124 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Michael Roth <michael.roth@amd.com>
 
-Extract a helper out of kvm_gmem_range_is_private() that checks that a
-range has given attributes.
+Make the source page for populating an SNP guest_memfd instance optional
+if in-place conversion/population is enabled.  If KVM can convert the page
+in-place, then it's possible for guest memory to be initialized directly
+from userspace by mmap()'ing the guest_memfd and writing to it while the
+corresponding GPA ranges are in a 'shared' state, before converting them
+to the 'private' state expected by KVM_SEV_SNP_LAUNCH_UPDATE.
 
-Optimize setting memory attributes by returning early if all pages in the
-requested range already has the requested attributes.
+Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+for 'uaddr' to be set to NULL when in-place conversion is enabled, which
+SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+copy in data from a separate memory location. Continue to enforce
+non-NULL when PRIVATE is tracked per-VM, not per-guest_memfd.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+[Added src_page check in error handling path when the firmware command fails]
+[Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+[sean: drop explicit vm_memory_attributes references]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ Documentation/virt/kvm/x86/amd-memory-encryption.rst | 13 +++++++++----
+ arch/x86/kvm/svm/sev.c                               | 16 +++++++++++-----
+ virt/kvm/kvm_main.c                                  |  1 +
+ 3 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 3c94442bc8131..cec8fa26ece17 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -86,6 +86,23 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
- }
+diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+index bd04a908a8dbd..29409297f1ef0 100644
+--- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
++++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+@@ -503,7 +503,8 @@ secrets.
  
-+static bool kvm_gmem_range_has_attributes(struct maple_tree *mt,
-+					  pgoff_t index, size_t nr_pages,
-+					  u64 attributes)
-+{
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
+ It is required that the GPA ranges initialized by this command have had the
+ KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
+-for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
++for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
++this aspect.
+ 
+ Upon success, this command is not guaranteed to have processed the entire
+ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+@@ -511,9 +512,13 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+ remaining range that has yet to be processed. The caller should continue
+ calling this command until those fields indicate the entire range has been
+ processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
+-range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
+-buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
+-``uaddr`` will be ignored completely.
++range plus 1, and ``uaddr`` (if specified) is the last byte of the
++userspace-provided source buffer address plus 1.
 +
-+	lockdep_assert(mt_lock_is_held(mt));
-+
-+	mt_for_each(mt, entry, index, end) {
-+		if (xa_to_value(entry) != attributes)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
- 				    pgoff_t index, struct folio *folio)
- {
-@@ -653,12 +670,15 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 	pgoff_t end = start + nr_pages;
- 	struct maple_tree *mt;
- 	struct ma_state mas;
--	int r;
-+	int r = 0;
++In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
++ignored completely. For all other page types, ``uaddr`` is optional if in-place
++conversion is enable, i.e. when the destination can also be the source, and is
++required if in-place conversion is disabled.
  
- 	mt = &gi->attributes;
+ Parameters (in): struct  kvm_sev_snp_launch_update
  
- 	filemap_invalidate_lock(mapping);
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 74fb15551e83f..2b7569b6a8609 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2330,7 +2330,13 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	int level;
+ 	int ret;
  
-+	if (kvm_gmem_range_has_attributes(mt, start, nr_pages, attrs))
-+		goto out;
-+
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
- 	if (r) {
-@@ -1148,19 +1168,14 @@ static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
- 				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
- {
- 	struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
--	pgoff_t end = index + nr_pages - 1;
--	void *entry;
+-	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
++	/*
++	 * A source page is required if in-place conversion isn't enabled, as
++	 * the data needs to come from a separate physical page.  Zero pages
++	 * are exempt as they don't consume a source page.
++	 */
++	if (!gmem_in_place_conversion &&
++	    sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
+ 		return -EINVAL;
  
- 	if (!gmem_in_place_conversion)
- 		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
- 							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
- 							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+ 	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
+@@ -2377,7 +2383,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	 */
+ 	if (ret && !snp_page_reclaim(kvm, pfn) &&
+ 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+-	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
++	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
+ 		void *src_vaddr = kmap_local_page(src_page);
+ 		void *dst_vaddr = kmap_local_pfn(pfn);
  
--	mt_for_each(mt, entry, index, end) {
--		if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
--			return false;
--	}
--	return true;
-+	return kvm_gmem_range_has_attributes(mt, index, nr_pages,
-+					     KVM_MEMORY_ATTRIBUTE_PRIVATE);
- }
+@@ -2410,8 +2416,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 	if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+ 		return -EFAULT;
  
- static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+-	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
+-		 params.gfn_start, params.len, params.type, params.flags);
++	pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
++		 params.gfn_start, params.len, params.type, params.flags, params.uaddr);
+ 
+ 	if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
+ 	    (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
+@@ -2468,7 +2474,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 
+ 	params.gfn_start += count;
+ 	params.len -= count * PAGE_SIZE;
+-	if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
++	if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+ 		params.uaddr += count * PAGE_SIZE;
+ 
+ 	if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 044486f128c37..dd1d18a1d2f68 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -103,6 +103,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+ 
+ #ifdef kvm_arch_has_private_mem
+ bool __ro_after_init gmem_in_place_conversion = false;
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+ #endif
+ 
+ #define MEMORY_ATTRIBUTES_MATCH(one, two)				\
 
 -- 
 2.55.0.rc0.738.g0c8ab3ebcc-goog
