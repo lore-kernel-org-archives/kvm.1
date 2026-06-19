@@ -1,65 +1,65 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57AE39099A
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61455390CB0
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781874343; cv=none; b=nj0yqV5kvSGCusTG9OEsTdv/33OGPvZLN5fFzcCjXuyWfRVKEcV5q2z8jtY3JJzmJwn1+NypXOAVqj1qDOZLB+GceOZVUYQlJaahku5ajrW/QMN3EWe4uk2Y2Y0xDEdRXrneWFNiovzt5FSwYusAaFFlqBVJFv/8ArXuqU/Uc+Q=
+	t=1781874344; cv=none; b=R1n67MqCv1109XJxTXgbzfmlTRWMZi7OLM+JQJKBU8T4D+oXnKZILyCxQ50B+yaryj5ysOadp4VSvy9Mx7b+IbXSLlbabrA00SC9z/CzGPoZj0djTUJbNSYomrZZ5ISKM3UJ1uuPcE06V3+lk5PVXdBvPt/7ceYijD0JEIJ6MP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781874343; c=relaxed/simple;
-	bh=sAAAPauK3dvFEkGnoeg5l/27xpBnHHTLAFA25BAS8Lc=;
+	s=arc-20240116; t=1781874344; c=relaxed/simple;
+	bh=PmxnzJnKscG7dGPKPDxus4v3HqBJvLxzD2HnVasr49M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pvwIkCinzkvOxUMxxCHy7OjC0gzncEnJsraS31iQjOoZ8eis3rjWLDuOe08k/otbvV63/mn2ZMXSOlT7HNZ8c9dODTg/P0i2vtu1HOzNT3J9/CkeNXhJjpgQvSUE/nlzb6QqoV0N/O2ez/P8uyxwS7HBoscang2g7wOfDOSD6gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=li7m5qDE; arc=none smtp.client-ip=209.85.218.54
+	 MIME-Version:Content-Type; b=Gk9u7GUprCTNPk7BQOlYi8T45tc8/H8XSCrTh7GHZDVUL5XuLZfJMWCfbVVJkOvzFfH7XvHpERDyOV1GTkLnXAmRwi2btX1GWYe3VOv/kZh9gvM3L/lRasoHXHfpH7AuvYr53rwVzlysrM3RqvTOSwLIcwKatbTaTpO2H5KtJSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xMK9FE96; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="li7m5qDE"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c0be5e548a4so44466566b.3
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 06:05:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xMK9FE96"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso14159345e9.3
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 06:05:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781874340; x=1782479140; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1781874341; x=1782479141; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SE+r4wGFd7f55RWtkYqXbt9/MkUiYQSeM/Vm+Litt3k=;
-        b=li7m5qDEk5JZrA9zdJK0Rkx2bBqaJWRcbL3er0h7G6a6fhBF0OQiJjpjITY7+bYGXe
-         g5l0Yyt8sH4VjP29ONxzeedW/cae51CoaTGNu4Z4OXeSTI2ljfPF++mlNONeEJe3loeu
-         KNfB+XdOt7zUFiTSVJ+6z0xniTTMfCNU59J8c8SpnYcCcHmERY5oSNXhAkKspANcBF1h
-         nQbqtzhzb1eJtf7bySHGQYh0X795fIyrhE4k8NGz+2DYEJEhJXu14yv2tewvoovXbsQq
-         bI/LivbJSqlJeOwO3dYMlrHEnVbNPhDHCVDVuCNl6tcbLYCuvohIFNuHtnrCwL+20t1M
-         LjhA==
+        bh=Il5WY7QfACzZ93YAvZWGe3XWn3xPIGhu97enE1XxJnA=;
+        b=xMK9FE96pci5LRixoYdd5bzeBOinvLQCO1mAeY8QAsgRrJ0KIOyz1AisONk/6dYj2/
+         onG/FqMzOsfsVN5jvZ+9eGMxnptx0FBr//sKPlRqKIUd6h20T4BXXDBeY+taFvYUBei4
+         PkME0qbe11yAO8OwgDcRuhWPW4CnjZ6BnD06d9+YkD1h9ND5iCtuTt9Mg7kQrE8e2yPN
+         GD8k3EM0I23i6O9Ebn+dnEKuMWgjAn3iph41tWfIHEsEDWNZ2QUE2007R6Sn2izCKaMN
+         kDY5GbhVqTKzcaT3qUFPrwkCNtMh5vSN/diB5ybYZ59nMVIh/l3vAQDNt0tSwlkvSu7w
+         +/pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781874340; x=1782479140;
+        d=1e100.net; s=20251104; t=1781874341; x=1782479141;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SE+r4wGFd7f55RWtkYqXbt9/MkUiYQSeM/Vm+Litt3k=;
-        b=ZQLzlfnq5zPgS7GxCx26r/8mPObSsL/GY4d2/0LOZPZBXxmFjpORnsRs15BHNdoXgL
-         Btqp1nuAXMt4NIC9WJUpTiDggWZNmSo2PM67lVNKG0K/pfdoD9HKvRUpr2IgNmEpm0IJ
-         TLdjRKVSv2iRdk5Be9ckU5gC945OuQB9iWwZMt42Zr0AqUtkq7xDoEQtjZybx/MVKuD7
-         XnxCMMSwGD3d5JRxTs+eKxP1YT/TSmnX50EZM3Ulnfg+Eh7eyw+F7ea7Wh7gM+di1wYy
-         SOgYwURrIuMgPRKpGuXCxgE/6Dmg88d2eID0PhLIbGiXzSpa51uAUx5RNkCfN2k7D5FF
-         PI7w==
-X-Forwarded-Encrypted: i=1; AFNElJ8Zz1XTpn/oWYkSePuqPf5v1UUIBQZlWIiZ8loK0iGYmnKwYuGeq+8Idj5sIJIbhXCopWs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx3B9j8MxG+ajd5nG5WgtTSh/wbdlm0GYJKa/kWiX+trKdckGm
-	sJGUVtWABTDeIsPP8AnXweOkkrTHkaPGCMCztvZKczLIguByRL09rOCzucqdxcGxZGY=
-X-Gm-Gg: AfdE7cnW9wv16h3ofmdancXmi+HjfW6raM1gDt5zBWpALIt7WCQhdYwacasmw0uzZp7
-	E8/NsZfGIMX7Fqhphk6PvwKfqWOU1hpgQvA/brFNY+hPbEddop6b7Jl2enR98w9wv4gJnaOB/+x
-	E9fsNNJHKoNHxQGWbDO3Zj7kbTJiwn7hriVMMGlRDVgWtfglRXRXs7cwkp/fsdrC/k5Q/vJqiFF
-	O0arx2wQ4+dU1NEre5FtdmWkR8TBEsnVJOY/izwOwZ1vRKL0sAKH+OCjmcDt6PmCLstR7BhxFBy
-	DwpI/nKWVeNPyT1I3lo5qcPvZxcL13ix19mo8ABS8CPXS2IrR4LJI9Xx2m3S0LWx00dLXoDTUZJ
-	mVDVR7yq7WibPj1uZF+9eu47mZKvvg2csYXH9VxNRTrgLIXIunvYSdAenMSWmp0W9Pw8dEPRQLy
-	Jtuv2XmTd2ujpQOFS6RTHxv60=
-X-Received: by 2002:a17:907:94c2:b0:c05:84b7:550d with SMTP id a640c23a62f3a-c097ceba8f0mr182145466b.43.1781874340116;
+        bh=Il5WY7QfACzZ93YAvZWGe3XWn3xPIGhu97enE1XxJnA=;
+        b=EXW08LdMnRAYxI4l6ZwRxW3HvQuC/rTUmquPudoZgJM4D4FxKFv7hMgxVCw53+fyiR
+         RAnYuKli0RWhNtNDyachOERTl7FGQXbbjJMFLJKv+Gn12MHLezZuaNMnNYORDEtSG9d4
+         +0Do7yqPwDlCKcqPdXAR9kVbblLnFL7LY3cgl7k21p3jr1nqCIgs3rMDB5Nlly02K6VK
+         IpSaCabzqWV1hEOqwIA/OjeJDYGXyra4dnoL614sbmOqUcWmsujQfY4Z5yVb+kOf8hSZ
+         eCdiEx3ieZ5RmCSNw1tG1Nzih4os2PxPS0eS87Xp+ipY6YKdFIDZl+svAWjXkOZamFFC
+         MhHA==
+X-Forwarded-Encrypted: i=1; AFNElJ+lqbgULfO7ElANvrPRZHcRDSjHrEgMVXLZnwVDcOb9oK4nmorMW1KC3B3oI8RiI12mw84=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqxbSRSS0XlxQ6J3Smw6RCwBfoforJNKIwg0lfZ82MaQdL/uO1
+	b0fw6UOTl5yO5Ab1jm5DdMkPDgCb8ry/jMA3Vnok6y04QMA/DSbP1EMu8m1GP2iCmFI=
+X-Gm-Gg: AfdE7cm5iB1eMMKtQUNKV4Z9H/CgsvsMWtFHpDPez0XKh3gRAh2f9iS7fAdEVUW5Al0
+	ifH890n+t2rPOa/mqmuxN5vhUhLfGEl2TqtyTZ52PjqOeHUDgBORk5RodAFlfmOZnIA4hRweyWm
+	zXin0Lev/sw5DPb/N6ifgJLIPVtJ4inYWkL5B1cE05K/tcPw7dzCSUAkZB9qjcarXSU2Ict7pkP
+	REoEpVLcUBJ3tmUAnB8vsfmxdkqC8t7M4MydETMmYF61L03YPcapsgliVTGPcYlz6e+0D/7gwli
+	pdL2KRk0zgcydkSPn1cOWViwp4EhbFZI5A7LWjjrKp1NzkonmNDCvMUkZSezVGGOQmVhFILPT9Z
+	7E065yw+z4J5/rWf9PgBsNunxzSeRsg4z0AwWzTSNkqiJNNdkE+tfl2lmEZnGyZgbuTJrilyWGe
+	jIcMjrd/e1U4NX
+X-Received: by 2002:a05:600d:4448:20b0:490:da12:f1fa with SMTP id 5b1f17b1804b1-49240ea7f99mr46236105e9.31.1781874340737;
         Fri, 19 Jun 2026 06:05:40 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650b67a253sm8064924f8f.23.2026.06.19.06.05.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49240efc160sm54997235e9.2.2026.06.19.06.05.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 19 Jun 2026 06:05:38 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id A1FC85F94E;
+	by draig.lan (Postfix) with ESMTP id 8B58F5F946;
 	Fri, 19 Jun 2026 14:05:37 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -80,9 +80,9 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	kvm@vger.kernel.org,
 	Hao Wu <wuhaotsh@google.com>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v8 4/7] target/arm: ensure we create the wxft_timer for all modes
-Date: Fri, 19 Jun 2026 14:05:33 +0100
-Message-ID: <20260619130537.820184-5-alex.bennee@linaro.org>
+Subject: [PATCH v8 3/7] target/arm: do not clear halting reason in has_work helper
+Date: Fri, 19 Jun 2026 14:05:32 +0100
+Message-ID: <20260619130537.820184-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260619130537.820184-1-alex.bennee@linaro.org>
 References: <20260619130537.820184-1-alex.bennee@linaro.org>
@@ -95,53 +95,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-We don't want to just use it for timeouts as we will calculate which
-will comes first. Remove the wxft feature test in favour of the
-broader architecture checks.
+The helper will be called multiple times as we exit a loop and until
+we actually restart (via arm_cpu_exec_halt) we should leave the
+condition the same.
 
+Fixes: 6fd2fcdc61b (target/arm: teach arm_cpu_has_work about halting reasons)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
 ---
-v8
-  - new commit
----
- target/arm/cpu.h | 2 +-
- target/arm/cpu.c | 9 ++++++++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ include/hw/core/sysemu-cpu-ops.h | 3 +++
+ target/arm/cpu.c                 | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 31a5567c951..8aa7437a397 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -966,7 +966,7 @@ struct ArchCPU {
-      * pmu_op_finish() - it does not need other handling during migration
+diff --git a/include/hw/core/sysemu-cpu-ops.h b/include/hw/core/sysemu-cpu-ops.h
+index 8be6a84bd54..9a45596169a 100644
+--- a/include/hw/core/sysemu-cpu-ops.h
++++ b/include/hw/core/sysemu-cpu-ops.h
+@@ -18,6 +18,9 @@
+ typedef struct SysemuCPUOps {
+     /**
+      * @has_work: Callback for checking if there is work to do.
++     *
++     * This function should be idempotent (i.e. not change state) as
++     * it will likely be queried multiple times before a CPU resumes.
       */
-     QEMUTimer *pmu_timer;
--    /* Timer used for WFxT timeouts */
-+    /* Timer used for WFxT timeouts OR event stream events */
-     QEMUTimer *wfxt_timer;
- 
-     /* GPIO outputs for generic timer */
+     bool (*has_work)(CPUState *cpu); /* MANDATORY NON-NULL */
+     /**
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 597e0626e7f..61945b6e6cc 100644
+index 86aae36ae55..597e0626e7f 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -2269,7 +2269,14 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+@@ -158,7 +158,6 @@ static bool arm_cpu_has_work(CPUState *cs)
+      * A wake-up event should only wake us if we are halted on a WFE
+      */
+     if (cpu->env.halt_reason == HALT_WFE && cpu->env.event_register) {
+-        cpu->env.halt_reason = NOT_HALTED;
+         return true;
      }
  
- #ifndef CONFIG_USER_ONLY
--    if (tcg_enabled() && cpu_isar_feature(aa64_wfxt, cpu)) {
-+    /*
-+     * We use the wfxt_timer for timeouts and event stream so we
-+     * enable from V6K up. There is no event stream on M-profile.
-+     */
-+    if (tcg_enabled() &&
-+        (arm_feature(env, ARM_FEATURE_V6K) ||
-+         arm_feature(env, ARM_FEATURE_V7) ||
-+         arm_feature(env, ARM_FEATURE_V8))) {
-         cpu->wfxt_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                        arm_wfxt_timer_cb, cpu);
+@@ -170,7 +169,6 @@ static bool arm_cpu_has_work(CPUState *cs)
+                            | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU_INTERRUPT_VFNMI
+                            | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
+                            | CPU_INTERRUPT_EXITTB)) {
+-        cpu->env.halt_reason = NOT_HALTED;
+         return true;
      }
+ 
+@@ -878,6 +876,8 @@ bool arm_cpu_exec_halt(CPUState *cs)
+         if (cpu->wfxt_timer) {
+             timer_del(cpu->wfxt_timer);
+         }
++        /* clear the halt reason */
++        cpu->env.halt_reason = NOT_HALTED;
+     }
+     return leave_halt;
+ }
 -- 
 2.47.3
 
