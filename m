@@ -1,93 +1,93 @@
 Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F8C35F5F7
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A310735AC09
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781857553; cv=pass; b=lOb7mq68XBStA6w2ZVW0d0xn5FoG7DAZU5dSJGHKNzLSqxjj3+5rJxjcPOjOmsLLLmQEADuNGf0Tcums4fiQi2bX8/lJ6CC8KM2F1whOW/iU0DRThjX71WBWuxSDunikcYvNRUnEM7OzNCc5pcHofOEtx5WfLWQdP1PyMvGW8fQ=
+	t=1781858138; cv=pass; b=gmBN8icgDj5NbkiAOgEg4rK8+bkEcLXQQBh0mo1eOpb+3kQun5X9Tq+8FH2aJda7hDFehDItDQIMgYUnXb2IUKdZV1qHbG+sRKg173osBfdlojbs6h6BlmpXWiUMaVerdYKPGIpMCS4peIH6QsRXzhZBhJulGwsJryV5MZNYbZE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781857553; c=relaxed/simple;
-	bh=aURqg38Q2gAlcr/J29NBP9ZvAVEI/c5mS9i6CA7HUZU=;
+	s=arc-20240116; t=1781858138; c=relaxed/simple;
+	bh=/2P664m7jGEtDAIgqO27YOlQWepzpwSiTCXRoum/oLE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PKngcKUDO2KODkmK9uSBbdaSpepUXhM7iKveIfmCs1ZfEEKb9zoqhWVAOWBytZx2vbQf79kgbmEtVrMct0rXc6FNP1pjDKGJnAT6iQA7qFqds3d2mTFV8fmyZEc3D/ussBMPUDR/TJ0RbB1GwIRAS05TmllPzlW9Znm3FE9iQ3c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C1qAv+DG; arc=pass smtp.client-ip=209.85.160.182
+	 To:Cc:Content-Type; b=a6DR0QlqvzHAKZZ5YEFW82pwFIxJ+NDANneKqK+bK+GsyC7VfyeDC+l2+8t2u2229VXxxArdk3/Sz1q7EGS25+BJ+UmHfnH1BEbR64Ht0OV6QixvUKmoCONB5d3vDmBE9eJe6PBA6pT+yPeWrVBMYP8cDqGGG9yC/JhwIm5S4GU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=udsHHS+i; arc=pass smtp.client-ip=209.85.160.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C1qAv+DG"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-519ed52bcc6so102471cf.0
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 01:25:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781857548; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="udsHHS+i"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51765331535so124811cf.1
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 01:35:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781858135; cv=none;
         d=google.com; s=arc-20260327;
-        b=I8LI/I7RL5gmupMkJOwBm0MLOb3L5aK4lp/XgsAXEN4ePjhJI4/Yny3chlJQIf/rK5
-         hodVhWwAtRfPJYts5IKSjCIxaguUeMgW8uv6HRQ9P0r6Pv9xDVkXlhZ4j0uRcxIc7Lwx
-         2X6AoNEfKg5oTSWSnzjzwrTmsu3bEudtW38cFaVxKdWnnaIhH068H8ghKumUFjZqdVeo
-         WYzNBqaIPHSJtxfeThgcmoo9LWEBWhIH18Mo38wc4aT+MXLPiTnCFJUdjtBtlhGi/oDc
-         lIhwBfpJnKgVoQ5WNfjfOGJkcC7HKf+For7BuPHWW9J1Jd1RatpyvwMZekUbFx4N+DUt
-         um1A==
+        b=gaMjRZEumbijDsRhCNBJFkO/TJrtyX+Luk4JToCy81osBqyJ5n/VWMFq2G1hb5Wnoe
+         oiOZ4aA+wCCgTZ4jWngBE9akKfm/SpslbwCsW5xAcdA3JCPK0ci3XJ+4AyT3zT2pv03H
+         51jj8ECzOE768T2J+trF42sMY37a62F8J/l+Hbx1OmOLZ29Qm3xlxva8A4f1A2KGgLG7
+         8immKsJAHqEOLV/sD+eTUNXhgNN29NG0qV1D3+X6k+MUvdqLxHV0IfsxtcPc7Mmd14SF
+         ZWsLLGVpfNMs4KcBd6Sfc4MgDRHyKwrpM6INp0udPSL+pzKmgxATd1IijtyGHMsxnxCS
+         B0aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=3cFYWLK/FtmAY6SmJ1SGh+iq0DuUVi9vERhh19AGAVg=;
-        fh=FakWZxl8JcF2WFeNj7FkHY4q8apOrZt5L5x39+MI1X8=;
-        b=NG5pKXNVoLOKtZJWWUhEszILhu0vxjLYZIv+b4lgzv3n2vkp0PuArfEUhFROTef0bK
-         /e/xmHINnWC0vwHgKxbDR0MVvmJXMmRbWJsVqZ3uHXwcTebaCASwHuwfth1cNrzKGiLV
-         zI54/ca7xkUV8l6ghpfI1pc3vJzW4fRi3GYiuv3jan7wVN84cSyok4ARMOTkzzcHeM36
-         9zY7r/Y8avrg4bmcRlZCYF+ofHtlQa6gvkROCFB1v/u1pIdUTbWrL0FjW0P8AY9UiygD
-         Z3vlfcnWfYVTiUpPaVd1A8L/tXBMLFHNqJOwA3HLRSDgtKZahKR51XxiJ6uLCMChQs2c
-         RuUg==;
+        bh=vJCNxtqxuBlYp3k8AwtzAL+0dBQBaE1Rgq6EFlCIf04=;
+        fh=5GbqiimkY6OhonXqbB3MerYgoRd6/R0f9WmMVm40aJc=;
+        b=jQrQi/oougFVxogt8dR7BFymXmyYO0DxSaZcbajLlj1WFDDGAWjh6WTxMMnk1tBUkZ
+         s0KXkbmE/s7csHbnUkGlBpLQ9CUrU944CZDKAjx/IRTk9oyyrl4j+cBhQ2hLObkNwnwk
+         j8GefAElKvLARcLh86V67n116F9AFDN5ttFdqew68Xqtu5PEXZWuMbXmJlu1gvIAZmay
+         9maXGkoHKtGQ+BSrq0OSi7p8wg4Sn0ht/lYt9AHVwy7NqzEXs+d53Eeuo/iQ2mVF8fcB
+         5Dn/8Yz7GZlsvsD8T7DBuNktS0NSnrtbM/2HthKc1JIA/mmW/n3t48JAGEPY6wv5ueZw
+         00mQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781857548; x=1782462348; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781858135; x=1782462935; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3cFYWLK/FtmAY6SmJ1SGh+iq0DuUVi9vERhh19AGAVg=;
-        b=C1qAv+DGMEKxnVxM+sBr4NP5i8XNi81E7eDwYk+miFa0/XEfJlMADbx4X47I7GtYT/
-         WmyQqfdv+tO5fw60wpGhgKzcYvy4V04y3fjSa55R3r6mFZ05u5SY4YlS6TnIDX6Zrugx
-         N7ju1RVu+51gd+3UoThKClmRN1aw3Q0SL0UwMxPhmOFmteLLAi+rxWQ+8nhr4l/altit
-         DhO7YwkfLwHvaykFsRDjKRpdRNkKCcFR1EMQo39iRVF2PK7aBdgoATs6p3Y6Selk2uiL
-         e+Q5ZY6hCuTzkAZJkLNb8IdWfgwhRXyUdm7Q04hn8PPqZsaFfJn03rUcF8UmwPfobzCH
-         9rVA==
+        bh=vJCNxtqxuBlYp3k8AwtzAL+0dBQBaE1Rgq6EFlCIf04=;
+        b=udsHHS+i25aggofArHhr2DS9m2ry8BQzgg3eT2kMYyLe77BdjoruBV9gi3qxkPzyA2
+         PkXqN5uCS0x92UWIv/YoFDZdkGs2Me24stmBd4Gs7t8/WcOoTlenIh/DsAcRhBUzQiVF
+         AiqwjI6X1AdurJ7DJ+MPiJVXQk6UQZzveYywVdOxc9JmVtEpVvOTMkmmRqu5ZA2tmpvr
+         0dtawsZDq5vMfEk7UdMyxTWkko3CgFUaLoZSUwC3wWL3flZVOM1fU3o3pwNFwX3KQYNF
+         k+AeXJ8NmaI1LUw1v1yF3qYIYX9kjZ8YQUErPGaNm7Ip6+fZIdcPG9RYAsWKHBzS/44e
+         ZuMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781857548; x=1782462348;
+        d=1e100.net; s=20251104; t=1781858135; x=1782462935;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=3cFYWLK/FtmAY6SmJ1SGh+iq0DuUVi9vERhh19AGAVg=;
-        b=l0j8M56DVDbRiygnER3t+tnqI6gkDJWRacptdLX7K1Ixpda5/7C7eTkzx2Mjxj89le
-         fl1105uDYGgsIUw7hGEL1InXB0ujwtGI7tIUDWVbeVRwPwFrImT1Hiv37/nepoYTVTVg
-         Ygp0x4NzANxPhsOnDg5I7HPoIUqPK5tyI9jUb6AgNf+kbQdBxh+ZD49pQmCIawKQvfBL
-         bVGeC11CNh5j1ROKjMy4o37o2gbhLks7S5ti12jGOQ3BsfW344ZvJ+cChnoVf6AmpFYz
-         Kbaxgw44AIxTz6cJxNNsiJLIloV5wSXKBxmuN4jO7ZY4JyDEzZWKrI48xJAdNA61GRN9
-         yTqw==
-X-Forwarded-Encrypted: i=1; AFNElJ/T/4dWHyD38wFiEyB8YUktFb7jzyDBkxNCN26w38Ntu3LW/GGCl/sYc+kuSkFuE5/BfSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV8qqG98gakYXNloPw5waU4DHZYGlo+a4SaqoIoHeFvpCI/zLW
-	0sDe55fiv/z8P6ru/MM2sbL0uICMfqJumCbFkQammmEbSLJHGVVESFFBO47SvC9EBs46Tw5Ft/H
-	2TFN9IhWtwbeA/SofcArxum2hcdS49AVocXmZ4Xzc
-X-Gm-Gg: AfdE7clREnvCk8Hsp1Zb9pZ1nZ8yPBOAXH/k00XTKgdHfyR5W/Ud77f8sEulq8gABEG
-	5nz/3r/mb/+dyr3J1Hgp/HGqn7vMUOPyhyOZCGIzHhW9e2OnVBysj62PE/GGrC7pk37tCgN1NRI
-	vCF9Wz2hjEIWBVhgD/MejJOT2xl8x6Sfgd39PPhLVmaqXLW9Vu+4z1z+uMKzw/l8t9DkY5O/32o
-	dOiqLxz6BVhP1fPCWHWhC9wMZ31aUTDd0/5NF4iNss44Leg6LZowYSR2/59+TbC11CKjj8K6Q==
-X-Received: by 2002:a05:622a:1b88:b0:519:b82d:fe62 with SMTP id
- d75a77b69052e-519e891c801mr4739831cf.7.1781857546581; Fri, 19 Jun 2026
- 01:25:46 -0700 (PDT)
+        bh=vJCNxtqxuBlYp3k8AwtzAL+0dBQBaE1Rgq6EFlCIf04=;
+        b=WFHjPv7sDusOZmr4UG0549MRor3qhUtvtAFePr3nMFw2EPbTIJUiYHHhLoQJLLCqFc
+         aqQENpDVY4u2kjgPnfH2oxDMNBe2xKkOw+iVEjdafabXQ890qmwdhzMUimqshZjVIRUt
+         RbFo6hIRAhgm6TE3IGCCTviAxZfMH2fYpl628lLr6hiPaEOfYsqKkJpV+BbhR80zUK7u
+         GzkvAX8QjRAFIC1m6esbqEqnEHcrenOnIenDI5QFyL43lY6t/lA9SK1b+fmgcBp9TKP1
+         Qahu5uZRkA95UQNpvqGRf5mpBMhqtiJvhcPYEu6ZHOoal2QiVyJdFj8tzw8FERyjn1th
+         wMpA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZjOdvKFZTCucGBwNWNoiAh6fD70tOBQUgcjv6fP99sXe8u4WpJAmCHyjTmxic7hMHowk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGM1CJslZdRFO7vdA8NYemKbjrHlsuJHtLitXsZrQFjPPNDLzZ
+	+SEeci3+iM3v92QeY2ZPuyPrtUnXw/LG7d/LuxR4gTZCRpnCIlBbsA88mnNQj53gRHZ4Aco6KOh
+	mjxZ85XbBwYLtJQN8eGYwTahVEwJEzF6EBVae8RpR
+X-Gm-Gg: AfdE7cmjHDufolMv16omX0vhjp8IiRUJNL6utJ6yNQF5BLsrFi0KmrJ4+8gHmBKBKjh
+	q6mKzPgd1xxBFYf/NLNCwfxFe8+L4wPmdAHYO0vgT1QNcY3MJ4TN+8B5z4uubyI0BCzmjap/WhE
+	sljpz8yFKgYP9C7CvsQlOqjpFkMF+fAK66gmlazjJ9AFbfPvEymmiCJCNz4ZoDGtN6cL4nQiAcB
+	FnZjLYyAfnSc7R69UdDesCoDSHW2lpqOni5zjVyYuZB+KsXX0nczRTzXYlprZBgUfAvq7DmAA==
+X-Received: by 2002:a05:622a:8893:b0:517:99ea:ab7e with SMTP id
+ d75a77b69052e-519e4a70452mr6973311cf.24.1781858134705; Fri, 19 Jun 2026
+ 01:35:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Fri, 19 Jun 2026 09:25:09 +0100
-X-Gm-Features: AVVi8CeyI3PAg86WrGg3AslQ1YuW7acL6Ym-NulDiNjx1M0Fc6iTcS7y2ypGj0E
-Message-ID: <CA+EHjTzh+iThoVnLOGbRDgacKFcvbBxx9m_72bhfafE4J7a7jw@mail.gmail.com>
-Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
- GFN private/shared status
+Date: Fri, 19 Jun 2026 09:34:57 +0100
+X-Gm-Features: AVVi8Ce8UOYY3ibWf7EXz5J6tTWRIQf_RIk-gcXz8kRs-aLeFMDUqknE2c7ssDk
+Message-ID: <CA+EHjTyGPo0JMsN8WFMer-2NWv6kNNUnyads+YHEXC20CwPjXQ@mail.gmail.com>
+Subject: Re: [PATCH v8 10/46] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -120,81 +120,143 @@ Content-Type: text/plain; charset="UTF-8"
 On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
 <devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> From: Ackerley Tng <ackerleytng@google.com>
+> From: Sean Christopherson <seanjc@google.com>
 >
-> Introduce function for KVM to check the private/shared status of guest
-> memory at a given GFN.
+> With in-place conversion, guest_memfd is able to track the private/shared
+> status of memory. Use a global flag to toggle between tracking
+> private/shared status per-vm or within guest_memfd.
 >
-> This will be used in a later patch.
+> When queried for supported vm memory attributes, return 0 if attributes are
+> tracked in guest_memfd.
 >
+> When querying for memory attributes over a range, look up memory attributes
+> based on the flag's state at query time.
+>
+> For per-GFN memory attribute queries, choosing an implementation (VM or
+> guest_memfd lookup) at KVM load time.
+>
+> The flag is always false for now and will be made toggle-able after all
+> in-place conversion features are added in subsequent patches.
+>
+> If/since the flag is false, if CONFIG_KVM_VM_MEMORY_ATTRIBUTES is also not
+> selected, the per-GFN memory attribute query defaults to returning
+> 0 (false/not private).
+>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
 
 Cheers,
 /fuad
+
 > ---
->  include/linux/kvm_host.h |  2 ++
->  virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 33 insertions(+)
+>  include/linux/kvm_host.h |  4 ++++
+>  virt/kvm/guest_memfd.c   | 22 +++++++++++++++++++---
+>  virt/kvm/kvm_main.c      | 12 +++++++++++-
+>  3 files changed, 34 insertions(+), 4 deletions(-)
 >
 > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 3915da2a61778..27687fb9d5201 100644
+> index 27687fb9d5201..acb552745b428 100644
 > --- a/include/linux/kvm_host.h
 > +++ b/include/linux/kvm_host.h
-> @@ -2575,6 +2575,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->  #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+> @@ -2560,6 +2560,8 @@ static inline bool kvm_mem_range_is_private(struct kvm *kvm, gfn_t start,
+>  #endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
 >
->  #ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
+>  #ifdef kvm_arch_has_private_mem
+> +extern bool gmem_in_place_conversion;
 > +
->  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->                      gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
->                      int *max_order);
+>  typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
+>  DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
+>
+> @@ -2568,6 +2570,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>         return static_call(__kvm_mem_is_private)(kvm, gfn);
+>  }
+>  #else
+> +#define gmem_in_place_conversion false
+> +
+>  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  {
+>         return false;
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 8101f64e0366f..bca912db5be6e 100644
+> index bca912db5be6e..e0e544ef47d69 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-> @@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
->         return 0;
->  }
+> @@ -926,6 +926,24 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
 >
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> +static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
+> +                                     size_t nr_pages, struct kvm *kvm, gfn_t gfn)
 > +{
-> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-> +       struct inode *inode;
+> +       struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
+> +       pgoff_t end = index + nr_pages - 1;
+> +       void *entry;
 > +
-> +       /*
-> +        * If this gfn has no associated memslot, there's no chance of the gfn
-> +        * being backed by private memory, since guest_memfd must be used for
-> +        * private memory, and guest_memfd must be associated with some memslot.
-> +        */
-> +       if (!slot)
-> +               return 0;
+> +       if (!gmem_in_place_conversion)
+> +               return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> +                                                         KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> +                                                         KVM_MEMORY_ATTRIBUTE_PRIVATE);
 > +
-> +       CLASS(gmem_get_file, file)(slot);
-> +       if (!file)
-> +               return 0;
-> +
-> +       inode = file_inode(file);
-> +
-> +       /*
-> +        * Rely on the maple tree's internal RCU lock to ensure a
-> +        * stable result. This result can become stale as soon as the
-> +        * lock is dropped, so the caller _must_ still protect
-> +        * consumption of private vs. shared by checking
-> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
-> +        * against ongoing attribute updates.
-> +        */
-> +       return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +       mt_for_each(mt, entry, index, end) {
+> +               if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
+> +                       return false;
+> +       }
+> +       return true;
 > +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+>
+>  static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>                                 struct file *file, gfn_t gfn, struct page *src_page,
+> @@ -946,9 +964,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>
+>         folio_unlock(folio);
+>
+> -       if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
+> -                                               KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> -                                               KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
+> +       if (!kvm_gmem_range_is_private(file, index, 1, kvm, gfn)) {
+>                 ret = -EINVAL;
+>                 goto out_put_folio;
+>         }
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 8b238e461b854..01761f6e25d25 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -101,6 +101,10 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(halt_poll_ns_shrink);
+>  static bool __ro_after_init allow_unsafe_mappings;
+>  module_param(allow_unsafe_mappings, bool, 0444);
+>
+> +#ifdef kvm_arch_has_private_mem
+> +bool __ro_after_init gmem_in_place_conversion = false;
+> +#endif
 > +
->  static struct file_operations kvm_gmem_fops = {
->         .mmap           = kvm_gmem_mmap,
->         .open           = generic_file_open,
+>  /*
+>   * Ordering of locks:
+>   *
+> @@ -2422,6 +2426,9 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+>  static u64 kvm_supported_vm_mem_attributes(struct kvm *kvm)
+>  {
+>  #ifdef kvm_arch_has_private_mem
+> +       if (gmem_in_place_conversion)
+> +               return 0;
+> +
+>         if (!kvm || kvm_arch_has_private_mem(kvm))
+>                 return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>  #endif
+> @@ -2633,8 +2640,11 @@ EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
+>
+>  static void kvm_init_memory_attributes(void)
+>  {
+> +       if (gmem_in_place_conversion)
+> +               static_call_update(__kvm_mem_is_private, kvm_gmem_is_private);
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -       static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+> +       else
+> +               static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
+>  #endif
+>  }
+>  #else
 >
 > --
 > 2.55.0.rc0.738.g0c8ab3ebcc-goog
