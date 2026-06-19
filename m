@@ -1,163 +1,297 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010067.outbound.protection.outlook.com [52.101.61.67])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAEF2B9BA;
-	Fri, 19 Jun 2026 13:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781875886; cv=fail; b=KpI224/Au4qVrTLFiTag2zNDMxfjDnDIxdMTim6KZjipiNngQ1H2dCJeRO5lezli3mdujFZMaN/xyDViijpIxrYrjRMcf4UQKXPmxviZpC/eeHyerxgeex6dCCI8K7p5v/nQB1doae6/40GuCYf0P2g4t/glJc0g5TXXKRt/NB8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781875886; c=relaxed/simple;
-	bh=1YXv3GYyR3m2WKKHliQtctbpUkEvQh5liJM9b2KIXog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eiP1YlW2Y4qRcZdQ4kdzF0PMQrVya34Gft4G15EV4U5M2uSC+2XEFLUUShREMaj0ShURDV3ZMpnJQ1oZ9A3Nfr1Iu4ZfZ5PTIZIK+OVVis1fYFLaaeJ/1L2fwKBsCwM1ijcoZif/aXMo8kAzP2LlmA8WZfw4xvB7XlX/3H73boM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Tw0JJrJ0; arc=fail smtp.client-ip=52.101.61.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258F227467F
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781877001; cv=none; b=mUBgw562e+J+lbhHXUXbEjIg8jQz4ytCwMR1R0865o1taohOGRmzaLsYWLpQbLf25f1koDajJj0TjVnTVvDygbKhpKMW+O+mY6gGLSKbbVzL55/WyMg+cD4s70JxVG+HMZ8aPSi/rnJZLTOD/WYmQ8YDOJUehzOyvAGK5mGJ3zE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781877001; c=relaxed/simple;
+	bh=qiFiwRkdPUZLaG3a9/RJbKrorenkk34pyYYWNbb/nyQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ae4XduGGi6MvXf46OMiy7JO/BBm69llfeYcJCqtBOf+oO4Jik6BEoGJFOFS5fatWrqGH6vwH3vMXnpoFs86+ZIhpnOy4FfWDOmMPChCpZuGTLNVm0znpCl/0xuHISXmyqm20MthamIPLVE648vtoF4zh0LfQOBaCVjzqlvN15GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FhbXeNXe; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Tw0JJrJ0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=izZ+ONLeTTy6nzBa3N/iiejcgwvjRhIGyBL6RXq4BoH9BQz05t6mfGJyzMcxNICUVwhcUpDwAf0rCkpU21VyxoGxwnAND1Y2Vi+dirw5hT/HTVMIzTXp9rPGMiROCO+I5D5I9qw8YyGWCVvoFGyxU+2EM1xcYWg5W+5/zUeH2zumvob5uvrvhA3HQBzrDxKA9xO4QH0CrVxvBekNurDS3gEK2d0SL7F7iZ95gV8xoFdFzgoh854yOLtK6+6StEm3pBAypWPQaX5Rodp8umR6iDd3GHEgWHrIevGSrRkjOi5J6whu99ZK7+dD0p10kdwEf0rmxbkJPN4ZBnG6a/i70g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bit6wyQN9GFksEzHOS2c01W0bMQghP8mgbup5mzOjWM=;
- b=KxqLkHDbLtU2qCiCU+LGZyNRpVTqIcqIzsDBGbMaIC/FNH2U5JiYVG5bQWPYFqMK+xBcaiXooO+WI2DBtbrizbkE/vxaLyUN9Ws8tx4Q5Np+9nzLxxyZfwq2xp70IItnfbb6UCABxw4hzUuG16219vLnZn5o1qi+hxWfirt64Gg0M7S+JFCGZRVV5ziEF4xNb+CsyKe0myLjUX4V8uC0UOu8H/1wX4dijcwLFqcJQVmnYiG4JTbkeTmwUEBDfLiI8IewDE1Te0n2znxBw7FDVlldVRS0lxqAve7viCF4Hoajf+ktcWUHCo45KCYDJu9i86J3vt8dYz5JFH/psHFHgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bit6wyQN9GFksEzHOS2c01W0bMQghP8mgbup5mzOjWM=;
- b=Tw0JJrJ0qKpISWwnaKGk2sXn8FvFCPtjzkHJ6S47vz3tGUO5KyNdHxYuuOqgdzGLAj29/FlDZPMXVBztjbl5qOkHo3LPpwVmlLgSxLXdHOAgtIcLrH41Tmn3wJ4yUpM1XIKYBDrnsw3jTHQSOmyE7crpAlZD143sbXAHvFqimQ2Q3qG+M1+sW8qj4v+DGnk7LA/A1PP1LK2+gje+IaI1AyWhCUnhRfA3pbRpXlIYLcraTAAtZJXjFdOBG3sf4t6cAGvo9ufAAYLPpnlFYTiCAch2uWAYq5mJIiF3Iv7rKLWqabWFaI2ne4S+gHSc4i/T6HlFy+lUSVZZ4GhstZFsBg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by CY8PR12MB7658.namprd12.prod.outlook.com (2603:10b6:930:9e::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Fri, 19 Jun
- 2026 13:31:17 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0113.015; Fri, 19 Jun 2026
- 13:31:17 +0000
-Date: Fri, 19 Jun 2026 10:31:16 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>, Alex Mastro <amastro@fb.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	"Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
-Message-ID: <20260619133116.GB278945@nvidia.com>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-7-matt@ozlabs.org>
- <aixgZQiBQKgS7yIM@google.com>
- <DM6PR11MB3690489DB5FA611413BF60558CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
- <ajGbRE3WWJxNxcrg@google.com>
- <BYAPR11MB3687AE280241C9E00B46FCF98CE42@BYAPR11MB3687.namprd11.prod.outlook.com>
- <24f34e59-7c3b-4b56-83bf-cb07e3f369a6@ozlabs.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <24f34e59-7c3b-4b56-83bf-cb07e3f369a6@ozlabs.org>
-X-ClientProxiedBy: YT1PR01CA0058.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:2e::27) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FhbXeNXe"
+X-Gm-Message-State: AOJu0YwPZRV6O2akI4/CNGUicWHWyprIHGWWwHKq6P7GTtv5hb/bptfn
+	9nZrYiPjhyuGzp31zZroH9TzqvgZdW+8uG23nukJD6fhV/oQJ+dCgbkSVIs5K3TpfYdt3TTtUtg
+	HJrQze9nfMGm7FFc/YM/bQ8yUQ0hBdv+M17RlCYLY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781876998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7YkY7/fRlhm+ypYsY6WrTFP5NJOyuEB6S6Db+mhsho=;
+	b=FhbXeNXevbFHc5vKFA2tP8qw8KdO6RHj+XPoU9qKoF3rDVgnV0b74k0iJzxPDh1GR43xG1
+	NQ+QfqWf6XVAh8rhlXGIruPWo5QMKkIOQT+1/+vLDEJc/103pRNrlcnAB2a+bXiOFmCEnq
+	IarsqmS334O2JMTkCrSIAmJ/s2/ZIfM=
+X-Received: by 2002:a05:622a:353:b0:517:99ea:ab79 with SMTP id
+ d75a77b69052e-519e8e7516bmr7294801cf.25.1781876988300; Fri, 19 Jun 2026
+ 06:49:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CY8PR12MB7658:EE_
-X-MS-Office365-Filtering-Correlation-Id: e27b9ee5-7f77-49ed-40eb-08dece070aa9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|18002099003|22082099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	UhysgkwY+Raw8lGwAVtYHZxeH32FU7CP71xLQ3a7zVdYE9dsmDITpS8PEkTz1fCksU+MdGL1z+cjeVxCFkDu1rXxLk9mS+vxbWT84P1ZAZbqVq8kmBwK7QCxTmTF/Citf60qtUiiES5zrdAs7+/0pXvQEo5spqtbpM5M3LJ63LLR7rJVgXLVVkqWsbhk8pmbEFUlvHqQ4QWaCMEuli0783/O+Z6DzBJDsgx15b7Udy8lUqHDEfJImHY0AIqrYRDkZ8YT0ZnYtisS3gS5DqOSSY7U1EBg5D/wooSD1LvACWJyEMic1FioilLDsJQEdEO1Zp74Vz9MOLWd73jgxN5UX+1KNoSdgCpyb0mE6BNTWELX1LR51OC55FnZW/wncXvFnJtYFBahWPv1PuG3N1lIxfUpgqlZueRYCEm0uXAuPdBj9CSgbfmJsChNdhPMhH5ZGDeSnrqbaandwP7cEa2z57vI1cGHhPtr9lekOpxETKMvMAH8TpvGUMoAX0KgwCMh93xWn3mvNAhsBcpDEdQzPqSQrSZUbuEMx+dYe8ev4i2N5ANKvyyVf0O6oO/9Eo7fA/+8WCdlfrLTWD85SEOB00lSnJ0/aOzGRke8x47q4xvoFSUfGvvogkvDyUX3ZpttP087DcEiYLyYhW7cXPjHOkBBr+6Jv6IQbsCrImXDlnc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fI/IgihgULFrE+awT7CC4TFcsXdQ7o+wsFnC/FIS5uReIYZdnIkzFHP8+zX6?=
- =?us-ascii?Q?cz3jeT4MjprlGxKNLDM836ITpVgS2lM0bVwDCptfCWrYqN4yd7f5UtAyaO7S?=
- =?us-ascii?Q?WmyaAXL9K4Oe//STGRmHFV+b+GMkpYJ0N/JStiLJiPxM/AkIzKMcXK5wZGGy?=
- =?us-ascii?Q?/V57yFv4PjOn9aEz31rFtO4S/pdZqiQeN9JWXrh40vXGUy34YcdWUmFw6fIr?=
- =?us-ascii?Q?58k30eNoM0dwQOxU5K92YyKbRcDVLaYzRjmIcvPrSwSIURrNPOznSThkye5b?=
- =?us-ascii?Q?HdHyZfqIT8YEUIwMUpAXpIUyFXLk4BabdO7GO0VHJwDRaO3qWuhgI5Ltc/5N?=
- =?us-ascii?Q?kj2AryI4qReYMacbAEGMaFUzK/o/UZw0fCXlfRtTpYe6bNlkZNZezkfJyuHd?=
- =?us-ascii?Q?lvDRfjBdmPPPWT2yoCSzu+g+hVZswzs+/1UqupL4Sz1AbEd0HxHdMvnoeHaF?=
- =?us-ascii?Q?fmP7NxaEf1z/XvJIcrEPXXk8nYK5zuMOHxfbNY+quOk1ZepTXM70OZaUva9R?=
- =?us-ascii?Q?noBVL8hDxLXsUWa0XouolEiJ0EYq3J6fightCgDOfgeERa6ePunkSDPUyss0?=
- =?us-ascii?Q?GHrPOlIaWxZBa3vxTGQivSLkhIet9P0x+F8Bytvn1Ayf+3E4Rs9N9ttjP9+T?=
- =?us-ascii?Q?wLGF96P9Jtc2J1EDYKgoCA24mOIDJrny9MXoNjMq39sk9fGIWz6QD03rK8LD?=
- =?us-ascii?Q?fydzTUzrJa5UA40+d0RCm2PmZ4PXjSTa3wwl0e7K92RFhbhbIUqO/wXzeESi?=
- =?us-ascii?Q?zoTuhRNB2SPJZaHiDm8b62A1fMXUcjbAajwXSdlXnvjBiTUvrtjxqUiCmuaJ?=
- =?us-ascii?Q?kA6lQO2ahZgV8cLbwZbzO9tRk6c4Q3d40VGzbzitOisxjngXpMtpVTRZYt5X?=
- =?us-ascii?Q?Q2Ltq6bR26EjUUiuMSrCkzBrU7xTf+Qb0U/h8uWJVT7iJs16Ub1xBNEHa0Yo?=
- =?us-ascii?Q?NaDLy/lThR2GAmi7NvMeN1W331DpWD1VEayz/X5QyTODhm+hn7PvjPTvGpj9?=
- =?us-ascii?Q?sYssWvM8W1HPKV1wblahgJtATlVofT9o2TmfZTzlU4g44pN6Bv1X1Slnvyvr?=
- =?us-ascii?Q?BuBaVwFbW9/FkQMMlSxTj0HGAS+Kk1bMCZSjKSK1tnWRi3IIuxfbNcR0Fpnu?=
- =?us-ascii?Q?sjs015oizXMPPyKxnanGjBVC6q8OISeHHTGM2QYZDiviB1Gwcc90m5XVTD3n?=
- =?us-ascii?Q?+9OUZ9FEaPWUSp/hxoss3UnKlT3NdBqNeug7X/mouNuxLrfo5HzSFti7NmAY?=
- =?us-ascii?Q?GltTSgvszVUH/nWDPVRy0edandlBtGLMiKVT5o3Fh1fYUbXYRQkLrlSQsejv?=
- =?us-ascii?Q?H8U5JRtYl7TTjcEjR4vNiSzCoX0Hc+3HxV8OLs9vpibuaNSFti6cU8BudQxy?=
- =?us-ascii?Q?w5Etu19Xm5h1DhADn9CX6dhIdLbevZ6G8j3pY5xsv8Qc8L7qfbj3uLaKUpgi?=
- =?us-ascii?Q?ibOLUjTpJpz65lEdU+gsuhrXazk8EcsgItVVLfUW3X2r2mwR8CqeunWkZVrc?=
- =?us-ascii?Q?MpYyFyaARlL6/XjTcgiwQ/fpi7A43aPcWHteDOnXh5oqV22r2xr98wvro+PE?=
- =?us-ascii?Q?1HSg3V3ogb60tsJlne0eOT4G0XufexdsKDgBevablUbIMCFN/f2y1Ys08p8W?=
- =?us-ascii?Q?dAn+ZtJulvp8b4KNJTpCvWmYHNMO+YGrFBUXL5NZGed5+G+AebGN6S5E9sGs?=
- =?us-ascii?Q?/OKL0j2oMYwdkXMX4HaKpSVjk7iiRysn3lk9r+edOHycNcu1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e27b9ee5-7f77-49ed-40eb-08dece070aa9
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2026 13:31:17.4159
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5evTwDO7fgLvd/S8Jmp2VW1g0Gov5FzdksZKLf3OgNKreXPm9pjGo4i9Hbtry1e4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7658
+References: <20260619115415.5475-1-will@kernel.org> <20260619115415.5475-5-will@kernel.org>
+In-Reply-To: <20260619115415.5475-5-will@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 19 Jun 2026 14:49:11 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTww=aY50itZBv=jUA6VeFNxgzyPkz2bktmW_ua1UdGmbQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdpAftAqDtWg1r2PRVf0VZ0OoIuqSLodNzRKnFtDqh6N6W58FWaKSJcgrE
+Message-ID: <CA+EHjTww=aY50itZBv=jUA6VeFNxgzyPkz2bktmW_ua1UdGmbQ@mail.gmail.com>
+Subject: Re: [PATCH kvmtool 4/4] arm64: Add support for protected VMs
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Andre Przywara <andre.przywara@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Jun 18, 2026 at 05:02:58PM +0100, Matt Evans wrote:
+Hi Will,
 
-> My understanding is that the sequences above wake a device that happens
-> to have previously been put into D3, and AFAICT it could only have got
-> there because of a previous vfio_pci_set_power_state().  Seems its only
-> caller is from the emulation of PCI_PM_CTRL using
-> vfio_lock_and_set_power_state(), and this zaps/revokes BAR access before
-> a transition to D3.  Similarly, an attempt to access a BAR via an
-> ioctl/through vfio_pci_core_do_io_rw() fails the D3 check in
-> __vfio_pci_memory_enabled(), and besides will try to take the memory_lock.
+On Fri, 19 Jun 2026 at 12:54, Will Deacon <will@kernel.org> wrote:
+>
+> Introduce a new '--protected' parameter which requests the creation of
+> a protected VM type from the kernel. In addition, a reserved DMA region
+> is advertised in the device-tree and VIRTIO_F_ACCESS_PLATFORM is
+> advertised so that virtio transfers can be bounced through a shared
+> memory window.
+>
+> Signed-off-by: Will Deacon <will@kernel.org>
 
-I thought the general design was the bars were made inaccessible
-before going to a low power state, and remain inaccessible while it is
-in low power?
+Two nits below, otherwise:
 
-So the order of D0 doesn't matter. If it is not in D0 then there is no
-mappings and zap/revoke is a NOP.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
 
-If is it in D0 then it doesn't matter because D0 is a nop.
 
-Jason
+> ---
+>  arm64/fdt.c                         | 37 +++++++++++++++++++++++++++--
+>  arm64/include/kvm/fdt-arch.h        | 10 +++++++-
+>  arm64/include/kvm/kvm-arch.h        |  2 ++
+>  arm64/include/kvm/kvm-config-arch.h |  5 +++-
+>  arm64/kvm.c                         | 20 +++++++++++++++-
+>  arm64/pci.c                         |  2 ++
+>  6 files changed, 71 insertions(+), 5 deletions(-)
+>
+> diff --git a/arm64/fdt.c b/arm64/fdt.c
+> index 98f1dd9..3cbd36e 100644
+> --- a/arm64/fdt.c
+> +++ b/arm64/fdt.c
+> @@ -71,6 +71,19 @@ static void generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type)
+>         _FDT(fdt_property(fdt, "interrupts", irq_prop, sizeof(irq_prop)));
+>  }
+>
+> +static bool emit_dma_regions;
+> +void generate_dma_region_prop(void *fdt)
+> +{
+> +       if (emit_dma_regions)
+> +               _FDT(fdt_property_cell(fdt, "memory-region", PHANDLE_DMA));
+> +}
+> +
+> +static void generate_aux_props(void *fdt, u8 irq, enum irq_type irq_type)
+> +{
+> +       generate_irq_prop(fdt, irq, irq_type);
+> +       generate_dma_region_prop(fdt);
+> +}
+> +
+>  struct psci_fns {
+>         u32 cpu_suspend;
+>         u32 cpu_off;
+> @@ -103,7 +116,7 @@ static int setup_fdt(struct kvm *kvm)
+>  {
+>         struct device_header *dev_hdr;
+>         u8 staging_fdt[FDT_MAX_SIZE];
+> -       u64 mem_reg_prop[]      = {
+> +       u64 resv_mem_prop, mem_reg_prop[] = {
+>                 cpu_to_fdt64(kvm->arch.memory_guest_start),
+>                 cpu_to_fdt64(kvm->ram_size),
+>         };
+> @@ -116,6 +129,9 @@ static int setup_fdt(struct kvm *kvm)
+>         void (*generate_cpu_peripheral_fdt_nodes)(void *, struct kvm *)
+>                                         = kvm->cpus[0]->generate_fdt_nodes;
+>
+> +       /* Generate DMA regions for bouncing in protected VMs */
+> +       emit_dma_regions = kvm->cfg.arch.protected;
+> +
+>         /* Create new tree without a reserve map */
+>         _FDT(fdt_create(fdt, FDT_MAX_SIZE));
+>         _FDT(fdt_finish_reservemap(fdt));
+> @@ -162,6 +178,23 @@ static int setup_fdt(struct kvm *kvm)
+>         _FDT(fdt_property(fdt, "reg", mem_reg_prop, sizeof(mem_reg_prop)));
+>         _FDT(fdt_end_node(fdt));
+>
+> +       /* Reserved memory (restricted DMA pool) */
+> +       if (emit_dma_regions) {
+> +               _FDT(fdt_begin_node(fdt, "reserved-memory"));
+> +               _FDT(fdt_property_cell(fdt, "#address-cells", 0x2));
+> +               _FDT(fdt_property_cell(fdt, "#size-cells", 0x2));
+> +               _FDT(fdt_property(fdt, "ranges", NULL, 0));
+> +
+> +               _FDT(fdt_begin_node(fdt, "restricted_dma_reserved"));
+> +               _FDT(fdt_property_string(fdt, "compatible", "restricted-dma-pool"));
+> +               resv_mem_prop = cpu_to_fdt64(DMA_MEM_REGION_SIZE);
+> +               _FDT(fdt_property(fdt, "size", &resv_mem_prop, sizeof(resv_mem_prop)));
+> +               _FDT(fdt_property_cell(fdt, "phandle", PHANDLE_DMA));
+> +               _FDT(fdt_end_node(fdt));
+> +
+> +               _FDT(fdt_end_node(fdt));
+> +       }
+> +
+>         /* CPU and peripherals (interrupt controller, timers, etc) */
+>         generate_cpu_nodes(fdt, kvm);
+>         if (generate_cpu_peripheral_fdt_nodes)
+> @@ -172,7 +205,7 @@ static int setup_fdt(struct kvm *kvm)
+>         while (dev_hdr) {
+>                 generate_mmio_fdt_nodes = dev_hdr->data;
+>                 if (generate_mmio_fdt_nodes) {
+> -                       generate_mmio_fdt_nodes(fdt, dev_hdr, generate_irq_prop);
+> +                       generate_mmio_fdt_nodes(fdt, dev_hdr, generate_aux_props);
+>                 } else {
+>                         pr_debug("Missing FDT node generator for MMIO device %d",
+>                                  dev_hdr->dev_num);
+> diff --git a/arm64/include/kvm/fdt-arch.h b/arm64/include/kvm/fdt-arch.h
+> index 60c2d40..8a0a460 100644
+> --- a/arm64/include/kvm/fdt-arch.h
+> +++ b/arm64/include/kvm/fdt-arch.h
+> @@ -1,6 +1,14 @@
+>  #ifndef ARM__FDT_H
+>  #define ARM__FDT_H
+>
+> -enum phandles {PHANDLE_RESERVED = 0, PHANDLE_GIC, PHANDLE_MSI, PHANDLES_MAX};
+> +enum phandles {
+> +       PHANDLE_RESERVED = 0,
+> +       PHANDLE_GIC,
+> +       PHANDLE_MSI,
+> +       PHANDLE_DMA,
+> +       PHANDLES_MAX
+> +};
+> +
+> +void generate_dma_region_prop(void *fdt);
+>
+>  #endif /* ARM__FDT_H */
+> diff --git a/arm64/include/kvm/kvm-arch.h b/arm64/include/kvm/kvm-arch.h
+> index a50e6a4..e7dd526 100644
+> --- a/arm64/include/kvm/kvm-arch.h
+> +++ b/arm64/include/kvm/kvm-arch.h
+> @@ -87,6 +87,8 @@
+>
+>  #define MAX_PAGE_SIZE  SZ_64K
+>
+> +/* Size of DMA region for bouncing when running a protected guest */
+> +#define DMA_MEM_REGION_SIZE    SZ_32M
+
+Worth scaling with guest RAM, or making it overridable for DMA-heavy guests?
+
+>
+>  static inline bool arm_addr_in_ioport_region(u64 phys_addr)
+>  {
+> diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
+> index d321b77..c2702d5 100644
+> --- a/arm64/include/kvm/kvm-config-arch.h
+> +++ b/arm64/include/kvm/kvm-config-arch.h
+> @@ -19,6 +19,7 @@ struct kvm_config_arch {
+>         unsigned int    sve_max_vq;
+>         bool            no_pvtime;
+>         bool            psci;
+> +       bool            protected;
+>  };
+>
+>  int irqchip_parser(const struct option *opt, const char *arg, int unset);
+> @@ -70,6 +71,8 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
+>         OPT_BOOLEAN('\0', "nested", &(cfg)->nested_virt,                        \
+>                     "Start VCPUs in EL2 (for nested virt)"),                    \
+>         OPT_BOOLEAN('\0', "e2h0", &(cfg)->e2h0,                                 \
+> -                   "Create guest without VHE support"),
+> +                   "Create guest without VHE support"),                        \
+> +       OPT_BOOLEAN('\0', "protected", &(cfg)->protected,                       \
+> +                       "Create a protected VM when pKVM is enabled"),
+>
+>  #endif /* ARM_COMMON__KVM_CONFIG_ARCH_H */
+> diff --git a/arm64/kvm.c b/arm64/kvm.c
+> index c8570ce..b899ebd 100644
+> --- a/arm64/kvm.c
+> +++ b/arm64/kvm.c
+> @@ -6,6 +6,7 @@
+>  #include "kvm/fdt.h"
+>  #include "kvm/gic.h"
+>  #include "kvm/kvm-cpu.h"
+> +#include "kvm/virtio.h"
+>
+>  #include "asm/smccc.h"
+>
+> @@ -147,6 +148,9 @@ void kvm__arch_init(struct kvm *kvm)
+>         kvm__arch_enable_mte(kvm);
+>         kvm__setup_smccc(kvm);
+>         kvm__arch_set_counter_offset(kvm);
+> +
+> +       if (kvm->cfg.arch.protected)
+> +               virtio_modern_enable_feat_access_platform();
+>  }
+>
+>
+> @@ -463,6 +467,16 @@ void kvm__arch_validate_cfg(struct kvm *kvm)
+>
+>         if (kvm->cfg.arch.e2h0 && !kvm->cfg.arch.nested_virt)
+>                 pr_warning("--e2h0 requires --nested, ignoring");
+> +
+> +       if (kvm->cfg.arch.protected) {
+> +               if (kvm->cfg.virtio_transport == VIRTIO_MMIO_LEGACY ||
+> +                   kvm->cfg.virtio_transport == VIRTIO_PCI_LEGACY) {
+> +                       die("Protected VMs require a modern virtio transport");
+> +               }
+> +
+> +               if (kvm->cfg.balloon)
+> +                       die("Ballooning not supported with protected VMs");
+> +       }
+>  }
+>
+>  u64 kvm__arch_default_ram_address(void)
+> @@ -485,6 +499,7 @@ int kvm__get_vm_type(struct kvm *kvm)
+>  {
+>         unsigned int ipa_bits, max_ipa_bits;
+>         unsigned long max_ipa;
+> +       int type;
+>
+>         /* If we're running on an old kernel, use 0 as the VM type */
+>         max_ipa_bits = kvm__arch_get_ipa_limit(kvm);
+> @@ -500,7 +515,10 @@ int kvm__get_vm_type(struct kvm *kvm)
+>         if (ipa_bits > max_ipa_bits)
+>                 die("Memory too large for this system (needs %d bits, %d available)", ipa_bits, max_ipa_bits);
+>
+> -       return KVM_VM_TYPE_ARM_IPA_SIZE(ipa_bits);
+> +       type = KVM_VM_TYPE_ARM_IPA_SIZE(ipa_bits);
+> +       if (kvm->cfg.arch.protected)
+> +               type |= KVM_VM_TYPE_ARM_PROTECTED;
+> +       return type;
+>  }
+
+The "old kernel" path above returns type 0, so --protected is dropped there
+silently. die() rather than downgrade a protection request without a word?
+
+>
+>  static int kvm__arch_free_kernel_header(struct kvm *kvm)
+> diff --git a/arm64/pci.c b/arm64/pci.c
+> index 0366783..db87db8 100644
+> --- a/arm64/pci.c
+> +++ b/arm64/pci.c
+> @@ -73,6 +73,8 @@ void pci__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+>         if (irqchip == IRQCHIP_GICV2M || irqchip == IRQCHIP_GICV3_ITS)
+>                 _FDT(fdt_property_cell(fdt, "msi-parent", PHANDLE_MSI));
+>
+> +       generate_dma_region_prop(fdt);
+> +
+>         /* Generate the interrupt map ... */
+>         dev_hdr = device__first_dev(DEVICE_BUS_PCI);
+>         while (dev_hdr && nentries < ARRAY_SIZE(irq_map)) {
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
