@@ -1,154 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123C528506C;
-	Fri, 19 Jun 2026 16:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04633B3C08;
+	Fri, 19 Jun 2026 16:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781885612; cv=none; b=OBbG5oCCppqc79l9GZBednIuAAoWM1KgDLH0Du/vNK6dtNKTQ5XZ8f3zrHei/n56GiKCfs1n7q/XmjQRtbMJpPnPS/ByF7jJP7oFL5B/rSvqM3fkPoI8FG45EueZptfourhWXg2sY4tBYHeDXEW7T2IXJLy3pLhpwvcT15Uo/uQ=
+	t=1781886942; cv=none; b=Vx+dU0RSCa5bqe9UA6sLZUPunL107nCG9f/PhvccIwtJj1hcdgssbBUBhW/iEbeRrQg5Z/SEnx50BTCf18xqdXM6VCO7NkQq1StZtnSDnrzrdC17zPGLEBUHZpKEZlRkVqNeWGQ30CmDJmWyjDmXzOq3GjmRA76CNAYi5Kq1uLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781885612; c=relaxed/simple;
-	bh=cOgZu3rrqVtChnX3vD9dCExO8/2SnJk1uqq6qfTf1QA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YWserY/pN4d5vJyP+2R+FYSEcM0u6zIUjx2V6CCalaWKzApd0AApKKQnGZVNNdXEG02/DtmMJkcKkrDpjzwFry5qEugRg2jtGyRAhLUCm7nIsd8ir5p/J5BXsnVIu2Siz7T7LWwYRRDHHlUJwiqJ0xXbP3wSWUR76DFo4x2xAAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcHyKdja; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781886942; c=relaxed/simple;
+	bh=tr1xSYBce60LkpMo3/cxQNRnltAtFEzDoYyyIMgzOgk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=SEZJ+TXWLLlkEv4cHuDpitixyjRM7gKZKNTESIJXhWi+lEySNtasz9DJUVDOdEheUsAJ8YSe30m8DXqKmsXgWcyhAvghE0TFE54koaaXUj8g160Uw60w6gKflEg625kTCWNusXBOaERsPcQ3bCHfn1r4Q3sMcz2Nf5FPtyfimnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSr03I2e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcHyKdja"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663051F000E9;
-	Fri, 19 Jun 2026 16:13:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSr03I2e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D1E1F000E9;
+	Fri, 19 Jun 2026 16:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781885610;
-	bh=fcM6SB8vHLGttAk6ZR3dHrbm2oeC4Sbrx6m2kXNRZqE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KcHyKdjanYsTrDe0n+gd2Bc4y5yUREwXYYIARkVqI+gtD9VqRgk6DL40Dy1L6G2US
-	 mVzGtvdzes5FqaDX3ZgH1Fq6sH1K7iRmj61i/uRTkVWsywL/X0g03V71HIcmQueoFb
-	 UNiq3Q6jzRQiLBOEeeYkOkdGDJ8RkgsiMIOtqwDVS5J7oKbJJ8nklgr9xUipHsSleb
-	 XolOW9Q2mxlKCHCao2g+nRPDAtFy3Yqwjxxeg2fu/WmA7MAkHaLNAseaN4B0BaBUji
-	 B2xVLhgeKxK50DTzf0/eTFgHqQtJueIzXOZH9/omO1MomMVO9qv1TCifgswsEjKH8V
-	 Ywh/1rQDjyZFg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/7] KVM: s390: Do not set special large pages dirty
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260619155154.307572-4-imbrenda@linux.ibm.com>
-References: <20260619155154.307572-1-imbrenda@linux.ibm.com>
- <20260619155154.307572-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 16:13:29 +0000
-Message-Id: <20260619161330.663051F000E9@smtp.kernel.org>
+	s=k20260515; t=1781886941;
+	bh=8pbkdusATBUef/RsXAw+OsK0chDzmWiJAUkn83wE3Ks=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=DSr03I2e+vhafA72nmxlAouGlzPrSVPE38TEdnV9a7DSTFfNVwkxDVB7ffGKkzKhW
+	 co5b2f6jyZkGL5YHZmzJFF/7oF8/gNCIitbTaNBrQzqtD7+MB9t27VRcZkLPTWp10g
+	 3bV3sq8+Ja+ncOhzUFTTWCu/B0xosOAsQzadh3M+6+Zeat5ITydMRgNs9lT4OUwdas
+	 eMIwC283g6JDzsZN8w2bLwaA4EqBj9iJjKwiIUsuSr3XhM1aZ/VVeU0yuedzNyLjE/
+	 XNYFAC9Cl3e2oy+x2NNZ/zT2gNAS4BxXL+iO8BQ5ttliKEE2N02jmAJIwjV5NNBeZL
+	 yXJhfuw8IzG4g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 012593AA7315;
+	Fri, 19 Jun 2026 16:35:36 +0000 (UTC)
+Subject: Re: [GIT PULL] KVM changes for Linux 7.2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260618152747.132796-1-pbonzini@redhat.com>
+References: <20260618152747.132796-1-pbonzini@redhat.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260618152747.132796-1-pbonzini@redhat.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+X-PR-Tracked-Commit-Id: ef057cbf825e03b63f6edf5980f96abf3c53089d
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c98d767b34574be82b74d77d02264a830ae1cadd
+Message-Id: <178188693466.3984250.7748475031458379095.pr-tracker-bot@kernel.org>
+Date: Fri, 19 Jun 2026 16:35:34 +0000
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+The pull request you sent on Thu, 18 Jun 2026 17:27:46 +0200:
 
-Pre-existing issues:
-- [Critical] Missing Special Page Validations in PV / Unmap Paths
-- [Critical] Unsafe SSKE Execution on Special Pages
---
+> https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
 
-commit 2d60ecc18379805e67b3a6ad94ddb8516f4d4167
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c98d767b34574be82b74d77d02264a830ae1cadd
 
-KVM: s390: Do not set special large pages dirty
+Thank you!
 
-This commit prevents setting special large pages dirty. It adds a missing
-check in gmap_clear_young_crste() to ensure the large page is not a
-special page before setting it dirty.
-
-> diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-> --- a/arch/s390/kvm/gmap.c
-> +++ b/arch/s390/kvm/gmap.c
-> @@ -327,7 +327,7 @@ static long gmap_clear_young_crste(union crste *crste=
-p, gfn_t gfn, gfn_t end, st
->  		new.h.i =3D 1;
->  		new.s.fc1.y =3D 0;
->  		new.s.fc1.prefix_notif =3D 0;
-> -		if (new.s.fc1.d || !new.h.p)
-> +		if ((new.s.fc1.d || !new.h.p) && !new.s.fc1.s)
->  			folio_set_dirty(phys_to_folio(crste_origin_large(crste)));
-
-[Severity: Critical]
-This is a pre-existing issue, but I noticed there are other places where
-special page validation seems to be missing in PV and unmap paths.
-
-If a malicious userspace maps device memory (VM_PFNMAP) to a PV guest,
-special shadow page table entries are created. When KVM unmaps these pages,
-_gmap_unmap_crste() calls phys_to_folio() on the physical frame number:
-
-arch/s390/kvm/gmap.c:_gmap_unmap_crste() {
-    ...
-    if (old.s.fc1.pr && test_bit(GMAP_FLAG_EXPORT_ON_UNMAP, &priv->gmap->fl=
-ags))
-        folio =3D phys_to_folio(crste_origin_large(old));
-    ...
-}
-
-Could this result in a garbage pointer if the entry is a special page,
-leading to a host panic when passed to uv_convert_from_secure_folio()
-which immediately calls folio_get()?
-
-A similar pattern appears in _gmap_unmap_pte() without checking ptep->s.s:
-
-arch/s390/kvm/gmap.c:_gmap_unmap_pte() {
-    ...
-    if (ptep->s.pr && test_bit(GMAP_FLAG_EXPORT_ON_UNMAP, &priv->gmap->flag=
-s))
-        folio =3D pfn_folio(ptep->h.pfra);
-    ...
-}
-
-And in _destroy_pages_crste():
-
-arch/s390/kvm/gmap.c:_destroy_pages_crste() {
-    ...
-    for ( ; cur < end; cur +=3D PAGE_SIZE)
-        __kvm_s390_pv_destroy_page(phys_to_page(cur));
-    ...
-}
-
-As well as _destroy_pages_pte() and _kvm_s390_pv_make_secure() in
-arch/s390/kvm/pv.c. Do these paths also need special bit checks to
-prevent panics from malicious userspace or guests?
-
-
-[Severity: Critical]
-This is also a pre-existing issue, but does KVM_S390_RESET_SKEYS safely
-handle special pages?
-
-When userspace triggers the KVM_S390_RESET_SKEYS ioctl, dat_reset_skeys_pte=
-()
-and dat_reset_skeys_crste() walk the gmap and invoke page_set_storage_key()
-without checking if the page is special. For example:
-
-arch/s390/kvm/dat.c:dat_reset_skeys_pte() {
-    ...
-    if (ptep->s.pr)
-        page_set_storage_key(pte_origin(*ptep), PAGE_DEFAULT_KEY, 1);
-    ...
-}
-
-arch/s390/kvm/dat.c:dat_reset_skeys_crste() {
-    ...
-    for ( ; addr < end; addr +=3D PAGE_SIZE)
-        page_set_storage_key(addr, PAGE_DEFAULT_KEY, 1);
-    ...
-}
-
-If page_set_storage_key() executes the hardware sske instruction on a physi=
-cal
-address not backed by valid system RAM, could this cause an s390 Addressing
-Exception and panic the host?
-
->  		new.s.fc1.d =3D 0;
->  		new.h.p =3D 1;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619155154.3075=
-72-1-imbrenda@linux.ibm.com?part=3D3
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
