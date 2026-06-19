@@ -1,152 +1,170 @@
-Received: from smtpout2.mo536.mail-out.ovh.net (smtpout2.mo536.mail-out.ovh.net [51.210.91.11])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F9A3B2FF9
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.210.91.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9013B9D98;
+	Fri, 19 Jun 2026 15:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781883638; cv=none; b=bTJ+itXdkfAHMhyUeRnPXn2z1jIkFA8IUA9uPEzPXh5unr8mKs7g/j71x6T5/RGMrJWmzcMs8ohxE0ziPiHdqhX5NSJQWogY9b+YULJ11CBA/ulzZv6zI+DQXT66qMdSBWnuqWNEiegUYbSC7AMeFXZp5nd52yN84QmS62VwIVI=
+	t=1781884332; cv=none; b=gig1YqsCeRRnW+jEJd87RQ9y50viwqFd885fU9gH0+vrOoQDLytsLf1X0Isf23i4Mh3sZAywIGD53zId5EvnC6BiBcaTApIcon9oEoQ6C6ut7ax9IQ8uA+xvHqp7vZawYiYu8Jh/hOZVW2VseYnMiMoW7X/mv7NVcHdh9hhHnak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781883638; c=relaxed/simple;
-	bh=dw4Gj3l0PolgAQc9zwe8boYeweP6AQJpodZT1X1TUCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXsr7BOISsVACyRJWc5vN/l4ZwqSRRzUfDR+osU6SApAZOFk1+5cqt4dxUUTLjFgdyGI1Qudu4dFmSRHaTc9vLGFLiF81CTggI4ioWPLmbfreg3BTvqTYJH0GFdIxKSWngiSO69wbkMaK28hTwNnyeC69poDoeaYd+ltwB0Q7LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaod.org; spf=pass smtp.mailfrom=kaod.org; dkim=pass (2048-bit key) header.d=kaod.org header.i=@kaod.org header.b=gvlPyTmu; arc=none smtp.client-ip=51.210.91.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaod.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaod.org
+	s=arc-20240116; t=1781884332; c=relaxed/simple;
+	bh=okAOvLQ4y0eY/fwgkvGuuxb8NOEPB30eyMm9tizr6DQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t6xDwFQAAIFPa0iC5M3maDqSw8oNw9vJ1bOAdSu5H0STMcuiFTUtS5HvhxLGrPCu581/yKjm2u8EW33mCB6R1oYrEEYM5MK7x7zh5wEcJL9yZF8z6zC1EklMFa1RqcLfSlQg87OrF+eRjec8m21yJFoYUHXrhsWdKJzmQw4+BWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pC53+zR8; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaod.org header.i=@kaod.org header.b="gvlPyTmu"
-Received: from director4.derp.mail-out.ovh.net (director4.derp.mail-out.ovh.net [79.137.60.37])
-	by mo536.mail-out.ovh.net (Postfix) with ESMTPS id 4ghhFz2Zwlz81F7;
-	Fri, 19 Jun 2026 15:24:06 +0000 (UTC)
-Received: from director4.derp.mail-out.ovh.net (director4.derp.mail-out.ovh.net. [127.0.0.1])
-        by director4.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <jamin_lin@aspeedtech.com>; Fri, 19 Jun 2026 15:24:06 +0000 (UTC)
-Received: from mta3.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.109.249.15])
-	by director4.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4ghhFy4z7Zz1xt2;
-	Fri, 19 Jun 2026 15:24:06 +0000 (UTC)
-Received: from kaod.org (unknown [10.1.6.2])
-	(Authenticated sender: clg@kaod.org)
-	by mta3.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id 7EAF312E36BA;
-	Fri, 19 Jun 2026 15:24:04 +0000 (UTC)
-Authentication-Results:garm.ovh; auth=pass (GARM-110S0042df0b5fe-b46f-49f0-99f5-86917569cd8f,
-                    D397870345096954499ACCBEFDDC37B3E918B293) smtp.auth=clg@kaod.org
-X-OVh-ClientIp:82.64.250.170
-Message-ID: <43d140b8-e918-4c37-81ac-d05954465acf@kaod.org>
-Date: Fri, 19 Jun 2026 17:24:03 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pC53+zR8"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65JDIDOn2415582;
+	Fri, 19 Jun 2026 15:52:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=VlM7qhGlAWkChpNhk
+	2d/9oqxLbUmFTK4zaaRixCZd1I=; b=pC53+zR8XTr/Bbek9tUM1Id2dEWHLmvB7
+	mTxADXNL9T+phd9eAA9gQLrJaEQImjpSG2HWsOMdxh4gCOO4DUsrxwPDmy3ka3Wk
+	q/T7acEp1iSEbHCdf1qwIOpQOf7rRCnfIaCBcj2dvz9/zhlFxEB+sCrvYYlTKgWl
+	PIXnKq+7gzymoNUPyZsvcEp/kZLSvWD2I3hRcFqYzrfuzjbAbAhB/kSqseA8gEb/
+	5D3MG1S3Blw3aSkfszzIeqctXdCA5MdgS9cdSVwY3wK+zsATT1j/AokbvU/PsabE
+	CxUT6usWjGZWU+XZPztLVg0ILkBwTwLGo+92XgQQiScDjikKQM7DQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eueqtxgxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jun 2026 15:52:01 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65JFnipa003405;
+	Fri, 19 Jun 2026 15:52:01 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ev1729hky-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jun 2026 15:52:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65JFpvT013763030
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Jun 2026 15:51:57 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 501622004E;
+	Fri, 19 Jun 2026 15:51:57 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 437BA20040;
+	Fri, 19 Jun 2026 15:51:56 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.54.29])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 19 Jun 2026 15:51:56 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
+        hca@linux.ibm.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, svens@linux.ibm.com
+Subject: [PATCH v4 1/7] s390/mm: Fix handling of _PAGE_UNUSED pte bit
+Date: Fri, 19 Jun 2026 17:51:48 +0200
+Message-ID: <20260619155154.307572-2-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260619155154.307572-1-imbrenda@linux.ibm.com>
+References: <20260619155154.307572-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/7] tests/functional: update anacapa-bmc image
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alexander Graf <agraf@csgraf.de>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Paolo Bonzini <pbonzini@redhat.com>, Pedro Barbuda <pbarbuda@microsoft.com>,
- Jamin Lin <jamin_lin@aspeedtech.com>, Steven Lee
- <steven_lee@aspeedtech.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org,
- Troy Lee <leetroy@gmail.com>, Kane Chen <kane_chen@aspeedtech.com>,
- Tyrone Ting <kfting@nuvoton.com>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, Hao Wu <wuhaotsh@google.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-References: <20260619130537.820184-1-alex.bennee@linaro.org>
- <20260619130537.820184-3-alex.bennee@linaro.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Autocrypt: addr=clg@kaod.org; keydata=
- xsFNBFu8o3UBEADP+oJVJaWm5vzZa/iLgpBAuzxSmNYhURZH+guITvSySk30YWfLYGBWQgeo
- 8NzNXBY3cH7JX3/a0jzmhDc0U61qFxVgrPqs1PQOjp7yRSFuDAnjtRqNvWkvlnRWLFq4+U5t
- yzYe4SFMjFb6Oc0xkQmaK2flmiJNnnxPttYwKBPd98WfXMmjwAv7QfwW+OL3VlTPADgzkcqj
- 53bfZ4VblAQrq6Ctbtu7JuUGAxSIL3XqeQlAwwLTfFGrmpY7MroE7n9Rl+hy/kuIrb/TO8n0
- ZxYXvvhT7OmRKvbYuc5Jze6o7op/bJHlufY+AquYQ4dPxjPPVUT/DLiUYJ3oVBWFYNbzfOrV
- RxEwNuRbycttMiZWxgflsQoHF06q/2l4ttS3zsV4TDZudMq0TbCH/uJFPFsbHUN91qwwaN/+
- gy1j7o6aWMz+Ib3O9dK2M/j/O/Ube95mdCqN4N/uSnDlca3YDEWrV9jO1mUS/ndOkjxa34ia
- 70FjwiSQAsyIwqbRO3CGmiOJqDa9qNvd2TJgAaS2WCw/TlBALjVQ7AyoPEoBPj31K74Wc4GS
- Rm+FSch32ei61yFu6ACdZ12i5Edt+To+hkElzjt6db/UgRUeKfzlMB7PodK7o8NBD8outJGS
- tsL2GRX24QvvBuusJdMiLGpNz3uqyqwzC5w0Fd34E6G94806fwARAQABzSBDw6lkcmljIExl
- IEdvYXRlciA8Y2xnQGthb2Qub3JnPsLBeAQTAQIAIgUCW7yjdQIbAwYLCQgHAwIGFQgCCQoL
- BBYCAwECHgECF4AACgkQUaNDx8/77KGRSxAAuMJJMhJdj7acTcFtwof7CDSfoVX0owE2FJdd
- M43hNeTwPWlV5oLCj1BOQo0MVilIpSd9Qu5wqRD8KnN2Bv/rllKPqK2+i8CXymi9hsuzF56m
- 76wiPwbsX54jhv/VYY9Al7NBknh6iLYJiC/pgacRCHtSj/wofemSCM48s61s1OleSPSSvJE/
- jYRa0jMXP98N5IEn8rEbkPua/yrm9ynHqi4dKEBCq/F7WDQ+FfUaFQb4ey47A/aSHstzpgsl
- TSDTJDD+Ms8y9x2X5EPKXnI3GRLaCKXVNNtrvbUd9LsKymK3WSbADaX7i0gvMFq7j51P/8yj
- neaUSKSkktHauJAtBNXHMghWm/xJXIVAW8xX5aEiSK7DNp5AM478rDXn9NZFUdLTAScVf7LZ
- VzMFKR0jAVG786b/O5vbxklsww+YXJGvCUvHuysEsz5EEzThTJ6AC5JM2iBn9/63PKiS3ptJ
- QAqzasT6KkZ9fKLdK3qtc6yPaSm22C5ROM3GS+yLy6iWBkJ/nEYh/L/du+TLw7YNbKejBr/J
- ml+V3qZLfuhDjW0GbeJVPzsENuxiNiBbyzlSnAvKlzda/sBDvxmvWhC+nMRQCf47mFr8Xx3w
- WtDSQavnz3zTa0XuEucpwfBuVdk4RlPzNPri6p2KTBhPEvRBdC9wNOdRBtsP9rAPjd52d73O
- wU0EW7yjdQEQALyDNNMw/08/fsyWEWjfqVhWpOOrX2h+z4q0lOHkjxi/FRIRLfXeZjFfNQNL
- SoL8j1y2rQOs1j1g+NV3K5hrZYYcMs0xhmrZKXAHjjDx7FW3sG3jcGjFW5Xk4olTrZwFsZVU
- cP8XZlArLmkAX3UyrrXEWPSBJCXxDIW1hzwpbV/nVbo/K9XBptT/wPd+RPiOTIIRptjypGY+
- S23HYBDND3mtfTz/uY0Jytaio9GETj+fFis6TxFjjbZNUxKpwftu/4RimZ7qL+uM1rG1lLWc
- 9SPtFxRQ8uLvLOUFB1AqHixBcx7LIXSKZEFUCSLB2AE4wXQkJbApye48qnZ09zc929df5gU6
- hjgqV9Gk1rIfHxvTsYltA1jWalySEScmr0iSYBZjw8Nbd7SxeomAxzBv2l1Fk8fPzR7M616d
- tb3Z3HLjyvwAwxtfGD7VnvINPbzyibbe9c6gLxYCr23c2Ry0UfFXh6UKD83d5ybqnXrEJ5n/
- t1+TLGCYGzF2erVYGkQrReJe8Mld3iGVldB7JhuAU1+d88NS3aBpNF6TbGXqlXGF6Yua6n1c
- OY2Yb4lO/mDKgjXd3aviqlwVlodC8AwI0SdujWryzL5/AGEU2sIDQCHuv1QgzmKwhE58d475
- KdVX/3Vt5I9kTXpvEpfW18TjlFkdHGESM/JxIqVsqvhAJkalABEBAAHCwV8EGAECAAkFAlu8
- o3UCGwwACgkQUaNDx8/77KEhwg//WqVopd5k8hQb9VVdk6RQOCTfo6wHhEqgjbXQGlaxKHoX
- ywEQBi8eULbeMQf5l4+tHJWBxswQ93IHBQjKyKyNr4FXseUI5O20XVNYDJZUrhA4yn0e/Af0
- IX25d94HXQ5sMTWr1qlSK6Zu79lbH3R57w9jhQm9emQEp785ui3A5U2Lqp6nWYWXz0eUZ0Ta
- d2zC71Gg9VazU9MXyWn749s0nXbVLcLS0yops302Gf3ZmtgfXTX/W+M25hiVRRKCH88yr6it
- +OMJBUndQVAA/fE9hYom6t/zqA248j0QAV/pLHH3hSirE1mv+7jpQnhMvatrwUpeXrOiEw1n
- HzWCqOJUZ4SY+HmGFW0YirWV2mYKoaGO2YBUwYF7O9TI3GEEgRMBIRT98fHa0NPwtlTktVIS
- l73LpgVscdW8yg9Gc82oe8FzU1uHjU8b10lUXOMHpqDDEV9//r4ZhkKZ9C4O+YZcTFu+mvAY
- 3GlqivBNkmYsHYSlFsbxc37E1HpTEaSWsGfAHQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4Pls
- ZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQizDiU6iOrUzBThaMhZO3i927SG2DwWDVzZlt
- KrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gDuVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <20260619130537.820184-3-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-x-ovh-tracer-id: 6851663883618397219
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTF2D7aMXawZVblEoufsl8EnVwMgr593UsRimnKU1QcSQPn5QaPfxVEl5uYEE5o5keoogHD+8U2kHM5vUlw2AjO8zInK1HbbygPAYaFezKosfCMoS/xYypGiG8rWc0byi/0idnHKr1QIYXHAW40FMz/jt+N6OesYP2gjcOYGCPioB/lJEmO+0UmeZ2GnQUktKKAUFgeRTWqPi2+ZzGhflDS8EM84Qdh6Esq7ne/POLyKeYxW9ZoZSDLlRV8A63gstKL9cbTSVahLOXKvFTQV1J+Y7TZcXK4euLO1wCmLydIM5AchIm+hRSQL3XRgOdqxXt5xxS3KT1qJbtp7LrxJMBDakNMX/GwVwF33HUAUR/p7DrBNhUleRhEicXJ1f5o5W8u0IzcqDx6NahgnVg6cKj6QRlnMrmC0xu2yeQfpGuKKAS9cl3dt1rrbI7DArhqbUolQ+DcWGX8lbrqpetjuhnQOofIh7ToU6yf9ROnPvva/2fQbL62PinCrmi9GKqtna4R0OrjkXbODhbhtPFlH4xsHyKuj69V8yEJrvST4yKr9N4erXV27DenIZfqXjdA5a/La9Z26aNwTUyuCMn+Y/oWoNUOXUhG2TXFw13tnuGoKfdLBQp3rf5lFaqdKZS5pvcxQkIe03gQOc6YPyXzvsTsPHGGIkFPYPX5pjLNI+u8qdQ
-DKIM-Signature: a=rsa-sha256; bh=CQC2yNnLs/sIVJK9rDuDX5qxfVgsLKbpiqkvaiGrCA4=;
- c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
- t=1781882649; v=1;
- b=gvlPyTmugJKKNtuh69KwrAaulcGdf4WKWoPJYCsOJbQ42XTezBxl3QEnEPOfI4w6eQ1IBFw0
- 2DZFrKeQr53FFGO0/nTeqL4io0Nibv1FgP0siUAG52TeIKh4843muqUyqu+jPQYVDtrDi5qPF2q
- tDdSkweHArtiV6shY62CcGqLEnl+BlVmuZ6nS1p2KCGR1tP+PuV7JDJbrB1Bb4oqrr0Rpg+2SD8
- Kxg3TqZKuE7Ar0hJfkj4RU9aXIVVJN3YopeGDoZdyoSSHnkC8JJCXNtpTV3QZ3ueHBapsYC/KIe
- l4bG9LFk2F4t4iFY3P9RQ/4HsYhoxaVK1e4KYuDThxg9w==
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: FxIqyg3UJ2kIe7IKkqa2R05lpDziVXcR
+X-Proofpoint-GUID: FxIqyg3UJ2kIe7IKkqa2R05lpDziVXcR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE5MDE1MCBTYWx0ZWRfX+AW9NYVkRX/R
+ 9a+aNvp+civd9VKURag+/4fg5NdkbJOqA1DYiXtSfXkVyeOx1jT9Gb6W1U6IYw0zp/kHck3j9ZV
+ 6MfjiP8wBCalNCNZ1CyOI5QTKIDv07PaFexeIFupgJ3y9OHe/B7iG1/hHJF5OK6OxhAtnG7IYsX
+ yNk9AWdYqW3EAcLezc/9hUn9a2m6u593A4A8bRKwarrvzRm6dgqZSXAEjrvdCm+frYWLxeY4b7a
+ ePz2jsESHTEzfYyjnnIH7IdYRYUU56cn0Mml6Lilr3SwRIPFcpOX6Uqvwu7EFaXdth2ta4zoAy3
+ z8ptaQrOnSgV/37wEfuMnPLlz+yormxyab2WbHqCUF+TxpMdaDwZbhKCfmw/SvZYXI4JNaoJI0Y
+ oGuEcJSqt8d+SwQU7mg8zx1fcG1G9RFXcgtrVY/QvKq1Rj4G1bjEoAoZzxFEk8nwj+i1FS0fBwX
+ MhXxLSgJPuLsvSO6eAw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE5MDE1MCBTYWx0ZWRfX9ew9tWmDbHO9
+ LPjPaTgx45c4m7yJ7ilZ6SQNtfQCGbZMjKTdm5gcpovheCbtMBV+NofIEpH4UFz+l7YqxGaMWgd
+ 3ZGuhg2tDa+oohkL1Ur4zSBXYmvEano=
+X-Authority-Analysis: v=2.4 cv=B4KJFutM c=1 sm=1 tr=0 ts=6a3565a1 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=BXoTXrUDSLvzEcKRN5AA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-19_03,2026-06-18_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606190150
 
-On 6/19/26 15:05, Alex Bennée wrote:
-> The initial version had the wrong DTB which caused issues with image
-> corruption [1]. Update to the latest version.
-> 
-> [1] https://github.com/legoater/qemu-aspeed-boot/pull/7
-> 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   tests/functional/arm/test_aspeed_anacapa.py | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/functional/arm/test_aspeed_anacapa.py b/tests/functional/arm/test_aspeed_anacapa.py
-> index 27f8bd8b56a..b16c6035c95 100644
-> --- a/tests/functional/arm/test_aspeed_anacapa.py
-> +++ b/tests/functional/arm/test_aspeed_anacapa.py
-> @@ -11,8 +11,8 @@
->   class AnacapaMachine(FacebookAspeedTest):
->   
->       ASSET_ANACAPA_FLASH = Asset(
-> -        'https://github.com/legoater/qemu-aspeed-boot/raw/3fa3212827b04be4034d43b5adeef57c27d6ab18/images/anacapa-bmc/openbmc-20260512025228/obmc-phosphor-image-anacapa-20260512025228.static.mtd.xz',
-> -        '2232e241abcfb6d4f6b82cb6c378ce5ce05e364aac6d118785c2b6cc33fe43f3')
-> +        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/master/images/anacapa-bmc/openbmc-20260616025349/obmc-phosphor-image-anacapa-20260616025349.static.mtd.xz',
-> +        'de3841fb6ed3085aec6424358ee6efc4b8ee85688361e5aa1987fd1acb7d3fb4')
->   
->       def test_arm_ast2600_anacapa_openbmc(self):
->           image_path = self.uncompress(self.ASSET_ANACAPA_FLASH)
+The _PAGE_UNUSED softbit should not really be lying around. Its sole
+purpose is to signal to try_to_unmap_one() and try_to_migrate_one()
+that the page can be discarded instead of being moved / swapped.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+KVM has no way to know why a page is being unmapped, so it sets the bit
+on userspace ptes corresponding to unused guest pages every time they
+get unmapped. KVM has no reasonable way to clear the bit once the page
+is in use again.
 
-Thanks,
+While set_ptes() checks and clears the bit, other paths that set new
+ptes did not. This led to used pages being thrown out as if they were
+unused, causing guest corruption.
 
-C.
+Fix the issue by clearing the _PAGE_UNUSED bit for present ptes in
+set_pte(), i.e. whenever a present pte is getting set. The check in
+set_ptes() is then redundant and can be removed.
+
+Also fix gmap_helper_try_set_pte_unused() to only set the bit if the
+pte is present; the _PAGE_UNUSED bit is only defined for present ptes
+and thus should not be set for non-present ptes.
+
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: c98175b7917f ("KVM: s390: Add gmap_helper_set_unused()")
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+---
+ arch/s390/include/asm/pgtable.h | 4 ++--
+ arch/s390/mm/gmap_helpers.c     | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index ca376a9b8e41..d03663483f76 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -980,6 +980,8 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+ 
+ static inline void set_pte(pte_t *ptep, pte_t pte)
+ {
++	if (pte_present(pte))
++		pte = clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
+ 	WRITE_ONCE(*ptep, pte);
+ }
+ 
+@@ -1332,8 +1334,6 @@ pgprot_t pgprot_writecombine(pgprot_t prot);
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 			      pte_t *ptep, pte_t entry, unsigned int nr)
+ {
+-	if (pte_present(entry))
+-		entry = clear_pte_bit(entry, __pgprot(_PAGE_UNUSED));
+ 	page_table_check_ptes_set(mm, addr, ptep, entry, nr);
+ 	for (;;) {
+ 		set_pte(ptep, entry);
+diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+index 1cfe4724fbe2..60023b6fdcb1 100644
+--- a/arch/s390/mm/gmap_helpers.c
++++ b/arch/s390/mm/gmap_helpers.c
+@@ -181,7 +181,8 @@ void gmap_helper_try_set_pte_unused(struct mm_struct *mm, unsigned long vmaddr)
+ 	if (IS_ERR_OR_NULL(ptep))
+ 		return;
+ 
+-	__atomic64_or(_PAGE_UNUSED, (long *)ptep);
++	if (pte_present(*ptep))
++		__atomic64_or(_PAGE_UNUSED, (long *)ptep);
+ 	pte_unmap_unlock(ptep, ptl);
+ }
+ EXPORT_SYMBOL_GPL(gmap_helper_try_set_pte_unused);
+-- 
+2.54.0
 
