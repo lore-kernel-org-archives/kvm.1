@@ -1,128 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B560922A1D4
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 01:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159BF2E3FE
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 03:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781831264; cv=none; b=n/ToEqMRcGCn1AJ4yF6U51ufppVdYmietUnN4BdnB7b7AwTMKsjuekqoV7c4dCrRo7pSjVLnj/YbftTAH7JaR33T5hDO8etUoaRer3QlBh1vHbzsYhsHMQ8GSdjgm/gQPjhTngt8+RzCU1TunosBCE991AcIUioAw4ZpSuCPK+k=
+	t=1781838141; cv=none; b=iElTh2m65RQgUzYWrRQTPff7ll9TjAtMemJdy0ClZQTNc4Ibd9ZyJ5a4TmI3wxpU7/IHBnhmuuH00Tf/H8U+w8119OA11E4VJjVhhQsyRWXZ6i9nL2ww1vfh8aFABcWDPApx3ajwyq41j1zTosew2v6GhixeropdDkkrL+gzYlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781831264; c=relaxed/simple;
-	bh=/IHQbl8eQJj5hWcxwa+TO96YLMK9VCJKW55grJVyJR8=;
+	s=arc-20240116; t=1781838141; c=relaxed/simple;
+	bh=UKEtMs5fHLEEXUbvxUq7fU39OKalTVra/kMpkTkmMrA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=c8cSNEMdKalyAFDy/kA7HmziouKcocBmze7IQeMI8eLUQbQSrE8kz6gmfByKIg5a3CMcfqr2CigMvZ37B/Jz1Wb9a60pxKONS8kLTPJoV3qc6cn+0ydlR7oHXXrPDpQjVEyPfvQjsdvCFDrd6A6V2U938NQNZLr4s4PMmahx/co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F63oT6AD; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eFUuAMPAFP9GaP656lbCISWZ3bMAPlBU0Ub/gwn/SuBQ/bhAloaw28OhHjMoT8xJ22FmGQs8byjyL/4wSPn9iM6Ca/I4bKiyDZMUrb2M8DMIwVgdIdrNFix8lY1LchpsXGRh9a9dWPwxxGxwf0AYUk84fx+F9SxJZd5MsrEpz9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8wr8oJZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F63oT6AD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB091F000E9;
-	Fri, 19 Jun 2026 01:07:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8wr8oJZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4DE1F000E9;
+	Fri, 19 Jun 2026 03:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781831263;
-	bh=lH+eZW1tIdGVopgwugFx4yAOiK5HqKqKfP57XZnRpGE=;
+	s=k20260515; t=1781838139;
+	bh=q3d7hayY4AekKJ/bqsf8sgPUXOnfkBP0HzARjtTO/8g=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F63oT6ADm4+GHGLbf+hdnIaksRL0Ijc5KcjmYupNod0i03xqVYIGd1wGydALluC8d
-	 qY+tS64ZTh+6UO5uKWd8lCOTzUlH4FSLxZQ0oHpue/eRN0cgsga/tOesqXPFV/L8pQ
-	 jUw9gvWTS6ilnEVksBIGYAwyABtyqqVAZtzx2jGmtcM3zSs0lMZb1ph2kUa7aOLIQ0
-	 zv6VMEBWeZK8mdk0DNoK8wSVyEp37OkQIi4EnKHWnVBgyY7JyQLpVtJatE4d1Dp7pQ
-	 Q+408BUuB/b3laFhDAlOEXLECsHk4a3yI3DZCdqywaiQvSfzd/idRpztyj/AbTuGaE
-	 2TQsAjfmqLkBw==
+	b=Y8wr8oJZpNF8r8Sr439xnYDFZVUnt8Qmc5ngtdlp332VyqXRDYi6wKo1b+Z/yZIFC
+	 5HchR4yqcd68R9kerduuxBQRooiSP+sdIv9ybXn0qhNq93n63argy80YzyvUgqQy2+
+	 sxAuUfyC/tMn20p4edQkFSHOcWGuNJEFeqQfpE4MdYcIEX/pFl5GoxB22OzTpAEov1
+	 RPzALRgxDo4tULVdArEqVg7uyjbBmY98o9qRf/mnrKzU74G53XPQu/uYHQXjoGykIs
+	 eXb8Pf8KdPD8NfPnJo+7u4DQDzmAWUmi+TeA9xqq14vU9k/C5gEJJycCHNTE6UHQPB
+	 CifZUG8i2LSlg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 39/46] KVM: selftests: Test conversion with elevated
- page refcount
+Subject: Re: [PATCH v8 38/46] KVM: selftests: Add helpers to pin pages with
+ CONFIG_GUP_TEST
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-39-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-39-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 01:07:42 +0000
-Message-Id: <20260619010742.ABB091F000E9@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 03:02:19 +0000
+Message-Id: <20260619030219.8C4DE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] Test assertion evasion due to `error_offset` zero-initialization=
- masking kernel bugs.
+
+New issues:
+- [Medium] System-wide exclusivity of `gup_test` prevents parallel executio=
+n of KVM selftests and causes spurious failures.
+- [Low] Incorrect relative include path for `gup_test.h` breaks the build o=
+r relies on accidental `-I` path traversal.
+
+Pre-existing issues:
+- [High] The `gup_test_release()` function calls `pin_longterm_test_stop()`=
+ without acquiring the `pin_longterm_test_mutex`, leading to a data race, d=
+ouble free, and Use-After-Free.
 --
 
-commit b2da0256dee5eac26d6a8400d7fa310b8e255837
+commit 23065bfd3ffa48cfd9620c8d5f059f9ef6b27ced
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: selftests: Test conversion with elevated page refcount
+KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
 
-This commit adds a selftest to ensure that converting a shared
-guest_memfd page to private fails if the page has an elevated reference
-count.
+This commit adds helper functions allowing KVM selftests to pin memory using
+the /sys/kernel/debug/gup_test interface. It implements pin_pages() and
+unpin_pages() by wrapping ioctl calls to PIN_LONGTERM_TEST_START and
+PIN_LONGTERM_TEST_STOP.
 
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
-.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 99b0023609670..4ebbd29029526 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index b73817f7bc803..524ef97d634bf 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -18,6 +18,8 @@
+>  #include <unistd.h>
+>  #include <linux/kernel.h>
+> =20
+> +#include "../../../../mm/gup_test.h"
+
+[Severity: Low]
+Is this relative include path correct?
+
+Four levels up from tools/testing/selftests/kvm/lib/ only reaches the
+tools/ directory, causing the compiler to search for tools/mm/gup_test.h.
+
+Does the build only succeed because the compiler falls back to the
+-I ../rseq include path defined in the KVM selftests Makefile?
+
 [ ... ]
-> @@ -441,6 +441,62 @@ GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
->  #undef TEST_STATE_AWAIT
+
+> @@ -639,6 +641,27 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
+>  	return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
 >  }
 > =20
-> +static void test_convert_to_private_fails(test_data_t *t, u64 pgoff,
-> +					  size_t nr_pages,
-> +					  u64 expected_error_offset)
-> +{
-> +	/* +1 to make it anything but expected_error_offset. */
-> +	u64 error_offset =3D expected_error_offset + 1;
-> +	u64 offset =3D pgoff * page_size;
-> +	int ret;
+> +static int gup_test_fd =3D -1;
 > +
-> +	do {
-> +		ret =3D __gmem_set_private(t->gmem_fd, offset,
-> +					 nr_pages * page_size, &error_offset);
-> +	} while (ret =3D=3D -1 && errno =3D=3D EINTR);
-> +	TEST_ASSERT(ret =3D=3D -1 && errno =3D=3D EAGAIN,
-> +		    "Wanted EAGAIN on page %lu, got %d (ret =3D %d)", pgoff,
-> +		    errno, ret);
-> +	TEST_ASSERT_EQ(error_offset, expected_error_offset);
+> +void pin_pages(void *vaddr, uint64_t size)
+> +{
+> +	const struct pin_longterm_test args =3D {
+> +		.addr =3D (uint64_t)vaddr,
+> +		.size =3D size,
+> +		.flags =3D PIN_LONGTERM_TEST_FLAG_USE_WRITE,
+> +	};
+> +
+> +	gup_test_fd =3D __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDW=
+R,
+> +					  "Is CONFIG_GUP_TEST enabled?");
+> +
+> +	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
 
 [Severity: Medium]
-Will this poison mechanism work as intended when expected_error_offset is 0?
+Will this cause spurious failures when running tests in parallel?
 
-Looking at the underlying call chain, __gmem_set_private() calls
-__gmem_set_memory_attributes(), which unconditionally zero-initializes the
-error_offset field before issuing the ioctl:
+The /sys/kernel/debug/gup_test interface relies on system-wide global
+state (pin_longterm_test_pages) rather than per-file-descriptor state.
 
-	struct kvm_memory_attributes2 attr =3D {
-		.attributes =3D attributes,
-		.offset =3D offset,
-		.size =3D size,
-		.flags =3D 0,
-		.error_offset =3D 0,
-	};
-	int r;
+If multiple tests run concurrently, won't the kernel return -EINVAL to all
+but the first caller because the global state is already occupied?
 
-	r =3D __gmem_ioctl(fd, KVM_SET_MEMORY_ATTRIBUTES2, &attr);
+Furthermore, when one test exits, its file descriptor closure unpins the
+memory of whichever test was actively using it.
 
-	/* Copy error_offset regardless of r so caller can check. */
-	if (error_offset)
-		*error_offset =3D attr.error_offset;
+[Severity: High]
+This isn't a bug introduced by this patch, but interacting with the gup_test
+file descriptor exposes a data race in the kernel.
 
-Since the wrapper ignores the poison value we pass in and overwrites it wit=
-h 0,
-if expected_error_offset happens to be 0 (e.g. for test_page =3D=3D 0) and =
-a kernel
-bug causes KVM to fail to populate error_offset, TEST_ASSERT_EQ(0, 0) will
-still pass, incorrectly hiding the bug.
+In mm/gup_test.c, closing the file descriptor calls gup_test_release(),
+which invokes pin_longterm_test_stop() without holding the
+pin_longterm_test_mutex:
 
-Should the test's poison value be passed down to the ioctl structure, or
-should we use a non-zero expected_error_offset to reliably detect if KVM
-updated it?
+mm/gup_test.c:gup_test_release() {
+    pin_longterm_test_stop();
+    return 0;
+}
 
-> +}
+If multiple file descriptors are closed concurrently (e.g., multithreaded
+test applications or concurrent test processes exiting), multiple threads
+can race inside pin_longterm_test_stop() and concurrently call
+unpin_user_pages() and kvfree() on the same global pin_longterm_test_pages
+pointer, leading to a double free and use-after-free.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618-gmem-inpla=
-ce-conversion-v8-0-9d2959357853@google.com?part=3D39
+ce-conversion-v8-0-9d2959357853@google.com?part=3D38
