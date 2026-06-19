@@ -1,128 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D503A3AB5B2
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0365A3A1693
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781882038; cv=none; b=abmgoyjSG1Sd+X6kRs4YbtziPVH83llzLeJQuaUulm+h+/g8c+KHzf7YW3c1dbwSa/8QqSau2WQaYEZsTr/YhKQVCFig76LS1R8OEpPXwP2/Ubp9lVuLmKM/tkTWB4jKNthVGbB/8KVUHADNKmMYpqHvhqMSJ9RncVd6trvsYo0=
+	t=1781882425; cv=none; b=KS0qiBkZ3wsEJTiD6B4l8HL0maVrA3ecabbLBrgfUu/e5gArTUAcmAfjcVuOwNBFVcj2zh98KTM3roeUtxm05k8io0Mu9L+grJsZtdPcx3BtreoCCHO3JuZ5RGR2sIR91dM9MPOe7qAyDMDld0fos4lFUTQNiWbG4N8RX91gHT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781882038; c=relaxed/simple;
-	bh=7dArzhHm5JN2w2xzSputPd5Cg7SBo1/ENQ+GdmSV7pc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=M9l0OljPQqd6hq/ZuHNcmF2aF/tX6/nEQK4WPH8XI+VWwgGwfOA2VOqGJbzjr9FAZR/XtLNgRd7X2AEZ4Ar/a1/42Q6fLebs/TrxSVvQT5l3lXDe2rFP4hgYHTST4Xus87GfyIU+88gd2niWCzZUB/+1zX19MbMSmdlia4ykqrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdagVVHn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781882425; c=relaxed/simple;
+	bh=1M34dB+F+4NOCUNtLseb2COv4EBQQaUsu85Zjt21i+M=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZH5Zr9DZe5lpKmW5ghAWGGbxz4ZJDqD/a9XesJVxhiwuEJQr7FYnLSJthLTgt5wC2ZxX1OnJLoElaoCAlr1Zzvl6z5I2iFghXpm0B2NygJSnXDyccUYsGymtCoW/12lOZWf8joMGKKkKvvo0DMuqehmzfZmQRxLcTyDxxFAmBJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=su4bzAbx; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdagVVHn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528E31F000E9;
-	Fri, 19 Jun 2026 15:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781882037;
-	bh=twCMkcNvvo1IX6CubXDQnj8pRmmC+Y2XSe4HQYLYTjQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CdagVVHnmZDol+Ms9vaODmfhLlnVXJ6+1DPMwAwZyAIxaxtxQ6q4zGXaDfezODX+E
-	 lQ0CXfVlMK88fremMlD9XnL++j46HjF+ge/L5ewBjc1rcbu7EpRlTuV6p57RKN8P6u
-	 Nupi+D8GShdSjruxr1oWQU+DZH8w8TRhg0xkEfcl2zGzgCcIeiMZ+1KvzKDS5V1JsB
-	 3WI2ckg3W9W0gobBjfqbFlu8vd7ekdeQ4FhpGxkTwJ3EReLa/PPmjCqRo+JZALhjgf
-	 jshL2kAN9fj1nRxj4BHaX6eJm2Upu03Sidqtuh+ii88WFIGUCNhDIbcorOhi4XvmKr
-	 1zKXF/Pvdfecg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.10 5.15] vfio/iommu_type1: replace kfree with kvfree
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nikolay Kuratov" <kniv@yandex-team.ru>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260619150206.1719815-1-kniv@yandex-team.ru>
-References: <20260619150206.1719815-1-kniv@yandex-team.ru>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 15:13:56 +0000
-Message-Id: <20260619151357.528E31F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="su4bzAbx"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c2c98c1be2so20562285ad.0
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781882423; x=1782487223; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dF66luDSUMXDxVr+FGh32ifY036ndowleeCCncNFG60=;
+        b=su4bzAbxyJnS5Zbl5LpLbNZBPO0JzQ62BgbGY3eizXCtuXueE3ll5pPnoxuyvfn73q
+         EWdREEplANzvohxR4ZZFGkJ4OR4pMk2/QcWdtG6n/0EMfr3DWKowJ0pVZjlTNBRIIjAg
+         H89UmQHfHON1gU9A87F6JtLSSu+WR34BHHEioqAG8KqJZOFJ89yfQN5Vk1Gd4m/MZujz
+         p0ZmM0kz9ddBh4dE1fBWP5Epm3d9nW+aQAtSqp7ieA+Cl5uQi5x/fjbzxT0jalR0uj48
+         J6QGlnLNYO6L9VJIdmoAk4qkyEAycXT9B4EUfvwtUEzWTLjq7+L9t1rHXkovw39LcdkO
+         g8Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781882423; x=1782487223;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dF66luDSUMXDxVr+FGh32ifY036ndowleeCCncNFG60=;
+        b=gvaeJi26SsOWMUp1WbMzkLrjMeaD1POJRZu4pkP1S+VSdXY8OgdH1lerqdhU8IzRNL
+         6bqWQUWqHUwV8zyp/U6NPy7TuEb8LiXpXe/B6Cb+6M5fTqeOkHMnCFZi6DwRby/18tR4
+         vl4dxUYl30gMxQKX6+AseiLlHAl9+e88W8dXsd51XlqoOyLMODZmhEzPbN6HCU36IbXA
+         dQvuTjfeWqJKrayIkuU7IMJJrH5UoBRyktInDH6GBZzkcYLGXUOWFJlrEfP60t+Ai8FI
+         h9XEZ1yqnVe0YMorlm6maHMmxM6OB7UnZxOx/OnjqLJezGsclS+kGHU95Cg6ti8W/tyS
+         VhWw==
+X-Forwarded-Encrypted: i=1; AFNElJ90QT/4NeebMAHEMSZG+PiwXYSrdJv33wbKcGAr71tsYkRvHay6fiB5gMYU3NY7numWKWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/2IirxUoQmXlsvA5op1m6wG9A64eeGr7EnbXT1cDB1JWr2nV/
+	7xG3CC7DUZhyVp3WGIj8bdVRU6bCW22KY2Tpg9CqUnjLDNTIh+qDONdvtUxbmAxbJ4QaluT27Uj
+	btMFNi987EsTESQ==
+X-Received: from plbjf7.prod.google.com ([2002:a17:903:2687:b0:2ae:c829:83a6])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:d2c5:b0:2bf:195d:21d2 with SMTP id d9443c01a7336-2c718cbe1c2mr49543545ad.16.1781882422839;
+ Fri, 19 Jun 2026 08:20:22 -0700 (PDT)
+Date: Fri, 19 Jun 2026 08:19:23 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260619152006.3684428-1-jmattson@google.com>
+Subject: [kvm-unit-tests PATCH 0/5] x86/apic: PV IPI robustness and subtest selection
+From: Jim Mattson <jmattson@google.com>
+To: pbonzini@redhat.com, kvm@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+This series improves the robustness of the APIC test suite, introduces
+generic subtest selection, and adds a new test case for a PV IPI boundary
+condition.
 
-Pre-existing issues:
-- [High] Memory leak in vfio_dma_bitmap_alloc_all error path leading to DoS=
-/OOM
-- [High] Out-of-bounds user memory access on 32-bit platforms due to incorr=
-ect pointer arithmetic in update_user_bitmap
---
+1. Robustness: Skip the PV IPI test if KVM PV IPI features are not
+   supported or if not running under KVM, preventing false failures and
+   potential #UDs on bare metal or non-KVM hypervisors.
+2. Code Reuse: Hoist the command-line test selection helper from
+   x86/vmexit.c into the common library (lib/argv.c) as
+   argv_test_wanted().
+3. Subtest Selection: Refactor x86/apic.c to use this library helper,
+   allowing users to run a subset of APIC tests (e.g., via QEMU's
+   -append option).
+4. Refactoring: Extract the KVM PV IPI hypercall inline assembly into a
+   shared pv_ipi() helper.
+5. New Test: Add test_pv_ipi_sparse() to verify PV IPI delivery to a
+   vCPU with APIC ID 255. APIC ID 255 is a key boundary condition (the
+   xAPIC/x2APIC transition point, and the MSB of the 64-bit cluster
+   bitmap used by KVM's PV IPI hypercall). A sparse topology is used
+   to verify KVM's handling of sparse APIC ID maps.
 
-commit 40ca6fabb082675b1379a40ebe33b025f5ba2193
-Author: Jiacheng Shi <billsjc@sjtu.edu.cn>
+Jim Mattson (5):
+  x86/apic: Skip PV IPI test if feature is not supported
+  lib: Hoist test selection logic to library for code reuse
+  x86/apic: Support subtest selection via command line
+  x86/apic: Introduce pv_ipi()
+  x86/apic: Add a test for a PV IPI boundary condition
 
-vfio/iommu_type1: replace kfree with kvfree
+ lib/argv.c          |  14 +++++
+ lib/argv.h          |   3 +
+ lib/x86/processor.h |   1 +
+ x86/apic.c          | 133 ++++++++++++++++++++++++++++++++++----------
+ x86/unittests.cfg   |  12 +++-
+ x86/vmexit.c        |  15 +----
+ 6 files changed, 135 insertions(+), 43 deletions(-)
 
-Variables allocated by kvzalloc should not be freed by kfree, because they
-may be allocated by vmalloc. This replaces kfree with kvfree for dma->bitma=
-p.
 
-Link: https://lore.kernel.org/r/20211212091600.2560-1-billsjc@sjtu.edu.cn
+base-commit: afcc98a30a84aaefc1f0d6783ffffec16c736717
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_ty=
-pe1.c
-> index 67e8276389951..65df5bbc71a8b 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -220,7 +220,7 @@ static int vfio_dma_bitmap_alloc(struct vfio_dma *dma=
-, size_t pgsize)
-> =20
->  static void vfio_dma_bitmap_free(struct vfio_dma *dma)
->  {
-> -	kfree(dma->bitmap);
-> +	kvfree(dma->bitmap);
->  	dma->bitmap =3D NULL;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at the error path in
-vfio_dma_bitmap_alloc_all() which calls this function:
-
-drivers/vfio/vfio_iommu_type1.c:vfio_dma_bitmap_alloc_all() {
-        ...
-        for (p =3D rb_prev(n); p; p =3D rb_prev(p)) {
-                struct vfio_dma *dma =3D rb_entry(n,
-                                struct vfio_dma, node);
-                vfio_dma_bitmap_free(dma);
-        }
-        ...
-}
-
-Does this code leak the previously allocated dma->bitmap memory?
-
-The loop iterates backward using p, but it extracts the vfio_dma struct
-using the failed node n instead of the loop iterator p. This causes the
-error path to repeatedly free the failed node while leaking the successful
-allocations.
-
-Unprivileged users might be able to trigger this failure repeatedly via the
-ioctl, which could exhaust memory.
-
-[Severity: High]
-This is a pre-existing issue, but can this pointer arithmetic cause
-out-of-bounds user memory accesses on 32-bit platforms?
-
-drivers/vfio/vfio_iommu_type1.c:update_user_bitmap() {
-        ...
-        unsigned long copy_offset =3D bit_offset / BITS_PER_LONG;
-        ...
-        if (copy_to_user((void __user *)(bitmap + copy_offset), dma->bitmap,
-                         DIRTY_BITMAP_BYTES(nbits + shift)))
-        ...
-}
-
-If the bitmap parameter is typed as a u64 pointer, advancing it by
-copy_offset on 32-bit architectures (where BITS_PER_LONG is 32) will move
-the pointer by copy_offset * 8 bytes.
-
-Since copy_offset is bit_offset / 32, this advances the pointer by
-bit_offset / 4 bytes instead of the expected bit_offset / 8 bytes.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619150206.1719=
-815-1-kniv@yandex-team.ru?part=3D1
