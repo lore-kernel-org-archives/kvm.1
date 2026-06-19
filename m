@@ -1,125 +1,114 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DE284693
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 12:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB3384CE7
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781873513; cv=none; b=YrSGJtQY5rPUo0IWjekc0X5JA1VKDtiJQXFpOUuIBDwY7NSnWX7URyA2gmvrlj2jL23WUpKtM0L9JjxaYrTVZiCjDQin0H1S6h3Lh9Jf+frx3xmxKSAriA2kdUwM+kurkHkwF2cH6qDvKvXl/NSzcwN0GUHBg9zT9ufQe/58hZ4=
+	t=1781874302; cv=none; b=nX4XQ+eRzyOJVAESl00QjfU3LYYzp1XDpQdI6nihd7JF4LrSwj7P4I2qpH2TksjZcnNMl4Q6IUpi9OKqbWGorVuoV4tv35pnMzuOe5MUFfG6sGsVsIc3UiUnT7WgyVTaUN4adRbb0nHm0NrGJfGeNYfMaOmKXbaTM42l0N4Q5m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781873513; c=relaxed/simple;
-	bh=AoSchuXJGAayDzDPFIuHozNVcqm/iWheUa1nSVya5uQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N+Lh1OJ1w3d2uJRZgbeT64Us0FzEzs/IBGIQGCfIyCqNZY1RG6YfDQr9NgGwZZU1G3mm7N5Pa3R+aDH880DNJWoqPSDy5D9OtS7cNhmIP9v2rJGb0Aom75cORYVBEMLcsuCkDvsjnTUCq77ZiRI3IsyHe9G/Opd76Z7VFSDfIvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6G6hYoQ; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781874302; c=relaxed/simple;
+	bh=ici1LF63GDXSYFCSToUOrQfp47UqSNRyItTIEoyv/MM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X/UzPnZy/1QXvkugBwMaYQoIvS9w1EwsVYb+9Vu0O+k7Pd17f70ddwUC5EU+2tlNbs41qQ1/z8QqmODYxRnSZeyeBhb3zZn1XfHlHjVeB6wWJl6wRcf7DSxHl97Oe+2/15z+dFy/hIRKs3y4Ai/tYa0uQqF1r7K+BKN6UgAFem8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FbLVvisI; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6G6hYoQ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso21061065e9.3
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 05:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781873510; x=1782478310; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=M6G6hYoQGyEFSHNFdRWBdU4G7ykRDxlAROTSMAlGePNeLH6fwR2d2KwGFBeEjya4rC
-         BRr787JIbVdi566ccw22qNGtfsdczdqKskU/r6th6LF/XO1W4RTPjDvJOEFwDwcX8tWN
-         RBnFtBY6AuYGPkhzKAQrGFCtaLpIxcRVixGOH4fegOPJ5UowVOqCf5cAIeNCNJZ8hDup
-         qz5s3dFSMMomrLxtqxUvwyl/SBfZTK1ylwbeLWnXudrPTqQQbXpRViclUOlHlmy9AP4w
-         NFz5R1imyhysVzPS3PZmBxVKnDZWwqB8qgCxNP4yX1s8Xs6rgA9q4gryRQbXbqd88BBI
-         Mk8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781873510; x=1782478310;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=laROZbWnzE0hCDsDDd6yA+mJoystSAqNpvIVq0sPclE=;
-        b=WQgE6fjTKng/fNJwJUYvWjcOY5AiPFy6cQtx96wK4GJmE3JPb85HanXr6Kd7KfsuVb
-         chmg68z08blo/NyAHUq8RIjedjF9cPVWs1fdRwzOJwU6ghKRiPG73jtuYHKwo6yRU0Pk
-         oPzB0fOFl6Yg/rL1S4YFLLAR/aMYMDdOdexQfNNW0k1zh0nI2OPKyv4dgcZcw162HkM7
-         BzMMoePhsUfyIwsruT2fTS28yQ1nzdKZn0FDMruuNc0rtkYsSBrOH4ALes11MUJiBtum
-         HchlCKr5dGvMHa+JvxJE8Ugwpn04uwG88wtkBfi4l2WCeCH12NIzPShExI1csls7+7k6
-         1XsA==
-X-Gm-Message-State: AOJu0YwbMkE3QnBzpRHI7lPM3Esa34ik1Y0czVBSr0p3YamHSG0PGeGl
-	+sZJL8pydZ75ktOZiRnl/2hGRyVru2i3BeGWlfpSLu2ncw6+v/7GDSxV
-X-Gm-Gg: AfdE7cnNcii7jDPSpxd9gHIHjBwaZgnZf8Dbrwvn3KZYM1EeQvqprypoo8JK0IYf0UL
-	GVVc5cmLqL0GHUMX70iRC3PMMGCyzIXGFk0G4ZLnrABATlHdx1EVd2KyHuYt30D7VEVfvPKn4JC
-	kRjyinsPFpwP8lZvLDt4gVKqUz9Og/7Cc5hNk3En+RcvUZl6ovoklMAV3sXr9q7enJlDVQYtzH/
-	MMacTc2NU+TEns0V/Z4lJrhH4TOuw6JrcNsS0wVhAmDpxber6s27Ik5K1drd0ueSKCdAGEQGbt6
-	vGAmPhNlL9o5pdVLYoHCWmVFoPU6lJjJkO8/mAFW0p+ZL3qo6azkX5UsQmESG5v/KIJXyax3i8u
-	lzDLRdCHrG5RD41zOdRLw7fKz/58sKxZzt2FZ9GE51LkEvKHD6V+Zo4S9lDUlOcVO+FDUHSzmrC
-	KTaDqDeWatSmZiSDK9V6w4kTri4y+n8yKQ9pw6SRne/llJ99uMylOT31f7zCqaorINaW+pA2jJD
-	C5eNYo=
-X-Received: by 2002:a05:600c:8b10:b0:490:b00c:8e6a with SMTP id 5b1f17b1804b1-4923f58988dmr65892965e9.28.1781873510164;
-        Fri, 19 Jun 2026 05:51:50 -0700 (PDT)
-Received: from [10.128.11.42] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650c115fd8sm7984157f8f.35.2026.06.19.05.51.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 05:51:48 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <8e53844c-f2f8-4a4b-bf72-f3140c170d43@gmail.com>
-Date: Fri, 19 Jun 2026 13:51:45 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FbLVvisI"
+X-Gm-Message-State: AOJu0YzNB3if/ynFqIWcDrQPDDwSdoIM0+AX9QRyU+4D7Kdca/0oHEwh
+	6+7vBxtVYopUboT2KWf9+g44tF7I+ZSVV2jKJJv2kz8tJMvEsHg9EEbhd9Mw6zOQyXGusQx3+oI
+	TABELKANIgMdBjzyqQDBpqU7VLARixBdliR0oc0ug
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781874296;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8eUJpWCn5MJf55/QS+SBCOG38tqnqArz1EhXl+TSuU4=;
+	b=FbLVvisIZwdod4JHZzfW+soX9HjAKkCaAhgwrCug7vwqSJR3ooMUsrWgBVbniXn5Ua/o7B
+	HN5G4KSefm2qEGdEp+NWUfJg1j/T7nwWo+ilxXHuXzbGiohgRpX7s6UXwweCi7J3MCgL0c
+	hk+bSiZq3YFpmPKnCz2hw+rpHI/7e8c=
+X-Received: by 2002:a05:622a:1492:b0:516:d25f:f038 with SMTP id
+ d75a77b69052e-519e48866d4mr8409241cf.10.1781874293681; Fri, 19 Jun 2026
+ 06:04:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260619115415.5475-1-will@kernel.org>
+In-Reply-To: <20260619115415.5475-1-will@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 19 Jun 2026 14:04:17 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTwzgapVvdf3qub5yruoPgVxKEo7Ghqn_a4P+Xu6t2O0Mg@mail.gmail.com>
+X-Gm-Features: AVVi8CdtT6iWYhzS2QfrYKi0SSlD1aMfZs-XAIfL0QrxQh6c3aj9vGPKgTYHh_8
+Message-ID: <CA+EHjTwzgapVvdf3qub5yruoPgVxKEo7Ghqn_a4P+Xu6t2O0Mg@mail.gmail.com>
+Subject: Re: [PATCH kvmtool 0/4] Add support for running protected VMs on arm64
+To: Will Deacon <will@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Andre Przywara <andre.przywara@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Hi Ackerley,
+Hi Will,
 
-On 6/19/26 01:31, Ackerley Tng via B4 Relay wrote:
+On Fri, 19 Jun 2026 at 12:54, Will Deacon <will@kernel.org> wrote:
+>
+> Hi folks,
+>
+> With a v7.1 host kernel, it is now possible to run protected VMs on
+> arm64 with pKVM enabled (kvm-arm.mode=protected). Although the pKVM
+> support is not yet feature complete, having kvmtool support is handy
+> for development and testing. So here it is.
+>
+> The patches are also available here if you want to pull them directly:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/log/?h=pkvm
+>
 
->  config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+I tested this on qemu, using the Android 17 kernel
+(ack/android17-6.18) and the upstream 7.1 to boot a protected (and
+while I'm at it) non-protected guest.
 
-Sorry for the style nitpick, but could you keep the type and prompt as
-the first attribute in the Kconfig option definition (like the other
-options do)?
+Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-- Julian Braha
+Cheers,
+/fuad
+
+> Cheers,
+>
+> Will
+>
+> Cc: Alexandru Elisei <alexandru.elisei@arm.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Andre Przywara <andre.przywara@arm.com>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Marc Zyngier <maz@kernel.org>
+>
+> --->8
+>
+>  arm64/fdt.c                         | 37 ++++++++++++++++++--
+>  arm64/include/asm/kvm.h             |  1 +
+>  arm64/include/kvm/fdt-arch.h        | 10 +++++-
+>  arm64/include/kvm/kvm-arch.h        |  2 ++
+>  arm64/include/kvm/kvm-config-arch.h |  5 ++-
+>  arm64/kvm.c                         | 20 ++++++++++-
+>  arm64/pci.c                         |  2 ++
+>  include/kvm/virtio.h                |  2 ++
+>  include/linux/kvm.h                 | 53 +++++++++++++++++++++++++----
+>  include/linux/virtio_ring.h         |  5 +--
+>  riscv/include/asm/kvm.h             | 11 +++---
+>  virtio/core.c                       | 12 +++++++
+>  virtio/mmio-modern.c                |  2 +-
+>  virtio/pci-modern.c                 |  2 +-
+>  x86/include/asm/kvm.h               | 21 +++++++-----
+>  15 files changed, 156 insertions(+), 29 deletions(-)
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
