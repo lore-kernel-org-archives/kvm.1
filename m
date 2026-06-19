@@ -1,226 +1,105 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B7C3C2BAF
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 20:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866F335AC13
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 20:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781901123; cv=none; b=i0n47M+/lMbmgolMgEhdPcnOZvoH3GwINOQ+xzzWW2xpXmf92gTrZldSC6x5cMplj6HC8+CzaQtN/dmk+SLYqz+H0rFf3SBviZIU5RAkg6UUbiJSlHPBwp+zLTPKM6CNqcz1qidJk6rikWKDbfBAQLOQq/y22MPInyAtMZdyBWM=
+	t=1781902004; cv=none; b=EegF9Em+39IzZgrKfpUJmCRFwO8a1xeCAnNDrOQI4bNRubc7Jq+fEwqSZLTvPxLm0cfDnLObq0VLEiu1Sh1kWbndTCNUtD8ayhH1JpSrABAuGEZ25pUP9VBfWfDbuA1DcpI14ZoCnDJM857TZu+oz4i/2hLhQAlB3UhriirGhCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781901123; c=relaxed/simple;
-	bh=KEHvri2C+4rwq4Wz41q+2TtCvRVzvXyvnlqX/inZMjo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nNrJUzmI6opGDpMJJ5FTW1YjjO7Ouh/Q8RWvDggJy+NH2WT3tuWK3ZBPvKpGzTitiZOu4d0ici2jUboRK7rhDZIULYVUyz8YD1UWkBxwcQ/Oqme/bFoEN2NTyvkF7zSLMtjU4w1ek7IsCsc8fpF/va13KcU0sQfUJT1XVRt1FwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dM+3r2rK; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781902004; c=relaxed/simple;
+	bh=Bq9oNfogEdZAnq2LId/cfY2I/jQUsrr1JrUsDa/t7AA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jQ8DCT8aX7Ex0xkSb0giVYJo/fY4ubmsvCAlzHqUyyMQ4OGVf8j686sCcr5pIJZq/hmgO82SVlw0cg8Dwck/yuup4DTAS+neVxDJvHRJuARH+g9lZ6CBk8ZpZirAE50tu0SbGuDgDMesSxcUM+cp52tTzgXa5Weq8EIpXRRREys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqIa1H5I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dM+3r2rK"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7ffbc4d8b8eso28451607b3.2
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:32:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781901119; x=1782505919; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vyiYsQofQELQbzMq1inRUoCbXJl9QmJD7EW7nh7MVlI=;
-        b=dM+3r2rKuRCj0AnZ9/5CQhVuFolFYblR7SpHBPcUtb13HrEvFqStkAfm5RFq9bNSWo
-         w2hoNu6kx5hcLSLqyKaFUb8WSKB7WuBH211yA9YoTqvlZ9m6Sak+Jb/dyJH3Kw24RL+v
-         EgndwFVFsQpKkdXNbOrU27zx9ATF2QhRmV1aVzYDBlJvbfpZu/XobsP2YffdYivwJfc4
-         N63tHNbzhkjz4OT7z0tDEOkleCd35ZOV0/9mlKWL5Q9wfcOcUbuantLJrM0tRCjM4wPl
-         QHPErmRW3XDOgdeAxm2hRAfELi/r4uVsx4ycPJLhTUUJivTQZS1jiqMdtuk3eXRSydbj
-         1vHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781901119; x=1782505919;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vyiYsQofQELQbzMq1inRUoCbXJl9QmJD7EW7nh7MVlI=;
-        b=KNG3wSzlIQKkkAd9bNqjEfbYNMyxgBbwxGHduXtZ1a1vGZzcx0XI6sQzgUv/5sgXWB
-         zHzZDUsn0ikGI5jkN3DNdOhdOwLxv9P/t70Q/GSA4oeZhQGh7gLkh15sdPLw1msit7sJ
-         wEmmbgJQJSfs3Dvwv+YVYq5B8mxAZMWYueXKNsAcyS1q631WzQKorcc784RURFaumYjv
-         ygP0Dijen8tW9cCEzCiskYAUxbjyVNDqaDuNd/esf+sny3u3q71Qun1LeF5/pG/NVC1Y
-         DB5YMPaCDXmfFtfLOGg2A6S5+XuwyRQKsfF57VluO2EJoyNYDdsq+MaTu2L2gW53ftvY
-         MAAA==
-X-Forwarded-Encrypted: i=1; AFNElJ+vxW6A1xv18Oqf/Qr6VpUOh+HDYxUQxbMRDyzReBtOzLmYie2Nyc3uo7xPVOuZb1b0dso=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvySLs3Wj4HpshSYxPrH3BR4RyKN2ouca+5gVro8+C33ilBwMi
-	tbIIGQxbGFgEHX3cD0pODCt6jaSIG44caeYH0sXbG3tXmTBrzGoOzWmJW783HCVwZtU=
-X-Gm-Gg: AfdE7cmP5H+1vCIpC9GLN8SCgo3DiJj+SpS/yXawp3QcwLzYeyrwYJiTWQKs1j08ZUT
-	nGQl4Ny+LWYaC+ppOGlcqKfdt4QNRWDhrRyEMAF95iK0n6LT6ftgSeFKPp1qxjZebiI2VkqyMS0
-	N0ejkfFaTEAkn8oYmj1dttkhTIWZQUXxV7qxug65sNFQn0qdSsub+imzYl7jxKiX1GnqQ1LZjud
-	6GDMz9Fqc2GkUvXIat9HdQsYkT/T5Tj5DYnu4ibG3NV8GoagbW51G+Oo+p5zhVu3X3Z56N6bi26
-	1cUArtUYeFYlJFhoQ9vP/9t9ltogQDCeZrD+wleMJ47cPqDpw/91bjYTWnXW8gImVGeTAJOG3aE
-	as5A692IjnYyH4ai1+i+F7oN5bGpvZf3TtUaOE/Z712J6hjSXpXT7xHoEGGTDbO81qEchgzPwMr
-	AmHxe3PUdXWAdKDlo=
-X-Received: by 2002:a05:690c:6c8e:b0:7fe:1333:c745 with SMTP id 00721157ae682-80134c78770mr57757507b3.27.1781901119103;
-        Fri, 19 Jun 2026 13:31:59 -0700 (PDT)
-Received: from TurinLinux.. ([37.19.212.13])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f015805sm11106986d6.1.2026.06.19.13.31.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 13:31:58 -0700 (PDT)
-From: Nicholas Dudar <main.kalliope@gmail.com>
-To: stable@vger.kernel.org
-Cc: seanjc@google.com,
-	pbonzini@redhat.com,
-	gregkh@linuxfoundation.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	0wn@theori.io,
-	mlevitsk@redhat.com,
-	jmattson@google.com,
-	Nicholas Dudar <main.kalliope@gmail.com>
-Subject: [PATCH v2 6.1.y 3/3] KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
-Date: Fri, 19 Jun 2026 16:31:07 -0400
-Message-Id: <20260619203107.2752678-4-main.kalliope@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260619203107.2752678-1-main.kalliope@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqIa1H5I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A691F000E9;
+	Fri, 19 Jun 2026 20:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781902003;
+	bh=5MIayV3GbvRDajQ1xUQQBBwOcj3bhJqI/1bQLo1yGug=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mqIa1H5I27+3sKMxkWCzL19pWUWJPBhe6zUMYb+l24BocCr2IAr/uRXAmJoydd2fS
+	 8jv+an2tqrRiO/Cq+CJ5xhFG1JCiswk7U4SmFxDbhVGwjvII7/rG5M/Rtq/0TURawc
+	 tdMB0vCKFeJMh8dqPYlgc8uT3gPwi66rjtSKlu3WB/dYl+5XjVIEqWUOsh1TEwHGFL
+	 mVvBPGTspQ3XGz10Ru9DAEL8Gp8PunPnksIArqHwXeRfOblEpErVEDs+8qPpx0XQQH
+	 ErP/ZfPxhEuD47sG+F1M5nPO3/MxQrlH/glSaWNAHidDEBv0tcK1/SbaxKVPfH2pIl
+	 2/9CQkyB9CL9Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6.1.y 1/3] KVM: nVMX: Add a helper to get highest
+ pending from Posted Interrupt vector
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Nicholas Dudar" <main.kalliope@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260619203107.2752678-2-main.kalliope@gmail.com>
 References: <20260619203107.2752678-1-main.kalliope@gmail.com>
+ <20260619203107.2752678-2-main.kalliope@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 19 Jun 2026 20:46:42 +0000
+Message-Id: <20260619204642.F1A691F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The condition `if (max_irr > 0)` incorrectly ignores vector 0, p=
+reventing it from being synced to the guest's virtual APIC and leaving the =
+PIR state corrupted.
+--
 
-commit 321ef62b0c5f6f57bb8500a2ca5986052675abbf upstream.
+commit 5c23c313090006d2eae5e26f892baf83bf9030f1
+Author: Sean Christopherson <seanjc@google.com>
 
-Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
-pending delivery, in vmx_has_nested_events() and drop the one-off
-kvm_x86_ops.guest_apic_has_interrupt() hook.
+KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector
 
-In addition to dropping a superfluous hook, this fixes a bug where KVM
-would incorrectly treat virtual interrupts _for L2_ as always enabled due
-to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
-treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
-on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
-event based on L1's IRQ blocking status.
+This commit adds a helper to retrieve the highest pending vector given a
+Posted Interrupt descriptor. The helper returns -1 to indicate no interrupt
+is pending, improving consistency with IRR and ISR handling.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Nicholas Dudar: backport to 6.1.y. 6.1.y predates the vmx main.c /
-  x86_ops.h split, so drop .guest_apic_has_interrupt from vmx_x86_ops in
-  vmx.c rather than vt_x86_ops in main.c. The function is static in vmx.c, so
-  upstream's x86_ops.h prototype removal does not apply. 6.1.y keeps the
-  current hwapic_isr_update signature. ]
-Signed-off-by: Nicholas Dudar <main.kalliope@gmail.com>
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 -
- arch/x86/include/asm/kvm_host.h    |  1 -
- arch/x86/kvm/vmx/nested.c          |  4 ++++
- arch/x86/kvm/vmx/vmx.c             | 21 ---------------------
- arch/x86/kvm/x86.c                 | 10 +---------
- 5 files changed, 5 insertions(+), 32 deletions(-)
+Link: https://lore.kernel.org/r/20240607172609.3205077-2-seanjc@google.com
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index c068565fe..1cfe83263 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -81,7 +81,6 @@ KVM_X86_OP(check_apicv_inhibit_reasons)
- KVM_X86_OP(refresh_apicv_exec_ctrl)
- KVM_X86_OP_OPTIONAL(hwapic_irr_update)
- KVM_X86_OP_OPTIONAL(hwapic_isr_update)
--KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
- KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
- KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
- KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index fe5c0f86a..31395c434 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1549,7 +1549,6 @@ struct kvm_x86_ops {
- 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
- 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
- 	void (*hwapic_isr_update)(struct kvm_vcpu *vcpu, int isr);
--	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
- 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
- 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
- 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index ad07e83d2..f7a790a28 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3979,6 +3979,10 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- 
- 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
- 
-+	max_irr = vmx_get_rvi();
-+	if ((max_irr & 0xf0) > (vppr & 0xf0))
-+		return true;
-+
- 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
- 	    pi_test_on(vmx->nested.pi_desc)) {
- 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index e5d162e97..2e6454e4c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4063,26 +4063,6 @@ void pt_update_intercept_for_msr(struct kvm_vcpu *vcpu)
- 	}
- }
- 
--static bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	void *vapic_page;
--	u32 vppr;
--	int rvi;
--
--	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
--		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
--		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
--		return false;
--
--	rvi = vmx_get_rvi();
--
--	vapic_page = vmx->nested.virtual_apic_map.hva;
--	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
--
--	return ((rvi & 0xf0) > (vppr & 0xf0));
--}
--
- static void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
-@@ -8266,7 +8246,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
--	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
- 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
- 	.deliver_interrupt = vmx_deliver_interrupt,
- 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 10ef8a435..208a713d7 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13046,12 +13046,6 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	kvm_page_track_flush_slot(kvm, slot);
- }
- 
--static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	return (is_guest_mode(vcpu) &&
--		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
--}
--
- static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- {
- 	if (!list_empty_careful(&vcpu->async_pf.done))
-@@ -13077,9 +13071,7 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- 	     static_call(kvm_x86_smi_allowed)(vcpu, false)))
- 		return true;
- 
--	if (kvm_arch_interrupt_allowed(vcpu) &&
--	    (kvm_cpu_has_interrupt(vcpu) ||
--	    kvm_guest_apic_has_interrupt(vcpu)))
-+	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
- 		return true;
- 
- 	if (kvm_hv_has_stimer_pending(vcpu))
--- 
-2.34.1
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index bdc462944cb08..7d8e18dbe8531 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+[ ... ]
+> @@ -3818,8 +3819,8 @@ static int vmx_complete_nested_posted_interrupt(str=
+uct kvm_vcpu *vcpu)
+>  	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
+>  		return 0;
+> =20
+> -	max_irr =3D find_last_bit((unsigned long *)vmx->nested.pi_desc->pir, 25=
+6);
+> -	if (max_irr !=3D 256) {
+> +	max_irr =3D pi_find_highest_vector(vmx->nested.pi_desc);
+> +	if (max_irr > 0) {
 
+[Severity: Medium]
+Does this condition inadvertently skip vector 0?
+
+The commit message states that pi_find_highest_vector() returns -1 to indic=
+ate
+no interrupt pending, so max_irr can be -1 or 0-255. By checking max_irr > =
+0,
+the code skips processing if vector 0 is the highest pending interrupt.
+
+While vector 0 is an invalid APIC interrupt that hardware typically ignores,
+skipping it here means KVM does not call __kvm_apic_update_irr(). As a resu=
+lt,
+vector 0 could remain stuck in the PIR array instead of being cleared, which
+diverges from the lockless PIR/ON protocol.
+
+Should this condition check for max_irr >=3D 0 or max_irr !=3D -1 instead?
+
+>  		vapic_page =3D vmx->nested.virtual_apic_map.hva;
+>  		if (!vapic_page)
+>  			goto mmio_needed;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260619203107.2752=
+678-1-main.kalliope@gmail.com?part=3D1
