@@ -1,131 +1,104 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E0F2853F3
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495C53AB29C;
+	Fri, 19 Jun 2026 15:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781881610; cv=none; b=LW+Yha1hSyESpr31rqkhYGd+3WrI35vSdfLq6m4e1PPy83vig30TgT2C0n5kH6H4id6e6j+Z83FaeLhFzd/BbLXpmrgc9l/mdNHrQiweLUDNreKU6jA+EdbuHbxbteknUnP2nV/3o2ld+nU3TIZEJua2u7rogqHthyHxhzQ/Tq0=
+	t=1781882013; cv=none; b=SxVJ/MUtiB5VSwE5URCmXkwzZFqC5tU2BrUkhtVZjf9hdgpv3cEpz1YXFT/EGbOPRoydpLlTfFy9bVFisWcBZcMdvsxP7bumIj2r0T26FqRhsz86k+ejx7C7fryEfeqBsugSiMyDwFTgy5/RDleBliakZhN7kVhU/qFVhe1jD0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781881610; c=relaxed/simple;
-	bh=6pKJbGXD3BjzZ6jiJgE2wbpszsCFCKqrbr9eZJ+4bJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2BPEA+emLFYc9oXkItv2NP0PezyHywH1Wnsmq9UcH2qFzJNGtMytcETYmhJUQM86W7f5nCSFqhI/ERQOWwgQFapgbH2DpBjPG1mK3fPyIKtzZKr/mxnVhaTcSbuS+JdSICpRtKQ0pxlpWydiFcB47EaRP7f5OHBhIYrcUZk/pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ml5PIyXh; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781882013; c=relaxed/simple;
+	bh=usOWqgCub5le+T3DjFN/vZpnwxPpCJ896YIBwaf05UI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LXOdAn2Bw1NKimzsL1mmwTzBu1yTZ+d/rvBCWBR0pENv8cKLc5F4Xpwh+5LPrKWT2NVS1Gsh1hvLvgSgno1cwR7KDB+Lmd6KDdfExm5Iw4FzS+HKtW4r0dm6yj6ZjEmBSYBbW7TBQe4FnALpVjRJl7q/hOwNYYh2kg26ShZazMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=lUkthRMa; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ml5PIyXh"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4601949975dso372728f8f.0
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:06:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781881607; x=1782486407; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E5kDXUnyJJXjz/qiqqJglYFwJpL0mExjzODZMSDh1B8=;
-        b=ml5PIyXhow2fCugjtwMLgU11fcd5bblay2/DgtT+1CODVIBs5aRxXlnE6nfh3J2qup
-         rQKY+poOgZhKmNGa3W9cDzJWOPIZhE3AkSZ88L9y+6SVWjfBdpLd69HG6O2P70ZW6Nuh
-         o6AascNR2h5VnSDkoNBNrP47+SEXgJxn9SstXN+7U0YOeX8A1J4CByEhKd5on/wr3Yuv
-         nheJQqumv7GENKqVsy2MHofZ5E25dzKVOp5vH/H5UQsoHnP+NAOPQGZciCtq0UDMyBr7
-         la/kLxMX1s6WLnTOSE7mQzblr97QVeNF5FJm/vM9aNZ+zlNefR5jjBtviHNmd0/M92lh
-         sVUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781881607; x=1782486407;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E5kDXUnyJJXjz/qiqqJglYFwJpL0mExjzODZMSDh1B8=;
-        b=iP9yrvKyXk3NMLzjPdjiNYpwJFRYwvOSZTxnvT8HRg3Ol4EJTnlFW6d8mWLC1H67CQ
-         tidV3g36YwYrY816Hew0o/68kAIoEkndBB2PdYhCOl2yxi1ucqAmrlLo43OgJDAgpot6
-         xA2Xray3aubB0e2eFemMmSzOxP16cD2Jhj6s0GtePJGm2oTwofedmQYiyJase6Jf50lX
-         /W/jUuXZW8iFyANsfsfQHhY/lEA4lKXjgBG5JLitiP49mHGQ5Uhg7sDoyuPcqTdESxm2
-         iuB52NFSAkKSvbsLgLBIY+miGSxNpuYQdbU+IULgyRSw9fnNmosngaIvUhHU91Lvccj9
-         CP3w==
-X-Forwarded-Encrypted: i=1; AFNElJ92pl9Vy4mneenycgJvcGG1udUgn0K92Z6Ncif0vsiTIr4zKtVJF+6knoiOXImgfiNPzZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw88sw/sh1SNgLkk/BJ1kznv28reSBxl/YIWHPpg8UgFQF6sE1o
-	uzPT0gY5X7YjXKp/1oCWWf5JZ6i+SjsHEVCkxobqJD42ZnJR45V8cvpX
-X-Gm-Gg: AfdE7clkolNFFmLKdbhKmKDppote8ZaFD7clSirKkYM+JVL1hIYEHIJoVLAjBYW7VjV
-	xm6sFQhQEvn7AzH9ZmlCMVcS2pOW/IsTVt1RbbcsxZz0CPoX4BZRblIT8goyLLVK7+k1DJ+Vu5c
-	pvD6f3bUPzHxqxxxU8QY+Rj+4JSE7N0dJe5DD4hA2pgZ+yDH6XZ+SOqt9V0iQnEbjzYmWnhBIUT
-	dhlCET1bZA54pljE64eo91dApR4iC9StZCpQ7zXCv33o/247YSnWguCgwk71/EjTiJXpFGdldVS
-	lyIqouFYgNaTdxDEsYyPNR06FPl9WnmpErOtO+6mQy8hqEgGQgK6r4ts6zGl3hrYuxqH8r41lpv
-	0FKUW0uaUiQYTJxT8eCS7yP3u6zLsz7ciONWpe2nE9cIVshPSOpiaqPeiS/qXvHGDVa8Ytl3OSy
-	tUc5Ny7F26p4e7icWXo2r34lQuSh2vpxGBu4Rt0RCVWPECE0ezLQ==
-X-Received: by 2002:a5d:5f96:0:b0:462:d07e:4bc4 with SMTP id ffacd0b85a97d-4656d643ccamr4620478f8f.7.1781881607111;
-        Fri, 19 Jun 2026 08:06:47 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46508a0473bsm10004425f8f.1.2026.06.19.08.06.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 08:06:46 -0700 (PDT)
-Date: Fri, 19 Jun 2026 16:06:45 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86: Replace BUG_ON() with WARN_ON_ONCE() on "bad"
- nested GPA translation
-Message-ID: <20260619160645.57f4e325@pumpkin>
-In-Reply-To: <20260618185746.2023283-1-seanjc@google.com>
-References: <20260618185746.2023283-1-seanjc@google.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="lUkthRMa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1781882009;
+	bh=1QsRTYJv/V6JQEsJMUbrHpG1B6cDUyuPuUiING2oFTI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lUkthRMaMEeqVhJ8JXxzh47Cl37fr8eNRTUlNw836+uLH/GZEf0zWkG+E4S01Jnfq
+	 YecdbiYTR+EzcalQYxIewQt1Rsv18MbUkpypGzNciItddrdKiD5Vmf6Mngrf7XIuwb
+	 RWJnYDiDJjQPb5igfdeb9udbwasF6bzYEpndpPzgRdMgEM/lnY/XUiM/CmickBaHvc
+	 ZkTrzjMlrxD635nTa02lPJiqeEF7r1F6Q/QKG29qlWIghwNZncR6BAY3zqxshSRce+
+	 Fx3CFwcDsgjHmzVL1h8IEkn+A0/L8espl1qdYSUar5Ma/bBcUv0O1ddWlMpELXpS95
+	 EYWQsk27ya2sQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ghh1X2w4Tz4w1W;
+	Sat, 20 Jun 2026 01:13:20 +1000 (AEST)
+Message-ID: <55ea7422-08d8-4c92-aa59-8ff6f9e9d781@ozlabs.org>
+Date: Fri, 19 Jun 2026 16:13:17 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Tian, Kevin" <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>, Alex Williamson <alex@shazbot.org>,
+ Leon Romanovsky <leon@kernel.org>, Alex Mastro <amastro@fb.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-7-matt@ozlabs.org> <aixgZQiBQKgS7yIM@google.com>
+ <DM6PR11MB3690489DB5FA611413BF60558CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
+ <ajGbRE3WWJxNxcrg@google.com>
+ <BYAPR11MB3687AE280241C9E00B46FCF98CE42@BYAPR11MB3687.namprd11.prod.outlook.com>
+ <24f34e59-7c3b-4b56-83bf-cb07e3f369a6@ozlabs.org>
+ <20260619133116.GB278945@nvidia.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20260619133116.GB278945@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Thu, 18 Jun 2026 11:57:45 -0700
-Sean Christopherson <seanjc@google.com> wrote:
+Hi Jason,
 
-> If KVM attempts to translate what it thinks is an L2 GPA with a non-nested
-> MMU, simply WARN and return the GPA, i.e. trust the MMU more than the
-> caller, as there is zero reason to potentially panic the host kernel just
-> because KVM misused an API.
-
-Except that PANIC_ON_WARN stands a reasonable chance of being set.
-So it makes little difference.
-
-	David
-
+On 19/06/2026 14:31, Jason Gunthorpe wrote:
+> On Thu, Jun 18, 2026 at 05:02:58PM +0100, Matt Evans wrote:
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/svm/nested.c | 3 ++-
->  arch/x86/kvm/vmx/nested.c | 3 ++-
->  2 files changed, 4 insertions(+), 2 deletions(-)
+>> My understanding is that the sequences above wake a device that happens
+>> to have previously been put into D3, and AFAICT it could only have got
+>> there because of a previous vfio_pci_set_power_state().  Seems its only
+>> caller is from the emulation of PCI_PM_CTRL using
+>> vfio_lock_and_set_power_state(), and this zaps/revokes BAR access before
+>> a transition to D3.  Similarly, an attempt to access a BAR via an
+>> ioctl/through vfio_pci_core_do_io_rw() fails the D3 check in
+>> __vfio_pci_memory_enabled(), and besides will try to take the memory_lock.
 > 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 9aedb88c832d..3e6c671a8dc2 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -2152,7 +2152,8 @@ static gpa_t svm_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
->  	struct vcpu_svm *svm = to_svm(vcpu);
->  	struct kvm_mmu *mmu = vcpu->arch.mmu;
->  
-> -	BUG_ON(!mmu_is_nested(vcpu));
-> +	if (WARN_ON_ONCE(!mmu_is_nested(vcpu)))
-> +		return gpa;
->  
->  	/* Non-GMET walks are always user-walks */
->  	if (!(svm->nested.ctl.misc_ctl & SVM_MISC_ENABLE_GMET))
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 3a293640d58c..6957bb6f5cf7 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -7470,7 +7470,8 @@ static gpa_t vmx_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
->  {
->  	struct kvm_mmu *mmu = vcpu->arch.mmu;
->  
-> -	BUG_ON(!mmu_is_nested(vcpu));
-> +	if (WARN_ON_ONCE(!mmu_is_nested(vcpu)))
-> +		return gpa;
->  
->  	/*
->  	 * MBEC differentiates based on the effective U/S bit of
+> I thought the general design was the bars were made inaccessible
+> before going to a low power state, and remain inaccessible while it is
+> in low power?
 > 
-> base-commit: 9d4853b044beefa21c4ee3e18c40653601a64ced
+> So the order of D0 doesn't matter. If it is not in D0 then there is no
+> mappings and zap/revoke is a NOP.
+> 
+> If is it in D0 then it doesn't matter because D0 is a nop.
+Yes, that's what I'm getting at. :)  If it's in D3 then BARs are
+inaccessible, so as long as we go into D0 before the DMABUF move, the
+order of the zap relative to the "go to D0" doesn't matter.
+
+
+M
+
 
