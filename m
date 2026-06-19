@@ -1,65 +1,65 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F4E390986
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57AE39099A
 	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781874343; cv=none; b=JXUOxtM+Rl3tuTr6HkcZLKYRo/2bW0Lw60pgBRqhA5r5D5TLcG5S0z8i+DR3k43vwQJHbkvQOL7s/+LAVT6jN6l3wShA622HwE82BA+tfEZgmanvoHPupQiRuznavCW9SX3whOn+i4epvja0uVKnU9o/YRqA7fW9BmGsA6twuGE=
+	t=1781874343; cv=none; b=nj0yqV5kvSGCusTG9OEsTdv/33OGPvZLN5fFzcCjXuyWfRVKEcV5q2z8jtY3JJzmJwn1+NypXOAVqj1qDOZLB+GceOZVUYQlJaahku5ajrW/QMN3EWe4uk2Y2Y0xDEdRXrneWFNiovzt5FSwYusAaFFlqBVJFv/8ArXuqU/Uc+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781874343; c=relaxed/simple;
-	bh=+HHA6dDvRTU1tKKYfXe38IJ1GKhRe45ap5fAWDZQb4M=;
+	bh=sAAAPauK3dvFEkGnoeg5l/27xpBnHHTLAFA25BAS8Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t8d6WBIrcD8Gd5wGUcnNiyD79przZ6D4JLDabP6fhxKeoEPMoYtgb3mmYruAGCjEbo9EN71PyxY0hmQJ4NgOTBzTCxmg5cLtVXLB0xZlp0+7vJLWjN1iY8QudVmW0ZsEqPR7XE1FKYieU1y2u3R0jw6v0awy4mQGRgNA8GJTs7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=V/ugE2/z; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version:Content-Type; b=pvwIkCinzkvOxUMxxCHy7OjC0gzncEnJsraS31iQjOoZ8eis3rjWLDuOe08k/otbvV63/mn2ZMXSOlT7HNZ8c9dODTg/P0i2vtu1HOzNT3J9/CkeNXhJjpgQvSUE/nlzb6QqoV0N/O2ez/P8uyxwS7HBoscang2g7wOfDOSD6gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=li7m5qDE; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="V/ugE2/z"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4624c1409c9so1627991f8f.3
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="li7m5qDE"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c0be5e548a4so44466566b.3
         for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 06:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1781874340; x=1782479140; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=by9u5EKjsb+5+gHbsiBm0Rf3TJxywMdtV+jmRIHAyvY=;
-        b=V/ugE2/zxkFiZROWAztS0LpH3lc09KrrkF9DIeApFmqUqYrHKBbE19AbKazYvEA8KV
-         iQBmXdCz9C/xxplri2lrXJg74PQuUCc4i8bNNmRHpSyuxF3dEz7D4zGTyikeWGbmvo88
-         XVkI3rvF1z5wgKfQ9xK237rt5rW05hMVDR4Oj7nv8TTJzvzW3WeJZ9dYXSAso58jD75b
-         oksUrbGf4LXWPzzFJHW+FcqdsEqFUaUp+Aw0lbyENK1XrtxH0Y0ReL5OT379QoRQv0Fq
-         QJGbqU4T/g7jk0cT2SrpvzKJW9tAWtIOEsWYpjL6QUBLnVDheMzPE+z0AWDO37jkJd9t
-         Mh0w==
+        bh=SE+r4wGFd7f55RWtkYqXbt9/MkUiYQSeM/Vm+Litt3k=;
+        b=li7m5qDEk5JZrA9zdJK0Rkx2bBqaJWRcbL3er0h7G6a6fhBF0OQiJjpjITY7+bYGXe
+         g5l0Yyt8sH4VjP29ONxzeedW/cae51CoaTGNu4Z4OXeSTI2ljfPF++mlNONeEJe3loeu
+         KNfB+XdOt7zUFiTSVJ+6z0xniTTMfCNU59J8c8SpnYcCcHmERY5oSNXhAkKspANcBF1h
+         nQbqtzhzb1eJtf7bySHGQYh0X795fIyrhE4k8NGz+2DYEJEhJXu14yv2tewvoovXbsQq
+         bI/LivbJSqlJeOwO3dYMlrHEnVbNPhDHCVDVuCNl6tcbLYCuvohIFNuHtnrCwL+20t1M
+         LjhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1781874340; x=1782479140;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=by9u5EKjsb+5+gHbsiBm0Rf3TJxywMdtV+jmRIHAyvY=;
-        b=bhPHci3n7gMhHFUw+DTWWTAlQ2xG6QVldcg40HR7DZFXFLvK2N+gPbaWVBMQNaIvni
-         xlJ1Ky1Y5WP1sRbyqrLfzCtz4DetHs6/eP2uRYGriOVEysRNIXJt7IRzaBe2874Cnrkx
-         GAzbeE/lspG5qisV4Lj0e1UfnKCRQhVzRpuki+HIhavppnRvu2qJYHzKQKBr2tBkWg6/
-         eEu/M0Q9f71bA5ga0JpQQi2h8UddTEQwNhJRrfqT2Edc8vEyL9cTSIoIsiNUbe4uJLHd
-         ggSo+zQo3/ZAePjQvIsog78QftQdHuXp81e0aRErt2e4pjJeut/d7OyGsYM5vTayYuxs
-         DFsw==
-X-Forwarded-Encrypted: i=1; AFNElJ/svKZgiCtiCljHcKL2W3Gb5Odm8nSCkE3Z8MCQgRoiq04ua0vACZ2SgN1grgMvr3HyNls=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBr5xBNNhBtOo460c8yZYHhIXWHoyNuwEZfdy7wb9Eyi7pumkW
-	FnYegSOHYQbqRx4v7exSeuRGkYAP27yEiKIpjsvG2CLhmSTxZRQyonxvJqeAH571LBk=
-X-Gm-Gg: AfdE7clLOQFDpd5VlEgwauIW+grTwJ2Y59H6uL9Lbp6F4dNyyuhq54R0CN5S8DrraB7
-	8immgrTJTP8W76CL4XdPe1kkdMmvvjTZ6I4ZnLVfBFAUDJzxgh9u5SwWmWc8c7YUTqEYAa3GKp3
-	ln4Y5WBG09HW/J0bI/mTLRfBnyvXrWRr9bVrxDZ6ZkoAWjzMUkExt9S602WanjCYNhT/3krpFXa
-	4HJfkPYXo0PF1e5Z8d4I4LhY6OR4KzwGdVG98qPzzgk1WZhpO5ssGiD7yzJc8IRRclijMBY075c
-	gxoH7sOnv5JSxovMnlI0WhHe0tUQch/MIUrEWlJ2K19PHviClaeQj4uFRxkY9pbHEYnVSNHyTxt
-	ZXNOJKS5t1F4pnZKFBPF7Ta0JXDRGUWF9+u73rmg6OGF6XuTrEwcUkm/OHMSQ/2TuEmtim21tfF
-	jf3dyDXCbmvlvsOwC1ex9+Ado=
-X-Received: by 2002:a05:600c:c088:b0:490:c2a2:e91f with SMTP id 5b1f17b1804b1-4923f59f2c7mr60670475e9.35.1781874339752;
-        Fri, 19 Jun 2026 06:05:39 -0700 (PDT)
+        bh=SE+r4wGFd7f55RWtkYqXbt9/MkUiYQSeM/Vm+Litt3k=;
+        b=ZQLzlfnq5zPgS7GxCx26r/8mPObSsL/GY4d2/0LOZPZBXxmFjpORnsRs15BHNdoXgL
+         Btqp1nuAXMt4NIC9WJUpTiDggWZNmSo2PM67lVNKG0K/pfdoD9HKvRUpr2IgNmEpm0IJ
+         TLdjRKVSv2iRdk5Be9ckU5gC945OuQB9iWwZMt42Zr0AqUtkq7xDoEQtjZybx/MVKuD7
+         XnxCMMSwGD3d5JRxTs+eKxP1YT/TSmnX50EZM3Ulnfg+Eh7eyw+F7ea7Wh7gM+di1wYy
+         SOgYwURrIuMgPRKpGuXCxgE/6Dmg88d2eID0PhLIbGiXzSpa51uAUx5RNkCfN2k7D5FF
+         PI7w==
+X-Forwarded-Encrypted: i=1; AFNElJ8Zz1XTpn/oWYkSePuqPf5v1UUIBQZlWIiZ8loK0iGYmnKwYuGeq+8Idj5sIJIbhXCopWs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx3B9j8MxG+ajd5nG5WgtTSh/wbdlm0GYJKa/kWiX+trKdckGm
+	sJGUVtWABTDeIsPP8AnXweOkkrTHkaPGCMCztvZKczLIguByRL09rOCzucqdxcGxZGY=
+X-Gm-Gg: AfdE7cnW9wv16h3ofmdancXmi+HjfW6raM1gDt5zBWpALIt7WCQhdYwacasmw0uzZp7
+	E8/NsZfGIMX7Fqhphk6PvwKfqWOU1hpgQvA/brFNY+hPbEddop6b7Jl2enR98w9wv4gJnaOB/+x
+	E9fsNNJHKoNHxQGWbDO3Zj7kbTJiwn7hriVMMGlRDVgWtfglRXRXs7cwkp/fsdrC/k5Q/vJqiFF
+	O0arx2wQ4+dU1NEre5FtdmWkR8TBEsnVJOY/izwOwZ1vRKL0sAKH+OCjmcDt6PmCLstR7BhxFBy
+	DwpI/nKWVeNPyT1I3lo5qcPvZxcL13ix19mo8ABS8CPXS2IrR4LJI9Xx2m3S0LWx00dLXoDTUZJ
+	mVDVR7yq7WibPj1uZF+9eu47mZKvvg2csYXH9VxNRTrgLIXIunvYSdAenMSWmp0W9Pw8dEPRQLy
+	Jtuv2XmTd2ujpQOFS6RTHxv60=
+X-Received: by 2002:a17:907:94c2:b0:c05:84b7:550d with SMTP id a640c23a62f3a-c097ceba8f0mr182145466b.43.1781874340116;
+        Fri, 19 Jun 2026 06:05:40 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49245711032sm23657165e9.0.2026.06.19.06.05.38
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4650b67a253sm8064924f8f.23.2026.06.19.06.05.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 19 Jun 2026 06:05:38 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 71C7B5F917;
+	by draig.lan (Postfix) with ESMTP id A1FC85F94E;
 	Fri, 19 Jun 2026 14:05:37 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,11 +79,10 @@ Cc: Alexander Graf <agraf@csgraf.de>,
 	Peter Maydell <peter.maydell@linaro.org>,
 	kvm@vger.kernel.org,
 	Hao Wu <wuhaotsh@google.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v8 2/7] tests/functional: update anacapa-bmc image
-Date: Fri, 19 Jun 2026 14:05:31 +0100
-Message-ID: <20260619130537.820184-3-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v8 4/7] target/arm: ensure we create the wxft_timer for all modes
+Date: Fri, 19 Jun 2026 14:05:33 +0100
+Message-ID: <20260619130537.820184-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260619130537.820184-1-alex.bennee@linaro.org>
 References: <20260619130537.820184-1-alex.bennee@linaro.org>
@@ -96,32 +95,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The initial version had the wrong DTB which caused issues with image
-corruption [1]. Update to the latest version.
+We don't want to just use it for timeouts as we will calculate which
+will comes first. Remove the wxft feature test in favour of the
+broader architecture checks.
 
-[1] https://github.com/legoater/qemu-aspeed-boot/pull/7
-
-Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/functional/arm/test_aspeed_anacapa.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/functional/arm/test_aspeed_anacapa.py b/tests/functional/arm/test_aspeed_anacapa.py
-index 27f8bd8b56a..b16c6035c95 100644
---- a/tests/functional/arm/test_aspeed_anacapa.py
-+++ b/tests/functional/arm/test_aspeed_anacapa.py
-@@ -11,8 +11,8 @@
- class AnacapaMachine(FacebookAspeedTest):
+---
+v8
+  - new commit
+---
+ target/arm/cpu.h | 2 +-
+ target/arm/cpu.c | 9 ++++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 31a5567c951..8aa7437a397 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -966,7 +966,7 @@ struct ArchCPU {
+      * pmu_op_finish() - it does not need other handling during migration
+      */
+     QEMUTimer *pmu_timer;
+-    /* Timer used for WFxT timeouts */
++    /* Timer used for WFxT timeouts OR event stream events */
+     QEMUTimer *wfxt_timer;
  
-     ASSET_ANACAPA_FLASH = Asset(
--        'https://github.com/legoater/qemu-aspeed-boot/raw/3fa3212827b04be4034d43b5adeef57c27d6ab18/images/anacapa-bmc/openbmc-20260512025228/obmc-phosphor-image-anacapa-20260512025228.static.mtd.xz',
--        '2232e241abcfb6d4f6b82cb6c378ce5ce05e364aac6d118785c2b6cc33fe43f3')
-+        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/master/images/anacapa-bmc/openbmc-20260616025349/obmc-phosphor-image-anacapa-20260616025349.static.mtd.xz',
-+        'de3841fb6ed3085aec6424358ee6efc4b8ee85688361e5aa1987fd1acb7d3fb4')
+     /* GPIO outputs for generic timer */
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 597e0626e7f..61945b6e6cc 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2269,7 +2269,14 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
  
-     def test_arm_ast2600_anacapa_openbmc(self):
-         image_path = self.uncompress(self.ASSET_ANACAPA_FLASH)
+ #ifndef CONFIG_USER_ONLY
+-    if (tcg_enabled() && cpu_isar_feature(aa64_wfxt, cpu)) {
++    /*
++     * We use the wfxt_timer for timeouts and event stream so we
++     * enable from V6K up. There is no event stream on M-profile.
++     */
++    if (tcg_enabled() &&
++        (arm_feature(env, ARM_FEATURE_V6K) ||
++         arm_feature(env, ARM_FEATURE_V7) ||
++         arm_feature(env, ARM_FEATURE_V8))) {
+         cpu->wfxt_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+                                        arm_wfxt_timer_cb, cpu);
+     }
 -- 
 2.47.3
 
