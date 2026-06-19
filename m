@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650791AA7A6;
-	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4B11F12E0;
+	Fri, 19 Jun 2026 00:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781829107; cv=none; b=cvbN26HXDnAUOMUrr9Ein8L+IN3H9wzLeuH0NBHDhIAaDe+7guPH5JudlF6SQajP7DEI3yxkXfBRz3IENEU5UjZLcIlnF61Tpmf6GAZyxeyvCTkGMO70aXl6ZaOnGAqzbhQWqosvslxMD210vUe0ZZXmAZYT5vQkvJ+VR7mNZqM=
+	t=1781829108; cv=none; b=cA69kMKnmoCfd2E38IxTLPqWRI1dz2/gNimfrA5ysh9qe5pcWZ2YchjWCkJ91M/yhyP6N+blsbY5PDKo58Haz6y2HPM1KTo8raQdfBA8GfmzQjiloqkoIXM7HogsBLjaLD3ODNPFLWH1M4F9UXWIdtaSldBK1FXX/HrioX0pwK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781829107; c=relaxed/simple;
-	bh=CB7AfOjVFZWOFS59P0Uu5cqgMUWbrL47cDd7UKb3SYQ=;
+	s=arc-20240116; t=1781829108; c=relaxed/simple;
+	bh=F7MrvmITOdbLitSsD7SdDf+3pf3iBq6uFTTR3SgUTnw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bXknPW8svKkd28wjqBaFg/AT6qV9gDfFxI8jffoP6I7TSFVD0SlN9EYPxrXfP60h5ucJ3G2HBHU3KTtPybcakpS/JMbcVU7Dr2wwVtEx/aBdR2/QFL6pPcX+Zoyux2UucVF05Tm8nRShX7WK+OOD9YuRDmPxJ9U/tkApy9pYl3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WLNmkqVm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=iUymc7f/7eMbj1nxzKFJI+A/DAqy3lOjXG4YBuWREHPh4fiznL+5WX2ANSZlmaMVBP6g45wkQWbMr9Km83z6J7rLshATpYJMbC0k2MvBEvoLvpHsBdnhAWclIIFkqAg2yhehrN2VqxZ9+Hq/EUS50P6Gp2apsZJ3Ii8au7zXcx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRjHWI0c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WLNmkqVm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2E159C4AF64;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRjHWI0c"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A3FDAC4AF48;
 	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1781829107;
-	bh=CB7AfOjVFZWOFS59P0Uu5cqgMUWbrL47cDd7UKb3SYQ=;
+	bh=F7MrvmITOdbLitSsD7SdDf+3pf3iBq6uFTTR3SgUTnw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WLNmkqVmie1VOR8aZ03V7tHR2WW6UlhAE0jz1jnWfhnMAP0I2iMIOdBZ+a9m2OqHl
-	 NqDDfNBbtPzPTkiYH9wTi195riRWAbB+Z8lxB1O2SnnSXSWLNrN6z1pP4QihnmN+HI
-	 YKzKUj4YpX5KPT/NWOLMkroUlRaClIRq+95vWEN8OBWv0MSrc8Wg6MBHQQGPupRbrn
-	 VchNHVnpwzXZq9oaykCYaaZPG/MqU5HWhah2RmTRS/w0bYrPTtFgmP2OlCTjXydbMo
-	 mK8l1PfoouSO/QX+Vvq1JQhzY6HdRGdmu8QdC8vlPdmD9J+iANtDGxhA03SREP0TG7
-	 3gqOPYMPJC19w==
+	b=dRjHWI0cgUh4zBIv24YHAAf3UxH8apiobd4AzA+LBBper99l03UY53GtvuevljR0a
+	 XmrWiBV9DdOgIyDY5A+MW8QndWZBFOWwcar7nkefXfL0aC2pkru735SygcUOzbCE3H
+	 dSCt+Yo6npkHYbZz5rvsITkMbuQb7YjGI9z/z+0auPnjzmqRZzzi3JBC4LLz5YlKto
+	 lFftnOELD93ZndD4Qjgk1fG96ZBy/JcxZsL3+NxepDaLeRhqZ/N/bIDwn8xOL0VmYV
+	 86kZ+qYaHon7AR6OOE3sIKoD3U0pkmIvokdygtOZYvsI8+SGt8txCYEvLoEXxkq16/
+	 4wMrHWqmdUfLA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FA48CD98FE;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B331CD98FC;
 	Fri, 19 Jun 2026 00:31:47 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 18 Jun 2026 17:31:42 -0700
-Subject: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
+Date: Thu, 18 Jun 2026 17:31:46 -0700
+Subject: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check GFN
+ private/shared status
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
+Message-Id: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=1858;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781829104; l=2428;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=xOoyBwi9Fnl8DxuOA6f4/8X9Su/Z5hzouF7RHonH6fY=;
- b=V+F5mfHWgPIoDzpZABnezOfAtJfijD6ASXKARAsXF7WpHdkwwRvE7O50VRv2i5WLaItJkqw1F
- lhXVRRjtDwXAl9Z1griCM60xbbYwOUvx/uXBC0nK6Jp5pf9anwnxeon
+ bh=OL8w0aV3ST1INN6O2LCRWZBxL/u1i0f+zitK0g2HaXw=;
+ b=U39LZVAAEnLif9QW9hvBFksHFO3tKpvUSafWIpsAGBhftPn37vTE7MrJjUfNOgAUHGvpRiPbd
+ dOWKEd717yMAVsSyc2k5PtncYd6bP63i0hlg1jmvSvL6Wn8Rq0oh7TC
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -89,56 +89,74 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-that might use vm_memory_attributes.
+Introduce function for KVM to check the private/shared status of guest
+memory at a given GFN.
 
-Also document CONFIG_KVM_VM_MEMORY_ATTRIBUTES to specifically be about the
-private/shared attribute.
+This will be used in a later patch.
 
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/Kconfig | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/linux/kvm_host.h |  2 ++
+ virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 24f96396cfa1c..c28393dc664eb 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -81,13 +81,16 @@ config KVM_WERROR
- 	  If in doubt, say "N".
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 3915da2a61778..27687fb9d5201 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2575,6 +2575,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
  
- config KVM_VM_MEMORY_ATTRIBUTES
--	bool
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-+	help
-+	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-+	  memory attributes.
+ #ifdef CONFIG_KVM_GUEST_MEMFD
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
++
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+ 		     int *max_order);
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 8101f64e0366f..bca912db5be6e 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return 0;
+ }
  
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -138,7 +141,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -162,7 +164,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_PREPARE
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
++bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
++{
++	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
++	struct inode *inode;
++
++	/*
++	 * If this gfn has no associated memslot, there's no chance of the gfn
++	 * being backed by private memory, since guest_memfd must be used for
++	 * private memory, and guest_memfd must be associated with some memslot.
++	 */
++	if (!slot)
++		return 0;
++
++	CLASS(gmem_get_file, file)(slot);
++	if (!file)
++		return 0;
++
++	inode = file_inode(file);
++
++	/*
++	 * Rely on the maple tree's internal RCU lock to ensure a
++	 * stable result. This result can become stale as soon as the
++	 * lock is dropped, so the caller _must_ still protect
++	 * consumption of private vs. shared by checking
++	 * mmu_invalidate_retry_gfn() under mmu_lock to serialize
++	 * against ongoing attribute updates.
++	 */
++	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
++
+ static struct file_operations kvm_gmem_fops = {
+ 	.mmap		= kvm_gmem_mmap,
+ 	.open		= generic_file_open,
 
 -- 
 2.55.0.rc0.738.g0c8ab3ebcc-goog
