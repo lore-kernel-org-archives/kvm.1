@@ -1,114 +1,146 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB3384CE7
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946D038F928
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 13:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781874302; cv=none; b=nX4XQ+eRzyOJVAESl00QjfU3LYYzp1XDpQdI6nihd7JF4LrSwj7P4I2qpH2TksjZcnNMl4Q6IUpi9OKqbWGorVuoV4tv35pnMzuOe5MUFfG6sGsVsIc3UiUnT7WgyVTaUN4adRbb0nHm0NrGJfGeNYfMaOmKXbaTM42l0N4Q5m0=
+	t=1781874342; cv=none; b=HUHTo1NNGxACY1LG/PuFP/hEyQHmBH07+gDdfnhF/gBEpVLAtBhNwmX3u615276azh0CJdc6HjyWumAdgznkGmPSfZ+MtlO2fHEegHAhCO2HTIilS75Mebtv9IZEJlLp+xq34qAgsz6e4fpQq1vD3Y2u2PNM98qYECzfRJTWO58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781874302; c=relaxed/simple;
-	bh=ici1LF63GDXSYFCSToUOrQfp47UqSNRyItTIEoyv/MM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/UzPnZy/1QXvkugBwMaYQoIvS9w1EwsVYb+9Vu0O+k7Pd17f70ddwUC5EU+2tlNbs41qQ1/z8QqmODYxRnSZeyeBhb3zZn1XfHlHjVeB6wWJl6wRcf7DSxHl97Oe+2/15z+dFy/hIRKs3y4Ai/tYa0uQqF1r7K+BKN6UgAFem8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FbLVvisI; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781874342; c=relaxed/simple;
+	bh=XTCxLyTZsxhrEV0S8gDPdhI/GUDaEHxf5DJT/ZzNObI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=quFKInsdhl80/Wl3zzlQgaM5rL1FrwEfAZWJN3Wlk7tO4tm5CO+0nIPODFUM6QBpo3SDaI7w7dRPt0MbhJRhIZQhJfs9Al7HaqiVqPumwEJVK21HGlTVoKuY12uACi7NhJCDBqLdXTOCo1p41YT4eTMH/S8iCCeH6maa5SLLjO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KWBhQveK; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FbLVvisI"
-X-Gm-Message-State: AOJu0YzNB3if/ynFqIWcDrQPDDwSdoIM0+AX9QRyU+4D7Kdca/0oHEwh
-	6+7vBxtVYopUboT2KWf9+g44tF7I+ZSVV2jKJJv2kz8tJMvEsHg9EEbhd9Mw6zOQyXGusQx3+oI
-	TABELKANIgMdBjzyqQDBpqU7VLARixBdliR0oc0ug
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781874296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8eUJpWCn5MJf55/QS+SBCOG38tqnqArz1EhXl+TSuU4=;
-	b=FbLVvisIZwdod4JHZzfW+soX9HjAKkCaAhgwrCug7vwqSJR3ooMUsrWgBVbniXn5Ua/o7B
-	HN5G4KSefm2qEGdEp+NWUfJg1j/T7nwWo+ilxXHuXzbGiohgRpX7s6UXwweCi7J3MCgL0c
-	hk+bSiZq3YFpmPKnCz2hw+rpHI/7e8c=
-X-Received: by 2002:a05:622a:1492:b0:516:d25f:f038 with SMTP id
- d75a77b69052e-519e48866d4mr8409241cf.10.1781874293681; Fri, 19 Jun 2026
- 06:04:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KWBhQveK"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4626fdc829aso1606421f8f.3
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 06:05:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1781874339; x=1782479139; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T72NDyunHLyFV4aqpIGKGdQkRXR7DefmzidasatP8oI=;
+        b=KWBhQveK3/yygfmxsqzJuglqMZzwdaIE7bzT3eq/A8uXhh6ncoKNZUrUe/ctfwLixN
+         UVEvYwpp0rRJF4uEeMpZ/BkvTmVA9MbxY0VXvtkud3K2MCfeFcLziRu8r1xzc3ZEJ+p9
+         DlBDGIPFr4yQe95c+yAN8UBujdmQhJC/dB6bQS3w9FqPAymzJeAq0SBMxJxsB35u6aZa
+         YxAkOgCbcXAvlElPYXS/qjPHLN+TOcMZX/NaMXNcjHJFBx5IZeOTj7UnyU+XF756j/q1
+         Badxq1jR/guM3ui4vbvSCwZ0vD2ZNfHMfyRGHyjs8SzcC35h2hPLMa9WdfkgrQo04JEN
+         PYvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781874339; x=1782479139;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=T72NDyunHLyFV4aqpIGKGdQkRXR7DefmzidasatP8oI=;
+        b=TCeAs3mV/dnYtm6ypPOSii7cAzO8UejObj+o4UmFu3qnldhD6WZhMtJNL/oMEdFsjz
+         MJmf6+nL5z2FRXA61kQtE6k1J21eMMsSNpsfcQNV47ZMbARl7numQ43RJO5HrccPW55N
+         sp2oQS4DbK8PExJdNmSDcRgkbM0qctkGfyWPZ5ETKWGaiPdX9k3jNhltOYbgcfZoWgjx
+         KrAcxElpGSX31YIc22F2bBBY1/5eUTF5UtZLiLMmJOW8zOwzZCTApM3IgT9EUL0m8oZc
+         aVzUp6rbk7LlyR/dIhDn91wdUdNKwZxsgBXn5zBCvB/ntPD2x8haGo+Ym6O00NMO1P4R
+         ppwg==
+X-Forwarded-Encrypted: i=1; AFNElJ/HPOJ2D7xVrGfqZPKGEzS3pw+ri71fhnb9OuAlo+Y2Gjl6Qp9G7Ei/fL6v3mAeln+Q0do=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykxaYu9wWrlvpC6324NHyrc+Iw/4rafJj/1nqWrRN1Z/HaWXfq
+	z2/dFXH4MLb99RAH9ImnzWexKU5pm8nrCXbl3i6HqZ+06D/hNnj5KrJoL2TKgWbxE60=
+X-Gm-Gg: AfdE7clZdwAUsGvjHl0+0vTr06gNzU4TaMIzBKuYX8FaeGFxp89LDUEQWzGpBTIDZvu
+	9OVjErFurxxVLsLp1EHFA1R+L91j1ObHMtwjCiC44/g6793vZwYbhyjno2QT63F/K3QfsvSZK9m
+	HZg+Pjkn6KRXbIUwuBBQ0SYb03AMednDH7w7AQxu/ECs+xf9EelU160sKhBVcTaDIUmsmsKzvJ0
+	5X526Ftlc0zOgvlm7DO/3QEsCOPl1gHe8Qt52p+HxsJ8qfatRsRfjSOG6O3TBy1or6nBez0bE4Q
+	FAch6hbO27bdAQb7yCes6Byv3dSb+zFTC+f7wB/Vz/L/4V2xo0FlN9Hzq1/ZBI0iT1gnTOE4A+N
+	SBraCL5WxXEuJcMrwL928KB+0O8yT0Rk6AG1PTWOEEXzDNaogC500wzPH17u6Pv+j42xRSW6hta
+	pEaoP50baARO8D
+X-Received: by 2002:a5d:5d87:0:b0:45e:f381:cd85 with SMTP id ffacd0b85a97d-4656f4704b5mr3865725f8f.20.1781874338894;
+        Fri, 19 Jun 2026 06:05:38 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46508a04b55sm8170000f8f.5.2026.06.19.06.05.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 06:05:38 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 5C3E15F814;
+	Fri, 19 Jun 2026 14:05:37 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alexander Graf <agraf@csgraf.de>,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Jamin Lin <jamin_lin@aspeedtech.com>,
+	Steven Lee <steven_lee@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Joel Stanley <joel@jms.id.au>,
+	qemu-arm@nongnu.org,
+	Troy Lee <leetroy@gmail.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+	Kane Chen <kane_chen@aspeedtech.com>,
+	Tyrone Ting <kfting@nuvoton.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	kvm@vger.kernel.org,
+	Hao Wu <wuhaotsh@google.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	qemu-stable@nongnu.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+Subject: [PATCH v8 1/7] hw/arm: use cortex-a9 mpcore base for CBAR on npcm7xx machines
+Date: Fri, 19 Jun 2026 14:05:30 +0100
+Message-ID: <20260619130537.820184-2-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260619130537.820184-1-alex.bennee@linaro.org>
+References: <20260619130537.820184-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260619115415.5475-1-will@kernel.org>
-In-Reply-To: <20260619115415.5475-1-will@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Fri, 19 Jun 2026 14:04:17 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwzgapVvdf3qub5yruoPgVxKEo7Ghqn_a4P+Xu6t2O0Mg@mail.gmail.com>
-X-Gm-Features: AVVi8CdtT6iWYhzS2QfrYKi0SSlD1aMfZs-XAIfL0QrxQh6c3aj9vGPKgTYHh_8
-Message-ID: <CA+EHjTwzgapVvdf3qub5yruoPgVxKEo7Ghqn_a4P+Xu6t2O0Mg@mail.gmail.com>
-Subject: Re: [PATCH kvmtool 0/4] Add support for running protected VMs on arm64
-To: Will Deacon <will@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Andre Przywara <andre.przywara@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Will,
+CBAR is an IMPDEF register and according to the A9 TRM [1]:
 
-On Fri, 19 Jun 2026 at 12:54, Will Deacon <will@kernel.org> wrote:
->
-> Hi folks,
->
-> With a v7.1 host kernel, it is now possible to run protected VMs on
-> arm64 with pKVM enabled (kvm-arm.mode=protected). Although the pKVM
-> support is not yet feature complete, having kvmtool support is handy
-> for development and testing. So here it is.
->
-> The patches are also available here if you want to pull them directly:
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git/log/?h=pkvm
->
+  In Cortex-A9 MPCore implementations, the base address is reset to
+  PERIPHBASE[31:13] so that software can determine the location of the
+  private memory region [2].
 
-I tested this on qemu, using the Android 17 kernel
-(ack/android17-6.18) and the upstream 7.1 to boot a protected (and
-while I'm at it) non-protected guest.
+If it doesn't we will confuse the Linux kernel as it probes the system
+SCU registers [3] and erroneously assumes the system is a buggy Aegis SOC
+and nerf the emission of SEV instructions, deadlocking any WFE's in
+the kernel (or QEMU smpboot code).
 
-Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
+[1] https://developer.arm.com/documentation/ddi0388/i/system-control/register-descriptions/configuration-base-address-register
+[2] https://developer.arm.com/documentation/ddi0407/g/Introduction/Private-Memory-Region
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/kernel/head.S?h=v7.1#n550
 
-Cheers,
-/fuad
+Fixes: 2d8f048c25ab ("hw/arm: Add NPCM730 and NPCM750 SoC models")
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
 
-> Cheers,
->
-> Will
->
-> Cc: Alexandru Elisei <alexandru.elisei@arm.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Andre Przywara <andre.przywara@arm.com>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Marc Zyngier <maz@kernel.org>
->
-> --->8
->
->  arm64/fdt.c                         | 37 ++++++++++++++++++--
->  arm64/include/asm/kvm.h             |  1 +
->  arm64/include/kvm/fdt-arch.h        | 10 +++++-
->  arm64/include/kvm/kvm-arch.h        |  2 ++
->  arm64/include/kvm/kvm-config-arch.h |  5 ++-
->  arm64/kvm.c                         | 20 ++++++++++-
->  arm64/pci.c                         |  2 ++
->  include/kvm/virtio.h                |  2 ++
->  include/linux/kvm.h                 | 53 +++++++++++++++++++++++++----
->  include/linux/virtio_ring.h         |  5 +--
->  riscv/include/asm/kvm.h             | 11 +++---
->  virtio/core.c                       | 12 +++++++
->  virtio/mmio-modern.c                |  2 +-
->  virtio/pci-modern.c                 |  2 +-
->  x86/include/asm/kvm.h               | 21 +++++++-----
->  15 files changed, 156 insertions(+), 29 deletions(-)
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+---
+v2
+  - rewrote commit message for clarity, added links
+  - used arnd's arndb.de address
+---
+ hw/arm/npcm7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+index c2bbcd89dbc..c27f149c04a 100644
+--- a/hw/arm/npcm7xx.c
++++ b/hw/arm/npcm7xx.c
+@@ -492,7 +492,7 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
+     /* CPUs */
+     for (i = 0; i < nc->num_cpus; i++) {
+         object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
+-                                NPCM7XX_GIC_CPU_IF_ADDR, &error_abort);
++                                NPCM7XX_CPUP_BA, &error_abort);
+         object_property_set_bool(OBJECT(&s->cpu[i]), "reset-hivecs", true,
+                                  &error_abort);
+ 
+-- 
+2.47.3
+
