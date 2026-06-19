@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E397A18027
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 00:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D6A54654
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 00:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781830160; cv=none; b=GlPr216aqjEMnv4W+j7SlXRXT7Hm73BGulfCyPRfD0zd8LCStvbSO2K/EiVyMy/N/HBC6JY9oFucmuVLcUkGWQQwIlJ6uuJYhGmJaMhGcjbXaZElAH4S/b3hTuemuJhKBiwVVowCItl9iiVF/Pa2QrO/2DEkpUyTDr5gDP6nAcs=
+	t=1781830277; cv=none; b=UJCVr4YF6aXtt3WTPR91tCKGAhGH0H729r7YnqyA6zpz/pxqb0x/d4SWoVWE3wYx6vFWiReiVujV58Ygjr3ng+V214Q5oRi60xxJ2F8GoTuXT6wBmAayCy1EyhMSGZ0J0Q97z3uOIMujtAwa2yOzkkbA1ZWj7HEya/ls31CvfEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781830160; c=relaxed/simple;
-	bh=jYYuE7JDDV4W0xvdsWfrT6KyNi6Duvo2hIqqW2WVBi8=;
+	s=arc-20240116; t=1781830277; c=relaxed/simple;
+	bh=EnCfmCy+tk30ZElTOXtLCSpv8o0aNw3MqYQQU4oeECI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bshBmqdozzu2538T1o0C5QoUaHAxX+szQ0vyTH2OAuCncPXwTSHsX+X/lNqunRBFLAJ0hxtS0S3tAWbmTPTFPFdS/cbyfoj1OXlZHJN7YUvwbraTGm+w9CkDIUQ1NqPDuAr8GvuFBM2UU5w9+bDqGbQTh7MiVC1LUSyNguC2n74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGq+N2yu; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=DG0r/bU4g4FYdLWnqMk0rpZd5kKI2Mqp4jGny2k0E0i7XWMXX+EI1YZ3HUyzfXPsVaa3URaXyhOvBXiPAqOWSQXeui652HISct//5S3ptogKXTftIy776sb27mdFCP8EY95ItqpmMYa/9wGravkt+suGYj0FiuULy9PcCGLkGZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IfePuhmR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGq+N2yu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852921F00A3A;
-	Fri, 19 Jun 2026 00:49:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IfePuhmR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016131F000E9;
+	Fri, 19 Jun 2026 00:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781830159;
-	bh=jYYuE7JDDV4W0xvdsWfrT6KyNi6Duvo2hIqqW2WVBi8=;
+	s=k20260515; t=1781830276;
+	bh=G9vQlQNvGhcGBdSqGSPyUlFK+9XrQ0U//PjtS7DHY0o=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DGq+N2yu6aXAsFHmZlX6Zofn/uUuJVpm31EkwAOPyWfvwCm0AAX+3xMo+CbX8nX/o
-	 Z22aHgmL3iXOKB5ulB82ZPFiOAZCCTVFOCtDPyp2Ko6GSIJfhr+pHo1fjhwredMnB/
-	 fYLZ8AxegTqvu2YNVoBk7MwiaJzDjLJPYk3ZMqwcYUtr4vP0DZjYamM+X6CjzcMhFM
-	 73pWbmC7YkdvctO6YNYEhTpEZ4S44SlAOjOsSq8BgXBx0o6HqBgTKAGP7nOMPEFa73
-	 UtHAXbZN5tK3ui8FxI8IKMl71t7Cjm7I0a5vP7AVdnPA7GcjdGMTrqEQZeiR0X7XJg
-	 eoYSpNCJ3HrzA==
+	b=IfePuhmRBTGUNb/90duW5rU3dKZHdp4PlfNuJpZky+OuoDyhP8E6Qctp2uYmdsEG7
+	 fQohlWQPJM2MZ35SI6CmuwMJ4mdQ33D4ElYHhc2j3GPjP1mkqgqyvZLnALkoGnXfX0
+	 ezJ1w3U3gucDZHkqK/fIBupTLKUs6log51OOwATRH7vxrcfGj5oN8KaOdUJVlXgKly
+	 Zlpz6k2+lKm8z7UcF5UPI4Bk7pcoOzDSMUgoa+iIxWdySgoXiOkSVScXknHZ/nfBGJ
+	 Y6nbPA5Yu/wa0HD6lLl2VZsBSa0qwWv6Sgbp1IOtoAxlK4hjJ1K3uq6IZMzB/EvIW7
+	 SDmcimfCz3Afw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 19/46] KVM: guest_memfd: Use actual size for
- invalidation in kvm_gmem_release()
+Subject: Re: [PATCH v8 08/46] KVM: Provide generic interface for checking
+ memory private/shared status
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-19-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-8-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-19-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-8-9d2959357853@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 00:49:19 +0000
-Message-Id: <20260619004919.852921F00A3A@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 00:51:15 +0000
+Message-Id: <20260619005116.016131F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,29 +47,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The commit message incorrectly references `__kvm_gmem_invalidate_be=
-gin()` instead of the actual function name `__kvm_gmem_invalidate_start()`.
+- [Low] Incomplete API renaming leaves `kvm_mem_range_is_private` checking =
+VM attributes instead of using the generic runtime implementation.
 --
 
-commit 50ac1910099f66ea81813150ac7efe43b67fe2df
-Author: Ackerley Tng <ackerleytng@google.com>
+commit 0ddb6a37467eac449d5a6333904fa11b3d52cad0
+Author: Sean Christopherson <seanjc@google.com>
 
-KVM: guest_memfd: Use actual size for invalidation in kvm_gmem_release()
+KVM: Provide generic interface for checking memory private/shared status
 
-This commit modifies kvm_gmem_release to calculate the actual size of the
-guest_memfd inode. This size is then used as the end range for invalidating
-SPTEs instead of relying on -1ul.
+Introduce a generic kvm_mem_is_private() interface using a static call to
+determine if a GFN is private, allowing the implementation to be set at
+runtime. The existing VM-attribute-based check is renamed to
+kvm_vm_mem_is_private.
 
-> __kvm_gmem_invalidate_begin() and __kvm_gmem_invalidate_end() actually do
-> not specially handle -1ul. -1ul is used as a huge number, which legal
-> indices do not exceed, and hence the invalidation works as expected.
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index eb26d4ea8945a..3915da2a61778 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+
+[ ... ]
+
+> @@ -2546,7 +2546,7 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm =
+*kvm,
+>  bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+>  					 struct kvm_gfn_range *range);
+> =20
+> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+> +static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  {
+>  	return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PR=
+IVATE;
+>  }
+> @@ -2557,6 +2557,16 @@ static inline bool kvm_mem_range_is_private(struct=
+ kvm *kvm, gfn_t start,
+>  						  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+>  						  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+>  }
 
 [Severity: Low]
-This isn't a bug, but should the commit message reference
-__kvm_gmem_invalidate_start instead of __kvm_gmem_invalidate_begin? The
-underlying function in the code appears to be named
-__kvm_gmem_invalidate_start.
+Should kvm_mem_range_is_private() also be renamed to
+kvm_vm_mem_range_is_private() for consistency?
+
+Since kvm_mem_is_private() was renamed to explicitly reflect its dependence
+on VM memory attributes, leaving this helper with a generic name might
+mislead future callers.
+
+If a future caller attempts to use kvm_mem_range_is_private(), it would
+bypass the new generic runtime mechanism entirely and incorrectly test VM
+attributes instead of using the runtime-dispatched implementation.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618-gmem-inpla=
-ce-conversion-v8-0-9d2959357853@google.com?part=3D19
+ce-conversion-v8-0-9d2959357853@google.com?part=3D8
