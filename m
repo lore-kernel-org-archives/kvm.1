@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93E2222565
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 00:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0FE2405E1
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 00:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781830727; cv=none; b=OQHzA0R2bYyT/cKmLTaa5X0A5d7rxmOFLpxJkTUfntDSE1e9f+5LtUCTVedsdptHiJPYRDtJWz24qgfvpPg6BGBbO4J8MFGPSas8sIT+Iim8Alkrl2rsakAkjZwfi2PAAe+XqFTs4bkslWirmKA0c4LE0g3fTJpKTKgBrV766eI=
+	t=1781830737; cv=none; b=p51ykRCx7gbKx1rg3J1WqeSu/AO4Fhoc7PlUY32pQyXXLv4F0ihdY1/ajxddnZB7XZxSJwRiCSMXqwD1jf/HGH9QjgOsrW6TKmZF+kXfyMZDbCnGgDLQdqpw+prdtAHKTrdY8iMX+L+3peC8z668XmjKHjox2Kuz5jDO6hHGu/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781830727; c=relaxed/simple;
-	bh=V+URe17bQjz83RhHuMmS6dIXa4yJddYrWdUMqD+u+yk=;
+	s=arc-20240116; t=1781830737; c=relaxed/simple;
+	bh=liZPaD89SxNIb1j5iDeg3EQadQHVggNlJz6WKjrl14U=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rqde3wsaGZxmXB7n2/Jb93m8LMbwX1lrIwGTYhGWFwevxnDzbXFo39LF3WJM6/7f+JUUI+46ZRI8AfP7cTgpwbHttnCbThwwMLxNUUIDtDeaqqIlU4ql8HOCV5EC4sW1B/4xMfnChfzfyPew2J8QMWUFSWfLZrxk8G1l/REdlHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMoq3AHt; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tJknrNz2k3/jRR5NghhKO3JmbbvjC3tFZ2r38SOf8xoKWDV/hA5gA2ImbbjFuTu6J2JLxe6ptlGBzjLZpmPx7vt9wt3tsEX5ssdDOM+ChiMXS1CXUZ2Thabf7BPomyxzcJJg6HtOTdSJdNU7KJCfwPJjJkI3QDsKgq5GJ1ojXiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bv+4UgXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMoq3AHt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04431F000E9;
-	Fri, 19 Jun 2026 00:58:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bv+4UgXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DD81F000E9;
+	Fri, 19 Jun 2026 00:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781830724;
-	bh=gtfFV+ftps62tL5JiIYvzWWmntsn1ltfvYXQndS3PvY=;
+	s=k20260515; t=1781830736;
+	bh=0xhRvFQa2cJCfQmEqY9JJ1Jge2hKE0a7h8QDS8ePmOs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oMoq3AHtFnA6CobXkuUkkGlfQe6FZnQFahK4Li6BTw9hjUxyDtrZlAm4lu2MbbXM8
-	 bTv2ILRzNdZzpiii35mizCCsIwsJAkLcnxZaB6NVDvDVEOhEy3cyV5zxo37gLWXUD6
-	 Gg46zTt6JYiEtEExGtvVePmENC1MeSbTzkAHKhyTVgSeSF68X3DVSNFro3NO95+kfb
-	 DGi8okZRrJDwIpZN0Es6Y3ZZtcbHErIyifXal9ql4nrYqVNmXU6A2kdr9Ph9HSIqI0
-	 DbtT7YjqsAWYtXJhTH/jMvfFHKxvGg/AKmgvqA9nRXjltAXjxLv9OnAn+J5kPnZ+FQ
-	 ExkAdrmXnyMcA==
+	b=Bv+4UgXXnykRHzhE7XJI9H2QqN+VKkhbSTb8IpNBtPDEvHo7jM0rwMtmE3WksPdrO
+	 a1Qm2sOs1K/bQQtVDinQAg/4bYHRXAipTx93lUJ72JODv1m3nTIa4LJu0p6hYMydpJ
+	 MSleHS6p7b7TMSAD0pL084vavRTHIz+UhVsdl6qpYx/pfJrk3AQQEAmm4DNlHLUEDA
+	 zUJLxAh4iSmDwLkRJYIJdPZETcGgCflA61UsDzEJ5VYoHRmZqghnkUpS8aKg9+F8sq
+	 4TfIQYOXk0SuqjSbEIz7uRROlPapUQJsFplH/z2xsonoJKW79mNfkbaEaJ1vR258/j
+	 FUja1y6hP+IPw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
+ default
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 19 Jun 2026 00:58:43 +0000
-Message-Id: <20260619005843.F04431F000E9@smtp.kernel.org>
+Date: Fri, 19 Jun 2026 00:58:55 +0000
+Message-Id: <20260619005856.09DD81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,59 +47,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] In-place memory conversion for TDX uses the same physical page for=
- source and destination, which violates the `TDH.MEM.PAGE.ADD` operand cons=
-traints.
+- [Medium] Unprivileged userspace can trigger a WARN_ON_ONCE if the host ad=
+ministrator misconfigures a module parameter.
 --
 
-commit 9c726fd29e9655323e0c5ac003966956b5c8273c
+commit bf8cb04a544d7b8235d73034e0febf195ab335c3
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+KVM: guest_memfd: Make in-place conversion the default
 
-This commit updates tdx_gmem_post_populate() to allow a NULL source
-page by defaulting to the page associated with the destination PFN.
-This allows for in-place memory conversion where data is already present
-in the target PFN.
+This commit makes in-place conversion the default when the architecture
+supports private memory. It introduces a module parameter to override the
+default and adds a warning in the CoCo VM memory population path if in-place
+conversion is disabled without enabling per-VM memory attributes.
 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index ffe9d0db58c59..56d10333c61a7 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm,=
- gfn_t gfn, kvm_pfn_t pfn,
->  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->  		return -EIO;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 86c9f5b0863cb..5cb73543c03c8 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1193,10 +1193,15 @@ static bool kvm_gmem_range_is_private(struct file=
+ *file, pgoff_t index,
+>  {
+>  	struct maple_tree *mt =3D &GMEM_I(file_inode(file))->attributes;
 > =20
-> -	if (!src_page)
-> -		return -EOPNOTSUPP;
-> +	if (!src_page) {
-> +		if (!gmem_in_place_conversion)
-> +			return -EOPNOTSUPP;
-> +
-> +		src_page =3D pfn_to_page(pfn);
+> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>  	if (!gmem_in_place_conversion)
+>  		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +#else
+> +	if (WARN_ON_ONCE(!gmem_in_place_conversion))
+> +		return false;
+> +#endif
 
-[Severity: High]
-Will this assignment cause the TDH.MEM.PAGE.ADD SEAMCALL to be executed with
-identical physical addresses for both the destination and the source?
+[Severity: Medium]
+Could this WARN_ON_ONCE() be triggered by unprivileged userspace if the
+administrator misconfigures the module parameter?
 
-The Intel TDX module ABI and MKTME architectural constraints prohibit
-overlapping source and destination pages. Reading with the host KeyID and
-writing with the TD private KeyID to the identical physical address
-simultaneously causes cache aliasing and potential machine check exceptions.
+If the system administrator sets kvm.gmem_in_place_conversion=3D0 on a kern=
+el=20
+compiled without CONFIG_KVM_VM_MEMORY_ATTRIBUTES, it appears this warning c=
+an=20
+be reached from an unprivileged ioctl path calling kvm_gmem_populate().
 
-Because of this, the TDX module rejects identical addresses with
-TDX_OPERAND_INVALID.
+Since an unprivileged user creating a CoCo VM can intentionally trigger thi=
+s=20
+warning, could this act as a host-side denial of service on systems configu=
+red=20
+with panic_on_warn=3D1?
 
-Since KVM verifies the SEAMCALL result with TDX_BUG_ON_2, does this
-deterministic hardware rejection introduce a regression where KVM will bug
-and crash the VM during initialization when in-place conversion is utilized?
-
-> +	}
-> =20
->  	kvm_tdx->page_add_src =3D src_page;
->  	ret =3D kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+Would it be better to convert this to a pr_warn_once() or perhaps validate =
+the=20
+module parameter at initialization time?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618-gmem-inpla=
-ce-conversion-v8-0-9d2959357853@google.com?part=3D23
+ce-conversion-v8-0-9d2959357853@google.com?part=3D24
