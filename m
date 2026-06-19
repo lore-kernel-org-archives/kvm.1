@@ -1,178 +1,233 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CAA3064AE;
-	Fri, 19 Jun 2026 04:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781844688; cv=fail; b=GFqygyNN3rwMCkt120CHRqIOh0zPNXI6Ar2VkhMPeFhGnPPG3GhpF5ImQ8T8nOzCBMqMo2uFdTboXcnaJXI3B7KnU7u5gEUO9710n1vs5hKYmmEdAvxqqDyt5F0GCnKisLY0PoS3r4PAMuzEthId2jyTI2rNzD6+7VIxaF1OY5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781844688; c=relaxed/simple;
-	bh=bKgw1v1Kdrdu17o1DMLGImIVTMh1a9YaHSymyzGR9TQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CdlTOWPtmLLyL8b4yJIV47yG9pjN+vgMhDqXFY3cTxoGbFjQUnIHvutpI+sKo2hbysO7bQReKmWL/udKQz87+rODYGgSlGiZUtHtygzEc2GqCoM1Z751psREmHqlIHQ3pc42VhdSZFQpqT9Zx/cGj6HVNz5cHZCuTzbl1X+6WzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kt8NWDoa; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7075D1E4AF;
+	Fri, 19 Jun 2026 06:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781849094; cv=none; b=uEx6lbeVa7/WMV9+ObSjV8aE5CftM1KHsCFlAYAQk56uD4GzUetRkdm4CDlHb4h7x8c8KHG/sWNZR1tsyJwF9AY1kT8IqkI+6FdJNsxlkhJFMUovbzQQWZ47jr5vo1X3iB+VxF1MzhE54M1LBgKuu7MWZ8YCuR98hYrDHQrFygA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781849094; c=relaxed/simple;
+	bh=fkME/WtDXBLpQgzMF8R1M9EG1UJ0viYk8neQkwvsnUs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VJShNZAxVojSbqMbuPxaHkND+qhxPY+4EzAG2zi0TET0vvi1Accs7on40J2UXlW3WcVZ+dG7zhwHGbY9XtzNU7Oj4bayMs2GU89YJArUZpndBTphhBjXIniW6FE1TubH0Hz6aKQPijkIz4aOKxLZjYHn2joiENiEzTuJwzMdj6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=n4mCothO; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kt8NWDoa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781844687; x=1813380687;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=bKgw1v1Kdrdu17o1DMLGImIVTMh1a9YaHSymyzGR9TQ=;
-  b=Kt8NWDoaSmrxUNDCistc6pV7UTsGH1REng+KiB4e5jDPP5B4/ONacz2Q
-   PCSYNXkYpvGzMVPpwsrvQQ7MER6YFf7vUYk7lwKxfQf2s4IntrDa7N9zd
-   EYiP8uMHbQXTEs/6XSuHfvYuSrhrOphmpTo+6K2EPx7OGyqFMWnJQN05d
-   ER4pGn1+qN/0sA/WPNlldq70zx55vVsgIK2GZBBt3/l5oI1gx41V/NeYw
-   iNdtnqg1gXmPtRW9W4DRuv/oWU16LPqls0t1T3ue8utZpOvD3pKBudDtj
-   J5W+qo6HAMXwt7zp0u8rGHq8iIYcm+3BWjMl+hnXXMN2wMIkHG8T02sY3
-   A==;
-X-CSE-ConnectionGUID: BVB7VvfQQrC1B/Kc5o1xUw==
-X-CSE-MsgGUID: zXNb43ZjQ4GjAFTdez16rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11821"; a="82802826"
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; 
-   d="scan'208";a="82802826"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 21:51:26 -0700
-X-CSE-ConnectionGUID: eN2KpjMTTAKTDgD+z7EqPQ==
-X-CSE-MsgGUID: UUzQHcTeRfyYSuD6D8HdYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,212,1774335600"; 
-   d="scan'208";a="286670206"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2026 21:51:26 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 18 Jun 2026 21:51:25 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 18 Jun 2026 21:51:25 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.29) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 18 Jun 2026 21:51:25 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t5TCssSWxued2iHejv8INv9Ekbm/LFAUesFAzz5t+PJHGelGMk1ORSWeNkGka+iPteKqdCfMBAt/5JUYsHf6Y0OG84rG4Uu4eJnhf6QqjdBhr2th3Vltvz9purrswYpLNezlBq38PIgPQFYiaGg9GoosB2xNhcUlcCLgfgPvsB107rmmtNuz91ql/wQ4/Pctq11hj4Dm0Tlw3C4lahrglgBq4TwobyEPsah1QsJZrFU0OMUvp1DwdyUbLwdgSEqY/sRBwP5d8XqNHMQJWqXkYkZe5jKzamg3yVlYHYkP8egKa9QoHzsnZ+7Mk04rmK2ELtN0RJsg+UfJERNLwDsxQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bKgw1v1Kdrdu17o1DMLGImIVTMh1a9YaHSymyzGR9TQ=;
- b=LmqOIGvsENG1lscxV3YDoAJuF3+IBDCdNzAvfTOGgfInhkR4t1/JsUMZIlEElag2nmRlTPKA1LbB9guts7wQb4TZIkZWFYFtDRHTUFB3Guvr5qF5h3sbOjLC9Ve5nAROVPVnkgMuibjvjiHzejCBCS1xDU8DaAD94c6KoySZ00EnyI6cqXHLY/7WSfzNfYeQuD6hc9DiRzCcDwRqXDcsn91N5JYj2eErTZUMGBCb9QRl+17oZJlEmSDbxBvcdr2jsK9J3KLN7yYGDsw46ogDc+lcZhCfh++JzNjfvb+/leuvhxGHshXetvWNMlsk0XhnY03uMP9B9VYiXu3QLiGC5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
- DM4PR11MB5311.namprd11.prod.outlook.com (2603:10b6:5:392::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.18; Fri, 19 Jun 2026 04:51:23 +0000
-Received: from DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
- ([fe80::ec1e:bdbd:ecd8:4c86%3]) with mapi id 15.21.0139.009; Fri, 19 Jun 2026
- 04:51:23 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "pbonzini@redhat.com" <pbonzini@redhat.com>, "seanjc@google.com"
-	<seanjc@google.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] KVM: x86: Clamp the EOI vector if its OOB instead of
- bugging the kernel
-Thread-Topic: [PATCH] KVM: x86: Clamp the EOI vector if its OOB instead of
- bugging the kernel
-Thread-Index: AQHc/1QYLGBBYF7ab0m45gRDa3IBLLZFT+IA
-Date: Fri, 19 Jun 2026 04:51:22 +0000
-Message-ID: <f8d021453f5bb6565fc9c9c2e23e63d8c620e2f4.camel@intel.com>
-References: <20260618185515.2021642-1-seanjc@google.com>
-In-Reply-To: <20260618185515.2021642-1-seanjc@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|DM4PR11MB5311:EE_
-x-ms-office365-filtering-correlation-id: 5e239793-43d7-4779-84e4-08decdbe6978
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|38070700021|18002099003|22082099003|56012099006|11063799006;
-x-microsoft-antispam-message-info: IHorp+eb0lK+e3QTI+WXCFgsxNvtGO8fY5lF2jL9n7wPzOBCfSq2uBNp1Q+nnasEswt7QR4/8NV4v9H6nrAs5SePDWyA0AYF8xjeyvXjWcIAkqDL5ioYnM/6lXrrBjJlFQddLhteBEoQtFLwKC0zib3DBnjVKFYq9ad6ExuuhPf/M3DLj5zR+zBbZnrq02gjvEz7PRmhXOLkQo6CJrFckO18v0ZhzDsK8YrPTO+9AKRWXXO4vdsgDUwO2N+zzuEkJlHv+kOWgZ2Zij5uDiJQJzbvHHd25xDt/Ytwz731GKEHtqF6QWy+ZB+Iel+O+az08mWe1PNiCFxc8ZDPkPscC8DeUBHZt5ZbCgclT3NnNv1IqZuz9q4/lpPeQkEemXdrZ5Cdddwy6wdFA8RCmDgWKFfzJwjCyRvbb5+jDLR46r6sfdWXumKgqax8Fg9LBpKk1cWccLOyrzFLJ/ZCfYzkiQojThVTxGtcUF2k7Rf9h1ZGEA9wAEr/aF1sp9NH1dIUqAbLdwQNL6ONlR+YyZ9h8w4qKoNW0mkoZBe4Q1cD8l/bIUsGcgmud6NZU4/DlaStqJTVkvJPUKE8KbR4KDUvnSYsVGKf6v5FB0gWK+i3Zkj83+KdflivmFJoTpUA72FiOmQ6Vf/9+ivaKBWpoYawfww4NXeV0cxOCp5FZghs9Yl7yzWgyH27Xn58feIDWKraNxM6yV5i6laK+oy/wYIcEdnW7AQpAizjRZGYoTwZBYc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(38070700021)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QXRTcU0vdzh0Y2VZODJCSmtGTmtGQjlrc0VXOEFaTFlmOElueUtiU09UaE50?=
- =?utf-8?B?L1ZZemFsdzRVdnVJTjNsVC84dzBRajduRURQRWpoRnJZWlU5UU5WYjUzcmlt?=
- =?utf-8?B?bDA3NCs4UzdCY0NQRXVDWmtvWlRYRzNrbWJJSDRIUEZBamZuaUV4M0UzV25Q?=
- =?utf-8?B?NU5MRnF5OTdHUmZ3WlZxK1NQYkJjcDVaZ3AzRGZTbzcwR0N3NWJ3VExlYjhs?=
- =?utf-8?B?bzJSNmVudDFGNjhBQUJ3Z0VpZy9rNDVPRk5TZEIybzVKOU9GcWwweDFPbzl4?=
- =?utf-8?B?eWdHam0vaTlPd2xmT2JYOSsyZGZrV3dPTHIvOXlOQmVsaFNmZFhWV25hUHVi?=
- =?utf-8?B?RS9GYzBKeE5WY1NlWEorTkRZN1FPekhmUUFzM1c3Z2ZOTFB1bmVpY3A0WmZw?=
- =?utf-8?B?ekp3UEM2N29NeGJSd2w5TkhpTEVKUTVXa3E1V0kzRVY4TnRUTHgwT3RHeEF2?=
- =?utf-8?B?L1hmaUZ0STlvbk5HaFpIS1ZBTnJUbmxGOE9FdTdwazgzTTQzRnpNSjdHVVpZ?=
- =?utf-8?B?OGRKbHJBSzBCSzZxRHpJVEVSQnp0bUxwZ3dOZlY0YTl4ZXV5KzZMTCtDMGZG?=
- =?utf-8?B?eENscE5oV3IwWlg3OWRPYzFkcGl5TDYvNDNDQ1UwcGczY1BLRWxXdXFnSEE5?=
- =?utf-8?B?ODMyTE5Sd0JwZEMxSmprRTNLbllRREtyT2NXeXQvc1hNdHR4cE1Eak5qbzNR?=
- =?utf-8?B?RlptVUlSckxKMDB2THB2cExQR3pJYityaWdZRzJKd0Qvd1Rma0lHSnpwaGMz?=
- =?utf-8?B?ckt2b2xINHVnc2xZZis5NVhINXp2bmw0d1hRU2dnR1RiKzRLREt6M25IOHl1?=
- =?utf-8?B?M3VEYXFndy9Jd2pEN0FQbHR0RG42ODArOFJ5cEpmaGZQejdTWmZDdGJjMzEw?=
- =?utf-8?B?M2dXaXNmYUlEaTZjekk3aFlBQThIY3RLYXdLL0ZvUytQUFhOUS9PSGZOdEFl?=
- =?utf-8?B?QVBmWDd6a3VIeC85MVFuUG1NbmwxcTIydm14SnJLUDNzcE5zL3NrQVJUZVBs?=
- =?utf-8?B?Zm5sSW1qeUFJOTVGYnBqelo4WTlpVFdNeG04U0dWWlZpaWd1QlBsYUJxQ3lo?=
- =?utf-8?B?WXN4Nk1BQ3hPb3UwQkVTbUVzT1hzSHJKQ3lEOEsvYUVEV0pXRHBDdDd1cTlL?=
- =?utf-8?B?WTBWK0lScUpyZmpacW1seFhZbXJZK2g4bFJtUXJ3cWk3aVNxZVlOK2FRSldJ?=
- =?utf-8?B?dGhZUWNMQ29RMThsMmtxY0R5azZvRG5OUk9XLzdvd3VVbkwvemtvUjNpKzNK?=
- =?utf-8?B?anp2cGJFY3FoK3Z2YjZKcENWMnRSY2dHVFg5VkIzMFJrOUFVcWdndllYeTlT?=
- =?utf-8?B?VXF0ZEx1VnNvdTkrRHJRUWJYQS9mRTNycXFWdmdNOU9qeEMwRnhDZW5xWlVj?=
- =?utf-8?B?T3JjNk5QdzF5aWlzdmx1aDE4cEpLU3E2WEZWOTUzbTliWTdCbm1VQ3BMY04z?=
- =?utf-8?B?bkNQVldzU0NCZFJRYzRUZWovR2lGQ3FnWnpIMXdiVUF4dTRQTERQeXl2OEJq?=
- =?utf-8?B?YVlFZ1g5NDRmOWNZOXNXRjcwSUFXRURRZS83SHQxUk8wWVZJazZNR0JyOEVx?=
- =?utf-8?B?U3VVQnB0eUk3QkZNREpUeFUxL0k2NHFtZXE1czRFWWRjbUk2S2ladUE0T24w?=
- =?utf-8?B?VWRqYnpxYUprR1FPK1A5Nno1S0VOTWJ5WmpRUU1YbVZXcmZXeGlhQzNmV040?=
- =?utf-8?B?R2hyT1AxU3J2QzVTcVNTT1RFZ202ZVJYNHpNNDVmQWhkaVZLZFlNM0xUS3lY?=
- =?utf-8?B?OHFXeEJhUldxM2dvbENqMEZHaWZWanBEMUxMZjE3TkxHaEFaM2d4MlFFVlRY?=
- =?utf-8?B?ZWZ6YXJXZWhBVmt2T3Rwa1YzWXZ4a2tJMHJ4VFljNFpkaHQxdkdjZU9uQzhp?=
- =?utf-8?B?YzRPK1hYcG5wMHVuWUlvSTJwK3c2VXRhaG9LaXFnUkNnbFlucVVITW1USFZM?=
- =?utf-8?B?YWdlOVhLTmY1VWxvYzFOUFJDK1VYKzdTSXNzRksxcGw5dFk2M0VDalptcFli?=
- =?utf-8?B?QUJ1T2wxWnN5U25EMU5FZ3JGckN6ZFFaL2E1OXBKMi9lM0UvZGJRbVNtVm8x?=
- =?utf-8?B?NmZwZ3REYmtnb2J6UTlNUzV2VEZlTi80Qjl4WW9wNjNuczN0VG91UDFkNUdF?=
- =?utf-8?B?bDEydnFWWTViRis2NCtLdmZtR0E1QU0yKysxYTBpZUdQRTVaV3dDVHd2SjJX?=
- =?utf-8?B?aEtVV3pPS1B4MHpzUjFodkc5U3d0QVBsczdQM1NiS1lEZWRhbm9KS1Z3TzBN?=
- =?utf-8?B?L0h6YXBGS3FSMUFLWXZLeUphNElmZVFieERkUWtXclJqMzkwQjZGSkt2ZWkz?=
- =?utf-8?B?NjN0Y1lETTc1WmFUc3U4NXRwYjFObUVzZW5pV2ZjUXQ1Y0Eva044dz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <21BCCE6BD946A94CBC94EE80B3EED7BF@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="n4mCothO"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65J3ITxO1152775;
+	Fri, 19 Jun 2026 06:04:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=cYSiXYIja3s/exHnYrx+tpMT5KHrPd
+	scpPPy3yBJQqA=; b=n4mCothO6btV4LJ47txGyE9V2F70HBFQP7tOkn/fO70Fr0
+	t5AdeT41vZJ9pZlJKWy03vk+awhx+E0oxrmHOdBk/pBhvbcVAsz70w/MGOByfkVE
+	OXW/xcnT7+6ndzuUxM7ggDwcLkuTZjyPs+98px5VW4lsocKPEYqztq8pqsC+5fUh
+	cV1EfGwzxi9Z80QwK3hQtrcH0Z2z0gGLcwtEAmiZ5DOk2ZP/ozlQl9sAtiZhrD4/
+	xdW/vu76n7Fn+qR0OaNkyeiKNYc8ZF4xDlag1xngVpIr7K+OWqgghJBj+a2ecF3i
+	AgmUfht1Wl1qyOBey+2bk+ZzgwI+uoPC85JQZrvw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eueqtv1ys-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jun 2026 06:04:31 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65J5nbv7027651;
+	Fri, 19 Jun 2026 06:04:30 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ev172fdm5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jun 2026 06:04:30 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65J64Sif21955138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Jun 2026 06:04:29 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1AAC58066;
+	Fri, 19 Jun 2026 06:04:28 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D7C4458063;
+	Fri, 19 Jun 2026 06:04:22 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.17.1])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with SMTP;
+	Fri, 19 Jun 2026 06:04:22 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Fri, 19 Jun 2026 11:34:21 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Anushree Mathur
+ <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
+Subject: Re: [PATCH v4 2/4] KVM: PPC: Book3S HV: Implement compat CPU
+ capability retrieval for KVM on PowerVM
+In-Reply-To: <20260616123314.82721-3-amachhiw@linux.ibm.com>
+References: <20260616123314.82721-1-amachhiw@linux.ibm.com>
+ <20260616123314.82721-3-amachhiw@linux.ibm.com>
+Date: Fri, 19 Jun 2026 11:34:21 +0530
+Message-ID: <878q8bcbh6.fsf@vajain21.in.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: HU7W/Lw3CIumwcBcZBG/bpVi1ZmwOxtMMyeEqzh3aV5UHjLwff7Xlon2nCh5kamJE3Dy2DChrGV/mvZRoX21nfrSPo8pTNhCq0r5uR8N4kVDo98w54/THZGTKm7opy6JWF7ZM8zQcrxCUL7DTZG6hO+IuaUfpafpphXuN4HYSPi8eN4c2VD34PLdMkMJNnJ1LjbOGQ4p4gBKGsyVw5/sAssYcbBX6oyvIA1iwC2rLQnUdXLwtM+uG2CO5X63koygmZFPTb+bfmLB0k7Fpp9sciAWp29vPhNL6YgwtOJfK0PHbe4ezw41AZ0yxgOw72hONr89Fy4CrFE5OQ0TLiAS3Q==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e239793-43d7-4779-84e4-08decdbe6978
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2026 04:51:22.9994
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hwp3ETfJfa5umNcod8OhcsOonEPDdoGE06yv1WWdRvItaXOBwvd3+tmuxKOIXhsBRQuFnY2fLlYeS+/5T6JbkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5311
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: GRjfG2396-rjN3sk0NeC9ICqeqVxAua3
+X-Proofpoint-GUID: CA0EaxVqhDXa0VhK6injMLzHzNxirnwR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE5MDA1MSBTYWx0ZWRfXwlGNBruTr5AC
+ jsylkTYWKqMpNKJF2kJPz1m3fc0hql/8xvBkjwquD9RkJ9vKgqaDNsSCb9dYO+rfPhlo94N1b2A
+ FL8JBUJyWEpIRW+zN9e1lm+wZ01RP3UR0hmS/zI/NASoH9L2zrchgyAJnnhvd3xpFvdmHuoxrJX
+ 0PpCPbOwCSj0Y4Q0Dst6RATU7eITHfRH+619r1O+1z54yfuzynP+kdOFQL6kG40XdPs9oHGoi1A
+ mwSl6ZvfiOG+pByATv0WS7C6vEzWiqht5fXEWOt7jk1WHdXai8ahKx0LA4doLuWTtWNIFiV5uy6
+ Ha5mn5Fik47SYv7NDb+okKCqFSdN5RurbrGIEG3XZQM9gm5tIgXCiPKKthg+lZXfjpB4+L/WKMk
+ 8Y9SdAL2UPi8rv+p6zk1zdNWyNZ3khj+Ndui6HPxoR08bAPxHhxR2yQetONMXFsklWq/xdwHQEa
+ x7oOh0/j4PdjGAOFDBw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE5MDA1MSBTYWx0ZWRfX0JpRW+TUpbD8
+ PiMZk3I3BrDcQfldZYiXuJQPZsOuOFKJOasaWiCekMH+FD8BpaKTJEsPfEOKoi14gkw6tePTSXu
+ AtVKYuUTX2cxP04zwwvdIzGLaL7NTcM=
+X-Authority-Analysis: v=2.4 cv=B4KJFutM c=1 sm=1 tr=0 ts=6a34dbef cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=EI8JAjJv2T8FAu73W3UA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-19_01,2026-06-18_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606190051
 
-T24gVGh1LCAyMDI2LTA2LTE4IGF0IDExOjU1IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBJZiBLVk0gaGFuZGxlcyBhbiBJL08gQVBJQyBFT0kgZXhpdCByZXF1ZXN0IHdpdGgg
-YSBiYWQgdmVjdG9yLCBjbGFtcCB0aGUNCj4gdmVjdG9yIHRvIDI1NSBhbmQgaG9wZSBmb3IgdGhl
-IGJlc3QgaW5zdGVhZCBvZiBidWdnaW5nIHRoZSBob3N0LiAgSW4gYWxsDQo+IGxpa2VsaWhvb2Qs
-IGEgbWlzc2VkIEVPSSBpcyBzdXJ2aXZhYmxlIGZvciB0aGUgZ3Vlc3QsIGFuZCBpdCdzIG1vc3QN
-Cj4gZGVmaW5pdGVseSBub3QgcmVtb3RlbHkgZmF0YWwgdG8gdGhlIGhvc3QsIGkuZS4gcG90ZW50
-aWFsbHkgcGFuaWNraW5nIHRoZQ0KPiBob3N0IGlzIGNvbXBsZXRlbHkgdW5qdXN0aWZpZWQuICBB
-cmJpdHJhcmlseSB1c2UgMjU1IGZvciB0aGUgZHVtbXkgdmVjdG9yLA0KPiB0aGUgZ29hbCBpcyBw
-dXJlbHkgdG8gZW5zdXJlIHRoZSB2ZWN0b3IgaXMgY292ZXJlZCBieSB0aGUgYml0bWFwLg0KDQoy
-NTUgaXMgYSB2YWxpZCB2ZWN0b3IuICBIb3cgYWJvdXQgdXNlIGEgQ1BVIHJlc2VydmVkIG9uZSBp
-bnN0ZWFkIChlLmcuLCB2ZWN0b3INCjApIGFuZCBob3BlIGZvciB0aGUgYmVzdD8NCg==
+Hi Amit.
+
+Thanks for the patch and incorporating V3 review comments. Further
+review comments inline below:
+
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+
+> On POWER systems, the host CPU may run in a compatibility mode (e.g., a
+> Power11 processor operating in Power10 compatibility mode). In such
+> cases, the effective CPU level exposed to guests differs from the
+> physical processor generation.
+>
+> When running nested KVM guests, QEMU derives the host CPU type using
+> mfpvr(), which reflects the physical processor version. This can result
+> in a mismatch between the CPU model selected by QEMU and the
+> compatibility mode enforced by the host, leading to guest boot failures.
+>
+> For example, booting a nested guest on a Power11 LPAR configured in
+> Power10 compatibility mode fails with:
+>
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+>
+> This occurs because QEMU selects a CPU model corresponding to the
+> physical processor (via mfpvr()), while the host operates in a lower
+> compatibility mode. As a result, KVM rejects the requested compatibility
+> level during guest initialization.
+>
+> Add support for retrieving host CPU compatibility capabilities for
+> nested guests on PowerVM (PAPR nested API v2). The hypervisor provides
+> the effective compatibility levels via the H_GUEST_GET_CAPABILITIES
+> hcall, which reflects the processor modes negotiated between the Power
+> hypervisor (L0) and the host partition (L1).
+>
+> On pseries systems, obtain the capability bitmap using
+> plpar_guest_get_capabilities() and return it via struct
+> kvm_ppc_compat_caps. The implementation defines KVM-specific capability
+> constants (KVM_PPC_COMPAT_CAP_POWER9/10/11) and applies masking to ensure
+> only supported processor modes are exposed to userspace. This information
+> is then exposed through the KVM_PPC_GET_COMPAT_CAPS ioctl.
+>
+> Hook the implementation into the Book3S HV kvmppc_ops so that it can be
+> invoked by the generic KVM ioctl handling code.
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+>  arch/powerpc/include/uapi/asm/kvm.h | 11 ++++++++++-
+>  arch/powerpc/kvm/book3s_hv.c        | 17 +++++++++++++++++
+>  2 files changed, 27 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+> index 8a38be6c3b03..730488681443 100644
+> --- a/arch/powerpc/include/uapi/asm/kvm.h
+> +++ b/arch/powerpc/include/uapi/asm/kvm.h
+> @@ -443,7 +443,16 @@ struct kvm_ppc_compat_caps {
+>  	__u64	size;			/* Size of this structure */
+>  	__u64	compat_capabilities;	/* Capabilities supported by the host */
+>  };
+> -
+> +/*
+> + * Capability bits for compat_capabilities field in kvm_ppc_compat_caps.
+> + * These bits indicate which processor compatibility modes are supported.
+> + */
+> +#define KVM_PPC_COMPAT_CAP_POWER9	(1ULL << 62)
+> +#define KVM_PPC_COMPAT_CAP_POWER10	(1ULL << 61)
+> +#define KVM_PPC_COMPAT_CAP_POWER11	(1ULL << 60)
+> +#define KVM_PPC_COMPAT_BITMASK		(KVM_PPC_COMPAT_CAP_POWER9 | \
+> +					 KVM_PPC_COMPAT_CAP_POWER10 | \
+> +					 KVM_PPC_COMPAT_CAP_POWER11)
+>  /*
+>   * Values for character and character_mask.
+>   * These are identical to the values used by H_GET_CPU_CHARACTERISTICS.
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index f9380ef65750..f674386df62c 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6523,6 +6523,22 @@ static bool kvmppc_hash_v3_possible(void)
+>  	return true;
+>  }
+>  
+> +
+> +static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
+> +{
+> +	unsigned long capabilities = 0;
+> +	long rc = -EINVAL;
+> +
+> +	if (kvmhv_on_pseries()) {
+> +		if (kvmhv_is_nestedv2())
+> +			rc = plpar_guest_get_capabilities(0,
+> &capabilities);
+I think instead of making the hcall you should use the
+'nested_capabilities' extern symbol as it would already the same
+value. This symbol is already accessible in 'book3s_hv.c'
+
+> +		host_caps->compat_capabilities = capabilities &
+> +							KVM_PPC_COMPAT_BITMASK;
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+>  static struct kvmppc_ops kvm_ops_hv = {
+>  	.get_sregs = kvm_arch_vcpu_ioctl_get_sregs_hv,
+>  	.set_sregs = kvm_arch_vcpu_ioctl_set_sregs_hv,
+> @@ -6565,6 +6581,7 @@ static struct kvmppc_ops kvm_ops_hv = {
+>  	.hash_v3_possible = kvmppc_hash_v3_possible,
+>  	.create_vcpu_debugfs = kvmppc_arch_create_vcpu_debugfs_hv,
+>  	.create_vm_debugfs = kvmppc_arch_create_vm_debugfs_hv,
+> +	.get_compat_caps = kvmppc_get_compat_caps,
+>  };
+>  
+>  static int kvm_init_subcore_bitmap(void)
+> -- 
+> 2.50.1 (Apple Git-155)
+>
+>
+
+-- 
+Cheers
+~ Vaibhav
