@@ -1,54 +1,54 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72DA3B14BF
-	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1753A7848
+	for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 15:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781882425; cv=none; b=YeFfNkw+qKH66DLLWFaHjobDPD0BL6KyWr9MlJZZdiGa6WmzfJHGXuQCXDXf8j7MF4iiLmcnoLR/5b9qjM/cH9Rs6sqr0C23Ms7TTMh6/Sx4FWN5OCuZnJzwc848FyeHqHIkPfkC+iTo/vA6VAFDxh3XKjP0ss0C0ATVNYw2srM=
+	t=1781882427; cv=none; b=cqChR+tvtuYAXo5J0HSt2uZ8n9OlXogMQUoZyZiol/9IDWcMoyoSmVdpVBBffXrVdTmWINSx+p3L7Tvv6QuL8oGVd5Hf59Q0/JqOFXWbXLi1fN/gtoxZnU5QbgTsfN1CCzLDJRszdwN2YSz0qSbAONn8yjHTqAl2aVIzXykfzzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781882425; c=relaxed/simple;
-	bh=ZFGKX1o4Is9+q1s5UrYkv3QtUOYWdVRT2yjZzlfnOhU=;
+	s=arc-20240116; t=1781882427; c=relaxed/simple;
+	bh=NQsj8iYU85Xf+mfUkBzv5es4sl3G3qNpHqSe21FjftU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L2RNy1DHVxpUorY4SsJiLXUYC2+cGfQOqaBD/8GUtBozdfH8cI1q15k4LT6fv3q+0Cr/L7bjud+VXGzz8H7QDxl20a0edCO604ps8rVI2uHbVHqSv+yFP0SsiJAqX1yinnrJHz3lB1jUX5jvexUftPTFWWOc+uY+afdzQT33Hik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rfAqD/Vj; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=XXHU0GkSuimkf1VaA1pAB28y1Gos2bvAQ1I8E8DXEzSDRUpR0kGvmdFUfRLXKO4cfbU96qRJlcC0DqI9Ep+jPfHuaHG2QVhKfx/g1wrrkIPOc4Dzf6c3DHb+ibLOxEI7tsso6CRxYAYwwetgXMw13hGiVCdVVd0x2kXIB3lYJKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ddjP9l8x; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rfAqD/Vj"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8514f8ed5dso1490330a12.3
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:20:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ddjP9l8x"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d985df4cfso2117861a91.1
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 08:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781882424; x=1782487224; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781882425; x=1782487225; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LErQXqw7Ji4tAXSgkOw3dBqPepO0ow35lm8nGv/xAKg=;
-        b=rfAqD/VjmIMws50CnEXu4pZUcz8X74iHystC78bMXlI2bWsieQvlCaQU+5dm2JPJ15
-         3YBn4FqYa4NVu9kudySZEinKxAbvT9FXsLK17dfgDpXcPTSPjOQj6Oy58RAaE9BAa6E7
-         HO8DSk5Nbep1aLW0puR6GkvyeHQBh/aX+OH0MyojrG+NeZEMb2b6q/AviW/lLaeabayR
-         5GlXRjSkN/O3oYOrVyxj0+KeAQWPVFX1Ljizk/pYBY0PV0apcPU3GtSMrS0nVdtI3GGu
-         myG/ARr8+IjdDiGHGP1H78kh9XsKwS2XokJDNsi0c8e1kpNPSJSx6s59/rBmq5ivVRtK
-         z/gQ==
+        bh=gDkpDj0IOMeBan2mZUfK8ZgkIskUkR9cM5RX0PavjGE=;
+        b=ddjP9l8xC+8YRXlj1ieqCNy64JfyvhtOxud0y6pOl6/Pj+RN+EEtICaZH9ghUpkHeV
+         ykHZZUU6SNG6G22vxPYD7MdotYNNzCcWaPXluAPglAxUH0MRF91fl2+G1ONqzG/rUPM2
+         yR++2NDNSyoiFy8EcSwbMhDazGGr7vsHhPgI41E/GNDCqAKcQKy3NOAUmwoq0Za2PzLR
+         wRn8hzOE1DGSo8hPm2mF5IlmFQjgAgiS48H/prvDKPu3SQgw+B9lIeMq8S39SOH+53xo
+         q2rO6E0duW8GW4vbJb33rAjJM0i+t0YfER3dpG+e5Dy5CTNcEFRYvcxDNPbjH5t2TbaF
+         s0DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781882424; x=1782487224;
+        d=1e100.net; s=20251104; t=1781882425; x=1782487225;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LErQXqw7Ji4tAXSgkOw3dBqPepO0ow35lm8nGv/xAKg=;
-        b=PnBd/wWHRHn+hztxoo6SLmbbYojk5/I9pTZgb8pn1kfWOAS6JbQr6h/cXPh6gI62s+
-         qjEBdFYdTQVRKldnYrsYEwrF8XWMPb3PloOnfM4r7nVYctMrPMQMR5HXLBhvwrdEsj9l
-         RP+r8XozNf69fZ9osWKbX4MFUkSHxvQF+E/FC0KGLNB6AchyIWpQGsTxWsuDXOjI9jJP
-         qV5War2e48Id3jkIxQvOOg9cPS+YiqqW7l73LFfRhaGXQZFNAK9sH5+iFS03jqbxih1k
-         BbYVNO3rVCAsg/Sybhf35eAw6t9m0UApOfd8YELQS1yPFBwHHA5MHiLRHBcaaQk8Ice3
-         0Lgw==
-X-Forwarded-Encrypted: i=1; AFNElJ+sxfaUvFItUzAbzqfObWWVWkwfSV0FbbDpbr2EEgUzSjXJ29Sc+Im+QNZKqcdA0mJGrGE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztKC4GdVwoVhC90ZQ8GZPRViqHQkZYG/OeOpmln71sSXWKtDeF
-	m7SrcOBHvh3qFsmLvim+wM3XwaRUaXVdATClqLWxgcIYC75V7Zbl3WFzrYzKtcIjuJfk7NdT6lL
-	Eyh175Hv9KyxN5w==
-X-Received: from pgli4.prod.google.com ([2002:a63:1304:0:b0:c79:8a8e:b046])
+        bh=gDkpDj0IOMeBan2mZUfK8ZgkIskUkR9cM5RX0PavjGE=;
+        b=TXtizQ7wbTQ4TVWoAwbEi9wxNsEb2To4Ca9g2Z8GEBfnfJIJhFeV415iV2TX6/PF/a
+         5eg1FPZQl3JCzjf2OtwqPf6nzztOewlHPU7lHQR7W53ywr3INuWHvYwr4MkUhC1nlAoD
+         HnlohbYVJDOo4tbEJoj8lAVLqOHfckXDyU6kbeFn/JZvcacO0GYMzx+OHGV1zDtRyc36
+         qtLLDcXCEH5IQVCQkvN3M1h2rPWOH2gB3Jb2F2P4swMjdnlA4XGlWHDE0btDah5Xbf7A
+         ILJzVKMzY+EFmlxIz/ocmIrhHLl9vLQzcj+BHqLpTNX8sQIFGlJolUY6pl9zVIZ25qSG
+         w8iw==
+X-Forwarded-Encrypted: i=1; AFNElJ9iYO3DGJqzfgx9Om/6qSn6K3GXNWyL463Re3F791HwluUejEsTDQ83biSXBqI3xCJzSW4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd/oVFukELMOMHafcMk/PuTZUSr3eDjiBC9Stz5rkvqfFD6QeL
+	724h9KdIhOT/yE0o4mMeUfY5maAdq0ZCrAWGMDkAjZZ2JgYZaxs5FktfBjEgDI9cVQWsyjwCtfS
+	zQTttmS63m7JDfw==
+X-Received: from pgjn9.prod.google.com ([2002:a63:e049:0:b0:c80:16d6:ed0])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:1493:b0:3ba:e8a9:e84a with SMTP id adf61e73a8af0-3bb361b05d5mr4728476637.42.1781882423776;
- Fri, 19 Jun 2026 08:20:23 -0700 (PDT)
-Date: Fri, 19 Jun 2026 08:19:24 -0700
+ 2002:a17:90b:57ee:b0:36b:bbee:fb28 with SMTP id 98e67ed59e1d1-37d160bd6dcmr4322850a91.2.1781882424668;
+ Fri, 19 Jun 2026 08:20:24 -0700 (PDT)
+Date: Fri, 19 Jun 2026 08:19:25 -0700
 In-Reply-To: <20260619152006.3684428-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,85 +58,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260619152006.3684428-1-jmattson@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260619152006.3684428-2-jmattson@google.com>
-Subject: [kvm-unit-tests PATCH 1/5] x86/apic: Skip PV IPI test if feature is
- not supported
+Message-ID: <20260619152006.3684428-3-jmattson@google.com>
+Subject: [kvm-unit-tests PATCH 2/5] lib: Hoist test selection logic to library
+ for code reuse
 From: Jim Mattson <jmattson@google.com>
 To: pbonzini@redhat.com, kvm@vger.kernel.org
 Cc: Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Check for KVM_FEATURE_PV_SEND_IPI before running the PV IPI test to avoid
-false failures or potential #UD exceptions in environments where KVM PV
-features are disabled, not supported by the host, or when running on
-non-KVM hypervisors or bare metal.
+Hoist the 'test_wanted()' helper from x86/vmexit.c into the common
+library as 'argv_test_wanted()' to facilitate code reuse.
 
-Define the KVM_FEATURE_PV_SEND_IPI macro (bit 11 of EAX in KVM CPUID leaf
-0x40000001) in processor.h to facilitate this check.
+This eliminates duplicate code and provides a generic,
+architecture-independent helper that any test suite can leverage to
+support running a subset of tests specified via command-line arguments.
 
-Additionally, update the [xapic] and [x2apic] configurations in
-unittests.cfg to advertise PV IPIs (+kvm-pv-ipi) in the guest CPUID,
-ensuring the PV IPI tests are not skipped in standard test runs.
+Refactor x86/vmexit.c to use the new library helper.
 
-Fixes: de8d3fcc5b63 ("x86: apic: pv ipis out-of-bounds access testing")
 Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- lib/x86/processor.h | 1 +
- x86/apic.c          | 5 +++++
- x86/unittests.cfg   | 4 ++--
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ lib/argv.c   | 14 ++++++++++++++
+ lib/argv.h   |  3 +++
+ x86/vmexit.c | 15 ++-------------
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/lib/x86/processor.h b/lib/x86/processor.h
-index b2726d939a47..c2bc0a3d9ef5 100644
---- a/lib/x86/processor.h
-+++ b/lib/x86/processor.h
-@@ -354,6 +354,7 @@ struct x86_cpu_feature {
-  */
- #define KVM_FEATURE_CLOCKSOURCE2	X86_CPU_FEATURE(0x40000001, 0, EAX, 3)
- #define KVM_FEATURE_ASYNC_PF		X86_CPU_FEATURE(0x40000001, 0, EAX, 4)
-+#define KVM_FEATURE_PV_SEND_IPI		X86_CPU_FEATURE(0x40000001, 0, EAX, 11)
- #define KVM_FEATURE_ASYNC_PF_INT	X86_CPU_FEATURE(0x40000001, 0, EAX, 14)
- 
- /*
-diff --git a/x86/apic.c b/x86/apic.c
-index 1c37cb295209..fee1b7893185 100644
---- a/x86/apic.c
-+++ b/x86/apic.c
-@@ -642,6 +642,11 @@ static void test_pv_ipi(void)
- 	int ret;
- 	unsigned long a0 = 0xFFFFFFFF, a1 = 0, a2 = 0xFFFFFFFF, a3 = 0x0;
- 
-+	if (!this_cpu_has_kvm() || !this_cpu_has(KVM_FEATURE_PV_SEND_IPI)) {
-+		report_skip("PV IPIs are not supported");
-+		return;
-+	}
+diff --git a/lib/argv.c b/lib/argv.c
+index fa5ff9ae9d28..b290c1f33903 100644
+--- a/lib/argv.c
++++ b/lib/argv.c
+@@ -146,3 +146,17 @@ void setup_env(char *env, int size)
+ 		*env++ = '\0';
+ 	}
+ }
 +
- 	if (!test_device_enabled())
- 		return;
++bool argv_test_wanted(const char *name, char *wanted[], int nwanted)
++{
++	int i;
++
++	if (!nwanted)
++		return true;
++
++	for (i = 0; i < nwanted; ++i)
++		if (strcmp(wanted[i], name) == 0)
++			return true;
++
++	return false;
++}
+diff --git a/lib/argv.h b/lib/argv.h
+index 0fa7772549da..bb539b0dcb44 100644
+--- a/lib/argv.h
++++ b/lib/argv.h
+@@ -8,10 +8,13 @@
+ #ifndef _ARGV_H_
+ #define _ARGV_H_
  
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index b9cbcc596c3f..0c433ac29e5f 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -10,7 +10,7 @@
- [x2apic]
- file = apic.flat
- smp = 2
--qemu_params = -cpu qemu64,+x2apic,+tsc-deadline
-+qemu_params = -cpu qemu64,+x2apic,+tsc-deadline,+kvm-pv-ipi
- arch = x86_64
- timeout = 30
- groups = apic
-@@ -19,7 +19,7 @@ groups = apic
- [xapic]
- file = apic.flat
- smp = 2
--qemu_params = -cpu qemu64,-x2apic,+tsc-deadline
-+qemu_params = -cpu qemu64,-x2apic,+tsc-deadline,+kvm-pv-ipi
- arch = x86_64
- timeout = 60
- groups = apic
++#include <stdbool.h>
++
+ extern void __setup_args(void);
+ extern void setup_args(const char *args);
+ extern void setup_args_progname(const char *args);
+ extern void setup_env(char *env, int size);
+ extern void add_setup_arg(const char *arg);
++extern bool argv_test_wanted(const char *name, char *wanted[], int nwanted);
+ 
+ #endif
+diff --git a/x86/vmexit.c b/x86/vmexit.c
+index 1b675c00f930..82f13a2faa5f 100644
+--- a/x86/vmexit.c
++++ b/x86/vmexit.c
+@@ -1,4 +1,5 @@
+ #include "libcflat.h"
++#include "argv.h"
+ #include "acpi.h"
+ #include "smp.h"
+ #include "vmalloc.h"
+@@ -594,19 +595,7 @@ static void enable_nx(void *junk)
+ 		wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NX_MASK);
+ }
+ 
+-static bool test_wanted(struct test *test, char *wanted[], int nwanted)
+-{
+-	int i;
+-
+-	if (!nwanted)
+-		return true;
+-
+-	for (i = 0; i < nwanted; ++i)
+-		if (strcmp(wanted[i], test->name) == 0)
+-			return true;
+ 
+-	return false;
+-}
+ 
+ int main(int ac, char **av)
+ {
+@@ -636,7 +625,7 @@ int main(int ac, char **av)
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tests); ++i)
+-		if (test_wanted(&tests[i], av + 1, ac - 1))
++		if (argv_test_wanted(tests[i].name, av + 1, ac - 1))
+ 			while (do_test(&tests[i])) {}
+ 
+ 	return 0;
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
