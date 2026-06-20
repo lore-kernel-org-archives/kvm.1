@@ -1,140 +1,138 @@
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0753311CAF
-	for <kvm@vger.kernel.org>; Sat, 20 Jun 2026 03:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781927905; cv=none; b=kurbJY+VD8BxX9zEouJGVaoflMM7e9QAngGCgco4bopAMEGsUaiFlepP9vQnNyU6RreK55Z6YNqwYlUdqRrx+zzV3GjNI1fQ8yKtJ/MiJbg4XddE7KW4TPK3UuzafuRiCU6ziOkGjERkdO0Dk0bRRdeyDRHhcUXmPyOGSJOQtg8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781927905; c=relaxed/simple;
-	bh=jBcL117oefVqvzeFraAukXo1usvSQvY1WMhClDVpeK0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ih6+/caAiDBs3dtpKBCMkWK9qPU/ILnENm5YtDUDnrSnU7m0t1VTiKghHe09pLhnDA7ZnKqjlqVbo0pQSaJsrUWI/qY9mdWFqa4qPN5Erm0enhSc6g5Nv4OlEH4BxJBfOIaZjVlr9MugpqbRV4dqj0IcM4dFR1z4RIoOs6PBxx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-489677a16bbso2540377b6e.0
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 20:58:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26B2DEA68
+	for <kvm@vger.kernel.org>; Sat, 20 Jun 2026 05:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781934037; cv=pass; b=ro8jPmN+F98lWAJJk1WLEQmqWiKs9ih+RwAzLdn6+mp7PD9B10nYxKobjCFcqTJVzQBhOJMle+u9CQ+EyGzl5Chjfj5QwGB3MtcfzuVzb1Z4TWHG+FnM/xk0OY64TeeO/q/tL/w7EfDMg75ExApAiJR9o6OD/QoSj4XigpObWkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781934037; c=relaxed/simple;
+	bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=thByVjZr+sq4/Cs9fvBiwVkmdVuFsrqhgdJlW6+LecpUakWl0pHQei/p3juO0apWeePGvi7H4vkWD70g5J6KvHKE7/t0BJzklBTqhAe8cr+at9hE2Ky4YHHCIqbRsiiX7c6zmXFJZn3JII++gzYWM7d3nOv74LdEGwtKrHmqh44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KjibknvF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gBs4L9WA; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KjibknvF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gBs4L9WA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781934035;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
+	b=KjibknvFo4/4z1xCk5FSSqjxvM12B/2r4X9mkJTbdZFRHvx8JWBj4KG4A1thr6Rffc1rE+
+	9AZbtkllrEUJRaCu0stw3O5qoRRVVphYnd/5TTjiVfJf1VsEiQE/uF7ATISFQlGNRxM6Zl
+	tgIBCJqTq3lCSsDYIrIh23UCzMegL90=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-CmLNR0QZOlWScdqczES1_A-1; Sat, 20 Jun 2026 01:40:33 -0400
+X-MC-Unique: CmLNR0QZOlWScdqczES1_A-1
+X-Mimecast-MFC-AGG-ID: CmLNR0QZOlWScdqczES1_A_1781934032
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490b0682d2fso20655485e9.0
+        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 22:40:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781934032; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UrIjS5hXQ+xpXzQ/kzVsg1npljF5MyOs5CxQA11+iyG/9NXWWnILcO/kzPcPEoIm+G
+         6gomRX0B39Q8zBj1N+5VOf4Oi6Ez6PNJd7wz7pigtIC823x1uFFwWeM/jasfOel8f7zl
+         BE3DPmqYjmOTCSEh3zbrn8j/BHjmaUJoMSusjPl+BMks6q4orEbmwtp0rO+Ugw9IEE3o
+         dnR6H5RmitIoRR3rVArs7FN1dSegi3onL4mlFR2iaz9rDp8papczv1sfmU+Kfyir8yvI
+         2jlA/D4y3ROh0sz3Sb0x6ptVD/QxcSroxS5ks1oAHZRuMDhmtDo5gj9Xxx7/e2uPFg9i
+         6rMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
+        fh=3UX48qOLTv8rEUF1BLbBsFL4AXQ44GHyVHDlYPqtRYI=;
+        b=eCqcZxe3fqXoGM1yZPGMOzORp8cwheHtibQRss6KlJ+hJT8bEfuWzOzirlRlUUjNmd
+         7w7VR7SjfUc3Yzxa+XtU4S/DNEDHG/PRh6nrbTG44w7MSNFiEOPnNmzYZsiHuPQO8jOz
+         RhRuTu/MX8JaM0ulWRd72d+b+3MZIhXS0hSZQmUptEB7HdeRhfZ8T6cg+3wFvi6rAT8g
+         EXwUrDrYHXk1CkLG1FnpuZPFR5JAuAZx2HOmVuI2M6cU/Cq3vYGYepY87+0B8T6tqgL3
+         J0Dfs9bxOnF4G7Dgc1Nr3jhp40ayKP5b3pQqyXCdIItWz4K5McDhgamLskiRX98KGcw+
+         u5aA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1781934032; x=1782538832; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
+        b=gBs4L9WAjY67fM9XLZT2WkkwmBtCXEmznn7Y2DUPlbjOUsspqFuiUEfxS+occMv/8h
+         kciRl78Uy9i1rCugWq65m3sv1Y7mwNzZNVIG/MS5AYRoiNEfMLEx+zTVauTaWS/SYMaz
+         DOcvUsLWMvC2BNKTs6SkNsXQTu1ugBWGiDyueFziEb8e4pfhJS5sG0XV1MiNqg2gkLk3
+         A7i8LedrvZk6ELL62INYp0Qa9berGsLXUvxpdZkCGN9zv05bwFtuKVKp5iuux8cecYog
+         INO59fxzjMw1PtcBYNlNVkwuFrjmauetQExL6DIEjmL9hTdy+nrcI4ncpr99D+kiTHTV
+         DTKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781927903; x=1782532703;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v1sOdCMXpSDAddoNBK2iHky7WrahVdcM6wwlTtYMx/Q=;
-        b=pjATCJCATeclKnGWE4ECzh9X21ZV/QwlJJ8ApE3Z6tlRnixyzcAwioTok+fjeC30lJ
-         L7+3D3c4WlgKCKLy7mFQ/LtX2kl/J247Eu1ZrOX4lxV43FoDT6ysSzTqT8RUz6T+ogYQ
-         cH2cLh9ZoCUjh2M/1Y5TZuDUZek7MIxH3gPs9zO3bgqmm0w3MrtgBi4+jgcvEjd2z/6y
-         YbbwcYI7JQRxEyXBDaKEp0ziPWnIjrmwumJy3Mtdb5o7bWffutSYZC5jLql13pg4ztTx
-         4+Ie1Hl35ar3yyvWD/b9FA7dXfa35uY3LRwO5IeAwurGX5YaQ35Nw51w9Jl65rOfvN1V
-         L+wg==
-X-Forwarded-Encrypted: i=1; AFNElJ/FZIn4Mbdcw+sYi7/GUb/vvemLBrybqRJi7fHZVkbdTzE9UYW+ImD6qyEWHwU84qLNPIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yytx3i3fTRU9YJni0Bd5gqDXoyyeo/l+iT1rZ/Z5auRbkNEfaBs
-	JTGp/6dvl0qRvsC7SbWmAqMSdktyyZBOYUWFilVVZ5Qq77Ba8hNtF1+gvVyP1Aj6PKyegYBmFo7
-	u37datlAwZIzTJN8nS4yrKL2qspxg1Q0+JcbeYEmN2bCedzCpFbxL51KMVks=
+        d=1e100.net; s=20251104; t=1781934032; x=1782538832;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
+        b=jLCvATavl03FXL5iz0SDoj7bRr7QAoARVs67o96Ud7vusqZ/ZADCyU3vLJ8TXbJmkl
+         JJ1FPWmGHf9LqK62ZT8Gz0mt6YHrt2PYc4TbnY4d1wRAid5jNN1OKHX7h6WO9Qtr2lCK
+         +aSP+jcyvN5j5p+GQK3XzgPn1AK7jhknxIhZ//L+8C42Vl7n/r29cBBC21rlvLEacf9/
+         kK/Suqvx6LLNlVNq0ZwzU6QRL6vaIS8EkteiGlqsnwoU8UV1Z2b1ihGWZQRAXVjkGaBJ
+         4CuGAM3ahlAIs8K6TdgYXo1zwZQsETur/XLzjioyY4tCrHao7pzUOPEWfjMnmLWw5Jrg
+         FHUw==
+X-Forwarded-Encrypted: i=1; AFNElJ/u7qbE9saes4OlWY5DymQbjFbvEqw+1xLV9tbBrP+iRRwOUcmv77E57QfnW/1UQ7ygOZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjRTvSXL1QwRi+N6h0C34eijTqodOt7l1nXGA+3xeS4D78yEBL
+	psvLhjwXtugZaW24y++VJgAUbRqJrnLUHT8LeXDyfzgl05pyqPZ2LiSuttlMUb+2CBLfq3QpVyM
+	pPPqOC6Fb1S64t68QEQBX8AxrYflmOL1pYIcovZlTIg952kI098q756Kp5iYq1Hamofd03tHup9
+	A3woJVfZIVt4ccNhEDGJsxAhh88clI
+X-Gm-Gg: AfdE7cmu3tLJ9tYP+m930+87l9f5LI56Im7St+l97z3AdHwZdqqu1/5ZjddzaiZQcCX
+	UTnjG3NP5T1aRYewDv1b+txrDOKJ+wXVN3grvL99BcBeJjBk9/yjOVxCtLC0n8jU3vpAYmUKRQI
+	QvperkLEqUWl7RM3cxPijvkUBUPGGp7bnfaPFFoteL1rgFGkuH1Qkqrc/ZavzAk15SPKzP3IFFg
+	SgVnG1qL3NPxk0+be2wHYs297HmDU+ygqMYbRfMO8SIcH/4a7z4/5oGRdVbuc1xqMn+LU6f
+X-Received: by 2002:a05:600c:5020:b0:490:d946:47cf with SMTP id 5b1f17b1804b1-4923ef47d08mr108763505e9.4.1781934032092;
+        Fri, 19 Jun 2026 22:40:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:5020:b0:490:d946:47cf with SMTP id
+ 5b1f17b1804b1-4923ef47d08mr108763315e9.4.1781934031793; Fri, 19 Jun 2026
+ 22:40:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1c09:b0:468:6a2:897 with SMTP id
- 5614622812f47-4896a9b5286mr5470331b6e.6.1781927903105; Fri, 19 Jun 2026
- 20:58:23 -0700 (PDT)
-Date: Fri, 19 Jun 2026 20:58:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a360fdf.871e809a.2d6dda.0000.GAE@google.com>
-Subject: [syzbot] [kvm-x86?] WARNING in vcpu_run (2)
-From: syzbot <syzbot+dd769db18693736eee89@syzkaller.appspotmail.com>
-To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
-	tglx@kernel.org, x86@kernel.org
+References: <20260503201029.106481-1-pbonzini@redhat.com> <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
+ <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
+In-Reply-To: <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 20 Jun 2026 07:40:18 +0200
+X-Gm-Features: AVVi8Cc9pgh_rugpxF92QHP0_KXWWdqXna6GpieKRqAEmkG8WgK-gTKAo9E9NdU
+Message-ID: <CABgObfawkiKRDz0to=oCjo1vygVAkHyZXAzpsLWT2GXwkszV_A@mail.gmail.com>
+Subject: Re: stable backports for "KVM: x86: Fix shadow paging use-after-free
+ due to unexpected GFN"
+To: Bjoern Doebel <doebel@amazon.de>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Sean Christopherson <seanjc@google.com>, Alexander Bulekov <bkov@amazon.com>, 
+	Fred Griffoul <fgriffo@amazon.co.uk>, stable@vger.kernel.org, zcgao@amazon.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, May 29, 2026 at 10:39=E2=80=AFAM Bjoern Doebel <doebel@amazon.de> w=
+rote:
+>
+> Hi Paolo,
+>
+> On Tue, May 05, 2026 at 12:13:34PM +0200, Paolo Bonzini wrote:
+> > I'll get to testing and sending them out, but it will take a while; if
+> > anybody wants to help testing, I can provide my tentative patches.
+>
+> took us a while, but if you are still looking for help, my friend Nathan
+> and I would volunteer to test these in the context of Amazon Linux.
 
-syzbot found the following issue on:
+Thanks,
 
-HEAD commit:    8c13415c8a43 Merge tag 'media/v7.2-1' of git://git.kernel...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12ec001c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d4e6991ab3edc95e
-dashboard link: https://syzkaller.appspot.com/bug?extid=dd769db18693736eee89
-compiler:       Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157ce8ea580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1176e566580000
+I placed everything in the linux-5.10.y and linux-5.15.y branches of
+https://git.kernel.org/pub/scm/virt/kvm/kvm.git, adding also a couple
+more issues that were fixed in the last merge window.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/27752fb81380/disk-8c13415c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/192b476e0df1/vmlinux-8c13415c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/ba635e3d5aec/bzImage-8c13415c.xz
+Paolo
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+dd769db18693736eee89@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-irq == -1
-WARNING: arch/x86/kvm/x86.c:10860 at kvm_check_and_inject_events arch/x86/kvm/x86.c:10860 [inline], CPU#0: syz.4.1716/11103
-WARNING: arch/x86/kvm/x86.c:10860 at vcpu_enter_guest arch/x86/kvm/x86.c:11356 [inline], CPU#0: syz.4.1716/11103
-WARNING: arch/x86/kvm/x86.c:10860 at vcpu_run+0x57ec/0x7950 arch/x86/kvm/x86.c:11770, CPU#0: syz.4.1716/11103
-Modules linked in:
-CPU: 0 UID: 0 PID: 11103 Comm: syz.4.1716 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-RIP: 0010:kvm_check_and_inject_events arch/x86/kvm/x86.c:10860 [inline]
-RIP: 0010:vcpu_enter_guest arch/x86/kvm/x86.c:11356 [inline]
-RIP: 0010:vcpu_run+0x57ec/0x7950 arch/x86/kvm/x86.c:11770
-Code: b5 ff ff 89 d1 80 e1 07 38 c1 0f 8c 64 b1 ff ff 48 8b 7c 24 58 e8 a4 66 eb 00 48 8b 54 24 58 e9 50 b1 ff ff e8 b5 47 7e 00 90 <0f> 0b 90 4c 8b 64 24 10 e9 4c e7 ff ff e8 a2 47 7e 00 90 0f 0b 90
-RSP: 0018:ffffc90006e375e0 EFLAGS: 00010293
-RAX: ffffffff8147d98b RBX: ffff88805b402cc0 RCX: ffff88807bca5d00
-RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 00000000ffffffff
-RBP: ffffc90006e379b0 R08: ffff88805b402c57 R09: 1ffff1100b68058a
-R10: dffffc0000000000 R11: ffffed100b68058b R12: 00000000ffffffff
-R13: ffff88805b402ca0 R14: 0000000000000001 R15: dffffc0000000000
-FS:  0000555579916500(0000) GS:ffff88812525d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1c74672780 CR3: 0000000075b22000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- kvm_arch_vcpu_ioctl_run+0x1193/0x2070 arch/x86/kvm/x86.c:12125
- kvm_vcpu_ioctl+0xa61/0xfd0 virt/kvm/kvm_main.c:4470
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1c7479ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffdeb74dbf8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f1c74a15fa0 RCX: 00007f1c7479ce59
-RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000006
-RBP: 00007f1c74832e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f1c74a15fac R14: 00007f1c74a15fa0 R15: 00007f1c74a15fa0
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
