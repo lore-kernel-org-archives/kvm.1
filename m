@@ -1,140 +1,63 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40881DF73A
-	for <kvm@vger.kernel.org>; Sun, 21 Jun 2026 13:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2590184540;
+	Sun, 21 Jun 2026 13:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782049160; cv=none; b=Y2IurOUFOKp4MTtQw9FX229IfpSZs/e260IOWyU16SCoESRr9VlxY2tWpxwBvf15mpz4BFKdTHJcDSplk0rhxlMIbFB1prtz+N2r/FgetOcrT5oUPRT9l8r6cMRcjQsOXoptCiQ9bibHC63tVS5KN3HuaCgj/UfRfRvLHOGSGwY=
+	t=1782049675; cv=none; b=hpj6kZvLeCqEZ5Vlvok0gK0q2qMNUFP79NrKrlqd/CsiDlO/EiX80w+BPHwBa1Wfa/G0U33CBUuiDXfig0ZkwYGvBgKPTw+eqgOZhagbqAglTXUwh+FeXMgMWAApewp2CWFTjC/58g0eY6RV910zDf/xDuuViURu3xGHyeImgqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782049160; c=relaxed/simple;
-	bh=PcEURl2W5mmzOY49oIrDgC4sXuUKEmnXJC+EqHFqIx8=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AXHrCq0mz4ZITMSrlXZt0c4+eRF04D1tAYnQcMALL3EugwlN+g5WpwLhfns6HFE9/WHnIfcgaACiGEGMXO3Wst+WRBEf+IcbY0kxSudCVDHdx1J8ckxiFTObBYE89EKTwW/Vbh7ZCjVAKtJcG1OMFA2grVroTSEX0vSgUe6ZM7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WjSFBVc+; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782049675; c=relaxed/simple;
+	bh=2bYUY4z5FOHm6jVp6AJgQDWZjpwmNfPFoX7kbxFp2Ho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UFwa+5ejrNRs2MNGrfpUTZDrhjTMK1/Er4kkCusnLHQuSQObp+Vb11t8/oD9cHa3Tx2SOOaL4HmBKM5qLUXbzqoW39Nf8YMxvN/wTEt0AhdWVQfUIqyD36Nw1T/25P9IAkRqHBA3On+DLDEACB0X2NPDFwEo6+x8KepqpqAkIuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXrJACOy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WjSFBVc+"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-7dfceeaf168so43955007b3.0
-        for <kvm@vger.kernel.org>; Sun, 21 Jun 2026 06:39:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782049158; x=1782653958; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUsaj7vv5ecLJDUQ0RmLhOH3YlF5lnncSJLJl2FpGbU=;
-        b=WjSFBVc+x5PQ4eaJ0Sgq53AeKSuFVqLUXt1bdNxYWDgfM9Gd+cbZm9xNx6j0EHdJPE
-         HTww0TPxeWims2viP3NLoABiuxw4YJbyhjsaFbiCmT9CUzuiOMJBall4Ny5+a8n3JoxL
-         RAbWijGhJB9Y959HS7qnPSGQSXUMVj4DJPBFAQ54uygppFKbaRn/JaF2eVX9T+oKy55s
-         5UuvzBs3n9atksSgvIo+LnDIY6WzFlP9VIiHQn/cekRGZeQ/fCZya9JTR/7Go5adjR4K
-         RgwOPTOQfje4Iq1ypeW2heg3nQ4ZNXcxpe/8Sn+A/ACOrH9r4nxxn0LtXIlC4IPvBREK
-         JbsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782049158; x=1782653958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YUsaj7vv5ecLJDUQ0RmLhOH3YlF5lnncSJLJl2FpGbU=;
-        b=Hbhz8I7gbzUY7WF/lFfoLJG5PfgDkEQnQvTInw1vRF86dBPMn7Sx6uRlFInN0gM9X1
-         PCj0UQkksJmOHBnT4IwMRB5O5CMI1gEivEo/EPMEnJXJZvXopMVuA8p5b/5MDrOQ73TZ
-         9J8UFEI8dPnScXiOiPRcKMCUZ8ck/uziOaIGH41AiCkRvDSJya4lva3Z6I60X+y1YDTZ
-         bnSOPItS2qMCZbZ4VOPAeMApMxqUuP8fBFWvXhE7u3nDw6PPYuZK429FP40CzG5SqIe1
-         CeujjEfCKMzaHzCTA6YAvDaP9sFCFSkY5qRnXTGsw5opqKG+uCISvqs85LYCum8Y4knb
-         ZRLw==
-X-Forwarded-Encrypted: i=1; AHgh+Roo+jeFVLKDr+kPmLbweJyBNZ+A3bcNef2G6WYnkR8a4vdg50ggdGMs3HutBvru9jQeUFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgaazRxv8HiSLQ813a06RHOk5ZlaDUxpBrQ2yfzfXdw3cknsix
-	g8JMDUeEd4unPQ/LcQDImzSzJF2nTHQtMQbGzhyYe/8F3ZtA+fmKr4tg
-X-Gm-Gg: AfdE7ckQ78WRscc2wVghP39TWSdymiI3BwpdEHEYzRz3R1XdyBI5DChjSQsWZQxcNr+
-	i22N34zEe/gheejbexFLOt7V9kg3EDz3QosubtryINih6h8QJTFGwAgeSysZqid2RrWDx3Q2j1C
-	Pg9IJbCIc39q9lwWkjzjyCHJoriviW/py08VHR7b3FTOpWaJT/hF5vwZoXbTkpMTt9EY3SWz/Ma
-	Y7S24dtyxq2iMEB1TrqT5QD3HzXF8aLOWuoLxS9BOF8xtEz6jP0QdeBTXPdz7mL3sNU1nmZd5IN
-	L5/qjUPq5zyBEpmeede7LHEMDgrh6TIvI92705TS2Y18QNC/2mSycNNExgBcwrYXNapIKAEaZEv
-	5dmJbj8DGVuJcXfS96EIabLAaHos83f5RlMIgMWEERN9onvKOsuJF6dVzefQ7LXDK/Fbyu5DKSO
-	U+IDYrb18KXE5LhYWVPVzVyhTlVqfgoPmvr8w=
-X-Received: by 2002:a05:690c:e347:b0:7db:ccda:a409 with SMTP id 00721157ae682-801759e5070mr88778787b3.9.1782049157948;
-        Sun, 21 Jun 2026 06:39:17 -0700 (PDT)
-Received: from localhost (user-24-214-85-55.knology.net. [24.214.85.55])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8025f8dde30sm20893067b3.27.2026.06.21.06.39.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 06:39:17 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-Date: Sun, 21 Jun 2026 09:39:17 -0400
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Yury Norov <yury.norov@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH 2/2] tracing: Add CONFIG_TRACE_PRINTK_DEBUGGING to clean
- up kernel.h
-Message-ID: <ajfphe4Z8BrfYoUX@yury>
-References: <20260621093430.264983361@kernel.org>
- <20260621093811.168514984@kernel.org>
- <20260621054721.7cde38f0@fedora>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXrJACOy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608E91F000E9;
+	Sun, 21 Jun 2026 13:47:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782049674;
+	bh=/GqOw75AVOZJedE0B+pdnEgrqK9BJ1jbeHdjPtzwYPU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DXrJACOy4IvzlKvzKXWZt4IYSap9i6KBIeGEp5SEp/st92saZUVXraxtoTqEZrpFD
+	 S1I9kp5QxV8qzgkXGjkT8O8SCti3e1Mc/6YNrbJLxlLxHhHd4iChlCOfV3dR5H2Qic
+	 Rn1sdq5PaPfYPTuuEESZ9N4nwJ/KrZDV+dwhVJZANHrKFSwp86W60/Eb3IW7IsOX0z
+	 4La1TT9zMFxe1IRwRel9OjVfXtcLqKSOdJXr576rkouofcneJ6NF62ZAomHDa5bVqv
+	 af2CRW9uEUhd2KIftMj4XyvkdQBtV+/s1++hJ1tD334FNElqdpzeVzHFUtDmKqkNci
+	 Jy3+hymhTmFDw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	gregkh@linuxfoundation.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	0wn@theori.io,
+	mlevitsk@redhat.com,
+	jmattson@google.com,
+	Nicholas Dudar <main.kalliope@gmail.com>
+Subject: Re: [PATCH v2 6.1.y 0/3] KVM: nVMX: backport virtual-APIC host NULL-deref fix
+Date: Sun, 21 Jun 2026 09:47:41 -0400
+Message-ID: <20260621133722.0003.sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260619203107.2752678-1-main.kalliope@gmail.com>
+References: <20260619203107.2752678-1-main.kalliope@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260621054721.7cde38f0@fedora>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 21, 2026 at 05:47:21AM -0400, Steven Rostedt wrote:
-> On Sun, 21 Jun 2026 05:34:32 -0400
-> Steven Rostedt <rostedt@kernel.org> wrote:
-> 
-> > Instead of having trace_printk.h included in kernel.h, create a config
-> > TRACE_PRINTK_DEBUGGING that when set will update the CFLAGS in the
-> > Makefile to allow developers to add trace_printk() without the need to add
-> > the include for it. Having it included in the Makefile keeps it from being
-> > in the dependency chain and it will not waste extra CPU cycles for those
-> > building the kernel without using trace_printk.
-> 
-> Bah, I only tested with the config option enabled, and missed some
-> dependencies with it disabled.
+> This series backports the fix for a guest-triggerable host NULL pointer
+> dereference in nested-VMX virtual-APIC handling. The bug is present in
+> 6.1.y and fixed in 6.6.y and later.
 
-Yes you did.
- 
-> For instance, rcu.h also uses ftrace_dump() so that too needs to go
-> into kernel.h.
+Queued the 3-patch series for 6.1, thanks.
 
-No, it shouldn't.
-
-> I also need to add a few more includes to trace_printk.h.
-
-> OK, I need to run this through all my tests to find where else I missed
-> adding the includes. But the idea should hopefully satisfy everyone.
-
-If you include it under config in kernel.h, to make the kernel buildable,
-you need to include trace_printk.h explicitly where it's actually used.
-IOW, apply my patch v4-7.
-
-Then, developers who use trace_printk() on their development machine,
-will be really frustrated when their debugging code will break client
-build just because CONFIG_TRACE_PRINTK_DEBUGGING is disabled there.
-They will spend a day, at best, communicating with remote managers,
-and end up with adding #include <linux/trace_printk.h> in the files
-they touch. Is that your plan?
-
-If I was one of those developers, the solution would be simple for me:
-don't use trace_printk() at all.
-
+-- 
 Thanks,
-Yury
+Sasha
