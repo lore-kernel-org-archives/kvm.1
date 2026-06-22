@@ -1,64 +1,61 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499A4347515
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6792933F584
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154144; cv=none; b=s+g2WZiDZZRrmb9MhlW4WJ621AjmyKafVQlevSiDuUun1Zz/8/cbMyOj4REuCEVuCat1trdsAnIPprbRyMendjMvNM3d99cxnUODUYRALfiwkW5n5DgviUOKLFb53PraPr30b+VKD5Ows3Ow7bhwAFl6oyEj5p+8TuByxKR6ycY=
+	t=1782154145; cv=none; b=DhuuX56h+di36uUiZohmRPq6vHiJIg35H2kQ2Gxv6yTiSG/DKP5WVXCIMIkmnlrvBDW9RRp3kN/nkzkiNhDLM38q4RPVal1+0bVLn4fpXKJG5nd4E3IVPL9yXWjCebJA/eNWPuxS/y0hSv77rU+QT1/0rjeB8Hf80g9dpfcBJlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154144; c=relaxed/simple;
-	bh=/ll0ethd+Y+ejhMqnBHdeN5CKETZ/XI2FbZX/MXGx/Y=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MV8krJGNNvz/buwxBmZpqjFpeUvySDOCmDSfSM0O4ux+1FZaomM3Gwv0AxdSm/CdKRgIahsBaDdoVGwFzz1bbfC+asF7JiQTvgidxfhE3y/unAtqBneebr/gv7B8l0UqRufkyuGXEY8cFKrXaG+KCDRURwgNyxj0BhTpcncs3P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lWnEmNUW; arc=none smtp.client-ip=209.85.208.74
+	s=arc-20240116; t=1782154145; c=relaxed/simple;
+	bh=DIjLzbnkRJ/pEuBgYb3z2HOVtgcinNlZvsdJq/Cs5OY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TRmUN02C/P/wLAdpXcwktsLW8bqTkDbSPMcEFf4dKzTmTkm/QLZa54+FzPOqmoIQRDDKYLHHm+20SVXkBpPtZ8CE4gx++nrwjTnmqpLDPOQRWxEvFH75BzPoWSQ4+Rj7cKbcZwWl5JURU/ri3NBEMQ2HsA98W/SCjZrMlkZsgic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W0e2ekRr; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lWnEmNUW"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6973d186db0so2914863a12.2
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:49:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W0e2ekRr"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49221de4ed4so30527575e9.0
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782154142; x=1782758942; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3NnqtfMpo6SzkdI4Y/HSdjjWo3N5TymmoO6c1c+A8Gw=;
-        b=lWnEmNUWgiAJuCJ2psJandvmHOGoljVXEmEv3OYvw0DxJprLApw1qjEYX09tdZRrhX
-         oUJ24G+STJzQ9IKjsXcX/JbP35nXiyq/igPt8ZrYY5xjK4T083/Z+uU+vArbD1e4ZLPj
-         kqjjLTD+pIZQb6fvbRiI5DGMRhxL3gdvAqu5KsHpFhdJhbttdal2xMNMccXTK+Nnj6Aa
-         IhplV7KRdWlu3elvPgyiz8fBwedc83mISwlZ5/YoGlSHiXgSqv0BSQxym96tDcSjObay
-         /gm3KfITuRGwTY7SKcyHQqN7FKS9SINMc1GvgOfUrGvdTnCACxEiaWQ15STUAeh7CJev
-         mQfg==
+        d=google.com; s=20251104; t=1782154141; x=1782758941; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
+        b=W0e2ekRrwJxi0Xb5VaP5CAjCcgPLqZwKTkBd2/qYqZ7JjbhH/EW/M7ryasr1Uqaj4I
+         TIzGIW+8qLLdxkwZfpdq5CNYnMzTP3yB4HtkWpiAn9Bkt6Rl5yRjUp6YJcM9QPqRFrp5
+         kwQ8PTJ22hHI70ol1GijCnlPHw5bPb25GI9gXTuVb+345yFNjQokT8nvuRqcmq72Y6Dm
+         +biy1vFWJopfzCOfhmjxIv09IMKT2p7xXgnZCDuv5MKJrda3Kj19MHFSh0tb3WpowIfD
+         3qpwSvhB97GUxPW6suSXffJZ8/qY4KBR2hcXsoKaIaSxNt2BJ19nICVk98GPpIb1xu+r
+         EVUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782154142; x=1782758942;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3NnqtfMpo6SzkdI4Y/HSdjjWo3N5TymmoO6c1c+A8Gw=;
-        b=FcOb1d1B6E0B9a3iTg9CBjpDw2H5wcFcbyXLYO+GxJ8Xuk8xp6KuauIsY/oX+wKTh1
-         XN8w9Jo67CQROC/6AXZ6GUTBVY+/DBrbvSLieVo8WLPyA8XftTGsarq8QWYZC1uSFPfA
-         IhrzLV9V42nHIWZrmdChy1hE3H+ZMjxh6DFsqm3yY4oLj229L5EvvlXy6hbOqS2RkAuM
-         7R4t0Pm2mqWTFTZD44VaabTWqiP3b3JTF8aHMBGf2V5LAdOlINDPCp6rLlmpEoYXPIIz
-         ZGe7VU9q9EkzsYCSeYo8ImUsm1nRsH+7b8HFtVz6tMpV4ZVjz9K2OR3Lf8MHmRXz3GLt
-         D7LA==
-X-Gm-Message-State: AOJu0Yz1Tgiu2vEYogNTEEjkQywOGbBUV7C5Sm/uKUFKO5TWSHq3CnCF
-	UTZ3muyqblGDJHm2JSKRRtyohXwajkZf6gthpb+er+ZVYUJWNoZnCxXAlEMJR2LUv1UAmlIsitm
-	G17qQdYYtugmL5sv1Fg==
-X-Received: from edh3.prod.google.com ([2002:a05:6402:5043:b0:697:8dab:813a])
+        d=1e100.net; s=20251104; t=1782154141; x=1782758941;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
+        b=RtzNM4jdPILXbK6qtG4/CECCgF8Jj63WStGI6E/Of0O5uErvD2kZqGUhHUN2vhjupg
+         2Ik2fPVreDECni7MksRxeXr8j/i3BMjTGx4KGUgxLDxYI+2/eZlccAnpku9qbckfLw9i
+         rDEmQM1XRVZqoCfjdgg8Xxh94z2ZpL6VwcE77ACN7Cw8y+WknK+Slcjknu9PbhuPqFh1
+         U3q6WZXw85ZcZr0WidS5QeZcVw5e0SMAhA8zq0LQDLdS402nV4aN2neXx2/JlJWABFcv
+         AIbcXDDeJZTFAE2nH42LgfWWDjrhUcO0nkzKqSTzAurh2Xoimq6xWkZwJfk9QEIfMkAP
+         qLFw==
+X-Gm-Message-State: AOJu0YwnEYzMYlkuqTYemVaE05P2MkVIbP4JXkM2hpzd0h7H4GtCPido
+	+SkuRcWyLIGrSDrSlpCF0qrxI7/YTDjo+56sd3tiJqMNM6jyHU3LMaN3KE/VtbKKb6P2Z/nYom3
+	9iA8F7Y4CB23sWP1RwQ==
+X-Received: from wmnj21.prod.google.com ([2002:a05:600c:755:b0:492:4a9f:3d5a])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3548:b0:695:837d:529f with SMTP id 4fb4d7f45d1cf-696e5221662mr7941415a12.20.1782154141503;
- Mon, 22 Jun 2026 11:49:01 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:48:43 +0000
-In-Reply-To: <20260622184851.2309827-1-tarunsahu@google.com>
+ 2002:a05:600c:c059:10b0:490:bb45:79da with SMTP id 5b1f17b1804b1-49240e427f0mr195668185e9.13.1782154140754;
+ Mon, 22 Jun 2026 11:49:00 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:48:42 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260622184851.2309827-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.786.g65d90a0328-goog
-Message-ID: <20260622184851.2309827-2-tarunsahu@google.com>
-Subject: [PATCH v3 1/9] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+Message-ID: <20260622184851.2309827-1-tarunsahu@google.com>
+Subject: [PATCH v3 0/9] liveupdate: kvm: guest_memfd preservation
 From: Tarun Sahu <tarunsahu@google.com>
 To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -69,42 +66,91 @@ Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce the LIVEUPDATE_GUEST_MEMFD Kconfig option. This option
-enables live update support for KVM guest_memfd files, enabling
-guest_memfd-backed memory preservation across kernel upgrades.
+Hello,
+This is Non-RFC patch series for guest_memfd preservation. After
+having multiple discussion across hypervisor liveupdate meeting,
+guest_memfd bi-weekly meeting, the design for the basic support of
+guest_memfd preservation is final. This series is going to include
+guest_memfd which are fully shared and does not support private mem
+and backed by PAGE_SIZE pages.
 
-Currently this support only guest_memfd files that are full-shared
-and pre-faulted.
+Steps to test:
+1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=y
+2. boot kernel with command line: kho=on liveupdate=on
+3. run the following kselftest
+	$ .selftests/kvm/guest_memfd_preservation_test --stage 1
+	$ <kexec> --reuse-cmdline
+	$ .selftests/kvm/guest_memfd_preservation_test --stage 2
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- kernel/liveupdate/Kconfig | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+NOTE: Assert the following:
+	$ ls /dev/liveupdate
+	$ ls /dev/kvm
+	$ dmesg | grep liveupdate # (should have kvm_vm_luo &&
+		# guest_memfd_luo handler registered)
 
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index c13af38..2490f9a 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -86,4 +86,19 @@ config LIVEUPDATE_MEMFD
- 
- 	  If unsure, say N.
- 
-+config LIVEUPDATE_GUEST_MEMFD
-+	bool "Live update support for guest_memfd"
-+	depends on LIVEUPDATE
-+	depends on KVM_GUEST_MEMFD
-+	default LIVEUPDATE
-+	help
-+	  Enable live update support for KVM guest_memfd files. This allows
-+	  preserving VM Memory backed by guest_memfd file across kernel live
-+	  updates.
-+
-+	  This can only be used for the guest_memfd that are fully-shared
-+	  and pre-faulted.
-+
-+	  If unsure, say N.
-+
- endmenu
+The changes are rebased on:
+	kvm/next + liveupdate/next (merge) + [3] + [4] + [5]
+	Where,
+	[3]: luo: conversion of serialized_data to KHOSER_PTR
+	[4]: luo: APIs to retrieve file internally from session
+	[5]: selftests: liveupdate sefltests library
+Here is the github repo:
+	https://github.com/tar-unix/linux/tree/gmem-pre
+
+V3 <- RFC V2 [2]
+1. Finalize the design
+2. resolve sashiko reported bugs
+3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
+
+RFC V2 [2] <- RFC V1 [1]
+1. Removed mem_attr_array as it is not needed for fully-shared
+2. Removed pre-faulted condition
+3. Added vm_type preservation for ARM64.
+4. Removed liveupdate_get_file_incoming api patch as it is sent
+   separately [4] by Samiullah.
+
+[1] https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.com/
+[2] https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com/
+[3] https://lore.kernel.org/all/20260622111215.4157974-1-tarunsahu@google.com/
+[4] https://lore.kernel.org/all/20260613012521.835490-1-skhawaja@google.com/
+[5] https://lore.kernel.org/all/20260612214512.464146-1-vipinsh@google.com/
+
+Tarun Sahu (9):
+  liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+  kvm: Prepare core VM structs and helpers for LUO support
+  kvm: kvm_luo: Allow kvm preservation with LUO
+  kvm: guest_memfd: Move internal definitions and helper to new header
+  kvm: guest_memfd: Add support for freezing and unfreezing mappings
+  kvm: guest_memfd_luo: add support for guest_memfd preservation
+  docs: add documentation for guest_memfd preservation via LUO
+  selftests: kvm: Split ____vm_create() to expose init helpers
+  selftests: kvm: Add guest_memfd_preservation_test
+
+ Documentation/core-api/liveupdate.rst         |   1 +
+ Documentation/liveupdate/vmm.rst              | 107 ++++
+ MAINTAINERS                                   |  14 +
+ include/linux/kho/abi/kvm.h                   | 106 ++++
+ include/linux/kvm_host.h                      |  14 +
+ kernel/liveupdate/Kconfig                     |  15 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
+ .../kvm/guest_memfd_preservation_test.c       | 236 +++++++++
+ .../testing/selftests/kvm/include/kvm_util.h  |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  26 +-
+ virt/kvm/Makefile.kvm                         |   1 +
+ virt/kvm/guest_memfd.c                        | 185 +++++--
+ virt/kvm/guest_memfd.h                        |  44 ++
+ virt/kvm/guest_memfd_luo.c                    | 497 ++++++++++++++++++
+ virt/kvm/kvm_luo.c                            | 195 +++++++
+ virt/kvm/kvm_main.c                           |  94 +++-
+ virt/kvm/kvm_mm.h                             |  15 +
+ 17 files changed, 1477 insertions(+), 81 deletions(-)
+ create mode 100644 Documentation/liveupdate/vmm.rst
+ create mode 100644 include/linux/kho/abi/kvm.h
+ create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+ create mode 100644 virt/kvm/guest_memfd.h
+ create mode 100644 virt/kvm/guest_memfd_luo.c
+ create mode 100644 virt/kvm/kvm_luo.c
+
 -- 
 2.55.0.rc0.786.g65d90a0328-goog
 
