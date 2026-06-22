@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D56352004;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE5135201E;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100902; cv=none; b=p3NPpmYELiEKTXqlVm/VTAIH5XtUnAJOUM/6cve2ioVQsdfX2ymwLt45WV8tgVMqiJvil/PvPknuPLGIdPpMu0Z1x2kkccbagIvX9i3LXfDXDdU9emT7r/Z1oSwRdNj2C40Ldx+VAHwwyBTb7KfD4IW+KNmPSw73CpZPV31lpP4=
+	t=1782100902; cv=none; b=DGlcev2M0mdW8HLpDnfuzlerRjPOLTsmlwCJK7SUkC530cZihXfOFEdxrMsdoTf9uSoZbA/w/9s9+goNtg4zghk4Q4c2PIFbyfDsdgMLA7r8l/a2u8zZx49u6Ocfa1p9Rl0JP658n/v/P8JD6Bxo5+wwK7lOk7oTUaNP5L1rk60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782100902; c=relaxed/simple;
-	bh=csu2MCYhTGbt4aW3Xcpruk4V6nSoe7kLM25kmO7C5Zw=;
+	bh=fu1GdsNJstsaf9uWgZqCDDCyMijDG7duJbjtTrAZrDQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=doVrv3EwGvABS9DxPGY2xc5g1CYlp/Rvds3khvswH7JUF7+MLsLA9sbdo8+6qITAcFoOHzO7gpJsObdlOiT3VKvbKaD0V03SlVlb+eOd62G8PjATcu5BZo1gi5dFpnnnLzAq19tUz6Tmzv8hH1mqsOz3UtDnesgZSrZApUBvsBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cojGf6gS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hszlKZGiZhayBaTpwL8BWEGp+9BWXelfq0WqJGTKwHRpTfz4Rub3H3hPv3QcWDTjqYnfS4d63ObFZ2ykrfCVO2VgdczVULbGYdUK87+NusgjjgYUrhxJB4goQg07fbaJI55Ii96Xd9ZvQX/QA6pEkVev/FXY4aqAbfJG9xHMbiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D5FSWQyS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cojGf6gS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E32F7C2BCC6;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D5FSWQyS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 126F7C2BCFF;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782100901;
-	bh=csu2MCYhTGbt4aW3Xcpruk4V6nSoe7kLM25kmO7C5Zw=;
+	s=k20201202; t=1782100902;
+	bh=fu1GdsNJstsaf9uWgZqCDDCyMijDG7duJbjtTrAZrDQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=cojGf6gSn0t86iKP/5DGkHFo3U6GLCU+jspsEpoCUixdiGRXZchgp/2B1Jj6VB66t
-	 x9uAxQcau6QcC5DcoGHRMQqvD0Nbm26Cey06oSNO4oUag7758PnUtZmz41d4TAnDVp
-	 qey7RWhGfYZJdQUT2tnma0sDCDTzzpbztz0Tb2V3MaMTlYg6LuAJqHcxu46CtY3rAt
-	 Vp9RZAalmevwU1yX77YWGGnnjfm4JnUXfyH6qGZRDbDhiunUXoMx9xasOHDFxhJT1k
-	 h9vTYXd11SJRL0L973oOEQckJQ5vGkUiWVWkq5L7dgNkSKgRWYWmMudhXjLyzTnyFo
-	 jMvGle+tzzJ0Q==
+	b=D5FSWQySZ39EDU299U7BOZknR/Xyqzv2WPWuAlJ4qcstr1GXRA2RpLDP3u8Ab/t8V
+	 TQF+mtsfH8uWNhp2QvLru03gO8BSt56MrdtoGmfhCagDDt1VI1hBSD1ggXd9BcWXfb
+	 Pj+sDIlnekE08A4pFsKCcdzrAaiKNwuTeMXFK92hV0CpoyrK8a6JEjIbUvGPUPvPm8
+	 DDoEKH1woMWnZBOYqTa1BCsrmxorzIcrlzn8qvFaD+JqBBdsOdIRU1vmSdGbJtMlAT
+	 txTVNAnUBso2/emToKz8BLmyAN04HnCw/9ujPvnV5l40HKraGHhUt4fenwBCLlLRer
+	 ZjCEEMBrKDB8A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB8F8CDB471;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09CE3CDB46F;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:27 -0700
-Subject: [PATCH v2 09/16] KVM: device: Add test device
+Date: Sun, 21 Jun 2026 21:01:29 -0700
+Subject: [PATCH v2 11/16] riscv: kvm: Use generated instruction headers for
+ mmio emulation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-9-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-11-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +55,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=6960;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=8876;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=8x/+xJ625ZFQvZhfM5utyV4o1uRb4g8LDdlC/Z0H7Ts=;
- b=UM7AHwZEBBNUuyGHLpLRDfyWFeXAXIC6/FahtGuQ7frwifqZ3I46OYfVM4iffX01r/Y+BwMDD
- Ra5vLynJycqB6hGQ/PXRPPp5iZLOCjJQe7MNXtygYkF9+brb0HtIC5l
+ bh=xLjfQQgbABuNv4NqoIYoQ0JwPk9sFvPpnVlBWBNYiFs=;
+ b=hzZNb94V9q2yxNe3ri7V6qBvZdsHV+gyBSXdq6F7Y7ldcMvfqWufSkDWdCUyNaeh1VqVIpqJq
+ Ih2tq/TWOemDNtQQKXUmVO3elI3safa90MkTU9UdNy8S7aZR4D7H8N2
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -68,250 +69,271 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Create a KVM test device to help verify mmio reads and write emulation.
-This is a simple device that will store the data in a buffer on writes
-and echo back that stored data on a read.
+Migrate the mmio emulation code to use the generated instruction headers
+instead of the hand-written instruction composition functions.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 ---
- include/uapi/linux/kvm.h |  2 +
- lib/Kconfig.debug        |  6 +++
- virt/kvm/Kconfig.debug   | 16 ++++++++
- virt/kvm/Makefile.kvm    |  1 +
- virt/kvm/kvm_main.c      |  8 ++++
- virt/kvm/mmio_test.c     | 95 ++++++++++++++++++++++++++++++++++++++++++++++++
- virt/kvm/mmio_test.h     | 18 +++++++++
- 7 files changed, 146 insertions(+)
+ arch/riscv/include/asm/kvm_vcpu_insn.h |   2 +-
+ arch/riscv/kvm/vcpu_insn.c             | 127 ++++++++++++++-------------------
+ 2 files changed, 55 insertions(+), 74 deletions(-)
 
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 6c8afa2047bf..abbbf74627a2 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1235,6 +1235,8 @@ enum kvm_device_type {
- #define KVM_DEV_TYPE_LOONGARCH_DMSINTC	KVM_DEV_TYPE_LOONGARCH_DMSINTC
- 	KVM_DEV_TYPE_ARM_VGIC_V5,
- #define KVM_DEV_TYPE_ARM_VGIC_V5	KVM_DEV_TYPE_ARM_VGIC_V5
-+	KVM_DEV_TYPE_TEST,
-+#define KVM_DEV_TYPE_TEST		KVM_DEV_TYPE_TEST
+diff --git a/arch/riscv/include/asm/kvm_vcpu_insn.h b/arch/riscv/include/asm/kvm_vcpu_insn.h
+index 350011c83581..106fb4c45108 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_insn.h
++++ b/arch/riscv/include/asm/kvm_vcpu_insn.h
+@@ -11,7 +11,7 @@ struct kvm_run;
+ struct kvm_cpu_trap;
  
- 	KVM_DEV_TYPE_MAX,
+ struct kvm_mmio_decode {
+-	unsigned long insn;
++	unsigned long rd;
+ 	int insn_len;
+ 	int len;
+ 	int shift;
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index 8ccf6ec722f0..1d8741d02242 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -376,7 +376,7 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			     unsigned long htinst)
+ {
+ 	u8 data_buf[8];
+-	unsigned long insn;
++	unsigned long insn, rd;
+ 	int shift = 0, len = 0, insn_len = 0;
+ 	struct kvm_cpu_trap utrap = { 0 };
+ 	struct kvm_cpu_context *ct = &vcpu->arch.guest_context;
+@@ -408,44 +408,47 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	}
  
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 8ff5adcfe1e0..0d235bdc94ec 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -754,6 +754,12 @@ source "net/Kconfig.debug"
+ 	/* Decode length of MMIO and shift */
+-	if ((insn & INSN_MASK_LW) == INSN_MATCH_LW) {
++	if (riscv_insn_is_lw(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LB) == INSN_MATCH_LB) {
++		rd = riscv_insn_lw_extract_xd(insn);
++	} else if (riscv_insn_is_lb(insn)) {
+ 		len = 1;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LBU) == INSN_MATCH_LBU) {
++		rd = riscv_insn_lb_extract_xd(insn);
++	} else if (riscv_insn_is_lbu(insn)) {
+ 		len = 1;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_LD) == INSN_MATCH_LD) {
++		rd = riscv_insn_lbu_extract_xd(insn);
++	} else if (riscv_insn_is_ld(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LWU) == INSN_MATCH_LWU) {
++		rd = riscv_insn_ld_extract_xd(insn);
++	} else if (riscv_insn_is_lwu(insn)) {
+ 		len = 4;
+-#endif
+-	} else if ((insn & INSN_MASK_LH) == INSN_MATCH_LH) {
++		rd = riscv_insn_lwu_extract_xd(insn);
++	} else if (riscv_insn_is_lh(insn)) {
+ 		len = 2;
+ 		shift = 8 * (sizeof(ulong) - len);
+-	} else if ((insn & INSN_MASK_LHU) == INSN_MATCH_LHU) {
++		rd = riscv_insn_lh_extract_xd(insn);
++	} else if (riscv_insn_is_lhu(insn)) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_C_LD) == INSN_MATCH_C_LD) {
++		rd = riscv_insn_lhu_extract_xd(insn);
++	} else if (riscv_insn_is_c_ld(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-		insn = RVC_RS2S(insn) << SH_RD;
+-	} else if ((insn & INSN_MASK_C_LDSP) == INSN_MATCH_C_LDSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rd = riscv_insn_c_ld_extract_xd(insn);
++	} else if (riscv_insn_is_c_ldsp(insn)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-#endif
+-	} else if ((insn & INSN_MASK_C_LW) == INSN_MATCH_C_LW) {
++		rd = riscv_insn_c_ldsp_extract_xd(insn);
++	} else if (riscv_insn_is_c_lw(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
+-		insn = RVC_RS2S(insn) << SH_RD;
+-	} else if ((insn & INSN_MASK_C_LWSP) == INSN_MATCH_C_LWSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rd = riscv_insn_c_lw_extract_xd(insn);
++	} else if (riscv_insn_is_c_lwsp(insn)) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
++		rd = riscv_insn_c_lwsp_extract_xd(insn);
+ 	} else {
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -455,7 +458,7 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		return -EIO;
  
- endmenu # "Networking Debugging"
+ 	/* Save instruction decode info */
+-	vcpu->arch.mmio_decode.insn = insn;
++	vcpu->arch.mmio_decode.rd = rd;
+ 	vcpu->arch.mmio_decode.insn_len = insn_len;
+ 	vcpu->arch.mmio_decode.shift = shift;
+ 	vcpu->arch.mmio_decode.len = len;
+@@ -498,11 +501,7 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			      unsigned long fault_addr,
+ 			      unsigned long htinst)
+ {
+-	u8 data8;
+-	u16 data16;
+-	u32 data32;
+-	u64 data64;
+-	ulong data;
++	ulong data, rs2;
+ 	unsigned long insn;
+ 	int len = 0, insn_len = 0;
+ 	struct kvm_cpu_trap utrap = { 0 };
+@@ -534,35 +533,30 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn_len = INSN_LEN(insn);
+ 	}
  
-+menu "KVM Debugging"
-+
-+source "virt/kvm/Kconfig.debug"
-+
-+endmenu # "KVM Debugging"
-+
- menu "Memory Debugging"
+-	data = GET_RS2(insn, &vcpu->arch.guest_context);
+-	data8 = data16 = data32 = data64 = data;
+-
+-	if ((insn & INSN_MASK_SW) == INSN_MATCH_SW) {
++	if (riscv_insn_is_sw(insn)) {
+ 		len = 4;
+-	} else if ((insn & INSN_MASK_SB) == INSN_MATCH_SB) {
++		rs2 = riscv_insn_sw_extract_xs2(insn);
++	} else if (riscv_insn_is_sb(insn)) {
+ 		len = 1;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_SD) == INSN_MATCH_SD) {
++		rs2 = riscv_insn_sb_extract_xs2(insn);
++	} else if (riscv_insn_is_sd(insn)) {
+ 		len = 8;
+-#endif
+-	} else if ((insn & INSN_MASK_SH) == INSN_MATCH_SH) {
++		rs2 = riscv_insn_sd_extract_xs2(insn);
++	} else if (riscv_insn_is_sh(insn)) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+-	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
++		rs2 = riscv_insn_sh_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sd(insn)) {
+ 		len = 8;
+-		data64 = GET_RS2S(insn, &vcpu->arch.guest_context);
+-	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rs2 = riscv_insn_c_sd_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sdsp(insn)) {
+ 		len = 8;
+-		data64 = GET_RS2C(insn, &vcpu->arch.guest_context);
+-#endif
+-	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
++		rs2 = riscv_insn_c_sdsp_extract_xs2(insn);
++	} else if (riscv_insn_is_c_sw(insn)) {
+ 		len = 4;
+-		data32 = GET_RS2S(insn, &vcpu->arch.guest_context);
+-	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++		rs2 = riscv_insn_c_sw_extract_xs2(insn);
++	} else if (riscv_insn_is_c_swsp(insn)) {
+ 		len = 4;
+-		data32 = GET_RS2C(insn, &vcpu->arch.guest_context);
++		rs2 = riscv_insn_c_swsp_extract_xs2(insn);
+ 	} else {
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -571,26 +565,24 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	if (fault_addr & (len - 1))
+ 		return -EIO;
  
- source "mm/Kconfig.debug"
-diff --git a/virt/kvm/Kconfig.debug b/virt/kvm/Kconfig.debug
-new file mode 100644
-index 000000000000..d24709f5bcbf
---- /dev/null
-+++ b/virt/kvm/Kconfig.debug
-@@ -0,0 +1,16 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+config KVM_MMIO_TEST
-+       bool "Enable kvm mmio testing"
-+       depends on KVM
-+       depends on KVM_MMIO
-+       default n
-+       help
-+         Enable testing for kvm mmio. This is a test-only mmio device that
-+         stores writes in a buffer and returns the buffered data on a read.
-+         
-+         This is useful for testing the kvm mmio emulation code. Enabling
-+         this does not run any tests, just builds in the support for the test
-+         device into the kernel.
-+
-+         If unsure, say N.
-diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-index d047d4cf58c9..bd4da8c23923 100644
---- a/virt/kvm/Makefile.kvm
-+++ b/virt/kvm/Makefile.kvm
-@@ -8,6 +8,7 @@ KVM ?= ../../../virt/kvm
- kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
- kvm-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
- kvm-$(CONFIG_KVM_MMIO) += $(KVM)/coalesced_mmio.o
-+kvm-$(CONFIG_KVM_MMIO_TEST) += $(KVM)/mmio_test.o
- kvm-$(CONFIG_KVM_ASYNC_PF) += $(KVM)/async_pf.o
- kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
- kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 881f92d7a469..d9bbe570eddd 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -58,6 +58,7 @@
- #include "async_pf.h"
- #include "kvm_mm.h"
- #include "vfio.h"
-+#include "mmio_test.h"
+-	/* Save instruction decode info */
+-	vcpu->arch.mmio_decode.insn = insn;
+ 	vcpu->arch.mmio_decode.insn_len = insn_len;
+-	vcpu->arch.mmio_decode.shift = 0;
+-	vcpu->arch.mmio_decode.len = len;
+ 	vcpu->arch.mmio_decode.return_handled = 0;
  
- #include <trace/events/ipi.h>
++	data = *((ulong *)(&vcpu->arch.guest_context) + rs2);
++
+ 	/* Copy data to kvm_run instance */
+ 	switch (len) {
+ 	case 1:
+-		*((u8 *)run->mmio.data) = data8;
++		*((u8 *)run->mmio.data) = data;
+ 		break;
+ 	case 2:
+-		*((u16 *)run->mmio.data) = data16;
++		*((u16 *)run->mmio.data) = data;
+ 		break;
+ 	case 4:
+-		*((u32 *)run->mmio.data) = data32;
++		*((u32 *)run->mmio.data) = data;
+ 		break;
+ 	case 8:
+-		*((u64 *)run->mmio.data) = data64;
++		*((u64 *)run->mmio.data) = data;
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -626,18 +618,13 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+  */
+ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ {
+-	u8 data8;
+-	u16 data16;
+-	u32 data32;
+-	u64 data64;
+-	ulong insn;
+ 	int len, shift;
++	unsigned long data;
  
-@@ -6532,6 +6533,10 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (WARN_ON_ONCE(r))
- 		goto err_vfio;
+ 	if (vcpu->arch.mmio_decode.return_handled)
+ 		return 0;
  
-+	r = kvm_mmio_test_ops_init();
-+	if (WARN_ON_ONCE(r))
-+		goto err_mmio_test;
-+
- 	r = kvm_gmem_init(module);
- 	if (r)
- 		goto err_gmem;
-@@ -6559,6 +6564,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- err_gmem:
- 	kvm_vfio_ops_exit();
- err_vfio:
-+	kvm_mmio_test_ops_exit();
-+err_mmio_test:
- 	kvm_async_pf_deinit();
- err_async_pf:
- 	kvm_irqfd_exit();
-@@ -6589,6 +6596,7 @@ void kvm_exit(void)
- 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
- 	kmem_cache_destroy(kvm_vcpu_cache);
- 	kvm_gmem_exit();
-+	kvm_mmio_test_ops_exit();
- 	kvm_vfio_ops_exit();
- 	kvm_async_pf_deinit();
- 	kvm_irqfd_exit();
-diff --git a/virt/kvm/mmio_test.c b/virt/kvm/mmio_test.c
-new file mode 100644
-index 000000000000..fa84c2b4c5fc
---- /dev/null
-+++ b/virt/kvm/mmio_test.c
-@@ -0,0 +1,95 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * mmio_test.c - Kernel module side for testing the KVM riscv mmio functionality.
-+ */
-+
-+#include <linux/kvm_host.h>
-+
-+#include <kvm/iodev.h>
-+#include "mmio_test.h"
-+
-+struct mmio_test {
-+	struct kvm *kvm;
-+	struct kvm_io_device dev;
-+	unsigned long start;
-+	unsigned long size;
-+	char cache[16];
-+};
-+
-+static struct mmio_test *kvm_to_mmio_test_dev(const struct kvm_io_device *dev)
-+{
-+	return container_of(dev, struct mmio_test, dev);
-+}
-+
-+static int mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
-+		     gpa_t addr, int len, void *val)
-+{
-+	struct mmio_test *mmio_test = kvm_to_mmio_test_dev(dev);
-+
-+	if ((addr - mmio_test->start) >= mmio_test->size)
-+		return -1;
-+
-+	/* Write back cached value */
-+	memcpy(val, &mmio_test->cache[(addr - mmio_test->start)], len);
-+	return 0;
-+}
-+
-+static int mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
-+		      gpa_t addr, int len, const void *val)
-+{
-+	struct mmio_test *mmio_test = kvm_to_mmio_test_dev(dev);
-+
-+	if ((addr - mmio_test->start) >= mmio_test->size)
-+		return -1;
-+
-+	/* Cache value */
-+	memcpy(&mmio_test->cache[(addr - mmio_test->start)], val, len);
-+	return 0;
-+}
-+
-+static const struct kvm_io_device_ops mmio_ops = {
-+	.read = mmio_read,
-+	.write = mmio_write,
-+};
-+
-+static int mmio_test_create(struct kvm_device *dev, u32 type)
-+{
-+	struct mmio_test *mmio_test;
-+
-+	mmio_test = kzalloc(sizeof(*mmio_test), GFP_KERNEL);
-+	if (!mmio_test)
-+		return -ENOMEM;
-+
-+	mmio_test->start = 0x20000000;
-+	mmio_test->size = 0x16;
-+
-+	dev->private = mmio_test;
-+
-+	kvm_iodevice_init(&mmio_test->dev, &mmio_ops);
-+	kvm_io_bus_register_dev(dev->kvm, KVM_MMIO_BUS, mmio_test->start,
-+				mmio_test->size, &mmio_test->dev);
-+
-+	return 0;
-+}
-+
-+static void mmio_test_release(struct kvm_device *dev)
-+{
-+	kfree(dev->private);
-+}
-+
-+struct kvm_device_ops kvm_riscv_mmio_test_device_ops = {
-+	.name = "kvm-riscv-mmio_test",
-+	.create = mmio_test_create,
-+	.release = mmio_test_release,
-+};
-+
-+int kvm_mmio_test_ops_init(void)
-+{
-+	return kvm_register_device_ops(&kvm_riscv_mmio_test_device_ops,
-+					KVM_DEV_TYPE_TEST);
-+}
-+
-+void kvm_mmio_test_ops_exit(void)
-+{
-+	kvm_unregister_device_ops(KVM_DEV_TYPE_TEST);
-+}
-diff --git a/virt/kvm/mmio_test.h b/virt/kvm/mmio_test.h
-new file mode 100644
-index 000000000000..49a6e900eec9
---- /dev/null
-+++ b/virt/kvm/mmio_test.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __KVM_MMIO_TEST_H
-+#define __KVM_MMIO_TEST_H
-+
-+#ifdef CONFIG_KVM_MMIO_TEST
-+int kvm_mmio_test_ops_init(void);
-+void kvm_mmio_test_ops_exit(void);
-+#else
-+static inline int kvm_mmio_test_ops_init(void)
-+{
-+	return 0;
-+}
-+static inline void kvm_mmio_test_ops_exit(void)
-+{
-+}
-+#endif
-+
-+#endif
+ 	vcpu->arch.mmio_decode.return_handled = 1;
+-	insn = vcpu->arch.mmio_decode.insn;
+ 
+ 	if (run->mmio.is_write)
+ 		goto done;
+@@ -647,29 +634,23 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 
+ 	switch (len) {
+ 	case 1:
+-		data8 = *((u8 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)((ulong)data8 << shift) >> shift);
++		data = *((u8 *)run->mmio.data);
+ 		break;
+ 	case 2:
+-		data16 = *((u16 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)((ulong)data16 << shift) >> shift);
++		data = *((u16 *)run->mmio.data);
+ 		break;
+ 	case 4:
+-		data32 = *((u32 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)((ulong)data32 << shift) >> shift);
++		data = *((u32 *)run->mmio.data);
+ 		break;
+ 	case 8:
+-		data64 = *((u64 *)run->mmio.data);
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-			(long)((ulong)data64 << shift) >> shift);
++		data = *((u64 *)run->mmio.data);
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	*((ulong *)(&vcpu->arch.guest_context) + vcpu->arch.mmio_decode.rd) =
++		(long)data << shift >> shift;
+ done:
+ 	/* Move to next instruction */
+ 	vcpu->arch.guest_context.sepc += vcpu->arch.mmio_decode.insn_len;
 
 -- 
 2.54.0
