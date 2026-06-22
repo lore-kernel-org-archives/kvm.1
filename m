@@ -1,230 +1,242 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619F33F584
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 21:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1F935675B;
+	Mon, 22 Jun 2026 21:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782162488; cv=none; b=nhV7tAoRzyZcLAVbxrOVNDn8+0pKeLgYaWU83+UOGnyuXLzlsLmj7tQ3mc2910QNYoZiroYIgv490XUytrx8/vt2jynwKIgJusdKFyeZezt+AMK1dgHfDoyqlEYTcCH+hcEgI8PCK00prPXSqJ//TA4pLSeDC38q75TuXcjRsws=
+	t=1782163824; cv=none; b=lJIiK5LQ1A21ktY1W3lVIjLdw3k1TWPkimKmHowEIW+YROsp/qREe+ryfgadY5IFS65Qbi1XbDGQ90lEUCDBK8iFBC/J54KxZJKzRm7VnpTf5Dy6YoUx5i+3WxdjsJdg/yLGbsgQJnLyIgHv4YuravvkA15sXJnhaTtmDfDkiRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782162488; c=relaxed/simple;
-	bh=eunKVDlsNamoHDNiOA4C+NT/pAI4L8qMackQj+NL+1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKWfOY8tbVHhit646YXsSOKPj58iimwOuYpb46AhgDuhkE24McKGv2X9GeEnmo0JSSKhfeasJsLMwlw5i6sr9iXQm/pSD6ehbmMrX8bQRKRWkpkBBWSlnffYU3uXwU/s2t+SZ9NT6UU/sSkQ9fP4EuVA7LsnmjopQbyNumY4+TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MwZZoFWP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HOShRJJT; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782163824; c=relaxed/simple;
+	bh=rY/lCz3dbJTsXY2JYWpNlQ7t/z+ar9fME7tKS+q04yw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EGjBTwNdd2AF4mUmEJRvd7Ft54BkU9GjaxViSW5ilzkjwavU2AuFPI1vThmKSIC/MUPDbz5H7yXb2CsM7T/rgdLYdJZhOX+JHQCiEvVZeOhGKFLz9HD6fLjO8Uai7lA+/BP15F0QxbdPNomrs75mJvVgGraLshccP0I32b3ASW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A8me9fR9; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MwZZoFWP";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HOShRJJT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782162485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZylaYIaJyH64ZUN0GPn4U0LhKcnXEBaFTWhwpPLc03o=;
-	b=MwZZoFWPdqpQcm1EuIK3tzEShYwQgoGwFzwo37QaJFEVydm3AsyTDpbJRy4Ml4UgxHLenT
-	6jRcDytr/phO4BzOrKxqRSJBA7ZEpH+5ujcL83uBWFsTuOPDxIMNte6pNNLBiHweTAvMBu
-	NVc+F/iuzPk+SNUb5EyvMwxt+ce8/BM=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-9AwgG_L2NqGzbOf7jONaTg-1; Mon, 22 Jun 2026 17:08:04 -0400
-X-MC-Unique: 9AwgG_L2NqGzbOf7jONaTg-1
-X-Mimecast-MFC-AGG-ID: 9AwgG_L2NqGzbOf7jONaTg_1782162484
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9159bc52211so806605385a.2
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 14:08:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782162484; x=1782767284; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZylaYIaJyH64ZUN0GPn4U0LhKcnXEBaFTWhwpPLc03o=;
-        b=HOShRJJTRNMsBc3Y/SyJmubc50y2AoDY5FZDb80J+pF+//SHvNAWRQcVSyZkluwj6y
-         zAoSAOt+RFcnUINODZoKwa/8RCBjChT6m7A+c+nMLytOVagWFYsfTnulPT3sXGf5SnC3
-         0DMCfWPT0woHnTd5ZXbts5i4XXQNBa3doFPc+7VrEJA0pDMKmHtwCOoWIrAsjs8v5klT
-         6bMOYP4V1eNGx7ZNlbDKUeBoNTko6g7AiL2ZbLR8IQ3aFXLDbzqOIFqh1p2kNQk4kvh0
-         B/w0pcawffqhh6TGok7pT8mw2DNL7y0FcQOKXUjuEEtqOS7xMBKhnbFpbL5BEKSQ55G7
-         U7aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782162484; x=1782767284;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZylaYIaJyH64ZUN0GPn4U0LhKcnXEBaFTWhwpPLc03o=;
-        b=qYhdgZ0J4z/wpXuZvvmG+NBGoa6GxAUPakZyXjE7AB0q0HDk0/HRF039Dp5QaX5+Ls
-         xDZZQ7y848XeMAj0Iwhvaxv8W9ekvEEcV8J3QMDePr/2J72r7fLWGB82mgXd8TlLUFFj
-         fKfv81qauugwF5LW/BnR6ioAe9pETNBEkkISytUm+InqYEzql2jEipRhRyaZNobdHhj6
-         I4J0n/qD+LJrU2mbmUmM+9KqTC5DYQ/J+cM1Iqtk5fdU3W1dsxYOnqNuOYWZgRYCOWMv
-         Vlj6KtoMnPqLgD2ZWdcNpevfm4SBiq5aTfvOUkyoYBvjzC/yraMp5MVq6IJkcZoxUFvQ
-         pt2A==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZRTVifHy2W/JhQk/MbpkmTF+ELK+wrF2ywjl9DnNd1loIxuPbT1SLVczQObaqXm478dU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYPI+TyNYusPBDVuHlvcwEODFUfhtwe27RVcWKun27x07LCtCX
-	4zg5Yu55ceF8ZICah+oBiPEhvrJI8FNx4p+LZFevf7yh60S8l/V2FJnQSF4vCP5iGf6gj9NEQVC
-	gr7Z6NCUdgFw4JFhDlZzZvS+aZVOjMKqjZ56PkZTOlmKh9wur2/JKvA==
-X-Gm-Gg: AfdE7cl2BuISZgOMnxwsnOG7UrHI4wJmR7HgzsWy7cCMtlm24Ksunrz5f8i+uhUWJJx
-	Avr0lY9CALftearihbCWswS168NoVK179YQJf2t4PwBYkgXbes+aUhVUglEHkQlL61JPtj+0D6b
-	fq3Tu8WhCNCoOJIOtkxwX/5p2ZGITsv3AYlzoCgboiE6BKRJQ4W90aNZiDxenueuOeOk4o+1iEe
-	7RSpXEkvAZTinfz2ZSKef00fbFYgw1xW7y6/NJnGaaVfphcc62+DtKpdB0BJzrpCr7Tp6AivWYr
-	ec2MIQZj1tXtFoNaUMNeEU1WcmJdmMKZoIqNlDgvkoaoVEUqaMRNbBWL9yPn+ar4pt6BjKfmrXL
-	ILR2dUMpLtiTkoaSUSX0xNzuW7M1meY2btGN3vgVWolJH/R8+t+xwCao+5dGm50a76x7uHslZ
-X-Received: by 2002:a05:620a:6492:b0:913:dcd2:f132 with SMTP id af79cd13be357-92090db22b3mr2623429685a.40.1782162483845;
-        Mon, 22 Jun 2026 14:08:03 -0700 (PDT)
-X-Received: by 2002:a05:620a:6492:b0:913:dcd2:f132 with SMTP id af79cd13be357-92090db22b3mr2623419985a.40.1782162483170;
-        Mon, 22 Jun 2026 14:08:03 -0700 (PDT)
-Received: from x1.local (bras-vprn-aurron9134w-lp130-03-174-91-117-157.dsl.bell.ca. [174.91.117.157])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-925fd39188csm82036985a.6.2026.06.22.14.07.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 14:08:01 -0700 (PDT)
-Date: Mon, 22 Jun 2026 17:07:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
-	qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	Fabiano Rosas <farosas@suse.de>, Mark Kanda <mark.kanda@oracle.com>,
-	Ben Chaney <bchaney@akamai.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
-	"Dr. David Alan Gilbert" <dave@treblig.org>,
-	Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: Re: [PATCH v5 00/12] Make RamDiscardManager work with multiple
- sources & virtio-mem
-Message-ID: <ajmkLgAqc_bz-m3A@x1.local>
-References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
- <CAJ+F1CKRvSWDOvKC98e_7uyjgJMuXfhOHP83H0s7a=+ZrYxA1g@mail.gmail.com>
- <ajVco512NDPKDPTr@x1.local>
- <CAMxuvazRnZw4PEsdKCEBD8X1ua5LMj5K-k+-oh-J_uvXm5vT1w@mail.gmail.com>
- <ajmMzMAXay65Sl7U@x1.local>
- <CAMxuvawvb-oueGsgXQsPzAtB8_ArAM+SOtpacrvOGq=4d1F2Bg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A8me9fR9"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65MJmNFQ4133777;
+	Mon, 22 Jun 2026 21:30:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=YJ096u
+	mEx3MrpmXsinFXH+2SQ0ejLWuKDD45GA2hOVU=; b=A8me9fR9R6KijQnmWO/aod
+	C6zFx63CawgQROVU7U1PwlHSCkp7MxazEHvWczpevS1+F+IqGj8CVxse+WAuN2uN
+	Ww/6JOD9PvBGAvBnqMT3s2LR9XXRa1gSMTq8v6JNWh9ooRL5z91YV7hLqV9Z+VBI
+	IVG66rZ395C+ayCY8Crugo2Zu51KkcqEjHqDm9/tZjdLg+Nv2WfsjLyFPvRWJc5o
+	3CGh0g564UxXTzJfz++P6j588UJDpOUaDneL38OCZSuHS9V7DKF/M9JuQngAG0xk
+	kZk4k3d6TfBIDmo2Zfo+NFwMJ4lLQCHlzMHrjgs4gJMk3Jc95QlbBtVmvag7Sf6Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhqkctt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jun 2026 21:30:20 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65MLJc2Y012893;
+	Mon, 22 Jun 2026 21:30:19 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex56q8dkp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jun 2026 21:30:19 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65MLUHOG20054738
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Jun 2026 21:30:17 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 331F45806A;
+	Mon, 22 Jun 2026 21:30:17 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 453875805D;
+	Mon, 22 Jun 2026 21:30:16 +0000 (GMT)
+Received: from [9.61.253.34] (unknown [9.61.253.34])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 22 Jun 2026 21:30:16 +0000 (GMT)
+Message-ID: <6bf8243d-89d6-4a20-ae15-166b028a2257@linux.ibm.com>
+Date: Mon, 22 Jun 2026 17:30:15 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMxuvawvb-oueGsgXQsPzAtB8_ArAM+SOtpacrvOGq=4d1F2Bg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] vfio-pci/zdev: Add VFIO FMB device features
+To: Alex Williamson <alex@shazbot.org>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
+        farman@linux.ibm.com, gbayer@linux.ibm.com
+References: <20260612181048.91548-1-oelghoul@linux.ibm.com>
+ <20260612181048.91548-4-oelghoul@linux.ibm.com>
+ <20260622142215.2446486e@shazbot.org>
+Content-Language: en-US
+From: Omar Elghoul <oelghoul@linux.ibm.com>
+In-Reply-To: <20260622142215.2446486e@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a39a96c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=c92rfblmAAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=aPsx3AmzkLelg1VItP4A:9 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDIwNiBTYWx0ZWRfX2yzd6ktk772Y
+ kQueMCHnw3fBvQRTMeImkRWO7RHGcbjpfLwk7sVDeKYuagzDJ19Gx9Nuv/6e5ZYD6f38Ib3LuFt
+ rlSYXSCARuLxlTUr4KMyz8TbFZVmeJDKfTlSbryeAiiy02y8vSEQ4BZXnu1Aps8013yxtPpHr7C
+ FL5t26I1JiMA5+kNDlE5gW6Vye8ql++kPTHcqLu/SJ+oPn0ETcOoEM4ucdJ2FOpGJnIJhB+96vu
+ ZoOz+sx1LD6n4Hvbuybf1b6F7pRSddMoDEYyeQShnn5/F30/xFndRIVb7XX28NB53BqyIVQ5QZQ
+ 3XFHCQVuFVLjKbipPHXAMEEUewxdl+y2e+yEpJn3EX74tEVTj0o4ixa85Guebqft8EgXGEtpjBD
+ fKmsuliViwEq8i7VGxLHOzsZcL/8PoDXFL7+DBDVLK14vdrzdEFQsghHv9tKh0rvzlRSIrxfrK8
+ QCZQ91cNXFKvNOfcXQQ==
+X-Proofpoint-GUID: eS_1NjBWvzhw4lKcdk2SA1kxZWRZG8W9
+X-Proofpoint-ORIG-GUID: eS_1NjBWvzhw4lKcdk2SA1kxZWRZG8W9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDIwNiBTYWx0ZWRfXygE9fZxg5orP
+ WdA6l1QDU3G9DW7anB+6a6qe5sI3sFSKocsm+0Gtw4UK4MydcZWM939bcy4bHcf7XYNBcoJeFfu
+ XIzpZLWM/YniKCcKz7PA1dE9LO+4MBk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-22_04,2026-06-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606220206
 
-On Tue, Jun 23, 2026 at 12:00:04AM +0400, Marc-André Lureau wrote:
-> Hi Peter
+On 6/22/26 4:22 PM, Alex Williamson wrote:
+> On Fri, 12 Jun 2026 14:10:47 -0400
+> Omar Elghoul <oelghoul@linux.ibm.com> wrote:
+>> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u32 flags,
+>> +				   void __user *arg, size_t argsz)
+>> +{
+>> +	struct zpci_dev *zdev;
+>> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
+>> +	int ret;
+>> +
+>> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeof(fmb_read));
+>> +	if (ret != 1)
+>> +		return ret;
+>> +
+>> +	zdev = to_zpci(vdev->pdev);
+>> +	if (!zdev)
+>> +		return -ENODEV;
+>> +
+>> +	guard(mutex)(&zdev->fmb_lock);
+>> +
+>> +	if (!zdev->fmb)
+>> +		return -ENOMSG;
+>> +	if (copy_from_user(&fmb_read, arg, sizeof(fmb_read)))
 > 
-> On Mon, Jun 22, 2026 at 11:28 PM Peter Xu <peterx@redhat.com> wrote:
-> >
-> > On Mon, Jun 22, 2026 at 03:53:33PM +0400, Marc-André Lureau wrote:
-> > > Hi Peter
-> > >
-> > > On Fri, Jun 19, 2026 at 7:13 PM Peter Xu <peterx@redhat.com> wrote:
-> > > >
-> > > > On Fri, Jun 19, 2026 at 12:11:48AM +0400, Marc-André Lureau wrote:
-> > > > > Hi
-> > > > >
-> > > > > On Thu, Jun 4, 2026 at 5:46 PM Marc-André Lureau
-> > > > > <marcandre.lureau@redhat.com> wrote:
-> > > > > >
-> > > > > > Hi,
-> > > > > >
-> > > > > > This is an attempt to fix the incompatibility of virtio-mem with confidential
-> > > > > > VMs. The solution implements what was discussed earlier with D. Hildenbrand:
-> > > > > > https://patchwork.ozlabs.org/project/qemu-devel/patch/20250407074939.18657-5-chenyi.qiang@intel.com/#3502238
-> > > > > >
-> > > > > > The first patches are misc cleanups. Then some code refactoring to have split a
-> > > > > > manager/source. And finally, the manager learns to deal with multiple sources.
-> > > > > >
-> > > > > > This has been tested together with the Linux kernel series from
-> > > > > > Zhenzhong Duan [1] for TDX guests.
-> > > > > >
-> > > > > > (help fix https://issues.redhat.com/browse/RHEL-131968)
-> > > > >
-> > > > > Can the patch 1-11 be queued or are we missing something?
-> > > > > (RFC patch 12 can be dropped for now)
-> > > >
-> > > > Likely yes.. one thing to double check with you before I do: We don't need
-> > > > the kernel series, do we?  Since when unplug, I expect with the truncation
-> > > > approach that this series proposed, KVM will emit TDH.MEM.PAGE.REMOVE then
-> > > > unaccept is done (?).
-> > >
-> > > > Say, what happens if we run QEMU with this series applied, but without the
-> > > > kernel series?
-> > >
-> > > The kernel series is needed at least for PAGE.ACCEPT. Without it, QEMU
-> > > will have KVM_RUN return EIO, and finish into assert (while tearing
-> > > down ioeventfd).
-> >
-> > Could you elaborate a bit more on why ACCEPT would fail?
-> >
-> > I used to ask the event flow here:
-> >
-> > https://lore.kernel.org/qemu-devel/agTjb3M8ElUAlfp1@x1.local/
-> >
-> > If AUG existed, then why ACCEPT would fail?
-> >
-> > PS: I didn't read a lot of what a Linux guest would do; I know there're
-> > some lazy accept approach, but IIUC it's only a matter of time to ACCEPT,
-> > not correctness.  My understanding is if we properly notify these new slots
-> > with AUG, then it should be able to ACCEPT?
+> No need to do this or the test below under mutex.
 > 
-> Yes, it will, but it needs the kernel patches to do it (or virtio-mem
-> will let the guest access un-accepted pages and qemu will crash). I
-> submitted a few proposals before Zhenzhong Duan proposed the last
-> iteration.
-
-OK, I think I misunderstood both the crash and also what Zhenzhong's series
-is trying to do.  After a closer look, it seems to be a proposal for any
-plug/unplug to work.  I'm surprised (if I get it right this time..) that TD
-didn't seem to support DIMM hotplugs besides virtio-mem.
-
+>> +		return -EFAULT;
+>> +	if (!fmb_read.data)
+>> +		return -EINVAL;
+>> +
+>> +	if (copy_to_user((struct zpci_fmb __user *) fmb_read.data, zdev->fmb, zdev->fmb_length))
 > 
-> > >
-> > > > What confused me a bit is the dependency of this series v.s. the kernel
-> > > > one.  It seems to use different approaches, but then I don't understand why
-> > > > this series was tested with the kernel change.
-> > >
-> > > My understanding is that the kernel may perform TDG.MEM.PAGE.RELEASE.
-> > > That depends on TDX config TDCS_CONFIG_PAGE_RELEASE which qemu/kvm
-> > > doesnt currently control. I don't know whether this is then
-> > > redundant/needless with qemu doing discard on the guest_memfd..
-> >
-> > The problem is if this series depends on the kernel series, should we then
-> > wait for the kernel solution be accepted first in case it'll change?
+> The v3 comment noted we could do this, but really keeping the buffer
+> and doing the copy_to_user after dropping the mutex is really the
+> better option.  Sashiko also notes[1] this as a high severity issue.
 > 
-> I don't think qemu needs to wait for the kernel to be fixed.
-> Furthermore, this series is not tdx/sev/etc specific
+> Should also use a u64_to_user_ptr() on the user data pointer.
+> 
+> [1]https://sashiko.dev/#/message/20260612182854.97E641F000E9%40smtp.kernel.org
 
-AFAIU it is coco specific, otherwise we only always have 1 source, hence no
-need for this series to provide this function.
-
-Said that, I agree with you.. Looks like there's no major plan to add
-anything specific to QEMU.
-
-Patch 1-10 are all reviewed patches and correctly resolve the known >1 ram
-sources and it's a design problem, I don't see how we can bypass that.
-
-Patch 11 is very reasonable on its own, then I assume the guest ACCEPT
-problem will need to evolve on its own.  Looks like the direction is
-correct, and only some corner cases to think about (acpi coverage, lazy
-accept, etc.) that I saw in the discussion.
+Acked.
 
 > 
-> >
-> > But obviously I still don't yet fully understand how this whole thing
-> > works.. :(
+>> +		return -EFAULT;
+>> +
+>> +	return 0;
+>> +}
+>> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+>> index 5de618a3a5ee..97e0f857fe4f 100644
+>> --- a/include/uapi/linux/vfio.h
+>> +++ b/include/uapi/linux/vfio.h
+>> @@ -1534,6 +1534,35 @@ struct vfio_device_feature_dma_buf {
+>>    */
+>>   #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+>>   
 > 
-> I am also slow, because I don't focus on this most of the time.
-> Someone with more experience and dedication would handle it better.
+> These next feature indexes are in contention, so we need to think about
+> how this gets merged; the whole thing through the vfio tree, the s390
+> bits through s390 tree with a branch exposed for me to merge to vfio
+> before applying this change, or the whole series applied to a clean
+> branch and merged into both the s390 and vfio next branches.  The first
+> two options give me the most leniency in adjusting feature indexes
+> based on what's already been merged at the time.
 
-I queued patch 1-11, will send a pull this week.  Thanks for all the
-explanations.
+I'm flexible on the merging. Carrying the assumption that the VFIO patch
+depends on the s390 patches (after I make the amendments below), I
+believe option 2 would work best, but I'm happy to work with whichever
+approach you prefer.
 
--- 
-Peter Xu
+> 
+>> +/**
+>> + * Upon VFIO_DEVICE_FEATURE_SET, enable or disable FMB for the VFIO zPCI device.
+>> + *
+>> + * enabled is treated as a bool, so any non-zero value evaluates to true. This
+>> + * feature fails on attempt to double enable/disable.
+> 
+> Same inconsistency noted on patch 2, it seems that it starts out
+> enabled.
+
+Acked, will amend it back to allowing the re-enable and appropriately
+document the behavior.
+
+> 
+>> + *
+>> + * Returns: 0 on success, -1 and errno set appropriately on error.
+>> + */
+>> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE 13
+>> +
+>> +struct vfio_device_feature_zpci_fmb_enable {
+>> +	__u8 enabled;
+>> +};
+>> +
+>> +/**
+>> + * Upon VFIO_DEVICE_FEATURE_GET, provide FMB passthrough for VFIO zPCI devices.
+>> + *
+>> + * The user-provided buffer must be at least fmb_length large, where fmb_length
+>> + * is reported in VFIO_DEVICE_INFO_CAP_ZPCI_BASE.
+> 
+> Is there a spec reference for the opaque data blob provided, or at
+> least reference to kernel structure documenting the layout defined by
+> some firmware reference?
+
+The structure (struct zpci_fmb) is defined in the kernel under
+arch/s390/include/asm/pci.h.
+
+> 
+>> + *
+>> + * Returns: 0 on success, -1 and errno set appropriately on error. errno==ENOMSG
+>> + * when the FMB is not enabled.
+> 
+> This sounds like a user sequencing error, so should it simply be EINVAL
+> or ENXIO?  ENOMSG almost sounds like we're tracking the samples field
+> to make sure the user hasn't already read the current sample.  Along
+
+The user should be allowed to read the same sample more than once. I
+also think ENOMSG makes sense here because its semantics are reasonable
+(i.e., there's no FMB "message" to read because the FMB is disabled.)
+That said ENXIO probably makes for a good second choice here, more so
+than EINVAL.
+
+> those same lines, should this document some mechanism for dealing with
+> torn samples since we might be relaying the sample structure mid-update?
+
+There is an "update-in-progress" bit in the structure, but I don't think
+that's within the scope of the uAPI since we're already treating it like
+an opaque blob.
+
+Thanks.
+
+> Thanks,
+> 
+> Alex
 
