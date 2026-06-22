@@ -1,175 +1,229 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D131128504D
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B51E28504D
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782102207; cv=none; b=lFF7pTBx3tNaAEVaLENhwFVkBuevtfZBfONJAQVNs0S0t2XIv59DWaWh8hooLE6SbC+LJFE2u/p+RFsPjCmtHNaFieCU7K+L9Y8++pyTn/Tm5w+VdgYSnzkbN0giVMirZmj9n8IZlHagf2OxlpLzHarWMZ8gA1w+M/6/Qjshba4=
+	t=1782102284; cv=none; b=UdH4IpVfXJdQKD7o0Fuz3hE/ow1jJ9+qS/tqknocqCyvQbf7drmUlvMMtKPWMo3ALKbhFtB/LnJ/sRUK3Ev7lM5CEyd7mwJGXDqq0iLsZhGoJMew7C6z601br4j6Sos9WH+pl0Ah+6PhWI7FE1YfB61HYyAUaqyYQjuewGfHT0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782102207; c=relaxed/simple;
-	bh=Ddpmap3HNEE4gPM0gXU3Kf61Ud2997HJZb945StfZMA=;
+	s=arc-20240116; t=1782102284; c=relaxed/simple;
+	bh=x2+ZDNl7cFyITOq+Yc/dCnlkz3adgyAAXFNamVd1XDc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dCC0lLXTQ5x+XvjN+n1Y7uDVnXTF+z5VQri6A66lbzZ7KJQClp9ZhksOVCRtyYhxIZ4ZD84QNZwDBMIZCsMVYmsmTH1BdARfFdjY4gQj+69KDok9SDqKPAO6zSosMVvBFPG3wRuZbJxunWGdjVriJCbq5GLp3dmYHyZhbqOkLI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEejPmLj; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=G9izXLBcrApcwW8Ag+oeFFS0IVOG38WVFPUPd2U8+ZigAVEknm8vAmnj5q8t9M/L1A5W2KS6x7aEVKsSDVgqNCS8J6fZMTJkWI3cCfid3QKDCquyOlmh4qMUk3MYsyrvvKYYlm9o+EBxbo7c1FAOWQdjdJFTPoChxCWYDWc2uYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHFgPFVn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEejPmLj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FFF1F000E9;
-	Mon, 22 Jun 2026 04:23:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHFgPFVn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20A21F000E9;
+	Mon, 22 Jun 2026 04:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782102206;
-	bh=yLEsct0NJnJfQR1wsHDMkBxuBddq1AKONiKMmc132RQ=;
+	s=k20260515; t=1782102282;
+	bh=TGpIxOUTS7it1pHBHjKqwdx7N82W4OjQTRmdLNyDTs8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nEejPmLj2lHlZzTQibXIzzkA5hjIcupWEq1XYi6Cvy+Prp+B2d6dV+w96RMC2MFbC
-	 A89wHrQ15/P+rZlnykxoToQl4gFcZIWvsjcUrFIUkvQuxGRdj8ctXPh0/5YeHBpXSV
-	 qWl5fUSOloFDwyxp9Voy+sxEZVqRj0MdZPZMJIBjGPWQ2casqj4hj1ZhVzcFqkJ2t9
-	 RnJkBBUoWrOe6THH9EnkitD5Q4LEqI5kUprIZaa+HR7sDe+toP+bCKQPB8LZ406Mdo
-	 yKFsg97R+bklXMRkTiAsvOWeE1C9Uy5PXF1Fhsm3UdRUEPXYtKDNf2DVLjUfAh7sIq
-	 MqSREEp+V7j9Q==
+	b=BHFgPFVnbCBREpBpRdTmzqe0aHQwpOft8nW7VQE88uy324kiY7SKpD1o09CTtVD6J
+	 roDW8JjTHU6KKndz8f07NgyqONv4sjGU/jGk3AO4M4G0Hu7HE1PnFJ4/Q1x+V3NnPo
+	 JD0LKGq9I8KeWRsNk/6bRWM3EhLAOc/dteaCU8vRUiasM0vWsErWsXVV8S6yb2HvOH
+	 VN7/7ArwnBTBH1hV9A8bDtJLcMYn847Q2Xn6iDnDPMMTlgZco2ZF0QYe37bKiiGXqJ
+	 z60l7oRVJto4HkXKE3QZDLirIFUFXE/1DLUOYejot6NGMZvB0/N9wcs+cDDSjwJqHe
+	 YlFWTOKtyNplA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 12/16] riscv: kvm: Add emulated test csr
+Subject: Re: [PATCH v2 13/16] KVM: riscv: selftests: Add csr emulation test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-13-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-13-7f0810ee2274@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:23:25 +0000
-Message-Id: <20260622042326.46FFF1F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 04:24:42 +0000
+Message-Id: <20260622042442.A20A21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [High] The `vsscratch` test CSR emulation handler is structurally unreach=
-able, rendering the feature dead code because accesses to VS-level CSRs fro=
-m VS-mode do not trap to KVM.
-- [High] The emulated test CSR unconditionally introduces a silently-on gue=
-st-visible feature and unmigratable state, violating KVM API invariants.
-- [High] The patch hijacks the architectural `vsscratch` CSR, backing it wi=
-th disconnected software state and causing split-brain register semantics.
-- [Medium] The emulated test CSR state is not cleared during VCPU reset, le=
-aking state across warm resets.
+- [High] The `kvm_create_device` wrapper is incorrectly used for feature pr=
+obing, which turns an intended graceful skip into a hard assertion failure.
+- [Medium] The test unconditionally manipulates the floating-point CSR (`fc=
+sr`) and `sstatus.FS` without checking if the F (Floating-Point) extension =
+is supported.
+- [Medium] File descriptors returned by `kvm_create_device()` are leaked on=
+ every successful execution.
+- [Medium] Missing `.align 2` directive for the `stvec` target label risks =
+creating an infinite exception loop.
+- [Low] A local C variable is passed to an inline assembly block using the =
+`"i"` (immediate) constraint, violating C compiler requirements and causing=
+ build failures.
 --
 
-commit 783cfef4904ebb8469e4e71c63a55936a9c8e148
+commit 9c090464385301d04ee38fa944d2379ab3dfd21a
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: kvm: Add emulated test csr
+KVM: riscv: selftests: Add csr emulation test
+   =20
+Introduce a kvm test that uses the emulated test csr to validate that
+all emulated reads/writes to csrs function as expected.
 
-This commit adds support to emulate the vsscratch CSR when
-CONFIG_RISCV_KVM_TEST_CSR is set. It introduces a new kvm_test_csr
-struct and hooks into the CSR instruction handling to reflect changes
-when the vsscratch register is accessed.
+> diff --git a/tools/testing/selftests/kvm/riscv/csr_test.c b/tools/testing=
+/selftests/kvm/riscv/csr_test.c
+> new file mode 100644
+> index 0000000000000..b3e8b99b6e923
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/riscv/csr_test.c
 
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
-vm_host.h
-> index 75b0a951c1bc6..4d30d30ebefc7 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
 [ ... ]
-> @@ -265,6 +271,10 @@ struct kvm_vcpu_arch {
->  		gpa_t shmem;
->  		u64 last_steal;
->  	} sta;
-> +
-> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
-> +	struct kvm_test_csr test_csr;
-> +#endif
->  };
 
-[Severity: High]
-Does this new guest-visible state need to be explicitly enabled by userspace
-with a runtime capability check rather than just a compile-time config?=20
-
-Also, since this state isn't exposed via the KVM_GET_ONE_REG or KVM_SET_ONE=
-_REG
-API, will it break live migration because it is completely invisible to
-userspace?
+> +/*
+> + * Use the fcsr as a U-mode accesible csr and compare against the custom=
+ 'test'
+> + * hypervisor csr (currently using vsscratch)
+> + */
+> +#define test_csr(write, initial, mode)								\
+> +static void test_##write(void)									\
+> +{												\
+> +	unsigned long hypervisor_result, reference_result, old_hypervisor;			\
+> +	unsigned long mask =3D 0x15;								\
+> +	asm volatile (										\
+> +		"csrs	sstatus, %[enable_fp]\n"						\
+> +		"csrw	fcsr, %[init]\n"							\
 
 [Severity: Medium]
-Is this test_csr state cleared during a VCPU reset? It looks like it is mis=
-sing
-from the architecture-specific reset path kvm_riscv_vcpu_context_reset(),
-which might allow the modified value to leak across warm resets.
+Does this code unconditionally manipulate the floating-point CSR (fcsr) and
+sstatus.FS without checking if the F (Floating-Point) extension is supporte=
+d?
 
-> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-> index 1d8741d022425..c5a70de4a5790 100644
-> --- a/arch/riscv/kvm/vcpu_insn.c
-> +++ b/arch/riscv/kvm/vcpu_insn.c
+On RISC-V targets lacking the F extension, accessing fcsr will raise an
+illegal instruction exception and crash the test. Should there be a probe f=
+or
+the F extension (e.g., via KVM_RISCV_ISA_EXT_F) before proceeding?
+
+> +		#write"	zero, fcsr, %[mask]\n"							\
+> +		"csrr	%[ref_res], fcsr\n"							\
+> +		: [ref_res] "=3D&r" (reference_result)						\
+> +		: [enable_fp] "r" (FP), [mask] #mode(mask), [init] "r" (initial)		\
+
+[Severity: Low]
+Is it safe to pass the local variable mask using the "i" (immediate)
+constraint?
+
+For tests like test_csrrwi, #mode(mask) expands to an "i" constraint, but
+compilers like GCC and Clang require the operand for an "i" constraint to be
+a compile-time constant expression. Does this cause an 'impossible constrai=
+nt
+in asm' build error with -O0 or when using Clang?
+
+> +		: "memory"									\
+> +	);											\
+
 [ ... ]
-> @@ -112,6 +114,9 @@ static int seed_csr_rmw(struct kvm_vcpu *vcpu, unsign=
-ed int csr_num,
->  static const struct csr_func csr_funcs[] =3D {
->  	KVM_RISCV_VCPU_AIA_CSR_FUNCS
->  	KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS
-> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
-> +	KVM_RISCV_VCPU_TEST_CSR_FUNCS
-> +#endif
->  	{ .base =3D CSR_SEED, .count =3D 1, .func =3D seed_csr_rmw },
->  };
+
+> +static void run(void *guest_code, char *instruction)
+> +{
+> +	struct ucall uc;
+> +	struct kvm_vm *vm;
+> +	struct kvm_vcpu *vcpu;
+> +
+> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
+> +
+> +	kvm_create_device(vm, KVM_DEV_TYPE_TEST);
+
+[Severity: Medium]
+Does this leak the file descriptor returned by kvm_create_device()?
+
+The function returns a new file descriptor which is ignored here and never
+explicitly closed. kvm_vm_free() only cleans up VM and vCPU file descriptor=
+s.
+
+> +
+> +	vcpu_run(vcpu);
+> +
+> +	TEST_ASSERT(get_ucall(vcpu, &uc) =3D=3D UCALL_DONE,
+> +		    "CSR instruction '%s' failed: '%s'", instruction,
+> +		    uc.buffer);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+> +static void check_test_csr_guest(void)
+> +{
+> +	unsigned long scause, stvec;
+> +
+> +	asm volatile(
+> +		"la	%[stvec], 1f\n"
+> +		"csrw	stvec, %[stvec]\n"
+> +		"csrwi	%[test_csr], 0x0\n"
+> +		"1:\n"
+
+[Severity: Medium]
+Could the lack of an .align 2 directive before the 1: label create an
+infinite exception loop?
+
+The RISC-V specification requires the stvec BASE address to be 4-byte
+aligned. If the test is compiled with the Compressed extension, the 1: label
+might reside at a 2-byte aligned boundary. When the hardware jumps to stvec,
+it masks out the lower bits, potentially resuming execution at an invalid
+offset.
+
+> +		"csrr	%[scause], scause\n"
+> +		: [scause] "=3D&r" (scause), [stvec] "=3D&r" (stvec)
+> +		: [test_csr] "i" (CSR_TEST)
+> +	);
+> +
+> +	/* An illegal instruction will be generated if CONFIG_RISCV_KVM_TEST_CS=
+R is not enabled. */
+> +	if (scause =3D=3D 2)
+> +		GUEST_FAIL("CONFIG_RISCV_KVM_TEST_CSR not enabled.\n");
+> +	GUEST_DONE();
+> +}
+> +
+> +static int check_test_csr(void)
+> +{
+> +	struct ucall uc;
+> +	struct kvm_vm *vm;
+> +	struct kvm_vcpu *vcpu;
+> +	int success;
+> +
+> +	vm =3D vm_create_with_one_vcpu(&vcpu, check_test_csr_guest);
+> +
+> +	/* Skip if CONFIG_KVM_MMIO_TEST not enabled */
+> +	if (!kvm_create_device(vm, KVM_DEV_TYPE_TEST))
+> +		exit(KSFT_SKIP);
 
 [Severity: High]
-Will this CSR emulation handler ever be reached?
+Will this check crash with an assertion failure instead of gracefully
+skipping?
 
-KVM's CSR emulation path kvm_riscv_vcpu_virtual_insn() is only invoked for
-Virtual Instruction exceptions (EXC_VIRTUAL_INST_FAULT, cause 22). However,
-accessing an HS-level CSR like vsscratch from VS-mode natively generates an
-Illegal Instruction exception (EXC_INST_ILLEGAL, cause 2).
+The selftests wrapper kvm_create_device() internally asserts
+TEST_ASSERT(fd >=3D 0, ...). If the host kernel does not support
+KVM_DEV_TYPE_TEST, the ioctl returns a negative error code, triggering the
+assertion rather than reaching the exit(KSFT_SKIP) path.
 
-Since KVM explicitly delegates these exceptions directly to the guest's
-VS-mode exception handler, it seems this handler gets bypassed entirely.
+Also, on success, it returns a valid file descriptor (fd > 0), which
+evaluates to true and bypasses the skip. Shouldn't we use
+__kvm_test_create_device() or __kvm_create_device() to probe safely without
+asserting?
 
-> diff --git a/arch/riscv/kvm/vcpu_test_csr.c b/arch/riscv/kvm/vcpu_test_cs=
-r.c
-> new file mode 100644
-> index 0000000000000..b8aa503cdaba7
-> --- /dev/null
-> +++ b/arch/riscv/kvm/vcpu_test_csr.c
-> @@ -0,0 +1,21 @@
-> +// SPDX-License-Identifier: GPL-2.0
+[Severity: Medium]
+Similar to the call in run(), does this also leak the file descriptor retur=
+ned
+by kvm_create_device() if the device creation is successful?
+
 > +
-> +#include <linux/kvm_host.h>
-> +#include <asm/kvm_vcpu_insn.h>
-> +#include <asm/kvm_vcpu_test_csr.h>
+> +	vcpu_run(vcpu);
 > +
-> +#define vcpu_to_test_csr(vcpu) (&(vcpu)->arch.test_csr)
+> +	success =3D get_ucall(vcpu, &uc) =3D=3D UCALL_DONE;
 > +
-> +int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
-> +			    unsigned long *val, unsigned long new_val,
-> +			    unsigned long wr_mask)
-> +{
-> +	struct kvm_test_csr *test_csr =3D vcpu_to_test_csr(vcpu);
+> +	kvm_vm_free(vm);
 > +
-> +	*val =3D test_csr->val;
-> +
-> +	if (wr_mask)
-> +		test_csr->val =3D (test_csr->val & ~wr_mask) | (new_val & wr_mask);
-> +
-> +	return KVM_INSN_CONTINUE_NEXT_SEPC;
+> +	return success;
 > +}
 
-[Severity: High]
-Does using the architectural vsscratch CSR for this test cause a split-brain
-state?
-
-In a RISC-V guest, accessing sscratch implicitly accesses the hardware
-vsscratch register, which KVM context-switches via its standard guest conte=
-xt
-structures.
-
-By intercepting explicit guest accesses to the vsscratch address and direct=
-ing
-them to this disjoint test_csr.val variable, the guest will see different
-values depending on whether it accesses the register implicitly via sscratch
-or explicitly via vsscratch. Would it be safer for a test CSR to use a
-reserved or custom CSR address?
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D12
+_table-v2-0-7f0810ee2274@gmail.com?part=3D13
