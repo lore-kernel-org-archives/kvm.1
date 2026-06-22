@@ -1,66 +1,66 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7519363C7F
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 23:27:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2001B304BA3
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 23:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782170875; cv=none; b=MbaqvPQLfgFjUvKF0zkHMBEXuajaIQTAsovnnVZlozMAvnbvqJ/cwDCyr/AnG/igeuKKZDGOxQv/CV6QYI+1InqUaS/c0QVA4dqAUiHMqyR9VbeVNsooMS+ycD3ZiUcO4rQm5ItFZsoR3mvaLdFVr8pu5RSZJGCOSB+8vb9Wjm4=
+	t=1782171033; cv=none; b=q83aJjm1aJNL3+QLq8YB7BFexIXu/dvkguA+Nbm+PfashtlKIesTSzfcvxNphJgpkD+xheVxOpKdnAP8k6EfkBft8vPFxmhZa+ulYU5WzSFv7He88L/0p8jymq+8ivgs9BEa7umQx8cS/OTAJ6QtpMFd7EjsZBjtefU76QDPOEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782170875; c=relaxed/simple;
-	bh=lwVDuCan41sfTJTnrOrdE1tC3q2gBSoCWyBPW5RUdWE=;
+	s=arc-20240116; t=1782171033; c=relaxed/simple;
+	bh=Id55ZmT3Ny8JY/8w5j8U96LeMpdqCvG/wazyNv7Ousw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3Q70RqcjKhoDaT8/uJWEsO16zk3DOfAdlxARonEXNYsibr0BdzgdJG2S8XADK9kYHdctf+VQzYdtiAREkNEltOUBV+UJzMgevZw665ap3cwyZOm5GJayhWpcllil1huDtr9o36mm3UVOX7Xvg7bH5h56+8tYenAM2ftzTAbkHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vI8N5A2d; arc=none smtp.client-ip=209.85.214.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7O2focYZ8n/6XEctLITFuKemFuGXV1e3bW5sm/3XycC3clYtiNuv0lBuZbGhgb6w97QwBFAW2pwPzuvT+pAZobTsYgrgceClISjEYcI1UprYDMFqJ0PBDKqJFhmEu4Oa74gUVwybFIA60jlLinJ0OhVDWK9oyFgIKoMSxnI8KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SW8nfISA; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vI8N5A2d"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c6a4eccab1so9865ad.1
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 16:27:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SW8nfISA"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso18485ad.0
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 16:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782170872; x=1782775672; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782171031; x=1782775831; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Wp+dObOPQcCrEViDJa1TZgNuuO73gOCATlytODnl2CU=;
-        b=vI8N5A2dkuuC6ZlMglc1nJv4JSKiYLHkIVecLahyg96otfvreNAoaguj+tu8rx7qXP
-         HtC49j+CCjL3Q3agyzgPdsOh1F8xO8xYXGfGerCBG7hlKDcJIVry1UdgiX76xQbEkkIi
-         59G0k6g/BXR8H4SWaEh6ZSllFTz9cgs3xQrNRLz6j1nEcDSNY/GiWEYwIxYh13DSk1aJ
-         PrpRLSia4t9gdlU2qounMYkX4jQ9x5k6DzCPxt+JknJVeSEjfC4JoE1zodUX7qvUJCsX
-         caGnY8f4OcLcIa3eFqq/fCq3xAZpfbaXFvPePK3TAr5IB3rwDW0A7nb7STyi0KLpig2k
-         2Qfw==
+        bh=BLj+HmvLjzLOHpEqRh1wn6kUXzQVKOV8V8gw6F5PDGc=;
+        b=SW8nfISAxoOdjm87HlyqZwVjj8AgpbEAmK+Pj0x+fetXxj3wT9j+FUbu5cpxDCTCfJ
+         3G6z+lrOn2I61hjq7qV6RKsIg9q3aAeAF6R5ItR1A9fWIfLjz/WcDLyHuU1Og9aD+jMO
+         3r8+0mW2BWHxx6LZri+RAkglP3zRXCt80vLItDik5WVBL/DUDGuuI8dEpZS45p/CyZtF
+         ZdmvAtpKM1GjB8qQxFXcijxxfFDEQe8khTq3+bYXAHxTXOq0DtJ/EV8hxUYR2LvEY7sD
+         Lw7c91jH8Kp2gFchz0RWMpwslPkbbDMBQXE1RcggqfH/IO8Knn4IiG0N3s0F/G+VxXcE
+         QmUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782170872; x=1782775672;
+        d=1e100.net; s=20251104; t=1782171031; x=1782775831;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Wp+dObOPQcCrEViDJa1TZgNuuO73gOCATlytODnl2CU=;
-        b=QP8Hvl1d8VfIvAYkXLhRMqfkAIJKdWeESL7FiDC8BmYD4T9JHAUnC0E+8kK6Abk/pf
-         rCdKCQaAfIJx2Byx9nM1Cotkp2HLrWMb/WE7nMfhB6gumUTdNJsIoCq+EilH+l7fWgzT
-         6f4GieA/IqrDHcZexAtLizQ5LVShdk/oDROVFMcfBg0++c1oLZBHZ0WSn1zul4A+tddV
-         z9fcMK9gkYzLGeN3gohgXBKRxe4zMWaCZu/RUj9c60BiEDcrniHqSPZq7I3x+p27H+0p
-         mVedSrHfl2FNUgeDdd1TLTzccxwpPznKDIChE6fqAHf/VW5qbGcKnGVSrFRz9VQC1r0s
-         RLBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrl1htQnGl9D3ZxKP/UDMYsyvLEuDD9ckOiCs8mbQ6ftk7FDThRH7cBVpuPHHGzov3jim0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMAfMz3N7sY1brQY1uaPgShoU7Nwg+cG1/RSTvSytTWkUIxubU
-	DlJNZQusAgPOVbj0w1KuBToo8XU8UPpp/F7D8JjXgJ7ZFR+yWHicy4NL33wvTY0dOg==
-X-Gm-Gg: AfdE7ckvnlPjJiaTi5f6w+WkIzB0LqZArtsvs1FsVlNLqOT69honVg6HUfmWTWmhBSH
-	6WuwgTq09AEng8kqywUoaejcTwVlffzTgDHbNWPYw6s/WkPSpjjZUMQF6weUNi/vYNoUPXM0BoJ
-	4647tLWrq2ruN7cqhf2BlSDzHgXWtHbvYPA8e+n8bWUhIUtgVssPGWJd+4LAuwTEQFrDUjVOnjZ
-	3jSlcPYDPJvnj8LFXu6zOmQtQ7xJOW7ehFGUpjzz1IG3OmM524tQ10sJC63sBN79inl9DmvAAZo
-	2LgrsqVbPksnB4aCcPkft1HeYtfj2TPKL6ug73ABzadkiEtOdY5M+/Wjp1yjU74wnsK6ycq0lLy
-	QG2zc+7bfQOtOcQdElDrkU30VSDVjaWcRSWraiSqWqvhOaicete/vmNj67u2Y8iB8LThtBTcPXU
-	4SkrRnxxhLAFFQEyMaTE4eolLUp+W1P9qCUUozAxAq/EKmpimmtSiKYy+FRwwvyCOVmfTUcf9Zf
-	xgYDz44oFaWk9TgPYc=
-X-Received: by 2002:a17:902:ec83:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2c7c70ec5damr540285ad.13.1782170871493;
-        Mon, 22 Jun 2026 16:27:51 -0700 (PDT)
+        bh=BLj+HmvLjzLOHpEqRh1wn6kUXzQVKOV8V8gw6F5PDGc=;
+        b=cHfNSZuMYwBzd+X9vM32X5Xc3axsdteQ6Q7kVrxqNfkLoMe9FR5yJx9DfSrH2VaAuJ
+         2Mjglv3b8pfZ7WpnS7p2+6JyZC2n0hEpYgLjSedH4SjXHi7m/pmc7ew1c3woi1kGtA7r
+         hXcBQYya3utjFamN9onNjl65/Qj/CwNMTa0HSLjbjyT3KMbm/4ewtCqUTgQqYGozrS0y
+         zVOpwJf7zpYPAJ9cnKbwBs9mYYZ5b3Q5Hb8o8G5n1jRG+yq+HhL6p9HLIwKogS6aoAG3
+         KmG9TKQFmbvwxLoWsex/XvVDZEDyfWZyuF+JtZEebOLUw4cGnb78txpsQadpqQtzfL3/
+         HpUA==
+X-Forwarded-Encrypted: i=1; AHgh+RoayzflPPgRlrrTm7JSZqFNUy5Ccr4dYIVnTCn22O/PYb+q3/7OYAXnqEK9cw6S+Z2XyMM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2WgzpgxbWifuJzy7bH5LnL65AHgj6Gaylwb+fuHCp6MbpZFuq
+	dYBS1BrrOAUzM1HmJeAY1G16bS3oOGZkG8swGxUu7xYtEAbvTMhVIWjRA6Cv8ElhIg==
+X-Gm-Gg: AfdE7cnE0TBApR/+UXzHMkDCWkAiZJaQtabklqDid3XyllXTzSMYySeyTJwnWa1VEaR
+	OeSw+vF6qMw1sunu3QOVnO/bZPCv2kjAiMa/a3Zi7coJ2zTw9M6/qV90Nivdp+UhxxykLLD6jVf
+	ALPWxZHm3lF2Za/U7WWYFkAMeEU1n6I3U4FS2ltQGDwXa8KlNszk4rEgvTkRw236prAdoNBojCU
+	GbFGsXn/UR+CyXQXQFMzQL6bkeyT3iMRMFa3uY4tR+tjnkMZXhHT/qRegOwYJtgqvN7xKgFVt14
+	7R4uT8il3bQyECS43BEuHU6KjON85az1aH92SbjS7i/hs/InmNRvBRHBaG0mEAP7xsnckkSUR6a
+	gtTh4jWxiQADaeHXOJq04iqvien8W4cNPaiRbcM7CgNqvfp4lbP+Dc1VaxmT017jjtq2kRQx583
+	C6MM6aT3lFrO10b2b2Fk4CsBncz0rj/HlzSJBJtiMcNlCQb6xk4nIiKL1grb1wU5JNoF7B3eMBH
+	pdo1S/T
+X-Received: by 2002:a17:902:ec88:b0:2c1:ee6e:4e4e with SMTP id d9443c01a7336-2c7c713f231mr649335ad.31.1782171030705;
+        Mon, 22 Jun 2026 16:30:30 -0700 (PDT)
 Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436af57asm97554325ad.13.2026.06.22.16.27.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d1aa087e9sm2638998a91.2.2026.06.22.16.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 16:27:50 -0700 (PDT)
-Date: Mon, 22 Jun 2026 23:27:47 +0000
+        Mon, 22 Jun 2026 16:30:30 -0700 (PDT)
+Date: Mon, 22 Jun 2026 23:30:26 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Baolu Lu <baolu.lu@linux.intel.com>
 Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
@@ -71,12 +71,12 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
 	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v3 09/18] iommu: Add APIs to get iommu and device
- preserved state
-Message-ID: <ajnAcPp13wXSiw8l@google.com>
+Subject: Re: [PATCH v3 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+Message-ID: <ajnFOZuL2WXrZCLd@google.com>
 References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-10-skhawaja@google.com>
- <ce3f6eb2-99c4-4582-a11b-a5578b62d401@linux.intel.com>
+ <20260614233728.2212104-11-skhawaja@google.com>
+ <23d4a3b9-41ac-4e05-ada6-01b6ae5e9f04@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,197 +85,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ce3f6eb2-99c4-4582-a11b-a5578b62d401@linux.intel.com>
+In-Reply-To: <23d4a3b9-41ac-4e05-ada6-01b6ae5e9f04@linux.intel.com>
 
-On Mon, Jun 22, 2026 at 11:10:55AM +0800, Baolu Lu wrote:
+On Mon, Jun 22, 2026 at 01:14:48PM +0800, Baolu Lu wrote:
 >On 6/15/26 07:37, Samiullah Khawaja wrote:
->>The preserved state of the device and IOMMU needs to be fetched during
->>shutdown and boot in the next kernel. Add APIs that can be used to fetch
->>the preserved state of a device and IOMMU. The APIs will only be used
->>during shutdown and after liveupdate so no locking needed.
+>>During boot fetch the preserved state of IOMMU unit and if found then
+>>restore the state.
 >>
->>Reviewed-by: Pranjal Shrivastava <praan@google.com>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>- Reuse the root_table that was preserved in the previous kernel.
+>>- Reclaim the domain ids of the preserved domains for each preserved
+>>   devices so these are not acquired by another domain.
+>>
+>>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
 >>---
->>  drivers/iommu/liveupdate.c       | 75 ++++++++++++++++++++++++++++++++
->>  include/linux/iommu-liveupdate.h | 31 +++++++++++++
->>  2 files changed, 106 insertions(+)
+>>  drivers/iommu/intel/iommu.c      | 87 +++++++++++++++++++++++---------
+>>  drivers/iommu/intel/iommu.h      |  7 +++
+>>  drivers/iommu/intel/liveupdate.c | 60 ++++++++++++++++++++++
+>>  3 files changed, 130 insertions(+), 24 deletions(-)
 >>
->>diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
->>index 2d782023407d..90750e78cd2a 100644
->>--- a/drivers/iommu/liveupdate.c
->>+++ b/drivers/iommu/liveupdate.c
->>@@ -18,6 +18,17 @@
->>  #define iommu_max_objs_per_page(_array) \
->>  	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
->>+#define iommu_liveupdate_for_each_obj(_arr, _obj, _idx)			\
->>+	for ((_idx) = 0, (_obj) = (_arr)->objects;			\
->>+	     (_idx) < (_arr)->hdr.nr_objects; (_idx)++, (_obj)++)	\
->>+		if (((_obj)->hdr.flags & IOMMU_SER_FLAG_DELETED))	\
->>+			continue;					\
->>+		else
->>+
->>+#define iommu_liveupdate_for_each_arr(_arr)				\
->>+	for (; (_arr); (_arr) = (_arr)->hdr.next_array_phys ?		\
->>+	     phys_to_virt((_arr)->hdr.next_array_phys) : NULL)
->>+
->>  struct iommu_flb_obj {
->>  	struct mutex lock;
->>  	struct iommu_flb_ser *ser;
->>@@ -216,6 +227,70 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+>>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>>index 26258861e3bf..cd40e274482b 100644
+>>--- a/drivers/iommu/intel/iommu.c
+>>+++ b/drivers/iommu/intel/iommu.c
+>>@@ -990,15 +990,16 @@ static void disable_dmar_iommu(struct intel_iommu *iommu)
+>>  		iommu_disable_translation(iommu);
 >>  }
->>  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
->>+int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
->>+				    void *arg)
->>+{
->>+	struct iommu_flb_obj *flb_obj;
->>+	struct iommu_device_array_ser *array;
->>+	struct iommu_device_ser *device_ser;
->>+	int ret, idx;
->>+
->>+	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
->>+	if (ret)
->>+		return -ENOENT;
->>+
->>+	if (!flb_obj->ser->device_array_phys)
->>+		return -ENOENT;
->>+
->>+	array = phys_to_virt(flb_obj->ser->device_array_phys);
->>+	iommu_liveupdate_for_each_arr(array) {
->>+		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
->>+			ret = fn(device_ser, arg);
->>+			if (ret)
->>+				goto out;
->>+		}
->>+	}
->>+
->>+out:
->>+	liveupdate_flb_put_incoming(&iommu_flb);
->>+	return ret;
->>+}
->>+EXPORT_SYMBOL(iommu_for_each_preserved_device);
->>+
->>+struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
->>+{
->>+	struct iommu_hw_ser *iommu_ser = NULL;
->>+	struct iommu_hw_array_ser *array;
->>+	struct iommu_flb_obj *flb_obj;
->>+	int ret, idx;
->>+
->>+	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
->>+	if (ret == -ENODATA || ret == -ENOENT)
->>+		return NULL;
->>+
->>+	if (ret)
->>+		return ERR_PTR(ret);
->
->Why does this helper return both NULL and an ERR_PTR()? Is NULL
->considered an error case here? Also, why are -ENODATA and -ENOENT
->treated differently?
-
-NULL indicates that no preserved state exists for this iommu HW, so
-setup normally as cold boot. ERR_PTR() indicates a fatal parsing or
-corruption error in the KHO tree that the driver needs to explicitly
-handle or abort on.
-
-liveupdate_flb_get_incoming() returns two different errors for two
-different missing-data scenarios:
-
--ENODATA: The system did not perform a live update.
--ENOENT: The system did perform a live update, but no data was preserved
-for this specific FLB.
-
- From the IOMMU driver's perspective, both scenarios simply mean "proceed
-with a normal cold boot," which is why we intercept them and return
-NULL.
-
-But as you suggested later, I will add kdocs for these to document all
-these things.
->
->>+
->>+	if (!flb_obj->ser->iommu_array_phys) {
->>+		iommu_ser = ERR_PTR(-EINVAL);
->>+		goto out;
->>+	}
->>+
->>+	array = phys_to_virt(flb_obj->ser->iommu_array_phys);
->>+	iommu_liveupdate_for_each_arr(array) {
->>+		iommu_liveupdate_for_each_obj(array, iommu_ser, idx) {
->>+			if (iommu_ser->token == token && iommu_ser->type == type)
->>+				goto out;
->>+		}
->>+	}
->>+
->>+	iommu_ser = NULL;
->>+out:
->>+	liveupdate_flb_put_incoming(&iommu_flb);
->>+	return iommu_ser;
->>+}
->>+EXPORT_SYMBOL(iommu_get_preserved_data);
->
->These two helpers are intended for use by IOMMU drivers, correct? If so,
->please add kernel-doc style comments to document their usage and guide
->how drivers should use them.
-
-Agreed. Will do.
->
->>+
->>  static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
+>>-static void free_dmar_iommu(struct intel_iommu *iommu)
+>>+static void free_dmar_iommu(struct intel_iommu *iommu, struct iommu_hw_ser *iommu_ser)
 >>  {
->>  	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
->>diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
->>index f9528c94979d..5ad006892cbd 100644
->>--- a/include/linux/iommu-liveupdate.h
->>+++ b/include/linux/iommu-liveupdate.h
->>@@ -13,6 +13,8 @@
->>  #include <linux/liveupdate.h>
->>  #include <linux/kho/abi/iommu.h>
->>+typedef int (*iommu_preserved_device_iter_fn)(struct iommu_device_ser *ser,
->>+					      void *arg);
->>  #ifdef CONFIG_IOMMU_LIVEUPDATE
->>  static inline void *dev_iommu_preserved_state(struct device *dev)
->>  {
->>@@ -28,6 +30,20 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->>  	return NULL;
->>  }
->>+static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
->>+{
->>+	struct iommu_domain_ser *ser;
->>+
->>+	ser = domain->preserved_state;
->>+	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
->>+		return ser;
->>+
->>+	return NULL;
->>+}
->>+
->>+int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
->>+				    void *arg);
->>+struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type);
->>  int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
->>  void iommu_unpreserve_domain(struct iommu_domain *domain);
->>  int iommu_preserve_device(struct iommu_domain *domain,
->>@@ -44,6 +60,21 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->>  	return NULL;
->>  }
->>+static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
->>+{
->>+	return NULL;
->>+}
->>+
->>+static inline int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn, void *arg)
->>+{
->>+	return -EOPNOTSUPP;
->>+}
->>+
->>+static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
->>+{
->>+	return NULL;
->>+}
->>+
->>  static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
->>  {
->>  	return -EOPNOTSUPP;
+>>  	if (iommu->copied_tables) {
+>>  		bitmap_free(iommu->copied_tables);
+>>  		iommu->copied_tables = NULL;
+>>  	}
+>>-	/* free context mapping */
+>>-	free_context_table(iommu);
+>>+	/* free context mapping if there is no serialized state. */
+>>+	if (!iommu_ser)
+>>+		free_context_table(iommu);
+>>  	if (ecap_prs(iommu->ecap))
+>>  		intel_iommu_finish_prq(iommu);
+>
+>disable_dmar_iommu() and free_dmar_iommu() are always paired in the
+>code. How about merging them into a single helper that is aware of iommu
+>preservation? Something like the following?
+>
+>static void release_dmar_iommu(struct intel_iommu *iommu)
+>{
+>        struct iommu_hw_ser *iommu_ser =
+>                        iommu_get_preserved_data(iommu->reg_phys, 
+>IOMMU_INTEL);
+>
+>        /*
+>         * All iommu domains must have been detached from the devices,
+>         * hence there should be no domain IDs in use.
+>         */
+>        if (WARN_ON(!ida_is_empty(&iommu->domain_ida)))
+>                return;
+>
+>        if ((iommu->gcmd & DMA_GCMD_TE) && !iommu_ser)
+>                iommu_disable_translation(iommu);
+>
+>        if (iommu->copied_tables) {
+>                bitmap_free(iommu->copied_tables);
+>                iommu->copied_tables = NULL;
+>        }
+>
+>        /* free context mapping if there is no serialized state. */
+>        if (!iommu_ser)
+>                free_context_table(iommu);
+>
+>        if (ecap_prs(iommu->ecap))
+>                intel_iommu_finish_prq(iommu);
+>}
+
+This looks great. I will update this in v4.
 >
 >Thanks,
 >baolu
