@@ -1,780 +1,196 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0F834B1B4
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B172E3B15
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154157; cv=none; b=giweFOOqIaKhmdsytA2k6hy+qiPEF6GFIKixNxfK31WfjVrIIVBGnemwMT2R2iI6Yl3GaYxwlJxIY78hazVfiX8skD3tcb1VmZgQjLmSdMBsYmUn+Dc3DUttJsf/STiTAHn8MQ89UxsLvMd1A0aCvA6xG8mCcp4glot+5ZdGMCs=
+	t=1782154452; cv=none; b=kEiJ2N5HxzCshlbYbLgk9F/K31qCP7vy/qRPaxuDUlV+5ZpeaVwcTtvfA0Zhx80TWHbId/DaEWmV8SUREsrF+IM0ZKbDxdZto7IOM6xcSrpbQJbpy5FMcGD3zSFDyqD0HFAZJd37qLEiJXEz6yYOb6c7HSb0WXHCfgxFP+E7jSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154157; c=relaxed/simple;
-	bh=4s1yskpcgxXZbDOd60gE351UCZnrMGq1Vej9r1aqsU8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HOYzO6E5vVypxoqIv6wivbkTFVxvW2QEklH4dqTHml7icfQIWKi/wyuJJQ5v4WwMLtZfVsHcSPkjQj4KT1XxsdM9iLyEi6GOQW8BNqyzBFhaNxHuEAW+4L/S3gFHaywJFXS3yvOMee0fIgp/P3GprY06ufiA9YawPQY6rDUKTsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cNWyKXT7; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	s=arc-20240116; t=1782154452; c=relaxed/simple;
+	bh=6ji9d8uAJLcoRju665G/IVINMSKJhweNyp0xkMhlyL0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mbNGlM12raSONzt8VB1vygpvTOefXNH1mLrPVfZg9gDPCqTzhVRL+cqypJdqcG+Zqx/NcoUKvvvzo2A+jdU2IYR+Gj2UgZgphWl2nE/1xWnZoUi0b0/6Rye8RZpt87nXsoQnJk/Ruq0B0lJntJ5x6eIeqrstbenQRTuImCnUl8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=H8dyjJ+O; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cNWyKXT7"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-492488f8583so24222665e9.2
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782154148; x=1782758948; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eO4/5+rWmZRxRXK4rz/cib79Y3hRHk98N5UOT15asUE=;
-        b=cNWyKXT74pBzbfKzlYXo7aeKl+LPzyp8R9IBVavp5LzNTv6zN1q5BYb09jg3+IvHZ4
-         oQvjdm/Lp9iBDGbQCZvm/9fu45HKcyKaytR0FOgLWEQ1c0MO3cQcElqDl3FK+1/frOUW
-         WO8fN4bf9HLEwDIRZp/BxUQDPcZwX1HccJtoy/6n6ngRmPlvLct2uYGlVlhOpOWlX1+1
-         NFQ8eOC/PkWUBpFu674Y6BsRarikvXzwuBJlch7Vs/xB9M0xlNjqWOPjiLR/D9gyKtmw
-         p9zVFeYAVS2YQs2hWDSzo/SSSh6Ipr5wqh0edW3eZVhUhMXb+tpmLZxj4HL0Yj2uVUCo
-         mLww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782154148; x=1782758948;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eO4/5+rWmZRxRXK4rz/cib79Y3hRHk98N5UOT15asUE=;
-        b=GD0kzIPkQ1NhBdtDyLAmKNAOwCm48tFenzyGWklU7IKXLO7/UwlBYBXiBVcMde/jWv
-         x0/Gfs1sKUxxRMZUF/BQtdSefQohANh05xi5hpH9ho9lPXT50XauElAvNI1HwkF63iWg
-         8XHBFNbSejpEglLEf3f0/zKKbm4u8+jyeqMyeDRTkapkmjsqwLgxLUT03nKYmBO5OwBI
-         npTKViuIILCr8ITEvouwwwGPhmZ7oEsTG7wPsh4A6gn/ec3ltEwWFIsJ2QTOrwjoS6Lc
-         szzwdFqUzTsOMd383Spt6E21kdaUiqCcrzyUTpWXtfNFFeGh/SjXG83nFA3Lcwy2JvdE
-         btlw==
-X-Gm-Message-State: AOJu0YxTQC/6FNd4m/FbNA8nFh0nzQMKMS0OSXRWNjAMMnFdQY8QkCXc
-	0CZEyry4H+qaD24O7wuAvn9AtkpIG1vYymwAAXRj5Pw9jFUGmHGi9QDz9N+Gykvwf9bsDRKe/uR
-	iW0cST6A3mfvX97iawQ==
-X-Received: from wmkn22.prod.google.com ([2002:a7b:c5d6:0:b0:489:1f08:926])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:8654:20b0:492:4fda:7720 with SMTP id 5b1f17b1804b1-4924fda7824mr96334525e9.14.1782154147352;
- Mon, 22 Jun 2026 11:49:07 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:48:48 +0000
-In-Reply-To: <20260622184851.2309827-1-tarunsahu@google.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="H8dyjJ+O"
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65MIphbn2559661
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:54:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=YYkBgAAFNWZDrKwhhTsTLZ1UTmm9m4xo9SJVRgbwcTU=; b=H8dyjJ+OZ2ra
+	vtcX+qfo1l9GRS2dDVdUnIfTNVls9Ru/fmTUD1AMMFkTQOWIY1OU774GQf2OdZSk
+	giyd8X0sLdbZHulfkRqr3RYLdeW1PEq69uSZfwvNJzFDrFMGGHjH+q46vXw9At/h
+	VrYM0B6d344yf65GjXr0wAi2ld14ZEFTPkmC6rCevABkyIASXBXafmI/isQOIboZ
+	w9UeEnBqcNXUIQW2Ht2PcCAqjSHVMPfHO1LJ2hVDH5SlTMErR9tNlU3xQdSlwyWX
+	U+n8y21d9BV3k/hVoMxxczedxjUjOEV+VUnCW9lpkWdpo+CuISIjtA7Qcgv5pPMi
+	oqBf2pIYcQ==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ewt5jw7sr-4
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:54:10 -0700 (PDT)
+Received: from twshared3243.34.frc3.facebook.com (2620:10d:c085:208::f) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.41; Mon, 22 Jun 2026 18:54:07 +0000
+Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
+	id DA0493FB8E341; Mon, 22 Jun 2026 11:42:15 -0700 (PDT)
+From: Zhiping Zhang <zhipingz@meta.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Michael
+ Guralnik <michaelgur@nvidia.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Alex Williamson
+	<alex@shazbot.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Zhiping Zhang
+	<zhipingz@meta.com>
+Subject: [PATCH v9 2/4] dma-buf: add optional get_pci_tph() callback
+Date: Mon, 22 Jun 2026 11:41:35 -0700
+Message-ID: <20260622184211.2229399-3-zhipingz@meta.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260622184211.2229399-1-zhipingz@meta.com>
+References: <20260622184211.2229399-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260622184851.2309827-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.786.g65d90a0328-goog
-Message-ID: <20260622184851.2309827-7-tarunsahu@google.com>
-Subject: [PATCH v3 6/9] kvm: guest_memfd_luo: add support for guest_memfd preservation
-From: Tarun Sahu <tarunsahu@google.com>
-To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=I65Vgtgg c=1 sm=1 tr=0 ts=6a3984d2 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=crHB47gyY4rKiduisYu9:22 a=VabnemYjAAAA:8 a=NnIffO1M-inhYcDKZaoA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: CM6kTZ8WjHAJxH87AIu9nszFcFDVPNHU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDE4NCBTYWx0ZWRfXyd7I0E5ZSLS7
+ zp4Vfu1O8gWzQgyO/ct+9SPtP5z/yFL2ZZGrzABv+bpkpn28z/02g3o24LnKblAtqvuMWhimmZQ
+ 6bhG5aW8lZ4jbMxJDySMYdZ/2anHNFGKuO9tMDMLDplG+yNJch28aJ9XQVtYc8ikQYD8GJ7H2fX
+ MkZ9s9+TEVOw5qS04uspTJnhWAvtx0Dtt1NMVt3T4IpXyVDlmQMCojI4u8nqvUPKrvmaTOtehhq
+ yJjCD5ppIOwpj3vSuNH9bf8HxhxXAWOlirLETcSaPTEG+YHhgeevTS2/wIo1hMSOvldYJaa5tgS
+ huDddArAFjTj1VD8A6NojhOZngoxDYw1S2otCL87oZtVIhLBJ/nlTMijx+ILYbIjHqSMbjiDxSl
+ UoD5SARaRuDrgc4qwESFhhY4bN9UtmAMz4UejrAvkOtHcr2pmskf8fN3DJAwFDuXofoVWRAkDJW
+ HlKzWHmR/e5pKaANRkw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDE4NCBTYWx0ZWRfX4UjVQYyVjv7d
+ SNztJKHmltUkOeSXc1lowMGz8hsJ/zTxtiR1ZrDwGaurlUTU68spr/0t/cBIQk9dxWF+JWz2ObV
+ 3omL+JofQCZ35+M278L4zEtN8DeiFfs=
+X-Proofpoint-ORIG-GUID: CM6kTZ8WjHAJxH87AIu9nszFcFDVPNHU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-22_03,2026-06-22_01,2025-10-01_01
 
-This patch sets up the basic infrastructure to preserve the guest_memfd.
-Currently this supports only fully shared guest_memfd and backed by
-PAGE_SIZE pages.
+Add an optional dma_buf_ops.get_pci_tph callback and a
+DMA-buf importer wrapper, dma_buf_get_pci_tph().
 
-It uses INIT_SHARED flag to check its shareability and
-kvm_arch_has_private_mem to check if the conversion of memory to private
-is not supported.
+TPH is PCIe TLP Processing Hint. 8-bit ST and 16-bit Extended ST are
+distinct PCIe TPH namespaces, so the importer requests the namespace it
+can emit and the exporter returns the matching ST/PH tuple or
+-EOPNOTSUPP.
 
-Preservation is straight forward. It walks through the folios and
-serialize them.
+dma_buf_get_pci_tph() is the importer entry point. It requires
+&dmabuf->resv to be held while the callback runs and returns
+-EOPNOTSUPP when the exporter does not provide PCI TPH metadata.
 
-There is kvm_gmem_freeze call on preserve which freeze the guest_memfd
-inode. It avoids any changes to inode mapping with fallocate calls and
-also fails any new fault allocation on or after preservation.
+The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
+mlx5 as the first importer.
 
-This change also update the MAINTAINERS list.
-
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 ---
- MAINTAINERS                 |   1 +
- include/linux/kho/abi/kvm.h |  79 +++++-
- virt/kvm/Makefile.kvm       |   2 +-
- virt/kvm/guest_memfd_luo.c  | 497 ++++++++++++++++++++++++++++++++++++
- virt/kvm/kvm_main.c         |   7 +
- virt/kvm/kvm_mm.h           |   4 +
- 6 files changed, 583 insertions(+), 7 deletions(-)
- create mode 100644 virt/kvm/guest_memfd_luo.c
+ drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
+ include/linux/dma-buf.h   | 22 ++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7c000e6..d1d699ce 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14420,6 +14420,7 @@ L:	kexec@lists.infradead.org
- L:	kvm@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
-+F:	virt/kvm/guest_memfd_luo.c
- F:	virt/kvm/kvm_luo.c
- 
- KVM PARAVIRT (KVM/paravirt)
-diff --git a/include/linux/kho/abi/kvm.h b/include/linux/kho/abi/kvm.h
-index 718db68..42074d7 100644
---- a/include/linux/kho/abi/kvm.h
-+++ b/include/linux/kho/abi/kvm.h
-@@ -9,20 +9,23 @@
- #define _LINUX_KHO_ABI_KVM_H
- 
- #include <linux/types.h>
-+#include <linux/bits.h>
- #include <linux/kho/abi/kexec_handover.h>
- 
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index d504c636dc29..7a4c9b0d5dab 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *atta=
+ch)
+ }
+ EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+=20
++/**
++ * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadat=
+a
++ * @dmabuf: DMA buffer to query
++ * @extended: false for 8-bit ST, true for 16-bit Extended ST
++ * @steering_tag: returns the raw steering tag for the requested namespa=
+ce
++ * @ph: returns the TPH processing hint
++ *
++ * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
++ *
++ * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
++ * exporter does not implement the callback or has no metadata for the
++ * requested namespace.
++ */
++int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
++			u16 *steering_tag, u8 *ph)
++{
++	dma_resv_assert_held(dmabuf->resv);
++
++	if (!dmabuf->ops->get_pci_tph)
++		return -EOPNOTSUPP;
++
++	return dmabuf->ops->get_pci_tph(dmabuf, extended, steering_tag, ph);
++}
++EXPORT_SYMBOL_NS_GPL(dma_buf_get_pci_tph, "DMA_BUF");
++
  /**
-- * DOC: KVM Live Update ABI
-+ * DOC: KVM and guest_memfd Live Update ABI
-  *
-- * KVM uses the ABI defined below for preserving its state
-+ * KVM and guest_memfd use the ABI defined below for preserving their states
-  * across a kexec reboot using the LUO.
-  *
-- * The state is serialized into a packed structure `struct kvm_luo_ser`
-- * which is handed over to the next kernel via the KHO mechanism.
-+ * The state is serialized into packed structures (struct kvm_luo_ser and
-+ * struct guest_memfd_luo_ser) which are handed over to the next kernel via
-+ * the KHO mechanism.
-  *
-- * This interface is a contract. Any modification to the structure layout
-+ * This interface is a contract. Any modification to the structure layouts
-  * constitutes a breaking change. Such changes require incrementing the
-- * version number in the KVM_LUO_FH_COMPATIBLE compatibility string.
-+ * version number in the KVM_LUO_FH_COMPATIBLE or
-+ * GUEST_MEMFD_LUO_FH_COMPATIBLE compatibility strings.
-  */
- 
- /**
-@@ -36,4 +39,68 @@ struct kvm_luo_ser {
- /* The compatibility string for KVM VM file handler */
- #define KVM_LUO_FH_COMPATIBLE	"kvm_vm_luo_v1"
- 
-+/**
-+ * struct guest_memfd_luo_folio_ser - Serialization layout for a single folio in guest_memfd.
-+ * @pfn:   Page Frame Number of the folio.
-+ * @index: Page offset of the folio within the file.
-+ * @flags: State flags associated with the folio.
-+ */
-+struct guest_memfd_luo_folio_ser {
-+	u64 pfn:52;
-+	u64 flags:12;
-+	u64 index;
-+} __packed;
-+
-+/**
-+ * GUEST_MEMFD_LUO_FOLIO_UPTODATE - The folio is up-to-date.
-+ *
-+ * This flag is per folio to check if the folio is uptodate.
-+ */
-+#define GUEST_MEMFD_LUO_FOLIO_UPTODATE	BIT(0)
-+
-+
-+/**
-+ * GUEST_MEMFD_LUO_FLAG_MMAP - The guest_memfd supports mmap.
-+ *
-+ * This flag indicates that the guest_memfd supports host-side mmap.
-+ */
-+#define GUEST_MEMFD_LUO_FLAG_MMAP		BIT(0)
-+
-+/**
-+ * GUEST_MEMFD_LUO_FLAG_INIT_SHARED - Initialize memory as shared.
-+ *
-+ * This flag indicates that the guest_memfd has been initialized as shared
-+ * memory.
-+ */
-+#define GUEST_MEMFD_LUO_FLAG_INIT_SHARED	BIT(1)
-+
-+/**
-+ * GUEST_MEMFD_LUO_SUPPORTED_FLAGS - Supported guest_memfd LUO flags mask.
-+ *
-+ * A mask of all guest_memfd preservation flags supported by this version
-+ * of the KVM LUO ABI.
-+ */
-+#define GUEST_MEMFD_LUO_SUPPORTED_FLAGS	(GUEST_MEMFD_LUO_FLAG_MMAP | \
-+						 GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
-+
-+/**
-+ * struct guest_memfd_luo_ser - Main serialization structure for guest_memfd.
-+ * @size:      The size of the file in bytes.
-+ * @flags:     File-level flags.
-+ * @nr_folios: Number of folios in the folios array.
-+ * @vm_token:  Token of the associated KVM VM instance.
-+ * @folios:    KHO vmalloc descriptor pointing to the array of
-+ *             struct guest_memfd_luo_folio_ser.
-+ */
-+struct guest_memfd_luo_ser {
-+	u64 size;
-+	u64 flags;
-+	u64 nr_folios;
-+	u64 vm_token;
-+	struct kho_vmalloc folios;
-+} __packed;
-+
-+/* The compatibility string for GUEST_MEMFD file handler */
-+#define GUEST_MEMFD_LUO_FH_COMPATIBLE	"guest_memfd_luo_v1"
-+
- #endif /* _LINUX_KHO_ABI_KVM_H */
-diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-index c1a9621..d30fca0 100644
---- a/virt/kvm/Makefile.kvm
-+++ b/virt/kvm/Makefile.kvm
-@@ -13,4 +13,4 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
- kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
- kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
- kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
--kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/kvm_luo.o
-+kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o $(KVM)/kvm_luo.o
-diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
-new file mode 100644
-index 0000000..c242b1d
---- /dev/null
-+++ b/virt/kvm/guest_memfd_luo.c
-@@ -0,0 +1,497 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Tarun Sahu <tarunsahu@google.com>
-+ *
-+ * Guestmemfd Preservation for Live Update Orchestrator (LUO)
-+ */
-+
-+/**
-+ * DOC: Guestmemfd Preservation via LUO
-+ *
-+ * Overview
-+ * ========
-+ *
-+ * Guest memory file descriptors (guest_memfd) can be preserved over a kexec
-+ * reboot using the Live Update Orchestrator (LUO) file preservation. This
-+ * allows userspace to preserve VM memory across kexec reboots.
-+ *
-+ * The preservation is not intended to be transparent. Only select properties
-+ * of the guest_memfd are preserved, while others are reset to default.
-+ *
-+ * Preserved Properties
-+ * ====================
-+ *
-+ * The following properties of guest_memfd are preserved across kexec:
-+ *
-+ * File Size
-+ *   The size of the file is preserved.
-+ *
-+ * File Contents
-+ *   All folios present in the page cache are preserved.
-+ *
-+ * File-level Flags
-+ *   The file-level flags (such as MMAP support and INIT_SHARED default mapping)
-+ *   are preserved.
-+ *
-+ * Non-Preserved Properties
-+ * ========================
-+ *
-+ * NUMA Memory Policy
-+ *   NUMA memory policies associated with the guest_memfd are not preserved.
-+ */
-+#include <linux/liveupdate.h>
-+#include <linux/kvm_host.h>
-+#include <linux/pagemap.h>
-+#include <linux/file.h>
-+#include <linux/err.h>
-+#include <linux/anon_inodes.h>
-+#include <linux/magic.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/kho/abi/kexec_handover.h>
-+#include <linux/kho/abi/kvm.h>
-+#include "guest_memfd.h"
-+#include "kvm_mm.h"
-+
-+
-+static int kvm_gmem_luo_walk_folios(struct address_space *mapping,
-+		pgoff_t end_index, struct guest_memfd_luo_folio_ser *folios_ser,
-+		u64 *out_count)
-+{
-+	struct folio_batch fbatch;
-+	pgoff_t index = 0;
-+	u64 count = 0;
-+	int err = 0;
-+
-+	folio_batch_init(&fbatch);
-+	while (index < end_index) {
-+		unsigned int nr, i;
-+
-+		nr = filemap_get_folios(mapping, &index, end_index - 1, &fbatch);
-+		if (nr == 0)
-+			break;
-+
-+		for (i = 0; i < nr; i++) {
-+			struct folio *folio = fbatch.folios[i];
-+
-+			if (folios_ser) {
-+				if (folio_test_hwpoison(folio)) {
-+					err = -EHWPOISON;
-+					folio_batch_release(&fbatch);
-+					goto out;
-+				}
-+				err = kho_preserve_folio(folio);
-+				if (err) {
-+					folio_batch_release(&fbatch);
-+					goto out;
-+				}
-+
-+				folios_ser[count].pfn = folio_pfn(folio);
-+				folios_ser[count].index = folio->index;
-+				folios_ser[count].flags = folio_test_uptodate(folio) ?
-+							  GUEST_MEMFD_LUO_FOLIO_UPTODATE : 0;
-+			}
-+			count++;
-+		}
-+		folio_batch_release(&fbatch);
-+		cond_resched();
-+	}
-+
-+out:
-+	*out_count = count;
-+	return err;
-+}
-+
-+static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
-+{
-+	struct inode *inode = file_inode(file);
-+	struct gmem_file *gmem_file;
-+	struct kvm *kvm;
-+
-+	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
-+		return 0;
-+
-+	gmem_file = file->private_data;
-+	if (!gmem_file)
-+		return 0;
-+
-+	/*
-+	 * Only Fully-shared guest_memfd preservation is supported
-+	 */
-+	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-+		return 0;
-+
-+	/*
-+	 * It makes sure that no memory can converted to private
-+	 * even if it was initially fully shared (in-place conversions are
-+	 * prevented).
-+	 */
-+	kvm = gmem_file->kvm;
-+	if (kvm_arch_has_private_mem(kvm))
-+		return 0;
-+
-+	if (mapping_large_folio_support(inode->i_mapping))
-+		return 0;
-+
-+	return 1;
-+}
-+
-+static int kvm_gmem_luo_preserve(struct liveupdate_file_op_args *args)
-+{
-+	DECLARE_KHOSER_PTR(sd, struct guest_memfd_luo_ser *);
-+	struct guest_memfd_luo_folio_ser *folios_ser = NULL;
-+	u64 count = 0, gmem_flags, abi_flags = 0;
-+	struct guest_memfd_luo_ser *ser;
-+	struct address_space *mapping;
-+	struct gmem_file *gmem_file;
-+	struct inode *inode;
-+	pgoff_t end_index;
-+	struct kvm *kvm;
-+	int err = 0;
-+	long size;
-+
-+	inode = file_inode(args->file);
-+	kvm_gmem_freeze(inode, true);
-+
-+	mapping = inode->i_mapping;
-+	size = i_size_read(inode);
-+	if (!size) {
-+		err = -EINVAL;
-+		goto err_unfreeze_inode;
-+	}
-+
-+	if (WARN_ON_ONCE(!PAGE_ALIGNED(size))) {
-+		err = -EINVAL;
-+		goto err_unfreeze_inode;
-+	}
-+
-+	gmem_file = args->file->private_data;
-+	kvm = gmem_file->kvm;
-+
-+	gmem_flags = READ_ONCE(GMEM_I(inode)->flags);
-+	if (gmem_flags & ~(GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED
-+				| GUEST_MEMFD_F_MAPPING_FROZEN)) {
-+		err = -EOPNOTSUPP;
-+		goto err_unfreeze_inode;
-+	}
-+
-+	if (gmem_flags & GUEST_MEMFD_FLAG_MMAP)
-+		abi_flags |= GUEST_MEMFD_LUO_FLAG_MMAP;
-+	if (gmem_flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-+		abi_flags |= GUEST_MEMFD_LUO_FLAG_INIT_SHARED;
-+
-+	end_index = size >> PAGE_SHIFT;
-+
-+	ser = kho_alloc_preserve(sizeof(*ser));
-+	if (IS_ERR(ser)) {
-+		err = PTR_ERR(ser);
-+		goto err_unfreeze_inode;
-+	}
-+
-+	/* First pass: Count the folios present in the page cache */
-+	err = kvm_gmem_luo_walk_folios(mapping, end_index, NULL, &count);
-+	if (err)
-+		goto err_free_ser;
-+
-+	ser->size = size;
-+	ser->flags = abi_flags;
-+	ser->nr_folios = count;
-+	ser->vm_token = 0; // It will be set during the kvm_gmem_luo_freeze()
-+
-+	if (count > 0) {
-+		folios_ser = vcalloc(count, sizeof(*folios_ser));
-+		if (!folios_ser) {
-+			err = -ENOMEM;
-+			goto err_free_ser;
-+		}
-+
-+		/* Second pass: Fill the metadata array and preserve folios */
-+		err = kvm_gmem_luo_walk_folios(mapping, end_index, folios_ser, &count);
-+		if (err)
-+			goto err_unpreserve_unlocked;
-+
-+		if (WARN_ON_ONCE(count != ser->nr_folios)) {
-+			err = -EINVAL;
-+			goto err_unpreserve_unlocked;
-+		}
-+	}
-+
-+	if (count > 0) {
-+		err = kho_preserve_vmalloc(folios_ser, &ser->folios);
-+		if (err)
-+			goto err_unpreserve_unlocked;
-+	}
-+
-+	KHOSER_STORE_PTR(sd, ser);
-+	KHOSER_COPY_TYPEUNSAFE(args->serialized_data, sd);
-+	args->private_data = folios_ser;
-+
-+	return 0;
-+
-+err_unpreserve_unlocked:
-+	for (long i = (long)count - 1; i >= 0; i--) {
-+		struct folio *folio = pfn_folio(folios_ser[i].pfn);
-+
-+		kho_unpreserve_folio(folio);
-+	}
-+	vfree(folios_ser);
-+err_free_ser:
-+	kho_unpreserve_free(ser);
-+err_unfreeze_inode:
-+	kvm_gmem_freeze(inode, false);
-+	return err;
-+}
-+
-+static int kvm_gmem_luo_freeze(struct liveupdate_file_op_args *args)
-+{
-+	struct guest_memfd_luo_ser *ser;
-+	struct gmem_file *gmem_file;
-+	struct kvm *kvm;
-+	struct file *kvm_file;
-+	u64 vm_token;
-+	int err;
-+
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (WARN_ON_ONCE(!ser))
-+		return -EINVAL;
-+
-+	gmem_file = args->file->private_data;
-+	kvm = gmem_file->kvm;
-+
-+	/*
-+	 * Obtain a strong reference to kvm->vm_file to prevent the SLAB_TYPESAFE_BY_RCU
-+	 * file memory from being reallocated while it is being processed.
-+	 */
-+	kvm_file = get_file_active(&kvm->vm_file);
-+	if (!kvm_file)
-+		return -ENOENT;
-+
-+	err = liveupdate_get_token_outgoing(args->session, kvm_file, &vm_token);
-+	fput(kvm_file);
-+	if (err)
-+		return err;
-+
-+	ser->vm_token = vm_token;
-+	return 0;
-+}
-+
-+static void kvm_gmem_luo_discard_folios(
-+	const struct guest_memfd_luo_folio_ser *folios_ser,
-+	u64 nr_folios, u64 start_idx)
-+{
-+	long i;
-+
-+	for (i = start_idx; i < nr_folios; i++) {
-+		struct folio *folio;
-+		phys_addr_t phys;
-+
-+		if (!folios_ser[i].pfn)
-+			continue;
-+
-+		phys = PFN_PHYS(folios_ser[i].pfn);
-+		folio = kho_restore_folio(phys);
-+		if (folio)
-+			folio_put(folio);
-+	}
-+}
-+
-+static void kvm_gmem_luo_unpreserve(struct liveupdate_file_op_args *args)
-+{
-+	struct guest_memfd_luo_folio_ser *folios_ser = args->private_data;
-+	struct guest_memfd_luo_ser *ser;
-+	long i;
-+
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (WARN_ON_ONCE(!ser))
-+		return;
-+
-+	if (ser->nr_folios > 0)
-+		kho_unpreserve_vmalloc(&ser->folios);
-+	for (i = ser->nr_folios - 1; i >= 0; i--) {
-+		struct folio *folio;
-+
-+		if (!folios_ser[i].pfn)
-+			continue;
-+
-+		folio = pfn_folio(folios_ser[i].pfn);
-+		kho_unpreserve_folio(folio);
-+	}
-+	vfree(folios_ser);
-+
-+	kho_unpreserve_free(ser);
-+	kvm_gmem_freeze(file_inode(args->file), false);
-+}
-+
-+static int kvm_gmem_luo_retrieve(struct liveupdate_file_op_args *args)
-+{
-+	struct guest_memfd_luo_folio_ser *folios_ser = NULL;
-+	struct guest_memfd_luo_ser *ser;
-+	struct kvm *kvm = NULL;
-+	struct file *vm_file;
-+	struct inode *inode;
-+	struct file *file;
-+	u64 gmem_flags = 0;
-+	int err = 0;
-+	long i = 0;
-+
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (!ser)
-+		return -EINVAL;
-+
-+	if (ser->flags & ~GUEST_MEMFD_LUO_SUPPORTED_FLAGS) {
-+		err = -EOPNOTSUPP;
-+		goto err_free_ser;
-+	}
-+
-+	if (ser->flags & GUEST_MEMFD_LUO_FLAG_MMAP)
-+		gmem_flags |= GUEST_MEMFD_FLAG_MMAP;
-+	if (ser->flags & GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
-+		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
-+
-+	err = liveupdate_get_file_incoming(args->session, ser->vm_token, &vm_file);
-+	if (err) {
-+		pr_warn("gmem: provided VM FD token (%llx) on preserve is incorrect\n",
-+						ser->vm_token);
-+		goto err_free_ser;
-+	}
-+
-+	if (file_is_kvm(vm_file))
-+		kvm = vm_file->private_data;
-+
-+	/*
-+	 * Release the temporary reference taken by the liveupdate_get_file_incoming
-+	 * call. LUO still holds a reference.
-+	 */
-+	fput(vm_file);
-+
-+	if (!kvm) {
-+		err = -EINVAL;
-+		goto err_free_ser;
-+	}
-+
-+	file = __kvm_gmem_create_file(kvm, ser->size, gmem_flags);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_free_ser;
-+	}
-+
-+	inode = file_inode(file);
-+
-+	if (ser->nr_folios) {
-+		folios_ser = kho_restore_vmalloc(&ser->folios);
-+		if (!folios_ser) {
-+			err = -EINVAL;
-+			goto err_destroy_file;
-+		}
-+
-+		for (i = 0; i < ser->nr_folios; i++) {
-+			struct folio *folio;
-+			phys_addr_t phys;
-+
-+			if (!folios_ser[i].pfn)
-+				continue;
-+
-+			phys = PFN_PHYS(folios_ser[i].pfn);
-+			folio = kho_restore_folio(phys);
-+			if (!folio) {
-+				pr_err("gmem: failed to restore folio at %llx\n", phys);
-+				err = -EIO;
-+				goto err_put_remaining_folios;
-+			}
-+
-+			err = filemap_add_folio(inode->i_mapping, folio, folios_ser[i].index,
-+						GFP_KERNEL);
-+			if (err) {
-+				pr_err("gmem: failed to add folio to page cache\n");
-+				folio_put(folio);
-+				goto err_put_remaining_folios;
-+			}
-+
-+			if (folios_ser[i].flags & GUEST_MEMFD_LUO_FOLIO_UPTODATE)
-+				folio_mark_uptodate(folio);
-+			folio_unlock(folio);
-+			folio_put(folio);
-+		}
-+		vfree(folios_ser);
-+	}
-+
-+	args->file = file;
-+	kho_restore_free(ser);
-+	return 0;
-+
-+err_put_remaining_folios:
-+	i++;
-+err_destroy_file:
-+	fput(file);
-+err_free_ser:
-+	if (ser->nr_folios) {
-+		if (!folios_ser)
-+			folios_ser = kho_restore_vmalloc(&ser->folios);
-+		if (folios_ser) {
-+			kvm_gmem_luo_discard_folios(folios_ser, ser->nr_folios, i);
-+			vfree(folios_ser);
-+		}
-+	}
-+	kho_restore_free(ser);
-+	return err;
-+}
-+
-+static void kvm_gmem_luo_finish(struct liveupdate_file_op_args *args)
-+{
-+	struct guest_memfd_luo_ser *ser;
-+	struct guest_memfd_luo_folio_ser *folios_ser;
-+
-+	/* Nothing to be done here, if retrieve_status was successful or errored,
-+	 * Cleanup is taken care of in retrieval call.
-+	 */
-+	if (args->retrieve_status)
-+		return;
-+
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (!ser)
-+		return;
-+
-+	if (ser->nr_folios) {
-+		folios_ser = kho_restore_vmalloc(&ser->folios);
-+		if (folios_ser) {
-+			kvm_gmem_luo_discard_folios(folios_ser, ser->nr_folios, 0);
-+			vfree(folios_ser);
-+		}
-+	}
-+
-+	kho_restore_free(ser);
-+}
-+
-+static const struct liveupdate_file_ops kvm_gmem_luo_file_ops = {
-+	.can_preserve = kvm_gmem_luo_can_preserve,
-+	.preserve = kvm_gmem_luo_preserve,
-+	.freeze = kvm_gmem_luo_freeze,
-+	.retrieve = kvm_gmem_luo_retrieve,
-+	.unpreserve = kvm_gmem_luo_unpreserve,
-+	.finish = kvm_gmem_luo_finish,
-+	.owner = THIS_MODULE,
-+};
-+
-+static struct liveupdate_file_handler kvm_gmem_luo_handler = {
-+	.ops = &kvm_gmem_luo_file_ops,
-+	.compatible = GUEST_MEMFD_LUO_FH_COMPATIBLE,
-+};
-+
-+int kvm_gmem_luo_init(void)
-+{
-+	int err = liveupdate_register_file_handler(&kvm_gmem_luo_handler);
-+
-+	if (err && err != -EOPNOTSUPP) {
-+		pr_err("Could not register luo filesystem handler: %pe\n", ERR_PTR(err));
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
-+void kvm_gmem_luo_exit(void)
-+{
-+	liveupdate_unregister_file_handler(&kvm_gmem_luo_handler);
-+}
-+
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index d9c3dd1..e8e2f10 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6581,6 +6581,10 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (r)
- 		goto err_luo;
- 
-+	r = kvm_gmem_luo_init();
-+	if (r)
-+		goto err_gmem_luo;
-+
- 	/*
- 	 * Registration _must_ be the very last thing done, as this exposes
- 	 * /dev/kvm to userspace, i.e. all infrastructure must be setup!
-@@ -6594,6 +6598,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	return 0;
- 
- err_register:
-+	kvm_gmem_luo_exit();
-+err_gmem_luo:
- 	kvm_luo_exit();
- err_luo:
- 	kvm_uninit_virtualization();
-@@ -6625,6 +6631,7 @@ void kvm_exit(void)
+  * dma_buf_map_attachment - Returns the scatterlist table of the attachm=
+ent;
+  * mapped into _device_ address space. Is a wrapper for map_dma_buf() of=
+ the
+diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+index d1203da56fc5..53b2686ad8fc 100644
+--- a/include/linux/dma-buf.h
++++ b/include/linux/dma-buf.h
+@@ -113,6 +113,26 @@ struct dma_buf_ops {
  	 */
- 	misc_deregister(&kvm_dev);
- 
-+	kvm_gmem_luo_exit();
- 	kvm_luo_exit();
- 
- 	kvm_uninit_virtualization();
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 8719871..1295ff8 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -103,9 +103,13 @@ static inline void kvm_gmem_unbind(struct kvm_memory_slot *slot)
- #ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
- int kvm_luo_init(void);
- void kvm_luo_exit(void);
-+int kvm_gmem_luo_init(void);
-+void kvm_gmem_luo_exit(void);
- #else
- static inline int kvm_luo_init(void) { return 0; }
- static inline void kvm_luo_exit(void) {}
-+static inline int kvm_gmem_luo_init(void) { return 0; }
-+static inline void kvm_gmem_luo_exit(void) {}
- #endif /* CONFIG_LIVEUPDATE_GUEST_MEMFD */
- 
- #endif /* __KVM_MM_H__ */
--- 
-2.55.0.rc0.786.g65d90a0328-goog
-
+ 	void (*unpin)(struct dma_buf_attachment *attach);
+=20
++	/**
++	 * @get_pci_tph:
++	 *
++	 * Retrieve PCIe TLP Processing Hint (TPH) steering metadata for
++	 * this buffer so an importer can program a matching ST/PH hint on
++	 * outbound TLPs targeting the exporter for peer-to-peer DMA.
++	 *
++	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
++	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
++	 * @steering_tag: Returns the raw TPH steering tag for the requested
++	 *                namespace
++	 * @ph: Returns the TPH processing hint (2-bit value)
++	 *
++	 * Optional callback for dma_buf_get_pci_tph(). Called with
++	 * &dma_buf.resv held. Returns 0 on success or -EOPNOTSUPP when
++	 * the exporter has no metadata for the requested namespace.
++	 */
++	int (*get_pci_tph)(struct dma_buf *dmabuf, bool extended,
++			   u16 *steering_tag, u8 *ph);
++
+ 	/**
+ 	 * @map_dma_buf:
+ 	 *
+@@ -563,6 +583,8 @@ void dma_buf_detach(struct dma_buf *dmabuf,
+ 		    struct dma_buf_attachment *attach);
+ int dma_buf_pin(struct dma_buf_attachment *attach);
+ void dma_buf_unpin(struct dma_buf_attachment *attach);
++int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
++			u16 *steering_tag, u8 *ph);
+=20
+ struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_inf=
+o);
+=20
+--=20
+2.53.0-Meta
