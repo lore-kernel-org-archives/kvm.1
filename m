@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59C834844C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B943134EEE5;
 	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100901; cv=none; b=Aqm1seEciF63hfs9X3W7dhKrGokPXbf3etNru9H7BwQCz0VKJf590YS6bytyf1aKbJ6vxcVJNdR+g9zR79TWB7JMibk5tZmuq4m3JF9J4H7edXqgv8SpxAiFWD9c+8229STO0D6Dymu1VN/7vlgkxQQ5N2tgGt9+4geSJgfVL5g=
+	t=1782100901; cv=none; b=pQaElhu4oG/AWxBWVRIDpdtOpw2UsJm1BaSDmJtUjPS58gqJ/wazoxkQNF/FrB5LyGkfRHg5QRb+PiHyud2hiKB1GF6cyNtfZ8s4MuneaP81usFfSiDOdW+3fg7MAJho6v0lvRqcGgwxVe0RpZskDb5h48Lonp5VOswCnqPqJUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782100901; c=relaxed/simple;
-	bh=UndNbueqQlR7gHvo3p/nXm7hpBs6hwZjn4+uUSmyX8k=;
+	bh=vQqqZr7DhoJ8ZrKIl6jOAn+rh2nQyLdMh5PQwl3TZ2U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bNpDgm2kcv/aexOsN+JLxMqjH0CLDJWIxRpWkmGny3Vz01oFtioCvv02YEJ+Gn5qt+MB4BfN3c/sIqH/GJ0fDqedZhEeyZRf+kBIpUSw4F8NJp15fPdwoGtJH6I35UKnnsYJIsG4WmRdvpOc5lPwORNlDmbgJjuGhuztz/PiuM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+U/KAET; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MKlTtEbH0y6NhK3SVj2PRMJ1jZKvhQhxRf36VLYovCFeRVeVUUPYyhrR/IY9N+TdUg1YnMTf9LF2cLYeMRnc3iP1TYcmWtsodSx5NLl+pClZfgu2Q4eU0w6eytuFEz0FGR9/01FSkY6bg7EdRzzdXkY4wkPe/1Fhb2JjSwOMTxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXRJ2Vg3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+U/KAET"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 82ACFC2BCC6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXRJ2Vg3"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D122C2BCFB;
 	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782100901;
-	bh=UndNbueqQlR7gHvo3p/nXm7hpBs6hwZjn4+uUSmyX8k=;
+	bh=vQqqZr7DhoJ8ZrKIl6jOAn+rh2nQyLdMh5PQwl3TZ2U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=D+U/KAETt5htAxWinaB5eUc4u+qCd0+1FX9L1R2ofdm+iDBZdcHGfqtU1SKlPWoJG
-	 8Y5o4M9fWg3MSLKZ4kilodnFsTWLnqhtNfZECE+Z7oRlO/XZ76SEx4EfiJ05yNG7kx
-	 B6xCVptxTEIKeZri8SmMCc2bQ4KwqcRW3xXkT0LIupeuxQKnj4TYt1ak8P9vEyr8r+
-	 jKQOiC9xXChmVd1eC2TcWFfA7sb+jSaabaTrwZgKQ0k7pSrUgVW3jGyYJ9QTQ9brEO
-	 HNsH024IOk/4bkUMFstNhklMFtTcrTOOPQ6ao/OcWwITRzOV4yRZe8A0H6x0Gj/gg/
-	 Y6iDt0tE4pIug==
+	b=DXRJ2Vg3/o7OPhxeCnmLCS90Kq+TO/T1O6CHH5ls3ktkZROCVd52iw0SEOUaXkrjS
+	 vfsZ4Rsgg3jO8DAPdr0xzJ8GxpXPp1V/9qSTpeBVK1fd4zyVY7kswcZsVktN5Wx7eg
+	 cc10Wb8EgyQwXj+b+nmAIhhs2v+GDiezueXmnZ/UDtdsFP8ptXiUVID8i13nq0u1nJ
+	 recfzv+AYWqzzVTmSLLbMdAt/f0NUNcFGLM2N6LS5EspAMw8xwBNoZAqHNDsVVnnUt
+	 c/hJs3KwVMDnumLLIfHf6HUrBcZEG26bu4wwcs1aS0iOHY1t93GC6V8Jph+lfNYjx5
+	 aUPPheWrQBbhw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70949CDB471;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 814DDCDB46F;
 	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:21 -0700
-Subject: [PATCH v2 03/16] riscv: kgdb: Use generated instruction headers
+Date: Sun, 21 Jun 2026 21:01:22 -0700
+Subject: [PATCH v2 04/16] riscv: Add kprobes instruction simulation KUnit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-3-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-4-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +54,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=7745;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=11557;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=IjVaLmAyDsdmOm3A507KtKDP292jEnsVxwzZ/J7AzEQ=;
- b=jOxpTVFGnfeaJAg11T53NuRSVgcZf3eM6Ot52Ddm7Op+qZbGPKAEL62aIcCJns3RnJ3NV4aXW
- CmEdZhmhg6cCR1yDM1jPemyj98jKp9yiJX0PyAJlXSAUNHCb0nphWKj
+ bh=+jKWnHeDczH8xoiHIK3Lygi5Gw6AxgY9uMrA5zkeP54=;
+ b=eBbrfi0UK3lHu/X+8/rzc81EDyRBf+eKcjHqg9HPWAjCsF8mvuP6WWEhWNSllFspkQrO4MQPC
+ TTyzd5JsR9hBbtO1kzgTASbBmrlASY1HJ7/W8B4x4h5EVE/sw3/WLDK
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -68,207 +68,326 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Migrate the code that is decoding instructions for the use of kgdb
-single stepping to use the generated instruction headers instead of the
-hand-written instruction functions.
+This KUnit iterates through all 32-bit integers and validates that the
+simulation code for kprobes simulates properly. These tests are very
+slow so they are gated behind a new kconfig option
+CONFIG_RISCV_KPROBES_SIMULATE_KUNIT.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
-
 ---
+ arch/riscv/kernel/tests/Kconfig.debug              |  13 ++
+ arch/riscv/kernel/tests/kprobes/Makefile           |   2 +
+ .../kernel/tests/kprobes/test-kprobes-simulate.c   | 250 +++++++++++++++++++++
+ arch/riscv/kernel/tests/kprobes/test-kprobes.h     |   6 +
+ 4 files changed, 271 insertions(+)
 
-I tested this again by comparing the original get_step_address()
-function with this new version and input all possible 32 bit numbers and
-checked that the next_addr was the same in every case.
-
-This is the code I used:
-
-void check_step()
-{
-	for (unsigned long opcode = 0; opcode < ((1ULL << 32) - 1); opcode++) {
-		unsigned long next_addr, next_addr2;
-		get_step_address(opcode, &next_addr);
-		get_step_address2(opcode, &next_addr2);
-		if (next_addr != next_addr2) {
-			printf("opcode: %lu -> %lu != %lu\n", opcode, next_addr, next_addr2);
-		}
-	}
-}
----
- arch/riscv/include/asm/insn.h |  21 +++++++++
- arch/riscv/kernel/kgdb.c      | 102 ++++++++++++++++--------------------------
- 2 files changed, 60 insertions(+), 63 deletions(-)
-
-diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
-index d0e137f9bcd7..b92c71896c00 100644
---- a/arch/riscv/include/asm/insn.h
-+++ b/arch/riscv/include/asm/insn.h
-@@ -514,4 +514,25 @@ static __always_inline bool riscv_insn_is_branch(u32 code)
+diff --git a/arch/riscv/kernel/tests/Kconfig.debug b/arch/riscv/kernel/tests/Kconfig.debug
+index 40f8dafffa0a..9eda8938ec15 100644
+--- a/arch/riscv/kernel/tests/Kconfig.debug
++++ b/arch/riscv/kernel/tests/Kconfig.debug
+@@ -42,6 +42,19 @@ config RISCV_KPROBES_KUNIT
  
- #define RVV_EXTRACT_VL_VS_WIDTH(x) RVFDQ_EXTRACT_FL_FS_WIDTH(x)
+          If unsure, say N.
  
-+static inline unsigned long riscv_insn_reg_get_val(unsigned long *regs, u32 index)
++config RISCV_KPROBES_SIMULATE_KUNIT
++       tristate "KUnit test for riscv kprobes instruction simulation" if !KUNIT_ALL_TESTS
++       depends on KUNIT
++       depends on KPROBES
++       default KUNIT_ALL_TESTS
++       help
++         Enable testing for riscv kprobes instruction simulation. Useful for
++         riscv and/or kprobes development. The test verifies that kprobes
++         instruction simulation properly simulates the instructions. These tests
++         are very slow.
++
++         If unsure, say N.
++
+ endif # RUNTIME_TESTING_MENU
+ 
+ endmenu # "arch/riscv/kernel runtime Testing"
+diff --git a/arch/riscv/kernel/tests/kprobes/Makefile b/arch/riscv/kernel/tests/kprobes/Makefile
+index df7256f62313..34db6044e87f 100644
+--- a/arch/riscv/kernel/tests/kprobes/Makefile
++++ b/arch/riscv/kernel/tests/kprobes/Makefile
+@@ -1,3 +1,5 @@
+ obj-$(CONFIG_RISCV_KPROBES_KUNIT) += kprobes_riscv_kunit.o
++obj-$(CONFIG_RISCV_KPROBES_SIMULATE_KUNIT) += kprobes_simulate_riscv_kunit.o
+ 
+ kprobes_riscv_kunit-objs := test-kprobes.o test-kprobes-asm.o
++kprobes_simulate_riscv_kunit-objs := test-kprobes-simulate.o
+diff --git a/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c b/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
+new file mode 100644
+index 000000000000..d82706685823
+--- /dev/null
++++ b/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
+@@ -0,0 +1,250 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++#include <linux/kernel.h>
++#include <linux/kprobes.h>
++#include <kunit/test.h>
++
++#include "../../probes/simulate-insn.h"
++
++#include <asm/insn.h>
++#include <asm/text-patching.h>
++
++static void test_kprobe_simulate_riscv(struct kunit *test)
 +{
-+	/* register 0 is always 0 and not stored in the register struct */
-+	return index ? *(regs + index) : 0;
++	unsigned int addr = 0xdeadbeef;
++	unsigned int i = 0;
++
++	do {
++		struct pt_regs regs = { 0 };
++
++		if (riscv_insn_is_jal(i)) {
++			s32 offset = riscv_insn_jal_extract_imm(i);
++			u32 xd_index = riscv_insn_jal_extract_xd(i);
++
++			simulate_jal(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++					    "jal instruction (0x%x) incorrectly simulated", i);
++
++			if (xd_index)
++				KUNIT_EXPECT_EQ_MSG(
++					test,
++					riscv_insn_reg_get_val((unsigned long *)&regs, xd_index),
++					addr + 4, "jal instruction (0x%x) incorrectly simulated",
++					i);
++		}
++		if (riscv_insn_is_jalr(i)) {
++			unsigned long reg_addr = 0xffff;
++			s32 offset = riscv_insn_jalr_extract_imm(i);
++			u32 rd_index = riscv_insn_jalr_extract_xd(i);
++			u32 rs1_index = riscv_insn_jalr_extract_xs1(i);
++
++			if (rs1_index)
++				riscv_insn_reg_set_val((unsigned long *)&regs, rs1_index, reg_addr);
++			else
++				reg_addr = 0;
++
++			simulate_jalr(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, (reg_addr + offset) & ~1,
++					    "jalr instruction (0x%x) incorrectly simulated", i);
++
++			if (rd_index)
++				KUNIT_EXPECT_EQ_MSG(
++					test,
++					riscv_insn_reg_get_val((unsigned long *)&regs, rd_index),
++					addr + 4, "jalr instruction (0x%x) incorrectly simulated",
++					i);
++		} else if (riscv_insn_is_auipc(i)) {
++			s32 offset = riscv_insn_auipc_extract_imm(i);
++			u32 rd_index = riscv_insn_auipc_extract_xd(i);
++
++			simulate_auipc(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++					    "auipc instruction (0x%x) incorrectly simulated", i);
++
++			if (rd_index)
++				KUNIT_EXPECT_EQ_MSG(
++					test,
++					riscv_insn_reg_get_val((unsigned long *)&regs, rd_index),
++					(unsigned long)addr + offset,
++					"auipc instruction (0x%x) incorrectly simulated", i);
++		} else if (riscv_insn_is_beq(i)) {
++			s32 offset = riscv_insn_beq_extract_imm(i);
++			u32 rs1_index = riscv_insn_beq_extract_xs1(i);
++			u32 rs2_index = riscv_insn_beq_extract_xs2(i);
++
++			simulate_beq(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) ==
++			    riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "beq instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "beq instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_bne(i)) {
++			s32 offset = riscv_insn_bne_extract_imm(i);
++			u32 rs1_index = riscv_insn_bne_extract_xs1(i);
++			u32 rs2_index = riscv_insn_bne_extract_xs2(i);
++
++			simulate_bne(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) !=
++			    riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "bne instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "bne instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_blt(i)) {
++			s32 offset = riscv_insn_blt_extract_imm(i);
++			u32 rs1_index = riscv_insn_blt_extract_xs1(i);
++			u32 rs2_index = riscv_insn_blt_extract_xs2(i);
++
++			simulate_blt(i, addr, &regs);
++
++			if ((long)riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) <
++			    (long)riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "blt instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "blt instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_bge(i)) {
++			s32 offset = riscv_insn_bge_extract_imm(i);
++			u32 rs1_index = riscv_insn_bge_extract_xs1(i);
++			u32 rs2_index = riscv_insn_bge_extract_xs2(i);
++
++			simulate_bge(i, addr, &regs);
++
++			if ((long)riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) >=
++			    (long)riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "bge instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "bge instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_bltu(i)) {
++			s32 offset = riscv_insn_bltu_extract_imm(i);
++			u32 rs1_index = riscv_insn_bltu_extract_xs1(i);
++			u32 rs2_index = riscv_insn_bltu_extract_xs2(i);
++
++			simulate_bltu(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) <
++			    riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "bltu instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "bltu instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_bgeu(i)) {
++			s32 offset = riscv_insn_bgeu_extract_imm(i);
++			u32 rs1_index = riscv_insn_bgeu_extract_xs1(i);
++			u32 rs2_index = riscv_insn_bgeu_extract_xs2(i);
++
++			simulate_bgeu(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) >=
++			    riscv_insn_reg_get_val((unsigned long *)&regs, rs2_index)) {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++						    "bgeu instruction (0x%x) incorrectly simulated",
++						    i);
++			} else {
++				KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
++						    "bgeu instruction (0x%x) incorrectly simulated",
++						    i);
++			}
++		} else if (riscv_insn_is_c_j(i)) {
++			s32 offset = riscv_insn_c_j_extract_imm(i);
++
++			simulate_c_j(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++					    "c.j instruction (0x%x) incorrectly simulated", i);
++		} else if (riscv_insn_is_c_jr(i)) {
++			u32 rs1_index = riscv_insn_c_jr_extract_xs1(i);
++
++			simulate_c_jr(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc,
++					    riscv_insn_reg_get_val((unsigned long *)&regs,
++								   rs1_index),
++					    "c.jr instruction (0x%x) incorrectly simulated", i);
++		} else if (riscv_insn_is_c_jalr(i)) {
++			unsigned long reg_addr = 0xffff;
++			u32 rs1_index = riscv_insn_c_jalr_extract_xs1(i);
++
++			if (rs1_index)
++				riscv_insn_reg_set_val((unsigned long *)&regs, rs1_index, reg_addr);
++			else
++				reg_addr = 0;
++
++			simulate_c_jalr(i, addr, &regs);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, reg_addr,
++					    "c.jalr instruction (0x%x) incorrectly simulated", i);
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.ra, addr + 2,
++					    "c.jalr instruction (0x%x) incorrectly simulated", i);
++		} else if (riscv_insn_is_c_bnez(i)) {
++			u32 offset;
++			u32 rs1_index = riscv_insn_c_bnez_extract_xs1(i);
++
++			simulate_c_bnez(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index + 8) != 0)
++				offset = riscv_insn_c_bnez_extract_imm(i);
++			else
++				offset = 2;
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++					    "c.bnez instruction (0x%x) incorrectly simulated", i);
++		} else if (riscv_insn_is_c_beqz(i)) {
++			u32 offset;
++			u32 rs1_index = riscv_insn_c_beqz_extract_xs1(i);
++
++			simulate_c_beqz(i, addr, &regs);
++
++			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index + 8) == 0)
++				offset = riscv_insn_c_beqz_extract_imm(i);
++			else
++				offset = 2;
++
++			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + offset,
++					    "c.beqz instruction (0x%x) incorrectly simulated", i);
++		}
++	} while (++i > 0);
 +}
 +
-+#define riscv_insn_branch(_insn, regs_ptr, _opcode, _pc, _comparison, type)     \
-+	({                                                                      \
-+		unsigned long _ret;                                             \
-+		if ((type)riscv_insn_reg_get_val(                               \
-+			    regs_ptr,                                           \
-+			    riscv_insn_##_insn##_extract_xs1(_opcode))          \
-+			    _comparison(type) riscv_insn_reg_get_val(           \
-+				    regs_ptr,                                   \
-+				    riscv_insn_##_insn##_extract_xs2(_opcode))) \
-+			_ret = _pc + riscv_insn_##_insn##_extract_imm(_opcode); \
-+		else                                                            \
-+			_ret = _pc + 4;                                         \
-+		_ret;                                                           \
-+	})
++static struct kunit_case kprobes_simulate_testcases[] = {
++	KUNIT_CASE_SLOW(test_kprobe_simulate_riscv),
++	{}
++};
 +
- #endif /* _ASM_RISCV_INSN_H */
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 0bf629204c76..fcf7cda3cc33 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -23,97 +23,73 @@ enum {
- static unsigned long stepped_address;
- static unsigned int stepped_opcode;
- 
--static int decode_register_index(unsigned long opcode, int offset)
--{
--	return (opcode >> offset) & 0x1F;
--}
--
--static int decode_register_index_short(unsigned long opcode, int offset)
--{
--	return ((opcode >> offset) & 0x7) + 8;
--}
--
--/* Calculate the new address for after a step */
- static int get_step_address(struct pt_regs *regs, unsigned long *next_addr)
- {
- 	unsigned long pc = regs->epc;
- 	unsigned long *regs_ptr = (unsigned long *)regs;
--	unsigned int rs1_num, rs2_num;
-+	unsigned int rs1_num;
- 	int op_code;
- 
- 	if (get_kernel_nofault(op_code, (void *)pc))
- 		return -EINVAL;
++static struct kunit_suite kprobes_simulate_test_suite = {
++	.name = "kprobes_simulate_riscv",
++	.test_cases = kprobes_simulate_testcases,
++};
 +
- 	if ((op_code & __INSN_LENGTH_MASK) != __INSN_LENGTH_GE_32) {
--		if (riscv_insn_is_c_jalr(op_code) ||
--		    riscv_insn_is_c_jr(op_code)) {
--			rs1_num = decode_register_index(op_code, RVC_C2_RS1_OPOFF);
--			*next_addr = regs_ptr[rs1_num];
--		} else if (riscv_insn_is_c_j(op_code) ||
--			   riscv_insn_is_c_jal(op_code)) {
--			*next_addr = RVC_EXTRACT_JTYPE_IMM(op_code) + pc;
-+		if (riscv_insn_is_c_jalr(op_code)) {
-+			*next_addr = regs_ptr[riscv_insn_c_jalr_extract_xs1(op_code)];
-+		} else if (riscv_insn_is_c_jr(op_code)) {
-+			*next_addr = regs_ptr[riscv_insn_c_jr_extract_xs1(op_code)];
-+		} else if (riscv_insn_is_c_j(op_code)) {
-+			*next_addr = riscv_insn_c_j_extract_imm(op_code) + pc;
-+		} else if (riscv_insn_is_c_jal(op_code)) {
-+			*next_addr = riscv_insn_c_jal_extract_imm(op_code) + pc;
- 		} else if (riscv_insn_is_c_beqz(op_code)) {
--			rs1_num = decode_register_index_short(op_code,
--							      RVC_C1_RS1_OPOFF);
--			if (!rs1_num || regs_ptr[rs1_num] == 0)
--				*next_addr = RVC_EXTRACT_BTYPE_IMM(op_code) + pc;
-+			rs1_num = riscv_insn_c_beqz_extract_xs1(op_code);
-+			if (regs_ptr[8 + rs1_num] == 0)
-+				*next_addr = riscv_insn_c_beqz_extract_imm(op_code) + pc;
- 			else
- 				*next_addr = pc + 2;
- 		} else if (riscv_insn_is_c_bnez(op_code)) {
--			rs1_num =
--			    decode_register_index_short(op_code, RVC_C1_RS1_OPOFF);
--			if (rs1_num && regs_ptr[rs1_num] != 0)
--				*next_addr = RVC_EXTRACT_BTYPE_IMM(op_code) + pc;
-+			rs1_num = riscv_insn_c_bnez_extract_xs1(op_code);
-+			if (regs_ptr[8 + rs1_num] != 0)
-+				*next_addr = riscv_insn_c_bnez_extract_imm(op_code) + pc;
- 			else
- 				*next_addr = pc + 2;
- 		} else {
- 			*next_addr = pc + 2;
- 		}
- 	} else {
--		if ((op_code & __INSN_OPCODE_MASK) == __INSN_BRANCH_OPCODE) {
--			bool result = false;
--			long imm = RV_EXTRACT_BTYPE_IMM(op_code);
--			unsigned long rs1_val = 0, rs2_val = 0;
--
--			rs1_num = decode_register_index(op_code, RVG_RS1_OPOFF);
--			rs2_num = decode_register_index(op_code, RVG_RS2_OPOFF);
--			if (rs1_num)
--				rs1_val = regs_ptr[rs1_num];
--			if (rs2_num)
--				rs2_val = regs_ptr[rs2_num];
--
--			if (riscv_insn_is_beq(op_code))
--				result = (rs1_val == rs2_val) ? true : false;
--			else if (riscv_insn_is_bne(op_code))
--				result = (rs1_val != rs2_val) ? true : false;
--			else if (riscv_insn_is_blt(op_code))
--				result =
--				    ((long)rs1_val <
--				     (long)rs2_val) ? true : false;
--			else if (riscv_insn_is_bge(op_code))
--				result =
--				    ((long)rs1_val >=
--				     (long)rs2_val) ? true : false;
--			else if (riscv_insn_is_bltu(op_code))
--				result = (rs1_val < rs2_val) ? true : false;
--			else if (riscv_insn_is_bgeu(op_code))
--				result = (rs1_val >= rs2_val) ? true : false;
--			if (result)
--				*next_addr = imm + pc;
--			else
--				*next_addr = pc + 4;
-+		if (riscv_insn_is_beq(op_code)) {
-+			*next_addr = riscv_insn_branch(beq, regs_ptr, op_code,
-+						       pc, ==, unsigned long);
-+		} else if (riscv_insn_is_bne(op_code)) {
-+			*next_addr = riscv_insn_branch(bne, regs_ptr, op_code,
-+						       pc, !=, unsigned long);
-+		} else if (riscv_insn_is_blt(op_code)) {
-+			*next_addr = riscv_insn_branch(blt, regs_ptr, op_code,
-+						       pc, <, long);
-+		} else if (riscv_insn_is_bge(op_code)) {
-+			*next_addr = riscv_insn_branch(bge, regs_ptr, op_code,
-+						       pc, >=, long);
-+		} else if (riscv_insn_is_bltu(op_code)) {
-+			*next_addr = riscv_insn_branch(bltu, regs_ptr, op_code,
-+						       pc, <, unsigned long);
-+		} else if (riscv_insn_is_bgeu(op_code)) {
-+			*next_addr = riscv_insn_branch(bgeu, regs_ptr, op_code,
-+						       pc, >=, unsigned long);
- 		} else if (riscv_insn_is_jal(op_code)) {
--			*next_addr = RV_EXTRACT_JTYPE_IMM(op_code) + pc;
-+			*next_addr = riscv_insn_jal_extract_imm(op_code) + pc;
- 		} else if (riscv_insn_is_jalr(op_code)) {
--			rs1_num = decode_register_index(op_code, RVG_RS1_OPOFF);
-+			rs1_num = riscv_insn_jalr_extract_xs1(op_code);
- 			if (rs1_num)
--				*next_addr = ((unsigned long *)regs)[rs1_num];
--			*next_addr += RV_EXTRACT_ITYPE_IMM(op_code);
-+				*next_addr = regs_ptr[rs1_num];
-+			*next_addr += riscv_insn_jalr_extract_imm(op_code);
- 		} else if (riscv_insn_is_sret(op_code)) {
- 			*next_addr = pc;
- 		} else {
- 			*next_addr = pc + 4;
- 		}
- 	}
++kunit_test_suites(&kprobes_simulate_test_suite);
 +
- 	return 0;
- }
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("KUnit test for riscv kprobes instruction simulatation");
+diff --git a/arch/riscv/kernel/tests/kprobes/test-kprobes.h b/arch/riscv/kernel/tests/kprobes/test-kprobes.h
+index 537f44aa9d3f..7a672de8f130 100644
+--- a/arch/riscv/kernel/tests/kprobes/test-kprobes.h
++++ b/arch/riscv/kernel/tests/kprobes/test-kprobes.h
+@@ -19,6 +19,12 @@ extern void *test_kprobes_addresses[];
+ /* array of functions that return KPROBE_TEST_MAGIC */
+ extern long (*test_kprobes_functions[])(void);
  
++void test_kprobes_arbitrary(void);
++
++extern unsigned int *test_kprobes_arbitrary_addr;
++
++extern unsigned int *test_kprobes_c_bnez_addr1;
++
+ #endif /* __ASSEMBLER__ */
+ 
+ #endif /* TEST_KPROBES_H */
 
 -- 
 2.54.0
