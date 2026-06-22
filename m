@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20955352019;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5665F3537E0;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100902; cv=none; b=kVqGSp6rtLQz9jOvmj20FYQVXTpjT5wyMCIfHtaiq1iDW1JI3c7gVdACtQ8GEpEpA3By/N0fUM9Nr96tawi6HPgz0piga4sh4z2pYuwYubbJ1vlTJslOLyGEgAWDJKm7m4iCcdiVltMh6RHZbjHtLOON9oGZe8FsNer5vnNdRG0=
+	t=1782100902; cv=none; b=A77fVTNg+0HI8tCBj3/7F82o6PDame/2JdGPawK01/H3nrX2MyFBYFXDSajYSCsDkiDL9YBXOYu2me0MbkHGCLSL8ScghGdWnL785fhB/KabkXqYVVsn3TUK6PUcYUm0clLzvJn6A2z5uShZokUvvnNv8z4PbAwkgy03yO54ils=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782100902; c=relaxed/simple;
-	bh=rIBUZlayDDUlElwH4STZyo3eLQ1aroKzxTDoI9morMI=;
+	bh=TVUTi3JzfDP6+5V/37ec117+w6OR65FVI5bIsfJZApA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ezA4+OGcnj5A/Kvo56+3LryQbwygxE2Wt+krXcxEf1Nos9RCU8z+HDK3Aax2EHpLOnD2l4D1Jr5XuIBVJQborRhw9HYlwoxsbnzcG17g5blgXwWqiW51ZASpdLOCKVrB9uPI2ZieParmS4pQHIy7qrLIqJ58SCvAGnNAwAq5VwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ya7NX0ie; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Ho6jXs3YhNbRPVaTdz8Wbug2rfIk7uW6qsn9Jyi9OgQ4xpMnQRUoP7Ij1SeW9/NhgQP7n+m01nhp61tUWY91qI9PfDKO45AaQqjHcFvujmMMaGZU5QCKZpiKm1G2nae1G6dpqhinArEzltsQw+Js8Zb37yoQz/+rewZNSAXZJz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4AOBYjl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ya7NX0ie"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0221AC2BD04;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4AOBYjl"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 35DEFC2BCFD;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782100902;
-	bh=rIBUZlayDDUlElwH4STZyo3eLQ1aroKzxTDoI9morMI=;
+	bh=TVUTi3JzfDP6+5V/37ec117+w6OR65FVI5bIsfJZApA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Ya7NX0iejpWjN4INkrPT4cunQJNOz+kfjITMaADVO98IMZP7uZdFS5otKCRXh3RIc
-	 0c5W+lkRUD4ZKeUOam0jy9vpxKe4MKjSmQ3XOPYt/DTOCVq6VEpo1TQs08PD8VUioV
-	 7xikwqRjowWfBoW5Zpq/3qYcxU96ti+HCKQW7THW95uibOybiMuQd9FV7B/4/FrY5Y
-	 7CvCOi9DFptWR2sr0hIvTZyHFC1tHpyRkXp1QPQH07Elf/Bny2ODi4aCgUGjpKdehH
-	 7xLqS1vqeDnuGvUuPnNHMfjzJXAchlOtzAtI5KpzHysc/Z5NYL8ByVNUrQTJqUDaUD
-	 dat8kjhduBM5Q==
+	b=Q4AOBYjlxIBqxzMIEV3PLP2UaHQnNf09AVYFW/j9dCpu2/frUABGIn/9dv9O1xDK2
+	 rnOODipLb1VwSN/TV78VqjNdgWoaXzcwyyxDl7ytdHBMGINu80z7T7Zx/SNw8NuhEU
+	 fZkNZRPy4MRCyTX8dNhnGxXDngcYv4OdtuCrFAa/xFJ+4CFDdgVEFkHfMCafe1fKlU
+	 fZ5+DeVDB3Kxp8SVWvMiMaztSYfuiuIRWzUP3T2M0s8OXpXzATTLpXqHSAzJ7Lrh1v
+	 ZoyAb/tfmIscpN+RHs6G4gKJcJo/p3bHbO6SAsHFymaBdJnrCzFO0rFeUB1z0CsjcX
+	 CFaAG2Z+VGefw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE473CD98F6;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BBC2CDB471;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:28 -0700
-Subject: [PATCH v2 10/16] KVM: riscv: selftests: Add mmio test
+Date: Sun, 21 Jun 2026 21:01:31 -0700
+Subject: [PATCH v2 13/16] KVM: riscv: selftests: Add csr emulation test
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-10-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-13-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +54,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=7221;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=4572;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=nCg2zsUhW9tVCXwueee6U43Tp4lvMvAC4x/Uj6w1DKc=;
- b=FiX8G4yh2kmXn5pRN+SXywegB4kTjVIWJ6CUVfln9IvG8p5Z0j49ic/ko/Q6oCDElSlvSzUMQ
- yGr78gl5jtACmSIhKleRZqcsS7hOJnL88KBuW01ZcepJnD6n0cykO4M
+ bh=UIPBSpc0H3jB7+KpJxg4F5rG4rgb2Zzku6x9eNCAhf8=;
+ b=LkA15MenggXoi151d45SYPIEvfF6f5Fo3rW9bGmHd1LZ5uSRXUZT9goc9vyY3EB3pqtMjq6G7
+ wPZWWace2SQCE3C+XBtQd73He4AWPCES9KyX40XDcpXuv8kW6z3sMPA
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -68,158 +68,82 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Use the test KVM device to validate that reads and writes to a device
-are properly emulated by KVM. This test checks all load and store
-instructions that are emulated by KVM.
+Introduce a kvm test that uses the emulated test csr to validate that
+all emulated reads/writes to csrs function as expected.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- tools/testing/selftests/kvm/riscv/mmio_test.c | 184 ++++++++++++++++++++++++++
- 2 files changed, 185 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm     |   1 +
+ tools/testing/selftests/kvm/riscv/csr_test.c | 126 +++++++++++++++++++++++++++
+ 2 files changed, 127 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 9118a5a51b89..07a5fc2bf67c 100644
+index 07a5fc2bf67c..88ccd15e8f94 100644
 --- a/tools/testing/selftests/kvm/Makefile.kvm
 +++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -214,6 +214,7 @@ TEST_GEN_PROGS_s390 += mmu_stress_test
+@@ -212,6 +212,7 @@ TEST_GEN_PROGS_s390 += s390/irq_routing
+ TEST_GEN_PROGS_s390 += mmu_stress_test
+ 
  TEST_GEN_PROGS_riscv = $(TEST_GEN_PROGS_COMMON)
++TEST_GEN_PROGS_riscv += riscv/csr_test
  TEST_GEN_PROGS_riscv += riscv/sbi_pmu_test
  TEST_GEN_PROGS_riscv += riscv/ebreak_test
-+TEST_GEN_PROGS_riscv += riscv/mmio_test
- TEST_GEN_PROGS_riscv += access_tracking_perf_test
- TEST_GEN_PROGS_riscv += arch_timer
- TEST_GEN_PROGS_riscv += coalesced_io_test
-diff --git a/tools/testing/selftests/kvm/riscv/mmio_test.c b/tools/testing/selftests/kvm/riscv/mmio_test.c
+ TEST_GEN_PROGS_riscv += riscv/mmio_test
+diff --git a/tools/testing/selftests/kvm/riscv/csr_test.c b/tools/testing/selftests/kvm/riscv/csr_test.c
 new file mode 100644
-index 000000000000..9726860a269a
+index 000000000000..b3e8b99b6e92
 --- /dev/null
-+++ b/tools/testing/selftests/kvm/riscv/mmio_test.c
-@@ -0,0 +1,184 @@
++++ b/tools/testing/selftests/kvm/riscv/csr_test.c
+@@ -0,0 +1,126 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * mmio_test.c - Tests the mmio functionality.
++ * csr_test.c - Tests the csr functionality.
 + */
 +#include "kvm_util.h"
 +#include "ucall_common.h"
 +
-+#define MMIO_TEST_REGION 0x20000000
++#define CSR_TEST 0x240
++#define FP 0x00006000
 +
-+#define test_standard_read(len, instruction, name, options)					\
-+static void test_##name(void)									\
++/*
++ * Use the fcsr as a U-mode accesible csr and compare against the custom 'test'
++ * hypervisor csr (currently using vsscratch)
++ */
++#define test_csr(write, initial, mode)								\
++static void test_##write(void)									\
 +{												\
-+	unsigned long mmio_result, reference_result;						\
-+	/* Configure the MMIO to return 0xff for each byte to check sign extension */		\
-+	unsigned long reference = ((unsigned long)-1 >> ((sizeof(long) - len) * 8));		\
-+	*((unsigned long *)MMIO_TEST_REGION) = reference;					\
-+	/* Check that reads through MMIO are equivalent to standard reads. */			\
++	unsigned long hypervisor_result, reference_result, old_hypervisor;			\
++	unsigned long mask = 0x15;								\
 +	asm volatile (										\
-+		".option push\n"								\
-+		options										\
-+		#instruction "	%[mmio_res], 0(%[region])\n"					\
-+		#instruction "	%[ref_res], 0(%[ref])\n"					\
-+		".option pop\n"									\
-+		: [mmio_res] "=&cr" (mmio_result), [ref_res] "=&cr" (reference_result)		\
-+		: [region] "cr" (MMIO_TEST_REGION), [ref] "cr" (&reference)			\
++		"csrs	sstatus, %[enable_fp]\n"						\
++		"csrw	fcsr, %[init]\n"							\
++		#write"	zero, fcsr, %[mask]\n"							\
++		"csrr	%[ref_res], fcsr\n"							\
++		: [ref_res] "=&r" (reference_result)						\
++		: [enable_fp] "r" (FP), [mask] #mode(mask), [init] "r" (initial)		\
++		: "memory"									\
 +	);											\
-+	GUEST_ASSERT_EQ(mmio_result, reference_result);						\
++	asm volatile (										\
++		"csrw	%[test_csr], %[init]\n"							\
++		#write"	%[old], %[test_csr], %[mask]\n"						\
++		"csrr	%[hyp_res], %[test_csr]\n"						\
++		: [hyp_res] "=&r" (hypervisor_result), [old] "=&r" (old_hypervisor)		\
++		: [test_csr] "i"(CSR_TEST), [mask] #mode(mask), [init] "r" (initial)		\
++		: "memory"									\
++	);											\
++	/* Check that writing works */								\
++	GUEST_ASSERT_EQ(reference_result, hypervisor_result);					\
++	/* Check that reading works */								\
++	GUEST_ASSERT_EQ(old_hypervisor, initial);						\
 +	GUEST_DONE();										\
 +}
 +
-+#define test_sp_read(len, instruction, name)							\
-+static void test_##name(void)									\
-+{												\
-+	unsigned long mmio_result, reference_result;						\
-+	unsigned long tmp;									\
-+	/* Configure the MMIO to return 0xff for each byte to check sign extension */		\
-+	unsigned long reference = ((unsigned long)-1 >> ((sizeof(long) - len) * 8));		\
-+	*(((unsigned long *)MMIO_TEST_REGION)) = reference;					\
-+	/* Check that reads through MMIO are equivalent to standard reads. */			\
-+	asm volatile (										\
-+		"mv	%[tmp], sp\n"								\
-+		"mv	sp, %[region]\n"							\
-+		".option push\n"								\
-+		".option arch,+c\n"								\
-+		#instruction "	%[mmio_res], 0(sp)\n"						\
-+		"mv	sp, %[ref]\n"								\
-+		#instruction "	%[ref_res], 0(sp)\n"						\
-+		".option pop\n"									\
-+		"mv	sp, %[tmp]\n"								\
-+		: [mmio_res]  "=&cr" (mmio_result), [ref_res] "=&cr" (reference_result),	\
-+		  [tmp] "=&r" (tmp)								\
-+		: [region] "r" (MMIO_TEST_REGION), [ref] "cr" (&reference)			\
-+	);											\
-+	GUEST_ASSERT_EQ(mmio_result, reference_result);						\
-+	GUEST_DONE();										\
-+}
-+
-+test_standard_read(1, lb, lb, "")
-+test_standard_read(1, lbu, lbu, "")
-+test_standard_read(4, lw, lw, "")
-+test_standard_read(4, c.lw, c_lw, ".option arch,+c\n")
-+test_sp_read(4, c.lwsp, c_lwsp)
-+
-+#if __riscv_xlen == 64
-+test_standard_read(2, lh, lh, "")
-+test_standard_read(2, lhu, lhu, "")
-+test_standard_read(4, lwu, lwu, "")
-+test_standard_read(8, ld, ld, "")
-+test_standard_read(8, c.ld, c_ld, ".option arch,+c\n")
-+test_sp_read(8, c.ldsp, c_ldsp)
-+#endif
-+
-+#define test_standard_write(len, write, read, name, options)					\
-+static void test_##name(void)									\
-+{												\
-+	unsigned long result;									\
-+	unsigned long reference = (0x55555555UL >> ((sizeof(long) - len) * 8));			\
-+	/* Check that we can write and then read the same value. */				\
-+	asm volatile (										\
-+		".option push\n"								\
-+		options										\
-+		#write "	%[ref], 0(%[region])\n"						\
-+		#read "		%[res], 0(%[region])\n"						\
-+		".option pop\n"									\
-+		: [res] "=&cr" (result)								\
-+		: [region] "cr" (MMIO_TEST_REGION), [ref] "cr" (reference)			\
-+	);											\
-+	GUEST_ASSERT_EQ(result, reference);							\
-+	GUEST_DONE();										\
-+}
-+
-+#define test_sp_write(len, write, read, name)							\
-+static void test_##name(void)									\
-+{												\
-+	unsigned long result;									\
-+	unsigned long tmp;									\
-+	unsigned long reference = (0x55555555UL >> ((sizeof(long) - len) * 8));			\
-+	/* Check that we can write and then read the same value. */				\
-+	asm volatile (										\
-+		"mv	%[tmp], sp\n"								\
-+		"mv	sp, %[region]\n"							\
-+		".option push\n"								\
-+		".option arch,+c\n"								\
-+		#write "	%[ref], 0(sp)\n"						\
-+		#read "		%[res], 0(sp)\n"						\
-+		".option pop\n"									\
-+		"mv	sp, %[tmp]\n"								\
-+		: [res] "=&cr" (result), [tmp] "=&r" (tmp)					\
-+		: [region] "cr" (MMIO_TEST_REGION), [ref] "cr" (reference)			\
-+	);											\
-+	GUEST_ASSERT_EQ(result, reference);							\
-+	GUEST_DONE();										\
-+}
-+
-+test_standard_write(1, sb, lb, sb, "")
-+test_standard_write(2, sh, lh, sh, "")
-+test_standard_write(4, sw, lw, sw, "")
-+test_standard_write(4, c.sw, c.lw, c_sw, ".option arch,+c\n")
-+test_sp_write(4, c.swsp, c.lwsp, c_swsp)
-+
-+#if __riscv_xlen == 64
-+test_standard_write(8, sd, ld, sd, "")
-+test_standard_write(8, c.sd, c.ld, c_sd, ".option arch,+c\n")
-+#endif
++test_csr(csrrw, 0x0, r)
++test_csr(csrrs, 0x0, r)
++test_csr(csrrc, 0x15, r)
++test_csr(csrrwi, 0x0, i)
++test_csr(csrrsi, 0x0, i)
++test_csr(csrrci, 0x15, i)
 +
 +static void run(void *guest_code, char *instruction)
 +{
@@ -228,55 +152,72 @@ index 000000000000..9726860a269a
 +	struct kvm_vcpu *vcpu;
 +
 +	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	kvm_create_device(vm, KVM_DEV_TYPE_TEST);
 +
-+	virt_map(vm, (unsigned long)MMIO_TEST_REGION, MMIO_TEST_REGION, 1);
++	kvm_create_device(vm, KVM_DEV_TYPE_TEST);
 +
 +	vcpu_run(vcpu);
 +
 +	TEST_ASSERT(get_ucall(vcpu, &uc) == UCALL_DONE,
-+		    "MMIO with instruction '%s' failed: '%s'", instruction,
++		    "CSR instruction '%s' failed: '%s'", instruction,
 +		    uc.buffer);
 +
 +	kvm_vm_free(vm);
 +}
 +
-+void test_mmio_read_sign_extension(void)
++static void check_test_csr_guest(void)
 +{
-+	run(test_lb, "lb");
-+	run(test_lbu, "lbu");
-+	run(test_lw, "lw");
-+	run(test_c_lw, "c.lw");
-+	run(test_c_lwsp, "c.lwsp");
++	unsigned long scause, stvec;
 +
-+#if __riscv_xlen == 64
-+	run(test_lh, "lh");
-+	run(test_lhu, "lhu");
-+	run(test_lwu, "lwu");
-+	run(test_ld, "ld");
-+	run(test_c_ld, "c.ld");
-+	run(test_c_ldsp, "c.ldsp");
-+#endif
++	asm volatile(
++		"la	%[stvec], 1f\n"
++		"csrw	stvec, %[stvec]\n"
++		"csrwi	%[test_csr], 0x0\n"
++		"1:\n"
++		"csrr	%[scause], scause\n"
++		: [scause] "=&r" (scause), [stvec] "=&r" (stvec)
++		: [test_csr] "i" (CSR_TEST)
++	);
++
++	/* An illegal instruction will be generated if CONFIG_RISCV_KVM_TEST_CSR is not enabled. */
++	if (scause == 2)
++		GUEST_FAIL("CONFIG_RISCV_KVM_TEST_CSR not enabled.\n");
++	GUEST_DONE();
 +}
 +
-+void test_mmio_write(void)
++static int check_test_csr(void)
 +{
-+	run(test_sb, "sb");
-+	run(test_sh, "sh");
-+	run(test_sw, "sw");
-+	run(test_c_sw, "c.sw");
-+	run(test_c_swsp, "c.swsp");
++	struct ucall uc;
++	struct kvm_vm *vm;
++	struct kvm_vcpu *vcpu;
++	int success;
 +
-+#if __riscv_xlen == 64
-+	run(test_sd, "sd");
-+	run(test_c_sd, "c.sd");
-+#endif
++	vm = vm_create_with_one_vcpu(&vcpu, check_test_csr_guest);
++
++	/* Skip if CONFIG_KVM_MMIO_TEST not enabled */
++	if (!kvm_create_device(vm, KVM_DEV_TYPE_TEST))
++		exit(KSFT_SKIP);
++
++	vcpu_run(vcpu);
++
++	success = get_ucall(vcpu, &uc) == UCALL_DONE;
++
++	kvm_vm_free(vm);
++
++	return success;
 +}
 +
 +int main(void)
 +{
-+	test_mmio_read_sign_extension();
-+	test_mmio_write();
++	/* Skip if CONFIG_RISCV_KVM_TEST_CSR not enabled */
++	if (!check_test_csr())
++		exit(KSFT_SKIP);
++
++	run(test_csrrw, "csrrw");
++	run(test_csrrs, "csrrs");
++	run(test_csrrc, "csrrc");
++	run(test_csrrwi, "csrrwi");
++	run(test_csrrsi, "csrrsi");
++	run(test_csrrci, "csrrci");
 +
 +	return 0;
 +}
