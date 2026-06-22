@@ -1,162 +1,219 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6FC34EF0E
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4222734F498
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782101601; cv=none; b=Omokl9GmIl3Ts9r+RitEqXH4/8IIKsAJflSPpE6ZoWQwXiPz3bxNlcWnVAzl+QfvOv4/gcYx56TILyxDE4menLTpqQdAsN/Mw/BpesGhzTIN9tir+xeG4i+ym7hq1ChUy3q/oD5cab0XQntw2wpm3l6i4WL0erFwVoBwkz66lWc=
+	t=1782101638; cv=none; b=DYg07s6i/umuPVIDkgKsadcgXjFzcw6/RY2qcfcbJngZnUs9+IQkZ1jQVJBks2yfYSbiqhCclN9n3NbVqyBuGAd5+3k5aZ0QpR71iD1ZVJzcKfK6jbcMV4H/1yg9U+kli4f7NBrU5MsxlhJoz6lTZ+GCYiKF62hNJ/lzHuljk2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782101601; c=relaxed/simple;
-	bh=lhxGebDH70yVwpr9sTbkk5k8w4ieyRez4b+RFw1gjcY=;
+	s=arc-20240116; t=1782101638; c=relaxed/simple;
+	bh=kBkkjOgcUtMoxYER4emMeXHkatQJ+6+2LxH/ED+8ftQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b3QDjAzSwTVhKHg642E7eKn/tiJvtcS/mg50MP2AgcnI5eeB6gYGtanLQVMWFeQrqEOjZ8DDtK78wAKLE+1kevl6T6J5krF/OUEXzZRlielmt85Kgkrb2cYqDM5fSFEeT+G5Kk0jI22KlTK4U5OYBULgxeMRTSMg7x/ns1gGINw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebeAYJ21; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=tM0+98B7PDDASmGJG2DSfR62QaxWO13qLwAuEY98FIOwiiE7Xa1Ulx0LbJtaXWjagIVGJ5IEX7cueFgyyq492P8r4xOLOsFODDdBKCY1w78auTz4XHBtFffxIMJlfpHzbFO29P+XyrooQKgAzTiknKBoAMFN7wFbF1/AvSgEgRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3uzEpAS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebeAYJ21"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854F11F000E9;
-	Mon, 22 Jun 2026 04:13:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3uzEpAS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AA31F000E9;
+	Mon, 22 Jun 2026 04:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782101599;
-	bh=0NJ6bODKcRM2PfxQP7+tIYAAFFJmT7UtRbeg6pj3n6w=;
+	s=k20260515; t=1782101636;
+	bh=aId6Tjq2xVlrrwcqKUhKNf6Ww6GLKRpnwWbBu4hLgp4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ebeAYJ21Xbu0nBxIX1v9NpFbCvIY+ibX12G84NhCnfC5JotKeQG6SmBOGUPugtXiY
-	 ZYK7x+I3iJfldLjj12i60o+8q0a/VwFHv7ouB8Y8OvLPGk4hojJ6Y/wKElUOl1T10m
-	 T92eiKOtQqyqqhz8dXvee0z0KBN6MokkGEWny1d5tEj9cSkRjgxYBnXuZbU2NzdSIO
-	 3CmIWxkQihQxqvB37PZFBedbNF8+3BSs1mKma5491Dn4rsVHH+YGskuFxgpZTyNNg1
-	 iVWGlV8MTT7XerhEYJM4oVI37WYMACCx/2wKizo4/F7GN8xPdWNJ2vdRgrACc0dPdi
-	 50yok+sfwrHwA==
+	b=V3uzEpASLo5mc/CLlsCxYAgydWfmGNmCMF9a1i5mTz63kgvc0E6J+tLbG2jIdNsJO
+	 8AWctVJ2dUZhF/RYq/9GTwZPEXHdIzp8K2PSpeA6EydQM3M1kDHpTP8E1ir21D0rzS
+	 qwyCSpm6r8iQ3ELaJeRfUMiegRrsQ5PwLaZEwIqNXR3w3tLB6mZRoV8JZ9QYTuJjk+
+	 nds3DI8Zjm9wZBXlj9Fc8527gn2TrITTQYz45Yhacgropv6ULmr+OU7uGDydBTSxb5
+	 EK7YiESuwnaixaAPjMuPRKLHQks2svFei1jO4ylY46CgA1JkBjyfOCLrifzKmxmGuA
+	 XM1R3pIWlvfGw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 01/16] riscv: Introduce instruction table generation
+Subject: Re: [PATCH v2 09/16] KVM: device: Add test device
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-1-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-9-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-1-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-9-7f0810ee2274@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:13:19 +0000
-Message-Id: <20260622041319.854F11F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 04:13:55 +0000
+Message-Id: <20260622041356.B8AA31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
 s) to consider:
-- [High] The shell script incorrectly truncates multiple instruction constr=
-aints during bash parameter expansion, causing generated matchers to drop a=
-ll but the first constraint.
-- [High] Extracted immediate values for compressed instructions are incorre=
-ctly truncated to 16 bits, corrupting instructions with large shifted immed=
-iates like c.lui.
-- [Low] The generated header relies on `sign_extend32` but fails to include=
- `<linux/bitops.h>`.
-- [Low] Signed integer shift overflow when generating instruction masks and=
- matches.
+- [Critical] Guest-triggerable out-of-bounds memory access in mmio_read and=
+ mmio_write due to invalid size constraints and missing length validation.
+- [Critical] Use-after-free vulnerability due to missing IO bus unregistrat=
+ion during device release.
+- [High] Registering the KVM IO device without holding `kvm->slots_lock`.
+- [High] Memory leak of the parent `struct kvm_device` in the device releas=
+e callback.
+- [High] Ignoring the return value of `kvm_io_bus_register_dev()` leaves th=
+e device silently non-functional on failure.
+- [High] Incorrect error handling sequence in `kvm_init()` leads to a resou=
+rce leak of VFIO ops or uninitialized teardown.
 --
 
-commit 2e4d01f18f465b8609784ae2ae57f5539bddd357
+commit 9fe1265e6415d3c7d4c794808d6fc306d06a4e0e
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: Introduce instruction table generation
+KVM: device: Add test device
 
-Eliminate the need to hand-write riscv instructions by using a shell
-script to autogenerate a header from an instruction table. This is modeled
-after the syscall table infrastructure. The table is generated externally
-by riscv-unified-db.
+Create a KVM test device to help verify mmio reads and write emulation.
+This is a simple device that will store the data in a buffer on writes
+and echo back that stored data on a read.
 
-Link: https://github.com/riscv-software-src/riscv-unified-db
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 881f92d7a469e..d9bbe570eddd5 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+[ ... ]
+> @@ -6559,6 +6564,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_alig=
+n, struct module *module)
+>  err_gmem:
+>  	kvm_vfio_ops_exit();
+>  err_vfio:
+> +	kvm_mmio_test_ops_exit();
+> +err_mmio_test:
+>  	kvm_async_pf_deinit();
 
-> diff --git a/arch/riscv/tools/insn_tbl.sh b/arch/riscv/tools/insn_tbl.sh
-> new file mode 100755
-> index 0000000000000..aede14c80146f
+[Severity: High]
+Does this error handling sequence leak VFIO ops or tear down uninitialized
+state?
+
+If kvm_mmio_test_ops_init() fails, the code jumps to err_mmio_test, which
+only executes kvm_async_pf_deinit() and skips kvm_vfio_ops_exit().
+
+Conversely, if kvm_vfio_ops_init() fails, the code jumps to err_vfio and
+executes kvm_mmio_test_ops_exit() before it was initialized. Should the lab=
+els
+reverse the initialization sequence perfectly?
+
+> diff --git a/virt/kvm/mmio_test.c b/virt/kvm/mmio_test.c
+> new file mode 100644
+> index 0000000000000..fa84c2b4c5fcf
 > --- /dev/null
-> +++ b/arch/riscv/tools/insn_tbl.sh
-> @@ -0,0 +1,256 @@
-
+> +++ b/virt/kvm/mmio_test.c
 [ ... ]
-
-> +echo "#ifndef RISCV_INSN_GEN_H" >> $outfile
-> +echo "#define RISCV_INSN_GEN_H" >> $outfile
-> +echo >> $outfile
-> +
-> +printf "#include <linux/bits.h>" >> $outfile
-> +echo >> $outfile
-
-[Severity: Low]
-The generated header relies on sign_extend32() for signed fields, but only
-includes <linux/bits.h>. Could this missing <linux/bitops.h> inclusion cause
-compilation failures for future standalone inclusions of the generated head=
-er?
-
+> +struct mmio_test {
+> +	struct kvm *kvm;
+> +	struct kvm_io_device dev;
+> +	unsigned long start;
+> +	unsigned long size;
+> +	char cache[16];
+> +};
 [ ... ]
-
-> +            if [ ${offset} -gt 0 ]; then
-> +                s=3D" << ${offset}"
-> +            else
-> +                s=3D""
-> +            fi
+> +static int mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
+> +		     gpa_t addr, int len, void *val)
+> +{
+> +	struct mmio_test *mmio_test =3D kvm_to_mmio_test_dev(dev);
 > +
-> +            mask=3D"${mask}${s}"
+> +	if ((addr - mmio_test->start) >=3D mmio_test->size)
+> +		return -1;
 > +
-> +            match=3D"${match} | 0b${bits}${s}"
+> +	/* Write back cached value */
+> +	memcpy(val, &mmio_test->cache[(addr - mmio_test->start)], len);
 
-[Severity: Low]
-Does this code trigger signed integer shift overflow warnings? The script
-generates macros using signed binary literals shifted by large amounts
-(e.g., 0b111000100000 << 20 for fclass.d). Even with -fno-strict-overflow,
-this can cause compiler warnings if -Wshift-overflow is enabled. Would it be
-better to append a U suffix to these binary literals to ensure unsigned
-shifts?
+[Severity: Critical]
+Can a guest trigger an out-of-bounds read of host memory here?
 
+The cache array is 16 bytes long, but mmio_test->size is configured to 0x16
+(22 bytes) in mmio_test_create(). The boundary check permits accesses up to
+offset 21.
+
+Furthermore, is there a check to ensure that the access offset plus len
+does not exceed the bounds of the array?
+
+> +	return 0;
+> +}
+> +
+> +static int mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
+> +		      gpa_t addr, int len, const void *val)
+> +{
+> +	struct mmio_test *mmio_test =3D kvm_to_mmio_test_dev(dev);
+> +
+> +	if ((addr - mmio_test->start) >=3D mmio_test->size)
+> +		return -1;
+> +
+> +	/* Cache value */
+> +	memcpy(&mmio_test->cache[(addr - mmio_test->start)], val, len);
+
+[Severity: Critical]
+Similarly, can this allow a malicious guest to trigger a heap buffer overfl=
+ow?
+
+Without a check verifying that the access length fits within the remaining
+space in the cache array, a large or offset write could overwrite adjacent
+host kernel memory.
+
+> +	return 0;
+> +}
 [ ... ]
-
-> +            if [ "${variable}" !=3D "${variable#*!}" ]; then
-> +                raw_constraints=3D"${variable#*!}"
-> +                raw_constraints=3D"${raw_constraints%%[=3D<~!]**}"
+> +static int mmio_test_create(struct kvm_device *dev, u32 type)
+> +{
+> +	struct mmio_test *mmio_test;
+> +
+> +	mmio_test =3D kzalloc(sizeof(*mmio_test), GFP_KERNEL);
+> +	if (!mmio_test)
+> +		return -ENOMEM;
+> +
+> +	mmio_test->start =3D 0x20000000;
+> +	mmio_test->size =3D 0x16;
+> +
+> +	dev->private =3D mmio_test;
+> +
+> +	kvm_iodevice_init(&mmio_test->dev, &mmio_ops);
+> +	kvm_io_bus_register_dev(dev->kvm, KVM_MMIO_BUS, mmio_test->start,
+> +				mmio_test->size, &mmio_test->dev);
 
 [Severity: High]
-Does this parameter expansion inadvertently truncate multiple constraints?
-Because the ! character is included in the character class [=3D<~!], the
-%% operator greedily matches the longest suffix starting with the first !
-it encounters.
+Does kvm_io_bus_register_dev() require kvm->slots_lock to be held?
 
-For example, with c.ldsp which has constraints like xd!0!1!3!5!7=3D11-7, it
-looks like this strips everything after the first !, leaving only 0. This
-would cause the generated matcher to only verify that xd !=3D 0 and fail to
-enforce the rest of the constraints.
-
-[ ... ]
-
-> +            if [ ${sign_extend} ]; then
-> +                extract=3D"sign_extend32(${extract}, $((offset + left_sh=
-ift - 1)))"
-> +                type=3D"s"
-> +            else
-> +                type=3D"u"
-> +            fi
-> +
-> +            printf "static __always_inline ${type}${size} riscv_insn_${f=
-ormatted_inst_name}_extract_${variable_name}(u${size} ${insn})\n"
+The function modifies RCU-protected bus arrays and has a lockdep assertion
+for kvm->slots_lock. This is called under kvm->lock but appears to be missi=
+ng
+the slots_lock acquisition.
 
 [Severity: High]
-Does this return type cause unintended truncation for compressed instructio=
-ns
-with large immediates?
+What happens if kvm_io_bus_register_dev() fails here?
 
-The script deduces the return type as s16 or u16 for compressed instruction=
-s.
-However, instructions like c.lui encode a 6-bit immediate shifted left by 1=
-2,
-resulting in an 18-bit signed value. It appears the generated function corr=
-ectly
-computes the 32-bit signed value, but returning it as s16 silently truncates
-the upper 16 bits (including the sign bit). Could this cause data corruption
-when decoding such instructions?
+The function could return -ENOMEM or -ENOSPC, but its return value is not
+checked. Could this leave the test device reported as fully instantiated
+without being able to receive MMIO traps?
+
+> +
+> +	return 0;
+> +}
+> +
+> +static void mmio_test_release(struct kvm_device *dev)
+> +{
+> +	kfree(dev->private);
+
+[Severity: Critical]
+Does freeing dev->private without unregistering the io device create a
+use-after-free?
+
+When the file descriptor is closed, the device state is freed, but the
+embedded kvm_io_device remains registered on the KVM MMIO bus. Any subseque=
+nt
+guest MMIO access to that region would route the request to this freed memo=
+ry.
+Should this call kvm_io_bus_unregister_dev() first?
+
+[Severity: High]
+Is the parent kvm_device leaked here?
+
+When a KVM device implements the release callback instead of destroy, it is
+responsible for freeing the core kvm_device object allocated by KVM core.
+Should there be a call to kfree(dev) before returning?
+
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D1
+_table-v2-0-7f0810ee2274@gmail.com?part=3D9
