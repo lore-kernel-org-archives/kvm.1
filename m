@@ -1,86 +1,87 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7803368AB
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 16:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A72C21E6
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 16:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782146477; cv=none; b=tNPW0KpuSotZLaQTbDVvr4PVxJSUB85kt37DQqy3xKTEHBtEQftvtGv1ZftI0sPWjRTp14oyNuUROtsrwoFq8zgbtYM0IgmOc6qKTLrWF7kdWNouOhd7dSmBM/Ko4KPLoIdbzF9KrYXH1hkRMIsQBIO/hS0LTKT6VJwKl8ZBN+k=
+	t=1782146551; cv=none; b=GPuur7gddOfLyhN7tB4HNO9txmadzatkQ33mLW3OWxrpr7BP9E/8SH3PNBsjujzuxx7eUty2m+2/8w6paCx2mvp/kpeeW9X2GozQi/hEguMSSZNbJBMr3PqcLjYV6euoQWWZsICHfK2VcDxR3fSbp59Kn4aq0stvACZERyA3cTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782146477; c=relaxed/simple;
-	bh=YIwRaZobmSO5Ij2EElLGkVQbqzOnFPr549GTUn7jyyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=THeJEf8Eau86L37wuIQXYDcDTDAdY7I336zuli+ZpSYxbXjv8u/MuGBmqE1fyDR/3awQ7dYMySHVQx6SeypzRf41Ej1seaN1S4USjl8G7m1kARZOGcLyWWoEp+yXp5wCEgT4+fS+83J2gNro+AVOzVvSCkcB2feB9imO2cDiCfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=a+E+Trzv; arc=none smtp.client-ip=91.218.175.173
+	s=arc-20240116; t=1782146551; c=relaxed/simple;
+	bh=Hsihgo5dHYZsg2AWHDNElWtQuw5yJT42wrZkNqj/5ZY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ik9sHoAYuRiKMlFtRj6QDOks9RgN+Kn3SSbIneOr3y7b5iKNkVeELx39y3YsRGhCcNYFlRgPm0w+RHFZZ8VAQOK9zi87Qrso8WCGALTt6uuZNbLJxMOeqru+tc3bRZMqZgRWVUy6o/HUFYNKPjEopLfDfeuO78Nisl2JCupBx8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=degiRhtL; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="a+E+Trzv"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="degiRhtL"
+Date: Mon, 22 Jun 2026 11:42:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782146473;
+	t=1782146547;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=j3tsej/J8ub0vO9QVMYHBgGXQkMEwQZE63kWE8Xy0PE=;
-	b=a+E+TrzvkaxJeZyUPkpEyAtpDyvvfnO7VQyDHuZKvBIhwXJCHENy3TnalYMWi4uipVOtux
-	L4+MP/VHaKmI9GxX4ElWWHwHpA/mqcPhbnM6lIeLhBlX3cQhwgSco5sKWI+aKOtw4NPbSz
-	H1EsqeIjzmxBgcWX2/5MMqEs/6jDLG4=
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uYmKnUOduquw+47HDL0amZ+DE5jg8rj9YdEgKJDy2GI=;
+	b=degiRhtL0C/2hxXmGNt3xr5e+inWh894uA2u3r1urEU+l20Qf+Oviq0x3p6lMKauG8z5WN
+	0/X4bFZrbjMzFeQNUCTxHn9QJISQh9t/ojLc+6O3/Kq1e+FMC3S1X7lcG2z+YS5dnb4Ykc
+	6LBORckuI/tj7huapWTShcUPrNsRIoU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Andrew Jones <andrew.jones@linux.dev>
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	thuth@redhat.com
-Subject: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by tag
-Date: Mon, 22 Jun 2026 11:41:08 -0500
-Message-ID: <20260622164109.26350-1-andrew.jones@linux.dev>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: alexandru.elisei@arm.com, eric.auger@redhat.com, joey.gouly@arm.com, 
+	maz@kernel.org, thuth@redhat.com, pbonzini@redhat.com, nrb@linux.ibm.com, 
+	imbrenda@linux.ibm.com, marcorr@google.com, oliver.upton@linux.dev, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev
+Subject: Re: [kvm-unit-tests PATCH v2] arm: io: Set is_pl011_uart flag in
+ ACPI initialization
+Message-ID: <4go6wzmiz3bb25r36i6uyqz3dbjoij2b56q54iuymit5zxobsh@p3ausac7pn3f>
+References: <20260619002505.669698-1-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260619002505.669698-1-coltonlewis@google.com>
 X-Migadu-Flow: FLOW_OUT
 
-Import Linux commit d1db4118489f ("checkpatch: add support for
-Assisted-by tag").
+On Fri, Jun 19, 2026 at 12:25:04AM +0000, Colton Lewis wrote:
+> When booting via ACPI on ARM64, the SPCR table is parsed to initialize
+> the console UART. However, the code was neglecting to set the
+> is_pl011_uart flag. This caused __getchar() to fall back to treating
+> the UART as a 16550A device, which fails on systems with a PL011.
+> 
+> Tests that wait for serial input (like its-migration) would hang
+> indefinitely because __getchar() would always return -1.
+> 
+> Update uart0_init_acpi() to inspect the SPCR interface_type and set
+> is_pl011_uart accordingly. Also define DBG2 macros for SPCR
+> interface types in lib/acpi.h.
+> 
+> Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table#table-3-debug-port-types-and-subtypes
+> Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> Assisted-by: Gemini:gemini-3.1-pro
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> ---
+> v2:
+>  - Align macro names with Linux kernel DBG2 definitions (Alexandru Elisei).
+> 
+> v1:
+>  https://lore.kernel.org/r/20260513211624.2416284-1-coltonlewis@google.com
+> 
+>  lib/acpi.h   | 6 ++++++
+>  lib/arm/io.c | 3 +++
+>  2 files changed, 9 insertions(+)
+>
 
-(I should have used AI for this, since it'd be fun to include that
-tag on this tag-enabling patch, but sometimes I still do my own
-homework!)
+Added
 
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
----
- scripts/checkpatch.pl | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Fixes: 8c065edf33c0 ("lib/arm/io: Fix calling getchar() multiple times")
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index e858261c95a8..653bec1f6ea5 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -626,6 +626,7 @@ our $signature_tags = qr{(?xi:
- 	Reviewed-by:|
- 	Reported-by:|
- 	Suggested-by:|
-+	Assisted-by:|
- 	To:|
- 	Cc:
- )};
-@@ -3073,6 +3074,15 @@ sub process {
- 				}
- 			}
- 
-+			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
-+			if ($sign_off =~ /^Assisted-by:/i) {
-+				if ($email !~ /^\S+:\S+/) {
-+					WARN("BAD_SIGN_OFF",
-+					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
-+				}
-+				next;
-+			}
-+
- 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
- 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
- 			if ($suggested_email eq "") {
--- 
-2.43.0
+and queued, https://gitlab.com/jones-drew/kvm-unit-tests/-/commits/arm/queue
 
+Thanks,
+drew
