@@ -1,183 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D092C346A01;
-	Mon, 22 Jun 2026 19:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C310348C5C
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782155363; cv=none; b=ufJAiuxgUmCsJVZw3BKx4P1F3J9mSBU+lnUwCt7UefaXMgEdMfy3ka5Gtdi+ETRrk+W599OgiaS5nZ/am84drEVF0iNcJlbBqqxU6hu7naBkoJdgkcmhdWhCcdmRLGLgjopcONhNITRT917RYrfdtCLlp9u+dSUvbFbT71YdJhc=
+	t=1782155608; cv=none; b=QVORNDkBhdt6FfKNePtz/VJ66S52o8Av8zQmy1CQ+6ewBXQeUwtV+EW5/cHsSw4JzRAAtvYKxoMvAgurlLJajp+fpr3M9m9SD6dgabNQw/u+AQwRNYvsZTkVCpw9I0A5zeF3l+H4XHCMDHsMPj81jZsYkxCY4f13+Eg210UDReI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782155363; c=relaxed/simple;
-	bh=ignz6eQq6wkV0sI2ABcjpx+KMVQtCPG1BECMG49RH/I=;
+	s=arc-20240116; t=1782155608; c=relaxed/simple;
+	bh=m1nKuLiZIGjAiLBMQC9OYQgPC+QpzXNL8zouMgxLVjI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fYEejkmSdQhRb4uSa2cWF7yy6sFCom6MZq+xS9L1RKrEAGL73qYRTyvEJsEi4rOe5+QwGCgyR2P1q/U5Gdby24hh1WQvC7Gpca6/PC2k7hBKLfWsVT46I8MmAAsSvrYDdJ7lJMISPoxMzkneIjqZv5NOJ+xQ2cFXikqNIl7I3Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezjO4EsJ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=SAEgz4sktL+IFQUn5NEcxe5Wo7vpcV9zCmctwhkXOsh74FqMgYvN2dOapy2BDRAm4sGnLOMOvEzswSabSmCZDPZJBoeVzHbjfD5ZI3DdtZGL6pbNg+abKIH1GOPJNX3bJZF2tn93VWpM6rYBjuDdvsDtVzul1+uyc9Cwn5YPhv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTKXVWsN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezjO4EsJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE6B1F000E9;
-	Mon, 22 Jun 2026 19:09:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTKXVWsN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B591F000E9;
+	Mon, 22 Jun 2026 19:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782155362;
-	bh=KIT/ERZTCyq8yFnbihT7w6olaM/rBcuMBNT11CWeBDA=;
+	s=k20260515; t=1782155607;
+	bh=pzIM9EtgGJgEzZOSz4KZKY1fknG9SXcu7sOxkG00XVE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ezjO4EsJus6vLBAEm4LeOtsk+vpozt2kWLg+5ENOwP+ATFwmwMZf18MWp5H1ecEql
-	 mwJOYuHdaCqRLXFJZQWfoAafbeFHPx8OJQAYEnXMaUIAzT+0zMkx53+62OmDULxlXG
-	 PinbQa8mgUTJHlihsvYONc6sWpxvq3si29jsMnQ58N7VvHWPjknwr1QMdPNmWJQ+9n
-	 ng1cu2w2CIMVtS2lrleJMJRyg4vhK8uaMAYUXxxGlTko5bmg9QVIz/PY3RxzQpZq99
-	 2qFTApJhaRP5V7lH1y7yWoi5ewa+MGL0EHq7mQrhBc8BWej8DY/aGZfnsEbuBpcxw/
-	 mkpK0sD7u0SEw==
+	b=PTKXVWsNNFMLsMRifOnrptfZOmtUetPaOwYqs5mxqw6qpaUQxjii1fCrhmquygY47
+	 7TXl2RTRXvZE/sZrcleMhJhcGKVvpGQ2GNvvC9Mg2wIf3mdtZfMveRhrBAd2s/rG+z
+	 N3gWRyp0ulNbaER8i6DRddDDkrHnEpIXJV4Apma9grg/z5URCLRamzhW/2yl4iUlA5
+	 Up5IiDu1NZCf/bLOV6kluvbVVjcq/nC/YRx/Y+H+KwVke60S6W0/59COeWn2xigmY3
+	 uacQZ+jfpoELmeAwiZHafo5G8fT42n19MMC4yoVoFNFZxvXHW/xnnDH3cyFrkUUuvA
+	 XHWF5N+5u1ZEg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 4/4] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
+Subject: Re: [PATCH v3 9/9] selftests: kvm: Add
+ guest_memfd_preservation_test
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhiping Zhang" <zhipingz@meta.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260622184211.2229399-5-zhipingz@meta.com>
-References: <20260622184211.2229399-1-zhipingz@meta.com>
- <20260622184211.2229399-5-zhipingz@meta.com>
+To: "Tarun Sahu" <tarunsahu@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622184851.2309827-10-tarunsahu@google.com>
+References: <20260622184851.2309827-1-tarunsahu@google.com>
+ <20260622184851.2309827-10-tarunsahu@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 19:09:21 +0000
-Message-Id: <20260622190922.4AE6B1F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 19:13:26 +0000
+Message-Id: <20260622191327.22B591F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-New issues:
-- [High] Missing ST index reference acquisition in `create_real_mr` fallbac=
-k path causes a refcount underflow upon MR destruction.
-- [Medium] TPH hints for pooled MRs (FRMRs) are stored in metadata but neve=
-r programmed into the hardware Memory Key Context.
-
-Pre-existing issues:
-- [High] Deallocating an ST index leaks the `mlx5_st_idx_data` structure in=
- `mlx5_st_dealloc_index`.
+- [High] Stage 2 test failure due to re-creation of preserved KVM resources=
+ (memslots and vCPU)
 --
 
-commit 0757112498e4ebc4a6ffc6fad46c40d302a22056
-Author: Zhiping Zhang <zhipingz@meta.com>
+commit 323482e513bb6a4836ceedaaec02c412bc10f974
+Author: Tarun Sahu <tarunsahu@google.com>
 
-RDMA/mlx5: get tph for p2p access when registering dma-buf mr
-   =20
-This patch wires up mlx5_ib to query the exporter's chosen PCIe TLP Process=
-ing
-Hint (TPH) Steering Tag at MR registration time for p2p access. It uses this
-metadata to program requester-side TPH on the outbound mkey and translates
-exporter-provided steering tags into local ST entries.
+selftests: kvm: Add guest_memfd_preservation_test
 
-> diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5=
-/mr.c
-> index e6b74955d95dc..7aced3f554561 100644
-> --- a/drivers/infiniband/hw/mlx5/mr.c
-> +++ b/drivers/infiniband/hw/mlx5/mr.c
+This commit adds a new KVM selftest to verify that guest memory backed
+by guest_memfd is preserved properly across kexec via LUO. It introduces
+a two-stage test to save state before kexec and verify it afterwards.
 
-[ ... ]
-
-> @@ -335,6 +364,7 @@ static int mlx5r_build_frmr_key(struct ib_device *dev=
-ice,
->  		get_unchangeable_access_flags(dev, in->access_flags);
->  	out->vendor_key =3D in->vendor_key;
->  	out->num_dma_blocks =3D in->num_dma_blocks;
-> +	out->kernel_vendor_key =3D in->kernel_vendor_key;
-> =20
->  	return 0;
->  }
-
-[Severity: Medium]
-While the steering tag and processing hint are stored inside the pool key h=
-ere,
-is there any code that actually extracts these values to program the pcie_t=
-ph_en
-bit or steering tag into the hardware Memory Key Context during FRMR creati=
-on or
-UMR WQE posting?
-
-It appears that pooled MRs silently fall back to default non-TPH routing.
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_preservation_test.c =
+b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+> new file mode 100644
+> index 0000000000000..c0a20e788ba79
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
 
 [ ... ]
 
-> @@ -755,6 +788,12 @@ static struct ib_mr *create_real_mr(struct ib_pd *pd=
-, struct ib_umem *umem,
-> =20
->  	xlt_with_umr =3D mlx5r_umr_can_load_pas(dev, umem->length);
->  	if (xlt_with_umr) {
-> +		err =3D mlx5_ib_get_frmr_st_handle_ref(dev, st_index);
-> +		if (err) {
-> +			ib_umem_release(umem);
-> +			return ERR_PTR(err);
-> +		}
+> +static void run_stage_2(int luo_fd, int state_session_fd)
+> +{
+> +	int retrieved_vm_fd, retrieved_gmem_fd, session_fd, stage;
+> +	struct vm_shape shape =3D VM_SHAPE_DEFAULT;
+> +	const uint64_t gpa =3D SZ_4G;
+> +	struct kvm_vcpu *vcpu;
+> +	const int slot =3D 1;
+> +	struct kvm_vm *vm;
+
+[ ... ]
+
+> +	retrieved_gmem_fd =3D luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
+> +	TEST_ASSERT(retrieved_gmem_fd >=3D 0, "Failed to retrieve guest_memfd f=
+ile descriptor");
 > +
->  		mr =3D alloc_cacheable_mr(pd, umem, iova, access_flags,
->  					MLX5_MKC_ACCESS_MODE_MTT,
->  					st_index, ph);
-> @@ -769,6 +808,8 @@ static struct ib_mr *create_real_mr(struct ib_pd *pd,=
- struct ib_umem *umem,
->  		mutex_unlock(&dev->slow_path_mutex);
->  	}
+> +	vm =3D vm_create_from_fd(retrieved_vm_fd, shape);
+> +
+> +	u64 nr_pages =3D 2048; /* 8MB is plenty for slot0 pages */
+> +
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0=
+);
 
 [Severity: High]
-Does this create a refcount underflow for the ST index?
+Does this ioctl fail with -EINVAL because slot 0 already exists in the
+preserved KVM VM with a different size? The preserved VM from stage 1 retai=
+ns
+its kernel-side state, which we attempt to blindly re-create here without
+respecting the preserved state.
 
-In the else branch (when xlt_with_umr is false), reg_create() is called
-and embeds st_index into the MR's kernel_vendor_key, but it misses calling
-mlx5_ib_get_frmr_st_handle_ref() to acquire a reference for the steering tag
-index.=20
-
-Later, mlx5r_handle_mkey_cleanup() unconditionally extracts st_index and
-decrements its reference count via mlx5_ib_put_frmr_st_handle_ref(). Droppi=
-ng
-a reference that was never acquired can lead to a refcount underflow and
-premature deallocation.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/n=
-et/ethernet/mellanox/mlx5/core/lib/st.c
-> index 997be91f0a135..bf14a7a6df15e 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> @@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
->  	kfree(st);
->  }
-> =20
-> -int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem=
-_type,
-> -			unsigned int cpu_uid, u16 *st_index)
-> +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-> +			       u16 *st_index)
->  {
->  	struct mlx5_st_idx_data *idx_data;
+> +	kvm_vm_elf_load(vm, program_invocation_name);
+> +
+> +	for (int i =3D 0; i < NR_MEM_REGIONS; i++)
+> +		vm->memslots[i] =3D 0;
+> +
+> +	struct userspace_mem_region *slot0 =3D memslot2region(vm, 0);
+> +
+> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_siz=
+e);
+> +
+> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZ=
+E, NULL,
+> +				   retrieved_gmem_fd, 0);
 
 [Severity: High]
-This is a pre-existing issue, but does this lead to a memory leak when
-deallocating an ST index?
+Could this fail with -EINVAL because modifying an existing private
+KVM_MEM_GUEST_MEMFD memslot is explicitly forbidden by KVM?
 
-In mlx5_st_alloc_index_by_tag() (or previously mlx5_st_alloc_index()), a new
-struct mlx5_st_idx_data object is dynamically allocated with kzalloc_obj() =
-and
-inserted into the st->idx_xa XArray.=20
+> +
+> +	for (size_t i =3D 0; i < GMEM_SIZE; i +=3D page_size)
+> +		virt_pg_map(vm, gpa + i, gpa + i);
+> +
+> +	vcpu =3D vm_vcpu_add(vm, 0, guest_code_phase2);
 
-However, in mlx5_st_dealloc_index(), when the reference count drops to zero=
-, the
-entry is removed from the XArray using xa_erase():
+[Severity: High]
+Will this call fail with -EEXIST since vCPU ID 0 was already created
+in Stage 1 and remains preserved within the retrieved KVM VM?
 
-    if (refcount_dec_and_test(&idx_data->usecount)) {
-        xa_erase(&st->idx_xa, st_index);
-        /* We leave PCI config space as was before, no mkey will refer to i=
-t */
-    }
-
-The dynamically allocated idx_data pointer is never freed with kfree(). Bec=
-ause
-userspace can repeatedly trigger this leak by creating and destroying DMA h=
-ints,
-can this serve as a DoS memory exhaustion vector?
+> +	kvm_arch_vm_finalize_vcpus(vm);
+> +
+> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184211.2229=
-399-1-zhipingz@meta.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
+827-1-tarunsahu@google.com?part=3D9
