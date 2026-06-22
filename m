@@ -1,193 +1,155 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11FF34BA49;
-	Mon, 22 Jun 2026 20:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8F534C130
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 20:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782159740; cv=none; b=WG+QltCsL7aQOlV+wRWtSWhbR82FBhXYgjGEyNkK+D09cVqg9LD+57wBziiMKR/75a995vsrwJHwaqt5UZLinP6Wz3DqEfdHXO/bH2z2HB69kO2P0XkoyouoOaMMseaStFeP8VFkWrzmPK08A9b5SUSdnIh4c2dT66TzQ8deyKA=
+	t=1782159806; cv=none; b=TWmNc7CeslPWpIv+JJxK1+X6D3uOhYAzXx7Y+LZaoZnpLXQuqTuQVkBGVATU8J3BXJX9MdT3C0kHCrLSkI0+gGv5+Wnw01TqmUrPZAkKEBJ9OznkNPDKIDfC3xZN9W+HAsvyo7MfglJnDx58vD7f79uI5fkiQ3ilbqjEKZzqmeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782159740; c=relaxed/simple;
-	bh=mBh4tOjGf3YdcuVaSsP/xt8FVXO1dJq9vXwmsdJ/K78=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DS8MzZaHrxyAnUFQOzDWSTa0BaOg0bM9GfghUoZ6RtkGZXtIDplRnkoWdlG4Jd76kuu4r2rrj+hgfNEX6QQd0ORUxMOXOfn24v2+1jSQX5cq2K3kPx5tuKGR8QrsPA45Rj5rLAwrsB2LXkS796Vip4whC1VQsVyAZWLIEONrtMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=OFXdMoes; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ILCCOKJb; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1782159806; c=relaxed/simple;
+	bh=GOCXVxUweLMnCkGmSJWoVQbh5WYUAviYOfgNB9Y2gbE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f9nsyz+QrsgFnKpw9GYIXdwP6Ifrd/EYPP1ItM51AeA8VsBOUnCA5Zc5Nbg81jrOnZElyipxGYQIkVMBG8kOOjvu8tZ+PAKP0GJMMaPkdGw5271RV7ljpRy+Cm588/jCoWPZjZbjhi/6G7oXblfqGvSDqYz5k/4FEPZIv5UDeCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KJWrlGZq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hKgRajIy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="OFXdMoes";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ILCCOKJb"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id E869D1D00023;
-	Mon, 22 Jun 2026 16:22:17 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 22 Jun 2026 16:22:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1782159737;
-	 x=1782246137; bh=FAL8dhxtWWHEyHTTSbbz9HNANOHRDrNII3W7xSFk9a4=; b=
-	OFXdMoes4RR63io6xlt1HkGQLTn8w6O/FPS5OObUBWP9fQKmEJuKRVAfL5Sf/8Sk
-	3sUhEuPwqhAekbzYMrTRd6jEK3DS2wVYd6KTuj5A1Y5eJqRwhuT1yBMEURMvSqEC
-	JUGyZoXVBKrNRBupd35AIaGV8xEmhdrzveedNmSXTimwFcH9dDDNo+0mq7fUmOqy
-	C4SDOE3HCzwx46pLhNrMcZBV5BEaCNfX9QCXc/0/7rf8Q9de/1HnQsgZQ86SAta1
-	FZHzcd9leeYeWh1pKheQxY3wYg0cF8S0bzM8VWvATOJeNTthY0Io5IO7uGEKSGcF
-	q9GiwCN11/R3jDSsMr+1Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782159737; x=
-	1782246137; bh=FAL8dhxtWWHEyHTTSbbz9HNANOHRDrNII3W7xSFk9a4=; b=I
-	LCCOKJbOHIeBhU7pgDL4uSS2TaOrPd32Ql6PW4fQZKarbqKNK+otPnCo65xRDuN2
-	UCp96cMa0xf6bGMkqUV8eSue+7jhrqPnm+sXqY2lb811hQidaydLIpAJ/wP8kx2O
-	4ny/h4uWdbPjUzBJTLxorwcgDt0bJ/QUmJkid/SRZBRjMvCgYGjcq5ABLzO6HwnR
-	jrM43HGBMyBpKbm8DXwYpJM8ysHNrE9/8A7KcxVZd7fgc3EHSkfskX8fD2NTKefu
-	2GI22d3FMMxnk/5fENWB93hTFE2X/AflAAafQCe6nZZDFDwWmhIAkr/H19Dv/nMv
-	BRSFgy5QmP2tGjspMATlw==
-X-ME-Sender: <xms:eZk5at-YDSTmkH203cI6bsL2nfdH7SRSMI8IakVAQb17W-vwI2GFLg>
-    <xme:eZk5ajEI0UIN92rsdMwKNbQSfQrV-E6HyrvnBbZmikfpiz4gh00YXS8TWfsddM1IO
-    mj2oz08axE72R1IgTSwySG6F-RjCBn49GcK_2CZNO5lJ41EytkC2Q>
-X-ME-Received: <xmr:eZk5akRCP-fyJyYRP3IrLwD-Oo_2EbXxoe2cQ7AW-bgO2hc-q4Y2HHFdXKE>
-X-ME-Proxy-Cause: dmFkZTGkjo92nJiVUshrgMAFTRCUY1gJfONNyQjyZ0s04zPW9OqQKj2Iug6vqz7+57aCzP
-    3bmGyjaFS5OlkQsJdJFM7bwyGbDqdt0WdUy+o7YVTy2btnhAztQASYt/5DD2uqG+FKp496
-    jMoV4vOKbym2mPzzwENlMy26X+CW6zh9WCnwghsPL57VHHWIixAT+DbaTxJX7YYa148vqO
-    jsvaIbj0wIdrceWmFeTOJdor1DXP6ywxIrcDhbkErBLpUX40qlykvhByxl7fXzBhiphYT2
-    Oz46MbsdJuyfE5UPPazsR2LEJM082U9DJiL2h6CzFDLNcaJHK0a5oaNnZ3cSyrleSihtHK
-    9IGIurn4csbYmPw6IHgWs1XjrKMayL/fyvcp1YC3ps4nFk6/zbZhkC/IQyFOAXBIcKarXQ
-    hu4JwQ7ZfEQPLey50H8uWcXZ9usC0ycu/07ipmI+vdum7rrnxo1u5iFtAvy3irE5t5arok
-    tPQ0964oMZq5oKPFCrDk45l6NbNjSncXRfANLfh7WcvXcT+wxL8r5rDPhPB9l7JGWkpt0c
-    748mX9MhuNR7E0z+fHZCOEUZt7wCzCJmnGpK05AJ5vQIqjssD6o6IjDu5DStsxIifcXPEz
-    WzhzhT5OcNFotqXtWPJgX0+pZvbTdhHpO7rD2547vr82g/QVfRrlzFW7iTFg
-X-ME-Proxy: <xmx:eZk5apsFH16KpNHSvW0YeTlkVrds--ZOYNMtUTVPLJy89f2XebPoZA>
-    <xmx:eZk5apCuyJzklTvXOB4t-v6TEBJxQkV5RQ4dsWpbSb7WlEuaxthWwQ>
-    <xmx:eZk5aucQ6--a_I0_jCvWpJjOufHWMU01UFcH_4q_F5t5CmjRTrUJnQ>
-    <xmx:eZk5apoOKfHU8R7KrA088h_kCYlPVF3UB6WS3zsrplhSB2ZYymV5Dg>
-    <xmx:eZk5arM_uwvpf0HlGsLnTlR_o6sWWKaNJgTt_RZ8deLMQ49bufO4wbK2>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 Jun 2026 16:22:16 -0400 (EDT)
-Date: Mon, 22 Jun 2026 14:22:15 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Omar Elghoul <oelghoul@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
- farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v4 3/4] vfio-pci/zdev: Add VFIO FMB device features
-Message-ID: <20260622142215.2446486e@shazbot.org>
-In-Reply-To: <20260612181048.91548-4-oelghoul@linux.ibm.com>
-References: <20260612181048.91548-1-oelghoul@linux.ibm.com>
-	<20260612181048.91548-4-oelghoul@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KJWrlGZq";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hKgRajIy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782159804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CPEP6gHhqNKJhrtW+PUpBGCpELK13U8EoAVNjsbwg7M=;
+	b=KJWrlGZqIc6M/vOsPByFkrbbCjhoux+zabjb0Es+qeSNZTHrkIPGKLtUDHmMSsotefms/y
+	nGPBWZdNYYENxAI7wB3eEC6XgmVCsJQdkst8ucmOfgWwVsRLZeok2ru2ufRuwWXyDIqV+j
+	taDwcueRY41bUncb1AYAGQg6M5OeIqw=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-21-WZecYUCxM2q3HLbokIyV8w-1; Mon, 22 Jun 2026 16:23:22 -0400
+X-MC-Unique: WZecYUCxM2q3HLbokIyV8w-1
+X-Mimecast-MFC-AGG-ID: WZecYUCxM2q3HLbokIyV8w_1782159802
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8cecf8bb835so81579286d6.1
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 13:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782159802; x=1782764602; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CPEP6gHhqNKJhrtW+PUpBGCpELK13U8EoAVNjsbwg7M=;
+        b=hKgRajIylfdD70gdbvaOAyCQme3lE2ui0P/3t1fhL/MTtjWs6pm6N8MApfrYs/3zcb
+         jYup1nQxQfTJg0eYXlwrAqGvGH2pp2TCsK0iqxPr/YStl+jk0lXBE/YRd5ZfegqZXjm6
+         JYPanCaMRVaVl8TdUgcJXXlrgErmEjnYqfDhFfibWBqv/zVE7BmEJp+FW30WH+nJzCX9
+         HKwgcHZzZQ5q0BHVFqaZp7fKaHyY2zxPD0lMNs3kBqjKwnIXrt5j2q5BOWZHkj5eGEtl
+         Mhda9buIIy75040R2WK5nI6/xM9+qmqvGkQAez31NmvOby4wjepT7EWVOO3xCqsqEg+Y
+         ikDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782159802; x=1782764602;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CPEP6gHhqNKJhrtW+PUpBGCpELK13U8EoAVNjsbwg7M=;
+        b=iE2jibEdJ07xZKKpDXQHPav/jDOgYRF0MbW23q9YfFeNGoy8e+V5sd0kPL5vj4e7D7
+         Gb19JyIPs4MxvdCOOhOr9RKe2baoIkMANrOn726zsD/ZKTajFOOSukOYHQdSZMXYu6Dd
+         yCH49vHWHkfAvUWMrkEyrJcK7J5j2WVUmnQ0R8SEqwGoiCKxUdceBPU0oKP/XicmK3/X
+         YbKx3tNbaVKfS/FMl5ySzpyCdRjSFftFvODTHaKLYL6RwtjYvvYn/2Aq8LL7ekX4b9eX
+         IvG7EfHJqgaheMoLqsGrLvGjpxIM4dMIFZAdjU9hNb6HUbaZIXVCpyPjpIF8xMmW9o/a
+         enEw==
+X-Forwarded-Encrypted: i=1; AHgh+RpU0szqsmvCaq+ybayhKTeyjvfCq1gSWIdx98zDk9IvyjdVYNW1u4pyZuq2VjQWNvXLNyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQY0QHr9a8/ZlT+GSKrm2rKWA/vYsyMCpgaV80HafdtLxDbSSK
+	AvFBg32Jm8PLz+GhYy0tQJB5Sws1z0mW/d9zSxd6U+KMyhWbdZ69XXSxsltvXZWoZpElh0q2L+d
+	ltIfK7LFy8pZxRhVP8+yVlmYmXN5arqO37xImpj5D95qdXzrEowzJ3g==
+X-Gm-Gg: AfdE7cmdnS+ujpfIDokt8bhdihmIxVKCEcpyW/NpHTLDezSOpJPmpbWd16VoQZAuKTP
+	3g3xnl+uKcy8M62cM6xZtpREA2vpXnWCExvY1PJcfmOuCzWcqQjNmT1a4+J5T8f4nZEtnqlWEvK
+	uZOlE9h/dqp3HDCTJc0Q+ULVUY3KejOph7SW8DUfE8QSgzgwP5TwhxOfIkt2OXPWKvx1bjbNQy0
+	LFi35TQYiQsHwj4Zc1jZlU2SSYB+w3UaXBHGpfyfMaCHvPQ/QoiHtLL8CEM12oE+cWo7P0yvJR5
+	pUhEEIS3924KbusRr++OXVmAKxE/p85ABwm9Hry1yZNvz25/Dw5Je4G+5ZkMFOn6X9WC6C1UZZM
+	UdWo0
+X-Received: by 2002:a05:6214:e6f:b0:8ce:f1b:74ea with SMTP id 6a1803df08f44-8dea3ae3fe8mr249639356d6.24.1782159802118;
+        Mon, 22 Jun 2026 13:23:22 -0700 (PDT)
+X-Received: by 2002:a05:6214:e6f:b0:8ce:f1b:74ea with SMTP id 6a1803df08f44-8dea3ae3fe8mr249638636d6.24.1782159801550;
+        Mon, 22 Jun 2026 13:23:21 -0700 (PDT)
+Received: from x1.local ([174.91.117.157])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81cde303sm105884836d6.25.2026.06.22.13.23.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 13:23:21 -0700 (PDT)
+Date: Mon, 22 Jun 2026 16:23:09 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthony PERARD <anthony@xenproject.org>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Reinoud Zandijk <reinoud@netbsd.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 0/3] migration/ram: Abort on unsupported migratable RAM
+ changes
+Message-ID: <ajmZrT1d0QXCWTNq@x1.local>
+References: <20260611-ram-v1-0-a2dacf699718@rsg.ci.i.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260611-ram-v1-0-a2dacf699718@rsg.ci.i.u-tokyo.ac.jp>
 
-On Fri, 12 Jun 2026 14:10:47 -0400
-Omar Elghoul <oelghoul@linux.ibm.com> wrote:
-> +int vfio_pci_zdev_feature_fmb_read(struct vfio_pci_core_device *vdev, u32 flags,
-> +				   void __user *arg, size_t argsz)
-> +{
-> +	struct zpci_dev *zdev;
-> +	struct vfio_device_feature_zpci_fmb_read fmb_read;
-> +	int ret;
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET, sizeof(fmb_read));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	zdev = to_zpci(vdev->pdev);
-> +	if (!zdev)
-> +		return -ENODEV;
-> +
-> +	guard(mutex)(&zdev->fmb_lock);
-> +
-> +	if (!zdev->fmb)
-> +		return -ENOMSG;
-> +	if (copy_from_user(&fmb_read, arg, sizeof(fmb_read)))
+On Thu, Jun 11, 2026 at 03:35:47PM +0900, Akihiko Odaki wrote:
+> Supersedes: <20260604-migration-v1-1-cef4a5b1bbdd@rsg.ci.i.u-tokyo.ac.jp>
+> ("[PATCH] system/physmem: Assert migration invariants")
+> 
+> ram_mig_ram_block_resized() already aborts migration when migratable RAM
+> is resized. Extend the same handling to other unsupported changes to the
+> migratable RAMBlock set, such as removing a migratable RAMBlock or
+> changing a RAMBlock's migratable state.
+> 
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> ---
+> Akihiko Odaki (3):
+>       system/physmem: Pass RAMBlock to RAMBlockNotifier callbacks
+>       system/physmem: Notify RAMBlock migratable and idstr changes
+>       migration/ram: Abort on unsupported migratable RAM changes
 
-No need to do this or the test below under mutex.
+Thanks for looking at this, Akihiko.
 
-> +		return -EFAULT;
-> +	if (!fmb_read.data)
-> +		return -EINVAL;
-> +
-> +	if (copy_to_user((struct zpci_fmb __user *) fmb_read.data, zdev->fmb, zdev->fmb_length))
+I understand this is a protection to the system to trap error use cases.
+The question I have is do we have any possible way to trigger these.
 
-The v3 comment noted we could do this, but really keeping the buffer
-and doing the copy_to_user after dropping the mutex is really the
-better option.  Sashiko also notes[1] this as a high severity issue.
+I worry we add a bunch of code and notifiers, and then there's zero way to
+trigger, essentially add dead code.
 
-Should also use a u64_to_user_ptr() on the user data pointer.
+Logically we could already add assert() on things we don't expect to
+happen.  This case might be slightly risky, but still I think we can also
+consider things like error_report_once() instead of introducing slightly
+complex notifiers just to cover what we think shouldn't happen.
 
-[1]https://sashiko.dev/#/message/20260612182854.97E641F000E9%40smtp.kernel.org
+Or do you have way to trigger any of these notifiers?
 
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 5de618a3a5ee..97e0f857fe4f 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1534,6 +1534,35 @@ struct vfio_device_feature_dma_buf {
->   */
->  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
->  
+PS: today I went back and I wanted to try how the existing resize()
+notifier would trigger, I can't even reproduce it with David's example
+here:
 
-These next feature indexes are in contention, so we need to think about
-how this gets merged; the whole thing through the vfio tree, the s390
-bits through s390 tree with a branch exposed for me to merge to vfio
-before applying this change, or the whole series applied to a clean
-branch and merged into both the s390 and vfio next branches.  The first
-two options give me the most leniency in adjusting feature indexes
-based on what's already been merged at the time.
+https://lore.kernel.org/qemu-devel/20210429112708.12291-1-david@redhat.com/#t
 
-> +/**
-> + * Upon VFIO_DEVICE_FEATURE_SET, enable or disable FMB for the VFIO zPCI device.
-> + *
-> + * enabled is treated as a bool, so any non-zero value evaluates to true. This
-> + * feature fails on attempt to double enable/disable.
+I can trap a qemu_ram_resize(), but that's invoked with newsize==rb->size,
+so it didn't really notify a thing.  I don't really know how to trigger
+ram_block_notify_resize().  If you know, please share.
 
-Same inconsistency noted on patch 2, it seems that it starts out
-enabled.
-
-> + *
-> + * Returns: 0 on success, -1 and errno set appropriately on error.
-> + */
-> +#define VFIO_DEVICE_FEATURE_ZPCI_FMB_ENABLE 13
-> +
-> +struct vfio_device_feature_zpci_fmb_enable {
-> +	__u8 enabled;
-> +};
-> +
-> +/**
-> + * Upon VFIO_DEVICE_FEATURE_GET, provide FMB passthrough for VFIO zPCI devices.
-> + *
-> + * The user-provided buffer must be at least fmb_length large, where fmb_length
-> + * is reported in VFIO_DEVICE_INFO_CAP_ZPCI_BASE.
-
-Is there a spec reference for the opaque data blob provided, or at
-least reference to kernel structure documenting the layout defined by
-some firmware reference?
-
-> + *
-> + * Returns: 0 on success, -1 and errno set appropriately on error. errno==ENOMSG
-> + * when the FMB is not enabled.
-
-This sounds like a user sequencing error, so should it simply be EINVAL
-or ENXIO?  ENOMSG almost sounds like we're tracking the samples field
-to make sure the user hasn't already read the current sample.  Along
-those same lines, should this document some mechanism for dealing with
-torn samples since we might be relaying the sample structure mid-update?
 Thanks,
 
-Alex
+-- 
+Peter Xu
+
