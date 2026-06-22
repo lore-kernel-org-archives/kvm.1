@@ -1,151 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C47A346E74
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154C1346E74
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154468; cv=none; b=R/YmWS0VvQw6i1Jbxi0IZ1IIydZ6+TfFZvGaurEIZIyamFENv2YLHm/27n2P9yyQt+FaSIzGk7/Lt2NaS7ktBj0jILOunMVU96gEq6jq9ypP9A74uN2UKHQKELpKW7RN9VZw27kfSXLZ21Td0x3cfw3zaS3TK9ZFcM5tuFm3bL0=
+	t=1782154557; cv=none; b=XxCwuizD5cJ68PfdDXdu2Izoji9J9qbtkvOmIR9mGZClNW3Fjjz2i4W/+Zqbvs4phKE1L+elWAVMd01NEnPyISPxbC1sgN5+owsT2pumhoy2PoFhVHRPaXgHwocqdpMJkoZVR+TRofQQYlZC3E2onDdr3GFEEOIfRLz5CpPVpYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154468; c=relaxed/simple;
-	bh=oxI82DHN5xeiIY+WOKZpA1FTn3dT3Cm30qhtpPIlQn8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OyMm3EyUq/dI38uWiFtcwdzDYOEUbf8QKeJK0pBg92xVB3/RogpnCCB95CAlS0GE4m2+y+/ZfWywuRf3Unko5R52M9ANrhvjPcXjVlAEnqptV4iM3VJ8Nh64lEI7hhkVn2W0PaBzRyaaz/QVHOJAgOGxiq8NtxquAt4R1X1nNvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bj3sYpgz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782154557; c=relaxed/simple;
+	bh=Lq9Vsdtmw9mWQ8fpK2xIbVncRHl92ljreJitSqndqng=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZoIgCYBBCF3Lw8utskYI3ltEEwp/PD6E5k66cGdraL7z/zOkzsxq46DHksKxEO7FAOaEFKJ0OVGo2I4r1qW9oIT+Ti5d6WZdWTppTJAjWZLnAmwT9g+ueEX8pz7Q6amelXujgPMBCjJ0J5+7/bCDCL2N2CHDqbycpibf+sipSr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S6Hmr2xB; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bj3sYpgz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2365D1F000E9;
-	Mon, 22 Jun 2026 18:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782154467;
-	bh=+jjC+pyHut0x83HuPHbsziGjiF0368diRjnVBJNGBaM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Bj3sYpgz2Ap9IJvyX2EFVt5GC/OYES80Ukg1M3Pp0lmued9cjMIsQDYJ0a8sr1lxV
-	 fq1E/M4CcwU/yhdXozWTX3eImCe9G9mEGBQPwQ3Vvta8TZei8CJozW8uqcL86LErBC
-	 dxCfKYJohxcSlgRZPcOHN+wOVn+MGEj8e8T1O9nhjQWF+Wtq0u2big1nxfO34nqoZ0
-	 jD06iq0lf6sr1fSbfOG3U8rHwVUTZtSC2P7aIRP4VhyF1DOjiF3ZI4GtGwh8jSphvo
-	 v6X+GRcus2ZEXN+obKkgJIhksxSMIJ9N7vuVk3CL3a6rE4226DNMHp2VL3KGMJ8B+4
-	 QNC+Dq8BGq77A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 7/9] docs: add documentation for guest_memfd
- preservation via LUO
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622184851.2309827-8-tarunsahu@google.com>
-References: <20260622184851.2309827-1-tarunsahu@google.com>
- <20260622184851.2309827-8-tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 18:54:26 +0000
-Message-Id: <20260622185427.2365D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S6Hmr2xB"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-49245e10b73so17294235e9.3
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782154555; x=1782759355; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nac52aGX3C1Hx+TvqYDuAOPnfxayVFA5kQK+3l4OkYQ=;
+        b=S6Hmr2xBTY1BpgDDwcStkzbIak+eG/e9ZXsQsdQtXL7isoBIJBpsNEcxdhb/f9HvjW
+         QOkWxnBWKQq34Q4UuKHAGgFT4B++TwRAIt6BpO3KebvOCLj+Cq8UAkVlcod8xuOdKW4i
+         uyxaAsHMiWDJt3woRO5N7Ur1JTi+XuA/ZYIuPpHlgpHzdlG+0SOrjp7dLShpHa4LTeDS
+         tOr0c5sF8eKYqVJG+K3RRydLZ5gnttfzJLnduaEnHm8iOyodejPZCFb2j95Ne/WbdJz2
+         45jsqQRj8q69w2OcMDbITBQo3Oxm/IWg2DF5hkU1hZUmxiFt2x3OrmU68vp8J2huwG/s
+         I58w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782154555; x=1782759355;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nac52aGX3C1Hx+TvqYDuAOPnfxayVFA5kQK+3l4OkYQ=;
+        b=rNOxmhel8l3h9bCDLQ/S++M+SttPnL9kmbGgE6J4xZVaieuuW4KTad3b6FLrA3/hlK
+         suFEXqTD4WM5BEznKwx68enQ8oz/WmENaCAr4wzLBaePQ7YkFCmo1mfHGgTrzdFIpOS7
+         Ufbd/koZ+3qEBwJ+pquUDtjJpymlZmc35qkaBqxbKKsLww3ASFR3Zd86PZQ8iTF2s21a
+         KxAwyOB4+KdrLJIR2a8+AlJP7YugBqeLhg6rIaS9yEktezxK0WZyIalVyFelBcNC5wG1
+         6UQGWHqJSOaFgVUnqL+aHKIxIbIWeLl/BIh9Z+p10MqhBzxy67uDR/CrOider8gybese
+         CHvg==
+X-Gm-Message-State: AOJu0YwQE4CvbYJK0VKtn9Z3YjWkSXAx43usfvXC0rrZTR5lQVA/8uAP
+	WWoh+wQxjiAvOFI2Eodx5VnUY6s5pTE/je7PucP/O2YOKc42iUxVn+cP5qtaAkuYCMBgPxG+lYx
+	N5uVZfO95I16rf0O6bw==
+X-Received: from wmbg28.prod.google.com ([2002:a05:600c:a41c:b0:492:413d:b354])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3516:b0:490:c2a2:e91c with SMTP id 5b1f17b1804b1-4924258fbbdmr240564905e9.34.1782154554506;
+ Mon, 22 Jun 2026 11:55:54 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:55:53 +0000
+In-Reply-To: <20260622184851.2309827-1-tarunsahu@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260622184851.2309827-1-tarunsahu@google.com>
+Message-ID: <9huzwlvqqu9y.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v3 0/9] liveupdate: kvm: guest_memfd preservation
+From: tarunsahu@google.com
+To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, seanjc@google.com, 
+	ackerleytng@google.com, aneesh.kumar@kernel.org, fvdl@google.com, 
+	sagis@google.com, david@redhat.com, dmatlack@google.com, mark.rutland@arm.com
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The patch includes an undocumented logic bug fix in C code while=
- being labeled as a pure documentation change.
-- [Low] Typos and grammatical errors in the new documentation.
---
 
-commit eb552713cd5f980d69c6b422467b4dfbb265bad1
-Author: Tarun Sahu <tarunsahu@google.com>
++ Adding More people to the series (To:) which I missed in my original message.
 
-docs: add documentation for guest_memfd preservation via LUO
+~Tarun
 
-This commit adds documentation under the "Preserving file descriptors" sect=
-ion
-of LUO's documentation. It describes the requirements and limitations for
-guest_memfd preservation.
+Tarun Sahu <tarunsahu@google.com> writes:
 
-> diff --git a/Documentation/liveupdate/vmm.rst b/Documentation/liveupdate/=
-vmm.rst
-> new file mode 100644
-> index 0000000000000..8353e236471d2
-> --- /dev/null
-> +++ b/Documentation/liveupdate/vmm.rst
-
-[ ... ]
-
-> +Scope and Limitations
-> +---------------------
-> +
-> +At this stage, the scope of guest_memfd preservation is restricted to:
-> +
-> +1. **Fully Shared guest_memfd**:
-> +   This time only fully shared guest_memfd supported. Any system that
-> +   supports coco vm (which uses private guest_memfd), will not support
-> +   the preservation.
-
-[Severity: Low]
-This isn't a bug, but there are some grammatical issues here. "This time on=
-ly
-fully shared guest_memfd supported" seems like it should be "At this time, =
-only
-fully shared guest_memfd is supported". Also, "coco vm" should probably be
-capitalized as "CoCo VM".
-
-[ ... ]
-
-> +Retrieval Order
-> +~~~~~~~~~~~~~~~
-> +
-> +Similarly, there is no strict ordering required for retrieving the VM
-> +and guest_memfd files. Any file can be retrieved at any order.
-> +
-> +If guest_memfd file is retrieved and VM file is not retrieved, and
-> +luo_finish is called, then vm_file will be lost and guest_memfd file
-> +will be hanging around.
-> +
-> +NOTE: Before Initiating the preservation/retirval, it is necessary to ma=
-ke
-
-[Severity: Low]
-This isn't a bug, but there is a typo here: "retirval" should be "retrieval=
-".
-
-> +sure that the kvm module is loaded (/dev/kvm must be available).
-> +
-> +
-
-[ ... ]
-
-> diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
-> index c242b1d14c0ac..8411fe86dc2a1 100644
-> --- a/virt/kvm/guest_memfd_luo.c
-> +++ b/virt/kvm/guest_memfd_luo.c
-> @@ -119,11 +119,11 @@ static bool kvm_gmem_luo_can_preserve(struct liveup=
-date_file_handler *handler, s
->  	/*
->  	 * Only Fully-shared guest_memfd preservation is supported
->  	 */
-> -	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
->  		return 0;
-
-[Severity: Medium]
-Should this functional logic fix in kvm_gmem_luo_can_preserve() be split in=
-to
-its own patch?=20
-
-The commit message explicitly states this is a documentation change, but th=
-is
-modifies the condition for GUEST_MEMFD_FLAG_INIT_SHARED in C code, which
-violates the rule of one logical change per commit and makes tracking bug
-fixes difficult.
-
-> =20
->  	/*
-> -	 * It makes sure that no memory can converted to private
-> +	 * It makes sure that no memory can be converted to private
->  	 * even if it was initially fully shared (in-place conversions are
->  	 * prevented).
->  	 */
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
-827-1-tarunsahu@google.com?part=3D7
+> Hello,
+> This is Non-RFC patch series for guest_memfd preservation. After
+> having multiple discussion across hypervisor liveupdate meeting,
+> guest_memfd bi-weekly meeting, the design for the basic support of
+> guest_memfd preservation is final. This series is going to include
+> guest_memfd which are fully shared and does not support private mem
+> and backed by PAGE_SIZE pages.
+>
+> Steps to test:
+> 1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=y
+> 2. boot kernel with command line: kho=on liveupdate=on
+> 3. run the following kselftest
+> 	$ .selftests/kvm/guest_memfd_preservation_test --stage 1
+> 	$ <kexec> --reuse-cmdline
+> 	$ .selftests/kvm/guest_memfd_preservation_test --stage 2
+>
+> NOTE: Assert the following:
+> 	$ ls /dev/liveupdate
+> 	$ ls /dev/kvm
+> 	$ dmesg | grep liveupdate # (should have kvm_vm_luo &&
+> 		# guest_memfd_luo handler registered)
+>
+> The changes are rebased on:
+> 	kvm/next + liveupdate/next (merge) + [3] + [4] + [5]
+> 	Where,
+> 	[3]: luo: conversion of serialized_data to KHOSER_PTR
+> 	[4]: luo: APIs to retrieve file internally from session
+> 	[5]: selftests: liveupdate sefltests library
+> Here is the github repo:
+> 	https://github.com/tar-unix/linux/tree/gmem-pre
+>
+> V3 <- RFC V2 [2]
+> 1. Finalize the design
+> 2. resolve sashiko reported bugs
+> 3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
+>
+> RFC V2 [2] <- RFC V1 [1]
+> 1. Removed mem_attr_array as it is not needed for fully-shared
+> 2. Removed pre-faulted condition
+> 3. Added vm_type preservation for ARM64.
+> 4. Removed liveupdate_get_file_incoming api patch as it is sent
+>    separately [4] by Samiullah.
+>
+> [1] https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.com/
+> [2] https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com/
+> [3] https://lore.kernel.org/all/20260622111215.4157974-1-tarunsahu@google.com/
+> [4] https://lore.kernel.org/all/20260613012521.835490-1-skhawaja@google.com/
+> [5] https://lore.kernel.org/all/20260612214512.464146-1-vipinsh@google.com/
+>
+> Tarun Sahu (9):
+>   liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+>   kvm: Prepare core VM structs and helpers for LUO support
+>   kvm: kvm_luo: Allow kvm preservation with LUO
+>   kvm: guest_memfd: Move internal definitions and helper to new header
+>   kvm: guest_memfd: Add support for freezing and unfreezing mappings
+>   kvm: guest_memfd_luo: add support for guest_memfd preservation
+>   docs: add documentation for guest_memfd preservation via LUO
+>   selftests: kvm: Split ____vm_create() to expose init helpers
+>   selftests: kvm: Add guest_memfd_preservation_test
+>
+>  Documentation/core-api/liveupdate.rst         |   1 +
+>  Documentation/liveupdate/vmm.rst              | 107 ++++
+>  MAINTAINERS                                   |  14 +
+>  include/linux/kho/abi/kvm.h                   | 106 ++++
+>  include/linux/kvm_host.h                      |  14 +
+>  kernel/liveupdate/Kconfig                     |  15 +
+>  tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
+>  .../kvm/guest_memfd_preservation_test.c       | 236 +++++++++
+>  .../testing/selftests/kvm/include/kvm_util.h  |   2 +
+>  tools/testing/selftests/kvm/lib/kvm_util.c    |  26 +-
+>  virt/kvm/Makefile.kvm                         |   1 +
+>  virt/kvm/guest_memfd.c                        | 185 +++++--
+>  virt/kvm/guest_memfd.h                        |  44 ++
+>  virt/kvm/guest_memfd_luo.c                    | 497 ++++++++++++++++++
+>  virt/kvm/kvm_luo.c                            | 195 +++++++
+>  virt/kvm/kvm_main.c                           |  94 +++-
+>  virt/kvm/kvm_mm.h                             |  15 +
+>  17 files changed, 1477 insertions(+), 81 deletions(-)
+>  create mode 100644 Documentation/liveupdate/vmm.rst
+>  create mode 100644 include/linux/kho/abi/kvm.h
+>  create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+>  create mode 100644 virt/kvm/guest_memfd.h
+>  create mode 100644 virt/kvm/guest_memfd_luo.c
+>  create mode 100644 virt/kvm/kvm_luo.c
+>
+> -- 
+> 2.55.0.rc0.786.g65d90a0328-goog
