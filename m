@@ -1,155 +1,124 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C9430C177;
-	Mon, 22 Jun 2026 23:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCE7EEB3
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 23:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782170024; cv=none; b=mrk0MAUfz/SMf58oWvQb+IlUuThMsNN2yob4qO0CKlvhXuZa/blkIDMevAMHdi/0/A81wePSS9EGfr7Utom9Gtq1pIOBvMgSuEkqMcuIhChj0d6sJ9l2XlQAuvh+WpUvSaHmS3zVbVo6g5bMHwZitp1MTi+uSD6Pise1/OGnBTc=
+	t=1782170629; cv=none; b=WqwpPrQwR7ut4avoWxIBcnT2mKmk8UqAJt/bI9/x0MtYV4/qLUQ2/Fdgjdwoy+zoDGQwx6jp/zSRs9yNeJix0ceg9H/yzasp1Qda7QvMr/DD2cIYL/gO26QYQ5NFaYWGR9RQ+DClm8IJXP/iuUGzZLd12Hn1wMu9tTerGYJlsVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782170024; c=relaxed/simple;
-	bh=oh7A0RAI7tER7bqo8zvulV+7B3H4XJvkEeb7ZI9wWNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AQLKQpRxOwqd1ubtC915XBUeZUz3jWFzdr1t+i+t9N3jBJ+PGcsFJ12cOuXyTvL7P9KTk20PzKseBkE2eS8LqBAgOqlwGG9BYEuaOFDnxnxdgFDLjn4HTO280okSOWZFp+wHDyGPauS6CL3d+NCg40qpQEzl23TKy/segVBDIhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=WUziQHNE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OV4/ZkVe; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1782170629; c=relaxed/simple;
+	bh=iT76L4fVr9ilJU9xRM8ws1sAqll6cvyzaUE7RZDtkJI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=b7OAD5P//TERh6JmRKywaps3uPyoB5DdHq0EunepdS5p87WLxleXgWjuWKkzTckCKkExYs/r2IXdf40KrT+kNhvM/RSYgqMnRLc7sPCOgSN0yPnpQY3JPHG2FpzpkUoX22qBS0GD9ZOtuqfXVUDZgCq3Tgx/WcTUu0w7zVZ/qOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rwg9UTgA; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="WUziQHNE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OV4/ZkVe"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8D0601D0007E;
-	Mon, 22 Jun 2026 19:13:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 22 Jun 2026 19:13:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1782170019;
-	 x=1782256419; bh=uucNtPV0I4MmovhtQhP25ytZEAiupQRi/0ihEK8Rhgo=; b=
-	WUziQHNE7zVmdQgAmci+JZYcwo5KkO7QkV18LNAwi7KpDkmZNhnzcYFcpJ3s0i/M
-	vNREOL3IJz7PpYtITSnURTXJ57NoKKtI3p8VdnvvqSByGNgqwb1K7ZYv4LWzS4RA
-	eGv77QMZNsNPOKWuMvM1u/Y/vGWVhPMaP4pDOjOppZPTk4Lo8pCwb1U285lX0mlr
-	LU5wlhsrTvA9a/4vuG0IS2vA4/tzWFQ4hyAGJv1Ote0P448ilKVTwjoqLvmTgETJ
-	OwMJ5DwEQcB9yyC8YwngLajZNQPzFpYXW2VCjtXQQhw2J+Nfuchc5nhLAyh1pFhZ
-	DlkzfMuA+M+8++cskbekUg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782170019; x=
-	1782256419; bh=uucNtPV0I4MmovhtQhP25ytZEAiupQRi/0ihEK8Rhgo=; b=O
-	V4/ZkVegwfYWhFi0CV7x3abQDcI+EMvP45aV65xUXGtBskn14RQSorce+nkWRjYT
-	0vUGzsysby5GrQmfBqRPvk3q5Sw0hugavUFZKFpoMMgcv9AU1yvyy3W+nImUH7kS
-	SjZ9hUrIx21b1w8iKUk4ZoSZZ/hyni3dzn4Y4rW/Tn+KmJFahhUaGlLCJ1HEtbsZ
-	liIrrHtxpgMUXWhG1yE0zc/1ID7ryZkyO6/L5edSt0ZPnpaOSBMp3f1FUifbx8QE
-	yLCSp9BFxoc1A92qOC7tdkgtmNtqVDR+ZbZx8lN2afLKCauJBD5nDne8uBZD5W1f
-	9+CUmnJk4mdEJL7Aasgxw==
-X-ME-Sender: <xms:osE5amVAIHeztFw-x6Jk2cu55pC7pZjRmwM1b6KSRuWDVIR_KTwJvg>
-    <xme:osE5auT4VLIfXIAUlUSHsDevdDOku6mOhxO5YVA14ZP6wQU4fUtEtfDHpEMcONgLa
-    IyEYJJ6uwCk3lY4ms7SZGpQuP2VZ8TxsKa5tcvL7lJN_k22wfgP4A>
-X-ME-Received: <xmr:osE5alEqQwwWFiCYO4WZS1y5iWQi4KDBwYCSMyaTEHpytxplrQpDKe4ePGE>
-X-ME-Proxy-Cause: dmFkZTGuB1iEvMd+xObr0XHRyjLZ564bpkukI0Iv4VBGAc8kgQK8balQPxjO1J5KLzYhKR
-    605IkjMxDcJA3PQXGOzAsP/a2qqkAveVav1mQz9sz74ejDOcAB1nKTxQ7Az8dn9NDB7h8n
-    +L2GIz2S0KD7QFR9SCO4MwHg5bwilIvRQO7bD+P5oYMomqi4MEOeSdsCHP7Rf6V1uHGLX2
-    l7K4NU176pHC8FwN4H4t7mIC+q15Zr24Jg9CULQ0OPMN5s1BgXLPViD1WwvdGiaSncZTkr
-    vUvs/iZX+9xQgrK4KW+Mao1JDSNl0pLKn1jUH20f08qmwfuaHj/qztG6zl30Uq93PjoxQZ
-    wS77CvLYhcgPkDVyh4OTwLfcbYCQBsP49N/qo4B5pGr3VrP4wC3EX/HMbpI0o7tnDHb8Vr
-    dUC4KsTR3XohX349NH0qkcYTAnuTvQmU/XTH8vCSFrDenwTlit8BbuyrmZseJPmljYQw3o
-    PWcMojRyNylo1GmUE6eVDYC9by8NKCN+P0P1PQ5Ihrtv1L5gGdXsmSAS4/IA5pgOjuwoIi
-    NSBRh+8VABI8itiZZG5BczewX+sa5k66o9ZINFwJJwvHN0vYAKq36XZ/yTRhj3byJ0e9qU
-    HKnIZbA0Hu543idA6+zPiDc8rMNS/K44j7bYaQUhGnsbNgzDb/OZthtS+zpQ
-X-ME-Proxy: <xmx:osE5auQRdJ-u5l69g5wM4Vu2WcHAuhdDct942-89KQW2FN0yytXFAA>
-    <xmx:osE5avq1a6u06jjKTm1185wY59wOCaNiXYckcLCmpR46D3RNQpZi4w>
-    <xmx:osE5akoor8Je3GunK-NO3i0DgcNRVxJ6W3IxDvfEK4Pb1RMhly4orw>
-    <xmx:osE5ai32xmGiXLj6RW-XweJ-e7SwioBikp0RZ0FO4IbKQbCKHT5hNQ>
-    <xmx:o8E5al5-Lz15wn6QttNoyZquTps-g1qYfxAJNhiR6Nk3RW_7DR1N8Mu8>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 Jun 2026 19:13:37 -0400 (EDT)
-Date: Mon, 22 Jun 2026 17:13:36 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, "Tian, Kevin" <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>,
- Leon Romanovsky <leon@kernel.org>, Alex Mastro <amastro@fb.com>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
-Message-ID: <20260622171336.7d13f548@shazbot.org>
-In-Reply-To: <55ea7422-08d8-4c92-aa59-8ff6f9e9d781@ozlabs.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
-	<20260610154327.37758-7-matt@ozlabs.org>
-	<aixgZQiBQKgS7yIM@google.com>
-	<DM6PR11MB3690489DB5FA611413BF60558CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
-	<ajGbRE3WWJxNxcrg@google.com>
-	<BYAPR11MB3687AE280241C9E00B46FCF98CE42@BYAPR11MB3687.namprd11.prod.outlook.com>
-	<24f34e59-7c3b-4b56-83bf-cb07e3f369a6@ozlabs.org>
-	<20260619133116.GB278945@nvidia.com>
-	<55ea7422-08d8-4c92-aa59-8ff6f9e9d781@ozlabs.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rwg9UTgA"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0532a6588so43324645ad.0
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 16:23:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782170627; x=1782775427; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1l368LEMViqYsAYRY3CcxbJd6IIQZRI4794Ia7jsAaQ=;
+        b=rwg9UTgAjiLIC2oHa24cU4iyDCJ9lrnkotKyNmL7O5co46Xd4k8NdUKak4tqWshpj2
+         udMLpmUgTQQcRCAs+cPS3lvG3gArVLSZcS5nr9t9entKUJlhHTUgJgIqObmzxFglBk+l
+         mcN+lM4nIeeTfXRr00n0TkM3JW3iYAd2fCBwJMDSf+A21+nQgcNWGrhQ/4++iaoK5SkF
+         KB2Onx7BiK3y9M1VJsRIVp+Ip3GHalcqtAx5IH0JwQ8kZfPdloRA40rhrOM3MH+u+gXe
+         e6tUdAehgZRJy24W5Rn0Da1HuOQlmyemta+fbe8Se4Qz1OKpKFQj7xU65pp7MDu3RgDT
+         H31g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782170627; x=1782775427;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1l368LEMViqYsAYRY3CcxbJd6IIQZRI4794Ia7jsAaQ=;
+        b=s+DKEnLlARbhr4xo8yRz4dETeP2DP0DLxHZaO3NXSLMxKXItXSGP8IzYLP7lt5jnkg
+         n1gt7/ugh8bKsPWwmwKBTLkQD5pZAlgzvFdkh/KskNajOZIFDhJL8j0v33OJKJv8v+tA
+         n0fDcMVrfw5pugtnDrRijoUocO3ghoj5Lh7Jw8ltX7QP6GPwmDMj0a8umZQgZZxnLzn8
+         +VNXkAujbz8Jk92DoHSTbl7+ru58H/GI/4KAtuH2G6JPiJ0F1eExxM7I4g/Da/x0VON5
+         l+10G783YLiOubG9blgWb9huRjheTe353h67hvyoDxZmjiIE6IcUJngGVs9Qolud/MH3
+         U9rA==
+X-Forwarded-Encrypted: i=1; AHgh+RojHQMO70yO0mSKv7U4StDuhGsq49EwobTlTFuApzirt/cJdw4Hud1mI10m6vGq4XXGES8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAUvgv2+ULEF4v2/sGCSBQ6lMarTOcCMmiMzfUD0lEAGLPBQyl
+	tGRhkoBct0WP09/mE7sTmE8C8bKR0tE4iMF9t36fsncg2PPBJMBrmj9SXHg+itIhBF5NO6mqp3d
+	8atnLQQ==
+X-Received: from plom12.prod.google.com ([2002:a17:903:3c0c:b0:2bf:1486:2669])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f691:b0:2c6:a172:55a6
+ with SMTP id d9443c01a7336-2c718f4ffa7mr171684595ad.9.1782170626901; Mon, 22
+ Jun 2026 16:23:46 -0700 (PDT)
+Date: Mon, 22 Jun 2026 16:23:46 -0700
+In-Reply-To: <20260621133708.3454718-2-mike.malyshev@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260621133708.3454718-1-mike.malyshev@gmail.com> <20260621133708.3454718-2-mike.malyshev@gmail.com>
+Message-ID: <ajnEAkFGyJWmomhq@google.com>
+Subject: Re: [PATCH 1/1] KVM: x86/mmu: Emulate, don't kill the VM, on access
+ to a disabled passthrough BAR
+From: Sean Christopherson <seanjc@google.com>
+To: mike.malyshev@gmail.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, 19 Jun 2026 16:13:17 +0100
-Matt Evans <matt@ozlabs.org> wrote:
-
-> Hi Jason,
+On Sun, Jun 21, 2026, mike.malyshev@gmail.com wrote:
+> ---
+>  arch/x86/kvm/mmu/mmu.c   | 16 +++++++++++++++-
+>  include/linux/kvm_host.h |  8 ++++++++
+>  virt/kvm/kvm_main.c      |  9 ++++++++-
+>  3 files changed, 31 insertions(+), 2 deletions(-)
 > 
-> On 19/06/2026 14:31, Jason Gunthorpe wrote:
-> > On Thu, Jun 18, 2026 at 05:02:58PM +0100, Matt Evans wrote:
-> >   
-> >> My understanding is that the sequences above wake a device that happens
-> >> to have previously been put into D3, and AFAICT it could only have got
-> >> there because of a previous vfio_pci_set_power_state().  Seems its only
-> >> caller is from the emulation of PCI_PM_CTRL using
-> >> vfio_lock_and_set_power_state(), and this zaps/revokes BAR access before
-> >> a transition to D3.  Similarly, an attempt to access a BAR via an
-> >> ioctl/through vfio_pci_core_do_io_rw() fails the D3 check in
-> >> __vfio_pci_memory_enabled(), and besides will try to take the memory_lock.  
-> > 
-> > I thought the general design was the bars were made inaccessible
-> > before going to a low power state, and remain inaccessible while it is
-> > in low power?
-> > 
-> > So the order of D0 doesn't matter. If it is not in D0 then there is no
-> > mappings and zap/revoke is a NOP.
-> > 
-> > If is it in D0 then it doesn't matter because D0 is a nop.  
-> Yes, that's what I'm getting at. :)  If it's in D3 then BARs are
-> inaccessible, so as long as we go into D0 before the DMABUF move, the
-> order of the zap relative to the "go to D0" doesn't matter.
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 91843e9224d04..115e2c4db5fa0 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -4759,8 +4759,22 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+>  	if (ret != RET_PF_CONTINUE)
+>  		return ret;
+>  
+> -	if (unlikely(is_error_pfn(fault->pfn)))
+> +	if (unlikely(is_error_pfn(fault->pfn))) {
+> +		/*
+> +		 * A passed-through PCI BAR is backed by a VM_IO/VM_PFNMAP
+> +		 * mapping whose fault handler refuses to install a PTE while the
+> +		 * device's memory space is disabled (e.g. the guest cleared
+> +		 * PCI_COMMAND.MEM). The fault then fails even though the memslot
+> +		 * is still valid. Treat such an access as MMIO and emulate it so
+> +		 * the guest observes Unsupported Request semantics, matching
+> +		 * bare metal, instead of killing the VM with -EFAULT. Genuine,
+> +		 * non-pfnmap errors still take the fatal path.
+> +		 */
+> +		if (fault->pfn == KVM_PFN_ERR_PFNMAP)
+> +			return kvm_handle_noslot_fault(vcpu, fault, access);
 
-I believe this is correct as well, but importantly we cannot assume
-that a stray read or write just returns -1 or gets dropped.  This is
-exactly why we have such hard protections against the user accessing
-the device while it's disabled.  Not all platforms, even within
-architectures that might otherwise be considered lenient of such
-accesses, consider this benign and might escalate to system level
-faults.
+I really don't like this.  It's an ABI change that affects years of precedent,
+and the ABI it creates is very haphazard.  E.g. why should PFNMAP memory get
+emulate MMIO semantics for this case?  And a PROT_NONE VMA really shouldn't get
+MMIO semantics either.
 
-Let's be careful not to frame this as "the access doesn't matter
-anyway", the answer is instead that non-D0 devices already lack any
-mappings to access the device.  Thanks,
+I would rather have KVM exit to userspace with KVM_EXIT_MEMORY_FAULT and fill
+run->memory_fault, i.e.
 
-Alex
+diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+index 26ed97efda91..aff6b82b0fdd 100644
+--- arch/x86/kvm/mmu/mmu.c
++++ arch/x86/kvm/mmu/mmu.c
+@@ -3534,6 +3534,7 @@ static int kvm_handle_error_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fa
+                return RET_PF_RETRY;
+        }
+ 
++       kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+        return -EFAULT;
+ }
+ 
+Huh, knew I had a feeling of deja vu.  I even proposed this as a fix a while
+back.  I don't know why it didn't go anywhere.  Maybe simply because no one cared
+at the time?
+
+https://lore.kernel.org/all/Zr-8M9rYplgN6IS3@google.com
