@@ -1,184 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833FD315D46;
-	Mon, 22 Jun 2026 16:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64312238D52;
+	Mon, 22 Jun 2026 16:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782145633; cv=none; b=JqlfyOSjQ2/PcsSR0T0C2Ue/xu8KEe20lL9ZvWHvD8WJ82Zi//FFhSQpQeKoPurzuh+PnE7Ip9WvvO1lcwcc/N6YGTeF4tcQ3+ZAk8LZ7M0PbBoB4c6pjGpzaLODdRCuCDEggmLVAht5u/0Q70vA67SDHTzDFEnbsMo2WX0UegI=
+	t=1782146452; cv=none; b=TaSOTJJ2K8BH15QgQZ+a0WtpyrNnprsNFfuAjX8ay7JzxQwZ1eP3ZQ4swrr0ZzISQABsMzXtKzcXoBDTVJcdNlZsGN9FJFJ56rliV+A/L/7S6VZ6qcTTNsJFE2fjh1x3Kj2HYGIuxyOMfN+lu2K8qP/RnRDzjqlPEFdg6HYgdJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782145633; c=relaxed/simple;
-	bh=NB/C1rIeoBqmvHQXZxAOSOHF/uMtnI7x5ka+Fl3hNIQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KwgU3LJp1WxKLzTCSEtvLaHbCgO9nywKs9aTYZJQPFAk7LtYL7x8KeCVqTupr4w4atHcCP92hd4p+nlt7kJLC8VMJ+90IdbA49MY3qZU03XJhV56VR1v81K72cYhvOyYZOjX6d+txcALsvorW8HlL1kTDqLx9z7ZdsCdv4CrP0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=It4EtNkQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782146452; c=relaxed/simple;
+	bh=VlfRDc9QQZP3OTb4meK3W37YOlAqyrnZGvqyxn7MT0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kCP5UK+Oe6zuu9WEdqREnyk4CLmh6yw6/5xOC6WfVGItJwLfFEKMZ03qD8D3bXSVdYKfbHwcFCmoxYHXBtx0RX/8aV/H7GSI23pTauMYmOmkhdawX59Z3m6LPg/J8pS+8eXJqIMd1G89J02WUIb51ipbKT29tG/i+VbYO5zkd1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wSEig2tX; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="It4EtNkQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20A21F00A3A;
-	Mon, 22 Jun 2026 16:27:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782145632;
-	bh=+JUuUJMkXfrUA0trMcxnwY9JiAw1QKMdlKZH2ypBUtQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=It4EtNkQKwTUcIZDxTD11OnMN2E1ILjzEXVVpfJD17yglPXs9zoQcGYeT4ULRt8wW
-	 hsbRet7meu+yhKJunbjWJkgsYZ0opfxN/vShLTSxVlecS9p+o/8kyW3OudCooyXGj1
-	 nSCLGxxtSzuF8FzGr7gwpsYB1UtKAA4CjGEKCvZmXE+UMs/i8ocXJC6iLiluARL1tG
-	 LXfnIReT7sgnpMid4HYf5bBXGnTmbJcL+UyWem5WFuqLAOoJvFr6UH/oj3Lm19a1e2
-	 iwYPXYEmQGh4KB4fkg6K8EF8njwtPUDy0ZqHd0+7Y0GUwXZncdVIuyBszpFDzMOQB7
-	 qfaEfoxwkFFxQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 7/9] KVM: s390: Fix cmma dirty tracking
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260622160739.202044-8-imbrenda@linux.ibm.com>
-References: <20260622160739.202044-1-imbrenda@linux.ibm.com>
- <20260622160739.202044-8-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 16:27:11 +0000
-Message-Id: <20260622162711.F20A21F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wSEig2tX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=c5UMhYqzW3FXITWipN5SHhAQOB1P9YUKBIDy0r3xPQw=; b=wSEig2tXNqqYlMi+DO0fVntY5n
+	xOHolZZKA+fIDoV0P9vbcZYk+nTw3ZO3neQaPzi4xv2gcxwSzlDonXdcprWpDH2QVuSHb1XstdPJW
+	SDJunku4cTdk3jGABXOOirk4qvdvStLyf+TSspP6lyyvSkgzI8foJ7iUHjAWC1KMbyOnlr8Bk2/AC
+	kSmplFs4mh7vU8qt6mUcBWozaXfZYbjxcaOPfxhFG3Z95uao/bptRNf0v9TlnvAPmJRfMGZZ11YUj
+	Kd2cOw4Cnm3blaF1fkpC/rbtuwYhawbpOJtgBO9UdgKUgdoYUd8ev6TfDb5XWKvISvKwTYP33Ug+E
+	awdU0f0A==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wbhhW-00000005CFj-0vuV;
+	Mon, 22 Jun 2026 16:40:46 +0000
+Message-ID: <08b3c961-18bb-43d9-8d7f-8a87bcad0afa@infradead.org>
+Date: Mon, 22 Jun 2026 09:40:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] tracing: Move trace_printk.h out of kernel.h
+To: Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ John Ogness <john.ogness@linutronix.de>, Thomas Gleixner <tglx@kernel.org>,
+ Julia Lawall <julia.lawall@inria.fr>, Yury Norov <yury.norov@gmail.com>,
+ linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org
+References: <20260621093430.264983361@kernel.org>
+ <20260622083440.GX49951@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260622083440.GX49951@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
 
-New issues:
-- [High] A stalled VCPU thread in `handle_essa()` racing with `kvm_s390_vm_=
-start_migration()` double-counts `cmma_dirty_pages`, causing an infinite lo=
-op in userspace.
 
-Pre-existing issues:
-- [Critical] Uninitialized kernel memory from `vmalloc` is leaked to usersp=
-ace via the CMMA state buffer.
-- [High] CMMA state of newly mapped pages can be silently lost during the s=
-tart of migration due to a TOCTOU race with `gmap_set_cmma_all_dirty` runni=
-ng while `migration_mode =3D=3D 0`.
---
+On 6/22/26 1:34 AM, Peter Zijlstra wrote:
+> On Sun, Jun 21, 2026 at 05:34:30AM -0400, Steven Rostedt wrote:
+>> There's been complaints about trace_printk() being defined in kernel.h as it
+>> can increase the compilation time. As it is only used by some developers for
+>> debugging purposes, it should not be in kernel.h causing lots of wasted CPU
+>> cycles for those that do not ever care about it.
+>>
+>> Instead, add a CONFIG_TRACE_PRINTK_DEBUGGING option that developers that do
+>> use it can set and not have to always remember to add #include <linux/trace_printk.h>
+>> to the files they add trace_printk() while debugging. It also means that
+>> those that do not have that config set will not have to worry about wasted
+>> CPU cycles as it is only include in the CFLAGS when the option is set, and
+>> its completely ignored otherwise.
+> 
+> Did you forget your C 101 class? If you use a function, you gotta
+> include the relevant header.
 
-commit d55126b5a3d84f06909a4a559b0185411825d1f2
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Also item #1 in Documentation/process/submit-checklist.rst.
 
-KVM: s390: Fix cmma dirty tracking
+> You don't see userspace saying: 'Hey, you know what, perhaps we should
+> add stdio.h to every other header, just in case someone wants to
+> printf()' either.
+> 
+> I really don't understand your argument. Yes, maybe someone will forget
+> and then either their editor (if they have a halfway modern setup with
+> LSP enabled) or their build will complain, but so what? This is all
+> trivial stuff, surely we have more pressing matters to concern outselves
+> with?
 
-This commit updates migration mode initialization to accurately count pages
-with allocated PTEs instead of counting all pages in memslots. It also fixes
-dat_get_cmma() to wrap around when searching for cmma-dirty pages.
 
-> diff --git a/arch/s390/kvm/dat.c b/arch/s390/kvm/dat.c
-> index cffac7782c4bf..0ad4ebc80ebaf 100644
-> --- a/arch/s390/kvm/dat.c
-> +++ b/arch/s390/kvm/dat.c
-> @@ -1253,6 +1253,9 @@ int dat_get_cmma(union asce asce, gfn_t *start, uns=
-igned int *count, u8 *values,
->  	};
-> =20
->  	_dat_walk_gfn_range(*start, asce_end(asce), asce, &ops, DAT_WALK_IGN_HO=
-LES, &state);
-> +	/* If no dirty pages were found, wrap around and continue searching */
-> +	if (*start && state.start =3D=3D -1)
-> +		_dat_walk_gfn_range(0, *start, asce, &ops, DAT_WALK_IGN_HOLES, &state);
 
-[Severity: Critical]
-This is a pre-existing issue, but does the values buffer leak uninitialized
-kernel memory to userspace?
+-- 
+~Randy
 
-In kvm_s390_get_cmma_bits(), the values buffer is allocated via vmalloc()
-without zeroing:
-
-arch/s390/kvm/kvm-s390.c:kvm_s390_get_cmma_bits() {
-    ...
-    values =3D vmalloc(args->count);
-    if (!values)
-        return -ENOMEM;
-    ...
-}
-
-When dat_get_cmma() iterates over guest memory, __dat_get_cmma_pte() skips
-unmapped holes and non-dirty pages (cmma_d =3D=3D 0). This leaves uninitial=
-ized
-gaps in the state->values array between the first and last dirty pages in t=
-he
-batch.
-
-Since the entire array up to args->count is later copied to userspace via
-copy_to_user(), could this expose sensitive heap data?
-
-[ ... ]
-> diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
-> index e6e786811db86..a9a37fdeb809b 100644
-> --- a/arch/s390/kvm/gmap.c
-> +++ b/arch/s390/kvm/gmap.c
-> @@ -1075,7 +1075,13 @@ int gmap_protect_rmap(struct kvm_s390_mmu_cache *m=
-c, struct gmap *sg, gfn_t p_gf
-> =20
->  static long __set_cmma_dirty_pte(union pte *ptep, gfn_t gfn, gfn_t next,=
- struct dat_walk *walk)
->  {
-> -	__atomic64_or(PGSTE_CMMA_D_BIT, &pgste_of(ptep)->val);
-> +	union pgste pgste;
-> +
-> +	pgste =3D pgste_get_lock(ptep);
-> +	pgste.cmma_d =3D 1;
-> +	pgste_set_unlock(ptep, pgste);
-> +	atomic64_inc(walk->priv);
-
-[Severity: High]
-Can this cause double-counting of cmma_dirty_pages if a VCPU thread in
-handle_essa() races with kvm_s390_vm_start_migration()?
-
-If a VCPU locklessly reads migration_mode =3D=3D 1 in handle_essa(), stalls=
-, and
-userspace stops then restarts migration:
-kvm_s390_vm_start_migration() resets cmma_dirty_pages =3D 0 and starts
-gmap_set_cmma_all_dirty().
-
-The stalled VCPU thread could then resume, enter __do_essa(), set cmma_d =
-=3D 1,
-and increment cmma_dirty_pages. When __set_cmma_dirty_pte() reaches the same
-page later, it lacks a check for !pgste.cmma_d, blindly setting cmma_d =3D 1
-and incrementing cmma_dirty_pages again.
-
-Would this over-counting cause userspace (like QEMU) to spin infinitely when
-calling the KVM_GET_CMMA_BITS ioctl, as it decrements its remaining counter
-expecting more pages than actually exist?
-
-[ ... ]
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 93141a68e0dde..cdd8b41d24ed2 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-[ ... ]
->  	/* mark all the pages as dirty */
-> +	atomic64_set(&kvm->arch.cmma_dirty_pages, 0);
->  	gmap_set_cmma_all_dirty(kvm->arch.gmap);
-> -	atomic64_set(&kvm->arch.cmma_dirty_pages, ram_pages);
-> -	kvm->arch.migration_mode =3D 1;
-> +	WRITE_ONCE(kvm->arch.migration_mode, 1);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does kvm_s390_vm_start_migra=
-tion()
-have a race condition because gmap_set_cmma_all_dirty() runs entirely while
-migration_mode =3D=3D 0?
-
-During gmap_set_cmma_all_dirty(), if a VCPU faults in a new page at an addr=
-ess
-already scanned by the walker, the PTE is created with cmma_d =3D 0. Since
-migration_mode is still 0, the VCPU can execute ESSA instructions which
-hardware handles natively.
-
-This would modify the CMMA state in the PGSTE but leave cmma_d =3D 0. When =
-the
-migration scan finishes and sets migration_mode =3D 1, does the newly dirti=
-ed
-page remain untracked, causing guest state corruption across live migration?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622160739.2020=
-44-1-imbrenda@linux.ibm.com?part=3D7
