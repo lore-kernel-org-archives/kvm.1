@@ -1,261 +1,189 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E0B342CBA
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5423368B7
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782155959; cv=none; b=WUNXJHZdaf9EEVi+9Op1LAr7k4gZVEtL093/0Vb2rvA0J9vC3R5kMayJdEzUsSQZpjMSfAJZm2bZoCUWd32i6aeXf5CXXFOGQpPcF+HKK4pdbiy3j8GLVj4xOtvmzWWgjzKXdFqdMH7TKCEK46STA1zhL4IicN3/Gs/QV287naM=
+	t=1782156500; cv=none; b=r+Q8cgkTgUu2ZNiqsroVIQBdCTXVtzqexVsCMifIvd7Hy+0rFE6c6Nth11ovXIa2JcpGaqkzAOhO6T2kBHAbgfRYbhWy+uj54isRbjvUKr8eG4hssWx3KbW55QrOOpcEXGMEfkZYspk6tYhMQJDeOM5jyiGerRqq0H55FEN9jfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782155959; c=relaxed/simple;
-	bh=VRGucQtupWQRWS1s+tdmc5UQGx54vGuaacc25MOY5WA=;
+	s=arc-20240116; t=1782156500; c=relaxed/simple;
+	bh=FmcISOu+pXDdvYZErgQO6TdnNZae35gJPWujl4yUO1I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nCN05XHP8QRSpzYR7g7UU5pyuotELA81PCcdMipnDkfLbLooJYgWN5nKARgcSED7zj8X2AUKlYNFxvaOAsmrH6LWM0lH4az5u3EpUgGCixXThqnL3SkrqXMQ3SEtgSKwR8aoP1tDwaS46ydcgT0sdzoc+eiM5e/friVNUYso/us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nF5rT2WV; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=TT6O7dZ2nCroB3foTg33SrEUNptxGWhiX8KrXzwOsUKu8rjWs18+4XZU7oCoraguECxEt4f89mUDjXcEjrgBBVpdYt16DzWhp9rS4GXN8n12tRZKn4H5Mf0R/qms1HsKJniYy/NkTcPrtcoASzVDR2CmpGlmqkqr1LqIdoXqNr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Aau7LbsD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ErlPbLLg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nF5rT2WV"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c73cefe192so7375ad.1
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 12:19:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Aau7LbsD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ErlPbLLg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782156498;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VG7BnIPX3GQnSpBekFs0Zvg/+BJtTZ/jPlj0eSfGCtY=;
+	b=Aau7LbsDxukCDXTVyej4126G9F8g7sFzU3d6vfvEdMxQ3Vw1berj8o0i2HIdJWDZneaLqR
+	CLuoc6By6TKH6IpqGtqKdr0AMq1VYlluNpOTReFnGbfaRGoGKIb7ZSc0Nd+23pi/rjXEo+
+	9QJC+fQRAbMxzjF0v6UyMiEK9QN0XBI=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-edvpDwMGNSmvQNtd3uKkNA-1; Mon, 22 Jun 2026 15:28:16 -0400
+X-MC-Unique: edvpDwMGNSmvQNtd3uKkNA-1
+X-Mimecast-MFC-AGG-ID: edvpDwMGNSmvQNtd3uKkNA_1782156496
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-519899aa6bfso89065031cf.1
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 12:28:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782155956; x=1782760756; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5kwLaFdFxHHe5ydqDODGo5QwfbB8vLExL1rAylvF7mc=;
-        b=nF5rT2WVYgIdRwnJbNo2KJ3KixbfcwvjqvkVLoLzTYw37Hbh6lAQrfwxaY/Tv+qBi2
-         Mj6BhmWKGOnZSsBXL7uZvOrVlvmSg0OUK3Tye5b/4+WxS0mgqm3h43XGhhrFXS9DkP2x
-         ozsOu9okVrLxVgAvHiu5tTzsxxBT1JlKz3VcBou+sbPz8KF1T3mraOXm8lZxFkkiTK96
-         iLOPYoKvIub5jhWGYUQjUOIfrWxVd9ckjjPH8x9WmzehxQ7GeRBlT7ioKSyK/eC9KoWO
-         NgxEUQ3de4IfZpMHKXD1JLxM5+3w9UY9C9dRfYdwSND2WhvIMX9VmDqJ+TWx8iUznn4Z
-         qPUw==
+        d=redhat.com; s=google; t=1782156496; x=1782761296; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=VG7BnIPX3GQnSpBekFs0Zvg/+BJtTZ/jPlj0eSfGCtY=;
+        b=ErlPbLLgz9Lvbi0HUa4JDhtJMaxCWm2kUdl8Zd2luLor8te7fFIhzTTC9ugPzIzYxa
+         JVwfw/qF3CnTy9if7C+J5FwvY5oDVnWtl8pzgZa7+fPv9FuQ4PpwufOf4EtJAzcL3mH/
+         Hpk3LVM9UYiJrGsNQH6UdglU25R3tjX0d4W8pqV7/lQNetVg+cfKGc/K7bsGFk98e8Xg
+         nf/qVXKDjBHnhGXRbS4enMUZmPepScEnBa4zBBAg1inO4AsGkt7Z1lOuIi+Qt7cHAwFS
+         5r6rbrC6MWlCQt7rC5OAr5l6sr+vmmZwxK1qZRqtR/sEHdo35INDs3SJynSscqm5yCOT
+         ZCtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782155956; x=1782760756;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5kwLaFdFxHHe5ydqDODGo5QwfbB8vLExL1rAylvF7mc=;
-        b=Hz0U4v54Pzl+M/hTwZKjH3G3VA8Tdln4X7dKGLxhcCruA/T3Q4BpA/AtUeJ0cMKcwN
-         GkrNw2EXr9xnEqUl0KTj6AM39hIokxm8U91cFbd1AKz7G5vcR971qPKY90ooFCX6992V
-         gq8BlIzgSOmgpJsd8VFHkiu7Zxq4n+eSmSh6Jt5clU8zmrR+mxOSjE39AEfvhiy066ny
-         vOP7Ga8NYMImaUE7PAvOu0Ou0ELZjTaD1Ty7ZLxIweORNz8wdoA0jYmfgDcH7vFzyOXR
-         2+FNzOFmXjirK9DB8CiCQHGkQvKwCkt0XcyM2Klu2bok0335vTFzJRQtE220VGoBDTFQ
-         FPsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrrjbqtqDD3BV6N4M+4MxKQ73mjRRr9Q8+RO+m/t2EaRapJdUcldAnsta/Wo9QLknLFQGI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuTGfinwVMi9M+LAx47u85yIm7sXw7NXRYnp2/3BcUdpcKPmlz
-	zKbgNgUDHxQWs3vX8vOEHoElsTzDaj/Vclg89BnT2iPkdGXAx9JeqMVQYBE6trScvg==
-X-Gm-Gg: AfdE7ck2pntntULBt6XS7NUKj+HxCtux7CwU9429KBMPIgMBNb8pfGTYO0spgCWncol
-	PJP9WWtnBh0M+mZ8DsM9t895V2bl59b+YqNl7HsLjWHmTMfYD2Do9ylPs6+JsCx4VuZTBhr+fqG
-	lvSBtaiuTMzMBNfjfgcwqikH7L6WgJjnyS20aDMeoyCM5KBopq16VXcXif37/LVKJT7Wey78baL
-	QDStecJ5ukFox2iSgZAgvchJsbNHGYmdPCBsusGOOhlmeUuTNqFWYG1kWwCTCu/QITCxKZ2s1ex
-	J5DEFbNGDAut7RpzyEqeDYMNeERCHxI2u+15H6w7txyXOn9bjqUmoKbCzdEfv45grn/ALbaNflm
-	7PRMn3QMvgbJD945aoE2QJopajTeVnhdYPQ4aafBwGZGZgwE7jlZF/cqAcEBKUEQbjGcBPfGqVN
-	+BXoNE25S1KqnjYzTKmNxX4IQYljQlpHVWaYZeap2yZYR/qO53dno0QXWVgFO2YfXVvjQ27nxa7
-	DgN8znM
-X-Received: by 2002:a17:903:8cd:b0:2c1:5756:1230 with SMTP id d9443c01a7336-2c7c4c43e3amr480935ad.0.1782155955831;
-        Mon, 22 Jun 2026 12:19:15 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ea72d7sm8228523b3a.46.2026.06.22.12.19.14
+        d=1e100.net; s=20251104; t=1782156496; x=1782761296;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VG7BnIPX3GQnSpBekFs0Zvg/+BJtTZ/jPlj0eSfGCtY=;
+        b=WohHmjFpuGWDBqE3NdtvWtLY0gE5IRDNszBqLEWjXtyhK6QST+SpPGkBCFIJxG4yF+
+         ED9C0EOwG3XkA7NhQameNQp8muis/o//jYMFPX3aYykYLy9aViGB68GiDixHj/Q/8J2c
+         QxPlYY9IpzhMn2tKx/63HZqeMaXDcYTFmagRejwkYSUkQG1j2fbCWUr/YhaXSc0QKPQd
+         oL4EFH/aPinDHIyHet+MD2nBfijm4AZfVkkOEHxPCyUbTW6RHvaAOUffMpjZ4vICocr5
+         ULWTiGAGwh3z9wm6hpD6YOglLIonQwgzBHqeIa7Gq8qpDshrvLt4oX+Axz+L8t3d/xZR
+         cEjA==
+X-Forwarded-Encrypted: i=1; AFNElJ85Qirh/hLWVdag+nmli5YTv8LcBzlEuTedIrqVw4m5Ppr3yMn7gQl37JIYlGhiC74Qw28=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo4ic/XjbR27MX2i4QjNsboEvr9AECzA+zwk+k5nnvOG71bcyt
+	uMokCKMIg9VznXxpStN/FHVkrLjYs7jXcl3KLh9HomzT7KGyBhJ1Lyfo7Aa4ewi9l4MGVj5oh/n
+	IDyFEPLwkVhSbnIEpDZt/zOUIyYoor8kkNJlJ0dUo4A2fGYKWazM6UA==
+X-Gm-Gg: AfdE7cmw4zqyo1wroiYc1Q3zQxJTZfEHuqDEIXVs+C5Z8ZJcezsiojBtQPbEEu4eskm
+	D08vhvMhABe90LHf2B1uAwt/qCsDH8JERhSZ5Bw9ybaYSNpFzHtF8O3kLf9wSq9FBCnlbcthCrP
+	cwotIP3Hn0CCrtiqYVzAvS+NG2UeoLTU01rPku5zVm932Wkkp+5//AgPw5aIx/n3dIkWXSKSPDI
+	nuXX9wo9osTD5c8EuG+wrHP7jYcOfeflfmLMHGAZ5nxQ48A8aKDHmbDmyM9deTM/9Fv4Iwx1E8j
+	gd7T7zgYPTxhYbtgSuxeKd0ZUZnhyAl56+9bnsCH0fYD75cWOzPVey3TDIY6h5Taj0Bn95mCOAU
+	JkT1gvHouzcx21yMbx/3aEIbZEIZTDyME24G0kU5TkwTKm5MoamORlP6Wf+VT78o4gK3NggrG
+X-Received: by 2002:a05:622a:1492:b0:517:7baa:c57f with SMTP id d75a77b69052e-519e4e4e50bmr239733101cf.54.1782156495799;
+        Mon, 22 Jun 2026 12:28:15 -0700 (PDT)
+X-Received: by 2002:a05:622a:1492:b0:517:7baa:c57f with SMTP id d75a77b69052e-519e4e4e50bmr239732491cf.54.1782156495119;
+        Mon, 22 Jun 2026 12:28:15 -0700 (PDT)
+Received: from x1.local (bras-vprn-aurron9134w-lp130-03-174-91-117-157.dsl.bell.ca. [174.91.117.157])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51a9bca9sm5745081cf.19.2026.06.22.12.28.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 12:19:15 -0700 (PDT)
-Date: Mon, 22 Jun 2026 19:19:11 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v3 07/18] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <ajl7xfcoKsohfpPJ@google.com>
-References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-8-skhawaja@google.com>
- <f3e2fef9-4f8c-4032-8d7b-007f47b3fb61@linux.intel.com>
+        Mon, 22 Jun 2026 12:28:14 -0700 (PDT)
+Date: Mon, 22 Jun 2026 15:28:12 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	David Hildenbrand <david@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+	qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+	Fabiano Rosas <farosas@suse.de>, Mark Kanda <mark.kanda@oracle.com>,
+	Ben Chaney <bchaney@akamai.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+	"Dr. David Alan Gilbert" <dave@treblig.org>,
+	Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: Re: [PATCH v5 00/12] Make RamDiscardManager work with multiple
+ sources & virtio-mem
+Message-ID: <ajmMzMAXay65Sl7U@x1.local>
+References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com>
+ <CAJ+F1CKRvSWDOvKC98e_7uyjgJMuXfhOHP83H0s7a=+ZrYxA1g@mail.gmail.com>
+ <ajVco512NDPKDPTr@x1.local>
+ <CAMxuvazRnZw4PEsdKCEBD8X1ua5LMj5K-k+-oh-J_uvXm5vT1w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f3e2fef9-4f8c-4032-8d7b-007f47b3fb61@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMxuvazRnZw4PEsdKCEBD8X1ua5LMj5K-k+-oh-J_uvXm5vT1w@mail.gmail.com>
 
-On Mon, Jun 22, 2026 at 09:50:36AM +0800, Baolu Lu wrote:
->On 6/15/26 07:37, Samiullah Khawaja wrote:
->>Add implementation of the device and iommu presevation in a separate
->>file. Also set the device and iommu preserve/unpreserve ops in the
->>struct iommu_ops.
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  MAINTAINERS                      |   8 ++
->>  drivers/iommu/intel/Makefile     |   1 +
->>  drivers/iommu/intel/iommu.c      |   8 +-
->>  drivers/iommu/intel/iommu.h      |  28 +++++
->>  drivers/iommu/intel/liveupdate.c | 175 +++++++++++++++++++++++++++++++
->>  include/linux/kho/abi/iommu.h    |  21 ++++
->>  6 files changed, 239 insertions(+), 2 deletions(-)
->>  create mode 100644 drivers/iommu/intel/liveupdate.c
->>
+On Mon, Jun 22, 2026 at 03:53:33PM +0400, Marc-André Lureau wrote:
+> Hi Peter
+> 
+> On Fri, Jun 19, 2026 at 7:13 PM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Fri, Jun 19, 2026 at 12:11:48AM +0400, Marc-André Lureau wrote:
+> > > Hi
+> > >
+> > > On Thu, Jun 4, 2026 at 5:46 PM Marc-André Lureau
+> > > <marcandre.lureau@redhat.com> wrote:
+> > > >
+> > > > Hi,
+> > > >
+> > > > This is an attempt to fix the incompatibility of virtio-mem with confidential
+> > > > VMs. The solution implements what was discussed earlier with D. Hildenbrand:
+> > > > https://patchwork.ozlabs.org/project/qemu-devel/patch/20250407074939.18657-5-chenyi.qiang@intel.com/#3502238
+> > > >
+> > > > The first patches are misc cleanups. Then some code refactoring to have split a
+> > > > manager/source. And finally, the manager learns to deal with multiple sources.
+> > > >
+> > > > This has been tested together with the Linux kernel series from
+> > > > Zhenzhong Duan [1] for TDX guests.
+> > > >
+> > > > (help fix https://issues.redhat.com/browse/RHEL-131968)
+> > >
+> > > Can the patch 1-11 be queued or are we missing something?
+> > > (RFC patch 12 can be dropped for now)
+> >
+> > Likely yes.. one thing to double check with you before I do: We don't need
+> > the kernel series, do we?  Since when unplug, I expect with the truncation
+> > approach that this series proposed, KVM will emit TDH.MEM.PAGE.REMOVE then
+> > unaccept is done (?).
+> 
+> > Say, what happens if we run QEMU with this series applied, but without the
+> > kernel series?
+> 
+> The kernel series is needed at least for PAGE.ACCEPT. Without it, QEMU
+> will have KVM_RUN return EIO, and finish into assert (while tearing
+> down ioeventfd).
 
-[snip]
+Could you elaborate a bit more on why ACCEPT would fail?
 
->>-
->>  /*
->>   * Take a root_entry and return the Lower Context Table Pointer (LCTP)
->>   * if marked present.
->>@@ -3926,6 +3925,11 @@ const struct iommu_ops intel_iommu_ops = {
->>  	.is_attach_deferred	= intel_iommu_is_attach_deferred,
->>  	.def_domain_type	= device_def_domain_type,
->>  	.page_response		= intel_iommu_page_response,
->>+#ifdef CONFIG_IOMMU_LIVEUPDATE
->>+	.preserve_device	= intel_iommu_preserve_device,
->>+	.preserve		= intel_iommu_preserve,
->>+	.unpreserve		= intel_iommu_unpreserve,
->>+#endif
->
->Any reason why an unpreserve_device callback is missing here?
+I used to ask the event flow here:
 
-I added unpreserve_device in a later patch when PASID support is added,
-as the context tables are currently unpreserved globally during
-unpreserve(iommu).
+https://lore.kernel.org/qemu-devel/agTjb3M8ElUAlfp1@x1.local/
 
-But I agree this looks incomplete and I will add a stub
-unpreserve_device in this patch.
->
->>  };
->>  static void quirk_iommu_igfx(struct pci_dev *dev)
+If AUG existed, then why ACCEPT would fail?
 
-[snip]
+PS: I didn't read a lot of what a Linux guest would do; I know there're
+some lazy accept approach, but IIUC it's only a matter of time to ACCEPT,
+not correctness.  My understanding is if we properly notify these new slots
+with AUG, then it should be able to ACCEPT?
 
->>+
->>+static void unpreserve_context_table(struct intel_iommu *iommu,
->>+				     struct iommu_hw_ser *ser,
->>+				     u8 bus, u8 devfn)
->>+{
->>+	struct context_entry *context;
->>+
->>+	spin_lock(&iommu->lock);
->>+	context = iommu_context_addr(iommu, bus, devfn, 0);
->>+	spin_unlock(&iommu->lock);
->
->The spinlock is dropped immediately after reading the address pointer.
->If this is guaranteed to be safe, please add a comment to explain why a
->UAF or race is avoided here. Otherwise, the locking scope needs to be
->extened to protect both the pointer lookup and use.
+> 
+> > What confused me a bit is the dependency of this series v.s. the kernel
+> > one.  It seems to use different approaches, but then I don't understand why
+> > this series was tested with the kernel change.
+> 
+> My understanding is that the kernel may perform TDG.MEM.PAGE.RELEASE.
+> That depends on TDX config TDCS_CONFIG_PAGE_RELEASE which qemu/kvm
+> doesnt currently control. I don't know whether this is then
+> redundant/needless with qemu doing discard on the guest_memfd..
 
-In the Intel VT-d driver, context tables are never freed once they are
-allocated during runtime, as they can be shared across multiple devices.
-So I took the lock here to protect against concurrent allocations inside
-iommu_context_addr(). Once the address is read, it is safe to use
-without holding the lock until the DMAR unit itself is torn down.
+The problem is if this series depends on the kernel series, should we then
+wait for the kernel solution be accepted first in case it'll change?
 
-I will add a comment explaining this here.
->
->>+	if (context && is_context_table_preserved(iommu, ser, bus, devfn)) {
->>+		iommu_unpreserve_pages(context);
->>+		clear_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
->>+			  (unsigned long *)&ser->intel.context_tables_bitmap[0]);
->>+	}
->>+}
->>+
->>+static int preserve_context_table(struct intel_iommu *iommu,
->>+				  struct iommu_hw_ser *ser,
->>+				  u8 bus, u8 devfn)
->>+{
->>+	struct context_entry *context;
->>+	int ret;
->>+
->>+	spin_lock(&iommu->lock);
->>+	context = iommu_context_addr(iommu, bus, devfn, 0);
->>+	spin_unlock(&iommu->lock);
->
->Ditto.
-
-Answered above.
->
->>+	if (context && !is_context_table_preserved(iommu, ser, bus, devfn)) {
->>+		ret = iommu_preserve_pages(context);
->>+		if (ret)
->>+			return ret;
->>+
->>+		set_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
->>+			(unsigned long *)&ser->intel.context_tables_bitmap[0]);
->>+	}
->>+
->>+	return 0;
->>+}
->>+
-
-[snip]
-
->>diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
->>index d06f251a2df4..ad760c497e13 100644
->>--- a/include/linux/kho/abi/iommu.h
->>+++ b/include/linux/kho/abi/iommu.h
->>@@ -80,6 +80,7 @@
->>   */
->>  enum iommu_type_ser {
->>  	IOMMU_INVALID,
->>+	IOMMU_INTEL,
->>  };
->>  #define IOMMU_SER_FLAG_DELETED	(1 << 0)
->>@@ -140,16 +141,36 @@ struct iommu_device_ser {
->>  	struct iommu_dev_map_ser domain_iommu_ser;
->>  } __packed;
->>+/**
->>+ * struct iommu_intel_ser - Serialized state of an Intel IOMMU instance
->>+ * @restored: Whether IOMMU state is restored
->>+ * @phys_addr: Physical address of the IOMMU register base
->>+ * @root_table: Physical address of the root entry table
->>+ * @context_tables_bitmap: Bitmap representing the context tables that are
->>+ * preserved.
->>+ */
->>+struct iommu_intel_ser {
->>+	u8 restored;
->>+	u8 padding[7];
->>+	u64 phys_addr;
->>+	u64 root_table;
->>+	u64 context_tables_bitmap[8]; /* Tracks upto 512 context tables */
->
->To avoid open-coded magic numbers, how about something like,
->
->#define VTD_PRESERVED_BITMAP_LONGS  DIV_ROUND_UP(512, BITS_PER_LONG_LONG)
->u64 context_tables_bitmap[VTD_PRESERVED_BITMAP_LONGS];
->
->?
-
-This looks great to me. I will update this here.
->
->>+};
->>+
->>  /**
->>   * struct iommu_hw_ser - Serialized state of an IOMMU instance
->>   * @hdr: Common object header
->>   * @token: Unique token for the IOMMU
->>   * @type: IOMMU type serialized state belongs to
->>+ * @intel: Intel specific serialization data
->>   */
->>  struct iommu_hw_ser {
->>  	struct iommu_hdr_ser hdr;
->>  	u64 token;
->>  	u64 type;
->>+	union {
->>+		struct iommu_intel_ser intel;
->>+	};
->>  } __packed;
->>  /**
->
->Thanks,
->baolu
->
+But obviously I still don't yet fully understand how this whole thing
+works.. :(
 
 Thanks,
-Sami
+
+-- 
+Peter Xu
+
