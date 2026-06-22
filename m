@@ -1,150 +1,277 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8631A5BAE;
-	Mon, 22 Jun 2026 05:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782105361; cv=none; b=D2EvDoJF0jfC31G6wd4nRpZdtZZFt0Qipa8zo54xK1/OHg+NILv3SGxmW+WdYWkzHnbTD+mDL5cakfM2zO4AUQcZfHKZMwm3H1Q9je2OdD6IELb6ju8ei54cqzcv8Ap3JlcKLVN13Zz6CX+1QW+Mz2HyO3ivPMdud9GqXhRexSw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782105361; c=relaxed/simple;
-	bh=WOIRHBMJDB53+oALbBrWO9clz0p9ceSiZ24cgDAArr0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qou/BdmldZLNh8mWq9Sd4G8QquvMRnDEebA/3m2ozDObt4cMt6hDTnSIcKFa2/OEp22TXz1/tJP80D7dPHZDGCVToIu151YLypG3rVqO4ckWFg/aTtHAZpig3gJpV/uUNGTV+YVP5PJ2Duu1b0pvCDyAErDQziv50M9Ge+zWcKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BIx4pjvp; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4612076025;
+	Mon, 22 Jun 2026 05:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782106488; cv=fail; b=mKcVXXToA0ElBEVQ8zQcDQqecyWoftZserQAwmyRYRhuuHvv0RV+oX/oNoIA1S+z+LWdqIib4v3JIt+Wo1ASilR45/yEuwXDuel31wylJ9rzc0yrjXXtDIm54Z3vci+YAanP5G8D1BSeeSaJxStVhOMbafn4ZKlNLDYFtSZKAUY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782106488; c=relaxed/simple;
+	bh=FIUuEA9lJI5YjoxLOH/bnJ6tHCB6l+esN7OrPdYqTSg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T85FKF3w5ZQYvu5L5x+15HKaIkNoJFGET6WbQ6obmgLQuOeEr2Jh6Gur/E/4d6XcxPTvhTqgvtoh67eTuLe6xI8QFsuwb/KcheCyXwrwQgiKNQ0kxF9w8pXztMqaV5gP/6ryuRtcswAU4MtA1Qj0ylmDYPdLXS2hdz3f+SzUIBA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T+riQ3DB; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BIx4pjvp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T+riQ3DB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782105360; x=1813641360;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WOIRHBMJDB53+oALbBrWO9clz0p9ceSiZ24cgDAArr0=;
-  b=BIx4pjvps+ZaR/a3PtlqeM+ZWINDyQhWr1L6cNMDUDWtWghARfCoFTM9
-   z8lsm5jFzJ7i+zPyvmJavX8VTVdGLfKqgpUNNbPzus7S/+ENvNom4O+2h
-   SAFN3L6Qnrxfy/lp1kd555OKcJRdoPiSBsOXfe4FD3cXsMeRkqB0W/gAL
-   jkCGa/69UUABR8bAdqdT+1HIsEUovjSTx/slS3hsEkB9G7aFBdpXzaLSW
-   TzYjekJi+aUCtwVZKueoT+QmZA4ccOSSYuW+QRWFlwo6z8MZ+6jL2LKLG
-   unOYCVTHyL4aK9UXg91jFFrkddbNlSRkgz5voxKNadt92bjYufovHtxko
-   Q==;
-X-CSE-ConnectionGUID: 2D8IQqXBRtStAMso7wysfQ==
-X-CSE-MsgGUID: NbicH0glRWCh7QTnNZ7iDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="81807698"
+  t=1782106486; x=1813642486;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=FIUuEA9lJI5YjoxLOH/bnJ6tHCB6l+esN7OrPdYqTSg=;
+  b=T+riQ3DBoopNeXHbQ81asAyEJbQRuwZFFv5UqtV+VOfCLyspp91HvZeg
+   43r7ooMrXZw7Lu74YawGYBnMm513HfZ+hebj+qzTmbjAAlgcvN6A9fxhk
+   qR2nLoER29dcL6KILoobz6qmP+KT37vzc3XE67Uh4UeFPfSzSI192rbC0
+   XWwHbZdECm2HbkV1K/KBolsF9ql6dMHtrShy+NTm/ZDgz/8NgxBptkUz/
+   sPp+/PGgv1P6d+hZHCOeNp0LlV56AmHk+08lnAofvjpQ9EdwFLnuRU9pL
+   DmTdGd2GbpflyfAka/qrHdt+fkdYPbrQ/3dTYFht2S2Iv9DnWr3dGnV3K
+   w==;
+X-CSE-ConnectionGUID: TJl5w2oWSV6Ntdd0jiowjg==
+X-CSE-MsgGUID: 4T8pcwYwTsebklAa8B1Z0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82923617"
 X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="81807698"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:15:59 -0700
-X-CSE-ConnectionGUID: x5KhmIZvTnOoP2YS52uxRg==
-X-CSE-MsgGUID: nzK0ViqmTj+AiLtYC6cFSg==
+   d="scan'208";a="82923617"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:34:45 -0700
+X-CSE-ConnectionGUID: ltXke1pwQ1CUr0TPB8HhEQ==
+X-CSE-MsgGUID: llh7/H/sRHGDu1P4Pk2b2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="249234937"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:15:55 -0700
-Message-ID: <23d4a3b9-41ac-4e05-ada6-01b6ae5e9f04@linux.intel.com>
-Date: Mon, 22 Jun 2026 13:14:48 +0800
+   d="scan'208";a="248982413"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:34:44 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 21 Jun 2026 22:34:43 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Sun, 21 Jun 2026 22:34:43 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.46) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Sun, 21 Jun 2026 22:34:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lBPCenZFsJWQW5Eql7lLMjIuzyzBj7/lsyQglW9aydxUeWhx7ZOCr5xRgqJJGEvD4e9jpCdKYNTqqwR0vfjfKwd6zFZUauIVPvgTc7opi7VvYGGPef7+wmN/qXmLPS3YgKDayHGeF1cKDsFd4ekCtdZpLGqaZF6LG/t042DeHy0hnDUy/70CcO0gFe6MAxFREcXAVd9327wTpRsCLfxw6ZjNeQ1WrdSmToaL8jcGdweam4wJigJeu4GpXLDoYZiW4Si34dkh547f697wmGqyUv8OoV1J7Cz08OaFPr0AEd2dG+O0NR/esPQAk1GnCuDidQWM3zdZ16AdRXxPZx3TTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RyFfjhYxdsWMr+khTg3aRZNYL9VtLYMYKjKB+g+p2vc=;
+ b=ovqFhntPjWNIP2qmorrnW4T/TIRus+bv80xbQbasqEwgk4ACrx1Qwj7GOhDBaP4GGV5UVSk20Iq1n9TBDc1VJpYs2CnDGY1goZGGkZd/sn4v0JsnDnRo8Ch/rnVdtCPH8kNI1DtfOY/eNRXVAGkeN4AO1PbvxSAC0IEtgn9bL0IzT8kRHkXcy1mQtg/KeYCtFUS+5BCfnPSyTRCccwZ7KmSRAgjdR+UYkfaPwofXhT4LqkbH2qdUVz2abSUPGjyItD2oOGm1GyKhlG5FtkQCcf0/00ZGYrqc0hbo07iFBQem0btiW7lyY644taNLVuuj4YkFBdNNcaPyzbwUj+dk7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by CH3PR11MB8187.namprd11.prod.outlook.com (2603:10b6:610:160::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Mon, 22 Jun
+ 2026 05:34:39 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 05:34:38 +0000
+Date: Mon, 22 Jun 2026 12:53:46 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: <ackerleytng@google.com>
+CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
+	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
+	<jmattson@google.com>, <jthoughton@google.com>, <michael.roth@amd.com>,
+	<oupton@kernel.org>, <pankaj.gupta@amd.com>, <qperret@google.com>,
+	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <shivankg@amd.com>,
+	<steven.price@arm.com>, <tabba@google.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <forkloop@google.com>, <pratyush@kernel.org>,
+	<suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>, <liam@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Jonathan Corbet
+	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
+	<shuah@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
+ default
+Message-ID: <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+X-ClientProxiedBy: SI2PR01CA0012.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::8) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-11-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260614233728.2212104-11-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|CH3PR11MB8187:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2bda0e8-04a4-4206-b640-08ded01ff3ca
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|23010399003|1800799024|56012099006|11063799006|3023799007|4143699003|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 1Haw93axPivZMiJFmLfoho3IklKufJURcMBrVuIaSB4ixfBO68yXhK4l62a54hB9KVQ89K3naYc+h1w7WCvqjsDEyUR0pTZLs2lXQ4cX77GHxQ3L2LBw2FePwQJa36eGPC5rbmdMCrmJQHT32olrewAZmc1tt03JFnSQJ/SvBAHIC+Hz3fDBp4nwLMs0AxFkRACD8vcEW5RhzU+y2FZJmt0iEcjOp9D9mibji1ClmbVG8YAQ6/PoPhCjviaWFonVd9YK4DtWCsg2f7UEvJvqDf6lB+lgpLR7evOOf/oUxHyEXnVUonZYbo2QYVi+K+5SQO+C/r+E2x1Kzpy+XnKcb+m2RVehcwwK/F7SKRn3Inxs8vnoxhwqlk3GW4E+BCiJzHEIGqTnqCnSlj+P/DA4I9BS6/h0S8qfFr1f0W0mtU3vzNDxKS2/EwDN4SjtJ1OKG9L93zIEZ1+OGfe+6lB/zrahVW2dkxN/zdvHxT8AyrySvtIy+nIUnaEg1y1+New16AljKb5iSh/V2lZeCZFwzVO1bR0ZsBAs8CENgd/zHxFs6zyS/VELuQo4W8zVvrZRzL5KLqA0h7yS+Yx7QdYIpyMV70yH/aAEo42DU4v9QMLpPb4gwjb05VCfi9ZmQBn+PT/bxD3y8d8rJm7ocGPhqFkfNi/YwNW6FKB5dQAwO1I=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(23010399003)(1800799024)(56012099006)(11063799006)(3023799007)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FKvJa9kbD/JQHxNmmY/E43ZtztItoRCjvuWBUZ8tmkcs8std6j57nP3MLGIs?=
+ =?us-ascii?Q?4VGm2vyms+LqfZiBeE+YMhByJbithzEzQpaFF0+UEYvYGLJrHOycsawn/SGG?=
+ =?us-ascii?Q?Ksf+i9S8HJfkoimve66xXwnbs9ESmvqtxiPoHcRuhPUcPsZdDfPjO/T3MpkO?=
+ =?us-ascii?Q?woNYuD10KbIHWJ73NwPst1+CGgCur/j53jhOblRNMGp+j0Xiq5qqLsc0xO9X?=
+ =?us-ascii?Q?JTdROvXuy7BkG/6xdW4IukLQ23V1s0vrnia25nHgxLr6GxINY3kGXwwY0xxz?=
+ =?us-ascii?Q?JGeMucqiCHSRyqL60V2JbBzAr7vXxePsdp+EqGXjKY1iQvVC0Tn5O0X8640Q?=
+ =?us-ascii?Q?VP/Dv0DzSS4o5BptEarcggLFXTxMcU6JlrMfahPVy7IYUyHwPOF3Srk9MvjV?=
+ =?us-ascii?Q?LPKFGx8wOyJB1HJqvpYhQpWkfcTQhOn4oOfyFZVKk7vB1YZe32KzQQqloC94?=
+ =?us-ascii?Q?FY9olPxPEUfNjAI8WyMQIfpcXx+oW2B9W/pQ0oENGxrxsn7tl2pS+q6krq1S?=
+ =?us-ascii?Q?gUgMt0OeVOw1qlq/ldJJykWjkuPAi1Bo3pdKrplNdFRAT4OOlZ4rtouW6kjJ?=
+ =?us-ascii?Q?z/icvqishD80V4gqFWMxRdHwLfDCvIfisOsvOBMQYgt+dMhInZ8kCTvXwUTX?=
+ =?us-ascii?Q?t77AAbni5wUBP5hsvcMGj95erUJqC+KpepuPzLwcNqh6qJHF8LHdCE63/nus?=
+ =?us-ascii?Q?zrqdsKBGkI39GWqzy5z9/Grwk0kmz5LavNutJwI2HNSbTYx07Pn52w2GOxcq?=
+ =?us-ascii?Q?cN15oMmTejzejN9mMO+eFIEVQ+Jvvt5sn88oXTRoOHGtg6B1Yis0AYAkU6au?=
+ =?us-ascii?Q?/HVGI7m7q8kNz25Ka246wKaS4DRdCRSh+Kx01YN18zaQDRKqGBQskADrqjUt?=
+ =?us-ascii?Q?p8FtZxECGcsyYjTX27pr5z0evG+6uByomNrqY61Ue0Uav3cug1kogMGR+OML?=
+ =?us-ascii?Q?YLLPbERsLR7Ggd84SOQBpNECDPzIYisOLpbeuEEYs6OkefSIFVp3KeHPGAGz?=
+ =?us-ascii?Q?6Ot9KzZPWwk7mxCu0JTUTsRSb7+04ut/35+lEtA9jNKfZAmTie8R1MI/emSL?=
+ =?us-ascii?Q?J4mdaDfwqugXfTByZC12JvvRsWRyN/xUJhWVw+4eALWCBisRdRBUgpZu6NPv?=
+ =?us-ascii?Q?dOWG15Ej9sSyQr3hGX6yvgafE6sCx8CxBTNhFKveYSqk4BNzT3UpctnNOv/b?=
+ =?us-ascii?Q?CV8QIu1uSuxKYLKTEcNULp0+9aHLjt9imScFm3xxVTuLFWshtu459ByXAtnz?=
+ =?us-ascii?Q?GOq88Mcl68Z42VR7OhnIoVahTyRhIIoGIhKG6WO14XcsdrGw+LUaiJVFKz/t?=
+ =?us-ascii?Q?bfEFlrgTRpObT2/tM5FCfiBhYrFQ8iM1OH3Wllz7IVq3LHsWLssaTtO/DEMm?=
+ =?us-ascii?Q?qOeZRn3sbwq6Ct5tmaXg2RAMLmliKaIzsfXfCNjv9OuroO9TKP8rACMQoPXO?=
+ =?us-ascii?Q?OgNS4SFs7mKpufA9HmUwgeGRoe5HU28vm2LksQ5MoxWg37exl/gMu3Cozur/?=
+ =?us-ascii?Q?WmauNIb06tG7urOYhW+feMIBjC4qoACR7PtQGgaoZ54fD1SEzjzxgxX5pqBG?=
+ =?us-ascii?Q?E+8yOtEgCaPaxs2VKNX7QE1LMZ90aWdqDJsRz90aYfKx9v4dPOO+MvV95CFc?=
+ =?us-ascii?Q?Tv0cX/MlSSj35aOI0K9OWeeGxo6PQ6MuWvSXz6Ogrn20ucENgOIl5Vj0BJwb?=
+ =?us-ascii?Q?JglUDnUM6cTptIYZqs3abWQ8IT6UpjEYdoCl595MjRu41BmqGfO9zd4CT/+/?=
+ =?us-ascii?Q?U0opJ3APVg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: cBpo2XtC7VLIlERky94gRa1sGJc8+k2Y4t4Z4n08ffwvKx/NQfq7VG01K6c4FU4C07IF9djVBie+Ywas5+vSTuvJ+h/UdGy4Aq6bDvLXeSzi+wzmrLSGili+JQodmEJo7NNlpvsWR1RIHutXgjSD/MQzDL63TcroqwMOCg3MxLw2YYMZdEwwyxCV/Z5LZ6zVGstzmkfKanYaw0vUrnx2MgWOR5kRTUNSm7oOUCzWLB8BHx2NX9ueUoqJLzATH/ds3ReuqPnB4vSdmIcDSIQR/Ket1lFidEtVY+z7mtm8oD5lDvuQZzCrVIJj3k0MQheLoIxXAh9TOZmhZMT1ZiaVqg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2bda0e8-04a4-4206-b640-08ded01ff3ca
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 05:34:38.8455
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DlZekpAv8Fo/LZkF95SXAVvbfi5JiUecD7a7RKvilhG7g5TyEKw1210h5uqVLkXwwcqV2zCo+RR983ReU7TiTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8187
+X-OriginatorOrg: intel.com
 
-On 6/15/26 07:37, Samiullah Khawaja wrote:
-> During boot fetch the preserved state of IOMMU unit and if found then
-> restore the state.
+On Thu, Jun 18, 2026 at 05:32:01PM -0700, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> - Reuse the root_table that was preserved in the previous kernel.
-> - Reclaim the domain ids of the preserved domains for each preserved
->    devices so these are not acquired by another domain.
+> Make in-place conversion the default if the arch has private mem.
 > 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> The default can be overridden at compile type by enabling
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES, or at KVM load time through a module
+> parameter.
+> 
+> In-place conversion also implies tracking a guest's private/shared state in
+> guest_memfd. To avoid inconsistencies in the way memory attributes are
+> tracked between the per-VM or by guest_memfd, make the module_param
+> read-only (0444).
+> 
+> Document that using per-VM attributes for tracking private/shared state of
+> guest memory is deprecated in favor of tracking in guest_memfd.
+> 
+> Warn if the admin sets gmem_in_place_conversion as false when
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not enabled. Add warning in the code
+> path where guest memory is populated for a CoCo VM, since that's the
+> earliest point in a CoCo VM's lifecycle where memory attributes are
+> queried. Unlike other query sites, this site is exclusively used by CoCo
+> VMs.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->   drivers/iommu/intel/iommu.c      | 87 +++++++++++++++++++++++---------
->   drivers/iommu/intel/iommu.h      |  7 +++
->   drivers/iommu/intel/liveupdate.c | 60 ++++++++++++++++++++++
->   3 files changed, 130 insertions(+), 24 deletions(-)
+>  arch/x86/kvm/Kconfig   | 7 ++++++-
+>  virt/kvm/guest_memfd.c | 5 +++++
+>  virt/kvm/kvm_main.c    | 3 ++-
+>  3 files changed, 13 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 26258861e3bf..cd40e274482b 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -990,15 +990,16 @@ static void disable_dmar_iommu(struct intel_iommu *iommu)
->   		iommu_disable_translation(iommu);
->   }
->   
-> -static void free_dmar_iommu(struct intel_iommu *iommu)
-> +static void free_dmar_iommu(struct intel_iommu *iommu, struct iommu_hw_ser *iommu_ser)
->   {
->   	if (iommu->copied_tables) {
->   		bitmap_free(iommu->copied_tables);
->   		iommu->copied_tables = NULL;
->   	}
->   
-> -	/* free context mapping */
-> -	free_context_table(iommu);
-> +	/* free context mapping if there is no serialized state. */
-> +	if (!iommu_ser)
-> +		free_context_table(iommu);
->   
->   	if (ecap_prs(iommu->ecap))
->   		intel_iommu_finish_prq(iommu);
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index c28393dc664eb..a3c189d765150 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -85,7 +85,12 @@ config KVM_VM_MEMORY_ATTRIBUTES
+>  	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
+>  	help
+>  	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
+> -	  memory attributes.
+> +	  memory attributes.  Using per-VM attributes are deprecated in favor
+> +	  of tracking PRIVATE state in guest_memfd.  Select this if you need
+> +	  to run CoCo VMs using a VMM that doesn't support guest_memfd memory
+> +	  attributes.
+> +
+> +	  If unsure, say N.
+>  
+>  config KVM_SW_PROTECTED_VM
+>  	bool "Enable support for KVM software-protected VMs"
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 86c9f5b0863cb..5cb73543c03c8 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -1193,10 +1193,15 @@ static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
+>  {
+>  	struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
+>  
+> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>  	if (!gmem_in_place_conversion)
+>  		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +#else
+> +	if (WARN_ON_ONCE(!gmem_in_place_conversion))
+> +		return false;
+> +#endif
+>  
+>  	return kvm_gmem_range_has_attributes(mt, index, nr_pages,
+>  					     KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index dd1d18a1d2f68..46e92b5dc3804 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -102,7 +102,8 @@ static bool __ro_after_init allow_unsafe_mappings;
+>  module_param(allow_unsafe_mappings, bool, 0444);
+>  
+>  #ifdef kvm_arch_has_private_mem
+> -bool __ro_after_init gmem_in_place_conversion = false;
+> +bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+> +module_param(gmem_in_place_conversion, bool, 0444);
 
-disable_dmar_iommu() and free_dmar_iommu() are always paired in the
-code. How about merging them into a single helper that is aware of iommu
-preservation? Something like the following?
+With gmem_in_place_conversion=true, userspace can create guest_memfd without the
+MMAP flag. In such cases, shared memory is allocated from different backends.
+This means this module parameter only enables per-gmem memory attribute and does
+not guarantee that gmem in-place conversion will actually occur.
 
-static void release_dmar_iommu(struct intel_iommu *iommu)
-{
-         struct iommu_hw_ser *iommu_ser =
-                         iommu_get_preserved_data(iommu->reg_phys, 
-IOMMU_INTEL);
+To avoid confusion, could we rename this module parameter to something more
+accurate, such as gmem_memory_attribute?
 
-         /*
-          * All iommu domains must have been detached from the devices,
-          * hence there should be no domain IDs in use.
-          */
-         if (WARN_ON(!ida_is_empty(&iommu->domain_ida)))
-                 return;
 
-         if ((iommu->gcmd & DMA_GCMD_TE) && !iommu_ser)
-                 iommu_disable_translation(iommu);
-
-         if (iommu->copied_tables) {
-                 bitmap_free(iommu->copied_tables);
-                 iommu->copied_tables = NULL;
-         }
-
-         /* free context mapping if there is no serialized state. */
-         if (!iommu_ser)
-                 free_context_table(iommu);
-
-         if (ecap_prs(iommu->ecap))
-                 intel_iommu_finish_prq(iommu);
-}
-
-Thanks,
-baolu
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+>  #endif
+>  
+> 
+> -- 
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+> 
+> 
