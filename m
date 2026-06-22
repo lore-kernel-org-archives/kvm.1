@@ -1,153 +1,184 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63522D3225;
-	Mon, 22 Jun 2026 11:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782128655; cv=none; b=Xblq3wDBN4pao3fe8DQiFaLkBj+8VI+4+XnjtkZxo0iyb+IXQ/8z6pdA/iVPQ7joVjv8l08aRMa5CGNuDckeCyUQDQ+Ram9dLpSIXXsmn5JaMHmWdl7RxvaXwT5IAFzTvYmph5un/3xglb8s31cDKr5YCUYmZP9qvVzwuPR0m9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782128655; c=relaxed/simple;
-	bh=TEXR9dgbVOnuVzbmM6cWss+wRzYrZboOvJjz4RrMRRA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PF6eHSfgwm5lGw29h4FvWsSo4FvddVdzyO8lnxLeQMlQjPJvhwysZFW7716K+d/uYcLTxUrV7ooIYZCFYSHn+96rJKtFiAn9lwn0XA2noHqU5QjNtokfj9aTzKR68Rbdf3G7Owsvom/X0dImJ6+v9HnzsSzmyrkvZ+f20f8ToRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B/fjOlWp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB79215075
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782129231; cv=pass; b=T2T5ir3sNlsKNK83Yd/qzqMqbncIRun8ZHAbU5gk7p/E1UmC8mytjeQMOEZaoHTWtZVjmVEHuAfoP+UOfhIlAyhtjFqiSn1vK0DzcdkcwmToYosj2l9jBM/01A7HuSs++b0z5D7jIo2kch0vRv3WlK/ybLn69cZNlylewki4ujE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782129231; c=relaxed/simple;
+	bh=7YxaNe+IV2f3GoMU5nHv8O4OQctVhayImGinD01gk6o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KxkiOcmMWLM+GyiCPpi5qxcQphqy50GVABCPmflUZoaTRR3lmCEy0/EIR7aS+DQERNhzgMjIMAbu+bhoVNQacGC8pXZT+3TqdDhc+YXdjtZC7wZyKK/LTAVUw1mStxYAa+vg3WkHwjXyy0xJD22PWGCStdBCMI5C78VSBAICoVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZkbjHuNf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DVOokrw5; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B/fjOlWp"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65MArYq12513846;
-	Mon, 22 Jun 2026 11:44:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=bU+fNw
-	peZhJOOImWRQobM3NI42qhoKA/9k5mrsS/KM4=; b=B/fjOlWpvAWdulXAoF9h6U
-	hAf+zewo1lQaeDRWa9HIja95WJvxxA4TSJ9LbTXRPBbTmysOPQxPXN0VxFOVWiQr
-	OVpwF+MQFojiWJYX7C26Wp0A56NGtUBlQvmz05S0YcincnjRP5oWahF9sQA7xwpM
-	PH+HBKjVuYRBy3TefO41yX74JGA4ESuA1PO0CLwW4DX7NGM2eycim6obUjflPdw/
-	t7XfTG9EpB8AYXvgmqwUZhWnEGMpPz2+exbQv0WeqF0dThfbrf30EcUiTPE307pD
-	+wC7TAlkw8Qi9gWfp5i/WhAWISuvLjOKaJCayRCZoW9NZtEBQvQuekz+6nRr3TSg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9g8xyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jun 2026 11:44:10 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65MBYcdJ005112;
-	Mon, 22 Jun 2026 11:44:10 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7vydnq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Jun 2026 11:44:09 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65MBi6Zb56230170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 22 Jun 2026 11:44:06 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2012C20049;
-	Mon, 22 Jun 2026 11:44:06 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8753620040;
-	Mon, 22 Jun 2026 11:44:05 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 22 Jun 2026 11:44:05 +0000 (GMT)
-Message-ID: <81a58478-6a39-4bdf-84a0-5da4d29b6407@de.ibm.com>
-Date: Mon, 22 Jun 2026 13:44:05 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZkbjHuNf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DVOokrw5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782129229;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fh9EbXDsUdt3JnPQT1zJjA204fWMQDrKUHfp8WDHpjI=;
+	b=ZkbjHuNfIzXLML+MmTsWkXrDT9SfM/lZNOIULDzl+aA4VD8rWRzuzf0QTxHxpNzLzcKOxr
+	Oii/yRQul0g5L66ZMPOHeyoGwKGrOf+471Cy6X3nOcIHQLtb5Ay/6AbzAinAcWy5kyNRBU
+	ajuf0hdHptbyEsOQv9KD69nLQ6M6X3A=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-224-WM81EaKgOKiRGgcWBlf-ZA-1; Mon, 22 Jun 2026 07:53:47 -0400
+X-MC-Unique: WM81EaKgOKiRGgcWBlf-ZA-1
+X-Mimecast-MFC-AGG-ID: WM81EaKgOKiRGgcWBlf-ZA_1782129227
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso90316425ad.3
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:53:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782129227; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eGQ9PaKHCGaPws00KRaFdu8v8BPOzpFEoVWVuSY890x8EB6qqobRL9KffP2usLKgn8
+         Eo6BMYhrmjKICXCZj8uY8vv0EXXsYzLKuXBh/6wOUTjVGPKSLW3XJuX8eaDTa9ueszDD
+         bPgA2RvMhBRFLZIc6DVTOmR6OTUuYn7NbdUDp8OhXLgbvkDxDADWzL5emRj6JLgOoFwP
+         4dpJJx2zzkgZbYwS3ARb2YEL6ZWFqsC3lOLlmWOHTofDs8S9d96ZrP8Bgmv1XZoe6Rb7
+         maGzwaKl7uzf7U1aH6EKu1L74i9VLSANyiKFXKGhqYPfv+cwwQlfMabjUZHuGHESgxx3
+         Xg1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fh9EbXDsUdt3JnPQT1zJjA204fWMQDrKUHfp8WDHpjI=;
+        fh=BIzKdEsj7aMaoywm+ybDi8y04HVq287ar+HjHtBp188=;
+        b=IE2utv8YmA01qQglYaeWU3/z/dRxXg4tfnDAo6dXrUrlVlrxI+q5di0DsXdAcD+Jyv
+         Xt8JPz7NOpz9Y5EsSMqlihDuFyB8lI94NNUOgQfnz1CQML9IdA3w5RwkyCx44REgQrPI
+         eGgODVi5fRhqHNihnq0qwiSBAsRvsLK65ujisLEOVxDe0F0aj7KKhXc68BMQeE+Mrc35
+         JYC9Uo69WCLob7W1BBh/ITZIplKqEwjxqeyonmue8U4g1yYXWewQEzxBRwKfSkzANDlW
+         R8tfJQRzsZuzYlwcqGpUCJspY+fxvdKQsJGdWNPcJeMkXSDrWmK6fQ6szAq17dnEi/kk
+         +v5A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782129227; x=1782734027; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fh9EbXDsUdt3JnPQT1zJjA204fWMQDrKUHfp8WDHpjI=;
+        b=DVOokrw5Ac6eGMfyoOl4mQJtzfz5mDv9Sp82KNA+9VThcN7onS5hgROnyfTRuWT1t9
+         2vOFYlJEiMyhRrqp56NJerYlrco2sGoV7sKTK4Y9h/gD7xncqheaLP3A9hsMIx2CgVGL
+         NrtnWnPelkifyhNcIHPgkumRL9p99sdvLfQ1xxmOwUCPrJZlK7lBvlZ5fFwNoudE+pM/
+         feRbd2b7d0ppN3bahdgV/AakAuPf5oxzb9QeOZcKqM/BIBVVmwZhZTgTkw7jYBR77CTS
+         7uInIEaAJXL/JmvAQbU5f36kU+mpHTXqBzkoO1mo/G8QPBU5OwFPTYaxi0CaX4xAxYj1
+         U6fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782129227; x=1782734027;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fh9EbXDsUdt3JnPQT1zJjA204fWMQDrKUHfp8WDHpjI=;
+        b=S3N8Jv/T4cnU55SqbRGDCSlJkdPQ9taqiysRm9qmgPp5I6yDG8dwx/ri9RC4xwneMj
+         7fM2Yvp9ECsS0nKG8leguzvIFAR4YnoO1HRiBy9VjR2faMuv+PwSVFLMnzcYmr5s/lav
+         Oc/0rpwxgmDuS0opkdU2sM6zrCBSsvIcerM4qadY1AVVC895aCgaUgk7zkFNq48hc1Hh
+         DEOXn6RNDnzAIZ8ByUHOTTNyPxl7CeA1XIjOB4KqhhYJEi96ymKzLZV7DjPuX6Y12CIs
+         QmmZwDBtsKtQnDJ5cMvAlr7TvEZmSj7uI5O3Y4fLe+adeUwY+NHDiAkOTumO3tk0Ta/W
+         mV6A==
+X-Forwarded-Encrypted: i=1; AHgh+RqhTPn7pHADOkAwIleLC8lZ98gKksGelqvgOHVDaAaF0da0NZ2W3yWVjfp9Xauvr3v2ARs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypW9AeqhHp8PEbYlouQ8Rgx58BQ2PA4hkJbzDY830QMu1bBHLd
+	6bO3Wbtp553JEWRMSjKkRZ2HJ/So6+pCMjT0Ng9YtP5xV9rkrkr+innF2Nl3V9bkr1mwSw2Ek4M
+	9rfzNaVk/+vQbdz6Myr0zEyP/YUCxDXADPYkVQMgK+C1gGzdvQIiHBOFPIPPzemv5XOqVhbI2EB
+	P1qae7YJ0KE3wwYFtq8cF34iGH5Ak1
+X-Gm-Gg: AfdE7ckGQbvQ3WovNXXFnOiMyrlTIMlH5p7F8n3TY38aFR78yZnRSwfd5+OfQGHcvqH
+	3mwOXHfwBDcuKIU/ay6bb/bMiQiBgsnYsjQ1QxvRviBdWX2NMJQT0U+zHn4RYaeHhCX5lQAo1aG
+	lMiipvp5OTBLZQQ0epgqRBXqvckyfq+79CvzS9Ui98x8o2zgnJyua3tk5w59b6kNcL0aumjBPVi
+	HiddoI+C7fPUev+vaOMbiMtYXF7S/b0he94ApnN89EsIZJ9zC5uL+HwrjbYhytC85sMB2zM0BWL
+	QNDZj7Oy4ERU
+X-Received: by 2002:a17:903:2f48:b0:2c7:1200:bd7e with SMTP id d9443c01a7336-2c718f60995mr175520555ad.18.1782129226687;
+        Mon, 22 Jun 2026 04:53:46 -0700 (PDT)
+X-Received: by 2002:a17:903:2f48:b0:2c7:1200:bd7e with SMTP id
+ d9443c01a7336-2c718f60995mr175520225ad.18.1782129226133; Mon, 22 Jun 2026
+ 04:53:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/7] KVM: s390: Fix handle_{sske,pfmf} under memory
- pressure
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com, hca@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, svens@linux.ibm.com
-References: <20260619155154.307572-1-imbrenda@linux.ibm.com>
- <20260619155154.307572-6-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-In-Reply-To: <20260619155154.307572-6-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aOTrwq3OLybzbqoDIx9AEz7FtJfv2KAF
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDExMiBTYWx0ZWRfXy4ZARlW6+85r
- wiDexrlGK7z3zKOnffTenw3OEPCZB/vEYNxi2uC3IwYRU8R1Ztp4zhLwKYftK+pP6EtzPOaRHbg
- G4UX+7U5uwaoLRKz9KyBqyb1u/wcujc=
-X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a39200a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=eumESayLdrPmyjtxqS8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDExMiBTYWx0ZWRfX5xerWm36llp/
- KqlY5F19TqA75hhUYN7UhR+bY2zizs8sWz84+8M1jt1YQnPScAOTyHFfINb6dBvXgW6S8fJ4e9t
- y60+XCUs0//h6807Pd30aFYGNVtHiE98Yx8NrPU7usHG54xCgdt7wH3X5PvMDvWeEs6anlVE+Vg
- qlO9wXHK+1abc0cRb9SFpyGd1pXoE6LktiPvx4GJjlqk7EUl/Q6e/t5I9G5qtp0a0jFJPGspIpg
- 0tpxUUfpnNYFQkXkULzY9tEe2YRDwX7FU9D+tTu68hj0EJHBbADj/Edaf7+YecbSLy4DD620Sxh
- 3yxzITiww/EdfldE5+Ypu7eLRSyBi2ZU/yNbvprGUk+Dl/rsF3UByrhzE1vk8m2yJx4Tp1P/nSa
- UpmdoSeOkShpKU9+HJohC3tyl5UgKGjysenhq8bqQMDoIdl1RcRNn9/cEW7Hy5Fdc7u3Pyc2oAF
- Y/jVG0DJRp3STYI4NLA==
-X-Proofpoint-ORIG-GUID: aOTrwq3OLybzbqoDIx9AEz7FtJfv2KAF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-22_02,2026-06-18_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606220112
+References: <20260604-rdm5-v5-0-5768e6a0943d@redhat.com> <CAJ+F1CKRvSWDOvKC98e_7uyjgJMuXfhOHP83H0s7a=+ZrYxA1g@mail.gmail.com>
+ <ajVco512NDPKDPTr@x1.local>
+In-Reply-To: <ajVco512NDPKDPTr@x1.local>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Mon, 22 Jun 2026 15:53:33 +0400
+X-Gm-Features: AVVi8Cetkjgs_ZPbhSsYJ4D0E5D4CqDmlEHuwWMGY_b4e-igfUqu15XDdXHKZHo
+Message-ID: <CAMxuvazRnZw4PEsdKCEBD8X1ua5LMj5K-k+-oh-J_uvXm5vT1w@mail.gmail.com>
+Subject: Re: [PATCH v5 00/12] Make RamDiscardManager work with multiple
+ sources & virtio-mem
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Zhenzhong Duan <zhenzhong.duan@intel.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@mailo.com>, 
+	qemu-rust@nongnu.org, Alex Williamson <alex@shazbot.org>, 
+	=?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, Fabiano Rosas <farosas@suse.de>, 
+	Mark Kanda <mark.kanda@oracle.com>, Ben Chaney <bchaney@akamai.com>, 
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
+	"Dr. David Alan Gilbert" <dave@treblig.org>, Zhao Liu <zhao1.liu@intel.com>, Eric Blake <eblake@redhat.com>, 
+	Markus Armbruster <armbru@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 19.06.26 um 17:51 schrieb Claudio Imbrenda:
-> Under heavy memory pressure, handle_sske() and handle_pfmf() might
-> cause an endless loop if the mmu cache runs empty, the atomic
-> allocations fail, and the top-up function also fails. While quite
-> unlikely, that scenario is not impossible.
-> 
-> Fix the issue by not ignoring the return value of
-> kvm_s390_mmu_cache_topup(), and appropriately returning an error code
-> in case of failure.
-> 
-> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Hi Peter
 
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+On Fri, Jun 19, 2026 at 7:13=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Fri, Jun 19, 2026 at 12:11:48AM +0400, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi
+> >
+> > On Thu, Jun 4, 2026 at 5:46=E2=80=AFPM Marc-Andr=C3=A9 Lureau
+> > <marcandre.lureau@redhat.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > This is an attempt to fix the incompatibility of virtio-mem with conf=
+idential
+> > > VMs. The solution implements what was discussed earlier with D. Hilde=
+nbrand:
+> > > https://patchwork.ozlabs.org/project/qemu-devel/patch/20250407074939.=
+18657-5-chenyi.qiang@intel.com/#3502238
+> > >
+> > > The first patches are misc cleanups. Then some code refactoring to ha=
+ve split a
+> > > manager/source. And finally, the manager learns to deal with multiple=
+ sources.
+> > >
+> > > This has been tested together with the Linux kernel series from
+> > > Zhenzhong Duan [1] for TDX guests.
+> > >
+> > > (help fix https://issues.redhat.com/browse/RHEL-131968)
+> >
+> > Can the patch 1-11 be queued or are we missing something?
+> > (RFC patch 12 can be dropped for now)
+>
+> Likely yes.. one thing to double check with you before I do: We don't nee=
+d
+> the kernel series, do we?  Since when unplug, I expect with the truncatio=
+n
+> approach that this series proposed, KVM will emit TDH.MEM.PAGE.REMOVE the=
+n
+> unaccept is done (?).
 
-> ---
->   arch/s390/kvm/priv.c | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
-> index 447ec7ed423d..9bc6fd02ff77 100644
-> --- a/arch/s390/kvm/priv.c
-> +++ b/arch/s390/kvm/priv.c
-> @@ -366,7 +366,9 @@ static int handle_sske(struct kvm_vcpu *vcpu)
->   		if (rc > 1)
->   			return kvm_s390_inject_program_int(vcpu, PGM_ADDRESSING);
->   		if (rc == -ENOMEM) {
-> -			kvm_s390_mmu_cache_topup(vcpu->arch.mc);
-> +			rc = kvm_s390_mmu_cache_topup(vcpu->arch.mc);
-> +			if (rc)
-> +				return rc;
->   			continue;
->   		}
->   		if (rc < 0)
-> @@ -1122,7 +1124,9 @@ static int handle_pfmf(struct kvm_vcpu *vcpu)
->   			if (rc > 1)
->   				return kvm_s390_inject_program_int(vcpu, rc);
->   			if (rc == -ENOMEM) {
-> -				kvm_s390_mmu_cache_topup(vcpu->arch.mc);
-> +				rc = kvm_s390_mmu_cache_topup(vcpu->arch.mc);
-> +				if (rc)
-> +					return rc;
->   				continue;
->   			}
->   			if (rc < 0)
+> Say, what happens if we run QEMU with this series applied, but without th=
+e
+> kernel series?
+
+The kernel series is needed at least for PAGE.ACCEPT. Without it, QEMU
+will have KVM_RUN return EIO, and finish into assert (while tearing
+down ioeventfd).
+
+> What confused me a bit is the dependency of this series v.s. the kernel
+> one.  It seems to use different approaches, but then I don't understand w=
+hy
+> this series was tested with the kernel change.
+
+My understanding is that the kernel may perform TDG.MEM.PAGE.RELEASE.
+That depends on TDX config TDCS_CONFIG_PAGE_RELEASE which qemu/kvm
+doesnt currently control. I don't know whether this is then
+redundant/needless with qemu doing discard on the guest_memfd..
 
