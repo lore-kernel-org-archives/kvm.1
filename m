@@ -1,80 +1,118 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17932283FDD
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07183438A7
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154838; cv=none; b=o1DfFuOd6GrLhBjRkluh636PCtI5o0QVj4FaGkx/JT6G9c285rYsseG/PaqKbU5r4V2L89EzL+XCpVayjkguoD94DCoeYbg2R1kpLbLjrTwTCPQEaoCWossp9SdxKP5Vj9N4F6T/T33AWIVd9cUp/Ewrq86ZUikdsB1m0/u02kI=
+	t=1782154880; cv=none; b=k6LYZn4pOQT+wWgh2M7oajozRNbsnGytFzUZk8e+zaRAhAfqkZCA3ClvDRZs8opPxncqYC0COGWiyObXkAqDn++oK6Av8miUNoiY6w8dcVi2ZkCojSnjnBNQYkv0ZcKbX+CxdmwkYmIy2G45hi8BcBd+Zn/vcHd6ls+o1S0bFm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154838; c=relaxed/simple;
-	bh=w5JJ31tyMwi4GxSQqN5lZltgsTXtqszu8jcmbUzhhIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ePRGRdWWIvb2Vn8MicffhcomLNHr2CdHegbdGf5EYCDzkOHwm2xo4Z+iReQAcKWOPb0TPrUP2gXrQffMW1Izlkg59Oqc4DAO8IJv2jZc/4tEnHbT5o8/bOkPob7CtYOw/Kl8Tx5V9jEIxRy8FHEKMxl7LlWr3gasxIpocUn6sG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KgP/5tqF; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1782154880; c=relaxed/simple;
+	bh=Ep/XnTHZTii2jnrwtld34R2Gh++x78ZXsQSvggjaA4o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Xi99/NDS8rG8jONVTtbZESuYq4a9TEyIWwnj97LxcKMr13uDUrqBq9XhZIzvT15kG2CI147lDt5T7lGm+bX/nHJ3ZZfropFIL3LHRUaCLlX/RfND+XVQc0Jj74oqNsDlm2WGj+fESNbpBUJFiNVtb7PSJGTWrlZ/UzkYaoT2akA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRz4SnHd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KgP/5tqF"
-Date: Mon, 22 Jun 2026 14:00:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782154835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ScuQLW+KiJFMDI194GLk7yKbACsBZDHcS03XkYLHrO4=;
-	b=KgP/5tqFrveMqyKfe2sp5L9p2SzdGcFIyY13bhJJt/YwnUmIYFQ+Q05uw4X2lE4pKr6SEq
-	9Xi0XDtGZ8PMahG6dOIc+sLEjHbHwZKvF+EXZozoTlrtPTNJTUQJZKE0vJ3eRF7YlBLkFB
-	djJT4PQbbXWhTQ/eYsej5nIoIgcK/fE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, thuth@redhat.com
-Subject: Re: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by
- tag
-Message-ID: <ev32z6yxkujq3ctb66f6l3e2l5cx2b33ye76mlqvo6jdsydxsk@hwmgkv5rmqym>
-References: <20260622164109.26350-1-andrew.jones@linux.dev>
- <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRz4SnHd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690A11F000E9;
+	Mon, 22 Jun 2026 19:01:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782154879;
+	bh=DjmqMO0MKPZ6exbwmBc5MtKmk4A6iHzP0t66Edt6p7Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DRz4SnHdDSTeYGN+l3+6dl26vBSs9d2FV2NrydMvIHR/ItNofxmdJjFrzEMOiOr0O
+	 KiO6F5m5uoPJzqOcpTrvedRuVUfvfdwRmFEhuEwgL7WQtc9dPBgGXxrLZXKa5BnSf8
+	 9qenBGIR/F+PxYG8lepdAeXquwvCIW9xz7WnsgYVwRcU1ob1bGXykLVrhbhth1DqQp
+	 3GM0VZ+zp/ILzG7YSir1z/hIbjG1HJWQ73bmewpj3dhNeO/QCwmPxPIJPHLpocRVoR
+	 LlJKEF3Yyt22FK06Jl6Ri6zw/lkj6YlKVEYMKVRoNdp1eXyhRuOdMUNFruCzKcsEtv
+	 4X4SdHCxOoPxA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/9] kvm: Prepare core VM structs and helpers for LUO
+ support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tarun Sahu" <tarunsahu@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622184851.2309827-3-tarunsahu@google.com>
+References: <20260622184851.2309827-1-tarunsahu@google.com>
+ <20260622184851.2309827-3-tarunsahu@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 22 Jun 2026 19:01:18 +0000
+Message-Id: <20260622190119.690A11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, Jun 22, 2026 at 06:43:45PM +0200, Paolo Bonzini wrote:
-> On Mon, Jun 22, 2026 at 6:41 PM Andrew Jones <andrew.jones@linux.dev> wrote:
-> >
-> > Import Linux commit d1db4118489f ("checkpatch: add support for
-> > Assisted-by tag").
-> >
-> > (I should have used AI for this, since it'd be fun to include that
-> > tag on this tag-enabling patch, but sometimes I still do my own
-> > homework!)
-> 
-> Personally, I don't see the point in providing free advertising to AI
-> companies, so if I had to choose I would do "WARN(...) if ($sign_off
-> =~ /^Assisted-by:/i)". It's more important to know what AI was used
-> *for*, than what AI was used period.
-> 
-> But I won't complain if people want this patch.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Missing `__rcu` annotation for the `vm_file` field in `struct kvm`.
+--
 
-The process is now well established over in Linux kernel land and we
-encourage kvm-unit-tests contributors to follow Linux processes. The
-motivation for this patch is because I just queued an ARM patch which
-used the Linux process and it failed checkpatch. I'd rather checkpatch
-succeed than to have to tell people to remove/modify the tags they're
-used to using with the kernel.
+commit 742b05343deb7763672dc99dce96c4773cc18720
+Author: Tarun Sahu <tarunsahu@google.com>
 
-We can encourage contributors to also add sentences stating how AI
-assisted when an AI assistance tag is provided in order to capture
-the "AI used for what" part.
+kvm: Prepare core VM structs and helpers for LUO support
 
-Thanks,
-drew
+This commit introduces core infrastructure to support VM preservation with
+LUO. It refactors VM file creation into a unified kvm_create_vm_file()
+helper and tracks a weak reference to the backing file in struct kvm to
+enable reverse file resolution.
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+[ ... ]
+> @@ -874,6 +874,18 @@ struct kvm {
+>  #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+>  	/* Protected by slots_lock (for writes) and RCU (for reads) */
+>  	struct xarray mem_attr_array;
+> +#endif
+> +#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
+> +	/*
+> +	 * Weak reference to the VFS file backing this KVM instance. Stored
+> +	 * without incrementing the file refcount to prevent a circular lifetime
+> +	 * dependency (since file->private_data already pins this struct kvm).
+> +	 * Used exclusively to resolve the file pointer back from struct kvm.
+> +	 *
+> +	 * Written/cleared via rcu_assign_pointer() and read locklessly under
+> +	 * RCU (e.g. via get_file_active() to prevent ABA races).
+> +	 */
+> +	struct file *vm_file;
+
+[Severity: Low]
+Should this pointer be annotated with __rcu?
+
+It is documented as being read locklessly under RCU and is updated using
+rcu_assign_pointer() below. Without the annotation, sparse static analysis
+will likely generate warnings about incorrect types and different address
+spaces when the pointer is updated.
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+[ ... ]
+> +struct file *kvm_create_vm_file(unsigned long type, const char *fdname)
+> +{
+[ ... ]
+> +#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
+> +	/*
+> +	 * Weak reference to the file (without get_file()) to prevent a circular
+> +	 * dependency. Safe because the file's release path clears this pointer
+> +	 * and drops its reference to the VM.
+> +	 *
+> +	 * Written via rcu_assign_pointer() because the pointer can be read
+> +	 * locklessly under RCU (e.g., in kvm_gmem_luo_preserve() via
+> +	 * get_file_active() to prevent lockless ABA races).
+> +	 */
+> +	rcu_assign_pointer(kvm->vm_file, file);
+
+[Severity: Low]
+Since kvm->vm_file is updated here in kvm_create_vm_file() using
+rcu_assign_pointer(), does the member in struct kvm require the __rcu
+modifier to prevent sparse warnings?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
+827-1-tarunsahu@google.com?part=3D2
