@@ -1,212 +1,250 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D17257845;
-	Mon, 22 Jun 2026 03:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2D213AF2;
+	Mon, 22 Jun 2026 03:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782097520; cv=none; b=iSAf/wuTiG1Zh7SvrCBNzzbwE0lYO/htV3OLXbMYyQcHulf+Kh+1VfyQx5NSlzoPBYHP0amZReEzOkKeA2oDVrRuJ6uJSvBoDUzvqyLgAVWmEFDONCqDfzJkbf//xJTrv3yx4AKnyI5GkVSjacgqM9KRH7rrGMfucsisK/TZRrU=
+	t=1782097927; cv=none; b=TJL2mczdSNEgE4+Kn6CKnM6oFEGTbBJ+a+3VZyYuluyz8qk7Uh9/MV1/CTI9FDIZodM2CbJPD1uFXngETUoDPDgFfik2Fs9Qoza6FvCs7Mwq3hBbXh3el9G1T7tabXM6WDAeWisS4J/yXsdacUiUlcRgw7tBjR02m4VZPQpEwr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782097520; c=relaxed/simple;
-	bh=HbEL0S7oIDnZkdCYRRL8oNqyCil+lu6wvX/nASNTXc0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nowrxzprw+8zjFbFwzkupaEjA/X5eJ0VeSbzCNmG9cvr2VY5qD8wnvE34C2c2XpLwhjRbJ1Pg78G22wBnoHHCYGYHMZD8u9yZ3Mi/bnNnnjZnGtRuEgY0sDr/m/2Qb/sicEMSV6ewvJdArztoanZ5QxSuXzHvBVM00wJCtxXN58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8BxdnhlpjhqSHQWAA--.33370S3;
-	Mon, 22 Jun 2026 11:05:09 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJCxPMJlpjhqVn6uAA--.1562S2;
-	Mon, 22 Jun 2026 11:05:09 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
-Date: Mon, 22 Jun 2026 11:05:08 +0800
-Message-Id: <20260622030508.2731279-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1782097927; c=relaxed/simple;
+	bh=zImvOuePFdZg7H+6UnjoJXpQ1HYUUu1uXxUhmcu5Hgk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kFsky5VLf13pi5Szvek1CyLgDHgokbbAp0oWqOyPVm07OJrrMD1jczdoJmqT1TbRZ8quW5KUfAaQui5Lb5jmPkkHB7/6v+7Bub9n288DIaOWmiRGH0+Dms47a24ip9f//K4d+YafDpvcXnBN/Y7izKBrlmompltuzuyvBoqBmRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E+6yeSA6; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E+6yeSA6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782097926; x=1813633926;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zImvOuePFdZg7H+6UnjoJXpQ1HYUUu1uXxUhmcu5Hgk=;
+  b=E+6yeSA6zeHMZxbJS1zge4eN0Jm3P8ObZQa1r6qi4A0UMAre9+Be7/H6
+   JSSpYB7hzCMGcdOrZj4FyUCKF4TgN2UD/7dbOrM9K5S2CFtwAjZ+O3Mzx
+   /kLOjRknyfRr2AI92pHUXnmxH7j1vGOq+VyLBpPVlhIkY2O/+zqHWsymR
+   fkBrtmAnbd5X93y7OBgXzzEgmxVp6epTScEEf6S+oIJs02Th/luGIVpxs
+   O8UwIlz5TeTijHwVzWK9RxYaK/LxTqTspPIIa/A7ClM7oVj/7W0wLxBFl
+   JxTpMH7vDMljBpPnLKzT1JoJT0rSnr/eVAyoQCzTem/Q5qum/0crUDuf5
+   A==;
+X-CSE-ConnectionGUID: XlbCIgByQgG119nxnnH8Xw==
+X-CSE-MsgGUID: uF/D34sqSSa/UWwcX53akA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82917233"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="82917233"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 20:12:06 -0700
+X-CSE-ConnectionGUID: Cbb/fnU2QkKb6OW5SH7kpw==
+X-CSE-MsgGUID: 0XFVuEElRQ++Vq9NMIZINw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="248959104"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 20:12:01 -0700
+Message-ID: <ce3f6eb2-99c4-4582-a11b-a5578b62d401@linux.intel.com>
+Date: Mon, 22 Jun 2026 11:10:55 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxPMJlpjhqVn6uAA--.1562S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/18] iommu: Add APIs to get iommu and device
+ preserved state
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+References: <20260614233728.2212104-1-skhawaja@google.com>
+ <20260614233728.2212104-10-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260614233728.2212104-10-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-API kvm_vcpu_ioctl_interrupt() is mainly to used to deliver interrupt
-from user mode, and internal APIs kvm_queue_irq() and kvm_dequeue_irq()
-are used in kernel mode.
+On 6/15/26 07:37, Samiullah Khawaja wrote:
+> The preserved state of the device and IOMMU needs to be fetched during
+> shutdown and boot in the next kernel. Add APIs that can be used to fetch
+> the preserved state of a device and IOMMU. The APIs will only be used
+> during shutdown and after liveupdate so no locking needed.
+> 
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>   drivers/iommu/liveupdate.c       | 75 ++++++++++++++++++++++++++++++++
+>   include/linux/iommu-liveupdate.h | 31 +++++++++++++
+>   2 files changed, 106 insertions(+)
+> 
+> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> index 2d782023407d..90750e78cd2a 100644
+> --- a/drivers/iommu/liveupdate.c
+> +++ b/drivers/iommu/liveupdate.c
+> @@ -18,6 +18,17 @@
+>   #define iommu_max_objs_per_page(_array) \
+>   	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
+>   
+> +#define iommu_liveupdate_for_each_obj(_arr, _obj, _idx)			\
+> +	for ((_idx) = 0, (_obj) = (_arr)->objects;			\
+> +	     (_idx) < (_arr)->hdr.nr_objects; (_idx)++, (_obj)++)	\
+> +		if (((_obj)->hdr.flags & IOMMU_SER_FLAG_DELETED))	\
+> +			continue;					\
+> +		else
+> +
+> +#define iommu_liveupdate_for_each_arr(_arr)				\
+> +	for (; (_arr); (_arr) = (_arr)->hdr.next_array_phys ?		\
+> +	     phys_to_virt((_arr)->hdr.next_array_phys) : NULL)
+> +
+>   struct iommu_flb_obj {
+>   	struct mutex lock;
+>   	struct iommu_flb_ser *ser;
+> @@ -216,6 +227,70 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+>   }
+>   EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+>   
+> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
+> +				    void *arg)
+> +{
+> +	struct iommu_flb_obj *flb_obj;
+> +	struct iommu_device_array_ser *array;
+> +	struct iommu_device_ser *device_ser;
+> +	int ret, idx;
+> +
+> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
+> +	if (ret)
+> +		return -ENOENT;
+> +
+> +	if (!flb_obj->ser->device_array_phys)
+> +		return -ENOENT;
+> +
+> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+> +	iommu_liveupdate_for_each_arr(array) {
+> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+> +			ret = fn(device_ser, arg);
+> +			if (ret)
+> +				goto out;
+> +		}
+> +	}
+> +
+> +out:
+> +	liveupdate_flb_put_incoming(&iommu_flb);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(iommu_for_each_preserved_device);
+> +
+> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
+> +{
+> +	struct iommu_hw_ser *iommu_ser = NULL;
+> +	struct iommu_hw_array_ser *array;
+> +	struct iommu_flb_obj *flb_obj;
+> +	int ret, idx;
+> +
+> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
+> +	if (ret == -ENODATA || ret == -ENOENT)
+> +		return NULL;
+> +
+> +	if (ret)
+> +		return ERR_PTR(ret);
 
-Also this patch removes unnecessary printk information with inject
-unsupported interrupt with number 0.
+Why does this helper return both NULL and an ERR_PTR()? Is NULL
+considered an error case here? Also, why are -ENODATA and -ENOENT
+treated differently?
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
-v1 ... v2:
-  1. Add border check with ipnum in eiointc_set_sw_coreisr() and
-     eiointc_update_irq(), so that injected interrupt vector is valid.
+> +
+> +	if (!flb_obj->ser->iommu_array_phys) {
+> +		iommu_ser = ERR_PTR(-EINVAL);
+> +		goto out;
+> +	}
+> +
+> +	array = phys_to_virt(flb_obj->ser->iommu_array_phys);
+> +	iommu_liveupdate_for_each_arr(array) {
+> +		iommu_liveupdate_for_each_obj(array, iommu_ser, idx) {
+> +			if (iommu_ser->token == token && iommu_ser->type == type)
+> +				goto out;
+> +		}
+> +	}
+> +
+> +	iommu_ser = NULL;
+> +out:
+> +	liveupdate_flb_put_incoming(&iommu_flb);
+> +	return iommu_ser;
+> +}
+> +EXPORT_SYMBOL(iommu_get_preserved_data);
 
-  2. Move IPI inject and ack within lock to avoid contention in
-     ipi_set() and ipi_clear().
+These two helpers are intended for use by IOMMU drivers, correct? If so,
+please add kernel-doc style comments to document their usage and guide
+how drivers should use them.
 
-  3. Add kvm_arch_irqchip_in_kernel() check in user mode irq injection
-    in function kvm_vcpu_ioctl_interrupt(), contention of user mode irq
-    injection is assured from user mode VMM.
----
- arch/loongarch/kvm/intc/dmsintc.c |  7 ++++---
- arch/loongarch/kvm/intc/eiointc.c | 14 +++++++++-----
- arch/loongarch/kvm/intc/ipi.c     | 14 ++++++--------
- arch/loongarch/kvm/vcpu.c         |  7 ++++---
- 4 files changed, 23 insertions(+), 19 deletions(-)
+> +
+>   static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
+>   {
+>   	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
+> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
+> index f9528c94979d..5ad006892cbd 100644
+> --- a/include/linux/iommu-liveupdate.h
+> +++ b/include/linux/iommu-liveupdate.h
+> @@ -13,6 +13,8 @@
+>   #include <linux/liveupdate.h>
+>   #include <linux/kho/abi/iommu.h>
+>   
+> +typedef int (*iommu_preserved_device_iter_fn)(struct iommu_device_ser *ser,
+> +					      void *arg);
+>   #ifdef CONFIG_IOMMU_LIVEUPDATE
+>   static inline void *dev_iommu_preserved_state(struct device *dev)
+>   {
+> @@ -28,6 +30,20 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
+>   	return NULL;
+>   }
+>   
+> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
+> +{
+> +	struct iommu_domain_ser *ser;
+> +
+> +	ser = domain->preserved_state;
+> +	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
+> +		return ser;
+> +
+> +	return NULL;
+> +}
+> +
+> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
+> +				    void *arg);
+> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type);
+>   int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
+>   void iommu_unpreserve_domain(struct iommu_domain *domain);
+>   int iommu_preserve_device(struct iommu_domain *domain,
+> @@ -44,6 +60,21 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
+>   	return NULL;
+>   }
+>   
+> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static inline int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn, void *arg)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
+> +{
+> +	return NULL;
+> +}
+> +
+>   static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
+>   {
+>   	return -EOPNOTSUPP;
 
-diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
-index de25735ce039..a726c6cafec3 100644
---- a/arch/loongarch/kvm/intc/dmsintc.c
-+++ b/arch/loongarch/kvm/intc/dmsintc.c
-@@ -47,7 +47,6 @@ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
- int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
- 				struct kvm_vcpu *vcpu, u32 vector, int level)
- {
--	struct kvm_interrupt vcpu_irq;
- 	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
- 
- 	if (!level)
-@@ -57,9 +56,11 @@ int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
- 	if (!ds)
- 		return -ENODEV;
- 
--	vcpu_irq.irq = INT_AVEC;
-+	if (!kvm_guest_has_msgint(&vcpu->arch))
-+		return -EINVAL;
-+
- 	set_bit(vector, (unsigned long *)&ds->vector_map);
--	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
-+	kvm_queue_irq(vcpu, INT_AVEC);
- 	kvm_vcpu_kick(vcpu);
- 
- 	return 0;
-diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index 2b14485d14a7..c6a309695030 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -17,7 +17,8 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
- 		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
- 			ipnum = count_trailing_zeros(ipnum);
- 			ipnum = ipnum < 4 ? ipnum : 0;
--		}
-+		} else if (ipnum >= LOONGSON_IP_NUM)
-+			ipnum = 0;
- 
- 		cpuid = ((u8 *)s->coremap)[irq];
- 		vcpu = kvm_get_vcpu_by_cpuid(s->kvm, cpuid);
-@@ -36,13 +37,13 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
- {
- 	int ipnum, cpu, found;
- 	struct kvm_vcpu *vcpu;
--	struct kvm_interrupt vcpu_irq;
- 
- 	ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
- 	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
- 		ipnum = count_trailing_zeros(ipnum);
- 		ipnum = ipnum < 4 ? ipnum : 0;
--	}
-+	} else if (ipnum >= LOONGSON_IP_NUM)
-+		ipnum = 0;
- 
- 	cpu = s->sw_coremap[irq];
- 	vcpu = kvm_get_vcpu_by_id(s->kvm, cpu);
-@@ -67,8 +68,11 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
- 	if (found < EIOINTC_IRQS)
- 		return; /* other irq is handling, needn't update parent irq */
- 
--	vcpu_irq.irq = level ? (INT_HWI0 + ipnum) : -(INT_HWI0 + ipnum);
--	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
-+	if (level)
-+		kvm_queue_irq(vcpu, INT_HWI0 + ipnum);
-+	else
-+		kvm_dequeue_irq(vcpu, INT_HWI0 + ipnum);
-+	kvm_vcpu_kick(vcpu);
- }
- 
- static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
-diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-index 4fa0897d7bdb..b7744dcbdd8e 100644
---- a/arch/loongarch/kvm/intc/ipi.c
-+++ b/arch/loongarch/kvm/intc/ipi.c
-@@ -10,16 +10,15 @@
- static void ipi_set(struct kvm_vcpu *vcpu, uint32_t data)
- {
- 	uint32_t status;
--	struct kvm_interrupt irq;
- 
- 	spin_lock(&vcpu->arch.ipi_state.lock);
- 	status = vcpu->arch.ipi_state.status;
- 	vcpu->arch.ipi_state.status |= data;
--	spin_unlock(&vcpu->arch.ipi_state.lock);
- 	if ((status == 0) && data) {
--		irq.irq = LARCH_INT_IPI;
--		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
-+		kvm_queue_irq(vcpu, LARCH_INT_IPI);
-+		kvm_vcpu_kick(vcpu);
- 	}
-+	spin_unlock(&vcpu->arch.ipi_state.lock);
- }
- 
- static void ipi_send(struct kvm *kvm, uint64_t data)
-@@ -40,16 +39,15 @@ static void ipi_send(struct kvm *kvm, uint64_t data)
- static void ipi_clear(struct kvm_vcpu *vcpu, uint64_t data)
- {
- 	uint32_t status;
--	struct kvm_interrupt irq;
- 
- 	spin_lock(&vcpu->arch.ipi_state.lock);
- 	vcpu->arch.ipi_state.status &= ~data;
- 	status = vcpu->arch.ipi_state.status;
--	spin_unlock(&vcpu->arch.ipi_state.lock);
- 	if (status == 0) {
--		irq.irq = -LARCH_INT_IPI;
--		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
-+		kvm_dequeue_irq(vcpu, LARCH_INT_IPI);
-+		kvm_vcpu_kick(vcpu);
- 	}
-+	spin_unlock(&vcpu->arch.ipi_state.lock);
- }
- 
- static uint64_t read_mailbox(struct kvm_vcpu *vcpu, int offset, int len)
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 20c207d80e31..82c96854df93 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1465,6 +1465,9 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
- 	if (vector >= EXCCODE_INT_NUM)
- 		return -EINVAL;
- 
-+	if (kvm_arch_irqchip_in_kernel(vcpu->kvm))
-+		return -EINVAL;
-+
- 	if (!kvm_guest_has_msgint(&vcpu->arch) && (vector == INT_AVEC))
- 		return -EINVAL;
- 
-@@ -1472,10 +1475,8 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
- 		kvm_queue_irq(vcpu, intr);
- 	else if (intr < 0)
- 		kvm_dequeue_irq(vcpu, -intr);
--	else {
--		kvm_err("%s: invalid interrupt ioctl %d\n", __func__, irq->irq);
-+	else
- 		return -EINVAL;
--	}
- 
- 	kvm_vcpu_kick(vcpu);
- 
-
-base-commit: ef0c9f75a19532d7675384708fc8621e10850104
--- 
-2.39.3
-
+Thanks,
+baolu
