@@ -1,61 +1,64 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6792933F584
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7321A34753F
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154145; cv=none; b=DhuuX56h+di36uUiZohmRPq6vHiJIg35H2kQ2Gxv6yTiSG/DKP5WVXCIMIkmnlrvBDW9RRp3kN/nkzkiNhDLM38q4RPVal1+0bVLn4fpXKJG5nd4E3IVPL9yXWjCebJA/eNWPuxS/y0hSv77rU+QT1/0rjeB8Hf80g9dpfcBJlQ=
+	t=1782154146; cv=none; b=TmNUFx0tDD1E/Ybu6YQdiM/dyzV4SnCHB5VmvdFVYGNUIpj9QL0FCT2PQ9Yg5dXRcuA2Il1Jkpj69FnZGr7KhXwQo9D6oJMM2AxhRoKAQ5LjlfDVCR8uA8mXkUyVoBB+y4aRmXProe3a8sHRpPeOtb+zjSxtvG2fVkb3zEzWIJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154145; c=relaxed/simple;
-	bh=DIjLzbnkRJ/pEuBgYb3z2HOVtgcinNlZvsdJq/Cs5OY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TRmUN02C/P/wLAdpXcwktsLW8bqTkDbSPMcEFf4dKzTmTkm/QLZa54+FzPOqmoIQRDDKYLHHm+20SVXkBpPtZ8CE4gx++nrwjTnmqpLDPOQRWxEvFH75BzPoWSQ4+Rj7cKbcZwWl5JURU/ri3NBEMQ2HsA98W/SCjZrMlkZsgic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W0e2ekRr; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1782154146; c=relaxed/simple;
+	bh=ZHjCn1pY331+hIUP4SUOz5v4zvcSMll9BdLgLIc/XoQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=g5mIOeq0JuIMstskEL88QFEdA4dgqLSYKka+sUN2InZxp6xU9+YUyyRDEeivcczZCGUo7u6duFuaCPoBOklRdNuZGp+8LRdRo3sp/Yu1dIPVSNWJ2W5hpjPCG6skK5SYN4G++zR436S5GapKWVw4Ys8r/eUQ2usV3q8LwkGvWIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UE5sW5fM; arc=none smtp.client-ip=209.85.218.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W0e2ekRr"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49221de4ed4so30527575e9.0
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:49:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UE5sW5fM"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-c0793772071so543248866b.0
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:49:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782154141; x=1782758941; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
-        b=W0e2ekRrwJxi0Xb5VaP5CAjCcgPLqZwKTkBd2/qYqZ7JjbhH/EW/M7ryasr1Uqaj4I
-         TIzGIW+8qLLdxkwZfpdq5CNYnMzTP3yB4HtkWpiAn9Bkt6Rl5yRjUp6YJcM9QPqRFrp5
-         kwQ8PTJ22hHI70ol1GijCnlPHw5bPb25GI9gXTuVb+345yFNjQokT8nvuRqcmq72Y6Dm
-         +biy1vFWJopfzCOfhmjxIv09IMKT2p7xXgnZCDuv5MKJrda3Kj19MHFSh0tb3WpowIfD
-         3qpwSvhB97GUxPW6suSXffJZ8/qY4KBR2hcXsoKaIaSxNt2BJ19nICVk98GPpIb1xu+r
-         EVUw==
+        d=google.com; s=20251104; t=1782154143; x=1782758943; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YDKxILlnDw+5iaEcF38F4xHpKQ3yBx+LqMsoNxfSVAA=;
+        b=UE5sW5fMm3z+r0ekPkzK4YdZkOcp/FRPTrURjELNbxMKCWz8YHgxEBnr134duv4RRw
+         GFON0gcLpDun6cftwhYejubYNkfhzS5x2HN2Y15Qqt8dRZCTnImsmQc5plwx9T8wi1h0
+         gMPeqFsuADkegNDG+QyZmbD7K54VjEJtp8Bw/b+Gx2lJi7x/tKbKD1c0mWxonyfqd6ZW
+         zzXFI0u8Tq2522jWiRIGMx+cEpuQYKrGc5v02UHQWaYFpHd7MsRpx0iOzvmP9JFeQyQx
+         rWhz6tt9QIS/N5+Hanu/gh4BRTUQ8ZvM9IBDPsmUTydwER5CyuM6pGKbzhu062ARuRpe
+         dGwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782154141; x=1782758941;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
-        b=RtzNM4jdPILXbK6qtG4/CECCgF8Jj63WStGI6E/Of0O5uErvD2kZqGUhHUN2vhjupg
-         2Ik2fPVreDECni7MksRxeXr8j/i3BMjTGx4KGUgxLDxYI+2/eZlccAnpku9qbckfLw9i
-         rDEmQM1XRVZqoCfjdgg8Xxh94z2ZpL6VwcE77ACN7Cw8y+WknK+Slcjknu9PbhuPqFh1
-         U3q6WZXw85ZcZr0WidS5QeZcVw5e0SMAhA8zq0LQDLdS402nV4aN2neXx2/JlJWABFcv
-         AIbcXDDeJZTFAE2nH42LgfWWDjrhUcO0nkzKqSTzAurh2Xoimq6xWkZwJfk9QEIfMkAP
-         qLFw==
-X-Gm-Message-State: AOJu0YwnEYzMYlkuqTYemVaE05P2MkVIbP4JXkM2hpzd0h7H4GtCPido
-	+SkuRcWyLIGrSDrSlpCF0qrxI7/YTDjo+56sd3tiJqMNM6jyHU3LMaN3KE/VtbKKb6P2Z/nYom3
-	9iA8F7Y4CB23sWP1RwQ==
-X-Received: from wmnj21.prod.google.com ([2002:a05:600c:755:b0:492:4a9f:3d5a])
+        d=1e100.net; s=20251104; t=1782154143; x=1782758943;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YDKxILlnDw+5iaEcF38F4xHpKQ3yBx+LqMsoNxfSVAA=;
+        b=pnPBhhrdtwBuhuu4BkBbmYkg9pnR5BCbFOjQlv3ZSEOOOqj29aT5lccSm2I1IdCPIH
+         9I2NNVXIJmu8D/2iqZilfimX1Lk8BsG8+REfkg6mgUkaWaMNUNi+CPUJi6Gwd1+/MkGE
+         vhaWMtYW1fXgg9JgzQj0NeVpwMCX14iYSdlid8a6JmAxSPv84xv+HC7SvPb4ScWUZDVP
+         2tJi01OKp+DjAouzrSWAcw8BgXPgPyEG4EdtSlxPMnXyHj3qaZYZwtztqVeW8sCiKWj0
+         ZnTyq3mKJndeWOod1vddYykmcc0/7Y15pyDN544e8QdAHemzzMlNjYk4/BDZAnYvvKYY
+         rNgQ==
+X-Gm-Message-State: AOJu0Yy5xQAze1LxHkhyFMwasPe0qvAjN6KuZuwp9MGodlR0UJsEKvyz
+	/zzSpuh+qgbYp1WE/Me0YOhk/jpMqpDaPRST+qckUwjxUoFXUNktQTG4i4j3UEMjTr2vwlUAAwQ
+	6VDZoXhld/OPoydiBew==
+X-Received: from ejbbw14.prod.google.com ([2002:a17:906:c1ce:b0:c04:8986:1578])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c059:10b0:490:bb45:79da with SMTP id 5b1f17b1804b1-49240e427f0mr195668185e9.13.1782154140754;
- Mon, 22 Jun 2026 11:49:00 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:48:42 +0000
+ 2002:a17:906:3583:b0:c10:1030:fffb with SMTP id a640c23a62f3a-c1010310402mr69033166b.12.1782154142415;
+ Mon, 22 Jun 2026 11:49:02 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:48:44 +0000
+In-Reply-To: <20260622184851.2309827-1-tarunsahu@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260622184851.2309827-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.786.g65d90a0328-goog
-Message-ID: <20260622184851.2309827-1-tarunsahu@google.com>
-Subject: [PATCH v3 0/9] liveupdate: kvm: guest_memfd preservation
+Message-ID: <20260622184851.2309827-3-tarunsahu@google.com>
+Subject: [PATCH v3 2/9] kvm: Prepare core VM structs and helpers for LUO support
 From: Tarun Sahu <tarunsahu@google.com>
 To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -66,91 +69,201 @@ Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
-This is Non-RFC patch series for guest_memfd preservation. After
-having multiple discussion across hypervisor liveupdate meeting,
-guest_memfd bi-weekly meeting, the design for the basic support of
-guest_memfd preservation is final. This series is going to include
-guest_memfd which are fully shared and does not support private mem
-and backed by PAGE_SIZE pages.
+Introduce core infrastructure to support VM preservation with LUO.
 
-Steps to test:
-1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=y
-2. boot kernel with command line: kho=on liveupdate=on
-3. run the following kselftest
-	$ .selftests/kvm/guest_memfd_preservation_test --stage 1
-	$ <kexec> --reuse-cmdline
-	$ .selftests/kvm/guest_memfd_preservation_test --stage 2
+First two changes are just refactoring, no functional change, third
+change introduces a new member in struct kvm.
+- Move ITOA_MAX_LEN to kvm_mm.h for reuse by upcoming kvm_luo code.
+- Add a public kvm_create_vm_file() helper wrapping kvm_create_vm()
+  and anon_inode_getfile() to provide a unified VM file creation API.
+- Track a weak reference to the backing file in struct kvm under
+  CONFIG_LIVEUPDATE_GUEST_MEMFD to enable reverse file resolution
+  without circular lifetime dependencies.
 
-NOTE: Assert the following:
-	$ ls /dev/liveupdate
-	$ ls /dev/kvm
-	$ dmesg | grep liveupdate # (should have kvm_vm_luo &&
-		# guest_memfd_luo handler registered)
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+---
+ include/linux/kvm_host.h | 14 +++++++
+ virt/kvm/kvm_main.c      | 79 +++++++++++++++++++++++++++++-----------
+ virt/kvm/kvm_mm.h        |  3 ++
+ 3 files changed, 75 insertions(+), 21 deletions(-)
 
-The changes are rebased on:
-	kvm/next + liveupdate/next (merge) + [3] + [4] + [5]
-	Where,
-	[3]: luo: conversion of serialized_data to KHOSER_PTR
-	[4]: luo: APIs to retrieve file internally from session
-	[5]: selftests: liveupdate sefltests library
-Here is the github repo:
-	https://github.com/tar-unix/linux/tree/gmem-pre
-
-V3 <- RFC V2 [2]
-1. Finalize the design
-2. resolve sashiko reported bugs
-3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
-
-RFC V2 [2] <- RFC V1 [1]
-1. Removed mem_attr_array as it is not needed for fully-shared
-2. Removed pre-faulted condition
-3. Added vm_type preservation for ARM64.
-4. Removed liveupdate_get_file_incoming api patch as it is sent
-   separately [4] by Samiullah.
-
-[1] https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.com/
-[2] https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com/
-[3] https://lore.kernel.org/all/20260622111215.4157974-1-tarunsahu@google.com/
-[4] https://lore.kernel.org/all/20260613012521.835490-1-skhawaja@google.com/
-[5] https://lore.kernel.org/all/20260612214512.464146-1-vipinsh@google.com/
-
-Tarun Sahu (9):
-  liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-  kvm: Prepare core VM structs and helpers for LUO support
-  kvm: kvm_luo: Allow kvm preservation with LUO
-  kvm: guest_memfd: Move internal definitions and helper to new header
-  kvm: guest_memfd: Add support for freezing and unfreezing mappings
-  kvm: guest_memfd_luo: add support for guest_memfd preservation
-  docs: add documentation for guest_memfd preservation via LUO
-  selftests: kvm: Split ____vm_create() to expose init helpers
-  selftests: kvm: Add guest_memfd_preservation_test
-
- Documentation/core-api/liveupdate.rst         |   1 +
- Documentation/liveupdate/vmm.rst              | 107 ++++
- MAINTAINERS                                   |  14 +
- include/linux/kho/abi/kvm.h                   | 106 ++++
- include/linux/kvm_host.h                      |  14 +
- kernel/liveupdate/Kconfig                     |  15 +
- tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
- .../kvm/guest_memfd_preservation_test.c       | 236 +++++++++
- .../testing/selftests/kvm/include/kvm_util.h  |   2 +
- tools/testing/selftests/kvm/lib/kvm_util.c    |  26 +-
- virt/kvm/Makefile.kvm                         |   1 +
- virt/kvm/guest_memfd.c                        | 185 +++++--
- virt/kvm/guest_memfd.h                        |  44 ++
- virt/kvm/guest_memfd_luo.c                    | 497 ++++++++++++++++++
- virt/kvm/kvm_luo.c                            | 195 +++++++
- virt/kvm/kvm_main.c                           |  94 +++-
- virt/kvm/kvm_mm.h                             |  15 +
- 17 files changed, 1477 insertions(+), 81 deletions(-)
- create mode 100644 Documentation/liveupdate/vmm.rst
- create mode 100644 include/linux/kho/abi/kvm.h
- create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
- create mode 100644 virt/kvm/guest_memfd.h
- create mode 100644 virt/kvm/guest_memfd_luo.c
- create mode 100644 virt/kvm/kvm_luo.c
-
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ab8cfae..cbb5eb9 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -874,6 +874,18 @@ struct kvm {
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	/* Protected by slots_lock (for writes) and RCU (for reads) */
+ 	struct xarray mem_attr_array;
++#endif
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Weak reference to the VFS file backing this KVM instance. Stored
++	 * without incrementing the file refcount to prevent a circular lifetime
++	 * dependency (since file->private_data already pins this struct kvm).
++	 * Used exclusively to resolve the file pointer back from struct kvm.
++	 *
++	 * Written/cleared via rcu_assign_pointer() and read locklessly under
++	 * RCU (e.g. via get_file_active() to prevent ABA races).
++	 */
++	struct file *vm_file;
+ #endif
+ 	char stats_id[KVM_STATS_NAME_SIZE];
+ };
+@@ -1074,7 +1086,9 @@ void kvm_get_kvm(struct kvm *kvm);
+ bool kvm_get_kvm_safe(struct kvm *kvm);
+ void kvm_put_kvm(struct kvm *kvm);
+ bool file_is_kvm(struct file *file);
++struct file *kvm_create_vm_file(unsigned long type, const char *fdname);
+ void kvm_put_kvm_no_destroy(struct kvm *kvm);
++void kvm_uevent_notify_vm_create(struct kvm *kvm);
+ 
+ static inline struct kvm_memslots *__kvm_memslots(struct kvm *kvm, int as_id)
+ {
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c..14c3254 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -67,9 +67,6 @@
+ #include <linux/kvm_dirty_ring.h>
+ 
+ 
+-/* Worst case buffer size needed for holding an integer. */
+-#define ITOA_MAX_LEN 12
+-
+ MODULE_AUTHOR("Qumranet");
+ MODULE_DESCRIPTION("Kernel-based Virtual Machine (KVM) Hypervisor");
+ MODULE_LICENSE("GPL");
+@@ -1349,6 +1346,19 @@ static int kvm_vm_release(struct inode *inode, struct file *filp)
+ {
+ 	struct kvm *kvm = filp->private_data;
+ 
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Clear the weak reference of the vm file.
++	 * In case vm file is closed by userspace, but kvm still has
++	 * other users like vCPUs, clearing this pointer ensures
++	 * that we don't have a dangling pointer to a closed file.
++	 *
++	 * Cleared via rcu_assign_pointer() to ensure proper memory visibility
++	 * for concurrent lockless readers under RCU.
++	 */
++	rcu_assign_pointer(kvm->vm_file, NULL);
++#endif
++
+ 	kvm_irqfd_release(kvm);
+ 
+ 	kvm_put_kvm(kvm);
+@@ -5477,11 +5487,47 @@ bool file_is_kvm(struct file *file)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
+ 
++struct file *kvm_create_vm_file(unsigned long type, const char *fdname)
++{
++	struct kvm *kvm = kvm_create_vm(type, fdname);
++	struct file *file;
++
++	if (IS_ERR(kvm))
++		return ERR_CAST(kvm);
++
++	file = anon_inode_getfile("kvm-vm", &kvm_vm_fops, kvm, O_RDWR);
++	if (IS_ERR(file)) {
++		kvm_put_kvm(kvm);
++		return file;
++	}
++
++#ifdef CONFIG_LIVEUPDATE_GUEST_MEMFD
++	/*
++	 * Weak reference to the file (without get_file()) to prevent a circular
++	 * dependency. Safe because the file's release path clears this pointer
++	 * and drops its reference to the VM.
++	 *
++	 * Written via rcu_assign_pointer() because the pointer can be read
++	 * locklessly under RCU (e.g., in kvm_gmem_luo_preserve() via
++	 * get_file_active() to prevent lockless ABA races).
++	 */
++	rcu_assign_pointer(kvm->vm_file, file);
++#endif
++
++	/*
++	 * Don't call kvm_put_kvm anymore at this point; file->f_op is
++	 * already set, with ->release() being kvm_vm_release().  In error
++	 * cases it will be called by the final fput(file) and will take
++	 * care of doing kvm_put_kvm(kvm).
++	 */
++
++	return file;
++}
++
+ static int kvm_dev_ioctl_create_vm(unsigned long type)
+ {
+ 	char fdname[ITOA_MAX_LEN + 1];
+ 	int r, fd;
+-	struct kvm *kvm;
+ 	struct file *file;
+ 
+ 	fd = get_unused_fd_flags(O_CLOEXEC);
+@@ -5490,31 +5536,17 @@ static int kvm_dev_ioctl_create_vm(unsigned long type)
+ 
+ 	snprintf(fdname, sizeof(fdname), "%d", fd);
+ 
+-	kvm = kvm_create_vm(type, fdname);
+-	if (IS_ERR(kvm)) {
+-		r = PTR_ERR(kvm);
+-		goto put_fd;
+-	}
+-
+-	file = anon_inode_getfile("kvm-vm", &kvm_vm_fops, kvm, O_RDWR);
++	file = kvm_create_vm_file(type, fdname);
+ 	if (IS_ERR(file)) {
+ 		r = PTR_ERR(file);
+-		goto put_kvm;
++		goto put_fd;
+ 	}
+ 
+-	/*
+-	 * Don't call kvm_put_kvm anymore at this point; file->f_op is
+-	 * already set, with ->release() being kvm_vm_release().  In error
+-	 * cases it will be called by the final fput(file) and will take
+-	 * care of doing kvm_put_kvm(kvm).
+-	 */
+-	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
++	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, file->private_data);
+ 
+ 	fd_install(fd, file);
+ 	return fd;
+ 
+-put_kvm:
+-	kvm_put_kvm(kvm);
+ put_fd:
+ 	put_unused_fd(fd);
+ 	return r;
+@@ -6342,6 +6374,11 @@ static void kvm_uevent_notify_change(unsigned int type, struct kvm *kvm)
+ 	kfree(env);
+ }
+ 
++void kvm_uevent_notify_vm_create(struct kvm *kvm)
++{
++	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
++}
++
+ static void kvm_init_debug(void)
+ {
+ 	const struct file_operations *fops;
+diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
+index 7510ca9..6241617 100644
+--- a/virt/kvm/kvm_mm.h
++++ b/virt/kvm/kvm_mm.h
+@@ -6,6 +6,9 @@
+ #include <linux/kvm.h>
+ #include <linux/kvm_types.h>
+ 
++/* Worst case buffer size needed for holding an integer as a string. */
++#define ITOA_MAX_LEN 12
++
+ /*
+  * Architectures can choose whether to use an rwlock or spinlock
+  * for the mmu_lock.  These macros, for use in common code
 -- 
 2.55.0.rc0.786.g65d90a0328-goog
 
