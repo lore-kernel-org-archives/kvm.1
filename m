@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5665F3537E0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6955B3537FE;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100902; cv=none; b=A77fVTNg+0HI8tCBj3/7F82o6PDame/2JdGPawK01/H3nrX2MyFBYFXDSajYSCsDkiDL9YBXOYu2me0MbkHGCLSL8ScghGdWnL785fhB/KabkXqYVVsn3TUK6PUcYUm0clLzvJn6A2z5uShZokUvvnNv8z4PbAwkgy03yO54ils=
+	t=1782100902; cv=none; b=thdd0hKoIiVwo5c0sPBESyCADt2tCn5uWMaVPgmokzJVoPJ530bF/+i+ruu/Zag6Wo8M2ugrsDhkO0KFkTqwHE5MH296wcUxC139KnMR97vQo3BDc3KIFpW8UTI8Yp2FOQCF0byO7jwS4t/kaj7V8xJFIn6V5FYMvdxCS+dfLaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782100902; c=relaxed/simple;
-	bh=TVUTi3JzfDP6+5V/37ec117+w6OR65FVI5bIsfJZApA=;
+	bh=E+K8vosRI15Y4jSDt5V6HFL8+ZHZPsTWupAHOqbhJaI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ho6jXs3YhNbRPVaTdz8Wbug2rfIk7uW6qsn9Jyi9OgQ4xpMnQRUoP7Ij1SeW9/NhgQP7n+m01nhp61tUWY91qI9PfDKO45AaQqjHcFvujmMMaGZU5QCKZpiKm1G2nae1G6dpqhinArEzltsQw+Js8Zb37yoQz/+rewZNSAXZJz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4AOBYjl; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=QnLeUoc5OdzIlcQXodK7i5gm0bu9OFLm+gaoVmCVQtFgLZ+VKcb8SWTpf+nnN+HIXiYOUGnTvQ7Q70PTQaIuwWQKIsY4e/+76/hEYY5iK72sxkZBQi6x+4ox4GzWcH0U5tYj19936Xe+LhTVCxWdYIcZ3+Zp03AOcPvV3PBgQAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6YBhO33; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4AOBYjl"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 35DEFC2BCFD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6YBhO33"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47375C2BD00;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1782100902;
-	bh=TVUTi3JzfDP6+5V/37ec117+w6OR65FVI5bIsfJZApA=;
+	bh=E+K8vosRI15Y4jSDt5V6HFL8+ZHZPsTWupAHOqbhJaI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Q4AOBYjlxIBqxzMIEV3PLP2UaHQnNf09AVYFW/j9dCpu2/frUABGIn/9dv9O1xDK2
-	 rnOODipLb1VwSN/TV78VqjNdgWoaXzcwyyxDl7ytdHBMGINu80z7T7Zx/SNw8NuhEU
-	 fZkNZRPy4MRCyTX8dNhnGxXDngcYv4OdtuCrFAa/xFJ+4CFDdgVEFkHfMCafe1fKlU
-	 fZ5+DeVDB3Kxp8SVWvMiMaztSYfuiuIRWzUP3T2M0s8OXpXzATTLpXqHSAzJ7Lrh1v
-	 ZoyAb/tfmIscpN+RHs6G4gKJcJo/p3bHbO6SAsHFymaBdJnrCzFO0rFeUB1z0CsjcX
-	 CFaAG2Z+VGefw==
+	b=a6YBhO33Y3uEAIkx9ioLDoWeUAyxBXlX6z2q1A8+Hq23iMO57w9YnQmOx1N1RDCEX
+	 8jo+sQp+f4/2YjwL5MWz6BEX9OD3CMI1gWTACg77Wqqpu0ckhUarJBDfFyUKSCxu/Z
+	 L4wLjk2O9teEAoE4904tW/WrdkYo6rj8YeokR3sejdOQGcGVvsPGaPj1JQV1MUBIxJ
+	 gm/EBAdSlOzLx2XfqoVIfHeHUf/jgwDhyLxjTBsSxrvlj9IkgUWprhldF/iPwiAgkR
+	 YQW/P4QTAXDQJWGdhWRGhmTxncZGT7Wphc0W4XH6ytgGB5Y5US3cHPv5/qdFQwPYOx
+	 PMgeoP18NLJbw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BBC2CDB471;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3ED0ACDB470;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:31 -0700
-Subject: [PATCH v2 13/16] KVM: riscv: selftests: Add csr emulation test
+Date: Sun, 21 Jun 2026 21:01:32 -0700
+Subject: [PATCH v2 14/16] riscv: kvm: Use generated instruction headers for
+ csr emulation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-13-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-14-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +55,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=4572;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=5943;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=UIPBSpc0H3jB7+KpJxg4F5rG4rgb2Zzku6x9eNCAhf8=;
- b=LkA15MenggXoi151d45SYPIEvfF6f5Fo3rW9bGmHd1LZ5uSRXUZT9goc9vyY3EB3pqtMjq6G7
- wPZWWace2SQCE3C+XBtQd73He4AWPCES9KyX40XDcpXuv8kW6z3sMPA
+ bh=9PbrBReqHg8odPzO0Aj25Dg/WrzhILietEScH5FIrZI=;
+ b=QER4oOxjHEWouKvbMLxcSeVmYy7F2UwfNIy6lN1Y+ALNTor+4ZNxcwBbLFauPUjqLtQ9V/IoQ
+ J620gJPvdEiAXbkMiY//x0UqkxqXNS9sF5ldLEIYTn/vpU8i/hpdP6v
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -68,159 +69,191 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Introduce a kvm test that uses the emulated test csr to validate that
-all emulated reads/writes to csrs function as expected.
+Migrate the csr emulation code to use the generated instruction headers
+instead of the hand-written instruction composition functions.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
----
- tools/testing/selftests/kvm/Makefile.kvm     |   1 +
- tools/testing/selftests/kvm/riscv/csr_test.c | 126 +++++++++++++++++++++++++++
- 2 files changed, 127 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 07a5fc2bf67c..88ccd15e8f94 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -212,6 +212,7 @@ TEST_GEN_PROGS_s390 += s390/irq_routing
- TEST_GEN_PROGS_s390 += mmu_stress_test
+---
+This can be tested with the introduced csr_test selftest.
+---
+ arch/riscv/include/asm/kvm_vcpu_insn.h |  3 +-
+ arch/riscv/kvm/vcpu_insn.c             | 61 +++++++++++++++++-----------------
+ 2 files changed, 32 insertions(+), 32 deletions(-)
+
+diff --git a/arch/riscv/include/asm/kvm_vcpu_insn.h b/arch/riscv/include/asm/kvm_vcpu_insn.h
+index 106fb4c45108..01efdaaede21 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_insn.h
++++ b/arch/riscv/include/asm/kvm_vcpu_insn.h
+@@ -19,7 +19,8 @@ struct kvm_mmio_decode {
+ };
  
- TEST_GEN_PROGS_riscv = $(TEST_GEN_PROGS_COMMON)
-+TEST_GEN_PROGS_riscv += riscv/csr_test
- TEST_GEN_PROGS_riscv += riscv/sbi_pmu_test
- TEST_GEN_PROGS_riscv += riscv/ebreak_test
- TEST_GEN_PROGS_riscv += riscv/mmio_test
-diff --git a/tools/testing/selftests/kvm/riscv/csr_test.c b/tools/testing/selftests/kvm/riscv/csr_test.c
-new file mode 100644
-index 000000000000..b3e8b99b6e92
---- /dev/null
-+++ b/tools/testing/selftests/kvm/riscv/csr_test.c
-@@ -0,0 +1,126 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * csr_test.c - Tests the csr functionality.
-+ */
-+#include "kvm_util.h"
-+#include "ucall_common.h"
-+
-+#define CSR_TEST 0x240
-+#define FP 0x00006000
-+
-+/*
-+ * Use the fcsr as a U-mode accesible csr and compare against the custom 'test'
-+ * hypervisor csr (currently using vsscratch)
-+ */
-+#define test_csr(write, initial, mode)								\
-+static void test_##write(void)									\
-+{												\
-+	unsigned long hypervisor_result, reference_result, old_hypervisor;			\
-+	unsigned long mask = 0x15;								\
-+	asm volatile (										\
-+		"csrs	sstatus, %[enable_fp]\n"						\
-+		"csrw	fcsr, %[init]\n"							\
-+		#write"	zero, fcsr, %[mask]\n"							\
-+		"csrr	%[ref_res], fcsr\n"							\
-+		: [ref_res] "=&r" (reference_result)						\
-+		: [enable_fp] "r" (FP), [mask] #mode(mask), [init] "r" (initial)		\
-+		: "memory"									\
-+	);											\
-+	asm volatile (										\
-+		"csrw	%[test_csr], %[init]\n"							\
-+		#write"	%[old], %[test_csr], %[mask]\n"						\
-+		"csrr	%[hyp_res], %[test_csr]\n"						\
-+		: [hyp_res] "=&r" (hypervisor_result), [old] "=&r" (old_hypervisor)		\
-+		: [test_csr] "i"(CSR_TEST), [mask] #mode(mask), [init] "r" (initial)		\
-+		: "memory"									\
-+	);											\
-+	/* Check that writing works */								\
-+	GUEST_ASSERT_EQ(reference_result, hypervisor_result);					\
-+	/* Check that reading works */								\
-+	GUEST_ASSERT_EQ(old_hypervisor, initial);						\
-+	GUEST_DONE();										\
-+}
-+
-+test_csr(csrrw, 0x0, r)
-+test_csr(csrrs, 0x0, r)
-+test_csr(csrrc, 0x15, r)
-+test_csr(csrrwi, 0x0, i)
-+test_csr(csrrsi, 0x0, i)
-+test_csr(csrrci, 0x15, i)
-+
-+static void run(void *guest_code, char *instruction)
-+{
-+	struct ucall uc;
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	kvm_create_device(vm, KVM_DEV_TYPE_TEST);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT(get_ucall(vcpu, &uc) == UCALL_DONE,
-+		    "CSR instruction '%s' failed: '%s'", instruction,
-+		    uc.buffer);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+static void check_test_csr_guest(void)
-+{
-+	unsigned long scause, stvec;
-+
-+	asm volatile(
-+		"la	%[stvec], 1f\n"
-+		"csrw	stvec, %[stvec]\n"
-+		"csrwi	%[test_csr], 0x0\n"
-+		"1:\n"
-+		"csrr	%[scause], scause\n"
-+		: [scause] "=&r" (scause), [stvec] "=&r" (stvec)
-+		: [test_csr] "i" (CSR_TEST)
-+	);
-+
-+	/* An illegal instruction will be generated if CONFIG_RISCV_KVM_TEST_CSR is not enabled. */
-+	if (scause == 2)
-+		GUEST_FAIL("CONFIG_RISCV_KVM_TEST_CSR not enabled.\n");
-+	GUEST_DONE();
-+}
-+
-+static int check_test_csr(void)
-+{
-+	struct ucall uc;
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	int success;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, check_test_csr_guest);
-+
-+	/* Skip if CONFIG_KVM_MMIO_TEST not enabled */
-+	if (!kvm_create_device(vm, KVM_DEV_TYPE_TEST))
-+		exit(KSFT_SKIP);
-+
-+	vcpu_run(vcpu);
-+
-+	success = get_ucall(vcpu, &uc) == UCALL_DONE;
-+
-+	kvm_vm_free(vm);
-+
-+	return success;
-+}
-+
-+int main(void)
-+{
-+	/* Skip if CONFIG_RISCV_KVM_TEST_CSR not enabled */
-+	if (!check_test_csr())
-+		exit(KSFT_SKIP);
-+
-+	run(test_csrrw, "csrrw");
-+	run(test_csrrs, "csrrs");
-+	run(test_csrrc, "csrrc");
-+	run(test_csrrwi, "csrrwi");
-+	run(test_csrrsi, "csrrsi");
-+	run(test_csrrci, "csrrci");
-+
-+	return 0;
-+}
+ struct kvm_csr_decode {
+-	unsigned long insn;
++	unsigned long rd;
++	unsigned long insn_len;
+ 	int return_handled;
+ };
+ 
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index c5a70de4a579..d666cd24f8c0 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -13,8 +13,7 @@
+ #include <asm/kvm_vcpu_test_csr.h>
+ 
+ struct insn_func {
+-	unsigned long mask;
+-	unsigned long match;
++	bool (*cmp)(u32 insn);
+ 	/*
+ 	 * Possible return values are as follows:
+ 	 * 1) Returns < 0 for error case
+@@ -131,20 +130,17 @@ static const struct csr_func csr_funcs[] = {
+  */
+ int kvm_riscv_vcpu_csr_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ {
+-	ulong insn;
+-
+ 	if (vcpu->arch.csr_decode.return_handled)
+ 		return 0;
+ 	vcpu->arch.csr_decode.return_handled = 1;
+ 
+ 	/* Update destination register for CSR reads */
+-	insn = vcpu->arch.csr_decode.insn;
+-	if ((insn >> SH_RD) & MASK_RX)
+-		SET_RD(insn, &vcpu->arch.guest_context,
+-		       run->riscv_csr.ret_value);
++	if (vcpu->arch.csr_decode.rd)
++		*((ulong *)&vcpu->arch.guest_context +
++		  vcpu->arch.csr_decode.rd) = run->riscv_csr.ret_value;
+ 
+ 	/* Move to next instruction */
+-	vcpu->arch.guest_context.sepc += INSN_LEN(insn);
++	vcpu->arch.guest_context.sepc += vcpu->arch.csr_decode.insn_len;
+ 
+ 	return 0;
+ }
+@@ -154,7 +150,7 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct kvm_run *run, ulong insn)
+ 	#define GET_REG(_rd) (*((unsigned long *)(&vcpu->arch.guest_context) + _rd))
+ 
+ 	int i, rc = KVM_INSN_ILLEGAL_TRAP;
+-	unsigned int csr_num;
++	unsigned int csr_num, rd;
+ 	const struct csr_func *tcfn, *cfn = NULL;
+ 	ulong val = 0, wr_mask = 0, new_val = 0;
+ 
+@@ -163,26 +159,32 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct kvm_run *run, ulong insn)
+ 		wr_mask = -1UL;
+ 		new_val = GET_REG(riscv_insn_csrrw_extract_xs1(insn));
+ 		csr_num = riscv_insn_csrrw_extract_csr(insn);
++		rd = riscv_insn_csrrw_extract_xd(insn);
+ 	} else if (riscv_insn_is_csrrs(insn)) {
+ 		wr_mask = GET_REG(riscv_insn_csrrs_extract_xs1(insn));
+ 		new_val = -1UL;
+ 		csr_num = riscv_insn_csrrs_extract_csr(insn);
++		rd = riscv_insn_csrrs_extract_xd(insn);
+ 	} else if (riscv_insn_is_csrrc(insn)) {
+-		wr_mask = GET_REG(riscv_insn_csrrs_extract_xs1(insn));
++		wr_mask = GET_REG(riscv_insn_csrrc_extract_xs1(insn));
+ 		new_val = 0;
+ 		csr_num = riscv_insn_csrrc_extract_csr(insn);
++		rd = riscv_insn_csrrc_extract_xd(insn);
+ 	} else if (riscv_insn_is_csrrwi(insn)) {
+ 		wr_mask = -1UL;
+ 		new_val = riscv_insn_csrrwi_extract_imm(insn);
+ 		csr_num = riscv_insn_csrrwi_extract_csr(insn);
++		rd = riscv_insn_csrrwi_extract_xd(insn);
+ 	} else if (riscv_insn_is_csrrsi(insn)) {
+ 		wr_mask = riscv_insn_csrrwi_extract_imm(insn);
+ 		new_val = -1UL;
+ 		csr_num = riscv_insn_csrrsi_extract_csr(insn);
++		rd = riscv_insn_csrrsi_extract_xd(insn);
+ 	} else if (riscv_insn_is_csrrci(insn)) {
+-		wr_mask = GET_REG(riscv_insn_csrrwi_extract_imm(insn));
++		wr_mask = riscv_insn_csrrci_extract_imm(insn);
+ 		new_val = 0;
+-		csr_num = riscv_insn_csrrwi_extract_csr(insn);
++		csr_num = riscv_insn_csrrci_extract_csr(insn);
++		rd = riscv_insn_csrrci_extract_xd(insn);
+ 	} else {
+ 		return rc;
+ 	}
+@@ -190,7 +192,8 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct kvm_run *run, ulong insn)
+ 	#undef GET_REG
+ 
+ 	/* Save instruction decode info */
+-	vcpu->arch.csr_decode.insn = insn;
++	vcpu->arch.csr_decode.rd = rd;
++	vcpu->arch.csr_decode.insn_len = INSN_LEN(insn);
+ 	vcpu->arch.csr_decode.return_handled = 0;
+ 
+ 	/* Update CSR details in kvm_run struct */
+@@ -234,43 +237,39 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct kvm_run *run, ulong insn)
+ 
+ static const struct insn_func system_opcode_funcs[] = {
+ 	{
+-		.mask  = INSN_MASK_CSRRW,
+-		.match = INSN_MATCH_CSRRW,
++		.cmp  = riscv_insn_is_csrrw,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_CSRRS,
+-		.match = INSN_MATCH_CSRRS,
++		.cmp  = riscv_insn_is_csrrs,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_CSRRC,
+-		.match = INSN_MATCH_CSRRC,
++		.cmp  = riscv_insn_is_csrrc,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_CSRRWI,
+-		.match = INSN_MATCH_CSRRWI,
++		.cmp  = riscv_insn_is_csrrwi,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_CSRRSI,
+-		.match = INSN_MATCH_CSRRSI,
++		.cmp  = riscv_insn_is_csrrsi,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_CSRRCI,
+-		.match = INSN_MATCH_CSRRCI,
++		.cmp  = riscv_insn_is_csrrci,
+ 		.func  = csr_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_WFI,
+-		.match = INSN_MATCH_WFI,
++		.cmp  = riscv_insn_is_wfi,
+ 		.func  = wfi_insn,
+ 	},
+ 	{
+-		.mask  = INSN_MASK_WRS,
+-		.match = INSN_MATCH_WRS,
++		.cmp  = riscv_insn_is_wrs_nto,
++		.func  = wrs_insn,
++	},
++	{
++		.cmp  = riscv_insn_is_wrs_sto,
+ 		.func  = wrs_insn,
+ 	},
+ };
+@@ -283,7 +282,7 @@ static int system_opcode_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 
+ 	for (i = 0; i < ARRAY_SIZE(system_opcode_funcs); i++) {
+ 		ifn = &system_opcode_funcs[i];
+-		if ((insn & ifn->mask) == ifn->match) {
++		if (ifn->cmp(insn)) {
+ 			rc = ifn->func(vcpu, run, insn);
+ 			break;
+ 		}
 
 -- 
 2.54.0
