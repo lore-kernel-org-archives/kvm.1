@@ -1,171 +1,175 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7FA35201E
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D131128504D
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782101986; cv=none; b=Ifa5Dk8ZSivE3CxNhPpBPp+SJo1lM5g7pV/DhYiAOrvYWCU7JzVP4xEs+5n9oMQ8yFtY1BcZEcEJ1pX+R+BshUrlxHpBss09wCuHWjR9VTv9TmVi1J01HKdQvKR3mKBuYB5KZRPil9aaDZjCQmTIy9nX/4C2nVYfiwPRM/edDl0=
+	t=1782102207; cv=none; b=lFF7pTBx3tNaAEVaLENhwFVkBuevtfZBfONJAQVNs0S0t2XIv59DWaWh8hooLE6SbC+LJFE2u/p+RFsPjCmtHNaFieCU7K+L9Y8++pyTn/Tm5w+VdgYSnzkbN0giVMirZmj9n8IZlHagf2OxlpLzHarWMZ8gA1w+M/6/Qjshba4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782101986; c=relaxed/simple;
-	bh=lgu5KtqRmIzGm4CQ+E1cYDXZat7Lb6ISHcP1jm0ess0=;
+	s=arc-20240116; t=1782102207; c=relaxed/simple;
+	bh=Ddpmap3HNEE4gPM0gXU3Kf61Ud2997HJZb945StfZMA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S11AKBFjPv4HW450hYTEVUTVbimUOuDwv0Bks95tw4Bc9Mx6ekqrGjf/bAT9oCXQ/7iKNt9HuIRyPaVIB3bmVofEUi3xOa5oY9eCWGOpb2vauzBHtD80/SM/xd7on5+9ouXiuFXZP6iUDAkoKQ7vEnLr/f9lusek3tepB2S5Yck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0HvEY1R; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=dCC0lLXTQ5x+XvjN+n1Y7uDVnXTF+z5VQri6A66lbzZ7KJQClp9ZhksOVCRtyYhxIZ4ZD84QNZwDBMIZCsMVYmsmTH1BdARfFdjY4gQj+69KDok9SDqKPAO6zSosMVvBFPG3wRuZbJxunWGdjVriJCbq5GLp3dmYHyZhbqOkLI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEejPmLj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0HvEY1R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F032C1F000E9;
-	Mon, 22 Jun 2026 04:19:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEejPmLj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FFF1F000E9;
+	Mon, 22 Jun 2026 04:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782101985;
-	bh=oyECg/ZcRIQYQmdiFG0fbgUnpshM9DCGKnw7ANnIe+o=;
+	s=k20260515; t=1782102206;
+	bh=yLEsct0NJnJfQR1wsHDMkBxuBddq1AKONiKMmc132RQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=X0HvEY1R/glUwp78o1WbdjpGYq/M/0yn3V90WSzPA5UaUp9hVnD9mUZ4pn5enhGRL
-	 PyMQrdiPCTkRMoGOeh7nkfZ95qEZyucq9Nj2fl/ldXSd2yFyiHh5pF7/U+8ZtEZ/Y+
-	 HudN5MJU4QPM3UQeNdF6FQYtXgJWbNOU2vJSmC2VXkZ/Qt3dZ/jPzclYpHpO46bp7N
-	 hrL7ScczC9cPSu5TGmT5xlt91hdmC3h1i6fPyRa7jN/bZ5xJrtNjVp/ODtCDPbssiw
-	 no3/jY7rzqA484ZgUd262/30HUftOp0G3wpYnV6irt3c5emWW5epdSqNgcutW6E1cR
-	 TbW15/2TkKCLA==
+	b=nEejPmLj2lHlZzTQibXIzzkA5hjIcupWEq1XYi6Cvy+Prp+B2d6dV+w96RMC2MFbC
+	 A89wHrQ15/P+rZlnykxoToQl4gFcZIWvsjcUrFIUkvQuxGRdj8ctXPh0/5YeHBpXSV
+	 qWl5fUSOloFDwyxp9Voy+sxEZVqRj0MdZPZMJIBjGPWQ2casqj4hj1ZhVzcFqkJ2t9
+	 RnJkBBUoWrOe6THH9EnkitD5Q4LEqI5kUprIZaa+HR7sDe+toP+bCKQPB8LZ406Mdo
+	 yKFsg97R+bklXMRkTiAsvOWeE1C9Uy5PXF1Fhsm3UdRUEPXYtKDNf2DVLjUfAh7sIq
+	 MqSREEp+V7j9Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/16] riscv: Add kprobes instruction simulation
- KUnit
+Subject: Re: [PATCH v2 12/16] riscv: kvm: Add emulated test csr
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-4-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-4-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:19:44 +0000
-Message-Id: <20260622041944.F032C1F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 04:23:25 +0000
+Message-Id: <20260622042326.46FFF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] The KUnit test executes an uninterruptible 4.29 billion iteration =
-loop, guaranteeing kernel soft lockups and breaking CI.
-- [Medium] The KUnit test logic is tautological and its state initializatio=
-n masks branch outcomes, halving test coverage.
+- [High] The `vsscratch` test CSR emulation handler is structurally unreach=
+able, rendering the feature dead code because accesses to VS-level CSRs fro=
+m VS-mode do not trap to KVM.
+- [High] The emulated test CSR unconditionally introduces a silently-on gue=
+st-visible feature and unmigratable state, violating KVM API invariants.
+- [High] The patch hijacks the architectural `vsscratch` CSR, backing it wi=
+th disconnected software state and causing split-brain register semantics.
+- [Medium] The emulated test CSR state is not cleared during VCPU reset, le=
+aking state across warm resets.
 --
 
-commit 0b416648ab5f17f7e140c671781502c76b641895
+commit 783cfef4904ebb8469e4e71c63a55936a9c8e148
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: Add kprobes instruction simulation KUnit
+riscv: kvm: Add emulated test csr
 
-This commit introduces a KUnit test that iterates through all 32-bit
-integers to validate kprobes instruction simulation. The tests are gated
-behind a new CONFIG_RISCV_KPROBES_SIMULATE_KUNIT kconfig option.
+This commit adds support to emulate the vsscratch CSR when
+CONFIG_RISCV_KVM_TEST_CSR is set. It introduces a new kvm_test_csr
+struct and hooks into the CSR instruction handling to reflect changes
+when the vsscratch register is accessed.
 
-diff --git a/arch/riscv/kernel/tests/Kconfig.debug b/arch/riscv/kernel/test=
-s/Kconfig.debug
-index 40f8dafffa0ab..9eda8938ec15b 100644
---- a/arch/riscv/kernel/tests/Kconfig.debug
-+++ b/arch/riscv/kernel/tests/Kconfig.debug
-@@ -42,6 +42,19 @@ config RISCV_KPROBES_KUNIT
-=20
-          If unsure, say N.
-=20
-> +config RISCV_KPROBES_SIMULATE_KUNIT
-> +       tristate "KUnit test for riscv kprobes instruction simulation" if=
- !KUNIT_ALL_TESTS
-> +       depends on KUNIT
-> +       depends on KPROBES
-> +       default KUNIT_ALL_TESTS
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
+vm_host.h
+> index 75b0a951c1bc6..4d30d30ebefc7 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+[ ... ]
+> @@ -265,6 +271,10 @@ struct kvm_vcpu_arch {
+>  		gpa_t shmem;
+>  		u64 last_steal;
+>  	} sta;
+> +
+> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
+> +	struct kvm_test_csr test_csr;
+> +#endif
+>  };
 
 [Severity: High]
-Will this default KUNIT_ALL_TESTS cause CI pipelines to break?
+Does this new guest-visible state need to be explicitly enabled by userspace
+with a runtime capability check rather than just a compile-time config?=20
 
-Since the test iterates through all 32-bit integers, it appears it could
-cause standard testing environments to timeout or lockup when they enable
-all tests.
+Also, since this state isn't exposed via the KVM_GET_ONE_REG or KVM_SET_ONE=
+_REG
+API, will it break live migration because it is completely invisible to
+userspace?
 
-> +       help
-> +         Enable testing for riscv kprobes instruction simulation. Useful=
- for
+[Severity: Medium]
+Is this test_csr state cleared during a VCPU reset? It looks like it is mis=
+sing
+from the architecture-specific reset path kvm_riscv_vcpu_context_reset(),
+which might allow the modified value to leak across warm resets.
 
+> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+> index 1d8741d022425..c5a70de4a5790 100644
+> --- a/arch/riscv/kvm/vcpu_insn.c
+> +++ b/arch/riscv/kvm/vcpu_insn.c
 [ ... ]
+> @@ -112,6 +114,9 @@ static int seed_csr_rmw(struct kvm_vcpu *vcpu, unsign=
+ed int csr_num,
+>  static const struct csr_func csr_funcs[] =3D {
+>  	KVM_RISCV_VCPU_AIA_CSR_FUNCS
+>  	KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS
+> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
+> +	KVM_RISCV_VCPU_TEST_CSR_FUNCS
+> +#endif
+>  	{ .base =3D CSR_SEED, .count =3D 1, .func =3D seed_csr_rmw },
+>  };
 
-diff --git a/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c b/arch=
-/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
-new file mode 100644
-index 0000000000000..d82706685823d
---- /dev/null
-+++ b/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
-@@ -0,0 +1,250 @@
-> +// SPDX-License-Identifier: GPL-2.0+
+[Severity: High]
+Will this CSR emulation handler ever be reached?
+
+KVM's CSR emulation path kvm_riscv_vcpu_virtual_insn() is only invoked for
+Virtual Instruction exceptions (EXC_VIRTUAL_INST_FAULT, cause 22). However,
+accessing an HS-level CSR like vsscratch from VS-mode natively generates an
+Illegal Instruction exception (EXC_INST_ILLEGAL, cause 2).
+
+Since KVM explicitly delegates these exceptions directly to the guest's
+VS-mode exception handler, it seems this handler gets bypassed entirely.
+
+> diff --git a/arch/riscv/kvm/vcpu_test_csr.c b/arch/riscv/kvm/vcpu_test_cs=
+r.c
+> new file mode 100644
+> index 0000000000000..b8aa503cdaba7
+> --- /dev/null
+> +++ b/arch/riscv/kvm/vcpu_test_csr.c
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +#include <linux/kernel.h>
-
-[ ... ]
-
-> +static void test_kprobe_simulate_riscv(struct kunit *test)
+> +#include <linux/kvm_host.h>
+> +#include <asm/kvm_vcpu_insn.h>
+> +#include <asm/kvm_vcpu_test_csr.h>
+> +
+> +#define vcpu_to_test_csr(vcpu) (&(vcpu)->arch.test_csr)
+> +
+> +int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
+> +			    unsigned long *val, unsigned long new_val,
+> +			    unsigned long wr_mask)
 > +{
-> +	unsigned int addr =3D 0xdeadbeef;
-> +	unsigned int i =3D 0;
+> +	struct kvm_test_csr *test_csr =3D vcpu_to_test_csr(vcpu);
 > +
-> +	do {
-> +		struct pt_regs regs =3D { 0 };
+> +	*val =3D test_csr->val;
+> +
+> +	if (wr_mask)
+> +		test_csr->val =3D (test_csr->val & ~wr_mask) | (new_val & wr_mask);
+> +
+> +	return KVM_INSN_CONTINUE_NEXT_SEPC;
+> +}
 
 [Severity: High]
-Is it safe to run a 4.29 billion iteration loop inside the kernel without
-yielding the CPU?
+Does using the architectural vsscratch CSR for this test cause a split-brain
+state?
 
-Looking at test_kprobe_simulate_riscv(), there doesn't appear to be any
-mechanism like cond_resched() inside the loop or the simulated functions.
-Won't this monopolize the CPU and reliably trigger the soft lockup watchdog
-or RCU stall detectors?
+In a RISC-V guest, accessing sscratch implicitly accesses the hardware
+vsscratch register, which KVM context-switches via its standard guest conte=
+xt
+structures.
 
-[Severity: Medium]
-Does initializing the registers to zero on every iteration reduce the cover=
-age
-of conditional branches?
-
-If source registers like rs1 and rs2 are never populated with non-zero valu=
-es,
-won't the branch conditions evaluate to a single static outcome? For exampl=
-e,
-a beq (0 =3D=3D 0) will always be true, and bne (0 !=3D 0) will always be f=
-alse.
-This seems to skip testing the alternate branch paths.
-
-> +
-> +		if (riscv_insn_is_jal(i)) {
-
-[ ... ]
-
-> +		} else if (riscv_insn_is_auipc(i)) {
-> +			s32 offset =3D riscv_insn_auipc_extract_imm(i);
-> +			u32 rd_index =3D riscv_insn_auipc_extract_xd(i);
-> +
-> +			simulate_auipc(i, addr, &regs);
-> +
-> +			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
-> +					    "auipc instruction (0x%x) incorrectly simulated", i);
-> +
-> +			if (rd_index)
-> +				KUNIT_EXPECT_EQ_MSG(
-> +					test,
-> +					riscv_insn_reg_get_val((unsigned long *)&regs, rd_index),
-> +					(unsigned long)addr + offset,
-> +					"auipc instruction (0x%x) incorrectly simulated", i);
-
-[Severity: Medium]
-Does extracting the expected values using the same macros as the implementa=
-tion
-make the test tautological?
-
-If a macro like riscv_insn_auipc_extract_imm() is flawed, both the test and
-the implementation will compute the identical incorrect value, causing the
-test to spuriously pass.
-
-[ ... ]
+By intercepting explicit guest accesses to the vsscratch address and direct=
+ing
+them to this disjoint test_csr.val variable, the guest will see different
+values depending on whether it accesses the register implicitly via sscratch
+or explicitly via vsscratch. Would it be safer for a test CSR to use a
+reserved or custom CSR address?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D4
+_table-v2-0-7f0810ee2274@gmail.com?part=3D12
