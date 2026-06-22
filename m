@@ -1,135 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C310348C5C
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E0B342CBA
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782155608; cv=none; b=QVORNDkBhdt6FfKNePtz/VJ66S52o8Av8zQmy1CQ+6ewBXQeUwtV+EW5/cHsSw4JzRAAtvYKxoMvAgurlLJajp+fpr3M9m9SD6dgabNQw/u+AQwRNYvsZTkVCpw9I0A5zeF3l+H4XHCMDHsMPj81jZsYkxCY4f13+Eg210UDReI=
+	t=1782155959; cv=none; b=WUNXJHZdaf9EEVi+9Op1LAr7k4gZVEtL093/0Vb2rvA0J9vC3R5kMayJdEzUsSQZpjMSfAJZm2bZoCUWd32i6aeXf5CXXFOGQpPcF+HKK4pdbiy3j8GLVj4xOtvmzWWgjzKXdFqdMH7TKCEK46STA1zhL4IicN3/Gs/QV287naM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782155608; c=relaxed/simple;
-	bh=m1nKuLiZIGjAiLBMQC9OYQgPC+QpzXNL8zouMgxLVjI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SAEgz4sktL+IFQUn5NEcxe5Wo7vpcV9zCmctwhkXOsh74FqMgYvN2dOapy2BDRAm4sGnLOMOvEzswSabSmCZDPZJBoeVzHbjfD5ZI3DdtZGL6pbNg+abKIH1GOPJNX3bJZF2tn93VWpM6rYBjuDdvsDtVzul1+uyc9Cwn5YPhv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTKXVWsN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782155959; c=relaxed/simple;
+	bh=VRGucQtupWQRWS1s+tdmc5UQGx54vGuaacc25MOY5WA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nCN05XHP8QRSpzYR7g7UU5pyuotELA81PCcdMipnDkfLbLooJYgWN5nKARgcSED7zj8X2AUKlYNFxvaOAsmrH6LWM0lH4az5u3EpUgGCixXThqnL3SkrqXMQ3SEtgSKwR8aoP1tDwaS46ydcgT0sdzoc+eiM5e/friVNUYso/us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nF5rT2WV; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTKXVWsN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B591F000E9;
-	Mon, 22 Jun 2026 19:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782155607;
-	bh=pzIM9EtgGJgEzZOSz4KZKY1fknG9SXcu7sOxkG00XVE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PTKXVWsNNFMLsMRifOnrptfZOmtUetPaOwYqs5mxqw6qpaUQxjii1fCrhmquygY47
-	 7TXl2RTRXvZE/sZrcleMhJhcGKVvpGQ2GNvvC9Mg2wIf3mdtZfMveRhrBAd2s/rG+z
-	 N3gWRyp0ulNbaER8i6DRddDDkrHnEpIXJV4Apma9grg/z5URCLRamzhW/2yl4iUlA5
-	 Up5IiDu1NZCf/bLOV6kluvbVVjcq/nC/YRx/Y+H+KwVke60S6W0/59COeWn2xigmY3
-	 uacQZ+jfpoELmeAwiZHafo5G8fT42n19MMC4yoVoFNFZxvXHW/xnnDH3cyFrkUUuvA
-	 XHWF5N+5u1ZEg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 9/9] selftests: kvm: Add
- guest_memfd_preservation_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622184851.2309827-10-tarunsahu@google.com>
-References: <20260622184851.2309827-1-tarunsahu@google.com>
- <20260622184851.2309827-10-tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 19:13:26 +0000
-Message-Id: <20260622191327.22B591F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nF5rT2WV"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c73cefe192so7375ad.1
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 12:19:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782155956; x=1782760756; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5kwLaFdFxHHe5ydqDODGo5QwfbB8vLExL1rAylvF7mc=;
+        b=nF5rT2WVYgIdRwnJbNo2KJ3KixbfcwvjqvkVLoLzTYw37Hbh6lAQrfwxaY/Tv+qBi2
+         Mj6BhmWKGOnZSsBXL7uZvOrVlvmSg0OUK3Tye5b/4+WxS0mgqm3h43XGhhrFXS9DkP2x
+         ozsOu9okVrLxVgAvHiu5tTzsxxBT1JlKz3VcBou+sbPz8KF1T3mraOXm8lZxFkkiTK96
+         iLOPYoKvIub5jhWGYUQjUOIfrWxVd9ckjjPH8x9WmzehxQ7GeRBlT7ioKSyK/eC9KoWO
+         NgxEUQ3de4IfZpMHKXD1JLxM5+3w9UY9C9dRfYdwSND2WhvIMX9VmDqJ+TWx8iUznn4Z
+         qPUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782155956; x=1782760756;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5kwLaFdFxHHe5ydqDODGo5QwfbB8vLExL1rAylvF7mc=;
+        b=Hz0U4v54Pzl+M/hTwZKjH3G3VA8Tdln4X7dKGLxhcCruA/T3Q4BpA/AtUeJ0cMKcwN
+         GkrNw2EXr9xnEqUl0KTj6AM39hIokxm8U91cFbd1AKz7G5vcR971qPKY90ooFCX6992V
+         gq8BlIzgSOmgpJsd8VFHkiu7Zxq4n+eSmSh6Jt5clU8zmrR+mxOSjE39AEfvhiy066ny
+         vOP7Ga8NYMImaUE7PAvOu0Ou0ELZjTaD1Ty7ZLxIweORNz8wdoA0jYmfgDcH7vFzyOXR
+         2+FNzOFmXjirK9DB8CiCQHGkQvKwCkt0XcyM2Klu2bok0335vTFzJRQtE220VGoBDTFQ
+         FPsQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrrjbqtqDD3BV6N4M+4MxKQ73mjRRr9Q8+RO+m/t2EaRapJdUcldAnsta/Wo9QLknLFQGI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuTGfinwVMi9M+LAx47u85yIm7sXw7NXRYnp2/3BcUdpcKPmlz
+	zKbgNgUDHxQWs3vX8vOEHoElsTzDaj/Vclg89BnT2iPkdGXAx9JeqMVQYBE6trScvg==
+X-Gm-Gg: AfdE7ck2pntntULBt6XS7NUKj+HxCtux7CwU9429KBMPIgMBNb8pfGTYO0spgCWncol
+	PJP9WWtnBh0M+mZ8DsM9t895V2bl59b+YqNl7HsLjWHmTMfYD2Do9ylPs6+JsCx4VuZTBhr+fqG
+	lvSBtaiuTMzMBNfjfgcwqikH7L6WgJjnyS20aDMeoyCM5KBopq16VXcXif37/LVKJT7Wey78baL
+	QDStecJ5ukFox2iSgZAgvchJsbNHGYmdPCBsusGOOhlmeUuTNqFWYG1kWwCTCu/QITCxKZ2s1ex
+	J5DEFbNGDAut7RpzyEqeDYMNeERCHxI2u+15H6w7txyXOn9bjqUmoKbCzdEfv45grn/ALbaNflm
+	7PRMn3QMvgbJD945aoE2QJopajTeVnhdYPQ4aafBwGZGZgwE7jlZF/cqAcEBKUEQbjGcBPfGqVN
+	+BXoNE25S1KqnjYzTKmNxX4IQYljQlpHVWaYZeap2yZYR/qO53dno0QXWVgFO2YfXVvjQ27nxa7
+	DgN8znM
+X-Received: by 2002:a17:903:8cd:b0:2c1:5756:1230 with SMTP id d9443c01a7336-2c7c4c43e3amr480935ad.0.1782155955831;
+        Mon, 22 Jun 2026 12:19:15 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ea72d7sm8228523b3a.46.2026.06.22.12.19.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 12:19:15 -0700 (PDT)
+Date: Mon, 22 Jun 2026 19:19:11 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v3 07/18] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+Message-ID: <ajl7xfcoKsohfpPJ@google.com>
+References: <20260614233728.2212104-1-skhawaja@google.com>
+ <20260614233728.2212104-8-skhawaja@google.com>
+ <f3e2fef9-4f8c-4032-8d7b-007f47b3fb61@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f3e2fef9-4f8c-4032-8d7b-007f47b3fb61@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Stage 2 test failure due to re-creation of preserved KVM resources=
- (memslots and vCPU)
---
+On Mon, Jun 22, 2026 at 09:50:36AM +0800, Baolu Lu wrote:
+>On 6/15/26 07:37, Samiullah Khawaja wrote:
+>>Add implementation of the device and iommu presevation in a separate
+>>file. Also set the device and iommu preserve/unpreserve ops in the
+>>struct iommu_ops.
+>>
+>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>---
+>>  MAINTAINERS                      |   8 ++
+>>  drivers/iommu/intel/Makefile     |   1 +
+>>  drivers/iommu/intel/iommu.c      |   8 +-
+>>  drivers/iommu/intel/iommu.h      |  28 +++++
+>>  drivers/iommu/intel/liveupdate.c | 175 +++++++++++++++++++++++++++++++
+>>  include/linux/kho/abi/iommu.h    |  21 ++++
+>>  6 files changed, 239 insertions(+), 2 deletions(-)
+>>  create mode 100644 drivers/iommu/intel/liveupdate.c
+>>
 
-commit 323482e513bb6a4836ceedaaec02c412bc10f974
-Author: Tarun Sahu <tarunsahu@google.com>
+[snip]
 
-selftests: kvm: Add guest_memfd_preservation_test
+>>-
+>>  /*
+>>   * Take a root_entry and return the Lower Context Table Pointer (LCTP)
+>>   * if marked present.
+>>@@ -3926,6 +3925,11 @@ const struct iommu_ops intel_iommu_ops = {
+>>  	.is_attach_deferred	= intel_iommu_is_attach_deferred,
+>>  	.def_domain_type	= device_def_domain_type,
+>>  	.page_response		= intel_iommu_page_response,
+>>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>>+	.preserve_device	= intel_iommu_preserve_device,
+>>+	.preserve		= intel_iommu_preserve,
+>>+	.unpreserve		= intel_iommu_unpreserve,
+>>+#endif
+>
+>Any reason why an unpreserve_device callback is missing here?
 
-This commit adds a new KVM selftest to verify that guest memory backed
-by guest_memfd is preserved properly across kexec via LUO. It introduces
-a two-stage test to save state before kexec and verify it afterwards.
+I added unpreserve_device in a later patch when PASID support is added,
+as the context tables are currently unpreserved globally during
+unpreserve(iommu).
 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_preservation_test.c =
-b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
-> new file mode 100644
-> index 0000000000000..c0a20e788ba79
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+But I agree this looks incomplete and I will add a stub
+unpreserve_device in this patch.
+>
+>>  };
+>>  static void quirk_iommu_igfx(struct pci_dev *dev)
 
-[ ... ]
+[snip]
 
-> +static void run_stage_2(int luo_fd, int state_session_fd)
-> +{
-> +	int retrieved_vm_fd, retrieved_gmem_fd, session_fd, stage;
-> +	struct vm_shape shape =3D VM_SHAPE_DEFAULT;
-> +	const uint64_t gpa =3D SZ_4G;
-> +	struct kvm_vcpu *vcpu;
-> +	const int slot =3D 1;
-> +	struct kvm_vm *vm;
+>>+
+>>+static void unpreserve_context_table(struct intel_iommu *iommu,
+>>+				     struct iommu_hw_ser *ser,
+>>+				     u8 bus, u8 devfn)
+>>+{
+>>+	struct context_entry *context;
+>>+
+>>+	spin_lock(&iommu->lock);
+>>+	context = iommu_context_addr(iommu, bus, devfn, 0);
+>>+	spin_unlock(&iommu->lock);
+>
+>The spinlock is dropped immediately after reading the address pointer.
+>If this is guaranteed to be safe, please add a comment to explain why a
+>UAF or race is avoided here. Otherwise, the locking scope needs to be
+>extened to protect both the pointer lookup and use.
 
-[ ... ]
+In the Intel VT-d driver, context tables are never freed once they are
+allocated during runtime, as they can be shared across multiple devices.
+So I took the lock here to protect against concurrent allocations inside
+iommu_context_addr(). Once the address is read, it is safe to use
+without holding the lock until the DMAR unit itself is torn down.
 
-> +	retrieved_gmem_fd =3D luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
-> +	TEST_ASSERT(retrieved_gmem_fd >=3D 0, "Failed to retrieve guest_memfd f=
-ile descriptor");
-> +
-> +	vm =3D vm_create_from_fd(retrieved_vm_fd, shape);
-> +
-> +	u64 nr_pages =3D 2048; /* 8MB is plenty for slot0 pages */
-> +
-> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0=
-);
+I will add a comment explaining this here.
+>
+>>+	if (context && is_context_table_preserved(iommu, ser, bus, devfn)) {
+>>+		iommu_unpreserve_pages(context);
+>>+		clear_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
+>>+			  (unsigned long *)&ser->intel.context_tables_bitmap[0]);
+>>+	}
+>>+}
+>>+
+>>+static int preserve_context_table(struct intel_iommu *iommu,
+>>+				  struct iommu_hw_ser *ser,
+>>+				  u8 bus, u8 devfn)
+>>+{
+>>+	struct context_entry *context;
+>>+	int ret;
+>>+
+>>+	spin_lock(&iommu->lock);
+>>+	context = iommu_context_addr(iommu, bus, devfn, 0);
+>>+	spin_unlock(&iommu->lock);
+>
+>Ditto.
 
-[Severity: High]
-Does this ioctl fail with -EINVAL because slot 0 already exists in the
-preserved KVM VM with a different size? The preserved VM from stage 1 retai=
-ns
-its kernel-side state, which we attempt to blindly re-create here without
-respecting the preserved state.
+Answered above.
+>
+>>+	if (context && !is_context_table_preserved(iommu, ser, bus, devfn)) {
+>>+		ret = iommu_preserve_pages(context);
+>>+		if (ret)
+>>+			return ret;
+>>+
+>>+		set_bit(CONTEXT_TABLE_PRESERVED_BIT(bus, devfn),
+>>+			(unsigned long *)&ser->intel.context_tables_bitmap[0]);
+>>+	}
+>>+
+>>+	return 0;
+>>+}
+>>+
 
-> +	kvm_vm_elf_load(vm, program_invocation_name);
-> +
-> +	for (int i =3D 0; i < NR_MEM_REGIONS; i++)
-> +		vm->memslots[i] =3D 0;
-> +
-> +	struct userspace_mem_region *slot0 =3D memslot2region(vm, 0);
-> +
-> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_siz=
-e);
-> +
-> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZ=
-E, NULL,
-> +				   retrieved_gmem_fd, 0);
+[snip]
 
-[Severity: High]
-Could this fail with -EINVAL because modifying an existing private
-KVM_MEM_GUEST_MEMFD memslot is explicitly forbidden by KVM?
+>>diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
+>>index d06f251a2df4..ad760c497e13 100644
+>>--- a/include/linux/kho/abi/iommu.h
+>>+++ b/include/linux/kho/abi/iommu.h
+>>@@ -80,6 +80,7 @@
+>>   */
+>>  enum iommu_type_ser {
+>>  	IOMMU_INVALID,
+>>+	IOMMU_INTEL,
+>>  };
+>>  #define IOMMU_SER_FLAG_DELETED	(1 << 0)
+>>@@ -140,16 +141,36 @@ struct iommu_device_ser {
+>>  	struct iommu_dev_map_ser domain_iommu_ser;
+>>  } __packed;
+>>+/**
+>>+ * struct iommu_intel_ser - Serialized state of an Intel IOMMU instance
+>>+ * @restored: Whether IOMMU state is restored
+>>+ * @phys_addr: Physical address of the IOMMU register base
+>>+ * @root_table: Physical address of the root entry table
+>>+ * @context_tables_bitmap: Bitmap representing the context tables that are
+>>+ * preserved.
+>>+ */
+>>+struct iommu_intel_ser {
+>>+	u8 restored;
+>>+	u8 padding[7];
+>>+	u64 phys_addr;
+>>+	u64 root_table;
+>>+	u64 context_tables_bitmap[8]; /* Tracks upto 512 context tables */
+>
+>To avoid open-coded magic numbers, how about something like,
+>
+>#define VTD_PRESERVED_BITMAP_LONGS  DIV_ROUND_UP(512, BITS_PER_LONG_LONG)
+>u64 context_tables_bitmap[VTD_PRESERVED_BITMAP_LONGS];
+>
+>?
 
-> +
-> +	for (size_t i =3D 0; i < GMEM_SIZE; i +=3D page_size)
-> +		virt_pg_map(vm, gpa + i, gpa + i);
-> +
-> +	vcpu =3D vm_vcpu_add(vm, 0, guest_code_phase2);
+This looks great to me. I will update this here.
+>
+>>+};
+>>+
+>>  /**
+>>   * struct iommu_hw_ser - Serialized state of an IOMMU instance
+>>   * @hdr: Common object header
+>>   * @token: Unique token for the IOMMU
+>>   * @type: IOMMU type serialized state belongs to
+>>+ * @intel: Intel specific serialization data
+>>   */
+>>  struct iommu_hw_ser {
+>>  	struct iommu_hdr_ser hdr;
+>>  	u64 token;
+>>  	u64 type;
+>>+	union {
+>>+		struct iommu_intel_ser intel;
+>>+	};
+>>  } __packed;
+>>  /**
+>
+>Thanks,
+>baolu
+>
 
-[Severity: High]
-Will this call fail with -EEXIST since vCPU ID 0 was already created
-in Stage 1 and remains preserved within the retrieved KVM VM?
-
-> +	kvm_arch_vm_finalize_vcpus(vm);
-> +
-> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
-827-1-tarunsahu@google.com?part=3D9
+Thanks,
+Sami
