@@ -1,126 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CFECA45
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186FC350285
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782102506; cv=none; b=LapDGCoPvZTX3nbFQ/fN9EQU7mbah9BTixC/2KlKzqVKCGRoXCIqBFem3xIrvW/NuPHXcpZbEUHJxpEf4E79oW0Khzf4GVUgi9fX0VvUagmJVw6/iZOXtutOu2w4Ihsk0DGRdEH3By8fr7mXJUqshxbaSg52k5FkTSJ2KSuXHHY=
+	t=1782102609; cv=none; b=d1V1je+hUVoCbMqO5FZtmd7o+KaxEBDWwNpTeWdFwi7arLMmz2HxmsBnoI58q1SiA96xzf2pDYO+gvV1uc4n/9POez5SVVvSvpMNtBtLlItXd3c1a5JXf8skUiNRkpt+t1xewReZFzyWODODw7iRKMjoyNu1P+F3YJnYQYl8bOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782102506; c=relaxed/simple;
-	bh=zChOAiqtVYVBl9Cr+xZaPR0utcdP8qDAEIU1qHKl4eU=;
+	s=arc-20240116; t=1782102609; c=relaxed/simple;
+	bh=qybzJItKx6y4cK6b/QjR8mK+aLLzcUvu1/X2roIf9SE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ojrtk5lze0vlIP+gTRhYc+c+T/3xijPJ9gJ2JiakLxCFDLFZdzSFRTa6Vypkhl81QXK5zp8Ew8RKUtS1yCnM7d4jIF1NH7fTAdp5fFZcPwXcvBTiboWFxUYAJDVaUQ4zZBigAZFcRNykGWnlAwWyeFRYRqpkb/dDblvu0iuWMRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHdLVyDG; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gpwg0tV24njZ4e5y6WFm2XYcwLcokYF9Js+ynIvXkdYLJSrpgDb5dIDDbOf7wTHjTQ2x76ddEZoKZbeGwpLWne0JnwFTvmnh/BBHgCPfCpQFnbXLO5paCHtvMqwNC0ljSxXh4cyvtbTSP2p71j+voUrPR83iRy10csBVDbujsJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmRo0EQw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHdLVyDG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4282F1F000E9;
-	Mon, 22 Jun 2026 04:28:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmRo0EQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE381F000E9;
+	Mon, 22 Jun 2026 04:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782102505;
-	bh=mn9iRJQAWA9jfzUPww+rcY2ixRx3rNwuUGZU1lw4JZw=;
+	s=k20260515; t=1782102608;
+	bh=/iT8yENSe6vEqhcSqdk2BQ2j2E4cLoYrN+sgJo5br30=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KHdLVyDGuY70DFT0j9soW205OMeu9qamSebrJ4T7gSEf2QoIlOsEe7+WsX6593jA1
-	 per9qzGFhmu/YJ9drPyrlVwNB68erTyMHA2LrKazNGUoh43cBVfEALxlSF9sEJVM2y
-	 ovLpWtF1Q1lVl6YZ0QD51dQMElgLu+Ja1ZQYS+wbMn+4/vBIOgbg1II2Dx9qAfTJ8Q
-	 0293OKl3STXZT8xp8KbD3DYs6N1J5WHVKHa2FkoMKgnAZuJYlBuFiHV0/zszUPSJbd
-	 Y7qMZIJVhR2+MbGLtypqaP/vq5ERhYZ/KSWJNbz4XJISq/vnMBWbVRAtZ098xg9rTC
-	 24SYT0qNY/9Eg==
+	b=JmRo0EQwklmX+0+HzYSxRR2CK5UJGVFxpAF7lp1j8L4D+u2ErVOW7z7b22ZtIVSuF
+	 VsJ5gj/+pD2tv6eplMCyxJW3avBVf0GTkJj4aEM3jAMgKt+65Bg8yIXBMTZIj2uFbE
+	 7Z3VziKcDUewXDuqQyNfi3eUQQ2vz73leTz2ZfdFpmmtoOKIFHfWiSqfWIfLvj+1iW
+	 HVsObbqpUkiEjiwOqr0p8q/0jDjJ73gek6GFuU6/cPFzl3WvoowlIkE+nDF8/sXn/5
+	 ELHgKgzpA5Y/N+IY637LQfbYZXP9/osab/kt0p/SmXn6MbhsLfGDAETZQp7tQ4I2xD
+	 SwfRGCIEEJ+wQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 02/16] riscv: alternatives: Use generated instruction
- headers for patching code
+Subject: Re: [PATCH v2 14/16] riscv: kvm: Use generated instruction headers
+ for csr emulation
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-2-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-14-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-2-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-14-7f0810ee2274@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:28:24 +0000
-Message-Id: <20260622042825.4282F1F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 04:30:07 +0000
+Message-Id: <20260622043007.CBE381F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Incorrect immediate calculation for auipc unconditionally adds 409=
-6, breaking alternative patching for jumps where bit 11 is 0.
-- [Low] Using a jalr-specific extraction function on an auipc instruction.
+
+Pre-existing issues:
+- [High] KVM's MMIO emulation unconditionally overwrites the hardwired `x0`=
+ register within the guest's context, causing subsequent KVM-emulated instr=
+uctions to use non-zero garbage values for `x0`.
 --
 
-commit 67f209569c2cc2afe918708c4cf86d391c4abcd2
+commit 7feea165a4c11a607fc4f7aca428cb92288c4147
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Subject: riscv: alternatives: Use generated instruction headers for patchin=
-g code
 
-This commit migrates the alternative patching code to use generated
-instruction headers instead of hand-written composition functions.
+riscv: kvm: Use generated instruction headers for csr emulation
+   =20
+Migrate the csr emulation code to use the generated instruction headers
+instead of the hand-written instruction composition functions.
 
-> diff --git a/arch/riscv/kernel/alternative.c b/arch/riscv/kernel/alternat=
-ive.c
-> --- a/arch/riscv/kernel/alternative.c
-> +++ b/arch/riscv/kernel/alternative.c
+> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+> index c5a70de4a5790..d666cd24f8c0e 100644
+> --- a/arch/riscv/kvm/vcpu_insn.c
+> +++ b/arch/riscv/kvm/vcpu_insn.c
 [ ... ]
-> @@ -78,14 +79,24 @@ static void riscv_alternative_fix_auipc_jalr(void *pt=
-r, u32 auipc_insn,
->  					     u32 jalr_insn, int patch_offset)
->  {
->  	u32 call[2] =3D { auipc_insn, jalr_insn };
-> +	u32 auipc_imm;
->  	s32 imm;
+> @@ -154,7 +150,7 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct kvm=
+_run *run, ulong insn)
+>  	#define GET_REG(_rd) (*((unsigned long *)(&vcpu->arch.guest_context) + =
+_rd))
 > =20
->  	/* get and adjust new target address */
-> -	imm =3D riscv_insn_extract_utype_itype_imm(auipc_insn, jalr_insn);
-> +	imm =3D riscv_insn_auipc_extract_imm(auipc_insn) + riscv_insn_jalr_extr=
-act_imm(jalr_insn);
->  	imm -=3D patch_offset;
+>  	int i, rc =3D KVM_INSN_ILLEGAL_TRAP;
+> -	unsigned int csr_num;
+> +	unsigned int csr_num, rd;
+>  	const struct csr_func *tcfn, *cfn =3D NULL;
+>  	ulong val =3D 0, wr_mask =3D 0, new_val =3D 0;
 > =20
-> +	/*
-> +	 * When the 32-bit immediate is split across auipc and jalr, the
-> +	 * constructed immediates need to be treated as individually sign
-> +	 * extended numbers. Add the sign bit of the lower 12 bits to the upper
-> +	 * 20 bits to undo the bleeding of the sign.
-> +	 */
-> +	auipc_imm =3D imm + (BIT(11) << 1);
+> @@ -163,26 +159,32 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct k=
+vm_run *run, ulong insn)
+>  		wr_mask =3D -1UL;
+>  		new_val =3D GET_REG(riscv_insn_csrrw_extract_xs1(insn));
 
 [Severity: High]
-Does this unconditionally add 4096 to the immediate?
+This isn't a bug introduced by this patch, but does the newly introduced
+GET_REG macro expose a pre-existing corruption of guest_context.zero?
 
-The original code conditionally added the offset using (imm & BIT(11)) << 1,
-but the new code appears to evaluate to a constant BIT(11) << 1. If imm
-has bit 11 set to 0, won't this corrupt the target jump address by 4096 byt=
-es?
+In RISC-V, the x0 register is hardwired to 0. If a guest executes an MMIO
+load with destination register x0, KVM unconditionally writes the loaded da=
+ta
+to guest_context.zero:
 
-> +
->  	/* update instructions */
-> -	riscv_insn_insert_utype_itype_imm(&call[0], &call[1], imm);
-> +	riscv_insn_auipc_insert_imm(&call[0], auipc_imm);
-> +	riscv_insn_jalr_insert_imm(&call[1], imm);
-[ ... ]
-> @@ -127,7 +138,7 @@ void riscv_alternative_fix_offsets(void *alt_ptr, uns=
-igned int len,
->  				continue;
-> =20
->  			/* if instruction pair is a call, it will use the ra register */
-> -			if (RV_EXTRACT_RD_REG(insn) !=3D 1)
-> +			if (riscv_insn_jalr_extract_xd(insn) !=3D 1)
+arch/riscv/kvm/vcpu_insn.c:kvm_riscv_vcpu_mmio_return() {
+    ...
+    *((ulong *)(&vcpu->arch.guest_context) + vcpu->arch.mmio_decode.rd) =3D
+        (long)data << shift >> shift;
+    ...
+}
 
-[Severity: Low]
-Since insn is verified to be an auipc instruction just above this block,
-should this be using riscv_insn_auipc_extract_xd(insn) instead?
+This patch changes csr_insn() to unconditionally read the source register
+using GET_REG() without verifying if the register is x0.=20
 
-While they both extract the destination register at bits 11:7 and work
-mathematically, using the jalr helper on an auipc instruction seems
-to break the abstraction provided by the new headers.
-
->  				continue;
-> =20
->  			riscv_alternative_fix_auipc_jalr(alt_ptr + i * sizeof(u32),
+If a guest triggers an MMIO load to x0, and then executes a CSR instruction
+such as csrrw x0, sscratch, x0, will KVM read the corrupted non-zero value
+from guest_context.zero and write it into the guest's CSR?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D2
+_table-v2-0-7f0810ee2274@gmail.com?part=3D14
