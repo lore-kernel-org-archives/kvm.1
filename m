@@ -1,171 +1,173 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2C1C2324
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F231C2324;
+	Mon, 22 Jun 2026 19:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782155169; cv=none; b=VTJT6Or6HKYCo+8whgXLdwAAq51AwlcAw6rtzu9euQ9MWr3TBD2744HYjL4DQI7ZwkQbw3hXvGwkSkCO7UZMKzqkfTjDi6DzQECa8FK93p1R63rZUhrQkOKCIjWYCbHCmH7rZoUEIL53Cf+baJFwJRAdgd8498cKjoX00t9XsTk=
+	t=1782155181; cv=none; b=alZc/81sbUjQvuirQnyotMbwRNwYhYZCMjjnSQbH7rtGMYS0IHx9bxuhCif6hs8ZUD7o+gDfiLqP1CQ+v9KYGqZ6KJ374rav687SSKtf5hJoRCj/hTUmY7DjrwCR0Ud/aGTjonQg7K7mbNpIim0Qnhe3u7DLLx88qezejPLaAKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782155169; c=relaxed/simple;
-	bh=og1gixDwSQELb2w/jaezSUzgpOpY8Fd8J8E5TOKB05c=;
+	s=arc-20240116; t=1782155181; c=relaxed/simple;
+	bh=4Ty717Rvr2KtBrquXS30C/jZ3WGh5CqsrVDpumZy/3o=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Fv75OORKjPu/vezjcKRX0gzGtbQm5kjlsp0EMPgLzA7QHfV9876aobZtwxa+mZx6xkL3hJri4tr1U5dIqXbKFA4Gu8Bv1l1Oy1Db78gmHr7sz3KPNCor8u/Zi0AbzXbZPx4CkC6nxB5VxtuzYvjylgnftuzSPdWoz+JBWlPeCEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0b79P54; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qUm/Bcb+HezStK7Q6egn9WQTWguz/wN0BuTaReH19sGdX2vIA7ocFEeaQx1WZiSTULIvRMTkFzLu6rzIrIjG//kI9bmxyw9fEpU/EwntQkq8A7iR9Nn7WcFYFy214v7ohyYu9jpTYrAUxfRQZt23QEm2twMkchQJcLmAmNFQOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOS1cY6T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0b79P54"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D301F000E9;
-	Mon, 22 Jun 2026 19:06:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOS1cY6T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DA01F000E9;
+	Mon, 22 Jun 2026 19:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782155168;
-	bh=sCjl+RxxFWmyVAYIit8p0eo1QH5zzb3AdgGmvW+WS0g=;
+	s=k20260515; t=1782155180;
+	bh=9oxSszJzvOcRTa/rj5gx5Lq8ASBBobjy7YnCgU2vPdo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O0b79P54WZSBkwzlQkC8ULdu2mpw7w/gswRBH+D2XnaombuaZcKzdYaLVzVsSbaqg
-	 uxFI4Zb347wgkzd/3jZdmXYQFVi12VJ8rPGWIfMugVIgEBqK1ZXDf+sz1WbG7CtYGQ
-	 G9aFRrF6qIc0df+k6YkdQED6uv64As7PAcSF2GeuKhIL7mjjI69Uu74wYVyL/cFsW/
-	 XiPftjKBuYJKNZPFrrceuAs9GVUgqPv/QeqVTT54eWrx/PQ4BBDs774m38oUrKTIjS
-	 wcqYuQRb6uJOkQKz08Yod6Yl6cFkVAgdAM7njSP77UOcPwUU37B0YT52fFHD2EvbS6
-	 3xWXK1C8d/IXg==
+	b=MOS1cY6T1vRZIGCz6OiQTq/oaArGrOSeh4G3IROYm2Hz2APlgepSFV40UoTSCw7hi
+	 qy5aAMg6Ds6CzbGaxPX03LG5P09H+3z4+jJruyLC36BwwqXcdxms7V9uunfj6UwmPc
+	 2Q2tsHRUWyNhVFjnaKlm4mxyHwTu9Re4liMbSSvkZcdiZ4N1BQJVUk7cHZBg5RTWFG
+	 c4mYcCbA22XXYdH7GNO24aUFk/7Kw96tTFx234raARcy9nxsqku7skvN3BG42UtHau
+	 oE6godkPHGwN4H4lK4nzze2JryIPFlFL4Q5IkyqELrJaOMrzxAVV+joTITifJ6g501
+	 PPTyLCEYK3XnA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/9] kvm: kvm_luo: Allow kvm preservation with LUO
+Subject: Re: [PATCH v9 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH
+ feature
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622184851.2309827-4-tarunsahu@google.com>
-References: <20260622184851.2309827-1-tarunsahu@google.com>
- <20260622184851.2309827-4-tarunsahu@google.com>
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260622184211.2229399-4-zhipingz@meta.com>
+References: <20260622184211.2229399-1-zhipingz@meta.com>
+ <20260622184211.2229399-4-zhipingz@meta.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 19:06:07 +0000
-Message-Id: <20260622190608.50D301F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 19:06:19 +0000
+Message-Id: <20260622190620.04DA01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Low] The macro `KHOSER_COPY_TYPEUNSAFE` is undefined in the kernel tree,=
- causing a build failure.
-- [Low] `KHOSER_LOAD_PTR` is incorrectly invoked with a `u64` argument inst=
-ead of a union, causing a build failure.
+- [High] Unconditional validation of the flag-gated `ph` syscall parameter =
+can falsely reject valid requests to clear TPH metadata.
+- [Medium] Packing new `tph_*` bitfields into the same byte as the existing=
+ `revoked` bitfield introduces a data race.
+- [Medium] Lockless plain read of `priv->vdev` can race with a concurrent w=
+rite of `NULL` during device cleanup.
 --
 
-commit c233e1cbb1e57dbd4789fe720442add1dfd010f1
-Author: Tarun Sahu <tarunsahu@google.com>
+commit d529be6632b034e32bc07cc3b900f28862d27327
+Author: Zhiping Zhang <zhipingz@meta.com>
 
-kvm: kvm_luo: Allow kvm preservation with LUO
+vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
 
-This commit introduces KVM VM preservation support for the Live Update
-Orchestrator (LUO). It registers a file handler to serialize and deserialize
-VM state across live updates, primarily focusing on preserving the VM type.
+This commit implements dma-buf get_pci_tph for vfio-pci exported dma-bufs.
+It adds VFIO_DEVICE_FEATURE_DMA_BUF_TPH to allow userspace to publish TPH
+metadata for a VFIO-owned device.
 
-> diff --git a/virt/kvm/kvm_luo.c b/virt/kvm/kvm_luo.c
-> new file mode 100644
-> index 0000000000000..6728877f16daf
-> --- /dev/null
-> +++ b/virt/kvm/kvm_luo.c
-> @@ -0,0 +1,195 @@
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
+ci_dmabuf.c
+> index c16f460c01d68..d6f5dd3210009 100644
+> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> @@ -19,7 +20,14 @@ struct vfio_pci_dma_buf {
+>  	u32 nr_ranges;
+>  	struct kref kref;
+>  	struct completion comp;
+> -	u8 revoked : 1;
+> +
+> +	/* Protected by dmabuf->resv. */
+> +	u16 tph_st_ext;
+> +	u8 tph_st;
+> +	u8 revoked:1;
+> +	u8 tph_st_valid:1;
+> +	u8 tph_st_ext_valid:1;
+> +	u8 tph_ph:2;
+>  };
 
-[ ... ]
+[Severity: Medium]
+Does this bitfield packing introduce a data race?
 
-> +static int kvm_luo_preserve(struct liveupdate_file_op_args *args)
+While the new tph_* fields are safely updated under the dmabuf->resv lock
+in vfio_pci_core_feature_dma_buf_tph(), existing code in
+vfio_pci_dma_buf_move() reads the revoked bit without holding the
+dmabuf->resv lock:
+
+vfio_pci_dma_buf_move()
+    if (priv->revoked !=3D revoked) {
+        dma_resv_lock(priv->dmabuf->resv, NULL);
+        ...
+
+Because they share the same underlying byte, the locked read-modify-write of
+the tph_* fields will concurrently access the byte while the lockless read =
+of
+the revoked flag occurs. This can violate the C memory model and trigger
+KCSAN warnings. Could the revoked flag be declared as a standalone bool to
+avoid sharing the byte with the dynamic tph_* bitfields?
+
+> [ ... ]
+> @@ -333,6 +362,72 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
+re_device *vdev, u32 flags,
+> [ ... ]
+> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
+> +				      u32 flags,
+> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
+> +				      size_t argsz)
 > +{
-> +	DECLARE_KHOSER_PTR(sd, struct kvm_luo_ser *);
-> +	struct kvm *kvm =3D args->file->private_data;
-> +	struct kvm_luo_ser *ser;
-
-[ ... ]
-
-> +	KHOSER_STORE_PTR(sd, ser);
-> +	KHOSER_COPY_TYPEUNSAFE(args->serialized_data, sd);
-
-[Severity: Low]
-Is this macro defined somewhere else in the tree?  It looks like
-KHOSER_COPY_TYPEUNSAFE is missing from <linux/kho/abi/kexec_handover.h>
-and other headers, which causes a build failure here.
-
+> [ ... ]
+> +	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
+> +		return -EFAULT;
 > +
-> +	return 0;
-> +}
-> +
-> +static atomic_t restored_vm_id =3D ATOMIC_INIT(0);
-> +
-> +static int kvm_luo_retrieve(struct liveupdate_file_op_args *args)
-> +{
-> +	char fdname[ITOA_MAX_LEN + 1];
-> +	struct kvm_luo_ser *ser;
-> +	struct file *file;
-> +	struct kvm *kvm;
-> +	int err =3D 0;
-> +
-> +	ser =3D KHOSER_LOAD_PTR(args->serialized_data);
-
-[Severity: Low]
-Does this code compile? KHOSER_LOAD_PTR() expects its argument to be a union
-declared with DECLARE_KHOSER_PTR(), which provides the expected .ptr and
-.phys fields.
-
-Since args->serialized_data is a plain u64, this causes a compilation error
-because it tries to access struct/union members on a primitive type.
-
-> +	if (!ser)
+> +	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
 > +		return -EINVAL;
 > +
-> +	snprintf(fdname, sizeof(fdname), "%d",
-> +		 atomic_inc_return(&restored_vm_id));
-> +
-> +	file =3D kvm_create_vm_file(ser->type, fdname);
+> +	if (set_tph.ph & ~0x3)
+> +		return -EINVAL;
 
-[ ... ]
+[Severity: High]
+Can this unconditional check falsely reject valid requests to clear TPH
+metadata?
 
-> +static void kvm_luo_unpreserve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct kvm_luo_ser *ser;
-> +
-> +	/*
-> +	 * in case preservation failed, args->serialized_data will
-> +	 * be NULL and kvm_luo_preserve takes care of cleaning up.
-> +	 * If preserve succeeds, this condition fails and unpreserve
-> +	 * function takes care of cleaning up.
-> +	 */
-> +	ser =3D KHOSER_LOAD_PTR(args->serialized_data);
+When userspace sets the flags to 0 to clear or invalidate published TPH
+metadata, the ph parameter is unused and might contain uninitialized stack
+garbage. Since syscall parameters that are only meaningful when certain fla=
+gs
+are set should not be validated when those flags are absent, could this
+cause legitimate clearing requests to fail with -EINVAL?
 
-[Severity: Low]
-Similar to the issue in kvm_luo_retrieve(), args->serialized_data is a plain
-u64 rather than the union KHOSER_LOAD_PTR() expects. Will this cause a build
-failure?
+> [ ... ]
+> +	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
+> +	if (IS_ERR(dmabuf))
+> +		return PTR_ERR(dmabuf);
+> +
+> +	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
+> +		ret =3D -EINVAL;
+> +		goto out_put;
+> +	}
+> +
+> +	priv =3D dmabuf->priv;
+> +	if (priv->vdev !=3D vdev) {
+> +		ret =3D -EINVAL;
+> +		goto out_put;
+> +	}
 
-> +	if (WARN_ON_ONCE(!ser))
-> +		return;
-> +
-> +	kho_unpreserve_free(ser);
-> +}
-> +
-> +static void kvm_luo_finish(struct liveupdate_file_op_args *args)
-> +{
-> +	struct kvm_luo_ser *ser;
-> +
-> +	/*
-> +	 * If retrieve_status is true or set to error, nothing to do here.
-> +	 * Already cleaned up in kvm_luo_retrieve().
-> +	 */
-> +	if (args->retrieve_status)
-> +		return;
-> +
-> +	ser =3D KHOSER_LOAD_PTR(args->serialized_data);
+[Severity: Medium]
+Could this plain read of priv->vdev race with a concurrent device cleanup?
 
-[Severity: Low]
-Is there a type mismatch here as well? args->serialized_data is being passed
-to KHOSER_LOAD_PTR() as a plain u64.
+Here, priv->vdev is accessed to check ownership without holding any locks
+that would protect against cleanup. Concurrently, if the original exporting
+device is being closed, vfio_pci_dma_buf_cleanup() sets priv->vdev =3D NULL
+locklessly relative to this ioctl execution context:
 
-> +	if (!ser)
-> +		return;
-> +
-> +	kho_restore_free(ser);
-> +}
+vfio_pci_dma_buf_cleanup()
+    list_del_init(&priv->dmabufs_elm);
+    priv->vdev =3D NULL;
+    vfio_device_put_registration(&vdev->vdev);
+
+This plain read racing with a plain write could cause undefined behavior
+under the kernel memory model and trigger KCSAN warnings. Should this be
+annotated with READ_ONCE() and WRITE_ONCE() to prevent compiler reordering
+or load tearing?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
-827-1-tarunsahu@google.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184211.2229=
+399-1-zhipingz@meta.com?part=3D3
