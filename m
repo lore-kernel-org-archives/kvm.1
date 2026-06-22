@@ -1,131 +1,194 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48811397B05;
-	Mon, 22 Jun 2026 09:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA7939E162
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 09:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782119057; cv=none; b=eTSDBNyEgHJvO0LzZJjhPep7RmMX/HimxSNW7i9nXUuncV875gUy1aVewnrQ+BWcQyrslnGPHyEi0dBS5GB9A51N2sYslAYzGoLKc7e67A6Agc4arOYHG+ORndWubzXfea6tO/7RAh6i4h59hOYKwOrIGAw39PSyxf2QbYAg7AY=
+	t=1782119086; cv=none; b=ASrmCUvB96Rs0wm1AaWMdTUYH6qEXpgL6mggQqP1tyFnHDd16CEsQ+mlbGoHp1MRueTBAL3Lv3c6pG+aPyLf2j63XrmwNiFJnFWjwvk/Ssnw5MekTXlCvflAVbna8hTGLiwzHe4FwLMR1qHDIy3YdCvktySm6WdOUA2VLHPqLTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782119057; c=relaxed/simple;
-	bh=GwVHIoZ7r/M8GteP9m8gN+gqChmMb7gtvlHqruMu3OY=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=vBfa0OVFavXrIq71YFoFsuANIgq/LtQJq7C2ibuMnfPkSE2Z1LC1tTqX+5eXdpirzn53Inm/uscqHMmyRSgnYzkwkMj7GNNhZ4bRujzoWS0ByyNu6753q33j0taWxh4BfmmqvSBws+h6+3OJrf+j4jCu3vTatIr2t2kU6do9N5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=none smtp.helo=mailgw.kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mailgw.kylinos.cn
-X-UUID: 21bd73886e0f11f1aa26b74ffac11d73-20260622
-Message-ID:<1782119051448443.14545.seg@mailgw.kylinos.cn>
-X-Spam-Fingerprint: 0
-X-GW-Reason: 11101
-X-Content-Feature:
-	ica/max.line-size 101
-	audit/email.address 2
-	dict/adv 1
-	dict/operate 1
-	meta/cnt.alert 1
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:df1340d8-bad8-4902-a57c-bc94b27aad22,IP:0,U
-	RL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:97fc9069a1c6fe1949f2f7a7b81d7275,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|865|898,TC:nil,Content:0|15|50,EDM:1
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 21bd73886e0f11f1aa26b74ffac11d73-20260622
-X-User: leixiang@kylinos.cn
-Received: from ninol.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <leixiang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 972357421; Mon, 22 Jun 2026 15:51:09 +0800
-From: leixiang <leixiang@kylinos.cn>
-To: 
-Cc: leixiang <leixiang@kylinos.cn>,
-	stable@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	Suresh Warrier <warrier@linux.vnet.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
-Date: Mon, 22 Jun 2026 15:51:01 +0800
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1782119086; c=relaxed/simple;
+	bh=HgiOx3Gxk7v+YKyg+0NTf2l18tte0N14NUCjjhZytL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QwRfPSHQyPVBXqHGk3xlxkd1dbiUsBo7+u2mokNLdxlv+NWNUwY0kxaX6T4CkiEd+fuXqRlMtAqPpYWukmMJ9A02D9lMxtNSygeG+PmP/laXhlJDmmWIdFWg7yANhiclljraU2z1xX3G3/RkYJ/+dfPZ8IPosML4+aC28+QtHoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PxbboRwp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PxbboRwp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 444D81BF3;
+	Mon, 22 Jun 2026 02:04:32 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F8853F62B;
+	Mon, 22 Jun 2026 02:04:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782119076; bh=HgiOx3Gxk7v+YKyg+0NTf2l18tte0N14NUCjjhZytL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PxbboRwpE2vS964Ehc5mDpWLSytaoETOaqhnaSQgQLz44uCl6YrGFOX3uhGIgcLsD
+	 RdxoMznAxnesiwlOTbTdRyqfY2n29clRiaQkWGw4b6Ne78MxEtPSnbHMbsGTjt58U0
+	 mN2wMTADr7F/T+x6DLmQUKJw3mWIMxkAumkIuj2w=
+Date: Mon, 22 Jun 2026 10:04:32 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
+	jean-philippe.brucker@arm.com, andre.przywara@arm.com,
+	suzuki.poulose@arm.com, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+Subject: Re: [PATCH kvmtool v2 7/7] arm64: Improve KVM_ARM_VCPU_PMU_V3_CTRL
+ diagnostics
+Message-ID: <ajj6oGxytFm2NE4T@raptor>
+References: <20260618155001.226266-1-alexandru.elisei@arm.com>
+ <20260618155001.226266-8-alexandru.elisei@arm.com>
+ <ajRBpMnlcNkhWzQL@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajRBpMnlcNkhWzQL@kernel.org>
 
-The x86 and powerpc add_producer() callbacks set irqfd->producer before the
-fallible setup and never clear it on error.  The bypass manager doesn't
-register a producer whose add_producer() failed -- producer->eventfd is
-left NULL, so the later unregister early-returns and del_producer() is
-never called -- so nothing ever drops the pointer.
+Hi Oliver,
 
-For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
-when the vector is disabled, after which a routing update dereferences the
-dangling pointer via kvm_arch_update_irqfd_routing().
+On Thu, Jun 18, 2026 at 12:06:12PM -0700, Oliver Upton wrote:
+> On Thu, Jun 18, 2026 at 04:50:01PM +0100, Alexandru Elisei wrote:
+> > kvmtool issues several ioctls when configuring the PMU, and each of them
+> > can fail for different reasons. Be more specific about the ioctl that
+> > failed when that happens.
+> > 
+> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> > ---
+> >  arm64/pmu.c | 31 ++++++++++++++++++++++++-------
+> >  1 file changed, 24 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/arm64/pmu.c b/arm64/pmu.c
+> > index 92cacd62479e..78c15f153fad 100644
+> > --- a/arm64/pmu.c
+> > +++ b/arm64/pmu.c
+> > @@ -12,6 +12,24 @@
+> >  
+> >  #include "asm/pmu.h"
+> >  
+> > +static const char *pmu_attr_names[] = {
+> > +	[KVM_ARM_VCPU_PMU_V3_IRQ]	= "KVM_ARM_VCPU_PMU_V3_IRQ",
+> > +	[KVM_ARM_VCPU_PMU_V3_INIT]	= "KVM_ARM_VCPU_PMU_V3_INIT",
+> > +	[KVM_ARM_VCPU_PMU_V3_FILTER]	= "KVM_ARM_VCPU_PMU_V3_FILTER",
+> > +	[KVM_ARM_VCPU_PMU_V3_SET_PMU]	= "KVM_ARM_VCPU_PMU_V3_SET_PMU",
+> > +	[KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS] = "KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTER",
+> > +};
+> > +
+> > +static const char *pmu_get_attr_name(u64 attr)
+> > +{
+> > +	switch (attr) {
+> > +	case KVM_ARM_VCPU_PMU_V3_IRQ ... KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS:
+> > +		return pmu_attr_names[attr];
+> > +	default:
+> > +		return "UNKNOWN";
+> > +	}
+> > +}
+> > +
+> >  static bool pmu_has_attr(struct kvm_cpu *vcpu, u64 attr)
+> >  {
+> >  	struct kvm_device_attr pmu_attr = {
+> > @@ -32,13 +50,12 @@ static void set_pmu_attr(struct kvm_cpu *vcpu, void *addr, u64 attr)
+> >  	};
+> >  	int ret;
+> >  
+> > -	if (pmu_has_attr(vcpu, attr)) {
+> > -		ret = ioctl(vcpu->vcpu_fd, KVM_SET_DEVICE_ATTR, &pmu_attr);
+> > -		if (ret)
+> > -			die_perror("PMU KVM_SET_DEVICE_ATTR");
+> > -	} else {
+> > -		die_perror("PMU KVM_HAS_DEVICE_ATTR");
+> > -	}
+> > +	if (!pmu_has_attr(vcpu, attr))
+> > +		die_perror("KVM_HAS_DEVICE_ATTR(%s)", pmu_get_attr_name(attr));
+> > +
+> > +	ret = ioctl(vcpu->vcpu_fd, KVM_SET_DEVICE_ATTR, &pmu_attr);
+> > +	if (ret)
+> > +		die_perror("KVM_SET_DEVICE_ATTR(%s)", pmu_get_attr_name(attr));
+> >  }
+> 
+> The whole if (ret) die_perror(...) thing is a bit repetetive IMO. A
+> treewide cleanup replacing this with macros would be nice, then you could
+> stringize the ioctl under the hood.
 
-Nullify irqfd->producer on the error paths.
+Thank you for having a look, that's a great idea, it will avoid out of bounds
+array access if KVM gets a new PMU ioctl and the name array is not updated at
+the same time - that's quite possible since ioctl numbers are pulled by running
+update_headers.sh, and the dependency is not obvious.
 
-Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
-Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
-Cc: stable@vger.kernel.org
-Signed-off-by: leixiang <leixiang@kylinos.cn>
----
- arch/powerpc/kvm/book3s_hv.c | 4 +++-
- arch/x86/kvm/irq.c           | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+I think the compilation errors are a bit higher priority than this, and a
+treewide change would more involved, possibly involving a change in behaviour
+(the gic seems to propagate the error instead of calling die_perror(), for
+example), would you mind if for this series I'll only introduce the macro for
+the pmu and convert the rest of the code in a separate series?
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..14919b76fb32 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
- 	irqfd->producer = prod;
+Thanks,
+Alex
 
- 	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
--	if (ret)
-+	if (ret) {
- 		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
- 			prod->irq, irqfd->gsi, ret);
-+		irqfd->producer = NULL;
-+	}
-
- 	return ret;
- }
-diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-index 8c62c6d4d5c1..cb8ac4b9b0d7 100644
---- a/arch/x86/kvm/irq.c
-+++ b/arch/x86/kvm/irq.c
-@@ -488,8 +488,10 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
-
- 	if (irqfd->irq_entry.type == KVM_IRQ_ROUTING_MSI) {
- 		ret = kvm_pi_update_irte(irqfd, &irqfd->irq_entry);
--		if (ret)
-+		if (ret) {
- 			kvm->arch.nr_possible_bypass_irqs--;
-+			irqfd->producer = NULL;
-+		}
- 	}
- 	spin_unlock_irq(&kvm->irqfds.lock);
-
---
-2.45.0
+> 
+> diff --git a/arm64/pmu.c b/arm64/pmu.c
+> index 5f31d6b..0d9f3df 100644
+> --- a/arm64/pmu.c
+> +++ b/arm64/pmu.c
+> @@ -23,23 +23,19 @@ static bool pmu_has_attr(struct kvm_cpu *vcpu, u64 attr)
+>  	return ret == 0;
+>  }
+>  
+> -static void set_pmu_attr(struct kvm_cpu *vcpu, void *addr, u64 attr)
+> -{
+> -	struct kvm_device_attr pmu_attr = {
+> -		.group	= KVM_ARM_VCPU_PMU_V3_CTRL,
+> -		.addr	= (u64)addr,
+> -		.attr	= attr,
+> -	};
+> -	int ret;
+> -
+> -	if (pmu_has_attr(vcpu, attr)) {
+> -		ret = ioctl(vcpu->vcpu_fd, KVM_SET_DEVICE_ATTR, &pmu_attr);
+> -		if (ret)
+> -			die_perror("PMU KVM_SET_DEVICE_ATTR");
+> -	} else {
+> -		die_perror("PMU KVM_HAS_DEVICE_ATTR");
+> -	}
+> -}
+> +#define kvm_set_device_attr(fd, _group, _attr, _addr)					\
+> +do {											\
+> +	struct kvm_device_attr __attr = {						\
+> +		.group	= (_group),							\
+> +		.attr	= (_attr),							\
+> +		.addr	= (u64)(_addr),							\
+> +	};										\
+> +	int r;										\
+> +											\
+> +	r = ioctl((fd), KVM_SET_DEVICE_ATTR, &__attr);					\
+> +	if (r)										\
+> +		die_perror("KVM_SET_DEVICE_ATTR(group:"#_group", attr:"#_attr")");	\
+> +} while (0)
+>  
+>  #define SYS_EVENT_SOURCE	"/sys/bus/event_source/devices/"
+>  /*
+> @@ -218,14 +214,18 @@ void pmu__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+>  
+>  	for (i = 0; i < kvm->nrcpus; i++) {
+>  		vcpu = kvm->cpus[i];
+> -		set_pmu_attr(vcpu, &irq, KVM_ARM_VCPU_PMU_V3_IRQ);
+> +		kvm_set_device_attr(vcpu->vcpu_fd, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +				    KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
+>  		/*
+>  		 * PMU IDs 0-5 are reserved; a positive value means a PMU was
+>  		 * found.
+>  		 */
+>  		if (pmu_id > 0)
+> -			set_pmu_attr(vcpu, &pmu_id, KVM_ARM_VCPU_PMU_V3_SET_PMU);
+> -		set_pmu_attr(vcpu, NULL, KVM_ARM_VCPU_PMU_V3_INIT);
+> +			kvm_set_device_attr(vcpu->vcpu_fd, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +					    KVM_ARM_VCPU_PMU_V3_SET_PMU, &pmu_id);
+> +
+> +		kvm_set_device_attr(vcpu->vcpu_fd, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +				    KVM_ARM_VCPU_PMU_V3_INIT, NULL);
+>  	}
+>  
+>  	_FDT(fdt_begin_node(fdt, "pmu"));
