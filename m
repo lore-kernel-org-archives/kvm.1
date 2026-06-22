@@ -1,250 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2D213AF2;
-	Mon, 22 Jun 2026 03:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5005E188596
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 03:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782097927; cv=none; b=TJL2mczdSNEgE4+Kn6CKnM6oFEGTbBJ+a+3VZyYuluyz8qk7Uh9/MV1/CTI9FDIZodM2CbJPD1uFXngETUoDPDgFfik2Fs9Qoza6FvCs7Mwq3hBbXh3el9G1T7tabXM6WDAeWisS4J/yXsdacUiUlcRgw7tBjR02m4VZPQpEwr8=
+	t=1782098050; cv=none; b=JIHlIzQi39qNEK6rWxgNhG3YCwxElndHAept34lM2om8DwSPIoMiunzRBa24x9HEJ2uXPtWRE3hOgmpzKppGKkhdNB7fciIIqFoMECG6cg6NuT+0P+UM5E5ohEf1wQycS8hYo86mTXoJB9f3dW/HPl/58SMaQZbuGSN92vXlduU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782097927; c=relaxed/simple;
-	bh=zImvOuePFdZg7H+6UnjoJXpQ1HYUUu1uXxUhmcu5Hgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kFsky5VLf13pi5Szvek1CyLgDHgokbbAp0oWqOyPVm07OJrrMD1jczdoJmqT1TbRZ8quW5KUfAaQui5Lb5jmPkkHB7/6v+7Bub9n288DIaOWmiRGH0+Dms47a24ip9f//K4d+YafDpvcXnBN/Y7izKBrlmompltuzuyvBoqBmRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E+6yeSA6; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782098050; c=relaxed/simple;
+	bh=opRbICt3Fd9iuqeXzybYpDlzxC3rtH2pFBADOLx8ZJU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OAHGsB7ix0BB2tuGf/qFZ1p3wHPEJ3YXTreY5le1igtQ7IEx22TlHVzq0PYvCX3n+1FBBbrl/5HvT5hetwE/0/ThpzdLjEt2oZe/gDu10rWdD+ewcQYkBi1n1nRXCqb9yMLENNOA7cYn80ZSthFZCdyRRY/kkt/4o5eRfEw4OIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7soOi64; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E+6yeSA6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782097926; x=1813633926;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zImvOuePFdZg7H+6UnjoJXpQ1HYUUu1uXxUhmcu5Hgk=;
-  b=E+6yeSA6zeHMZxbJS1zge4eN0Jm3P8ObZQa1r6qi4A0UMAre9+Be7/H6
-   JSSpYB7hzCMGcdOrZj4FyUCKF4TgN2UD/7dbOrM9K5S2CFtwAjZ+O3Mzx
-   /kLOjRknyfRr2AI92pHUXnmxH7j1vGOq+VyLBpPVlhIkY2O/+zqHWsymR
-   fkBrtmAnbd5X93y7OBgXzzEgmxVp6epTScEEf6S+oIJs02Th/luGIVpxs
-   O8UwIlz5TeTijHwVzWK9RxYaK/LxTqTspPIIa/A7ClM7oVj/7W0wLxBFl
-   JxTpMH7vDMljBpPnLKzT1JoJT0rSnr/eVAyoQCzTem/Q5qum/0crUDuf5
-   A==;
-X-CSE-ConnectionGUID: XlbCIgByQgG119nxnnH8Xw==
-X-CSE-MsgGUID: uF/D34sqSSa/UWwcX53akA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="82917233"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="82917233"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 20:12:06 -0700
-X-CSE-ConnectionGUID: Cbb/fnU2QkKb6OW5SH7kpw==
-X-CSE-MsgGUID: 0XFVuEElRQ++Vq9NMIZINw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="248959104"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 20:12:01 -0700
-Message-ID: <ce3f6eb2-99c4-4582-a11b-a5578b62d401@linux.intel.com>
-Date: Mon, 22 Jun 2026 11:10:55 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7soOi64"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70581F000E9;
+	Mon, 22 Jun 2026 03:14:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782098048;
+	bh=Pwxfu1olBg2Md7foEGnngQlBHD+BbjJDuyhh4EbRffA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=N7soOi64oRupbIhi0Io4WuckCAMkIvLjvK9m8G3e5W0RjVb3crz0hVM3vSdILtaAE
+	 UUZwIHv0nmMBSovxzHAEU9aHl9Ewog26dIRLNAdErxNkqFqnik1gLwigwHy9b217Ed
+	 qNNXC8UmyhYssZVVpKwNm7U25AhqVvg1QngZKHYz6wxjuOvquOywjWy5NeYl9X89E9
+	 K37ijt9oo+RMPgxPER3xmd24cSh4K7HsMNIwpNMz6QOSipPUw0zpaqEc1+BmDSqGsw
+	 Qh5S/Gh6njwdoSxsCjkA2oUvNA0tHXnfqxTkVUQQr3xS4pg4LwggNUI5s+aytDPkyJ
+	 2sZQqdlWnJT1Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] LoongArch: KVM: Use internal API to deliver
+ interrupt in kernel mode
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bibo Mao" <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622030508.2731279-1-maobibo@loongson.cn>
+References: <20260622030508.2731279-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 22 Jun 2026 03:14:08 +0000
+Message-Id: <20260622031408.B70581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/18] iommu: Add APIs to get iommu and device
- preserved state
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-10-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260614233728.2212104-10-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 6/15/26 07:37, Samiullah Khawaja wrote:
-> The preserved state of the device and IOMMU needs to be fetched during
-> shutdown and boot in the next kernel. Add APIs that can be used to fetch
-> the preserved state of a device and IOMMU. The APIs will only be used
-> during shutdown and after liveupdate so no locking needed.
-> 
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/liveupdate.c       | 75 ++++++++++++++++++++++++++++++++
->   include/linux/iommu-liveupdate.h | 31 +++++++++++++
->   2 files changed, 106 insertions(+)
-> 
-> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
-> index 2d782023407d..90750e78cd2a 100644
-> --- a/drivers/iommu/liveupdate.c
-> +++ b/drivers/iommu/liveupdate.c
-> @@ -18,6 +18,17 @@
->   #define iommu_max_objs_per_page(_array) \
->   	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
->   
-> +#define iommu_liveupdate_for_each_obj(_arr, _obj, _idx)			\
-> +	for ((_idx) = 0, (_obj) = (_arr)->objects;			\
-> +	     (_idx) < (_arr)->hdr.nr_objects; (_idx)++, (_obj)++)	\
-> +		if (((_obj)->hdr.flags & IOMMU_SER_FLAG_DELETED))	\
-> +			continue;					\
-> +		else
-> +
-> +#define iommu_liveupdate_for_each_arr(_arr)				\
-> +	for (; (_arr); (_arr) = (_arr)->hdr.next_array_phys ?		\
-> +	     phys_to_virt((_arr)->hdr.next_array_phys) : NULL)
-> +
->   struct iommu_flb_obj {
->   	struct mutex lock;
->   	struct iommu_flb_ser *ser;
-> @@ -216,6 +227,70 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
->   }
->   EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
->   
-> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
-> +				    void *arg)
-> +{
-> +	struct iommu_flb_obj *flb_obj;
-> +	struct iommu_device_array_ser *array;
-> +	struct iommu_device_ser *device_ser;
-> +	int ret, idx;
-> +
-> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
-> +	if (ret)
-> +		return -ENOENT;
-> +
-> +	if (!flb_obj->ser->device_array_phys)
-> +		return -ENOENT;
-> +
-> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
-> +	iommu_liveupdate_for_each_arr(array) {
-> +		iommu_liveupdate_for_each_obj(array, device_ser, idx) {
-> +			ret = fn(device_ser, arg);
-> +			if (ret)
-> +				goto out;
-> +		}
-> +	}
-> +
-> +out:
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(iommu_for_each_preserved_device);
-> +
-> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
-> +{
-> +	struct iommu_hw_ser *iommu_ser = NULL;
-> +	struct iommu_hw_array_ser *array;
-> +	struct iommu_flb_obj *flb_obj;
-> +	int ret, idx;
-> +
-> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
-> +	if (ret == -ENODATA || ret == -ENOENT)
-> +		return NULL;
-> +
-> +	if (ret)
-> +		return ERR_PTR(ret);
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Why does this helper return both NULL and an ERR_PTR()? Is NULL
-considered an error case here? Also, why are -ENODATA and -ENOENT
-treated differently?
+Pre-existing issues:
+- [High] Un-ratelimited `kvm_err` log spam triggered by malicious guest wri=
+tes.
+--
 
-> +
-> +	if (!flb_obj->ser->iommu_array_phys) {
-> +		iommu_ser = ERR_PTR(-EINVAL);
-> +		goto out;
-> +	}
-> +
-> +	array = phys_to_virt(flb_obj->ser->iommu_array_phys);
-> +	iommu_liveupdate_for_each_arr(array) {
-> +		iommu_liveupdate_for_each_obj(array, iommu_ser, idx) {
-> +			if (iommu_ser->token == token && iommu_ser->type == type)
-> +				goto out;
-> +		}
-> +	}
-> +
-> +	iommu_ser = NULL;
-> +out:
-> +	liveupdate_flb_put_incoming(&iommu_flb);
-> +	return iommu_ser;
-> +}
-> +EXPORT_SYMBOL(iommu_get_preserved_data);
+commit 5c0076c5351b1595453bb8b4c3718d9f86784e4f
+Author: Bibo Mao <maobibo@loongson.cn>
 
-These two helpers are intended for use by IOMMU drivers, correct? If so,
-please add kernel-doc style comments to document their usage and guide
-how drivers should use them.
+LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
 
-> +
->   static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
->   {
->   	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
-> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
-> index f9528c94979d..5ad006892cbd 100644
-> --- a/include/linux/iommu-liveupdate.h
-> +++ b/include/linux/iommu-liveupdate.h
-> @@ -13,6 +13,8 @@
->   #include <linux/liveupdate.h>
->   #include <linux/kho/abi/iommu.h>
->   
-> +typedef int (*iommu_preserved_device_iter_fn)(struct iommu_device_ser *ser,
-> +					      void *arg);
->   #ifdef CONFIG_IOMMU_LIVEUPDATE
->   static inline void *dev_iommu_preserved_state(struct device *dev)
->   {
-> @@ -28,6 +30,20 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->   	return NULL;
->   }
->   
-> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
-> +{
-> +	struct iommu_domain_ser *ser;
-> +
-> +	ser = domain->preserved_state;
-> +	if (ser && (ser->hdr.flags & IOMMU_SER_FLAG_INCOMING))
-> +		return ser;
-> +
-> +	return NULL;
-> +}
-> +
-> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
-> +				    void *arg);
-> +struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type);
->   int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
->   void iommu_unpreserve_domain(struct iommu_domain *domain);
->   int iommu_preserve_device(struct iommu_domain *domain,
-> @@ -44,6 +60,21 @@ static inline void *dev_iommu_preserved_state(struct device *dev)
->   	return NULL;
->   }
->   
-> +static inline void *iommu_domain_restored_state(struct iommu_domain *domain)
-> +{
-> +	return NULL;
-> +}
-> +
-> +static inline int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn, void *arg)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline struct iommu_hw_ser *iommu_get_preserved_data(u64 token, enum iommu_type_ser type)
-> +{
-> +	return NULL;
-> +}
-> +
->   static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
->   {
->   	return -EOPNOTSUPP;
+This patch replaces kvm_vcpu_ioctl_interrupt() with internal APIs
+kvm_queue_irq() and kvm_dequeue_irq() for delivering interrupts in kernel
+mode. It also removes unnecessary printk information when injecting
+unsupported interrupts with number 0.
 
-Thanks,
-baolu
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+> index 4fa0897d7bdb0..b7744dcbdd8e3 100644
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+[ ... ]
+> @@ -40,16 +39,15 @@ static void ipi_send(struct kvm *kvm, uint64_t data)
+
+[Severity: High]
+This is a pre-existing issue, but since this patch cleans up unnecessary
+kvm_err() logs elsewhere, I wanted to ask about the kvm_err() in ipi_send().
+
+If a malicious guest writes an invalid CPU ID to the IOCSR_IPI_SEND registe=
+r,
+it triggers this path:
+
+arch/loongarch/kvm/intc/ipi.c:ipi_send() {
+...
+	vcpu =3D kvm_get_vcpu_by_cpuid(kvm, cpu);
+	if (unlikely(vcpu =3D=3D NULL)) {
+		kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+		return;
+	}
+...
+}
+
+Since kvm_err() does not appear to be rate-limited, could a guest loop
+repeatedly trigger this to spam the host syslog?
+
+Could this lead to host performance degradation or RCU stalls, effectively
+acting as a host denial of service?
+
+>  static void ipi_clear(struct kvm_vcpu *vcpu, uint64_t data)
+>  {
+>  	uint32_t status;
+> -	struct kvm_interrupt irq;
+> =20
+>  	spin_lock(&vcpu->arch.ipi_state.lock);
+>  	vcpu->arch.ipi_state.status &=3D ~data;
+>  	status =3D vcpu->arch.ipi_state.status;
+> -	spin_unlock(&vcpu->arch.ipi_state.lock);
+>  	if (status =3D=3D 0) {
+> -		irq.irq =3D -LARCH_INT_IPI;
+> -		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
+> +		kvm_dequeue_irq(vcpu, LARCH_INT_IPI);
+> +		kvm_vcpu_kick(vcpu);
+>  	}
+> +	spin_unlock(&vcpu->arch.ipi_state.lock);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622030508.2731=
+279-1-maobibo@loongson.cn?part=3D1
