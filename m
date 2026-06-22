@@ -1,134 +1,212 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202A03290BA;
-	Mon, 22 Jun 2026 02:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D17257845;
+	Mon, 22 Jun 2026 03:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782096499; cv=none; b=ad9JRgXsbK4mxAvOc6F4w1Acb0JDbU82Zgk2vCRtSO5et+As6CUZQ0aHbcTdDHyhPVsDKvuvLp6AYfPFRLh/QOYPOCS6nOWNzERnxBYyeNQIk90ygv0lNxfkhWYquiLxTp6a1QL61VpM16F7jJ6VkMJufUXNDm0tadsPf1ABhr8=
+	t=1782097520; cv=none; b=iSAf/wuTiG1Zh7SvrCBNzzbwE0lYO/htV3OLXbMYyQcHulf+Kh+1VfyQx5NSlzoPBYHP0amZReEzOkKeA2oDVrRuJ6uJSvBoDUzvqyLgAVWmEFDONCqDfzJkbf//xJTrv3yx4AKnyI5GkVSjacgqM9KRH7rrGMfucsisK/TZRrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782096499; c=relaxed/simple;
-	bh=pj/RajTl5IOiHjklPG4MR4kM7xXSdwQBL/9H2qH5kVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JTswDdAcaazHD25v6hBmWTBKRuvZo0wy0i7zsiHFkdUnjpd6aVU5BJKTpfF3C1OZ8Nw4/RrOSg8SnWfpdnsBriWEmgwCOz5NrPH9FyuN6y4gOHB7WPEKd1QrjW8cMdyt0Q3noA+mwnFriR09Tq4pDaHQwhq9E3cC47S8i5693pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JetgvMGx; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JetgvMGx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782096496; x=1813632496;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pj/RajTl5IOiHjklPG4MR4kM7xXSdwQBL/9H2qH5kVU=;
-  b=JetgvMGxSne4rF0OyRch9seBruIYUzb+7jJ68eKCY8XMmids5YgVXVek
-   8Oln8vEzWk/CnL9+ZQu+GxJsUh8TvjcBuksaACy2RSTru9bGa5kAlOqTT
-   qw8S2zByWZFda/IznyzPWxchV0PHpSw46SsBK9EPO0IdDrYVRIp0eU7TO
-   /CWDQOwYzM7N2N5Mujjckgi6HjQSksJxGqvIYepdBXmEKfaRBnpbyror4
-   p/9bxFKl/erah3kasy3j/I1SxZ3VVzSia4nYnOjvBZKAVXZQbf5kEEV4Y
-   B9C+wMR4n+Nv40NTqW3Z6dA7bdVF5qzO0vVojgiflSPj5CEDlH5Xe7V+8
-   g==;
-X-CSE-ConnectionGUID: V2zFIm1zR9m/F2NaR/xSWw==
-X-CSE-MsgGUID: LMwEDQWsR625bO8MmxtKeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="93188099"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="93188099"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 19:48:16 -0700
-X-CSE-ConnectionGUID: u9Eg5v/2QTGN0pgVUZmaBg==
-X-CSE-MsgGUID: IK+UPpu7St+LLiztrSd52g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="249210480"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 19:48:11 -0700
-Message-ID: <51e03b42-796c-489c-a0fa-525ed1a492ca@linux.intel.com>
-Date: Mon, 22 Jun 2026 10:47:05 +0800
+	s=arc-20240116; t=1782097520; c=relaxed/simple;
+	bh=HbEL0S7oIDnZkdCYRRL8oNqyCil+lu6wvX/nASNTXc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nowrxzprw+8zjFbFwzkupaEjA/X5eJ0VeSbzCNmG9cvr2VY5qD8wnvE34C2c2XpLwhjRbJ1Pg78G22wBnoHHCYGYHMZD8u9yZ3Mi/bnNnnjZnGtRuEgY0sDr/m/2Qb/sicEMSV6ewvJdArztoanZ5QxSuXzHvBVM00wJCtxXN58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8BxdnhlpjhqSHQWAA--.33370S3;
+	Mon, 22 Jun 2026 11:05:09 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJCxPMJlpjhqVn6uAA--.1562S2;
+	Mon, 22 Jun 2026 11:05:09 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+Date: Mon, 22 Jun 2026 11:05:08 +0800
+Message-Id: <20260622030508.2731279-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/18] iommu/vt-d: clear unpreserved context entries
- during shutdown
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
-References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-9-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260614233728.2212104-9-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxPMJlpjhqVn6uAA--.1562S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On 6/15/26 07:37, Samiullah Khawaja wrote:
-> During normal shutdown the iommu translation is disabled. Since the root
-> table is preserved during live update, it needs to be cleaned up and the
-> context entries of the unpreserved devices and root entries for the
-> unpreserved context tables need to be cleared.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |  9 ++--
->   drivers/iommu/intel/iommu.h      |  6 +++
->   drivers/iommu/intel/liveupdate.c | 74 ++++++++++++++++++++++++++++++++
->   3 files changed, 86 insertions(+), 3 deletions(-)
+API kvm_vcpu_ioctl_interrupt() is mainly to used to deliver interrupt
+from user mode, and internal APIs kvm_queue_irq() and kvm_dequeue_irq()
+are used in kernel mode.
 
-Please tweak the commit title to: "iommu/vt-d: Clear unpreserved..."
-(capitalize "Clear") to match the driver's commit history style.
+Also this patch removes unnecessary printk information with inject
+unsupported interrupt with number 0.
 
-A high-level question: have you looked at how the suspend/resume path
-behaves with the iommu and device preservation? DMA translation is
-disabled and re-enabled there. I don't see any immediate changes are
-needed there, but it would be good to call it out explicitly if it was
-overlooked.
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+v1 ... v2:
+  1. Add border check with ipnum in eiointc_set_sw_coreisr() and
+     eiointc_update_irq(), so that injected interrupt vector is valid.
 
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 715b538e7efe..26258861e3bf 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -2374,8 +2374,11 @@ void intel_iommu_shutdown(void)
->   		/* Disable PMRs explicitly here. */
->   		iommu_disable_protect_mem_regions(iommu);
->   
-> -		/* Make sure the IOMMUs are switched off */
-> -		iommu_disable_translation(iommu);
-> +		/* Make sure the IOMMUs are switched off if not preserved. */
-> +		if (iommu_preserved_state(&iommu->iommu))
-> +			clear_unpreserved_context_entries(iommu);
+  2. Move IPI inject and ack within lock to avoid contention in
+     ipi_set() and ipi_clear().
 
-How are PCI devices handled during a live update kexec? Do they go
-through the standard iommu_release_device() path?
+  3. Add kvm_arch_irqchip_in_kernel() check in user mode irq injection
+    in function kvm_vcpu_ioctl_interrupt(), contention of user mode irq
+    injection is assured from user mode VMM.
+---
+ arch/loongarch/kvm/intc/dmsintc.c |  7 ++++---
+ arch/loongarch/kvm/intc/eiointc.c | 14 +++++++++-----
+ arch/loongarch/kvm/intc/ipi.c     | 14 ++++++--------
+ arch/loongarch/kvm/vcpu.c         |  7 ++++---
+ 4 files changed, 23 insertions(+), 19 deletions(-)
 
-I assume they do not, because if they did, the context entries for
-preserved devices could be updated after preservation. If they do bypass
-the release_device path, why not just explicitly invoke
-iommu_release_device() for all devices that are not preserved?
+diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+index de25735ce039..a726c6cafec3 100644
+--- a/arch/loongarch/kvm/intc/dmsintc.c
++++ b/arch/loongarch/kvm/intc/dmsintc.c
+@@ -47,7 +47,6 @@ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
+ int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
+ 				struct kvm_vcpu *vcpu, u32 vector, int level)
+ {
+-	struct kvm_interrupt vcpu_irq;
+ 	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
+ 
+ 	if (!level)
+@@ -57,9 +56,11 @@ int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
+ 	if (!ds)
+ 		return -ENODEV;
+ 
+-	vcpu_irq.irq = INT_AVEC;
++	if (!kvm_guest_has_msgint(&vcpu->arch))
++		return -EINVAL;
++
+ 	set_bit(vector, (unsigned long *)&ds->vector_map);
+-	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
++	kvm_queue_irq(vcpu, INT_AVEC);
+ 	kvm_vcpu_kick(vcpu);
+ 
+ 	return 0;
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index 2b14485d14a7..c6a309695030 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -17,7 +17,8 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
+ 		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+ 			ipnum = count_trailing_zeros(ipnum);
+ 			ipnum = ipnum < 4 ? ipnum : 0;
+-		}
++		} else if (ipnum >= LOONGSON_IP_NUM)
++			ipnum = 0;
+ 
+ 		cpuid = ((u8 *)s->coremap)[irq];
+ 		vcpu = kvm_get_vcpu_by_cpuid(s->kvm, cpuid);
+@@ -36,13 +37,13 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ {
+ 	int ipnum, cpu, found;
+ 	struct kvm_vcpu *vcpu;
+-	struct kvm_interrupt vcpu_irq;
+ 
+ 	ipnum = (s->ipmap >> (irq / 32 * 8)) & 0xff;
+ 	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+ 		ipnum = count_trailing_zeros(ipnum);
+ 		ipnum = ipnum < 4 ? ipnum : 0;
+-	}
++	} else if (ipnum >= LOONGSON_IP_NUM)
++		ipnum = 0;
+ 
+ 	cpu = s->sw_coremap[irq];
+ 	vcpu = kvm_get_vcpu_by_id(s->kvm, cpu);
+@@ -67,8 +68,11 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ 	if (found < EIOINTC_IRQS)
+ 		return; /* other irq is handling, needn't update parent irq */
+ 
+-	vcpu_irq.irq = level ? (INT_HWI0 + ipnum) : -(INT_HWI0 + ipnum);
+-	kvm_vcpu_ioctl_interrupt(vcpu, &vcpu_irq);
++	if (level)
++		kvm_queue_irq(vcpu, INT_HWI0 + ipnum);
++	else
++		kvm_dequeue_irq(vcpu, INT_HWI0 + ipnum);
++	kvm_vcpu_kick(vcpu);
+ }
+ 
+ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
+diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+index 4fa0897d7bdb..b7744dcbdd8e 100644
+--- a/arch/loongarch/kvm/intc/ipi.c
++++ b/arch/loongarch/kvm/intc/ipi.c
+@@ -10,16 +10,15 @@
+ static void ipi_set(struct kvm_vcpu *vcpu, uint32_t data)
+ {
+ 	uint32_t status;
+-	struct kvm_interrupt irq;
+ 
+ 	spin_lock(&vcpu->arch.ipi_state.lock);
+ 	status = vcpu->arch.ipi_state.status;
+ 	vcpu->arch.ipi_state.status |= data;
+-	spin_unlock(&vcpu->arch.ipi_state.lock);
+ 	if ((status == 0) && data) {
+-		irq.irq = LARCH_INT_IPI;
+-		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
++		kvm_queue_irq(vcpu, LARCH_INT_IPI);
++		kvm_vcpu_kick(vcpu);
+ 	}
++	spin_unlock(&vcpu->arch.ipi_state.lock);
+ }
+ 
+ static void ipi_send(struct kvm *kvm, uint64_t data)
+@@ -40,16 +39,15 @@ static void ipi_send(struct kvm *kvm, uint64_t data)
+ static void ipi_clear(struct kvm_vcpu *vcpu, uint64_t data)
+ {
+ 	uint32_t status;
+-	struct kvm_interrupt irq;
+ 
+ 	spin_lock(&vcpu->arch.ipi_state.lock);
+ 	vcpu->arch.ipi_state.status &= ~data;
+ 	status = vcpu->arch.ipi_state.status;
+-	spin_unlock(&vcpu->arch.ipi_state.lock);
+ 	if (status == 0) {
+-		irq.irq = -LARCH_INT_IPI;
+-		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
++		kvm_dequeue_irq(vcpu, LARCH_INT_IPI);
++		kvm_vcpu_kick(vcpu);
+ 	}
++	spin_unlock(&vcpu->arch.ipi_state.lock);
+ }
+ 
+ static uint64_t read_mailbox(struct kvm_vcpu *vcpu, int offset, int len)
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 20c207d80e31..82c96854df93 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1465,6 +1465,9 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
+ 	if (vector >= EXCCODE_INT_NUM)
+ 		return -EINVAL;
+ 
++	if (kvm_arch_irqchip_in_kernel(vcpu->kvm))
++		return -EINVAL;
++
+ 	if (!kvm_guest_has_msgint(&vcpu->arch) && (vector == INT_AVEC))
+ 		return -EINVAL;
+ 
+@@ -1472,10 +1475,8 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
+ 		kvm_queue_irq(vcpu, intr);
+ 	else if (intr < 0)
+ 		kvm_dequeue_irq(vcpu, -intr);
+-	else {
+-		kvm_err("%s: invalid interrupt ioctl %d\n", __func__, irq->irq);
++	else
+ 		return -EINVAL;
+-	}
+ 
+ 	kvm_vcpu_kick(vcpu);
+ 
 
-Using iommu_release_device() for the unpreserved devices would naturally
-erase their context entries and securely park those devices in a DMA
-blocking state.
+base-commit: ef0c9f75a19532d7675384708fc8621e10850104
+-- 
+2.39.3
 
-> +		else
-> +			iommu_disable_translation(iommu);
->   	}
->   }
-> 
-
-[...]
-
-Thanks,
-baolu
