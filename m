@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4383B35203A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D56352004;
 	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100902; cv=none; b=cfj+1ltiDfDWX69Xlu3RdFuPp/syP2i0bwHUKH9+F8DkUkh1GlaWBt5iMD8kRE84rxKXacWeCoqnTsPTvndQur6I31f9cxyiyL8TFoJOcTEnof1lhEvc+FAYi8HHsTmuxrf+eXeKO93TzQvvo6ihWFAdytaEWLSd8UFbsr0ROco=
+	t=1782100902; cv=none; b=p3NPpmYELiEKTXqlVm/VTAIH5XtUnAJOUM/6cve2ioVQsdfX2ymwLt45WV8tgVMqiJvil/PvPknuPLGIdPpMu0Z1x2kkccbagIvX9i3LXfDXDdU9emT7r/Z1oSwRdNj2C40Ldx+VAHwwyBTb7KfD4IW+KNmPSw73CpZPV31lpP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782100902; c=relaxed/simple;
-	bh=763frQ7EoZ7Vc1DfOAoonCliM33mKg/2n2s5chR42Oc=;
+	bh=csu2MCYhTGbt4aW3Xcpruk4V6nSoe7kLM25kmO7C5Zw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=E8XTFuYMujWc/RN4oIrymZhXTv3bC6famALO+ynN//wu1E2N0AsQMihFYb98lFFqahceicYqYRAykY8v2OSv4yXvsYMPe7ISZxXfzu2oggR5NKw1x4DlAhxCLwBtx1AgEe4NkvjbbfFVw1SiRDFf6C9nOYcNew1sZ2lB96PK2eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+8k3Bwu; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=doVrv3EwGvABS9DxPGY2xc5g1CYlp/Rvds3khvswH7JUF7+MLsLA9sbdo8+6qITAcFoOHzO7gpJsObdlOiT3VKvbKaD0V03SlVlb+eOd62G8PjATcu5BZo1gi5dFpnnnLzAq19tUz6Tmzv8hH1mqsOz3UtDnesgZSrZApUBvsBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cojGf6gS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+8k3Bwu"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 24CAFC2BCB4;
-	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cojGf6gS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E32F7C2BCC6;
+	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782100902;
-	bh=763frQ7EoZ7Vc1DfOAoonCliM33mKg/2n2s5chR42Oc=;
+	s=k20201202; t=1782100901;
+	bh=csu2MCYhTGbt4aW3Xcpruk4V6nSoe7kLM25kmO7C5Zw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=s+8k3BwuuT5dVyBFSZhxXAuUVDTvUD/4AXdNX8cUcK1zq3gKuity1u5G8ZZ0ftJ+L
-	 2RyllilXKFPFTk2Caf3PmAWEz9eH9SY11q7wTxqCNGn1+xy5x0Yl74zfon3nZofC2I
-	 Bq1CQ3ZyLUcypKnZJlIP/nnsxVLguLulS/Rp8dz7Y3tV0ELqCwitBJNkfqOan7gOhr
-	 euPeMCdKWtPdLS1wWMxFtUStWfqWT6XUZyRiDTx+lQgg4EUlo0Cv7cMUzQGyzjlazd
-	 FVxVtTlsqe8vKSTdQ26nuPgFPzgratIs8qA6gQGrxZSDJVU+zcLKoyPeemfkAyefpv
-	 3QHfEJHhjqo1g==
+	b=cojGf6gSn0t86iKP/5DGkHFo3U6GLCU+jspsEpoCUixdiGRXZchgp/2B1Jj6VB66t
+	 x9uAxQcau6QcC5DcoGHRMQqvD0Nbm26Cey06oSNO4oUag7758PnUtZmz41d4TAnDVp
+	 qey7RWhGfYZJdQUT2tnma0sDCDTzzpbztz0Tb2V3MaMTlYg6LuAJqHcxu46CtY3rAt
+	 Vp9RZAalmevwU1yX77YWGGnnjfm4JnUXfyH6qGZRDbDhiunUXoMx9xasOHDFxhJT1k
+	 h9vTYXd11SJRL0L973oOEQckJQ5vGkUiWVWkq5L7dgNkSKgRWYWmMudhXjLyzTnyFo
+	 jMvGle+tzzJ0Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C36FCD98F6;
-	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB8F8CDB471;
+	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:30 -0700
-Subject: [PATCH v2 12/16] riscv: kvm: Add emulated test csr
+Date: Sun, 21 Jun 2026 21:01:27 -0700
+Subject: [PATCH v2 09/16] KVM: device: Add test device
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-9-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -54,11 +54,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=5057;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=6960;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=neF9aplelwD4odoezxCMv5VCTRiCvu3tkb2/zo8PcSI=;
- b=9jIIU8JY/LLPqDYTkqOQsDnVD/NjPR1ssGDR28kuMyfuB8pPk9cQOmt6ARJ3kfg9/+KvNnXvI
- l0KuzOqo2ykCOJNV4I3L6zsXMm2QfUeTGCAwrtcbJDW7wOSoMow9V2m
+ bh=8x/+xJ625ZFQvZhfM5utyV4o1uRb4g8LDdlC/Z0H7Ts=;
+ b=UM7AHwZEBBNUuyGHLpLRDfyWFeXAXIC6/FahtGuQ7frwifqZ3I46OYfVM4iffX01r/Y+BwMDD
+ Ra5vLynJycqB6hGQ/PXRPPp5iZLOCjJQe7MNXtygYkF9+brb0HtIC5l
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -68,160 +68,250 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-To test the riscv kvm implementation of emulated CSRs, add support to
-emulate the vsscratch csr when CONFIG_RISCV_KVM_TEST_CSR is set.
+Create a KVM test device to help verify mmio reads and write emulation.
+This is a simple device that will store the data in a buffer on writes
+and echo back that stored data on a read.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 ---
- arch/riscv/Kconfig.debug                   |  1 +
- arch/riscv/include/asm/kvm_host.h          | 10 ++++++++++
- arch/riscv/include/asm/kvm_vcpu_test_csr.h | 15 +++++++++++++++
- arch/riscv/kvm/Kconfig.debug               | 16 ++++++++++++++++
- arch/riscv/kvm/Makefile                    |  1 +
- arch/riscv/kvm/vcpu_insn.c                 |  5 +++++
- arch/riscv/kvm/vcpu_test_csr.c             | 21 +++++++++++++++++++++
- 7 files changed, 69 insertions(+)
+ include/uapi/linux/kvm.h |  2 +
+ lib/Kconfig.debug        |  6 +++
+ virt/kvm/Kconfig.debug   | 16 ++++++++
+ virt/kvm/Makefile.kvm    |  1 +
+ virt/kvm/kvm_main.c      |  8 ++++
+ virt/kvm/mmio_test.c     | 95 ++++++++++++++++++++++++++++++++++++++++++++++++
+ virt/kvm/mmio_test.h     | 18 +++++++++
+ 7 files changed, 146 insertions(+)
 
-diff --git a/arch/riscv/Kconfig.debug b/arch/riscv/Kconfig.debug
-index eafe17ebf710..be202267da6d 100644
---- a/arch/riscv/Kconfig.debug
-+++ b/arch/riscv/Kconfig.debug
-@@ -1 +1,2 @@
- source "arch/riscv/kernel/tests/Kconfig.debug"
-+source "arch/riscv/kvm/Kconfig.debug"
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 75b0a951c1bc..4d30d30ebefc 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -167,6 +167,12 @@ struct kvm_vcpu_reset_state {
- 	unsigned long a1;
- };
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 6c8afa2047bf..abbbf74627a2 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1235,6 +1235,8 @@ enum kvm_device_type {
+ #define KVM_DEV_TYPE_LOONGARCH_DMSINTC	KVM_DEV_TYPE_LOONGARCH_DMSINTC
+ 	KVM_DEV_TYPE_ARM_VGIC_V5,
+ #define KVM_DEV_TYPE_ARM_VGIC_V5	KVM_DEV_TYPE_ARM_VGIC_V5
++	KVM_DEV_TYPE_TEST,
++#define KVM_DEV_TYPE_TEST		KVM_DEV_TYPE_TEST
  
-+#ifdef CONFIG_RISCV_KVM_TEST_CSR
-+struct kvm_test_csr {
-+	unsigned long val;
-+};
-+#endif
-+
- struct kvm_vcpu_arch {
- 	/* VCPU ran at least once */
- 	bool ran_atleast_once;
-@@ -265,6 +271,10 @@ struct kvm_vcpu_arch {
- 		gpa_t shmem;
- 		u64 last_steal;
- 	} sta;
-+
-+#ifdef CONFIG_RISCV_KVM_TEST_CSR
-+	struct kvm_test_csr test_csr;
-+#endif
- };
+ 	KVM_DEV_TYPE_MAX,
  
- /*
-diff --git a/arch/riscv/include/asm/kvm_vcpu_test_csr.h b/arch/riscv/include/asm/kvm_vcpu_test_csr.h
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 8ff5adcfe1e0..0d235bdc94ec 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -754,6 +754,12 @@ source "net/Kconfig.debug"
+ 
+ endmenu # "Networking Debugging"
+ 
++menu "KVM Debugging"
++
++source "virt/kvm/Kconfig.debug"
++
++endmenu # "KVM Debugging"
++
+ menu "Memory Debugging"
+ 
+ source "mm/Kconfig.debug"
+diff --git a/virt/kvm/Kconfig.debug b/virt/kvm/Kconfig.debug
 new file mode 100644
-index 000000000000..a844fccaafc3
+index 000000000000..d24709f5bcbf
 --- /dev/null
-+++ b/arch/riscv/include/asm/kvm_vcpu_test_csr.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef __KVM_VCPU_RISCV_TEST_CSR_H
-+#define __KVM_VCPU_RISCV_TEST_CSR_H
-+
-+#include <asm/kvm_vcpu_insn.h>
-+
-+#define KVM_RISCV_VCPU_TEST_CSR_FUNCS \
-+	{.base = CSR_VSSCRATCH,	.count = 1,	.func = kvm_riscv_vcpu_test_csr },
-+
-+int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
-+			    unsigned long *val, unsigned long new_val,
-+			    unsigned long wr_mask);
-+
-+#endif /* !__KVM_VCPU_RISCV_TEST_CSR_H */
-diff --git a/arch/riscv/kvm/Kconfig.debug b/arch/riscv/kvm/Kconfig.debug
-new file mode 100644
-index 000000000000..dc76e02120a3
---- /dev/null
-+++ b/arch/riscv/kvm/Kconfig.debug
++++ b/virt/kvm/Kconfig.debug
 @@ -0,0 +1,16 @@
 +# SPDX-License-Identifier: GPL-2.0-only
-+menu "arch/riscv/kvm testing"
 +
-+config RISCV_KVM_TEST_CSR
-+        bool "Test KVM CSR emulation"
-+        depends on KVM
-+        default n
-+        help
-+            Enable this option to enable the emulation of a test hypervisor csr.
-+            The KVM test csr is the vsscratch register. Once this is enabled,
-+            reading/writing to the vsscratch register will trap into the host
-+            supervisor and reflect the change.
++config KVM_MMIO_TEST
++       bool "Enable kvm mmio testing"
++       depends on KVM
++       depends on KVM_MMIO
++       default n
++       help
++         Enable testing for kvm mmio. This is a test-only mmio device that
++         stores writes in a buffer and returns the buffered data on a read.
++         
++         This is useful for testing the kvm mmio emulation code. Enabling
++         this does not run any tests, just builds in the support for the test
++         device into the kernel.
 +
-+            If unsure, say N.
-+
-+endmenu # "arch/riscv/kvm testing"
-diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
-index 296c2ba05089..5092b86751c4 100644
---- a/arch/riscv/kvm/Makefile
-+++ b/arch/riscv/kvm/Makefile
-@@ -38,6 +38,7 @@ kvm-y += vcpu_sbi_sta.o
- kvm-y += vcpu_sbi_system.o
- kvm-$(CONFIG_RISCV_SBI_V01) += vcpu_sbi_v01.o
- kvm-y += vcpu_switch.o
-+kvm-$(CONFIG_RISCV_KVM_TEST_CSR) += vcpu_test_csr.o
- kvm-y += vcpu_timer.o
- kvm-y += vcpu_vector.o
- kvm-y += vm.o
-diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-index 1d8741d02242..c5a70de4a579 100644
---- a/arch/riscv/kvm/vcpu_insn.c
-+++ b/arch/riscv/kvm/vcpu_insn.c
-@@ -10,6 +10,8 @@
- #include <asm/cpufeature.h>
- #include <asm/insn.h>
++         If unsure, say N.
+diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
+index d047d4cf58c9..bd4da8c23923 100644
+--- a/virt/kvm/Makefile.kvm
++++ b/virt/kvm/Makefile.kvm
+@@ -8,6 +8,7 @@ KVM ?= ../../../virt/kvm
+ kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
+ kvm-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
+ kvm-$(CONFIG_KVM_MMIO) += $(KVM)/coalesced_mmio.o
++kvm-$(CONFIG_KVM_MMIO_TEST) += $(KVM)/mmio_test.o
+ kvm-$(CONFIG_KVM_ASYNC_PF) += $(KVM)/async_pf.o
+ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+ kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469..d9bbe570eddd 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -58,6 +58,7 @@
+ #include "async_pf.h"
+ #include "kvm_mm.h"
+ #include "vfio.h"
++#include "mmio_test.h"
  
-+#include <asm/kvm_vcpu_test_csr.h>
-+
- struct insn_func {
- 	unsigned long mask;
- 	unsigned long match;
-@@ -112,6 +114,9 @@ static int seed_csr_rmw(struct kvm_vcpu *vcpu, unsigned int csr_num,
- static const struct csr_func csr_funcs[] = {
- 	KVM_RISCV_VCPU_AIA_CSR_FUNCS
- 	KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS
-+#ifdef CONFIG_RISCV_KVM_TEST_CSR
-+	KVM_RISCV_VCPU_TEST_CSR_FUNCS
-+#endif
- 	{ .base = CSR_SEED, .count = 1, .func = seed_csr_rmw },
- };
+ #include <trace/events/ipi.h>
  
-diff --git a/arch/riscv/kvm/vcpu_test_csr.c b/arch/riscv/kvm/vcpu_test_csr.c
+@@ -6532,6 +6533,10 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+ 	if (WARN_ON_ONCE(r))
+ 		goto err_vfio;
+ 
++	r = kvm_mmio_test_ops_init();
++	if (WARN_ON_ONCE(r))
++		goto err_mmio_test;
++
+ 	r = kvm_gmem_init(module);
+ 	if (r)
+ 		goto err_gmem;
+@@ -6559,6 +6564,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+ err_gmem:
+ 	kvm_vfio_ops_exit();
+ err_vfio:
++	kvm_mmio_test_ops_exit();
++err_mmio_test:
+ 	kvm_async_pf_deinit();
+ err_async_pf:
+ 	kvm_irqfd_exit();
+@@ -6589,6 +6596,7 @@ void kvm_exit(void)
+ 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
+ 	kmem_cache_destroy(kvm_vcpu_cache);
+ 	kvm_gmem_exit();
++	kvm_mmio_test_ops_exit();
+ 	kvm_vfio_ops_exit();
+ 	kvm_async_pf_deinit();
+ 	kvm_irqfd_exit();
+diff --git a/virt/kvm/mmio_test.c b/virt/kvm/mmio_test.c
 new file mode 100644
-index 000000000000..b8aa503cdaba
+index 000000000000..fa84c2b4c5fc
 --- /dev/null
-+++ b/arch/riscv/kvm/vcpu_test_csr.c
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/virt/kvm/mmio_test.c
+@@ -0,0 +1,95 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * mmio_test.c - Kernel module side for testing the KVM riscv mmio functionality.
++ */
 +
 +#include <linux/kvm_host.h>
-+#include <asm/kvm_vcpu_insn.h>
-+#include <asm/kvm_vcpu_test_csr.h>
 +
-+#define vcpu_to_test_csr(vcpu) (&(vcpu)->arch.test_csr)
++#include <kvm/iodev.h>
++#include "mmio_test.h"
 +
-+int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
-+			    unsigned long *val, unsigned long new_val,
-+			    unsigned long wr_mask)
++struct mmio_test {
++	struct kvm *kvm;
++	struct kvm_io_device dev;
++	unsigned long start;
++	unsigned long size;
++	char cache[16];
++};
++
++static struct mmio_test *kvm_to_mmio_test_dev(const struct kvm_io_device *dev)
 +{
-+	struct kvm_test_csr *test_csr = vcpu_to_test_csr(vcpu);
-+
-+	*val = test_csr->val;
-+
-+	if (wr_mask)
-+		test_csr->val = (test_csr->val & ~wr_mask) | (new_val & wr_mask);
-+
-+	return KVM_INSN_CONTINUE_NEXT_SEPC;
++	return container_of(dev, struct mmio_test, dev);
 +}
++
++static int mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
++		     gpa_t addr, int len, void *val)
++{
++	struct mmio_test *mmio_test = kvm_to_mmio_test_dev(dev);
++
++	if ((addr - mmio_test->start) >= mmio_test->size)
++		return -1;
++
++	/* Write back cached value */
++	memcpy(val, &mmio_test->cache[(addr - mmio_test->start)], len);
++	return 0;
++}
++
++static int mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
++		      gpa_t addr, int len, const void *val)
++{
++	struct mmio_test *mmio_test = kvm_to_mmio_test_dev(dev);
++
++	if ((addr - mmio_test->start) >= mmio_test->size)
++		return -1;
++
++	/* Cache value */
++	memcpy(&mmio_test->cache[(addr - mmio_test->start)], val, len);
++	return 0;
++}
++
++static const struct kvm_io_device_ops mmio_ops = {
++	.read = mmio_read,
++	.write = mmio_write,
++};
++
++static int mmio_test_create(struct kvm_device *dev, u32 type)
++{
++	struct mmio_test *mmio_test;
++
++	mmio_test = kzalloc(sizeof(*mmio_test), GFP_KERNEL);
++	if (!mmio_test)
++		return -ENOMEM;
++
++	mmio_test->start = 0x20000000;
++	mmio_test->size = 0x16;
++
++	dev->private = mmio_test;
++
++	kvm_iodevice_init(&mmio_test->dev, &mmio_ops);
++	kvm_io_bus_register_dev(dev->kvm, KVM_MMIO_BUS, mmio_test->start,
++				mmio_test->size, &mmio_test->dev);
++
++	return 0;
++}
++
++static void mmio_test_release(struct kvm_device *dev)
++{
++	kfree(dev->private);
++}
++
++struct kvm_device_ops kvm_riscv_mmio_test_device_ops = {
++	.name = "kvm-riscv-mmio_test",
++	.create = mmio_test_create,
++	.release = mmio_test_release,
++};
++
++int kvm_mmio_test_ops_init(void)
++{
++	return kvm_register_device_ops(&kvm_riscv_mmio_test_device_ops,
++					KVM_DEV_TYPE_TEST);
++}
++
++void kvm_mmio_test_ops_exit(void)
++{
++	kvm_unregister_device_ops(KVM_DEV_TYPE_TEST);
++}
+diff --git a/virt/kvm/mmio_test.h b/virt/kvm/mmio_test.h
+new file mode 100644
+index 000000000000..49a6e900eec9
+--- /dev/null
++++ b/virt/kvm/mmio_test.h
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __KVM_MMIO_TEST_H
++#define __KVM_MMIO_TEST_H
++
++#ifdef CONFIG_KVM_MMIO_TEST
++int kvm_mmio_test_ops_init(void);
++void kvm_mmio_test_ops_exit(void);
++#else
++static inline int kvm_mmio_test_ops_init(void)
++{
++	return 0;
++}
++static inline void kvm_mmio_test_ops_exit(void)
++{
++}
++#endif
++
++#endif
 
 -- 
 2.54.0
