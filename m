@@ -1,333 +1,171 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F31E351C2D
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7FA35201E
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782101902; cv=none; b=CR5nsHI8ZAFgx2DjwctOs49MqRGSPiLUcwo9jN/S73pzis6xCYNIwMmUw3SzVIw7cQ9y+DREtgvKCbfPJNbP7Fm+RrkyQfif9M+xECflPrBP50inU6cwAWYQJioDAslptHAInkOUWaIjbjD2p2VJl1wPoqc33hPM/u09xQqcEuo=
+	t=1782101986; cv=none; b=Ifa5Dk8ZSivE3CxNhPpBPp+SJo1lM5g7pV/DhYiAOrvYWCU7JzVP4xEs+5n9oMQ8yFtY1BcZEcEJ1pX+R+BshUrlxHpBss09wCuHWjR9VTv9TmVi1J01HKdQvKR3mKBuYB5KZRPil9aaDZjCQmTIy9nX/4C2nVYfiwPRM/edDl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782101902; c=relaxed/simple;
-	bh=LsTuEP52/0UZkwdnSdEc+1NLLUpNbSGxX76G+H10ZQc=;
+	s=arc-20240116; t=1782101986; c=relaxed/simple;
+	bh=lgu5KtqRmIzGm4CQ+E1cYDXZat7Lb6ISHcP1jm0ess0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tPt/+ELL+bPCifEoj2FBjsLt74YWcf4w7faXqqkZYK39Kk3xGFFCCRUWbRK7Y6RZbOq1rpfqzeRXq6aXMdSVtfA2bFrmV/1D08xfj4CRTeojIIXXIDOfyaqVvUPRgiJny5Jqn6Jmv39T/W6OCrLUpbp6K0O0dQ2unK5ZPCZ3C2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMAOevwS; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=S11AKBFjPv4HW450hYTEVUTVbimUOuDwv0Bks95tw4Bc9Mx6ekqrGjf/bAT9oCXQ/7iKNt9HuIRyPaVIB3bmVofEUi3xOa5oY9eCWGOpb2vauzBHtD80/SM/xd7on5+9ouXiuFXZP6iUDAkoKQ7vEnLr/f9lusek3tepB2S5Yck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0HvEY1R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMAOevwS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC491F00A3E;
-	Mon, 22 Jun 2026 04:18:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0HvEY1R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F032C1F000E9;
+	Mon, 22 Jun 2026 04:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782101901;
-	bh=21JgXcfiad4wBSAqXnJJJi5Yurt6CAg1Ce/k6DEjTDg=;
+	s=k20260515; t=1782101985;
+	bh=oyECg/ZcRIQYQmdiFG0fbgUnpshM9DCGKnw7ANnIe+o=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mMAOevwS7y/G8/Js5qTk8b+099xIqphJNDSurGSQNhwfkvsP/nW7sN1eRB+iZ80gu
-	 ZXPxB8sSK49NyssQafiO1XZeMWEkRZcp/PO8uTm3XCtWBtKjh7mpO7I9FDsf8RYo5A
-	 ZCZnAoDcsT8Voez7lHwnJ3UKgoqfDqwbU7v9MV2kFWg6k+tiQ1nrM6sju0TxYIJLzI
-	 V1SxzsBYj94FOenLA+QWmNOS+fOHd7Rt8bB6nZyclszHjYsNvAsamHStJ0fnvo9NoN
-	 P105mwA1DMI3n1zKzFmLLO3mr3lAoVVNwLWwOks/o6aqLaHpr+6xfV5TA3yP2YjmA+
-	 ACgwZDYpMVyFA==
+	b=X0HvEY1R/glUwp78o1WbdjpGYq/M/0yn3V90WSzPA5UaUp9hVnD9mUZ4pn5enhGRL
+	 PyMQrdiPCTkRMoGOeh7nkfZ95qEZyucq9Nj2fl/ldXSd2yFyiHh5pF7/U+8ZtEZ/Y+
+	 HudN5MJU4QPM3UQeNdF6FQYtXgJWbNOU2vJSmC2VXkZ/Qt3dZ/jPzclYpHpO46bp7N
+	 hrL7ScczC9cPSu5TGmT5xlt91hdmC3h1i6fPyRa7jN/bZ5xJrtNjVp/ODtCDPbssiw
+	 no3/jY7rzqA484ZgUd262/30HUftOp0G3wpYnV6irt3c5emWW5epdSqNgcutW6E1cR
+	 TbW15/2TkKCLA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 10/16] KVM: riscv: selftests: Add mmio test
+Subject: Re: [PATCH v2 04/16] riscv: Add kprobes instruction simulation
+ KUnit
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-10-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-4-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-10-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-4-7f0810ee2274@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:18:20 +0000
-Message-Id: <20260622041820.DFC491F00A3E@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 04:19:44 +0000
+Message-Id: <20260622041944.F032C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 11 potential issue=
-(s) to consider:
-
-New issues:
-- [High] The test pattern for MMIO writes uses a 32-bit literal, causing it=
- to evaluate to 0 when shifted on 64-bit architectures.
-- [Medium] The compressed store instruction `c.sdsp` is entirely omitted fr=
-om the test suite.
-- [Medium] Standard 16-bit loads (`lh` and `lhu`) are erroneously restricte=
-d to 64-bit RISC-V builds.
-- [Medium] The KVM device file descriptor returned by `kvm_create_device` i=
-s leaked, which also leaks the KVM VM.
-- [Medium] The selftest fails to gracefully skip when KVM_DEV_TYPE_TEST is =
-not supported by the kernel.
-
-Pre-existing issues:
-- [Critical] The KVM MMIO test device contains a heap buffer overflow and o=
-ut-of-bounds read vulnerability due to a mismatch between the registered de=
-vice size and its internal cache array capacity.
-- [Critical] The mmio_test device fails to unregister itself from the KVM M=
-MIO bus upon release, leading to a Use-After-Free vulnerability.
-- [High] `mmio_test_create()` registers the device to the KVM IO bus withou=
-t holding the required `kvm->slots_lock`.
-- [High] The error cleanup path in `kvm_init()` unwinds initializations in =
-the wrong order.
-- [High] The return value of `kvm_io_bus_register_dev()` is ignored, potent=
-ially leaking an unregistered device.
-- [High] The `struct kvm_device` allocated for the test device is permanent=
-ly leaked.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The KUnit test executes an uninterruptible 4.29 billion iteration =
+loop, guaranteeing kernel soft lockups and breaking CI.
+- [Medium] The KUnit test logic is tautological and its state initializatio=
+n masks branch outcomes, halving test coverage.
 --
 
-commit 91109e879d023e4a9b60888f79545187037508bf
+commit 0b416648ab5f17f7e140c671781502c76b641895
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
-KVM: riscv: selftests: Add mmio test
 
-This commit adds a new MMIO selftest for KVM on RISC-V. It introduces test
-cases for various read and write instructions, including compressed
-instructions, to ensure KVM properly emulates MMIO accesses.
+riscv: Add kprobes instruction simulation KUnit
 
-> diff --git a/tools/testing/selftests/kvm/riscv/mmio_test.c b/tools/testin=
-g/selftests/kvm/riscv/mmio_test.c
-> new file mode 100644
-> index 0000000000000..9726860a269a3
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/riscv/mmio_test.c
-> @@ -0,0 +1,184 @@
+This commit introduces a KUnit test that iterates through all 32-bit
+integers to validate kprobes instruction simulation. The tests are gated
+behind a new CONFIG_RISCV_KPROBES_SIMULATE_KUNIT kconfig option.
+
+diff --git a/arch/riscv/kernel/tests/Kconfig.debug b/arch/riscv/kernel/test=
+s/Kconfig.debug
+index 40f8dafffa0ab..9eda8938ec15b 100644
+--- a/arch/riscv/kernel/tests/Kconfig.debug
++++ b/arch/riscv/kernel/tests/Kconfig.debug
+@@ -42,6 +42,19 @@ config RISCV_KPROBES_KUNIT
+=20
+          If unsure, say N.
+=20
+> +config RISCV_KPROBES_SIMULATE_KUNIT
+> +       tristate "KUnit test for riscv kprobes instruction simulation" if=
+ !KUNIT_ALL_TESTS
+> +       depends on KUNIT
+> +       depends on KPROBES
+> +       default KUNIT_ALL_TESTS
+
+[Severity: High]
+Will this default KUNIT_ALL_TESTS cause CI pipelines to break?
+
+Since the test iterates through all 32-bit integers, it appears it could
+cause standard testing environments to timeout or lockup when they enable
+all tests.
+
+> +       help
+> +         Enable testing for riscv kprobes instruction simulation. Useful=
+ for
+
 [ ... ]
-> +test_standard_read(4, lw, lw, "")
-> +test_standard_read(4, c.lw, c_lw, ".option arch,+c\n")
-> +test_sp_read(4, c.lwsp, c_lwsp)
+
+diff --git a/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c b/arch=
+/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
+new file mode 100644
+index 0000000000000..d82706685823d
+--- /dev/null
++++ b/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
+@@ -0,0 +1,250 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 > +
-> +#if __riscv_xlen =3D=3D 64
-> +test_standard_read(2, lh, lh, "")
-> +test_standard_read(2, lhu, lhu, "")
+> +#include <linux/kernel.h>
 
-[Severity: Medium]
-Are lh and lhu intentionally restricted to 64-bit architectures here?
-
-Since these are standard 16-bit loads in the RV32I base instruction set,
-should they be moved outside the __riscv_xlen =3D=3D 64 check so they are a=
-lso
-tested on 32-bit platforms?
-
-> +test_standard_read(4, lwu, lwu, "")
-> +test_standard_read(8, ld, ld, "")
 [ ... ]
-> +#define test_standard_write(len, write, read, name, options)					\
-> +static void test_##name(void)									\
-> +{												\
-> +	unsigned long result;									\
-> +	unsigned long reference =3D (0x55555555UL >> ((sizeof(long) - len) * 8)=
-);			\
 
-[Severity: High]
-Does this bitwise shift evaluate to 0 on 64-bit systems?
-
-When __riscv_xlen =3D=3D 64, sizeof(long) is 8. For a 32-bit store (len=3D4=
-),
-this shifts 0x55555555UL right by 32 bits, resulting in 0.
-
-For len=3D1 and len=3D2, it shifts by 56 and 48 bits, also resulting in 0.
-
-Could this mask sign-extension or truncation issues by only ever verifying
-a value of 0?
-
-Should this use a 64-bit literal like 0x5555555555555555ULL instead?
-
-> +	/* Check that we can write and then read the same value. */				\
-> +	asm volatile (										\
-[ ... ]
-> +#define test_sp_write(len, write, read, name)							\
-> +static void test_##name(void)									\
-> +{												\
-> +	unsigned long result;									\
-> +	unsigned long tmp;									\
-> +	unsigned long reference =3D (0x55555555UL >> ((sizeof(long) - len) * 8)=
-);			\
-
-[Severity: High]
-Similar to test_standard_write, does this shift evaluate to 0 on 64-bit
-systems for compressed stack-pointer relative writes?
-
-> +	/* Check that we can write and then read the same value. */				\
-[ ... ]
-> +static void run(void *guest_code, char *instruction)
+> +static void test_kprobe_simulate_riscv(struct kunit *test)
 > +{
-> +	struct ucall uc;
-> +	struct kvm_vm *vm;
-> +	struct kvm_vcpu *vcpu;
+> +	unsigned int addr =3D 0xdeadbeef;
+> +	unsigned int i =3D 0;
 > +
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +	kvm_create_device(vm, KVM_DEV_TYPE_TEST);
+> +	do {
+> +		struct pt_regs regs =3D { 0 };
+
+[Severity: High]
+Is it safe to run a 4.29 billion iteration loop inside the kernel without
+yielding the CPU?
+
+Looking at test_kprobe_simulate_riscv(), there doesn't appear to be any
+mechanism like cond_resched() inside the loop or the simulated functions.
+Won't this monopolize the CPU and reliably trigger the soft lockup watchdog
+or RCU stall detectors?
 
 [Severity: Medium]
-Does this test need to gracefully skip if KVM_DEV_TYPE_TEST is unavailable?
+Does initializing the registers to zero on every iteration reduce the cover=
+age
+of conditional branches?
 
-kvm_create_device() uses TEST_ASSERT internally and will abort the test
-if the kernel lacks support.
-
-Would it be safer to check support with __kvm_create_device() and use
-TEST_REQUIRE() to exit with a skip code in CI environments running older
-kernels?
-
-[Severity: Medium]
-Does this leak the KVM device file descriptor returned by kvm_create_device=
-()?
-
-Since the file descriptor holds a reference to the KVM VM (kvm_get_kvm),
-failing to close it will prevent the VM from being destroyed when
-kvm_vm_free(vm) is called.
-
-Since run() iterates for multiple instructions, will this accumulate file
-descriptor and kernel memory leaks?
+If source registers like rs1 and rs2 are never populated with non-zero valu=
+es,
+won't the branch conditions evaluate to a single static outcome? For exampl=
+e,
+a beq (0 =3D=3D 0) will always be true, and bne (0 !=3D 0) will always be f=
+alse.
+This seems to skip testing the alternate branch paths.
 
 > +
-> +	virt_map(vm, (unsigned long)MMIO_TEST_REGION, MMIO_TEST_REGION, 1);
+> +		if (riscv_insn_is_jal(i)) {
+
 [ ... ]
-> +void test_mmio_read_sign_extension(void)
-> +{
-> +	run(test_lb, "lb");
-[ ... ]
-> +	run(test_c_lwsp, "c.lwsp");
+
+> +		} else if (riscv_insn_is_auipc(i)) {
+> +			s32 offset =3D riscv_insn_auipc_extract_imm(i);
+> +			u32 rd_index =3D riscv_insn_auipc_extract_xd(i);
 > +
-> +#if __riscv_xlen =3D=3D 64
-> +	run(test_lh, "lh");
-> +	run(test_lhu, "lhu");
+> +			simulate_auipc(i, addr, &regs);
+> +
+> +			KUNIT_EXPECT_EQ_MSG(test, regs.epc, addr + 4,
+> +					    "auipc instruction (0x%x) incorrectly simulated", i);
+> +
+> +			if (rd_index)
+> +				KUNIT_EXPECT_EQ_MSG(
+> +					test,
+> +					riscv_insn_reg_get_val((unsigned long *)&regs, rd_index),
+> +					(unsigned long)addr + offset,
+> +					"auipc instruction (0x%x) incorrectly simulated", i);
 
 [Severity: Medium]
-Are the executions for lh and lhu also intentionally restricted to 64-bit
-builds here?
+Does extracting the expected values using the same macros as the implementa=
+tion
+make the test tautological?
 
-> +	run(test_lwu, "lwu");
+If a macro like riscv_insn_auipc_extract_imm() is flawed, both the test and
+the implementation will compute the identical incorrect value, causing the
+test to spuriously pass.
+
 [ ... ]
-> +void test_mmio_write(void)
-> +{
-> +	run(test_sb, "sb");
-> +	run(test_sh, "sh");
-> +	run(test_sw, "sw");
-> +	run(test_c_sw, "c.sw");
-> +	run(test_c_swsp, "c.swsp");
-> +
-> +#if __riscv_xlen =3D=3D 64
-> +	run(test_sd, "sd");
-> +	run(test_c_sd, "c.sd");
-
-[Severity: Medium]
-Is the compressed store instruction c.sdsp omitted from the 64-bit write
-tests?
-
-The commit message notes that all emulated load and store instructions are
-checked, but c.sdsp appears to be missing an instantiation via
-test_sp_write and execution via run(test_c_sdsp, "c.sdsp").
-
-> +#endif
-> +}
-
-While reviewing how this selftest interacts with KVM_DEV_TYPE_TEST, I
-noticed several pre-existing issues in the test device implementation itself
-(virt/kvm/mmio_test.c and virt/kvm/kvm_main.c). I have included them here
-for completeness:
-
-virt/kvm/mmio_test.c:mmio_test_create():
-    mmio_test->size =3D 0x16;
-
-[Severity: Critical]
-This is a pre-existing issue, but does mmio_test->size exceed the capacity
-of the internal cache array?
-
-The internal cache array is sized at 16 bytes (char cache[16];), but the
-size field is initialized to 0x16 (22 bytes).
-
-When a guest accesses an MMIO address near the end of the registered region,
-the addr - start + len calculation inside mmio_write() and mmio_read()
-can exceed 16.
-
-Can this allow an unprivileged guest to trigger an out-of-bounds memcpy(),
-leading to host heap corruption or information leaks?
-
-
-virt/kvm/mmio_test.c:mmio_test_release():
-static void mmio_test_release(struct kvm_device *dev)
-{
-    kfree(dev->private);
-}
-
-[Severity: Critical]
-This is a pre-existing issue, but is there a use-after-free vulnerability h=
-ere?
-
-The release callback frees the backing dev->private structure, but it does
-not call kvm_io_bus_unregister_dev().
-
-The KVM MMIO bus retains a dangling pointer to the freed structure.
-
-Will any subsequent MMIO access to the registered range by an active vCPU
-dereference this freed pointer?
-
-
-[Severity: High]
-This is a pre-existing issue, but does mmio_test_release() leak the
-struct kvm_device?
-
-kvm_ioctl_create_device() dynamically allocates the struct kvm_device
-using kzalloc().
-
-The device implementation's .release or .destroy callback is responsible
-for freeing this memory, but it appears to be omitted here.
-
-Does this cause a permanent leak every time a test device is closed?
-
-
-virt/kvm/mmio_test.c:mmio_test_create():
-    kvm_io_bus_register_dev(dev->kvm, KVM_MMIO_BUS, mmio_test->start,
-                            mmio_test->size, &mmio_test->dev);
-
-[Severity: High]
-This is a pre-existing issue, but is kvm_io_bus_register_dev() called
-without holding the required kvm->slots_lock?
-
-mmio_test_create() is invoked via kvm_ioctl_create_device(), which only
-holds kvm->lock.
-
-kvm_io_bus_register_dev() strictly requires kvm->slots_lock and enforces
-it via lockdep.
-
-Will this cause an immediate lockdep splat and a data race against concurre=
-nt
-MMIO bus updates?
-
-
-[Severity: High]
-This is a pre-existing issue, but is the return value of
-kvm_io_bus_register_dev() safely ignored?
-
-The function can fail (e.g., due to -ENOMEM or hitting NR_IOBUS_DEVS).
-
-Since mmio_test_create() ignores the return value and unconditionally
-returns 0, will userspace receive a valid fd for a device that was never
-actually attached to the MMIO bus?
-
-
-virt/kvm/kvm_main.c:kvm_init():
-err_gmem:
-    kvm_vfio_ops_exit();
-err_vfio:
-    kvm_mmio_test_ops_exit();
-err_mmio_test:
-    kvm_async_pf_deinit();
-
-[Severity: High]
-This is a pre-existing issue, but are the error unwinding labels interleaved
-incorrectly?
-
-kvm_init() initializes components in the order: VFIO, MMIO_TEST, and GMEM.
-
-If kvm_gmem_init() fails, it jumps to err_gmem which executes
-kvm_vfio_ops_exit() followed by kvm_mmio_test_ops_exit(), which is the
-reverse of the correct unwinding order.
-
-Furthermore, if kvm_vfio_ops_init() fails, it jumps to err_vfio and
-attempts to exit mmio_test (which hasn't been initialized yet).
-
-If kvm_mmio_test_ops_init() fails, it skips unwinding VFIO entirely.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D10
+_table-v2-0-7f0810ee2274@gmail.com?part=3D4
