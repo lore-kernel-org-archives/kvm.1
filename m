@@ -1,189 +1,183 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3378F33DEF2
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 19:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D092C346A01;
+	Mon, 22 Jun 2026 19:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782155311; cv=none; b=Oy5Wt4y+9De8A2k8qBXyBHv33e3e6WjRVvuo1Po5P/YP5ecDUVUG6Ncc02s2cu8l0Eq6aBVC46ySl2Hy6hPE72UOAFIROR1wwo6HADhgQQRAbpdEMrni/I3R7A3SR+/MtYw25sTBQjrowVe/jYN46d6G/CfgehnD6/o38tdN7k0=
+	t=1782155363; cv=none; b=ufJAiuxgUmCsJVZw3BKx4P1F3J9mSBU+lnUwCt7UefaXMgEdMfy3ka5Gtdi+ETRrk+W599OgiaS5nZ/am84drEVF0iNcJlbBqqxU6hu7naBkoJdgkcmhdWhCcdmRLGLgjopcONhNITRT917RYrfdtCLlp9u+dSUvbFbT71YdJhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782155311; c=relaxed/simple;
-	bh=Dt55FXC5j1tYUpyfltnffnmyZcZOeQK9oe8Q4jAhSs4=;
+	s=arc-20240116; t=1782155363; c=relaxed/simple;
+	bh=ignz6eQq6wkV0sI2ABcjpx+KMVQtCPG1BECMG49RH/I=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cpM8QEuKwrtWUUMJebPb9E+2F1YsFVk3pYDHQ0RqmVHiikLhvok7UZTbSUK4kxufIp4TYaJ7K/hPyKva2ittErhJYRGtpqj/yKnEGwtBBwdy4BvZVxmqq4CSMHyVGONb3mjcif4aKIPwK3k/JTMZm+YETt5ZPkGl8AR++Nw+pw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JkuxatPb; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=fYEejkmSdQhRb4uSa2cWF7yy6sFCom6MZq+xS9L1RKrEAGL73qYRTyvEJsEi4rOe5+QwGCgyR2P1q/U5Gdby24hh1WQvC7Gpca6/PC2k7hBKLfWsVT46I8MmAAsSvrYDdJ7lJMISPoxMzkneIjqZv5NOJ+xQ2cFXikqNIl7I3Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezjO4EsJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JkuxatPb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B1F1F000E9;
-	Mon, 22 Jun 2026 19:08:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezjO4EsJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE6B1F000E9;
+	Mon, 22 Jun 2026 19:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782155309;
-	bh=mNvdXdClmftMUFCxTIN/5jVkbOUuWDaO51jVGlKI/3o=;
+	s=k20260515; t=1782155362;
+	bh=KIT/ERZTCyq8yFnbihT7w6olaM/rBcuMBNT11CWeBDA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JkuxatPbhEF2becwKav7E9gKazt9665wkA39udVsFLa/cZ6JAdiuWUvWjgJ7dzx77
-	 a3ImDEgYbSocEKuwW1FiztZfqh/Ph/U5t3JUy3C7XL9p44t6oJ8FKLTUqmM2fklnUF
-	 wV9LeT3wM4eIMP1fLhcgL8XNzqVNRgXlTD131Vzcbpa5JmGb8nsEs4pzXdW3zHH01W
-	 OyvnunlSBGifOsz52qnGjr5WxbxcRSiLety2A2YtklFD0oLES74XKX1JK6NrPPA5sk
-	 1Vw8o9crqehUbTozP7HvzmVlddz56NgZjoOAKXXyxCuyUGgcGKIdRkiP+63tbOMowT
-	 i4TjwWC7M4raA==
+	b=ezjO4EsJus6vLBAEm4LeOtsk+vpozt2kWLg+5ENOwP+ATFwmwMZf18MWp5H1ecEql
+	 mwJOYuHdaCqRLXFJZQWfoAafbeFHPx8OJQAYEnXMaUIAzT+0zMkx53+62OmDULxlXG
+	 PinbQa8mgUTJHlihsvYONc6sWpxvq3si29jsMnQ58N7VvHWPjknwr1QMdPNmWJQ+9n
+	 ng1cu2w2CIMVtS2lrleJMJRyg4vhK8uaMAYUXxxGlTko5bmg9QVIz/PY3RxzQpZq99
+	 2qFTApJhaRP5V7lH1y7yWoi5ewa+MGL0EHq7mQrhBc8BWej8DY/aGZfnsEbuBpcxw/
+	 mkpK0sD7u0SEw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 6/9] kvm: guest_memfd_luo: add support for
- guest_memfd preservation
+Subject: Re: [PATCH v9 4/4] RDMA/mlx5: get tph for p2p access when
+ registering dma-buf mr
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622184851.2309827-7-tarunsahu@google.com>
-References: <20260622184851.2309827-1-tarunsahu@google.com>
- <20260622184851.2309827-7-tarunsahu@google.com>
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260622184211.2229399-5-zhipingz@meta.com>
+References: <20260622184211.2229399-1-zhipingz@meta.com>
+ <20260622184211.2229399-5-zhipingz@meta.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 19:08:28 +0000
-Message-Id: <20260622190829.86B1F1F000E9@smtp.kernel.org>
+Date: Mon, 22 Jun 2026 19:09:21 +0000
+Message-Id: <20260622190922.4AE6B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Critical] Missing `kvm_get_kvm()` in `kvm_gmem_luo_retrieve` causes a Us=
-e-After-Free of the KVM instance.
-- [Critical] Restoring guest_memfd with flags not supported by the current =
-architecture or KVM configuration.
-- [High] Missing validation of `ser->size` and `folios_ser[i].index` during=
- guest_memfd retrieval.
-- [Low] The patch calls non-existent LUO functions and accesses a non-exist=
-ent field in `struct liveupdate_file_op_args`, preventing compilation.
+
+New issues:
+- [High] Missing ST index reference acquisition in `create_real_mr` fallbac=
+k path causes a refcount underflow upon MR destruction.
+- [Medium] TPH hints for pooled MRs (FRMRs) are stored in metadata but neve=
+r programmed into the hardware Memory Key Context.
+
+Pre-existing issues:
+- [High] Deallocating an ST index leaks the `mlx5_st_idx_data` structure in=
+ `mlx5_st_dealloc_index`.
 --
 
-commit 9f1f13985c0cce15e0b3564ac25bf7a759e9dd5e
-Author: Tarun Sahu <tarunsahu@google.com>
+commit 0757112498e4ebc4a6ffc6fad46c40d302a22056
+Author: Zhiping Zhang <zhipingz@meta.com>
 
-kvm: guest_memfd_luo: add support for guest_memfd preservation
+RDMA/mlx5: get tph for p2p access when registering dma-buf mr
+   =20
+This patch wires up mlx5_ib to query the exporter's chosen PCIe TLP Process=
+ing
+Hint (TPH) Steering Tag at MR registration time for p2p access. It uses this
+metadata to program requester-side TPH on the outbound mkey and translates
+exporter-provided steering tags into local ST entries.
 
-This patch sets up the basic infrastructure to preserve the guest_memfd acr=
-oss
-kexec reboots using LUO. It walks through the folios, serializes them, and
-freezes the guest_memfd inode to avoid changes. During retrieval, the folios
-are restored into the page cache.
-
-> diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
-> new file mode 100644
-> index 0000000000000..c242b1d14c0ac
-> --- /dev/null
-> +++ b/virt/kvm/guest_memfd_luo.c
-[ ... ]
-> +static int kvm_gmem_luo_freeze(struct liveupdate_file_op_args *args)
-> +{
-[ ... ]
-> +	/*
-> +	 * Obtain a strong reference to kvm->vm_file to prevent the SLAB_TYPESA=
-FE_BY_RCU
-> +	 * file memory from being reallocated while it is being processed.
-> +	 */
-> +	kvm_file =3D get_file_active(&kvm->vm_file);
-> +	if (!kvm_file)
-> +		return -ENOENT;
-> +
-> +	err =3D liveupdate_get_token_outgoing(args->session, kvm_file, &vm_toke=
-n);
-
-[Severity: Low]
-Is args->session defined in struct liveupdate_file_op_args?
-
-Looking at the definition in include/linux/liveupdate.h, there is no session
-field, and the function liveupdate_get_token_outgoing appears to be
-undefined in the kernel tree.
-
-Will this cause a compilation failure?
+> diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5=
+/mr.c
+> index e6b74955d95dc..7aced3f554561 100644
+> --- a/drivers/infiniband/hw/mlx5/mr.c
+> +++ b/drivers/infiniband/hw/mlx5/mr.c
 
 [ ... ]
-> +static int kvm_gmem_luo_retrieve(struct liveupdate_file_op_args *args)
-> +{
+
+> @@ -335,6 +364,7 @@ static int mlx5r_build_frmr_key(struct ib_device *dev=
+ice,
+>  		get_unchangeable_access_flags(dev, in->access_flags);
+>  	out->vendor_key =3D in->vendor_key;
+>  	out->num_dma_blocks =3D in->num_dma_blocks;
+> +	out->kernel_vendor_key =3D in->kernel_vendor_key;
+> =20
+>  	return 0;
+>  }
+
+[Severity: Medium]
+While the steering tag and processing hint are stored inside the pool key h=
+ere,
+is there any code that actually extracts these values to program the pcie_t=
+ph_en
+bit or steering tag into the hardware Memory Key Context during FRMR creati=
+on or
+UMR WQE posting?
+
+It appears that pooled MRs silently fall back to default non-TPH routing.
+
 [ ... ]
-> +	if (ser->flags & GUEST_MEMFD_LUO_FLAG_MMAP)
-> +		gmem_flags |=3D GUEST_MEMFD_FLAG_MMAP;
-> +	if (ser->flags & GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
-> +		gmem_flags |=3D GUEST_MEMFD_FLAG_INIT_SHARED;
-> +
-> +	err =3D liveupdate_get_file_incoming(args->session, ser->vm_token, &vm_=
-file);
 
-[Severity: Low]
-Similar to the freeze path, is args->session defined, and is
-liveupdate_get_file_incoming available in the current tree?
-
-[ ... ]
-> +	if (!kvm) {
-> +		err =3D -EINVAL;
-> +		goto err_free_ser;
-> +	}
-> +
-> +	file =3D __kvm_gmem_create_file(kvm, ser->size, gmem_flags);
-
-[Severity: Critical]
-Does this miss a kvm_get_kvm() call?
-
-In kvm_gmem_luo_retrieve(), __kvm_gmem_create_file() associates the new
-guest_memfd file with the kvm instance. However, without calling
-kvm_get_kvm(), the lifecycle linkage is broken.
-
-If the userspace process closes the VM file descriptor before closing the
-retrieved guest_memfd, could the KVM instance be freed prematurely, leading
-to a use-after-free when the guest_memfd is eventually released?
-
-[Severity: Critical]
-Are gmem_flags validated against the current architecture's supported flags?
-
-Unlike kvm_gmem_create(), the retrieval path passes the deserialized flags
-directly to __kvm_gmem_create_file() without checking
-kvm_gmem_get_supported_flags().
-
-Could an outdated or manipulated KHO image force the creation of a
-guest_memfd with mmap enabled on architectures or confidential
-configurations that explicitly forbid it?
-
-[Severity: High]
-Is ser->size validated before creating the file?
-
-The standard creation path enforces that the size is greater than 0 and page
-aligned.
-
-Without these checks, could an invalid size cause issues in the guest_memfd?
-
-> +	if (IS_ERR(file)) {
-> +		err =3D PTR_ERR(file);
-> +		goto err_free_ser;
-> +	}
-> +
-> +	inode =3D file_inode(file);
-> +
-> +	if (ser->nr_folios) {
-> +		folios_ser =3D kho_restore_vmalloc(&ser->folios);
-> +		if (!folios_ser) {
-> +			err =3D -EINVAL;
-> +			goto err_destroy_file;
+> @@ -755,6 +788,12 @@ static struct ib_mr *create_real_mr(struct ib_pd *pd=
+, struct ib_umem *umem,
+> =20
+>  	xlt_with_umr =3D mlx5r_umr_can_load_pas(dev, umem->length);
+>  	if (xlt_with_umr) {
+> +		err =3D mlx5_ib_get_frmr_st_handle_ref(dev, st_index);
+> +		if (err) {
+> +			ib_umem_release(umem);
+> +			return ERR_PTR(err);
 > +		}
 > +
-> +		for (i =3D 0; i < ser->nr_folios; i++) {
-> +			struct folio *folio;
-> +			phys_addr_t phys;
-[ ... ]
-> +			err =3D filemap_add_folio(inode->i_mapping, folio, folios_ser[i].inde=
-x,
-> +						GFP_KERNEL);
+>  		mr =3D alloc_cacheable_mr(pd, umem, iova, access_flags,
+>  					MLX5_MKC_ACCESS_MODE_MTT,
+>  					st_index, ph);
+> @@ -769,6 +808,8 @@ static struct ib_mr *create_real_mr(struct ib_pd *pd,=
+ struct ib_umem *umem,
+>  		mutex_unlock(&dev->slow_path_mutex);
+>  	}
 
 [Severity: High]
-Are bounds checks needed for folios_ser[i].index?
+Does this create a refcount underflow for the ST index?
 
-The deserialized index is trusted implicitly.
+In the else branch (when xlt_with_umr is false), reg_create() is called
+and embeds st_index into the MR's kernel_vendor_key, but it misses calling
+mlx5_ib_get_frmr_st_handle_ref() to acquire a reference for the steering tag
+index.=20
 
-If a manipulated KHO image provides out-of-bounds indices greater than or
-equal to the file size divided by the page size, could this insert
-inaccessible folios into the page cache that consume memory until the file
-is closed?
+Later, mlx5r_handle_mkey_cleanup() unconditionally extracts st_index and
+decrements its reference count via mlx5_ib_put_frmr_st_handle_ref(). Droppi=
+ng
+a reference that was never acquired can lead to a refcount underflow and
+premature deallocation.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/n=
+et/ethernet/mellanox/mlx5/core/lib/st.c
+> index 997be91f0a135..bf14a7a6df15e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+> @@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
+>  	kfree(st);
+>  }
+> =20
+> -int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem=
+_type,
+> -			unsigned int cpu_uid, u16 *st_index)
+> +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
+> +			       u16 *st_index)
+>  {
+>  	struct mlx5_st_idx_data *idx_data;
+
+[Severity: High]
+This is a pre-existing issue, but does this lead to a memory leak when
+deallocating an ST index?
+
+In mlx5_st_alloc_index_by_tag() (or previously mlx5_st_alloc_index()), a new
+struct mlx5_st_idx_data object is dynamically allocated with kzalloc_obj() =
+and
+inserted into the st->idx_xa XArray.=20
+
+However, in mlx5_st_dealloc_index(), when the reference count drops to zero=
+, the
+entry is removed from the XArray using xa_erase():
+
+    if (refcount_dec_and_test(&idx_data->usecount)) {
+        xa_erase(&st->idx_xa, st_index);
+        /* We leave PCI config space as was before, no mkey will refer to i=
+t */
+    }
+
+The dynamically allocated idx_data pointer is never freed with kfree(). Bec=
+ause
+userspace can repeatedly trigger this leak by creating and destroying DMA h=
+ints,
+can this serve as a DoS memory exhaustion vector?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
-827-1-tarunsahu@google.com?part=3D6
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184211.2229=
+399-1-zhipingz@meta.com?part=3D4
