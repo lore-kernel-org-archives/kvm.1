@@ -1,196 +1,151 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B172E3B15
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C47A346E74
+	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782154452; cv=none; b=kEiJ2N5HxzCshlbYbLgk9F/K31qCP7vy/qRPaxuDUlV+5ZpeaVwcTtvfA0Zhx80TWHbId/DaEWmV8SUREsrF+IM0ZKbDxdZto7IOM6xcSrpbQJbpy5FMcGD3zSFDyqD0HFAZJd37qLEiJXEz6yYOb6c7HSb0WXHCfgxFP+E7jSA=
+	t=1782154468; cv=none; b=R/YmWS0VvQw6i1Jbxi0IZ1IIydZ6+TfFZvGaurEIZIyamFENv2YLHm/27n2P9yyQt+FaSIzGk7/Lt2NaS7ktBj0jILOunMVU96gEq6jq9ypP9A74uN2UKHQKELpKW7RN9VZw27kfSXLZ21Td0x3cfw3zaS3TK9ZFcM5tuFm3bL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782154452; c=relaxed/simple;
-	bh=6ji9d8uAJLcoRju665G/IVINMSKJhweNyp0xkMhlyL0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mbNGlM12raSONzt8VB1vygpvTOefXNH1mLrPVfZg9gDPCqTzhVRL+cqypJdqcG+Zqx/NcoUKvvvzo2A+jdU2IYR+Gj2UgZgphWl2nE/1xWnZoUi0b0/6Rye8RZpt87nXsoQnJk/Ruq0B0lJntJ5x6eIeqrstbenQRTuImCnUl8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=H8dyjJ+O; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1782154468; c=relaxed/simple;
+	bh=oxI82DHN5xeiIY+WOKZpA1FTn3dT3Cm30qhtpPIlQn8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OyMm3EyUq/dI38uWiFtcwdzDYOEUbf8QKeJK0pBg92xVB3/RogpnCCB95CAlS0GE4m2+y+/ZfWywuRf3Unko5R52M9ANrhvjPcXjVlAEnqptV4iM3VJ8Nh64lEI7hhkVn2W0PaBzRyaaz/QVHOJAgOGxiq8NtxquAt4R1X1nNvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bj3sYpgz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="H8dyjJ+O"
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65MIphbn2559661
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:54:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=YYkBgAAFNWZDrKwhhTsTLZ1UTmm9m4xo9SJVRgbwcTU=; b=H8dyjJ+OZ2ra
-	vtcX+qfo1l9GRS2dDVdUnIfTNVls9Ru/fmTUD1AMMFkTQOWIY1OU774GQf2OdZSk
-	giyd8X0sLdbZHulfkRqr3RYLdeW1PEq69uSZfwvNJzFDrFMGGHjH+q46vXw9At/h
-	VrYM0B6d344yf65GjXr0wAi2ld14ZEFTPkmC6rCevABkyIASXBXafmI/isQOIboZ
-	w9UeEnBqcNXUIQW2Ht2PcCAqjSHVMPfHO1LJ2hVDH5SlTMErR9tNlU3xQdSlwyWX
-	U+n8y21d9BV3k/hVoMxxczedxjUjOEV+VUnCW9lpkWdpo+CuISIjtA7Qcgv5pPMi
-	oqBf2pIYcQ==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ewt5jw7sr-4
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 11:54:10 -0700 (PDT)
-Received: from twshared3243.34.frc3.facebook.com (2620:10d:c085:208::f) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.41; Mon, 22 Jun 2026 18:54:07 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id DA0493FB8E341; Mon, 22 Jun 2026 11:42:15 -0700 (PDT)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Michael
- Guralnik <michaelgur@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Alex Williamson
-	<alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Zhiping Zhang
-	<zhipingz@meta.com>
-Subject: [PATCH v9 2/4] dma-buf: add optional get_pci_tph() callback
-Date: Mon, 22 Jun 2026 11:41:35 -0700
-Message-ID: <20260622184211.2229399-3-zhipingz@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260622184211.2229399-1-zhipingz@meta.com>
-References: <20260622184211.2229399-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bj3sYpgz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2365D1F000E9;
+	Mon, 22 Jun 2026 18:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782154467;
+	bh=+jjC+pyHut0x83HuPHbsziGjiF0368diRjnVBJNGBaM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Bj3sYpgz2Ap9IJvyX2EFVt5GC/OYES80Ukg1M3Pp0lmued9cjMIsQDYJ0a8sr1lxV
+	 fq1E/M4CcwU/yhdXozWTX3eImCe9G9mEGBQPwQ3Vvta8TZei8CJozW8uqcL86LErBC
+	 dxCfKYJohxcSlgRZPcOHN+wOVn+MGEj8e8T1O9nhjQWF+Wtq0u2big1nxfO34nqoZ0
+	 jD06iq0lf6sr1fSbfOG3U8rHwVUTZtSC2P7aIRP4VhyF1DOjiF3ZI4GtGwh8jSphvo
+	 v6X+GRcus2ZEXN+obKkgJIhksxSMIJ9N7vuVk3CL3a6rE4226DNMHp2VL3KGMJ8B+4
+	 QNC+Dq8BGq77A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 7/9] docs: add documentation for guest_memfd
+ preservation via LUO
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tarun Sahu" <tarunsahu@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622184851.2309827-8-tarunsahu@google.com>
+References: <20260622184851.2309827-1-tarunsahu@google.com>
+ <20260622184851.2309827-8-tarunsahu@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 22 Jun 2026 18:54:26 +0000
+Message-Id: <20260622185427.2365D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=I65Vgtgg c=1 sm=1 tr=0 ts=6a3984d2 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=crHB47gyY4rKiduisYu9:22 a=VabnemYjAAAA:8 a=NnIffO1M-inhYcDKZaoA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: CM6kTZ8WjHAJxH87AIu9nszFcFDVPNHU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDE4NCBTYWx0ZWRfXyd7I0E5ZSLS7
- zp4Vfu1O8gWzQgyO/ct+9SPtP5z/yFL2ZZGrzABv+bpkpn28z/02g3o24LnKblAtqvuMWhimmZQ
- 6bhG5aW8lZ4jbMxJDySMYdZ/2anHNFGKuO9tMDMLDplG+yNJch28aJ9XQVtYc8ikQYD8GJ7H2fX
- MkZ9s9+TEVOw5qS04uspTJnhWAvtx0Dtt1NMVt3T4IpXyVDlmQMCojI4u8nqvUPKrvmaTOtehhq
- yJjCD5ppIOwpj3vSuNH9bf8HxhxXAWOlirLETcSaPTEG+YHhgeevTS2/wIo1hMSOvldYJaa5tgS
- huDddArAFjTj1VD8A6NojhOZngoxDYw1S2otCL87oZtVIhLBJ/nlTMijx+ILYbIjHqSMbjiDxSl
- UoD5SARaRuDrgc4qwESFhhY4bN9UtmAMz4UejrAvkOtHcr2pmskf8fN3DJAwFDuXofoVWRAkDJW
- HlKzWHmR/e5pKaANRkw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDE4NCBTYWx0ZWRfX4UjVQYyVjv7d
- SNztJKHmltUkOeSXc1lowMGz8hsJ/zTxtiR1ZrDwGaurlUTU68spr/0t/cBIQk9dxWF+JWz2ObV
- 3omL+JofQCZ35+M278L4zEtN8DeiFfs=
-X-Proofpoint-ORIG-GUID: CM6kTZ8WjHAJxH87AIu9nszFcFDVPNHU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-22_03,2026-06-22_01,2025-10-01_01
 
-Add an optional dma_buf_ops.get_pci_tph callback and a
-DMA-buf importer wrapper, dma_buf_get_pci_tph().
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] The patch includes an undocumented logic bug fix in C code while=
+ being labeled as a pure documentation change.
+- [Low] Typos and grammatical errors in the new documentation.
+--
 
-TPH is PCIe TLP Processing Hint. 8-bit ST and 16-bit Extended ST are
-distinct PCIe TPH namespaces, so the importer requests the namespace it
-can emit and the exporter returns the matching ST/PH tuple or
--EOPNOTSUPP.
+commit eb552713cd5f980d69c6b422467b4dfbb265bad1
+Author: Tarun Sahu <tarunsahu@google.com>
 
-dma_buf_get_pci_tph() is the importer entry point. It requires
-&dmabuf->resv to be held while the callback runs and returns
--EOPNOTSUPP when the exporter does not provide PCI TPH metadata.
+docs: add documentation for guest_memfd preservation via LUO
 
-The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
-mlx5 as the first importer.
+This commit adds documentation under the "Preserving file descriptors" sect=
+ion
+of LUO's documentation. It describes the requirements and limitations for
+guest_memfd preservation.
 
-Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
----
- drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
- include/linux/dma-buf.h   | 22 ++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+> diff --git a/Documentation/liveupdate/vmm.rst b/Documentation/liveupdate/=
+vmm.rst
+> new file mode 100644
+> index 0000000000000..8353e236471d2
+> --- /dev/null
+> +++ b/Documentation/liveupdate/vmm.rst
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index d504c636dc29..7a4c9b0d5dab 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *atta=
-ch)
- }
- EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
-=20
-+/**
-+ * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadat=
-a
-+ * @dmabuf: DMA buffer to query
-+ * @extended: false for 8-bit ST, true for 16-bit Extended ST
-+ * @steering_tag: returns the raw steering tag for the requested namespa=
-ce
-+ * @ph: returns the TPH processing hint
-+ *
-+ * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
-+ *
-+ * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
-+ * exporter does not implement the callback or has no metadata for the
-+ * requested namespace.
-+ */
-+int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
-+			u16 *steering_tag, u8 *ph)
-+{
-+	dma_resv_assert_held(dmabuf->resv);
-+
-+	if (!dmabuf->ops->get_pci_tph)
-+		return -EOPNOTSUPP;
-+
-+	return dmabuf->ops->get_pci_tph(dmabuf, extended, steering_tag, ph);
-+}
-+EXPORT_SYMBOL_NS_GPL(dma_buf_get_pci_tph, "DMA_BUF");
-+
- /**
-  * dma_buf_map_attachment - Returns the scatterlist table of the attachm=
-ent;
-  * mapped into _device_ address space. Is a wrapper for map_dma_buf() of=
- the
-diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-index d1203da56fc5..53b2686ad8fc 100644
---- a/include/linux/dma-buf.h
-+++ b/include/linux/dma-buf.h
-@@ -113,6 +113,26 @@ struct dma_buf_ops {
- 	 */
- 	void (*unpin)(struct dma_buf_attachment *attach);
-=20
-+	/**
-+	 * @get_pci_tph:
-+	 *
-+	 * Retrieve PCIe TLP Processing Hint (TPH) steering metadata for
-+	 * this buffer so an importer can program a matching ST/PH hint on
-+	 * outbound TLPs targeting the exporter for peer-to-peer DMA.
-+	 *
-+	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
-+	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
-+	 * @steering_tag: Returns the raw TPH steering tag for the requested
-+	 *                namespace
-+	 * @ph: Returns the TPH processing hint (2-bit value)
-+	 *
-+	 * Optional callback for dma_buf_get_pci_tph(). Called with
-+	 * &dma_buf.resv held. Returns 0 on success or -EOPNOTSUPP when
-+	 * the exporter has no metadata for the requested namespace.
-+	 */
-+	int (*get_pci_tph)(struct dma_buf *dmabuf, bool extended,
-+			   u16 *steering_tag, u8 *ph);
-+
- 	/**
- 	 * @map_dma_buf:
- 	 *
-@@ -563,6 +583,8 @@ void dma_buf_detach(struct dma_buf *dmabuf,
- 		    struct dma_buf_attachment *attach);
- int dma_buf_pin(struct dma_buf_attachment *attach);
- void dma_buf_unpin(struct dma_buf_attachment *attach);
-+int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
-+			u16 *steering_tag, u8 *ph);
-=20
- struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_inf=
-o);
-=20
+[ ... ]
+
+> +Scope and Limitations
+> +---------------------
+> +
+> +At this stage, the scope of guest_memfd preservation is restricted to:
+> +
+> +1. **Fully Shared guest_memfd**:
+> +   This time only fully shared guest_memfd supported. Any system that
+> +   supports coco vm (which uses private guest_memfd), will not support
+> +   the preservation.
+
+[Severity: Low]
+This isn't a bug, but there are some grammatical issues here. "This time on=
+ly
+fully shared guest_memfd supported" seems like it should be "At this time, =
+only
+fully shared guest_memfd is supported". Also, "coco vm" should probably be
+capitalized as "CoCo VM".
+
+[ ... ]
+
+> +Retrieval Order
+> +~~~~~~~~~~~~~~~
+> +
+> +Similarly, there is no strict ordering required for retrieving the VM
+> +and guest_memfd files. Any file can be retrieved at any order.
+> +
+> +If guest_memfd file is retrieved and VM file is not retrieved, and
+> +luo_finish is called, then vm_file will be lost and guest_memfd file
+> +will be hanging around.
+> +
+> +NOTE: Before Initiating the preservation/retirval, it is necessary to ma=
+ke
+
+[Severity: Low]
+This isn't a bug, but there is a typo here: "retirval" should be "retrieval=
+".
+
+> +sure that the kvm module is loaded (/dev/kvm must be available).
+> +
+> +
+
+[ ... ]
+
+> diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
+> index c242b1d14c0ac..8411fe86dc2a1 100644
+> --- a/virt/kvm/guest_memfd_luo.c
+> +++ b/virt/kvm/guest_memfd_luo.c
+> @@ -119,11 +119,11 @@ static bool kvm_gmem_luo_can_preserve(struct liveup=
+date_file_handler *handler, s
+>  	/*
+>  	 * Only Fully-shared guest_memfd preservation is supported
+>  	 */
+> -	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
+> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
+>  		return 0;
+
+[Severity: Medium]
+Should this functional logic fix in kvm_gmem_luo_can_preserve() be split in=
+to
+its own patch?=20
+
+The commit message explicitly states this is a documentation change, but th=
+is
+modifies the condition for GUEST_MEMFD_FLAG_INIT_SHARED in C code, which
+violates the rule of one logical change per commit and makes tracking bug
+fixes difficult.
+
+> =20
+>  	/*
+> -	 * It makes sure that no memory can converted to private
+> +	 * It makes sure that no memory can be converted to private
+>  	 * even if it was initially fully shared (in-place conversions are
+>  	 * prevented).
+>  	 */
+
 --=20
-2.53.0-Meta
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622184851.2309=
+827-1-tarunsahu@google.com?part=3D7
