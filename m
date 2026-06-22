@@ -1,91 +1,65 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18143B14CD
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 13:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695E53B19D5;
+	Mon, 22 Jun 2026 13:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782133913; cv=none; b=OVjmpvrZHlKCARNirWTd5lngWzsuf7kDzvSGqk0GmPlWUA/nkmR9Jtx/a9i/54ZieBuukhUQ7D9t39pK7G5LN+XIbRvYa48zLYrtym5WOmSiSoR623lI0NLL1NwgaOut06LEYOOIuPgXYarTdfk+8mTvOpRe8YQdGID4Drw/yFA=
+	t=1782134121; cv=none; b=LeSrZ3pmSG6Iu9cnnPSRxbVLEnvx1BzWR2Up70k/eISoFOKENhjZYLcadPbO5FNIzDkCK5aR8L2sqKCLBxl50VNqyZM/ByFsuU1QP7wKJ3JLB2Rk9lc9bRXvZtaOUWtbwmwZ04ZBBbuZ63Ch0b4LjaAKH0NjJLTQIZ1t1vkIyW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782133913; c=relaxed/simple;
-	bh=HQz5Bgb9Ix6CxIn/K74tfrlANhIDMynRIFpNpd4eCGE=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R9/iltRR7zu/SavVswJ2ioc14sON18PqPCBkSAR8oSKuo1uBx8DIioJGeSx+ZRMaPhLs7nxj3IqgXLxYnPVbHewYoC6joUxDaBgvEYbijDDSLXKGzuQdCJqX4SlE5vNhAadVchBP99Pa/Jsljj9iSTHYf8U10L5/tpMbAj6sWG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/i5uTze; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782134121; c=relaxed/simple;
+	bh=5kJJ0jBEBcZgpsBD3iTZRct7s2YdiRXW58TdAFGGXNs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hv6oN5ST8+eNM/B5GHsLFLIcDDOXU2SkWsAUnGDiuu5vWTp0UXjq3Na9uc49wyib4gXUMdUSME4eZ2swMndelCHf+R2qF4mPkskh1JZUsbwhF2RhnQqJgKnrIhSOTSTFQxqHZwcVmM1r0rwZE8GNn3aGxXZR8ZYRwCvLq7XXeJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O/yb4eRN; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/i5uTze"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-66043ecf6b3so3874415d50.0
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 06:11:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782133911; x=1782738711; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XkaEWxUJkCuHp/17+ud4oWXJ3qqAKnltzqopfMTtFIs=;
-        b=k/i5uTzeJQR4+7Wet36cQgSo4sxL7JHnWkI80+xtkrP/9oBTFyHZ8X3t1Q2CnMTDp6
-         Psigzn+fygxUIibpKJV8vugNaeMafjx2dbtYSsLvity3z1Woqbw59/7qieJHFyH4Adan
-         iIRyDi8CMOCz/az4EFMKhiAYGCpfEhizDTOzb65ymOvZsLNvI1F9BvcwvMSLbbcXXmc6
-         lyPBLK7m1zPmKDIwdT1nVVOesfeemXdJZa83ea/kP7geAEZB8UZ24UFkA43weVCRdqNX
-         kqhXI7Jym8KGVdZHNk1qUH7mqWCLBnaTI9Bl96kF6LQYh6lfzYB59dUz5+jAHbpHTf5O
-         SP5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782133911; x=1782738711;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XkaEWxUJkCuHp/17+ud4oWXJ3qqAKnltzqopfMTtFIs=;
-        b=ll/IYfcy7TDsGuOfRdG4F8PxND4Sn1z97u3p/kq+sldA/j9dI//tMp+i+pJ2ftUlpx
-         9T02qpj9AePp52gjR1zpNkS01nKNF2LdFrigMAxVHZ5StIYUJM5ni88txgC+yOO+k09w
-         5VDUp5Vn58BLP5uWQHPSuk1J5C0dHn+IOKsEHy0WYkne2fYb3kpbPIVYEl3AbPRk/ZIj
-         KAi0Sff+9BfZOYF1YT9pBAWwUMT4hWiWcK3XBF6gt42VTTnVNbLtPdYWWnlXYiQXlmmJ
-         AjY3ifb6cNux6mvvEm+EYHbuBAkwr4Xh2QXyGd/gEKXEgsgYte/EhpMgAMGMPOH9zKsU
-         mixg==
-X-Forwarded-Encrypted: i=1; AHgh+RpXp6pb3g0JZ5V0/eR5DDpH7BG5YVSdlMKIcRbezdrRRUxaQL2fyT75+096DO4Pxbav8Ic=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylrRa6jvuuqSstDGkmWI5Ds3r2ZeNpbuFayurbTT/2QROKN+dt
-	4c4BbMCfQVO7EO9XVOvwwivbrGvOOVMC9Pt3NJ4EVMolD5q/rMmpZ3jO
-X-Gm-Gg: AfdE7cmUKCwR/7bgCVFWwAc6lWuggK78scD1Kx9oWp5N8XKR3Mi6VTAxNoL7iZm4K7s
-	YIZ623Y8vzjwo9g1iviWRwv/h3ls1cjMoj1DRSNvAl3Zm7aWj26fGQUSh9Sg1KnzQJVivct0liT
-	N7ByQduNkeImWwjKXOs/970f3089+7+hD8b0Ql112JSdoq/jyG31Fxk5KzUEmhBi/wqzDihLNtN
-	zvtfpLTPn4GcYis5JAFtYJmqDzGoWQCofraFl8w5ry6NpcB6oYt0uso2rVjULoP+Alw3VGfsLNH
-	5/lNF8JvokJx4m9rwJksnaTfjT3JawDLbRHsEupm8kX6S5X+Hgzth0q39A5Af07mcV3nPS3Dz6f
-	MuOcHqtB1vPQJ0kLGyhZCFGUDH8RJDBBQZd0aK8Zy+iltDs3tC6O/vHOH6pg0Wo+9djZ/JLxrzi
-	U9+F2fgdA=
-X-Received: by 2002:a05:690e:120c:b0:660:54e4:5dd1 with SMTP id 956f58d0204a3-6630333ac1bmr11505521d50.44.1782133910591;
-        Mon, 22 Jun 2026 06:11:50 -0700 (PDT)
-Received: from localhost ([38.101.158.131])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66314ac3f96sm3600882d50.1.2026.06.22.06.11.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 06:11:50 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-Date: Mon, 22 Jun 2026 09:11:49 -0400
-To: Steven Rostedt <rostedt@kernel.org>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Yury Norov <yury.norov@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH 0/2] tracing: Move trace_printk.h out of kernel.h
-Message-ID: <ajk0lT9P0SeuD94j@yury>
-References: <20260621093430.264983361@kernel.org>
- <dbb5915e-6587-4de9-87f3-76bea5024da8@kernel.org>
- <20260622090826.20efadb3@fedora>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O/yb4eRN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782134121; x=1813670121;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5kJJ0jBEBcZgpsBD3iTZRct7s2YdiRXW58TdAFGGXNs=;
+  b=O/yb4eRNiXkoGX5infJnPnIf6yOmmJuTPNYxVWAoTqXtq4zrVroydX3M
+   xBNSrCFAsVjLFxnQwyg8aETc3dJmQezMzjjfu9ywwwPKl31qYGZKb9ud6
+   4KkknEBDWUIYgYn8vNsHVfKzNMTmKTUkp0WpbNhe99SNJeacwI0ed3K2Y
+   mspZ6VvKZ4iE0j8bsl8FmUOOBy7tVCtbl1ymQN4kTseuLJKlCclh7xjvg
+   EeS60Ig7tNqmFbO0xBDKrMbOlCBoUl9F3a6P+JpJhgVsttZWFNcoEv56U
+   T+ARVvuCrIalVmibQrc3awWwp30CyyhUQnvAidv0rdCkUPVjkHMMuNBPQ
+   Q==;
+X-CSE-ConnectionGUID: AnCMHKiOReeE8sO3df9a2w==
+X-CSE-MsgGUID: UaczPgJfQjC/gK3eBIJ+GA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="81966611"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="81966611"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 06:15:20 -0700
+X-CSE-ConnectionGUID: EQIh5x00RLeUoqQcAS7dUQ==
+X-CSE-MsgGUID: O1Jx3ChjTTKcvtRqfJ++Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="254322008"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa005.fm.intel.com with ESMTP; 22 Jun 2026 06:15:15 -0700
+Date: Mon, 22 Jun 2026 21:15:14 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	dave.hansen@linux.intel.com, seanjc@google.com
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <ajk1YuMEs4YCwVak@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,20 +68,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260622090826.20efadb3@fedora>
+In-Reply-To: <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
 
-On Mon, Jun 22, 2026 at 09:08:26AM -0400, Steven Rostedt wrote:
-> On Mon, 22 Jun 2026 10:05:13 +0200
-> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
+> There's also zero stopping us from putting version in args:
 > 
-> > > There's been complaints about trace_printk() being defined in kernel.h as it
-> > > can increase the compilation time. As it is only used by some developers for
-> > > debugging purposes, it should not be in kernel.h causing lots of wasted CPU
-> > > cycles for those that do not ever care about it.  
-> > 
-> > Do we have a measurement of the increased compilation time ?
+> 	struct tdx_module_args args = {};
+>   	int ret;
 > 
-> I believe Yury does.
+> 	if (tdx_addon_feature0) {
+> 		args.r9 = tdx_addon_feature0;
+> 		args.version = 1;
+> 	}
+> 
+> 	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+> 
+> Eh?
 
-I re-run compilation is a more strict environment, and the difference
-is negligible.
+I'm thinking the version is only needed for 3 SEAMCALLs. We don't have
+to make version common for all 100+ SEAMCALLs. Besides the layout of
+"struct tdx_module_args" correlates the fundamental assembly code of
+__seamcall() in tdcall.S.
+
+Could we make dedicated SEAMCALL wrappers for TDH_SYS_UPDATE similar to
+other SEAMCALLs and wrapper the specific version handling there? I put
+the diff in the end.
+
+> 
+> That gives args.version==0 in all the normal cases which just happens to
+> be the exact behavior we want. It also avoids having to plumb version
+> through all the seamcall*() wrappers.
+> 
+> But this is *exactly* the kind of thing that shouldn't be a part of an
+> attestation patch series. This could very much have been a separate
+> discussion and happened a month or a year ago. But now it is blocking
+> this DICE thing from getting done <grumble>.
+
+Sorry, I was thinking "don't keep version" was the conclusion...
+
+--------8<--------
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 01fb01313077..b3b3540e431a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1757,18 +1757,12 @@ int tdx_module_shutdown(void)
+
+ int tdx_module_run_update(void)
+ {
+-       u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+-       struct tdx_module_args args = {};
++       u64 err;
+        int ret;
+
+-       if (tdx_addon_feature0) {
+-               args.r9 = tdx_addon_feature0;
+-               seamcall_fn = TDH_SYS_UPDATE;
+-       }
+-
+-       ret = seamcall_prerr(seamcall_fn, &args);
+-       if (ret)
+-               return ret;
++       err = tdx_sys_update(tdx_addon_feature0);
++       if (err)
++               return -EIO;
+
+        ret = get_tdx_sys_info_version(&tdx_sysinfo.version);
+        /*
+@@ -2351,7 +2345,7 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+                .r8 = x2apicid,
+        };
+
+-       return seamcall(TDH_VP_INIT, &args);
++       return seamcall(SEAMCALL_LEAF_VER(TDH_VP_INIT, 1), &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+
+@@ -2463,3 +2457,16 @@ void tdx_sys_disable(void)
+        if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+                pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+ }
++
++u64 tdx_sys_update(u64 features_enable0)
++{
++       struct tdx_module_args args = {
++               .r9 = features_enable0,
++       };
++       u64 fn = TDH_SYS_UPDATE;
++
++       if (features_enable0)
++               fn = SEAMCALL_LEAF_VER(TDH_SYS_UPDATE, 1);
++
++       return seamcall(fn, &args);
++}
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 32b13b0c85f9..f07e12552bf9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -44,7 +44,7 @@
+ #define TDH_VP_CREATE                  10
+ #define TDH_MNG_KEY_FREEID             20
+ #define TDH_MNG_INIT                   21
+-#define TDH_VP_INIT                    SEAMCALL_LEAF_VER(22, 1)
++#define TDH_VP_INIT                    22
+ #define TDH_PHYMEM_PAGE_RDMD           24
+ #define TDH_VP_RD                      26
+ #define TDH_PHYMEM_PAGE_RECLAIM                28
+@@ -61,8 +61,7 @@
+ #define TDH_SYS_SHUTDOWN               52
+-#define TDH_SYS_UPDATE_V0              53
+-#define TDH_SYS_UPDATE                 SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
++#define TDH_SYS_UPDATE                 53
+ #define TDH_EXT_INIT                   60
+ #define TDH_EXT_MEM_ADD                        61
+ #define TDH_SYS_DISABLE                        69
+
