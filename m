@@ -1,93 +1,131 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEC840D596;
-	Mon, 22 Jun 2026 08:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48811397B05;
+	Mon, 22 Jun 2026 09:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782118454; cv=none; b=tV2P8WECAXZbyl/5HlOSVgPbqttOdeL8CKbw7P17BpFxwPSinyd/f9DHckxKkaco2V+VNOkjGE3cDIpqsiShiJBL/cM+HFFx4HtKT35dgraYPB+PhXd3hiqLZYKaQ7GILVl5icPH3ZNeurEu4S4hzGAKbi9UJaXvTv4UFKurY9w=
+	t=1782119057; cv=none; b=eTSDBNyEgHJvO0LzZJjhPep7RmMX/HimxSNW7i9nXUuncV875gUy1aVewnrQ+BWcQyrslnGPHyEi0dBS5GB9A51N2sYslAYzGoLKc7e67A6Agc4arOYHG+ORndWubzXfea6tO/7RAh6i4h59hOYKwOrIGAw39PSyxf2QbYAg7AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782118454; c=relaxed/simple;
-	bh=OAWmV8skIxMVw/WDm7TlekxPmF8xJMXvHUg1xzxkcD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OjWViWBEWY75Dib0nocssY8HZ0CJB8m/hrsROFYW8Sf4dP2guecWBadIQJa4MR4ds/C9Wm6Bfd0hQt6KzYgd8HBkH4gBBq2LjXfzoTK1Pv91XV1Rwag8YNs39JK1gcr1XWfRpggsnAUdhRpQuyV+IIlY/F1DjFjzL3Qsypw8mVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TuPlTRCU; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TuPlTRCU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=y2+mOP/j6lYd9qVyAamBJsy1djQW4CKGJJUDwRnuyXs=; b=TuPlTRCUatJuuJgUUAwvzHwMKv
-	dWwVfsTqUjTJh9SX5fPBCQGdiQcrZu7Ws4gSZKgN7rA0kNKxui7b5LEtKWEEQDe4V7j5A8N0jYuRY
-	uas/iKoJjFjR3gKpo0uOWWxjsbSNbU4N4b8MGJpMvU190ZELYDlzfAoftHa96t+aSCVqbpoMUbpfL
-	uOWtb+WeGCTtTYOdcuf3kQ/LcfWhZsQK+C/ri3C/zOHCtiyE1n8uDvDi3TDA+Xy225DqvitJuIeN0
-	RneapmfngTU0PhOUCG9gkRpGwiGc3BAbq6jkG1ZvAJCnP1chuakPaLn4PyoFg+CyhHRv/kOJ0Ywl3
-	cXoCNRYg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wba77-00000003u7U-1iUV;
-	Mon, 22 Jun 2026 08:34:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 52395300B5F; Mon, 22 Jun 2026 10:34:40 +0200 (CEST)
-Date: Mon, 22 Jun 2026 10:34:40 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Steven Rostedt <rostedt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
+	s=arc-20240116; t=1782119057; c=relaxed/simple;
+	bh=GwVHIoZ7r/M8GteP9m8gN+gqChmMb7gtvlHqruMu3OY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=vBfa0OVFavXrIq71YFoFsuANIgq/LtQJq7C2ibuMnfPkSE2Z1LC1tTqX+5eXdpirzn53Inm/uscqHMmyRSgnYzkwkMj7GNNhZ4bRujzoWS0ByyNu6753q33j0taWxh4BfmmqvSBws+h6+3OJrf+j4jCu3vTatIr2t2kU6do9N5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=none smtp.helo=mailgw.kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mailgw.kylinos.cn
+X-UUID: 21bd73886e0f11f1aa26b74ffac11d73-20260622
+Message-ID:<1782119051448443.14545.seg@mailgw.kylinos.cn>
+X-Spam-Fingerprint: 0
+X-GW-Reason: 11101
+X-Content-Feature:
+	ica/max.line-size 101
+	audit/email.address 2
+	dict/adv 1
+	dict/operate 1
+	meta/cnt.alert 1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:df1340d8-bad8-4902-a57c-bc94b27aad22,IP:0,U
+	RL:0,TC:0,Content:0,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-20
+X-CID-META: VersionHash:e7bac3a,CLOUDID:97fc9069a1c6fe1949f2f7a7b81d7275,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|865|898,TC:nil,Content:0|15|50,EDM:1
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 21bd73886e0f11f1aa26b74ffac11d73-20260622
+X-User: leixiang@kylinos.cn
+Received: from ninol.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <leixiang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 972357421; Mon, 22 Jun 2026 15:51:09 +0800
+From: leixiang <leixiang@kylinos.cn>
+To: 
+Cc: leixiang <leixiang@kylinos.cn>,
+	stable@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Thomas Gleixner <tglx@kernel.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Yury Norov <yury.norov@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH 0/2] tracing: Move trace_printk.h out of kernel.h
-Message-ID: <20260622083440.GX49951@noisy.programming.kicks-ass.net>
-References: <20260621093430.264983361@kernel.org>
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paul Mackerras <paulus@ozlabs.org>,
+	Suresh Warrier <warrier@linux.vnet.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
+Date: Mon, 22 Jun 2026 15:51:01 +0800
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260621093430.264983361@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 21, 2026 at 05:34:30AM -0400, Steven Rostedt wrote:
-> There's been complaints about trace_printk() being defined in kernel.h as it
-> can increase the compilation time. As it is only used by some developers for
-> debugging purposes, it should not be in kernel.h causing lots of wasted CPU
-> cycles for those that do not ever care about it.
-> 
-> Instead, add a CONFIG_TRACE_PRINTK_DEBUGGING option that developers that do
-> use it can set and not have to always remember to add #include <linux/trace_printk.h>
-> to the files they add trace_printk() while debugging. It also means that
-> those that do not have that config set will not have to worry about wasted
-> CPU cycles as it is only include in the CFLAGS when the option is set, and
-> its completely ignored otherwise.
+The x86 and powerpc add_producer() callbacks set irqfd->producer before the
+fallible setup and never clear it on error.  The bypass manager doesn't
+register a producer whose add_producer() failed -- producer->eventfd is
+left NULL, so the later unregister early-returns and del_producer() is
+never called -- so nothing ever drops the pointer.
 
-Did you forget your C 101 class? If you use a function, you gotta
-include the relevant header.
+For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
+when the vector is disabled, after which a routing update dereferences the
+dangling pointer via kvm_arch_update_irqfd_routing().
 
-You don't see userspace saying: 'Hey, you know what, perhaps we should
-add stdio.h to every other header, just in case someone wants to
-printf()' either.
+Nullify irqfd->producer on the error paths.
 
-I really don't understand your argument. Yes, maybe someone will forget
-and then either their editor (if they have a halfway modern setup with
-LSP enabled) or their build will complain, but so what? This is all
-trivial stuff, surely we have more pressing matters to concern outselves
-with?
+Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+Cc: stable@vger.kernel.org
+Signed-off-by: leixiang <leixiang@kylinos.cn>
+---
+ arch/powerpc/kvm/book3s_hv.c | 4 +++-
+ arch/x86/kvm/irq.c           | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 61dbeea317f3..14919b76fb32 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+ 	irqfd->producer = prod;
+
+ 	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+-	if (ret)
++	if (ret) {
+ 		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+ 			prod->irq, irqfd->gsi, ret);
++		irqfd->producer = NULL;
++	}
+
+ 	return ret;
+ }
+diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
+index 8c62c6d4d5c1..cb8ac4b9b0d7 100644
+--- a/arch/x86/kvm/irq.c
++++ b/arch/x86/kvm/irq.c
+@@ -488,8 +488,10 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
+
+ 	if (irqfd->irq_entry.type == KVM_IRQ_ROUTING_MSI) {
+ 		ret = kvm_pi_update_irte(irqfd, &irqfd->irq_entry);
+-		if (ret)
++		if (ret) {
+ 			kvm->arch.nr_possible_bypass_irqs--;
++			irqfd->producer = NULL;
++		}
+ 	}
+ 	spin_unlock_irq(&kvm->irqfds.lock);
+
+--
+2.45.0
