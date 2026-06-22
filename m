@@ -1,116 +1,278 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5005E188596
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 03:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA2234A78E;
+	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782098050; cv=none; b=JIHlIzQi39qNEK6rWxgNhG3YCwxElndHAept34lM2om8DwSPIoMiunzRBa24x9HEJ2uXPtWRE3hOgmpzKppGKkhdNB7fciIIqFoMECG6cg6NuT+0P+UM5E5ohEf1wQycS8hYo86mTXoJB9f3dW/HPl/58SMaQZbuGSN92vXlduU=
+	t=1782100901; cv=none; b=fxM9tFXXoEF8EWdQNbuAddYVPH/GqfV314rEmnV+vPdhx3m8vm4lDNMNEMzAG81Q+U6L71dTr+cXPvKdXd+DFnhWuV4tBReIBeuXT6xqcbNcCtT5W6wXlFFMcMddQi0SqFZZ9af3gAONrlh6+1IQzRr9XVQXh+s27xp837YFlCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782098050; c=relaxed/simple;
-	bh=opRbICt3Fd9iuqeXzybYpDlzxC3rtH2pFBADOLx8ZJU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OAHGsB7ix0BB2tuGf/qFZ1p3wHPEJ3YXTreY5le1igtQ7IEx22TlHVzq0PYvCX3n+1FBBbrl/5HvT5hetwE/0/ThpzdLjEt2oZe/gDu10rWdD+ewcQYkBi1n1nRXCqb9yMLENNOA7cYn80ZSthFZCdyRRY/kkt/4o5eRfEw4OIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7soOi64; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782100901; c=relaxed/simple;
+	bh=yH+WzegEs+zPyrnewAU8tfya6oMKUvKLC+l4fiOSOyg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ftIJw9tDciEZgJdTKMxXT+B8DhlpDwlve+mOsFQDEKjKUy//Q8wxdXWsxWeORuJCWbCMdZSXKmREkxSPDN/fVfjI8zIrZ3Kt0xEWvCL/kGIs9Wh6BocS6jJ3uaGVNDy4HRXaf12i9yGWVWTknL9JL3cdff3xvxhgRwGB38/r5/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1EGjueR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7soOi64"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70581F000E9;
-	Mon, 22 Jun 2026 03:14:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782098048;
-	bh=Pwxfu1olBg2Md7foEGnngQlBHD+BbjJDuyhh4EbRffA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=N7soOi64oRupbIhi0Io4WuckCAMkIvLjvK9m8G3e5W0RjVb3crz0hVM3vSdILtaAE
-	 UUZwIHv0nmMBSovxzHAEU9aHl9Ewog26dIRLNAdErxNkqFqnik1gLwigwHy9b217Ed
-	 qNNXC8UmyhYssZVVpKwNm7U25AhqVvg1QngZKHYz6wxjuOvquOywjWy5NeYl9X89E9
-	 K37ijt9oo+RMPgxPER3xmd24cSh4K7HsMNIwpNMz6QOSipPUw0zpaqEc1+BmDSqGsw
-	 Qh5S/Gh6njwdoSxsCjkA2oUvNA0tHXnfqxTkVUQQr3xS4pg4LwggNUI5s+aytDPkyJ
-	 2sZQqdlWnJT1Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] LoongArch: KVM: Use internal API to deliver
- interrupt in kernel mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bibo Mao" <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622030508.2731279-1-maobibo@loongson.cn>
-References: <20260622030508.2731279-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 03:14:08 +0000
-Message-Id: <20260622031408.B70581F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1EGjueR"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C708C2BCF6;
+	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1782100901;
+	bh=yH+WzegEs+zPyrnewAU8tfya6oMKUvKLC+l4fiOSOyg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=D1EGjueReeWatNRIyhyuN3rUNAWyJQ3oUCyctAgkQk3ANOfArwTBXOBKT0dkZzp8w
+	 lu38yi+XIPKFkoiZDnlqHo2mvm70H0mmN6fJpEh7swWpVlRfbAck8aa+Td8XPvtQD/
+	 VwjOyHBIDda0cqIv5i+C6NylKnNJ2f2FD39OSywDJXmRvAx95LIqVsJ57fqvyO5b/E
+	 Qz3uVRGCiC+IDL4SDEFPV7ZIHjyu1uYw9Uz78OloksjPTWGtOAUbC8rujyJOrQd6eq
+	 +OWcu69Qp7umi/dK+JSK8FJPfcHclw9VrYB0h68a2B+3cHNLuYw2T2m0KmP6UHn4ti
+	 XjIBnwOclLudA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FCE8CD98F6;
+	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
+Date: Sun, 21 Jun 2026 21:01:20 -0700
+Subject: [PATCH v2 02/16] riscv: alternatives: Use generated instruction
+ headers for patching code
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260621-riscv_insn_table-v2-2-7f0810ee2274@gmail.com>
+References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Nam Cao <namcao@linutronix.de>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Conor Dooley <conor@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+ =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-kselftest@vger.kernel.org, 
+ Charlie Jenkins <thecharlesjenkins@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=7576;
+ i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
+ bh=qT7TaAXs9xJHwiZtIc+DhKQ0DUJ/foDaC5z2Xsev0Gc=;
+ b=/u85iHT70EYTXXRqfcVxuy+eKwFcv1Sm2g06wLEvHak3vEGteG8Ldc7KcaqMfE6OBxJ7lA1lT
+ 3pl0ydafEiwCvE6sFXti2/uSXa2yef6V//ebUsmR2dpfwpT6liIzDX7
+X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
+ pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
+X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
+ with auth_id=810
+X-Original-From: Charlie Jenkins <thecharlesjenkins@gmail.com>
+Reply-To: thecharlesjenkins@gmail.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Pre-existing issues:
-- [High] Un-ratelimited `kvm_err` log spam triggered by malicious guest wri=
-tes.
---
+Migrate the alternatives patching code to use the generated instruction
+headers instead of the hand-written instruction composition functions.
 
-commit 5c0076c5351b1595453bb8b4c3718d9f86784e4f
-Author: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+---
 
-This patch replaces kvm_vcpu_ioctl_interrupt() with internal APIs
-kvm_queue_irq() and kvm_dequeue_irq() for delivering interrupts in kernel
-mode. It also removes unnecessary printk information when injecting
-unsupported interrupts with number 0.
+These function expansions are very simple and almost expand to the same
+thing in the new and old version. The main difference is
+riscv_insn_auipc_extract_imm() in the new version expands to:
 
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-> index 4fa0897d7bdb0..b7744dcbdd8e3 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-[ ... ]
-> @@ -40,16 +39,15 @@ static void ipi_send(struct kvm *kvm, uint64_t data)
+((_insn >> 12 & GENMASK(19, 0)) << 12)
 
-[Severity: High]
-This is a pre-existing issue, but since this patch cleans up unnecessary
-kvm_err() logs elsewhere, I wanted to ask about the kvm_err() in ipi_send().
+while it expands to the following in the old version:
 
-If a malicious guest writes an invalid CPU ID to the IOCSR_IPI_SEND registe=
-r,
-it triggers this path:
+((_insn >> 0) & GENMASK(31, 12))
 
-arch/loongarch/kvm/intc/ipi.c:ipi_send() {
-...
-	vcpu =3D kvm_get_vcpu_by_cpuid(kvm, cpu);
-	if (unlikely(vcpu =3D=3D NULL)) {
-		kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
-		return;
+These are the same thing, but GCC is unable to properly optimize the
+second one so the first one ends up using almost half as many
+instructions. With this finding and other similar examples, I made
+the generated headers construct in the first way to help GCC optimize
+all of these functions.
+
+Brute force can also be checked with this code:
+
+void check_auipc_jalr() {
+	for (unsigned int auipc = 0; auipc < ((1ULL << 12) - 1); auipc++) {
+		for (unsigned int jalr = 0; jalr < ((1ULL << 20) - 1); jalr++) {
+			unsigned int auipc_t=riscv_insn_auipc(auipc, 0), jalr_t=riscv_insn_jalr(jalr, 0, 0), auipc_t2=riscv_insn_auipc(auipc, 0), jalr_t2=riscv_insn_jalr(jalr, 0, 0);
+			riscv_alternative_fix_auipc_jalr(&auipc_t, &jalr_t, 0);
+			riscv_alternative_fix_auipc_jalr2(&auipc_t2, &jalr_t2, 0);
+
+			if (auipc_t != auipc_t2) {
+				printf("auipcs don't match %u, %u: %u != %u\n", auipc, jalr, auipc_t, auipc_t2);
+				return;
+			}
+
+			if (jalr_t != jalr_t2) {
+				printf("jalrs don't match %u: %u != %u\n", i, jalr_t, jalr_t2);
+			}
+		}
 	}
-...
 }
+---
+ arch/riscv/include/asm/insn.h   | 74 -----------------------------------------
+ arch/riscv/kernel/alternative.c | 23 +++++++++----
+ 2 files changed, 17 insertions(+), 80 deletions(-)
 
-Since kvm_err() does not appear to be rate-limited, could a guest loop
-repeatedly trigger this to spam the host syslog?
+diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+index d562b2b40ba1..d0e137f9bcd7 100644
+--- a/arch/riscv/include/asm/insn.h
++++ b/arch/riscv/include/asm/insn.h
+@@ -514,78 +514,4 @@ static __always_inline bool riscv_insn_is_branch(u32 code)
+ 
+ #define RVV_EXTRACT_VL_VS_WIDTH(x) RVFDQ_EXTRACT_FL_FS_WIDTH(x)
+ 
+-/*
+- * Get the immediate from a J-type instruction.
+- *
+- * @insn: instruction to process
+- * Return: immediate
+- */
+-static inline s32 riscv_insn_extract_jtype_imm(u32 insn)
+-{
+-	return RV_EXTRACT_JTYPE_IMM(insn);
+-}
+-
+-/*
+- * Update a J-type instruction with an immediate value.
+- *
+- * @insn: pointer to the jtype instruction
+- * @imm: the immediate to insert into the instruction
+- */
+-static inline void riscv_insn_insert_jtype_imm(u32 *insn, s32 imm)
+-{
+-	/* drop the old IMMs, all jal IMM bits sit at 31:12 */
+-	*insn &= ~GENMASK(31, 12);
+-	*insn |= (RV_X_MASK(imm, RV_J_IMM_10_1_OFF, RV_J_IMM_10_1_MASK) << RV_J_IMM_10_1_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_11_OFF, RV_J_IMM_11_MASK) << RV_J_IMM_11_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_19_12_OFF, RV_J_IMM_19_12_MASK) << RV_J_IMM_19_12_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_SIGN_OFF, 1) << RV_J_IMM_SIGN_OPOFF);
+-}
+-
+-/*
+- * Put together one immediate from a U-type and I-type instruction pair.
+- *
+- * The U-type contains an upper immediate, meaning bits[31:12] with [11:0]
+- * being zero, while the I-type contains a 12bit immediate.
+- * Combined these can encode larger 32bit values and are used for example
+- * in auipc + jalr pairs to allow larger jumps.
+- *
+- * @utype_insn: instruction containing the upper immediate
+- * @itype_insn: instruction
+- * Return: combined immediate
+- */
+-static inline s32 riscv_insn_extract_utype_itype_imm(u32 utype_insn, u32 itype_insn)
+-{
+-	s32 imm;
+-
+-	imm = RV_EXTRACT_UTYPE_IMM(utype_insn);
+-	imm += RV_EXTRACT_ITYPE_IMM(itype_insn);
+-
+-	return imm;
+-}
+-
+-/*
+- * Update a set of two instructions (U-type + I-type) with an immediate value.
+- *
+- * Used for example in auipc+jalrs pairs the U-type instructions contains
+- * a 20bit upper immediate representing bits[31:12], while the I-type
+- * instruction contains a 12bit immediate representing bits[11:0].
+- *
+- * This also takes into account that both separate immediates are
+- * considered as signed values, so if the I-type immediate becomes
+- * negative (BIT(11) set) the U-type part gets adjusted.
+- *
+- * @utype_insn: pointer to the utype instruction of the pair
+- * @itype_insn: pointer to the itype instruction of the pair
+- * @imm: the immediate to insert into the two instructions
+- */
+-static inline void riscv_insn_insert_utype_itype_imm(u32 *utype_insn, u32 *itype_insn, s32 imm)
+-{
+-	/* drop possible old IMM values */
+-	*utype_insn &= ~(RV_U_IMM_31_12_MASK);
+-	*itype_insn &= ~(RV_I_IMM_11_0_MASK << RV_I_IMM_11_0_OPOFF);
+-
+-	/* add the adapted IMMs */
+-	*utype_insn |= (imm & RV_U_IMM_31_12_MASK) + ((imm & BIT(11)) << 1);
+-	*itype_insn |= ((imm & RV_I_IMM_11_0_MASK) << RV_I_IMM_11_0_OPOFF);
+-}
+ #endif /* _ASM_RISCV_INSN_H */
+diff --git a/arch/riscv/kernel/alternative.c b/arch/riscv/kernel/alternative.c
+index 7642704c7f18..b26a90eb65cc 100644
+--- a/arch/riscv/kernel/alternative.c
++++ b/arch/riscv/kernel/alternative.c
+@@ -11,6 +11,7 @@
+ #include <linux/cpu.h>
+ #include <linux/uaccess.h>
+ #include <asm/alternative.h>
++#include <asm/insn.h>
+ #include <asm/module.h>
+ #include <asm/sections.h>
+ #include <asm/vdso.h>
+@@ -78,14 +79,24 @@ static void riscv_alternative_fix_auipc_jalr(void *ptr, u32 auipc_insn,
+ 					     u32 jalr_insn, int patch_offset)
+ {
+ 	u32 call[2] = { auipc_insn, jalr_insn };
++	u32 auipc_imm;
+ 	s32 imm;
+ 
+ 	/* get and adjust new target address */
+-	imm = riscv_insn_extract_utype_itype_imm(auipc_insn, jalr_insn);
++	imm = riscv_insn_auipc_extract_imm(auipc_insn) + riscv_insn_jalr_extract_imm(jalr_insn);
+ 	imm -= patch_offset;
+ 
++	/*
++	 * When the 32-bit immediate is split across auipc and jalr, the
++	 * constructed immediates need to be treated as individually sign
++	 * extended numbers. Add the sign bit of the lower 12 bits to the upper
++	 * 20 bits to undo the bleeding of the sign.
++	 */
++	auipc_imm = imm + (BIT(11) << 1);
++
+ 	/* update instructions */
+-	riscv_insn_insert_utype_itype_imm(&call[0], &call[1], imm);
++	riscv_insn_auipc_insert_imm(&call[0], auipc_imm);
++	riscv_insn_jalr_insert_imm(&call[1], imm);
+ 
+ 	/* patch the call place again */
+ 	patch_text_nosync(ptr, call, sizeof(u32) * 2);
+@@ -96,11 +107,11 @@ static void riscv_alternative_fix_jal(void *ptr, u32 jal_insn, int patch_offset)
+ 	s32 imm;
+ 
+ 	/* get and adjust new target address */
+-	imm = riscv_insn_extract_jtype_imm(jal_insn);
++	imm = riscv_insn_jal_extract_imm(jal_insn);
+ 	imm -= patch_offset;
+ 
+ 	/* update instruction */
+-	riscv_insn_insert_jtype_imm(&jal_insn, imm);
++	riscv_insn_jal_insert_imm(&jal_insn, imm);
+ 
+ 	/* patch the call place again */
+ 	patch_text_nosync(ptr, &jal_insn, sizeof(u32));
+@@ -127,7 +138,7 @@ void riscv_alternative_fix_offsets(void *alt_ptr, unsigned int len,
+ 				continue;
+ 
+ 			/* if instruction pair is a call, it will use the ra register */
+-			if (RV_EXTRACT_RD_REG(insn) != 1)
++			if (riscv_insn_jalr_extract_xd(insn) != 1)
+ 				continue;
+ 
+ 			riscv_alternative_fix_auipc_jalr(alt_ptr + i * sizeof(u32),
+@@ -136,7 +147,7 @@ void riscv_alternative_fix_offsets(void *alt_ptr, unsigned int len,
+ 		}
+ 
+ 		if (riscv_insn_is_jal(insn)) {
+-			s32 imm = riscv_insn_extract_jtype_imm(insn);
++			s32 imm = riscv_insn_jal_extract_imm(insn);
+ 
+ 			/* Don't modify jumps inside the alternative block */
+ 			if ((alt_ptr + i * sizeof(u32) + imm) >= alt_ptr &&
 
-Could this lead to host performance degradation or RCU stalls, effectively
-acting as a host denial of service?
+-- 
+2.54.0
 
->  static void ipi_clear(struct kvm_vcpu *vcpu, uint64_t data)
->  {
->  	uint32_t status;
-> -	struct kvm_interrupt irq;
-> =20
->  	spin_lock(&vcpu->arch.ipi_state.lock);
->  	vcpu->arch.ipi_state.status &=3D ~data;
->  	status =3D vcpu->arch.ipi_state.status;
-> -	spin_unlock(&vcpu->arch.ipi_state.lock);
->  	if (status =3D=3D 0) {
-> -		irq.irq =3D -LARCH_INT_IPI;
-> -		kvm_vcpu_ioctl_interrupt(vcpu, &irq);
-> +		kvm_dequeue_irq(vcpu, LARCH_INT_IPI);
-> +		kvm_vcpu_kick(vcpu);
->  	}
-> +	spin_unlock(&vcpu->arch.ipi_state.lock);
->  }
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622030508.2731=
-279-1-maobibo@loongson.cn?part=3D1
