@@ -1,172 +1,190 @@
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021137.outbound.protection.outlook.com [52.101.65.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3223328C2A1
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 17:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782147688; cv=none; b=JpmmhL/Y9LQ3xnb+EZE9aNfwItdoULuAG12KkSsqI8u7j6Lbna6nC/YP+n0TWT4u1mflrNqAsqogWDudAezzDruJzyvQCaUqDm5KB6Yo8567H7FeMQefiFtXzcEbChV9Fr/JsQukhqq5SUbUn2NY3fxrW/mmnYRteSUvyImqqbk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782147688; c=relaxed/simple;
-	bh=wQqkN2cHqzACXP03tdU2Ir7GLJ158xuVoUdoWKMnod8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=kQQF7t37WYalaOzM4j7HsHHjhglFiijuUa+fNeTyCOvz0gFXUNE+Tc5MYfr63+3bLumDxovVU8+cOGnkCHnyN9yb4BHkYy83qWS+VWKMftIgeaPaVCpuhUfHTN2KNanQKMrz//Bn62Vk9cAk7yLFeVkGnknz5I9uw+65HY9ZWrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-6a100cc5ad0so97827eaf.1
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 10:01:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782147686; x=1782752486;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GHC7doRNUnQxvHDNdnUFh6/Vrao4hlxF0VFgayPnUEk=;
-        b=psdEGgQr4KGnbl6hqa6kQEt7izZ/CYVv649nTHOAjyiXqyozM2OTYulMix0ZqIYzsY
-         7uGPetI8IXw1aT9/vg57UnUbbWSJbIcrGjpVAgzjR8ya+oFAvEYmJJP21DOMpaux5Gua
-         9mzt6tS4PtaMuonaRzIQTCqfK7PfZxZOPoOrBNNZIVy8K5m/cJkraTB1yYFuUyqJE/vZ
-         48ZfYKZtnK2EJWUdNfBritGXH5IhHoDmVY0rwPyZKtTdT9wtFzS6J46XaQWqxbQNQfsV
-         qLOR6yEaSVKmNZLYTk1saz/3xGAJOI8kYcB0O4NqpwYd+zf67zpe9DWBq7nRYzuVxjBM
-         wpVA==
-X-Forwarded-Encrypted: i=1; AFNElJ8wqTODwxYdPR1TLYkTCOQ7pTNMQzRqM5srHfz8sQhHCMEkiFsq6eb9bD4A2U3J4GEkQuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTFpwl+x0WcAAn2Y72PtQ9xi0rbuOc1FPBIoNUPIxoP54D+kPO
-	bFOe8kuADxYEjSzYmMFxr0BZo9qxPHZ++f3RSlolDrafWoi+n+aoagvw+aCQN5GohGnznVOfFhz
-	wiBhgfQG71nvlLgmwLC85busDWc5EXx65Bf8BhtXKL7LN0Nr1tZEtZv9hh+U=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4D343885;
+	Mon, 22 Jun 2026 17:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.137
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782151103; cv=fail; b=MPUxbAm7OxpJ758RPueYHvUukqc+CNNWZj0ycyuxgZlFrWy4ESabr9ntERGkR0vWW0l1yQITFkYRx3XzIA8RZ4anOKzAMNRvQr2d8Dv83wOLN6TXozcMaW1FNJF1h8QQGmEY9Zt6ehfxOZM0B4S1vQHFkVGQ2hYzPWvYQbK+ZZw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782151103; c=relaxed/simple;
+	bh=CzE+kCBXxLU6z465GAQOgb0QAq8awcHFVQbr2PQe0Ak=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dXS90mxlOH6YRqqf6VinmF+R1wK9E9M5UpHZF/hjwSPEpE2F3S41OYqEfuqJumBIF9c1QNgO9UJlui0iLrg3k5aTJx/PY3B3uJfWaMnx6DpLxv00SMdrJhadf2cMymJsrg/B7Cl2aQrrM+n+6xP7b3cQNgKXFovRmB0nsjehCgw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=WxYff+vm; arc=fail smtp.client-ip=52.101.65.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="WxYff+vm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Go88Fx5kKH/cj2/NNx8ghJfdLv4AlDwrxqow1CwfrC5mLxlNgXB8Cs+M/iQXstvcydUX1k/pV56Y0U+zlGyHnnj3/a8sGBCAdwmnZApfyRWS/W+JnQmSK5I78d14PQnkEvFP3fHgYWlccOpqsMNs4wPFaJ/AC/wIhqGkIeOpqRdRH+4w69EMwKa19KG3Aw+ggAFnjyW2gwh4mzeuqeK0Rb1p85DoXwKL44buwSyhqH2AJKBgjUv/0Nvit0yqCsMfeai+qvTNTXZkogAyxGhIT5+g6lXiSTI2P2qY27R+Z9C1/pxcDrMesY4j/fBBWbLAZg6h4glPqQ1norco6SxgCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mo5zTAxteDAcCew6voc2dC5jew5kr2Jn1w1zPT0fetI=;
+ b=Bp6oNT4kJtqYWXEacbPYdvHhPtIBS/X0JWx5SZ3+AHEOB28T0RIdHXF07OFL7eCtq5EnMqsAjLO71cU7hQ0UFf1mIc8WnJOgk6aarwitvCS0ISrPQUflOoXTJXBibb4wDBtjfeNF9brVARemWx2/ACBQvq8rrPQ5LI4mj4MaOK4NV1Nvt6KvhF47DjIKKqLic6UXgR10fdF6cmx/jI/ES6Xaj95O6xH95mbl3XXiP7AlOvm5SO1M6PNG5akprOVFrC6ObVPT5qlISGmfQBukKtlH3OnoGUK0hXenqFP8TAze3sPs5s3nQeRcvLDFZ9s1qZH0ky4a9soXYsGfl51KDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mo5zTAxteDAcCew6voc2dC5jew5kr2Jn1w1zPT0fetI=;
+ b=WxYff+vmoggbYF6s0MD3/pxIZbuNsIzF4m7jLZTp4smU8D9ix/jmaToKHz/RIa7UTiVlZjFmAzCXvuG3gxjZxunYrGvsC4NrKxnQ83zspiTT/y74/ANChVPsYFj5NUKn1EpIKX2al7vTGZfH19E0VdLpQdL62SsKTxGBLPBpb0mY1GS07F50MbZHAp/O9z31/5cBRmQDKhDI4ROZG3bBarfbDREoZJUis8/Lt+35vV56C0X2UPwrOBM/susXgvjCOHDkrPi6RkKQxvmw1GAH3XlKBcnq3aRPX0m2IVOvWVyAF3YvB75PZO/Bdad2MGkKgcEC0gN6IWdDl9ygzWCT9g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by DU2PR08MB7375.eurprd08.prod.outlook.com
+ (2603:10a6:10:2f3::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.13; Mon, 22 Jun
+ 2026 17:58:18 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%5]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 17:58:18 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com,
+	bchaney@akamai.com,
+	mark.kanda@oracle.com,
+	ptikhomirov@virtuozzo.com,
+	den@openvz.org,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v2 0/4] vhost/vsock: add support for VHOST_RESET_OWNER and CPR migration
+Date: Mon, 22 Jun 2026 20:58:04 +0300
+Message-ID: <20260622175808.508084-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VIUP296CA0012.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:34f::12) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:212:b0:6a1:11fa:1b37 with SMTP id
- 006d021491bc7-6a1127a4e06mr176024eaf.25.1782147686107; Mon, 22 Jun 2026
- 10:01:26 -0700 (PDT)
-Date: Mon, 22 Jun 2026 10:01:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a396a66.52ae72c2.136ac7.0002.GAE@google.com>
-Subject: [syzbot] [kvm-x86?] WARNING in hv_tlb_flush_enqueue
-From: syzbot <syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com>
-To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
-	tglx@kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU2PR08MB7375:EE_
+X-MS-Office365-Filtering-Correlation-Id: bff7e6a9-ab86-49b3-32d0-08ded087d6e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|52116014|7416014|376014|1800799024|18002099003|38350700014|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	nOBaUfevcC3GhOga5JoQp944dRRtO/N6elXCABmARHuqdb4jHxY3aePMHi+HyYVGZPfdplvTArbN6l6jyz5oBTgx90CZjqS40bYb9UYkzEV7Uk8UG0YAHOK4SGfAeeddLs+Zn+i1mCV3npAKvfaFbky55rz7hhz5R0v5p76Cjt4jlSr3EHNyQJ5ySTvS8w3RRQRu5awe0iRt/0m4DrsrfB+/ywSvvlvUNj3yiqaMMXLXAlrrklllEkHjqLLHVpjXs6OIWSclG135IC5kajd+lMLAfwLblgm4QmMCh1H7nFC21BX01R+8uxUtJR7+xmJ6YQt6o6vWKcThOu7h7h6oZmjciE+yneDpIGhDL+cNC3CFRL3VQEdL/iZlB6DsFO+XNDZJ4zekv4KOFg5vp+ByUr7vEB8plMHl3vV6Bkxb+niyzx7b0WlAZOlhz4LNZxrZjqQE74XY8NVZYzBf5JE7wDFkPrEnnQHtOX2cB2l5KAbbH4wKH+Fo+O3YsJ3heXbEscjAdtwNQF+vxhFkfUjQ8nCxBVILCUFHNArE4qjaPFXkTooOtyd36AbfIrSAWq9vmFNV/G1vHA5ZgNmUkrWZ1AjIz7diVFuKh+RHl/9unufMkRGKGrLBx4qFmhiSNWr34KScZpicWccMDYX9JNbHCbErgGiRSLjGQ3ggfnREoyrxicqcUfGAMzJsZ49KEBxp4PA+QKtSIpY5A54cbxhrnh1HDZZCAlCuCenRn+gTHoc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(52116014)(7416014)(376014)(1800799024)(18002099003)(38350700014)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gwu6Ega8NnBGe4lvgvHl8St9HbhmWeFTZOGKi0BnkEi4bcfznnnpCDs1h7EN?=
+ =?us-ascii?Q?GCFW8Sa3vkZ+dMScUTjFkFHOFMPZIcVLe+MXvha76SbV1zhsX0k2B9Of7sgH?=
+ =?us-ascii?Q?WPUe86nh4sv4FhQOSEZ7zV4B505G3oK+EOTjCuqL3isTVIRqOOswpaaW0GGg?=
+ =?us-ascii?Q?3j/sv1a6tE6HsQLJIVAUUqH6SMPcjx+t/oYFZtfT46GR4uIdSbqAMNGEPJUT?=
+ =?us-ascii?Q?bxj3seorJ0QK/lUDp7app3yWXlnmx162Na4BKG4hTEcd7g1loH3DrHMyK+s5?=
+ =?us-ascii?Q?cLR+0ni6hLpd3Q/eulFM2d/6JvhEvsQhTV6za4Z8V/ea5S6QR+X6l9UixROG?=
+ =?us-ascii?Q?07KZu4raLe7k+PPHRXExKxjNGvfN3tO+aTlolnvRFGveyTPgQpUGG3vAHLSV?=
+ =?us-ascii?Q?jWXp7OyE61xy6+e625pZuIsyt8yVGD15GRuy9oyFBfmmVNTJpTq6WHo4kbel?=
+ =?us-ascii?Q?K7i7kZyAOvdV0dvzAMjiKsWBHvNBjrpD400BQUcq2sqPa0REuhF2BsXPnpNU?=
+ =?us-ascii?Q?AUBxA2gsAXvFiJC34MrwoKEShRnODQYGCb662DR3Z8FqVEEQNufOHJdHwOgl?=
+ =?us-ascii?Q?XFv/O92CC03qR4bexUsTUn+9dnzP+5SQNFBkbvXM3dpKgSNrrJ8RB/Y9s6wX?=
+ =?us-ascii?Q?poBlo1mcyDDKrHjEelUeOalmbssCQemBImWviE1jJMKckoOGrThjhr9KB+em?=
+ =?us-ascii?Q?XE9ywidQk+QnOSKLZxyezDR+IigiHhe+VkB2Yxo8VCHYjJpQQPeKyc9rRVGR?=
+ =?us-ascii?Q?UP0smdM3kpOg7tIJD+KL4Gja9zT28WfrSzoOgu0ClCxy+Lqjofk4fXcvv0u8?=
+ =?us-ascii?Q?EvUAF6sYXhLINwiWOR4rELB/GmsskfY2b0QnYsp6uD86PLZF8j7GSZeEWNLV?=
+ =?us-ascii?Q?WNHi+97F3TB/RgbY5N/HNKWyiy1EeCk4WToDu8nta9x83+EoYXbdl47wTmat?=
+ =?us-ascii?Q?YPg5CbT1xYH1lCPLw2x1AxcElY/cMrfpjIV0muQxcwoLY4/2V6lAQNCbjICA?=
+ =?us-ascii?Q?G+XoeO1t8aNB/gxswJGUIWTmPpEAm13fJil1VuFfkciajaVVvO0nsHmUEwVL?=
+ =?us-ascii?Q?c+h4USWB2lnHdNwlFsZZEOMKxVxX1LSdV63pbpYzj0Sa5UX0p4IkpFmxVyF3?=
+ =?us-ascii?Q?8iwhQz8+StxpnXnGEY6rApFdm5odaucT/KDjfUEgeznJzFXyOv9wweIDkpuQ?=
+ =?us-ascii?Q?E0tr2nSAeeTz+cLwLh/8zaiW4mRlKY3I6Y1votyN+Y7Z2A7vnB0rLox7rbmd?=
+ =?us-ascii?Q?mRTfI+Gh7LBKuBW9EbXjjKmvBEiFeE8lCrA2kUHqiPlSlvJgeioxL+jcyKs9?=
+ =?us-ascii?Q?Tc4dtr+MNfAWzYBKX4nGasSGsOd4gir56B0h8IyeDU4RERfEP28O47xetyaL?=
+ =?us-ascii?Q?EvG5n2CRg+Oi6tpEee26ZZyB5bjw3pa79Vb0ldy8VUOHJcm9zENt6nlns9QM?=
+ =?us-ascii?Q?a+WMZGV4Jcy3abbGqF386m+AVDnh/TXwUayHNt7UiEB3GRs478hw0H5c2R9J?=
+ =?us-ascii?Q?QhH006SPK1WUx7ARv8uCs0L52KzoIMM3hHm+38/va/yxzeoHUIeQA3+fs/uJ?=
+ =?us-ascii?Q?AdkIKvbPfveFjDu0spx328MHZhsJXR/9u6s5NOl7V7gItG2YoB5kZ5utMdfd?=
+ =?us-ascii?Q?LjdtJreValtuZgFcfbkkE4u/a4JOz7x7M05hq6FvZ9rUvZdZ1sKK8FxvUaHX?=
+ =?us-ascii?Q?xPBebp98am0VwKntKwkrihhyCGU6/I3shgj56gz3lmg7UilxXBtJYQKwdtXV?=
+ =?us-ascii?Q?Ad8rq/1R/R42FKGbrGq0Wn8IIba0aZA=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bff7e6a9-ab86-49b3-32d0-08ded087d6e9
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 17:58:17.9726
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kfFOGkhEJ57xsoFEdD4KsXSMPqVpHVuGXODXSXa8d6pSRoJSo3QmgXpQb/gXIyGgtVjV9IY00ka79ObDUzCcCHW24ZkprqOAp4xgJ9VUpwk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB7375
 
-Hello,
+v1 -> v2:
 
-syzbot found the following issue on:
+  * Patch 2 (suppress EHOSTUNREACH): replace 'cpr_paused' + backend check
+    with a single 'started' latch;
+  * Patch 3 (re-scan TX virtqueue): reword commit message;
+  * Patch 4 (VHOST_RESET_OWNER):
+      - fix a vhost_worker use-after-free / stuck VHOST_WORK_QUEUED stall
+        against the lockless send path;
+      - drop the no-op vsock_for_each_connected_socket() iteration;
+  * Shuffle the patches, keep RESET_OWNER implementation last to preserve
+    bisectability;
+  * Reword the cover letter.
 
-HEAD commit:    8cd8cf7a07e5 Merge tag 'scsi-misc' of git://git.kernel.org..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1012a7a1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e69294ccc24d9da
-dashboard link: https://syzkaller.appspot.com/bug?extid=5d2b94b77112148d1744
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14c0db7a580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13dd001c580000
+v1: https://lore.kernel.org/virtualization/20260612165718.433546-1-andrey.drobyshev@virtuozzo.com
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-8cd8cf7a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b15ef084e059/vmlinux-8cd8cf7a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a22f25c3f8ee/bzImage-8cd8cf7a.xz
+Host<-->guest connections via AF_VSOCK sockets aren't supposed to
+outlive VM migration, since VM is moving to another host.  However
+there's a special case, which is QEMU live-update, or CPR
+(checkpoint-restore) migration.  In this case, VM remains on the same
+host, and we'd like such connections to persist.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
+For this to work, we need to be able to transfer device ownership from
+source QEMU to dest QEMU.  Namely, source needs to reset ownership by
+issuing VHOST_RESET_OWNER ioctl, and then target has to claim it by
+calling VHOST_SET_OWNER.
 
-------------[ cut here ]------------
-pvqspinlock: lock 0xffff88802c0c8790 has corrupted value 0x0!
-WARNING: kernel/locking/qspinlock_paravirt.h:504 at __pv_queued_spin_unlock_slowpath+0x220/0x2e0 kernel/locking/qspinlock_paravirt.h:504, CPU#0: syz.0.3154/18851
-Modules linked in:
-CPU: 0 UID: 0 PID: 18851 Comm: syz.0.3154 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__pv_queued_spin_unlock_slowpath+0x223/0x2e0 kernel/locking/qspinlock_paravirt.h:504
-Code: fc ff df 48 c1 ea 03 0f b6 14 02 4c 89 e0 83 e0 07 83 c0 03 38 d0 7c 04 84 d2 75 4d 41 8b 14 24 48 8d 3d 40 00 44 05 4c 89 e6 <67> 48 0f b9 3a e9 2f ff ff ff 48 89 df 48 89 14 24 e8 17 07 e0 f6
-RSP: 0018:ffffc9000c4273a0 EFLAGS: 00010246
-RAX: 0000000000000003 RBX: ffff88802c0c8790 RCX: ffffffff8b99c87f
-RDX: 0000000000000000 RSI: ffff88802c0c8790 RDI: ffffffff90ddc8f0
-RBP: ffff88802c0c8798 R08: 0000000000000000 R09: ffffed10058190f2
-R10: ffff88802c0c8793 R11: 0000000000000000 R12: ffff88802c0c8790
-R13: ffff88802c0c8000 R14: 0000000000000000 R15: ffff88802c0c87d0
-FS:  00007ffaf56696c0(0000) GS:ffff8880d6318000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000005645e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __raw_callee_save___pv_queued_spin_unlock_slowpath+0x15/0x40
- .slowpath+0x9/0x18
- pv_queued_spin_unlock arch/x86/include/asm/paravirt-spinlock.h:40 [inline]
- queued_spin_unlock arch/x86/include/asm/paravirt-spinlock.h:72 [inline]
- do_raw_spin_unlock+0x145/0x1e0 kernel/locking/spinlock_debug.c:142
- __raw_spin_unlock include/linux/spinlock_api_smp.h:168 [inline]
- _raw_spin_unlock+0x1e/0x50 kernel/locking/spinlock.c:190
- spin_unlock include/linux/spinlock.h:390 [inline]
- hv_tlb_flush_enqueue.isra.0+0x195/0x200 arch/x86/kvm/hyperv.c:1967
- kvm_hv_flush_tlb+0x17b4/0x1ae0 arch/x86/kvm/hyperv.c:2150
- kvm_hv_hypercall+0xd0b/0x2350 arch/x86/kvm/hyperv.c:2629
- kvm_emulate_hypercall+0x115/0x3c0 arch/x86/kvm/x86.c:10510
- __vmx_handle_exit arch/x86/kvm/vmx/vmx.c:6848 [inline]
- vmx_handle_exit+0x4d6/0x1ef0 arch/x86/kvm/vmx/vmx.c:6858
- vcpu_enter_guest arch/x86/kvm/x86.c:11550 [inline]
- vcpu_run+0x3558/0x5d50 arch/x86/kvm/x86.c:11707
- kvm_arch_vcpu_ioctl_run+0x5b6/0x1890 arch/x86/kvm/x86.c:12062
- kvm_vcpu_ioctl+0x730/0x1700 virt/kvm/kvm_main.c:4470
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ffaf479ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffaf5669028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffaf4a15fa0 RCX: 00007ffaf479ce59
-RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000006
-RBP: 00007ffaf4832e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffaf4a16038 R14: 00007ffaf4a15fa0 R15: 00007ffcc021d3a8
- </TASK>
-----------------
-Code disassembly (best guess), 3 bytes skipped:
-   0:	48 c1 ea 03          	shr    $0x3,%rdx
-   4:	0f b6 14 02          	movzbl (%rdx,%rax,1),%edx
-   8:	4c 89 e0             	mov    %r12,%rax
-   b:	83 e0 07             	and    $0x7,%eax
-   e:	83 c0 03             	add    $0x3,%eax
-  11:	38 d0                	cmp    %dl,%al
-  13:	7c 04                	jl     0x19
-  15:	84 d2                	test   %dl,%dl
-  17:	75 4d                	jne    0x66
-  19:	41 8b 14 24          	mov    (%r12),%edx
-  1d:	48 8d 3d 40 00 44 05 	lea    0x5440040(%rip),%rdi        # 0x5440064
-  24:	4c 89 e6             	mov    %r12,%rsi
-* 27:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2c:	e9 2f ff ff ff       	jmp    0xffffff60
-  31:	48 89 df             	mov    %rbx,%rdi
-  34:	48 89 14 24          	mov    %rdx,(%rsp)
-  38:	e8 17 07 e0 f6       	call   0xf6e00754
+Since VHOST_RESET_OWNER isn't yet implemented for vhost-vsock, let's add
+such implementation.  Patch 1 is a preliminary helper.  Patches 2 and 3
+fix the pre-existing issues which do manifest during CPR / RESET_OWNER.
+Patch 4 is the ioctl's implementation itself - we keep it last to
+preserve bisectability.
 
+There's a complementary series for QEMU [0] adding support of vhost-vsock
+devices during CPR migration.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+I've tested this (patched QEMU + patched kernel) approximately as follows:
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+  * Run listener in the guest:
+  socat -u VSOCK-LISTEN:9999 - >/tmp/recv.bin
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+  * Run data transfer from host to guest:
+  socat -u FILE:/root/bigfile.bin VSOCK-CONNECT:CID:9999
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+  * Perform CPR migration during transfer (either cpr-exec or cpr-transfer)
+  * Check that file hash sum matches
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+[0] https://lore.kernel.org/qemu-devel/20260619105514.128812-1-andrey.drobyshev@virtuozzo.com
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Andrey Drobyshev (2):
+  vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+  vhost/vsock: re-scan TX virtqueue on device start
 
-If you want to undo deduplication, reply with:
-#syz undup
+Pavel Tikhomirov (2):
+  vhost/vsock: split out vhost_vsock_drop_backends helper
+  vhost/vsock: add VHOST_RESET_OWNER ioctl
+
+ drivers/vhost/vsock.c | 96 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 76 insertions(+), 20 deletions(-)
+
+-- 
+2.47.1
+
