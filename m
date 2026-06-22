@@ -1,51 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA6433D6EA;
-	Mon, 22 Jun 2026 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26801C84BB;
+	Mon, 22 Jun 2026 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782147258; cv=none; b=XcNFWWtZ/PZw4jvbI5f/Ci9FPD1ZvblCnEuskXS3abu8j4tuQWPV0CrYH7raGuLaMx1r/RRnNR/BVfqVdcG1lP2XyFKqP/JVHp+xSbNc8utnOZL5zqPLULhVXvkDwfHY4aUTr9jo8jTQivo3VfE7JWOGHpSJMwi9hlXVWxMT128=
+	t=1782147310; cv=none; b=oLEQlV+Wz19W2/LHpQmNMTKY7GA/S1pHN9h8pdOtxp0+H3K/fmv3IbwivX9KGowx8oGyDYuwi56VK+uwg+VGC54c379lVIYomwNGElrplwVrPeLw6XwlNANPcVI+UgKUGxd8TZaecUJl9NdBDTzgL+zDMxcnBfLk2VHnEaSJH8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782147258; c=relaxed/simple;
-	bh=ekb34tGbOLl4mmCxRRdPt5mbSzeRyctvnTkA7LWxmsA=;
+	s=arc-20240116; t=1782147310; c=relaxed/simple;
+	bh=yukAW+Z8i9v3NIhazZ5NRNFfxHqpLVDGViMLnKkkEOk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f5KNE04lLhN/+vauxxUUEqSCZXgqO+/cjJiR0U2KKYxKSHrwXflpn+JoBsqWB4rmEiKTrJrJFG/lAzmqoidUjOTtiUTtkt9qjLwBgx4+Y52viDy1sLvS4F5vc8+2CozbeuTbt7OdU8pazT8a3S8y4Dh12b2X9pyaopYfu+qJ7ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XN8Wesbb; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=k1lFRJIoTVh/lTugIhUpqVxd2eejnmlkoHcsB2y4DwwTNCKDlVtT+cmlLHVw+dpC1kNwqCG0JyzwGnZPYsjSKx970Mhv7y+2/xY4JnKnp4nhxUufVbSuadpWO7FenI/SeP8jKpjJj86Haev8wx9jrW1C+HIUxM0RSefQ8Msikus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zx4jUC0a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XN8Wesbb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D951F000E9;
-	Mon, 22 Jun 2026 16:54:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zx4jUC0a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3F51F000E9;
+	Mon, 22 Jun 2026 16:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782147257;
-	bh=TQRxOVfPsF5zdei5YjlXmlodQ7Ot2nd16HyX3ZqLG9w=;
+	s=k20260515; t=1782147309;
+	bh=tkrUBunzzSd0lpNk16EVteU8HoOMNZNuJe8m7GqVJPA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XN8WesbbvyOworVWhVgscRDeNhSgZmydbPz/p4oR7VNlhMcua0LQgNIz4tMtc5Ju8
-	 R/pPzDNePrsm9XRX7YPBAPbyMKML2pvegsX4SjD+N7+DKOynfQueNX8tSXmAHWa/B0
-	 JVZbQAtfIdfxEXQl9LU+Jtfbcu2+9rSrayKmQKT8C7Gqxp8OyAdHw0STQ4dxvAMMoK
-	 2fWqED/xcGupntj2tnbHAZjSPhJAK6G7U09Jc1BbcBogWDG3ZrE8F29muik4Rva2Lg
-	 0nZhRDTFYFUVSvQyYnXSH9J0qy1OT2u8LX+ZnNJc0/MkyNb6gyycTj3dYincWe0QLu
-	 OLL1yDR4Ytt2Q==
-Date: Mon, 22 Jun 2026 17:54:10 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Anthony Pighin <anthony.pighin@nokia.com>, 
-	linux-kernel@vger.kernel.org, Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <ajlnTdkbmEzy_uhe@lucifer>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org>
- <20260617192928.GB231643@ziepe.ca>
- <ajQDVAu9b-LX8gUQ@lucifer>
- <ajQI5jMJpxyNZCLN@casper.infradead.org>
- <20260618153049.GG231643@ziepe.ca>
- <ajQRY7tHShCEz8vg@lucifer>
- <20260619131658.GA1068655@ziepe.ca>
+	b=Zx4jUC0aWCq9VEBJoN0kOOYcuNOKSkjJSz+tdDvzkInO8/80PWmPij3R6QgCfsqJA
+	 Ks+EYHJ2O+Idv5Oydi4cbp6Qq2+eowtNM3er63+S+6oUoAJfF4agBpyZU3i+PAvTGK
+	 eiwCTwJslDKypU2fvhBUL0rKyUA+CRnjyzkXCNqyjtdETxDlJIMmJfJMFKXGUbX/XB
+	 Cvrff97ZJ5ppUCNUOuQIYsUEihP9KZduCey39sBUCp9G1Qn285RDMJHjJqEjUi0i4U
+	 ERu5PkCov6Dtbb6QmTDloCC60FozrSeBxYOvf76gCS/TPR8BpGPvj5j325lbBbUbrY
+	 WRSuhKLQ9d9Ng==
+Date: Mon, 22 Jun 2026 09:55:08 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
+	jean-philippe.brucker@arm.com, andre.przywara@arm.com,
+	suzuki.poulose@arm.com, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+Subject: Re: [PATCH kvmtool v2 7/7] arm64: Improve KVM_ARM_VCPU_PMU_V3_CTRL
+ diagnostics
+Message-ID: <ajlo7Arpi7XrGjFs@kernel.org>
+References: <20260618155001.226266-1-alexandru.elisei@arm.com>
+ <20260618155001.226266-8-alexandru.elisei@arm.com>
+ <ajRBpMnlcNkhWzQL@kernel.org>
+ <ajj6oGxytFm2NE4T@raptor>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -54,34 +48,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260619131658.GA1068655@ziepe.ca>
+In-Reply-To: <ajj6oGxytFm2NE4T@raptor>
 
-On Fri, Jun 19, 2026 at 10:16:58AM -0300, Jason Gunthorpe wrote:
-> On Thu, Jun 18, 2026 at 04:56:06PM +0100, Lorenzo Stoakes wrote:
-> > > > What you're saying is that offset 0 of the opened file might correspond
-> > > > to a PFN that is not aligned in any way?  I had assumed that when trying
-> > > > to do the mapping of (2MB+4KiB to 64MB), that the offset specified to
-> > > > mmap was 2MB+4KiB.  But you seem to be saying that the offset in that
-> > > > case would be 0 and someone needs to know that it corresponds to a PFN
-> > > > that is misaligned?
-> > >
-> > > I do expect that the pgoff space is usually aligned to the pfn space,
-> > > most drivers do that or could be improved to do that. There will be
-> > > some off cases, but maybe we don't care, and VFIO should be fine.
-> >
-> > Some stuff has weird assumptions about pfn=0 at start of the range (DMA for
-> > instance).
->
-> Do you have a pointer? I'm drawing a blank what "dma" is?
+On Mon, Jun 22, 2026 at 10:04:32AM +0100, Alexandru Elisei wrote:
+> Hi Oliver,
+> 
+> On Thu, Jun 18, 2026 at 12:06:12PM -0700, Oliver Upton wrote:
+> > The whole if (ret) die_perror(...) thing is a bit repetetive IMO. A
+> > treewide cleanup replacing this with macros would be nice, then you could
+> > stringize the ioctl under the hood.
+> 
+> Thank you for having a look, that's a great idea, it will avoid out of bounds
+> array access if KVM gets a new PMU ioctl and the name array is not updated at
+> the same time - that's quite possible since ioctl numbers are pulled by running
+> update_headers.sh, and the dependency is not obvious.
+> 
+> I think the compilation errors are a bit higher priority than this, and a
+> treewide change would more involved, possibly involving a change in behaviour
+> (the gic seems to propagate the error instead of calling die_perror(), for
+> example), would you mind if for this series I'll only introduce the macro for
+> the pmu and convert the rest of the code in a separate series?
 
-(I am obliged to link https://xkcd.com/138/... :)
+Fine by me, thanks Alex :)
 
-dmabuf as in [0], where vma->vm_pgoff must be the page offset
-into the DMA buffer.
-
-[0]:https://elixir.bootlin.com/linux/v7.1/source/kernel/dma/direct.c#L550
-
->
-> Jason
-
-Thanks, Lorenzo
+Best,
+Oliver
