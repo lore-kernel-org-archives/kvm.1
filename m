@@ -1,152 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E971A3160
-	for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 04:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8631A5BAE;
+	Mon, 22 Jun 2026 05:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782102913; cv=none; b=XuKc4nNP3rnmW3C7d6fwXzP2mVw+1UDpdlEdIxBZUA5pBSDlNlit2TY3KdR0NIqNkPpVfeK6EaEgaAdjXyrAOA73sCeHoDdUtyGtE2qSDJSrHzbmhWPCuB3kWcn22UMUC4YOXQYmxJUIdNn/Kx0SXPYP9kXTmM1LqaN/oaYb8rY=
+	t=1782105361; cv=none; b=D2EvDoJF0jfC31G6wd4nRpZdtZZFt0Qipa8zo54xK1/OHg+NILv3SGxmW+WdYWkzHnbTD+mDL5cakfM2zO4AUQcZfHKZMwm3H1Q9je2OdD6IELb6ju8ei54cqzcv8Ap3JlcKLVN13Zz6CX+1QW+Mz2HyO3ivPMdud9GqXhRexSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782102913; c=relaxed/simple;
-	bh=f7yngOaiql8bxXoC7M1MccPtsIq0ZKDTathvBns/JtQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LNczsGzf9vTsuWtRDFor7qj5XihDBSjRdeNwkxNKyYkE821djoGcQpbdeHFxjS4EB+AUUdwLu6KfMCmmd1vkgWv7SWJ5sng82OCPz1Qa4ncMpEwMXxBsVvcFSqePoiWvhFnS8bF9mbQJiYtNxadmctNZeY8k+bJhaKkY81N4v2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5nkgW4Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782105361; c=relaxed/simple;
+	bh=WOIRHBMJDB53+oALbBrWO9clz0p9ceSiZ24cgDAArr0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qou/BdmldZLNh8mWq9Sd4G8QquvMRnDEebA/3m2ozDObt4cMt6hDTnSIcKFa2/OEp22TXz1/tJP80D7dPHZDGCVToIu151YLypG3rVqO4ckWFg/aTtHAZpig3gJpV/uUNGTV+YVP5PJ2Duu1b0pvCDyAErDQziv50M9Ge+zWcKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BIx4pjvp; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5nkgW4Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8736B1F000E9;
-	Mon, 22 Jun 2026 04:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782102911;
-	bh=/bxcoorH509VmAgc0fwLwTKA0GvZ0K3ZuQClb1Q0bxY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n5nkgW4YYNtyP6UBxfJFqQotWAKKaLu3AuaybzcrrvTvvusRF5sRLp7bMAMU9V4dd
-	 0xeD5dqL34CzblHvj5whnq7lD2vLef4ug+TWcvkztaxlmCjXjEcOh8RnrgtPnivizg
-	 tzpCY/zkxNyx1vjsbYzj0PsJrc7lsbo2/OewYiKijo/mWKA9pjAVwreJd8xYt2xSWS
-	 b33W8a+Gfw+eLj8mskaXE0UXQLbpk4FymhnLbNbUPsyxEDZzF65IJ2oPFic+CfsQXb
-	 zC9mBFDEcGowp5wXoBsxXBd2CYMU1KgI7Oa58P2GIl+4O0ACfzfRoJxlJw0+DE692M
-	 NoPCjKO0Nfukw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 06/16] riscv: cfi: Use generated instruction headers
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Charlie Jenkins via B4 Relay" <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260621-riscv_insn_table-v2-6-7f0810ee2274@gmail.com>
-References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
- <20260621-riscv_insn_table-v2-6-7f0810ee2274@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 22 Jun 2026 04:35:11 +0000
-Message-Id: <20260622043511.8736B1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BIx4pjvp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782105360; x=1813641360;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WOIRHBMJDB53+oALbBrWO9clz0p9ceSiZ24cgDAArr0=;
+  b=BIx4pjvps+ZaR/a3PtlqeM+ZWINDyQhWr1L6cNMDUDWtWghARfCoFTM9
+   z8lsm5jFzJ7i+zPyvmJavX8VTVdGLfKqgpUNNbPzus7S/+ENvNom4O+2h
+   SAFN3L6Qnrxfy/lp1kd555OKcJRdoPiSBsOXfe4FD3cXsMeRkqB0W/gAL
+   jkCGa/69UUABR8bAdqdT+1HIsEUovjSTx/slS3hsEkB9G7aFBdpXzaLSW
+   TzYjekJi+aUCtwVZKueoT+QmZA4ccOSSYuW+QRWFlwo6z8MZ+6jL2LKLG
+   unOYCVTHyL4aK9UXg91jFFrkddbNlSRkgz5voxKNadt92bjYufovHtxko
+   Q==;
+X-CSE-ConnectionGUID: 2D8IQqXBRtStAMso7wysfQ==
+X-CSE-MsgGUID: NbicH0glRWCh7QTnNZ7iDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="81807698"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="81807698"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:15:59 -0700
+X-CSE-ConnectionGUID: x5KhmIZvTnOoP2YS52uxRg==
+X-CSE-MsgGUID: nzK0ViqmTj+AiLtYC6cFSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="249234937"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2026 22:15:55 -0700
+Message-ID: <23d4a3b9-41ac-4e05-ada6-01b6ae5e9f04@linux.intel.com>
+Date: Mon, 22 Jun 2026 13:14:48 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
+ domain ids
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+References: <20260614233728.2212104-1-skhawaja@google.com>
+ <20260614233728.2212104-11-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260614233728.2212104-11-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 6/15/26 07:37, Samiullah Khawaja wrote:
+> During boot fetch the preserved state of IOMMU unit and if found then
+> restore the state.
+> 
+> - Reuse the root_table that was preserved in the previous kernel.
+> - Reclaim the domain ids of the preserved domains for each preserved
+>    devices so these are not acquired by another domain.
+> 
+> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      | 87 +++++++++++++++++++++++---------
+>   drivers/iommu/intel/iommu.h      |  7 +++
+>   drivers/iommu/intel/liveupdate.c | 60 ++++++++++++++++++++++
+>   3 files changed, 130 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index 26258861e3bf..cd40e274482b 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -990,15 +990,16 @@ static void disable_dmar_iommu(struct intel_iommu *iommu)
+>   		iommu_disable_translation(iommu);
+>   }
+>   
+> -static void free_dmar_iommu(struct intel_iommu *iommu)
+> +static void free_dmar_iommu(struct intel_iommu *iommu, struct iommu_hw_ser *iommu_ser)
+>   {
+>   	if (iommu->copied_tables) {
+>   		bitmap_free(iommu->copied_tables);
+>   		iommu->copied_tables = NULL;
+>   	}
+>   
+> -	/* free context mapping */
+> -	free_context_table(iommu);
+> +	/* free context mapping if there is no serialized state. */
+> +	if (!iommu_ser)
+> +		free_context_table(iommu);
+>   
+>   	if (ecap_prs(iommu->ecap))
+>   		intel_iommu_finish_prq(iommu);
 
-New issues:
-- [Critical] Incorrect target address calculation for auipc+jalr pairs duri=
-ng alternative patching.
+disable_dmar_iommu() and free_dmar_iommu() are always paired in the
+code. How about merging them into a single helper that is aware of iommu
+preservation? Something like the following?
 
-Pre-existing issues:
-- [High] KCFI failure handler extracts the actual type instead of the expec=
-ted type, leading to a misleading log and a potential arbitrary kernel memo=
-ry leak.
---
+static void release_dmar_iommu(struct intel_iommu *iommu)
+{
+         struct iommu_hw_ser *iommu_ser =
+                         iommu_get_preserved_data(iommu->reg_phys, 
+IOMMU_INTEL);
 
-commit fc627870b9c3f0a09b99b862169f28fa7f3bcda2
-Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
+         /*
+          * All iommu domains must have been detached from the devices,
+          * hence there should be no domain IDs in use.
+          */
+         if (WARN_ON(!ida_is_empty(&iommu->domain_ida)))
+                 return;
 
-riscv: cfi: Use generated instruction headers
-   =20
-Migrate the code that is decoding cfi instructions to use the generated
-instruction headers. This is part of a broader series that updates
-instruction decoding and patching across alternative, kprobe, kgdb, and
-cfi subsystems to use the newly generated instruction tables.
+         if ((iommu->gcmd & DMA_GCMD_TE) && !iommu_ser)
+                 iommu_disable_translation(iommu);
 
-> diff --git a/arch/riscv/kernel/alternative.c b/arch/riscv/kernel/alternat=
-ive.c
-> index 7642704c7f184..b26a90eb65cca 100644
-> --- a/arch/riscv/kernel/alternative.c
-> +++ b/arch/riscv/kernel/alternative.c
-[ ... ]
-> @@ -78,14 +79,24 @@ static void riscv_alternative_fix_auipc_jalr(void *pt=
-r, u32 auipc_insn,
->  					     u32 jalr_insn, int patch_offset)
->  {
->  	u32 call[2] =3D { auipc_insn, jalr_insn };
-> +	u32 auipc_imm;
->  	s32 imm;
-> =20
->  	/* get and adjust new target address */
-> -	imm =3D riscv_insn_extract_utype_itype_imm(auipc_insn, jalr_insn);
-> +	imm =3D riscv_insn_auipc_extract_imm(auipc_insn) + riscv_insn_jalr_extr=
-act_imm(jalr_insn);
->  	imm -=3D patch_offset;
-> =20
-> +	/*
-> +	 * When the 32-bit immediate is split across auipc and jalr, the
-> +	 * constructed immediates need to be treated as individually sign
-> +	 * extended numbers. Add the sign bit of the lower 12 bits to the upper
-> +	 * 20 bits to undo the bleeding of the sign.
-> +	 */
-> +	auipc_imm =3D imm + (BIT(11) << 1);
+         if (iommu->copied_tables) {
+                 bitmap_free(iommu->copied_tables);
+                 iommu->copied_tables = NULL;
+         }
 
-[Severity: Critical]
-Does this calculation unconditionally add 4096 to the immediate?
+         /* free context mapping if there is no serialized state. */
+         if (!iommu_ser)
+                 free_context_table(iommu);
 
-Since BIT(11) << 1 evaluates to a constant 4096 (0x1000), it looks like
-this regression adds 4096 regardless of whether bit 11 is actually set
-in the immediate.
+         if (ecap_prs(iommu->ecap))
+                 intel_iommu_finish_prq(iommu);
+}
 
-For any jump where bit 11 of the offset is 0, won't the auipc instruction
-be patched with a value that is 0x1000 too large, causing the execution to
-jump to an unintended address?
-
-> +
->  	/* update instructions */
-> -	riscv_insn_insert_utype_itype_imm(&call[0], &call[1], imm);
-> +	riscv_insn_auipc_insert_imm(&call[0], auipc_imm);
-> +	riscv_insn_jalr_insert_imm(&call[1], imm);
-> =20
->  	/* patch the call place again */
->  	patch_text_nosync(ptr, call, sizeof(u32) * 2);
-
-> diff --git a/arch/riscv/kernel/cfi.c b/arch/riscv/kernel/cfi.c
-> index 6ec9dbd7292ee..e38d5f863747a 100644
-> --- a/arch/riscv/kernel/cfi.c
-> +++ b/arch/riscv/kernel/cfi.c
-> @@ -40,16 +40,16 @@ static bool decode_cfi_insn(struct pt_regs *regs, uns=
-igned long *target,
->  	if (!riscv_insn_is_beq(insn))
->  		return false;
-> =20
-> -	*type =3D (u32)regs_ptr[RV_EXTRACT_RS1_REG(insn)];
-> +	*type =3D (u32)regs_ptr[riscv_insn_beq_extract_xs1(insn)];
-
-[Severity: High]
-This is a pre-existing issue, but does this extract the actual type
-instead of the expected type?
-
-The compiler sequence for indirect call checks places the actual type in
-t1 (rs1) and the expected type in t2 (rs2). By extracting xs1 here, the
-KCFI failure handler appears to retrieve the actual type loaded from memory.
-
-Since the actual type is read from -4(<reg>) where <reg> could be an
-attacker-controlled function pointer, could this allow leaking arbitrary
-kernel memory if CONFIG_CFI_PERMISSIVE is enabled and the warning is printed
-to dmesg?
-
-Should this extract xs2 instead to get the expected type?
-
-> =20
->  	if (get_kernel_nofault(insn, (void *)regs->epc) ||
->  	    get_kernel_nofault(insn, (void *)regs->epc + GET_INSN_LENGTH(insn)))
->  		return false;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260621-riscv_insn=
-_table-v2-0-7f0810ee2274@gmail.com?part=3D6
+Thanks,
+baolu
