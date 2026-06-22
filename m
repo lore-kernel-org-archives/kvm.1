@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1A534F497;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4383B35203A;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782100901; cv=none; b=nVIC69K6NV97klkNWcdpUUqRB4hfsXZBVWgRIatO9PRKI8q7JRXLSgPpZIGD1KV78oQ0ku2hPfDhZODBWaIJSDtHNX0cXCO6UIURohMg/W21nzxOyy8LmyZST5E48scJ5/8zls74SAejbkl3U1pm7morrWiF9WRq+qGrQ3aIF8g=
+	t=1782100902; cv=none; b=cfj+1ltiDfDWX69Xlu3RdFuPp/syP2i0bwHUKH9+F8DkUkh1GlaWBt5iMD8kRE84rxKXacWeCoqnTsPTvndQur6I31f9cxyiyL8TFoJOcTEnof1lhEvc+FAYi8HHsTmuxrf+eXeKO93TzQvvo6ihWFAdytaEWLSd8UFbsr0ROco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782100901; c=relaxed/simple;
-	bh=/s7s07LIxVqEDoz5hXdHh/rwgg1EE8173MuDCxAexBY=;
+	s=arc-20240116; t=1782100902; c=relaxed/simple;
+	bh=763frQ7EoZ7Vc1DfOAoonCliM33mKg/2n2s5chR42Oc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SJeRDRFveGGx/6pIvGM/4qc679iSrGPxliL7nvWMBJ8VahsqAOi55XzvFju7PxzNheDCWpKCwoHwJFpXjCfDM7g8EqYhHNRQbGVHsyDSTCb7tzOc6KYrQzghrlCLgQwa0lsmTVpzyUisYmqGgsn08PGJu5y4FwWNTpDNG2phI9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVAcvBCJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E8XTFuYMujWc/RN4oIrymZhXTv3bC6famALO+ynN//wu1E2N0AsQMihFYb98lFFqahceicYqYRAykY8v2OSv4yXvsYMPe7ISZxXfzu2oggR5NKw1x4DlAhxCLwBtx1AgEe4NkvjbbfFVw1SiRDFf6C9nOYcNew1sZ2lB96PK2eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+8k3Bwu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVAcvBCJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BB6FCC2BCFC;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+8k3Bwu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 24CAFC2BCB4;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1782100901;
-	bh=/s7s07LIxVqEDoz5hXdHh/rwgg1EE8173MuDCxAexBY=;
+	s=k20201202; t=1782100902;
+	bh=763frQ7EoZ7Vc1DfOAoonCliM33mKg/2n2s5chR42Oc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HVAcvBCJqqhLpcx7sldi8YtBoYx/Mzc+nWU7oVsMe8Og5QbVjExsDNZpeN+kUjSyD
-	 BnGndv5AJH2tTvWEIC76hTqiXHE/7o6CbPzJQ4PVppowYCpBEwK92ACTetyPQCCjI8
-	 vCSRL4N61SnUKsNk4Fo+BswlZC0b8c7cwBgvtd1l983UJo7qWSKC9l5gtcxiVJhtGP
-	 9Q0zMM1/joTedefyQr/BoYVphfmeNHn1slhlxGkaXjzVacPnI674TFtD1O2NLjfUW7
-	 rQ3O8r1fbz22dBOb/ieAyMU4BJjTqvaCKUL3qshbCQ5YA8S+KKLLRLklv4cSzJZ+oA
-	 3aicbVYppZhRQ==
+	b=s+8k3BwuuT5dVyBFSZhxXAuUVDTvUD/4AXdNX8cUcK1zq3gKuity1u5G8ZZ0ftJ+L
+	 2RyllilXKFPFTk2Caf3PmAWEz9eH9SY11q7wTxqCNGn1+xy5x0Yl74zfon3nZofC2I
+	 Bq1CQ3ZyLUcypKnZJlIP/nnsxVLguLulS/Rp8dz7Y3tV0ELqCwitBJNkfqOan7gOhr
+	 euPeMCdKWtPdLS1wWMxFtUStWfqWT6XUZyRiDTx+lQgg4EUlo0Cv7cMUzQGyzjlazd
+	 FVxVtTlsqe8vKSTdQ26nuPgFPzgratIs8qA6gQGrxZSDJVU+zcLKoyPeemfkAyefpv
+	 3QHfEJHhjqo1g==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B270FCD98F6;
-	Mon, 22 Jun 2026 04:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C36FCD98F6;
+	Mon, 22 Jun 2026 04:01:42 +0000 (UTC)
 From: Charlie Jenkins via B4 Relay <devnull+thecharlesjenkins.gmail.com@kernel.org>
-Date: Sun, 21 Jun 2026 21:01:25 -0700
-Subject: [PATCH v2 07/16] riscv: Use generated instruction headers for
- misaligned loads/stores
+Date: Sun, 21 Jun 2026 21:01:30 -0700
+Subject: [PATCH v2 12/16] riscv: kvm: Add emulated test csr
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260621-riscv_insn_table-v2-7-7f0810ee2274@gmail.com>
+Message-Id: <20260621-riscv_insn_table-v2-12-7f0810ee2274@gmail.com>
 References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 In-Reply-To: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -55,11 +54,11 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=12714;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782100900; l=5057;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=ZAiLZFKdSr+pr2o3OBlX9XLjRZtoG/b8FwQl9m8qk5Y=;
- b=y7IVZIEmcoljWJ93+YDaiUC+saBrOzoRz/XrCAyavNyO5zSoQSRFnaLkIZOJi0JJBm15P69lU
- Domxcx36VgcAuc5RmVVDjS7l9pp/yTkT62qaIugZmhW37lekgm4fYbd
+ bh=neF9aplelwD4odoezxCMv5VCTRiCvu3tkb2/zo8PcSI=;
+ b=9jIIU8JY/LLPqDYTkqOQsDnVD/NjPR1ssGDR28kuMyfuB8pPk9cQOmt6ARJ3kfg9/+KvNnXvI
+ l0KuzOqo2ykCOJNV4I3L6zsXMm2QfUeTGCAwrtcbJDW7wOSoMow9V2m
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 X-Endpoint-Received: by B4 Relay for thecharlesjenkins@gmail.com/20260605
@@ -69,368 +68,160 @@ Reply-To: thecharlesjenkins@gmail.com
 
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-Migrate the misaligned loads/store code to use the generated instruction
-headers instead of the hand-written instruction composition functions.
+To test the riscv kvm implementation of emulated CSRs, add support to
+emulate the vsscratch csr when CONFIG_RISCV_KVM_TEST_CSR is set.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
-
 ---
+ arch/riscv/Kconfig.debug                   |  1 +
+ arch/riscv/include/asm/kvm_host.h          | 10 ++++++++++
+ arch/riscv/include/asm/kvm_vcpu_test_csr.h | 15 +++++++++++++++
+ arch/riscv/kvm/Kconfig.debug               | 16 ++++++++++++++++
+ arch/riscv/kvm/Makefile                    |  1 +
+ arch/riscv/kvm/vcpu_insn.c                 |  5 +++++
+ arch/riscv/kvm/vcpu_test_csr.c             | 21 +++++++++++++++++++++
+ 7 files changed, 69 insertions(+)
 
-Similar to the other patches of this series, I extracted out the logic
-of this function and brute forced all possible inputs to validate that
-the outputs are the same. To verify this change in the kernel, I booted
-on Spike and used the misaligned access checker which does some
-misaligned accesses.
----
- arch/riscv/kernel/traps_misaligned.c | 183 ++++++++++++++++-------------------
- 1 file changed, 83 insertions(+), 100 deletions(-)
-
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 81b7682e6c6d..4d2a2432e0c4 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -22,15 +22,11 @@
+diff --git a/arch/riscv/Kconfig.debug b/arch/riscv/Kconfig.debug
+index eafe17ebf710..be202267da6d 100644
+--- a/arch/riscv/Kconfig.debug
++++ b/arch/riscv/Kconfig.debug
+@@ -1 +1,2 @@
+ source "arch/riscv/kernel/tests/Kconfig.debug"
++source "arch/riscv/kvm/Kconfig.debug"
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index 75b0a951c1bc..4d30d30ebefc 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -167,6 +167,12 @@ struct kvm_vcpu_reset_state {
+ 	unsigned long a1;
+ };
  
- #ifdef CONFIG_FPU
- 
--#define FP_GET_RD(insn)		(insn >> 7 & 0x1F)
--
- extern void put_f32_reg(unsigned long fp_reg, unsigned long value);
- 
--static int set_f32_rd(unsigned long insn, struct pt_regs *regs,
-+static int set_f32_rd(unsigned long fp_reg, struct pt_regs *regs,
- 		      unsigned long val)
- {
--	unsigned long fp_reg = FP_GET_RD(insn);
--
- 	put_f32_reg(fp_reg, val);
- 	regs->status |= SR_FS_DIRTY;
- 
-@@ -39,9 +35,8 @@ static int set_f32_rd(unsigned long insn, struct pt_regs *regs,
- 
- extern void put_f64_reg(unsigned long fp_reg, unsigned long value);
- 
--static int set_f64_rd(unsigned long insn, struct pt_regs *regs, u64 val)
-+static int set_f64_rd(unsigned long fp_reg, struct pt_regs *regs, u64 val)
- {
--	unsigned long fp_reg = FP_GET_RD(insn);
- 	unsigned long value;
- 
- #if __riscv_xlen == 32
-@@ -58,10 +53,8 @@ static int set_f64_rd(unsigned long insn, struct pt_regs *regs, u64 val)
- #if __riscv_xlen == 32
- extern void get_f64_reg(unsigned long fp_reg, u64 *value);
- 
--static u64 get_f64_rs(unsigned long insn, u8 fp_reg_offset,
--		      struct pt_regs *regs)
-+static u64 get_f64_rs(unsigned long fp_reg, struct pt_regs *regs)
- {
--	unsigned long fp_reg = (insn >> fp_reg_offset) & 0x1F;
- 	u64 val;
- 
- 	get_f64_reg(fp_reg, &val);
-@@ -73,10 +66,8 @@ static u64 get_f64_rs(unsigned long insn, u8 fp_reg_offset,
- 
- extern unsigned long get_f64_reg(unsigned long fp_reg);
- 
--static unsigned long get_f64_rs(unsigned long insn, u8 fp_reg_offset,
--				struct pt_regs *regs)
-+static unsigned long get_f64_rs(unsigned long fp_reg, struct pt_regs *regs)
- {
--	unsigned long fp_reg = (insn >> fp_reg_offset) & 0x1F;
- 	unsigned long val;
- 
- 	val = get_f64_reg(fp_reg);
-@@ -89,10 +80,8 @@ static unsigned long get_f64_rs(unsigned long insn, u8 fp_reg_offset,
- 
- extern unsigned long get_f32_reg(unsigned long fp_reg);
- 
--static unsigned long get_f32_rs(unsigned long insn, u8 fp_reg_offset,
--				struct pt_regs *regs)
-+static unsigned long get_f32_rs(unsigned long fp_reg, struct pt_regs *regs)
- {
--	unsigned long fp_reg = (insn >> fp_reg_offset) & 0x1F;
- 	unsigned long val;
- 
- 	val = get_f32_reg(fp_reg);
-@@ -107,28 +96,18 @@ static void set_f32_rd(unsigned long insn, struct pt_regs *regs,
- 
- static void set_f64_rd(unsigned long insn, struct pt_regs *regs, u64 val) {}
- 
--static unsigned long get_f64_rs(unsigned long insn, u8 fp_reg_offset,
--				struct pt_regs *regs)
-+static unsigned long get_f64_rs(unsigned long fp_reg, struct pt_regs *regs)
- {
- 	return 0;
- }
- 
--static unsigned long get_f32_rs(unsigned long insn, u8 fp_reg_offset,
--				struct pt_regs *regs)
-+static unsigned long get_f32_rs(unsigned long fp_reg, struct pt_regs *regs)
- {
- 	return 0;
- }
- 
- #endif
- 
--#define GET_F64_RS2(insn, regs) (get_f64_rs(insn, 20, regs))
--#define GET_F64_RS2C(insn, regs) (get_f64_rs(insn, 2, regs))
--#define GET_F64_RS2S(insn, regs) (get_f64_rs(RVC_RS2S(insn), 0, regs))
--
--#define GET_F32_RS2(insn, regs) (get_f32_rs(insn, 20, regs))
--#define GET_F32_RS2C(insn, regs) (get_f32_rs(insn, 2, regs))
--#define GET_F32_RS2S(insn, regs) (get_f32_rs(RVC_RS2S(insn), 0, regs))
--
- #define __read_insn(regs, insn, insn_addr, type)	\
- ({							\
- 	int __ret;					\
-@@ -217,13 +196,13 @@ static int handle_vector_misaligned_load(struct pt_regs *regs)
- }
- #endif
- 
--static int handle_scalar_misaligned_load(struct pt_regs *regs)
-+static noinline int handle_scalar_misaligned_load(struct pt_regs *regs)
- {
- 	union reg_data val;
- 	unsigned long epc = regs->epc;
- 	unsigned long insn;
- 	unsigned long addr = regs->badaddr;
--	int fp = 0, shift = 0, len = 0;
-+	int fp = 0, shift = 0, len = 0, rd = 0;
- 
- 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, addr);
- 
-@@ -240,68 +219,71 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
- 
- 	regs->epc = 0;
- 
--	if ((insn & INSN_MASK_LW) == INSN_MATCH_LW) {
-+	if (riscv_insn_is_lw(insn)) {
- 		len = 4;
- 		shift = 8 * (sizeof(unsigned long) - len);
--#if defined(CONFIG_64BIT)
--	} else if ((insn & INSN_MASK_LD) == INSN_MATCH_LD) {
-+		rd = riscv_insn_lw_extract_xd(insn);
-+	} else if (riscv_insn_is_ld(insn)) {
- 		len = 8;
- 		shift = 8 * (sizeof(unsigned long) - len);
--	} else if ((insn & INSN_MASK_LWU) == INSN_MATCH_LWU) {
-+		rd = riscv_insn_ld_extract_xd(insn);
-+	} else if (riscv_insn_is_lwu(insn)) {
- 		len = 4;
--#endif
--	} else if ((insn & INSN_MASK_FLD) == INSN_MATCH_FLD) {
-+		rd = riscv_insn_lwu_extract_xd(insn);
-+	} else if (riscv_insn_is_fld(insn)) {
- 		fp = 1;
- 		len = 8;
--	} else if ((insn & INSN_MASK_FLW) == INSN_MATCH_FLW) {
-+		rd = riscv_insn_fld_extract_fd(insn);
-+	} else if (riscv_insn_is_flw(insn)) {
- 		fp = 1;
- 		len = 4;
--	} else if ((insn & INSN_MASK_LH) == INSN_MATCH_LH) {
-+		rd = riscv_insn_flw_extract_fd(insn);
-+	} else if (riscv_insn_is_lh(insn)) {
- 		len = 2;
- 		shift = 8 * (sizeof(unsigned long) - len);
--	} else if ((insn & INSN_MASK_LHU) == INSN_MATCH_LHU) {
-+		rd = riscv_insn_lh_extract_xd(insn);
-+	} else if (riscv_insn_is_lhu(insn)) {
- 		len = 2;
--#if defined(CONFIG_64BIT)
--	} else if ((insn & INSN_MASK_C_LD) == INSN_MATCH_C_LD) {
-+		rd = riscv_insn_lhu_extract_xd(insn);
-+	} else if (riscv_insn_is_c_ld(insn)) {
- 		len = 8;
- 		shift = 8 * (sizeof(unsigned long) - len);
--		insn = RVC_RS2S(insn) << SH_RD;
--	} else if ((insn & INSN_MASK_C_LDSP) == INSN_MATCH_C_LDSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+		rd = (8 + riscv_insn_c_ld_extract_xd(insn));
-+	} else if (riscv_insn_is_c_ldsp(insn)) {
- 		len = 8;
- 		shift = 8 * (sizeof(unsigned long) - len);
--#endif
--	} else if ((insn & INSN_MASK_C_LW) == INSN_MATCH_C_LW) {
-+		rd = riscv_insn_c_ldsp_extract_xd(insn);
-+	} else if (riscv_insn_is_c_lw(insn)) {
- 		len = 4;
- 		shift = 8 * (sizeof(unsigned long) - len);
--		insn = RVC_RS2S(insn) << SH_RD;
--	} else if ((insn & INSN_MASK_C_LWSP) == INSN_MATCH_C_LWSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+		rd = (8 + riscv_insn_c_lw_extract_xd(insn));
-+	} else if (riscv_insn_is_c_lwsp(insn)) {
- 		len = 4;
- 		shift = 8 * (sizeof(unsigned long) - len);
--	} else if ((insn & INSN_MASK_C_FLD) == INSN_MATCH_C_FLD) {
-+		rd = riscv_insn_c_lwsp_extract_xd(insn);
-+	} else if (riscv_insn_is_c_fld(insn)) {
- 		fp = 1;
- 		len = 8;
--		insn = RVC_RS2S(insn) << SH_RD;
--	} else if ((insn & INSN_MASK_C_FLDSP) == INSN_MATCH_C_FLDSP) {
-+		rd = (8 + riscv_insn_c_fld_extract_fd(insn));
-+	} else if (riscv_insn_is_c_fldsp(insn)) {
- 		fp = 1;
- 		len = 8;
--#if defined(CONFIG_32BIT)
--	} else if ((insn & INSN_MASK_C_FLW) == INSN_MATCH_C_FLW) {
-+		rd = riscv_insn_c_fldsp_extract_fd(insn);
-+	} else if (riscv_insn_is_c_flw(insn)) {
- 		fp = 1;
- 		len = 4;
--		insn = RVC_RS2S(insn) << SH_RD;
--	} else if ((insn & INSN_MASK_C_FLWSP) == INSN_MATCH_C_FLWSP) {
-+		rd = (8 + riscv_insn_c_flw_extract_fd(insn));
-+	} else if (riscv_insn_is_c_flwsp(insn)) {
- 		fp = 1;
- 		len = 4;
--#endif
--	} else if ((insn & INSN_MASK_C_LHU) == INSN_MATCH_C_LHU) {
-+		rd = riscv_insn_c_flwsp_extract_fd(insn);
-+	} else if (riscv_insn_is_c_lhu(insn)) {
- 		len = 2;
--		insn = RVC_RS2S(insn) << SH_RD;
--	} else if ((insn & INSN_MASK_C_LH) == INSN_MATCH_C_LH) {
-+		rd = (8 + riscv_insn_c_lhu_extract_xd(insn));
-+	} else if (riscv_insn_is_c_lh(insn)) {
- 		len = 2;
--		shift = 8 * (sizeof(ulong) - len);
--		insn = RVC_RS2S(insn) << SH_RD;
-+		shift = 8 * (sizeof(unsigned long) - len);
-+		rd = (8 + riscv_insn_c_lh_extract_xd(insn));
- 	} else {
- 		regs->epc = epc;
- 		return -1;
-@@ -319,11 +301,11 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
- 	}
- 
- 	if (!fp)
--		SET_RD(insn, regs, (long)(val.data_ulong << shift) >> shift);
-+		*(unsigned long *)((unsigned long *)regs + rd) = val.data_ulong << shift;
- 	else if (len == 8)
--		set_f64_rd(insn, regs, val.data_u64);
-+		set_f64_rd(rd, regs, val.data_u64);
- 	else
--		set_f32_rd(insn, regs, val.data_ulong);
-+		set_f32_rd(rd, regs, val.data_ulong);
- 
- 	regs->epc = epc + INSN_LEN(insn);
- 
-@@ -336,7 +318,7 @@ static int handle_scalar_misaligned_store(struct pt_regs *regs)
- 	unsigned long epc = regs->epc;
- 	unsigned long insn;
- 	unsigned long addr = regs->badaddr;
--	int len = 0, fp = 0;
-+	int fp = 0, len = 0, rd = 0;
- 
- 	perf_sw_event(PERF_COUNT_SW_ALIGNMENT_FAULTS, 1, regs, addr);
- 
-@@ -351,67 +333,68 @@ static int handle_scalar_misaligned_store(struct pt_regs *regs)
- 
- 	regs->epc = 0;
- 
--	val.data_ulong = GET_RS2(insn, regs);
--
--	if ((insn & INSN_MASK_SW) == INSN_MATCH_SW) {
-+	if (riscv_insn_is_sw(insn)) {
- 		len = 4;
--#if defined(CONFIG_64BIT)
--	} else if ((insn & INSN_MASK_SD) == INSN_MATCH_SD) {
-+		rd = riscv_insn_sw_extract_xs2(insn);
-+	} else if (riscv_insn_is_sd(insn)) {
- 		len = 8;
--#endif
--	} else if ((insn & INSN_MASK_FSD) == INSN_MATCH_FSD) {
-+		rd = riscv_insn_sd_extract_xs2(insn);
-+	} else if (riscv_insn_is_fsd(insn)) {
- 		fp = 1;
- 		len = 8;
--		val.data_u64 = GET_F64_RS2(insn, regs);
--	} else if ((insn & INSN_MASK_FSW) == INSN_MATCH_FSW) {
-+		rd = riscv_insn_fsd_extract_fs2(insn);
-+	} else if (riscv_insn_is_fsw(insn)) {
- 		fp = 1;
- 		len = 4;
--		val.data_ulong = GET_F32_RS2(insn, regs);
--	} else if ((insn & INSN_MASK_SH) == INSN_MATCH_SH) {
-+		rd = riscv_insn_fsw_extract_fs2(insn);
-+	} else if (riscv_insn_is_sh(insn)) {
- 		len = 2;
--#if defined(CONFIG_64BIT)
--	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
-+		rd = riscv_insn_sh_extract_xs2(insn);
-+	} else if (riscv_insn_is_c_sd(insn)) {
- 		len = 8;
--		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP) {
-+		rd = riscv_insn_c_sd_extract_xs2(insn);
-+	} else if (riscv_insn_is_c_sdsp(insn)) {
- 		len = 8;
--		val.data_ulong = GET_RS2C(insn, regs);
--#endif
--	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
-+		rd = riscv_insn_c_sdsp_extract_xs2(insn);
-+	} else if (riscv_insn_is_c_sw(insn)) {
- 		len = 4;
--		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP) {
-+		rd = riscv_insn_c_sw_extract_xs2(insn);
-+	} else if (riscv_insn_is_c_swsp(insn)) {
- 		len = 4;
--		val.data_ulong = GET_RS2C(insn, regs);
--	} else if ((insn & INSN_MASK_C_FSD) == INSN_MATCH_C_FSD) {
-+		rd = riscv_insn_c_swsp_extract_xs2(insn);
-+	} else if (riscv_insn_is_c_fsd(insn)) {
- 		fp = 1;
- 		len = 8;
--		val.data_u64 = GET_F64_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_FSDSP) == INSN_MATCH_C_FSDSP) {
-+		rd = riscv_insn_c_fsd_extract_fs2(insn);
-+	} else if (riscv_insn_is_c_fsdsp(insn)) {
- 		fp = 1;
- 		len = 8;
--		val.data_u64 = GET_F64_RS2C(insn, regs);
--#if !defined(CONFIG_64BIT)
--	} else if ((insn & INSN_MASK_C_FSW) == INSN_MATCH_C_FSW) {
-+		rd = riscv_insn_c_fsdsp_extract_fs2(insn);
-+	} else if (riscv_insn_is_c_fsw(insn)) {
- 		fp = 1;
- 		len = 4;
--		val.data_ulong = GET_F32_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_FSWSP) == INSN_MATCH_C_FSWSP) {
-+		rd = riscv_insn_c_fsw_extract_fs2(insn);
-+	} else if (riscv_insn_is_c_fswsp(insn)) {
- 		fp = 1;
- 		len = 4;
--		val.data_ulong = GET_F32_RS2C(insn, regs);
--#endif
--	} else if ((insn & INSN_MASK_C_SH) == INSN_MATCH_C_SH) {
-+		rd = riscv_insn_c_fswsp_extract_fs2(insn);
-+	} else if (riscv_insn_is_c_sh(insn)) {
- 		len = 2;
--		val.data_ulong = GET_RS2S(insn, regs);
-+		rd = riscv_insn_c_sh_extract_xs2(insn);
- 	} else {
--		regs->epc = epc;
- 		return -1;
- 	}
- 
- 	if (!IS_ENABLED(CONFIG_FPU) && fp)
- 		return -EOPNOTSUPP;
- 
-+	if (!fp)
-+		val.data_ulong = *(unsigned long *)((unsigned long *)regs + rd);
-+	else if (len == 8)
-+		val.data_u64 = get_f64_rs(rd, regs);
-+	else
-+		val.data_ulong = get_f32_rs(rd, regs);
++#ifdef CONFIG_RISCV_KVM_TEST_CSR
++struct kvm_test_csr {
++	unsigned long val;
++};
++#endif
 +
- 	if (user_mode(regs)) {
- 		if (copy_to_user((u8 __user *)addr, &val, len))
- 			return -1;
+ struct kvm_vcpu_arch {
+ 	/* VCPU ran at least once */
+ 	bool ran_atleast_once;
+@@ -265,6 +271,10 @@ struct kvm_vcpu_arch {
+ 		gpa_t shmem;
+ 		u64 last_steal;
+ 	} sta;
++
++#ifdef CONFIG_RISCV_KVM_TEST_CSR
++	struct kvm_test_csr test_csr;
++#endif
+ };
+ 
+ /*
+diff --git a/arch/riscv/include/asm/kvm_vcpu_test_csr.h b/arch/riscv/include/asm/kvm_vcpu_test_csr.h
+new file mode 100644
+index 000000000000..a844fccaafc3
+--- /dev/null
++++ b/arch/riscv/include/asm/kvm_vcpu_test_csr.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __KVM_VCPU_RISCV_TEST_CSR_H
++#define __KVM_VCPU_RISCV_TEST_CSR_H
++
++#include <asm/kvm_vcpu_insn.h>
++
++#define KVM_RISCV_VCPU_TEST_CSR_FUNCS \
++	{.base = CSR_VSSCRATCH,	.count = 1,	.func = kvm_riscv_vcpu_test_csr },
++
++int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
++			    unsigned long *val, unsigned long new_val,
++			    unsigned long wr_mask);
++
++#endif /* !__KVM_VCPU_RISCV_TEST_CSR_H */
+diff --git a/arch/riscv/kvm/Kconfig.debug b/arch/riscv/kvm/Kconfig.debug
+new file mode 100644
+index 000000000000..dc76e02120a3
+--- /dev/null
++++ b/arch/riscv/kvm/Kconfig.debug
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0-only
++menu "arch/riscv/kvm testing"
++
++config RISCV_KVM_TEST_CSR
++        bool "Test KVM CSR emulation"
++        depends on KVM
++        default n
++        help
++            Enable this option to enable the emulation of a test hypervisor csr.
++            The KVM test csr is the vsscratch register. Once this is enabled,
++            reading/writing to the vsscratch register will trap into the host
++            supervisor and reflect the change.
++
++            If unsure, say N.
++
++endmenu # "arch/riscv/kvm testing"
+diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
+index 296c2ba05089..5092b86751c4 100644
+--- a/arch/riscv/kvm/Makefile
++++ b/arch/riscv/kvm/Makefile
+@@ -38,6 +38,7 @@ kvm-y += vcpu_sbi_sta.o
+ kvm-y += vcpu_sbi_system.o
+ kvm-$(CONFIG_RISCV_SBI_V01) += vcpu_sbi_v01.o
+ kvm-y += vcpu_switch.o
++kvm-$(CONFIG_RISCV_KVM_TEST_CSR) += vcpu_test_csr.o
+ kvm-y += vcpu_timer.o
+ kvm-y += vcpu_vector.o
+ kvm-y += vm.o
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index 1d8741d02242..c5a70de4a579 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -10,6 +10,8 @@
+ #include <asm/cpufeature.h>
+ #include <asm/insn.h>
+ 
++#include <asm/kvm_vcpu_test_csr.h>
++
+ struct insn_func {
+ 	unsigned long mask;
+ 	unsigned long match;
+@@ -112,6 +114,9 @@ static int seed_csr_rmw(struct kvm_vcpu *vcpu, unsigned int csr_num,
+ static const struct csr_func csr_funcs[] = {
+ 	KVM_RISCV_VCPU_AIA_CSR_FUNCS
+ 	KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS
++#ifdef CONFIG_RISCV_KVM_TEST_CSR
++	KVM_RISCV_VCPU_TEST_CSR_FUNCS
++#endif
+ 	{ .base = CSR_SEED, .count = 1, .func = seed_csr_rmw },
+ };
+ 
+diff --git a/arch/riscv/kvm/vcpu_test_csr.c b/arch/riscv/kvm/vcpu_test_csr.c
+new file mode 100644
+index 000000000000..b8aa503cdaba
+--- /dev/null
++++ b/arch/riscv/kvm/vcpu_test_csr.c
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/kvm_host.h>
++#include <asm/kvm_vcpu_insn.h>
++#include <asm/kvm_vcpu_test_csr.h>
++
++#define vcpu_to_test_csr(vcpu) (&(vcpu)->arch.test_csr)
++
++int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
++			    unsigned long *val, unsigned long new_val,
++			    unsigned long wr_mask)
++{
++	struct kvm_test_csr *test_csr = vcpu_to_test_csr(vcpu);
++
++	*val = test_csr->val;
++
++	if (wr_mask)
++		test_csr->val = (test_csr->val & ~wr_mask) | (new_val & wr_mask);
++
++	return KVM_INSN_CONTINUE_NEXT_SEPC;
++}
 
 -- 
 2.54.0
