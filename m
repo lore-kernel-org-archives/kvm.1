@@ -1,188 +1,168 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3D5390985
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782237045; cv=pass; b=mgF9zsVZzvuUThQ7doJXhTa3hznpNslRRzdRkRiN/hksmNYgNaWa7nKYqcwHoF9gA13bKbC/IB+op5vvqoBe/qZKu9iNuLivZq/cDndX2gfcPj1qOF9fYI1f5gRdW9Q4x9nQ9Fb7gAdBNW52Hgxjmaqb7i6M7j29u166B921DvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782237045; c=relaxed/simple;
-	bh=ao/gjLtwrPN9EkIIj1OlYbo6h/r99kzcN9bKH22zQDQ=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O3wW6zsO5pOsVpN3mkbnmP0+G5zNYjw5hMEI2OE1Ib5BtQOXUvxTR6wiAZB+wtHGQWd5jPU5kbwGZGdv/iTbPKk8r7F5/WwUVQZ7qb5cZc2QQMal8Iny/9M70dg/ELLKP/bA9EWfJfALp5AnND9YK5ehEV4Epm5i3Qj8eRw52N4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i6bLY+y4; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EF7390CBE
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782237536; cv=none; b=ffqj4BTaBP8q72XH+KRYISujTqmryLbqqRW0W6fXNuQRpEdjR7lsL4r2v55yW1Mm0WvkD2Gyz4H+WR3TftKBe6VqjmVPJuakNfSWiyF1hBZikKgiqteHIjAGt/WA1zzXqxgLH5P2isGxEN3kApn9c7jKxRlYA8TwN6FTjhQjqTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782237536; c=relaxed/simple;
+	bh=RzEDS2yX+4MKzi0o36/G+EV0tHRLGjT/pJ+PsRmPSfw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oDgBYcKx/OrWX4qoUwCvHy7E0PBoAo7nUtM2y8keda14Q81yRU+ZGVjKq5rxxpYiLY839EQklnqvxNkVBSN5T5W6xxtOsunuGf3IOElmBuNdpHtcxtdrF75SxpMmpBXO21DQwuDthHQxaP7IbCjnstwwB5c3FH6RL+U/2pt9bb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZbAOy+R6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i6bLY+y4"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1384ebe7a10so235794c88.1
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 10:50:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782237044; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iF5uMxkbLqwGYTg7w5lkvF/eZylrhlNh3f6idutSk+MUSyJekL25PKxgWkL5CiSWji
-         ppAk2u00k3xhPHq4SYbiKOtr9wBZGflKt7a8sj0qq4M2KTN3qzzibjR1464r28/wmP+M
-         lKERA9NbnL3pXtkIp8NrzsN12Ju0hHFGtrCgj/fF7EY3+8kX/Wrl+hDo09K5AgbD0sZQ
-         4GpUmNolGWm3Twsa6vn40A1mgi20Xvo1pXrxZLm0W+31jqwnnbbHPgRvVz/ePJHh+ZVh
-         zYHgqrbR75ClalxQHkbKfyfBQLgnboLRjTfbMU0qyqVscu8L9fuL3IIa45e+KFbDzeN6
-         sosA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=iaH6OIuh4aHHZqieJze8syUo2Z1c4+x2P2tU6UVJVNo=;
-        fh=iwZicRdIhd/NIdoyKJQk0rU4LK+/gkZ99VYRzb32iG0=;
-        b=QH5pH17Y5QH5DGVux07kPCUb2lO42oQrEDSz4D1HGRDzUKr3jY7Q+mdAXtyggLRVRB
-         VJTpwdJSMFjqgvoDWp0XB2cLZG0YeYAHlR8klzA1aQ2eXCxopPRPH32HWjJDL3CNnsdI
-         wgOWmCj8Om+2VMF8q9whsOW+avIG1V5+4TSBQIiGZ07J9/4qhSwXfl/7xuTYACiU7rKx
-         AIJpyqYvR3/gqrgBe6+zN4NcFuVw3ZjJlgvtkV88WXgW+ujsvQkJ4XAYoyTRjCUi1fis
-         Zezy29RuQn3jk14+6DAmJ+ouxT2ReiLfjKxy4aEHSzkwvfpnakkPQAePMmcinP1eSeo6
-         NAAA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782237044; x=1782841844; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iaH6OIuh4aHHZqieJze8syUo2Z1c4+x2P2tU6UVJVNo=;
-        b=i6bLY+y4fheSs6q75OLzzsOqa9l01NWekCcBaj6vDWzRrNf73Wu4MLKQ8hmiwJfnGc
-         T5L0BT/mAWOekSBW6iurWAgNjou+8CLxl62vfTA1iwQn+VsyLh6Vm69w9wJt8mFjNZHW
-         65H9iGefXXfZta6mAi4Ir1iT4F0qMd34X59g/aHqqiMIWrnqLQxotAzq1Ca7wtIrfxjk
-         kWfKyDQYzse3LFxaRXDz+JBSoLstq4q4ckKtWXUh/tJjNdjuMl7Ya4Cbv+WRHv0875rS
-         j68iL8JOvYnKfj7/n8WU+gE4kxuu85V7FbV3MrWbOTdTNPlHy2w2lZ8d27Y1fhEf2D5b
-         D9jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782237044; x=1782841844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iaH6OIuh4aHHZqieJze8syUo2Z1c4+x2P2tU6UVJVNo=;
-        b=EkCzxhxMDkaNZtPdRn5y4TF+JMRa3FSjZa8ulYF6/1n9oZf8UKl8EhcCNcGORDodZg
-         jRtyEOYF/0KB0EGZXmUtK52+3jQOWtmrVBvC9vQqGRzfB1CoLe8w8JW5zCjRLUnEdXia
-         VF0Fo+Qj2Qz57uQZq9prVvMOTyFQBZAV7CLbu4n5P7A10VZnaXZ6dPeYGSJT1PRV2ddQ
-         LCR9sKRHvNKWzVWkX+2l7e9GpXEbztdM3v99VTjdj9T5l1MgThbCyp5IuvkgiddzBSgv
-         l+hM7mRCU4NsQGlV7+G7+sOub5mm9YcyLRBCuJUZWDI975lmnZ3R/6hdhdRH0tf44zKd
-         C8MA==
-X-Forwarded-Encrypted: i=1; AFNElJ+VbewJguEH+uJWesTcwLviw1sq2rZ9G1JpojOnjwM2m2hlBwmlggDbvxla2iJ4TimG/vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG51w7sux6zcs7Sh9NJTZAjXbfdB749nnqdeMnUt84zBT9qPlU
-	HSP9VqhEc5kiR5PX42SliUlN5PW37PChE/R77965qACgy2y8s+2ACwUvczPMi3IQQYZMqEPwXPy
-	B+P6fEtBEXrCO/7XHOCNH0t65j0Lq+5QFtfBXBzBR
-X-Gm-Gg: AfdE7clOEdY6tBFzDsjdZF+LIgZPHeK5sew5Uzxg6vcmsobWUPb3ck7OE1pgHnZWgJm
-	ueBQP25XpeFcuyxCP1qYTKsRIXcMgB74B+Mm1AJXnBIeIv8mS6SXG5D9xqlhM7GUk9gfNLBHPWf
-	BA2gqbqeXiAlOTBLMgymjgIEa8Kp4TccOPKjLbRxqSF8BJUGdgpWZ44vqoOXuzmBOVq6YKF+Guq
-	g+EdJuRcNaYFvogSCeUx9vAIy7qqiJXU85zY96S2Rn11Vem7DMOiZQn5IiwyeVbYjUFavdWRhi8
-	RghMlCup63S6BPMwI+1FDwqk/lHgCW+FiNUU7dk2txt7yBpKRTLXruBm+5o=
-X-Received: by 2002:a05:7023:b0d:b0:12d:ea4f:99de with SMTP id
- a92af1059eb24-139c5b9d56amr3139260c88.0.1782237043068; Tue, 23 Jun 2026
- 10:50:43 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 10:50:42 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 10:50:42 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <8c5f4082-e3a5-4f65-b058-33938a7ee324@amd.com>
-References: <cover.1781419998.git.ashish.kalra@amd.com> <de274c2fb3f794ff1f19f0c96184ee50d04d1282.1781419998.git.ashish.kalra@amd.com>
- <0fa0bc95-ff31-40c5-b083-3c885d09d0ab@amd.com> <8c5f4082-e3a5-4f65-b058-33938a7ee324@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZbAOy+R6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6601F00A3A;
+	Tue, 23 Jun 2026 17:58:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782237535;
+	bh=29MXx0ZeiSexMD4mniQObjEduMkNTNcTPVWQ3j6Z4ME=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZbAOy+R6CkQ+cPJ2JRV+mF4IuJ9cAqm9u2hsJUNWkDhAMkP8qUVQhDVCGV3JXV3FL
+	 C/M4OGjfBsZspEUFZpeCinve4BZH1eb56D6frqKdW7BPsffACsdvtpVZ+67sUc4Es/
+	 ebVzUHuknm7QqZ17/OFxmdr8t0SsbDEW+jczPVFYNJLg0EgU+ZrAvKV/5oEHdNSgE1
+	 RvgXZjP0L8TYlUGKl0XtUbZP8E6yEqfCOG/EbW6S6MI/1SIHUMdmhoK6MY+iF5MWcy
+	 PugwuNmsZX5xbdrXbDd/0O/kEoeOmj3q4BbM76hDMY5WEIDvh4KooFQQpLn9zNAXwp
+	 VFQ9RejxV89ww==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/4] vhost/vsock: suppress EHOSTUNREACH fast-fail
+ during CPR pause
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622175808.508084-3-andrey.drobyshev@virtuozzo.com>
+References: <20260622175808.508084-1-andrey.drobyshev@virtuozzo.com>
+ <20260622175808.508084-3-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 23 Jun 2026 17:58:54 +0000
+Message-Id: <20260623175854.DB6601F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 23 Jun 2026 10:50:42 -0700
-X-Gm-Features: AVVi8CdyhQZDa5lioZ66r0smztGw-BoY8xCcu3T1y7FPhbFJD_2pARoB-P2VDng
-Message-ID: <CAEvNRgHPbb0ARYS-E4N=fM1eG5fNshKHSwdWj74gZdzjgwm4Rg@mail.gmail.com>
-Subject: Re: [PATCH v8 4/7] x86/sev: Add support to perform RMP optimizations asynchronously
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, seanjc@google.com, peterz@infradead.org, 
-	thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
-	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, jackyli@google.com, 
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com, xin@zytor.com, 
-	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com, 
-	nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de, 
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-"Kalra, Ashish" <ashish.kalra@amd.com> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
->
-> [...snip...]
->
->
-> Yes, a simpler implementation will be like this:
-> ...
->
->  	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL))
+New issues:
+- [Medium] The `started` flag is never cleared on VM reboot, permanently di=
+sabling the originally intended fast-fail behavior for all subsequent boots.
 
-Perhaps have a WARN_ON_ONCE() here so we know rmpopt was not performed?
-Not a huge deal without though.
+Pre-existing issues:
+- [High] The patch exposes an unbounded memory leak and Local DoS vulnerabi=
+lity by queueing host-initiated packets indefinitely when the guest is paus=
+ed.
+--
 
->                 return;
->
->  	cpumask_copy(follower_mask, &rmpopt_cpumask);
->
->         /*
->          * The current CPU's core always has RMPOPT_BASE programmed
->          * (snp_prepare() required all CPUs online at setup and CPU hotpl=
-ug
->          * is disabled while SNP is active), so it can always be the lead=
-er.
->          * RMPOPT_BASE is per-core; exclude this core from the followers.
->          */
->         migrate_disable();
->         cpumask_andnot(follower_mask, follower_mask,
->                        topology_sibling_cpumask(smp_processor_id()));
->
->         for (pa =3D rmpopt_pa_start; pa < rmpopt_pa_end; pa +=3D SZ_1G) {
->                 rmpopt(pa);
->                 cond_resched();
->         }
->         migrate_enable();
->
->         cpus_read_lock();
->         for (pa =3D rmpopt_pa_start; pa < rmpopt_pa_end; pa +=3D SZ_1G) {
->                 on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, t=
-rue);
->                 cond_resched();
->         }
->         cpus_read_unlock();
->
->         free_cpumask_var(follower_mask);
->
->
+commit c58db98ab34af8efb673c49c85406f685bf9805b
+Author: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-Definitely better than the version in the original patch :) Thanks!
+vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
 
->  Here, the leader exclusion must use the sibling mask, not clear_cpu(this=
-_cpu). That's why my collapsed version uses:
->
->         cpumask_andnot(follower_mask, follower_mask,
->                        topology_sibling_cpumask(smp_processor_id()));
->
->   - If this_cpu is a primary: its sibling mask contains itself (the prima=
-ry) -> andnot removes this core's primary from the followers.
->
->   - If this_cpu is a secondary: it isn't in follower_mask at all, but its=
- sibling mask contains its primary, which is in
->   follower_mask -> andnot still removes this core's primary.
->
->   So either way the current core is dropped from the followers. (The old =
-code needed two branches because case #1 used
->   clear_cpu(this_cpu) =E2=80=94 only correct when this_cpu is the primary=
- =E2=80=94 while case #2 used the sibling andnot. The single andnot works f=
-or
->   both cases).
->
-> Thanks,
-> Ashish
->
->>> +		goto followers;
->>> +	}
->>> +
->>> +	migrate_enable();
->>> +
+This patch alters the fast-fail condition in vhost_transport_send_pkt() to
+check a new 'started' flag rather than checking if the device backends are
+dropped. This ensures that host-initiated packets are queued rather than
+fast-failed when a guest is temporarily paused during checkpoint-restore.
+
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index b12221ce6faf2..bec6bcfd885fa 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+[ ... ]
+> @@ -302,17 +303,12 @@ vhost_transport_send_pkt(struct sk_buff *skb, struc=
+t net *net)
+>  		return -ENODEV;
+>  	}
+> =20
+> -	/* Fast-fail if the guest hasn't enabled the RX vq yet. Queuing the pac=
+ket
+> -	 * and making the caller wait is pointless: even if the guest manages t=
+o init
+> -	 * within the timeout, it'll immediately reply with RST, because there'=
+s no
+> -	 * listener on the port yet.
+> -	 *
+> -	 * vhost_vq_get_backend() without vq->mutex is acceptable here: locking
+> -	 * the mutex would be too expensive in this hot path, and we already ha=
+ve
+> -	 * all the outcomes covered: if the backend becomes NULL right after th=
+e check,
+> -	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
+> +	/* Fast-fail until the guest first enables the device (SET_RUNNING(1)).
+> +	 * Before that there is no listener, so queuing is pointless. 'started'
+> +	 * is never cleared, so once we're up we keep queuing across later
+> +	 * stop / CPR-pause windows.
+>  	 */
+> -	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX]))=
+)) {
+> +	if (unlikely(!READ_ONCE(vsock->started))) {
+
+[Severity: High]
+This is a pre-existing issue, but does changing the fast-fail condition to
+rely on a flag that is never cleared expose an unbounded memory leak when a
+VM is paused?
+
+If a guest is paused, the device backend is stopped, but the started flag
+remains true. A local user could repeatedly open a vsock socket, call
+connect() with O_NONBLOCK to the paused guest's CID, and immediately close
+the socket.
+
+The close system call invokes virtio_transport_release(), which drops the
+file descriptor but does not call cancel_pkt() to purge the pending
+VIRTIO_VSOCK_OP_REQUEST packet from the transport's queue:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_release() {
+    ...
+    if (remove_sock) {
+        sock_set_flag(sk, SOCK_DONE);
+        virtio_transport_remove_sock(vsk);
+    }
+}
+
+Since skb_set_owner_w() binds the queued SKB to the socket's sk_wmem_alloc,
+the orphaned socket and the SKB are kept alive in kernel memory. Because
+send_pkt_queue is unbounded and there is no orphan socket limit, could this
+allow a user to indefinitely leak kernel memory and exhaust host resources?
+
+>  		rcu_read_unlock();
+>  		kfree_skb(skb);
+>  		return -EHOSTUNREACH;
+[ ... ]
+> @@ -640,6 +636,11 @@ static int vhost_vsock_start(struct vhost_vsock *vso=
+ck)
+>  		mutex_unlock(&vq->mutex);
+>  	}
+> =20
+> +	/* Set 'started' flag on the first start; never cleared, so send_pkt
+> +	 * keeps queuing (instead of fast-failing) on later stop / CPR pauses.
+> +	 */
+> +	WRITE_ONCE(vsock->started, true);
+> +
+
+[Severity: Medium]
+Does leaving this flag permanently set disable the originally intended
+fast-fail behavior for all subsequent VM boots?
+
+During a VM reboot, QEMU resets the vhost device via the VHOST_RESET_OWNER
+ioctl, which clears the backends via vhost_vsock_drop_backends(), but
+typically keeps the /dev/vhost-vsock file descriptor open.
+
+Since the started flag is never reset to false during VHOST_RESET_OWNER,
+host connection attempts during the rebooted VM's early boot phase will
+bypass the fast-fail check and be queued indefinitely until the VM fully
+boots.
+
+Could this contradict the commit message's goal to keep the behavior
+originally intended, which is to fast-fail if there is no listener yet?
+
+>  	/* Some packets may have been queued before the device was started,
+>  	 * let's kick the send worker to send them.
+>  	 */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622175808.5080=
+84-1-andrey.drobyshev@virtuozzo.com?part=3D2
