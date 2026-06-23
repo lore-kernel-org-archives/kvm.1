@@ -1,57 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD67363C64
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 14:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FAB363C64
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 14:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782224470; cv=none; b=VFlsmuNX7LDABJt16UPzblHFVG8flSFuDJUxgtaiL+r2FaiQyb578iyZ2WASXKYRvXLF5ygXlUufv2RLV23IpP7vD6XesC6Tojtg4P8uMCjRCZZHEGvhF/iI/z49qxsV7QiQP3MfW143JbU4TMyI4z0ChTbyeMV+qbZw2mkkB9U=
+	t=1782224475; cv=none; b=p+3cdJM43kw0qzwpyPryDipW6j1M2+UgnE2DU9CxZko9uLipjy0hj7TprPpZXhJJ0PvL/aEHVhudJN5QbAB98GVuYNiaCZFG+zH6THtaDpv8BZQXYnObv5PXHViQg54WS3TO52KDqd/TOS7JfBKKIgNunlExHr74iG/qJw8E+vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782224470; c=relaxed/simple;
-	bh=Kv+1NHl42ymfK/+f+/4S/PNGkuHoaavwrp22ie7F4+U=;
+	s=arc-20240116; t=1782224475; c=relaxed/simple;
+	bh=Xhc35v/TSZ+AgLU91QoDjJAHv/Igycpol3ZHcA2YDDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmPFLI6wyPdahk/TWSMwsuxTa0tSphhyS+v1v5gjIYfZs1EZb6f3zxwUyfEnZoyM10et8DvZJEmN3wOyolGXqWYtxSqmGexR0wtGuw90ZH4p2nnD8iwcIh3wLlQgXYSq1trY1/fkqsZOYaWa7VsBCvDojdsNWtRkWgR89KZ3RX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tQTp5K8W; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=OFUmAErzhv0O555BCiCf/DPW9oOMZNoOXJavW2BQ/Qg58wpag6+tMfew9YbjGU0EKKtHNCPfXqwC4XaQKgqjW6YMxHeI8cPZX/k6sLb1f9SGjkEciE+pPX7U7GyQEwEi+Vgul0QRtgD9cv6QRNdiOaRS1NOflKJsKsdjYyGhqag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gFWlsbZd; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tQTp5K8W"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65NBmIPI1983827;
-	Tue, 23 Jun 2026 14:20:55 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gFWlsbZd"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65NBn12Z1858416;
+	Tue, 23 Jun 2026 14:21:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=LGNgZMw1UEgMoxoYi
-	supKjhdJLZKr9GILaxiozmZ6es=; b=tQTp5K8WOKs3FuQC+kCMehYRZb//jfN7L
-	sUcediV/rJAYkOvOqfYx2nT7vKRaXzwa5D1GIh44ZwkLj/1RZJvMfvN+Y4DpDGz9
-	wtT++PePUvGOWGG5phBkm7JoFUqLD1KvpR8RM3RdMkg2dLV0PZgnFDX6ELIrQrHV
-	ca+4N3+b5XL71gx8xxvgB63KUYnO8foBQuureNIZGPOD1lMiXKOBhOoj/HdkGqYK
-	GR/uXb4lcncz4jajNsaBlN3wz0b4m9tVqbYx+yq4kDgSRGr+iqaRpAPkfOWdBriN
-	w/6QP1bUK9RF0Fh9WvV+UCM34OCdqXPyvJ6rmt29J2q9mT/ABvNaQ==
+	:mime-version:references:subject:to; s=pp1; bh=MH3+Fm1X+G3WoSgOt
+	xXXW016+N8ndpH4JV+X9W0a35I=; b=gFWlsbZdEXy12+qJ5/oBaZ7igkPg5Edak
+	rK+svws1SvaQtpFTIRdEK8xsjhqKsZAkq0OgsgDMfrKe26CErWS61GoiKgiY99d5
+	KNzfAiOxaYm4UhSXP4aoj9kHYrH0WnMudNKjfCn/R05JrB/6/7qHS/w7z36EKbkm
+	xejXpCQmLXChFnxxpBzF4Mfz3XS41L7XYYjTu7D5nIr7MkLSHnLIAVGKV3PKtMms
+	ylpKjPt31bYCZygBiPJuShThZgSipoYNnHq4ZAlPElpqmF8r4E/ci3ablkcc1ZmJ
+	9zcWaI/ojoZlKXuKWo7l0K8PagkOS1vT/placGZZzuOulHz+SXYwA==
 Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjc3f1jn-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewg9hq7fg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jun 2026 14:20:54 +0000 (GMT)
+	Tue, 23 Jun 2026 14:21:04 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65NEJlob016983;
-	Tue, 23 Jun 2026 14:20:53 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex66k3ng1-1
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65NEJfd1016955;
+	Tue, 23 Jun 2026 14:21:03 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex66k3ngp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jun 2026 14:20:53 +0000 (GMT)
+	Tue, 23 Jun 2026 14:21:03 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65NEKnUH38011170
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65NEKx4a46530828
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 23 Jun 2026 14:20:49 GMT
+	Tue, 23 Jun 2026 14:20:59 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6AEA92004B;
-	Tue, 23 Jun 2026 14:20:49 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 32BD520043;
+	Tue, 23 Jun 2026 14:20:59 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CD1220040;
-	Tue, 23 Jun 2026 14:20:40 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2421220040;
+	Tue, 23 Jun 2026 14:20:50 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.19.165])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 23 Jun 2026 14:20:39 +0000 (GMT)
+	Tue, 23 Jun 2026 14:20:49 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
         Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -69,9 +69,9 @@ Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
         Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
         kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
         Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH 4/8] tests/functional: Use default powernv machine instead of power10
-Date: Tue, 23 Jun 2026 19:49:29 +0530
-Message-ID: <20260623141933.577981-5-adityag@linux.ibm.com>
+Subject: [PATCH 5/8] ppc/pnv: Replace Power8E with Power11 for 'none' machine test
+Date: Tue, 23 Jun 2026 19:49:30 +0530
+Message-ID: <20260623141933.577981-6-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260623141933.577981-1-adityag@linux.ibm.com>
 References: <20260623141933.577981-1-adityag@linux.ibm.com>
@@ -84,56 +84,57 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=X4Ni7mTe c=1 sm=1 tr=0 ts=6a3a9647 cx=c_pps
+X-Proofpoint-ORIG-GUID: XiUpj6y-aTHjgMrJfJx6qHs5kF0fN9Rr
+X-Proofpoint-GUID: A6rpFGHk-uQOYcL9dwT1E1GTA9lVMgLu
+X-Authority-Analysis: v=2.4 cv=Y4XIdBeN c=1 sm=1 tr=0 ts=6a3a9650 cx=c_pps
  a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=MGuuq5ZBRx0t7b6k6EIA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDExNyBTYWx0ZWRfX+zyd+WORj2PU
- dmrXHE767hBjw6RJhJ979j4Vh6UpusYnL78kV7hUURvigz7WTmPuf46j9Ayj3RPfsS2XOpyF+E0
- v8A4c6U9+dZ/8WsSy9K801MbX/5FVbE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDExNyBTYWx0ZWRfX99YQK07LVY2A
- KkeiNSTjVItTySUPEWxmktgbj07oKl1LyCD+9tz4bNqyf5HRaxBYAVhh7pUbW3ZT8ZRsOZcMPwh
- haz8788WLydjHWlUQV+0fljoAJyV9z5f2YmSLjzihZ2NyjeAYMB969EsTmc5CQedPCoFpXL0vfk
- LGYvY11Og0dytfdp/60HYpjQ4yT9TUN9F2l4oZjg0xiSPxihQxXGvTifssAALmTGP8ArgK9U4xn
- knJog7tlFUD2edZpNc9SYV9RF4799v5kz2ZNMZAuluK3ApuvM5T0SQ2OZM/IIDx9s3IPdlEyyUG
- wLa/Q2WQ/+n767OQvUqIZyZrh2xtE+Dw15k1xyiM+6GNiebhJFBkKRjfOlAsh3Vray0UX4pWELy
- jlqHETCVWKSsN5I6SPW0vF0v1hvlr4bLcdzolIsYDr/y/zwVaIYgyGv7ptwZCHS4U5EX+lFXqAg
- 2HhY6QYCjfn3lEYSt9A==
-X-Proofpoint-ORIG-GUID: d6SsggomyJ5akhQGcassHHX56V947UXh
-X-Proofpoint-GUID: K_EKy-WL-ZjcJz30zDxBl_z35puNVh6D
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=F5hhBwQ8Fieae4k-f6wA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDExNyBTYWx0ZWRfXwcvFZbYir81O
+ CBJK4DMShaK9BBDjHUBHthjguB3/IAqHmYcEHRHjIUc88sorzxPXcj8EQkmlEzGtCyPCT/RhN6b
+ WZV8egRXE6TnlreRZnZg4MJL1YDhNYJfEx/Am17h+r6DBY3o8xgDHm2I2ZfsvqIpYTIBxT50T7Q
+ zdQPKRtaI1C8TdvRL7Fhe0RT0MJ6hY9IML1MqHCsQMyKoZ+tm532oA5wZHKJFvmO82LJte4/nqS
+ kHEs+sSB1PYDtOVu7rZxL4Ji5bsTtgeATWsyl8fHdLO69MnvU20nKr/eNj/ci2eWNEqQPpNUhRT
+ BGux4iyrKFnoRoR1lPJEgunOSOAUKU2Yu4ERflD+PNkyFiljvZK1yfyp+pR6aoX/1X+lq98dq97
+ kKE5t1c0MbkgFXQdTj3FMQ5pba49XhjB+3wHtTldrAViJGeNmLmISTsZZDEuXXKQtSyJmWjPhqr
+ KnsGe3ZQdHjzOunAzQg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDExNyBTYWx0ZWRfX3pKQALxOkFkY
+ T+x9lZykNmQqEZ9PJh9Lww1wZmxrkCadEIIxR7+AGEo8M+QnpQCsXAknbRT8PKdAfh++Q+SRMdi
+ PNDcWSQbcL3qGJfcCMd8QSRut6h8ua4=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-23_03,2026-06-23_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606230117
 
-The default powernv machine has been recently changed to powernv11,
-though fadump functional test used powernv10
+Power8E and Power8NVL were deprecated since QEMU 10.1, with
+commit 264a604e7163 ("target/ppc: Deprecate Power8E and Power8NVL")
 
-Change it to use default 'powernv' machine for the tests instead of
-being fixed to powernv10
+As Power8E chip is removed in future commits, remove the use of Power8E
+chip for use with the none machine test, and replace with Power11 for
+ppc64 test coverage for the test
 
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- tests/functional/ppc64/test_fadump.py | 2 +-
+ tests/qtest/machine-none-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/functional/ppc64/test_fadump.py b/tests/functional/ppc64/test_fadump.py
-index 7ea65974e0ea..c75095076b52 100755
---- a/tests/functional/ppc64/test_fadump.py
-+++ b/tests/functional/ppc64/test_fadump.py
-@@ -53,7 +53,7 @@ def do_test_fadump(self, is_kvm=False, is_powernv=False):
-             self.require_accelerator("tcg")
- 
-         if is_powernv:
--            self.set_machine("powernv10")
-+            self.set_machine("powernv")
-         else:
-             # SLOF takes upto >20s in startup time, use VOF
-             self.set_machine("pseries")
+diff --git a/tests/qtest/machine-none-test.c b/tests/qtest/machine-none-test.c
+index bafd7d660ec7..3205df190f35 100644
+--- a/tests/qtest/machine-none-test.c
++++ b/tests/qtest/machine-none-test.c
+@@ -38,7 +38,7 @@ static struct arch2cpu cpus_map[] = {
+     { "mips64el", "I6500" },
+     { "or1k", "or1200" },
+     { "ppc", "604" },
+-    { "ppc64", "power8e_v2.1" },
++    { "ppc64", "power11_v2.0" },
+     { "s390x", "qemu" },
+     { "sh4", "sh7750r" },
+     { "sh4eb", "sh7751r" },
 -- 
 2.54.0
 
