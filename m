@@ -1,298 +1,342 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023114.outbound.protection.outlook.com [40.107.201.114])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010052.outbound.protection.outlook.com [52.101.85.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C4732B13A;
-	Tue, 23 Jun 2026 23:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46A1394470;
+	Tue, 23 Jun 2026 23:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782256138; cv=fail; b=b/C7g8VN3yxitirLfnPCdS1rW70GB/HDd3bvIKZS/X4rCOsM2D1Sc1Pbr4tQvx3ja4zOF9RZNeFLoWc2Tyu6g54lkuFIL+vM+KdLi5JAeLvhbu73LJmVqE72oXvIh7vm6CqDhudJSRZvP687MlHTPHUMmpHcnNMA9JAzw3HBA0A=
+	t=1782256963; cv=fail; b=a/B4ICMQ9ijE3ScPXB7/zWLnH+07Io97QTX9dE55xn3ZkeUsYtR1zjwy/jfimSqhVOjYMgfKL8+/JuC6fTKJDLGoROh81nScaePO2WxBMiOmfRrB/87WJJEzUjhd1W8z7bajjvrqji8/p5sKBpxP1f3GL3MQiusP2FoSEXuF/DY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782256138; c=relaxed/simple;
-	bh=qbgE1cyuapNA48W/BftBlee3XLCbmI7ERnpiR1os9s8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gi+Gg7m7883lOkBKyb4ykoJzVE8BMRNxZcZtiJxG+LkOiQw/i++P1X7PtuWTV7948hHk27qxTuTZW/8ZesnjigBCuG6kFQ19faV6Z9N0J+eAmUDowt5idkjGIUyrOPqSjLy228HXWYwNCBdV3smmGs1l4TNWLMYvQUTEu6CUa08=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fortanix.com; spf=pass smtp.mailfrom=fortanix.com; dkim=pass (1024-bit key) header.d=fortanix.com header.i=@fortanix.com header.b=ShuMfMUl; arc=fail smtp.client-ip=40.107.201.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fortanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fortanix.com
+	s=arc-20240116; t=1782256963; c=relaxed/simple;
+	bh=xQHJD74L2gMuDGvn3WkBxZ10+gUI7uhTzFhaFhfzO2I=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CgvYIIVozVceMTz6TX7ZTxmKr3/juUbk5a5pKmUyzM4J7mfWZED1OAJGhX8W/NUFhoLOfsSS5SPQqrtoSSuQlTRTbADmQd2h9CH2Ja2o6jMQme8ccMH5cm+OcFOzTN8JLOwjHnIp+2u/RM+FRR/Z8eBWhdphKODSJitxowc+/dM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pIZsxznN; arc=fail smtp.client-ip=52.101.85.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=fortanix.com header.i=@fortanix.com header.b="ShuMfMUl"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pIZsxznN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A6svKZ83RPZe0hqrUq3HuMuCsa0/tWPGEF95Ls025zKRKwcNCHUzvgRmkY6ZuzNBI40lU3x1//VAGLeZH0GzI9Kt+iaylbx1UK+4XETzmhCiu35CQql9F9EVCijaY9ae9iIMZXYlnaqGxZ1z9A/winKWRrnF4sZZt6Fl/+11FyFFedfhRuDuCUaaHWz6Vp2cbqAxvgddD/p0B5wvWwwwRRRYejitB78r7xAm8zCKe1EdPF3HwsmsX4tvGcxYKGHUbAXf7WKqI3CUKp2DUjI5GZ7xStQeF9kHCIjmB/97bOHICbApRKWFBoqWuc25HH88X6MTawcrsLUE4SFDFyg8GA==
+ b=AAwasEfM5sjzexwz21jPM2OP9ZW5cyKZmSGpohe3NtLeVoetflyLTTl3XKT1uPzouccp4JZChD2kBCsLAokS6EPrfCLBsx206d5VAw4rDUlA49phImJQalLRHeN3fx8bzucgOkChngiLVwdrlgCX+T3GTIS5F/yHeurg2Q64NqbW+MOd/9Ey0YsIKgc+P4bQX428nF9p7xrg1lFB3z9mrNlcMBR+Zex5iJNw6UDA6xvuSmcdd1fN9mkwviA/mHdcENC771WetYQXBFa4IICy7YUklHiePKCwsmIk2AVZAgZvpVEC4BGJtaIxs6Yzr/uxyBKSLADvx1Z/loonyC1pbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AOetI1gjjkOyKE4mM8/fPuNuvg1lHOasjTue4Z7F1N0=;
- b=JBqgy3M5PCoUC+4+PJUN31r5MPaAEDjaUI9i8DgqXwdwAb7VKojbY9I5xZZtyFCcWiZxOd3kEIUNkKAsbKWa5cIdTdgHyP850V7JMvFtYKzpnpcaPQSb0GCgZtk9wzYfQkRhXL+4RIfwxPAo1EIIzUrxE0YViUJIl4r6XealcUOaA5sAjOX+ein3nEkJ84mxj3W4s5sGXXBHVtj6cDCvPF9PA5766ap3n5qxfUv8DqSw2pbepWgAmyErkXrNY0R9Zm+fjG713XltKyBT30WlpTvAKWzYEInlPrSipVxQARzHUik56jc7wLYZysFaIrgEvfx5vXCmtSvxS1+VrJ0KCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fortanix.com; dmarc=pass action=none header.from=fortanix.com;
- dkim=pass header.d=fortanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fortanix.com;
- s=selector1;
+ bh=68kTSJd6mv7p9bYktadgLNuVcXsueRwR4nDXOPmgvC4=;
+ b=xEsDbd+GUcrzMHNwgGbydLLoOBxvkcZD1DKcZkbI5IUFTxJVC35O7yjBjnKaEiFLPe/A4CMlY60s5o1Z6cLSm87fx1RItau0UGDdP+mxETLtjFnBPtCZsRROdEtIM98qqpHRqcTWaG+ZBatMJQk/UnMmawUwasMeHNjnSKVEcjBeEUn7jTOHy5yCozC39S4QitO721hrHDxBq97ES2ODDiqw8JsqFx9EMdWdG4NPdhg/DATequ+cmn46qfSBshH6H1Jbl3BgzNYheVJFKukWNX9tMzqtMutJ1BxaOq0yIftBEYpz4zwgNJ20iBdOOreVctYZX6rlmTcvxPOo8FNgTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AOetI1gjjkOyKE4mM8/fPuNuvg1lHOasjTue4Z7F1N0=;
- b=ShuMfMUl2z+XdR4dU//uVn2EgeUekE+s2yHOYYD4QWPHolqyvMbgjZbMg63KXBAGPPHfCjjWTSmDkjdnAuMISoc0vrHfqeJMQA0RYhhAjb9ReD9a61Z+THPkZRsijGQZctO5OsUrTT/0vDHLs7ZCeOShkYCvaGYQsKhNlDhl/bA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fortanix.com;
-Received: from PH0PR11MB5626.namprd11.prod.outlook.com (2603:10b6:510:ee::15)
- by SJ0PR11MB5005.namprd11.prod.outlook.com (2603:10b6:a03:2d3::21) with
+ bh=68kTSJd6mv7p9bYktadgLNuVcXsueRwR4nDXOPmgvC4=;
+ b=pIZsxznNF5saY3x5yWUOhf3Oz5Rd6zOoETOfwFaYsJ2Fasg0+pzR/ZX7uPUVvITxzrzslBh2XqSWtOZwxkGgZNiq2SdG30XWSh6rp3J/IR8bzygjRz1Bim/Tq/TVoZdEPPGN1C6SaRTIyIkeicJHGU+ebMmxxj0VwnZzBXWE6zU=
+Received: from DM6PR02CA0115.namprd02.prod.outlook.com (2603:10b6:5:1b4::17)
+ by CY8PR12MB7561.namprd12.prod.outlook.com (2603:10b6:930:94::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 23 Jun
- 2026 23:08:54 +0000
-Received: from PH0PR11MB5626.namprd11.prod.outlook.com
- ([fe80::64f2:5af6:ec99:cb80]) by PH0PR11MB5626.namprd11.prod.outlook.com
- ([fe80::64f2:5af6:ec99:cb80%5]) with mapi id 15.21.0159.012; Tue, 23 Jun 2026
- 23:08:53 +0000
-Message-ID: <89c4ac3a-1462-4798-a700-2e1e9407a4f8@fortanix.com>
-Date: Wed, 24 Jun 2026 01:08:46 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH 4/4] kvm: svm: Support
- KVM_SEV_SNP_PAGE_TYPE_VMSA at SNP_LAUNCH_UPDATE
+ 2026 23:22:36 +0000
+Received: from CY4PEPF0000EDD3.namprd03.prod.outlook.com
+ (2603:10b6:5:1b4:cafe::9b) by DM6PR02CA0115.outlook.office365.com
+ (2603:10b6:5:1b4::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.20 via Frontend Transport; Tue,
+ 23 Jun 2026 23:22:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD3.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.10 via Frontend Transport; Tue, 23 Jun 2026 23:22:35 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 23 Jun
+ 2026 18:22:35 -0500
+Date: Tue, 23 Jun 2026 18:22:17 -0500
+From: Michael Roth <michael.roth@amd.com>
 To: Sean Christopherson <seanjc@google.com>
-Cc: Jon Lange <jlange@microsoft.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?=
- <joro@8bytes.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "x86@kernel.org" <x86@kernel.org>, "thomas.lendacky"
- <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>,
- Joerg Roedel <joerg.roedel@amd.com>
-References: <ajKe-oboTRowcO_i@8bytes.org> <ajKjMIBb21qB46fh@google.com>
- <ajKnKeo1FV3zbjEt@8bytes.org> <ajqMvQLMGONiLn1S@google.com>
- <LV0PR21MB6859D1AEF99FB84228C23620CAEE2@LV0PR21MB6859.namprd21.prod.outlook.com>
- <0657500d-a8bd-4dec-80a5-807e857a4306@fortanix.com>
- <ajr-AigoW2cJY5k3@google.com>
- <ada6c850-9390-4b91-8edd-c4b74bfe4269@fortanix.com>
- <ajsCdRhFEw2pcIXx@google.com>
- <4982d413-4634-40b2-a9f6-566733933c2b@fortanix.com>
- <ajsO6SLATtDsXYsZ@google.com>
-Content-Language: en-US
-From: Jethro Beekman <jethro@fortanix.com>
-In-Reply-To: <ajsO6SLATtDsXYsZ@google.com>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; boundary="------------ms070701090802060401090809"
-X-ClientProxiedBy: AM0PR02CA0187.eurprd02.prod.outlook.com
- (2603:10a6:20b:28e::24) To CO6PR11MB5619.namprd11.prod.outlook.com
- (2603:10b6:5:358::12)
+CC: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
+ {en,de}crypt debug ioctls
+Message-ID: <6xyh7xa53k2s7bytlkcys4pyq4756rwoly5q7swrifv3td6dey@3h5e2e67lkvj>
+References: <20260501203537.2120074-1-seanjc@google.com>
+ <20260501203537.2120074-3-seanjc@google.com>
+ <ajNQ_Ix5e0p6FuFT@google.com>
+ <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
+ <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+ <ajrkryMxHZtsMvga@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ajrkryMxHZtsMvga@google.com>
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5626:EE_|SJ0PR11MB5005:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30367fa8-5ccb-4b33-5887-08ded17c64a6
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD3:EE_|CY8PR12MB7561:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2a0ea79-85b2-429b-0e70-08ded17e4f49
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|56012099006|11063799006|4143699003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|23010399003|36860700016|56012099006|18002099003|22082099003|4143699003|3023799007|11063799006|5023799004|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	el8If54q7uDlVZaMhu0Dmv8I9BSyKIKa/aZBY9Rn1kapqpZ5vr1ifg+l/jrIB6fejKWJFIp3cZUJu0dffWBPUozGmcIBIQQzyzc8qFhIV2cK3muMjMAepcB6bTaHpo2jifgGB79Yp+X9esnbSQfqHUgl0gJrMqJKGie4K4ulQMY5Svvxqs4LmtSxDI16NvJUcj2uQrv8/viKk2w1/LW/AiyPyc+IHOpK5KT3eA0VJrujA/k/1PmuA0jHgZhUU8/4i3c/y/UpmvmMaD7NdcmSVzv0AmSRPcgSaVmRZrOOsDHx6zgrapArBsYhuUeHF97g4Q6FGbvdKsGLEbL1kkNGc03A+7kIiswbq7HkBHhQqHErxg10blEdlRKwCL5/msulqCcq1sn5+W0d057vkwBUFnc6uPUJhX/05guTq/tb+gop1WZq4GogQRcIYXEVMcAW3a/l2R5qUTQxzbYhbyZhnpgJb7kOy2D6KBGHYg2SbDafZzVwtX1c0M6u7h5Wouo8EMnWuZnPb9yKY2ViXxjezg2mGV1gI4RX4XsJDhazdQkQMl83DX7isZM2ZDHEvhpAmB29yIpu7NEN9tXJbD7zW9y3NEkzdifKfky3oR0WBczckq6xnLMDe0e8TgCR3RPwcxuIuGl72D4VdTyFvRtp39M7es9RFD78gKBYmfiWhMk=
+	Eshl3Bt07cyT4uS+farUzjeboIVPEOMgnKN0Y0TPRIHVamKZYQFHf2NOKL4QekqC1I4Uf0HNgz7itbAJDJoXj54Oyso8Ud2Uj13J73SG5QyN0n5zTdxxtE5Kd9Gywyd9vQJCoSzMXbJw2IbYHKE6Qg4XZz9DlhxAq8YxpCXeaWKOjxfTg4YsLnKsL2fRMfUMlCEJHpI9zrwRb4widQF+H0+ASFUyp9DCXr5squwRZvLvcdkzAfgpQkvYYjI8wFke702c9YNfBiqD8VDRT6e0GePw7Teetq0EZ7AxEOBSM71hljdUDP2I0H14l0go8C2Ou/xmKLtq5FE1oYSlkvsA3M/E5hGmVrsUGf/6a5m1aI+ZktRqkfVcgdiSWIfWcezBYNWurACjZbxgevrwkn5pmuERqpEjI1y5el9M5F4jtc7ZLxVkYv0YQe1o/VjJOoEjojc9AvFn47Trp8HMS6goSo/6gt4k9smQYxCKPiFv2RgXBejWCk3KcdH6zqA8OpZdtO+2XaRYALEWcNsstXY9JzZRvBnQaaLm2hK0p3A7rM5WRTTp+nWr9MhqNUfKmuUYTMV/IyCibs67ECk4alvX6Yh55XwizR/XMa6CVEkcLUHsVoKTpzDe7Y5aRfmV4KltVq7IBwTO93JsJHe3cHxAPUzGvRonizaMfrfd9X+Uvej1I6fGAscWKFiat1TCNQ893m6LaxPreIOVGfHVe5tYUA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5626.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(23010399003)(36860700016)(56012099006)(18002099003)(22082099003)(4143699003)(3023799007)(11063799006)(5023799004)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VGZIQzJubXA3K2QxTzF6dmJNR0FHbnV2S3hGa3NLSzAyU3lUT3c3NGRBMjla?=
- =?utf-8?B?YW55cURSbFpHc1FFS3E5TzkyczVHMGY2Wkh3MDVleThTVHFmT1VwMVFCZTM3?=
- =?utf-8?B?WDB0ZytMd1BjOE5XZ0t6MkpERCtqWmVISkJmOHc3bFE0K24wQ0wvRlJZMFVx?=
- =?utf-8?B?Z0RTRXFDVTlkcVJRbkZzZ3A5RFJLK3c4UnBmaDdsdVlwcG5jRW4rcHYwTWRT?=
- =?utf-8?B?R1RuWHY5OXoxdUtZcXZVcGhCalpmaGxvMTN3VTVDUUVtcVlrNXZaVGR5UllH?=
- =?utf-8?B?L1hFNlExSzdnRi9vOEM4MlVsNm9OTHl0VWtzdE56ZnF2MlBRQ2ZkWk9JNW1X?=
- =?utf-8?B?WDZidm8rVmpibnJVTm5KditVVkR6SUZGMGdCS1hXQUhwSVpUYTJndFoyNitE?=
- =?utf-8?B?RUVHWmVDam9SVHZvTzI5RllKd2s2WklUQ2RiQnNvbjZUVHNkQnh2cGw5dEoy?=
- =?utf-8?B?RVJianZqOEtJc0JwZGFlWjlxaHBIM1pnRnVScXFob1ZmaGFoaDM5TmZ6L0tY?=
- =?utf-8?B?c2VLOXNubExWa2FPbk1nbmxSV0VwNmdPekVwa1NUR0xkQjR0YzRQMWlFYTUw?=
- =?utf-8?B?bHFCQ2Z0c01QVE5EenBLTU5wN1BNektIOGhIRXVmNks5ZFhWRDBodWpEVXJV?=
- =?utf-8?B?U2VlaGg5RzFYbTNTRTNhQ3Q1QXh0eXI1QzI1T29XWGx4cDRjZFZWR3JFMnJM?=
- =?utf-8?B?cy9JbC9JNGxyVjN6a0RmdTM3WDZZRllGV21naUdBRW5QcDhZcC9IOFB2RUNv?=
- =?utf-8?B?dkZvUURhYXY0SGcxUml5aFBqMS9laUFtbG9Sbk03WG5uNUhBd3B6L3N2eGZ3?=
- =?utf-8?B?UXd2VFlhOEJ6dGJaSTdOUzFhb1VJN0hHdEtjYzZRVTc5eVcwakRRNFBPZy95?=
- =?utf-8?B?Y2toRjkwZW16andKZXZPRWczSUhwcFZBS1lkQVY4VFRCSXpjaTNUQ01WRnZ1?=
- =?utf-8?B?N3p3SE8wWkdhek1NUGdOY2VJVXlDLzUxZ0YvSUorVlBoUGJ2UGtMcHUzYkNt?=
- =?utf-8?B?dm94MWRMSmhWY1dLU0RQSjArN3FzWStPWCtkNGxCQ3hjZ1RJMVJPUEk0VGJ6?=
- =?utf-8?B?SURST2hwUWxjUEFOTlpydFloa3k1OFY2a01yQlVDeERWdVVQTlJkc1M1Y3ZZ?=
- =?utf-8?B?QlIzQWx2YkR5WGRtd0pCRnRlR2ZxRHdJUzJWcEx5UW00VVliWFNkVjVZRTBr?=
- =?utf-8?B?UCs4V1NVYlZLOHU2aUdNOHJIZ3ZQMU5hcTNPSTZLYkFGWmt4ZHdsenpwZUYr?=
- =?utf-8?B?Ri9sYzVxemJqOUlkU25BRXNlRDk3SUNUOVg2UXNOSExnSVFCdGFpVEdjNFZE?=
- =?utf-8?B?MjJjZlVSMlJYdnRJNS9NUkdwMGs5ZWRUVmU3NkR6T1JOZXhMeGxzbG5ERlhJ?=
- =?utf-8?B?cklEYTBiV3NhV2d5WUpGcUpmcUFMZ3VqRWJjU1VIUFROdmNkUTNibWp2VTQr?=
- =?utf-8?B?bmk3UmxZREVXcHZzb2lmcGlsekNJaWZPb08rNG4vb2ZTSTQxSG5wNlpYZ3hE?=
- =?utf-8?B?QTJZWlhsdzg3Nm56ZFc2RVVQWnVSeHhOcFVEaXJkdEcrLyswQ0cweU9PK1VH?=
- =?utf-8?B?SUlZSjByWVN2YjUzQ0FCL2lJU2wvTGhobkJiM2lNNmhyZlAzTFBvUTZyeXVi?=
- =?utf-8?B?N3JTcEloeVVkakxJTlRXWFd4Q2l4aHJlQWpKa1grRFErRXh3RVd5ODdBTEdK?=
- =?utf-8?B?dkVMUll3OHdKMTByZG4wejFZSHhBVFFVNVFNdUIyU0lpV0lxb2dKY2JjWFZV?=
- =?utf-8?B?VGNsUXhONVNYWjNSMmlPc0ZIcHY0Ymg2ZjFSSlViaFNSYm1uMEtyRlpUaG1j?=
- =?utf-8?B?akNud1UzMTRmY1ZTUU0zWFBRQ3lxNVdjTjIxOVJsZUd4bXNEdUpnNjQxdFRa?=
- =?utf-8?B?bjNPcGdMWXVMcTFpRXNWdGNJdlB3ZjZOUnFzNEhkUGtKZlhDSmlOOXZMQmUr?=
- =?utf-8?B?aXFlcFd0WXdaNldBSmp5czRUdVZqeEdDRW1YUExmencvVVU0OVRtcnJheFFF?=
- =?utf-8?B?ZDdkTEluaTV5MDdDVis0SGdweGU5SWJlZzlkemFMUjQzU09pQzJkTkJpbDk5?=
- =?utf-8?B?c3FteG5ObFF5YXQzdUxPb2h5RUdmczVoMFJhMXNDQ3YzMXBGcUVSUGdFUWZO?=
- =?utf-8?B?M3dnYkdnZFN4cEQ2eURyaWNjQlFHZmdvd3VEUHkraEdEVDZHMXB5Y0JPVytS?=
- =?utf-8?B?d21PZ3lEMXh4eElRaEY3V3lIQkN6anpiTU96bXlscUwzbkR0WXJXNTFNMjZp?=
- =?utf-8?B?dEJuUjZLcktNbWxaZ1ErcUtWWGtub3hGNGluN3pyUGFxR3RNcHJLNTFRdzZZ?=
- =?utf-8?B?ZkpTSXV0Sk4weG1vckplRndTNUlRbDVIZmJldUE4dTNlaTBqZHR0UT09?=
-X-OriginatorOrg: fortanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30367fa8-5ccb-4b33-5887-08ded17c64a6
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5619.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 23:08:53.7989
+	Ev79k44qnmXZiPwa3HOA8BTT1h3jMf4z1pFg3BqXzOCxxtGmwVJEKZRTLkE4nQoN3UOPmHrr8jVgqWNTmT43meBE7XtFgKGdJwhIpIZrICb/O12dKTboJvoCp9HH3sFvdLfK6M84rpq4oYqUw4wGYW+bf4npseph0EvvI6VA5Tqumpp51BvVtusYuy/ykp2XDTjsnZr632ovZXsvCWk4Lq1VIVHc555NQOL42vP0FgMJ1y80EidFajtLKw+8hkIOUSo8iq4kPYDiRs8R9ekjF9rSN9Xi1VkE+ytlMv7R+Q5fJw4g66+uMoRtWwYbnYxyJQYxiNn8pQdtSOm9/M4baz+3fXwbbSyYDw02HYyoIBI+QYndKZTEiOeVrtoUhuflQNx8CLuIOaxxO+f8c4GAKrD7QcGUGLLHS28AbUua+TR4TF5mR96NP1FvuuopE0QU
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 23:22:35.8581
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: de7becae-4883-43e8-82c7-7dbdbb988ae6
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l9S+MYsYOCOIz9bO7ug0TxTwYiGsb/nXBv4pIho4JbaIc4a5rb+FFcCqWdK6j+9VvlQ/cCLuRSsZlHx27lHTyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5005
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2a0ea79-85b2-429b-0e70-08ded17e4f49
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7561
 
---------------ms070701090802060401090809
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jun 23, 2026 at 07:55:27PM +0000, Sean Christopherson wrote:
+> +lists
+> 
+> On Tue, Jun 23, 2026, Michael Roth wrote:
+> > On Thu, Jun 18, 2026 at 10:18:03AM -0500, Michael Roth wrote:
+> > > On Wed, Jun 17, 2026 at 06:59:24PM -0700, Sean Christopherson wrote:
+> > > > off-list in case this is double-ungood.
+> > > > 
+> > > > I ran this on an SNP host today (I think this is the first time I've run the full
+> > > > test on an SNP host), and it explodes with RMP violation #PFs in weird ways.  I
+> > > > don't _think_ it's a KVM bug?  Because I get the RMP violations even without ever
+> > > > running an SNP guest.  I'm using kvm/next, at commit ef057cbf825e ("KVM: x86/mmu:
+> > > > Ensure hugepage is in by slot before checking max mapping level")
+> > > > 
+> > > > It might be related to edge cases around pages, or maybe large sizes, as the test
+> > > > passes if I comment out the testcases that focus on the larger sizes.  I haven't
+> > > > narrowed it down further than this (reboots aren't exactly fast).
+> > > > 
+> > > > What's especially odd is that on most of the crashes, there's no apparent reason
+> > > > for the RMP violation, as the RMP says the page is unassigned.  I did get one
+> > > > crash (#2 below) where the RMP entry was non-zero.  That one was after booting
+> > > > an SNP VM, but it was quite some time after shutting down that VM.  The RMP dump
+> > > > is equally confusing to me, because AFAICT the RMP entry is corrupted.
+> > > > 
+> > > > Mike/Tom, can you try and repro and debug?  I don't have the bandwidth to dig
+> > > > deep on this, and even if I did, I suspect it's beyond my abilities to debug.
+> > > 
+> > > Hi Sean,
+> > > 
+> > > I was able to reproduce this after running the test in a loop for a few
+> > > minutes after a clean boot (trace below).
+> > > 
+> > > Not making much sense to be ATM either, but might be related to RMP table
+> > > memory itself. Will keep investigating.
+> > 
+> > It looks like this was a recent regression caused by changes to how the
+> > temp buffers are allocated. I tested the below revert patch ~14 hours
+> > and the issue seems to be fixed (I generally was reproducing it within
+> > an couple hours or so max so it seems good).
+> 
+> Thanks for root causing!
+>  
+> > Planning to submit upstream today if there's no objections/concerns.
+> 
+> I object :-)
 
-On 2026-06-24 00:55, Sean Christopherson wrote:
-> On Wed, Jun 24, 2026, Jethro Beekman wrote:
->> On 2026-06-24 00:02, Sean Christopherson wrote:
->>>> A UAPI that allows creation of all architecturally-valid enclaves fo=
-r
->>>> purposes of measurement portability was stated as an explicit non-go=
-al. As
->>>> this is the only stated purpose of this patch set, it should also no=
-t be
->>>> accepted.
->>>
->>> No, the stated goals (thanks to the follow-up from Jon) are to (a) su=
-pport VMSA
->>> GPAs other than KVM's hardcoded, arbitrary 0xFFFFFFFFF000, and=20
->>
->> As Jon points out, the VMSA GPA is not architecturally relevant, so an=
-y
->> enclave can be changed to support a BSP VMSA at 0xFFFFFFFFF000. The on=
-ly
->> reason to "support VMSA GPAs other than KVM's hardcoded, arbitrary
->> 0xFFFFFFFFF000" is measurement portability.
->=20
-> Well, that and hardcoding 0xFFFFFFFFF000 is bizarre and confusing, IMO.=
+Drat :)
 
->=20
->>> (b) to play nice with multi-VMPL scenarios in the future.
->>
->> It's not clear to me what multi-VMPL scenario Jon is describing that r=
-equires
->> custom VMSA content/address at launch time other than measurement
->> portability. It's currently completely possible for VMPL0 code to set =
-the
->> VMPL of a VMSA or create a new VMSA with VMPL>0 at any GPA of their ch=
-oosing.
->=20
-> Sorry, I phrased that poorly.  It's not about directly playing nice wit=
-h multi-VMPL
-> scenarios, it's that if/when multi-VMPL support comes along, the BSP's =
-VMSA for
-> VMPL0 will likely be the only VMSA that is NOT in guest memory.  And so=
- supporting
-> an in-guest VMSA for BSP VMPL0 would provide consistency on top of cros=
-s-hypervisor
-> compatilibity, and I place a lot of value on consistency.
+> 
+> > From: Michael Roth <michael.roth@amd.com>
+> > Date: Mon, 22 Jun 2026 22:47:03 -0500
+> > Subject: [PATCH] Revert "KVM: SEV: Allocate only as many bytes as needed for
+> >  temp crypt buffers"
+> > 
+> > When SNP is enabled, the data passed to firmware must be contained
+> > within pages that have been transferred to firmware ownership via the
+> > corresponding RMP table updates. 
+> 
+> IIUC, and I'm pretty sure I do at this point, this is wrong, or at least *very*
+> misleading.  Nothing in KVM performs RMP table updates, and so saying "the data
+> passed to firmware must be contained within pages that have been transferred to
+> firmware ownership" is completely inaccurate.
 
-If the goal is to get rid of the arbitrary 0xFFFFFFFFF000 GPA/put the VMS=
-A in guest memory, then we just need a vcpu ioctl that lets you set the G=
-PA.
+The driver will place it into the 'firmware' state ("5.3 Page States" in
+SEV-SNP Firmware ABI) prior to issuing the command to firmware, so from
+a kernel perspective I don't think it is inaccurate. It's true that this
+is handled transparently to KVM, but I don't think the wording is really
+in conflict with that.
 
---
-Jethro Beekman | CTO | Fortanix
+Just trying to clarify and understand if I'm missing something more subtle
+here, since your proposed fix seems nicer and more complete anyway.
 
---------------ms070701090802060401090809
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+> 
+> Piecing together the changelog and diff, and my own observations, my understanding
+> is that **firmware** modifies the RMP to *temporarily* take ownership of the page
 
-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
-ZmljYXRpb24gQXV0aG9yaXR5IFJTQTAeFw0xOTAzMjYxNzQxMDZaFw0zNDAzMjIxNzQxMDZa
-MH4xCzAJBgNVBAYTAlVTMQ4wDAYDVQQIDAVUZXhhczEQMA4GA1UEBwwHSG91c3RvbjERMA8G
-A1UECgwIU1NMIENvcnAxOjA4BgNVBAMMMVNTTC5jb20gQ2xpZW50IENlcnRpZmljYXRlIElu
-dGVybWVkaWF0ZSBDQSBSU0EgUjIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDm
-Q+3UxwVE9dAx75DUrLZwgASWLLr/ID8bbGCfpcrSHIRsrR4ut5n49JGViu5DYE6addkpajbi
-MA2Jaw1Ap4RncDjZ+0fzSWbqGKEE+vNPVLoKy7OVIrxf/9HzGUT6YaELSNrGTR0cYNcR+W5b
-E3JTxTMQiLMAwBbMXH4qKXQUT+oyIXD11CIMUtM8ECoo2o7qdpw1zaZWwVvhXy9mkAaRgrkw
-2NpddZUVbJKF/spsJa3lNVdSi3wcJpDDQAl6jxtBF/3ctkY1OjBQz32yRlArFymsPc+we9ff
-HAgvfqbHVfXvgWG8urVith8/6MjmojHMCKqFoJueLbtTPoN8QhvVh49uoRYYAUUH0HOAYCOz
-GBGrdJvMIYZqQsX90XlU7Qxp1En7vMkQswkQTvGmBPWrK/EwSAJc15BZm+i8QBxPqVKFORfL
-ETLEC4ZrwomtW/oPxBP8zXPvQ0K1dQzAkw+JXxKv/KiwDryFFhU5xMMB3yKxO5NRYXlnqW9n
-wfhdBTJScthzAtGO9KZQ2GPmq0NMVMuXe1XdCOmnPxOptKkMldBItkaYgrkTzqP1nzIAhVfU
-4sNnHIxKPftwrZ9VMSc5Wkz88bOtAJyz3KQRY0qcAtR4LaeRkiZaEmprQA8EOpdJxtv03pBZ
-taUnnTY6DsEwGQ0+P2mmB5IHB74SknyNswIDAQABo4IBaTCCAWUwEgYDVR0TAQH/BAgwBgEB
-/wIBADAfBgNVHSMEGDAWgBTdBAkHovV6fVJTEpKV7jiAJQ2mWTCBgwYIKwYBBQUHAQEEdzB1
-MFEGCCsGAQUFBzAChkVodHRwOi8vd3d3LnNzbC5jb20vcmVwb3NpdG9yeS9TU0xjb21Sb290
-Q2VydGlmaWNhdGlvbkF1dGhvcml0eVJTQS5jcnQwIAYIKwYBBQUHMAGGFGh0dHA6Ly9vY3Nw
-cy5zc2wuY29tMBEGA1UdIAQKMAgwBgYEVR0gADApBgNVHSUEIjAgBggrBgEFBQcDAgYIKwYB
-BQUHAwQGCisGAQQBgjcKAwwwOwYDVR0fBDQwMjAwoC6gLIYqaHR0cDovL2NybHMuc3NsLmNv
-bS9zc2wuY29tLXJzYS1Sb290Q0EuY3JsMB0GA1UdDgQWBBRmj6a8t5Msnfm6SeVP3OqQUBFq
-nTAOBgNVHQ8BAf8EBAMCAYYwDQYJKoZIhvcNAQELBQADggIBAMJr11ncGIPKbaZxuuU2P1TG
-yXF+gy+xH2TBNWNliJVL613nH1J7L2WcJQzqXYl77rKTzGeQexnKeYZ13MFwuE80vISif/gw
-K569WLoyCvNVvGEZ2bZ+JL5K49mVhrv1gqO+MgMvc8iEENl1xoWRpJGD4EClk8t4u7NUCgBv
-hYORiyzHCZcILHcEMvfEwmmFshMN6TqcAJdRjFT0Ru0hJcs5d7EFdM9dCa5ckXWrKK49cSNq
-4qOaxqpG99EfDw6U2c70YcJ1/IhC1wL6z8qlGvhYQ0vJvqGJqW/DdeuWcMmrB+qZL9WbORQ1
-nvlNggB6smEk0pXXYBr8HYjxT67XwtBBmkBXFpa7G6y4P0BO3kxWGBfvRBJHfyaiwREgVWa3
-6V/WjXtPmV8VHcv04Rqgk64E4OlSUxgi9k9VC6kivTXJN+Gg2uJJBQdf+ptVhJqkkrtB0gAB
-F+kQP0xsagKkrS3NVrVKo6peWMx0h7l52bGqT8ucu4Qe200KQi2xp/r8jpP60EE9U4M8D1gr
-H3Kh9OxVOL4wykdoC/yGJNLKIl0BfsCVWB/GeSq5hxe/84K51OEJqpjDnOMrkRevfVzqGBFF
-Aeg7Kg7uSysVR05wR+ltp3ytaIbjGJtKad8raIbM1qiNFErG7YB7v4baI3BP1s/rTDtPLoto
-tahwHP7IqOHOMYIFVDCCBVACAQEwgZIwfjELMAkGA1UEBhMCVVMxDjAMBgNVBAgMBVRleGFz
-MRAwDgYDVQQHDAdIb3VzdG9uMREwDwYDVQQKDAhTU0wgQ29ycDE6MDgGA1UEAwwxU1NMLmNv
-bSBDbGllbnQgQ2VydGlmaWNhdGUgSW50ZXJtZWRpYXRlIENBIFJTQSBSMgIQNfphqrZnvSlG
-TcM/9wjbxjANBglghkgBZQMEAgEFAKCCAxIwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjYwNjIzMjMwODQ2WjAvBgkqhkiG9w0BCQQxIgQg88drghgguxgI
-oSffGc1KJGJRoFXQbOg6v7L5SEaCkQIwgaMGCSsGAQQBgjcQBDGBlTCBkjB+MQswCQYDVQQG
-EwJVUzEOMAwGA1UECAwFVGV4YXMxEDAOBgNVBAcMB0hvdXN0b24xETAPBgNVBAoMCFNTTCBD
-b3JwMTowOAYDVQQDDDFTU0wuY29tIENsaWVudCBDZXJ0aWZpY2F0ZSBJbnRlcm1lZGlhdGUg
-Q0EgUlNBIFIyAhA1+mGqtme9KUZNwz/3CNvGMIGlBgsqhkiG9w0BCRACCzGBlaCBkjB+MQsw
-CQYDVQQGEwJVUzEOMAwGA1UECAwFVGV4YXMxEDAOBgNVBAcMB0hvdXN0b24xETAPBgNVBAoM
-CFNTTCBDb3JwMTowOAYDVQQDDDFTU0wuY29tIENsaWVudCBDZXJ0aWZpY2F0ZSBJbnRlcm1l
-ZGlhdGUgQ0EgUlNBIFIyAhA1+mGqtme9KUZNwz/3CNvGMIIBVwYJKoZIhvcNAQkPMYIBSDCC
-AUQwCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzANBggqhkiG9w0DAgIB
-BTANBggqhkiG9w0DAgIBBTAHBgUrDgMCBzANBggqhkiG9w0DAgIBBTAHBgUrDgMCGjALBglg
-hkgBZQMEAgEwCwYJYIZIAWUDBAICMAsGCWCGSAFlAwQCAzALBglghkgBZQMEAgQwCwYJYIZI
-AWUDBAIHMAsGCWCGSAFlAwQCCDALBglghkgBZQMEAgkwCwYJYIZIAWUDBAIKMAsGCSqGSIb3
-DQEBATALBgkrgQUQhkg/AAIwCAYGK4EEAQsAMAgGBiuBBAELATAIBgYrgQQBCwIwCAYGK4EE
-AQsDMAsGCSuBBRCGSD8AAzAIBgYrgQQBDgAwCAYGK4EEAQ4BMAgGBiuBBAEOAjAIBgYrgQQB
-DgMwDQYJKoZIhvcNAQEBBQAEggGAoQ/ZxTFFrMRThtCBiDj1RX1u70jLJeuoG50nNwm1l9dU
-hUJHwU+cpFK1vrOu561KVmtDFPeI3CCcp49xniANbXOCe9Yg0pd8jpI6fXnGx7M341fNQDzL
-hJsGihJF2fosnS2zwAGOwHKXQhzn6yPqW06RuwMeX0g1IFjfuH8HHS2krss9Qb/xLssHmlui
-7S1el2KdPAPNFC85JDHYIBpgAgJtE0FHnoCvoUTNI1Nax5D/UaMgJVxRKJoBzUDQng63Qt/F
-iocqOWlnqtJqaWOMWdUKzffzphT4I1Vb8RlwAfU2i2xCowKFLO1oFE9cMYxarMiVdTAWfkgA
-qNwCu45rxBrp002b/Su35Yx4EYXISsxuufK2XdLBZ15qvX/AQlE+lXhbVRP9dshQdmJm21WO
-ADKU7Q5AYMXKIILwI7hmlISASPoQvT69nn+jAIm6rU+CuNN30VxrRwXlmVLeROC9X0vZpppn
-w70RDTZiTppeGJYWRNJMJ1d/ZJkcmDXg4QgCAAAAAAAA
+rmp_mark_pages_firmware() in drivers/crypto/ccp/sev-dev.c does the RMP
+table update as part of preparing the command buffers prior to issuing
+the firmware call, placing the page in the 'firmware' state, and once
+the command completes, firmware modifies the RMP table state to be in
+the 'reclaim' state. The page will still be 'private' at that point, in
+the sense it will have the 'assigned' bit set.
 
---------------ms070701090802060401090809--
+The hypervisor can then take it back via additional firmware call
+SEV_CMD_SNP_PAGE_RECLAIM and subsequent RMPUPDATE to normal/'hypervisor'
+page. So the transition out of 'firmware' does sort of happen
+automatically, but the overall reclaim process requires explicit work by
+the hypervisor.
+
+> while performing the {DE,EN}CRYPT operation.  So there's no requirement that the
+> pages be in any specific state, the only "requirement" is that software needs to
+> either prevent concurrent accesses or be prepared to handle spurious RMP #PFs due
+> to the temporarily RMP modifications.
+> 
+> SNP_DBG_DECRYPT does require software to convert the destination to be a firmware
+> page: "The firmware also checks that the destination page is a Firmware page."
+> But this is about SEV_DBG_{DE,EN}CRYPT, not SNP_DBG_ENCRYPT.
+
+The above behavior isn't really specific to DECRYPT/ENCRYPT, but one
+example of a general requirement that when issuing legacy SEV commands
+on an SNP-enabled host, the memory that firmware writes to must undergo
+the above transitions before/after the actual firmware call:
+
+  5.3.9 SEV Legacy Commands
+  The behavior of the SEV-legacy commands is altered when the SNP firmware is in the INIT state.
+  In this case, the SEV-legacy commands require any page that the SEV-legacy command writes to
+  be a Firmware or Default page.
+
+('Default' state is for ranges that have no corresponding RMP table entries
+at all, which isn't really applicable for how things are implemented in the
+kernel currently. The reasoning there though is that those pages can't be
+used for SNP guests, so legacy firmware commands can't be used as a widget
+to try to mess with private guest memory).
+
+SNP_DBG_DECRYPT calls it out explicitly since that's how it as always
+worked, whereas for legacy commands these are additional, SNP-specific
+operations that happen before/after the legacy commands, so they are
+documented in a broader fashion.
+
+> 
+> > This is not compatible with uses kmalloc() allocations since kernel accesses
+> 
+> As is the statement about kmalloc().  kmalloc() of a PAGE_SIZE is a-ok, because
+> the kernel will always hand out a full page.
+> 
+> > to other allocations within that page will trigger an RMP fault and crash the
+> 
+> And it's specificaly about other *accesses*, not simply other allocations.
+> 
+> > host. Fix this by moving back to page-based allocations.o
+> 
+> Always forcing full page allocations is overkill for SEV and SEV-ES, and robs us
+> of the opportunity to document that SNP+ is special, which is especially important
+> because AFAICT, none of the specs are so kind as to document this "minor" behavior.
+> 
+> Rather than fully revert, just force PAGE_SIZE allocations if the host supports SNP.
+> I haven't run anywhere near 14 hours, but I was also getting failures on every
+> single run of the test, and I ran the test 100 times without problem.
+> 
+> However, this only addresses the case where KVM is using temporary buffers.  For
+> small, nicely aligned operations, a misbehaving userspace could induce a crash by
+> coercing the kernel into accessing the to-be-{de,en}crypted page via a kernel
+> mapping while the crypo op is in-progess.  I don't see a less awful option than
+> forcing KVM to use the "slow" path, e.g. if the problem is limited to the dest
+> for a decrypt operation:
+> 
+> diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+> index 87025d0d2f91..7e3334c90c57 100644
+> --- arch/x86/kvm/svm/sev.c
+> +++ arch/x86/kvm/svm/sev.c
+> @@ -1406,7 +1406,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
+>                 sev_clflush_pages(&src_p, 1);
+>                 sev_clflush_pages(&dst_p, 1);
+>  
+> -               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
+> +               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16) &&
+> +                   (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) || cmd != KVM_SEV_DBG_DECRYPT))
+>                         ret = sev_issue_dbg_cmd(kvm,
+>                                                 __sme_page_pa(src_p) + s_off,
+>                                                 __sme_page_pa(dst_p) + d_off,
+> 
+> But if firmware temporarily converts *both* pages, then we're "stuck" because at
+> some point KVM needs to actually target the correct guest-owned page.  The only
+> option I can think of is to require capable(CAP_SYS_BOOT), *if* the above doesn't
+> suffice.
+
+Not sure I understand fully, but snp_populate_cmd_buf_desc_list() in the
+firmware driver requires the transiton for the destination page that we
+write to both for 'encrypt' as well as 'decrypt'. What the issue with
+using a temp buffer as the destination for the 'encrypt' case?
+
+> 
+> So what exactly is the behavior here?  Because I can't find anything in the specs,
+> I can only make educated guesses based on the SNP_DBG_DECRYPT documentation.
+
+Hopefully the above references help somewhat, but I agree there's still
+an uncomfortable amount of connecting the dots for this flow.
+
+Thanks,
+
+Mike
+
+> 
+> ---
+> From: Sean Christopherson <seanjc@google.com>
+> Date: Tue, 23 Jun 2026 12:21:56 -0700
+> Subject: [PATCH] KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on
+>  SNP-enabled hosts
+> 
+> When {de,en}crypting memory of an SEV or SEV-ES guest on an SNP-enabled
+> host via a temporary buffer, allocate a full 4KiB page for the buffer to
+> ensure the kernel won't concurrently access the page that's being
+> {de,en}crypted.  On SNP-enabled platforms, firmware modifies the RMP to
+> temporarily take ownership of the to-be-{de,en}crypted page, and so using
+> a sub-allocation results in unexpected (and seemingly spurious) RMP #PF
+> violations due to software attempting to access a firmware-owned page.
+> 
+> Note, it is unclear whether the RMP updates are considered architectural,
+> or an implementation quirk, as none of the documentation for the non-SNP
+> DBG_{DE,EN}CRYPT commands say anything about RMP updates, nor does the SNP
+> specific firmware ABI spec.
+> 
+> Fixes: 4c735bf1bc22 ("KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers")
+> Debugged-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 74fb15551e83..87025d0d2f91 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -1280,6 +1280,16 @@ static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
+>  	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
+>  		return NULL;
+>  
+> +	/*
+> +	 * If SNP is enabled, i.e. the RMP is active, allocate a full page to
+> +	 * prevent concurrent accesses to the page.  Firmware modifies the RMP
+> +	 * to temporarily take ownership of the page while the {DE,EN}CRYPT
+> +	 * operation is in-progress, and so concurrent software accesses will
+> +	 * encounter seemingly spurious RMP #PF violations
+> +	 */
+> +	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> +		return kmalloc(PAGE_SIZE, GFP_KERNEL);
+> +
+>  	return kmalloc(*nr_bytes, GFP_KERNEL);
+>  }
+>  
+> 
+> base-commit: 9d4853b044beefa21c4ee3e18c40653601a64ced
+> -- 
