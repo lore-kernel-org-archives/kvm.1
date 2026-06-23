@@ -1,139 +1,212 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725921F4176
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 00:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF636376BF1
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 00:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782174153; cv=none; b=SrWoD2HB3Yfol0SlKzEGORt2h426Gvjzs8VAxCHTP91iC5A5D9GKG7A7Ma7QU6ImYHnF2x+V4paZeb80urzuFdA88R2cs8L+mPHS0/rNsD3Ji6FzVJJx7hjGFVYs5+mxt2mWZ2rCgHAT6tK16t0Q+RzIk2y17yZmda2He27T4d0=
+	t=1782174418; cv=none; b=aOS6MezAo4Jx4gkDNZG462dLsXAqh+u/dgHbEDllr5UQtNbRdEzLuKSkKKO3Q9Qmgqi7a3nIzz7zXECG/jMXuO6AOTsrCZBsWI32ppJeRVhufHHs4tvZYxHY75uHZ/fbXIVZFXJYzE7OasJ73WJVo0t9jnXCr2sQeXm63THd7EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782174153; c=relaxed/simple;
-	bh=hET3RaJtC6ro7NYZPXmQUq8MQF1p6emzxm3gNcm+1IE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RviBGmMDNo75qko9uNbFedxal2qq0j2vHb3KZ3l9xb0vc197rmLKe3W9HSjS4TaKkCSJP2hSM+9CsMWbQjVdSqEc6FH+xfpGrD8i5eyPkJuug9yFU+RzKww8rBbMeMjtUgC6nDP3vr8j/QU5J+Z7vBa+F/y0JRbHjXN0m0SMLpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wllk+GYm; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1782174418; c=relaxed/simple;
+	bh=Mvpv5fk7EqlynV6gqt/65OUkuuW/xeN1GfXtNQ6g2Cc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TeDQA//m/BiTQicFKgB/AVkQV2oLHgdSH54+hHQHNl9+QqqSTPCjSQHDI/SDwg+4diiUts5Ktnh0LwFEy9Hz5bwnAyhYhUiAsGQtJqrMeQRJHPGwv1zxxAYvdmTVH5+Ww76nplZFyQkyQlH5baTfbkDPkfEFmecDdMsrWPyNgD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JA+0VnMw; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wllk+GYm"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88fc985a65so3100734a12.2
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 17:22:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JA+0VnMw"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c69fa0b1f8so23745ad.0
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 17:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782174152; x=1782778952; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQLsIF+iVXLuEt9X7AENLYAj3zuZSbHkrs731kL+O+A=;
-        b=wllk+GYm+EcPaLMqRAaxpHRRtRZ0Q/IyHzUTSmFlbcacCXQtWC8B+jka/SO7+rasPH
-         IvJZt3iJORGm6GWMR6ppQvXrCZYe3NODpAb1VHkl81ygp8TwuTBZFou0JKx0xy0S6Wbx
-         eNIK4953Mv6nu4rmza73z6JWCn7kAP6qLAmMXDJbtRTJyDM2cRvT/+hbWdn8m8xbNg9e
-         SxeYaXQLGAXn3a3n3XmBcFcUotqTGjnKAhRZBvfhW409OTYhcCKlOsmC9/caJ7GL0nRr
-         beQe6huDjy2ytOl44Tof/kOk7zrPADRCETaCBu3kf95UGEA1UjnKfevPtUiQ6s9sCOor
-         qgYA==
+        d=google.com; s=20251104; t=1782174416; x=1782779216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Dnnvmp3kEWC924WaK9RNBF9LgizMYwDhSueWIubs0Ho=;
+        b=JA+0VnMwY+WZCRNOQdgAnx4k+0Eo+pO0RvYE5f439LuTrrz31FSmtCbRnORvQHryFg
+         Qa6WkIv3nqxmNNG1+ot3bAQgL6P7tAddRJ78JBB/ZrdMIzkU0RZn9BVpcrfJy8qP9RZC
+         C3ZZSCfIAkAovMed5BhL8+Ip5ENVU6UDjFYVMzuz+wD7kiHxRSM/+Kbx46jDAhKtZrSE
+         BNcrwR3yWiTmkJ3NM9k/UN6bHuNbgBtQVhPjNYfjuhHrw3kFBR2oMLnLhNJNsc4Zhgtf
+         rzzOvb6/WQTQfGukw4BQDr8HfeQD1Jw2wYzWkyByGSPqkdRw50732GhTTiDkpy2/aJY+
+         XsKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782174152; x=1782778952;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oQLsIF+iVXLuEt9X7AENLYAj3zuZSbHkrs731kL+O+A=;
-        b=PuYIDvtuttAqSyrGRBml5n9B3Wsf0e84VJPitovDqKwbBCVD4crABbyQ2oOdLubNop
-         5Rq02cb8r4XfIcrE25GQG93/2j0NLnw7PB29OuUIZ/7eh+OwmoAnn5owXyIIS5QvDQ42
-         mKsBc1hRkQRJLLtg8e2Rxg1tUrIfKSAucYNPSAH1kPHpGHjzqgBVMdbVn78OiTh+saZe
-         yMSdrkCjYxfOsWIfg0HcYJx7sKNseY5lxreiBLhitpH3mKJSN8IiB2NjsJP92S4Onlmq
-         IGfrc3y73FcTkiLgCbX0PoZdzJsAMbGTw2Zc/4YDjHtN5Rp7kjHg0STryAu0PwNnTy0y
-         OxYw==
-X-Forwarded-Encrypted: i=1; AFNElJ+X6c9KHIjOnMCJVqK78FLxnaGIa/ZCywe5zdbZsfXIwu5L8AsZPK+RrJEXLMhQ1H/VMUg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaFpFwLu2WYshUSiefyiAhwSIBSapgS9RTQHLBlzvpzSIaZ5Yg
-	UskMoaEtoG3+KrjS2sHXv/lpKoXq91W8ZBTdq3J6rGwYF17wtX1YCUTzc9JCtge2Yms7+da6VbD
-	TnnOiSw==
-X-Received: from pfbk14.prod.google.com ([2002:a05:6a00:b00e:b0:82f:8cba:4285])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:855:b0:842:3be7:4d55
- with SMTP id d2e1a72fcca58-84597094577mr199419b3a.11.1782174151143; Mon, 22
- Jun 2026 17:22:31 -0700 (PDT)
-Date: Mon, 22 Jun 2026 17:22:30 -0700
-In-Reply-To: <CA+EHjTx2xKjheiW5VzHw_TdWFUqdJqfgu=dOPa=_yaYBMY8uyw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1782174416; x=1782779216;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Dnnvmp3kEWC924WaK9RNBF9LgizMYwDhSueWIubs0Ho=;
+        b=eiLDexd52pjmLe+9OXDO20NhuRlLVgG+D7yX7oE9WSlSQqN1N1ySAXsQ1LjZT8ndSu
+         my7WD0X4/To8vR1vkKLkRMRfUKk9e/xkykEFOk6goRE+/kI0/pm1flv2an0NLUT6O3hd
+         mTjCyP7g7GeP3Vz+6OGZ6n86FNlEAu1lC7kYU31xR5fUIra68CBiOETHvWECxZ5aviJC
+         plwAQna82SlcxJA6ZoApdYpJcdpG2msyqmwobjzkpoAMlf0G9WmxnzYWtNDD4nJP2+17
+         VTjEt9WrRyu+60n2Z0oG5x8W+V17ei9/YvCvkI5ZSO76Us3UNGbJ0HQAQ1ELzT8oQstU
+         Cvhg==
+X-Forwarded-Encrypted: i=1; AHgh+Rremr/EJRoTRjHqRnGSElgBMdvZGYoVpXDMlrfCjq2vAOY6Ay2zvucZVe+MID3gSqxML+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+eWTfHz6DXZEW54ygD5dVhxMfcamqLBfXg/kQ3JoUpfr+phfA
+	kcdqnIlv6t1TYKyinlkrU7mVRnKPjphHT2kvDKYLsBbTbNtmpE6/pCcmerNUzthVWg==
+X-Gm-Gg: AfdE7cn61bWIEG4w8WyM0WEd8dk/AJN3GFDKatO5MgmKQ23fKfe4Q49YLfNUg3m2sWn
+	U77D4IpD2um5UkaRynrDZb2jc3uOT6jyUZDwiSqueQYbRMEbiAps7eD0xGEPgO09lt1nPOhFGOx
+	J6NnRITt1fGJjhN8TpwhMY9Jx4aWwijwmkOeRUs9xsMrUcxAaGHoWG0jN1F6kgrNXbdwUQhpYCN
+	/74bRD5cTbPvrs5B+YbJrE76skFWWf4P3bkcqN7ldXeqNMQHpBIFksPcShuKQVbgzktHYlBEGB3
+	aAvH4VIjqvey53JItLTLmiH9EO8r75c/JV3lwQnzsAO1psXV27lLbrYToDaIsc1i2Gis7oc9zvs
+	qKzQ+aIp3Q5QyQUlVuK3HSI1l/xFyVpviFbsuIzjHbD2maVWucE0Lu2S1ZZPvrbEc8kX1xBrIt4
+	/KyyJFIyUGcT20HHydXMlwjMBAHBpPOLEry7uxLZbOpNkoq912VwG3RC3bDv+461fXIpQSFEBGQ
+	/0CCVLM
+X-Received: by 2002:a17:903:2c7:b0:2bd:63cb:c5be with SMTP id d9443c01a7336-2c7c7067d97mr672265ad.5.1782174415306;
+        Mon, 22 Jun 2026 17:26:55 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8bc563c6e1sm8052094a12.15.2026.06.22.17.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 17:26:54 -0700 (PDT)
+Date: Tue, 23 Jun 2026 00:26:51 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v3 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+Message-ID: <ajnGMjFxhNCbW0To@google.com>
+References: <20260614233728.2212104-1-skhawaja@google.com>
+ <20260614233728.2212104-13-skhawaja@google.com>
+ <01f53c50-f585-49a0-b7a2-fdf002049aea@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com> <CA+EHjTx2xKjheiW5VzHw_TdWFUqdJqfgu=dOPa=_yaYBMY8uyw@mail.gmail.com>
-Message-ID: <ajnRxuJ19OzZ8zJC@google.com>
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <01f53c50-f585-49a0-b7a2-fdf002049aea@linux.intel.com>
 
-On Fri, Jun 19, 2026, Fuad Tabba wrote:
-> On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
-> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> >
-> > From: Ackerley Tng <ackerleytng@google.com>
-> >
-> > Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
-> > just updates attributes tracked by guest_memfd.
-> >
-> > Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> > by making sure requested attributes are supported for this instance of kvm.
-> >
-> > A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> > KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> > details to userspace. This will be used in a later patch.
-> >
-> > The two ioctls use their corresponding structs with no overlap, but
-> > backward compatibility is baked in for future support of
-> > KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> > ioctl.
-> >
-> > The process of setting memory attributes is set up such that the later half
-> > will not fail due to allocation. Any necessary checks are performed before
-> > the point of no return.
-> >
-> > Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> > Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> > Co-developed-by: Sean Christoperson <seanjc@google.com>
-> > Signed-off-by: Sean Christoperson <seanjc@google.com>
-> > Reviewed-by: Fuad Tabba <tabba@google.com>
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> 
-> Note sure if it's user error on my part, if I'm applying this to the
-> wrong base, but I found a build break here on patch 13:
-> kvm_gmem_invalidate_start() doesn't exist in the base tree. The
-> function is kvm_gmem_invalidate_begin() here. The rename
-> (190cc5370a8b6) landed via a different merge path and isn't an
-> ancestor of the stated base.
-> 
-> Patches 19 and 20 have the same mismatch. Fix for all three is
-> s/kvm_gmem_invalidate_start/kvm_gmem_invalidate_begin/.
+On Mon, Jun 22, 2026 at 01:44:06PM +0800, Baolu Lu wrote:
+>On 6/15/26 07:37, Samiullah Khawaja wrote:
+>>Reattach the restored domain to the preserved device using restored
+>>domain ID. While reattaching do not setup the context and PASID entries
+>>as those are preserved during liveupdate.
+>>
+>>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      |  46 ++++++++++---
+>>  drivers/iommu/intel/iommu.h      |  17 +++++
+>>  drivers/iommu/intel/liveupdate.c | 111 +++++++++++++++++++++++++++++++
+>>  3 files changed, 163 insertions(+), 11 deletions(-)
+>>
+>>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>>index cd40e274482b..91b67ccba011 100644
+>>--- a/drivers/iommu/intel/iommu.c
+>>+++ b/drivers/iommu/intel/iommu.c
+>>@@ -1311,10 +1311,16 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+>>  {
+>>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>  	struct intel_iommu *iommu = info->iommu;
+>>+	struct iommu_device_ser *device_ser;
+>>  	unsigned long flags;
+>>  	int ret;
+>>-	ret = domain_attach_iommu(domain, iommu);
+>>+	device_ser = dev_iommu_restored_state(dev);
+>>+	if (!device_ser)
+>>+		ret = domain_attach_iommu(domain, iommu);
+>>+	else
+>>+		ret = intel_iommu_domain_reattach_iommu(domain,
+>>+							iommu, device_ser);
+>>  	if (ret)
+>>  		return ret;
+>>@@ -1327,16 +1333,20 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+>>  	if (dev_is_real_dma_subdevice(dev))
+>>  		return 0;
+>>-	if (!sm_supported(iommu))
+>>-		ret = domain_context_mapping(domain, dev);
+>>-	else if (intel_domain_is_fs_paging(domain))
+>>-		ret = domain_setup_first_level(iommu, domain, dev,
+>>-					       IOMMU_NO_PASID, NULL);
+>>-	else if (intel_domain_is_ss_paging(domain))
+>>-		ret = domain_setup_second_level(iommu, domain, dev,
+>>-						IOMMU_NO_PASID, NULL);
+>>-	else if (WARN_ON(true))
+>>-		ret = -EINVAL;
+>>+	if (!device_ser) {
+>>+		if (!sm_supported(iommu))
+>>+			ret = domain_context_mapping(domain, dev);
+>>+		else if (intel_domain_is_fs_paging(domain))
+>>+			ret = domain_setup_first_level(iommu, domain, dev,
+>>+						       IOMMU_NO_PASID, NULL);
+>>+		else if (intel_domain_is_ss_paging(domain))
+>>+			ret = domain_setup_second_level(iommu, domain, dev,
+>>+							IOMMU_NO_PASID, NULL);
+>>+		else if (WARN_ON(true))
+>>+			ret = -EINVAL;
+>>+	} else if (!sm_supported(iommu)) {
+>>+		iommu_enable_pci_ats(info);
+>>+	}
+>
+>Instead of merging domain restoration into the attach_dev path, how
+>about adding a new callback to restore a preserved domain for a device?
 
-Ya, Ackerley used a slightly older kvm/next to send the patches.  I at least was
-testing against kvm-x86/next, which does have the rename.
+Even with a new callback, the driver still just fetches the restored
+state and takes a different path. I am guessing we can just do the
+following inside the driver to keep it clean:
 
-Other than noting that this should be applied against the current kvm/next, I
-don't think there's anything else to be done?
+static int intel_iommu_attach_device(struct iommu_domain *domain,
+                                 	struct device *dev,
+                                         struct iommu_domain *old)
+{
+	struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
+
+	if (device_ser)
+		return _intel_iommu_restore_dev(domain, dev, device_ser);
+
+	return _intel_iommu_attach_device(domain, dev, old);
+}
+
+This keeps the separation you want without touching the generic ops.
+WDYT?
+
+With the new callback, this check is just moved into the core inside
+__iommu_attach_device(). I am concerned that later down the road when we
+add PASID support, we will add restore_dev_pasid().
+
+>Something like:
+>
+>diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+>index b2f614367074..e61409f2d9fc 100644
+>--- a/include/linux/iommu.h
+>+++ b/include/linux/iommu.h
+>@@ -748,6 +748,8 @@ struct iommu_ops {
+>  * * <others>  - treated as ENODEV by the caller. Use is discouraged
+>  * @set_dev_pasid: set or replace an iommu domain to a pasid of 
+>device. The pasid of
+>  *                 the device should be left in the old config in 
+>error case.
+>+ * @restore_dev: Set a domain that is restored from the previous 
+>live-updated
+>+ *               kernel to a device.
+>  * @map_pages: map a physically contiguous set of pages of the same 
+>size to
+>  *             an iommu domain.
+>  * @unmap_pages: unmap a number of pages of the same size from an 
+>iommu domain
+>@@ -772,6 +774,9 @@ struct iommu_ops {
+> struct iommu_domain_ops {
+>        int (*attach_dev)(struct iommu_domain *domain, struct device *dev,
+>                          struct iommu_domain *old);
+>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>+       int (*restore_dev)(struct iommu_domain *domain, struct device *dev);
+>+#endif
+>        int (*set_dev_pasid)(struct iommu_domain *domain, struct 
+>device *dev,
+>                             ioasid_t pasid, struct iommu_domain *old);
+>
+>Thanks,
+>baolu
+
+Thanks,
+Sami
