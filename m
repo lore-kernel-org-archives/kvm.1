@@ -1,177 +1,101 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D9D3C198A;
-	Tue, 23 Jun 2026 22:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26B83C1411
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 22:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782252675; cv=none; b=DX4CvZARAJw5nmIftkUD5HA2lBjuPsiyFhNUNm2z4YW7zqd68+ieNfnhszavyp4BANGMYwAt3++NeuIcg3d5MAwdsh1sJREL4fPzb10IfPK5Ix5LiiotXHCuKtE8O3iKB8aHwn6jQfUKuAq5IuZzJBFlgiFCrqtJVKjLdjeDXsk=
+	t=1782253712; cv=none; b=bIi/bTt1lgTgxmolIFtsJoSHX0TasJMaU08EkZxi4hLPTJdI00O01ZBBh72NQy/Fu6eWbhG0oeXIgPI4UotZJ0X/CodveADsjO/13R4TVUcJUFHiPg0X8arNhLniynl3wMZQMILMHHYr9Pj8FdUqDMP6b4P8CgsQBDbNphSs9fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782252675; c=relaxed/simple;
-	bh=C6CX7JyhSOyKnLbA4mBI5QfP7/9EKi7ITQD+T/id9fM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MxGBynCrSqiENZj1mg6xtDJvaB3hwe7XOoJhm+DfQP4+V3kCtuzJEOIkkcUbTjJYT/8lm+9aB4QxN/CvPvRRkRrWqiEYgafI1+jmNZ/k0O+Dxa3f/HXkcVSqJrZ6WXydkV/Jt9HRMC1v+ISPZerLbrLDopyHDyQV/VUw9FoqdUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=IIJp9UX7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FO6fvLzn; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1782253712; c=relaxed/simple;
+	bh=rgP8Tqmd9PYeAKiD749qsCytgtvgwZlrHNsxYWKuq3g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Ut7S+G0rFAiPjCUCD1ocVYgQD0EwMfZyuJkT655g3kDl/5yS+BnXw2vZEYnYXTOwJAw/SXJCQZPNPVMFHj2PxMnWubjnAxLfyybTu1mhUb7PXPffAfCYc7yRiWou3hsUAxDZbd9EfSNMi0OGUPzyTwfLhZ9NZSkzBbMlxYdmOhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GqJGYCN4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="IIJp9UX7";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FO6fvLzn"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6952D140008F;
-	Tue, 23 Jun 2026 18:11:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 23 Jun 2026 18:11:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1782252671;
-	 x=1782339071; bh=X18SHEo1gUp9Lx6clXwkcErZhNajWNK13kB/IUh+wK4=; b=
-	IIJp9UX7hiluWdFh89iYXNpbN5zR09i8L5PmnsWAcAEU/4jlsXqahP7zp/tvUN07
-	2P6MWeNFvE5noi2bIBZVuItgCQeWtkGpDbb0MnKSUEJEeuBeO/cBB2PujDoK7F36
-	AVr3le3NXNszBNLAl29MA9CfgcUYX1AfVShzDIFTdgZxSBW6eeO/BsxLRGNZ8Pbg
-	95JADH56A7hFVYope+kdjDjvVpJCcKLUyUsj2zB+fLdfJc9tVyahCNFic9i3sZTu
-	NPT7Vm5FRwrybIhBEt2YxL5vkCwuNmKHveL+1qwUut8CN4IK/FO2sDknN200twl3
-	NGjlfTdbe4KpzNOeH/taaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782252671; x=
-	1782339071; bh=X18SHEo1gUp9Lx6clXwkcErZhNajWNK13kB/IUh+wK4=; b=F
-	O6fvLznPvdpIQim3zUrag+ztK5HGF02dvRbliPGko4eCloFj1bi8VKlaPAfk/yyC
-	2GkphLUPKWKS4YCLZT9mpDnYmSDN4HRPh7S76pKc2wPXFRLN0FUAKcoFyvD0fH8R
-	p2vioIpSCM05FO4xAJtXseKV8Ni0JbSIICWCKcWgHGZD0/MQ+pjfbBmZNEvOOHVc
-	aArflSRw3cmRowd4G7A7Ee7StMJKlzuk/XwA8KETPHuSNzRaMHZkvgYKK6gZUlxk
-	pbDsyyWzvdjLoKHV92Aw2vxjpvFtYoy5i5EJx7aw9G6To+h2XIZ/oiDGR0gm7AYl
-	iSBkJetgMHn12GFWF2Qdw==
-X-ME-Sender: <xms:fgQ7aj3ADADPgWDoTYxdG4BsdR_0lLce9ljFqBhSIf09Bgwcl9l1ZQ>
-    <xme:fgQ7av61gHGUAICR8zS_2QwRf4V3lxZTQRjvGMaKh_jVOqmf43RParzPGg-XFsYkX
-    Lh9AXxk35HQHsZ1mHfrn3DzFmYly3dq_0fVEGWNonU5D725seAI>
-X-ME-Received: <xmr:fgQ7auXmuK6qxOm85kNuBnPmg8Jak0SIsa0-uQIQWLd19iCgDFnQVX0sKvI>
-X-ME-Proxy-Cause: dmFkZTEScOgLYk0MfvgSy13XGx7Nr6/3LxprQMRW1YTpQARQUOSkpxT/m7Fn/QPbrirYOk
-    OZYuYk070jQ+t/zgFGqVt3cOdx5JiCPt+zjRdUPsm2wuYbTmjUc+cSjtgICuDGgkqnK7vv
-    CvcYpoBi15cUX2bAfu0LrNVwF/buweOC9mD/yaBfGjfIt05LNCGIGwaVrFLRiIqGjcuk7Z
-    Ly7YaQYW9iD0lSKnabtjz5kfBEbtRoG9+lz6/vOe5Wbn+O5hbpegIL2Dpt9mxRg/lOlhHK
-    SV+I/sYy0YG2xar+l5ya6C0X9pYFfXMg5Qv6TU0PqDlVHMZ9aYNkSgKOIp3i1et0oh6oat
-    Ky+BHj3KciJElaQHfOLyO6p3Ou8ZL0chonKVQZt7ThKHh1Q1UCd8f6yqcIkOF4lqapXkTo
-    bsowho4/Kew4lUee3ioAKivz6cnfHMMhJuzQ4UVYJPOYKu+01tPqtK44FiHq5oQP/uwWWR
-    dPiOWMClYeHAXinKGKsiCKs7qhWIc9WgsaGzJuQ4t681KyNDZQyWJA1KKPV4VY8MUn7BYp
-    nUCxHnb/hetYoEKxq4kvbjKP2Be3M1ydxSSgofwKBEjv5uRm/tsPKKvNXEzmf+zeY4Y7Q/
-    wujnh2AqIAwIAdmMBiLyLvY1Mw3kRxcJ81OR8/nvoDSIoTW8z7Gs6yPWd7xw
-X-ME-Proxy: <xmx:fgQ7amBb3kNAEBip2wws1TbySt6ejC2fvzYM7S5QnvthyWkWqBJbSQ>
-    <xmx:fgQ7al47MLAmIQQxVGUHfuBBj-534alWh5AHTlJGT_A3Q5mGe2YSoA>
-    <xmx:fgQ7apyhtLML1wwVjHwqaBhy2Q_HwBRjTIHyETU9mcn61Wz2EdLuKQ>
-    <xmx:fgQ7akyK_bMXYv-m-pcsbQjG6KQs8kbSfrBt6fn5NwlFdfV_4jkD1w>
-    <xmx:fwQ7amminaFn1KpKA3tDa_6vIaHzz70SXty1zpTJWU7xtYGUVvTCwNxu>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Jun 2026 18:11:10 -0400 (EDT)
-Date: Tue, 23 Jun 2026 16:11:08 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: lirongqing <lirongqing@baidu.com>
-Cc: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH][v2] vfio/type1: Sanitize user-supplied inputs to
- prevent undefined __ffs() behavior
-Message-ID: <20260623161108.07a708af@shazbot.org>
-In-Reply-To: <20260617113251.2535-1-lirongqing@baidu.com>
-References: <20260617113251.2535-1-lirongqing@baidu.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GqJGYCN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755ED1F000E9;
+	Tue, 23 Jun 2026 22:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782253711;
+	bh=sQh2X2KVbLC76/V5DqE0dzxsSn1srlGayn9HPwwquUk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GqJGYCN4hJsALLbL7ynOJ+4INjRRRo0QlDA0lxecGKMeP2SkIZtx/D3zamEBgOBvd
+	 /QMyecNJal8nsiFxJKZdfWp/Fkzb5iSqBUyrZNoa4o40enuCOUPWACJwdQRdEZIF5j
+	 itKjElguxopXEWTLfKAAMz6jD3ahWzcoyVz8CAcDZy4jDA+elSfEDcc163BZiArJjT
+	 /zgyFg0BRqwpGysYAXEJK6kTkQci4/74/xwuPWOh0yxI9gOyZUY3U8i4x461Lo2tsL
+	 gxO2NCdF1C86gKCbiu5Rc5yqum+1qpnCQgEfZBGJT52Q0Udz5C+IiKWbUPIU7vY3Zr
+	 6r93zbKuQ5sRg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net v3 1/2] iov_iter: export iov_iter_restore
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Octavian Purdila" <tavip@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260622222757.2130402-2-tavip@google.com>
+References: <20260622222757.2130402-1-tavip@google.com>
+ <20260622222757.2130402-2-tavip@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 23 Jun 2026 22:28:30 +0000
+Message-Id: <20260623222831.755ED1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 17 Jun 2026 19:32:51 +0800
-lirongqing <lirongqing@baidu.com> wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> The __ffs() function expects a non-zero input. When passed 0, its return
-> value is undefined (garbage) but does not trigger a hardware fault.
-> Although downstream logic may eventually catch invalid derived values,
-> passing unchecked user inputs into __ffs() is a robust-ness and code
-> quality issue.
-> 
-> Fix this by validating user-supplied inputs early in the UNMAP_DMA and
-> DIRTY_PAGES ioctl paths before they reach any bit scan operations:
-> 
-> 1. Reject an empty dirty.flags in vfio_iommu_type1_dirty_pages() to
->    ensure the subsequent __ffs() / __fls() single-bit check is safe.
-> 2. Ensure bitmap.pgsize and range.bitmap.pgsize are valid non-zero
->    powers of two before calculating pgshift via __ffs().
-> 
-> This change improves the overall robustness of the VFIO type1 IOMMU
-> driver against erratic or malicious user-space inputs.
-> 
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
-> Diff with v1: Add the two check in vfio_iommu_type1_dirty_pages
->               and rewrite the commit message
-> 
->  drivers/vfio/vfio_iommu_type1.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> index c8151ba..b74f56c 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -38,6 +38,7 @@
->  #include <linux/workqueue.h>
->  #include <linux/mm_inline.h>
->  #include <linux/overflow.h>
-> +#include <linux/log2.h>
->  #include "vfio.h"
->  
->  #define DRIVER_VERSION  "0.2"
-> @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
->  		if (!access_ok((void __user *)bitmap.data, bitmap.size))
->  			return -EINVAL;
->  
-> +		if (unlikely(!is_power_of_2(bitmap.pgsize)))
-> +			return -EINVAL;
-> +
->  		pgshift = __ffs(bitmap.pgsize);
->  		ret = verify_bitmap_size(unmap.size >> pgshift,
->  					 bitmap.size);
-> @@ -2985,6 +2989,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
->  	if (dirty.argsz < minsz || dirty.flags & ~mask)
->  		return -EINVAL;
->  
-> +	if (!dirty.flags)
-> +		return -EINVAL;
-> +
->  	/* only one flag should be set at a time */
->  	if (__ffs(dirty.flags) != __fls(dirty.flags))
->  		return -EINVAL;
+Pre-existing issues:
+- [High] Exporting `iov_iter_restore` exposes a pre-existing logic error wh=
+ere restoring an `ITER_KVEC` iterator falsely triggers a `WARN_ON_ONCE`.
+--
 
-If it can't be zero and only has one flag bit set, it seems like both
-of these could be collapsed into another single !is_power_of_2() test.
+commit b7b5854a768fd37654ad61552651a21df8d14c8f
+Author: Octavian Purdila <tavip@google.com>
 
-Note that if (__ffs(0) == __fls(0)) this could present as an ABI change
-where empty flags fall through as success, but that doesn't seem to be
-the case for any of the usual suspects.  Probably worth a note in the
-commit log though.
+iov_iter: export iov_iter_restore
 
-Also the unlikely() hint in the other chunks is inconsistent and
-unnecessary, these aren't critical hot paths.  Thanks,
+Export iov_iter_restore so that it can be used by modules. This is needed by
+the virtio vsock transport to restore the msg_iter state when transmission
+fails.
 
-Alex
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index 273919b161617..f5df63961fb24 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -1491,6 +1491,7 @@ void iov_iter_restore(struct iov_iter *i, struct io=
+v_iter_state *state)
+>  		i->__iov -=3D state->nr_segs - i->nr_segs;
+>  	i->nr_segs =3D state->nr_segs;
+>  }
+> +EXPORT_SYMBOL_GPL(iov_iter_restore);
 
+[Severity: High]
+This isn't a bug introduced by this patch, but exporting this function to
+modules exposes a pre-existing issue when restoring an ITER_KVEC iterator.
 
-> @@ -3039,6 +3046,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
->  			       range.bitmap.size))
->  			return -EINVAL;
->  
-> +		if (unlikely(!is_power_of_2(range.bitmap.pgsize)))
-> +			return -EINVAL;
-> +
->  		pgshift = __ffs(range.bitmap.pgsize);
->  		ret = verify_bitmap_size(size >> pgshift,
->  					 range.bitmap.size);
+Looking at iov_iter_restore() in lib/iov_iter.c:
 
+void iov_iter_restore(struct iov_iter *i, struct iov_iter_state *state)
+{
+	if (WARN_ON_ONCE(!iov_iter_is_bvec(i) && !iter_is_iovec(i) &&
+			 !iter_is_ubuf(i)) && !iov_iter_is_kvec(i))
+		return;
+
+Because !iov_iter_is_kvec(i) is placed outside the WARN_ON_ONCE() parenthes=
+es,
+restoring an ITER_KVEC evaluates to WARN_ON_ONCE(true) && false. This safely
+skips the early return, but still incorrectly triggers the warning, which c=
+an
+lead to a panic on systems with panic_on_warn enabled.
+
+Since ITER_KVEC is often used for kernel-originated network and storage dat=
+a,
+does exporting this to modules like virtio vsock create a risk of falsely
+triggering warnings or a denial of service condition?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622222757.2130=
+402-1-tavip@google.com?part=3D1
