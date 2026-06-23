@@ -1,406 +1,251 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E08B175A67;
-	Tue, 23 Jun 2026 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782238664; cv=none; b=CNOxXKfyX9Lcm8SmR6ru/lTClO0/fHn8+aLFmD+Q3kpVZOjfos6dbG52NnKPtCxXmcy+uYPn2hg9JAwCW0q29rcT0m4DpTQzAqerlnDNTFxA/rPd4rQCBMxsEMwRmuVmBMYYKzNNUMgXvRugrzxbwMJ4xIX9bwspOZObRvX87xk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782238664; c=relaxed/simple;
-	bh=iUvpSiJn348z+xGT2jd2xklbQLkJa/MVABMpzt/E/Ww=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oz4NkcK2UZiFlLCN8OQmQunPca+dl6y/opIu8swanTjhsCxb3XDwop2TrDgOSkRoLwj9NDVlOladeXTSga6ROriuX7DXC4PLw2CTZ1pOYqcBFN0tEm9825wQzqecA/ij+PmxtumBf4pEaxaU52a2GRa+fly6fEsl/VhrERY2Uz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Br4rKaNW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hWTEdnxK; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D5A28726E;
+	Tue, 23 Jun 2026 19:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782242155; cv=fail; b=au8IrkSQ087y3RFZVeLTEkk+DiYBi2pjM6jUppI4Ihl+nZeIncP8ATxSe5fYKYw/w3eZeDIJ9JrJ57fB2sYasfUUcHd5yN98KnXMoIlbMO0t4YqpBlUp0ylfdeZ4KIwvPRU8JHpM//m4BoanCQIss5cBqs1oqzyzwKNmRV4nGBw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782242155; c=relaxed/simple;
+	bh=UQyyMPNJ0Zpsd/rsN4XUT4sZy1/McOr5OLYGnZtK9lI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=CLJi9VYa5MJG2ZK9JHPkjexjunetZvO3FP26hXPM6tKs1/TYdq5geiKpJKdZ/Xm23GAMSLeeYHrmP89Iyt9qGCEemaAyVVlKw/PYS97YjIW9v8J6a/syL7wJwnVCRWgz4VZHQFrtx9CuZfGZsF0wnGzmXg5pGpolxpXoDo5+WQc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zgzoo/KE; arc=fail smtp.client-ip=52.101.62.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Br4rKaNW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hWTEdnxK"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 49254EC02D1;
-	Tue, 23 Jun 2026 14:17:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 23 Jun 2026 14:17:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1782238660;
-	 x=1782325060; bh=Sj1SnG8wgmD6FqcVumX9KYEM4P8DEWyQcCqQNAcBYVs=; b=
-	Br4rKaNWrUxObjLWbsZrmJ6uJgkIZNnPXZNiOmg7zHsDw7mZA1ISU8IuKjOwFXS2
-	Bsy8cuKD/Wrq+nqBJae3XX6mKWl6eULt3Z0bswaVxDqPpvrlG651CCqWk9RQKeQm
-	z/M0ySScjJUa+Jmn9U8H915N7HQHNV3a2P/zBD0QbcxnYFBw579K2d3XqbWRjVEN
-	WIWJuu8KzuLTFpUSfAEL3iyPGmpWLLXN8PfFzHjWv6p2oCsutiLenMJ+BnRLUL5F
-	JLzXrpnHx62ei8S629wTHWMuEVPR0dBUN7HrJiUzdU5Wfe0GhO1nLWC/qHEUozuL
-	yCmDjfnkgbQPOI6sXJ72mQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782238660; x=
-	1782325060; bh=Sj1SnG8wgmD6FqcVumX9KYEM4P8DEWyQcCqQNAcBYVs=; b=h
-	WTEdnxKHc6dgyqth4FYHuKGrq6bqziO5Ww0y9bTEEuL60nwhUDtxOymOFvFPa0x7
-	CBoeQQMbeZTg6htZNh+ZnOImUPi2QXc7AshZ/vSNkWZMmE5RdiOCgGZktRwtqU7N
-	vUrZknkvbtt7BshuNFe+XHdZfjTb/dvm7bEEqE0AImrYz3ObSl1anIHPfVcFEPyf
-	SNV7bSY41mmYLMprKwhgejuA/knHs9pNIR0OdCx3Hdr1fLcgxLh4XRLlaxPSUUKX
-	VCX6OvpKHXpgUafF98JSbB1tFvT4u4qrxOIpyPunF8/BL0+TZ2nMf0YHXOdmbPAY
-	k+ZGerrIzn7f6XfvcNvdw==
-X-ME-Sender: <xms:w806anfp0mutTTFpDFeUpuyVHWep-YPV2glDT6SACvFHraIWhXBSTA>
-    <xme:w806ajnQrCRuUtx8tDhSWS7PKRa5OZBv_-Li9GmCPcZ0DMrLFZhvBnOkF7mCG_wO1
-    2XaPj9uEJ9lyKaKF3S2fu6IomQtsM6WqRJBpKJW0z1nT-tzZ0O2VA>
-X-ME-Received: <xmr:w806asz_I8CedBmyN4ke3AyZqa_VcAwNwuJ-RFbQIWC6an68jXkYXAbZQN8>
-X-ME-Proxy-Cause: dmFkZTFwRukWK6LHpRv1dlQXVP+RHoSsx9S4XR1otDkyXrwiDIOs4np7kPjKMqXWjFmuEU
-    tEySCHmFmyO1Jo95cbYld1vI+mrzB+rN1uba3i7HSSzXjrcoWChXIvlQhkTjJ0Owm6bszC
-    4VjfKNsF/CZeyu5o8efMctxWXJMYpbhAHnghcaNvtQ1x1wMNxw9+t6LXF/HDA9gXjTrEp2
-    H4aI5wf6/s0LZblVCfcd4cQ5fWmAyoqySaVLFys4TastGdGU3tFQ6YRTKI3cCGLjUyXh/f
-    /khZBHxKMg9sKo4vpXchNvftdGpFuuxAAR6xfHKfiZZ6hbefE9Kti2WHplt+wXvS3Sh7C9
-    cyOCZo6fxAFZN1ZnbcOlVuYwxpnTmrWHQcAhwsnC5LIJn6rMVspBAg6C2RBscdctr7U2LI
-    tq6K9LzZmLAt8t0aAYI/Dd0/clq3lnRDSnXlyg5k/2HJwpahQC8nn8VCXbbkRkH0tkTaWN
-    8Gm0xNQalwhmyl1+WLUMRAJ/ue1DCBmcDX80uqe2N0FckOjt7b8rmwmx3qNAgY05kDCW7K
-    tUUXdTnb9i2H92bYuq4zpLnkKAKOlviaB8v+JAV0vAWl2Fk8CpVOu6lFe/iBTlNlUe7Csa
-    s5e1aHGRElcJMcyT0y0m47MlgK4jho+Uu1SvuksNQB412fts+5XqmIBdEwiQ
-X-ME-Proxy: <xmx:w806amzRokRAerraTfgOcqc1E90kq8ybgEjvfH_KJ4oTfF-JVrQpIA>
-    <xmx:w806asU99NHLQYuUrGMPsK-0cKe8CNOBBWrh6fwxLUx3B6atV0AaZw>
-    <xmx:w806atSWw6n-KtO9E9KdlmdxwSF8VtRe46dzJvtWx6LAlyLKloBYAw>
-    <xmx:w806akSTJ1_58dWwpxb1CoMdOz5_RLiXQ4OhjIU4pyMrwprYv8M3pw>
-    <xmx:xM06aqbnnXKnTMOinT4ywTBWXnuJ4pTqxNRz-U7kKqeK07Szc6HXmcuE>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Jun 2026 14:17:38 -0400 (EDT)
-Date: Tue, 23 Jun 2026 12:17:36 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Michael Guralnik <michaelgur@nvidia.com>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian Konig <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, <kvm@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, alex@shazbot.org
-Subject: Re: [PATCH v9 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH
- feature
-Message-ID: <20260623121736.4d9e38b9@shazbot.org>
-In-Reply-To: <20260622184211.2229399-4-zhipingz@meta.com>
-References: <20260622184211.2229399-1-zhipingz@meta.com>
-	<20260622184211.2229399-4-zhipingz@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zgzoo/KE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OiKU8lJuP45v3gPniI+gH/LcLLfIGNlIRSwIYYeXe+qkBg3HNy5++uHUFnVX00jL5NyrqMMO+niQiS3bCBfQhir3TSJEFkcT/2Rx7wJ4pZh1BFH1gXkhS6suHZibJO2KupMtdR/9PwzD34+WvUn7T4Nledr8R17ZlIsRaeyyDm7s7e21NQyGVNL7iCdREDe6xWZ5Gt8lKRhPp9lis0HGvUfdzWAIsLbM5vULUBozuTC8CHH3YKzSb8VTLodVNVQnxD8m551WYdLcBfYzDhyfNVUWJYjNyLqdCaiykag9K0EVUVok4Yu3x5Mzr3tchyOh0pVY1tSypMdd0Co7mQh/UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ETgMD5YgQY/TiTNqnjcWQRVSkulxu8b73IKyFkWXix0=;
+ b=GILIsPJ63r/1oLqOX4oqjUuoiTHE5tPhm0xEWfZEUOrMvd0sQYDMCyUHELZbySfWq9jik5b090ckqtQ89/1iNyxXd6GuGINNutKzvy/JYYtL7gkeoGSPjMBe/E1JzrzSmyvfodIHv8MS4elh0O77E/ygUJVpcPBejq46bjYJ+qeNHB/Ah31s6awyNBdr4PBSSAe3SLzk7Igu+vFTfIO+wpSMnEaZ6swduFE95iBxdQoel31MghsuQohpvMaf0JhCW6NhkLvjfxY3bVuUtsIy73EFpH5fzvMk9DI4VDzugEo6pn+cmjPf4qPMin6UXru+KFgZ07IvT6DHhgHNK7KG6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ETgMD5YgQY/TiTNqnjcWQRVSkulxu8b73IKyFkWXix0=;
+ b=zgzoo/KEG6pjOvWHWhAkzJxKIODdvK2TU1VKPwAj7L6NBb0OeZ41f6thrYrAmtI4C8/93X3cHTUqwN/N7OUnmM+03K8gsFot+BZvPhUxWQTSB6tfvh7krF1VNY2xlDH+2JAKESwBLi3tfk8SWTwrjRAB110/BmTpmt4VhnCTFl4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by IA0PR12MB8205.namprd12.prod.outlook.com (2603:10b6:208:400::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Tue, 23 Jun
+ 2026 19:15:48 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0159.012; Tue, 23 Jun 2026
+ 19:15:48 +0000
+Message-ID: <8e4af4f3-da52-40a0-9916-072952551295@amd.com>
+Date: Tue, 23 Jun 2026 14:15:42 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is
+ active
+To: Ackerley Tng <ackerleytng@google.com>,
+ Jethro Beekman <jethro@fortanix.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1781419998.git.ashish.kalra@amd.com>
+ <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
+ <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
+ <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR13CA0005.namprd13.prod.outlook.com
+ (2603:10b6:806:21::10) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|IA0PR12MB8205:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef470413-a6c3-4541-d008-08ded15bd4d5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|5023799004|11063799006|4143699003|3023799007|6133799003|921020|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	+RFwluUu7lsI4rHmLNGksg5/lFaW7wdpCUlEZnZ+qPgKeLMQvO+mnh9ZDFIywCIXftBieQyWx+vyyllD2r5Sb5caRG84SXw1UmAJZGmhVcS75C+tALEbmQCmDQJOCf7ukPuzDvZ2Ubqx5Cx6lwxrPqJmdpfZGuCZB+g4chooMYCS6aBSRoJjO6ory3V2ZnHD+NB6EkqWrhBqkLfqfXlaCmWJ0NwI6dOtIFliv33RVFdqwk6uyj3UFfnxxAPl16pypsPtsUciSvEfg9+jtn+Ey+iRB1i63jFz+IcDW1Wj9eJv8pSUewBqRETjvsn/ax+SBZ3sAXJg5blMHSzeE77aLx9D4Gg0C9X8agj3HXsJQegMVJOCssLKNTFxm0SwGz07Rd84FEkEyF2f2p1aY268nhl1CearX8CfCsVR/VHTU+ksQT3xtWKPz81im3OjaeNSuQMLAa1aBaFVSHYP5rFwLL7Q1w3FmUK9pYl85tD0iOmXbGEII2hiO61p3ZQMx8jRG3B6izNvVb/MQMUdHl/A7AaW/F1yufHVgwja64kWhj7eJFCv8WzSeh0B4lZCoTGt2Qahqeh7o14ir8QV5YhRavvgudgw1DQiQhMrP0IlTM214wW9s5ZCPyv1v30R+TGHDD948gPgFnqy45qD2BSrw5ezfEzVGqu+hOPlVCiJMZ5KUCz+t3p/KVrJ1IQB9MYZ/bBoCXD/R2RtH01am1j2qQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(5023799004)(11063799006)(4143699003)(3023799007)(6133799003)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bnFUV2IvaFc2aEh5aEFmMjZ6QU0zSTVKNWx2N05YbDBhVUl5MnphQTloQmdT?=
+ =?utf-8?B?VUNvakRsTDcrcmJnK3hYVE1hZUVZa0kvbXNSRUk2d0NsV1MyM0dodjg5dnh0?=
+ =?utf-8?B?a0tUeHozUjFYQmZ1UzdwbjVxZVhXVmlaQTJHV2pTOGw0RTlIY09VK2ZtVzVI?=
+ =?utf-8?B?RmV0Zi82S2JLSkViWUhEU2Y3ZlhLVS8zLzN1ZjkvQ1JpK3ZSUndFclA5YmMr?=
+ =?utf-8?B?K0RqWXBBc1MzUXBCZnhmaXplYXpxUElpVWZKNFExUXlNQy9hU1I3TFh4d3hN?=
+ =?utf-8?B?Z2xUM1VmU2hFeGxoZ2JYdWVjbGttRjlDNXlLbzFLaTdKbU4rYzg0R3VMU25M?=
+ =?utf-8?B?Y0NBVlVXREdKdnJ5WVZ5Q2crTTZDanlYekFoalAwU3ZrdlU1UG90Vk9BQmhj?=
+ =?utf-8?B?a1FGZFpaNFQ2NEovZkNMa2xyQTFsSEJNS3ZRUSs0YUIwSWlmN3N0ZlFaeUdv?=
+ =?utf-8?B?UHAxbGJ6eTlXc3dIOUk3WEYrQzRLNjV0TjJXY0xQaFRZbUlBS1NiaU5ZZ2ZO?=
+ =?utf-8?B?U2NiTFJsYmJlSDIrdU8rUWl4Zm9oU2toTk5KSkp0dWJWR1JjbEVkbld4SjJp?=
+ =?utf-8?B?bW9VT0FodmhKV3FTVHBzUmVtTk5IL0hjZ1lzMW1WbzdVRXErSjlBUXI3Nkox?=
+ =?utf-8?B?cW80c1BTK0RxaHJod3Awb1NqWTlLbnNEcDZiWFdQaXFGaC84NHVJR08wckpF?=
+ =?utf-8?B?aWtqbytFaGJyd1prUjMyaHFxVDF6N1Axc25VS1dPNlRyUkYyMzhhc3ppWkta?=
+ =?utf-8?B?ZysySndTaGxKUVpKdjZUMEZvN1ppVC9nc1FTdTFYV0FDbmNFRmw5d01aV2VR?=
+ =?utf-8?B?c0VNSmJjNXpHazRsNHdxYWFJbk1aWnRUUUF0MTBRRk5iNmxjeTllaUIzOHdh?=
+ =?utf-8?B?N3FLZHNnOEdTTWdsZzUycWlhWFdxVmdWdlpQU2ZrUzZzYzlaRkpMVGEwcndo?=
+ =?utf-8?B?T1Z1VlNSUFlQU1dPUTRMaXQrbWR0VzRiR0tRSEhhYVkyb0RCVnUwMUVIK1JS?=
+ =?utf-8?B?aWE5STNJTENRaTMvWk91Y1g0NWYxOVFBZll0K3o0KzZDMmlIMWJtdit0anlV?=
+ =?utf-8?B?VGVlOThnOUx2R1ZVWE9SV3liNUpZNFBOaUVPSjR2ay9uK2dVUG8vYzFPZ1dV?=
+ =?utf-8?B?cHZkajRKWU9EZXFMbmlta01WYjBFS3dKSTBBMWErQi9TcjNVWVNNaUM4YzNU?=
+ =?utf-8?B?MlhsUnYzUXNheTJiVGtxNjdlMG4rdXI1cThvbVl3RWc4UHFPdUNReDlaWGJz?=
+ =?utf-8?B?VEJFcUgzYzM1bkdhS2ZGSnNMN0FoVDFpejhvQmJyc0E1YzBmTmtWVG1hclpT?=
+ =?utf-8?B?a2o0R3FQY3IxZ1U2VkxhU001MnF4VitlQkxYN2dnUGlBcDMwSDF4ODZDNmhq?=
+ =?utf-8?B?MUZmYW1RM1NYbEdZVDZBd2UxSC9CT2IvOUI1MnhtSDNTZ2JpMUw1ZCtvamtw?=
+ =?utf-8?B?NHpRditOejd2dXFEaXdtRm4wR2UrakZLa0Y4Y3pLaG1FaHNEM3lFNldESU1Z?=
+ =?utf-8?B?L1hvSzFQcnN1WFVKYVFxalBXMk1qV2pWOFJ4TTF2d3NXdU1zcnAxSzFlcTFs?=
+ =?utf-8?B?eFZDU3A5YnovVlFEUzZIV0FLa1ZrYUpkQkFqNlN5UC8yUE0yUXRrMFloUnlt?=
+ =?utf-8?B?ZjhJV29vYVJ4TTAvSElUbWQ4S2JUbDYrWEtzbXQ1b0hYb2pyM1QrVlVxRnMv?=
+ =?utf-8?B?V0E3WHRYeVRrNUhQMGlPSXlVNE1MdEduQlJIVmVLOEFkUGhGbzNMYWxtMTUy?=
+ =?utf-8?B?VnhYQzU4Nmhoa3UvbVdaQ0VpNURCV0tzK1I2em4rMWV5WXM1MFF4ZjdiUHZP?=
+ =?utf-8?B?eDk4ZG1vK1Y3T2tjT3JoUFJtelJlUXZRbzRIZDhURWVFbGxHYnV2eWdNbGFV?=
+ =?utf-8?B?cWQ0ODFmajVVLzFoZWF0ODN3Umd4RWlxa2wzVm45RkZIMDBtbnJOenA3aTZw?=
+ =?utf-8?B?T0s4MzAxSVlteDRUTlJNOCtWdGYxMTZuNkFTQnEyVGFCZ09nS2tXYjNkYzI2?=
+ =?utf-8?B?K1RrcWMrbEIwNlorVG1PZzhBNmVCVkhZMUtkdTVMSFJiUzdKdGU0aHRCYm1K?=
+ =?utf-8?B?ZDlqOEVjQ25HM0JtMml3Ynd5MEl4dHh1TTlqamhwMDQzbnFLaTVWb25VUnpX?=
+ =?utf-8?B?Nm5yMlhDalhBWk43cmhicE5wRUFUQ1JGdUVSbG9uN2UyaE9qOTczVi9Wa0tr?=
+ =?utf-8?B?cWE3SCtDYXViR21Td0JXRDM4UnFqYlhMZTVYRVBFM0dPN21zK3EwTEs5UjNo?=
+ =?utf-8?B?RGNUU0ZzVUtzUVF4MG5PRDRnY3QzOGs4eE9KcU5wWmhWc0lDN0cyQ0Q1UXQw?=
+ =?utf-8?Q?/cwlKBxNeTRM4AELtt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef470413-a6c3-4541-d008-08ded15bd4d5
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 19:15:47.8604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EPpNsRH8FPyrVMSdddOs17LsGN/LABxC4h9dv5navecm5fw4+6TP1kXDnX+RFRQWA42mv5+HoIWbpPCMhEc2Mw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8205
 
-On Mon, 22 Jun 2026 11:41:36 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
+Hello Ackerley,
 
-> Implement dma-buf get_pci_tph for vfio-pci exported dma-bufs and add
-> VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
-> for a VFIO-owned device.
+On 6/23/2026 12:48 PM, Ackerley Tng wrote:
+> Jethro Beekman <jethro@fortanix.com> writes:
 > 
-> 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-> uAPI carries both with explicit validity flags, and get_pci_tph()
-> returns the value matching the importer's requested namespace or
-> -EOPNOTSUPP.
+>> On 2026-06-15 21:49, Ashish Kalra wrote:
+>>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>>
+>>> The SEV firmware enumerates the CPUs at SNP initialization and is not
+>>> aware of the OS bringing CPUs online or offline afterwards, so OS CPU
+>>> hotplug can diverge from the firmware's expectations and break SNP.
+>>> Disable CPU hotplug while SNP is active.
+>>
+>> I think this is too broad. If I have a hypervisor that supports SNP virtualization, a (non-confidential) L1 guest running Linux should still support CPU hotplug while also running confidential L2 guests.
+>>
+>> --
+>> Jethro Beekman | CTO | Fortanix
+>>
 > 
-> Publish and read the TPH descriptor under dmabuf->resv, matching the
-> locking used for other importer-visible dma-buf state. The SET ioctl
-> takes dma_resv_lock_interruptible(), while the callback runs under
-> DMA-buf's asserted resv lock.
+> Were any other solutions considered other than disabling CPU hotplug?
 > 
-> Reject requests the device cannot consume as a completer:
-> pcie_tph_completer_type() must report at least
-> PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
-> PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Make PROBE follow the same hardware
-> gate so the feature only probes as supported when the device can really
-> consume it.
+> Is this temporary until something else is implemented?
 > 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c   |  3 +
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 97 +++++++++++++++++++++++++++++-
->  drivers/vfio/pci/vfio_pci_priv.h   | 12 ++++
->  include/uapi/linux/vfio.h          | 37 ++++++++++++
->  4 files changed, 148 insertions(+), 1 deletion(-)
+> I'm not sure how commonly CPU hotplug is used, and if people are okay
+> with trading in CPU hotplug to get SNP.
 > 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index a28f1e99362c..c7d6902bc61b 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1572,6 +1572,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
->  	case VFIO_DEVICE_FEATURE_DMA_BUF:
->  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-> +	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-> +		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-> +							 argsz);
->  	default:
->  		return -ENOTTY;
->  	}
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index c16f460c01d6..d6f5dd321000 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -3,6 +3,7 @@
->   */
->  #include <linux/dma-buf-mapping.h>
->  #include <linux/pci-p2pdma.h>
-> +#include <linux/pci-tph.h>
->  #include <linux/dma-resv.h>
->  
->  #include "vfio_pci_priv.h"
-> @@ -19,7 +20,14 @@ struct vfio_pci_dma_buf {
->  	u32 nr_ranges;
->  	struct kref kref;
->  	struct completion comp;
-> -	u8 revoked : 1;
-> +
-> +	/* Protected by dmabuf->resv. */
+> Is it that fundamentally the SEV firmware can't support hotplug, so
+> there's no point in keeping it enabled anyway?
 
-Nit, it would be more accurate to say:
+Yes, essentially. The SEV firmware knows nothing about when the OS takes CPUs online or offline. At SNP_INIT it accounts for all
+the CPUs enabled via the BIOS/UEFI and establishes the per-core SNP state for them; it has no notion of the OS bringing CPUs up or
+down afterwards. So OS hotplug actions can diverge from the firmware's expectations and break SNP. Disabling hotplug just makes
+that constraint explicit — there's nothing useful to keep it enabled for:  a hot-removed core still "exists" as far as
+the firmware and the per-core RMP/RMPOPT state are concerned, and a core brought online later was never set up for SNP.
 
-	/*
-	 * Updates protected by dmabuf->resv, @revoked additionally
-	 * protected by memory_lock.
-	 */
+> 
+> Is there some way of supporting hotplug for CPUs that won't be used with
+> SNP, for serving non-SNP VMs on the same host as SNP VMs, or is that too
+> complicated?
+>
 
-revoked also has an unprotected read, but it's previously existing and
-benign, and likely just needs a READ_ONCE() annotation.
+Not really. SNP's memory-integrity guarantee rests on a single invariant: every memory write is subject to RMP checks to protect
+against corruption of SEV-SNP guest memory. The moment any CPU can issue writes that aren't RMP-checked, that protection is
+broken for the whole system — it's not something that can be confined to "that one core."
 
-> +	u16 tph_st_ext;
-> +	u8 tph_st;
-> +	u8 revoked:1;
-> +	u8 tph_st_valid:1;
-> +	u8 tph_st_ext_valid:1;
-> +	u8 tph_ph:2;
->  };
->  
->  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> @@ -69,6 +77,26 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
->  	return ret;
->  }
->  
-> +static int vfio_pci_dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
-> +					u16 *steering_tag, u8 *ph)
-> +{
-> +	struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> +
-> +	dma_resv_assert_held(dmabuf->resv);
-> +
-> +	if (extended) {
-> +		if (!priv->tph_st_ext_valid)
-> +			return -EOPNOTSUPP;
-> +		*steering_tag = priv->tph_st_ext;
-> +	} else {
-> +		if (!priv->tph_st_valid)
-> +			return -EOPNOTSUPP;
-> +		*steering_tag = priv->tph_st;
-> +	}
-> +	*ph = priv->tph_ph;
-> +	return 0;
-> +}
-> +
->  static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment,
->  				   struct sg_table *sgt,
->  				   enum dma_data_direction dir)
-> @@ -101,6 +129,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
->  
->  static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
->  	.attach = vfio_pci_dma_buf_attach,
-> +	.get_pci_tph = vfio_pci_dma_buf_get_pci_tph,
->  	.map_dma_buf = vfio_pci_dma_buf_map,
->  	.unmap_dma_buf = vfio_pci_dma_buf_unmap,
->  	.release = vfio_pci_dma_buf_release,
-> @@ -333,6 +362,72 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  	return ret;
->  }
->  
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz)
-> +{
-> +	struct vfio_device_feature_dma_buf_tph set_tph;
-> +	struct vfio_pci_dma_buf *priv;
-> +	struct dma_buf *dmabuf;
-> +	u8 comp;
-> +	int ret;
-> +
-> +	comp = pcie_tph_completer_type(vdev->pdev);
-> +	if (comp == PCI_EXP_DEVCAP2_TPH_COMP_NONE)
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-> +				 sizeof(set_tph));
-> +	if (ret != 1)
-> +		return ret;
-> +
-> +	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-> +		return -EFAULT;
-> +
-> +	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-> +		return -EINVAL;
-> +
-> +	if (set_tph.ph & ~0x3)
-> +		return -EINVAL;
-> +
-> +	if ((set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT) &&
-> +	    comp != PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
-> +		return -EOPNOTSUPP;
-> +
-> +	dmabuf = dma_buf_get(set_tph.dmabuf_fd);
-> +	if (IS_ERR(dmabuf))
-> +		return PTR_ERR(dmabuf);
-> +
-> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	priv = dmabuf->priv;
-> +	if (priv->vdev != vdev) {
-> +		ret = -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	ret = dma_resv_lock_interruptible(dmabuf->resv, NULL);
-> +	if (ret)
-> +		goto out_put;
-> +
-> +	priv->tph_st         = set_tph.steering_tag;
-> +	priv->tph_st_ext     = set_tph.steering_tag_ext;
-> +	priv->tph_ph         = set_tph.ph;
-> +	priv->tph_st_valid   = !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-> +	priv->tph_st_ext_valid =
-> +		!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-> +	dma_resv_unlock(dmabuf->resv);
-> +	ret = 0;
-> +
-> +out_put:
-> +	dma_buf_put(dmabuf);
-> +	return ret;
-> +}
-> +
->  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
->  {
->  	struct vfio_pci_dma_buf *priv;
-> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-> index fca9d0dfac90..c58f369be4b3 100644
-> --- a/drivers/vfio/pci/vfio_pci_priv.h
-> +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> @@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
->  int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  				  struct vfio_device_feature_dma_buf __user *arg,
->  				  size_t argsz);
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz);
->  void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
->  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked);
->  #else
-> @@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  {
->  	return -ENOTTY;
->  }
-> +
-> +static inline int
-> +vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u32 flags,
-> +				  struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				  size_t argsz)
-> +{
-> +	return -ENOTTY;
-> +}
->  static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
->  {
->  }
-> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> index 5de618a3a5ee..2d30ba43e2cf 100644
-> --- a/include/uapi/linux/vfio.h
-> +++ b/include/uapi/linux/vfio.h
-> @@ -1534,6 +1534,43 @@ struct vfio_device_feature_dma_buf {
->   */
->  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
->  
-> +/**
-> + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) metadata
-> + * with a vfio-exported dma-buf. The dma-buf must have been created by
-> + * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must report
-> + * TPH Completer support in Device Capabilities 2 (bits 13:12); requests
-> + * carrying VFIO_DMA_BUF_TPH_ST_EXT additionally require the device to
-> + * report the Extended TPH Completer encoding. Otherwise the ioctl
-> + * returns -EOPNOTSUPP.
-> + *
-> + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA_BUF.
-> + *
-> + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) are
-> + * distinct namespaces. Userspace supplies whichever values are valid and sets
-> + * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bits in @flags;
-> + * an importer requests one namespace and receives the matching value.
-> + *
-> + * @flags == 0 marks any previously published ST / Extended-ST as invalid
-> + * for future PCI TPH queries on this dma-buf.
+That's because SNP isn't per-core in that sense — it's a system-wide mode. SYSCFG[SNP_EN] is set on every core, the RMP covers all
+of physical memory, and once SNP is enabled every memory write is subject to RMP checks on every core. A non-SNP guest sharing the
+host still runs on cores that are part of the SNP-enabled system.
 
-I think we should avoid "published" as it still suggests we're somehow
-able to invalidate what was previously reported and consumed.  It's
-offset by the trailing clause here, but that's absent below.
+By the SNP architecture there simply can't be a CPU that isn't doing RMP checks while SNP is active, so SNP_EN has to be enforced
+on every core. RMP enforcement is gated per-core by SYSCFG[SNP_EN] and it must be set on every core before SNP_INIT; a core with
+SNP_EN clear performs no RMP checks at all, which the architecture doesn't allow once SNP is up. A newly hotplugged CPU comes up
+without SNP_EN (SNP not enabled on it), and since it wasn't present when SNP_INIT ran it isn't part of the initialized SNP
+configuration either — so it does no RMP checking. And because an SNP guest's vCPUs (or any guest for that matter) can be scheduled
+on any online CPU, the guest could end up running on that core, accessing memory with no RMP enforcement and breaking SNP's memory integrity. 
+There's no way to prevent that: KVM doesn't fence SNP guests (or any guests for that matter) off particular online cores.
+And carving out cores for non-SNP-only use isn't possible by the architecture: SNP requires RMP checks on every CPU, so there's no valid
+configuration with SNP active and a subset of cores exempt.
 
-Also, we're noting @flags == 0 as if it's a special case, but we really
-need the clarity that if either flag bit is not set, the corresponding
-field is marked invalid for future queries.  Perhaps something like:
+Thanks,
+Ashish
 
-   * @flags is the authoritative validity for each namespace: when
-   * VFIO_DMA_BUF_TPH_ST is set, @steering_tag becomes the valid 8-bit ST; when
-   * VFIO_DMA_BUF_TPH_ST_EXT is set, @steering_tag_ext becomes the valid 16-bit
-   * Extended ST.  A namespace whose bit is clear is marked invalid and
-   * reported as unsupported to importers requesting it.
-   *
-   * Each SET fully replaces the dma-buf's TPH state: any namespace not selected
-   * in @flags is left invalid, so @flags == 0 marks both ST and Extended ST
-   * invalid.  This only affects TPH queries made after the SET completes; an
-   * importer that has already retrieved a value is unaffected.  Userspace must
-   * therefore configure TPH before handing the dma-buf fd to an importer.
-
-> + *
-> + * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-
-Slight inconsistency here, @ph.  We might also help to silence the
-Sashiko warning to note:
-
-   * Undefined @flags and @ph bits must always be zero.
-
-> + *
-> + * Userspace must publish TPH before handing the dma-buf fd to an importer.
-> + * Calling SET again replaces the published values.
-
-The above suggestion is meant to replace this as well.
-
-> + */
-> +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-
-There are several series in-flight contending for device feature
-indexes, so this should really go in through the vfio tree to reduce
-the risk of duplicates.  We also still need acks from the relevant
-maintainers for PCI, dma-buf, and mlx5 before this can be queued for
-v7.3.  Thanks,
-
-Alex
-
-> +
-> +#define VFIO_DMA_BUF_TPH_ST		(1 << 0)
-> +#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)
-> +
-> +struct vfio_device_feature_dma_buf_tph {
-> +	__s32	dmabuf_fd;
-> +	__u32	flags;
-> +	__u16	steering_tag_ext;
-> +	__u8	steering_tag;
-> +	__u8	ph;
-> +};
-> +
->  /* -------- API for Type1 VFIO IOMMU -------- */
->  
->  /**
-
+ 
+>>>
+>>> [...snip...]
+>>>
