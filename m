@@ -1,139 +1,104 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58667309DDF;
-	Tue, 23 Jun 2026 16:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68929305968
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 16:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782230410; cv=none; b=FSKKRsSYTYY6gi3xPKM5UH1y3kCxsMv4CSKDw4/dsWAZZREh3cq71LqiJ9PCxmTtCOqlNxGW70lvjwMfvSfeRaeHjCZxaiH1vMI1QdupdGxXvHKqKI55QE/55ZmBUPzooD5LeBymr3I82dCh+PbLtO+Al7ro5/tbQrAeGB63MZA=
+	t=1782230695; cv=none; b=kUdjNr+BEOZLPwNMsve4WTAGOzndckvHVoK+MNKopqCcpCsAr78PBsP/PwyGoiUzZipcf9rJP8LyyrnNR9qGo9Uu21msDzVdS3an6QqnYyZLNGi/+cDb+Fsu2ZOPKPQNzrMIrL2ndSfCfceAeUc59kBa+HsDYqUibvkFUga122M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782230410; c=relaxed/simple;
-	bh=mnYZEO5Qc1HJCQHnvfowar1j3IGqJNjvOTc6qMOyxvg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JL74Ak6Kb4SkvBUv++CN9Gyb33yghtiLmr2QbnnEHmdoxd55cwNmOwbS3ykAc/SZg2jVZTN2vkY541+HcuSEL9ncgqlA9Uf3JiuKpsdkgJqHmsHt9KQ6uKBB8eHOjVJZSsbUVGaxq1sdcB7STFcaVFze3vhWElyiVvn61HjgqYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=oBIn3DCB; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1782230695; c=relaxed/simple;
+	bh=NKYALfrymSfloD9phqouCoon0tF0Fwr7CfmN4KVm1rs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gjr2pgSlX3xOjCFjN8L00IwR68ajydARca8EgEkUuhZ5tO5bX9zvZxDA2/7RUzK4NE2lKzTCsP+5IJ35KgVeBUj3iMs1zD3wMIRB5Sr8VFejt3TLysI1SjHdzYzTBf98/du2p9x6skUlpKumb8J3ycDPo1MeCbAQh90l02eKLgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ukiNsib9; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="oBIn3DCB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1782230405;
-	bh=QyccYdnY6i0pwVZFs1mkkJ0flxezhHTsxJPLPJYO6+8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oBIn3DCBBcIDcErjiM5VxTBeWJBne9g+g02xQbbcOvnY9/Pmc/SSDrA+20e0JnrZy
-	 JnfweqAHrHWnF5NBgFSeBOkWhcPEmn+mY1T3GOsr4oybIX5o+KUviHpT0GW+EX64Ru
-	 Miq0JU//KwSCapVJBEuKHXF42Rgnd3LVavXGM8GdliaAuRzT3jbj2yhbg1nzbws9Ko
-	 ZLLjaRc0XoO5mrmkWX+mpmVVtHBThU89oMkBitI8LVirojvXwjTR6PnahriGUg/RE3
-	 Eu29Jm8ARiO2If5qWwb+7TrRa6ohd5HE3HVWq1IAWNDGAlVkvSeeawx53bEINKS1Ca
-	 ydEYIlMZPO2Qg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gl8sR5r0Wz4w9R;
-	Wed, 24 Jun 2026 01:59:55 +1000 (AEST)
-Message-ID: <88a9ebaa-8637-4290-b299-acae0e3065f8@ozlabs.org>
-Date: Tue, 23 Jun 2026 16:59:49 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ukiNsib9"
+Date: Tue, 23 Jun 2026 11:04:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782230690;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HUMXCuMO7p6O5rMHTd48qDrDnp9sIV5SbSD9vcVwTcQ=;
+	b=ukiNsib9RQNh0POS4icEM61aaTZs1u8fyQ63wd6/eWuktd7EVVXP1VXD26dhcfoz6PkSgq
+	+4EbfP050QlmoW5tvJDaMSYCKZoo9f/i3WCdqqDXonkT4osN3LntQa4y/rt5KqEg3kLOae
+	f9xu8u9G2yhuyMI/18PP+3Q4mrzpibo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	thuth@redhat.com
+Subject: Re: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by
+ tag
+Message-ID: <b3agpqbu47bnsfcfzskdfgymyag6y6be5danltshzwiimybvnh@r4773lfg6vfj>
+References: <20260622164109.26350-1-andrew.jones@linux.dev>
+ <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
+ <ev32z6yxkujq3ctb66f6l3e2l5cx2b33ye76mlqvo6jdsydxsk@hwmgkv5rmqym>
+ <92a4d803-c545-48e8-ab5c-647bb04f3560@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Content-Language: en-GB
-To: Robin Murphy <robin.murphy@arm.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-2-matt@ozlabs.org> <aisAc1HRn2Wa4F9p@google.com>
- <DM6PR11MB36904ED2E1D2C646644F67668C182@DM6PR11MB3690.namprd11.prod.outlook.com>
- <0dfadf98-a904-4e6a-b078-5caf27bc7922@ozlabs.org>
- <81a9d212-996e-42e1-aabf-b120a13e94c3@arm.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <81a9d212-996e-42e1-aabf-b120a13e94c3@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <92a4d803-c545-48e8-ab5c-647bb04f3560@oss.qualcomm.com>
+X-Migadu-Flow: FLOW_OUT
 
-Heya Robin,
-
-On 23/06/2026 16:48, Robin Murphy wrote:
-> On 12/06/2026 3:31 pm, Matt Evans wrote:
->> Hi Kevin, Pranjal, (+Robin, hi!)
+On Tue, Jun 23, 2026 at 05:08:07PM +0200, Philippe Mathieu-Daudé wrote:
+> On 22/6/26 21:00, Andrew Jones wrote:
+> > On Mon, Jun 22, 2026 at 06:43:45PM +0200, Paolo Bonzini wrote:
+> > > On Mon, Jun 22, 2026 at 6:41 PM Andrew Jones <andrew.jones@linux.dev> wrote:
+> > > > 
+> > > > Import Linux commit d1db4118489f ("checkpatch: add support for
+> > > > Assisted-by tag").
+> > > > 
+> > > > (I should have used AI for this, since it'd be fun to include that
+> > > > tag on this tag-enabling patch, but sometimes I still do my own
+> > > > homework!)
+> > > 
+> > > Personally, I don't see the point in providing free advertising to AI
+> > > companies, so if I had to choose I would do "WARN(...) if ($sign_off
+> > > =~ /^Assisted-by:/i)". It's more important to know what AI was used
+> > > *for*, than what AI was used period.
+> > > 
+> > > But I won't complain if people want this patch.
+> > 
+> > The process is now well established over in Linux kernel land and we
+> > encourage kvm-unit-tests contributors to follow Linux processes. The
+> > motivation for this patch is because I just queued an ARM patch which
+> > used the Linux process and it failed checkpatch. I'd rather checkpatch
+> > succeed than to have to tell people to remove/modify the tags they're
+> > used to using with the kernel.
+> > 
+> > We can encourage contributors to also add sentences stating how AI
+> > assisted when an AI assistance tag is provided in order to capture
+> > the "AI used for what" part.
 > 
-> Oh hey there! :)
-> 
->> On 12/06/2026 04:39, Tian, Kevin wrote:
->>>> From: Pranjal Shrivastava <praan@google.com>
->>>> Sent: Friday, June 12, 2026 2:38 AM
->>>>
->>>> On Wed, Jun 10, 2026 at 04:43:15PM +0100, Matt Evans wrote:
->>>>> --- a/drivers/pci/Kconfig
->>>>> +++ b/drivers/pci/Kconfig
->>>>> @@ -206,11 +206,7 @@ config PCIE_TPH
->>>>>   config PCI_P2PDMA
->>>>>       bool "PCI peer-to-peer transfer support"
->>>>>       depends on ZONE_DEVICE
->>>>> -    #
->>>>> -    # The need for the scatterlist DMA bus address flag means PCI
->>>> P2PDMA
->>>>> -    # requires 64bit
->>>>> -    #
->>>>> -    depends on 64BIT
->>>>> +    select PCI_P2PDMA_CORE
->>>>>       select GENERIC_ALLOCATOR
->>>>>       select NEED_SG_DMA_FLAGS
->>>>>       help
->>>>
->>>> Nit: Did we drop depends on 64BIT intentionally here? I guess the full
->>>> PCI_P2PDMA stack still selects NEED_SG_DMA_FLAGS? IIRC,
->>>> NEED_SG_DMA_FLAGS doesn't select 64BIT?
->>>
->>> seems that comment is stale. According to the commit msg:
->>>
->>> " it would make vfio-pci only available if CONFIG_ZONE_DEVICE is
->>> present (e.g. 64-bit systems), "
->>>
->>> so it sounds a redundant dependency hence is removed.
->>
->> This was intentional.  In practice there is still a dependency on 64BIT
->> for PCI_P2PDMA, but it is because of ZONE_DEVICE (and mem hotplug).  The
->> key need is PCI_P2PDMA_CORE is available on !64BIT for VFIO, but I
->> didn't see a requirement from PCI_P2PDMA itself (as opposed to its
->> dependencies).  If I've missed one, I can put it back...
->>
->> But NEED_SG_DMA_FLAGS doesn't smell quite right; I see from comments in
->>
->>    af2880ec44021 ("scatterlist: add dedicated config for DMA flags")
->>
->> that it assumes 64BIT, but it seems to be missing a "depends on 64BIT".
->>
->> Robin -- should that depend on 64BIT?
-> 
-> Indeed, looking at the history it seems like that was overlooked, but it
-> worked out at the time since the only selector of NEED_SG_DMA_FLAGS was
-> PCI_P2PDMA as you say. If we're now generalising then moving the
-> explicit 64BIT dependency to NEED_SG_DMA_FLAGS itself sounds like the
-> right thing to do.
+> I tend to agree with Paolo in that I don't see the value added by
+> these tags -- except the free advertising --. Besides what provides
+> $AGENT_NAME:$MODEL_VERSION is likely irrelevant without the prompt
+> used. And even if we try to reproduce we would get a slightly
+> different result :) Then by the time the patch is committed the
+> information is almost obsolete.
+>
 
-Cheers for confirming.  I'll send a patch separate to this series (since
-the deps work out OK for PCI_P2PDMA for the reasons mentioned).
+kvm-unit-tests does sit on the boundary of being Linux-like and
+QEMU-adjacent. So I can see why the QEMU position[1] might be
+considered over the Linux position here. OTOH, I'd rather not
+complicate kvm-unit-tests development. I'm also personally not
+that against the tags providing free advertising. The tags also
+provide stats in the long run which may be used to compute risk
+factors and/or evaluate quality of particular LLM designs which
+can lead to LLM improvements.
 
-Ta,
+[1] https://patchew.org/QEMU/20260528073412.551117-1-pbonzini@redhat.com/
 
-Matt
+Thanks,
+drew
