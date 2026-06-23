@@ -1,264 +1,137 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613763D566B;
-	Tue, 23 Jun 2026 12:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEDB70836
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782216903; cv=none; b=tLcrPNdaGKSxZPx0OK6CxyE2KDHLpgflgeMMlwQbmIK0Ub/inVFz1ekAXVJE3anjBh3coOpOJ2qn2EFA33+BfFbTYCRn0RY5Z0NTeMMKKWJWfyplH2MCDTNtCwzo1Fea970co3gRoTJkzptesjLWS4u/5vwaWkIXSK6odh8W+rg=
+	t=1782217899; cv=none; b=Ty8RKMAdXymKWfhHymrHgniLdH2xNwMIDABucR5H8Vq+bCI4RNVw+wJ1/YaGSuP12vdVfDRNjC5m6jePDE4yXjXj4vXpBGnzIKCNNIVm46DWFyilHPVSFp43hTSYgtAKsMbYa1fw0SJZoX2mTa63fvTuLJEwXMpNd9hfx/KWono=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782216903; c=relaxed/simple;
-	bh=b8J068l5dorgJ0v1lsoMUzBqTXGKDpwoHdIfHPtdR4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P75vBmt68yhxXK7J0hSu/+WxvynAul+q+Kif3qRWt6EdjF8y+4TqkJlUW0kNBp3y0000cdZdvgP6EbOO0CLP+gWVlb5nxSOdIw06hqeXzeSD9UjJNeSHi9NzcEGXkMoIVhsHiYeAtCbPUmWL2lewoY95iMGLvy+r5j5r9fzoUa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gl3sw6GPsz8Xrr9;
-	Tue, 23 Jun 2026 20:15:00 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
-	by mse-fl2.zte.com.cn with SMTP id 65NCEsMN005473;
-	Tue, 23 Jun 2026 20:14:54 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from localhost.localdomain (unknown [10.234.74.162])
-	by smtp (Zmail) with SMTP;
-	Tue, 23 Jun 2026 20:14:57 +0800
-X-Zmail-TransId: 3e816a3a78c1006-0472d
-X-Zmail-LocalSMTP: 1
-X-Zmail-RealSender: wang.yechao255@zte.com.cn
-From: Wang Yechao <wang.yechao255@zte.com.cn>
-To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
-        Alexandre Ghiti <alex@ghiti.fr>,
-        Wang Yechao <wang.yechao255@zte.com.cn>
-Subject: [PATCH v3 5/5] RISC-V: KVM: Add the eager_page_split module parameter
-Date: Tue, 23 Jun 2026 20:13:13 +0800
-Message-ID: <20260623121332.78514-6-wang.yechao255@zte.com.cn>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20260623121332.78514-1-wang.yechao255@zte.com.cn>
+	s=arc-20240116; t=1782217899; c=relaxed/simple;
+	bh=SQcJj83DBljYAwLuDoEuZarYtC5os1vRPVjt8shq/mg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bwqXNljIVrUBTQcL5TzaXkNR+q5ishWzG7IKEi4jExLWYmrm4rr9Z3zZoxBIm8+FO5+RvhEiscRutVTrnzI2JDJ+MKKdVWF9H41jR7jGVG5C9BT+pBcBStiZ00Dbp81Wy/VcF7hLesFfWd5L7vLnHlnDB7nDcmqztiukKPW5duM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/CuZ8l8; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/CuZ8l8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBF41F000E9;
+	Tue, 23 Jun 2026 12:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782217898;
+	bh=sRQD54I/EfIuwNIJbHb4BAMbgs8mLII/QnelNFY7VPk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=F/CuZ8l8IZLc7hI4o2d7bvupHnTakq+OwRQGrokqO3DLqvJDR8X5pVtQueC9F2Gmh
+	 ylY4wC/f8IHUE7hqqk4taxWPxzXt3afDt704IAxjDhS2Y6HEWpblwn95dhm1dhvvk9
+	 UG10oCdPuTvqwdw0Ao/uVP5FkySBVC4LFVxFrC0Kcd40B+BboUXsq/Qzq5jaCZ/x5/
+	 ibwrPqQU4mxTp5Wucbjsu/9V41Ecu3dJwa5cYlFQumnDJ61ApcBisWUsviB0odExBo
+	 /1f0QbGQTvUZMWQhscPf0QUDF0sOwIPw3LQHRswgNtJkQcM05oDEATMy6kj2QSZd5H
+	 cEfwk6jZx9WgA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 5/5] RISC-V: KVM: Add the eager_page_split module
+ parameter
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Wang Yechao" <wang.yechao255@zte.com.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260623121332.78514-6-wang.yechao255@zte.com.cn>
 References: <20260623121332.78514-1-wang.yechao255@zte.com.cn>
+ <20260623121332.78514-6-wang.yechao255@zte.com.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 23 Jun 2026 12:31:37 +0000
+Message-Id: <20260623123137.CEBF41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL:mse-fl2.zte.com.cn 65NCEsMN005473
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 23 Jun 2026 20:15:00 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A3A78C4.001/4gl3sw6GPsz8Xrr9
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
+New issues:
+- [Low] The `eager_page_split` module parameter is declared globally withou=
+t the `static` keyword, leading to namespace pollution.
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+Pre-existing issues:
+- [Critical] Dropping `mmu_lock` before flushing the TLB for newly write-pr=
+otected pages allows the guest to modify memory without KVM recording it in=
+ the dirty bitmap, leading to silent data corruption during live migration.=
+ This problem wasn't introduced by this patch, but it was exposed in the mo=
+dified code.
+--
 
+commit 775425d655f0c265e56c7d5ec6ecfe710e56385a
+Author: Wang Yechao <wang.yechao255@zte.com.cn>
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+RISC-V: KVM: Add the eager_page_split module parameter
 
+This commit introduces the eager_page_split module parameter for RISC-V KVM
+to control whether huge pages are proactively split during dirty logging.
+Eager page splitting is enabled by default.
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+[ ... ]
 
-QWRkIGFuIGVhZ2VyX3BhZ2Vfc3BsaXQgbW9kdWxlIHBhcmFtZXRlciBmb3IgUklTQy1WIEtWTSwg
-Zm9sbG93aW5nDQp0aGUgc2FtZSBhcHByb2FjaCBhcyBvbiB4ODYuIFRoaXMgcGFyYW1ldGVyIGNv
-bnRyb2xzIHdoZXRoZXIgZWFnZXINCnBhZ2Ugc3BsaXR0aW5nIGlzIGVuYWJsZWQuIFRoZSBkZWZh
-dWx0IHZhbHVlIGlzIG9uLg0KDQpXaGVuIGVhZ2VyIHBhZ2Ugc3BsaXR0aW5nIGlzIGVuYWJsZWQs
-IEtWTSBwcm9hY3RpdmVseSBzcGxpdHMgbGFyZ2UNCnBhZ2VzIChodWdlIHBhZ2VzKSBpbnRvIHNt
-YWxsZXIgcGFnZXMgd2hlbiBuZWVkZWQgZm9yIGRpcnR5IGxvZ2dpbmcNCm9yIG90aGVyIG9wZXJh
-dGlvbnMuIERpc2FibGluZyBpdCBjYW4gYmUgYmVuZWZpY2lhbCBmb3IgVk0gd29ya2xvYWRzDQp0
-aGF0IHJhcmVseSBwZXJmb3JtIHdyaXRlcywgb3IgdGhhdCBvbmx5IHdyaXRlIHRvIGEgc21hbGwg
-cmVnaW9uIG9mDQptZW1vcnksIGFzIGl0IGFsbG93cyBodWdlIHBhZ2VzIHRvIHJlbWFpbiBpbnRh
-Y3QgZm9yIHJlYWQgYWNjZXNzZXMuDQoNClNpZ25lZC1vZmYtYnk6IFdhbmcgWWVjaGFvIDx3YW5n
-LnllY2hhbzI1NUB6dGUuY29tLmNuPg0KLS0tDQogRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9r
-ZXJuZWwtcGFyYW1ldGVycy50eHQgfCAgNyArKysrKy0tDQogYXJjaC9yaXNjdi9rdm0vbW11LmMg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAxMyArKysrKysrKysrLS0tDQogMiBmaWxlcyBj
-aGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQgYi9Eb2N1bWVu
-dGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0KaW5kZXggYTY4MDAzYzM1
-OTljYy4uYjRjNjhhODk2ZmE3OSAxMDA2NDQNCi0tLSBhL0RvY3VtZW50YXRpb24vYWRtaW4tZ3Vp
-ZGUva2VybmVsLXBhcmFtZXRlcnMudHh0DQorKysgYi9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRl
-L2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0KQEAgLTMwNDcsNyArMzA0Nyw3IEBAIEtlcm5lbCBwYXJh
-bWV0ZXJzDQogCQkJRGVmYXVsdCBpcyAwIChkb24ndCBpZ25vcmUsIGJ1dCBpbmplY3QgI0dQKQ0K
-IA0KIAlrdm0uZWFnZXJfcGFnZV9zcGxpdD0NCi0JCQlbS1ZNLFg4Nl0gQ29udHJvbHMgd2hldGhl
-ciBvciBub3QgS1ZNIHdpbGwgdHJ5IHRvDQorCQkJW0tWTSxYODYsUklTQ1ZdIENvbnRyb2xzIHdo
-ZXRoZXIgb3Igbm90IEtWTSB3aWxsIHRyeSB0bw0KIAkJCXByb2FjdGl2ZWx5IHNwbGl0IGFsbCBo
-dWdlIHBhZ2VzIGR1cmluZyBkaXJ0eSBsb2dnaW5nLg0KIAkJCUVhZ2VyIHBhZ2Ugc3BsaXR0aW5n
-IHJlZHVjZXMgaW50ZXJydXB0aW9ucyB0byB2Q1BVDQogCQkJZXhlY3V0aW9uIGJ5IGVsaW1pbmF0
-aW5nIHRoZSB3cml0ZS1wcm90ZWN0aW9uIGZhdWx0cw0KQEAgLTMwNjcsNyArMzA2NywxMCBAQCBL
-ZXJuZWwgcGFyYW1ldGVycw0KIAkJCXRoZSBLVk1fQ0xFQVJfRElSVFkgaW9jdGwsIGFuZCBvbmx5
-IGZvciB0aGUgcGFnZXMgYmVpbmcNCiAJCQljbGVhcmVkLg0KIA0KLQkJCUVhZ2VyIHBhZ2Ugc3Bs
-aXR0aW5nIGlzIG9ubHkgc3VwcG9ydGVkIHdoZW4ga3ZtLnRkcF9tbXU9WS4NCisJCQlPbiB4ODYs
-IGVhZ2VyIHBhZ2Ugc3BsaXR0aW5nIGlzIG9ubHkgc3VwcG9ydGVkIHdoZW4NCisJCQlrdm0udGRw
-X21tdT1ZLg0KKw0KKwkJCU9uIFJJU0NWLCBlYWdlciBwYWdlIHNwbGl0dGluZyBpcyBzdXBwb3J0
-ZWQgYnkgZGVmYXVsdC4NCiANCiAJCQlEZWZhdWx0IGlzIFkgKG9uKS4NCiANCmRpZmYgLS1naXQg
-YS9hcmNoL3Jpc2N2L2t2bS9tbXUuYyBiL2FyY2gvcmlzY3Yva3ZtL21tdS5jDQppbmRleCA1Yjky
-YjI1NmFlMjJjLi5iNmI2ZTdlNjRkYjYwIDEwMDY0NA0KLS0tIGEvYXJjaC9yaXNjdi9rdm0vbW11
-LmMNCisrKyBiL2FyY2gvcmlzY3Yva3ZtL21tdS5jDQpAQCAtMTYsNiArMTYsOSBAQA0KICNpbmNs
-dWRlIDxhc20va3ZtX21tdS5oPg0KICNpbmNsdWRlIDxhc20va3ZtX25hY2wuaD4NCiANCitib29s
-IF9fcmVhZF9tb3N0bHkgZWFnZXJfcGFnZV9zcGxpdCA9IHRydWU7DQorbW9kdWxlX3BhcmFtKGVh
-Z2VyX3BhZ2Vfc3BsaXQsIGJvb2wsIDA2NDQpOw0KKw0KIHN0YXRpYyB2b2lkIG1tdV93cF9tZW1v
-cnlfcmVnaW9uKHN0cnVjdCBrdm0gKmt2bSwgaW50IHNsb3QpDQogew0KIAlzdHJ1Y3Qga3ZtX21l
-bXNsb3RzICpzbG90cyA9IGt2bV9tZW1zbG90cyhrdm0pOw0KQEAgLTE2NSw4ICsxNjgsMTAgQEAg
-dm9pZCBrdm1fYXJjaF9tbXVfZW5hYmxlX2xvZ19kaXJ0eV9wdF9tYXNrZWQoc3RydWN0IGt2bSAq
-a3ZtLA0KIA0KIAlrdm1fcmlzY3ZfZ3N0YWdlX3dwX3JhbmdlKCZnc3RhZ2UsIHN0YXJ0LCBlbmQp
-Ow0KIA0KLQlpZiAoa3ZtX2RpcnR5X2xvZ19tYW51YWxfcHJvdGVjdF9hbmRfaW5pdF9zZXQoa3Zt
-KSkNCi0JCW1tdV9zcGxpdF9odWdlX3BhZ2VzKCZnc3RhZ2UsIHN0YXJ0LCBlbmQpOw0KKwlpZiAo
-a3ZtX2RpcnR5X2xvZ19tYW51YWxfcHJvdGVjdF9hbmRfaW5pdF9zZXQoa3ZtKSkgew0KKwkJaWYg
-KFJFQURfT05DRShlYWdlcl9wYWdlX3NwbGl0KSkNCisJCQltbXVfc3BsaXRfaHVnZV9wYWdlcygm
-Z3N0YWdlLCBzdGFydCwgZW5kKTsNCisJfQ0KIH0NCiANCiB2b2lkIGt2bV9hcmNoX3N5bmNfZGly
-dHlfbG9nKHN0cnVjdCBrdm0gKmt2bSwgc3RydWN0IGt2bV9tZW1vcnlfc2xvdCAqbWVtc2xvdCkN
-CkBAIC0yMzYsNyArMjQxLDkgQEAgdm9pZCBrdm1fYXJjaF9jb21taXRfbWVtb3J5X3JlZ2lvbihz
-dHJ1Y3Qga3ZtICprdm0sDQogCQlpZiAoa3ZtX2RpcnR5X2xvZ19tYW51YWxfcHJvdGVjdF9hbmRf
-aW5pdF9zZXQoa3ZtKSkNCiAJCQlyZXR1cm47DQogCQltbXVfd3BfbWVtb3J5X3JlZ2lvbihrdm0s
-IG5ldy0+aWQpOw0KLQkJbW11X3NwbGl0X21lbW9yeV9yZWdpb24oa3ZtLCBuZXctPmlkKTsNCisN
-CisJCWlmIChSRUFEX09OQ0UoZWFnZXJfcGFnZV9zcGxpdCkpDQorCQkJbW11X3NwbGl0X21lbW9y
-eV9yZWdpb24oa3ZtLCBuZXctPmlkKTsNCiAJfQ0KIH0NCiANCi0tIA0KMi40My41
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index d2d36a9dca06f..89f0dc237cf7b 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -16,6 +16,9 @@
+>  #include <asm/kvm_mmu.h>
+>  #include <asm/kvm_nacl.h>
+> =20
+> +bool __read_mostly eager_page_split =3D true;
+> +module_param(eager_page_split, bool, 0644);
 
+[Severity: Low]
+Should this variable be declared with the static keyword?
 
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+Because eager_page_split is only used in this file, omitting static pollutes
+the global namespace and might cause silent collisions with variables in
+other built-in drivers or subsystems. It can also trigger a
+-Wmissing-prototypes warning.
 
-QWRkJm5ic3A7YW4mbmJzcDtlYWdlcl9wYWdlX3NwbGl0Jm5ic3A7bW9kdWxlJm5ic3A7cGFyYW1l
-dGVyJm5ic3A7Zm9yJm5ic3A7UklTQy1WJm5ic3A7S1ZNLCZuYnNwO2ZvbGxvd2luZzxiciAvPnRo
-ZSZuYnNwO3NhbWUmbmJzcDthcHByb2FjaCZuYnNwO2FzJm5ic3A7b24mbmJzcDt4ODYuJm5ic3A7
-VGhpcyZuYnNwO3BhcmFtZXRlciZuYnNwO2NvbnRyb2xzJm5ic3A7d2hldGhlciZuYnNwO2VhZ2Vy
-PGJyIC8+cGFnZSZuYnNwO3NwbGl0dGluZyZuYnNwO2lzJm5ic3A7ZW5hYmxlZC4mbmJzcDtUaGUm
-bmJzcDtkZWZhdWx0Jm5ic3A7dmFsdWUmbmJzcDtpcyZuYnNwO29uLjxiciAvPg08YnIgLz5XaGVu
-Jm5ic3A7ZWFnZXImbmJzcDtwYWdlJm5ic3A7c3BsaXR0aW5nJm5ic3A7aXMmbmJzcDtlbmFibGVk
-LCZuYnNwO0tWTSZuYnNwO3Byb2FjdGl2ZWx5Jm5ic3A7c3BsaXRzJm5ic3A7bGFyZ2U8YnIgLz5w
-YWdlcyZuYnNwOyhodWdlJm5ic3A7cGFnZXMpJm5ic3A7aW50byZuYnNwO3NtYWxsZXImbmJzcDtw
-YWdlcyZuYnNwO3doZW4mbmJzcDtuZWVkZWQmbmJzcDtmb3ImbmJzcDtkaXJ0eSZuYnNwO2xvZ2dp
-bmc8YnIgLz5vciZuYnNwO290aGVyJm5ic3A7b3BlcmF0aW9ucy4mbmJzcDtEaXNhYmxpbmcmbmJz
-cDtpdCZuYnNwO2NhbiZuYnNwO2JlJm5ic3A7YmVuZWZpY2lhbCZuYnNwO2ZvciZuYnNwO1ZNJm5i
-c3A7d29ya2xvYWRzPGJyIC8+dGhhdCZuYnNwO3JhcmVseSZuYnNwO3BlcmZvcm0mbmJzcDt3cml0
-ZXMsJm5ic3A7b3ImbmJzcDt0aGF0Jm5ic3A7b25seSZuYnNwO3dyaXRlJm5ic3A7dG8mbmJzcDth
-Jm5ic3A7c21hbGwmbmJzcDtyZWdpb24mbmJzcDtvZjxiciAvPm1lbW9yeSwmbmJzcDthcyZuYnNw
-O2l0Jm5ic3A7YWxsb3dzJm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7dG8mbmJzcDtyZW1haW4m
-bmJzcDtpbnRhY3QmbmJzcDtmb3ImbmJzcDtyZWFkJm5ic3A7YWNjZXNzZXMuPGJyIC8+DTxiciAv
-PlNpZ25lZC1vZmYtYnk6Jm5ic3A7V2FuZyZuYnNwO1llY2hhbyZuYnNwOyZsdDt3YW5nLnllY2hh
-bzI1NUB6dGUuY29tLmNuJmd0Ow08YnIgLz4tLS08YnIgLz4mbmJzcDtEb2N1bWVudGF0aW9uL2Fk
-bWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dCZuYnNwO3wmbmJzcDsmbmJzcDs3Jm5ic3A7
-KysrKystLTxiciAvPiZuYnNwO2FyY2gvcmlzY3Yva3ZtL21tdS5jJm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOzEzJm5ic3A7KysrKysr
-KysrKy0tLTxiciAvPiZuYnNwOzImbmJzcDtmaWxlcyZuYnNwO2NoYW5nZWQsJm5ic3A7MTUmbmJz
-cDtpbnNlcnRpb25zKCspLCZuYnNwOzUmbmJzcDtkZWxldGlvbnMoLSk8YnIgLz4NPGJyIC8+ZGlm
-ZiZuYnNwOy0tZ2l0Jm5ic3A7YS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJh
-bWV0ZXJzLnR4dCZuYnNwO2IvRG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1l
-dGVycy50eHQ8YnIgLz5pbmRleCZuYnNwO2E2ODAwM2MzNTk5Y2MuLmI0YzY4YTg5NmZhNzkmbmJz
-cDsxMDA2NDQ8YnIgLz4tLS0mbmJzcDthL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVs
-LXBhcmFtZXRlcnMudHh0PGJyIC8+KysrJm5ic3A7Yi9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRl
-L2tlcm5lbC1wYXJhbWV0ZXJzLnR4dDxiciAvPkBAJm5ic3A7LTMwNDcsNyZuYnNwOyszMDQ3LDcm
-bmJzcDtAQCZuYnNwO0tlcm5lbCZuYnNwO3BhcmFtZXRlcnM8YnIgLz4mbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDtEZWZhdWx0Jm5ic3A7aXMmbmJzcDswJm5ic3A7KGRvbiZhcG9zO3QmbmJzcDtpZ25vcmUs
-Jm5ic3A7YnV0Jm5ic3A7aW5qZWN0Jm5ic3A7I0dQKTxiciAvPiZuYnNwOw08YnIgLz4mbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtrdm0uZWFnZXJfcGFnZV9zcGxpdD08YnIgLz4tJm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7W0tWTSxYODZdJm5ic3A7Q29udHJvbHMmbmJzcDt3aGV0aGVyJm5ic3A7b3ImbmJz
-cDtub3QmbmJzcDtLVk0mbmJzcDt3aWxsJm5ic3A7dHJ5Jm5ic3A7dG88YnIgLz4rJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7W0tWTSxYODYsUklTQ1ZdJm5ic3A7Q29udHJvbHMmbmJzcDt3aGV0aGVyJm5ic3A7b3Im
-bmJzcDtub3QmbmJzcDtLVk0mbmJzcDt3aWxsJm5ic3A7dHJ5Jm5ic3A7dG88YnIgLz4mbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDtwcm9hY3RpdmVseSZuYnNwO3NwbGl0Jm5ic3A7YWxsJm5ic3A7aHVnZSZu
-YnNwO3BhZ2VzJm5ic3A7ZHVyaW5nJm5ic3A7ZGlydHkmbmJzcDtsb2dnaW5nLjxiciAvPiZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwO0VhZ2VyJm5ic3A7cGFnZSZuYnNwO3NwbGl0dGluZyZuYnNwO3JlZHVj
-ZXMmbmJzcDtpbnRlcnJ1cHRpb25zJm5ic3A7dG8mbmJzcDt2Q1BVPGJyIC8+Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7ZXhlY3V0aW9uJm5ic3A7YnkmbmJzcDtlbGltaW5hdGluZyZuYnNwO3RoZSZuYnNw
-O3dyaXRlLXByb3RlY3Rpb24mbmJzcDtmYXVsdHM8YnIgLz5AQCZuYnNwOy0zMDY3LDcmbmJzcDsr
-MzA2NywxMCZuYnNwO0BAJm5ic3A7S2VybmVsJm5ic3A7cGFyYW1ldGVyczxiciAvPiZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwO3RoZSZuYnNwO0tWTV9DTEVBUl9ESVJUWSZuYnNwO2lvY3RsLCZuYnNwO2Fu
-ZCZuYnNwO29ubHkmbmJzcDtmb3ImbmJzcDt0aGUmbmJzcDtwYWdlcyZuYnNwO2JlaW5nPGJyIC8+
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Y2xlYXJlZC48YnIgLz4mbmJzcDsNPGJyIC8+LSZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwO0VhZ2VyJm5ic3A7cGFnZSZuYnNwO3NwbGl0dGluZyZuYnNwO2lzJm5ic3A7b25seSZu
-YnNwO3N1cHBvcnRlZCZuYnNwO3doZW4mbmJzcDtrdm0udGRwX21tdT1ZLjxiciAvPismbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDtPbiZuYnNwO3g4NiwmbmJzcDtlYWdlciZuYnNwO3BhZ2UmbmJzcDtzcGxpdHRpbmcm
-bmJzcDtpcyZuYnNwO29ubHkmbmJzcDtzdXBwb3J0ZWQmbmJzcDt3aGVuPGJyIC8+KyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwO2t2bS50ZHBfbW11PVkuPGJyIC8+KzxiciAvPismbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDtPbiZuYnNw
-O1JJU0NWLCZuYnNwO2VhZ2VyJm5ic3A7cGFnZSZuYnNwO3NwbGl0dGluZyZuYnNwO2lzJm5ic3A7
-c3VwcG9ydGVkJm5ic3A7YnkmbmJzcDtkZWZhdWx0LjxiciAvPiZuYnNwOw08YnIgLz4mbmJzcDsm
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDtEZWZhdWx0Jm5ic3A7aXMmbmJzcDtZJm5ic3A7KG9uKS48YnIgLz4mbmJz
-cDsNPGJyIC8+ZGlmZiZuYnNwOy0tZ2l0Jm5ic3A7YS9hcmNoL3Jpc2N2L2t2bS9tbXUuYyZuYnNw
-O2IvYXJjaC9yaXNjdi9rdm0vbW11LmM8YnIgLz5pbmRleCZuYnNwOzViOTJiMjU2YWUyMmMuLmI2
-YjZlN2U2NGRiNjAmbmJzcDsxMDA2NDQ8YnIgLz4tLS0mbmJzcDthL2FyY2gvcmlzY3Yva3ZtL21t
-dS5jPGJyIC8+KysrJm5ic3A7Yi9hcmNoL3Jpc2N2L2t2bS9tbXUuYzxiciAvPkBAJm5ic3A7LTE2
-LDYmbmJzcDsrMTYsOSZuYnNwO0BAPGJyIC8+Jm5ic3A7I2luY2x1ZGUmbmJzcDsmbHQ7YXNtL2t2
-bV9tbXUuaCZndDsNPGJyIC8+Jm5ic3A7I2luY2x1ZGUmbmJzcDsmbHQ7YXNtL2t2bV9uYWNsLmgm
-Z3Q7DTxiciAvPiZuYnNwOw08YnIgLz4rYm9vbCZuYnNwO19fcmVhZF9tb3N0bHkmbmJzcDtlYWdl
-cl9wYWdlX3NwbGl0Jm5ic3A7PSZuYnNwO3RydWU7PGJyIC8+K21vZHVsZV9wYXJhbShlYWdlcl9w
-YWdlX3NwbGl0LCZuYnNwO2Jvb2wsJm5ic3A7MDY0NCk7PGJyIC8+KzxiciAvPiZuYnNwO3N0YXRp
-YyZuYnNwO3ZvaWQmbmJzcDttbXVfd3BfbWVtb3J5X3JlZ2lvbihzdHJ1Y3QmbmJzcDtrdm0mbmJz
-cDsqa3ZtLCZuYnNwO2ludCZuYnNwO3Nsb3QpPGJyIC8+Jm5ic3A7ezxiciAvPiZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwO3N0cnVjdCZuYnNwO2t2bV9tZW1zbG90cyZuYnNwOypzbG90cyZu
-YnNwOz0mbmJzcDtrdm1fbWVtc2xvdHMoa3ZtKTs8YnIgLz5AQCZuYnNwOy0xNjUsOCZuYnNwOysx
-NjgsMTAmbmJzcDtAQCZuYnNwO3ZvaWQmbmJzcDtrdm1fYXJjaF9tbXVfZW5hYmxlX2xvZ19kaXJ0
-eV9wdF9tYXNrZWQoc3RydWN0Jm5ic3A7a3ZtJm5ic3A7Kmt2bSw8YnIgLz4mbmJzcDsNPGJyIC8+
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7a3ZtX3Jpc2N2X2dzdGFnZV93cF9yYW5nZSgm
-YW1wO2dzdGFnZSwmbmJzcDtzdGFydCwmbmJzcDtlbmQpOzxiciAvPiZuYnNwOw08YnIgLz4tJm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7aWYmbmJzcDsoa3ZtX2RpcnR5X2xvZ19tYW51YWxfcHJvdGVj
-dF9hbmRfaW5pdF9zZXQoa3ZtKSk8YnIgLz4tJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7bW11X3NwbGl0X2h1Z2VfcGFnZXMoJmFtcDtnc3RhZ2UsJm5ic3A7
-c3RhcnQsJm5ic3A7ZW5kKTs8YnIgLz4rJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7aWYmbmJzcDso
-a3ZtX2RpcnR5X2xvZ19tYW51YWxfcHJvdGVjdF9hbmRfaW5pdF9zZXQoa3ZtKSkmbmJzcDt7PGJy
-IC8+KyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO2lmJm5i
-c3A7KFJFQURfT05DRShlYWdlcl9wYWdlX3NwbGl0KSk8YnIgLz4rJm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7bW11
-X3NwbGl0X2h1Z2VfcGFnZXMoJmFtcDtnc3RhZ2UsJm5ic3A7c3RhcnQsJm5ic3A7ZW5kKTs8YnIg
-Lz4rJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fTxiciAvPiZuYnNwO308YnIgLz4mbmJzcDsNPGJy
-IC8+Jm5ic3A7dm9pZCZuYnNwO2t2bV9hcmNoX3N5bmNfZGlydHlfbG9nKHN0cnVjdCZuYnNwO2t2
-bSZuYnNwOyprdm0sJm5ic3A7c3RydWN0Jm5ic3A7a3ZtX21lbW9yeV9zbG90Jm5ic3A7Km1lbXNs
-b3QpPGJyIC8+QEAmbmJzcDstMjM2LDcmbmJzcDsrMjQxLDkmbmJzcDtAQCZuYnNwO3ZvaWQmbmJz
-cDtrdm1fYXJjaF9jb21taXRfbWVtb3J5X3JlZ2lvbihzdHJ1Y3QmbmJzcDtrdm0mbmJzcDsqa3Zt
-LDxiciAvPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwO2lmJm5ic3A7KGt2bV9kaXJ0eV9sb2dfbWFudWFsX3Byb3RlY3RfYW5kX2luaXRfc2V0KGt2
-bSkpPGJyIC8+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7cmV0dXJuOzxiciAvPiZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO21tdV93cF9tZW1vcnlfcmVn
-aW9uKGt2bSwmbmJzcDtuZXctJmd0O2lkKTs8YnIgLz4tJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7bW11X3NwbGl0X21lbW9yeV9yZWdpb24oa3ZtLCZuYnNw
-O25ldy0mZ3Q7aWQpOzxiciAvPis8YnIgLz4rJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7aWYmbmJzcDsoUkVBRF9PTkNFKGVhZ2VyX3BhZ2Vfc3BsaXQpKTxi
-ciAvPismbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsmbmJzcDttbXVfc3BsaXRfbWVtb3J5X3JlZ2lvbihrdm0sJm5ic3A7bmV3
-LSZndDtpZCk7PGJyIC8+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fTxiciAvPiZuYnNw
-O308YnIgLz4mbmJzcDsNPGJyIC8+LS0mbmJzcDsNPGJyIC8+Mi40My41PGJyIC8+
+[ ... ]
 
+> @@ -165,8 +168,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct =
+kvm *kvm,
+> =20
+>  	kvm_riscv_gstage_wp_range(&gstage, start, end);
+> =20
+> -	if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+> -		mmu_split_huge_pages(&gstage, start, end);
+> +	if (kvm_dirty_log_manual_protect_and_init_set(kvm)) {
+> +		if (READ_ONCE(eager_page_split))
+> +			mmu_split_huge_pages(&gstage, start, end);
+> +	}
 
---=====_003_next=====--
+[Severity: Critical]
+This is a pre-existing issue, but does dropping the lock in
+mmu_split_huge_pages() without first flushing the TLB allow the guest to
+bypass dirty tracking?
 
---=====_002_next=====--
+During KVM_CLEAR_DIRTY_LOG, the generic KVM core clears the dirty bit in its
+bitmap before calling the architecture hook here in
+kvm_arch_mmu_enable_log_dirty_pt_masked().
 
---=====_001_next=====--
+kvm_riscv_gstage_wp_range() makes the KVM page tables read-only, but its
+return value (which indicates a TLB flush is needed) is ignored. We then
+call mmu_split_huge_pages() which periodically drops kvm->mmu_lock to call
+cond_resched():
 
+mmu_split_huge_pages() {
+    ...
+    if (need_topup_split_caches_or_resched(pcache, count)) {
+        ...
+        write_unlock(&kvm->mmu_lock);
+        cond_resched();
+        ...
+}
+
+While the lock is dropped, guest vCPUs can still write to memory using
+stale, writable TLB entries. Since the dirty bit was already cleared, these
+writes silently bypass KVM's dirty tracking and are lost during live
+migration.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623121332.7851=
+4-1-wang.yechao255@zte.com.cn?part=3D5
