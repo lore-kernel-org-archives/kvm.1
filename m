@@ -1,166 +1,141 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D9438D3F6;
-	Tue, 23 Jun 2026 17:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782236854; cv=none; b=Mql/xogMEZvg80dqYB6iO/5eqNj0pZ55e+HQL6J+PWe5k5Yn5G9y9VeSVW7jJ2XuVtCZx9hs50GKJAFwj2miixfrJBjZW8jgAp1matlg7zDCcMcr7tudq0UN5xrxJqsNH8kStd52iFxs1ixSfIOlpsjJN4CxdQfdegL8Eaie5vw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782236854; c=relaxed/simple;
-	bh=RFfYMFzKrlyKUMDniBl2wYGeZ+3FxaPK1tLanhTUZ9k=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=D1kM2Pb7Swhn7XI398XhWkpIZJU0n48bP5f0IwJUspsRWwOiIgHLXFJom9MGDRtROse99I2FNGx+/R+hlOaEvdIRo3jKIARR+aBV0JTWO5Ylao23oL9UyY7vZFyfvXkHc6AW3Ujl5EGXa042Uu3uXen1AnVqBiHv20sq24JpufY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=Kki45cJZ; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793A938D407
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782236907; cv=pass; b=cVaQ62LIvBv+oQUmp6aB+UE2wP2cDaQyr+IRU6D0DQGRGiZyOBej/MfIBe+fVg7wArB87ZGMH5Ecboi4owVjvvnOE1QnygvSXgQfHStIl+2IzHY+HrsjssxvFnZLeM4k+PrBEfwwr+srhM3zXupKhVF2CJn0s4TLSl0iM2QOpt0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782236907; c=relaxed/simple;
+	bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u5qmIXKQuGgKFyIPvF6LBFoc8WDJ2cxCYa8wTRGfpwxoYYtoS6s0bmKrcwYeejcZ9CUoHwRWBq9q/vcGBNaEHpZ/Xt3w3uNVeaQfRD1vTDBycf252i29IL590Ono08JLvzTWNxt7LwGenkSQsTQko9ed2PiLZmUnEt5u+Ky7SVo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dhhWaiYD; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="Kki45cJZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1782236848;
-	bh=YnpLj85EVGFLS082aT9C1I8KDlkyXpsPGbTho/uxSLo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Kki45cJZWsx9YAZgIjFlNXBh4gxmehNd4vPdhDGqbXNckYAUWcNK5NrOjxPnNhA0I
-	 QtvyyFV0Eoh8ZNWJ7aIXyTto6helylau76gRUqZWbHqMWu67oqEojo8vwKq+EsHq6N
-	 qCqcCGyNAYXq6mJLW+VOFY+Z41U9sdcsKlCkoZYyHf6ZwhMlYFnVbTEvkDeIp8eWCU
-	 l96EoKWxeFlRbsj1l3UQV2fwAJuTACjiUyG5IG6lkYNHFMY9/TH/nv4V27mR0Ii/oD
-	 g4Jpo55fotZNFVbkMuFlvwAb3414y7QDk/0X40yG4cgrli+myDrMBQmXrhUoGuIT0C
-	 y7iLzj3Cuv5fA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4glCFN67bcz4wB7;
-	Wed, 24 Jun 2026 03:47:20 +1000 (AEST)
-Message-ID: <feaefa41-9f67-4d4f-a3e0-282dca41f3eb@ozlabs.org>
-Date: Tue, 23 Jun 2026 18:47:14 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dhhWaiYD"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-697d677fc3dso119592a12.3
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 10:48:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782236905; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HQRDBLIXwPbTrOp3GkN5UdE1LhHBWoFNHnzuY/1IrMMtwHi5D/aeNDeBWO3BtWqym9
+         j7Eq4qHiiA5aEUJLP/GWKZdh9ThI+6cFaRiT7SHX7ErRqQDbdbGHN1utzguuhQJVzvQu
+         APtFApvj3VTRDN2LzUJMhT1FUGQJFphUPxXk9A7tPRORbxQ6vJLqiEVOhusXxJbFGEro
+         jMk2IdktVGo6YZsiPBpcAYhwmMNgDvWRkdVqTicUQGYMJG1XfLHRVkU24Esw/DSZVOOf
+         yz2Rw8PzXbwgWODOKSC13kbEJgbQqMKnJe1VCk5n/lQKDIpt6A8qGAM9RMlCF1P3fU+s
+         FWww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        fh=9ZVS8MUoMxw+1RMDbr+DtC/gvxjXQBzjMzwP6r7JoLY=;
+        b=je2tWIZm3hQlNYL4wUzNZB228NTteSt4DgG18lreGlXHJVk2nywxtv2dtsYpXy+C3L
+         obwW/ifln5EyNK5I4HIiljft9YoMrpZLfqAay73j+3wl86wgCtLdrpKEBbsiee/3fh35
+         U0vhLQBb0iSoqzr41uq3jfD6K+ibsfu7/uZQKb1s/bxs6d9diK0vFXW/Ik3d/oWVnKbb
+         sattK3SV6eZu3czERYxnwDNcs6uKwCl6sFHoUbAvhcceytKQ9HrVIp/fJDc+lmexL4r2
+         TccanI8Xd0r1yJkwaY+l/Paxnuq4sAzf9yP72oufChAucuH336/bEFDOwWVhYrmETQe+
+         cfmw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782236905; x=1782841705; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        b=dhhWaiYDMzmVCqcZLo1Ww3Q6RIeRFokXwQ4T1o8H/LynuZqN4Z7RyHZfdXFkeFFidq
+         ubPPHyqZQLpsLaqcqa924TbJKj4h4xfhYsUXX+VB4M/+nET5Qzz3YLiGsTC4Thgi1BWy
+         PhxiT6s0tCFa6xb/wfz31ZCcdfdj9nQWhKqehJG5ghg70fLZrBfqmt9veN9c6Wa7GlTO
+         ADP/Md7DuZuxljNyx05b1jFCB/x4YcvkgrlCrVCmvKX7DYdTzCnju7qmu9mZzRmKlYzh
+         S0asHwr7I0Hg/B2mu8qtekrOqBl4ZWlfrdGWmgWp9vKCYTLF3FXzEfoyi/Nk4cqn7I2F
+         ehWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782236905; x=1782841705;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
+        b=CJvd9RUUNsai1ef2U/Nb+gUifYULALKSrJ79TZTMJueHl0exbgNdqQ2hFgD6NUKarC
+         NBxZNWoDJSmiJoUkgKq7Mfs40KJqzIGsGN/WZOKD5wZ+H6IoNbMWXgvUQd4yK8KRuQVk
+         UR4CCfi835lLWRSK0T7nptVymaxvRyuMPxsGm4m9rb66rDw7AobHd3uWWAOXARzSGp4G
+         Y958Xw4ZwlT7xwyB5N1R3wuYgIg6As8ZpMue8zTnwyejRMhTxvHG8gXLTF6aWqbVfzhJ
+         CWviIS4BIlPJsEFCGaUtZl+bxo/Ba+cQhJJg8vgiJ7AxWS8v3+NRvYZ0Vg5XPaGS2yCB
+         HxkA==
+X-Forwarded-Encrypted: i=1; AFNElJ+UM5Ye/SuzQf/pBP5UKTt3yCTzOwVxVexV4Oha5jwX3gBn/98HhOEOTB7jx7+cx9p853w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQUeRcXXlOsvGSxI/7c8pwv3SyWJd7cqgUjeOlgIHeZ3ej0+4I
+	F6ndJzRiYD4+NYVAomkSRWMHZXMBQVeChg2gP8cZU1p2zFT54soNnO5wu78xn4bC4vkJT3H5smU
+	/LZ7rHaO80RnD69ukn1YPoIPOmXpzosDLXdqdYa9B
+X-Gm-Gg: AfdE7ck7IOmcsIvM4ZtpxzgpIAVX+wfAvsUte4RnFd1obPGcbetkbdciKka/XG8dcBa
+	yacy+UVsD/e+RTfgxkSdMcL0Qt+DGt2bzuzjsLRh5dOymzpkpwfzL/H6GzvxCMEAXSKi8WYg/nu
+	WFDtspfcU4nWFopN9Y8OjX+kKibPM+l6ZmVTwfTVi7rDmlT6wPNWv4MEhlWRLwLqUOdSYZOAXs7
+	eRzq6cJGde4FA6cJpvEYeqZAztMXMO23Fks2Utu90vAw66/a3juIckLEYx6hn8Hs4QpNOT+WfVH
+	a2gfLrOd0NVN2wlowYSBzZEhFDLX/BBcrlVIITJKMWPD4uWxO53NyY8175OLdTOWBhlMhw==
+X-Received: by 2002:a17:907:60cc:b0:c0d:5466:ce4c with SMTP id
+ a640c23a62f3a-c0d5466d9dcmr844180966b.1.1782236904428; Tue, 23 Jun 2026
+ 10:48:24 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
+References: <cover.1781419998.git.ashish.kalra@amd.com> <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
+ <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-Content-Language: en-GB
-From: Matt Evans <matt@ozlabs.org>
-To: Robin Murphy <robin.murphy@arm.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-2-matt@ozlabs.org> <aisAc1HRn2Wa4F9p@google.com>
- <DM6PR11MB36904ED2E1D2C646644F67668C182@DM6PR11MB3690.namprd11.prod.outlook.com>
- <0dfadf98-a904-4e6a-b078-5caf27bc7922@ozlabs.org>
- <81a9d212-996e-42e1-aabf-b120a13e94c3@arm.com>
- <88a9ebaa-8637-4290-b299-acae0e3065f8@ozlabs.org>
-In-Reply-To: <88a9ebaa-8637-4290-b299-acae0e3065f8@ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 23 Jun 2026 10:48:22 -0700
+X-Gm-Features: AVVi8CctYJVp25OwZWeFxJ-OUwcfHXzFhyslZieHlTKLg5vqXDjAr-hhZP5Iwqw
+Message-ID: <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
+Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is active
+To: Jethro Beekman <jethro@fortanix.com>, Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, seanjc@google.com, peterz@infradead.org, 
+	thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
+	ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, 
+	jackyli@google.com, pgonda@google.com, rientjes@google.com, 
+	jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com, 
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com, 
+	darwi@linutronix.de, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Robin, me,
+Jethro Beekman <jethro@fortanix.com> writes:
 
-On 23/06/2026 16:59, Matt Evans wrote:
-> Heya Robin,
-> 
-> On 23/06/2026 16:48, Robin Murphy wrote:
->> On 12/06/2026 3:31 pm, Matt Evans wrote:
->>> Hi Kevin, Pranjal, (+Robin, hi!)
+> On 2026-06-15 21:49, Ashish Kalra wrote:
+>> From: Ashish Kalra <ashish.kalra@amd.com>
 >>
->> Oh hey there! :)
+>> The SEV firmware enumerates the CPUs at SNP initialization and is not
+>> aware of the OS bringing CPUs online or offline afterwards, so OS CPU
+>> hotplug can diverge from the firmware's expectations and break SNP.
+>> Disable CPU hotplug while SNP is active.
+>
+> I think this is too broad. If I have a hypervisor that supports SNP virtualization, a (non-confidential) L1 guest running Linux should still support CPU hotplug while also running confidential L2 guests.
+>
+> --
+> Jethro Beekman | CTO | Fortanix
+>
+
+Were any other solutions considered other than disabling CPU hotplug?
+
+Is this temporary until something else is implemented?
+
+I'm not sure how commonly CPU hotplug is used, and if people are okay
+with trading in CPU hotplug to get SNP.
+
+Is it that fundamentally the SEV firmware can't support hotplug, so
+there's no point in keeping it enabled anyway?
+
+Is there some way of supporting hotplug for CPUs that won't be used with
+SNP, for serving non-SNP VMs on the same host as SNP VMs, or is that too
+complicated?
+
 >>
->>> On 12/06/2026 04:39, Tian, Kevin wrote:
->>>>> From: Pranjal Shrivastava <praan@google.com>
->>>>> Sent: Friday, June 12, 2026 2:38 AM
->>>>>
->>>>> On Wed, Jun 10, 2026 at 04:43:15PM +0100, Matt Evans wrote:
->>>>>> --- a/drivers/pci/Kconfig
->>>>>> +++ b/drivers/pci/Kconfig
->>>>>> @@ -206,11 +206,7 @@ config PCIE_TPH
->>>>>>   config PCI_P2PDMA
->>>>>>       bool "PCI peer-to-peer transfer support"
->>>>>>       depends on ZONE_DEVICE
->>>>>> -    #
->>>>>> -    # The need for the scatterlist DMA bus address flag means PCI
->>>>> P2PDMA
->>>>>> -    # requires 64bit
->>>>>> -    #
->>>>>> -    depends on 64BIT
->>>>>> +    select PCI_P2PDMA_CORE
->>>>>>       select GENERIC_ALLOCATOR
->>>>>>       select NEED_SG_DMA_FLAGS
->>>>>>       help
->>>>>
->>>>> Nit: Did we drop depends on 64BIT intentionally here? I guess the full
->>>>> PCI_P2PDMA stack still selects NEED_SG_DMA_FLAGS? IIRC,
->>>>> NEED_SG_DMA_FLAGS doesn't select 64BIT?
->>>>
->>>> seems that comment is stale. According to the commit msg:
->>>>
->>>> " it would make vfio-pci only available if CONFIG_ZONE_DEVICE is
->>>> present (e.g. 64-bit systems), "
->>>>
->>>> so it sounds a redundant dependency hence is removed.
->>>
->>> This was intentional.  In practice there is still a dependency on 64BIT
->>> for PCI_P2PDMA, but it is because of ZONE_DEVICE (and mem hotplug).  The
->>> key need is PCI_P2PDMA_CORE is available on !64BIT for VFIO, but I
->>> didn't see a requirement from PCI_P2PDMA itself (as opposed to its
->>> dependencies).  If I've missed one, I can put it back...
->>>
->>> But NEED_SG_DMA_FLAGS doesn't smell quite right; I see from comments in
->>>
->>>    af2880ec44021 ("scatterlist: add dedicated config for DMA flags")
->>>
->>> that it assumes 64BIT, but it seems to be missing a "depends on 64BIT".
->>>
->>> Robin -- should that depend on 64BIT?
+>> [...snip...]
 >>
->> Indeed, looking at the history it seems like that was overlooked, but it
->> worked out at the time since the only selector of NEED_SG_DMA_FLAGS was
->> PCI_P2PDMA as you say. If we're now generalising then moving the
->> explicit 64BIT dependency to NEED_SG_DMA_FLAGS itself sounds like the
->> right thing to do.
-> 
-> Cheers for confirming.  I'll send a patch separate to this series (since
-> the deps work out OK for PCI_P2PDMA for the reasons mentioned).
-
-I think we were wrong, NEED_SG_DMA_FLAGS doesn't _need_ 64BIT.
-
-Other than P2PDMA, the other consumer of NEED_SG_DMA_FLAGS is IOMMU_DMA,
-and turns out if one builds an i386 kernel with INTEL_IOMMU (or some
-other configs, like Xen) then NEED_SG_DMA_FLAGS is enabled on 32-bit
-builds too.
-
-The scatterlist.h comments af2880ec44021 touched are just saying that
-_since_ P2PDMA depends on 64BIT, there _is_ circumstantial padding so
-let's use it for flags.  It doesn't require 64BIT.
-
-For example struct scatterlist isn't pushed over some special (e.g.
-power-of-two) size when NEED_SG_DMA_FLAGS is enabled on 32-bit; I can't
-find a reason it should be prevented on 32-bit builds (and found cases
-above in which it is already enabled in them).
-
-So I won't change the NEED_SG_DMA_FLAGS dependencies after all.  Sorry
-for the noise -- as ever if I've missed something do please explain.
-
-(I'll continue with removing the P2PDMA dependency on 64BIT because it
-seems P2PDMA's dependencies rely on 64BIT, though P2PDMA itself doesn't.)
-
-Thanks,
-
-
-Matt
