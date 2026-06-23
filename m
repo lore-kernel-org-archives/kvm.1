@@ -1,240 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE4D2765ED
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 15:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731AA277C9E
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 15:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782229516; cv=none; b=GhWv0PxY3ABi0yjwYs+UgZZQlI11KWsvmY2yxuwkDhGfXYhGTZYTPh0/0H819+Rst217kY9uCKzE4HCU21WVzb76Smc5IKQsozTOJUHahEbmbfbGeIn6No0euZ62Lxs1F1uG+kduzTnmGqmbCB7z9L+MTvyiBjzLWMqqRvl5syE=
+	t=1782229656; cv=none; b=IaAyiimm6qWeTs37BiuekxdbgRSvt1gOsyP6/Rvj+qN3R3fU09ijlp47pEjgtC4NlTkIQgMYrr0GYCILoyzs0gyIJPjFSTzVU+XvWIgocqFKxu+8IY2LvqGXQhEHRE7hPpvUcDa1Z89a47DWN0w5+wVRzeWwoZF22KlixP1vt3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782229516; c=relaxed/simple;
-	bh=AgN/xen2BOovvC5YvbeKJ/vf9Mq4/1rGh/HWy2Cz3ok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jiFrkkATJYxcO0bbC93v691e0dxlEMQJJF1tobL42ARjyUSnwwUJiPrqI050RaDehQf1vowenLwnGnIHKRkhLaZPHQWnuAsqFqLNYLXkKSGNnVxvpeSXxdLT8j+4KsM1E4bFoO9lP00KVSl2Kiuos7lK4UCxYL37KeT862oZLCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E7AFpzws; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T3Z8+uti; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782229656; c=relaxed/simple;
+	bh=zRF/JSDS/dRU29yV0iMPflNJ16lJDCHys+mn6tZWBvw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kNQRtkUHu14sPv8l4bNNbc/y9jsWs1LXjBtUvs6uCxAzsYv+Yk6/RJeivVzxmY+7tGyc+WlKjB8FJiD8IjqF5P3N18OTnFD1qX7pQxWf1dj4u/lphkzWD1/JDCzjsgupSjtncJRNpt0gTUykPME1qhqTVeGQvu9gIQt1y5gMk8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gWjEUJW1; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E7AFpzws";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T3Z8+uti"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782229514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I5a/T4Vqnm4D5FklI48JkOMRyoCfPv+sa5L5OLPTryY=;
-	b=E7AFpzwsHuTgIvBhwcWINCso0HY7S9pp9RqKafJ2ch6FX0eYwYerDTIfhYwd3JEMSdbGR5
-	+Sn0e62+ysg2AXu09PoSFSMVaJa1UTH/vN8q7IkD10q2vWUJMtEN6O+br14XPeb/GpvBzS
-	3n4W8rOySXuZFSr7mTVEDpfXywfLYJQ=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-WP_MIORGMWeXUMirXvwGtA-1; Tue, 23 Jun 2026 11:45:12 -0400
-X-MC-Unique: WP_MIORGMWeXUMirXvwGtA-1
-X-Mimecast-MFC-AGG-ID: WP_MIORGMWeXUMirXvwGtA_1782229512
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-519fd49d101so17672701cf.0
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 08:45:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782229512; x=1782834312; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5a/T4Vqnm4D5FklI48JkOMRyoCfPv+sa5L5OLPTryY=;
-        b=T3Z8+utiWkc0YS+Hx/Y/G0j9bMCVFUnJvQPAfWEkz8DtziEPk6znu8DkH6O3/Hfkrq
-         kI7q2hBl89vYLFLo2yIOPRXqF2JDWKPCgMFYZ3ZYHwHqmLmyggCF+af2mPdJFgzt/Kza
-         4z6g8FCajzTl+TmpRtBL+hcy4vaH54FmW0HABmEBqb3PruDrPwJZLQIp6MKXRcr7MRA1
-         FtBAr5BdNttd/3OEhgImgrCHH/TLwp/TYDmUYesVid7LPm/9K+L17aPVpkwHmphGfGYr
-         4x8DX7YQhpBqJD43MYieWHQnOUOE7ccqzZKkf0Iriyv5CljJrhrsV/VMkhERvIs6lo3J
-         RBmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782229512; x=1782834312;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I5a/T4Vqnm4D5FklI48JkOMRyoCfPv+sa5L5OLPTryY=;
-        b=UeS35ctX4cMTWYuTSwD7bp+cLff5pW1N4PI93v5g5Kjh4qnlqkCf0BrSaKHUoaUR5q
-         hQT9tz6LSQyNaRggLdZzNckN3bQfrXJBbkGxVh6tyA0n90z1gdGJuBZOQ+X3JT5uA7PH
-         7BpM6ncInKbsLDDQb2uHpO0ph+ECQRcEnXy1ZuWof5+osEsqCzf4LpqONn56mwujjMbi
-         4t/jg93SDP4e1MC5WW4zz7QpKtvZjDI35Is5HdFh8svPJE7KQUA3yVT1xc2xPSZTRgIY
-         RiPclqAi2yupfYmFKkMFPA2K7xQ7jbTNDAYffxQsxTH+30mwAzV7C63eVyMrOjasjn/H
-         B1QQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/WtgV8NF9I00liEGbxPD4cidhrpOJg/voshLKuEt2JWglA3UeK4AGixBeYFvkw4g71wQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxr4fa9nPSjuh1k96iRiKxNkSJ/BUf6/SaTacbM4G++dzm9LlVg
-	+QPIaTeVwP7z3mBDknqcDPT6BRFh8tGK+mPShd8X+e6uRKXtJOte8eRpvcrstaCGiTyK74Y9BPa
-	PzhPdnx437GO/FIXQ4442Q+2SpiKgyKqmrqE2lHuzFcowTqygI6GS5w==
-X-Gm-Gg: AfdE7cnQgtyfI1iYnc/jrKYR/cmouG/2qex9/rneq3JoKCRAaKHm1wGDtCPJpOYJUjU
-	wWINOPtSaIhS2bqKztZUYVqNHnEZvkUr4Xg2WOo9HfUgqXDHZxKJLHtFR6kU5qGvFyctDM14ufU
-	elyevcDG0vT77KbPqWK/eEsf8F73vt1No9Vxz0QdTRE57lYQ9kwxG/VyHEFJGQ7hd8lLwiQrgD+
-	plsFgJnCsewLpdzapBB8REjVmX/eF+lLjAzxoSUZ79F1pKliztJwpVN5A0NZyAJV98YsvgzfLwi
-	unWrQ6SBZTyqJ+M0AaSLWCN6cM4rk+1FDFOQGpnJ52erjsy5UcpOPeJ14yDhIgInXaD/M3W80RW
-	NICzGIO2wIJxz1xgzTdHXpY+P1Qd93MFk45h6Pcwvoz2KFpiSkWzt2BDWoNTnQXR7rCgHXLlX
-X-Received: by 2002:ac8:5fc3:0:b0:517:6fc2:4760 with SMTP id d75a77b69052e-51a51788b89mr60583991cf.9.1782229511534;
-        Tue, 23 Jun 2026 08:45:11 -0700 (PDT)
-X-Received: by 2002:ac8:5fc3:0:b0:517:6fc2:4760 with SMTP id d75a77b69052e-51a51788b89mr60582621cf.9.1782229510620;
-        Tue, 23 Jun 2026 08:45:10 -0700 (PDT)
-Received: from x1.local (bras-vprn-aurron9134w-lp130-03-174-91-117-157.dsl.bell.ca. [174.91.117.157])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51ae9505sm28287431cf.26.2026.06.23.08.45.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 08:45:09 -0700 (PDT)
-Date: Tue, 23 Jun 2026 11:45:08 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
-	Hanna Reitz <hreitz@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Anthony PERARD <anthony@xenproject.org>,
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Reinoud Zandijk <reinoud@netbsd.org>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Alex Williamson <alex@shazbot.org>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 0/3] migration/ram: Abort on unsupported migratable RAM
- changes
-Message-ID: <ajqqBBA3Ynxqgu_S@x1.local>
-References: <20260611-ram-v1-0-a2dacf699718@rsg.ci.i.u-tokyo.ac.jp>
- <ajmZrT1d0QXCWTNq@x1.local>
- <b8154a3d-5538-42e1-995b-2aeb05daa4ab@rsg.ci.i.u-tokyo.ac.jp>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gWjEUJW1"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65NBmTYA1826484;
+	Tue, 23 Jun 2026 15:47:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Gtkvmz
+	yOvMSiHb7TIr9pNrovy7WPNEp1CAGEcmPtwpc=; b=gWjEUJW1uCS9An39qLAg+K
+	x2NEOgaQs8U6w1hl4c1LqHJJQPl2CT6WEKc4hrWq2sEngqe7k/LCqRcz0OOnitZQ
+	jbfSGRSJy2ET4MHWxVBr2McEVlH+AeryPFYfbzvpqZ376fEq8tf5QIRAq/sZcwvh
+	E9uhYCgc0Gj7uLWzXeH91Zp/ebX3yos9dQ5uEiePRZNYwFPsINNiADEBcot1AiJK
+	FpVmepOIDmLPeUuMHRJZugJcXNmrqddGy3wR8cEhBS/WxT41hB1vv8aHC8Om3L9m
+	QnPZgY3raM+P8GjkulF/E21fU5iFeRtA7ElHCOKApZrk9VakWB/ZxlcVmWZdB9YA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjgsqarm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jun 2026 15:47:27 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65NFYelR004474;
+	Tue, 23 Jun 2026 15:47:26 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dg3v42-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jun 2026 15:47:26 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65NFlMgw60817686
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Jun 2026 15:47:22 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5262720043;
+	Tue, 23 Jun 2026 15:47:22 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F03620040;
+	Tue, 23 Jun 2026 15:47:16 +0000 (GMT)
+Received: from shivang.upadyay (unknown [9.124.220.40])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 23 Jun 2026 15:47:16 +0000 (GMT)
+Message-ID: <4de3eafc3c47799d0b503076b0d71be7cf261b61.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/8] tests/functional: Add remote interrupts test for
+ PowerNV
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
+        qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        =?ISO-8859-1?Q?C=E9dric?= Le Goater
+	 <clg@redhat.com>,
+        Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+	 <philmd@oss.qualcomm.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini	
+ <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn	
+ <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier	
+ <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree
+ Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani
+ <gautam@linux.ibm.com>,
+        Chinmay Rath	 <rathc@linux.ibm.com>
+Date: Tue, 23 Jun 2026 21:17:15 +0530
+In-Reply-To: <20260623141933.577981-2-adityag@linux.ibm.com>
+References: <20260623141933.577981-1-adityag@linux.ibm.com>
+	 <20260623141933.577981-2-adityag@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b8154a3d-5538-42e1-995b-2aeb05daa4ab@rsg.ci.i.u-tokyo.ac.jp>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDEyNiBTYWx0ZWRfX1xDUMZUjEflh
+ 8n6g3ymadaI2eM9Y0xCB/RMEykbQp4sU5v8+VAndh0OapyMuTa7wdUkIH+QVw0JV9euM7Cfq167
+ VFiocndsfrMUfr+IH1ptb6cE9O90UYjPQ/npWJON1JQ9WAIO+KbMeC7OEX+PQCM5wzYOcow7ekD
+ RjWJlKmSP24qSGjNJUdOjUDSz5e91HZY169spr7SZqWGZulE+Z5U/xbUqn6REDAw+JyMK+lKH/p
+ lQAq/7V+2VwxgTIJq+dpRIa0HoQYmQQnLSY1YaDeB05gXpZtiQCgUB7tiHXD8KlI6Lr7+KeLajr
+ 8IDQYsxBktjdIV98KTXxxgiQpxTWKlTflCA/TRD78hEtm6JfwUPe/qlryxYa0QSIE3/OZUsw1r8
+ LH1rZVCjy8YcEuYWkRAiw4jTjxIxNRTSgYVhnCFao0JOdEMKykua4CMizlZxMlF2yQBhoedk83R
+ Ube/JsHrRkTtLlZ5zCA==
+X-Proofpoint-GUID: O6XELPUimcVOMayUyA5uwUOYXGhCVKcb
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDEyNiBTYWx0ZWRfX8T61LkzWp3Af
+ JFLp1WV8L5/rlvM6nWENiiEu0OVmJcepCZkDNJ5CEbnybkwvBK1SsQdGt+gOcfODWkcrtAt+f+q
+ irjMFk0hzau4FeKEUZHQgS9VZKTJwvs=
+X-Authority-Analysis: v=2.4 cv=I/lVgtgg c=1 sm=1 tr=0 ts=6a3aaa8f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=Z75tzEJdkSRbXBlqtPMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: JCECIRRxWS9Q60fhhPtVc-jXZyykSRF6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-23_03,2026-06-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1011 priorityscore=1501
+ adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606230126
 
-On Tue, Jun 23, 2026 at 09:05:22PM +0900, Akihiko Odaki wrote:
-> On 2026/06/23 5:23, Peter Xu wrote:
-> > On Thu, Jun 11, 2026 at 03:35:47PM +0900, Akihiko Odaki wrote:
-> > > Supersedes: <20260604-migration-v1-1-cef4a5b1bbdd@rsg.ci.i.u-tokyo.ac.jp>
-> > > ("[PATCH] system/physmem: Assert migration invariants")
-> > > 
-> > > ram_mig_ram_block_resized() already aborts migration when migratable RAM
-> > > is resized. Extend the same handling to other unsupported changes to the
-> > > migratable RAMBlock set, such as removing a migratable RAMBlock or
-> > > changing a RAMBlock's migratable state.
-> > > 
-> > > Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> > > ---
-> > > Akihiko Odaki (3):
-> > >        system/physmem: Pass RAMBlock to RAMBlockNotifier callbacks
-> > >        system/physmem: Notify RAMBlock migratable and idstr changes
-> > >        migration/ram: Abort on unsupported migratable RAM changes
-> > 
-> > Thanks for looking at this, Akihiko.
-> > 
-> > I understand this is a protection to the system to trap error use cases.
-> > The question I have is do we have any possible way to trigger these.
-> > 
-> > I worry we add a bunch of code and notifiers, and then there's zero way to
-> > trigger, essentially add dead code.
-> > 
-> > Logically we could already add assert() on things we don't expect to
-> > happen.  This case might be slightly risky, but still I think we can also
-> > consider things like error_report_once() instead of introducing slightly
-> > complex notifiers just to cover what we think shouldn't happen.
-> > 
-> > Or do you have way to trigger any of these notifiers?
-> 
-> I simply followed what's already done for resize(), expecting resize() does
-> the correct thing and following it won't introduce a regression.
-> 
-> > 
-> > PS: today I went back and I wanted to try how the existing resize()
-> > notifier would trigger, I can't even reproduce it with David's example
-> > here:
-> > 
-> > https://lore.kernel.org/qemu-devel/20210429112708.12291-1-david@redhat.com/#t
-> > 
-> > I can trap a qemu_ram_resize(), but that's invoked with newsize==rb->size,
-> > so it didn't really notify a thing.  I don't really know how to trigger
-> > ram_block_notify_resize().  If you know, please share.
-> I made an LLM amend the reproducer. Below is its output.
-> 
-> Regards,
-> Akihiko Odaki
-> 
-> LLM output:
-> 
-> A synthetic but effective variant is to add custom ACPI filler tables so the
-> initial `etc/acpi/tables` blob is just under the 128 KiB alignment bucket,
-> then let the normal boot-time fw_cfg ACPI rebuild push it over.
-> 
-> I tested this shape:
-> 
-> ```sh
-> truncate -s 65000 /tmp/fill1
-> truncate -s 50600 /tmp/fill2
-> ```
-> 
-> Then add to the original-ish command:
-> 
-> ```sh
-> -device pcie-root-port,id=rp0,chassis=1,slot=1 \
-> -acpitable sig=FI1A,data=/tmp/fill1 \
-> -acpitable sig=FI2A,data=/tmp/fill2
-> ```
+On Tue, 2026-06-23 at 19:49 +0530, Aditya Gupta wrote:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Check that interrupt counts=
+ increased
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 success_msg =3D "Interrupts i=
+ncreased"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.helper_exec_shell_comman=
+d(f"export
+> PASS=3D'{success_msg}'")
+This is a great idea. Maybe in future we can pull this to a saperate
+function? something like the following.
 
-These lines should inject some sections into ACPI, but I don't see why the
-acpi table would change: that should be appended right at QEMU boots, so I
-expect the ACPI table to grow indeed comparing to when without these lines,
-but not resize during VM running.  I wonder if below is hallucinations from
-the AI.
+  self.is_booted =3D True
+  shell_check_pass_fail_command("asdf")
 
-> 
-> Observed via `info ramblock`:
-> 
-> ```text
-> before cont:
-> /rom@etc/acpi/tables   Used 0x0000000000020000
-> 
-> after cont:
-> /rom@etc/acpi/tables   Used 0x0000000000040000
-> ```
-> 
-> So this does produce a real RAMBlock used-size growth during boot in the
-> current tree. With migration started before `cont` using a stalled `exec:`
-> target, `info migrate` moved to `cancelling`, which is consistent with the
-> current resize-during-precopy abort path.
-> 
-> The key is not the root port itself; the key is making the ACPI table
-> rebuild cross `ACPI_BUILD_TABLE_SIZE` alignment. The filler is a bit
-> artificial, but it is a good stress variant for the exact class of bug.
-
-I did have a closer look on this whole "MR size can change" thing.
-
-We have two users: ACPI (rom_add_blob()) and other firmwares (most of them
-rom_add_file() users, very little used rom_add_blob()).
-
-AFAIU, the real resize should only happen at the 2nd user, not ACPI.
-
-ACPI seems to be able to change ROM size (PS: this is tricky to call it ROM
-in the first place: I believe it's only a data blob in fw_cfg) when e.g. it
-scans the pci bus and things changed, only happen during reboot, but it
-can't happen during migration because qdev_add is forbidden.
-
-Device ROMs can really change size if dest host has newer firmware packages
-than source, but that's another use case and I _think_ we support fine,
-except that firmwares can only grow not shrink, guarded by
-qemu_ram_resize() check on max_length.
-
-That's a pretty niche use case and nothing I can think of that on change of
-flipping migratable and so on.  So IMHO we will need to understand the
-problem better before having more notifiers.
-
-PS: I wished ACPI three use cases of ROM can be part of device states
-already, then it is out of question on MR resize complexity: the max size
-is 128K as far as I know; it doesn't need iterability... we migrate devices
-sometimes much larger than 128KB on device states.  It can be a VMSD field.
-
-Thanks,
-
--- 
-Peter Xu
-
+~Shivang.
