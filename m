@@ -1,159 +1,81 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B2A2367D3
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB40F22E3E9
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782219364; cv=none; b=gU3whmeGORB7cExhzCJJo0TgMz1Qy7nxx6jCInsMF9B2MeEDY4zW2wes28yL1DATMWlDcRkUz4LKEgaxP0NDZlyKw5Gj6c6Dk/rJIyO5o4qfh2tTGM3nf0Lx+QTz1MKaSdAMNTECJFJRcrBOQZ+lTBe5DjCqUaiw5zJEd0sKSr4=
+	t=1782219421; cv=none; b=UexpO886V2g8Os7tWe5Anvx+gESni6zSCxf/CVKCCjoarn/K7OohHb4/ShmmrtDCtsP4eaXS1cF6xzC3j8zfPQV+r0PjPyDA+mM6Kd+o9V7ZTbEDjHtRRCqrzC3UYWgBL34ESeah7pjQaISFvdG/pirr2Zy2vqg4SVDj3D37sB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782219364; c=relaxed/simple;
-	bh=NC4e5HkKbMXBmR/mNbiQBNrMVxlnVz9K0c54XWtXRaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LcAd3WUlm44vWSdnATBJWPF1fYMVldKU4U96XPF3d8y8MtHxUIAHlKBSoTS9pbszfCMQBiy5ACZrog0RknwIZpQ6mt56fcGY/G0F2Zqs4Ookanugp09u+73tQhj1B81Z4xPNMeN+4uumcMKdi6Rzy5LrGP3DJkR3XBDUwaZbqBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=dh2pX73k reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1782219421; c=relaxed/simple;
+	bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=V0o4eVhc3p66aoXXaVFIiu9DBaVD7cVTJCeFO+ZGsQ/gtzjr+IOktSFYCf1fTVrIPGjep2SDq6xrLIPAfFPdqZebOU9CQB5zlhM6IHF1UKDUuq59hcrPLxxO3saityLb/gNQkY104EikXME2abSvZQpsxkXSt/emTQZJsEQlwM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ut1NTRXy; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="dh2pX73k"
-Received: from [133.11.54.183] (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 65NC5MDm068220
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 23 Jun 2026 21:05:22 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=9icVwESoPEziromrElTWXlq4W6A+7nPEVg5wxcfPes8=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20250326; t=1782216322; v=1;
-        b=dh2pX73k57bNitgcjzM+naWKr7Mn+CiVA2w1u0Eyi8E3uZ4EkBqjyV40LcPMs3Zp
-         G421yHXRFJPMer6h4x+VabcMYOMMW+1McFGt/MCo3BPGdrbACThjlQiLjZNdonH8
-         ouHUg4L1dxNiG313ZrDgoriFiRE5JRl5oEYwDa2HoWKshSSroog9NJdU718MtGs6
-         1bt+TFiSfpROxOzvm3dINrwBxFjb6G9UHSwk6EHWhWz/M1X4/ikS3lUN04byv7Xq
-         Ou9E3yeBLCmjMPq8oEP5s/YkC7F1XZeJ1VTQZE502qMwptrnf/BWvWz+yWLC1VkQ
-         Qm15dwUnyeh62sFEHa5ooQ==
-Message-ID: <b8154a3d-5538-42e1-995b-2aeb05daa4ab@rsg.ci.i.u-tokyo.ac.jp>
-Date: Tue, 23 Jun 2026 21:05:22 +0900
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ut1NTRXy"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845438fbd9cso4292637b3a.2
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 05:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782219420; x=1782824220; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
+        b=ut1NTRXyoE8yRLB+r7JIrJv30u7SlR8w6tZ/i8p0voyyj7DVW6/i0i8hmuQXJw9lIz
+         jLYsnhwuIpkaV77Gmw8JhtHtGJj9Z0gvBpeJ8QlwNUcOTSFCwjw7behfycz1T65BZ6c8
+         8vxQFJ+BNDIBb5p5ItYL870hpplLvsPb1xHCMdBvpCbo86M0Ge10M8HGX49LGkx6tCOm
+         qxnncidFZ64g6MMEYyIXMYUj31Gm7PTngUtLRFPzSEThYD8JDrVopHYWqxC5hzMt+m/W
+         77a7WuONrOTdCZque/2SWcKM6Vive84rodBHoogNU/LhV5CZ83355M1EN2XYcd4AMcWv
+         s18Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782219420; x=1782824220;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
+        b=L+F+Qh/Sjx7ilBUKhu2YZU05gzFicwA+NJbVJKSEtXkdAyoyvVXgWi8dWK4h9X8984
+         kBwgZZ/IOPsxDdX1ah8yL4oAJrh3fvRb9f+eiBh0wHooTM8PnR43O/0YXdUN4keWLB5l
+         mSY4GvJhHfuoRBrsrRWe49PfTi/juY23fhFbYUie53McZQ91tpctzsDh4/UOIMR4P425
+         iBGU8OHAi022RijNeZfNn7B3VXbnpIyW5kirJO7dCOwpJLOHogi5497cnB6ZEOo70Rx5
+         AQ7TED5QMi6d58cuvTooGRjqAGTDKTcBakHMT37/SUWyb6dj1b2pP6op152r7EeIYl/b
+         rb/g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9QuDdZ5tP3ixWBjbQwYeSthqomo2BrANkkxfuj0iJZfFr8GjhXKeIh7ijK4tpTylegTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZHUDPlSI1XTUQFvkouwoevkFkYTY9ewfYKdkV50F7zLkg1uEY
+	fxXQI0mleU1QmsFh8SbNq3HRAcYL3pwvkVtXGRMxU6CcLNZLzHhfIr4a7q6q0BW6i5Drg0Jk5yv
+	15ncoTA==
+X-Received: from pfez11.prod.google.com ([2002:aa7:888b:0:b0:844:e56c:ba8c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f08:b0:845:43d6:14d7
+ with SMTP id d2e1a72fcca58-845507e017amr20047637b3a.16.1782219419781; Tue, 23
+ Jun 2026 05:56:59 -0700 (PDT)
+Date: Tue, 23 Jun 2026 05:56:53 -0700
+In-Reply-To: <ajpSF6HyhgBA3uV3@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] migration/ram: Abort on unsupported migratable RAM
- changes
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
-        Hanna Reitz <hreitz@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@mailo.com>,
-        Zhao Liu <zhao1.liu@intel.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Anthony PERARD <anthony@xenproject.org>,
-        "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-        Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
-        Reinoud Zandijk <reinoud@netbsd.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Alex Williamson <alex@shazbot.org>,
-        =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>,
-        qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
-        kvm@vger.kernel.org
-References: <20260611-ram-v1-0-a2dacf699718@rsg.ci.i.u-tokyo.ac.jp>
- <ajmZrT1d0QXCWTNq@x1.local>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <ajmZrT1d0QXCWTNq@x1.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260623091556.1500930-1-joro@8bytes.org> <20260623091556.1500930-3-joro@8bytes.org>
+ <20260623092417.5964D1F000E9@smtp.kernel.org> <ajpSF6HyhgBA3uV3@8bytes.org>
+Message-ID: <ajqClZ3kHfDcCxUe@google.com>
+Subject: Re: [PATCH 2/4] kvm: sev: Unmap pages in correct order in sev_gmem_post_populate()
+From: Sean Christopherson <seanjc@google.com>
+To: "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026/06/23 5:23, Peter Xu wrote:
-> On Thu, Jun 11, 2026 at 03:35:47PM +0900, Akihiko Odaki wrote:
->> Supersedes: <20260604-migration-v1-1-cef4a5b1bbdd@rsg.ci.i.u-tokyo.ac.jp>
->> ("[PATCH] system/physmem: Assert migration invariants")
->>
->> ram_mig_ram_block_resized() already aborts migration when migratable RAM
->> is resized. Extend the same handling to other unsupported changes to the
->> migratable RAMBlock set, such as removing a migratable RAMBlock or
->> changing a RAMBlock's migratable state.
->>
->> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->> ---
->> Akihiko Odaki (3):
->>        system/physmem: Pass RAMBlock to RAMBlockNotifier callbacks
->>        system/physmem: Notify RAMBlock migratable and idstr changes
->>        migration/ram: Abort on unsupported migratable RAM changes
-> 
-> Thanks for looking at this, Akihiko.
-> 
-> I understand this is a protection to the system to trap error use cases.
-> The question I have is do we have any possible way to trigger these.
-> 
-> I worry we add a bunch of code and notifiers, and then there's zero way to
-> trigger, essentially add dead code.
-> 
-> Logically we could already add assert() on things we don't expect to
-> happen.  This case might be slightly risky, but still I think we can also
-> consider things like error_report_once() instead of introducing slightly
-> complex notifiers just to cover what we think shouldn't happen.
-> 
-> Or do you have way to trigger any of these notifiers?
+On Tue, Jun 23, 2026, J=C3=B6rg R=C3=B6del wrote:
+> On Tue, Jun 23, 2026 at 09:24:16AM +0000, sashiko-bot@kernel.org wrote:
+> > Should this second instance be updated to reverse the unmap order as we=
+ll to
+> > prevent kmap stack corruption?
+>=20
+> Yes, it should. Updated for v2.
 
-I simply followed what's already done for resize(), expecting resize() 
-does the correct thing and following it won't introduce a regression.
-
-> 
-> PS: today I went back and I wanted to try how the existing resize()
-> notifier would trigger, I can't even reproduce it with David's example
-> here:
-> 
-> https://lore.kernel.org/qemu-devel/20210429112708.12291-1-david@redhat.com/#t
-> 
-> I can trap a qemu_ram_resize(), but that's invoked with newsize==rb->size,
-> so it didn't really notify a thing.  I don't really know how to trigger
-> ram_block_notify_resize().  If you know, please share.
-I made an LLM amend the reproducer. Below is its output.
-
-Regards,
-Akihiko Odaki
-
-LLM output:
-
-A synthetic but effective variant is to add custom ACPI filler tables so 
-the initial `etc/acpi/tables` blob is just under the 128 KiB alignment 
-bucket, then let the normal boot-time fw_cfg ACPI rebuild push it over.
-
-I tested this shape:
-
-```sh
-truncate -s 65000 /tmp/fill1
-truncate -s 50600 /tmp/fill2
-```
-
-Then add to the original-ish command:
-
-```sh
--device pcie-root-port,id=rp0,chassis=1,slot=1 \
--acpitable sig=FI1A,data=/tmp/fill1 \
--acpitable sig=FI2A,data=/tmp/fill2
-```
-
-Observed via `info ramblock`:
-
-```text
-before cont:
-/rom@etc/acpi/tables   Used 0x0000000000020000
-
-after cont:
-/rom@etc/acpi/tables   Used 0x0000000000040000
-```
-
-So this does produce a real RAMBlock used-size growth during boot in the 
-current tree. With migration started before `cont` using a stalled 
-`exec:` target, `info migrate` moved to `cancelling`, which is 
-consistent with the current resize-during-precopy abort path.
-
-The key is not the root port itself; the key is making the ACPI table 
-rebuild cross `ACPI_BUILD_TABLE_SIZE` alignment. The filler is a bit 
-artificial, but it is a good stress variant for the exact class of bug.
+Already fixed, commit 138f5f9cbe37 ("KVM: SEV: Unmap local kmaps in LIFO or=
+der,
+per highmem requirements").
