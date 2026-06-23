@@ -1,239 +1,203 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA923939B0
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 19:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7739281F
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 19:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782244530; cv=none; b=RlMzvsatGBN5wywolTTZA0hEEfzHT23WDLjoknjIy715GWp2QRNJWcNiCrxjmvnrQYDtTqG+yrbea2RfywODIZlaKgItXg9jNTw+bM9hnaEkJLeSqkz7BxDRntp71t59jIADwMIsj4De685ajf7BkrVGR10lLE2DLhrRf5mGUZs=
+	t=1782244649; cv=none; b=GtrG9BOvaAPHMWVACorhO0pkDN11gLoFMlVWdO+AQ/vetnoFKI/cR55duOR3U7hSTaYiUIfiZT+0H5yrHYhD/9LNTp67BswfRaCDfkloaMUxzr/F03oaR0nypbT7lO1fbvR92KPuWBZSdV3kOFrqHbCnzPQxc/DPpecvNtuTnak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782244530; c=relaxed/simple;
-	bh=63sbJHarhRjl2iOQAD0mHNtnHScOAjCdBhb1R1qPxoI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U9XWmrW+lih0QvQUbyaj4eFRHrSRC4i9BRj+jaLukOZGjHjXlxeaO2ARxTQ/AsWTCKAAT1SiE96n6+MtJbPF1rQepILqvW1kI+JejPH2aqaA2MteuDAGzJ9YiJgSGAEfCmuEWpmGbod7B9hxR2CYzJC0gi/56av497lQtMhypqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vzTcvnbi; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782244649; c=relaxed/simple;
+	bh=cS1JB5K5LEiNN3GFVoT+fk/p1KBe4YLWKs9/23hvb2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IVp7h1KwtkZWpJHkcttERP4WQ9b2t0CpJXDOdDTYiRuL/SxZcNkH3RPDJxnOStsd7RkR3AXJOZfDoTHlITzgjUU5HS8Up0tGMaLj5sTTxoXzcJAhbOChV5QLVjyDjAxKIhY8xp/zksrvLELSOozYbP1BsIidR3CT/VYT7ACRIR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ay+kH2oQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ns31AQgl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vzTcvnbi"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88e0f04e51so108781a12.0
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:55:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ay+kH2oQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ns31AQgl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782244647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qDc7guQ2ycA7m89lxili9KO877GhNfGfglR9NmUk+Uc=;
+	b=ay+kH2oQb/oVqrs4/z41ZrptmKu+KhHouI4ywHy8d6p1j1ltHtsZCYJI6MJuKrzl+mPCge
+	mGp++qPox8qZlEknOme/ivQfc1AwXKBRR11bmMZORY204uSnsG9aGAX03mfY6ERJp0OWS8
+	5AavPsvsGb/dmN/WgbD3VCGDS1RVE0M=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-8nHzEnilMsuCvW5_tD1yNw-1; Tue, 23 Jun 2026 15:57:25 -0400
+X-MC-Unique: 8nHzEnilMsuCvW5_tD1yNw-1
+X-Mimecast-MFC-AGG-ID: 8nHzEnilMsuCvW5_tD1yNw_1782244644
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4924725bec9so1252725e9.1
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:57:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782244528; x=1782849328; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIpRVKbnPB3e1icAr2g1HCqVBQNdkLJ4J5hLjJ9OhkI=;
-        b=vzTcvnbiYr4iY7b/e0mGNzuiVzoekU5uJLh3zeMJTqJ+Q6+67oJ7tC7rQnlPCHhQry
-         SJsmpguPA4mg3EmjFg+bCx7vMULQShFpNaiAj0rRiJDVRjJLjfPsuhZ0xNdZXUh/3biu
-         EP0xclIbTIvmBSSN7uSyeQ+7NbitnwIJn6rGmqPX/FB3ERz6wYgnAzffGBeOSs8/J9bo
-         WfUgcnu2zlfVvQbTJsuhMoQwOAWnQ+YAwpiWmyUSBvU/lS8p+QXEEIM9kreF1cFp0QlA
-         5reSbsb2dKqV7B7upsXjqdAlLPokCjLr6tpNmdfrPdM3GxIWpeG59qCZTueyg5QcXaxd
-         aoAQ==
+        d=redhat.com; s=google; t=1782244644; x=1782849444; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=qDc7guQ2ycA7m89lxili9KO877GhNfGfglR9NmUk+Uc=;
+        b=ns31AQglrSv3bX2D28LOprpF2HikPr/LZp7reSUzq8+k/W3Jdt42RfzWLy7gfXE2LH
+         15OwgG30mGawNX9Xur/+uVKbM88vrlYCk9VkbnVm3wK1aFUkocycFwqdYg6IVEkaP7NU
+         33vMEqgJZ8gmU34x5dcRPlcLdcleND4F4HOw3Bsn2p1G3OIcVTfZ0FjU1Dqh5saDAjXO
+         UvtK98+Se9suvLOvgTA13KjXX1RkfZCT9AJEeukiqZAhwW5WyDWp7kSvggK+8hbNdCCN
+         WHm0/5oWqpnnQxQage6ac11+bRMrewFIrnhq8nW449keRuPVjhLYp3GxEAWbq0SoF/HX
+         6+tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782244528; x=1782849328;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIpRVKbnPB3e1icAr2g1HCqVBQNdkLJ4J5hLjJ9OhkI=;
-        b=G5FF11AqbfSzgGNFgbYcxTTKEvHywJEqNT9G5dAHYK8hu1n9RoPgfVtDjY4rzR/Pbm
-         qT/olvYobVRIil6v9EAkgZjSf7SOEv8AgsJP9yh5mIkJknPc+v8HaVHEln88HbGpfv7a
-         u3saks99n/8aP4uGfJofnGD5oil9cnaEOmNgjzlLEpJG686SC6o29PagkjCmew4DDdfK
-         IgcvH9z19Nvf3PaDLLAJ8OJ+DjWLbEH1A/wwrJo8Rp6nORTThLP55mO4g9pYFalOAdLn
-         O0VgnxKgeLNpWq4vuMgQgYMkHNJc/KHiqJgcM+jjGwClmPunV6LVjfqpv/nCbkaPKvJ2
-         +zPw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Wi40cH+wagehpJbk8Q0QAPfXAGcwO1FP682oRF0D7DVa07h0jVJKWsrFEy3ujxvtbEjE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIYbEX9B8/o9HPwZ6gsfoG1f675Dgv6Gr/rQ9z8dif8HlciT8z
-	XI0ygXYX/aigJTFYETkLxWvSHFEsVq9y/N1nxl1afmaLX+n2CCtzZxCTJvwY3kNw0RgWzzEHJCR
-	Fmu1Jgw==
-X-Received: from pgct16.prod.google.com ([2002:a05:6a02:5290:b0:c8e:650d:c415])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e292:b0:3b4:6026:6c5d
- with SMTP id adf61e73a8af0-3bd2d047b32mr236285637.5.1782244528090; Tue, 23
- Jun 2026 12:55:28 -0700 (PDT)
-Date: Tue, 23 Jun 2026 19:55:27 +0000
-In-Reply-To: <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+        d=1e100.net; s=20251104; t=1782244644; x=1782849444;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qDc7guQ2ycA7m89lxili9KO877GhNfGfglR9NmUk+Uc=;
+        b=mw1j7zojw/I730wfa/QKdxUmgg2y85yCTH2WWGBpuN2uq2y2hZEfHnVEp9UgvxLzOr
+         8wQ+fOyU35rHLA51RJSxjy85PUIQaMZ/8sxZ2/mTNYrjzDzRTCDaPMUvB5AnZcJ/Ef1a
+         sn97w3XOd6q+SQ6sg6GfQr6jZ/acDtHbkRJsLXlkjZTTe+rgq+zHxryWSVxB9ShvgZQf
+         Ey89ntKA3N+3dEda0soygk5KdIrdSPon1s0s+j63a3CQnF02Prj4ksnbK0XdqsczQzDH
+         KMpHY1QhxUh4c/2FE12ySFhbtSNlE9OaOParn94ryfiLfrnDeRNSml3xo8yzAI82YgxM
+         wXFw==
+X-Forwarded-Encrypted: i=1; AFNElJ+mz9v1FoJd7lHY1Wl8jtmbPWJ1pM1EDI/+6YffIaptf7x+DTR/YqXjdEXcY2uLN64IOh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9u6i/bb7JfFr8hJhW6q+vJjv/3B0L1xdeAl0jTuMA/aAWxL0V
+	ngoXpNJA3QCvAj7gDbNBeim8ADUFzzJKPs95iJ8SPwh6sSv4jllMxuTaU2MM7h23n0oeVe7Inqi
+	LDaXadEssiLoDT2vsOOA5gvWnkrKXnxEV+qa1bq+0hVxU9vzyMeyujA==
+X-Gm-Gg: AfdE7clTbFX1lspOKHBThn8nw9wMqNU3lt5EYnkJi2l5izLeTNh5PnH+9qXDk2/hieq
+	n23IwFlDGHneQeQbU2fw45dge5m62fGj7YFgz45VUzKlW0EP7QuvwT0Oh9T8h9XGLitIEMP9KlP
+	TO0vLBZ/oiY66nPsOnvQmhqjXgz8BGDRn+H67ytA6Fp1r1xXYXIvR6R4ikM5dYVtb50a31ZjAsd
+	kULycwpsUcxG5qV+15yq6qVp5fxIrOBzV7UbbRrCdwNCWzGlsEpv3J8kcAo9sv/e5SPERSD2Td9
+	FcrEtILdL1nWCojbsGCKYHcTjQzIvgLUJ0BIk5BmbT8ayeYKxTdFsqLIJ32rBC5fnvKNt71qK4Z
+	vhTH5reA=
+X-Received: by 2002:a05:600c:a51:b0:492:379c:32ee with SMTP id 5b1f17b1804b1-49249083c09mr275512265e9.6.1782244644371;
+        Tue, 23 Jun 2026 12:57:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:a51:b0:492:379c:32ee with SMTP id 5b1f17b1804b1-49249083c09mr275512025e9.6.1782244643935;
+        Tue, 23 Jun 2026 12:57:23 -0700 (PDT)
+Received: from [192.168.0.9] ([47.64.113.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1e840eefsm57195f8f.1.2026.06.23.12.57.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jun 2026 12:57:23 -0700 (PDT)
+Message-ID: <21cd2f80-64a2-48ca-9821-7a233470af77@redhat.com>
+Date: Tue, 23 Jun 2026 21:57:22 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260501203537.2120074-1-seanjc@google.com> <20260501203537.2120074-3-seanjc@google.com>
- <ajNQ_Ix5e0p6FuFT@google.com> <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
- <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
-Message-ID: <ajrkryMxHZtsMvga@google.com>
-Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
- {en,de}crypt debug ioctls
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by
+ tag
+To: Andrew Jones <andrew.jones@linux.dev>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+References: <20260622164109.26350-1-andrew.jones@linux.dev>
+ <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
+ <ev32z6yxkujq3ctb66f6l3e2l5cx2b33ye76mlqvo6jdsydxsk@hwmgkv5rmqym>
+ <92a4d803-c545-48e8-ab5c-647bb04f3560@oss.qualcomm.com>
+ <b3agpqbu47bnsfcfzskdfgymyag6y6be5danltshzwiimybvnh@r4773lfg6vfj>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
+ yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
+ 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
+ tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
+ 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
+ O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
+ 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
+ gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
+ 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
+ zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
+ aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
+ QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
+ EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
+ 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
+ eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
+ ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
+ zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
+ tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
+ WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
+ UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
+ BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
+ 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
+ +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
+ 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
+ gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
+ WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
+ VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
+ knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
+ cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
+ X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
+ AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
+ ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
+ fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
+ 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
+ cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
+ ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
+ Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
+ oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
+ IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
+ yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
+In-Reply-To: <b3agpqbu47bnsfcfzskdfgymyag6y6be5danltshzwiimybvnh@r4773lfg6vfj>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-+lists
-
-On Tue, Jun 23, 2026, Michael Roth wrote:
-> On Thu, Jun 18, 2026 at 10:18:03AM -0500, Michael Roth wrote:
-> > On Wed, Jun 17, 2026 at 06:59:24PM -0700, Sean Christopherson wrote:
-> > > off-list in case this is double-ungood.
-> > > 
-> > > I ran this on an SNP host today (I think this is the first time I've run the full
-> > > test on an SNP host), and it explodes with RMP violation #PFs in weird ways.  I
-> > > don't _think_ it's a KVM bug?  Because I get the RMP violations even without ever
-> > > running an SNP guest.  I'm using kvm/next, at commit ef057cbf825e ("KVM: x86/mmu:
-> > > Ensure hugepage is in by slot before checking max mapping level")
-> > > 
-> > > It might be related to edge cases around pages, or maybe large sizes, as the test
-> > > passes if I comment out the testcases that focus on the larger sizes.  I haven't
-> > > narrowed it down further than this (reboots aren't exactly fast).
-> > > 
-> > > What's especially odd is that on most of the crashes, there's no apparent reason
-> > > for the RMP violation, as the RMP says the page is unassigned.  I did get one
-> > > crash (#2 below) where the RMP entry was non-zero.  That one was after booting
-> > > an SNP VM, but it was quite some time after shutting down that VM.  The RMP dump
-> > > is equally confusing to me, because AFAICT the RMP entry is corrupted.
-> > > 
-> > > Mike/Tom, can you try and repro and debug?  I don't have the bandwidth to dig
-> > > deep on this, and even if I did, I suspect it's beyond my abilities to debug.
-> > 
-> > Hi Sean,
-> > 
-> > I was able to reproduce this after running the test in a loop for a few
-> > minutes after a clean boot (trace below).
-> > 
-> > Not making much sense to be ATM either, but might be related to RMP table
-> > memory itself. Will keep investigating.
+On 23/06/2026 18.04, Andrew Jones wrote:
+> On Tue, Jun 23, 2026 at 05:08:07PM +0200, Philippe Mathieu-Daudé wrote:
+>> On 22/6/26 21:00, Andrew Jones wrote:
+>>> On Mon, Jun 22, 2026 at 06:43:45PM +0200, Paolo Bonzini wrote:
+>>>> On Mon, Jun 22, 2026 at 6:41 PM Andrew Jones <andrew.jones@linux.dev> wrote:
+>>>>>
+>>>>> Import Linux commit d1db4118489f ("checkpatch: add support for
+>>>>> Assisted-by tag").
+>>>>>
+>>>>> (I should have used AI for this, since it'd be fun to include that
+>>>>> tag on this tag-enabling patch, but sometimes I still do my own
+>>>>> homework!)
+>>>>
+>>>> Personally, I don't see the point in providing free advertising to AI
+>>>> companies, so if I had to choose I would do "WARN(...) if ($sign_off
+>>>> =~ /^Assisted-by:/i)". It's more important to know what AI was used
+>>>> *for*, than what AI was used period.
+>>>>
+>>>> But I won't complain if people want this patch.
+>>>
+>>> The process is now well established over in Linux kernel land and we
+>>> encourage kvm-unit-tests contributors to follow Linux processes. The
+>>> motivation for this patch is because I just queued an ARM patch which
+>>> used the Linux process and it failed checkpatch. I'd rather checkpatch
+>>> succeed than to have to tell people to remove/modify the tags they're
+>>> used to using with the kernel.
+>>>
+>>> We can encourage contributors to also add sentences stating how AI
+>>> assisted when an AI assistance tag is provided in order to capture
+>>> the "AI used for what" part.
+>>
+>> I tend to agree with Paolo in that I don't see the value added by
+>> these tags -- except the free advertising --. Besides what provides
+>> $AGENT_NAME:$MODEL_VERSION is likely irrelevant without the prompt
+>> used. And even if we try to reproduce we would get a slightly
+>> different result :) Then by the time the patch is committed the
+>> information is almost obsolete.
+>>
 > 
-> It looks like this was a recent regression caused by changes to how the
-> temp buffers are allocated. I tested the below revert patch ~14 hours
-> and the issue seems to be fixed (I generally was reproducing it within
-> an couple hours or so max so it seems good).
+> kvm-unit-tests does sit on the boundary of being Linux-like and
+> QEMU-adjacent. So I can see why the QEMU position[1] might be
+> considered over the Linux position here. OTOH, I'd rather not
+> complicate kvm-unit-tests development. I'm also personally not
+> that against the tags providing free advertising. The tags also
+> provide stats in the long run which may be used to compute risk
+> factors and/or evaluate quality of particular LLM designs which
+> can lead to LLM improvements.
+FWIW, I think we should follow the kernel here. k-u-t has always used the 
+coding style, header files, scripts, etc. from the kernel, so IMHO we should 
+not diverge here.
+And I agree with Andrew that the tags could be useful in the long run, e.g. 
+if there is ever a problem with a certain AI model, it's easier for us to 
+find out which commits we might want to have another closer look at.
 
-Thanks for root causing!
- 
-> Planning to submit upstream today if there's no objections/concerns.
+  Thomas
 
-I object :-)
-
-> From: Michael Roth <michael.roth@amd.com>
-> Date: Mon, 22 Jun 2026 22:47:03 -0500
-> Subject: [PATCH] Revert "KVM: SEV: Allocate only as many bytes as needed for
->  temp crypt buffers"
-> 
-> When SNP is enabled, the data passed to firmware must be contained
-> within pages that have been transferred to firmware ownership via the
-> corresponding RMP table updates. 
-
-IIUC, and I'm pretty sure I do at this point, this is wrong, or at least *very*
-misleading.  Nothing in KVM performs RMP table updates, and so saying "the data
-passed to firmware must be contained within pages that have been transferred to
-firmware ownership" is completely inaccurate.
-
-Piecing together the changelog and diff, and my own observations, my understanding
-is that **firmware** modifies the RMP to *temporarily* take ownership of the page
-while performing the {DE,EN}CRYPT operation.  So there's no requirement that the
-pages be in any specific state, the only "requirement" is that software needs to
-either prevent concurrent accesses or be prepared to handle spurious RMP #PFs due
-to the temporarily RMP modifications.
-
-SNP_DBG_DECRYPT does require software to convert the destination to be a firmware
-page: "The firmware also checks that the destination page is a Firmware page."
-But this is about SEV_DBG_{DE,EN}CRYPT, not SNP_DBG_ENCRYPT.
-
-> This is not compatible with uses kmalloc() allocations since kernel accesses
-
-As is the statement about kmalloc().  kmalloc() of a PAGE_SIZE is a-ok, because
-the kernel will always hand out a full page.
-
-> to other allocations within that page will trigger an RMP fault and crash the
-
-And it's specificaly about other *accesses*, not simply other allocations.
-
-> host. Fix this by moving back to page-based allocations.o
-
-Always forcing full page allocations is overkill for SEV and SEV-ES, and robs us
-of the opportunity to document that SNP+ is special, which is especially important
-because AFAICT, none of the specs are so kind as to document this "minor" behavior.
-
-Rather than fully revert, just force PAGE_SIZE allocations if the host supports SNP.
-I haven't run anywhere near 14 hours, but I was also getting failures on every
-single run of the test, and I ran the test 100 times without problem.
-
-However, this only addresses the case where KVM is using temporary buffers.  For
-small, nicely aligned operations, a misbehaving userspace could induce a crash by
-coercing the kernel into accessing the to-be-{de,en}crypted page via a kernel
-mapping while the crypo op is in-progess.  I don't see a less awful option than
-forcing KVM to use the "slow" path, e.g. if the problem is limited to the dest
-for a decrypt operation:
-
-diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
-index 87025d0d2f91..7e3334c90c57 100644
---- arch/x86/kvm/svm/sev.c
-+++ arch/x86/kvm/svm/sev.c
-@@ -1406,7 +1406,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
-                sev_clflush_pages(&src_p, 1);
-                sev_clflush_pages(&dst_p, 1);
- 
--               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
-+               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16) &&
-+                   (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) || cmd != KVM_SEV_DBG_DECRYPT))
-                        ret = sev_issue_dbg_cmd(kvm,
-                                                __sme_page_pa(src_p) + s_off,
-                                                __sme_page_pa(dst_p) + d_off,
-
-But if firmware temporarily converts *both* pages, then we're "stuck" because at
-some point KVM needs to actually target the correct guest-owned page.  The only
-option I can think of is to require capable(CAP_SYS_BOOT), *if* the above doesn't
-suffice.
-
-So what exactly is the behavior here?  Because I can't find anything in the specs,
-I can only make educated guesses based on the SNP_DBG_DECRYPT documentation.
-
----
-From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 23 Jun 2026 12:21:56 -0700
-Subject: [PATCH] KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on
- SNP-enabled hosts
-
-When {de,en}crypting memory of an SEV or SEV-ES guest on an SNP-enabled
-host via a temporary buffer, allocate a full 4KiB page for the buffer to
-ensure the kernel won't concurrently access the page that's being
-{de,en}crypted.  On SNP-enabled platforms, firmware modifies the RMP to
-temporarily take ownership of the to-be-{de,en}crypted page, and so using
-a sub-allocation results in unexpected (and seemingly spurious) RMP #PF
-violations due to software attempting to access a firmware-owned page.
-
-Note, it is unclear whether the RMP updates are considered architectural,
-or an implementation quirk, as none of the documentation for the non-SNP
-DBG_{DE,EN}CRYPT commands say anything about RMP updates, nor does the SNP
-specific firmware ABI spec.
-
-Fixes: 4c735bf1bc22 ("KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers")
-Debugged-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/sev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74fb15551e83..87025d0d2f91 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1280,6 +1280,16 @@ static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
- 	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
- 		return NULL;
- 
-+	/*
-+	 * If SNP is enabled, i.e. the RMP is active, allocate a full page to
-+	 * prevent concurrent accesses to the page.  Firmware modifies the RMP
-+	 * to temporarily take ownership of the page while the {DE,EN}CRYPT
-+	 * operation is in-progress, and so concurrent software accesses will
-+	 * encounter seemingly spurious RMP #PF violations
-+	 */
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+		return kmalloc(PAGE_SIZE, GFP_KERNEL);
-+
- 	return kmalloc(*nr_bytes, GFP_KERNEL);
- }
- 
-
-base-commit: 9d4853b044beefa21c4ee3e18c40653601a64ced
--- 
