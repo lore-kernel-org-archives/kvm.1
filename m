@@ -1,167 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD2E53E0B
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 04:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763D153E0B;
+	Tue, 23 Jun 2026 04:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782190107; cv=none; b=KAqQBDJ09gn6MER4HPxPpVlAaJdoslqKC+2pnd9kinOQYfZtAUxofQ35obs7GNmptBOXQyfVMN/ugSCf4O4bxCXN5JABU9Y7bxoXKykh85tyzdSPKyWnsorogE4S87zpK5AucdxNcARdEWQ4qZxdwYljzGVQ9eFFOi91eBAIkWY=
+	t=1782190568; cv=none; b=NSLbMEoklIQjAeWY/+arYUeuun54TJ98wGVLCnKQIBF2S1v/BChVr4TGJOWNzAjBwh/ZWKOw0SQ/48AVJaLf09kjvzjvkVVOuUBL4wWB6U+UZHBERdGYTc/prYZdiz26dUYek55Qtw0SWZCGThFgpEY9hTZLFPHDjf2h8yU6yUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782190107; c=relaxed/simple;
-	bh=XSWfFmWNeWXVK5B9EfbqMeQCSYxkPecpgO5qb+5Gojs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=p0VMRNocsLVXme8PLRIL7EFAk3cFq5REJqdGsVZ1WQ82W210Yw4IaUDDKM/R+JGoL+ZEZ7Uwt5ZhDaActHD0Jmr7CS6l9NMK+A/ZBIeorFXtRJQ/pbRI+i4SuAVNblpe12vy79NTCoGYd2oFjiIQOKxHhfUreV5OlXgxAHTsXGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arqcT/Ng; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782190568; c=relaxed/simple;
+	bh=TLs0cQbV4zQ3otfUmbOc+g0UN+QoGh4qUf1p9MrAKU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cpp/DyQUcJx0OHNdyKonb2TIt9/eOu7Xbw4/8eUu0vIxaDCVQ3Yn8AXQ7wUWNQKhE1f5G28IejWLmPRniuiDVxK5C6uReA8wSplIqf4QE0xQlB76p/QJd2wJdOxnCalTuGmnsgPDBO5Hu8utOCXYjdhmUpO9vtRr3PSURag+swg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nRx1Vcd5; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arqcT/Ng"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592FF1F000E9;
-	Tue, 23 Jun 2026 04:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782190106;
-	bh=uwg2DlMSMLEDKkfs2z2J76HU1F581KAadq3I0B8m2EI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=arqcT/NgqvVtrom4mb+55q04fq9sYlsVpx71F++xbVZ2AUXCNXbFz5+EMiIotWy2a
-	 jVwpE7dpc0SXIK2ar67msDjSCDSsg6qwTFehaRU+NP22Jx/BHjtRKmiGTFkgU709Ue
-	 Ru8xluuEfwixIUWHh8MztwhVuptWqGM6LHBxKZwPGLGEbUGxy6I7CRshMz/LbXehtV
-	 jYeT4m0SgLkVauQb8XtXKs4IjF9+MmygsAjU6WCBH/URMCUEv2yt6DW6PhJ3OeUdys
-	 tXvSOYWSpQYXR4QBiH9yY6NyPUFajBc3fWpO7jpD+5bs2TzAphbEK4X53/fa3ZVyP6
-	 WixqMH3XFtppA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V4 3/4] KVM: x86/pmu: Support PERF_METRICS MSR in
- mediated vPMU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zide Chen" <zide.chen@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260623041927.178256-4-zide.chen@intel.com>
-References: <20260623041927.178256-1-zide.chen@intel.com>
- <20260623041927.178256-4-zide.chen@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 04:48:25 +0000
-Message-Id: <20260623044826.592FF1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nRx1Vcd5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782190567; x=1813726567;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TLs0cQbV4zQ3otfUmbOc+g0UN+QoGh4qUf1p9MrAKU0=;
+  b=nRx1Vcd5EHkx11DaM63lpi38QvmCKT/Q7C0qjoyG1y8BRx9sxHLsqrLI
+   NXEAa25tJic8giKi9ijw+mTTQywiCAvXutdf2kmNe2G2U/l+xyRttkW1B
+   fieYLssVmBVDkWt80sKU4PqVEG4xNreAQlBb9B3ORWt5rTEiQf5uYgzBj
+   Av1IflftMwpgVzCjlVUJrE5q9DEsFxdBS6yxvSnUhbCiZuZJW0zv2H/Ur
+   uJRK4NLRz6CKyLmDE33Qjzs3KRWexXJldZ7+Gdx3xLlGUTSZh9uvr1gE5
+   mUGbjSZ1unRuNZ1QYEpzbL3U1wlhCTYZsbb18DLr8dFvQxjYR517N0/g5
+   g==;
+X-CSE-ConnectionGUID: XXTW7DstQRqtL/pRusoevQ==
+X-CSE-MsgGUID: 5Iv15DEqR/+HU+HMViG0zw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82696353"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="82696353"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 21:56:06 -0700
+X-CSE-ConnectionGUID: 4Bxv4k3BSX6J0pVhhllv2Q==
+X-CSE-MsgGUID: yXIM0ueyQAGYNRhCF5FN7g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="248527637"
+Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 21:55:52 -0700
+Message-ID: <96fb369d-dbff-4ed6-b1f9-0ce63d7d4ed0@linux.intel.com>
+Date: Tue, 23 Jun 2026 12:55:50 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Emulation of guest RDMSR and WRMSR for MSR_PERF_METRICS unconditio=
-nally injects a #GP fault, breaking emulation and nested virtualization.
-- [High] KVM_SET_MSRS for MSR_PERF_METRICS is silently discarded, breaking =
-live migration of TMA metrics.
-- [High] Host Topdown microarchitectural metrics are leaked to the guest vi=
-a the RDPMC instruction when mediated PMU is enabled but the guest lacks th=
-e PERF_METRICS capability.
---
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
 
-commit 3d014d661f0ac59ad10f0335ced10697e72d7bf6
-Author: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
-
-This commit exposes the IA32_PERF_METRICS MSR to the guest when mediated vP=
-MU
-is enabled. It handles the MSR in kvm_pmu_{get,set}_msr() for host accesses
-and saves/restores the value on PMU context switches to avoid clobbering ho=
-st
-data or leaking guest state.
-
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-> index 59b7a90c79e12..2c3367f5e2dfb 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-[ ... ]
-> @@ -345,6 +347,11 @@ static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, =
-struct msr_data *msr_info)
->  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
->  		msr_info->data =3D pmu->fixed_ctr_ctrl;
->  		break;
-> +	case MSR_PERF_METRICS:
-> +		if (!msr_info->host_initiated)
-> +			return 1;
-
-[Severity: High]
-If KVM needs to emulate a guest RDMSR instruction targeting MSR_PERF_METRIC=
-S,
-won't this unconditional return inject a #GP fault into the guest?
-
-> +		msr_info->data =3D pmu->perf_metrics;
-> +		break;
->  	case MSR_IA32_PEBS_ENABLE:
->  		msr_info->data =3D pmu->pebs_enable;
->  		break;
-> @@ -394,6 +401,16 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, =
-struct msr_data *msr_info)
->  		if (pmu->fixed_ctr_ctrl !=3D data)
->  			reprogram_fixed_counters(pmu, data);
->  		break;
-> +	case MSR_PERF_METRICS:
-> +		if (!msr_info->host_initiated)
-> +			return 1;
-
-[Severity: High]
-Similarly, if KVM emulates a guest WRMSR instruction targeting
-MSR_PERF_METRICS, does returning 1 here cause the emulator to incorrectly
-inject a #GP fault?
-
-> +
-> +		/*
-> +		 * If TMA level 2 is not supported, bits [63:32] are reserved
-> +		 * and ignored on write, so no validation is needed here.
-> +		 */
-> +		pmu->perf_metrics =3D data;
-
-[Severity: High]
-When restoring guest state during live migration, userspace calls KVM_SET_M=
-SRS
-which is wrapped in vcpu_load() and vcpu_put(). Since intel_pmu_set_msr()
-updates pmu->perf_metrics without updating the hardware MSR, won't the
-subsequent intel_mediated_pmu_put() during vcpu_put() read the stale hardwa=
-re
-MSR and overwrite this newly restored value?
-
-> +		break;
->  	case MSR_IA32_PEBS_ENABLE:
->  		if (data & pmu->pebs_enable_rsvd)
->  			return 1;
-[ ... ]
-> @@ -803,6 +828,13 @@ static void intel_mediated_pmu_load(struct kvm_vcpu =
-*vcpu)
->  	struct kvm_pmu *pmu =3D vcpu_to_pmu(vcpu);
->  	u64 global_status, toggle;
-> =20
-> +	/*
-> +	 * PERF_METRICS MSR must be restored closely after fixed counter 3,
-> +	 * which was just restored by kvm_pmu_load_guest_pmcs().
-> +	 */
-> +	if (vcpu_has_perf_metrics(vcpu))
-> +		wrmsrq(MSR_PERF_METRICS, pmu->perf_metrics);
-> +
-
-[Severity: High]
-If the guest is configured without PERF_CAP_PERF_METRICS but with mediated
-PMU enabled, RDPMC exiting might be disabled. Since
-intel_mediated_pmu_load() skips writing to MSR_PERF_METRICS in this case,
-could the guest execute RDPMC and read the un-scrubbed host metrics, leaking
-host microarchitectural state?
-
->  	rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS, global_status);
->  	toggle =3D pmu->global_status ^ global_status;
->  	if (global_status & toggle)
-> @@ -831,6 +863,12 @@ static void intel_mediated_pmu_put(struct kvm_vcpu *=
-vcpu)
->  	 */
->  	if (pmu->fixed_ctr_ctrl_hw)
->  		wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
-> +
-> +	if (vcpu_has_perf_metrics(vcpu)) {
-> +		pmu->perf_metrics =3D rdpmc(INTEL_PMC_FIXED_RDPMC_METRICS);
-> +		if (pmu->perf_metrics)
-> +			wrmsrq(MSR_PERF_METRICS, 0);
-> +	}
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index d370e834d619e..eb26d4ea8945a 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2534,13 +2534,13 @@ static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
+>  }
+>  
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> -static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> +static inline unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>  {
+>  	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
+>  }
+>  
+> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> -				     unsigned long mask, unsigned long attrs);
+> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +					unsigned long mask, unsigned long attrs);
+>  bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+>  					struct kvm_gfn_range *range);
+>  bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> @@ -2548,7 +2548,14 @@ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+>  
+>  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>  {
+> -	return kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +	return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +}
+> +static inline bool kvm_mem_range_is_private(struct kvm *kvm, gfn_t start,
+> +					    gfn_t end)
+> +{
+> +	return kvm_range_has_vm_memory_attributes(kvm, start, end,
+> +						  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> +						  KVM_MEMORY_ATTRIBUTE_PRIVATE);
 >  }
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623041927.1782=
-56-1-zide.chen@intel.com?part=3D3
+This function is added, but never used in this patch series.
+Is it intended to be called only when CONFIG_KVM_VM_MEMORY_ATTRIBUTES is
+enabled?
+
+
+
+>  #else
+>  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
