@@ -1,251 +1,378 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D5A28726E;
-	Tue, 23 Jun 2026 19:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782242155; cv=fail; b=au8IrkSQ087y3RFZVeLTEkk+DiYBi2pjM6jUppI4Ihl+nZeIncP8ATxSe5fYKYw/w3eZeDIJ9JrJ57fB2sYasfUUcHd5yN98KnXMoIlbMO0t4YqpBlUp0ylfdeZ4KIwvPRU8JHpM//m4BoanCQIss5cBqs1oqzyzwKNmRV4nGBw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782242155; c=relaxed/simple;
-	bh=UQyyMPNJ0Zpsd/rsN4XUT4sZy1/McOr5OLYGnZtK9lI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CLJi9VYa5MJG2ZK9JHPkjexjunetZvO3FP26hXPM6tKs1/TYdq5geiKpJKdZ/Xm23GAMSLeeYHrmP89Iyt9qGCEemaAyVVlKw/PYS97YjIW9v8J6a/syL7wJwnVCRWgz4VZHQFrtx9CuZfGZsF0wnGzmXg5pGpolxpXoDo5+WQc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zgzoo/KE; arc=fail smtp.client-ip=52.101.62.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9883939B6
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 19:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782244205; cv=none; b=nokzF7f9ViHxo4VjQxsOehtZjqN3DHd57uCM7dn7tSEZ2hqfsxzo5dViPOZj7WNY5a5FomRiKRmnWLjXe2ij/1qUoX7htZiTJorTx6GkPmZJD93AGj4rva2EeBLalb8Db3D8zFn6pWVCnz75RiLGmOIQws8HDAtz4WxakGAh8H4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782244205; c=relaxed/simple;
+	bh=PCdxZHaDVmkm3TCzXBWX11/NSB4PaHEtWEjQDmjXAX0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gAThb7ssX3Sj3zodJh7C47oFB9+fyoA3+2Ih+q1Mt/e7bym5w9I8yceZ5GTfuP6RtGNA8I/haWdbdkAUaxsn7FYqS7QqtR9sKsmGgDiqRkaK3PjdgUmw/GAxEKw76Gir38baynGRQuI8JazeX+PXB6BAMkP8lH/3v3AvKS2Z5YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YPwRq5wt; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zgzoo/KE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OiKU8lJuP45v3gPniI+gH/LcLLfIGNlIRSwIYYeXe+qkBg3HNy5++uHUFnVX00jL5NyrqMMO+niQiS3bCBfQhir3TSJEFkcT/2Rx7wJ4pZh1BFH1gXkhS6suHZibJO2KupMtdR/9PwzD34+WvUn7T4Nledr8R17ZlIsRaeyyDm7s7e21NQyGVNL7iCdREDe6xWZ5Gt8lKRhPp9lis0HGvUfdzWAIsLbM5vULUBozuTC8CHH3YKzSb8VTLodVNVQnxD8m551WYdLcBfYzDhyfNVUWJYjNyLqdCaiykag9K0EVUVok4Yu3x5Mzr3tchyOh0pVY1tSypMdd0Co7mQh/UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ETgMD5YgQY/TiTNqnjcWQRVSkulxu8b73IKyFkWXix0=;
- b=GILIsPJ63r/1oLqOX4oqjUuoiTHE5tPhm0xEWfZEUOrMvd0sQYDMCyUHELZbySfWq9jik5b090ckqtQ89/1iNyxXd6GuGINNutKzvy/JYYtL7gkeoGSPjMBe/E1JzrzSmyvfodIHv8MS4elh0O77E/ygUJVpcPBejq46bjYJ+qeNHB/Ah31s6awyNBdr4PBSSAe3SLzk7Igu+vFTfIO+wpSMnEaZ6swduFE95iBxdQoel31MghsuQohpvMaf0JhCW6NhkLvjfxY3bVuUtsIy73EFpH5fzvMk9DI4VDzugEo6pn+cmjPf4qPMin6UXru+KFgZ07IvT6DHhgHNK7KG6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ETgMD5YgQY/TiTNqnjcWQRVSkulxu8b73IKyFkWXix0=;
- b=zgzoo/KEG6pjOvWHWhAkzJxKIODdvK2TU1VKPwAj7L6NBb0OeZ41f6thrYrAmtI4C8/93X3cHTUqwN/N7OUnmM+03K8gsFot+BZvPhUxWQTSB6tfvh7krF1VNY2xlDH+2JAKESwBLi3tfk8SWTwrjRAB110/BmTpmt4VhnCTFl4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by IA0PR12MB8205.namprd12.prod.outlook.com (2603:10b6:208:400::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Tue, 23 Jun
- 2026 19:15:48 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0159.012; Tue, 23 Jun 2026
- 19:15:48 +0000
-Message-ID: <8e4af4f3-da52-40a0-9916-072952551295@amd.com>
-Date: Tue, 23 Jun 2026 14:15:42 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is
- active
-To: Ackerley Tng <ackerleytng@google.com>,
- Jethro Beekman <jethro@fortanix.com>, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1781419998.git.ashish.kalra@amd.com>
- <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
- <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
- <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA9PR13CA0005.namprd13.prod.outlook.com
- (2603:10b6:806:21::10) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YPwRq5wt"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-697df3655d8so121826a12.2
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:50:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782244202; x=1782849002; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdsj6Guo7r326E75XLxyGx3YlVfMh6UQRvA3w5OPiCM=;
+        b=YPwRq5wtAMcjgrky1GfhZg5Sq9cYpXmGlUdarAT287bU5lv82QwzRtupJvjWurvuyn
+         fLC2oDnRGb8EQ2VbzjhDkG44c3G2anlU5dUUqdwwn2ot7bfW+tvR2o8dYlSINLbskgaG
+         +tf+xYOmPZQbAVqB2OnS6gJ7Zdah1zZsnmtfIgWG6OktTruQvKrDbCHtbNzF2c6GTA3I
+         0NwS/dEKIFa5SmnbJ4WbUR+iBK6aUY5pgQuTTQYgHr7YwfqCmZVMgDKylvghq5qLMB8L
+         tCjZgg5Gmon7qXfqIVqWITRm1TXiOejw1NkVyli8xABGnWFn7HXAqhegYfln4PHm2wqA
+         z1gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782244202; x=1782849002;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zdsj6Guo7r326E75XLxyGx3YlVfMh6UQRvA3w5OPiCM=;
+        b=fMFyiFo934qaqx19jjck4xPBB1LU6qh1Bddu47QaNPjpsgTwcxWzNBw/6tQ+GRWfwU
+         TeggTxz4RdoL5QliaMojEUnffaO1kXpgXH562MDklk3Fsc82YaBAS415X5dJJl52sCsl
+         o9pE3osvJ6WLcA7CSApM6+ttjlmezXoITOsfQWKYTBbTR/I3SlQ76gCBpFx3UQEuWRl8
+         VigmZgJJoKebRulXanqcuKOq2/S4RUJII3+ad8k7HjAgvXLKjB0L3og2cp7+K226gRZA
+         rTFdJ6sUDVxDRm0CTjZMXFyj1W0kSg1+qVy+wgJNa/JtcPhPJDS3iC+i1dfYUPt9J27b
+         3FFw==
+X-Forwarded-Encrypted: i=1; AFNElJ9w4dKIHpO6gjRcwhwal7ELKAFqR8P6b//fLtqsdXwDorS4Vjn5QAv+F2lgweYncdHdCHA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTLcyR6xBrmD6SNsCEJvL+Zbf8oJyAiL/hWArh0tputQvqRX57
+	LW4/Y7cLTZvvP+R13Iv9e7LR+6BkM8KdXYEkxu3MsMBm3hyr2Gsik3mjDxlz07eU2UPi27NpTgZ
+	Pf9/owLGK1kGVZ4dNEQ==
+X-Received: from edbbp7.prod.google.com ([2002:a05:6402:1467:b0:692:efc2:c022])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:5253:b0:697:aee0:7a4d with SMTP id 4fb4d7f45d1cf-697dba62033mr2212935a12.6.1782244201867;
+ Tue, 23 Jun 2026 12:50:01 -0700 (PDT)
+Date: Tue, 23 Jun 2026 19:50:00 +0000
+In-Reply-To: <CAEvNRgE2GZNiDg_g6SP_H9CDsDDAnpN7KTRWJEK18wxpTZFJZw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|IA0PR12MB8205:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef470413-a6c3-4541-d008-08ded15bd4d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|5023799004|11063799006|4143699003|3023799007|6133799003|921020|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	+RFwluUu7lsI4rHmLNGksg5/lFaW7wdpCUlEZnZ+qPgKeLMQvO+mnh9ZDFIywCIXftBieQyWx+vyyllD2r5Sb5caRG84SXw1UmAJZGmhVcS75C+tALEbmQCmDQJOCf7ukPuzDvZ2Ubqx5Cx6lwxrPqJmdpfZGuCZB+g4chooMYCS6aBSRoJjO6ory3V2ZnHD+NB6EkqWrhBqkLfqfXlaCmWJ0NwI6dOtIFliv33RVFdqwk6uyj3UFfnxxAPl16pypsPtsUciSvEfg9+jtn+Ey+iRB1i63jFz+IcDW1Wj9eJv8pSUewBqRETjvsn/ax+SBZ3sAXJg5blMHSzeE77aLx9D4Gg0C9X8agj3HXsJQegMVJOCssLKNTFxm0SwGz07Rd84FEkEyF2f2p1aY268nhl1CearX8CfCsVR/VHTU+ksQT3xtWKPz81im3OjaeNSuQMLAa1aBaFVSHYP5rFwLL7Q1w3FmUK9pYl85tD0iOmXbGEII2hiO61p3ZQMx8jRG3B6izNvVb/MQMUdHl/A7AaW/F1yufHVgwja64kWhj7eJFCv8WzSeh0B4lZCoTGt2Qahqeh7o14ir8QV5YhRavvgudgw1DQiQhMrP0IlTM214wW9s5ZCPyv1v30R+TGHDD948gPgFnqy45qD2BSrw5ezfEzVGqu+hOPlVCiJMZ5KUCz+t3p/KVrJ1IQB9MYZ/bBoCXD/R2RtH01am1j2qQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(5023799004)(11063799006)(4143699003)(3023799007)(6133799003)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bnFUV2IvaFc2aEh5aEFmMjZ6QU0zSTVKNWx2N05YbDBhVUl5MnphQTloQmdT?=
- =?utf-8?B?VUNvakRsTDcrcmJnK3hYVE1hZUVZa0kvbXNSRUk2d0NsV1MyM0dodjg5dnh0?=
- =?utf-8?B?a0tUeHozUjFYQmZ1UzdwbjVxZVhXVmlaQTJHV2pTOGw0RTlIY09VK2ZtVzVI?=
- =?utf-8?B?RmV0Zi82S2JLSkViWUhEU2Y3ZlhLVS8zLzN1ZjkvQ1JpK3ZSUndFclA5YmMr?=
- =?utf-8?B?K0RqWXBBc1MzUXBCZnhmaXplYXpxUElpVWZKNFExUXlNQy9hU1I3TFh4d3hN?=
- =?utf-8?B?Z2xUM1VmU2hFeGxoZ2JYdWVjbGttRjlDNXlLbzFLaTdKbU4rYzg0R3VMU25M?=
- =?utf-8?B?Y0NBVlVXREdKdnJ5WVZ5Q2crTTZDanlYekFoalAwU3ZrdlU1UG90Vk9BQmhj?=
- =?utf-8?B?a1FGZFpaNFQ2NEovZkNMa2xyQTFsSEJNS3ZRUSs0YUIwSWlmN3N0ZlFaeUdv?=
- =?utf-8?B?UHAxbGJ6eTlXc3dIOUk3WEYrQzRLNjV0TjJXY0xQaFRZbUlBS1NiaU5ZZ2ZO?=
- =?utf-8?B?U2NiTFJsYmJlSDIrdU8rUWl4Zm9oU2toTk5KSkp0dWJWR1JjbEVkbld4SjJp?=
- =?utf-8?B?bW9VT0FodmhKV3FTVHBzUmVtTk5IL0hjZ1lzMW1WbzdVRXErSjlBUXI3Nkox?=
- =?utf-8?B?cW80c1BTK0RxaHJod3Awb1NqWTlLbnNEcDZiWFdQaXFGaC84NHVJR08wckpF?=
- =?utf-8?B?aWtqbytFaGJyd1prUjMyaHFxVDF6N1Axc25VS1dPNlRyUkYyMzhhc3ppWkta?=
- =?utf-8?B?ZysySndTaGxKUVpKdjZUMEZvN1ppVC9nc1FTdTFYV0FDbmNFRmw5d01aV2VR?=
- =?utf-8?B?c0VNSmJjNXpHazRsNHdxYWFJbk1aWnRUUUF0MTBRRk5iNmxjeTllaUIzOHdh?=
- =?utf-8?B?N3FLZHNnOEdTTWdsZzUycWlhWFdxVmdWdlpQU2ZrUzZzYzlaRkpMVGEwcndo?=
- =?utf-8?B?T1Z1VlNSUFlQU1dPUTRMaXQrbWR0VzRiR0tRSEhhYVkyb0RCVnUwMUVIK1JS?=
- =?utf-8?B?aWE5STNJTENRaTMvWk91Y1g0NWYxOVFBZll0K3o0KzZDMmlIMWJtdit0anlV?=
- =?utf-8?B?VGVlOThnOUx2R1ZVWE9SV3liNUpZNFBOaUVPSjR2ay9uK2dVUG8vYzFPZ1dV?=
- =?utf-8?B?cHZkajRKWU9EZXFMbmlta01WYjBFS3dKSTBBMWErQi9TcjNVWVNNaUM4YzNU?=
- =?utf-8?B?MlhsUnYzUXNheTJiVGtxNjdlMG4rdXI1cThvbVl3RWc4UHFPdUNReDlaWGJz?=
- =?utf-8?B?VEJFcUgzYzM1bkdhS2ZGSnNMN0FoVDFpejhvQmJyc0E1YzBmTmtWVG1hclpT?=
- =?utf-8?B?a2o0R3FQY3IxZ1U2VkxhU001MnF4VitlQkxYN2dnUGlBcDMwSDF4ODZDNmhq?=
- =?utf-8?B?MUZmYW1RM1NYbEdZVDZBd2UxSC9CT2IvOUI1MnhtSDNTZ2JpMUw1ZCtvamtw?=
- =?utf-8?B?NHpRditOejd2dXFEaXdtRm4wR2UrakZLa0Y4Y3pLaG1FaHNEM3lFNldESU1Z?=
- =?utf-8?B?L1hvSzFQcnN1WFVKYVFxalBXMk1qV2pWOFJ4TTF2d3NXdU1zcnAxSzFlcTFs?=
- =?utf-8?B?eFZDU3A5YnovVlFEUzZIV0FLa1ZrYUpkQkFqNlN5UC8yUE0yUXRrMFloUnlt?=
- =?utf-8?B?ZjhJV29vYVJ4TTAvSElUbWQ4S2JUbDYrWEtzbXQ1b0hYb2pyM1QrVlVxRnMv?=
- =?utf-8?B?V0E3WHRYeVRrNUhQMGlPSXlVNE1MdEduQlJIVmVLOEFkUGhGbzNMYWxtMTUy?=
- =?utf-8?B?VnhYQzU4Nmhoa3UvbVdaQ0VpNURCV0tzK1I2em4rMWV5WXM1MFF4ZjdiUHZP?=
- =?utf-8?B?eDk4ZG1vK1Y3T2tjT3JoUFJtelJlUXZRbzRIZDhURWVFbGxHYnV2eWdNbGFV?=
- =?utf-8?B?cWQ0ODFmajVVLzFoZWF0ODN3Umd4RWlxa2wzVm45RkZIMDBtbnJOenA3aTZw?=
- =?utf-8?B?T0s4MzAxSVlteDRUTlJNOCtWdGYxMTZuNkFTQnEyVGFCZ09nS2tXYjNkYzI2?=
- =?utf-8?B?K1RrcWMrbEIwNlorVG1PZzhBNmVCVkhZMUtkdTVMSFJiUzdKdGU0aHRCYm1K?=
- =?utf-8?B?ZDlqOEVjQ25HM0JtMml3Ynd5MEl4dHh1TTlqamhwMDQzbnFLaTVWb25VUnpX?=
- =?utf-8?B?Nm5yMlhDalhBWk43cmhicE5wRUFUQ1JGdUVSbG9uN2UyaE9qOTczVi9Wa0tr?=
- =?utf-8?B?cWE3SCtDYXViR21Td0JXRDM4UnFqYlhMZTVYRVBFM0dPN21zK3EwTEs5UjNo?=
- =?utf-8?B?RGNUU0ZzVUtzUVF4MG5PRDRnY3QzOGs4eE9KcU5wWmhWc0lDN0cyQ0Q1UXQw?=
- =?utf-8?Q?/cwlKBxNeTRM4AELtt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef470413-a6c3-4541-d008-08ded15bd4d5
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 19:15:47.8604
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EPpNsRH8FPyrVMSdddOs17LsGN/LABxC4h9dv5navecm5fw4+6TP1kXDnX+RFRQWA42mv5+HoIWbpPCMhEc2Mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8205
+Mime-Version: 1.0
+References: <cover.1780676742.git.tarunsahu@google.com> <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
+ <CAEvNRgE2GZNiDg_g6SP_H9CDsDDAnpN7KTRWJEK18wxpTZFJZw@mail.gmail.com>
+Message-ID: <9huzldc5m3yv.fsf@tarunix.c.googlers.com>
+Subject: Re: [RFC PATCH v2 10/10] selftests: kvm: Add guest_memfd_preservation_test
+From: tarunsahu@google.com
+To: Ackerley Tng <ackerleytng@google.com>, Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
+	fvdl@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, aneesh.kumar@kernel.org, 
+	skhawaja@google.com, vipinsh@google.com, Pratyush Yadav <pratyush@kernel.org>, 
+	david@redhat.com, dmatlack@google.com, mark.rutland@arm.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	seanjc@google.com, axelrasmussen@google.com
+Cc: linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello Ackerley,
+Ackerley Tng <ackerleytng@google.com> writes:
 
-On 6/23/2026 12:48 PM, Ackerley Tng wrote:
-> Jethro Beekman <jethro@fortanix.com> writes:
-> 
->> On 2026-06-15 21:49, Ashish Kalra wrote:
->>> From: Ashish Kalra <ashish.kalra@amd.com>
->>>
->>> The SEV firmware enumerates the CPUs at SNP initialization and is not
->>> aware of the OS bringing CPUs online or offline afterwards, so OS CPU
->>> hotplug can diverge from the firmware's expectations and break SNP.
->>> Disable CPU hotplug while SNP is active.
->>
->> I think this is too broad. If I have a hypervisor that supports SNP virtualization, a (non-confidential) L1 guest running Linux should still support CPU hotplug while also running confidential L2 guests.
->>
->> --
->> Jethro Beekman | CTO | Fortanix
->>
-> 
-> Were any other solutions considered other than disabling CPU hotplug?
-> 
-> Is this temporary until something else is implemented?
-> 
-> I'm not sure how commonly CPU hotplug is used, and if people are okay
-> with trading in CPU hotplug to get SNP.
-> 
-> Is it that fundamentally the SEV firmware can't support hotplug, so
-> there's no point in keeping it enabled anyway?
-
-Yes, essentially. The SEV firmware knows nothing about when the OS takes CPUs online or offline. At SNP_INIT it accounts for all
-the CPUs enabled via the BIOS/UEFI and establishes the per-core SNP state for them; it has no notion of the OS bringing CPUs up or
-down afterwards. So OS hotplug actions can diverge from the firmware's expectations and break SNP. Disabling hotplug just makes
-that constraint explicit — there's nothing useful to keep it enabled for:  a hot-removed core still "exists" as far as
-the firmware and the per-core RMP/RMPOPT state are concerned, and a core brought online later was never set up for SNP.
-
-> 
-> Is there some way of supporting hotplug for CPUs that won't be used with
-> SNP, for serving non-SNP VMs on the same host as SNP VMs, or is that too
-> complicated?
+> Tarun Sahu <tarunsahu@google.com> writes:
 >
+>> Add a new KVM selftest `guest_memfd_preservation_test` to verify that
+>> guest memory backed by guest_memfd is preserved properly.
+>>
+>
+> Don't think using backticks in commit messages is a common practice but
+> I might be wrong here.
+>
+>> The test leverages the Live Update Orchestrator (LUO) infrastructure
+>> to validate that memory folios and configuration layouts are
+>> successfully saved and then restored during kernel live updates,
+>> preventing any memory loss for the guest.
+>>
+>> Here, I have used the kvm selftests framework by creating a new
+>> vm and mapping two memory slots to it. One is the code that is executed
+>> inside the vm and other is the guest_memfd whose memory is being
+>> written by the guest code.
+>>
+>
+> Don't think commit messages with "I" are common either
 
-Not really. SNP's memory-integrity guarantee rests on a single invariant: every memory write is subject to RMP checks to protect
-against corruption of SEV-SNP guest memory. The moment any CPU can issue writes that aren't RMP-checked, that protection is
-broken for the whole system — it's not something that can be confined to "that one core."
 
-That's because SNP isn't per-core in that sense — it's a system-wide mode. SYSCFG[SNP_EN] is set on every core, the RMP covers all
-of physical memory, and once SNP is enabled every memory write is subject to RMP checks on every core. A non-SNP guest sharing the
-host still runs on cores that are part of the SNP-enabled system.
+Will take care of commit message everywhere as per the guidelines,
+Sorry about that.
+>
+>> In Phase 1: Once data is written the vm exits and wait for the user
+>> to trigger the kexec.
+>>
+>> In Phase 2: A new vm is created with retrieved kvm and again two
+>> memory slots are assigned. Once for guest code, and another is for
+>> retrieved guest_memfd where guest_memfd memory is verified by the
+>> executed guest code. If verification succeeds, The test passes.
+>>
+>>
+>> [...snip...]
+>>
+>> +#define SESSION_NAME "gmem_vm_preservation_session"
+>> +#define VM_TOKEN 0x1001
+>> +#define GMEM_TOKEN 0x1002
+>> +
+>> +#define GMEM_SIZE (16ULL * 1024 * 1024)
+>> +#define DATA_SIZE (5ULL * 1024 * 1024)
+>> +
+>> +static size_t page_size;
+>> +
+>> +/* Deterministic byte pattern generation based on offset */
+>> +static inline uint8_t get_pattern_byte(size_t offset)
+>> +{
+>> +	return (uint8_t)(offset ^ 0x5A);
+>> +}
+>> +
+>> +static void guest_code_phase1(uint64_t gpa, uint64_t size, uint64_t data_size)
+>> +{
+>> +	uint8_t *mem = (uint8_t *)gpa;
+>> +	size_t i;
+>> +
+>> +	for (i = 0; i < data_size; i++)
+>> +		mem[i] = get_pattern_byte(i);
+>> +
+>> +	GUEST_DONE();
+>> +}
+>> +
+>> +static void guest_code_phase2(uint64_t gpa, uint64_t size, uint64_t data_size)
+>> +{
+>> +	uint8_t *mem = (uint8_t *)gpa;
+>> +	size_t i;
+>> +
+>> +	for (i = 0; i < data_size; i++) {
+>> +		uint8_t val = get_pattern_byte(i);
+>> +
+>> +		__GUEST_ASSERT(mem[i] == val,
+>> +			       "Data mismatch at offset %lu! Expected 0x%x, got 0x%x",
+>> +			       i, val, mem[i]);
+>> +	}
+>> +
+>> +	GUEST_DONE();
+>> +}
+>> +
+>> +static void do_phase1(void)
+>> +{
+>> +	uint64_t flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
+>
+> Is there a reason to set GUEST_MEMFD_FLAG_MMAP? We're not really
+> accessing that memory from the host in this test.
 
-By the SNP architecture there simply can't be a CPU that isn't doing RMP checks while SNP is active, so SNP_EN has to be enforced
-on every core. RMP enforcement is gated per-core by SYSCFG[SNP_EN] and it must be set on every core before SNP_INIT; a core with
-SNP_EN clear performs no RMP checks at all, which the architecture doesn't allow once SNP is up. A newly hotplugged CPU comes up
-without SNP_EN (SNP not enabled on it), and since it wasn't present when SNP_INIT ran it isn't part of the initialized SNP
-configuration either — so it does no RMP checking. And because an SNP guest's vCPUs (or any guest for that matter) can be scheduled
-on any online CPU, the guest could end up running on that core, accessing memory with no RMP enforcement and breaking SNP's memory integrity. 
-There's no way to prevent that: KVM doesn't fence SNP guests (or any guests for that matter) off particular online cores.
-And carving out cores for non-SNP-only use isn't possible by the architecture: SNP requires RMP checks on every CPU, so there's no valid
-configuration with SNP active and a subset of cores exempt.
+Right, We can skip it.
 
-Thanks,
-Ashish
+>
+>> +	int gmem_fd, dev_luo_fd, session_fd, ret;
+>> +	const uint64_t gpa = SZ_4G;
+>> +	struct kvm_vcpu *vcpu;
+>> +	const int slot = 1;
+>> +	struct kvm_vm *vm;
+>> +
+>> +	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1,
+>> +					guest_code_phase1);
+>> +	gmem_fd = vm_create_guest_memfd(vm, GMEM_SIZE, flags);
+>> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
+>> +				 gmem_fd, 0);
+>> +
+>> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
+>> +		virt_pg_map(vm, gpa + i, gpa + i);
+>> +
+>> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
+>
+> If GMEM_SIZE and DATA_SIZE are static I think we don't have to set those
+> as vcpu_args_set(), they can be used as macros from within the guest.
 
- 
->>>
->>> [...snip...]
->>>
+Yes, There are multiple places we can skip it, Like passing them as the
+argument in the guest_code_phase1/2. Will update it.
+
+>
+>> +
+>> +	vcpu_run(vcpu);
+>> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
+>> +
+>> +	dev_luo_fd = luo_open_device();
+>> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
+>> +
+>> +	session_fd = luo_create_session(dev_luo_fd, SESSION_NAME);
+>> +	TEST_ASSERT(session_fd >= 0, "Failed to create LUO session");
+>> +
+>> +	ret = luo_session_preserve_fd(session_fd, vm->fd, VM_TOKEN);
+>> +	TEST_ASSERT(ret == 0, "Failed to preserve VM file descriptor");
+>> +
+>> +	ret = luo_session_preserve_fd(session_fd, gmem_fd, GMEM_TOKEN);
+>> +	TEST_ASSERT(ret == 0, "Failed to preserve guest_memfd file descriptor");
+>> +
+>
+> Thanks for showing how this works :)
+
+Glad to know. it helped.
+. .
+ v
+
+
+>
+>> +	printf("\n============================================================\n");
+>> +	printf("Phase 1 Complete Successfully!\n");
+>> +	printf("VM file and guest_memfd file have been preserved via LUO.\n");
+>> +	printf("Tokens: VM_TOKEN=0x%x, GMEM_TOKEN=0x%x\n", VM_TOKEN, GMEM_TOKEN);
+>> +	printf("Machine Size: %llu MB, Data Size: %llu MB\n", GMEM_SIZE / SZ_1M,
+>> +				 DATA_SIZE / SZ_1M);
+>> +	printf("------------------------------------------------------------\n");
+>> +
+>> +	daemonize_and_wait();
+>> +}
+>> +
+>> +static struct kvm_vm *vm_create_from_fd(int resurrected_vm_fd,
+>> +					struct vm_shape shape)
+>> +{
+>> +	struct kvm_vm *vm;
+>> +
+>> +	vm = calloc(1, sizeof(*vm));
+>> +	TEST_ASSERT(vm != NULL, "Insufficient Memory");
+>> +
+>> +	vm_init_fields(vm, shape);
+>
+> What would happen if the shape was changed between preserving and
+> restoring?
+Shape must be consistent across kexec. It may break. struct vm_shape
+includes two fields
+1. mode: 4k, 16k or 64k mapping, how many page table bit etc.
+         which are used to setup mapping with guest code, and memory.
+         guest_memfd does not support mapping other than PAGE_SIZE.
+2. type: This is userspace side of the vm type. And it will not have
+         information about the preserved vm_type via vm_file (kernel).
+         If userspace changes this on stage2, some action might not
+         work. for example, if userspace is expecting vm_type to be
+         COCO VM and preserved vm_type is shared, this will have
+         conflict when userspace will try to perform some operation that
+         only works with COCO VM.
+
+
+My Question is: Why should someone change the shape, unless they are
+                planning to make the vm fail?
+
+>
+>> +
+>> +	vm->kvm_fd = open_path_or_exit(KVM_DEV_PATH, O_RDWR);
+>> +	vm->fd = resurrected_vm_fd;
+>> +
+>> +	if (kvm_has_cap(KVM_CAP_BINARY_STATS_FD))
+>> +		vm->stats.fd = vm_get_stats_fd(vm);
+>> +	else
+>> +		vm->stats.fd = -1;
+>> +
+>> +	vm_init_memory_properties(vm);
+>> +
+>> +	return vm;
+>> +}
+>> +
+>
+> I think vm_create_from_fd() could be introduced in an earlier patch to
+> reduce the amount of new code in this patch. Also, I think it could
+> perhaps be moved to kvm_util.c assuming that other test will use it too.
+>
+Makes sense, Will take of it next revision v4.
+
+
+>> +static void do_phase2(void)
+>> +{
+>> +	int retrieved_vm_fd, retrieved_gmem_fd, dev_luo_fd, session_fd;
+>> +	struct vm_shape shape = VM_SHAPE_DEFAULT;
+>> +	const uint64_t gpa = SZ_4G;
+>> +	struct kvm_vcpu *vcpu;
+>> +	const int slot = 1;
+>> +	struct kvm_vm *vm;
+>> +
+>> +	dev_luo_fd = luo_open_device();
+>> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
+>> +
+>> +	session_fd = luo_retrieve_session(dev_luo_fd, SESSION_NAME);
+>> +	TEST_ASSERT(session_fd >= 0, "Failed to retrieve LUO session");
+>> +
+>> +	retrieved_vm_fd = luo_session_retrieve_fd(session_fd, VM_TOKEN);
+>> +	TEST_ASSERT(retrieved_vm_fd >= 0, "Failed to retrieve VM file descriptor");
+>> +
+>> +	retrieved_gmem_fd = luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
+>> +	TEST_ASSERT(retrieved_gmem_fd >= 0, "Failed to retrieve guest_memfd file descriptor");
+>> +
+>> +	vm = vm_create_from_fd(retrieved_vm_fd, shape);
+>> +
+>> +	u64 nr_pages = 2048; /* 8MB is plenty for slot0 pages */
+>> +
+>
+> I don't think declarations are usually mixed with regular code.
+Okay, will udpate that.
+
+>
+>> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0);
+>> +	kvm_vm_elf_load(vm, program_invocation_name);
+>> +
+>> +	for (int i = 0; i < NR_MEM_REGIONS; i++)
+>> +		vm->memslots[i] = 0;
+>> +
+>> +	struct userspace_mem_region *slot0 = memslot2region(vm, 0);
+>> +
+>> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_size);
+>> +
+>> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
+>> +				   retrieved_gmem_fd, 0);
+>> +
+>> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
+>> +		virt_pg_map(vm, gpa + i, gpa + i);
+>> +
+>> +	vcpu = vm_vcpu_add(vm, 0, guest_code_phase2);
+>> +	kvm_arch_vm_finalize_vcpus(vm);
+>> +
+>> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
+>> +
+>> +	printf("Resuming / Running VM in Phase 2...\n");
+>> +	vcpu_run(vcpu);
+>> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
+>> +
+>> +	printf("\nSUCCESS: Phase 2 Complete! All 5MB complex data verified intact!\n");
+>> +
+>> +	luo_session_finish(session_fd);
+>> +	close(session_fd);
+>> +	close(dev_luo_fd);
+>> +	/* This will also close the vm_fd */
+>> +	kvm_vm_free(vm);
+>> +	close(retrieved_gmem_fd);
+>> +}
+>> +
+>> +int main(int argc, char *argv[])
+>> +{
+>> +	bool phase2 = false;
+>> +
+>> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
+>> +	page_size = getpagesize();
+>> +
+>> +	for (int i = 1; i < argc; i++) {
+>> +		if (strcmp(argv[i], "--phase2") == 0)
+>> +			phase2 = true;
+>> +	}
+>> +
+>
+> Maybe use getopt() here?
+
+In V3, it is update to use liveupdate library.
+>
+>> +	if (phase2)
+>> +		do_phase2();
+>> +	else
+>> +		do_phase1();
+>> +
+>> +	return 0;
+>> +}
+>> --
+>> 2.54.0.1032.g2f8565e1d1-goog
+>
+> I think we also need tests for trying to allocate while frozen, and
+> conversion while frozen, and trying to preserve while preservation is
+> not allowed.
+
+Yes, We need those tests. For this series, I wanted to focus on design.
+Now that we are aligned, next revision, I will send with more tests.
+
+~Tarun
