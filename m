@@ -1,208 +1,683 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149773CF678;
-	Tue, 23 Jun 2026 08:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9AF3C73EA
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 08:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782204268; cv=fail; b=ATj28CBrh4d/VH0ZhSBsszg5Utg48CCxHYCQBAta6iP67mHOo4u3p+6zfHk3s0kxWTXzwWyC2tto/22ECUx9Q7txEjekNwpiu3GxblMiSFZtT87q5FJng6j3OeqzOAvQC4qN63b/k5/7YL/6kHd3x6G7mZY0wEZVLcP6wJvN/wQ=
+	t=1782204503; cv=pass; b=TA6Rn/3bEE5qXhicPJ67oaZH+qBj7B6/LDkRtMdbA+vhrEhIRdgQwe4KD2o7YkbWoku739Ks3LE4sTCpKzfLLs1N4lj6RG0Pn5lcO+n4nsty/79EduWZdcztq4UF2bDUnsm2aijRQwJfogpDjcITrF2paGjO014hEZ7t/udixQc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782204268; c=relaxed/simple;
-	bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hng8p5MEuLFtxZDtc/7whk7vY6VDYzoQcg9jL7+pBOGqGY1H2LrqZhTi4L15jUWYOZUJpLivqzsJRHqbaG5ACFMxS+bD7miHWwO1LzuYCJff1SPPaASusoM2yWyZUCSfYMY053CKlsBT/qiz0knMipBrhDNAIgtYyH1obt8djCs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bE+YdMem; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782204503; c=relaxed/simple;
+	bh=MvTm1/V5cR0bYZKWXLWMsoWEngS9v10+JAMvkup0iDY=;
+	h=References:In-Reply-To:From:Mime-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r5Lo1o9bY3VfwIff6x6TrBBhf/LbbC4oGi+AL/eksQM0e+3Tgfn9x1CCojPTnWMEZXGI1npmNGAgHmOh9cSTLGVU0gq9iChVAfylz/OXAVgMjdArarQg3U5EzZ3fqelDrqiJr9nQUk6xTodWmBYy5Yk9aT0o9BAeybo/+gI7qss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=iNz7e9RM; arc=pass smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bE+YdMem"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782204265; x=1813740265;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
-  b=bE+YdMemqHE6WVLUQPxC27WTBHlushnOfdOn9nvnnOjH5T3jarbjOs45
-   orvWMq5+iL4wSyiItRPSL7h87JBQls4Aarcl4r0AG/ST+ul/JgDIhViFz
-   5aBCht2imIIk9RDkc3ZfcS0QVhrd09b+MUCkfmzQ7wpLvSLc1wktvsH4W
-   wDZKThI6SnqvKKtGCk9yKOo6213I7gDJddmeEOIDQMWnH9Auw3hSoM8O/
-   ID2ZC1jIYgvcfahvEketv8LJqHF6R6eFtZMSpLamu9Bc1JF1164g3d4po
-   TkAx3bcWaXcyn+90RBUCuqyxF43fBJF80z6bzamLZJOydRlE338MnkWpw
-   A==;
-X-CSE-ConnectionGUID: o/I05+WISWSfj/kZLtZp/A==
-X-CSE-MsgGUID: 7SPDntMKS/Wv4IEaFa6QDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="70459127"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="70459127"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
-X-CSE-ConnectionGUID: EaIagTq2Qn24pWIou/bzqw==
-X-CSE-MsgGUID: UDa3CqkKSgOCJaGRLezecw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="247116443"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 23 Jun 2026 01:44:24 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 23 Jun 2026 01:44:24 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.29) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 23 Jun 2026 01:44:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XAoUBvd5cYbkv4tjDoTg6wveZUoQxvyMm2PrEokPHjSB9CSJxBm1S8D7FBBW8z9JRsccRojdxVkvR1IcM9MSjIFnmNJLn1sGfFtGOd9m+KW5HKQEp0IvaoX44baZkdHmUKys+Sjw0DSYSHhpL4SIV/jMrfT5UJ7kFcLug77d2eZp9nrkxBRRviTPUTWOaCU2GJ715cWx7I8xQOk/qj7NJvwdigbsII5cDtTs6wQhvxvV5nDL9WJzcPMZwcMj96xsRRFhTm6nVgckxpUt/wvANwoeVRL/EfBusjgGTomQnu0YnsrAOoHdUUle41lGpyz3hKpcuxMymZDo+gj+LY4xLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XXUw+XU/6s4cTDIZVtKepwFjauLL8rQpKpRBMDYqvwM=;
- b=xkXtW8Ki0TNDe3NaPOzwnIUC/HQjN5SB/gzc7CFtY08mKXadLk590eYgrBRKmxX9p5a6EL4dsvfet9A0UKDrnPMjbH8bCSBSDf6B1Fs+8QP2jszMXGlT175JiH4WoneDzx6Q4i9aYdWeBw+Y7RqhiOb0oz8n5WcXDdtMMQQd+qHvCL0eHbb4GddQrxGCFB0bWlC9PYFpMcitKuoyxLJaHJGVL+iWQjKpNPKuhisWDkuSfGEfv/WdVcwjU31ZgcrQ3N6Hw8VmoZZc8id200OsLHdV/CKm58ViSlEhJELbhj6W483Q0BZuTNO2XtVMU85iS3pNJHnsVukBLBczXNfB0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by CY5PR11MB6341.namprd11.prod.outlook.com (2603:10b6:930:3e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 23 Jun
- 2026 08:44:20 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
- 08:44:20 +0000
-Date: Tue, 23 Jun 2026 16:43:48 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-CC: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
-	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
-	<kishen.maloor@intel.com>, <tony.lindgren@linux.intel.com>,
-	<peter.fang@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
-	<dave.hansen@linux.intel.com>, <seanjc@google.com>
-Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-Message-ID: <ajpHRNaq+z5bdn+R@intel.com>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-X-ClientProxiedBy: TPYP295CA0001.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:9::18) To BN7PR11MB2836.namprd11.prod.outlook.com
- (2603:10b6:406:ad::26)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="iNz7e9RM"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa7a7ad475so5841917e87.1
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 01:48:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782204498; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UdPPF5TzwGhMh+hyRmLE11V7aLMGu7ZIBQ2K1tpi50b6l+1kXf2kBJwWLSdoVH8KwG
+         ioyEUPEK8k7Ood+Z5LCcMM00DVNmrCZ42bVZrpusNk4BJ7y5pe3I4A6g8iwB/6Cgf7GY
+         HZAlgeWU0WvQZheNruWIV2392PSXCGGKdnvXzGLitljkn3CDy5Q1gp5jfl3MQlmBcqv2
+         PRXDLTIvZ0+zNFY0Y4xnBKkcdTXkZATyjz5nA+ztIdmCp5Jg5v2tkiOF6Zff7qfwclCj
+         IBXgLTvQ1efO5LvgQ75EOXsmmUwak7WCGALYejIGyK96fdVJbXwcR5XpvXyhzrzibN9m
+         2cPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:user-agent
+         :mime-version:from:in-reply-to:references:dkim-signature;
+        bh=n5xBv4esraUDbm7myGlgVwoDL09rPZflhhewxMxljmo=;
+        fh=5/ED2vENnXMm3aAi2C8zk76ht7I3+67NTiNXm8ZchB8=;
+        b=EOi5y3VDBX9+mvixAVKbJmkbBX34bCu7Eq/+GsRjNf2FXdkL+eZl0lewTcGb++2dx3
+         HLfZk6Hwi+1IeOECVyJjThouR8NBq6wHbbUT9mRiLWP/4Xl5+Brmdhcbn4OAcy3bfi0Z
+         EEUygfXJwH0S7M1qQDFS2+ZTiDD6eB3TFABpqk/E4RmPd41uTdOMTR43BJ27m5wFrrRY
+         UpXoCnNHLkkR8JOGASCN8b3C5E8QD8Im0t3lAA3TdeNgZCU80yFi30BDU1NcnpoHxxmg
+         kDpxHcXcJLcly+E/fK4fZS63WhzbeuHiC2Qi42dCfQh6k2wrPEmiAOrZKrDZEazgiLa6
+         5Jbg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1782204498; x=1782809298; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:user-agent
+         :mime-version:from:in-reply-to:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n5xBv4esraUDbm7myGlgVwoDL09rPZflhhewxMxljmo=;
+        b=iNz7e9RMfmm0djcfBtWFfutav1gE9bW4l9w+oycdPVE8gICY2K7TJ3z+esQkxpIMX3
+         6CFMQKUNNUhNb02CMuKztYeiBsR/XatjRATEPAzNWcHz8b0HT50UMRDZUA4jTIjZQEHw
+         aGonimvsCeJhDiSH4waSQbnZNYO9q8fmjdYsmLWgwkLk3GfnsvUXX8LsI/o75OmInBdU
+         ICzwivB0mlPXXNGZ7vOvZygOBrqdBl84OKN7mT3YLwb4GnP3bWSKtEFCIw4aokF78Qcz
+         I2GbfBSySI+XwTjTcmGpPOWjbR8IeUQVzgmQfKA+hWpJoXd4nkiXQ/UAeGQyhHFUllID
+         lScw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782204498; x=1782809298;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:user-agent
+         :mime-version:from:in-reply-to:references:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=n5xBv4esraUDbm7myGlgVwoDL09rPZflhhewxMxljmo=;
+        b=lRAanBFytsy9NTD84cw+UKWgKDUMR/6mOgU9nj72uqAPNxf3WXeUMYFKD5b3rOpt8D
+         OigBJgnMC1ZeYzSRKFtQrbuRUJ8948V56vO70NeB3bxY87bcYjIXQwWIhxoutWtCpthx
+         +AIYzS5VBsHmsm30gGFvRkotMy2wrsghsAp/8b2E4WQhHTTeMtmdLBIQEx40H46l1URj
+         roUBGdAzEguU1d8b6VydJTZwnSE3CTufjVPKmZYL+k3we4XZDzQU0NB/KL2pNDWT6DMv
+         sx7Hq/nERU1dvC/nnKorUPSCeivoXJoVAhlcHpdgLF4OGKRwArJByZjFfE97ivXlQ28w
+         rMHw==
+X-Forwarded-Encrypted: i=1; AFNElJ/zVBtJhzVOZp6hTG2QwgJP49u9dG8upwqDeuADLOPM7HM0cAfkmkTeDwSPQsJYH3DEu/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5qP48PskTmPGUnDseWgMUDHDTpyfKGvPjLpaVKP4V+1cLDeLX
+	/QlPcNQtg6Jt6CAnIH3TUliBDeDTvp7czwS8CJDp9KkA7Rwr6FkSE1u1zCuKwC7HM6zfDKccqxu
+	uShY2NBqZsF/513oPMUU+dAAinIKe+N9Of1/0taL1yQ==
+X-Gm-Gg: AfdE7clS9bAi39aRnaEoepKoryRkYpFZkRzzJ1xGtake7hUrYWvcQkoheHoQuN49iD6
+	ibti7XfTWbKkNWKidKSCwRw10+b1RRCfb5ygnSBtKJ24giRiX9YJlGZkdJt9mPvPP5OXA8O3M4X
+	GuVGxcD9OO1x2CTALepZzz07YWuAIjRkXUF14tP/1W1cSZVikZzCiBOKaO97ohOFpRuzT79IlwI
+	Q2Kf8OCT7XY1ItnOVawy84v/cZojsGc1Pc7t5OiOjCnUwQ+w1nXLvnf3KCr6t7cI34/jbs=
+X-Received: by 2002:a05:6512:b1f:b0:5aa:8822:f27f with SMTP id
+ 2adb3069b0e04-5ade474bd06mr549035e87.47.1782204497498; Tue, 23 Jun 2026
+ 01:48:17 -0700 (PDT)
+Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 23 Jun 2026 04:48:16 -0400
+Received: from 44278815321 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 23 Jun 2026 04:48:16 -0400
+References: <202606101206.65AC69UA050105@mse-fl1.zte.com.cn> <00786ddb6d626442879072851d455bbd8ef1181d.371854f5.6bc1.4985.842c.192c1a21a55b@bytedance.com>
+X-Original-From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+In-Reply-To: <00786ddb6d626442879072851d455bbd8ef1181d.371854f5.6bc1.4985.842c.192c1a21a55b@bytedance.com>
+From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|CY5PR11MB6341:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|18002099003|22082099003|6133799003|56012099006|3023799007|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: d0r4M1s74nQZAw3ZdGu8QOMJ0K7U98lCCKoJJ6tTtHdh3saFMiI0Vszk2UaUvNufFASchRH8oRW0W8kp28wIIR6FlXKIUwRLldphTp2YtrDaoeFQQQpMVUdfntL5aeyVhBlN8RCq8mqEauU4qCXVJEgEqQxrqZr8oWnzN9p8fbZoqJ5SoMdX0zgMN1B1d+KnLvxBOrVcnFRwON8A8w8anAMt/NXsWNJgFcRy7ywEEvekmOBJ96lbTMs3Aaoz+z9TopPM+9I+K2AXOh7LgM/eu89XWg0PlrwgnmHCqO6cZ9dq8YaFgh1bwQVsMLvRzaiYZk8Om80klK/4QVL0Ah1ZXruS8914L/P9Q2gOcEFSeIX1s9/DV96r7EKlSlOVzXHcosfP49FWs/GHevFGiXz7gXpYAQ1Rc4Z90bcUgB0nDHpmbWMt4ouOTzujlApeZOMW0scs0GV9Z8yXLVxulcOT7OtH8UKYfBPzNgyAXF1IVo+z0bPT4asm1IvM2NO15mfp7GLVOHKsVWqlE6FfuH5hrwjcrSLd0tiH6CHL07QeC/TCfEBE1JDq5mmcJLcR6Qe3R/Mzg9HRR46RS7o2MNMIe0xBOAZxFCEkRtgAL9yeC75MqMPZcu4M+UUlRxHw8K6nwxpfZainX5RochmRnoJnewkIBrY3aZ5/KHp3z2yOkg8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(3023799007)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4zCzZ4xK874ErPdoASkisgQe1kSgGnxn+DR/N+d6Xk9A/AIxQtO1SPVQ5aFF?=
- =?us-ascii?Q?9jYDjtNTgR4ASxXGPz4OBKAl2uFv7htCIQ8uKIvFDjISev57HllXZg5i1SsF?=
- =?us-ascii?Q?7gH6XfthllV5wy8PH/9YgqYqyysjHLEwGo7cbIgLvG0t8evfwmqd0Zl1jB/T?=
- =?us-ascii?Q?xJvOIX1MmgxXoq/1I7xVHraQZ6n5Wx7HuB/u+apCyfmlu329F9hUuVabnCf6?=
- =?us-ascii?Q?NRzZ9E0LI9oqJvG8mdunDHOWUQ/3eoDkM8kMvfeLa1vlwnuw6mSXodoX3V6W?=
- =?us-ascii?Q?VYkngo3nlUFe6Z6O5Bo+3swj/MgDQbLxPa+zzcq2BOmJ4IJ8LPMzGoMCSTWF?=
- =?us-ascii?Q?8D9/jkPhOjI0kVmmjqF5HvRCMntE4qqRUiW2smBTj0dBDSvBO+awpGyyJnXm?=
- =?us-ascii?Q?RvIy4qx1rPw27BnQvxXsrVqDdVVwQI61VmBEOm+fIlN+F/4CUh59OxI6vN3h?=
- =?us-ascii?Q?jfuNFVPin5A2A16eW8n3DcqwpLLcX26XKRSKD0v1yk3YI6vk4XaGU4PJuKaA?=
- =?us-ascii?Q?n146PNw+zreS4iIQcL67E7u6VfyZqHeHaRwgi44mEhMZFVCG2d+GKljrTeBp?=
- =?us-ascii?Q?N2rXzVYiObpIQIJuARO/++gPsZjyAXdao/Rce/s3r2K3M162ukZHmfRaRz5W?=
- =?us-ascii?Q?+kCapZXj3lBuRR+rnbFoyjuvu0HuwacQU7KO9zzet6QT+oQfr8FB9/0h8G8g?=
- =?us-ascii?Q?CEvfAoNwQ2/m2PTKRNBcaUCf/QUmMjo/wlpSESrRmg8fKI2SpPsmZXuHYebJ?=
- =?us-ascii?Q?By2+pOrMuFTomMueDHsHwHezZcESYp2OjhgtCmNIL/RTc2V93R0kp0s7G8LX?=
- =?us-ascii?Q?psXXBSoi9yVTWODMfGe9K/wOguG6QYIJ3dwBnc49GfCa48VWd+3V8XPWUGGi?=
- =?us-ascii?Q?Bg/TZoiHWjuw+k+DU6qW2gKBW0YZZU+pKEgsG0RN2escgPQL1PLmpgmwZTj9?=
- =?us-ascii?Q?BjJt3230j1IHN+IGGuSLkpNl2EJdFgnAgt4Dt4J7bXxXfgKvsV+0TKmBHkUW?=
- =?us-ascii?Q?t1Iv5pkedlp/h69wBDwCoQxcWRz8NTkJh97D1U12ee1Gcz0JXesmRaHAOke8?=
- =?us-ascii?Q?5kHzI5SmS+rF6w3d7gxP+HKDHYeW2dmayciTl2WKxoulEklqpZLzjmbxLWM/?=
- =?us-ascii?Q?YAvd0cODQdAxOnYz9kzxMU4QIx+eYkX5XCBEW7Oz05YTUyTybXYTB82U3bY9?=
- =?us-ascii?Q?eVYxSbgF919o0YTGvRTOfPbm4GEgO2xCKT9g5TXg/M7LEYlCNzFWcKglmZbX?=
- =?us-ascii?Q?mdN4l4GoLAuiLZ2+huGPfjtUgvJSgdewSpgrA7clr8VctPQF0n9eXkMy8yqP?=
- =?us-ascii?Q?Ywc5gRj27gGGzJHGsB08Of0J26Xe71iB4sK/kVJ+fort7lMygmFmXUXj2gEh?=
- =?us-ascii?Q?ocFKDJNDd1Cxt9Q2we4MnmVp6P6NcBOUakEwbrlHcOmTxMgyT+AKtaKfjWae?=
- =?us-ascii?Q?YqkFsNQsCOjzvYsKAt6X7/JWYFnxhqy7XGiNQ8OXdGV4CshcjpEHTNIsbO5o?=
- =?us-ascii?Q?N+W0C4/EJWBa9OT7w0R93Tdd9a6cIFHBWqZ73jsWgv6NyosdrACc24u3cqFs?=
- =?us-ascii?Q?xuWq387sm8N8wNEGbuHrjLLykQ8IZyEQOYWJN32v+rm+nkhgQeYUSViaPsaV?=
- =?us-ascii?Q?warrInbYDbJb6pNAPZege0nXIfxYQUKH3VjOsLXSt05XfoYzs7bMRrhBUK6P?=
- =?us-ascii?Q?r1iW5FRT6LohJROraTsYO4s1aUs61UV8z7lSxWghQHt4IBgn0Dw3h2AE2VC6?=
- =?us-ascii?Q?QlmkIpQrSQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: NKPa5NmbkUsxcU42skD2neBB7MM0DJdACovayFRRLv+7dWbOXvn1OQpD8BGxRzBRjqukA3s6j1rjvab6eaYXZ5LiOe3X/rIlqhecVh0U+lZtRnQOlqXaheXphLstpn3go4TBAuGyo21GTeb7HbA9OiTtSCIFVyy3XDzzS0qK3ANmToVWQahAldWcQA6l6C2xgMcbTiPrrTwgPopMhyjh1DN0U/XWwr7E98wrrw65/V5rxMhYSouKn1DuV9AwonV1eErHGk/P5EHOTGb475jPwqdhhBMqJb5QA1NEVxHFqukS9bXZS3pTUxp+lmihu3jKY7jE6eR/csUMYU6qBtib5g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 08:44:20.1093
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X4u/NimAkh5KkD5cLhgfaPuYw9m9GfQj1azVrCccj4aUpeuRUCCif6Udzwkjv7KIDkUp6pbKarsfbAHy4AKrwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6341
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Date: Tue, 23 Jun 2026 04:48:16 -0400
+X-Gm-Features: AVVi8CdLiQEVbaQNPwVOBfdN74KeD0p_3evPQCHETqlHrPAPf-PWpcsG_I2fylc
+Message-ID: <CACnXVndEZS_-ccYAgTYpj0Kf+p9OpY+RwchwR8WuK27zF0Tgkw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v9 4/5] perf: RISC-V: add support for SSE event
+To: yang.susheng@zte.com.cn
+Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, pjw@kernel.org, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, conor@kernel.org, cleger@rivosinc.com, 
+	himanshu@thechauhan.dev, will@kernel.org, mark.rutland@arm.com, 
+	atish.patra@linux.dev, anup@brainfault.org, shuah@kernel.org, 
+	cuiyunhui@bytedance.com, yuanzhu@bytedance.com, liu.xuemei1@zte.com.cn, 
+	zhang.anmeng@zte.com.cn, gao.rui@zte.com.cn, tan.hu@zte.com.cn, 
+	jin.qi@zte.com.cn, li.zhichao@zte.com.cn, jia.yunxiang@zte.com.cn, 
+	dai.hualiang@zte.com.cn, liu.qingtao2@zte.com.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 18, 2026 at 04:13:40PM +0800, Xu Yilun wrote:
->In addition to basic TDX functionalities, TDX module provides add-on
->features that can be progressively enabled as the kernel supports them.
->The kernel should explicitly configure these features at boot or
->post-update initialization time. Configuring an add-on feature, such as
->TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
->initializing TDX module extensions. TDX Quoting is the target feature to
->enable but defer it for now until full kernel support is in place.
+Hi Susheng,
+
+I have reproduced the panic locally and have a fix for it.
+
+The root cause is that PMU-SSE delivers the PMU overflow through an SSE
+handler entered with a synthetic supervisor context. That context is
+good enough for running the SSE handler, but it is not the context
+interrupted by the PMU overflow. Therefore, the perf callchain unwinder
+must not treat the SSE handler frame as the sampled frame; it needs to
+start from the SSE-interrupted context.
+
+My current prototype does that. With a matching OpenSBI change, Linux
+reads the interrupted PC/SP/FP/RA/privilege state from SSE attributes
+and uses this context as the callchain starting point. With this change,
+the reproducer no longer panics in my setup. I used hackbench as the
+workload, which I believe is complex enough for this panic reproducer:
+
+   perf record -g -F 999 hackbench
+
+This version is indeed not compliant with the current SBI SSE spec.
+However, I think the information currently exposed by SBI SSE is not
+sufficient for Linux to complete perf callchain unwinding. My current
+approach needs SBI to provide the interrupted context, at least the
+interrupted PC, SP, frame pointer (s0), RA, and privilege mode. For
+future perf's host/guest attribution, we may also need a virt-mode flag.
+
+I will keep looking for a better implementation and try to find an
+approach that is acceptable for the SBI specification. Comments and
+discussion are very welcome.
+
+On 6/11/26 2:25 PM, Zhanpeng Zhang wrote:
+> Hi Susheng,
 >
->TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
->input parameters to specify which add-on features to configure. The
->bitmap uses the same definitions as TDX_FEATURES0.
+> Thanks a lot for the bug report and the detailed logs.
 >
->For runtime update, Linux applies a policy that no newer features should
->be added after update to avoid disrupting live TDX operations. To adhere
->to this, TDH.SYS.UPDATE must configure the same features as the
->TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
->global var so that both phases can use it.
+>> From: yang.susheng@zte.com.cn
+>> Date:=C2=A0 Wed, Jun 10, 2026, 20:06
+>> Subject:=C2=A0 [External] Re: [PATCH v9 4/5] perf: RISC-V: add support f=
+or SSE event
+>> To: <zhangzhanpeng.jasper@bytedance.com>
+>> Cc: <linux-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>, =
+<linux-kselftest@vger.kernel.org>, <kvm@vger.kernel.org>, <kvm-riscv@lists.=
+infradead.org>, <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.=
+edu>, <alex@ghiti.fr>, <conor@kernel.org>, <cleger@rivosinc.com>, <himanshu=
+@thechauhan.dev>, <will@kernel.org>, <mark.rutland@arm.com>, <atish.patra@l=
+inux.dev>, <anup@brainfault.org>, <shuah@kernel.org>, <cuiyunhui@bytedance.=
+com>, <yuanzhu@bytedance.com>, <zhangzhanpeng.jasper@bytedance.com>, <liu.x=
+uemei1@zte.com.cn>, <zhang.anmeng@zte.com.cn>, <gao.rui@zte.com.cn>, <tan.h=
+u@zte.com.cn>, <jin.qi@zte.com.cn>, <li.zhichao@zte.com.cn>, <jia.yunxiang@=
+zte.com.cn>, <dai.hualiang@zte.com.cn>, <liu.qingtao2@zte.com.cn>
+>> Hi Zhanpeng,
+>>
+>>>
+>>> In order to use SSE within PMU drivers, register an SSE handler for the
+>>> local PMU event. Reuse the existing overflow IRQ handler and pass
+>>> appropriate pt_regs. Add a config option RISCV_PMU_SBI_SSE to select ev=
+ent
+>>> delivery via SSE events.
+>>>
+>>> When the SSE path is used, also honor the return value from
+>>> perf_event_overflow(). If perf core throttles or disables an event, do =
+not
+>>> immediately restart the overflowed counters from the SSE handler.
+>>>
+>>> Signed-off-by: Cl=C3=A9ment L=C3=A9ger <cleger@rivosinc.com>
+>>> Co-developed-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+>>> Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+>>> ---
+>>>  =C2=A0drivers/perf/Kconfig =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 10 +++=
+++
+>>>  =C2=A0drivers/perf/riscv_pmu.c =C2=A0 =C2=A0 =C2=A0 | 23 +++++++++++
+>>>  =C2=A0drivers/perf/riscv_pmu_sbi.c =C2=A0 | 78 +++++++++++++++++++++++=
++++++++++-----
+>>>  =C2=A0include/linux/perf/riscv_pmu.h | =C2=A05 +++
+>>>  =C2=A04 files changed, 104 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/perf/Kconfig b/drivers/perf/Kconfig
+>>> index ab90932fc2d0..b6c58475091c 100644
+>>> --- a/drivers/perf/Kconfig
+>>> +++ b/drivers/perf/Kconfig
+>>> @@ -105,6 +105,16 @@ config RISCV_PMU_SBI
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0full perf feature support i.e=
+. counter overflow, privilege mode
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0filtering, counter configurat=
+ion.
+>>>
+>>> +config RISCV_PMU_SBI_SSE
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on RISCV_PMU && RISCV_SBI_SSE
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0bool "RISC-V PMU SSE events"
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0default n
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0help
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Say y if you want to use SSE events=
+ to deliver PMU interrupts. This
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0provides a way to profile the kerne=
+l at any level by using NMI-like
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0SSE events. Since SSE events can be=
+ intrusive, this option allows
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0selecting them only when needed.
+>>> +
+>>>  =C2=A0config STARFIVE_STARLINK_PMU
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on ARCH_STARFIVE || COMPILE_=
+TEST
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0depends on 64BIT
+>>> diff --git a/drivers/perf/riscv_pmu.c b/drivers/perf/riscv_pmu.c
+>>> index 8e3cd0f35336..a48e286d9394 100644
+>>> --- a/drivers/perf/riscv_pmu.c
+>>> +++ b/drivers/perf/riscv_pmu.c
+>>> @@ -13,6 +13,7 @@
+>>>  =C2=A0#include <linux/irqdesc.h>
+>>>  =C2=A0#include <linux/perf/riscv_pmu.h>
+>>>  =C2=A0#include <linux/printk.h>
+>>> +#include <linux/riscv_sbi_sse.h>
+>>>  =C2=A0#include <linux/smp.h>
+>>>  =C2=A0#include <linux/sched_clock.h>
+>>>
+>>> @@ -254,6 +255,24 @@ void riscv_pmu_start(struct perf_event *event, int=
+ flags)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perf_event_update_userpage(event);
+>>>  =C2=A0}
+>>>
+>>> +#ifdef CONFIG_RISCV_PMU_SBI_SSE
+>>> +static void riscv_pmu_disable(struct pmu *pmu)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv_pmu(p=
+mu);
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (rvpmu->sse_evt)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_disa=
+ble_local(rvpmu->sse_evt);
+>>> +}
+>>> +
+>>> +static void riscv_pmu_enable(struct pmu *pmu)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv_pmu(p=
+mu);
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (rvpmu->sse_evt)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_enab=
+le_local(rvpmu->sse_evt);
+>>> +}
+>>> +#endif
+>>> +
+>>>  =C2=A0static int riscv_pmu_add(struct perf_event *event, int flags)
+>>>  =C2=A0{
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *rvpmu =3D to_riscv=
+_pmu(event->pmu);
+>>> @@ -411,6 +430,10 @@ struct riscv_pmu *riscv_pmu_alloc(void)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_m=
+apped =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_mapped,
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_u=
+nmapped =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_unmapped,
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.event_i=
+dx =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_event_idx,
+>>> +#ifdef CONFIG_RISCV_PMU_SBI_SSE
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.pmu_enable =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_enable,
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.pmu_disable =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_disable,
+>>> +#endif
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.add =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_add,
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.del =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_del,
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0.start =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=3D riscv_pmu_start,
+>>> diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.=
+c
+>>> index 385af5e6e6d0..ac10ebd73c7c 100644
+>>> --- a/drivers/perf/riscv_pmu_sbi.c
+>>> +++ b/drivers/perf/riscv_pmu_sbi.c
+>>> @@ -17,6 +17,7 @@
+>>>  =C2=A0#include <linux/irqdomain.h>
+>>>  =C2=A0#include <linux/of_irq.h>
+>>>  =C2=A0#include <linux/of.h>
+>>> +#include <linux/riscv_sbi_sse.h>
+>>>  =C2=A0#include <linux/cpu_pm.h>
+>>>  =C2=A0#include <linux/sched/clock.h>
+>>>  =C2=A0#include <linux/soc/andes/irq.h>
+>>> @@ -1038,10 +1039,10 @@ static void pmu_sbi_start_overflow_mask(struct =
+riscv_pmu *pmu,
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_=
+start_ovf_ctrs_sbi(cpu_hw_evt, ctr_ovf_mask);
+>>>  =C2=A0}
+>>>
+>>> -static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
+>>> +static irqreturn_t pmu_sbi_ovf_handler(struct cpu_hw_events *cpu_hw_ev=
+t,
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct pt_r=
+egs *regs, bool from_sse)
+>>>  =C2=A0{
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct perf_sample_data data;
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0struct pt_regs *regs;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct hw_perf_event *hw_evt;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0union sbi_pmu_ctr_info *info;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int lidx, hidx, fidx;
+>>> @@ -1049,7 +1050,7 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, v=
+oid *dev)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct perf_event *event;
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0int ev_overflow =3D 0;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 overflow;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 overflowed_ctrs =3D 0;
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events *cpu_hw_evt =3D dev;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 start_clock =3D sched_clock();
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu_snapshot_data *sdat=
+a =3D cpu_hw_evt->snapshot_addr;
+>>>
+>>> @@ -1059,13 +1059,15 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
+ void *dev)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Firmware counter don't support ov=
+erflow yet */
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0fidx =3D find_first_bit(cpu_hw_evt->=
+used_hw_ctrs, RISCV_MAX_COUNTERS);
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (fidx =3D=3D RISCV_MAX_COUNTERS) =
+{
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0csr_clear(CSR_=
+SIP, BIT(riscv_pmu_irq_num));
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return I=
+RQ_NONE;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0event =3D cpu_hw_evt->events[fidx];
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!event) {
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OV=
+F_CLEAR_PENDING(riscv_pmu_irq_mask);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0ALT_SBI_PMU_OVF_CLEAR_PENDING(riscv_pmu_irq_mask);
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return I=
+RQ_NONE;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>>
+>>> @@ -1080,16 +1082,16 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
+ void *dev)
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * Overflow interrupt pending bit sh=
+ould only be cleared after stopping
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 * all the counters to avoid any race cond=
+ition.
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 * all the counters to avoid any race cond=
+ition. When using SSE,
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 * interrupt is cleared when stopping coun=
+ters.
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OVF_CLEAR_PENDING(riscv_pmu_ir=
+q_mask);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!from_sse)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ALT_SBI_PMU_OV=
+F_CLEAR_PENDING(riscv_pmu_irq_mask);
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* No overflow bit is set */
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!overflow)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return I=
+RQ_NONE;
+>>>
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0regs =3D get_irq_regs();
+>>> -
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_set_bit(lidx, cpu_hw_evt->u=
+sed_hw_ctrs, RISCV_MAX_COUNTERS) {
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct p=
+erf_event *event =3D cpu_hw_evt->events[lidx];
+>>>
+>>> @@ -1133,18 +1136,65 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq,=
+ void *dev)
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 * TODO: We will need to stop the guest counters once
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 * virtualization support is added.
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 */
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0perf_event_overflow(event, &data, regs);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0ev_overflow |=3D perf_event_overflow(event, &data, regs);
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* Reset=
+ the state as we are going to start the counter after the loop */
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0hw_evt->=
+state =3D 0;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>>
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_start_overflow_mask(pmu, overflowe=
+d_ctrs);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!ev_overflow || !from_sse)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_start_=
+overflow_mask(pmu, overflowed_ctrs);
+>>> +
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0perf_sample_event_took(sched_clock()=
+ - start_clock);
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return IRQ_HANDLED;
+>>>  =C2=A0}
+>>>
+>>> +static irqreturn_t pmu_sbi_ovf_irq_handler(int irq, void *dev)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0return pmu_sbi_ovf_handler(dev, get_irq_re=
+gs(), false);
+>>> +}
+>>> +
+>>> +#ifdef CONFIG_RISCV_PMU_SBI_SSE
+>>> +static int pmu_sbi_ovf_sse_handler(u32 evt, void *arg, struct pt_regs =
+*regs)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_events =
+=3D arg;
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events *hw_event =3D raw_cpu=
+_ptr(hw_events);
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu_sbi_ovf_handler(hw_event, regs, true);
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
+>>> +}
+>>> +
+>>> +static int pmu_sbi_setup_sse(struct riscv_pmu *pmu)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0int ret;
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct sse_event *evt;
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_events =
+=3D pmu->hw_events;
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0evt =3D sse_event_register(SBI_SSE_EVENT_L=
+OCAL_PMU_OVERFLOW, 0,
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pmu_sbi_ovf_sse_handler, hw_even=
+ts);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(evt))
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return PTR_ERR=
+(evt);
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D sse_event_enable(evt);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sse_event_unre=
+gister(evt);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_info("using SSE for PMU event delivery\=
+n");
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0pmu->sse_evt =3D evt;
+>>> +
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;
+>>> +}
+>>> +#else
+>>> +static int pmu_sbi_setup_sse(struct riscv_pmu *pmu)
+>>> +{
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0return -EOPNOTSUPP;
+>>> +}
+>>> +#endif
+>>> +
+>>>  =C2=A0static int pmu_sbi_starting_cpu(unsigned int cpu, struct hlist_n=
+ode *node)
+>>>  =C2=A0{
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct riscv_pmu *pmu =3D hlist_entr=
+y_safe(node, struct riscv_pmu, node);
+>>> @@ -1195,6 +1242,10 @@ static int pmu_sbi_setup_irqs(struct riscv_pmu *=
+pmu, struct platform_device *pde
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct cpu_hw_events __percpu *hw_ev=
+ents =3D pmu->hw_events;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct irq_domain *domain =3D NULL;
+>>>
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D pmu_sbi_setup_sse(pmu);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!ret)
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;
+>>> +
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (riscv_isa_extension_available(NU=
+LL, SSCOFPMF)) {
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0riscv_pm=
+u_irq_num =3D RV_IRQ_PMU;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0riscv_pm=
+u_use_irq =3D true;
+>>> @@ -1229,7 +1280,7 @@ static int pmu_sbi_setup_irqs(struct riscv_pmu *p=
+mu, struct platform_device *pde
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -=
+ENODEV;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+>>>
+>>> - =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D request_percpu_irq(riscv_pmu_irq, =
+pmu_sbi_ovf_handler, "riscv-pmu", hw_events);
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D request_percpu_irq(riscv_pmu_irq, =
+pmu_sbi_ovf_irq_handler, "riscv-pmu", hw_events);
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_err("=
+registering percpu irq failed [%d]\n", ret);
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return r=
+et;
+>>> diff --git a/include/linux/perf/riscv_pmu.h b/include/linux/perf/riscv_=
+pmu.h
+>>> index f82a28040594..08fdcf6baf4e 100644
+>>> --- a/include/linux/perf/riscv_pmu.h
+>>> +++ b/include/linux/perf/riscv_pmu.h
+>>> @@ -28,6 +28,8 @@
+>>>
+>>>  =C2=A0#define RISCV_PMU_CONFIG1_GUEST_EVENTS 0x1
+>>>
+>>> +struct sse_event;
+>>> +
+>>>  =C2=A0struct cpu_hw_events {
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* currently enabled events */
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0n_events;
+>>> @@ -54,6 +56,9 @@ struct riscv_pmu {
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0char =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0*name;
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0irqreturn_t =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0(*handle_irq)(int irq_num, void *dev);
+>>> +#ifdef CONFIG_RISCV_PMU_SBI_SSE
+>>> + =C2=A0 =C2=A0 =C2=A0 =C2=A0struct sse_event *sse_evt;
+>>> +#endif
+>>>
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0cmask;
+>>>  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0u64 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0(*ctr_read)(struct perf_event *event);
+>>> --
+>>> 2.50.1 (Apple Git-155)
+>>
+>> We found that if RISCV_PMU_SBI_SSE is enabled, executing 'perf record -g
+>> -F 999 ls' may occasionally fail. If the program is more complex, the
+>> error occurs 100% of the time. After disabling RISCV_PMU_SBI_SSE, the
+>> program runs normally. Therefore, we suspect there may be an issue with
+>> the PMU_SBI_SSE functionality. Have you encountered this phenomenon? Do
+>> you have any troubleshooting suggestions?
+>
+> I can reproduce the issue locally with PMU-SSE enabled, using
+> `perf record -g -F 999`. This does look like a PMU-SSE issue. I am
+> investigating the root cause now, and will follow up once I have a clear
+> answer and a proper fix.
+>
+>> Below are some fault information=EF=BC=9A
+>> [root@localhost ~]# perf record -g -F 999 ls
+>> [ 9478.867438] BUG: spinlock bad magic on CPU#2, ls/1046
+>> [ 9478.871534] Unable to handle kernel paging request at virtual address=
+ ffffffc6004940d0
+>> [ 9478.872804] Oops [#1]
+>> [ 9478.873359] Modules linked in: xt_MASQUERADE xfrm_user xfrm_algo ipta=
+ble_nat xt_addrtype
+>> iptable_filter ip_tables xt_conntrack x_tables nf_nat nf_conntrack nf_de=
+frag_ipv6 nf_defrag_ipv4
+>> libcrc32c br_netfilter bridge stp llc overlay virtio_gpu virtio_dma_buf =
+drm_shmem_helper
+>> drm_client_lib drm_kms_helper nls_iso8859_1 drm drm_panel_orientation_qu=
+irks backlight configfs efivarfs
+>> [ 9478.877513] CPU: 2 UID: 0 PID: 1046 Comm: ls Not tainted 6.13.0-00006=
+-ge94d0b11d044-dirty #7
+>> [ 9478.878544] Hardware name: QEMU QEMU Virtual Machine, BIOS 2.7 2/2/20=
+22
+>> [ 9478.879324] epc : string+0x48/0xe6
+>> [ 9478.880100] =C2=A0ra : vsnprintf+0xea/0x3b4
+>> [ 9478.880697] epc : ffffffff809e39ae ra : ffffffff809e656e sp : ffffffc=
+600493360
+>> [ 9478.881331] =C2=A0gp : ffffffff81516480 tp : ffffffd68d280000 t0 : ff=
+ffffc600493312
+>> [ 9478.881952] =C2=A0t1 : ffffffffffffffff t2 : 6e697073203a4755 s0 : ff=
+ffffc6004933a0
+>> [ 9478.882557] =C2=A0s1 : ffffffffffffffff a0 : ffffffc6004934d7 a1 : 00=
+00000000000000
+>> [ 9478.883355] =C2=A0a2 : ffffffc6004934a8 a3 : ffffffc6004930d0 a4 : ff=
+ffffc6004940d0
+>> [ 9478.883988] =C2=A0a5 : ffffffc7004934d6 a6 : ffffffffffffe000 a7 : 00=
+00000000000004
+>> [ 9478.884600] =C2=A0s2 : ffffffc6004934d7 s3 : ffffffc6004934a8 s4 : ff=
+ffffff80f24ea4
+>> [ 9478.885420] =C2=A0s5 : ffffffff000000ff s6 : ffffffff8100153e s7 : 00=
+00000000ffffff
+>> [ 9478.886056] =C2=A0s8 : ffffffff8100153c s9 : 0000000000000007 s10: 00=
+00000000000002
+>> [ 9478.886859] =C2=A0s11: ffffffc6004935f0 t3 : 0000000000000004 t4 : ff=
+ffffff80e592d8
+>> [ 9478.887493] =C2=A0t5 : ffffffff8152cb20 t6 : ffffffc60049307a
+>> [ 9478.887946] status: 0000000200000100 badaddr: ffffffc6004940d0 cause:=
+ 000000000000000d
+>> [ 9478.888886] [<ffffffff809e39ae>] string+0x48/0xe6
+>> [ 9478.889342] [<ffffffff809e656e>] vsnprintf+0xea/0x3b4
+>> [ 9478.889795] [<ffffffff8007c2ce>] vprintk_store+0x108/0x3d2
+>> [ 9478.890459] [<ffffffff8007d0ce>] vprintk_emit+0x82/0x218
+>> [ 9478.890932] [<ffffffff8007d27a>] vprintk_default+0x16/0x1e
+>> [ 9478.891416] [<ffffffff8007e270>] vprintk+0x1e/0x3c
+>> [ 9478.892011] [<ffffffff8000332a>] _printk+0x32/0x50
+>> [ 9478.892441] [<ffffffff80002f84>] spin_dump+0x5e/0x6e
+>> [ 9478.892865] [<ffffffff80077bf4>] do_raw_spin_unlock+0x130/0x132
+>> [ 9478.893542] [<ffffffff809f50e0>] _raw_spin_unlock+0x10/0x22
+>> [ 9478.894031] [<ffffffff80166118>] filemap_map_pages+0x314/0x434
+>> [ 9478.894541] [<ffffffff8019f6ea>] __handle_mm_fault+0x9ac/0xd50
+>> [ 9478.895556] Code: 97aa a809 7463 00c5 0023 00d5 0505 2585 0663 00f5 (=
+4683) 0007
+>> [ 9478.896729] ---[ end trace 0000000000000000 ]---
+>> [ 9478.897637] note: ls[1046] exited with irqs disabled
+>> [ 9478.898653] note: ls[1046] exited with preempt_count 4
+>>
+>> [root@localhost x264]# perf record -g -F 999 ./x264 -o output_static.mkv=
+ ./Kimono_1920x1080_24.yuv
+>> --input-res 1920x1080 --fps 24 --preset faster --vbv-maxrate 2400 --vbv-=
+bufsize 4800 --ref 1
+>> --aq-mode 2 --aq-strength 1.2 --qcomp 0.8 --lookahead-threads 12 --iprat=
+io 1.0 --bframes 3
+>> --rc-lookahead 6 --crf 28 --keyint 60 --scenecut 0 --frames 200
+>> [ =C2=A0 63.382672] Unable to handle kernel paging request at virtual ad=
+dress 0000003feb0ff5d8
+>> [ =C2=A0 63.383325] Oops [#1]
+>> [ =C2=A0 63.383395] Modules linked in: xt_MASQUERADE xfrm_user xfrm_algo=
+ iptable_nat xt_addrtype
+>> iptable_filter ip_tables xt_conntrack x_tables nf_nat nf_conntrack nf_de=
+frag_ipv6 nf_defrag_ipv4
+>> libcrc32c br_netfilter bridge stp llc overlay virtio_gpu virtio_dma_buf =
+drm_shmem_helper
+>> drm_client_lib drm_kms_helper nls_iso8859_1 drm configfs drm_panel_orien=
+tation_quirks
+>> backlight efivarfs
+>> [ =C2=A0 63.385401] CPU: 3 UID: 0 PID: 580 Comm: x264 Not tainted 6.13.0=
+-00006-ge94d0b11d044-dirty #7
+>> [ =C2=A0 63.385521] Hardware name: QEMU QEMU Virtual Machine, BIOS 2.7 2=
+/2/2022
+>> [ =C2=A0 63.385732] epc : walk_stackframe+0x5c/0x11a
+>> [ =C2=A0 63.386470] =C2=A0ra : walk_stackframe+0xda/0x11a
+>> [ =C2=A0 63.386537] epc : ffffffff80013b5c ra : ffffffff80013bda sp : ff=
+ffffc600493a40
+>> [ =C2=A0 63.386579] =C2=A0gp : ffffffff81516480 tp : ffffffd684b33300 t0=
+ : ffffffd7febf9c20
+>> [ =C2=A0 63.386617] =C2=A0t1 : 000000003b9aca00 t2 : ffffffd7febe8080 s0=
+ : ffffffc600493a90
+>> [ =C2=A0 63.386654] =C2=A0s1 : ffffffc600493ee0 a0 : 0000000000000001 a1=
+ : ffffffff809f5a48
+>> [ =C2=A0 63.386692] =C2=A0a2 : 0000000000000002 a3 : 0000003feb0ff5d0 a4=
+ : ffffffffffffc000
+>> [ =C2=A0 63.386729] =C2=A0a5 : 0000000000003fff a6 : ffffffff81552558 a7=
+ : ffffffd698fb8000
+>> [ =C2=A0 63.386769] =C2=A0s2 : 0000003feb100000 s3 : 0000003feb0ff5e0 s4=
+ : ffffffff8001886a
+>> [ =C2=A0 63.386806] =C2=A0s5 : ffffffc600493ac0 s6 : ffffffff809f5a48 s7=
+ : 0000000000000000
+>> [ =C2=A0 63.386844] =C2=A0s8 : ffffffc600493ac0 s9 : 0000000000000000 s1=
+0: 000000000007fff8
+>> [ =C2=A0 63.386886] =C2=A0s11: ffffffd698fb8000 t3 : 0000000000000015 t4=
+ : 00000000000003e7
+>> [ =C2=A0 63.386932] =C2=A0t5 : 0000000000452bf5 t6 : ffffffc600493f70
+>> [ =C2=A0 63.386965] status: 0000000200000100 badaddr: 0000003feb0ff5d8 c=
+ause: 000000000000000d
+>> [ =C2=A0 63.387069] [<ffffffff80013b5c>] walk_stackframe+0x5c/0x11a
+>> [ =C2=A0 63.387122] [<ffffffff80018902>] perf_callchain_kernel+0x28/0x34
+>> [ =C2=A0 63.387154] [<ffffffff80160294>] get_perf_callchain+0x88/0x18e
+>> [ =C2=A0 63.387189] [<ffffffff8015bcf2>] perf_callchain+0x52/0x6e
+>> [ =C2=A0 63.387219] [<ffffffff8015c0f4>] perf_prepare_sample+0x3e6/0x730
+>> [ =C2=A0 63.387249] [<ffffffff8015c8d6>] perf_event_output_forward+0x56/=
+0xb8
+>> [ =C2=A0 63.387280] [<ffffffff8015c51a>] __perf_event_overflow+0xdc/0x2e=
+2
+>> [ =C2=A0 63.387310] [<ffffffff8015d954>] perf_event_overflow+0x12/0x1a
+>> [ =C2=A0 63.387341] [<ffffffff807e15e0>] pmu_sbi_ovf_handler+0x684/0x736
+>> [ =C2=A0 63.387383] [<ffffffff807e16ee>] pmu_sbi_ovf_sse_handler+0x26/0x=
+30
+>> [ =C2=A0 63.387417] [<ffffffff807b73a0>] sse_handle_event+0x16/0x48
+>> [ =C2=A0 63.387449] [<ffffffff8001933a>] do_sse+0x76/0xa8
+>> [ =C2=A0 63.387478] [<ffffffff800195ac>] handle_sse+0xc0/0x162
+>> [ =C2=A0 63.387748] Code: 7933 00e9 6463 0539 f693 0079 e2a1 e062 8693 f=
+f09 (bc03) 0086
+>> [ =C2=A0 63.388072] ---[ end trace 0000000000000000 ]---
+>> [ =C2=A0 63.388547] Kernel panic - not syncing: Fatal exception in inter=
+rupt
+>> [ =C2=A0 63.388870] SMP: stopping secondary CPUs
+>>
+>> Regards
+>> Yangsusheng
+>>
+>
+> Thanks,
+> Zhanpeng
 
-Actually, we do not need another global variable here. tdx_features0 is cached
-and is not updated across a runtime update, so the derived add-on feature
-bitmap will be the same before and after the update.
-
-
-> static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-> 				    u64 global_keyid)
-> {
->+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
-> 	struct tdx_module_args args = {};
-> 	u64 *tdmr_pa_array;
-> 	size_t array_sz;
->@@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-> 	args.rcx = __pa(tdmr_pa_array);
-> 	args.rdx = tdmr_list->nr_consumed_tdmrs;
-> 	args.r8 = global_keyid;
->-	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
->+
->+	set_tdx_addon_features();
->+
->+	if (tdx_addon_feature0) {
->+		args.r9 = tdx_addon_feature0;
-
-How about moving this r9 assignment out of the if block and placing it next to
-'args.r8 = global_keyid;'? There is no need to guard it, because args.r9 will
-be 0 when no add-on features are enabled, which is perfectly fine.
-
->+		seamcall_fn = TDH_SYS_CONFIG;
->+	}
->+
->+	ret = seamcall_prerr(seamcall_fn, &args);
+Regards,
+Zhanpeng
