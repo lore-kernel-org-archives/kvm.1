@@ -1,126 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF71E22B8DF
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394A38AC85;
+	Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782237536; cv=none; b=VPwLIFI+Qn82q9ZIO7r+Ty3vv6gbYeFUGoEHuMjPM3RZe3ijAG6sNMlUGMofwP5lIIZqMOCYLTOg8d7nOzPHdGiq9gRqPxagJClTZoJn1ha+y6eHOQHsSCSzDeEE066dgImSg0zDzugRO0TZYU2LF1bvWCUOoTw8S2V2gfoqZM4=
+	t=1782238416; cv=none; b=kY59LfOWGac5pj//d4Rp70ZA60PvM44AoyBs0m3eZiV0YRV0jVWhQshXSQ5+Jd0jpxXjXAJBlOs3Pybk45CMzNzPLZwIY28e2sap9DRfgVfH+dk3imNei7e8e+549MYA3bKravxyqbqEpNfCx3rtPyV06ct5o+mxGLI9gBK1ClQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782237536; c=relaxed/simple;
-	bh=dJZKj4Y5Mp/hdCAOMTmRM5msT+HJ3ixnEAyD8OjT+jI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WLXcRCrpp2Dm7Yte0Gb5DRBXZ5qpRGkIy11k561xXRNeaiVLM+GaizGwfZOSCYmRza9nTLOzsC6laKURrU6rBe1qjkDHsF27dfAxoVeBB9Y3U9tZm4JMaTtw62TWP72kSqRzocXCRegeMJW7yXvCf+FXOYXTh6s7XGVTuLGMR/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THc5R3+J; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782238416; c=relaxed/simple;
+	bh=V071eB0OShAJcubanDUfinkZ4YVt3qy8HiCeWjfZSy0=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=dNjP9pRvX9M7aw6kY04mGOrTLS/5LzLVFh7aBexcFGUSihYdFk311gYMv1q3Lnm1vjZP27T8F5D5nIUntvmCL6ckE/MPXS5PXAm0L+m0Oo/Yxn8qJ+sDZQRHhaWLI8+JCkXJROzXcnhyymWgiA8VTtfvbWCPEyGqEJ/g8owvD3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yoka7Gbq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THc5R3+J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6231F000E9;
-	Tue, 23 Jun 2026 17:58:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yoka7Gbq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CBE1F000E9;
+	Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782237535;
-	bh=3MShGS2HoVryOPv1dqGkt+YLx8uqW/W9QBppRdCUtG0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=THc5R3+JZ+cJouTGw87coNUtVyOAGyk1uZ0b24aOcn5Tlx2hjq6xjP9MJHwk9nxuc
-	 gXdBSbSblq3OEsEg2K/fvwld9gIL2JcMT4rp0xu5cRGyA9bn80664mB6fHaSSIsiP1
-	 TnCkoCUsxGcBSm3XF2tx7eEwlW5NcqOUP4imeHY/70Y3Fdu11Bv4ViaPkIb81aatgX
-	 WAyNfOY7GgVCHlpKJy7cU2GF+BRMSkquu7V48gR0H12ppMK8zGpnY5tC9kdomXBDim
-	 SwbCe6jYe+Vmll7TS63F06FJu2QgMs4XThiQ+UxU5zoJEpW0tm52OQMrftA338EV35
-	 Op2rCouKsVagg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] vhost/vsock: add VHOST_RESET_OWNER ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260622175808.508084-5-andrey.drobyshev@virtuozzo.com>
-References: <20260622175808.508084-1-andrey.drobyshev@virtuozzo.com>
- <20260622175808.508084-5-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 17:58:55 +0000
-Message-Id: <20260623175855.7A6231F000E9@smtp.kernel.org>
+	s=k20260515; t=1782238414;
+	bh=E/TuaqZp9SrAOm6ih2rrgSDiVa0hufYGsNwM/m76EDQ=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Yoka7Gbq2SraXyP6jmOdRcPoxXRj5V9Jw/b6qig6mT3ceLH6l9DURwZFj1iCDnHea
+	 J63bsMKj9SqpBC8iHpQ5S8Eu+adrxmereL3A2pBEZR9ly50gJzv+YY0liyoefWF0Bd
+	 y14TZjJuRQvuzoR7Iq7qR22xM3PjjCuxOPcYVkOauMXf2eK46MyFELeG+TMbjVz8Ex
+	 jCFuhAK8Zc/s1e6Ob6hZevI9/OC94CHyWM7SJNd9OUOD8zFa5n617icoqA2K62bgLx
+	 qFyrOXYum0SPZwRlLIdqMhnqQJyjleethFTB17Wqrs68MPGZafaGHSB09mslkW9CeA
+	 CacWWJUyUZXTA==
+Content-Type: multipart/mixed; boundary="===============2774573830481326885=="
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-Id: <8a9d5b1314956de19cdeebcf42f453a392b64019d9685aed93d1dced0e254e34@mail.kernel.org>
+In-Reply-To: <20260622-vmscape-bhb-v12-8-76cbda0ae3e5@linux.intel.com>
+References: <20260622-vmscape-bhb-v12-8-76cbda0ae3e5@linux.intel.com>
+Subject: Re: [PATCH v12 08/12] KVM: Define EXPORT_STATIC_CALL_FOR_KVM()
+From: bot+bpf-ci@kernel.org
+To: pawan.kumar.gupta@linux.intel.com,x86@kernel.org,jon@nutanix.com,nik.borisov@suse.com,hpa@zytor.com,jpoimboe@kernel.org,david.kaplan@amd.com,seanjc@google.com,bp@alien8.de,dave.hansen@linux.intel.com,peterz@infradead.org,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,kpsingh@kernel.org,jolsa@kernel.org,davem@davemloft.net,david.laight.linux@gmail.com,luto@kernel.org,tglx@kernel.org,mingo@redhat.com,dsahern@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,haoluo@google.com,pbonzini@redhat.com,corbet@lwn.net,jbaron@akamai.com,aliceryhl@google.com,rostedt@goodmis.org,ardb@kernel.org,skhan@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,kvm@vger.kernel.org,asit.k.mallick@intel.com,tao1.zhang@intel.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-doc@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 23 Jun 2026 18:13:34 +0000 (UTC)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Missing backend check in `vhost_transport_cancel_pkt()` leads to a=
- Use-After-Free of `vq->worker` and/or a permanently stuck `VHOST_WORK_QUEU=
-ED` flag during `VHOST_RESET_OWNER`.
---
+--===============2774573830481326885==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-commit 1246364b7bca9df01b3f2315a384db215bb18763
-Author: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> EXPORT_SYMBOL_FOR_KVM() exists to export symbols to KVM modules. Static
+> calls need the same treatment when the core kernel defines a static_call
+> that KVM needs access to (e.g. from a VM-exit path).
+>
+> Define EXPORT_STATIC_CALL_FOR_KVM() as the static_call analogue of
+> EXPORT_SYMBOL_FOR_KVM(). The same three-way logic applies:
+>
+>   - KVM_SUB_MODULES defined: export to "kvm," plus all sub-modules
+>   - KVM=m, no sub-modules: export to "kvm" only
+>   - KVM built-in: no export needed (noop)
+>
+>   As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both
+>   macros (e.g. to suppress the export when kvm.ko itself will not be
+>   built despite CONFIG_KVM=m). Add the x86 no-op overrides in
+>   arch/x86/include/asm/kvm_types.h for that case. To keep the pair in
+>   sync, EXPORT_STATIC_CALL_FOR_KVM() is defined inside the
+>   EXPORT_SYMBOL_FOR_KVM #ifndef block; an arch that defines
+>   EXPORT_SYMBOL_FOR_KVM must also define EXPORT_STATIC_CALL_FOR_KVM or the
+>   build will fail with a compile-time error.
+>
+> As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override
+> EXPORT_STATIC_CALL_FOR_KVM definition (e.g. to suppress the export when
+> kvm.ko itself will not be built despite CONFIG_KVM=m). Add the x86 no-op
+> override in arch/x86/include/asm/kvm_types.h for that case.
+>
+> Architectures must also define EXPORT_STATIC_CALL_FOR_KVM when they define
+> EXPORT_SYMBOL_FOR_KVM.
 
-vhost/vsock: add VHOST_RESET_OWNER ioctl
+This isn't a bug, but the arch-override rationale appears twice in nearly
+identical form.  The third paragraph (starting "As with
+EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both macros") and
+the fourth paragraph (starting "As with EXPORT_SYMBOL_FOR_KVM(), allow
+architectures to override EXPORT_STATIC_CALL_FOR_KVM definition") both
+explain suppressing the export when kvm.ko will not be built and both
+mention adding the x86 no-op override.
 
-This patch adds the VHOST_RESET_OWNER ioctl for QEMU CPR migration of a
-guest with a vhost-vsock device. It fences the send path around the teardown
-by adding a backend check in vhost_transport_send_pkt() to prevent using
-the worker after it is freed.
+The requirement that an arch defining EXPORT_SYMBOL_FOR_KVM must also
+define EXPORT_STATIC_CALL_FOR_KVM also shows up twice: once inside the
+third paragraph ("an arch that defines EXPORT_SYMBOL_FOR_KVM must also
+define EXPORT_STATIC_CALL_FOR_KVM or the build will fail") and again as the
+standalone final sentence ("Architectures must also define
+EXPORT_STATIC_CALL_FOR_KVM when they define EXPORT_SYMBOL_FOR_KVM").
 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index 81d4f72097191..7d0146cd38d26 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
+Could the duplicate paragraphs be folded into a single statement?
 
-[ ... ]
 
-> @@ -903,6 +910,36 @@ static int vhost_vsock_set_features(struct vhost_vso=
-ck *vsock, u64 features)
->  	return -EFAULT;
->  }
-> =20
-> +static int vhost_vsock_reset_owner(struct vhost_vsock *vsock)
-> +{
-> +	struct vhost_iotlb *umem;
-> +	long err;
-> +
-> +	mutex_lock(&vsock->dev.mutex);
-> +	err =3D vhost_dev_check_owner(&vsock->dev);
-> +	if (err)
-> +		goto done;
-> +	umem =3D vhost_dev_reset_owner_prepare();
-> +	if (!umem) {
-> +		err =3D -ENOMEM;
-> +		goto done;
-> +	}
-> +	vhost_vsock_drop_backends(vsock);
-> +
-> +	/* Let in-flight send_pkt() callers stop touching the worker before the
-> +	 * flush + free below. Pairs with the backend check in
-> +	 * vhost_transport_send_pkt().
-> +	 */
-> +	synchronize_rcu();
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-[Severity: High]
-Does vhost_transport_cancel_pkt() also need a backend check similar to the
-one added in vhost_transport_send_pkt()?
-
-Since VHOST_RESET_OWNER leaves the vsock hashed so connections survive,
-a concurrent socket close can still look up the vsock and call
-vhost_transport_cancel_pkt().
-
-If this happens after the synchronize_rcu() call finishes,
-vhost_transport_cancel_pkt() can conditionally call
-vhost_poll_queue(&tx_vq->poll). This unconditionally queues work without
-checking if the backend is alive, which dereferences vq->worker.
-
-Because vhost_workers_free() frees the worker synchronously via kfree()
-during teardown, could this lead to a use-after-free of the worker
-or a permanently stuck VHOST_WORK_QUEUED flag?
-
-> +
-> +	vhost_vsock_flush(vsock);
-> +	vhost_dev_stop(&vsock->dev);
-> +	vhost_dev_reset_owner(&vsock->dev, umem);
-> +done:
-> +	mutex_unlock(&vsock->dev.mutex);
-> +	return err;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622175808.5080=
-84-1-andrey.drobyshev@virtuozzo.com?part=3D4
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28046221590
+--===============2774573830481326885==--
