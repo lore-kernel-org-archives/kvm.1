@@ -1,378 +1,239 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9883939B6
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 19:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA923939B0
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 19:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782244205; cv=none; b=nokzF7f9ViHxo4VjQxsOehtZjqN3DHd57uCM7dn7tSEZ2hqfsxzo5dViPOZj7WNY5a5FomRiKRmnWLjXe2ij/1qUoX7htZiTJorTx6GkPmZJD93AGj4rva2EeBLalb8Db3D8zFn6pWVCnz75RiLGmOIQws8HDAtz4WxakGAh8H4=
+	t=1782244530; cv=none; b=RlMzvsatGBN5wywolTTZA0hEEfzHT23WDLjoknjIy715GWp2QRNJWcNiCrxjmvnrQYDtTqG+yrbea2RfywODIZlaKgItXg9jNTw+bM9hnaEkJLeSqkz7BxDRntp71t59jIADwMIsj4De685ajf7BkrVGR10lLE2DLhrRf5mGUZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782244205; c=relaxed/simple;
-	bh=PCdxZHaDVmkm3TCzXBWX11/NSB4PaHEtWEjQDmjXAX0=;
+	s=arc-20240116; t=1782244530; c=relaxed/simple;
+	bh=63sbJHarhRjl2iOQAD0mHNtnHScOAjCdBhb1R1qPxoI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gAThb7ssX3Sj3zodJh7C47oFB9+fyoA3+2Ih+q1Mt/e7bym5w9I8yceZ5GTfuP6RtGNA8I/haWdbdkAUaxsn7FYqS7QqtR9sKsmGgDiqRkaK3PjdgUmw/GAxEKw76Gir38baynGRQuI8JazeX+PXB6BAMkP8lH/3v3AvKS2Z5YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YPwRq5wt; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=U9XWmrW+lih0QvQUbyaj4eFRHrSRC4i9BRj+jaLukOZGjHjXlxeaO2ARxTQ/AsWTCKAAT1SiE96n6+MtJbPF1rQepILqvW1kI+JejPH2aqaA2MteuDAGzJ9YiJgSGAEfCmuEWpmGbod7B9hxR2CYzJC0gi/56av497lQtMhypqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vzTcvnbi; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YPwRq5wt"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-697df3655d8so121826a12.2
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:50:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vzTcvnbi"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88e0f04e51so108781a12.0
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782244202; x=1782849002; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782244528; x=1782849328; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zdsj6Guo7r326E75XLxyGx3YlVfMh6UQRvA3w5OPiCM=;
-        b=YPwRq5wtAMcjgrky1GfhZg5Sq9cYpXmGlUdarAT287bU5lv82QwzRtupJvjWurvuyn
-         fLC2oDnRGb8EQ2VbzjhDkG44c3G2anlU5dUUqdwwn2ot7bfW+tvR2o8dYlSINLbskgaG
-         +tf+xYOmPZQbAVqB2OnS6gJ7Zdah1zZsnmtfIgWG6OktTruQvKrDbCHtbNzF2c6GTA3I
-         0NwS/dEKIFa5SmnbJ4WbUR+iBK6aUY5pgQuTTQYgHr7YwfqCmZVMgDKylvghq5qLMB8L
-         tCjZgg5Gmon7qXfqIVqWITRm1TXiOejw1NkVyli8xABGnWFn7HXAqhegYfln4PHm2wqA
-         z1gQ==
+        bh=AIpRVKbnPB3e1icAr2g1HCqVBQNdkLJ4J5hLjJ9OhkI=;
+        b=vzTcvnbiYr4iY7b/e0mGNzuiVzoekU5uJLh3zeMJTqJ+Q6+67oJ7tC7rQnlPCHhQry
+         SJsmpguPA4mg3EmjFg+bCx7vMULQShFpNaiAj0rRiJDVRjJLjfPsuhZ0xNdZXUh/3biu
+         EP0xclIbTIvmBSSN7uSyeQ+7NbitnwIJn6rGmqPX/FB3ERz6wYgnAzffGBeOSs8/J9bo
+         WfUgcnu2zlfVvQbTJsuhMoQwOAWnQ+YAwpiWmyUSBvU/lS8p+QXEEIM9kreF1cFp0QlA
+         5reSbsb2dKqV7B7upsXjqdAlLPokCjLr6tpNmdfrPdM3GxIWpeG59qCZTueyg5QcXaxd
+         aoAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782244202; x=1782849002;
+        d=1e100.net; s=20251104; t=1782244528; x=1782849328;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zdsj6Guo7r326E75XLxyGx3YlVfMh6UQRvA3w5OPiCM=;
-        b=fMFyiFo934qaqx19jjck4xPBB1LU6qh1Bddu47QaNPjpsgTwcxWzNBw/6tQ+GRWfwU
-         TeggTxz4RdoL5QliaMojEUnffaO1kXpgXH562MDklk3Fsc82YaBAS415X5dJJl52sCsl
-         o9pE3osvJ6WLcA7CSApM6+ttjlmezXoITOsfQWKYTBbTR/I3SlQ76gCBpFx3UQEuWRl8
-         VigmZgJJoKebRulXanqcuKOq2/S4RUJII3+ad8k7HjAgvXLKjB0L3og2cp7+K226gRZA
-         rTFdJ6sUDVxDRm0CTjZMXFyj1W0kSg1+qVy+wgJNa/JtcPhPJDS3iC+i1dfYUPt9J27b
-         3FFw==
-X-Forwarded-Encrypted: i=1; AFNElJ9w4dKIHpO6gjRcwhwal7ELKAFqR8P6b//fLtqsdXwDorS4Vjn5QAv+F2lgweYncdHdCHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTLcyR6xBrmD6SNsCEJvL+Zbf8oJyAiL/hWArh0tputQvqRX57
-	LW4/Y7cLTZvvP+R13Iv9e7LR+6BkM8KdXYEkxu3MsMBm3hyr2Gsik3mjDxlz07eU2UPi27NpTgZ
-	Pf9/owLGK1kGVZ4dNEQ==
-X-Received: from edbbp7.prod.google.com ([2002:a05:6402:1467:b0:692:efc2:c022])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5253:b0:697:aee0:7a4d with SMTP id 4fb4d7f45d1cf-697dba62033mr2212935a12.6.1782244201867;
- Tue, 23 Jun 2026 12:50:01 -0700 (PDT)
-Date: Tue, 23 Jun 2026 19:50:00 +0000
-In-Reply-To: <CAEvNRgE2GZNiDg_g6SP_H9CDsDDAnpN7KTRWJEK18wxpTZFJZw@mail.gmail.com>
+        bh=AIpRVKbnPB3e1icAr2g1HCqVBQNdkLJ4J5hLjJ9OhkI=;
+        b=G5FF11AqbfSzgGNFgbYcxTTKEvHywJEqNT9G5dAHYK8hu1n9RoPgfVtDjY4rzR/Pbm
+         qT/olvYobVRIil6v9EAkgZjSf7SOEv8AgsJP9yh5mIkJknPc+v8HaVHEln88HbGpfv7a
+         u3saks99n/8aP4uGfJofnGD5oil9cnaEOmNgjzlLEpJG686SC6o29PagkjCmew4DDdfK
+         IgcvH9z19Nvf3PaDLLAJ8OJ+DjWLbEH1A/wwrJo8Rp6nORTThLP55mO4g9pYFalOAdLn
+         O0VgnxKgeLNpWq4vuMgQgYMkHNJc/KHiqJgcM+jjGwClmPunV6LVjfqpv/nCbkaPKvJ2
+         +zPw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Wi40cH+wagehpJbk8Q0QAPfXAGcwO1FP682oRF0D7DVa07h0jVJKWsrFEy3ujxvtbEjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIYbEX9B8/o9HPwZ6gsfoG1f675Dgv6Gr/rQ9z8dif8HlciT8z
+	XI0ygXYX/aigJTFYETkLxWvSHFEsVq9y/N1nxl1afmaLX+n2CCtzZxCTJvwY3kNw0RgWzzEHJCR
+	Fmu1Jgw==
+X-Received: from pgct16.prod.google.com ([2002:a05:6a02:5290:b0:c8e:650d:c415])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e292:b0:3b4:6026:6c5d
+ with SMTP id adf61e73a8af0-3bd2d047b32mr236285637.5.1782244528090; Tue, 23
+ Jun 2026 12:55:28 -0700 (PDT)
+Date: Tue, 23 Jun 2026 19:55:27 +0000
+In-Reply-To: <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1780676742.git.tarunsahu@google.com> <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
- <CAEvNRgE2GZNiDg_g6SP_H9CDsDDAnpN7KTRWJEK18wxpTZFJZw@mail.gmail.com>
-Message-ID: <9huzldc5m3yv.fsf@tarunix.c.googlers.com>
-Subject: Re: [RFC PATCH v2 10/10] selftests: kvm: Add guest_memfd_preservation_test
-From: tarunsahu@google.com
-To: Ackerley Tng <ackerleytng@google.com>, Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
-	fvdl@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, aneesh.kumar@kernel.org, 
-	skhawaja@google.com, vipinsh@google.com, Pratyush Yadav <pratyush@kernel.org>, 
-	david@redhat.com, dmatlack@google.com, mark.rutland@arm.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	seanjc@google.com, axelrasmussen@google.com
-Cc: linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20260501203537.2120074-1-seanjc@google.com> <20260501203537.2120074-3-seanjc@google.com>
+ <ajNQ_Ix5e0p6FuFT@google.com> <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
+ <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+Message-ID: <ajrkryMxHZtsMvga@google.com>
+Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
+ {en,de}crypt debug ioctls
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Ackerley Tng <ackerleytng@google.com> writes:
++lists
 
-> Tarun Sahu <tarunsahu@google.com> writes:
->
->> Add a new KVM selftest `guest_memfd_preservation_test` to verify that
->> guest memory backed by guest_memfd is preserved properly.
->>
->
-> Don't think using backticks in commit messages is a common practice but
-> I might be wrong here.
->
->> The test leverages the Live Update Orchestrator (LUO) infrastructure
->> to validate that memory folios and configuration layouts are
->> successfully saved and then restored during kernel live updates,
->> preventing any memory loss for the guest.
->>
->> Here, I have used the kvm selftests framework by creating a new
->> vm and mapping two memory slots to it. One is the code that is executed
->> inside the vm and other is the guest_memfd whose memory is being
->> written by the guest code.
->>
->
-> Don't think commit messages with "I" are common either
+On Tue, Jun 23, 2026, Michael Roth wrote:
+> On Thu, Jun 18, 2026 at 10:18:03AM -0500, Michael Roth wrote:
+> > On Wed, Jun 17, 2026 at 06:59:24PM -0700, Sean Christopherson wrote:
+> > > off-list in case this is double-ungood.
+> > > 
+> > > I ran this on an SNP host today (I think this is the first time I've run the full
+> > > test on an SNP host), and it explodes with RMP violation #PFs in weird ways.  I
+> > > don't _think_ it's a KVM bug?  Because I get the RMP violations even without ever
+> > > running an SNP guest.  I'm using kvm/next, at commit ef057cbf825e ("KVM: x86/mmu:
+> > > Ensure hugepage is in by slot before checking max mapping level")
+> > > 
+> > > It might be related to edge cases around pages, or maybe large sizes, as the test
+> > > passes if I comment out the testcases that focus on the larger sizes.  I haven't
+> > > narrowed it down further than this (reboots aren't exactly fast).
+> > > 
+> > > What's especially odd is that on most of the crashes, there's no apparent reason
+> > > for the RMP violation, as the RMP says the page is unassigned.  I did get one
+> > > crash (#2 below) where the RMP entry was non-zero.  That one was after booting
+> > > an SNP VM, but it was quite some time after shutting down that VM.  The RMP dump
+> > > is equally confusing to me, because AFAICT the RMP entry is corrupted.
+> > > 
+> > > Mike/Tom, can you try and repro and debug?  I don't have the bandwidth to dig
+> > > deep on this, and even if I did, I suspect it's beyond my abilities to debug.
+> > 
+> > Hi Sean,
+> > 
+> > I was able to reproduce this after running the test in a loop for a few
+> > minutes after a clean boot (trace below).
+> > 
+> > Not making much sense to be ATM either, but might be related to RMP table
+> > memory itself. Will keep investigating.
+> 
+> It looks like this was a recent regression caused by changes to how the
+> temp buffers are allocated. I tested the below revert patch ~14 hours
+> and the issue seems to be fixed (I generally was reproducing it within
+> an couple hours or so max so it seems good).
 
+Thanks for root causing!
+ 
+> Planning to submit upstream today if there's no objections/concerns.
 
-Will take care of commit message everywhere as per the guidelines,
-Sorry about that.
->
->> In Phase 1: Once data is written the vm exits and wait for the user
->> to trigger the kexec.
->>
->> In Phase 2: A new vm is created with retrieved kvm and again two
->> memory slots are assigned. Once for guest code, and another is for
->> retrieved guest_memfd where guest_memfd memory is verified by the
->> executed guest code. If verification succeeds, The test passes.
->>
->>
->> [...snip...]
->>
->> +#define SESSION_NAME "gmem_vm_preservation_session"
->> +#define VM_TOKEN 0x1001
->> +#define GMEM_TOKEN 0x1002
->> +
->> +#define GMEM_SIZE (16ULL * 1024 * 1024)
->> +#define DATA_SIZE (5ULL * 1024 * 1024)
->> +
->> +static size_t page_size;
->> +
->> +/* Deterministic byte pattern generation based on offset */
->> +static inline uint8_t get_pattern_byte(size_t offset)
->> +{
->> +	return (uint8_t)(offset ^ 0x5A);
->> +}
->> +
->> +static void guest_code_phase1(uint64_t gpa, uint64_t size, uint64_t data_size)
->> +{
->> +	uint8_t *mem = (uint8_t *)gpa;
->> +	size_t i;
->> +
->> +	for (i = 0; i < data_size; i++)
->> +		mem[i] = get_pattern_byte(i);
->> +
->> +	GUEST_DONE();
->> +}
->> +
->> +static void guest_code_phase2(uint64_t gpa, uint64_t size, uint64_t data_size)
->> +{
->> +	uint8_t *mem = (uint8_t *)gpa;
->> +	size_t i;
->> +
->> +	for (i = 0; i < data_size; i++) {
->> +		uint8_t val = get_pattern_byte(i);
->> +
->> +		__GUEST_ASSERT(mem[i] == val,
->> +			       "Data mismatch at offset %lu! Expected 0x%x, got 0x%x",
->> +			       i, val, mem[i]);
->> +	}
->> +
->> +	GUEST_DONE();
->> +}
->> +
->> +static void do_phase1(void)
->> +{
->> +	uint64_t flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
->
-> Is there a reason to set GUEST_MEMFD_FLAG_MMAP? We're not really
-> accessing that memory from the host in this test.
+I object :-)
 
-Right, We can skip it.
+> From: Michael Roth <michael.roth@amd.com>
+> Date: Mon, 22 Jun 2026 22:47:03 -0500
+> Subject: [PATCH] Revert "KVM: SEV: Allocate only as many bytes as needed for
+>  temp crypt buffers"
+> 
+> When SNP is enabled, the data passed to firmware must be contained
+> within pages that have been transferred to firmware ownership via the
+> corresponding RMP table updates. 
 
->
->> +	int gmem_fd, dev_luo_fd, session_fd, ret;
->> +	const uint64_t gpa = SZ_4G;
->> +	struct kvm_vcpu *vcpu;
->> +	const int slot = 1;
->> +	struct kvm_vm *vm;
->> +
->> +	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1,
->> +					guest_code_phase1);
->> +	gmem_fd = vm_create_guest_memfd(vm, GMEM_SIZE, flags);
->> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
->> +				 gmem_fd, 0);
->> +
->> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
->> +		virt_pg_map(vm, gpa + i, gpa + i);
->> +
->> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
->
-> If GMEM_SIZE and DATA_SIZE are static I think we don't have to set those
-> as vcpu_args_set(), they can be used as macros from within the guest.
+IIUC, and I'm pretty sure I do at this point, this is wrong, or at least *very*
+misleading.  Nothing in KVM performs RMP table updates, and so saying "the data
+passed to firmware must be contained within pages that have been transferred to
+firmware ownership" is completely inaccurate.
 
-Yes, There are multiple places we can skip it, Like passing them as the
-argument in the guest_code_phase1/2. Will update it.
+Piecing together the changelog and diff, and my own observations, my understanding
+is that **firmware** modifies the RMP to *temporarily* take ownership of the page
+while performing the {DE,EN}CRYPT operation.  So there's no requirement that the
+pages be in any specific state, the only "requirement" is that software needs to
+either prevent concurrent accesses or be prepared to handle spurious RMP #PFs due
+to the temporarily RMP modifications.
 
->
->> +
->> +	vcpu_run(vcpu);
->> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
->> +
->> +	dev_luo_fd = luo_open_device();
->> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
->> +
->> +	session_fd = luo_create_session(dev_luo_fd, SESSION_NAME);
->> +	TEST_ASSERT(session_fd >= 0, "Failed to create LUO session");
->> +
->> +	ret = luo_session_preserve_fd(session_fd, vm->fd, VM_TOKEN);
->> +	TEST_ASSERT(ret == 0, "Failed to preserve VM file descriptor");
->> +
->> +	ret = luo_session_preserve_fd(session_fd, gmem_fd, GMEM_TOKEN);
->> +	TEST_ASSERT(ret == 0, "Failed to preserve guest_memfd file descriptor");
->> +
->
-> Thanks for showing how this works :)
+SNP_DBG_DECRYPT does require software to convert the destination to be a firmware
+page: "The firmware also checks that the destination page is a Firmware page."
+But this is about SEV_DBG_{DE,EN}CRYPT, not SNP_DBG_ENCRYPT.
 
-Glad to know. it helped.
-. .
- v
+> This is not compatible with uses kmalloc() allocations since kernel accesses
 
+As is the statement about kmalloc().  kmalloc() of a PAGE_SIZE is a-ok, because
+the kernel will always hand out a full page.
 
->
->> +	printf("\n============================================================\n");
->> +	printf("Phase 1 Complete Successfully!\n");
->> +	printf("VM file and guest_memfd file have been preserved via LUO.\n");
->> +	printf("Tokens: VM_TOKEN=0x%x, GMEM_TOKEN=0x%x\n", VM_TOKEN, GMEM_TOKEN);
->> +	printf("Machine Size: %llu MB, Data Size: %llu MB\n", GMEM_SIZE / SZ_1M,
->> +				 DATA_SIZE / SZ_1M);
->> +	printf("------------------------------------------------------------\n");
->> +
->> +	daemonize_and_wait();
->> +}
->> +
->> +static struct kvm_vm *vm_create_from_fd(int resurrected_vm_fd,
->> +					struct vm_shape shape)
->> +{
->> +	struct kvm_vm *vm;
->> +
->> +	vm = calloc(1, sizeof(*vm));
->> +	TEST_ASSERT(vm != NULL, "Insufficient Memory");
->> +
->> +	vm_init_fields(vm, shape);
->
-> What would happen if the shape was changed between preserving and
-> restoring?
-Shape must be consistent across kexec. It may break. struct vm_shape
-includes two fields
-1. mode: 4k, 16k or 64k mapping, how many page table bit etc.
-         which are used to setup mapping with guest code, and memory.
-         guest_memfd does not support mapping other than PAGE_SIZE.
-2. type: This is userspace side of the vm type. And it will not have
-         information about the preserved vm_type via vm_file (kernel).
-         If userspace changes this on stage2, some action might not
-         work. for example, if userspace is expecting vm_type to be
-         COCO VM and preserved vm_type is shared, this will have
-         conflict when userspace will try to perform some operation that
-         only works with COCO VM.
+> to other allocations within that page will trigger an RMP fault and crash the
 
+And it's specificaly about other *accesses*, not simply other allocations.
 
-My Question is: Why should someone change the shape, unless they are
-                planning to make the vm fail?
+> host. Fix this by moving back to page-based allocations.o
 
->
->> +
->> +	vm->kvm_fd = open_path_or_exit(KVM_DEV_PATH, O_RDWR);
->> +	vm->fd = resurrected_vm_fd;
->> +
->> +	if (kvm_has_cap(KVM_CAP_BINARY_STATS_FD))
->> +		vm->stats.fd = vm_get_stats_fd(vm);
->> +	else
->> +		vm->stats.fd = -1;
->> +
->> +	vm_init_memory_properties(vm);
->> +
->> +	return vm;
->> +}
->> +
->
-> I think vm_create_from_fd() could be introduced in an earlier patch to
-> reduce the amount of new code in this patch. Also, I think it could
-> perhaps be moved to kvm_util.c assuming that other test will use it too.
->
-Makes sense, Will take of it next revision v4.
+Always forcing full page allocations is overkill for SEV and SEV-ES, and robs us
+of the opportunity to document that SNP+ is special, which is especially important
+because AFAICT, none of the specs are so kind as to document this "minor" behavior.
 
+Rather than fully revert, just force PAGE_SIZE allocations if the host supports SNP.
+I haven't run anywhere near 14 hours, but I was also getting failures on every
+single run of the test, and I ran the test 100 times without problem.
 
->> +static void do_phase2(void)
->> +{
->> +	int retrieved_vm_fd, retrieved_gmem_fd, dev_luo_fd, session_fd;
->> +	struct vm_shape shape = VM_SHAPE_DEFAULT;
->> +	const uint64_t gpa = SZ_4G;
->> +	struct kvm_vcpu *vcpu;
->> +	const int slot = 1;
->> +	struct kvm_vm *vm;
->> +
->> +	dev_luo_fd = luo_open_device();
->> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
->> +
->> +	session_fd = luo_retrieve_session(dev_luo_fd, SESSION_NAME);
->> +	TEST_ASSERT(session_fd >= 0, "Failed to retrieve LUO session");
->> +
->> +	retrieved_vm_fd = luo_session_retrieve_fd(session_fd, VM_TOKEN);
->> +	TEST_ASSERT(retrieved_vm_fd >= 0, "Failed to retrieve VM file descriptor");
->> +
->> +	retrieved_gmem_fd = luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
->> +	TEST_ASSERT(retrieved_gmem_fd >= 0, "Failed to retrieve guest_memfd file descriptor");
->> +
->> +	vm = vm_create_from_fd(retrieved_vm_fd, shape);
->> +
->> +	u64 nr_pages = 2048; /* 8MB is plenty for slot0 pages */
->> +
->
-> I don't think declarations are usually mixed with regular code.
-Okay, will udpate that.
+However, this only addresses the case where KVM is using temporary buffers.  For
+small, nicely aligned operations, a misbehaving userspace could induce a crash by
+coercing the kernel into accessing the to-be-{de,en}crypted page via a kernel
+mapping while the crypo op is in-progess.  I don't see a less awful option than
+forcing KVM to use the "slow" path, e.g. if the problem is limited to the dest
+for a decrypt operation:
 
->
->> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0);
->> +	kvm_vm_elf_load(vm, program_invocation_name);
->> +
->> +	for (int i = 0; i < NR_MEM_REGIONS; i++)
->> +		vm->memslots[i] = 0;
->> +
->> +	struct userspace_mem_region *slot0 = memslot2region(vm, 0);
->> +
->> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_size);
->> +
->> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
->> +				   retrieved_gmem_fd, 0);
->> +
->> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
->> +		virt_pg_map(vm, gpa + i, gpa + i);
->> +
->> +	vcpu = vm_vcpu_add(vm, 0, guest_code_phase2);
->> +	kvm_arch_vm_finalize_vcpus(vm);
->> +
->> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
->> +
->> +	printf("Resuming / Running VM in Phase 2...\n");
->> +	vcpu_run(vcpu);
->> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
->> +
->> +	printf("\nSUCCESS: Phase 2 Complete! All 5MB complex data verified intact!\n");
->> +
->> +	luo_session_finish(session_fd);
->> +	close(session_fd);
->> +	close(dev_luo_fd);
->> +	/* This will also close the vm_fd */
->> +	kvm_vm_free(vm);
->> +	close(retrieved_gmem_fd);
->> +}
->> +
->> +int main(int argc, char *argv[])
->> +{
->> +	bool phase2 = false;
->> +
->> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
->> +	page_size = getpagesize();
->> +
->> +	for (int i = 1; i < argc; i++) {
->> +		if (strcmp(argv[i], "--phase2") == 0)
->> +			phase2 = true;
->> +	}
->> +
->
-> Maybe use getopt() here?
+diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+index 87025d0d2f91..7e3334c90c57 100644
+--- arch/x86/kvm/svm/sev.c
++++ arch/x86/kvm/svm/sev.c
+@@ -1406,7 +1406,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
+                sev_clflush_pages(&src_p, 1);
+                sev_clflush_pages(&dst_p, 1);
+ 
+-               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
++               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16) &&
++                   (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) || cmd != KVM_SEV_DBG_DECRYPT))
+                        ret = sev_issue_dbg_cmd(kvm,
+                                                __sme_page_pa(src_p) + s_off,
+                                                __sme_page_pa(dst_p) + d_off,
 
-In V3, it is update to use liveupdate library.
->
->> +	if (phase2)
->> +		do_phase2();
->> +	else
->> +		do_phase1();
->> +
->> +	return 0;
->> +}
->> --
->> 2.54.0.1032.g2f8565e1d1-goog
->
-> I think we also need tests for trying to allocate while frozen, and
-> conversion while frozen, and trying to preserve while preservation is
-> not allowed.
+But if firmware temporarily converts *both* pages, then we're "stuck" because at
+some point KVM needs to actually target the correct guest-owned page.  The only
+option I can think of is to require capable(CAP_SYS_BOOT), *if* the above doesn't
+suffice.
 
-Yes, We need those tests. For this series, I wanted to focus on design.
-Now that we are aligned, next revision, I will send with more tests.
+So what exactly is the behavior here?  Because I can't find anything in the specs,
+I can only make educated guesses based on the SNP_DBG_DECRYPT documentation.
 
-~Tarun
+---
+From: Sean Christopherson <seanjc@google.com>
+Date: Tue, 23 Jun 2026 12:21:56 -0700
+Subject: [PATCH] KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on
+ SNP-enabled hosts
+
+When {de,en}crypting memory of an SEV or SEV-ES guest on an SNP-enabled
+host via a temporary buffer, allocate a full 4KiB page for the buffer to
+ensure the kernel won't concurrently access the page that's being
+{de,en}crypted.  On SNP-enabled platforms, firmware modifies the RMP to
+temporarily take ownership of the to-be-{de,en}crypted page, and so using
+a sub-allocation results in unexpected (and seemingly spurious) RMP #PF
+violations due to software attempting to access a firmware-owned page.
+
+Note, it is unclear whether the RMP updates are considered architectural,
+or an implementation quirk, as none of the documentation for the non-SNP
+DBG_{DE,EN}CRYPT commands say anything about RMP updates, nor does the SNP
+specific firmware ABI spec.
+
+Fixes: 4c735bf1bc22 ("KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers")
+Debugged-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 74fb15551e83..87025d0d2f91 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1280,6 +1280,16 @@ static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
+ 	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
+ 		return NULL;
+ 
++	/*
++	 * If SNP is enabled, i.e. the RMP is active, allocate a full page to
++	 * prevent concurrent accesses to the page.  Firmware modifies the RMP
++	 * to temporarily take ownership of the page while the {DE,EN}CRYPT
++	 * operation is in-progress, and so concurrent software accesses will
++	 * encounter seemingly spurious RMP #PF violations
++	 */
++	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
++		return kmalloc(PAGE_SIZE, GFP_KERNEL);
++
+ 	return kmalloc(*nr_bytes, GFP_KERNEL);
+ }
+ 
+
+base-commit: 9d4853b044beefa21c4ee3e18c40653601a64ced
+-- 
