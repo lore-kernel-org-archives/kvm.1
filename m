@@ -1,151 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5A53C65F0;
-	Tue, 23 Jun 2026 07:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F39359A81;
+	Tue, 23 Jun 2026 07:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782200344; cv=none; b=hq5vCHw7nHZ5CtOPsrSMVQRfCG2sp070sW6RCkEUr8a/2Dx9f/SYBzCyM6PCa52FEc3W2HTdQXBXwGluGNNDTlithvowM32Kos66OvFYgnGfa5+/cLltRIyD8RRq0nQAkteB2Db2tfGzwJV0XUideHnNJWyflqbIuUKHxqWmVoU=
+	t=1782201188; cv=none; b=foQi8WeclozSKNxBGZ2K4+VuopjMy72gPnP8byLrFON2PaKq8YgoTTUf0STNxWOkIDs6LY77KXS8/wfVq/cELTLplE7e6pudB18AeTatLCFFo1yKEFgeC5vLbFAdoNB6HUv55qX1HJo14expWwtVGKHDP0orWnndbbYLMmVCYXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782200344; c=relaxed/simple;
-	bh=9M53Doqkm/ZxlnBoSdM7DNRi6CHdmePszrm5SmUxjlw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HYS5Id6wtL4wje3MoGNxwStCJS16PBnkorW0JH508Wm5nmsP0ZB55jCjW1ZMlE+5QDeL+Um5L+dNLsI38OxZtmW7971xDFvLkH8q0+gUUwCuGB1MizVb7eQR5D05PlfQmYUSoJ8gEbrRJvIaHlyasUOwsc2sI2aDsUy5kiqUikM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U7IixbY6; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782201188; c=relaxed/simple;
+	bh=Z8nPTGOELiNpLext6XY/7JueKxLoEarzlsGzHgZZNBc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MqedVo4VCyZiDtO/KU56UtMwoKdthVX+wnHNNYAlt+lrZNGl24ChxtO+bMH1eymxfGnbSzcf6W6z+t9iMQnXj/XIPs0+r/cMsZR8UObF343mNcRhdIYqtTYK4esmNM4WWOQuaFOILQNvTKR2fGl9kRO1q6OqtUJCKaFs4usIjXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KoA63PjL; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U7IixbY6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782200342; x=1813736342;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9M53Doqkm/ZxlnBoSdM7DNRi6CHdmePszrm5SmUxjlw=;
-  b=U7IixbY6CJ8B/RFouZj0Qdshs3RLxVsKjlwWevvsJP2zSkk4Namn03UU
-   3NTve40zudYOwT7mhr80eNNq9QOXngd392jQeYbJSQUVlIgjZdSCUFyIG
-   ukoygZom4jd9iqYsGBhKJKjB4VDaXK2DMlU0CzOaYVDog9Npd+FfdzXbt
-   lJm1LxeHRve8J0ZcjimeAHhEqTXZTSXMwUPPEstViVLm8vHHPi6zrSEjY
-   N2/BM+yHV0r6SIdkHrH02KPouPRQRAJlnob2dKfAzunStX+RRRlh+hQrS
-   zUgWRz6Wy5+2nCL5RYzzcfRPpy8PFOIFu9JrtnIh0S3vT9jiQQns0GYqi
-   w==;
-X-CSE-ConnectionGUID: jrOstpqgTQiaF9vz6yoZXw==
-X-CSE-MsgGUID: lNiqej26Rq2hGEcccUKC5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93300753"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="93300753"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 00:39:01 -0700
-X-CSE-ConnectionGUID: ouVIYE8qSdG+QaUlar4m7w==
-X-CSE-MsgGUID: 3mQz4kUVQfKSAD4PEZxlOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="248298804"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 00:38:47 -0700
-Message-ID: <ede86ac4-d560-49a6-82d6-b33ac5fc9355@linux.intel.com>
-Date: Tue, 23 Jun 2026 15:38:44 +0800
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KoA63PjL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Cc
+	rcH5t6ZYGuhJDVVH+tDRtjwGRf2id6dqNPTyNJhlc=; b=KoA63PjLb96hByd0Qb
+	BOK9IX9Cu7IViYzaNf219D2sTTo9+8GbLV5gS5fzBIVVS3yMUH2VkKKTIqnJa8rN
+	QAEPtRL9Jz+tg2YoJI2IA70VJkcB6XRXahIswdqzmnhKNCpR45OM3b000dtZJVqs
+	tOogSP6Du+UGR/9zxjbJ8DJ44=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDnOeA1OzpqI+i9Dg--.16449S2;
+	Tue, 23 Jun 2026 15:52:28 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: mjrosato@linux.ibm.com,
+	alifm@linux.ibm.com,
+	farman@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	frankja@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	david@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	svens@linux.ibm.com,
+	schnelle@linux.ibm.com
+Cc: linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: s390: pci: Fix GISC refcount leak on AIF enable failure
+Date: Tue, 23 Jun 2026 15:52:20 +0800
+Message-Id: <20260623075220.2022613-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
- KVM_SET_MEMORY_ATTRIBUTES2
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgDnOeA1OzpqI+i9Dg--.16449S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CFyUtFWkZr4rJFyxJF1kZrb_yoW8Gr15pa
+	4UC3Z8G3sYqFW0yF47ta1v9FyUuayUGr4xCF18J3y2qr1aqFyvyFZ5AFyUZr45GrW8u3Wr
+	AFZYkF1DuF98CaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JU5GYdUUUUU=
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7h0HdWo6Oz2DEwAA3H
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
-> just updates attributes tracked by guest_memfd.
-> 
-> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> by making sure requested attributes are supported for this instance of kvm.
-> 
-> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> details to userspace. This will be used in a later patch.
-> 
-> The two ioctls use their corresponding structs with no overlap, but
-> backward compatibility is baked in for future support of
-> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> ioctl.
-> 
-> The process of setting memory attributes is set up such that the later half
-> will not fail due to allocation. Any necessary checks are performed before
-> the point of no return.
-> 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Sean Christoperson <seanjc@google.com>
-> Signed-off-by: Sean Christoperson <seanjc@google.com>
+kvm_s390_gisc_register() registers the guest ISC before pinning
+the guest interrupt forwarding pages and allocating the AISB bit.
+If any of the later setup steps fails, the function unwinds the
+pinned pages and other local state, but does not unregister the
+GISC reference. Add the missing kvm_s390_gisc_unregister() to the
+error unwind path.
 
-s/Christoperson /Christopherson
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ arch/s390/kvm/pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  include/uapi/linux/kvm.h |  13 ++++++
->  virt/kvm/Kconfig         |   1 +
->  virt/kvm/guest_memfd.c   | 116 +++++++++++++++++++++++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c      |  12 +++++
->  4 files changed, 142 insertions(+)
-> 
->
+diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+index 5b075c38998e..a9d5996590e7 100644
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -252,7 +252,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+ 	srcu_read_unlock(&kvm->srcu, idx);
+ 	if (npages < 1) {
+ 		rc = -EIO;
+-		goto out;
++		goto out_unregister_gisc;
+ 	}
+ 	aibv_page = pages[0];
+ 	pcount++;
+@@ -327,6 +327,8 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+ 		unpin_user_page(aisb_page);
+ unpin1:
+ 	unpin_user_page(aibv_page);
++out_unregister_gisc:
++	kvm_s390_gisc_unregister(kvm, fib->fmt0.isc);
+ out:
+ 	return rc;
+ }
+-- 
+2.25.1
 
-[...]
-
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 297e4399fbd49..cfa2c78ba5fb9 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -102,6 +102,7 @@ config KVM_MMU_LOCKLESS_AGING
->  
->  config KVM_GUEST_MEMFD
->         select XARRAY_MULTI
-> +       select KVM_MEMORY_ATTRIBUTES
-
-What's this?
-This config is gone.
-
->         bool
->  
