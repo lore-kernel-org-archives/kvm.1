@@ -1,127 +1,73 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86659384CEC
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 00:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464F384250
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 00:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782174991; cv=none; b=pexy6myZYW66D3WLBhS2DsNEQrUKQJOsGEnJ/UOE6LHp4mn0HuSYuTWgqwrkqbsH1fpaVbUj1nE25/+aSdk/iEDU1sYElUrRjy1eYBwpm7hSGlO6wgZaXH8FzRG5odjGOpLeYcM9bfTtERwPa8E3VJsxiij2Dwjip1diOuzj9H8=
+	t=1782175324; cv=none; b=BJU37B52y7CnM0O7L/3yyXzPTDh6aZd4y5qSA905A5Yo2hHF04HCVG2YHwcT5ptQlm2XQ/Jox0MnTqWHmmQfd1KGz8Gw6psrDtmwODms4RHhtCSPQ3qGszcFsFlB3y4ECEsiVvVZSbfXIi7yXzXlF7bHcOf6VqeGY+VeHjFtMxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782174991; c=relaxed/simple;
-	bh=PUnUxYHmCp3aaAbqKD/kYlXYduXizBmSoeU75lfmYqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDhBhnFrnfpMUn2Lzluw/H4WrXPzH7fCfe7V6Z7UBJCfBfnQLiDBDRXhogiVCYDTHp0JCWoL/ESGj0mHeShX112wwjuL2xfDlwRMCcnWQyTltZnDZt/yL/XSXVNdQPyVEvPe7O4W8uAnwFaR1t2Fy5wJ0zB3k1uxM6uP/KOaUDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aD1fXXrv; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aD1fXXrv"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso20055ad.0
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 17:36:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782174990; x=1782779790; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q1m/UZ+tyAY37uB0UHTmcmll3+MuVllAAR/s1gutk68=;
-        b=aD1fXXrv6YWwrx6gT2Xo4MV0/Or0kTjQTarQmFCFNk0xnQapWQN9bjWNbKPTlnIOj+
-         B38buIl1hVGY9sbObfYvN1rqun1Q7XlvCoaFlk/OAXgmZBkJg74s5zQzDo6MuqWHrI0w
-         OndDq+gog3lNUClMIb/WpEc2PfWR5Gc73ssw3+mjt29962FFSXsXsTvANj7rFEHfUv8D
-         Nhv93ceYdEY6rShxsmAs5OrZsiOPNzCTOHsulycCsYFxRPUoUHp9VRKPOJV7B6ZAnjqC
-         8ZNNddommjZULGs1IRBnBsk66NIqLQEn/VzJrBnLy/diOM0jGsrqHy6zEV7aAWiD3qRE
-         wA8w==
+	s=arc-20240116; t=1782175324; c=relaxed/simple;
+	bh=KwUqj7nhoHDhIuRDD1Xp7nbnthWPTVmrcZsXCZ16fVI=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=LQ6egxiDGAEdIV/SZALNN0gfE2qV+epJldTBDZ7Wxvh2dF6YIfiJVzFNx4BcbhiHq+a3udqQ7BOWHrvkcaV2tSOEo2Ck1TJmEQ6AfH1scwK6KuNdGGrgA+R+qlE1wL1VTpeH6cTbpQWr9ok/8OtD64xJNFYVIJ2i9FglWWfGuJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-486e64c8edeso6993070b6e.2
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 17:42:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782174990; x=1782779790;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q1m/UZ+tyAY37uB0UHTmcmll3+MuVllAAR/s1gutk68=;
-        b=LkxrETXmjh6EvImaMWpTN4dgValicTlu7Auh9uO70MMdzPuN/TuWtdqONCHOs/Y4jg
-         QcZ/nLFzDXnNV0Bi2ATCqGjSVzVnTz4OdwCs4atKISJZWA/Q5BIpBgi6CvdAHCr2rNSs
-         wdw5fsm2au3ubPiUltkkUMzU6/QruL0eR78zZlxvcTR2VUqWis/fj8mk5Za/wy/GzezW
-         FPqDpG6aAe513tM8999W+uWWHRmNhQDV4YiO43j2KFeyHvmic3pVrZzqpHmuWCXs9ztz
-         ZRRt2BteksJqu1GzSJtXUbVzCVpi233KgzfNfzWvQJhOKqv3F73vYzGAis9+MK5bmi12
-         7iDg==
-X-Forwarded-Encrypted: i=1; AHgh+RrBziwVGU+iYzqVeTiwlQDSOfKcxcEVl9BnUKzD24yfxFhhCEWk2MMJZZjNBFPf62V1PpY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA3lqwPrTDe/GgNMxhNgMGM6IX5f80IwBfeVhqRDtAgNMqDnqH
-	yGorWDkKaX63GQfVcLSanMRu4ERwgkyHpZoX+P4rnP5EStNMBf9xDyk1k/7JXW+6rQ==
-X-Gm-Gg: AfdE7cnYCJ9vaeR6hcf58TaVy6AUH4hQUxNJNfMCbCCtUHI4gGKXwkV2oW0/tzKfzUI
-	BXeM73M3GX7/4Z1eT1bjDzQgQ49rDv1UizsYBO4UcR3V2Kyof68LZy/gJBs9bF5qLD/Ujq1Lf2M
-	ocFHkOySWUD0o3SMpJdy5TRXqmteCA46fiH9nrmUJns1lQPtFPw9yCuNqcsAHo+XZrGWz/kUSMK
-	EBTdp7MEFyqNgtBlOGoJEk/LBCwNn1kQi8+oCFz3XrD0Z1SzSxBhdRnUh/AeIvm3gLGxIC3Iwpa
-	XwZrFXljCT918kCoztdiDIbjp2eqqxtLH6ZjPfURsd3KgSmelxhkoQ+2cxvtZ72zGbkGcxvMyYC
-	p6t+54dN3kY3SmcHqdcTUFqfokhSK2JYnTogKsdN7cqmcvaiCizjEPmxusxdVY3zR0xd4N4T0es
-	/u3HnA1ouBv8NaCV2BmimaU23H/S6rQ7Mqk/q9HHQwOvd3r6d257ByLVtMfubQaEXDu/yNkg8V3
-	+udkzTb
-X-Received: by 2002:a17:902:f710:b0:2bf:749:551 with SMTP id d9443c01a7336-2c7c528b0f1mr1135025ad.22.1782174989106;
-        Mon, 22 Jun 2026 17:36:29 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564e9dab2sm8963719b3a.41.2026.06.22.17.36.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 17:36:28 -0700 (PDT)
-Date: Tue, 23 Jun 2026 00:36:25 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v3 13/18] iommu/vt-d: preserve PASID table of preserved
- device
-Message-ID: <ajnS4Pjb1Sld1jrn@google.com>
-References: <20260614233728.2212104-1-skhawaja@google.com>
- <20260614233728.2212104-14-skhawaja@google.com>
- <8b1076ea-022c-42f2-8fbb-f55cd30b4b3d@linux.intel.com>
+        d=1e100.net; s=20251104; t=1782175321; x=1782780121;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QbsGXYDBBVR67WbkMrc1s5CRse+QBADx4nI89RRSsII=;
+        b=Mweb5tv41b3zlfQ8lBwAkIDMJkxxbQl/Wj5Y8JAOQrErYYO1bGG2LCjQ1kBcwims5l
+         LFd09vTxs538JwyzKLJWWUriHaG+g5Hy/bt7jH6iIJfAC2B6izjUaPooGynv4eP5ypuy
+         X94eF69MS6j2TjOVhaREDZlZmylMpxcdOGJHZMgcRHrog3GbPZab2fRW5BJsAJZNRTQd
+         8oi63HC492rBHZgeUS1LWIAXQZpX5MDiFleYspuqGLim81dBjuxfxswAvx9BPH/ezy30
+         Ey7sWQu8KwIggo5IdH5X+i9/J5bSLciTpwzxd1nT5MQugGiIgkxAQm5oaXHtdKiBgz+n
+         gUvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9un+cF0bFlh7/3djeOyKHXqCLC9O/saQcxW6Y6F1NSISRufXYiY0S6+NDl6DcxjnIAWjw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9Gx5qTpztZkKdcM/nQ42u9TMgxNdz6f/gbP7cqpX5U1cdrZGB
+	jB7OV3Q05FyMBHg8o37TDoSmZb9X/lffoUxCMkGnaZo2I6BN8qjpQ6TxyLNePnKL5JhCUV2CmNb
+	l+RT173Y8BvzeDumLEangybDGd3EIWf6ALvGSFeiIwS7M3jzfjrv5k373+BI=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <8b1076ea-022c-42f2-8fbb-f55cd30b4b3d@linux.intel.com>
+X-Received: by 2002:a05:6808:191e:b0:489:f088:5f70 with SMTP id
+ 5614622812f47-48f27b2be16mr619900b6e.12.1782175321280; Mon, 22 Jun 2026
+ 17:42:01 -0700 (PDT)
+Date: Mon, 22 Jun 2026 17:42:01 -0700
+In-Reply-To: <ajnPfP1Y2sSIEY3F@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a39d659.c358b6d0.89040.0001.GAE@google.com>
+Subject: Re: [syzbot] [kvm-x86?] WARNING in hv_tlb_flush_enqueue
+From: syzbot <syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com>
+To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
+	tglx@kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 22, 2026 at 02:01:09PM +0800, Baolu Lu wrote:
->On 6/15/26 07:37, Samiullah Khawaja wrote:
->>diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
->>index 89541b74ab8c..5cac8e95f73b 100644
->>--- a/drivers/iommu/intel/pasid.c
->>+++ b/drivers/iommu/intel/pasid.c
->>@@ -60,8 +60,11 @@ int intel_pasid_alloc_table(struct device *dev)
->>  	size = max_pasid >> (PASID_PDE_SHIFT - 3);
->>  	order = size ? get_order(size) : 0;
->>-	dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
->>-					1 << (order + PAGE_SHIFT));
->>+
->>+	dir = intel_pasid_try_restore_table(dev, 1 << (order + PAGE_SHIFT + 3));
->>+	if (!dir)
->>+		dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
->>+						1 << (order + PAGE_SHIFT));
->>  	if (!dir) {
->>  		kfree(pasid_table);
->>  		return -ENOMEM;
->
->This reads as if PASID table restoration fails, it tries to allocate a
->native PASID table instead. This doesn't match my understanding. It
->would be a disaster, and the system should panic if the table
->restoration fails. Or is there something I'm overlooking?
+Hello,
 
-Your understanding is correct, and that is exactly what
-intel_pasid_try_restore_table() does if the device state was preserved.
-If the restoration fails, it fails hard with a panic.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-The reason I have _try_ in the name is to account for devices that
-simply have no preserved state to begin with. In that case, a new PASID
-table needs to be allocated.
+Reported-by: syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
+Tested-by: syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
 
-I agree the naming makes it sound like we ignore restoration failures. I
-will rename the function to make this less confusing in v4.
->
->Thanks,
->baolu
+Tested on:
+
+commit:         aec262d2 KVM: x86/hyperv: Ensure vCPU's Hyper-V object..
+git tree:       https://github.com/sean-jc/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=167b177a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=79a99f123f20da7b
+dashboard link: https://syzkaller.appspot.com/bug?extid=5d2b94b77112148d1744
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
