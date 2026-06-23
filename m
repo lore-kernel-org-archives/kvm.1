@@ -1,81 +1,91 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB40F22E3E9
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA3823A9BD
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 12:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782219421; cv=none; b=UexpO886V2g8Os7tWe5Anvx+gESni6zSCxf/CVKCCjoarn/K7OohHb4/ShmmrtDCtsP4eaXS1cF6xzC3j8zfPQV+r0PjPyDA+mM6Kd+o9V7ZTbEDjHtRRCqrzC3UYWgBL34ESeah7pjQaISFvdG/pirr2Zy2vqg4SVDj3D37sB4=
+	t=1782219482; cv=none; b=qsL/prusUF60w7r1Fz4s2sdEpqYkYznX+lNyZCiMPkPKrsrMDYGx4xuKmU1UKNGlKz6QCFjrjmLQSEvCJBxx/7pqurIdSZPhvBAvKBX3d1Onpu1kPtGUQLduKAy87XtNScWH33IGsfgT5nk+Uslf3cKm8TZB9m3c0P9Lhm0FDRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782219421; c=relaxed/simple;
-	bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
+	s=arc-20240116; t=1782219482; c=relaxed/simple;
+	bh=MUfdRUEiHnVw1WgnwmaZ1IXlokSHEukC0IVBDks3u6w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=V0o4eVhc3p66aoXXaVFIiu9DBaVD7cVTJCeFO+ZGsQ/gtzjr+IOktSFYCf1fTVrIPGjep2SDq6xrLIPAfFPdqZebOU9CQB5zlhM6IHF1UKDUuq59hcrPLxxO3saityLb/gNQkY104EikXME2abSvZQpsxkXSt/emTQZJsEQlwM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ut1NTRXy; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=eGuzOdoEjoReAdrf6RQtjC9lhUloRgvPotHKlXh0XTzsu3+3bxiKpv+10M4Emyrm/J4kDVyM9Rj8/WLOADdfDjqxGGz7nVsW4I5cE7PpGNCEDy6fE3S61g0UpFz0737T2YoZrT6BqP5R7G3sSzCjhjQ+8mDjbMc93C/jlAh5gcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d/C01c7W; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ut1NTRXy"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845438fbd9cso4292637b3a.2
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 05:57:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d/C01c7W"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8426ed9f24dso691358b3a.1
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 05:58:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782219420; x=1782824220; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782219480; x=1782824280; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
-        b=ut1NTRXyoE8yRLB+r7JIrJv30u7SlR8w6tZ/i8p0voyyj7DVW6/i0i8hmuQXJw9lIz
-         jLYsnhwuIpkaV77Gmw8JhtHtGJj9Z0gvBpeJ8QlwNUcOTSFCwjw7behfycz1T65BZ6c8
-         8vxQFJ+BNDIBb5p5ItYL870hpplLvsPb1xHCMdBvpCbo86M0Ge10M8HGX49LGkx6tCOm
-         qxnncidFZ64g6MMEYyIXMYUj31Gm7PTngUtLRFPzSEThYD8JDrVopHYWqxC5hzMt+m/W
-         77a7WuONrOTdCZque/2SWcKM6Vive84rodBHoogNU/LhV5CZ83355M1EN2XYcd4AMcWv
-         s18Q==
+        bh=MUfdRUEiHnVw1WgnwmaZ1IXlokSHEukC0IVBDks3u6w=;
+        b=d/C01c7WKBu+YtH97K2uq/uZDmWTHqLKKcwHghTh8WGsYo0vZj+7ZwRjENKq8IkMMh
+         5i1zUaVUlXCJf2ItCndt18BMkTVsDcKuCtqgzozUZxAOVow5YtVfZV7u1P+DzkpsZkZ6
+         75Lcj/tvMVH1AAj2828XCVr8Ss1Dr+AlAjIO7J4B085p3F6kXCOshnmzew+T2GpEEWMr
+         7wUZ2QEUlRKamXBb5C1KV+cKkLaCKeGjGO4IyRwoN5zweHY6s7OWvWT6Cylqf8cEkfwB
+         zn603yr8+AyYgN9eRlcC6XkCd5ngUUSi3NkI98fkdAsEI63Dla4Rm8l76Yp4KRkyXUJI
+         3ZpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782219420; x=1782824220;
+        d=1e100.net; s=20251104; t=1782219480; x=1782824280;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cYciK/K71PU3bqDNjuY+Q8z2fxXYxDMG0vk5d6ZKjW0=;
-        b=L+F+Qh/Sjx7ilBUKhu2YZU05gzFicwA+NJbVJKSEtXkdAyoyvVXgWi8dWK4h9X8984
-         kBwgZZ/IOPsxDdX1ah8yL4oAJrh3fvRb9f+eiBh0wHooTM8PnR43O/0YXdUN4keWLB5l
-         mSY4GvJhHfuoRBrsrRWe49PfTi/juY23fhFbYUie53McZQ91tpctzsDh4/UOIMR4P425
-         iBGU8OHAi022RijNeZfNn7B3VXbnpIyW5kirJO7dCOwpJLOHogi5497cnB6ZEOo70Rx5
-         AQ7TED5QMi6d58cuvTooGRjqAGTDKTcBakHMT37/SUWyb6dj1b2pP6op152r7EeIYl/b
-         rb/g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9QuDdZ5tP3ixWBjbQwYeSthqomo2BrANkkxfuj0iJZfFr8GjhXKeIh7ijK4tpTylegTs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZHUDPlSI1XTUQFvkouwoevkFkYTY9ewfYKdkV50F7zLkg1uEY
-	fxXQI0mleU1QmsFh8SbNq3HRAcYL3pwvkVtXGRMxU6CcLNZLzHhfIr4a7q6q0BW6i5Drg0Jk5yv
-	15ncoTA==
-X-Received: from pfez11.prod.google.com ([2002:aa7:888b:0:b0:844:e56c:ba8c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f08:b0:845:43d6:14d7
- with SMTP id d2e1a72fcca58-845507e017amr20047637b3a.16.1782219419781; Tue, 23
- Jun 2026 05:56:59 -0700 (PDT)
-Date: Tue, 23 Jun 2026 05:56:53 -0700
-In-Reply-To: <ajpSF6HyhgBA3uV3@8bytes.org>
+        bh=MUfdRUEiHnVw1WgnwmaZ1IXlokSHEukC0IVBDks3u6w=;
+        b=mFctzOu9lBJUdIq91PUaA6bbzMwarLwI1Ve77d1B/Gi3Hr2Xfm/pF4pZqfRTQsRkxf
+         zKF+j1W3sAcMNeBulhaphSM9rxrEQaz7iG4p26146IEGC45Pae+3b9oGhkDiQOaffe3t
+         YMvNjGvD+tRo+e4dsgaJnWTL9UkjMShd1yiRRkV6tXXwRLOz2hrI5TQVdswYk8Zm3EDO
+         pX9m5mktoGwzZP3qw+bi1vTUURZdGtfxZmgSobtSJIf0JbZsfPaPjzXnwIxHTo4nWyaZ
+         E8Myk+Kb2sOnIRynlaCLrJoweU6m1IexkNpgpW6amRnBm1DNPcr5dU2s9g5lnglmK2HG
+         2hhw==
+X-Forwarded-Encrypted: i=1; AHgh+RrIdu7KEuqmK/oJpM0pBfyfz2Qwf18QHJ96OGrlPyL4aA2Plmrd+T1RDPWzTyJ9KfXGU3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzohxtxNJNfbm9A1qBXTwhXWNYWznjWI813IqlyfbPnmLSIlFn
+	XwARh0F2Y0jQvLImb8e3hwPHM9oJWilncNRqvKdYoJsuo3I6I8lG3yw5C2KW6PH30u1Fg+juxey
+	Prx/NWw==
+X-Received: from pfbmb7.prod.google.com ([2002:a05:6a00:7607:b0:845:9e1a:1d94])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1394:b0:841:d7f6:7286
+ with SMTP id d2e1a72fcca58-84591c68753mr3097217b3a.18.1782219479903; Tue, 23
+ Jun 2026 05:57:59 -0700 (PDT)
+Date: Tue, 23 Jun 2026 05:57:58 -0700
+In-Reply-To: <20260623091556.1500930-4-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260623091556.1500930-1-joro@8bytes.org> <20260623091556.1500930-3-joro@8bytes.org>
- <20260623092417.5964D1F000E9@smtp.kernel.org> <ajpSF6HyhgBA3uV3@8bytes.org>
-Message-ID: <ajqClZ3kHfDcCxUe@google.com>
-Subject: Re: [PATCH 2/4] kvm: sev: Unmap pages in correct order in sev_gmem_post_populate()
+References: <20260623091556.1500930-1-joro@8bytes.org> <20260623091556.1500930-4-joro@8bytes.org>
+Message-ID: <ajqC1k1VV23_Xe5F@google.com>
+Subject: Re: [PATCH 3/4] KVM: guest_memfd: Add `write` parameter to kvm_gmem_populate()
 From: Sean Christopherson <seanjc@google.com>
 To: "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Joerg Roedel <joerg.roedel@amd.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jun 23, 2026, J=C3=B6rg R=C3=B6del wrote:
-> On Tue, Jun 23, 2026 at 09:24:16AM +0000, sashiko-bot@kernel.org wrote:
-> > Should this second instance be updated to reverse the unmap order as we=
-ll to
-> > prevent kmap stack corruption?
+> From: Joerg Roedel <joerg.roedel@amd.com>
 >=20
-> Yes, it should. Updated for v2.
+> The call-path of kvm_gmem_populate() might subsequently write to the
+> page provided by user-space. This is used to provide detailed error
+> information in case the page population failed.
+>=20
+> But since kvm_gmem_populate() only acquires a read-only reference to
+> the user-space page via get_user_pages_fast(), the error information
+> might be written to a read-only page later on.
+>=20
+> Add a parameter to kvm_gmem_populate() to optionally acquire a
+> writeable reference to the source page to make sure page permissions
+> can be enforced.
 
-Already fixed, commit 138f5f9cbe37 ("KVM: SEV: Unmap local kmaps in LIFO or=
-der,
-per highmem requirements").
+Already fixed, commit f13e90059908 ("KVM: SEV: Pin source page for write wh=
+en
+adding CPUID data for SNP guest").
