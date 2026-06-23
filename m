@@ -1,133 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099C338888E;
-	Tue, 23 Jun 2026 03:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100E73A7F51;
+	Tue, 23 Jun 2026 04:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782184229; cv=none; b=nugJgZiZUQUcx15HGzCWpQ00Th3svTojLeaWAJHsyAyWmJhePQCgvBKJakctlIj2rAm2/sosebyyC6kIzanh9LpnlNBu+o8ufkMQBBKHX7amUxY3MCnDHQYFn2Plnl2+JgtZbwbE7tdZGn581RJP5EZkgAH9LuD7yprEfnGuIT0=
+	t=1782188932; cv=none; b=ae04MJfNw8X6y0tkkYSxwaACkIXKBE3XhOntLV/Ttn3NRkmK5L9Oqn/azCy8oIMPUIHZoWrE02pi+RoWBolcGVRSX8n/UBN9TYQIrEiDnOGWYPGmygGR0VwZ0lrptDnrhSGcicSj90A34theYbAnV8F+qAclzb25dVUcTvEDL8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782184229; c=relaxed/simple;
-	bh=FzB8Fb4p4Mjwmnh7oxOdArQm2a4Bl6t8IOGs1WP0LH8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ufCQaIBmfENmxZUKxWN++/biWVlTg31b/yVAgM4tVg6luJXWTEVwqSqvZ9yq3aZUgVKpvWwxYhmgsYa0DHHvVFVri3uStZJ6a7Uz4SG+Tj+MKTmZg+rbtc+bj8ldPCrK48EULGHcwYZ11H6h+I/WIiFhyhdmCrNpzZk0GxBF374=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BLl2Ug/e; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782188932; c=relaxed/simple;
+	bh=uu0OcTgn3CPKXcF0xjMO0RfY0krvnzHgkkThexzDjvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RtwIV12UpzuMsaRH5H3M8qOlpzliq5exb7ulFsdLePvbd9NXkDjwNNaV2KBH4/97nCDw/VqsxjXUSJoYoc+tb7YZF65rv+dyi8kOvGDd+bE4PXQnwDXbtCZPci0nz6jKUXMDmragbLWZe5dnOexowkHhTT6qwN1XKGO5/VbTiIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8J+dmz3; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BLl2Ug/e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8J+dmz3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782184224; x=1813720224;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FzB8Fb4p4Mjwmnh7oxOdArQm2a4Bl6t8IOGs1WP0LH8=;
-  b=BLl2Ug/eLj8p1uLirtLSh0KPVKuPz79n9xv/OeDHRYsBU3dRGdmatr3c
-   tj/8RMSbSniF3stF0N267pPq1jw9uhz5HtGN98F3xziJDaDNOxAg3oDxs
-   +dkY7LcQQVMnyDxN9TRKKhRdVyLl2JLPoUbu61nX2dfRAuvcM4Kw+Dix0
-   gLBRYKma7fEnEjgA1GAkBYNPVtUP2R6JfGqNCfMguzDImuXit6BIuT1Wn
-   WICJx03pjJ4Y2JMqj/IbbUnyv5JbPkBbctVOr7/0JhzVzHpuEsTqwl6Cp
-   S0n7v8ant6cu8gMFBAhwNvWtNWabRp/Xz4HpPlGgRmEOac1H84k11MO2b
-   w==;
-X-CSE-ConnectionGUID: l/t3aqZrQROMQx24pH9cPQ==
-X-CSE-MsgGUID: TTQXJxn3QvKAMpWYdGVJiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="100470615"
+  t=1782188930; x=1813724930;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=uu0OcTgn3CPKXcF0xjMO0RfY0krvnzHgkkThexzDjvs=;
+  b=S8J+dmz3YnR3WKIf644+HHAb10sqOsSRIcwgscu2GZ8TFbgLUi6T5Ho7
+   3UenkAM9ZcL8jRCmu/NTncBqZV9IctIfshJhAWba7UFarZcjdkqYpKNgE
+   sJ2fhb/L+fdJeJcoTRxdoQKNEmg/cupkcF/NDvpj3rFRMW0V1soGAJE3O
+   kL/XHUPbWeA8s9sFhyUkG0yhblW3X53TJ2NpYByGxN8PoXIJPCt1WrAE1
+   kQnDMyUrXFoyMWX4hCsL2x7ZC/8+N9lVRft/5ZoVKTVVEFt5XS/FfPEvr
+   t08E/NDQHZ/WCrs3ojFxCBpKQIA6riMStItdEO7EWYN5Wm6+ezeLoP9Do
+   A==;
+X-CSE-ConnectionGUID: Uk375n2IRECf8GUDt6obGw==
+X-CSE-MsgGUID: B8WaTKkESAOvIaWqWpPtvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82809043"
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="100470615"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 20:10:22 -0700
-X-CSE-ConnectionGUID: l6e4mZ83QTiXSvs+mWEwsQ==
-X-CSE-MsgGUID: FX/cqQqIQeCB/GDWGdGDPA==
+   d="scan'208";a="82809043"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 21:28:49 -0700
+X-CSE-ConnectionGUID: s1mq7/L3SZqT2P8NrSNfGw==
+X-CSE-MsgGUID: oYt41iiYSpu7TEWQl+4E8w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="254376571"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 20:10:09 -0700
-Message-ID: <1c3d817b-e5d4-47fc-a716-3a8bd941375d@linux.intel.com>
-Date: Tue, 23 Jun 2026 11:10:06 +0800
+   d="scan'208";a="279587562"
+Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 21:28:50 -0700
+From: Zide Chen <zide.chen@intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Das Sandipan <Sandipan.Das@amd.com>,
+	Shukla Manali <Manali.Shukla@amd.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Falcon Thomas <thomas.falcon@intel.com>,
+	Xudong Hao <xudong.hao@intel.com>
+Subject: [PATCH V4 1/4] KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
+Date: Mon, 22 Jun 2026 21:19:24 -0700
+Message-ID: <20260623041927.178256-2-zide.chen@intel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260623041927.178256-1-zide.chen@intel.com>
+References: <20260623041927.178256-1-zide.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 06/46] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-6-9d2959357853@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-6-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> on kvm_arch_has_private_mem being #defined in anticipation of decoupling
-> kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> guest_memfd support for memory attributes will be unconditional to avoid
-> yet more macros (all architectures that support guest_memfd are expected to
-> use per-gmem attributes at some point), at which point enumerating support
-> KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
-> supported _somewhere_ would result in KVM over-reporting support on arm64.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Only fixed counters 0..2 have matching generic cross-platform
+hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
+Therefore, perf_get_hw_event_config() is only applicable to these
+counters.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+KVM does not intend to emulate fixed counters >= 3 on legacy
+(non-mediated) vPMU, while for mediated vPMU, KVM does not care what
+the fixed counter event mappings are.  Therefore, return 0 for their
+eventsel.
 
-> ---
->  virt/kvm/kvm_main.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 1ccc4895a4c26..7b989b659cf82 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2421,8 +2421,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
->  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->  static u64 kvm_supported_mem_attributes(struct kvm *kvm)
->  {
-> +#ifdef kvm_arch_has_private_mem
->  	if (!kvm || kvm_arch_has_private_mem(kvm))
->  		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +#endif
->  
->  	return 0;
->  }
-> 
+Also remove __always_inline as BUILD_BUG_ON() is no longer needed.
+
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+---
+v2:
+- Replace 3 in "if (index < 3)" with ARRAY_SIZE(fixed_pmc_perf_ids).
+---
+ arch/x86/kvm/vmx/pmu_intel.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index a73a9515d96c..59b7a90c79e1 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -464,28 +464,30 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+  * different perf_event is already utilizing the requested counter, but the end
+  * result is the same (ignoring the fact that using a general purpose counter
+  * will likely exacerbate counter contention).
+- *
+- * Forcibly inlined to allow asserting on @index at build time, and there should
+- * never be more than one user.
+  */
+-static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
++static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ {
+ 	const enum perf_hw_id fixed_pmc_perf_ids[] = {
+ 		[0] = PERF_COUNT_HW_INSTRUCTIONS,
+ 		[1] = PERF_COUNT_HW_CPU_CYCLES,
+ 		[2] = PERF_COUNT_HW_REF_CPU_CYCLES,
+ 	};
+-	u64 eventsel;
+-
+-	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+-	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
++	u64 eventsel = 0;
+ 
+ 	/*
+-	 * Yell if perf reports support for a fixed counter but perf doesn't
+-	 * have a known encoding for the associated general purpose event.
++	 * Fixed counters 3 and above don't have corresponding generic hardware
++	 * perf event, and KVM does not intend to emulate them on non-mediated
++	 * vPMU.
+ 	 */
+-	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+-	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	if (index < ARRAY_SIZE(fixed_pmc_perf_ids)) {
++		/*
++		 * Yell if perf reports support for a fixed counter but perf
++		 * doesn't have a known encoding for the associated general
++		 * purpose event.
++		 */
++		eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
++		WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	}
+ 	return eventsel;
+ }
+ 
+-- 
+2.54.0
 
