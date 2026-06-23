@@ -1,138 +1,108 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E763369234
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 01:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D3D13D539
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 01:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782178639; cv=none; b=rnsP/ZKJ7EO03fVGhguWB4WPDTP/EB5PfuYLkw0g3y0PU84wCVSgLPr9NADJvsw64cjUg1CbxjSOJ9bDYMchX6dtj2DbRkR/gXeANku9DPw7w2Lb9f/FyBaTJh/7e8lxFBm4HPuGrGEWtIh88cRlBSuJcZfO3iA2SnwJRlKr+co=
+	t=1782179238; cv=none; b=ZD1c3ZRx6Htl6gEXzrkiTjbraFpyLcvQ9Zj/+Sp2ZDdSMDO06YO2tZoMjCXkP+vnHTTyTI5eKOl9S7rnQvozTEv8X+ddc1P6mOQqcz5ZXyHNeuy3oXqpjoLhLex8Xc0nUvNIfuRc3zmJNfO0rqiLrgmu73Ae1q5hJBHaiCRX2S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782178639; c=relaxed/simple;
-	bh=5DxnOpKxfSLreEefJhlh19ZNtNNDhg7LneuBINRCFH0=;
+	s=arc-20240116; t=1782179238; c=relaxed/simple;
+	bh=P67FYLXAJXpU1JgIrkarwLwNT0d7c7oo7LGWh9f3zc4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g5gp3B9THZh6HxxagdJBLsTBGYWCxpPx4X/tPOeCYT7pEu8A359XhW/cYdK2NF6XiMdwG0cUOnGlggwxmx0PU+2GeBLOj/2KgEzPzS64pGSk6loIZ3BT58z0GX/HdN9MZm2H4gizr5HmNtHPqow5tmetNJvnHIj23QMkL/XWlJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hRn3tqx+; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=ap/fxc1+/mApAh5mlJMCTmUaX0lzehfHxJuMI+heCsJFredahcMyj1BOLSxZ58SOxt93EOGs/g8ZQPND7x3wNLeRI+lZkQG1e+oNjQG1wlOFN3Zr9IaNG0wZ13tpx4LGSzrjEAbWbpkRpD6qfZ5BO4F/M7QBPvFS+h3ZGJ2wFpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fQwl40vH; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hRn3tqx+"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37c89e480easo5375985a91.3
-        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:37:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fQwl40vH"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37c648d3ca8so3310029a91.2
+        for <kvm@vger.kernel.org>; Mon, 22 Jun 2026 18:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782178638; x=1782783438; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782179236; x=1782784036; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AP9gehEakYRCrViEtM0iQf/Z+UhqMaziDYgqcj7Zu0I=;
-        b=hRn3tqx+Sz8fueo4/W3oWJiLZ8I6XXIlhDj8ugi8QdXZIv4FrxBaMw/z9DbQsh+H55
-         qg6S2EcgvsrtLPAxT3OqjzT2lUVXYMGS07H32nTNP5EOr4R9J3EY7ZPbNcBPmSBTRK8i
-         5bWai6YNUqT6XuNqEeaZQWj6ajY+LsES/9QF3TmiGL0hUagoN8Unz7XtqLHPjPwSNiUZ
-         3CLncvk9uH7NTJWJne/Vpn/693HMcfGoQMqhhWX8MlUC3J9/knjy85ewtxYQm+qwDhbe
-         scPCG9WTN9OoIQIQ/fORHRIGjEG7M0+2mueTIsuRey7AttGsP0NOZdZGjEpx/4prN6wP
-         O2VQ==
+        bh=xXrOsG0sOKwQxPybxGcKKGAUN4JOfTPB1ofkSmrXZc0=;
+        b=fQwl40vHxvthLYSBWx2PwM1bsxXrQQZoOr26H/tyGnPwNKDxn8YS1dMR///rmsPsHb
+         tLvwGBEZ3nCoO65M3RAT1JZ4P1ss92cLRHCq41GftTl5AgRFOX2T2mBITVl+8ToLH2vE
+         lWW4d1K4pNnPsRe54azNPOIWFeesKUyzismtzzIcB98lOv9fRG/MH1BQOwR32PrvvIDR
+         g2r3Jrvou1j17PUaqfrdwMiBlAY6u+YT0+rYv5JWi2/edYTp18TghkBvvMgZ1TIApBS/
+         2ERvS/oYKpQEKvwVwu7tNo/EnBRLRiHVhs7vQehC1h/C4DZH2PHG1CAbqawGplWv9OdX
+         U3pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782178638; x=1782783438;
+        d=1e100.net; s=20251104; t=1782179236; x=1782784036;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AP9gehEakYRCrViEtM0iQf/Z+UhqMaziDYgqcj7Zu0I=;
-        b=KOZ5vRybIaBZbatNgIcjswbySYukyOXvxBmyI9L0Vw+O/ZNNeGxdixT3pQVU0l+cK/
-         zBJ05PvdxnJ/U6nWoS2BX2qRa8aaZLpYBsHHkWbJWZwHZo9XaJj27JCS8AAReTOtjPmU
-         ossHLQTZKfob4ZYEatBpr+8RRPlOg7gS934jkKwOHLY4VYS7e6rUHTztdsEEO96KzIkn
-         OJwk3mXexmEkxG+DzjUd48zxzUc3z8PhdFUzMn7SgnOCqX8+00sUa3656nQ08b2LHj3Z
-         YJ6WJ67hGfHuTBQC7htKUriik4UvR4lMAzdzByzziy/2g3jZzI8RIlNhfLNiRQvp3Fhi
-         7G3A==
-X-Forwarded-Encrypted: i=1; AHgh+Rp78egdTQOUX5JvDyl7FXv46/6pC2EcHcji36uamSaIiwDf9HhV4ML/dvCuL1rFri1qodQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPIi9ljyENGDOZL0VHY6udmNzSKkMo0oSWKhH4wDXDs0NAcd36
-	f4RGY+yGtNXUXgZGZhnGtUAgVdvBUea8f44J1PaHetLijdO7YSkd/PQJ4VOKJXMeIiRDRnqHSvl
-	Evu14ww==
-X-Received: from plox10.prod.google.com ([2002:a17:902:8eca:b0:2bf:27ab:9cf4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a68:b0:2c7:9ba7:a39f
- with SMTP id d9443c01a7336-2c7c99de6e3mr2076175ad.17.1782178637132; Mon, 22
- Jun 2026 18:37:17 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:37:16 -0700
-In-Reply-To: <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
+        bh=xXrOsG0sOKwQxPybxGcKKGAUN4JOfTPB1ofkSmrXZc0=;
+        b=cbPydNm2JskOS5SGIZw5KGbAu6N40J7l5/byTOO8fYCpqdTMdOUnUXZPkuqFFbTLcY
+         vHHcgswuMqm/S6seDOAHKsdLsbfzuJlx6mmYqg/Djm/S6lZXQzFzw5ngpVH7wXwwxk4W
+         Brice7V88IQdk4cLxR+ELQir8+M8x5ltlLqWTZ86yVanQYm0uc8Udb7PqeK3+ArxzIfe
+         DWBAc6JkoV2E81V3Y+shZ/wdIVjG1RIUVU2PpkvmX/nhhCM+flHdOit7vsnt5IBHFbAq
+         1XwSKMDQTMI1fQWU5cW1wt+Pfonjbte9vxqCS0oyDI+KTwFkjLrNNWZ0o0J8pD1e16/7
+         XWgQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roq2y760FuiFt6m0xR1tDgUcpRQmSNAXw0geYSI6WzcvWXo1bMZekbyFbC7tsGgrtFJIHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9zJRzvFk4eLS4UHyTd7S5V2/QJu0u46KP+NsXkqesey3WByKN
+	hixIHRutYot9rQA0V3W9qTAqkamCjmP3ZhhygKy7jrrK4izsrahzl4ONn1j2NZ0KkxgIdxw3/3R
+	D7JaGNg==
+X-Received: from pjzr16.prod.google.com ([2002:a17:90b:510:b0:37c:64eb:faf7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3809:b0:369:1dcf:4a46
+ with SMTP id 98e67ed59e1d1-37d162c3d15mr16740820a91.25.1782179236220; Mon, 22
+ Jun 2026 18:47:16 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:47:15 -0700
+In-Reply-To: <20260619204642.F1A691F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com> <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
-Message-ID: <ajnjTJdQKD1Kz3tf@google.com>
-Subject: Re: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
+References: <20260619203107.2752678-1-main.kalliope@gmail.com>
+ <20260619203107.2752678-2-main.kalliope@gmail.com> <20260619204642.F1A691F000E9@smtp.kernel.org>
+Message-ID: <ajnlo3vf-Qcai0jz@google.com>
+Subject: Re: [PATCH v2 6.1.y 1/3] KVM: nVMX: Add a helper to get highest
+ pending from Posted Interrupt vector
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+To: sashiko-reviews@lists.linux.dev
+Cc: Nicholas Dudar <main.kalliope@gmail.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 22, 2026, Binbin Wu wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> 
-> [...]
-> 
+On Fri, Jun 19, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > index bdc462944cb08..7d8e18dbe8531 100644
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> [ ... ]
+> > @@ -3818,8 +3819,8 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
+> >  	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
+> >  		return 0;
 > >  
-> > +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-> > +{
-> > +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-> > +	void *entry = mtree_load(mt, index);
-> > +
-> > +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
+> > -	max_irr = find_last_bit((unsigned long *)vmx->nested.pi_desc->pir, 256);
+> > -	if (max_irr != 256) {
+> > +	max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+> > +	if (max_irr > 0) {
 > 
-> If the entry is unexpectedly missing, returning 0 means the attribute would
-> be treated as shared.  And then in kvm_gmem_fault_user_mapping(), it would
-> allow the userspace to fault in the folio.
+> [Severity: Medium]
+> Does this condition inadvertently skip vector 0?
+
+No, it deliberately skips vector 0.
+
+> The commit message states that pi_find_highest_vector() returns -1 to indicate
+> no interrupt pending, so max_irr can be -1 or 0-255. By checking max_irr > 0,
+> the code skips processing if vector 0 is the highest pending interrupt.
 > 
-> Should gmem deny such edge case?
+> While vector 0 is an invalid APIC interrupt that hardware typically ignores,
+> skipping it here means KVM does not call __kvm_apic_update_irr(). As a result,
+> vector 0 could remain stuck in the PIR array instead of being cleared, which
+> diverges from the lockless PIR/ON protocol.
+> 
+> Should this condition check for max_irr >= 0 or max_irr != -1 instead?
 
-After several bugs this year where a WARN_ON_ONCE() fired, but was entirely
-insufficient to prevent true badness, I'm definitely senstive to making the "bad"
-behavior as harmless as possible.
+Nah, because vmcs.GUEST_INTR_STATUS's RVI will never satisfy:
 
-However, in this case I think we're just hosed.  If KVM treats the memory as
-private, KVM will incorrectly do prepare(), incorrectly allow populate(), and
-will caused missed invalidations (though I suppose __kvm_gmem_set_attributes()
-"only" lies to userspace in that case).
+  RVI[7:4] > VPPR[7:4]
 
-That said, assuming SHARED is definitely odd for cases where guest_memfd *can't*
-hold shared memory.  Ditto for assuming PRIVATE.  What if we instead fall back to
-the "init" state, e.g.?
+and so the interrupt (that shouldn't/can't exist) will never be delivered, even
+if the KVM check were "fixed".  If anything KVM could do "max_irr > 15", probably
+with a #define of some kind instead of an open coded literally.
 
-static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-{
-	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-	void *entry = mtree_load(mt, index);
-
-	if (WARN_ON_ONCE(!entry)) {
-		bool shared = GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED;
-
-		return shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-	}
-
-	return xa_to_value(entry);
-}
+Regardless, that's something to tweak in upstream, not in LTS backports.
