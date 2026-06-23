@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F17370AFB
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 09:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3018A38BF9A
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 09:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782207152; cv=none; b=b7RaHJF/KXyhghsB3zBndmBPJoftom/RXLCtCviz0jn5645AXLHwS/iKvGddadqHBtiFL0SQ6eDn+efCjWxCP538w3Bdm2e0W2ZytCRGvkp9ecoptE6ulpLHTIqOQHZYStGL8ofbSSR9NuOfiCwZJAnqG2YbOn/7KuXtEnGWhw0=
+	t=1782207154; cv=none; b=GD0pvA4okdAH60FDXEvod7aH5XYa4Ot3vZWEB7OAL9mC6W+YQlhb+RXwCZX6t6Eq3hdFfoEgAkIP5L5j8JbztuCDexEtmu9yRVm5eQv9QdJDvezMMh20KyNNcNIPtEgdSFQq5wyRpVzYZ45SkyIUUXL/ee73RYTWJPQC/EGHcFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782207152; c=relaxed/simple;
-	bh=+wxlvSMAbdrFyG+OgYuFlEQYzekN4jdJj778rHb/V4E=;
+	s=arc-20240116; t=1782207154; c=relaxed/simple;
+	bh=lW8AHNH/+vVrGsnW97+vNe55BLkMWejyxN3dMB0c0oU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nDv+HR5VLV9C/IpZJbFQf2R+cJ773G0ar+Nsn1F5Kt4eYbpmOGFnaRhJfIe1C8llpva1GYt6Zw6OFajDsLGUi1EG9EWlE4i6CqMldde1K8vNtG6EWEIwZ9Est/UJGQdSngAILGxiUwfO8CvmGpw8UoF9SSMYVj7cwWvOjkC/lA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6u/uPtk; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=cqKGsvds41j5Nyey1LN7YTrrGsE+UygQ9SLcreHKGdxwfbYOqagAqfkcJXUhv6odmC6dxNRkDj0eWLkD6VM8HJ6s6FUkvrlL5hrZWe239Vt4R4mqolbHxtwTt2dC8HiKFpC++xflKnZd/xUGApWYDkVNnvkKFhUIQESN/IJlERs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9Bpo/B4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6u/uPtk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C863F1F000E9;
-	Tue, 23 Jun 2026 09:32:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9Bpo/B4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CA91F00A3A;
+	Tue, 23 Jun 2026 09:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782207150;
-	bh=HalZF/JSA4thuvnnAew5owk2j3alNVIOAoSLIt9VPiE=;
+	s=k20260515; t=1782207151;
+	bh=ZgKAtATzCLKgvTXIuYFlbsStE3EyNxB1trWghX3F0KM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=g6u/uPtkVIUxTPEAF5+yLSLGaR1JqcJJ7GAChleT9N6UUrwSKi/UIMZjM64tuVWnN
-	 4Fu68Jr1KMfukpIJLIZzQVKP0HQi8MSqd51iDdJOutXSp7DJhh0vPh1POgoYBAXalp
-	 +5YfsPyIMjGCuw8Zg5SsO/y+9oHlLBEDB3Vh8mthpfueAXzd6Y27cmUkNMgJhrdNAT
-	 sLv1A1l4qx7TeVaZFlbXVSqcg4VkigHssztEv2S4oa7WdNr3Resu7Vnpe/gDNzb75I
-	 K0OQFaDKUA1eNwa8M+XJMSuWt1XNk0LZQAJqn6iIKbTbmfUHKZ0UKCVUsANyaKJaYJ
-	 aQl3VoXTLopLw==
+	b=V9Bpo/B4Wq7qOuo+Qp7HxcjJPVGMtZAnTNvEGEcu/GGCbaXKlRugEfNpag5MhDw68
+	 R8SBwgEFxoiUziwR9y5T6R0tn/3Kp4nA7Qnu0OqK1MKCaVZJ1qWXW9XJVJ5ghrTnQM
+	 5sewMEHhN+yuRxtCpA3/b+6KFaJ/d4znl5zbVI+jWO3cyY83iVhVhDtzyiig0luGfO
+	 v1yZQWD7815BI3I2wIoCwnQppSiXyCiamSWqVJuECV7Q+nSnFjwCm+aZpp3anVBFno
+	 UjryV6+jp7qS/PSIDk27y6G0WwwdpDaUJYG1IO7b3XbLwtrYOqbY0O9jBFPRf292LI
+	 MdBbgVmNIeg7g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/4] kvm: sev: Fix user-space triggerable WARN_ON on
- snp_launch_update path
+Subject: Re: [PATCH 3/4] KVM: guest_memfd: Add `write` parameter to
+ kvm_gmem_populate()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260623091556.1500930-2-joro@8bytes.org>
+In-Reply-To: <20260623091556.1500930-4-joro@8bytes.org>
 References: <20260623091556.1500930-1-joro@8bytes.org>
- <20260623091556.1500930-2-joro@8bytes.org>
+ <20260623091556.1500930-4-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 09:32:30 +0000
-Message-Id: <20260623093230.C863F1F000E9@smtp.kernel.org>
+Date: Tue, 23 Jun 2026 09:32:31 +0000
+Message-Id: <20260623093231.B4CA91F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,105 +48,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Low] The integer `write` parameter is passed directly as the `gup_flags`=
+ bitmask to `get_user_pages_fast()`, treating a bitmask as a boolean.
+
 Pre-existing issues:
-- [High] `snp_launch_update` unconditionally returns `-EIO` when `kvm_gmem_=
-populate` fails, discarding critical error codes like `-EINTR`, `-EFAULT`, =
-and `-ENOMEM`.
-- [High] `sev_gmem_post_populate` unmaps `kmap_local` pointers in the wrong=
- order in the CPUID firmware error handling block.
+- [Medium] Modified user pages acquired via `get_user_pages_fast()` are not=
+ marked dirty before their reference is dropped, leading to potential data =
+loss.
 --
 
-commit 9048d7bc73d4ef4c2ccbf4550c4b2feff1f1822d
+commit 49441863078cd5114f78eb8c75f1d31489417864
 Author: Joerg Roedel <joerg.roedel@amd.com>
 
-kvm: sev: Fix user-space triggerable WARN_ON on snp_launch_update path
+KVM: guest_memfd: Add write parameter to kvm_gmem_populate()
 
-This commit avoids a WARN_ON_ONCE in the snp_launch_update() path by explic=
-itly
-checking if a user-space process passed a NULL source address when the page
-type is not KVM_SEV_SNP_PAGE_TYPE_ZERO.
+This commit adds a write parameter to kvm_gmem_populate() to optionally
+acquire a writable reference to the user-space page via get_user_pages_fast=
+().
+This ensures page permissions are enforced when KVM needs to write error
+details back to userspace.
 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 6c6a6d663e296..41dcba5180cad 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2438,6 +2438,13 @@ static int snp_launch_update(struct kvm *kvm, stru=
-ct kvm_sev_cmd *argp)
->  	if (!PAGE_ALIGNED(src))
->  		return -EINVAL;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 69c9d6d546b28..7a245a402a1b2 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -893,7 +893,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_g=
+fn, void __user *src, long
+>  		if (src) {
+>  			unsigned long uaddr =3D (unsigned long)src + i * PAGE_SIZE;
 > =20
-> +	/*
-> +	 * Make sure user-mode did not pass NULL as src with
-> +	 * type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO.
-> +	 */
-> +	if (src =3D=3D NULL && params.type !=3D KVM_SEV_SNP_PAGE_TYPE_ZERO)
-> +		return -EINVAL;
-> +
->  	npages =3D params.len / PAGE_SIZE;
+> -			ret =3D get_user_pages_fast(uaddr, 1, 0, &src_page);
+> +			ret =3D get_user_pages_fast(uaddr, 1, write, &src_page);
 
-[Severity: High]
-This is a pre-existing issue, but does snp_launch_update() unconditionally
-return -EIO when kvm_gmem_populate() fails?
+[Severity: Low]
+Does this pass an integer parameter directly into the gup_flags argument?
+While the integer value 1 coincidentally evaluates to FOLL_WRITE (1 << 0),
+is it safe to rely on the numeric value of an internal macro definition her=
+e?
+Would it be more robust to explicitly pass FOLL_WRITE based on the write
+parameter?
 
-arch/x86/kvm/svm/sev.c:snp_launch_update() {
-...
-	count =3D kvm_gmem_populate(kvm, params.gfn_start, src, npages, write,
-				  sev_gmem_post_populate, &sev_populate_args);
-	if (count < 0) {
-		argp->error =3D sev_populate_args.fw_error;
-		pr_debug("%s: kvm_gmem_populate failed, ret %ld (fw_error %d)\n",
-			 __func__, count, argp->error);
-		return -EIO;
-	}
-...
+[Severity: Medium]
+This is a pre-existing issue, but since we are explicitly handling writable
+pages here, are we missing a dirty page notification before the reference
+is dropped?
+
+If a user-provided CPUID page fails validation during a SEV-SNP VM launch,
+sev_gmem_post_populate() modifies the page directly via memcpy() bypassing
+the user page tables. However, kvm_gmem_populate() drops the reference
+shortly after:
+
+virt/kvm/guest_memfd.c:kvm_gmem_populate() {
+    ...
+    ret =3D __kvm_gmem_populate(...);
+   =20
+    if (src_page)
+        put_page(src_page);
+    ...
 }
 
-Returning -EIO unconditionally here discards important error codes like
--EINTR, -EFAULT, and -ENOMEM from kvm_gmem_populate().
+Does this drop the reference without calling set_page_dirty_lock() or an
+equivalent dirtying function? If so, could the memory management subsystem
+reclaim the unmarked page and cause userspace to read stale data instead of
+the detailed error information?
 
-A userspace process could receive a signal (e.g. SIGALRM) during the ioctl
-execution, causing kvm_gmem_populate() to return -EINTR, which gets
-overwritten with -EIO.
-
-This breaks standard Linux signal restart semantics and could cause VM
-creation to fail under signal pressure.
-
-[Severity: High]
-This is also a pre-existing issue, but are the kmap_local pointers unmapped
-in the wrong order in sev_gmem_post_populate()?
-
-arch/x86/kvm/svm/sev.c:sev_gmem_post_populate() {
-...
-	if (ret && !snp_page_reclaim(kvm, pfn) &&
-	    sev_populate_args->type =3D=3D KVM_SEV_SNP_PAGE_TYPE_CPUID &&
-	    sev_populate_args->fw_error =3D=3D SEV_RET_INVALID_PARAM) {
-		void *src_vaddr =3D kmap_local_page(src_page);
-		void *dst_vaddr =3D kmap_local_pfn(pfn);
-
-		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
-
-		kunmap_local(src_vaddr);
-		kunmap_local(dst_vaddr);
-	}
-...
-}
-
-kunmap_local() requires pointers to be unmapped in strictly reverse LIFO
-order.
-
-Here, src_vaddr is mapped first, then dst_vaddr, but src_vaddr is also
-unmapped first.
-
-This violates the API requirement and can trigger kernel panics via BUG_ON()
-when CONFIG_DEBUG_KMAP_LOCAL is enabled.
-
-While an earlier patch in this series ('kvm: sev: Unmap pages in correct
-order in sev_gmem_post_populate()') fixed this in the first error block of
-the function, it looks like this second error block was missed.
-
-This can be triggered by a userspace VMM passing invalid CPUID data to
-KVM_SEV_SNP_LAUNCH_UPDATE, causing firmware to reject the page.
+>  			if (ret < 0)
+>  				break;
+>  			if (ret !=3D 1) {
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623091556.1500=
-930-1-joro@8bytes.org?part=3D1
+930-1-joro@8bytes.org?part=3D3
