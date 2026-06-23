@@ -1,100 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE4838B148
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4A634753A;
+	Tue, 23 Jun 2026 17:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782235608; cv=none; b=NdYMVNgWG/an32nzr6bIdnfRk8jHF9uUEJgNe1rMgbRPhaUf7TYLkF48+1jsE+SHeTAhW4HXlOFDtD45joeepxKyvBR/gxprmfzW/BcMqiAtPye+cTNCduHpqrynYq/UZ1IOlXgrru484gviT3BX8PH8tPoNrV+5MPN0EeewWN4=
+	t=1782235960; cv=none; b=qilooguOFYEw3ezoSVnTEcfLaWl9VlwnDIsWo5DmPC7wYP98wI1qT3MATn5haAmivW6e2VxnMW2uRZ34M9j8WzY1OzwrwP4fOx6Z9Yc+627r3zkxDuY+8nX67u8Bic7BhyiKvpXsl9TRPeSoah16aRf7og/DQRwxmDzzr9CAqA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782235608; c=relaxed/simple;
-	bh=rip9uRV7z1MrHq44c9P9AtUk8yQpQ+kZiXRL/p9vnmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CutssQvcknTLOfm1rZSNUQX1RzXaThqvCGoMXRqSlj9JacinXe2wjAN7SbKN6TYqVVC7odwGLf0j1V83MvbkoF8gDGDTZ19zf6SOotDjUT90PVbONdSXZdjI0gIp3w/NUK55wKHggWDZ7axvey72CCszGxlEhGLIDT0EDB2VuGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UMHkL/cB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RWtN+S3w; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782235960; c=relaxed/simple;
+	bh=EaXUBP6Fus11Qnb7LZg/aF3HHSEsKAT0/awbcaYgXBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bjqxfE6Cjw5hKUJdHzVW4r0jBuD+0t5x4r6bNMJ+wZfBKSDRW1seMfyC7Gvw74bYv8k23Zd0pMyePwdwKxELY9NmNqPviQVYKCOr/JoMiWgJNmw3OkvRSAawpzBwHtwxOCxm1TnfvLR4oN7/85op1wM31yTH0aHpAopq0dEp2+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ROAF8xjh; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UMHkL/cB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RWtN+S3w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782235606;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lVPkNP6BJkSGxsw8Xm+oSCJFyrrNmnKR4VG6pNKWuqE=;
-	b=UMHkL/cBt9u4LU5O9Ozvgx4IZp1j7yLBffa2cpF18SDH9hmeWTZi6O5GC7Rq73z+C2a+MT
-	yHQY2ZI3EtM6J/qvuFBc5xjxnZ7hDafE4MqeLBvHb/Bvp0p/wmMDhUFtuS1q4TquQRxc+c
-	s7WbtS1iVZiM5zn0GHVfciHrMEirlq8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-rNqCsGLJOUSKlWRz-O231g-1; Tue, 23 Jun 2026 13:26:45 -0400
-X-MC-Unique: rNqCsGLJOUSKlWRz-O231g-1
-X-Mimecast-MFC-AGG-ID: rNqCsGLJOUSKlWRz-O231g_1782235604
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-463aaa77ffeso68635f8f.3
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 10:26:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782235604; x=1782840404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lVPkNP6BJkSGxsw8Xm+oSCJFyrrNmnKR4VG6pNKWuqE=;
-        b=RWtN+S3w5nUnDU9qN4AoM9hgBMTiCfuemcvk1UVk3ycFf04W1NwFhoIT/S8taijT6n
-         +TSL5al3pOADiNNudozhS9kKueRxCMGUJJoW2tMLlAkZpnuWkxFfl19j6VVo5Z7KI3YL
-         XL7jA1wsIi7tfbeHVmtXXdmRVJS2eIXw+R+JO1XQzzRdV6I7DG25K5wZMdF2hWS/1VOf
-         +RObMIf6tfT4LxmDIjcFwvMjOwDs7IJEZLR+YZwPphF/fDxJ9NnDVEx69qxs15zDgH/v
-         FDimkDQYi8zSebcreC8GXjd6wHWXCgpUKtwjNNFRDIQVmDaEJCED/JOhAoqHh32UEizf
-         HjWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782235604; x=1782840404;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lVPkNP6BJkSGxsw8Xm+oSCJFyrrNmnKR4VG6pNKWuqE=;
-        b=ZU/dKwIK53cevnLVXaPIwwdIVAa+rX+QFfZSeVh9GoivIH2AxVw9APtldBfFEIUWNF
-         2MHs41IPv3ci3mOZwlyZx75OFyJ2XUb9KGk5EIUMvgG4Px2RSzxRoUd8ru44/SGZw9K0
-         lFhFUQcdDFK5dc7uCHgkEYtRECmnCSRTTSBgo/9LBvd80RQP9ayCtO8yUkfTNggCQ8Rb
-         dwsAltN1TVh76R91vRIpagYbgYJUAaRULQEbPzCbrfVmk0uT/YSd5JVWhUZNXwjcduNU
-         FC/gVnh7GBcSdn4m+xGh8I2cumM+Vh0GAtJbL1mITWtHkw0HVqYysMjCW+8THKDlBaBs
-         Is5g==
-X-Forwarded-Encrypted: i=1; AFNElJ8HkUTPvwHA7gkxeUdloab2JXJaghECfPSbg1ixpY5vb75fmPxd40sE0Y/sSfOi6xw+qbo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG0N+ETTu8tsmwunQpnMTisswJzj3Ow0HaoEzpzlRiqvHk0vxB
-	4OEPHrm8f831hiaf/duK3BuCrrQqewKV/5UedQBZSGUd9RNUb03WLu6Um3FZvZgbOrEEOrOXrd0
-	iFMYo7HjtVSRPvJEv98FP6htNursY4bKVCz0EkpTzKYjk1az2d/HJKQ==
-X-Gm-Gg: AfdE7cnjL9gXVA8JgtZ4LuyLq9EmEtSjuv8S+cNdhqBhHuPNpqiK8yLFcYjmBsIPWZ5
-	OMkBczWRtK4PjSASCLtXDHFKdbdumYoVTf66H8aktEs0HumLIKmsPniME4d/tCSDqeuAYXGiD2l
-	NF+Jjd79Ixf8eQ2WIC6lQ9PrSRidICHr9cpkbxBzKgIVCtznSZadvjuAMeFBzdtvxXRSsXpwFRY
-	r1wNA0olFWq2G+PcWKxB008Je+wkbuErdHiU/qS83fiA28CupUr1amGwrdmriXc4FVu836KE3Si
-	FD4CSUxe3fvto7T7fJYtk9Va9iYTRxvHm1V+ycSgLphEN0UxKgPaEZBd3q4MacHfxzNertt7C2k
-	4Y/0jcOEktfkNFFeaCCaK/EiqLcMGGJ2U
-X-Received: by 2002:a05:600c:d4:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49240e20de0mr257222805e9.5.1782235603239;
-        Tue, 23 Jun 2026 10:26:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:d4:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49240e20de0mr257222385e9.5.1782235602685;
-        Tue, 23 Jun 2026 10:26:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4923fd15535sm425803415e9.3.2026.06.23.10.26.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 10:26:41 -0700 (PDT)
-Date: Tue, 23 Jun 2026 13:26:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Arseniy Krasnov <avkrasnov@rulkc.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ROAF8xjh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782235958; x=1813771958;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=EaXUBP6Fus11Qnb7LZg/aF3HHSEsKAT0/awbcaYgXBk=;
+  b=ROAF8xjhkKfAMo9RAZroEVCYnh7wSbsMh+f4gUoRcslA+QjFeRiAZhZX
+   2F8BljZbQIcTagEWUJCF52CvALEHGpaGLsF/DtZ06UJJ8NeLtmLUtya2n
+   saBF3DTCSBHgbYU1B4j4unwGE6clol8a6YdERKExUDzQGNjqssHuNQbcG
+   /Va0gjOWk7CCGomOVZxQpCpyKLuy2tTHQ615fxIBSVpQKJzPUvcOOoN+g
+   Tq/KHUtxWJL1K41gRl0NCOOqPAeYCNNB2BCDzGw+V7liUIqc1SC2iO9HT
+   PSklMYTX8Tyc7tMGVwlsysRvj8JTDJMn4b9ENK6p8+Bcx0m/ynzcnO4CX
+   Q==;
+X-CSE-ConnectionGUID: zK2uSsThQ0iUlUPCf9DlaA==
+X-CSE-MsgGUID: xdlVyD/OR4WDxQl+qcRq9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="100538715"
+X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
+   d="scan'208";a="100538715"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 10:32:37 -0700
+X-CSE-ConnectionGUID: HxFBj3SXTf670benaEflbQ==
+X-CSE-MsgGUID: sSTU+2ntTtaz6yVM4DxKQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
+   d="scan'208";a="273646411"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 10:32:36 -0700
+Date: Tue, 23 Jun 2026 10:32:36 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Simon Horman <horms@kernel.org>, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, oxffffaa@gmail.com,
-	rulkc@linuxtesting.org
-Subject: Re: [PATCH net-next v3] vsock/virtio: rewrite MSG_ZEROCOPY flag
- handling
-Message-ID: <20260623132014-mutt-send-email-mst@kernel.org>
-References: <20260623153819.697635-1-avkrasnov@rulkc.org>
+	David Laight <david.laight.linux@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Asit Mallick <asit.k.mallick@intel.com>,
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v12 00/12] VMSCAPE optimization for BHI variant
+Message-ID: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAFyvOWoC/3XSS27CMBAG4KugrGvkGb/irnqPqgvbYxdLEFBCI
+ yrE3eugtiSRWXokf5rHf22G2Oc4NK+ba9PHMQ/52JUH4MumCTvXfUaWqRQa5Ki4Bc3GwxDcKTK
+ /84wMSW2tMQlTU36c+pjy5c69f5T3Lg/nY/9910eYqr8OyoUzAuOMnILEI1gh6W2fu6/LNnfnu
+ N+G46GZtBH/BeCglgIWwULwRDYIZ3VdEDMBzVIQRVDGioBKyGhFXZAPAcAuBVkEcORIRm2JQl1
+ QMwGX+xwVK3MgaR0lCs95XdAPATksBT1tUgMnUqAMyLpg/gTNxXoKUwRvtDPGONu6VBfambC+Z
+ lsE3XqvUHrhvK0L9iFIjkvBTteUBNoHLPF6MgXwGQHrSPFixORK1px3UT2ZA2Bm4KoNmHLpoY0
+ 8JIEuVfq43W4/yqDU0kUDAAA=
+X-Change-ID: 20250916-vmscape-bhb-d7d469977f2f
+X-Mailer: b4 0.16-dev
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -103,105 +96,197 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260623153819.697635-1-avkrasnov@rulkc.org>
 
-On Tue, Jun 23, 2026 at 06:38:19PM +0300, Arseniy Krasnov wrote:
-> Logically it was based on TCP implementation, so to make further support
-> easier, rewrite it in the TCP way (like in 'tcp_sendmsg_locked()'). This
-> patch only rewrites flag handling (e.g. it doesn't change logic).
-> 
-> Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+v12:
+- Applied tags from Sean and Borisov.
+- Rebased to v7.1
 
+It would be nice to have some more review-tags to help this get merged
+sooner. If you have already reviewed v11 this version should be easy, it is
+mostly a rebase.
 
-It seems to change logic though:
+v11: https://lore.kernel.org/r/20260422-vmscape-bhb-v11-0-b18e0cf32af4@linux.intel.com
+- Use ifdef EXPORT_SYMBOL_FOR_KVM guard for EXPORT_STATIC_CALL_FOR_KVM()
+  definition. It is not practical to define one but not the other. (Sean)
+- Collected tags.
 
-> ---
->  Changelog v1->v2:
->  * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
->    already added.
->  Changelog v2->v3:
->  * Update commit message.
->  * Remove one empty line.
-> 
->  net/vmw_vsock/virtio_transport_common.c | 47 ++++++++++++-------------
->  1 file changed, 22 insertions(+), 25 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 09475007165b..41c2a0b82a8e 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -328,38 +328,35 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
->  		return pkt_len;
->  
-> -	if (info->msg) {
-> -		/* If zerocopy is not enabled by 'setsockopt()', we behave as
-> -		 * there is no MSG_ZEROCOPY flag set.
-> +	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
-> +		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
-> +		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
-> +		 * handling from 'tcp_sendmsg_locked()'.
->  		 */
-> -		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
-> -			info->msg->msg_flags &= ~MSG_ZEROCOPY;
+v10: https://lore.kernel.org/r/20260414-vmscape-bhb-v10-0-efa924abae5f@linux.intel.com
+- Add patches to define EXPORT_STATIC_CALL_FOR_MODULES() and
+  EXPORT_STATIC_CALL_FOR_KVM(), so that vmscape_predictor_flush static key
+  is only accessible to KVM and not to other kernel modules. (PeterZ)
+  (Borisov earlier objected to exporting the static key to all modules, but
+  now the static key is only exported to KVM. I guess that resolves the
+  concern.)
+- Avoid an explicit call to vmscape_mitigation_enabled() and instead use
+  static_call_query() in VMexit hot path. (Sean)
+- Drop vmscape_mitigation_enabled(), as it is no longer needed.
+- Rebased to v7.0
 
-So previously without SOCK_ZEROCOPY, MSG_ZEROCOPY was always ignored...
+v9: https://lore.kernel.org/r/20260402-vmscape-bhb-v9-0-94d16bc29774@linux.intel.com
+- Use global variables for BHB loop counters instead of ALTERNATIVE-based
+  approach. (Dave & others)
+- Use 32-bit registers (%eax/%ecx) for loop counters, loaded via movzbl
+  from 8-bit globals. 8-bit registers (e.g. %ah in the inner loop) caused
+  performance regression on certain CPUs due to partial-register stalls. (David Laight)
+- Let BPF save/restore %rax/%rcx as in the original implementation, since
+  it is the only caller that needs these registers preserved across the
+  BHB clearing sequence.
+- Drop Reviewed-by from patch 2/10 as the implementation changed significantly.
+- Apply Tested-by from Jon Kohler to the series (except patch 2/10).
+- Fix commit message grammar. (Borislav)
+- Rebased to v7.0-rc6.
 
+v8: https://lore.kernel.org/r/20260324-vmscape-bhb-v8-0-68bb524b3ab9@linux.intel.com
+- Use helper in KVM to convey the mitigation status. (PeterZ/Borisov)
+- Fix the documentation for default vmscape mitigation. (BPF bot)
+- Remove the stray lines in bug.c (BPF bot).
+- Updated commit messages and comments.
+- Rebased to v7.0-rc5.
 
-> +		if (info->msg->msg_ubuf) {
-> +			uarg = info->msg->msg_ubuf;
-> +			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+v7: https://lore.kernel.org/r/20260319-vmscape-bhb-v7-0-b76a777a98af@linux.intel.com
+- s/This allows/Allow/ and s/This does adds/This adds/ in patch 1/10 commit
+  message (Borislav).
+- Minimize register usage in BHB clearing seq. (David Laight)
+  - Instead of separate ecx/eax counters, use al/ah.
+  - Adjust the alignment of RET due to register size change.
+  - save/restore rax in the seq itself.
+  - Remove the save/restore of rax/rcx for BPF callers.
+- Rename clear_bhb_loop() to clear_bhb_loop_nofence() to make it
+  obvious that the LFENCE is not part of the sequence (Borislav).
+- Fix Kconfig: s/select/depends on/ HAVE_STATIC_CALL (PeterZ).
+- Rebased to v7.0-rc4.
 
-now it's not in this case?
+v6: https://lore.kernel.org/r/20251201-vmscape-bhb-v6-0-d610dd515714@linux.intel.com
+- Remove semicolon at the end of asm in ALTERNATIVE (Uros).
+- Fix build warning in vmscape_select_mitigation() (LKP).
+- Rebased to v6.18.
 
+v5: https://lore.kernel.org/r/20251126-vmscape-bhb-v5-2-02d66e423b00@linux.intel.com
+- For BHI seq, limit runtime-patching to loop counts only (Dave).
+  Dropped 2 patches that moved the BHB seq to a macro.
+- Remove redundant switch cases in vmscape_select_mitigation() (Nikolay).
+- Improve commit message (Nikolay).
+- Collected tags.
 
-Maybe the right call, but saying "does not change logic" seems wrong.
+v4: https://lore.kernel.org/r/20251119-vmscape-bhb-v4-0-1adad4e69ddc@linux.intel.com
+- Move LFENCE to the callsite, out of clear_bhb_loop(). (Dave)
+- Make clear_bhb_loop() work for larger BHB. (Dave)
+  This now uses hardware enumeration to determine the BHB size to clear.
+- Use write_ibpb() instead of indirect_branch_prediction_barrier() when
+  IBPB is known to be available. (Dave)
+- Use static_call() to simplify mitigation at exit-to-userspace. (Dave)
+- Refactor vmscape_select_mitigation(). (Dave)
+- Fix vmscape=on which was wrongly behaving as AUTO. (Dave)
+- Split the patches. (Dave)
+  - Patch 1-4 prepares for making the sequence flexible for VMSCAPE use.
+  - Patch 5 trivial rename of variable.
+  - Patch 6-8 prepares for deploying BHB mitigation for VMSCAPE.
+  - Patch 9 deploys the mitigation.
+  - Patch 10-11 fixes ON Vs AUTO mode.
 
+v3: https://lore.kernel.org/r/20251027-vmscape-bhb-v3-0-5793c2534e93@linux.intel.com
+- s/x86_pred_flush_pending/x86_predictor_flush_exit_to_user/ (Sean).
+- Removed IBPB & BHB-clear mutual exclusion at exit-to-userspace.
+- Collected tags.
 
-> +		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
-> +			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
-> +						    NULL, false);
-> +			if (!uarg) {
-> +				virtio_transport_put_credit(vvs, pkt_len);
-> +				return -ENOMEM;
-> +			}
->  
-> -		if (info->msg->msg_flags & MSG_ZEROCOPY)
->  			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
-> +			if (!can_zcopy)
-> +				uarg_to_msgzc(uarg)->zerocopy = 0;
->  
-> +			have_uref = true;
-> +		}
-> +
-> +		/* 'can_zcopy' means that this transmission will be
-> +		 * in zerocopy way (e.g. using 'frags' array).
-> +		 */
->  		if (can_zcopy)
->  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> -
-> -		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> -		    info->op == VIRTIO_VSOCK_OP_RW) {
-> -			uarg = info->msg->msg_ubuf;
-> -
-> -			if (!uarg) {
-> -				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> -							    pkt_len, NULL, false);
-> -				if (!uarg) {
-> -					virtio_transport_put_credit(vvs, pkt_len);
-> -					return -ENOMEM;
-> -				}
-> -
-> -				if (!can_zcopy)
-> -					uarg_to_msgzc(uarg)->zerocopy = 0;
-> -
-> -				have_uref = true;
-> -			}
-> -		}
->  	}
->  
->  	rest_len = pkt_len;
-> -- 
-> 2.25.1
+v2: https://lore.kernel.org/r/20251015-vmscape-bhb-v2-0-91cbdd9c3a96@linux.intel.com
+- Added check for IBPB feature in vmscape_select_mitigation(). (David)
+- s/vmscape=auto/vmscape=on/ (David)
+- Added patch to remove LFENCE from VMSCAPE BHB-clear sequence.
+- Rebased to v6.18-rc1.
+
+v1: https://lore.kernel.org/r/20250924-vmscape-bhb-v1-0-da51f0e1934d@linux.intel.com
+
+Hi All,
+
+These patches aim to improve the performance of a recent mitigation for
+VMSCAPE[1] vulnerability. This improvement is relevant for BHI variant of
+VMSCAPE that affect Alder Lake and newer processors.
+
+The current mitigation approach uses IBPB on kvm-exit-to-userspace for all
+affected range of CPUs. This is an overkill for CPUs that are only affected
+by the BHI variant. On such CPUs clearing the branch history is sufficient
+for VMSCAPE, and also more apt as the underlying issue is due to poisoned
+branch history.
+
+Below is the iPerf data for transfer between guest and host, comparing IBPB
+and BHB-clear mitigation. BHB-clear shows performance improvement over IBPB
+in most cases.
+
+Platform: Emerald Rapids
+Baseline: vmscape=off
+Target: IBPB at VMexit-to-userspace Vs the new BHB-clear at
+	VMexit-to-userspace mitigation (both compared against baseline).
+
+(pN = N parallel connections)
+
+| iPerf user-net | IBPB    | BHB Clear |
+|----------------|---------|-----------|
+| UDP 1-vCPU_p1  | -12.5%  |   1.3%    |
+| TCP 1-vCPU_p1  | -10.4%  |  -1.5%    |
+| TCP 1-vCPU_p1  | -7.5%   |  -3.0%    |
+| UDP 4-vCPU_p16 | -3.7%   |  -3.7%    |
+| TCP 4-vCPU_p4  | -2.9%   |  -1.4%    |
+| UDP 4-vCPU_p4  | -0.6%   |   0.0%    |
+| TCP 4-vCPU_p4  |  3.5%   |   0.0%    |
+
+| iPerf bridge-net | IBPB    | BHB Clear |
+|------------------|---------|-----------|
+| UDP 1-vCPU_p1    | -9.4%   |  -0.4%    |
+| TCP 1-vCPU_p1    | -3.9%   |  -0.5%    |
+| UDP 4-vCPU_p16   | -2.2%   |  -3.8%    |
+| TCP 4-vCPU_p4    | -1.0%   |  -1.0%    |
+| TCP 4-vCPU_p4    |  0.5%   |   0.5%    |
+| UDP 4-vCPU_p4    |  0.0%   |   0.9%    |
+| TCP 1-vCPU_p1    |  0.0%   |   0.9%    |
+
+| iPerf vhost-net | IBPB    | BHB Clear |
+|-----------------|---------|-----------|
+| UDP 1-vCPU_p1   | -4.3%   |   1.0%    |
+| TCP 1-vCPU_p1   | -3.8%   |  -0.5%    |
+| TCP 1-vCPU_p1   | -2.7%   |  -0.7%    |
+| UDP 4-vCPU_p16  | -0.7%   |  -2.2%    |
+| TCP 4-vCPU_p4   | -0.4%   |   0.8%    |
+| UDP 4-vCPU_p4   |  0.4%   |  -0.7%    |
+| TCP 4-vCPU_p4   |  0.0%   |   0.6%    |
+
+[1] https://comsec.ethz.ch/research/microarch/vmscape-exposing-and-exploiting-incomplete-branch-predictor-isolation-in-cloud-environments/
+
+---
+Pawan Gupta (12):
+      x86/bhi: x86/vmscape: Move LFENCE out of clear_bhb_loop()
+      x86/bhi: Make clear_bhb_loop() effective on newer CPUs
+      x86/bhi: Rename clear_bhb_loop() to clear_bhb_loop_nofence()
+      x86/vmscape: Rename x86_ibpb_exit_to_user to x86_predictor_flush_exit_to_user
+      x86/vmscape: Move mitigation selection to a switch()
+      x86/vmscape: Use write_ibpb() instead of indirect_branch_prediction_barrier()
+      static_call: Define EXPORT_STATIC_CALL_FOR_MODULES()
+      KVM: Define EXPORT_STATIC_CALL_FOR_KVM()
+      x86/vmscape: Use static_call() for predictor flush
+      x86/vmscape: Deploy BHB clearing mitigation
+      x86/vmscape: Resolve conflict between attack-vectors and vmscape=force
+      x86/vmscape: Add cmdline vmscape=on to override attack vector controls
+
+ Documentation/admin-guide/hw-vuln/vmscape.rst   | 15 ++++-
+ Documentation/admin-guide/kernel-parameters.txt |  6 +-
+ arch/x86/Kconfig                                |  1 +
+ arch/x86/entry/entry_64.S                       | 21 ++++---
+ arch/x86/include/asm/cpufeatures.h              |  2 +-
+ arch/x86/include/asm/entry-common.h             | 13 ++--
+ arch/x86/include/asm/kvm_types.h                |  1 +
+ arch/x86/include/asm/nospec-branch.h            | 15 +++--
+ arch/x86/kernel/cpu/bugs.c                      | 84 +++++++++++++++++++++----
+ arch/x86/kvm/x86.c                              |  4 +-
+ arch/x86/net/bpf_jit_comp.c                     |  4 +-
+ include/linux/kvm_types.h                       | 10 ++-
+ include/linux/static_call.h                     |  8 +++
+ 13 files changed, 147 insertions(+), 37 deletions(-)
+---
+base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+change-id: 20250916-vmscape-bhb-d7d469977f2f
+
+Best regards,
+--  
+Pawan
+
 
