@@ -1,13 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C45A363C64;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1493624C8;
 	Tue, 23 Jun 2026 09:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782206165; cv=none; b=m83e+4myhzArsSHJ5s4us0PtuCttImXM4O/KFz+W3SWVbYCaBLbCl6p6aX6YXTFxNVTmWkxl5k1knGHQJRjNe3g1zsvDNBYb1+RNqv+1eV6VQZOZwXrcwexBi1c5CQIFDk2fHttgrTh1JoEmIK1MhUwnEzYWy64AJitEMfZQMwc=
+	t=1782206165; cv=none; b=hIa8KhvI/CVaZv4+8bX6zc1zvygAT6WT7QcdlFT262LN255icZ2An6UqeEkkHDauCEdXPrI1x9hfX7T5y6ulnrIsO74jdcHgk2PFPfWujAMiuxsX4Tw2OEY8WiDNc2/G3UA9awrRaovkD1r2u8Wc4R+/X62cpixxG7XU5uNARXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782206165; c=relaxed/simple;
-	bh=IHPxirW0tGSOOWb/OQLL9F3AfBhjt8ti3JHwfRUhur0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OT82Cji1I0VlqRNS02AXt/QUJr0Pdza/LDkZCz1TfBeHL3CS0UVFB1+bdUoDL4LEHzGjftHegxCqQotqPkabQqC6qK+MwH8l/9EWaFVPRYJyfel8GDb0AInT3iH+guWkUH6cMgdrSuVpLVbKCN5HVwIfu04oLjecqgEQ/QowSws=
+	bh=xpsrDYFTmiRF4oI632s75CvkbiV8Eses+SRTA5q3r5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qPKvFNZl7Wl8t4mBuu9/F1VwZh9QlqTzONbEzT52OTIgtxLAA/NxDry/nzGLiVwQan2NTL6oGpSphHjxNqfY19ZG203do7ViiAAOgchxekYImX/1Ywn7whz7jkkDMZyDBctevfC7M/LEIZIIbWgYRh7bKn7EkehOlF4kClpfz+U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -15,8 +16,8 @@ Received: from io.fritz.box (p200300f6af4fc500cc95bb0c16cd4e45.dip0.t-ipconnect.
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id D4DDA203CDD;
-	Tue, 23 Jun 2026 11:16:02 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 2799F203D40;
+	Tue, 23 Jun 2026 11:16:03 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -30,10 +31,12 @@ Cc: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 0/4] kvm: sev: Fix issues reported by Sashiko
-Date: Tue, 23 Jun 2026 11:15:52 +0200
-Message-ID: <20260623091556.1500930-1-joro@8bytes.org>
+Subject: [PATCH 2/4] kvm: sev: Unmap pages in correct order in sev_gmem_post_populate()
+Date: Tue, 23 Jun 2026 11:15:54 +0200
+Message-ID: <20260623091556.1500930-3-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260623091556.1500930-1-joro@8bytes.org>
+References: <20260623091556.1500930-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,35 +47,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Hi,
+The kmap_local() interface requires unmapping of pages in reverse
+order of mapping.
 
-On the post of my direct-VMSA patch-set Sashiko reported a few real
-pre-existing issues in the SEV-SNP launch_update code. This patch-set
-addresses three of them:
+Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	* Fix user-triggerable WARN_ON on LAUNCH_UPDATE path.
-
-	* Check that CPUID pages are writable before writing error
-	  information to it.
-
-	* Fix kunmap_local() order.
-
-Please review.
-
--Joerg
-
-Joerg Roedel (4):
-  kvm: sev: Fix user-space triggerable WARN_ON on snp_launch_update path
-  kvm: sev: Unmap pages in correct order in sev_gmem_post_populate()
-  KVM: guest_memfd: Add `write` parameter to kvm_gmem_populate()
-  kvm: sev: Acquire a writeable page reference for CPUID pages
-
- arch/x86/kvm/svm/sev.c   | 15 +++++++++++++--
- arch/x86/kvm/vmx/tdx.c   |  2 +-
- include/linux/kvm_host.h |  4 +++-
- virt/kvm/guest_memfd.c   |  4 ++--
- 4 files changed, 19 insertions(+), 6 deletions(-)
-
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 41dcba5180ca..f09d15f68964 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2360,8 +2360,8 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 
+ 		memcpy(dst_vaddr, src_vaddr, PAGE_SIZE);
+ 
+-		kunmap_local(src_vaddr);
+ 		kunmap_local(dst_vaddr);
++		kunmap_local(src_vaddr);
+ 	}
+ 
+ 	ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, PG_LEVEL_4K,
 -- 
 2.53.0
 
