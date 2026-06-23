@@ -1,141 +1,129 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793A938D407
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782236907; cv=pass; b=cVaQ62LIvBv+oQUmp6aB+UE2wP2cDaQyr+IRU6D0DQGRGiZyOBej/MfIBe+fVg7wArB87ZGMH5Ecboi4owVjvvnOE1QnygvSXgQfHStIl+2IzHY+HrsjssxvFnZLeM4k+PrBEfwwr+srhM3zXupKhVF2CJn0s4TLSl0iM2QOpt0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782236907; c=relaxed/simple;
-	bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u5qmIXKQuGgKFyIPvF6LBFoc8WDJ2cxCYa8wTRGfpwxoYYtoS6s0bmKrcwYeejcZ9CUoHwRWBq9q/vcGBNaEHpZ/Xt3w3uNVeaQfRD1vTDBycf252i29IL590Ono08JLvzTWNxt7LwGenkSQsTQko9ed2PiLZmUnEt5u+Ky7SVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dhhWaiYD; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3720C26E165;
+	Tue, 23 Jun 2026 17:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782236979; cv=none; b=BSNI8LLJrTO5AmLS0aVhPrcUabvQi3HrL5/ZJdqglHIUu5/cu0U9+5JiRUfEwUsi/dpRPbr9I4fg9o3OPCFU9KVZayYBPZ3nUXhwKRyI9wzfpaQbRY0i+mnkQEneuR9BLMN0KsfLDqwU7CINGziCfyCuhLHOgRIhoYPFKTVUKJ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782236979; c=relaxed/simple;
+	bh=g2y4wjRL+EF21fcYYfF51xqYTu/Iw6eL3J9ytA02wPE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aTjCQnVFdKH8hMyIEVEZ0P3Scc4oJuHQLnTqW5TDrBaQ+k7B020XLE2XkMsHHaesY5MJXAGKA1teSpodrkl/wa56b8TfWeSZAxwVxfLIQnnTf7CRTQ+xd3Utey4duTZaxcn47RYJzl08PKaoErco0eq3+ZciAIGzE6FzbEkEVH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyjKrXQZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dhhWaiYD"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-697d677fc3dso119592a12.3
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 10:48:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782236905; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HQRDBLIXwPbTrOp3GkN5UdE1LhHBWoFNHnzuY/1IrMMtwHi5D/aeNDeBWO3BtWqym9
-         j7Eq4qHiiA5aEUJLP/GWKZdh9ThI+6cFaRiT7SHX7ErRqQDbdbGHN1utzguuhQJVzvQu
-         APtFApvj3VTRDN2LzUJMhT1FUGQJFphUPxXk9A7tPRORbxQ6vJLqiEVOhusXxJbFGEro
-         jMk2IdktVGo6YZsiPBpcAYhwmMNgDvWRkdVqTicUQGYMJG1XfLHRVkU24Esw/DSZVOOf
-         yz2Rw8PzXbwgWODOKSC13kbEJgbQqMKnJe1VCk5n/lQKDIpt6A8qGAM9RMlCF1P3fU+s
-         FWww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
-        fh=9ZVS8MUoMxw+1RMDbr+DtC/gvxjXQBzjMzwP6r7JoLY=;
-        b=je2tWIZm3hQlNYL4wUzNZB228NTteSt4DgG18lreGlXHJVk2nywxtv2dtsYpXy+C3L
-         obwW/ifln5EyNK5I4HIiljft9YoMrpZLfqAay73j+3wl86wgCtLdrpKEBbsiee/3fh35
-         U0vhLQBb0iSoqzr41uq3jfD6K+ibsfu7/uZQKb1s/bxs6d9diK0vFXW/Ik3d/oWVnKbb
-         sattK3SV6eZu3czERYxnwDNcs6uKwCl6sFHoUbAvhcceytKQ9HrVIp/fJDc+lmexL4r2
-         TccanI8Xd0r1yJkwaY+l/Paxnuq4sAzf9yP72oufChAucuH336/bEFDOwWVhYrmETQe+
-         cfmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782236905; x=1782841705; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
-        b=dhhWaiYDMzmVCqcZLo1Ww3Q6RIeRFokXwQ4T1o8H/LynuZqN4Z7RyHZfdXFkeFFidq
-         ubPPHyqZQLpsLaqcqa924TbJKj4h4xfhYsUXX+VB4M/+nET5Qzz3YLiGsTC4Thgi1BWy
-         PhxiT6s0tCFa6xb/wfz31ZCcdfdj9nQWhKqehJG5ghg70fLZrBfqmt9veN9c6Wa7GlTO
-         ADP/Md7DuZuxljNyx05b1jFCB/x4YcvkgrlCrVCmvKX7DYdTzCnju7qmu9mZzRmKlYzh
-         S0asHwr7I0Hg/B2mu8qtekrOqBl4ZWlfrdGWmgWp9vKCYTLF3FXzEfoyi/Nk4cqn7I2F
-         ehWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782236905; x=1782841705;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y9+yQ6m2SHjTMQK+C809Y49D4LsiLBGTR1bcbiYo9aM=;
-        b=CJvd9RUUNsai1ef2U/Nb+gUifYULALKSrJ79TZTMJueHl0exbgNdqQ2hFgD6NUKarC
-         NBxZNWoDJSmiJoUkgKq7Mfs40KJqzIGsGN/WZOKD5wZ+H6IoNbMWXgvUQd4yK8KRuQVk
-         UR4CCfi835lLWRSK0T7nptVymaxvRyuMPxsGm4m9rb66rDw7AobHd3uWWAOXARzSGp4G
-         Y958Xw4ZwlT7xwyB5N1R3wuYgIg6As8ZpMue8zTnwyejRMhTxvHG8gXLTF6aWqbVfzhJ
-         CWviIS4BIlPJsEFCGaUtZl+bxo/Ba+cQhJJg8vgiJ7AxWS8v3+NRvYZ0Vg5XPaGS2yCB
-         HxkA==
-X-Forwarded-Encrypted: i=1; AFNElJ+UM5Ye/SuzQf/pBP5UKTt3yCTzOwVxVexV4Oha5jwX3gBn/98HhOEOTB7jx7+cx9p853w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQUeRcXXlOsvGSxI/7c8pwv3SyWJd7cqgUjeOlgIHeZ3ej0+4I
-	F6ndJzRiYD4+NYVAomkSRWMHZXMBQVeChg2gP8cZU1p2zFT54soNnO5wu78xn4bC4vkJT3H5smU
-	/LZ7rHaO80RnD69ukn1YPoIPOmXpzosDLXdqdYa9B
-X-Gm-Gg: AfdE7ck7IOmcsIvM4ZtpxzgpIAVX+wfAvsUte4RnFd1obPGcbetkbdciKka/XG8dcBa
-	yacy+UVsD/e+RTfgxkSdMcL0Qt+DGt2bzuzjsLRh5dOymzpkpwfzL/H6GzvxCMEAXSKi8WYg/nu
-	WFDtspfcU4nWFopN9Y8OjX+kKibPM+l6ZmVTwfTVi7rDmlT6wPNWv4MEhlWRLwLqUOdSYZOAXs7
-	eRzq6cJGde4FA6cJpvEYeqZAztMXMO23Fks2Utu90vAw66/a3juIckLEYx6hn8Hs4QpNOT+WfVH
-	a2gfLrOd0NVN2wlowYSBzZEhFDLX/BBcrlVIITJKMWPD4uWxO53NyY8175OLdTOWBhlMhw==
-X-Received: by 2002:a17:907:60cc:b0:c0d:5466:ce4c with SMTP id
- a640c23a62f3a-c0d5466d9dcmr844180966b.1.1782236904428; Tue, 23 Jun 2026
- 10:48:24 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 10:48:22 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
-References: <cover.1781419998.git.ashish.kalra@amd.com> <1feccf6e2a56d949b30f403c0ca7949f580e5982.1781419998.git.ashish.kalra@amd.com>
- <0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyjKrXQZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F1F1F000E9;
+	Tue, 23 Jun 2026 17:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782236977;
+	bh=m0BlYAjC4y1xPTA0tggkdt/va89eyWJsjZJi6vyGLCM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iyjKrXQZotKQolK8ZFZPA2mVInwY/OyV9jqypSLnkN4Cc7k8ncklFkgfatnOxy7Mb
+	 Pbn+Pbgwt0Bvj4LMGDCgKjVxnX7XyCJ77Z7E8yx0qst0cGM+aowQ8XT/wipJnPFrhs
+	 pbmk5ll95WYd6EBDG6bn8cCrmMe/NOvCivDrqazNUIf5gxMcelCZb8fVx2S8P4QdAz
+	 IEolODBnVoNbBoGO/d005u8DZY+tCC5SKPvDzk0QD7t3ZHiPM1NDTWr5a6JZjcyOTq
+	 H5kmS9GgBGHQizQSHpNRu4jFNS61tM6eJi7l7GA7EMsBeRJSz0pvG9asYVtxyFqQwB
+	 UvXe6Ru6o1Wow==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 10/12] x86/vmscape: Deploy BHB clearing mitigation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Pawan Gupta" <pawan.kumar.gupta@linux.intel.com>
+Cc: bpf@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260622-vmscape-bhb-v12-10-76cbda0ae3e5@linux.intel.com>
+References: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+ <20260622-vmscape-bhb-v12-10-76cbda0ae3e5@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 23 Jun 2026 17:49:37 +0000
+Message-Id: <20260623174937.A2F1F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 23 Jun 2026 10:48:22 -0700
-X-Gm-Features: AVVi8CctYJVp25OwZWeFxJ-OUwcfHXzFhyslZieHlTKLg5vqXDjAr-hhZP5Iwqw
-Message-ID: <CAEvNRgHDNGCETxLsy0v-_cBO1=1U+tXtOXWEFrXLU7pYz7U9ow@mail.gmail.com>
-Subject: Re: [PATCH v8 3/7] crypto/ccp: Disable CPU hotplug while SNP is active
-To: Jethro Beekman <jethro@fortanix.com>, Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, seanjc@google.com, peterz@infradead.org, 
-	thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com, 
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, 
-	jackyli@google.com, pgonda@google.com, rientjes@google.com, 
-	jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com, 
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com, 
-	darwi@linutronix.de, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
 
-Jethro Beekman <jethro@fortanix.com> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] VMSCAPE mitigation downgrades from IBPB to BHB clear without verif=
+ying eIBRS is active, leaving host userspace vulnerable to BTB injection.
+- [High] The BHB clearing sequence `clear_bhb_loop_nofence` lacks a specula=
+tion barrier (LFENCE), allowing speculative bypass of the BHI mitigation.
+--
 
-> On 2026-06-15 21:49, Ashish Kalra wrote:
->> From: Ashish Kalra <ashish.kalra@amd.com>
->>
->> The SEV firmware enumerates the CPUs at SNP initialization and is not
->> aware of the OS bringing CPUs online or offline afterwards, so OS CPU
->> hotplug can diverge from the firmware's expectations and break SNP.
->> Disable CPU hotplug while SNP is active.
->
-> I think this is too broad. If I have a hypervisor that supports SNP virtualization, a (non-confidential) L1 guest running Linux should still support CPU hotplug while also running confidential L2 guests.
->
-> --
-> Jethro Beekman | CTO | Fortanix
->
+commit 23a617eeb2c65912ce9fd14bc20dacfa19110ed4
+Author: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-Were any other solutions considered other than disabling CPU hotplug?
+x86/vmscape: Deploy BHB clearing mitigation
+   =20
+IBPB mitigation for VMSCAPE is an overkill on CPUs that are only affected
+by the BHI variant of VMSCAPE. On such CPUs, eIBRS already provides
+indirect branch isolation between guest and host userspace. However, branch
+history from guest may also influence the indirect branches in host
+userspace. To mitigate the BHI aspect, use the BHB clearing sequence.
 
-Is this temporary until something else is implemented?
+> diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/e=
+ntry-common.h
+> --- a/arch/x86/include/asm/entry-common.h
+> +++ b/arch/x86/include/asm/entry-common.h
+[ ... ]
+> @@ -84,6 +84,10 @@ static inline void arch_exit_to_user_mode_prepare(stru=
+ct pt_regs *regs,
+>  #endif
+> =20
+>  	if (unlikely(this_cpu_read(x86_predictor_flush_exit_to_user))) {
+> +		/*
+> +		 * Since the mitigation is for userspace, an explicit
+> +		 * speculation barrier is not required after flush.
+> +		 */
+>  		static_call_cond(vmscape_predictor_flush)();
 
-I'm not sure how commonly CPU hotplug is used, and if people are okay
-with trading in CPU hotplug to get SNP.
+[Severity: High]
+Does omitting the speculation barrier here allow the BHB clearing loop to be
+speculatively bypassed?
 
-Is it that fundamentally the SEV firmware can't support hotplug, so
-there's no point in keeping it enabled anyway?
+Since SYSRET, IRET, and SWAPGS do not serialize the processor, it appears an
+attacker could poison the branch predictor to predict an early exit from the
+BHB clearing loop itself.
 
-Is there some way of supporting hotplug for CPUs that won't be used with
-SNP, for serving non-SNP VMs on the same host as SNP VMs, or is that too
-complicated?
+If the CPU speculatively bypasses the loop, wouldn't it speculatively
+execute host userspace indirect branches with the guest's poisoned branch
+history buffer still intact?
 
->>
->> [...snip...]
->>
+[ ... ]
+> diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> --- a/arch/x86/kernel/cpu/bugs.c
+> +++ b/arch/x86/kernel/cpu/bugs.c
+[ ... ]
+> @@ -3114,7 +3117,17 @@ static void __init vmscape_select_mitigation(void)
+>  		break;
+> =20
+>  	case VMSCAPE_MITIGATION_AUTO:
+> -		if (boot_cpu_has(X86_FEATURE_IBPB))
+> +		/*
+> +		 * CPUs with BHI_CTRL(ADL and newer) can avoid the IBPB and use
+> +		 * BHB clear sequence. These CPUs are only vulnerable to the BHI
+> +		 * variant of the VMSCAPE attack, and thus they do not require a
+> +		 * full predictor flush.
+> +		 *
+> +		 * Note, in 32-bit mode BHB clear sequence is not supported.
+> +		 */
+> +		if (boot_cpu_has(X86_FEATURE_BHI_CTRL) && IS_ENABLED(CONFIG_X86_64))
+> +			vmscape_mitigation =3D VMSCAPE_MITIGATION_BHB_CLEAR_EXIT_TO_USER;
+
+[Severity: High]
+Should vmscape_select_mitigation() also verify that eIBRS is currently
+active before making this downgrade?
+
+The commit message mentions that eIBRS already provides indirect branch
+isolation. However, if a system boots with vmscape=3Dauto and spectre_v2 is
+set to retpoline or off, this logic changes the mitigation from
+IBPB to BHB_CLEAR based solely on the BHI_CTRL hardware capability.
+
+Without eIBRS enabled, would this leave host userspace vulnerable to
+guest-to-host BTB injection (the non-BHI variant of VMSCAPE)?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260622-vmscape-bh=
+b-v12-0-76cbda0ae3e5@linux.intel.com?part=3D10
