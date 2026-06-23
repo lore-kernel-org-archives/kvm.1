@@ -1,179 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584E738C2B8;
-	Tue, 23 Jun 2026 17:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001B12F7F1B
+	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782236083; cv=none; b=B/8WiAspwGlN8D7jo5yHxa337iUBK1gx3fh8tAQjC+SU7J2zJx3BiIERfwwvbkLgzPPzvyq5QHPIjdtjfq/TWdW+2SaEKIo/KxFtJtZuIBbeb8KE1OHFluV6w4+C08CFebhUphHVnNuTBtCizPPl0Z+y7EoVyJ7r3uHl5yfi3Fw=
+	t=1782236092; cv=none; b=QeigOLhphLb1F1pPJts7P5h/DM8HVXiPOWDDbdGAe/kcLDunX5w36wGqSRvDmvmGb3uykan1qj6C43SSIiz0bbyAjFwbF7tAuEjp+B0tmdWMD96xumMl10LhhjJr9csrUu0MiSR7bb/zSyvs+aG8UWcoW/UyTXxRHvzZQOtl9Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782236083; c=relaxed/simple;
-	bh=z/sNUYaIrPTPe86EjpLm5BGVrpojz7obnEIgESIDYQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o6Ic+swF2KefUI/EwrX3/gbwcMWuRu3lb4rmzGdcxtlu99PjmYHfAMkj1mbT+plJO1B1LIkfbHmWkTBn5uPcMN/OLNgl8YqW6UhF73KcwbFwMH97i+VYhZjvgoSpWp06rBD02Az5VJbQoLsnSoOAzAGyGctqb8OyL0QPFji6x1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXFrhRGn; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782236092; c=relaxed/simple;
+	bh=VPgj+iaPb8s6r7X5BwS/V7zX7/9vmoxbqQh7SVzyNEs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=T2Ugujt6fW1xJcbAz7l0JsZDdNqPbyDfKIiOrs6hnqCPiNVVlRVG/R3+zUO7fao5opaj03nukAnGy7chBXCpwvO9xQxUyCoPpXkDNaCYHAHIWvlsXQfgVL/2L3q8T/sbNftyp3iHLm+TjWaXdtE4b0IXup2I94ZO4hf4GGzEloA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TXsyZ5YU; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXFrhRGn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782236082; x=1813772082;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z/sNUYaIrPTPe86EjpLm5BGVrpojz7obnEIgESIDYQQ=;
-  b=hXFrhRGnl2UniOGQWDEsqhAuNiMntTi2dEmg7qJdMnyT2dTnXudVhuof
-   9ApnSR+9Ic4SVP+VXgRjzG92TgxudSzHxNdlO+5soa6214EZkLfkFYKxa
-   EU00U6zsqpyilTirN2dGyBhcwkMmkbUjZ6azxJ/FccM9FwoI3R50pGDrn
-   OGwtZnYkUudHPBte73FugnGrPMsoAR1D6d6oASZpe7aSmrZoa7H8cavBI
-   Z8cK8yzlGlX9k7enIxJrj/JzjXDI5QFyuBYOEiAHzftaEOa8dIl2CixjO
-   EmxmZJPyzubmC12noAvmMailIf6mFP8Y/9GpiYuJZYlzh5WYuqK5fMvHy
-   w==;
-X-CSE-ConnectionGUID: yXtpioI1TDyv33wTqISp0Q==
-X-CSE-MsgGUID: yb4yGPZmSsSuOb950KFPrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="100414986"
-X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
-   d="scan'208";a="100414986"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 10:34:41 -0700
-X-CSE-ConnectionGUID: 65kKS9OBRXKCxe0IHEOtwA==
-X-CSE-MsgGUID: dZylsM7yQC25fVOamVuTGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
-   d="scan'208";a="249687621"
-Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 10:34:42 -0700
-Date: Tue, 23 Jun 2026 10:34:41 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: x86@kernel.org, Jon Kohler <jon@nutanix.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	David Kaplan <david.kaplan@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Laight <david.laight.linux@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Asit Mallick <asit.k.mallick@intel.com>,
-	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: [PATCH v12 08/12] KVM: Define EXPORT_STATIC_CALL_FOR_KVM()
-Message-ID: <20260622-vmscape-bhb-v12-8-76cbda0ae3e5@linux.intel.com>
-X-Mailer: b4 0.16-dev
-References: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TXsyZ5YU"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65NBmRdS1805308;
+	Tue, 23 Jun 2026 17:34:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=roiNz4
+	KKyZOpHcBuVw3i9PIsnqu7+nfAHre4gDQZqmw=; b=TXsyZ5YUYyqKsmPd4rRi/e
+	d5S1C2l5dzBc0pFeXtHxb6MecrfB/Ou3UgakYsn0we8QJIyCf0aLbZZfkJgDNzHv
+	uElrAciBKXSGKe5WQ7zKrvy93p0tQk8vW9FpETkWYpeXG5pDxGXJeW3MWRLQRXCa
+	Wyh/m1ZPJfLTFpnYL1D+yl4HUD8RJnNyAUT4xtAxAZXKIXRpF8duPGt0cdV+7vub
+	jSruKMsuMHX4b+1Fwi6dhvFzBliK4OZ3jA3K3+OfT7JuOlPJzO5stSID9YX6jrcY
+	5YdIwu1qakp8+gIEsR3lx1waMINhgbYqn4YDjjw/KaT2dcQ7jb+GPpkB5Q+XDYng
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9gfwuk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jun 2026 17:34:49 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65NHYhhq021543;
+	Tue, 23 Jun 2026 17:34:48 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwcn7t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 23 Jun 2026 17:34:48 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65NHYkQg49021212
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Jun 2026 17:34:46 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 706A32004B;
+	Tue, 23 Jun 2026 17:34:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 48CC220040;
+	Tue, 23 Jun 2026 17:34:46 +0000 (GMT)
+Received: from [9.111.8.225] (unknown [9.111.8.225])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 23 Jun 2026 17:34:46 +0000 (GMT)
+Message-ID: <69ed9c5d-e57c-4c04-87b6-611f7547e63a@linux.ibm.com>
+Date: Tue, 23 Jun 2026 19:34:45 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: s390: gmap: protect entire guest top-level table
+ when shadowing
+To: Naveed Khan <naveed@digiscrypt.com>, kvm@vger.kernel.org
+References: <178223359030.58041.119573473883113694@digiscrypt.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <178223359030.58041.119573473883113694@digiscrypt.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4QguhTgg7WRm9LOi-bxawi4U1oAQv89m
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIzMDE0MiBTYWx0ZWRfXz+QRA8yP1uMx
+ g9K3SX9prM7Scli544YDbDA2A0d7fIJsBvgqOe6+U+7k56JtJEtz5alnbfbTWmnCHrajEEIcCYr
+ 2Xi4IHxDHYeQ1IAmLG+2SvNE16ELwSc=
+X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a3ac3b9 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=DWeQ9qxvAAAA:8 a=ZezDE1mnLR29BFnUlDAA:9 a=QEXdDO2ut3YA:10
+ a=H9FfVFjNSCz-tzo9QOUa:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIzMDE0MiBTYWx0ZWRfX1QpRZzU89+1c
+ HD1zKYu7lZCw6KOEVgYL6O5jENPHcqNQvZj/1jeT29mbcljU0wlyfMfmGH0PPvpzhNyNcUqa0WM
+ MntRhz2LGeXHJVdeBHH8LRzC7ubjJGhxIUJDYGO91NCqhwmWk58k6xYdVgCZ33Y3lq2cIihyLqQ
+ 7jzfCcNjq6YTDimx78x0dNJ8ig5inZQyOqkW+f8b3wxf8zkL89KSgNUhEOF9XLS+KP90YDDP11p
+ ILwOgGLGKiwAXfSWDgNveJSUGqXuW7cKkjEtYzk5y61F+m1zJcSvvqaCnA25/4nkVYc/wAUXoC3
+ 74OZEXZVufKtM/uQ0WXpfhi52A4vBNNnJIjkJmVtns1e/5ISY6KnLs6eRFfHVbCQ/sp5o8kA+uW
+ YAWM3+WHEIys5X4wCTl1TbwcFLAXem6BQvB8swJxiI73lWb4kyzMxkRTlfnJPhPzTgOG2HTspBe
+ YPwuXhIGCWvqNL5n8YQ==
+X-Proofpoint-ORIG-GUID: 4QguhTgg7WRm9LOi-bxawi4U1oAQv89m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-23_03,2026-06-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606230142
 
-EXPORT_SYMBOL_FOR_KVM() exists to export symbols to KVM modules. Static
-calls need the same treatment when the core kernel defines a static_call
-that KVM needs access to (e.g. from a VM-exit path).
 
-Define EXPORT_STATIC_CALL_FOR_KVM() as the static_call analogue of
-EXPORT_SYMBOL_FOR_KVM(). The same three-way logic applies:
+Am 23.06.26 um 18:53 schrieb Naveed Khan:
+[..]
 
-  - KVM_SUB_MODULES defined: export to "kvm," plus all sub-modules
-  - KVM=m, no sub-modules: export to "kvm" only
-  - KVM built-in: no export needed (noop)
+> Fixes: abeb7eb57f16 ("KVM: s390: vsie: Use mmu cache to allocate rmap")
+> Signed-off-by: Naveed Khan <naveed@digiscrypt.com>
+> ---
+> diff --git a/arch/s390/kvm/gmap.c b/arch/s390/kvm/gmap.c
+> index 77829f787d..e1e734cbc0 100644
+> --- a/arch/s390/kvm/gmap.c
+> +++ b/arch/s390/kvm/gmap.c
+> @@ -1287,7 +1287,7 @@ static int gmap_protect_asce_top_level(struct kvm_s390_mmu_cache *mc, struct gma
+>   	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+>   	smp_rmb();
+>   
+> -	rc = kvm_s390_get_guest_pages(sg->kvm, context.f, asce.rsto, asce.dt + 1, false);
+> +	rc = kvm_s390_get_guest_pages(sg->kvm, context.f, asce.rsto, asce.tl + 1, false);
+>   	if (rc > 0)
+>   		rc = -EFAULT;
+>   	if (!rc).]
+there is a patch already in the making for quite some time
+https://lore.kernel.org/kvm/20260623153331.233784-5-imbrenda@linux.ibm.com/
+https://lore.kernel.org/kvm/20260616165110.360921-5-imbrenda@linux.ibm.com/
 
-  As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override both
-  macros (e.g. to suppress the export when kvm.ko itself will not be
-  built despite CONFIG_KVM=m). Add the x86 no-op overrides in
-  arch/x86/include/asm/kvm_types.h for that case. To keep the pair in
-  sync, EXPORT_STATIC_CALL_FOR_KVM() is defined inside the
-  EXPORT_SYMBOL_FOR_KVM #ifndef block; an arch that defines
-  EXPORT_SYMBOL_FOR_KVM must also define EXPORT_STATIC_CALL_FOR_KVM or the
-  build will fail with a compile-time error.
-
-As with EXPORT_SYMBOL_FOR_KVM(), allow architectures to override
-EXPORT_STATIC_CALL_FOR_KVM definition (e.g. to suppress the export when
-kvm.ko itself will not be built despite CONFIG_KVM=m). Add the x86 no-op
-override in arch/x86/include/asm/kvm_types.h for that case.
-
-Architectures must also define EXPORT_STATIC_CALL_FOR_KVM when they define
-EXPORT_SYMBOL_FOR_KVM.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- arch/x86/include/asm/kvm_types.h |  1 +
- include/linux/kvm_types.h        | 10 +++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/kvm_types.h b/arch/x86/include/asm/kvm_types.h
-index d7c704ed1be9..bceeaed2940e 100644
---- a/arch/x86/include/asm/kvm_types.h
-+++ b/arch/x86/include/asm/kvm_types.h
-@@ -15,6 +15,7 @@
-  * at least one vendor module is enabled.
-  */
- #define EXPORT_SYMBOL_FOR_KVM(symbol)
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
- #endif
- 
- #define KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE 40
-diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-index a568d8e6f4e8..be602d3f287e 100644
---- a/include/linux/kvm_types.h
-+++ b/include/linux/kvm_types.h
-@@ -13,6 +13,8 @@
- 	EXPORT_SYMBOL_FOR_MODULES(symbol, __stringify(KVM_SUB_MODULES))
- #define EXPORT_SYMBOL_FOR_KVM(symbol) \
- 	EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol) \
-+	EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm," __stringify(KVM_SUB_MODULES))
- #else
- #define EXPORT_SYMBOL_FOR_KVM_INTERNAL(symbol)
- /*
-@@ -23,11 +25,17 @@
- #ifndef EXPORT_SYMBOL_FOR_KVM
- #if IS_MODULE(CONFIG_KVM)
- #define EXPORT_SYMBOL_FOR_KVM(symbol) EXPORT_SYMBOL_FOR_MODULES(symbol, "kvm")
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol) EXPORT_STATIC_CALL_FOR_MODULES(symbol, "kvm")
- #else
- #define EXPORT_SYMBOL_FOR_KVM(symbol)
-+#define EXPORT_STATIC_CALL_FOR_KVM(symbol)
- #endif /* IS_MODULE(CONFIG_KVM) */
--#endif /* EXPORT_SYMBOL_FOR_KVM */
-+#else
-+#ifndef EXPORT_STATIC_CALL_FOR_KVM
-+#error Must #define EXPORT_STATIC_CALL_FOR_KVM if #defining EXPORT_SYMBOL_FOR_KVM
- #endif
-+#endif /* EXPORT_SYMBOL_FOR_KVM */
-+#endif /* KVM_SUB_MODULES */
- 
- #ifndef __ASSEMBLER__
- 
-
--- 
-2.34.1
+This code area is currently under heavy work and we do read sashiko reviews so
+there is probably no point in doing LLM review in this code area at the moment.
 
 
