@@ -1,58 +1,138 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E335E3D0BE7;
-	Tue, 23 Jun 2026 10:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782212118; cv=none; b=F4Gp4pJYD9Mrns3PRZR7g4bx536Q3URn/yKgY0HS1nk/egenlIz3TTdAlHferbUfPbPPzPGZ8ADAE84/gEplUPbR7sk4zPCz43lL31GQjjc4MA1YWOSY8liDqtPHLC2RksSGSdzu+VJl3TdA4aNFgO1FscGW6Z6zvhPnNaX7Tlg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782212118; c=relaxed/simple;
-	bh=h/9xuOQaDFu9FJOSwW8NmHrA26zYcltPOrdP6rzQ2aE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sTmXtXTK8o+CKRVYzdfrh34E9YEM35mwnUKtyIqmgjEIc3P4aUTLA1F8roFnytR5r6qY46PKbFSUtnHJcxdeh8smT4wJvBiFJmoDwoQ8WDU9ac+giV3HGjVC9vDxbkA/vf750Wl7Pz6ufEFu0T1Yas5J24l883iogopczygixxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p200300f6af4fc500afaede31c5136906.dip0.t-ipconnect.de [IPv6:2003:f6:af4f:c500:afae:de31:c513:6906])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 82C49203DA5;
-	Tue, 23 Jun 2026 12:55:15 +0200 (CEST)
-Date: Tue, 23 Jun 2026 12:55:14 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org, Michael Roth <michael.roth@amd.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, coconut-svsm@lists.linux.dev, 
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: Re: [PATCH 1/4] kvm: svm: Streamline VMSA setting for VCPUs
-Message-ID: <ajpl0uR1bBxtbtXo@8bytes.org>
-References: <20260611123528.572255-1-joro@8bytes.org>
- <20260611123528.572255-2-joro@8bytes.org>
- <5dc215d1-ea45-4e4d-b79f-0490c1940639@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8CE26AE5;
+	Tue, 23 Jun 2026 11:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782212936; cv=none; b=gB57dAoZ0kJfpJMSPY2Gtfyb0NRYx5nSbsRNXTZwfqtPXxaz0VgzybMHxZ0nAFJMVjBVIyUwJEHWo3U78FZm1pp+3v5fhyYj080GkIPc9RljqtYl+vD0zk/d9U2f0pBTFHs5ovLo6N+4IVEkfaB1e3e3etZRGqbiJmLQhOEEhb8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782212936; c=relaxed/simple;
+	bh=q+Epg0ImzR9Bi5UQ+cuzeaeWabiHBPkRgrmaxy17Wug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LqzQmnvYTS9STO9sX7PLOEDPnk9aH5SG2EffC9GWbp2h4OymxJCMCDJMj830blwc3yGaKoFtvGPiqYqfMIGE4Cnyx0QbfYsdnqj7hKzyN8wbMsLWhL0Sxpmc/S9cKbFaNfJHrQ6y3+wJjFMYeGRGlHaVBInKJRKpvpCHbv61N8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=cMqCQd61; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="cMqCQd61"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1782212926;
+	bh=oRLUVj38EuP2J4LoI+n0itLP4n8PZdzZFqOvvhcE7RM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cMqCQd61to2RMTd50gLHX4EQRg3EY1Ev62PA5OfCA0InlQQm+x4R3uC7ywQPH7iUv
+	 803WdO3/IU3lp8pwyDKc+okPSmbv0MCJLy7CVJqjujc/JG4fdo09YAH9D8KFz30RdZ
+	 flm1600i9mpfJRzgHwtZ9RI3mQTVnq/jH/dhsUIaVpH9ywYwCjchyZCeVu+o5zgf8i
+	 do24J3BlR6G4shCvdxS0WOcZH4ac3Ww9YZpZ97O66TTqfP+KYBfgExQzAstlDwsbYy
+	 eihexuWI6xPt68gtW3rUA1ucdenrQ95aDce/5r0blkPKmwFVzJlx3zKj/KZ6S0mILM
+	 r/DO6cqLEjvqg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gl2PJ2QFPz4wCJ;
+	Tue, 23 Jun 2026 21:08:35 +1000 (AEST)
+Message-ID: <fbb2b1a6-594f-48eb-887f-7cf0cdd4c336@ozlabs.org>
+Date: Tue, 23 Jun 2026 12:08:30 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5dc215d1-ea45-4e4d-b79f-0490c1940639@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, "Tian, Kevin" <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>, Leon Romanovsky <leon@kernel.org>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-7-matt@ozlabs.org> <aixgZQiBQKgS7yIM@google.com>
+ <DM6PR11MB3690489DB5FA611413BF60558CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
+ <ajGbRE3WWJxNxcrg@google.com>
+ <BYAPR11MB3687AE280241C9E00B46FCF98CE42@BYAPR11MB3687.namprd11.prod.outlook.com>
+ <24f34e59-7c3b-4b56-83bf-cb07e3f369a6@ozlabs.org>
+ <20260619133116.GB278945@nvidia.com>
+ <55ea7422-08d8-4c92-aa59-8ff6f9e9d781@ozlabs.org>
+ <20260622171336.7d13f548@shazbot.org>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20260622171336.7d13f548@shazbot.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Tom,
+Hi Alex,
 
-On Tue, Jun 16, 2026 at 03:52:55PM -0500, Tom Lendacky wrote:
-> On 6/11/26 07:35, Jörg Rödel wrote:
-> >  static int snp_decommission_context(struct kvm *kvm);
-> > +static int kvm_rmp_make_shared(struct kvm *kvm, u64 pfn, enum pg_level level);
-> > +static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va);
-> > +static int snp_page_reclaim(struct kvm *kvm, u64 pfn);
+On 23/06/2026 00:13, Alex Williamson wrote:
+> On Fri, 19 Jun 2026 16:13:17 +0100
+> Matt Evans <matt@ozlabs.org> wrote:
 > 
-> Can this be worked so that we don't add more forward declarations?
+>> Hi Jason,
+>>
+>> On 19/06/2026 14:31, Jason Gunthorpe wrote:
+>>> On Thu, Jun 18, 2026 at 05:02:58PM +0100, Matt Evans wrote:
+>>>   
+>>>> My understanding is that the sequences above wake a device that happens
+>>>> to have previously been put into D3, and AFAICT it could only have got
+>>>> there because of a previous vfio_pci_set_power_state().  Seems its only
+>>>> caller is from the emulation of PCI_PM_CTRL using
+>>>> vfio_lock_and_set_power_state(), and this zaps/revokes BAR access before
+>>>> a transition to D3.  Similarly, an attempt to access a BAR via an
+>>>> ioctl/through vfio_pci_core_do_io_rw() fails the D3 check in
+>>>> __vfio_pci_memory_enabled(), and besides will try to take the memory_lock.  
+>>>
+>>> I thought the general design was the bars were made inaccessible
+>>> before going to a low power state, and remain inaccessible while it is
+>>> in low power?
+>>>
+>>> So the order of D0 doesn't matter. If it is not in D0 then there is no
+>>> mappings and zap/revoke is a NOP.
+>>>
+>>> If is it in D0 then it doesn't matter because D0 is a nop.  
+>> Yes, that's what I'm getting at. :)  If it's in D3 then BARs are
+>> inaccessible, so as long as we go into D0 before the DMABUF move, the
+>> order of the zap relative to the "go to D0" doesn't matter.
+> 
+> I believe this is correct as well, but importantly we cannot assume
+> that a stray read or write just returns -1 or gets dropped.  This is
+> exactly why we have such hard protections against the user accessing
+> the device while it's disabled.  Not all platforms, even within
+> architectures that might otherwise be considered lenient of such
+> accesses, consider this benign and might escalate to system level
+> faults.
 
-Thanks for the review. I have worked in all your comments into v2.
+We are in enthusiastic agreement here.
 
--Joerg
+> Let's be careful not to frame this as "the access doesn't matter
+> anyway", the answer is instead that non-D0 devices already lack any
+> mappings to access the device.  Thanks,
+
+I agree that is not the right thing to say, for exactly that reason.
+(For avoidance of any doubt, I didn't say that :) )
+
+Thanks for confirming the behaviour.  I hope Praan and Kevin are
+satisfied that this patch doesn't cause the issues they first worried
+about (the changed order of the zap relative to the D0 transition
+doesn't have a detrimental effect because of the existing inaccessibility).
+
+Alex, I'll post v4 soon, but if you have any comments in the pipeline
+please shout and I'll hold off awhile.
+
+
+Thanks,
+
+
+Matt
 
