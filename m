@@ -1,168 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573D32E7389;
-	Tue, 23 Jun 2026 08:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782203438; cv=none; b=TI3zcVjti9bIoghCSSkQB9rovbvHlOxMTFidWUiXmMLX2MXagy9ZI6OXSmW/BFDF9F4Fl43mXbwpiSFAiivhH6uoKj6T7D5Go0rxJSSqw3Qw4vPKmtAMFuqo+HIHBdMt7f8qmCENjmHB0PXyRotzlJ4tKiVT4AIcvqD41cXrq9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782203438; c=relaxed/simple;
-	bh=zHy/4SDm4gevy9Nrqn/DmaomIgQ1NNEIfBIp1uG5s/E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nPVs8KYitWe9oDHu4Qx0B0+aDFMkW5Xu/GBqe/vEVgONfxMLM50UN3DAUYghd+czM1Qp45+IkiUj07k08OqrKeN4A+USMX4ltohCWP8zFYnhY0RKkGzYGqQELj5Cdxbx/n2p9L9SjiylMhvhctO8/Zp1u8J8WtA0zcCdGk0+c9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0lkuPzZ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149773CF678;
+	Tue, 23 Jun 2026 08:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782204268; cv=fail; b=ATj28CBrh4d/VH0ZhSBsszg5Utg48CCxHYCQBAta6iP67mHOo4u3p+6zfHk3s0kxWTXzwWyC2tto/22ECUx9Q7txEjekNwpiu3GxblMiSFZtT87q5FJng6j3OeqzOAvQC4qN63b/k5/7YL/6kHd3x6G7mZY0wEZVLcP6wJvN/wQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782204268; c=relaxed/simple;
+	bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hng8p5MEuLFtxZDtc/7whk7vY6VDYzoQcg9jL7+pBOGqGY1H2LrqZhTi4L15jUWYOZUJpLivqzsJRHqbaG5ACFMxS+bD7miHWwO1LzuYCJff1SPPaASusoM2yWyZUCSfYMY053CKlsBT/qiz0knMipBrhDNAIgtYyH1obt8djCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bE+YdMem; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0lkuPzZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC6F1F000E9;
-	Tue, 23 Jun 2026 08:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782203437;
-	bh=TYs+oCmAlfzBmfvYUmiGUyoWok0/0BBwKASHaksLMqw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=L0lkuPzZM/aLIPhL8SYkCjijb1QtkhcQ9UDhCv5w8t7qQYGatOwsnCJ8bJkDqORNl
-	 sWd97IkirrBJlJpLsahuX/J9x/avKOttkQuAMARDmmWcOsoCjlyWeT4kKaQ0mu8FXY
-	 4UZabAPn0f0uwnQtFoI3fwre/F6ceAgoxbLkk3hD7OSYLXtZcHVS4QfKKNO38mZSQ3
-	 9iITmm9BRlo1Xs/TgVqfkgmmBmni3bi/MUb3buC9B7fa8ZHtlPSgisYAqnQspwG/Hi
-	 vyej1QECcOf7qQWpCo+Hn+rdmGDsC8Bb1optVh9O6G+S3tMIiZHxQAM1kzga94h4St
-	 94rTpYQTFxgKQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH] KVM: arm64: Set irqfd->producer to enable vLPI
- routing updates
-Reply-To: sashiko-reviews@lists.linux.dev
-To: leixiang <leixiang@kylinos.cn>
-Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260623081433.21250-1-leixiang@kylinos.cn>
-References: <20260622075103.35164-1-leixiang@kylinos.cn>
- <20260623081433.21250-1-leixiang@kylinos.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jun 2026 08:30:36 +0000
-Message-Id: <20260623083036.BCC6F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bE+YdMem"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782204265; x=1813740265;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=jgy3LzKopwzzIsYUV+IOapJsWwrWXda2unIWJeFfGwU=;
+  b=bE+YdMemqHE6WVLUQPxC27WTBHlushnOfdOn9nvnnOjH5T3jarbjOs45
+   orvWMq5+iL4wSyiItRPSL7h87JBQls4Aarcl4r0AG/ST+ul/JgDIhViFz
+   5aBCht2imIIk9RDkc3ZfcS0QVhrd09b+MUCkfmzQ7wpLvSLc1wktvsH4W
+   wDZKThI6SnqvKKtGCk9yKOo6213I7gDJddmeEOIDQMWnH9Auw3hSoM8O/
+   ID2ZC1jIYgvcfahvEketv8LJqHF6R6eFtZMSpLamu9Bc1JF1164g3d4po
+   TkAx3bcWaXcyn+90RBUCuqyxF43fBJF80z6bzamLZJOydRlE338MnkWpw
+   A==;
+X-CSE-ConnectionGUID: o/I05+WISWSfj/kZLtZp/A==
+X-CSE-MsgGUID: 7SPDntMKS/Wv4IEaFa6QDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="70459127"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="70459127"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
+X-CSE-ConnectionGUID: EaIagTq2Qn24pWIou/bzqw==
+X-CSE-MsgGUID: UDa3CqkKSgOCJaGRLezecw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="247116443"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 01:44:24 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 23 Jun 2026 01:44:24 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 23 Jun 2026 01:44:24 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.29) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 23 Jun 2026 01:44:23 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XAoUBvd5cYbkv4tjDoTg6wveZUoQxvyMm2PrEokPHjSB9CSJxBm1S8D7FBBW8z9JRsccRojdxVkvR1IcM9MSjIFnmNJLn1sGfFtGOd9m+KW5HKQEp0IvaoX44baZkdHmUKys+Sjw0DSYSHhpL4SIV/jMrfT5UJ7kFcLug77d2eZp9nrkxBRRviTPUTWOaCU2GJ715cWx7I8xQOk/qj7NJvwdigbsII5cDtTs6wQhvxvV5nDL9WJzcPMZwcMj96xsRRFhTm6nVgckxpUt/wvANwoeVRL/EfBusjgGTomQnu0YnsrAOoHdUUle41lGpyz3hKpcuxMymZDo+gj+LY4xLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XXUw+XU/6s4cTDIZVtKepwFjauLL8rQpKpRBMDYqvwM=;
+ b=xkXtW8Ki0TNDe3NaPOzwnIUC/HQjN5SB/gzc7CFtY08mKXadLk590eYgrBRKmxX9p5a6EL4dsvfet9A0UKDrnPMjbH8bCSBSDf6B1Fs+8QP2jszMXGlT175JiH4WoneDzx6Q4i9aYdWeBw+Y7RqhiOb0oz8n5WcXDdtMMQQd+qHvCL0eHbb4GddQrxGCFB0bWlC9PYFpMcitKuoyxLJaHJGVL+iWQjKpNPKuhisWDkuSfGEfv/WdVcwjU31ZgcrQ3N6Hw8VmoZZc8id200OsLHdV/CKm58ViSlEhJELbhj6W483Q0BZuTNO2XtVMU85iS3pNJHnsVukBLBczXNfB0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by CY5PR11MB6341.namprd11.prod.outlook.com (2603:10b6:930:3e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 23 Jun
+ 2026 08:44:20 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
+ 08:44:20 +0000
+Date: Tue, 23 Jun 2026 16:43:48 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+CC: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
+	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
+	<kishen.maloor@intel.com>, <tony.lindgren@linux.intel.com>,
+	<peter.fang@intel.com>, <baolu.lu@linux.intel.com>,
+	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
+	<dave.hansen@linux.intel.com>, <seanjc@google.com>
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <ajpHRNaq+z5bdn+R@intel.com>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+X-ClientProxiedBy: TPYP295CA0001.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:9::18) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|CY5PR11MB6341:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|18002099003|22082099003|6133799003|56012099006|3023799007|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: d0r4M1s74nQZAw3ZdGu8QOMJ0K7U98lCCKoJJ6tTtHdh3saFMiI0Vszk2UaUvNufFASchRH8oRW0W8kp28wIIR6FlXKIUwRLldphTp2YtrDaoeFQQQpMVUdfntL5aeyVhBlN8RCq8mqEauU4qCXVJEgEqQxrqZr8oWnzN9p8fbZoqJ5SoMdX0zgMN1B1d+KnLvxBOrVcnFRwON8A8w8anAMt/NXsWNJgFcRy7ywEEvekmOBJ96lbTMs3Aaoz+z9TopPM+9I+K2AXOh7LgM/eu89XWg0PlrwgnmHCqO6cZ9dq8YaFgh1bwQVsMLvRzaiYZk8Om80klK/4QVL0Ah1ZXruS8914L/P9Q2gOcEFSeIX1s9/DV96r7EKlSlOVzXHcosfP49FWs/GHevFGiXz7gXpYAQ1Rc4Z90bcUgB0nDHpmbWMt4ouOTzujlApeZOMW0scs0GV9Z8yXLVxulcOT7OtH8UKYfBPzNgyAXF1IVo+z0bPT4asm1IvM2NO15mfp7GLVOHKsVWqlE6FfuH5hrwjcrSLd0tiH6CHL07QeC/TCfEBE1JDq5mmcJLcR6Qe3R/Mzg9HRR46RS7o2MNMIe0xBOAZxFCEkRtgAL9yeC75MqMPZcu4M+UUlRxHw8K6nwxpfZainX5RochmRnoJnewkIBrY3aZ5/KHp3z2yOkg8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(3023799007)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4zCzZ4xK874ErPdoASkisgQe1kSgGnxn+DR/N+d6Xk9A/AIxQtO1SPVQ5aFF?=
+ =?us-ascii?Q?9jYDjtNTgR4ASxXGPz4OBKAl2uFv7htCIQ8uKIvFDjISev57HllXZg5i1SsF?=
+ =?us-ascii?Q?7gH6XfthllV5wy8PH/9YgqYqyysjHLEwGo7cbIgLvG0t8evfwmqd0Zl1jB/T?=
+ =?us-ascii?Q?xJvOIX1MmgxXoq/1I7xVHraQZ6n5Wx7HuB/u+apCyfmlu329F9hUuVabnCf6?=
+ =?us-ascii?Q?NRzZ9E0LI9oqJvG8mdunDHOWUQ/3eoDkM8kMvfeLa1vlwnuw6mSXodoX3V6W?=
+ =?us-ascii?Q?VYkngo3nlUFe6Z6O5Bo+3swj/MgDQbLxPa+zzcq2BOmJ4IJ8LPMzGoMCSTWF?=
+ =?us-ascii?Q?8D9/jkPhOjI0kVmmjqF5HvRCMntE4qqRUiW2smBTj0dBDSvBO+awpGyyJnXm?=
+ =?us-ascii?Q?RvIy4qx1rPw27BnQvxXsrVqDdVVwQI61VmBEOm+fIlN+F/4CUh59OxI6vN3h?=
+ =?us-ascii?Q?jfuNFVPin5A2A16eW8n3DcqwpLLcX26XKRSKD0v1yk3YI6vk4XaGU4PJuKaA?=
+ =?us-ascii?Q?n146PNw+zreS4iIQcL67E7u6VfyZqHeHaRwgi44mEhMZFVCG2d+GKljrTeBp?=
+ =?us-ascii?Q?N2rXzVYiObpIQIJuARO/++gPsZjyAXdao/Rce/s3r2K3M162ukZHmfRaRz5W?=
+ =?us-ascii?Q?+kCapZXj3lBuRR+rnbFoyjuvu0HuwacQU7KO9zzet6QT+oQfr8FB9/0h8G8g?=
+ =?us-ascii?Q?CEvfAoNwQ2/m2PTKRNBcaUCf/QUmMjo/wlpSESrRmg8fKI2SpPsmZXuHYebJ?=
+ =?us-ascii?Q?By2+pOrMuFTomMueDHsHwHezZcESYp2OjhgtCmNIL/RTc2V93R0kp0s7G8LX?=
+ =?us-ascii?Q?psXXBSoi9yVTWODMfGe9K/wOguG6QYIJ3dwBnc49GfCa48VWd+3V8XPWUGGi?=
+ =?us-ascii?Q?Bg/TZoiHWjuw+k+DU6qW2gKBW0YZZU+pKEgsG0RN2escgPQL1PLmpgmwZTj9?=
+ =?us-ascii?Q?BjJt3230j1IHN+IGGuSLkpNl2EJdFgnAgt4Dt4J7bXxXfgKvsV+0TKmBHkUW?=
+ =?us-ascii?Q?t1Iv5pkedlp/h69wBDwCoQxcWRz8NTkJh97D1U12ee1Gcz0JXesmRaHAOke8?=
+ =?us-ascii?Q?5kHzI5SmS+rF6w3d7gxP+HKDHYeW2dmayciTl2WKxoulEklqpZLzjmbxLWM/?=
+ =?us-ascii?Q?YAvd0cODQdAxOnYz9kzxMU4QIx+eYkX5XCBEW7Oz05YTUyTybXYTB82U3bY9?=
+ =?us-ascii?Q?eVYxSbgF919o0YTGvRTOfPbm4GEgO2xCKT9g5TXg/M7LEYlCNzFWcKglmZbX?=
+ =?us-ascii?Q?mdN4l4GoLAuiLZ2+huGPfjtUgvJSgdewSpgrA7clr8VctPQF0n9eXkMy8yqP?=
+ =?us-ascii?Q?Ywc5gRj27gGGzJHGsB08Of0J26Xe71iB4sK/kVJ+fort7lMygmFmXUXj2gEh?=
+ =?us-ascii?Q?ocFKDJNDd1Cxt9Q2we4MnmVp6P6NcBOUakEwbrlHcOmTxMgyT+AKtaKfjWae?=
+ =?us-ascii?Q?YqkFsNQsCOjzvYsKAt6X7/JWYFnxhqy7XGiNQ8OXdGV4CshcjpEHTNIsbO5o?=
+ =?us-ascii?Q?N+W0C4/EJWBa9OT7w0R93Tdd9a6cIFHBWqZ73jsWgv6NyosdrACc24u3cqFs?=
+ =?us-ascii?Q?xuWq387sm8N8wNEGbuHrjLLykQ8IZyEQOYWJN32v+rm+nkhgQeYUSViaPsaV?=
+ =?us-ascii?Q?warrInbYDbJb6pNAPZege0nXIfxYQUKH3VjOsLXSt05XfoYzs7bMRrhBUK6P?=
+ =?us-ascii?Q?r1iW5FRT6LohJROraTsYO4s1aUs61UV8z7lSxWghQHt4IBgn0Dw3h2AE2VC6?=
+ =?us-ascii?Q?QlmkIpQrSQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: NKPa5NmbkUsxcU42skD2neBB7MM0DJdACovayFRRLv+7dWbOXvn1OQpD8BGxRzBRjqukA3s6j1rjvab6eaYXZ5LiOe3X/rIlqhecVh0U+lZtRnQOlqXaheXphLstpn3go4TBAuGyo21GTeb7HbA9OiTtSCIFVyy3XDzzS0qK3ANmToVWQahAldWcQA6l6C2xgMcbTiPrrTwgPopMhyjh1DN0U/XWwr7E98wrrw65/V5rxMhYSouKn1DuV9AwonV1eErHGk/P5EHOTGb475jPwqdhhBMqJb5QA1NEVxHFqukS9bXZS3pTUxp+lmihu3jKY7jE6eR/csUMYU6qBtib5g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d046952-9f20-4c6f-f4fb-08ded1039df1
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 08:44:20.1093
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X4u/NimAkh5KkD5cLhgfaPuYw9m9GfQj1azVrCccj4aUpeuRUCCif6Udzwkjv7KIDkUp6pbKarsfbAHy4AKrwQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6341
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Thu, Jun 18, 2026 at 04:13:40PM +0800, Xu Yilun wrote:
+>In addition to basic TDX functionalities, TDX module provides add-on
+>features that can be progressively enabled as the kernel supports them.
+>The kernel should explicitly configure these features at boot or
+>post-update initialization time. Configuring an add-on feature, such as
+>TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
+>initializing TDX module extensions. TDX Quoting is the target feature to
+>enable but defer it for now until full kernel support is in place.
+>
+>TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+>input parameters to specify which add-on features to configure. The
+>bitmap uses the same definitions as TDX_FEATURES0.
+>
+>For runtime update, Linux applies a policy that no newer features should
+>be added after update to avoid disrupting live TDX operations. To adhere
+>to this, TDH.SYS.UPDATE must configure the same features as the
+>TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+>global var so that both phases can use it.
 
-New issues:
-- [Critical] Early return in `kvm_arch_irq_bypass_del_producer` skips clear=
-ing `irqfd->producer`, leaving a dangling pointer that leads to a Use-After=
--Free.
-- [High] Late assignment of `irqfd->producer` allows concurrent routing upd=
-ates to silently skip hardware unmapping, leaking vLPI mappings.
+Actually, we do not need another global variable here. tdx_features0 is cached
+and is not updated across a runtime update, so the derived add-on feature
+bitmap will be the same before and after the update.
 
-Pre-existing issues:
-- [High] Lockless and non-seqcount-protected access to `irqfd->irq_entry` c=
-auses torn reads of MSI routing fields.
---
 
-commit 6730fdc5cdf162e59409e000dad54d0460124435
-Author: leixiang <leixiang@kylinos.cn>
+> static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> 				    u64 global_keyid)
+> {
+>+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> 	struct tdx_module_args args = {};
+> 	u64 *tdmr_pa_array;
+> 	size_t array_sz;
+>@@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> 	args.rcx = __pa(tdmr_pa_array);
+> 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> 	args.r8 = global_keyid;
+>-	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+>+
+>+	set_tdx_addon_features();
+>+
+>+	if (tdx_addon_feature0) {
+>+		args.r9 = tdx_addon_feature0;
 
-KVM: arm64: Set irqfd->producer to enable vLPI routing updates
+How about moving this r9 assignment out of the if block and placing it next to
+'args.r8 = global_keyid;'? There is no need to guard it, because args.r9 will
+be 0 when no add-on features are enabled, which is perfectly fine.
 
-ARM64's kvm_arch_irq_bypass_add_producer() never sets irqfd->producer,
-so kvm_irq_routing_update() never calls the ARM64 routing hook. That
-hook unmaps the vLPI and falls back to software injection when an
-irqfd's MSI routing changes. Set irqfd->producer once
-kvm_vgic_v4_set_forwarding() succeeds and clear it in del_producer().
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index d84e80b2ce546..54d4bb5d01899 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -2891,6 +2891,7 @@ int kvm_arch_irq_bypass_add_producer(struct irq_byp=
-ass_consumer *cons,
->  	struct kvm_kernel_irqfd *irqfd =3D
->  		container_of(cons, struct kvm_kernel_irqfd, consumer);
->  	struct kvm_kernel_irq_routing_entry *irq_entry =3D &irqfd->irq_entry;
-> +	int ret;
-> =20
->  	/*
->  	 * The only thing we have a chance of directly-injecting is LPIs. Maybe
->  	 * one day...
->  	 */
->  	if (irq_entry->type !=3D KVM_IRQ_ROUTING_MSI)
->  		return 0;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this lockless access to
-irqfd->irq_entry cause torn reads of MSI routing fields?
-
-KVM_SET_GSI_ROUTING updates this struct under irqfds.lock and
-irqfd->irq_entry_sc seqcount. The lockless read here can observe a torn
-state (e.g., mismatched MSI devid and data), causing
-vgic_its_resolve_lpi() to resolve an arbitrary, unintended LPI.
-
-> -	return kvm_vgic_v4_set_forwarding(irqfd->kvm, prod->irq,
-> -					  &irqfd->irq_entry);
-> +	ret =3D kvm_vgic_v4_set_forwarding(irqfd->kvm, prod->irq,
-> +					 &irqfd->irq_entry);
-> +	if (ret)
-> +		return ret;
-> +
-> +	spin_lock_irq(&irqfd->kvm->irqfds.lock);
-> +	irqfd->producer =3D prod;
-
-[Severity: High]
-Does this late assignment of irqfd->producer allow concurrent routing updat=
-es
-to silently skip hardware unmapping, leaking vLPI mappings?
-
-kvm_vgic_v4_set_forwarding() maps the vLPI, but irqfd->producer is published
-afterward. A concurrent routing update will see irqfd->producer =3D=3D NULL=
- and
-skip unmapping the vLPI, which relies on irqfd->producer being set to invoke
-kvm_arch_update_irqfd_routing().
-
-Once add_producer() completes, it unconditionally publishes irqfd->producer.
-The vLPI is now permanently bound in hardware despite KVM treating the
-routing as non-MSI.
-
-> +	spin_unlock_irq(&irqfd->kvm->irqfds.lock);
-> +
-> +	return 0;
->  }
-> =20
->  void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
-> @@ -2913,6 +2922,10 @@ void kvm_arch_irq_bypass_del_producer(struct irq_b=
-ypass_consumer *cons,
->  	struct kvm_kernel_irqfd *irqfd =3D
->  		container_of(cons, struct kvm_kernel_irqfd, consumer);
->  	struct kvm_kernel_irq_routing_entry *irq_entry =3D &irqfd->irq_entry;
-> =20
->  	if (irq_entry->type !=3D KVM_IRQ_ROUTING_MSI)
->  		return;
-
-[Severity: Critical]
-Does this early return based on the current routing type skip clearing
-irqfd->producer, leaving a dangling pointer?
-
-When an irqfd's routing is updated from MSI to non-MSI,
-kvm_arch_update_irqfd_routing() unmaps the vLPI but intentionally leaves
-irqfd->producer populated.
-
-If the producer is later unregistered, kvm_arch_irq_bypass_del_producer()
-hits this early return because the routing is now non-MSI. This completely
-skips the newly added irqfd->producer =3D NULL assignment.
-
-The KVM irqfd retains a dangling pointer to the freed producer. A subsequent
-routing update will dereference the freed pointer via irqfd->producer->irq =
-in
-kvm_arch_update_irqfd_routing(), leading to a use-after-free.
-
-> +	spin_lock_irq(&irqfd->kvm->irqfds.lock);
-> +	irqfd->producer =3D NULL;
-> +	spin_unlock_irq(&irqfd->kvm->irqfds.lock);
-> +
->  	kvm_vgic_v4_unset_forwarding(irqfd->kvm, prod->irq);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260623081433.2125=
-0-1-leixiang@kylinos.cn?part=3D1
+>+		seamcall_fn = TDH_SYS_CONFIG;
+>+	}
+>+
+>+	ret = seamcall_prerr(seamcall_fn, &args);
