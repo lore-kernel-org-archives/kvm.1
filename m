@@ -1,202 +1,177 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C413C0602
-	for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 22:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D9D3C198A;
+	Tue, 23 Jun 2026 22:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782252152; cv=none; b=Bh4puPrvSCKJIRiv/BsG65nhKxontvftS5sU8k/MINi1xkEtjLlNLp9tc9UFcY6+th2mO2YJakMCxjOVpFqAH1s7NqtAs5Gph++xC/zAsj5Oa/H7cNuPKcCDdCOWi52dqpK5hiPdqNK75q/O3i12ofyRUR7sp4v5FZdYh3ysDBE=
+	t=1782252675; cv=none; b=DX4CvZARAJw5nmIftkUD5HA2lBjuPsiyFhNUNm2z4YW7zqd68+ieNfnhszavyp4BANGMYwAt3++NeuIcg3d5MAwdsh1sJREL4fPzb10IfPK5Ix5LiiotXHCuKtE8O3iKB8aHwn6jQfUKuAq5IuZzJBFlgiFCrqtJVKjLdjeDXsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782252152; c=relaxed/simple;
-	bh=EcSLeDAkf+NYYlNPbaQDgJqvXTeoGd4kGIS3C758yv8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gb8nxv/9iRmH9U8EkMNovSfpQRxw6b4zEWwedIuTXYH1oWDQdaSaszPi+FS1xW2HzXVwFnoQL1ZVGiHQlzG0A3YLAxqqWJ+xqGeh7KTrFzyGbnJmPceiI1hHT2kRyHmQm0sg1HT2QOEF3KrV3u51h6hDVUegO1BYrgWa8aG6b4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vhl0kAXH; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782252675; c=relaxed/simple;
+	bh=C6CX7JyhSOyKnLbA4mBI5QfP7/9EKi7ITQD+T/id9fM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MxGBynCrSqiENZj1mg6xtDJvaB3hwe7XOoJhm+DfQP4+V3kCtuzJEOIkkcUbTjJYT/8lm+9aB4QxN/CvPvRRkRrWqiEYgafI1+jmNZ/k0O+Dxa3f/HXkcVSqJrZ6WXydkV/Jt9HRMC1v+ISPZerLbrLDopyHDyQV/VUw9FoqdUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=IIJp9UX7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FO6fvLzn; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vhl0kAXH"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842446a3851so233708b3a.0
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 15:02:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782252150; x=1782856950; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RRBVZcuKuww3Wq8UWokXWaW99P2Z0kQJ1V7bgh+4dKk=;
-        b=vhl0kAXHULtfvtiJaCDzgx7n9ruvBYqAVa1G9edpg630PlxuljAce2Zk8ECMInBwqK
-         mOXgIH6LrGBpNuaMowohRmBAy65d3jA2ZzYvPSUdatxmJTY5+80gwCJIZdPaE6i24+W/
-         oDMybvSyjP+cNU1+9r5vLkq79ztjucUb+rchm1xYXSudSUnn0Vih072dL7sFPnHwnknk
-         jol01Go4e0fRc8qOBlPv2tZqz/9LAIc591z4syHrq095dTlcz8Fsqw/GfUT/SIw759mX
-         kMqcA00Kt2Vmzx4P+hqaOqQwH3Awg5Hl2X38N2kXihBSBN2EiWWWwd4BCuVNE/oRCmDm
-         3ZXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782252150; x=1782856950;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RRBVZcuKuww3Wq8UWokXWaW99P2Z0kQJ1V7bgh+4dKk=;
-        b=pmTHpN/sr4jYtpg1I9ewHMwP/qVBxUEJsArotSD45PusEMJMYM37ZEQOfq3Bdv6UbS
-         GrtE3oJjOIIXLPSJDaGwi2O6pRwHtcUjTfIzFYaCefemevd+VnaFp1sxWzxu41+bhfyV
-         QJTZ4wLacAUVH4PUXWS+cnX3WXflvla2zS3eUyGinwpfb6ZekAnSsgfrrZVkI7Y5gfD/
-         2v8m+iX77c4Dp45bcNCSHPh9iz4EfSmsjuv/OieS3lcof+gm8uxsayQgQ6lR9Xucz7ue
-         gS23kF9t/QW8Gq79rKd05MhpQV/Kyu3gaVmXtCgeza2DvioAMdGY/p0boFqk5KAQfARn
-         /8SQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8cC1KjbPbho45v5NsGmbmeTWXqR2UqfGwFGD4oE+AES+Rv+G82fnFvtZYpxp7X1b2Z1ik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCZCh66upp181gOeWh2lGuszqtmau08YEFu/214V0gZUU689DO
-	2rL5Kk/J0B9uG6YT+9qgBVnx/jIFPtXDh3SFDqSFHsaqUsa797YVX27Kbbci8n8TApP5xcOASZy
-	Lo4apQw==
-X-Received: from pfod4.prod.google.com ([2002:aa7:8684:0:b0:845:4210:eae4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1886:b0:842:3d8d:bab5
- with SMTP id d2e1a72fcca58-845a27b4293mr1064521b3a.37.1782252149754; Tue, 23
- Jun 2026 15:02:29 -0700 (PDT)
-Date: Tue, 23 Jun 2026 15:02:29 -0700
-In-Reply-To: <ada6c850-9390-4b91-8edd-c4b74bfe4269@fortanix.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="IIJp9UX7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FO6fvLzn"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 6952D140008F;
+	Tue, 23 Jun 2026 18:11:11 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 23 Jun 2026 18:11:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1782252671;
+	 x=1782339071; bh=X18SHEo1gUp9Lx6clXwkcErZhNajWNK13kB/IUh+wK4=; b=
+	IIJp9UX7hiluWdFh89iYXNpbN5zR09i8L5PmnsWAcAEU/4jlsXqahP7zp/tvUN07
+	2P6MWeNFvE5noi2bIBZVuItgCQeWtkGpDbb0MnKSUEJEeuBeO/cBB2PujDoK7F36
+	AVr3le3NXNszBNLAl29MA9CfgcUYX1AfVShzDIFTdgZxSBW6eeO/BsxLRGNZ8Pbg
+	95JADH56A7hFVYope+kdjDjvVpJCcKLUyUsj2zB+fLdfJc9tVyahCNFic9i3sZTu
+	NPT7Vm5FRwrybIhBEt2YxL5vkCwuNmKHveL+1qwUut8CN4IK/FO2sDknN200twl3
+	NGjlfTdbe4KpzNOeH/taaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782252671; x=
+	1782339071; bh=X18SHEo1gUp9Lx6clXwkcErZhNajWNK13kB/IUh+wK4=; b=F
+	O6fvLznPvdpIQim3zUrag+ztK5HGF02dvRbliPGko4eCloFj1bi8VKlaPAfk/yyC
+	2GkphLUPKWKS4YCLZT9mpDnYmSDN4HRPh7S76pKc2wPXFRLN0FUAKcoFyvD0fH8R
+	p2vioIpSCM05FO4xAJtXseKV8Ni0JbSIICWCKcWgHGZD0/MQ+pjfbBmZNEvOOHVc
+	aArflSRw3cmRowd4G7A7Ee7StMJKlzuk/XwA8KETPHuSNzRaMHZkvgYKK6gZUlxk
+	pbDsyyWzvdjLoKHV92Aw2vxjpvFtYoy5i5EJx7aw9G6To+h2XIZ/oiDGR0gm7AYl
+	iSBkJetgMHn12GFWF2Qdw==
+X-ME-Sender: <xms:fgQ7aj3ADADPgWDoTYxdG4BsdR_0lLce9ljFqBhSIf09Bgwcl9l1ZQ>
+    <xme:fgQ7av61gHGUAICR8zS_2QwRf4V3lxZTQRjvGMaKh_jVOqmf43RParzPGg-XFsYkX
+    Lh9AXxk35HQHsZ1mHfrn3DzFmYly3dq_0fVEGWNonU5D725seAI>
+X-ME-Received: <xmr:fgQ7auXmuK6qxOm85kNuBnPmg8Jak0SIsa0-uQIQWLd19iCgDFnQVX0sKvI>
+X-ME-Proxy-Cause: dmFkZTEScOgLYk0MfvgSy13XGx7Nr6/3LxprQMRW1YTpQARQUOSkpxT/m7Fn/QPbrirYOk
+    OZYuYk070jQ+t/zgFGqVt3cOdx5JiCPt+zjRdUPsm2wuYbTmjUc+cSjtgICuDGgkqnK7vv
+    CvcYpoBi15cUX2bAfu0LrNVwF/buweOC9mD/yaBfGjfIt05LNCGIGwaVrFLRiIqGjcuk7Z
+    Ly7YaQYW9iD0lSKnabtjz5kfBEbtRoG9+lz6/vOe5Wbn+O5hbpegIL2Dpt9mxRg/lOlhHK
+    SV+I/sYy0YG2xar+l5ya6C0X9pYFfXMg5Qv6TU0PqDlVHMZ9aYNkSgKOIp3i1et0oh6oat
+    Ky+BHj3KciJElaQHfOLyO6p3Ou8ZL0chonKVQZt7ThKHh1Q1UCd8f6yqcIkOF4lqapXkTo
+    bsowho4/Kew4lUee3ioAKivz6cnfHMMhJuzQ4UVYJPOYKu+01tPqtK44FiHq5oQP/uwWWR
+    dPiOWMClYeHAXinKGKsiCKs7qhWIc9WgsaGzJuQ4t681KyNDZQyWJA1KKPV4VY8MUn7BYp
+    nUCxHnb/hetYoEKxq4kvbjKP2Be3M1ydxSSgofwKBEjv5uRm/tsPKKvNXEzmf+zeY4Y7Q/
+    wujnh2AqIAwIAdmMBiLyLvY1Mw3kRxcJ81OR8/nvoDSIoTW8z7Gs6yPWd7xw
+X-ME-Proxy: <xmx:fgQ7amBb3kNAEBip2wws1TbySt6ejC2fvzYM7S5QnvthyWkWqBJbSQ>
+    <xmx:fgQ7al47MLAmIQQxVGUHfuBBj-534alWh5AHTlJGT_A3Q5mGe2YSoA>
+    <xmx:fgQ7apyhtLML1wwVjHwqaBhy2Q_HwBRjTIHyETU9mcn61Wz2EdLuKQ>
+    <xmx:fgQ7akyK_bMXYv-m-pcsbQjG6KQs8kbSfrBt6fn5NwlFdfV_4jkD1w>
+    <xmx:fwQ7amminaFn1KpKA3tDa_6vIaHzz70SXty1zpTJWU7xtYGUVvTCwNxu>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Jun 2026 18:11:10 -0400 (EDT)
+Date: Tue, 23 Jun 2026 16:11:08 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH][v2] vfio/type1: Sanitize user-supplied inputs to
+ prevent undefined __ffs() behavior
+Message-ID: <20260623161108.07a708af@shazbot.org>
+In-Reply-To: <20260617113251.2535-1-lirongqing@baidu.com>
+References: <20260617113251.2535-1-lirongqing@baidu.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ajJAYZAPxNrrsiYp@8bytes.org> <ajKadxZEMI253AoT@google.com>
- <ajKe-oboTRowcO_i@8bytes.org> <ajKjMIBb21qB46fh@google.com>
- <ajKnKeo1FV3zbjEt@8bytes.org> <ajqMvQLMGONiLn1S@google.com>
- <LV0PR21MB6859D1AEF99FB84228C23620CAEE2@LV0PR21MB6859.namprd21.prod.outlook.com>
- <0657500d-a8bd-4dec-80a5-807e857a4306@fortanix.com> <ajr-AigoW2cJY5k3@google.com>
- <ada6c850-9390-4b91-8edd-c4b74bfe4269@fortanix.com>
-Message-ID: <ajsCdRhFEw2pcIXx@google.com>
-Subject: Re: [EXTERNAL] Re: [PATCH 4/4] kvm: svm: Support KVM_SEV_SNP_PAGE_TYPE_VMSA
- at SNP_LAUNCH_UPDATE
-From: Sean Christopherson <seanjc@google.com>
-To: Jethro Beekman <jethro@fortanix.com>
-Cc: Jon Lange <jlange@microsoft.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"thomas.lendacky" <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>, Joerg Roedel <joerg.roedel@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 23, 2026, Jethro Beekman wrote:
-> On 2026-06-23 23:43, Sean Christopherson wrote:
-> > On Tue, Jun 23, 2026, Jethro Beekman wrote:
-> >> On 2026-06-23 16:51, Jon Lange wrote:
-> >>> On Tuesday, June 23, 2026 6:40 AM, Sean Christopherson wrote:
-> >>>> On Wed, Jun 17, 2026, J=C3=B6rg R=C3=B6del wrote:
-> >>>>> On Wed, Jun 17, 2026 at 06:37:52AM -0700, Sean Christopherson wrote=
-:
-> >>>>>> Ok, so it took us a few times to learn our lesson.  I still don't =
-see that as a
-> >>>>>> strong argument for new uAPI, especially not for VMSA pages.  I am=
- very firmly
-> >>>>>> of the opinion that letting anything but the host kernel configure=
- the VMSA is
-> >>>>>> beyond stupid, but unfortunately we're stuck with AP_CREATION.  Ex=
-panding that
-> >>>>>> surface has a very, very, VERY high bar to get over.
-> >>>>>
-> >>>>> The strongest argument in my view (and the main reason we are doing=
- this) is
-> >>>>> actually the predictable launch measurement. On SEV-SNP this is a r=
-equirement
-> >>>>> to use platform VM-identity features like the ID Block.
-> >>>>
-> >>>> And I'm saying that unless KVM *can't* provide a predictable launch =
-measurement,
-> >>>> which AIUI isn't the case, then the launch measurement *must* be sta=
-ble across
-> >>>> kernels because it's part of KVM's ABI.  So as I see it, the issue i=
-sn't that
-> >>>> KVM is inherently unpredictable, it's that we lack tests to validate=
- a thorny,
-> >>>> subtle piece of KVM's ABI.
-> >>>
-> >>> Joerg is suggesting that we need a launch measurement that is stable =
-not
-> >>> just across multiple launches on the same system, but across multiple
-> >>> hypervisors.
-> >>
-> >> If this is now suddenly an acceptable argument, please also merge http=
-s://lkml.org/lkml/2021/4/12/625
-> >=20
-> > No, that's not how this works.  Dave and Jarkko both have unanswered qu=
-estions
-> > regarding the use case.  Answer their questions, and I'm confident you'=
-ll get
-> > traction.
-> >=20
-> >  : I don't believe we necessarily *WANT* or need Linux to support "all
-> >  : possible ECREATE, EADD, EEXTEND, EINIT sequences".  Yet, it's what i=
-s
-> >  : being used to justify this series without any other justification.
-> >  :=20
-> >  : It's going to be a different story if you bring me a real enclave th=
-at
-> >  : *REALLY* wants to do this for good reasons.
-> >=20
-> > and
-> >=20
-> >  : What specifically are you referring as the "rest of the world"?
-> >  :=20
-> >  : That would be mean that there is reviewable workload "out there".
-> >=20
-> > The start of that thread is *exactly* what's playing out here.  The big=
- difference,
-> > and why this one's likely getting a different result, is that Jon provi=
-ded a very
-> > thorough explanation of exactly what use case Joerg and company want to=
- support.
-> > The only "assumed knowledge" is why it's desirable for the measurement =
-to be stable
-> > across hypervisors, but I'm comfortable stitching that together on my o=
-wn.
-> >=20
-> > In other words, they aren't asking KVM to support every possible way/ti=
-me a VMSA
-> > could be associated with a vCPU, they're asking to extend KVM to suppor=
-t a concrete
-> > use case, with meaningful real world impact.  In fact, I actually think=
- this series
-> > is *too* narrowly focused on their use case.
-> >=20
-> > FWIW, KVM_TDX_INIT_MEM_REGION has almost the exact same ABI that SGX ha=
-s: pages
-> > contents are measured immediately after they're added.
->=20
-> Sorry, the argument from Jon/Joerg is no different than the one we made y=
-ears
-> ago for SGX.
->=20
-> It was previously made abundantly clear that it's the kernel maintainers'=
-s
-> stance that it's sufficient to offer a UAPI that allows the creation of a
-> Linux-specific subset of enclaves with a stable measurement encompassing
-> largely the enclave functionality available in the hardware. Or said anot=
-her
-> way: if you can take your enclave and modify it to work with Linux, albei=
-t
-> with a different measurement, that is acceptable. KVM-SNP is currently at
-> that state: it is currently completely possible to load VMs that were
-> designed with the current Linux VMSA in IGVM format.
->=20
-> A UAPI that allows creation of all architecturally-valid enclaves for
-> purposes of measurement portability was stated as an explicit non-goal. A=
-s
-> this is the only stated purpose of this patch set, it should also not be
-> accepted.
+On Wed, 17 Jun 2026 19:32:51 +0800
+lirongqing <lirongqing@baidu.com> wrote:
 
-No, the stated goals (thanks to the follow-up from Jon) are to (a) support =
-VMSA
-GPAs other than KVM's hardcoded, arbitrary 0xFFFFFFFFF000, and (b) to play =
-nice
-with multi-VMPL scenarios in the future.  If that happens to let userspace =
-build
-every architecturally possible VM, then yay!, we got lucky and probably won=
-'t
-ever need to revisit this.  But "support every possibility" is not the goal=
-.
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> The __ffs() function expects a non-zero input. When passed 0, its return
+> value is undefined (garbage) but does not trigger a hardware fault.
+> Although downstream logic may eventually catch invalid derived values,
+> passing unchecked user inputs into __ffs() is a robust-ness and code
+> quality issue.
+> 
+> Fix this by validating user-supplied inputs early in the UNMAP_DMA and
+> DIRTY_PAGES ioctl paths before they reach any bit scan operations:
+> 
+> 1. Reject an empty dirty.flags in vfio_iommu_type1_dirty_pages() to
+>    ensure the subsequent __ffs() / __fls() single-bit check is safe.
+> 2. Ensure bitmap.pgsize and range.bitmap.pgsize are valid non-zero
+>    powers of two before calculating pgshift via __ffs().
+> 
+> This change improves the overall robustness of the VFIO type1 IOMMU
+> driver against erratic or malicious user-space inputs.
+> 
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
+> Diff with v1: Add the two check in vfio_iommu_type1_dirty_pages
+>               and rewrite the commit message
+> 
+>  drivers/vfio/vfio_iommu_type1.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> index c8151ba..b74f56c 100644
+> --- a/drivers/vfio/vfio_iommu_type1.c
+> +++ b/drivers/vfio/vfio_iommu_type1.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/workqueue.h>
+>  #include <linux/mm_inline.h>
+>  #include <linux/overflow.h>
+> +#include <linux/log2.h>
+>  #include "vfio.h"
+>  
+>  #define DRIVER_VERSION  "0.2"
+> @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
+>  		if (!access_ok((void __user *)bitmap.data, bitmap.size))
+>  			return -EINVAL;
+>  
+> +		if (unlikely(!is_power_of_2(bitmap.pgsize)))
+> +			return -EINVAL;
+> +
+>  		pgshift = __ffs(bitmap.pgsize);
+>  		ret = verify_bitmap_size(unmap.size >> pgshift,
+>  					 bitmap.size);
+> @@ -2985,6 +2989,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+>  	if (dirty.argsz < minsz || dirty.flags & ~mask)
+>  		return -EINVAL;
+>  
+> +	if (!dirty.flags)
+> +		return -EINVAL;
+> +
+>  	/* only one flag should be set at a time */
+>  	if (__ffs(dirty.flags) != __fls(dirty.flags))
+>  		return -EINVAL;
 
-Side topic, if someone is going to propose changes for TDX measurements rel=
-ated
-to IGVM, now would be a good time to mention them :-)
+If it can't be zero and only has one flag bit set, it seems like both
+of these could be collapsed into another single !is_power_of_2() test.
+
+Note that if (__ffs(0) == __fls(0)) this could present as an ABI change
+where empty flags fall through as success, but that doesn't seem to be
+the case for any of the usual suspects.  Probably worth a note in the
+commit log though.
+
+Also the unlikely() hint in the other chunks is inconsistent and
+unnecessary, these aren't critical hot paths.  Thanks,
+
+Alex
+
+
+> @@ -3039,6 +3046,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+>  			       range.bitmap.size))
+>  			return -EINVAL;
+>  
+> +		if (unlikely(!is_power_of_2(range.bitmap.pgsize)))
+> +			return -EINVAL;
+> +
+>  		pgshift = __ffs(range.bitmap.pgsize);
+>  		ret = verify_bitmap_size(size >> pgshift,
+>  					 range.bitmap.size);
+
