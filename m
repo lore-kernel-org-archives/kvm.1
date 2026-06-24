@@ -1,174 +1,170 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04495346AF1
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 23:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782344870; cv=pass; b=mpU2BpTMc+rSLzphuEkqV7r4/C77I/Cdk72ePiN7ZDALpnX0JvAEwllknLQ5qPPyvaWVoCZxMGuFkaTC8TMB+Zth7D86qLc+dcNenAtnoLqh/aHGxdlMviwHOYwc96tnTJIKEPOU+JMAlX3GIlPAKQO1S9bVuNeT1GRJCMWPpEA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782344870; c=relaxed/simple;
-	bh=BOTs7ndZFpsyfsR7Xd704fb0PFSbUEVOoFzPWcbnkd8=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j8OH30hAohsQbT/utTKkb0jeXWgji6NJAHD+Zz6GISU33JipA26aFYAFeG8eJ5KU0mPKju2w8cpieWOgL7/FA9B1YvICr1oi2XwZVNrP/hAwtuKHxmpMY3/NPzz++CqcByPZSl80YiEFSrdtIN7TNkzHG0EsdMGzeI+FxF0IRvA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j2VaH551; arc=pass smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F2A3B42CA
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 23:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782345016; cv=none; b=MfIvdg+ozZmmSDW4o46t1lvaJ217CV72h+oVyB1pVqK6x2g0NkaJV4bp0MXYp1IkrCkoBsYOlqP8TTi3OQmdvKYYs2iTcVtmlkVjuxN18YucE8DfZgHbEmlbH5phxoIz2Tw103699Q7c5WCXdVBz2DvKe7/cesX5pLDnTdR31lg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782345016; c=relaxed/simple;
+	bh=jFwTgMVyvPSe2l2h8xYHy/RhaF5bRwpBGbC2LGmMwX8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dn8pnYNIsTouMqspiCXayuUsJwMPDt1JmLYrezDcINm+VzUanyNa2YLNGmHL6RSZkj3+0J0S6n5kD6UUS+6KowK+jcXdnZBBnCuycpig71sEf9eBG9cFxyQa+FVIJ1o8Uvu8kx5gt1CR+f6cQf4feZgBR5WKrFTKUpgLugR6dws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T+e+0WEb; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j2VaH551"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-13986d61b4eso999695c88.0
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:47:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782344868; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dMCKBG8GzzHQVligRwHX4lW7xdZoA5CPIs9ZYAAGcT+P35XPKClMHOVPiyP78L/u6H
-         uAWiZGbRYX8/hmfjyPxPnbPpe8rj7UPGphGRNyWyWk1SHyZzHH5OHiy6IYWodhCnBDgb
-         XSD6H23yIlVMpB/cxQ4kF6Hw+tkDj08WAchimtfW12W8G8oQFbWYJgi+R4rEP5zc3GJP
-         Bv/wPencmETtkFa23IP2o27L1rCIRZ4oqxvJuwyvVNPqSUAyqNQXUJQSg9kw6erW84xV
-         S+mE/mPR5VLznxP+u5sUNR8eLrYx0JLtzho+P7/U6JdLk68uFmf87j+hSVkDQsE7plDd
-         9e3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=18U+I3MBHpVGWp0B9SjNPE91pyZLnJEIxilKZScMveI=;
-        fh=KVy4+j+TE0qJlGnL1oxDtQvAs+ZlkPteDJwxhHS2piY=;
-        b=Q5NnfHiburPG/3twOU0AqQRcWqiA0pKDO2KGi2NNqOiCrgY34hia3MPxoqrF2+RX2p
-         1P2+PSrYPjzIyjpF893Cfpv2eht+JPRQZOsR8tvjFYDCJScNVmn74sIk5eUUhpvUy78f
-         hjDIB2OTEmc75Q9V4NFcFyTFJddM54vmrV2VXcuP004OKbtMG+we2JNqiWKEdxTfdt0S
-         UlMSK1T4tkbH2uXp0nGuIISXJ9MbF6rjoLSXW3gAIBjGsBqBrHfvH8L6fUQdF6tVkxgC
-         Jl/5kQCf1IfYr6wBCVKXnam1wK1jPw/KIZFvsQm0QXSgNA+KEWFSPEAPCusSYQifXEhd
-         pvJw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T+e+0WEb"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso21305ad.0
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782344868; x=1782949668; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=18U+I3MBHpVGWp0B9SjNPE91pyZLnJEIxilKZScMveI=;
-        b=j2VaH551cx+jK85joo9stweuJyYc9JJn7hLgMPBCaPYRCLrHkTyHZXOhqVPwh76Mte
-         FXhACii6Hn6oF1c1O4bYOE6m8nTZCio1BAQtbwyYaLdwAxSlbe15n06CDjsDRP6XhJN1
-         UEDtJS0gl8R3nKI0CffyTcZC4QDT1fy+uH+or0obwSyWGJi1Kk9p327mNN8hJ4Dekb1H
-         sQTZJRLWOio0aJVjoPvF7qJ9j/8NRvG67VtVv8G0ExvoeziuoHr63TGfSCfJIKqwmskq
-         3zAQfCSjK9ZxEQJ+T+2lD6i6xrZfz4cZNNf4WKdludgUEsS3jvTJvHaTLy/URciCaLRd
-         pa5Q==
+        d=google.com; s=20251104; t=1782345015; x=1782949815; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=re80BiDMtfSQEgMKbr3zmDreG+eTyRX3VIJM0LJKtgI=;
+        b=T+e+0WEbglhMLvcp1R3B6LVjYkz65SF5Zzgyfqo7Uj2JJAXsd17y5vlkoZJSaRk/bj
+         vpX7kGr8yDyGH9CqeJ9G++WLVSDut4VmfbH85Zkyo4aa3OVo6ggKrNc3Hbbs3vEDd/BJ
+         ncotSJ3kS2ltCsy0AzFrQSjZ07z1tcfPlkcJH1bDveSibn58QApgSJ7CUdOI5Sis+Dsl
+         apDwoUHMPqhLSi6NBlhB9iGm2wsTmyrWKdSS+9aWvcfT/4S9NUrqpQyeIhx+ihGQDZC9
+         3RrflyKZx90q4iNGb3Ym9Z15425ITP96GOPdi2UHp1RY0cNcyPvo5qsbOJRURU23on+7
+         3Y0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782344868; x=1782949668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=18U+I3MBHpVGWp0B9SjNPE91pyZLnJEIxilKZScMveI=;
-        b=XuwwhQiMLFfWibU0n30G+WegH1J4jP3A6Gi4bwN0KxVEFL6Gn7LFc3yRxo9Ay1I2Id
-         u/NOqhoJIsR3nOPQPa8kFabqmHbsuKZQu2wwHYALthM+wWjmb1Keh9EzhK5ZLqiQVUxs
-         snpif8zNJot0YN+O2bBJHUBVA0mXSAbCJeZxSt73EisfHhxJqzNvUp1hyIUcOAc9FaOk
-         0d9yV0P/YrRPaXFREc6UMbWXzdih1NQn+AExgRWUllFxCP7Zg3/ac68EqbQcd96kI4Px
-         J4183eZ8QvDwrWNF0UHBEqfa+UQtfUwx2VLTthCTSTHjXXzltF+h88S6gltZIAhXnPEq
-         q6cw==
-X-Gm-Message-State: AOJu0YxG9IQVzTYfubxHL29jFSP2jmcgVrcsZy0rwF62x/jzqylkox/N
-	9ZpaoWXiHRbJ4liVujTaQ2XFC+vQOcLmHSpwn6LO/4yEqoi7FxLAm6OhtcKJ+t0MxcFGgNZhw9B
-	mUyELeuA2cHVaNr/8hbBl/9BKQFGkAsyx4zJEQNIAudl14yQ8pYLGQeTC
-X-Gm-Gg: AfdE7cmW7n+2O6nAwwj0sUfbUmVMCv8dTPBPCQzHNqNg6NXXhUYdPuNRG8RyIjC4mG+
-	qmCdIp5bS7gdW2NeYe84JLhOH/5AAljF4UiWobJ0NzPJa6DMb6w4kZfBRPAvRaR3j1VIqi5cGAs
-	PAy0GxX0Jsf9Y+d1q8psmD2AxtdUAXqc3iGJJhPTZJuhRtPuXM6N7g4usyPYoTZXBpg+E6/1YKi
-	gQOtLk/isimWioixZn2rSivOv4J5pzbxuDe+ceIg+vztEj3EmhrBEJMCbLyc57gDN1QeITlG9ds
-	6CE76whXSSLVMyvJLfOLotNKUjlMYd8943B0hIGrTPeRV2MrrKEBS+Ai1JE=
-X-Received: by 2002:a05:7022:98d:b0:136:c565:e83a with SMTP id
- a92af1059eb24-139dbb3ec98mr135615c88.24.1782344867276; Wed, 24 Jun 2026
- 16:47:47 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 16:47:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 16:47:45 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260619005856.09DD81F000E9@smtp.kernel.org>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com> <20260619005856.09DD81F000E9@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1782345015; x=1782949815;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=re80BiDMtfSQEgMKbr3zmDreG+eTyRX3VIJM0LJKtgI=;
+        b=C1V1Bf7Sqv38SqIod7Uen9TWvP0yzbVMcF5reaGX+XeH53GvTVgKSid62T25RqIQrm
+         nDVTkB9MStv0PBs+MiBMmEyAksioF/dFMaYx3Tl3HJzhWDFwViRNj1kgVoAKJS5mAYh5
+         K8/EHXpUjGXpM04qTJWNZhCBBk/IJE0XN4nVljnznvTg/N/qa//imfkql/XeA7Zca/qH
+         hF3lbI7l3qhJ3EgVDFhzc3J5ZKQ2c4RUL7uqKtk21UtB1LAUf4miGmk7OnZ4YhnA82Pr
+         UASoGTzYqFt/Vokfg8XXp9AaDWu82Ca91GZ2lZQObUQHfP4K3ndPQtTVfljXgLROJhHb
+         ZskQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpq0r+1wNTWTOF6SPAlm7kiiMt5oLGvRnk8IN7ZBYv2IUOWV09FkSief4yCLLm8rl6HutU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG7f5eK1ZG8k9KCj4HpmJwJDu0zc52h9L4WnYIO7N3cA65o7G2
+	0AaQBBAubkSbA6yDuUvYbzWOsKrHvVOT5SWcZOal1Dvxt2KNY62Qc+rPYFcDc2bPig==
+X-Gm-Gg: AfdE7cl9ggDLVcA9/Jtra0gFKjyMqO6IfEMzgs31BZjCkLa0tvAIBR3Fczr+k73iqBj
+	foePx2bW5ppPwjGbA9gYJiJdM9PIYhlYdtNFKKt7RhwLXziuKV6Zt21TVrkoXekEE5ytpPHKgT4
+	EdMr0HYcdjOi3UxdJ5QSZJXsbZaQlwgFYHoL4S75CZwvvgMqqnv9oo8ChQWaocQ/9EXqFYNp68e
+	l+IPf9G9rkGs3BuvkZlnD6QZRuTW+8dFH7Zs2HNh2AMPEXrJtgAW3xndF457fwcG2QYWPvDaAf3
+	Di0GiQugdWtEGI9KjbVqdZA7HlQ5RqitMpZPPbOGuvnCZ/3rQVtxIIPUTslySitw3Elcb+CTIMc
+	TgFZ1WPGqtEkHYjp405gJMvOGmPbABw4DirZ+m/cTORQNL3MDmvCp6opLS7TcoiMXM9dLFEgSHd
+	UnL6dlbM8+YyBQEzJz1D5sSdAmA7+gH5EaaAxHyN57r3g=
+X-Received: by 2002:a17:902:f687:b0:2bf:193b:a195 with SMTP id d9443c01a7336-2c7fae6b840mr507585ad.11.1782345014009;
+        Wed, 24 Jun 2026 16:50:14 -0700 (PDT)
+Received: from google.com (74.67.83.34.bc.googleusercontent.com. [34.83.67.74])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bc1df037sm546294a12.17.2026.06.24.16.50.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 16:50:13 -0700 (PDT)
+Date: Wed, 24 Jun 2026 23:50:09 +0000
+From: Lisa Wang <wyihan@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Chenyi Qiang <chenyi.qiang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Roger Wang <runanwang@google.com>,
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v13 03/22] KVM: selftests: Initialize the TDX VM
+Message-ID: <ajxtMdOFCPiMU0Pw@google.com>
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-3-6983ae4c3a4d@google.com>
+ <d27cce6a-da0b-46dc-96b3-5f2f699907eb@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 16:47:45 -0700
-X-Gm-Features: AVVi8CcyRflzPmfvQme9jCFwguwaCgRojeI5Y2eDu1yNbRvAkdDgWUV4du7WdVU
-Message-ID: <CAEvNRgE6iKBhMYM64rgvuVEOvAFyNoryzpjTtSQRf5TcrLTepA@mail.gmail.com>
-Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default
-To: sashiko-reviews@lists.linux.dev, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d27cce6a-da0b-46dc-96b3-5f2f699907eb@intel.com>
 
-sashiko-bot@kernel.org writes:
+On Wed, Jun 17, 2026 at 11:21:49AM +0800, Xiaoyao Li wrote:
+> > +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
+> > @@ -11,4 +11,34 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
+> >   	return vm->type == KVM_X86_TDX_VM;
+> >   }
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] Unprivileged userspace can trigger a WARN_ON_ONCE if the host =
-administrator misconfigures a module parameter.
-> --
->
-> commit bf8cb04a544d7b8235d73034e0febf195ab335c3
-> Author: Ackerley Tng <ackerleytng@google.com>
->
-> KVM: guest_memfd: Make in-place conversion the default
->
-> This commit makes in-place conversion the default when the architecture
-> supports private memory. It introduces a module parameter to override the
-> default and adds a warning in the CoCo VM memory population path if in-pl=
-ace
-> conversion is disabled without enabling per-VM memory attributes.
->
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index 86c9f5b0863cb..5cb73543c03c8 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -1193,10 +1193,15 @@ static bool kvm_gmem_range_is_private(struct fil=
-e *file, pgoff_t index,
->>  {
->>  	struct maple_tree *mt =3D &GMEM_I(file_inode(file))->attributes;
->>
->> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->>  	if (!gmem_in_place_conversion)
->>  		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>  							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->> +#else
->> +	if (WARN_ON_ONCE(!gmem_in_place_conversion))
->> +		return false;
->> +#endif
->
-> [Severity: Medium]
-> Could this WARN_ON_ONCE() be triggered by unprivileged userspace if the
-> administrator misconfigures the module parameter?
->
-> If the system administrator sets kvm.gmem_in_place_conversion=3D0 on a ke=
-rnel
-> compiled without CONFIG_KVM_VM_MEMORY_ATTRIBUTES, it appears this warning=
- can
-> be reached from an unprivileged ioctl path calling kvm_gmem_populate().
->
-> Since an unprivileged user creating a CoCo VM can intentionally trigger t=
-his
-> warning, could this act as a host-side denial of service on systems confi=
-gured
-> with panic_on_warn=3D1?
->
-> Would it be better to convert this to a pr_warn_once()
+Thanks for the review. I will change all comments for this patch I did
+not reply here in the next version.
 
-Sean, what do you think of using pr_warn_once()?
+> > +/*
+> > + * TDX ioctls
+> > + * Use underscores to avoid collisions with struct member names.
+> > + */
+> > +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
+> > +({									\
+> > +	int r;								\
+> > +									\
+> > +	union {								\
+> > +		struct kvm_tdx_cmd c;					\
+> > +		unsigned long raw;					\
+> > +	} tdx_cmd = { .c = {						\
+> > +		.id = (cmd),						\
+> > +		.flags = (u32)(_flags),				\
+> > +		.data = (u64)(arg),				\
+> > +	} };								\
+> > +									\
+> > +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
+> > +	r ?: tdx_cmd.c.hw_error;					\
+> > +})
+> 
+> It looks __tdx_vm_ioctl() can be implemented as the static inline function.
+> 
+> Given all the existing xxx_ioctl() are implmeneted as MACRO, I'm OK with it.
 
-> or perhaps validate the
-> module parameter at initialization time?
+Most vm_ioctl() and vcpu_ioctl() used MACRO.
+I prefer to use MACRO for `tdx_vm_ioctl()` for the `#cmd`, but I am ok
+to change `__tdx_vm_ioctl()` to static inline function.
+If we can only change part of it, do you think it is better to change it
+as the static inline fucntion ?
 
-I thought about this too, but didn't want to move it to initialization
-time because this (populate) is probably the first time the kernel
-knows for sure something is used weirdly.
+> > +}
+> > +
+> > +static struct kvm_cpuid_entry2 *tdx_find_cpuid_config(struct kvm_tdx_capabilities *cap,
+> > +						      u32 leaf, u32 sub_leaf)
+> > +{
+> > +	struct kvm_cpuid_entry2 *config;
+> > +	u32 i;
+> > +
+> > +	for (i = 0; i < cap->cpuid.nent; i++) {
+> > +		config = &cap->cpuid.entries[i];
+> > +
+> > +		if (config->function == leaf && config->index == sub_leaf)
+> > +			return config;
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> 
+> No need to introduce a new fucntin. We can use get_cpuid_entry().
 
-Like, perhaps the admin did compile without
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES and also set gmem_in_place_conversion=3D0
-but wants to use the host only for non-CoCo VMs and hence doesn't need a
-warning, idk.
+I think we cannot use `get_cpuid_entry()` directly here.
+This function is called by `tdx_filter_cpuid()` to check if KVM's
+supported CPUID entries are present in the TDX capabilities list. Since
+the TDX list only contains a subset of CPUID leaves, some queries will
+naturally return NULL (which we want to gracefully filter out) However,
+`get_cpuid_entry()` has an embedded TEST_FAIL(), which would abort for
+any missing leaf.
+How about I add a `__get_cpuid_entry()` to share the same part of them?
 
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260618-gmem-inp=
-lace-conversion-v8-0-9d2959357853@google.com?part=3D24
+Lisa
