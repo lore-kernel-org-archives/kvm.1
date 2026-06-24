@@ -1,121 +1,97 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F053546D8
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 17:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B24B3630B7;
+	Wed, 24 Jun 2026 17:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782320487; cv=none; b=UNGC+G1KNujl0YBZlKhZjFX5PzNJDy7du7jdGb9dDsUCSvbusYsgXCDW91bevxnSis7ONkygSKgcOtqqjP9Y0zvjKtDtRs0RXglCk+Z+NesFkUa+U3edVIIUL7NRAMViHAPNBHw3mkr5e2nHNH7gDakB5OH/9/YgnpbhM+Sl/7Q=
+	t=1782321447; cv=none; b=k8fid4yTJxHCy+ZRFMNfa1aeaqHQj9aVO2vTUnSQBfvdOZmRehhbLq8S2TUr0f6TuyJDMaQgqDxC/p7yL/TN/Nc673zI+BghNHiCSas5/e77BDLo9fFH+xyXL9hv7oR/ePz48BCEE+TJU7wtsYOqxl09d8VoMGZISBTcorXm5Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782320487; c=relaxed/simple;
-	bh=hXT+eybuvhiG4/K2l6t7f2dd3GljuDBbH8uGde2JbnE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mx29Kxts2vrnCngejrGzIgiYUFOSi1vuHRnkw5rOKKDoAD5rkFHt9J/nTGF3fZfJYWEKD3PJ8xFHTLIbcT5aF1A06GbA8H6pV+zbG734TpyVju1yktQ6PJUsK+YfToVfnDw9kqSYvzNZIMMHbkKGSCcd50MDZC+1ATqhTh8BAhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D6es8OUA; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782321447; c=relaxed/simple;
+	bh=32/0HEYv1mzY/swRe7WIiMRfh4Gms8oNhET+0hf5Ptg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A2xNGgI67NKhkCcvjo9FSys9WS5mowu97O3xcOtXR2vV0HH5aAU4mggqUhF+CO0kqwjNr3xn9zYn0RjVMnK/KtAFw5CYIup3IMuJ+WlvQhCaqrLAAxDboGf4v2M02kmIkP81g/dqfhoc8ou2QfXO4niTCDEXbFf01XHNBLCCYaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SIYZfYjp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D6es8OUA"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8453a81b846so1747462b3a.2
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 10:01:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782320484; x=1782925284; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ISY2wbCcsFGmwP11+MNFOlIY+gG7N5avT6t+DVDnEh8=;
-        b=D6es8OUAoly9OUWtQLuBHZGqhM1yF4DuY5G5Qeg5+x+l43ivOAZXi9Tj/QQaTmKjeL
-         2Cn5Afo7iMnTwtFsy+Mxg37/QlAZ22u/b7a1JSJFKxuIYs6apGt7CeZIPWvYXRltPsna
-         WR/vZdV3F12O8GOfonrIxoivp+deQbL5NpoG8EY/nj9bnGZqmTYgZ5cdydMkp7FpxB3F
-         a04wDEGjDGpfSlXUlsY0k/yy/vqe1DWNxqpWCK2Tr5jGLIUk0ctnP7MzHBMpjLF9asoM
-         F9vcYRazfeX6V4ya0tnju1h19Wl0KMCb9I9o9hWGOdH0nPDEUOCoPwS+EcaLdOWCYu4h
-         aT9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782320484; x=1782925284;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ISY2wbCcsFGmwP11+MNFOlIY+gG7N5avT6t+DVDnEh8=;
-        b=o/A+MUbVS5OWOLd56Vm+hea8okNJh8sHen/wqSEHm6KW3r4DIolJVqrxR1I/ItQKde
-         GtfJvQ70oiwrPClqPs2F9eQMVCIeucfbpzz8uBN39EtArOI0oDusqHe1R0Kw8kUcKPKo
-         M7iNi6BR2KZC1bwuAeuiW4U+gOvjOxPKRYGa81MjESrec5HOFLr3VLqI/AzcRqXePyXm
-         uzsSmvaBOdFouiJl4PkXbKe5CRvD8HofGJXe4UWBNMjbnVHoFhtb6nHYgcESi9IM2Ufb
-         ppBsH7SVrLoinuHXIPK4hg0izQ88v/8mQbExhQtQt0kLYC+z4hTAVI7D+NGWf0Ij30dH
-         u7Qg==
-X-Forwarded-Encrypted: i=1; AFNElJ/n6sJyElpYUl/JZs09To13WFDlj/A1yliavnYvCGCKe2lLM9vKQs8LDQcNTivIGV0ksfM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRUGXu9EHHfeMp8iznwffgDeMm7XOMrZxt+/MkPMUS2qlewkQn
-	kCgYNkkVb5otw5SyKTKe8pZue2Fxvchgn/pT/5QuZaDQx/8gJi4ydRk03PVdo+kPF7VSBTH48Mz
-	p3elfTg==
-X-Received: from pfnp26.prod.google.com ([2002:aa7:861a:0:b0:83a:68c:e1c6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:88ca:0:b0:827:2a07:231d
- with SMTP id d2e1a72fcca58-845a26d1fe1mr5396846b3a.17.1782320483693; Wed, 24
- Jun 2026 10:01:23 -0700 (PDT)
-Date: Wed, 24 Jun 2026 10:01:23 -0700
-In-Reply-To: <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SIYZfYjp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57D721713;
+	Wed, 24 Jun 2026 10:17:19 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1F4B3F905;
+	Wed, 24 Jun 2026 10:17:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782321443; bh=32/0HEYv1mzY/swRe7WIiMRfh4Gms8oNhET+0hf5Ptg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SIYZfYjpHli+ifYQUJSv3FTpiZDKR2MlK9jF5GrtyuoQR4hmz4isDcqFBV32sshGq
+	 Ec4VjxguEwxW7H6gX+OnIZSZ2JlbPKPi1dokRadj4QuMqz+WlX4+zhq34gRRKQdPdr
+	 Fh03VemCCJtbHKCC5NaBNyvLPai1M4xBBOYUNxGM=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	David Matlack <dmatlack@google.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Wu Fei <wu.fei9@sanechips.com.cn>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/3] KVM: selftests: Improvements on dirty-ring
+Date: Wed, 24 Jun 2026 18:16:46 +0100
+Message-ID: <20260624171656.1737580-1-leo.bras@arm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com> <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
-Message-ID: <ajwNYwsDc2_Vx_kp@google.com>
-Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1515; i=leo.bras@arm.com; h=from:subject; bh=32/0HEYv1mzY/swRe7WIiMRfh4Gms8oNhET+0hf5Ptg=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLJsBG6y8xtHbUuMC/tl/WzDCtdVF56q9hqGhB4LmXDVK XuLzxHLjlIWBjEuBlkxRRbZR/NX8XyfknHkyo8FMHNYmUCGMHBxCsBEmHUYGfZ5ica3S/Lpb25p dz96l2NF6KaHX1uabBfeVJqw4IJ9dzzD/5L0TX8lbqwoCGXSyMtf/e6T32UZmQXp28Se3+r337p wDgMA
+X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 23, 2026, Binbin Wu wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> > @@ -606,12 +608,20 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
-> >  	next = start;
-> >  	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> >  
-> > -		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> > +		for (i = 0; i < folio_batch_count(&fbatch);) {
-> >  			struct folio *folio = fbatch.folios[i];
-> >  
-> > -			if (folio_ref_count(folio) !=
-> > -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> > -				safe = false;
-> > +			safe = (folio_ref_count(folio) ==
-> > +				folio_nr_pages(folio) +
-> > +				filemap_get_folios_refcount);
-> > +
-> > +			if (safe) {
-> > +				++i;
-> > +			} else if (folio_may_be_lru_cached(folio) &&
-> > +				   !lru_drained) {
-> > +				lru_add_drain_all();
-> 
-> It seems unprivileged userspace is able to trigger lru_add_drain_all() repeatedly
-> by invoking KVM_SET_MEMORY_ATTRIBUTES2 in a loop, which could lead to DoS risk?
+Add support to dirty-ring on dirty_log_perf_test, so we can measure
+performance differences when we change / improve the mechanism.
 
-FIW, if there's a risk, then AFAICT fadvise() and memfd's F_ADD_SEALS already
-have the same risk.
+One major question I had in this set is that dirty-ring needs to be 
+enabled after the VM was created, but before any cpu is created, so
+for that, I made a few changes on memstress so it can actually take
+dirty-ring size as a parameter for VM creation. (Patch #1)
+I honestly don't think it's pretty, but I could not think on a
+better way of doing this without messing too much in the code.
+
+Also added some checks in dirty-ring enable, so an error message on
+ring size is more informative.
+
+Please provide feedback :)
+
+Thanks!
+Leo
+
+
+
+Leonardo Bras (3):
+  KVM: selftests: memstress: Add option to enable dirty-ring on VM
+    creation
+  KVM: selftests: Check dirty-ring size before enabling
+  KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+
+ .../testing/selftests/kvm/include/memstress.h |   3 +-
+ .../selftests/kvm/access_tracking_perf_test.c |   2 +-
+ .../selftests/kvm/demand_paging_test.c        |   2 +-
+ .../selftests/kvm/dirty_log_perf_test.c       | 100 ++++++++++++++++--
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  18 +++-
+ tools/testing/selftests/kvm/lib/memstress.c   |  34 +++++-
+ .../kvm/memslot_modification_stress_test.c    |   2 +-
+ .../kvm/x86/dirty_log_page_splitting_test.c   |   2 +-
+ 8 files changed, 140 insertions(+), 23 deletions(-)
+
+
+base-commit: 840ef6c78e6a2f694b578ecb9063241c992aaa9e
+-- 
+2.54.0
+
