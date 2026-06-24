@@ -1,103 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFACB211A09
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 03:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DDD30C144;
+	Wed, 24 Jun 2026 04:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782270983; cv=none; b=KuDCS92/xp0RFJGKPD6yLFEAXGH7R2Fc06IgNTTMiz9nQTzwCzIAJbK92O5zQRUAYfYd7vBdxlzfSZOdipgqgUpTxxhnEDUMg1j03cgWjQE4HOoihsBEYhLYI2hjdRE19ygN4HaNRMN8AUyVLVfmcO/IkCtoZcVMhA+uORfGnzc=
+	t=1782275038; cv=none; b=OtX3kFDXO2iIHmcA/1CQpWWErgb94GnGoYJXu/lJ5rfX3iysXRqdFReVkNjZXm4gFgyvTlNl8yVSkgDG7mnM2lHMqb97LN+0wN5nB1uY/YZQN5iP3tu5koh417GN+HSRZKRXojFgaq5WLtYQVrkYTe4ZTUs6SY+5auTqw/1QMhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782270983; c=relaxed/simple;
-	bh=15Odll5aHJIRb6IFJ+qRYKwkGbg6A35jeWxfbNt0DTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EK+x60RS9w1Fe6i74ax/uh1ehcFXfONo/pgV74AF3WpnkJMcRoBxBksfwOMct3lr8Nx+Tm7zc6QV3SmFNeGbUfldsfXSX3aADQs6Z4AJU9ESIQMkm2qyCQ5nQ37JHjG8fMR2sHKh4zMYiNoUZ4aqEtgMQikJeG/Hi759kloI4Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJW3Nmvb; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJW3Nmvb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782270981; x=1813806981;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=15Odll5aHJIRb6IFJ+qRYKwkGbg6A35jeWxfbNt0DTw=;
-  b=GJW3NmvbnvrI7/px8/5rbVEi1rou4FcP30ymRCUp9IOQxGZpQm9uDhhj
-   TGLSp2xBXl63O7EAYsrXAQTgA3x0y3ziJCx86pGBwtqd83HHR9Mhiyw7S
-   4JfSwxaGVSUwBnbPtHDb41u+JC8V4zBfXV2IX5MsColrPfaivwkn1LhVR
-   lDjqoprTCsmoSLEnE4ALYBLm2WYgU1Us+os8CpYfz3nVUQXhoZQ4+bpvX
-   Kllodj/quIctYxUEt1tVJM2FbIzt28ceplzEstEr7G6CftnGe2nom+TeC
-   mr3hcrZU/nNf/ijhidWJHlaQF7OpJnmPiYSGpOzZB3Bt6V9gnMEg8HWVV
-   g==;
-X-CSE-ConnectionGUID: S0JR2DyKSSy6dfIqGUXQlg==
-X-CSE-MsgGUID: PTgVXhPVRC20q77oWu5jPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="82892553"
-X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
-   d="scan'208";a="82892553"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 20:16:20 -0700
-X-CSE-ConnectionGUID: 9KqWf4kbQ22mcr2eUbItCA==
-X-CSE-MsgGUID: 0WF2HMbsTQe58m223ih1Jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,221,1774335600"; 
-   d="scan'208";a="245558289"
-Received: from bparkins-mobl.amr.corp.intel.com (HELO [10.246.164.236]) ([10.246.164.236])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 20:16:20 -0700
-Message-ID: <92226edf-6943-485c-a127-dc2b1acd4a4d@intel.com>
-Date: Tue, 23 Jun 2026 22:16:19 -0500
+	s=arc-20240116; t=1782275038; c=relaxed/simple;
+	bh=/VDAWvqEVWRwL2bygJTtxYJnAUhDrljbETsx/v9Qni8=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=mobtX5epslFQpuhEu0q7aqtq6w26Xwn0tyDinRGGjQPKU5bILp5Twhbqri5uCgYaNbbf2M1tBViE/obKOZROU5w/Lix5V9gdEjcr89SxX41ztFcgH02/+HSQ1aZrgXjth2hUrKeGSGYOwScpf6x0D/2cuTFQ5yIhdDoDC0OlPgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 8C2F692009C; Wed, 24 Jun 2026 06:23:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 852C692009B;
+	Wed, 24 Jun 2026 05:23:54 +0100 (BST)
+Date: Wed, 24 Jun 2026 05:23:54 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Sean Christopherson <seanjc@google.com>
+cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, 
+    =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Subject: Re: [PATCH v2 2/6] KVM: x86: Prioritize DR7.GD #DB over #GP due to
+ illegal DR6/7 value
+In-Reply-To: <aig9ckd1f6oZaYgA@google.com>
+Message-ID: <alpine.DEB.2.21.2606240442420.58268@angie.orcam.me.uk>
+References: <20260603230718.1733483-1-seanjc@google.com> <20260603230718.1733483-3-seanjc@google.com> <alpine.DEB.2.21.2606040048520.22659@angie.orcam.me.uk> <aig9ckd1f6oZaYgA@google.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 3/4] KVM: x86/pmu: Support PERF_METRICS MSR in mediated
- vPMU
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-References: <20260623041927.178256-1-zide.chen@intel.com>
- <20260623041927.178256-4-zide.chen@intel.com>
- <20260623044826.592FF1F000E9@smtp.kernel.org>
- <bcbc4f64-60e9-46a8-bf63-19e7d9d30595@intel.com>
- <ajsXxXHz-oIcSXDE@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <ajsXxXHz-oIcSXDE@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
+On Tue, 9 Jun 2026, Sean Christopherson wrote:
 
-
-On 6/23/2026 6:33 PM, Sean Christopherson wrote:
-> On Tue, Jun 23, 2026, Zide Chen wrote:
->> On 6/22/2026 11:48 PM, sashiko-bot@kernel.org wrote:
->>>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
->>>> index 59b7a90c79e12..2c3367f5e2dfb 100644
->>>> --- a/arch/x86/kvm/vmx/pmu_intel.c
->>>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
->>> [ ... ]
->>>> @@ -345,6 +347,11 @@ static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->>>>  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
->>>>  		msr_info->data = pmu->fixed_ctr_ctrl;
->>>>  		break;
->>>> +	case MSR_PERF_METRICS:
->>>> +		if (!msr_info->host_initiated)
->>>> +			return 1;
->>>
->>> [Severity: High]
->>> If KVM needs to emulate a guest RDMSR instruction targeting MSR_PERF_METRICS,
->>> won't this unconditional return inject a #GP fault into the guest?
->>
->> I can't think of a case that KVM needs to emulate RDMSR/WRMSR on
->> MSR_PERF_METRICS.
+> > > When emulating a MOV DR, specifically a write to DR6 or DR7, treat a #DB
+> > > due to DR7.GD (General Detect) as higher priority than a #GP due to an
+> > > illegal value.  While neither Intel's SDM nor AMD's APM says anything
+> > > about the relative priority, empirical testing on Intel and AMD shows that
+> > > the #DB has higher priority.  
+> > 
+> >  It has to.  
 > 
-> If the literal emulator happens to emulate a RDMSR/WRMSR, KVM should behave
-> correctly.  Even if that weren't the case, KVM's implementation should adhere to
-> the architecture.  Assuming MSR_PERF_METRICS is read/write, KVM should emulate
-> it as such.
+> Not super strictly speaking though, because ucode _could_ check for an illegal
+> value before enforcing DR7.GD.
 
-Thanks! I can remove these from {get_set}_msr() handlers.
+ Sure, hardware can do anything insane, but that defeats the purpose of 
+DR7.GD.  When the debug register stack is under debug firmware control one 
+can reasonably expect it is up to the firmware how to emulate access and 
+interpretation could potentially be given to these otherwise invalid bit 
+patterns (semihosting comes up to mind).
 
-if (!msr_info->host_initiated)
-	return 1;
+> OMG, Intel and AMD don't even behave the same.  I _was_ going to say that
+> "obviously the CPL #GP check has priority over DR7.GD", but on Intel the DR7.GD
+> #DB has priority over the CPL check, whereas on AMD the CPL check has priority.
+> 
+> Which actually proves my point: hardware/ucode doesn't _have to_ treat DR7.GD
+> with the absolute highest priority.
+
+ Sigh, what can I say?  Arguably either approach has its advantages and 
+disadvantages from the debug environment implementer's point of view, and 
+the Intel interpretation seems more flexible to me: the debug firmware can 
+examine conditions and still arrange for #GP to be delivered whereas if 
+hardware does that without trapping into SMM, then there's no choice.
+
+ Notice the symmetry with ICEBP/INT1, which always traps into SMM under 
+debug firmware control regardless of CPL.
+
+> Ugh, and KVM's emulator doesn't get the priority between the #UD checks and the
+> CPL check.  Double ugh, half of the instructions that #GP at CPL>0 don't get the
+> priority right.
+
+ No doubt people get confused with all these corner cases; this isn't 
+common usage.
+
+> > The primary reason for the existence of DR7.GD is to prevent 
+> > software being debugged such as an OS kernel from clobbering the debug 
+> > register state when executed under the control of an ICE or a JTAG (XDP) 
+> > debug probe.  Under these circumstances #GP remains an ordinary exception 
+> > routed via the IDT to a handler provided by the OS, however #DB traps into 
+> > the ICE or SMM mode instead and the OS handler is never reached.
+> > 
+> >  This is also the reason why DR7.GD gets cleared at the same time -- so
+> > that the debug firmware can then access the debug state rather than making 
+> > the exception trigger again -- and for the existence of the ICEBP aka INT1 
+> > instruction -- so that #DB can be triggered and control regained by the 
+> > debug firmware via a software breakpoint, since the number of hardware 
+> > breakpoints is limited (and #BP is an ordinary exception).
+> > 
+> >  It's unsurprising that the priority of these exceptions is not documented 
+> > well in the processor developer's manuals given that x86 hardware debug 
+> > features remain vaguely documented overall in public resources.  Though I 
+> > note the Intel wording for the GD bit is "[it] causes a debug exception to 
+> > be generated prior to any MOV instruction that accesses a debug register." 
+> 
+> Define "accesses" though.  MOV DR at CPL>0 definitely isn't going to access
+> anything, and so that statement still holds true if the #GP due to CPL>0 had higher
+> priority, as there wouldn't be any DR access to prevent.
+
+ Fair enough, but please see my observation above as to usability.
+
+  Maciej
