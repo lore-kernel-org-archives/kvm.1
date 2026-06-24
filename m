@@ -1,246 +1,242 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010004.outbound.protection.outlook.com [52.101.56.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94071288C30
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 23:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D133B42ED;
+	Wed, 24 Jun 2026 23:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782342038; cv=pass; b=YLzBv3uzx7fZ5yEo+5rdS2AdhMGveXIMVPNQPSFcrFTkaMVyFFtiXvxpnuK+RE5o8gc85rg3zR+dXlIVdJgtip51etNJqmGM718KJn9xApoae1PlRZUkJ8lVPTpQzJONN6B1hKSdoMhTV0dUwqi1/cy68e4vInahWAqWPmyPf3k=
+	t=1782342707; cv=fail; b=cudT7y/3Mg4bjRq2T7NPNz+Y69L/0UiBxkG+qNH/Wh/5KL9bT32VeBSy5KuQuAtpGDzLGdUZXF9BssZUs8D395uIbY1nmjzXJcRi5w+wOXCAb2l3qpsjyaryQya4IIVN6OBYrKDmhihwBvvycJnCo0Lj7fpS7TYSlwmyMbjdOpY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782342038; c=relaxed/simple;
-	bh=IqPLVwsO0D0MZhplC6ajaXmgltfNbyg+xs7Qj1el6YM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P30eIaEEJR9OJS44puu/XlJE7U7tG4hRE0SlByNjoxnP2tpDyLte3594lR+1Gn5FFZcbAns5mFOpM7bIwWJ/oNG4PfMYPedJ/bM5z2tZn4Kk6Jy7HFU7B4QOl7O/oh4cEho77LWQloDeFlO4eze0mFYGHbvgpo7i+5uFxDc8JVI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c2EC3qjj; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1782342707; c=relaxed/simple;
+	bh=DRyo4/IKqg8x0xtvGmJcgwKl87qU2hMzivrYIpQ/beI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwoLcpzd3U9jByNtCO1oZ/SQe7crJ1W2vP3zOADbxZx67Gt6mQcDMqIa1FBMCmY24ZoFBlNGFg14makMk2amN1OVVBrcT0jT14tTCLBZgovcSPSbZftTV/8pjSztwobxfL0HnV5Vh5oKKrNnw36Si/RKTyzi1tLGMRbIT3Kdh5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UfLL6ghW; arc=fail smtp.client-ip=52.101.56.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c2EC3qjj"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-139a5f4ca15so1825052c88.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:00:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782342035; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NIWpXIqn+HiNT1ORw9nMRVkLJOzt+WUyX2oXxtm+QIPl7NYhI4t5XOGevWMihrt7ot
-         cZDQirjN6Ta6J74FdPsVy1s1qBsoRC8NeiJHpLX3+S/NzjPPmdQGAVakKKOoclRPJvqc
-         /Q3UR5GsbUJAlUyRafjTFW5aPjpRPD6JSmWa3kvyU2m72TY/mAC90GBhBYAV3LrZ1SHz
-         vpu9YPR6Hqid5EiMbH07e/d6C02KKYI2T3qWc7MD0pkA4EkLF44u2HdQZYgp45rh/9nU
-         f/MPfpXRpXPc0m89Ms/R1/hYtW7gB4DjQ24KBdq1Cy3+Rv6cdb3aazE+/vmmgd2fXGsY
-         CAqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
-        fh=+tdIj+wAefPMPTSBwIfEWCxhLyvhDg/OASCvuJ/zOQc=;
-        b=cQo33FoXCr6cktcVtOoM/qBVEWoYf1GitZDpdPMXK5PDNP8+uH0W7EROWJUodfcXgX
-         6ZAuPNc6+smLgW3EjGGIu9W6xdd+NN0IQjKHRvz0WcAzar5edSMOUmzR/K0cH4agGvy2
-         Nd182egkI4lJigg3uZSao7kzM8+7xI5R+lEOIBhv75jSlju2WILk1tEEu8FKsmfOAMOW
-         VSE/1zBG8lq2BV0XOig/T0enZjQWK2h9EeX+oWGIvDeTd0yMYzUjxygQaSxnGHaFhYrL
-         miL7349ABxNTAH8c8SXNR2MIkiC14tkrP4/qO70Pd8VEYLfiwEv4v5ov4yaNhUqAyMeq
-         o4ww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782342035; x=1782946835; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
-        b=c2EC3qjj7Ho+XyzOWWSriQVBShOkmXct1jUKlwr5G0BN3dk1Nrg+m9xF8EW9ds1mHO
-         POmbN5gIAuSj8Dzj68e5V9/j83y6e6bXak2hEblXC06jGjbR+eP/5H4RVH2KIwxUPpEQ
-         U2yt89KIDqQOmIu53mbOOiudxfdAEDIjginbIvBHO2hiX8RqK3LzguzR9nqrX4QO+UHU
-         k6Mq5fmnoNklvcg4CNb9LY3bOHv83j63fPjrOG7psVBxYYm5IvR+KJNk+idTznszqznx
-         46BgvajMCK4dIt/ugI2f/DhtSLxEG6r5fn2uCscS8vKrAQT+lKOASUIUR6pE5C+ndo31
-         elpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782342035; x=1782946835;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
-        b=LErQdwW1sDvNbpgtt4HtgtaZAKxi+Pm8i/VSlZ8Rb6BmT3LbicFbHDHnD66yvcyFJm
-         1SwiXiTek7/yqN+VxlVocXI1lv3h+ocN4rKSbWUD9tr5M/8kxyWj7Y4ARTSX2eW+pHgJ
-         rnMkVfrFYaAtWYOkr6qhRlTVvnRwfIXX16tF7XlFQBlJHiEybeEr60s19BNb2Wd9UqDk
-         dwF5oDV1KgvT0Z5u47bqB2XROlxq/OWlIAuSRSUCFu7HS6mLpEYzQgfB0vsKxx8/GP4H
-         TlBPwnLXbFsboqe/F0pWjnAcc7SNeAdw/upHbmoSKUoX1A9TO+DLl+x3BUkfHLodMJQx
-         nDxg==
-X-Forwarded-Encrypted: i=1; AFNElJ/l5hyxXhaWbR9w5tXjpwcL377w7JkmMIQe6OV0s41YFQCmOpn2oNC59rxW8cEhPhasdSE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznfJStjAjlfxJHafvDP6PaWOAaN3rgLuar6v3xDa8T0q4v+1FT
-	sixywUnl6MMW00nOj6iWfI2QCJb/SqFvtmAj0zBIZm5UUhApojM39MAkIVmvDFiYw+HchunEFgq
-	sZJCXQflrpV16t5OsZacxtj3R1fFKG6cqItDzK2fS
-X-Gm-Gg: AfdE7ckgxB5x74UUjblp32Jes3EDjGt3YvwrsC9MN0eZ07SjkLV9y0rcKat7+pZY12/
-	CTQHowYVPPhEhI8ut9rT4dKtIl6SP3Hyk01Vf9Ehc5X9FyjIdvMdU4TGQ2j7q/Km3Qp9OBgvbBj
-	k7lH6CPFDNdgJdeA3m96edFZt3+CH0wev/HNZTnI0wV5skF7sdhOQHfGiAVJPYI6sQ/ffbKzZjA
-	Tr2J4MuTvoRd5ub9cr3mjrvDPi+NB+3e2Sa2afe+MJav7kMIR0VOBD+ERmOJqsLnWpMSlJ7ddly
-	lzcbN3ZRTtOjt2NJTANt0kLiQs3G+vfuWHnEOcwVUHtlTSVak9JaJnwxB4UCbXWhrIof/Q==
-X-Received: by 2002:a05:7022:160a:b0:139:cf4f:3b80 with SMTP id
- a92af1059eb24-139dbb1250dmr40215c88.34.1782342033417; Wed, 24 Jun 2026
- 16:00:33 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 16:00:32 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 16:00:32 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ajxasFBzp_9KnQLq@google.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
- <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com> <ajnf5Z9nWZxoLS4x@google.com>
- <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com> <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
- <ajxasFBzp_9KnQLq@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UfLL6ghW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=US1cGL5HZ3686gMpaN/mn3S+2JrC3YMGW+55mgi+b5mInDp52qydNyyMH5XhbbaHVs3uQsufOyZ0DuZ/o7hOgq1DLZmLN7xUQaT3RUS+R5khb0W710SMfK9K96BkJKTyBe7NP6pQJHJS9zwrPyXf6bBWK2gmJ9KwnBL5HDfOTlu2WQi0LdxFxh1eOfnmNx75nrwU1EP6aT2fTDMq2bAw/uFebA7ca1J+GyWGwDpBykhpeBXjG38BA/0xi59wcwOSA00pep8IDNJnPG7zcd4FH+iwbaL7YsLPOjj5x8xbYcPgyAB0WccEdN0YWJZX2a/iSwXqANZxz/HbK2EPCI2iSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hHn3xSMgd8CEBrSP3GPFveIlmN7NzH7Albrkw2iojFA=;
+ b=By6D8mMHblEfd2DWYMTNJ4EQmGITbYoHN2hdTDpQj53KmlTXEWnrjgowEhDpIu/TfvgloyupSiarSGGvK++xyq0NSEZ/V+zzqRi0+0CyErCjtQg0/eZX0kMl4igEegooo3VZabyE8/GE0imO57XFWYFFa/ez0E2sFL8dtg6KhO6YBt4HBswiIaFmEzDgKoRpRfl+jeQjWYNw3zSBdUdVMISskFZlMgmDmbQiYU1Z6ii8nnqIAucgra8wWVfxWOiUenkECvNMXZWQvKP0dPnDHCorowUnAQASs3bpkxOgTaKGz8j82809t/xoUdpLJfyKDZtSZ53nie5diSUJGEHwBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hHn3xSMgd8CEBrSP3GPFveIlmN7NzH7Albrkw2iojFA=;
+ b=UfLL6ghWH0GZ4UJFjwNpW6GGK0oRkrVewpXxVQZU7iK/ZNq5MWo1K2ED9ZIBRpeznRoiSwdYfUqr5m/08PLw4L3hmaLroPbtjFwzWQHAl0auMgNdivthm9gY3KSDN1R/tt3Ys+KK6WXG2bumK9xqm6n9ynJ7LppK4CeG80sEa1c=
+Received: from SJ0PR03CA0162.namprd03.prod.outlook.com (2603:10b6:a03:338::17)
+ by DM4PR12MB6591.namprd12.prod.outlook.com (2603:10b6:8:8e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Wed, 24 Jun
+ 2026 23:11:40 +0000
+Received: from SJ5PEPF000001C8.namprd05.prod.outlook.com
+ (2603:10b6:a03:338:cafe::4b) by SJ0PR03CA0162.outlook.office365.com
+ (2603:10b6:a03:338::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Wed,
+ 24 Jun 2026 23:11:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001C8.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 24 Jun 2026 23:11:40 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 24 Jun
+ 2026 18:11:38 -0500
+Date: Wed, 24 Jun 2026 18:11:22 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
+ {en,de}crypt debug ioctls
+Message-ID: <45ixyum4upln4b2yvasovm2bmsfxyfezsi23vsr75r4fklelef@utxv4mymvfcd>
+References: <20260501203537.2120074-1-seanjc@google.com>
+ <20260501203537.2120074-3-seanjc@google.com>
+ <ajNQ_Ix5e0p6FuFT@google.com>
+ <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
+ <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+ <ajrkryMxHZtsMvga@google.com>
+ <6xyh7xa53k2s7bytlkcys4pyq4756rwoly5q7swrifv3td6dey@3h5e2e67lkvj>
+ <ajsjQtpZb-h2BdPh@google.com>
+ <ajxLCMgLQe-JiRfq@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 16:00:32 -0700
-X-Gm-Features: AVVi8Cd6MsvMJuk5LYLyYsxDOenZ5WDyms3uLYv9lo6HnpeNhZqAtHcdl1tcM3o
-Message-ID: <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ajxLCMgLQe-JiRfq@google.com>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001C8:EE_|DM4PR12MB6591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37954f21-1bd0-42a6-f5f0-08ded245f2e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|23010399003|376014|18002099003|22082099003|6133799003|3023799007|5023799004|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	NkTWWOVWCOJUP5QtYDCDRbZYrno/86DW1SMneznumuSTp4iMy9nxFMXkmUI8eh3i47XOMfJq+yjho75V9nVfFwZSFt2sYz5/BrNpkSztsEv68XCPZXTRtPePA1a0G17g6j8QVFCPxlwzIDqzNOl+3hVqsvZVdWZzjROxgFJTjfZovtGqWfPA8IZdALbf/ppeL/a74RNZ92nTJqZ8qpyY9Ckc+JGbTjK+D0x584CNfXwfD7N4EpSZ8Q9ttEL4ioPl3otBMj+pozaJ7F8UdSa970JYk6M8NY9PqyP40qa3A4Nph58Gq6sguzE3Oyu0YBAeeOznrT/LpnnTO0A8LmKw96pqLR6f3HtS0EcfRDEmOiH2dH26MnwtrMBDH1NPLHNIc0zflDY4ksCFiF45ssNKlgOv5zqwNzU+R0R1zERy6YBVdLMr+O0Hs1a7Q3Go+YRw8k3G5nNrNtG5OJJAgDBioipKIL4FDD3rutKTDzErQCWAHYwYQMV+D29SQsTTmfwwIjRrLztygETNbt5IUBta6+MS9t1SDdMQ9pWx0lB3F7LK93wCg0fXCvTcWqGkDiKoaOiyfwtObEfbwEb7nSyDyUZps3fyRWAHhqZgc2uojCnxcoJ22LOyhwM0GdPilAm95RId6rvJb1wl4yVjnQgIrq/3HAOUqP+MA1EFSBgY6tIGRH0Uhmw7YR1AhrSctKFJrbiArG1dClomfG+7g4nibA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(23010399003)(376014)(18002099003)(22082099003)(6133799003)(3023799007)(5023799004)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	yJIUsMi4+Tqbho6eJz6uadks6awVLb6DIZJlGI5dGvI1ntKPwGeTSVwJGBPUhiC1pz60waqOPDT1P2h6pv8z9eoA8pxxbP3A7MO9wJtbjV06kywcsPd6/n3yJgE2gbkaj9D/Vz2F46IWbiXndnn8heyr8yAJbOwcQKrGqvWfka/GeXJvrsSbbHGGdFYP6XGhy6+WgitIuUpD37842Q2Gw/ndeyRmyy75YZLcG2vBXu+dcAu3xNvEn0Aq7lPr8VUd525otNr4YHceJji+sR5UsBcs3qlSg+dpZvbhNPbv0LUtpPz5thXfeb7qZqpA3jDN5af1nXQR3fvFX/OwzDYpx2yOyhinm+E4FZMNks/4x9YsBtuVoj4zs6QOX8Q6EV6gTQWAhnpWxCH844SooISUsQqMBGtRDdvE7EBNxu7QcMuppVWkVufeXUtVc7V2Ghzx
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 23:11:40.1562
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37954f21-1bd0-42a6-f5f0-08ded245f2e4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001C8.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6591
 
-Sean Christopherson <seanjc@google.com> writes:
+On Wed, Jun 24, 2026 at 02:24:24PM -0700, Sean Christopherson wrote:
+> On Tue, Jun 23, 2026, Sean Christopherson wrote:
+> > On Tue, Jun 23, 2026, Michael Roth wrote:
+> > > On Tue, Jun 23, 2026 at 07:55:27PM +0000, Sean Christopherson wrote:
+> > > since your proposed fix seems nicer and more complete anyway.
+> > 
+> > It's missing a case though :-(
+> 
+> Ah, but so is the revert, and it's not a coincidence that the old code didn't
+> bounce buffer the destination for KVM_SEV_DBG_ENCRYPT.
 
-> On Tue, Jun 23, 2026, Yan Zhao wrote:
->> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
->> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
->> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
->> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
->> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> > > > > index ffe9d0db58c59..56d10333c61a7 100644
->> > > > > --- a/arch/x86/kvm/vmx/tdx.c
->> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
->> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->> > > > >  		return -EIO;
->> > > > >
->> > > > > -	if (!src_page)
->> > > > > -		return -EOPNOTSUPP;
->> > > > > +	if (!src_page) {
->> > > > > +		if (!gmem_in_place_conversion)
->> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
->> > > > without the MMAP flag, the absence of src_page should still be treated as an
->> > > > error.
->> > >
->> > > Why MMAP?
->> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
->> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
->> >
->> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
->> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
->> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
->> > > initialize the memory.
->> > Do you mean using up-to-date flag as below?
->
-> Yes?  I didn't actually look at the implementation details.
->
->> > if (!src_page) {
->> > 	src_page = pfn_to_page(pfn);
->> > 	if (!folio_test_uptodate(page_folio(src_page)))
->> > 		return -EOPNOTSUPP;
->> > }
+Yah I was realizing this too :( Though I'm not sure why we set
+'guest_owned' for DBG_DECRYPT... I'm not even sure it makes sense to
+write decrypted data into guest memory since it would only be usable
+if the range was decrypted to begin with... in most cases this likely
+wouldn't be guest memory.
 
-Yan is right that with the earlier patch "Zero page while getting pfn",
-folio_test_uptodate() here will always return true.
+So maybe the bounce buffer approach would work for DBG_DECRYPT at
+least, but yah...I think the issue is more general...
 
-Actually, this is an alternative fix for the issue Sashiko pointed out
-on v7 where userspace can do a populate() (either TDX or SNP) without
-first allocating the page, with src_address == NULL, and leak
-uninitialized memory into the guest.
+> 
+> > The final write for ENCRYPT writes to the destination directly:
+> > 
+> > 		r = sev_issue_dbg_cmd(kvm, __sme_set(__pa(buf)), dst_pa,
+> > 				      nr_bytes, KVM_SEV_DBG_ENCRYPT, err);
+> > 
+> > More at the bottom.
+> 
+> Once more, with feeling...
+> 
+> > > > diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+> > > > index 87025d0d2f91..7e3334c90c57 100644
+> > > > --- arch/x86/kvm/svm/sev.c
+> > > > +++ arch/x86/kvm/svm/sev.c
+> > > > @@ -1406,7 +1406,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
+> > > >                 sev_clflush_pages(&src_p, 1);
+> > > >                 sev_clflush_pages(&dst_p, 1);
+> > > >  
+> > > > -               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
+> > > > +               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16) &&
+> > > > +                   (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) || cmd != KVM_SEV_DBG_DECRYPT))
+> > > >                         ret = sev_issue_dbg_cmd(kvm,
+> > > >                                                 __sme_page_pa(src_p) + s_off,
+> > > >                                                 __sme_page_pa(dst_p) + d_off,
+> > > > 
+> > > > But if firmware temporarily converts *both* pages, then we're "stuck" because at
+> > > > some point KVM needs to actually target the correct guest-owned page.  The only
+> > > > option I can think of is to require capable(CAP_SYS_BOOT), *if* the above doesn't
+> > > > suffice.
+> > > 
+> > > Not sure I understand fully, but snp_populate_cmd_buf_desc_list() in the
+> > > firmware driver requires the transiton for the destination page that we
+> > > write to both for 'encrypt' as well as 'decrypt'. What the issue with
+> > > using a temp buffer as the destination for the 'encrypt' case?
+> > 
+> > The problem is if KVM does NOT use a temporary buffer, which is the "fast" path
+> > where src, dst, and len are all 16-byte aligned.  In that case, KVM does inline
+> > {de,en}cryption between src and dst.  But those pages are also mapped into
+> > userspace (they have to be, since KVM pins them via gup()), which means that
+> > userspace could feed the same pages to a different chunk of the kernel that
+> > reads/write userspace memory via gup() (or gup-like equivalent).
+> > 
+> > E.g. pread()/read() on shmem-backed memory.
+> 
+> pread() doesn't work, because the source or destination needs to be a userspace
+> address, and so any RMP #PFs will get eaten.  But copy_file_range() makes the
+> world go kablooie.
 
-Advantage of using the uptodate check in populate: if the host never
-allocates the page, populate doesn't incur zeroing before writing the
-page anyway in populate().
+I was hoping we could at least rely on kernel accesses going through GUP
+and maybe doing something like unmapping and freezing folio refcount
+to block concurrent access to the page, or read-only protections that
+would force the GUP to fail and just fail the concurrent userspace-requested
+operation...
 
-Disadvantage: Both TDX and SNP will have to implement this uptodate
-check. guest_memfd can't check centrally because for SNP, for a
-PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
-firmware will zero and there's no leakage of uninitialized host memory?
+copy_file_range() bypasses the GUP, but freezing the refcount or locking
+the folio would cause it to spin until the folio was released. So maybe
+that's an option?
 
->>
->> Another concern with this fix is that:
->> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
->> folio uptodate before reaching post_populate().
->>
->> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
->>
->> > One concern is that TDX now does not much care about the up-to-date flag since
->> > TDX doesn't rely on the flag to clear pages on conversions.
->> > I'm not sure if the flag can be reliably checked in this case. e.g.,
->> > now the whole folio is marked up-to-date even if only part of it is faulted by
->> > user access.
->> > Ensuring that the up-to-date flag works correctly with huge page support seems
->> > to have more effort than introducing a dedicated flag for TDX.
->> >
->> > > > Additionally, to properly enable in-place copying for the TDX initial memory
->> > > > region, userspace must not only specify source_addr to NULL, but also follow
->> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
->> > > > 1. create guest_memfd with MMAP flag
->> > > > 2. mmap the guest_memfd.
->> > > > 3. convert the initial memory range to shared.
->> > > > 4. copy initial content to the source page.
->> > > > 5. convert the initial memory range to private
->> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
->> > > > 7. do not unmap the source backend.
->> > > >
->> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
->> > > > to explicitly opt into the in-place copy functionality? e.g.,
->> > >
->> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
->> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+This is similar to what's been proposed for gmem hugetlb support when
+splitting/rebuilding hugepages as part of the conversion path, where
+we need to guard against concurrent access by both kernel/userspace, so
+maybe it's not too hacky?
 
-Yan, is your concern that userspace forgot to update the code and
-forgets to provide a src_page, and if we keep the "Zero page while
-getting pfn" patch, ends up with the guest silently having a zero page?
-I think that would be found quite early in userspace VMM testing...
+> 
+> Weirdly, I haven't been able to get a splat of any kind, the host just goes
+> AWOL and reboots.  But I'm very confident RMP #PFs are the issue, because doing
+> the same operation via writes in userspace yields:
+> 
+>     sev_dbg_test-24385   [049] d....  1892.853197: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853202: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853204: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853206: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853207: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853209: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853211: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+>     sev_dbg_test-24385   [049] d....  1892.853212: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+> 
+> 
+> > Looking at the full picture, isn't this a bug in the PSP driver that affects all
+> > commands?  With pre-SNP VMs, "guest owned" isn't really a thing, since nothing
+> > guarantees that the destination page is accessible *only* by the guest.
+> > 
+> > If we rip that out and always bounce-buffer, then KVM won't have to force its
+> > own bounce buffering of sub-page lengths for SNP, and that would eliminate the
+> > race I described above.
+> > 
+> > Completely untested (I'll give this a whirl tomorrow).
+> 
+> So this doesn't work.  Dredging up some knowledge of how this all works, I'm
+> fairly certain the issue is that the encryption is salted with the physical address,
+> and so encrypting at X instead of Y will yield different ciphertext.  I.e. any
+> command that encrypts the contents in the destination (or in theory, decrypts,
+> though AFAICT none of the commands do so) *can't* be bounce buffered.
 
->> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
->> > kernel to detect this mistake, similar to how it validates whether source_addr
->> > is PAGE_ALIGNED.
->
-> The alignment case is different.  If userspace provides an unaligned value, KVM
-> *can't* do what userspace is asking because hardware and thus KVM only supports
-> converting on page boundaries.
->
-> For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
-> request would then be making assumptions about what userspace wants.
->
+Yes, sorry for not noticing that detail sooner. It really throws a
+wrench in things =\
 
-Also, +1 on this, what if userspace, knowing that pages are zeroed on
-allocation, actually wants to rely on that to get a zero page in the guest?
+> 
+> I don't see a way to salvage SEV/SEV-ES on SNP systems, short of requiring
+> CAP_SYS_BOOT or some other elevated permission to do *anything*.  Or redo SEV/SEV-ES
+> support to require guest_memfd for operations that require putting pages into
+> Firmware state.
 
->> > Since userspace already needs to perform additional steps to enable in-place
->> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
->> > intentional seems like a reasonable burden.
->
-> I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
-> just wen up with code that does:
->
-> 	if (in-place) {
-> 		src = NULL;
-> 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
-> 	}
+Yah, short of maybe the above approach, I don't see any way around it atm :(
+If you think it's worth pursuing though I can give that a shot on my
+end.
+
+Thanks,
+
+Mike
