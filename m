@@ -1,148 +1,153 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C472517AF
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 22:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782338526; cv=pass; b=DLz6QFS+0XU9KbENceJYuUTB9oWy5B28I9AEeYSHFhNV7ayAVK6a7ZrNH/MSI+uS1sROGGFLbdN2NPeK1I7xUWNh+8hU7QakDkNY0MgtS7PHDPlEZ+gMJmDHIciTLslV4rDXK7gsxgvmyv6mRjFGKxSpzFz01N2bQ191dUWfxHs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782338526; c=relaxed/simple;
-	bh=7lfnvnV3tDsdkAeD8ENY3TZFcgviUe6OdssAmRPb6ME=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=EwmFvdsfqzERsHsZJs2eR0O60Ng57E0kHWy0Finzw5ePthNaFzjbCdS+1p2YOmx03o9FI8lH/vwFHnEneeeUYUhkBygkwYB1vQcyw33QAGbEdwDlUS3WIKUIkodEiIKNEtTPYIsMWeZWJyIzCu+BiVhidFkBuJY2YUuUVQ1LwPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYTEBVPv; arc=pass smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5232652AF
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 22:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782338609; cv=none; b=jG/ltGLzuSunSGFoSoyLS4zTsbNoW4pB+1yHLyE0BDZL/kB7rVk0/9Bztu3wcBHhEL33b8YBbZCiMb7JPRwIeMSO1RA1BkfaABOw8nl69DqmMxHaYVovum8LkAnKgjvNFzP1XBDAsPCu+hJ5eL70BKBCprRH6WgORQ1XjFZTas4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782338609; c=relaxed/simple;
+	bh=r5g6+V2Amp0yxvechpGrRZ8S0WXq2V+a9zpffLkRRbs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=O8Craz0UAdGmjn+qUPu6EI/RPnZ547T4I4cbGBJgkhWJ/h6SFFaFOj8XM2XC6rm+IBHK6TP6J2z6KuL/WZpTFAXrtVhEqhbb2M+WGCE7YS3vlNcQRdgf4lpO3zVR1O/3a1ezBSxsn4Xf47F7xG29c5rjhaCrAsXFhclxFkHlCsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kt8Q55al; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYTEBVPv"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-80814edb536so15482687b3.2
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 15:02:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782338524; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FpRNDfdX/cupKeXn1/tKGL/UXnxPw3iCerH0523/7GqoPq8LEEzK5mDNNH4l3qYEBW
-         gpHgXpCTD/6p+TGwziFxt6hK9yGIeTnxiNx3/peleEaZfiQ0dXXLO9lZk5ya6JZJgAE/
-         Wo0MUbdwieGJ78APGJcrN9ANGSrXpMfougpIK0CFBMI0BdSttA7BKIuXT285+q8zU+Ng
-         1UK/mIm/0rAi9aTlEiTvgH+jZJkAJev24jhxfA2cuROj86eQ+V1KEt+oEPvZa79rF9sk
-         Qh5WPJ3natyqQ+X2AjDe4S6++HoUlq65JjVGW1hYoZOAzuEYZ12D8oSeY2w9SBANihg8
-         87+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=xItY7SuPRYPt+AaXU+DYzekCb5pQcTJpSYGHn52GHR8=;
-        fh=xc2eALkLyu/79v4P7ONAVaYK8ZG68T84O7ikAdq+y5g=;
-        b=lVkd1jmG8+yMd7WAJXWMtfTUapOFVvbA2WZEOxpieXv5aistJVfJ5EUTQXpWEqcu7P
-         Nt5Ypeior4+meiK8NiOE+GvzF8kPj2tK7f9vZEcBFRFmj2IIanJbkYaECHVPV/307FU3
-         anKYNgasZ2uWjkl1dn6ZBDvRs135KhZObFiNMaZJ/rnx6h+k+BIRWwldJA29kL0KfswZ
-         kgK8O6hr+2cRBcwWiywgmvbp1h8PhnJoHm2H+hekY5wHr0W36/lZWgnMo/qNfPdwkHsH
-         VCyzYJY8YuD3UFYWmLzNJ2xSrde4dxq5BQhW4JE72k2fZP/7+HqAWZzBzrohWkfc8avo
-         xvrQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kt8Q55al"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c6b4271491so8440255ad.2
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 15:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782338524; x=1782943324; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xItY7SuPRYPt+AaXU+DYzekCb5pQcTJpSYGHn52GHR8=;
-        b=jYTEBVPv0Lq8+4hXuCybKJFhzU+GYv4nB7+oPItBwyD2Iy10+tL0hJhfAnIJPSvb5W
-         nmSrzJImS6MvubZwWAFDCYrygJpoXiYK7ArvsqQzsK5uh3Jxy13bJfId7rjPLQ/yph/A
-         tVbq7Jc1j8IEauss63loTziXBGbXib2MWMy7j2CmctutcndasghMnL3ofkZz2zdsUJ4v
-         mbwNoYlEj+vuW/6tledvCuf0s7e6HGq6Cp0768V++FKwpQa77eheIwfmsq3Hua9oGSUT
-         4YTs7TCyoRuxOtuM7XHy81zD4z2aC3J7mwGrff57hjudeYqMDBdMAzCJHiOXJ2XuG3eC
-         eVZw==
+        d=google.com; s=20251104; t=1782338607; x=1782943407; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrxdfhnpHc3n007Ugb6QRVTz2pRJtP7mIebzaELjk+Q=;
+        b=kt8Q55alaDwoCFWKoa5bV7LcIVUuvYZ+cxeB620+DGabur7nuY8PEpVyhUSxvSnco4
+         OSwgjFGL9Eu0eZVhBoN19wU18B6Zd8Ea0vlTaDTPYK4VpqcUoKGVSZdsrtK/VVYBxi3m
+         LOhFO78H2yV26E0pldjYBn/V1VvlesUVLbaVSI4LErRM9eVH488NhvbpjAglQjz3wxX2
+         F25V9ad6yPEW03J1fq69n5YEhpiMbb/ikzkY+aBne+O3cwFts9p045oRm2sQP4pem8LF
+         G7rXCZ8D0e3jIfuOEACMzP5ulS7A5gVxxS+BcFHQyMJZ4QTJ15nam/3pnnT8VQBwOQ8l
+         FZpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782338524; x=1782943324;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xItY7SuPRYPt+AaXU+DYzekCb5pQcTJpSYGHn52GHR8=;
-        b=KufdgtlbcoXJjecc7urGRC4fyIKnU59b00fLDEc5uzfKaTNyO2WciplszEgsnEla8q
-         6RU1fz3vvPqcr9Mw5cvyTlj586opwinFogxrDSb4ihqiVE+rsZR2ZtAb1FLwJoe/aSJX
-         lsz1Nxwf62A/0PTgr5bLJdXyzOJiQPiiapANnLuobNdEbiOxq26IQZKxL2iUbf0z4hgs
-         Pmp1C/KS9DY3IHxAu9qFGrsV2p7y+xJEm/2Ivm+DTc1U3wSNAwexplTej1Co7K53jm6N
-         77l6g8PdC4R0G7lNzvfxQYINE0/LYli4sX5PJzJFm3zaVzUIeEjsA3QMnIG46EE7y08c
-         vEJQ==
-X-Gm-Message-State: AOJu0YzkT2gOxQczkSZOOTr2lKo1jzMvbI/FZMBDduk5OeLIIhMQ8yvS
-	sAkd2svN0jBcIrI4X4yeqNGO1XIrzIRszv4zeOR3oCie0OZeBP3nNAbxOQpErQcRs/5E39Ylakw
-	0IHv3BX1rz6Ty2b2LZreD9v0+ZykscX4=
-X-Gm-Gg: AfdE7ckSAvm1RacUzwGNeVLdNF62488iWsHox0UsWZk/tgaXI8uC2mdYid6oBY1DEYp
-	4ahbMbFCRIQBsIaVrCjZqT9/LyJZdbnvN/1lWwbSq99IeHfsQT97jU4z8qRfPXvENCHbzm0YVNK
-	phwPKY89D+BHqtk2JJBUQeUk0y35yqNqWjUSwAR3fvQzuGAqH/nJt8jVJdkHJ2F5+3YogyAwXo8
-	UbnmPGzo6zcoJtLVCBtAbY3NX/RmDHScCMnqdbS800jU5H1ra85y2yZjgP9THcfW4c/kkQh
-X-Received: by 2002:a05:690c:b19:b0:7f8:7e31:28ae with SMTP id
- 00721157ae682-80a662eb798mr848857b3.48.1782338523988; Wed, 24 Jun 2026
- 15:02:03 -0700 (PDT)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 24 Jun 2026 15:02:02 -0700
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Wed, 24 Jun 2026 15:02:02 -0700
+        d=1e100.net; s=20251104; t=1782338607; x=1782943407;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LrxdfhnpHc3n007Ugb6QRVTz2pRJtP7mIebzaELjk+Q=;
+        b=WkKT8deqpUzjVA1nKWrb0KmDZ68bjb3Fe1q6coFzUNRTvDBj/OaFagbdUT9LXy7Yvi
+         TlnO6ehj7Rl0V5GFp67e9Q5cTbJBxZSLjN7tNkztBSNrxt0adyE7WJFfi8nUNzgQhCGn
+         GQGhT97juBiWfDudpzSZCmbP38YiTXELOauz47gYAGEsuw+KcJGZ/oSlX8Oj/hb1urgB
+         JzrRYRp5IWlQr+oUzFI0oZCp5aPwNUqSY5LplNfBEpyq15k2YaTkRJi300YQvHfMhS9f
+         mjpvNdXilgI2VNGTMfWTPIJ0N5u7X7bWqFtEzHzWPS0arWpwlDqcESF1KjMq8MkvtM/y
+         DAIA==
+X-Forwarded-Encrypted: i=1; AHgh+RoQbd9nmCj08xbw0pHBQiv6URGPcLPTmBZ5/Jxp86IhMziIrKHoXMbUf5luYlKNk8djWUI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSQaCIkG4shhzwYNSGvt0iSvpGx8puId+cDb/NIkBZy6NBfCQQ
+	W0Z6McfrwLk6+zo0lN5zWpDvjslMq4zbgg36ywwS3fi0F3YtkVoWv1RonZb76fGcvwnrVXdTcJi
+	qcFsKOg==
+X-Received: from plbl20.prod.google.com ([2002:a17:902:eb14:b0:2c7:e126:e2ca])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4d0:b0:2c2:21e9:5a7d
+ with SMTP id d9443c01a7336-2c7fc8a9b4fmr173895ad.34.1782338606050; Wed, 24
+ Jun 2026 15:03:26 -0700 (PDT)
+Date: Wed, 24 Jun 2026 22:03:25 +0000
+In-Reply-To: <20260624214955.6kkivefeuapcocib@desk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-Date: Wed, 24 Jun 2026 15:02:02 -0700
-X-Gm-Features: AVVi8CdqX4PfLHQXiwpnwtEKJdmkwx9CQ3waCkhoXh_EjZA4ykU1Up_eDosLuk8
-Message-ID: <CAMuQ4bX-iDvcUOPPY+NLz95tkRJYwWqvzAr=U48uNaub_HZLGw@mail.gmail.com>
-Subject: [PATCH v4] vhost/vdpa: reject overflowing PA map page counts on 32-bit
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+ <20260622-vmscape-bhb-v12-7-76cbda0ae3e5@linux.intel.com> <ajvUp_kPJBRZ7k_p@google.com>
+ <20260624214955.6kkivefeuapcocib@desk>
+Message-ID: <ajxULasZkCS57NPq@google.com>
+Subject: Re: [PATCH v12 07/12] static_call: Define EXPORT_STATIC_CALL_FOR_MODULES()
+From: Sean Christopherson <seanjc@google.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, Jon Kohler <jon@nutanix.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Josh Poimboeuf <jpoimboe@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, KP Singh <kpsingh@kernel.org>, 
+	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	David Laight <david.laight.linux@gmail.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Asit Mallick <asit.k.mallick@intel.com>, 
+	Tao Zhang <tao1.zhang@intel.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-vhost_vdpa_pa_map() adds the IOVA page offset to the user-controlled map
-size before computing the number of pages to pin. On 32-bit systems,
-where unsigned long is narrower than u64, that addition can overflow and
-the code can pin and map fewer pages than the requested IOTLB range.
+On Wed, Jun 24, 2026, Pawan Gupta wrote:
+> On Wed, Jun 24, 2026 at 05:59:19AM -0700, Sean Christopherson wrote:
+> > On Tue, Jun 23, 2026, Pawan Gupta wrote:
+> > > There is EXPORT_STATIC_CALL_TRAMP() that hides the static key from all
+> > > modules. But there is no equivalent of EXPORT_SYMBOL_FOR_MODULES() to
+> > > restrict symbol visibility to only certain modules.
+> > > 
+> > > Add EXPORT_STATIC_CALL_FOR_MODULES(name, mods) that wraps both the key and
+> > > the trampoline with EXPORT_SYMBOL_FOR_MODULES(), allowing only a limited
+> > > set of modules to see and update the static key.
+> > > 
+> > > The immediate user is KVM, in the following commit.
+> > > 
+> > > checkpatch reported below warnings with this change that I believe don't
+> > > apply in this case:
+> > > 
+> > >   include/linux/static_call.h:219: WARNING: Non-declarative macros with multiple statements should be enclosed in a do - while loop
+> > >   include/linux/static_call.h:220: WARNING: EXPORT_SYMBOL(foo); should immediately follow its function/variable
+> > > 
+> > > Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> > > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > > ---
 
-Reject sizes that overflow the unsigned long page-count calculation.
+...
 
-Fixes: 22af48cf91aa ("vdpa: factor out vhost_vdpa_pa_map() and
-vhost_vdpa_pa_unmap()")
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
----
-Changes in v4:
-- Keep the Fixes tag on one line.
-- Add Michael's Acked-by tag.
+> > Drat, I forgot about this.  Exporting static call trampolines for KVM came up in
+> > another conversation[*].  I had already put together patches to effectively default
+> > to exporting only the trampoline, and also to deduplicate this code so that the
+> > CONFIG_HAVE_STATIC_CALL_INLINE=y / CONFIG_HAVE_STATIC_CALL=y / CONFIG_HAVE_STATIC_CALL=n
+> > implementations don't need to copy+paste the same lines of code.
+> > 
+> > The attached patches touch a lot more code, and will conflict mightily with KVM
+> > changes I want to land in 7.3 (more use of a static_call in KVM).  But if we get
+> > them applied (to tip tree) shortly after 7.2-rc1 and provide a topic branch/tag,
+> > then there shouldn't be too much juggling needed?
+> > 
+> > If we want to go with the more aggressive cleanup, I'll formally post the patches.
+> > 
+> > [*] https://lore.kernel.org/all/ahhoDGUz39KSGZ6o@google.com
+> 
+> Thanks for the context.
+> 
+> Earlier making the key ro-after-init came up as an option in a thread with
+> Peter. Does it look like a good option to you?
 
-Changes in v3:
-- Add the Fixes tag.
+No, it won't work for KVM.  kvm.ko (owner of the keys) updates the keys only when
+a vendor module (kvm-intel.ko or kvm-amd.ko) is loaded, and updates keys *every*
+time a vendor module is loaded.  So for KVM, the static calls need to be __read_mostly,
+not __ro_after_init.
 
-Changes in v2:
-- Clarify that the overflow is on 32-bit systems.
-- Drop the unrelated memlock check change.
-
- drivers/vhost/vdpa.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ac55275fa..38b28ed3d 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1102,6 +1102,7 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
- 	unsigned int gup_flags = FOLL_LONGTERM;
- 	unsigned long npages, cur_base, map_pfn, last_pfn = 0;
- 	unsigned long lock_limit, sz2pin, nchunks, i;
-+	unsigned long page_offset;
- 	u64 start = iova;
- 	long pinned;
- 	int ret = 0;
-@@ -1114,7 +1115,13 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
- 	if (perm & VHOST_ACCESS_WO)
- 		gup_flags |= FOLL_WRITE;
-
--	npages = PFN_UP(size + (iova & ~PAGE_MASK));
-+	page_offset = iova & ~PAGE_MASK;
-+	if (size > ULONG_MAX - page_offset) {
-+		ret = -EINVAL;
-+		goto free;
-+	}
-+
-+	npages = PFN_UP(size + page_offset);
- 	if (!npages) {
- 		ret = -EINVAL;
- 		goto free;
--- 
-2.54.0
+> diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+> index b610afd1ed55..ea56da8fb446 100644
+> --- a/include/linux/static_call.h
+> +++ b/include/linux/static_call.h
+> @@ -200,6 +200,14 @@ extern long __static_call_return0(void);
+>  	};								\
+>  	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+>  
+> +#define DEFINE_STATIC_CALL_NULL_RO_AFTER_INIT(name, _func)		\
+> +	DECLARE_STATIC_CALL(name, _func);				\
+> +	struct static_call_key STATIC_CALL_KEY(name) __ro_after_init = {\
+> +		.func = _func,						\
+> +		.type = 1,						\
+> +	};								\
+> +	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+> +
+>  #define DEFINE_STATIC_CALL_RET0(name, _func)				\
+>  	DECLARE_STATIC_CALL(name, _func);				\
+>  	struct static_call_key STATIC_CALL_KEY(name) = {		\
