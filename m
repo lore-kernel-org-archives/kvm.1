@@ -1,211 +1,162 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB613C1406
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 14:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782310731; cv=pass; b=gvRPAuTAcXeCEKsd3vLzD6hK6rnj9PzZe4C2QECBSk05d47dQhZgosOr7hb4MHc+SQYry1nYV/qGFomkOymmyJfTPBuDVbZ173AtpMVfx32FmBRwn37Eaq/d6Gid9LIYPjT63fv0RH4X+KdN33s+J+dH5cmxNwzQegUqsiWPpT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782310731; c=relaxed/simple;
-	bh=S43KLHfWZf4rr+LSchiMooKQ2vnBu5Vtd0C00yl/idE=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TbTPXU1ryvwlb6LHhX+9IOU/grQw4pnJ5BS2eJ+eYuQclIdDMGJIxQrne67aGQYOCjXpuBxF201JizP8CCmeNrG9l4go4NQCoa4oryWp9AcWFIWW2FS7Jh853mvPIosNW70R1+KNiuqdxZFffekonxM/Mpz9v1NLeGw1tlNMzJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=df3sqHyt; arc=pass smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6BC3C2BA2
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 14:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782311326; cv=none; b=YkLf35WmHIc2bFkzskMkl65kTSByID29AgiBvfWf4An067hQ399bzhAB1/fxhX1CaYAQHrp5aGqh/mVVPuv+9qnH2MXkhdTkhU5nP8rPlsWAEcu8YACo0eIwwOUVIiUYdWB6er8EUwu+9uJ62UB9LwoVx02F+ZmznzokjHmz+68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782311326; c=relaxed/simple;
+	bh=YhkMWVSgEIbpiNhkj6ez80Jwjik13RTyMKNxxHFY5k0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MBs3rSALyAj6zy1U5aRZaazY5NvcVmGe9aXdPO6x0WpjO+t3AGyVeNA0ehdSawIfzuMa6CyBgoJc1istm+6o68bgSKyw2MB93U8pq/G4vK4oQRi6ki8Wr3m5LrlHQu3MnqzibvGxdaS46YzfWBGnYKUBZXn3ZwBsZd3LGpHerZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Hh0MPPdk; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="df3sqHyt"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13986d61b4eso2706735c88.0
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 07:18:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782310727; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZfMhhil61i4HX5YvZhB2eyAJSddHTuTI6pm54POq2p0loDMC0vo3PO4HB12EimkjGH
-         puWg1bcbq/h7tkVJwJ9QgCIX7nEZownWdMEmtAYvg6zqHiMNco1kLrjpM0BnTJelxGcN
-         KAzf5kB/U/Ah6GONiOXQXSiHXmWAUQAqvLnS11rIKH1+5W3TWLX5OmAVrKFIn33RmX+E
-         h4srQdSuCB8Ee/MKtB8YIlyVkGOMx+yXz63rsU9HrhwHLqqPpsg2RKR9rCjqL+TdakNP
-         uT3KkLbuK8NYP601yVxEVWjc4NfI7uzBbVG3bhXBdNpps3Fkxu4T4ObbfTNZObgZlSwV
-         Yz3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        fh=+FZMXagWLchR2Dmv/LjtKu5DOwNrvquktB0g5IPiU24=;
-        b=HUve0I7digCTGLfXiNWELq68fZUoyqVOPgdKySvJXK794Xs3c+TVVQSIdYJDTptcXo
-         LLu0F36VUgnWL9zCOttXE75TYMXy7aYaP6fHe9zpZMCUPqiBLZnm0aiDJ4Zfr4JckWgx
-         hSWTi7JG7z5iriR2l5oP48gVWsKWX0+ieMYisGZIu3dpfPJsYIYXe9NykstKMzkNFHSK
-         4tDjg/sKLjevAGpLnxlIJBHaNWdnntl5/Q42XjAKMf1g1/xk4F1IS5GoVxXz1+zTY3rs
-         Dh0kjHpAvxTIE89z1yo6yHye0GsfSfi3t3rzaLMRkCTie+Tm61srBbT3TiC0ipjm70/N
-         xzXQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782310727; x=1782915527; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=df3sqHytMdVQfm8AoVQf0XDsZFlP86k7xtk4HCgprtM4Sn9s7OAXQylD/qcfp/Ep9r
-         0t9p/fnfAiUBS/iQBNEPTdSrMRAMDtcJP1OwM4knL5F42tn5UEehXedN8s4JXkHtRTZK
-         VOqr9xe3z7xacVEAVUp0J8cETm9/thUkrXIXkD9i85dk8hbcnwljADl4eLtMcNHJUdq7
-         Y1FOh+re6oPej1vzugspLX8LP1l+xmKh7xNSPDHoAHZvo10EYqTi2dcHjOsy0YYdRivn
-         fRKFRvQUauDv62EyXbk7hRSdU8O/51XpfJwHFWCzmVQRJkPuzoLRk3OrekIrJxhOujO3
-         IjeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782310727; x=1782915527;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=tWVS7hq5KCPXQAUKgLJR3uv30zfxsH3o8mmjm9GnqBAS72OgvEHm+LJJWsqRgGgm2Y
-         VYO0q32nc/ePNoaPcgENSJBucL8OhEabzidTheKPltzqqpoDhhWPgPXcrgvtie3//ibP
-         fS/ikKkyOlw/qsoCea2dPfj7B3btO1AfNdPXDJWTHaqBP1Dy29P8A35aklFCv2AxvFBH
-         eocoCfosuWHQC3cvs1cAb86NpENQ0VOjuE6AT5REf+POjbNaGY/396T7iWzEdJhAlbAt
-         lJ9ia+J04qXKLn7QcW1EKrcjKTXlK7AP5Sl0NEr5GPhOEcw4ToJEByzGRMA/EZfK8Nk8
-         QV+w==
-X-Forwarded-Encrypted: i=1; AFNElJ8Q9prbtznM0mzx+Bw6U4MFGupuJ4FwtvTXri9XI5J11bHQtYQhBBfVNnF2MtC7zgu7bCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya+UjPQF9ixzp67U4pG7FPwMy4ekrZmtJ3t5GDHXXHixf3bNQ1
-	3X80Ahr+Cy23kSA+Q6K8QbN6CgioLuT2fSe75HOgyubKv2ScuIGT+RdE9RDQPpPQMAUlATQAsSc
-	ZjcymyUSzLmYZFFrv0o1HRYKzSWBcGB5VamnM1cHq
-X-Gm-Gg: AfdE7cnGBwPniweGEz1DxwneW7XuuMR2f+DUib/SXCcQcB5lnJ8yRYbf5VcJD1qaQCj
-	kIFCb2YUKWyYwfF/Vl0P4g0QvAZfeFCmmb7+eOtjpxZSGvFb0O1PlRyZf9zjLtwth83LiZ2kJ/6
-	Q5yMyzGHW0aE0r5pF2s0cy1FyMgt7mPjQ/xhUgeNPUIQEAGYcSuXR0ygriQ6MScrOQPkngqG2ql
-	E5CRQmSlqY734ug2A45Dqb1gdpoSPmsrk2GQAgWvD/tDrIKDF5JenBYkedoxSn3wKsHUV30Ll/y
-	j2vgvhjWYgjOuEIxbovE8EgTUU8h
-X-Received: by 2002:a05:7022:43a0:b0:12d:de3e:86a8 with SMTP id
- a92af1059eb24-139ad72bfe4mr15983384c88.38.1782310725876; Wed, 24 Jun 2026
- 07:18:45 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:44 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-8-9d2959357853@google.com>
- <CA+EHjTw6x-mxDnJjnhE-6SV73tMrb0paKDTtOC2j6zJ1fXZDLA@mail.gmail.com>
- <CA+EHjTxu32nQ+vPV7Zmcw76_-V4g2_g=P_UzRnnO2dP1PFO2ww@mail.gmail.com> <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Hh0MPPdk"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OAmi8Z596217;
+	Wed, 24 Jun 2026 14:28:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Z94kfi
+	UAm93RXBLrLcspjQdZC+Vm7C1VeVzQvsKK9Gg=; b=Hh0MPPdk0hb0hJHcxGBE6D
+	VCuk0MGK1hJVdGvW/ee98DSg6OSE0USKGdZFFK//dqYFPetQ/gmQ3eDH+emRAm6D
+	ZS7maag1Pam218SIPLHVDc8aJ0tAZxvyisMmeW46vS3yUHjcpom4kKXUosYKVYah
+	t/nkhdKTrgZFrOhMv6yhpvxvk6dl0hNZebu4Dajkyz2PDKqAIBljKSlC5IcaTYat
+	OIR5xp8vpyUZyIrjXHCooUurjA25FQw49SPoueJuqHa6cZ6BRTY8JlfgdkSoVNax
+	hFG/8TQ9JPepAWpuw5T33osmxl9TGmoKftKO1oqSHZXpKmWONmCHlS7WatuHTXkA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewg9hvse6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 14:28:26 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OEJjms003828;
+	Wed, 24 Jun 2026 14:28:25 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex6phh03m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 14:28:25 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OESLmb39911934
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jun 2026 14:28:21 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3956E2004B;
+	Wed, 24 Jun 2026 14:28:21 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5B7F420043;
+	Wed, 24 Jun 2026 14:28:14 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.19.28])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 24 Jun 2026 14:28:14 +0000 (GMT)
+Date: Wed, 24 Jun 2026 19:58:11 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: Re: [PATCH 2/8] tests/qtest/pnv_spi: Test Power11 PNV_SPI
+Message-ID: <ajvkrq3e1103wLH7@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+References: <20260623141933.577981-1-adityag@linux.ibm.com>
+ <20260623141933.577981-3-adityag@linux.ibm.com>
+ <ccbadb13-888b-495d-b894-826a8e664d3e@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 07:18:44 -0700
-X-Gm-Features: AVVi8CeUzt8nV1nzvS6dw32sjloWQ_ALAuG02W0rgNOvY8pSNnpach_kfV-0O1g
-Message-ID: <CAEvNRgEKB0FhD=qhyX=0m2o+d02Jz6n6njdbFmjyiUpK3Up-4Q@mail.gmail.com>
-Subject: Re: [PATCH v8 08/46] KVM: Provide generic interface for checking
- memory private/shared status
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ccbadb13-888b-495d-b894-826a8e664d3e@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: yd7cnFL-Hqr7q59kOnWpf8H5qR1nFYMU
+X-Proofpoint-GUID: owxjWKmysTP1Im0zzj-cl3bfbk_27wXf
+X-Authority-Analysis: v=2.4 cv=Y4XIdBeN c=1 sm=1 tr=0 ts=6a3be98a cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=L1eJwh8xV2WiUtXmEVcA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDExOSBTYWx0ZWRfXwnCS++JGfZD4
+ OgvsumcDmMalEHtsT1JdlTqElSpdrYi9VDZ7pmjk4aJxvbGG2N0zfAgLSQkAMD5sOaOCZGkQbTX
+ 38sywR2aDVjKL8jrDb16NyGUzi4RZShkKy1vv6UILpY8PoHyeNOk9bmygknpuMXx4I93kmHWUU1
+ s+h92iGeH7+bgBpamaq27BvGgnRZr3y+77iGCJuxVRrnd0CUj4rCPH0IkrjCTs3nC9d9i92pdUh
+ vEwV7jd9Wo2WnEH5pD7EekL//8ShQwURkn1pnFQDOPWIluiNlPLvCe19ylgEhy5VKtF55yxK/oe
+ bOZarNIvWVBkGqQefonpJAPxdrLwnH0/Tk+tfl2T4fwelo0EhO0t62PlkVe++j2Z6LrbGVnBygz
+ P3ZdzaxqhqAu/fIx6FV6B7ZSYwT5A3YxaVMVcBbhKXo6UrA4diXF0GM7mN0EBXycfhrE0iKcoLp
+ L+VssEkkHjoJUG3vbvg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDExOSBTYWx0ZWRfX/0IzTN0UF8yA
+ O5XaC2CiEAdbZc1q+Rozr1dgsNiwep2HJuOylrk84/U04HvsO8u8WoGFSIusoaBpcZPUzo5w7kl
+ 4CxcHmMRuekbXjgfgimElDc6Z24JxlA=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-24_03,2026-06-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240119
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On 26/06/24 01:47PM, Cédric Le Goater wrote:
+> On 6/23/26 16:19, Aditya Gupta wrote:
+> > <...snip...>
+> >
+> >       g_test_init(&argc, &argv, NULL);
+> > -    char *tname = g_strdup_printf("pnv-xscom/spi-seeprom/%s",
+> > -            pnv_chips[3].cpu_model);
+> > -    qtest_add_data_func(tname, &pnv_chips[3], test_spi_seeprom);
+> > -    g_free(tname);
+> > +
+> > +    for (int i = 0; i < ARRAY_SIZE(pnv_chips); i++) {
+> > +        /* TYPE_PNV_SPI is not instantiated for older Power8/9 machines */
+> > +        if (pnv_chips[i].chip_type < PNV_CHIP_POWER10) {
+> 
+> Can we remove this chip_type field from the tests too ? see 248e4e924e87.
 
->
-> [...snip...]
->
->>>> @@ -2546,7 +2546,7 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
->>>>   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
->>>>                                           struct kvm_gfn_range *range);
->>>>
->>>> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>
->> Should have read the Sashiko review first, but where is this used?
->> It's not used at all in this series...
->
-> See below:
->
->>
->> /fuad
->>
->>>>   {
->>>>          return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>>>   }
->>>> @@ -2557,6 +2557,16 @@ static inline bool kvm_mem_range_is_private(struct kvm *kvm, gfn_t start,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>>>   }
->>>> +#endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>> +
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
->>>> +DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +
->>>> +static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +{
->>>> +       return static_call(__kvm_mem_is_private)(kvm, gfn);
->>>> +}
->>>>   #else
->>>>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>>   {
->>>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->>>> index 6669f1477013c..8b238e461b854 100644
->>>> --- a/virt/kvm/kvm_main.c
->>>> +++ b/virt/kvm/kvm_main.c
->>>> @@ -2627,6 +2627,20 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
->>>>   }
->>>>   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>>
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +DEFINE_STATIC_CALL_RET0(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
->>>> +
->>>> +static void kvm_init_memory_attributes(void)
->>>> +{
->>>> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->>>> +       static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
->>>> +#endif
->>>> +}
->
->
-> Here ^^ as the static call update ?
->
->
-> Suzuki
+I went through the usage, and don't see any fix currently, as the
+PnvChip structure these qtests are using is basic, and we need some way
+to identify the chip type, for things like which machine to use, xscom
+addresses, and to skip/do specific things for particular chip type.
+I went through the mentioned commit and its parent, seems it was
+possible with the compat property being handled by respective
+class_init. So currently I don't see a better way, what do you think ?
 
-Thanks Suzuki, it is used here. kvm_mem_is_private() was and still is
-the function used to check if some gfn is private or shared. Hence, in
-this patch, the usages of kvm_mem_is_private() were not
-updated. Instead, kvm_mem_is_private() is now set up as a static call,
-and the static call is hard-wired to kvm_vm_mem_is_private() in this
-patch.
+> 
+> > +            continue;
+> > +        }
+> > +
+> > +        char *tname = g_strdup_printf("pnv-xscom/spi-seeprom/%s",
+> > +                pnv_chips[i].cpu_model);
+> 
+> please consider g_autofree variables.
 
-In the later wiring patch, all the places where attributes are looked up
-are updated all at once: if conversion enabled, take gmem route, else
-take VM route.
+Sure cedric, will use it in v2.
 
-kvm_mem_is_private() is special in that the if-else is done at KVM load
-time rather than runtime, and I believe that's for performance reasons
-since this is checked quite often from the KVM fault handling code.
+Thanks,
+- Aditya G
 
-Buut I think perhaps Fuad was referring to kvm_mem_range_is_private(),
-which is indeed not used anywhere. Binbin also asked about this, I think
-we should drop kvm_mem_range_is_private(). My reply to Binbin is at [1].
-
-[1] https://lore.kernel.org/all/CAEvNRgGbBcrX5Fw3vNTsTOBNC=Ypi=9-S07674yPxLU9i4akjA@mail.gmail.com/
+> 
+> > +        qtest_add_data_func(tname, &pnv_chips[i], test_spi_seeprom);
+> > +        g_free(tname);
+> > +    }
+> >       return g_test_run();
+> >   }
+> 
