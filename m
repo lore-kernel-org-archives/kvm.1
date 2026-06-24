@@ -1,137 +1,149 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF643B0AFA
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 15:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B503DA5C3;
+	Wed, 24 Jun 2026 15:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314539; cv=none; b=kJLabjZ62yuAx5Qm4RzWoU4CPUKGopIobNji8EyWT8+SD7S66XuzsctFY43u8YuKVY5JQ6YlSF2/Rt91XGL7hzc7o07jKzs3Dn3aOenpuI2djg6MWf4uVV8x5LDsLRj0ShQhnPgEOEy+Fql8DqKWEYV4Njf/TsuaNxY0nYDZcIg=
+	t=1782315827; cv=none; b=nzqpMuFyo8hue78gwIEjiTGmaFM5vdptd+sAWZzmoTmjkvvrjP5KEH5Ej4NIsw/VarcuoElF9nqIB9sK4W5pugJgGtTrhOcEvZHm84IiqWHnsCamz4nkNtks0nNh6pivEO88mSgEvmfpK4GprNgoEzasNQVPMuZ+UKzr4mLfE4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314539; c=relaxed/simple;
-	bh=XlV4gg+hFj7K65n/dyOrPh0qJpdfKdeAogTtacqShnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvDmwAlweMeaIFfGKWD2SN4JdFjbXeMt+OI5t4RtK0wGWcYEor9VL17I0qLH38Fv5QErAUGtcsBtM5ypvt9cH/o4GpDVZY+3uRlfxoG13E/612tkgPssrK1rgWh6LmVrE7/EmmX8xOQMVzM2E6Zj1IG7XV7IAbnxatNcxniW+fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iBjNAQOW; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782315827; c=relaxed/simple;
+	bh=5YOuVHtOcSqCS6wcZuSBHTS4usorpWqZnTw19YeQUPg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I5timyMdUyZI35FTG/jP+8IBrr2GyfAnGNMdqFTKT3o3I8YJ4RgD1jKKX3ducFWXjG2+TvnkG3hyBtYj7x6kk+GxjPhFjNAxz5MtP0Elpezz/BbV2xfYNG8c/6QKtSKU99T9hkG5CGTBco5BgyMloc0bSVh4h3+Lg5ZFf86qeVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZG8bbzc; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iBjNAQOW"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OEmOvO1229091;
-	Wed, 24 Jun 2026 15:21:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=goJ4v1
-	nhY/z3nlmgG0teKC+QhVS6raLvFZ3QsdvBVzg=; b=iBjNAQOWu1J/4MvE/wJ8TC
-	fyfGQC2FM7od5uyikZ0BlLMMvEnm+20aiIrnLzrCNnJlXXxRfDXxEfsVdOfpnl7m
-	425Uv74wjDIHCw7kI7Or2gpCabh46vHCJKXhuNXfNA60FMZfHzanmWbHwVgCaDPE
-	6tAl4jhQtBeW+mcj9unM2SGPGhxUpJk5QGfX+Ey7JbjQCHj4QUKSo7F3i0SJlTHR
-	tWVfjVGV3VGFAw3isae4ENlWunOxhTtnZIW0HS/+qc3CZXaqJewBKC3assj561Tn
-	FP5WCssc4bTjAC1WScKTSjB9jVAW2YKhX/qFwr7+/3ONcBILx/R2vf9JQNxYB5Ww
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9gms9y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 15:21:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OFJiiX029008;
-	Wed, 24 Jun 2026 15:21:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwhdey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 15:21:54 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OFLoWF28377446
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Jun 2026 15:21:50 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98C2620043;
-	Wed, 24 Jun 2026 15:21:50 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C168520040;
-	Wed, 24 Jun 2026 15:21:39 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.19.28])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 24 Jun 2026 15:21:39 +0000 (GMT)
-Date: Wed, 24 Jun 2026 20:51:35 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: Shivang Upadhyay <shivangu@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH 1/8] tests/functional: Add remote interrupts test for
- PowerNV
-Message-ID: <ajvr5gPPLsu7GcA5@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-References: <20260623141933.577981-1-adityag@linux.ibm.com>
- <20260623141933.577981-2-adityag@linux.ibm.com>
- <4de3eafc3c47799d0b503076b0d71be7cf261b61.camel@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZG8bbzc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782315824; x=1813851824;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5YOuVHtOcSqCS6wcZuSBHTS4usorpWqZnTw19YeQUPg=;
+  b=lZG8bbzcePErxkNYhnRV6P3WMVkl4E/0LCeJQe48yU0FgJKyQM46Di0C
+   sdERm8Bmob2PxKB8WEPg0t/7jeFYk6llMIkjGN1ePQ2V7ithftCQFGbll
+   wjZk0rhsqF7wIccUhMjZdOBC7kgDLvhT+6GC5qGevnmAgoEowkY9VnFbq
+   DDQyRrOeh7Inb3nwN//9wC40p2mWoNsCdEpk6eGFFmrS+CH+fLj6PYcHE
+   h5acF3ZMPDqDLWiDezzzGfhx+zy4O9IwIPy+Re3xRyZXavAeqHZ0XF6Eu
+   zJYl8CqGszidwjmiWCrig9VIgHOubz5mn2VODCxufh8r4psXIks5152II
+   g==;
+X-CSE-ConnectionGUID: SI3+IOWPR+6Pxo338I9cWQ==
+X-CSE-MsgGUID: 4snxtVNaTiecuLKh2EvErg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="93442444"
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="93442444"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 08:43:43 -0700
+X-CSE-ConnectionGUID: ewQvxYfZQtGiPvo02jLRKQ==
+X-CSE-MsgGUID: vsG9ZIE/RFyuWOMq8tB0ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="251876562"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 08:43:38 -0700
+Message-ID: <f8937d16-4aed-44d9-a058-beff56eac4ad@intel.com>
+Date: Wed, 24 Jun 2026 23:43:35 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4de3eafc3c47799d0b503076b0d71be7cf261b61.camel@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: iKYhyKYc85gGO_m8A2cbWXoE9orJb-ia
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDEyOCBTYWx0ZWRfX0EP5lrMlLL3M
- T1+/aeaAgDUsMA/TRM5y+3BLE0mXSKcKupSbGsMG+BDkQ6ku9wiZPULNfD/3xbm6h8a7qagD2lW
- 3co31WNhhHNVDJN+xHJYUMSReSe/5MU=
-X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a3bf613 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=8OfXivTFFpb-axvt66UA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDEyOCBTYWx0ZWRfX9W2slgDuvEk0
- FwR8Q1zsLbEUDkly5nh+/xFZKc2eT3WHDRxmBlMJMj3Y9FDaf+g0QoDZMeU96A9PT9FX94t9IuA
- EY8ra5Lp16jA8MDaJDwB2730yI3Qwi8h6MKH6+5dDjOk+ZgE2RP48PqkuV5hLnbbzjEht9fukAG
- mRyEu3NkuoMlRXj5YJvUD41ks8kp2W6bcKRIW4RkndAzZY+2d7ff7bXpWAvsoLNtwEWzwIWtCey
- JXaYfShj9bp9SC1H3SPa5sGaNaO55Jxnd8f9vdCPFiEc3/KkySPl6exjqvLdwev2jQEe7Ip8R9X
- 6DTBVZuBlv/1OQzU6TkPXKbqa12jIQqCJUBbOmbzR8GM0owXlOVkDAS/WevjrZNIbmLwkSoDRE/
- 0vpQMcxObe2Y9opczJ7PHUs9t0jM85ReRlRxRBMHHVz1ihco4bfY6g9oUk2XKK2ArywfUoGnuuQ
- BKf4vjjN/j9mjc4MtHA==
-X-Proofpoint-ORIG-GUID: EcV8BSPjPxMycR1mjL20WeJsoQWgdFl1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-24_03,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240128
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 13/22] KVM: selftests: Set first memory region as
+ shared if guest_memfd
+To: Ackerley Tng <ackerleytng@google.com>, Lisa Wang <wyihan@google.com>,
+ Andrew Jones <ajones@ventanamicro.com>, Binbin Wu
+ <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
+ Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
+ <20260521-tdx-selftests-v13-v13-13-6983ae4c3a4d@google.com>
+ <CAEvNRgEBiivp9tOHZnFmWvF6ek-Ar-m2B+hb=-H0dgAcM2=z8Q@mail.gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CAEvNRgEBiivp9tOHZnFmWvF6ek-Ar-m2B+hb=-H0dgAcM2=z8Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 26/06/23 09:17PM, Shivang Upadhyay wrote:
-> On Tue, 2026-06-23 at 19:49 +0530, Aditya Gupta wrote:
-> > +        # Check that interrupt counts increased
-> > +        success_msg = "Interrupts increased"
-> > +        self.helper_exec_shell_command(f"export
-> > PASS='{success_msg}'")
-> This is a great idea. Maybe in future we can pull this to a saperate
-> function? something like the following.
+On 6/16/2026 7:46 AM, Ackerley Tng wrote:
+> Lisa Wang <wyihan@google.com> writes:
 > 
->   self.is_booted = True
->   shell_check_pass_fail_command("asdf")
-
-Makes sense. Will have a helper in v2.
-
-Thanks,
-- Aditya G
-
+>> Set the initial state of the first memory region as shared if it is
+>> backed by guest_memfd, so that the KVM selftest framework functions can
+>> populate mmap()-ed guest_memfd memory the same way memory from other
+>> memory providers are populated.
+>>
+>> For CoCo VMs, pages that need to be private are explicitly set to
+>> private before executing the VM.
+>>
+>>
+>> [...snip...]
+>>
+>> @@ -495,14 +497,16 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+>>   	vm = ____vm_create(shape);
+>>
+>>   	/*
+>> -	 * Force GUEST_MEMFD for the primary memory region if necessary, e.g.
+>> -	 * for CoCo VMs that require GUEST_MEMFD backed private memory.
+>> +	 * Force GUEST_MEMFD for the primary memory region if necessary, and
+>> +	 * initialize it as shared so the selftest framework can populate it
+>> +	 * exactly like other memory providers.
+>>   	 */
+>> -	flags = 0;
+>> -	if (is_guest_memfd_required(shape))
+>> +	if (is_guest_memfd_required(shape)) {
+>>   		flags |= KVM_MEM_GUEST_MEMFD;
+>> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+>> +	}
+>>
 > 
-> ~Shivang.
+> Just noticed this while hacking some SNP tests.
+> 
+>> -	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags);
+>> +	vm_mem_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, flags, -1, 0, gmem_flags);
+>>   	for (i = 0; i < NR_MEM_REGIONS; i++)
+>>   		vm->memslots[i] = 0;
+>>
+>>
+>> --
+>> 2.54.0.746.g67dd491aae-goog
+> 
+> I think this patch should fully buy into in-place conversions, so we
+> need to also set GUEST_MEMFD_FLAG_MMAP:
+> 
+> @@ -483,6 +483,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape,
+> u32 nr_runnable_vcpus,
+>   {
+>   	u64 nr_pages = vm_nr_pages_required(shape.mode, nr_runnable_vcpus,
+>   						 nr_extra_pages);
+> +	enum vm_mem_backing_src_type src_type = VM_MEM_SRC_ANONYMOUS;
+>   	struct userspace_mem_region *slot0;
+>   	u64 gmem_flags = 0;
+>   	struct kvm_vm *vm;
+> @@ -503,10 +504,16 @@ struct kvm_vm *__vm_create(struct vm_shape
+> shape, u32 nr_runnable_vcpus,
+>   	 */
+>   	if (is_guest_memfd_required(shape)) {
+>   		flags |= KVM_MEM_GUEST_MEMFD;
+> -		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
+> +		gmem_flags |= GUEST_MEMFD_FLAG_INIT_SHARED | GUEST_MEMFD_FLAG_MMAP;
+
+GUEST_MEMFD_FLAG_INIT_SHARED is valid only when the memory attributes is 
+per-gmem.
+
+we need to check KVM_CAP_GUEST_MEMFD_FLAGS or kvm_has_gmem_attributes.
+
