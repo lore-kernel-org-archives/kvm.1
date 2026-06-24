@@ -1,121 +1,90 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2963FBA7
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202E3AFCE8
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782304252; cv=none; b=VabNgA2CjqydjELz67MZsXMJx7qWmkS03xYocnw4TqYAdCfVwRXSdFjWkRxPYaTWSrTWz1hKhw5fAnnB3K0+NwCD2bl6gPFEAumPPJG7selluyHpcGO2goEARINAqVmdIGpTLXr2Ng0UvmWHlHNCTH2lGm6GbDFnPf9RhljdSTw=
+	t=1782305726; cv=none; b=Gt1njge0eEzYEufuoilCKGiF9KI/tMAgUqWcy6kgaRNMmSi23n16D3Qv5EbriGMQNMREbNv/0F2s2QP//y2p70fCZix2afLfPBRwNmB7HLNj2jiAlXUWUkHbXE1XEDOji2TEvO3xkvAHM2Xv5yexQN3EAu09m8tIqmMq8W709Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782304252; c=relaxed/simple;
-	bh=jCpCELjDEVU1UZHsZP9I7IfaMyz3oVIDS0rdopJq3IM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LiP3AN+KBuxWjeE7hLF5Pe6bFRchrT9akEn3T2W4A19pG69n+7pMHwdtTeG3kdBk7dXO9fgSJeoyJCgvZ+thq93CGx6T/aQKiZakABI+aKcwnfqC9KGjsiAV5usnK+SqdQN+txwmNyLnvhzOUwA1NeqOM1kHut8UJ1HJQ6mE3ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IzWH6895; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782305726; c=relaxed/simple;
+	bh=NLjtRvBkdhmNAGFal4tWXd7u8NKNhx62HEmkoID3kxg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sKiV4lSz4kN1hktmp8QSQ8EKUvv4lW+zdOitoCwEyM0MqU4tguTnJAwnKlnH+w+QGN9PxXrqCSpO0hr3mI+GkZbUyE5C/31wLCzib/F88v6LhlI7/qxG1kogN8OuuDBJlA2q7VuKRS/pMa4hAOd9e9wLSc+1YPXpZZYxvOyJkeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sQgXk8Xz; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IzWH6895"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782304249;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=e6PWEZAb7BAaygQvOE+X2NbH92QyrXEToNGxHKAMiP8=;
-	b=IzWH6895r+Ic4TL9oP8RAFjcZ86rEJF403Z4LhJ6H6zugUUHOWkexc6TDFoUBx7YQ4fle7
-	hUPYe6ucUbSsJwNsB21cslk4nTzIMz1TEMKv8IsLsf4V3JWvuRF3wZhAJpiLQBqU20zc2y
-	qa24W8ZKiBOJufbrzwJ/9Y3ufoSAbIg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-325-uCyQg2RSNpWO3Dt09t0NOQ-1; Wed,
- 24 Jun 2026 08:30:46 -0400
-X-MC-Unique: uCyQg2RSNpWO3Dt09t0NOQ-1
-X-Mimecast-MFC-AGG-ID: uCyQg2RSNpWO3Dt09t0NOQ_1782304245
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D2B81955DBB;
-	Wed, 24 Jun 2026 12:30:45 +0000 (UTC)
-Received: from [10.44.50.109] (unknown [10.44.50.109])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B65AF1956049;
-	Wed, 24 Jun 2026 12:30:43 +0000 (UTC)
-Message-ID: <5c254d26-1dfc-4037-8ab6-5f8af6d0501f@redhat.com>
-Date: Wed, 24 Jun 2026 14:30:42 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sQgXk8Xz"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so699125a12.3
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 05:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782305725; x=1782910525; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgxssUOjnxNEhvqo+T3EzbX5gSgbIPqDF9WSUICY2jA=;
+        b=sQgXk8XzQuactmbK7ANkZ/QfTPRJKoorxHQELLdn0zYI950Dx7o9i50tlZErQ8AsTE
+         2+v3dUfcL4yLxDp+Rq382Hyxf4OrvIkel7zSzzYu/Ue+ak8p4/8DTKIAic7/gdOvniLE
+         XGDFUu78zt/wtbQ+s3Ohnmi4zjXnfcOrxqdHt69EWHAitW//RESaIChRAY+lmUu4DzmN
+         JbWz5DFSAl1APSF56N4kXBsUKij/IVAJ24bpTJBI59DEhBSUlOXIF8IvCXfO6MKkUzB4
+         fyz5AZhBHP0JOxZr7x7vhRsq59x0i1pDruqUVx6VOmofmrCsIZZT9sDEm2Jf+pU9QAuE
+         KJjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782305725; x=1782910525;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgxssUOjnxNEhvqo+T3EzbX5gSgbIPqDF9WSUICY2jA=;
+        b=kg0qA7wM0Rw77kucK6QDxwwK4/kb9H4beKIfioQoJMsyV/SNWnq8Nn5vkFWE4drzAQ
+         RysCJI0acf4lOwJCWn3grc5XUDjDPYtbv9S3ch9wcm6zWMdOG7L0YKubbwRBWq6JmSRo
+         zJ6VCJpNLf2gWL4DRnU8IelvoX0crbyrgqFkghZaZe4udi2andDDa5AFYbEsjLKWikLZ
+         SmP9kicJn/Jjy2Ip7qhp7rT6mXiQYxMOFbqh+UDT629NSAmgaFrPQ1M9nF7oud/V1byx
+         GAwRNe8h9M01QFZCuNIyvTT//yAg7l/zoBSjHyGMIlNAdbXfQc46k2i0J1qJTY5fQEnQ
+         sh9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ856ylrxQE8fceQbQCWYsIr5A7NfcPIf89IuhcfD3Pxu9lW9Z4Uc5JgGpR4dLRklOEg+nA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgTo8i7/iZOHTTAAC+cwhaWAkyl6DRMZX0OhhE+XgLIHnewL+P
+	N+S0pHT69zc8EFYzr474KLvI2CkBEjBqp6tfolHn/0aGu5sC7EqnOrWa6BWcmXnFekZVoB0QRYu
+	6MTQhDg==
+X-Received: from pfwz36.prod.google.com ([2002:a05:6a00:1da4:b0:845:aa6d:92ea])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2184:b0:842:68d3:e29f
+ with SMTP id d2e1a72fcca58-845a26cf79dmr4484045b3a.3.1782305724733; Wed, 24
+ Jun 2026 05:55:24 -0700 (PDT)
+Date: Wed, 24 Jun 2026 05:55:20 -0700
+In-Reply-To: <5c254d26-1dfc-4037-8ab6-5f8af6d0501f@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0
+References: <20260613000329.732085-1-seanjc@google.com> <5c254d26-1dfc-4037-8ab6-5f8af6d0501f@redhat.com>
+Message-ID: <ajvTrLNWGgulNJaj@google.com>
 Subject: Re: [PATCH v4 00/30] KVM: x86: x86.{c,h} spring cleaning
-To: Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-References: <20260613000329.732085-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260613000329.732085-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/13/26 02:02, Sean Christopherson wrote:
-> It's still technically spring!
+On Wed, Jun 24, 2026, Paolo Bonzini wrote:
+> On 6/13/26 02:02, Sean Christopherson wrote:
+> > It's still technically spring!
+> > 
+> > Perform spring cleaning on x86.{c,h} and asm/kvm_host.h, by adding regs.c
+> > (the kvm_cache_regs.h => regs.h is already applied) and msrs.{c,h}, and moving
+> > relevant code out of x86.c.
 > 
-> Perform spring cleaning on x86.{c,h} and asm/kvm_host.h, by adding regs.c
-> (the kvm_cache_regs.h => regs.h is already applied) and msrs.{c,h}, and moving
-> relevant code out of x86.c.
+> Rebased and applied to kvm/queue, with the following changes:
+> 
+> - Collect more tags
+> - Move enum kvm_apicv_inhibit to x86.h
+> - Move TSS constants to tss.h, include it in vmx.c
+> - Rename kvm_x86_vcpu_ioctl_get_sregs2 to kvm_vcpu_ioctl_x86_get_sregs2
+> - Rename kvm_x86_vcpu_ioctl_set_sregs2 to kvm_vcpu_ioctl_x86_set_sregs2
+> - Fix conflicts
+> - Changed srcu_dereference_check() to __force cast (see 18/30)
+> - Adjust commit message on patches 11 and 26
 
-Rebased and applied to kvm/queue, with the following changes:
-
-- Collect more tags
-- Move enum kvm_apicv_inhibit to x86.h
-- Move TSS constants to tss.h, include it in vmx.c
-- Rename kvm_x86_vcpu_ioctl_get_sregs2 to kvm_vcpu_ioctl_x86_get_sregs2
-- Rename kvm_x86_vcpu_ioctl_set_sregs2 to kvm_vcpu_ioctl_x86_set_sregs2
-- Fix conflicts
-- Changed srcu_dereference_check() to __force cast (see 18/30)
-- Adjust commit message on patches 11 and 26
-
-Paolo
-
+Shoot, I have a fully refreshed version that I was going to send today (well, I
+was going to send it on Monday, but life happened).  Any chance you want to wait
+and grab that?  It has all of the above (except for maybe rebasing?), along with
+a few more cleanups.
