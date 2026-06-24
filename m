@@ -1,100 +1,98 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F8464
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 00:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4230D3E2
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 00:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782259769; cv=pass; b=j9VQ/G6xrCLKO+VMzZndLzEqKriD869bfnFiDNV2x7hysVFHO9aupVCwI0pGBSlUZWKMddxhvXYyXbEVTGoC2zrBbsWN5AqJDER9Ocxl6LwPOfuxBFCeYcFKgFi146wWdcDeN6szCOYZNBai+oVL0RkRVYJgWiXR95CI0+bhwis=
+	t=1782260017; cv=pass; b=qIoZpGRBKSutVNCO3XZML51RI2xSTonPTckDCONrAhHko0PjCrTXyPYDN1ePokmPj3I68n9TmwRQXP4a5+Id1zVPAYi4eyMG+iMij8OkxHNJYBG7gXJri+Whs03OQGa8ScKdUq/zkiVgCHmLJjDfesSdK3e8E0DpvubiDB3sxCM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782259769; c=relaxed/simple;
-	bh=rQfqkBaw/xkmyQgEiFlC2Kezzoeugio7gq7U/cPAgVE=;
+	s=arc-20240116; t=1782260017; c=relaxed/simple;
+	bh=RYAvvdGH//Kw5GkREKpzN/KALBoM5gNnUxyEPrhaWUg=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NPB1FMLW8v3gHs7goyyVcQ28Nv8DCrjR+4qU5FdNxYyOf94yV9FWYS5+3LTNl4/NQKVEmGlW6L094l/xa1omDqC+4Czc6pAQLt4isNDhI+eeTXK2M9Z+Jha+YLxIlQCRH+UHXT/TR8I7RxPiHYT0M9OWXVcy8iK5s7/q22e4qPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=veUsiC1C; arc=pass smtp.client-ip=74.125.82.48
+	 To:Cc:Content-Type; b=Eb5s/p+KY1H0fJjW99RA31Dl899e1pseL7emdqZ49wOtcROxIHQN0yfTybagdf85gYYkkQtZ3uu9+g/y+4JbC563TloptQQQDON1BVMI3HRqU+WewWByNDSeLa3GjLFqcqE5z0tnd9fVOgNQLVj3k1zumzlJf0CeEdrjtvjs9qc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GfRD9DKj; arc=pass smtp.client-ip=74.125.82.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="veUsiC1C"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-139b5e604b9so540338c88.0
-        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:09:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782259768; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CYxF37Ljmh+O3iCAcgjucPWEB7gUNhroudJMFGPt1ahzfMWTYipKtHELib+lG7l1Wi
-         CtDd56Ix8P0FUqSpSZhXYxVI4IsW8WR7ktCBHQlb4urqDWbmR15Q+vxVdBRZA3I75mtb
-         P8VdZFIYsHAiq09rcccpmVQFKWku8UJ8Z1rOf0ZeuYxwUYdp061sC+d8Azc3xkt1mXQk
-         KXenutxGwWH8FtC0ppAQt4GvlOFQ22jWnB/UMAWN5zSibRt+scDwzvIakITvOaLJkCZt
-         8Mp/cYD4wm8FnJBts9+5EBzUgye7E9IUyTBHoAQmQDiG+U4KkeHuXZM8iAMtjP0yzps1
-         VQRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GfRD9DKj"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-137dd4cc208so678554c88.1
+        for <kvm@vger.kernel.org>; Tue, 23 Jun 2026 17:13:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782260016; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VAQBQAN7qArrVgnNaRDuVUGKoHUVHgHw+9yKxwOoyzgUJW5JSKeCzxsFsx1emMCVH5
+         Ysk6R3F6AMdvQI6xFPELOsx3bFcy1i7CnFtX1rodOXgQF5TtIOSDy079NE8tOoaphHc+
+         nvzs6tjsY+1r2B+2TwbB6AD0E+OAq+btD5DiH/EDWH7OlIck3KjS9FPamT+9mK64/is3
+         sVvdJMmUK6PxvmOvHj0h4TMjJ0cd9XWk60MnPlUthPfxYGH6AkKNK1wXZsT7rBLVb2iE
+         1cCMc1ZMr/xFYikLkWfL34rDYTg8c8X+zZX04E7pYJM26ttQLPvw3uczwUH5gU4k0CZ3
+         Ns/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=LOf9tviNFkAeKYv+XoLw2pXVKZU7weWckYUjDtw8Ax8=;
-        fh=mpnfDqicJm0eSh+t5CToJOsDgAmq+n6r37bwy7bJE1c=;
-        b=JD+EEEjjUEG7kR8/Jn1leA5zr0QU1m8PKxDEctA4S4byoJcHK6WkIrjALo0PdCftCS
-         V7swS2Im7Rgh5jlROd3LZP2A6hVFFTbNxTyk4AsF6YfA3sgvoSLgG6X81Znazu7QnFTU
-         K77EWNLfiPnylZUVdMR/edrV0p9rPfTrjuyvd6tSkbxB4UCyyqd/taci+YKdmy5qkTHy
-         QSIF8rwmQSFtiBPf/PbeV306lPkmbauwER/RfjIJTHCUWe8tDlbBi+XfQnJoO3mg84rl
-         bTS/GI8D/0gDozK0dVkOguIh5iTcp1eFFKCfYb7gbtJztpBRIl7jrh3Rk25yPr+ziHCG
-         VBbA==;
+        bh=AXfKSlAh1VQG+yH3bfeaIisPmAkRsyj1F3ZP6iafDhc=;
+        fh=DPKYJq1SfNEhpz2NW/vhlG69DWVQ5lc0b9OhlX9fdK0=;
+        b=bRG3MR7ZfR3CT+X5MhpanWPlipf8VaxjC7IPsVz1ToPVcha053XaB6coBoKP0VRv9T
+         Ia4YL7krzHVRnri0q3jfChNjzyLUHZx9plPxL2uwxix6mP5TxzQKKdvHdNOpbXFrUIkw
+         YloJgg7CXdUw9odvNM0ITodBd1KgeNiiZ2Ef+unXJQjbP0b0BbLG5kJtCCkGXLeAYVSr
+         03IxuvHuTnfzygXhX8QdCG7g3Qfr74bAtZ9ZjdTEq+bXQpvnaTwxi0JnL/bg7zvXtikS
+         VbChy77NKakwL+8V24c6P+tYF425HJ0FzK+OZgZAYUkcCZqdwzE9xcN9Jis3KId615JI
+         Utbw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782259768; x=1782864568; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782260016; x=1782864816; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LOf9tviNFkAeKYv+XoLw2pXVKZU7weWckYUjDtw8Ax8=;
-        b=veUsiC1C69EY+fW+phEEcbGGJR1QtHjfW0d5G1V91rsvTaqXDyiTLhXXS9KvXQDxcZ
-         oWZfD4aPELOrcjBl0S4WaAofqhRsh7rEZ5pQO3FCfS3ra6aku162Pf0qCkXR+xXopq1O
-         IQKeS/G6Yi915cxG1Q5coGJU9a+qvcY+2pF5iSXRniVzMo3wiX9bpO5siiQcu5hv10zG
-         IRNmijyT3ZTFPax8idXSgIdxbUpbhO10FVExLS2PxXXeKQXDrr99e5Cw7mM91YAKYLN/
-         5W7OT8L10Oa4D+7xzkF7MBH1sJvrlSEyXhHEhhSosvwz7SMH4/WDaSXCQlJ4lOg1Sf2i
-         XC/g==
+        bh=AXfKSlAh1VQG+yH3bfeaIisPmAkRsyj1F3ZP6iafDhc=;
+        b=GfRD9DKjO6m4etzUk23FUdNdZ3CSHx3IZQLR8z1RuC4yFdMZFOSvO7wGWuFO9Pz6of
+         jT+8BdagviOTg+P0UeM8nDK4Epu4DE5TP0SF38dSlppFLVd3SPW3VhaB7YlkhLZXYCNl
+         fSxXWnKMDhQeQprUfMAE+XDAx6oF1ysjXhc/2tKw6aq3111tun4ezu9+5ax+D00pec5B
+         Q+qppo1NWHKgnbyqMG6M7HRL7gcjBZbl0kIHA2zEmBK62djTrJVYWBpSaQvCutelBG+r
+         7jOGVfjeVx8YuUk5wztCZOQZD9S7Xs3SZzTjThhoG0uLs8q7D/7CLT+pRt7lAIPJu0F1
+         DGhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782259768; x=1782864568;
+        d=1e100.net; s=20251104; t=1782260016; x=1782864816;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LOf9tviNFkAeKYv+XoLw2pXVKZU7weWckYUjDtw8Ax8=;
-        b=Gy9keKFZR2SBksqlaf2/QMNv4kLxx50O5qeu8nwaet1o0uxCnCkM2+6U48kNf9+8At
-         Je75dbP6NoSx216FwL6mz3hUFRrOnzbA90CHUXa2Ef+VOBXYEINWdPTEGsiPC1ARj1TQ
-         XSvP1my6Szlj/uDAuGJmg+PfDZIyG+QTju8Q/D7XZV2CHyVNcDn7fUtz+EzhuM7fkdri
-         jt7n4BXX5K5uNXzXdAEqud0xqf/YRMrhofb9VTYL2xCjxW/OBK2EmIo+d0qc9Lg/6FSa
-         G9tK5TrgHZuKB8x2Dfvuxetr7Uh49Ryh5kXD5pDqeYDVW27b5/OfCcbIEvBPztT3wAEH
-         hPlg==
-X-Forwarded-Encrypted: i=1; AFNElJ9sgYrPZz812P0+qQ/q4tL5XFIjuYrYLL8QWLQSUw7tBuGHUc0W/ymmw+8ssgCiHSZW50I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNLxz09GF3/MNZ3TryTqOV7JaMTLcgVM4Mpv512r2uHdGEuMrr
-	49aDSNvKnJ/H5lqeHnZdtBdMOEjNrDLRmforyp4xjzaoLtsFo5xHBkwlEpGbbWws2PCesA8/Wm/
-	bzTbg6Tql8MnCSraj1HQnmrGApVNu9VRJp0wIniYp
-X-Gm-Gg: AfdE7cnQ2Bu0vm+l+bhAZ+SnwGhxNatsAK2s1MPjS7EoT5mRFAGmraJzLdH+ajjw3Yy
-	cMHF0jj54n7HZEdRBRers12m8uYL9r0iOoa7vO4UsggWvZyVNmM9/yfYJy3MRbYlg80yRQae4HW
-	1hKvWqG5NMf2S4WYeLqHci1dLRcSdEE4xRR1QsXJ94hSnqBbpikAfKH7VGhba+rRzomPEf35spV
-	901zrk/KERHkgnY1LW44VeQFrrmjpO961GxVE0BMhg6yaAb8pTK6EM/IGVMhzoXBx85AwIaHpR6
-	XexcLUxZ+2PHyieY+VVjuHgJ8gsloJ47JRKplK6ma8xLCx3aqYdgzsSyT+M=
-X-Received: by 2002:a05:7022:45a4:b0:127:3f2a:af21 with SMTP id
- a92af1059eb24-139c5cff378mr4117596c88.15.1782259766886; Tue, 23 Jun 2026
- 17:09:26 -0700 (PDT)
+        bh=AXfKSlAh1VQG+yH3bfeaIisPmAkRsyj1F3ZP6iafDhc=;
+        b=jVq3fUdDlwqTWamJ+UBDHn3bMDbbkBFWs9Im9+/Kj954eKl7OTGPXkaJigAajZdjzN
+         gsv6QKVCU68kgfOYg4Lu94BnC2+l9b69mDjvyB5uzFeXjEERquRqd9Cn30oM+4Wtvq3E
+         eJ0FY7+ur6LSB6N2SPSUT2RLGLAJq4o3VeiWK1LxAyWIPagNkhV83Tam2sPwZsjzhr5K
+         VEs2mdc3UbZ8r6qHfhl/gbSh1bn2PH1O3Ui51CGNv+QAPan6Ck2/uqS5wkGbiOQqbD5o
+         jFtG6cY/Y+uD+bnYJQdZFCHowp5fpyYSW9qk7FGCY3IJDAh7JF5o/3BoPve2ahTgUsyi
+         CRTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+uoj35LYakXzEVHh6Ty1h8gDDL69IpuE4QcIpC3K9hDoAHhSnBt6lFOyzJ9lMkwIxM/QA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSFEQO/XE616RD9u8cQQI0JxeejfL59RXNp4AW5VOnyH93RPVd
+	AeorPWQ37OOGUxz7O9BIzOqvqlc8R3XNLAjxeNbSeuoCgqxvz/bnb+SbQ+VZ/zJ2IrFNRKf8gbh
+	qSXzRJOeaQdRUw1i3sK9CgTbZ6/Ann+XfxecwDoc4
+X-Gm-Gg: AfdE7cn5jB67Ud5jWWCfWfTbRDE9TSAYqF+dFibdFLO5jlZx2sk/E4OH10pJtgQFPeY
+	LH4as6tssRtvWqfxglUe9oWiBEukEv4Lbgi0eUnX4l/u0iKlkVdfb7rXRBpetw8MLW5wQuD2Kbk
+	aQlPParvvv/OXTAodA4B7+fmSjlgHhOxDPsFxoQwNJpURG0q0DHnHMpNHW35q124N1H/aAc+3bD
+	YfS05XEqOSnC59CY7HdvYlC4WExvUXah2vfsye5HZEVwFcxq17GBnqqU5u1HHQpEHQhIv0AZVJK
+	bTdb4bdJNRK40JfGYr95ysqe5T8GJ/HWWiTzWe8ODWLgR4PdGHDHKHSOW1Q=
+X-Received: by 2002:a05:7022:fe05:b0:12d:c3d8:1f95 with SMTP id
+ a92af1059eb24-139c3c12ca8mr4394599c88.4.1782260014848; Tue, 23 Jun 2026
+ 17:13:34 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 17:09:25 -0700
+ HTTPREST; Tue, 23 Jun 2026 17:13:34 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 23 Jun 2026 17:09:25 -0700
+ HTTPREST; Tue, 23 Jun 2026 17:13:33 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ajnjTJdQKD1Kz3tf@google.com>
+In-Reply-To: <a21bfc05-787e-4cd8-89af-8579357e6a12@linux.intel.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com>
- <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com> <ajnjTJdQKD1Kz3tf@google.com>
+ <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com> <a21bfc05-787e-4cd8-89af-8579357e6a12@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 23 Jun 2026 17:09:25 -0700
-X-Gm-Features: AVVi8Cdk7fD1H5RbfHSz0rAk7YN_q01NbBdLx3di9F5nnt4X6vdgAPFTH7tGEuQ
-Message-ID: <CAEvNRgFU4H5FrjQvLMQm9DOQ9ujiHfFfsV6zVKNVi-rzC_zSxA@mail.gmail.com>
-Subject: Re: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
-To: Sean Christopherson <seanjc@google.com>, Binbin Wu <binbin.wu@linux.intel.com>
+Date: Tue, 23 Jun 2026 17:13:33 -0700
+X-Gm-Features: AVVi8Cdxrjo0g3tR27IbX_VUitZ5rT0F_mHH6JHHegralypGAFX77zV4x7wFDNs
+Message-ID: <CAEvNRgGF+O7r-YHqcLp-ZgoXTCbqjuUhpOdD5eE5w2wu3YYYpw@mail.gmail.com>
+Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+To: Binbin Wu <binbin.wu@linux.intel.com>
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
 	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
 	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
@@ -103,8 +101,9 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
 	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
 	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
 	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
 	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
 	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
 	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
@@ -122,60 +121,69 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
 	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-Sean Christopherson <seanjc@google.com> writes:
+Binbin Wu <binbin.wu@linux.intel.com> writes:
 
-> On Mon, Jun 22, 2026, Binbin Wu wrote:
->> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+>> From: Sean Christopherson <seanjc@google.com>
 >>
->> [...]
+>> When memory attributes become trackable in guest_memfd, the concept of
+>> having private memory is no longer dependent on
+>> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 >>
->> >
->> > +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
->> > +{
->> > +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
->> > +	void *entry = mtree_load(mt, index);
->> > +
->> > +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
+>> With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
+>> platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
+>> in.
 >>
->> If the entry is unexpectedly missing, returning 0 means the attribute would
->> be treated as shared.  And then in kvm_gmem_fault_user_mapping(), it would
->> allow the userspace to fault in the folio.
+>> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+>
+> One nit below.
+>
+>> ---
+>>  arch/x86/include/asm/kvm_host.h | 4 +++-
+>>  include/linux/kvm_host.h        | 2 +-
+>>  2 files changed, 4 insertions(+), 2 deletions(-)
 >>
->> Should gmem deny such edge case?
+>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>> index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
+>> --- a/arch/x86/include/asm/kvm_host.h
+>> +++ b/arch/x86/include/asm/kvm_host.h
+>> @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>>  		       int tdp_max_root_level, int tdp_huge_page_level);
+>>
+>>
+>> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
+>> +	defined(CONFIG_KVM_INTEL_TDX) ||	\
+>> +	defined(CONFIG_KVM_AMD_SEV)
 >
-> After several bugs this year where a WARN_ON_ONCE() fired, but was entirely
-> insufficient to prevent true badness, I'm definitely senstive to making the "bad"
-> behavior as harmless as possible.
+> Nit:
+> Vertically align the defined(XXX) statements for better readability?
 >
 
-I guess both are indeed awkward.
+Sean had this aligned with spaces, and checkpatch complained about
+having no spaces before tabs, so I switched it to tabs instead since I
+don't think alignment like that is officially documented either way.
 
-> However, in this case I think we're just hosed.  If KVM treats the memory as
-> private, KVM will incorrectly do prepare(), incorrectly allow populate(), and
-> will caused missed invalidations (though I suppose __kvm_gmem_set_attributes()
-> "only" lies to userspace in that case).
->
-> That said, assuming SHARED is definitely odd for cases where guest_memfd *can't*
-> hold shared memory.  Ditto for assuming PRIVATE.  What if we instead fall back to
-> the "init" state, e.g.?
->
-> static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-> {
-> 	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-> 	void *entry = mtree_load(mt, index);
->
-> 	if (WARN_ON_ONCE(!entry)) {
-> 		bool shared = GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED;
->
-> 		return shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
+Either way is fine :)
 
-I was wondering if we should not only return the init state but also set
-the init state, but that would involve performing a conversion to the
-init state... Too complicated for an edge case.
-
-> 	}
->
-> 	return xa_to_value(entry);
-> }
-
-Thanks Binbin and Sean!
+>>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>>  #endif
+>>
+>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+>> index 201d0f2143976..d370e834d619e 100644
+>> --- a/include/linux/kvm_host.h
+>> +++ b/include/linux/kvm_host.h
+>> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>>  }
+>>  #endif
+>>
+>> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>> +#ifndef kvm_arch_has_private_mem
+>>  static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>>  {
+>>  	return false;
+>>
