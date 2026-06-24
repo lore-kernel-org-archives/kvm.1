@@ -1,64 +1,64 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A3125228D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5B1279334
 	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 10:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782297054; cv=none; b=jZ/DB0u67cL5/e7+0oSMXFDLIkWePKZ3p5VcRlP9Dg3MeFMmwOQmh5lUMgJfPXaoAIQMXOeQqtjHF+j82QuDnhM8fd63otEQlZ8z6oDfcHa6ncAZzcCWLgadsm5+K40k2P11arNaKXFx26A9dwFCIDbDW68a2+UPQ9DMG//Pb/s=
+	t=1782297055; cv=none; b=s7dhDZ4jp4/8bJioB7L3GzFcbUdVm11qKZ13Rd9hXs8yAsxtQuTlCA9KEIbb1c8OP23LXDr5RFT0V8v6JarOMyiECtT2YFL+LIZU56Wi2cPKLFeld7Z95YDXge+Lqs0Yjnlu9Lm2OumgDmLhIy4W5OZrKVV9M8WLbnsXgX1NmAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782297054; c=relaxed/simple;
-	bh=XTCxLyTZsxhrEV0S8gDPdhI/GUDaEHxf5DJT/ZzNObI=;
+	s=arc-20240116; t=1782297055; c=relaxed/simple;
+	bh=/NEa7w1FO/8xvWSy/oeXYT+FZXax//vnpkEfJSTqO5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YLpGPAI6ln1+NTGxDESplwGwbVnATxuV3d+TjL02J3G5hForJzy6/H20jkai158DFaAdcJCHqO9OBq76RljM/fOC7+01wNOy+tqRzQ8o9eIusMP+Z6AEvpocs3tqd0M6kZYcxdH7KIrzrgNZeWlPe98aBeJHBFWn56DOgJE6OT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FGDPUSb7; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version:Content-Type; b=bIIZLGnZXx6BDRfbbzcIXGtUI84K7Gf/8o1IhHwFe1RS4yn9tKd+RKWrBQ2csYQp3EqDOOsaM57L0CA2K3XCoA3H7JRuE2L1ol25Y8pcHi/qfwYtiP6dUqgoQBrS2HCUgyfsT5zJn8zajJ/fiN3uueLSNAS0/5ZU/ybjjzK4Ak4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xm97QdDE; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FGDPUSb7"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490c0c92cffso6125765e9.2
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xm97QdDE"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45eeea039ebso525859f8f.1
         for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 03:30:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google; t=1782297052; x=1782901852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T72NDyunHLyFV4aqpIGKGdQkRXR7DefmzidasatP8oI=;
-        b=FGDPUSb7Rt9HabhbDnrD0egF8OxcBdzEaZatnFuMHn2hZE3Uy3hpQkR7kxuKqLCJHq
-         cvkwik2qfiAHK+MdHLKHjN4wPJ+tPnivxFsEEx3tq2sW6ECJQS40c9SFSvMxY1nJSVVh
-         YMDNYEpTdJ9xX7z1sexPoYJSGnbBflzlVmnW/GfcOWlVCvQ/Hs6/+VcMxeDVUPqKuIWL
-         F8OVT/QvxFeJOIDW1YL+EngC1wwwHLipR2ZcbHu5PpB2gKsCsweQ/LBzlSXoRcHQgZnq
-         P68x1rFfNVQxTkENovpMCFHiidl4BhLPON6/HO5DW6SxCJjw1aNp9ZCp56IWpeYJv4GT
-         Nvbw==
+        bh=JcUw6dVic7iy+SWHCEsbAuTBlDckpX0jLlbUXwwqlgE=;
+        b=Xm97QdDErvfQA7tOORHXWyWqn9NyjNSQeYwD8Braj8oZV9iDEt2VcitJtORuxj3Ph9
+         44nt7zb9MSKH5ictyntmmD/OZ94Ybt7yLPgjwAedCXfbK44WP75oVwWVJ9qDzZoAT2Dx
+         G0J2IKSSoBX4Pgn/SHc4UiyisqLwUsNg9hQixEULNTHeMZNtUDM28i/mjPIkVUSghADu
+         0/3ufNBQsDrCjDR1BdG8flL5kz85GxpuG1y/TXjQf+5K5z3zzhc9kERcipBnFGdw1nhG
+         EKFMGxx1EhQhzT1vghEUpt4atHIkgOVHrF1NHLc3ptyCzhv3oURj9UcFQXyJxP47e+Dm
+         h4Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1782297052; x=1782901852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=T72NDyunHLyFV4aqpIGKGdQkRXR7DefmzidasatP8oI=;
-        b=LXAQwq61DXYY4pN1AnmEwe8NACqskNqX7F1FQ4f0Q72J4OJze2ESEipv8MgnEuEElA
-         /8WmCC0ZqXB2Gd/RzXcMB5rkPxrrDta20IqRXpJ5EVhEMWRQBLLUftmLR7WEFCuRZNtU
-         Rpdths/r5I/SDhulx5sf9r+j+8DxOAgZcMgGV0uhLxVxIjzNOwZhJetjSpOr+doCpQLV
-         4gfjtcAk8aPvOL6swpsRlJggWoMRloKCEq4vL2M72YLWV+ReHfWLHvGGw2Ngmv0RAOd4
-         KKa5542rCNKECRmKmOtir7wNdRrv3PPV7zoM5X7HL/gmHK7Q5U6NMEcdu9qqOmolQTip
-         Sk5g==
-X-Gm-Message-State: AOJu0YzjgXPYrnfLfhEeG+ZpRtRTpNDSeEYsvVwLrU3hco5zeZZsB1lO
-	EEuMtSCMb6cRMe4igfmydd23zY5G7UvNE/QSzP6R1/q9nucawr40ntZ8I5HXtS64tUo=
-X-Gm-Gg: AfdE7clvU+h3TiDWt+BSQB9+mC0poJlEIQ1bXnJN15SSTriu6IveLUsVNCxE1KUvJkq
-	4QeVR0XJM/26e545P9Tr650vIKmFlrrk6H4fLyA+AkDKz3k2LuUCNmjo0+kgWH7CfARkLxdnBcn
-	ry4/fVKrhRUIVb+Qm74DLurA5ZQ0CT647l5G06bQMLGx+YFZz92mMAIgNAjTbtpky3Zn+I+rZW6
-	to3PbYprHO/Ax1c9dl6KWcdC7pzmOgMkU2LPF7OwtgXq9t36yLyiK5sCHntAHroYedcmaWe9gut
-	tzHJ772y908Szpx1sZSsOQfnABfkoQTRGc/FvaOPb76kTTw2HfJDPRdVr/9dwyezLWeS1aelUJS
-	xO1hAWcshSSynrm5sFDPFPHss0O5+Jp9h3GKyJQVwWgshYv9qhVF4F3YpXvKoFzQoLXImlfUlkf
-	6GvlPjVix/9+iR
-X-Received: by 2002:a05:600d:4453:10b0:490:c2a3:3303 with SMTP id 5b1f17b1804b1-4926088046dmr26636395e9.34.1782297051526;
-        Wed, 24 Jun 2026 03:30:51 -0700 (PDT)
+        bh=JcUw6dVic7iy+SWHCEsbAuTBlDckpX0jLlbUXwwqlgE=;
+        b=s8Tpy4zaCz0CYDrTNzGH/mBprKpXuq+e4ju06zllz0QEEkhRIbwiKcfA/RwlfdKGmO
+         PvZt36+KDWy+VG5aVEgPdupQOsWt/JXNfTLjK5T0dclp/10+s4edzAYJZtGHRFAS+9NH
+         QwonNcIEc+iVaGuLjw1/3/BU8qk9HPiz6PPiKtIlKhVPj3d4KqPQwcrph3xtDMvuqkBD
+         KEoy0NG2WfaEJ6jtbBcUpixiUiM8oyLuvseG0MDe+bt8PKs1BsYm+rcOd9uLLFov0k0q
+         l3qEiOu3FkzTSkJV9+CE1SWEaAjdW2ZTj6/8f3nP76v5G53hxuD7f0kCFZZrjFbSMmET
+         bg7Q==
+X-Gm-Message-State: AOJu0YwxOSM4/DDnVZk/ZUsOmIQVlzdRxfMNG45R/S+C+wjRzA+7sEvO
+	/u9H68mAvacNiUEUZme3lQb2WRgB/u7PPmjoIatOZjiNiJEBapm8WdHp80/Irlm64mo=
+X-Gm-Gg: AfdE7cmzwEtHDmV7YSWDGi7qV4EOp8OgnKUi4n1QoSqSDiEos7L/Eo6Dnx26IYb4WRp
+	Jh7eBm+0TN44p5MY2f8+SNqwquv3rbzgZ3bn/Kc0foLr8W9+SBguWsGGnmz3Zz8iGbektqydvMJ
+	hmgQsbQYOHy86+xkwKh6N0pGwQYD6Fy87M04Pt+MqOYvTzqXstpuiECzo8yd481A9dfwS7u4Rz7
+	ZF9C06Hqb5Uy5U6YWqQafnh9gYV2gZUsx1DCIeC1Rg+LSwE13bRwfedxjStgimwWxzd5FuIYbeN
+	WIAw6VMihbDcac1IrMjwXGja9NPECwXEdjO66PlznPW3MozgnO8cFdPcIMZXooD0fi9YIYk2NE8
+	lE2Wh2dSxTtbsEkqlL13aDLWNzdBaUZF/efemH8NWFatLiUjoRv1SBXSB/61joOCYL/3aN7OXvB
+	qSJ2oVow1fMqCj
+X-Received: by 2002:a05:6000:1789:b0:46c:dc80:7627 with SMTP id ffacd0b85a97d-46cdc8077admr574890f8f.26.1782297052187;
+        Wed, 24 Jun 2026 03:30:52 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee01c6csm5921884f8f.14.2026.06.24.03.30.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee0189esm5827376f8f.9.2026.06.24.03.30.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 24 Jun 2026 03:30:50 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id C91325F845;
+	by draig.lan (Postfix) with ESMTP id DE8655F8E5;
 	Wed, 24 Jun 2026 11:30:49 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -79,12 +79,10 @@ Cc: kvm@vger.kernel.org,
 	Alexander Graf <agraf@csgraf.de>,
 	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	qemu-stable@nongnu.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-Subject: [PATCH v9 1/7] hw/arm: use cortex-a9 mpcore base for CBAR on npcm7xx machines
-Date: Wed, 24 Jun 2026 11:30:43 +0100
-Message-ID: <20260624103049.884930-2-alex.bennee@linaro.org>
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH v9 2/7] tests/functional: update anacapa-bmc image
+Date: Wed, 24 Jun 2026 11:30:44 +0100
+Message-ID: <20260624103049.884930-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260624103049.884930-1-alex.bennee@linaro.org>
 References: <20260624103049.884930-1-alex.bennee@linaro.org>
@@ -97,49 +95,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-CBAR is an IMPDEF register and according to the A9 TRM [1]:
+The initial version had the wrong DTB which caused issues with image
+corruption [1]. Update to the latest version.
 
-  In Cortex-A9 MPCore implementations, the base address is reset to
-  PERIPHBASE[31:13] so that software can determine the location of the
-  private memory region [2].
+[1] https://github.com/legoater/qemu-aspeed-boot/pull/7
 
-If it doesn't we will confuse the Linux kernel as it probes the system
-SCU registers [3] and erroneously assumes the system is a buggy Aegis SOC
-and nerf the emission of SEV instructions, deadlocking any WFE's in
-the kernel (or QEMU smpboot code).
-
-[1] https://developer.arm.com/documentation/ddi0388/i/system-control/register-descriptions/configuration-base-address-register
-[2] https://developer.arm.com/documentation/ddi0407/g/Introduction/Private-Memory-Region
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/kernel/head.S?h=v7.1#n550
-
-Fixes: 2d8f048c25ab ("hw/arm: Add NPCM730 and NPCM750 SoC models")
-Cc: qemu-stable@nongnu.org
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
-
 ---
-v2
-  - rewrote commit message for clarity, added links
-  - used arnd's arndb.de address
----
- hw/arm/npcm7xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/functional/arm/test_aspeed_anacapa.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index c2bbcd89dbc..c27f149c04a 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -492,7 +492,7 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
-     /* CPUs */
-     for (i = 0; i < nc->num_cpus; i++) {
-         object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
--                                NPCM7XX_GIC_CPU_IF_ADDR, &error_abort);
-+                                NPCM7XX_CPUP_BA, &error_abort);
-         object_property_set_bool(OBJECT(&s->cpu[i]), "reset-hivecs", true,
-                                  &error_abort);
+diff --git a/tests/functional/arm/test_aspeed_anacapa.py b/tests/functional/arm/test_aspeed_anacapa.py
+index 27f8bd8b56a..b16c6035c95 100644
+--- a/tests/functional/arm/test_aspeed_anacapa.py
++++ b/tests/functional/arm/test_aspeed_anacapa.py
+@@ -11,8 +11,8 @@
+ class AnacapaMachine(FacebookAspeedTest):
  
+     ASSET_ANACAPA_FLASH = Asset(
+-        'https://github.com/legoater/qemu-aspeed-boot/raw/3fa3212827b04be4034d43b5adeef57c27d6ab18/images/anacapa-bmc/openbmc-20260512025228/obmc-phosphor-image-anacapa-20260512025228.static.mtd.xz',
+-        '2232e241abcfb6d4f6b82cb6c378ce5ce05e364aac6d118785c2b6cc33fe43f3')
++        'https://github.com/legoater/qemu-aspeed-boot/raw/refs/heads/master/images/anacapa-bmc/openbmc-20260616025349/obmc-phosphor-image-anacapa-20260616025349.static.mtd.xz',
++        'de3841fb6ed3085aec6424358ee6efc4b8ee85688361e5aa1987fd1acb7d3fb4')
+ 
+     def test_arm_ast2600_anacapa_openbmc(self):
+         image_path = self.uncompress(self.ASSET_ANACAPA_FLASH)
 -- 
 2.47.3
 
