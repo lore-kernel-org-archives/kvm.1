@@ -1,269 +1,210 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1002F7EE8
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782318687; cv=pass; b=TnqY7aCPxOhNbapsjNhnfbuZXUmvjjxai1ZbbxP+V5Hrl/Ky1YREcR72MjnFoZ1Fc9VMpBZez5Nc+1HBHBURkvxPQRf+pCVBYiYgyEtyHl855MqNKCEziHiRikHFpJhAsAug/cSE0BZWfB2ioND/+9fO7mGLCohQzZR+JhHlOEs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782318687; c=relaxed/simple;
-	bh=2YQBN+nmkvvFhuD/Rgh7VA8+emeoZTJiETXgPH2ynuA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cZJfPZt6ZC7rwb+9Rq4WwkU4kzOwQu+mRNoQmp5TtNyRy203Mv3qebWLm8jg66VyZNwYbAprn+7G1WGujBkZdfX0ItW0E16hSlsQwKhIwkVAuga2Xhpsyu3kwo5AqhDVrNbOCgYC/nKTM5/GE4QzV6/eY1qhtVIYikewqfey4YE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OmlX7rlP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhoX+TDG; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51603332604
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782319497; cv=none; b=ePz/BfJ5rW8GRJYdp46j/+VfIsJEuUa9Ca0LFf7L3NHiqcpkMwbPJeoJrC7rISR9LkXFquudaPPivmc+WUM94A/Ol4gKLx9pP6UDbfaQPM6LjNF23lJR/xhDsFB6XFZ7507wl58cQMnq8Xtve+oBSSjSYa7rJ/CgL2Bmb6wXOQs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782319497; c=relaxed/simple;
+	bh=OUu4AlzwIk44skuE58xMZJuQfwug6gLNgzIjPyQdNTI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j0QNNtkmVnzsCFABQvW6IKlhHF2+wi0hfBrlhl1yErnH36FehrKdZTF5gxzKInxse7jPnzmzeWSFUPBtlb6qwvwrl6eNHTovNuK1PfwU9pPBC5GRUJGceTlsw/WPGhRpzUOjDa5FAmTLZKIAIWDsoNDJiQR4xmjNuqN84bgLjsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UoqNTlUR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=a6c21cMX; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OmlX7rlP";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhoX+TDG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UoqNTlUR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="a6c21cMX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782318684;
+	s=mimecast20190719; t=1782319495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZQOMCeDkLTISYEifw5sJoCnj9y0RnfVPgEIfIGjjlDg=;
-	b=OmlX7rlPJMiwoD/dBS1QbUI1yEBbk/iPOI4xEzJ8cWKzTEfnl6SHPmTNkZ8i57cEds8K42
-	5ReTUVBjbIuCcCwfEzmJnFdLaJgePwHSaeZWcw5gerzGAZfZnhz9ez5N90x9lbxmOkmqxG
-	nxP0VH/5wyWs4QEODpOrT8kckkTblzk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=U/w9A5NkYf1505G0HkTRB7rAtX6H+f/I3wXhWE6/+vs=;
+	b=UoqNTlURHO1edHfR3oDLehLSuBhx+uKgYNhELHj24OgDQBIPLAXZaOcgxpY8V/dfnt+ZKn
+	idUIV8EsieTO6n9EnFb7xDdyhmJfr3ggRp9CRAqcD9HyZfRm9ODFm0m8z5qhQt524lIcox
+	zLi9ic8U7UvjXIug+HbMc3DR7wG+dAM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-yMDWm0YpOPKlB4J9KxLs9Q-1; Wed, 24 Jun 2026 12:31:23 -0400
-X-MC-Unique: yMDWm0YpOPKlB4J9KxLs9Q-1
-X-Mimecast-MFC-AGG-ID: yMDWm0YpOPKlB4J9KxLs9Q_1782318682
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4642a5651d4so1214858f8f.2
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 09:31:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782318682; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dqM754Vi1u8hlpPghLc56rJSCdO+/mZRQuZiQNOWK9DWTm7rDS5H07JFfFtHq8Ixze
-         RanUvWEY+wYwjS46+RShQNkK5/CPwk6r2FGCm6RB5FwQ90wox2cujK5T1q95189H0MbE
-         mobnAb8owzm3KPpGtvO9bVfThZaw5zQw/gHSizI6UQBvBQ7bV47NFEwsceI4r2rd82+T
-         vIPMS4c+NHwDZ2B5hp4MWf4Qpz+EFZ8FCy32XzB4VaoE/pxsi/Ry/lXYJWBxIt0Fy5Lg
-         wZ8fXc+V8CCksArSGlju/TBzR2d4nNkA9mJNy2Dkdv0BZ3ytDQ2HnJ3MmyUliGGQjqX/
-         g7og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZQOMCeDkLTISYEifw5sJoCnj9y0RnfVPgEIfIGjjlDg=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=APsotn8CVeJ2rMsgJ3lwFDDcTnMHTN9NUYyqp5LUOOWNgVkDSs1n0fqvNU1y9BrvCy
-         FS7hyETuAUUPKxKA7/1v/IKqG9lnR0kV4Pfsy2zOKxxwR5DajHdY5n2vtNBQBbwd7Umt
-         Q3oUNseScqGHXinugsCWfSHQKrfJOLYpzfmOtabvrN9qFD3GPqMbrPzqlD6SAZIA6WHi
-         OVrLg66jvcM6Ucb3VVsmjze4qFDJJW51A52UC2D4n5FxLiOrKd3PS6UKd5CDDXU67RcU
-         WC6eCndx6YODLE5ILUA3LJMoUh+7yXTtWLVWXhBTBgaIoWvCqXpVEfwUWYxyphiPlsqh
-         bMvA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ us-mta-595-lYf2SEblMk-U12WBHHDrbg-1; Wed, 24 Jun 2026 12:44:54 -0400
+X-MC-Unique: lYf2SEblMk-U12WBHHDrbg-1
+X-Mimecast-MFC-AGG-ID: lYf2SEblMk-U12WBHHDrbg_1782319493
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-46c90c8fd42so499564f8f.1
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 09:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782318682; x=1782923482; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZQOMCeDkLTISYEifw5sJoCnj9y0RnfVPgEIfIGjjlDg=;
-        b=bhoX+TDGDP4iKRQuTPT0b3W5YnOtIr7Cj5OBlVVfzOeboxBVTKmU/eVXMX8+X7xoq/
-         ZhTD0J+Pyau+GvqObpqLmRkawtheHOuj/HLYpSVui3daAB7kVGMzTHcZlEHXfzlsryQn
-         JrX/Xb5d2qCvcSL3jBJ2YuvHaJtFOsq+fQxrV8jujlRoyyIBMtT2ZQYpNgN2YXtINm7/
-         gqhp3k2IYqfsdqXTXc7Lxjj1KlG4kwsEhAyA3WkQ/ZLYJ8JirDFGzyCTMWZ2IbEBHziB
-         mgYl2y/8Hl8vIrMrlWWlolS0Jg2DKqeapBaK8W+nxCt930fSgloqb1cCbN0ydNMS8soW
-         cq6g==
+        d=redhat.com; s=google; t=1782319493; x=1782924293; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=U/w9A5NkYf1505G0HkTRB7rAtX6H+f/I3wXhWE6/+vs=;
+        b=a6c21cMXhEK4KtpfNVIHJavBs6lZRSXHx113xVfhsiqAm3zfpRp8IKZTcvtegq65ic
+         0pnmRF3kTrYUKDA+uGWguUYGdB+ib3hiy/jXOBSgJdOxQFmVlH5Fy/luJUQR+njiBAuw
+         5rGbKR6yZTiG8aZnbelHzHaayupz2ShC7VMmZgMGTSCQo4I163zl4KniZL2f8g+eR8KP
+         R1mLZVN8jKo/4khOk4VBpy48RQ3zCsR3Wj7yxt6xzdl8UsZNybiIuiUCR1XYyU2CW+Pi
+         WxF2Vi+Eao+hU5R/TbgLddDCVFpBA5jiH9CX6cIwEtjMSGqYyHQ2fVJYWwwv1FImywu1
+         9P5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782318682; x=1782923482;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZQOMCeDkLTISYEifw5sJoCnj9y0RnfVPgEIfIGjjlDg=;
-        b=e12He/B7E34LjSZMn5l9rO6BZ/lWKnFEYsFxTVrs9qigXG7YTI4Gf2TeJ/CBbEGnKr
-         lZjSjgAPKU6sYuQXUr37QACVyFVyNvvrR79bPVUF26eBFLSp6GrCKId4tgCHh8PxeIOg
-         3IdRUPQdlED+8PHDpMuuHPFRfaSb58TuWpdota9ChvCsYUoMupZNDwF+HGoUOL4N8gUX
-         kRgg/jy/te5bF4yWqtPgpTSLzOAmM8QiR5DqIc/1e9rRAP/3E7r5/EpJUyf4lWf/wnu0
-         Ky/331VSzUso0FZSAyrkPei+tVni1PWihqSKkKvYoPLeXMehSje5X3R13s2ycDVVmTeX
-         dC8Q==
-X-Gm-Message-State: AOJu0YyyPIEvChy8frXdg33etmsxqIZa2pFt2Fv+WTKd9J0JCqQLZn7R
-	3gkuDLtcN2XNpG41tDNilGbxBUtw3fvJ0FVgqa+7T/i7Qpp8nkXDp85C/6ajgDxt8qs7NpsP3tU
-	zctQXBG4SCLiVprDXXp3Px7mgOMyqAa3Gdpx+XfZ9TVbck8ijQFNUQZNxr96RpAHhi+JHrwQSl3
-	21zMNY4uTv7EbdKA/EhpFgxhOdEchc
-X-Gm-Gg: AfdE7ckXCDQVHMN6I8A3xLYBtxikRD87kyZQU785BPfq+AzDNi7Jetp5gPKFyEbHXj8
-	SZc3TSNioPDcrJrvv6uL0H/6gQet3IofpYD+oOg/xbz/eMFqpG8RfQoHUxnNBY0hk+d++5hsHdy
-	NQvUy9tOMNRBw6ck6y8FVJ5/Mpr8TC0vgwtGbfg1vKf4Gezxfdne9TR57JBjKmjJVWuYNh7tm0W
-	Rs1b7m4xkXKxnTnIJkgWZngdfPWfA+McElAD2brQngRlGWtPJGNrLWtvr49mLBlF0Dxj0RR
-X-Received: by 2002:a05:6000:41f1:b0:45d:77f4:1ac2 with SMTP id ffacd0b85a97d-46c068f00bamr6805756f8f.0.1782318681860;
-        Wed, 24 Jun 2026 09:31:21 -0700 (PDT)
-X-Received: by 2002:a05:6000:41f1:b0:45d:77f4:1ac2 with SMTP id
- ffacd0b85a97d-46c068f00bamr6805655f8f.0.1782318681078; Wed, 24 Jun 2026
- 09:31:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782319493; x=1782924293;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U/w9A5NkYf1505G0HkTRB7rAtX6H+f/I3wXhWE6/+vs=;
+        b=UeLlWXCOBP92uMTRXPn3zmgvkhjo3Cs5WiQayv/oUrQ4J3mUaIxzZrCfqqZAwTOKBw
+         NM0HBTgmt0kuASypwoxxD058mHbz31OYwvABaqiLUmV+uMBPZ363O7H0kIFPvkO9D6uH
+         DyhAzOsXfPXD7pCJj4V9pC+7mDngAVnNFL6QMgyCESJGdPIcX+PwlTO78NkYtrCLJKGl
+         BaCKKidAtxapQtug8h7Tfy3cOTy10/2v5xPHaKhv/rNpJwgyR9mOEaCFz8RaHqkMCB5t
+         YXD2rhTTrq8xi18kyzo+b0Gdw7e7FW9A9jE+h4ZXbIyaZcj2r8vZ4LbTe1sgLJv2a5aq
+         h7HA==
+X-Forwarded-Encrypted: i=1; AFNElJ+EGz0ImGv/Y413SCg1fIr8/OyHQUH+y4ItGS5u2mEwxn0ra0lH1yoqkkwNtN1EVHSrWWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNOh8j5n405jkNSRCbA2dxLJRT2gx2Jpv6ZoSbraHjIV7tG6DS
+	BKeMGfjyN6XYUcEkvf3GviOXWRglHoLZ0ZDgJt0+2Dn+2vecT7nitSvdvg6rpvh8clEHYeB/LdG
+	aMrPMDgrcw5aZT1XwPcf3OAd8mWYjnOE9MpkpSCB3l87255Pvbo0Axg==
+X-Gm-Gg: AfdE7cnTdTMO5XACjhQaN/TVmWa4vXgmP3BpLS5BtrR5sN0kkC4ZrlHOliX8I0fc/vL
+	0eykaNYtqjmPfsM5UW66YRvxoE4dtyv99a/Y+9coXe04eVuCoYUneH73dlO1rYVZwyuSV7Lazgh
+	ZJj5/QYBN6tDNLPKFpPdGuDc5cgD5QRcNxoaSr9euf/RkGQkPwjHubp3DmGjWo5ElCJKWCc5J4F
+	TBwE+thSKRtpANIvDlgJ4WO8dCnXe41x6m0Z+mqnNyiQ5e2U0h2sQRfZACARjW1ebWwAY6c3lfL
+	ysXXXvlt6/1Sty4agRsMP+WCVgbvAFUVDeZM4t7j/L4WmVZy8+vzsB/1eli17Wl5tqALQP7J9PT
+	VZlEXPhT3QFSBsPVV/GC+TLsdiujaEEpmV3Y6PNuzxVdiIxNsKlBB
+X-Received: by 2002:a05:600c:5491:b0:490:b294:c652 with SMTP id 5b1f17b1804b1-492608726b3mr60484235e9.20.1782319492691;
+        Wed, 24 Jun 2026 09:44:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:5491:b0:490:b294:c652 with SMTP id 5b1f17b1804b1-492608726b3mr60483805e9.20.1782319492216;
+        Wed, 24 Jun 2026 09:44:52 -0700 (PDT)
+Received: from ?IPV6:2a01:cb19:8426:ae00:a924:b4e0:1ee:f5c5? ([2a01:cb19:8426:ae00:a924:b4e0:1ee:f5c5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee01d46sm7307969f8f.13.2026.06.24.09.44.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jun 2026 09:44:51 -0700 (PDT)
+Message-ID: <6833bccf-afa8-4633-85b1-f61347034594@redhat.com>
+Date: Wed, 24 Jun 2026 18:44:50 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260624155633.2874939-1-seanjc@google.com>
-In-Reply-To: <20260624155633.2874939-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 24 Jun 2026 18:31:08 +0200
-X-Gm-Features: AVVi8CeDw7L9PseHVtXMBz6RDRw8N4r1oP69nX6vP0KpoXHT6Xi2TL6Oj4pMXSM
-Message-ID: <CABgObfaA2VAmJnHvd1UeHsVMXEdYO4kiwyJN+1tpKCV8eYim6w@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Early selftests changes for 7.3
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] tests/qtest/pnv_spi: Test Power11 PNV_SPI
+To: Aditya Gupta <adityag@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+ Shivang Upadhyay <shivangu@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ devel@lists.libvirt.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.ibm.com>,
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, kvm@vger.kernel.org,
+ Gautam Menghani <gautam@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
+References: <20260623141933.577981-1-adityag@linux.ibm.com>
+ <20260623141933.577981-3-adityag@linux.ibm.com>
+ <ccbadb13-888b-495d-b894-826a8e664d3e@redhat.com>
+ <ajvkrq3e1103wLH7@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <ajvkrq3e1103wLH7@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 24, 2026 at 5:56=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> If it's possible to get this into to kvm/next before you disappear on hol=
-iday,
-> please pull a set of selftest changes that (lightly) touch all x86 tests =
-that
-> use nested virtualization in any way.
->
-> If it's too late to get this into kvm/next, I'd say just ignore this pull
-> request and I'll include them in the normal 7.3 selftests pull requests. =
- I
-> don't think there will be any cross-branch conflicts to juggle?  But I've=
- had
-> these sitting in -next for a few weeks now, and getting them into kvm/nex=
-t
-> "now" would all but guarantee I won't end up having to play weird games w=
-ith
-> selftests patches.
->
-> Thanks!
+On 6/24/26 16:28, Aditya Gupta wrote:
+> On 26/06/24 01:47PM, Cédric Le Goater wrote:
+>> On 6/23/26 16:19, Aditya Gupta wrote:
+>>> <...snip...>
+>>>
+>>>        g_test_init(&argc, &argv, NULL);
+>>> -    char *tname = g_strdup_printf("pnv-xscom/spi-seeprom/%s",
+>>> -            pnv_chips[3].cpu_model);
+>>> -    qtest_add_data_func(tname, &pnv_chips[3], test_spi_seeprom);
+>>> -    g_free(tname);
+>>> +
+>>> +    for (int i = 0; i < ARRAY_SIZE(pnv_chips); i++) {
+>>> +        /* TYPE_PNV_SPI is not instantiated for older Power8/9 machines */
+>>> +        if (pnv_chips[i].chip_type < PNV_CHIP_POWER10) {
+>>
+>> Can we remove this chip_type field from the tests too ? see 248e4e924e87.
+> 
+> I went through the usage, and don't see any fix currently, as the
+> PnvChip structure these qtests are using is basic, and we need some way
+> to identify the chip type, for things like which machine to use, xscom
+> addresses, and to skip/do specific things for particular chip type.
+> I went through the mentioned commit and its parent, seems it was
+> possible with the compat property being handled by respective
+> class_init. So currently I don't see a better way, what do you think ?
 
-Sure; placed on kvm/queue for now as well, I'm building a kernel to
-test the rest.
+OK. Thanks for looking.
 
-Paolo
+C.
 
-> The following changes since commit ef057cbf825e03b63f6edf5980f96abf3c5308=
-9d:
->
->   KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping=
- level (2026-06-16 00:39:57 +0200)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-selftests_l2_stacks-7=
-.3
->
-> for you to fetch changes up to 70f4701c12e4bb6214f0ec762f928e96ff3dacc3:
->
->   KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only bi=
-ts (2026-06-17 17:56:17 -0700)
->
-> ----------------------------------------------------------------
-> KVM selftests for 7.3, early edition
->
->  - Automatically allocate a full page for L2 guest stacks on x86 instead =
-of
->    requiring test-specific L1 guest code to carve out a portion of the L1
->    stack for L2 usage, and to ensure the L2 stack also adheres to the x86=
--64
->    calling convention ABI.
->
->  - Add a selftest to verify {Guest,Host}-Only behavior in x86's mediated =
-PMU.
->
-> ----------------------------------------------------------------
-> Jim Mattson (1):
->       KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Onl=
-y bits
->
-> Sean Christopherson (1):
->       KVM: selftests: Add a helper to query enable_mediated_pmu module pa=
-ram
->
-> Yosry Ahmed (3):
->       KVM: selftests: Refactor allocating guest stack into a helper
->       KVM: selftests: Allocate a dedicated guest page for x86 L2 guest st=
-ack
->       KVM: selftests: Drop L1-provided stacks for L2 guests on x86
->
->  tools/testing/selftests/kvm/Makefile.kvm                         |   1 +
->  tools/testing/selftests/kvm/include/x86/pmu.h                    |   6 +=
-++
->  tools/testing/selftests/kvm/include/x86/processor.h              |  10 +=
-++++
->  tools/testing/selftests/kvm/include/x86/svm_util.h               |   5 +=
-+-
->  tools/testing/selftests/kvm/include/x86/vmx.h                    |   4 +=
--
->  tools/testing/selftests/kvm/lib/x86/memstress.c                  |  19 +=
-+-------
->  tools/testing/selftests/kvm/lib/x86/processor.c                  |  45 +=
-++++++++++----------
->  tools/testing/selftests/kvm/lib/x86/svm.c                        |   6 +=
-+-
->  tools/testing/selftests/kvm/lib/x86/vmx.c                        |   6 +=
-+-
->  tools/testing/selftests/kvm/x86/aperfmperf_test.c                |   9 +=
-----
->  tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c        |   5 +=
---
->  tools/testing/selftests/kvm/x86/hyperv_evmcs.c                   |   6 +=
---
->  tools/testing/selftests/kvm/x86/hyperv_svm_test.c                |   6 +=
---
->  tools/testing/selftests/kvm/x86/kvm_buslock_test.c               |   9 +=
-----
->  tools/testing/selftests/kvm/x86/nested_close_kvm_test.c          |  12 +=
------
->  tools/testing/selftests/kvm/x86/nested_dirty_log_test.c          |   8 +=
----
->  tools/testing/selftests/kvm/x86/nested_emulation_test.c          |   4 +=
--
->  tools/testing/selftests/kvm/x86/nested_exceptions_test.c         |   9 +=
-----
->  tools/testing/selftests/kvm/x86/nested_invalid_cr3_test.c        |  10 +=
-----
->  tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c          |   9 +=
-----
->  tools/testing/selftests/kvm/x86/nested_tsc_adjust_test.c         |  10 +=
-----
->  tools/testing/selftests/kvm/x86/nested_tsc_scaling_test.c        |  10 +=
-----
->  tools/testing/selftests/kvm/x86/nested_vmsave_vmload_test.c      |   6 +=
---
->  tools/testing/selftests/kvm/x86/smm_test.c                       |   8 +=
----
->  tools/testing/selftests/kvm/x86/state_test.c                     |  11 +=
------
->  tools/testing/selftests/kvm/x86/svm_int_ctl_test.c               |   5 +=
---
->  tools/testing/selftests/kvm/x86/svm_lbr_nested_state.c           |   6 +=
---
->  tools/testing/selftests/kvm/x86/svm_nested_clear_efer_svme.c     |   7 +=
----
->  tools/testing/selftests/kvm/x86/svm_nested_pat_test.c            |   8 +=
----
->  tools/testing/selftests/kvm/x86/svm_nested_shutdown_test.c       |   5 +=
---
->  tools/testing/selftests/kvm/x86/svm_nested_soft_inject_test.c    |   6 +=
---
->  tools/testing/selftests/kvm/x86/svm_nested_vmcb12_gpa.c          |  13 +=
-+----
->  tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c        | 215 +=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++++++++++++++++++++
->  tools/testing/selftests/kvm/x86/svm_vmcall_test.c                |   5 +=
---
->  tools/testing/selftests/kvm/x86/triple_fault_event_test.c        |   9 +=
-----
->  tools/testing/selftests/kvm/x86/vmx_apic_access_test.c           |   5 +=
---
->  tools/testing/selftests/kvm/x86/vmx_apicv_updates_test.c         |   4 +=
--
->  tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c |   6 +=
---
->  tools/testing/selftests/kvm/x86/vmx_nested_la57_state_test.c     |   5 +=
---
->  tools/testing/selftests/kvm/x86/vmx_preemption_timer_test.c      |   5 +=
---
->  40 files changed, 323 insertions(+), 215 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_te=
-st.c
->
+
+> 
+>>
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        char *tname = g_strdup_printf("pnv-xscom/spi-seeprom/%s",
+>>> +                pnv_chips[i].cpu_model);
+>>
+>> please consider g_autofree variables.
+> 
+> Sure cedric, will use it in v2.
+> 
+> Thanks,
+> - Aditya G
+> 
+>>
+>>> +        qtest_add_data_func(tname, &pnv_chips[i], test_spi_seeprom);
+>>> +        g_free(tname);
+>>> +    }
+>>>        return g_test_run();
+>>>    }
+>>
+> 
 
