@@ -1,162 +1,137 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB3520E023
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 15:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF643B0AFA
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 15:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782313954; cv=none; b=L1dvQ9BPhdGY0JfvB7ePzHD2iuHLN9e+Fs510VoKRWFHGU+/gPNQJUI65nCHMw5eA9N9B2W2RCCHP7dDBO6i42yNIREFUxNj2k2fOBdKXvJ+6kdgkr7usEAZxifbrZSvRJKV1BkJYbCQq2zg6y2ib2RBoakKDAj3N8Qutwi6h+8=
+	t=1782314539; cv=none; b=kJLabjZ62yuAx5Qm4RzWoU4CPUKGopIobNji8EyWT8+SD7S66XuzsctFY43u8YuKVY5JQ6YlSF2/Rt91XGL7hzc7o07jKzs3Dn3aOenpuI2djg6MWf4uVV8x5LDsLRj0ShQhnPgEOEy+Fql8DqKWEYV4Njf/TsuaNxY0nYDZcIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782313954; c=relaxed/simple;
-	bh=YQ3/8MH+pHOzHZgS6t1eRUhjOfffeihprBIIfnMF1y0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=q0pFDQZNTpU8kj9kwXO6yL5sd6ixLY0NodNORO1ITFHOect41dBg9A5WU+Y2L9bOaGsfLNYOZjM3V3UrmiyA9ADuxqLhLngF6/wEH/LKaG06epW8PYioLOTiORzVfDavXWDGnJiwk56l3D9cJAgdTxdZGdxYbjtJ0LoQep5/WiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YnGzROfu; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782314539; c=relaxed/simple;
+	bh=XlV4gg+hFj7K65n/dyOrPh0qJpdfKdeAogTtacqShnU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tvDmwAlweMeaIFfGKWD2SN4JdFjbXeMt+OI5t4RtK0wGWcYEor9VL17I0qLH38Fv5QErAUGtcsBtM5ypvt9cH/o4GpDVZY+3uRlfxoG13E/612tkgPssrK1rgWh6LmVrE7/EmmX8xOQMVzM2E6Zj1IG7XV7IAbnxatNcxniW+fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iBjNAQOW; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YnGzROfu"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c889d1eebafso1450666a12.0
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 08:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782313952; x=1782918752; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r4Rgqs0dmpAmBtoUIzRDi3XnAOaTZ7bU1jnGrXxRY7M=;
-        b=YnGzROfu7qCNjuudkIxxEtTx9kMMyr44XBCg4CdBKKS0hpuBtFiSeYz9U9hn1L+lKN
-         6NTTRIcAMHPZCRv8PJ8C0yFoWydFa7u2hQ6+g93kD6oJsWEGNDDlDLVFLSSYabsAjK7V
-         bZsfO4vYk0POpljQRMg6WvYRuGFmJhmoD89sZK8IIPVq2XqlKX36B0VN4Sb+he2r/ge/
-         VtXUFKS21QKEAsO5W/xX0gtWqUlc1x9JiDe55+6/hbmFLinGbe2a1t+Dp5/cZOLE84eO
-         PSYjHe5kRLIbxtOcwTWbP2x/ITjOe2a/9T/rL3mc9gs1+RDU3oPRmshiXFsCrD6jki+s
-         WkwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782313952; x=1782918752;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r4Rgqs0dmpAmBtoUIzRDi3XnAOaTZ7bU1jnGrXxRY7M=;
-        b=N/EBgStEPGU7t8+Sazfzqf+3PXRyC8CPiMAf2IyYpwaowsuWBZh3PFRXSecinF/OTZ
-         GPq5oIWsvXpwoIvEO1h6BH93WRR984corszpvxXmOY4HJUCdOYbYfYNkAu56f8EGgDwf
-         VMneQqkqEkQM5IeOjR5NDuocMwpjZJmmF75D0uVLDq7W+/TiIGKv6Wga8ad5Q61ToO7A
-         9NUUi8hEzpz/SCeoeujLvv/Jue8KpBjdBGGk5L2p4yFNYbN+y+k2i+rOyq+0HsGBNV7R
-         kyvEt6rqrtp1C/HL9z872OLtWbGGmhUUJhkJ5IRThzORTJOAGwhhm5bGZWg2h4L28Lg5
-         7QzQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+i/o8XB+wnyKq/GZa0uJNW2DR8yAS8utZXT/Ke65W1sh9NpzHtbcQ4N7gg3CsYRYPZMAI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRsDKU1Uz1y8t9rpLioe/3rULdzziDUE6Jg3DDfaw4TzCvvxoR
-	DvwHt4e+YPIT5D6sRNtm5hjjCu+m93p3Rl7IV4N/2UgWeedchOXkxzsd4J5BYid9sQsTgdbi1v6
-	OYBxTXg==
-X-Received: from pfbjj5.prod.google.com ([2002:a05:6a00:93a5:b0:842:507a:6d57])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b4a:b0:843:49f0:f5a0
- with SMTP id d2e1a72fcca58-845a2caa198mr4791522b3a.32.1782313951462; Wed, 24
- Jun 2026 08:12:31 -0700 (PDT)
-Date: Wed, 24 Jun 2026 08:12:30 -0700
-In-Reply-To: <CAEvNRgGF+O7r-YHqcLp-ZgoXTCbqjuUhpOdD5eE5w2wu3YYYpw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iBjNAQOW"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OEmOvO1229091;
+	Wed, 24 Jun 2026 15:21:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=goJ4v1
+	nhY/z3nlmgG0teKC+QhVS6raLvFZ3QsdvBVzg=; b=iBjNAQOWu1J/4MvE/wJ8TC
+	fyfGQC2FM7od5uyikZ0BlLMMvEnm+20aiIrnLzrCNnJlXXxRfDXxEfsVdOfpnl7m
+	425Uv74wjDIHCw7kI7Or2gpCabh46vHCJKXhuNXfNA60FMZfHzanmWbHwVgCaDPE
+	6tAl4jhQtBeW+mcj9unM2SGPGhxUpJk5QGfX+Ey7JbjQCHj4QUKSo7F3i0SJlTHR
+	tWVfjVGV3VGFAw3isae4ENlWunOxhTtnZIW0HS/+qc3CZXaqJewBKC3assj561Tn
+	FP5WCssc4bTjAC1WScKTSjB9jVAW2YKhX/qFwr7+/3ONcBILx/R2vf9JQNxYB5Ww
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewh9gms9y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 15:21:55 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OFJiiX029008;
+	Wed, 24 Jun 2026 15:21:54 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwhdey-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 15:21:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OFLoWF28377446
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jun 2026 15:21:50 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 98C2620043;
+	Wed, 24 Jun 2026 15:21:50 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C168520040;
+	Wed, 24 Jun 2026 15:21:39 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.19.28])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 24 Jun 2026 15:21:39 +0000 (GMT)
+Date: Wed, 24 Jun 2026 20:51:35 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Shivang Upadhyay <shivangu@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: Re: [PATCH 1/8] tests/functional: Add remote interrupts test for
+ PowerNV
+Message-ID: <ajvr5gPPLsu7GcA5@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+References: <20260623141933.577981-1-adityag@linux.ibm.com>
+ <20260623141933.577981-2-adityag@linux.ibm.com>
+ <4de3eafc3c47799d0b503076b0d71be7cf261b61.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
- <a21bfc05-787e-4cd8-89af-8579357e6a12@linux.intel.com> <CAEvNRgGF+O7r-YHqcLp-ZgoXTCbqjuUhpOdD5eE5w2wu3YYYpw@mail.gmail.com>
-Message-ID: <ajvz3uywXwa36FOp@google.com>
-Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4de3eafc3c47799d0b503076b0d71be7cf261b61.camel@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: iKYhyKYc85gGO_m8A2cbWXoE9orJb-ia
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDEyOCBTYWx0ZWRfX0EP5lrMlLL3M
+ T1+/aeaAgDUsMA/TRM5y+3BLE0mXSKcKupSbGsMG+BDkQ6ku9wiZPULNfD/3xbm6h8a7qagD2lW
+ 3co31WNhhHNVDJN+xHJYUMSReSe/5MU=
+X-Authority-Analysis: v=2.4 cv=c62bhx9l c=1 sm=1 tr=0 ts=6a3bf613 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=8OfXivTFFpb-axvt66UA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDEyOCBTYWx0ZWRfX9W2slgDuvEk0
+ FwR8Q1zsLbEUDkly5nh+/xFZKc2eT3WHDRxmBlMJMj3Y9FDaf+g0QoDZMeU96A9PT9FX94t9IuA
+ EY8ra5Lp16jA8MDaJDwB2730yI3Qwi8h6MKH6+5dDjOk+ZgE2RP48PqkuV5hLnbbzjEht9fukAG
+ mRyEu3NkuoMlRXj5YJvUD41ks8kp2W6bcKRIW4RkndAzZY+2d7ff7bXpWAvsoLNtwEWzwIWtCey
+ JXaYfShj9bp9SC1H3SPa5sGaNaO55Jxnd8f9vdCPFiEc3/KkySPl6exjqvLdwev2jQEe7Ip8R9X
+ 6DTBVZuBlv/1OQzU6TkPXKbqa12jIQqCJUBbOmbzR8GM0owXlOVkDAS/WevjrZNIbmLwkSoDRE/
+ 0vpQMcxObe2Y9opczJ7PHUs9t0jM85ReRlRxRBMHHVz1ihco4bfY6g9oUk2XKK2ArywfUoGnuuQ
+ BKf4vjjN/j9mjc4MtHA==
+X-Proofpoint-ORIG-GUID: EcV8BSPjPxMycR1mjL20WeJsoQWgdFl1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-24_03,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240128
 
-On Tue, Jun 23, 2026, Ackerley Tng wrote:
-> Binbin Wu <binbin.wu@linux.intel.com> writes:
+On 26/06/23 09:17PM, Shivang Upadhyay wrote:
+> On Tue, 2026-06-23 at 19:49 +0530, Aditya Gupta wrote:
+> > +        # Check that interrupt counts increased
+> > +        success_msg = "Interrupts increased"
+> > +        self.helper_exec_shell_command(f"export
+> > PASS='{success_msg}'")
+> This is a great idea. Maybe in future we can pull this to a saperate
+> function? something like the following.
 > 
-> > On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> >> From: Sean Christopherson <seanjc@google.com>
-> >>
-> >> When memory attributes become trackable in guest_memfd, the concept of
-> >> having private memory is no longer dependent on
-> >> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> >>
-> >> With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
-> >> platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
-> >> in.
-> >>
-> >> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> >> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> >> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> >
-> > Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> >
-> > One nit below.
-> >
-> >> ---
-> >>  arch/x86/include/asm/kvm_host.h | 4 +++-
-> >>  include/linux/kvm_host.h        | 2 +-
-> >>  2 files changed, 4 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> >> index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
-> >> --- a/arch/x86/include/asm/kvm_host.h
-> >> +++ b/arch/x86/include/asm/kvm_host.h
-> >> @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
-> >>  		       int tdp_max_root_level, int tdp_huge_page_level);
-> >>
-> >>
-> >> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> >> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-> >> +	defined(CONFIG_KVM_INTEL_TDX) ||	\
-> >> +	defined(CONFIG_KVM_AMD_SEV)
-> >
-> > Nit:
-> > Vertically align the defined(XXX) statements for better readability?
-> >
+>   self.is_booted = True
+>   shell_check_pass_fail_command("asdf")
+
+Makes sense. Will have a helper in v2.
+
+Thanks,
+- Aditya G
+
 > 
-> Sean had this aligned with spaces, and checkpatch complained about
-
-checkpatch is a tool, it is neither omniscient nor authoritative.  And for things
-like this, the *entire* purpose for rules/guildlines like "no tabs after spaces"
-is to help ensure the code is easier to read, e.g. doesn't end up with wonky
-formatting when viewed in certain editors or whatever.  So, ignore checkpatch if
-it complains about formatting that is visually superior to what makes checkpatch
-happy.
-
-> having no spaces before tabs, so I switched it to tabs instead since I
-> don't think alignment like that is officially documented either way.
-
-This exact case may not be "officially" documented, but the general gist is in
-Documentation/process/maintainer-tip.rst:
-
-  When splitting function declarations or function calls, then please align
-  the first argument in the second line with the first argument in the first
-  line::
-
-And there is lots and lots of prior art on-list (from me and others) that is more
-or less as good as official documentation.
-
-> Either way is fine :)
-
-Please restore the alignment.
+> ~Shivang.
