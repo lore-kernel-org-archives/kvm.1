@@ -1,132 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA512EC57C;
-	Wed, 24 Jun 2026 11:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E538364953;
+	Wed, 24 Jun 2026 11:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782301252; cv=none; b=hVgkhzKd+7kEZRwJNacQ61kjQBEd2lHQBdL0nnLkor4KflS001/DJH9u1Rre46P8k6yguIZeIvuBaW2CQXEwRPXYueTTK+XA823KpzCziXDH4utGxsJX5m+lJz85G5pF9IOkGZenYqOcPc0w4VBq3AI1iQsJSvrBG1mN25DuSEk=
+	t=1782301345; cv=none; b=fmZ/HDHkZaooaK51DKDVwTmzjOnr566iygv9anZCo3GHdLcw3IlyM5WVHgNICdnQp6vcI5VLvtQzxAfRrTA6iN+QcF6nniCPsOc6JHVotB407r99X+CT1WqrcbOoSMmaf8bN3XsXufWcD5iWZzFk1sQhUJsbVFxu7LZwJMyUXC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782301252; c=relaxed/simple;
-	bh=F/IAXX4dwkECDuMAkY3e6tX7nGAz2NAI8u8D+tgS2+c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b/54sJgd+qufK8lmHMI2UOTcA9LpLgR3rWXzF3RCVV+jQ8n1kH9NyUOwTCj0Zsqk4DEEI9LN6PLTyjMy7mnrwXIYl1QviZi+uDLhpOHDgbvGztKIalkrIIwA/x89YpVUsLThhWcV0FI+JLXWrsLeAMo5jwCOMQ0XpaAvfmKSkgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOOdDLTf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782301345; c=relaxed/simple;
+	bh=riMPr912UFIPMnkd77dj4O/2qenW/y+bhggkPiDqP2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uFu3olmiXFaChTHCJr3xmY5hgt1RyqrC0uyN8+Sq4XhHKKl3Ee4ya4hIdSMwPSmtHgl11e3ACAjVpYsjNND2lF2PwRo4yNfC+pRPAuobLnBZa9gT6/ZCqtG35fMJl6SpMCdZbfyCSH1FxuiWVwkn3w1hCsRw/cgNYBFUkp1mg+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Vfw1P4/4; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOOdDLTf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDD91F000E9;
-	Wed, 24 Jun 2026 11:40:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782301251;
-	bh=fo60fryRAHrjhVR2+t5KBGtLNiRjD7P/KEfF02Be6Zo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TOOdDLTfE5zQ3hmPypXpjCCchroJeTLsCqltEJ3VwQ/aMzqeTY3ydnZQFfn7yYrL9
-	 FW2hYdh4y0JFDU2T9FZziii7vDa0mkqpMtMa+9ypDL/euYnbsEvUK+xA4lDddvtJTM
-	 btPSbKLaKjXApbsOvpXxuhz9tjc4s+TVrTdgoRC/inSZdASp0uxgpW+arCGoSWLSKa
-	 H5UalEvq1y6CskBMyVXm2+Bv1uDGjQ9iytKHiNmzfk21HABK6hxUG3aeksXXzR4Elx
-	 KDwDh92g7jNiSkIpIkm3A0EIa5JgYs7NawMDtIC6ga0Q+XJLgTSV97YuVWPxUmqdP7
-	 ItkgTeWRtduag==
-From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 01/12] KVM: s390: Fix S390_USER_OPEREXEC
- enablement without STFLE 74
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260624111928.144283-2-imbrenda@linux.ibm.com>
-References: <20260624111928.144283-1-imbrenda@linux.ibm.com>
- <20260624111928.144283-2-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 24 Jun 2026 11:40:50 +0000
-Message-Id: <20260624114050.BEDD91F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Vfw1P4/4"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9855215A1;
+	Wed, 24 Jun 2026 04:42:17 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 263A93F632;
+	Wed, 24 Jun 2026 04:42:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782301342; bh=riMPr912UFIPMnkd77dj4O/2qenW/y+bhggkPiDqP2Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Vfw1P4/4IoI5cqXw4yBJZNOTaVkYRmMS6+C6sbeyrmmGnGWWzzWff8oMzVCkvRHpG
+	 /WfA6cZgcjrIZBg4la2twn3GyGmuyUH3yH5HcauiNCm7UhB5ttO+fuGOsQ/50nUI2x
+	 XbN64JsbCSXXQ+WSm4c6Fyy4/VKP2cHszV2Zyuew=
+Message-ID: <b49a3107-68be-4f7f-8c66-0f78206c7359@arm.com>
+Date: Wed, 24 Jun 2026 12:42:17 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+To: Matt Evans <matt@ozlabs.org>, "Tian, Kevin" <kevin.tian@intel.com>,
+ Pranjal Shrivastava <praan@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-2-matt@ozlabs.org> <aisAc1HRn2Wa4F9p@google.com>
+ <DM6PR11MB36904ED2E1D2C646644F67668C182@DM6PR11MB3690.namprd11.prod.outlook.com>
+ <0dfadf98-a904-4e6a-b078-5caf27bc7922@ozlabs.org>
+ <81a9d212-996e-42e1-aabf-b120a13e94c3@arm.com>
+ <88a9ebaa-8637-4290-b299-acae0e3065f8@ozlabs.org>
+ <feaefa41-9f67-4d4f-a3e0-282dca41f3eb@ozlabs.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <feaefa41-9f67-4d4f-a3e0-282dca41f3eb@ozlabs.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On 23/06/2026 6:47 pm, Matt Evans wrote:
+> Hi Robin, me,
+> 
+> On 23/06/2026 16:59, Matt Evans wrote:
+>> Heya Robin,
+>>
+>> On 23/06/2026 16:48, Robin Murphy wrote:
+>>> On 12/06/2026 3:31 pm, Matt Evans wrote:
+>>>> Hi Kevin, Pranjal, (+Robin, hi!)
+>>>
+>>> Oh hey there! :)
+>>>
+>>>> On 12/06/2026 04:39, Tian, Kevin wrote:
+>>>>>> From: Pranjal Shrivastava <praan@google.com>
+>>>>>> Sent: Friday, June 12, 2026 2:38 AM
+>>>>>>
+>>>>>> On Wed, Jun 10, 2026 at 04:43:15PM +0100, Matt Evans wrote:
+>>>>>>> --- a/drivers/pci/Kconfig
+>>>>>>> +++ b/drivers/pci/Kconfig
+>>>>>>> @@ -206,11 +206,7 @@ config PCIE_TPH
+>>>>>>>    config PCI_P2PDMA
+>>>>>>>        bool "PCI peer-to-peer transfer support"
+>>>>>>>        depends on ZONE_DEVICE
+>>>>>>> -    #
+>>>>>>> -    # The need for the scatterlist DMA bus address flag means PCI
+>>>>>> P2PDMA
+>>>>>>> -    # requires 64bit
+>>>>>>> -    #
+>>>>>>> -    depends on 64BIT
+>>>>>>> +    select PCI_P2PDMA_CORE
+>>>>>>>        select GENERIC_ALLOCATOR
+>>>>>>>        select NEED_SG_DMA_FLAGS
+>>>>>>>        help
+>>>>>>
+>>>>>> Nit: Did we drop depends on 64BIT intentionally here? I guess the full
+>>>>>> PCI_P2PDMA stack still selects NEED_SG_DMA_FLAGS? IIRC,
+>>>>>> NEED_SG_DMA_FLAGS doesn't select 64BIT?
+>>>>>
+>>>>> seems that comment is stale. According to the commit msg:
+>>>>>
+>>>>> " it would make vfio-pci only available if CONFIG_ZONE_DEVICE is
+>>>>> present (e.g. 64-bit systems), "
+>>>>>
+>>>>> so it sounds a redundant dependency hence is removed.
+>>>>
+>>>> This was intentional.  In practice there is still a dependency on 64BIT
+>>>> for PCI_P2PDMA, but it is because of ZONE_DEVICE (and mem hotplug).  The
+>>>> key need is PCI_P2PDMA_CORE is available on !64BIT for VFIO, but I
+>>>> didn't see a requirement from PCI_P2PDMA itself (as opposed to its
+>>>> dependencies).  If I've missed one, I can put it back...
+>>>>
+>>>> But NEED_SG_DMA_FLAGS doesn't smell quite right; I see from comments in
+>>>>
+>>>>     af2880ec44021 ("scatterlist: add dedicated config for DMA flags")
+>>>>
+>>>> that it assumes 64BIT, but it seems to be missing a "depends on 64BIT".
+>>>>
+>>>> Robin -- should that depend on 64BIT?
+>>>
+>>> Indeed, looking at the history it seems like that was overlooked, but it
+>>> worked out at the time since the only selector of NEED_SG_DMA_FLAGS was
+>>> PCI_P2PDMA as you say. If we're now generalising then moving the
+>>> explicit 64BIT dependency to NEED_SG_DMA_FLAGS itself sounds like the
+>>> right thing to do.
+>>
+>> Cheers for confirming.  I'll send a patch separate to this series (since
+>> the deps work out OK for PCI_P2PDMA for the reasons mentioned).
+> 
+> I think we were wrong, NEED_SG_DMA_FLAGS doesn't _need_ 64BIT.
+> 
+> Other than P2PDMA, the other consumer of NEED_SG_DMA_FLAGS is IOMMU_DMA,
+> and turns out if one builds an i386 kernel with INTEL_IOMMU (or some
+> other configs, like Xen) then NEED_SG_DMA_FLAGS is enabled on 32-bit
+> builds too.
+> 
+> The scatterlist.h comments af2880ec44021 touched are just saying that
+> _since_ P2PDMA depends on 64BIT, there _is_ circumstantial padding so
+> let's use it for flags.  It doesn't require 64BIT.
+> 
+> For example struct scatterlist isn't pushed over some special (e.g.
+> power-of-two) size when NEED_SG_DMA_FLAGS is enabled on 32-bit; I can't
+> find a reason it should be prevented on 32-bit builds (and found cases
+> above in which it is already enabled in them).
+> 
+> So I won't change the NEED_SG_DMA_FLAGS dependencies after all.  Sorry
+> for the noise -- as ever if I've missed something do please explain.
 
-New issues:
-- [Medium] A lockless data race between concurrent KVM_ENABLE_CAP and KVM_C=
-REATE_VCPU can result in a vCPU silently missing the operation exception in=
-tercept.
+Ah, I was also taking the comments at face value, plus conflating the 
+memory of the original series which did stash the P2P flag in bit 2 of 
+the page_link pointer - in my defence, it's far too hot for my brain to 
+work properly :)
 
-Pre-existing issues:
-- [Critical] Missing `vcpu->mutex` in `kvm_arch_vcpu_postcreate` allows a c=
-oncurrent `KVM_RUN` ioctl to trigger a host kernel panic via a NULL pointer=
- dereference on `vcpu->arch.gmap`.
---
+Doing a bit more archaeology, the separate dma_flags field was a late 
+suggestion just before the series was merged, so I guess it's actually 
+just that the comments never got updated accordingly. Sorry for 
+perpetuating the confusion!
 
-commit 40c6c07119e484ffc2bb8e5fccec2d6c44c1df03
-Author: Eric Farman <farman@linux.ibm.com>
+Cheers,
+Robin.
 
-KVM: s390: Fix S390_USER_OPEREXEC enablement without STFLE 74
+> (I'll continue with removing the P2PDMA dependency on 64BIT because it
+> seems P2PDMA's dependencies rely on 64BIT, though P2PDMA itself doesn't.)
+> 
+> Thanks,
+> 
+> 
+> Matt
 
-This commit ensures the USER_OPEREXEC capability is properly enabled
-in kvm_arch_vcpu_postcreate() even if the guest disables STFLE.74.
-It adds a check for vcpu->kvm->arch.user_operexec alongside the
-existing checks for STFLE.74 and user_instr0.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3542,7 +3542,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
->  		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
-
-[Severity: Critical]
-This is a pre-existing issue, but does this function need to hold
-vcpu->mutex while initializing vcpu->arch.gmap?
-
-When kvm_vm_ioctl_create_vcpu() executes, it unlocks vcpu->mutex and
-increments kvm->online_vcpus before calling kvm_arch_vcpu_postcreate():
-
-virt/kvm/kvm_main.c:kvm_vm_ioctl_create_vcpu()
-    atomic_inc(&kvm->online_vcpus);
-    mutex_unlock(&vcpu->mutex);
-    mutex_unlock(&kvm->lock);
-    kvm_arch_vcpu_postcreate(vcpu);
-
-If a second thread immediately calls the KVM_RUN ioctl on the new vCPU,
-it can acquire vcpu->mutex and proceed to __vcpu_run() before
-kvm_arch_vcpu_postcreate() finishes.  Could this result in a NULL pointer
-dereference when __vcpu_run() accesses vcpu->arch.gmap->asce.val?
-
-arch/s390/kvm/kvm-s390.c:__vcpu_run()
-    sie_return =3D kvm_s390_enter_exit_sie(vcpu->arch.sie_block,
-                                         vcpu->run->s.regs.gprs,
-                                         vcpu->arch.gmap->asce.val);
-
->  		sca_add_vcpu(vcpu);
->  	}
-> -	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0)
-> +	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
-> +	    vcpu->kvm->arch.user_operexec)
-
-[Severity: Medium]
-Does the lockless read of user_operexec introduce a data race with
-KVM_ENABLE_CAP?
-
-If a thread enables KVM_CAP_S390_USER_OPEREXEC concurrently with vCPU
-creation, kvm_vm_ioctl_enable_cap() writes to kvm->arch.user_operexec and
-iterates over online vCPUs without a full memory barrier:
-
-arch/s390/kvm/kvm-s390.c:kvm_vm_ioctl_enable_cap()
-    kvm->arch.user_operexec =3D 1;
-    icpt_operexc_on_all_vcpus(kvm);
-
-Meanwhile, kvm_vm_ioctl_create_vcpu() increments online_vcpus before
-calling kvm_arch_vcpu_postcreate().
-
-Because of this sequence, is it possible for both threads to observe the
-older state of the other's variables? If so, could this cause the newly
-created vCPU to silently miss setting the ICTL_OPEREXC bit?
-
->  		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624111928.1442=
-83-1-imbrenda@linux.ibm.com?part=3D1
