@@ -1,146 +1,179 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A43B635E
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 13:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114621A6830
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 14:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782308891; cv=none; b=o5MLDWEXDqTPk/Mhc1YrYJGf8sLNOiQFKwSqoEfdvVK1EcKU7vDVdt9MB5qKgM/Bfcct3y7PHovKNKz2umd3tlWoqn9YfLRw222twPtlLBnI3e6JIid5J8c4YWR160Rh4SfK+Z8X75ffnG/eiVd+LReZAU/ecW83s2valn8PTJk=
+	t=1782309623; cv=none; b=bKgEWLr2Z8tDpRNyfnW+sXfbaGrV1ZJU+kjmbknUuSQJvBn6l1iRZz4pV/RgAhI7JWYKjBar/P8mRUMfhuQNd5JFi5bR11tXtJROSmTwqUiPQ/JYOD67+nPPXFoDQZk/t/+RgbJRIAcjnQ6m/cuSZpMEfZH1Aoz/wDgagw+cX+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782308891; c=relaxed/simple;
-	bh=+SuUkXcRDrGA2g6ILzzszHYue7BwJLG3Iipm68dhT+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mIFx7D6gg0ZE21FznlVWpl4snSbah6SMMKWafl5rI0zuCVlg4qbgn0GsGzlTMyrDgFZwd6sjPguX8SDK3Fs5XmpAk92hJzdUB3PKPp5yqlNNnLhWJETTSFcmMOywMaAGxM7+eluzSuQxtBeXfDB6JprqUBDe+SAMEZcj6UppedQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rUCHIIf/; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782309623; c=relaxed/simple;
+	bh=uWXrXU7zV0ucP6hOYN9p5hUEGvkRWkrjHTDBqRtNFQw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M9u3/rEhoxOlkCNxgQdEL3/3Fre63cEwLqoOWgyConOfgw7QZhLnddb8WuaXtb0eQenOH5/wn+OCxcuNW1C7pTooi1CWHu1jFlDf97yi/VG+Q0KrldZQiPYv8L9fdxFlOaV7RxiNz0UQf8Bt8OExfD1DuyQjnX1satPiJO+7jKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vanqoMr/; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rUCHIIf/"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OAmxlP645070;
-	Wed, 24 Jun 2026 13:47:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=SgcMkG
-	V7hvM0ax53/oEu6I10+bV30F43/QldYfio//I=; b=rUCHIIf/fKCIwDxeIEJjXr
-	eLZHnFsxHS1T1FpTYYNywvb8JyRAGaVg8l33oJ5hS/CFHtjwrP9snspHE3S73ZiG
-	JpA/QG0sIs+nnYwq+8ikKbDzmHYGT1LnxFSJg1Apn3EpuTlpKWzvMGDhkbNLOVo2
-	8juQREMhM0VW2pUJj3agG0ucFCGvOgiSjD8/xeoR3gMfbLR8ncrOePuIKInAF30A
-	Llb8Zk0YUTuNUlHHHmwBE2EuiKW4EeHdOZyCJZp2Rv0xLp4ADoueLjSI7TB5jTki
-	ot7Q9Y0i+7g4a5/MuGxbg/UosYkKil+3lcdZs9kXYQdMO4yIpnhMOHXEknEqrY/Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjk4mf3y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 13:47:54 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65ODYfNp006094;
-	Wed, 24 Jun 2026 13:47:53 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex56qh2mb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 13:47:53 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65ODlnPU51380666
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Jun 2026 13:47:49 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A5692004B;
-	Wed, 24 Jun 2026 13:47:49 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D45B20040;
-	Wed, 24 Jun 2026 13:47:41 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.19.28])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 24 Jun 2026 13:47:40 +0000 (GMT)
-Date: Wed, 24 Jun 2026 19:17:37 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH 1/8] tests/functional: Add remote interrupts test for
- PowerNV
-Message-ID: <ajvfl1XVRUJiovA2@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-References: <20260623141933.577981-1-adityag@linux.ibm.com>
- <20260623141933.577981-2-adityag@linux.ibm.com>
- <2f6d69e5-e11e-4561-a38f-84760525a549@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vanqoMr/"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c32faa62so16121285ad.2
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 07:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782309620; x=1782914420; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+GnaUB9qp/nLMoVt45YRZ3NA9SXGagN6God624kPSw=;
+        b=vanqoMr/gw/S7vhxvxefP31jJhy5hd+OKPk02mkfaOyVNKbk7jOaHY28tfiHznX1ps
+         mXmvZEiKCbZxcbl/DpMYo4d09s2Io0yvlXIIWYe1iNuY0PJBAD4dxOkdFgN4/a2Hk9Zr
+         CLEe/LMX7Pn9XDr4FnOf84T5OQc4ROSz5CZeQRXpFQ9XDEu0UW8byD5TCdeI32R70Gkt
+         IJaxMZ1uw7w0PCV8z/Rn8gE02C62C1a3prKS5l39sn8efQyWcjc4kdHWqLtMTMN9bLXl
+         KT/2CGYGiP/BV0kXYGROq9FYOz+P308XpEorczHuFuoz6F3iqMyijKcOZ7u7sRT5aCDR
+         Nu4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782309620; x=1782914420;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j+GnaUB9qp/nLMoVt45YRZ3NA9SXGagN6God624kPSw=;
+        b=NUr1tajWqi8gEa3yFs/isWqZn5lYGTxvw6qVxJ5keZFdWR6G7tNBEZN1569JVM8l25
+         vNMSUVr/U6Mc6KcdNRSWpcS75UtVJPOrjylp8TRKf5fro0bYYfhgckYMlyDBF2RO1gRP
+         hdKo3H6O6Op+NkoRwHYBM3FkbOClMRXjnvJeZJhBR0SZgiSSirZ+c58pDOcht39P7faG
+         eSVCYdSVlbDX8Ecq5x837PGzeWVrp2GuiPZ27QGtjpMmdds60N3DqIFH8cPGi45Nxzic
+         YMptTXVEUqZnuRdkGdyf936BEcD/4KlvkxzqUqDJkgaUPKL8egzFrbBeURvxcHVgI79J
+         wUEA==
+X-Forwarded-Encrypted: i=1; AHgh+RqxPfIVk6pYrkCvuD+Nw+ogJR+G9CXgd48vaIa2JCqEuciprUDZMuI93bHkHLQ64wJ3YHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMZm4eiCiulBBStY+ZhpZPznaxS888uwABQ2+Xa2uabCIRaID9
+	cwInO38WBxkNIBManlJpm3AkIi2W+peouOf3nuoHCawxN1Zr8fS8JtpbJTL3r2mBXGBIWkU/SLN
+	90Exf+A==
+X-Received: from plpa2.prod.google.com ([2002:a17:902:9002:b0:2bd:34d1:ea8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8cd:b0:2c7:9b3e:3987
+ with SMTP id d9443c01a7336-2c7c76ce140mr81245405ad.25.1782309619894; Wed, 24
+ Jun 2026 07:00:19 -0700 (PDT)
+Date: Wed, 24 Jun 2026 07:00:19 -0700
+In-Reply-To: <345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2f6d69e5-e11e-4561-a38f-84760525a549@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDExNCBTYWx0ZWRfX2WQeekJyUtaf
- RxZl77J691M+TR8hdPVYUDR+MXrW9k4Zz463wjiIeWh7PeBhPdIM5jYRVGaQtSqSfxzZMgI1qb+
- jTKgaP8rOIQBVT7/lTjncj/XyNLEtl4=
-X-Proofpoint-ORIG-GUID: P52uTQVncJ_E0_1umFDYvOsO0oriQPOr
-X-Authority-Analysis: v=2.4 cv=Oph/DS/t c=1 sm=1 tr=0 ts=6a3be00a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=8lG4SYNR4Pdbq3r0qSMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDExNCBTYWx0ZWRfX55ixbV97ioMo
- /gCldyPY9Dne66dfPfV+K0ojiF0sgfQYs7P6d6e3vy/dK4x7eqWfHtPY9MPjozIh4FsmV62osSR
- KfrW4QhU170MTLc4Nst9H3u8kUltrg2QsG2bcs6tY4rolWW/ZgHyb+cAfpdFlfrgKvV+cmxD5yv
- k/t6zrdInnOGn1u0HUPpHxI0E1YgjW7u7E+0VQOGGv/3qo1BiF0xwCOSp03cxoX++KgCz2YYn+1
- W2jJ2vgfLN/Fu21SyLfU+j+6S3JcODt5oKQlfeHkI7vzd3hWdPXQm+BTL2GrwLrE4nKpB4ir5eX
- 1xmSwk7hftmBQC+mFtoZGr/0lyOg8r/700I+sIbsLsoWQP2T0Dzj7tKc1dOVe/BEUa9aTGHfCfE
- imR2ZnIFKStN7Xd5JYvTEF4Bc75kJAsOf9apoEl1naP31kuuqm8kzBMf48ZsrqycFrUWa4A6bFa
- o0LpmwpzfM7UegMxt6A==
-X-Proofpoint-GUID: 02UyFluDyZ9exRjSNiEZVvP7EXXjDkCB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-24_03,2026-06-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240114
+Mime-Version: 1.0
+References: <345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.kernel.org>
+Message-ID: <ajvi89dlwvirl4BI@google.com>
+Subject: Re: [PATCH] KVM: x86: Drop WARN_ON_ONCE() for concurrently
+ disappearing interrupts
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot <syzbot@kernel.org>
+Cc: syzkaller-bugs@googlegroups.com, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, 
+	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org, hpa@zytor.com, 
+	linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 26/06/24 01:44PM, Cédric Le Goater wrote:
-> On 6/23/26 16:19, Aditya Gupta wrote:
-> > <...snip...>
-> >       def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
-> >           self.require_accelerator("tcg")
-> >           kernel_path = self.ASSET_KERNEL.fetch()
-> > @@ -71,6 +75,88 @@ def test_linux_smt_boot(self):
-> >           wait_for_console_pattern(self, console_pattern, self.panic_message)
-> >           wait_for_console_pattern(self, self.good_message, self.panic_message)
-> > +    def test_linux_remote_interrupts(self):
-> > +        self.require_accelerator("tcg")
-> > +        self.set_machine('powernv')
-> > +
-> > +        # have more sockets with as few CPUs as possible, increasing the
-> > +        # probability to have remote interrupts from one chip to another
-> > +        # also have e1000e network device to generate interrupts
+On Wed, Jun 24, 2026, syzbot wrote:
+> From: Alexander Potapenko <glider@google.com>
 > 
-> Can you attach the PCI device to a PCI bus known to be on the
-> second socket ? and then offline cpus on the second socket,
-> so that all IRQ servers are on the first socket.
+> A warning can be triggered in kvm_check_and_inject_events() when an
+> interrupt disappears between the time it is checked via
+> kvm_cpu_has_injectable_intr() and the time it is fetched via
+> kvm_cpu_get_interrupt(). This occurs because the warning incorrectly
+> assumes that if an interrupt is injectable, fetching it must always return
+> a valid interrupt vector (i.e., not -1).
+> 
+> However, this assumption is broken by level-triggered interrupts that are
+> deasserted concurrently by another thread. For example, if a misconfigured
+> PIT or a PCI device asserts and then immediately deasserts a
+> level-triggered interrupt, the VCPU thread might see the pending interrupt
+> during the check but find it gone during the fetch, resulting in
+> kvm_cpu_get_interrupt() returning -1.
 
-Makes sense, thanks cedric ! will keep the device attached to 4th
-socket, and offline it's CPU, and let the other setting affinity part
-same
+I think this the race is limited to the PIC case, no?  Because for all other
+cases, mucking with pending IRQs requires holding vcpu->mutex.
 
-Thanks,
-- Aditya G
+So rather than removing the WARN entirely, can't we fix this by exempting the
+in-kernel PIC case?  Given that we're pushing hard to move to a split IRQCHIP
+model, this would preserve the WARN for the use case we care most about.
 
+diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
+index 3a2e4493516f..64f6592f5b23 100644
+--- arch/x86/kvm/x86.c
++++ arch/x86/kvm/x86.c
+@@ -7694,7 +7694,7 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
+                if (r) {
+                        int irq = kvm_cpu_get_interrupt(vcpu);
+ 
+-                       if (!WARN_ON_ONCE(irq == -1)) {
++                       if (!WARN_ON_ONCE(irq == -1 && !pic_in_kernel(vcpu->kvm))) {
+                                kvm_queue_interrupt(vcpu, irq, false);
+                                kvm_x86_call(inject_irq)(vcpu, false);
+                                WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
+
+> The warning manifests as follows:
+> 
+> ------------[ cut here ]------------
+> irq == -1
+> WARNING: arch/x86/kvm/x86.c:10860 at kvm_check_and_inject_events
+> arch/x86/kvm/x86.c:10860 [inline]
+> WARNING: arch/x86/kvm/x86.c:10860 at vcpu_enter_guest
+> arch/x86/kvm/x86.c:11356 [inline]
+> WARNING: arch/x86/kvm/x86.c:10860 at vcpu_run+0x57ec/0x7950
+> arch/x86/kvm/x86.c:11770
+> RIP: 0010:kvm_check_and_inject_events arch/x86/kvm/x86.c:10860 [inline]
+> RIP: 0010:vcpu_enter_guest arch/x86/kvm/x86.c:11356 [inline]
+> RIP: 0010:vcpu_run+0x57ec/0x7950 arch/x86/kvm/x86.c:11770
+> Call Trace:
+>  <TASK>
+>  kvm_arch_vcpu_ioctl_run+0x1193/0x2070 arch/x86/kvm/x86.c:12125
+>  kvm_vcpu_ioctl+0xa61/0xfd0 virt/kvm/kvm_main.c:4470
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>  </TASK>
+> 
+> Since this is a legitimate Time-Of-Check to Time-Of-Use (TOCTOU) race
+> condition that can occur during normal operation, WARN_ON_ONCE() must not
+> be used for conditions that can legitimately happen. The patch removes the
+> WARN_ON_ONCE() in kvm_check_and_inject_events() and replaces it with a
+> pr_err_ratelimited() to log the event instead.
+
+If we can't salvage the WARN, I don't want to log anything to dmesg.  The purpose
+of the WARN is to find KVM bugs.  A ratelimited printk isn't going to help on that
+front.
+
+> Fixes: bf672720e83c ("KVM: x86: check the kvm_cpu_get_interrupt result before using it")
+> Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
+> Reported-by: syzbot+dd769db18693736eee89@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=dd769db18693736eee89
+> Link: https://syzkaller.appspot.com/ai_job?id=35cad3cd-95fd-4c0d-8ca8-812f58d56e59
+> Signed-off-by: Alexander Potapenko <glider@google.com>
+> 
+> ---
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0550359ed..c5b4cddd9 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10857,10 +10857,13 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
+>  		if (r) {
+>  			int irq = kvm_cpu_get_interrupt(vcpu);
+>  
+> -			if (!WARN_ON_ONCE(irq == -1)) {
+> +			if (irq != -1) {
+>  				kvm_queue_interrupt(vcpu, irq, false);
+>  				kvm_x86_call(inject_irq)(vcpu, false);
+>  				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
+> +			} else {
+> +				pr_err_ratelimited(
+> +					"KVM: interrupt disappeared between checking and fetching\n");
+>  			}
+>  		}
+>  		if (kvm_cpu_has_injectable_intr(vcpu))
+> 
+> 
+> base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+> -- 
+> See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
+> You can comment on the patch as usual, syzbot will try to address
+> the comments and send a new version of the patch if necessary.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
