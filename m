@@ -1,118 +1,150 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44644175A87
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 10:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885602E8897;
+	Wed, 24 Jun 2026 11:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782298067; cv=none; b=Wo/6TKbMY1i4WcVTRDSzCF85niF+kpMuOfY9tGasRDIXrxa55jbgSL3GGiTZpJmGyhvIOxL486SioYOr5N2RN0YzjMSPAoWyjQlOT1GcnnxplKUQXcGRb8th4EdGpELHSUZo6tOsK5qh51aqEGOxDd8GXuuo2iP6XYp7twya/bw=
+	t=1782299979; cv=none; b=BBywHVV9m71CNgACH1pzcWkj4f6PdkW91l1re2SnQfOrUXDPFPXdxRTr6JiXDNNSimCm5VxpSWA4+eScNKpcm5+6ClVFF+WfLqB1UkHGtp42YIJLOZ963fwdy04qiPP2mW58GI1XTdSpLMm/oXQy5pIZNwfeHVyp+Rug1hLVlO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782298067; c=relaxed/simple;
-	bh=5ga6Bg6Ft0CilD/kybwELS3njlqTEQrmbI9iTWkhhdQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D6xsHBL3hO25yY+0rxl7Kr5cAlAmPDvYdS9KQ9Z+f6zsjKBdE9o4rq+aIs6MW2o0SfNnpP8U45wwZtkYqYVFWus/OUtij7Ex7u3N0SmycuR/G1IgVJIU3ylcPRnVAn4NHi19v2TgMCCUo06I7wBLu2omiWXFX3G9s0rf/1B89Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hV7hoJW4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782299979; c=relaxed/simple;
+	bh=MEGh5Wqm2CuGKn3jLVKjQEJz+OoPSWJ/GZQsV9q0mHs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jxSOFqwXE2MsLdizZdGZ76of0khN4C0N4CB9JY44pFt5CSuE5FwzF+w1qqQpxHncTAk0JS20sobjQPWLVvIHi1PZQJul3e0q5tBZ2Q6UEoyOyIU1bISUqaMg+xGNn2qM1gt4PJAxVOYUAZwtI3bTNEj9DVYXx45/MC3OZwStcOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RjP2b6Md; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hV7hoJW4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782298065;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=N8IrcjKVSGRrrQkxP5YIgWZCLBm8ejeVytx94BD743I=;
-	b=hV7hoJW4b1QyYkY4mVHJjbNCJ3TvOIb+kUKun2p3N2JM9vJYGJ2o2dXamcUY0cIsx+EYWG
-	FuuNJ+KpHxAkC0J0KykndwuTlyVqJIBdCK8ZsykOxMz5s2UYtxsBtMmtzj2vqlfV0cdVlF
-	MbQ2LwfUIrseN7qVgiqzJOuu9dmmqT8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-201-Pa9kjjP7OOaViw0Uj39CTg-1; Wed,
- 24 Jun 2026 06:47:39 -0400
-X-MC-Unique: Pa9kjjP7OOaViw0Uj39CTg-1
-X-Mimecast-MFC-AGG-ID: Pa9kjjP7OOaViw0Uj39CTg_1782298057
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7E1C18052EA;
-	Wed, 24 Jun 2026 10:47:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.49.57])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F2B5180049F;
-	Wed, 24 Jun 2026 10:47:29 +0000 (UTC)
-Date: Wed, 24 Jun 2026 11:47:25 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Anushree Mathur <anushree.mathur@linux.ibm.com>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-	Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH 8/8] MAINTAINERS: Add self as maintainer for PowerNV
-Message-ID: <aju1vc-yqJoaK7CO@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260623141933.577981-1-adityag@linux.ibm.com>
- <20260623141933.577981-9-adityag@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RjP2b6Md"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OAmJpF717979;
+	Wed, 24 Jun 2026 11:19:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=4c8GV3PydGKWg5W3KOwq90mZOAzNMZOCpxQMqcUix
+	yk=; b=RjP2b6MdArRflFjmx0nLcnTpW2lwMpryAaKcXvLhjle4/kNk+UQdIFz02
+	0X6eOJrzP+xz1bC5N3fXWhYKyIWa+wZmFJeknyOByzHe0y2Bp3efBPwCxV/769/i
+	s2/clROrK8+8ItgkMDqwPqJa8RUVWZTdp0Bo+I/yWmoyn49MN4RrQAN5ngWGTtLk
+	35x035ULhzaJcaXrZgzOBMwvPIGlpy82yB5uVeklJs/OzIJ0o66fd/rIx6bIy1HY
+	FXVWHzUmmce7+S+kHorCJ3rx5QBSN1mXTxzLIG6exNIL1EOFFTB718aaz/LSHf/z
+	/LQJan+aPwnvXVFCxlyclSOXQ/WSw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjc3kv5t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 11:19:36 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OB4eOn022073;
+	Wed, 24 Jun 2026 11:19:35 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dg8101-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 11:19:35 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OBJSLX16974262
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jun 2026 11:19:29 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C53FF20043;
+	Wed, 24 Jun 2026 11:19:28 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 847D320040;
+	Wed, 24 Jun 2026 11:19:28 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Jun 2026 11:19:28 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        borntraeger@de.ibm.com
+Subject: [GIT PULL v1 00/12] KVM: s390: Fix S390_USER_OPEREXEC and more gmap fixes
+Date: Wed, 24 Jun 2026 13:19:16 +0200
+Message-ID: <20260624111928.144283-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260623141933.577981-9-adityag@linux.ibm.com>
-User-Agent: Mutt/2.3.2 (2026-04-26)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=X4Ni7mTe c=1 sm=1 tr=0 ts=6a3bbd48 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=mMwgtVGczyN9lTVxpCkA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDA5NCBTYWx0ZWRfX8dHKpbEpAiZX
+ G0V6aVyxxZnsgbBWyv0YeRYux724coCcTjPwWmYSpK2Iw+uqPRBtN6Bz3whzT8yQ0ayo9wKN+Bm
+ oBiS7FxKQwWES133khrE8YygRcDSGWo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDA5NCBTYWx0ZWRfXy5CBVEKWycJY
+ D+1LUx2izcrj9F/iOoU/g7s6ehqQXUQWXFG/ASX4JwIVyaDFUhNZ3co7u1TY0QEzB3y5t9mbqHN
+ l7N+2N+qWr5Y1p72cjQz8Xo5dyZweMqSsW9uT8FZcFBzOlobvkVV5SV46+kmQNDO7XH1QgWQH4C
+ 6GBmxabk3Pe0GW8EL97/Lszhs4yXT27EE4iVA0nqRxdY/RGDjBHpR5Zk/DEk/S2WxUGt0qWUoXL
+ ajlE5rxfp5CZRYgzS8TOKGItGaPbUpG1IuJWqCNHtHOgTpUw0nUVmb3ABImrIgq+bJg2BHQdGFM
+ uLjjGbc1MPUOINQj/9Icn6sNmyQSzbd6nAsFhqajCNDlL+ox2bWlZ57kcvB+oc+WglcsHHc6RzK
+ W1EiAlJneclbG5eNnBkVdl1Mqqe2aYHW1uiiDxEEKxyAlhonj2DjeIG7vCysSg/5xZiazkKxG9j
+ QVBlLlc2FVP0LAFvV2g==
+X-Proofpoint-ORIG-GUID: 1-KKaNEhXMPaHKNSDyXuy4xRZJhBMIaB
+X-Proofpoint-GUID: 1-KKaNEhXMPaHKNSDyXuy4xRZJhBMIaB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-24_03,2026-06-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240094
 
-On Tue, Jun 23, 2026 at 07:49:33PM +0530, Aditya Gupta wrote:
-> Add myself as maintainer for PowerNV machine, and remove the
-> reviewer entry
-> 
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-> ---
->  MAINTAINERS | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 93df53d87f63..67f65bff3913 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1646,7 +1646,8 @@ F: tests/functional/ppc64/test_tuxrun.py
->  
->  PowerNV (Non-Virtualized)
->  M: Nicholas Piggin <npiggin@gmail.com>
-> -R: Aditya Gupta <adityag@linux.ibm.com>
-> +M: Aditya Gupta <adityag@linux.ibm.com>
-> +G: @adi-g15-ibm
+Ciao Paolo,
 
-Please drop the G: line, as I'm changing the approach for recording
-this info to be more automatic.
+here are some fixes for the second half of the merge window:
 
->  R: Glenn Miles <milesg@linux.ibm.com>
->  R: Harsh Prateek Bora <harshpb@linux.ibm.com>
->  L: qemu-ppc@nongnu.org
-> -- 
-> 2.54.0
-> 
-> 
+* Fix S390_USER_OPEREXEC so it can now be enabled regardless of other
+  unrelated capabilities
+* Fix handling of the _PAGE_UNUSED pte bit that could lead to guest
+  memory corruption in some scenarios
+* A bunch of misc gmap fixes (locking, behaviour under memory pressure)
+* Fix CMMA dirty tracking
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+The following changes since commit 8cd9520d35a6c38db6567e97dd93b1f11f185dc6:
 
+  Linux 7.1 (2026-06-14 15:58:38 +0100)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/kvm-s390-next-7.2-2
+
+for you to fetch changes up to babe08404e1993697a523e60bc0f9d096ffe1ef8:
+
+  KVM: s390: Return failure in case of failure in kvm_s390_set_cmma_bits() (2026-06-24 10:08:57 +0200)
+
+----------------------------------------------------------------
+KVM: s390: Fix S390_USER_OPEREXEC and more gmap fixes
+
+----------------------------------------------------------------
+Claudio Imbrenda (9):
+      s390/mm: Fix handling of _PAGE_UNUSED pte bit
+      KVM: s390: Fix dat_peek_cmma() overflow
+      KVM: s390: Do not set special large pages dirty
+      KVM: s390: Fix code typo in gmap_protect_asce_top_level()
+      KVM: s390: Fix handle_{sske,pfmf} under memory pressure
+      KVM: s390: Fix locking in kvm_s390_set_mem_control()
+      KVM: s390: Fix cmma dirty tracking
+      KVM: s390: selftests: Fix cmma selftest
+      KVM: s390: Return failure in case of failure in kvm_s390_set_cmma_bits()
+
+Eric Farman (3):
+      KVM: s390: Fix S390_USER_OPEREXEC enablement without STFLE 74
+      KVM: s390: selftests: Extended user_operexec tests
+      KVM: s390: Fix typo in UCONTROL documentation
+
+ Documentation/virt/kvm/api.rst                     |   2 +-
+ arch/s390/include/asm/pgtable.h                    |   4 +-
+ arch/s390/kvm/dat.c                                |   5 +-
+ arch/s390/kvm/gmap.c                               |  35 +++++--
+ arch/s390/kvm/gmap.h                               |  12 ++-
+ arch/s390/kvm/kvm-s390.c                           |  71 ++++++++-----
+ arch/s390/kvm/priv.c                               |  10 +-
+ arch/s390/mm/gmap_helpers.c                        |   3 +-
+ .../testing/selftests/kvm/include/s390/facility.h  |   6 ++
+ tools/testing/selftests/kvm/s390/cmma_test.c       |   6 ++
+ tools/testing/selftests/kvm/s390/user_operexec.c   | 110 +++++++++++++++++++++
+ 11 files changed, 226 insertions(+), 38 deletions(-)
