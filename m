@@ -1,93 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06290322B8C;
-	Wed, 24 Jun 2026 16:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782317259; cv=none; b=dHmoQ0lf9RdyWFBGg077zdVTzDQ9D7KpC63M68NSaYr06+1Ij680dQo0b444zf36ucQAURaERcu/QIR0FwOFnU9OKDI4AhjW5zlmVWnPuXVXf6aqwKvpMJyp5rM/vkf8MUTiw6Ta0F+ySAglGQcq4W9tsD5w4Fe9NYrth+fbCMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782317259; c=relaxed/simple;
-	bh=11GcyBMUEaMVpP2tNUELZmobxFuiGR8sDyQRMOunA+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bBLV6BJK60LbofK/zQ5QMQc+lwWD2TIFNmwpBdvhEEvVdBVyzLgWaXcyO6Ulgk7j25NcdBzU5WQN/v9KA3EjP/0LDgyfYbPQwIga50dxlCGz4VtwcbYMg4WvvCR5bXJLkQJQ5abyAISvSbTHvm043epdzKjISioXZRKSToehQgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EN4FsWHK; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3D6306775
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782317684; cv=pass; b=T7Sbw3YI470mDYI8f3LsMQPp5aUN53jJFsyuj4ZMe8eMarfR1iPSMgZ9F9FV3avLD92ucAItlV7YSe+ovKOxb/dqkk7Xz9svdPnRUhFrGbN4QlXWuvVbrmEJaeCNKPZl3oLNb4go8TADocs5pMcdQCxVVDVRH+TsEC0szT2UFyk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782317684; c=relaxed/simple;
+	bh=Sdzgqtv1Tmlni/DBclt3F/1Zy3gjhyQWqH2lmWCayf0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbwpUNdeyLTv9Cwe6uHigoZisNa1YH7NAOJP0VzszSnaPHjYj0/gLuhTsxtar8gZgYdkzOETglmfihnV3IGbUmNQ0zZOE7J5pOm8Yz6yzYyL6oiZWIeolbj4zxznLgD0cUh1Xlrb45HpRqDqMO0bo3svro8nVF+JZYoS+7NO8l0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ajk/R8Bo; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EN4FsWHK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782317258; x=1813853258;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=11GcyBMUEaMVpP2tNUELZmobxFuiGR8sDyQRMOunA+o=;
-  b=EN4FsWHKVsCZQXYPNFFkfbqQSZw1Nwm/eq944zGJA9Jp2p4cHumkzN9U
-   6sx+ANQJBOlXGE+7z+HXYsrtUxvwDmVz4W8WtpfAK2nwGljl/ScO+jWdV
-   HdFPbjed+7eej2cQteWA34SJoBOuk6QP1kf19q0uyyLyo7r5ALxilWNDH
-   ubv9SOArhyasN0QsEEpqMLoc+EV+cdsKwFswTBV8wiHxG+w4KIU1rwKvs
-   SQ6eLAEneeIJOWfpDpFCNtuzW6jKT9+uGMB8uifafWDmO0HnADIyWTbzk
-   51t6BwpRGx+rpS6R7OYIMCe54CDX/8eadfebMAFLAQ6Jr3cW/ggE5udgH
-   Q==;
-X-CSE-ConnectionGUID: 4WW/3JLzTmKHu90a6Dj8iw==
-X-CSE-MsgGUID: w4WLlCa5RAu7Smk/AHS7/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="94480817"
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
-   d="scan'208";a="94480817"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 09:07:37 -0700
-X-CSE-ConnectionGUID: vXFfLJdiQz++37OKCSPH3A==
-X-CSE-MsgGUID: IkydLMwlSeGusOq1cDIDaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
-   d="scan'208";a="250073156"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 09:07:31 -0700
-Message-ID: <03aea6bd-4747-4583-b072-5b5b4a825123@intel.com>
-Date: Thu, 25 Jun 2026 00:07:29 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ajk/R8Bo"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-519ed52bcc6so334171cf.0
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 09:14:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782317682; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rUOVEDqjzwxZN8z0raddD8s0w7VzzFNcDHMkFZmryE5SP0XBDzkHW4bJF4jf83+J3T
+         DQjLe1t7gm1z5TbN10u9Lh2y/KQifUL0LldfOCehxPi7DIu8KmLfxNkPQaErpyGhasHg
+         udlqvpw/3bJhhtRqPRZZ9Z/m+E0+PrVPJsd1vOoyAks9qWpPcPbL8eAsMZ5Y1pJlEPbY
+         Kf2nIfHtdcGdw4JkAiQ/ItYxxdVx+odfwzUrUSgGFuLaZBiEGnNYFFCNirGbDkxOkZUI
+         YDhpokrtvNAGKBMKk1tRenR6c0pfxZejFRyCIRvyKZInR/SCm9WeCVnzNq/pkcLAHbTZ
+         xpTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=L4jqqFTyVaEfw5oQOEDvCjggk+pjLmWqgC46xkeFBNE=;
+        fh=vQ0urNc3k6xQe3yD0ZGzZcJ3g06W/veYbWtWoguyCWc=;
+        b=J/A4a9mcYGiA0qGrAsPzzOZR9Q0Uzkx/Rr7yFEVmfckWDJwB6ZJvIG6hTvr+RhzjuT
+         qm4rNH8ZYulmZuYjpIkn/XWCYIM8S6+9S7r3/MscAUYVOh7nsKpAl43Ymm4uSfTITSCw
+         xY+Z+gpmYj1uwCo1z8oScAqY4oi0L6GlbK/q6x7trOXWP/LCTYzMkgKTSFOJ/UR++tU5
+         tke+2FGfKtK7ToXQDF9JSnjFubaPEM8EFbXB8aGBlfBmg26uneyAYKZF249X69IJkxMa
+         +8ANVAUhEsPUCY6b8QsFE60F5vX9kLBmuTdkpG4K1lTVw7FaKYnhQKxtboZItPgbTA9r
+         ZZNQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782317682; x=1782922482; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=L4jqqFTyVaEfw5oQOEDvCjggk+pjLmWqgC46xkeFBNE=;
+        b=Ajk/R8Bo3wDQ2TaZg29+fjL5hpW54G5g0VyCDv458zHyYJzVP+04+UjxHKoUoF4TOn
+         NoBhFvmoSLAeWlpSmFJzaavSJJn7vEZyUDPqWyxJuOkdUTTlDSd3eZg/kpodTVEPgmJh
+         bLzKc0rCa0PKDpAF2GXIZDes/FM9SVZV+0lZgLA9AR8YpExc6davbBxRJSxJd3jtw9/e
+         MjlAEWO4JErd4T2U22E1Nq1PTlHC2DrxoU6LaEJ07Nfn18jS/eb0FV1Knyk8YxF6n1f2
+         G7NQjKCHtYqvSwqStpp/8TXGuiSX5opHA03S8aXGiM4QmixyFjNkxJE33G3+joCHwV5Q
+         iz9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782317682; x=1782922482;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L4jqqFTyVaEfw5oQOEDvCjggk+pjLmWqgC46xkeFBNE=;
+        b=cfv5SWA/KxtY9ICViZe+GeSL6ncGYCBXhUS4CVX5g72Pr92Rpvkjh3FbFktCToaJcU
+         hN+bhyEBRtbJCK2h7l/y0miTuW9yO4ao5R4LcZaNfWR8ADCYaFB5od3XO1s070QRTTAC
+         T6ML9FUQwV0kTce2F4rvsLH69QviItr6YnhJo1vMO321fV+TjRhPmwTWa/aEFjBkIZyx
+         YuWBPjZcqn2cTArKR1MOkte9qa+bwQMOeYNJWozLf6yhD/3dg8s8eZd5hSLISJnQFAli
+         2tomVWUfG0w3ot+1y/5FvTdgxgn2+sK2cJBCmI77TzhzFrkAyMAvDdUKXeNK/Rua/LLw
+         GxUg==
+X-Forwarded-Encrypted: i=1; AFNElJ+lDEtFAKiEYhDHd0Ou2/HefKwB53KeDa4GhjKqg17sNf14dZyPErlE+fc/EjU21VhFzS8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgAvWx1oHRDbnK6aprZ/hq9Yh3me75EFgwBOOkTzjTCIoZUhKh
+	2pBa8RkIOAwnOgzmm7En1rMw/1tEynD/lEP2MnnOiRBzOzs4rpJmmc869Ktfx4pBFAwq1G4nuJ1
+	dVScpkD3FvCoAFLGUEU8PWydUEBzu/F6lAXQK/xC/
+X-Gm-Gg: AfdE7cmG2WdSdHPDEFqmKuagkkvOtU+XC+buPeejvbdhWxo+zRq5rFkyZK+3OBY6wO+
+	JM8Ym423GLINmMRq0lr6hetuZptIgA1XRyrRocdC5dsPgKh+fsMHGvKijSIu8qhBLY2OkYAO9wj
+	LqeYwPPqAxgQv9rmSB+KVtxihYx3RFC0VDT2BnloDsjFJEDARUs9lgCaMAqCWBeRhi73tBh+rXU
+	zPiQ4l8bNV6J/RiGXDp9IMia6xfAmJ+AU1Qi9aTJ8xfrqqLK4WxcaloWGBFqOdD+McVdfNedqm/
+	ZLyrsyJmclInF3qxcTX2UKSkrms=
+X-Received: by 2002:a05:622a:14:b0:519:df4f:6c93 with SMTP id
+ d75a77b69052e-51a617dba42mr10324841cf.20.1782317681383; Wed, 24 Jun 2026
+ 09:14:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 11/22] KVM: selftests: Set up TDX boot parameters
- region
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
- <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
+ <20260622-alloc-trylock-v2-6-31f31367d420@google.com> <20260622101056.4120C1F000E9@smtp.kernel.org>
+ <DJFI4P57YE9X.20DPMTK9LL7LW@linux.dev> <ajm_dEqauYLBi-7T@google.com> <ajnTJ03IxVnBXWdp@google.com>
+In-Reply-To: <ajnTJ03IxVnBXWdp@google.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 24 Jun 2026 09:14:30 -0700
+X-Gm-Features: AVVi8CfUZG4ru4sHeWtIPbsYQyBEOrJbLz3f3SZdi_mmHQdVijFR8buxYw7ygJ4
+Message-ID: <CAJuCfpEUZ-xL7ebW21Q=5wXDFuJSeh52Ei-8YLsRUdXiB5NiYg@mail.gmail.com>
+Subject: Re: [PATCH v2 06/13] KVM: VMX: Use higher-level allocator
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	sashiko-reviews@lists.linux.dev, Brendan Jackman <jackmanb@google.com>, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/22/2026 7:16 AM, Lisa Wang wrote:
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
-> +{
-> +	struct td_boot_parameters *params =
-> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-> +	u32 cr4;
-> +
-> +	TEST_ASSERT_EQ(vm->mode, VM_MODE_PXXVYY_4K);
+On Mon, Jun 22, 2026 at 5:29=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Mon, Jun 22, 2026 at 04:04:20PM -0700, Sean Christopherson wrote:
+> > On Mon, Jun 22, 2026, Brendan Jackman wrote:
+> > > On Mon Jun 22, 2026 at 10:10 AM UTC, sashiko-bot wrote:
+> > > > Thank you for your contribution! Sashiko AI review found 1 potentia=
+l issue(s) to consider:
+> > > > - [Medium] The commit message incorrectly states that `__alloc_page=
+s_node()` allows passing `NUMA_NO_NODE`, while the opposite is true.
+> > > > --
+> > > >
+> > > > commit 7bd439c242125db27305b61b14c9972fb028282a
+> > > > Author: Brendan Jackman <jackmanb@google.com>
+> > > >
+> > > > KVM: VMX: Use higher-level allocator
+> >
+> > While you're dealing with nits, can you massage the shortlog to somethi=
+ng like:
+> >
+> >   KVM: VMX: Use no-underscores API when allocating pages for a specific=
+ NUMA node
+> >
+> > "Use higher-level allocator" is extremely vague, and arguably misleadin=
+g because
+> > the "allocator" being used isn't changing.  Which is kinda the point: *=
+nothing*
+> > is changing in practice.
+>
+> Maybe "higher-level allocator API"?
+>
+> no-underscores is just.. meh :P
 
-Why TDX needs to check it explicitly?
+It's overall a good idea to add "No functional change intended" at the
+end of the changelog in all these cleanup patches.
 
-x86's virt_arch_pgd_alloc() already has such assertation. I think we can 
-just drop it.
+>
