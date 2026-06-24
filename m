@@ -1,188 +1,163 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD463E5A0F
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782335440; cv=pass; b=W3tZJk/N90vH5YBfIF0xU4ruH21si/JOGPbxVwGn35VMaP4XrUQkuSHZ1cd3u7J2cR3fi2vMd8ITEh9jAYWWSOL9elZaRvkMTDMCg7cYOdx0GvVbQG93GfeZUbST+jKGxI6rW7Eu8quofTgDBqo8HwFUktuGuqnfu/8EKWASp1w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782335440; c=relaxed/simple;
-	bh=/fqLeUK+2mBqGvKbYmtjhS3yw4ZIMajZ90sW7dKC8MY=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bj6n9jPLKGYRc70E9yqHZIsNJnsvTxggjEjoQaApPEOihUOxznNO1Kqp6KABB8UrQIYWmTqAUeH9aMmp1sWcNZGRdbr8s+osQrnxaFLkkCXft2ocyi+XXBXsX4Xs8s6G2brAmm4ar9sozDuuZF5GVs/1HYKBP7FIMPZWg8lVjw4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gZrCJnRz; arc=pass smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C913E5EE4
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782336267; cv=none; b=ahola6p0OJnsiCxpUw/O0fjWjzIgxhAv033y7TurmrrcDEXmCaSlYg+lG8W4OesAAwlNfcEKUbJ1Rkeb1SiKBa9l6dngRTeck9XwKJaY23yv7If64pGVDnK2o/lyp3qdebSLYdb5OkzUzx6m7ri1291NQwsq5MMdPdX7TTAWSMQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782336267; c=relaxed/simple;
+	bh=2lge+Pd4W0zB1s/tSHgdzijBtMZQZMA5TRxQYp4mKkY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dqcO24PmekbPBSLfs8shlPWQYrFd4p6tagN/uHCwVdF45vBP7FjO3BYKMIqjfrIYL7pvtm3Ug3WZzzL5rSBwS17lYbp02CkFxCiy9dCsyNUHu6AMK7CEhnUt1587ThRfJ5zNmDX/0Om0E60wjfvk5PfEJWg+3GXt5ubJWdU8N2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QIfMF2EF; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gZrCJnRz"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-13809223fd4so1814844c88.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 14:10:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782335438; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h7VSQQMqV5FeilfP7fC7H5pJyWBjEVWpC5TfMYSKGqA8MMrn3ay9njOQqtegjAr+k2
-         6Ti+kEvTeLYAU4vcgyCwpW2fFc2NQF+vPjPRWoryfWUdt10sWcAOgl0+KqvQm/RppdIb
-         EGaouh/SgwQV/di5uv5VelqgxmEHiLVHHyxO4uXglSEre6GmbbUVW0pKfx8uBK+e0L12
-         scLYQufgDI0jjBgU3dP7hdtw0D8ppaDQtO0x9Ficklb1aIhHYZAB0PCK1WUEAfcQBYVy
-         B546q8KydL3ftyPvS6FX1TR1yljq4eY4y1Ugk5wIVXJycFTyDZd4ntg2dwxQ84K/j4h6
-         HrAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=1qhY5YTt9otpZBdjhswjpjNDeK/pN32eIQWKDjhQOPw=;
-        fh=rTWroj2rXdGB+XWmEMslmauo+AepA5Rh4Bmg2nPh7yU=;
-        b=lYvyqnwEgWLAhvs8RoO6L8l42zeNEJqoS3bFT4nKPWXKynQHEFsP8yGN8c/UHypghz
-         oQtRDd9t5pAld9rVXrXTvNVE1HhdjbmJ70j7EAY3EZl+zB2cK/jy98D7nK/UO4SmIGqQ
-         wBFR2o/CjDxIq3OgK3bwZrbuLxXMgY29qpy0W6dR8oflWa4A0rv+Kv3aE9vS+beYppD2
-         59hHadyEAg1gPaEjpo/CG2dcFN9vR+SCKERzaAyyEi4PzcxuGAG8A5/+ltWF2Z2/WSKB
-         xtoc1TTAtDkBGbeE/zsSfmNOdMHa4YvOInChoFbqOdQZhM3sim6uCaB/VcBiBOxJc16X
-         UM5w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QIfMF2EF"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84245e2bb00so1371661b3a.1
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 14:24:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782335438; x=1782940238; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1qhY5YTt9otpZBdjhswjpjNDeK/pN32eIQWKDjhQOPw=;
-        b=gZrCJnRziYALESi+EyO4zrNEGpp7soNo5xePz6vITzszfo4F6y/KtcKGvcLpyKvZrd
-         qtd0Q6THio+xAZ13GySQ7XR9xNuTXLNjTYxZHjxUD+jFV5qLjPimK8JsV5XtWPp+IAAE
-         nueZGNVCzR76HQiXS9fWPEkZW+FEfophypqL9S0rY23Umgws0WYROaJTvJcYM9FMRvD0
-         6v/Ue4mud2QRGPZtmqhpg5QOTD+bcStGRE/IYgeZ0R/CwpVQGH9tnaAkT8bojKXGfjeH
-         y9dVcengerUfzgIllLUNo7WRQx57pHQqltKIqtj6TIwC4MFBTmGuK/vib7CEbCBHOYOf
-         ZITA==
+        d=google.com; s=20251104; t=1782336265; x=1782941065; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zgd+lmmBeOYJKxFSRKtOvJkSqu6mdzwXWBeZO2ZkeHQ=;
+        b=QIfMF2EF/Gnul6sPAFsDJtaTHPjPYIyyjO9SyMY7LtNv52VD3qjohquccSAwdRie4d
+         EYwTC5daqJSnLb3HgMhtl0XC4LJ9COka6iSSINOOP6H5ncAQIE+tLVMgTbtFysOSH+0G
+         X8dyMNB8FK+Xde26GaX5k+UbOlE+n0PnJ3kVHKsVPLBqZeVaBiuKXk8+H3C/8Cl/IaaA
+         /J+B5lbGX5vsZVab8nAJuGFCnpXw2Lwf26kCvmGwQ2+zX7lgCbgwEKtgswA9hh9zQpmV
+         B27Gk5/Dzv+3eQ4K3z4gEX0R1JyfCpH9IIYttf/6GRhgEGJjzBe5U3fkGPwhstKD0u9G
+         bfBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782335438; x=1782940238;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1qhY5YTt9otpZBdjhswjpjNDeK/pN32eIQWKDjhQOPw=;
-        b=tF2kBxt/xz9z+bIpLdLSW+ldnhBab6bIzMmy6uFORxu//j07y4cF1osPeFsgu9HSYV
-         aMB+F4yMUyshZptVfowEYwXPt9eXFh7F6S4iJfZgt9y2Z/2UiYLgKGEhIWHtGu0DCTs/
-         Bal9cwosjPYZJ910qafMzM2kvmXz2Y6KOQ+BFvxZBttd6H3IFMIvvlvGRLvi7pUYwmn0
-         fMfzQtnD/mnZ7Fe3B6NH9nigkIYNl29uNuVTXz69d/KscCyPWNjy+7LGeRV2ppbPvuS+
-         wUcXY83iMWF5Su5KQ/oGHuMO170sqk5ZKQxOsQAFHeqGdx1WZ49izrWVgGE8WAzGhpkm
-         PRDg==
-X-Forwarded-Encrypted: i=1; AFNElJ8H7BR3g/zynXB4Sfe5hMs+fpgN26xy9bZe1CW5Vu+MVLxbAkFi+x6OCizjp9mc2EFt74g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+Zf/kKhAK5FFgHyvlz9Fgh/S6yzSGJbTy6IfGehFHObeJW+1I
-	w5NC0EBwWa0CaLVeXq4fiZ0plRqzFvEYsCA7apUHYYQdHMilVvkmJYU/SDfBOcvT6KexeMb7PEf
-	nI+7srQIlSERAl65GS0zl39z1faj/54xBc9feZOTJ
-X-Gm-Gg: AfdE7ckPT/pRVI59DIPMaAEsAtpubGyK+MDXzQQ+ocNDnIstEuHQ7o0jZkP19XQHa+Z
-	5BtZjFF52j+vUO7ro2DEWQ72z0gRTxCPFHULbuXfTIQIbYpLDuxxJG8sxzFajy1/3XTX+VaoOav
-	lWJKxGmNUwl1r2XK/JGNWm+z90r2zwQ7G6r3Ia4KlJ5k8/fFQyMy/zAzxmxzP7j9Hg4Mt8ub5/d
-	NiDqddb0Bq73KNZzOupDkbFHeazROyPsIleLPYXJBoytX8/hWKf+NAzNVgRHGkD4MaT2f4tcfgC
-	2MDZZIiz6GzekG0N4HIbmgjYT7+wV53PROWPVcstLE1UzCgdi1zQZsgB8+k=
-X-Received: by 2002:a05:7022:ec4:b0:138:4e1:4701 with SMTP id
- a92af1059eb24-139d0bfe4c6mr3377918c88.7.1782335437124; Wed, 24 Jun 2026
- 14:10:37 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 14:10:36 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 14:10:36 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ede86ac4-d560-49a6-82d6-b33ac5fc9355@linux.intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com> <ede86ac4-d560-49a6-82d6-b33ac5fc9355@linux.intel.com>
+        d=1e100.net; s=20251104; t=1782336265; x=1782941065;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zgd+lmmBeOYJKxFSRKtOvJkSqu6mdzwXWBeZO2ZkeHQ=;
+        b=pCOCzr1AvJOF6+YHsbzsFDlGgJJ/s1BLVZBS4Y/6EGwzPp3kXWaglZg6HBBdzb5eO2
+         K8nZUtKnDjp5WdAkjoWLFyOc8Q98HHbzXLh+HumkAjjVF/El6PP08lM+cK6bdZTH2mDN
+         F54xfOyDfEDFSZdkrw4SU+BbrRtysB/bhbDo7IN1y4N/i2aQW4UgVq2kaRfq5XReSUV+
+         2CEeLp69HLrm/ufPFGF+k6YmUAfwxkZHzPrK0+edWj2OoOWIGs2Y/b8WIzkA3nVYB+QW
+         BT2ZCAblrpNgSHB0rw1KCDo5oUxyZNBvqKkqcfJFGd0Nb4IClp4fmqcs2AJJMCDiFoRz
+         O5Mg==
+X-Forwarded-Encrypted: i=1; AFNElJ8U/nptbzyGxcm6HnTz7TpRF0/a1usxecixe97jVkUgYNOkRU/IdnpBaAQ48reBlC2bdp8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwllAh2uNOuXiTycSKXw+mYqJRd2QyzXkJ0KWfea1ewnR/lnpkZ
+	nchcT0HNoj8Ss36gRYb11ElJHBpqzlLqaUZ30ZVk8FvqpB5WnoiLBOBqoZW5X0FlWsYlb3oloMt
+	U2sKYNQ==
+X-Received: from pfbbm3.prod.google.com ([2002:a05:6a00:3203:b0:842:5659:67de])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2301:b0:822:6830:5900
+ with SMTP id d2e1a72fcca58-845b3607627mr8582b3a.6.1782336264898; Wed, 24 Jun
+ 2026 14:24:24 -0700 (PDT)
+Date: Wed, 24 Jun 2026 14:24:24 -0700
+In-Reply-To: <ajsjQtpZb-h2BdPh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 14:10:36 -0700
-X-Gm-Features: AVVi8CebnA3rqvCzlkQD0wA3EY7nvdb5mQUucCUu-AjWUK6m396TQ3uUDm-u_rc
-Message-ID: <CAEvNRgGWwfWZbvXxBAKHxc3DYVGzDo8TYtii+8fVnJNtBwvCqg@mail.gmail.com>
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260501203537.2120074-1-seanjc@google.com> <20260501203537.2120074-3-seanjc@google.com>
+ <ajNQ_Ix5e0p6FuFT@google.com> <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
+ <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+ <ajrkryMxHZtsMvga@google.com> <6xyh7xa53k2s7bytlkcys4pyq4756rwoly5q7swrifv3td6dey@3h5e2e67lkvj>
+ <ajsjQtpZb-h2BdPh@google.com>
+Message-ID: <ajxLCMgLQe-JiRfq@google.com>
+Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
+ {en,de}crypt debug ioctls
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Binbin Wu <binbin.wu@linux.intel.com> writes:
+On Tue, Jun 23, 2026, Sean Christopherson wrote:
+> On Tue, Jun 23, 2026, Michael Roth wrote:
+> > On Tue, Jun 23, 2026 at 07:55:27PM +0000, Sean Christopherson wrote:
+> > since your proposed fix seems nicer and more complete anyway.
+> 
+> It's missing a case though :-(
 
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
->> From: Ackerley Tng <ackerleytng@google.com>
->>
->> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
->> just updates attributes tracked by guest_memfd.
->>
->> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
->> by making sure requested attributes are supported for this instance of kvm.
->>
->> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
->> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
->> details to userspace. This will be used in a later patch.
->>
->> The two ioctls use their corresponding structs with no overlap, but
->> backward compatibility is baked in for future support of
->> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
->> ioctl.
->>
->> The process of setting memory attributes is set up such that the later half
->> will not fail due to allocation. Any necessary checks are performed before
->> the point of no return.
->>
->> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
->> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
->> Co-developed-by: Sean Christoperson <seanjc@google.com>
->> Signed-off-by: Sean Christoperson <seanjc@google.com>
->
-> s/Christoperson /Christopherson
->
+Ah, but so is the revert, and it's not a coincidence that the old code didn't
+bounce buffer the destination for KVM_SEV_DBG_ENCRYPT.
 
-Thanks!
+> The final write for ENCRYPT writes to the destination directly:
+> 
+> 		r = sev_issue_dbg_cmd(kvm, __sme_set(__pa(buf)), dst_pa,
+> 				      nr_bytes, KVM_SEV_DBG_ENCRYPT, err);
+> 
+> More at the bottom.
 
->> Reviewed-by: Fuad Tabba <tabba@google.com>
->> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->> ---
->>  include/uapi/linux/kvm.h |  13 ++++++
->>  virt/kvm/Kconfig         |   1 +
->>  virt/kvm/guest_memfd.c   | 116 +++++++++++++++++++++++++++++++++++++++++++++++
->>  virt/kvm/kvm_main.c      |  12 +++++
->>  4 files changed, 142 insertions(+)
->>
->>
->
-> [...]
->
->> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
->> index 297e4399fbd49..cfa2c78ba5fb9 100644
->> --- a/virt/kvm/Kconfig
->> +++ b/virt/kvm/Kconfig
->> @@ -102,6 +102,7 @@ config KVM_MMU_LOCKLESS_AGING
->>
->>  config KVM_GUEST_MEMFD
->>         select XARRAY_MULTI
->> +       select KVM_MEMORY_ATTRIBUTES
->
-> What's this?
-> This config is gone.
->
+Once more, with feeling...
 
-I'm surprised this compiles... I'll fix it, thanks!
+> > > diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+> > > index 87025d0d2f91..7e3334c90c57 100644
+> > > --- arch/x86/kvm/svm/sev.c
+> > > +++ arch/x86/kvm/svm/sev.c
+> > > @@ -1406,7 +1406,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
+> > >                 sev_clflush_pages(&src_p, 1);
+> > >                 sev_clflush_pages(&dst_p, 1);
+> > >  
+> > > -               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
+> > > +               if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16) &&
+> > > +                   (!cc_platform_has(CC_ATTR_HOST_SEV_SNP) || cmd != KVM_SEV_DBG_DECRYPT))
+> > >                         ret = sev_issue_dbg_cmd(kvm,
+> > >                                                 __sme_page_pa(src_p) + s_off,
+> > >                                                 __sme_page_pa(dst_p) + d_off,
+> > > 
+> > > But if firmware temporarily converts *both* pages, then we're "stuck" because at
+> > > some point KVM needs to actually target the correct guest-owned page.  The only
+> > > option I can think of is to require capable(CAP_SYS_BOOT), *if* the above doesn't
+> > > suffice.
+> > 
+> > Not sure I understand fully, but snp_populate_cmd_buf_desc_list() in the
+> > firmware driver requires the transiton for the destination page that we
+> > write to both for 'encrypt' as well as 'decrypt'. What the issue with
+> > using a temp buffer as the destination for the 'encrypt' case?
+> 
+> The problem is if KVM does NOT use a temporary buffer, which is the "fast" path
+> where src, dst, and len are all 16-byte aligned.  In that case, KVM does inline
+> {de,en}cryption between src and dst.  But those pages are also mapped into
+> userspace (they have to be, since KVM pins them via gup()), which means that
+> userspace could feed the same pages to a different chunk of the kernel that
+> reads/write userspace memory via gup() (or gup-like equivalent).
+> 
+> E.g. pread()/read() on shmem-backed memory.
 
->>         bool
->>
+pread() doesn't work, because the source or destination needs to be a userspace
+address, and so any RMP #PFs will get eaten.  But copy_file_range() makes the
+world go kablooie.
+
+Weirdly, I haven't been able to get a splat of any kind, the host just goes
+AWOL and reboots.  But I'm very confident RMP #PFs are the issue, because doing
+the same operation via writes in userspace yields:
+
+    sev_dbg_test-24385   [049] d....  1892.853197: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853202: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853204: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853206: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853207: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853209: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853211: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+    sev_dbg_test-24385   [049] d....  1892.853212: page_fault_user: address=0x7fc63f8fe000 ip=0x41cb44 error_code=0x80000007
+
+
+> Looking at the full picture, isn't this a bug in the PSP driver that affects all
+> commands?  With pre-SNP VMs, "guest owned" isn't really a thing, since nothing
+> guarantees that the destination page is accessible *only* by the guest.
+> 
+> If we rip that out and always bounce-buffer, then KVM won't have to force its
+> own bounce buffering of sub-page lengths for SNP, and that would eliminate the
+> race I described above.
+> 
+> Completely untested (I'll give this a whirl tomorrow).
+
+So this doesn't work.  Dredging up some knowledge of how this all works, I'm
+fairly certain the issue is that the encryption is salted with the physical address,
+and so encrypting at X instead of Y will yield different ciphertext.  I.e. any
+command that encrypts the contents in the destination (or in theory, decrypts,
+though AFAICT none of the commands do so) *can't* be bounce buffered.
+
+I don't see a way to salvage SEV/SEV-ES on SNP systems, short of requiring
+CAP_SYS_BOOT or some other elevated permission to do *anything*.  Or redo SEV/SEV-ES
+support to require guest_memfd for operations that require putting pages into
+Firmware state.
