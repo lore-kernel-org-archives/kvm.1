@@ -1,271 +1,122 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF69332623
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 19:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782328090; cv=pass; b=OWRXn5zEHeuU1xC8ti6Ye1vgeNE6OPLI3V1HW4Ou9qk1PKm1ZFF0WUeJHcP2Iz5T711UsAGWOpDKnSyxyfRJQK18Ltofrt8CkWsgNEDXqDQVjna6qFKAxH9tUO+oTlWi6Qd3nAHPiE2UnFYmCjBcLQDWw4bhoc1KFCovLpE9Yo4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782328090; c=relaxed/simple;
-	bh=UP+Dr5MrbTzrKOKcZX0iQlCSzBjZ6w5Lp2OCqKc9Uds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TpWZ6258hQ77NMOjZj04JZcZ2HFAablPepyRWTzOng1v1JN1NSuq2VWnAoVlPb5deSnxm828cGQlLMOnfhOQE7gl29NdF8MxdgCA1EU0TJ8ttjcAgTKJLmIcYJoxjnJnDDVDYUGY0TDRn2TTejjGTL9v1TuVLBcGkl0w8wp3SsA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vyjKq4HD; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F43339861
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 19:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782328337; cv=none; b=qhUJMJiIRTC3LceN176wnS5MLZhC/owV1dVZFyco8fUI6XLuF/FxdxuK/E2opk0JkcuI8BI3mxYWe07/sEBlhG8/+KqdHy/fEmTUIStz1y20ndyfVj+T9KyheyKgoTEPBquL+3tlW2qw9q5Aw0m/59/Ti/AtQK+yjZDQa6dE6HM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782328337; c=relaxed/simple;
+	bh=4YrFRigel65Gt+dh4luOyWozRezA4Dk8/7Gn8IJG0Mg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HP8gnlq3Z8j56hTW9jv2EblmrjFnVipDdA/+hU6g4SOkSLuwf9PVl9sGEfI9R+/ESTZMALFkpssx2muxaFqt4Byb/dLWXq/N8tm8d4dVa0eEWH1MND7ean9NzPCcJ1ZACo1b8NRfAoTWJOlGmH9siXGQn18SudngItY6zuUKg9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqIc1cSm; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vyjKq4HD"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5177d1ff061so53131cf.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:08:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782328088; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qV2dhcVfOhiPq1VjqZYYKJg+7GH8s+pNItFkpklkZya7aiSQ6LoHNvp0SW3X31K3p3
-         GUhRt1dArxlcC6+4vj4Ug+NYzKYIGfmM3JDbAkhseoWgblKYO2KlaiOUWjPY40qN41p9
-         pyiFLoQ1JAOPaxuY6PTqrdwB7L3dVa80ACe0KuNgl9+Ft8W6BULxVCmQoM2x/uPA0xzj
-         SqgZeVDwNudU0QVWUXDKh+o1F5JfNFwS6HpTP1LMVg8qN0mmX5GXCpmIPXMBFxCUFW3f
-         7CIXyfWzExVRlGvaMUN6i25ph8qs400V+xvwI2hzR4Zh17ejUIimfcDi+COiIdsX5Npc
-         Aiiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        fh=JOB+pcyWrPDKNsPMxWJvulNplZpuhNLq9tE/GOU5zbs=;
-        b=blT7Hbv19wM3H9yjkjB/xaJoKmM02O34MkFHZYGX3mHMPcVvXRJv2WxmxSDf294uuf
-         pNyDZPxKho8UNU0jXBV/zF1Cu/n4kJuX9tgMkAsR9dEb3PCzD53wV8jB8LZ8g7ION09m
-         XMCr+sMoZCYlsmBDwl/17Vt9JhAX63lbZsrxxwODHoOziQwuKIn3Lj7ccCiIT59E7Tni
-         FpF44I2KPhRWh/EEPBopSkO1NgyA7F+XQ3jjuyjRCi04pILkXThDrDAWtP9Q8mkQ3hnj
-         PGCZB3RRE+fnsLxsId+LvSANXqKCdJ/ZjiDCE1o29t+SMHCVlH4nHvykuu/r/8N0L8yz
-         Izbw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqIc1cSm"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4923fb1f095so14561105e9.1
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782328088; x=1782932888; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        b=vyjKq4HDhyOZZLC37t9qCK5n7DBNlBckmKzrCG4i30jvmigF3gC4uA3yV53d7UmnSH
-         fU3di4SRXb4jZ8JnO0c/10AtnyIpfUBlsJ20bccijySXF/pLnuCpabU7elZ/xQsJ/dIJ
-         Wq2Rs/QTDAWXN/IMm7OypN2q7mtv5n48pPEZcjaDX0aqMt3zr66rijgBfxY7FOpITl5g
-         RXrkrOn7CcQJOjZ0R3po1ujJT4AztnZyj3Avv4EJwV4/TOo+sBefDXRON/GS4D2MoZkH
-         CCzMYCV7PIJN5l3UzE+v5JAqhe2ivTik+7DWYtWmwSFoWLWIcF8TXTYjF0yEuPr6QP37
-         1Wrw==
+        d=gmail.com; s=20251104; t=1782328334; x=1782933134; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YSVjzRBmQFYwfQSkxHVzN7pkPCZVpx+D6sU3JXp6ZaA=;
+        b=kqIc1cSmlPkimjZjTN3mhIA53hn75u9NypqoCCuhAuwqDQurPdpqvCSgsR7VWpLVtO
+         9330A4sex4B9xng1kgVytxG5LEOVxlVCJmDgBmLhKQnUlqrkAEBchCB6jayYDtTnlqO7
+         JJNe1Px7xMKaro/l+Tty+QgBeBd+WQKK7pxg/f50nyYKVG3GUS6SbNP880XoluTLgcm2
+         zHLR4LLWENna4QdT9+CU3YApjuEpzLnLVPsQ3GQug2vQjUyxE/uzCD1TTAqHZHkdP0xO
+         HZlO8cpJqd/nIOJnVRdkviJkjIYqrShKW5ZECskrYDdCN40TR7gNnBSUMZ72xHOzrWXm
+         nNkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782328088; x=1782932888;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        b=ZXByZ+eie5StdhTrHxubgeORjxBndRVq6Uy4RWlK39QVqSCSOmJ02XuPVVpebftzYH
-         grEpOXoqlFRSCmTlM4b3rk/u/JGFECsZqkWdwuvND0TdLepLjJfdsero55FGevi5UB96
-         RfNmoPRHcXDAHX0F0iFnTmr7PpqK2K0MGLwTSFBjPirmub9pilviRth7w+Zb76M0zVvn
-         tqmKVANzDe/uLfIkY4yTtaR/CiH6brjh2EqcyyHA+oHn8Qfl4hvfmR4egBLH1TOFYngX
-         4Mo/NNkQEhzRHHLuLQYEjEXbsU8b8i2Yplo4GLExB+6FqRAh96Q/Je4Ou8CXfX1TkE7K
-         fqZg==
-X-Forwarded-Encrypted: i=1; AFNElJ9CfvyIjjMe7y5HNpjDhdzwzScFdH3TawlVqKqQg3v1yiojmCqjle7J7cVxasbllCfuN3o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcBe3rOSqkYP1JVXNWadafv16lzui1YJHDZR7J9vhxpPmw7nsL
-	2P/+G6yuJTzd4P+4Q48QTrPc2Pbjkgvktgk2H2TCmAMJpuFsVsI5rjle4AjOBNLJDoqld+8+Sjv
-	9crcpFHj5LMPHDyfB7GgaU7ZfY818aGx4m33cIaL0
-X-Gm-Gg: AfdE7cmiiAuz0zCINrbKtwhduoHwkZ4G72Mu4WPvksCZGtQ+a3+mNUnq1ZdEdVEBGZR
-	6mOvWeWb9Rk801lkmZBOyK9QdgTr/F3X94CulWhPN/nvmZOVBf2SeYJw7oTBf6qJraLsPFWVjrB
-	BKHm5tIh5UkUxL9Jz2us6rN8aFShHAI/PZLgi2AMcUX5xaeHn9kkTGH+4YiCrs0D6QqvIlBmJZG
-	4kaAVASCALM1TS1perBbNwmstm+EIeOKT55D6Ho3/aFlfNe5XJoCyn9ZZOp7dItyyMNprvofg==
-X-Received: by 2002:a05:622a:aa89:20b0:50f:b69a:f4a8 with SMTP id
- d75a77b69052e-51a6ec225f4mr979921cf.7.1782328086856; Wed, 24 Jun 2026
- 12:08:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782328334; x=1782933134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YSVjzRBmQFYwfQSkxHVzN7pkPCZVpx+D6sU3JXp6ZaA=;
+        b=HxWnugYn5SMmjiaGOAqfF724SBueXwSFtQ5R6yFSk9XNxO3cX3ZTRR+bGzyZFH3MEx
+         cItR2GiT1E0Syr51+cKwfPax008n7HCUuIJFwj7B+3PUtmqg1YDoOb1Jbs8yS2VkRciB
+         THM2Ral5vCGw/vmL/V6GM666nQZqgLy3BNdw3zrs3wiEbFTIMEH7aqUFeymdSvh2smDY
+         l20mQhJSDZO2/IoPLlOrVKsTOK3zfkOIVxUSQaWM/4iJ2cQPLdIO4wyI6XFAZIZhPjua
+         mbrdM2dDQzk0t774nVQ/g91fv5pOQ31mfyMPziCSukZB0TieIeh62B+AAp3xy79haKU7
+         Hjuw==
+X-Gm-Message-State: AOJu0Yy7CKboAsed6t3K9kG8R88G6b7idqIE9uQEeSNd5m4czk5te5Qa
+	Cclq7+s/jvYwwGWKo7gtQwYDgmoM+reF3+A6+x2KQnvzrClLbDR1Mr6KHMQqLItjUhbyeA==
+X-Gm-Gg: AfdE7cmsf28PdKi2H94gZerV1gByUtzwa5zh5dKxaLSKIJ060Yi+YO+usaKIVUQRMDQ
+	/ySwrGPn3cylbE8KICMQ/LzqRvljsAewwP+FjpbEJNyYqFvTt65E/Tk+7ZcJ+Jpb21SGnAejRbI
+	U6Sa/YFY4bOK4oe+xlBfSJelVLDoVlvhwpebwWug1JMR2wQ06b6fO1Tv5DiGFvSXb6qwk/eUkrc
+	aK92TM+rDV9R3HzmyNEBq8tatKBr9yMWB2KmPCjSKG6y4rhS0wo+e/iRP86QwRneypQdqyJVV/A
+	elLKlWnlfxBho5JfaGDUrZ/+hefoLA3nCuF5the/qcFeROsrD9EINMIrdkLch4NIBiZILs1g1u5
+	2FMpzLZJsNjv7Q6pl1koWULkYjbcX7LzD6AYqY4zu4LGOCVKbStOGl5psM/wk/8H35gbLxZXoRD
+	se6Pzr6bxp0ap03dtpBp//VLvRxw==
+X-Received: by 2002:a05:600c:1c25:b0:492:488c:f627 with SMTP id 5b1f17b1804b1-4925b359bc7mr139631375e9.11.1782328334427;
+        Wed, 24 Jun 2026 12:12:14 -0700 (PDT)
+Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492640260a6sm12341355e9.6.2026.06.24.12.12.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 12:12:14 -0700 (PDT)
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yousef Alhouseen <alhouseenyousef@gmail.com>
+Subject: [PATCH] vfio/type1: validate dirty bitmap page size before use
+Date: Wed, 24 Jun 2026 21:12:04 +0200
+Message-ID: <20260624191204.3774-1-alhouseenyousef@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-28-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-28-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 24 Jun 2026 20:07:29 +0100
-X-Gm-Features: AVVi8Cd8t5YxMdE0Ng1SGfAxSm9nIleavoz2HxsrURbnpplSd_eJ9V_CBlxTVmc
-Message-ID: <CA+EHjTwoMC3iZ=NVLCX7eypj3gwV4Ja4gLMoWsCwbXTd4980Vw@mail.gmail.com>
-Subject: Re: [PATCH v8 28/46] KVM: selftests: Add support for mmap() on
- guest_memfd in core library
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Sean Christopherson <seanjc@google.com>
->
-> Accept gmem_flags in vm_mem_add() to be able to create a guest_memfd within
-> vm_mem_add().
->
-> When vm_mem_add() is used to set up a guest_memfd for a memslot, set up the
-> provided (or created) gmem_fd as the fd for the user memory region. This
-> makes it available to be mmap()-ed from just like fds from other memory
-> sources. mmap() from guest_memfd using the provided gmem_flags and
-> gmem_offset.
->
-> Add a kvm_slot_to_fd() helper to provide convenient access to the file
-> descriptor of a memslot.
->
-> Update existing callers of vm_mem_add() to pass 0 for gmem_flags to
-> preserve existing behavior.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [For guest_memfds, mmap() using gmem_offset instead of 0 all the time.]
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+The dirty bitmap ioctl paths derive a shift with __ffs() from the
+userspace supplied bitmap page size before comparing it with the IOMMU
+page size. A zero page size has undefined behavior, and a non-power-of-2
+value makes the bitmap size check use a different granularity than the
+page size later accepted by the ioctl.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+Reject invalid bitmap page sizes before using them in shift arithmetic.
 
-Cheers,
-/fuad
+Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+---
+ drivers/vfio/vfio_iommu_type1.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> ---
->  tools/testing/selftests/kvm/include/kvm_util.h     |  7 +++++-
->  tools/testing/selftests/kvm/lib/kvm_util.c         | 27 ++++++++++++----------
->  .../kvm/x86/private_mem_conversions_test.c         |  2 +-
->  3 files changed, 22 insertions(+), 14 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> index d4c104cb0418f..0cacf3698b259 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -700,7 +700,7 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
->                                  gpa_t gpa, u32 slot, u64 npages, u32 flags);
->  void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->                 gpa_t gpa, u32 slot, u64 npages, u32 flags,
-> -               int gmem_fd, u64 gmem_offset);
-> +               int gmem_fd, u64 gmem_offset, u64 gmem_flags);
->
->  #ifndef vm_arch_has_protected_memory
->  static inline bool vm_arch_has_protected_memory(struct kvm_vm *vm)
-> @@ -732,6 +732,11 @@ void *addr_gva2hva(struct kvm_vm *vm, gva_t gva);
->  gpa_t addr_hva2gpa(struct kvm_vm *vm, void *hva);
->  void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa);
->
-> +static inline int kvm_slot_to_fd(struct kvm_vm *vm, u32 slot)
-> +{
-> +       return memslot2region(vm, slot)->fd;
-> +}
-> +
->  #ifndef vcpu_arch_put_guest
->  #define vcpu_arch_put_guest(mem, val) do { (mem) = (val); } while (0)
->  #endif
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 9b482778f7379..d5bbc80b2bf1c 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -978,12 +978,13 @@ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
->  /* FIXME: This thing needs to be ripped apart and rewritten. */
->  void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->                 gpa_t gpa, u32 slot, u64 npages, u32 flags,
-> -               int gmem_fd, u64 gmem_offset)
-> +               int gmem_fd, u64 gmem_offset, u64 gmem_flags)
->  {
->         int ret;
->         struct userspace_mem_region *region;
->         size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
->         size_t mem_size = npages * vm->page_size;
-> +       off_t mmap_offset = 0;
->         size_t alignment = 1;
->
->         TEST_REQUIRE_SET_USER_MEMORY_REGION2();
-> @@ -1055,8 +1056,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->
->         if (flags & KVM_MEM_GUEST_MEMFD) {
->                 if (gmem_fd < 0) {
-> -                       u32 gmem_flags = 0;
-> -
->                         TEST_ASSERT(!gmem_offset,
->                                     "Offset must be zero when creating new guest_memfd");
->                         gmem_fd = vm_create_guest_memfd(vm, mem_size, gmem_flags);
-> @@ -1077,13 +1076,17 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->         }
->
->         region->fd = -1;
-> -       if (backing_src_is_shared(src_type))
-> +       if (flags & KVM_MEM_GUEST_MEMFD && gmem_flags & GUEST_MEMFD_FLAG_MMAP) {
-> +               region->fd = kvm_dup(gmem_fd);
-> +               mmap_offset = gmem_offset;
-> +       } else if (backing_src_is_shared(src_type)) {
->                 region->fd = kvm_memfd_alloc(region->mmap_size,
->                                              src_type == VM_MEM_SRC_SHARED_HUGETLB);
-> +       }
->
-> -       region->mmap_start = kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
-> -                                     vm_mem_backing_src_alias(src_type)->flag,
-> -                                     region->fd);
-> +       region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
-> +                                       vm_mem_backing_src_alias(src_type)->flag,
-> +                                       region->fd, mmap_offset);
->
->         TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
->                     region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
-> @@ -1129,10 +1132,10 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->
->         /* If shared memory, create an alias. */
->         if (region->fd >= 0) {
-> -               region->mmap_alias = kvm_mmap(region->mmap_size,
-> -                                             PROT_READ | PROT_WRITE,
-> -                                             vm_mem_backing_src_alias(src_type)->flag,
-> -                                             region->fd);
-> +               region->mmap_alias = __kvm_mmap(region->mmap_size,
-> +                                               PROT_READ | PROT_WRITE,
-> +                                               vm_mem_backing_src_alias(src_type)->flag,
-> +                                               region->fd, mmap_offset);
->
->                 /* Align host alias address */
->                 region->host_alias = align_ptr_up(region->mmap_alias, alignment);
-> @@ -1143,7 +1146,7 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
->                                  enum vm_mem_backing_src_type src_type,
->                                  gpa_t gpa, u32 slot, u64 npages, u32 flags)
->  {
-> -       vm_mem_add(vm, src_type, gpa, slot, npages, flags, -1, 0);
-> +       vm_mem_add(vm, src_type, gpa, slot, npages, flags, -1, 0, 0);
->  }
->
->  /*
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index 1d2f5d4fd45d7..861baff201e78 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -399,7 +399,7 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
->         for (i = 0; i < nr_memslots; i++)
->                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
->                            BASE_DATA_SLOT + i, slot_size / vm->page_size,
-> -                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i);
-> +                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
->
->         for (i = 0; i < nr_vcpus; i++) {
->                 gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index c8151ba54..9499381d0 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -26,6 +26,7 @@
+ #include <linux/fs.h>
+ #include <linux/highmem.h>
+ #include <linux/iommu.h>
++#include <linux/log2.h>
+ #include <linux/module.h>
+ #include <linux/mm.h>
+ #include <linux/kthread.h>
+@@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
+ 		if (!access_ok((void __user *)bitmap.data, bitmap.size))
+ 			return -EINVAL;
+ 
++		if (!is_power_of_2(bitmap.pgsize))
++			return -EINVAL;
++
+ 		pgshift = __ffs(bitmap.pgsize);
+ 		ret = verify_bitmap_size(unmap.size >> pgshift,
+ 					 bitmap.size);
+@@ -3039,6 +3043,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+ 			       range.bitmap.size))
+ 			return -EINVAL;
+ 
++		if (!is_power_of_2(range.bitmap.pgsize))
++			return -EINVAL;
++
+ 		pgshift = __ffs(range.bitmap.pgsize);
+ 		ret = verify_bitmap_size(size >> pgshift,
+ 					 range.bitmap.size);
+-- 
+2.54.0
+
