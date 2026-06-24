@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E71C3E7BAA
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21573E7BC8
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782337357; cv=none; b=cN55pwvxgCTX55t53VmQNsTVDJE9b7ZEP0jZt5Fdn5J6lRS/IiQ3ARShKJfUOpPXOPEr/Z98oc15FhiJD2iblZpKdeMeO0FwS9/zc3pX8RpDZxsQ4NafiTrdSiMRdCLU+NyJd+saLypSVpEjC08jxfguROAapdxosU8rsYmInOE=
+	t=1782337357; cv=none; b=RheYTXvdbFDg1XoeYi1sBB7gbU2Wq96DjHihwXQrdFDzgqxHZI5LE8HWKlknSodJvXxFZQnsxVTLppVDqJc4a7uga40d1EaOgL7wu3c+cRgdpJwySaPxXeFEtUiQ1XIt0rgjgOAQLYTsCWgo4n3/qguy4H7izZ9aY0UFNSx++cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782337357; c=relaxed/simple;
-	bh=CUzjaRRCyQe+LioVJzE22VetAaufeaIz1BDXGG9PmIc=;
+	bh=/T9yn90+WAFRVRCvh4ei/KCLyD6E4mdhlv+BDkAuVh0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bmDYWvZyA4OLXL44Xyja6cF9j0upEnwAOgy2ec5Tk61NUCwOXgHo/8WrG9eathughJtdyAKsXByEagS5LWbTdn7nJbCwmo1nfEP14WOiBOMitOnocOT9qzOPzFFBiJ9dKyZzNIek/lnsvJeUs4tw+js8y4AoIwjsxjW/mh4rdig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ELM6uFx0; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=m6NbBxXdfLii6yi20uPjFIjkJlV9+LWdLGg3zZA3mrbBH4GyKkGYCaOAX9TkdfjdjvHfeYyvtV5Kw5mOhzX5iatKrnIqZdYnjGkh6QxyGyiVhkEMKI5EdsxbOxVRjOlsU4FSO5ncwY3/qnQ/SFrAQniMCpQ/DaeYcQFIIGdTnno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BxS99yFV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ELM6uFx0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BxS99yFV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782337350;
+	s=mimecast20190719; t=1782337351;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h6a61/z8DUAXPEz31jgPSogZ8PQT/+uAnRl/9RGdaHw=;
-	b=ELM6uFx0jpqz8A6bs29OMyPas7w+hbDHu0SarJshQVOIqkz0uCfyr7Qv8rVYEpazKujVkp
-	TPbvKVjyxIqaU/z7jfVw4n0jx+ajQF/Xkos1l2w8YX0U0dwvM5xARUgiu9bRYD9Y247kth
-	tVRyGgPy/wtWPCMhYGY48i3Z7isyUj4=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=iiQ2KSBiFqsFFYcz9fMrynT5PJotv3ZXzx4ZDpnLfaA=;
+	b=BxS99yFVFk2EIGHmbAmlVVHxk+fN6k5nbCrYeSZNoB27n3Jq9Xu16IpqJ8eBA0qZZ9Qfdr
+	PuLrKOcR26T8VBzS8rDB0BAvNb3sd0AeTC0G31c16NqI4w+gj+jwOY8gdVde7vp/xh0f58
+	DkFVOFk49hdJRJNCK/9heSDlNNJ4aLs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-157-nH5m_d0fO9qKIx4G_IQylg-1; Wed,
- 24 Jun 2026 17:42:26 -0400
-X-MC-Unique: nH5m_d0fO9qKIx4G_IQylg-1
-X-Mimecast-MFC-AGG-ID: nH5m_d0fO9qKIx4G_IQylg_1782337346
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-UeqLibrgNGaSA1uF2eCABA-1; Wed,
+ 24 Jun 2026 17:42:28 -0400
+X-MC-Unique: UeqLibrgNGaSA1uF2eCABA-1
+X-Mimecast-MFC-AGG-ID: UeqLibrgNGaSA1uF2eCABA_1782337347
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F30351805A13;
-	Wed, 24 Jun 2026 21:42:25 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BEBC18001FB;
+	Wed, 24 Jun 2026 21:42:27 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C363195608D;
-	Wed, 24 Jun 2026 21:42:25 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BA8AB195609F;
+	Wed, 24 Jun 2026 21:42:26 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 7.2-based 10/19] KVM: x86/mmu: pass struct kvm_pagewalk to kvm_mmu_invalidate_addr
-Date: Wed, 24 Jun 2026 17:42:09 -0400
-Message-ID: <20260624214218.73796-11-pbonzini@redhat.com>
+Subject: [PATCH 7.2-based 12/19] KVM: x86/mmu: change nested_mmu.w to ngva_walk
+Date: Wed, 24 Jun 2026 17:42:11 -0400
+Message-ID: <20260624214218.73796-13-pbonzini@redhat.com>
 In-Reply-To: <20260624214218.73796-1-pbonzini@redhat.com>
 References: <20260624214218.73796-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -60,115 +60,178 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-kvm_mmu_invalidate_addr only needs to know if what's being invalidated
-is a GVA or GPA.  This will ultimately be represented by two different
-kvm_pagewalk structs, so adjust the type of the parameter.
-
-For now the GVA case is represented by both root_mmu and nested_mmu.
-Since nested_mmu never has a sync_spte callback, it would exit at its
-check; but really nested_mmu should not be a kvm_mmu in the first place
-and the container_of() would be bogus, so introduce a separate check
-for whether the invalidation is happening for a nested GVA.  In that
-case there's nothing needed beyond kvm_x86_call(flush_tlb_gva).
+nested_mmu is now only used for its w member.  Rename it,
+and change its type.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/mmu/mmu.c          | 12 ++++++++----
+ arch/x86/include/asm/kvm_host.h |  5 ++--
+ arch/x86/kvm/mmu.h              |  6 ++---
+ arch/x86/kvm/mmu/mmu.c          | 41 ++++++++++++++-------------------
+ arch/x86/kvm/svm/nested.c       |  2 +-
  arch/x86/kvm/vmx/nested.c       |  2 +-
- arch/x86/kvm/x86.c              |  2 +-
- 4 files changed, 11 insertions(+), 7 deletions(-)
+ 5 files changed, 24 insertions(+), 32 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 1f48f760bea9..6abb1f5b09f9 100644
+index 6bb9bd800295..c73f9009bbc2 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -2390,7 +2390,7 @@ int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
- 		       void *insn, int insn_len);
- void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
- void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
--void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-+void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
- 			     u64 addr, unsigned long roots);
- void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
- void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
+@@ -882,11 +882,10 @@ struct kvm_vcpu_arch {
+ 	 * walking and not for faulting since we never handle l2 page faults on
+ 	 * the host.
+ 	 */
+-	struct kvm_mmu nested_mmu;
++	struct kvm_pagewalk ngva_walk;
+ 
+ 	/*
+-	 * Pointer to the mmu context currently used for
+-	 * gva_to_gpa translations.
++	 * Pagewalk context used for gva_to_gpa translations.
+ 	 */
+ 	struct kvm_pagewalk *gva_walk;
+ 
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 160614293f5b..e1198694a053 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -177,8 +177,8 @@ static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ 	 * be stale.  Refresh CR0.WP and the metadata on-demand when checking
+ 	 * for permission faults.  Exempt nested MMUs, i.e. MMUs for shadowing
+ 	 * nEPT and nNPT, as CR0.WP is ignored in both cases.  Note, KVM does
+-	 * need to refresh nested_mmu, a.k.a. the walker used to translate L2
+-	 * GVAs to GPAs, as that "MMU" needs to honor L2's CR0.WP.
++	 * need to refresh ngva_walk, a.k.a. the walker used to translate L2
++	 * GVAs to GPAs, so as to honor L2's CR0.WP.
+ 	 */
+ 	if (!tdp_enabled || w == &vcpu->arch.guest_mmu.w)
+ 		return;
+@@ -306,7 +306,7 @@ static inline gpa_t kvm_translate_gpa(struct kvm_vcpu *vcpu,
+ 				      struct x86_exception *exception,
+ 				      u64 pte_access)
+ {
+-	if (w != &vcpu->arch.nested_mmu.w)
++	if (w != &vcpu->arch.ngva_walk)
+ 		return gpa;
+ 	return kvm_x86_ops.nested_ops->translate_nested_gpa(vcpu, gpa, access,
+ 							    exception,
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 0aff263e3461..fd5c7616a0b1 100644
+index f32784667890..b91785712856 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6617,22 +6617,26 @@ static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu
- 	write_unlock(&vcpu->kvm->mmu_lock);
+@@ -6058,43 +6058,37 @@ static void init_kvm_softmmu(struct kvm_vcpu *vcpu,
+ 	context->w.get_guest_pgd     = get_guest_cr3;
  }
  
--void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-+void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
- 			     u64 addr, unsigned long roots)
+-static void init_kvm_nested_mmu(struct kvm_vcpu *vcpu,
++static void init_kvm_ngva_walk(struct kvm_vcpu *vcpu,
+ 				union kvm_cpu_role new_mode)
  {
-+	struct kvm_mmu *mmu;
- 	int i;
+-	struct kvm_mmu *g_context = &vcpu->arch.nested_mmu;
++	struct kvm_pagewalk *g_context = &vcpu->arch.ngva_walk;
  
- 	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
+-	if (new_mode.as_u64 == g_context->w.cpu_role.as_u64)
++	if (new_mode.as_u64 == g_context->cpu_role.as_u64)
+ 		return;
  
- 	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
--	if (mmu != &vcpu->arch.guest_mmu) {
-+	if (w != &vcpu->arch.guest_mmu.w) {
- 		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
- 		if (is_noncanonical_invlpg_address(addr, vcpu))
+-	g_context->w.cpu_role.as_u64   = new_mode.as_u64;
+-	g_context->w.inject_page_fault = kvm_inject_page_fault;
+-	g_context->w.get_pdptr         = kvm_pdptr_read;
+-	g_context->w.get_guest_pgd     = get_guest_cr3;
+-
+-	/*
+-	 * L2 page tables are never shadowed, so there is no need to sync
+-	 * SPTEs.
+-	 */
+-	g_context->sync_spte         = NULL;
++	g_context->cpu_role.as_u64   = new_mode.as_u64;
++	g_context->inject_page_fault = kvm_inject_page_fault;
++	g_context->get_pdptr         = kvm_pdptr_read;
++	g_context->get_guest_pgd     = get_guest_cr3;
+ 
+ 	/*
+ 	 * Note that arch.mmu->gva_to_gpa translates l2_gpa to l1_gpa using
+ 	 * L1's nested page tables (e.g. EPT12). The nested translation
+-	 * of l2_gva to l1_gpa is done by arch.nested_mmu.gva_to_gpa using
++	 * of l2_gva to l1_gpa is done by arch.ngva_walk.gva_to_gpa using
+ 	 * L2's page tables as the first level of translation and L1's
+ 	 * nested page tables as the second level of translation. Basically
+-	 * the gva_to_gpa functions between mmu and nested_mmu are swapped.
++	 * the gva_to_gpa functions between mmu and ngva_walk are swapped.
+ 	 */
+ 	if (!is_paging(vcpu))
+-		g_context->w.gva_to_gpa = nonpaging_gva_to_gpa;
++		g_context->gva_to_gpa = nonpaging_gva_to_gpa;
+ 	else if (is_long_mode(vcpu))
+-		g_context->w.gva_to_gpa = paging64_gva_to_gpa;
++		g_context->gva_to_gpa = paging64_gva_to_gpa;
+ 	else if (is_pae(vcpu))
+-		g_context->w.gva_to_gpa = paging64_gva_to_gpa;
++		g_context->gva_to_gpa = paging64_gva_to_gpa;
+ 	else
+-		g_context->w.gva_to_gpa = paging32_gva_to_gpa;
++		g_context->gva_to_gpa = paging32_gva_to_gpa;
+ 
+-	reset_guest_paging_metadata(vcpu, &g_context->w);
++	reset_guest_paging_metadata(vcpu, g_context);
+ }
+ 
+ void kvm_init_mmu(struct kvm_vcpu *vcpu)
+@@ -6103,7 +6097,7 @@ void kvm_init_mmu(struct kvm_vcpu *vcpu)
+ 	union kvm_cpu_role cpu_role = kvm_calc_cpu_role(vcpu, &regs);
+ 
+ 	if (mmu_is_nested(vcpu))
+-		init_kvm_nested_mmu(vcpu, cpu_role);
++		init_kvm_ngva_walk(vcpu, cpu_role);
+ 	else if (tdp_enabled)
+ 		init_kvm_tdp_mmu(vcpu, cpu_role);
+ 	else
+@@ -6127,10 +6121,9 @@ void kvm_mmu_after_set_cpuid(struct kvm_vcpu *vcpu)
+ 	 */
+ 	vcpu->arch.root_mmu.root_role.invalid = 1;
+ 	vcpu->arch.guest_mmu.root_role.invalid = 1;
+-	vcpu->arch.nested_mmu.root_role.invalid = 1;
+ 	vcpu->arch.root_mmu.w.cpu_role.ext.valid = 0;
+ 	vcpu->arch.guest_mmu.w.cpu_role.ext.valid = 0;
+-	vcpu->arch.nested_mmu.w.cpu_role.ext.valid = 0;
++	vcpu->arch.ngva_walk.cpu_role.ext.valid = 0;
+ 	kvm_mmu_reset_context(vcpu);
+ 
+ 	KVM_BUG_ON(!kvm_can_set_cpuid_and_feature_msrs(vcpu), vcpu->kvm);
+@@ -6632,7 +6625,7 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
  			return;
  
  		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
-+		if (w == &vcpu->arch.nested_mmu.w)
-+			return;
+-		if (w == &vcpu->arch.nested_mmu.w)
++		if (w == &vcpu->arch.ngva_walk)
+ 			return;
  	}
  
-+	mmu = container_of(w, struct kvm_mmu, w);
- 	if (!mmu->sync_spte)
- 		return;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 7c9ff119ca32..a9501ade417f 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -117,7 +117,7 @@ static void nested_svm_init_mmu_context(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.mmu->w.get_pdptr       = nested_svm_get_tdp_pdptr;
  
-@@ -6658,7 +6662,7 @@ void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva)
- 	 * be synced when switching to that new cr3, so nothing needs to be
- 	 * done here for them.
- 	 */
--	kvm_mmu_invalidate_addr(vcpu, vcpu->arch.walk_mmu, gva, KVM_MMU_ROOTS_ALL);
-+	kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.walk_mmu->w, gva, KVM_MMU_ROOTS_ALL);
- 	++vcpu->stat.invlpg;
+ 	vcpu->arch.mmu->w.inject_page_fault = nested_svm_inject_npf_exit;
+-	vcpu->arch.gva_walk              = &vcpu->arch.nested_mmu.w;
++	vcpu->arch.gva_walk              = &vcpu->arch.ngva_walk;
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_invlpg);
-@@ -6680,7 +6684,7 @@ void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid)
- 	}
  
- 	if (roots)
--		kvm_mmu_invalidate_addr(vcpu, mmu, gva, roots);
-+		kvm_mmu_invalidate_addr(vcpu, &mmu->w, gva, roots);
- 	++vcpu->stat.invlpg;
- 
- 	/*
+ static void nested_svm_uninit_mmu_context(struct kvm_vcpu *vcpu)
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index a0f13adea8d8..fe63b8b514ab 100644
+index 21a727007eaa..d9f0b4957d66 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -407,7 +407,7 @@ static void nested_ept_invalidate_addr(struct kvm_vcpu *vcpu, gpa_t eptp,
- 			roots |= KVM_MMU_ROOT_PREVIOUS(i);
- 	}
- 	if (roots)
--		kvm_mmu_invalidate_addr(vcpu, vcpu->arch.mmu, addr, roots);
-+		kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.guest_mmu.w, addr, roots);
+@@ -516,7 +516,7 @@ static void nested_ept_init_mmu_context(struct kvm_vcpu *vcpu)
+ 
+ 	vcpu->arch.mmu->w.inject_page_fault = nested_ept_inject_page_fault;
+ 
+-	vcpu->arch.gva_walk              = &vcpu->arch.nested_mmu.w;
++	vcpu->arch.gva_walk              = &vcpu->arch.ngva_walk;
  }
  
- static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 36ceb556a3c2..a06e4328a219 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -988,7 +988,7 @@ void __kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
- 	 */
- 	if ((fault->error_code & PFERR_PRESENT_MASK) &&
- 	    !(fault->error_code & PFERR_RSVD_MASK))
--		kvm_mmu_invalidate_addr(vcpu, fault_mmu, fault->address,
-+		kvm_mmu_invalidate_addr(vcpu, &fault_mmu->w, fault->address,
- 					KVM_MMU_ROOT_CURRENT);
- 
- 	fault_mmu->w.inject_page_fault(vcpu, fault, from_hardware);
+ static void nested_ept_uninit_mmu_context(struct kvm_vcpu *vcpu)
 -- 
 2.52.0
 
