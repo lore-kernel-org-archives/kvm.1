@@ -1,139 +1,168 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C56017DFE7
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 20:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782331284; cv=none; b=DtDt4R83mtXFYuBuEG2Te3i1ySjCMKjybazKsyjK390qjy8yDzUE4gK7yZsVAyZRbi4EZeoLShVAU3UB5U4CvL7XZ11eqjRA3Tnmc6r+OLT7+Q2HlPke3LMgNjDtNMRDqmwoVTnFkQlgZvThzLT3nfbfGKmxw3PelmSUXqwychQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782331284; c=relaxed/simple;
-	bh=anjC5YPqeMIM8QG0W71R5B8c1T+6vdn1q9ywPyHqFKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeSqZFix3ZbboBp+JlFbRaR4q4F+pE5RHVkJTkz7RbHdR4d8ai7WXlF/jTndxl66ZQK6UyivCAKjIn6r7leDuMWH651pXgFmP/uQBvWMwq7eAcn/Yf5cyCNcMwKxbvoN7FALHyTTq1/+vAeEF7wxEkis6YZkkM5HlVXjoNdBoJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X/dbDc/R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23883CAE93
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 20:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782333855; cv=pass; b=kn8ymj413SczfPbzq0ep3SPfY2kGgDepzbD/ejWz2stT/y5lnnhohQxoLkoexPjxykNM4eGsmqnHXqPwQr6MxjLAawMz2NjvtQYerrC6dpwAQjK+aq+JLjEN2bGze3bv+fPsXSFFoHgZjW1+Suwnu4V2v2zdOyv/2jWPvqS9n1g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782333855; c=relaxed/simple;
+	bh=QyhcqbadZWN+AG6WcwYfzT9ILGIvGzGDjWcEDHa8YsM=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s2ZmTN96EQh+J7woIXXgJZUGeZHlxrwm15y3H2+mkPBsuBmJx7AxhYvp5K7vgn0hMEf4FTSeLbr6gWjUkTDkYdzqTH4DjX11zJrmEat7L1FFqiF7mE9Bg8j/nW51ZYZxXu0vtIH1u9+avzvupgN4GxZSZhmbMnml1RhmNzvI0K0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSkv1ByO; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X/dbDc/R"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OJmHve2205941;
-	Wed, 24 Jun 2026 20:01:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=s6WlORJYVYHHQ7R3w
-	RMPn4PNsTwuPA9cmF8IlG+FSAc=; b=X/dbDc/RUOL9otWtfHrkBIon8gs20GESe
-	sMXe6P13cqQI/CKPo8Ql+Ijdq7MDNBmDmW4Vf49j/qzorPcg+t+nBCMw1VdWTPug
-	XH/sh0bY0+Vh4z+UPRY+plBM5AYHin/Wo9uZWAOvSSanUg4Q05OcwgmsXy3DT96D
-	5wbPGm8pa2p274Q+GAAV479VQdO+bsj5N2uMlWvhFJoLrtkmMhk0uvDHGyj/KCsQ
-	qA8ccUBU15M6xt6nO8oQy5xusFVJWaE82W8SUsWqC8xjim6sfla7Vs/WFNid58J+
-	gUUUTCrezRM4iJicKyMPM0ZTDKTtzsyLH8bTPrSfso1+6l0pXXbMQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhqx5dh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 20:00:59 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OJo3mI013295;
-	Wed, 24 Jun 2026 20:00:58 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwjnbp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jun 2026 20:00:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OK0s8D49283362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Jun 2026 20:00:54 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 935352004B;
-	Wed, 24 Jun 2026 20:00:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A2F420040;
-	Wed, 24 Jun 2026 20:00:45 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.20.104])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 24 Jun 2026 20:00:44 +0000 (GMT)
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH v2 8/8] MAINTAINERS: Add self as maintainer for PowerNV
-Date: Thu, 25 Jun 2026 01:29:24 +0530
-Message-ID: <20260624195924.1422821-9-adityag@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260624195924.1422821-1-adityag@linux.ibm.com>
-References: <20260624195924.1422821-1-adityag@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSkv1ByO"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-13986d61b4eso593263c88.0
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 13:44:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782333852; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QCty/MqQsnjdltULAJt4Ekqintmmw3DGz8vPqttwf/l/TBozgjuykmCqNxu0n4/vNi
+         rkY8KPNYabcQEZravKEIQu83AcMI+2AT3OBLd4vW8GlZ8fhRYWV3mv9jrr4H1AJyXW0M
+         a6p8mbNmPn9Bf3+I44h/JHdu5zoDmnn5/6DbSF47v1Sh4bmm23/xchO9au5jlmpO18wy
+         bTpkPFnzZ8c/LkpTvLu3USSiiWkIKvxdX6RVX9kptQAaZ3CxPXKdSmTjiCSLfB97nPWS
+         hA3T9Y4RYVeYYXnBDq4luRSjtndHu2aSe7YDzGS2e59cEaBbJ6LBHf6+1McjrLIg++R6
+         Dl9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
+        fh=D1INHgkWENvJfGBh6Gybxw4YyHYPJrSciTfgBNpae50=;
+        b=ifvRa+PKVOcliTEUgILrFZvglny7Bt39aqTHV2/RXG22650zxcClNulq/lgdPsM3yo
+         N20uEWVnUiA/DVLvymM85w+EUQVDFx7Cn13GG4Ud+HFjRv0znBTz7zkYgsMAhOmEQTrX
+         69jwiACB5Zu9JeL7dmNxHwcGKU8+u+iVVEC/wjASHN9dsVuiRcV0AyD7A1o3yBvkaewV
+         EJAIjHGs3dIejFMkoNO10gnXfyqSbitaLvoZflaYKtlrxC03QUXXdy40cDi0n2gZhO4M
+         n2BwfkbZkguin3F2BwyvNSSVqPkCUU91y+25vU+NQ74wMsR5UIZmrsb7QM8HIaJBMQhL
+         UajQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782333852; x=1782938652; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
+        b=JSkv1ByOJCbqB3lKP23YrYbT+yH7RufFZrgmn4j/W8qw6G5kef45xY9CunSp1hBjKl
+         KHgVhL5ObhUsvnwhujk91Y67/6q+5ENJ5W776GmqArB+gXTtg+DIFH3JaFJNxCbmJgx2
+         xK1qHRd0fYVk0P6hcWRVYj+0lEjKw/IRQzc4/bPK98RF9CScDpgGhyhJ+aB4yD10Nn48
+         x058kobRMDvgeK0FribCHSLJNszxKB2rtE0mEA2S+CpTC9JeLDOuZC5qZs737sz/P9HV
+         FvvFbAnWU8Eix7XSgeUEQs3GFnal1lCF03gEvkFky91ryDTf9BXSrKyKy2IGAXpkxAmx
+         c54A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782333852; x=1782938652;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
+        b=RuKawicT97UHu190CuGbZFCT9oR/IHzeTKLGi9s1NGB1LXYhOqjPYkvvunzwiSc1Pl
+         LEDgQmrn7hFLQfM/D3123kGqQxluFn4HTSlJgMTsAR2z48+vpW1/jfVM4vob/+oeN9EA
+         Tfkla9f7MVaHAuM4TVHudAFgp+76pAnVes2kW1jor3ch7h7wKKn5Om/UgU2n85SxmkoU
+         dXluKDyUSWQUPYeFlJJyEqrrOWkjqFk+gfcE1IQeYrosIDaM+FhIjHq4EsUHWKswN9pG
+         OftvaGXT8A594yBv7U71wK2QU9TzfzBgcWmHgububHbSQji1dhGi0HYknn6DPGGVfH9A
+         xfeg==
+X-Forwarded-Encrypted: i=1; AFNElJ8I7mSU4mzkBqQ9hSor/S+JyVCP6uDxsZvBpsEXyk87tekPKFLuW66ifSrguhCRA56mLLg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOSehmQ0M7+FY37uwrPRpSbwIzXWmohdZzlQaJclwKzo8cVgXm
+	XOzAJ8Cc+iTilOfrmlt7Ot3C3qlpQu4wsZvcgjKx0MHW98X4Y2+2dQ3XwRYvmE6NJ3Vct0Pn0pj
+	/GM7KdWpeZ5eyK2T0PPY93sjOxyJ7rKcy/d0GgpFL
+X-Gm-Gg: AfdE7clcR1905X1epo/TNIC0g3Rw2WITdyYU5AsGqefhDCNll+9wwGJI5qmNAR57tUn
+	kZ52nR8v5KUeu9d+Z9UgSs5kbpIEamLlyFBwKVTEElou/utKMgb8wlv5U+fjjS1nBLVnOid3xCT
+	obCQ7Cefn7OPclLmRV8U01IKyldvMrBZsGW4Woj5UqstQ46W0qyXB2EzL2a6NqWCh/1/YNBu8rc
+	PqFlg8xQIT94N0QodByWWK3n4bDxoNbLaMsH+A2bfo/YfH35T9pnEojHLd9+mNAmNywgbuZNkaR
+	4Dzx6K9dLgyh4JHqiDykQ0UodzPNy8lj8+B5ePnLvQGorEDCCzQt0eo7eYU=
+X-Received: by 2002:a05:7022:e995:b0:137:eda3:e5a9 with SMTP id
+ a92af1059eb24-139ad711637mr14297421c88.28.1782333850616; Wed, 24 Jun 2026
+ 13:44:10 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 13:44:09 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 13:44:09 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <2ef455c3-a3f5-4ba1-86ea-b96416d163ce@linux.intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com> <2ef455c3-a3f5-4ba1-86ea-b96416d163ce@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a3c377c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=69wJf7TsAAAA:8
- a=LxXt4eSeZzJWShDyzMIA:9 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDE2NiBTYWx0ZWRfX8Qse/Tk2o475
- bMasiUYNcbl0oCuEShjPvMl/37wQOV+uhhJzDiXD0ykyn4/oMbydSiFIpzo/H5+ZC9uJezoBsCC
- EzSppfzrO314Xat9OzwvoM6WrCZRFM6Xvu+knSZ6s+EblCBSMq0K2Yxy86x21oCoNLiDCqWNwqN
- JJczb2cokVAWeMb9EYRowUOV4Lr98cmTPCRk/AWpziZx/HEObaJZKYwEhEILntXzqn4ppKzK2T2
- wc0V7skeu2i4zRXKcXn2Sb+WZTYPjA18b2pEHqisYCJPZbQ0GHSna/qDLsGKmnq3wsIFu4bJy+w
- BhcNDntYVBrNPGmHeL8to2ejpdHyB61xdb3uDIVf++WR4UTIpQCrT/lrdQcyZGr4FwwtzhGCTOb
- wsddUE+bnNUFddHKkWW3XK8L23XzXZDgdPjzVsq04mWwUfKrNWToBjoSWK9IiHqH5ZWjYAdhEc2
- oQAfEOMXg/iIS2FuV4g==
-X-Proofpoint-GUID: yWYvhwsprWXvZ-3vWRf74wo-jFQiXiQT
-X-Proofpoint-ORIG-GUID: OcD-AaurB38nYnjALB7ghOP9oWaZ3Jbv
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDE2NiBTYWx0ZWRfXz9JGvF6rEfFG
- Am2tpaCsIuMLNhR1YPGSnt7NwqPvSw/JX2ReitL8RpV59fXaa9B1j4V8SA350eCPkKARBaQL0JK
- efTxxStlcfxwDCn7i2gbuSWN9B+jv58=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-24_04,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606240166
+Date: Wed, 24 Jun 2026 13:44:09 -0700
+X-Gm-Features: AVVi8Cc-v85YTGgbOrOpBNr09aOMCIpUVvlduJvADSpw08YaAcwUxrqW73F-Zbs
+Message-ID: <CAEvNRgFYpTAi+F8iF_m3mQnP_hB+DWN1oTnhEQ5WWxduX2D5MQ@mail.gmail.com>
+Subject: Re: [PATCH v8 10/46] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Add myself as maintainer for PowerNV machine, and remove the
-reviewer entry
+Binbin Wu <binbin.wu@linux.intel.com> writes:
 
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+>
+> [...]
+>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index bca912db5be6e..e0e544ef47d69 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -926,6 +926,24 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+>>
+>>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+>> +static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
+>> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+>> +{
+>> +	struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
+>> +	pgoff_t end = index + nr_pages - 1;
+>> +	void *entry;
+>> +
+>> +	if (!gmem_in_place_conversion)
+>> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+>> +
+>> +	mt_for_each(mt, entry, index, end) {
+>> +		if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
+>> +			return false;
+>> +	}
+>
+> Patch 1 noted that "Ensuring every index is represented in the maple tree at all times".
+> So I think the queried range should not be a hole in the maple tree.
+> However, there is a inconsistency: in patch 1 kvm_gmem_get_attributes() explicitly
+> checks for holes, but this patch does not.
+>
+>> +	return true;
+>> +}
+>>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 93df53d87f63..b56f2efb6794 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1646,7 +1646,7 @@ F: tests/functional/ppc64/test_tuxrun.py
- 
- PowerNV (Non-Virtualized)
- M: Nicholas Piggin <npiggin@gmail.com>
--R: Aditya Gupta <adityag@linux.ibm.com>
-+M: Aditya Gupta <adityag@linux.ibm.com>
- R: Glenn Miles <milesg@linux.ibm.com>
- R: Harsh Prateek Bora <harshpb@linux.ibm.com>
- L: qemu-ppc@nongnu.org
--- 
-2.54.0
+With Sean's suggestion for patch 1, I'll update this one to default to
+the "init" state if xa_to_value(entry) is NULL.
 
+Thanks!
