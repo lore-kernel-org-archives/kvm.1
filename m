@@ -1,68 +1,69 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDAA33F580
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 16:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F053546D8
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 17:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782320227; cv=none; b=U6b1ECov7aAedUNhmO+0fcFg02rHnZRmgDDI6d/qPdbogso8Yf5OIZk5df/RWaqr/PfWKcUXYRj903alvseJT4lCAIFfozDX8hpz3GKeGbXxEw5ag5QoJOXuMngLg5bJ5Ox0Gaht+5b3oJqpRASU4gggqvAyELetglYzP1Qo/Io=
+	t=1782320487; cv=none; b=UNGC+G1KNujl0YBZlKhZjFX5PzNJDy7du7jdGb9dDsUCSvbusYsgXCDW91bevxnSis7ONkygSKgcOtqqjP9Y0zvjKtDtRs0RXglCk+Z+NesFkUa+U3edVIIUL7NRAMViHAPNBHw3mkr5e2nHNH7gDakB5OH/9/YgnpbhM+Sl/7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782320227; c=relaxed/simple;
-	bh=sFclBlGuLlklutyWalxOxdLRxtPJWxF7xb2dfh79PCc=;
+	s=arc-20240116; t=1782320487; c=relaxed/simple;
+	bh=hXT+eybuvhiG4/K2l6t7f2dd3GljuDBbH8uGde2JbnE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=q9qW3TpZN3Qb4rzKoLac6BfGYu6D8Kws+14cKYD3+cHiik3av6VhtmiywmeLnkqV8ealhGcaxxn9+4MTWX5XKogNDtsbHWdub8n9rMDt/GKzc6/FxcGlU/iz4vZpEeOFPFK0aLsENS/IWd7r+WL0QGnqKVSeaeZdUzROC/viChA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GwH5XZT5; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=mx29Kxts2vrnCngejrGzIgiYUFOSi1vuHRnkw5rOKKDoAD5rkFHt9J/nTGF3fZfJYWEKD3PJ8xFHTLIbcT5aF1A06GbA8H6pV+zbG734TpyVju1yktQ6PJUsK+YfToVfnDw9kqSYvzNZIMMHbkKGSCcd50MDZC+1ATqhTh8BAhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D6es8OUA; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GwH5XZT5"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c7ee3952d6so4719805ad.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 09:57:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D6es8OUA"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8453a81b846so1747462b3a.2
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 10:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782320225; x=1782925025; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782320484; x=1782925284; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bTiRAq90VFPvdthoswICGCbbk82NFtmBH/qctXPK1uM=;
-        b=GwH5XZT5Gjtb/KiCw8TnuO37Blpge4KdrQPeHuge+fZ2ETrA/7DHZDBZJhhj5T9t9T
-         +m0mKXolKbM+sB2/iw5PzfNG9X3CKDq8QaZGGePsE7ehLwyy7NViZtAxz1EOO0qgD91B
-         sDcE44mtf8Uhm/c6mfio2i7R7I2t77uN8d4RO/shjDMAyLXXQgp5TuL2qNZzfP9f491L
-         hVwGb2vv8u4P7+b4j3S6xKNDoGiGW6Vce2462lp2Fkt9ecdJ9NlzKImTGcEdh86+Wsxt
-         pkDn9q1v+NC7T5gda5AA0A7AC36NAdqEGWroymqCYDcuS/Wg2/x6jj5CxstfckPuFGkI
-         g4Vg==
+        bh=ISY2wbCcsFGmwP11+MNFOlIY+gG7N5avT6t+DVDnEh8=;
+        b=D6es8OUAoly9OUWtQLuBHZGqhM1yF4DuY5G5Qeg5+x+l43ivOAZXi9Tj/QQaTmKjeL
+         2Cn5Afo7iMnTwtFsy+Mxg37/QlAZ22u/b7a1JSJFKxuIYs6apGt7CeZIPWvYXRltPsna
+         WR/vZdV3F12O8GOfonrIxoivp+deQbL5NpoG8EY/nj9bnGZqmTYgZ5cdydMkp7FpxB3F
+         a04wDEGjDGpfSlXUlsY0k/yy/vqe1DWNxqpWCK2Tr5jGLIUk0ctnP7MzHBMpjLF9asoM
+         F9vcYRazfeX6V4ya0tnju1h19Wl0KMCb9I9o9hWGOdH0nPDEUOCoPwS+EcaLdOWCYu4h
+         aT9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782320225; x=1782925025;
+        d=1e100.net; s=20251104; t=1782320484; x=1782925284;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bTiRAq90VFPvdthoswICGCbbk82NFtmBH/qctXPK1uM=;
-        b=q30KkEiWHKnu7YJpKzTQhdF/9J8VpNbNTk3XC8wO9vZy0+Y056ajMKOn0y9uyirW1E
-         R+YtTY7vLuRrOYMxuwlRSp0lmvqeHbk+ECmoBj6PMA8pU08hH2GOOXMvCDOk+nhBMSNo
-         RrPheFLLoLFbYpBQzmMFEY9rTJ9OuhE5+ehzTDwC0rmTqrlqwuXXVAFnJ6ME5RaIzdGE
-         ytiGmKV3UvaKt3xlLwJkdxFmnwEzzLT+0sP9HCTxQdeyocs6hPmMqe8/+bl9g641o6Nh
-         R1At6QAQLAI6283BW9qIevhAHOtqCDhHOeYOMOe6vqXegwF5UZtv+NkBOYfNmN/2wrqA
-         DYmw==
-X-Forwarded-Encrypted: i=1; AHgh+RrZEvwkYXKUSN78SghpSClYeOhNfSGfUClVm8ZpUv/387dG+GGjIkiXHt47zyrlztJ9BKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTnrMuUP0GA2aPJjATv1LiT2F57Krv222gl9c8v7sVFUHiGLBo
-	1/OtTUGXLF2hASOASHvBUd0/csY4iqBSsqFEGiHS/7bDXZM3lhXPPUVc9aYHq1nUQzLrQrJQg5n
-	2QLWHLg==
-X-Received: from plpn21.prod.google.com ([2002:a17:902:9695:b0:2c6:b814:535b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fd47:b0:2c0:b081:84b1
- with SMTP id d9443c01a7336-2c7e1464d1amr26763135ad.10.1782320224855; Wed, 24
- Jun 2026 09:57:04 -0700 (PDT)
-Date: Wed, 24 Jun 2026 09:57:04 -0700
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+        bh=ISY2wbCcsFGmwP11+MNFOlIY+gG7N5avT6t+DVDnEh8=;
+        b=o/A+MUbVS5OWOLd56Vm+hea8okNJh8sHen/wqSEHm6KW3r4DIolJVqrxR1I/ItQKde
+         GtfJvQ70oiwrPClqPs2F9eQMVCIeucfbpzz8uBN39EtArOI0oDusqHe1R0Kw8kUcKPKo
+         M7iNi6BR2KZC1bwuAeuiW4U+gOvjOxPKRYGa81MjESrec5HOFLr3VLqI/AzcRqXePyXm
+         uzsSmvaBOdFouiJl4PkXbKe5CRvD8HofGJXe4UWBNMjbnVHoFhtb6nHYgcESi9IM2Ufb
+         ppBsH7SVrLoinuHXIPK4hg0izQ88v/8mQbExhQtQt0kLYC+z4hTAVI7D+NGWf0Ij30dH
+         u7Qg==
+X-Forwarded-Encrypted: i=1; AFNElJ/n6sJyElpYUl/JZs09To13WFDlj/A1yliavnYvCGCKe2lLM9vKQs8LDQcNTivIGV0ksfM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRUGXu9EHHfeMp8iznwffgDeMm7XOMrZxt+/MkPMUS2qlewkQn
+	kCgYNkkVb5otw5SyKTKe8pZue2Fxvchgn/pT/5QuZaDQx/8gJi4ydRk03PVdo+kPF7VSBTH48Mz
+	p3elfTg==
+X-Received: from pfnp26.prod.google.com ([2002:aa7:861a:0:b0:83a:68c:e1c6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:88ca:0:b0:827:2a07:231d
+ with SMTP id d2e1a72fcca58-845a26d1fe1mr5396846b3a.17.1782320483693; Wed, 24
+ Jun 2026 10:01:23 -0700 (PDT)
+Date: Wed, 24 Jun 2026 10:01:23 -0700
+In-Reply-To: <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
-Message-ID: <ajwMYCSrPlxg-Fok@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com> <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
+Message-ID: <ajwNYwsDc2_Vx_kp@google.com>
 Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
  refcounts during conversion safety check
 From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
 	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
 	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
@@ -90,10 +91,31 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 18, 2026, Ackerley Tng wrote:
-> When checking if a guest_memfd folio is safe for conversion, its refcount
-> is examined. A folio may be present in a per-CPU lru_add fbatch, which
-> temporarily increases its refcount. 
+On Tue, Jun 23, 2026, Binbin Wu wrote:
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> > @@ -606,12 +608,20 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+> >  	next = start;
+> >  	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> >  
+> > -		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> > +		for (i = 0; i < folio_batch_count(&fbatch);) {
+> >  			struct folio *folio = fbatch.folios[i];
+> >  
+> > -			if (folio_ref_count(folio) !=
+> > -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+> > -				safe = false;
+> > +			safe = (folio_ref_count(folio) ==
+> > +				folio_nr_pages(folio) +
+> > +				filemap_get_folios_refcount);
+> > +
+> > +			if (safe) {
+> > +				++i;
+> > +			} else if (folio_may_be_lru_cached(folio) &&
+> > +				   !lru_drained) {
+> > +				lru_add_drain_all();
+> 
+> It seems unprivileged userspace is able to trigger lru_add_drain_all() repeatedly
+> by invoking KVM_SET_MEMORY_ATTRIBUTES2 in a loop, which could lead to DoS risk?
 
-Under what circumstances does this happen, and what alternatives are there for
-userspace to work around the issue?
+FIW, if there's a risk, then AFAICT fadvise() and memfd's F_ADD_SEALS already
+have the same risk.
