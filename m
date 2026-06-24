@@ -1,124 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D662D363C45;
-	Wed, 24 Jun 2026 13:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7206D370AED
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 13:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782306946; cv=none; b=q1lu0uK1GFdMom84Xsv4nacdeXHnIdvb0PRLMYugf+2Uq3gpJlFyP9Iv8VSdjnhIkIoEpieTx525PdhOQB58pWV/EF5xHYeJmOrG7qVC4//6LJxdLVOkCkBojqwSoSlZ6jhru8L+YrtiNMLYunaLXNOXddJKhrKDmZZ7GdMHgFA=
+	t=1782307139; cv=none; b=W6VN8H+jM2i6z+8LwURwYgxnaQglHuhxePtnabIrIbVRDO0rNEmKnXSaGCwQnfX5uKrwnsCQB9CjgOjHXcbe5WQ+4+JjPQp/dxCAGwZ70axXpuwtAx2LDONSmznRNDuPWjA8XdQf8TLbBpU8d3zDn/ypCrHa3BVESHRC6wxpuWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782306946; c=relaxed/simple;
-	bh=IDqPT/UxUH9FGfEYniuNUef+hEDrgFrZ3WBKNrRfzdY=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=Ok1rw47tx7bjqxCgGrej0huqU4iPEpR/hSHT0Fa7CDCGCscSU4snMzJeDvAK59YJszxAY6J7B0CJ+DvHV2b/ORfSeCWF3ptk7fAiNaSeo7NKQGg9Qn1To+Xg7l41wqxgVHv7uNrVcqD44UiKghoNElXm317VZgx4oPOkt1gA4sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpuZfIb/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782307139; c=relaxed/simple;
+	bh=mGE1tYmA+kGSWiPrxyKwfqxTfPW+ZKg/3dyYJzL4koY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PuN6MDi5pcS3eqMTQqbSfPEDBbmTA9p7H67EnIKP84JK3k5vGJ3uVPx2gZ3xbF17pLVdJrTDINWhMZyLu+/HWh8UASOwZNp2JExhsuSjy7s13W/C8xl0T4klN/ilSwicRMkqSYeuIoYJ7/nIoVBEeh1H0yEeLxGo3CHRKVB6xhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dB/Mb/Yo; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpuZfIb/"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 1376C1F000E9;
-	Wed, 24 Jun 2026 13:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782306945;
-	bh=FWobWMYxr9HtRCbm8Iueb4NAtV81V2tsUehSZZ4zNQM=;
-	h=From:To:Cc:Subject:Date;
-	b=SpuZfIb/jFYtb09PbjDmmIXdUu/A150vs+gM9+NPeVMjrAEys6wjOlD5nz8K+GYGu
-	 cV7Tvd58uZWZsJXCy69cntQIbArSfmT8nsz4It/RbLyONBEtcm76AkpSEonpFvWnhF
-	 urSfGnKiQzba4znB3jpXAmzMenfjHyYXss5JBcyUdeDJ5HXLSQhQdQAbKCK9zGyv2W
-	 vEjazIEDyJCqAc/VjC6XuAGZJpFhmhcPO2ahzR4jE1+fBIXSRjoBhwP5i67h45ePfL
-	 w90K4F0sIFw9ZRwdsR1voOSDiOgGLa1IYTs6zKU3FkY8zKVENqL8/6JvvD9brnpq++
-	 +aN87mr7XNrBA==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, <kvm@vger.kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Paolo Bonzini" <pbonzini@redhat.com>, "Sean Christopherson" <seanjc@google.com>, "Thomas Gleixner" <tglx@kernel.org>, <x86@kernel.org>
-Cc: hpa@zytor.com, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] KVM: x86: Drop WARN_ON_ONCE() for concurrently disappearing interrupts
-Message-ID: <345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dB/Mb/Yo"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37de7fa80f5so477407a91.3
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 06:18:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782307138; x=1782911938; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NmQyG4j72F26xg99WCY2R6hMRcnqKtCzrcEzc+lTkJE=;
+        b=dB/Mb/YoVmIUfFUyw1xuxYh3nK0ww90CGnUF8YWIT4F5SaDhOAMlmQjvqxbKFRRAhx
+         5LMIqLguh54ecpGvIEdxn+htccRUN3rStCszo84dlKHWfo49Lz9SG6dxO2m8prCpwrBc
+         fiqLFqSsas0TC8QhjIiwVEjyRCEkGh/5qAGMZcDJKxrL/TqwdbZepVM9SNSwrKHNQ54O
+         jJH8TvmQrOLjEyFUj7zcWoxPAlgeA4/1vHw8PTjqqB4a/EA2AQx0nh/jtivNFchIcuga
+         /X+xsairUY9ofwI6SdX+e8pGm955bD/QQzzjv+uhGwYdqqlMRB5LYnezDIzT3cxWyhM9
+         4nUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782307138; x=1782911938;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NmQyG4j72F26xg99WCY2R6hMRcnqKtCzrcEzc+lTkJE=;
+        b=Flxb6aGbkMSd+HWSAmAHaViF4+cBdqiLuicSxJeKdeVmgepfCGCxAl67x53s/6OOsy
+         oX49LYcI/D4WMTvaygJEQ6eAh+DyBtzNV+hy780sehm6b35VlaepDhbJyMs1Xj8Nw3vG
+         bl8OKt45osRBjU4AvLmNVQHL/8TLv/Ri7Fic/DmALrREZOx4s4BDpgCA20xRAKBIIAUB
+         CxbZsRqM36nUqPN/8NEITnDkssJr0izMTqJtpWNDhjlZ4lykBzlkJVq1nj5m2lvf3nyR
+         2jLxHosLkK9JVGG91r3hHl0TgLeytZgjdgLOcB4LdrMPaH3HxIGcoCv/OvaCFxQAvOUM
+         xO2Q==
+X-Gm-Message-State: AOJu0Ywz/8knwXAdzUZDV4XFghQ2EYWyn1jsDDAoboLGWBjfbwRKp1NQ
+	ImXPpDbTZrn/tPb+ssJvH90Un6Eu/UAIDrydhg+D50mXHll7jSSBOwIId3hpKzMug+0MwDENqKA
+	6EGpmoA==
+X-Received: from pjex8.prod.google.com ([2002:a17:90a:1648:b0:36b:c172:1497])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1fcf:b0:369:b9db:b885
+ with SMTP id 98e67ed59e1d1-37d4e438f45mr18290838a91.15.1782307137525; Wed, 24
+ Jun 2026 06:18:57 -0700 (PDT)
+Date: Wed, 24 Jun 2026 06:18:56 -0700
+In-Reply-To: <3948934a-eb84-418f-b29e-c1176b47370d@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Date: Wed, 24 Jun 2026 13:15:45 +0000 (UTC)
+Mime-Version: 1.0
+References: <20260618185515.2021642-1-seanjc@google.com> <3948934a-eb84-418f-b29e-c1176b47370d@redhat.com>
+Message-ID: <ajvZQFzfYKcfgiJo@google.com>
+Subject: Re: [PATCH] KVM: x86: Clamp the EOI vector if its OOB instead of
+ bugging the kernel
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-From: Alexander Potapenko <glider@google.com>
+On Wed, Jun 24, 2026, Paolo Bonzini wrote:
+> On 6/18/26 20:55, Sean Christopherson wrote:
+> > If KVM handles an I/O APIC EOI exit request with a bad vector, clamp the
+> > vector to 255 and hope for the best instead of bugging the host.  In all
+> > likelihood, a missed EOI is survivable for the guest, and it's most
+> > definitely not remotely fatal to the host, i.e. potentially panicking the
+> > host is completely unjustified.  Arbitrarily use 255 for the dummy vector,
+> > the goal is purely to ensure the vector is covered by the bitmap.
+> > 
+> > Opportunistically ensure the EOI vector isn't negative, as it's a signed
+> > integer, i.e. the "greater than 255" check won't guard against setting the
+> > vector to a negative value (KVM uses -1 to say "no IRQ" in many flows).
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >   arch/x86/kvm/x86.c | 5 ++++-
+> >   1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index d9d51803b7b2..fda09e03b960 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -11212,7 +11212,10 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+> >   		if (kvm_check_request(KVM_REQ_NMI, vcpu))
+> >   			process_nmi(vcpu);
+> >   		if (kvm_check_request(KVM_REQ_IOAPIC_EOI_EXIT, vcpu)) {
+> > -			BUG_ON(vcpu->arch.pending_ioapic_eoi > 255);
+> > +			if (WARN_ON_ONCE(vcpu->arch.pending_ioapic_eoi < 0 ||
+> > +					 vcpu->arch.pending_ioapic_eoi > 255))
+> > +				vcpu->arch.pending_ioapic_eoi = 255;
+> > +
+> 
+> Yay, it's my turn to say "why?!?" I'm not going to go full Linus on
+> it :) but I've been waiting for the moment for years!
 
-A warning can be triggered in kvm_check_and_inject_events() when an
-interrupt disappears between the time it is checked via
-kvm_cpu_has_injectable_intr() and the time it is fetched via
-kvm_cpu_get_interrupt(). This occurs because the warning incorrectly
-assumes that if an interrupt is injectable, fetching it must always return
-a valid interrupt vector (i.e., not -1).
+LOL.  Well, well, well, if it isn't the consequences of my own actions.
 
-However, this assumption is broken by level-triggered interrupts that are
-deasserted concurrently by another thread. For example, if a misconfigured
-PIT or a PCI device asserts and then immediately deasserts a
-level-triggered interrupt, the VCPU thread might see the pending interrupt
-during the check but find it gone during the fetch, resulting in
-kvm_cpu_get_interrupt() returning -1.
+> If this happens we have a much bigger problem: the vector is set in
+> kvm_ioapic_send_eoi() and ultimately comes from apic_find_highest_isr().
+> It is simply not going to happen.
+> 
+> Unlike pending_external_vector or highest_stale_pending_ioapic_eoi, this
+> cannot even be -1...255 so make it u8 and call it a day?
 
-The warning manifests as follows:
-
-------------[ cut here ]------------
-irq == -1
-WARNING: arch/x86/kvm/x86.c:10860 at kvm_check_and_inject_events
-arch/x86/kvm/x86.c:10860 [inline]
-WARNING: arch/x86/kvm/x86.c:10860 at vcpu_enter_guest
-arch/x86/kvm/x86.c:11356 [inline]
-WARNING: arch/x86/kvm/x86.c:10860 at vcpu_run+0x57ec/0x7950
-arch/x86/kvm/x86.c:11770
-RIP: 0010:kvm_check_and_inject_events arch/x86/kvm/x86.c:10860 [inline]
-RIP: 0010:vcpu_enter_guest arch/x86/kvm/x86.c:11356 [inline]
-RIP: 0010:vcpu_run+0x57ec/0x7950 arch/x86/kvm/x86.c:11770
-Call Trace:
- <TASK>
- kvm_arch_vcpu_ioctl_run+0x1193/0x2070 arch/x86/kvm/x86.c:12125
- kvm_vcpu_ioctl+0xa61/0xfd0 virt/kvm/kvm_main.c:4470
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Since this is a legitimate Time-Of-Check to Time-Of-Use (TOCTOU) race
-condition that can occur during normal operation, WARN_ON_ONCE() must not
-be used for conditions that can legitimately happen. The patch removes the
-WARN_ON_ONCE() in kvm_check_and_inject_events() and replaces it with a
-pr_err_ratelimited() to log the event instead.
-
-Fixes: bf672720e83c ("KVM: x86: check the kvm_cpu_get_interrupt result before using it")
-Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
-Reported-by: syzbot+dd769db18693736eee89@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dd769db18693736eee89
-Link: https://syzkaller.appspot.com/ai_job?id=35cad3cd-95fd-4c0d-8ca8-812f58d56e59
-Signed-off-by: Alexander Potapenko <glider@google.com>
-
----
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0550359ed..c5b4cddd9 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10857,10 +10857,13 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
- 		if (r) {
- 			int irq = kvm_cpu_get_interrupt(vcpu);
- 
--			if (!WARN_ON_ONCE(irq == -1)) {
-+			if (irq != -1) {
- 				kvm_queue_interrupt(vcpu, irq, false);
- 				kvm_x86_call(inject_irq)(vcpu, false);
- 				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
-+			} else {
-+				pr_err_ratelimited(
-+					"KVM: interrupt disappeared between checking and fetching\n");
- 			}
- 		}
- 		if (kvm_cpu_has_injectable_intr(vcpu))
-
-
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
--- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-You can comment on the patch as usual, syzbot will try to address
-the comments and send a new version of the patch if necessary.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Ya, that's waaay better, especially since pending_ioapic_eoi defaults to '0'
+anyways.
