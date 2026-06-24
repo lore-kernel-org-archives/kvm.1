@@ -1,38 +1,47 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [58.251.27.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6286C26CE1E;
-	Wed, 24 Jun 2026 08:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E58E3624D7;
+	Wed, 24 Jun 2026 08:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=58.251.27.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782288586; cv=none; b=rZZYboPmFMReYmUK32ElblPMKK4dezN6cx1eqNQBbXXdeM6dUBwjHdV62YKk9jSoE8Qx3YfszMsWaaahlWFonoD4E6Qjq+8pMh7rhYfh3zTgbY2MtbTTROZE1XHCBlyChA31vNI/dPKLbNyro4KIL1++NX5pEBPoH0XkPkTfwNo=
+	t=1782288594; cv=none; b=Y4WVVjnI1KsGcSEcbrbFPhJzyofmkY7Ni+WS7uj9D75pb6qGkIrGhzTIeJt0TfuPh8/KlYJqWdw5iy+TRsjPty96IwIMa8pe1lN1S8Cu6a7KahPA8wNEgA/8dy3L1MFRUdhLhjsCl0rjgykgVgoQFLfHbZ8f/cZbAiCZo4xNdzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782288586; c=relaxed/simple;
-	bh=I7fV0vv7P4G/iY1Tg6my6sne+ggdMgqSA4oY4XDddKo=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=kviyFW0Doj78+6T1wifKWz/4ZD551alrx11/pxQXtZZZ317vZ5D6tg8yZqEJswY81ST9rUHwyj8Fv+HQEVZHuw3GTqHElbpgBbd1OVBcqVWBqE7TUI07LAPkG/XakUGxeG5f9QFqQI5zR+6x/002G5V8YcJDmIH+UxT1/MpBix0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+	s=arc-20240116; t=1782288594; c=relaxed/simple;
+	bh=8nlqzFvBUk4skNvu+ukAgV3XS35MmadXMQP16BFdbn0=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=P/pcz8+L97AT9qrzNWSG0C62mKbJKUyUN/jesuG6YipBJuJ3S5tyjVRub7JsforRGv+S3Sigk6fuJl0dIfbNfbBFCOlyKnMCyt+SlEqPfu6d84jWJDS/kqOPz9B22sIK7pzJ/HR7NUxf/TY/gaOyczoUUET1gUkwOKxUPK9YSgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=58.251.27.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mxde.zte.com.cn (unknown [10.35.20.165])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4glZBf3yFMzCh5m;
+	Wed, 24 Jun 2026 16:01:14 +0800 (CST)
+Received: from mxhk.zte.com.cn (unknown [192.168.250.137])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxde.zte.com.cn (FangMail) with ESMTPS id 4glZBX1x2vz5TCG0;
+	Wed, 24 Jun 2026 16:01:08 +0800 (CST)
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4glZNR5X33z8Xrrd;
-	Wed, 24 Jun 2026 16:09:43 +0800 (CST)
-Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
-	by mse-fl2.zte.com.cn with SMTP id 65O89VmN002647;
-	Wed, 24 Jun 2026 16:09:31 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4glZBR49Ywz8Xrrf;
+	Wed, 24 Jun 2026 16:01:03 +0800 (CST)
+Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
+	by mse-fl2.zte.com.cn with SMTP id 65O80qZY088369;
+	Wed, 24 Jun 2026 16:00:52 +0800 (+08)
 	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp04[null])
+Received: from mapi (szxlzmapp02[null])
 	by mapi (Zmail) with MAPI id mid12;
-	Wed, 24 Jun 2026 16:09:33 +0800 (CST)
-X-Zmail-TransId: 2b066a3b90bdafe-1c3f8
+	Wed, 24 Jun 2026 16:00:54 +0800 (CST)
+X-Zmail-TransId: 2b046a3b8eb661b-fd032
 X-Mailer: Zmail v1.0
-Message-ID: <20260624160933260NTWchyx5a1-4pAhy9HVE4@zte.com.cn>
-In-Reply-To: <20260624160054463wcDvJaMoydSggcNOWgcfB@zte.com.cn>
-References: 20260624160054463wcDvJaMoydSggcNOWgcfB@zte.com.cn
-Date: Wed, 24 Jun 2026 16:09:33 +0800 (CST)
+Message-ID: <20260624160054463wcDvJaMoydSggcNOWgcfB@zte.com.cn>
+Date: Wed, 24 Jun 2026 16:00:54 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,49 +54,79 @@ To: <anup@brainfault.org>, <kvm@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 Cc: <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
         <atish.patra@linux.dev>, <alex@ghiti.fr>, <wang.yechao255@zte.com.cn>
-Subject: =?UTF-8?B?wqBbUEFUQ0ggdjMgUkVTRU5EIDMvNV0gUklTQy1WOiBLVk06IFJlbW92ZSByZWR1bmRhbnQgVExCIGZsdXNoIG9wZXJhdGlvbnM=?=
+Subject: =?UTF-8?B?W1BBVENIIHYzIFJFU0VORCAwLzVdIEltcGxlbWVudCBFYWdlciBQYWdlIFNwbGl0dGluZyBmb3IgUklTQy1W?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 65O89VmN002647
+X-MAIL:mse-fl2.zte.com.cn 65O80qZY088369
 X-TLS: YES
 X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Wed, 24 Jun 2026 16:09:43 +0800
+X-SOURCE-IP: 10.35.20.165 unknown Wed, 24 Jun 2026 16:01:14 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A3B90C7.001/4glZNR5X33z8Xrrd
+X-Fangmail-MID-QID: 6A3B8EC9.001/4glZBf3yFMzCh5m
 
 From: Wang Yechao <wang.yechao255@zte.com.cn>
 
-The function kvm_arch_mmu_enable_log_dirty_pt_masked() is called by
-kvm_vm_ioctl_reset_dirty_pages() and kvm_clear_dirty_log_protect().
-Both callers already perform a TLB flush after enabling dirty logging,
-so the TLB flush inside kvm_arch_mmu_enable_log_dirty_pt_masked() is
-unnecessary. Remove it.
+Eager Page Splitting is implemented on x86 and ARM. It improves the
+performance of dirty logging (used in live migrations) when guest memory
+is backed by huge pages.
 
-Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
----
- arch/riscv/kvm/mmu.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+This series implement Eager Page Splitting for RISC-V. The Implementation
+similar to x86 and ARM. It provides two ways to split huge pages in ioctl
+context instead of on fault in vCPU context:
 
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 95e83c50addf5..bc3bad67d507b 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -160,14 +160,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
- 	phys_addr_t start = (base_gfn +  __ffs(mask)) << PAGE_SHIFT;
- 	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
--	bool flush;
+- Split huge pages when dirty logging is enabled when
+  KVM_DIRTY_LOG_INITIALLY_SET is not set. This happens when enabling the
+  KVM_MEM_LOG_DIRTY_PAGES flag of a memslot, and splits the whole memslot
+  into 4K mappings.
 
- 	kvm_riscv_gstage_init(&gstage, kvm);
+- Split huge pages during KVM_CLEAR_DIRTY_LOG when
+  KVM_DIRTY_LOG_INITIALLY_SET is set. This happens when enabling dirty log
+  in small chunks. It does not split the whole memslot, but only the
+  requested chunk range.
 
--	flush = kvm_riscv_gstage_wp_range(&gstage, start, end);
--	if (flush)
--		kvm_flush_remote_tlbs_range(kvm, start >> PAGE_SHIFT,
--					    (end - start) >> PAGE_SHIFT);
-+	kvm_riscv_gstage_wp_range(&gstage, start, end);
- }
+Changes in v3 resend:
+ - Fix patch format to ensure emails reach the linux-riscv and kvm-riscv
+   mailing lists.
+ - Move the free pgd_split_page_cache into kvm_arch_destroy_vm().
 
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+Changes in v3:
+ - Rebase on v7.1 version.
+ - Add patch03 to remove the redundant TLB flush operations.
+
+ sashiko-bot AI review
+ (https://sashiko.dev/#/message/20260603104847.9692C1F00893%40smtp.kernel.org)
+ - Check the kvm->arch.pgd before split huge pages.
+ - Align the start address to PMD_SIZE before split.
+ - Flushing remote TLBs before Dropping mmu_lock.
+
+Changes in v2:
+ - Rename the split_page_cache.
+ - Rename the kvm_riscv_split_huge_pages and
+   kvm_riscv_split_memory_region.
+ - Add lockdep_assert_held check before split huge pages.
+ - Update Documentation/admin-guide/kernel-parameters.txt.
+ - Link to v2
+ https://lore.kernel.org/linux-riscv/20260603175256408L0jnqGs1cJGc0ijCdujci@zte.com.cn/
+
+ - Link to v1:
+ https://lore.kernel.org/linux-riscv/20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn/
+
+
+Wang Yechao (5):
+  RISC-V: KVM: Add the split page cache for ioctl context
+  RISC-V: KVM: Split huge pages when dirty logging is enabled
+  RISC-V: KVM: Remove redundant TLB flush operations
+  RISC-V: KVM: Split huge pages during KVM_CLEAR_DIRTY_LOG
+  RISC-V: KVM: Add the eager_page_split module parameter
+
+ .../admin-guide/kernel-parameters.txt         |  7 +-
+ arch/riscv/include/asm/kvm_gstage.h           |  6 +-
+ arch/riscv/include/asm/kvm_host.h             |  1 +
+ arch/riscv/kvm/gstage.c                       | 21 +++--
+ arch/riscv/kvm/mmu.c                          | 91 ++++++++++++++++++-
+ arch/riscv/kvm/vm.c                           |  6 ++
+ 6 files changed, 116 insertions(+), 16 deletions(-)
+
 -- 
 2.43.5
