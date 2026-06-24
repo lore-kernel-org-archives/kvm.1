@@ -1,158 +1,174 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420663CB2F8
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 19:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782330827; cv=none; b=qeB2W2J95Ujzj2nPM8ulTnSJz9WqVthC6hUK19EoDvO0i15NhviHrpy74ld+BHwoFJhkVxlrUA6dy6RaJp+/OsUOCq53EMIBCvuNh0aMT5u0rUsB1SToHmOU8JC5sUCu0iq58q8He2C22R6p1PAxDFaNugspZOQDjQ9HwCL8V3Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782330827; c=relaxed/simple;
-	bh=0sw9vdmmHIrg289S7LBhBP3TAeh5HlhPIfC0XvwKSeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d1Pr/MmvwyD1vzLRaV6k1yIlTykrcLmP+sy47LwIgGBJ64GCPIcfHTBfI7TMnu3pFLuP2ZyKyegJAbwTNW0ynC3B1Rg7I0zmwFSRrJNMOVAjg81eUqfxnlmnoRfkzny+skLC6XMQiXsuPLbxhbNTDqZCUFvf7HBIiS/O7f9MJWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V8WVZRMs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=swPeArCF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B58F3321DC
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 19:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782330912; cv=pass; b=Lb+LizBUOGMdiEzqhXGDumVCGda3R43ekDvmoBiyhyCdWOBQTX7WxfPiygqjWhOBwQhJBpiNHiS8laKH2+9JcA9Mwhm8cVMPsZFE0GqGT/XZA9naoAtcrQbpuCcIxgU/Lh8l79GFodmtuUEbRoXTiPbDUCsy11eCCil810LuwDo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782330912; c=relaxed/simple;
+	bh=W1Q1ZIS1tK0GuoWOs7eGstZIyMHoTFwb+9lbpX5rjyE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y+Dj5iwgayZ49f0bIgm2H98E5Q3yAt7qiABCICULbjvkQsdLxnr45ZbvNriSFbo7XzLFisxxFf4TrVy0bxNCZKDPrJSMCcJ2x1+lpbqPyYW44HZ4w5bn+joVkqQBQ4JKgEbhfXgpGhR3g2xv9KwSGBbYsm3+r+80DbeMSK8VA+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKFxI7AN; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V8WVZRMs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="swPeArCF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782330825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hQwXPDQFNRwXTCwtbeb7bS0lb7BdO0SS5von3s4mxo4=;
-	b=V8WVZRMspSKhnefhPoUpqtBnZ3POvCSRgOVMjFHCc1k+uHuVZUoq7o7XA2GYAXFBYQdiCr
-	FK8g+Z0W79mHAZwVIeAnGQhJ6HUhmSQNbut6jwjgZmKiebSZin9qYP9t4jyw1+XVi7oBk7
-	Ma0PbMf65Ip4vuVTxboxQfSkT91yM6k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-SG89pnrOPPOAyxwJXRVXqQ-1; Wed, 24 Jun 2026 15:53:43 -0400
-X-MC-Unique: SG89pnrOPPOAyxwJXRVXqQ-1
-X-Mimecast-MFC-AGG-ID: SG89pnrOPPOAyxwJXRVXqQ_1782330823
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49244130073so9229845e9.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:53:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKFxI7AN"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51765331535so5451cf.1
+        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:55:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782330910; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RYjdLXA4Hx3p7xJB+ZEofogh0eoNud+chSi7Un0kPyZa+BBN8zFRmeXbdRcW31N5ue
+         7w6VBhwBp36L0QPPPV33qX22u4rIclsuUEI+86kznUObN8w5Z2DNV3zRlzaxIu7aleBo
+         4/YNHcXApW12AWUwZFX88KM7p9enWpSASHqQbURmrWlXX+B/CcdpJkrmNQeKgy2SZPHe
+         mHAPa7mfB9yHvNov5K9ovXHRCzz98N0LIjZX86+HFZWSsF7HXxAOs4XaYlhEcdNklCWN
+         TtFRnwVw4VMxEjM6RXruzdk0QVk2FNfftjKXeL9qWq+aq8qvPef4fP5EP6MEXsbgAsDa
+         4g7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
+        fh=1AweYqCDdaiSGREufDNVb6iX7R3ZoYVVcKpMgILHiyI=;
+        b=oi1koWN2A0m93Ge3sgOo1ZcwMu5Hvcw2baMMX2U95XjCJAp22JOTAlRr1hXmrTzpvC
+         TT+OU+JYMdssoJLpfZnh7aiHUSCGb66P6I9i8jRIK93FtFGbO1ZOQetgU3NQwQa785JD
+         W6CGHQ20mTTYcrxk+DnJEQ3ogIr4Fr6lu+xtzk3w0NIKf4D+HdJXy3vzP5MyDUu5gYrT
+         gcxZN75j3+o3lB4yl6D8W64FIEPi4H1/2QRwqk1C2+WPOoTAU5d/QdvWjfokS39mYliv
+         /j1+Si6s2Q8ttNsd1pXrgfSlYZaW1DfKjS14WP/6m9y+Dcc8JbLY7F1Rtfj1Du20b12P
+         zI9w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782330823; x=1782935623; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hQwXPDQFNRwXTCwtbeb7bS0lb7BdO0SS5von3s4mxo4=;
-        b=swPeArCF1ipP67Vhjm78dHJ970rMBZ00ss9gJc1WKGlq5puf4NXjOqoPkHLB83YXLK
-         vRtIHq0X3w1xngyrq6fRW78+AG1y+V7X2m7s4Jw0e8PMnYwA5ccU66wzziJVV4KyLCYT
-         iZYxwZpUkVrvd/koVWHs7CAaZBFsPNRXAafDiF/tcEZF24zSV+eGADhi8eGm8fjgXW9L
-         OHfa2E/rbmcUu0EySMu6AOdWwV1DQI8+Sl+XFpBXi6gSlnK4pd2Vhf6EsRbDdMXFoIwR
-         oHQVdeHLHTxeX49D6ZvXIwl6W8bJ2JCX3Jg/LxtraEO386fWmKRWLPyWDYBNWsc3mKdU
-         K8Yw==
+        d=google.com; s=20251104; t=1782330910; x=1782935710; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
+        b=IKFxI7AN91+Su44+nzY2J9cDEgCqiE9J+SIujBBBjaKcESFQBYMLk4NSnVfh4BHaTk
+         fHp24xs2Z1426Qh5ujvz5rpTWPA4hI1GKASTogqqeosMvV40tjnb2dWppPw0oQSZUR00
+         +R5TFV2iPHRtaE96mp7eEUB93YaIvSgCYlp588GveDYO/ZgbqoWpwpUZQ3CdQdifT9Eh
+         /jtCFx9pZORu3/vioCHLYNAZ6FuoqFKo842YYo0T4KqBlY9XOyexra5zeC36h5CHUJrS
+         5gu/5+hlYXpQd7JQBFMdPpR8EOylySyW5v+wM3eYy+hrajoD2OW3Af0bcZ+UuNcXPKwb
+         hUpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782330823; x=1782935623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hQwXPDQFNRwXTCwtbeb7bS0lb7BdO0SS5von3s4mxo4=;
-        b=On8bKJXHMzuRGb92lQsEb62OJmjGmYA+g9URZyi4/Kfp9SJrXvQIzTBjuIT7rlzRHB
-         XpxYX67JQ7ZTZOWBQUpI8RAmTvOFzTOnrAr9A7PL5WHHbsLZZeE8a/2NUXqBilo7oxfq
-         xD7+kY6wmuU9y3+eaLVw5FsmUXJx/cPOBVzxUVcL7Z5OhuoBKsFFScQhinKRWnvTnVoe
-         Rh2O+9zqqxT6vjTSHOyKVSdqWhbJof519ZwaGvnBSxAgka3vvxtpeMjhJq0tXpDKOH2P
-         mXt1+7/7YzMMjodCCBaLe5jLxgWF7toRw1LTwCk0KEt/3KUx5bkjYJFbSpiEGG7REYv0
-         7Atw==
-X-Forwarded-Encrypted: i=1; AFNElJ8nZ8ifjgEqDvGXAEdC5SO/c+oFFqDbr+0sDsjhNSxgQplb0vuwa+hm+HvivEIaVdUDfjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPdS9W2R9HlXV+lDDXxPoimnEqqxxcgq5wMF7sFjUmyQIHYN92
-	5hUpu6KVnVYMa5pKQbfpWMhmrPQMqe9MShRsbXKNTUFFutqRikpaHo9QL8hqliDzE51xmdBo3rv
-	xL6T/PjkaXJpS34z5Re3EiAPRCmexuodmIu32vdyTIUhAW8aNJIJWeg==
-X-Gm-Gg: AfdE7cm2PrhJjftBYrRA4PBjLkc8cw2AH6ZeWYCif+gitphlk4Om2SZ8zk+plCs/O9j
-	oaPWj92KYxPUdEXM1DKDd/CKRn8Wuw8kWXjjR7tBYAyFQSsRWjKd43dSsZV3yjvQRZg1NH+5MgF
-	fBYsXv136T0/wmheY4BmgLj/HwCTh6Mem0tJHxKjvdkPVEAhS0zSZIKNP/ptnqNu/2ZEO1Pio0d
-	cSw6ZDp5P1kplcZ/qWEqLnNtpGmuYQCDVB7vCxw7E/P5a4FXVvgGFu1f/bNT9ET/mCx3Govvrpu
-	lyD+OsVv3TthdXPntG1R/vJAmc+4XaFJDuejmOsSoYIySiE1R/juCOIzmtu4fsRra5C+WAkfecF
-	Aqpmi2w8iRS6wZZ33eg16dsdtmAwEhYCN
-X-Received: by 2002:a05:600c:8716:b0:490:e196:eaee with SMTP id 5b1f17b1804b1-4925b359af6mr134950035e9.10.1782330822582;
-        Wed, 24 Jun 2026 12:53:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:8716:b0:490:e196:eaee with SMTP id 5b1f17b1804b1-4925b359af6mr134949745e9.10.1782330822030;
-        Wed, 24 Jun 2026 12:53:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49264011d5fsm16636315e9.1.2026.06.24.12.53.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 12:53:41 -0700 (PDT)
-Date: Wed, 24 Jun 2026 15:53:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Yousef Alhouseen <alhouseenyousef@gmail.com>
-Cc: Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/vdpa: reject overflowing PA map page counts
-Message-ID: <20260624153850-mutt-send-email-mst@kernel.org>
-References: <20260624190653.2893-1-alhouseenyousef@gmail.com>
+        d=1e100.net; s=20251104; t=1782330910; x=1782935710;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
+        b=XetQtMXG1JzzZ5b3iy2sA3dVp1zMJ+2o38XiCLStP8I60AxzOtViaaIzomJwMNpmZU
+         k3IXNsgyGl11WY+tt/uoj3Ygu1qOhDx/ZuuAZgjTJPaq9dtIXQZFntOLM4lGLOm0AW7s
+         HTIEU7VghTtc5U9DXkVKzMdbLdsZSNyRKEmA8UqANFEWGhQHLPmDe6G7I+iQxBQ2dT53
+         uPzB6OWKh1lANt2GVxTQrjJZFch+M8Pzh1FpxDnM7aUOU9yW1OO13+CtTfw480xy35EZ
+         6hpQEwJvk4o6Z5UaJ0Sl/x9hAeWb878Ur+Pixyn2vGxIjeOIzytzVI2rMRaSXtcYb+6+
+         U7Tw==
+X-Forwarded-Encrypted: i=1; AFNElJ9hq2pn1g9tRzSVsMEgsMY9Kaq17caetkN6JUUecLGBDPZ3Jjl8b0xqt+Tnu7r0ur/4P74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ201ity5S6otYt2k1OsnIN6usSiqjrFhpzt8hIKtZNV3iHHhk
+	dFVG94TplQN8t8Jixdt8Sycvv4gBFwb5NA983T9xWEMCWH4cVjXvPTkvZXGOqqh4ljUi3O+8TJN
+	JOBITf7cOXreuh4SRtAjr5ysvHqvuzuW8FDT48+sR
+X-Gm-Gg: AfdE7clsjJfeCO7QsXAxavkZ5m7JnKxZA6GxF+wEIPc+yFvV0obV0R5PCSj9VBc7MDC
+	tJcJY6OWBrF50+geoD6Sg6bDcYqIDGalCN8Nv7mujSEFT0naHJSRqb11Y+9uYOqyteT9BsO7bDs
+	l1LIovw+O/lOjGAH/WV6FcYtCXZzXL7G5reE/rMsPGND0xYMNkLg12SllyVSykCUJIuPsXPA1eP
+	ZKsM4vsI1gLBrJabvoUMzwsLLGEna2t7yIP3GJlq+KpIatz5iKYlBGwsQvPGHBpxRcLRJTZlg==
+X-Received: by 2002:a05:622a:64a:b0:519:df4f:6c93 with SMTP id
+ d75a77b69052e-51a6ebb200dmr1920671cf.20.1782330909527; Wed, 24 Jun 2026
+ 12:55:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624190653.2893-1-alhouseenyousef@gmail.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-32-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-32-9d2959357853@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Wed, 24 Jun 2026 20:55:00 +0100
+X-Gm-Features: AVVi8CdkNL-Bi4CuQeJBlP58vmddsTQ61Xm1xaJ4QXqFxTKdTVP42Qqva81y8NQ
+Message-ID: <CA+EHjTwJYQmg6oTU49ObF5fQCThghn+TMau=g5zUP8w_KLuiKQ@mail.gmail.com>
+Subject: Re: [PATCH v8 32/46] KVM: selftests: Test conversion flow when INIT_SHARED
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 24, 2026 at 09:06:53PM +0200, Yousef Alhouseen wrote:
-> vhost_vdpa_pa_map() adds the IOVA page offset to the user-controlled map
-> size before computing the number of pages to pin. If that addition wraps,
-> the code can pin and map fewer pages than the requested IOTLB range.
-> 
-> Reject sizes that overflow the page-count calculation.
+On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> Add a test case to verify that conversions between private and shared
+> memory work correctly when the memory is initially created as shared.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-You should add "on 32 bit systems" - I do not see how it can
-overflow on 64 bit.
+Reviewed-by: Fuad Tabba <tabba@google.com>
 
-> Also make the
-> memlock check subtraction-based so a large page count cannot wrap the
-> pinned page total.
+Cheers,
+/fuad
 
-I don't see how this can happen at all - pinned_vm is in units of pages.
-
-> Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 > ---
->  drivers/vhost/vdpa.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> index ac55275fa..090cb8693 100644
-> --- a/drivers/vhost/vdpa.c
-> +++ b/drivers/vhost/vdpa.c
-> @@ -1102,6 +1102,8 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
->  	unsigned int gup_flags = FOLL_LONGTERM;
->  	unsigned long npages, cur_base, map_pfn, last_pfn = 0;
->  	unsigned long lock_limit, sz2pin, nchunks, i;
-> +	unsigned long page_offset;
-> +	u64 pinned_vm;
->  	u64 start = iova;
->  	long pinned;
->  	int ret = 0;
-> @@ -1114,7 +1116,12 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
->  	if (perm & VHOST_ACCESS_WO)
->  		gup_flags |= FOLL_WRITE;
->  
-> -	npages = PFN_UP(size + (iova & ~PAGE_MASK));
-> +	page_offset = iova & ~PAGE_MASK;
-> +	if (size > ULONG_MAX - page_offset) {
-> +		ret = -EINVAL;
-> +		goto free;
-> +	}
-> +	npages = PFN_UP(size + page_offset);
->  	if (!npages) {
->  		ret = -EINVAL;
->  		goto free;
-> @@ -1123,7 +1130,8 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
->  	mmap_read_lock(dev->mm);
->  
->  	lock_limit = PFN_DOWN(rlimit(RLIMIT_MEMLOCK));
-> -	if (npages + atomic64_read(&dev->mm->pinned_vm) > lock_limit) {
-> +	pinned_vm = atomic64_read(&dev->mm->pinned_vm);
-> +	if (npages > lock_limit || pinned_vm > lock_limit - npages) {
->  		ret = -ENOMEM;
->  		goto unlock;
->  	}
-> -- 
-> 2.54.0
-
+>  .../testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index 8e09e241723e5..5b070d3374eae 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> @@ -95,6 +95,12 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)          \
+>  #define GMEM_CONVERSION_TEST_INIT_PRIVATE(test)                                        \
+>         __GMEM_CONVERSION_TEST_INIT_PRIVATE(test, 1)
+>
+> +#define __GMEM_CONVERSION_TEST_INIT_SHARED(test, __nr_pages)                   \
+> +       GMEM_CONVERSION_TEST(test, __nr_pages, GUEST_MEMFD_FLAG_INIT_SHARED)
+> +
+> +#define GMEM_CONVERSION_TEST_INIT_SHARED(test)                                 \
+> +       __GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
+> +
+>  struct guest_check_data {
+>         void *mem;
+>         char expected_val;
+> @@ -186,6 +192,12 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(init_private)
+>         test_convert_to_private(t, 0, 'C', 'E');
+>  }
+>
+> +GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
+> +{
+> +       test_shared(t, 0, 0, 'A', 'B');
+> +       test_convert_to_private(t, 0, 'B', 'C');
+> +       test_convert_to_shared(t, 0, 'C', 'D', 'E');
+> +}
+>
+>  int main(int argc, char *argv[])
+>  {
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
