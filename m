@@ -1,176 +1,143 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E538364953;
-	Wed, 24 Jun 2026 11:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25AA2E7393;
+	Wed, 24 Jun 2026 11:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782301345; cv=none; b=fmZ/HDHkZaooaK51DKDVwTmzjOnr566iygv9anZCo3GHdLcw3IlyM5WVHgNICdnQp6vcI5VLvtQzxAfRrTA6iN+QcF6nniCPsOc6JHVotB407r99X+CT1WqrcbOoSMmaf8bN3XsXufWcD5iWZzFk1sQhUJsbVFxu7LZwJMyUXC8=
+	t=1782301355; cv=none; b=YQXYO6BWbGHj7oDn/Q7x+ZngsYonWzBgbHFfEtlCuFfvQrLRQrfBGGu+QtnPh0fOhYQNCVThuSfBdURYJ7k+mZfuL10d68W1l78FLZo7pKXIWLb+mDIGt3NNcs8bThlQhe0kwmbkqDis6HE9bsd/W8JOX1mOTh2R+63kHex0zpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782301345; c=relaxed/simple;
-	bh=riMPr912UFIPMnkd77dj4O/2qenW/y+bhggkPiDqP2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uFu3olmiXFaChTHCJr3xmY5hgt1RyqrC0uyN8+Sq4XhHKKl3Ee4ya4hIdSMwPSmtHgl11e3ACAjVpYsjNND2lF2PwRo4yNfC+pRPAuobLnBZa9gT6/ZCqtG35fMJl6SpMCdZbfyCSH1FxuiWVwkn3w1hCsRw/cgNYBFUkp1mg+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Vfw1P4/4; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782301355; c=relaxed/simple;
+	bh=h623UEDfapL4GJxlFUPp5951xsVK3JCa5/q54rYUR38=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=m+3mEFNmXcyP3aZ8CNugS0NTRvff0k5SJQYSF1WCdmoy48yXOYHC2mVsJh2chVSt46JihuuEdgIDfRn36N4L2wKvFCgtX42dnNUDb6ono71z7ln6u++hKShgbMDn7rT5+A0pGclt0WmUz/MB5SAybZJPLhbmqg4YapvJWhlLfyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIJa6Tkh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Vfw1P4/4"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9855215A1;
-	Wed, 24 Jun 2026 04:42:17 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 263A93F632;
-	Wed, 24 Jun 2026 04:42:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782301342; bh=riMPr912UFIPMnkd77dj4O/2qenW/y+bhggkPiDqP2Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Vfw1P4/4IoI5cqXw4yBJZNOTaVkYRmMS6+C6sbeyrmmGnGWWzzWff8oMzVCkvRHpG
-	 /WfA6cZgcjrIZBg4la2twn3GyGmuyUH3yH5HcauiNCm7UhB5ttO+fuGOsQ/50nUI2x
-	 XbN64JsbCSXXQ+WSm4c6Fyy4/VKP2cHszV2Zyuew=
-Message-ID: <b49a3107-68be-4f7f-8c66-0f78206c7359@arm.com>
-Date: Wed, 24 Jun 2026 12:42:17 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIJa6Tkh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D871F00A3A;
+	Wed, 24 Jun 2026 11:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782301354;
+	bh=5UG1piZ984bT9bClz0ChcR2PnJ9Rq3r1loi053dwaHc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EIJa6Tkhih7bgy+ZHYr84+VHn7ay48ZXxgZlUNyEk9CTaolXTdhBUPt15cw3UxKjQ
+	 41H8cBXWYjSlA8DnpfQBUvjo7f4gc7STvk6ZToh/TDxbyexz4chG/TW0iB+J4ENKGG
+	 puynJ69kZ1WcRzVSvCUKZLw+POqeu3rUaBQu6rUBd7rdEMyPnYNQOP2BnLu8lzk45Z
+	 ud/M2d8lY7+5cQXiFuxz4XlL6F57V1E1Ovs+w5BOli+Wab+n5tHWej2mdvJfNJSzTw
+	 DjCyILY06dpIhQRPVswMxeNVkxFOIKaI0H5hxoUbs6ccJqw1tdXcqPVQDid5MgdPLp
+	 eGqU6wXA0wF7g==
+From: sashiko-bot@kernel.org
+Subject: Re: [GIT PULL v1 04/12] s390/mm: Fix handling of _PAGE_UNUSED pte
+ bit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260624111928.144283-5-imbrenda@linux.ibm.com>
+References: <20260624111928.144283-1-imbrenda@linux.ibm.com>
+ <20260624111928.144283-5-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 24 Jun 2026 11:42:32 +0000
+Message-Id: <20260624114233.30D871F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-To: Matt Evans <matt@ozlabs.org>, "Tian, Kevin" <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-References: <20260610154327.37758-1-matt@ozlabs.org>
- <20260610154327.37758-2-matt@ozlabs.org> <aisAc1HRn2Wa4F9p@google.com>
- <DM6PR11MB36904ED2E1D2C646644F67668C182@DM6PR11MB3690.namprd11.prod.outlook.com>
- <0dfadf98-a904-4e6a-b078-5caf27bc7922@ozlabs.org>
- <81a9d212-996e-42e1-aabf-b120a13e94c3@arm.com>
- <88a9ebaa-8637-4290-b299-acae0e3065f8@ozlabs.org>
- <feaefa41-9f67-4d4f-a3e0-282dca41f3eb@ozlabs.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <feaefa41-9f67-4d4f-a3e0-282dca41f3eb@ozlabs.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 23/06/2026 6:47 pm, Matt Evans wrote:
-> Hi Robin, me,
-> 
-> On 23/06/2026 16:59, Matt Evans wrote:
->> Heya Robin,
->>
->> On 23/06/2026 16:48, Robin Murphy wrote:
->>> On 12/06/2026 3:31 pm, Matt Evans wrote:
->>>> Hi Kevin, Pranjal, (+Robin, hi!)
->>>
->>> Oh hey there! :)
->>>
->>>> On 12/06/2026 04:39, Tian, Kevin wrote:
->>>>>> From: Pranjal Shrivastava <praan@google.com>
->>>>>> Sent: Friday, June 12, 2026 2:38 AM
->>>>>>
->>>>>> On Wed, Jun 10, 2026 at 04:43:15PM +0100, Matt Evans wrote:
->>>>>>> --- a/drivers/pci/Kconfig
->>>>>>> +++ b/drivers/pci/Kconfig
->>>>>>> @@ -206,11 +206,7 @@ config PCIE_TPH
->>>>>>>    config PCI_P2PDMA
->>>>>>>        bool "PCI peer-to-peer transfer support"
->>>>>>>        depends on ZONE_DEVICE
->>>>>>> -    #
->>>>>>> -    # The need for the scatterlist DMA bus address flag means PCI
->>>>>> P2PDMA
->>>>>>> -    # requires 64bit
->>>>>>> -    #
->>>>>>> -    depends on 64BIT
->>>>>>> +    select PCI_P2PDMA_CORE
->>>>>>>        select GENERIC_ALLOCATOR
->>>>>>>        select NEED_SG_DMA_FLAGS
->>>>>>>        help
->>>>>>
->>>>>> Nit: Did we drop depends on 64BIT intentionally here? I guess the full
->>>>>> PCI_P2PDMA stack still selects NEED_SG_DMA_FLAGS? IIRC,
->>>>>> NEED_SG_DMA_FLAGS doesn't select 64BIT?
->>>>>
->>>>> seems that comment is stale. According to the commit msg:
->>>>>
->>>>> " it would make vfio-pci only available if CONFIG_ZONE_DEVICE is
->>>>> present (e.g. 64-bit systems), "
->>>>>
->>>>> so it sounds a redundant dependency hence is removed.
->>>>
->>>> This was intentional.  In practice there is still a dependency on 64BIT
->>>> for PCI_P2PDMA, but it is because of ZONE_DEVICE (and mem hotplug).  The
->>>> key need is PCI_P2PDMA_CORE is available on !64BIT for VFIO, but I
->>>> didn't see a requirement from PCI_P2PDMA itself (as opposed to its
->>>> dependencies).  If I've missed one, I can put it back...
->>>>
->>>> But NEED_SG_DMA_FLAGS doesn't smell quite right; I see from comments in
->>>>
->>>>     af2880ec44021 ("scatterlist: add dedicated config for DMA flags")
->>>>
->>>> that it assumes 64BIT, but it seems to be missing a "depends on 64BIT".
->>>>
->>>> Robin -- should that depend on 64BIT?
->>>
->>> Indeed, looking at the history it seems like that was overlooked, but it
->>> worked out at the time since the only selector of NEED_SG_DMA_FLAGS was
->>> PCI_P2PDMA as you say. If we're now generalising then moving the
->>> explicit 64BIT dependency to NEED_SG_DMA_FLAGS itself sounds like the
->>> right thing to do.
->>
->> Cheers for confirming.  I'll send a patch separate to this series (since
->> the deps work out OK for PCI_P2PDMA for the reasons mentioned).
-> 
-> I think we were wrong, NEED_SG_DMA_FLAGS doesn't _need_ 64BIT.
-> 
-> Other than P2PDMA, the other consumer of NEED_SG_DMA_FLAGS is IOMMU_DMA,
-> and turns out if one builds an i386 kernel with INTEL_IOMMU (or some
-> other configs, like Xen) then NEED_SG_DMA_FLAGS is enabled on 32-bit
-> builds too.
-> 
-> The scatterlist.h comments af2880ec44021 touched are just saying that
-> _since_ P2PDMA depends on 64BIT, there _is_ circumstantial padding so
-> let's use it for flags.  It doesn't require 64BIT.
-> 
-> For example struct scatterlist isn't pushed over some special (e.g.
-> power-of-two) size when NEED_SG_DMA_FLAGS is enabled on 32-bit; I can't
-> find a reason it should be prevented on 32-bit builds (and found cases
-> above in which it is already enabled in them).
-> 
-> So I won't change the NEED_SG_DMA_FLAGS dependencies after all.  Sorry
-> for the noise -- as ever if I've missed something do please explain.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Ah, I was also taking the comments at face value, plus conflating the 
-memory of the original series which did stash the P2P flag in bit 2 of 
-the page_link pointer - in my defence, it's far too hot for my brain to 
-work properly :)
+New issues:
+- [Medium] The KVM unused page discard optimization is completely defeated =
+by page aging.
 
-Doing a bit more archaeology, the separate dma_flags field was a late 
-suggestion just before the series was merged, so I guess it's actually 
-just that the comments never got updated accordingly. Sorry for 
-perpetuating the confusion!
+Pre-existing issues:
+- [Critical] Guest memory corruption because hardware memory access does no=
+t clear `_PAGE_UNUSED`.
+--
 
-Cheers,
-Robin.
+commit 4123a9573ff29d2fd29637723b6e4e5841aed14e
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-> (I'll continue with removing the P2PDMA dependency on 64BIT because it
-> seems P2PDMA's dependencies rely on 64BIT, though P2PDMA itself doesn't.)
-> 
-> Thanks,
-> 
-> 
-> Matt
+s390/mm: Fix handling of _PAGE_UNUSED pte bit
 
+The _PAGE_UNUSED softbit should not really be lying around. Its sole
+purpose is to signal to try_to_unmap_one() and try_to_migrate_one()
+that the page can be discarded instead of being moved / swapped.
+
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgta=
+ble.h
+> index 2c6cee8241e04..4740c75649ebb 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -980,6 +980,8 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+> =20
+>  static inline void set_pte(pte_t *ptep, pte_t pte)
+>  {
+> +	if (pte_present(pte))
+> +		pte =3D clear_pte_bit(pte, __pgprot(_PAGE_UNUSED));
+
+[Severity: Critical]
+This is a pre-existing issue, but does moving the clearing logic into
+set_pte() fully resolve the guest memory corruption?
+
+When the guest resumes using a page, the s390 hardware transparently updates
+the referenced and dirty bits in the hardware Storage Key without triggering
+a host page fault. Because no software page fault occurs, set_pte() is never
+invoked, leaving _PAGE_UNUSED erroneously set on the active host PTE.
+
+If memory compaction occurs, try_to_migrate_one() checks pte_unused() and
+drops the page without first validating the Storage Key:
+
+mm/rmap.c:try_to_migrate_one() {
+    ...
+    } else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
+               !userfaultfd_armed(vma)) {
+        /*
+         * The guest indicated that the page content is of no
+         * interest anymore. Simply discard the pte, vmscan
+         * will take care of the rest.
+         */
+    ...
+}
+
+Could this lead to the silent loss of active guest data since the migration
+path incorrectly assumes the page is discardable?
+
+[Severity: Medium]
+Does clearing _PAGE_UNUSED unconditionally here in set_pte() defeat the KVM
+unused page discard optimization during page aging?
+
+When the system is under memory pressure, shrink_page_list() calls
+folio_referenced(), which invokes ptep_test_and_clear_young() to inspect the
+Storage Key and clear the young bit.
+
+On s390, ptep_test_and_clear_young() writes the updated PTE back via an
+unconditional call to set_pte(). This would permanently destroy the
+KVM-provided _PAGE_UNUSED marker.
+
+Immediately after aging, try_to_unmap_one() checks the unused status:
+
+mm/rmap.c:try_to_unmap_one() {
+    ...
+    } else if (likely(pte_present(pteval)) && pte_unused(pteval) &&
+               !userfaultfd_armed(vma)) {
+        /*
+         * The guest indicated that the page content is of no
+         * interest anymore. Simply discard the pte
+         */
+    ...
+}
+
+Because the bit was just cleared by the aging process, won't this evaluate
+to false, causing truly unused guest pages to be unnecessarily swapped out
+instead of efficiently discarded?
+
+>  	WRITE_ONCE(*ptep, pte);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624111928.1442=
+83-1-imbrenda@linux.ibm.com?part=3D4
