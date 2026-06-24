@@ -1,55 +1,51 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044383EAC80
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B183E5EE1
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 21:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782336684; cv=none; b=lEqmI17sG4d6wvN3XZOuKCj8IetA0qGsCBjfSrhx64Wa6ntNKaiFbqI4xjueCKLrxBDjNgsLKLh/iAxtckQ1Zc1jqAQuGye19DuX2ktvLnH8dfxZeiOPGZsXFZOF3Wx8SQuAoqP61mH2uh7GI4z0kh3kjQ+QStV5hshmLpBTv2c=
+	t=1782337345; cv=none; b=t1A/KvQ7nHuNapPVeLOQkvfK/RqodMK2QAPNVah4h9IOJ6be+CMRfzSFH/G629XdzfQneMbmKWRMwwAc3uCaoDdTbnQu04vdTnDoMstsMcBzeJ26C1X6E45Wni8Qu1TdhbOA0kwZ9Z/aYHqMyMQldIc+y0pE41+sCI8MrO5nqtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782336684; c=relaxed/simple;
-	bh=vvKL0LhtyJjXE9vYK8YqtXtZ+VnQ2mKpewibzcifO4s=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NlCUtQGerQ5qJ+9dU1VcUhrqUeRYHEffbL+qcxsB9aMZsYhBTqUUrwgrgEcxsWGHyiCxM3lBA3Cq484xlcXHVipfbfLZYThMGqrJ9DKW4gSa1chtTRJ3ru1OO1n/QoGzy7XVnmBrxzGLKXPzf7oe1GhTjwozsq5qy+bTwkVJQ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iIJKt//2; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1782337345; c=relaxed/simple;
+	bh=E4Ehy9dNOOQU8yQmBRGbmAhK928Bws8MPIirPAuH40w=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eoFl7lVyvdaoHTqDtoMzS0LR4a0TYXIo4vhAbaipJbSOD59YjcW+OMxXbowMGbgcJzi6vTtS1E8c/U3QoOzks3MnY3TZgvBhcVwjHojwDukUAHupNpAnpcxhyuK5NhtD5oAE5sEG45YyeXFjd7/8PPKT/zSWlgCKOuxIoRWw3K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AmpIelhn; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iIJKt//2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AmpIelhn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782336680;
+	s=mimecast20190719; t=1782337341;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cxZxjZhyAgmX7mwqDmxmVC/CMHC4diYsTV8Pcr0ZCMo=;
-	b=iIJKt//2Gif1Dk4uXFsKOuwHteK8UXLM2wCqwYs09OOwT1vGKf5I7EPqBmcvNqlz4WFu/E
-	AMKPXOTqfmBxrKNb1v7+/2cqnjPmR0f5NdT6xTxr+a5RJb//Px5kJoileBatL7Y3mvMay+
-	9sMnKjwge3rpBAutcdxFoxfZjGZa3Sg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tVoXy41jyuhdNP7TFRpfdnwd9ePJiil+Vo6QBlTewG0=;
+	b=AmpIelhnTsDaO+oih7EYptzgMSM/C2g20ektw+8LWN8VFi6kgqfZKKH9AHKZJ/1gdFnyYI
+	4IeRBHgYS9ZdiBKwd1hKpBsSyXxykqCwlBC8GoTy5DNbusXaL0YD4BuMT0Tajolpf19Zkw
+	b3GGyDGyS6LRq+KF5vrmqpUp7YZaGOo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-UdTo0SG5NcKdaUuft6poqA-1; Wed,
- 24 Jun 2026 17:31:16 -0400
-X-MC-Unique: UdTo0SG5NcKdaUuft6poqA-1
-X-Mimecast-MFC-AGG-ID: UdTo0SG5NcKdaUuft6poqA_1782336675
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-Z4FGYoHcPHuSkjpC2Klenw-1; Wed,
+ 24 Jun 2026 17:42:20 -0400
+X-MC-Unique: Z4FGYoHcPHuSkjpC2Klenw-1
+X-Mimecast-MFC-AGG-ID: Z4FGYoHcPHuSkjpC2Klenw_1782337339
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 935A41954B38;
-	Wed, 24 Jun 2026 21:31:15 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 68B7D1955F7D;
+	Wed, 24 Jun 2026 21:42:19 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D8BD195608D;
-	Wed, 24 Jun 2026 21:31:15 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 025CF1686;
+	Wed, 24 Jun 2026 21:42:18 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Subject: [PATCH 18/19] KVM: x86/mmu: parameterize update_permission_bitmask()
-Date: Wed, 24 Jun 2026 17:31:01 -0400
-Message-ID: <20260624213102.71082-19-pbonzini@redhat.com>
-In-Reply-To: <20260624213102.71082-1-pbonzini@redhat.com>
-References: <20260624213102.71082-1-pbonzini@redhat.com>
+Subject: [PATCH v2 7.2-based 00/19] KVM: apply chainsaw to struct kvm_mmu
+Date: Wed, 24 Jun 2026 17:41:59 -0400
+Message-ID: <20260624214218.73796-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,72 +54,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Make it possible to apply the computation loop to both guest
-and shadow PTEs formats; the latter do not have an extended role, so
-pass the four parameters to the function one by one.
+This is the same as what I have just posted at
+https://lore.kernel.org/kvm/20260624213102.71082-1-pbonzini@redhat.com/,
+just on a 7.2 base (i.e. without Sean's spring cleaning series
+https://lore.kernel.org/kvm/20260613000329.732085-1-seanjc@google.com/),
+so as to trigger Sashiko's review.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/mmu/mmu.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+The code is exactly the same, other than some functions (mostly
+load_pdptrs) and prototypes having moved from x86.c to regs.c,
+or out of kvm_host.h.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 03e0bd3c8490..11d86e34acf4 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5658,18 +5658,15 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
- 	 (14 & (access) ? 1 << 14 : 0) | \
- 	 (15 & (access) ? 1 << 15 : 0))
- 
--static void update_permission_bitmask(struct kvm_pagewalk *pw, bool tdp, bool ept)
-+static void __update_permission_bitmask(struct kvm_page_format *fmt, bool tdp,
-+					bool ept, bool cr4_smep, bool cr4_smap,
-+					bool cr0_wp, bool efer_nx)
- {
- 	unsigned index;
- 
- 	const u16 w = ACC_BITS_MASK(ACC_WRITE_MASK);
- 	const u16 r = ACC_BITS_MASK(ACC_READ_MASK);
- 
--	bool cr4_smep = is_cr4_smep(pw);
--	bool cr4_smap = is_cr4_smap(pw);
--	bool cr0_wp = is_cr0_wp(pw);
--	bool efer_nx = is_efer_nx(pw);
--
- 	/*
- 	 * In hardware, page fault error codes are generated (as the name
- 	 * suggests) on any kind of page fault.  permission_fault() and
-@@ -5682,7 +5679,7 @@ static void update_permission_bitmask(struct kvm_pagewalk *pw, bool tdp, bool ep
- 	 * permission_fault() to indicate accesses that are *not* subject to
- 	 * SMAP restrictions.
- 	 */
--	for (index = 0; index < ARRAY_SIZE(pw->fmt.permissions); ++index) {
-+	for (index = 0; index < ARRAY_SIZE(fmt->permissions); ++index) {
- 		unsigned pfec = index << 1;
- 
- 		/*
-@@ -5756,10 +5753,17 @@ static void update_permission_bitmask(struct kvm_pagewalk *pw, bool tdp, bool ep
- 				smapf = (pfec & (PFERR_RSVD_MASK|PFERR_FETCH_MASK)) ? 0 : kf;
- 		}
- 
--		pw->fmt.permissions[index] = ff | uf | wf | rf | smapf;
-+		fmt->permissions[index] = ff | uf | wf | rf | smapf;
- 	}
- }
- 
-+static void update_permission_bitmask(struct kvm_pagewalk *w, bool tdp, bool ept)
-+{
-+	__update_permission_bitmask(&w->fmt, tdp, ept,
-+				    is_cr4_smep(w), is_cr4_smap(w),
-+				    is_cr0_wp(w), is_efer_nx(w));
-+}
-+
- /*
- * PKU is an additional mechanism by which the paging controls access to
- * user-mode addresses based on the value in the PKRU register.  Protection
+Paolo
+
+v1->v2:
+- remove merged patches
+- mask pfec in spte_permission_fault()
+- swap patches 13 and 14 (18 and 19 in v1) to fix bisectability
+
+Paolo Bonzini (19):
+  KVM: x86/hyperv: remove unnecessary mmu_is_nested() check
+  KVM: x86/mmu: introduce struct kvm_pagewalk
+  KVM: x86/mmu: move get_guest_pgd to struct kvm_pagewalk
+  KVM: x86/mmu: move gva_to_gpa to struct kvm_pagewalk
+  KVM: x86/mmu: move get_pdptr to struct kvm_pagewalk
+  KVM: x86/mmu: move inject_page_fault to struct kvm_pagewalk
+  KVM: x86/mmu: move CPU-related fields to struct kvm_pagewalk
+  KVM: x86/mmu: change CPU-role accessor fields to take struct
+    kvm_pagewalk
+  KVM: x86/mmu: move remaining permission fields to struct kvm_pagewalk
+  KVM: x86/mmu: pass struct kvm_pagewalk to kvm_mmu_invalidate_addr
+  KVM: x86/mmu: change walk_mmu to struct kvm_pagewalk
+  KVM: x86/mmu: change nested_mmu.w to ngva_walk
+  KVM: x86/mmu: pull struct kvm_pagewalk out of struct kvm_mmu
+  KVM: x86/mmu: unify root_gva_walk and ngva_walk
+  KVM: x86/mmu: cleanup functions that initialize shadow MMU
+  KVM: x86/mmu: pull page format to a new struct
+  KVM: x86/mmu: merge struct rsvd_bits_validate into struct
+    kvm_page_format
+  KVM: x86/mmu: parameterize update_permission_bitmask()
+  KVM: x86/mmu: use kvm_page_format to test SPTEs
+
+ arch/x86/include/asm/kvm_host.h |  72 +++---
+ arch/x86/kvm/hyperv.c           |   7 +-
+ arch/x86/kvm/mmu.h              |  31 +--
+ arch/x86/kvm/mmu/mmu.c          | 411 +++++++++++++++-----------------
+ arch/x86/kvm/mmu/paging_tmpl.h  |  88 +++----
+ arch/x86/kvm/mmu/spte.c         |   4 +-
+ arch/x86/kvm/mmu/spte.h         |  69 +++---
+ arch/x86/kvm/mmu/tdp_mmu.c      |   3 +-
+ arch/x86/kvm/svm/nested.c       |  13 +-
+ arch/x86/kvm/vmx/nested.c       |  15 +-
+ arch/x86/kvm/vmx/vmx.c          |   2 +-
+ arch/x86/kvm/x86.c              |  58 ++---
+ 12 files changed, 382 insertions(+), 391 deletions(-)
+
 -- 
 2.52.0
-
 
