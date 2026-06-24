@@ -1,174 +1,200 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B58F3321DC
-	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 19:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782330912; cv=pass; b=Lb+LizBUOGMdiEzqhXGDumVCGda3R43ekDvmoBiyhyCdWOBQTX7WxfPiygqjWhOBwQhJBpiNHiS8laKH2+9JcA9Mwhm8cVMPsZFE0GqGT/XZA9naoAtcrQbpuCcIxgU/Lh8l79GFodmtuUEbRoXTiPbDUCsy11eCCil810LuwDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782330912; c=relaxed/simple;
-	bh=W1Q1ZIS1tK0GuoWOs7eGstZIyMHoTFwb+9lbpX5rjyE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y+Dj5iwgayZ49f0bIgm2H98E5Q3yAt7qiABCICULbjvkQsdLxnr45ZbvNriSFbo7XzLFisxxFf4TrVy0bxNCZKDPrJSMCcJ2x1+lpbqPyYW44HZ4w5bn+joVkqQBQ4JKgEbhfXgpGhR3g2xv9KwSGBbYsm3+r+80DbeMSK8VA+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IKFxI7AN; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB696366562
+	for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 20:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782331205; cv=none; b=UV+TpZmHQbkMuzoj5SvXiAPSR4w0EeOksJPv5DoF2gNTxBQtDCNAMkHapbo1lPFz0Awc5XuCM4SUjkvVnS2lbEPesBPINS/QXtV+63CbA8fK0ikxFWTRappDs37ivy1Njx4XgCUrXpsobwCMfz7E1AkwKuqm4/jPdhZe9FqRJik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782331205; c=relaxed/simple;
+	bh=DO10XwF+Bo4sX74Fj06EIaGYjAZIRDN0qt1MIhs++nQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CPPT9gu3y7f3otjLePZCdxIdof3dFbQTYY3h959chrL5TykFTKaR8y34b/dURxPVuNGwjf0Nrrr63+8JoFMkiEkyqyz/tM3KuAUWIgocKZG86MeaiuMWFYUywl87zA5vqWJtAgNQ+FAOOSck2v7Jiqzp6jBNyExfrbflvdfcPD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Gi/EuNtV; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IKFxI7AN"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51765331535so5451cf.1
-        for <kvm@vger.kernel.org>; Wed, 24 Jun 2026 12:55:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782330910; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RYjdLXA4Hx3p7xJB+ZEofogh0eoNud+chSi7Un0kPyZa+BBN8zFRmeXbdRcW31N5ue
-         7w6VBhwBp36L0QPPPV33qX22u4rIclsuUEI+86kznUObN8w5Z2DNV3zRlzaxIu7aleBo
-         4/YNHcXApW12AWUwZFX88KM7p9enWpSASHqQbURmrWlXX+B/CcdpJkrmNQeKgy2SZPHe
-         mHAPa7mfB9yHvNov5K9ovXHRCzz98N0LIjZX86+HFZWSsF7HXxAOs4XaYlhEcdNklCWN
-         TtFRnwVw4VMxEjM6RXruzdk0QVk2FNfftjKXeL9qWq+aq8qvPef4fP5EP6MEXsbgAsDa
-         4g7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
-        fh=1AweYqCDdaiSGREufDNVb6iX7R3ZoYVVcKpMgILHiyI=;
-        b=oi1koWN2A0m93Ge3sgOo1ZcwMu5Hvcw2baMMX2U95XjCJAp22JOTAlRr1hXmrTzpvC
-         TT+OU+JYMdssoJLpfZnh7aiHUSCGb66P6I9i8jRIK93FtFGbO1ZOQetgU3NQwQa785JD
-         W6CGHQ20mTTYcrxk+DnJEQ3ogIr4Fr6lu+xtzk3w0NIKf4D+HdJXy3vzP5MyDUu5gYrT
-         gcxZN75j3+o3lB4yl6D8W64FIEPi4H1/2QRwqk1C2+WPOoTAU5d/QdvWjfokS39mYliv
-         /j1+Si6s2Q8ttNsd1pXrgfSlYZaW1DfKjS14WP/6m9y+Dcc8JbLY7F1Rtfj1Du20b12P
-         zI9w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782330910; x=1782935710; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
-        b=IKFxI7AN91+Su44+nzY2J9cDEgCqiE9J+SIujBBBjaKcESFQBYMLk4NSnVfh4BHaTk
-         fHp24xs2Z1426Qh5ujvz5rpTWPA4hI1GKASTogqqeosMvV40tjnb2dWppPw0oQSZUR00
-         +R5TFV2iPHRtaE96mp7eEUB93YaIvSgCYlp588GveDYO/ZgbqoWpwpUZQ3CdQdifT9Eh
-         /jtCFx9pZORu3/vioCHLYNAZ6FuoqFKo842YYo0T4KqBlY9XOyexra5zeC36h5CHUJrS
-         5gu/5+hlYXpQd7JQBFMdPpR8EOylySyW5v+wM3eYy+hrajoD2OW3Af0bcZ+UuNcXPKwb
-         hUpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782330910; x=1782935710;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=CJJECXfHWYzxy9+jrHC2YkFB6UtBZdMEUotYUUXmsS8=;
-        b=XetQtMXG1JzzZ5b3iy2sA3dVp1zMJ+2o38XiCLStP8I60AxzOtViaaIzomJwMNpmZU
-         k3IXNsgyGl11WY+tt/uoj3Ygu1qOhDx/ZuuAZgjTJPaq9dtIXQZFntOLM4lGLOm0AW7s
-         HTIEU7VghTtc5U9DXkVKzMdbLdsZSNyRKEmA8UqANFEWGhQHLPmDe6G7I+iQxBQ2dT53
-         uPzB6OWKh1lANt2GVxTQrjJZFch+M8Pzh1FpxDnM7aUOU9yW1OO13+CtTfw480xy35EZ
-         6hpQEwJvk4o6Z5UaJ0Sl/x9hAeWb878Ur+Pixyn2vGxIjeOIzytzVI2rMRaSXtcYb+6+
-         U7Tw==
-X-Forwarded-Encrypted: i=1; AFNElJ9hq2pn1g9tRzSVsMEgsMY9Kaq17caetkN6JUUecLGBDPZ3Jjl8b0xqt+Tnu7r0ur/4P74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ201ity5S6otYt2k1OsnIN6usSiqjrFhpzt8hIKtZNV3iHHhk
-	dFVG94TplQN8t8Jixdt8Sycvv4gBFwb5NA983T9xWEMCWH4cVjXvPTkvZXGOqqh4ljUi3O+8TJN
-	JOBITf7cOXreuh4SRtAjr5ysvHqvuzuW8FDT48+sR
-X-Gm-Gg: AfdE7clsjJfeCO7QsXAxavkZ5m7JnKxZA6GxF+wEIPc+yFvV0obV0R5PCSj9VBc7MDC
-	tJcJY6OWBrF50+geoD6Sg6bDcYqIDGalCN8Nv7mujSEFT0naHJSRqb11Y+9uYOqyteT9BsO7bDs
-	l1LIovw+O/lOjGAH/WV6FcYtCXZzXL7G5reE/rMsPGND0xYMNkLg12SllyVSykCUJIuPsXPA1eP
-	ZKsM4vsI1gLBrJabvoUMzwsLLGEna2t7yIP3GJlq+KpIatz5iKYlBGwsQvPGHBpxRcLRJTZlg==
-X-Received: by 2002:a05:622a:64a:b0:519:df4f:6c93 with SMTP id
- d75a77b69052e-51a6ebb200dmr1920671cf.20.1782330909527; Wed, 24 Jun 2026
- 12:55:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Gi/EuNtV"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65OJmIIR2056159;
+	Wed, 24 Jun 2026 19:59:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=1FC7h/Tf3tea9aTJqa/h6+iCZDtV
+	kupvE0BRfZZyGcA=; b=Gi/EuNtVlAoDv+/57wuZWYkxJbPBLL1NRkXlEqhe5414
+	4AgaU8Jzfi9dkM5ujLebsiXNUaThMyXEbc/ToQJYgZmpbsOaUgPolgMKkr/n+ls7
+	O9kctEZCOQny3l56btdxLF9hjSF0BjPIcgTxCe3sm2lBD4TewBQuO3Om6yddlcNW
+	Yukf/FNQRk2BrAb+kiRj771Py/otOXABS18AtKmoa5/h2dmKaE0zeanLSoNyVxLS
+	agXf7oXR10LarzeJXmsXWu57m7WB6ZjJA2KOaN0n9VQJAgGg7VFJWWpuiHrLfVyf
+	sbfeZkINmkF0KzHY6Ci/7yL9139jQrZYUXxQgK0QDQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjc3paaj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 19:59:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65OJnxHD025071;
+	Wed, 24 Jun 2026 19:59:40 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7vyt78w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jun 2026 19:59:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65OJxasv26149202
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jun 2026 19:59:36 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5B27220043;
+	Wed, 24 Jun 2026 19:59:36 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E430020040;
+	Wed, 24 Jun 2026 19:59:26 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.20.104])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Jun 2026 19:59:26 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>,
+        =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: [PATCH v2 0/8] Testcase improvements and Power8E/NVL removal
+Date: Thu, 25 Jun 2026 01:29:16 +0530
+Message-ID: <20260624195924.1422821-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-32-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-32-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 24 Jun 2026 20:55:00 +0100
-X-Gm-Features: AVVi8CdkNL-Bi4CuQeJBlP58vmddsTQ61Xm1xaJ4QXqFxTKdTVP42Qqva81y8NQ
-Message-ID: <CA+EHjTwJYQmg6oTU49ObF5fQCThghn+TMau=g5zUP8w_KLuiKQ@mail.gmail.com>
-Subject: Re: [PATCH v8 32/46] KVM: selftests: Test conversion flow when INIT_SHARED
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=X4Ni7mTe c=1 sm=1 tr=0 ts=6a3c372d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=p0WdMEafAAAA:8 a=MdZrTe2ayghipT-8awEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI0MDE2NiBTYWx0ZWRfX7MOPVq/MB9PP
+ PBQXAqIzJskOZv9CZE08TCsQEsXGbScSkXtBuJG8mKaYxwDHdPiacBUg04Q9L0c2EV3LSW+t/ww
+ C8t4Khvg16su+FK2T+gLdtvK2kUnNaI=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI0MDE2NiBTYWx0ZWRfX0r2tQm0RaqlW
+ xBibd5k6HbQef7gcmZtSv/EPO7POuUXyFEx0InstWnI0hG60W3uOHwq+1IhxkSr2Hbpb8bVrqJ7
+ +gUXUV2cis0k8NLL2ganWjPhAXvc+GdBgwb4fXCrwlHentMT8oVZaJuwYZrOzUBGKyZPM1Mv/K/
+ FnT3/UY/Zqw+sA4OqKstvKM/QWXFCzBJZBojvKOfsSk4TpYTBjAKpDWOlizLBRsfwW1i49/Hjbi
+ kZDLq7q20psnjmYScPiDLOP8YhZxXf0kO1NcXyK5V9Fyz7XYJhFMu0w7wUxyEmY9PYTElDkRyhR
+ g/GmuHkGQvs1WuFUmAdUcr8vSM3k+pSt2MdMm0e4VP99MiLXsaoBbrVRMCo8duXUyZjF32Ld//E
+ ZhaSHbAfHoCkmgrGzZ9Chhu3TdHV8DuFmpojg9/KfNiwvtyaXG9zrxCk7BD7p91C5WcSiZ9i0qa
+ f+yQ4zSJ5t03sPc8ZPg==
+X-Proofpoint-ORIG-GUID: HS3hx3_UBkhfXpMaFfw8uxTqJdORti6S
+X-Proofpoint-GUID: v5Ecg5_6Jx1xtDTQhoTA0QQDqGKMSc0P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-24_04,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606240166
 
-On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> Add a test case to verify that conversions between private and shared
-> memory work correctly when the memory is initially created as shared.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Overview
+========
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+This patch series merged two patch series sent earlier:
+	"Testcase improvements for PowerNV"
+	"Remove deprecated Power8E and 8NVL CPUs"
+since the Power8E removal series depended on the former due to pnv-spi test
 
-Cheers,
-/fuad
+Broadly contains 3 changes:
+1. Testcase improvements:
+    Add a testcase to detect regression in remote interrupts when XIVE changes,
+    since such regression had occurred during Power11 XIVE changes:
+    https://lore.kernel.org/qemu-devel/baf6c854-832b-4a2e-922f-d34e6dadf821@redhat.com/
 
-> ---
->  .../testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 8e09e241723e5..5b070d3374eae 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> @@ -95,6 +95,12 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)          \
->  #define GMEM_CONVERSION_TEST_INIT_PRIVATE(test)                                        \
->         __GMEM_CONVERSION_TEST_INIT_PRIVATE(test, 1)
->
-> +#define __GMEM_CONVERSION_TEST_INIT_SHARED(test, __nr_pages)                   \
-> +       GMEM_CONVERSION_TEST(test, __nr_pages, GUEST_MEMFD_FLAG_INIT_SHARED)
-> +
-> +#define GMEM_CONVERSION_TEST_INIT_SHARED(test)                                 \
-> +       __GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
-> +
->  struct guest_check_data {
->         void *mem;
->         char expected_val;
-> @@ -186,6 +192,12 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(init_private)
->         test_convert_to_private(t, 0, 'C', 'E');
->  }
->
-> +GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
-> +{
-> +       test_shared(t, 0, 0, 'A', 'B');
-> +       test_convert_to_private(t, 0, 'B', 'C');
-> +       test_convert_to_shared(t, 0, 'C', 'D', 'E');
-> +}
->
->  int main(int argc, char *argv[])
->  {
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+    Also add Power11 chip and testcase in qtests, and fadump functional test
+
+2. Power8E/Power8NVL removal
+    Power8E and Power8NVL were deprecated since QEMU 10.1, with
+    commit 264a604e7163 ("target/ppc: Deprecate Power8E and Power8NVL")
+    
+    Hence, remove usage (chip and core types) of Power8E and 8NVL from PowerNV,
+    PSeries as well as testcases.
+
+3. Maintainer changes
+    Add myself as maintainer for PowerNV machine
+
+Testing
+=======
+
+* Git tree for testing: https://gitlab.com/adi-g15-ibm/qemu/tree/feat_maintainer-v2
+* Gitlab pipeline: https://gitlab.com/adi-g15-ibm/qemu/-/pipelines/2627063408 
+* Successful ppc64 functional tests, qtests, boot tests, builds at all commits
+
+Changelog
+=========
+v2:
++ #1: put e1000e on socket 1, and disable it's cpu, as suggested by cedric
++ #1: pull out command fail checks into a helper, as suggested by shivang
++ #2: use g_autofree, suggested by cedric
++ #3: use g_autofree in tests updated
++ #8: remove G:, as suggested by daniel
++ rebased to upstream
+
+from previous split series:
++ #1: added checks to see if network is up and interrupts happened, based on shivang's review
++ #3: replaced common if-else-if check for machine type with pnv_get_machine_type
++ #7: added doc in removed-features, as suggested by cedric
++ #6,7: added rb from philippe
++ #8: new patch, maintainer change
+
+Aditya Gupta (8):
+  tests/functional: Add remote interrupts test for PowerNV
+  tests/qtest/pnv_spi: Test Power11 PNV_SPI
+  tests/qtest: Add Power11 chip & machine to qtests
+  tests/functional: Use default powernv machine instead of power10
+  ppc/pnv: Replace Power8E with Power11 for 'none' machine test
+  ppc/pnv: Remove Power8E and Power8NVL pnv chips
+  ppc/pnv: Remove Power8E and Power8NVL CPUs
+  MAINTAINERS: Add self as maintainer for PowerNV
+
+ MAINTAINERS                            |  2 +-
+ docs/about/deprecated.rst              |  9 ---
+ docs/about/removed-features.rst        |  8 +++
+ docs/system/ppc/powernv.rst            |  2 +-
+ docs/system/ppc/pseries.rst            |  2 +-
+ hw/ppc/pnv.c                           | 62 -----------------
+ hw/ppc/pnv_core.c                      |  2 -
+ hw/ppc/spapr_cpu_core.c                |  2 -
+ include/hw/ppc/pnv.h                   |  8 ---
+ target/ppc/cpu-models.c                |  6 --
+ target/ppc/cpu-models.h                |  4 --
+ target/ppc/cpu_init.c                  |  6 --
+ target/ppc/kvm.c                       |  4 +-
+ tests/functional/ppc64/test_fadump.py  |  2 +-
+ tests/functional/ppc64/test_powernv.py | 95 ++++++++++++++++++++++++++
+ tests/qtest/machine-none-test.c        |  2 +-
+ tests/qtest/pnv-host-i2c-test.c        | 10 ++-
+ tests/qtest/pnv-spi-seeprom-test.c     | 20 ++++--
+ tests/qtest/pnv-xive2-test.c           |  2 +-
+ tests/qtest/pnv-xscom-test.c           | 22 ++----
+ tests/qtest/pnv-xscom.h                | 42 ++++++++----
+ 21 files changed, 163 insertions(+), 149 deletions(-)
+
+
+base-commit: b83371668192a705b878e909c5ae9c1233cbd5fb
+-- 
+2.54.0
+
