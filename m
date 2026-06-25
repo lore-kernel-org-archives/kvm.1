@@ -1,180 +1,142 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012045.outbound.protection.outlook.com [52.101.43.45])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2C6233704;
-	Thu, 25 Jun 2026 03:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782359135; cv=fail; b=Z2tSYaWY4RuP0lGU33Pit2y5nqjgFQIKXMYxNSS+8r6qAaihIV+LYHol+xIyiyruev84i7iKwJZeVO5AO6+o2oLo6n3g9ReNjvbWYgbar789ogeXQzCu7dMkZ3/LClxq3V/59j1jFWWgRDauNXU+q3pH8IRCagIl3IcCczCdU34=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782359135; c=relaxed/simple;
-	bh=16UIrMKlW7kuhbDA3a/Af6VsrvccsRopV5TDci5A1Hc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OH7XrTgqu1BoFZfUIPuSNbVMqbhJSqLIspgZ/xdctF2qWXSJEAuHzUCvCvO+McAuKq+oXBbBzB7HFTLahnZntXvWD9ZQ1fklJAyHFWMdWm/8h55r9jPVyQwFyqcJtoo8MFggemVvOS1HGMNGje/zsUdFN4+3AMJz9zN2XQ/Dzgk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KLIty9cC; arc=fail smtp.client-ip=52.101.43.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0108C1CAA78;
+	Thu, 25 Jun 2026 03:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782359695; cv=none; b=V0lMKZ4RRmrsivs+UynmF1uZd+16ruSj8RclK0fqt2AxDHqd4P+mp0IvuWkRcYPJsfaqAhdcTMmJ0E9kCJ4Z4WTpJyvjgnF15WpukKOKvQf1JlYGbXuO3enUNKlTN1qVs62XCKdVB41y8nR8R6SdaErMmxAf/cHsoPnmyEHWBUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782359695; c=relaxed/simple;
+	bh=cnIcwmbbTbzD78xzTfIyMXwnIfQGt6qigGgffUtGN5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KCadYDlzygmeplloQGmwjHbkSR/NNNWUZcpysPz71Ep2+ktxjV+vOV2/e5efmN1jLt6+KbpR+1VP4Te/EFzPtRARYoPuXg0Ux1wC89huLFXjML390U1g45qkOZUEVBTjjzwybZHxsa/Kcd3n/Txg/rfNioS3/pMzcOhzn6JoAdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Brjzcpys; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KLIty9cC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=doUyJK7Qbiq17wgGcPE/FRHwAUtOm/NvKMlFcnN59GaX+Wzf84yBYv+VdgNK6S4N/Y0ylLrHgzJKJCbbcgmhasAuBMgB94KjuYg8/x9xfCuNTpLSDtb2PCagf57O0+xy2vQ3R+wtYK/dujHNRgdTfT9I+A/WaIUgVy3bpi+ZKc2Uf7gEvUNYEa9Rolsph73BNdxn8Q4DJ6ivBd+xJj+8vrDzKO1UXOmmjIK6zQFkQBxs11ZbGgf9FUYBEnxqIXfAPBKg1gHkgBDYzKiws35+Rwz012AV/7EXKkLj7hNqgMJywjGqkw/90GohcXEo8YoDSt6ZlDWhH2jwhHn3aui5ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7VfN3eUSG2znRzzfTRHxAdqKHyd+c/JHdUhek4gynkE=;
- b=SdG8Z20RTn9MMJRVUDrEX/TNQCBOdykTBn3iYjPJkGc7yyYQff+qIGzyCvf//1Fblb5SNWAk3OYCDSkOH/Lmig54PCTBGsXg6BmtPtt+sHU6S+2qQddsWavNhCdUDC1o/a0+OTyDRE51hW1pIq9pH6AHgViZ2Q/iN5Af6LeecxfJqFlSXWNnjzxD57/YwR77GrjT1hKtCo7Pj+7+Ms5MLqJ/Z2dlJM4e4HygkLTT/hvrmtSSZEwLHlZY+tKgvFRKjyKrXAwyaYn8NibriFWRJ4wmYF9z7wVRMfVDPbAxxInzzPapx4mwMapxmHuyVX/eWObLfnIRIgR06+oY1B6/Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7VfN3eUSG2znRzzfTRHxAdqKHyd+c/JHdUhek4gynkE=;
- b=KLIty9cCs8L/xdWU80qbco/pnz7HhJelIfxp40SyBdHsBDzE0ollu2+fYxVlhsMgZnHwAm8F7LP2hY4cRwBF2kywtnJmL/OtAglRBRW+mGzy+m4Uov3GgYEueShy1Lag+p5w80IAsaaUDxn5wADZ62n5SqOvKZOt8biu3q98IDc=
-Received: from SJ0PR05CA0206.namprd05.prod.outlook.com (2603:10b6:a03:330::31)
- by SA5PPFCAFD069B8.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e1) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Thu, 25 Jun
- 2026 03:45:30 +0000
-Received: from SJ5PEPF000001F2.namprd05.prod.outlook.com
- (2603:10b6:a03:330:cafe::a2) by SJ0PR05CA0206.outlook.office365.com
- (2603:10b6:a03:330::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.11 via Frontend Transport; Thu,
- 25 Jun 2026 03:45:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001F2.mail.protection.outlook.com (10.167.242.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 25 Jun 2026 03:45:30 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 24 Jun
- 2026 22:45:28 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 24 Jun
- 2026 20:45:28 -0700
-Received: from [10.136.35.225] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 24 Jun 2026 22:45:18 -0500
-Message-ID: <fe9927ad-a06a-4a4b-8122-12644513ed14@amd.com>
-Date: Thu, 25 Jun 2026 09:15:12 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Brjzcpys"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782359694; x=1813895694;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cnIcwmbbTbzD78xzTfIyMXwnIfQGt6qigGgffUtGN5I=;
+  b=Brjzcpysuo1qEu3Pg/S97e0UliME7FnzKMBKAqurghyKbQksgFGstyVy
+   jBLa9+1oPdYmo8MX/vKOEKQYG7Panlk/GFbitrMOnJv7EsS6Qjt5Vo4VG
+   MNJW8tMGWPzgXP9VHx41I7bb5vDqOp+dPgktwRCQX6G2SyTmdDjhfKy2/
+   8XJBgbhRpD3hTgqBvXw7g/BCpRvTAIHPQTgEOq0mOSt2DCwlFio6jHaX9
+   uvrF7ubRHdBc+fzbDID+F932A1PgDUw9n5q0iuouuRwUv+6yYaxf5PODw
+   Ybxt1h0kI+cxLVV77ZQ9/cdZavEPtwifTMc1PESYOuA5yiubEuo96JL4i
+   A==;
+X-CSE-ConnectionGUID: uiwnvD9CTNyo4ZTm9m1oSg==
+X-CSE-MsgGUID: +5MxV9oxTb65uX8au3Qs7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82901454"
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="82901454"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 20:54:53 -0700
+X-CSE-ConnectionGUID: WjNZjeZOS2CgZSU4rIHgRg==
+X-CSE-MsgGUID: Kj5sEOfhS+KqaVgoD0Y9Lg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="288396615"
+Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 20:54:52 -0700
+From: Zide Chen <zide.chen@intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Das Sandipan <Sandipan.Das@amd.com>,
+	Shukla Manali <Manali.Shukla@amd.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Falcon Thomas <thomas.falcon@intel.com>,
+	Xudong Hao <xudong.hao@intel.com>
+Subject: [PATCH V5 1/7] KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
+Date: Wed, 24 Jun 2026 20:45:49 -0700
+Message-ID: <20260625034555.141453-2-zide.chen@intel.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625034555.141453-1-zide.chen@intel.com>
+References: <20260625034555.141453-1-zide.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F2:EE_|SA5PPFCAFD069B8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d5fda12-2cdf-43a6-8c2e-08ded26c33ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|7416014|23010399003|4143699003|3023799007|11063799006|56012099006|921020|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7hsn2ndu/gRlF70SupPeY2L975BgWMXWehRiSGy/QrQFwX1HRF+cv9fd8Zv5KAmx0CjQB9HWI9da1cWtY5zKJM8mpxzSt1DB2UKg6uZolhWJANpkxBLAEAloMt5J+b7SqnJI3WygnR4Ql6mKavFyFhGplxFcGFOOGPYZckOKHkzGaaXqIif2UJB7v+mwpG6vIkP5nUQwERmYGXKU2fIvMmMayWOC+Fx/mkkqbMu7kl8qazbZTF0vlDnBKGp5RF/syTmbcOYE9JPdgi823ouGJJAqOb1E/TpYE0Bb/hFnPzA6zjAPHYWrxFxZnQrJh+afvBzU8aCJaaWtNiyrE532Z1LFMa4lVyAHf59n2l4e6yYah+uOYRN7f5+ohFjPrBG9XSzvaLPeZoIiMX1RgKRqlbcYBNOCkQLJEFZPSOBYV34VH5TfmNv2Kf/m8q3NWNx3fEOVMJ2gjJavdwJYDZnPXdh8lYV2Lon0aeDUp1pzdokLpdhjKcoD7K/AFON41oOtMO7qRV/+pCNzYKtHJslTNumABn8RORNI799wga0zmfimGgmt1jthk07OKMphtw4cuxMA/ediqZJDS06WZ+oIO92tsCjR8sYRGMzyIR7fRllblR+FWDkhdTLnVo9cV43M9U4/9kC0npHKgxHofnXS6uUqHGLyoN4XIYlAo4Lf9Gyg5MgGwWxV1wYDvbudFfXRAal8QXU8TTZINPfw52foNmM9P/iRxi767NX3ndzEdWO/zxvFkdwxXoWlDLVa6zvA
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(7416014)(23010399003)(4143699003)(3023799007)(11063799006)(56012099006)(921020)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	QYbELyHSP3QNLkiY4kquqVUV1EZ7ceW3QLSi8Hgtv8+8ie6j/8KjrQTScq3Gxe0FE3pLdzZKLP6TiztgWbWGXMysxtsdC9S1AMr/AEhSLJHHbk3Sy/nii6n3M/rBoKTI8h9kW96xxo16sAGIzOjd06/bX70F36N6bUNz1IivfGuXSHziuTZJNfjc8fUHAH/UH1rtNU+WOv7j3iUyLbl2g10gITX3q0sy5Q6HY7pd5dOPTHTM7hooZE+1G65q8XVn1O80RgiH4hdMdGr5pRM+05Z2z5Migj+8ZmepPBdA4FGGqTGnNmnz94oBoKOorv1gyxc8UEGhOqSw+SI237zBCp+WfObMmii3WY5YumKQfP0vn6cpfWQxcCcrChphoYRxVucP6Jtk0p4YBU7qpoHlYrRYQ/0vUL4mL/VbRo9baSxc0ZaChEQ8GzcMicPLEdhc
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 03:45:30.1908
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d5fda12-2cdf-43a6-8c2e-08ded26c33ec
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFCAFD069B8
+Content-Transfer-Encoding: 8bit
 
-Hello Ashish,
+Only fixed counters 0..2 have matching generic cross-platform
+hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
+Therefore, perf_get_hw_event_config() is only applicable to these
+counters.
 
-On 6/25/2026 3:26 AM, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> While SNP is active, every memory write is checked against the RMP to
-> protect the integrity of SEV-SNP guest memory.  By the SNP architecture
-> these checks cannot be disabled on a subset of CPUs: they are gated
-> per-core by SYSCFG[SNP_EN], which the SEV firmware requires to be set on
-> every present CPU before SNP initialization.  A CPU that does not have
-> SNP_EN set and was not initialized via SNP_INIT performs no RMP checks at
-> all, so there is no valid configuration with SNP active and any CPU exempt
-> from RMP checks.
-> 
-> The firmware determines which CPUs are present from the processor and the
-> BIOS/UEFI configuration (e.g. SMT disabled in the BIOS) and enumerates
-> them at SNP init; it is not aware of the OS bringing CPUs online or
-> offline afterwards.  A CPU brought online after SNP init was not
-> enumerated at SNP_INIT and does not have SNP_EN set, so writes from it are
-> not RMP-checked and could corrupt SEV-SNP guest memory, and there is no
-> way to keep work off such a CPU once it is online.  OS CPU hotplug can thus
-> diverge from the firmware's expectations and break SNP.
+KVM does not intend to emulate fixed counters >= 3 on legacy
+(non-mediated) vPMU, while for mediated vPMU, KVM does not care what
+the fixed counter event mappings are.  Therefore, return 0 for their
+eventsel.
 
-If this is true ...
+Also remove __always_inline as BUILD_BUG_ON() is no longer needed.
 
-[..snip..]
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+---
+v2:
+- Replace 3 in "if (index < 3)" with ARRAY_SIZE(fixed_pmc_perf_ids).
+---
+ arch/x86/kvm/vmx/pmu_intel.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index 217b6b19802e..66475145b3fa 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1479,6 +1479,9 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
->  
->  	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
->  
-> +	/* Disable CPU hotplug while SNP is active (see snp_disable_cpu_hotplug). */
-> +	snp_disable_cpu_hotplug();
-
-... then this should be done at snp_prepare() before
-on_each_cpu(snp_enable) right?
-
-If not, then any CPU hotplug between the cpus_read_unlock() there and
-the snp_disable_cpu_hotplug() here will not have the SNP_EN set.
-
-Isn't that a concern?
-
-Also, this patch can probably go first since the FW assumptions on
-hotplug exists independent of RMPOPT bits.
-
-> +
->  	snp_setup_rmpopt();
->  
->  	sev->snp_initialized = true;
-
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index a73a9515d96c..60b6b83c7ced 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -464,28 +464,30 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+  * different perf_event is already utilizing the requested counter, but the end
+  * result is the same (ignoring the fact that using a general purpose counter
+  * will likely exacerbate counter contention).
+- *
+- * Forcibly inlined to allow asserting on @index at build time, and there should
+- * never be more than one user.
+  */
+-static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
++static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ {
+ 	const enum perf_hw_id fixed_pmc_perf_ids[] = {
+ 		[0] = PERF_COUNT_HW_INSTRUCTIONS,
+ 		[1] = PERF_COUNT_HW_CPU_CYCLES,
+ 		[2] = PERF_COUNT_HW_REF_CPU_CYCLES,
+ 	};
+-	u64 eventsel;
+-
+-	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+-	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
++	u64 eventsel = 0;
+ 
+ 	/*
+-	 * Yell if perf reports support for a fixed counter but perf doesn't
+-	 * have a known encoding for the associated general purpose event.
++	 * Fixed counters 3 and above don't have a corresponding generic
++	 * hardware perf event, and KVM does not intend to emulate them on
++	 * non-mediated vPMU.
+ 	 */
+-	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+-	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	if (index < ARRAY_SIZE(fixed_pmc_perf_ids)) {
++		/*
++		 * Yell if perf reports support for a fixed counter but perf
++		 * doesn't have a known encoding for the associated general
++		 * purpose event.
++		 */
++		eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
++		WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
++	}
+ 	return eventsel;
+ }
+ 
 -- 
-Thanks and Regards,
-Prateek
+2.54.0
 
