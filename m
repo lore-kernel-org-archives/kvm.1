@@ -1,47 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DD9361650;
-	Thu, 25 Jun 2026 17:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036C330E0F8
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 17:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782407465; cv=none; b=OLKwMGpsLQurnwWDi6nldZb0zCyOGf/oE0KuTqFCP2gp6uUxWpEdMjPgHS4eTOunXHAnbg+ZRX26I5nHWW2SmXSAPzIghV7PCylKsg9ZMJsl5SNcOywNezneC90oMURQjVRl2vzpN39zqWNd4WtKhDI6No+X5dL/bMGP0QmBWnk=
+	t=1782409025; cv=none; b=WxraAcvNqyk3ulZgJ4xqd9Mq8ua2L1VhE+s0kz4xXXYYhhvFwy21lN8lOztXN1biAwMbNYWj8NVaDM+cLR3WYhX8pAgsneKCcEyYZSbNKTqocAbbSfV6MrLMktC+67ZBTSjhFTWUVD0DHu9ivsHUFGDRFrnZCUz4dMFZpmNmQHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782407465; c=relaxed/simple;
-	bh=vS5WUcE+HNJk8xIWquHv1ABVUTZBGJpFWaUurFk6op8=;
+	s=arc-20240116; t=1782409025; c=relaxed/simple;
+	bh=z074bJO6OHWaI7OyPaH6/IPDvBnvlv9ayjdX6IUQvtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuTbkl3JtrmsuBQmJM1G72xVh9rMH7N+fe/Br8yMbz0J3fCFfmCmE/IIIPdkbUvA4xrdvgJ/bp0KT/6cU9Qs5OFrSa9mWSZ2Fn/9QbbAyhWINYJYLhQf7gK/kaukLn4eH29v97v+wtb9fQVyR4afUJV80zMsnGdvzjfN1VVGf4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnmwXhIz; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=U+02TNeyVE4fcRy3haUfXmeeSgzWtryYq3IX3+hnZ/FczAhjCIFNIZzjdihuIjYPCkc9Dy8a0KAQMOtSlzJA4GVrGnEc4u5RN2NhYZGYGtGfSid2QwS1xajixEVf4kJUV2nKGvJdllcuSfTnT+vWRxPLN9O8VoVPcS19oatqkl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=btq2T22J; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BXkNC36c; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnmwXhIz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6381F00A3A;
-	Thu, 25 Jun 2026 17:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782407464;
-	bh=UiojHg/Xe39SNWNqXE/NkwltevEEWb5yupUBRz4QOw0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GnmwXhIzOkB22TiO3F/6fICpPOFwuVkuSPmauX2azZ3Mo8bMZ4vUKXc8BIHNXAU3i
-	 UT9w84hP6a7XgIm62clqjZIbmTq/OhRut6QzmjyVmoE26c3nx5Ea8Kq/6fo6SCdB89
-	 ze8chDUPq3VWc3+4nQtQnTjD6No4TifXmnMchWmn2k5ahmH5fQYP3eKXSXii4ZK9qQ
-	 L9D+lv/8JPyugzrtVF/XqdcBYIpM7lN7qtQ960iNOnpt6b4P/7EmAJZ/CbNUc+//iL
-	 zx9vltNCKyMN1WLYj/PopBcaEs35FJOJcOE2KdsUriCHugW7g9qUBfbBzfudATGVMt
-	 jjTeSKdyuOM6A==
-From: Will Deacon <will@kernel.org>
-To: kvm@vger.kernel.org
-Cc: kvmarm@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH v2 kvmtool 4/4] arm64: Add support for protected VMs
-Date: Thu, 25 Jun 2026 18:10:45 +0100
-Message-ID: <20260625171046.4482-5-will@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260625171046.4482-1-will@kernel.org>
-References: <20260625171046.4482-1-will@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="btq2T22J";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BXkNC36c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782409023;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z074bJO6OHWaI7OyPaH6/IPDvBnvlv9ayjdX6IUQvtI=;
+	b=btq2T22JWv1EduvtDZqIBwovAQt9Igx7bBItmNT41rQEhyfwdYJ77GGI6bAGI2etPo6LaU
+	abZg5j9TtJ+cP7Ws+gvOtt85G00WziVOZS3h37dMh+4ZMPfqbzjuhGt1UcIkYQXCmdChTH
+	nqmZOj1+A0panwsdNI7Dk2b1fEXLNPU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-iwwJWBfXOAaFINeksAeS9w-1; Thu, 25 Jun 2026 13:37:01 -0400
+X-MC-Unique: iwwJWBfXOAaFINeksAeS9w-1
+X-Mimecast-MFC-AGG-ID: iwwJWBfXOAaFINeksAeS9w_1782409020
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-46db5d470bfso1775f8f.2
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 10:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782409020; x=1783013820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=z074bJO6OHWaI7OyPaH6/IPDvBnvlv9ayjdX6IUQvtI=;
+        b=BXkNC36cf+9xh+okX+Mrjy9EgaafmHFAwvLRGJMmwmWXpUufBzbt507Fv9k4dZyxwL
+         rTHR16RuPK8o3hK6mHKezHNdXFJ4/9PFJohqFbfWSO4KleF0G8H60H8ZzZSUygK7p/ZP
+         0jqleae9r2EtB3BobFdwjObQXf1qEpQ0hgXiP3GmMd2jW26b3BaFYfm0NDnMJCoKKv0c
+         DOM3KZPXurR2xPqOu/rrlLpUEAWJbQHB/S31ld67mOSI4M0QenS6KPTKUCEELpboXNLU
+         T/RKfQGwuqvRCiMhR5oCYkM0CMLguV5k3Bm6zJlU1Q1Hc6NRhEWPPIH2nDqECjR5sRtM
+         gSeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782409020; x=1783013820;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z074bJO6OHWaI7OyPaH6/IPDvBnvlv9ayjdX6IUQvtI=;
+        b=VHZ9Dq+wS7n3xCLGQvlA53zlmTCWhxN/QAVnWYUpvJ4zoWOZiG4NWi6VO+fWNsJ67f
+         Fk8MSAtzadpbnjmBGkumhFOEK9KKTLqV85Pmi1QkwQ2AyO2/H5kT7Vy2QSDuGHCiCPgy
+         r2/Yqg4uQHo00EFZ/C3HEbrAQP8OWbIIdwD7bmpe91+qWTFRuu1lYzGh6FCtnB0d1Vn/
+         8a1NeXPOPJlYFjnLZz8muxJW2aa5xm/tbQlReOWALAt55qh4a6M7l75NoJsl4vIvTul1
+         aoQmluQtt5B655mWD2aGvMy2GmyDPNEAU3DPlToaPAAcnl+PzDovWuDJhWXOEFsHjJn2
+         eJDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RptWA7sFaB7GUyIiJencmMdMfCcwCBniioGpXUJxHAy1ejNgjOTg2adIAN3SNJGqM3B7/0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZDzOL+ea4c0xrDm9ZmGyAwAAdxqW4LRJCi5Iz/dNIZR4pqbkl
+	ZbrRi6oOQzRxiL1keMXtmRzLMmVXoTUecVwxhD5/Bb9Mods6UacVz4JcTr0swlnWabTnJQGUo+g
+	FXHGQMYPBntMTl1mFefR0n1RtX7aA0lJK1kqSQQEd5owYM6Phk4BOdLK3D//u+g==
+X-Gm-Gg: AfdE7cmEHdJRE/3TA8IUaViE/3uXqOALixTj1EwGfn642q+7d7GbisY5ahVx//hjHoA
+	4dWLIrt9a1QXDy/nTlDukvOeUh7kD5PK/RelrgqxaEyzaUMC7C4ycoAk75nd3MwwWeEsD4yMptc
+	xO60Dk60mmnSn+6If9Iap3EsJGeSyRlKWA7TEzyJWo3Fu1v/3neVn7lHsWyW+QKPGHbyl24F91c
+	tt6hcP9qR+y2Qi1N8TTXMb1dMFB30S8ObFx3As+X5IvWhITrYhZOP2ic44WGcksaofYKaXSHo7T
+	AdjoEyVX1YP3I9E0GoqRlo2VqZmZPhS8/Awa04qEDeuhsQpU/e4w5s1Vh/hB/P/vEeeXEt5HWAj
+	Zzi7HkYj6qEhkGU2uxV1yUg8nBSNHRj9oo190DLYfDlcf0FCPrLDWEyL4rnHGKM0HbC0D6AvZzh
+	QyTZN0KqveI5eOTeMq
+X-Received: by 2002:a05:6000:220f:b0:465:8fc5:7f52 with SMTP id ffacd0b85a97d-46dc0e05344mr5737786f8f.26.1782409020369;
+        Thu, 25 Jun 2026 10:37:00 -0700 (PDT)
+X-Received: by 2002:a05:6000:220f:b0:465:8fc5:7f52 with SMTP id ffacd0b85a97d-46dc0e05344mr5737745f8f.26.1782409019927;
+        Thu, 25 Jun 2026 10:36:59 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.124.208])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c22c680fasm18026588f8f.34.2026.06.25.10.36.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 10:36:59 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Magnus Kulke <magnuskulke@linux.microsoft.com>
+Cc: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org,
+	Magnus Kulke <magnuskulke@microsoft.com>,
+	Wei Liu <liuwe@microsoft.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Wei Liu <wei.liu@kernel.org>,
+	Alex Williamson <alex@shazbot.org>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 00/34] Add migration support to the MSHV accelerator
+Date: Thu, 25 Jun 2026 19:35:31 +0200
+Message-ID: <20260625173530.1624189-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,237 +107,22 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce a new '--protected' parameter which requests the creation of
-a protected VM type from the kernel. In addition, a reserved DMA region
-is advertised in the device-tree and VIRTIO_F_ACCESS_PLATFORM is
-advertised so that virtio transfers can be bounced through a shared
-memory window.
+I merged everything except:
 
-Signed-off-by: Will Deacon <will@kernel.org>
----
- arm64/fdt.c                         | 37 +++++++++++++++++++++++++++--
- arm64/include/kvm/fdt-arch.h        | 10 +++++++-
- arm64/include/kvm/kvm-arch.h        |  2 ++
- arm64/include/kvm/kvm-config-arch.h |  5 +++-
- arm64/kvm.c                         | 28 ++++++++++++++++++++--
- arm64/pci.c                         |  2 ++
- 6 files changed, 78 insertions(+), 6 deletions(-)
+- target/i386/mshv: migrate LAPIC state (*)
+- target/i386/mshv: migrate Synic SINT MSRs
+- target/i386/mshv: migrate SIMP and SIEFP state
+- target/i386/mshv: migrate STIMER state
+- accel/mshv: introduce SaveVMHandler (*)
+- accel/mshv: write synthetic MSRs after migration
+- accel/mshv: migrate REFERENCE_TIME
+- target/i386/mshv: migrate MP_STATE
 
-diff --git a/arm64/fdt.c b/arm64/fdt.c
-index 98f1dd9..3cbd36e 100644
---- a/arm64/fdt.c
-+++ b/arm64/fdt.c
-@@ -71,6 +71,19 @@ static void generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type)
- 	_FDT(fdt_property(fdt, "interrupts", irq_prop, sizeof(irq_prop)));
- }
- 
-+static bool emit_dma_regions;
-+void generate_dma_region_prop(void *fdt)
-+{
-+	if (emit_dma_regions)
-+		_FDT(fdt_property_cell(fdt, "memory-region", PHANDLE_DMA));
-+}
-+
-+static void generate_aux_props(void *fdt, u8 irq, enum irq_type irq_type)
-+{
-+	generate_irq_prop(fdt, irq, irq_type);
-+	generate_dma_region_prop(fdt);
-+}
-+
- struct psci_fns {
- 	u32 cpu_suspend;
- 	u32 cpu_off;
-@@ -103,7 +116,7 @@ static int setup_fdt(struct kvm *kvm)
- {
- 	struct device_header *dev_hdr;
- 	u8 staging_fdt[FDT_MAX_SIZE];
--	u64 mem_reg_prop[]	= {
-+	u64 resv_mem_prop, mem_reg_prop[] = {
- 		cpu_to_fdt64(kvm->arch.memory_guest_start),
- 		cpu_to_fdt64(kvm->ram_size),
- 	};
-@@ -116,6 +129,9 @@ static int setup_fdt(struct kvm *kvm)
- 	void (*generate_cpu_peripheral_fdt_nodes)(void *, struct kvm *)
- 					= kvm->cpus[0]->generate_fdt_nodes;
- 
-+	/* Generate DMA regions for bouncing in protected VMs */
-+	emit_dma_regions = kvm->cfg.arch.protected;
-+
- 	/* Create new tree without a reserve map */
- 	_FDT(fdt_create(fdt, FDT_MAX_SIZE));
- 	_FDT(fdt_finish_reservemap(fdt));
-@@ -162,6 +178,23 @@ static int setup_fdt(struct kvm *kvm)
- 	_FDT(fdt_property(fdt, "reg", mem_reg_prop, sizeof(mem_reg_prop)));
- 	_FDT(fdt_end_node(fdt));
- 
-+	/* Reserved memory (restricted DMA pool) */
-+	if (emit_dma_regions) {
-+		_FDT(fdt_begin_node(fdt, "reserved-memory"));
-+		_FDT(fdt_property_cell(fdt, "#address-cells", 0x2));
-+		_FDT(fdt_property_cell(fdt, "#size-cells", 0x2));
-+		_FDT(fdt_property(fdt, "ranges", NULL, 0));
-+
-+		_FDT(fdt_begin_node(fdt, "restricted_dma_reserved"));
-+		_FDT(fdt_property_string(fdt, "compatible", "restricted-dma-pool"));
-+		resv_mem_prop = cpu_to_fdt64(DMA_MEM_REGION_SIZE);
-+		_FDT(fdt_property(fdt, "size", &resv_mem_prop, sizeof(resv_mem_prop)));
-+		_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_DMA));
-+		_FDT(fdt_end_node(fdt));
-+
-+		_FDT(fdt_end_node(fdt));
-+	}
-+
- 	/* CPU and peripherals (interrupt controller, timers, etc) */
- 	generate_cpu_nodes(fdt, kvm);
- 	if (generate_cpu_peripheral_fdt_nodes)
-@@ -172,7 +205,7 @@ static int setup_fdt(struct kvm *kvm)
- 	while (dev_hdr) {
- 		generate_mmio_fdt_nodes = dev_hdr->data;
- 		if (generate_mmio_fdt_nodes) {
--			generate_mmio_fdt_nodes(fdt, dev_hdr, generate_irq_prop);
-+			generate_mmio_fdt_nodes(fdt, dev_hdr, generate_aux_props);
- 		} else {
- 			pr_debug("Missing FDT node generator for MMIO device %d",
- 				 dev_hdr->dev_num);
-diff --git a/arm64/include/kvm/fdt-arch.h b/arm64/include/kvm/fdt-arch.h
-index 60c2d40..8a0a460 100644
---- a/arm64/include/kvm/fdt-arch.h
-+++ b/arm64/include/kvm/fdt-arch.h
-@@ -1,6 +1,14 @@
- #ifndef ARM__FDT_H
- #define ARM__FDT_H
- 
--enum phandles {PHANDLE_RESERVED = 0, PHANDLE_GIC, PHANDLE_MSI, PHANDLES_MAX};
-+enum phandles {
-+	PHANDLE_RESERVED = 0,
-+	PHANDLE_GIC,
-+	PHANDLE_MSI,
-+	PHANDLE_DMA,
-+	PHANDLES_MAX
-+};
-+
-+void generate_dma_region_prop(void *fdt);
- 
- #endif /* ARM__FDT_H */
-diff --git a/arm64/include/kvm/kvm-arch.h b/arm64/include/kvm/kvm-arch.h
-index a50e6a4..e7dd526 100644
---- a/arm64/include/kvm/kvm-arch.h
-+++ b/arm64/include/kvm/kvm-arch.h
-@@ -87,6 +87,8 @@
- 
- #define MAX_PAGE_SIZE	SZ_64K
- 
-+/* Size of DMA region for bouncing when running a protected guest */
-+#define DMA_MEM_REGION_SIZE	SZ_32M
- 
- static inline bool arm_addr_in_ioport_region(u64 phys_addr)
- {
-diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
-index d321b77..c2702d5 100644
---- a/arm64/include/kvm/kvm-config-arch.h
-+++ b/arm64/include/kvm/kvm-config-arch.h
-@@ -19,6 +19,7 @@ struct kvm_config_arch {
- 	unsigned int	sve_max_vq;
- 	bool		no_pvtime;
- 	bool		psci;
-+	bool		protected;
- };
- 
- int irqchip_parser(const struct option *opt, const char *arg, int unset);
-@@ -70,6 +71,8 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
- 	OPT_BOOLEAN('\0', "nested", &(cfg)->nested_virt,			\
- 		    "Start VCPUs in EL2 (for nested virt)"),			\
- 	OPT_BOOLEAN('\0', "e2h0", &(cfg)->e2h0,					\
--		    "Create guest without VHE support"),
-+		    "Create guest without VHE support"),			\
-+	OPT_BOOLEAN('\0', "protected", &(cfg)->protected,			\
-+			"Create a protected VM when pKVM is enabled"),
- 
- #endif /* ARM_COMMON__KVM_CONFIG_ARCH_H */
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index c8570ce..fb0b98d 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -6,6 +6,7 @@
- #include "kvm/fdt.h"
- #include "kvm/gic.h"
- #include "kvm/kvm-cpu.h"
-+#include "kvm/virtio.h"
- 
- #include "asm/smccc.h"
- 
-@@ -147,6 +148,9 @@ void kvm__arch_init(struct kvm *kvm)
- 	kvm__arch_enable_mte(kvm);
- 	kvm__setup_smccc(kvm);
- 	kvm__arch_set_counter_offset(kvm);
-+
-+	if (kvm->cfg.arch.protected)
-+		virtio_modern_enable_feat_access_platform();
- }
- 
- 
-@@ -463,6 +467,22 @@ void kvm__arch_validate_cfg(struct kvm *kvm)
- 
- 	if (kvm->cfg.arch.e2h0 && !kvm->cfg.arch.nested_virt)
- 		pr_warning("--e2h0 requires --nested, ignoring");
-+
-+	if (kvm->cfg.arch.protected) {
-+		if (kvm->cfg.ram_size &&
-+		    kvm->cfg.ram_size < DMA_MEM_REGION_SIZE) {
-+			die("RAM size (0x%llx) smaller than DMA bounce region (0x%x)",
-+			    kvm->cfg.ram_size, DMA_MEM_REGION_SIZE);
-+		}
-+
-+		if (kvm->cfg.virtio_transport == VIRTIO_MMIO_LEGACY ||
-+		    kvm->cfg.virtio_transport == VIRTIO_PCI_LEGACY) {
-+			die("Protected VMs require a modern virtio transport");
-+		}
-+
-+		if (kvm->cfg.balloon)
-+			die("Ballooning not supported with protected VMs");
-+	}
- }
- 
- u64 kvm__arch_default_ram_address(void)
-@@ -485,11 +505,15 @@ int kvm__get_vm_type(struct kvm *kvm)
- {
- 	unsigned int ipa_bits, max_ipa_bits;
- 	unsigned long max_ipa;
-+	int type = 0;
-+
-+	if (kvm->cfg.arch.protected)
-+		type |= KVM_VM_TYPE_ARM_PROTECTED;
- 
- 	/* If we're running on an old kernel, use 0 as the VM type */
- 	max_ipa_bits = kvm__arch_get_ipa_limit(kvm);
- 	if (!max_ipa_bits)
--		return 0;
-+		return type;
- 
- 	/* Otherwise, compute the minimal required IPA size */
- 	max_ipa = kvm->cfg.ram_addr + kvm->cfg.ram_size - 1;
-@@ -500,7 +524,7 @@ int kvm__get_vm_type(struct kvm *kvm)
- 	if (ipa_bits > max_ipa_bits)
- 		die("Memory too large for this system (needs %d bits, %d available)", ipa_bits, max_ipa_bits);
- 
--	return KVM_VM_TYPE_ARM_IPA_SIZE(ipa_bits);
-+	return type | KVM_VM_TYPE_ARM_IPA_SIZE(ipa_bits);
- }
- 
- static int kvm__arch_free_kernel_header(struct kvm *kvm)
-diff --git a/arm64/pci.c b/arm64/pci.c
-index 0366783..db87db8 100644
---- a/arm64/pci.c
-+++ b/arm64/pci.c
-@@ -73,6 +73,8 @@ void pci__generate_fdt_nodes(void *fdt, struct kvm *kvm)
- 	if (irqchip == IRQCHIP_GICV2M || irqchip == IRQCHIP_GICV3_ITS)
- 		_FDT(fdt_property_cell(fdt, "msi-parent", PHANDLE_MSI));
- 
-+	generate_dma_region_prop(fdt);
-+
- 	/* Generate the interrupt map ... */
- 	dev_hdr = device__first_dev(DEVICE_BUS_PCI);
- 	while (dev_hdr && nentries < ARRAY_SIZE(irq_map)) {
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+The ones marked (*) were the important ones that I'll reply to, the rest are
+collateral damage.
+
+I also removed TSC_DEADLINE from the MSRs patch, since it's more of a local
+APIC register and it has a dependency on "migrate LAPIC state".
+
+Paolo
 
