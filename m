@@ -1,104 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B252D6E44
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 04:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C827AC45;
+	Thu, 25 Jun 2026 05:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782360824; cv=none; b=RalTAV8VrhcHLw0zrbwkDQxxVuz89bctnMaxG4NxaX+jxoAIW6PJTXFKrl+7Hv24ee/Fs6/8r9zUNvxQMaFTWczM5YaVXyogyzhbfYuRXuuoq7/8gyW1DGSqMU4c/VYrZcbXZ/thTSrvlfa/8D3+UGgJEVXT/TXNPHaczI9PbC8=
+	t=1782364766; cv=none; b=LcmknbVkeAKMQwMbhTzg6HWcIweK1XVSdC8MU9Si7wqKGPfOX2wrgntZQ4TaLdGh/P8Eo4WFQjCpXHwzxzk2lBp7v2xl9zOn5H4Bg1+vsJZe7bdBeApMB9m7ZNbTYTdyUJH66Yeh/+T5/yR6DxEq1AYAmwRAMi1xwIa1LicLNsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782360824; c=relaxed/simple;
-	bh=/iopUA0EruxSij3SihZ3vynul3k6nTUQQC9AANpoT4w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=M+z7G/9CAhpqI0ncAjAidDp3blrRXT4Fj2LCGyCb5NwY/zeOkyk7QAk9MvcaMJo+U7jJM24zqeon+FQCaDAd0KRk+4ZNlfPbkqQEYOE+dYdKE4Dh0MXXZsh3acYh6M/fE3NIAeCNfNBzSJJ9jlu86BXDDkV0k2iTfhlTj7XPDr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3vSEVlV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782364766; c=relaxed/simple;
+	bh=dd9YkuM2YzsaF4WuicVaxwqdNyWNt74Oh8Mq7k3AR2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L/jVycsxEXIlyoeoGy1Q2eXeNS3LgdrhxqryCfOz9bDTKD9oMO0bJP1LK6Ui4h53inX9hw52jw+ldV9weXYeM8xcdMSYanvhzfQ+L8OCDsDI3JRB22nmHRYtJ14N3qOpmil3Vd6K2MZsUq29LXrXkkGLLHxgZWRuTmDT6Zx4Gzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OzlcuY1a; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3vSEVlV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B303E1F000E9;
-	Thu, 25 Jun 2026 04:13:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782360822;
-	bh=JjAT7cWbGZ2zoombqBYHiNMWzrjgfxAHTeP/dPhEEUQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=J3vSEVlVqqSCu/bpda2m/XpohHju7QmEEP2zaxF2uEeIrBKcUmwHj3iNnhEIZuLwP
-	 mwC5PIhJMER77kqWrS7xQyruLX1vgiIES1bCSDNa2uPOexNMH2fpOl8Xysn41VX+xT
-	 85/cNZFE9CCO2znykIWwgG5Ygfoi212FPo6t35nblSrLYWxN/zDYgNL0cVtyKRN8Ug
-	 p8ygl6nluUVqRYP2mxRD1xig2fSLQp+/chDTv/pUyWPeZQ3FA4Ypsca4nWmRI485Bn
-	 cQPeMAV1GTIIsBwo7svF1YgJ8A4yKlnodgVycSdk5BoQ4kh/iT2kKHpgCiPkrf96O5
-	 Pfp6/jpBFJvrg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V5 7/7] KVM: selftests: Add perf_metrics and fixed
- counter 3 tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zide Chen" <zide.chen@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260625034555.141453-8-zide.chen@intel.com>
-References: <20260625034555.141453-1-zide.chen@intel.com>
- <20260625034555.141453-8-zide.chen@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 25 Jun 2026 04:13:42 +0000
-Message-Id: <20260625041342.B303E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OzlcuY1a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782364765; x=1813900765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dd9YkuM2YzsaF4WuicVaxwqdNyWNt74Oh8Mq7k3AR2c=;
+  b=OzlcuY1acDXOMriXH7IHSt5T3/vvxFeuqw6DOvrlsE1IkVJAPSb4QoLu
+   /6wSpH7qnAw7+jsw4zahhJQhXo9Ew/2wngEvyFggOwhHPywNsaT8ZVL50
+   qmqJUbYZQAPXX1DI/cOV0/Q/eJJU8kkOP4iTFRLsC1Qe++MUzRu+WDjjz
+   m8G1KgFR4loPIdLzMakLkfic1aRei/Ce6v0rKdlSakAv1JOXZ102MXsAk
+   sgJ/4pl0cdXfRZmElMEy0z9NzVc7z7Q+WfMmWH/K9qt2AgLemED5LUpEG
+   6F6xcwbxcoi9/Hgsysiiux+aV2ZwnHS0Lop9ZHUa3OQUOGuKV9rK/FzHq
+   Q==;
+X-CSE-ConnectionGUID: fTXHaFiyRUGdMUPUyxdehA==
+X-CSE-MsgGUID: +qfMstEzTK2WiZMkFfqpiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="93789065"
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="93789065"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 22:19:24 -0700
+X-CSE-ConnectionGUID: 8LQhUKjkRY2o1SFF/NwFUA==
+X-CSE-MsgGUID: g98MKyAWT/qeqtQN2zZVsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="247252936"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.64])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 22:19:19 -0700
+Date: Thu, 25 Jun 2026 08:19:16 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, seanjc@google.com
+Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
+ initialization is required
+Message-ID: <ajy6VMlPK08K7kIT@tlindgre-MOBL1>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-4-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618081355.3253581-4-yilun.xu@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The selftest assumes that MSR_PERF_METRICS retains arbitrary wri=
-tten values like 0xdeaddead, which contradicts the Intel SDM and will fail =
-on hardware when mediated PMU passthrough is used.
---
+On Thu, Jun 18, 2026 at 04:13:41PM +0800, Xu Yilun wrote:
+> TDX module extensions support extension SEAMCALLs that are preemptible
+> and resumable, unlike normal SEAMCALLs that run to completion while
+> monopolizing the CPU. This allows for higher-level API constructions,
+> so better supports some add-on features that implement higher order
+> security protocols.
 
-commit e4e21b97cacf777b041e2f100421a3f415696310
-Author: Zide Chen <zide.chen@intel.com>
+How about "TDX module extension SEAMCALLs are preemptible and resumable..."
+above to make it easier to read?
 
-KVM: selftests: Add perf_metrics and fixed counter 3 tests
+Other than that:
 
-This commit adds a test case to exercise IA32_PERF_METRICS, validating the
-architectural support for Topdown Level 1 metrics. It also extends the PMU
-selftest to cover Intel fixed counter 3.
-
-> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/=
-testing/selftests/kvm/x86/pmu_counters_test.c
-> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-
-[ ... ]
-
-> @@ -318,6 +322,56 @@ static void guest_test_arch_event(u8 idx)
-
-[ ... ]
-
-> +static void guest_test_perf_metrics(void)
-> +{
-
-[ ... ]
-
-> +	/* Sanity check after PERF_METRICS disabled. */
-> +	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
-> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
-> +	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
-> +
-> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
-
-[Severity: Medium]
-Will writing a reserved value to MSR_PERF_METRICS cause test failures on
-hardware with mediated PMU passthrough?
-
-The Intel SDM specifies that a write of 0 clears the metrics, and other
-write values are reserved.
-
-When mediated PMU is enabled, KVM disables MSR intercepts for
-MSR_PERF_METRICS. This means the guest executes the wrmsr instruction
-directly on the physical CPU. The hardware will likely reject the reserved
-0xdeaddead value with a #GP exception, or mask the write, causing the
-GUEST_ASSERT_EQ check to fail.
-
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625034555.1414=
-53-1-zide.chen@intel.com?part=3D7
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
