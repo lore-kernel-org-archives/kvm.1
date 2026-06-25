@@ -1,111 +1,88 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BFF3E717C
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 14:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A002236D503;
+	Thu, 25 Jun 2026 15:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782398825; cv=none; b=X3o1rGV+04PHy6gaxaf/WvLrDp0RbjhOGLM0Mw6UF0ekcMD+v+hovbGN8U9BZPvzxUHYMPVOU4YzhBDwsl7hKOz4HPT9dXbKTvFTcytyrFRTENtgNhx83GoXeomjOPpZDgIv0DzFs3bZRE3nVLVTU73geO/yugmDD2G3DKjLkRY=
+	t=1782399843; cv=none; b=ZQ56rJCGDRKa1CJWJaKORSmhWf5x7ZOl6TiARNpBWIGgt5gH/RuVeft8ob4iolMh5wFfKmjI5X4S56T+C9szeV0UfZXLnqWpDQsATODMVjDndmpS+amUnkynHHugnP+YkTeK49yDYMgywO6PDFELmbISBZtDRBjx3Vab+f9wYgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782398825; c=relaxed/simple;
-	bh=S3+dkh2AAJ6V4XkIrQrgR8TKF7PKZWqSNP4fIsdZR1M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hRPDaL3LYUh3SpKQ2w7DTDCwJYEQtTaEcWZrjNMnd1RblCT+nU67DhX6ZjO87g2HFxuM64XMlJZlKhmOMNffYQLtWWCmSis2zFrKER2FUdJv8Nbz1gpm5gV/0rIm8yontC+vWqUsWUCZVHIcZIjNkuAU5tRkiJD9JO6sKVL/4oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KgxALouB; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782399843; c=relaxed/simple;
+	bh=Uac3s/FkLZu5nWQvtVOiyODe+/g5II1WqX00+hlx0Lo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GmYqzZ/yKmWh7zMe0/LbDj7fk44yNEKI9uYAoLA1TFlHv22lXjriV1DHGgA66CGOovuRRG20k94WqZsXxccZTe1KpMxIt/HHQWuy3WtJ0pT8EsK+dSP9l2I/6A7aN8E2NSCnaV9M5xH3nzzrStT7vH+fxOr30X4PneGAR8toXeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=iQfR2mKs; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KgxALouB"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c7f4d28c66so10247315ad.1
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 07:47:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782398822; x=1783003622; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5FjTW/9czr0/KEcw1u4AJo3uHAihN7mDKo0VNDm2rhM=;
-        b=KgxALouB3jPtDbHSxQhr4Zntv/M5xctm69/pX85wgATVrolEdP4HdCG/HdAUuhtP96
-         dv8lNVEjkF6A1yaZNegNZ3DthNRsg8ogteLqHH2fTNZKX/XpZIj18jR1Unf1obSzoU5f
-         1Ln5wycGygBCCcpFpsfhOSF6kharfAHAN5LlMuGyJ3xoPk5WAU6RPvC17xKj7oy33r+/
-         finUTUQ/Y6x/qGafUurspIo3/Lw0nI9A//gD/rp0KtRX9SckuMJ1d8+DQN90mw7YBjQg
-         FKXv4Fxwa7NUt1iftwiCYOSVhoTH+QOZEhvnmbQO/CTnGZVu84hMfdEgEtVYcX0Gf1Wn
-         fjrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782398822; x=1783003622;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5FjTW/9czr0/KEcw1u4AJo3uHAihN7mDKo0VNDm2rhM=;
-        b=YuYJG+gyYKBEcS96x3Km7FitC97ZE/eoA0UzdNjETTZSzinlAVNzg40IBC3RebJnvU
-         2IWvkI6iZVmXWaOrJV58oADNtUzADs8MnhyWAH5jqbfirV/osqFzyiF31JC7wyRFApY9
-         1TY8x7CF3VZr0MhFNlnp0DDBZg/Yut1uxdOQ3LeSjgDH1m6Ghhcpg4vt/KIEeLHpohKK
-         OPMo7SfF5v+aw5G7jHno16NOYCNjEf/CTLycBXpL8MO1GV68LDh1t3CgO8YPDS0ANixH
-         pY8HI4G005vrkS/O9wUl+wPLoDiMODHIFKpCEfWqIt9wYqDZth6ajx41TU6e3Fqnzahs
-         0t+g==
-X-Forwarded-Encrypted: i=1; AHgh+RpoQJYGdAkJHGlhHN+ph/x3RJO4RRk+kR+LY10BCKAmb48NDrlvgMgqYokUfO7FHuJwJ9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCnXfWjH15RzOKaemIzJQLcv4VvKlGHIuWZjCWOxUSeNNXlls2
-	vq4fCCU7uY4mAGeKbS4ENgwYbNHT5QiW2lNKij1u3t7hDDrBEKE2XU0yJh0NhlxmmXFQqFgchKC
-	iUvl1fw==
-X-Received: from plrd20.prod.google.com ([2002:a17:902:aa94:b0:2c7:9ba8:5327])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:320a:b0:2bf:2ea3:af30
- with SMTP id d9443c01a7336-2c7c3d2ad10mr124561455ad.4.1782398821740; Thu, 25
- Jun 2026 07:47:01 -0700 (PDT)
-Date: Thu, 25 Jun 2026 07:47:01 -0700
-In-Reply-To: <20260625095846.EF9271F000E9@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="iQfR2mKs"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7508D40E00BF;
+	Thu, 25 Jun 2026 15:03:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id eHJzs-crGVFb; Thu, 25 Jun 2026 15:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1782399812; bh=gCbhzWJy0h7/sYHbIeCE/SlEs5Mm3OwXOOEFuRKFBz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iQfR2mKsH6/4iRn5OS5IvrsKEeoUmzF9LkUzPCcf7YVenE/soQ6PsAKMUoLDVJmuQ
+	 PGoTr5pLrgnatv6RrMKZzf312NxvxFBvxScjLM61iIBKMEv8P9HoGvspyYgUM+/HHt
+	 y+X3bj47cVwMYt048FuJNSDfan7NVCMsbD9iFfPkZ+PynDYAW1eTodbHLiGewZ+1Dg
+	 qUT1g2fYK614+p33CJzDbzS+gwXL2U2rtK6VLdNezoOx8eJw2E/V4Svt+Lxhzv2S14
+	 WFTAVilpeZDhBDGJlGdTm9LAvD3Ldzc4yHUcKqrG2CPLzZErjQxxfp4lJ/TC38SQIr
+	 Phk0d+v8eFilPvOi0dIZn2VnMCYa89K65AlVD/PPRPGRwJMt7Pfg3J27Hx5Yl6Lr+3
+	 XKuOptIbrsuC//PcpPASAgXTCi4g7nuAIO1guoOfMthJuoS5OizMD4HBdnwkEwnshr
+	 A+5Vgi44j/qeOqOCGJwXzpJtESqthaXOv73g0NiLjpv5dylu8utndj1dYcpK2COGXw
+	 6zV680j4z0QVFPAb8SPsIhJR1wMwAheYozw/e8ocW/m6TW4n/eft4FLJBuwljRRcZy
+	 96h8e8qcPO7tNuPWVEayz2sH0NCuwINaiUUcvBu9nlJAYdhQ6CDUA6Ir26J9063ZCg
+	 7nPKVdJSOhcqlYYnMDpTIIuM=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C91540E0031;
+	Thu, 25 Jun 2026 15:02:57 +0000 (UTC)
+Date: Thu, 25 Jun 2026 08:02:53 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
+Message-ID: <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
+References: <cover.1782336473.git.ashish.kalra@amd.com>
+ <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260625094047.255954-1-suryasaimadhu369@gmail.com> <20260625095846.EF9271F000E9@smtp.kernel.org>
-Message-ID: <aj0_ZWALxEcvlUIy@google.com>
-Subject: Re: [PATCH] KVM: SVM: handle wraparound of asid_generation
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: suryasaimadhu <suryasaimadhu369@gmail.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
 
-On Thu, Jun 25, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] The patch claims to fix a 64-bit ASID generation wraparound, but provides an incomplete solution that only shifts the theoretical ABA vulnerability from generation 0 to generation 1, and fails to remove the corresponding FIXME comment.
-> --
-> 
-> commit ecd299cb836eda8be32eeffedf37f3e076185761
-> Author: suryasaimadhu <suryasaimadhu369@gmail.com>
-> 
-> KVM: SVM: handle wraparound of asid_generation
-> 
-> If asid_generation wraps around to 0, it matches the initial
-> value of svm->current_vmcb->asid_generation (0), causing KVM
-> to skip calling new_asid() and potentially reuse stale ASIDs.
-> 
-> Fix this by skipping 0 when incrementing asid_generation.
-> 
-> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > index 24d59ccfa40d9..cfb9952f7c1f6 100644
-> > --- a/arch/x86/kvm/svm/svm.c
-> > +++ b/arch/x86/kvm/svm/svm.c
-> > @@ -1794,7 +1794,8 @@ static void svm_update_exception_bitmap(struct kvm_vcpu *vcpu)
-> >  static void new_asid(struct vcpu_svm *svm, struct svm_cpu_data *sd)
-> >  {
-> >  	if (sd->next_asid > sd->max_asid) {
-> > -		++sd->asid_generation;
-> > +		if (!++sd->asid_generation)
-> > +			sd->asid_generation = 1;
-> 
-> [Severity: Medium]
-> Does skipping generation 0 fully resolve the wraparound issue, or does it
-> merely shift the theoretical ABA vulnerability to generation 1?
-> 
-> If a VMCB happens to sleep for an entire 2^64 generation cycle and wakes up
-> when the generation counter reaches 1 again, wouldn't it incorrectly match
-> the wrapped generation 1 and reuse a stale ASID?
+On Wed, Jun 24, 2026 at 09:56:49PM +0000, Ashish Kalra wrote:
+> +/* Set while SNP has CPU hotplug disabled (kernel-lifetime; survives ccp reload). */
+> +static bool snp_cpu_hotplug_disabled;
 
-Yeah, properly "fixing" this would require poking every vCPU in the system.
+Do you really need this?
 
-I don't see any value in trying to make this bit of code less ugly.  In practice,
-the generation is never going to wrap.  Even if the CPU were able to increment
-the generation every *cycle*, a CPU running at 6ghz would only overflow after
-~97 years.
+-- 
+Regards/Gruss,
+    Boris.
 
-And Yosry's nSVM TLB flushing series completely eliminates the generation scheme:
-https://lore.kernel.org/all/20260616004155.1435766-10-yosry@kernel.org
+https://people.kernel.org/tglx/notes-about-netiquette
