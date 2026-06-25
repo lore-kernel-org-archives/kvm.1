@@ -1,156 +1,116 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473FF331EC7
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D0730EF63
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782427105; cv=none; b=S+H6wlDdl4DjfYPPUyi9hiiNp3iwELjeKyA5l2t1vnogrBE8Si1EUxDu2N1T14SmVC/+gHtf/MLjYE2KYX+x2ZXa9i2+GQxDDmG4PeJwoxugdA2lfirnwuRoqlInHbh/j4QVqnz35DmrFeXNKAGSTsGWBd2rznlzIquRRsSN5sI=
+	t=1782427162; cv=none; b=CGHGC+MoTxQbjZ63sVfHAKHHn8iSRhjGjEt+2jM/yuRTPwXn9DfqP0b6u8RXOGXgBSv2SOwbfWMXpAtA+1nqm8eQ2QUhqQ41Xw5dRGhg5qcxWcltlrB2dQx0hixxJdKZbTWUDWPMBUi6V8jzTfhgATk+1SzPE2oGiaEdsn0wOR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782427105; c=relaxed/simple;
-	bh=CpABWUr260CgXpjicA89ge4lT71J4tbfxyzcLfz68os=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NNlFaaGpTjh6MjfRpsAZ40OoiyVjf1QKxhlOhcNsqgwIK4PsiMMiBtbtk8sSoaCcR3fF+HXSq/5jL/H9gyXH8PY/hLcaw2C1tE6XKaWSmOrzBP/uEVkqOFJGcXP64DKB/UgCP2vGZvQjwXHRRrUiRFW35cF3gwjyVJZKEghD2uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R5ICKmKk; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782427162; c=relaxed/simple;
+	bh=9+hj/5TWchWH3+Ittt3J3cXWOkEZ3vhktEA/U8RXdcs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XakJsrlN3h2savByAf5LfraWcQsIruog0bJ3IzQBuH6x/dV8oFp+b6s64F/tDcbC5Ij4WRz1POcluTVfsDjaKqg/r2W9E+2q9rytP7orwUu4w481aHa0++XAZulb57kwLI82cmJ3xVlXH+yhIo5L5FiLyBqlPePwHOCsMF0ky0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYKEMLdS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R5ICKmKk"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88da04b719so178892a12.2
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:38:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782427104; x=1783031904; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=C41fullCZRTObl53NmujOLk30v3K2S7YvKtmD0713xo=;
-        b=R5ICKmKkgfPJE+3UPmqPAHKu8Cr6lKFunTsV4UuHkSBPmRDmC6JABy7ryPRlBzM4db
-         O4oJZhbVUxSJISaHZXHjGyCWdh4ZXIq8aXFWNt1FEh+880i7GH5rKxkLwWqeN/FwyVVw
-         btDQVqn3pkD588x+yb0xnSODZBT1fZKrI+bRKVz/noTaPBd7f4bnO6BevgLj2mbSH30t
-         Rv1hYEM+u8sFia5awaeKVa2CrSlbc49jcq230ITyoGY1FC7DSPqRqSGhF/it4xbGEly/
-         47jCk4jIG40AQ2hST6iHnRVEawrWy9D3MNF1jQyE+1GtY1rAxrSua6K+S04qZmAIkAJm
-         rgwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782427104; x=1783031904;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C41fullCZRTObl53NmujOLk30v3K2S7YvKtmD0713xo=;
-        b=Xz86lgqjyBE3KfWYgxr77fc0XodLVpusFTA4nCYZHo6Co5/QNe9VFFAafhjBVxGjAl
-         vm7qSk8MaBH2/9lkrrrJ+bjrl5KPRjOxpf2GT8NtAbS7HTXdBNwQuwusIyCl+Q7HmVgp
-         OnWfyyqJ953aL5MuDAHt0J1CyGIRPdNJkfAr2IupiFbZaWtQNXuSd/3VV9mgvwMIlf9/
-         eQEBGvo2E6fxe+wXcW6H1JHXIIyJ64sLfv//NIBIxos4fvOT1Fwv9OjlpR6ognOcR7PV
-         sEjZfMyC0UhiLIFYPqgEjbtkgcDx6M/cxWpvNidb3QBqC6APcktLM5Lnt2VDkYFtYDlJ
-         +ddQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrmDIymX7nu9NeZOUPbvR7vnmesOQ1xQxVDU9VA8idqPGF3sukBXQ8+u74lJ/6d5f6r37c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymJMGFVb5FOLxmBVH3ND9i6jyQA0yoQzhgbXCZiy4KG9GT8Mhm
-	xkuhyuttBeG8EG8ob6sm4P/UIMsJ3y/4R6NC5QM9d9ydMaKbunV04xpHTifVtG2OS9SH8sjUlXI
-	NErxEuA==
-X-Received: from pgbn7.prod.google.com ([2002:a63:5907:0:b0:c85:b968:afa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c4f:b0:36d:e051:7b6a
- with SMTP id 98e67ed59e1d1-37dfa2434d9mr4486316a91.12.1782427103428; Thu, 25
- Jun 2026 15:38:23 -0700 (PDT)
-Date: Thu, 25 Jun 2026 15:38:22 -0700
-In-Reply-To: <CANp29Y7aiAeNCUPAYbym7_b7gxDsjweF+qssQ-VSussbZ1OGgw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYKEMLdS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7511F000E9;
+	Thu, 25 Jun 2026 22:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782427160;
+	bh=14XYD6IibAntOOcL0Q8vpdvbq5cQpREwFLzurnpmTTY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PYKEMLdSkWbq16MM43KfK8BJVYGD+I3FczpV8iuzkpbCeCx/5tZMplXxuCCT6m8vn
+	 mPAlrpVqGKEFs/Bp7ovccHK8a+a7vbjxU0ujzJJQfdZ1v7HGWk8JQ7fQRxYHRtTpRq
+	 /vyf2yvkvQnNz/XXohB9C2jjhwRiz61VM1F1FWLbp7kmSqlh8jgmpurmtl8QDZkrS4
+	 gQOqGWk6Avj5whOZrq8cHEn6e/X4l2Mu2uGCNM1c29nUj2EVasmIf3ktV2o2unBptN
+	 mQzUxCsibCano1upkQMIr5QOToDG9+mUgD7tTXel4ZSRLDtcnPM1TU/KRukLvIfFmh
+	 ni2ZmtJiP5Y9w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/7] KVM: Rework .gmem_invalidate() into
+ .gmem_free_folio()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260625222229.3367197-5-seanjc@google.com>
+References: <20260625222229.3367197-1-seanjc@google.com>
+ <20260625222229.3367197-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 25 Jun 2026 22:39:19 +0000
+Message-Id: <20260625223920.6C7511F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <86078441-92eb-4461-b823-7d3539ac5859@mail.kernel.org> <CANp29Y7aiAeNCUPAYbym7_b7gxDsjweF+qssQ-VSussbZ1OGgw@mail.gmail.com>
-Message-ID: <aj2t3vnFk_fkF6Gk@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Exempt in-kernel PIC from "disappearing"
- interrupt warning
-From: Sean Christopherson <seanjc@google.com>
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: syzbot <syzbot@kernel.org>, syzkaller-bugs@googlegroups.com, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org, hpa@zytor.com, 
-	linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026, Aleksandr Nogikh wrote:
-> On Thu, Jun 25, 2026 at 11:10=E2=80=AFPM 'syzbot' via syzkaller-bugs
-> > https://lore.kernel.org/all/345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.k=
-ernel.org/T/
-> > ---
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index 0550359ed..f1681aa9f 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -10857,7 +10857,9 @@ static int kvm_check_and_inject_events(struct k=
-vm_vcpu *vcpu,
-> >                 if (r) {
-> >                         int irq =3D kvm_cpu_get_interrupt(vcpu);
-> >
-> > -                       if (!WARN_ON_ONCE(irq =3D=3D -1)) {
-> > +                       WARN_ON_ONCE(irq =3D=3D -1 && !pic_in_kernel(vc=
-pu->kvm));
-> > +
-> > +                       if (irq !=3D -1) {
->=20
-> Hmm, no, that looks weird.
-> Sorry for the noise, please ignore.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Looks right to me?  FWIW, this is what I had thrown together locally:
+Pre-existing issues:
+- [High] KVM module can be unloaded while guest_memfd folios are being evic=
+ted, causing a Use-After-Free crash when calling a_ops->free_folio().
+--
 
----
-Author:     Sean Christopherson <seanjc@google.com>
-AuthorDate: Thu Jun 25 08:46:48 2026 -0700
-Commit:     Sean Christopherson <seanjc@google.com>
-CommitDate: Thu Jun 25 09:00:49 2026 -0700
+commit dd2a52e3b94932f45c23fd6812c93b476a753c85
+Author: Sean Christopherson <seanjc@google.com>
 
-    KVM: x86: Don't WARN if IRQ disappears because it was cleared from the =
-PIC
-   =20
-    When getting a to-be-injected IRQ, don't WARN if the IRQ disappeared an=
-d
-    the VM has an in-kernel PIC, as the ExtINT handling that's routed throu=
-gh
-    KVM's virtual PIC is tracked per-VM, not per-vCPU.  If another vCPU gra=
-bs
-    the IRQ, or deasserts the interrupt (which is level-triggered), then it=
-'s
-    both expected and "fine" for a
-   =20
-    Keep the assert for split IRQCHIP VMs to help detect KVM bugs, as users=
-pace
-    is responsible for routing ExtINT to the intended vCPU, i.e. once an Ex=
-tINT
-    is pending, it can't be cleared without holding the vCPU's mutex, and t=
-hus
-    false positives are impossible.
-   =20
-    Fixes: bf672720e83c ("KVM: x86: check the kvm_cpu_get_interrupt result =
-before using it")
-    Debugged-by: Alexander Potapenko <glider@google.com>
-    Reported-by: syzbot+dd769db18693736eee89@syzkaller.appspotmail.com
-    Closes: https://syzkaller.appspot.com/bug?extid=3Ddd769db18693736eee89
-    Closes: https://lore.kernel.org/all/6a360fdf.871e809a.2d6dda.0000.GAE@g=
-oogle.com
-    Signed-off-by: Sean Christopherson <seanjc@google.com>
+KVM: Rework .gmem_invalidate() into .gmem_free_folio()
 
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index 0626e835e9eb..7feddeeb819d 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -7686,10 +7686,12 @@ static int kvm_check_and_inject_events(struct kvm_v=
-cpu *vcpu,
-                if (r) {
-                        int irq =3D kvm_cpu_get_interrupt(vcpu);
-=20
--                       if (!WARN_ON_ONCE(irq =3D=3D -1)) {
-+                       if (likely(irq !=3D -1)) {
-                                kvm_queue_interrupt(vcpu, irq, false);
-                                kvm_x86_call(inject_irq)(vcpu, false);
-                                WARN_ON(kvm_x86_call(interrupt_allowed)(vcp=
-u, true) < 0);
-+                       } else {
-+                               WARN_ON_ONCE(!pic_in_kernel(vcpu->kvm));
-                        }
-                }
-                if (kvm_cpu_has_injectable_intr(vcpu))
+Rename .gmem_invalidate() to .gmem_free_folio() as the hook is called when
+a folio is freed. Drop guest_memfd's trampoline and wire up .free_folio()
+directly to the arch callback.
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 86690683b2fe3..1618acc3ca647 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -523,23 +523,12 @@ static int kvm_gmem_error_folio(struct address_spac=
+e *mapping, struct folio *fol
+>  	return MF_DELAYED;
+>  }
+> =20
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -static void kvm_gmem_free_folio(struct folio *folio)
+> -{
+> -	struct page *page =3D folio_page(folio, 0);
+> -	kvm_pfn_t pfn =3D page_to_pfn(page);
+> -	int order =3D folio_order(folio);
+> -
+> -	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> -}
+> -#endif
+> -
+>  static const struct address_space_operations kvm_gmem_aops =3D {
+>  	.dirty_folio =3D noop_dirty_folio,
+>  	.migrate_folio	=3D kvm_gmem_migrate_folio,
+>  	.error_remove_folio =3D kvm_gmem_error_folio,
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -	.free_folio =3D kvm_gmem_free_folio,
+> +	.free_folio =3D kvm_arch_gmem_free_folio,
+
+[Severity: High]
+This is a pre-existing issue, but can this lead to an execution-after-free
+crash during module unload?
+
+When a user closes all KVM-related file descriptors, __fput() drops the
+module reference via fops_put(file->f_op) before it calls dput(). The
+dput() call subsequently drops the inode reference and triggers page cache
+eviction.=20
+
+Because kvm_gmem_fs lacks .owner =3D THIS_MODULE, the superblock and
+inodes do not independently pin the KVM module in memory.
+
+If an administrator unloads the KVM module after fops_put() but before
+eviction completes, does the mapping->a_ops->free_folio() call in the page
+cache eviction path attempt to execute unmapped memory?
+
+>  #endif
+>  };
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260625222229.3367=
+197-1-seanjc@google.com?part=3D4
