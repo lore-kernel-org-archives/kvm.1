@@ -1,218 +1,179 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C75D3E3153
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 12:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB013DCD80;
+	Thu, 25 Jun 2026 12:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782391928; cv=none; b=VJNaAq2GzvwYBXVJzAyWMxMGtF+W5JJlFOTOMFbrkAQgT4jAwneKVKtRazY3P/wqO8P4bh18Bcs4AzCjdpRbPqbg7OYjdQtYvUGFmDyuub4qg72iYIWk2GqzMroEl0C+XCrCT6OY8ix4IqZ4LNsWaTbJ21jc2lce1+eqLJRbkDM=
+	t=1782392264; cv=none; b=Uw5rH2JRXgJpyezTniFHwGBiAeOKB58/gDI/q+bNZo6N/Gj9eWDZyuvHppbUPvH337JI9dRuYwYRCrCPGx1OpDK6BjWA++1zgYQVzQ7Ymu/qWJRn4PuTrtmEBX+ED16d863RVthh2srmBGJgbrHhM4E5CJcAaVhQdkWu6kglOn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782391928; c=relaxed/simple;
-	bh=qI5a312uzCO1/du7mDSlEQPVStrftWOg9+WuhzXFfwU=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mzwn2qHmgoInsKAdFfFZ5S77v1lmnw47VKGKpd5tKCEfECk5O516jOZKQVKX7V0flMpg9yijtseLrV4OXu25TH4RWQJWZ1YUBi2TtsFeY1h5NaDdtCrkcwn8sUX9rSqUD5xFTZNxGsgv8U/ZeZvwUFhEhIHf7VHYurAnHNNbo00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GipR/ca6; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1782392264; c=relaxed/simple;
+	bh=kUD4yxqkQ3I71PGnDd7xEHq2Yhfg0jaZRyTX8ogxiA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nuqj90KPeJkDnYceaYMzUYsRxLaouKhSkGv2vjoB5gA2t687t4NJDhkJ3BC7hDklEfbhCLGpv7Rb9NPK4fMK8v4QSaglqSHDaTPQEvghOmZsHzVo7grH6QgPmkJgoUYosWEcBygHZCQiNxPCFfoPKOulo8L8grpuqmuovGqaPgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHmpLCYx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GipR/ca6"
-Message-ID: <416dfbf8-f765-442e-b6de-6fc0fe1a4b5f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782391914;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6vCDn7zTlDDt00JE09Z8ikXG1La8GTobpXUF8h+MjkI=;
-	b=GipR/ca6QP+LZiejM68dl/qx1WxQNZGfK1ZN64TuNLOIJ0p9sLapjmbHg38LmulMO5Xtc9
-	byDWtHSF7gxLDvGahshb9ZIJ9bICzFr97ofI6UnejOO8W0UsoLp0YTbrjM6LyRTnFLyX+C
-	UmIABC2PlhqeDTw6uyayBIQmY6hvN1o=
-Date: Thu, 25 Jun 2026 20:51:45 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHmpLCYx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBCE1F00A3A;
+	Thu, 25 Jun 2026 12:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782392263;
+	bh=kBH/vS8hZh8Igpj0aw8/HaHtMjB3pKyKAfYdrgPsQCU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dHmpLCYxkcYHAnhShuZZiNteUIsANckSSdSG7HqREuNtilbYWQipbTko618b1Yqz0
+	 TdmqsVsHCGZsqS/WBZm4cZsmyAR29Rb2Z0yEWyZqjWRGGDfP33LlQQ6+1lxyqZxoRp
+	 yjEiovspVIARiluKrlsUuXuVAk+XCr1BoRB8pEztZQ7RjuT4jQfM5sBPW4JxKpY3v7
+	 Yr8XpCL4sC80zDNED3TFkKh0otLxXx+aGAsD4h0vpvKtyevTGOjQ3tMZyxONEStJZh
+	 27J6zBoo6Pu7SjU7iu4yPlyB6hd1OxletytvTKm7z4321BrdJn+b4w+S2Yu07TTkhf
+	 WX1h0k78BILkA==
+Message-ID: <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
+Date: Thu, 25 Jun 2026 14:57:25 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Cc: cui.tao@linux.dev, kernel@xen0n.name, kvm@vger.kernel.org,
- Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH v4 2/3] LoongArch: KVM: Implement guest-side PV TLB flush
-To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, loongarch@lists.linux.dev
-References: <20260615082154.42144-1-cui.tao@linux.dev>
- <20260615082154.42144-3-cui.tao@linux.dev>
- <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
- <1bfa4941-b94b-410a-9b64-c13f2712edf9@linux.dev>
- <9ec9d22b-93fd-3dcb-c6b8-19563f1b7c0a@loongson.cn>
- <404180d0-c734-4465-8752-f43279730692@linux.dev>
- <6f837e00-e606-ddaa-b22b-dd30348a18fb@loongson.cn>
- <084d7bec-592c-31b5-aa44-099bff87af9a@loongson.cn>
- <013459e1-f817-42b5-a0fd-20b38d9b6140@linux.dev>
- <835a9c5c-2f66-293b-d093-fc59bac26a01@loongson.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <835a9c5c-2f66-293b-d093-fc59bac26a01@loongson.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: Sean Christopherson <seanjc@google.com>,
+ Ackerley Tng <ackerleytng@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
+ brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+ <ajwMYCSrPlxg-Fok@google.com>
+ <CAEvNRgE8HZDOnexMJeim6TjmxGG1AUXFY2+HH1YyKB=aM6D-DQ@mail.gmail.com>
+ <ajx3vmNPRf-M9kR6@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ajx3vmNPRf-M9kR6@google.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
 
-
-
-在 2026/6/25 15:36, Bibo Mao 写道:
-> 
-> 
-> On 2026/6/25 下午3:15, Tao Cui wrote:
+On 6/25/26 02:35, Sean Christopherson wrote:
+> On Wed, Jun 24, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
 >>
->>
->> 在 2026/6/25 14:11, Bibo Mao 写道:
 >>>
->>>
->>> On 2026/6/25 上午11:31, Bibo Mao wrote:
->>>>
->>>>
->>>> On 2026/6/25 上午10:27, Tao Cui wrote:
->>>>>
->>>>> Hi Bibo,
->>>>>
->>>>> 在 2026/6/17 09:05, Bibo Mao 写道:
->>>>>>
->>>>>>> Rather than argue from intuition, I'd like to try the hypercall approach
->>>>>>> you suggested and measure the performance improvement against the current
->>>>>>> path. I'll share the results with you once the testing is done, so we
->>>>>>> can decide the direction based on the numbers.
->>>>>> well, that is the best. It is my pleasure to discuss this with you.
->>>>>>
->>>>>
->>>>> A quick update on the testing. I put both the hypercall and the
->>>>> steal-time variants through two benchmarks on an 8-core host with a
->>>>> 4:1 overcommitted guest (32 vCPUs), and wanted to share where things
->>>>> stand.
->>>>>
->>>>> The two workloads:
->>>>>    - ebizzy (all threads busy, mm-flush heavy)
->>>>>    - tlb_bench in sleep-idle mode (1 flusher + 31 sleeping idle threads,
->>>>>      so the idle vCPUs get preempted)
->>>>>
->>>>> ebizzy (records/s, higher is better), 32 vCPUs:
->>>>>     no-PV       ~103,737
->>>>>     hypercall   ~105,779
->>>>>     steal-time  ~105,872
->>>>>     -> all within noise (±2%); no measurable difference.
->>>> Hi Tao,
->>>>
->>>> what is ebizzy command? ebizzy -m or ebizzy -M.
->>>>
->>>> could you try command on host and one VM without over-committed at first, and then two VMs and three VMs?
->>>>
->>>> Here is result on my 3C5000 Dual-way machines with 32 cores and two numa nodes:
->>>>                   ./ebizzy -m          ./ebizzy -M
->>>> host             8633                 158898
->>>> VM(32 vCPUs)     6610                 133153
->>>> VM/host          76%                  83%
->>>>
->>> just ./ebizzy -M is enough, it seems that CPU number is one key factor.
->>>
+>>> Under what circumstances does this happen,
 >>
->> Sorry for the delay — it turned out my ebizzy command was wrong. I had
->> been running `ebizzy -t <vcpus> -S 10`, which is neither -m nor -M, so
->> neither mmap mode was active and the workload wasn't really stressing
->> the TLB-flush path. Thanks for catching it.
->>
->> I re-ran with -m and -M on host and a single VM (8-core LoongArch
->> KVM host, 8 vCPU guest, 1:1, no overcommit).
->>
->>                   ebizzy -m        ebizzy -M
->> host             ~20,000          ~55,000
->> VM (8 vCPU,1:1)  ~17,000          ~53,000
->> VM/host          ~86%             ~97%
->>
->> The -m ratio (86%) is close to your 76%.
-> On my 3C5000 Dual-way machine, VM has the same CPU/memory topology with physical machine, the kernel is mainline without any patch.
->                           ./ebizzy -M
-> Host (32 pCPUs)           158898
-> One VM(32 vCPUs)          133153                 83% of host
-> Two VMs(32 vCPUs each)    9083 + 9630 = 18713    11% of host
+>> It happened 100% of the time in selftests. Perhaps it's because in the
+>> selftests the pages are almost always freshly allocated and so the
+>> lru_add fbatch isn't full yet? (and that the host isn't super busy so
+>> lru_add fbatch doesn't get drained yet).
 > 
-> It seems that with ebizzy benchmark, there is big difference if vCPU is preempted. Even if vCPU is not preempted, the performance is only 83% of host on my 3C5000 Dual-way machine.
+> I chatted with Ackerley about this.  What I wanted to understand is why guest_memfd
+> pages were getting put onto per-CPU batches for lru_add(), given that guest_memfd
+> pages are unevictable.  The answer (assuming I read the code right), is that
+> lruvec_add_folio() updates stats and other per-lru metadata for the unevictable
+> lru, and does so under a per-lru lock.  I.e. we don't want to skip that stuff
+> entirely.
 
-After fixing the ebizzy command, I
-have multi-VM overcommit results for both approaches.
+Hm. Our pages don't participate in any LRU activity (including
+isolation+migration). Isolation+migration would only apply once we'd support
+page migration.
 
-Setup: 8-core LoongArch (single-socket, single NUMA), KVM,
-linux-next-20260623, 8 vCPU per VM. All VMs run ebizzy -M
-simultaneously, 3 runs each. The PV-off baseline uses a guest kernel
-with CONFIG_PARAVIRT=y but without the PV TLB flush patches, so
-PV IPI and steal-time are active in all three columns.
+But yes, secretmem also does it like that: filemap_add_folio() will call
+folio_add_lru().
 
-ebizzy -M, total records/s across all VMs:
+Traditionally we used the unevictable LRU only for mlock purposes.
 
-              PV-off      steal-time   hypercall
-  1:1 (1VM)   53,600      53,800       53,900
-  2:1 (2VM)    2,600      42,600       45,300
-  3:1 (3VM)    2,800      44,700       46,000
-
-At 1:1 there is no difference — no vCPU gets preempted. Under
-overcommit, without PV TLB flush the throughput drops to ~3-5% of
-the single-VM case, because every remote TLB flush sends IPIs to
-preempted vCPUs. With either PV TLB flush variant, preempted vCPUs
-are skipped, and total throughput stays at ~85-90% of single-VM
-(bounded by physical cores).
-
-Hypercall is consistently 3-6% above steal-time in the overcommit
-cases. A possible reason is that the hypercall hands the entire
-target set to the host in one call, while steal-time still IPIs the
-running vCPUs and only defers the preempted ones.
-
-On our 8-core machine the collapse is more severe than on your
-3C5000 (~5% vs 11% of host at 2 VMs), likely due to the smaller
-core count and single-NUMA topology.
-
-Thanks,
-Tao
+But yeah, there are "unevictable" stats involved ....
 
 > 
-> Regards
-> Bibo Mao
->>
->> I then tried multi-VM overcommit (2 and 3 VMs, all running ebizzy -M
->> simultaneously). The initial result showed a large gap between the
->> PV-TLB-flush kernel and the baseline under overcommit. Both kernels
->> have CONFIG_PARAVIRT enabled (PV IPI and steal-time are active in
->> both), so PV TLB flush should be the main differentiator — but since
->> they are two separate kernel images rather than a clean on/off toggle,
->> there may be some noise from other differences. I'm now re-running
->> with a QEMU CPU property (kvm-pv-tlb-flush on/off) on the same kernel
->> to isolate the effect cleanly.
->>
->> I'll share the verified numbers once I have them.
->>
->> Thanks,
->> Tao
->>
->>>> Regards
->>>> Bibo Mao
->>>>
->>>>>
->>>>> tlb_bench sleep-idle (ns/flush, lower is better), 1 flusher + 31 idle:
->>>>>     no-PV       ~166,536
->>>>>     steal-time  ~149,553
->>>>>     hypercall    ~88,686
->>>>>
->>>>> ebizzy's workload is mostly threads staying busy with alloc/copy/free,
->>>>> which drives remote TLB flushes against running vCPUs — that may not be
->>>>> the path this feature is meant to optimize, so the flat result there
->>>>> probably says more about the workload mismatch than about the feature
->>>>> itself. I need to take another look at whether the benchmark actually
->>>>> exercises the cases PV TLB flush targets before reading too much into
->>>>> the numbers, including the tlb_bench figure above.
->>>>>
->>>>> So I'd hold off on any conclusion for now. Next I'll re-examine the
->>>>> test setup / pick a workload that better matches the feature, and keep
->>>>> you posted once I have something more representative.
->>>>>
->>>>> Best,
->>>>> Tao
->>>>>
->>>
-> 
+> One thought I had, to avoid the IPIs that draining all per-CPU caches requires,
+> was to disallow putting guest_memfd pages in folio batches, e.g. by hacking
+> something into folio_may_be_lru_cached().  But due to taking a per-lru lock,
+> that would penalize the relatively hot path and definitely common operation of
+> faulting in guest memory.  On the other hand, memory conversion is already a
+> relatively slow operation and is relatively uncommon compared to page faults,
+> (and likely very uncommon for real world setups).  I.e. having to drain all
+> caches if conversion isn't safe penalizes a relatively slow, relatively uncommon
+> path.
 
+Yeah, the lru_add_drain_all is rather messy.
+
+We have similar code in
+
+collect_longterm_unpinnable_folios(), where we first try a lru_add_drain(), to
+then escalate to a lru_add_drain_all().
+
+Maybe we could factor that (suboptimal code) out to not have to reinvent the
+same thing multiple times?
+
+-- 
+Cheers,
+
+David
