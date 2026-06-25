@@ -1,91 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BA032B105;
-	Thu, 25 Jun 2026 10:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3003CF698;
+	Thu, 25 Jun 2026 10:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782384208; cv=none; b=Zh7FHszpbzMh2OKVCHULoY2RRYugaaKba4+ApjW9UoCo3iigGwQtmNvFLl+2CXabZ2mu23Eow7J2hnT4nXdoRjrGv6gXFDGK2Zq0bdVuDnKBp/4mPGvrJicsOuTsPt0XNwf8oAIDw1iXfzezrc8fabyu6rNM+NRmkK3Bjc7Yqq4=
+	t=1782384215; cv=none; b=igQXBHBclsMjgztqBe+FiFLISbambeptdRqT1oqGrH5TopU3eALjA5o3N3GlBjTO3JRwHTA32SWeLnRvuij1jnCLkr/uIiom4Y94rM+W+sY/JSfpc5Hd0G1lfurj2MbknQfS+5WDleKA+9dd9Rm9rZEmBO+NPEEKLQk5QKLHDe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782384208; c=relaxed/simple;
-	bh=UjrUr9JyhWSPsRrVGWFmbeJ/i1JdU8zynCYVhgLqGXg=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=I2+vwOpZ0GEU0ryCMa8kecnz8mYefbOu9d4NFcdxz6U6HOtCsoD6HpAH1OE8foFiiGWSs3sRPVGs1pGwaajw4sahIr2dXCS4fkUAtrO7woHZoJA70Cac8jE/wxkaULhAhDFhNF6vohq9KLfdMwnNlRuSmo/iCW6RIfAB4Zc9740=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUzARnuu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782384215; c=relaxed/simple;
+	bh=lBuu39UbK68A8xrKG/Ns64hX/mqB5WWzuQz5XMfitXs=;
+	h=Message-ID:Date:From:To:Cc:Subject; b=mZf9FEd82+0F71BJrAlS5OgcLW4/F1+fcWVqmPiEG82/dNocQ1YEnhR7vWR3o5H/bWHV+T353Xts6xZXkNi+nDfUgDrI/4Hdnb+w4EZ+pC1gHZcGKYPdGPirk/lbeA9MzHSnConLkHGwPBbDRTofP8jUjo46VqHHLekHfL8JlEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T44en6Na; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUzARnuu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466001F000E9;
-	Thu, 25 Jun 2026 10:43:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T44en6Na"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7681F00A3A;
+	Thu, 25 Jun 2026 10:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782384207;
-	bh=589RF0+vWh1NzozOpnG5ilghF2hslk/czCRYDKKGC4w=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=RUzARnuu0h0jnVHIdThgs3WVMsYsdpqLGtXwF4HecxRhL4ek2PKwV5JmNkGT6YgIu
-	 hXaBbs3HI4HAtNvUzT9+5cvNvgvFv7UiabvCUdCzYEJdWU/2ZdegrajykC7IsKJJFv
-	 spx+7IQKoRCrqwJtvJFWSt5dzFZTMovJ3tR+FpPvBwJcJQ6kFWPj91hzTey1oqa71/
-	 uF107IVIBBxyZ5sFxBa/6RuDCaL06OA8mCC4Te1Wn8QM9OpG6X2/cjCNgK6hpnmvQT
-	 G8eFsYVcx+0UBkbyq1W85Eqm9Se7lCKUiwtZoFylz8l5L65c+nLK9o/ZHcnm4RH+b/
-	 i9c3zMkll6jEA==
+	s=k20260515; t=1782384214;
+	bh=olDhkqtxI30UfcWJ97Za0LqCZRLOxs3Rv1WfiI82UaQ=;
+	h=Date:From:To:Cc:Subject;
+	b=T44en6NaGlPGuxRlGZBX7xnth52c5FHMZA7AOZVAPYNjd0/OrfRoLodTcHRiLQybk
+	 YHPoJMZyP0iX25n7G9jANVJXXjT2z//aa7wnRevhkJ0bI3u0YaLzPgTwOLcAbRt64j
+	 ACmhmjoVdR07WL1bwoDOgc/oadNP+3aEkFJFaDkjj9n69C6YXWcorpHXSRZwvWTuMo
+	 /nSOIt8LzbsdCM6rRxySNy5v7RD5esp/F39Dz65F50D+Tmp5AncdllaYY7jVXX+xRH
+	 LpczgNSv52PoLL5Oxla7W8wbkAlEz02czNEPjic5fmsZKO6KeFuPL++VV9MmCK/mlb
+	 QVwtXegLzsm0A==
+Received: from rostedt by gandalf with local (Exim 4.99.3)
+	(envelope-from <rostedt@kernel.org>)
+	id 1wchYw-00000002W9c-0A36;
+	Thu, 25 Jun 2026 06:44:02 -0400
+Message-ID: <20260625104007.041432666@kernel.org>
+User-Agent: quilt/0.69
+Date: Thu, 25 Jun 2026 06:40:07 -0400
+From: Steven Rostedt <rostedt@kernel.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ John Ogness <john.ogness@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Julia Lawall <julia.lawall@inria.fr>,
+ Yury Norov <yury.norov@gmail.com>,
+ linux-doc@vger.kernel.org,
+ linux-kbuild@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ dri-devel@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,
+ linux-rdma@vger.kernel.org,
+ linux-usb@vger.kernel.org,
+ linux-ext4@vger.kernel.org,
+ linux-nfs@vger.kernel.org,
+ kvm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org
+Subject: [PATCH v4 0/2] tracing: Move non-trace_printk prototypes into trace_controls.h
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net v3 1/2] iov_iter: export iov_iter_restore
-From: Christian Brauner <brauner@kernel.org>
-To: Octavian Purdila <tavip@google.com>
-Cc: netdev@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Arseniy Krasnov <avkrasnov@salutedevices.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>, 
- kvm@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- Stefano Garzarella <sgarzare@redhat.com>, virtualization@lists.linux.dev, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260622222757.2130402-2-tavip@google.com>
-References: <20260622222757.2130402-1-tavip@google.com>
- <20260622222757.2130402-2-tavip@google.com>
-Date: Thu, 25 Jun 2026 12:43:18 +0200
-Message-Id: <20260625-erstbesteigung-mundschutz-invalide-3b0d4cd4cbc9@brauner>
-X-Mailer: b4 0.16-dev-d9d01
-X-Developer-Signature: v=1; a=openpgp-sha256; l=871; i=brauner@kernel.org;
- h=from:subject:message-id; bh=UjrUr9JyhWSPsRrVGWFmbeJ/i1JdU8zynCYVhgLqGXg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTZsnnqFouHhX8+Hf69S+uAhEZH18NVT69larvfD5/G7
- dnoPtuto5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCKVgYwMrdYxUfdiXnROLX37
- R+Ndw4Ue9aluiksWLfjQUOYtzClWx/BXdMbunRlJXy6W3df4aP73/4XbzR/WXlmnf7T+M9PkTVy
- CTAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-> Export iov_iter_restore so that it can be used by modules.
-> 
-> This is needed by the virtio vsock transport (which can be built as a
-> module) to restore the msg_iter state when transmission fails.
-> 
-> Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-> Signed-off-by: Octavian Purdila <tavip@google.com>
->
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index 273919b16161..f5df63961fb2 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -1491,6 +1491,7 @@ void iov_iter_restore(struct iov_iter *i, struct iov_iter_state *state)
->  		i->__iov -= state->nr_segs - i->nr_segs;
->  	i->nr_segs = state->nr_segs;
->  }
-> +EXPORT_SYMBOL_GPL(iov_iter_restore);
+Remove trace_printk.h by creating a trace_controls.h for those places that
+need access to tracing prototypes like tracing_off() and for the places that
+need trace_printk() directly, to have it included directly.
 
-At least only export it for the module that really needs it. For
-example, see:
+Changse since v3: https://lore.kernel.org/all/20260624081806.120105649@kernel.org/
 
-EXPORT_SYMBOL_FOR_MODULES(__kernel_write, "autofs4");
+- Always include trace_controls.h in rcu.h (kernel test robot)
 
--- 
-Christian Brauner <brauner@kernel.org>
+  There are other configs that may include tracing_off() in rcu.h besides
+  the one that had the include of trace_controls.h. Just always include
+  it in that header to be safe.
+
+Steven Rostedt (2):
+      tracing: Move non-trace_printk prototypes into trace_controls.h
+      tracing: Remove trace_printk.h from kernel.h
+
+----
+ arch/powerpc/kvm/book3s_xics.c         |  1 +
+ arch/powerpc/xmon/xmon.c               |  1 +
+ arch/s390/kernel/ipl.c                 |  1 +
+ arch/s390/kernel/machine_kexec.c       |  1 +
+ drivers/gpu/drm/i915/gt/intel_gtt.h    |  1 +
+ drivers/gpu/drm/i915/i915_gem.h        |  2 ++
+ drivers/hwtracing/stm/dummy_stm.c      |  1 +
+ drivers/infiniband/hw/hfi1/trace_dbg.h |  1 +
+ drivers/tty/sysrq.c                    |  1 +
+ drivers/usb/early/xhci-dbc.c           |  1 +
+ fs/ext4/inline.c                       |  1 +
+ include/linux/ftrace.h                 |  2 ++
+ include/linux/kernel.h                 |  1 -
+ include/linux/sunrpc/debug.h           |  1 +
+ include/linux/trace_controls.h         | 54 ++++++++++++++++++++++++++++++++
+ include/linux/trace_printk.h           | 56 ++--------------------------------
+ kernel/debug/debug_core.c              |  1 +
+ kernel/panic.c                         |  1 +
+ kernel/rcu/rcu.h                       |  1 +
+ kernel/rcu/rcutorture.c                |  1 +
+ kernel/trace/ring_buffer_benchmark.c   |  1 +
+ kernel/trace/trace.h                   |  1 +
+ kernel/trace/trace_benchmark.c         |  1 +
+ lib/sys_info.c                         |  1 +
+ samples/fprobe/fprobe_example.c        |  1 +
+ samples/ftrace/ftrace-direct-too.c     |  1 -
+ samples/trace_printk/trace-printk.c    |  1 +
+ 27 files changed, 82 insertions(+), 55 deletions(-)
+ create mode 100644 include/linux/trace_controls.h
