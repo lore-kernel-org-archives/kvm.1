@@ -1,65 +1,65 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3A33074A1
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7C314D15
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782411950; cv=none; b=QGASlTNFZ8rfSWKfvZIwe9ozdHCwqU7MiSFZKHvTBik+d72gNPNxE1WsVbgyfaLoKcqD7V8GU243Lvpeq0a1MDfYiOOsOoolaP1y4JPwxv+GTAL0sS0lPb6xpWhYyJqeLI4TnvQk3H5eIF6sI5dEBT2qA3U4RrC5C+HQZ6aw6jk=
+	t=1782412174; cv=none; b=b8I3mDiCaC7GjqiVNbCqU55I8u6o5iwpNN1ISiuuJyDV2EDSyZncO3YppksfWY1fFpOQBuU6DMQFezPPnhdd5O71R6UCqRJU7xrnxavTYS/gXnKLmDdi4uRT8UGDjTXvxWHpbAMLAu4yoSsNbHfcRjXqBOhi7fsDVwOrtmn7gkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782411950; c=relaxed/simple;
-	bh=cJD1d8SS4YkFBeIsSThL0NMVfHMqUFfkKfh1Wvpcjiw=;
+	s=arc-20240116; t=1782412174; c=relaxed/simple;
+	bh=ruI1D+60LviHu6T85gvnun6dB5PLGiX7hIRc8JYMsR4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BSpNs7CwV7wHF3vxwicyr++H4kUUvFzefz8otnlMOm0mFriV4IlWWZR7aerpHpRSrd+XhmZ2NazYyF31Za9bB+2+dTXUMFZPfzo7ArEBPXC0xG1P/pO5ER1svEeZWWJxcvX74ntfYyE7UPzuv/GVjphg1HD239Zubjly/cjbipM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H7W5XyJq; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=Vunm9ON/hz8CtOkFRABvHN5cnx6mjLFggXnVpBfB8zybqicU0e+rXCpa680NLG1Kf5ugnaDxjpcnFl13ZJ/tNQodo3neU6rXzsf6Boo0JDhYoEExlUtRxacleERma5IaV2lonExdWiLskZ8f9+Id2bPNwAZo3ahBoENElDhBAcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VW30oJLi; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H7W5XyJq"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c79e5de32cso1352365ad.2
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:25:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VW30oJLi"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c804e38cb1so1145215ad.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:29:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782411948; x=1783016748; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782412173; x=1783016973; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJD1d8SS4YkFBeIsSThL0NMVfHMqUFfkKfh1Wvpcjiw=;
-        b=H7W5XyJqLVSIX7ZcKm5hXyxMpX49GCZ0qKDOyicbDlTnY/rNBEmbMcOie2AnTOqYXh
-         45wLbpOnzvZKGzD14Y6kS5FziaYULg0kOoRQdJKnZVlqd9z/zGfOdK91RiLt/UYpHgVt
-         rLMiGmqE0e/4XOb7jhk8HNNlwyBJt9CbzHJJHMgFXnYSDDLb0fmkvXAATL17aN+GLTA6
-         3ZLFk+XebhHLHVUminbxovZIKE0vMyY/S7rLjX55bTgDuX2JHntOoqYqDuAqA3R3Pbru
-         Q352RidDY+hMJDD+g1r5YmgaCzlkLiTKfkBe4nebXeBdvXJxFmx8epi1TpkmWewA2fyq
-         eO3w==
+        bh=UlrTxHjS5w8g7dS4TjG06CQGwg1aqavnJRIR747VzMs=;
+        b=VW30oJLi1YnO21Z9dAvCvWUufqDhrW2+KRY9yPzl/a3CX2BEHLYnxMdAfnspHDt5lx
+         eVipj7Vqe04jDp8b9Tgo+I34H/suTWeAip66n9cAPxd5XX0+lOjmSUX+RvO8+z5AoVjJ
+         7aCZbO9ik+gIZYCaA8ZCytU1iPHuXn4Mqr48BMDzyIVpNthG1K2rtFvxAy8WroyFbkfc
+         xc2zcQGBAM1VM2FArRNOdcwyUzuQu7srXQVlynXY0GIuxWo2UebnQBrUct/By4aoEUAo
+         erzUsAI9nT7gj/kc6ret8QhSASmRh+Leci3rzUsmIHooD+r8wT37uHYbD5QBeshX5vGa
+         l2Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782411948; x=1783016748;
+        d=1e100.net; s=20251104; t=1782412173; x=1783016973;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJD1d8SS4YkFBeIsSThL0NMVfHMqUFfkKfh1Wvpcjiw=;
-        b=innuJLLX3RkwIPOvaRQr4LC3IyEdkTroJvXBs9xxfB2EoD1t0mXEug9DzJ9O8k1yRw
-         4LL7a68HcjfUkKyM5wH7hxAT7j4bn5oCBo0vNyFMvj+wy8I7Vt9LimUIsuUEnoPMth9G
-         OUq3/TcKN5UHpiQsy4RrP+Yga+IRdCmBBqLAsW5bqItCy7VkTNZzAko3AyW0rgm7LFJm
-         AEzVJpqfJ5dKTxfidedLQVuUHcVvULZRWFRCXkjPHHAj++r6GPIMw85V7pxf0WeYyNQj
-         uCZ7HfwdUTo+pDdyawkEiwJKXwxq1AJW1MyKMW2GXbmmi0zQZQJ2BEC+xbSpERzUz2Pl
-         z/8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+3Z5bPSpZGXf5rJMaQbd/8Es1XZwpCl/WdhCeSyWJla72cMuU1P9Eqip2DfdfjQ6cHcBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM3iaOKS6ZM9PdJFgmOAtxu45BvoCzn53pFFdo2gP/Vls8LYIJ
-	/WVv2O+hrRkqpvIjRzn7h2Q2fh30ocDjCtDdz45j8nQ4lIJvyW+O8TCGpCIpXlp8zyDbLMyw3ns
-	xrsrR5A==
-X-Received: from pgbfe1.prod.google.com ([2002:a05:6a02:2881:b0:c92:f433:5ab0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:220c:b0:3b4:6cae:4a51
- with SMTP id adf61e73a8af0-3bd4ac5e2f8mr4530424637.11.1782411948176; Thu, 25
- Jun 2026 11:25:48 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:25:47 -0700
-In-Reply-To: <20260527-kvm-locking-docs-v1-12-4fe8b602ff47@google.com>
+        bh=UlrTxHjS5w8g7dS4TjG06CQGwg1aqavnJRIR747VzMs=;
+        b=BEHCMpPitGqxD+XqMT1WOI387RRHTjft1HOXJQ0ZUIQF1mIBLHeJgJKMlcCF5UUE7Y
+         p7XaUwxUi4UFNBSS5jz1TPXX34OQ4ktnmrNDZFSSyt6KpjcCdFWq6Khe/4mEqTCHr1SB
+         t9Es7t3nU/x/V72c9FUFnrPCJCU5IADcyMTg2N15dOaJEXZsrs7hZzqHwTG1R1fXGGoG
+         WxxScxsFXvWCp7sOSYcN/ewgskvlKHdrnyu1J02ioVB4YPlejkuJC+/eEHP7cje/gU8A
+         AKY7lKZOQcFxTjnwq06+asLkyQsSe/nVP91u6prXpYlxd/yp6sO5lX7GIPO95y9pPF6C
+         pcbg==
+X-Forwarded-Encrypted: i=1; AHgh+RpUoHcUIfrLxPXj2ppVqcCEGGOrbP7b+O1LLuihR/wyeAq9cmkJJcgozIlYzVD1ZyLEBXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnJ4B5MP5kwOeL1g1L6VyMkenqQxh6T3YKqWTyesqk4m5OS+18
+	g+Il7eypsoNxFW98DvP/UmzYi7/0NTCAL3+KSPQO2snnpZgi83zkuhog6b3wzbRiQbDoUHbVgTZ
+	o1RfzXw==
+X-Received: from plps15.prod.google.com ([2002:a17:902:988f:b0:2bd:4f41:fbf4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d484:b0:2be:3850:297e
+ with SMTP id d9443c01a7336-2c7fc792f8emr34372895ad.31.1782412172316; Thu, 25
+ Jun 2026 11:29:32 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:29:31 -0700
+In-Reply-To: <20260527-kvm-locking-docs-v1-11-4fe8b602ff47@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com> <20260527-kvm-locking-docs-v1-12-4fe8b602ff47@google.com>
-Message-ID: <aj1yq6DFK-5WI9ey@google.com>
-Subject: Re: [PATCH RFC 12/12] Documentation: KVM: Focus acquisition order
- section on preventing deadlocks
+References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com> <20260527-kvm-locking-docs-v1-11-4fe8b602ff47@google.com>
+Message-ID: <aj1zi1XIvFpJtNlq@google.com>
+Subject: Re: [PATCH RFC 11/12] KVM: mmu: Point users of host_pfn_mapping_level()
+ to docs
 From: Sean Christopherson <seanjc@google.com>
 To: Ackerley Tng <ackerleytng@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -73,9 +73,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, May 27, 2026, Ackerley Tng wrote:
-> Now that the first sentence is already described in more detail in the new
-> section on synchronization while managing guest faults, drop the first
-> sentence.
+> After consolidating documentation for host_pfn_mapping_level() in
+> Documentation/virt/kvm/locking.rst, point users of function to docs.
 
-Nope, nothing in that sections says anything about the role of
-mn_active_invalidate_count.
+NAK.  I want the "formal" documentation to describe the rules and general mechanisms,
+not arch specific implementation details.  It's unfortunate the LoongArch copy+pasted
+x86's code, comment and all, but that's a separate problem.
