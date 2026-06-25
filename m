@@ -1,235 +1,233 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8787383329
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 01:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782352244; cv=none; b=SQwBIbZ20SftrAuwxQo3ILERp1KwAIgywV81tA4b2uONLX0P01LVogGSlhnuDUu5JInezYqpUCO8N6TOAs4zyakVv78KvCnw1ESzJFnN1rJGMOAK08pCi4+M0O38+84bSRqva1Xs0jW/q1agaCLni99uu6Vp6qUFpsoggoPO3zM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782352244; c=relaxed/simple;
-	bh=Y3Mm/trMCYCte5v5e5OyesdqSDN8lT4JiWBw2yRtY8Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=S5snjcC4V/DuFUuucHl/ltYABd3V8Zh+WEAsKpIGCWH9QHzESeVKcwAYPuHdapGF89q89sJPE939PPc+i+E8WNRPA+K9PumdphFeWB4L8TH2SmXQQOZzsrXXJz6k5UgfqfPQR99DpgmmSEf+JEEi9W1+GnCp8pI86tnOJFW6A/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEAt36R2; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4D43876B5;
+	Thu, 25 Jun 2026 01:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782352285; cv=fail; b=E1jW0qlbhVKqTjpLpMOYTRcqOcYjkS/N+dMzf9nPJEguTWgk4Nd6LspZSkp3sW6pI8TQTAR80CnS9zMcSIxPg3uNQtByRSLS7bR5oj8sRicbraZs2JAIiaAEEFxXLFxt8RnLDS8FrUF+sYrEBYifWf1FCAo48bAe13wwI2+yAXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782352285; c=relaxed/simple;
+	bh=C6XVTJIElHpX+QIGCrdJpKCuNojy/oGKyvEu/s4PFVU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CAznpbx2SI0sliPySWgRa4q5I9K6U715OYKirzWsLHWaetbLlp/j9l322QhnV3YUClWuKLfuM8W4ORj63Qxy7UvhHOP3KKZbWvzpkKEsrIx1dM86LKq5SBB9IA4HUyGXtTugmibiQTpiLkv0VZgZIv+GY3R7lnx1cGdSYgCxyyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dFlfRoD/; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEAt36R2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C701F000E9;
-	Thu, 25 Jun 2026 01:50:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782352243;
-	bh=O6jCLqrB4QvNh26QjfQzkrEeueqBNau9snZDaNM5Pg0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IEAt36R21W6xbnXuPDYuQ30RVMQKRRlCxBrIS4SI6JV+GrZopd/K38JjAaX3nMJAO
-	 jIvb/dLKChYOqNDFWeCNp683Gvum/8dh0+NMGl3CDyJV2/ZrV5zDkaYsEiy2qhiVDd
-	 yOTz5NVWNReuQxyRLdjgvuQB/cxF9WBxy4ImohxrEeRvrFIngRI71/Ex0gpGwrov+o
-	 TbQJaYbHcvcPOHMrXAtPf1nOTpHmDT4MoPQF7rJpWfbY5jEHNDFk0G0/OeDZ7Wj0TV
-	 3EwLzv7D2DqiHQNPv1WsKL169vCnpu9DrLyQeW4Xm16W7lB0AM62AL1sewD4RsM1d9
-	 y6yp4it3FGz3A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: RISC-V: Add CPU PM notifier for non-retention idle
- states
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260624-kvm-cpu-pm-v1-1-52088e127a55@sifive.com>
-References: <20260624-kvm-cpu-pm-v1-1-52088e127a55@sifive.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 25 Jun 2026 01:50:42 +0000
-Message-Id: <20260625015043.26C701F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dFlfRoD/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782352280; x=1813888280;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=C6XVTJIElHpX+QIGCrdJpKCuNojy/oGKyvEu/s4PFVU=;
+  b=dFlfRoD/gWipGf6KBCNMgi8i47vCnuuGNQOnwvwcdAJhLEPeuP+u+lx5
+   w/pEfxKrHdCbrqAEt1FLLJMp77Bv7FCBxlWonfSSgiEbVpF5JhVbVCPcY
+   C9rfnSIRa348uiZOss/2lsfvefcTtXPwhKUxRGlW8PF0BKpko175h88yp
+   J+VYTakQi7tRUVHvslrLTBy+S4SUP+i5KlaU3uApcDDiuPhgRmsathWh0
+   2CDZf+tDF9B8BLz1D8a+0HeIxzG+RN8ddcUeBb8/ATK7kE2lkpJWw8Jwk
+   9vEY5gxMe18eVxte44yw5wFTCE+S6Z08cGusneE7VOjL17eucEdZQ/ivV
+   A==;
+X-CSE-ConnectionGUID: S+3ezXrmTSeasHEYsZyQ0w==
+X-CSE-MsgGUID: rMyYols9Tb+MhyHUWMxMOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="93725080"
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="93725080"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 18:51:19 -0700
+X-CSE-ConnectionGUID: xb94SW6qRfKVT6UkgtGKGg==
+X-CSE-MsgGUID: vyio9+qGQJqjF0Wl36Jifg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="255034145"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 18:51:18 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 24 Jun 2026 18:51:17 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 24 Jun 2026 18:51:17 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.8) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 24 Jun 2026 18:51:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uHkAioOCye0cirRm05e2c+IvyIhRMauMWbz8kQmZDq8GkyJy1H2aanz1cgkMQ01vVwOVb4wc+X1nyf78ZCG4cbip6prraIBa0TQuLRkHa5ztbPCQ6YzAPZ3lLhXpVK0uCEvNsqn1JeNZWF9eYLxPb903H0CVGB9d2gTmxxssuIepKdTa6L2pY0fksZU3VAFgq0aT0TLfW1zqv7NVXKDhwRTJ/BxqyAty95wYelMvFN7XVWU0ZeS69guRRAoOqaST8r3SZc8a0mDRQN2F1ALzkjGeZt11jNGlPidsRu/SY5rsfP6w5ugYXO++UI66EqIbZHDRh+KcihAr+WR532OYFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gpqZ7AB4PddwUfgiSvXzYuwNvPjiNpm1Ysu2T/OYD2c=;
+ b=vZ3ewn1VB8YTmUulGeMU3O1lkeyAb1OkKx1DfotgDxHc3un+CojbTJ7AlI/IXPjAGUtQlbjtmoieqMKJiwfUvOvw4m4o3ZhNiO2idIDdmRFFqa9x4ZbzWn+8HGnWpqbNl2CoCX+wOXHFu+4/yn1T25VfMfjIUkLcdV2M3F4Z6Uz3C68N+aMlfD5xZyVEs8c/fcLkPPQP1FzdsFTCDt8jynGw1dANxilPwBiTAv4g/3ZA9/2Wyw/rBD8c5oV+4VwV+YvtDsuk1MjMkBDx2QkLd+44XapE43nhqcwjklLTCD9/E1sIzjr/YG0faKK5hdm2J5VNZDrFA7G6RvNPyxt/ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7468.namprd11.prod.outlook.com (2603:10b6:806:329::21)
+ by DM4PR11MB5293.namprd11.prod.outlook.com (2603:10b6:5:390::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Thu, 25 Jun
+ 2026 01:51:14 +0000
+Received: from SN7PR11MB7468.namprd11.prod.outlook.com
+ ([fe80::c17a:b7fa:6361:dbee]) by SN7PR11MB7468.namprd11.prod.outlook.com
+ ([fe80::c17a:b7fa:6361:dbee%7]) with mapi id 15.21.0139.018; Thu, 25 Jun 2026
+ 01:51:14 +0000
+Date: Thu, 25 Jun 2026 09:51:01 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
+ default
+Message-ID: <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+ <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+ <ajx5Vrz9ma--hrGH@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ajx5Vrz9ma--hrGH@google.com>
+X-ClientProxiedBy: KUZPR01CA0025.apcprd01.prod.exchangelabs.com
+ (2603:1096:d10:26::6) To DS0PR11MB7457.namprd11.prod.outlook.com
+ (2603:10b6:8:140::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7468:EE_|DM4PR11MB5293:EE_
+X-MS-Office365-Filtering-Correlation-Id: 691001c7-a1dc-48fb-ff1c-08ded25c3cbc
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|56012099006|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 3P/8TwxqHtqh/YIyX3wbjw4VAp7tPQn+GPWGyn6jlbJnVFqKsDQ+4v9Z1f6OcPcKiTWjOk5ntnfZ1vcheEXT1kX122oaPdbwVyCqCVP10KrwZSNKXwfNgFkzPKplnsNjPN2ib+KkdjtMZHLey5MbyX9uDbuVluMpnOzmkS4DmUOYXjUQbXUNuDh/+ZzhSdNu3Daxu7TLrhPiE87Paovrwwix3J+40Ijj+zEqAtHIqZNVeWwnJm6LKVWUezNZOsZekF3jXMT11HAAD1bPdFlQ/qPVP4SHloKx1lDFuCtUsWKZUeR4U0pISNgGdje9QPo8LUikkoFa0oXXugMCW5Q0BRd75V0vZzI5xXOFnUsyUqQka3LOZO5SDtaY6j2x36uxXl5bI8/AHWwdr/UW7SdYTNEuVWMUeW50z+C1UrdDGl3Sy0fil29dTDwinXb8W5y1/WFAQ4T+UsOh1anMZ3YoiULQSWbyUmJiPTQtrc0Uo6gEvvWHv5zatWB9uMXHiqVmoIKW9+TNBYDLfG5E9bT/ZhoWrsYmtp1BDI4d3Cw4LTHZL1gBod9TdM1hqDBKDYkqEFhYTXTCUoi9wpdvydArG7mItA6jEmkawYUBByGdXa/ys4N4GP2GdqOYvV8pjSGWlGZscc5327MwnnL+VY+mkD5UYd1tGCWbfL9iMI/axFY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7468.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Pb4uAPpBfkDox81EsdlqZ/HaWIxTJBisWdg50pqqr3i8qa1fbmDUVrw3C/+h?=
+ =?us-ascii?Q?NTvRsEVnaN/RXupCZOx11+3JElw6gzlfK9qeVuZGBTZuzOf9AZnXFCmPs+Bq?=
+ =?us-ascii?Q?4a+Q5E35b1rs89APj4wpEbpF/96R0BaLHCAHlf3/ZNA+uswZ0X02Hx4HOBg4?=
+ =?us-ascii?Q?Ow+BK++X/nO/CS9cPW5ZTxj+bCYXttdQNkrK0ErEscF3i1GlaVz+vYGjAxaA?=
+ =?us-ascii?Q?cPlvhtoMf7O43SxxqjkwR+wNPNmCe0q+D7rQyFqak5BDc0BiPGarLIdw2yHv?=
+ =?us-ascii?Q?nAVvvmT5rTvVL53sNFacANQ1IOUJt5aR0phTW4Rprznz8qUC6AuSSd5hrcfN?=
+ =?us-ascii?Q?hMxFQHtevyA8mmdjY/sCUphpAfV9yZfpkzgWOR+da2sUcOsoU9yd13iJv4l3?=
+ =?us-ascii?Q?tk9RdbqDArWJJ3E29oUzWN8lFVml/cNIcy24sMpytEbxV0hmhd/2UfJ8EG7Z?=
+ =?us-ascii?Q?v4NCQyINfQYmfe/qht3HfVUkcbM9ZjA2dMdMT6dSv8Cx9FQlCWFUT5P0IXoT?=
+ =?us-ascii?Q?Du455NB20heD6b37xUV9i9+1PkfjXZBcfbDyRpHyuGSWC2O+m5Y5iyvaazI9?=
+ =?us-ascii?Q?7xirikYsOA12JMDTBOz8AKdfeMA/MGTY0EgzXGbyLdOtRJ8psQtfPdOWirhW?=
+ =?us-ascii?Q?hofVkse0DfS4VcL0aKPEqp5Hu5Ry1DEqqHBtnw/kEJrLPMDr9/gXS/p04Dw+?=
+ =?us-ascii?Q?TC9AVJjSulzlDjJElzad53/z0KJTFHWg45qU1wY4s2x0emARxe0Ub45h7cER?=
+ =?us-ascii?Q?0w8cgyovKX1l2PdUKC/XOOZZ2jBpNTv0hOELs53xKZaK6JcUtD/XZU1GYSvU?=
+ =?us-ascii?Q?tcyDxAvys4ZDzmHH/1cq9th+FKPUN/a83Z1MX9I06mho4W0iDew28U8EI7Ue?=
+ =?us-ascii?Q?P6naedlpJSytJk3qxI+aIclDjrsPOpNw9UfidLMXTd0vTRZt5zvgKfX4Cc+s?=
+ =?us-ascii?Q?BdT++RZeq4u1h7mqLZLewmldtxqheE0iv11TIClyB7WRwb2auD7cRVyOfhhl?=
+ =?us-ascii?Q?ze6EVoimmGiaYDHAyxokmUsyzAg2eeR4xBQStCDqWfDEBsdTWEcORLzV4ROP?=
+ =?us-ascii?Q?4USncsml04nXadLh30DlOKzQmkM75wTyMxr/c5Qbc7NvwptjzDwizqs/q+dr?=
+ =?us-ascii?Q?Psg3Yfd+mn4mWiA1zhPK0k3WEmh6eFYpB569zVyN8GRXL/A7hJfECKz0Bdsg?=
+ =?us-ascii?Q?/xINkroDmIU84zomYek2EuALVAIq6TL/WbL9KOi2VT3F3axXv89QoCXKqVXd?=
+ =?us-ascii?Q?cTUG7uuQkbXxoNbkHQtjO/uiKyeEXFsHJLJzo+ftroKWCkFzUIXJ3rujQTtl?=
+ =?us-ascii?Q?XORoFcZA6KoYCCJxYZi4GMoQYC2uatk43m7X74papXeysZuc9Ob1CullW7TA?=
+ =?us-ascii?Q?BjdpM/rd0VEbGBE59Sgq1hPHsT1HVLpLxQRY9mwbmXmRXN2UGOaHwBxwyZr4?=
+ =?us-ascii?Q?5x4qPno4rwPmQxRK/yiiLPebtreReai4e9nSsPocCk49sX48CrTCWFsGssQT?=
+ =?us-ascii?Q?No2+o9xYvjYmeej7V+LuJ2B8Zesz8lacfxB8sm+uNxPtFMR7wgz29sF/h30d?=
+ =?us-ascii?Q?taIDUaYEod6oKV0vJePRx3lMrKAH9zezzdFvu4Oce3+yD0fMpzLBZYKLnLjc?=
+ =?us-ascii?Q?cc9kUHKfqjCZcEQD91tcMkN4NRD5rrCKCsHvXg4sdObPzyAwxEG+si8VPaZw?=
+ =?us-ascii?Q?kY63IYkqHNwGuQCzO6uVrPx7o7Qs/848BLv5gsJjurR29pDO1sDi1dLIZ2VT?=
+ =?us-ascii?Q?OTk8beXL8Q=3D=3D?=
+X-Exchange-RoutingPolicyChecked: K3JI1c250hZVPM4jt2viKbnlvHnvC3MpVmQKWLG12KGBKpUbaJQJqvGsQTHUeh0ZpAOCh8l00yqnvlja9XdL7+hmE2+e/jgm7/1lFwPIdSuY1x4cVmE0JWPLY3auR4bdQaC71YTMUbhjpC1HlYc5DZ/YATcZCV0wNe8LbgjdQ0oI/CJVP9eoZZUFKTWCu3va/BA2+gR+INLTfWsil01Z4vDDZj8FdoHK2OmY/sWnO6uKG95fz1wv9u36a7epmvXSrpxfePuULhG+JsvUcYq6Wvdwl74DcDhAQjE2JfnXYEW8JzOG/SJK65X7/Py2zc6K7gedjESZMOQHDB9MUUWu/g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 691001c7-a1dc-48fb-ff1c-08ded25c3cbc
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7457.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 01:51:13.9997
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ULT79I2hHVsbbzdlft9l+lnbu42yyBUQ9mzWVNug492V5EN6/ASJFJneGvDwak7lyHgvI/E/zUWYin96cFlx0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5293
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [Critical] The `SYSTEM_SUSPEND` check in the CPU PM notifier incorrectly =
-skips CSR save/restore during suspend-to-idle (s2idle).
-- [Critical] CPU PM notifier fails to clear KVM's vCPU cache, leading to gu=
-est context loss and a potential sandbox escape.
-- [High] Missing restoration of `CSR_HIE` (Hypervisor Interrupt Enable) for=
- Guest External Interrupts (`IRQ_S_GEXT`) on CPU PM exit.
-- [High] SBI NACL (Nested Acceleration) shared memory configuration is not =
-restored on CPU PM exit.
-- [High] The KVM CPU PM notifier fails to handle `CPU_PM_ENTER_FAILED`, lea=
-ving hypervisor CSRs permanently disabled if a suspend transition aborts.
-- [Medium] The PM notifier may unconditionally run and use uninitialized AI=
-A state, writing `~0UL` to `CSR_HGEIE` if KVM hardware virtualization is no=
-t yet fully enabled.
---
+On Wed, Jun 24, 2026 at 05:41:58PM -0700, Sean Christopherson wrote:
+> On Wed, Jun 24, 2026, Ackerley Tng wrote:
+> > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > With gmem_in_place_conversion=true, userspace can create guest_memfd without the
+> > > MMAP flag. In such cases, shared memory is allocated from different backends.
+> > > This means this module parameter only enables per-gmem memory attribute and does
+> > > not guarantee that gmem in-place conversion will actually occur.
+> 
+> KVM module params are pretty much always about what KVM supports, not what is
+> guaranteed to happen.
+> 
+>   - enable_mmio_caching doesn't guarantee there will actually be MMIO SPTEs,
+>     because maybe the guest never accesses emulated MMIO.
+>   - enable_pmu doesn't guarantee VMs will get a PMU, because userspace may elect
+>     not to advertise one.
+>   - and so on and so forth...
+> 
+> Yes, there's a small mental jump to get from "KVM supports in-place conversion"
+> to "I need to set memory attributes on the guest_memfd instance, not the VM",
+> but I don't see that as a big hurdle, certainly not in the long term.  And once
+> the VMM code is written, I really do think most people are going to care about
+> whether or not KVM supports in-place conversion, not where PRIVATE is tracked.
+Sorry, I just saw this mail after posting my reply in [1].
 
-commit 107ddca84d721ec26cecb9bff7a0c2d5722c8a92
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Subject: KVM: RISC-V: Add CPU PM notifier for non-retention idle states
+I'm ok with gmem_in_place_conversion=true just means KVM supports in-place
+conversion, while we can still create VMs with shared memory not from gmem.
 
-This patch registers a CPU_PM notifier to restore hypervisor CSR content
-during CPU non-retention idle states. It handles state saving and restoring
-when a CPU enters deep idle states that power off the CPU domain.
+Though it still feels a bit odd to require TDX huge pages to depend on
+gmem_in_place_conversion=true when shared memory is not currently allocated from
+gmem, it should become more natural over time once gmem supports in-place
+conversions for huge page.
 
-> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-> index bafb009c5ce55..82812493ac684 100644
-> --- a/arch/riscv/kvm/aia.c
-> +++ b/arch/riscv/kvm/aia.c
-[ ... ]
-> @@ -532,50 +532,61 @@ static void aia_hgei_exit(void)
-[ ... ]
-> -	raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> -	if (!hgctrl->free_bitmap_initialized) {
-> -		hgctrl->free_bitmap =3D (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hge=
-i, 1) : 0;
-> -		hgctrl->free_bitmap_initialized =3D true;
-> +		raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> +		if (!hgctrl->free_bitmap_initialized) {
-> +			hgctrl->free_bitmap =3D (hgctrl->nr_hgei) ?
-> +					      GENMASK_ULL(hgctrl->nr_hgei, 1) :
-> +					      0;
-> +			hgctrl->free_bitmap_initialized =3D true;
-> +		}
-> +		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
-> +	} else {
-> +		raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> +		csr_write(CSR_HGEIE, ~hgctrl->free_bitmap);
-> +		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
->  	}
+[1] https://lore.kernel.org/all/ajyCn0PnFtQK+Nka@yzhao56-desk.sh.intel.com
 
-[Severity: Medium]
-Since cpu_pm_register_notifier() is called in riscv_kvm_init() before
-kvm_init() has called hardware_enable_all(), can this PM notifier
-unconditionally run before KVM hardware virtualization is fully enabled?
 
-If a CPU enters and exits idle in this window, kvm_riscv_aia_enable(false)
-writes ~hgctrl->free_bitmap to CSR_HGEIE. Because free_bitmap is
-uninitialized (0), this writes ~0UL, which could lead to unexpected behavio=
-r.
-
-[ ... ]
-> -	/* Enable per-CPU SGEI interrupt */
-> -	enable_percpu_irq(hgei_parent_irq,
-> -			  irq_get_trigger_type(hgei_parent_irq));
-> -	csr_set(CSR_HIE, BIT(IRQ_S_GEXT));
-> +	if (full_cleanup) {
-> +		/* Enable per-CPU SGEI interrupt */
-> +		enable_percpu_irq(hgei_parent_irq,
-> +				  irq_get_trigger_type(hgei_parent_irq));
-> +		csr_set(CSR_HIE, BIT(IRQ_S_GEXT));
-> +	}
-
-[Severity: High]
-Does this prevent the restoration of CSR_HIE for guest external interrupts =
-on
-CPU PM exit?
-
-When a CPU enters a non-retention deep idle state, hypervisor CSRs lose the=
-ir
-state. On PM exit, kvm_riscv_aia_enable(false) is invoked. However, because
-full_cleanup is false, the CSR_HIE bit is never re-enabled.
-
-This seems like it would cause the host CPU to permanently stop receiving
-supervisor guest external interrupts, breaking interrupt delivery to VMs.
-
-[ ... ]
-> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-> index 0924c75100a2d..41ef91ea39218 100644
-> --- a/arch/riscv/kvm/main.c
-> +++ b/arch/riscv/kvm/main.c
-[ ... ]
-> +static int kvm_riscv_cpu_pm_notifier(struct notifier_block *self, unsign=
-ed long cmd, void *v)
-> +{
-> +	/*
-> +	 * To avoid redundant disable/enable operations (since KVM's
-> +	 * syscore ops will handle the state during system suspend),
-> +	 * ignore CPU_PM events when a system suspend/resume is in
-> +	 * progress.
-> +	 */
-> +	if (system_state =3D=3D SYSTEM_SUSPEND)
-> +		return NOTIFY_DONE;
-
-[Severity: Critical]
-Does this check incorrectly skip CSR save/restore during suspend-to-idle
-(s2idle)?
-
-During s2idle, CPUs are pushed into the idle loop instead of being hotplugg=
-ed
-offline, and syscore suspend callbacks do not execute. When the last CPU
-freezes its tick, system_state is set to SYSTEM_SUSPEND. When CPUs
-subsequently enter deep idle, KVM's notifier skips the state save due to th=
-is
-check, completely destroying the hypervisor state on resume.
-
-> +
-> +	switch (cmd) {
-> +	case CPU_PM_EXIT:
-> +		kvm_riscv_csr_enable();
-> +		kvm_riscv_aia_enable(false);
-> +		return NOTIFY_OK;
-
-[Severity: High]
-Does this omit the restoration of SBI nested acceleration (NACL) shared mem=
-ory
-configuration?
-
-Firmware does not preserve extension-specific shared memory configuration a=
-cross
-non-retentive CPU suspend states. The PM exit handler restores base CSRs and
-AIA, but lacks a call to kvm_riscv_nacl_enable(). This seems like it would
-cause the NACL shmem mapping to be permanently lost on the CPU, breaking ne=
-sted
-virtualization acceleration.
-
-[Severity: Critical]
-Does the CPU PM notifier also need to clear KVM's vCPU cache to prevent gue=
-st
-context loss?
-
-kvm_arch_vcpu_load() in arch/riscv/kvm/vcpu.c skips writing guest CSRs and
-HGATP if vcpu matches the former vcpu and last_exit_cpu matches the current
-cpu:
-
-if (vcpu !=3D __this_cpu_read(kvm_former_vcpu))
-    __this_cpu_write(kvm_former_vcpu, vcpu);
-else if (vcpu->arch.last_exit_cpu =3D=3D cpu && !vcpu->arch.csr_dirty)
-    goto csr_restore_done;
-
-A non-retention idle state destroys the hardware CSR context (resetting them
-to 0). Because the PM notifier does not clear kvm_former_vcpu, a VCPU
-rescheduled on the same CPU after wakeup will hit this fast-path and execute
-with zeroed hardware CSRs.
-
-Entering guest mode with HGATP=3D0 configures G-stage translation to bare m=
-ode,
-mapping guest physical addresses directly to host physical memory. Can this
-lead to a trivial sandbox escape?
-
-> +	case CPU_PM_ENTER:
-> +		kvm_riscv_aia_disable(false);
-> +		kvm_riscv_csr_disable();
-> +		return NOTIFY_OK;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return NOTIFY_DONE;
-> +}
-
-[Severity: High]
-Does this switch statement fail to handle CPU_PM_ENTER_FAILED?
-
-If a subsequent notifier in the chain fails after KVM disables its hypervis=
-or
-CSRs on CPU_PM_ENTER, the PM subsystem aborts the suspend sequence and
-broadcasts CPU_PM_ENTER_FAILED. Because KVM's notifier lacks a case for it,
-it ignores this event.
-
-Will this leave KVM's hypervisor CSRs permanently disabled until a full off=
-line
-and online cycle?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624-kvm-cpu-pm=
--v1-1-52088e127a55@sifive.com?part=3D1
+> > > To avoid confusion, could we rename this module parameter to something more
+> > > accurate, such as gmem_memory_attribute?
+> > 
+> > I asked Sean about this after getting some fixes off list. Sean said
+> > gmem_in_place_conversion is named for a host admin to use, and something
+> > like gmem_memory_attributes is too much implementation details for the
+> > admin.
+> > 
+> > Sean, would you reconsider since Yan also asked? If the admin compiled
+> > the kernel knowing what CONFIG_KVM_VM_MEMORY_ATTRIBUTES means, then the
+> > admin would also be able to use a param like gmem_memory_attributes?
+> 
+> No, because it's not all memory attributes, it's very specifically the PRIVATE
+> attribute that will get moved to guest_memfd.  I don't want to pick a name that
+> will become stale and confusing when RWX attributes come along.  The RWX bits
+> will be per-VM, while PRIVATE will be per-guest_memfd.
