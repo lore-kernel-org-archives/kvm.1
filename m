@@ -1,134 +1,128 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9939348C7C;
-	Thu, 25 Jun 2026 16:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14543ECBED
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 16:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782404358; cv=none; b=OSPdUFbuRCFnBpZ1rIBxml0YpfYndWQ6yg3G4TawH1F8z3GSpZ2MqETaTtrHCAJwL7YPzQeu6P0NPAzdVIJ6j5Fmh0121HLVIKTYeO9iH3LHN6L6S37bDiysoihEbJ2EBrzqRmeDLyN/PwoD8y3HXE3FZaE0Sn2l/11lHfQNdGg=
+	t=1782404470; cv=none; b=Aq4ji8X44Qxo9aclTbMjYsGxZPx/4mEb2AC+ZopwQ5EK6UN4OC9WNiFHupu/CsM5KA8wNOhJIpr6cJxe4IB4uChI9LHTc3fRjexKeznC3XQTJKZDBTyNPn4Cv6Gg88wqNPyGSHNqojN+EnolbZcODMnRqv3tnGFlS3UKEecKpfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782404358; c=relaxed/simple;
-	bh=pPOtgiQ6nS0ClOv75U7F6NplWOi+LZM45knFOXi9OCM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+qZ1VaANOx51b3Gp2e/J3TdCRRPq8fftbyRU2Yu5MuohExRD6urzyZrNgxPpm/FIw4BDAU6UZoO1oRzoLheWMuOfpjl0u4XMwZqc/Vw33fdaKagEFeGemSPGbJUxCPUDc2nM7tQyLFv+Apbzim7ccN5kNFbWAVuxogXwVkITSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=R8ky6eK6; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782404470; c=relaxed/simple;
+	bh=cWoMyE2Jt9LI5QWmHop8a7As2DpqmKqDzIfcUPR8gok=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JSURNnxyMTyCNaqHPj8LB9XZdet1xzviQ9wYUFVsUFD8LVg4Fszv2BTpnRupjXEPkGo62gk6TIJqxxR20Ao5dIHZ2buk+k0Rb2R9CMsN0AgBfkzfGbu49+kRjDhilmjStnWGZSjA+iUfMIacK5QDa9fzVKzp9L6vtDmjmW2vtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z70+GDa+; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="R8ky6eK6"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B2F23165;
-	Thu, 25 Jun 2026 09:19:11 -0700 (PDT)
-Received: from [10.57.25.211] (unknown [10.57.25.211])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08E4F3F836;
-	Thu, 25 Jun 2026 09:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782404356; bh=pPOtgiQ6nS0ClOv75U7F6NplWOi+LZM45knFOXi9OCM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R8ky6eK6otniQz0tX4X2/mZe2xO749mYgapqpG/Kc2tR/D52NLVkJ8nvedfF1ilEa
-	 r41ZER+aidvk8k3VGWcWbqqmOgGTTlmTkJ0kiy8eQ4jiaOZj/6H+/HCPCqBr1CUwgR
-	 NjT4emEydoEvvFMq+0fmgSaxYNIhbdswRVJLBDjM=
-Message-ID: <9b96068c-97d8-4093-a707-faf39e193857@arm.com>
-Date: Thu, 25 Jun 2026 17:19:11 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z70+GDa+"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c889d1eebafso57564a12.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782404468; x=1783009268; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=D0Iegm3XWpEU50W87frBJm5VEN9NWiBbsMScWatf8rs=;
+        b=Z70+GDa+yZiGdrM1xvJ6lL9WnsaRLQG9TdY0mAy+OFmyLEzsW5AxcfUG95LFOeOWNl
+         t2Xn6CweLUjoUMFNbg74n0GdtpZyne3ojyDprFuGF8zjTEJaMoLHw1fL+ZOTbkHFAziL
+         PqEGpvN9El9k1aWIA8xTy4VYMbbmjJrQAXsnaTQujvwniEPK+3kmF7TQIyaGPeX0aJQA
+         RY0sd1rcWzvT9CJ7iDlpKJ8GgKP0D0fbEqE93yQgUIWoUSsJW2c1mjTrsdwoFxke7GwT
+         OkaoWUS8k+tGuTINJEb0LKThDgy/nmJ8429ue5uXFXdJrNqcxhrQrisf6oy8AL6xm/+v
+         fy3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782404468; x=1783009268;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D0Iegm3XWpEU50W87frBJm5VEN9NWiBbsMScWatf8rs=;
+        b=SBJbFSCBTarxMiNXE88e8u+Ln+nUpHDd0nRuu0cOLhi0MCFR/z+3GoS4AqJa0s5jRq
+         NPJulL1UYwyrotCbZlLgQqsu2WJ2IfJG/aKQv4n5oS5oUhWKRscd3Z20IUlqVELnMrBx
+         qlMKhFNDCITSDvLwEdvpWIzh13V7gzKDj2CuAjPMLDGCEB9IgeYjAbxOhPdxzP46/uDf
+         Xau7p39ftMJZXMzWNf/udnglq425WRo+Vl3aZDjaMuZ3rWKiVXg8xKtvDx8zL3ahJ8yd
+         01eE4Uhaax0hdi0MYJ8qgHlvonMOEC7PKgSXlpkJMu92YpbsjFBqfRTkcjWAU8MINoZz
+         ZiTw==
+X-Forwarded-Encrypted: i=1; AFNElJ/M16wwANFo/uEnAc2fpljJeu3LyBYlZLGu3BIdTPwCtUs1m+B11avaUESAC51/T5xB0kw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoeHsNKZvUKoojGYsz/yFiQsN3ZoQqVS2eD4aJzeem73Al//mS
+	nTX9TeOhvZtojf6SYphNuSWky8pgLyIKVU/q6nawE4ECOXShzNqgpVBpWEXYm9NSgeW3/orBQQW
+	tDEFTJA==
+X-Received: from pfux48.prod.google.com ([2002:a05:6a00:bf0:b0:845:b531:adf4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa3:b0:3b4:8bc6:138
+ with SMTP id adf61e73a8af0-3bd4ae9cd56mr4201086637.23.1782404467957; Thu, 25
+ Jun 2026 09:21:07 -0700 (PDT)
+Date: Thu, 25 Jun 2026 09:21:07 -0700
+In-Reply-To: <178221517808.3589966.15538835749975810737@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-27-steven.price@arm.com>
- <ea4be6c5-9506-4253-80c5-c76c9ac3b77d@redhat.com>
- <0c71b4b8-ad0b-4a24-9f4a-180b2aaacdb6@arm.com>
- <ad45c64c-18ab-4d42-9813-0ac1704bb127@arm.com>
- <9631be66-c757-488d-bb66-a62698aa26b8@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <9631be66-c757-488d-bb66-a62698aa26b8@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260621133708.3454718-1-mike.malyshev@gmail.com>
+ <20260621133708.3454718-2-mike.malyshev@gmail.com> <ajnEAkFGyJWmomhq@google.com>
+ <178221517808.3589966.15538835749975810737@gmail.com>
+Message-ID: <aj1Vc13mqb-fXiow@google.com>
+Subject: Re: [PATCH 1/1] KVM: x86/mmu: Emulate, don't kill the VM, on access
+ to a disabled passthrough BAR
+From: Sean Christopherson <seanjc@google.com>
+To: Mikhail Malyshev <mike.malyshev@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 08/06/2026 14:53, Steven Price wrote:
-> On 08/06/2026 10:41, Suzuki K Poulose wrote:
->> On 08/06/2026 10:36, Steven Price wrote:
->>> On 28/05/2026 06:30, Gavin Shan wrote:
->>>> Hi Steve,
->>>>
->>>> On 5/13/26 11:17 PM, Steven Price wrote:
->>>>> The VMM needs to populate the realm with some data before starting
->>>>> (e.g.
->>>>> a kernel and initrd). This is measured by the RMM and used as part of
->>>>> the attestation later on.
->>>>>
->>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>
->> ...
->>
->>>>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>>>> index a89873a5eb77..209087bcf399 100644
->>>>> --- a/arch/arm64/kvm/rmi.c
->>>>> +++ b/arch/arm64/kvm/rmi.c
->>>>> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm,
->>>>> unsigned long start,
->>>>>             realm_unmap_private_range(kvm, start, end, may_block);
->>>>>     }
->>>>>     +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
->>>>> +                   kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
->>>>> +                   unsigned long flags)
->>>>> +{
->>>>> +    struct realm *realm = &kvm->arch.realm;
->>>>> +    phys_addr_t rd = virt_to_phys(realm->rd);
->>>>> +    phys_addr_t dst_phys, src_phys;
->>>>> +    int ret;
->>>>> +
->>>>> +    dst_phys = __pfn_to_phys(dst_pfn);
->>>>> +    src_phys = __pfn_to_phys(src_pfn);
->>>>> +
->>>>> +    if (rmi_delegate_page(dst_phys))
->>>>> +        return -ENXIO;
->>>>> +
->>>>> +    ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
->>>>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>>>> +        /* Create missing RTTs and retry */
->>>>> +        int level = RMI_RETURN_INDEX(ret);
->>>>> +
->>>>> +        KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
->>>>
->>>>           KVM_BUG_ON(level >= KVM_PGTABLE_LAST_LEVEL, kvm);
->>>
->>> Ack.
->>>
->>
->> Thinking more about this, I guess a buggy VMM can trigger this
->> by populating twice ? (level == KVM_PGTABLE_LAST_LEVEL). So, we should
->> return the error back, than warning here and suppressing the error ?
+On Tue, Jun 23, 2026, Mikhail Malyshev wrote:
+> On Mon, Jun 22, 2026, Sean Christopherson wrote:
+> > I really don't like this.  It's an ABI change that affects years of precedent,
+> > and the ABI it creates is very haphazard.  E.g. why should PFNMAP memory get
+> > emulate MMIO semantics for this case?  And a PROT_NONE VMA really shouldn't get
+> > MMIO semantics either.
+> >
+> > I would rather have KVM exit to userspace with KVM_EXIT_MEMORY_FAULT and fill
+> > run->memory_fault, i.e.
 > 
-> Populating twice causes rmi_delegate_page() to be run twice on the same
-> page and the second one will then fail. So I don't think this is
-> possible (please correct me if I've missed something!)
-
-Good point, but I think this may not fail to allow the hugepages in the
-future. The DELEGATE_RANGE would skip the granules in DELEGATED/DATA 
-state. I am getting this clarified in the spec.
-
-
-Suzuki
-
+> Agreed, thanks - that's the right layer, and the PROT_NONE case alone is reason
+> enough not to overload the pfn classification the way I did.
 > 
-> Thanks,
-> Steve
+> For context on v1's shape: localizing the fix in KVM was a deliberate scoping
+> choice - it was the smallest change that stopped the crash without updating
+> another major component (the VMM) at the same time. I agree that optimizing for
+> a single-component change put the policy in the wrong layer; KVM reporting
+> KVM_EXIT_MEMORY_FAULT and the VMM applying device semantics is the right split.
+> 
+> Plan: implement your suggestion (kvm_mmu_prepare_memory_fault_exit() in
+> kvm_handle_error_pfn()) and pair it with a QEMU change that recognizes a
+> memory-fault on a vfio-pci BAR whose memory space is currently disabled and
+> emulates it as an Unsupported Request (reads all ones, writes dropped) rather
+> than aborting. Note QEMU's current KVM_EXIT_MEMORY_FAULT handling only covers
+> guest_memfd shared/private conversion, so this is new vfio-pci handling on the
+> VMM side - I'll test the kernel + QEMU pair against the reproducer before
+> sending v2.
+> 
+> FWIW this is the concrete user the 2024 KVM_CAP_MEMORY_FAULT_INFO work
+> (Zr-8M9rYplgN6IS3) was missing: an assigned Intel iGPU whose guest driver clears
+> PCI_COMMAND.MEM on one vCPU while another is mid-MMIO to the BAR, which kills the
+> VM. Reproducible on demand and seen in the field.
+> 
+> Two questions before I respin:
+> 
+> - Prefer I revive Anish's x86 patch from that series (rebased), or a fresh
+>   minimal change against kvm-x86/next? The tree has moved a lot since 2024
+>   (kvm_follow_pfn, etc.), so I was leaning fresh with a Link: to the original
+>   and Suggested-by: you.
 
+Oh, I forgot that Anish had posted the x86 MMU change as an isolated patch.
+
+Given that patch 2 still applies cleanly, I would say take Anish's patch, rewrite
+the changelog, and then give yourself a Co-developed-by.  I.e. give attribution
+to both Anish and you.
+
+> - You'd asked for KVM_BUG_ON() + -EIO conversions on that x86 patch - still want
+>   those folded in,
+
+Yes, please tack on a separate patch to convert the WARN_ON_ONCE()-protected
+EFAULTS in x86's fault path to KVM_BUG_ON() + -EIO.
+
+> and should this stay x86-only or also cover arm64?
+
+Definitely keep your patches x86-only.  For all intents and purposes this is a
+bug fix, let someone else deal with the pain of enabling KVM_CAP_MEMORY_FAULT_INFO
+on arm64 :-)
