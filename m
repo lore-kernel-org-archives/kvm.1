@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAEE3BBFCA
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD7E3BCD1E
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782426995; cv=none; b=numGulCfHq0ZGYtDcFF417MkK6YsiaxO28bfxO/K9I+DKI9EF0QeF2PWtVNu23K6k3w3Rjhum8XC3G4x9dJXmVuLh1U0Yg1WNePwo3nANu5EYxu9fprNlA0JhYJ1mNf5ooBAUisF3CS8irH/BeuOBT+QIZdG5i0za4L/uGWzjyI=
+	t=1782426997; cv=none; b=oCAEtcHtDhWG2rB0ucq15xvSQUpcmfCWBtYxeAQZtPh8tqOgM5o9nGFH528HtDmqQQp2GulIEcODVGTQYjGfpJ/BOREweOel/y2Mld1oTdiVKQ1R4mwxeQGGE8bqkzY5TN4948qAleCOls2ldAYcJsC6gXb6imcwzWCYqxBNB8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782426995; c=relaxed/simple;
-	bh=MJMJSRlF5r3+tmZ0m1lotCOKLe9s9kaI30CjRDVM5h8=;
+	s=arc-20240116; t=1782426997; c=relaxed/simple;
+	bh=V75SHra9VGRQmxCJJnEi01828Yrrz1sE2AE38QrP0w8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UarA8+S0hgEzjYNLElhKC2U6LGJDKnioM6sMOMAL+tNl3AAkqeBIJ9SI0C9WnJS0ZfDqxz4IFsy6TYVtZ878Yk9p9J526dLIc5vl4KRv34QK3GulLufrt+BGQ175y90nYn2Z8HfvzDEEsgl8hwY1xUGX7xZCOR84SxmO7THSZiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qPCkLYkh; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=P2Nu0ssAb5j+Zwu4hHD2C3J0+K9FHI7tH/OUao7bNSGWvQGBIB9rC1Z05B7E9Yo1uMrqs3PSEoJ8+ezQILsv/RTa6DdEFd7e+p5syQy8PGUjfi69VIrcPXVHSi6F0T2Y9W6e9hyscrKPhaxzsQEFI4mYxCwnhdvR5rMbrtwgYj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eVUDn0sN; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qPCkLYkh"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c80be91ea3so5225845ad.1
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:36:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eVUDn0sN"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d8719bae6so250177a91.3
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:36:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782426994; x=1783031794; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782426995; x=1783031795; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=saiGWJ+1qIp4vGwoKItcqKkB3ikEVHldv3doWsecfgE=;
-        b=qPCkLYkh/yOD88x9oVTAn2Yk7HDix34jG9if8amo7lySdn7v1eZpAF0YN/ZaPtAaJ5
-         iN6/nr06ihOsWLRorGzEpPYjcJcPUb4aZbZ15DAssVY6Qaks2rr2qS2/FQ5vMKo5Q5rE
-         dxO6IUsNBiv4mFBuIXLyO+rh62a6CQbQF2IkgtOkP2WRYBAdO+cRaHmw1qDKn7MXAUXz
-         ymoNIzcmGcvjbBl4fRwL+qNCgqe4sc9CB8eDctHj72uK+gGc675cadxA+PG18V4jmiL5
-         Oo7NWlne+KXea4Xi5G/90SaKxN1PRvQ1InB4A7Jy4eyXAIFS4t+l0dO9duy0pOf8Z2vX
-         u3VQ==
+        bh=UeadhBfV9V0Nj7tYx0kx2CoFCei/ZQCY4DJOehfMJzU=;
+        b=eVUDn0sNcyAWImEwA9Yis7na3OfiG4h307t6rk2OLXFKNRsA3aaa8HYN87USPma6fu
+         7DdZ7BS0s3xDPSc/QoFCzoNpEbplFJiM2WGxVF/FR0AcCVfKvmq5vQqgRKvDp0UBF9Ig
+         YAAP0fSK7nXXFTQCGEk2eb1xSsE1r7z16+Gx6pRD9duJyoSkaHk6as2lj8qzZw9EH87i
+         I5AqFH2eDU+w4O9U5dVoWLy2m/MlWNnT8HmKSLhdVWbBYl2vImVP18gf5BIb54VQgIFy
+         YD0DO5ZmpRbIQfPHfAwqaemZACrPMK96efk9/ECROeYLckiuJiVO9AIsY3ygVeSYb6Y8
+         m4Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782426994; x=1783031794;
+        d=1e100.net; s=20251104; t=1782426995; x=1783031795;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=saiGWJ+1qIp4vGwoKItcqKkB3ikEVHldv3doWsecfgE=;
-        b=BY08Ee7S8yxPeD5oEH/RQeQsDq1PIWXGqEpA6WT5pqf98BIbxa/3qgaYZtfttzm5T1
-         q71Ptle7xE/qcVlaR4jCv9qTRu2mScHlGWH07hXqCZnFj1nGWS0wjur+c0mgUUJ+tw9M
-         7xQSXp1vcEuDJRVjPqjKG34X3Fc2OnMqldPkWvqo55DGmyq6CVqcdOd+DEfv3KRPxm3/
-         zUWjSy+c3cZ+ILYRXglb3FKPDFYfEGOoIau0nYt0mBlWsz1Sotchp0W5god+A4H68xvM
-         KhCDxfo75SaK20XlUd9RxJq1a0eGf7zVp4HCG0DngSiJOOPGskDBxpDyCP7oGKMwV3vv
-         S6/w==
-X-Gm-Message-State: AOJu0YyL2fzUmwMzFsmGMTWl4+WSLAx9Grgmrg+vmJ1Bm0sESrRPdDcO
-	Z9wjnG6HlZDCgQAvhHwz3+/nNd/O/WFdoGBnloa7qmfswKckTf/v6msSIzH0FV80eBDCjOC3/Aj
-	n83QajQ==
-X-Received: from plka7.prod.google.com ([2002:a17:903:f87:b0:2c7:ef8a:f87f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:46c3:b0:2c1:f262:4962
- with SMTP id d9443c01a7336-2c7fc6f45d4mr41405045ad.20.1782426993903; Thu, 25
- Jun 2026 15:36:33 -0700 (PDT)
+        bh=UeadhBfV9V0Nj7tYx0kx2CoFCei/ZQCY4DJOehfMJzU=;
+        b=ApmGHt53SkLZ6GxX6IYi2lPT6dWYboxLWUgrQXRi5UAjm9pUdaSN0+pHTZsL8f2ZPH
+         2SVZgm8DgEosTCoH3t2iBdK8shmZfTLoxpOBYV7rNkzmo0Dhg6rhdzhyf6abjmkxOWtf
+         CSEUK4wQQErRanlC5YlgUcFW3UClvZln5kReqBqoUT8HeyzN75RefxHXzrib9HSdZHqT
+         b9K8G5dd1LcJ8T1bc9oWCP1wGIzpc+PzixL4ENd/F7w6sucTeS+EInVSBrLOWG/ky2A+
+         OwlWyPxsT2lGe2oeG4nV71zwdmzlzUZH0sUwfml76b0r7T9Fd7EOcDAJ0+aVvhv7v9NH
+         CBlg==
+X-Gm-Message-State: AOJu0YyujZI5sEzaojn+WDzzNM2Ba/QlikmpB+eO0/IpmPkJjhXzN6rC
+	rzu/eJQ+iaHng6b+kZYS4cxX3GKxYgUymqiWAgOqXw2iJmaHNSos8qZvnOD5Z3eplUsIElBuHXz
+	zhzyOJg==
+X-Received: from pgbdr2.prod.google.com ([2002:a05:6a02:fc2:b0:c8a:604f:6851])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1347:b0:36a:5d1f:7b6
+ with SMTP id 98e67ed59e1d1-37df9f38334mr3699448a91.2.1782426995052; Thu, 25
+ Jun 2026 15:36:35 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 25 Jun 2026 15:36:21 -0700
+Date: Thu, 25 Jun 2026 15:36:22 -0700
 In-Reply-To: <20260625223623.3376478-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260625223623.3376478-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625223623.3376478-9-seanjc@google.com>
-Subject: [PATCH v3 08/10] KVM: x86: Treat a vCPU as unreachable if its index
- is invalid
+Message-ID: <20260625223623.3376478-10-seanjc@google.com>
+Subject: [PATCH v3 09/10] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
 From: Sean Christopherson <seanjc@google.com>
 To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,28 +69,58 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-In the "vCPU locked or unreachable" lockdep assertion, treat a vCPU as
-unreachable if its index is invalid, i.e. if the vCPU is in the process of
-being created.  Until the vCPU is inserted into the array of vCPUs, the
-only way to get at the vCPU is via kvm_vm_ioctl_create_vcpu().  Note, the
-actual index is set _before_ adding the vCPU to the array, i.e. there's no
-risk of a false negative on the lockdep assertion.
+Assert that either vcpu->mutex is held or the VM is otherwise unreachable
+when using the normal vCPU => HyperV accessor to help detect improper
+cross-task usage of the HyperV structure.  When accessing the structure
+without holding the vCPU's mutex, e.g. to send interrupts or to queue TLB
+flushes, KVM needs to use the more paranoid to_hv_vcpu_safe() to guarantee
+that it can't see a half-baked structure.
+
+To avoid false positives, open code accesses to vcpu->arch.hyperv in the
+Synthetic Timer callbacks (can be reached if and only if HyperV state is
+fully initialized).
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/hyperv.c | 6 ++----
+ arch/x86/kvm/hyperv.h | 2 ++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index b10814f99a50..0bdfa3699352 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -992,6 +992,7 @@ static inline struct kvm_io_bus *kvm_get_bus(struct kvm *kvm, enum kvm_bus idx)
- static inline void kvm_lockdep_assert_vcpu_is_locked_or_unreachable(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 888526ce4dab..f765c3bb9b1f 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -599,8 +599,7 @@ static void stimer_mark_pending(struct kvm_vcpu_hv_stimer *stimer,
  {
- 	lockdep_assert_once(lockdep_is_held(&vcpu->mutex) ||
-+			    vcpu->vcpu_idx < 0 ||
- 			    !refcount_read(&vcpu->kvm->users_count));
+ 	struct kvm_vcpu *vcpu = hv_stimer_to_vcpu(stimer);
+ 
+-	set_bit(stimer->index,
+-		to_hv_vcpu(vcpu)->stimer_pending_bitmap);
++	set_bit(stimer->index, vcpu->arch.hyperv->stimer_pending_bitmap);
+ 	kvm_make_request(KVM_REQ_HV_STIMER, vcpu);
+ 	if (vcpu_kick)
+ 		kvm_vcpu_kick(vcpu);
+@@ -614,8 +613,7 @@ static void stimer_cleanup(struct kvm_vcpu_hv_stimer *stimer)
+ 				    stimer->index);
+ 
+ 	hrtimer_cancel(&stimer->timer);
+-	clear_bit(stimer->index,
+-		  to_hv_vcpu(vcpu)->stimer_pending_bitmap);
++	clear_bit(stimer->index, vcpu->arch.hyperv->stimer_pending_bitmap);
+ 	stimer->msg_pending = false;
+ 	stimer->exp_time = 0;
+ }
+diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
+index ea9c81d76dd3..37a0bcf03e28 100644
+--- a/arch/x86/kvm/hyperv.h
++++ b/arch/x86/kvm/hyperv.h
+@@ -76,6 +76,8 @@ static inline struct kvm_vcpu_hv *to_hv_vcpu_safe(struct kvm_vcpu *vcpu)
+ 
+ static inline struct kvm_vcpu_hv *to_hv_vcpu(struct kvm_vcpu *vcpu)
+ {
++	kvm_lockdep_assert_vcpu_is_locked_or_unreachable(vcpu);
++
+ 	return vcpu->arch.hyperv;
  }
  
 -- 
