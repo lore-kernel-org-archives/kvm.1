@@ -1,78 +1,125 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968F2282F1D
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF22430569B
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782410520; cv=none; b=rj2cCCp2tCdZt1FoG3BJoItc0tonULLXOPVzssubxSbV18PfQmz7n7emooiVviYYEDjKxzoV77OHxeXHKZnrMetyLBL8xMWWZGmI+q9FNTsC/Gpa6qbCYV+IRRQpAyHL0ELavrJzziuT2NEUV5p68VhigrRwazV5iDJZdg09ifc=
+	t=1782411128; cv=none; b=emizzU7O7dOQmvq8hc5+m5NftWMGDQyMmfBquReAobSVYMzwjVipD1DhH5OgBOQPHAN07g+p3Nxt8AMyOuHG/Up8yh5ZUq2Q3LqfLZ5AFE+dHIaFS3s92hCaGgXqBvCjK8YS/ZVj283xTNDmlpKyDWecIyj6kevCP02qgsD6Lk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782410520; c=relaxed/simple;
-	bh=AWA1RyC3DW+Gbn4npqgD5CoqZo4JbHLfF2ZhLzS2+6k=;
+	s=arc-20240116; t=1782411128; c=relaxed/simple;
+	bh=1PYPrh5cmW7j92HgEZsxX+MtgSZruUXIrXzPkSjifnI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mZJKDy9vnHRXSb0usc5wX8tPX89KQWyI+gNeor7+NuUAIpmUf8Rw+MbGVp7Tvz/OeBCEhhe1JrbwN7IByrsJ3tLUgBEFrx9McxTdrekBIdo0XcKj+P0Slahrg+XleEEmcReQ2AXWbye/40PWdIV7qtoNBbuf/zecB+eWcQ+DI7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IY9hhBVW; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=b+JEjB9ZCeE+SnRoRAPV5A9i0Fsv+vZ9aA5e0lYJhVtCZoN+RaGDbKPPRBR1C/07o9fscgbeCG/dr8OE8a8a1TQ2hBw3hmRye2UXDwBFqrHszDO09/Fx/hSfR4B9N56j4YUYaPQYJNknmd42Wyra5C3HfqTag5Av/VfvV50Qhig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wLj3yr40; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IY9hhBVW"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845bc2f62c9so13786b3a.3
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:01:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wLj3yr40"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8923722247so151272a12.2
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:12:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782410519; x=1783015319; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782411126; x=1783015926; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9XORV0MpbLe0TPyqpmXBTUptzOlLBIC6P4Y0TjKtCc=;
-        b=IY9hhBVWRfnXdKFhhq5vg8DrLoZUxUiyRsDfAPZVGN/QZVe3h3XMj5YCzr+mDX9VxV
-         Z83DLCE4cmg00Lm8lCxMd1AofHEU3V/xsOb+ZqBHuIl80C7Y6+1bt0XQC6U3u7RbZI+J
-         MCeTQp94dJxPvyomjKWH3+BOdKXAq4qHDMnhEFqCLkm9znGYmtwjIxGKVyPdhUsZftNV
-         G2RiXHhDavSTj/oE2rElQPoX1Z+SE15t55HTlY7gTxmfP2kELKejyroG/ZuUsu2Xi57f
-         jl9AWSkroQFyE96FkbK+IaNKj2bNQ1Tlrv7W3shbrJDhu65GZFWrk7KIVfcl68X3uwLU
-         OqMg==
+        bh=ytZubqtXwlHPvZAN+p1oFC5/Ov6kfqDqplPxrT9CpGE=;
+        b=wLj3yr402erE2fLcvahXA8QdcIcUykM0SrGgplCZ7ZfFILjW48N4NAQtcza+0GImz3
+         ubR65rUwRjC9AQJPv0fzCCmUEEVUhCUTwTgbCqitAt+rGeAn/ccHuQmzYf19va+m9ehl
+         QaSHTQaC7a+pNTmGuBw5bDSFGHwwFNIH21zwiMnaw4K4rD5qCBwbMu9kUJ5LFU8aPakm
+         SBj4TsMKACOYqShDtnz0oiHMyyi+Ji5jyJTdf3hHpmCWXRfy8vF8qlgk7OMl597Kt69H
+         5zCs2MY28F6MHIy8uk5M8qmXceDe6QJWPh+hAzfc/8INzCYEjgWLBmNOsVxJaYub6xQq
+         U3Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782410519; x=1783015319;
+        d=1e100.net; s=20251104; t=1782411126; x=1783015926;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9XORV0MpbLe0TPyqpmXBTUptzOlLBIC6P4Y0TjKtCc=;
-        b=eAsUwaPeDpLlGOBc1JpjE2MYD0knOn+vgkteEfx9PAO1lE99GngGA0bY450kW1uI6f
-         5M//PRcbQrSTpPWQZvDWmxTs2kyVHRfebV/RPdVFo5pzXVj4aRH5MrEIYk4+Xr5h2Qea
-         2CjCCTp8vWhbFmqWxfFSra1M4gKb2vJ3LK9K9fCQp9OYYQmdVJVsqeKC1u0/TEM+3LLo
-         FSF9PB6lEuP0puL7fs8o1OMECMTiB2ETdbjOxauPA8jHOv+OBxKoEmJHTNLX9F8sRmEi
-         Ts1x7VsDDqU4oRLk7OwXieSQXJZGYnOQ109TfzaNx6iSLLU0onl8+MKvpz+41BAzBfHF
-         4d2w==
-X-Forwarded-Encrypted: i=1; AHgh+RrEwJchqDOWdzTZ49MTaUmR1vfNVKdPmeHfi4TI1BU+OaRHfEHe41fAcNvPgxEXmXUOK3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNznJIPGYazzxRiWrEgC86XKhzPsIbNPyUiW8H/BeKdxU1mqB8
-	rs5Wi2lUi0xZlxa7PrJFYdunWJErxSxIxbvoANLJSsqtUamha0MG2/HU3mc7/p3wi4ixP6hR7A/
-	10IKy4A==
-X-Received: from pful12.prod.google.com ([2002:a05:6a00:140c:b0:845:5d45:e510])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:438e:b0:842:5a18:9af4
- with SMTP id d2e1a72fcca58-845b39e85bcmr4011361b3a.18.1782410518627; Thu, 25
- Jun 2026 11:01:58 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:01:58 -0700
-In-Reply-To: <20260618081355.3253581-17-yilun.xu@linux.intel.com>
+        bh=ytZubqtXwlHPvZAN+p1oFC5/Ov6kfqDqplPxrT9CpGE=;
+        b=HLdtGesW5OtOW8GtlPo+HIkpahhS6hSqlTvuvSTnLXTtBGdEP9JgcDtzQQqgIkFLyM
+         xIEhvtfHsGuFuIIentQWGrwkG2CYaTqlUChc9/asKjFhy6Q2Ww/GBBRXSr1dj1rZZgDx
+         sYkFzX87sk2Pk9FJAJQ37380X1HolHNN9aNbEoDFd0LmwJGRvQaE64ecn9Rl5b1Y0mMH
+         w907cSHSUW2jkpUHOKqb4m9cLXjLN6pYTdQi11H0jToeCplXlr0eXgiHkp0SnyUPlo/K
+         wyMYJEiebcwAGggc/dPAC9kQbtxfca4As9zecM+S3YAJXbQu0LFz1QCb19rcqU9Cu2aX
+         MlDA==
+X-Forwarded-Encrypted: i=1; AFNElJ/1vB1J5njLZ3CMrSMykE83JGj86h217G8VxCr/xJb4ZfzigYYmODlw5VDWWfMAvgHkCng=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDg+EKr7CXp8mc46WEa+zxgnHoc6yEIMz+wpO9vH1c7bOa1jMI
+	Qw0+6HlGvPOSxWh3/QerZs11KXzdm42gLnd3v9IQoBOuBWwaGEI+kDuwaiJasooaSu9C8YhK9Rx
+	XFNa0eQ==
+X-Received: from pgbfp5.prod.google.com ([2002:a05:6a02:2ce5:b0:c8b:ed9c:4468])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1bc1:b0:3bd:203b:b587
+ with SMTP id adf61e73a8af0-3bd4b021e47mr4245885637.40.1782411125978; Thu, 25
+ Jun 2026 11:12:05 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:12:05 -0700
+In-Reply-To: <20260527-kvm-locking-docs-v1-1-4fe8b602ff47@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com> <20260618081355.3253581-17-yilun.xu@linux.intel.com>
-Message-ID: <aj1tFuwZWdPGfUoG@google.com>
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
+References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com> <20260527-kvm-locking-docs-v1-1-4fe8b602ff47@google.com>
+Message-ID: <aj1vdb1VxNilPa9i@google.com>
+Subject: Re: [PATCH RFC 01/12] Documentation: KVM: Elaborate comment on kvm_usage_lock
 From: Sean Christopherson <seanjc@google.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org, 
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com, xiaoyao.li@intel.com, 
-	sohil.mehta@intel.com, adrian.hunter@intel.com, kishen.maloor@intel.com, 
-	tony.lindgren@linux.intel.com, peter.fang@intel.com, baolu.lu@linux.intel.com, 
-	zhenzhong.duan@intel.com, dave.hansen@intel.com, dave.hansen@linux.intel.com
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Fuad Tabba <tabba@google.com>, vannapurve@google.com, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 18, 2026, Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
+On Wed, May 27, 2026, Ackerley Tng wrote:
+> The original comment talks about cpus_read_lock() and kvm_usage_count, but
+> doesn't explain why they are related.
 > 
-> Provide an in-kernel path for Quote generation when handling
-> TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+> Elaborate comment on kvm_usage_lock to provide more context.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  Documentation/virt/kvm/locking.rst | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/virt/kvm/locking.rst b/Documentation/virt/kvm/locking.rst
+> index 662231e958a07..5564c8b38b9cc 100644
+> --- a/Documentation/virt/kvm/locking.rst
+> +++ b/Documentation/virt/kvm/locking.rst
+> @@ -248,8 +248,23 @@ time it will be set using the Dirty tracking mechanism described above.
+>  :Arch:		any
+>  :Protects:	- kvm_usage_count
+>  		- hardware virtualization enable/disable
+> -:Comment:	Exists to allow taking cpus_read_lock() while kvm_usage_count is
+> -		protected, which simplifies the virtualization enabling logic.
+> +:Comment:       ``kvm_usage_count`` serves to deduplicate hardware
+> +    virtualization enabling and disabling requests from different VMs
+> +    being created.
 
-Why?
+kvm_usage_count does that and more, i.e. this is 'wrong" by being incomplete. 
+
+> +
+> +    Hardware virtualization enabling/disabling requires taking
+> +    ``cpus_read_lock()``.
+> +
+> +    ``kvm_lock`` used to also protect ``kvm_usage_count``, but other
+> +    parts of the Linux kernel holding ``cpus_read_lock()`` need to
+> +    call into KVM to ensure that VM state remains consistent with the
+> +    host's state. For example, when the CPU frequency changes, KVM is
+> +    notified. ``kvmclock_cpufreq_notifier()`` takes ``kvm_lock`` to
+> +    iterate ``vm_list``.
+> +
+> +    To decouple these, use different locks, ``kvm_lock`` for
+> +    ``vm_list`` and ``kvm_usage_lock`` for enabling/disabling hardware
+> +    virtualization.
+
+I appreciate the effort, but honestly I think this does more harm than good.  I
+already know what this code does, and the above confused me more than anything.
+
+>  
+>  ``kvm->mn_invalidate_lock``
+>  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 
+> -- 
+> 2.54.0.823.g6e5bcc1fc9-goog
+> 
