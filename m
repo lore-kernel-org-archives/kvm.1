@@ -1,91 +1,161 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E8A3254AF
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3D513D891
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 19:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782412640; cv=none; b=QiVup/9vqe+jtMa4BqN+lRmVYyNMD/+bsvC7o9kUFcp5WDRIYGSmqinTGwiNjU7Sbwh6FNnvo5hgsEpWuZhd9KWzHfLjlrvpIC2T4pGqno4WgZRNL6LIGydSYGdEkaZ4nqscIu+w5ndLz+9CcITedN+5tsG1EeFSa9f6r/3DPrA=
+	t=1782414432; cv=none; b=NyGEJGNg9xDqh7No97nrv66ept8zgEu/lkNsosB8+yeE8pbDOekAJYewsPqwEtgC3gysdQCWeV1NzxYI+7WUJW5ugXGBuzDqXXMyyH8XSNBTk17VDjTQ1xEuGOf7xZEOeoIYP6sMqJQzqK1oaQeu2V3kLPs99DezT+Gm8xXn7wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782412640; c=relaxed/simple;
-	bh=XGF2VYl68rxHrrb3+celOOH/NDrS3MYyMHWdfsQBzvU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TLjiWuzRyWqTrTgQNIkMo6jaO10aMV2SE8Ct0NQMU9ozR8q6TbYmrqS+VjxXplk0IJBqJgVvkAFUAiuC8H3OoewOtkmrUIOqaN2IZBXdxnAMS/t9G3aWiU3No3j02PJV1phy02BEA2mwwMsi/paPCjKrqcisnfqy9R9XFz3+al8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X8aWhkmN; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782414432; c=relaxed/simple;
+	bh=nsqb1tz2bDc+ssS0lvVIeKHj0pXROC4yOCAqzf85+yc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=a/oqCAQJaORqfCBQidM6l4eEwJCnZPwoB9x5VwuGpJ1uoKW0j1acYaBIZ0SMRFZILc3i6KQ6aZ6HA/rHMFD59NftsHpZLyC/D0NZ1rhF00GKCnHF8IkmfSqtdvuQ8pfebLGwh5wNIChjP5+wWA/9ak/yQGPdJJ6UJ7OnWsih/iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EcNi6n+r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X8aWhkmN"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37e09f9c4dbso112245a91.0
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782412638; x=1783017438; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1CLBFjHRtepPsR7OTGTpvVtcvQrDt/pUW+o4gNlp90=;
-        b=X8aWhkmNeHj5B+S2ARCMB1eYjl8r4K4etZG/HFXM6FdnlaRlqdY4o98YfqE28CTDcR
-         h/5o4uydtcCJZiCzbK9sKcrbpGEB+T9aiDdWY3gbAEdzDlZbZa/q2KSuRVZ+rLox9d3p
-         G4TtUWznQjge07RTSOIla9Pcp/rxD06QJ6XKnXaUvB6LS0sDQD0KiwbF/nSfSJ/UctIs
-         eiYqmaiFp2MeO9M8BJQa/JwucCl/DUMXIcHS7haA2iKr7vI3h4lbwnYwrAqjdla0TWWq
-         ju4VtRWlsKfyNNN3B70xbms6qUr002QyNhVZPOSpZvIhg13Wsch+aShIcJyNNQcyyMMd
-         Ol+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782412638; x=1783017438;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1CLBFjHRtepPsR7OTGTpvVtcvQrDt/pUW+o4gNlp90=;
-        b=m96HO39WU0MhGYzjiJsKtjlLdYR5X0BQ3Gdmid2mCbb9ZqkF8EAbPeYci40vGUWilg
-         PcBK1KU2DUtVqUUqCvEdSZg+MkE5alEOKQ2C4CgK8KE08OWpn1z/FOk+qJdoncZ89mrx
-         GGBhTfY4HlioNfP5qNfdDFaK+v6vWv1fLZwRbZFXn/hYzSB/n5HQEuI3P0iFZi5ERVDm
-         BemDFyeIrtrNMetQBQnwYl2tL1j+8ru/KtXh88eYxnVc/2YzVUOG2DPuW2DoNG8IXOt4
-         Rj5wU4Vnd+UJrHijncOL3G5HsYjrrq36VAKWtEx8VKLaHTRErYIk20bpFE1DmYf7rBIV
-         nBYw==
-X-Forwarded-Encrypted: i=1; AFNElJ9yLSW++1q8jNnc/NKBkYusrmDVi8Gg7napSKLIFFH0s2yNYkHTVTgb6jXETzj7SH8FD0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5/SvHkiW/TnpAQmDpkssMusicNnC7C7J0b3YPzBhWzV+uwWvP
-	zElLSzuwVmssbxW4el5nEckvAYECoAUcK0CuhkJOXP7kvR/gti0/DcK3GVq+4Vy+xn9LWa9ZJSu
-	Gy8u7oQ==
-X-Received: from pgab3.prod.google.com ([2002:a63:3403:0:b0:c89:356d:606a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b04:b0:3b4:8aad:6337
- with SMTP id adf61e73a8af0-3bd4ac80c24mr4406701637.15.1782412638064; Thu, 25
- Jun 2026 11:37:18 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:37:17 -0700
-In-Reply-To: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EcNi6n+r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557121F000E9;
+	Thu, 25 Jun 2026 19:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782414431;
+	bh=muFfKGL3lwflKCrSkngHr7FjsuVWPTux0LF4bM1ejxI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EcNi6n+ryKyoAp0QoaCWscHuCyYPZNSpCpatBnxLPVhTlHmfKjgWecddL7qaO8WOT
+	 nlkSCPTdjxPQiBr+4CzLlHZpo/6pxEE8PDIKUbyGWUJ/Efj96BXwgfxpr5N8uj9xnc
+	 AGAdDqJIVSIUFnzK7M79/ofD6IOE57sKSIccmV/RZdbGBhbZB2NuviIYFVFMK1XiYv
+	 WiSr+jltcXT7nh+JB/3geBc8kI7RVffgiBMJJuQVx5Uv/ttwOnW+gAMSvUpUbC70Vn
+	 HdOemhJslfqbTV6n/5jbjFtkI//H7ywl81G8IS5DekMAyscbCdy5ZJH1VrPGRkeBsd
+	 pII+28VSBl1UA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vhost/vdpa: reject overflowing PA map page counts
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yousef Alhouseen" <alhouseenyousef@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260624190653.2893-1-alhouseenyousef@gmail.com>
+References: <20260624190653.2893-1-alhouseenyousef@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 25 Jun 2026 19:07:10 +0000
+Message-Id: <20260625190711.557121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com>
-Message-ID: <aj11XdftC_WAf6Av@google.com>
-Subject: Re: [PATCH RFC 00/12] Document synchronization used in managing guest faults
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Fuad Tabba <tabba@google.com>, vannapurve@google.com, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
 
-On Wed, May 27, 2026, Ackerley Tng wrote:
-> Ackerley Tng (12):
->       Documentation: KVM: Elaborate comment on kvm_usage_lock
->       Documentation: KVM: Consolidate notes about cpu_read_lock() and kvm_lock
->       Documentation: KVM: Consolidate notes about kvm->slots_lock and irq_lock
->       Documentation: KVM: Turn - into bullet point
->       Documentation: KVM: Explain what rule the exception section is meant for
->       Documentation: KVM: Have actual headings for exceptions
->       Documentation: KVM: Drop mention of kvm->lock in SRCU documentation
->       Documentation: KVM: Add example for kvm->srcu in relation to mutex/lock
->       Documentation: KVM: Document synchronization for managing guest faults
->       KVM: guest_memfd: Clarify comment about gmem.file vs kvm->srcu
->       KVM: mmu: Point users of host_pfn_mapping_level() to docs
->       Documentation: KVM: Focus acquisition order section on preventing deadlocks
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Please split these up into standalone patches or small series of patches that are
-logically related at a finer granularity.  "Here's a pile of KVM documentation
-updates" is not a reasonable level of granularity.
+Pre-existing issues:
+- [Critical] The variable `last_pfn` uses `0` as a sentinel value, which br=
+eaks the physical discontinuity check if PFN 0 is pinned, allowing an attac=
+ker to map arbitrary physical memory into the device IOMMU.
+- [High] Permanent leak of pinned memory pages in the error handling path d=
+ue to flawed state tracking with the `nchunks` variable.
+- [High] TOCTOU race in RLIMIT_MEMLOCK check allows users to bypass the loc=
+ked memory limit by concurrently mapping pages across multiple vhost-vdpa d=
+evices.
+--
+
+commit b62fefdce516922a639203f628dde15b26a4b097
+Author: Yousef Alhouseen <alhouseenyousef@gmail.com>
+
+vhost/vdpa: reject overflowing PA map page counts
+
+This commit adds a check in vhost_vdpa_pa_map to prevent integer overflows
+when adding the size and page offset. It also converts the pinned memory
+limit check to use subtraction to prevent wrapping.
+
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index ac55275fa0d0a..090cb8693b7ce 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -1102,6 +1102,8 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
+>  	unsigned int gup_flags =3D FOLL_LONGTERM;
+>  	unsigned long npages, cur_base, map_pfn, last_pfn =3D 0;
+
+[Severity: Critical]
+This is a pre-existing issue, but does using 0 as a sentinel for last_pfn
+break the discontinuity check if PFN 0 is pinned?
+
+If PFN 0 is pinned, last_pfn becomes 0, and this check is silently bypassed
+for all subsequent pages:
+
+vhost_vdpa_pa_map() {
+    ...
+    if (last_pfn && (this_pfn !=3D last_pfn + 1)) {
+    ...
+}
+
+Could this allow discontiguous physical pages to be incorrectly grouped
+together and map arbitrary physical memory into the device IOMMU?
+
+[ ... ]
+
+> @@ -1123,7 +1130,8 @@ static int vhost_vdpa_pa_map(struct vhost_vdpa *v,
+>  	mmap_read_lock(dev->mm);
+> =20
+>  	lock_limit =3D PFN_DOWN(rlimit(RLIMIT_MEMLOCK));
+> -	if (npages + atomic64_read(&dev->mm->pinned_vm) > lock_limit) {
+> +	pinned_vm =3D atomic64_read(&dev->mm->pinned_vm);
+> +	if (npages > lock_limit || pinned_vm > lock_limit - npages) {
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this limit check contain
+a race condition?
+
+Because pinned_vm is read without global serialization across the shared
+mm_struct, multiple threads could concurrently issue ioctls to update the
+IOTLB. Each thread takes its own device mutex and a shared mmap_read_lock.
+
+If all threads concurrently read pinned_vm here, couldn't they all pass the
+limit check, pin memory, and increment pinned_vm later, effectively bypassi=
+ng
+the limit?
+
+>  		ret =3D -ENOMEM;
+>  		goto unlock;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but is there a leak of pinned memory pages in
+the error handling path of this function?
+
+When a discontiguous page is encountered, the previous chunk is mapped and
+nchunks is cleared to 0:
+
+vhost_vdpa_pa_map() {
+    ...
+    if (last_pfn && (this_pfn !=3D last_pfn + 1)) {
+        ...
+        ret =3D vhost_vdpa_map(...)
+        ...
+        nchunks =3D 0;
+    }
+    ...
+}
+
+However, the inner loop immediately continues processing the new page, maki=
+ng
+it the start of a new outstanding chunk. If a subsequent pin_user_pages()
+fails in the next iteration of the outer loop, the code jumps to the out
+label:
+
+vhost_vdpa_pa_map() {
+    ...
+out:
+    if (ret) {
+        if (nchunks) {
+            ...
+            for (pfn =3D map_pfn; pfn <=3D last_pfn; pfn++)
+                unpin_user_page(pfn_to_page(pfn));
+        }
+        ...
+}
+
+Because nchunks was left at 0, doesn't it skip unpinning the outstanding
+pages?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260624190653.2893=
+-1-alhouseenyousef@gmail.com?part=3D1
