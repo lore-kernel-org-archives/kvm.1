@@ -1,175 +1,361 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA692874E6
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 06:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4026D31328E;
+	Thu, 25 Jun 2026 06:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782369226; cv=none; b=RffOj4lqRuk+G9w3L2JQauPJE4w1/qtiYHsKmlNb6JfCwA9UXcz87fNR0RgdszAG9YkTO83TnzVVxZJRdA3rS/I7kcwIXgtJcx7Jji1EaQZLvWHcCVgCFh4+AvQ7TYYrWuzIFJIONaZkAVb9S/hidPNCBE8pmOqlCTwc2FLXKEg=
+	t=1782369244; cv=none; b=nirKTvAxdFFW2leMzoa/V/39R37DStrEu52+7PzuVXJBGcnxxBG4Rc027GGm5BhnPjfUHiSWUz3WMFCCBW4gTA/gGhX5TSAnOP99uMlFY+Vexs3KdTEIFIcMwZiU1LATc10oO5yYOOmK4QuHRtGm1WnhdEPZVx+kyGCJoZH0rTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782369226; c=relaxed/simple;
-	bh=/aC8130EFJ7u+kWfB2Sh3kUu42G6SuYlpwYaOu+3aYg=;
+	s=arc-20240116; t=1782369244; c=relaxed/simple;
+	bh=yTW+2pnex5nkPADO6CvSxNrZzpX8ReEi1EuOZBv2vkY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mdDNGJwJy7k1xcYG7+bSSryVmbsC6UN0iI9aww84WnRkUjEh6xbl/nCNPnuyc8L9UsUb4usgiRsz10LijDPDCX9BEJKeogP0YO6I+xVdu54an/8Lj6TiV9jnavOcgXNyb99MWfTTllzEwJJxWuX3E4d0onRAhWcI8CRdCmDlVJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FqnfGnJi; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tw/frloKWBEyfoC+rvarWtmauQnwji0OSCCqBliRt5ZhCkBpF9FFpFA/pSuNg76BR8919V9rxbUdeVfwczSdaM8ANZVBSNEmZt99tyPBui6rbKn7kjlvLqXdm6Z13pJt1rCZq8UKlwRPBB0mVGBOHvzVZRhCy0kf3Oql9sPlXC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MQBVNdRI; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FqnfGnJi"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3mVWm2977929;
-	Thu, 25 Jun 2026 06:33:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kcpKFX
-	vTivp9kP7qB8T1/R2TF8Zj3x0QbugW4pPUHjQ=; b=FqnfGnJi8ciFIa6uS6nv/A
-	h2V8Fe4TqKS4fRInHXWOEpiZNQWIkpURIkaNkglHGKnNObClyj7iAvNPwtb3lFTQ
-	IcTA05q/5aKRTpnPck+EA+uLkt7mkjHma/X8wTUaO1juPywFcvBV05BK5X6FZi9j
-	TOHuZU1pKdoqqosFvFqnnUKApSIZc+tcrAdgAfeG0/7HSaUQPb/EGlZkPLA+Zd1B
-	WLEbTx5Na1d20hnKEEtld8uuLZNCETYrfoQ1MGuvbZeXTQOY/yoRrNMEHmQo4Keh
-	+L46Umefo1Wq0aCZYvpYQo6Wadlf4VwAEUq0mieBWSD6GnYFgbs6bkArB8pkdlDw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjk4rb94-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 06:33:15 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65P6K8L7005392;
-	Thu, 25 Jun 2026 06:33:14 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwmxm9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 06:33:13 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65P6X9Lj45744578
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2026 06:33:10 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DED0520040;
-	Thu, 25 Jun 2026 06:33:09 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 863C52004B;
-	Thu, 25 Jun 2026 06:33:02 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.21.199])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 25 Jun 2026 06:33:02 +0000 (GMT)
-Date: Thu, 25 Jun 2026 12:02:59 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>, qemu-devel@nongnu.org,
-        qemu-ppc@nongnu.org,
-        =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH 3/8] tests/qtest: Add Power11 chip & machine to qtests
-Message-ID: <ajzLOyHQDof4wO4Q@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-References: <20260623141933.577981-1-adityag@linux.ibm.com>
- <20260623141933.577981-4-adityag@linux.ibm.com>
- <54a9b8d16347f6cc94a625aca81897ba6b875385.camel@linux.ibm.com>
- <ajvemcUx0k12xOIW@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
- <4edf1ef8-1d88-4ad1-92eb-d587974bcd20@linux.ibm.com>
- <2afab235-5239-8663-a35e-91ce83485ca0@eik.bme.hu>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MQBVNdRI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782369243; x=1813905243;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yTW+2pnex5nkPADO6CvSxNrZzpX8ReEi1EuOZBv2vkY=;
+  b=MQBVNdRIMFBiW0E8hxdWM+iUuvf+VHZSAohZo8JDOZPGSkPz/FVCtRPn
+   70hGd8kpEG2mKudMAu7adMSS55viK+imoBkEIZV9JqHVXSFwyobT4k75x
+   CQoi1rYbtYpt9BCS954PcB6htGj33/iHEXWsWmX1rEOfw2568jkC41DFN
+   AMQGnXbOpSiPCt6FTwpcRDoXwRL/N1LEqC8B9sAH/7ILmBQ/9XIaM2L9E
+   uP92ouHY+G1NnTsVlfT0cHs7Wmt0YR7C1m2JhSvWyAy7KGeKoL4PSFv6M
+   sBVLioQpPIRbYL7JH/sFsawVvNgQqffeoNtw+FzwjwPfJK6W7a4BxTvKm
+   g==;
+X-CSE-ConnectionGUID: dcH6jb6fSW+Up3q67Ai6BA==
+X-CSE-MsgGUID: +xeHR4tjQiWOitwWxKcfTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="93794068"
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="93794068"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 23:34:03 -0700
+X-CSE-ConnectionGUID: EMbBFf/TQIOEyY13Sj7ssQ==
+X-CSE-MsgGUID: NJFkV2J8QxujSUOQH4dKZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
+   d="scan'208";a="288495401"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa001.jf.intel.com with ESMTP; 24 Jun 2026 23:33:59 -0700
+Date: Thu, 25 Jun 2026 14:33:57 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, x86@kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, dave.hansen@linux.intel.com,
+	seanjc@google.com
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <ajzL1aO7wtl5GEsU@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <4f4b0f29-424b-45ed-8cfd-c77da2ea390f@intel.com>
+ <ajvG54UMcf3vbJez@yilunxu-OptiPlex-7050>
+ <20260624221037.GD923079@pedri>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2afab235-5239-8663-a35e-91ce83485ca0@eik.bme.hu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDA1MyBTYWx0ZWRfX2+IdW+nAvkZm
- e+TLol9Y5ZT2N4wdL7MQJwiyll/RYHv3ZJoRf4+4iGLTM11mjUXh8RoAs6IjTa/zHM1MxSSEzbk
- nTGdo2k1k57UcpsHO/5xS2UAdtIQTKU=
-X-Proofpoint-ORIG-GUID: r9K0Sw0udjjc10GPdX0yvmYJkxE-q74a
-X-Authority-Analysis: v=2.4 cv=Oph/DS/t c=1 sm=1 tr=0 ts=6a3ccbab cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=RuPvRiwboNjlD2If9HoA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDA1MyBTYWx0ZWRfX0ANGCJBrG165
- 5gDwJCeH0xMtLA2yykQUWt9YBJqY4dSNF0D3nL/qYrjDLw2/eEKy7tdzlDvc/WWl377G3CPH3E1
- SXD6CQ9X7mDeJPNq3ZwjPtd1XIWHxETxai7wlesO0q1loCA+hvi88LLi8EA5ShgRckyOnDSxdQ2
- AEwxpaWsOF/hRj/ns+JK6BD8jmUc36kVOjVjxNUpFNbxGy9FUoi6ndM5f1cyNWOhaZIjGrajXyU
- +dDQ3X/D7OSa1EnMsrsZ2mH/RBsVxpl6gbuVJyvpYuyYfuXCfPpy9ghNZ2OS1a8plkpB8ecAf/N
- nPNjQa6WYoLCqfC0pO7MTAtsfkviSwRVXTHJRcG+00U9nPBa398bLWh8T6egxF4uJ+L+6TxwJce
- IRd6/3WN2y1IUTUI3rLGRgUmWNGTmO+ADV/Q+S0zqpysJhWU94m9lYIT+H995fo1VEwV5c3OTde
- jSLXB3h6t68V1VrEb8Q==
-X-Proofpoint-GUID: paGEjVdJQkFJAkStK_BinL6gH-QrwnH9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-25_01,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250053
+In-Reply-To: <20260624221037.GD923079@pedri>
 
-On 26/06/25 08:03AM, BALATON Zoltan wrote:
-> On Thu, 25 Jun 2026, Harsh Prateek Bora wrote:
-> > On 24/06/26 7:14 pm, Aditya Gupta wrote:
-> > > On 26/06/23 09:24PM, Shivang Upadhyay wrote:
-> > > > On Tue, 2026-06-23 at 19:49 +0530, Aditya Gupta wrote:
-> > > > > +static const char *pnv_get_machine_type(enum PnvChipType chip_type)
-> > > > > +{
-> > > > > +    if (chip_type == PNV_CHIP_POWER8) {
-> > > > > +        return "powernv8";
-> > > > > +    } else if (chip_type == PNV_CHIP_POWER9) {
-> > > > > +        return "powernv9";
-> > > > > +    } else if (chip_type == PNV_CHIP_POWER10) {
-> > > > > +        return "powernv10";
-> > > > > +    } else if (chip_type == PNV_CHIP_POWER11) {
-> > > > > +        return "powernv11";
-> > > > > +    } else {
-> > > > > +        g_assert_not_reached();
-> > > > > +    }
-> > > > > +}
-> > > > 
-> > > > How about refactoring to the following?
-> > > > 
-> > > >      static const char *const machine_types[] = {
-> > > >          [PNV_CHIP_POWER8]  = "powernv8",
-> > > >          [PNV_CHIP_POWER9]  = "powernv9",
-> > > >          [PNV_CHIP_POWER10] = "powernv10",
-> > > >          [PNV_CHIP_POWER11] = "powernv11",
-> > > >      };
-> > > >      return machine_types[x];
+On Wed, Jun 24, 2026 at 03:10:37PM -0700, Peter Fang wrote:
+> On Wed, Jun 24, 2026 at 08:00:39PM +0800, Xu Yilun wrote:
+> > > There's also zero stopping us from putting version in args:
 > > > 
-> > > Has a subtle difference, that it may not assert/segfault on unknown
-> > > value for x, I want the test to crash/fail if this is called with an
-> > > unknown/new processor chip. I believe the if-else/switch is better as it
-> > > handles (by 'crashing') unknown values too.
+> > > 	struct tdx_module_args args = {};
+> > >   	int ret;
+> > > 
+> > > 	if (tdx_addon_feature0) {
+> > > 		args.r9 = tdx_addon_feature0;
+> > > 		args.version = 1;
+> > > 	}
+> > > 
+> > > 	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+> > > 
+> > > Eh?
+> > > 
+> > > That gives args.version==0 in all the normal cases which just happens to
+> > > be the exact behavior we want. It also avoids having to plumb version
+> > > through all the seamcall*() wrappers.
 > > 
-> > We could just do:
+> > Ah, on 2nd reading, I'm pretty sure now I understand your logical argument in
+> > patch 1 and 2. It's good to me. I append my diff at the end.
 > > 
-> > if (chip_type >= PNV_CHIP_MAX) {
-> >    g_assert_not_reached();
-> > } else {
-> >    return machine_types[chip_type];
-> > }
 > 
-> Or even g_assert(chip_type < PNV_CHIP_MAX); without the if?
+> [ ... ]
 > 
-> Regards,
-> BALATON Zoltan
+> > diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
+> > index 016a2a1ec1d6..d1d3d40c5614 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdxcall.S
+> > +++ b/arch/x86/virt/vmx/tdx/tdxcall.S
+> > @@ -48,6 +48,14 @@
+> >         /* Move Leaf ID to RAX */
+> >         mov %rdi, %rax
+> > 
+> > +       /*
+> > +        * Extract the version from 'struct tdx_module_args', append it to
+> > +        * RAX[23:16]
+> > +        */
+> > +       movzbl  TDX_MODULE_version(%rsi), %ecx
+> > +       shll    $16, %ecx
+> > +       orq     %rcx, %rax
+> > +
+> >         /* Move other input regs from 'struct tdx_module_args' */
+> >         movq    TDX_MODULE_rcx(%rsi), %rcx
+> >         movq    TDX_MODULE_rdx(%rsi), %rdx
 > 
-> > That way just adding new array entry would work for future chips.
+> This approach looks much cleaner to me. Would it be better to have a
+> small C helper to encode the final RAX value instead of operating on RAX
+> directly in asm? Looking at the May 2026 edition of the ABI spec,
+> SEAMCALL RAX encoding is starting to get quite complex. Just thinking
+> about this from a readability standpoint.
 
-will do in v3. thanks !
+I'm also good to it. I made some diff for your proposal, Some additional
+effort here is to update some comments and parameter names, to reflect
+the differences between "function/func/fn" (the unversioned number) and
+the final composite "fn_code" for RAX.
 
-- Aditya G
+-----8<-------
+
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..c26eca18fded 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -143,6 +143,8 @@ struct tdx_module_args {
+ 	u64 rbx;
+ 	u64 rdi;
+ 	u64 rsi;
++	/* for leaf encoding */
++	u8  version;
+ };
+ 
+ /* Used to communicate with the TDX module */
+diff --git a/arch/x86/virt/vmx/tdx/seamcall.S b/arch/x86/virt/vmx/tdx/seamcall.S
+index 6854c52c374b..5cf3993e98f4 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall.S
++++ b/arch/x86/virt/vmx/tdx/seamcall.S
+@@ -10,8 +10,8 @@
+  *
+  * __seamcall() function ABI:
+  *
+- * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
+- * @args (RSI)  - struct tdx_module_args for input
++ * @fn_code (RDI)  - SEAMCALL composite leaf code, moved to RAX
++ * @args    (RSI)  - struct tdx_module_args for input
+  *
+  * Only RCX/RDX/R8-R11 are used as input registers.
+  *
+@@ -29,8 +29,8 @@ SYM_FUNC_END(__seamcall)
+  *
+  * __seamcall_ret() function ABI:
+  *
+- * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
+- * @args (RSI)  - struct tdx_module_args for input and output
++ * @fn_code (RDI)  - SEAMCALL composite leaf code, moved to RAX
++ * @args    (RSI)  - struct tdx_module_args for input and output
+  *
+  * Only RCX/RDX/R8-R11 are used as input/output registers.
+  *
+@@ -51,8 +51,8 @@ SYM_FUNC_END(__seamcall_ret)
+  *
+  * __seamcall_saved_ret() function ABI:
+  *
+- * @fn   (RDI)  - SEAMCALL Leaf number, moved to RAX
+- * @args (RSI)  - struct tdx_module_args for input and output
++ * @fn_code (RDI)  - SEAMCALL composite leaf code, moved to RAX
++ * @args    (RSI)  - struct tdx_module_args for input and output
+  *
+  * All registers in @args are used as input/output registers.
+  *
+diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+index be5f446467df..bb17d965b453 100644
+--- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
++++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+@@ -11,17 +11,28 @@
+ #ifndef _X86_VIRT_SEAMCALL_INTERNAL_H
+ #define _X86_VIRT_SEAMCALL_INTERNAL_H
+ 
++#include <linux/bitfield.h>
+ #include <linux/printk.h>
+ #include <linux/types.h>
+ #include <asm/archrandom.h>
+ #include <asm/processor.h>
+ #include <asm/tdx.h>
+ 
+-u64 __seamcall(u64 fn, struct tdx_module_args *args);
+-u64 __seamcall_ret(u64 fn, struct tdx_module_args *args);
+-u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
++u64 __seamcall(u64 fn_code, struct tdx_module_args *args);
++u64 __seamcall_ret(u64 fn_code, struct tdx_module_args *args);
++u64 __seamcall_saved_ret(u64 fn_code, struct tdx_module_args *args);
+ 
+-typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
++typedef u64 (*sc_func_t)(u64 fn_code, struct tdx_module_args *args);
++
++#define SEAMCALL_VERSION_MASK		GENMASK_U64(23, 16)
++
++static __always_inline u64 __seamcall_fn_encoding(sc_func_t func, u64 fn,
++						  struct tdx_module_args *args)
++{
++	FIELD_MODIFY(SEAMCALL_VERSION_MASK, &fn, args->version);
++
++	return func(fn, args);
++}
+ 
+ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 						  struct tdx_module_args *args)
+@@ -39,7 +50,7 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
+ 	 */
+ 	this_cpu_write(cache_state_incoherent, true);
+ 
+-	return func(fn, args);
++	return __seamcall_fn_encoding(func, fn, args);
+ }
+ 
+ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+diff --git a/arch/x86/virt/vmx/tdx/tdxcall.S b/arch/x86/virt/vmx/tdx/tdxcall.S
+index 016a2a1ec1d6..b0f7867bcd1c 100644
+--- a/arch/x86/virt/vmx/tdx/tdxcall.S
++++ b/arch/x86/virt/vmx/tdx/tdxcall.S
+@@ -24,7 +24,7 @@
+  *-------------------------------------------------------------------------
+  * Input Registers:
+  *
+- * RAX                        - TDCALL/SEAMCALL Leaf number.
++ * RAX                        - TDCALL/SEAMCALL composite Leaf code.
+  * RCX,RDX,RDI,RSI,RBX,R8-R15 - TDCALL/SEAMCALL Leaf specific input registers.
+  *
+  * Output Registers:
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 6a1c4fe202bb..8c1a5b7f603a 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1019,7 +1019,6 @@ static __init void set_tdx_addon_features(void)
+ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+ 				    u64 global_keyid)
+ {
+-	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+ 	struct tdx_module_args args = {};
+ 	u64 *tdmr_pa_array;
+ 	size_t array_sz;
+@@ -1042,18 +1041,18 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+ 	for (i = 0; i < tdmr_list->nr_consumed_tdmrs; i++)
+ 		tdmr_pa_array[i] = __pa(tdmr_entry(tdmr_list, i));
+ 
++	set_tdx_addon_features();
++
+ 	args.rcx = __pa(tdmr_pa_array);
+ 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+ 	args.r8 = global_keyid;
+ 
+-	set_tdx_addon_features();
+-
+ 	if (tdx_addon_feature0) {
+ 		args.r9 = tdx_addon_feature0;
+-		seamcall_fn = TDH_SYS_CONFIG;
++		args.version = 1;
+ 	}
+ 
+-	ret = seamcall_prerr(seamcall_fn, &args);
++	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+ 
+ 	/* Free the array as it is not required anymore. */
+ 	kfree(tdmr_pa_array);
+@@ -1515,16 +1514,15 @@ int tdx_module_shutdown(void)
+ 
+ int tdx_module_run_update(void)
+ {
+-	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+ 	struct tdx_module_args args = {};
+ 	int ret;
+ 
+ 	if (tdx_addon_feature0) {
+ 		args.r9 = tdx_addon_feature0;
+-		seamcall_fn = TDH_SYS_UPDATE;
++		args.version = 1;
+ 	}
+ 
+-	ret = seamcall_prerr(seamcall_fn, &args);
++	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -2112,6 +2110,7 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
++		.version = 1,
+ 	};
+ 
+ 	return seamcall(TDH_VP_INIT, &args);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 2deb0a5c902e..1f43d2eb2345 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -2,7 +2,6 @@
+ #ifndef _X86_VIRT_TDX_H
+ #define _X86_VIRT_TDX_H
+ 
+-#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ 
+ /*
+@@ -12,18 +11,6 @@
+  * architectural definitions come first.
+  */
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define SEAMCALL_LEAF			GENMASK(15, 0)
+-#define SEAMCALL_VER			GENMASK(23, 16)
+-
+-#define SEAMCALL_LEAF_VER(l, v)		(FIELD_PREP(SEAMCALL_LEAF, l) | \
+-					 FIELD_PREP(SEAMCALL_VER, v))
+-
+ /*
+  * TDX module SEAMCALL leaf functions
+  */
+@@ -44,7 +31,7 @@
+ #define TDH_VP_CREATE			10
+ #define TDH_MNG_KEY_FREEID		20
+ #define TDH_MNG_INIT			21
+-#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
++#define TDH_VP_INIT			22
+ #define TDH_PHYMEM_PAGE_RDMD		24
+ #define TDH_VP_RD			26
+ #define TDH_PHYMEM_PAGE_RECLAIM		28
+@@ -58,11 +45,9 @@
+ #define TDH_PHYMEM_CACHE_WB		40
+ #define TDH_PHYMEM_PAGE_WBINVD		41
+ #define TDH_VP_WR			43
+-#define TDH_SYS_CONFIG_V0		45
+-#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
++#define TDH_SYS_CONFIG			45
+ #define TDH_SYS_SHUTDOWN		52
+-#define TDH_SYS_UPDATE_V0		53
+-#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
++#define TDH_SYS_UPDATE			53
+ #define TDH_EXT_INIT			60
+ #define TDH_EXT_MEM_ADD			61
+ #define TDH_SYS_DISABLE			69
+
 
