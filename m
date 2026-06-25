@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299B837C91B
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC88376465
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782425105; cv=none; b=CCQ4VTFwLyQNhnZUSHDkjBlSJbQ2Bcr+zNMyn98D/v/qvkDm8+z8BIKegvAp6C/nL2aJzNJCYzUrGLR5zjnEA9nOOeYPrKJA6+FZIC8vbzwJjVnLEsCDraz7aSbjN24dJyGE3ZN6blSoR2EVwxlO+Ju5p56Ul9lKijulxktf+FY=
+	t=1782425105; cv=none; b=pNlwAOiSbYlbtwaERz1GtEd8XXqyCuZOAYK2g3ldi1VEn+voeSOlhvLl2XVjtRy7qUVQh5UQ2URmvcL/LPdS/9l5hba+rorC2dZWsZiT+b+PThWG8LoAj0bfPLMvvDT23nFXNvW+00UyHBJH0hiHs3MtUOhoRtfKHf94dWR5xrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782425105; c=relaxed/simple;
-	bh=gGrl1QnRrIHgKxMqkj52qix+onSiD5qn5e5RZzDKZ7M=;
+	bh=wRHjL7Vxzskbz7E55ywnhG1dtfWEFY+OuV5osIH6qR4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mnwpnErAEa4YBrxvZz56cvyphExmQOhIBJGFXe+Ih+xQ/NI2UHSKKh5AGqve+6AsM8A1sXtqOe4g7Zr6A2JMVjEiV2ghrUw6cIjSiO6RG33xANTs6dwnVl119gNtQyxJpwVlnM3yCJBWe6EalEvG2LPSLDF/2QTKIIUHm0gP7T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qRXK+HuT; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=YR/WHH8njPc3RmggfqQKw1RlQyXWh3K1JzieeiFNLZ/+1EIaWPbAs6iJeZjgu0GNSn+acbY7hR7kyDY80qtYJTDA+UmXqja97s2u0zQtctqXEhCkkgpWIJ4dIVzVTHX/MStX+lcRtXTvepQ1dhRhpITUvE+3sVBTIKyAkX9u4Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nRgOwifk; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qRXK+HuT"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37e09f9c4dbso210459a91.0
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:05:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nRgOwifk"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so191812a12.1
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782425100; x=1783029900; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782425099; x=1783029899; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=u6No93sMWAWPDG2KkgdSV9mtTDMO1MEgDwmas8ljtKU=;
-        b=qRXK+HuTeXfn9efmQPd9OIOl+PhQzlSMm/xaU7yu9zub2dQIoudQnk/IbpPoCLuZL7
-         VlpD20LMAQp6HLOlFBG/Kcp8KuPTeeX68bXTHFj59wlnUSE31FkVzkr5IRDW7Lb+EkrM
-         bYtQSoYuTuKfhNvv7i8NBAg4hlLkcbregHwV18nelLnMlwQ/1elSHEcTG7hzsAorEZf6
-         lmBhjD2ThcjXTScO2HrKgGi5SQ39XMBk6l48x0nCj5MVw2qEPEUamNQ0gSQr+960Jima
-         n/VNgmoO/CnxieTqOc2EW3PExsWQamwfB+w4joAdy27PS4FvBWa+oeByfTzmDd4N9MLQ
-         xWdA==
+        bh=H7E60LJzTlv9sk6UTbJ8U0xvMyb9HT0AFN1vWvqqyfI=;
+        b=nRgOwifkcqTjeJgxKkr5416bH8YnWPXsKumRI4Cw/HfyiTYyVKivpSbwdCuZWlcO6T
+         PyCdsdx9HXMecccKrvs53mOxTnu4XsHYSCrN19jHPRD7YSJVNO7UfM5c6YW/R1yc9DF6
+         kNbkhgMY3SmN8srNpovmmv/rTRFONeJo/47hbKttKBOWXoBsL4m8cHmFyHrVsKbJltas
+         vBChMhYp2apADBX9R93TGK+Wpg5VJa/vjocwge/ynfQrhTy15Aezv0F89bYpeyZQN54/
+         mV1UYrnis3/vKT50g/Cp4RpSIY90G5IMGlem/z5nf6BfQT75Hs6oxaczzG/NWBySEmk4
+         aQKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782425100; x=1783029900;
+        d=1e100.net; s=20251104; t=1782425099; x=1783029899;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=u6No93sMWAWPDG2KkgdSV9mtTDMO1MEgDwmas8ljtKU=;
-        b=jyipxLQFSqyONTGlRhFcmmlILnsyxOKdSADkiiEx+j2n0yJlrAkLbH1xfKS6F6v3Pp
-         7YiMopLc3aarbeM20ULxeQo+tpST0wQt8GaY2D9yIZSZJFc+bFlkjxHlxDUPecG1rcfk
-         AkVyfeh3TE3SalDbJ1HwWdJUcYdg8jYbmOTnS68n6IMRkjZ6aG1xOIVVwhIOGJkYKrai
-         HMHpIR+3tFhogwX5R3xYL/dU39/CCNUrZ7Tjjvy29DJ0LbmM2t0AwxeYYvle+iSVFGqY
-         IFG8Ty1PkM6gBfyYzaQ2bNNd/vQNmlLBzqQbc89VZrXHuAGw8TOUuyGZnDPrsFwjU76R
-         NebA==
-X-Gm-Message-State: AOJu0YwnRXTKPXaR30JCOR1So4lfxHtGJk7TU4SUQbNTuq88YXVD8JRI
-	fnjHAHYFwlWCTt7Cbi10LToZkQhDYcsXcXVZWEKQfP7dRLa3ihaL5GItLaxgzFwzjOK+qU7ZF1O
-	wAP1/bA==
-X-Received: from pjbgb9.prod.google.com ([2002:a17:90b:609:b0:36b:8d3f:d147])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a8e:b0:37d:f887:dc9f
- with SMTP id 98e67ed59e1d1-37dfa2860demr4563491a91.21.1782425100089; Thu, 25
- Jun 2026 15:05:00 -0700 (PDT)
+        bh=H7E60LJzTlv9sk6UTbJ8U0xvMyb9HT0AFN1vWvqqyfI=;
+        b=RP77f1P6Vsfj60SIkMWrhwe0fEiSA57o3XiIEcVHHt+/9NFuQbPNsROCzs0sdpqLsp
+         /MSxmnN+Jzsu26d4iSvesJQo4bIB8YaqrqnM14eYRRHJL3uMZ5V7Md7ndj0GzGatboup
+         teOzZ/5jPnEND6x4fr53emkJYU0HRq3h9CCB/M2pOKy1m/qPd1YG2BuSQXCnzB70EkX5
+         QCxCYAAlr0vPdkUL0qFHMwgJ/mH34TpkNfMaegxiRVpD8lO8YG+k0n6kElcuMPI9sQpm
+         jQ0w7hUgDuJzKXN4FK6G7pCF3if5497ikqz0qHMiDvguwjidHuX1LIhKuUUD30o9MczZ
+         dZCw==
+X-Gm-Message-State: AOJu0YyTUUM4sEmgFp1I4uwxRK3OtQjWQe8iBTMsdwr+rYVPV6a27tMz
+	leh6yqBjAB/Y3lv0/+ST+QWpcOmR0KnTf03u1noo7PKvkkNUxDXmH0jOhqDJA9MTibPAj+9UlkJ
+	S2lvKfA==
+X-Received: from pfdb14.prod.google.com ([2002:a05:6a00:94ee:b0:845:c7a0:745a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:438b:b0:845:4f20:3832
+ with SMTP id d2e1a72fcca58-845b3ac13f5mr5149375b3a.8.1782425098917; Thu, 25
+ Jun 2026 15:04:58 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 25 Jun 2026 15:04:47 -0700
+Date: Thu, 25 Jun 2026 15:04:46 -0700
 In-Reply-To: <20260625220450.3354415-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260625220450.3354415-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625220450.3354415-7-seanjc@google.com>
-Subject: [PATCH 6/9] KVM: x86: Add static asserts to document connection b/w
- TSS structs and macros
+Message-ID: <20260625220450.3354415-6-seanjc@google.com>
+Subject: [PATCH 5/9] KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h => x86.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -69,44 +68,62 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Binbin Wu <binbin.wu@linux.intel.com>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add static asserts to sanity check the I/O permission map and TSS size
-macros against tss_segment_32.  Alternatively, the macros could simply use
-offsetof() and sizeof(), but having literal numbers makes it easier to
-understand the bigger picture, and provides a good excuse for the sanity
-checks.
-
-Opportunistically add the necessary includes to make tss.h self sufficient.
+Move KVM_GUESTDBG_VALID_MASK into x86.c so that it's not globally visible.
+As explained by commit 462474588b19 ("KVM: x86: Move misc "VALID MASK"
+defines from kvm_host.h => x86.c"), which unintentionally missed GUESTDBG,
+the set of valid flags/bits is very much a KVM-internal detail, as the
+values from the hardcoded #defines are often captured and massaged by KVM's
+setup code, i.e. *directly* using the macros outside of KVM x86 would be
+actively dangerous.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/tss.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/kvm_host.h | 9 ---------
+ arch/x86/kvm/x86.c              | 9 +++++++++
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/tss.h b/arch/x86/kvm/tss.h
-index 117bf8bec07d..55ced8975840 100644
---- a/arch/x86/kvm/tss.h
-+++ b/arch/x86/kvm/tss.h
-@@ -2,6 +2,10 @@
- #ifndef __TSS_SEGMENT_H
- #define __TSS_SEGMENT_H
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index fd712f604636..f24e0de00692 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -212,15 +212,6 @@ enum x86_intercept_stage;
  
-+#include <linux/build_bug.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
-+
- struct tss_segment_32 {
- 	u32 prev_task_link;
- 	u32 esp0;
-@@ -64,4 +68,7 @@ struct tss_segment_16 {
- #define RMODE_TSS_SIZE							\
- 	(TSS_BASE_SIZE + TSS_REDIRECTION_SIZE + TSS_IOPB_SIZE + 1)
+ #define KVM_NR_DB_REGS	4
  
-+static_assert(offsetof(struct tss_segment_32, io_map) == TSS_IOPB_BASE_OFFSET);
-+static_assert(sizeof(struct tss_segment_32) == TSS_BASE_SIZE);
+-#define KVM_GUESTDBG_VALID_MASK \
+-	(KVM_GUESTDBG_ENABLE | \
+-	KVM_GUESTDBG_SINGLESTEP | \
+-	KVM_GUESTDBG_USE_HW_BP | \
+-	KVM_GUESTDBG_USE_SW_BP | \
+-	KVM_GUESTDBG_INJECT_BP | \
+-	KVM_GUESTDBG_INJECT_DB | \
+-	KVM_GUESTDBG_BLOCKIRQ)
+-
+ #define PFERR_PRESENT_MASK	BIT(0)
+ #define PFERR_WRITE_MASK	BIT(1)
+ #define PFERR_USER_MASK		BIT(2)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0626e835e9eb..5ee6d0c33009 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -115,6 +115,15 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_host);
+ 
+ #define KVM_CAP_PMU_VALID_MASK KVM_PMU_CAP_DISABLE
+ 
++#define KVM_GUESTDBG_VALID_MASK \
++	(KVM_GUESTDBG_ENABLE | \
++	KVM_GUESTDBG_SINGLESTEP | \
++	KVM_GUESTDBG_USE_HW_BP | \
++	KVM_GUESTDBG_USE_SW_BP | \
++	KVM_GUESTDBG_INJECT_BP | \
++	KVM_GUESTDBG_INJECT_DB | \
++	KVM_GUESTDBG_BLOCKIRQ)
 +
- #endif
+ #define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS		| \
+ 				    KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK	| \
+ 				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	| \
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
