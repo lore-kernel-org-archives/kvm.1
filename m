@@ -1,122 +1,127 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D6A27057D
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3663C253958
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782402030; cv=none; b=DVUBlkiLhKvk6tCpZ5Gi5HASoJudO870yjiqRmlx/yPSar3er6BoADalXhiR5GXwENOdjoX5W7TsQAnVSta0Y7g5go7wTs959iB8RvRL5kyUlFCB96iDbsxe6USdkT47uvM2FFkizpBFEpOmtG8bwV4Ye7a6RSD8Qt/hL7HOAy0=
+	t=1782402377; cv=none; b=ru7dSwJn7fAKzIoyMrdXsluMAcnsvOr5ZhxD6W9LC04y8mp+8q7e1UWJOCChRUzYofVbfg8mdDCu9nXhw6MFBo5Q9JYsJgE4wEpegauTRi34wW4Iwk89pKV01iM9JwNOGjq2IlHNGyXzcXoxumS9KkhkaY8lXxbgvWFSfn1ZcGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782402030; c=relaxed/simple;
-	bh=wnycnk35ivpQHERfilV0c1wBVrlSSxbqgktgJps4HzY=;
+	s=arc-20240116; t=1782402377; c=relaxed/simple;
+	bh=5nphQwRTm4dRsHeGfPoMW8sxguVrvWPhjOBBeyzKy8s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FPIo3XzGqVzfVlmXJ8eABd4bPxmUHMvahYLcQKP0AR0NH2w1HOHDg4EXSaqWcGecSlLoSgWNpzBclL09S6bs/L/oWtY43iBOwSwJFdP6dlMHisOIYXyXIKbl2sR19oqN1E9wZUgK7t6iDuZKZO9hPvY34jHZPy6lPqvBt1Jzce4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O1HkzZQI; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=bSN4evyEsaBHVIgPmOCwZ3nZMCCqFNa3G3FyZllojv/6LJQQjqJvxU91grOR+cOt96CH2mpk4MIKXrJXtYNvvmQ+CKq2W8dIvipkpZtIzl/1kPU/xk4IbVXaVqCh9nIxt1058z4JnlA1Ni3dNSXBuwcCXLAHmpUxpY2Co2DzMYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CaJFYxKC; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O1HkzZQI"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8423efbfb61so1770639b3a.0
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 08:40:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CaJFYxKC"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c7e921550fso432695ad.1
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 08:46:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782402028; x=1783006828; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782402375; x=1783007175; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Itjo2jMjkwhBM0k9+OlfOfXdIDoAWufeDNJNDd1hXfc=;
-        b=O1HkzZQIi+MnRkSybj5bbHuNPOdQm0Cmmkp8R2vnMeuw9GWpob8A+A/aD4CDhOrWgP
-         FJWl+84GxCOD51HXoVsHR9kMqxc0JN7hEHkV/ZXBReJ5S+BiDH5VKRRcuoOFAOyHvjlt
-         Q+IMC3Rx+3t+vBvSw0G+3Q+y5kUa5TeEfSfy8Bpsp0XtvORO3v5FaT7VZdS/Y7VFGLlX
-         0pg4Dshd8wn1n0dXEir7JeZzp6LGx1xIHBxPAZRpY//ieK0H6vF1eNPSDpUfyQ1vK1a5
-         Ve9TtzFxPu/KyrX0abS2rMpjTgJzrWKggNpa4IRUcEzwHDRqASoj5uZQ2pXXTguf7WNc
-         6thQ==
+        bh=2mKkwDWOAeARe21Udp6soz5zRiePOnk40Bo3CgS/YAA=;
+        b=CaJFYxKC8WSUs/3kOpw7sGxA8PUneYRC1Q21ILzJjMUf9yfD9vzwZdyAXW2i+3qpDo
+         p9ylWi6qKeztOi7H4CT3yvpOYYVu9KerQvkymQQQNgkkO+bgtPMCLkBeGlN0myUOIT/Q
+         kC+0Kk4qRAAEq9xfrUOhWl66TTCAw1zCHqEkf4L94d1dfcg8/f24l9oo1zyXTJU9KHnY
+         ztPUzA0U67zrz9aHFhywNTWEE/4xi9KDjhRdDIUeUba5yWEbnGo3tqASPLpw6VSn+vXw
+         mTl0cRaAeWI3/oUgBj3yT7Fpi4vwNlo48mrQcS3vziOhmFXQpD5JH7uwFs6l8UBU+Zdl
+         Yx9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782402028; x=1783006828;
+        d=1e100.net; s=20251104; t=1782402375; x=1783007175;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Itjo2jMjkwhBM0k9+OlfOfXdIDoAWufeDNJNDd1hXfc=;
-        b=hTPZbCISxYIz/x07iFvHFAWA/2khPQRmGIm3szNfprNVueV+9Bx1SnaqXbyV3y9oaS
-         d41kCD/8GIDt+RiRVE4HBSbNbOLZ7ckEIrswaleJ7EQ5dBSxe7WKbGhhKhu81ppSPx4i
-         BcspZW/SUh8LkboISmElcmgWqL6p89n23buWDYJLc2m1/p5ppWx2aE4EgrpamWROwuMa
-         eOYLa587cf6wHBIAWXJ9whKwpcArZ3y6GzXaNPbxdKkP6NkFwmLasp6DDN0x0f/adZl3
-         ED5Z/AeoDK8ojqr/p3I9X/f3JqdAS0PdvMvsfav0vxVrk8HQdY7chukvckMRS9IhbNsd
-         0RQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9U2Paxcb4jlh/0tsf2oRt62i9HBx88UZbXFmfipDVXv0WW+5vAt7y3v5JC5UNiy0wQPdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO4rqKaLGZsDC8xgY1/8VGFQdK4t4cAwTJJm30TPhGXFzMni1h
-	FYtavBY2BMHan8shcmbA/ss2005cNlA0oVna+j+XG1zfshIRgCDHKBtNfwm8Kv2ZNqU2lxEF7qK
-	n/YDtXg==
-X-Received: from pgbdk2.prod.google.com ([2002:a05:6a02:c82:b0:c85:9dd2:d11e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cc97:b0:3b4:5c6f:cf30
- with SMTP id adf61e73a8af0-3bd4b25b347mr3615613637.38.1782402027934; Thu, 25
- Jun 2026 08:40:27 -0700 (PDT)
-Date: Thu, 25 Jun 2026 08:40:27 -0700
-In-Reply-To: <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
+        bh=2mKkwDWOAeARe21Udp6soz5zRiePOnk40Bo3CgS/YAA=;
+        b=kAdK/zpBrnai+E+ozQ1vHCy8loxk2AoeR7BYNnhugvsiEMIxxha+EAw7BjLrKiivSg
+         D3sgob/obI9zUA0bRZ37TlpCdDWjEpe/E2hHpju/vymDYv2YAOO65ddmRIbVGShIZ4+q
+         eLST5Qw+PXfS5ySxtmuHeJmVBX3vo4BbJbgkhaBhSa+RCJ6bmubKF7UNZVVWKBh/MLet
+         nGQnJO/vy8UvmRHuiFnmpXigLUdJ5/Rq1ZUR3f0fihuFaCP7VgPhIYry6VxbYs+l4zWO
+         94wH+fQjVSnMcA3kY75gUZNPLdz5beR2kiow7lUGAbItiN8tQ5zJoaJQ83gchb1Ed6D+
+         BoOA==
+X-Forwarded-Encrypted: i=1; AHgh+RqO7yFag6RozS+Jcvdftoshvjs1wEB7Ndz8rrI2DM5jZ2XJPsDwSbMgUBuuF2fzXLwlZ1o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1F8Jmmc9yBEj4dHHW3JtT5dApySf1UvFciVHj8m1K7+l5gXww
+	dMcC3eMDEVX3uHMZBrUHhVLrNXz9N+Oh8P+XDQAX/c5HJIqmDaXK0c7+Ahq4CCQ9D05Um6vclC5
+	YEmJWww==
+X-Received: from plsc3.prod.google.com ([2002:a17:902:b683:b0:2c7:75c1:68f8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:40d1:b0:2c0:db23:4a4
+ with SMTP id d9443c01a7336-2c7fc9cdc4dmr31964125ad.36.1782402375114; Thu, 25
+ Jun 2026 08:46:15 -0700 (PDT)
+Date: Thu, 25 Jun 2026 15:46:14 +0000
+In-Reply-To: <0c183f0f-f23d-45ce-af22-a1f936b9bf2c@0in.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
- <ajwMYCSrPlxg-Fok@google.com> <CAEvNRgE8HZDOnexMJeim6TjmxGG1AUXFY2+HH1YyKB=aM6D-DQ@mail.gmail.com>
- <ajx3vmNPRf-M9kR6@google.com> <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
-Message-ID: <aj1L626RI3Ty_hh3@google.com>
-Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
+References: <177749023441.304242.8022456530166067549.reportbug@mspc2024debian.lan>
+ <177902420697.2035014.8796825668567298024@eldamar.lan> <agsXnbjjKdrq8e-T@google.com>
+ <db210e1d-0d3b-4501-89c5-de7d7de66b03@0in.de> <aiNCq17MbKfs3hGy@google.com> <0c183f0f-f23d-45ce-af22-a1f936b9bf2c@0in.de>
+Message-ID: <aj1NRsUIVQRGBqM1@google.com>
+Subject: Re: Bug#1135235: linux-image-6.19.13+deb14-amd64: Reoccuring host
+ crash "Invalid SPTE change" with gaming win kvm/qemu guest and device passthrough
 From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+To: Maximilian Senftleben <kernel@0in.de>
+Cc: 1135235@bugs.debian.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 25, 2026, David Hildenbrand (Arm) wrote:
-> On 6/25/26 02:35, Sean Christopherson wrote:
-> > One thought I had, to avoid the IPIs that draining all per-CPU caches requires,
-> > was to disallow putting guest_memfd pages in folio batches, e.g. by hacking
-> > something into folio_may_be_lru_cached().  But due to taking a per-lru lock,
-> > that would penalize the relatively hot path and definitely common operation of
-> > faulting in guest memory.  On the other hand, memory conversion is already a
-> > relatively slow operation and is relatively uncommon compared to page faults,
-> > (and likely very uncommon for real world setups).  I.e. having to drain all
-> > caches if conversion isn't safe penalizes a relatively slow, relatively uncommon
-> > path.
-> 
-> Yeah, the lru_add_drain_all is rather messy.
-> 
-> We have similar code in
-> 
-> collect_longterm_unpinnable_folios(), where we first try a lru_add_drain(), to
-> then escalate to a lru_add_drain_all().
-> 
-> Maybe we could factor that (suboptimal code) out to not have to reinvent the
-> same thing multiple times?
++lists to capture this for posterity
 
-As discussed in the guest_memfd call, we should do this straightaway, i.e. instead
-of merging this series as-is, so that we don't export lru_add_drain_all() only to
-drop the export a kernel or two later, and can instead export the helper to drain
-any batches for a folio (or set of folios/pages).
+On Wed, Jun 24, 2026, Maximilian Senftleben wrote:
+> I tried a 7.0.10 with KASAN for several days, and now I am running
+> 7.0.12+deb14.1-amd64 since a couple of days, and at least so far I was not
+> able to reproduce my issue, i.e. I had no crash so far.
 
+That, and the fact that 7.0.7 was fine, strongly suggests a broken fix got
+backported and landed in 7.0.8 or 7.0.9, and then a fix-for-the-fix landed in
+7.10.  There aren't any KVM commits of interest anywhere in that range, which
+supports my theory that KVM is an innocent bystander that ran afoul of memory
+corruption due to a bug elsewhere in the kernel.
+
+Unless you want to bisect to figure out exactly what commit broken things, and
+what commit fixed things, I think it makes sense to consider this resolved unless
+the problem occurs on a 7.0.10+ kernel.
+
+> On 05.06.26 23:42, Sean Christopherson wrote:
+> > On Wed, Jun 03, 2026, Maximilian Senftleben wrote:
+> > > Hi,
+> > > 
+> > > sorry for the late reply, took me a while to first built the kernel with
+> > > that options and then actually find time to play long enough.
+> > > 
+> > > If I did everything correctly, then I build 7.0.7 with
+> > > - CONFIG_VMAP_STACK=y
+> > > - CONFIG_KASAN=y
+> > > 
+> > > I did not get it to crash on that built kernel yet, however I booted
+> > > 7.0.9+deb14-amd64 once, and after playing a while got a crash again.
+> > > 
+> > > I will try using the built kernel next week to see if I can get it to crash
+> > > as well.
+> > Hmm, can you try 7.0.9 with KASAN?  Or even just a 7.0.9 kernel that you built?
+> > It's possible there's a bug somewhere between 7.0.7 and 7.0.9.
+> > 
+> > > Or do I have to look somewhere else if kasan is active?
+> > KASAN reports issues in dmesg.  But generally speaking, if the error is bad
+> > enough to crash the kernel, you'll see a KASAN splat *and* a crash.
+> > 
+> > > On 18.05.26 15:43, Sean Christopherson wrote:
+> > > > Odds are very good this is due to host memory corruption, and is not a bug in
+> > > > KVM's MMU.  We (Google) had a period of time where our kernel was triggering stack
+> > > > overflows if a networking IRQ hit at just the right/wrong time, and whenever the
+> > > > overflow wandered into KVM page tables, it would result in failures like these.
+> > > > I got quite familiar with the signature :-)
+> > > Not sure if it could be something else, however I at least run memtest for
+> > > ~12h without problems.
+> > > > If you aren't already, can you try running with CONFIG_VMAP_STACK=y?  Stack
+> > > > overflow doesn't seem likely in this case since the gfn would put the SPTE in the
+> > > > middle of the page table, but it's easy enough to rule out.
+> > > > 
+> > > > The other thing to try would be to run with CONFIG_KASAN=y.  That might make your
+> > > > gaming quite miserable, but if this is indeed due to a rogue write, it's the best
+> > > > shot for catching the culprit.
+> > > 
+> > > Regards
+> > > 
