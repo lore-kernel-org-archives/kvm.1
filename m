@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C284377551
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68723379990
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782425097; cv=none; b=Nlzzo8Pfy0lx7tzuPmzOYAOgQd44FGqEsL3C9sBJfMOspuETnxlbiQCs0pAbjhYP4G66c7RSMfLwN/829D8/sq1sHuvqzUNfGlHVtWS7G9sILAiwo6AymDhvXArKgjQ1QVwNB4iRzTyMhCLitMUIxte9ez1jp1I5RjlJIRHHn68=
+	t=1782425098; cv=none; b=FEEdrZSrJ5YdHcc6WcLVNY1fSQTwpOVn+liQ8UA79ntHlyQ/8AjhLIgxfohVP0bnQAHJ64VOhijl0tcLWAYR+dNLjmQK5aAVQhKEe2YUBqyC9avtEv2mqtSgm6jVC3/RSJE3cER597YqT/5mhTBqpg+KiQ3EznToyVaMX7X6oC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782425097; c=relaxed/simple;
-	bh=ohGR4tybGsGwnG8zSyNw7id14okyWjMdatdmOU8g+r8=;
+	s=arc-20240116; t=1782425098; c=relaxed/simple;
+	bh=/cBorCarlxDR97YiEGmq4dtsm1PpKjyia8yStQo5i3k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bW/FEdsHyAZv1n5tQ0S+EA6f7sJgmynMYdma0eMxtKBNAG4cEzm+6dbw1otB6dKR3tsFlvmegiKQQgwsrF3mb5jw8JJWLS2C4p9IP/UF8DuLn8GLeLlQozqI24StllKFVhKC4zAcazoVJirwUcWeQkt/DVvsEs/yAmaZGE1vVy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MPLirnQ3; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=YFWpn9TXSvw8+ZCmC6Qfiysq2t6vxs/oVrqV9TZmAnzGNhyqVfNNwejCwCgwmISDnBII3rMWkrVVmjGYaia9cH/0uN/L1Iqs6xRUF7ui+HkYxQquoqll+6s23GSpXvU6Non54wfEOUFF0NeTKWifk71MRfuaB2OCF6yWjyisrn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fwC/eL7t; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MPLirnQ3"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c818fe1ea9so103285ad.3
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:04:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fwC/eL7t"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f3e4728so119289b3a.2
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782425096; x=1783029896; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782425097; x=1783029897; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=RZDKSZXWGrkG6G3v9NbzY5n6wGj5GjUyTAQDn3wMgSk=;
-        b=MPLirnQ3gRZ1WZprOWTvnRSkolqM8LynARtTOQZbx9VLXHjEAa4YagTu1rtx+p8ReG
-         opYLra44R4wFumBvVX3uU2Nl3nUP3T9Q1qHYdp7ESet+dUcUxMyk8NGrLYbU6okp+quF
-         4y+6KxM0ydW+3s65oxo4X3x8gvakcsWqYQjmPpEeuA/x+pk362LdV26IREIsrvLvH0e+
-         MTpQo3wHVhnd9quSIpoj0jg6iWUMlMxtiTO2sMLAummmw3OUoBIdFfTH/W4zdLBAvaN7
-         jD9lVxyJsOVsCX3av3KCif9ibQdEw+oKm9+LHVIuiLJCevlUERhtqJLLHh853O846JkA
-         v9mw==
+        bh=WEw3Rm0Xhw6WdW5PTXYk51nRebahdmwmFrTIU4C+35g=;
+        b=fwC/eL7tR57IjhAic625OjUKpXNVZFK1VefBYDrRdgCX2zKpHEjiVYnowAeXMbLYcf
+         GHtSgXJVzYmWhuq3sPfHvr38n+94qfsV5jLlTIp5vEKcwmv0Qy6ygQGFthFWL6r8LO+d
+         zvVFmryiLUeKofbfAFHc0wH5DUzXCjGYs+zkfHKfImEcIc0N0X0C5kL+koP8/7wIBh6l
+         CuVXzlRfXSPyuRow7FRE0N6/w0YSBYbOwBJbmdS/4EMEJkCCoOk4fMVgAGjy9YSVnZoA
+         hckIHwnUlQV2mxthSldxLmDlJYJ9x0f9JMy5CzGCT5xg6EGj986vVg3wAclzw5THPqnb
+         YLzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782425096; x=1783029896;
+        d=1e100.net; s=20251104; t=1782425097; x=1783029897;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RZDKSZXWGrkG6G3v9NbzY5n6wGj5GjUyTAQDn3wMgSk=;
-        b=XeK0upEu8E3eFz9EkO2FudZMyKXQMKE97yhzbxzmRwFCJGqmJUOXI+5NUlSni7v9gB
-         EdvGe3BKJRNwqrjb841oxHw7QDG3qZYFbhuFTrFzaWaLXzKqZlDH51YugvaH3jSNPMK3
-         KnkGmOs6BLfno/qR75KRPkckCVPuQFpQ8HS7cUsxzPtnspyJboG88bx5y6vdj7lr6res
-         rDOxBbdOGjUn/Q4QqKBKY4F/zak1sDopMFVeteIAhXvnbU7iuf+SFVbEp2SJcTpRpcEW
-         IdQB8AX8VH1Dear4t3N+MWgNXHqbiJ8tkFM49HsUPijRqi+FYbU60HP3zH/N1V5/du2k
-         ba6Q==
-X-Gm-Message-State: AOJu0YyL6f7XBwmA2YAeW1xB+rs8L8pauS8o91qOVC017Hu4PmARG0/k
-	H6/eAG0YRfS6jDjCregRPvK/i4Es1Qjnj9wwdW0ZAgj0CeRSwwXzDo3ORy1r7i9n8sPmXz3iZnc
-	bTDdvhQ==
-X-Received: from plhd7.prod.google.com ([2002:a17:903:2307:b0:2bc:aee7:306a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec91:b0:2c0:a711:539
- with SMTP id d9443c01a7336-2c7fc65bf6amr39666525ad.5.1782425095342; Thu, 25
- Jun 2026 15:04:55 -0700 (PDT)
+        bh=WEw3Rm0Xhw6WdW5PTXYk51nRebahdmwmFrTIU4C+35g=;
+        b=GSU6DDUrDGeHn/Keo5bTWesvn6RA2zObgNHkb1o4rO434CdKv8W8Pa51HgGXTraJKw
+         zD8gWpQmNiSo7XurRs/Ty7YLT6mN9qHo9daRjiPAv7UV7umvkmissPjIKEs4ZXSvA177
+         R7mxGXgt+D4woc6gtcrgRH1+yI7PW/n6DQXAQ7FWgah69S524lu1rKsAeZCFHsG+dNkz
+         kv8REa2aFVJRz5Nww+WAB2ZSV64vU8i6MP4RQEDhGQ3QIeVfAiYBJFizWCkVRcDVmWss
+         5/LlacI9yYKiRDUowBa/gzXWsjcKjG4UMFuQxKgK+XW+GhOQO9Ulubbn9b77fbO7tKaY
+         sQ2A==
+X-Gm-Message-State: AOJu0YxfOA7ir2hhoitui9YapSnIakQYwqDiD4rHeCQTZxLbuX60zNsg
+	Hi8OpLxbWtdeWIfzygm7z/mGkWehOgD1/PPpM/izew31yoL042loOaupVJcdUYVYB2u4HWwST4n
+	jx4vd2g==
+X-Received: from pgjd1.prod.google.com ([2002:a63:d641:0:b0:c92:864:4328])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3991:b0:3a0:c325:aa11
+ with SMTP id adf61e73a8af0-3bd4af208damr5489299637.34.1782425096555; Thu, 25
+ Jun 2026 15:04:56 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 25 Jun 2026 15:04:43 -0700
+Date: Thu, 25 Jun 2026 15:04:44 -0700
 In-Reply-To: <20260625220450.3354415-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260625220450.3354415-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625220450.3354415-3-seanjc@google.com>
-Subject: [PATCH 2/9] KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
+Message-ID: <20260625220450.3354415-4-seanjc@google.com>
+Subject: [PATCH 3/9] KVM: x86: Pluralize the macro guard name for msrs.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>
@@ -68,58 +68,32 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Binbin Wu <binbin.wu@linux.intel.com>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Tag tdp_enabled with __read_mostly as the variable is only ever written
-during vendor module load, same as all the other global MMU variables that
-are handled by kvm_configure_mmu().
-
-Opportunistically annotate the tdp_mmu_enabled and eager_page_split
-declarations with __read_mostly, to match their definitions.  The compiler
-will warn if there are conflicting annotations, i.e. there's minimal risk
-of the declaration annotation becoming stale.
+Add an 'S' to msrs.h's macro guard so that both the file and guard names
+are plural.
 
 No functional change intended.
 
+Fixes: 7a2683080158 ("KVM: x86: Move the bulk of MSR specific code from x86.c to msrs.{c,h}")
+Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+Closes: https://lore.kernel.org/all/ead7d7fd-aa4e-4c18-b399-90fb448e0af6@linux.intel.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu.h     | 6 +++---
- arch/x86/kvm/mmu/mmu.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/msrs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index c9f628b97dae..85bc503de1b6 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -6,14 +6,14 @@
- #include "regs.h"
- #include "cpuid.h"
+diff --git a/arch/x86/kvm/msrs.h b/arch/x86/kvm/msrs.h
+index b698983e37fb..9c5c6b33e58f 100644
+--- a/arch/x86/kvm/msrs.h
++++ b/arch/x86/kvm/msrs.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef ARCH_X86_KVM_MSR_H
+-#define ARCH_X86_KVM_MSR_H
++#ifndef ARCH_X86_KVM_MSRS_H
++#define ARCH_X86_KVM_MSRS_H
  
--extern bool tdp_enabled;
-+extern bool __read_mostly tdp_enabled;
- #ifdef CONFIG_X86_64
--extern bool tdp_mmu_enabled;
-+extern bool __read_mostly tdp_mmu_enabled;
- #else
- #define tdp_mmu_enabled false
- #endif
- extern bool __read_mostly enable_mmio_caching;
--extern bool eager_page_split;
-+extern bool __read_mostly eager_page_split;
- 
- #define KVM_MEMSLOT_PAGES_TO_MMU_PAGES_RATIO 50
- #define KVM_MIN_ALLOC_MMU_PAGES 64UL
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 6c13da942bfc..af3820136f7c 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -104,7 +104,7 @@ module_param_named(flush_on_reuse, force_flush_and_sync_on_reuse, bool, 0644);
-  * 2. while doing 1. it walks guest-physical to host-physical
-  * If the hardware supports that we don't need to do shadow paging.
-  */
--bool tdp_enabled = false;
-+bool __read_mostly tdp_enabled = false;
- 
- static bool __ro_after_init tdp_mmu_allowed;
- 
+ #include <linux/kvm_host.h>
+ #include <linux/user-return-notifier.h>
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
