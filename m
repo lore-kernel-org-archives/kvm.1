@@ -1,94 +1,94 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2DC376BD7
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104863C1986
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782380610; cv=pass; b=YH6rPnqtdGuxaXzrWm55XNg5+U1If0gFUWwPvUngvg/sQiGjkXx4o8137i6Wi4PqXD642xSh+f1AIUicTsBAJ4lxJLd7RxD2Guog7R/VTirJDpIvs9EFJY2OS6Vr4MfScTKE6aLjTSy1i/wQggQfsDDoABOv1uk4zE0bTSsMChc=
+	t=1782381446; cv=pass; b=LsD3ISfYEP4q5oq57Ayflnmmks5yjI3hUtLW6l8ACVan5juUL5QbIwiTeKso7WdqqPbhZ+vNmOc2F7VL1z35utq0XuabNQn2PwOGC/Y0EMKHG+Ze+hBCb2JLAfAjFqHwCZtTlvon4OE03IiDMXzftlmjKYEravgBF/sRWe6aVXU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782380610; c=relaxed/simple;
-	bh=b8wBEbsUQs0VJH8qRWq+x+Mcifx/55FV07RbPrweSd4=;
+	s=arc-20240116; t=1782381446; c=relaxed/simple;
+	bh=qvhKJbkEFFfAWC+9rpTE+bYHpR0yaiYW1uDCpafn5Jk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=diVqg9Pwv1FVEEeJXsVWOLY4Hn70ru8/0nbqUQFXt1H39IV18gC5xON5t47oJ58R/i5SoD8+LzPgFGlQ+G7VScJ8jbo0VqFoBKQj9SrfLf0jwYxXICA0XltxD2T88Tch6tSAwGcVm4gneu+81PUb3ioOHw3OeroT/y4GaWUiQCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IeZ9cAXt; arc=pass smtp.client-ip=209.85.160.170
+	 To:Cc:Content-Type; b=SpDNZc6oqx9mB3fqjqzrCuVd2KfVSKAf87ZAEgCDzNV+nocIMIanMah3J6t7q1WVUX3svC6Vw2IE71sAItuVXVyS/g1z7XF32lCbKa/xP0ExzHMbv5JMt+/Pu2ZhKeGTVAvN2NTPJLDONdxlxsMER6aV9TX2d/ek2pQjc4Pk/fc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YeUlOIOo; arc=pass smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IeZ9cAXt"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51765331535so168411cf.1
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 02:43:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782380608; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YeUlOIOo"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5177d1ff061so183061cf.1
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 02:57:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782381444; cv=none;
         d=google.com; s=arc-20260327;
-        b=knBs+WxeidK9i5Kd0wvb3wVofKnxYu94tzol7hnpIi01MESynBQaU6YLU631CALHgA
-         4rSCtQrnc19pSyWop42DUVLlwa970fHAsoU81gXsEcWSae3Qh+3EwBEgxm7ZaFUdko68
-         Z1c3e1e77ehSilRY4SIRJSZqt8DtDLRr5YSOrxoUxtuZvhxBnyo/hJP2I8boCJx44jxa
-         8G0fOMeguPMIe8vm9VrP2AhzU8pemjokNCEhf1Q90JNj/QvDw9YAGipu4rtGpX//f5H3
-         1ZIIFWUSAgGuPPfdrfGfixaDUtKm94DY7yE8wOlX3pOkbqbIyjI6xrKpzh2uWDJw0Ska
-         0s3A==
+        b=ZGlSLNNjgIa+RIDK7MTU+pwlfxv+Pz1nnhc+lfSxTo2yfCaW+97NsTEb2hvNKoDZaK
+         Lwd5jTjm+uOmUtbfSDCIPvEfA0gzUuQs4KQWwKGcLWTiz/halX1Qc7KI4F1HneOG9yw+
+         LDInu8K81oysgS1deJGwBm/FMD4aUv6Sjx6k+F0lyoHnj5bdbAN/agyeNbjCNcXzW/Gw
+         jILweFnznsIoMjs6p2P8m4IZ4SHb5Li3uQ6/oKOsa4rqn1JFUdmli5BopAYl83njLqA9
+         wyn85cGMGnPlQmQCmx3cws0B4sEROL66kTrAtuQHXs7ylzGjQX+z9r4vsqPB1wIeTrEI
+         Rvjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=gcCzDur02+kpX92XVlxTT3/2MUJYhXNphEvl6EVFGyM=;
-        fh=pG7X96t8aHVskMrGgLML+JPLwyeo/0lZu+qcs5AT9gA=;
-        b=rvpF8KJY2omYsI80UBzQso6VakA03syujBZXAIevFGyxhIIrPox633Rvqt9sODdvva
-         CHwTRIafsZ2Ser1ZYqqplaVrr/zUajpLM6qB/IgbG5tVGss4F/O0zh275wJdkMRNhWog
-         HtZu6ylK25Bomxl3kbVEWu5QdBai8RP9ZwHKPz7NmBp8ZYAzujz+U7o91b0tUr4drmzF
-         u2F4ozCHLdpK008bjHowZLSnKqL83RzC1zGYXNkCdt9q3CAhAAxaesNEAEukJvB6N6uE
-         tpoJLg2a8g0UvCeqTFljYZoAc4DNfi/e37SBx+dICefx+Tb7zJTt6eFICe194xNmJ+yx
-         RJXw==;
+        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
+        fh=HvYryCpeo2Mfy7rD9NKxJ+9UDw4srn8BtDCET9TvTGk=;
+        b=VII/DiFjIJN+tvHo2A6/mYiTAdC8FIQx+1fcFmEkpsBPBnpDoRUaqF5VApjlJF8kfK
+         OSSqDnj7PAx7HqwxxC06tAmtC6r5oKQYDGkM+201SQvgPleTw735QzkqIyOdAnNXtky+
+         y908J5Txp6sDkGLEx1l3nMKLU0HENKJ1YtTHOR/JqZJuezevcQoiJrL5/1jpH/eKW1gA
+         qYRCxJzlkCQqqcOt7M/wvz91Xhar+ZjKhUJL/ikm08joKnjsS8SXgeBQkyPxfY59HUpo
+         FktfMNXyJ/Rf1azaoognpg1CGzz7V9CbU2S3aZdlGM6V4YZ+44UEbo1gZPlgypvTk6fp
+         8YMA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782380608; x=1782985408; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782381444; x=1782986244; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gcCzDur02+kpX92XVlxTT3/2MUJYhXNphEvl6EVFGyM=;
-        b=IeZ9cAXtd1SpHZ4zBu0/D7rjHf/F4JEB2Wz4TmUp/za15dVheopH+O+ftwBEx4CqG3
-         Jdga7Xe7jZyoPRrlJDrCOCvC2s30Mf4+LOJwxGxzpZmhOo9eH3tPkef4t1ZGD7zzbuA+
-         A5SXFDWwM9v5b7UYRAZJ0PCX0gWfkrWIdwlh1JksjZ8CPcVp0eW7fw+PX/n7uKT2Oa0H
-         mLs3zLWPcTVpkg1vSv6XqvxxCezdr1wZZZh8R4R++nfp0LZP9Db44fNQ+u0W8giGE5RE
-         C61AVUHogm8bR624/TRe/aYt7A0kXw849IsJmKqnrvBLb+xjSwVJ/E7uZIXRfgq58mV0
-         uPQg==
+        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
+        b=YeUlOIOon6VjIzRK28YIwDj/KMrSn+Ynb1pNhJc3HEY/y+OVC6W3hscXNXbix6osJh
+         Zu6t+30Tcp2uooHxK4Ea/9Xm044Pzudjp6jpm5fs1q0oycEV2G1KpwXyhnu0QPMnY1Ru
+         x7bNKT2UnJpHJSFalXcSsG3zCRKcYKAfpmDrw970D3JAedFRaYpm53T2rXIjRgS8L+nx
+         STh4fc2vDih2hqwlqYO0BaliaE/YtSwwucxH1f5UZI1aswaXHcDqOUmNkJRO6gZAio5c
+         rbmlVK2FZxXDjJU8mL/5FNbnnrjFzDbYMEEbHxAS7b5OiGvIEJk3K82phs3ezRKNyOii
+         HQGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782380608; x=1782985408;
+        d=1e100.net; s=20251104; t=1782381444; x=1782986244;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=gcCzDur02+kpX92XVlxTT3/2MUJYhXNphEvl6EVFGyM=;
-        b=JspR7CkRwsEihSS/IOSIsvq1Rsea8lXQiXjrbeHR5fixFS/OGL8xZgmu6XXo1wmjzW
-         o3XXAMIF91uauR2lJfQ8jf/xt+OUiHVfYOxwBHXOTnk9m9dt2l8OS4QMnu1I89L+vjRa
-         v1Ri72GuNjumnhiiHX/ThogBeO4zY5/dE2BUQL9qHt1snjKh3LF4vbzH3oOG6BOV7Dm9
-         MXDqFj/jpwhwMPT8Kv2WRZvuTv9Jry6/Z+d3g2UWtjZ/HPKAXv9JjBvaXVtIlF7yyoi1
-         npxnzqJLxwmhxhDAVYf5YpGMhn7Nxk7EsRQLmK2nT/DRTvr86A8OggXkE0p8G1g0AmOh
-         V3xQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+RXpRXIYNLxXpPXHNf+mbT7vgWUPqMfezcsg1ie26C/dAlPp5mNBjjrRBJ+HpI7P1BNUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTYTjFZYlmz5blHYmxC/n5XxmugCtY3/92L9cBoYIxR0aJHSvO
-	PSoLQm0mtTsJyVpLJJeOe+kATTWUYrRC7kdn+D4kvzAAir7S+WcpcpiUkdKv/haOe117KqPV2va
-	97Frz/SA3A/uQy8Rd8RL0b3HCQM5vNo9MngYz+GKO
-X-Gm-Gg: AfdE7cl0wTMYxkbuSC0SmBS+rKhB1OAMH7CRFSyroGyQjA/AGJa84nXnCZgFv7gM/71
-	TYXHlZU2fT7y3cfNWuj86HyKU1VwDMQebUzB5baX72BWcGkobeGkgrVlqsxXpsHtCXGDz1NY3BO
-	IZL1Af4XSZzuWt9ZNOXxtCn4XUSl0smAqSGtA6HwPj3Uwvac5Ua/xTWQH7QO0sArAet8VUMqbiE
-	EN9teAB1QZXZ4kHQV0XTIXyeDJblHi5TKE4jYHA3tRequJW75d+D+aC8Egtk6lNurx6TiFEV60D
-	GXhycei5
-X-Received: by 2002:a05:622a:1f96:b0:516:cc18:4760 with SMTP id
- d75a77b69052e-51a709958aamr6605881cf.21.1782380606888; Thu, 25 Jun 2026
- 02:43:26 -0700 (PDT)
+        bh=u/mrXMGknIREFr9L6V/jI2fkRAbyZYaUWGH07oXz/yk=;
+        b=P2oP9129aUqslvwo3XyKrw+wEdFXjlKpDoSNtoLJgaCbvQ1lymP/8aY01ag4KkdI/C
+         QzZMHIjNP/0/X+7Gphy6cOj1swPRMhL/OiHkinp/hInz7Eg47p1fDM6RdAR4Rj8jYvKR
+         g84rUHpquwsahCKfyk6fDxgK7JxtEYdGAg8QqD3p+x8kcOyaJC7f5baab4Rp1RqR5hbL
+         AQQTSWbcy/bB2sC8086zf7hqVZB2fGvr35cmVqhkp14M6y2mD98NkZDq8rkpvXZvWcNC
+         QKn72ahkJCyvW7JLZAHQmbZXNhahmeZ4Pl3SJNXjFkUOtjyDlb54Me3TjNbNT8nnkbuu
+         ft1w==
+X-Forwarded-Encrypted: i=1; AFNElJ9ijr3jLKr+E0+SGC5U8y6zbKwWUw7gYJScM+GrfqzZTlbodGUkpQf60EM6E5gf6kZ2Gcs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxhvot3rRsIFZ3ri8GwYIbA50licQZZUTF+F5LHM3uAzusopDKv
+	hk/r1Ws7+8lWmhk8fCTHQQ1q++M+Ek5+dAwUlUqjL3mtfSvpnohm7GbOrKIFmGKN0l/VgY32W/R
+	RBLmajfabkr+6O8qi4RA14UpO0IQKOzW6PDkXsx7h
+X-Gm-Gg: AfdE7ckB9Ay5Y2p0guwiC863XiKuvd+FV+C9IMJf/I8bhsgijFwPHqmQ/qaR7mHY4sw
+	3LbOXW712ROUMxNUGYlDckYEMt8Qr8EiGrhDXlAQ5vSGxTU4M5rpdWBsSrQJUsiiZ4h8hgtsTgc
+	7IHssQ8tlkjR8Yt3Xz+UXJljjYKKipLcE9R2k4kuKnFDVaeBqOsdiHgIsLtpJfbvkIHf30YLBjH
+	1nlUoKXrR14HA62dsPD+vxxXrIIIJLUwWOoPQUc+1Hnzc/jQsMsw69RNSt/M5j3Jka82KSZud/+
+	IqfTEmI8
+X-Received: by 2002:a05:622a:1804:b0:50e:38f0:ccb2 with SMTP id
+ d75a77b69052e-51a7097b73dmr6249471cf.15.1782381443129; Thu, 25 Jun 2026
+ 02:57:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-45-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-45-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-46-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-46-9d2959357853@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 10:43:00 +0100
-X-Gm-Features: AVVi8CeAgnQFawLrHeIHW8UXEeBJMVi8lMuxnjDgguWeUrHnouPWU4zA8KvTsuw
-Message-ID: <CA+EHjTyddaEbaa8ohd-2uLbT=dpxPn92s0UULbckHyoCXtZMgA@mail.gmail.com>
-Subject: Re: [PATCH v8 45/46] KVM: selftests: Update private_mem_conversions_test
- to mmap() guest_memfd
+Date: Thu, 25 Jun 2026 10:56:00 +0100
+X-Gm-Features: AVVi8Cdu5TEy7e9mOJQzpvO2gtGAQsCwELbue-J7rOmw4IFWddPVfZNy_ZtxEUs
+Message-ID: <CA+EHjTw3MrKXdOjC10Q6rrxehwYZjFv7J45wK2E2PBWtSBwCRQ@mail.gmail.com>
+Subject: Re: [PATCH v8 46/46] KVM: selftests: Update private memory exits test
+ to work with per-gmem attributes
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -121,33 +121,23 @@ Content-Type: text/plain; charset="UTF-8"
 On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
 <devnull+ackerleytng.google.com@kernel.org> wrote:
 >
-> From: Ackerley Tng <ackerleytng@google.com>
+> From: Sean Christopherson <seanjc@google.com>
 >
-> Update the private memory conversions selftest to also test conversions
-> that are done "in-place" via per-guest_memfd memory attributes. In-place
-> conversions require the host to be able to mmap() the guest_memfd so that
-> the host and guest can share the same backing physical memory.
+> Skip setting memory to private in the private memory exits test when using
+> per-gmem memory attributes, as memory is initialized to private by default
+> for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
+> requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
+> doable, but would need to be conditional and is ultimately unnecessary).
 >
-> This includes several updates, that are conditioned on the system
-> supporting per-guest_memfd attributes (kvm_has_gmem_attributes):
+> Expect an emulated MMIO instead of a memory fault exit when attributes are
+> per-gmem, as deleting the memslot effectively drops the private status,
+> i.e. the GPA becomes shared and thus supports emulated MMIO.
 >
-> 1. Set up guest_memfd requesting MMAP and INIT_SHARED.
+> Skip the "memslot not private" test entirely, as private vs. shared state
+> for x86 software-protected VMs comes from the memory attributes themselves,
+> and so when doing in-place conversions there can never be a disconnect
+> between the expected and actual states.
 >
-> 2. With in-place conversions, the host's mapping points directly to the
->    guest's memory. When the guest converts a region to private, host access
->    to that region is blocked. Update the test to expect a SIGBUS when
->    attempting to access the host virtual address (HVA) of private memory.
->
-> 3. Use vm_mem_set_memory_attributes(), which chooses how to set memory
->    attributes based on whether kvm_has_gmem_attributes.
->
-> Restrict the test to using VM_MEM_SRC_SHMEM because guest_memfd's required
-> mmap() flags and page sizes happens to align with those of
-> VM_MEM_SRC_SHMEM. As long as VM_MEM_SRC_SHMEM is used for src_type,
-> vm_mem_add() works as intended.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
@@ -156,106 +146,70 @@ Cheers,
 /fuad
 
 > ---
->  .../kvm/x86/private_mem_conversions_test.c         | 44 ++++++++++++++++++----
->  1 file changed, 36 insertions(+), 8 deletions(-)
+>  .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
+>  1 file changed, 30 insertions(+), 6 deletions(-)
 >
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index 289ad10063fca..4308c67952310 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -306,9 +306,12 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
->         if (do_fallocate)
->                 vm_guest_mem_fallocate(vm, gpa, size, map_shared);
+> diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+> index 10db9fe6d9063..70ed16066c63e 100644
+> --- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+> +++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+> @@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
 >
-> -       if (set_attributes)
-> -               vm_set_memory_attributes(vm, gpa, size,
-> -                                        map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-> +       if (set_attributes) {
-> +               u64 attrs = map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +               vm_mem_set_memory_attributes(vm, gpa, size, attrs);
+>         virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
+>
+> -       /* Request to access page privately */
+> -       vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
+> +       /* Request to access page privately. */
+> +       if (!kvm_has_gmem_attributes)
+> +               vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
+>
+>         pthread_create(&vm_thread, NULL,
+>                        (void *(*)(void *))run_vcpu_get_exit_reason,
+> @@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
+>         pthread_join(vm_thread, &thread_return);
+>         exit_reason = (u32)(u64)thread_return;
+>
+> -       TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
+> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+> -       TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
+> +       /*
+> +        * If attributes are tracked per-gmem, deleting the memslot that points
+> +        * at the gmem instance effectively makes the memory shared, and so the
+> +        * read should trigger emulated MMIO.
+> +        *
+> +        * If attributes are tracked per-VM, deleting the memslot shouldn't
+> +        * affect the private attribute, and so KVM should generate a memory
+> +        * fault exit (emulated MMIO on private GPAs is disallowed).
+> +        */
+> +       if (kvm_has_gmem_attributes) {
+> +               TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
+> +               TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
+> +               TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
+> +               TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
+> +       } else {
+> +               TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
+> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+> +               TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
 > +       }
-> +
->         run->hypercall.ret = 0;
+>
+>         kvm_vm_free(vm);
 >  }
+> @@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
+>         struct kvm_vcpu *vcpu;
+>         u32 exit_reason;
 >
-> @@ -352,8 +355,20 @@ static void *__test_mem_conversions(void *__vcpu)
->                                 size_t nr_bytes = min_t(size_t, vm->page_size, size - i);
->                                 u8 *hva = addr_gpa2hva(vm, gpa + i);
->
-> -                               /* In all cases, the host should observe the shared data. */
-> -                               memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
-> +                               /*
-> +                                * When using per-guest_memfd memory attributes,
-> +                                * i.e. in-place conversion, host accesses will
-> +                                * point at guest memory and should SIGBUS when
-> +                                * guest memory is private.  When using per-VM
-> +                                * attributes, i.e. separate backing for shared
-> +                                * vs. private, the host should always observe
-> +                                * the shared data.
-> +                                */
-> +                               if (kvm_has_gmem_attributes &&
-> +                                   uc.args[0] == SYNC_PRIVATE)
-> +                                       TEST_EXPECT_SIGBUS(READ_ONCE(*hva));
-> +                               else
-> +                                       memcmp_h(hva, gpa + i, uc.args[3], nr_bytes);
->
->                                 /* For shared, write the new pattern to guest memory. */
->                                 if (uc.args[0] == SYNC_SHARED)
-> @@ -382,6 +397,7 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
->         const size_t slot_size = memfd_size / nr_memslots;
->         struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
->         pthread_t threads[KVM_MAX_VCPUS];
-> +       u64 gmem_flags;
->         struct kvm_vm *vm;
->         int memfd, i;
->
-> @@ -397,12 +413,17 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
->
->         vm_enable_cap(vm, KVM_CAP_EXIT_HYPERCALL, (1 << KVM_HC_MAP_GPA_RANGE));
->
-> -       memfd = vm_create_guest_memfd(vm, memfd_size, 0);
+> +       /*
+> +        * Accessing non-private memory as private with a software-protected VM
+> +        * isn't possible when doing in-place conversions.
+> +        */
 > +       if (kvm_has_gmem_attributes)
-> +               gmem_flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-> +       else
-> +               gmem_flags = 0;
+> +               return;
 > +
-> +       memfd = vm_create_guest_memfd(vm, memfd_size, gmem_flags);
+>         vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
+>                                            guest_repeatedly_read);
 >
->         for (i = 0; i < nr_memslots; i++)
->                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
->                            BASE_DATA_SLOT + i, slot_size / vm->page_size,
-> -                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
-> +                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, gmem_flags);
->
->         for (i = 0; i < nr_vcpus; i++) {
->                 gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
-> @@ -452,17 +473,24 @@ static void usage(const char *cmd)
->
->  int main(int argc, char *argv[])
->  {
-> -       enum vm_mem_backing_src_type src_type = DEFAULT_VM_MEM_SRC;
-> +       enum vm_mem_backing_src_type src_type;
->         u32 nr_memslots = 1;
->         u32 nr_vcpus = 1;
->         int opt;
->
->         TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
->
-> +       src_type = kvm_has_gmem_attributes ? VM_MEM_SRC_SHMEM :
-> +                                            DEFAULT_VM_MEM_SRC;
-> +
->         while ((opt = getopt(argc, argv, "hm:s:n:")) != -1) {
->                 switch (opt) {
->                 case 's':
->                         src_type = parse_backing_src_type(optarg);
-> +                       TEST_ASSERT(!kvm_has_gmem_attributes ||
-> +                                   src_type == VM_MEM_SRC_SHMEM,
-> +                                   "Testing in-place conversions, only %s mem_type supported\n",
-> +                                   vm_mem_backing_src_alias(VM_MEM_SRC_SHMEM)->name);
->                         break;
->                 case 'n':
->                         nr_vcpus = atoi_positive("nr_vcpus", optarg);
 >
 > --
 > 2.55.0.rc0.738.g0c8ab3ebcc-goog
