@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350AB3BAD94
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CA63BB118
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782426993; cv=none; b=KRadnger2HC1V+9Pj+a0hPNzMYOvJTpRYaVZp8QGgrbxUR5UyeZ5C0EcOS5NS8+M0Js760GikQ06nWVQjWtZyUWSrjIuM3//4z4M5HJIkKTI7y2UtIaYIxe6zsOfufvkvwb6Hk3UdprksMMyXW8SbOnIJyJUaBOsQRqBvJEbBAs=
+	t=1782426994; cv=none; b=bfls01mEGHb1gYQvzNKtIQy94VawNYRiiNJXlFXxAVkM4dxtQ52/u3onqWWiOhb0//Ui9diT9TqamhVD0eoktH2HVYsMLUAWNzj6813TtAN1xuXDiMFPAvg5kHrCdc3J7yQGWWxGuiylCDyko3wn+zg+StUCw2URwe5IJIl7sGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782426993; c=relaxed/simple;
-	bh=kL83qZkJZi4Aj2Er+eHbDD6C37v6WYXWwKerURyzRrY=;
+	s=arc-20240116; t=1782426994; c=relaxed/simple;
+	bh=sEqo9ipyNHXqGElckHhyPshYyntkhkEipYpT06/s6LI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CEukfEmsHb/L9kR3a5SrLzlPYkBFhRpf/e4Gm3eh6gOFiK25G0sdaw6r0OvNwQmlFcafKr7Dj+/smiefOkcCxIeM8W7+4Tn9A8169iayaUV8Oo4//9d0avQJl0mZ6iOK0GE3wTv0unTB05iL0/otuV7v9cCxymwqe4/3U3Os+2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OlGXV6um; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=emmmN6eLK1EajdqI0IIJHUgTFeo5aWGl4AWgPRpsc8T4n8DAyvR+Rq6An3Z+FyRehse2Xk+hRqN/NFAnmsyqOjfEMCm/EdhQ2VhlV6P4exTlQ3lb2F8uQKo/TTYIyWN7YP2UUGg0FUVMYfxjnX6FXpZBIJPtQ911dVRSqxPGJ7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hgg6Bsnm; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OlGXV6um"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c856470fe9fso183525a12.2
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:36:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hgg6Bsnm"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37e09f9c4dbso222237a91.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782426989; x=1783031789; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782426992; x=1783031792; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=nYe2f5ROlk+rOZAgZLHnz85wyy4NST3pKojrwpDQPdM=;
-        b=OlGXV6umzbN5Ek/RJ6USetBIRekCG3u9/LQa+SQN3Sa5CwzrDfPGj9du4hACKkVylQ
-         IopKRQmelpUjSALyR3XaRVE2x78DlwjuHaVkSAvbFHg7V0V/nCL9W5Gan+Ao3CfM0VK1
-         5cVohgzZvs1TJf0s16yUqwB343jcaPKF/MyQkKX6M1as39VmsjoJ43OqBOEtE//L2crI
-         JRFlxbqGnx9QHL2qynP41C3pHCRpUdq+nvZ+BUz59bJDYLdi/EhY0u3FcjDuxIIek4yo
-         716A+a1CbTxG4opxdR2shfYami9F6NfhK7xnnpOd/gRHev0acKteICl+FkFs2DBzGrJy
-         4s3g==
+        bh=m5JKVap7NXaXDR3kbNPE0TD3ZfAZJnRDS516RKmwD6c=;
+        b=hgg6BsnmMJa9ilwfeYSXQsn6q1ujHsjm4Di7/JFHkonp+GT0CdGg16XIDkiVTFQZXV
+         vZaKL5PM7G9ll1JR3kcS9ddMdsqdfBl09yZXaDWdWqeifWSzj1QHG5VP+NTSeRTJEpzL
+         ygCUoQ/8ejLlFYQK7zv5ch4OvYRH4ZaDl4IDwJ9y6KPOhU6ZR5NPp+bcWjKl503SRFdX
+         HmVNauC2EccYt7/xonRoFJN9zOhgPP+tGuF9KChlhL6pFe5gWno5yFQ5zEj8ugbgunqS
+         6iofiRMsFvojCR3k7vzHjKT4Op35L8xd/V5we9C2hsrtOsg2gCj5xoPwcght4Q24UC0s
+         vT3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782426989; x=1783031789;
+        d=1e100.net; s=20251104; t=1782426992; x=1783031792;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nYe2f5ROlk+rOZAgZLHnz85wyy4NST3pKojrwpDQPdM=;
-        b=YwrtrqSBzn7qUKkCAosuNdp/zgSf0x15994uaBpKqTmS42z11ZJsosQ1w9bKO2IXLG
-         N+TE6iGgdjviAyUjv8y/7Th3Zvs7Nlw873sOF3eVrSk+sZvLIte7/tY+pcpalG3Hj6nn
-         xmf5wvtRedeR2Rk99Cgft/e+EoLXTBTKswfymgZY2AtKRuz0QShx48bRiHuyNmNVhDK0
-         3CHAsa9gilSIrkC689D90Bu+ih+EeBO3TeCySoZWdwYy/mNWf2IVxFM3HlYJX5S2pzo4
-         h4guX2QRLrNTzncr5LE6x48kBDrJJp7tHJidQr+qmaBopMAP44myzbS0/7wFkJ+1g3SR
-         42ZA==
-X-Gm-Message-State: AOJu0Ywi8NSyRu8+Ht6lpuZU4JDs9jBr9E6bwVd5v5TWOReX544h7EaK
-	irwnNA3iDqIhGtUteJFz9SKE11Pv8nZaQ2ZmFVLfJ4Kz1Pgb8rJHJQffiuyvHoUgmR3q41AXHNs
-	sKoT3Fw==
-X-Received: from pgbgf14.prod.google.com ([2002:a05:6a02:2cce:b0:c92:3cad:b6c5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:404c:b0:3b3:4406:202c
- with SMTP id adf61e73a8af0-3bd4ac79687mr5015657637.10.1782426989277; Thu, 25
- Jun 2026 15:36:29 -0700 (PDT)
+        bh=m5JKVap7NXaXDR3kbNPE0TD3ZfAZJnRDS516RKmwD6c=;
+        b=fnITZxwoQ0WVxWO+BCj9GOVFm35Cp0/Vd/js1crDGUsGziEYrJwiUoiKiC6IUc4sy6
+         rUX8IH3v7FWtnKWZ5cQZgS9AZ3Tfmzy6dxwmyZLbsPJcWIHWO0Aqsi+F4+HJOits4OoC
+         szxyuz8O/g6Sg23ULvM2h9OMW5b3pm8p87sE/+kemBxm7eU6NClu71886aOHw4kymzFS
+         qdeJo6xfKwjUHQdasadj3xhmCqYCzLvBkDBs2jVaIKNLdmdw1kdUq/gzyL4kGHDd+Vc4
+         8UY6Evj8tK7DenO+eFiV4/MFXIcPMAkjLJQd1HesnYcHpGpKtVDX+AwZd4/duFW/3vIJ
+         m8+w==
+X-Gm-Message-State: AOJu0YzAH6EY23krEJvNRQ17Cxn+sH1zIehDU3UA7D6z7JlcWW9tzq5q
+	UliZAJeselyHtQN8z3Y5n3NrlJDW1dY/DALJR+9jVH7a+0QVVo4UvFLke1XzlntZjQ4+JBlicbC
+	Re75g7A==
+X-Received: from pgkj14.prod.google.com ([2002:a63:e74e:0:b0:c8a:b173:5516])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8c:b0:368:1064:62f7
+ with SMTP id 98e67ed59e1d1-37dfa1a5204mr4008930a91.6.1782426991615; Thu, 25
+ Jun 2026 15:36:31 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 25 Jun 2026 15:36:17 -0700
+Date: Thu, 25 Jun 2026 15:36:19 -0700
 In-Reply-To: <20260625223623.3376478-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260625223623.3376478-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625223623.3376478-5-seanjc@google.com>
-Subject: [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to
- userspace if Xen vCPU ID isn't set
+Message-ID: <20260625223623.3376478-7-seanjc@google.com>
+Subject: [PATCH v3 06/10] KVM: Initialize a vCPU's index to '-1' while it's
+ being created
 From: Sean Christopherson <seanjc@google.com>
 To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
@@ -70,64 +70,59 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-Explicitly invalidate KVM's internal Xen vCPU ID during vCPU creation
-instead of *trying* to set the Xen ID to the vCPU index by default, and
-forward singleshot timer hypercalls to userspace if the VMM hasn't set the
-Xen ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.  Using the vCPU's index as its
-default Xen ID is reasonable in concept, but in practice is horribly flawed
-as the index is left as '0' until after vCPU initialization completes, i.e.
-every vCPU gets a Xen ID of '0' by default.
+Invalidate a vCPU's index immediately after allocating storage for the vCPU
+so that KVM doesn't incorrectly treat a vCPU that is the process of being
+created as being vCPU0.  This will also allow detecting that a vCPU is in
+the process of being created and thus otherwise unreachable, which is
+useful for avoiding false positives in lockdep assertions on vcpu->mutex.
 
-Forward hypercalls to userspace instead of trying to salvage any kind of
-default behavior, as all userspace implementations that support multiple
-vCPUs either don't enable the timer, are guaranteed to set Xen ID, or work
-only because *all* guests also screw up the singleshot timer hypercalls.
-The last scenarios is extremely unlikely given that Linux-as-a-guest uses
-the actual Xen vCPU ID when making timer hypercalls.  In other words, for
-all intents and purposes, KVM's ABI is already that userspace must set the
-Xen vCPU ID, so just commit to that ABI.
+Unwind the index back to -1 if insert the vCPU into the array fails so that
+kvm_arch_vcpu_destroy() sees the vCPU as unreachable, i.e. so that teardown
+logic doesn't hit false positive lockdep assertions.  Opportunistically add
+a comment to call out that the "real" index needs to be set before making
+the vCPU visible to other tasks.
 
-Note, KVM's handling of KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restricts the ID to
-KVM_MAX_VCPUS, so there's no chance of a valid ID colliding with -1u.
+Note, kvm_wait_for_vcpu_online() naturally does the right thing thanks to
+vcpu->vcpu_idx and kvm->online_vcpus being signed values.
 
-Link: https://lore.kernel.org/all/20260612233017.1F9771F000E9@smtp.kernel.org
-Suggested-by: David Woodhouse <dwmw2@infradead.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/xen.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ virt/kvm/kvm_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 694b31c1fcc9..27c1aeeab8af 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -22,6 +22,7 @@
- #include <xen/interface/version.h>
- #include <xen/interface/event_channel.h>
- #include <xen/interface/sched.h>
-+#include <xen/xen-ops.h>
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..98da4c889ffc 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4188,6 +4188,8 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 		goto vcpu_decrement;
+ 	}
  
- #include <asm/xen/cpuid.h>
- #include <asm/pvclock.h>
-@@ -1610,6 +1611,9 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vcpu, bool longmode, int cmd,
- 	if (!kvm_xen_timer_enabled(vcpu))
- 		return false;
- 
-+	if (vcpu->arch.xen.vcpu_id == XEN_VCPU_ID_INVALID)
-+		return false;
++	vcpu->vcpu_idx = -1;
 +
- 	switch (cmd) {
- 	case VCPUOP_set_singleshot_timer:
- 		if (vcpu->arch.xen.vcpu_id != vcpu_id) {
-@@ -2299,7 +2303,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
+ 	BUILD_BUG_ON(sizeof(struct kvm_run) > PAGE_SIZE);
+ 	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+ 	if (!page) {
+@@ -4216,11 +4218,18 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 		goto unlock_vcpu_destroy;
+ 	}
  
- void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.xen.vcpu_id = vcpu->vcpu_idx;
-+	vcpu->arch.xen.vcpu_id = XEN_VCPU_ID_INVALID;
- 	vcpu->arch.xen.poll_evtchn = 0;
++	/*
++	 * Set the vCPU's index *before* the vCPU is reachable by other tasks.
++	 * Unwind the index back to -1 on failure so that KVM can use the index
++	 * to detect that the vCPU is unreachable, e.g. for lockdep asserts.
++	 */
+ 	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
+ 	r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
+ 	WARN_ON_ONCE(r == -EBUSY);
+-	if (r)
++	if (r) {
++		vcpu->vcpu_idx = -1;
+ 		goto unlock_vcpu_destroy;
++	}
  
- 	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
+ 	/*
+ 	 * Now it's all set up, let userspace reach it.  Grab the vCPU's mutex
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
