@@ -1,412 +1,331 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010006.outbound.protection.outlook.com [52.101.61.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A436D9F9
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 21:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782422550; cv=fail; b=J4mtja+TPiexF+jNNyLpDIfiPI+O73g44FBVSfXIiNncFtCOV/9c30caZg5Gh4lUUKLS/aqavRydut2SWapeEJnE99XePiagoPtApZXZN8Cwg8jn+kxTmQjMRXbj80KJLM13Mul8SZUhVyfZspwW1LCszNf9ywjYC+fdOE50Yu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782422550; c=relaxed/simple;
-	bh=w99WZjcoi87aeXzKIo8a3n/eWPdS1VR58JbZ3ox9Qi4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdUXrLS9zflupwznB/UPcilLcXumjjhig69Dj9Kfvb6E/nW77WYtV8gMf6hMPeHVp4bI7lXkcbn1dNxzYHp1BgKrmMEF1kSmFwSwrDvp/H/c2FZ1uGmdwLt9zOf5E6rVkwKmJTX+KARNN5pNudkTEp6SJ+3mAXHKHc/oMKPh8xg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Fh5uJWA0; arc=fail smtp.client-ip=52.101.61.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39DF358372
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 21:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782423950; cv=none; b=Hr/MTvudiPUdg7KaaxpvS61aXRGpvjBRDGEAkgpJorS4seZ0ndDkzSfJIZ8scExBeXmNf3rWwzp8XTnBhLSviszdGb7PsdoYVCFWBmHSHXFUPPCnafauL6a2R1o7dX1eOsTPEqt6o1rfHBcYKvqhu5gGJi4j1mdbphfVPVmt7+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782423950; c=relaxed/simple;
+	bh=R695RNKosz53FgQpxHNo3CW1d1pFwQ7ud5ZvpBjzuJg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tKGUQFMoCUIxaL5PbIYVbnG/zga1kzyO70XpaDd+Q0FXOfMb/fXJY08eS+wi0kMQ/G+LYCm0VfMWAB9wkgk8vwFEMWb6JPrjRz9FCO6tidOHLxGkQgEjtnfggU3u4l8FMKqs09dkTMsWXE84aEDKTjSDTcLDjOlVpMk2VI7ldcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RSZHMyvK; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Fh5uJWA0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yaE6HGc4A7mgcbSoH4voHNrBSBCF5y59blmb4tjOUliKd5ZvHhqA5c9AfXZe2w0I13mDvVl1eQj4kd8qHeWAuLME802mT7JxHgbbBB51VUwKS2uu50rs2bo0swjmeHsFt4x4iB3rhlTKd86zITa0PWf2d/yd1MQkWUmbx1GRDOGxUhn1sLmASJ3A/sBMekxfMMt5j5sgkantQ56AfeRg04sMJA2LX95yM2R8NJwaV35fLrL8OeXNjW2Hnt1HbCuC44Sx3C7UP0IVXVAh5RAthCtUUnVopMCuUcTWVQXM5LLaryLYL4Qe3TWS18JPqMsSwbrbzi21W95wiVlNiy4W0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hk3t522edh3FWAUrMTCmDOhujQ16KakiireDHV6V50g=;
- b=XUAnxp+mxhrweX/C5LFxuR0JQ+++gEqU9UrfmpYsmTLpGsKXNCUJUKY8h4/tBVRPV28EgP2HOJEi/aey4lKX4EOIn2WaxCgf1CrbV8jDpPcFdScIcbgXCpVDsgWP2+6uFuqG6ELqQ0LmG4HW9YZh3H3ChQ0GztI7LHH+Z83JbNz5eFv9nO2rMyHlUD93GZc+oPqspH0Ds2raKLLnrQrjMgzjQAnEr6eMat8C1ypzbEnN66vcf94TDS3VD9RntD5uJIzVzWJJaSOP1hKRFNboM9IBP4tMNKP4esi36ZCHqcVqlBNvLuOi7KtA6UuYLdeIMBc51PadQmcpO4FxTS9Glg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hk3t522edh3FWAUrMTCmDOhujQ16KakiireDHV6V50g=;
- b=Fh5uJWA01xT4A5IJPeiknOH/oPnB3Bw9bdI4OFsmv+ZFY0fYvEwu1VQABg4xWX7dah0K4KmaYUREeHOphbN9bx5iMTnt96BSbL9YE27nwBeeOhQBTKte1Ovm2T692K2yri0uof18tilrcHw4vLS8Mec0OX34IE0KJES4LGjuwjQ=
-Received: from MW4PR03CA0074.namprd03.prod.outlook.com (2603:10b6:303:b6::19)
- by SJ2PR12MB8036.namprd12.prod.outlook.com (2603:10b6:a03:4c1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Thu, 25 Jun
- 2026 21:22:16 +0000
-Received: from CO1PEPF00012E80.namprd03.prod.outlook.com
- (2603:10b6:303:b6:cafe::63) by MW4PR03CA0074.outlook.office365.com
- (2603:10b6:303:b6::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.16 via Frontend Transport; Thu,
- 25 Jun 2026 21:22:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF00012E80.mail.protection.outlook.com (10.167.249.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 25 Jun 2026 21:22:16 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 25 Jun
- 2026 16:22:10 -0500
-Date: Thu, 25 Jun 2026 16:21:52 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <pbonzini@redhat.com>,
-	<berrange@redhat.com>, <armbru@redhat.com>, <pankaj.gupta@amd.com>,
-	<isaku.yamahata@intel.com>, <xiaoyao.li@intel.com>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <ashish.kalra@amd.com>,
-	<ackerleytng@google.com>
-Subject: Re: [PATCH RFC 00/12] guest_memfd: support in-place memory conversion
-Message-ID: <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
-References: <20260528000416.8161-1-michael.roth@amd.com>
- <ajkrWSfmODM8NTZ5@lpieralisi>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RSZHMyvK"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c89956023dbso160264a12.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 14:45:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782423948; x=1783028748; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KLKv2w/oZldsKRU7x2mvxBStpob28cqfWxBp8cLvb0Q=;
+        b=RSZHMyvKuXxhtdaUczjj5Gjgf6qmydvLtzixBHQmGCvH/lnWkt8B862Y8NE7953V3l
+         XYN+eG0/x7wPIA5eFbkfAqyyNmV6ZKro2NRFsP39JYdZLrCf2HOkPsOFvQ7qRuqoVfHf
+         73+CzcqUwrPRO0G6Q98VfN1yOCxoWe/AkrXFEUpo49GQS7iRSsOQ55RJodTbrBxI7/un
+         7vRYkMRx68AqeUodrrvQVie7CX//oQSD8o4r/l9N9RFSCHEgJqCJ/gYZDkiPcVXb5pWJ
+         upK5k9bu1A+u0qhNRmGLNJlW5w+WfyT6o8ifbluNkl69cAAAsXXTK/dYsIG2+cYrcdVF
+         iDBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782423948; x=1783028748;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KLKv2w/oZldsKRU7x2mvxBStpob28cqfWxBp8cLvb0Q=;
+        b=jsYqMirnhja5O2slO0Db7jzZSr2RwgOo7lrEOG6EMAQSGqKegQS65z4wY1VzSK/XUa
+         ZvGxAoEVAdeCyQ/HY1p70e1DzXC5v211Rp42ncZsmxoYVkj/NxeONEhX5rDsucaVpnzO
+         o+9+bKsctoqjLQ7ZmO+9QWXUXxiaA26SB9jZ5hCL5SmwBvp/nyQjrR4dVB8lG6Gal0Jk
+         m4C5FNaRy/SxJJ43MLnT4vY0mSWHSXBKIr127JSj+IG7gEW5rX+Tx/ugBSoc82D43pjR
+         O4C2E/bOBOYYMNnAoNpWvQ5SRuui72ud/oEGxHi3eYhBtW5nm8iTYz+EYSWLcjcwFPvP
+         z8Hw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4AEpjtBTAzb9eFHDybcC4ynwc/PSM7Rwa8O2ZOiggcWO3N5OihR9GZXrgHeXKM5SipeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpNAx93S8cDbk088weB6OPjp6IrkXzInWyOVycLK1WxJxOkbyj
+	gg6ESav4lqKuvpVANPaaeNZRDUyxKdb3+2OHBihHlNuxFbZO2dIbftXYrQN5I5iQOsJCLi/Hu5I
+	POhyRkw==
+X-Received: from pfbfj39.prod.google.com ([2002:a05:6a00:3a27:b0:82f:8cba:4285])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:464f:b0:842:2f09:fde9
+ with SMTP id d2e1a72fcca58-845b39afe3emr5212047b3a.8.1782423947743; Thu, 25
+ Jun 2026 14:45:47 -0700 (PDT)
+Date: Thu, 25 Jun 2026 14:45:47 -0700
+In-Reply-To: <20260520111325.693807-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260520111325.693807-1-aha310510@gmail.com>
+Message-ID: <aj2hi-NcqUUCaoQF@google.com>
+Subject: Re: [PATCH] KVM: pfncache: track HVA invalidations for HVA-based caches
+From: Sean Christopherson <seanjc@google.com>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Paul Durrant <pdurrant@amazon.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ajkrWSfmODM8NTZ5@lpieralisi>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E80:EE_|SJ2PR12MB8036:EE_
-X-MS-Office365-Filtering-Correlation-Id: 527618c8-16c0-42c6-2df2-08ded2ffd507
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|36860700016|23010399003|376014|82310400026|18002099003|22082099003|13003099007|6133799003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	8yjWAUQ1Qg9e+E+LgUp0Ud+Y3I/sSTfUaHHdA/MyXGaXxlyUV1mcF6gTQPjkhE+vNCd4gTHAqfyx9x+03k4uxg9lhk/Y1pJgoXi5jjr/sJ8Eu1hQAeYgvaiQOILwGwSybnPHnDHDR8LxGSeh4rgAL/vrjn2IWj2sYNTbVvMsFyMeSR/vWHgqWDW6CgZU/4DItKF2ghkRGPRS/FMzZfCTLV344b7kuO6scp8EBiOg/z2qyM4zHU2wlpisMxkan89TG+y4zNgvk4Z8HbpbIMv19hXoXMJkikSeSgP4BDHAgaosQnK2vy11oCHmymizODMLd5NclyBieGw3wL0NEsTBuSFYWtZw1n27YuTcjLLYCHlGHEB4YxK9TQqXzen5g6bW9tBYuBjmE5Tb1gTXcKUfUegk5bhmKeDIAe64/tGU85eBKvyW40NLhEj9VMfr+v98Piu9PiD9KB5Y67Yzgzc6WQvkZh/BL1y27k11HiVWGONnYZG/F+xAz60pMrFVwdLyho20dFs/j8ID5/tYy8xrPQC3zJp9WlDoTHuK5vkS9W6opnDIB4tzA3fnN37GTHqTG6cVcARk78O+XH8g4nqEvcrJtdVqCZvAuS/IeMjNaMI/Du1Oc9mRm8AE8+tMvoupfDh9XH8+IJ2vvemR4WZHGaroOGwmQCkgHhUFxBOSE+4x6g2oV6FOpZsXfCmUfy5OP3HOhcBB05RRDqcYNnCJ5w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(36860700016)(23010399003)(376014)(82310400026)(18002099003)(22082099003)(13003099007)(6133799003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	yQDgAvC3Xpt608C1a5Lk210q4ijCd8Rmt5wv5jlAujdBVKMiZc/NtkKs55oDcJhmtf17uhq1MdVeC1Hrluw8BuF1EAw8Yr/Z0zCLSXWGxN96AVlghvo1GtY0V9YlMZMmyXIZjJ8813zYhhm+A/cUXIKXIMgrQCU8cZcoFR81vXvkWFSuvt59IKfaXOywlkJ9yexWK1xKIyb8UW/dLvAPzzXqZ7RrArutX530mjsQH8VU9f7GD9lMFEJ85stJhUhOKdAWIevcZzFQQBwZPh5ZTYlOY0fLsLUQyUVp6eEJ0d32C+/Q6R8vuAj8gBQAESHp5t6pUUpnOxXt19QJUlQUvMG37SXsv/s/RiYzHBvDXBI95/41FEez4sCSU0pPxxFRujCIQn8F4VPatOP5J/0NjhO8oonIGA7oaxrArjDbQoxyHXGgnO/xwIaT8Y1jGtQ2
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 21:22:16.4351
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 527618c8-16c0-42c6-2df2-08ded2ffd507
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E80.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8036
 
-On Mon, Jun 22, 2026 at 02:32:25PM +0200, Lorenzo Pieralisi wrote:
-> On Wed, May 27, 2026 at 07:03:25PM -0500, Michael Roth wrote:
-> > This patchset is also available at:
-> > 
-> >   https://github.com/amdese/qemu/commits/snp-inplace-rfc1
-> > 
-> > which is in turn based on the following series:
-> > 
-> >   [PATCH 0/4] "guest_memfd: Fix handling for conversions of MMIO ranges"
-> >   https://lists.gnu.org/archive/html/qemu-devel/2026-05/msg07547.html
-> > 
-> > 
-> > OVERVIEW
-> > --------
-> > 
-> > This series adds guest_memfd support for in-place conversion of memory
-> > between private/shared, and enables it for SEV-SNP guests. It is based
-> > on recently-added kernel support for mmap()-able guest_memfd
-> > instances[1], which allow it to be used for shared memory, and the
-> > following patchset[2], which adds additional guest_memfd interfaces to
-> > allow it to be used to perform in-place conversion:
-> > 
-> >   "[PATCH v7 00/42] guest_memfd: In-place conversion support"
-> >   https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
-> > 
-> > That series also introduces a new 'vm_memory_attributes' KVM
-> > module option, which sets whether memory attributes are tracked
-> > VM-wide by KVM (vm_memory_attributes=1: the existing 'legacy' mode),
-> > or per-guest_memfd instance (vm_memory_attributes=0: the new mode
-> > which allows for in-place conversion). The latter is intended to
-> > eventually deprecate the legacy mode, at which point in-place
-> > conversion would become the primarily-supported mode.
-> > 
-> > 
-> > MOTIVATION
-> > ----------
-> > 
-> > Today, SEV-SNP guests (and other CoCo VM types using guest_memfd) keep
-> > shared and private memory on separate physical backings: a userspace
-> > memory-backend object for shared pages, and a kernel-allocated
-> > guest_memfd file descriptor for private pages. KVM_SET_MEMORY_ATTRIBUTES
-> > flips which backing the guest sees for a given GPA range, and the old
-> > backing is typically discarded / hole-punched on conversion to avoid
-> > doubled memory usage.
+On Wed, May 20, 2026, Jeongjun Park wrote:
+> HVA-based gfn_to_pfn caches are not necessarily backed by a KVM memslot.
+> When an MMU notifier invalidation targets such an HVA, KVM's global
+> mmu_invalidate_seq is not guaranteed to change because that sequence is
+> advanced through the memslot-based invalidation path.
 > 
-> Hi Michael,
-
-Hi Lorenzo,
-
+> This matters during hva_to_pfn_retry(). The refresh path temporarily
+> marks the cache invalid and drops gpc->lock while resolving the HVA and
+> creating a kernel mapping. If an overlapping HVA invalidation completes in
+> that window, the notifier may observe gpc->valid == false and therefore
+> leave no state behind for the in-progress refresh. For an HVA outside all
+> memslots, the refresh cannot rely on mmu_invalidate_seq to detect the
+> event either.
 > 
-> I am giving this a go on Arm CCA on top of Ackerley's KVM patches.
+> To prevent this, we must add a per-cache HVA invalidation sequence.
 
-Nice!
+No, there are multiple ways this could be handled.  Instead of saying "we must",
+state what change is being (as you did below), and then briefly explain the
+alternatives and _why_ the chosen approach was deemed to be the best approach.
 
+> Bump the sequence whenever the cached HVA overlaps an MMU notifier range,
+> regardless of the current valid state. Snapshot the sequence before
+> dropping gpc->lock in hva_to_pfn_retry(), and retry the refresh if it
+> changes before the new mapping is published.
 > 
-> When convert-in-place is switched on I think that the post conversion
-> hook should not trigger discard+hole-punch since now guest-memfd _is_
-> the memory back-end but it looks like there is no guard in place against
-> that (I noticed that ram_block_discard_range() triggers a hole-punch in
-> kvm_post_convert_section() - when the CCA guest first requests a
-> KVM_EXIT_MEMORY_FAULT to convert to private).
+> Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com
+
+Given that there's no reproducer, how did you test this?
+
+> Fixes: b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+>  include/linux/kvm_types.h |  1 +
+>  virt/kvm/pfncache.c       | 42 ++++++++++++++++++++++++++++++++-------
+>  2 files changed, 36 insertions(+), 7 deletions(-)
 > 
-> It is a question really.
+> diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+> index a568d8e6f4e8..ff3b8aa73561 100644
+> --- a/include/linux/kvm_types.h
+> +++ b/include/linux/kvm_types.h
+> @@ -85,6 +85,7 @@ struct gfn_to_pfn_cache {
+>  	u64 generation;
+>  	gpa_t gpa;
+>  	unsigned long uhva;
+> +	unsigned long hva_invalidate_seq;
+>  	struct kvm_memory_slot *memslot;
+>  	struct kvm *kvm;
+>  	struct list_head list;
+> diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+> index 728d2c1b488a..296b06482ebc 100644
+> --- a/virt/kvm/pfncache.c
+> +++ b/virt/kvm/pfncache.c
+> @@ -19,6 +19,24 @@
+>  
+>  #include "kvm_mm.h"
+>  
+> +static inline bool gpc_uhva_in_range(struct gfn_to_pfn_cache *gpc,
+> +			      unsigned long start, unsigned long end)
+> +{
+> +	return gpc->uhva >= start && gpc->uhva < end;
+> +}
+> +
+> +static inline bool gpc_should_invalidate(struct gfn_to_pfn_cache *gpc,
+> +				  unsigned long start, unsigned long end)
 
-Yes, I agree that it does not make much sense to try to hole-punch for
-in-place conversion, it's just uncessary churn on the gmem side. In my
-internal branches I generally disabled this path but for some reason
-left that out of this series. I've tested with the below change and it
-should do the trick though; I'll roll something similar into v2 of the
-series.
+Rather than providing a "should invalidate" helper, which is makes it difficult
+to understand the conditions for invalidation, i.e. requires jumping around the
+code base, I think we should provide:
 
-  diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-  index 5840daa7c8..2faec929b5 100644
-  --- a/accel/kvm/kvm-all.c
-  +++ b/accel/kvm/kvm-all.c
-  @@ -3619,17 +3619,19 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
-           }
-       }
-   
-  -    if (to_private) {
-  -        if (rb->page_size != qemu_real_host_page_size()) {
-  -            /*
-  -             * shared memory is backed by hugetlb, which is supposed to be
-  -             * pre-allocated and doesn't need to be discarded
-  -             */
-  -            return 0;
-  +    if (current_machine->cgs && current_machine->cgs->convert_in_place) {
-  +        if (to_private) {
-  +            if (rb->page_size != qemu_real_host_page_size()) {
-  +                /*
-  +                 * shared memory is backed by hugetlb, which is supposed to be
-  +                 * pre-allocated and doesn't need to be discarded
-  +                 */
-  +                return 0;
-  +            }
-  +            ret = ram_block_discard_range(rb, offset, size);
-  +        } else {
-  +            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
-           }
-  -        ret = ram_block_discard_range(rb, offset, size);
-  -    } else {
-  -        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
-       }
-   
-       return 0;
+  static bool gpc_hva_is_valid(struct gfn_to_pfn_cache *gpc)
+  {
+	return kvm_gpc_is_hva_active(gpc) || gpc->valid;
+  }
 
-Thanks!
+and open code the start/end checks.  We could keep gpc_uhva_in_range() (but drop
+the 'u'), but IMO it's not a net positive.  E.g. yield:
 
--Mike
+		/* Only a single page so no need to care about length */
+		if (gpc_hva_is_valid(gpc) &&
+		    gpc->uhva >= start && gpc->uhva < end) {
+			read_unlock_irq(&gpc->lock);
 
-> 
-> Thanks,
-> Lorenzo
-> 
-> > That model works, but has a number of downsides that impact certain
-> > use-cases:
-> > 
-> >   - Each conversion involves discarding pages on one side and faulting
-> >     them in on the other, which incurs allocation overheads in the
-> >     host kernel for every conversion.
-> > 
-> >   - Some use-cases, like pKVM[3], rely on memory isolation rather than
-> >     encryption and rely on in-place conversion to pass through things
-> >     like secured framebuffer memory without needing to bounce data
-> >     through separate shared/private HPAs, which would introduce
-> >     unacceptable latency for that sort of workload.
-> > 
-> >   - Hugetlb support[4] for guest_memfd will rely on it, since things like
-> >     1GB hugepages with a mix of shared/private sub-ranges would generally
-> >     require 2 1GB hugetlb pages to remain available to handle shared vs.
-> >     private accesses, which quickly causes doubling of guest memory usage.
-> > 
-> > Recent kernel work[2] makes guest_memfd mmap()-able and lets the *same*
-> > physical pages be used for both shared and private states for a given
-> > GPA range, allowing the above pitfalls to be naturally avoided.
-> > 
-> > This series wires that support up in QEMU.
-> > 
-> > 
-> > DESIGN
-> > ------
-> > 
-> > A new dedicated memory backend, memory-backend-guest-memfd, allocates
-> > its memory via a guest_memfd file descriptor obtained from KVM with
-> > the GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED flags. The fd
-> > is mmap()ed so userspace can access pages directly while they are in
-> > the shared state. For a normal/non-confidential VM, this backend can
-> > be used in a similar fashion as the existing memory-backend-memfd.
-> > 
-> > For confidential VMs, a new 'convert-in-place' flag is added to switch
-> > on in-place conversion support. When running in this mode, the user
-> > *MUST* use memory-backend-guest-memfd for backing guest RAM. A new
-> > RAM_GUEST_MEMFD_SHARED RAMBlock flag is added to track/enforce the
-> > dependency. Additionally, QEMU is modified to use mmap()-able
-> > guest_memfd and set this flag for other cases where it allocates RAM
-> > internally. As a result, block->fd will generally always a guest_memfd,
-> > and when RAM_GUEST_MEMFD_SHARED is set then that block->fd will be
-> > qemu_dup()'d as the FD handle for private memory is well (which is
-> > currently what block->guest_memfd point to). This allows the prior
-> > non-in-place handling around block->guest_memfd to be kept mostly
-> > unchanged.
-> > 
-> > When running with convert-in-place=true, shared/private conversions
-> > are no longer handled directly by KVM, but instead by a new guest_memfd
-> > ioctl, KVM_SET_MEMORY_ATTRIBUTES2, which purposely provides similar
-> > naming/implementation to the KVM_SET_MEMORY_ATTRIBUTES KVM ioctl that
-> > it replaces. This series adds handling to route conversion requests to
-> > the appropriate ioctls based on whether or not in-place conversion is
-> > enabled.
-> > 
-> > Since guest_memfd ioctls need to be called against the specific
-> > guest_memfd inode associated with each memory slot/region, some
-> > refactoring is needed to handle conversions on a per-section. Much of
-> > that is inherited from the bugfix series this patchset is based on top
-> > of, which adds the initial logic for handling multiple sections within
-> > a range that gets heavily re-used here.
-> > 
-> > 
-> > USAGE
-> > -----
-> > 
-> > After applying this series against a kernel with the RFC patches above
-> > present, an SEV-SNP guest can be started with in-place conversion via:
-> > 
-> >     qemu-system-x86_64 \
-> >         -machine q35,confidential-guest-support=sev0,memory-backend=ram0 \
-> >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
-> >         -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,\
-> >                 convert-in-place=on \
-> >         ...
-> > 
-> > The new memory-backend-guest-memfd can also be used by normal VMs:
-> > 
-> >     qemu-system-x86_64 \
-> >         -machine q35,memory-backend=ram0 \
-> >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
-> >         ...
-> > 
-> > This is mainly only useful atm for testing, but in the future there may
-> > be more use-cases around using guest_memfd as a general-purpose backend
-> > for non-confidential VMs, so it is intended to work in this manner as
-> > well.
-> > 
-> > 
-> > NOTES/TODO
-> > ----------
-> > 
-> >   - the CPR handling to support resetting of confidential VMs is
-> >     currently disabled when in-place conversion is enabled.
-> >   - TDX testing would be great, in theory it can be enabled with this
-> >     series (similarly to the top patch) but I'm not sure if there are
-> >     other special requirements before we can switch it on.
-> >   - kernel patches are still in-flight, but fairly mature at this point
-> >     and nearing upstream
-> > 
-> > 
-> > REFERENCES
-> > ----------
-> > 
-> > [1] https://lore.kernel.org/kvm/20250729225455.670324-1-seanjc@google.com/
-> > [2] https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
-> > [3] https://www.youtube.com/watch?v=MMfAGNW9RVg
-> > [4] 1GB hugetlb v2
-> > 
-> > 
-> > Thoughts, feedback, and testing are very much appreciated.
-> > 
-> > Thanks,
-> > 
-> > Mike
-> > 
-> > 
-> > ----------------------------------------------------------------
-> > Michael Roth (12):
-> >       accel/kvm: Decouple guest_memfd checks from memory attribute checks
-> >       hostmem: Introduce dedicated memory backend for guest_memfd
-> >       linux-headers: Update headers for v7 of in-place conversion kernel support
-> >       accel/kvm: Add CGS option to control in-place conversion support
-> >       system/memory: Re-use memory-backend-guest-memfd inode for private memory
-> >       system/memory: Default to guest_memfd for RAM for in-place conversion
-> >       accel/kvm: Move post-conversion updates to a separate helper
-> >       accel/kvm: Re-order attribute notifications for in-place conversion
-> >       accel/kvm: Support shared/private conversions via guest_memfd ioctls
-> >       accel/kvm: Don't default to private attributes for in-place conversion
-> >       i386/sev: Update SNP_LAUNCH_UPDATE for in-place conversion
-> >       i386/sev: Allow in-place conversion for SEV-SNP guests
-> > 
-> >  accel/kvm/kvm-all.c                                | 286 +++++++++++--
-> >  accel/stubs/kvm-stub.c                             |   9 +-
-> >  backends/confidential-guest-support.c              |  25 ++
-> >  backends/hostmem-guest-memfd.c                     |  93 +++++
-> >  backends/meson.build                               |   1 +
-> >  include/standard-headers/drm/drm_fourcc.h          |  28 +-
-> >  include/standard-headers/linux/const.h             |  18 +
-> >  include/standard-headers/linux/ethtool.h           |  28 +-
-> >  include/standard-headers/linux/input-event-codes.h |  13 +
-> >  include/standard-headers/linux/pci_regs.h          |  71 +++-
-> >  include/standard-headers/linux/typelimits.h        |   8 +
-> >  include/standard-headers/linux/virtio_ring.h       |   5 +-
-> >  include/standard-headers/linux/virtio_rtc.h        | 237 +++++++++++
-> >  include/standard-headers/linux/vmclock-abi.h       |  20 +
-> >  include/system/confidential-guest-support.h        |  14 +
-> >  include/system/hostmem.h                           |   1 +
-> >  include/system/kvm.h                               |   3 +-
-> >  include/system/memory.h                            |   8 +-
-> >  linux-headers/asm-arm64/kvm.h                      |   1 +
-> >  linux-headers/asm-arm64/unistd_64.h                |   1 +
-> >  linux-headers/asm-generic/unistd.h                 |   5 +-
-> >  linux-headers/asm-loongarch/kvm.h                  |   5 +
-> >  linux-headers/asm-loongarch/kvm_para.h             |   1 +
-> >  linux-headers/asm-loongarch/unistd_64.h            |   2 +
-> >  linux-headers/asm-mips/unistd_n32.h                |   1 +
-> >  linux-headers/asm-mips/unistd_n64.h                |   1 +
-> >  linux-headers/asm-mips/unistd_o32.h                |   1 +
-> >  linux-headers/asm-powerpc/unistd_32.h              |   1 +
-> >  linux-headers/asm-powerpc/unistd_64.h              |   1 +
-> >  linux-headers/asm-riscv/kvm.h                      |  11 +-
-> >  linux-headers/asm-riscv/ptrace.h                   |  37 ++
-> >  linux-headers/asm-riscv/unistd_32.h                |   1 +
-> >  linux-headers/asm-riscv/unistd_64.h                |   1 +
-> >  linux-headers/asm-s390/unistd_32.h                 | 446 ---------------------
-> >  linux-headers/asm-s390/unistd_64.h                 |   1 +
-> >  linux-headers/asm-x86/kvm.h                        |  21 +-
-> >  linux-headers/asm-x86/unistd_32.h                  |   1 +
-> >  linux-headers/asm-x86/unistd_64.h                  |   1 +
-> >  linux-headers/asm-x86/unistd_x32.h                 |   1 +
-> >  linux-headers/linux/const.h                        |  18 +
-> >  linux-headers/linux/iommufd.h                      |  48 +++
-> >  linux-headers/linux/kvm.h                          |  62 ++-
-> >  linux-headers/linux/mshv.h                         |   4 +-
-> >  linux-headers/linux/psp-sev.h                      |   2 +-
-> >  linux-headers/linux/stddef.h                       |   4 +
-> >  linux-headers/linux/vduse.h                        |  85 +++-
-> >  linux-headers/linux/vfio.h                         |  30 +-
-> >  qapi/qom.json                                      |  35 +-
-> >  qemu-options.hx                                    |   5 +
-> >  system/memory.c                                    |  22 +-
-> >  system/physmem.c                                   |  50 ++-
-> >  target/i386/sev.c                                  |  12 +-
-> >  52 files changed, 1253 insertions(+), 533 deletions(-)
-> >  create mode 100644 backends/hostmem-guest-memfd.c
-> >  create mode 100644 include/standard-headers/linux/typelimits.h
-> >  create mode 100644 include/standard-headers/linux/virtio_rtc.h
-> >  delete mode 100644 linux-headers/asm-s390/unistd_32.h
-> > 
+Which, for me, makes it easier to understand _this_ flow.  I might have questions
+about what constitutes a "valid hva", but I don't need to learn those details to
+understand the invalidation flow.
+
+> +{
+> +	if (!gpc_uhva_in_range(gpc, start, end))
+> +		return false;
+> +
+> +	if (kvm_gpc_is_hva_active(gpc))
+> +		return true;
+> +
+> +	return gpc->valid && !is_error_noslot_pfn(gpc->pfn);
+> +}
+
+>  /*
+>   * MMU notifier 'invalidate_range_start' hook.
+>   */
+> @@ -32,8 +50,7 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+>  		read_lock_irq(&gpc->lock);
+>  
+>  		/* Only a single page so no need to care about length */
+> -		if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+> -		    gpc->uhva >= start && gpc->uhva < end) {
+> +		if (gpc_should_invalidate(gpc, start, end)) {
+>  			read_unlock_irq(&gpc->lock);
+>  
+>  			/*
+> @@ -45,9 +62,11 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+>  			 */
+>  
+>  			write_lock_irq(&gpc->lock);
+> -			if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+
+Unless I'm forgetting/missing something, it should be impossible for gpc->pfn to
+be garbage if gpc->valid is true.  As a follow-up patch, turn that into a
+WARN_ON_ONCE()?  Assuming I'm not missing something...
+
+> -			    gpc->uhva >= start && gpc->uhva < end)
+> +			if (gpc_should_invalidate(gpc, start, end)) {
+> +				if (kvm_gpc_is_hva_active(gpc))
+> +					gpc->hva_invalidate_seq++;
+
+Hmm, I think I would rather just add a per-gpc mmu_invalidate_seq and drop
+usage of kvm->mmu_invalidate_seq entirely in the gpc code.  Well, if we can get
+this working, which I'm not sure we can without a pile of surgery I don't really
+want to do.
+
+  CPU0 (hva_to_pfn_retry())     CPU1 (invalidate)
+  -------------------------     -------------------------
+                                invalidate_range_start()
+                                mn_active_invalidate_count = 1
+                                hva_invalidate_seq = X
+                                write_unlock_irq()
+
+  write_lock_irq()
+  gpc->active = true
+  gpc->uhva = A
+  hva_seq = X
+  write_unlock_irq()
+
+  pfn = Z
+
+                                invalidate_range_end()
+                                mn_active_invalidate_count = 0
+
+  mn_active_invalidate_count == 0
+  hva_seq == hva_invalidate_seq
+
+  use-after-free
+
+In other words, the mmu_invalidate_seq scheme requires that the sequence counter
+be incremented in the same critical section as mmu_invalidate_in_progress.
+
+Note, the current use of mn_active_invalidate_count is "fine" because it outlives
+mmu_invalidate_in_progress, i.e. mn_active_invalidate_count achieves the "same
+critical section" rule by proxy.
+
+We could add gfn_to_pfn_cache_invalidate_end(), but I really, really don't want
+to add more serialization to the mmu_notifier flow when it's all but guaranteed
+to be unnecessary.  And we can't optimize it to skip bumping sequence counters
+if gfn_to_pfn_cache_invalidate_start() doesn't detect relevant GPS, unless we
+block GPC refresh while mn_active_invalidate_count is elevated, as is done for
+memslots, otherwise KVM would incorrectly skip bumping counters if a GPC becomes
+relevant after the fact.  And blocking memslot updates is a bit of a disaster
+because it's inherently unfair, and that's for a path that's already slow.
+
+Oh!  But we can simply piggyback mn_invalidate_lock and use a per-VM GPC sequence
+counter, then the end() path doesn't need to re-walk GPCs.  That will regress
+GPCs in the presense of unrelated mmu_notifier events, but we already know that's
+a lurking problem, and we know how to fix it[*] (I think).
+
+There's a "sleeping while atomic" problem that will occur on RT if/when GPCs take
+mn_invalidate_lock when refreshing the PFN, thanks to IRQs being disabled, but
+that's not a problem until we implement the range-based optimization, because
+until then, the reader side can be lockless.
+
+[*] https://lore.kernel.org/all/Zw8DINUkJJKDByXE@google.com
+
+Not yet tested, and I think I'd want to land this at the same time as the
+range-based optimzation, to avoid regressing "normal" GPC usage (only AWS uses
+the HVA-based Xen API, so getting a fix to LTS kernels isn't a priority, AFAIK),
+but this?
+
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 0bdfa3699352..d07e3cbff983 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -854,6 +854,8 @@ struct kvm {
+        gfn_t mmu_invalidate_range_start;
+        gfn_t mmu_invalidate_range_end;
+ 
++       unsigned long gpc_invalidate_seq;
++
+        struct list_head devices;
+        u64 manual_dirty_log_protect;
+        struct dentry *debugfs_dentry;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 98da4c889ffc..5c2e92e4a085 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -812,6 +812,15 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+ 
+        /* Pairs with the increment in range_start(). */
+        spin_lock(&kvm->mn_invalidate_lock);
++       kvm->gpc_invalidate_seq++;
++
++       /*
++        * As with the MMU sequence counter and mmu_invalidate_in_progress, the
++        * GPC sequence increase must be visible before the invalidate count
++        * goes to zero.  Pairs with the smp_rmb() in gpc_invalidate_retry().
++        */
++       smp_wmb();
++
+        if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
+                --kvm->mn_active_invalidate_count;
+        wake = !kvm->mn_active_invalidate_count;
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 728d2c1b488a..a427daea986f 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
+ #endif
+ }
+ 
+-static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
++static inline bool gpc_invalidate_retry(struct kvm *kvm, unsigned long mmu_seq)
+ {
+        /*
+         * mn_active_invalidate_count acts for all intents and purposes
+@@ -142,14 +142,14 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
+                return true;
+ 
+        /*
+-        * Ensure mn_active_invalidate_count is read before
+-        * mmu_invalidate_seq.  This pairs with the smp_wmb() in
+-        * mmu_notifier_invalidate_range_end() to guarantee either the
+-        * old (non-zero) value of mn_active_invalidate_count or the
+-        * new (incremented) value of mmu_invalidate_seq is observed.
++        * Ensure mn_active_invalidate_count is read before gpc_invalidate_seq.
++        * This pairs with the smp_wmb() in
++        * kvm_mmu_notifier_invalidate_range_end() to guarantee either the
++        * old (non-zero) value of mn_active_invalidate_count or the new
++        * (incremented) value of gpc_invalidate_seq is observed.
+         */
+        smp_rmb();
+-       return kvm->mmu_invalidate_seq != mmu_seq;
++       return kvm->gpc_invalidate_seq != mmu_seq;
+ }
+ 
+ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+                 * attempting to refresh.
+                 */
+                WARN_ON_ONCE(gpc->valid);
+-       } while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
++       } while (gpc_invalidate_retry(gpc->kvm, mmu_seq));
+ 
+        gpc->valid = true;
+        gpc->pfn = new_pfn;
+
