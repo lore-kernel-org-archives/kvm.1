@@ -1,105 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF2D37AA97
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 08:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782376390; cv=none; b=mGrj4ethh7AaKCGm92o7BKZsxTI40R4PUSmdUjjBQmm1dvztxGPXr4EL1naKElvC3PR59mGilEgZoZgNAfWlF2z2lw12/AURzuW0s4wB8uHhreGU12lG3Cecd6qxYyjJS+PWN1MkmSkD7DvrXcz2jeSQFgF6osDXIj+PQCD5n4E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782376390; c=relaxed/simple;
-	bh=n894yfp2xFYdiYmeDgSEUNXtb5dHmIr68kgfNYG6mLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=slpQ1MajWuUneZ17elPGcRTWMDIu/JbQUSdzhUtSxeCVPPxwtMTTd32GSa18AeDrW9tqFJvqFDhejAPy39SdhPN8Ep6fNGvhrKSfqJdBpr1Zh0hnoLKOyiZCUvnuIbOg0xATr4dy5jP0zZaE3/ipZEpQD8Y5XU4jZsWHT9jSbGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AbestJ1N; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A7F384CCB
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 08:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782377258; cv=pass; b=S/Ohxuryb3ULYdkUgwt8duRBnV4gDe30TRozgxlSLsGFuUwUt3u3NxYZjxFkX3triTI2A6CbsoDgwjdQtU4Pw1+YQs07E2wl06Ssydm7udzuAOZden04HUUf6MaoPjxzZZVTstRlrhRYsQx3zzDuDQ4kZR5d30r5aPvf8Mpe2GU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782377258; c=relaxed/simple;
+	bh=rcYaGj7kmNHFT5KlkfLFAP87Gtcx0zYbs6pHF/7fSTE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TVuZFqc6K8u6fk1gpB4UnFIzCHjeJ/PV2RmYdW5ZOWXqTF4TjtvA/1t6PF8vNkwH2twgq8NtKFFEC1S/eWHROFbcaWHmaJ+b1vglwvar0Vfn32IYogJVh7OydjLZoRyntz3X2FdD1V5blufzIHhCAPB9d6YaZ0qkWrs/gzjTEq4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i18uyhwP; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AbestJ1N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782376388;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rQqNoEuB8Z87x4GVApUX90M7TlHPqfzGZvJ9FujVa2A=;
-	b=AbestJ1NMEV4mV9e6zgUpWTdEhPzlAxQYJiY6H2xARob4KddOyhj1keFRp+z2sG7pXs0zz
-	pxOHFPiNSkVb8ip6i76LCqAuiQqkZfqr1NFFrbu09Mt7hk7+Ks944l3DS/b0WcYX15NhnE
-	jHH78S3ASX+5TP3UGzoTeSFuBf+N54k=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-MUBvrgN4O2uRE5cgNOqcKg-1; Thu,
- 25 Jun 2026 04:33:04 -0400
-X-MC-Unique: MUBvrgN4O2uRE5cgNOqcKg-1
-X-Mimecast-MFC-AGG-ID: MUBvrgN4O2uRE5cgNOqcKg_1782376382
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 858A1195604A;
-	Thu, 25 Jun 2026 08:33:01 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.50.47])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB5561955F7C;
-	Thu, 25 Jun 2026 08:32:54 +0000 (UTC)
-Date: Thu, 25 Jun 2026 09:32:51 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Anushree Mathur <anushree.mathur@linux.ibm.com>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-	Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH v2 4/8] tests/functional: Use default powernv machine
- instead of power10
-Message-ID: <ajznoPrHDJEtVGCX@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260624195924.1422821-1-adityag@linux.ibm.com>
- <20260624195924.1422821-5-adityag@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i18uyhwP"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51765331535so153781cf.1
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 01:47:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782377255; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Hzncn0tU7ydLIPRWK3yEgky6UvkFCjz39VpO52XTzbjWZ95asosrHG0pfsCZw/eM/K
+         NmtzeXGV4V+EyMSUnsfle1HfNpF0tDwn6P0KKW12teyNsPc0UcTucxbUVA/GrmVSh9Ij
+         NkVcVlEqk7uZF/Ykwlie8qDgJhCySFpugFRvMKBhAho0YK5wFKgaJh/khfI9hRF8TvgK
+         7SHWSmM49eukxJXxR1GylFGMkKdY/zcmlci9ZHFKm/k8Jv0odoLZgePcM36oyl3ZKQhZ
+         5/nnXI32Ts+vcNJla+qffUdLiQMYKmi35cCTzRd79BiFrx9OibCb8iqle0xMRnkiCJUc
+         aLFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
+        fh=a0s3EvLoEDJcMWNPq3qKabglZk5WNO8Vrj22Ldd35Hw=;
+        b=QraQUEEy516A/2yiK0y0qhKSUyB4BQXsHHMgSXcbu1ojk43YaccjsnZxnx4iJE1trr
+         nyrp6IExBpxtDFqmmLImB2ivv3EYfW021IxWtsEduY5Gl8KMQNwLQ8G/BjZP6IPB4YMN
+         s1HVLV93qGt8fpaoej4pjoDU8gOjcICUm7gnizFYDe45Y0V854mFQDvfrMBxOYDMRirm
+         XxchoX7KB6nStslsZuvYVc9lruAQ2RdPSVO5KxsBMQACMQXOUOm1L+mWCjq0J8/mxD/E
+         QwKLQVzXBgGTNPIUWvGRWyOUBH5iLSoXMNDoKWYxrx5s6TxQqgzYNFir5fPhz2vmOw9Y
+         yQyw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782377255; x=1782982055; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
+        b=i18uyhwPSpt4uOmX4NzfZvIwT3wKQ8maf2CpLRcblIiKYCl4LpgjDCxqeaPyJvJqRq
+         a3GibJSiFgkgs8ou1X9pvIBasPVKaewpazNJ3Rg+OJ3V6uDPV5KWcqpAgjXlqdAog4dS
+         OPrLnOOl+2ZO7hnaNrc8CWabV+UgTU+U/yLL2HVK+bACuk1NP+RiDIvqUtwBQxMZ4KQx
+         Jk+dubmF0WFdVv93v0QUt4BWfvt+2h8khGN9fD4BVmOd+kt2T219A9MfzXyCr0daSMp4
+         Mo9GTDeDZA09xHIxhUrT3g6ycUbAAgKZqYOWA2OYFHfsXd/6aoqzWx1G01jfWsqUWsPD
+         KDkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782377255; x=1782982055;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
+        b=IE/i9JTZ+rYgTqhIBtsPOdiFmRVHNYgrdcvuEpvRABqlSM4JhrcmA95reWwTaRcUiI
+         s1w0Rz33o31/9UEdI7Hn3PgirMtpgYVFmIuHeq3fJqd+y2wIBSLNI0U6HmlgXzTu5r+J
+         D/6nOlfLYEsEfR3HiJmsNz7oS9Gp4nE4RGlc6RuZxKBBDxrEBZKHyENicL570e9C+a53
+         7mrF6Jmf/ZsZTMiEXq0PXDD3DWbA7Q9RJ1Qm4BEchlsG2Q7zQRVN4QiTT/0ZHmYFrUNa
+         6Bp+LRQOdUtyi9l7dN+2UBev4nPwHtodb+3ElEuXzrO3aaEWKqNUbyaqVjSv5OyKNxml
+         xazw==
+X-Forwarded-Encrypted: i=1; AFNElJ9IyVOsFdUT4o4VehQty+BCs9U0jiQmiACWhCdH8aZrIwvOrFv9/Y5VXNkTdLok9lduS/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz24A1FTXlQIpBwfY0BD9ldBms5jGQcyUBeYNIp8XgK+//yZYQe
+	NNkxoEizd+i1kgpmpCjO8VXeOQUuqd6d/snJFwxPlGbuQS+jf/jVdqWq2kAyrGwZjQTKVSHvLap
+	E+bZaAVB+N8v0a7Viszi6yv3KEQv2xsgB+t3LaZ7v
+X-Gm-Gg: AfdE7clsu6Plkcu/WanyyZ0xgfddbt+H+1G0ItiMO6j0b0zvvK5VmsMxWDwUnYJMReH
+	e6hukl8Vjj+vBbigQ8Pd4VOeh4ylEJJ2Qbk0JbSlb8wTTpUEDfEYs4G8Bx32znk5/lL+5WIVjzN
+	PlRKAu6yeNJsUKhYHZM5DDp+9WraNoJIsbk/SDegcqeJwVwusEv6HC1KoAx1y4hHVUJt0tOfZAL
+	4MWhMDGY0iJ+Dl5zV9u/Qu0ybmP5QrLFYtiGQND7ovQltnva0Mf4YMMotGqdJ9A3BSfctDGWKVi
+	EK5vPaP7
+X-Received: by 2002:a05:622a:250c:b0:516:d25f:f038 with SMTP id
+ d75a77b69052e-51a6e9b48c8mr8613301cf.10.1782377254458; Thu, 25 Jun 2026
+ 01:47:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260624195924.1422821-5-adityag@linux.ibm.com>
-User-Agent: Mutt/2.3.2 (2026-04-26)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-40-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-40-9d2959357853@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 25 Jun 2026 09:46:57 +0100
+X-Gm-Features: AVVi8CfgbrnQMIfXiVsNJJJ0xVsuAP4drBRXl96LSWEK0lsp_b9ZqLBB6cNHuVM
+Message-ID: <CA+EHjTxw-28BpsSbPTyuhBEMSzzJa=AWMtrT6Bw=3P+SfBKvLA@mail.gmail.com>
+Subject: Re: [PATCH v8 40/46] KVM: selftests: Reset shared memory after hole-punching
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 25, 2026 at 01:29:20AM +0530, Aditya Gupta wrote:
-> The default powernv machine has been recently changed to powernv11,
-> though fadump functional test used powernv10
-> 
-> Change it to use default 'powernv' machine for the tests instead of
-> being fixed to powernv10
-> 
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> private_mem_conversions_test used to reset the shared memory that was used
+> for the test to an initial pattern at the end of each test iteration. Then,
+> it would punch out the pages, which would zero memory.
+>
+> Without in-place conversion, the resetting would write shared memory, and
+> hole-punching will zero private memory, hence resetting the test to the
+> state at the beginning of the for loop.
+>
+> With in-place conversion, resetting writes memory as shared, and
+> hole-punching zeroes the same physical memory, hence undoing the reset
+> done before the hole punch.
+>
+> Move the resetting after the hole-punching, and reset the entire
+> PER_CPU_DATA_SIZE instead of just the tested range.
+>
+> With in-place conversion, this zeroes and then resets the same physical
+> memory. Without in-place conversion, the private memory is zeroed, and the
+> shared memory is reset to init_p.
+>
+> This is sufficient since at each test stage, the memory is assumed to start
+> as shared, and private memory is always assumed to start zeroed. Conversion
+> zeroes memory, so the future test stages will work as expected.
+>
+> Fixes: 43f623f350ce1 ("KVM: selftests: Add x86-only selftest for private memory conversions")
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+
+Reviewed-by: Fuad Tabba <tabba@google.com>
+
+Cheers,
+/fuad
+
 > ---
->  tests/functional/ppc64/test_fadump.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
-
+>  tools/testing/selftests/kvm/x86/private_mem_conversions_test.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+> index 861baff201e78..289ad10063fca 100644
+> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
+> @@ -202,15 +202,18 @@ static void guest_test_explicit_conversion(u64 base_gpa, bool do_fallocate)
+>                 guest_sync_shared(gpa, size, p3, p4);
+>                 memcmp_g(gpa, p4, size);
+>
+> -               /* Reset the shared memory back to the initial pattern. */
+> -               memset((void *)gpa, init_p, size);
+> -
+>                 /*
+>                  * Free (via PUNCH_HOLE) *all* private memory so that the next
+>                  * iteration starts from a clean slate, e.g. with respect to
+>                  * whether or not there are pages/folios in guest_mem.
+>                  */
+>                 guest_map_shared(base_gpa, PER_CPU_DATA_SIZE, true);
+> +
+> +               /*
+> +                * Hole-punching above zeroed private memory. Reset shared
+> +                * memory in preparation for the next GUEST_STAGE.
+> +                */
+> +               memset((void *)base_gpa, init_p, PER_CPU_DATA_SIZE);
+>         }
+>  }
+>
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
