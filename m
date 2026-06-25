@@ -1,159 +1,263 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456FD2F12AC
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 07:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE50347BC4
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 07:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782371434; cv=none; b=JO/e9X4bVmI6XJtFPnBzcATRyNLo2RvLF6XHSbqFRtrxbvr6SXcWjuLAZN+MfdPUCelumDH0fTHmxrABeGT2pFtOvF910udIjjCxfeQRr6nGzeB1c7/Fn6Bo4SNSpGxc1qrC6sdwBN4IUpe1t8+OHm7nhV43+UeHDtB19byToV8=
+	t=1782371735; cv=none; b=Rh0B7ZTR6kEFwFjDVGDWatN9JzSb55jfQSAnG19JL/450HYigdCv74WLYy+L0yZvtFjkbDZgnl73gBciZc38QtB4fQlEVT+fzmw9Dmdiz4DnBk+lZFYxQoO+OZvcJG+j8M8KZwkP5nL2t4alce7RlA0eO7FOmqU+Gp4iRGuUBE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782371434; c=relaxed/simple;
-	bh=yZTX7VJC/WD2OA/W8YgsMHmmxA3TUk1+6Pebdr0tiEw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lm+KCzAWCgWqk1kF0SZ1nGqsGNw8tDaJ4mR75myWcXiwzuzc/UpuCEn2kiyYCA3cXg9sOtPIBbVV7A3WIK7J9NsX76GuwALTXz+Wa9k141Bba5noMPWSm1HBUU+1Gp+r7CAsud7pF6+M4gQO5FaqTrS51IMA6cm5PiNAU9BmWvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JQEPuKIC; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782371735; c=relaxed/simple;
+	bh=u8XCrqCgJetvR2xdyVexEcnDWRZXDkhW13PCWvw8OtE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KhwB689+ri/6wRn+sbx8TdHZ6SKGh7vw9y+UdRtRJ9fWYQvyQz2eykxOS5kQJsgImfZgYyEVscMnQXVDaAFmPGRH9+3pBSTI3hdQE0jcO+ltTeO1B1QJxi8ESeluQYdzMz3/7S2ZnvumsZOU9dEh26lj6dlH3th4RQnkmhhTpgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G4Jv8KrS; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JQEPuKIC"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c0efc7ef797so346943166b.2
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 00:10:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782371432; x=1782976232; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d4T0v1+5jWi6SLHmOxRLSB1SGzzI7YTPcb0uLSBXV2Y=;
-        b=JQEPuKICiqx9xYfTog0UlKQbBY+k/oNtfd7cPR1/HSzGUxoI5Br7yFYPUVzhiBPtqZ
-         ScPO+fYAc+Lk16PPxenU9xzyxR7b3aDw2GKZ37uGYVkstRMRYq3kaQBzYGl27aAq4wuL
-         M3fudC+DFBrCCm1hswGdDuxS5B4vLU67BGEIIT+Wo3anGtNFNRnVlNa7POxUtpDg59ZK
-         6r1XqK6tcDoMnSlYkVLg5cGSeDM/SijyuY15iJKAu9YKvrSrUrA7hokVimh85a2/uO58
-         T4gNQOyN95WrmCnZHTum5KloCAc5Np4PcAaMqCMPKuWDATPryIdOiegogJFCMj/O8Tw0
-         a3Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782371432; x=1782976232;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=d4T0v1+5jWi6SLHmOxRLSB1SGzzI7YTPcb0uLSBXV2Y=;
-        b=WfaltDCnFMtMbGHcqz+7DJblXlF8agCNVTt4pdCEnr184T18y8GupGHkE81riIe17a
-         vsLCngLUixXb77sfu0NFU+I95PYP+qh+G6ziA1xy0dojpoeFRewGSv716lM+cR8f71mI
-         i7aKyvQWkqUbDJtQqNSRABqTlOpM8x+VTyMvhzpgtsrtEwjKNSnB1vYmP+pkrD0kuJL6
-         WqpnPnrh9rSF1l8anKtiuNLZeLH0afOVAGqlnE4kY0T3SRhaD41A09lhENkIORlWNlJY
-         gmMt7Fl4dAw0OTHDPf1R9WLMR/vwk2NrbivB1AuzoRMs1zP8opIhFP/KxQCdFPyc530W
-         4PvA==
-X-Gm-Message-State: AOJu0YxkjOjbsJfZYuY232THxt1XlUt9UvsQWWfGqdu3AJ+BA3pWiO9+
-	0krzC/1ky4NLSWoiwU3Wtg8ESdSv8otu0qJgzJOoiwzz8fHHwMIKr1pcLOBz/CtkJIQ=
-X-Gm-Gg: AfdE7ckH+BHbjT3ZqD++PK7/grz6zUDDDQSwo+0qIbIDtz6OUfHafA/Zgv0uK1nue0a
-	ObhMzoWdPMrv6aCrbl2qXE37F16C+Me9uWy6jhH076h4uIhHnBkgDjVy1PHxeUjdtvZipzwNH5s
-	xneWA1knX5Nkb/XrZMbKyHBBJVeEhuB1tP48gPLPrnxpvp0HoXG5sf0LhFBj7+4T0kq9eJqI1CS
-	OCLqWVfFK5Q9rZw2I3JEKKnCRz0vSpLq5gGQCUpnaoBJHlXV4UtR7ObuZXhYSDyOn7rc/9vWp4+
-	jxeM1dISYYQjyvzai7yUDeFmaV8yJBqWsuNeWApiDLTR7O8SZjVgHxrcw/3Y6+ta8v+tMXeCu4v
-	Q5e9NyFVXf1ip551k99jhq1BGF1PSbR1uI7urk52ZpWOYmFH18JEt/FXxF8F/+cUZG7putZaaSp
-	TyooCLK0b6wMzjaZ2TmRoB+ajBuTfJ+f68SSW0eKtjO71g7c2YmApRrMjzWsgvhFnXwWtKy73V4
-	lIneiTUvCXTUmutEHfDYTtxS2I=
-X-Received: by 2002:a17:907:c08c:b0:c12:3f6:f624 with SMTP id a640c23a62f3a-c1205ec5923mr64446866b.35.1782371431337;
-        Thu, 25 Jun 2026 00:10:31 -0700 (PDT)
-Received: from arch-piotr.tailb7ebba.ts.net (226.55.classcom.pl. [195.150.55.226])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbe05f9csm114464966b.31.2026.06.25.00.10.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 00:10:30 -0700 (PDT)
-From: Piotr Zarycki <piotr.zarycki@gmail.com>
-To: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: seanjc@google.com,
-	vkuznets@redhat.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Piotr Zarycki <piotr.zarycki@gmail.com>
-Subject: [PATCH v3] selftests: add swap() macro to kselftest.h
-Date: Thu, 25 Jun 2026 09:09:14 +0200
-Message-ID: <20260625070914.2175124-1-piotr.zarycki@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
-References: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G4Jv8KrS"
+X-Forwarded-Encrypted: i=1; AFNElJ+aaI28Pa0+/R3jKhmuLTNnWzQgL/I6rgqdsxoyzV3sjxIYbdzUk2c1k1baJghfPv7AN+w=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782371730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n4l8kEDpwe6ZsvCFof1KiGbqck2t2+CoEwvUDbK1yNQ=;
+	b=G4Jv8KrSZoKm/h0cWk4HI8AF9Rcw5kChPmYYlIN8avju2k0n0QAuEb2b1FMW/k3KLn88he
+	/RTmhOMbtkTBI+XHZCRwtlBEFo9D4Lv++ycf8ONtLq+eLg98Pm5QbUy2Urr+TFgFOOSn27
+	mlyQoQ2rnhtIGZtyZ/ZIrUAAma3+850=
+X-Gm-Message-State: AOJu0YzGylYhDizbp+rSy7TVhOpqvYN8XXTwXdu8tSlqqjkfA8adht70
+	6FlAe71pblBie2fnIP3j90zKo71oQVgk8hyMkh3IH6rJ2OiXC6fM+NN6c3S93DV1OarzSWHXiCc
+	OZGpqkS5APxXnPo+kq+sCCYW5f6Rw8nxV6mol+iIg
+X-Received: by 2002:a05:622a:1f96:b0:516:cc18:4760 with SMTP id
+ d75a77b69052e-51a709958aamr5225201cf.21.1782371725540; Thu, 25 Jun 2026
+ 00:15:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 25 Jun 2026 08:14:48 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxZQf9w+iT11O3+KC-z6Sbg5qCEZ-XCR3=wRnG2k3=Maw@mail.gmail.com>
+X-Gm-Features: AVVi8Cfiom8KyzZV2HmAlpy9PB5CRyn77LPV2Q5_VbhfHk5a3YCLzvyw4gtaMNM
+Message-ID: <CA+EHjTxZQf9w+iT11O3+KC-z6Sbg5qCEZ-XCR3=wRnG2k3=Maw@mail.gmail.com>
+Subject: Re: [PATCH v8 37/46] KVM: selftests: Test that shared/private status
+ is consistent across processes
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Add swap() to tools/testing/selftests/kselftest.h with an #ifndef guard.
+On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Sean Christopherson <seanjc@google.com>
+>
+> Add a test to verify that a guest_memfd's shared/private status is
+> consistent across processes, and that any shared pages previously mapped in
+> any process are unmapped from all processes.
+>
+> The test forks a child process after creating the shared guest_memfd
+> region so that the second process exists alongside the main process for the
+> entire test.
+>
+> The processes then take turns to access memory to check that the
+> shared/private status is consistent across processes.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
 
-Guard the local swap() definition in mm/uffd-stress.c with #ifndef to
-prevent a redefinition warning.
+Two things below, otherwise:
 
-Use swap() in hyperv_tlb_flush.c to replace the open-coded PTE swap and
-remove the TODO comment.
+Reviewed-by: Fuad Tabba <tabba@google.com>
 
-Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
----
-Changes in v3:
-- Add #ifndef guard to mm/uffd-stress.c to fix a redefinition warning;
-  uffd-stress.c defines its own swap() without a guard, which conflicts
-  when kselftest.h is included first via uffd-common.h.
+Cheers,
+/fuad
 
-Changes in v2:
-- Move swap() from tools/include/linux/kernel.h to kselftest.h; kernel.h
-  breaks perf (swap is used there as a function pointer call).
 
- tools/testing/selftests/kselftest.h                | 4 ++++
- tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c | 6 +-----
- tools/testing/selftests/mm/uffd-stress.c           | 2 ++
- 3 files changed, 7 insertions(+), 5 deletions(-)
+>  .../kvm/x86/guest_memfd_conversions_test.c         | 118 +++++++++++++++++++++
+>  1 file changed, 118 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index f03af2c46426f..99b0023609670 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> @@ -2,6 +2,8 @@
+>  /*
+>   * Copyright (c) 2024, Google LLC.
+>   */
+> +#include <pthread.h>
+> +#include <time.h>
+>  #include <sys/mman.h>
+>  #include <unistd.h>
 
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index 60838b61a2da..7f53751523d8 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -64,6 +64,10 @@
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
- #endif
- 
-+#ifndef swap
-+#define swap(a, b)  do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-+#endif
-+
- #if defined(__i386__) || defined(__x86_64__) /* arch */
- /*
-  * gcc cpuid.h provides __cpuid_count() since v4.4.
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c b/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-index 15ee8b7bfc11..514d41f00714 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-@@ -131,14 +131,10 @@ static void set_expected_val(void *addr, u64 val, int vcpu_id)
- 
- /*
-  * Update PTEs swapping two test pages.
-- * TODO: use swap()/xchg() when these are provided.
-  */
- static void swap_two_test_pages(gpa_t pte_gva1, gpa_t pte_gva2)
- {
--	u64 tmp = *(u64 *)pte_gva1;
--
--	*(u64 *)pte_gva1 = *(u64 *)pte_gva2;
--	*(u64 *)pte_gva2 = tmp;
-+	swap(*(u64 *)pte_gva1, *(u64 *)pte_gva2);
- }
- 
- /*
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index 700fbaa18d44..802046e905dd 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -56,8 +56,10 @@ static uffd_global_test_opts_t *gopts;
- static char *zeropage;
- pthread_attr_t attr;
- 
-+#ifndef swap
- #define swap(a, b) \
- 	do { __auto_type __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-+#endif
- 
- const char *examples =
- 	"# Run anonymous memory test on 100MiB region with 99999 bounces:\n"
--- 
-2.54.0
+nit: include order
 
+>
+> @@ -323,6 +325,122 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
+>         test_private(t, 0, 0, 'A');
+>  }
+>
+> +/* Test that shared/private memory protections work and are seen from any process. */
+> +GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
+> +{
+> +       enum test_state {
+> +               STATE_INIT,
+> +               STATE_CHECK_SHARED,
+> +               STATE_DONE_CHECKING_SHARED,
+> +               STATE_CHECK_PRIVATE,
+> +               STATE_DONE_CHECKING_PRIVATE,
+> +       };
+> +
+> +       struct sync_state {
+> +               pthread_mutex_t mutex;
+> +               pthread_cond_t cond;
+> +               enum test_state step;
+> +       } *sync;
+> +
+> +       pthread_mutexattr_t mattr;
+> +       pthread_condattr_t cattr;
+> +       pid_t child_pid, parent_pid;
+> +       int status;
+> +
+> +       sync = kvm_mmap(sizeof(*sync), PROT_READ | PROT_WRITE,
+> +                       MAP_SHARED | MAP_ANONYMOUS, -1);
+> +
+> +       pthread_mutexattr_init(&mattr);
+> +       pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
+> +       pthread_mutex_init(&sync->mutex, &mattr);
+> +       pthread_mutexattr_destroy(&mattr);
+> +
+> +       pthread_condattr_init(&cattr);
+> +       pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
+> +       pthread_cond_init(&sync->cond, &cattr);
+> +       pthread_condattr_destroy(&cattr);
+> +
+> +       sync->step = STATE_INIT;
+> +
+> +#define TEST_STATE_AWAIT(__state)                                              \
+> +       do {                                                                    \
+> +               pthread_mutex_lock(&sync->mutex);                               \
+> +               while (sync->step != (__state)) {                               \
+> +                       struct timespec ts, stop;                               \
+> +                       int ret;                                                \
+> +                                                                               \
+> +                       clock_gettime(CLOCK_REALTIME, &ts);                     \
+> +                       stop = timespec_add_ns(ts, 100 * 1000000UL);            \
+> +                                                                               \
+> +                       ret = pthread_cond_timedwait(&sync->cond, &sync->mutex, &stop); \
+> +                       if (ret == ETIMEDOUT) {                                 \
+> +                               bool alive = (child_pid == 0) ?                 \
+> +                                            (getppid() == parent_pid) :                \
+> +                                            (waitpid(child_pid, NULL, WNOHANG) == 0); \
+
+Not sure it's worth it, but if you want to silence Sashiko, waitid
+with WNOWAIT might be the way to go (not tested, just from looking at
+the man page). This is though very unlikely, mentioning it since
+Sashiko complained.
+
+
+> +                               TEST_ASSERT(alive, "Other process exited prematurely"); \
+> +                       } else {                                                \
+> +                               TEST_ASSERT(!ret, "pthread_cond_timedwait failed"); \
+> +                       }                                                       \
+> +               }                                                               \
+> +               pthread_mutex_unlock(&sync->mutex);                             \
+> +       } while (0)
+> +
+> +#define TEST_STATE_SET(__state)                                                        \
+> +       do {                                                                    \
+> +               pthread_mutex_lock(&sync->mutex);                               \
+> +               sync->step = (__state);                                         \
+> +               pthread_cond_broadcast(&sync->cond);                            \
+> +               pthread_mutex_unlock(&sync->mutex);                             \
+> +       } while (0)
+> +
+> +       parent_pid = getpid();
+> +       child_pid = fork();
+> +       TEST_ASSERT(child_pid != -1, "fork failed");
+> +
+> +       if (child_pid == 0) {
+> +               const char inconsequential = 0xdd;
+> +
+> +               TEST_STATE_AWAIT(STATE_CHECK_SHARED);
+> +
+> +               /*
+> +                * This maps the pages into the child process as well, and tests
+> +                * that the conversion process will unmap the guest_memfd memory
+> +                * from all processes.
+> +                */
+> +               host_do_rmw(t->mem, 0, 0xB, 0xC);
+> +
+> +               TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
+> +               TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
+> +
+> +               TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
+> +               TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
+> +
+> +               TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
+> +               exit(0);
+> +       }
+> +
+> +       test_shared(t, 0, 0, 0xA, 0xB);
+> +
+> +       TEST_STATE_SET(STATE_CHECK_SHARED);
+> +       TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
+> +
+> +       test_convert_to_private(t, 0, 0xC, 0xD);
+> +
+> +       TEST_STATE_SET(STATE_CHECK_PRIVATE);
+> +       TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
+> +
+> +       TEST_ASSERT_EQ(waitpid(child_pid, &status, 0), child_pid);
+> +       TEST_ASSERT(WIFEXITED(status) && WEXITSTATUS(status) == 0,
+> +                   "Child exited with unexpected status");
+> +
+> +       pthread_mutex_destroy(&sync->mutex);
+> +       pthread_cond_destroy(&sync->cond);
+> +       kvm_munmap(sync, sizeof(*sync));
+> +
+> +#undef TEST_STATE_SET
+> +#undef TEST_STATE_AWAIT
+> +}
+> +
+>  int main(int argc, char *argv[])
+>  {
+>         TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
