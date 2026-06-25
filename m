@@ -1,128 +1,303 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14543ECBED
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 16:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCFE3AA1B0;
+	Thu, 25 Jun 2026 16:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782404470; cv=none; b=Aq4ji8X44Qxo9aclTbMjYsGxZPx/4mEb2AC+ZopwQ5EK6UN4OC9WNiFHupu/CsM5KA8wNOhJIpr6cJxe4IB4uChI9LHTc3fRjexKeznC3XQTJKZDBTyNPn4Cv6Gg88wqNPyGSHNqojN+EnolbZcODMnRqv3tnGFlS3UKEecKpfA=
+	t=1782405064; cv=none; b=Y8Dp4BiyS0OE1VNGBPKv8rwp5xpZGxn1ESf3TENn4qmewfTQAZbXCMK4FzAp5tOFbqAd2Q4LZ1nA1eNabolyD0GMyss55kxg9Vlbp4K81aZ6DESHz/7W8QkwHyu9w0plsiavDiV7WG35QPzJL3glITzLB02+NghnF77OvGOESUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782404470; c=relaxed/simple;
-	bh=cWoMyE2Jt9LI5QWmHop8a7As2DpqmKqDzIfcUPR8gok=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JSURNnxyMTyCNaqHPj8LB9XZdet1xzviQ9wYUFVsUFD8LVg4Fszv2BTpnRupjXEPkGo62gk6TIJqxxR20Ao5dIHZ2buk+k0Rb2R9CMsN0AgBfkzfGbu49+kRjDhilmjStnWGZSjA+iUfMIacK5QDa9fzVKzp9L6vtDmjmW2vtEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z70+GDa+; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782405064; c=relaxed/simple;
+	bh=FlflHI6eZ2LJMOCo0rE1cuVEvdNt3PMJD1t19srOLnU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fp0Fw8l9NO/Z0gJcGBWvetg85F9W0Xvd9Zh0lKhd40XnX6OQYnt2enxBebhfGgeJ478qDTHbmMYTfObwCk8bJRW6Krci4gKCybqYl3u5uFUG6srA1fBlA76Kk2Qby59ksFDAvKJUojk7gG5m9szb2LyOmx2vXzRj8nVUBscJoqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f2BoyQUX; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z70+GDa+"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c889d1eebafso57564a12.0
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:21:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782404468; x=1783009268; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D0Iegm3XWpEU50W87frBJm5VEN9NWiBbsMScWatf8rs=;
-        b=Z70+GDa+yZiGdrM1xvJ6lL9WnsaRLQG9TdY0mAy+OFmyLEzsW5AxcfUG95LFOeOWNl
-         t2Xn6CweLUjoUMFNbg74n0GdtpZyne3ojyDprFuGF8zjTEJaMoLHw1fL+ZOTbkHFAziL
-         PqEGpvN9El9k1aWIA8xTy4VYMbbmjJrQAXsnaTQujvwniEPK+3kmF7TQIyaGPeX0aJQA
-         RY0sd1rcWzvT9CJ7iDlpKJ8GgKP0D0fbEqE93yQgUIWoUSsJW2c1mjTrsdwoFxke7GwT
-         OkaoWUS8k+tGuTINJEb0LKThDgy/nmJ8429ue5uXFXdJrNqcxhrQrisf6oy8AL6xm/+v
-         fy3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782404468; x=1783009268;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D0Iegm3XWpEU50W87frBJm5VEN9NWiBbsMScWatf8rs=;
-        b=SBJbFSCBTarxMiNXE88e8u+Ln+nUpHDd0nRuu0cOLhi0MCFR/z+3GoS4AqJa0s5jRq
-         NPJulL1UYwyrotCbZlLgQqsu2WJ2IfJG/aKQv4n5oS5oUhWKRscd3Z20IUlqVELnMrBx
-         qlMKhFNDCITSDvLwEdvpWIzh13V7gzKDj2CuAjPMLDGCEB9IgeYjAbxOhPdxzP46/uDf
-         Xau7p39ftMJZXMzWNf/udnglq425WRo+Vl3aZDjaMuZ3rWKiVXg8xKtvDx8zL3ahJ8yd
-         01eE4Uhaax0hdi0MYJ8qgHlvonMOEC7PKgSXlpkJMu92YpbsjFBqfRTkcjWAU8MINoZz
-         ZiTw==
-X-Forwarded-Encrypted: i=1; AFNElJ/M16wwANFo/uEnAc2fpljJeu3LyBYlZLGu3BIdTPwCtUs1m+B11avaUESAC51/T5xB0kw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoeHsNKZvUKoojGYsz/yFiQsN3ZoQqVS2eD4aJzeem73Al//mS
-	nTX9TeOhvZtojf6SYphNuSWky8pgLyIKVU/q6nawE4ECOXShzNqgpVBpWEXYm9NSgeW3/orBQQW
-	tDEFTJA==
-X-Received: from pfux48.prod.google.com ([2002:a05:6a00:bf0:b0:845:b531:adf4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa3:b0:3b4:8bc6:138
- with SMTP id adf61e73a8af0-3bd4ae9cd56mr4201086637.23.1782404467957; Thu, 25
- Jun 2026 09:21:07 -0700 (PDT)
-Date: Thu, 25 Jun 2026 09:21:07 -0700
-In-Reply-To: <178221517808.3589966.15538835749975810737@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f2BoyQUX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782405063; x=1813941063;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FlflHI6eZ2LJMOCo0rE1cuVEvdNt3PMJD1t19srOLnU=;
+  b=f2BoyQUXQTimJYJ1tdyDKed9nKs6tdTBFhRahO9sx3pXEGqjhtoa9ud0
+   txmrJCQUoEtEazaXdImzvHS/hJ+zNVqen5A2dNWS60ynTcUvi1yPtuS8z
+   6wBxle1HeX/lt7WUYxOgwza2K4OQBqLfs7Rx760ukcxKbidgeosjhZs1p
+   cQsGVqb9xsEfjkduAxcbYZY5vKcS9f6MOAhDa9UBqpebvxh+A852ECEF3
+   DnhKqdSGWRUgW4vVm1olu6QEF77AEZjlrHy6R28vBNwqTUi13VkqBHkql
+   tiwQj6WJ+oQBY7/DzJdcIxClkxaRbqqshSyey8Io3SA0+Z7gPffTs2kbt
+   Q==;
+X-CSE-ConnectionGUID: 99gR02kFQGuknlF+bWv/AA==
+X-CSE-MsgGUID: SnhNG6MZRQmPjzR3CjA43g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="70696995"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="70696995"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 09:30:59 -0700
+X-CSE-ConnectionGUID: 7lFSDcONQFW0srDlCcLGvA==
+X-CSE-MsgGUID: djbSK/wHTTK5eY4iljoz0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="249278334"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 09:30:59 -0700
+Message-ID: <1f1c2f34-1f89-4886-a115-41666532f032@intel.com>
+Date: Thu, 25 Jun 2026 11:30:57 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260621133708.3454718-1-mike.malyshev@gmail.com>
- <20260621133708.3454718-2-mike.malyshev@gmail.com> <ajnEAkFGyJWmomhq@google.com>
- <178221517808.3589966.15538835749975810737@gmail.com>
-Message-ID: <aj1Vc13mqb-fXiow@google.com>
-Subject: Re: [PATCH 1/1] KVM: x86/mmu: Emulate, don't kill the VM, on access
- to a disabled passthrough BAR
-From: Sean Christopherson <seanjc@google.com>
-To: Mikhail Malyshev <mike.malyshev@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 6/7] KVM: x86/pmu: Emulate RDPMC on performance metrics
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260625034555.141453-1-zide.chen@intel.com>
+ <20260625034555.141453-7-zide.chen@intel.com>
+ <e3058805-9215-48dc-ad37-ec530a6c8212@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <e3058805-9215-48dc-ad37-ec530a6c8212@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 23, 2026, Mikhail Malyshev wrote:
-> On Mon, Jun 22, 2026, Sean Christopherson wrote:
-> > I really don't like this.  It's an ABI change that affects years of precedent,
-> > and the ABI it creates is very haphazard.  E.g. why should PFNMAP memory get
-> > emulate MMIO semantics for this case?  And a PROT_NONE VMA really shouldn't get
-> > MMIO semantics either.
-> >
-> > I would rather have KVM exit to userspace with KVM_EXIT_MEMORY_FAULT and fill
-> > run->memory_fault, i.e.
+
+
+On 6/25/2026 4:17 AM, Mi, Dapeng wrote:
 > 
-> Agreed, thanks - that's the right layer, and the PROT_NONE case alone is reason
-> enough not to overload the pfn classification the way I did.
+> On 6/25/2026 11:45 AM, Zide Chen wrote:
+>> If the host has the PERF_METRICS capability but it's not present on
+>> the guest, RDPMC interception must be enabled and KVM should inject
+>> an #GP when the guest attempts to read it.
+>>
+>> If the guest has PERF_METRICS, but RDPMC interception is enabled for
+>> other reasons, KVM needs to emulate RDPMC with type 2000H.
+>>
+>> For simplicity, Metrics Clear Mode is not supported.
+>>
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>> ---
+>> v5: new patch.
+>> ---
+>>  arch/x86/kvm/pmu.c | 30 ++++++++++++++++++++++++++----
+>>  1 file changed, 26 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>> index 7aafc5db1346..af5b14f44e4b 100644
+>> --- a/arch/x86/kvm/pmu.c
+>> +++ b/arch/x86/kvm/pmu.c
+>> @@ -755,6 +755,16 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>  	return 0;
+>>  }
+>>  
+>> +static int kvm_pmu_rdpmc_metrics(struct kvm_vcpu *vcpu,
+>> +				 unsigned idx, u64 *data)
+>> +{
+>> +	if (!kvm_vcpu_has_perf_metrics(vcpu))
+>> +		return 1;
+>> +
+>> +	*data = vcpu_to_pmu(vcpu)->perf_metrics;
+>> +	return 0;
+>> +}
+>> +
+>>  int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>  {
+>>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>> @@ -767,15 +777,18 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>  	if (is_vmware_backdoor_pmc(idx))
+>>  		return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
+>>  
+>> -	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+>> -	if (!pmc)
+>> -		return 1;
+>> -
+>>  	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
+>>  	    (kvm_x86_call(get_cpl)(vcpu) != 0) &&
+>>  	    kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
+>>  		return 1;
+>>  
+>> +	if (idx & INTEL_PMC_FIXED_RDPMC_METRICS)
 > 
-> For context on v1's shape: localizing the fix in KVM was a deliberate scoping
-> choice - it was the smallest change that stopped the crash without updating
-> another major component (the VMM) at the same time. I agree that optimizing for
-> a single-component change put the policy in the wrong layer; KVM reporting
-> KVM_EXIT_MEMORY_FAULT and the VMM applying device semantics is the right split.
-> 
-> Plan: implement your suggestion (kvm_mmu_prepare_memory_fault_exit() in
-> kvm_handle_error_pfn()) and pair it with a QEMU change that recognizes a
-> memory-fault on a vfio-pci BAR whose memory space is currently disabled and
-> emulates it as an Unsupported Request (reads all ones, writes dropped) rather
-> than aborting. Note QEMU's current KVM_EXIT_MEMORY_FAULT handling only covers
-> guest_memfd shared/private conversion, so this is new vfio-pci handling on the
-> VMM side - I'll test the kernel + QEMU pair against the reproducer before
-> sending v2.
-> 
-> FWIW this is the concrete user the 2024 KVM_CAP_MEMORY_FAULT_INFO work
-> (Zr-8M9rYplgN6IS3) was missing: an assigned Intel iGPU whose guest driver clears
-> PCI_COMMAND.MEM on one vCPU while another is mid-MMIO to the BAR, which kills the
-> VM. Reproducible on demand and seen in the field.
-> 
-> Two questions before I respin:
-> 
-> - Prefer I revive Anish's x86 patch from that series (rebased), or a fresh
->   minimal change against kvm-x86/next? The tree has moved a lot since 2024
->   (kvm_follow_pfn, etc.), so I was leaning fresh with a Link: to the original
->   and Suggested-by: you.
+> I'm not quite sure if this check is good enough. Although the SDM vol.2
+> says "Performance metrics use type 2000H. This type can be used only if
+> IA32_PERF_CAPABILITIES.PERF_METRICS_AVAILABLE[bit 15]=1. For this type, the
+> index in ECX[15:0] is implementation specific." It doesn't say the PMC
+> index must be 0, but we always set the PMC index to 0 when reading topdown
+> metrics.
 
-Oh, I forgot that Anish had posted the x86 MMU change as an isolated patch.
+Simply AND the idx is problematic for two reasons: 1) it doesn't catch
+invalid type. for example 6000H; 2) fundamentally,
+INTEL_PMC_FIXED_RDPMC_METRICS is Intel specific and it can't be compared
+in common code.
 
-Given that patch 2 still applies cleanly, I would say take Anish's patch, rewrite
-the changelog, and then give yourself a Co-developed-by.  I.e. give attribution
-to both Anish and you.
+The proposal is to change the callback rdpmc_ecx_to_pmc() to
+emu_rdpmc(), and mode the RDPMC metrics code into vendor. Part of the
+proposed code:
 
-> - You'd asked for KVM_BUG_ON() + -EIO conversions on that x86 patch - still want
->   those folded in,
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 7aafc5db1346..af6fc8c96037 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -758,8 +758,6 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu
+*vcpu, unsigned idx, u64 *data)
+ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ {
+        struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-       struct kvm_pmc *pmc;
+-       u64 mask = ~0ull;
 
-Yes, please tack on a separate patch to convert the WARN_ON_ONCE()-protected
-EFAULTS in x86's fault path to KVM_BUG_ON() + -EIO.
+        if (!pmu->version)
+                return 1;
+@@ -767,17 +765,12 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned
+idx, u64 *data)
+        if (is_vmware_backdoor_pmc(idx))
+                return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
 
-> and should this stay x86-only or also cover arm64?
+-       pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+-       if (!pmc)
+-               return 1;
+-
+        if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
+            (kvm_x86_call(get_cpl)(vcpu) != 0) &&
+            kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
+                return 1;
 
-Definitely keep your patches x86-only.  For all intents and purposes this is a
-bug fix, let someone else deal with the pain of enabling KVM_CAP_MEMORY_FAULT_INFO
-on arm64 :-)
+-       *data = pmc_read_counter(pmc) & mask;
+-       return 0;
++       return kvm_pmu_call(emu_rdpmc)(vcpu, idx, data);
+ }
+
+ static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 3066cade5790..24634aa92875 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -24,8 +24,7 @@
+ #define KVM_FIXED_PMC_BASE_IDX INTEL_PMC_IDX_FIXED
+
+ struct kvm_pmu_ops {
+-       struct kvm_pmc *(*rdpmc_ecx_to_pmc)(struct kvm_vcpu *vcpu,
+-               unsigned int idx, u64 *mask);
++       int (*emu_rdpmc)(struct kvm_vcpu *vcpu, unsigned idx, u64 *data);
+        struct kvm_pmc *(*msr_idx_to_pmc)(struct kvm_vcpu *vcpu, u32 msr);
+        int (*check_rdpmc_early)(struct kvm_vcpu *vcpu, unsigned int idx);
+        bool (*is_valid_msr)(struct kvm_vcpu *vcpu, u32 msr);
+@@ -84,14 +85,12 @@ static void reprogram_fixed_counters(struct kvm_pmu
+*pmu, u64 data)
+        }
+ }
+
+-static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+-                                           unsigned int idx, u64 *mask)
++static int intel_emu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ {
+        unsigned int type = idx & INTEL_RDPMC_TYPE_MASK;
+        struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-       struct kvm_pmc *counters;
++       struct kvm_pmc *counters, *pmc;
+        unsigned int num_counters;
+-       u64 bitmask;
+
+        /*
+         * The encoding of ECX for RDPMC is different for architectural
+versus
+@@ -104,7 +103,7 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct
+kvm_vcpu *vcpu,
+         * as KVM doesn't support such PMUs.
+         */
+        if (WARN_ON_ONCE(!pmu->version))
+-               return NULL;
++               return 1;
+
+        /*
+         * General Purpose (GP) PMCs are supported on all PMUs, and
+fixed PMCs
+@@ -118,23 +117,28 @@ static struct kvm_pmc
+*intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+        case INTEL_RDPMC_FIXED:
+                counters = pmu->fixed_counters;
+                num_counters = pmu->nr_arch_fixed_counters;
+-               bitmask = pmu->counter_bitmask[KVM_PMC_FIXED];
+                break;
+        case INTEL_RDPMC_GP:
+                counters = pmu->gp_counters;
+                num_counters = pmu->nr_arch_gp_counters;
+-               bitmask = pmu->counter_bitmask[KVM_PMC_GP];
+                break;
++       case INTEL_RDPMC_METRICS:
++               if (!kvm_vcpu_has_perf_metrics(vcpu))
++                       return 1;
++
++               *data = vcpu_to_pmu(vcpu)->perf_metrics;
++               return 0;
+        default:
+-               return NULL;
++               return 1;
+        }
+
+        idx &= INTEL_RDPMC_INDEX_MASK;
+        if (idx >= num_counters)
+-               return NULL;
++               return 1;
+
+-       *mask &= bitmask;
+-       return &counters[array_index_nospec(idx, num_counters)];
++       pmc = &counters[array_index_nospec(idx, num_counters)];
++       *data = pmc_read_counter(pmc);
++       return 0;
+ }
+
+ static inline struct kvm_pmc *get_fw_gp_pmc(struct kvm_pmu *pmu, u32 msr)
+
+
+> Could you please test to run the rdpmc instruction to read topdown metrics
+> with valid and invalid PMC index on real HW and look what would happen? Thanks.
+
+RDPMC with invalid type, for example 0x6000 got an #GP. non-zero index
+(ECX[15:0]) with type 2000H got an #GP on SPR/NVL/GNR as well.
+
+I haven't found any documentation talking about non-zero index on type
+2000H. Since it's implementation specific, for now seems it's OK to
+reject (#GP) non-zero index.
+
+
+>> +		return kvm_pmu_rdpmc_metrics(vcpu, idx, data);
+>> +
+>> +	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+>> +	if (!pmc)
+>> +		return 1;
+>> +
+>>  	*data = pmc_read_counter(pmc) & mask;
+>>  	return 0;
+>>  }
+>> @@ -803,6 +816,14 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>>  }
+>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+>>  
+>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
+>> +{
+>> +	if (!(kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS))
+>> +		return false;
+>> +
+>> +	return !kvm_vcpu_has_perf_metrics(vcpu);
+>> +}
+>> +
+>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>  {
+>>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>> @@ -815,6 +836,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>  		return true;
+>>  
+>>  	return kvm_need_any_pmc_intercept(vcpu) ||
+>> +	       kvm_need_perf_metrics_intercept(vcpu) ||
+>>  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
+>>  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
+>>  }
+
