@@ -1,217 +1,160 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C113242B2
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782378122; cv=none; b=eTIp/CUNATU1oImBvRVgKmLsjIOMf6wBvgXF3ZWJD2D6iOejXLdyNaqPgkRp0l1YjTdlHotCzdtocdB5cvdCxVSQjcog/d2rGstUtyJk6ILw3OUiJBVloOA84x4b/UwOt86SXzTBsdDkcJfJTIkTgaFc+tVIjeN8Sw9J48dWmpY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782378122; c=relaxed/simple;
-	bh=NHQmFvVQNGqmMvQnG1Cw0kS00OH5C+7EKyCxke5Maf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zohc+Fv1GGoNu2sWEW4M2/agfO1SNos7paUDtmeFjSKHH5t4rqVglLh8Cf+Qk3a+/E5LsPRlzW9InOQe9gC5n3eEGtiyzAfTfuoZPdyupNhU6wRVYxDbUd2Mg4p7LbuhbEvro5lFEJEJBrnyPQXrEtBgJyuGfYHSaBBEogdgGeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cz/Urwe1; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325D221F1F
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 09:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782378430; cv=pass; b=ClzrNDSjxtcjyXdX8/gflOwVFiGEK/swtlnZUzNvvdiGW/t75vCeVg+DZHDmNHCdBayMdPD8WuUN4z5Uy8UYSVMhPzjyTksfXM9UuJeKPO4Q2b2B21GLOQs78AeMeOfmsazwgLy/n+hiHNOpvVI9qtLssznI/Gfaf1W/5QteURQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782378430; c=relaxed/simple;
+	bh=UEYSjQQa9ki6wfrDTl8bUciJydH67+AsH0v6+q+s0WM=;
+	h=In-Reply-To:References:MIME-Version:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MOHoyE5bZ7qPOmmUmFI3v3txy8M5Ntn4K9jw3YLaQFeDWvgibNtWPFtGHrIunmPdrTPcz5Xdra1mMCLIrpTTCLZeQVvoa+Hg+zcypKet2S4y/1/yhHoKZEZzIihrbbyxPVvA7miDsEoya1pHAthWeT4nTQ+xvGy5frUuDP+JjAg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bs9l5f/3; arc=pass smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cz/Urwe1"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8453f568e84so2274393b3a.0
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 02:02:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bs9l5f/3"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7dfceeaf168so22746767b3.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 02:07:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782378428; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dYLD/hg+gp0EutXTFuB3oPbC9WZQoISAXtt0PKhGhz979UM9QkQZhIjmifGDZkjohD
+         XEqCfUytwzzzgVWCSdWzI7zfm/HAcOL9OY98mI2nAPFu12UP80eLDKOAK3YV522U3pZ8
+         OOMqShIFkcl+EQTZ4Rgv6IaMC6/9bEmNFKiFBvXma+zU9VzhhjDYbcwNaL4CTDl+Wvn+
+         OCVhN5hBX3vWUZzsBry1hbTkmREz3U/k3k09CIHY4pZeWN+aUq22xiqALT+rWCCWJ5VD
+         IuDH4ZDYYuKckRL6PGF4ALYckFum1kutXk14pPE8kChwo2BDHHF60mtz1BnV2AfNvdL1
+         MLiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:dkim-signature;
+        bh=UEYSjQQa9ki6wfrDTl8bUciJydH67+AsH0v6+q+s0WM=;
+        fh=7zvvFFXHdKmji8sLPsftZ9ignPKtGN3mj3H4Q2q2vxo=;
+        b=r1SHwT7CH0FjY4xDOJA+PdxOSZHlx6pXENg2USQQvOgU/tcbea7zQ/+jKjWzrmC3j1
+         uAQ86GXy/F1bAN570O0pYIGeF7147bxD0srPMIAH+Kqqe2Iuq13qed23D3wDXYS1tgXH
+         czil1rCvtIhVvuGTQPK8pqZzFBevtEaUNRSWG26PS0/2VaAvbF/9fwUMsanIL9E05EUy
+         efDDhOeKHE4UQ3HlfOyOaMFI6X4JvWOSjbL+1LMZfuK6peIancPDub5pmTMCvHlkmNvm
+         Hmw7M8syXd8lVya7hvqXW7ZGgI2lzfvl1mIGVPC0JmTOeRmOWokdydI91ep0yrR41Vek
+         KW0A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782378120; x=1782982920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xB7qUPmcfFX2YiFs58VwnI7FiN+3mMnOwgtZFnYBHsA=;
-        b=Cz/Urwe1gIdRu7c3m5+Z7j+u5BBibe9iViTUSYjA62h+kfpyqD5wD4/Xw3u886x3Bw
-         o1eRgmtxyiYQ+nD7YAP7y11aYVYbTZSkv3pBPTOSL5o5eweaH/ESgCrUpI3xIdawr3xa
-         VdsiF0eyrSl890VTZ9fj0HKZjxnVV/Dx9SAcrVzVFnabRIKpuaRGirokvRTtgydOxhW1
-         DU5fdQMkpgZbz7Hpb7L7tLPjS5yHNBTRrOcsh2fDdNvisjaXCg56MU06WXwditMFWVWW
-         pJpN0ED8IWsnWDnxVEXeksyU78hwefAVpi5i6G6uf4J5MNj1lkSPny4FW3l3x+M/76Ij
-         82bQ==
+        d=gmail.com; s=20251104; t=1782378428; x=1782983228; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=UEYSjQQa9ki6wfrDTl8bUciJydH67+AsH0v6+q+s0WM=;
+        b=Bs9l5f/3aZPCc+dMTvVEyPYlWMKiEhbkGoiYj6M7xKtuEQM+1JO6tAUv2xBItyS4lN
+         0mHoegcNYsWSj5HGK9O+23fOxis9WHayLIBggjWyxO+EbeR/+xG7KoJaVvWmHx0Lj6xR
+         6w0SRJhnh8amr66jq19qwTR3qKp3j5XpgHW/hAkonZqocWIa65rWlmwD+yN1XW1IdM2c
+         T1iXKgKW8s0CdnNiIeYKDEUIpKDn9SlsQjS7Ekid+Cdfs0glhBS9sd66wrTA9OqGI+ct
+         mrD4oiox0U3DMzQHB0aJqd+uttmPBdezjqMsVJ3G+rVQIvggCO0qwi/YBioshGfiUv1k
+         DtmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782378120; x=1782982920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1782378428; x=1782983228;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xB7qUPmcfFX2YiFs58VwnI7FiN+3mMnOwgtZFnYBHsA=;
-        b=aOwM/NwbO8Dbiyvyl5fJfGqt/VpPdlEE8t67rUGB1+a0G3nISQJngmNxxG3VmVVB+8
-         Fq+cHPAdpWDmPS4In2IAQQPwoxJPmHzqlcjPLZXCZxGbTz2cAZ9zJYJ+5NVDVmMfxr9M
-         uquf+LZoHFWyzOqX+akQLwJiPloU6TxCDsosXRT8o1xYvAd+yHsAunkHSxpY0rbjvxZ3
-         o2U4io6ECltQHVZEc/gNc6iD4bmOlWp17LoOiNho4Qt9aJWJHuBy5fvMEjRgEkpjgpqv
-         izyyjbajGGA/qGhpKRe/5D46o/u8h4Hr59/WBOTzlpmpRhpIb+lX5LHXsUKBbbhyAJrW
-         Wj2w==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ll3oQTHxrrzsNrPRCjqSi+/OUbrR36/tIZIBQ3OAuiDEqS1lwS3y0kyRV/zec74mB284=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYlpBtqKhjsrnqdAXXBSDCKP6Akuvw/Apn91yxWBHaBDkcnjvd
-	w1xNyrxIxdBandm6mHC4NXXjtmn6t8jgZ3qlydB4/mbA6PfQ5vzL+8L0
-X-Gm-Gg: AfdE7cm2UZgGL72piTDRGPdkFmaGrMRCtqpfgZG8hV8Hyaz8nG940r9hPozB/pai5kF
-	QsMNtEH1QeJiWks5wY6NkJTYIScgx+CYIwaRfTvfPaP06qCeB0r4aq9EqSkDr4RhnP1BlINhz6h
-	It9Px9kGVtrHxHZ7ZuwbqxajmJnv3I/8kyGRFgR8qiXi8F2MZCBz9EzeOIGeDayJ5q2cApuRUKu
-	Q0Ip8G4IkSgmmgZpJULC9p+Gyxyq5P7EUOklNIBX6BNlrQ63J2HFw0Q9pWaJYVu45Wvvpl5+K7j
-	1FFXH8E/YEr1AIkcm+neLxKy8JXYMSywDaRzkFnaKcUbPMym9k6OQNJKVzihMcGKEqoWqRxkzMj
-	giN/2MC2pl9t3Pj4kwV4cLiNXtTEKJebS7dRd2ekoGiX1oLEF0HDZexBaWGmKJnsYi+016Ue0ww
-	8PhSxDYw3dzzCgkH2GZs8f9g0Jek0/LKCaCFiKiApEt/BEpaiqL/5R2uEH
-X-Received: by 2002:a05:6a00:1a8e:b0:81f:5037:a317 with SMTP id d2e1a72fcca58-845b39d39c6mr2187454b3a.11.1782378119713;
-        Thu, 25 Jun 2026 02:01:59 -0700 (PDT)
-Received: from LIKEXU-MC4.tencent.com ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845b962bf55sm575643b3a.13.2026.06.25.02.01.57
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 25 Jun 2026 02:01:59 -0700 (PDT)
-From: Like Xu <like.xu.linux@gmail.com>
-X-Google-Original-From: Like Xu <likexu@tencent.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: jmattson@google.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: x86/pmu: Clean up vPMU comments and stray blank lines
-Date: Thu, 25 Jun 2026 17:01:55 +0800
-Message-ID: <20260625090155.6326-1-likexu@tencent.com>
-X-Mailer: git-send-email 2.50.1
+        bh=UEYSjQQa9ki6wfrDTl8bUciJydH67+AsH0v6+q+s0WM=;
+        b=Y8ePiOsB8br2qhx/g/qkQUBhHhWJxz/iii9mMIueJEolsKzZZNbH8iXkxFLfU/+u2C
+         cKju6AhuorvJA4rR3GFMbaYazQfOnW+sJ9xrESs6v8HOVRCTPk+gakTzon7mWlYgKYBY
+         JjRpS9d90XwUAPQXUG3wPSJNdzkvIEf0tLzYY5YubdNDJVy8cx1XrDEx5OHGDxJ/jbo+
+         zmheE1oCLf7DKBEBJQtMRP34MLQ6W28a7kJxW7H60uyxnhC1y6mgxxgaQi/iwDyno9aW
+         79yLUqkLj4ocZSG78r20Qn08YHOyXpYobr9tbalz/lPor9Db5AUXS8Gnf/qt8wdXp2bA
+         2Wtg==
+X-Gm-Message-State: AOJu0Yw2aHhN6tull13sP3K/XfOu7M4/PPEOas3YR+ZFx0B+ToxC9ERW
+	pu9Ef3T23tAlNs8E9DrizsNhvTSdP9MjI59HmTkHTElV3m1PwBZ/2oKPPzi2sxkFqXENKrp2lvA
+	lfWdvrd6nubVvknW5jqEBKDg0vYFeb0w=
+X-Gm-Gg: AfdE7ckn+6XtTsxXCoUtfCKFqnr5VyBaZFpdNfucMwf8/T+wBqpcm9+JUi8j3pI/PxB
+	sJB28nSzsVIi1+cDqA62SIeFg6Yl819vQrDMq3VZJ0StlN43llZXqJ7mkOz19MLx7F3QG9/UJyk
+	mg1NerBQGVO6cqi5nVVO9nZlLhCOYECb1ilcfOoJUjX+s4yw+R4LHQkD28iyAHzf1wWoeSFNMbU
+	3Euxs5Q4Wj4rwEIgqryJXIEHV94L7KB98Y9m6pzaZuwPxcY6xlk9m8Og67ZSzKYaIfXbEpBgw==
+X-Received: by 2002:a05:690c:c453:b0:7d4:3090:f39 with SMTP id
+ 00721157ae682-80a6b0a264cmr16436707b3.42.1782378428135; Thu, 25 Jun 2026
+ 02:07:08 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 25 Jun 2026 02:07:07 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 25 Jun 2026 02:07:07 -0700
+In-Reply-To: <20260624132217.7fd42c77@shazbot.org>
+References: <20260624191204.3774-1-alhouseenyousef@gmail.com> <20260624132217.7fd42c77@shazbot.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Date: Thu, 25 Jun 2026 02:07:07 -0700
+X-Gm-Features: AVVi8Cd3-MLnkT3QQoy3d0WjFoeLW5hfvJeraMpvbqdjUWcA2rnRFw8pk_bCrJc
+Message-ID: <CAMuQ4bWvYZTaDOPzOYSL8GpTNupGjkFS86evM7A4GV=DwTsgLg@mail.gmail.com>
+Subject: Re: [PATCH] vfio/type1: validate dirty bitmap page size before use
+To: Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Li RongQing <lirongqing@baidu.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Tidy up the x86 vPMU emulation code and its selftests by fixing comments
-that no longer reflect the code along with assorted spelling and grammar
-mistakes, and by dropping redundant blank lines reported by checkpatch.
+Hi Alex,
 
-No functional change intended.
+Thanks for the pointer. I'll defer to the existing series; please drop my patch.
 
-Signed-off-by: Like Xu <likexu@tencent.com>
----
- arch/x86/kvm/pmu.c                                   | 12 +++++-------
- arch/x86/kvm/pmu.h                                   |  4 ++--
- arch/x86/kvm/vmx/pmu_intel.c                         |  1 -
- tools/testing/selftests/kvm/x86/pmu_counters_test.c  |  4 ++--
- .../selftests/kvm/x86/pmu_event_filter_test.c        |  4 ++--
- 5 files changed, 11 insertions(+), 14 deletions(-)
+Thanks,
+Yousef
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index b92dd2e583356..e7f635b9c4d78 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -403,7 +403,7 @@ void pmc_write_counter(struct kvm_pmc *pmc, u64 val)
- 	 * Drop any unconsumed accumulated counts, the WRMSR is a write, not a
- 	 * read-modify-write.  Adjust the counter value so that its value is
- 	 * relative to the current count, as reading the current count from
--	 * perf is faster than pausing and repgrogramming the event in order to
-+	 * perf is faster than pausing and reprogramming the event in order to
- 	 * reset it to '0'.  Note, this very sneakily offsets the accumulated
- 	 * emulated count too, by using pmc_read_counter()!
- 	 */
-@@ -422,7 +422,6 @@ static int filter_cmp(const void *pa, const void *pb, u64 mask)
- 	return (a > b) - (a < b);
- }
- 
--
- static int filter_sort_cmp(const void *pa, const void *pb)
- {
- 	return filter_cmp(pa, pb, (KVM_PMU_MASKED_ENTRY_EVENT_SELECT |
-@@ -658,7 +657,7 @@ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu)
- 	/*
- 	 * The reprogramming bitmap can be written asynchronously by something
- 	 * other than the task that holds vcpu->mutex, take care to clear only
--	 * the bits that will actually processed.
-+	 * the bits that will actually be processed.
- 	 */
- 	BUILD_BUG_ON(sizeof(bitmap) != sizeof(atomic64_t));
- 	atomic64_andnot(*(s64 *)bitmap, &pmu->__reprogram_pmi);
-@@ -666,9 +665,9 @@ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu)
- 	kvm_for_each_pmc(pmu, pmc, bit, bitmap) {
- 		/*
- 		 * If reprogramming fails, e.g. due to contention, re-set the
--		 * regprogram bit set, i.e. opportunistically try again on the
--		 * next PMU refresh.  Don't make a new request as doing so can
--		 * stall the guest if reprogramming repeatedly fails.
-+		 * reprogram bit, i.e. opportunistically try again on the next
-+		 * PMU refresh.  Don't make a new request as doing so can stall
-+		 * the guest if reprogramming repeatedly fails.
- 		 */
- 		if (reprogram_counter(pmc))
- 			set_bit(pmc->idx, pmu->reprogram_pmi);
-@@ -956,7 +955,6 @@ static void kvm_pmu_reset(struct kvm_vcpu *vcpu)
- 	kvm_pmu_call(reset)(vcpu);
- }
- 
--
- /*
-  * Refresh the PMU configuration for the vCPU, e.g. if userspace changes CPUID
-  * and/or PERF_CAPABILITIES.
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index a5821d7c87f93..090c9bbb74f48 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -94,8 +94,8 @@ static inline bool kvm_vcpu_has_mediated_pmu(struct kvm_vcpu *vcpu)
-  * is tracked internally via index 32.  On Intel, (AMD doesn't support fixed
-  * counters), this mirrors how fixed counters are mapped to PERF_GLOBAL_CTRL
-  * and similar MSRs, i.e. tracking fixed counters at base index 32 reduces the
-- * amounter of boilerplate needed to iterate over PMCs *and* simplifies common
-- * enabling/disable/reset operations.
-+ * amount of boilerplate needed to iterate over PMCs *and* simplifies common
-+ * enable/disable/reset operations.
-  *
-  * WARNING!  This helper is only for lookups that are initiated by KVM, it is
-  * NOT safe for guest lookups, e.g. will do the wrong thing if passed a raw
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index a73a9515d96cd..70ef84aa1a223 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -795,7 +795,6 @@ static void intel_pmu_write_global_ctrl(u64 global_ctrl)
- 	vmcs_write64(GUEST_IA32_PERF_GLOBAL_CTRL, global_ctrl);
- }
- 
--
- static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-index dc6afac3aa919..677dc23535487 100644
---- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-+++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-@@ -146,7 +146,7 @@ static u8 guest_get_pmu_version(void)
- 
- /*
-  * If an architectural event is supported and guaranteed to generate at least
-- * one "hit, assert that its count is non-zero.  If an event isn't supported or
-+ * one hit, assert that its count is non-zero.  If an event isn't supported or
-  * the test can't guarantee the associated action will occur, then all bets are
-  * off regarding the count, i.e. no checks can be done.
-  *
-@@ -598,7 +598,7 @@ static void test_intel_counters(void)
- 	 * To keep the total runtime reasonable, test only a handful of select,
- 	 * semi-arbitrary values for the mask of unavailable PMU events.  Test
- 	 * 0 (all events available) and all ones (no events available) as well
--	 * as alternating bit sequencues, e.g. to detect if KVM is checking the
-+	 * as alternating bit sequences, e.g. to detect if KVM is checking the
- 	 * wrong bit(s).
- 	 */
- 	const u32 unavailable_masks[] = {
-diff --git a/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c b/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
-index 84e4c6ca67a3d..2d401ff091124 100644
---- a/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
-+++ b/tools/testing/selftests/kvm/x86/pmu_event_filter_test.c
-@@ -62,7 +62,7 @@ struct {
- 
- /*
-  * If we encounter a #GP during the guest PMU sanity check, then the guest
-- * PMU is not functional. Inform the hypervisor via GUEST_SYNC(0).
-+ * PMU is not functional. Inform the hypervisor via GUEST_SYNC(-EFAULT).
-  */
- static void guest_gp_handler(struct ex_regs *regs)
- {
-@@ -73,7 +73,7 @@ static void guest_gp_handler(struct ex_regs *regs)
-  * Check that we can write a new value to the given MSR and read it back.
-  * The caller should provide a non-empty set of bits that are safe to flip.
-  *
-- * Return on success. GUEST_SYNC(0) on error.
-+ * Return on success, GUEST_SYNC(-EIO) on error.
-  */
- static void check_msr(u32 msr, u64 bits_to_flip)
- {
--- 
-2.50.1 (Apple Git-155)
-
+On Wed, 24 Jun 2026 13:22:17 -0600, Alex Williamson <alex@shazbot.org> wrote:
+> On Wed, 24 Jun 2026 21:12:04 +0200
+> Yousef Alhouseen <alhouseenyousef@gmail.com> wrote:
+>
+> > The dirty bitmap ioctl paths derive a shift with __ffs() from the
+> > userspace supplied bitmap page size before comparing it with the IOMMU
+> > page size. A zero page size has undefined behavior, and a non-power-of-2
+> > value makes the bitmap size check use a different granularity than the
+> > page size later accepted by the ioctl.
+> >
+> > Reject invalid bitmap page sizes before using them in shift arithmetic.
+>
+> Thanks for the patch, this is already being worked:
+>
+> [v1]https://lore.kernel.org/all/20260616111733.1810-1-lirongqing@baidu.com/
+> [v2]https://lore.kernel.org/all/20260617113251.2535-1-lirongqing@baidu.com/
+>
+> Thanks,
+> Alex
+>
+> > Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+> > ---
+> > drivers/vfio/vfio_iommu_type1.c | 7 +++++++
+> > 1 file changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+> > index c8151ba54..9499381d0 100644
+> > --- a/drivers/vfio/vfio_iommu_type1.c
+> > +++ b/drivers/vfio/vfio_iommu_type1.c
+> > @@ -26,6 +26,7 @@
+> > #include <linux/fs.h>
+> > #include <linux/highmem.h>
+> > #include <linux/iommu.h>
+> > +#include <linux/log2.h>
+> > #include <linux/module.h>
+> > #include <linux/mm.h>
+> > #include <linux/kthread.h>
+> > @@ -2949,6 +2950,9 @@ static int vfio_iommu_type1_unmap_dma(struct vfio_iommu *iommu,
+> > if (!access_ok((void __user *)bitmap.data, bitmap.size))
+> > return -EINVAL;
+> >
+> > + if (!is_power_of_2(bitmap.pgsize))
+> > + return -EINVAL;
+> > +
+> > pgshift = __ffs(bitmap.pgsize);
+> > ret = verify_bitmap_size(unmap.size >> pgshift,
+> > bitmap.size);
+> > @@ -3039,6 +3043,9 @@ static int vfio_iommu_type1_dirty_pages(struct vfio_iommu *iommu,
+> > range.bitmap.size))
+> > return -EINVAL;
+> >
+> > + if (!is_power_of_2(range.bitmap.pgsize))
+> > + return -EINVAL;
+> > +
+> > pgshift = __ffs(range.bitmap.pgsize);
+> > ret = verify_bitmap_size(size >> pgshift,
+> > range.bitmap.size);
