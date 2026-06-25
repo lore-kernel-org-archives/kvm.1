@@ -1,55 +1,55 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FACD38654F
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA099386578
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 22:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782426160; cv=none; b=ecZo/c6ApTXOVMHVSOeWNW2W0M0TGvhkYGhXiiD3CXoPHWCbCxZLK4zi4VV5rDMh37ME9jI7UMsac8plpRxLSwAqAalAvC0uMD8ubHB2Y+WtpzJbs/wX3x2nW27Yah6fqDWGa+JiYVmEMwJ4cf8H3KThBnAUSIAdt6xDpOwuY4I=
+	t=1782426165; cv=none; b=HVBY+r/GGlWjyUqoamnt+6P9kx6yMG9PMWwC4bQUHhSqHs1i5qpZW+iaUOzyo9MmDi3dVV9S8ik8gXhy1Uim/uThYawAvktS/jBX729PVaChJU6IyTZfAvZtQdsaHLuTSeJrppbYGys809hN8mVEDDNFu0sy2LdPEYODp+0+QjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782426160; c=relaxed/simple;
-	bh=srv7vFiH046kGF3f3LQX0f60FTXO8wnoJ9H8KLUrjZs=;
+	s=arc-20240116; t=1782426165; c=relaxed/simple;
+	bh=DBIf3+VFDZYptvruqD6ltoPaucEpf3ClGhtQ8Sb8YIg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MFU6/rLQN4QvLTOcbOUnIJGSCgzju7iGIjbC79Ee8e4gS8vUBSrixR8luEX5vrEVvjYQvxkfPliHW61gjPkx3NhiyLSEwbKdbuvpYoITfln+Oi8pEhV5t7zyUFMt3N1k6ki1zt8dC/l6zWljE+YB+CnLyP7Gd8pS+Q255UxAvUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BnVqiqfO; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=DgIYcMB3TPuECCPoBJiGDPCdT15Aa0wuR4NBVHPp+OyILA3JanF2JHG4TjgLGhHoObOCPh4wKKZb+4m1lT6+Wrbv38IWy7ZHRJQkugNQk3LlxIa0JuVgTXKV/FaZEDdGA0BxYHKuuM1jAs23lEZzuKEkB78dMaEE2oj2DyhDtZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eILZsB5l; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BnVqiqfO"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c891ed872ddso167054a12.2
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:22:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eILZsB5l"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8bad49b171so155876a12.3
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 15:22:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782426157; x=1783030957; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782426160; x=1783030960; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=SiYg0gyFMIOMLK0hbaugxjbdZ5LjE3WVtjbzhR70NnU=;
-        b=BnVqiqfOQMVFYWBR8RI1mhJEE4EETBbq889UOPIga3p9e5rsrR0Dcp03nApt1c9Oxp
-         Apoy83Q+KQbKGwRi43OFrWbf5HMUr19Rkmuk9blhDSGeDt1zXCyeoTlgKBNNqK8TqliS
-         RAuGRqE+ovnFTQQxH79J3c6OOHgYO2tRAhGXzTZ9rGkSGGTxZPRDRu4yI4G1aswKyK4M
-         NLMBdrZ5Onk6rso49JR/vwyhwHhjRTZduyj9VKcyicVdEBT6yVbaz1c/wQ0IEA5sbnGt
-         1VjSAp9gGjJQDdDntSJBOFw/L3JDvaDGEbUqIjwr8jTbV+QJmsEMyw3Qehhjum+ayIkM
-         +mTQ==
+        bh=23IT/I8BFI3FVtFLLsXh6XFyUDIWbMpHRUduaQab4Hg=;
+        b=eILZsB5lOECd/9JtJne1k04XeD+jttljk+s4kjHgDheMQ20aoaEVtpf2RAL1j20+CJ
+         zCD7MSQlscKZZH9hsRdvPkvRcvBgXNYS38cYDe0YB5sJBdYiRFVYQuyjXnKtZbKlaYaM
+         x+Y54EFq/mkb2zN3qtexs9taq+k05tACrmSADi6ned9p1we/ZaFOEpSgtnPu7A1jJily
+         eaSRtOzi2BcXfDnrQ1H3fJ2xJNGsSczlnTf4QjL7rG7SevxkycPEHmyVz8HjwlNZRVM3
+         rwwdKv3q+TDduscCJQ5UnQRY27+EES9S/r/UMyY17k6LJ6Sqe33RKDrFI16HpA3aVjRb
+         mG0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782426157; x=1783030957;
+        d=1e100.net; s=20251104; t=1782426160; x=1783030960;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SiYg0gyFMIOMLK0hbaugxjbdZ5LjE3WVtjbzhR70NnU=;
-        b=Si9u1KfVTA3DNaVDsHtvSRnoUE38pCFP7l+v/ayjs/8UmZxzqvV/kjj0NP8XtHkRWe
-         arHv0JPi2svsLf3WYnKIpsboxpsyfDj5MKcWas3i400iC2UnzVQdIktB9AAPv/oWQjhE
-         uSTWbNtufqEW7M368sIG3DTH/eDkq8r+9C49Xdh7SKIJevKzAsO73JywIb/zi3VgP58M
-         pTCvXNj1nKMEbX4LlHpBCzHw7spvyNnBtHskYLCl5V6a4ll9ILbXW8x535CJlgfjhPuE
-         KgO3aW2NSuRhTj71yIPyk+PtD0LBAijF/nShsQj0T7xcnPskGpA9G2DVOXKfARVDgXR5
-         lSAg==
-X-Gm-Message-State: AOJu0Yy1yt2HIf3KN9e6R/5ZFzNR4QyU5yQmiktUe7VKEpglI/Vz6T0n
-	+1pY+tmW/6tDF9wrCUh5uKn9iiQ3XxPjbgVIyw2EIenKp/SItPWF3sU2/j22j+jO/sE82FlsJXH
-	OfHm5rQ==
-X-Received: from pgbdp9.prod.google.com ([2002:a05:6a02:f09:b0:c88:c1c9:47c0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7116:b0:3b4:813d:dae
- with SMTP id adf61e73a8af0-3bd4ad2d7aemr5281927637.16.1782426156601; Thu, 25
- Jun 2026 15:22:36 -0700 (PDT)
+        bh=23IT/I8BFI3FVtFLLsXh6XFyUDIWbMpHRUduaQab4Hg=;
+        b=Wkwu0lAIMYJEUegb4zxYTij5sKmqJw7+O8CyQ6Vr46RAeMLkqY4HKjoaCAVWq9xZGn
+         u3X4jWTo/Em5GGylpyJ/c3tS5nJGoAGAyl3OkLpfQHH3U4tIzdTAUPbTZ0ZLNqD/6aAM
+         k7JOwvISKO+Z3mngG0ZUBnJO/31nzo7MrH8VosFJ3O5oTGfRjyn9mp7M3Z35vocad44i
+         O/6ZC29Q44s/pcewIb7u266ciNEqW32/GwBdmLVMBri8z6pBRnRY0YOBchzY2gkXGonc
+         00Jr79RtxIkGAjuia7Crl1jETCUHg+4uknep2iN2VRKqKdfbkX+a5nuYBxH77BH6JW0J
+         s9Vw==
+X-Gm-Message-State: AOJu0YzsC1sjj3mYYsfr8Fph+ytuP/mBU5RdCVLpJv8X4cB/MFvaYBOx
+	j3zRZdOOx3fTHYMlfLNZV8Wh5GHMA6HLza0XbqlrtxUgY72PFp8P7u7i6S8yiTKj9SHhze6EH3b
+	7bJ2EzQ==
+X-Received: from pgeu26.prod.google.com ([2002:a63:a91a:0:b0:c92:29d5:1f29])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7f8d:b0:3b2:a8cd:ef4a
+ with SMTP id adf61e73a8af0-3bd4ae7b32amr4819622637.30.1782426159831; Thu, 25
+ Jun 2026 15:22:39 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 25 Jun 2026 15:22:26 -0700
+Date: Thu, 25 Jun 2026 15:22:29 -0700
 In-Reply-To: <20260625222229.3367197-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260625222229.3367197-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625222229.3367197-5-seanjc@google.com>
-Subject: [PATCH 4/7] KVM: Rework .gmem_invalidate() into .gmem_free_folio()
+Message-ID: <20260625222229.3367197-8-seanjc@google.com>
+Subject: [PATCH 7/7] KVM: SEV: Mark vCPU has having guest-provided VMSA even
+ if its invalid
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -68,174 +69,70 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Michael Roth <michael.roth@amd.com>, "=?UTF-8?q?J=C3=B6rg=20R=C3=B6del?=" <joro@8bytes.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Rename .gmem_invalidate() to .gmem_free_folio() as the hook is called when
-a folio is freed, which is far too late and lack sufficient information for
-KVM to actually invalidate its usage of the memory.  Drop guest_memfd's
-trampoline and just wire up .free_folio() directly to the arch callback so
-that the chain of events is clear and obvious.
+Track the guest as having a guest-provided VMSA as soon as control.vmsa_pa
+is invalidated, instead of waiting to see if the guest-provided VMSA is
+usable, so that KVM doesn't switch back to the original VMSA instead of
+exiting to userspace (due to an invalid VMSA).  By the time a vCPU tries
+to load a guest-provided VMSA, KVM has already communicated "success" for
+AP creation, i.e. KVM has committed to using the guest-provided VMSA.
 
-Opportunistically guard kvm_x86_ops.gmem_free_folio with an ifdef to
-ensure the callback will actually be called, e.g. so that non-SEV code
-doesn't try to wire up a callback without enabling
-CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE.
-
-No functional change intended.
-
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  4 +++-
- arch/x86/include/asm/kvm_host.h    |  4 +++-
- arch/x86/kvm/svm/sev.c             |  4 +++-
- arch/x86/kvm/svm/svm.c             |  4 +++-
- arch/x86/kvm/svm/svm.h             |  3 +--
- arch/x86/kvm/x86.c                 |  4 ++--
- include/linux/kvm_host.h           |  2 +-
- virt/kvm/guest_memfd.c             | 13 +------------
- 8 files changed, 17 insertions(+), 21 deletions(-)
+ arch/x86/kvm/svm/sev.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 83dc5086138b..e36eba952705 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -147,7 +147,9 @@ KVM_X86_OP_OPTIONAL(get_untagged_addr)
- KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
- KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
--KVM_X86_OP_OPTIONAL(gmem_invalidate)
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-+KVM_X86_OP_OPTIONAL(gmem_free_folio)
-+#endif
- #endif
- 
- #undef KVM_X86_OP
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index b517257a6315..dd542c7a7376 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1901,7 +1901,9 @@ struct kvm_x86_ops {
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
- 	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
--	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-+	void (*gmem_free_folio)(struct folio *folio);
-+#endif
- 	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
- };
- 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 30792adcfc8e..3d90aa723dc2 100644
+index 04be49b1af57..7e06ed16f474 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -5136,8 +5136,10 @@ int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
- 	return 0;
- }
+@@ -4001,23 +4001,6 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 */
+ 	vmcb_mark_all_dirty(svm->vmcb);
  
--void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-+void sev_gmem_free_folio(struct folio *folio)
- {
-+	kvm_pfn_t start = page_to_pfn(folio_page(folio, 0));
-+	kvm_pfn_t end = start + (1ul << folio_order(folio));
- 	kvm_pfn_t pfn;
- 
- 	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ef69a51ab27f..6f1823e820a4 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5460,9 +5460,11 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
- 	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
- 
-+#ifdef CONFIG_KVM_AMD_SEV
- 	.gmem_prepare = sev_gmem_prepare,
--	.gmem_invalidate = sev_gmem_invalidate,
-+	.gmem_free_folio = sev_gmem_free_folio,
- 	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
-+#endif
- };
- 
- /*
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index d077783c287e..2f8215810a08 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -1009,7 +1009,7 @@ int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
- extern unsigned int max_sev_asid;
- void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
- int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
--void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
-+void sev_gmem_free_folio(struct folio *folio);
- int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
- struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu);
- void sev_free_decrypted_vmsa(struct kvm_vcpu *vcpu, struct vmcb_save_area *vmsa);
-@@ -1039,7 +1039,6 @@ static inline int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, in
- {
- 	return 0;
- }
--static inline void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) {}
- static inline int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
- {
- 	return 0;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0626e835e9eb..adc1e1b244c7 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10592,9 +10592,9 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
- #endif
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-+void kvm_arch_gmem_free_folio(struct folio *folio)
- {
--	kvm_x86_call(gmem_invalidate)(start, end);
-+	kvm_x86_call(gmem_free_folio)(folio);
- }
- #endif
- #endif
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab8cfaec82d3..e5b47a5e4cea 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2607,7 +2607,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
- #endif
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
-+void kvm_arch_gmem_free_folio(struct folio *folio);
- #endif
- 
- #ifdef CONFIG_KVM_GENERIC_PRE_FAULT_MEMORY
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 86690683b2fe..1618acc3ca64 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -523,23 +523,12 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
- 	return MF_DELAYED;
- }
- 
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--static void kvm_gmem_free_folio(struct folio *folio)
--{
--	struct page *page = folio_page(folio, 0);
--	kvm_pfn_t pfn = page_to_pfn(page);
--	int order = folio_order(folio);
+-	if (!VALID_PAGE(gpa))
+-		return;
 -
--	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
--}
--#endif
+-	slot = gfn_to_memslot(vcpu->kvm, gfn);
+-	if (!slot)
+-		return;
 -
- static const struct address_space_operations kvm_gmem_aops = {
- 	.dirty_folio = noop_dirty_folio,
- 	.migrate_folio	= kvm_gmem_migrate_folio,
- 	.error_remove_folio = kvm_gmem_error_folio,
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
--	.free_folio = kvm_gmem_free_folio,
-+	.free_folio = kvm_arch_gmem_free_folio,
- #endif
- };
+-	mmu_seq = kvm->mmu_invalidate_seq;
+-	smp_rmb();
+-
+-	/*
+-	 * The new VMSA will be private memory guest memory, so retrieve the
+-	 * PFN from the gmem backend.
+-	 */
+-	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
+-		return;
+-
+ 	/*
+ 	 * From this point forward, the VMSA will always be a guest-mapped page
+ 	 * rather than the initial one allocated by KVM in svm->sev_es.vmsa. In
+@@ -4029,6 +4012,23 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 */
+ 	svm->sev_es.snp_has_guest_vmsa = true;
  
++	if (!VALID_PAGE(gpa))
++		return;
++
++	slot = gfn_to_memslot(vcpu->kvm, gfn);
++	if (!slot)
++		return;
++
++	mmu_seq = kvm->mmu_invalidate_seq;
++	smp_rmb();
++
++	/*
++	 * The new VMSA will be private memory guest memory, so retrieve the
++	 * PFN from the gmem backend.
++	 */
++	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
++		return;
++
+ 	read_lock(&kvm->mmu_lock);
+ 	/*
+ 	 * Save the guest-provided GPA.  If retry is needed, then KVM will try
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
