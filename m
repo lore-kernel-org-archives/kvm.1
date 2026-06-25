@@ -1,223 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E6A3D1705
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 10:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782383108; cv=fail; b=ppgH9FxUVCPeloZvY0pvRXcDGWIJj1FOqgjgBdP6YT6/HGPjC/YC3FxDlSD26+Aw/JQIPrpAmlJbEimw9fFrYlt2rVoxWdYIY3Wo+wXcE5JC6fvin1K17hIlUtwzQQgPcIkBEtQeU5c+8uZWzk/B+LsEXHY6IdyD352gGGLw77o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782383108; c=relaxed/simple;
-	bh=c6kjhbi7m1N0XEIx2mc0qj13jd7ZrihfJ9+DZkjkOxE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=j+cG5kIYguxjnRAgXEWVHIbSj+k/C0ZshLnwBQ0V86FuKkGcnA7whfb057XkTmOySxPvwYR2vlh5qQFL7R98neU5bAOUSMAKr2D4Q4rcYrA0GUMDDU03NPacjl8yEStxDSkIG1of37ZvFKzrxP/hf/RPIBk/umtiNWsuFQH3mBM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FoxXEZzm; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA7E3CF698;
+	Thu, 25 Jun 2026 10:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782384135; cv=none; b=b2apzqAY0f6aG830TVbVKoB2UoKWPM/q2FeZTK0dT6dGFk35Chr1Jk7zJOTWtoyezSGld09DSekvysbbpQk9pQwLXNWMrD09r2aHChk2Os6p7aINAfnBCZYRjEDnSDZMc5h4nmZFez+xtvAhdTR4IKxbIbzw2SO5nLGFOR1/Keo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782384135; c=relaxed/simple;
+	bh=173lQ7jzJnbBLvffNLCqIOWQQGAchmqsaB7zv7/I9ww=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O0VIWstFnj+pS6h4uMg5RaZhk4jEGmdabF38Ez0Bz6vZbjqAOi3+BgTNQLlr8AkSr+4ykyPdn2Z2Xbc8rdvKNJ3SLqLStF3MMNtLTtaYXKe1lsHA/Ico+kCRFWIpFVSzWWpJ4R6Ak9QDKVvby7pQmJuVVVM7lqsP/JoV4bl6608=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sqCPT31B; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FoxXEZzm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782383107; x=1813919107;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=c6kjhbi7m1N0XEIx2mc0qj13jd7ZrihfJ9+DZkjkOxE=;
-  b=FoxXEZzmHajvIohxx1KRhgqVRZklOMvP3zYy52F9d9j2cJVMy3n1lxO6
-   YvHCc7exyihOaFUeC8dLh0duf0D3LHsIn2o6dqzxDHBHieS8dPYG/TfZz
-   0bNzOcBmvYMEkAGDoRUuNTS0uvm3UFr4FZYBLEwRgWpwfYyPf35XSrqwP
-   e/xa5xiUJsDzbH+ah0xk8DAZ5OiSZPEcb95Esfbb2yQulcf1RpzbHjtfn
-   wiNeJj2OdUlE8JN9Wy0LsET9dZhooqErmgeF3koMfuTDN3/iAtnZeT3Vj
-   m2Z3cwJW5zzhMOF+5lxbE/85b5nIKAzRjMEEEYCUpWVcxElUo3B0eQVCH
-   A==;
-X-CSE-ConnectionGUID: Fj98LXB7R7Kn4bKC6XH4+g==
-X-CSE-MsgGUID: qPGOCp/aSwu0RBWHOaELOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="83162216"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="83162216"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 03:25:06 -0700
-X-CSE-ConnectionGUID: npeFqrLUQ5e+O7dn9mh5XA==
-X-CSE-MsgGUID: u1jGjX7wRUallUTqMl+4Hw==
-X-ExtLoop1: 1
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 03:25:06 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 25 Jun 2026 03:25:05 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 25 Jun 2026 03:25:05 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.57) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 25 Jun 2026 03:25:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F2R1KYMCE0FfAokQXs+UsRKpJZWUvhqgTnlqL90fK4O6xbjvb0kryWFWDQhvnBv7RIx4LrJEPJWyZPiWCBRs4bnkksDj9l5o+851hxwHowF2w8pBGs6LAo5+Pnc6CDZzgLz0m71a1Duu0vGrtVJ8g8uyxi+Uhvk+HGX2muC8eosXjbJzRqGDtLvY+vyYuPa/B4DiIh5GWIvLOXYV1DQrhDO9zEVP0mDVvWzGLnQAQyTGKTQFBcqklCdolMaBYq+dR62rysFUkI04LxohXluJ7IA6EiOpKttl3HDyDuvxXVc8VxVdHah14UFL0RcklyLoF8CyGamyVjo7vBAWkEH+Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yd7L1ZueNkG9CC2KzJzwOrj47XxKtZ7nPX3vjo/zbmc=;
- b=q0DQeEBVFSnx0y7gK7w+GmsRfLoPGVzqjlX7RwMegRAk3JGWObh2K1njajcujqAxpAi8+oRs5x7tOr5mdzwOqOL2lgwybqd0p4Ta76QvUDDYGKBtx/2CBk7kH3PXh1XeFVZwaPdEmW02qae8y4DArJYrh82ZlB4dtInzrAk1NgEv00jHVtTnrzc0arvAMAJdOHYqq/3JLdcqYKWZTKwV3KpiXjMSyPRbFhDqyvg3kYJw9bDdSeF6n2tmFQ1NXZ5FNA5oBQc0layOXQ6ke0BRw7xuTLkVEmibkPb/oJtvURg6pXofgoJMv9jJy5HEJCwbK1anWjOn+BW71vmKFDXUpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SJ0PR11MB5893.namprd11.prod.outlook.com (2603:10b6:a03:429::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Thu, 25 Jun
- 2026 10:24:55 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0159.015; Thu, 25 Jun 2026
- 10:24:54 +0000
-Date: Thu, 25 Jun 2026 03:24:29 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: <sashiko-reviews@lists.linux.dev>
-CC: Xu Yilun <yilun.xu@linux.intel.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2 07/17] x86/virt/tdx: Initialize Quoting extension
-Message-ID: <20260625102429.GA1600180@pedri>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-8-yilun.xu@linux.intel.com>
- <20260618085017.0EE151F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260618085017.0EE151F000E9@smtp.kernel.org>
-X-ClientProxiedBy: BY1P220CA0046.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59e::8) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sqCPT31B"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3nsih3188232;
+	Thu, 25 Jun 2026 10:42:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PPxrq8
+	Mq/VZpa22VlH3o9x7wplaq6waAQx3XOI0U4Zs=; b=sqCPT31B4hnuP8UVwFvpyj
+	qvDhd0wai3xHDNBOyTnLqg1VwWA/KilXk0dDeWuweJAIigoj5GS5cNEjgKbgyyYp
+	GrY+2wRemn7pqVyAq7MYOdVikkb0v3zquUrQUelaqBxUl2nblZ+Nybzxk2w8VkMK
+	8bobw8sXXidwaf+ZxOrTqnNmXlC18gKMqvKALZo7JMJKIXCvW/1QzfenM4Q2NuZA
+	lbpT8+T8dobQB2L07XY1BVGfmzDEAbSLFvr05hhRsfonbGWHyM7pEk5PXwl7wopo
+	VVs9pCN0johp/FJMhq8UAOfavmo/aXm5o7+Lx/JvhR683rPEKBYDWEaQbXYo3zhQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhr15xa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jun 2026 10:42:09 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PAYpIF003558;
+	Thu, 25 Jun 2026 10:42:08 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7dgdf2m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jun 2026 10:42:08 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PAg50a31392166
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Jun 2026 10:42:05 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DB9820040;
+	Thu, 25 Jun 2026 10:42:05 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D29BC2004B;
+	Thu, 25 Jun 2026 10:42:04 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 25 Jun 2026 10:42:04 +0000 (GMT)
+Message-ID: <9b05627e-abb8-447b-afd6-994045ccedcd@linux.ibm.com>
+Date: Thu, 25 Jun 2026 12:42:04 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SJ0PR11MB5893:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c1f2d6c-bb92-4b34-dfd9-08ded2a3ffd2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|6133799003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: q9j2ZJqb/1/pgmsYfxKi4AD81NgZhP8R20Ep2Ro9saWRduFqKzitlTqpWiJuO8x4xJTyEtYpkqqRiMLDS5osfdgaKGkOViyDYI6LHgaPfi6f16gg38IzaUDK6K76ViGFpjkKF52qwvXXOXxRFoeQj9Sueoz8ipIkOc9ei0zPT1Buf0cFLWObMY3epAUiiRokSFxxLpGTKk7tQxDWLEHaFH0mddeA5IkPtPUwWFtkFZR920rGrQ9MGAwavJrA1HBgc5xcAuhzBuoUQIwwtiN4mc+5RQofoNwGsCCuYYxENyqJcF6S4XucjKNFEXLjKac+GTWYbjX18rZEeUsBCIvuwL/5TIxSRLKVpB+m9fy5fJbGYGEkLLEB5DNLYcRI32OdPDsYkKUqaL8ISMRSHhZst75ADULKQ2Aks1JUt+JycN4iTAADf4f9Si5X2Tt7JhYYzuEgH5/spg4OintWGYtuzjP15++zx8h2uXtNhljauu4X7VdvL5xOdWtSgLv5SCPzt9Ir5iS5Adi5MTcKgxrv+3foZsC/0tY7CSfcpb/ky1Tc/9AImw/UtDWH1It0HFeztXEXhcKn4wOtdYGTyevi6DKBNl4B6f09csB97xPcSoE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXNlY3hWVDJTaDhvcDFZaEc4cUdvdzFDdFd5eTY1cysyQW9uTWZwdkxUWW44?=
- =?utf-8?B?TUZPY3JWWit5TmtZZ0wrcDJacnNkM08wZFpLamZ5UVJRbW5mSXQwTCtFSCtz?=
- =?utf-8?B?emdwLzNub29Mby9yV2FsbWJzRVFOcnZydmlyaUxwbmdlMVNJaXlURVNqNk5T?=
- =?utf-8?B?bG02Q2NoWGJDZG5lcDJUUVN3OVp5TmM3U0k4b012TllpNkFpaVFEZXpQWGhU?=
- =?utf-8?B?T0NkYVk0Q3EzdWVvTlhwR1c3SmR0dnM1bHRML01CUnVyMzB4U1plRFhUSk90?=
- =?utf-8?B?TUpONFpYMDlmQ0Q5R0hkUlFTOVVEUFc0amJwVWJOUFhqTXVRVTdpVjMrSGV2?=
- =?utf-8?B?ZVVXTGN1Tk5PaTZURnNzRXlkNWlScUFYZGxoajgySWJFZ2lRK2lSNzVTdUQ0?=
- =?utf-8?B?WXJDVWs2S2Fsd1RLMVQ2c0FNekRBUlVrdFdUMjAzdGdONStWSlRibzkxNHBE?=
- =?utf-8?B?b2U0Y2hnVkEyeFhCNVVGdkpkeDBzMGVuYUxxdHRWd0xzUE5CZzhhNVQrYnZZ?=
- =?utf-8?B?ZThnRnpMOGZhZGFySmw3ekhqcVdMdllSTTNtZENmK3pjcC84UlV4NjU0Zi9k?=
- =?utf-8?B?QmE1WG5BYzNWWVpVUm9KLzFEelR4RG82Nkk0ZWo5dzJodTJKdTRRMHhHRmlI?=
- =?utf-8?B?ZFlYd1AzSjQwSmJkbTk0THVKcDV5REZpR3dKbUFIaHU4QnFLTjl3aFNob05L?=
- =?utf-8?B?MWV4YzlEOGxzOCsvams1dEh6ekQzYVN2YXY0cW9menBNN3JReUx4QlM2alVP?=
- =?utf-8?B?anBhYXNYczlhb0U2Qjc1UXB6WWpxT1pkc1FHM0NlSTlPampaaGs5M0RtZ09D?=
- =?utf-8?B?UDcrc2JMTjZKc25lcUwwN1hqdEtMOElGWDN0NUJVOHdyN2VPbmlUdzh5TlN4?=
- =?utf-8?B?TWlkbnlZazB0OFpXajdja2diTlExN255MGxaQjRGT2dFMjlmOVdwZjRjT0VL?=
- =?utf-8?B?WjRwcmtGaWV0UU9RV1ErS2RWZ2lDQXhuSjVzSXAyTmpWVlZUSTE4ZGZUdlB2?=
- =?utf-8?B?U25uRVc0NTBHNFlhc0VpN0pHVmZkVFJwY0YzcjJzK0ZFcFVYQjkwSzFia1VY?=
- =?utf-8?B?MzVRRGdrLzhDQWlKZCtNdGRaS0EraEE1WGxkQnFJOUI4R1Y5aXFvdTE0NUZk?=
- =?utf-8?B?K014Z3hYdnR3Q29Rd0Y1RFRTTXBPNjRZTG4zVHdIVnZqRlNPbjJDdW9TVzRI?=
- =?utf-8?B?aDkwUjVmZHY4aTVjSnRyeEZCcjR5WmN4WjljL3UxM3lHTTQ2ZXJSOTFYYmxM?=
- =?utf-8?B?bnhaKzd1K01kR2VWQjVJVmFZb085bE5ya0RROXBkM1BuVit0MHpZcFJtdm5U?=
- =?utf-8?B?S0VUUXNRQW9Db3NTQ2RUdndKSmRYczdPam9aTmZ1emxlQ01rVkdvMXZIelZm?=
- =?utf-8?B?czQwdDgxT1prZGJNa0ltRmtGMnpqTWg3dktrb0thaHNUMENXcHVlK2tCYS9Z?=
- =?utf-8?B?Rnd6MmIrR0I0VTlMd01ic0toUGUrNWg5VVpMckcxYmR2RFB5d2xjQjdjZW1T?=
- =?utf-8?B?NEc3M1dsdmdmRVFmQ2FqYUhUNWNORE8vdlBXek03enJyUlRRdjU0TmN0OVRi?=
- =?utf-8?B?MUMxbi9pOGpzNFBRODNmNWR1Uis1Z3Z1bDhiSjBXSTlKQzJ4RHZNSWZXRU11?=
- =?utf-8?B?Uk14WDUrL2hiVkJGem4yVGRaTWQvb0VYb3FMTHE0eWxHdFNqSkt5TDA1bTFU?=
- =?utf-8?B?TllMbTQvSDI3ajVwSmZYVCtHV01rRkR2SVBDUjVpYjJCem14TEtXM3RETldr?=
- =?utf-8?B?aUxvd0pWaVM3M2dXa3ozUFdReitkaWxkeHU2cWE2d2FTRXVNaGtqazlWZUVN?=
- =?utf-8?B?RHJKc3laVUdPbUNkTnNEN0dEWWh5RDFIeGFzNWJQaHR5bitXVUZ1TTFndGJX?=
- =?utf-8?B?RkJibm5MdG1TU2RCWVM0RnRsN0lpd3REdkZaMERrU3BqZEZ6b1NrNlNLV0Jm?=
- =?utf-8?B?S2t4QUpoZmlZbUFLcUhXWHEwOGwvb253VUNPWjdWWjlMakR5RmQ2MENrSGFH?=
- =?utf-8?B?R3FrWEM2eDVsVUprMFpBakpJc2xMdW1sd0RvdTloUzNxeU9qcGFJQ2ZreHhq?=
- =?utf-8?B?N0lmcEdRYitaUUt2U2FqVVJlZ0Y4QzhwTU9paENudW9XS3pJTC85a1hlSkph?=
- =?utf-8?B?RHljV3BjeEx5cUl1VlhVMDlrQTV0LzRsc3lTaUxFa2JvSXN1TkpEcU1wd01B?=
- =?utf-8?B?YkN6TlFYWU42YjR4U1BrOXZheVlwTWZHakliRW1wNUxYRVpYaVlMakgwK2dP?=
- =?utf-8?B?TUVUc2IyMmhYaldmOS80RHdhRmo5Zm9uQkNMMGZsUVJOOVNSRDFaano1MEY2?=
- =?utf-8?B?Wjh1djZGV05VZlUydDZJZVJlNDFFK3lhYnl5ZkNsNU94Z0JCVE56UT09?=
-X-Exchange-RoutingPolicyChecked: WHVVEVAzQPPej+RnbQGo4VUFU6ev6FV2T84y780Ce3JXhcSleIC3oRVc1wv6YrKEz+i26VYWtCn1l2J+DJ9XbvbSkmpy6jd8H3s6iAWlxiuYyl66b7WU1rKCwDVk4DI3rdFRrhlcUJze3X1k6BPOIPARn2E86mfFoAy8A4YwByLvpci/ZI7ukCXgbHrRHU7bDTEGiYl1zRV3vkhYxgixvGG891QHViutRu+70hIFH4DDtefGUzs0wg8DHsrW69UqjlTkLjW+SGRa583Odf20mFGf+Z6LfQtvOtrj7S8JzFbVmChe5uUxwqogeS4vjS5nqrGHS7R5kiHV2gzNskBYPQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c1f2d6c-bb92-4b34-dfd9-08ded2a3ffd2
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 10:24:54.9323
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0jQQ1hJja8KG1/vFgpKTvrY+ZKVYQmgsA13KAv1B4/DwzQBX7df2M9DMRfqmbK7J5dLUV0WeoQQtQpn1J1w5lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5893
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: s390: pci: Fix GISC refcount leak on AIF enable
+ failure
+To: Haoxiang Li <haoxiang_li2024@163.com>, mjrosato@linux.ibm.com,
+        alifm@linux.ibm.com, farman@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@kernel.org, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com,
+        schnelle@linux.ibm.com
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260624061910.2794734-1-haoxiang_li2024@163.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260624061910.2794734-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a3d0602 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=Byx-y9mGAAAA:8 a=VnNF1IyMAAAA:8 a=5fjQyjqO7ItlhYJTiW4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDA4OCBTYWx0ZWRfX+lEBWXtDF8RP
+ iy+Kl2hBQSR6SZa7E4vGA0UvkKxvYXca5XBm7jdvV3RHTmYf1Pzi+T2Nw8EK0TwtBqi0Wf4i53z
+ 9a4f4+dTunkUXCbsS6HdSsUWhUx1PkwZ4lRfs+CA8aQeplaZWmPgSVKGCuTGI9K+1AOj9S0cGTj
+ 5XkkgD55Lfp/gxNB2Ze48MKxlcUU53My6Rp3II3EYQ2aT1CkR+kB1y66nQ3thpuwTeSa9Ao4Vm3
+ E7W3m1T6zPkgz9ZlhEAwGtPPMxnZ50XFFDR9w5OKNykSWw3cpAgRcZmxI30BuvFEToJrO6KMpAz
+ Y1Y1puBQ2at2SknYFvHsRzqUs7llWJOWBt+jUXlM2R06C2jVej9z/gZUdSUGk0XOADNmVCtOQbg
+ NU1BW8o1Z4CIY0xiq0ja+MqHog84MTDoi8fuyy3iS9CtwlV79B0sBapvOjoZAOSD+K5fEpxMaWw
+ tezoo9pnh2nFWIvUZng==
+X-Proofpoint-GUID: 2ZY1oorcYXfgmBh7E2HeWMMeHiSJwrU4
+X-Proofpoint-ORIG-GUID: DC6bkh7qS0SbxJMK13wVUfykDy0GfR4_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDA4OCBTYWx0ZWRfX2flGIkIQamr7
+ oxwae893OWC2w3olmEux6PP5BnRXhuZ9Fq908kTwByJ8vtAu1cvoPq9SzPycfKA8oFs/F9Qd7nk
+ rc0KikYs0jlBQwsyygArsVy0EhB8gSQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-25_01,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 impostorscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606250088
 
-On Thu, Jun 18, 2026 at 08:50:16AM +0000, sashiko-bot@kernel.org wrote:
+Am 24.06.26 um 08:19 schrieb Haoxiang Li:
+> kvm_s390_gisc_register() registers the guest ISC before pinning
+> the guest interrupt forwarding pages and allocating the AISB bit.
+> If any of the later setup steps fails, the function unwinds the
+> pinned pages and other local state, but does not unregister the
+> GISC reference. Add the missing kvm_s390_gisc_unregister() to the
+> error unwind path.
 > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > index 4d2940f4538a2..06c42b86b05e8 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> [ ... ]
-> > +/* Initialize quoting extension */
-> > +static __init int tdx_quote_init(void)
-> > +{
-> > +	struct tdx_module_args args = {};
-> > +	u64 r;
-> > +
-> > +	do {
-> > +		r = seamcall(TDH_QUOTE_INIT, &args);
-> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
-> > +
-> > +	if (r != TDX_SUCCESS)
-> > +		return -EFAULT;
-> 
-> [Severity: High]
-> Does this discard the actual SEAMCALL error code? By returning -EFAULT
-> here, the specific hardware error information from TDH_QUOTE_INIT is lost,
-> which might make debugging initialization failures difficult.
+> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+> Changes in v2:
+>   - Move unregister call after "out" label. Thanks, Matt!
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Yilun did a pretty decent analysis of this in [1]. There really isn't
-much the host can do if this fails, so it seems like a reasonable
-tradeoff to just make sure there's a record of this in the kernel log.
-
-> 
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static __init void init_tdx_quoting_extension(void)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (tdx_addon_feature0 & TDX_FEATURES0_QUOTE) {
-> > +		ret = tdx_quote_init();
-> > +		WARN_ON_ONCE(ret);
-> 
-> [Severity: High]
-> The commit message explicitly states that quoting is an optional feature
-> and initialization failures shouldn't cause TDX bringup to fail.
-> 
-> Is WARN_ON_ONCE() too aggressive here? On systems configured with
-> panic_on_warn=1 (which is common in many environments), this will
-> trigger a kernel panic instead of gracefully falling back to the
-> userspace flow.
-
-Having a splat here is to draw the user's attention. Patch 13 sets the
-TDX_FEATURES0_QUOTE bit only if the TDX module reports support for it.
-Advertising such support but then failing to initialize it is very
-likely a TDX module bug. Since attestation is pretty important to TDX
-security, I think using WARN_ON_ONCE() here should be okay, and the
-backtrace should be enough to describe the failure.
-
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260618081355.3253581-1-yilun.xu@linux.intel.com?part=7
-> 
-
-[1] https://lore.kernel.org/kvm/ajq8RFjv2YFghvQp@yilunxu-OptiPlex-7050/
+applied.
