@@ -1,65 +1,64 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F81313534
-	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E8A3254AF
+	for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 18:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782412537; cv=none; b=ZGRwR2mXYP2VfaKSuMf1apP/zXYhNNmC0XFXVSXA+DeMYqLBuXnFsrABCdXU1g2E1AhaJ/gBPgcU74cHQp3N/e/2EzjWHe3UtSmmyExflLSG+Y1Z0Mjr4C0zgCw5npiWh2r1wqp1BYYqhMAABwpYlv69t91++p0XEoHtdupjNCM=
+	t=1782412640; cv=none; b=QiVup/9vqe+jtMa4BqN+lRmVYyNMD/+bsvC7o9kUFcp5WDRIYGSmqinTGwiNjU7Sbwh6FNnvo5hgsEpWuZhd9KWzHfLjlrvpIC2T4pGqno4WgZRNL6LIGydSYGdEkaZ4nqscIu+w5ndLz+9CcITedN+5tsG1EeFSa9f6r/3DPrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782412537; c=relaxed/simple;
-	bh=L9vCpaeeEmhW+X3fHblf6tQERv8UAVK3udM+8P3RNr0=;
+	s=arc-20240116; t=1782412640; c=relaxed/simple;
+	bh=XGF2VYl68rxHrrb3+celOOH/NDrS3MYyMHWdfsQBzvU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MLhRU16dXREBPiAGleemBI4DrYvwUMfKUUjnHYIrM1YuIkurZcDCwLejA1CVWv7QPlDqjshtYP/+JyhfaAMY7EnBzbDKRbCBfO+O729MiGJ3/oVpW4OlJp5sQkO33MUQS8YReTXx4WNBuLsn9EzL4hFKSGOeIeprTPFPPhUrZoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qcatYeyB; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=TLjiWuzRyWqTrTgQNIkMo6jaO10aMV2SE8Ct0NQMU9ozR8q6TbYmrqS+VjxXplk0IJBqJgVvkAFUAiuC8H3OoewOtkmrUIOqaN2IZBXdxnAMS/t9G3aWiU3No3j02PJV1phy02BEA2mwwMsi/paPCjKrqcisnfqy9R9XFz3+al8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X8aWhkmN; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qcatYeyB"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso2799985ad.3
-        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:35:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X8aWhkmN"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37e09f9c4dbso112245a91.0
+        for <kvm@vger.kernel.org>; Thu, 25 Jun 2026 11:37:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782412536; x=1783017336; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782412638; x=1783017438; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UXrEPlz9Ov6WhImX2KAHJf2Hbzd09EWe17YltKaKh6c=;
-        b=qcatYeyBvaAf2V63iqR7grZEaB1XVKQkBeiXQKabmdPi51WudavK/SR8iTvNwGNqEz
-         BalS1LnUB73eML2mz/iIWejpmxfA/59vmn4Pz7i1aMXeKdVFuxKAfKqQFjMHaTQMt0/y
-         q/i/gPcoIhdJbudLKip/WumJiJac9llUhSdp/MCbORMVIuZYXotDSNxjNrkM3OZCSHmn
-         phA6duulBtgUnro7/7raUQJN8kBwLxfVsofSrJN55AyUoo+saU22scc/Nazzket2Fu+5
-         yL7X5Hpa7piVAViuyytzHwOAIp35osMn2XRE9gH9Nz4uc51BDK8EgZW3JcuBcES37Fnd
-         AnGg==
+        bh=k1CLBFjHRtepPsR7OTGTpvVtcvQrDt/pUW+o4gNlp90=;
+        b=X8aWhkmNeHj5B+S2ARCMB1eYjl8r4K4etZG/HFXM6FdnlaRlqdY4o98YfqE28CTDcR
+         h/5o4uydtcCJZiCzbK9sKcrbpGEB+T9aiDdWY3gbAEdzDlZbZa/q2KSuRVZ+rLox9d3p
+         G4TtUWznQjge07RTSOIla9Pcp/rxD06QJ6XKnXaUvB6LS0sDQD0KiwbF/nSfSJ/UctIs
+         eiYqmaiFp2MeO9M8BJQa/JwucCl/DUMXIcHS7haA2iKr7vI3h4lbwnYwrAqjdla0TWWq
+         ju4VtRWlsKfyNNN3B70xbms6qUr002QyNhVZPOSpZvIhg13Wsch+aShIcJyNNQcyyMMd
+         Ol+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782412536; x=1783017336;
+        d=1e100.net; s=20251104; t=1782412638; x=1783017438;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UXrEPlz9Ov6WhImX2KAHJf2Hbzd09EWe17YltKaKh6c=;
-        b=c0ZeaagAoZBZQ1G37OjCWginF2NkcBE4fOA+JckDi1faIs7iDsglin9AFLcanBn7SK
-         q/eCCYkijjRAqSlROv6xeyst2E6rRFNwPNToZ0yU/ovl8xKrcIq/wz0UC25u9bP4iweD
-         K90SnpIvMkg0EiDkMKF+FBj7f78673DBDR2p1L5rO/cEDiNvjOhFQQPbdlTd1DTiCAxO
-         aUvLExAsZf2qIIcJfeCdmaCnwfl/6GmluhZyDuKuAvVnDfxnzXSaS9GaRViUAt9W8jae
-         WmQr5sfdF7/nMG7H44OVEyJQHifPA27Hk6aa0kCDnhDsBWrXtYL8vD7XPifkJ9rZbLgB
-         zyWA==
-X-Forwarded-Encrypted: i=1; AFNElJ+YNPIEZuThmcpB624xFElSucdcH1+N2DxCOBAgMr9rYDimLbUWXEOgr7B3bwtOZYdX49Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVb50L4OpnYfwUUaK8UigpGlen5XpmUYTprA8TyON1bIoP3xAD
-	PZB2dWWDuTazot46+jR4Ki3bXOFALmC2hlg0rVuYKHnvZBl5DK1sz/TrN3lkfVGXc34750d7ODe
-	8SkPmaw==
-X-Received: from pgbz5.prod.google.com ([2002:a63:6505:0:b0:c8b:dff5:ac27])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a11b:b0:398:7256:3c0
- with SMTP id adf61e73a8af0-3bd4ac9e542mr4363119637.13.1782412535530; Thu, 25
- Jun 2026 11:35:35 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:35:34 -0700
-In-Reply-To: <20260527-kvm-locking-docs-v1-7-4fe8b602ff47@google.com>
+        bh=k1CLBFjHRtepPsR7OTGTpvVtcvQrDt/pUW+o4gNlp90=;
+        b=m96HO39WU0MhGYzjiJsKtjlLdYR5X0BQ3Gdmid2mCbb9ZqkF8EAbPeYci40vGUWilg
+         PcBK1KU2DUtVqUUqCvEdSZg+MkE5alEOKQ2C4CgK8KE08OWpn1z/FOk+qJdoncZ89mrx
+         GGBhTfY4HlioNfP5qNfdDFaK+v6vWv1fLZwRbZFXn/hYzSB/n5HQEuI3P0iFZi5ERVDm
+         BemDFyeIrtrNMetQBQnwYl2tL1j+8ru/KtXh88eYxnVc/2YzVUOG2DPuW2DoNG8IXOt4
+         Rj5wU4Vnd+UJrHijncOL3G5HsYjrrq36VAKWtEx8VKLaHTRErYIk20bpFE1DmYf7rBIV
+         nBYw==
+X-Forwarded-Encrypted: i=1; AFNElJ9yLSW++1q8jNnc/NKBkYusrmDVi8Gg7napSKLIFFH0s2yNYkHTVTgb6jXETzj7SH8FD0A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5/SvHkiW/TnpAQmDpkssMusicNnC7C7J0b3YPzBhWzV+uwWvP
+	zElLSzuwVmssbxW4el5nEckvAYECoAUcK0CuhkJOXP7kvR/gti0/DcK3GVq+4Vy+xn9LWa9ZJSu
+	Gy8u7oQ==
+X-Received: from pgab3.prod.google.com ([2002:a63:3403:0:b0:c89:356d:606a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6b04:b0:3b4:8aad:6337
+ with SMTP id adf61e73a8af0-3bd4ac80c24mr4406701637.15.1782412638064; Thu, 25
+ Jun 2026 11:37:18 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:37:17 -0700
+In-Reply-To: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com> <20260527-kvm-locking-docs-v1-7-4fe8b602ff47@google.com>
-Message-ID: <aj109naG1wr46Cpf@google.com>
-Subject: Re: [PATCH RFC 07/12] Documentation: KVM: Drop mention of kvm->lock
- in SRCU documentation
+References: <20260527-kvm-locking-docs-v1-0-4fe8b602ff47@google.com>
+Message-ID: <aj11XdftC_WAf6Av@google.com>
+Subject: Re: [PATCH RFC 00/12] Document synchronization used in managing guest faults
 From: Sean Christopherson <seanjc@google.com>
 To: Ackerley Tng <ackerleytng@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -73,16 +72,20 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, May 27, 2026, Ackerley Tng wrote:
-> The original comment says that synchronize_srcu(&kvm->srcu) is called
-> inside critical sections for kvm->lock, vcpu->mutex and
-> kvm->slots_lock. Drop mention of kvm->lock since this is no longer true.
+> Ackerley Tng (12):
+>       Documentation: KVM: Elaborate comment on kvm_usage_lock
+>       Documentation: KVM: Consolidate notes about cpu_read_lock() and kvm_lock
+>       Documentation: KVM: Consolidate notes about kvm->slots_lock and irq_lock
+>       Documentation: KVM: Turn - into bullet point
+>       Documentation: KVM: Explain what rule the exception section is meant for
+>       Documentation: KVM: Have actual headings for exceptions
+>       Documentation: KVM: Drop mention of kvm->lock in SRCU documentation
+>       Documentation: KVM: Add example for kvm->srcu in relation to mutex/lock
+>       Documentation: KVM: Document synchronization for managing guest faults
+>       KVM: guest_memfd: Clarify comment about gmem.file vs kvm->srcu
+>       KVM: mmu: Point users of host_pfn_mapping_level() to docs
+>       Documentation: KVM: Focus acquisition order section on preventing deadlocks
 
-I would *much* rather "fix" this by saying synchronize_srcu() *may* be called
-inside blah blah blah.  Because (a) I don't feel like auditing all of KVM to see
-if the above is true, (b) KVM's implementation may change again in the future,
-and (c) taking kvm->lock inside a kvm->srcu read-side critical section is still
-unsafe as we'd end up with ABBA deadlock (well, ABCCA?).
-
-  1. SRCU held, waiting on kvm->lock
-  2. kvm->lock held, waiting on vcpu->mutex
-  3. vcpu->mutex held, waiting on synchronize_srcu()
+Please split these up into standalone patches or small series of patches that are
+logically related at a finer granularity.  "Here's a pile of KVM documentation
+updates" is not a reasonable level of granularity.
