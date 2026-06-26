@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC3B3E44ED;
-	Fri, 26 Jun 2026 08:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153163E9F93;
+	Fri, 26 Jun 2026 08:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782462086; cv=none; b=tXs21IPNQO7ZIBojGeKK2oNJ6xY2nVsde1eReLlYWiFfEdxCP0Olb0h1VYsFdDpNG+g8Wn5CrEEhALLJDbLkfojE/E0YKSE5rZfxX0M7zzURQIicY3TBb+YqXZda/tSJ7xg02qYbgv3F6wCa4MmY3CkoA0wp3yP/64WonOw896w=
+	t=1782462095; cv=none; b=dGdinXD9T7uZUcI7izTI9l8HOeC2AHd96ihR3ctLIvGbAW+5bjmf84hP8xKGDJ6ajvcjuia76kEm1n8CiwGMSu9Z5BE2xK54woNRQ4jV36XYTUBhnYlqKeo0oIgyWp1U5kihS1AUPaOTIdKZa7cSrlq8rl9vz+ZDA6cecgHuWtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782462086; c=relaxed/simple;
-	bh=dSaiTT1rGFr8qpEYcgO8/FtYUP+SfgT2MBw8poSyEyo=;
+	s=arc-20240116; t=1782462095; c=relaxed/simple;
+	bh=LfyVuDjuaXqLOQSaVmwimxEQFAl41640zftbAge2Qp8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CSDd7OCCR5usxP8Q/zpn3NuxLNKr/o6mujqbzt8OTXcWsANYSicL+ofdLuR8MDwyd4XfnRSujCoMPnvyyodTV8pakK8ougJeB+1MigkXweZy+wP77fipKz8t47e0tYo90KTcERzRyUyqprl9kP3b0qiZb1ujXRA6XnWkLSWXOQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMYx1Gto; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HDFD3H5F37ECADRlsn2jdhkQhHQZsv8X3zfWI2J05Wau7bcwisA2X/a9LBcq4vmLDEJL+8ChLQHFaEmlItVn7HtHsqOVz6ra7skKYPHvxqWIIjV4BMuH+JrKarC9k3Rm7PcJjI+eC80TEsz9ISCgGEckn77xMlcdk4wqk25e5yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqxGMNNy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aMYx1Gto"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCA41F00A3A;
-	Fri, 26 Jun 2026 08:21:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqxGMNNy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D090C1F000E9;
+	Fri, 26 Jun 2026 08:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782462073;
-	bh=JvPo55g3eS2w4p/tC+pRBIWpmLSFQYMnnMNilcteyYo=;
+	s=k20260515; t=1782462093;
+	bh=p5+rIqdVv344EQDk5zZnFOdYzj2jMyT9lQ7p6WTw/Os=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aMYx1Gto+N0bypalZDoOlr81wF/uH5UhY0QLhvs3GfbDwe5bOFn2glLQH8D+H7Nev
-	 0Ha6rhez+fSUCy/wkeqZ3/bg7F7Ed9gH95xZyZB4l4cOrd6O06o1PaxzzmD5RkMEEK
-	 Oj8M+q3f+yWMfsAPzd/3h1rE4oaTY7Nv5DjHgJFBAFox7DT9p0wZgwni9qaHDUM4D8
-	 11J5ZTpZfXRQJodF+odR4kikxgiW5zjCjdReouqymf/4FfvtZCcwCnMGG/C2ik6cSI
-	 FyRPycWIgCmEPNB4nTJ1B9JhyFj57Rv4Su4SabrWN+t+hc9bhF6FrvcKRIVT00h1Sv
-	 XXokDVsnCNwzw==
+	b=AqxGMNNytH3yg2QXdoyhU9CAHGPY90p1k6s3uowWLx6ea3WXmlnZ3vzgQS4KLBOHe
+	 +KFJfvXWvyDW5YLRusseh09kaj695+9bqcQUpqxrnjgVwetdjOR2JxmVBQwg5VlhIB
+	 PTJ3cnRE3KwvbWnuMoNO0fT7tGR7BhQEwvFtkeMLdASmixXxD2fQlmZ+lK9JPch9mn
+	 t7+jyKnIbQFE+QtZ1Sb9L5Aq5TQgQRUUUPMAmITLivRKIwBKGrn04Lkxi3DAOP+hSU
+	 4JlJ7OFphSa22D5OXHRQ8P5D9J84BgNkWARuQoiDJFgnBcHjtYSB3bj58AIReMmS9H
+	 uSD+zHAFPodYg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5695939389E8;
-	Fri, 26 Jun 2026 08:21:01 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1975839389E8;
+	Fri, 26 Jun 2026 08:21:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -37,46 +37,49 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 0/2] iommu/riscv: Support Svpbmt memory types in
- generic_pt
+Subject: Re: [PATCH 0/5] KVM: riscv: Speed up dirty logging write faults
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <178246206005.3816447.8810357368655365502.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jun 2026 08:21:00 +0000
-References: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
-To: yu fangyu <fangyu.yu@linux.alibaba.com>
-Cc: linux-riscv@lists.infradead.org, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, tjeznach@rivosinc.com, jgg@ziepe.ca,
- kevin.tian@intel.com, baolu.lu@linux.intel.com, vasant.hegde@amd.com,
- anup@brainfault.org, atish.patra@linux.dev, skhawaja@google.com,
- jgg@nvidia.com, nutty.liu@hotmail.com, guoren@kernel.org,
- andrew.jones@oss.qualcomm.com, kvm@vger.kernel.org, iommu@lists.linux.dev,
- kvm-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+ <178246208080.3816447.14235715613320602429.git-patchwork-notify@kernel.org>
+Date: Fri, 26 Jun 2026 08:21:20 +0000
+References: <20260517153427.94889-1-tjytimi@163.com>
+In-Reply-To: <20260517153427.94889-1-tjytimi@163.com>
+To: Jinyu Tang <tjytimi@163.com>
+Cc: linux-riscv@lists.infradead.org, apatel@ventanamicro.com,
+ anup@brainfault.org, pbonzini@redhat.com, seanjc@google.com,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, atish.patra@linux.dev, pjw@kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ alex@ghiti.fr, radim.krcmar@oss.qualcomm.com, andrew.jones@oss.qualcomm.com,
+ conor.dooley@microchip.com, yongxuan.wang@sifive.com, nutty.liu@hotmail.com
 
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Joerg Roedel <joerg.roedel@amd.com>:
+by Anup Patel <anup@brainfault.org>:
 
-On Tue, 12 May 2026 15:41:40 +0800 you wrote:
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On Sun, 17 May 2026 23:34:22 +0800 you wrote:
+> This series speeds up the common dirty logging write fault path for
+> RISC-V KVM.
 > 
-> RISC-V Svpbmt adds page-based memory types (PBMT) to PTEs, allowing
-> mappings to be tagged as e.g. normal memory, non-cacheable memory, or
-> I/O.
-> 
-> This series wires the RISC-V IOMMU Svpbmt capability into generic_pt
-> and uses PBMT to encode device memory attributes for IOMMU mappings.
+> When dirty logging is enabled, guest writes to write-protected G-stage
+> 4K leaves currently go through the full fault path and take mmu_lock for
+> write.  That is expensive once the leaf already exists and
+> only needs its permission and dirty state updated.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v4,1/2] iommu/riscv: Advertise Svpbmt support to generic page table
-    https://git.kernel.org/riscv/c/f196a8668797
-  - [v4,2/2] iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits
+  - [1/5] KVM: riscv: Rely on common MMU notifier locking
     (no matching commit)
+  - [2/5] KVM: riscv: Use an rwlock for mmu_lock
+    (no matching commit)
+  - [3/5] KVM: riscv: Add a G-stage PTE cmpxchg helper
+    https://git.kernel.org/riscv/c/7dd416fdd3fb
+  - [4/5] KVM: riscv: Update G-stage PTE permissions atomically
+    https://git.kernel.org/riscv/c/d7a26a0ba715
+  - [5/5] KVM: riscv: Fast-path dirty logging write faults
+    https://git.kernel.org/riscv/c/7705be59eb2d
 
 You are awesome, thank you!
 -- 
