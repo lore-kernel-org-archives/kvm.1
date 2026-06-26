@@ -1,125 +1,250 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8633F4DFB
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 12:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB43F44FC;
+	Fri, 26 Jun 2026 12:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782476893; cv=none; b=cKtKyV5gXsoqclEnijHg+rA6+Hs5UCfG0dLg6AikHOcSWyDrKQoBaYlTl0TLC6TG1woJGL+aZB85kElMc1N/FEZhFRGY6Oo5apC2i/z1kylyYTBwegUDHZhtS91lcLrHPZF5hxnsaoP7I69SFymxp05o8C/boccnY4ouHxV4YsU=
+	t=1782477672; cv=none; b=b5V5Alth+D6oRBruqD8TwTvhTcgrY4Hw8PFyqNhDGhvg/gKMaFElwAGplCdUcrhjN5Enhcm67BpzJQ0hYyxAHCRzWkpdGCm4seNDSalKxXKHs32M6kqHmwSEc8PAD7V6KwkT/3DHdrSfAqRB+roUYnDDKTodkCJ5OKUfNvwvjMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782476893; c=relaxed/simple;
-	bh=no/wPJgtP6DbZQPWAjIf9H3kDQn9r/tDbohV0v6hrjY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C4wuRLJJTOCOF+sA/y6bsGVyrAC9WWJYDQ/++T0nSOuDED0eea2ZriwG5n8geT4r1Agxr3GTdxjs9wMpT0sbFdwx216MVulhXDuqIoagYm34nUPbzD1y5AufIoMx9gajHOymcH17qbq2fkSkTunx/GKPlb3bvpmHKI80N0NPkdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7Ks+voi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782477672; c=relaxed/simple;
+	bh=0UejVAi8/6569N1EBprj5W/iqY2e5pWsMrCOAhU645I=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M4X8ny1ALUvD3kbmA7ybcNcE39QT1zeS+sdnCa9eqZ+57o6I4apFipzVSUiVfB7rsEEtKfAdi2x0BudIX0ku5xhKNARxoVCueSdF1el1C/NT/docDjJVmaX7KSkl+v6Hc+EWpvLSzmwd56VGCZNIyNvSJVLoOdjVYm9HYZNOGfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APJDhQw1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7Ks+voi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3284C1F000E9;
-	Fri, 26 Jun 2026 12:28:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APJDhQw1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11AD1F000E9;
+	Fri, 26 Jun 2026 12:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782476892;
-	bh=XcsdblN8q6gUOWlYXWFShihXczvynERKHRxpaiiYcqc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f7Ks+voiuUZT2SXMdvFQpmESN94kcF1D1oByMMro2laH2dwAEP2g4QzepCkZl7Jih
-	 scD4U0lHl9D8G0elSI6DkrjjHLpLhjeqf29+EGMGnX3wHdsOHWWbMNYD5cp0xI65nm
-	 ZJTRxnSjb0KUXx+vqs+NnohdgOgU+R0MnNpuPV5pVVdN3Ux5qtOxqKHiD+5UqMY6K2
-	 E8gokUpB+13ipzJai4dJOTM7fMSBPuGYS1Hj6ZmGzmNV3slt/wuigeglSjXwVkymZk
-	 qUNJ+O7Kctq0BfaaWM9TtjGOT5l2Ec3QivuP8m97dVMXHCJ/6lui7JPchtf7JlYnTW
-	 5IbCc36DK9Qqw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.15.y 5/8] KVM: x86/mmu: pull call to drop_large_spte()
- into __link_shadow_page()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626112606.1778248-6-pbonzini@redhat.com>
-References: <20260626112606.1778248-1-pbonzini@redhat.com>
- <20260626112606.1778248-6-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 12:28:11 +0000
-Message-Id: <20260626122812.3284C1F000E9@smtp.kernel.org>
+	s=k20260515; t=1782477670;
+	bh=3NCzdsx5KZMZ1wmssjwQd/gh170VUGx221Dc/0PwPbk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=APJDhQw18cZQHEntw+EbWHvLcFysGmIjCcOUsPdcXTYMb0YsPKzRdB7GM/lNRBCqi
+	 EjgnnhtcS/Vwrli3SVVGwJyb34oGUU46fcwgvkPGPmy5AK6I/jRxQ5dJYscMUVlYPJ
+	 ggeDj1eiRLtuWUKJBVejTrluidMzRtvieaXgFBe2NX3mU39NlSRXTvafWDcfJNSkAQ
+	 9CVJwELsZmScSu0yMHXXwvKfglSYvDj79Mbtj1hzOHOPBYCrxJwAMPjbVA81nmtHf0
+	 0yTBcwijhJNqyAXpZxzBrCpi+LiuYcK5lzpWYRQ77rpEXl9jBk651lX4ntuNhVfstN
+	 BpVeEhY8GOJiw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wd5rp-0000000GKvi-0Cvk;
+	Fri, 26 Jun 2026 12:41:09 +0000
+Date: Fri, 26 Jun 2026 13:41:08 +0100
+Message-ID: <86a4shqxsr.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Oliver Upton" <oupton@kernel.org>
+Subject: Re: [PATCH] KVM: Make kvm_io_bus_get_dev() filter devices by ops
+In-Reply-To: <20260626114635.82A0B1F00A3A@smtp.kernel.org>
+References: <20260626111344.802555-1-maz@kernel.org>
+	<20260626114635.82A0B1F00A3A@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Fri, 26 Jun 2026 12:46:35 +0100,
+sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+>=20
+> Pre-existing issues:
+> - [High] Dropping the SRCU lock in kvm_io_bus_get_dev() exposes a Use-Aft=
+er-Free for VGIC redistributors.
+> --
+>=20
+> commit 954101cd7bbd1642133e68638e5210cf89b88023
+> Author: Marc Zyngier <maz@kernel.org>
+>=20
+> KVM: Make kvm_io_bus_get_dev() filter devices by ops
+>=20
+> This commit updates kvm_io_bus_get_dev() to check the device ops pointer
+> before dropping the SRCU lock. This aims to prevent lifetime issues where
+> a caller might introspect an object of the wrong type after the lock is
+> dropped.
+>=20
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+>=20
+> [ ... ]
+>=20
+> > @@ -6081,7 +6082,9 @@ struct kvm_io_device *kvm_io_bus_get_dev(struct k=
+vm *kvm, enum kvm_bus bus_idx,
+> >  	if (dev_idx < 0)
+> >  		goto out_unlock;
+> > =20
+> > -	iodev =3D bus->range[dev_idx].dev;
+> > +	if (bus->range[dev_idx].dev &&
+> > +	    bus->range[dev_idx].dev->ops =3D=3D ops)
+> > +		iodev =3D bus->range[dev_idx].dev;
+> > =20
+> >  out_unlock:
+> >  	srcu_read_unlock(&kvm->srcu, srcu_idx);
+>=20
+> [Severity: High]
+> This is a pre-existing issue, but does dropping the SRCU lock here before
+> returning the matched device pointer expose a use-after-free?
+>=20
+> If a host VMM concurrently executes KVM_SIGNAL_MSI (with a doorbell addre=
+ss
+> overlapping the redistributor) and KVM_CREATE_VCPU (forced to fail due to
+> resource exhaustion), the failed vCPU creation path can unregister the
+> device and free the vCPU memory.
+>=20
+> Because the SRCU lock is already dropped here, the unregister path won't
+> be blocked. When the MSI injection path resumes in __vgic_doorbell_to_its=
+(),
+> it can dereference the freed vCPU memory:
+>=20
+> arch/arm64/kvm/vgic/vgic-its.c:__vgic_doorbell_to_its() {
+>     ...
+>     kvm_io_dev =3D kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, &kvm_io_gic_ops,=
+ db);
+>     if (!kvm_io_dev)
+>         return ERR_PTR(-EINVAL);
+>=20
+>     iodev =3D container_of(kvm_io_dev, struct vgic_io_device, dev);
+>     if (iodev->iodev_type !=3D IODEV_ITS)
+>         return ERR_PTR(-EINVAL);
+>     ...
+> }
 
-New issues:
-- [Low] The newly introduced `__link_shadow_page` function declares a `cach=
-e` parameter that is never used.
+Gniii... I guess the last option is to bite the bullet and make sure
+that any filtering occurs with the SRCU lock held. Something like the
+patch below. Or just move the locking outside of the helper and keep
+it completely inside the caller.
 
-Pre-existing issues:
-- [High] `drop_large_spte` flushes the wrong guest physical address range w=
-hen dropping a large SPTE, potentially leaving stale hardware TLB entries f=
-or the unmapped guest memory.
---
+	M.
 
-commit 9820244be6c2ac65ed2abfdc79a98053af6c7970
-Author: Paolo Bonzini <pbonzini@redhat.com>
+=46rom 4f6872cf57b3d30dcc81155e0ef6ac8bc6075fba Mon Sep 17 00:00:00 2001
+From: Marc Zyngier <maz@kernel.org>
+Date: Thu, 25 Jun 2026 15:28:38 +0100
+Subject: [PATCH] KVM: Add lock-protected filtering to kvm_io_bus_get_dev()
 
-KVM: x86/mmu: pull call to drop_large_spte() into __link_shadow_page()
+kvm_io_bus_get_dev() returns a device that is only matched by the
+address, and nothing else. This can cause a lifetime issue if
+the matched device is not the expected type, as by the time
+the caller can introspect the object, it might be gone (the srcu
+lock having been dropped).
 
-This patch consolidates the removal of existing large SPTEs by moving the
-drop_large_spte() call from multiple caller sites directly into
-__link_shadow_page(). It also updates kvm_mmu_get_child_sp() to return
--EEXIST if a non-large shadow page is already present, avoiding double
-linking.
+Add a callback to this helper so that users can check the validity
+of the device while under the srcu lock, and update the sole user
+to pass its own filter.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-[ ... ]
-> -static void drop_large_spte(struct kvm_vcpu *vcpu, u64 *sptep)
-> +static void drop_large_spte(struct kvm *kvm, u64 *sptep)
->  {
-> -	if (__drop_large_spte(vcpu->kvm, sptep)) {
-> -		struct kvm_mmu_page *sp =3D sptep_to_sp(sptep);
-> +	struct kvm_mmu_page *sp;
-> =20
-> -		kvm_flush_remote_tlbs_with_address(vcpu->kvm, sp->gfn,
-> +	sp =3D sptep_to_sp(sptep);
-> +	WARN_ON(sp->role.level =3D=3D PG_LEVEL_4K);
-> =20
-> -	}
-> +	drop_spte(kvm, sptep);
-> +	kvm_flush_remote_tlbs_with_address(kvm, sp->gfn,
-> +			KVM_PAGES_PER_HPAGE(sp->role.level));
->  }
+Reported-by: Will Deacon <will@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: 8a39d00670f07 ("KVM: kvm_io_bus: Add kvm_io_bus_get_dev() call")
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/vgic/vgic-its.c | 24 ++++++++++++++----------
+ include/linux/kvm_host.h       |  1 +
+ virt/kvm/kvm_main.c            |  4 +++-
+ 3 files changed, 18 insertions(+), 11 deletions(-)
 
-[Severity: High]
-This is a pre-existing issue, but does drop_large_spte() flush the wrong
-guest physical address range here?
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 4477f870c7b36..d8541690e7ba2 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -503,23 +503,27 @@ static unsigned long vgic_mmio_read_its_idregs(struct=
+ kvm *kvm,
+ 	return 0;
+ }
+=20
++static bool vgic_its_device_filter(struct kvm_io_device *dev)
++{
++	if (dev && dev->ops =3D=3D &kvm_io_gic_ops) {
++		struct vgic_io_device *iodev;
++
++		iodev =3D container_of(dev, struct vgic_io_device, dev);
++		return iodev->iodev_type =3D=3D IODEV_ITS;
++	}
++
++	return false;
++}
++
+ static struct vgic_its *__vgic_doorbell_to_its(struct kvm *kvm, gpa_t db)
+ {
+ 	struct kvm_io_device *kvm_io_dev;
+-	struct vgic_io_device *iodev;
+=20
+-	kvm_io_dev =3D kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, db);
++	kvm_io_dev =3D kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, vgic_its_device_filt=
+er, db);
+ 	if (!kvm_io_dev)
+ 		return ERR_PTR(-EINVAL);
+=20
+-	if (kvm_io_dev->ops !=3D &kvm_io_gic_ops)
+-		return ERR_PTR(-EINVAL);
+-
+-	iodev =3D container_of(kvm_io_dev, struct vgic_io_device, dev);
+-	if (iodev->iodev_type !=3D IODEV_ITS)
+-		return ERR_PTR(-EINVAL);
+-
+-	return iodev->its;
++	return container_of(kvm_io_dev, struct vgic_io_device, dev)->its;
+ }
+=20
+ static unsigned long vgic_its_cache_key(u32 devid, u32 eventid)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 4c14aee1fb063..3610a6986be3d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -231,6 +231,7 @@ int kvm_io_bus_register_dev(struct kvm *kvm, enum kvm_b=
+us bus_idx, gpa_t addr,
+ int kvm_io_bus_unregister_dev(struct kvm *kvm, enum kvm_bus bus_idx,
+ 			      struct kvm_io_device *dev);
+ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus=
+_idx,
++					 bool (*filter)(struct kvm_io_device *),
+ 					 gpa_t addr);
+=20
+ #ifdef CONFIG_KVM_ASYNC_PF
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469e..c4f6044ae89fe 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6066,6 +6066,7 @@ int kvm_io_bus_unregister_dev(struct kvm *kvm, enum k=
+vm_bus bus_idx,
+ }
+=20
+ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus=
+_idx,
++					 bool (*filter)(struct kvm_io_device *),
+ 					 gpa_t addr)
+ {
+ 	struct kvm_io_bus *bus;
+@@ -6082,7 +6083,8 @@ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *=
+kvm, enum kvm_bus bus_idx,
+ 	if (dev_idx < 0)
+ 		goto out_unlock;
+=20
+-	iodev =3D bus->range[dev_idx].dev;
++	if (filter(bus->range[dev_idx].dev))
++		iodev =3D bus->range[dev_idx].dev;
+=20
+ out_unlock:
+ 	srcu_read_unlock(&kvm->srcu, srcu_idx);
+--=20
+2.47.3
 
-By using sp->gfn, the flush targets the base GFN of the entire parent page
-table, or the guest page directory itself for indirect mappings.
-
-If the dropped SPTE is at an index greater than 0, wouldn't this flush the
-0th index instead of the actual memory mapped by the dropped SPTE?
-
-Could this leave stale hardware TLB entries for the unmapped guest memory
-on environments supporting precise range-based TLB flushes? Should this
-retrieve the exact GFN using the offset of sptep within sp->spt instead?
-
-[ ... ]
-> -static void link_shadow_page(struct kvm_vcpu *vcpu, u64 *sptep,
-> -			     struct kvm_mmu_page *sp)
-> +static void __link_shadow_page(struct kvm_vcpu *vcpu,
-> +			       struct kvm_mmu_memory_cache *cache, u64 *sptep,
-> +			       struct kvm_mmu_page *sp)
-
-[Severity: Low]
-Is the new cache parameter actually used in this function?
-
-It appears the cache parameter is passed in but never referenced. The
-underlying code seems to use the cache from the vcpu struct directly
-when adding a parent PTE.
-
-Could this parameter be removed to keep the signature clean?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112606.1778=
-248-1-pbonzini@redhat.com?part=3D5
+Without deviation from the norm, progress is not possible.
