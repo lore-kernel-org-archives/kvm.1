@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC2C3C1F31
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE313CA497
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782509753; cv=none; b=rbcSa7e0WEWww+oVBpLRq7GFKSvxiMoM/bPz5jJ2O8iehRicsQ4fZ7yNj+cOAAU8afyHZUr6zPKUATzSufJfrapGwDFijAOCY/iSpTl9WAXVuj5ptx+1bewRaMPFqguI1uJ+++w2IfdZ1mgDiYsgQtqbWr6fElHKRxXoaXwppvQ=
+	t=1782509756; cv=none; b=iwON8FbdbqVE2YYUmTQuxJFf8iIMEmQQ0XJ8YInLmW3enrVLnf/FF3s6QAM99+koJsr7P4MVH/r4iRah5dtSRaqAK+uolH6e5rJx5SCF8s95VPH7VInE6lnRjo7TalA5uqL2hS23omFovMatheHBvb4zaSWMHJzLN25MyirrW60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782509753; c=relaxed/simple;
-	bh=ZbaRyKJ5+N5Q+0DLeDMTRepe35qClN0OPdAISbfzeZM=;
+	s=arc-20240116; t=1782509756; c=relaxed/simple;
+	bh=2uyOYEokTiVVIUDBjPDyg1aZa20yup9XuSi/76mLVaY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OxJN4D5H6iUsS5BVT7IlsdL6zyEEy7E/9+1NdAM44ALYVY5BwMpkqW4gENj0kRmeqfGQssNG2vHxYB6kMNJbHZqiNW7oIxS8bjV1QVd4dicupF0fJ7CMy619a6Jv+3jM+RLtpL+IoTZKk+HJHHe+VFh8j8oDisOEK8eNHvt3WVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B1tOtHA/; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=YgO3YsGkIlXBuTsGjUsj9sDN4dnucXpg9qbUydufYvfCnJ9hSyCHWH6udMMFUhlfIYwG3KC3j64uyCFhk7kX5W6MMSJM1L5IyfWOq6MU0VVp1xSzvDx/Wi1tmxeOHL/hXd8UhXXH3VBbOPK7fAFCCFxo2K/kbPc/AuxOXm39g8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K+lk3XFi; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B1tOtHA/"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c9a700dc0eso760925ad.1
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K+lk3XFi"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37d4eede8ccso871544a91.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782509751; x=1783114551; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782509752; x=1783114552; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=BfGxV+xN5MQJzo1OxAcNftwHJizNMsItpsF+xT3GCNY=;
-        b=B1tOtHA/8UWgi74eQemWL7XK3FXNzMJUPQ3UlMnzCVgIQX9yBvmQlntGUvhaSDl0SL
-         y56mzsTBbKt/2J6+E+oGfyzn2KesbMLT5yw9ErhstU60mtppuvKjuGyD6m/jHbKd6VyJ
-         5zXLOyLYwsjNqffEHnRugEY6xuZOy/92+Yhekr9T0B3FS89XQVDSh9Z4YKipQfBwDPzO
-         Ng54L8oJKfL8q3FIc7rMi8tDAKPnwADdALn+rj2WkqxgMJVdTocfwuWwydjQXve9cNbp
-         jNSWyp472PS9IA0eVLQsZ/4Qon6qqpA0qrviq4yIHTOM8plHqyWnCPA26tTxsl9PCZ27
-         yz8g==
+        bh=MgDHYDGdp3s1Dejk8hKBifIQkaWCPHBgxY5F3+CDVvM=;
+        b=K+lk3XFi3uN70/4XiMqoQWgSHPeZxkUpe0mYDVD45J+G2BhqZaXHuYzgQJvJekQ+OR
+         EwUQHwTxOf6gUVtUnAutb/fEZS9up7IYqFQP8sCsOc3wqCOPvKm5kLcYOwi/v26kIOsF
+         M0Cv0UtrgMt18i7I3zb9pnCubJnJnLlxr+OweCq9kZkeGGmXT5UHPyrJVzkI5XzgaigK
+         krNkCP8vc8t/5BpP+5jOLF5mAk86wMgXWe7Wm7VDVpROYq+FQbyelkyvL5AqXUsHb+MH
+         R7QoIbuLVD1vXM9U4yii+nINzf0Ky2BcKCjaOBqkriP3cjHXYLVjTkG+c7LGO4HL3wVK
+         YBAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782509751; x=1783114551;
+        d=1e100.net; s=20251104; t=1782509752; x=1783114552;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BfGxV+xN5MQJzo1OxAcNftwHJizNMsItpsF+xT3GCNY=;
-        b=g8RZ2CEqDjKrXzbnweD0fIF27adn9J9RrzOFZT13achnjf0SpZKYZNuMocAcAawC4q
-         HFxBgeOphm2aEQzivTGsmffSrlfD3i0HbudLHjc85woqmyMKuHTsBX48brM6p90g2bxi
-         Kc/dwApX4S18GELiOo3EC4sy5TmgqMcJ7mgVdUoN2gRKkEBebNvqKJmEYXLu11/tIecM
-         OHLajGjQKtgHS9IK1nCqZLztauPmmSMTqgwY8Yy8d1QJA7DbKyeOrx2RZmEDszF8+Xel
-         hO3Y0yAnQm7nf9kK6FEhMfANdfTQ/OOrGGCOUfG0ORtycTdR7OP1TZHUiu13Hn/vr0nH
-         6mjw==
-X-Forwarded-Encrypted: i=1; AHgh+RpiAHAX0gmaAd9KaxiSKlC5e9IFeZF0w6C7HU8b/llR+Hv8GBWrhlGq7J+NaHoq9+zi0Og=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAl8Bn6r7cpP2I5q0l6IMGcmoOucQCeJojdyMCL+qK6mTlNdQo
-	vRF4XnQdFZkzSG2pm4eIX8vVR93FMSmymzl1DmtvajbxLNTnIxDJvtXOlQjPpTHxqzSmErI+r5/
-	KgesRSQ==
-X-Received: from plbmj7.prod.google.com ([2002:a17:903:2b87:b0:2c7:f558:fbb4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f786:b0:2c0:bb2d:a30b
- with SMTP id d9443c01a7336-2c7fc754bebmr76656145ad.32.1782509750610; Fri, 26
- Jun 2026 14:35:50 -0700 (PDT)
+        bh=MgDHYDGdp3s1Dejk8hKBifIQkaWCPHBgxY5F3+CDVvM=;
+        b=fw80XiVH37gJPXZ7pQ8hRN7vnt6ZYUbSVH1asLk0MPY8FYnxR6zg77s3RSQYvcOxVk
+         odgAKmjBdxTrTG6bZQUAVzW0S4Y3etLqQESgWH1F7bVDAUUVZgqdcHqJUpBuwp+4br+0
+         +3dHYIQsxnOwLAN+KQjLRV62cBG4yO3AgwIW+5H1r7glDVnAUmmTkKDkG0aO1UKcuke2
+         oAAIZqX8AfmUSZ9Ez6GuajsrvFlMMkbBoJOi6yyPTXY/TmVLqgqvW4Q3v9Emyu5Y+ERn
+         0DTPCbh0X04FnGkB/t64Xgbse1FGE4x9cOa8l1XqWc+O12vh4yhwqsYjbpzy7/7hg9kx
+         pD0A==
+X-Forwarded-Encrypted: i=1; AHgh+RpKhdec0BsuY2O934qoJfZk0RiazK477caltgJio/8DqFIQUM7WIjamVW/ZgVIatp5XgAI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySRvVxUWMmi0L90S7pQpuRX1lN+Mr50Hrsxfr9dirGSCb/JirX
+	msgHf3p/bZTj1Tq3ww+fA0qEKHGsv96UX9OBs8Argx+Ufguux8U8NQ/8O9lrAbM+xdJ5/Bkm8fu
+	9FBrjpQ==
+X-Received: from pjbch13.prod.google.com ([2002:a17:90a:f40d:b0:37d:c9ac:4621])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:46:b0:37e:1ff4:44c0
+ with SMTP id 98e67ed59e1d1-37e1ff4463cmr2659910a91.12.1782509751839; Fri, 26
+ Jun 2026 14:35:51 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 14:35:25 -0700
+Date: Fri, 26 Jun 2026 14:35:26 -0700
 In-Reply-To: <20260626213534.3866178-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260626213534.3866178-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626213534.3866178-13-seanjc@google.com>
-Subject: [PATCH v8 12/20] KVM: selftests: Add option to set empty routing
- between IRQs in eventfd IRQ test
+Message-ID: <20260626213534.3866178-14-seanjc@google.com>
+Subject: [PATCH v8 13/20] KVM: selftests: Make number of IRQs configurable in
+ IRQ test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -75,93 +75,57 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Extend the eventfd IRQ test with an '-e' flag to set empty GSI routing
-between interrupts.  Clobbering the GSI routing table verifies that KVM
-correctly handles CPUx => NULL => CPUy transitions, not just CPUx => CPUy
-transitions, and verifies that KVM can "rebuild" an entire routing setup.
+Extend the eventfd IRQ test with a '-i' flag to let the user specify the
+the number of IRQs to generate (instead of hardcoding the test to always
+generate 1000 interrupts).
 
 Signed-off-by: David Matlack <dmatlack@google.com>
 Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: '-e' for "empty" instead of '-c' for "clear", massage changelog]
+[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/irq_test.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/irq_test.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index fd386e3e9ac3..fd03ec940362 100644
+index fd03ec940362..bb20bb81e930 100644
 --- a/tools/testing/selftests/kvm/irq_test.c
 +++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -121,6 +121,13 @@ static void kvm_route_msi(struct kvm_vm *vm, u32 gsi, struct kvm_vcpu *vcpu,
- 	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing.header);
- }
- 
-+static void kvm_set_empty_gsi_routing(struct kvm_vm *vm)
-+{
-+	struct kvm_irq_routing routing = {};
-+
-+	vm_ioctl(vm, KVM_SET_GSI_ROUTING, &routing);
-+}
-+
- static const char *probe_iommu_type(void)
- {
- 	int io_fd;
-@@ -139,11 +146,12 @@ static const char *probe_iommu_type(void)
+@@ -146,12 +146,13 @@ static const char *probe_iommu_type(void)
  
  static void help(const char *name)
  {
--	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-h] [-t iommu_type]\n", name);
-+	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-t iommu_type]\n", name);
+-	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-t iommu_type]\n", name);
++	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-t iommu_type]\n", name);
  	printf("\n");
  	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
  	printf("-a	Affine the device's host IRQ to a random physical CPU\n");
  	printf("-d	Use a VFIO device to send MSI-X interrupts instead of manually signaling the eventfd\n");
-+	printf("-e	Set empty GSI routing in-between some interrupts\n");
+ 	printf("-e	Set empty GSI routing in-between some interrupts\n");
++	printf("-i	The number of IRQs to generate during the test\n");
  	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
  	printf("\n");
  	exit(KSFT_FAIL);
-@@ -170,6 +178,7 @@ int main(int argc, char **argv)
- 	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
- 	struct vfio_pci_device *device = NULL;
- 	int nr_irqs = 1000, nr_vcpus = 1;
-+	bool set_empty_routing = false;
- 	const char *device_bdf = NULL;
- 	const char *iommu_type = NULL;
- 	int i, j, c, msix, eventfd;
-@@ -177,7 +186,7 @@ int main(int argc, char **argv)
+@@ -186,7 +187,7 @@ int main(int argc, char **argv)
  	struct kvm_vm *vm;
  	int irq, irq_cpu;
  
--	while ((c = getopt(argc, argv, "ad:ht:")) != -1) {
-+	while ((c = getopt(argc, argv, "ad:eht:")) != -1) {
+-	while ((c = getopt(argc, argv, "ad:eht:")) != -1) {
++	while ((c = getopt(argc, argv, "ad:ehi:t:")) != -1) {
  		switch (c) {
  		case 'a':
  			irq_affinity = true;
-@@ -185,6 +194,9 @@ int main(int argc, char **argv)
- 		case 'd':
- 			device_bdf = optarg;
+@@ -197,6 +198,9 @@ int main(int argc, char **argv)
+ 		case 'e':
+ 			set_empty_routing = true;
  			break;
-+		case 'e':
-+			set_empty_routing = true;
++		case 'i':
++			nr_irqs = atoi_positive("Number of IRQs", optarg);
 +			break;
  		case 't':
  			iommu_type = optarg;
  			break;
-@@ -234,9 +246,13 @@ int main(int argc, char **argv)
- 	}
- 
- 	for (i = 0; i < nr_irqs; i++) {
-+		const bool do_set_empty_routing = set_empty_routing && (i & BIT(3));
- 		struct kvm_vcpu *vcpu = vcpus[i % nr_vcpus];
- 		struct timespec start;
- 
-+		if (do_set_empty_routing)
-+			kvm_set_empty_gsi_routing(vm);
-+
- 		kvm_route_msi(vm, gsi, vcpu, vector);
- 
- 		if (irq_affinity) {
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
