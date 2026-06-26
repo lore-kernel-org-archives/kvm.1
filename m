@@ -1,132 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A73EFFD2
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 13:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFA92C0299;
+	Fri, 26 Jun 2026 13:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782480506; cv=none; b=Fk7+5rUdeLTQztbyQk+jY0SoOPFwAEMsi4MYOOegRPNeMaKQ+nIEsDeHxIJ/wJguS3LFdEm6TSxqHGQeMZmI3eveMQslpXUspHQtOFQ537A5BduAuyg8CXtcYf4Adn4WLOzfIQmGD7L+nXUrOAtfSpzI0hzFfk8vId83fY6xZGo=
+	t=1782480939; cv=none; b=ocOKd5lxhCxxL1Qs4jiMmoSSbG+rKNM7BPam/hj0xp2WHuDmGo/cYcCnEB0Zhi9OXlJHRFbSu4wIhTrXTa45VgJopdxjDRvtBmt8kJZgl/GpHDLSjZxpGQ23y45SQexkHwWu7gll17oRuABjbLaql0CcvJwub+2gEVdwq2j2NDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782480506; c=relaxed/simple;
-	bh=3OFxxx8kS5Cdmy7AVq4wnLk/WzsyoXnvtqZpyeshVUE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rEPM7L0BrW0Hk323oqPorltba/MDu0R3F20yid1kcIvx+ncbEh2XgV4HSquZCu8DIq9j17GngE3VRml706dmNWq7ON26qkgmWjsTTTpr5b8vfCwHz4A5vTw1L1+HlhvqyvLTdXm8AiOU6JLOf1KtQwVO7GV72gl5BykisciE7go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYeLyCIA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782480939; c=relaxed/simple;
+	bh=kxzTDbHkEr6q+G5Bg7xpP9Sz4lyuVpfrnGtN6pLP2Bs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cu1YwyeP+Rn575zJX9chIQkNB7pqnEstvnUi5sMQT8Sx69aNjkxVMWYtVl2s9IAwLse6tpX5HoduQZVftCqKJ+kZjpObYEdYskIIYZM9JmCum6TcrHfzFjnixtOkUxTbsqWSWvxnyX2xAd6fkBhnb2ifF0BEGghV5At4GeQTKGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMeT0S1S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYeLyCIA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3432A1F00A3A;
-	Fri, 26 Jun 2026 13:28:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMeT0S1S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED28B1F000E9;
+	Fri, 26 Jun 2026 13:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782480503;
-	bh=kNyq6Y3prIe42y3Ryu+3RLPykCCsL9vi1GPmxhwcmzw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FYeLyCIAHXjXuEh7AHp6TDRIsi+mYvk5CumxQ97kdRytCud1fkkWqrtz0Qt3AY3Ke
-	 Atpjxks96QT0MoD3Lvf6KgRaBrHf1N9u/ksc0nUOUH5eC4xlUcrO28jxG7/vNgsvLh
-	 k3IPtMUaZxXfPCUXJENbg7y6nPTbZGIhyErd8C+mdwlPiQmCICKrJ0m/THPnRSeWsd
-	 wY4kNa/KUzNiTRLY2oVUSuGBVLxMMIHH7bE7l3j57CYPBJx+s+lhaGBkz3nChujudi
-	 m6vUM7s57Ou+0nOJpE1jk/wh4RYX4VYUHDvTqZVwNtqt/VABXpHJw+UDCTakiTsvk8
-	 JZi3qq4Vj5feg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.10.y 11/17] KVM: x86/mmu: Always pass 0 for @quadrant
- when gptes are 8 bytes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626112634.1778506-12-pbonzini@redhat.com>
-References: <20260626112634.1778506-1-pbonzini@redhat.com>
- <20260626112634.1778506-12-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 13:28:22 +0000
-Message-Id: <20260626132823.3432A1F00A3A@smtp.kernel.org>
+	s=k20260515; t=1782480938;
+	bh=NzHNiZRJs/ug1E3IvLOYIVWeeI5eXvwckhLoUOrOafc=;
+	h=From:To:Cc:Subject:Date;
+	b=VMeT0S1SvqLatI/IwMpCTMXnqFFBPetfizCnvFuQZvF9X2oV6NsBlc8otnciskJ7d
+	 DmNVg/W6U4lrOQdbceCKtUGpvtFWXu26YXitkFfqWlHbd2a0dx1fjEpKpNk2DygS7f
+	 YpgzuqzwwQWIHeWSTu0nYlIG6Oo8DKm8g8k+JZias+t0haj2M6qzxXr5E6C3rz8yrU
+	 DIEQLOuKqJdvJCUR2GQUG8icS+Cz9VM3949Oy6ga6wWJ/VxJ13Qiu63jPsKdznBIk6
+	 T+9qCI8OMnE0Kl2SxClS3up52kDWYpoJRb/spn3gNoCFg+JJFrryiIuDV+oh9g5sYB
+	 J3dWlP/o9k95g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wd6iV-0000000GLsv-1HwZ;
+	Fri, 26 Jun 2026 13:35:35 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Bradley Morgan <include@grrlz.net>,
+	Fuad Tabba <tabba@google.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Xuanqing Shi <shixuanqing.11@bytedance.com>,
+	Zhong Wang <wangzhong.c0ss4ck@bytedance.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.2, take #1
+Date: Fri, 26 Jun 2026 14:35:26 +0100
+Message-ID: <20260626133526.817232-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, include@grrlz.net, tabba@google.com, imv4bel@gmail.com, oupton@kernel.org, bestswngs@gmail.com, will@kernel.org, shixuanqing.11@bytedance.com, wangzhong.c0ss4ck@bytedance.com, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Paolo,
 
-New issues:
-- [High] The newly added `WARN_ON_ONCE(role.direct && !role.gpte_is_8_bytes=
-)` is factually incorrect and trivially triggerable by an unprivileged gues=
-t, leading to a host-side Denial of Service if `panic_on_warn` is enabled.
+As predicted, here's another largeish set of fixes for KVM/arm64. A
+bunch of them are fairly benign (the PSTATE.IL stuff), but some are
+pretty annoying (vgic, MOPS) and are stable material.
 
-Pre-existing issues:
-- [High] In direct MMU mappings for non-paging guests, child shadow page al=
-location incorrectly applies 32-bit quadrant logic and triggers a warning.
---
+On the bright side, Fuad has volunteered to be an official reviewer.
+We really need people to engage with the reviewing process instead of
+simply dumping patches on us, as me and Oliver really can't be
+stretched much further. So many thanks Fuad for offering to help.
 
-commit 890f97eba3156db8c16203bd93e23c5a69ffdd15
-Author: Paolo Bonzini <pbonzini@redhat.com>
+I expect to be back next week with a similar delivery, as my Inbox
+keeps filling with this stuff...
 
-KVM: x86/mmu: Always pass 0 for @quadrant when gptes are 8 bytes
+Please pull,
 
-The quadrant is only used when gptes are 4 bytes, but
-mmu_alloc_{direct,shadow}_roots() pass in a non-zero quadrant for PAE
-page directories regardless. Make this less confusing by only passing in
-a non-zero quadrant when it is actually necessary.
+	M.
 
-Message-Id: <20220516232138.1783324-6-dmatlack@google.com>
+The following changes since commit 1ee27dacbe5dc4def481794d899d67b0d4570094:
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index e4759156a2dc8..76d87da1d0712 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3263,9 +3263,10 @@ static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu,=
- gfn_t gfn, int quadrant,
->  	struct kvm_mmu_page *sp;
-> =20
->  	role.level =3D level;
-> +	role.quadrant =3D quadrant;
-> =20
-> -	if (!role.gpte_is_8_bytes)
-> -		role.quadrant =3D quadrant;
-> +	WARN_ON_ONCE(quadrant && role.gpte_is_8_bytes);
-> +	WARN_ON_ONCE(role.direct && !role.gpte_is_8_bytes);
+  Merge branch kvm-arm64/nv-mmu-7.2 into kvmarm-master/next (2026-06-12 09:29:34 +0100)
 
-[Severity: High]
-Can this new warning be triggered by an unprivileged guest?
+are available in the Git repository at:
 
-If a guest runs with TDP disabled (Shadow MMU active) and disables paging
-(e.g., boots in real mode), kvm_calc_shadow_mmu_root_page_role() sets
-role.base.direct =3D 1 and role.base.gpte_is_8_bytes =3D 0.
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.2-1
 
-When mmu_alloc_direct_roots() calls mmu_alloc_root() for a direct MMU
-root, won't this unconditionally hit the WARN_ON_ONCE and potentially
-cause a host panic if panic_on_warn is enabled?
+for you to fetch changes up to d098bb75d14fde2f12155f1a95ec0168160867ce:
 
->  	sp =3D kvm_mmu_get_page(vcpu, gfn, role);
->  	++sp->root_count;
+  KVM: arm64: account pKVM reclaim against the VM mm (2026-06-22 10:48:08 +0100)
 
-[ ... ]
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.2, take #1
 
-[Severity: High]
-This isn't a bug introduced by this patch, but a prior patch in the series
-appears to have introduced a similar issue for direct MMU mappings for
-non-paging guests.
+- Fix an accounting buglet when reclaiming pages from a protected
+  guest
 
-When a guest operates without paging using the Shadow MMU, the root shadow
-page has role.direct =3D 1 and role.gpte_is_8_bytes =3D 0.
+- Fix a bunch of architectural compliance issues when injecting a
+  synthesised exception, most of which were missing the PSTATE.IL bit
+  indicating a 32bit-wide instruction
 
-During page faults, __direct_map() allocates intermediate shadow pages by
-calling kvm_mmu_get_child_sp() -> kvm_mmu_child_role():
+- Another set of fixes addressing issues with translation of VNCR_EL2,
+  including corner cases where the guest point that register at a RO
+  page...
 
-arch/x86/kvm/mmu/mmu.c:kvm_mmu_child_role() {
-        ...
-        if (!role.gpte_is_8_bytes) {
-                WARN_ON_ONCE(role.level !=3D PG_LEVEL_4K);
-                role.quadrant =3D (sptep - parent_sp->spt) % 2;
-        }
-        ...
-}
+- Don't warn when trapping accesses to ZCR_EL2 from an L2 guest, as
+  that's not unexpected at all
 
-Since role.gpte_is_8_bytes =3D=3D 0, does this erroneously execute the 32-b=
-it
-guest PAE-shadowing path, triggering the warning when allocating level 2
-shadow pages and incorrectly assigning a quadrant to direct mapping pages?
+- Address a bunch of races with LPI migration vs LPIs being disabled
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112634.1778=
-506-1-pbonzini@redhat.com?part=3D11
+- Fix a total howler of a bug combining FEAT_MOPS and NV, resulting in
+  exception returning in the wrong place...
+
+- Coerce Fuad Tabba into a reviewer role, and may his Inbox catch
+  fire!
+
+----------------------------------------------------------------
+Bradley Morgan (1):
+      KVM: arm64: account pKVM reclaim against the VM mm
+
+Fuad Tabba (11):
+      KVM: arm64: nv: Write ESR_EL2 for injected nested SError exceptions
+      KVM: arm64: Sync SPSR_EL1 when injecting an exception into a pVM
+      KVM: arm64: nv: Fix PSTATE construction on illegal exception return
+      KVM: arm64: Add Fuad Tabba as a reviewer
+      KVM: arm64: Set ESR_ELx.IL for injected undefined exceptions at EL2
+      KVM: arm64: Unconditionally set IL for injected undefined exceptions
+      KVM: arm64: Unconditionally set IL for injected abort exceptions
+      KVM: arm64: Set IL for injected FPAC exceptions during ERET emulation
+      KVM: arm64: Set IL for emulated SError injection
+      KVM: arm64: Set IL for nested SError injection
+      KVM: arm64: Set IL in fake ESR for pKVM memory sharing exit
+
+Hyunwoo Kim (1):
+      KVM: arm64: vgic: Check the interrupt is still ours before migrating it
+
+Marc Zyngier (1):
+      KVM: arm64: vgic: Handle race between interrupt affinity change and LPI disabling
+
+Oliver Upton (6):
+      KVM: arm64: nv: Drop bogus WARN for write to ZCR_EL2
+      KVM: arm64: nv: Respect read-only PFN when mapping L1 VNCR
+      KVM: arm64: nv: Inject SEA if kvm_translate_vncr() can't resolve PFN
+      KVM: arm64: nv: Re-translate VNCR before injecting abort
+      KVM: arm64: nv: Inject SEA if guest VNCR isn't normal memory
+      KVM: arm64: nv: Mark VM as bugged for unexpected VNCR abort
+
+Weiming Shi (1):
+      KVM: arm64: nv: Fix SPSR_EL2 restore in kvm_hyp_handle_mops()
+
+ MAINTAINERS                             |   1 +
+ arch/arm64/include/asm/kvm_nested.h     |   8 ++
+ arch/arm64/kvm/at.c                     |   8 --
+ arch/arm64/kvm/emulate-nested.c         |  37 +++++--
+ arch/arm64/kvm/hyp/include/hyp/switch.h |  11 ++-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c          |   3 +-
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c      |   3 +-
+ arch/arm64/kvm/inject_fault.c           |  18 +---
+ arch/arm64/kvm/nested.c                 | 164 ++++++++++++++++----------------
+ arch/arm64/kvm/pkvm.c                   |   2 +-
+ arch/arm64/kvm/vgic/vgic.c              |  20 ++--
+ 11 files changed, 149 insertions(+), 126 deletions(-)
