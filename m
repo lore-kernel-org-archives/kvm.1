@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808F43BFACB
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887963C09E5
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782509739; cv=none; b=hLPafVGN+OiZgAs+8Wq3iEfF5AnDNV8g6gVA4AuWrRW+yWfDzRGHbngcmLR7H56LkTfDtyiDT8IelH6R1q/cUMUCSlB2ojLSnmczA8iwFooG0vB/3CQxao1hYyFMVAgp54A3uOANvhouRty947C+h7v0YFG73UWk7W6pfNW6XVc=
+	t=1782509742; cv=none; b=MPJVIwm1h9CRAozcvrM1RV3Ulo7hFOTFQnSGslmZMCzlpasIRxgXKn+DA3UXH11v/H8yxuGf9jbt0koQfa77m8liLoRGrJT8lBdPB0uvsB8zjAc1l/DGc4vH7KOgfAQVvHk2/XzoPTkAR3McNpWRR+MStwnMLJL2N8AZE0dw4WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782509739; c=relaxed/simple;
-	bh=2O0WH3pvR3gLzy2R+GyxwzyDg8G99Zdln+fhYAUluQI=;
+	s=arc-20240116; t=1782509742; c=relaxed/simple;
+	bh=+iVK0U72I4V9rzOETZXqLIHJYh3Jg+jyJNG57By+z/c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YX5UM6tjyrTgTaVrkv/uado5PQJifnZbTUQ98TLsqEM+jXhrT3cV+oj4ocBTStK/JXia0wASkzhtYbRXjcxEpEqjeWRmY0ofBtuaDFql0OSmbv6xQGI9xDV5vBy4W3DuTOS+zTaTxCjiVcG9CxMvjJtm6i8MIy2b9fhYBQ2SpYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BaUV7NLM; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=nK82nJCQc1KESUL54Tmh1sNL//FZgXt7CgHoPzzNu03aiK4veeKDOzpDW91XCtOmEXTX4ITr+QAjOLuLntGOGnaGZ8o0AbjLnRxgCCAj8g45TiiqmGamb5a0TFJqtp/DBgEb20vf2VnIbl83XyJtLFEyrbiSObJGxU5F+/6FyO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uZ3L2i52; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BaUV7NLM"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37df91eab27so1388758a91.2
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uZ3L2i52"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c80be91ea3so20129925ad.1
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782509738; x=1783114538; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782509739; x=1783114539; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=SQrCOvI/gGqY/5lmFouPkrLmKsRGpPhinpGyhSDO7Ek=;
-        b=BaUV7NLM3TMO9EsuTsYI5CGyIo1stGTBwS6fCv4mjkwOTGGeghXmTneDeQXLSIBlfw
-         MFjrwibkb2FiV8AtdOERxcC+3fDm/00kGbzP0d6xXqlgyyC0FWJdx0/1xNv/QcRFGa4+
-         Bgoco9QCGFr0Q4azfWofKgKKMLx4XZmBQ5bnHpmSm35MUsPN0cRJxRxBAHihouCmv+BJ
-         mlNUePfzkY+4pGzZAv8RrEAMVP9s6GVyowOtl6xd6VeE+Gz9gnK2/X6keJtzWklAZem5
-         TdKqFM+OLRzN0aVyMyIs5NktDnVmm4CfMG0o80CJ1RTGbe3y02gUFM1DC+AOBJ3n6h3O
-         ts/Q==
+        bh=4C/F69MMCNbFC/U7daD4jUcYFr10L9zUYtkcPR6sWF8=;
+        b=uZ3L2i527ZA7YodJWlK1UUWJDFk/VaiPEfGvUrXD40HeFD6ZnSs+F+59iuI0mCbM4E
+         rrRm6cpcZHx+h2gs75QYyZZ1o/kxJZ0l9fYtSB2t1sbmBNT9N01UWHZuOdamI8Ks6Sv5
+         jcIs9zPxL4GmBScjO5u4KMXyhWL3b87QcvzyjxdIRZ58VmRdhBbTUi+HeyVwFvPjurps
+         lrMV1SuyFZ0a6tm5Td1W5mhQ/3YB7Uppy9eNSa5sSRCUnP/X6312wfrUmOMlz1XVKesQ
+         2E3HlD4oNlBfca6dF1cZFuiHv5JyP6M5/NXRJPV0KiYhcgwXWucXHdkHK40S7q93rc42
+         XX0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782509738; x=1783114538;
+        d=1e100.net; s=20251104; t=1782509739; x=1783114539;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SQrCOvI/gGqY/5lmFouPkrLmKsRGpPhinpGyhSDO7Ek=;
-        b=eIFwP/y6rcRgA7hnHtCs+OpTltM++8CaE7J87XtDqzEGqlQL/pXFRYZ8ptlbElL6yp
-         0JgYAlkOU+DuX3tlzjmJVCCGXbxHm6+N/3stPmgzqRzXA0IlwlnWMn3H9Rf8wNyaksgr
-         Ds6XyGiIqqv0AHKgA5XDx12OpxwNUHKxttP8VIsR2jCSm3NGJ2Xl1wTAGt+0gDm53UFc
-         5gPLri/Qx312JC/PhdvVMd1pIY4+/e6CBJeBMQRqcZqtLhQo7QX/3M3kr7OxXk0r8BGm
-         uicvxuA/GroZI77QKfwN+2pCEF1POxTHxYmRWyIQU+TOx9nw5hTe0uD+gXABXCVApM3n
-         Mlag==
-X-Forwarded-Encrypted: i=1; AHgh+RpePlCRE5dIkcYCC8ef2u2foCiWsz8bv/Q4OkLGp07eXUwAWG4OIYY4Mit4U+lnQRubBog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRGVQrbaQS+F/vaRGNiGyswOwW2TCZulSsLHLTIlzvRJA1+nDJ
-	05m577U0wj97MmdW/6vzBjbW2SquLzz198LwFJGfxrpT/wOOJI51pnKFW30E8KWHDe+gth6CymB
-	tM+YlIg==
-X-Received: from plq11.prod.google.com ([2002:a17:903:2f8b:b0:2c8:17d:91a3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2304:b0:2c0:d91d:c3e8
- with SMTP id d9443c01a7336-2c7fc65423emr78308535ad.4.1782509737490; Fri, 26
- Jun 2026 14:35:37 -0700 (PDT)
+        bh=4C/F69MMCNbFC/U7daD4jUcYFr10L9zUYtkcPR6sWF8=;
+        b=cHt7RSr/CuCBM5jpFCErLiu6IKgUtuaDRESl6JWhLbDMwMfDLbudgEJAOflaB+/WQ4
+         pfG2F2dxu3tZE9Z32TF6rnLUGivGTeZlFRCVdyUfncuZi0xxZoENCatlIyvi/xW8gu7q
+         A9qx1xbkn2T4/hYpNFkvuAY0UJLKCv5gMO3shkYDuvAhN8nHVpD4rf6uNFBpDdIlCgfc
+         KT/g1ixViqQJ12sG+LZtgehmlnb0+XwxPqZgM6veAEj5QYEKbDOo4/IQom40lx15uMRW
+         kS1ED69LxkSBqlwfxXxrZtoqCH3WIO+KLfhHQTE0JsSZuE4DIS4xWtnaofUBO2YQm1/4
+         VSVg==
+X-Forwarded-Encrypted: i=1; AHgh+RoHq69FrVzEgnGGaCN0bVnRE+h65cXfUN3LOsMHTLHfg6HdafoS3HGTc3PzIQIIh+VSvk4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7UZES29KG2/wMHv9/KYP3P2kPAGg5FSEpMyHIjwiiaq620NF/
+	F4covzGXmeL6rt8F1pFJtFox4XFP4IEB9CA5GEPt/9yb/8sBWsHyU7xBGFAMEzhP9PzmGr2IXrG
+	CyTKmIw==
+X-Received: from plrr3.prod.google.com ([2002:a17:902:c603:b0:2c6:a096:4c29])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f05:b0:2c2:be43:39bc
+ with SMTP id d9443c01a7336-2c7fc6f3442mr85977465ad.22.1782509738712; Fri, 26
+ Jun 2026 14:35:38 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 14:35:14 -0700
+Date: Fri, 26 Jun 2026 14:35:15 -0700
 In-Reply-To: <20260626213534.3866178-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260626213534.3866178-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626213534.3866178-2-seanjc@google.com>
-Subject: [PATCH v8 01/20] KVM: selftests: Build and link selftests/vfio/lib
- into KVM selftests
+Message-ID: <20260626213534.3866178-3-seanjc@google.com>
+Subject: [PATCH v8 02/20] KVM: selftests: Add macros to read/write+sync
+ to/from guest memory
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -75,47 +75,177 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: David Matlack <dmatlack@google.com>
 
-Include libvfio.mk into the KVM selftests Makefile and link it into all
-KVM selftests by adding it to LIBKVM_OBJS.
+Add SYNC_FROM_GUEST_AND_READ(vm, variable), to read a variable value
+from the guest. Add WRITE_AND_SYNC_TO_GUEST(vm, variable, value) to
+write a value to a guest variable. These macros improve the readability
+of code which reads and writes data between host and guest in tests.
 
-This lays the groundwork for future changes to utilize VFIO devices to
-verify IRQ bypass in KVM selftests.
+Use the new macro in existing tests that do back-to-back write+sync.
 
-Note that KVM selftests build their own copy of selftests/vfio/lib and
-the resulting object files are placed in $(OUTPUT)/lib. This allows the
-KVM and VFIO selftests to apply different CFLAGS when building without
-conflicting with each other.
+No functional changes are intended.
 
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: David Matlack <dmatlack@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
+[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/dirty_log_test.c  |  9 +++-----
+ .../testing/selftests/kvm/include/kvm_util.h  | 10 +++++++++
+ tools/testing/selftests/kvm/mmu_stress_test.c |  9 +++-----
+ tools/testing/selftests/kvm/steal_time.c      | 22 +++++++------------
+ 4 files changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 4ace12606e93..ae0dfd67dd31 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -259,6 +259,7 @@ OVERRIDE_TARGETS = 1
- # which causes the environment variable to override the makefile).
- include ../lib.mk
- include ../cgroup/lib/libcgroup.mk
-+include ../vfio/lib/libvfio.mk
+diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
+index 74ca096bf976..087e94a8a81a 100644
+--- a/tools/testing/selftests/kvm/dirty_log_test.c
++++ b/tools/testing/selftests/kvm/dirty_log_test.c
+@@ -708,8 +708,7 @@ static void run_test(enum vm_guest_mode mode, void *arg)
  
- INSTALL_HDR_PATH = $(top_srcdir)/usr
- LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
-@@ -313,7 +314,9 @@ LIBKVM_S := $(filter %.S,$(LIBKVM))
- LIBKVM_C_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_C))
- LIBKVM_S_OBJ := $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
- LIBKVM_STRING_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
--LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ) $(LIBCGROUP_O)
-+LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ)
-+LIBKVM_OBJS += $(LIBCGROUP_O)
-+LIBKVM_OBJS += $(LIBVFIO_O)
- SPLIT_TEST_GEN_PROGS := $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
- SPLIT_TEST_GEN_OBJ := $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS))
+ 		sync_global_to_guest(vm, iteration);
  
+-		WRITE_ONCE(nr_writes, 0);
+-		sync_global_to_guest(vm, nr_writes);
++		WRITE_AND_SYNC_TO_GUEST(vm, nr_writes, 0);
+ 
+ 		dirty_ring_prev_iteration_last_page = dirty_ring_last_page;
+ 		WRITE_ONCE(dirty_ring_vcpu_ring_full, false);
+@@ -775,16 +774,14 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+ 		 * writing memory during verification, pages that this thread
+ 		 * sees as clean may be written with this iteration's value.
+ 		 */
+-		WRITE_ONCE(vcpu_stop, true);
+-		sync_global_to_guest(vm, vcpu_stop);
++		WRITE_AND_SYNC_TO_GUEST(vm, vcpu_stop, true);
+ 		sem_wait(&sem_vcpu_stop);
+ 
+ 		/*
+ 		 * Clear vcpu_stop after the vCPU thread has acknowledge the
+ 		 * stop request and is waiting, i.e. is definitely not running!
+ 		 */
+-		WRITE_ONCE(vcpu_stop, false);
+-		sync_global_to_guest(vm, vcpu_stop);
++		WRITE_AND_SYNC_TO_GUEST(vm, vcpu_stop, false);
+ 
+ 		/*
+ 		 * Sync the number of writes performed before verification, the
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 04a910164a29..c1f588154398 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -1138,6 +1138,16 @@ vm_adjust_num_guest_pages(enum vm_guest_mode mode, unsigned int num_guest_pages)
+ 	memcpy(&(g), _p, sizeof(g));				\
+ })
+ 
++#define SYNC_FROM_GUEST_AND_READ(_vm, _variable) ({		\
++	sync_global_from_guest(_vm, _variable);			\
++	READ_ONCE(_variable);					\
++})
++
++#define WRITE_AND_SYNC_TO_GUEST(_vm, _variable, _value) do {	\
++	WRITE_ONCE(_variable, _value);				\
++	sync_global_to_guest(_vm, _variable);			\
++} while (0)
++
+ /*
+  * Write a global value, but only in the VM's (guest's) domain.  Primarily used
+  * for "globals" that hold per-VM values (VMs always duplicate code and global
+diff --git a/tools/testing/selftests/kvm/mmu_stress_test.c b/tools/testing/selftests/kvm/mmu_stress_test.c
+index 54d281419d31..473ef4c0ea9f 100644
+--- a/tools/testing/selftests/kvm/mmu_stress_test.c
++++ b/tools/testing/selftests/kvm/mmu_stress_test.c
+@@ -155,10 +155,8 @@ static void *vcpu_worker(void *data)
+ 		    "Expected EFAULT on write to RO memory, got r = %d, errno = %d", r, errno);
+ 
+ 	atomic_inc(&nr_ro_faults);
+-	if (atomic_read(&nr_ro_faults) == nr_vcpus) {
+-		WRITE_ONCE(all_vcpus_hit_ro_fault, true);
+-		sync_global_to_guest(vm, all_vcpus_hit_ro_fault);
+-	}
++	if (atomic_read(&nr_ro_faults) == nr_vcpus)
++		WRITE_AND_SYNC_TO_GUEST(vm, all_vcpus_hit_ro_fault, true);
+ 
+ #if defined(__x86_64__) || defined(__aarch64__)
+ 	/*
+@@ -383,8 +381,7 @@ int main(int argc, char *argv[])
+ 	rendezvous_with_vcpus(&time_run2, "run 2");
+ 
+ 	mprotect(mem, slot_size, PROT_READ);
+-	mprotect_ro_done = true;
+-	sync_global_to_guest(vm, mprotect_ro_done);
++	WRITE_AND_SYNC_TO_GUEST(vm, mprotect_ro_done, true);
+ 
+ 	rendezvous_with_vcpus(&time_ro, "mprotect RO");
+ 	mprotect(mem, slot_size, PROT_READ | PROT_WRITE);
+diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+index 76fcdd1fd3cb..2de87549fcc0 100644
+--- a/tools/testing/selftests/kvm/steal_time.c
++++ b/tools/testing/selftests/kvm/steal_time.c
+@@ -70,8 +70,8 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
+ static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
+ {
+ 	/* ST_GPA_BASE is identity mapped */
+-	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+-	sync_global_to_guest(vcpu->vm, st_gva[i]);
++	WRITE_AND_SYNC_TO_GUEST(vcpu->vm, st_gva[i],
++				(void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
+ 
+ 	vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME, (ulong)st_gva[i] | KVM_MSR_ENABLED);
+ }
+@@ -187,8 +187,7 @@ static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
+ 	};
+ 
+ 	/* ST_GPA_BASE is identity mapped */
+-	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+-	sync_global_to_guest(vm, st_gva[i]);
++	WRITE_AND_SYNC_TO_GUEST(vm, st_gva[i], (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
+ 
+ 	st_ipa = (ulong)st_gva[i];
+ 	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+@@ -310,10 +309,8 @@ static bool is_steal_time_supported(struct kvm_vcpu *vcpu)
+ static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
+ {
+ 	/* ST_GPA_BASE is identity mapped */
+-	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+-	st_gpa[i] = addr_gva2gpa(vcpu->vm, (gva_t)st_gva[i]);
+-	sync_global_to_guest(vcpu->vm, st_gva[i]);
+-	sync_global_to_guest(vcpu->vm, st_gpa[i]);
++	WRITE_AND_SYNC_TO_GUEST(vcpu->vm, st_gva[i], (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
++	WRITE_AND_SYNC_TO_GUEST(vcpu->vm, st_gpa[i], addr_gva2gpa(vcpu->vm, (gva_t)st_gva[i]));
+ }
+ 
+ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+@@ -442,8 +439,7 @@ static void steal_time_init(struct kvm_vcpu *vcpu, u32 i)
+ 	};
+ 
+ 	/* ST_GPA_BASE is identity mapped */
+-	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
+-	sync_global_to_guest(vm, st_gva[i]);
++	WRITE_AND_SYNC_TO_GUEST(vm, st_gva[i], (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
+ 
+ 	err = __vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &attr);
+ 	TEST_ASSERT(err == 0, "No PV stealtime Feature");
+@@ -549,8 +545,7 @@ int main(int ac, char **av)
+ 
+ 		/* Second VCPU run, expect guest stolen time to be <= run_delay */
+ 		run_vcpu(vcpus[i]);
+-		sync_global_from_guest(vm, guest_stolen_time[i]);
+-		stolen_time = guest_stolen_time[i];
++		stolen_time = SYNC_FROM_GUEST_AND_READ(vm, guest_stolen_time[i]);
+ 		run_delay = get_run_delay();
+ 		TEST_ASSERT(stolen_time <= run_delay,
+ 			    "Expected stolen time <= %ld, got %ld",
+@@ -570,8 +565,7 @@ int main(int ac, char **av)
+ 
+ 		/* Run VCPU again to confirm stolen time is consistent with run_delay */
+ 		run_vcpu(vcpus[i]);
+-		sync_global_from_guest(vm, guest_stolen_time[i]);
+-		stolen_time = guest_stolen_time[i] - stolen_time;
++		stolen_time = SYNC_FROM_GUEST_AND_READ(vm, guest_stolen_time[i]) - stolen_time;
+ 		TEST_ASSERT(stolen_time >= run_delay,
+ 			    "Expected stolen time >= %ld, got %ld",
+ 			    run_delay, stolen_time);
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
