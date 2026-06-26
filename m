@@ -1,317 +1,310 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD793BED4A
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 08:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32941286415
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 08:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782463556; cv=none; b=jv6J4uzNgcJK/n0IGHemD0iqNICt0CxPAiIMX+lwpenJAIJSjCiZ3RmNvwTHjWFh6WvMsAAlhYBNWjPo6ujRHWyyu5E5LipK9N+xIbZQcUm1bZgJhD5eCh3CwOksqH/hIaDxgXqZTrYbyqP17w2IlT+XDGV8gDcabXo20sP0Aas=
+	t=1782463724; cv=none; b=uFLPQTEnIUPaBgzOHjD/0U5QsJcnCt2UszXL61ochVyPBjazOyKTHRqpMFtqA96WMFqeDIbi57WsR9LH8Viu/+Kstm/V4GrnRJ/Ul2g5GI3FIWPJ0YZ5WWcFnRjFygMf64O+AbNnASQTM2+tBrNjNOUHwGMR3F8LN6VnM/+0IDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782463556; c=relaxed/simple;
-	bh=Z/jWvKS2isE2i5O2K+5sf/P7tPDD6kEse9Ze3a6umhI=;
+	s=arc-20240116; t=1782463724; c=relaxed/simple;
+	bh=8SKE5+w+nUC99O0PQPXOslSSjU0k/cav2IEwIOqB1o4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jU6dTY/as3Z3ix6DKv4gmdh9VSchGAJrKanSYhnLNBsD31wHowVYBKiVYARpL4z7b92+Z3UvoNN5RMka/j2YnXWdhJbAAuJhCbYf4yTywrgph/2C0d/zSoh3L9drY4rIhjwn/svcOpJAeJbcI7mo21k+0bQEUhphSqthoAZXbZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPBJtj6Q; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=pz+jq+4qO17jzznVZs+8TIgD2vkJ7ZsF890cnxYhvOZZc3EI7r++G3Ciwun/uIOYHQeVzZ7aNDHZEMLD6gcfPutlxXX+2m9FqY52313TrkxnaPoOABJz9Nu9uBBYIO6GuyKL+OM2g7gslx0qWz3kSE5oNsKlyVsSbwmrQUHyEFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z8Jnl+m6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPBJtj6Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C2E1F000E9;
-	Fri, 26 Jun 2026 08:45:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z8Jnl+m6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172581F000E9;
+	Fri, 26 Jun 2026 08:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782463554;
-	bh=b7ZE+EUznPcQuHw4xnSR9fDvJlXQO89IslIk94mQgIw=;
+	s=k20260515; t=1782463722;
+	bh=cTIFKFfXeX2xk6Z/mOOtvMk5UiCmmucmn3EbcJ2LHY8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lPBJtj6QuiUsEMzlfCfveX35m+OXaqshE2qN8xL9YuuP6SAPEsfM63Zz0P5qyqY3B
-	 C4+W9qf7vCG3G5l92pHu4sRMKv471OfRQoY1k7B7LmdJMBnaDms1i8KHZ4RgLYobtl
-	 9WflTspkDfgiyDJ5z4Rcy30baDq1eHmsjAtBNWh5988qQhmyJRuNhAwe522ezwsXyT
-	 EAxygsdpxSe/KxXUaZB81zdRUd4pu9QEQWTtZqKZjZYhrgfkvKMA+/i3qTvJYa16Np
-	 jP7y6+U5R/Faxdojol0oiIUMvUK+tfKjcURx5xwPUpKXAyG1Z7K/1T7cMYZsJBeGQw
-	 eNNIZ6hzAFheA==
+	b=Z8Jnl+m6DjHc7CVmpKUhwANNj2WDS3FcduGMba1zX2VL5ET2+pzphsXsgLTMxtUCN
+	 hPO3On6q8DmtVygIHrROSY+BM73Xo6qFGiOF+wvmu4X+U+A3fcrNWiSQi/yaozfZ/D
+	 KChQDe9kayLgfBQB9IdNwDMgkBhcHU5mJfABiFmorRCY/T8t+mM0Y6UYgdRtNZXcXX
+	 lWeWuTi/D/7nlF3rHLsy/+u2Ee5MifksM9XTxZ4i16gv08V7bVRwAcf7YWOJQJMG2X
+	 jsXWgvCVAbbywPtJdb3lK0m5/irqDPiD+93GF4avRQ/pVQW/Sj6OHDbrVH/tAjZbmB
+	 92RtoYJhNXxRw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: RISC-V: Add CPU PM notifier for
- non-retention idle states
+Subject: Re: [RFC PATCH] KVM: rust: add Rust reimplementation of eventfd
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626-kvm-cpu-pm-v2-2-478e5ef8dc9b@sifive.com>
-References: <20260626-kvm-cpu-pm-v2-0-478e5ef8dc9b@sifive.com>
- <20260626-kvm-cpu-pm-v2-2-478e5ef8dc9b@sifive.com>
+To: leixiang <leenollei@gmail.com>
+Cc: kvm@vger.kernel.org, ojeda@kernel.org
+In-Reply-To: <20260626083212.39611-1-leixiang@kylinos.cn>
+References: <20260626083212.39611-1-leixiang@kylinos.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 08:45:53 +0000
-Message-Id: <20260626084554.93C2E1F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 08:48:41 +0000
+Message-Id: <20260626084842.172581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 7 potential issue(=
 s) to consider:
-- [Critical] IMSIC guest interrupt files (VS-files) are permanently lost du=
-ring non-retentive idle.
-- [High] Nested Acceleration (NACL) is permanently disabled after a CPU dee=
-p idle cycle, and doubly disabled on CPU offline.
-- [High] The CPU PM notifier unconditionally restores KVM hardware state on=
- idle exit and creates a dangerous race during module unload.
-- [High] Aborted system suspend bypasses state restoration, causing silent =
-KVM hardware state loss.
+- [Critical] Recursive spinlock acquisition causing guaranteed deadlock in =
+`irqfd_wakeup`.
+- [Critical] ABBA deadlock between `irqfds.lock` and waitqueue lock intenti=
+onally hidden from lockdep.
+- [High] `kvm_deassign_ioeventfd_idx` fails to free the `Ioeventfd` device,=
+ leaking memory and eventfd references.
+- [High] MutexGuard dropped too late, holding `irq_lock` across `synchroniz=
+e_srcu_expedited`.
+- [High] Logic error in `irqfd_wakeup` injects spurious interrupts for deac=
+tivating irqfds.
+- [High] Unsafe RCU list traversal in `kvm_notify_irqfd_resampler` lacks `r=
+cu_dereference` memory barriers.
+- [Medium] Unaligned memory read causes undefined behavior in `ioeventfd_in=
+_range`.
 --
 
-commit 7c6e618531e4da8059b75390623f67b52d8838ff
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+commit 3427a3ec37eb356c05fc7c711d26f74d692d5086
+Author: ninol <leenollei@gmail.com>
+Subject: KVM: rust: add Rust reimplementation of eventfd
 
-KVM: RISC-V: Add CPU PM notifier for non-retention idle states
+This patch introduces a Rust reimplementation of KVM's eventfd support, pro=
+viding irqfd and ioeventfd functionality. It uses RAII guards for lock mana=
+gement and is selectable via a new Kconfig option.
 
-This commit adds a CPU PM notifier to save and restore hypervisor CSRs
-during non-retention idle states. It checks system_state to avoid conflicts
-with KVM's existing syscore suspend/resume handlers.
-
-> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-> index bafb009c5ce55..4cf351f91c643 100644
-> --- a/arch/riscv/kvm/aia.c
-> +++ b/arch/riscv/kvm/aia.c
+> diff --git a/rust/kernel/kvm/eventfd.rs b/rust/kernel/kvm/eventfd.rs
+> new file mode 100644
+> index 0000000000000..d9b12c7caccb0
+> --- /dev/null
+> +++ b/rust/kernel/kvm/eventfd.rs
 [ ... ]
-> @@ -609,42 +620,49 @@ void kvm_riscv_aia_disable(void)
-> =20
->  	if (__riscv_isa_extension_available(NULL, RISCV_ISA_EXT_SSCOFPMF))
->  		csr_clear(CSR_HVIEN, BIT(IRQ_PMU_OVF));
-> -	/* Disable per-CPU SGEI interrupt */
-> -	csr_clear(CSR_HIE, BIT(IRQ_S_GEXT));
-> -	disable_percpu_irq(hgei_parent_irq);
-> =20
-> -	csr_write(CSR_HVICTL, aia_hvictl_value(false));
-> -
-> -	raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> -
-> -	for (i =3D 0; i <=3D hgctrl->nr_hgei; i++) {
-> -		vcpu =3D hgctrl->owners[i];
-> -		if (!vcpu)
-> -			continue;
-> +	if (full_cleanup) {
-> +		/* Disable per-CPU SGEI interrupt */
-> +		csr_clear(CSR_HIE, BIT(IRQ_S_GEXT));
-> +		disable_percpu_irq(hgei_parent_irq);
-> +	}
-> =20
-> -		/*
-> -		 * We release hgctrl->lock before notifying IMSIC
-> -		 * so that we don't have lock ordering issues.
-> -		 */
-> -		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
-> +	csr_write(CSR_HVICTL, aia_hvictl_value(false));
-> =20
-> -		/* Notify IMSIC */
-> -		kvm_riscv_vcpu_aia_imsic_release(vcpu);
-> +	if (full_cleanup) {
-> +		raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> =20
-> -		/*
-> -		 * Wakeup VCPU if it was blocked so that it can
-> -		 * run on other HARTs
-> -		 */
-> -		if (csr_read(CSR_HGEIE) & BIT(i)) {
-> -			csr_clear(CSR_HGEIE, BIT(i));
-> -			kvm_vcpu_kick(vcpu);
-> +		for (i =3D 0; i <=3D hgctrl->nr_hgei; i++) {
-> +			vcpu =3D hgctrl->owners[i];
-> +			if (!vcpu)
-> +				continue;
+> +unsafe extern "C" fn irqfd_wakeup(
+> +    wait: *mut bindings::wait_queue_entry,
+> +    _mode: c_uint,
+> +    _sync: c_int,
+> +    key: *mut c_void,
+> +) -> c_int {
+> +    // SAFETY: wait is embedded in kvm_kernel_irqfd.
+> +    let irqfd: *mut bindings::kvm_kernel_irqfd =3D
+> +        crate::container_of!(wait, bindings::kvm_kernel_irqfd, wait);
+> +    let flags =3D (key as usize) as bindings::__poll_t;
+> +    let kvm =3D (*irqfd).kvm;
+> +    let mut ret: c_int =3D 0;
 > +
-> +			/*
-> +			 * We release hgctrl->lock before notifying IMSIC
-> +			 * so that we don't have lock ordering issues.
-> +			 */
-> +			raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
-> +
-> +			/* Notify IMSIC */
-> +			kvm_riscv_vcpu_aia_imsic_release(vcpu);
-> +
-> +			/*
-> +			 * Wakeup VCPU if it was blocked so that it can
-> +			 * run on other HARTs
-> +			 */
-> +			if (csr_read(CSR_HGEIE) & BIT(i)) {
-> +				csr_clear(CSR_HGEIE, BIT(i));
-> +				kvm_vcpu_kick(vcpu);
-> +			}
-> +
-> +			raw_spin_lock_irqsave(&hgctrl->lock, flags);
->  		}
-> =20
-> -		raw_spin_lock_irqsave(&hgctrl->lock, flags);
-> +		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
-> +	} else {
-> +		hgctrl->saved_value =3D csr_read(CSR_HGEIE);
->  	}
+> +    if (flags & bindings::POLLIN) !=3D 0 {
+> +        let mut cnt: u64 =3D 0;
+> +        eventfd_ctx_do_read((*irqfd).eventfd, &raw mut cnt);
 
 [Severity: Critical]
-Does skipping kvm_riscv_vcpu_aia_imsic_release() on the CPU_PM_ENTER path
-cause IMSIC guest interrupt files (VS-files) to be permanently lost?
-
-Since KVM RISC-V AIA uses lazy release for VS-files, vCPUs can remain attac=
-hed
-to the hardware IMSIC even when preempted. When a CPU enters deep idle, the
-IMSIC hardware powers off, wiping the VS-file state.
-
-This else branch skips saving the active VS-files to software, which means =
-the
-state is destroyed by power loss and not recovered upon wake. This could ca=
-use
-running VMs to hang or drop devices.
-
-> =20
-> -	raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
-> -
->  	put_cpu_ptr(&aia_hgei);
->  }
-> =20
-> diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-> index 350e4f097d6e8..f397a93881dc5 100644
-> --- a/arch/riscv/kvm/main.c
-> +++ b/arch/riscv/kvm/main.c
-[ ... ]
-> @@ -33,14 +34,9 @@ long kvm_arch_dev_ioctl(struct file *filp,
->  	return -EINVAL;
->  }
-> =20
-> -int kvm_arch_enable_virtualization_cpu(void)
-> +/* Initialize hypervisor CSRs - called during CPU online and non-retenti=
-on idle resume */
-> +static void kvm_riscv_csr_enable(void)
->  {
-> -	int rc;
-> -
-> -	rc =3D kvm_riscv_nacl_enable();
-> -	if (rc)
-> -		return rc;
-> -
->  	csr_write(CSR_HEDELEG, 0);
->  	csr_write(CSR_HIDELEG, 0);
-> =20
-> @@ -48,16 +44,11 @@ int kvm_arch_enable_virtualization_cpu(void)
->  	csr_write(CSR_HCOUNTEREN, 0x02);
-> =20
->  	csr_write(CSR_HVIP, 0);
-> -
-> -	kvm_riscv_aia_enable();
-> -
-> -	return 0;
->  }
-
-[Severity: High]
-Should this function call kvm_riscv_nacl_enable() to pair with the disable
-call in kvm_riscv_csr_disable()?
-
-Without it, the Nested Acceleration (NACL) shared memory feature is permane=
-ntly
-broken on a CPU once it enters deep idle, leading to silent failures or sta=
-te
-corruption for nested virtualization upon wake-up.
-
-> =20
-> -void kvm_arch_disable_virtualization_cpu(void)
-> +/* Clear hypervisor CSRs - called during CPU offline and non-retention i=
-dle entry */
-> +static void kvm_riscv_csr_disable(void)
->  {
-> -	kvm_riscv_aia_disable();
-> -
->  	/*
->  	 * After clearing the hideleg CSR, the host kernel will receive
->  	 * spurious interrupts if hvip CSR has pending interrupts and the
-> @@ -74,6 +65,59 @@ void kvm_arch_disable_virtualization_cpu(void)
->  	kvm_riscv_nacl_disable();
->  }
-
-[Severity: High]
-Does leaving kvm_riscv_nacl_disable() inside this refactored function cause
-unintended side effects?
-
-Because kvm_riscv_csr_disable() is now called by the CPU_PM_ENTER path, NACL
-is explicitly torn down on every deep idle entry. Additionally, it causes a
-double-disable of NACL during CPU offline operations since
-kvm_arch_disable_virtualization_cpu() calls kvm_riscv_nacl_disable()
-immediately after this function.
-
-[ ... ]
-> +static int kvm_riscv_cpu_pm_notifier(struct notifier_block *self, unsign=
-ed long cmd, void *v)
-> +{
-> +	/*
-> +	 * To avoid redundant disable/enable operations (since KVM's
-> +	 * syscore ops will handle the state during system suspend),
-> +	 * ignore CPU_PM events when a system suspend/resume is in
-> +	 * progress.
-> +	 */
-> +	if (system_state =3D=3D SYSTEM_SUSPEND)
-> +		return NOTIFY_DONE;
-
-[Severity: High]
-Could this check cause silent KVM hardware state loss if the suspend cycle
-is aborted?
-
-The kernel enters SYSTEM_SUSPEND early in the suspend process. If a CPU ent=
-ers
-deep idle while devices are still suspending, this notifier ignores it, and
-the non-retentive idle zeroes out KVM CSRs.
-
-If device suspend fails, the system aborts the suspend cycle and resumes to
-SYSTEM_RUNNING without ever reaching KVM's syscore suspend/resume hooks. The
-CPU wakes up with lost KVM state, and VMs resume execution with missing
-interrupts and CSR configurations.
+Does this cause a recursive spinlock deadlock? This irqfd_wakeup() function=
+ is
+invoked from the eventfd waitqueue wakeup path where the waitqueue spinlock
+(wqh.lock) is already held. Calling eventfd_ctx_do_read() here will try to
+acquire that exact same spinlock again, resulting in an immediate deadlock.
 
 > +
-> +	switch (cmd) {
-> +	case CPU_PM_EXIT:
-> +	case CPU_PM_ENTER_FAILED:
-> +		kvm_riscv_csr_enable();
-> +		kvm_riscv_aia_enable(false);
-> +		return NOTIFY_OK;
+> +        // SAFETY: kvm->irq_srcu is valid.
+> +        let _srcu_guard =3D unsafe { SrcuGuard::new(&raw mut (*kvm).irq_=
+srcu) };
+> +
+> +        // Read irq_entry under seqcount protection to avoid torn reads
+> +        // when kvm_irq_routing_update() writes concurrently on another =
+CPU.
+> +        let mut irq =3D loop {
+> +            let seq =3D unsafe { bindings::read_seqcount_begin(&raw mut =
+(*irqfd).irq_entry_sc) };
+> +            let entry =3D unsafe { core::ptr::read(&(*irqfd).irq_entry) =
+};
+> +            if unsafe { bindings::read_seqcount_retry(&raw mut (*irqfd).=
+irq_entry_sc, seq) } =3D=3D 0 {
+> +                break entry;
+> +            }
+> +        };
+> +
+> +        let deactivating =3D !irqfd_is_active(irqfd);
+> +        if deactivating
+> +            || unsafe {
+> +                bindings::kvm_arch_set_irq_inatomic(
+> +                    &raw mut irq,
+> +                    kvm,
+> +                    bindings::KVM_USERSPACE_IRQ_SOURCE_ID as i32,
+> +                    1,
+> +                    false,
+> +                )
+> +            } =3D=3D -(bindings::EWOULDBLOCK as c_int)
+> +        {
+> +            // SAFETY: FFI call.
+> +            unsafe { bindings::schedule_work(&raw mut (*irqfd).inject) };
+> +        }
 
 [Severity: High]
-Does this unconditionally restore hypervisor CSRs regardless of whether KVM
-hardware virtualization is actually enabled on the CPU?
+Does this logic mistakenly inject spurious interrupts when an irqfd is
+deactivating? If the deactivating condition is true, the || operator
+short-circuits and evaluates the entire condition to true, meaning we will
+schedule work for deactivating irqfds. This could lead to use-after-free
+issues if the work executes after the irqfd memory has been freed.
 
-Host CPUs might run with active hypervisor CSRs (like IRQ_S_GEXT in CSR_HIE
-enabled) even when KVM has no active VMs or is actively being unloaded. This
-can lead to kernel panics if a spurious interrupt hits the hypervisor while
-KVM is not meant to handle it.
-
-> +	case CPU_PM_ENTER:
-> +		kvm_riscv_aia_disable(false);
-> +		kvm_riscv_csr_disable();
-> +		return NOTIFY_OK;
-> +	default:
-> +		break;
-> +	}
 > +
-> +	return NOTIFY_DONE;
+> +        // _srcu_guard is dropped here
+> +        ret =3D 1;
+> +    }
+> +
+> +    if (flags & bindings::POLLHUP) !=3D 0 {
+> +        // SAFETY: Taking irqfds.lock is safe here per original C commen=
+t.
+> +        // SAFETY: kvm is valid, irqfds.lock is valid.
+> +        let _spin_guard =3D unsafe { SpinLockIrqSaveGuard::new(&raw mut =
+(*kvm).irqfds.lock) };
+
+[Severity: Critical]
+Is there an ABBA deadlock risk here? This acquires irqfds.lock while the
+waitqueue lock (wqh.lock) is already held by the caller. However, in
+kvm_irqfd_register(), irqfds.lock is acquired before calling
+add_wait_queue_priority_exclusive(), which in turn acquires wqh.lock. This
+lock inversion can trigger a deadlock when registering and closing eventfds
+concurrently.
+
+[ ... ]
+> +unsafe extern "C" fn kvm_irqfd_register(
+> +    _file: *mut bindings::file,
+> +    wqh: *mut bindings::wait_queue_head,
+> +    pt: *mut bindings::poll_table,
+> +) {
+[ ... ]
+> +    // Initialize wait queue entry with our custom wakeup handler.
+> +    init_waitqueue_func_entry(&raw mut (*irqfd).wait, Some(irqfd_wakeup)=
+);
+> +
+> +    // Temporarily lie to lockdep about holding irqfds.lock to avoid a
+> +    // false positive: add_wait_queue_priority_exclusive takes wqh->lock
+> +    // internally, and lockdep would see irqfds.lock -> wqh->lock, which
+> +    // matches the reverse order in irqfd_wakeup(EPOLLHUP).
+> +    // SAFETY: `kvm` is a valid pointer, and `irqfds.lock` is held.
+> +    unsafe { bindings::rust_helper_kvm_irqfds_spin_release(kvm) };
+> +
+> +    // Add as priority waiter on eventfd.
+> +    (*p).ret =3D add_wait_queue_priority_exclusive(wqh, &raw mut (*irqfd=
+).wait);
+> +
+> +    // SAFETY: `kvm` is valid, lockdep state is restored after
+> +    // releasing wait queue lock.
+> +    unsafe { bindings::rust_helper_kvm_irqfds_spin_acquire(kvm) };
+
+[Severity: Critical]
+This isn't a false positive; silencing lockdep here hides the real ABBA
+deadlock mentioned above between irqfd_wakeup() and this function. Could we
+restructure the locking to avoid this inversion instead of hiding it from
+lockdep?
+
+[ ... ]
+> +#[inline(always)]
+> +unsafe fn ioeventfd_in_range(
+> +    p: &Ioeventfd,
+> +    addr: bindings::gpa_t,
+> +    len: c_int,
+> +    val: *const c_void,
+> +) -> bool {
+[ ... ]
+> +    if let Some(datamatch) =3D p.datamatch() {
+> +        // KVM guarantees val is naturally aligned; assert to match C's =
+BUG_ON.
+> +        debug_assert!(
+> +            (val as usize) % (len as usize) =3D=3D 0,
+> +            "ioeventfd_in_range: val pointer not aligned to len"
+> +        );
+> +        let _val: u64 =3D match len {
+> +            1 =3D> unsafe { (val as *const u8).read() as u64 },
+> +            2 =3D> unsafe { (val as *const u16).read() as u64 },
+> +            4 =3D> unsafe { (val as *const u32).read() as u64 },
+> +            8 =3D> unsafe { (val as *const u64).read() as u64 },
+> +            _ =3D> return false,
+> +        };
+
+[Severity: Medium]
+Could this result in undefined behavior? In release builds, debug_assert!
+compiles away, and ptr::read() strictly requires the input pointer to be
+aligned. If the pointer happens to be unaligned, this invokes undefined
+behavior. Using ptr::read_unaligned() would be safer here.
+
+[ ... ]
+> +unsafe fn kvm_deassign_ioeventfd_idx(
+> +    kvm: *mut bindings::kvm,
+> +    bus_idx: bindings::kvm_bus,
+> +    args: *const bindings::kvm_ioeventfd,
+> +) -> c_int {
+[ ... ]
+> +            // SAFETY: kvm_io_bus_unregister_dev will trigger the iodevi=
+ce destructor,
+> +            // which implicitly performs list_del and kfree(p). Using `n=
+ext` above avoids UAF.
+> +            unsafe { bindings::kvm_io_bus_unregister_dev(kvm, bus_idx, &=
+raw mut (*p).dev) };
+> +            let bus =3D unsafe { bindings::kvm_get_bus(kvm, bus_idx) };
+> +            if !bus.is_null() {
+> +                unsafe { (*bus).ioeventfd_count -=3D 1 };
+> +            }
+> +            ret =3D 0;
+> +            break;
+> +        }
+> +        // _mutex_guard drops here, unlocking before eventfd_ctx_put.
+> +    }
+
+[Severity: High]
+Does this code leak the Ioeventfd and eventfd references? The assumption in
+the comment that kvm_io_bus_unregister_dev() triggers the destructor is
+incorrect; it only removes the device from the bus array. The caller is sti=
+ll
+responsible for explicitly deleting the list entry and freeing the memory.
+
+[ ... ]
+> +pub unsafe extern "C" fn kvm_notify_irqfd_resampler(
+> +    kvm: *mut bindings::kvm,
+> +    irqchip: c_uint,
+> +    pin: c_uint,
+> +) -> bool {
+> +    // SAFETY: kvm->irq_srcu is valid.
+> +    let _srcu_guard =3D unsafe { SrcuGuard::new(&raw mut (*kvm).irq_srcu=
+) };
+> +    let gsi =3D unsafe { bindings::kvm_irq_map_chip_pin(kvm, irqchip, pi=
+n) };
+> +
+> +    if gsi !=3D -1 {
+> +        let mut pos =3D (*kvm).irqfds.resampler_list.next;
+> +        let head =3D &raw mut (*kvm).irqfds.resampler_list;
+> +        while pos !=3D head {
+> +            let resampler: *mut bindings::kvm_kernel_irqfd_resampler =3D
+> +                crate::container_of!(pos, bindings::kvm_kernel_irqfd_res=
+ampler, link);
+
+[Severity: High]
+Can this plain pointer traversal cause a data race? Accessing an RCU list v=
+ia
+direct pos.next dereferences under an SRCU read lock lacks the memory barri=
+er
+provided by rcu_dereference(), which is required on weakly ordered
+architectures to prevent reading uninitialized state.
+
+[ ... ]
+> +pub unsafe extern "C" fn kvm_unregister_irq_ack_notifier(
+> +    kvm: *mut bindings::kvm,
+> +    kian: *mut bindings::kvm_irq_ack_notifier,
+> +) {
+> +    // SAFETY: Caller guarantees kvm is valid.
+> +    let _mutex_guard =3D unsafe { MutexGuard::new(&raw mut (*kvm).irq_lo=
+ck) };
+> +    unsafe { bindings::rust_helper_hlist_del_init_rcu(&raw mut (*kian).l=
+ink) };
+> +    // _mutex_guard dropped here
+> +    unsafe { bindings::synchronize_srcu_expedited(&raw mut (*kvm).irq_sr=
+cu) };
+> +    unsafe { bindings::kvm_arch_post_irq_ack_notifier_list_update(kvm) };
 > +}
-[ ... ]
-> @@ -192,6 +250,10 @@ static void __exit riscv_kvm_exit(void)
->  {
->  	kvm_exit();
-> =20
-> +	/* Unregister CPU PM notifier */
-> +	if (IS_ENABLED(CONFIG_CPU_PM))
-> +		cpu_pm_unregister_notifier(&kvm_riscv_cpu_pm_nb);
-> +
->  	kvm_riscv_teardown();
->  }
->  module_exit(riscv_kvm_exit);
 
 [Severity: High]
-Is there a race condition here since the CPU PM notifier is unregistered af=
-ter
-kvm_exit()?
-
-During riscv_kvm_exit(), kvm_exit() disables hardware virtualization. Howev=
-er,
-if a CPU enters and exits deep idle within this teardown window before the
-notifier is unregistered, the PM notifier will spuriously reactivate hyperv=
-isor
-CSRs just before the KVM module is removed.
+Is the _mutex_guard actually dropped where the comment claims? Because
+_mutex_guard is not explicitly dropped (e.g., via drop(_mutex_guard) or
+wrapping in an inner block), its lifetime extends to the end of the function
+scope. This means irq_lock is held across the blocking
+synchronize_srcu_expedited() call, violating the locking hierarchy and
+potentially causing a deadlock.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626-kvm-cpu-pm=
--v2-0-478e5ef8dc9b@sifive.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626083212.3961=
+1-1-leixiang@kylinos.cn?part=3D1
