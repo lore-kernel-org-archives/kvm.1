@@ -1,173 +1,261 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6041037C10C
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2618837C91F
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782483597; cv=none; b=QKDO4Me6pFjsjGS2C5/IVPRgAayQDVowcL3IGRsBaJJfYxuWIf7Xi2/8gHwJJuotwbBDe2ldwrOj6UgsrjrFYGW3I+KWRU5G7JZZt+2lwk0HpJfh7YjQdS3OIG+EUeG6WBy/2AvA6cdoX8qgStkH3BoSae4P9rCsuzEJL54Kzko=
+	t=1782483772; cv=none; b=q3q11X6sRHD6N4ncqmrPVxuzKigyDSQM9oeTqM0c3oBiqO/Lgnzdsogh1XYF+HPDBYoyU+wUGXKxgDKwUnWAg53KSVGJnWageA60psro43KSUOgO5rmzPI6liDPtN2bIm4xgCqlE4ghQhDoNDPFiTt7AuqJAEHlJXxc2dehUtaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782483597; c=relaxed/simple;
-	bh=qAEaykDtygaSoYnFmxE2YZNI+X4dYjPeG16wIErSTXs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ilpz6bg/XjAJYHCp/MHOYXwhZEnHmhSJ8x8oxNSgf/BuCUmwbtz2btfOrJUAicmIIjFDl0VKoodM3yNMsN0D/tG/6q+xZb63YseShpA+JW9e5aGOETB7BZbquZGPXWUMothv6C9n010o4flje8EBRZgJ7VDAVMKdvOK3vF2dHYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uYJYpAwl; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782483772; c=relaxed/simple;
+	bh=cXaqsM1PpKfaMoOs9eaSaUzWG3Uc7ETrUGcmj3/0kIo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=lLjzYZVsmd6D//W+8bzPHKCQel6PcMnLcNM5cXOTXnQuQinMe5B2lI+4P0U8pkk5oXYJQhp9CfmmPbA0nn0Kf97LSZd5GbGcSFMWQWaboVQnuefKlhb1Em4z0m6xXRO5kAB1rROFLXIkJk4l8CSDt1KAi+lUDHQyrKiUNs3LzDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cmbGKR+a; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uYJYpAwl"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c894c1c4aa9so574782a12.0
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:19:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782483595; x=1783088395; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=grgJpjWYVMVO5CmpJCwranewTd9svoUmtrJ5rximOqA=;
-        b=uYJYpAwlskqk0+JN00lG2kxUg0fT5RpfVeBbrheZsWe61Fkk0QIXhdQkVLcY18nK99
-         MRcIPzLZ1x9RiJXe4BMmz0Ln/yiZEai/RaeriHlzGFXrAEsdspIoky4UuFZeo8kdAG4U
-         vT0Z2AXA6tYrq6RbkHeqOTuGTRMI3Lf3STgIL5KHvISyXVrTDAmfKgEUUMQk6nCzqcqJ
-         3NWAqwe3BBwNOfA7HHBjnBs+WNkdJ9PRaV50vC3IYvWY6dkAjXcx75jBAbrS7fuxOcn2
-         fkUWKiH0rfNl57MNVnWG+jnxTCh7FHBPl1Fr/WYBH+/IoYLQubX/f5QTge4LOxV9R/U3
-         4jpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782483595; x=1783088395;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=grgJpjWYVMVO5CmpJCwranewTd9svoUmtrJ5rximOqA=;
-        b=qNnycd06vYspRguumVEjJ/NsLuQQ+1TbqHOF+zYVUR4sAqYQceBmvaxwsmlRPVR6G5
-         HNZ7McilmStuEzDBqqJDi2bp1WSjI3vTUo/toGm+P0Bh5iVfjnLwz9li7UPtLc+zGh/u
-         62qhEzIk2PvW6IY3gaVcvWF2/3BpE+ANJNdLidMNo2QoRcQHjmEl46eMho+PGyMcjeiG
-         YsbCgC6TnjzmeAqYzyM/iu1JOeU0HubpRvYH9j51EJciXWicAP9w83q2N6T5lycfVp//
-         NjU3Q3hyFhAOCBFdf1rMl2hPXhhn76LfyFC0el23/t2hyY32Glq2gcb9X90pfaSwU6YA
-         +jgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrRqJ/RfMD88PmGeBKWe/tvaoY/qVseTHS9GJzzyXMhnWE7MTwHg7v/jVLx2NxDZOI7f3g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybEz52mAs3WifHYij8ZP2zD92mlFPclQshCrcQTRRAsbvbEqdD
-	eWPrrcNoFAA/obziXv9TYoQ1rhUJ7YMTUv3Zp97nshZQT84wFOClLOQuF4hSDRIDB6aGqTiz5x4
-	tWEW3gw==
-X-Received: from pjblx10.prod.google.com ([2002:a17:90b:4b0a:b0:37d:8022:9ef5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d44f:b0:36b:9835:cf96
- with SMTP id 98e67ed59e1d1-37dfa1d4057mr6515782a91.2.1782483595335; Fri, 26
- Jun 2026 07:19:55 -0700 (PDT)
-Date: Fri, 26 Jun 2026 07:19:54 -0700
-In-Reply-To: <c574f7c48c2e4805fb63f38e7d31240ff4497aff.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cmbGKR+a"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260625223623.3376478-1-seanjc@google.com> <20260625223623.3376478-6-seanjc@google.com>
- <c574f7c48c2e4805fb63f38e7d31240ff4497aff.camel@infradead.org>
-Message-ID: <aj6KireObWQXDF-8@google.com>
-Subject: Re: [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU ID
- for singleshot timer hypercalls
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
-	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782483765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sXG8afNs3yklXPbprHmJENAjnx3o20Btd5uIVU420b8=;
+	b=cmbGKR+aou02UPg0yNfg6EUU0La0FotxxR6hFPLMLLx0i5lyy0uaFlAgbddgfY7BgaEqsZ
+	Avp7TJZOyigFd/b6E8iMjLcwLrplB8eRe2p1FXE6V2RLxfwUhMhmUh4RVdZbwmBV1PhoSu
+	DO+3c0Hx0lG9DdahENlsDEcvPZ/2SDM=
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jun 2026 14:22:35 +0000
+Message-Id: <DJJ1R8VB5H31.1XJ69GVCYMB87@linux.dev>
+Subject: Re: [PATCH v12 13/16] KVM: selftests: Add guest_memfd based
+ vm_mem_backing_src_types
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+ <kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+ <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+ <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+ <oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+ "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+ <yuzenghui@huawei.com>, "catalin.marinas@arm.com"
+ <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
+ "seanjc@google.com" <seanjc@google.com>, "tglx@kernel.org"
+ <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+ <bp@alien8.de>, "dave.hansen@linux.intel.com"
+ <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
+ "peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
+ <willy@infradead.org>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+ <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+ "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
+ <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+ <kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+ "haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+ <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+ <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jannh@google.com" <jannh@google.com>, "pfalcato@suse.de"
+ <pfalcato@suse.de>, "skhan@linuxfoundation.org"
+ <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
+ <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
+ <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>, "tabba@google.com"
+ <tabba@google.com>, "prsampat@amd.com" <prsampat@amd.com>,
+ "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
+ "mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jmattson@google.com"
+ <jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>,
+ "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "alex@ghiti.fr"
+ <alex@ghiti.fr>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
+ "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+ "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "baolu.lu@linux.intel.com"
+ <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+ "gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com"
+ <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
+ <shijie@os.amperecomputing.com>, "svens@linux.ibm.com"
+ <svens@linux.ibm.com>, "thuth@redhat.com" <thuth@redhat.com>,
+ "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
+ <urezki@gmail.com>, "zhengqi.arch@bytedance.com"
+ <zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
+ <gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
+ <jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>,
+ "pavel@kernel.org" <pavel@kernel.org>, "rafael@kernel.org"
+ <rafael@kernel.org>, "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
+ "vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
+ <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>
+References: <20260410151746.61150-1-kalyazin@amazon.com>
+ <20260410151746.61150-14-kalyazin@amazon.com>
+In-Reply-To: <20260410151746.61150-14-kalyazin@amazon.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jun 26, 2026, David Woodhouse wrote:
-> On Thu, 2026-06-25 at 15:36 -0700, Sean Christopherson wrote:
-> > Hoist the checks on the Xen vCPU ID when handling set_singleshot_timer =
-and
-> > stop_singleshot_timer hypercalls out of their individual case-statement=
-s,
-> > so that both checks on the ID are in common code.=C2=A0 kvm_xen_hcall_v=
-cpu_op()
-> > is already doubly committed to handling only singleshot timer hypercall=
-s,
-> > and even if that were to change in the future, the function could simpl=
-y
-> > be renamed and turned into a helper specifically for timer hypercalls.
-> >=20
-> > No functional change intended.
->=20
-> Makes sense. In fact these hypercalls are the *only* VCPUOP_xxx calls
-> for which Xen has that restriction (otherwise it would be pointless to
-> have the vcpu argument at all). Which is why we did the check in the
-> individual cases.
+On Fri Apr 10, 2026 at 3:20 PM UTC, Nikita Kalyazin wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
+>
+> Allow selftests to configure their memslots such that userspace_addr is
+> set to a MAP_SHARED mapping of the guest_memfd that's associated with
+> the memslot. This setup is the configuration for non-CoCo VMs, where all
+> guest memory is backed by a guest_memfd whose folios are all marked
+> shared, but KVM is still able to access guest memory to provide
+> functionality such as MMIO emulation on x86.
+>
+> Add backing types for normal guest_memfd, as well as direct map removed
+> guest_memfd.
+>
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+> ---
+>  .../testing/selftests/kvm/include/kvm_util.h  | 18 ++++++
+>  .../testing/selftests/kvm/include/test_util.h |  7 +++
+>  tools/testing/selftests/kvm/lib/kvm_util.c    | 61 ++++++++++---------
+>  tools/testing/selftests/kvm/lib/test_util.c   |  8 +++
+>  4 files changed, 65 insertions(+), 29 deletions(-)
+>
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testi=
+ng/selftests/kvm/include/kvm_util.h
+> index 8b39cb919f4f..056a003a63c0 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> @@ -664,6 +664,24 @@ static inline bool is_smt_on(void)
+> =20
+>  void vm_create_irqchip(struct kvm_vm *vm);
+> =20
+> +static inline uint32_t backing_src_guest_memfd_flags(enum vm_mem_backing=
+_src_type t)
+> +{
+> +	uint32_t flags =3D 0;
+> +
+> +	switch (t) {
+> +	case VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP:
+> +		flags |=3D GUEST_MEMFD_FLAG_NO_DIRECT_MAP;
+> +		fallthrough;
+> +	case VM_MEM_SRC_GUEST_MEMFD:
+> +		flags |=3D GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return flags;
+> +}
+> +
+>  static inline int __vm_create_guest_memfd(struct kvm_vm *vm, uint64_t si=
+ze,
+>  					uint64_t flags)
+>  {
+> diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/test=
+ing/selftests/kvm/include/test_util.h
+> index 8140e59b59e5..ea6de20ce8ef 100644
+> --- a/tools/testing/selftests/kvm/include/test_util.h
+> +++ b/tools/testing/selftests/kvm/include/test_util.h
+> @@ -152,6 +152,8 @@ enum vm_mem_backing_src_type {
+>  	VM_MEM_SRC_ANONYMOUS_HUGETLB_16GB,
+>  	VM_MEM_SRC_SHMEM,
+>  	VM_MEM_SRC_SHARED_HUGETLB,
+> +	VM_MEM_SRC_GUEST_MEMFD,
+> +	VM_MEM_SRC_GUEST_MEMFD_NO_DIRECT_MAP,
+>  	NUM_SRC_TYPES,
+>  };
+> =20
+> @@ -184,6 +186,11 @@ static inline bool backing_src_is_shared(enum vm_mem=
+_backing_src_type t)
+>  	return vm_mem_backing_src_alias(t)->flag & MAP_SHARED;
+>  }
+> =20
+> +static inline bool backing_src_is_guest_memfd(enum vm_mem_backing_src_ty=
+pe t)
+> +{
+> +	return t =3D=3D VM_MEM_SRC_GUEST_MEMFD || t =3D=3D VM_MEM_SRC_GUEST_MEM=
+FD_NO_DIRECT_MAP;
+> +}
+> +
+>  static inline bool backing_src_can_be_huge(enum vm_mem_backing_src_type =
+t)
+>  {
+>  	return t !=3D VM_MEM_SRC_ANONYMOUS && t !=3D VM_MEM_SRC_SHMEM;
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index 5b0865683047..fa4a2fc236fe 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -1046,6 +1046,33 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_bac=
+king_src_type src_type,
+>  	alignment =3D 1;
+>  #endif
+> =20
+> +	if (guest_memfd < 0) {
+> +		if ((flags & KVM_MEM_GUEST_MEMFD) || backing_src_is_guest_memfd(src_ty=
+pe)) {
+> +			uint32_t guest_memfd_flags =3D backing_src_guest_memfd_flags(src_type=
+);
+> +
+> +			TEST_ASSERT(!guest_memfd_offset,
+> +				    "Offset must be zero when creating new guest_memfd");
+> +			guest_memfd =3D vm_create_guest_memfd(vm, mem_size, guest_memfd_flags=
+);
+> +		}
+> +	} else {
+> +		/*
+> +		 * Install a unique fd for each memslot so that the fd
+> +		 * can be closed when the region is deleted without
+> +		 * needing to track if the fd is owned by the framework
+> +		 * or by the caller.
+> +		 */
+> +		guest_memfd =3D kvm_dup(guest_memfd);
+> +	}
+> +
+> +	if (guest_memfd >=3D 0) {
+> +		flags |=3D KVM_MEM_GUEST_MEMFD;
+> +
+> +		region->region.guest_memfd =3D guest_memfd;
+> +		region->region.guest_memfd_offset =3D guest_memfd_offset;
+> +	} else {
+> +		region->region.guest_memfd =3D -1;
+> +	}
+> +
+>  	/*
+>  	 * When using THP mmap is not guaranteed to returned a hugepage aligned
+>  	 * address so we have to pad the mmap. Padding is not needed for HugeTL=
+B
+> @@ -1061,10 +1088,13 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_ba=
+cking_src_type src_type,
+>  	if (alignment > 1)
+>  		region->mmap_size +=3D alignment;
+> =20
+> -	region->fd =3D -1;
+> -	if (backing_src_is_shared(src_type))
+> +	if (backing_src_is_guest_memfd(src_type))
+> +		region->fd =3D guest_memfd;
 
-Sashiko pointed out that the patch is broken as-is, because the effective
-"default" case will reject hypercalls if the vcpu_id doesn't match instead =
-of
-routing those to userspace.  The easiest way to deal with that is to pull t=
-he
-cmd check out of the switch-statement, e.g.
+This seems to cause a double-close in __vm_mem_region_delete() - it was
+fine when this patch was written but now we have kvm_free_fd() which
+crashes the test when this happens.
 
-	struct vcpu_set_singleshot_timer oneshot;
-	struct x86_exception e;
-
-	if (cmd !=3D VCPUOP_set_singleshot_timer &&
-	    cmd !=3D VCPUOP_stop_singleshot_timer)
-		return false;
-
-	if (!kvm_xen_timer_enabled(vcpu))
-		return false;
-
-	if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-		*r =3D -EINVAL;
-		return true;
-	}
-
-	if (cmd =3D=3D VCPUOP_set_singleshot_timer) {
-		/*
-		 * The only difference for 32-bit compat is the 4 bytes of
-		 * padding after the interesting part of the structure. So
-		 * for a faithful emulation of Xen we have to *try* to copy
-		 * the padding and return -EFAULT if we can't. Otherwise we
-		 * might as well just have copied the 12-byte 32-bit struct.
-		 */
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, timeout_ab=
-s_ns) !=3D
-			     offsetof(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, timeou=
-t_abs_ns) !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, flags) !=
-=3D
-			     offsetof(struct vcpu_set_singleshot_timer, flags));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, flags)=
- !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, flags));
-
-		if (kvm_read_guest_virt(vcpu, param, &oneshot, longmode ? sizeof(oneshot)=
- :
-					sizeof(struct compat_vcpu_set_singleshot_timer), &e)) {
-			*r =3D -EFAULT;
-			return true;
-		}
-
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-	} else {
-		kvm_xen_stop_timer(vcpu);
-	}
-
-	*r =3D 0;
-	return true;
-
-> But these are *also* the only VCPUOP calls we're ever likely to
-> accelerate in the kernel, so that's actually fine. I would prefer to
-> see a comment above the check though.
-
-This?
-
-	/*
-	 * Reject the hypercall if the guest is trying to start/stop the timer
-	 * for a different vCPU.  Xen per-vCPU hypercalls take a target vCPU as
-	 * a common parameter, as all per-vCPU hypercalls *except* single-shot
-	 * timer updates can be cross-vCPU.
-	 */
-	if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-		*r =3D -EINVAL;
-		return true;
-	}
-
-> And let's move your patch 4 to come *after* this semantic change.
-
-Agreed.
+AFAICS it's easy to fix we just need to enlighten
+__vm_mem_region_delete() that they might be the same FD.
