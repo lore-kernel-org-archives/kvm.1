@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108F8175A80;
-	Fri, 26 Jun 2026 11:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75F028725B
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 12:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782474397; cv=none; b=cixWo1csuNadn4SsIHN9Fw4mVg4xa7SAgw2XjpoXxLEerLWoB3rFNFCOuEvImrzT2jCGcZFenfen84odLzrzGrO5BonIhBgYDysL+fRuSjlFC5wF5RIa44gk5o7MvG01aeod0K3SkzM8Fmqmqp9Bl7nRWLKkXzXzVIS5X0P1kcg=
+	t=1782475305; cv=none; b=PBygMGeinLXN68TBS/1kvDCeOrvQM3LWzTdMqdmzfMdzAzksd3+obUZab9QDSP51ynNPaAQl6IiUs5YGc5I+5pfghG2KXR63pC9G2tcEo12SjjBN1rpIYY65543+UilG1oFJz3owQsPbYuKB+HfJjVrSjUEUOcBr+V7s3/5ioWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782474397; c=relaxed/simple;
-	bh=fjrxJQLGwmRuI2zMtba+SKMvIdVPZE1F6L3o26FtE3Q=;
+	s=arc-20240116; t=1782475305; c=relaxed/simple;
+	bh=tjxKuacwQjoME5YJtnVddd+6ueFS6k1ycQDUqvKWyZE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jlHLHuJdr7iwNnqiFcEd0wHVtMV5PlwJWgEcQ9iqI3QAEvuPUaUhmwEUngsDOIbYEaO6dCwYeaq2DeweKc4bHvKlg18Lk57gY5CQ3mEd/o/fs8XpLa0VY9aRJVzPmWIdPbN4Ry5dua3VEOfJ1v745EblMdhtEbndA7ARd3QLtjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxVpWUxd; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TaINixLr67TDJnD+I21AK2Je2OtpByHMT0rgq4jSbYXBfWoc5JY498UuQZcj6fqIEF4+NC8J6rz0XroXlHfv00o0iDJIJ/vSADmWdjXmW89BeWkgyrSpAZpRIBoJSXFbTMfYL1oadLh9gMfdQGyNaAyrB2wrhwKHuzRUiK4kiX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2iiE3d0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxVpWUxd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A0B1F00A3A;
-	Fri, 26 Jun 2026 11:46:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2iiE3d0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651001F000E9;
+	Fri, 26 Jun 2026 12:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782474395;
-	bh=ouswJwkXR2S4nwwAzVktLu91MB9Oz0JoiKIzV1E4/ZA=;
+	s=k20260515; t=1782475303;
+	bh=09zd8DfYltv9QFPgpshFSzK5Zg343kf32j7GrdW2MuQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VxVpWUxdfY8j5Joar8Ic80ZKhkBUrLMQw8nD38/n/mNlkESWI2RlgLcIKY6W/e2Da
-	 OQ3mHI7V/8ymOa/Vjs46mCAAU8n3hwd+4YmR2BdjsuCwZLv4aXhoBw2UbNdJCP3hYV
-	 6FAStFNGvdpL0uiXn0X6Pc4sd7y1URGxaFaki+Rlhms8GoyKqkwsQTJ5Vtm0FaV1y4
-	 VcvM/glfnSScN3i8cz0ybjtu238AidSL++RaEWPo/93kCXmgVIK/HcpK76N3cFGtRe
-	 L5QirzSaZNFflyCeL5Zunbx4jVb0HrGw3E6BdizoAoX8NeA3rvky0bnfp8NJ9eFHK+
-	 8EoE8MaNJWDHQ==
+	b=h2iiE3d084w+/X4I1+PimGuiaJjNNxfjvOJ90vf4ZRicbEkaIbdcy/v4m8dQKvcgB
+	 6eKyKnGVrgMBfvwxe/rH6BESlGf8cj4Odz+n2B4g22e/eCADzrQszVwIVwSMyzRevT
+	 tOJ9Lf3YutlAJ8ul+21CkGw9c8Q9iCMd0QVowGAOemsZZNQlLYW9NWFhIbRnGZz+Lf
+	 ywBy5v4st1X6UX4x+Fcykr1gF2XfIpCfTqyKPI/uxXO3asVgXPcA9RxA6/S3AHzlQ7
+	 ZqJ4GJqvPUvjBzsJUJcIqkHsaaD8E30831j46UpK/HKr9jCXUUiXZOTQ6kwM5ZZ5k9
+	 qo0wsr+I6bGzA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: Make kvm_io_bus_get_dev() filter devices by ops
+Subject: Re: [PATCH 5.15.y 3/8] KVM: x86/mmu: Derive shadow MMU page role
+ from parent
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marc Zyngier" <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>
-In-Reply-To: <20260626111344.802555-1-maz@kernel.org>
-References: <20260626111344.802555-1-maz@kernel.org>
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260626112606.1778248-4-pbonzini@redhat.com>
+References: <20260626112606.1778248-1-pbonzini@redhat.com>
+ <20260626112606.1778248-4-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 11:46:35 +0000
-Message-Id: <20260626114635.82A0B1F00A3A@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 12:01:41 +0000
+Message-Id: <20260626120143.651001F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,67 +47,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] Dropping the SRCU lock in kvm_io_bus_get_dev() exposes a Use-After=
--Free for VGIC redistributors.
+- [High] Missing `gpte_is_8_bytes =3D true` override for direct pages cause=
+s KVM invariant violations, memory bloat, and guest-triggerable host panics=
+ (DoS).
 --
 
-commit 954101cd7bbd1642133e68638e5210cf89b88023
-Author: Marc Zyngier <maz@kernel.org>
+commit 9e9bc7152f4bea9d4c30ffc781d2f28f82a2c951
+Author: Paolo Bonzini <pbonzini@redhat.com>
+Subject: KVM: x86/mmu: Derive shadow MMU page role from parent
 
-KVM: Make kvm_io_bus_get_dev() filter devices by ops
+This commit refactors how the shadow MMU page role is computed by
+deriving it from the parent shadow page. This removes the reliance on
+the vCPU root role when allocating shadow page tables.
 
-This commit updates kvm_io_bus_get_dev() to check the device ops pointer
-before dropping the SRCU lock. This aims to prevent lifetime issues where
-a caller might introspect an object of the wrong type after the lock is
-dropped.
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -2070,33 +2070,15 @@ static void clear_sp_write_flooding_count(u64 *sp=
+te)
+[ ... ]
+> -	role.direct =3D direct;
+> -	if (role.direct)
+> -		role.gpte_is_8_bytes =3D true;
 
 [ ... ]
 
-> @@ -6081,7 +6082,9 @@ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm=
- *kvm, enum kvm_bus bus_idx,
->  	if (dev_idx < 0)
->  		goto out_unlock;
-> =20
-> -	iodev =3D bus->range[dev_idx].dev;
-> +	if (bus->range[dev_idx].dev &&
-> +	    bus->range[dev_idx].dev->ops =3D=3D ops)
-> +		iodev =3D bus->range[dev_idx].dev;
-> =20
->  out_unlock:
->  	srcu_read_unlock(&kvm->srcu, srcu_idx);
+> @@ -2171,6 +2153,54 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struc=
+t kvm_vcpu *vcpu,
+> +static union kvm_mmu_page_role kvm_mmu_child_role(u64 *sptep, bool direc=
+t, unsigned int access)
+> +{
+[ ... ]
+> +	if (!role.gpte_is_8_bytes) {
+> +		WARN_ON_ONCE(role.level !=3D PG_LEVEL_4K);
+> +		role.quadrant =3D (sptep - parent_sp->spt) % 2;
+> +	}
+> +
+> +	return role;
+> +}
 
 [Severity: High]
-This is a pre-existing issue, but does dropping the SRCU lock here before
-returning the matched device pointer expose a use-after-free?
+Does this missing gpte_is_8_bytes override cause issues for direct maps
+when a guest has paging disabled?
 
-If a host VMM concurrently executes KVM_SIGNAL_MSI (with a doorbell address
-overlapping the redistributor) and KVM_CREATE_VCPU (forced to fail due to
-resource exhaustion), the failed vCPU creation path can unregister the
-device and free the vCPU memory.
+Since we no longer set gpte_is_8_bytes =3D true when role.direct is true,=20
+if a guest runs with CR0.PG=3D0, mmu_role.base.gpte_is_8_bytes will be fals=
+e.
 
-Because the SRCU lock is already dropped here, the unregister path won't
-be blocked. When the MSI injection path resumes in __vgic_doorbell_to_its(),
-it can dereference the freed vCPU memory:
+In kvm_mmu_child_role(), child direct pages inherit this false value
+from their parent. When building non-leaf shadow pages for direct maps,
+this will enter the if (!role.gpte_is_8_bytes) block.
 
-arch/arm64/kvm/vgic/vgic-its.c:__vgic_doorbell_to_its() {
-    ...
-    kvm_io_dev =3D kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, &kvm_io_gic_ops, d=
-b);
-    if (!kvm_io_dev)
-        return ERR_PTR(-EINVAL);
+Won't this trigger the WARN_ON_ONCE(role.level !=3D PG_LEVEL_4K) assertion
+for non-leaf direct maps, and also calculate a bogus quadrant? This
+could fragment the cache keys and cause duplicate shadow page allocations
+for the same GFN.
 
-    iodev =3D container_of(kvm_io_dev, struct vgic_io_device, dev);
-    if (iodev->iodev_type !=3D IODEV_ITS)
-        return ERR_PTR(-EINVAL);
-    ...
-}
+[ ... ]
+
+> @@ -3408,13 +3437,18 @@ static int mmu_check_root(struct kvm_vcpu *vcpu, =
+gfn_t root_gfn)
+> -static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
+> +static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, int quadra=
+nt,
+>  			    u8 level)
+>  {
+> -	bool direct =3D vcpu->arch.mmu->mmu_role.base.direct;
+> +	union kvm_mmu_page_role role =3D vcpu->arch.mmu->mmu_role.base;
+[ ... ]
+> +	if (!role.gpte_is_8_bytes)
+> +		role.quadrant =3D quadrant;
+> +
+> +	sp =3D kvm_mmu_get_page(vcpu, gfn, role);
+
+[Severity: High]
+Could the lack of the direct override here cause the root page to have
+invalid role properties?
+
+When mmu_alloc_root() is called by mmu_alloc_direct_roots() for a guest
+with paging disabled, the role is extracted from mmu_role.base. If we
+don't override gpte_is_8_bytes to true for direct pages, the root page
+will have gpte_is_8_bytes =3D false.=20
+
+Because of this, sequentially all children will inherit these invalid
+properties, leading to the problems mentioned above in
+kvm_mmu_child_role(). Should we ensure gpte_is_8_bytes is set correctly
+for direct pages during root allocation?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626111344.8025=
-55-1-maz@kernel.org?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112606.1778=
+248-1-pbonzini@redhat.com?part=3D3
