@@ -1,135 +1,109 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DFC3B9922
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 18:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ABD3403EC;
+	Fri, 26 Jun 2026 18:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496912; cv=none; b=O96RPRpfvlaXxuq76m2AKQxDBk6JWX2b3uZPliNzPTDgYLOLCeToZ8TYqt8VXJWZCoJ6ZpSbA9gT4AAAjAC+4/lZS96/gR7QGiQQseg/XftjMbmLC2LCTZEpZOrLR3ow5mUSw0NwEYegQdAQgm64kTKAhSErUEI15fCzmDSrvgc=
+	t=1782497167; cv=none; b=dp7r6359F40fqIjS348uiUX16YLSYBtXePujBfmHvxLryq47dkrA6ll3jwVoQMXiMmrqIn47xL3MYyWxVL/YNjTE+4XL7JupwFRjIWazFZtSouzD9H/lDLbbSyrL0kez32gbZbIcyWTrBHGrIQWmwkDjmrDUmK2yyRfzCMwVaUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782496912; c=relaxed/simple;
-	bh=aA0A5I2lDTZ+3fuKrSnqtIKoZ5aG2/MOhsZpVD8zJV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCSpeCRCqvOt3VB+ANvmQpM0PUG9XGDgbIoxwB8jQQAzGXvPsMzTS7adzth4NnZM+k5u1Wq4CLHhZ+UOcUHCSiIoUPv1aRyI5DJWyo0V2Y7J9FYUW8KDxAk+0OU09Ki7zJ2wafh76SFyDbDfablO7/egcwf+mCpUWNxvD8nQn1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=cN9JrMHH; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1782497167; c=relaxed/simple;
+	bh=KptHpNS1VH1jjrAs6CJC7GgvTopeV5d1AIZn94/B1xc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Y+5mAowFOKwYqZkZstbc/wFCNGMLWBzfMJWI/P22nRs2XfekwKKNy1fk7Os6uoQsu9bhhimlLi17a6Zk/7bpcfXfDpffvuRuClw2HiJTbYO9/r21bObAj1eypZ99TwS1aU9sUvFBAm8kS04LCIrTB7BwaTwYGXC9DsfVVSmh90c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0SOYEr7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="cN9JrMHH"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-463f1165e16so1250223f8f.0
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:01:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1782496908; x=1783101708; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2RX9n3O90HDR3KKKfuve+ljOjDu+EQUCUgCqbYAMF1E=;
-        b=cN9JrMHHWExW1yjI/6LOQslEIKUy31cY1xr4d2bt9zNsT8MI0XCkcCy6kDSO9kGOKo
-         krsERaCt40JmlXh4S8rhg+Ku9G8aZ03JqvvKIm0qhyH+E9ioi1+OjajYVqeiXUEj06rY
-         jvyy+2sflB89vV5M+ocZWpxWxcIs2c2G6SSGfiCP0ePKK3Gufro+GJYR0pcOejSYoiD6
-         yze0NDpDudvZQnaHKus2OF792MNWlVVHUOL4IQdFKVgMWcEOH1bPiW7jzFlHDmoTNbQQ
-         HM1VtyScAmkfVcyI39xvulzn1co0EhGcEwbfx6UF9u+8SmS86NLzn145+xTFqa7H2Rr5
-         nm0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782496908; x=1783101708;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2RX9n3O90HDR3KKKfuve+ljOjDu+EQUCUgCqbYAMF1E=;
-        b=Bd2v/+mxT2jCpaM6EGvxk23/kCI+nhv2P3E8Wrldt+gS0mFoh3OhIiDvCbelFfZJNN
-         5wOcZoZchYHOpIGZ8HV+ERmeo7mfuX/0wuthvxgMJyDsEyvphG4qrI79HYYbb6hit/63
-         98v2LxQNU7iPBIIpukDSAGiNHnEL5wgOk6sFNuiCTmv3oBciGhUSeuZdr+pKzXHiW29v
-         GmKUyVfOAH55hHE9/azX/oZT1sVp8GbLDSvsQMBhu71uVvUbUsSkj21yM75//tZyDvfl
-         FIg0SLMh5G+SfAOaXk9fllkbLVO8AANgpaZ+UK+Yv6X8XG20YlIaik2qt3APF/4yJNpc
-         rEFg==
-X-Forwarded-Encrypted: i=1; AHgh+RpaBZLCk0nFh3L3Fj8ONlMZVeGzOUy0N+cv9H8qnBIYu1MptZrg3KjP/EYt6K/nh7ZG7vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOdj4JaC5/ca47fbCHZocvTdnLF3vlQ2DJKN3qEMwxBJwnOq2m
-	2okMUsN+pB2DhCNDesrG7UMszEmBDjkZUAwlrKgJNadpSklA2wc5yO1tCh3pJQhN9+s=
-X-Gm-Gg: AfdE7ck99aLczRp25WGloTzB86kU9+K40N25eLz/XYQj0jd4igF+ilEJE6v3aRLqavL
-	Bh7PrDDbMV10AiYJPSpOjIDkXbPJxmdfbklHxAr3SUravcsvCSATZLodgb7+dwx8BgZWRwS8mBS
-	9PW5FNxmsJTKLTI8GrMR6rizslz//H6vkJIkCUe2P5mFxubE77MuLUb0lVmnipghqv5h7w8gsCW
-	zAjsACY1eQIi5VNbAQOT9vN/roX/5XUGruvZzGUQ9DxCB7uk1PyRwsnYClfjszdsw27YgQfvYFM
-	89NEdOnuLPl9z/GwzuPUEcHEmPYPTLKz5cQqrm5X7IB303ktdx/JTjHIheJP6rQr0+8cpG2bY75
-	J0eL989IHVqLr8y39aB7VS+LdLfKdiTqBB0WLI3M9Jyjo/AWKO9IbpRozTHS7OnP7bK1w9YMX7W
-	7Eh0MWG8L5P4DeK5QrYJP1PP4voFzVOsaDMe59K7NncrYPJY/Dx0uDr8XHWnkbT6d+cZMn/wXhM
-	Y8uaYPKkas8wDE=
-X-Received: by 2002:a05:6000:2512:b0:46f:f12b:e45a with SMTP id ffacd0b85a97d-46ff12be583mr1368867f8f.23.1782496908406;
-        Fri, 26 Jun 2026 11:01:48 -0700 (PDT)
-Received: from localhost (p200300f65f47db04b3606a871f5f1c38.dip0.t-ipconnect.de. [2003:f6:5f47:db04:b360:6a87:1f5f:1c38])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46f86c34d76sm3712060f8f.3.2026.06.26.11.01.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 11:01:47 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 14/17] LoongArch: KVM: Add include defining struct cpu_feature
-Date: Fri, 26 Jun 2026 20:00:33 +0200
-Message-ID:  <a6e37d1e4abc0d86ef53b763cbbf1f7cf9898d13.1782490566.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1782490566.git.u.kleine-koenig@baylibre.com>
-References: <cover.1782490566.git.u.kleine-koenig@baylibre.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0SOYEr7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF961F000E9;
+	Fri, 26 Jun 2026 18:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782497166;
+	bh=NC44CepU1ErdNSkgELoT8ZTzb9/40szhMVb7wZJ8BVo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=K0SOYEr7K78/EsMvm8qjT8k6gqHsqSBn7wHFJt6ItSZvDurg7QwSr8o671KIAEDBm
+	 9ec9aeM2q3J2EE3LruTt3qHQ7xi5bSnXb6fLClpqf5JQF9+XkTqvtGfh9zC5/FHQO9
+	 rMhdmPnWN2CyvWqgcurvdLKMEjC566EpM46FjflrtR9S1KIMcmwf1QDJcVil7H8/0I
+	 bM6M7vuLKgjUP/5D+lRTxtb5unmGOWLSft2nse6wSBUudYyRe1dilymb0smxtr765r
+	 tFx2H9G0vDISKV8z5qJnkGN+9Of8BelvhphFlyGVZD1Fde2PCY5bKbq2zW4WXDXKyq
+	 fWz8me2IFSSwQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/4] s390/pci: Preserve FMB state in device
+ re-enablement
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Omar Elghoul" <oelghoul@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260626175525.37370-3-oelghoul@linux.ibm.com>
+References: <20260626175525.37370-1-oelghoul@linux.ibm.com>
+ <20260626175525.37370-3-oelghoul@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 26 Jun 2026 18:06:05 +0000
+Message-Id: <20260626180606.2EF961F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1370; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=aA0A5I2lDTZ+3fuKrSnqtIKoZ5aG2/MOhsZpVD8zJV8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqPr5ZOhBqzGUIytUOD5ZGIN1r+oKkcY9L/deLX uIj9VKfRLqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaj6+WQAKCRCPgPtYfRL+ TqPRCACs7sMhF30wJXTkHgak8YFIcMgH1Fnp9mip9T3hT6j8ONZSkwKfpSItmZW5WfDx9fsKnEo TplXVIffJ2ViqeEqXitjhzkEmdDXsPonrbGEexNSnl4DH9mq6Vf1VvPxzYTyDOdGyY6OTP+qQ18 ehyl0jShHvjpx54maIABQRC1S7LnREKiXXsfslJwnAzirRBlMxaHLq7mXjuox1xU1TL0MbadVj3 EitUzpL+808folx9RkqnZiUPd2+1IJOOgMee/ovEm/b8uBrL9go31dgL4YjpLM5I5RA+HOFjgkO 4Irh3U2vosSmxP337PkIM7kffPKH4IXohqVQgAmYXXpIfSRR
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
 
-Traditionally <linux/mod_devicetable.h> was a header defining a plethora
-of structs, among them struct cpu_features. This was split now with the
-objective that only the relevant bits are included.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Currently <linux/mod_devicetable.h> is transitively included in
-arch/loongarch/kvm/main.c via:
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but there is a missi=
+ng resource cleanup in `zpci_reenable_device()` on the `zpci_set_irq()` err=
+or path. If `zpci_set_irq()` fails, the function returns immediately withou=
+t calling `zpci_disable_device()`, unlike the subsequent IOMMU registration=
+ error path. This leaves the device enabled in an inconsistent state.
+--
 
-	arch/loongarch/kvm/main.c ->
-	<linux/kvm_host.h> ->
-	<linux/entry-virt.h> ->
-	<linux/resume_user_mode.h> ->
-	<linux/memcontrol.h> ->
-	<linux/cgroup.h> ->
-	<linux/kernel_stat.h> ->
-	<linux/interrupt.h> ->
-	<linux/hardirq> ->
-	<asm/hardirq.h> ->
-	<linux/irq.h> ->
-	<asm/irq.h> ->
-	<linux/irqdomain.h> ->
-	<linux/of.h> ->
-	<linux/mod_devicetable.h>
+commit 94bfdcea02e7e7dca9c322a0dc40fac61a9fb275
+Author: Omar Elghoul <oelghoul@linux.ibm.com>
 
-To keep struct cpu_features available once <linux/of.h> stops including
-<linux/mod_devicetable.h>, include it here explicitly.
+s390/pci: Preserve FMB state in device re-enablement
 
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
----
- arch/loongarch/kvm/main.c | 1 +
- 1 file changed, 1 insertion(+)
+This commit introduces zpci_fmb_reenable_device() to check the FMB state and
+ensure it is enabled. It resets the counters and handles re-enabling if the
+FMB was already active.
 
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index f105a86143f5..aa0fb4c90d90 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/err.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h> /* for struct cpu_feature */
- #include <linux/kvm_host.h>
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
--- 
-2.47.3
+> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+> index 2910d4038d39c..1eb6aa772eb3f 100644
+> --- a/arch/s390/pci/pci.c
+> +++ b/arch/s390/pci/pci.c
+[ ... ]
+> @@ -737,9 +765,13 @@ int zpci_reenable_device(struct zpci_dev *zdev)
+>  	}
+> =20
+>  	rc =3D zpci_iommu_register_ioat(zdev, &status);
+> -	if (rc)
+> +	if (rc) {
+>  		zpci_disable_device(zdev);
+> +		return rc;
+> +	}
 
+[Severity: High]
+This isn't a bug introduced by this patch, but there is a pre-existing issue
+with resource cleanup in zpci_reenable_device().
+
+If zpci_set_irq() fails earlier in this function:
+
+        if (zdev->msi_nr_irqs > 0) {
+                rc =3D zpci_set_irq(zdev);
+                if (rc)
+                        return rc;
+        }
+
+It returns immediately without calling zpci_disable_device(), unlike the
+subsequent zpci_iommu_register_ioat() error path. Does this leave the device
+enabled in the firmware but failed in Linux, rendering it unusable and
+leaking its enabled state?
+
+> =20
+> +	guard(mutex)(&zdev->fmb_lock);
+> +	zpci_fmb_reenable_device(zdev);
+>  	return rc;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626175525.3737=
+0-1-oelghoul@linux.ibm.com?part=3D2
