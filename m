@@ -1,56 +1,56 @@
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E23C3C16
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FCF3BFE4D
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782509763; cv=none; b=ENzRZ20zJ6j0HwktMZwyKVgxp9vH9gIJIUbuJOqBSz3IwR60Ez8chnq0VGsITOIZ41ZTKM637JM//Avrc+10vZjqnDwxh8sY5ZryDqTUDuSZ2JBdAjPeQRKTyZl6hc/G4tO8rEeaUhPBJXNBs3d+uURmEV62Z/wp+4JaQnmPSsM=
+	t=1782509763; cv=none; b=MuQysvEM4ItCi5wb2iSGgRGeTkRFIPuxHHVAHpXs7zn6sygPm0prnMvBbuoKsxIoSj7fVyXwY22JhSQ7X5NotcTOLmCiTJu29TatFqNDJap8BLy+N54cT8H9LZIXq5JVI0FbFdqkycuUv5KHtEkemlglfB41jUZDYm3gfFn0kqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782509763; c=relaxed/simple;
-	bh=quYP307cCmyP2CKKWA+CHAZMV/Jy7UY2hC7jDhiWYJM=;
+	bh=Fs7so+ZJGi3P+jhdmabB+E9ttuV6+nBB8ARPj8KikO0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a9d+WNECz99It+I/j/hnAyFT4hkdI6VGsFTj8UrHCYrn2G9Qu7ym9AH3fvxpHcDP0izPgMSnfajofb5aiZhr1esYGgaPJOtNHchmcPv4AFukgznJjT1XGlM1zj5+bQdyol5vllAQX+i0LSxD+QhF9UEvly03qRVMRmnrZ+DKIxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NR1jdhk2; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=L+HJE892KRz9Rqw+9K5fOsd/rkwq3k3e35hBrZ/Oj3VjxOAPT7mA3PFCIAJIR8291MfGeyZhHR7gOEZwUosL2Ytc0YlK1nMDzzuV+7WQL7x1adhzuQB6Sm3hNXiyq5at/PVvpLyuCpSjNyyaYO/WvEc1ixUUpjyJqAHPhTAgTms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FZlPWZs7; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NR1jdhk2"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845bae98cdcso1117458b3a.1
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FZlPWZs7"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845c296374cso950228b3a.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:36:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782509757; x=1783114557; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782509761; x=1783114561; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=rZu3Cjc6CZtki/JQXUzTgacdlapy8vtMh25cja8rCSM=;
-        b=NR1jdhk2enjuw2zo653WmHWkZd9/OiVLYnhzEfQiNlTXJoxApYwhYGO7Sdh1+QoT4n
-         j1RJNr990yA2lGmaE/bt2Q+PW6ICglibOMbXEYyE552N8kPJRfvovJnY3HZ1UtN5zvZf
-         zU0hvIDQWCrx7seBVeFWpxdx3aeB+uDG8AZulgW0OX3WrfZHOm4R2BM5GdMaMaBMWpjY
-         S3BWgutVam9wRoJrvhS46C/kkJeXOHPxjCAdMx/Wgik007Zc+VKQeDxDTCc84BoiMVHM
-         7yDZwsWA6I/bTw6hl9tSW7WYJmJmPwgbFOsSehh8dM+On5GZvUf/m+yYEZyBzfYNfNl4
-         roTw==
+        bh=NsPt5mg15Oj99hJ3f/oZG/2r0/ISQ2OwxSu7NKxi9WQ=;
+        b=FZlPWZs7+ozpOQfs7Eh5W5r1YzLpjNBXx3dQl5YqT5wuuM2dmjia7fc2PT/46oOyaU
+         e2x7GZsJpxsFNY6QQcUTiXBcDWJTolezQQQkRzyn2iHEnDjQLyUb7CM5ujAn1wwSp38n
+         Qx8AIitvFeA0P4aGzhpY7t7xbsHnfyYNVfY7vVHajxhdB3BtJPeLweGsf/nwVmFW/mZk
+         3EXMG5t0r0nHmfKh9/D/NEJA/nnyG9ewgJh20NDwCXrqjpfuoNnzoRqY3w2YBMgaVvQe
+         1MrSD7whAKazLCt+/tEOX30ynD673UJmOIeDYHcAZvOxSkgLKxfh4BRBT4Spi2t+JcCd
+         inLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782509757; x=1783114557;
+        d=1e100.net; s=20251104; t=1782509761; x=1783114561;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rZu3Cjc6CZtki/JQXUzTgacdlapy8vtMh25cja8rCSM=;
-        b=IqO66gHR/pXSTG0UXg7DYrkrkMTXEfdiEPzraV4ZtsSgYY1xkNX05nBcwPTfD4b5XI
-         Nw5pRFvLePRLjruy7bfbnk+deeIwSF+ppFxI1LOaSKEXqvWBKlcwOaHJqie+WAq/2Hjd
-         t7wJcqyys0b2NtybtLaroL1Lce0Loer1ZNfuqQb4+HPRIXzI0y57w61wPn+YTgX8M9sk
-         9AqYhfWbl0gGmcGadFdyIjouOZ7xRkfyvs2NOAJvIJEIgjtUfdtFbaABnQPBLOystUjz
-         g8EQdUK3+YgO9fhwxtbmCQTCvAV1tt+KwkEe9bIsQs5/XdyPkzBaZ91LrkibYpgw8eai
-         UdRg==
-X-Forwarded-Encrypted: i=1; AHgh+RpsENRZU6Rw4wVR0wZiULVqP8tPKPi37JS/DGsQNm5WBRM3qsOTVAa+X9MMv+I/PQ7ab+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN4DQBwS7dRU1hy4045YQlIiv0ihhFHDcKC1y1Y8SblPYTDGL7
-	h5XmYZ/TYdlBHYCVKrRZjEtSasd7bojc0f5h2GSgZXif+Gunlc4I2eXoZR6qe3jWl/bhne4BdyG
-	jPTXo+Q==
-X-Received: from pfbgi11.prod.google.com ([2002:a05:6a00:63cb:b0:845:ba3d:923a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2987:b0:845:d274:bf90
- with SMTP id d2e1a72fcca58-845d274e56dmr1605456b3a.57.1782509756871; Fri, 26
- Jun 2026 14:35:56 -0700 (PDT)
+        bh=NsPt5mg15Oj99hJ3f/oZG/2r0/ISQ2OwxSu7NKxi9WQ=;
+        b=MIHih+5hMSu32a7pnEIOW9igAzLhqYa4srYcaL/PvP27c0awvOVulE67bnyLw5vs1w
+         +6Lcg7eXO4kVAR/ebmcCKwdj9DY96nMMqg31Zf8Md06SB+sozVazWISgDi/oXAjCLN+Z
+         sLLCJ+gAxudLh36tZjsjQFh4N1vjbE2FIIBYf84u6vL9vBZPA6pSbXJrjKQP0oP8drzF
+         jZpF1DBN0fIbgMbC1+3vmvQpH2DPEQ2o6vc27bfDY2/vpQ/81b7ax442mtNG+QMftFNk
+         C7hTq4e2fe9X/6oOj2pS9tNAZdiutvVm7Ia8UnvL6BNUKOHK0GKL7Fg3baRGHUCdcql5
+         hCxA==
+X-Forwarded-Encrypted: i=1; AHgh+RqYfojbJewvR6C/EMRi51RQt63KZhQkfFRlLbWBBTthSZy4zhIPh5uvYEB42MAF09nyJ+o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybTOSRGcVVQSF8809txk42J7XJbngd0D+m2FgryDcY/ooZM7mC
+	b/1vVXUbd6Fk9okzdDv9laj6oSY/yIKrpheANYnBGjH5fU6aDDFkZMtMtBlgCblvIJ4YvG8uMw2
+	N8yRMDw==
+X-Received: from pfblu3.prod.google.com ([2002:a05:6a00:7483:b0:842:3b3a:5198])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140d:b0:842:1ffc:55b4
+ with SMTP id d2e1a72fcca58-845b3ac63abmr8607670b3a.36.1782509760452; Fri, 26
+ Jun 2026 14:36:00 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 14:35:30 -0700
+Date: Fri, 26 Jun 2026 14:35:33 -0700
 In-Reply-To: <20260626213534.3866178-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260626213534.3866178-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626213534.3866178-18-seanjc@google.com>
-Subject: [PATCH v8 17/20] KVM: selftests: Add a utility to pin a task to a
- random CPU, given a CPU set
+Message-ID: <20260626213534.3866178-21-seanjc@google.com>
+Subject: [PATCH v8 20/20] KVM: selftests: Add xAPIC support in eventfd IRQ test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
@@ -73,68 +72,127 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	Josh Hilke <jrhilke@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Josh Hilke <jrhilke@google.com>
+From: David Matlack <dmatlack@google.com>
 
-Add a helper function, pin_task_to_random_cpu(), to pin a task to a random
-CPU from a given cpu_set_t.
+Extend the eventfd IRQ test with a '-x' flag to let the user run the test
+in xAPIC mode instead of the default x2APIC mode.  When using xAPIC mode,
+sanity check user input to ensure the test is being run with at most 255
+vCPUs, as xAPIC can only address IDs 0-254 (255, i.e. 0xff, broadcasts to
+all CPUs).
 
-This helper will be used eventfd IRQ test to migrate vCPUs to random pCPUs,
-to stress host-side interrupt routing and delivery.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Co-developed-by: Josh Hilke <jrhilke@google.com>
 Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: massage changelog]
+[sean: add sanity check on number of vCPUs]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/include/kvm_util.h  |  2 ++
- tools/testing/selftests/kvm/lib/kvm_util.c    | 21 +++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ tools/testing/selftests/kvm/irq_test.c | 31 +++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index c1f588154398..b39e713c30a4 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1094,6 +1094,8 @@ static inline void pin_task_to_cpu(pthread_t task, int cpu)
- 	TEST_ASSERT(!r, "Failed to set thread affinity to pCPU '%u'", cpu);
- }
+diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
+index d2c745c54960..240f6f0fdbe4 100644
+--- a/tools/testing/selftests/kvm/irq_test.c
++++ b/tools/testing/selftests/kvm/irq_test.c
+@@ -18,6 +18,7 @@ static u64 timeout_ns = 2ULL * 1000 * 1000 * 1000;
+ static bool guest_ready_for_irqs[KVM_MAX_VCPUS];
+ static bool guest_received_irq[KVM_MAX_VCPUS];
+ static bool guest_received_nmi[KVM_MAX_VCPUS];
++static bool x2apic = true;
+ static bool irq_affinity;
+ static bool done;
  
-+void pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus);
-+
- static inline int pin_task_to_any_cpu(pthread_t task)
+@@ -31,14 +32,20 @@ static bool done;
+ 
+ static u32 guest_get_vcpu_id(void)
  {
- 	int cpu = sched_getcpu();
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 6a0ee033fdef..3794575d2ca0 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -668,6 +668,27 @@ void kvm_print_vcpu_pinning_help(void)
- 	       "     (default: no pinning)\n", name, name);
+-	return x2apic_read_reg(APIC_ID);
++	if (x2apic)
++		return x2apic_read_reg(APIC_ID);
++	else
++		return xapic_read_reg(APIC_ID) >> 24;
  }
  
-+void pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus)
-+{
-+	int target_idx;
-+	int nr_cpus;
-+	int cpu;
-+
-+	nr_cpus = CPU_COUNT(possible_cpus);
-+	TEST_ASSERT(nr_cpus > 0, "No CPUs available in possible_cpus");
-+
-+	target_idx = kvm_random_u64(&kvm_rng) % nr_cpus;
-+
-+	for (cpu = 0; cpu < CPU_SETSIZE; cpu++) {
-+		if (CPU_ISSET(cpu, possible_cpus) && target_idx-- == 0) {
-+			pin_task_to_cpu(task, cpu);
-+			return;
-+		}
+ static void guest_irq_handler(struct ex_regs *regs)
+ {
+ 	WRITE_ONCE(guest_received_irq[guest_get_vcpu_id()], true);
+ 
+-	x2apic_write_reg(APIC_EOI, 0);
++	if (x2apic)
++		x2apic_write_reg(APIC_EOI, 0);
++	else
++		xapic_write_reg(APIC_EOI, 0);
+ }
+ 
+ static void guest_nmi_handler(struct ex_regs *regs)
+@@ -48,7 +55,10 @@ static void guest_nmi_handler(struct ex_regs *regs)
+ 
+ static void guest_code(void)
+ {
+-	x2apic_enable();
++	if (x2apic)
++		x2apic_enable();
++	else
++		xapic_enable();
+ 
+ 	sti_nop();
+ 
+@@ -158,7 +168,7 @@ static const char *probe_iommu_type(void)
+ 
+ static void help(const char *name)
+ {
+-	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type] [-v nr_vcpus]\n", name);
++	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type] [-v nr_vcpus] [-x]\n", name);
+ 	printf("\n");
+ 	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
+ 	printf("-a	Affine the device's host IRQ to a random physical CPU\n");
+@@ -169,6 +179,7 @@ static void help(const char *name)
+ 	printf("-n	Deliver 50 percent of IRQs as non-maskable interrupts\n");
+ 	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
+ 	printf("-v	Number of vCPUS to run\n");
++	printf("-x	Use xAPIC mode instead of x2APIC mode in the guest\n");
+ 	printf("\n");
+ 	exit(KSFT_FAIL);
+ }
+@@ -205,7 +216,7 @@ int main(int argc, char **argv)
+ 	struct kvm_vm *vm;
+ 	int irq, irq_cpu;
+ 
+-	while ((c = getopt(argc, argv, "ad:ehi:mnt:v:")) != -1) {
++	while ((c = getopt(argc, argv, "ad:ehi:mnt:v:x")) != -1) {
+ 		switch (c) {
+ 		case 'a':
+ 			irq_affinity = true;
+@@ -233,6 +244,9 @@ int main(int argc, char **argv)
+ 			TEST_ASSERT(nr_vcpus <= KVM_MAX_VCPUS,
+ 				    "KVM selftests support at most %u vCPUs", KVM_MAX_VCPUS);
+ 			break;
++		case 'x':
++			x2apic = false;
++			break;
+ 		case 'h':
+ 		default:
+ 			help(argv[0]);
+@@ -248,6 +262,11 @@ int main(int argc, char **argv)
+ 	vm_install_exception_handler(vm, vector, guest_irq_handler);
+ 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
+ 
++	if (!x2apic) {
++		TEST_ASSERT(nr_vcpus < 256, "xAPIC can only target IDs [0-254] (255 vCPUs)");
++		virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
 +	}
 +
-+	TEST_FAIL("Failed to find random CPU in possible_cpus");
-+}
+ 	if (device_bdf) {
+ 		if (!iommu_type)
+ 			iommu_type = probe_iommu_type();
+@@ -271,6 +290,8 @@ int main(int argc, char **argv)
+ 
+ 	kvm_assign_irqfd(vm, gsi, eventfd);
+ 
++	sync_global_to_guest(vm, x2apic);
 +
- void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
- 			    int nr_vcpus)
- {
+ 	if (migrate_vcpus)
+ 		kvm_sched_getaffinity(0, sizeof(available_cpus), &available_cpus);
+ 
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
