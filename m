@@ -1,144 +1,112 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646763F871B
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912B43F8250
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782484076; cv=none; b=SDM8kQe/iqnS9O+VnAdj9/6fLiYopDVSJZiXts/jIaGGN7LhqPJCs1g/znwGLQg+Y7psdLz0syW8Xa+ac3KBbouc8gc53rVTXfgg0x7dSz7R/4HsEF7qrjUBdNgcdDAk3mKHIBDY5fbbYOnjf4On+TO0XjpVB3ZRUoGAxBXtMNg=
+	t=1782484599; cv=none; b=KHGhqECXCcKC1oovtKJmSIfjHEDN8lR2eAYIqDUvwNlz5Ty8qMkUpL+X233Ssqnu1prBdgf3CpTINXTHPbkU+kcmIffI2oDNqgpp2TWeVxcLVtuLH0EU7z8WQPnlv5jOS8IMI2Z+v5gynNwsXLjL/uH/h9l26y8LL2pKVgzZukw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782484076; c=relaxed/simple;
-	bh=j74mLa4an6FUKWcGbPm5zIuMfCmCm8jiEpyP9u+oRMU=;
+	s=arc-20240116; t=1782484599; c=relaxed/simple;
+	bh=3hWmG+tA03LYJv/XcbbvqJo3zymlC5xeIlxw9AzG4iI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nTDhAhwMF20rjp7RjWEcmDSi8n6ACgTUQxUZR7Ows22xyWX9y49WTQ36wgjdmBIpwxkYGoO+szK0qCrIio4xj/rO9VtcRqU4LJ/Tt6mC1Hd95aBbJ5FjHV33CfBGC+7sb3QI8uXXdYZTaRJTR+K0f6E8nk+6Q7hKHJf9WZyRwu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lgco9qfK; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=vAEAUSelDbMif+aUgI1DpzvBZjJvvQueLGLSrI9KCS1gNXBFieOs9KlM21BWU7LAlXNv+8nbolt0t9B9LochlpAjLO3LvrmiU1Ab4+xdsQYKS4YnPI6JxT/GV4vDWqwmdEn40lgcYxN4+9o49IMzm8JgFqxnBf96CYRKhrsZubY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gMNCkc5L; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lgco9qfK"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c8018f11fbso9967115ad.3
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:27:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gMNCkc5L"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so543229a12.3
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782484068; x=1783088868; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cCJJmjJsx9ZpoPuR0fj0nKjX7eTBmSdWBoum/bdsThU=;
-        b=lgco9qfKmV6qETXpFHw3OUczF/0PHsaUKQdqAgpAW618cM8+oFlas1jr9HZiMlzTm0
-         nts1PFIFfdjKfHYu9+BgLtLp9+HxGmkGemrM6iTUDoEPnHBu49RJev3y1q+ASXtb2ArZ
-         dVWqADCrah1QgiiyxNSZ/bRVG0p8NHR68m1mbdoRcKgxfOJ+sYLu/kNBxt4QML+ynHrW
-         WEnZetWy0d1cNba2nYlGg2MWfTg1NZLPi9PYsgM7nql6s30ZkLVA/nDHJUxCGF+WhHaG
-         1yuz6vj4KXM/dR/zO4wbpYXVV8alcF3cWbNr52DS/N8Lo6K/PcCOlpf4ypJXA6yP4NRk
-         sP3Q==
+        d=google.com; s=20251104; t=1782484598; x=1783089398; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WHB0fdKnr8+8chWcl/LA1xZMu3z8MHB7fOVr6aCL3fQ=;
+        b=gMNCkc5LzAF6nrsmshPNsPNCQNPEiFCvkUsRYkPxALv7mDxdGIaV9B95Hu50If1uvV
+         ELvhzUB3GuVHtPuWfjuB9bPNB2SU9Q0UC3sDZcZwC8g0/5o6dMAQYjxr+xA3eKTawJvu
+         VxqHgeyxHzDhAMg9zB9oB29HPWsDGqNUTvDtZRsaOB+1qrvdzl91zO7GwHi4uUzLsiJJ
+         6n3JipEtdAeRaC9J/iDRVZLYIP+hHcR+7Bb0vL38gYHXSlogOYTqhXxBo1SDNEKEQYFJ
+         KPwVKUDhLum4rDk2otG4niP2Hn4489ORGTYGsecd0mIVgzoeank5418Dau/dgFNh++XX
+         sxlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782484068; x=1783088868;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cCJJmjJsx9ZpoPuR0fj0nKjX7eTBmSdWBoum/bdsThU=;
-        b=LulLFjvz+//LqSA+Il8eSon8wdznv1FnzkRM9pHoFR0FlE8uzB9Mpu/v9VZLKnrMWR
-         wtw3gt6WtTkJzHiEv23SwpJQlluU3wGWhG+q24hNfpYpiocABtm5ydVk5d1sXtVEP1pd
-         /U2fRZA5v7ZtIl1uSGpekzGM1eORjcmjk2KggFA+qJ3yR0/ipsp38IF8wDinxnTCROiv
-         sV03YV/TzZA9pFX1CQCYisGgP71yCOLASwetnQXxnNBtcffCSQH5OlQyQ0glzAWjYuMs
-         ec6UmJ8mdNDCVnByEXZyIr7aeWlSWDn1JmIGL9hJLu+4fr7FI9Ak7gT/RxBXatfOigWX
-         e8hw==
-X-Forwarded-Encrypted: i=1; AHgh+RqYxP1e30boAp6kkSNn6Qy4JBM60fuOYhKaLP3Rmw6t4wq1pU7SDNFdx8ZbQ50VccuC0h4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUUlpKzHFlq+i5HqCwwsqA9u4RhFso2Ew6J+JwfDBd9KiGvYMn
-	JlcLIoKihDzgKPYBpzZCiz9gq/QgPt/w9J9N5SFypxd8XFpVrqQsww/Lce4jgveKaxLHGYC4Qem
-	m5Z0JvA==
-X-Received: from plqt1.prod.google.com ([2002:a17:902:a5c1:b0:2c0:a677:42a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3b88:b0:2c1:ea95:8297
- with SMTP id d9443c01a7336-2c7fc75a973mr71403235ad.7.1782484067938; Fri, 26
- Jun 2026 07:27:47 -0700 (PDT)
-Date: Fri, 26 Jun 2026 07:27:47 -0700
-In-Reply-To: <123bd3932db959a9c26b9ede46632e482dbdc4ab.camel@infradead.org>
+        d=1e100.net; s=20251104; t=1782484598; x=1783089398;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WHB0fdKnr8+8chWcl/LA1xZMu3z8MHB7fOVr6aCL3fQ=;
+        b=Y3OsLIDVbGA5N+zQRJd8+0WCJCgbUA215FHDrLnGdcN6cgOcl76ai1M+txXv+oIzOB
+         /Ydh7JALZw2qWLa0yXaOhBG/g5CDJ1XGJ4I8uoxXKt0521B9WdPOWOgGvodKIvwlNhs0
+         o138L0Rssug1Tm+QBtlm9NLojr1N0honMdrUTpM+tVkN3ditZAj45nwWiYiwrm3Bfpnz
+         XOfoLNJU/tLYaVsbEFg5EZZCHsM9A6iU1vmyErA6uOQ7P80Gr1AZ4sgiozbSGaAmJZyF
+         PqqICkBEiHPoIU8O98juGTb8LyEnodxWM52o4NA74Ckxvx4+uD9d2EvTbLQpBLMQ1v4G
+         vGAw==
+X-Forwarded-Encrypted: i=1; AFNElJ/bFFMHy72zrBodJemGuzXMZy7aBV/hQIWa/cjYLwBKcOC6mZh4BRRF1L2reMVgjKaOn+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKYQn/FQbEQkvvce6nrFBr60iyduQ/kKZOcAqWJSCu8nplH2R2
+	PQPxY73Ia2tRASxr1nuW77TGKbDAQigQtprzcRWZ8+nD9O+gdkODt1VWeXlCy1QaW8o7scYY6+c
+	pw5MDGg==
+X-Received: from pgna29.prod.google.com ([2002:a63:705d:0:b0:c7b:b2bd:6cb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4e01:b0:3b5:6b5a:4f28
+ with SMTP id adf61e73a8af0-3bd4af047ebmr8411729637.34.1782484597661; Fri, 26
+ Jun 2026 07:36:37 -0700 (PDT)
+Date: Fri, 26 Jun 2026 07:36:37 -0700
+In-Reply-To: <4be83098ac73020458d6ca2f38f4a8fb8de9d4be.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260625223623.3376478-1-seanjc@google.com> <20260625223623.3376478-5-seanjc@google.com>
- <123bd3932db959a9c26b9ede46632e482dbdc4ab.camel@infradead.org>
-Message-ID: <aj6MY_9wx_uaDvHN@google.com>
-Subject: Re: [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to
- userspace if Xen vCPU ID isn't set
+References: <20260625220450.3354415-1-seanjc@google.com> <20260625220450.3354415-2-seanjc@google.com>
+ <4be83098ac73020458d6ca2f38f4a8fb8de9d4be.camel@intel.com>
+Message-ID: <aj6OdedUwa14vikU@google.com>
+Subject: Re: [PATCH 1/9] KVM: x86: Move the "APIC attention" macros from
+ kvm_host.h => lapic.c
 From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
-	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Kai Huang <kai.huang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 26, 2026, David Woodhouse wrote:
-> On Thu, 2026-06-25 at 15:36 -0700, Sean Christopherson wrote:
-> > Explicitly invalidate KVM's internal Xen vCPU ID during vCPU creation
-> > instead of *trying* to set the Xen ID to the vCPU index by default, and
-> > forward singleshot timer hypercalls to userspace if the VMM hasn't set =
-the
-> > Xen ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.=C2=A0 Using the vCPU's index=
- as its
-> > default Xen ID is reasonable in concept, but in practice is horribly fl=
-awed
-> > as the index is left as '0' until after vCPU initialization completes, =
-i.e.
-> > every vCPU gets a Xen ID of '0' by default.
-> >=20
-> > Forward hypercalls to userspace instead of trying to salvage any kind o=
-f
-> > default behavior, as all userspace implementations that support multipl=
-e
-> > vCPUs either don't enable the timer, are guaranteed to set Xen ID, or w=
-ork
-> > only because *all* guests also screw up the singleshot timer hypercalls=
-.
-> > The last scenarios is extremely unlikely given that Linux-as-a-guest us=
-es
-> > the actual Xen vCPU ID when making timer hypercalls.=C2=A0 In other wor=
-ds, for
-> > all intents and purposes, KVM's ABI is already that userspace must set =
-the
-> > Xen vCPU ID, so just commit to that ABI.
-> >=20
-> > Note, KVM's handling of KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restricts the ID=
- to
-> > KVM_MAX_VCPUS, so there's no chance of a valid ID colliding with -1u.
->=20
-> Nit: XEN_VCPU_ID_INVALID isn't -1u; it's U32_MAX.
->=20
-> I'd have been slightly happier if you'd used an explicit -1U, perhaps
-> with a name of its own (although I guess we wouldn't want to call it
-> KVM_VCPU_IDX_INVALID in the *Xen* part).
+On Fri, Jun 26, 2026, Kai Huang wrote:
+> On Thu, 2026-06-25 at 15:04 -0700, Sean Christopherson wrote:
+> > ---
+> >  arch/x86/include/asm/kvm_host.h | 10 ----------
+> >  arch/x86/kvm/lapic.c            | 10 ++++++++++
+> >  2 files changed, 10 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index b517257a6315..9ba8aa739f93 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -290,16 +290,6 @@ enum x86_intercept_stage;
+> >  #define PFERR_PRIVATE_ACCESS   BIT_ULL(49)
+> >  #define PFERR_SYNTHETIC_MASK   (PFERR_IMPLICIT_ACCESS | PFERR_PRIVATE_ACCESS)
+> >  
+> > -/* apic attention bits */
+> > -#define KVM_APIC_CHECK_VAPIC	0
+> > -/*
+> > - * The following bit is set with PV-EOI, unset on EOI.
+> > - * We detect PV-EOI changes by guest by comparing
+> > - * this bit with PV-EOI in guest memory.
+> > - * See the implementation in apic_update_pv_eoi.
+> > - */
+> > -#define KVM_APIC_PV_EOI_PENDING	1
+> > -
+> > 
+> 
+> Nit:
+> 
+> 'apic_update_pv_eoi' is a typo.  AFAICT it even didn't exist either when PV_EOI
+> was initially added in commit ae7a2a3fb6f8b ("KVM: host side for eoi
+> optimization").
+> 
+> I think it's a typo which was introduced by that commit, and my best guessing is
+> the correct one should be apic_sync_pv_eoi_from_guest().
+> 
+> Btw, the comment isn't easy to understand either IMHO.  Maybe just delete it (in
+> another patch perhaps, if it's worth)?
 
-Ya, I was 50/50 on having KVM define its own INVALID macro versus reusing w=
-hat
-the Xen-the-guest has.  I didn't want to open code the literal, because tha=
-t
-would require open coding a somewhat magical value in multiple locations.  =
-And
-having XEN_VCPU_ID_INVALID and KVM_XEN_VCPU_ID_INVALID, with the same value=
-,
-seemed even worse than reusing a macro that isn't strictly owned by KVM.
-
-What if I also add a compile-timer assertion?  In the end, KVM doesn't care=
- what
-value XEN_VCPU_ID_INVALID uses, so long as it can't colled with what is all=
-owed
-by KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.
-
-diff --git arch/x86/kvm/xen.c arch/x86/kvm/xen.c
-index 3ed6686e0a1a..5c60ed9ef2cc 100644
---- arch/x86/kvm/xen.c
-+++ arch/x86/kvm/xen.c
-@@ -1103,6 +1103,8 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, stru=
-ct kvm_xen_vcpu_attr *data)
-                break;
-=20
-        case KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID:
-+               BUILD_BUG_ON(XEN_VCPU_ID_INVALID < KVM_MAX_VCPUS);
-+
-                if (data->u.vcpu_id >=3D KVM_MAX_VCPUS)
-                        r =3D -EINVAL;
-                else {
+I'll "Opportunistically" update the comment as part of this code movement; the
+formatting is also all kinds of funky.
