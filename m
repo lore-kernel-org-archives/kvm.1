@@ -1,225 +1,179 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013039.outbound.protection.outlook.com [40.107.201.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFC71A3160;
-	Fri, 26 Jun 2026 10:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782471383; cv=none; b=cKwbvcMBDc3Uw1bG0ZQ20Tf04TeMBKvIolmEzhOjw0b+cEZ0jcYsjHsiucgfLXGQnC2+nK7vFxjg2RhSFwn1I/aHIIpaZcNUOBiZMxObIZ57CJim5Kd8IJ6wLPZE4Rvn/LU2m+a6D+v+pfLS8F/hmbzGP23YULHCUQcn/T82n5k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782471383; c=relaxed/simple;
-	bh=DM63XhpYG5YPKl4ipjeVKu6JPy+MyPjGsRO1jzofCwU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFilR8Y2Jzye0lundUMQjugJNDxkujyNUaAt4N3Zqo8vtjNUIRUGr+egeXokSBI0+xJV6GGQLP6Lau9D9DNSbPNC/zmuaiZV8RiTqxCoELGSI4MV3qS5oQY0CPpjkjiVAW6zJ7nFoFpl7DtcH0u93yR7ROCTC0a5NbhGg6sycCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bTXpd9XZ; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B253E024F;
+	Fri, 26 Jun 2026 10:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782471580; cv=fail; b=NAZXy560Wt+UWoTGwf4rYZpVaWhF+b7JWvx6/HjTxyaNSORQcAppsTRPmA2e1URVOc3p+Y7xZybUbEemuyWaNNCa3e5+QGMlQ9m1p4ZwH9jyMj55DnNoWz1S53ocPOVlxZ4xzuSy4UgnFgLhyu93oC7ab3pKTv/01B0DffPV9SM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782471580; c=relaxed/simple;
+	bh=f23+XIECQCbvEVigSjY2Rb4GZy56Tc4Cqr+643bjT6I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CcDUeUgwZptiyKaVB94rs4PfysTsAXvVpBz/PmSmzM/84CZFxYio1zN9Wj798X8oMwI8xxrO/meka8E2o/EfvgP2JEfhmWAyeLPspLey2n7hct7pCQyuijEugMHPye3C0QqapoWz+rUOwkfKM2MnV+wfRaDAY+gpEHl6Qv9r+V0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pu/XdOdT; arc=fail smtp.client-ip=40.107.201.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bTXpd9XZ"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QAIH192919861;
-	Fri, 26 Jun 2026 10:55:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ynUqAtv7brfarr/o+
-	AaTrcXvFX8xzgL33PEwIVBnQQw=; b=bTXpd9XZGcxE82TCw7PT4XiVmx2qaz/4E
-	NWXtk/4aL6ofq/hTmZOsFXusVPZ901V+qQ9iSeRGApZpnpZsjsNrZAbi4sJECjMv
-	UGDjUpziDN87N1Lfnmb1FAh9jb1Dgit9fN/daTANezHBH6zrAfFUrq/Z92Q+2sST
-	hxNrs1H/oW/vpWTETZVeUuOFudend336Ow/JN/4zutm4svrnrh4hh3NFqkE1qnWU
-	pH55FtKdsIuqy+vOYL0iQVxVzYg6K+NtBYFXVlGJkJNRRLDK3Do7KOQ7qOvloBsV
-	GX/oxMRCTpRbyOrXVTbpbuTgl7NaO4IsiUyV7KB6gw5dtClHkr3CA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhr6g00-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jun 2026 10:55:56 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65QAo8Ov023161;
-	Fri, 26 Jun 2026 10:55:55 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex5jwtuy3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jun 2026 10:55:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65QAtp6V24838454
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jun 2026 10:55:51 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 73CC020040;
-	Fri, 26 Jun 2026 10:55:51 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C9962004B;
-	Fri, 26 Jun 2026 10:55:49 +0000 (GMT)
-Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 26 Jun 2026 10:55:49 +0000 (GMT)
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: maddy@linux.ibm.com
-Cc: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        gautam@linux.ibm.com, bigeasy@linutronix.de,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [PATCH 1/1] KVM: powerpc/book3s_hv: Use generic xfer to guest work function
-Date: Fri, 26 Jun 2026 16:23:01 +0530
-Message-ID: <20260626105449.2897924-4-vishalc@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260626105449.2897924-2-vishalc@linux.ibm.com>
-References: <20260626105449.2897924-2-vishalc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pu/XdOdT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IIqcz0Tu3oQJBatyC9dqmIPfRP8IZjmfkZxE5lGhXBy8NbCVNxkQI7WO0UdLLvkDHhzaBp41CKB23RndR+V0SF3mhfmuWb4YCKR+a3T/5QRXAbpSxCcPn5FaXdFp1ufCttqfVU/DCI9KvJImN6LmWhOv1VDrmEXo6kFbtfcF4ITJLFRN0EciHZITWS1kKZTecVV5GbVyzAmzFxdWxVkXQQ8ABMMOZinJWyly6nr9TzuMFRAXpml02cpOynpu1MLFzXgVkfwyTW+OfuTKCs2xYhk8Av+4OU4VoPnKa35l9YDVIuBTxG9/5vuXdyvKHIm9BvOwnNFGakyb8F0QDGJIzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hbtGUWaeufLmtZUBwgc/GxMx7LZpPbxXn/hnUfDUMvY=;
+ b=UUoLpF7loJxHTTX+DGWMoDNo6BYUlVwwH8HieoBOp6bI0VY+DmaDZdJf5ngUP9KDJooAilLHl6lI6Kky3hdNnMPvoevzQnbnOW0GplN5bZNB0Fptr7ilkgvUlsILM2+ng8SjK3J1oaU/Za8vfgrMw1OFDB3NyRjIM/8GSgRPuD/OdAz6PEARsdf/VG5Rv7ZWNIw2KKYb+hW8g+Cij9THpe/eI8Wp9SXzu1U9IectltSGchnTVkt/ZfOqXuYZuLvH38T+EujKlscJXTzmTRXeI6CecoaMvbAnHaVvON37kMpEvHxCd9Ptn//M4zoq4PJeJcvf0cu6KWTBJLhEQDG0dQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hbtGUWaeufLmtZUBwgc/GxMx7LZpPbxXn/hnUfDUMvY=;
+ b=pu/XdOdT2c72pcmmTEbfhe814/KhEmxScQ8y0v3xsQ6gd+mkU9OMgEWklE5kD43N6b58GYcdH6lZgawa3gWZWPLsE0x/K2j45Vu7bs4IFFMJXVpNmM/4uoGZMY487S4EZ9cr0v3MO9FNNmAB0tylTqjqKD5ONS6pfUtApChHRAk=
+Received: from CY8PR11CA0044.namprd11.prod.outlook.com (2603:10b6:930:4a::9)
+ by PH7PR12MB8825.namprd12.prod.outlook.com (2603:10b6:510:26a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Fri, 26 Jun
+ 2026 10:59:34 +0000
+Received: from CH2PEPF00000143.namprd02.prod.outlook.com
+ (2603:10b6:930:4a:cafe::42) by CY8PR11CA0044.outlook.office365.com
+ (2603:10b6:930:4a::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.18 via Frontend Transport; Fri,
+ 26 Jun 2026 10:59:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH2PEPF00000143.mail.protection.outlook.com (10.167.244.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Fri, 26 Jun 2026 10:59:34 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 26 Jun
+ 2026 05:59:29 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Robin
+ Murphy" <robin.murphy@arm.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
+ Christopherson" <seanjc@google.com>, Suravee Suthikulpanit
+	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Vasant
+ Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+Subject: [RFC PATCH 0/5] Add support for AMD IOMMU GAPPI
+Date: Fri, 26 Jun 2026 16:29:01 +0530
+Message-ID: <20260626105906.14577-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a3e5abd cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=4VjbuBxFWgCYz5P0O64A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDA4NyBTYWx0ZWRfX3t0UT5ubNJg1
- e0Ju70iY/DZlOsPdp0HozN8v8JfDlTQqM3032Zd1f78Hr6d0UChraexJfYBAxWubw65BCTqvDwe
- eT7m7KYWfSJDCcBoHcJ0im5OLrkzUpizoI0VVR5NCUt3D04vAwJHMrKm+Dg5/MKA21zJjdSYuiz
- BqAvopuYGxSDQ24TTed6QaJ7brWdz5RAu6P69aM+FngSEv/4snIxxc1MWGevb2RDiJIM1Q01olb
- zBEIlZkhlQeJlT40zlOYX5KdfGVJeczGrSJQtr0mkE3WSIgmyQAgR8Yr4ZLmLZas4d7HXng1SYq
- B1WWUooN0+f8hCiepZ3ijkVhuuhABrJQ0dt2ra7+HHwv7cybkmc22ALjkewq4OGLm9PynkU66DD
- V/Es4z+uqPhELq5inRzyrA9RCZ7VgtRzHtuyM15f9su8MfTOO1K/yBkc5jH69+ET9W71NeoG69H
- gaeG+HmlTrAYfxeKupQ==
-X-Proofpoint-GUID: Kwy7peUFLNixGJjQ1MkK9u9HHjXNkCXI
-X-Proofpoint-ORIG-GUID: XNY5LW5xptq8orItsOU9ihfmc4GQOj5K
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDA4NyBTYWx0ZWRfX7H2j3JoBJ7jO
- mEUfk2fsKrIjURjWqHtR50hbANSgW1z02//abwSKTvPJV7tKdL5gHjcSa+yLuTIg/sPjLqZ08K8
- NFM0w9vIxZ7V4SyEiLf/Ywe2N9BiD3Y=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-26_03,2026-06-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1011 impostorscore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606260087
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000143:EE_|PH7PR12MB8825:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7fdf201-c368-4120-772e-08ded37201b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|376014|7416014|1800799024|36860700016|13003099007|921020|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	usc57Ck9yebvydI8b7/MWLmj80MZNRa3b+415R8f4MLXxQ/jOpryE0WxTpw91pyO5bIEh7ZYLG9UiG4TjomlFmbQ+v6lbr+UFk1osnaXSvJ45KVs1P/yE+kvTEQb9UhPr065gI2eyn9EUSHN6N2Q3s9XttWQhfN4fJhqmX2wclJC4t6De4UTuaa0ttJWysR/YqWRsdigq2i7I+aq9WeDBYyHHg0poKOQ1MNXnn6fMHSLffKt2J5x59XODZ2v9xAdiTSFeOf1JX+vqy1hM+LmQGjuKH7XKbRHaNrj758a9Nxr5kbCWr+gWWFeGXSYypzYnTjB8vvRMRYSKlB4dOOa75avQD8nDjJmLD20/KevczhrGyuG4UbVWmpRjnLTsOt9AcaVCZgd4Ru6y9i0qiI+aL54osTdSCkbZbuQhdgrS+e1fOUronPni1LDVhUSAF7BG0mMBD3regDNsdp51Mu2nyyCgrc9dmOGIHtLLAR5nqM8Z2DI/BB+RAsQ4wGj6SESs//CS/g9TrGZ/u5XBVpHDJjScnqI5y3p8ulAeOuVt2e5E2oYV8kXER0qkze7O4r3a3Ck+6Wg7YKRppb00xgmDa9PfGKo8Skn7Vlv+LqBcroQu3CDXA89nDIwIX0+mL4X/ECUc/K7dsYXHPqmx3gmWMHUI81zOXeqUjtWoCMpNLqaZYpaA02s/Al/9tv58PQ7HizxnOAeNGvCpDWqUbuj2yvrcYL1wKfrIOmBkOMXhfItcnSJEi3GIo4Rza7NeG3L
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(376014)(7416014)(1800799024)(36860700016)(13003099007)(921020)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	/cY6QOWwkY7/0xXVvnyJcvWTzcgm7juYzXrHROXzaMbKVULZJrIOHytsOxSbKrqM+6Z1DZ4m6GmkjQFe0nXFyaPGrHIq1K2EwoewQZNlIqG1yK6OIygyxfJ8dnKeHMM40fG/PByX4i8r6uFiFb9o+o/XlkLOo5bpUzIM7mjkJtZ1Q8Hvm6svwGpka0B1AEhSmD0uvQJEBe+tRFqGVt7ZMaMeBFeoFmhjWPAtf+6CcvKeyT7ITTNBZLvwMB53Ek/9UaYQb/iKbEhCK/BsYM5GIAX4KR6gg2f5n7dyVSN7yZctcPsSraVTV8l085jQ1D4QNxoQt7YkCbsD8TMEc8WBK1UatgiG21rT4yDCgsa71ERQP1K+KngzWIW3AILGFEHklyOudW9LD7/pUzvLygGv8Z2Nznn7eav6cz5Gn4izTh/kUL1y3REOynEyjR7v+bWw
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 10:59:34.1172
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7fdf201-c368-4120-772e-08ded37201b7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000143.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8825
 
-Use the generic infrastructure to check for and handle pending work
-before transitioning into guest mode, replacing the open-coded
-need_resched() and cond_resched() checks.
+Introduction
+============
+On newer generation of AMD processor, the IOMMU AVIC/x2AVIC feature can be
+enabled with the new Guest APIC Physical Processor Interrupt (GAPPI) mode,
+which is an alternative mode for handling AVIC guest interrupts to
+non-running vcpus (i.e. IRTE[IsRun]=0).
 
-This picks up handling for TIF_NOTIFY_RESUME, which was previously
-ignored, meaning task work will now be correctly handled on every
-guest re-entry.
+With GAPPI enabled, the IOMMU delivers the posted interrupt to the physical
+CPU described by the IRTE destination fields, with the wake up vector in
+ga_tag.
 
-Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
----
- arch/powerpc/kvm/Kconfig     |  1 +
- arch/powerpc/kvm/book3s_hv.c | 58 +++++++++++++++++++++++++++++++-----
- 2 files changed, 52 insertions(+), 7 deletions(-)
+Please see more detail about GAPPI in section 2.2.5.4 Guest APIC Physical
+Processor Interrupt of the AMD I/O Virtualization Technology (IOMMU)
+Specification [1]. 
 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index 9a0d1c1aca6c..36aec58c5f22 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -81,6 +81,7 @@ config KVM_BOOK3S_64_HV
- 	depends on KVM_BOOK3S_64 && PPC_POWERNV
- 	select KVM_BOOK3S_HV_POSSIBLE
- 	select KVM_BOOK3S_HV_PMU
-+	select VIRT_XFER_TO_GUEST_WORK
- 	select CMA
- 	help
- 	  Support running unmodified book3s_64 guest kernels in
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..b012512342e6 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3850,10 +3850,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 	 * and return without going into the guest(s).
- 	 * If the mmu_ready flag has been cleared, don't go into the
- 	 * guest because that means a HPT resize operation is in progress.
-+	 *
-+	 * xfer_to_guest_mode_work_pending() is the IRQs-disabled recheck for
-+	 * pending guest-mode work (reschedule, signals, and TIF_NOTIFY_RESUME
-+	 * task_work such as the deferred CFS throttle). It is the pre-POWER9
-+	 * analog of the final gate in kvmhv_run_single_vcpu(), and a superset
-+	 * of the old need_resched() check: it catches work that raced in after
-+	 * the drain in kvmppc_run_vcpu(), so a CPU-bound vCPU is throttled here
-+	 * instead of running one more guest dispatch past its quota. IRQs are
-+	 * hard-disabled just above, so the non-__ variant (which asserts that)
-+	 * is the correct one.
- 	 */
- 	local_irq_disable();
- 	hard_irq_disable();
--	if (lazy_irq_pending() || need_resched() ||
-+	if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
- 	    recheck_signals_and_mmu(&core_info)) {
- 		local_irq_enable();
- 		vc->vcore_state = VCORE_INACTIVE;
-@@ -4824,10 +4834,24 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
- 		vc->runner = vcpu;
- 		if (n_ceded == vc->n_runnable) {
- 			kvmppc_vcore_blocked(vc);
--		} else if (need_resched()) {
-+		} else if (__xfer_to_guest_mode_work_pending()) {
- 			kvmppc_vcore_preempt(vc);
--			/* Let something else run */
--			cond_resched_lock(&vc->lock);
-+			/*
-+			 * Let something else run, and run pending guest-mode
-+			 * work (reschedule, and TIF_NOTIFY_RESUME task_work such
-+			 * as the deferred CFS throttle) before we would re-enter
-+			 * the guest, so a CPU-bound vCPU is actually throttled
-+			 * here instead of running past its quota. This is a
-+			 * superset of the old need_resched() check. Use the raw
-+			 * helper, not the kvm_ wrapper: signals (KVM_EXIT_INTR
-+			 * and the signal_exits stat) are accounted by this path's
-+			 * existing handling below, so going through the wrapper
-+			 * here would double-count them. The helper may schedule(),
-+			 * so the vcore lock is dropped around it.
-+			 */
-+			spin_unlock(&vc->lock);
-+			xfer_to_guest_mode_handle_work();
-+			spin_lock(&vc->lock);
- 			if (vc->vcore_state == VCORE_PREEMPT)
- 				kvmppc_vcore_end_preempt(vc);
- 		} else {
-@@ -4899,8 +4923,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 		}
- 	}
- 
--	if (need_resched())
--		cond_resched();
-+	/*
-+	 * Run pending work before (re-)entering the guest, most importantly
-+	 * task_work queued via TWA_RESUME (e.g. the deferred CFS bandwidth
-+	 * throttle, which only sets TIF_NOTIFY_RESUME). Without this a CPU-bound
-+	 * vCPU that keeps returning RESUME_GUEST never reaches an exit-to-user
-+	 * point, so the throttle is never enforced and the task runs far beyond
-+	 * its quota. The helper also handles reschedule and signals, replacing
-+	 * the cond_resched() that was here. It may schedule(), so it runs before
-+	 * preemption and IRQs are disabled, with no vcore/KVM locks held. This
-+	 * is the per-reentry site shared by the bare-metal and pseries (nested)
-+	 * paths, so both are covered.
-+	 */
-+	r = kvm_xfer_to_guest_mode_handle_work(vcpu);
-+	if (r)	/* -EINTR: signal pending, exit to userspace (KVM_EXIT_INTR) */
-+		return r;
- 
- 	kvmppc_update_vpas(vcpu);
- 
-@@ -4916,7 +4953,14 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	if (signal_pending(current))
- 		goto sigpend;
--	if (need_resched() || !kvm->arch.mmu_ready)
-+	/*
-+	 * Re-check for pending guest-mode work with IRQs disabled, to catch
-+	 * anything (e.g. a TIF_NOTIFY_RESUME task_work such as the deferred CFS
-+	 * throttle) that raced in after the check above. Bail back to the outer
-+	 * loop, which re-enters here and runs the work. This is a superset of
-+	 * the previous need_resched() check.
-+	 */
-+	if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
- 		goto out;
- 
- 	vcpu->cpu = pcpu;
+
+Implementation Details
+======================
+GAPPI reuses the posted-interrupt wakeup path introduced for Intel VMX: the
+IOMMU sets ga_tag to POSTED_INTR_WAKEUP_VECTOR and SVM registers the handler
+with kvm_set_posted_intr_wakeup_handler().
+
+SVM maintains a per-CPU list of vCPUs that are scheduled out.
+When a CPU receives a GAPPI interrupt from the IOMMU, the handler
+walks that list, finds vCPUs with a pending IRR bit, and wakes them.
+
+The IRTE destination is chosen as the last host CPU where the vCPU ran, to
+reduce unnecessary VMEXITs from GAPPI deliveries.
+
+The first patch refactors the SVM/IOMMU interface: apicid (formerly cpu)
+denotes the running vCPU's host APIC ID or, when scheduled out, the APIC ID
+of the pCPU hosting the vCPU on its GAPPI wakeup list. Explicit running and
+posted-interrupt flags replace the old ga_log_intr boolean, since apicid no
+longer implies vCPU state on its own.
+
+
+Advantages
+==========
+With GALOG, IOMMU can only generate a single interrupt using the MMIO offset
+0x180h (XT IOMMU GA Log Interrupt Control Register) and appends the vCPU
+information to the GALOG buffer. hypervisor has to scan this list in order to
+wakeup the vCPUs which can introduce significant latency and even cause buffer
+overflow under high interrupt rate.
+
+GAPPI resolves this problem by distributing the posted interrupt across
+multiple CPUs. 
+
+[1] https://docs.amd.com/v/u/en-US/48882_3.11_IOMMU_PUB
+
+Sairaj Kodilkar (5):
+  iommu/amd: kvm/svm: Improve API between SVM and AMD IOMMU
+  iommu/amd: Configure IRTE to use the GAPPI for posted interrupts
+  kvm/svm: Introduce per-CPU lock and wakeup queue
+  kvm/svm: Update the per-CPU wakeup-list during vCPU load and unload
+  iommu/amd: Provide kernel command line option to enable GAPPI
+
+ arch/x86/include/asm/irq_remapping.h |   4 +-
+ arch/x86/kvm/svm/avic.c              | 136 +++++++++++++++++++++++----
+ arch/x86/kvm/svm/svm.c               |   2 +
+ arch/x86/kvm/svm/svm.h               |   5 +
+ drivers/iommu/amd/amd_iommu.h        |   1 +
+ drivers/iommu/amd/amd_iommu_types.h  |   6 +-
+ drivers/iommu/amd/init.c             |  23 ++++-
+ drivers/iommu/amd/iommu.c            |  41 +++++---
+ include/linux/amd-iommu.h            |  15 ++-
+ 9 files changed, 192 insertions(+), 41 deletions(-)
+
+
+base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
 -- 
-2.54.0
+2.34.1
 
