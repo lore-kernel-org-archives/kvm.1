@@ -1,83 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9173E63BF;
-	Fri, 26 Jun 2026 08:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C846178C9C
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 08:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782462112; cv=none; b=hx9Al9a9jJx9QiPZ/OokzRmW4sKxt699leR1AVMzrJs41Gr0GGXnpVuKwVnOEJNsQnDriS1du5Jg8HVXCICyL/dVCpAS+/X92TJnFh8qAE9mqE2acW8zy9mVpHbVSDUr6UWGfwkJ/Ifkb7244aM113OnPWJH4sAGPGDyRKxVCfE=
+	t=1782462241; cv=none; b=FHXh2/zwqN0OK6HF53HRTryl4IWWEiaW+PUDpWeETubYvBP/fTRQvayKUG25weqZjaKG6tqL1y4EOvW5zTR7/oT//wOIzqARSlIOBRP18KGzt83kM0APOW+YOh2jP1mfDaNMIVpuP4+X+LrsYEa+eMdk2UvUhgZp3lISb4VRW70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782462112; c=relaxed/simple;
-	bh=7mBAUboXbBsIAvrg5DJH3kWL4Y1U+Y0QNvknv34WZ7E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MD7hLPxnra/7K1o6c5VRKg9iyP22Uma+aCM/lM+iirkLAJip5nQCepjbJAHJK8iBGIFcl8eyPBv3U5QY2IuEBHeY8LCdCuekxeRl8Hgpk4lvoosndt0cTKQ0bH0e4NgKRimH31ZtssIMICBy9bCwwX3BP1Qu+OrKD6rxo9EdeeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKaoLeCV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782462241; c=relaxed/simple;
+	bh=aOcN8mnYJvpUbDHzKnJv3eWv6lFjVcVGulc7fYXjqSU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iS43GQWu8czD39+ou1eqbvakf523MNQDf4j1FRWrFD8AOoPwl3jvO3BSIO3P25sn3FJngXdbtboQni5EJYu4313zPmQjOPoseWKDLyiy72W2Y9LDH9qryBD53EvtuSnVMbaIHARn4TTPFSA3ODNxtFmjWN5M+2qWoNTMYXv8a2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=VWJMkz79; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKaoLeCV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AD31F00A3D;
-	Fri, 26 Jun 2026 08:21:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782462111;
-	bh=72yOiaA8TWoMcBgxP6mWwE+LHov7bJ9rKxn3P+RprOc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=DKaoLeCVBLfxGRUCDD63mz3Yv7wl1NmkyC/oWe1VXxnYgbNOgx8OLIb97BrF9ahWi
-	 9/keAucRqysUZAM8A/5IiD86BP+oNc90Y7vaAxe3E8/8cQ0NmxW9/zls0xbx8r6QBW
-	 tHZnjpYjiJyQN4U0wFT/X1gcBAXyemKYO4HqQsMjy54TLKkdesvd33LtZi6FN5GxU+
-	 vhJEpEXa0WW8Xr5G0nVV3hjoEOnOHOhpuPuem40C3KmCu/gOqyOqma4VMQnFra+8t8
-	 HFwZ628Oz/edI1HY69uzGDt9l7vmmnqeBQUy1kcz8Dt4Wr7K5k+utU0I+nvK7y4e5x
-	 w/sKB7Uq98upQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690A39389E8;
-	Fri, 26 Jun 2026 08:21:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="VWJMkz79"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-13986d61b4eso2094291c88.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 01:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1782462239; x=1783067039; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ccpgKTbVU35FcpL6ebiWIfE77fSWC1R9tsT9g07kXw=;
+        b=VWJMkz79SShA1Q4sdMR6MqOavgdEzgbv6l4fEIucTBdbEgfnc6xeVow8jZ3JQQr8o3
+         +ZhxTCtO2Hm0a3HH2ADYqXSJM1XH+hX2AkP17ILP2rh4J7yQlx1toSjGKPpyXaAFY39y
+         k5hh9QjI1dxD2fu36zodHoV/QXpIqx/egg9KVDa6I0L9pzlCY0isvoCB0hUCYmWcYTv4
+         cUAFuFgozgifO/kIa0QCAexYuXETjr39Z148yqIGgc4TO4LmwqfCULW4LCCKc4UUCmJA
+         ffQrrDBNGTjYHCbTdUWBrwXoGuD7zC41ytubL9gP2+FMzd7hiaWqJFSJKDeuE0Bndvri
+         tXDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782462239; x=1783067039;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4ccpgKTbVU35FcpL6ebiWIfE77fSWC1R9tsT9g07kXw=;
+        b=jpCM3/Wh+sGoFY8TsPeVG6Qh1s9usEFzIRTLrdbnnyLd7zVcClj5Z2KazhsOs0fLRk
+         0e4TkhiZE2aT2ncWwsf8/FzG+GPXgwg0Kt7g0hWXkTn7mqzoqI+XyyZsFAFv1iTdbbLv
+         H2yffW9hC4BxArMxymTtx9ZaX7H61Sn81SPdL1EwpPLmII5JtZ8nqKMuOBK9vEshLaiU
+         2S05lQvIFHgL7o87/+VTBZ+osPOsHJq7DjzN/XIxbW5kSZfcm5eeDd6LkhrGjjrpE07A
+         6ydAXbU9HR5VXukbvCIg8odmUB/LxMuHdCkXPUW6MMDuPV+cSXq2DPzG7+GMPmnAZO4G
+         eTmg==
+X-Forwarded-Encrypted: i=1; AFNElJ/8d+Nfq2HFTirwDgg1YPxPtJ3LGOwZaP7CzoefBZOJ+BUhHcKbuzX/FI5TJfei/BfdRmA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywad7UKzQqvFzQ9TCYH0q2mObTT1OJDncvLSFMn6IEIzPsdOruF
+	6C4SNQ4iq4ZnvKcHY/7kMzN6Pz/POBO/o26qG7G3Y477ZBo6mwdDtiG/enTgHgaaVyk=
+X-Gm-Gg: AfdE7cmgN1whUhp6DT3+aeYMeoM+ZX3Oqm329822KE2b1GLduiSpphWKvxS6rMKzbAU
+	AYQA/yBvOf8gCGfDeSfNapde0UITX4SqPa8vfSTQE7Qm38aeAaPSbwSVt1XP+BzlRRNW+aF6jOq
+	lT2E0xr0Zf65tTEr4KX3skWtx+fMVsW7wv+dFst5gAuDLgFXGqniwvtqrFMaLiWF9P8QU0bZKB1
+	dfgcxP4uMhKGozZKQ7K2PYaIU8iRgsBAMUCXH56B/KBDJcVGuZWu30DNAICx2MI7RATUlcWOJqN
+	f/56moI5UmsT9faYXhnSueyQNnHR9JijRSJjVSKcexvK/5AN3LYZLzc5MvJQOVmmDQ6yii6GIDs
+	iXAUxGvC87EoBujKLd9F3UumZZoEmP7O3ZNME3gCo/JnjTKH/oGkE0eOdnSDgqXSsn5UWxJSpEA
+	DwCmut/kNNGHy9QAKS3Fj65ZTHvZuHgG67WDY3Ol0CS6w=
+X-Received: by 2002:a05:7022:4597:b0:136:c565:e862 with SMTP id a92af1059eb24-139dbb529f0mr4508204c88.26.1782462238802;
+        Fri, 26 Jun 2026 01:23:58 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d8f318e7sm15557199c88.3.2026.06.26.01.23.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 01:23:58 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH v2 0/2] KVM: RISC-V: Add CPU PM notifier for non-retention
+ idle states
+Date: Fri, 26 Jun 2026 01:23:20 -0700
+Message-Id: <20260626-kvm-cpu-pm-v2-0-478e5ef8dc9b@sifive.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] RISC-V: KVM: Fix NULL pointer dereference in AIA IMSIC
- functions
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <178246209795.3816447.969073388950467321.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jun 2026 08:21:37 +0000
-References: <20260526031517.1166025-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260526031517.1166025-1-xujiakai2025@iscas.ac.cn>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: linux-riscv@lists.infradead.org, kvm-riscv@lists.infradead.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, aou@eecs.berkeley.edu,
- alex@ghiti.fr, anup@brainfault.org, atish.patra@linux.dev,
- liujingqi@lanxincomputing.com, palmer@dabbelt.com, pjw@kernel.org,
- jiakaiPeanut@gmail.com
+X-B4-Tracking: v=1; b=H4sIAPg2PmoC/22Nyw6CMBBFf4XM2jFtQxFd+R+GRS1TGQ2PtNBoC
+ P9ui1uXJzn33BUCeaYAl2IFT5EDj0MCdSjAdmZ4EHKbGJRQlahUia/Yo50WnHo8l7KUhmyrnYE
+ 0mDw5fu+xW/PjsNyfZOdcyEbHYR79Z3+LMnt/w1GiRK1EXZNUJ6P1NbDjSEc79tBs2/YFdeOEK
+ bcAAAA=
+X-Change-ID: 20260624-kvm-cpu-pm-94141aecd5fa
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>, 
+ Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+ Nutty Liu <nutty.liu@hotmail.com>, Jinyu Tang <tjytimi@163.com>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782462237; l=2099;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=aOcN8mnYJvpUbDHzKnJv3eWv6lFjVcVGulc7fYXjqSU=;
+ b=giWvwAPg7EAWMUg2prEKaAltGBPuyswuvK1/Q0rWzme2xOkcN1QD/CpdhHYbwsyAYOxyuNWiG
+ DcsF+dE2RumAj+v9AFM++BmT1nwPZnp8MWfxtu77AhMM5SrE3OOXSOs
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-Hello:
+This series adds CPU_PM notifier support to save and restore hypervisor
+CSR state when CPUs enter non-retention idle states where the CPU domain
+is powered off.
+Patch 1 fixes a VCPU cache invalidation bug that could cause incorrect
+CSR restoration after power state transitions.
 
-This patch was applied to riscv/linux.git (fixes)
-by Anup Patel <anup@brainfault.org>:
+Patch 2 implements the CPU_PM notifier to handle CSR save/restore during
+CPU idle, completing KVM's power management coverage alongside existing
+CPU hotplug and system suspend mechanisms.
 
-On Tue, 26 May 2026 03:15:17 +0000 you wrote:
-> Fuzzer reported a NULL pointer dereference in
-> kvm_riscv_vcpu_aia_imsic_put() when a VCPU's imsic_state was NULL while
-> kvm_riscv_aia_initialized() returned true.
-> 
-> The global initialized flag is set per-VM in aia_init(), but imsic_state
-> is allocated per-VCPU in kvm_riscv_vcpu_aia_imsic_init(). If a VCPU is
-> created after aia_init() has already run, its imsic_state remains NULL
-> while the global flag is true. When this VCPU is preempted, kvm_sched_out()
-> calls kvm_arch_vcpu_put() -> kvm_riscv_vcpu_aia_put() ->
-> kvm_riscv_vcpu_aia_imsic_put() which dereferences NULL.
-> 
-> [...]
+---
+Changes in v2:
+- Add patch 1 force restore VCPU after power state transitions (sashiko)
+- Added CPU_PM_ENTER_FAILED event handling (sashiko)
+- Optimized HGEIE save/restore with saved_value field (sashiko)
+- Fixed HIE CSR restoration in lightweight idle resume path (sashiko)
+- Link to v1: https://patch.msgid.link/20260624-kvm-cpu-pm-v1-1-52088e127a55@sifive.com
 
-Here is the summary with links:
-  - RISC-V: KVM: Fix NULL pointer dereference in AIA IMSIC functions
-    https://git.kernel.org/riscv/c/76ae7c7ee004
+---
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+To: Anup Patel <anup@brainfault.org>
+To: Atish Patra <atish.patra@linux.dev>
+To: Paul Walmsley <pjw@kernel.org>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+To: Albert Ou <aou@eecs.berkeley.edu>
+To: Alexandre Ghiti <alex@ghiti.fr>
+To: Radim Krčmář <radim.krcmar@oss.qualcomm.com>
+To: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Nutty Liu <nutty.liu@hotmail.com>
+To: Jinyu Tang <tjytimi@163.com>
+Cc: greentime.hu@sifive.com
+Cc: vincent.chen@sifive.com
+Cc: zong.li@sifive.com
+Cc: kvm@vger.kernel.org
+Cc: kvm-riscv@lists.infradead.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
 
+---
+Yong-Xuan Wang (2):
+      KVM: RISC-V: Clear former VCPU cache on virtualization disable
+      KVM: RISC-V: Add CPU PM notifier for non-retention idle states
+
+ arch/riscv/include/asm/kvm_aia.h  |  15 +++-
+ arch/riscv/include/asm/kvm_host.h |   2 +
+ arch/riscv/kvm/aia.c              | 144 +++++++++++++++++++++-----------------
+ arch/riscv/kvm/main.c             | 100 +++++++++++++++++++++-----
+ arch/riscv/kvm/vcpu.c             |  11 +++
+ 5 files changed, 189 insertions(+), 83 deletions(-)
+---
+base-commit: 52738352a6f29279e15285fcb7b50241ef867e27
+change-id: 20260624-kvm-cpu-pm-94141aecd5fa
 
