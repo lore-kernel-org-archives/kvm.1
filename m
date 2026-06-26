@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9473A7F66;
-	Fri, 26 Jun 2026 17:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA103A7F6E;
+	Fri, 26 Jun 2026 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782496503; cv=none; b=WHFoUYU6IaKcVWxBEV/Ctyd3Ybc4AjSONKVieFX1cAfbeKdyHIbyMqgaDV/EsT7L3lG83xTKYsmiY7BlvGMa822nADMCypWdZqcKUVEq76amZHxwcv0km1ZkFJxjXNtFQDZO1YgDZKL/W+cF7RQkz7PHQYSjFtuMlN+37Ds4iS8=
+	t=1782496503; cv=none; b=OLD7akWfC8M0iXMv4SuKlss2lAHeT6EERaGmosl1R77hfBfFlAIOEPyJO7I/Yq/39JDL+/vFG3SimzryrbS2tM9tBuabnp1d+B/Q1CuQ67G3LeWKAd5ukZAvt2Nr1g5yF/a8+t+Pxi3PIJxqIUpuDpeI2K3fp1E43B5YMVxQNN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782496503; c=relaxed/simple;
-	bh=LuJz7qmlTF1YJ2xgiYxnz5Dv/hWesqiDlDVM2K3h6HM=;
+	bh=Jg2TlGtVz0m+rZvTPiVKfKC14M/U4mgFBygVo76eHog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvAJ22WqpFaw6/g73z2LYxMjOcHkJPPaIH6IwFuqdeahH+lNbzWF1wnYXkqQItVpahAqUotUE2pQQcQynZw4IKo/0dDaKZEFIAvltf3RGo5dfxiZseDWeqPUlsy5iHP0puNTKB+BOealbgQpz+ayliyA3DJT9rr4CtqUAW81mAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXsICJXM; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=efvo5g4HLhzuaxLlYw/6Oz8UGZx82oUobkmhLkwsrBDjzwoBecqzLxY80GPk1rGJbaEXhnND5nSuYgJRSGZ14XAiFwneikX8yKDoeBXd0HgoysElHauVcPJQSReMsEdzHg3ie9lS/DbKcmaGN+i3OJNAwMQwCb2kjcR6Qu9NqGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nln8U2kM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXsICJXM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744951F00A3A;
-	Fri, 26 Jun 2026 17:54:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nln8U2kM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED01F00A3F;
+	Fri, 26 Jun 2026 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782496494;
-	bh=kCQGmQCiPt8POPSO8VVlYjKlurk3/QBY1u2pmsWTY7M=;
+	s=k20260515; t=1782496496;
+	bh=4VIulwJUfa0xQa9hP/IddMMtjm75/S8X5O+aEMj+3zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EXsICJXMMFRJOyh2ft348yKY5OlcxsssI2rseOwWYc1CCL2kNtttih/e8/uFl3U9h
-	 zk/xfD/T/noozZZFD6CjLmTJWI7yln1etnM70i8E4DR/bDWscPUkVGXPVJUGGpD6uH
-	 WpGLKC4pZKkvDJa1mvGiX9u/6vZZXhaUPOcQXHLLvdJ95RKRrvEwXJlKyiK4L5x/T2
-	 N/COqrGnXjGsBwaaJ88d266TBEasN3x6pCetQKNe0VOKkc8yIblsj/kHVnJiMRenls
-	 1vI5dkddOTpSHrjPtFmMAWF3aICPJ7ESlSokR1YTlu9+2MZcnqapLYHr8eIK/L05xD
-	 xn4lbTGdoc9RA==
+	b=Nln8U2kMFfugG2XE3t1ypfc8V3inpQU5HK1aJlDDcjWJ4XNNaneZFwU/Z5Zm03/a8
+	 NJhK9QX5HP2q8cXUnH8ccI0fNWiW8Xdd+n5Im7GcG73PKe6VMF6Xt3mnauJhowv4l/
+	 iRAImJQFFxp+icVX3/OO9fA2VRc74lYIuxV6DZFnOHQsKAHTJho5aEmZeD5hMqKwbU
+	 zKpSh3ZvcOWis51xL6waTLH8wiNnzpQMSPiwTavBJvfzbYL7Uxx2zhg0G0gud3GOXt
+	 xiuU3NYOTaAjdvaLytD8rAmE9SXjrCnLeRvGF1o959RQ1zxLmq9Ri2zKXEOX9I99j7
+	 KEAWrETTU2nUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
@@ -42,12 +42,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Filippo Sironi <sironi@amazon.de>,
 	Ivan Orlov <iorlov@amazon.co.uk>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 6.12.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Fri, 26 Jun 2026 13:54:25 -0400
-Message-ID: <stable-reply-item007-hugepage-612-20260626@kernel.org>
+Subject: Re: [PATCH 6.6.y] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
+Date: Fri, 26 Jun 2026 13:54:26 -0400
+Message-ID: <stable-reply-item007-hugepage-66-20260626@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626112405.1777340-2-pbonzini@redhat.com>
-References: <20260626112405.1777340-2-pbonzini@redhat.com>
+In-Reply-To: <20260626112425.1777712-2-pbonzini@redhat.com>
+References: <20260626112425.1777712-2-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,7 +58,7 @@ Content-Transfer-Encoding: 8bit
 
 > KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
 
-Queued for 6.12, thanks.
+Queued for 6.6, thanks.
 
 -- 
 Thanks,
