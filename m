@@ -1,121 +1,126 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33D037F737
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 23:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5970E328610
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 23:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782515687; cv=none; b=diz/Zwe7371CCALZNrZrDvSM7b8EgxdaXo4tsc38sQ5DgL/zUEsfwhWcY0xDmBw7ii79MEDv9YyDRBTwMMnrANe0Q+Cb7ii1I8jbbwgbGqSs38bySR7w6x9HOuMJPW1TWP0LWmyYM34dHBCGyD8kI6VRDEwW1GfoLjURpJk2aIo=
+	t=1782516576; cv=none; b=EnjhE48bFlFeEAIc3thN6UFIa3Xggn6DILei0LFoqTwxDXEbxOcH3LTnwaSMRX6MOabA2qHGmwkumOVz4As1HrYQd4eE2HRuSSwasKGOdsqGFjbOuscmOA7P1nbN/MEiXkO87X1hAk/h7rXUZDfxeOgjo/FMtjM7o6lwQXPiPUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782515687; c=relaxed/simple;
-	bh=HBkgRA6uVgfyEUqrtY2okf9+4WoA/QhXCaV1revLFpk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k61i6WKkA5smZ+ON9WK7+QBLA9099mwpfrlFkzy861gEVsCvsesmBrBrOcSL598xVNUiD+aiATU9FQTJoaZ9Jq6cgjFZjCHlktNaNn5uqEdMytlaYZgVgvgWKFWSIOiPKDFNf3sQl+aA3AT7b1cFQC50nqRrC/X4fHwHTSJ5C9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ia1Uz1nA; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782516576; c=relaxed/simple;
+	bh=wXY5j2xpJIzbHymWJSI3QRQOhXO/xF0oKMZKAXWvHu0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=M0HkRd7z41YJkxg9+viDViXgc7m7dgatFlm8iPJ6qnZHYlVpksg1hdwweFaj+Z+EJmAZPfuNjbV+8Ir+cGj6az7u0NDhWu36SuNS3Or4J30P8R2BIBIKoF4EKwDqeFzoYsbZE/SzqyylZpcPdUIyxaXPK+txQmER+u3CrsxqVwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BBmabsJP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ia1Uz1nA"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37d4f23eb37so2024600a91.0
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 16:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782515668; x=1783120468; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mwe4uem1XSlnKjJx9IUUikqz2qOQzYyIv13OTVMORgo=;
-        b=ia1Uz1nATbqt8fvHKlTNZ238HoMJyn2nMBPY5FeHb1oUTlvncIn3vsNK3VaXKw97B3
-         bXS80Hk+v/tosyXZrd8Icia6gOUSbXissq6mBTEV520QG0R61nP82HI9oLvw9jV9yOPJ
-         BVR3hqJTv7PCj0NgR5Mb/TnhGeaQOtkYS3ntEtWX8/uB56VLH4DyRAiK3a6oh+x4nzOz
-         q7UVSQvD5CkMLesaIzQFyqGEHMZpScyhMmEuwbnz0GHG2rsQobPPVdViYWi+Q9LgcFQ9
-         iFt4Vt0L/UWP870D8v4LKFRfGxzb7WhEZXQy9OakCPgyU/mnnP8H69JE+re2288VrQ3g
-         wrVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782515668; x=1783120468;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mwe4uem1XSlnKjJx9IUUikqz2qOQzYyIv13OTVMORgo=;
-        b=gCpZnErmTznudOioSdEOytoEOqJh4xAbgxcxwXAx52/gtCMuDoopbcG88+mGDxWF1r
-         0v6V5fDvAd4x3+K8Ip3CzppvoDw6a1XC82OdTqzH8+6u+geesGpV08iLRL6cILaEpSEn
-         tHa9+Z7KXlkMKywwMo3GEdPOeyd4qSO3y9MjMi/oTU9ncEGRNixxf57XP2DR32jmE0Nv
-         ilVt8OuQudZOfRpXPLGoY79XP+3E1HYMa4fOR2tvvnPKdkuDy1Xc5KYRjZiy5hB6OAJb
-         pt5dNSv8wiwubaQ3oRmf2XtJMupK7mSub8jO4XyY4LoiKe9VfEUcWutKo3iZbOIj3Gl1
-         /yjg==
-X-Gm-Message-State: AOJu0YxdRy18hJs4udz2gNtEiKRo3pWxIOM42cObyjqogZNS3qqXALRG
-	pgSQXzfRskpX3+BV+IRGDrxBbT1ws9dnU4Nk1vOldgnbCWWvKZo5A918N6Uchs4sofHMnq9V8dQ
-	H85f9xQ==
-X-Received: from pjbga17.prod.google.com ([2002:a17:90b:391:b0:36b:bc13:f5a6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:52:b0:37f:9ce3:ca95
- with SMTP id 98e67ed59e1d1-37f9ce3cb1amr1839395a91.30.1782515668073; Fri, 26
- Jun 2026 16:14:28 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 16:14:15 -0700
-In-Reply-To: <20260626231416.3943216-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BBmabsJP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99A11F000E9;
+	Fri, 26 Jun 2026 23:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782516575;
+	bh=SkQlDtNQOtI4xf4TqPW3RQTP3kR9MPkiwV9/tjE82TM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BBmabsJP/FeGkzOhArhrT/k8wTFwVoSLp7nQ7OH6FrAawJUhWbc7kLixr3jgzJvnB
+	 wx6CXuIHrK2llRJhq50FOmXfQlQnu/HhsPedMBE42lsuBZRdloLKBnDsl3DLf/US0I
+	 5ev8agqephjp7sOgIdkAonN5b3lamqVaaCxAnqT37w10ox1jSL9oJXnwIgr1xtItJb
+	 bbt0Qx3ZRfY6wHi9iircgdiI0URKczKwbaKJRDRgsmatmJ0ljjkjIryAbdMYFtaUbz
+	 ClPSTYN5wFRo0uH3Nurpzfm7vverMR4rcFjGTJS48mIVBCahokH6d+1DXBE/VXKjAq
+	 zjEIFif0Lx/Yw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/9] KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into
+ "front" and "back" halves
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260626231416.3943216-7-seanjc@google.com>
+References: <20260626231416.3943216-1-seanjc@google.com>
+ <20260626231416.3943216-7-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 26 Jun 2026 23:29:34 +0000
+Message-Id: <20260626232934.D99A11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260626231416.3943216-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626231416.3943216-9-seanjc@google.com>
-Subject: [PATCH v2 8/9] KVM: x86: Guard .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE=y
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, "=?UTF-8?q?J=C3=B6rg=20R=C3=B6del?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Wrap the .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE so that
-non-SEV code doesn't try to wire up a callback without doing the necessary
-enabling.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] Evaluating `kvm_memslot_flush_zap_all(kvm)` twice in `kvm_arch=
+_flush_shadow_memslot()` creates a TOCTOU race window that allows concurren=
+t quirk modification to skip the back-half zap, leading to a Use-After-Free=
+ of host memory.
+--
 
-No functional change intended.
+commit daadba9269f9868eb59f2fe4d2fd49715b55bc67
+Author: Sean Christopherson <seanjc@google.com>
 
-Fixes: 3bb2531e20bf ("KVM: guest_memfd: Add hook for initializing memory")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm-x86-ops.h | 4 +++-
- arch/x86/include/asm/kvm_host.h    | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back" halves
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 69ca2a848ad6..fd08454c7553 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -146,12 +146,14 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL(get_untagged_addr)
- KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
--KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
-+#endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
- KVM_X86_OP_OPTIONAL(gmem_invalidate_range)
- KVM_X86_OP_OPTIONAL(gmem_free_folio)
- #endif
-+KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
- #endif
- 
- #undef KVM_X86_OP
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 776272dc6fdc..ee47a0d1feb9 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1903,7 +1903,9 @@ struct kvm_x86_ops {
- 
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
- 	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-+#endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	void (*gmem_invalidate_range)(struct kvm *kvm, struct kvm_gfn_range *range);
- 	void (*gmem_free_folio)(struct folio *folio);
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+This commit splits kvm_mmu_zap_all_fast() into a front half (running with
+mmu_lock held for write) and a back half (running outside of mmu_lock).
+This allows sharing the mmu_lock critical section when zapping in response
+to a memslot being deleted or moved.
 
+Cc: stable@vger.kernel.org # 6.12.x
+
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 223d80b12b9b6..5925db37543f3 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+
+[ ... ]
+
+> @@ -7578,14 +7591,19 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kv=
+m,
+>  	};
+>  	bool flush;
+> =20
+> +	write_lock(&kvm->mmu_lock);
+> +
+>  	if (kvm_memslot_flush_zap_all(kvm)) {
+> -		kvm_mmu_zap_all_fast(kvm);
+> +		__kvm_mmu_zap_all_fast_front_half(kvm);
+>  	} else {
+> -		write_lock(&kvm->mmu_lock);
+>  		flush =3D kvm_unmap_gfn_range(kvm, &range);
+>  		kvm_mmu_zap_memslot_pages_and_flush(kvm, slot, flush);
+> -		write_unlock(&kvm->mmu_lock);
+>  	}
+> +
+> +	write_unlock(&kvm->mmu_lock);
+> +
+> +	if (kvm_memslot_flush_zap_all(kvm))
+> +		__kvm_mmu_zap_all_fast_back_half(kvm);
+>  }
+
+[Severity: Critical]
+Can kvm_memslot_flush_zap_all() evaluate differently on the second check in
+kvm_arch_flush_shadow_memslot()?
+
+Since kvm_memslot_flush_zap_all() dynamically checks disabled_quirks, if a
+concurrent thread disables KVM_X86_QUIRK_SLOT_ZAP_ALL after the front half
+executes but before the back half check:
+
+Thread 1 in kvm_arch_flush_shadow_memslot():
+    if (kvm_memslot_flush_zap_all(kvm))
+        __kvm_mmu_zap_all_fast_front_half(kvm);
+       =20
+Thread 2:
+    KVM_ENABLE_CAP with KVM_CAP_DISABLE_QUIRKS
+    (disables KVM_X86_QUIRK_SLOT_ZAP_ALL)
+   =20
+Thread 1 resumes:
+    if (kvm_memslot_flush_zap_all(kvm))
+        // Evaluates to false, skips back half
+        __kvm_mmu_zap_all_fast_back_half(kvm);
+       =20
+Could this skip the back half zap and leave invalidated TDP MMU roots
+unzapped? If so, this could lead to a use-after-free because KVM's MMU
+notifiers will not find the mapping to zap it when the host frees the memor=
+y.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626231416.3943=
+216-1-seanjc@google.com?part=3D6
