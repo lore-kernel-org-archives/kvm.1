@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB693BB9F8;
-	Fri, 26 Jun 2026 08:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6373ABD95;
+	Fri, 26 Jun 2026 08:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782461110; cv=none; b=q2yQoKdrTWGlGVtThHyBCIgZkCztFCIrgPs1uKPVZlw5gGHG0BcbFXL7/HnHOpS5zlQ0Kh3D+o8glGZnwDxj9XaAQqJ/M+R2Ab4sVg8IJqHnTm618hsRYDSBugq8wyYPghhWCgW2jKKdKahIJgWIQkngi4cpDT/LqMdC495D/8M=
+	t=1782461503; cv=none; b=hE0IZ84ZgQvh4sFnfmmVT7m9flkU4S4oIyVdi3YD+AW2Ncqh0ofMfEJNTacLyyei0tKs7bP+VI6DCg7L7hZSCoSrOk6Xfq/1bQNECpWZWarv1LQ+cBPH2ajUYhvoKFDuB6G5JCVcC0SvcIvDf66+GeyMv3+unhXbMiZ0ShnYv24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782461110; c=relaxed/simple;
-	bh=L7aTMYE1X2Qr9oZ5P4BPqx+ISf3ALZC0HLvnwog4xz4=;
+	s=arc-20240116; t=1782461503; c=relaxed/simple;
+	bh=hVK/Pl71amA4YviYJruaHzOlUArxm+8k5y80L8zkszY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rISlKRR+jtla/YjGlRAnsOGvv8CFzTS2cSHZKASFJKANk/HQBWMgZmlbpDPsEzxQzfqcQLoDuh6nUy3PaPbkw/FT7tUkqhWUVzmRI++S5XiPucM7/Z2eakWXLAZXfyFddmQMsaSLfyOg+Z+BnkVSYFNVcWb0KnpevAz5ljsQTik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=PW9AkTGy; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=LESFhrBp9CazSXWj1Vk7Zl80pD8aCJONtJqq+N1q8bIr/Lnqh40JGArhDhCR2/ebV5wg5YITmP7eVG4+rzzN+3k3i4s1/h62u5Vl+HEtEDftcbhbPK2A6Oc49ubw4OJzmmPvSMDAasjnYKy48EWMMt6EQ36wGkpZxqRRZdknyQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qgdvJbk8; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="PW9AkTGy"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qgdvJbk8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CAeUsyedYIR9IfToxIda2dxWQPnvP4514OAg9vqw08Y=; b=PW9AkTGyhxC101ui32X7LJPycd
-	wn9jpHl92OYneaRNVniZl51IqQ+RVqvnFUSAvkLa0jxDjcaijlsO0Inz11FQpy23LKDNZUpKcdsK/
-	pi3cPidpkxEOViZfyN8+5ntTnMKZm2QGt2PhnFCaXsEeT0nJqoRHW+x/pqx+ZvFYnelJokSTAE9kR
-	VPR+twPf1SlFpdOu2O21FWU8uUY/FK+JD12R9/FYlSlS6HQMcpNGYVqj+7WbVcZBSUMqtM33aAsMb
-	GPsmo24fNbQnDLQonCV8tWd51JC5GdkxUB/5I8eCPuKv29P5zULqovgGDV8U1q7c/lL6rUxdnqxL1
-	+HgHM08g==;
+	bh=jIyhRvMWXkLro+diXzTg4UZFoFs+C0KvlMk7iw2Rp7I=; b=qgdvJbk8oahlFrylNOqVyERALa
+	YGBqg8YIomJYsu8AyWYSxu+Qxk1JyJTicy6bye9gOwyz9dkI1W6I7fHAwnmtVJVg67d1ckzA6odcP
+	iLalXNNhhWNyyY3ZsbLUQ1DOWUjCvI7YwwgMcfWrlJvcqBKLXwPNLGqkDHT0xk+9Vt9XZzxQW3kpD
+	ftKVpr/fAZMR/sEe6yvXMhz0VivsWzOh0mJCWmZiTXsXAv8W8bXdYSmUSlB1XCVjn4Z3lJA3x+C50
+	kG7daKCdNQGZLy+hfYT7LcT4nvOo85VXvyvRgesHtimDfOBk7QEu5UND8XmomWhsWZoD8/8AGk4Cz
+	7gnNzLWw==;
 Received: from [2001:8b0:10b:5:f3d6:3c0c:6c61:8d10] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd1Yc-0000000BTDo-3VHP;
-	Fri, 26 Jun 2026 08:05:03 +0000
-Message-ID: <123bd3932db959a9c26b9ede46632e482dbdc4ab.camel@infradead.org>
-Subject: Re: [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to
- userspace if Xen vCPU ID isn't set
+	id 1wd1f0-0000000BTfM-1eGD;
+	Fri, 26 Jun 2026 08:11:38 +0000
+Message-ID: <c574f7c48c2e4805fb63f38e7d31240ff4497aff.camel@infradead.org>
+Subject: Re: [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU
+ ID for singleshot timer hypercalls
 From: David Woodhouse <dwmw2@infradead.org>
 To: Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov
 	 <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant
@@ -40,12 +40,12 @@ To: Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
 	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
-Date: Fri, 26 Jun 2026 09:05:02 +0100
-In-Reply-To: <20260625223623.3376478-5-seanjc@google.com>
+Date: Fri, 26 Jun 2026 09:11:38 +0100
+In-Reply-To: <20260625223623.3376478-6-seanjc@google.com>
 References: <20260625223623.3376478-1-seanjc@google.com>
-	 <20260625223623.3376478-5-seanjc@google.com>
+	 <20260625223623.3376478-6-seanjc@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-tSKYhoy/41trbzcwTFn2"
+	boundary="=-AaawjVcTCZlo5GvCOYFj"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa6 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -56,94 +56,83 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-tSKYhoy/41trbzcwTFn2
+--=-AaawjVcTCZlo5GvCOYFj
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, 2026-06-25 at 15:36 -0700, Sean Christopherson wrote:
-> Explicitly invalidate KVM's internal Xen vCPU ID during vCPU creation
-> instead of *trying* to set the Xen ID to the vCPU index by default, and
-> forward singleshot timer hypercalls to userspace if the VMM hasn't set th=
-e
-> Xen ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.=C2=A0 Using the vCPU's index a=
-s its
-> default Xen ID is reasonable in concept, but in practice is horribly flaw=
-ed
-> as the index is left as '0' until after vCPU initialization completes, i.=
-e.
-> every vCPU gets a Xen ID of '0' by default.
+> Hoist the checks on the Xen vCPU ID when handling set_singleshot_timer an=
+d
+> stop_singleshot_timer hypercalls out of their individual case-statements,
+> so that both checks on the ID are in common code.=C2=A0 kvm_xen_hcall_vcp=
+u_op()
+> is already doubly committed to handling only singleshot timer hypercalls,
+> and even if that were to change in the future, the function could simply
+> be renamed and turned into a helper specifically for timer hypercalls.
 >=20
-> Forward hypercalls to userspace instead of trying to salvage any kind of
-> default behavior, as all userspace implementations that support multiple
-> vCPUs either don't enable the timer, are guaranteed to set Xen ID, or wor=
-k
-> only because *all* guests also screw up the singleshot timer hypercalls.
-> The last scenarios is extremely unlikely given that Linux-as-a-guest uses
-> the actual Xen vCPU ID when making timer hypercalls.=C2=A0 In other words=
-, for
-> all intents and purposes, KVM's ABI is already that userspace must set th=
-e
-> Xen vCPU ID, so just commit to that ABI.
->=20
-> Note, KVM's handling of KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restricts the ID t=
-o
-> KVM_MAX_VCPUS, so there's no chance of a valid ID colliding with -1u.
+> No functional change intended.
 
-Nit: XEN_VCPU_ID_INVALID isn't -1u; it's U32_MAX.
+Makes sense. In fact these hypercalls are the *only* VCPUOP_xxx calls
+for which Xen has that restriction (otherwise it would be pointless to
+have the vcpu argument at all). Which is why we did the check in the
+individual cases.
 
-I'd have been slightly happier if you'd used an explicit -1U, perhaps
-with a name of its own (although I guess we wouldn't want to call it
-KVM_VCPU_IDX_INVALID in the *Xen* part).
+But these are *also* the only VCPUOP calls we're ever likely to
+accelerate in the kernel, so that's actually fine. I would prefer to
+see a comment above the check though.
 
-But this works.
+And let's move your patch 4 to come *after* this semantic change.
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-I'd have put this *after* your patch 5 though (qv).
-
-> Link: https://lore.kernel.org/all/20260612233017.1F9771F000E9@smtp.kernel=
-.org
-> Suggested-by: David Woodhouse <dwmw2@infradead.org>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
-> =C2=A0arch/x86/kvm/xen.c | 6 +++++-
-> =C2=A01 file changed, 5 insertions(+), 1 deletion(-)
+> =C2=A0arch/x86/kvm/xen.c | 14 +++++---------
+> =C2=A01 file changed, 5 insertions(+), 9 deletions(-)
 >=20
 > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index 694b31c1fcc9..27c1aeeab8af 100644
+> index 27c1aeeab8af..db10f12d10cf 100644
 > --- a/arch/x86/kvm/xen.c
 > +++ b/arch/x86/kvm/xen.c
-> @@ -22,6 +22,7 @@
-> =C2=A0#include <xen/interface/version.h>
-> =C2=A0#include <xen/interface/event_channel.h>
-> =C2=A0#include <xen/interface/sched.h>
-> +#include <xen/xen-ops.h>
-> =C2=A0
-> =C2=A0#include <asm/xen/cpuid.h>
-> =C2=A0#include <asm/pvclock.h>
-> @@ -1610,6 +1611,9 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *=
-vcpu, bool longmode, int cmd,
-> =C2=A0	if (!kvm_xen_timer_enabled(vcpu))
+> @@ -1614,13 +1614,13 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu=
+ *vcpu, bool longmode, int cmd,
+> =C2=A0	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
 > =C2=A0		return false;
 > =C2=A0
-> +	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
-> +		return false;
+
+	/*
+	 * Only the set/stop singleshot timer calls are accelerated
+	 * by KVM, and they both operate only on the same vCPU.
+	 */
+> +	if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
+> +		*r =3D -EINVAL;
+> +		return true;
+> +	}
 > +
 > =C2=A0	switch (cmd) {
 > =C2=A0	case VCPUOP_set_singleshot_timer:
-> =C2=A0		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-> @@ -2299,7 +2303,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vc=
-pu *vcpu, u64 param, u64 *r)
+> -		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
+> -			*r =3D -EINVAL;
+> -			return true;
+> -		}
+> -
+> =C2=A0		/*
+> =C2=A0		 * The only difference for 32-bit compat is the 4 bytes of
+> =C2=A0		 * padding after the interesting part of the structure. So
+> @@ -1648,10 +1648,6 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu =
+*vcpu, bool longmode, int cmd,
+> =C2=A0		return true;
 > =C2=A0
-> =C2=A0void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
-> =C2=A0{
-> -	vcpu->arch.xen.vcpu_id =3D vcpu->vcpu_idx;
-> +	vcpu->arch.xen.vcpu_id =3D XEN_VCPU_ID_INVALID;
-> =C2=A0	vcpu->arch.xen.poll_evtchn =3D 0;
-> =C2=A0
-> =C2=A0	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
+> =C2=A0	case VCPUOP_stop_singleshot_timer:
+> -		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
+> -			*r =3D -EINVAL;
+> -			return true;
+> -		}
+> =C2=A0		kvm_xen_stop_timer(vcpu);
+> =C2=A0		*r =3D 0;
+> =C2=A0		return true;
 
---=-tSKYhoy/41trbzcwTFn2
+--=-AaawjVcTCZlo5GvCOYFj
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -222,21 +211,21 @@ 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
-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
+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
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAjFYvlakW8Wp5
-evsEQ01PiiJ4IYeRU8FvqmmK8haNb4/pMg5uSYacwsYZ2qixyptQieJ313Jny8rCwf0vI6u8Kt/I
-BjFIFMVjFyT3szqFYD5OyKxEs4UDz0/k0VrOB4rwCVE0QSCVFIq9JljNI5sZ6fPVnDgwNa1IqTAw
-HiImOTtXeORTnhLn1xFRbj49ABmRfLDsg+UudS2GMTdlwdMliYWeaQiO+3SqwqfpTgYJABehs1CQ
-mgZgyAddoTmHEvUVBQMFH7pAUrchW44hc/g+y3NyTJM1KBv402RVIMIzEmKiV8SrvvxnquqTgBiF
-r35uSYbhV+rp5m3LlPzTiHvOuUDaTXHmBUdWmNji/d5wNyaLJ1KLAApp14nqXsXDuIWxN/3xMAUa
-En7CF6w+mGvFeOF4glPax9YKcgwj+sVLuctnEb0hdvrBFRE/WieL39vU8WsiCGAPjQgbxU5lSV8J
-v3hKSNUg9NtZVpRkvLoamzOP8Nutxn72tnS8a6njETj8fiSCkOK8SXnpK0c13OfaC9wcwJg862Y+
-BU0eleptnCcYzT3WDWiYABV49WPLG8A0Mjx89HE5t8DmdvwOsOLCuyRT2dBLWw/OsjdnWDq5/3B2
-2Kwf0J4H4nU9D3t5dnUxdoviKeyjwLoK+DaaiLjy6tXRw9y2cFp446tP/7fpJh8AAAAAAAA=
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAdEdLnSjoNFj8
+Bv2sVbGmKquraDuDM/819zsIlFmkoE609Ncps1g0Nr9RRsr55HXhMTxSvg8x/bl+VeePwCn15q0R
+Eq1kmDo+IdosZ3gzNA5swoRNphH6C6sv8iQsnei9zUWjsmnCuaQq+OkSCBJEuk5A8iwFCbYac/q5
+pGPbsciYfpHOmp9LTIL25pj2bJdZWnVZVtjDGGei42EV0L3qorkeTGFXGM7cYC/je9r5hfCrcm41
+BPdPQINg/Qedq4C/LRvwwJSdX5qn1WL/be8u5MsDV0CBToWu+X8jk1jqVedzvRK3xLDvr8FeUZaA
+VgPTW9PeljzU3zLLJEC4pyVjMDRxNVSPIHr5Ks2iewGvPbB+aNwi/szgb404hXlNvij8XqBfZtvO
+1UDoNfNKxiyB2vKRUGKx9HwSZjVwtQpdWjsMdJ2P/OpVx/k1WOpAtTnjEAO3IJWQVdSMiTQ4pFvB
+KdnjohOCxh+HYVVeHzxPaHY6bcbOfOqzBSpVsJMAv0b+RiindINCovXiVhgKnhW7t/bAoW/2HXNi
+F6VDwL7aeXxXODT3PvCwmKcuwqtZBB9/J6Z2OtOqxn96AnSfk4QUjCsED8VjFFhCzVkmWVzZXKr8
+bUWOF2U7S+83QgZvMJW2KnL524k35adf8LVs6kBGVrgdGKcyjqPQ3sQvJ5VT9IIAAAAAAAA=
 
 
---=-tSKYhoy/41trbzcwTFn2--
+--=-AaawjVcTCZlo5GvCOYFj--
