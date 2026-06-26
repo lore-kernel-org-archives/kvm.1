@@ -1,119 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768B63F484E
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8633F4DFB
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 12:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782476804; cv=none; b=j2+w3LopwTQGDKCel86T8qbhPCQBoVtC6iThfjerOVxqNQfsDf4toZW5nqMC+WUnHPPsoEkJDPD3zVvPQSbJ96zhUV+BSMw8ltb7Ml2WR7lNPO4lILctbamePggrH8eE04IwIR2UTBlXX3H0oUm23g9bt0VCgH73ruJzaik1VeI=
+	t=1782476893; cv=none; b=cKtKyV5gXsoqclEnijHg+rA6+Hs5UCfG0dLg6AikHOcSWyDrKQoBaYlTl0TLC6TG1woJGL+aZB85kElMc1N/FEZhFRGY6Oo5apC2i/z1kylyYTBwegUDHZhtS91lcLrHPZF5hxnsaoP7I69SFymxp05o8C/boccnY4ouHxV4YsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782476804; c=relaxed/simple;
-	bh=Vk0WiV0sz49WlfIpLKOTpBS51K/SM+9Qi6j8USZ1iMQ=;
+	s=arc-20240116; t=1782476893; c=relaxed/simple;
+	bh=no/wPJgtP6DbZQPWAjIf9H3kDQn9r/tDbohV0v6hrjY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m4rDSd6azB1PcRzdzJWqDd3F8musilhCODyL/7klbZqytYHl8/IiWckFhiLDdyjW1XHg8fMOf1YPKput0oH9VMklQcb8bsM5Ys+WDXqGb8+6VDOEZNGQYscTX9YJWjtAmJT+pkyWpdlEhCLlh3w6A90OyrzLdSdMq1ZgcjQctI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPrbRz/F; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=C4wuRLJJTOCOF+sA/y6bsGVyrAC9WWJYDQ/++T0nSOuDED0eea2ZriwG5n8geT4r1Agxr3GTdxjs9wMpT0sbFdwx216MVulhXDuqIoagYm34nUPbzD1y5AufIoMx9gajHOymcH17qbq2fkSkTunx/GKPlb3bvpmHKI80N0NPkdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7Ks+voi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPrbRz/F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68001F000E9;
-	Fri, 26 Jun 2026 12:26:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7Ks+voi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3284C1F000E9;
+	Fri, 26 Jun 2026 12:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782476803;
-	bh=u/J/MSWyFEIa1fu3JMdjpI5N/IMlgpka0uozHyNrs+I=;
+	s=k20260515; t=1782476892;
+	bh=XcsdblN8q6gUOWlYXWFShihXczvynERKHRxpaiiYcqc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VPrbRz/FpurnddTzFstxzoNnaoQ0axrfZKXcmoC5qWWIoObx5EQqmEItGhgTN+FwY
-	 xVxeucvgYnMx+WED1BWFHABuamUWsANIIPcXI4ao1nAWTxgcQI2qJU+6I1SSIAYcb2
-	 boPif8KjczHEREof6gvOL1AfY7XDE+sgdPku0QAFbWNVLlzohEPkbxXiCKDR56R7/P
-	 QkeAcNoga3Yg6Zt2YRrcjL64mBFwfQ6shc6Ggj7BziPNnrgJi40LdhQm7/7AlBClrR
-	 sdKss8b3G0xNyUkaheXVWiZ3JRwZAH+1MD3QJWxLE7gDP0EnUy9yKjPy2gOv5SfW14
-	 Jz6O7LyzpRwgg==
+	b=f7Ks+voiuUZT2SXMdvFQpmESN94kcF1D1oByMMro2laH2dwAEP2g4QzepCkZl7Jih
+	 scD4U0lHl9D8G0elSI6DkrjjHLpLhjeqf29+EGMGnX3wHdsOHWWbMNYD5cp0xI65nm
+	 ZJTRxnSjb0KUXx+vqs+NnohdgOgU+R0MnNpuPV5pVVdN3Ux5qtOxqKHiD+5UqMY6K2
+	 E8gokUpB+13ipzJai4dJOTM7fMSBPuGYS1Hj6ZmGzmNV3slt/wuigeglSjXwVkymZk
+	 qUNJ+O7Kctq0BfaaWM9TtjGOT5l2Ec3QivuP8m97dVMXHCJ/6lui7JPchtf7JlYnTW
+	 5IbCc36DK9Qqw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.10.y 04/17] KVM: x86/mmu: Ensure MMU pages are
- available when allocating roots
+Subject: Re: [PATCH 5.15.y 5/8] KVM: x86/mmu: pull call to drop_large_spte()
+ into __link_shadow_page()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626112634.1778506-5-pbonzini@redhat.com>
-References: <20260626112634.1778506-1-pbonzini@redhat.com>
- <20260626112634.1778506-5-pbonzini@redhat.com>
+In-Reply-To: <20260626112606.1778248-6-pbonzini@redhat.com>
+References: <20260626112606.1778248-1-pbonzini@redhat.com>
+ <20260626112606.1778248-6-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 12:26:41 +0000
-Message-Id: <20260626122642.D68001F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 12:28:11 +0000
+Message-Id: <20260626122812.3284C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] The patch introduces a sleep-in-atomic bug by holding `mmu_lock` (=
-a spinlock) while reading guest PDPTRs, which can sleep.
+
+New issues:
+- [Low] The newly introduced `__link_shadow_page` function declares a `cach=
+e` parameter that is never used.
+
+Pre-existing issues:
+- [High] `drop_large_spte` flushes the wrong guest physical address range w=
+hen dropping a large SPTE, potentially leaving stale hardware TLB entries f=
+or the unmapped guest memory.
 --
 
-commit 2d0be26b413397b6f1a85adc0319fa2727427ab6
-Author: Sean Christopherson <seanjc@google.com>
+commit 9820244be6c2ac65ed2abfdc79a98053af6c7970
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-KVM: x86/mmu: Ensure MMU pages are available when allocating roots
+KVM: x86/mmu: pull call to drop_large_spte() into __link_shadow_page()
 
-This patch modifies the root allocation flow to hold the mmu_lock for write
-for the entire duration of allocating and initializing an MMU's roots. This
-prevents root allocations from failing by ensuring MMU pages are available.
+This patch consolidates the removal of existing large SPTEs by moving the
+drop_large_spte() call from multiple caller sites directly into
+__link_shadow_page(). It also updates kvm_mmu_get_child_sp() to return
+-EEXIST if a non-large shadow page is already present, avoiding double
+linking.
 
 > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index a506c0818e77a..9b1f63b5e86ec 100644
 > --- a/arch/x86/kvm/mmu/mmu.c
 > +++ b/arch/x86/kvm/mmu/mmu.c
-
 [ ... ]
-
-> @@ -3315,6 +3306,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *=
-vcpu)
+> -static void drop_large_spte(struct kvm_vcpu *vcpu, u64 *sptep)
+> +static void drop_large_spte(struct kvm *kvm, u64 *sptep)
+>  {
+> -	if (__drop_large_spte(vcpu->kvm, sptep)) {
+> -		struct kvm_mmu_page *sp =3D sptep_to_sp(sptep);
+> +	struct kvm_mmu_page *sp;
 > =20
->  	for (i =3D 0; i < 4; ++i) {
->  		MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
-> +
->  		if (mmu->root_level =3D=3D PT32E_ROOT_LEVEL) {
->  			pdptr =3D mmu->get_pdptr(vcpu, i);
+> -		kvm_flush_remote_tlbs_with_address(vcpu->kvm, sp->gfn,
+> +	sp =3D sptep_to_sp(sptep);
+> +	WARN_ON(sp->role.level =3D=3D PG_LEVEL_4K);
+> =20
+> -	}
+> +	drop_spte(kvm, sptep);
+> +	kvm_flush_remote_tlbs_with_address(kvm, sp->gfn,
+> +			KVM_PAGES_PER_HPAGE(sp->role.level));
+>  }
 
 [Severity: High]
-Does this code sleep while holding a spinlock?
+This is a pre-existing issue, but does drop_large_spte() flush the wrong
+guest physical address range here?
 
-Since kvm_mmu_load() now holds vcpu->kvm->mmu_lock when calling
-mmu_alloc_shadow_roots(), this ends up calling mmu->get_pdptr()
-under a spinlock.
+By using sp->gfn, the flush targets the base GFN of the entire parent page
+table, or the guest page directory itself for indirect mappings.
 
-On SVM, this resolves to kvm_pdptr_read(), which can sleep:
+If the dropped SPTE is at an index greater than 0, wouldn't this flush the
+0th index instead of the actual memory mapped by the dropped SPTE?
 
-arch/x86/kvm/kvm_cache_regs.h:kvm_pdptr_read() {
-    might_sleep();
-    ...
-}
-
-Could this lead to a "scheduling while atomic" panic?
-
->  			if (!(pdptr & PT_PRESENT_MASK)) {
+Could this leave stale hardware TLB entries for the unmapped guest memory
+on environments supporting precise range-based TLB flushes? Should this
+retrieve the exact GFN using the offset of sptep within sp->spt instead?
 
 [ ... ]
+> -static void link_shadow_page(struct kvm_vcpu *vcpu, u64 *sptep,
+> -			     struct kvm_mmu_page *sp)
+> +static void __link_shadow_page(struct kvm_vcpu *vcpu,
+> +			       struct kvm_mmu_memory_cache *cache, u64 *sptep,
+> +			       struct kvm_mmu_page *sp)
 
-> @@ -4872,7 +4854,15 @@ int kvm_mmu_load(struct kvm_vcpu *vcpu)
->  	r =3D mmu_alloc_special_roots(vcpu);
->  	if (r)
->  		goto out;
-> -	r =3D mmu_alloc_roots(vcpu);
-> +	spin_lock(&vcpu->kvm->mmu_lock);
-> +	if (make_mmu_pages_available(vcpu))
-> +		r =3D -ENOSPC;
-> +	else if (vcpu->arch.mmu->direct_map)
-> +		r =3D mmu_alloc_direct_roots(vcpu);
-> +	else
-> +		r =3D mmu_alloc_shadow_roots(vcpu);
-> +	spin_unlock(&vcpu->kvm->mmu_lock);
-> +
->  	kvm_mmu_sync_roots(vcpu);
->  	if (r)
->  		goto out;
+[Severity: Low]
+Is the new cache parameter actually used in this function?
+
+It appears the cache parameter is passed in but never referenced. The
+underlying code seems to use the cache from the vcpu struct directly
+when adding a parent PTE.
+
+Could this parameter be removed to keep the signature clean?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112634.1778=
-506-1-pbonzini@redhat.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112606.1778=
+248-1-pbonzini@redhat.com?part=3D5
