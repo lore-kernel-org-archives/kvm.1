@@ -1,55 +1,55 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC30737F8C7
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 23:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81ABF38E8BB
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 23:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782515670; cv=none; b=Sw9K7hhVxHJHK6xdOSzznnt+c7v0fvjC6T12WT6e/884gae9CGp8KyG3v5U3lFOrcntmZQ1ww8+q0iDyJ5s4oumQN+tkGlHqiyNfP8J0GA5bbk1/smZ8KUpHKR6WMynF9CTUVsDM+SAQvpOVL7URHjpho5HmOoio94U/CJgOJRA=
+	t=1782515673; cv=none; b=E2P6vZrWPz6Wm84evzWWPAXXPDDmna+d4zMRr4q3WMklsiChAFnrt+ecClSxrBxNkUrFsmrFi8pknjRDQ5/pNSesfAlolR3JCrduPymp3R5fgOUoOLsfqEjULvZy9dC0AdXn0YTP3pipOOIJ6JwUOC8QaBklsnqWTDtn9z3K+G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782515670; c=relaxed/simple;
-	bh=M+ns7hIsjvqgw42ToErJ/i81C5vsomZl7iRsyhMGNzc=;
+	s=arc-20240116; t=1782515673; c=relaxed/simple;
+	bh=DBIf3+VFDZYptvruqD6ltoPaucEpf3ClGhtQ8Sb8YIg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HwS8evAafBTNBPvBP/7pyWxmoJilGTX8jlb38AJVT218eywnsvpk4dJm+Tk88UsT4ob1VHJ4Ieyyh+jAffEDiohqdCJ/ocvA9MSX8wS3wXCH+8YFmer0IImWA0hPryfT90zUvrMwhIVdl3q30tuCju1QPWxdOjJRw7PhNF3Wkt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vA6SgSh4; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=t5ZMqM92gW9I9mDIx3TaVSxUImTMH5vwNCFegHh7j9T6r8dpFmLtNnXeGpyktWtWEa24jxAmfZRYR6/lyWjKMJe/FhFvr1RX4pg1enMJuLMonNo/l2s86OKxWbITEyGek2V19ypXj1ngIjTHM16vFN5VRMYgouNTmAvWwX24e6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XcRYWEZ1; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vA6SgSh4"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37df6354960so1066369a91.2
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 16:14:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XcRYWEZ1"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c7fae22808so20633005ad.2
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 16:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782515666; x=1783120466; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782515670; x=1783120470; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=CckMd+ZBZTPBjpcDx+h5yQ8CEqxWh1RxSUyuEWlO4OY=;
-        b=vA6SgSh47OrWmPM487Qw8UnDN8s1+7eRejZamrbWNUmX0nype2flWC87jfu+o+BvSV
-         t37CnM//xK8monNfy1SNohDCnlMO59BD16HrMbvVa1nQoGGdEepPAXTdIDt8IndSlLcO
-         OJ5urF19LfDlRCgsVqZki6smW9xnUsJNtw8BS2krOTLRMwVfsLG2HHVRyWmQ3EPWO0xO
-         TmF+zS4vBg7DkF1g+ne/UndLN2DGPGmtqYHCrDJmpGz+ttjkJqfKDwHMa3+JQS9j6066
-         A4QldNeJiUxgaEH6kQiNFWIABrEkigrHH/bPDvZZPYsuMnyI9diX6+74DPMNfmO0LMx/
-         s4yw==
+        bh=23IT/I8BFI3FVtFLLsXh6XFyUDIWbMpHRUduaQab4Hg=;
+        b=XcRYWEZ1BnjfcqXl2GPzpOZTDxb+pE/JFMJJozO9kPzdjMekNT4aqjIpUE2862r2mJ
+         7YXZP+yKFMAbd1ypuZEyedvgLC1Qs+yPiESxq/+l+ndxTwDEZxqpVPTupcY0KppOmATL
+         ooXr7LLJEUR576SWjRfLv8lZKKOAA0aEc7lpfII7YvW2kK87pKcdSTK5tuejJrHc5/Bw
+         JpALUpkUZQGsiAUhBQmIdNBzSr/N3qL60XMXEF8xX50sVP9HTEKV23cqz3M7yB8uSNH5
+         Lm8PfkAWRXKIIf8m964M4ufRpryJPAc0ZWIVm4gzrJWjlGcuixaBCrNo8k7n84S8DaAz
+         gfkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782515666; x=1783120466;
+        d=1e100.net; s=20251104; t=1782515670; x=1783120470;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CckMd+ZBZTPBjpcDx+h5yQ8CEqxWh1RxSUyuEWlO4OY=;
-        b=jsKjLAeVFPAEOdW1eoVy9pf3Uw5xzNlqrwnhQSvsoaKMz7w/1EwhNVAWTmt/KJ3hWs
-         FYuGZoTEbQlMahkxUGsJ/IbYl/l5RjmTvT8P1raPqs2aACJKmuI32fmYyt8NunWQFA4e
-         qGfXSdE3WeNc/em1mB3cq/QU+O1h+DSuulhE6mypM9eeXGgnKtolDzIsrrbn9qH4GpXS
-         iPZJXzY2hlsMdU7p9xI26dX7+9OE/c4rYhvHC1yvgA84DrLYD5eF+aqb7b3swP21QRNH
-         gjuyrpGuICv/TBrAzc63BhlGiP0KT7uTdcRwJV5ioORq2+VHuUN+7tUxB/OVS2QYfWHq
-         MA1Q==
-X-Gm-Message-State: AOJu0YySRRgW2f7CdBPo4UnCs5K+5iOZUj3C7jEdWEHJnl0AJ8t0Wi2a
-	9XxoR58vTAC+2pXRMVGYSYmNKu8qvHeQmPNNVX6Y0i3NV8+elEpMSVOfrspOR/HENvOIG39FmgR
-	qP4odWQ==
-X-Received: from pjvn5.prod.google.com ([2002:a17:90a:de85:b0:37d:ea95:4421])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5282:b0:368:ed26:15b2
- with SMTP id 98e67ed59e1d1-37dfa1b7ea8mr8569014a91.8.1782515665869; Fri, 26
- Jun 2026 16:14:25 -0700 (PDT)
+        bh=23IT/I8BFI3FVtFLLsXh6XFyUDIWbMpHRUduaQab4Hg=;
+        b=WTBzMA54x4JD52M5/BTdW7/1my/ziX8OH0OI2HNRJsAXw0wANSoJyCCPxx0Dljg7Hi
+         3js94tMrkoMkCYeVMTnPOWuQAl0u1BvtE0gGJAdqeN8PZdXTiQOkGyakjOc54V5vNwA3
+         gowaej/17d7lPnOeBHYxxXxskvrJrLyEOk9ZEOBisDhRYS+LzPbebC+7ppbvKwTkUCVp
+         y0BMNf3ZuUU5b8uijpnEN30XFKUOpB9XrSysZ62kZcMp1wf6dXFZkO52djqA4iV4NWQ+
+         0qP4Qa/ECfy4wMPs5ajlvqvNzgCxSfsX4V1j16wsKPeLAM/Rg8CP0ljfT8ZlhTwgUC+9
+         E70Q==
+X-Gm-Message-State: AOJu0YwRuxQfQr7jWRmgLG8a3wg1iMUaPTucb0K8thpmA3bYbRulQy4a
+	CYXQLfrJjfpqf88AnbEerqXPPCfrXASsvYTwpVPyMlgOovj/UVNSOYU6KCEX7625Iof+lbpLaRP
+	7srUd/g==
+X-Received: from pgbo37.prod.google.com ([2002:a63:5a25:0:b0:c93:e04b:d9ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d045:b0:3a2:d838:bfdb
+ with SMTP id adf61e73a8af0-3bd4ae979ccmr9780194637.29.1782515669661; Fri, 26
+ Jun 2026 16:14:29 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 16:14:13 -0700
+Date: Fri, 26 Jun 2026 16:14:16 -0700
 In-Reply-To: <20260626231416.3943216-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260626231416.3943216-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626231416.3943216-7-seanjc@google.com>
-Subject: [PATCH v2 6/9] KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into
- "front" and "back" halves
+Message-ID: <20260626231416.3943216-10-seanjc@google.com>
+Subject: [PATCH v2 9/9] KVM: SEV: Mark vCPU has having guest-provided VMSA
+ even if its invalid
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,113 +70,70 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Split kvm_mmu_zap_all_fast() into a "front half" and a "back half", where
-the front half is everything that runs with mmu_lock held for write, and
-the back half is the code that runs outside of mmu_lock.
+Track the guest as having a guest-provided VMSA as soon as control.vmsa_pa
+is invalidated, instead of waiting to see if the guest-provided VMSA is
+usable, so that KVM doesn't switch back to the original VMSA instead of
+exiting to userspace (due to an invalid VMSA).  By the time a vCPU tries
+to load a guest-provided VMSA, KVM has already communicated "success" for
+AP creation, i.e. KVM has committed to using the guest-provided VMSA.
 
-Manually invoke the two halves when zapping in response to a memslot being
-DELETE or MOVED, and share the mmu_lock critical section between the "fast
-zap all" and "zap only the memslot" paths.  This will allow putting more
-code inside the critical section without having to take mmu_lock twice in
-quick succession.
-
-No functional change intended.
-
-Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 48 +++++++++++++++++++++++++++++-------------
- 1 file changed, 33 insertions(+), 15 deletions(-)
+ arch/x86/kvm/svm/sev.c | 34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 223d80b12b9b..5925db37543f 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6921,20 +6921,11 @@ static void kvm_zap_obsolete_pages(struct kvm *kvm)
- 	kvm_mmu_commit_zap_page(kvm, &invalid_list);
- }
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 04be49b1af57..7e06ed16f474 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4001,23 +4001,6 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 */
+ 	vmcb_mark_all_dirty(svm->vmcb);
  
--/*
-- * Fast invalidate all shadow pages and use lock-break technique
-- * to zap obsolete pages.
-- *
-- * It's required when memslot is being deleted or VM is being
-- * destroyed, in these cases, we should ensure that KVM MMU does
-- * not use any resource of the being-deleted slot or all slots
-- * after calling the function.
-- */
--static void kvm_mmu_zap_all_fast(struct kvm *kvm)
-+static void __kvm_mmu_zap_all_fast_front_half(struct kvm *kvm)
- {
- 	lockdep_assert_held(&kvm->slots_lock);
-+	lockdep_assert_held_write(&kvm->mmu_lock);
- 
--	write_lock(&kvm->mmu_lock);
- 	trace_kvm_mmu_zap_all_fast(kvm);
- 
+-	if (!VALID_PAGE(gpa))
+-		return;
+-
+-	slot = gfn_to_memslot(vcpu->kvm, gfn);
+-	if (!slot)
+-		return;
+-
+-	mmu_seq = kvm->mmu_invalidate_seq;
+-	smp_rmb();
+-
+-	/*
+-	 * The new VMSA will be private memory guest memory, so retrieve the
+-	 * PFN from the gmem backend.
+-	 */
+-	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
+-		return;
+-
  	/*
-@@ -6971,8 +6962,12 @@ static void kvm_mmu_zap_all_fast(struct kvm *kvm)
- 	kvm_make_all_cpus_request(kvm, KVM_REQ_MMU_FREE_OBSOLETE_ROOTS);
+ 	 * From this point forward, the VMSA will always be a guest-mapped page
+ 	 * rather than the initial one allocated by KVM in svm->sev_es.vmsa. In
+@@ -4029,6 +4012,23 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 */
+ 	svm->sev_es.snp_has_guest_vmsa = true;
  
- 	kvm_zap_obsolete_pages(kvm);
-+}
- 
--	write_unlock(&kvm->mmu_lock);
-+static void __kvm_mmu_zap_all_fast_back_half(struct kvm *kvm)
-+{
-+	lockdep_assert_held(&kvm->slots_lock);
-+	lockdep_assert_not_held(&kvm->mmu_lock);
- 
++	if (!VALID_PAGE(gpa))
++		return;
++
++	slot = gfn_to_memslot(vcpu->kvm, gfn);
++	if (!slot)
++		return;
++
++	mmu_seq = kvm->mmu_invalidate_seq;
++	smp_rmb();
++
++	/*
++	 * The new VMSA will be private memory guest memory, so retrieve the
++	 * PFN from the gmem backend.
++	 */
++	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
++		return;
++
+ 	read_lock(&kvm->mmu_lock);
  	/*
- 	 * Zap the invalidated TDP MMU roots, all SPTEs must be dropped before
-@@ -6986,6 +6981,24 @@ static void kvm_mmu_zap_all_fast(struct kvm *kvm)
- 		kvm_tdp_mmu_zap_invalidated_roots(kvm, true);
- }
- 
-+/*
-+ * Fast invalidate all shadow pages and use lock-break technique
-+ * to zap obsolete pages.
-+ *
-+ * It's required when memslot is being deleted or VM is being
-+ * destroyed, in these cases, we should ensure that KVM MMU does
-+ * not use any resource of the being-deleted slot or all slots
-+ * after calling the function.
-+ */
-+static void kvm_mmu_zap_all_fast(struct kvm *kvm)
-+{
-+	write_lock(&kvm->mmu_lock);
-+	__kvm_mmu_zap_all_fast_front_half(kvm);
-+	write_unlock(&kvm->mmu_lock);
-+
-+	__kvm_mmu_zap_all_fast_back_half(kvm);
-+}
-+
- int kvm_mmu_init_vm(struct kvm *kvm)
- {
- 	int r, i;
-@@ -7578,14 +7591,19 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	};
- 	bool flush;
- 
-+	write_lock(&kvm->mmu_lock);
-+
- 	if (kvm_memslot_flush_zap_all(kvm)) {
--		kvm_mmu_zap_all_fast(kvm);
-+		__kvm_mmu_zap_all_fast_front_half(kvm);
- 	} else {
--		write_lock(&kvm->mmu_lock);
- 		flush = kvm_unmap_gfn_range(kvm, &range);
- 		kvm_mmu_zap_memslot_pages_and_flush(kvm, slot, flush);
--		write_unlock(&kvm->mmu_lock);
- 	}
-+
-+	write_unlock(&kvm->mmu_lock);
-+
-+	if (kvm_memslot_flush_zap_all(kvm))
-+		__kvm_mmu_zap_all_fast_back_half(kvm);
- }
- 
- void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen)
+ 	 * Save the guest-provided GPA.  If retry is needed, then KVM will try
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
