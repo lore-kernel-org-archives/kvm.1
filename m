@@ -1,92 +1,91 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CCC3F88A2
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F733F8ED6
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473236; cv=none; b=L6gQI17nTeYn7nJYf/yObBHe2J4a9oXbIJYwWVjngTh429PY9vVovtXnzgWf7FYtSwrYaMFevMIFkC21D8DBDbj6MYi0NaesdnU3ztvX/+SXIgX3I2ZCcQro986DHpbM96Q0Tr8ytiujShn9Skl25aw0YH0t7SjyU/xnO4q+nIU=
+	t=1782473238; cv=none; b=NanJEqT2zonY1HDDWrbVwl3Gtl62hbD7e7ZDE0VE2YMtjTu+1nExl4+TYiCrPvkVAkGcTC5DSBwXU3L0VwvYtB73uiqJwMCwutmoPEBzMktYmgTvImYZnxg/CJv+tMBknP0dkhiql7m6P0yhDRtSDeU0qM2m2wunNtG/5trjELA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473236; c=relaxed/simple;
-	bh=4LAo5cntnJrzKevnVfmCzD2yJX4HzEXg19LINgkx9SU=;
+	s=arc-20240116; t=1782473238; c=relaxed/simple;
+	bh=4Tk1T7bAQVtVDSO4Cyz1IjBHx8Rh6j6660OzLHVl9iQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7RpXxi3zykk89IFUmicLsLopV8RHC117YAYJTf6AzUK2sv+VJXqjbwYe9psjIcEI7l9aUlhG9YxXXEkdvbZZlc0i2LFHScNXLB5BdovGFhiJmqh+PsK7EfYz/PV5g0/MtJMdLJq/ZFERfhuCS3VrVaeBlsCsBaf7PBTM9xhyus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eKUr+717; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GTU6my05; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=FV63zlb8ah9uwflxS+EZdNCdFCAdPURgqo1Ou1M9jdVdFl12NsCnZnnxTkvEcvz7g0a/tRWkgTtTYYop22MP2QqZGOhs7/mMLQ/bn57IsoOl1SouabPgbvDduTRFgCePW83G8blqha5qM0kv2bd6VY7CVbD4mkRr046jUCXdmdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E84TEwyQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PEE1Iu2I; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eKUr+717";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GTU6my05"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E84TEwyQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PEE1Iu2I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473231;
+	s=mimecast20190719; t=1782473234;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=plvs3uX60jFPn0//6lOYkBMC2oyKDTuSMPh8BGjsZZ0=;
-	b=eKUr+717FQrJOJEnFSKDydHUcqI4QbDA+S7Ea0HDbGJvwEzNl2/KLQ+c7cDSm/mf0TcTBk
-	vCvhUmdXuqNObPb5xdLbgQRKU6flqBbAhvwuVg0+mAoH1OBr3+6SLhzeawJxMoqybWvq9m
-	ciTtDXhtuRcPq+hsWP6PCyzjv6m/iq8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=OwvKrDNtiRlmaWjGsQV6M1SJ94iS+Y8ruq6qo2kSihw=;
+	b=E84TEwyQfwP46qw3KOyScK7i5DbUIt1YH9DUFjI2CpUD5fiWrJhS59K0Bu69tSKQ7mYvAg
+	bVTMWxpmK0vzCQoxn+rl1oD05yI/2/0pV7W/K7A46v87KnFRZqumYN3PDKHb1L8WpA3hiV
+	eLc2eEfiBiBSNUUxCocr8mM01u1iBs0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-RVlXB7fLP2Wpxi2W39oesw-1; Fri, 26 Jun 2026 07:27:05 -0400
-X-MC-Unique: RVlXB7fLP2Wpxi2W39oesw-1
-X-Mimecast-MFC-AGG-ID: RVlXB7fLP2Wpxi2W39oesw_1782473224
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490b4d3d3e6so6440035e9.0
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 04:27:05 -0700 (PDT)
+ us-mta-610-9mBdpeU6PXOHMxHifSK3lA-1; Fri, 26 Jun 2026 07:27:12 -0400
+X-MC-Unique: 9mBdpeU6PXOHMxHifSK3lA-1
+X-Mimecast-MFC-AGG-ID: 9mBdpeU6PXOHMxHifSK3lA_1782473231
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4923d2f0dedso4694005e9.3
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 04:27:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473224; x=1783078024; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1782473231; x=1783078031; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=plvs3uX60jFPn0//6lOYkBMC2oyKDTuSMPh8BGjsZZ0=;
-        b=GTU6my05Mg8ox/ONyHJxNNCNQP3zctMwiQYs3YIKGnyqyBhFJid2ZuGDfiyaWw/1pQ
-         NwDPdv2sAsJfKq7YgqUOo4MXkHfW/ARWP4BQ3EswUZ5+Ko701WaAxF7unEAys0YPooYY
-         J8jD04KKcGoZZYNBgGSBl4Hy7mC/ybM2j4Khd/UifgyxoVcxih2uFGruU1yqiU/S62JG
-         epEBzZZ3eehKrULZCA/QkXlXrS54b7dj6JZQv7Z/vZfHBGnG8XluDCTNBAS5DsxVPOm5
-         FZj/L17gk6/bvqEvSMisObPVSFEr+cI4YKcsy+Y6XjnSRiB76601s7x/ajhDhqUVhI/s
-         ddRg==
+        bh=OwvKrDNtiRlmaWjGsQV6M1SJ94iS+Y8ruq6qo2kSihw=;
+        b=PEE1Iu2ITK0JP/GuCbN6I+1FleyBuMl1RmyAMjTv88lHOqJcxNswlEh5Y3bbeGNOgP
+         t9FVQG2sNGteqdx8nTGfRNcWeGtpDhE1zK+NwL0N42g8pqOiIcz36cNwrutxSgKCWZl3
+         CGlIx/xwfy7ZvSmxfHKCLNhT7H/P5+dIyAjZ6pFsURU0QhMssxE3p0i8duwdEn3Jn0rf
+         YkD46stv52D1vEqiWx1cU74vTpNqGirfwGJp9GLftsm+LrsG+DE8EYLOtv01BeDCmr/Y
+         APWwLK8+HpvTCySuHOv7Ms/bN9MOxIYQV0Pq+PxiWmYKilvMmYQVcgfI67frhNg/ySij
+         tR+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473224; x=1783078024;
+        d=1e100.net; s=20251104; t=1782473231; x=1783078031;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=plvs3uX60jFPn0//6lOYkBMC2oyKDTuSMPh8BGjsZZ0=;
-        b=WSWMetvcuW4b+YHqpPGmZbiQSQ6kvFXiW8PvFI2qi+BaiWxTvtQJubMVUVUpurZLpu
-         gtNf/9yhZsoRg2hqhxqxX/ZbmgBThFKVosMAn5qTZZx8Xn+Shk6cxuHgf9O6Mj49Ry0t
-         oQ8wYO3uuWkqNJ6qTFwprGbwItoW6WPZAz37VHDaU+GwwnTEusrgwAMQ+JXGAAJwY+VX
-         hFVLTwtIK3YgNi52xFk46GyL9MxOD9BcGP/M7INrbft5MrbfObSc9jh2SCYrTBGaLHzJ
-         kRFihncgjCctOO7kGmbrEHeC8pKK9GaZVuffCjZEFDfDUj7MG7qQFpCgdOIW1PgtkxSL
-         UGwQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+IXjCzycI/4jl+UjDNi7gdNnrgMwqyF+tbm1f1mgBuU7LbTzBIzFLgOAa+vrtaPo1eLPk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDQbBUyB4rKkSaQCIdSXXyAp15shVcBRNjhedyKpwsavOLnRW/
-	/mIwgvvceckSEf8egDZeTIjd0+CvO9K/I67BY7KxC2MkSXyC/jlh4Vcswvd85vNFbxbJ1/6+r//
-	HXkqTe+ewnIEfkt/PXOxXoaBmFx8gEqEpKSUgLZutfu3Jl5XKJrxZUg==
-X-Gm-Gg: AfdE7clS+lcpWjkZBABud/sFynEW+wFz+DRqtcOB7a3J0yPfM1OU3WzaJrODYt7cABt
-	nLMkY7jpUJz9y7QCGOCNuw2LsX9mXl/SybUb1RV5ZUtzYmcu5NLs78MzZKfT1cDXMZ2h5CDhC4v
-	i1vgbUejPwVVgOlesHGN+31o8fIbO8B5rbTs0MQgxTgq+uBgxb4NY9QERuvGyqiW3zwUppVoQ5Y
-	F4vbb/HKP9AupV2NKKFqOXnR22HLZh9hi/U4eQlRtYWk7OnnGeY6ZTBEotTyqI7xyPqQwQPvfZ9
-	RsisHwYT0zNns5ACEpF4LOIDpVZrkZRV7ABng6U+7MfGG3OjA36UNEfTNFXGmCP3c313Ja4DRxZ
-	wgXYHqqRKLXk65MUtqijdAMFKys4WCLREhdpId8trbpT18WkB6sXx+c1s3F0VrKvdA6l0UQXJBh
-	kFA5XmgXMycTDNqPyh
-X-Received: by 2002:a05:600c:4e45:b0:492:4948:bfce with SMTP id 5b1f17b1804b1-4926fc45f89mr6531845e9.16.1782473223794;
-        Fri, 26 Jun 2026 04:27:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e45:b0:492:4948:bfce with SMTP id 5b1f17b1804b1-4926fc45f89mr6531135e9.16.1782473223302;
-        Fri, 26 Jun 2026 04:27:03 -0700 (PDT)
+        bh=OwvKrDNtiRlmaWjGsQV6M1SJ94iS+Y8ruq6qo2kSihw=;
+        b=KjjSQ9FzJlCbZpRHjp6XabAQcLNzHhf+QTTuAW6dahn7sIs3OCt2j1/0MFBKlSbbl8
+         PYl/iUWSXFwMadQFDsLBNr2QFZA3KJ8OUXAIdXOA6WQ6dSWe48ITjetQ6P3Vp9JmGZ0T
+         HRpicCzJBeGVhcANy5wv8ZCZG3wcjHB68su9XvNccNJX5xffmMfal4SUgyWLEGngPY/p
+         nW3n6ZFbM8oqUE2UclryF7fe2m26pEbIR4CNSnPrHoKOqn/qjFkq7j5fYE0Y+JnIyP2j
+         yseIk88qYaPpKIS/5m3ElfsvI+6y5+WY9AR1I2ycIahRRQZ0qsRqLGR48Rm6cjTATHEc
+         9k1Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/lNbr0i2hvlAy2szogeMAd53rLExkBt6IN/u6szqd8+ZJ4tuuoQtPMLXcQo8uK/bd3Nd8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9/2Vkr4JBbxLh5Ak0RdLXo7VeX68rIbh74ViOuLIO17q+M3tW
+	0EArpD2GXazKoz0OydrnCrqYEzGzVQNxY1TrUIbsBnx2ne9z0v6oKuplVzhl9tEI4PNj+N8aDZ5
+	uDVjIk3N4OR5MzdAAWCF5Z7eao/AaklD5RtaU3oDrSSJx32BBtSIEew==
+X-Gm-Gg: AfdE7cla2rv+b7wzfi40D0+QCZLu0CplX/KVZQdAC1SGICNpB2y7XFxAEGQVxEcsTnH
+	QmWVxh0BHJ8kpaZW52r4uvMV5TUykNJbrEfhP3WUlRllwdMi7PdyPv9u3/YaUIdJa26nL81rgvq
+	wlXT50uMre2ZjWqMnQv+v0DJONbMomK3P9ItenuaRz1zFgYD73ijT0YGn5gNtQg40TMDnGrwgm0
+	4NYct0BWCsaaIcgvHEMY4+m986WsyyxBu+IPhcOt32DwbWP1sm0/WyM9MvihkU8edNI73QrYNpo
+	hQ/LG3unMYBEwkKorEfqyVZ/vlLlwVp00GIUw10NLP5yIZcsdl1PlSQy51RY7JqZaFrHNywrTPQ
+	ZqWv5a6MXTbw0jAW90aCv17bf+y4HbV1TK+CaKuZOug1yI49pE59x7Lx/REOd/OwmvKE50fpssl
+	NDCPmKKN7a1B9pUBQd
+X-Received: by 2002:a05:600c:c3cd:20b0:492:4911:8a with SMTP id 5b1f17b1804b1-49266872ec7mr73924945e9.12.1782473230222;
+        Fri, 26 Jun 2026 04:27:10 -0700 (PDT)
+X-Received: by 2002:a05:600c:c3cd:20b0:492:4911:8a with SMTP id 5b1f17b1804b1-49266872ec7mr73924445e9.12.1782473229639;
+        Fri, 26 Jun 2026 04:27:09 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268fef710sm127137345e9.7.2026.06.26.04.27.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268fe949csm84091075e9.5.2026.06.26.04.27.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:27:02 -0700 (PDT)
+        Fri, 26 Jun 2026 04:27:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Xu <peterx@redhat.com>,
-	David Matlack <dmatlack@google.com>
-Subject: [PATCH 5.10.y 10/17] KVM: x86/mmu: Derive shadow MMU page role from parent
-Date: Fri, 26 Jun 2026 13:26:27 +0200
-Message-ID: <20260626112634.1778506-11-pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10.y 12/17] KVM: x86/mmu: Check PDPTRs before allocating PAE roots
+Date: Fri, 26 Jun 2026 13:26:29 +0200
+Message-ID: <20260626112634.1778506-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626112634.1778506-1-pbonzini@redhat.com>
 References: <20260626112634.1778506-1-pbonzini@redhat.com>
@@ -98,237 +97,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-commit 2e65e842c57d72e9a573ba42bc2055b7f626ea1f upstream.
+From: Sean Christopherson <seanjc@google.com>
 
-Instead of computing the shadow page role from scratch for every new
-page, derive most of the information from the parent shadow page.  This
-eliminates the dependency on the vCPU root role to allocate shadow page
-tables, and reduces the number of parameters to kvm_mmu_get_page().
+commit 6e0918aec49a5f89ca22c60c60cb5d20d8c9af29 upstream.
 
-Preemptively split out the role calculation to a separate function for
-use in a following commit.
+Check the validity of the PDPTRs before allocating any of the PAE roots,
+otherwise a bad PDPTR will cause KVM to leak any previously allocated
+roots.
 
-Note that when calculating the MMU root role, we can take
-@role.passthrough, @role.direct, and @role.access directly from
-@vcpu->arch.mmu->root_role. Only @role.level and @role.quadrant still
-must be overridden for PAE page directories, when shadowing 32-bit
-guest page tables with PAE page tables.
-
-No functional change intended.
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
-Message-Id: <20220516232138.1783324-5-dmatlack@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20210305011101.3597423-8-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c         | 99 ++++++++++++++++++++++------------
- arch/x86/kvm/mmu/paging_tmpl.h |  9 ++--
- 2 files changed, 71 insertions(+), 37 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 6db07ebeb695..e4759156a2dc 100644
+index 76d87da1d071..5df1cd5bff1b 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2023,35 +2023,17 @@ static void clear_sp_write_flooding_count(u64 *spte)
- 	__clear_sp_write_flooding_count(sptep_to_sp(spte));
- }
- 
--static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
--					     gfn_t gfn,
--					     gva_t gaddr,
--					     unsigned level,
--					     bool direct,
--					     unsigned int access)
-+static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu, gfn_t gfn,
-+					     union kvm_mmu_page_role role)
+@@ -3308,7 +3308,7 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
  {
- 	bool direct_mmu = vcpu->arch.mmu->direct_map;
--	union kvm_mmu_page_role role;
- 	struct hlist_head *sp_list;
--	unsigned quadrant;
- 	struct kvm_mmu_page *sp;
- 	bool need_sync = false;
- 	bool flush = false;
- 	int collisions = 0;
- 	LIST_HEAD(invalid_list);
+ 	struct kvm_mmu *mmu = vcpu->arch.mmu;
+-	u64 pdptr, pm_mask;
++	u64 pdptrs[4], pm_mask;
+ 	gfn_t root_gfn, root_pgd;
+ 	int quadrant, i;
+ 	hpa_t root;
+@@ -3319,6 +3319,17 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 	if (mmu_check_root(vcpu, root_gfn))
+ 		return 1;
  
--	role = vcpu->arch.mmu->mmu_role.base;
--	role.level = level;
--	role.direct = direct;
--	if (role.direct)
--		role.gpte_is_8_bytes = true;
--	role.access = access;
--	if (!direct_mmu && vcpu->arch.mmu->root_level <= PT32_ROOT_LEVEL) {
--		quadrant = gaddr >> (PAGE_SHIFT + (PT64_PT_BITS * level));
--		quadrant &= (1 << ((PT32_PT_BITS - PT64_PT_BITS) * level)) - 1;
--		role.quadrant = quadrant;
--	}
--
- 	sp_list = &vcpu->kvm->arch.mmu_page_hash[kvm_page_table_hashfn(gfn)];
- 	for_each_valid_sp(vcpu->kvm, sp, sp_list) {
- 		if (sp->gfn != gfn) {
-@@ -2088,22 +2070,22 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
- 
- 	++vcpu->kvm->stat.mmu_cache_miss;
- 
--	sp = kvm_mmu_alloc_page(vcpu, direct);
-+	sp = kvm_mmu_alloc_page(vcpu, role.direct);
- 
- 	sp->gfn = gfn;
- 	sp->role = role;
- 	hlist_add_head(&sp->hash_link, sp_list);
--	if (!direct) {
-+	if (!role.direct) {
- 		/*
- 		 * we should do write protection before syncing pages
- 		 * otherwise the content of the synced shadow page may
- 		 * be inconsistent with guest page table.
- 		 */
- 		account_shadowed(vcpu->kvm, sp);
--		if (level == PG_LEVEL_4K && rmap_write_protect(vcpu, gfn))
-+		if (role.level == PG_LEVEL_4K && rmap_write_protect(vcpu, gfn))
- 			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn, 1);
- 
--		if (level > PG_LEVEL_4K && need_sync)
-+		if (role.level > PG_LEVEL_4K && need_sync)
- 			flush |= kvm_sync_pages(vcpu, gfn, &invalid_list);
- 	}
- 	trace_kvm_mmu_get_page(sp, true);
-@@ -2115,6 +2097,54 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
- 	return sp;
- }
- 
-+static union kvm_mmu_page_role kvm_mmu_child_role(u64 *sptep, bool direct, unsigned int access)
-+{
-+	struct kvm_mmu_page *parent_sp = sptep_to_sp(sptep);
-+	union kvm_mmu_page_role role;
++	if (mmu->root_level == PT32E_ROOT_LEVEL) {
++		for (i = 0; i < 4; ++i) {
++			pdptrs[i] = mmu->get_pdptr(vcpu, i);
++			if (!(pdptrs[i] & PT_PRESENT_MASK))
++				continue;
 +
-+	role = parent_sp->role;
-+	role.level--;
-+	role.access = access;
-+	role.direct = direct;
-+
-+	/*
-+	 * If the guest has 4-byte PTEs then that means it's using 32-bit,
-+	 * 2-level, non-PAE paging. KVM shadows such guests with PAE paging
-+	 * (i.e. 8-byte PTEs). The difference in PTE size means that KVM must
-+	 * shadow each guest page table with multiple shadow page tables, which
-+	 * requires extra bookkeeping in the role.
-+	 *
-+	 * Specifically, to shadow the guest's page directory (which covers a
-+	 * 4GiB address space), KVM uses 4 PAE page directories, each mapping
-+	 * 1GiB of the address space. @role.quadrant encodes which quarter of
-+	 * the address space each maps.
-+	 *
-+	 * To shadow the guest's page tables (which each map a 4MiB region), KVM
-+	 * uses 2 PAE page tables, each mapping a 2MiB region. For these,
-+	 * @role.quadrant encodes which half of the region they map.
-+	 *
-+	 * Note, the 4 PAE page directories are pre-allocated and the quadrant
-+	 * assigned in mmu_alloc_root(). So only page tables need to be handled
-+	 * here.
-+	 */
-+	if (!role.gpte_is_8_bytes) {
-+		WARN_ON_ONCE(role.level != PG_LEVEL_4K);
-+		role.quadrant = (sptep - parent_sp->spt) % 2;
++			if (mmu_check_root(vcpu, pdptrs[i] >> PAGE_SHIFT))
++				return 1;
++		}
 +	}
 +
-+	return role;
-+}
-+
-+static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
-+						 u64 *sptep, gfn_t gfn,
-+						 bool direct, unsigned int access)
-+{
-+	union kvm_mmu_page_role role;
-+
-+	role = kvm_mmu_child_role(sptep, direct, access);
-+	return kvm_mmu_get_page(vcpu, gfn, role);
-+}
-+
- static void shadow_walk_init_using_root(struct kvm_shadow_walk_iterator *iterator,
- 					struct kvm_vcpu *vcpu, hpa_t root,
- 					u64 addr)
-@@ -2897,8 +2927,7 @@ static int __direct_map(struct kvm_vcpu *vcpu, gpa_t gpa, u32 error_code,
- 		if (is_shadow_present_pte(*it.sptep))
- 			continue;
+ 	/*
+ 	 * Do we shadow a long mode page table? If so we need to
+ 	 * write-protect the guests page table root.
+@@ -3348,14 +3359,11 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 		MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
  
--		sp = kvm_mmu_get_page(vcpu, base_gfn, it.addr,
--				      it.level - 1, true, ACC_ALL);
-+		sp = kvm_mmu_get_child_sp(vcpu, it.sptep, base_gfn, true, ACC_ALL);
- 
- 		link_shadow_page(vcpu, it.sptep, sp);
- 		if (is_tdp && huge_page_disallowed &&
-@@ -3227,13 +3256,18 @@ static int mmu_check_root(struct kvm_vcpu *vcpu, gfn_t root_gfn)
- 	return ret;
- }
- 
--static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
-+static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, int quadrant,
- 			    u8 level)
- {
--	bool direct = vcpu->arch.mmu->mmu_role.base.direct;
-+	union kvm_mmu_page_role role = vcpu->arch.mmu->mmu_role.base;
- 	struct kvm_mmu_page *sp;
- 
--	sp = kvm_mmu_get_page(vcpu, gfn, gva, level, direct, ACC_ALL);
-+	role.level = level;
-+
-+	if (!role.gpte_is_8_bytes)
-+		role.quadrant = quadrant;
-+
-+	sp = kvm_mmu_get_page(vcpu, gfn, role);
- 	++sp->root_count;
- 
- 	return __pa(sp->spt);
-@@ -3256,8 +3290,8 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
- 		for (i = 0; i < 4; ++i) {
- 			MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
- 
--			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT),
--					      i << 30, PT32_ROOT_LEVEL);
-+			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT), i,
-+					      PT32_ROOT_LEVEL);
- 			mmu->pae_root[i] = root | PT_PRESENT_MASK;
- 		}
- 		mmu->root_hpa = __pa(mmu->pae_root);
-@@ -3323,8 +3357,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
- 				return 1;
+ 		if (mmu->root_level == PT32E_ROOT_LEVEL) {
+-			pdptr = mmu->get_pdptr(vcpu, i);
+-			if (!(pdptr & PT_PRESENT_MASK)) {
++			if (!(pdptrs[i] & PT_PRESENT_MASK)) {
+ 				mmu->pae_root[i] = 0;
+ 				continue;
+ 			}
+-			root_gfn = pdptr >> PAGE_SHIFT;
+-			if (mmu_check_root(vcpu, root_gfn))
+-				return 1;
++			root_gfn = pdptrs[i] >> PAGE_SHIFT;
  		}
  
--		root = mmu_alloc_root(vcpu, root_gfn, i << 30,
--				      PT32_ROOT_LEVEL);
-+		root = mmu_alloc_root(vcpu, root_gfn, i, PT32_ROOT_LEVEL);
- 		mmu->pae_root[i] = root | pm_mask;
- 	}
- 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 25d4484c78aa..d5facee0db60 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -667,8 +667,9 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gpa_t addr,
- 		if (!is_shadow_present_pte(*it.sptep)) {
- 			table_gfn = gw->table_gfn[it.level - 2];
- 			access = gw->pt_access[it.level - 2];
--			sp = kvm_mmu_get_page(vcpu, table_gfn, addr,
--					      it.level-1, false, access);
-+			sp = kvm_mmu_get_child_sp(vcpu, it.sptep, table_gfn,
-+						  false, access);
-+
- 			/*
- 			 * We must synchronize the pagetable before linking it
- 			 * because the guest doesn't need to flush tlb when
-@@ -726,8 +727,8 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gpa_t addr,
- 		drop_large_spte(vcpu, it.sptep);
- 
- 		if (!is_shadow_present_pte(*it.sptep)) {
--			sp = kvm_mmu_get_page(vcpu, base_gfn, addr,
--					      it.level - 1, true, direct_access);
-+			sp = kvm_mmu_get_child_sp(vcpu, it.sptep, base_gfn,
-+						  true, direct_access);
- 			link_shadow_page(vcpu, it.sptep, sp);
- 			if (huge_page_disallowed && req_level >= it.level)
- 				account_huge_nx_page(vcpu->kvm, sp);
+ 		/*
 -- 
 2.54.0
 
