@@ -1,103 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F7E253958
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 12:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B296A3E3C48;
+	Fri, 26 Jun 2026 13:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782478643; cv=none; b=WsXVGe/AUpOXwy6T4Kwwf9KmrvdK/C/HZwaL+CNtN5ESW3kkZfjMF6jGFU4hiQWc1vWu+t6P5EsQPtNfSdoop53Y3SdHV1i9XSpVTkEYyOm9jn6dK0NTnF/BbXzsaoxx/sMIm/rymAnjnNMjULhDC16ico5/y6A8p8Y3qF53IlA=
+	t=1782479070; cv=none; b=XcqXjXE73wcccJXwIbo34onaGILbhUyKHqVsqvsPFKP2lRLHKweO8n4gP8FSTJlHO+frvlnFiobVXgBL9fZyq+yqIiSkbOOvcrKQIoGvRG1J0GJiI8FbnQoBn5682LEaHfZfhDFfLCAMOtCqYo5JmBlrGRierxgOXFINfMExjzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782478643; c=relaxed/simple;
-	bh=J4OJyfWdGUdxvQateK5fktqc0zsIXkLYWgjJLeyGN4w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jVuYy2U2ZnRNl+z3q5AiidbHQJiWPSzXkrT5+k3An7EQeg8p5gIY42X44rNmVeQJm6H4r8kk+G/2C/bHNzQRT+tqDVpkAkEyeYTX2aI1UwADvO26orfftgTHi49iFuSG8P9T/fcxP3tkRbaTxdxWjkW4/KntDP8wXRejLnqWVik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvVGT0Uw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782479070; c=relaxed/simple;
+	bh=uzKGErtMmxktxmF9Q5RDlkms6wcbY6dIab3o0yeQRr4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nZzC2lCgk4KEuqEyRQ6junD1sQGF645/Ipa7s5TxvS23tIxN22rQyz+KAA7KKiwC8QfVxkKy4hH/WByXVc8mAEaGxe0WTgap+b/i9r39FkWJw3ipWkYTGyipnw+g81CgULoTuETUBgsMjcHPo00PkUL3VPvt/JQ7yalb1c3MYTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aa3NFxlu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvVGT0Uw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812201F000E9;
-	Fri, 26 Jun 2026 12:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782478642;
-	bh=KztJzRKLR++EUQFynaFD85LuTG775fmEb0h4eckAXSA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GvVGT0UwR2hD3qIFqs/Z1ZLewrDItrvuQ/l75V8+MNO0qJr1vAqkkG1Vi6Dfs9v4W
-	 37keykHKsmO2EQohhsVDY7/xjLrhln7bDFtnBsLSjwFYX7gVkQ74na4f5QlVTG2uZe
-	 6MtWhNVES1V5nusKWqB5xlBij4btBTWZnb5gI/5l4ceuQOz9B9iinF3xdXHndqm9J+
-	 J+SQ6SI8czVyBN+s3A5v8J8i0CEWI/TonM8xuGLJgRQHm2LNWyRf80fVfPcXUa5cvc
-	 O3z0qnYO5dyrQvDcjmetBe4eAXTLnDgwKQd2WrhOkJg151MaOn4EJ0iP+PMOw58SxL
-	 BXlJHCAsD1rfw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.15.y 8/8] KVM: x86/mmu: Ensure hugepage is in by slot
- before checking max mapping level
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626112606.1778248-9-pbonzini@redhat.com>
-References: <20260626112606.1778248-1-pbonzini@redhat.com>
- <20260626112606.1778248-9-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 12:57:22 +0000
-Message-Id: <20260626125722.812201F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aa3NFxlu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=p7aRzIif6Ecb7cZno4wzYdFgvJT2Wn5O7xaduJZCRAU=; b=aa3NFxluyzZQ5OB0iK+U4uRxf9
+	eqQof+klGLqqTaVLBSEZQxAYAnxR5I+POsB8l41/nHl9h3LwjSBcxD6/hgta8IZM5aXWfNpZKrk74
+	iOER01TVjSH26NjzjYaRwFBt870XTf5hTK8B9mCNj1+QWOOIspLhgRHd8KOvIs0kiFfJls6S76Kzx
+	ZWqVI/MkbOpGWl4xV8hg4NgjsaRATxqmsICO/fCVDtWqpdHVziptHPf6czDLckPKgrkZh6yHpKnDm
+	99b1mxMCk3LVjjFZsdIex0c5ALIr05PIG9NFSprv9nQHOLlUfOJMQSm1umuhcEv3fLVgiic764vWE
+	tOJRfEGg==;
+Received: from [2001:8b0:10b:5:f3d6:3c0c:6c61:8d10] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wd6EJ-0000000Br9l-3YRu;
+	Fri, 26 Jun 2026 13:04:24 +0000
+Message-ID: <e8d802f9f1ca831f99f991567243b5d74578a514.camel@infradead.org>
+Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU
+ load
+From: David Woodhouse <dwmw2@infradead.org>
+To: Lei Chen <lei.chen@smartx.com>, seanjc@google.com
+Cc: igor@gooddata.com, jan.cipa@gooddata.com,
+ jaroslav.pulchart@gooddata.com, 	kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, pbonzini@redhat.com
+Date: Fri, 26 Jun 2026 14:04:23 +0100
+In-Reply-To: <20260409142226.2581-1-lei.chen@smartx.com>
+References: <adVGrJaRlRooO4su@google.com>
+	 <20260409142226.2581-1-lei.chen@smartx.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Wus06MMlFQG2jRGofuUt"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa6 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] The patch accidentally removes the `!kvm_is_reserved_pfn(pfn)`=
- check while adding the `is_gfn_in_memslot(slot, sp->gfn)` bounds check. Th=
-is allows reserved PFNs (e.g., from VM_PFNMAP device memory mappings) to be=
- processed for hugepage collapsing, resulting in a host kernel panic.
---
 
-commit 2d19b4db9edc2ca668a2a822466a8d07744d71f3
-Author: Sean Christopherson <seanjc@google.com>
+--=-Wus06MMlFQG2jRGofuUt
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping lev=
-el
+On Thu, 2026-04-09 at 22:22 +0800, Lei Chen wrote:
+>=20
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5210,8 +5210,13 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int=
+ cpu)
+> =C2=A0		 * On a host with synchronized TSC, there is no need to update
+> =C2=A0		 * kvmclock on vcpu->cpu migration
+> =C2=A0		 */
+> -		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu =3D=3D -1)
+> -			kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
+> +		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu =3D=3D -1) {
+> +			if (__ratelimit(&vcpu->kvm->arch.kvmclock_update_rs))
+> +				kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
+> +			else
+> +				kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+> +		}
+> +
+> =C2=A0		if (vcpu->cpu !=3D cpu)
+> =C2=A0			kvm_make_request(KVM_REQ_MIGRATE_TIMER, vcpu);
+> =C2=A0		vcpu->cpu =3D cpu;
 
-This patch adds a bounds check in the shadow MMU to verify the base gfn of
-a shadow page is within the target memslot before querying the max mapping
-level. This prevents out-of-bounds access to the slot's lpage_info when
-guest hugepage mappings extend below the bounds of a memslot.
+I don't like this.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index e9dbe3e7ec622..9a3020648c8be 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-[ ... ]
-> @@ -5883,13 +5883,19 @@ static bool kvm_mmu_zap_collapsible_spte(struct k=
-vm *kvm,
-[ ... ]
-> -		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
-> +		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
->  		    sp->role.level < kvm_mmu_max_mapping_level(kvm, slot, sp->gfn,
->  							       pfn, PG_LEVEL_NUM)) {
+We do the GLOBAL_CLOCK_UPDATE in non-masterclock mode because
+theoretically, a *failure* to do so could cause the guest to observe
+non-monotonicity across vCPUs.
 
-[Severity: Critical]
-Does this code accidentally drop the check for reserved PFNs?
+With this rate-limiting, we *sometimes* protect against that non-
+monotonicity. Why even bother? Why not just rip it out completely, in
+that case? AIUI the guest should cope with anyway if its
+PVCLOCK_TSC_STABLE_BIT isn't set, and enforce monotonicity for itself
+side in __pvclock_clocksource_read() ?=20
 
-If a memslot maps device memory (VM_PFNMAP), the SPTE contains a reserved
-PFN with no backing struct page. Since the !kvm_is_reserved_pfn(pfn) check
-was removed, this loop can now pass these reserved PFNs down into
-kvm_mmu_max_mapping_level(), which takes the following path:
+But also, I would *love* to kill non-masterclock mode completely.
 
-kvm_mmu_zap_collapsible_spte()
-  kvm_mmu_max_mapping_level()
-    host_pfn_mapping_level()
+In this nested case, the L1 TSCs *are* actually in sync; it just don't
+have the +invtsc CPUID to *promise* that they will be.
 
-Inside host_pfn_mapping_level(), the code executes:
+Could we find a way for L1 KVM to use masterclock mode for its nested
+L2 VMs even in this case? Could we make it use PVCLOCK_TSC_STABLE_BIT
+to enable masterclock mode, instead?
 
-    if (!PageCompound(pfn_to_page(pfn)) && !kvm_is_zone_device_pfn(pfn))
+At at the very least, could we find a way for L1 to trigger the
+GLOBAL_CLOCK_UPDATE only if an *actual* discrepancy in its TSCs is
+found? (Or, if vdso mode is not VDSO_CLOCKMODE_PVCLOCK?)
 
-Could calling pfn_to_page() on a reserved PFN here result in dereferencing
-an unmapped vmemmap pointer, causing a host kernel panic?
+--=-Wus06MMlFQG2jRGofuUt
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
->  			pte_list_remove(kvm, rmap_head, sptep);
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYyNjEzMDQy
+M1owLwYJKoZIhvcNAQkEMSIEIKogvrh3Mq2SycIAPsOjDpvaLCMrkBjaWAWYH/VWMnKoMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAThwfAiaHvllN
+u8STQFlySrWn9zQTAkciTmfqJDNYR7VrsQ/bSIdN06x+q1fOl99XbyqmI7vggCIhURRho4q0o6BG
+tk28pMPLCKJXg3nznC9Zk/sB9joaweZpKtMNp29D0BiaQvKrPqu18Bih4BhJd+/y7ZeMgRtH72NV
+c3q6JV1oD79d6Egf8CkW49G/wRcbYW3E4bGq83biljtDZudJxNhd9d4dmeCW4sHzsWP9Qn5wypEt
+/K0fWyUrULWVIiLSLScilc21leUa6r8+g3+jok/86TXWkAWShmPC4Hxwukryf4XTkOyHU2ysr5VX
+JE/wBZCBYTZPuhi6iAkF2MUCu2NBUS0ZSYgEP0ue7In8I7GZRL699Vle9JW8Mi5btgNjbJEr3Iyi
+ZWYEamwOms23Cp3awVaztQsRBThQJXnKhnqAqvW6QV8FcODrv1VZUEHLtHrHT4sSHNQ0yKcQB2m8
++PLbQI34ok5q++hCIme5axbtob5QGFesynfMqwHyxHIQgCoULTTVkCN0bUDS0i499vpmeuQoBqGg
+rlEKKbC8DKDs9V759y0Kdjc5nO4lWiDjbcZ8JxyUU27f1Jy5KNeFElD7FbjwFEzX1Y44iYdGwRfs
+/AjMwVF55xczZjHf9yai0YupCleBLY+hj0+Bu3HfYwh2BeYMC5NAk/V4x67NBYIAAAAAAAA=
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112606.1778=
-248-1-pbonzini@redhat.com?part=3D8
+
+--=-Wus06MMlFQG2jRGofuUt--
