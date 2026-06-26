@@ -1,223 +1,424 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012050.outbound.protection.outlook.com [52.101.48.50])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602E2384CE4;
-	Fri, 26 Jun 2026 04:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782446543; cv=fail; b=anPh/nnBUrFRbmLO6zkjJ4iw+g/rozggMN75xmDrEAF7aQQ7RO/gTvNbCz81m8Q57DP7OQWHQyYdOL0qkFIorkskjlMFLAe+uTlNDJ4weRpuiqMi+OSQYxUHuzhvryUiMYI9PODaw7gCgNACxGSCz5FALfcB7ldVO27n4GY+rHs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782446543; c=relaxed/simple;
-	bh=z18ssLQZE9EEsk/V7PEyYPTr9V+y0Q4lMo8VbSEfY/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=udtJzitnT7YZWIpvzlh0JqOAcSuqqP1QnMF58xJHr1sSArTbxcfNqdlqHN//KwHe28RRiWSkAnxvSz9vjarMxtJNwexd7qUzSTglbJCrfj0sD86DhFPxeoCKpAje8mOzk4XxVp8w27pnIioEfJWpJYrNOweIjaImKcKsPJeBm4s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SR+kC4AO; arc=fail smtp.client-ip=52.101.48.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529DC389E13
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 05:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782452364; cv=none; b=ADytRLgZX9tZP84OerafU1TCgUy7yvKbGXn/rFxVVpDG9/Ai1IuYj3qEE+qKxlZwOBeEJxdSct2+9BROu2z/238Vemzv89ASuSEi6ooWVms5iIwssLy2hrlb7yNe2jqHdrCO1zpNyQO6VMok4C7cnL8bzAG0nLv/Jr+EhXswe+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782452364; c=relaxed/simple;
+	bh=C4tY2kb2NmFwl+KNWH/jKyAgBvBWieM/pAz9BVHeAw8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TNGc38fKVPj9BH8JxMSgu9pVV457DS4dlM9kQqnMuKTnDCvx5HprRsZliaKeoY7/j0KiZeqetOkBeQWBjQ+9z1n/JgBhoMCMWcG6IpRJIkvz5aXu/Q9TgXkJRZxXZB9uEIeaRC8knpxfEhaFnOaI+HZdidc0aLvT4ohURU+A0Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qftX2/iI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SR+kC4AO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UkYV0d1Vqu075aU2krJ7xFiUwdSYk8Tc5Q4Rb8SFiitRyXwzEeegrsRPNkPsQGxktldk5Dp1V833JsJHztAHEpuZI0Fh6Z/oGOKSbqefsvR6xRerg+/TykCv9HfRhX9FmMgcbjeDn1DeohTSiY4QVncnIBn7AbQ6neKR5oU7NGRrnSL017BGxaT+epDjcnWlcRzUYdPuqduKkK2WizYyRX9eWCDInmT/uXFzAOge41oZo320akAt/fZE3Mcb01QaUAlKPjuuzoW6YJ4hXqTdGiZh7AcKqOS5rtqhNDNYQHtzq/3KFi97W29F9rMnvVG3rw0rzXx7PgL/IPMYj26SqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GIJjdo66gTpFAxChpohtVwLy18XSAQ1c0E9x3CezJNA=;
- b=kYnCosewXTh9iCIzNl7n0mmmYcYjn6+kbDeLka0+1acaW3tK/PLCb+4az9aQ1kPTnoP+zxkpsYYRes3hdGk1QPLi4aSZsekLbGNW/ItHFFSCnq9/wWv4JmHNfC0+0Y8Z3KVRpCczc79GdP8a9xwgG3PPTyYslBD7HFMe2kRuSLC6wtAeMoDUqUUNPZk8RajVGi2W6NdNYo4QJKQVumLaJ0NxwO4ZUYWVUqoukDL/iwwjrJhxVDklwioixLVROn9+AwEcXin2uNWzC7mzepFdJD5NoN1LFVo0LVDydwBQ22bAEhS/C5ROySYlhHzbsuxuy0YOFv3LlRSLZKsfQZMMUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GIJjdo66gTpFAxChpohtVwLy18XSAQ1c0E9x3CezJNA=;
- b=SR+kC4AOfPoyZ4ggyMVGjWhbgOEoFTD5rRgjm6AdV24YxkDln9RFLYytpEEsKJ7pPXr7jecrmSGk8K2rCwVgkCGTHFfXHOlq7oxNOmuVxCdohGLfd6aocH+bg15dSorIzNUyklIzqn7cHDuUehyiJeVHsTSZF2APHnuyzl+Lcxk=
-Received: from MN0P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::30)
- by PH0PR12MB7929.namprd12.prod.outlook.com (2603:10b6:510:284::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
- 2026 04:02:16 +0000
-Received: from BN3PEPF0000B371.namprd21.prod.outlook.com
- (2603:10b6:208:52e:cafe::44) by MN0P220CA0006.outlook.office365.com
- (2603:10b6:208:52e::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.17 via Frontend Transport; Fri,
- 26 Jun 2026 04:02:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B371.mail.protection.outlook.com (10.167.243.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.0 via Frontend Transport; Fri, 26 Jun 2026 04:02:15 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 25 Jun
- 2026 23:02:05 -0500
-Received: from [10.136.35.225] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 25 Jun 2026 23:01:56 -0500
-Message-ID: <24aef42a-86da-42d4-92d1-9a6d2d329592@amd.com>
-Date: Fri, 26 Jun 2026 09:31:55 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qftX2/iI"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65Q2me261794480;
+	Fri, 26 Jun 2026 05:39:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KCdgC0
+	HcmqD/5uth1lUeqwdkiL0tQL+uVIdhAqozD5Y=; b=qftX2/iIydTwvzDpk8bWqK
+	lOSeFqpzby0AjzOFbpyBrUlDPkjUqb6R3Ne5+c/sDr4ZD+TnoXET4HB/JhVzZSY6
+	nxRPUPplLAz6wocRQQScTrzTtw12EYWZLRX/k9pCWrOaoa5YNHgzys7Hkq6h3Aqf
+	ZQVwVNuyFLP1AK6cSf7P+Xe5XXyRgY5VRBn3Hei9YgStm6d40SSvMASig2WFe1t8
+	CDbiM3mw2UZOCXWMZmKNbCHPFWKQxWwMVljh9Iob5y7bgqd34KuvpPDKlEmWY4Ty
+	yRrAu8AZl3UvwZrAdhRyS+/W++KMXo8yMdzZ9tLlm3fAfN9ohOCVIOdMpLusXPFg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjk4wer5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jun 2026 05:39:03 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65Q5YwMb022844;
+	Fri, 26 Jun 2026 05:39:02 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex6phsk3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jun 2026 05:39:02 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65Q5cwuj48562444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Jun 2026 05:38:58 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7064E20049;
+	Fri, 26 Jun 2026 05:38:58 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 019DF20040;
+	Fri, 26 Jun 2026 05:38:54 +0000 (GMT)
+Received: from shivang.upadyay (unknown [9.123.12.247])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 26 Jun 2026 05:38:53 +0000 (GMT)
+Message-ID: <e681d0b31ad42dba8595f09e0936c476fdc09d7b.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 1/8] tests/functional: Add remote interrupts test for
+ PowerNV
+From: Shivang Upadhyay <shivangu@linux.ibm.com>
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
+        qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        =?ISO-8859-1?Q?C=E9dric?= Le Goater
+	 <clg@redhat.com>,
+        Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+	 <philmd@oss.qualcomm.com>,
+        "Daniel P ." =?ISO-8859-1?Q?Berrang=E9?=
+	 <berrange@redhat.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini	
+ <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn	
+ <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier	
+ <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree
+ Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier
+ <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani
+ <gautam@linux.ibm.com>,
+        Chinmay Rath	 <rathc@linux.ibm.com>
+Date: Fri, 26 Jun 2026 11:08:53 +0530
+In-Reply-To: <20260624195924.1422821-2-adityag@linux.ibm.com>
+References: <20260624195924.1422821-1-adityag@linux.ibm.com>
+	 <20260624195924.1422821-2-adityag@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
- <898e378a-cf7c-4310-b439-e28ec0a71338@amd.com>
- <b9777de5-a6fa-418c-92d2-89c095e91837@amd.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <b9777de5-a6fa-418c-92d2-89c095e91837@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B371:EE_|PH0PR12MB7929:EE_
-X-MS-Office365-Filtering-Correlation-Id: 406b6ccb-4f98-467c-c448-08ded337b5a6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700016|82310400026|1800799024|23010399003|18002099003|22082099003|5023799004|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Fsuec6Dm8rPFNHL0EmyIJFtHihd+PYjcxjrEwarf5VKiG8a5/dkjE49eo/D39gKK9zI3MZDWnT+IxEQAetfVoXM6pnoLOdUEOclBrFSDcw8F9ucsjPEJL8+hrWh7LLTx4DNudVj0JVy0a284zyd1zenCcFTHxS9h8CszM3GsnNcLacfwn6peMJGGfZQRjeOJjVnu/gx869xsl2VytSmgHJ5wWbD1sFwPXaD65vxc1SIdMF6xP6PLz+wHMXUjBXlw+Jae+IL10/tUuLqyWTH23o2gXcutIMzDP6pDv+h0FH3kVpoKtGWDJBCHedL7WJfhBJm/GkNSvzZCjvkS5htcATE5vSs1/qe4nCgdIooY6I2SePb2pTT+K0arRu+fPH2QeuKzIEVpiBZpJO60yheCjd3yCHAy7Qnb9aMxHHRKbTJOOjvKsyI9JZB5sKkKr7I221+Oah/gLCrvFfnTo6OvmgyWaGNRJa4Mjt9usU/C3aYIVjHKTBTNYjFE9gblN7tCakoXx1PEAMEb/Pm9u2Ye5co7bNXyNLdTsjoBX9JtCAhBim0xlH8WEgMJo9CLgr2BsJOCN9nISXzz+mAndYSc2mn1fwhZr0SOzRiwlRZaw/FhMtc95DPn7PWIzImD4JCyXS0m8k47VK3/pE3h9wvAeswExPYSFEn1281vq36mBRgmVt4uFCB5seB28iZq3qWY432XK9Al5mAouOqRrEoYEw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(82310400026)(1800799024)(23010399003)(18002099003)(22082099003)(5023799004)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	dQnBnqnoLcFaB666q8c7O7l81Ez0noK5+QqwooasIuXJJ52GiaV7PxjpmzOCV0MhpWmaSg+eLvLryW+jSe3eHtV7RBteFD23gEX9/9vi3Wbd8yPotEK5t+a1KVy1/Mhoxf1Q3mPFRF0gWX7M30ogamV2LHRD9twLKuj9H7umFjm79EmTs/CftIJU2vHH13Q2SKwTxN0u76ds5VUHeFyj6YZwH3/L8Lu2w7q7rIT2IU2jpocyce/a+c8r3g1nj+2xCnoGKyu9bdfzKY1nDXa/c6aG9xRf7Deig12Dyy7wT7GG/UrLeHtyYSPLI5FEjWdV/oF1txYcoKc8Lj7xlumhyHHpfadMdzw4wHEiO9yEIDwFLKO8NOC0tlrIkui3CANT8HRwfzxT15t4cJqOhAh6oPyb0DQEB2eaCDa0qtmwHO/huUvFUU6NNc+WfbScGby0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 04:02:15.7191
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 406b6ccb-4f98-467c-c448-08ded337b5a6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B371.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7929
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDA0MCBTYWx0ZWRfX2NjbbrGbePwe
+ /xUuQ9gZpPzWkPnHDx+09ui6joVfnziKgX8YIZTeOQLsMa7ZAjYBi9Eb4ZlvZ/v3E0EESNoF4uR
+ B3vG48cLK7evG7OFNagn1awJTd6T96o=
+X-Proofpoint-ORIG-GUID: LpjclnvK5vbGFgNzdG14iRChfT7vBrRF
+X-Authority-Analysis: v=2.4 cv=Oph/DS/t c=1 sm=1 tr=0 ts=6a3e1078 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=c2MNTF9r4_0dSDPVjxAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDA0MCBTYWx0ZWRfXy16fnzMNDEqp
+ A5SXs+Ou+aq41hXGAZUN0zOVIOAtKySekCQIcXvJFUIbNc46/+dQ2adWa+zr+t98rH/8F2WloMc
+ +cTiKm42BCKQ8lMXF786/DjTpOYLjVRWT/JD8LjSE3FW1Zi5i5FsQj2c8T7BNo4cyXzUKlnfWrn
+ Tz0R9Pjh+qLc7Jjm9GHj8RiteKa2BGrr/99Qd9UQ28RhrTwgAIhYsIsZgoE33M/v2kcnnscvQvb
+ l9ilAA3S62DHb69z7yPRo3QS+1DI0Y2QF/iUY5d27QnQ9zfIchwf3Ygk34oihH62kMk/3H3A1CG
+ EPw/haHIkvXs9KOi78d/DXxw/FmkXU/fKSY8zC8GWkpzYFjUNrUoJL0TwWc5PP3dSXALf/f/UT9
+ uYwI3H24f62G+E500+I8xVgReXgAUDLMW2trYdH4dNzX3Iq0PS138WmMc/OvGvj6X9YWWu677EA
+ OTCSkGOyQ+ELDuvagKQ==
+X-Proofpoint-GUID: 5qlqY1xz4Jmo0oiSh0FerjQbuH7BwSaP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-26_01,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ clxscore=1011 impostorscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606260040
 
-Hello Ashish,
+On Thu, 2026-06-25 at 01:29 +0530, Aditya Gupta wrote:
+> In the past there have been hard to recreate issues where XIVE
+> changes
+> cause qemu crashes due to multi-socket interrupts such as in [1].
+>=20
+> Add a functional test explicitly to test whether remote interrupts
+> work.
+>=20
+> The test can also work as additional boot test for multi-socket boot,
+> initrd boot test, as well as a check for e1000e to be working in
+> powernv,
+> though that's not a target goal, and are additional benefits.
+>=20
+> From docs/system/devices/net.rst:
+>=20
+> =C2=A0 In order to check that the user mode network is working, you can
+> ping
+> =C2=A0 the address 10.0.2.2 and verify that you got an address in the
+> range
+> =C2=A0 10.0.2.x from the QEMU virtual DHCP server.
+>=20
+> Hence use 10.0.2.2 with ping.
+>=20
+> [1]:
+> https://lore.kernel.org/qemu-devel/baf6c854-832b-4a2e-922f-d34e6dadf821@r=
+edhat.com/
+>=20
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+> =C2=A0tests/functional/ppc64/test_powernv.py | 95
+> ++++++++++++++++++++++++++
+> =C2=A01 file changed, 95 insertions(+)
+>=20
+> diff --git a/tests/functional/ppc64/test_powernv.py
+> b/tests/functional/ppc64/test_powernv.py
+> index 0ea6c93e4287..9760f58ee41e 100755
+> --- a/tests/functional/ppc64/test_powernv.py
+> +++ b/tests/functional/ppc64/test_powernv.py
+> @@ -9,6 +9,7 @@
+> =C2=A0
+> =C2=A0from qemu_test import LinuxKernelTest, Asset
+> =C2=A0from qemu_test import wait_for_console_pattern
+> +from qemu_test import exec_command_and_wait_for_pattern
+> =C2=A0
+> =C2=A0class PowernvMachine(LinuxKernelTest):
+> =C2=A0
+> @@ -27,6 +28,17 @@ class PowernvMachine(LinuxKernelTest):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 'buildroot/qemu_pp=
+c64le_powernv8-2025.02/rootfs.ext2'),
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> 'aee2192b692077c4bde31cb56ce474424b358f17cec323d5c94af3970c9aada2')
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0 def shell_exec_command_check_fail(self, command):
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fail_msg=3D"Fail"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(f"exp=
+ort __FAIL_MSG=3D{fail_msg}")
 
-On 6/26/2026 8:08 AM, Kalra, Ashish wrote:
->> Looking at snp_prepare(), we have an early-bailout for
->>
->>     rdmsrq(MSR_AMD64_SYSCFG, val);
->>     if (val & MSR_AMD64_SYSCFG_SNP_EN)
->>          return;
->>
->> Does executing SHUTDOWN command lead to the firmware clearing SNP_EN in
->> SYSCFG on all CPUS?
-> 
-> Yes, in case of X86_SNP_SHUTDOWN (available if firmware supports X86SnpShutdown feature)
-> SNP is disabled on all cores by clearing SYSCFG[SNPEn] bit.
-> 
-> If X86_SNP_SHUTDOWN is set to 1, the firmware clears the SYSCFG[SNPEn] bit in each core. 
-> 
-> But, in case of legacy SNP shutdown, SNP_EN bit is not cleared and so SNP remains enabled.
+nice idea.
 
-Ah! That was the bit I was missing. Thanks a ton for clarifying.
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # If the exit code for the co=
+mmand is non 0, print fail
+> message
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 command =3D command + " || ec=
+ho $__FAIL_MSG"
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exec_command_and_wait_for_pat=
+tern(self, command, '#',
+> fail_msg)
+> +
+> +=C2=A0=C2=A0=C2=A0 def shell_exec_command(self, command):
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exec_command_and_wait_for_pat=
+tern(self, command, '#',
+> self.panic_message)
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0 def do_test_linux_boot(self, command_line =3D
+> KERNEL_COMMON_COMMAND_LINE):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.require_accelerator=
+("tcg")
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernel_path =3D self.ASS=
+ET_KERNEL.fetch()
+> @@ -71,6 +83,89 @@ def test_linux_smt_boot(self):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern=
+(self, console_pattern,
+> self.panic_message)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern=
+(self, self.good_message,
+> self.panic_message)
+> =C2=A0
+> +=C2=A0=C2=A0=C2=A0 def test_linux_remote_interrupts(self):
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.require_accelerator("tcg=
+")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.set_machine('powernv')
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Have below setup in this te=
+st:
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # 1. e1000e attached to pcie.=
+6, which is from 7th PHB,
+> belonging to 2nd
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #=C2=A0=C2=A0=C2=A0 socket (c=
+hip 1), in a powernv boot with default 6 PHBs
+> per socket
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # 2. CPU on 2nd socket (chip =
+1) disabled
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # 3. RX IRQ's affinity to chi=
+p 2, and TX IRQ's affinity to
+> chip 3
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Then ping is done, to gener=
+ate interrupts from e1000e
+> which should go
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # to IRQ server on the remote=
+ sockets
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.add_args('-smp', '4,s=
+ockets=3D4,threads=3D1')
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.add_args('-netdev', '=
+user,id=3Dnet0')
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.add_args('-device', '=
+e1000e,netdev=3Dnet0,bus=3Dpcie.6')
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kernel_path =3D self.ASSET_KE=
+RNEL.fetch()
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rootfs_path =3D self.ASSET_IN=
+ITRD.fetch()
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.set_console()
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.add_args('-kernel', k=
+ernel_path,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 '-dri=
+ve',
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> f'file=3D{rootfs_path},format=3Draw,if=3Dnone,id=3Ddrive0,readonly=3Don',
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 '-app=
+end', 'root=3D/dev/nvme0n1 console=3Dhvc0',
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 '-dev=
+ice',
+> 'nvme,drive=3Ddrive0,bus=3Dpcie.2,addr=3D0x0,serial=3D1234')
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.launch()
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Wait for boot to complete
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 console_pattern =3D 'CPU maps=
+ initialized for 1 thread per
+> core'
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern(self=
+, console_pattern,
+> self.panic_message)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 console_pattern =3D 'smp: Bro=
+ught up 4 nodes, 4 CPUs'
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern(self=
+, console_pattern,
+> self.panic_message)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern(self=
+, 'Run /sbin/init as init
+> process',
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.panic_message)
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Wait for login prompt and l=
+ogin as root (no password in
+> buildroot)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wait_for_console_pattern(self=
+, 'login:', self.panic_message)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exec_command_and_wait_for_pat=
+tern(self, 'root', '#',
+> self.panic_message)
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # e1000e is connected to sock=
+et 1, disable the CPU on socket
+> 1
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command("echo=
+ 0 >
+> /sys/devices/system/cpu/cpu1/online")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt CPU1_STATE=3D$(cat
+> /sys/devices/system/cpu/cpu1/online)")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command_check=
+_fail("[ $CPU1_STATE -eq 0 ]")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # RX, TX interrupts to chip/c=
+pu 2 & 3 respectively
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt RX_IRQ=3D$(awk '/eth0-rx/ {print $1}'
+> /proc/interrupts | tr -d ':')")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt TX_IRQ=3D$(awk '/eth0-tx/ {print $1}'
+> /proc/interrupts | tr -d ':')")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command("echo=
+ 2 >
+> /proc/irq/$RX_IRQ/smp_affinity_list")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command("echo=
+ 3 >
+> /proc/irq/$TX_IRQ/smp_affinity_list")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Capture interrupt counts be=
+fore generating traffic
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt RX_BEFORE=3D$(awk '/eth0-rx/ {print $3}'
+> /proc/interrupts)")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt TX_BEFORE=3D$(awk '/eth0-tx/ {print $4}'
+> /proc/interrupts)")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Wait up to 15 seconds for e=
+th0 link to come up
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "c=3D=
+0; while ! ip addr show eth0 | grep 'inet 10.0.2'; do
+> "
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "slee=
+p 1; c=3D$((c+1)); [ $c -gt 15 ] && break; done")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command_check=
+_fail(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "ip a=
+ddr show eth0 | grep 'inet 10.0.2'")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Generate network traffic to=
+ trigger remote interrupts
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Ping QEMU's user-mode netwo=
+rk gateway (10.0.2.2)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command("ping=
+ -W2 -c5 10.0.2.2")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Show final interrupt counts=
+ to verify remote interrupts
+> occurred
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command("cat =
+/proc/interrupts | grep eth0")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Verify interrupt counts inc=
+reased (whether interrupts were
+> delivered)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt RX_AFTER=3D$(awk '/eth0-rx/ {print $3}'
+> /proc/interrupts)")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command(
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "expo=
+rt TX_AFTER=3D$(awk '/eth0-tx/ {print $4}'
+> /proc/interrupts)")
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Check that interrupt counts=
+ increased
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command_check=
+_fail("[ $RX_AFTER -gt
+> $RX_BEFORE ]")
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.shell_exec_command_check=
+_fail("[ $TX_AFTER -gt
+> $TX_BEFORE ]")
+> +
+> =C2=A0=C2=A0=C2=A0=C2=A0 def test_linux_big_boot(self):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.set_machine('powern=
+v')
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.vm.add_args('-smp',=
+ '16,threads=3D4,cores=3D2,sockets=3D2')
 
-> 
->>
->> If SNP_EN remains set (and Linux can't clear it since it is
->> "Write-1-only" bit), then a subsequent snp_prepare() will skip setting
->> SYSCFG if it sees SNP_EN on local CPU.
->>
->> It can so happen that we enable hotlpug at shutdown, CPUs come online
->> without setting SNP_EN in SYSCFG, subsequent snp_prepare() runs on a CPU
->> where SNP_EN is still set and skips configuring it for the CPUs that
->> don't have it set, and we'll be in a pickle still.
->>
->> The comment above that bailout saying "this can happen in case of kexec
->> boot" makes me believe that SNP_EN remains set until a full system
->> reset.
->>
->> The only safe way to do this is to ensure all possible CPUs are online
->> during snp_prepare() and do snp_enable() regardless of whether local CPU
->> has SNP_EN or not.
->>
->> Am I missing something?
->>
-> 
-> The piece that makes the early bailout safe is the disable this patch adds:
-> hotplug is disabled while SNP is active, so the online set can't change under an
-> active SNP. snp_prepare() already requires online == present, so at a successful
-> init every present CPU gets SNP_EN,
+Here's some of the log
 
-How is this enforced? AFAICT, on_each_cpu(snp_enable) will only covers
-the online CPUs and there could be CPUs that have been offlined before
-that right?
+2026-06-25 21:21:41,820: --- 10.0.2.2 ping statistics ---
+2026-06-25 21:21:41,820: 5 packets transmitted, 5 packets received, 0%
+packet loss
+2026-06-25 21:21:41,820: round-trip min/avg/max =3D 0.547/2.077/7.575 ms
+2026-06-25 21:21:41,823: #
+2026-06-25 21:21:41,826: cat /proc/interrupts | grep eth0
+2026-06-25 21:21:41,874: 131:          0         26          0  PNV-
+PCI-MSI 2416443392 Edge      eth0-rx-0
+2026-06-25 21:21:41,875: 132:          0          0         18  PNV-
+PCI-MSI 2416443393 Edge      eth0-tx-0
+2026-06-25 21:21:41,875: 133:          0          0          0  PNV-
+PCI-MSI 2416443394 Edge      eth0
+2026-06-25 21:21:41,877: #
+2026-06-25 21:21:41,881: export RX_AFTER=3D$(awk '/eth0-rx/ {print $3}'
+/proc/interrupts)
+2026-06-25 21:21:41,920: #
+2026-06-25 21:21:41,926: export TX_AFTER=3D$(awk '/eth0-tx/ {print $4}'
+/proc/interrupts)
+2026-06-25 21:21:41,969: #
+2026-06-25 21:21:41,971: export __FAIL_MSG=3DFail
+2026-06-25 21:21:41,971: #
+2026-06-25 21:21:41,974: [ $RX_AFTER -gt $RX_BEFORE ] || echo
+$__FAIL_MSG
+2026-06-25 21:21:41,974: #
+2026-06-25 21:21:41,976: export __FAIL_MSG=3DFail
+2026-06-25 21:21:41,976: #
 
-> and because hotplug is then disabled none
-> can leave or rejoin without it. So whenever the bailout is hit with SNP active,
-> every online CPU already has SNP_EN:
-> 
->   - kexec: SNP_EN is already set on all CPUs by the previous kernel.
+Maybe we can design this __FAIL_MSG, that doesn't need to interfere
+with stdout directly. But This is alright currently.
 
-There is a catch here: you can have offline CPUs during the previous boot
-(say you have maxcpus=8 in your cmdline), and then you kexec with a different
-kernel / cmdline that brings online a bunch more CPUs.
 
-SNP_EN will only be set for a subset of then with the legacy SNP_INIT and
-if snp_prepare() runs on those legacy CPUs, you still skip setting it for
-the ones that don't have SNP_EN set.
+Tested-by: Shivang Upadhyay <shivangu@linux.ibm.com>
+Reviewed-by: Shivang Upadhyay <shivangu@linux.ibm.com>
 
-Is that case covered somehow or is it a non-issue?
-
->   - re-init while SNP is still active (e.g. after a legacy SNP_SHUTDOWN that
->   leaves SNP_EN set): hotplug was disabled the whole time, so the online set is
->   unchanged and all of them still have SNP_EN.
-> 
-> The only way a CPU can be online without SNP_EN is when SNP is not active --
-> i.e. after an SNP_INIT failure, where this patch re-enables hotplug. That is
-> deliberately the same as the behavior before this support existed (hotplug was
-> never disabled then), and it is benign: SNP_EN only gates RMP checks, the RMP
-> itself is initialized by SNP_INIT, so on a failed init the RMP is all-zeroes --
-> every entry is in the default HV-owned state, no page is assigned, no check ever blocks
-> and snp_initialized stays false, so no SNP guest can be created.
-> Nothing is enforced and nothing is protected.
-> 
-> So I've kept snp_prepare()'s existing bailout / snp_enable() behavior unchanged;
-> what this patch adds is disabling hotplug while SNP is active, which is what
-> actually closes the window (a CPU coming online without SNP_EN while SNP is
-> live). That window -- and the SNP_EN-stays-set-on-failure situation -- already
-> exist in today's code, this patch constrains the dangerous (active) case and
-> otherwise matches current behavior.
-
-Ack! Just that one small bit up above bothers me but other than that,
-doing it in snp_prepare() should be good.
-
-This is all new to me so thanks a ton for answering my queries.
-
-> 
-> (On the v9 placement specifically: I'm moving the disable into snp_prepare()
-> ahead of SNP_EN in the next version; in v9 it sits after SNP_INIT, which leaves
-> the window you originally pointed out.)
--- 
-Thanks and Regards,
-Prateek
-
+Regards
+~Shivang.
