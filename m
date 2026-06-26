@@ -1,388 +1,132 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE2F303CAE
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 18:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A95478F2F;
+	Fri, 26 Jun 2026 19:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782497562; cv=none; b=H9xUx2A5Lh8+/wCpizwqlqaTT8fkyrXUxy/Nm3o2RF8i8b61ovC/SQtGDHqAouB70EKBrCo4yZUIGC3qTCIaww2odMBfhXawY7oF+4HMmjgYickEzC6mifpKaR49lQPsI9c2pJgnr1UPDvXGvzPItOlRJuvs99dXVoylA4NsxP4=
+	t=1782500614; cv=none; b=JaZbmRDsZ6shVSgxzDlT4v5srXQUQJrCw9Kpuw1E+dYj+nRNr+jxfm93PkO8KmJ9myYHcEkGOjkmWySN8nR+td8LRDWUrGwjJRKgEsufL2adhqQDaSLBzb05FXA6KutV+rsCGcD68ovkDol0HaURJm86AKIWWv67hZbUduyuV3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782497562; c=relaxed/simple;
-	bh=fs3A10aDXdMl8Lfh2BaU4hraJiP4la1QfA/aQRyXM7M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sYhqeGpOWXyHTTWRSQ+C6MmEKGBn9oEHu0BYg8kh/3JCRDqsKVnqLeq7mRMQh9ShiAZxSMNFEsVvvBw5+ex3SGgeMc+cXfbi1VyjOVkfnVrol7DbGtFsmfHU5koAk7GVlUh6kI8fWbPXEnva7aroA42WDhcaUZbCjW3G24KJegQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PMzuw1UT; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782500614; c=relaxed/simple;
+	bh=xgD+moCIk2s9p64pqwR5V1lvrLbSEMq1BO1aJJ5fuAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qwdr3UcRB5CEugn3LNBtMlbi0qE/Ce9LjL1kL4LQCb7TT6SsuZYTg0uh88H+O1P0KPaXxsHzzlLqlJbjqlSKhN56L+xDa6y8DXxNFQ50ldNxfjrpWAKbLo4Oci3BafhT077nA26lhqrZSHy7Wqud2imqToQeN/2+Fv5XXHyR0mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tw9iWJ3A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PMzuw1UT"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36d8719bae6so1038752a91.3
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:12:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782497559; x=1783102359; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gLVK1WZR0iDfScSkTqtApjN1rB6pMsaHoZ3NQbVYEXo=;
-        b=PMzuw1UTK8wo0LXUQBcRkUpB3t5nuO69BtK9A3MdeiwK6QP+1bF5LgaRl9PA6b6ZKj
-         E4d2PbalE5Dn55VV/Vfl0y2TLkeXxa9zf42BiKVf16PqtJncKji+3ubhnzoi7sW+yiza
-         OKkYa22e/qnKkgS6OnaxXrn1iD1/tWl6OU+8tGV9AQdUXfALK295ro7QLASJYTE3p7q5
-         hScKBbj1v2d+W0WxBWLkSuVJpPdJGyBxps+wcoyjRJhOg42NNDnDo7ttK443HKohjblm
-         vtGvzgJm4GRc/mye9JZREED8tCbZReKiqJSwk8G0py0eZ8GM7GlGZ2y/zmcMa4BCHD66
-         rqUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782497559; x=1783102359;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gLVK1WZR0iDfScSkTqtApjN1rB6pMsaHoZ3NQbVYEXo=;
-        b=bWPaAOIbaQy2Q3ZfmxAHeSFBSNA1Si5zWcOJnQtwbDVp5w5uD7w1JiJfZ7izzX4+xM
-         o9JRofJmYEqW5QcmF6IcTIcn7vR6hC5jRiuxcHOYWmgADMO87LLBZt1xxUTAeMsRkjq+
-         QhnMK7kJZ5ZIH+SIiLdEDghe4Io3FG9ej+TajYAlGQ1CkdT/n4NFHKhbokRA7cDShWBV
-         vNLk06rLIrDYIZfv96kv2YPbMZCp7OVOfWbLGJci0tPloNPSY5LQqMZO51h6TPtWHXnc
-         4VJOmu96qIXbAFbfrITF2kFt4pBTUTSJqkwvER1qkuPYCu2nWrrp1kO0I28cBYPDMzI1
-         tM/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoM2udC7WHDdHZJX/MjGWZ2bLaz/rRFBVwNOkB039iB2k7Ot6E6f6BJCsVb1cmrgL3t6Ks=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq9l5aEdI6FU+J6boz48R3k5WSIZDRBA199+rcaCc+ytfihQYN
-	wmW5g61NddLNI4ZmBxgYiVDBkLO79aR9L3Cxh/lIgqf1L0PXqSDnwHKd/RqgsaJg7b/GJyaaS53
-	iIOCf4g==
-X-Received: from pgu9.prod.google.com ([2002:a63:1449:0:b0:c85:88eb:3619])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ccc:b0:37d:f614:dbf
- with SMTP id 98e67ed59e1d1-37dfa17332amr6876722a91.10.1782497558938; Fri, 26
- Jun 2026 11:12:38 -0700 (PDT)
-Date: Fri, 26 Jun 2026 11:12:38 -0700
-In-Reply-To: <5838fbf9c799d135b06ba61b7879a231e314f7b5.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tw9iWJ3A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10911F000E9;
+	Fri, 26 Jun 2026 19:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782500612;
+	bh=TyFl9GWmXNLl+QLk0gYGvkiIPobdLVhGYz9j6ia1saU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Tw9iWJ3AW/qVhYN7KGc/ZTiaZzg/3oECz+DiP4VJfyn3QB4fPWwrgNuAJIGNxs+V2
+	 gQMOySYXH+qHCB0JOy7ShmXUDJ864WlfuAmNSW4eC0jw1v5I1DDn/MBUmLRwI+Zmn+
+	 Tvx68PQugVu+ljQ23TFRCcjPeBFQjWYKgQD+yv+Dj0NPAyY7KU1ce1064Yq2UJQHNh
+	 7PCVds29NYJupkBRTBhXtnaGXQquqVp6AN7Xp9L5f6IxL0XEVKpAcZfxaTF8hC29A2
+	 GZgsbwtmAy/ydDOu69TLhC+XE3g2v+Sxjbre9Fp/7W+UikRELgut2FYBWl4v+dv3IH
+	 ZX2QubJjR77jQ==
+Date: Fri, 26 Jun 2026 12:03:25 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Steven Rostedt <rostedt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Yury Norov <yury.norov@gmail.com>, linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-nfs@vger.kernel.org, kvm@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH v4 2/2] tracing: Remove trace_printk.h from kernel.h
+Message-ID: <20260626190325.GA3913132@ax162>
+References: <20260625104007.041432666@kernel.org>
+ <20260625104402.210473477@kernel.org>
+ <20260625234158.GA261868@ax162>
+ <20260626045119.659d1e6b@fedora>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260625223623.3376478-1-seanjc@google.com> <20260625223623.3376478-6-seanjc@google.com>
- <c574f7c48c2e4805fb63f38e7d31240ff4497aff.camel@infradead.org>
- <aj6KireObWQXDF-8@google.com> <5838fbf9c799d135b06ba61b7879a231e314f7b5.camel@infradead.org>
-Message-ID: <aj7BFl5gzyS9n6zZ@google.com>
-Subject: Re: [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU ID
- for singleshot timer hypercalls
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
-	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260626045119.659d1e6b@fedora>
 
-On Fri, Jun 26, 2026, David Woodhouse wrote:
-> On Fri, 2026-06-26 at 07:19 -0700, Sean Christopherson wrote:
-> > On Fri, Jun 26, 2026, David Woodhouse wrote:
-> > > On Thu, 2026-06-25 at 15:36 -0700, Sean Christopherson wrote:
-> > > > Hoist the checks on the Xe
->=20
-> +	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
-> > > > +		return false;n vCPU ID when handling set_singleshot_timer and
-> > > > stop_singleshot_timer hypercalls out of their individual case-state=
-ments,
-> > > > so that both checks on the ID are in common code.=C2=A0 kvm_xen_hca=
-ll_vcpu_op()
-> > > > is already doubly committed to handling only singleshot timer hyper=
-calls,
-> > > > and even if that were to change in the future, the function could s=
-imply
-> > > > be renamed and turned into a helper specifically for timer hypercal=
-ls.
-> > > >=20
-> > > > No functional change intended.
-> > >=20
-> > > Makes sense. In fact these hypercalls are the *only* VCPUOP_xxx calls
-> > > for which Xen has that restriction (otherwise it would be pointless t=
-o
-> > > have the vcpu argument at all). Which is why we did the check in the
-> > > individual cases.
-> >=20
-> > Sashiko pointed out that the patch is broken as-is, because the effecti=
-ve
-> > "default" case will reject hypercalls if the vcpu_id doesn't match inst=
-ead of
-> > routing those to userspace.=C2=A0 The easiest way to deal with that is =
-to pull the
-> > cmd check out of the switch-statement, e.g.
-> >=20
-> > 	struct vcpu_set_singleshot_timer oneshot;
-> > 	struct x86_exception e;
-> >=20
-> > 	if (cmd !=3D VCPUOP_set_singleshot_timer &&
-> > 	=C2=A0=C2=A0=C2=A0 cmd !=3D VCPUOP_stop_singleshot_timer)
-> > 		return false;
-> >=20
-> > 	if (!kvm_xen_timer_enabled(vcpu))
-> > 		return false;
-> >=20
->=20
-> You dropped the=20
->=20
-> +	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
-> +		return false;
->=20
-> part. Although that's kind of fair since I did ask you to put this
-> patch first, before that.
+On Fri, Jun 26, 2026 at 04:51:19AM -0400, Steven Rostedt wrote:
+> On Thu, 25 Jun 2026 16:41:58 -0700
+> Nathan Chancellor <nathan@kernel.org> wrote:
+> 
+> 
+> > The following diff resolves it for me, should I send it as a separate
+> > patch or do you want to just fold it in with a note?
+> > 
+> > diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+> > index 621566345406..2301a701ffbb 100644
+> > --- a/include/linux/lockdep.h
+> > +++ b/include/linux/lockdep.h
+> > @@ -10,6 +10,7 @@
+> >  #ifndef __LINUX_LOCKDEP_H
+> >  #define __LINUX_LOCKDEP_H
+> >  
+> > +#include <linux/instruction_pointer.h>
+> 
+> Ah, so the reason for this breakage is because lockdep was relying on
+> instruction_pointer.h, that just happened to be included in kernel.h
+> via trace_printk.h.
 
-Heh, it's still there, I just didn't include it in this snippet.
+Correct.
 
-> But really, while this rearrangement you propose would work... this
-> patch was intended as a cosmetic cleanup, and this seems less pretty
-> than what we had before.
+> This is a separate issue, so it should be a separate patch. I'll add it
+> as patch 1 of this series.
 
-I disagree.  The old code uses a common check for kvm_xen_timer_enabled(), =
-which
-is confusing and actively dangerous, as evidenced by my goof, because it's =
-easy
-to miss that the only reason KVM can bail early for !kvm_xen_timer_enabled(=
-) is
-because it returns false.  Punting hypercalls that are never accelerated by=
- KVM
-because some other hypercall happens to be disabled is nasty.
+Sounds good, thanks!
 
-> How about keeping your patch 4 which just returns false for invalid
-> vcpu_id, and dropping patch 5 completely? Or if you really want to
-> tackle it, start with this...
->=20
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
-> @@ -1745,8 +1745,10 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
->                                                  params[1], &r);
->                 break;
->         case __HYPERVISOR_vcpu_op:
-> -               handled =3D kvm_xen_hcall_vcpu_op(vcpu, longmode, params[=
-0], params[1],
-> -                                               params[2], &r);
-> +               if (params[0] =3D=3D VCPUOP_set_singleshot_timer ||
-> +                   params[0] =3D=3D VCPUOP_stop_singleshot_timer)
-> +                       handled =3D kvm_xen_hcall_vcpu_op(vcpu, longmode,=
- params[0], params[1],
-> +                                                       params[2], &r);
+> Can you send me the config you used. This didn't trigger in my tests.
 
-But then kvm_xen_hcall_vcpu_op() is a misleading name, and this also splits=
- the
-checks on @cmd.  E.g. even with this:
+It is a plain allmodconfig, for example on arm:
 
-		if (params[0] !=3D VCPUOP_set_singleshot_timer &&
-		    params[0] !=3D VCPUOP_stop_singleshot_timer)
-			break;
+  $ make -skj"$(nproc)" ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- allmodconfig lib/test_context-analysis.o
+  In file included from include/linux/local_lock_internal.h:8,
+                   from include/linux/local_lock.h:5,
+                   from lib/test_context-analysis.c:9:
+  include/linux/local_lock_internal.h: In function 'local_lock_acquire':
+  include/linux/lockdep.h:541:87: error: '_THIS_IP_' undeclared (first use in this function)
+    541 | #define lock_map_acquire(l)                     lock_acquire_exclusive(l, 0, 0, NULL, _THIS_IP_)
+        |                                                                                       ^~~~~~~~~
+  include/linux/lockdep.h:509:88: note: in definition of macro 'lock_acquire_exclusive'
+    509 | #define lock_acquire_exclusive(l, s, t, n, i)           lock_acquire(l, s, t, 0, 1, n, i)
+        |                                                                                        ^
+  include/linux/local_lock_internal.h:46:9: note: in expansion of macro 'lock_map_acquire'
+     46 |         lock_map_acquire(&l->dep_map);
+        |         ^~~~~~~~~~~~~~~~
+  include/linux/lockdep.h:541:87: note: each undeclared identifier is reported only once for each function it appears in
+  ...
 
-		handled =3D kvm_xen_hcall_single_shot_timer(vcpu, longmode, params[0],
-							  params[1], params[2], &r);
-		break;
+I also reproduced it on top of allnoconfig:
 
-Then kvm_xen_hcall_single_shot_timer() either looks flawed if it does:
+  $ cat allno.config
+  CONFIG_CONTEXT_ANALYSIS_TEST=y
+  CONFIG_DEBUG_KERNEL=y
+  CONFIG_DEBUG_LOCK_ALLOC=y
+  CONFIG_EXPERT=y
+  CONFIG_MMU=y
+  CONFIG_RUNTIME_TESTING_MENU=y
 
-	if (cmd =3D=3D VCPUOP_set_singleshot_timer) {
-		...
+  $ make -skj"$(nproc)" ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- KCONFIG_ALLCONFIG=1 clean allnoconfig lib/test_context-analysis.o
+  <same error as above>
 
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-	} else {
-		kvm_xen_stop_timer(vcpu);
-	}
-
-because it doesn't explicitly check that cmd is set_singleshot_timer or
-stop_singleshot_timer.  We could do:
-
-	if (cmd =3D=3D VCPUOP_set_singleshot_timer) {
-		...
-
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-	} else {
-		WARN_ON_ONCE(cmd !=3D VCPUOP_stop_singleshot_timer);
-
-		kvm_xen_stop_timer(vcpu);
-	}
-
-but that's rather ridiculous given that there's exactly one path to this co=
-de.
-
-IMO, this:
-
-	struct vcpu_set_singleshot_timer oneshot;
-	struct x86_exception e;
-
-	if (cmd !=3D VCPUOP_set_singleshot_timer &&
-	    cmd !=3D VCPUOP_stop_singleshot_timer)
-		return false;
-
-	if (!kvm_xen_timer_enabled(vcpu))
-		return false;
-
-	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
-		return false;
-
-	/*
-	 * Reject the hypercall if the guest is trying to start/stop the timer
-	 * for a different vCPU.  Xen per-vCPU hypercalls take a target vCPU as
-	 * a common parameter, as all per-vCPU hypercalls *except* single-shot
-	 * timer updates can be cross-vCPU.
-	 */
-	if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-		*r =3D -EINVAL;
-		return true;
-	}
-
-	if (cmd =3D=3D VCPUOP_set_singleshot_timer) {
-		/*
-		 * The only difference for 32-bit compat is the 4 bytes of
-		 * padding after the interesting part of the structure. So
-		 * for a faithful emulation of Xen we have to *try* to copy
-		 * the padding and return -EFAULT if we can't. Otherwise we
-		 * might as well just have copied the 12-byte 32-bit struct.
-		 */
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, timeout_ab=
-s_ns) !=3D
-			     offsetof(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, timeou=
-t_abs_ns) !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, flags) !=
-=3D
-			     offsetof(struct vcpu_set_singleshot_timer, flags));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, flags)=
- !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, flags));
-
-		if (kvm_read_guest_virt(vcpu, param, &oneshot, longmode ? sizeof(oneshot)=
- :
-					sizeof(struct compat_vcpu_set_singleshot_timer), &e)) {
-			*r =3D -EFAULT;
-			return true;
-		}
-
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-	} else {
-		kvm_xen_stop_timer(vcpu);
-	}
-
-	*r =3D 0;
-	return true;
-
-is logically more sound and easier to read than what we currently have:
-
-	struct vcpu_set_singleshot_timer oneshot;
-	struct x86_exception e;
-
-	if (!kvm_xen_timer_enabled(vcpu))
-		return false;
-
-	switch (cmd) {
-	case VCPUOP_set_singleshot_timer:
-		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-			*r =3D -EINVAL;
-			return true;
-		}
-
-		/*
-		 * The only difference for 32-bit compat is the 4 bytes of
-		 * padding after the interesting part of the structure. So
-		 * for a faithful emulation of Xen we have to *try* to copy
-		 * the padding and return -EFAULT if we can't. Otherwise we
-		 * might as well just have copied the 12-byte 32-bit struct.
-		 */
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, timeout_ab=
-s_ns) !=3D
-			     offsetof(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, timeou=
-t_abs_ns) !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, flags) !=
-=3D
-			     offsetof(struct vcpu_set_singleshot_timer, flags));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, flags)=
- !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, flags));
-
-		if (kvm_read_guest_virt(vcpu, param, &oneshot, longmode ? sizeof(oneshot)=
- :
-					sizeof(struct compat_vcpu_set_singleshot_timer), &e)) {
-			*r =3D -EFAULT;
-			return true;
-		}
-
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-		*r =3D 0;
-		return true;
-
-	case VCPUOP_stop_singleshot_timer:
-		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-			*r =3D -EINVAL;
-			return true;
-		}
-		kvm_xen_stop_timer(vcpu);
-		*r =3D 0;
-		return true;
-	}
-
-	return false;
-
-especially once the "vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID" che=
-ck comes
-along, because while this technically works, it's even more confusing becau=
-se
-vcpu->arch.xen.vcpu_id isn't necessarily check for the other ops, e.g. if @=
-vcpu_id
-targets a different vCPU.
-
-	struct vcpu_set_singleshot_timer oneshot;
-	struct x86_exception e;
-
-	if (!kvm_xen_timer_enabled(vcpu))
-		return false;
-
-	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
-		return false;
-
-	switch (cmd) {
-	case VCPUOP_set_singleshot_timer:
-		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-			*r =3D -EINVAL;
-			return true;
-		}
-
-		/*
-		 * The only difference for 32-bit compat is the 4 bytes of
-		 * padding after the interesting part of the structure. So
-		 * for a faithful emulation of Xen we have to *try* to copy
-		 * the padding and return -EFAULT if we can't. Otherwise we
-		 * might as well just have copied the 12-byte 32-bit struct.
-		 */
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, timeout_ab=
-s_ns) !=3D
-			     offsetof(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, timeou=
-t_abs_ns) !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, timeout_abs_ns));
-		BUILD_BUG_ON(offsetof(struct compat_vcpu_set_singleshot_timer, flags) !=
-=3D
-			     offsetof(struct vcpu_set_singleshot_timer, flags));
-		BUILD_BUG_ON(sizeof_field(struct compat_vcpu_set_singleshot_timer, flags)=
- !=3D
-			     sizeof_field(struct vcpu_set_singleshot_timer, flags));
-
-		if (kvm_read_guest_virt(vcpu, param, &oneshot, longmode ? sizeof(oneshot)=
- :
-					sizeof(struct compat_vcpu_set_singleshot_timer), &e)) {
-			*r =3D -EFAULT;
-			return true;
-		}
-
-		kvm_xen_start_timer(vcpu, oneshot.timeout_abs_ns, false);
-		*r =3D 0;
-		return true;
-
-	case VCPUOP_stop_singleshot_timer:
-		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
-			*r =3D -EINVAL;
-			return true;
-		}
-		kvm_xen_stop_timer(vcpu);
-		*r =3D 0;
-		return true;
-	}
-
-	return false;
+-- 
+Cheers,
+Nathan
