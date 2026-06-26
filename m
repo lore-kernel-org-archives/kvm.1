@@ -1,305 +1,244 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011066.outbound.protection.outlook.com [52.101.62.66])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8F539282C;
-	Fri, 26 Jun 2026 02:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782441534; cv=fail; b=twPOTkw4aoFVfnMJbtksLt1aJTqssrQ4Pvl0iWeEHBXW/ZB9jBH9bndzaakzDHNrCJ8g3Ln9bJ5LzqlnmOdrwGaVzwnnHi1FpuR7TGPpu5Vev+Ei9f10a4iwX2Y9B80DOH+j0vau0yxs1/7lvAQBxKpdbrWsE9f/ZmrlcWsexNg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782441534; c=relaxed/simple;
-	bh=xP4RkgMqooXMIEVG1ZHqWl7BO8G6nJqeolhPDgu0LFA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uwQzPuI/t3QMjQJ/QGBOIPGY7v3ddcErRhMa4OFG3z52h+UfSWf4e9XWNoTNX66yGyjMGSvpZmlkUH+5F8LrFpS4O/SRRPWJ8PSBevJoEi7r2VQa3AAO93fghfSx3y58/8m8ATaxV1G6ThUflfEVBWy6tiX5wogLxB/kJK0hkdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0AtJxIW8; arc=fail smtp.client-ip=52.101.62.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD8331CA4E
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 02:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782442412; cv=none; b=igLy+zQ2KErpnT330iOndRBs4rnqNXQVYjNH/slfPJjKIRmh3MVxIwUnXmaG+IJBavwL+jszpo5Mq2qLapFUndoq5mGmY/hmfpSdiI2XzcMIhnRTEDuJ+EincT637l3o4p9HehHpdmGXLniKmJhjbU9ZS6mTFJX5GYfpQIr7vBE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782442412; c=relaxed/simple;
+	bh=gV1aOJZoZjxm0TX13e5rocssGvwodffJDsO8CKFxeEM=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Wvnmt4MmL0CO07U0RTRwEheg9sBWmv5OMQbokMjl6loeT61fjQ7U0Krt5AqFW4Jyob6fW5tRlW880SN1Pr/c+aNssB3j6Z668vEUyfxXDV3/0lN9l8wuhkHE4W4gZ32RKxVpd+q7E9cuwcprOLCFCRSt4naaVHG6xtVo3wnHEdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b6aaERhY; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0AtJxIW8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iFjl1cMqkhTKDyWecLt8pgIT6yh1/o5YJVVY05vrmL2i4KJxvh/37vZ1kfAz15GdtWy7wkQ0LOQwFo8FXCGnwADCNLJRWdRSONi5nLm1eti4cjUKaCd8hycJ7qVU3fDujsRFq3vWEVKxBuXeRB6LRyUpndFE9+r1mG6hWCZmu4XiuSAj1/ss1QmD3HsDhuJ6WtMM4rBAbrXKYh10U9f8JoYKB/4sUDEKy0p6C3l/Uv3u2LRYTvhxECWnT0FHlZdryIfsTfNFLy2fWBtXnKe3xavxycdaJE0N6OzaZ0utlhb9h5nqYPJ/r0BkrNYa+HcCIgEXnjUpnG4BbQ2L9bJveA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WlevGwQtcfFfHQF749V3+EY5pgaKBXNH5bySVOTQpso=;
- b=rOA1jtxSKO5z76OPUI5a5HnxjvZztv4RvLQrVgv5kktQeMQ8cwDl4a1ciwvcWHpDO7XnFemiNhboazOj9SFXZODGiF10AM6Ql1Y36bczkD1XngVCc9YCL25VtzqJAGUFaEb8X53KZWN3vZ/hn0jqpe4Cmzf7RACvh1BxkKCoJbBC0GZZfnuDH6Hmt7BRHLc1CqPTkITnXQGYHfJCOQnngNGSO3ceVF0/Eeh6t8zioFV+j7HrCOA9DThEViahsdOxxDpZv0O4XOIqouZA4CA9ANINCvJIZf4h//f9p1vWNyueaY4eRv4y7c74B82yP9i0G0FmN9uAHIShxt/9xJ9vqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WlevGwQtcfFfHQF749V3+EY5pgaKBXNH5bySVOTQpso=;
- b=0AtJxIW8E6df2AO4d7fLNNWOcz1sUKAISVF6cl+4lENfeaxtCZ8NOaB/seHIJk7BaztxWkiZq3UBYfFLyN5BIRDVzVhrbgrMPP/+Sw4PZEJItYRfLVdde82F0tK0lMVXLy2iAK3P0b1btdc5dk7cuMVDEU6ufXGbJUdn1FAiJ1A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by IA1PR12MB7661.namprd12.prod.outlook.com (2603:10b6:208:426::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Fri, 26 Jun
- 2026 02:38:47 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0159.012; Fri, 26 Jun 2026
- 02:38:47 +0000
-Message-ID: <b9777de5-a6fa-418c-92d2-89c095e91837@amd.com>
-Date: Thu, 25 Jun 2026 21:38:40 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: K Prateek Nayak <kprateek.nayak@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, ackerleytng@google.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
- <898e378a-cf7c-4310-b439-e28ec0a71338@amd.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <898e378a-cf7c-4310-b439-e28ec0a71338@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR13CA0035.namprd13.prod.outlook.com
- (2603:10b6:610:b2::10) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b6aaERhY"
+Message-ID: <d09a90f7-94b1-4a2f-bcea-d42802d2353e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782442408;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I/kmCUr2FMukFT4QP+23bPCDsXUixLrGDX4iwtE8M1k=;
+	b=b6aaERhYcRMl2N43kzzCgYUUwU+ZjJGQIsa3oTCwdNbv9eV+kV34dAAD8gixRmHwP8nvTS
+	MVealMlQKavylimNZmBGNbF6QnykrdEYEKaa4UaEFVNNJ6nf/vC7cg4imadBX4r8ALGw88
+	A/y6nqd7FxpkJlKPrz2nt1pmeTgg78g=
+Date: Fri, 26 Jun 2026 10:53:19 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|IA1PR12MB7661:EE_
-X-MS-Office365-Filtering-Correlation-Id: 131ebb63-c9fe-4860-c625-08ded32c0bb7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|18002099003|22082099003|4143699003|56012099006|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	AvdlQENNHTK5q5Ray9YWmKALg23tDwDQUWM2GCfetMJ8XdapKS73wmu9zrAZtl+10F+Q0mUKDw9X6oRAw6d41EquQ+pLBIB9K3TObdIXETjnc1hq12c3fMXUCwxywtHyrPsQhF+m99cHW9uZp0asddfaRpKsx2LyCjaqinQ1MPtmDLKtUvfahG+4uBrGZi9thOADY4rb4LSJAwA6/triVCItDxDcvn6JJOGK2eSXadjK/gGnoP2q8VteZD+el34litxRiiVPDlF+oEcx5ebiCGtwxASO3/U5+rMbeGZhHbeJzX2fhol0kTkdJQ13gLJ5QPRjQkLrzQRrCYXFi5oFlq1sa0FhZWC8/SYQcop6SlfvnbvbN1jzEEJHF2Scm5/hpN2pNBBZevTWLzOKqciFhH2ZAWFs7AaJj03oYEc6S0K6AEYE8/Kaz9teNUTNW5xZvzMS30/C0JBBjHqO/nOve/CiYtJuVW+HODON2DnuE/6xTFWxB3KDNGN9hVsxtCoAtro08wk7EIzLo76glhT1pPv+MelMuP26F8RBIkow46TWxzBjSpPvyAWxyfOokS4YOIn8HpDc6CwxIafizBqp//lUaLdiADUOjlzBn8SENoBaqU7yXbt55cX9ctPaLXWwIgmBEdpmlzPSftbqhMC39KIig1mLwHZZ8/ECrkVqTAw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WUdIdjVZRzZCaW5zcHpaTm1ITUlJcldjU2pVTlZJN1J2L002R2NMUDJxRWRq?=
- =?utf-8?B?Z3NUMGtiRVpSL0VtdnRQVjU1UEFqa3MvMWRPMHdvc3VlMFovN3p0QlZoNDgy?=
- =?utf-8?B?VGVvVWtzcEYrajJDNFpLZWh5TEJTZGUycENZa3lMSjNiYlRMK1E3OVVWdFg1?=
- =?utf-8?B?QllJK0twVzloWG4vaHFZNTVuTjdkNWtnd3pkanROdVNOeER0anQrNExnMnhx?=
- =?utf-8?B?ZTNvRUNUeXZYVFZMNE9DQ2ZQdnpGZXQxMHI4RGpWdEhYWTk4ejJ0d2hGK0di?=
- =?utf-8?B?UzcyM0pYMU1IclZGL0ZRU0RVelZTNWI0bW5DWkJuOXkyNlpQTXdsVE5HTFhD?=
- =?utf-8?B?ZDViWkd6VENGMkM3a1laOXN0NWJyVi9WRjBnYzVDMTk0WlZMTjRMSURQY3lO?=
- =?utf-8?B?MkNmaSthM0hVRnlRSVU2VEN6Z0pXWGNFMW84V1Q3aTZ0bVBheHlWQm9IQXp6?=
- =?utf-8?B?OEhla002TVdCWk9yNWYrb0hVTkNnRndFeDNSWHVpZjJPSklRUVZ0VjNWeGcy?=
- =?utf-8?B?bnZKWFc1alJuRjlYZWVzYllUR3BVa3JtdnZvZ3FyN2tGV2N6UUNxQTUvVWtl?=
- =?utf-8?B?aEkrR3YxK1RWdFVoL3FTNmVXZUI4dk9aSFprM01aVEdPNURtNkZWZitBdHc5?=
- =?utf-8?B?Tlo3OGIzL3AxUFRhN1BUY0hzRU5zN1N0WXg1ak1Nb0lSVkRSQllkdWJkc05u?=
- =?utf-8?B?dHFheW1OckoyeFQ0elE5aWI2b0NJQWdicGM3WFlFaldLSGYvRlhtbTY1cHRQ?=
- =?utf-8?B?U0htZDJJeThqeHR1RnM0V09QNm5NS3VmQi9vOWVRaXo4QkFFMUZYTWxhZHpB?=
- =?utf-8?B?dVRDTzJMZTQzN1pPVHNMUjlaSC9GbXNYYWNCTFZLdlBSUXdVYXpHYWNXbTEv?=
- =?utf-8?B?ZVA5a0pkZ2JtOER6SFBaQWh5ak8rd0ZOM3o4VFNJZk5DeE9iVkJHUVNtZWxu?=
- =?utf-8?B?M0luVExlQWdzdGkvYUw3ejJOdXIyRjVrMllnNW11N2JYWnBmbmVZcXlRdmlJ?=
- =?utf-8?B?dlNpQ0djNVYySy9vOU44WEVCRllBdmd4alZEeVNSU09XYnBHaUZ5WjZKMlBQ?=
- =?utf-8?B?L2pnK29PWHIvM0Mrb0NyNUo5UkZSLzU2MkJEZVorU01QVUdSRHVJcWJqakVD?=
- =?utf-8?B?ZFRrdGxTZkljNnZnbXBtUlpKRXVXWHI1NzdQNVFjTmVYWElERXl0QVA4M09H?=
- =?utf-8?B?ZUtZU0wzaWxWVmNKd3VSOVdLWWgwU3ZXWDVCeUN3TXZScko5WWpxRi9OT2lF?=
- =?utf-8?B?VUt0NE1kOE5KUlhHRkxHc3NTVHYvaTRCSlU4bk5hcWJNV0pxTUk5TUpQV0pj?=
- =?utf-8?B?eUIzSTZHa2VsTXgvdEN2VktTNVk2VVFBYi9EMTRQSFl4bDJQMDQyM0lOTE9w?=
- =?utf-8?B?OUZ5ZktJbUFWUkgxYzJwQmdYOXVwQytkTXdzR1YwRnZmQXc1NGpwRGFMeE9K?=
- =?utf-8?B?QWhMaFQ2SWtpMjJ4dEMvWFU0KzlCVms4cWxyaEdQVS9TS1AyaHNVTjZkbEFk?=
- =?utf-8?B?RnRPNHprcUZjbU1ueFMrVDgwZzRaOWthaFlTN09iWGl2LzBrTUp6aUFidlUz?=
- =?utf-8?B?Znl1VHU1Wmw0ZDlYUmhXR2JUeXVrUDZtbWRLYWFoaTJZTDJQaTRJTzh3TUpJ?=
- =?utf-8?B?VzBIRFRZMFVZelUxZFlJU3c3aUN2N2JlZis5VGtFLzgzeFhlelE2RHdNQSsw?=
- =?utf-8?B?NXczbVpqWVZxbXBBOFk0U2ZXeHV1MU0xRnZvRjJ0M1VLV3RiWTF2RmtxclAw?=
- =?utf-8?B?MDRBWDR4eWNoTnNBcWZTTXVvMGoyYXZSV0JzZ0R5ckowQUlFQW5zTlR4U25x?=
- =?utf-8?B?Vzd6TGJkUEVRMFdvUkNodzNGK3lYOU9qVzRUK2l5TDZKRTB2eXBPREF3bkxs?=
- =?utf-8?B?akUvTjdlcVpZcFM4YXNlVEQvTW1wZEo3V0pQR1hDMVlGanRKai9FbVVPNWdI?=
- =?utf-8?B?UVRoT0o5cU9NbmxLVEp3bmNmRVhBc0xYcFBncnZuK25tK2tKL0ZqRGVMamF5?=
- =?utf-8?B?OXJLUFU3NnBoaTRtTzVUZkszS1ZKK3hFQjJRb3hLRlNUbG5NNVMrWHpCaDZr?=
- =?utf-8?B?U2FLMitKV0Y2Rjhkd3FFN1JVL241a2VQVGo0MEdRMVdXdGhLa0sydml5c1Er?=
- =?utf-8?B?M1lRR3lUWmR0cEFva2dvWXhQNW8xSUxuYVRjaHljekxyZHJXaEx2akJFUDhU?=
- =?utf-8?B?Qlk3SjZKdjlXUVZjbHplM2RhRlRZSGNKczBnZmhZRmZvRzNEVUNXZ0pYMHlQ?=
- =?utf-8?B?THBucG1jZnRwd0NYOGUrczY0TGdHWHhxMXkvMUYzdXZPazY0VEd3R1Z2OGtU?=
- =?utf-8?Q?j6I1lswaf+d96xWBTQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 131ebb63-c9fe-4860-c625-08ded32c0bb7
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 02:38:46.6960
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 78NsXeOzFzR/2p8Wm6R3AopRFCqbrG/f4/RNW9/pBnytTeprBlwGvX6YZBlRpNwDNwl7kubGK+DppAUdkca3qQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7661
+Cc: cui.tao@linux.dev, kernel@xen0n.name, kvm@vger.kernel.org,
+ Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH v4 2/3] LoongArch: KVM: Implement guest-side PV TLB flush
+To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, loongarch@lists.linux.dev
+References: <20260615082154.42144-1-cui.tao@linux.dev>
+ <20260615082154.42144-3-cui.tao@linux.dev>
+ <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
+ <1bfa4941-b94b-410a-9b64-c13f2712edf9@linux.dev>
+ <9ec9d22b-93fd-3dcb-c6b8-19563f1b7c0a@loongson.cn>
+ <404180d0-c734-4465-8752-f43279730692@linux.dev>
+ <6f837e00-e606-ddaa-b22b-dd30348a18fb@loongson.cn>
+ <084d7bec-592c-31b5-aa44-099bff87af9a@loongson.cn>
+ <013459e1-f817-42b5-a0fd-20b38d9b6140@linux.dev>
+ <835a9c5c-2f66-293b-d093-fc59bac26a01@loongson.cn>
+ <416dfbf8-f765-442e-b6de-6fc0fe1a4b5f@linux.dev>
+ <a7e7a17c-fdaa-b168-2a7b-d4cd4018b662@loongson.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <a7e7a17c-fdaa-b168-2a7b-d4cd4018b662@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
-On 6/25/2026 5:16 PM, K Prateek Nayak wrote:
-> Hello Ashish,
+
+在 2026/6/26 09:37, Bibo Mao 写道:
 > 
-> On 6/26/2026 1:12 AM, Kalra, Ashish wrote:
->> Hello Boris,
+> 
+> On 2026/6/25 下午8:51, Tao Cui wrote:
 >>
->> On 6/25/2026 10:02 AM, Borislav Petkov wrote:
->>> On Wed, Jun 24, 2026 at 09:56:49PM +0000, Ashish Kalra wrote:
->>>> +/* Set while SNP has CPU hotplug disabled (kernel-lifetime; survives ccp reload). */
->>>> +static bool snp_cpu_hotplug_disabled;
+>>
+>> 在 2026/6/25 15:36, Bibo Mao 写道:
 >>>
->>> Do you really need this?
 >>>
+>>> On 2026/6/25 下午3:15, Tao Cui wrote:
+>>>>
+>>>>
+>>>> 在 2026/6/25 14:11, Bibo Mao 写道:
+>>>>>
+>>>>>
+>>>>> On 2026/6/25 上午11:31, Bibo Mao wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 2026/6/25 上午10:27, Tao Cui wrote:
+>>>>>>>
+>>>>>>> Hi Bibo,
+>>>>>>>
+>>>>>>> 在 2026/6/17 09:05, Bibo Mao 写道:
+>>>>>>>>
+>>>>>>>>> Rather than argue from intuition, I'd like to try the hypercall approach
+>>>>>>>>> you suggested and measure the performance improvement against the current
+>>>>>>>>> path. I'll share the results with you once the testing is done, so we
+>>>>>>>>> can decide the direction based on the numbers.
+>>>>>>>> well, that is the best. It is my pleasure to discuss this with you.
+>>>>>>>>
+>>>>>>>
+>>>>>>> A quick update on the testing. I put both the hypercall and the
+>>>>>>> steal-time variants through two benchmarks on an 8-core host with a
+>>>>>>> 4:1 overcommitted guest (32 vCPUs), and wanted to share where things
+>>>>>>> stand.
+>>>>>>>
+>>>>>>> The two workloads:
+>>>>>>>     - ebizzy (all threads busy, mm-flush heavy)
+>>>>>>>     - tlb_bench in sleep-idle mode (1 flusher + 31 sleeping idle threads,
+>>>>>>>       so the idle vCPUs get preempted)
+>>>>>>>
+>>>>>>> ebizzy (records/s, higher is better), 32 vCPUs:
+>>>>>>>      no-PV       ~103,737
+>>>>>>>      hypercall   ~105,779
+>>>>>>>      steal-time  ~105,872
+>>>>>>>      -> all within noise (±2%); no measurable difference.
+>>>>>> Hi Tao,
+>>>>>>
+>>>>>> what is ebizzy command? ebizzy -m or ebizzy -M.
+>>>>>>
+>>>>>> could you try command on host and one VM without over-committed at first, and then two VMs and three VMs?
+>>>>>>
+>>>>>> Here is result on my 3C5000 Dual-way machines with 32 cores and two numa nodes:
+>>>>>>                    ./ebizzy -m          ./ebizzy -M
+>>>>>> host             8633                 158898
+>>>>>> VM(32 vCPUs)     6610                 133153
+>>>>>> VM/host          76%                  83%
+>>>>>>
+>>>>> just ./ebizzy -M is enough, it seems that CPU number is one key factor.
+>>>>>
+>>>>
+>>>> Sorry for the delay — it turned out my ebizzy command was wrong. I had
+>>>> been running `ebizzy -t <vcpus> -S 10`, which is neither -m nor -M, so
+>>>> neither mmap mode was active and the workload wasn't really stressing
+>>>> the TLB-flush path. Thanks for catching it.
+>>>>
+>>>> I re-ran with -m and -M on host and a single VM (8-core LoongArch
+>>>> KVM host, 8 vCPU guest, 1:1, no overcommit).
+>>>>
+>>>>                    ebizzy -m        ebizzy -M
+>>>> host             ~20,000          ~55,000
+>>>> VM (8 vCPU,1:1)  ~17,000          ~53,000
+>>>> VM/host          ~86%             ~97%
+>>>>
+>>>> The -m ratio (86%) is close to your 76%.
+>>> On my 3C5000 Dual-way machine, VM has the same CPU/memory topology with physical machine, the kernel is mainline without any patch.
+>>>                            ./ebizzy -M
+>>> Host (32 pCPUs)           158898
+>>> One VM(32 vCPUs)          133153                 83% of host
+>>> Two VMs(32 vCPUs each)    9083 + 9630 = 18713    11% of host
+>>>
+>>> It seems that with ebizzy benchmark, there is big difference if vCPU is preempted. Even if vCPU is not preempted, the performance is only 83% of host on my 3C5000 Dual-way machine.
 >>
->> Yes.
+>> After fixing the ebizzy command, I
+>> have multi-VM overcommit results for both approaches.
 >>
->> cpu_hotplug_disable()/cpu_hotplug_enable() are refcounted (cpu_hotplug_disabled++/--,
->> with a WARN on underflow), so they have to be balanced. This flag collapses them to
->> exactly one outstanding disable per SNP-active window, because the disable and enable
->> sites are not reached a symmetric number of times:
->>>   - On firmware without SNP_X86_SHUTDOWN_SUPPORTED, __sev_snp_shutdown_locked() does not
->>   call snp_shutdown() (it's gated on data.x86_snp_shutdown), so SNP stays enabled in
->>   hardware — SNP_EN stays set and hotplug stays disabled — while sev->snp_initialized is
->>   cleared. Re-init after that is routine, the SNP ioctls self-bracket init and shutdown
->>   (e.g. SNP_COMMIT, SNP_SET_CONFIG, SNP_VLEK_LOAD):
+>> Setup: 8-core LoongArch (single-socket, single NUMA), KVM,
+>> linux-next-20260623, 8 vCPU per VM. All VMs run ebizzy -M
+>> simultaneously, 3 runs each. The PV-off baseline uses a guest kernel
+>> with CONFIG_PARAVIRT=y but without the PV TLB flush patches, so
+>> PV IPI and steal-time are active in all three columns.
 >>
->>   if (!sev->snp_initialized)
->>           snp_move_to_init_state(...);   /* -> __sev_snp_init_locked -> snp_prepare() */
->>   ... SNP_CMD ...
->>   if (shutdown_required)
->>           __sev_snp_shutdown_locked(...);
->>   - So whenever SNP isn't already initialized (psp_init_on_probe off, or after a prior
->>   legacy shutdown), every such ioctl does init -> command -> legacy shutdown. Each init
->>   reaches snp_prepare() with SNP_EN already set, and the disable now sits at the top of
->>   snp_prepare(), so it fires on every cycle. Without this flag that keeps bumping
->>   cpu_hotplug_disabled while the legacy shutdown never re-enables — hotplug ends up stuck
->>   disabled. This flag makes all but the first disable a no-op.
->>  
->>   - Also, importantly, kvm-amd module reload on legacy firmware is the same pattern: 
->>   unload leaves SNP_EN set, reload re-inits.)
-> 
-> Looking at snp_prepare(), we have an early-bailout for
-> 
->     rdmsrq(MSR_AMD64_SYSCFG, val);
->     if (val & MSR_AMD64_SYSCFG_SNP_EN)
->          return;
-> 
-> Does executing SHUTDOWN command lead to the firmware clearing SNP_EN in
-> SYSCFG on all CPUS?
-
-Yes, in case of X86_SNP_SHUTDOWN (available if firmware supports X86SnpShutdown feature)
-SNP is disabled on all cores by clearing SYSCFG[SNPEn] bit.
-
-If X86_SNP_SHUTDOWN is set to 1, the firmware clears the SYSCFG[SNPEn] bit in each core. 
-
-But, in case of legacy SNP shutdown, SNP_EN bit is not cleared and so SNP remains enabled.
-
-> 
-> If SNP_EN remains set (and Linux can't clear it since it is
-> "Write-1-only" bit), then a subsequent snp_prepare() will skip setting
-> SYSCFG if it sees SNP_EN on local CPU.
-> 
-> It can so happen that we enable hotlpug at shutdown, CPUs come online
-> without setting SNP_EN in SYSCFG, subsequent snp_prepare() runs on a CPU
-> where SNP_EN is still set and skips configuring it for the CPUs that
-> don't have it set, and we'll be in a pickle still.
-> 
-> The comment above that bailout saying "this can happen in case of kexec
-> boot" makes me believe that SNP_EN remains set until a full system
-> reset.
-> 
-> The only safe way to do this is to ensure all possible CPUs are online
-> during snp_prepare() and do snp_enable() regardless of whether local CPU
-> has SNP_EN or not.
-> 
-> Am I missing something?
-> 
-
-The piece that makes the early bailout safe is the disable this patch adds:
-hotplug is disabled while SNP is active, so the online set can't change under an
-active SNP. snp_prepare() already requires online == present, so at a successful
-init every present CPU gets SNP_EN, and because hotplug is then disabled none
-can leave or rejoin without it. So whenever the bailout is hit with SNP active,
-every online CPU already has SNP_EN:
-
-  - kexec: SNP_EN is already set on all CPUs by the previous kernel.
-  - re-init while SNP is still active (e.g. after a legacy SNP_SHUTDOWN that
-  leaves SNP_EN set): hotplug was disabled the whole time, so the online set is
-  unchanged and all of them still have SNP_EN.
-
-The only way a CPU can be online without SNP_EN is when SNP is not active --
-i.e. after an SNP_INIT failure, where this patch re-enables hotplug. That is
-deliberately the same as the behavior before this support existed (hotplug was
-never disabled then), and it is benign: SNP_EN only gates RMP checks, the RMP
-itself is initialized by SNP_INIT, so on a failed init the RMP is all-zeroes --
-every entry is in the default HV-owned state, no page is assigned, no check ever blocks
-and snp_initialized stays false, so no SNP guest can be created.
-Nothing is enforced and nothing is protected.
-
-So I've kept snp_prepare()'s existing bailout / snp_enable() behavior unchanged;
-what this patch adds is disabling hotplug while SNP is active, which is what
-actually closes the window (a CPU coming online without SNP_EN while SNP is
-live). That window -- and the SNP_EN-stays-set-on-failure situation -- already
-exist in today's code, this patch constrains the dangerous (active) case and
-otherwise matches current behavior.
-
-(On the v9 placement specifically: I'm moving the disable into snp_prepare()
-ahead of SNP_EN in the next version; in v9 it sits after SNP_INIT, which leaves
-the window you originally pointed out.)
-
-Thanks,
-Ashish
-
+>> ebizzy -M, total records/s across all VMs:
 >>
->>   - On the enable side it avoids an unbalanced cpu_hotplug_enable() when the teardown/failure
->>   paths run without an outstanding disable (e.g. shutdown of a never-fully-initialized SNP).
+>>                PV-off      steal-time   hypercall
+>>    1:1 (1VM)   53,600      53,800       53,900
+>>    2:1 (2VM)    2,600      42,600       45,300
+>>    3:1 (3VM)    2,800      44,700       46,000
 >>
->> So it's not redundant with cpu_hotplug_disabled — it tracks whether the outstanding disable
->> belongs to this SNP-active window in this kernel, which keeps the single disable/enable
->> balanced across the asymmetric legacy-vs-full SNP teardown paths and re-init.
+>> At 1:1 there is no difference — no vCPU gets preempted. Under
+> From the previous result, the score on host is 55,000, with 1:1 mode the virtualization efficiency is 97%, it is hard to improve actually. On my 3C5000 Dual-way machine, the virtualization efficiency is 83%, I think it can improve even with 1:1 mode.
+> 
+> Also the paper at https://dl.acm.org/doi/pdf/10.1145/2892242.2892245 proves it with 1:1 mode.
+
+Thanks for the reference. That makes sense — the 1:1 overhead is
+larger on multi-socket systems, so there may be room to improve
+even without overcommit.
+
+>> overcommit, without PV TLB flush the throughput drops to ~3-5% of
+>> the single-VM case, because every remote TLB flush sends IPIs to
+>> preempted vCPUs. With either PV TLB flush variant, preempted vCPUs
+>> are skipped, and total throughput stays at ~85-90% of single-VM
+>> (bounded by physical cores).
+>>
+>> Hypercall is consistently 3-6% above steal-time in the overcommit
+>> cases. A possible reason is that the hypercall hands the entire
+>> target set to the host in one call, while steal-time still IPIs the
+>> running vCPUs and only defers the preempted ones.
+>>
+>> On our 8-core machine the collapse is more severe than on your
+>> 3C5000 (~5% vs 11% of host at 2 VMs), likely due to the smaller
+>> core count and single-NUMA topology.
+> yeap, with more CPUs the benefit is more high. I think that this kind of patch had better be tested on server platform if there is such hardware by hand after all KVM is used in server platform in most time. I will test the patch in later.
+> 
+
+I'll try to get access to a server-class LoongArch machine for
+further testing. If you're able to run the patches on the 3C5000,
+that would be great too.
+
+> Regards
+> Bibo Mao
+>>
+>> Thanks,
+>> Tao
+>>
+>>>
+>>> Regards
+>>> Bibo Mao
+>>>>
+>>>> I then tried multi-VM overcommit (2 and 3 VMs, all running ebizzy -M
+>>>> simultaneously). The initial result showed a large gap between the
+>>>> PV-TLB-flush kernel and the baseline under overcommit. Both kernels
+>>>> have CONFIG_PARAVIRT enabled (PV IPI and steal-time are active in
+>>>> both), so PV TLB flush should be the main differentiator — but since
+>>>> they are two separate kernel images rather than a clean on/off toggle,
+>>>> there may be some noise from other differences. I'm now re-running
+>>>> with a QEMU CPU property (kvm-pv-tlb-flush on/off) on the same kernel
+>>>> to isolate the effect cleanly.
+>>>>
+>>>> I'll share the verified numbers once I have them.
+>>>>
+>>>> Thanks,
+>>>> Tao
+>>>>
+>>>>>> Regards
+>>>>>> Bibo Mao
+>>>>>>
+>>>>>>>
+>>>>>>> tlb_bench sleep-idle (ns/flush, lower is better), 1 flusher + 31 idle:
+>>>>>>>      no-PV       ~166,536
+>>>>>>>      steal-time  ~149,553
+>>>>>>>      hypercall    ~88,686
+>>>>>>>
+>>>>>>> ebizzy's workload is mostly threads staying busy with alloc/copy/free,
+>>>>>>> which drives remote TLB flushes against running vCPUs — that may not be
+>>>>>>> the path this feature is meant to optimize, so the flat result there
+>>>>>>> probably says more about the workload mismatch than about the feature
+>>>>>>> itself. I need to take another look at whether the benchmark actually
+>>>>>>> exercises the cases PV TLB flush targets before reading too much into
+>>>>>>> the numbers, including the tlb_bench figure above.
+>>>>>>>
+>>>>>>> So I'd hold off on any conclusion for now. Next I'll re-examine the
+>>>>>>> test setup / pick a workload that better matches the feature, and keep
+>>>>>>> you posted once I have something more representative.
+>>>>>>>
+>>>>>>> Best,
+>>>>>>> Tao
+>>>>>>>
+>>>>>
+>>>
+> 
+
