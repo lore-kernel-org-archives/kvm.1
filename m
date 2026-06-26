@@ -1,236 +1,306 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF153E1233
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6A362130;
+	Fri, 26 Jun 2026 07:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782459835; cv=none; b=UwjYJV6vny5yiOxNSwMljGAoquL09EiRC6pD3/YV0MFbpbsBCsHbjVRmhIZ2ROpyfssuLJ0damebpBSmSvjdDW1RSvncOJ54WCx/jLZdqgrqJ0ByEn5r7a4yFa+3HVT46Z9z4srHRwWdFJ/9iF8xCVmz4WfQYiQ/jwp8HRt8NL4=
+	t=1782459955; cv=none; b=Id8AQ3563UAK8aiX6MKBF7BRpDUkftH+BqUF8HvDtzHCcU5va08DwqjhvoQ4YWsc5CTJe+50PT7ieE31PHAhhC6hDCa/4xdTqaTyqEl9H0FkR+XAexf2fq4iwyKMJ2v9RVa90JVZ7effgv4NSnmSxbXUIplMUcXKo9r6eFlQ7PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782459835; c=relaxed/simple;
-	bh=s0U6052cZS8r73pCwXoBgHD40+SRrB/8u/7DqNhuwIY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B6rBk7WygYb2AKf5VjujZl6Eyrfi5bOuA7MaZu7/IBdIzVX75KklR6hwpnTbzxS1LU6dQGAUaWREhnIrJ+lD1tbAkrk+O9g6uYhIMfC1v8nCEYWYmo8SZiUAIU8JFJEPtJl9STobChRJETlAW4f7Z7T5jFguP07VzDujr8/zNjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jJXZvGJU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mMStKE6f; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782459955; c=relaxed/simple;
+	bh=Rc8WwAfijhfhMypu6KPun19UMYrTGWdC38Tc4O9jGko=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hQUJQ5uc74HkwWORB6ytwostcnVOa3mIkzICwEleszeFruKAx/8/ONUNo3y8soqZohOXO40MxuocFAeHclCj1eac+lj7whlmqTnnAp84kyrvYNJyGwOEY35vZWs5M7Rd3FX8hn1dGccnQS1QpZkWegGHqlzkeuvJw5Q0AyLnqkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JZQ5ZYzV; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jJXZvGJU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mMStKE6f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782459833;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
-	b=jJXZvGJUlj9UPcSFJp+kIp8mx9SuR3iZcqkVLSsCe+QLgO0zXQ9WDLFFzmYtM67688/lta
-	b8cyEpxBKHybvZF/b9MnV/la4vVOA2hly/26WBupGYG6tebXshzDghzbtjjBM5DU3JvAkY
-	n+B04Ln8GzptE8wg/CCxS0CGwdE7VGs=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-Gu6VU17rMRWBL2qt1A03gA-1; Fri, 26 Jun 2026 03:43:49 -0400
-X-MC-Unique: Gu6VU17rMRWBL2qt1A03gA-1
-X-Mimecast-MFC-AGG-ID: Gu6VU17rMRWBL2qt1A03gA_1782459829
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c7cfa17fe6so10615055ad.3
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 00:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782459829; x=1783064629; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
-        b=mMStKE6fg7oNgxRTKZG7evHqgatHdqc88ndKS9GKr+StddiiLVOZplbKeCVj4gEVRp
-         tjV5Nz/2UFEUd6B4aTggFDT8WZeSiyZdSRCzqQprefNk3+/Hrg/d/lYjq+e0K6OzQwID
-         1txMd054WMhVV+eaP5LU6eHCZRHsVv1CMutI3meguNKHG98KAPiOXmi06E2vSXGWZa38
-         f76elAuL80paZhaulbnX2cfyDF7o4bQGszDUSRKlXPzsn/CjBRs/9r8NEE77AN4ljDvY
-         wb2sUWWH09jBQJ0HnI9cKdk2CyrCZvAasddtenUSjdTn7Qhu2GIFU/uerQsBCFQ4ZoNC
-         HdRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782459829; x=1783064629;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
-        b=ffk8m/Msw2ky2xCbVWKS1ZgrvJxxDhVdcH5nmTvLIJIq2BEewh/u0VUDwaLLr5rbJo
-         le2/K5e7SFiBkNOs+lW7kVRK3Y1KnrDCLGHLtQ2Ja3Ym5jM8NpSG70cNetT8MqHNqXVB
-         wdmBTTwONoy8TXHdok+vFG1qm817X/+J+YD93nZrLAF+jwkATefHOn8wtKLgGyYMZL70
-         5uAaQzvnZwoJwg1yLtjnzkUGdYrCIMDwgsteitx5y5Mmrn6csizgMUspxiI1Z6d/3llU
-         Rtr/Ojeb4nouS8Ihieu7irXJ6nv4Q+7LhbvCcgEbLX4pu+mZ56RvBTIxNQK2V3awrK23
-         ZuCw==
-X-Forwarded-Encrypted: i=1; AHgh+Rorc5KPnlzwek68Kyq/WK+OH5X0GZy9ajiK28eXKJBPMlpl7FqrfhjnRD3Sy4hPWhP7muA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0pBtTlE0Lrqt22xOl9tYoxW7esDIbCLtMYRksdRBQGJ8JoH2T
-	luLV/iPJHQ6FzCulbS4d0jd+2I+IPK1+ItiwNBaPe/3gIlQsabBeoiNZjWY784d1/GxpltsaADq
-	aeN8qciuYghaAwJUVkChZ9MYx2q/bMVts/lc5Tox6QCXOWuyWaJ3F9Q==
-X-Gm-Gg: AfdE7cnh2R/ZWcMK3yQyNtVL2ObRWOOnlGBuZIKUgIt6eXrDlOn1QHGWSFUB9Qv5C2H
-	8yppm4rhAslf8ErbZwSv8i0nYcFST7rJZY1W8yG6+njiKR0oTZUKYe3t9bnKksNvH8W9wy/PW2C
-	dGGWI/fzyLG/xmQNUG5hibFZ2DgNPxup8n+1laJq+R5lw9KAKdd137PpE+7vCBvvE3KzLn+hKnM
-	BTLbAB2OHlC9metV87BirqwY2KxlOy1xXoP5XXyPwMsspIzfBeku5Ds4dDPpee8ZdxTM53jz0yB
-	Gz9QTawYfkDs16HGQEYc2KkD1gOgsmpT4Y7XSVB6QMdxWuKZZAChfXiYpyKUYpY9nv0rJVAe6ZO
-	BcfQCB/23boVmwPpjNSmJK7bIRGAf5mRnZn+Nl2+mrdX+4UQbclbXew==
-X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064605ad.31.1782459828701;
-        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
-X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064265ad.31.1782459828076;
-        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b27f4sm34866665ad.53.2026.06.26.00.43.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jun 2026 00:43:47 -0700 (PDT)
-Message-ID: <8da87878-2a5d-478a-a280-60dbed7ad1b9@redhat.com>
-Date: Fri, 26 Jun 2026 17:43:34 +1000
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JZQ5ZYzV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TwvBdpBncCHdAk2VKNUDqd1awgXNOyMgwxy8ic1McgA=; b=JZQ5ZYzVGsqAwf2NN+oevFuyzN
+	zGDOpTpQ3BZ+YH8yveLFfsFMZF9H3+QWU4sY3SBL4k63Apc0BUCT4XWFNkftFwkF9HwgsU3V1Gn0a
+	azV5fRxS1GUEi+eE7zpvpofCcaZNEeP2/xP15VvpZ9vfuUjuR7xaGEhkCrL/b/oek8Q14l10B3w+p
+	V8x6zCL8FdorO8CZgOKTc4mPDvTl4kWqGrj+IlcVF/avqPD85fI8zKQOdLzXuRQSULg/fMMUdPol2
+	a7dYqTJ5iZGPOwo2Fue5Xy0bn64sAhPobgFEDZr4OUaX+gBrgg50xdj5mPSA9ssvjykQrmRdDhujE
+	m+ATFP1Q==;
+Received: from [2001:8b0:10b:5:f3d6:3c0c:6c61:8d10] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wd1Fk-0000000BRV1-1Gtv;
+	Fri, 26 Jun 2026 07:45:32 +0000
+Message-ID: <8edfdca645f691cb856e80ade830d78925fdc19d.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: Add
+ KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Gerd Hoffmann
+ <kraxel@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Date: Fri, 26 Jun 2026 08:45:32 +0100
+In-Reply-To: <aj21KctIXuf7b_5G@google.com>
+References: <c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org>
+	 <aj21KctIXuf7b_5G@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Zgc7OAjbz0Hgd13lKrY1"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa6 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
- <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-30-steven.price@arm.com>
- <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
- <aiJ6u83O0nVUtPyv@lpieralisi>
- <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
- <aiLes2ecZSr17UwZ@lpieralisi>
- <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
- <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 6/26/26 1:58 AM, Suzuki K Poulose wrote:
-> On 25/06/2026 14:53, Gavin Shan wrote:
->> On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
->>> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
->>>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
->>>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
 
-[...]
+--=-Zgc7OAjbz0Hgd13lKrY1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->>>>
->>>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
->>>> that memory slots backed by THP are broken. With THP disabled on the host and
->>>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
->>>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
->>>> fxies on the top.
->>>>
->>>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/ latest)
->>>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
->>>>
->>>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
->>>
->>> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
->>> issues you pointed out above.
->>>
->>>> If so, I'm not sure if there is a QEMU repository for me to try?
->>>
->>> We should be able to submit patches by end of June - we shall let you know
->>> whether we can make something available earlier.
->>>
->>
->> Not sure if there are other known issues in this series. It seems the stage2
->> page fault handling on the shared space isn't working well. In my test, the
->> vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
->> data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
->> resolved in the s2 page fault handler for shared (unprotected) space.
->>
->> - I rebased Jean's latest qemu branch to the upstream qemu;
->>
->> - On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
->>    disabled.
->>
->> - On the guest, I can see the virtio vring (struct vring_desc) is updated. The
->>    S1 page-table entry looks correct because the corresponding physical address
->>    0x10046880000 is a sane shared (unprotected) space address.
->>
->>    [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
->>    [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
->>    [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
->>
->> - On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
->>    A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
->>
->>    [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
->>    [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
->>    [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
->>    [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
->>    [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
->>    [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
-> 
-> Are you able to correlate the order of the transitions and the Guest
-> access with RMM log ? We haven't seen this from our end. We are aware
-> of permission fault issues with Unprotected IPA when backing the memslot
-> with MAP_PRIVATE areas. But this looks different.
-> 
-> Lorenzo, have you run into this ?
-> 
+On Thu, 2026-06-25 at 16:09 -0700, Sean Christopherson wrote:
+> On Tue, Apr 28, 2026, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> >=20
+> > Commit 3617c0ee7decb ("KVM: x86/xen: Only write Xen hypercall page for
+> > guest writes to MSR") blocked host-initiated writes from triggering the
+> > Xen hypercall page setup, to fix an SRCU usage violation when the
+> > hypercall MSR index collides with a real MSR written during vCPU reset.
+> >=20
+> > However, some VMMs legitimately need to trigger hypercall page setup
+> > from host context. For example, a VMM may intercept the guest's MSR
+> > write to track an epoch (for kexec/crash recovery), and then replay the
+> > write as a host-initiated KVM_SET_MSRS to populate the hypercall page.
+> > The host_initiated check breaks this use case.
+> >=20
+> > Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE as a new vcpu attribute
+> > that explicitly invokes kvm_xen_write_hypercall_page() under proper
+> > locking. This gives userspace a safe interface to trigger hypercall pag=
+e
+> > setup without going through the MSR write path, preserving the
+> > host_initiated defence in depth while restoring the lost functionality.
+>=20
+> This is all kinda silly.=C2=A0 Userspace provides KVM a blob, then usersp=
+ace intercepts
+> the MSR write that triggers doing something with said blob, only to call =
+back into
+> KVM to consume the blob that userspace provided in the first place.
+>=20
+> Any chance we can deprecate KVM's kvm_xen_write_hypercall_page(), and ins=
+tead
+> rely on userspace to fill the page?=C2=A0 This extra bit obviously isn't =
+much code to
+> carry, but it's yet one more Xen thing to maintain, and we've accumulated=
+ a lot
+> of those over the years...
 
-It's hard to correlate the order since the logs are collected from two separate
-consoles. For the write permission, I add code to the host where the permission
-is always added for all s2 page faults in the shared space. Otherwise, qemu can
-be killed by -EFAULT or similar error.
+We don't actually use the 'blob' mode. That was added in commit
+ffde22ac53b6d in 2009 with a comment saying, "A generic mechanism to
+delegate MSR writes to userspace seems overkill and risks encouraging
+similar MSR abuse in the future.  Thus this patch adds special support
+for the Xen HVM MSR."
 
-There are more findings after more experiments: this virtio-net-pci device has 3
-queues or vrings (Rx/Tx/Ctrl). The Rx/Tx/Ctrl queue are populated in order one after
-one. In the guest kernel, I intentionally write fixed data (0x0123456789abcdef) to
-the first 8 bytes of the queue when it gets populated, and stop the guest at random
-points to see if the data is gone. I found that the data written to Rx/Tx queue are
-lost after Ctrl queue is allocated.
+When Jo=C3=A3o and I came along almost a decade later, in 23200b7a30de3
+where we added hypercall interception support we said, "Since this
+means KVM owns the ABI, dispense with the facility for the VMM to
+provide its own copy of the hypercall pages; just fill them in directly
+using VMCALL/VMMCALL as we do for the Hyper-V hypercall page."
 
-The data written to Rx/Tx queue is lost if the guest stops (B). The data written to
-Rx/Tx queue isn't lost if the guest stops at (A). I can see the pattern (0x0123...cdef)
-by dumping the physcial memory through 'pmemsave' command in qemu.
+I think we could probably rip out the blob mode without any fear of
+breaking userspace. Even in 2018 I don't think we could even find the
+alleged code from 2009 that used the old support. At least, not in
+buildable and usable form?
 
-DMA allocation
-==============
-dma_alloc_coherent
-   dma_alloc_attrs
-     dma_direct_alloc
-       __dma_direct_alloc_pages
-       dma_set_decrypted                    // (A) No data lost if being stopped here for the Ctrl queue
-       memset(ret, 0, size)                 // (B) Data lost after being stopped after memset() for the Ctrl queue
+> > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> > index 91fd3673c09a..c16b4560c9e7 100644
+> > --- a/arch/x86/kvm/xen.c
+> > +++ b/arch/x86/kvm/xen.c
+> > @@ -907,6 +907,13 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, s=
+truct kvm_xen_vcpu_attr *data)
+> > =C2=A0{
+> > =C2=A0	int idx, r =3D -ENOENT;
+> > =C2=A0
+> > +	/*
+> > +	 * kvm_xen_write_hypercall_page() manages its own locking.
+> > +	 * Handle it before taking xen_lock to avoid a deadlock.
+>=20
+> Do we actually want the side effects that necessitate taking xen.xen_lock=
+?=C2=A0 From
+> a uAPI perspective, it's odd to effectively bundle KVM_XEN_ATTR_TYPE_LONG=
+_MODE
+> into KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE.
 
-The memset() on the Ctrl queue should trigger a stage2 page fault. It seems the page
-fault enforces the shared pages for Rx/Tx queue to be dropped? I need to add more
-debugging code and track it down.
+That's *guest* ABI, and it's derived from Xen behaviour. Xen will
+'latch' its idea of whether a guest VM is 32-bit or 64-bit, for the
+purpose of shared data structures (shared_info page, vcpu_info,
+runstate).
 
-> Suzuki
-> 
-> 
->>
->> - On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
->>    data in that adress are zeros.
->>
->>    ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
->>    virtqueue_split_pop: last_avail_idx=0x0, head=0x0
->>    address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
->>    address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
->>    address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
->>    flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
->>    virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
->>    qemu-system-aarch64: virtio: zero sized buffers are not allowed
->>
->>
-Thanks,
-Gavin
+Xen latches this from the current mode of the running vCPU in *two*
+places:
+ =E2=80=A2 When the hypercall MSR is invoked
+ =E2=80=A2 When the guest sets the event channel GSI (HVM_PARAM_CALLBACK_IR=
+Q).
 
+Thus far, the former has been handled in the kernel (in the code you're
+looking at), while the latter is why we have the ioctl to explicitly
+latch the guest's long_mode from userspace too, as userspace handles
+the HVMOP_set_param calls.
+
+> The other question is, why does kvm_xen_write_hypercall_page() drop xen_l=
+ock
+> when writing guest memory?=C2=A0 That seems odd and unnecessary.
+
+Huh? It takes the lock to do the thing that needs the lock, then drops
+it. That is not "odd and unnecessary" at all.
+
+You've been spending too long with these scope-guarded locks. I *hate*
+them. I hate the way they slowly spread around the whole kernel, making
+every lock holder hold their locks for just a *little* bit longer than
+they need to, slowly increasing lock contention "just a little bit; it
+doesn't matter" at a time. I hate the way they stop us thinking about
+which locks are needed and in which order, and make it unclear whether
+some action in the tail of a function actually *needed* the lock, or
+was just caught up in it as collateral damage.
+
+> > +	 */
+> > +	if (data->type =3D=3D KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE)
+> > +		return kvm_xen_write_hypercall_page(vcpu, data->u.gpa) ? -EIO : 0;
+>=20
+> -EIO is rather weird, wouldn't -EINVAL be more appropriate?=C2=A0 Ah, and=
+ both are
+> wrong if copying the blob fails.
+
+-EINVAL is more for "you asked me to do something that doesn't make
+sense". -EIO is for "something went wrong when I tried".
+
+Arguably, the thing that's most likely to go wrong is the
+kvm_vcpu_write_guest() where it writes instructions[] to the guest, and
+maybe that ought to be -EFAULT? But I'm not sure that's quite the right
+semantic to return from the ioctl?
+
+> > +
+> > =C2=A0	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
+> > =C2=A0	idx =3D srcu_read_lock(&vcpu->kvm->srcu);
+>=20
+> Speaking of writing memory, kvm_xen_write_hypercall_page() expects the ca=
+ller
+> to be in a read-side SRCU critical section (I didn't actually run this wi=
+th
+> PROVE_LOCKING=3Dy, but I don't think I'm missing anything?)
+
+Yes, good catch. Thanks.
+
+> So, if this uAPI is unavoidable seems like we want something like the bel=
+ow.
+> Either that or guard all of kvm_xen_write_hypercall_page() with a lock, a=
+nd put
+> the entire thing in a helper so that KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCA=
+LL_PAGE
+> can be handled in a case-statement and doesn't need to grab SRCU on its o=
+wn.
+
+Makes sense (with the test, of course). Want me to put them together
+and resend?
+
+--=-Zgc7OAjbz0Hgd13lKrY1
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDYyNjA3NDUz
+MlowLwYJKoZIhvcNAQkEMSIEIBISr3iYaDd3qFcoqAvCDTS+4GADOAXk1Gl0XpGJqnYIMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAiHAYQRC6J6MS
+3ASzXKqv4CzaI+MWyycM32z5SNbGEafbVLwQ01sDao1hyYHIH4LDHc6GG2YeCiJxblfH4u4L9+XJ
+RxMLP8puPxv/FAXpNvxqllma+w4Jo/Gpy7R8BQJpMKQnHYXJ0GgWLw2No8tvq4AZdwGHGQBoqYkk
+6qNTneF78Td5X3yyAKAi2Nr1fml/1x3KKHSjesMeSoPQtNBLYYpnoRgzdXqZFdx280gRYFp7qmX5
+/fEzNWGbARqYiPnWsoTrFHTJdiGqXjP71ME56oOFLsZc8jbClarbK7ngP9sraVzIdu5Llw8wY5x4
+AFVOHH7AwOIggdd+Id6vgrFY+JOpUcgsBZVV03dYVfiketxc38O+89m/cPDGrJHdJUe+WeW/qouJ
+IhlYiknv5oKOK6roGfROvq9vjKk5Mn9n1pTEaEWSrIfM5YpT51r99anntEtx9FORGbC5Bovc2Kw4
+J+3tN7WYHsRkvOhJtF6igH3yH9uCMRLQ1wAduiOyqfPtg7xwCF6pTO5Bm+7xZwhYs9l9mmyrLKbT
+5xfE7QXI9GtNrWNGMigdszf+dT2tsVS8SX6klNMnqzUdLzlGlgzJStBOfx54Z/FbKA5mULEdjhge
+D7xaUVHdwfjyqoAtkTcansFsnNsWnrbIn4dD0dNmBSUUThGH0IpAD9Oxq/3AYr0AAAAAAAA=
+
+
+--=-Zgc7OAjbz0Hgd13lKrY1--
