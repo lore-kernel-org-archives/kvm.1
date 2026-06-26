@@ -1,146 +1,236 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536413DBD4E
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF153E1233
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782457601; cv=none; b=M8WnDXkbvKFQHer/jl43Gz9FvOOeSg7iFxx3tgrDtvkCQsgj2OD2lCx2ozWFMzYiyQLZAGmVKl7L2EvmfC2fHFEo3PtF3nNEQGe+EOf98Mjx+Kgn2ErvKrDVbJy6Z0DS6kj7FvcX6mo2DEX5YCkRvyjMDOOF9ncakB7jUfFCTDw=
+	t=1782459835; cv=none; b=UwjYJV6vny5yiOxNSwMljGAoquL09EiRC6pD3/YV0MFbpbsBCsHbjVRmhIZ2ROpyfssuLJ0damebpBSmSvjdDW1RSvncOJ54WCx/jLZdqgrqJ0ByEn5r7a4yFa+3HVT46Z9z4srHRwWdFJ/9iF8xCVmz4WfQYiQ/jwp8HRt8NL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782457601; c=relaxed/simple;
-	bh=pqYqDss+We3+fWbvaNY96iNE/l1ss4C7O7FCExvRb6Q=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=Wy0fcopHklwNXITnlZqwr3jjMnxIG9dW13b7dpzeXTQMA/gGQbOCzMlKAH+diTA5sbI6wjQBSBebo9X9uTr05wYVJDyDzoRHHodfnV8vwJ85wNGllA5KshMUXdvzzRZn+l+wAXer35vZOu0Jw6bukTXNNIdOwOJL0kMXxyFQmHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-48e77e6a63bso1219880b6e.0
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 00:06:40 -0700 (PDT)
+	s=arc-20240116; t=1782459835; c=relaxed/simple;
+	bh=s0U6052cZS8r73pCwXoBgHD40+SRrB/8u/7DqNhuwIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B6rBk7WygYb2AKf5VjujZl6Eyrfi5bOuA7MaZu7/IBdIzVX75KklR6hwpnTbzxS1LU6dQGAUaWREhnIrJ+lD1tbAkrk+O9g6uYhIMfC1v8nCEYWYmo8SZiUAIU8JFJEPtJl9STobChRJETlAW4f7Z7T5jFguP07VzDujr8/zNjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jJXZvGJU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mMStKE6f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jJXZvGJU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mMStKE6f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782459833;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
+	b=jJXZvGJUlj9UPcSFJp+kIp8mx9SuR3iZcqkVLSsCe+QLgO0zXQ9WDLFFzmYtM67688/lta
+	b8cyEpxBKHybvZF/b9MnV/la4vVOA2hly/26WBupGYG6tebXshzDghzbtjjBM5DU3JvAkY
+	n+B04Ln8GzptE8wg/CCxS0CGwdE7VGs=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-682-Gu6VU17rMRWBL2qt1A03gA-1; Fri, 26 Jun 2026 03:43:49 -0400
+X-MC-Unique: Gu6VU17rMRWBL2qt1A03gA-1
+X-Mimecast-MFC-AGG-ID: Gu6VU17rMRWBL2qt1A03gA_1782459829
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c7cfa17fe6so10615055ad.3
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 00:43:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782459829; x=1783064629; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
+        b=mMStKE6fg7oNgxRTKZG7evHqgatHdqc88ndKS9GKr+StddiiLVOZplbKeCVj4gEVRp
+         tjV5Nz/2UFEUd6B4aTggFDT8WZeSiyZdSRCzqQprefNk3+/Hrg/d/lYjq+e0K6OzQwID
+         1txMd054WMhVV+eaP5LU6eHCZRHsVv1CMutI3meguNKHG98KAPiOXmi06E2vSXGWZa38
+         f76elAuL80paZhaulbnX2cfyDF7o4bQGszDUSRKlXPzsn/CjBRs/9r8NEE77AN4ljDvY
+         wb2sUWWH09jBQJ0HnI9cKdk2CyrCZvAasddtenUSjdTn7Qhu2GIFU/uerQsBCFQ4ZoNC
+         HdRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782457599; x=1783062399;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o+gKfN7c60i0SfByDcT2rkIdmUDIAot8wJ+q//zIWXU=;
-        b=euvzXjmzoioTycNZRAzprEXbN2uDvLqj3oh+Iah7YS4aDozjQX4rk/yjivcp/qlc5G
-         vcXyXuXqwwMFX2tfF9KSIPDQf1U4fdUPQNr4ojS4O66vLD42ZLmD8GGJwDq4M0m9NKTT
-         B2rScQy/a0OaI4NGIScdvB4/Cwm5BWE37cx2kNbTT4WLv2V/+a2WML4uVv+vKf4tq8Z/
-         OtVboIsSer3i4LHSC4uGNqKUtP88o9NtFYOTF16+92q84TxIsanhNMVZcCX0BeViYDKM
-         +9wSMoBiEQ2kKKn3if5NNjV0hSgb7AMemuooFSVT1Q4ntw9apTEoBj8RtXLKlRAXnUv/
-         KF9w==
-X-Forwarded-Encrypted: i=1; AFNElJ9NlszQfVLDltC4e5o/bJrrHpoIm/8rQZFI8pzCW5wLsvhEJEfRRJsv7AjzBFvxE2YRVH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzewUYQ28eL96TweqwKPVirb2ZvFJrFC2TcZCKT7tP8Zd7U45mp
-	nEuWBhuBa4QkBg9VwpIkq7N80F2DFdp53mz3I6J4Seo+qThv3JNxKKlWXctp8CKDXp4/O6DcpCS
-	rIcbltWzcOgQ01ayGdP7GVcSxUDT0zqLcY0zfMFtAbctDFkYGnmE6b/6Idek=
+        d=1e100.net; s=20251104; t=1782459829; x=1783064629;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xt7ue9HwiPWHFMmu1Qr+INx7bk2xLViK4an0U84LPO8=;
+        b=ffk8m/Msw2ky2xCbVWKS1ZgrvJxxDhVdcH5nmTvLIJIq2BEewh/u0VUDwaLLr5rbJo
+         le2/K5e7SFiBkNOs+lW7kVRK3Y1KnrDCLGHLtQ2Ja3Ym5jM8NpSG70cNetT8MqHNqXVB
+         wdmBTTwONoy8TXHdok+vFG1qm817X/+J+YD93nZrLAF+jwkATefHOn8wtKLgGyYMZL70
+         5uAaQzvnZwoJwg1yLtjnzkUGdYrCIMDwgsteitx5y5Mmrn6csizgMUspxiI1Z6d/3llU
+         Rtr/Ojeb4nouS8Ihieu7irXJ6nv4Q+7LhbvCcgEbLX4pu+mZ56RvBTIxNQK2V3awrK23
+         ZuCw==
+X-Forwarded-Encrypted: i=1; AHgh+Rorc5KPnlzwek68Kyq/WK+OH5X0GZy9ajiK28eXKJBPMlpl7FqrfhjnRD3Sy4hPWhP7muA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0pBtTlE0Lrqt22xOl9tYoxW7esDIbCLtMYRksdRBQGJ8JoH2T
+	luLV/iPJHQ6FzCulbS4d0jd+2I+IPK1+ItiwNBaPe/3gIlQsabBeoiNZjWY784d1/GxpltsaADq
+	aeN8qciuYghaAwJUVkChZ9MYx2q/bMVts/lc5Tox6QCXOWuyWaJ3F9Q==
+X-Gm-Gg: AfdE7cnh2R/ZWcMK3yQyNtVL2ObRWOOnlGBuZIKUgIt6eXrDlOn1QHGWSFUB9Qv5C2H
+	8yppm4rhAslf8ErbZwSv8i0nYcFST7rJZY1W8yG6+njiKR0oTZUKYe3t9bnKksNvH8W9wy/PW2C
+	dGGWI/fzyLG/xmQNUG5hibFZ2DgNPxup8n+1laJq+R5lw9KAKdd137PpE+7vCBvvE3KzLn+hKnM
+	BTLbAB2OHlC9metV87BirqwY2KxlOy1xXoP5XXyPwMsspIzfBeku5Ds4dDPpee8ZdxTM53jz0yB
+	Gz9QTawYfkDs16HGQEYc2KkD1gOgsmpT4Y7XSVB6QMdxWuKZZAChfXiYpyKUYpY9nv0rJVAe6ZO
+	BcfQCB/23boVmwPpjNSmJK7bIRGAf5mRnZn+Nl2+mrdX+4UQbclbXew==
+X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064605ad.31.1782459828701;
+        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
+X-Received: by 2002:a17:902:d510:b0:2c7:f233:3df8 with SMTP id d9443c01a7336-2c7fc8ab880mr56064265ad.31.1782459828076;
+        Fri, 26 Jun 2026 00:43:48 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b27f4sm34866665ad.53.2026.06.26.00.43.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 00:43:47 -0700 (PDT)
+Message-ID: <8da87878-2a5d-478a-a280-60dbed7ad1b9@redhat.com>
+Date: Fri, 26 Jun 2026 17:43:34 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:181c:b0:486:caa4:ea44 with SMTP id
- 5614622812f47-48ee2660937mr9593907b6e.6.1782457599446; Fri, 26 Jun 2026
- 00:06:39 -0700 (PDT)
-Date: Fri, 26 Jun 2026 00:06:39 -0700
-In-Reply-To: <20260625223623.3376478-1-seanjc@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a3e24ff.bd346d9a.250aae.0008.GAE@google.com>
-Subject: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
-From: syzbot ci <syzbot+ci6c27aad5db86e5b9@syzkaller.appspotmail.com>
-To: dwmw2@infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	paul@xen.org, pbonzini@redhat.com, seanjc@google.com, 
-	syzbot@syzkaller.appspotmail.com, vkuznets@redhat.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 29/44] arm64: RMI: Runtime faulting of memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-30-steven.price@arm.com>
+ <3359f788-07fa-41a1-9ac7-45c58577c1fa@redhat.com>
+ <aiJ6u83O0nVUtPyv@lpieralisi>
+ <ecef952b-e8c6-4102-933b-c99c46f14431@redhat.com>
+ <aiLes2ecZSr17UwZ@lpieralisi>
+ <1e39094f-7fa3-4ef1-be54-53d7a8643506@redhat.com>
+ <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <98d2a0f3-b831-466a-8212-5bcf97ad9d8b@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+On 6/26/26 1:58 AM, Suzuki K Poulose wrote:
+> On 25/06/2026 14:53, Gavin Shan wrote:
+>> On 6/6/26 12:35 AM, Lorenzo Pieralisi wrote:
+>>> On Fri, Jun 05, 2026 at 06:11:11PM +1000, Gavin Shan wrote:
+>>>> On 6/5/26 5:28 PM, Lorenzo Pieralisi wrote:
+>>>>> On Fri, Jun 05, 2026 at 04:23:15PM +1000, Gavin Shan wrote:
 
-[v3] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
-https://lore.kernel.org/all/20260625223623.3376478-1-seanjc@google.com
-* [PATCH v3 01/10] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
-* [PATCH v3 02/10] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
-* [PATCH v3 03/10] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
-* [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to userspace if Xen vCPU ID isn't set
-* [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU ID for singleshot timer hypercalls
-* [PATCH v3 06/10] KVM: Initialize a vCPU's index to '-1' while it's being created
-* [PATCH v3 07/10] KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
-* [PATCH v3 08/10] KVM: x86: Treat a vCPU as unreachable if its index is invalid
-* [PATCH v3 09/10] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
-* [PATCH v3 10/10] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
+[...]
 
-and found the following issue:
-WARNING in kvm_hv_vcpu_uninit
+>>>>
+>>>> I tried to rebase Jean's latest QEMU series [1] to upstream QEMU, and found
+>>>> that memory slots backed by THP are broken. With THP disabled on the host and
+>>>> other fixes (mentioned in my prevous replies) applied on the top of this (v14)
+>>>> series, I'm able to boot a realm guest with rebased QEMU series [2], plus more
+>>>> fxies on the top.
+>>>>
+>>>> [1] https://git.codelinaro.org/linaro/dcap/qemu.git  (branch: cca/ latest)
+>>>> [2] https://git.qemu.org/git/qemu.git                (branch: cca/gavin)
+>>>>
+>>>> Lorenzo, You may be saying there is someone making QEMU to support ARM/CCA?
+>>>
+>>> Mathieu and I are working on that yes and with Steven/Suzuki to fix the THP
+>>> issues you pointed out above.
+>>>
+>>>> If so, I'm not sure if there is a QEMU repository for me to try?
+>>>
+>>> We should be able to submit patches by end of June - we shall let you know
+>>> whether we can make something available earlier.
+>>>
+>>
+>> Not sure if there are other known issues in this series. It seems the stage2
+>> page fault handling on the shared space isn't working well. In my test, the
+>> vring (struct vring_desc) of virtio-net-pci is updated by the guest, and the
+>> data isn't seen by QEMU, I'm suspecting if the host-page-frame-number is properly
+>> resolved in the s2 page fault handler for shared (unprotected) space.
+>>
+>> - I rebased Jean's latest qemu branch to the upstream qemu;
+>>
+>> - On the host, which is emulated by qemu/tcg, the THP (transparent huge page) is
+>>    disabled.
+>>
+>> - On the guest, I can see the virtio vring (struct vring_desc) is updated. The
+>>    S1 page-table entry looks correct because the corresponding physical address
+>>    0x10046880000 is a sane shared (unprotected) space address.
+>>
+>>    [   52.094143] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+>>    [   52.289746] virtqueue_add_desc_split: desc[0]@0xffff000006880000, [00000100b983f000  00000640  0002  0001]
+>>    [   52.432150] PTE 0x00e8010046880707 at address 0xffff000006880000
+>>
+>> - On the host, the s2 page-table-entry is unmapped due to attribute transition (private -> shared).
+>>    A subsequent S2 page fault is raised against the adress and the s2 page-table-entry is built.
+>>
+>>    [  109.259077] ====> realm_unmap_shared_range: tracked_unprot_addr=0x10046880000
+>>    [  109.260249] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>    [  109.317786] realm_unmap_shared_range: unmapped shared range at 0x10046880000
+>>    [  109.629939] ====> kvm_handle_guest_abort: fault_ipa=0x10046880000, esr=0x92000007
+>>    [  109.630245] realm_map_non_secure: ipa=0x10046880000, pfn=0xb8b59, size=0x1000, prot=0xf
+>>    [  109.630331] realm_map_non_secure: ipa=0x10046880000, ipa_top=0x10046881000, flags=0x1e0001, range_desc=0xb8b59004
+> 
+> Are you able to correlate the order of the transitions and the Guest
+> access with RMM log ? We haven't seen this from our end. We are aware
+> of permission fault issues with Unprotected IPA when backing the memslot
+> with MAP_PRIVATE areas. But this looks different.
+> 
+> Lorenzo, have you run into this ?
+> 
 
-Full report is available here:
-https://ci.syzbot.org/series/6864cbe8-ce00-47d1-b4b1-abc7d1528d4e
+It's hard to correlate the order since the logs are collected from two separate
+consoles. For the write permission, I add code to the host where the permission
+is always added for all s2 page faults in the shared space. Otherwise, qemu can
+be killed by -EFAULT or similar error.
 
-***
+There are more findings after more experiments: this virtio-net-pci device has 3
+queues or vrings (Rx/Tx/Ctrl). The Rx/Tx/Ctrl queue are populated in order one after
+one. In the guest kernel, I intentionally write fixed data (0x0123456789abcdef) to
+the first 8 bytes of the queue when it gets populated, and stop the guest at random
+points to see if the data is gone. I found that the data written to Rx/Tx queue are
+lost after Ctrl queue is allocated.
 
-WARNING in kvm_hv_vcpu_uninit
+The data written to Rx/Tx queue is lost if the guest stops (B). The data written to
+Rx/Tx queue isn't lost if the guest stops at (A). I can see the pattern (0x0123...cdef)
+by dumping the physcial memory through 'pmemsave' command in qemu.
 
-tree:      kvm-next
-URL:       https://kernel.googlesource.com/pub/scm/virt/kvm/kvm/
-base:      a204badd8432f93b7e862e7dac6db0fe3d65f370
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/0627391d-c4d6-4820-99f0-31a8b51ba783/config
-syz repro: https://ci.syzbot.org/findings/cdadfdf2-8445-4193-a3a6-bf878176b493/syz_repro
+DMA allocation
+==============
+dma_alloc_coherent
+   dma_alloc_attrs
+     dma_direct_alloc
+       __dma_direct_alloc_pages
+       dma_set_decrypted                    // (A) No data lost if being stopped here for the Ctrl queue
+       memset(ret, 0, size)                 // (B) Data lost after being stopped after memset() for the Ctrl queue
 
-------------[ cut here ]------------
-debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || vcpu->vcpu_idx < 0 || !refcount_read(&vcpu->kvm->users_count))
-WARNING: ./include/linux/kvm_host.h:996 at kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline], CPU#1: syz.1.34/5967
-WARNING: ./include/linux/kvm_host.h:996 at to_hv_vcpu arch/x86/kvm/hyperv.h:79 [inline], CPU#1: syz.1.34/5967
-WARNING: ./include/linux/kvm_host.h:996 at kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906, CPU#1: syz.1.34/5967
-Modules linked in:
-CPU: 1 UID: 0 PID: 5967 Comm: syz.1.34 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline]
-RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:79 [inline]
-RIP: 0010:kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906
-Code: 48 89 df e8 0a 55 d8 00 48 c7 03 00 00 00 00 eb 05 e8 5c 16 6d 00 5b 41 5c 41 5e 41 5f 5d e9 ff 16 4d 0a cc e8 49 16 6d 00 90 <0f> 0b 90 e9 65 ff ff ff 48 c7 c1 e0 bb 2f 90 80 e1 07 80 c1 03 38
-RSP: 0018:ffffc9000390f960 EFLAGS: 00010293
-RAX: ffffffff8158e9e7 RBX: ffff8881bc192880 RCX: ffff88816ac70000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffff888101fa1743 R09: 1ffff110203f42e8
-R10: dffffc0000000000 R11: ffffed10203f42e9 R12: 0000000000000000
-R13: 00000000fffffff8 R14: ffff888101fa1740 R15: dffffc0000000000
-FS:  00007f47c1e886c0(0000) GS:ffff8882a92b6000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000c64000 CR3: 000000016a5e7000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:9413
- kvm_vm_ioctl_create_vcpu+0x615/0x990 virt/kvm/kvm_main.c:4269
- kvm_vm_ioctl+0x886/0xd30 virt/kvm/kvm_main.c:5168
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f47c0f9caeb
-Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-RSP: 002b:00007f47c1e87ee0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f47c1215fa0 RCX: 00007f47c0f9caeb
-RDX: 0000000000000000 RSI: 000000000000ae41 RDI: 00000000000000f7
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000200000c00000 R11: 0000000000000246 R12: 0000200000c00000
-R13: 0000000000000153 R14: 0000200000000400 R15: 00007ffe526558c8
- </TASK>
+The memset() on the Ctrl queue should trigger a stage2 page fault. It seems the page
+fault enforces the shared pages for Rx/Tx queue to be dropped? I need to add more
+debugging code and track it down.
 
+> Suzuki
+> 
+> 
+>>
+>> - On QEMU, the updated vring (struct vring_desc) at GPA 0x46880000 isn't seen. All the
+>>    data in that adress are zeros.
+>>
+>>    ====> virtqueue_split_pop: vdev=<virtio-net>, sz=0x38, queue_index=0x0, vq->vring.num=0x100
+>>    virtqueue_split_pop: last_avail_idx=0x0, head=0x0
+>>    address_space_read_cached_slow: cache@0xffff1c036440, addr=0x0, buf=0xffffeee34880, len=0x10
+>>    address_space_read_cached_slow: cache: ptr=0x0, xlat=0x10046880000, len=0x1000, mrs=<realm-dma-region>, is_write=no
+>>    address_space_read_cached_slow: translated to mr=<mach-virt.ram>, mr_addr=0x6880000, l=0x10
+>>    flatview_read_continue_step: mr=<mach-virt.ram>, host=0xffff23e00000, mr_addr=0x6880000, ram_ptr=0xffff2a680000
+>>    virtqueue_split_pop: desc: 0000000000000000 - 00000000 - 00000000 - 00000000
+>>    qemu-system-aarch64: virtio: zero sized buffers are not allowed
+>>
+>>
+Thanks,
+Gavin
 
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
