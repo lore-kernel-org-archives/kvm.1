@@ -1,409 +1,317 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A3C1684BE;
-	Fri, 26 Jun 2026 01:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782436652; cv=fail; b=VTcoLH5rfa/DNOOLsU76re/JDwSUCw4uIz8lw/R+a5p6CI5WGlto+jH4zpDJY/5Cj6nf7meaFCBwy71zwb5p0A2XUb3Ku0p812RZ7AU+F9w5qxgfV65k2ILARu7okfkw3OTDnB1JaozstLta63eUEIIqlkTIbG7qFqWZu+N/tNY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782436652; c=relaxed/simple;
-	bh=sh7xAKwl3vLKab8xlpiAdd6a9cFO+D+hwdwFYuahWL0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QrSnqHTvBm8DwNBg7UK6LVQLPgy0+igwtJtPCcqeGUuh7ROVEQxZHOuhNJ+5dbV4Kvo0eMlpQZTOlh2QnezvKSaedVusbUFW63Zz3UiuUf5mq6nU/xljScYbmNJrukWxBO98i84rW/AgOcb4jWBw/PIf1SkEbq7bjkyE0HaS5BE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQsLgaRv; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F27F1714AA;
+	Fri, 26 Jun 2026 01:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782437812; cv=none; b=HTnu60dMc9Ktki68TC2OUv4Oy9H+yRjX55of0XJh9Za23o3qRTvczh4nygkhN77WQktHu6/nuZXLFkr12rkWh3T0qtEmC3jcszqVwi1TrxmmNaBTech0g7vpsRx5/NfGTJPttEWFNNuZwGyqLTLuTQH5Zhq9Vi8YK32sFPZEUzU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782437812; c=relaxed/simple;
+	bh=BqtTjLUlgLmLpCLaFZemiRnfSh9fNhnZLfCku1cXgas=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KpHjVeETZj0I3I36LBSMAUNZrZfj6J7+r3F9HSrP7UE3PAgP1ZpuI0BEokBvHOCfZFmWQckkR0KDxevMlabjjkV9AO10dYO0TrHFkg0ucgwzfQWupCeY/0in0C3OwnbFReCx4Ih4aF3sE/mlBH3eI7p1h/IKaDTC5W5r45YjI3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CaJLyq8N; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQsLgaRv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CaJLyq8N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782436650; x=1813972650;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=sh7xAKwl3vLKab8xlpiAdd6a9cFO+D+hwdwFYuahWL0=;
-  b=FQsLgaRv8sfJ9sqelhwnG6bD+1PMIYhAJbTyQtoqMKIlD7FVrzVObF0E
-   s6UB9H9ol7wcPoYUtqbvaV9k6T1o9zAad/6CB+MAHzXSVzeo8CHkDKYc3
-   mpfUydJpYQ/7GEWbWZ8xHPF1RAOY2W4QygsGTwzJOKWXTg0ih03uVZEgk
-   QZJTWs+t74u7MSCvlVRpAKeOdc47MQhB5G2/EhVtMyIp1WnAjvc0l6A8B
-   Xvxhy3EENfcKdLMDCb9bdtg0miWPsnSpB8kDomNkD9Sa0eBhxxgMSoEVp
-   CoW69b/3lkMFvEOfmyf9peyYH9vHaouRGX3J1BhoSyKZjJhoLTCjFugVu
-   Q==;
-X-CSE-ConnectionGUID: 6+hqB2KEQXaou6P49NgO0g==
-X-CSE-MsgGUID: fSuSajJzSMe5ywLitqMXgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="82223995"
+  t=1782437810; x=1813973810;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BqtTjLUlgLmLpCLaFZemiRnfSh9fNhnZLfCku1cXgas=;
+  b=CaJLyq8NTGhY22eVtlckHj8kek1RtMxBIx1VNP2HEKOeppx1chHZQaD7
+   DMcIYckM8FUFFypbH+bC5akGSMg6CNnPkLtJhXzBmsoyZ7CNlVQ/lKVAy
+   YSCk92vLL4Ll7De9M8fBauYMLAdVUI4txk7ZrqakxAsRGTN6wMaNciC0q
+   A6MaD4/sWsiBixD4IgpJqIsxTTwfhm/X7Gavbyx6+CqY9th/82/sD0rTF
+   47x9JKQCEopp95FzH2Ks6EHgK3KXPbsWZEhaVr+e5SZ5gf5/tUb+PkdOx
+   5zuZFqHZjP3ZNVmQ0gkHBLD4v5Z35uYSfDYb0kMTAG3b+PVErt4HPORB2
+   A==;
+X-CSE-ConnectionGUID: CNWtGfJnTGy5dcfoOv7/Kg==
+X-CSE-MsgGUID: fWDeqHwHTMufjkJtA6/k9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="100659478"
 X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
-   d="scan'208";a="82223995"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 18:17:29 -0700
-X-CSE-ConnectionGUID: stUXW0E9R5KsYdhKSLfjLw==
-X-CSE-MsgGUID: tJSP9EtqTSeEMRlAxkodxw==
+   d="scan'208";a="100659478"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 18:36:49 -0700
+X-CSE-ConnectionGUID: 0DHGXJftS3OivR1Vn9XbpA==
+X-CSE-MsgGUID: psz7njomTSy1ZuuKQGFQ8w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
-   d="scan'208";a="256102406"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 18:17:28 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 25 Jun 2026 18:17:28 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 25 Jun 2026 18:17:28 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.12) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 25 Jun 2026 18:17:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CuhdYDfvVpUTNSDRjlcvdqJhFNEaGj9MVUPtgDA5Rw66Jy/5Jgn/WBDTtLK43G/sbAt/pXbynEzNxan6Yy+TX1Bg4aE0Wnn+EaLQD2gHWQIP2YWoS8n3F7/Z+35QBmKVO2bH097U7XdcoK4x2IMr7LLUjxxGC5RqYrhRj9N8iZ6hgyNwElT3V58Si7edq4NtMrd4uE4N5E383LuIOE6APU0aWtXtsGN3DnAPFNGKSx0M3IxQMhqzYKFsmdLYCOoyEO9Z2VVHIkXuIEBWsnabWME9I/D+R62htf1HZ8+H5FE1JHy+May+xC2tlzanXujlu0UFgsP8f5ITvxYLzDw59w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8A5z9PZsiUYW7RbErPIcWNLwyOIpxbQkYmw7rEsKEZs=;
- b=xw4CDshouPpK4UJ9h3iZhI11lu787yY0OY6bCN7n4l0TPjIPBAt5rIIPyHcKnoDBjmsY2vmhiWDL77Zn90+jeaX0HG7E80mbeGqCEjsBhzLoZOTatiaqXQFFar5GSQt967qyxPsRHZ0LNhAYAWZBTJ9Rko2KK28+pFd8a47M7a/Sl78Gupb8VqdWYSpsF9li6UBUh+LYikfax5hlnZ1zdF/UOCLIY212VZXvJ9F8pn6NgI8uVELTu8kpQ3i4/IMkya+Zjt0wUUUaHTsdTaxOPjoQEpEhv4NWzTdJbGB4tBJt+4PIfZcVo+bZiYgMA7HPTPZ3hx3j6+ptjQttkPvMig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by DS0PR11MB8183.namprd11.prod.outlook.com (2603:10b6:8:161::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Fri, 26 Jun
- 2026 01:17:24 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0159.013; Fri, 26 Jun 2026
- 01:17:24 +0000
-Date: Fri, 26 Jun 2026 09:17:12 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: Sean Christopherson <seanjc@google.com>, <aik@amd.com>,
-	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
-	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
-	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
-	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
-	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
-	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
-	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
-	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
-	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
-	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
-	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
-	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
-	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
-Message-ID: <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
- <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com>
- <ajnf5Z9nWZxoLS4x@google.com>
- <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com>
- <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
- <ajxasFBzp_9KnQLq@google.com>
- <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
- <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
- <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
-X-ClientProxiedBy: SG2PR02CA0136.apcprd02.prod.outlook.com
- (2603:1096:4:188::16) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+   d="scan'208";a="248567386"
+Received: from jarockia-mobl.amr.corp.intel.com (HELO [10.246.152.209]) ([10.246.152.209])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 18:36:47 -0700
+Message-ID: <021e5f83-40c0-42f9-a3fd-66dda0b90288@intel.com>
+Date: Thu, 25 Jun 2026 20:36:46 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DS0PR11MB8183:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51ba2d33-d923-4b54-9582-08ded320ad9a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|18002099003|22082099003|4143699003|6133799003|5023799004|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: 17R4vo00ud8nYqvCsbC2xWzSaDjNvccyPdkH0d1DUS5a6qbzz3M7UxMer7J0xwtF+4npWY6h1BhsBvQUPFOaCbEgLsYJnMbnLmYiBlPknwVygP2KSW3W77fReSgNDjo+mgbHNCrYA0pqjIZ669+SGUNtzUl81ciD9inZW65obIUdDhaNutqez5y+1lIVQAcQmq+TjRkg4T3bz11gwrDE1EQJ3knTAHraohVJW/c8KZCaqjS+7BYikmudL41FxVeoiH6O7gCuIrhPK3txtDBfxopDdhVzihe8eaxGKf1gK6iw57KzQGqyl3SbNmAxGW5RlQ9TFoh6ROspdmMPAIRqHpoS7nD0ORpHkd+CBE43Nw4F+vIvemNEfceoLQyvYavb0SKPwiXxHVAW1iDL0SJTqZuHPv515oKYLatmefyINcuSNsJTv2LDprIUEzY1H4qBiufsUk7RuEhIXB2xkPQp3Gt4qICfMSuHPXnYZeUoV8QVMrpNvr2vnAPngRWZ2B4A+YAwZXyvyhWntstS5ipD79H1f8lO7oYHnyJMjHuoNb3GPs8MsuRkYc73LufsE9wO3AzHzertOBVgaIroefa0cXX4krI0RWfwPh/ND1v5IV9BicvZa8I4kC9ueIJzV0MVnGTPYZ31tdM474ziD9mu28fXDAtWMxaNbmSHK6gFSmE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(22082099003)(4143699003)(6133799003)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5gtVQXt/82HtuMa3Sb8GeuTfpbyeo0xZBMj0UExlAqWyXzr56nbNuc3B1b7g?=
- =?us-ascii?Q?6sYiSw5ALXtT5FiMrPVBiL7USpE+hAMUO39BofLuH6roIM0Z5p1hJL1JYhHH?=
- =?us-ascii?Q?pjpfvKkFg/vHSnw8aFbEAyR/vEetCjhZ5w8VcLWxliTMctnkNJZrMuw1+W/R?=
- =?us-ascii?Q?zfUFbu0q2kB6V3dyoT6Zf5khsNuTQavhHxLf+zypzDrjy8KDjAICeoqx9vfw?=
- =?us-ascii?Q?dweTDpS5elj/2YIFJI/b6U7ZTWM0cKSpJoBIDxlc4/wZKIYSaGE2iQuKwthe?=
- =?us-ascii?Q?MC/lPf0dNrxmHavT6ZpIfCHmIoEsEGK8N+/IVne4u0km19Jb6hIZCityLvNY?=
- =?us-ascii?Q?es+RTF56l3dgWVxxCLQ5KXplPvs7pyey+rOt6piE/Xm158jIpemSjb03Ggxf?=
- =?us-ascii?Q?o44Yh5SWE7SgdZkgaR1nO7d6E8Ywc6yTZjQ98rvQZCo2TgwY1J+uaq75DFdl?=
- =?us-ascii?Q?vV5NzmJXQnYPpHWva5/bYkiyZaFk/ZG3Lh+c7aFNZd1BbidJ2pNbTJ5ayyxH?=
- =?us-ascii?Q?cuK1bcYk5m++x8P067gdsBoeunS0hqDLOVFSkKlzBP3NYGj49ebq8dbGySkO?=
- =?us-ascii?Q?nCd+HT4f1IbHxY8S99q4BUgIJQOAqCaez8DfoRwLYkgkrVu9HttRLTMv8yAI?=
- =?us-ascii?Q?Xd7l2ocicz4xy4zgGwSHrqvmflMq1WIZy9c7654E2yWjhtnBW2gKsUrqsmyE?=
- =?us-ascii?Q?WMQhSSckzsNfUjOvLylng6s/venKdKNlilcFlIomRsSB23GpjGz8bMRScn9A?=
- =?us-ascii?Q?xyJO2UXUpjpXBGuiOFJMMelO2L5juPwZbnwHFbZiaDNZHI2iyTFHW6wo3Jsk?=
- =?us-ascii?Q?CZKiUKbm5UNp7JzpHzFR9arDjoGA2lK8GO7HpRJE/8col4NqvdEaGrCJTIdQ?=
- =?us-ascii?Q?qO8iGMZNcBXQCKnOG891Cp3PPK8sneC8KVPtQ2uG30PtRvfZU7cx0SGbzraI?=
- =?us-ascii?Q?7mAZqfAe5CYNeraUhcqD5KFBJwnlayMS3PBIBIj7t6mPNKoP+U2B4sUztkf4?=
- =?us-ascii?Q?mawcMjvg1vVOtvr7LDwWGG+kNOo9dagmKsv84faZaaWj6mD57b73M1vu8Qhq?=
- =?us-ascii?Q?lAcJZ1+hEfh7+RRe2TLH6WjinjFxijVybL+ofy7ZH0SJ65sQBg+ClQ+VIbCX?=
- =?us-ascii?Q?z7rZbS9GdkYAUAYPE7lm/or5B+RxPgfO2JldGbqc/WLX5Fyv0Lpr++vo+P3P?=
- =?us-ascii?Q?JLroARCz6+lkzo43UztitwNHrCwEVKVlIMpo6qdyakP7wb2kDJkn0BrzJipR?=
- =?us-ascii?Q?lfa+pgWqvwq9mITSxIXUTYGdzbJRhmll75yOkPzrSZTYxJY0/FFDuRnOWM8v?=
- =?us-ascii?Q?Aa0Fcf46w9kdl1ntLOTeo3/KynQ0gs3j4ojsGzLVUjoFywjsGQOPXXgTHo7m?=
- =?us-ascii?Q?ry4JlgQACXzd20nxz/zRek93URDJhSORD6nYnevkPbpw8olMfijWRwVhDPsA?=
- =?us-ascii?Q?k3q1G4T3XLp+6Z7c0LS7Y8QXIX2Blc7nH4oVFwJ5UcQDgFH6YMQK0XJeUroB?=
- =?us-ascii?Q?8bYZhf1UgH8P9TAF0OOnU2mYqPh8DzsA5rfFzoGtGaA2RaXqMGjfQrECgPdH?=
- =?us-ascii?Q?PVHhaIQjUOdLJpN9uoLKj7Ci/n/TUlHYyduLiRyikHyXSXTCMGdRnkembhl6?=
- =?us-ascii?Q?Wv34SmRJU2o0Ug8zSB5FSMI5IlG0/CtBAP9v5YdqeNXB93eM88+LdbQaE3fb?=
- =?us-ascii?Q?eMGG+LztXzteVNipZLll4y4XYxKJ3U0FAtiaIXlWYcsKn3pWR3FnsyFvIZZ2?=
- =?us-ascii?Q?bX1bUnzDbA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: QR5YmlFUmSlygnRDCOVKCHIEEQkt7m7wnW+tem2gfgeVrFmPJPQHZ89PNoL524DpmXAfQKmOgyVBUvkhPk+0lV/vC+LjGCb7lzJUYYdQb6SpqmUbli+dAX9RcYa3nmNYv7/36D7YqJB+GQaWcARAqKJpoEXQPGrYkmLEL7CqRSY3fD4SKy5FqaHKQc6IQbL/0NALT1NjjzbVbeFjTJ1m+oTeP6IwaJ0KFsMJ66TT1LBDsWrWkBFXvWUG526wJstXY/qDyf8cXiM8uM1sP2w61Ynw2i/PG6rNDgAWyzS4WIFDXmAyOiBH8hS5LC7gbW5EvVc+GfV5mC1OE2sW4OHB0A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51ba2d33-d923-4b54-9582-08ded320ad9a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 01:17:24.2535
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZCfCByBoYtykho1oPhk4zfENepU4326aQdEgNnN7cifskZn27zll1bWY9RQSnVGs7D38DMZBA2nyBDEl+lE+9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8183
-X-OriginatorOrg: intel.com
-
-On Thu, Jun 25, 2026 at 05:07:23PM -0700, Ackerley Tng wrote:
-> Yan Zhao <yan.y.zhao@intel.com> writes:
-> 
-> > On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
-> >> Sean Christopherson <seanjc@google.com> writes:
-> >>
-> >> > On Tue, Jun 23, 2026, Yan Zhao wrote:
-> >> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
-> >> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
-> >> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
-> >> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
-> >> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> >> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
-> >> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
-> >> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
-> >> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> >> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
-> >> >> > > > >  		return -EIO;
-> >> >> > > > >
-> >> >> > > > > -	if (!src_page)
-> >> >> > > > > -		return -EOPNOTSUPP;
-> >> >> > > > > +	if (!src_page) {
-> >> >> > > > > +		if (!gmem_in_place_conversion)
-> >> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
-> >> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
-> >> >> > > > error.
-> >> >> > >
-> >> >> > > Why MMAP?
-> >> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
-> >> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
-> >> >> >
-> >> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
-> >> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
-> >> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
-> >> >> > > initialize the memory.
-> >> >> > Do you mean using up-to-date flag as below?
-> >> >
-> >> > Yes?  I didn't actually look at the implementation details.
-> >> >
-> >> >> > if (!src_page) {
-> >> >> > 	src_page = pfn_to_page(pfn);
-> >> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
-> >> >> > 		return -EOPNOTSUPP;
-> >> >> > }
-> >>
-> >> Yan is right that with the earlier patch "Zero page while getting pfn",
-> >> folio_test_uptodate() here will always return true.
-> >>
-> >> Actually, this is an alternative fix for the issue Sashiko pointed out
-> >> on v7 where userspace can do a populate() (either TDX or SNP) without
-> >> first allocating the page, with src_address == NULL, and leak
-> >> uninitialized memory into the guest.
-> >>
-> >> Advantage of using the uptodate check in populate: if the host never
-> >> allocates the page, populate doesn't incur zeroing before writing the
-> >> page anyway in populate().
-> >>
-> >> Disadvantage: Both TDX and SNP will have to implement this uptodate
-> >> check. guest_memfd can't check centrally because for SNP, for a
-> >> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
-> >> firmware will zero and there's no leakage of uninitialized host memory?
-> > Another disadvantage: the uptodate flag is per-folio. What if the folio
-> > is only partially initialized by the userspace especially after huge page is
-> > supported?
-> >
-> 
-> Good point on huge pages!
-> 
-> The uptodate flag on the folio in guest_memfd means "this folio has been
-> written to". As of now (before patch at [1]), this happens when
-> 
-> + folio is zeroed on first use by userspace
-> + folio is zeroed on first use of the guest
-> + folio is populated
-> 
-> When huge pages are supported, the folio can't partially be initialized?
-> 
-> On allocation, if any part is shared, we split the page. The parts are
-> separate folios that have their own uptodate flags.
-> 
-> On splitting, if the huge page is uptodate, the split pages will also be
-> uptodate. If the huge page is not uptodate, the split pages won't be
-> uptodate, but that's ok since they will be marked uptodate on first use.
-> 
-> On merging, the non-uptodate parts have to be zeroed and then marked
-If that's true, it would be good.
-
-> uptodate. Any parts that are in use would have been marked uptodate
-> already, so there's no overwriting data that is in use. I'll need to
-> think more about when it's safe to zero.
-> 
-> I'm still on the fence between the two options
-> 
-> 1. Using uptodate check in populate to reject src_pages that have never
->    been written to or
-> 2. Always zero before populate
-2 does not work?
-The flow is
-1. mmap gmem_fd, make GFN shared, and write initial content.
-2. convert GFN to private
-3. invoke ioctl to trigger populate.
-
-> but whether the uptodate flag is per-folio or not doesn't affect these
-> two options in terms of fixing the leak of uninitialized host memory,
-> right?
-yes, provided "On merging, the non-uptodate parts have to be zeroed and then
-marked uptodate".
-
-> >
-> >> >> Another concern with this fix is that:
-> >> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
-> >> >> folio uptodate before reaching post_populate().
-> >> >>
-> >> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
-> >> >>
-> >> >> > One concern is that TDX now does not much care about the up-to-date flag since
-> >> >> > TDX doesn't rely on the flag to clear pages on conversions.
-> >> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
-> >> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
-> >> >> > user access.
-> >> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
-> >> >> > to have more effort than introducing a dedicated flag for TDX.
-> >> >> >
-> >> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
-> >> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
-> >> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
-> >> >> > > > 1. create guest_memfd with MMAP flag
-> >> >> > > > 2. mmap the guest_memfd.
-> >> >> > > > 3. convert the initial memory range to shared.
-> >> >> > > > 4. copy initial content to the source page.
-> >> >> > > > 5. convert the initial memory range to private
-> >> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
-> >> >> > > > 7. do not unmap the source backend.
-> >> >> > > >
-> >> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
-> >> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
-> >> >> > >
-> >> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
-> >> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
-> >>
-> >> Yan, is your concern that userspace forgot to update the code and
-> >> forgets to provide a src_page, and if we keep the "Zero page while
-> > Yes. Previously, it would be rejected after GUP fails.
-> >
-> 
-> I see, didn't realize previously it would be rejected because GUP
-> fails. GUP failed because it wasn't faulted into the host?
-GUP fails if 0 is not a valid user address.
-But GUP would not fail if 0 is a valid address. e.g., in below scenario: 
-
-#include <sys/mman.h>
-#include <stdio.h>
-int main(void)
-{
-        void *p=mmap((void*)0,4096,PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
-        if (p==MAP_FAILED) {
-                perror("mmap");
-                return 1;
-        }
-        *(char*)0='Y';
-        printf("addr0=%p val=%c\n",p,*(char*)0);
-        return 0;
-}
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 6/7] KVM: x86/pmu: Emulate RDPMC on performance metrics
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260625034555.141453-1-zide.chen@intel.com>
+ <20260625034555.141453-7-zide.chen@intel.com>
+ <e3058805-9215-48dc-ad37-ec530a6c8212@linux.intel.com>
+ <1f1c2f34-1f89-4886-a115-41666532f032@intel.com>
+ <3ed61c5c-cf91-4af3-90ad-f416f14ac644@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <3ed61c5c-cf91-4af3-90ad-f416f14ac644@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-> That's kind of orthogonal, I don't think GUP fail leading to rejecting
-> populate was meant to help userspace catch these issues. GUP would also
-> fail if the user did mmap(), write to it, unmap using
-> madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
-The original uAPI did not explicitly define 0 as an invalid uaddr. Whether 0 was
-rejected depended on whether the user mmap()'d address 0. If 0 was a valid
-mapping, populate() could proceed.
 
-commit 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating
-guest memory") changed the behavior though. It would return -EOPNOTSUPP for a 0
-uaddr.
-
-But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
-source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
-treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
-
-
-> >> getting pfn" patch, ends up with the guest silently having a zero page?
-> >> I think that would be found quite early in userspace VMM testing...
-> > I actually encountered this during testing this patch.
-> > I update most code path to follow this sequence. However, still some corner ones
-> > for TDVF HOB, which are less obvious and harder to update.
-> > The TD just booted up and hang silently.
-> >
+On 6/25/2026 7:28 PM, Mi, Dapeng wrote:
 > 
-> I think this is just the life of a close-to-hardware software engineer
-> :P no errors, got stuck somewhere, root cause is some unitialized
-> thing.
+> On 6/26/2026 12:30 AM, Chen, Zide wrote:
+>>
+>> On 6/25/2026 4:17 AM, Mi, Dapeng wrote:
+>>> On 6/25/2026 11:45 AM, Zide Chen wrote:
+>>>> If the host has the PERF_METRICS capability but it's not present on
+>>>> the guest, RDPMC interception must be enabled and KVM should inject
+>>>> an #GP when the guest attempts to read it.
+>>>>
+>>>> If the guest has PERF_METRICS, but RDPMC interception is enabled for
+>>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
+>>>>
+>>>> For simplicity, Metrics Clear Mode is not supported.
+>>>>
+>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>>> ---
+>>>> v5: new patch.
+>>>> ---
+>>>>  arch/x86/kvm/pmu.c | 30 ++++++++++++++++++++++++++----
+>>>>  1 file changed, 26 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>>>> index 7aafc5db1346..af5b14f44e4b 100644
+>>>> --- a/arch/x86/kvm/pmu.c
+>>>> +++ b/arch/x86/kvm/pmu.c
+>>>> @@ -755,6 +755,16 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> +static int kvm_pmu_rdpmc_metrics(struct kvm_vcpu *vcpu,
+>>>> +				 unsigned idx, u64 *data)
+>>>> +{
+>>>> +	if (!kvm_vcpu_has_perf_metrics(vcpu))
+>>>> +		return 1;
+>>>> +
+>>>> +	*data = vcpu_to_pmu(vcpu)->perf_metrics;
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>>  int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>>>  {
+>>>>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>>>> @@ -767,15 +777,18 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>>>  	if (is_vmware_backdoor_pmc(idx))
+>>>>  		return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
+>>>>  
+>>>> -	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+>>>> -	if (!pmc)
+>>>> -		return 1;
+>>>> -
+>>>>  	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
+>>>>  	    (kvm_x86_call(get_cpl)(vcpu) != 0) &&
+>>>>  	    kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
+>>>>  		return 1;
+>>>>  
+>>>> +	if (idx & INTEL_PMC_FIXED_RDPMC_METRICS)
+>>> I'm not quite sure if this check is good enough. Although the SDM vol.2
+>>> says "Performance metrics use type 2000H. This type can be used only if
+>>> IA32_PERF_CAPABILITIES.PERF_METRICS_AVAILABLE[bit 15]=1. For this type, the
+>>> index in ECX[15:0] is implementation specific." It doesn't say the PMC
+>>> index must be 0, but we always set the PMC index to 0 when reading topdown
+>>> metrics.
+>> Simply AND the idx is problematic for two reasons: 1) it doesn't catch
+>> invalid type. for example 6000H; 2) fundamentally,
+>> INTEL_PMC_FIXED_RDPMC_METRICS is Intel specific and it can't be compared
+>> in common code.
+>>
+>> The proposal is to change the callback rdpmc_ecx_to_pmc() to
+>> emu_rdpmc(), and mode the RDPMC metrics code into vendor. Part of the
+>> proposed code:
+>>
+>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>> index 7aafc5db1346..af6fc8c96037 100644
+>> --- a/arch/x86/kvm/pmu.c
+>> +++ b/arch/x86/kvm/pmu.c
+>> @@ -758,8 +758,6 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu
+>> *vcpu, unsigned idx, u64 *data)
+>>  int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+>>  {
+>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>> -       struct kvm_pmc *pmc;
+>> -       u64 mask = ~0ull;
+>>
+>>         if (!pmu->version)
+>>                 return 1;
+>> @@ -767,17 +765,12 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned
+>> idx, u64 *data)
+>>         if (is_vmware_backdoor_pmc(idx))
+>>                 return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
+>>
+>> -       pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+>> -       if (!pmc)
+>> -               return 1;
+>> -
+>>         if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
+>>             (kvm_x86_call(get_cpl)(vcpu) != 0) &&
+>>             kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
+>>                 return 1;
+>>
+>> -       *data = pmc_read_counter(pmc) & mask;
+>> -       return 0;
+>> +       return kvm_pmu_call(emu_rdpmc)(vcpu, idx, data);
+>>  }
+>>
+>>  static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+>> index 3066cade5790..24634aa92875 100644
+>> --- a/arch/x86/kvm/pmu.h
+>> +++ b/arch/x86/kvm/pmu.h
+>> @@ -24,8 +24,7 @@
+>>  #define KVM_FIXED_PMC_BASE_IDX INTEL_PMC_IDX_FIXED
+>>
+>>  struct kvm_pmu_ops {
+>> -       struct kvm_pmc *(*rdpmc_ecx_to_pmc)(struct kvm_vcpu *vcpu,
+>> -               unsigned int idx, u64 *mask);
+>> +       int (*emu_rdpmc)(struct kvm_vcpu *vcpu, unsigned idx, u64 *data);
+>>         struct kvm_pmc *(*msr_idx_to_pmc)(struct kvm_vcpu *vcpu, u32 msr);
+>>         int (*check_rdpmc_early)(struct kvm_vcpu *vcpu, unsigned int idx);
+>>         bool (*is_valid_msr)(struct kvm_vcpu *vcpu, u32 msr);
+>> @@ -84,14 +85,12 @@ static void reprogram_fixed_counters(struct kvm_pmu
+>> *pmu, u64 data)
+>>         }
+>>  }
+>>
+>> -static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+>> -                                           unsigned int idx, u64 *mask)
+>> +static int intel_emu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
 > 
-> >> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
-> >> >> > kernel to detect this mistake, similar to how it validates whether source_addr
-> >> >> > is PAGE_ALIGNED.
-> >> >
-> >> > The alignment case is different.  If userspace provides an unaligned value, KVM
-> >> > *can't* do what userspace is asking because hardware and thus KVM only supports
-> >> > converting on page boundaries.
-> >> >
-> >> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
-> >> > request would then be making assumptions about what userspace wants.
-> >> >
-> >>
-> >> Also, +1 on this, what if userspace, knowing that pages are zeroed on
-> >> allocation, actually wants to rely on that to get a zero page in the guest?
-> > What if 0 uaddr is a valid address? :)
-> >
-> >> >> > Since userspace already needs to perform additional steps to enable in-place
-> >> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
-> >> >> > intentional seems like a reasonable burden.
-> >> >
-> >> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
-> >> > just wen up with code that does:
-> >> >
-> >> > 	if (in-place) {
-> >> > 		src = NULL;
-> >> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
-> >> > 	}
-> >>
+> What does "emu" mean? Is it a typo?
+
+Short for emulate. Or we can use emulate_rdpmc().
+
+
+> 
+>>  {
+>>         unsigned int type = idx & INTEL_RDPMC_TYPE_MASK;
+>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>> -       struct kvm_pmc *counters;
+>> +       struct kvm_pmc *counters, *pmc;
+>>         unsigned int num_counters;
+>> -       u64 bitmask;
+>>
+>>         /*
+>>          * The encoding of ECX for RDPMC is different for architectural
+>> versus
+>> @@ -104,7 +103,7 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct
+>> kvm_vcpu *vcpu,
+>>          * as KVM doesn't support such PMUs.
+>>          */
+>>         if (WARN_ON_ONCE(!pmu->version))
+>> -               return NULL;
+>> +               return 1;
+>>
+>>         /*
+>>          * General Purpose (GP) PMCs are supported on all PMUs, and
+>> fixed PMCs
+>> @@ -118,23 +117,28 @@ static struct kvm_pmc
+>> *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+>>         case INTEL_RDPMC_FIXED:
+>>                 counters = pmu->fixed_counters;
+>>                 num_counters = pmu->nr_arch_fixed_counters;
+>> -               bitmask = pmu->counter_bitmask[KVM_PMC_FIXED];
+>>                 break;
+>>         case INTEL_RDPMC_GP:
+>>                 counters = pmu->gp_counters;
+>>                 num_counters = pmu->nr_arch_gp_counters;
+>> -               bitmask = pmu->counter_bitmask[KVM_PMC_GP];
+>>                 break;
+>> +       case INTEL_RDPMC_METRICS:
+>> +               if (!kvm_vcpu_has_perf_metrics(vcpu))
+>> +                       return 1;
+>> +
+>> +               *data = vcpu_to_pmu(vcpu)->perf_metrics;
+>> +               return 0;
+>>         default:
+>> -               return NULL;
+>> +               return 1;
+>>         }
+>>
+>>         idx &= INTEL_RDPMC_INDEX_MASK;
+>>         if (idx >= num_counters)
+>> -               return NULL;
+>> +               return 1;
+>>
+>> -       *mask &= bitmask;
+>> -       return &counters[array_index_nospec(idx, num_counters)];
+>> +       pmc = &counters[array_index_nospec(idx, num_counters)];
+>> +       *data = pmc_read_counter(pmc);
+>> +       return 0;
+>>  }
+>>
+>>  static inline struct kvm_pmc *get_fw_gp_pmc(struct kvm_pmu *pmu, u32 msr)
+>>
+>>
+>>> Could you please test to run the rdpmc instruction to read topdown metrics
+>>> with valid and invalid PMC index on real HW and look what would happen? Thanks.
+>> RDPMC with invalid type, for example 0x6000 got an #GP. non-zero index
+>> (ECX[15:0]) with type 2000H got an #GP on SPR/NVL/GNR as well.
+>>
+>> I haven't found any documentation talking about non-zero index on type
+>> 2000H. Since it's implementation specific, for now seems it's OK to
+>> reject (#GP) non-zero index.
+> 
+> Yeah, this is consistent with what we ever know. Let us follow the HW's
+> behavior here. Thanks.
+> 
+> 
+>>
+>>
+>>>> +		return kvm_pmu_rdpmc_metrics(vcpu, idx, data);
+>>>> +
+>>>> +	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+>>>> +	if (!pmc)
+>>>> +		return 1;
+>>>> +
+>>>>  	*data = pmc_read_counter(pmc) & mask;
+>>>>  	return 0;
+>>>>  }
+>>>> @@ -803,6 +816,14 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>>>>  }
+>>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+>>>>  
+>>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +	if (!(kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS))
+>>>> +		return false;
+>>>> +
+>>>> +	return !kvm_vcpu_has_perf_metrics(vcpu);
+>>>> +}
+>>>> +
+>>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>  {
+>>>>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>>>> @@ -815,6 +836,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>  		return true;
+>>>>  
+>>>>  	return kvm_need_any_pmc_intercept(vcpu) ||
+>>>> +	       kvm_need_perf_metrics_intercept(vcpu) ||
+>>>>  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
+>>>>  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
+>>>>  }
+
