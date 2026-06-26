@@ -1,92 +1,92 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88C73F6618
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0583F6C52
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473219; cv=none; b=A3ag8YOoAuLgRMcTCSqMy6j1kXsJHov9BCVTpqTyVnblJOS5VdOTHR5x5rANQoTMM4AYztV3k5+gOtdLZPbu02fZa3Rhdkqyuh3lQVg5FRQpPi6HbrPCsjwWRxdqinJqmyMs5MaUh8uUm7l3G93ieW4XaAdr1l1YU2hPsFZGPbs=
+	t=1782473222; cv=none; b=q0jxITF/w+siS82fl1iMzvytnHekPD/j4d9j8MTJAsLs92/oefxP3aulqyqh3GTMB/JXqjzR9/QDiH2u6OJr5SSi3kPZECFrUpIuLdgAZXXrC3TYkyeZtoUDfmHNpswVL5ext5LlWdc9xhRT5NYQhzFBvahnqwKsUQd0Pt6v2Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473219; c=relaxed/simple;
-	bh=IsMFqh5lCzslhR35A+TpAigK0yuuYqvptTFT8QA/wU8=;
+	s=arc-20240116; t=1782473222; c=relaxed/simple;
+	bh=weYSUgaYkqSXYwb5X3ty9F+fWEmo2ZS70X7C1+bNYMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMQSLBSk2bMMdvUssR/Z5D6bWr3OPZrS2GnNechfDtnfEtruTEklk0zuEE5wl7QIAC29+GIJmoBQBQtwJ8i0Lmjr1EVz0othUX6cV9sqLZFTlrYZ+ux3bfbE/IroyC8Ymvdn3iWAHf036g/tjkul0Suj8wdYVYBtIEJVgGgcFlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N8kUYZaX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=izFO1jjY; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=cgUrT1y9AGR9/yf+LS+h8UYUQNE+FxvfapXj234MQGe8sIo3NuMYsnxKUYxGjmTu2ljrsqrmQK+ManQGPMz0wN+hurgOIRL1iWHh9uq/YDLkM8Ct1C0f8swYEHawsTIEPbYEEVbm6t/9FaDgOyrq7ClZ94vR47/zy+A/vvxvyDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W+6FPsYt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ewUeV75r; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N8kUYZaX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="izFO1jjY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W+6FPsYt";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ewUeV75r"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473213;
+	s=mimecast20190719; t=1782473217;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pL854WDCy8UICjVgQlEGBttHpjAaK87n93leEJVa9jE=;
-	b=N8kUYZaXoOKoMpOlz1T1eEeH+IALBAVTMxJI8Kg3roBIm9xd90x0Uz7umuJ4h/N3J/qx3/
-	KEzE3yxeyD6U309B3OjDr8a9V6xcCzKAnJJeX3+tbbYtlmQDY378HuTCCYQYxGVXuYme8b
-	221gWX6ppMbe63Yq5oatHTz93dnRln4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=L6BcOA0+z/i0uW3obMPgn2IQzAL5+x4K+CGN3abb/tg=;
+	b=W+6FPsYta9OHeEphRS7jJzmsi5eGGi5klEvt7jHBJbWCmo7n2tqA+u4oUEUgTejgfn3Tk5
+	PqfmxHoOwCIleakPwdDJJvgnUoZDBUMLbG7eMRbfyflGTcn1iC0P0+3KunAMXpAZyzVZUK
+	+9wjh6FKWSK1U6mgzSi9qqunKgUAPxE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-V2h_sG7uPmOVIlbhUBgCSw-1; Fri, 26 Jun 2026 07:26:52 -0400
-X-MC-Unique: V2h_sG7uPmOVIlbhUBgCSw-1
-X-Mimecast-MFC-AGG-ID: V2h_sG7uPmOVIlbhUBgCSw_1782473211
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767b782so6614755e9.2
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 04:26:52 -0700 (PDT)
+ us-mta-328-mWvpHDb5OquOq4g9_5wJTw-1; Fri, 26 Jun 2026 07:26:56 -0400
+X-MC-Unique: mWvpHDb5OquOq4g9_5wJTw-1
+X-Mimecast-MFC-AGG-ID: mWvpHDb5OquOq4g9_5wJTw_1782473215
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4621b17733cso378968f8f.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 04:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473211; x=1783078011; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1782473215; x=1783078015; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pL854WDCy8UICjVgQlEGBttHpjAaK87n93leEJVa9jE=;
-        b=izFO1jjY86fxlhwcgV0Sg+vlXEQUyfAUhpmM20CJQtbHpqytXWHlao2ZGwLwa39TLm
-         AzdKJNbP/6li0n70HavRSJ2ICXUgYWy9sWnvr3LMuMsC6qCMbAotgM4C42VIiFmd+xJv
-         dSs9Rgv6O6lV6N0t1oqrW5Ucaicju7rnU/7sjyoG2HHpV8MQJ3hcVKcBRxWLJ4WgQ7V2
-         zHng/CX6EOUEEy0zy4h/QhBDSD3L+ub6OXHgLML8IKfPnCeL8/WgKwhIvQMBmS2XCX/9
-         YYnUEJbFmvb7C4i4bKCJ8+8hy6mPCjBzwCf4XkvaNeZU92/ob33gIoiVkisHV02gydQf
-         tF8A==
+        bh=L6BcOA0+z/i0uW3obMPgn2IQzAL5+x4K+CGN3abb/tg=;
+        b=ewUeV75rBwCtRpO5pIh5GVMsmn0RTcGtLq7hUgno9+r8DOX7JhEWihrX9mPFVOq8cL
+         Kkv7OqVHgt3OYxP1Z87hq58RsTw7O0qLVnXOwTlO8vTbMaR8Tz8OSKi66EK/JxUmHY17
+         7SO/G1Hd/ePPe0hQHP/ZHdYgz+O3jLRAk3VETCmpTABXW/4X3PbPfzw/gJ2xk2THG4m+
+         5WDTIBiASzk3YGohJvR8HosHTSDcBwhkt6d45vMoyvzPSTSA0flPXzpvVjSB/IuBsf8w
+         KrCnWJ45cQkJpOWj5WyTIqKd5oJrokIxA9QD2OPTGvMXlnrIWMi7v3bIZV0BW+8MsB9q
+         37lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473211; x=1783078011;
+        d=1e100.net; s=20251104; t=1782473215; x=1783078015;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pL854WDCy8UICjVgQlEGBttHpjAaK87n93leEJVa9jE=;
-        b=P2T3wXgTzoNnmJodDWJOGtD2WLgaiZvN0SCz+olyHNZHvl95bxMVzEGx5AX8z6kNfP
-         lEm7u3yzmB7wQUCF1WVoRI9F2aNPZifU3sNsEhdyt+mHKJCstiMVFG9K2K8gFGiSjDKH
-         rzeJf1ccvHQZ1jeYf4Lo8inL1pZouxKFLEM0Be2TjuJBS6+fr0j9f6UT+d+wJQq7+XEy
-         ennvWkHmBdIr12kRCUh2COMaGiZ3SHFDMccK+wnj9YMo9JMi23IwRWGXZic/5qy0g37l
-         A8pGP1QWl1mMk7NmuqHvfij6uMFE0qjw3Mggz2Q2hEt75Y1MmvqtMPqsQhVU4moncn+b
-         //HA==
-X-Forwarded-Encrypted: i=1; AFNElJ9XHNasg1vm1eLsPVaWtNTuqRtMYTSQhv/7I+LNvagrPKiyqFL6QyC0ePJHjwXAw33uFD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz1CMpK/LljMQ14VlRuFdX8nCDkzyz6SDg6kjZtN5GW1cuQUme
-	PpDJQEhOYqRRqodR+zZF1WWVaBiIMhMUiV0GUpkAIlIsHBmx0wyuniN6hCEyLm9beuY6Gu5X4U6
-	0y5ONnnxRrXTJ0/t7WjTvhR3l4NHGojRTqFdBXRmJKBnkSKM1zHuRJ25Gp0umDw==
-X-Gm-Gg: AfdE7cntt7EjGmgtVgRAnLyHMz5Ii2BpfUjcZUmw+R2STzcIF0taeBHpo38y0XVA+Y0
-	c9j6KqTpGBH1p7jr3LFrA8VaClqpx7d/QREw8r8bAe4G1VqETg+7CM4al4xmVHbM3VlcjtDT3Vk
-	e/zH0FRBi1hQthupPyRhQJluIGY+YysyuzVZc/VeBIJlMa5xChMalcUub0t4VXbWGJepygMzOiM
-	fixZ8FkyUOnuT9tWu8DbcDItV5sz/4bgrD+JJGdlmACHxWhpsTVdEhNaCbgOJcWZOpdXDqe7/jX
-	ku0L31spSzyoDelREywg0cT8Cvgh8CXAl5PzbNmbba6KQJgSXevY/HcKwS0th14rrpA8RpRXwBm
-	TLVr7gd6f5s/x1aFrHQd5l8KZjkvM2JTqE3Xx7SYQXzQVlnHDHbL+0BwJAkm07m+o/FI+Nbz8ws
-	a/1ozuCaBGEdhhIXv7
-X-Received: by 2002:a05:600c:8b4b:b0:492:2f5b:7ed4 with SMTP id 5b1f17b1804b1-49266892555mr90504675e9.36.1782473211172;
-        Fri, 26 Jun 2026 04:26:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b4b:b0:492:2f5b:7ed4 with SMTP id 5b1f17b1804b1-49266892555mr90504355e9.36.1782473210815;
-        Fri, 26 Jun 2026 04:26:50 -0700 (PDT)
+        bh=L6BcOA0+z/i0uW3obMPgn2IQzAL5+x4K+CGN3abb/tg=;
+        b=abcdDxF5tl81CtrH2VAXX7gY5qh9QLQZgTwesF71qrajgKLdLPMJt6QB46rvRqtHjn
+         /zgfRsDEv8gVEPXT6GZ4ute0eT6rOARmSuE4MwA3OlI7cKyWTw17fl+XQ94HVpu5JsWk
+         rBrID1pe2l/gPYhhfJ8R37WX4vrI20/k4rhuCZZhXiq9TcZorP5zWJQhcS0yYfSakVKv
+         ni0HsnQibmKjMdaPWyvDoMYTHIzCTVuBr1zJ+Ef5+YCWG78D6/4dSYLvEsF3cHkn1mQC
+         vG9Bzxo6mE6H/24yPFuW9DnTZEgpBxiYQqEiqXjehHxV3qHhap+JBgp0mVuC8xDHy2aJ
+         bsAA==
+X-Forwarded-Encrypted: i=1; AHgh+RqjeATS0VMgYGymgwSqtbwSombNKWrBfqundA3zGjAWTYBD0dtSIvV0bMagqlv7I28A5e4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw36ec06j95/amfrEUo4YoJWQneHBXDcwPb1VkPABofqgrExH7o
+	3kbNT2KYye1RFTzWmAEG52qSDLQshX/XSp1VKdKcJfx4myiGVG3ugPIp/j5UTCMYA4mdIYPTOye
+	VyttajQO/d1GLaOku/VWO7TlUKxawPHlLIh4TWQ3hkNia3qTr5jcLKQ==
+X-Gm-Gg: AfdE7cn4KBBAySWSUt99o37VrEyHYSipClu7tTynyr5H32KR5P3yBHrxLaUyst4KrQs
+	9bA9Cjj8MnRZq2yMumP4J6At5vqF+LzWEc0Du9TL3SWOeYdtgbB0NgOKG8aI8R3tL8YdOiFA5+E
+	+dISWUlT92V31mPOIAGD8W8D0yJ+hX4zcFZl68nT5MTw/XC2wosWg0c7bm7X4s8tMHhk2aWU24a
+	LD/dcoZHKn6JcJQBq+AiCxu+aGPVt0UeK3TpckNq2ifu5JCASEYd+RllDBqYZe90X0CKssHph2o
+	liO7DwP/55duor8aXYoYvXqbL5Y6k8zXUU+zGaM7pyA9PzNFWaTw6qRVt+/IYfFF8iKrQVefMa2
+	ZSqjfT1FoVcYvqsvuOmMShd21eQDp9Nx+suTOU1sCl8SMx/TNIxxKRHSnRzVfNH/rAslpC74aUA
+	G4vDBemicFGDtnYIXg
+X-Received: by 2002:a5d:5f44:0:b0:465:fa66:be57 with SMTP id ffacd0b85a97d-46dc12df7bbmr10285958f8f.30.1782473215063;
+        Fri, 26 Jun 2026 04:26:55 -0700 (PDT)
+X-Received: by 2002:a5d:5f44:0:b0:465:fa66:be57 with SMTP id ffacd0b85a97d-46dc12df7bbmr10285895f8f.30.1782473214656;
+        Fri, 26 Jun 2026 04:26:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492690168d5sm97634785e9.14.2026.06.26.04.26.49
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46dcbac0c9dsm14175351f8f.19.2026.06.26.04.26.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:26:50 -0700 (PDT)
+        Fri, 26 Jun 2026 04:26:51 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>
-Subject: [PATCH 5.10.y 06/17] KVM: x86/mmu: Stop passing "direct" to mmu_alloc_root()
-Date: Fri, 26 Jun 2026 13:26:23 +0200
-Message-ID: <20260626112634.1778506-7-pbonzini@redhat.com>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: [PATCH 5.10.y 07/17] KVM: x86/mmu: Refactor shadow walk in __direct_map() to reduce indentation
+Date: Fri, 26 Jun 2026 13:26:24 +0200
+Message-ID: <20260626112634.1778506-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626112634.1778506-1-pbonzini@redhat.com>
 References: <20260626112634.1778506-1-pbonzini@redhat.com>
@@ -98,72 +98,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Matlack <dmatlack@google.com>
+From: Sean Christopherson <sean.j.christopherson@intel.com>
 
-commit 86938ab6925b8fe174ca6abf397e6ea9d3c054a4 upstream.
+commit 03fffc5493c8c8d850586df5740c985026c313bf upstream.
 
-The "direct" argument is vcpu->arch.mmu->root_role.direct,
-because unlike non-root page tables, it's impossible to have
-a direct root in an indirect MMU.  So just use that.
+Employ a 'continue' to reduce the indentation for linking a new shadow
+page during __direct_map() in preparation for linking private pages.
 
-Suggested-by: Lai Jiangshan <jiangshanlai@gmail.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
-Message-Id: <20220516232138.1783324-4-dmatlack@google.com>
+Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-Id: <702419686d5700373123f6ea84e7a946c2cad8b4.1625186503.git.isaku.yamahata@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 97705c28a97e..b168b804ac7f 100644
+index b168b804ac7f..161e05783629 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3224,8 +3224,9 @@ static int mmu_check_root(struct kvm_vcpu *vcpu, gfn_t root_gfn)
- }
+@@ -2891,15 +2891,16 @@ static int __direct_map(struct kvm_vcpu *vcpu, gpa_t gpa, u32 error_code,
+ 			break;
  
- static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
--			    u8 level, bool direct)
-+			    u8 level)
- {
-+	bool direct = vcpu->arch.mmu->mmu_role.base.direct;
- 	struct kvm_mmu_page *sp;
+ 		drop_large_spte(vcpu, it.sptep);
+-		if (!is_shadow_present_pte(*it.sptep)) {
+-			sp = kvm_mmu_get_page(vcpu, base_gfn, it.addr,
+-					      it.level - 1, true, ACC_ALL);
++		if (is_shadow_present_pte(*it.sptep))
++			continue;
  
- 	sp = kvm_mmu_get_page(vcpu, gfn, gva, level, direct, ACC_ALL);
-@@ -3245,14 +3246,14 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
- 		root = kvm_tdp_mmu_get_vcpu_root_hpa(vcpu);
- 		mmu->root_hpa = root;
- 	} else if (shadow_root_level >= PT64_ROOT_4LEVEL) {
--		root = mmu_alloc_root(vcpu, 0, 0, shadow_root_level, true);
-+		root = mmu_alloc_root(vcpu, 0, 0, shadow_root_level);
- 		mmu->root_hpa = root;
- 	} else if (shadow_root_level == PT32E_ROOT_LEVEL) {
- 		for (i = 0; i < 4; ++i) {
- 			MMU_WARN_ON(VALID_PAGE(mmu->pae_root[i]));
- 
- 			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT),
--					      i << 30, PT32_ROOT_LEVEL, true);
-+					      i << 30, PT32_ROOT_LEVEL);
- 			mmu->pae_root[i] = root | PT_PRESENT_MASK;
- 		}
- 		mmu->root_hpa = __pa(mmu->pae_root);
-@@ -3287,7 +3288,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
- 		MMU_WARN_ON(VALID_PAGE(mmu->root_hpa));
- 
- 		root = mmu_alloc_root(vcpu, root_gfn, 0,
--				      mmu->shadow_root_level, false);
-+				      mmu->shadow_root_level);
- 		mmu->root_hpa = root;
- 		goto set_root_pgd;
- 	}
-@@ -3319,7 +3320,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
- 		}
- 
- 		root = mmu_alloc_root(vcpu, root_gfn, i << 30,
--				      PT32_ROOT_LEVEL, false);
-+				      PT32_ROOT_LEVEL);
- 		mmu->pae_root[i] = root | pm_mask;
+-			link_shadow_page(vcpu, it.sptep, sp);
+-			if (is_tdp && huge_page_disallowed &&
+-			    req_level >= it.level)
+-				account_huge_nx_page(vcpu->kvm, sp);
+-		}
++		sp = kvm_mmu_get_page(vcpu, base_gfn, it.addr,
++				      it.level - 1, true, ACC_ALL);
++
++		link_shadow_page(vcpu, it.sptep, sp);
++		if (is_tdp && huge_page_disallowed &&
++		    req_level >= it.level)
++			account_huge_nx_page(vcpu->kvm, sp);
  	}
  
+ 	ret = mmu_set_spte(vcpu, it.sptep, ACC_ALL,
 -- 
 2.54.0
 
