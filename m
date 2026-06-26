@@ -1,188 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDE3377EC2
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DE12EDD6C
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473121; cv=none; b=WzmEQ5qRdQm3wqLjms1Y4kC/ufZ1C7tIoamZiwnbQ9zc6f1AhEAIe4mjiL9OtCruzW1aQ5kEuMs47harRzqDlTjcX1srD+Y98/GaEExpz56yz59HCmktXoIcuvEWraa3wRnjEexLM+ezRBKYQ9WDj64GoNeMNYGe8frai9oXVGM=
+	t=1782473138; cv=none; b=mTV4FulOXrKDvnK+NeXxstLW2aZ5OkJUsqDBOgBxTdoEwgzSgYcdK79LyXylUNpuIoDwtaDmQr/YFX5xneV4AF9rkX+GQmUSerAhMj074abYv9/SijTfQELgXTh66L1qjTouZhOHwXnf8DHqf6YmAXCoJ2Cwx4Ba8/BWTlbQOu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473121; c=relaxed/simple;
-	bh=6jnG4jp4ywQBAqZpnwI+HCPLkio+a9IH6ijqjUSpbII=;
+	s=arc-20240116; t=1782473138; c=relaxed/simple;
+	bh=NAP7+jsd3icWyU19FskOFPlxcaV0Lg3+LPHFwttAnN4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pS62Z3b+lYW9B55ue8NSF/Yara7grc0KlU53UEHBI5R4XqFHS5Z6t0oTHN4GdrSTCigv5dnbCjw+MJmvu6GdNis5kCKlZzvhePkUgHWlBJupSR+5EqZ+xNOX/1dECtYM14G9n6RCOHHSTrVbOoBLwsFuS1WH6M7VrlOFRvt2G2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBtqYi2c; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TyOez3KqOSJtmiaTUcgX+YYOxatiI7bSHxg4BsKN18MC23tvxxYQrKDaOWBPYb8qJrnBqsPruJZMLwXrGKmmm1XmSd8cmE3xh2DmskgYBBk6aTpf9npGCJmHv6j+opVkKPa+0IZvvqe+U5V2RiYXlGDQ58Z90YjhsOlULMnUhEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7reA6+P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBtqYi2c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A59C1F000E9;
-	Fri, 26 Jun 2026 11:25:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7reA6+P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F0A1F000E9;
+	Fri, 26 Jun 2026 11:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782473119;
-	bh=WykOcXwRdwVqT/mdqbs3/fRRFh31+n0NNEMppDgDAhM=;
+	s=k20260515; t=1782473137;
+	bh=+Dx8n8mcepODCAluMIETj7vXrSxTWjCHB3GC2gBPKSA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NBtqYi2cfKuGvUmckxFZQQJ1AUr5BeU0Je8aanQx2Tz6qHShZJpYzB9ubRfPw9Bvw
-	 WmN/Pd/GNYAoqDHrdk0cI/Y7lEWwmlNaJO35iRyMkeej2ovmQMM8fP1wm+OVOpQN5k
-	 F8/BlpISG7HeM+zjO1CnAclLUgEgFLnhjXWOh6VD20Z8TDA9cjqMzpJHPkn8OjeACY
-	 sMCp9UlOopGIulTC+ysS/ckTZMpU+1b1pNzwIXbAEoLAPdc/PPkwNCS9FCDWFni6Qz
-	 fXLnA/Yf1euJ6v3zanYA89MDqRust/Y2vbCCWuS+/bqzOu3Jk8zGXVjwcKVaVTi1Ll
-	 DUzF4rOnofLuQ==
+	b=I7reA6+PgAC0fKn9QCgMDG+YmnQwVWasIw4ZVfktcb8htjPOATDJwuE5eJplyVs5w
+	 qs+TKXJqNsnOyajdv6tLJplIiL1Jc3rTQuKT7WMf74Q9Dxazcs2utz1LEQgUNrkpKv
+	 qd4VfvoA5h1QtyhBtrlxjKLK5eXYd1CIMlW0f/feoNBiRjX/xnG332NmUWpyY7lzNq
+	 s2FVvHVt1KkjjNkyPTP80AyhoSzUpxFx6p5hTjb2Xbvum2p56KDLa9RQCf3TLC9r4x
+	 L0ZALuWOAYNmx6BHZRyO8qZNS7W8obEppDDL/aJIcb9TrsnGTiQeUohoMKceqYSa5O
+	 C3d4BiUid1IQA==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 4/5] kvm/svm: Update the per-CPU wakeup-list during
- vCPU load and unload
+Subject: Re: [RFC PATCH 5/5] iommu/amd: Provide kernel command line option
+ to enable GAPPI
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sairaj Kodilkar" <sarunkod@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626105906.14577-5-sarunkod@amd.com>
+In-Reply-To: <20260626105906.14577-6-sarunkod@amd.com>
 References: <20260626105906.14577-1-sarunkod@amd.com>
- <20260626105906.14577-5-sarunkod@amd.com>
+ <20260626105906.14577-6-sarunkod@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 11:25:18 +0000
-Message-Id: <20260626112519.6A59C1F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 11:25:36 +0000
+Message-Id: <20260626112537.22F0A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [High] `avic_remove_vcpu_from_gappi_wakeup_list` and `avic_add_vcpu_to_ga=
-ppi_wakeup_list` acquire a raw spinlock without disabling interrupts, leadi=
-ng to a hard deadlock with the GAPPI IPI hardirq handler.
-- [High] Uninitialized `svm->gappi_cpu` (-1) is unconditionally passed to `=
-kvm_cpu_get_apicid()` and `avic_add_vcpu_to_gappi_wakeup_list()`, causing a=
-n out-of-bounds array read and a userspace-triggerable `WARN_ON`.
-- [High] The GAPPI wakeup handler is registered with the core kernel but ne=
-ver unregistered, leading to a dangling pointer if the KVM module is unload=
-ed.
-- [Medium] The per-CPU GAPPI wakeup lists lack CPU hotplug support, resulti=
-ng in permanently lost device interrupts and hanging vCPUs if a CPU is offl=
-ined.
+
+New issues:
+- [High] The global variable `amd_iommu_gappi` is not cleared to `false` wh=
+en `enable_iommus_vapic()` returns early.
+- [High] The `CONTROL_GAPPI_EN` feature is enabled but never disabled durin=
+g IOMMU teardown or kexec initialization, leaking hardware state.
+- [High] The GA log interrupt handler unconditionally re-enables `CONTROL_G=
+ALOG_EN` upon an overflow event, even when GAPPI is used and GA log memory =
+is uninitialized.
+
+Pre-existing issues:
+- [High] `iommu_init_ga_log()` unconditionally allocates memory with `GFP_K=
+ERNEL` and reallocates pointers during suspend/resume cycles, causing a mem=
+ory leak and a sleep-in-atomic bug.
+- [High] `enable_iommus_vapic()` returns immediately on error without rolli=
+ng back previously initialized IOMMUs, leading to an inconsistent initializ=
+ation state.
 --
 
-commit 3af48ba2bd8326c04b2aa47ac47a9f53e0cd61a3
+commit a43ef908c557e1883a80f54d875c75488a6d0f52
 Author: Sairaj Kodilkar <sarunkod@amd.com>
 
-kvm/svm: Update the per-CPU wakeup-list during vCPU load and unload
+iommu/amd: Provide kernel command line option to enable GAPPI
 
-When a vCPU is unloaded from a physical CPU enqueue it on that CPU's
-GAPPI wakeup list. Remove the vCPU from the wakeup list when it is loaded
-on to a CPU again.
+This commit introduces the amd_iommu=3Dgappi command line parameter to enab=
+le
+the GAPPI extended feature when supported by the IOMMU hardware.
 
-> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> index e7a4c0e90e7a7..d238f65a8172b 100644
-> --- a/arch/x86/kvm/svm/avic.c
-> +++ b/arch/x86/kvm/svm/avic.c
-> @@ -889,6 +892,44 @@ int avic_init_vcpu(struct vcpu_svm *svm)
->  	return ret;
->  }
+> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+> --- a/drivers/iommu/amd/init.c
+> +++ b/drivers/iommu/amd/init.c
+> @@ -3038,11 +3038,20 @@ static void enable_iommus_vapic(void)
+>  		return;
+>  	}
 > =20
-> +static void avic_add_vcpu_to_gappi_wakeup_list(struct vcpu_svm *svm, int=
- cpu)
-> +{
-> +	struct list_head *wakeup_list;
-> +	raw_spinlock_t *spinlock;
-> +
-> +	if (WARN_ON(cpu < 0))
-> +		return;
-> +
-> +	wakeup_list =3D &per_cpu(gappi_vcpu_wakeup_list, cpu);
-> +	spinlock =3D &per_cpu(gappi_vcpu_wakeup_list_lock, cpu);
-> +	raw_spin_lock(spinlock);
-> +	if (list_empty(&svm->gappi_vcpu_wakeup_list))
-> +		list_add_tail(&svm->gappi_vcpu_wakeup_list, wakeup_list);
-> +	raw_spin_unlock(spinlock);
-> +}
-> +
-> +static void avic_remove_vcpu_from_gappi_wakeup_list(struct vcpu_svm *svm=
-, int cpu)
-> +{
-> +	raw_spinlock_t *spinlock;
-> +
-> +	if (WARN_ON(cpu < 0))
-> +		return;
-> +
-> +	spinlock =3D &per_cpu(gappi_vcpu_wakeup_list_lock, cpu);
-> +	raw_spin_lock(spinlock);
-> +	if (!list_empty(&svm->gappi_vcpu_wakeup_list))
-> +		list_del_init(&svm->gappi_vcpu_wakeup_list);
-> +	raw_spin_unlock(spinlock);
-> +}
 
 [Severity: High]
-Can this cause a hard deadlock with the GAPPI IPI hardirq handler?
+If enable_iommus_vapic() returns early before this point because
+FEATURE_GAM_VAPIC is missing or SNP is active, the newly added
+amd_iommu_gappi flag is never cleared.
 
-When a user process destroys a VM, avic_destroy_vcpu() is called from
-svm_vcpu_free() in normal thread context with interrupts enabled. If the
-POSTED_INTR_WAKEUP_VECTOR IPI fires on the same CPU while this thread holds
-the gappi_vcpu_wakeup_list_lock non-recursive raw spinlock, the interrupt
-handler will spin forever attempting to acquire it.
-
-Should these functions use raw_spin_lock_irqsave() to disable interrupts
-during lock acquisition?
-
-[ ... ]
-
-> @@ -958,16 +1005,18 @@ int avic_pi_update_irte(struct kvm_kernel_irqfd *i=
-rqfd, struct kvm *kvm,
->  		} else {
->  			posted_intr =3D !!(entry & AVIC_PHYSICAL_ID_ENTRY_GA_LOG_INTR);
->  			pi_data.flags =3D posted_intr << AMD_IOMMU_FLAG_POSTED_INTR_SHIFT;
-> -			/* GAPPI is disabled at this point (amd_iommu_gappi is
-> -			 * enabled in the following patches) hence keep the
-> -			 * apicid as 0.
-> -			 */
-> -			pi_data.apicid =3D 0;
-> +			if (amd_iommu_gappi) {
-> +				pi_data.apicid =3D kvm_cpu_get_apicid(svm->gappi_cpu);
-> +				if (list_empty(&svm->ir_list)) {
-> +					avic_add_vcpu_to_gappi_wakeup_list(svm, svm->gappi_cpu);
-> +					is_vcpu_waiting =3D true;
-> +				}
-> +			}
->  		}
+Could this cause issues later in amd_iommu_update_ga() when KVM expects
+GAPPI behavior but Virtual APIC mode is logically disabled, triggering
+warnings and failing interrupt delivery?
 
 [Severity: High]
-Is it possible for svm->gappi_cpu to still be -1 here?
+When recovering from a previous kernel in the kexec path earlier in this
+function, the cleanup loop clears CONTROL_GALOG_EN and CONTROL_GAINT_EN.
 
-If userspace creates a VM but inhibits AVIC (for example, via an invalid
-APIC ID), avic_vcpu_load() bails out early leaving svm->gappi_cpu as -1.
-If userspace later assigns a device interrupt via KVM_IRQFD,
-avic_pi_update_irte() will pass -1 to kvm_cpu_get_apicid().
+Since this patch introduces CONTROL_GAPPI_EN, does the cleanup loop also
+need to call iommu_feature_disable(iommu, CONTROL_GAPPI_EN) to prevent
+hardware state corruption if the previous kernel left GAPPI active? A
+similar omission appears to exist in iommu_disable().
 
-This triggers a negative index array read yielding a garbage APIC ID, and
-also hits the WARN_ON(cpu < 0) inside avic_add_vcpu_to_gappi_wakeup_list().
-
-[ ... ]
-
-> @@ -1353,6 +1436,7 @@ bool __init avic_hardware_setup(void)
->  		enable_ipiv =3D false;
-> =20
->  	amd_iommu_register_ga_log_notifier(&avic_ga_log_notifier);
-> +	kvm_set_posted_intr_wakeup_handler(&avic_gappi_wakeup_handler);
-> =20
->  	return true;
->  }
-
-[Severity: Medium]
-Does the per-CPU GAPPI wakeup list need CPU hotplug coordination?
-
-If a physical CPU is taken offline while a VM is running, any blocked
-vCPUs queued on that offlined CPU's gappi_vcpu_wakeup_list might permanently
-miss their GAPPI wakeups. Without a hotplug state notifier to migrate these
-vCPUs, will they hang indefinitely?
+> +	if (amd_iommu_gappi &&
+> +	    !(check_feature(FEATURE_GAPPI) &&
+> +	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
+> +		pr_warn("GAPPI is not supported.\n");
+> +		amd_iommu_gappi =3D false;
+> +	}
+> +
+>  	/* Enabling GAM and SNPAVIC support */
+>  	for_each_iommu(iommu) {
+> -		if (iommu_init_ga_log(iommu) ||
+> -		    iommu_ga_log_enable(iommu))
+> -			return;
+> +		if (amd_iommu_gappi)
+> +			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
+> +		else if (iommu_init_ga_log(iommu) ||
+> +			 iommu_ga_log_enable(iommu))
+> +			 return;
 
 [Severity: High]
-Is there a missing module unload teardown for the wakeup handler?
+When amd_iommu_gappi is true, iommu_init_ga_log() is intentionally bypassed,
+meaning the GA log memory is never allocated.
 
-This registers avic_gappi_wakeup_handler with the core kernel, but it
-doesn't seem to be unregistered (via kvm_set_posted_intr_wakeup_handler(NUL=
-L))
-during module teardown in avic_hardware_unsetup(). If the kvm-amd module
-is unloaded, could a subsequent POSTED_INTR_WAKEUP_VECTOR jump to unmapped
-memory and cause a kernel panic?
+If a spurious GA log overflow interrupt fires, amd_iommu_int_thread_galog()
+processes it by calling amd_iommu_restart_ga_log(), which blindly re-enables
+CONTROL_GALOG_EN.
+
+Will the hardware then attempt to write log entries to an uninitialized
+physical address, potentially causing kernel memory corruption or fatal
+IOMMU target aborts?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but returning immediately on
+failure here leaves the system in an inconsistent state.
+
+If a subsequent IOMMU fails initialization, the loop aborts without rolling
+back the features (like CONTROL_GAM_EN or CONTROL_SNPAVIC_EN) enabled on
+previously processed IOMMUs. Could this result in partially initialized
+interrupt routing?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but calling iommu_init_ga_log()
+here unconditionally allocates memory with GFP_KERNEL.
+
+During system resume, amd_iommu_syscore_ops.resume calls
+enable_iommus_vapic() with hardware interrupts disabled. Does calling a
+GFP_KERNEL allocator in this atomic context cause a sleep-in-atomic bug,
+and does unconditionally overwriting iommu->ga_log leak the previously
+allocated memory on every resume cycle?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626105906.1457=
-7-1-sarunkod@amd.com?part=3D4
+7-1-sarunkod@amd.com?part=3D5
