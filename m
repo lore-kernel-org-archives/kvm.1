@@ -1,54 +1,51 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6A362130;
-	Fri, 26 Jun 2026 07:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB693BB9F8;
+	Fri, 26 Jun 2026 08:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782459955; cv=none; b=Id8AQ3563UAK8aiX6MKBF7BRpDUkftH+BqUF8HvDtzHCcU5va08DwqjhvoQ4YWsc5CTJe+50PT7ieE31PHAhhC6hDCa/4xdTqaTyqEl9H0FkR+XAexf2fq4iwyKMJ2v9RVa90JVZ7effgv4NSnmSxbXUIplMUcXKo9r6eFlQ7PM=
+	t=1782461110; cv=none; b=q2yQoKdrTWGlGVtThHyBCIgZkCztFCIrgPs1uKPVZlw5gGHG0BcbFXL7/HnHOpS5zlQ0Kh3D+o8glGZnwDxj9XaAQqJ/M+R2Ab4sVg8IJqHnTm618hsRYDSBugq8wyYPghhWCgW2jKKdKahIJgWIQkngi4cpDT/LqMdC495D/8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782459955; c=relaxed/simple;
-	bh=Rc8WwAfijhfhMypu6KPun19UMYrTGWdC38Tc4O9jGko=;
+	s=arc-20240116; t=1782461110; c=relaxed/simple;
+	bh=L7aTMYE1X2Qr9oZ5P4BPqx+ISf3ALZC0HLvnwog4xz4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hQUJQ5uc74HkwWORB6ytwostcnVOa3mIkzICwEleszeFruKAx/8/ONUNo3y8soqZohOXO40MxuocFAeHclCj1eac+lj7whlmqTnnAp84kyrvYNJyGwOEY35vZWs5M7Rd3FX8hn1dGccnQS1QpZkWegGHqlzkeuvJw5Q0AyLnqkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JZQ5ZYzV; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=rISlKRR+jtla/YjGlRAnsOGvv8CFzTS2cSHZKASFJKANk/HQBWMgZmlbpDPsEzxQzfqcQLoDuh6nUy3PaPbkw/FT7tUkqhWUVzmRI++S5XiPucM7/Z2eakWXLAZXfyFddmQMsaSLfyOg+Z+BnkVSYFNVcWb0KnpevAz5ljsQTik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=PW9AkTGy; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JZQ5ZYzV"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="PW9AkTGy"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TwvBdpBncCHdAk2VKNUDqd1awgXNOyMgwxy8ic1McgA=; b=JZQ5ZYzVGsqAwf2NN+oevFuyzN
-	zGDOpTpQ3BZ+YH8yveLFfsFMZF9H3+QWU4sY3SBL4k63Apc0BUCT4XWFNkftFwkF9HwgsU3V1Gn0a
-	azV5fRxS1GUEi+eE7zpvpofCcaZNEeP2/xP15VvpZ9vfuUjuR7xaGEhkCrL/b/oek8Q14l10B3w+p
-	V8x6zCL8FdorO8CZgOKTc4mPDvTl4kWqGrj+IlcVF/avqPD85fI8zKQOdLzXuRQSULg/fMMUdPol2
-	a7dYqTJ5iZGPOwo2Fue5Xy0bn64sAhPobgFEDZr4OUaX+gBrgg50xdj5mPSA9ssvjykQrmRdDhujE
-	m+ATFP1Q==;
+	bh=CAeUsyedYIR9IfToxIda2dxWQPnvP4514OAg9vqw08Y=; b=PW9AkTGyhxC101ui32X7LJPycd
+	wn9jpHl92OYneaRNVniZl51IqQ+RVqvnFUSAvkLa0jxDjcaijlsO0Inz11FQpy23LKDNZUpKcdsK/
+	pi3cPidpkxEOViZfyN8+5ntTnMKZm2QGt2PhnFCaXsEeT0nJqoRHW+x/pqx+ZvFYnelJokSTAE9kR
+	VPR+twPf1SlFpdOu2O21FWU8uUY/FK+JD12R9/FYlSlS6HQMcpNGYVqj+7WbVcZBSUMqtM33aAsMb
+	GPsmo24fNbQnDLQonCV8tWd51JC5GdkxUB/5I8eCPuKv29P5zULqovgGDV8U1q7c/lL6rUxdnqxL1
+	+HgHM08g==;
 Received: from [2001:8b0:10b:5:f3d6:3c0c:6c61:8d10] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd1Fk-0000000BRV1-1Gtv;
-	Fri, 26 Jun 2026 07:45:32 +0000
-Message-ID: <8edfdca645f691cb856e80ade830d78925fdc19d.camel@infradead.org>
-Subject: Re: [PATCH] KVM: x86/xen: Add
- KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+	id 1wd1Yc-0000000BTDo-3VHP;
+	Fri, 26 Jun 2026 08:05:03 +0000
+Message-ID: <123bd3932db959a9c26b9ede46632e482dbdc4ab.camel@infradead.org>
+Subject: Re: [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to
+ userspace if Xen vCPU ID isn't set
 From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Gerd Hoffmann
- <kraxel@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
- <hpa@zytor.com>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Date: Fri, 26 Jun 2026 08:45:32 +0100
-In-Reply-To: <aj21KctIXuf7b_5G@google.com>
-References: <c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org>
-	 <aj21KctIXuf7b_5G@google.com>
+To: Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov
+	 <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant
+	 <paul@xen.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
+	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
+Date: Fri, 26 Jun 2026 09:05:02 +0100
+In-Reply-To: <20260625223623.3376478-5-seanjc@google.com>
+References: <20260625223623.3376478-1-seanjc@google.com>
+	 <20260625223623.3376478-5-seanjc@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Zgc7OAjbz0Hgd13lKrY1"
+	boundary="=-tSKYhoy/41trbzcwTFn2"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa6 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,155 +56,94 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-Zgc7OAjbz0Hgd13lKrY1
+--=-tSKYhoy/41trbzcwTFn2
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-06-25 at 16:09 -0700, Sean Christopherson wrote:
-> On Tue, Apr 28, 2026, David Woodhouse wrote:
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >=20
-> > Commit 3617c0ee7decb ("KVM: x86/xen: Only write Xen hypercall page for
-> > guest writes to MSR") blocked host-initiated writes from triggering the
-> > Xen hypercall page setup, to fix an SRCU usage violation when the
-> > hypercall MSR index collides with a real MSR written during vCPU reset.
-> >=20
-> > However, some VMMs legitimately need to trigger hypercall page setup
-> > from host context. For example, a VMM may intercept the guest's MSR
-> > write to track an epoch (for kexec/crash recovery), and then replay the
-> > write as a host-initiated KVM_SET_MSRS to populate the hypercall page.
-> > The host_initiated check breaks this use case.
-> >=20
-> > Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE as a new vcpu attribute
-> > that explicitly invokes kvm_xen_write_hypercall_page() under proper
-> > locking. This gives userspace a safe interface to trigger hypercall pag=
+On Thu, 2026-06-25 at 15:36 -0700, Sean Christopherson wrote:
+> Explicitly invalidate KVM's internal Xen vCPU ID during vCPU creation
+> instead of *trying* to set the Xen ID to the vCPU index by default, and
+> forward singleshot timer hypercalls to userspace if the VMM hasn't set th=
 e
-> > setup without going through the MSR write path, preserving the
-> > host_initiated defence in depth while restoring the lost functionality.
+> Xen ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.=C2=A0 Using the vCPU's index a=
+s its
+> default Xen ID is reasonable in concept, but in practice is horribly flaw=
+ed
+> as the index is left as '0' until after vCPU initialization completes, i.=
+e.
+> every vCPU gets a Xen ID of '0' by default.
 >=20
-> This is all kinda silly.=C2=A0 Userspace provides KVM a blob, then usersp=
-ace intercepts
-> the MSR write that triggers doing something with said blob, only to call =
-back into
-> KVM to consume the blob that userspace provided in the first place.
+> Forward hypercalls to userspace instead of trying to salvage any kind of
+> default behavior, as all userspace implementations that support multiple
+> vCPUs either don't enable the timer, are guaranteed to set Xen ID, or wor=
+k
+> only because *all* guests also screw up the singleshot timer hypercalls.
+> The last scenarios is extremely unlikely given that Linux-as-a-guest uses
+> the actual Xen vCPU ID when making timer hypercalls.=C2=A0 In other words=
+, for
+> all intents and purposes, KVM's ABI is already that userspace must set th=
+e
+> Xen vCPU ID, so just commit to that ABI.
 >=20
-> Any chance we can deprecate KVM's kvm_xen_write_hypercall_page(), and ins=
-tead
-> rely on userspace to fill the page?=C2=A0 This extra bit obviously isn't =
-much code to
-> carry, but it's yet one more Xen thing to maintain, and we've accumulated=
- a lot
-> of those over the years...
+> Note, KVM's handling of KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restricts the ID t=
+o
+> KVM_MAX_VCPUS, so there's no chance of a valid ID colliding with -1u.
 
-We don't actually use the 'blob' mode. That was added in commit
-ffde22ac53b6d in 2009 with a comment saying, "A generic mechanism to
-delegate MSR writes to userspace seems overkill and risks encouraging
-similar MSR abuse in the future.  Thus this patch adds special support
-for the Xen HVM MSR."
+Nit: XEN_VCPU_ID_INVALID isn't -1u; it's U32_MAX.
 
-When Jo=C3=A3o and I came along almost a decade later, in 23200b7a30de3
-where we added hypercall interception support we said, "Since this
-means KVM owns the ABI, dispense with the facility for the VMM to
-provide its own copy of the hypercall pages; just fill them in directly
-using VMCALL/VMMCALL as we do for the Hyper-V hypercall page."
+I'd have been slightly happier if you'd used an explicit -1U, perhaps
+with a name of its own (although I guess we wouldn't want to call it
+KVM_VCPU_IDX_INVALID in the *Xen* part).
 
-I think we could probably rip out the blob mode without any fear of
-breaking userspace. Even in 2018 I don't think we could even find the
-alleged code from 2009 that used the old support. At least, not in
-buildable and usable form?
+But this works.
 
-> > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> > index 91fd3673c09a..c16b4560c9e7 100644
-> > --- a/arch/x86/kvm/xen.c
-> > +++ b/arch/x86/kvm/xen.c
-> > @@ -907,6 +907,13 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, s=
-truct kvm_xen_vcpu_attr *data)
-> > =C2=A0{
-> > =C2=A0	int idx, r =3D -ENOENT;
-> > =C2=A0
-> > +	/*
-> > +	 * kvm_xen_write_hypercall_page() manages its own locking.
-> > +	 * Handle it before taking xen_lock to avoid a deadlock.
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+I'd have put this *after* your patch 5 though (qv).
+
+> Link: https://lore.kernel.org/all/20260612233017.1F9771F000E9@smtp.kernel=
+.org
+> Suggested-by: David Woodhouse <dwmw2@infradead.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+> =C2=A0arch/x86/kvm/xen.c | 6 +++++-
+> =C2=A01 file changed, 5 insertions(+), 1 deletion(-)
 >=20
-> Do we actually want the side effects that necessitate taking xen.xen_lock=
-?=C2=A0 From
-> a uAPI perspective, it's odd to effectively bundle KVM_XEN_ATTR_TYPE_LONG=
-_MODE
-> into KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE.
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index 694b31c1fcc9..27c1aeeab8af 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -22,6 +22,7 @@
+> =C2=A0#include <xen/interface/version.h>
+> =C2=A0#include <xen/interface/event_channel.h>
+> =C2=A0#include <xen/interface/sched.h>
+> +#include <xen/xen-ops.h>
+> =C2=A0
+> =C2=A0#include <asm/xen/cpuid.h>
+> =C2=A0#include <asm/pvclock.h>
+> @@ -1610,6 +1611,9 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *=
+vcpu, bool longmode, int cmd,
+> =C2=A0	if (!kvm_xen_timer_enabled(vcpu))
+> =C2=A0		return false;
+> =C2=A0
+> +	if (vcpu->arch.xen.vcpu_id =3D=3D XEN_VCPU_ID_INVALID)
+> +		return false;
+> +
+> =C2=A0	switch (cmd) {
+> =C2=A0	case VCPUOP_set_singleshot_timer:
+> =C2=A0		if (vcpu->arch.xen.vcpu_id !=3D vcpu_id) {
+> @@ -2299,7 +2303,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vc=
+pu *vcpu, u64 param, u64 *r)
+> =C2=A0
+> =C2=A0void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
+> =C2=A0{
+> -	vcpu->arch.xen.vcpu_id =3D vcpu->vcpu_idx;
+> +	vcpu->arch.xen.vcpu_id =3D XEN_VCPU_ID_INVALID;
+> =C2=A0	vcpu->arch.xen.poll_evtchn =3D 0;
+> =C2=A0
+> =C2=A0	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
 
-That's *guest* ABI, and it's derived from Xen behaviour. Xen will
-'latch' its idea of whether a guest VM is 32-bit or 64-bit, for the
-purpose of shared data structures (shared_info page, vcpu_info,
-runstate).
-
-Xen latches this from the current mode of the running vCPU in *two*
-places:
- =E2=80=A2 When the hypercall MSR is invoked
- =E2=80=A2 When the guest sets the event channel GSI (HVM_PARAM_CALLBACK_IR=
-Q).
-
-Thus far, the former has been handled in the kernel (in the code you're
-looking at), while the latter is why we have the ioctl to explicitly
-latch the guest's long_mode from userspace too, as userspace handles
-the HVMOP_set_param calls.
-
-> The other question is, why does kvm_xen_write_hypercall_page() drop xen_l=
-ock
-> when writing guest memory?=C2=A0 That seems odd and unnecessary.
-
-Huh? It takes the lock to do the thing that needs the lock, then drops
-it. That is not "odd and unnecessary" at all.
-
-You've been spending too long with these scope-guarded locks. I *hate*
-them. I hate the way they slowly spread around the whole kernel, making
-every lock holder hold their locks for just a *little* bit longer than
-they need to, slowly increasing lock contention "just a little bit; it
-doesn't matter" at a time. I hate the way they stop us thinking about
-which locks are needed and in which order, and make it unclear whether
-some action in the tail of a function actually *needed* the lock, or
-was just caught up in it as collateral damage.
-
-> > +	 */
-> > +	if (data->type =3D=3D KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE)
-> > +		return kvm_xen_write_hypercall_page(vcpu, data->u.gpa) ? -EIO : 0;
->=20
-> -EIO is rather weird, wouldn't -EINVAL be more appropriate?=C2=A0 Ah, and=
- both are
-> wrong if copying the blob fails.
-
--EINVAL is more for "you asked me to do something that doesn't make
-sense". -EIO is for "something went wrong when I tried".
-
-Arguably, the thing that's most likely to go wrong is the
-kvm_vcpu_write_guest() where it writes instructions[] to the guest, and
-maybe that ought to be -EFAULT? But I'm not sure that's quite the right
-semantic to return from the ioctl?
-
-> > +
-> > =C2=A0	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
-> > =C2=A0	idx =3D srcu_read_lock(&vcpu->kvm->srcu);
->=20
-> Speaking of writing memory, kvm_xen_write_hypercall_page() expects the ca=
-ller
-> to be in a read-side SRCU critical section (I didn't actually run this wi=
-th
-> PROVE_LOCKING=3Dy, but I don't think I'm missing anything?)
-
-Yes, good catch. Thanks.
-
-> So, if this uAPI is unavoidable seems like we want something like the bel=
-ow.
-> Either that or guard all of kvm_xen_write_hypercall_page() with a lock, a=
-nd put
-> the entire thing in a helper so that KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCA=
-LL_PAGE
-> can be handled in a case-statement and doesn't need to grab SRCU on its o=
-wn.
-
-Makes sense (with the test, of course). Want me to put them together
-and resend?
-
---=-Zgc7OAjbz0Hgd13lKrY1
+--=-tSKYhoy/41trbzcwTFn2
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -286,21 +222,21 @@ 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
-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
+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
-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
+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
 
 
---=-Zgc7OAjbz0Hgd13lKrY1--
+--=-tSKYhoy/41trbzcwTFn2--
