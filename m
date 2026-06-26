@@ -1,67 +1,68 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712233DF001
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 08:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BDB3E51E8
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 08:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782462242; cv=none; b=Y4bszbnPLngfvMr/xPwAwv+jR/MtqP+eb1ckgrCqaBjRtTOZoIIlov+40LNwrWISZqF2lNINlgJyupLL62DxYTo6B/cZr7ESI8zPDHplGCWyCKYDadV3ElCDgBTnHFt4L4aWVQzQ3WXGxpvlqEY0ryw0yhmN0WwmA/mPNrhERwY=
+	t=1782462244; cv=none; b=GCZ4+Z5yya7EZXNtfPuo2bXLkTPfwlec16/s+CDUdZjEm5rn3eZ/0Epl2b/2PiAmsJ7KC3Iy3x7/gwsQVLk7/Xu0RhT24DFMLpKFQS7+pHRezxqh8nAJb5B0AL6nLwXq5FEbwHU3ZWmcFmg/GBf1COUixGmhNBPO1EywlK0fQxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782462242; c=relaxed/simple;
-	bh=VCtdpA7YF5advtu0bupY3qxS+FfCYS20j33S3YKJEL0=;
+	s=arc-20240116; t=1782462244; c=relaxed/simple;
+	bh=/QbFFpsCboBDa9cui72zMmEKaCY9UuIm5HwWxj1et3w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GWWZp79HxcAfOXpiKV79Jo9a9S4TFmYhFATQhWSl98vTs9EMQSrVfYTB03VlN2f0BaGS5jToqAJ9v7CDAbhcrLdxl7dlq/498iQ5dU+DEOEJoYKkNcN1jUD6ZxFjl3/BX5wAcGwBJ6XFlhy8abs6gizjXJfNfSWFPy16s0ugPL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=ZFfB8sbG; arc=none smtp.client-ip=74.125.82.49
+	 In-Reply-To:To:Cc; b=BqDFZeEjHztFWSsc6YtQCwr0sWXPCYOeY3WPW0Ud/Lt4yyUJVur3/jsJ2BHqVrFatSekVg88Oq7HV6kB0PEfyknjX7MvREe8a9nmuGyYNGBAXzk1fj71Gl1OW1pJvsiDZGy083UB+6BQclm9ZSCSZiz6XwKV9d5YXOHVdR5ae6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=Mtgr9P9+; arc=none smtp.client-ip=74.125.82.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="ZFfB8sbG"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1384ebe7a10so529155c88.1
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 01:24:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="Mtgr9P9+"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1363fe80fe8so1568155c88.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 01:24:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1782462241; x=1783067041; darn=vger.kernel.org;
+        d=sifive.com; s=google; t=1782462242; x=1783067042; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k8TjMER5gISFlQ4SyOMczlZr2aeQOkgr25LHVZl1LkM=;
-        b=ZFfB8sbGw6PYU726rPQYVhJksyYvYa2B+reA9AocpI8M1LXBXakEdSkos+9vatXn6l
-         klJIXvhdlfcMGA0GGxzC7Nv/nwqGiTAVt3V8b9ZPyVuozKbiHn0r1vUjbiM3JDEssDWR
-         hFK4f3UIhLFPP4IzYq6UrdWBtWlYl7x7LKVN/bX8c2v+XL3ELvG/36EpoN/h00xWchwc
-         iasuOxQNemLhNcJZnNkjHiIWB9pvFxBnM67XsoUrGhS1+y1ZvYW3gZAYkbTvjV2ypqgE
-         qJ7nAPCUTHo29ej6erdoD6jBcwP/G/AA90VrYLGYlzZ62m0t5OytDhYhfbLxAknKg0uP
-         xRpw==
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=krYcPQa3k13i7reuaRQvQCEYDOEzT3cGJGxL2UEq0GU=;
+        b=Mtgr9P9+F8UHxkio+ymj7v6McdYEy8fYVyanImqqr0v0qriTin+la5ct98D5Dl40XZ
+         fCvaN5LWNQQ3+HCazsw+BKGeVNA1cQx1/GJAkvzGt9+ZAy5AOs2Gv+EzogBhWraYWN21
+         BbZFgzDL4dO6TemgOHZScPTpVv5XSOcW43An99SPMczOJXC1/aiEFeWCXNOIDTK6uR5T
+         +AZMOkN7icfgJITejdO8RnSy1BfeM1RdwI7D4CHmKzwp4dUeuYgCGFqsRSqZLE7oPin0
+         odruvY1fjDvYcPrmtkNc2oIPfuvrpb5Ywgozq4RXohmQBzIAoANC7iGjU51HOx1iIDGG
+         JXbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782462241; x=1783067041;
+        d=1e100.net; s=20251104; t=1782462242; x=1783067042;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=k8TjMER5gISFlQ4SyOMczlZr2aeQOkgr25LHVZl1LkM=;
-        b=J3315Macljy7JhRJql6zB9SJXr9YUwnsHrkjV2HQctZZiU+8s8aFsZwtfLIF32AXup
-         kGoFaLPNF0bN+y2Yn7ftB7BrD8uD3NmhUpqa+rg0y+IJOYLnLTHbtXgDCcIB/TXKRzHP
-         t5AlAIQvPVT+pt5els4ZDm/pK5T5bF69VX6MH6l4Vud/HiHo3niqoO+Ip1h19lA+abD0
-         zh3ZV58HKd+ZqIsgFezWqyxs0XUBRLOm+q5X8g1CSczR1jDRLpm/OYIJY8EPMY7dteB7
-         wJS8EjoAw4nFNo9rkJ9sV1zr82CFMvJnqZE8ew8Sf3EKGIrl79T8VzHIb3q9tub+0jyg
-         JYnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/8LtfgixxJUNT9dmxDxTZW0hkx0XwA8OOIWv6xzBHGtOXuvPYIF5I3gsqTYHS6SK9Rpls=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2Qo06W3WM3W/Cmud+emKvqyHllizhKE4PiiWheWGWpg1HO6bG
-	+ItJg+L4I58ZA4iNi0SPHXDjJp0BBJRrZ+/C9L1ddWo8dvsbrbz88TLj3eEpSPpRggc=
-X-Gm-Gg: AfdE7cm015mCCEBtHyxnVGU2qlrLj3ZrcAuaUQz6ZJGq5VyGgtFPofsfvDmH80Km3s7
-	O+7HqvkdG1xt/TyVzFScX7HVQqz3aRVXhISbMMQk7jwQoaDcMnNstmBhUW+RcAslJvbycFY5MWg
-	dglCXYywWLL2XKi8pPa/jUmf44QKjJ3f0+1vt8a5Y2SgL3AgVPlhiz0YDtOIgpQqBgJneaeei4y
-	RQm4vp209yCsb35JUu1br6ZvWinX2qqDVLdG9Opfl3LrADWFTaxsjT9a+f+2aGRTyLGpT70zpmu
-	r0GgEp+tJV/blkosMbhO9N63k0gny5owD6MGEuhasO9wC0xDZYxeRsMNin76Sq+PByP/uQkOu8d
-	7FOc0QPVVb/Ru1+qDtRF8WHym38SAviyQn3IqKV32Ekod9zM+0i3VpngDC+3o4ix69/qXgLhVpp
-	UwagxKFoCjrcYLN9z1VNwa80myuhV8dNiP
-X-Received: by 2002:a05:7022:ebc5:b0:137:feeb:3fc9 with SMTP id a92af1059eb24-139dbb5b2d9mr6090271c88.18.1782462240516;
-        Fri, 26 Jun 2026 01:24:00 -0700 (PDT)
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=krYcPQa3k13i7reuaRQvQCEYDOEzT3cGJGxL2UEq0GU=;
+        b=ZVwJl/B2AJHYTMrJf/BR+BqdzeBtig3hcxKq1rsU61MZgHagZ/+15hjJhofYilnMi4
+         fzQgRMxUPT4ZXB37BEajIHXZhNXGijPFY42ekirlUq0x4bI1hh6fyMQx+IC8jQQmvREr
+         JH5xQrRM9jR+RYwn1bDETNVQNK/UNnyBHYa2w16aqXlM7dMRDFVb6awHyYGxab3rkzrx
+         W1rWI2reixMRhwXXfSY1vRjPhDaam8D3zC/T6Ey+/hY8r11BZTH+pNC8SKypPAy//ZO4
+         utwnttWu9hDh0DFdWdUCo6//UJbb0QwQ+XZggi6ztYLqupdJwemRpxBWqhSavau8Pd7j
+         1VjQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Vzf2FoX/qb9naB6Q+FlzKiBfHo6X55CpuKYv7NDihIeanczgzslo6iNNHg3NkaG8kK0E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+/E/3B7wA/ix/o8OuP04SolD8ESrgIMZ5BqfQjqsCOx6tIR0L
+	/iGAfT78j1JG39fYy2z/R0rMaoA1NTg/8Bs21ExOxMtGNw/aGJaDuMU9EK7Zb2MpBkc=
+X-Gm-Gg: AfdE7ck7F7E1K+vnIcY1JIj/m9esZDMDahbDGDG+1wVqy/V/+oW676AhdwnN+WdtwVK
+	7vtPlGaZ4liTKocHeqGbZSqWGeukQ0ivSBYaRaJHYP7P3QVEk975jzTqWmV6ycG6H/RXttMcLc7
+	zhUm/PSu8NUuCEuqukzCLpvI8Y01XzMGG0qRlNZmoyQsBlBtTbcVDJQbJYmMeYxD3VKHUIPVPK6
+	/b18quNFhh+CMzM2ubQthdeFYlJG6VujbY0eopzZQ9c8Qy7n32lezeInM8h/6XV8tu7rESjXs8X
+	UzuFU4ovO6EYPr13jsOGApfsZPwljiiDlHdRQAzQyDkNTlFjpIj9BCwNn3xoHdfFDfN94RM2ImK
+	wLfEZoZqcKz895SC94rcQMu3FsYvwybnhSu28B5IPK4dv4rfQd4gDIMgC0t9tOPqIxfbCnLlfg2
+	zP96e6zuUm1aqxj8Tb/2Fb6mA0UWNOv5SD
+X-Received: by 2002:a05:7022:6981:b0:138:43a4:840a with SMTP id a92af1059eb24-139dbab8c50mr5144073c88.28.1782462241883;
+        Fri, 26 Jun 2026 01:24:01 -0700 (PDT)
 Received: from sw07.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d8f318e7sm15557199c88.3.2026.06.26.01.23.59
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-139d8f318e7sm15557199c88.3.2026.06.26.01.24.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 01:23:59 -0700 (PDT)
+        Fri, 26 Jun 2026 01:24:01 -0700 (PDT)
 From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Fri, 26 Jun 2026 01:23:21 -0700
-Subject: [PATCH v2 1/2] KVM: RISC-V: Clear former VCPU cache on
- virtualization disable
+Date: Fri, 26 Jun 2026 01:23:22 -0700
+Subject: [PATCH v2 2/2] KVM: RISC-V: Add CPU PM notifier for non-retention
+ idle states
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-kvm-cpu-pm-v2-1-478e5ef8dc9b@sifive.com>
+Message-Id: <20260626-kvm-cpu-pm-v2-2-478e5ef8dc9b@sifive.com>
 References: <20260626-kvm-cpu-pm-v2-0-478e5ef8dc9b@sifive.com>
 In-Reply-To: <20260626-kvm-cpu-pm-v2-0-478e5ef8dc9b@sifive.com>
 To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
@@ -84,82 +85,421 @@ Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com,
  linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Yong-Xuan Wang <yongxuan.wang@sifive.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782462237; l=2593;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782462237; l=12408;
  i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
- bh=VCtdpA7YF5advtu0bupY3qxS+FfCYS20j33S3YKJEL0=;
- b=PLsuyWmTEcgztSc4jAigjlQNrBKATP06+H1C5DMVQ6nyjljp9p0vtpvzJiWdtN2jkenD9DYIc
- v2Jc5qMTS2+D+On88Jk0ju4NdP5P1vHLUHdxSAETIrJn4I7SmX333Ra
+ bh=/QbFFpsCboBDa9cui72zMmEKaCY9UuIm5HwWxj1et3w=;
+ b=tUNh0DUemY9KKf2vF6bVrVh1CR+ViaQU5MeleAy2xEteCcCOLp+q3QELSMykASbi7xnDCNuTy
+ vAgjWsjn+IJDpZs5ysK8aHt0YkhgZWZ7bKlX+k64Iwf1DkkBPKh7JKn
 X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
  pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-When a CPU is taken offline or enters deep idle states, hypervisor CSR
-state is lost. The kvm_former_vcpu fast-path optimization caches the
-last VCPU that ran on each CPU to avoid expensive CSR restoration when
-the same VCPU is re-scheduled on the same CPU. However, if this cache
-is not cleared when CSR state is lost, the next VCPU entry will
-incorrectly skip CSR restoration, leading to corrupt hypervisor state.
+Register a CPU_PM notifier to restore hypervisor CSR content during CPU
+non-retention idle states. When a CPU enters a deep idle state that
+powers off the CPU domain, hypervisor CSRs and VS CSRs lose their state
+and must be saved before entry and restored after exit.
 
-Add kvm_riscv_clear_former_vcpu() to invalidate the per-CPU cache and
-call it from kvm_arch_disable_virtualization_cpu() to ensure proper CSR
-restoration after CPU offline or system suspend events.
+To avoid conflicts with KVM's existing syscore suspend/resume handlers,
+the notifier checks system_state and skips processing during system-wide
+suspend/resume operations, where the syscore mechanism in
+virt/kvm/kvm_main.c already handles the state transitions.
 
-Fixes: 1323a5cfe52c ("KVM: riscv: Skip CSR restore if VCPU is reloaded on the same core")
+This completes KVM's power management coverage for RISC-V:
+- CPU hotplug: handled by kvm_online_cpu/kvm_offline_cpu (cpuhp callbacks)
+- System suspend: handled by kvm_suspend/kvm_resume (syscore ops)
+- CPU idle (retention): no action needed, CSRs are retained
+- CPU idle (non-retention): handled by this CPU_PM notifier
 
 Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 ---
- arch/riscv/include/asm/kvm_host.h |  2 ++
- arch/riscv/kvm/main.c             |  2 ++
- arch/riscv/kvm/vcpu.c             | 11 +++++++++++
- 3 files changed, 15 insertions(+)
+ arch/riscv/include/asm/kvm_aia.h |  15 +++-
+ arch/riscv/kvm/aia.c             | 144 ++++++++++++++++++++++-----------------
+ arch/riscv/kvm/main.c            |  98 +++++++++++++++++++++-----
+ 3 files changed, 174 insertions(+), 83 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 60017ceec9d2..808b4ee1bd10 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -319,6 +319,8 @@ bool kvm_riscv_vcpu_stopped(struct kvm_vcpu *vcpu);
+diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
+index c67ec5ac0a14..7c1c3250598f 100644
+--- a/arch/riscv/include/asm/kvm_aia.h
++++ b/arch/riscv/include/asm/kvm_aia.h
+@@ -165,8 +165,19 @@ int kvm_riscv_aia_alloc_hgei(int cpu, struct kvm_vcpu *owner,
+ 			     void __iomem **hgei_va, phys_addr_t *hgei_pa);
+ void kvm_riscv_aia_free_hgei(int cpu, int hgei);
  
- void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu);
- 
-+void kvm_riscv_clear_former_vcpu(void);
+-void kvm_riscv_aia_enable(void);
+-void kvm_riscv_aia_disable(void);
++/**
++ * kvm_riscv_aia_enable() - Enable AIA support on current CPU
++ * @full_cleanup: true = full hardware init (CPU hotplug/module load),
++ *                false = lightweight CSR restore (CPU non-retention idle resume)
++ */
++void kvm_riscv_aia_enable(bool full_cleanup);
 +
- /* Flags representing implementation specific details */
- DECLARE_STATIC_KEY_FALSE(kvm_riscv_vsstage_tlb_no_gpa);
++/**
++ * kvm_riscv_aia_disable() - Disable AIA support on current CPU
++ * @full_cleanup: true = full hardware cleanup (CPU hotplug/module exit),
++ *                false = lightweight CSR save (CPU non-retention idle entry)
++ */
++void kvm_riscv_aia_disable(bool full_cleanup);
+ int kvm_riscv_aia_init(void);
+ void kvm_riscv_aia_exit(void);
+ 
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index bafb009c5ce5..4cf351f91c64 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -25,6 +25,7 @@ struct aia_hgei_control {
+ 	unsigned long free_bitmap;
+ 	struct kvm_vcpu *owners[BITS_PER_LONG];
+ 	unsigned int nr_hgei;
++	unsigned long saved_value;
+ };
+ static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
+ static int hgei_parent_irq;
+@@ -532,50 +533,59 @@ static void aia_hgei_exit(void)
+ 	free_percpu_irq(hgei_parent_irq, &aia_hgei);
+ }
+ 
+-void kvm_riscv_aia_enable(void)
++void kvm_riscv_aia_enable(bool full_cleanup)
+ {
+-	const struct imsic_global_config *gc;
+-	const struct imsic_local_config *lc;
+ 	struct aia_hgei_control *hgctrl;
+ 	unsigned long flags;
+-	int aia_nr_hgei;
+ 
+ 	if (!kvm_riscv_aia_available())
+ 		return;
+ 
+-	gc = imsic_get_global_config();
+-	lc = (gc) ? this_cpu_ptr(gc->local) : NULL;
+ 	hgctrl = this_cpu_ptr(&aia_hgei);
+ 
+-	/* Figure-out number of bits in HGEIE */
+-	csr_write(CSR_HGEIE, -1UL);
+-	hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
+-	csr_write(CSR_HGEIE, 0);
+-	if (hgctrl->nr_hgei)
+-		hgctrl->nr_hgei--;
++	if (full_cleanup) {
++		const struct imsic_global_config *gc;
++		const struct imsic_local_config *lc;
++		int aia_nr_hgei;
+ 
+-	/*
+-	 * Number of usable per-HART HGEI lines should be minimum of
+-	 * per-HART IMSIC guest files and number of bits in HGEIE.
+-	 */
+-	if (lc)
+-		hgctrl->nr_hgei = min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
+-	else
+-		hgctrl->nr_hgei = 0;
++		gc = imsic_get_global_config();
++		lc = (gc) ? this_cpu_ptr(gc->local) : NULL;
+ 
+-	/* Update the number of IMSIC guest files across all HARTs */
+-	aia_nr_hgei = atomic_read(&kvm_riscv_aia_nr_hgei);
+-	do {
+-		if (aia_nr_hgei <= hgctrl->nr_hgei)
+-			break;
+-	} while (!atomic_try_cmpxchg(&kvm_riscv_aia_nr_hgei, &aia_nr_hgei, hgctrl->nr_hgei));
++		/* Figure-out number of bits in HGEIE */
++		csr_write(CSR_HGEIE, -1UL);
++		hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
++		csr_write(CSR_HGEIE, 0);
++		if (hgctrl->nr_hgei)
++			hgctrl->nr_hgei--;
+ 
+-	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+-	if (!hgctrl->free_bitmap_initialized) {
+-		hgctrl->free_bitmap = (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hgei, 1) : 0;
+-		hgctrl->free_bitmap_initialized = true;
++		/*
++		 * Number of usable per-HART HGEI lines should be minimum of
++		 * per-HART IMSIC guest files and number of bits in HGEIE.
++		 */
++		if (lc)
++			hgctrl->nr_hgei = min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
++		else
++			hgctrl->nr_hgei = 0;
++
++		/* Update the number of IMSIC guest files across all HARTs */
++		aia_nr_hgei = atomic_read(&kvm_riscv_aia_nr_hgei);
++		do {
++			if (aia_nr_hgei <= hgctrl->nr_hgei)
++				break;
++		} while (!atomic_try_cmpxchg(&kvm_riscv_aia_nr_hgei, &aia_nr_hgei,
++					     hgctrl->nr_hgei));
++
++		raw_spin_lock_irqsave(&hgctrl->lock, flags);
++		if (!hgctrl->free_bitmap_initialized) {
++			hgctrl->free_bitmap = (hgctrl->nr_hgei) ?
++					      GENMASK_ULL(hgctrl->nr_hgei, 1) :
++					      0;
++			hgctrl->free_bitmap_initialized = true;
++		}
++		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
++	} else {
++		csr_write(CSR_HGEIE, hgctrl->saved_value);
+ 	}
+-	raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
+ 
+ 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
+ 	csr_write(CSR_HVIPRIO1, 0x0);
+@@ -587,16 +597,17 @@ void kvm_riscv_aia_enable(void)
+ 	csr_write(CSR_HVIPRIO2H, 0x0);
+ #endif
+ 
+-	/* Enable per-CPU SGEI interrupt */
+-	enable_percpu_irq(hgei_parent_irq,
+-			  irq_get_trigger_type(hgei_parent_irq));
++	if (full_cleanup)
++		enable_percpu_irq(hgei_parent_irq,
++				  irq_get_trigger_type(hgei_parent_irq));
+ 	csr_set(CSR_HIE, BIT(IRQ_S_GEXT));
++
+ 	/* Enable IRQ filtering for overflow interrupt only if sscofpmf is present */
+ 	if (__riscv_isa_extension_available(NULL, RISCV_ISA_EXT_SSCOFPMF))
+ 		csr_set(CSR_HVIEN, BIT(IRQ_PMU_OVF));
+ }
+ 
+-void kvm_riscv_aia_disable(void)
++void kvm_riscv_aia_disable(bool full_cleanup)
+ {
+ 	int i;
+ 	unsigned long flags;
+@@ -609,42 +620,49 @@ void kvm_riscv_aia_disable(void)
+ 
+ 	if (__riscv_isa_extension_available(NULL, RISCV_ISA_EXT_SSCOFPMF))
+ 		csr_clear(CSR_HVIEN, BIT(IRQ_PMU_OVF));
+-	/* Disable per-CPU SGEI interrupt */
+-	csr_clear(CSR_HIE, BIT(IRQ_S_GEXT));
+-	disable_percpu_irq(hgei_parent_irq);
+ 
+-	csr_write(CSR_HVICTL, aia_hvictl_value(false));
+-
+-	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+-
+-	for (i = 0; i <= hgctrl->nr_hgei; i++) {
+-		vcpu = hgctrl->owners[i];
+-		if (!vcpu)
+-			continue;
++	if (full_cleanup) {
++		/* Disable per-CPU SGEI interrupt */
++		csr_clear(CSR_HIE, BIT(IRQ_S_GEXT));
++		disable_percpu_irq(hgei_parent_irq);
++	}
+ 
+-		/*
+-		 * We release hgctrl->lock before notifying IMSIC
+-		 * so that we don't have lock ordering issues.
+-		 */
+-		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
++	csr_write(CSR_HVICTL, aia_hvictl_value(false));
+ 
+-		/* Notify IMSIC */
+-		kvm_riscv_vcpu_aia_imsic_release(vcpu);
++	if (full_cleanup) {
++		raw_spin_lock_irqsave(&hgctrl->lock, flags);
+ 
+-		/*
+-		 * Wakeup VCPU if it was blocked so that it can
+-		 * run on other HARTs
+-		 */
+-		if (csr_read(CSR_HGEIE) & BIT(i)) {
+-			csr_clear(CSR_HGEIE, BIT(i));
+-			kvm_vcpu_kick(vcpu);
++		for (i = 0; i <= hgctrl->nr_hgei; i++) {
++			vcpu = hgctrl->owners[i];
++			if (!vcpu)
++				continue;
++
++			/*
++			 * We release hgctrl->lock before notifying IMSIC
++			 * so that we don't have lock ordering issues.
++			 */
++			raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
++
++			/* Notify IMSIC */
++			kvm_riscv_vcpu_aia_imsic_release(vcpu);
++
++			/*
++			 * Wakeup VCPU if it was blocked so that it can
++			 * run on other HARTs
++			 */
++			if (csr_read(CSR_HGEIE) & BIT(i)) {
++				csr_clear(CSR_HGEIE, BIT(i));
++				kvm_vcpu_kick(vcpu);
++			}
++
++			raw_spin_lock_irqsave(&hgctrl->lock, flags);
+ 		}
+ 
+-		raw_spin_lock_irqsave(&hgctrl->lock, flags);
++		raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
++	} else {
++		hgctrl->saved_value = csr_read(CSR_HGEIE);
+ 	}
+ 
+-	raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
+-
+ 	put_cpu_ptr(&aia_hgei);
+ }
  
 diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
-index 0924c75100a2..350e4f097d6e 100644
+index 350e4f097d6e..f397a93881dc 100644
 --- a/arch/riscv/kvm/main.c
 +++ b/arch/riscv/kvm/main.c
-@@ -69,6 +69,8 @@ void kvm_arch_disable_virtualization_cpu(void)
+@@ -10,6 +10,7 @@
+ #include <linux/err.h>
+ #include <linux/module.h>
+ #include <linux/kvm_host.h>
++#include <linux/cpu_pm.h>
+ #include <asm/cpufeature.h>
+ #include <asm/kvm_mmu.h>
+ #include <asm/kvm_nacl.h>
+@@ -33,14 +34,9 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 	return -EINVAL;
+ }
+ 
+-int kvm_arch_enable_virtualization_cpu(void)
++/* Initialize hypervisor CSRs - called during CPU online and non-retention idle resume */
++static void kvm_riscv_csr_enable(void)
+ {
+-	int rc;
+-
+-	rc = kvm_riscv_nacl_enable();
+-	if (rc)
+-		return rc;
+-
  	csr_write(CSR_HEDELEG, 0);
  	csr_write(CSR_HIDELEG, 0);
  
-+	kvm_riscv_clear_former_vcpu();
-+
+@@ -48,16 +44,11 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 	csr_write(CSR_HCOUNTEREN, 0x02);
+ 
+ 	csr_write(CSR_HVIP, 0);
+-
+-	kvm_riscv_aia_enable();
+-
+-	return 0;
+ }
+ 
+-void kvm_arch_disable_virtualization_cpu(void)
++/* Clear hypervisor CSRs - called during CPU offline and non-retention idle entry */
++static void kvm_riscv_csr_disable(void)
+ {
+-	kvm_riscv_aia_disable();
+-
+ 	/*
+ 	 * After clearing the hideleg CSR, the host kernel will receive
+ 	 * spurious interrupts if hvip CSR has pending interrupts and the
+@@ -74,6 +65,59 @@ void kvm_arch_disable_virtualization_cpu(void)
  	kvm_riscv_nacl_disable();
  }
  
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index cf6e231e76e2..e48338f907f4 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -26,6 +26,17 @@
- 
- static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
- 
-+void kvm_riscv_clear_former_vcpu(void)
++int kvm_arch_enable_virtualization_cpu(void)
 +{
-+	/*
-+	 * Clear the per-CPU former VCPU pointer because hypervisor CSR state
-+	 * will be lost. This ensures that the next VCPU entry will properly
-+	 * restore all CSRs instead of incorrectly skipping CSR restoration
-+	 * via the fast-path optimization.
-+	 */
-+	__this_cpu_write(kvm_former_vcpu, NULL);
++	int rc;
++
++	rc = kvm_riscv_nacl_enable();
++	if (rc)
++		return rc;
++
++	kvm_riscv_csr_enable();
++	kvm_riscv_aia_enable(true);
++
++	return 0;
 +}
 +
- const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
- 	KVM_GENERIC_VCPU_STATS(),
- 	STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
++void kvm_arch_disable_virtualization_cpu(void)
++{
++	kvm_riscv_aia_disable(true);
++	kvm_riscv_csr_disable();
++	kvm_riscv_nacl_disable();
++}
++
++static int kvm_riscv_cpu_pm_notifier(struct notifier_block *self, unsigned long cmd, void *v)
++{
++	/*
++	 * To avoid redundant disable/enable operations (since KVM's
++	 * syscore ops will handle the state during system suspend),
++	 * ignore CPU_PM events when a system suspend/resume is in
++	 * progress.
++	 */
++	if (system_state == SYSTEM_SUSPEND)
++		return NOTIFY_DONE;
++
++	switch (cmd) {
++	case CPU_PM_EXIT:
++	case CPU_PM_ENTER_FAILED:
++		kvm_riscv_csr_enable();
++		kvm_riscv_aia_enable(false);
++		return NOTIFY_OK;
++	case CPU_PM_ENTER:
++		kvm_riscv_aia_disable(false);
++		kvm_riscv_csr_disable();
++		return NOTIFY_OK;
++	default:
++		break;
++	}
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block kvm_riscv_cpu_pm_nb = {
++	.notifier_call = kvm_riscv_cpu_pm_notifier,
++};
++
+ static void kvm_riscv_teardown(void)
+ {
+ 	kvm_riscv_aia_exit();
+@@ -174,17 +218,31 @@ static int __init riscv_kvm_init(void)
+ 
+ 	kvm_register_perf_callbacks();
+ 
+-	rc = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+-	if (rc) {
+-		kvm_riscv_teardown();
+-		return rc;
++	/* Register CPU PM notifier for CPU idle non-retention states */
++	if (IS_ENABLED(CONFIG_CPU_PM)) {
++		rc = cpu_pm_register_notifier(&kvm_riscv_cpu_pm_nb);
++		if (rc) {
++			kvm_err("Failed to register CPU PM notifier: %d\n", rc);
++			goto err_teardown;
++		}
+ 	}
+ 
++	rc = kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
++	if (rc)
++		goto err_unregister_cpu_pm;
++
+ 	if (kvm_riscv_aia_available())
+ 		kvm_info("AIA available with %d guest external interrupts\n",
+ 			 atomic_read(&kvm_riscv_aia_nr_hgei));
+ 
+ 	return 0;
++
++err_unregister_cpu_pm:
++	if (IS_ENABLED(CONFIG_CPU_PM))
++		cpu_pm_unregister_notifier(&kvm_riscv_cpu_pm_nb);
++err_teardown:
++	kvm_riscv_teardown();
++	return rc;
+ }
+ module_init(riscv_kvm_init);
+ 
+@@ -192,6 +250,10 @@ static void __exit riscv_kvm_exit(void)
+ {
+ 	kvm_exit();
+ 
++	/* Unregister CPU PM notifier */
++	if (IS_ENABLED(CONFIG_CPU_PM))
++		cpu_pm_unregister_notifier(&kvm_riscv_cpu_pm_nb);
++
+ 	kvm_riscv_teardown();
+ }
+ module_exit(riscv_kvm_exit);
 
 -- 
 2.43.7
