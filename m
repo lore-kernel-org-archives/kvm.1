@@ -1,228 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE903164A9
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492A93F23D7
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 11:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473252; cv=none; b=GbjJxf+1159mx5aJnc6+Xou1g7RAhPuVu5hFCD+aUqizWO/mpuLjIwY4vR2ZAXlagz9cLncOkvaQ3zqOFphqPuUNQVk933DTUZ0ujV6zqvXdg3A4U7iNIM5tsotsRTImTh36Mn4AYKYJKt1jd/Ck5oL/lgVus3Sh8bJNk9/6K5g=
+	t=1782473383; cv=none; b=AtSlpEzNwX4k+4g/rROJ/UnP0pHVh84WTHJEaSuo9Z3jDwMtxf9/vG21HV+/SeJR+xwW9G5Yk67eO2hIyKVFljCp9fCErvp+PAfwcMrzCzfwOTJuO0FOwJNXIoihJkYKxUPoW4QZ3/T/V6Wifh+GAT5CNnzFjmx4uTv+OdJkPnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473252; c=relaxed/simple;
-	bh=E1C3BPJ0p8jD2trwUlWOiL20YlY9EiZVRd4Sg/13Z/c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFk7sA634wh5BQDqzvyhBZCIwHHZcmIFZRd18KvT3uDxVvq3MneGqVzf/sBr8Gd5dTaD22siQpuw0+8ZwEHW6jmaA0IYWkVWPnG+PJxncMIX8Ygvn8h+fV9MwqANoyR19n/S1Kfnma3aoNbstfjFQ0lm9PEMsYrdoqA2tVW0j7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cfekGbUT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZnTqrSs0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782473383; c=relaxed/simple;
+	bh=rUXlA1jXakncTzZEmvdE6NjlvS8eLgyvw8clZ60qIFs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=t3PgMp287tN89vze7fSadxjEWc553IPO9J8CQx9+6MDAbwse6JFtd5YqWMpATrIHZjm8yMuDyh4EchJvTbN4I4yXGxb3IfvFrC0g6BPxtiIT7ow8A3mTWFh2bTvXC7Xv0UpwdEHTlzbQ+Vw9gsH1tggx02CODWDY6haHiSIEXKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RlqTWMQ3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cfekGbUT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZnTqrSs0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782473249;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3LOKYXeF8DV1xTMTuzANqPLbadSyXms7qeYO6RbZUFw=;
-	b=cfekGbUTcCLfW+TQWeqtiriD2jgwDXKjsxbc+oxvzRuVwJQ/f6ok9J8M/5Rse+FOOAzQCr
-	mhbMLjmiK6F5pBuKhGPMzcGvWNusu1IpKugPbZIystGhw9hX345YqS98KY7Q2qto+QbCVP
-	2mXjdhVhpED6m/i2SPFDO35hYaldL00=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-17f4D2MkNgq0g-vuAzjXaA-1; Fri, 26 Jun 2026 07:27:27 -0400
-X-MC-Unique: 17f4D2MkNgq0g-vuAzjXaA-1
-X-Mimecast-MFC-AGG-ID: 17f4D2MkNgq0g-vuAzjXaA_1782473247
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4642a5651d4so712235f8f.2
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 04:27:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782473246; x=1783078046; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3LOKYXeF8DV1xTMTuzANqPLbadSyXms7qeYO6RbZUFw=;
-        b=ZnTqrSs0H78PY4C9L+mU/231Bi8XpLFPFEm0hpa2jUwESA6Lq/PknQ165qAYShPBPS
-         r+6++kUTp4bFyGA/bzWNzj4h6xfYh6SQjEhLe8T+JMMTZJnkOzk6ewLOrxGLPctA769E
-         9EDAzvCkh/lrmogxfj0PhDz1H3weas1ZIdnYYACS+GhM92nJ9M3WWMe3+rp4KHkVUNBF
-         50Tl/iWhgZBcWqRa0vLHYU0eYIa0gQ7IvVVV63u85U0wDgFhRzdqlYyU/b6ALkQDdDZS
-         PnymttaoUQkOLyMtDYVJqvpBleOP8FxKDOVIAUSPCtBHVzfHUgZrYCG42eeasns7lTrZ
-         gNFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782473246; x=1783078046;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3LOKYXeF8DV1xTMTuzANqPLbadSyXms7qeYO6RbZUFw=;
-        b=UEhjO8wqqd8BiPyZGiPjFjNqy03YKNL8TLIyuOxBoZdSDUFkW0GN4/TarL981/E1C6
-         +6zID6Xns38F1RpUgLCVYNuay5MFVPlyRU3AuIXjmNohMxVO89vsHdcPqNs3YaBZFC4N
-         hTHVbxgVJ6eD7UuwtevOK++r0iCr5j91tEVslhtzsxDDmphG87M+i95Lco/RVRMoMANL
-         uOSMDHEofDAtQ4/yCvOHefbd9dGAnSfLaxpQXlRvY0c1EDkmBe8m9uKXTVfEuyhKLX3M
-         yolXKQ3WJYabsKR45tZ7NjcPqk1c5ot8nw8DuhtfTcBrtNUpd1LeakF/l4E6+0Xgjk1O
-         EuVQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqwraHpFy5IUhPlmXXGJOnqrvgDjygF/Tti02WAj/8lvCONGngcpCCFk5iGGlg6K+3lwAw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy3SAalAn/KjgBINuUFd4YDMc+tGun/P58XGWemdPQfnKCL+ga
-	Vcn64/koJDPzLCJxF3pVsQa62ceru9p1IdU26q6VAvnh9mB5qhp/qL7WYQ2dZgWzh3x+2WAw7JS
-	Sr6j0NR+o5/bd6e76O86XDyc8H4aLD3cmUao7jgEfZIFPrx0ZiuobFw==
-X-Gm-Gg: AfdE7cn7DMs08YV0rI43tfaSTWTHkHxhVlR9pnfCTmuvc9KxSt23MTqaRQwJYX50pcU
-	yP89yy1udUt4bKY1FhNCVWgI/dfRcJxxLpNEKZ5NI9aul+r0NLH3AEQWriU8tSxpf1LqulkOqRB
-	9L00lMp+GUq1U3Jj1oRd95/mEW+4ZWGEnSlw+tPLzIlMJG0FY7aRd6bgy2TScYQj8dRtNHC0r4i
-	Y3gJmwsbKD4pE4ngLehGVwt8qKcrJE9nvuDOLyv0xlVUT2Esmkg8lwjp6bYXSrS1b0Vi2Ryd05D
-	1NQLxb3LA/IBW7Ro2yN0+6dkkqqmFjUU04J59V6DcMNMvJ8Y2admYb1HeB1q/wqH5Qyey6qn7fD
-	k1llu9Fn0zAt4zvvtrOZoliofLIuH/hQo4W7WXgcy5yAfXzUJT+OgEO7qRRBf2HjgFEC93dj4u3
-	7S1IIixHtcC0EOfBrc
-X-Received: by 2002:a05:6000:4308:b0:45e:891c:648e with SMTP id ffacd0b85a97d-46dbf023548mr10491103f8f.8.1782473246497;
-        Fri, 26 Jun 2026 04:27:26 -0700 (PDT)
-X-Received: by 2002:a05:6000:4308:b0:45e:891c:648e with SMTP id ffacd0b85a97d-46dbf023548mr10491054f8f.8.1782473246043;
-        Fri, 26 Jun 2026 04:27:26 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.124.208])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46e3d6ba143sm11204309f8f.33.2026.06.26.04.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 04:27:25 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	David Matlack <dmatlack@google.com>,
-	James Houghton <jthoughton@google.com>,
-	Alexander Bulekov <bkov@amazon.com>,
-	Fred Griffoul <fgriffo@amazon.co.uk>,
-	Alexander Graf <graf@amazon.de>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Filippo Sironi <sironi@amazon.de>,
-	Ivan Orlov <iorlov@amazon.co.uk>
-Subject: [PATCH 5.10.y 17/17] KVM: x86/mmu: Ensure hugepage is in by slot before checking max mapping level
-Date: Fri, 26 Jun 2026 13:26:34 +0200
-Message-ID: <20260626112634.1778506-18-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260626112634.1778506-1-pbonzini@redhat.com>
-References: <20260626112634.1778506-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RlqTWMQ3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3D51F000E9;
+	Fri, 26 Jun 2026 11:29:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782473382;
+	bh=OJe359it65xxNvLTDjnbdRCzcIfKgpS14Cor6BR0J9Y=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RlqTWMQ3dxfUOLTQHpvRXxvPSlqyfRUknJK8zzE51SMdt87KXfcf0l+SE9kH0qXZu
+	 Tr9CtRSjgv1XiFNvre+DNFd8q+p0dN6mhwmccO8Drdxfs2lX3ZwCtJ1lcAJB+LRnLn
+	 OMYpHc3xXRcMtAxSnkHKl3RlAdkkXCkPb70E9MsKCs1eGQpZVcNVULi5mO4+NtuUya
+	 CgZTkTuo7rYbxuR1OZNo1zWNoIIQHgbWkwmQTTl39T1592gHZtI8wx+FXHYqAb5slW
+	 AkqBEqbC2TbgMUj/AcCqIPQpRYdOfIFt+8t4fhSTvw8BOgpPqyLO1MYZhZ28PzRYQ9
+	 d67AFFOUmhLxw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 2/5] iommu/amd: Configure IRTE to use the GAPPI for
+ posted interrupts
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sairaj Kodilkar" <sarunkod@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260626105906.14577-3-sarunkod@amd.com>
+References: <20260626105906.14577-1-sarunkod@amd.com>
+ <20260626105906.14577-3-sarunkod@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 26 Jun 2026 11:29:41 +0000
+Message-Id: <20260626112941.EC3D51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] `amd_iommu_update_ga` dynamically modifies the `gappi_dis` field=
+ in the IRTE without issuing an IOMMU invalidation, which may result in per=
+manently lost wakeups.
+--
 
-commit ef057cbf825e03b63f6edf5980f96abf3c53089d upstream.
+commit f265b23208b1df21d27bc13bee3b5f94ce45d71c
+Author: Sairaj Kodilkar <sarunkod@amd.com>
 
-When recovering hugepages in the shadow MMU, verify that the base gfn of
-the shadow page is actually contained within the target memslot, *before*
-querying the max mapping level given the shadow page's gfn.  Failure to
-pre-check the validity of the gfn can lead to an out-of-bounds access to
-the slot's lpage_info (which typically manifests as a host #PF because the
-lpage_info is vmalloc'd) if the guest creates a hugepage mapping (in its
-PTEs) that extends "below" the bounds of a memslot.
+iommu/amd: Configure IRTE to use the GAPPI for posted interrupts
 
-When faulting in memory for a guest, and the size of the guest mapping is
-greater than KVM's (current) max mapping, then KVM will create a "direct"
-shadow page (direct in that there are no gPTEs to shadow, and so the target
-gfn is a direct calculation given the base gfn of the shadow page).  The
-hugepage recovery flow looks for such direct shadow pages, as forcing 4KiB
-mappings when dirty logging generates the guest > host mapping size case.
-When the 4KiB restriction is lifted, then KVM can replace the shadow page
-with a hugepage.
+This commit updates the AMD IOMMU driver to support Guest APIC Posted
+Interrupts (GAPPI). It configures the Interrupt Remapping Table Entry (IRTE)
+for wakeups using the reserved POSTED_INTR_WAKEUP_VECTOR when the guest
+is not running.
 
-But if KVM originally used a smaller mapping than the guest because the
-range of memory covered by the guest hugepage exceeds the bounds of a
-memslot, then KVM will link a direct shadow page with a gfn that is outside
-the bounds of the memslot being used to fault in memory.  The rmap entry
-added for the leaf mapping is correct and within bounds, but the gfn of the
-leaf SPTE's parent shadow page will be out of bounds.
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+[ ... ]
+> @@ -3969,9 +3969,18 @@ static void __amd_iommu_update_ga(struct irte_ga *=
+entry, int apicid, int flags)
+>  		entry->lo.fields_vapic.is_run =3D true;
+>  		entry->lo.fields_vapic.ga_log_intr =3D false;
+>  	} else {
+> -		entry->lo.fields_vapic.is_run =3D false;
+> -		entry->lo.fields_vapic.ga_log_intr =3D !!(flags &
+> -							AMD_IOMMU_FLAG_POSTED_INTR);
+> +		bool posted_intr =3D !!(flags & AMD_IOMMU_FLAG_POSTED_INTR);
+> +		if (amd_iommu_gappi) {
+> +			entry->lo.fields_vapic.gappi_dis =3D !posted_intr &&
+> +							   check_feature2(FEATURE_GAPPIDISSUP);
 
-  BUG: unable to handle page fault for address: ffffc90000806ffc
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 100000067 P4D 100000067 PUD 1002a7067 PMD 10612f067 PTE 0
-  Oops: Oops: 0000 [#1] SMP
-  CPU: 13 UID: 1000 PID: 757 Comm: mmu_stress_test Not tainted 7.1.0-rc1-48ce1e26eace-x86_pir_to_irr_comments-vm #341 PREEMPT
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  RIP: 0010:kvm_mmu_max_mapping_level+0x79/0x2b0 [kvm]
-  Call Trace:
-   <TASK>
-   kvm_mmu_recover_huge_pages+0x21b/0x320 [kvm]
-   kvm_set_memslot+0x1ee/0x590 [kvm]
-   kvm_set_memory_region.part.0+0x3a1/0x4d0 [kvm]
-   kvm_vm_ioctl+0x9bf/0x15d0 [kvm]
-   __x64_sys_ioctl+0x8a/0xd0
-   do_syscall_64+0xb7/0xbb0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f21c0f1a9bf
-   </TASK>
+[Severity: Medium]
+Does this code need to issue an IOMMU cache invalidation after modifying
+gappi_dis?
 
-Don't bother pre-checking the bounds of the potential hugepage, i.e. don't
-check that e.g. sp->gfn + KVM_PAGES_PER_HPAGE(sp->role.level + 1) is also
-within the memslot, as the checks performed by kvm_mmu_max_mapping_level()
-are a superset of the basic bounds checks.  I.e. pre-checking the full
-range would be a dubious micro-optimization.
+Since __amd_iommu_update_ga() is a fast-path update function, it appears
+there is no subsequent IOMMU cache flush when gappi_dis changes. If KVM
+schedules out a vCPU (setting gappi_dis =3D 1) and then the vCPU blocks
+(setting gappi_dis =3D 0), hardware that caches the gappi_dis bit might not
+observe the transition back to 0.
 
-Fixes: 9eba50f8d7fc ("KVM: x86/mmu: Consult max mapping level when zapping collapsible SPTEs")
-Cc: stable@vger.kernel.org
-Cc: David Matlack <dmatlack@google.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Alexander Bulekov <bkov@amazon.com>
-Cc: Fred Griffoul <fgriffo@amazon.co.uk>
-Cc: Alexander Graf <graf@amazon.de>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Filippo Sironi <sironi@amazon.de>
-Cc: Ivan Orlov <iorlov@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/mmu/mmu.c   | 19 +++++++++++++------
- include/linux/kvm_host.h |  5 +++++
- 2 files changed, 18 insertions(+), 6 deletions(-)
+Could this caching behavior lead to permanently dropped wakeup interrupts
+and indefinite vCPU hangs?
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 39186d695269..b7e8618d3df5 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5659,13 +5659,20 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
- 		pfn = spte_to_pfn(*sptep);
- 
- 		/*
--		 * We cannot do huge page mapping for indirect shadow pages,
--		 * which are found on the last rmap (level = 1) when not using
--		 * tdp; such shadow pages are synced with the page table in
--		 * the guest, and the guest page table is using 4K page size
--		 * mapping if the indirect sp has level = 1.
-+		 * Direct shadow page can be replaced by a hugepage if the host
-+		 * mapping level allows it and the memslot maps all of the host
-+		 * hugepage.  Note!  If the memslot maps only part of the
-+		 * hugepage, sp->gfn may be below slot->base_gfn, and querying
-+		 * the max mapping level would cause an out-of-bounds lpage_info
-+		 * access.  So the gfn bounds check *must* be done first.
-+		 *
-+		 * Indirect shadow pages are created when the guest page tables
-+		 * are using 4K pages.  Since the host mapping is always
-+		 * constrained by the page size in the guest, indirect shadow
-+		 * pages are never collapsible.
- 		 */
--		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
-+		if (sp->role.direct && is_gfn_in_memslot(slot, sp->gfn) &&
-+		    !kvm_is_reserved_pfn(pfn) &&
- 		    (kvm_is_zone_device_pfn(pfn) ||
- 		     PageCompound(pfn_to_page(pfn)))) {
- 			pte_list_remove(rmap_head, sptep);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 6b8b562407a0..b737604a676e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1092,6 +1092,11 @@ int kvm_request_irq_source_id(struct kvm *kvm);
- void kvm_free_irq_source_id(struct kvm *kvm, int irq_source_id);
- bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args);
- 
-+static inline bool is_gfn_in_memslot(const struct kvm_memory_slot *slot, gfn_t gfn)
-+{
-+	return gfn >= slot->base_gfn && gfn < slot->base_gfn + slot->npages;
-+}
-+
- /*
-  * search_memslots() and __gfn_to_memslot() are here because they are
-  * used in non-modular code in arch/powerpc/kvm/book3s_hv_rm_mmu.c.
--- 
-2.54.0
+> +			entry->lo.fields_vapic.is_run =3D false;
+> +			entry->lo.fields_vapic.destination =3D
+> +						APICID_TO_IRTE_DEST_LO(apicid);
+> +			entry->hi.fields.destination =3D APICID_TO_IRTE_DEST_HI(apicid);
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626105906.1457=
+7-1-sarunkod@amd.com?part=3D2
