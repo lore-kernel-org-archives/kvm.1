@@ -1,76 +1,51 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012008.outbound.protection.outlook.com [40.107.209.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BFE3F0A92;
-	Fri, 26 Jun 2026 11:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782472145; cv=fail; b=cwxHQsKcxv+KCWgOLq9Hy622uHRtEqjpjtcn/hLGXuwde6eQrtgSng8h8NE0oY3VcrurHdSXEKEe4MUp8E+vgqRIxukyC7SBheKpQMf/D7UtPe9mFlccXHj7sWnAnIpsIDa5e1CW3qb81OmTW3Vof2yJG0Fz2bb5ulJFBt3yG7M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782472145; c=relaxed/simple;
-	bh=5lK2wMaTIEOc7fR9t+pXzIRqI45cUWiIP4aSh+Ef2wI=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pAckp5uJ80RzPyogVNkMLBROl9n0JnIOfUlPeeLxYsieCkefdJ/Vo2wn8H0SQxUfKNMHO1ECnKPK9dMNFxdTqkUrWP++90ZheSO5FWulQXHJvP4mcrOg9yEV3ZFPI42NiUBe6EMoAF8A9XfAdrRDnHqRu6QhyoghlycmS1qwnxw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lYeYaxeS; arc=fail smtp.client-ip=40.107.209.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC29249E5;
+	Fri, 26 Jun 2026 11:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782472449; cv=none; b=cAKnBKXzxSVi5pRHPWgSS+H4dAeAJKbCWBghPmDELShluq/ZWCY2owxyF1n0ln72YuU9ZQb+VOT9vRB1q5/54qsTLWAjLpGC/mtMKdew84ectf2WqexWSZ7TfOWQ9McajhgIVZSbMmK49VXo4+NCzja9WfJH+83y0H2Qn9r+YYA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782472449; c=relaxed/simple;
+	bh=FKSRA4QIkdSVuuKM8frxdcVN/2HixuGr174Q8BfV66M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=figIAWfUD0F2rE8AsmvrlLSPhcVTF3gHDGpi0wmcCBmBCxy2Vu2YaVWm+9ETfyj4GwqlDDfQJ2cDfPXFFHimbdV7uShzLKs8wcv31PKSLwVVUlMkQdCT8qETAoPulL5+OLeVKnc4DyDuGgVryb5OeZmsPN2myp3EOAERkTdr7no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gz6urgNF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lYeYaxeS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fjHwqHdv2hv1yjJQz8MNzNdQ3Y2bV1zO1meHVO0WR+Uve3+aSmFqCmmmK5ftN1tYLrsVYVHV8S1ffyzKH9PI4qSMXAp1JtGqeK2OIu3kBC2LRk2RmBsukz/YDIRc2qaaXCXyaVpKoPVoUGsJ14qId+k9+TmYSQs9qEchEwWTPsr/Ek+Y1uMy+N3/r6GkLDDKRMfsBOD8Zh6A+ffM6KOFcnnLW7yiiXv2mmtosmm5s7D3El6n2NnvX63A1PCOyqToEZs2DmciTAjNKItKpqz1JNk+58D6sW3lTxrGRh/5OmXlsK2RXobB21dhDxpace9yJRvNxm+ipF62COa/y9o2Gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9ZhWNyJrkSv5u9Me/m6yp2sGrgKw7VmzDp9nUipX4fM=;
- b=tW5SEaLXvDA+Z7b63h6JwrH2UlWb5ItMeTtwSH9JGEGOgwR9G8YJ84UrTZdtN1oVgYxd3zqha6bVkfxlZg9Z6bmGaj9ukkvbCNx+djzKoX4/85ef0YopGWQ2PXmVQuBQPzyQOhhSuRaoPTQed6WnHzlwnc2dSTT9Zgv1iAVVAnun6404JYZTy7Az0rIRF8l+oOPo8DOlk9vj8uL+uke+uhFX6Yev/NC8rZ9BN9NWqfYwUfw/YzFXSsgScOGchv1TWlx/TOXI+skvALuJIHhMZ/jTH/AZjc7myJFczWPeVgzFzkXUlydXrRL57lsw8wAwIJQ0D8RWmACCCk67fqzsjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9ZhWNyJrkSv5u9Me/m6yp2sGrgKw7VmzDp9nUipX4fM=;
- b=lYeYaxeS1EgGvh5Y8l5Gymp4DCHL/9ReDOsmZs1VpyoO9NubEYocczPwOs8uDBAn0kkqb4oHx41Uu/H8cikGy04jp9CYisfGzpRMNlIbDLByosoa3q8o3GN68RWEou1sIraQXmlK5trlaFLcpsxA76MbbURWDkRugDt9/2gmjJQ=
-Received: from SJ0PR13CA0034.namprd13.prod.outlook.com (2603:10b6:a03:2c2::9)
- by LV3PR12MB9401.namprd12.prod.outlook.com (2603:10b6:408:21c::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Fri, 26 Jun
- 2026 11:08:59 +0000
-Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
- (2603:10b6:a03:2c2:cafe::27) by SJ0PR13CA0034.outlook.office365.com
- (2603:10b6:a03:2c2::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.7 via Frontend Transport; Fri, 26
- Jun 2026 11:08:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Fri, 26 Jun 2026 11:08:58 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 26 Jun
- 2026 06:01:14 -0500
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Robin
- Murphy" <robin.murphy@arm.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
- Christopherson" <seanjc@google.com>, Suravee Suthikulpanit
-	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Vasant
- Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [RFC PATCH 5/5] iommu/amd: Provide kernel command line option to enable GAPPI
-Date: Fri, 26 Jun 2026 16:29:06 +0530
-Message-ID: <20260626105906.14577-6-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260626105906.14577-1-sarunkod@amd.com>
-References: <20260626105906.14577-1-sarunkod@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gz6urgNF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09C71F000E9;
+	Fri, 26 Jun 2026 11:14:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782472447;
+	bh=GOtd/Q5jMBs1nKTaCUlK0pT1uV18NzvSg8sXipKGWEo=;
+	h=From:To:Cc:Subject:Date;
+	b=gz6urgNFMazzIa1K0HLHL8V5gBEOv+F5aYHIYBaGoczUHMBBWHSmYPm8Nu9rHJykq
+	 pI1qLCl3vY/xc0XiLWe+VU2FY3sw4YxvB+bDMrySux0CTSQYhwnm3jml541MGDbjtW
+	 Zfo+PDmC7pKPyoZYMfCz/wYy4EAJ7alTmhR0+6EgD6k0KZJ/tp4hrsf1v9kKeeNSqo
+	 AVu0caXKFR6ynQHx9eH7gBKeo0qraHt92pFv0xJqSQlKX4Rc20p7yEtbtoB9YnP1wk
+	 Db3mix8fdfGVZwK1qhBSfKzJru4bHEuPso3uRhG32CBRvQX8NPxfjZEAujGuh6GSS1
+	 2d2/DaHuHOXUQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wd4VZ-0000000GJ9y-2AOO;
+	Fri, 26 Jun 2026 11:14:05 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: Make kvm_io_bus_get_dev() filter devices by ops
+Date: Fri, 26 Jun 2026 12:13:44 +0100
+Message-ID: <20260626111344.802555-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -78,114 +53,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|LV3PR12MB9401:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23a7c7f5-9a52-4396-3ed3-08ded3735233
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|36860700016|376014|82310400026|23010399003|1800799024|11063799006|56012099006|921020|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	dvymmByt5b6q4dIXgXaZ5GPlydqbWwESgkudnjWZAkZzk36mL59v8HOJTL44zPz27vBgRRngJ7JefaW8VaLLb+83+qPiTMmddKHcRMJuJY5nAEDH8Ty30XlIxlpkZrkbMENB5UxCalfWFcdr7sKfNGovYaPNVGuZz6NI7fUUnsILK4+UJ4CN0NzgZjMxzG8W3G7ZbRUJAhKp8c6KqToy+2fMGH4lhf+ud5HGTSU8IqRzCL2U42zg6t/pD08n9t02tpEOgoH4iisAcwCncuoXpVRky0/NB3VF+MGk3hInuOyM8r6vK1zfbZ3zI353Kp0685B8dn7NJxtV4lkewiUNP1CMEA+4ob+BFKpfFWUJsPe6iOBLCXwuDNnMaaqn3IC5XtnpwQe6tZVy2tlkkAsc7R6XzTe/hFOF8CSHHYz+T1hwKSMnxDSS4XwCuc0XKtdE3qdnFwzAgDi8zl1X61dxwzatOhXV3nzwvdGVPFQt15NCddmqYQOE3AxdSUKb4wiE84FA73RwI/QrXIzx4h7IoSSk2wLo3FRkqF6ci4Lm63sVuGdPpqSlfZgHXbZDpHlIimTsfb3n5onsiebcmYId+IvPalvgsEDqB6msrbizGjocX/CkJ/vAmQx5sLFpquWo+IQvxn6zbmgRpgI8St0j2lTrbhCT0bMuAgEbO/d7Mifa7vVFJQK3A2AlK+eaEfh4n6chesv5ZG1NZAHIhJ6HLvWoyDJ+Xq0OSu0915tDGk/fdlWRO8p+GUoe14TEdZCX
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(376014)(82310400026)(23010399003)(1800799024)(11063799006)(56012099006)(921020)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	UbzheAH26WJAoX9OEKE5WjWigs9q3BUnxR0OZNseU0HsL3CM4TJTdGUMumqygXP2c//tNGCweN93oeBkFoy5p1DaZuovky/7M8za3CaA53AeURAk3G/J2Zi+tu7UJd0ChXUPmCBRIGXGcgxrK69aRKwyoKh1Od5Q513T8IdaWYmag9BW9RBgrfD84Q6V3Da2Kn3oYd0/79YQq1drPQrJv50MvJV15f5sOVdiYKgTXOw4t7O6OFx+fhneEqmFN4Yy6FYXPOf1hI7l45PnsGXvFZFbHhRXMZsnSdhFAPXqyVdInbFTVYZXXzQ/pf18gzEdiAw6Oxti4v63w9yMrHFCV7Nk4qycbNRQhP0mi35uwWJGXG/uydH1dUpAMmeFMdgbv2utnN3ChmK6ql5OUX/PO17TnxGYlzd5up2QBome+cYByFxv0gOM+O1KlSHsMaHx
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 11:08:58.4626
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23a7c7f5-9a52-4396-3ed3-08ded3735233
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002312.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9401
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, pbonzini@redhat.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Enable GAPPI when IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with "amd_iommu=gappi" command line parameter.
+kvm_io_bus_get_dev() returns a device that is only matched by the
+address, and nothing else. This can cause a lifetime issue if
+the matched device is not the expected type, as by the time
+the caller can introspect the object, it might be gone (the srcu
+lock having been dropped).
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+Add an kvm_io_device_ops pointer to the list of things that this
+helper must check before dropping the lock and returning the pointer,
+and update the sole user to pass its own ops.
+
+Reported-by: Will Deacon <will@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: 8a39d00670f07 ("KVM: kvm_io_bus: Add kvm_io_bus_get_dev() call")
+Cc: stable@vger.kernel.org
 ---
- drivers/iommu/amd/amd_iommu_types.h |  2 ++
- drivers/iommu/amd/init.c            | 20 ++++++++++++++++----
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c | 5 +----
+ include/linux/kvm_host.h       | 1 +
+ virt/kvm/kvm_main.c            | 5 ++++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 26d7a9796e64..de0b23306944 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -94,6 +94,7 @@
- #define FEATURE_X2APIC		BIT_ULL(2)
- #define FEATURE_NX		BIT_ULL(3)
- #define FEATURE_GT		BIT_ULL(4)
-+#define FEATURE_GAPPI		BIT_ULL(5)
- #define FEATURE_IA		BIT_ULL(6)
- #define FEATURE_GA		BIT_ULL(7)
- #define FEATURE_HE		BIT_ULL(8)
-@@ -191,6 +192,7 @@
- #define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_GAPPI_EN	55
- #define CONTROL_GCR3TRPMODE	58
- #define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 2e1889f8a9e4..b3e1d8ee7e9d 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3038,11 +3038,20 @@ static void enable_iommus_vapic(void)
- 		return;
- 	}
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 4477f870c7b36..1c1bdd420c40d 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -508,13 +508,10 @@ static struct vgic_its *__vgic_doorbell_to_its(struct kvm *kvm, gpa_t db)
+ 	struct kvm_io_device *kvm_io_dev;
+ 	struct vgic_io_device *iodev;
  
-+	if (amd_iommu_gappi &&
-+	    !(check_feature(FEATURE_GAPPI) &&
-+	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-+		pr_warn("GAPPI is not supported.\n");
-+		amd_iommu_gappi = false;
-+	}
-+
- 	/* Enabling GAM and SNPAVIC support */
- 	for_each_iommu(iommu) {
--		if (iommu_init_ga_log(iommu) ||
--		    iommu_ga_log_enable(iommu))
--			return;
-+		if (amd_iommu_gappi)
-+			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-+		else if (iommu_init_ga_log(iommu) ||
-+			 iommu_ga_log_enable(iommu))
-+			 return;
+-	kvm_io_dev = kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, db);
++	kvm_io_dev = kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, &kvm_io_gic_ops, db);
+ 	if (!kvm_io_dev)
+ 		return ERR_PTR(-EINVAL);
  
- 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
- 		if (amd_iommu_snp_en)
-@@ -3050,7 +3059,8 @@ static void enable_iommus_vapic(void)
- 	}
+-	if (kvm_io_dev->ops != &kvm_io_gic_ops)
+-		return ERR_PTR(-EINVAL);
+-
+ 	iodev = container_of(kvm_io_dev, struct vgic_io_device, dev);
+ 	if (iodev->iodev_type != IODEV_ITS)
+ 		return ERR_PTR(-EINVAL);
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 4c14aee1fb063..4c195a8723c40 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -231,6 +231,7 @@ int kvm_io_bus_register_dev(struct kvm *kvm, enum kvm_bus bus_idx, gpa_t addr,
+ int kvm_io_bus_unregister_dev(struct kvm *kvm, enum kvm_bus bus_idx,
+ 			      struct kvm_io_device *dev);
+ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus_idx,
++					 const struct kvm_io_device_ops *ops,
+ 					 gpa_t addr);
  
- 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
--	pr_info("Virtual APIC enabled\n");
-+	pr_info("Virtual APIC enabled with %s\n",
-+		amd_iommu_gappi ? "GAPPI" : "GALOG");
- #endif
+ #ifdef CONFIG_KVM_ASYNC_PF
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469e..26c34d500ea18 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6066,6 +6066,7 @@ int kvm_io_bus_unregister_dev(struct kvm *kvm, enum kvm_bus bus_idx,
  }
  
-@@ -3741,6 +3751,8 @@ static int __init parse_amd_iommu_options(char *str)
- 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
- 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
- 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+		} else if (strncmp(str, "gappi", 5) == 0) {
-+			amd_iommu_gappi = true;
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
+ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus_idx,
++					 const struct kvm_io_device_ops *ops,
+ 					 gpa_t addr)
+ {
+ 	struct kvm_io_bus *bus;
+@@ -6082,7 +6083,9 @@ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus_idx,
+ 	if (dev_idx < 0)
+ 		goto out_unlock;
+ 
+-	iodev = bus->range[dev_idx].dev;
++	if (bus->range[dev_idx].dev &&
++	    bus->range[dev_idx].dev->ops == ops)
++		iodev = bus->range[dev_idx].dev;
+ 
+ out_unlock:
+ 	srcu_read_unlock(&kvm->srcu, srcu_idx);
 -- 
-2.34.1
+2.47.3
 
