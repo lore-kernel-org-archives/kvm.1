@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ABD3403EC;
-	Fri, 26 Jun 2026 18:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CAC3403EC
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 18:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782497167; cv=none; b=dp7r6359F40fqIjS348uiUX16YLSYBtXePujBfmHvxLryq47dkrA6ll3jwVoQMXiMmrqIn47xL3MYyWxVL/YNjTE+4XL7JupwFRjIWazFZtSouzD9H/lDLbbSyrL0kez32gbZbIcyWTrBHGrIQWmwkDjmrDUmK2yyRfzCMwVaUo=
+	t=1782497280; cv=none; b=mJKQ9aBR321GIJtG1ng2fIvfGI7xa7iBAbUwmwAmxPjqXaGfsZ1ot/kOV+m5FCrso280kMOfKyfR+JMMpyH871cgooz3iIqPVMToXfjBQMSaxuteyVOz3iPtrmYmtmliasopWd8ybcR4x8hQVbu3IY3JfnzGQdFvRU4cI7Q35pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782497167; c=relaxed/simple;
-	bh=KptHpNS1VH1jjrAs6CJC7GgvTopeV5d1AIZn94/B1xc=;
+	s=arc-20240116; t=1782497280; c=relaxed/simple;
+	bh=if1gwpiv6k6PzCdV7CGHJesLtyoraI1A/pEIroOt6NA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Y+5mAowFOKwYqZkZstbc/wFCNGMLWBzfMJWI/P22nRs2XfekwKKNy1fk7Os6uoQsu9bhhimlLi17a6Zk/7bpcfXfDpffvuRuClw2HiJTbYO9/r21bObAj1eypZ99TwS1aU9sUvFBAm8kS04LCIrTB7BwaTwYGXC9DsfVVSmh90c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0SOYEr7; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Nac6sXWfu017mVFlWipiQulSLus/Rr4qD0EiACzRINctoChbe1+84waq291mBbJhBCtiiaQwgTTWaBpm3eQW/pTFktLUXMv3mBLDS0mKqFTxqWPw+riJJ5ux8DPVNA/we9SngfVwv8ZwjDezXL+Pc7U1mVOQh1ZypXwJSw2gZ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cWrB0UPj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0SOYEr7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF961F000E9;
-	Fri, 26 Jun 2026 18:06:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cWrB0UPj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A08C1F000E9;
+	Fri, 26 Jun 2026 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782497166;
-	bh=NC44CepU1ErdNSkgELoT8ZTzb9/40szhMVb7wZJ8BVo=;
+	s=k20260515; t=1782497279;
+	bh=xxjnxEiubfS8KgHYjKU1f28NFFs9xdXsLo7rKY/e4iA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=K0SOYEr7K78/EsMvm8qjT8k6gqHsqSBn7wHFJt6ItSZvDurg7QwSr8o671KIAEDBm
-	 9ec9aeM2q3J2EE3LruTt3qHQ7xi5bSnXb6fLClpqf5JQF9+XkTqvtGfh9zC5/FHQO9
-	 rMhdmPnWN2CyvWqgcurvdLKMEjC566EpM46FjflrtR9S1KIMcmwf1QDJcVil7H8/0I
-	 bM6M7vuLKgjUP/5D+lRTxtb5unmGOWLSft2nse6wSBUudYyRe1dilymb0smxtr765r
-	 tFx2H9G0vDISKV8z5qJnkGN+9Of8BelvhphFlyGVZD1Fde2PCY5bKbq2zW4WXDXKyq
-	 fWz8me2IFSSwQ==
+	b=cWrB0UPjfzXulBhNelbHQbrEk5nBzBl0wZJN6cotfWMW2ZK5Tr1TO+WD/+tPxE6Gf
+	 29K7KUpuJQqZKKd+UFuBRtMsNCUq9XyWHqlzBiMkW+i1ocUkR+8GQOHegtHi++q4IN
+	 3ID/nyYoBW5rvqD9SMpVuNWGaJFp8+vDHMtfPLgGtfjdOGAdmUAcuGbeVuBsVLt/Gt
+	 nT+NH3aowGXe9E+AsT0F+YdbbrjdtPE9dsmphpH/TsiZfgxsI/5GuxVFZ7kNdxLDPt
+	 xYVO5kWFd+bKdp3nqes78CAUimQmv0c+UiDcCof6xagCl+KyZfBHI7KJoVSOtx+JUW
+	 bj6SUbE+BfTMA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/4] s390/pci: Preserve FMB state in device
- re-enablement
+Subject: Re: [PATCH 5.15.y v2 3/8] KVM: x86/mmu: Derive shadow MMU page role
+ from parent
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Omar Elghoul" <oelghoul@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260626175525.37370-3-oelghoul@linux.ibm.com>
-References: <20260626175525.37370-1-oelghoul@linux.ibm.com>
- <20260626175525.37370-3-oelghoul@linux.ibm.com>
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260626174620.1819772-4-pbonzini@redhat.com>
+References: <20260626174620.1819772-1-pbonzini@redhat.com>
+ <20260626174620.1819772-4-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 18:06:05 +0000
-Message-Id: <20260626180606.2EF961F000E9@smtp.kernel.org>
+Date: Fri, 26 Jun 2026 18:07:58 +0000
+Message-Id: <20260626180759.2A08C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,62 +47,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but there is a missi=
-ng resource cleanup in `zpci_reenable_device()` on the `zpci_set_irq()` err=
-or path. If `zpci_set_irq()` fails, the function returns immediately withou=
-t calling `zpci_disable_device()`, unlike the subsequent IOMMU registration=
- error path. This leaves the device enabled in an inconsistent state.
+- [High] Direct shadow pages can be allocated with `gpte_is_8_bytes =3D fal=
+se`, violating KVM MMU invariants.
 --
 
-commit 94bfdcea02e7e7dca9c322a0dc40fac61a9fb275
-Author: Omar Elghoul <oelghoul@linux.ibm.com>
+commit 0b01cee575924096aea0e7bca6d1f776d55aa386
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-s390/pci: Preserve FMB state in device re-enablement
+KVM: x86/mmu: Derive shadow MMU page role from parent
 
-This commit introduces zpci_fmb_reenable_device() to check the FMB state and
-ensure it is enabled. It resets the counters and handles re-enabling if the
-FMB was already active.
+This patch refactors how shadow page roles are computed, deriving most
+information from the parent shadow page rather than calculating it from
+scratch. This eliminates the dependency on the vCPU root role when
+allocating shadow page tables.
 
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index 2910d4038d39c..1eb6aa772eb3f 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
 [ ... ]
-> @@ -737,9 +765,13 @@ int zpci_reenable_device(struct zpci_dev *zdev)
->  	}
-> =20
->  	rc =3D zpci_iommu_register_ioat(zdev, &status);
-> -	if (rc)
-> +	if (rc) {
->  		zpci_disable_device(zdev);
-> +		return rc;
+> @@ -2171,6 +2153,54 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struc=
+t kvm_vcpu *vcpu,
+> +static union kvm_mmu_page_role kvm_mmu_child_role(u64 *sptep, bool direc=
+t, unsigned int access)
+> +{
+> +	struct kvm_mmu_page *parent_sp =3D sptep_to_sp(sptep);
+> +	union kvm_mmu_page_role role;
+> +
+> +	role =3D parent_sp->role;
+> +	role.level--;
+> +	role.access =3D access;
+> +	role.direct =3D direct;
+[ ... ]
+> +	if (!role.gpte_is_8_bytes) {
+> +		WARN_ON_ONCE(role.level !=3D PG_LEVEL_4K);
+> +		role.quadrant =3D (sptep - parent_sp->spt) % 2;
 > +	}
+> +
+> +	return role;
+> +}
 
 [Severity: High]
-This isn't a bug introduced by this patch, but there is a pre-existing issue
-with resource cleanup in zpci_reenable_device().
+Will this result in direct pages inheriting an incorrect quadrant and byte =
+size?
 
-If zpci_set_irq() fails earlier in this function:
+When breaking down a huge page for a 32-bit non-PAE guest, FNAME(fetch) cal=
+ls
+kvm_mmu_get_child_sp() with direct set to true. kvm_mmu_child_role() derives
+the role from the indirect parent, leaving gpte_is_8_bytes as false. It then
+incorrectly calculates a quadrant for the direct page. Does this violate the
+core MMU invariant that direct pages must always use 8-byte PTE semantics?
 
-        if (zdev->msi_nr_irqs > 0) {
-                rc =3D zpci_set_irq(zdev);
-                if (rc)
-                        return rc;
-        }
-
-It returns immediately without calling zpci_disable_device(), unlike the
-subsequent zpci_iommu_register_ioat() error path. Does this leave the device
-enabled in the firmware but failed in Linux, rendering it unusable and
-leaking its enabled state?
-
+[ ... ]
+> @@ -3408,13 +3437,18 @@ static int mmu_check_root(struct kvm_vcpu *vcpu, =
+gfn_t root_gfn)
+> -static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
+> +static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, int quadra=
+nt,
+>  			    u8 level)
+>  {
+> -	bool direct =3D vcpu->arch.mmu->mmu_role.base.direct;
+> +	union kvm_mmu_page_role role =3D vcpu->arch.mmu->mmu_role.base;
+>  	struct kvm_mmu_page *sp;
 > =20
-> +	guard(mutex)(&zdev->fmb_lock);
-> +	zpci_fmb_reenable_device(zdev);
->  	return rc;
->  }
+> -	sp =3D kvm_mmu_get_page(vcpu, gfn, gva, level, direct, ACC_ALL);
+> +	role.level =3D level;
+> +
+> +	if (!role.gpte_is_8_bytes)
+> +		role.quadrant =3D quadrant;
+> +
+> +	sp =3D kvm_mmu_get_page(vcpu, gfn, role);
+
+[Severity: High]
+Could this cause issues for non-paging guests?
+
+For non-paging guests where TDP is disabled, the base role has direct
+set to true but gpte_is_8_bytes set to false. This role is passed
+unmodified to mmu_alloc_root(), which seems like it might propagate the
+inconsistent state (direct with 4-byte PTEs) to the root allocation.
+If a later check asserts that all direct pages use 8-byte PTEs, would
+this trigger a host warning or panic on boot?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626175525.3737=
-0-1-oelghoul@linux.ibm.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626174620.1819=
+772-1-pbonzini@redhat.com?part=3D3
