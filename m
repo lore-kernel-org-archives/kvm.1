@@ -1,201 +1,120 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ACF3F58DC
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 13:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD87E3F7886
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 13:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782481228; cv=none; b=MiBTEZ7rTaYztvufmOrM+lRL/DwmInhmkQRgqFbRHql42COylieLGtGHS9SJik1rm9265ogMF17QDF8S3PTctNgdQiommswen2LOT8wLApbLVZ+A/PMJRl5+05PxtRKSxMEslzdKOpzWTJkgLNz3h76krSuSyWt9evtP+7p+FJM=
+	t=1782481454; cv=none; b=e8md0yKBRgFR4V7ewYJE2Gl7Ro2YHwsRceR0jnaL3r9sw/hb68IgBX0T2KcX5T7RVzBF8qNdAtuyt21TeV07hb4sEZTjQHNrWZgesQysODqH47TkYhHBl7tJH1cC9pnmp26/hOHvMOMcyqfwnddupNePEdG2iZL+/mrhEqOJz/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782481228; c=relaxed/simple;
-	bh=ZTYwDObvNITM63AQAcIL9oQn4r7n//7GEnMzPgbQTlQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jicawn6ouACmY3K+vjazMzYWwWyGmFc3FFFN292hl3VXtl68pXvZiaBekNTOruyZhMObIDe3nx2Na/fSnk6LiT8gsbckoLSIE1jDLNe4671Auaf6uTGBBtTaoZ2VSm4ZTVK7kXe6GqLt1CnQevzfIe6viMotJMEW4qsrXVKrvV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EqDIJTKT; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782481454; c=relaxed/simple;
+	bh=B0pUn9zddnbLjyq3tVon9eQkN0AQ1q5LVHk/Ttih18M=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=USUwV0Wf6zXJHLkPtpYC2NudH3CWFgSUy+DR/kU56OPIyr2czURWJh8JOyBEf2AC/RF7l/7vCU7is54Hvi4+1EWMr7DmZdpcFhSmSrR3fsn5EsQ6NlL+XqjCSt+cxvXg8XCgxgg32AZ9PIy7eQ5Loxg76GMYGyJqNMA8eL9s1l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLe/obkO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EqDIJTKT"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88fc985a65so606256a12.2
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 06:40:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782481225; x=1783086025; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MlObcbngD1D37h11uAaHsV+lydVMU0QoTJkAdzqpBkQ=;
-        b=EqDIJTKT7BHiWsQC5Q1OnG23UHMY307OZA1VRbAU4X9t9CUkPGnK0maae4QqfJe85N
-         eGRTOukJzv1wriqPB/wg0iLU6lmmD5ZQLSeJATCX6d/nvbqR4cvC+n+CqEQnx9i3J3pj
-         WfdT4rWbpxojl00vWCTZu7PoB0pMW35d355O1Cy/cIdbTsi3VJIHx2u/fDjRKMMaEu7h
-         DRE2VUlK+gzJo0AzRggY6iPkxUrVAo/Jm3Xj2lpSmkKE5MtEWFSOb8qRfo2kZpFLJq35
-         e3yXsQbtJoZ4ju8/R+/ClGTYjG58i4b9jxGYaZIPN1bipl4yzTOaQA69m0xIb5V1sgCB
-         PsTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782481225; x=1783086025;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MlObcbngD1D37h11uAaHsV+lydVMU0QoTJkAdzqpBkQ=;
-        b=Fp7vNE1joSCulZPrgVoMhd5KicdEnIVsC5tmIyT9hlVlTi5a+MncfOxhAm6lbqd2cT
-         x38C0oneggpsgqAFN0G3mqs3tMLGHHI0p3wi0AcOBEwDsxhFYDT2bbtNdi2pfz4D/mr8
-         QKHpejld5AZEW/yLk/W6aaLfjy5y0QGo9JHTjZWPLMyMyCAO/WoWAwbY2eelYl4L7QtO
-         AUyaJXErmdzPLwqDLhC4OZlk/w2kzIJu7W5kRhs/xI1zgSMhhoF8sx62Sg4ESpKOWBQ/
-         izd2IK5vUxrz2lAJQ8SrkVZLetIhexBz3GBS00ebnqhm+u5mbmi1yzBUPbJsrIHI81O2
-         8FpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/+uZwdUIGOlikCP4TVA5z32IxUml4f/DggXBFNbWikZGp+laHRJ9RjSqZXYwZN+GudH5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiDMN3qohMiN9i7v2dAQFDhJFyKnWNLCC6Ec/HElN+aGx+x1/c
-	jdV7LpkpANoz3qHb3S+kMFFp2FIXMaHlHF4UA7TT/oAJndP9vy0L4mbkLrb39M25wUPvRnO8QTI
-	7qZxHJg==
-X-Received: from pgbcl7.prod.google.com ([2002:a05:6a02:987:b0:c93:e04b:d9ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7487:b0:3bf:6c08:fb80
- with SMTP id adf61e73a8af0-3bf6c0912edmr420142637.48.1782481224936; Fri, 26
- Jun 2026 06:40:24 -0700 (PDT)
-Date: Fri, 26 Jun 2026 06:40:24 -0700
-In-Reply-To: <8edfdca645f691cb856e80ade830d78925fdc19d.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLe/obkO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C721F000E9;
+	Fri, 26 Jun 2026 13:44:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782481452;
+	bh=QrCSXL+YYWdVLuo4pBW5bfoUtjbZAo7wRs0fIy6oYBo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NLe/obkODnbBRnk/cd1aqCnJphRd3D0qontgjfyvU7tg6XzfQLFY0tLvGJFnpK70h
+	 FTL+9q2aXFUKr120NOXtscCOpttq+Jv6EIBUFb7YcR7eQx1tvBog+2AqZHud0omh87
+	 4DtLZdFbOxmxmFeXL8a0KvdbnP4X6FcxUvHtL0f+s2KxrwKEMq2RB1yCz8jLFii7tk
+	 SMI1gItvjE1S+aIcACk6PBBW6RvaGEOflkskubERMCjl556+WH23IsasN7I3reJc/i
+	 bK5sdGcf+1MUMEasFRienWo8Ycd9bV6g5NAbRVzP4+unsydKp/bWiUqbPqZRz7ZhtV
+	 RagUaVkMexPdA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5.10.y 12/17] KVM: x86/mmu: Check PDPTRs before
+ allocating PAE roots
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260626112634.1778506-13-pbonzini@redhat.com>
+References: <20260626112634.1778506-1-pbonzini@redhat.com>
+ <20260626112634.1778506-13-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 26 Jun 2026 13:44:11 +0000
+Message-Id: <20260626134412.49C721F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org>
- <aj21KctIXuf7b_5G@google.com> <8edfdca645f691cb856e80ade830d78925fdc19d.camel@infradead.org>
-Message-ID: <aj6BSMT2LOd4JRpu@google.com>
-Subject: Re: [PATCH] KVM: x86/xen: Add KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Paul Durrant <paul@xen.org>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026, David Woodhouse wrote:
-> On Thu, 2026-06-25 at 16:09 -0700, Sean Christopherson wrote:
-> > > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> > > index 91fd3673c09a..c16b4560c9e7 100644
-> > > --- a/arch/x86/kvm/xen.c
-> > > +++ b/arch/x86/kvm/xen.c
-> > > @@ -907,6 +907,13 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu,=
- struct kvm_xen_vcpu_attr *data)
-> > > =C2=A0{
-> > > =C2=A0	int idx, r =3D -ENOENT;
-> > > =C2=A0
-> > > +	/*
-> > > +	 * kvm_xen_write_hypercall_page() manages its own locking.
-> > > +	 * Handle it before taking xen_lock to avoid a deadlock.
-> >=20
-> > Do we actually want the side effects that necessitate taking xen.xen_lo=
-ck?=C2=A0 From
-> > a uAPI perspective, it's odd to effectively bundle KVM_XEN_ATTR_TYPE_LO=
-NG_MODE
-> > into KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE.
->=20
-> That's *guest* ABI, and it's derived from Xen behaviour. Xen will
-> 'latch' its idea of whether a guest VM is 32-bit or 64-bit, for the
-> purpose of shared data structures (shared_info page, vcpu_info,
-> runstate).
->=20
-> Xen latches this from the current mode of the running vCPU in *two*
-> places:
->  =E2=80=A2 When the hypercall MSR is invoked
->  =E2=80=A2 When the guest sets the event channel GSI (HVM_PARAM_CALLBACK_=
-IRQ).
->=20
-> Thus far, the former has been handled in the kernel (in the code you're
-> looking at), while the latter is why we have the ioctl to explicitly
-> latch the guest's long_mode from userspace too, as userspace handles
-> the HVMOP_set_param calls.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Calling mmu->get_pdptr() (which can sleep) while holding the vcpu-=
+>kvm->mmu_lock spinlock, leading to sleep-in-atomic bugs.
+--
 
-Right, and I'm pointing out that from a KVM uAPI perspective, bundling the =
-first
-one in a "write hypercall page" call is rather odd, especially since there'=
-s
-already uAPI to handle the latching.
+commit f2009072d01cd7e9d707fa7cab9918b457bec0aa
+Author: Sean Christopherson <seanjc@google.com>
 
-> > The other question is, why does kvm_xen_write_hypercall_page() drop xen=
-_lock
-> > when writing guest memory?=C2=A0 That seems odd and unnecessary.
->=20
-> Huh? It takes the lock to do the thing that needs the lock, then drops
-> it. That is not "odd and unnecessary" at all.
->
-> You've been spending too long with these scope-guarded locks.
+KVM: x86/mmu: Check PDPTRs before allocating PAE roots
 
-No, I'm asking why KVM doesn't serialize the writes to guest memory.  Usual=
-ly
-when KVM writes to guest memory, KVM is emulating something that is very mu=
-ch
-vCPU-specific, and so if there are races it's the guest's problem to deal w=
-ith.
+This commit adds a validity check for PDPTRs before allocating any of the P=
+AE
+roots. It iterates over the PDPTRs and checks if they are valid to prevent =
+KVM
+from leaking previously allocated roots when a bad PDPTR is encountered.
 
-The Xen MSR here is clearly VM-scoped though, which is why it feels odd to =
-take
-a per-VM lock, and then deliberately drop the lock before completing the op=
-eration,
-In practice it shouldn't matter, since it sounds like the same repeating 16=
- byte
-pattern will be written every time, but it was a bit head-scratching when r=
-eading
-the code.
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -3308,7 +3308,7 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *=
+vcpu)
+>  static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_mmu *mmu =3D vcpu->arch.mmu;
+> -	u64 pdptr, pm_mask;
+> +	u64 pdptrs[4], pm_mask;
+>  	gfn_t root_gfn, root_pgd;
+>  	int quadrant, i;
+>  	hpa_t root;
+> @@ -3319,6 +3319,17 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu =
+*vcpu)
+>  	if (mmu_check_root(vcpu, root_gfn))
+>  		return 1;
+> =20
+> +	if (mmu->root_level =3D=3D PT32E_ROOT_LEVEL) {
+> +		for (i =3D 0; i < 4; ++i) {
+> +			pdptrs[i] =3D mmu->get_pdptr(vcpu, i);
 
-> > > +	if (data->type =3D=3D KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE)
-> > > +		return kvm_xen_write_hypercall_page(vcpu, data->u.gpa) ? -EIO : 0;
-> >=20
-> > -EIO is rather weird, wouldn't -EINVAL be more appropriate?=C2=A0 Ah, a=
-nd both are
-> > wrong if copying the blob fails.
->=20
-> -EINVAL is more for "you asked me to do something that doesn't make sense=
-".
-> -EIO is for "something went wrong when I tried".
+[Severity: High]
+Does this sequence call mmu->get_pdptr() while holding a spinlock?
 
-Sure, but KVM returns EINVAL for pretty much every ioctl (or ioctl-like thi=
-ng)
-if userspace provides bad input, e.g. for the @data param.
-=20
-> Arguably, the thing that's most likely to go wrong is the
-> kvm_vcpu_write_guest() where it writes instructions[] to the guest, and
-> maybe that ought to be -EFAULT?
+Looking at kvm_mmu_load(), it calls mmu_alloc_shadow_roots() while holding
+vcpu->kvm->mmu_lock:
 
-Heh, ya, I just say that too when looking at the code again.
+kvm_mmu_load()
+    spin_lock(&vcpu->kvm->mmu_lock);
+    ...
+    r =3D mmu_alloc_shadow_roots(vcpu);
 
-> But I'm not sure that's quite the right semantic to return from the ioctl=
-?
+If the vCPU is running a nested guest (L2) with a 32-bit PAE NPT, the callb=
+ack
+for mmu->get_pdptr() is nested_svm_get_tdp_pdptr(). This function reads gue=
+st
+memory via kvm_vcpu_read_guest_page(), which can sleep.
 
-We can/should return whatever kvm_vcpu_write_guest() returns, i.e. literall=
-y
-return its result directly.  Which of course is only ever going to be -EFAU=
-LT,
-but in the extremely unlikely case that ever changes, we won't have to worr=
-y
-about creating misleading behavior in the Xen code.
+Can this lead to a sleep-in-atomic issue when the lock is held?
 
-> > > =C2=A0	mutex_lock(&vcpu->kvm->arch.xen.xen_lock);
-> > > =C2=A0	idx =3D srcu_read_lock(&vcpu->kvm->srcu);
-> >=20
-> > Speaking of writing memory, kvm_xen_write_hypercall_page() expects the =
-caller
-> > to be in a read-side SRCU critical section (I didn't actually run this =
-with
-> > PROVE_LOCKING=3Dy, but I don't think I'm missing anything?)
->=20
-> Yes, good catch. Thanks.
->=20
-> > So, if this uAPI is unavoidable seems like we want something like the b=
-elow.
-> > Either that or guard all of kvm_xen_write_hypercall_page() with a lock,=
- and put
-> > the entire thing in a helper so that KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPER=
-CALL_PAGE
-> > can be handled in a case-statement and doesn't need to grab SRCU on its=
- own.
->=20
-> Makes sense (with the test, of course). Want me to put them together
-> and resend?
+> +			if (!(pdptrs[i] & PT_PRESENT_MASK))
+> +				continue;
+> +
+> +			if (mmu_check_root(vcpu, pdptrs[i] >> PAGE_SHIFT))
+> +				return 1;
+> +		}
+> +	}
+> +
+>  	/*
+>  	 * Do we shadow a long mode page table? If so we need to
+>  	 * write-protect the guests page table root.
 
-Yes please.
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112634.1778=
+506-1-pbonzini@redhat.com?part=3D12
