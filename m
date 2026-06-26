@@ -1,97 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3954219D07A
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA2D37C10C
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782482513; cv=none; b=EjTFsgiDlK03Mk8zLLUnJWFmdquajOx+u7mkC2jFsxyC/4Coi2ThjDbvspTEmSfQh6ddq57rCNbUiFxBhXFcFLBjtIuqWRD5aB1P/Xfmti5A0LbwA2ztn5brYGpnpswPdVmyRvZ+lR97VBB+PoU0JFKvleXzWYhG1E6iKnNnTqw=
+	t=1782483443; cv=none; b=oAob+vH8CMk+H/BlGpZAGf7lIsCoXPZyMshSM3MRfRlzF+Ab9cyAodeDep68IlxZIPsXu01vGq+eWTBPjaX6m7f8XhPlndkDM3CJEoHjz/rIinQHP7BDOl+m0OjbYsAWsdPJkPzhrSD/Q/U3z01JOnVJUzkOCKy+bBY+6xFgUcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782482513; c=relaxed/simple;
-	bh=8QwqAX+DDv2FAXdhmNA8D6WkL/h8ogU9eC9uUJ4kWcY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l2KXq5/XQLfFdFTuLVZ9Qx9aejPQ0Dl/uYoAm2MZ3jCbkRu+vJrnuNd8DV7b3kHqhMKo5CdPn4jtpF7prmjEkQOKRbXEfofMRozM67yFa/7sZJ4+yIG49XNT3cBmNK3pG37uDLwbN6uUQ7dndfZIIHFOYzcxaQBZD65kOIX9Sz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geXSsRaG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782483443; c=relaxed/simple;
+	bh=QKHyaJTvQu4ZF6weABah7/8BfNaD6lUpLE76WpbWnFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RD8awjFKBgmvERtvRmUVNBCMSVQ0T6b5qPgKtEGwNulqTYsQfgqKoaibl9ZVtP6k+YN7sPpMZiCMuw3JLmlpLzUzOHApexG6KoypNx0XYcRQFE36GBQY0rX4vwpNYbBKI45vEhxsoxnQ1KyCw9TnyaGejj6TXFi/+ZNJ8WiNkok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bmD9WTqA; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geXSsRaG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75F91F000E9;
-	Fri, 26 Jun 2026 14:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782482512;
-	bh=2UjCv1H2gQlx+0MhBLX0Re35KcHfescQ8JNG6hpxe0k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=geXSsRaG5/+8fRWFx4q3z+pJSe18ZDFYtg27xraZidGdzEPjc8zvwlL4581qbpcOu
-	 XCbP+POOyDl3zqVakRx/CyWnmhNoxBoY9Lw1hmmZ/c74cgC4+n/NvkSKRcrcbIHXoq
-	 YrlWWeai5TPpE58HEKnQ223Hgn4sduFBJocmgGGgr9uEFdgU5QyWwDNnmC6j0a819x
-	 w4ZdpfmS8Up/+zAgmVHdkb/PM7AoL+E9DY4LTcpc3LUpUX/0zwE1UlNQy6SzQ2WMRm
-	 vtRHi71Oq/JXanfVGXIRHY996ETfOJZmA82Z8DZcpiUljJui3iQpttfRnp8R9CfXnF
-	 WG3FGyygIWTCA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.10.y 13/17] KVM: x86/mmu: pull call to
- drop_large_spte() into __link_shadow_page()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260626112634.1778506-14-pbonzini@redhat.com>
-References: <20260626112634.1778506-1-pbonzini@redhat.com>
- <20260626112634.1778506-14-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Jun 2026 14:01:51 +0000
-Message-Id: <20260626140151.E75F91F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bmD9WTqA"
+Date: Fri, 26 Jun 2026 09:17:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782483439;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jhWj2goxkapwl2JR2dlEyBo0T8Hc8So7koP8GzaYn0s=;
+	b=bmD9WTqAycseifbxe4GIAUat0GSnDKAV0sdNRaiye7UFo5D84FuaUhFrBCRT7Wlif5nl+w
+	rCXdA5o8YL+2rUVpWCqO3BOWwMAKAtp7LwotfgOFRG4NSHT2x1SKq+ZOORDvl3LG9ZMof7
+	Jx5SD6prW7HlGD8fkU4kWCBS51BoYEM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by
+ tag
+Message-ID: <5ts6z45hsrkia3gh34cjlfglbp2fwcnwutvzdi236pcmubbk5o@jbmv5ej4gqmm>
+References: <20260622164109.26350-1-andrew.jones@linux.dev>
+ <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
+ <ev32z6yxkujq3ctb66f6l3e2l5cx2b33ye76mlqvo6jdsydxsk@hwmgkv5rmqym>
+ <92a4d803-c545-48e8-ab5c-647bb04f3560@oss.qualcomm.com>
+ <b3agpqbu47bnsfcfzskdfgymyag6y6be5danltshzwiimybvnh@r4773lfg6vfj>
+ <21cd2f80-64a2-48ca-9821-7a233470af77@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <21cd2f80-64a2-48ca-9821-7a233470af77@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The newly added `cache` parameter in `__link_shadow_page()` is neve=
-r used.
---
+On Tue, Jun 23, 2026 at 09:57:22PM +0200, Thomas Huth wrote:
+> On 23/06/2026 18.04, Andrew Jones wrote:
+> > On Tue, Jun 23, 2026 at 05:08:07PM +0200, Philippe Mathieu-Daudé wrote:
+> > > On 22/6/26 21:00, Andrew Jones wrote:
+> > > > On Mon, Jun 22, 2026 at 06:43:45PM +0200, Paolo Bonzini wrote:
+> > > > > On Mon, Jun 22, 2026 at 6:41 PM Andrew Jones <andrew.jones@linux.dev> wrote:
+> > > > > > 
+> > > > > > Import Linux commit d1db4118489f ("checkpatch: add support for
+> > > > > > Assisted-by tag").
+> > > > > > 
+> > > > > > (I should have used AI for this, since it'd be fun to include that
+> > > > > > tag on this tag-enabling patch, but sometimes I still do my own
+> > > > > > homework!)
+> > > > > 
+> > > > > Personally, I don't see the point in providing free advertising to AI
+> > > > > companies, so if I had to choose I would do "WARN(...) if ($sign_off
+> > > > > =~ /^Assisted-by:/i)". It's more important to know what AI was used
+> > > > > *for*, than what AI was used period.
+> > > > > 
+> > > > > But I won't complain if people want this patch.
+> > > > 
+> > > > The process is now well established over in Linux kernel land and we
+> > > > encourage kvm-unit-tests contributors to follow Linux processes. The
+> > > > motivation for this patch is because I just queued an ARM patch which
+> > > > used the Linux process and it failed checkpatch. I'd rather checkpatch
+> > > > succeed than to have to tell people to remove/modify the tags they're
+> > > > used to using with the kernel.
+> > > > 
+> > > > We can encourage contributors to also add sentences stating how AI
+> > > > assisted when an AI assistance tag is provided in order to capture
+> > > > the "AI used for what" part.
+> > > 
+> > > I tend to agree with Paolo in that I don't see the value added by
+> > > these tags -- except the free advertising --. Besides what provides
+> > > $AGENT_NAME:$MODEL_VERSION is likely irrelevant without the prompt
+> > > used. And even if we try to reproduce we would get a slightly
+> > > different result :) Then by the time the patch is committed the
+> > > information is almost obsolete.
+> > > 
+> > 
+> > kvm-unit-tests does sit on the boundary of being Linux-like and
+> > QEMU-adjacent. So I can see why the QEMU position[1] might be
+> > considered over the Linux position here. OTOH, I'd rather not
+> > complicate kvm-unit-tests development. I'm also personally not
+> > that against the tags providing free advertising. The tags also
+> > provide stats in the long run which may be used to compute risk
+> > factors and/or evaluate quality of particular LLM designs which
+> > can lead to LLM improvements.
+> FWIW, I think we should follow the kernel here. k-u-t has always used the
+> coding style, header files, scripts, etc. from the kernel, so IMHO we should
+> not diverge here.
+> And I agree with Andrew that the tags could be useful in the long run, e.g.
+> if there is ever a problem with a certain AI model, it's easier for us to
+> find out which commits we might want to have another closer look at.
+>
 
-commit 58832cb7365080324e7906cc11df0e03073304a5
-Author: Paolo Bonzini <pbonzini@redhat.com>
+I pushed the commit.
 
-KVM: x86/mmu: pull call to drop_large_spte() into __link_shadow_page()
-
-This commit moves the dropping of large SPTEs from the callers into
-__link_shadow_page() to happen just before the shadow page is installed.
-It also modifies kvm_mmu_get_child_sp() to return an error pointer if the
-shadow page already exists, preventing duplicate links.
-
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 5df1cd5bff1b9..47c5c3613b682 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-
-[ ... ]
-
-> @@ -2208,13 +2201,21 @@ static void shadow_walk_next(struct kvm_shadow_wa=
-lk_iterator *iterator)
->  	__shadow_walk_next(iterator, *iterator->sptep);
->  }
-> =20
-> -static void link_shadow_page(struct kvm_vcpu *vcpu, u64 *sptep,
-> -			     struct kvm_mmu_page *sp)
-> +static void __link_shadow_page(struct kvm_vcpu *vcpu,
-> +			       struct kvm_mmu_memory_cache *cache, u64 *sptep,
-
-[Severity: Low]
-This isn't a bug, but is the new cache parameter intended to be used?
-
-Looking at the rest of this function, the cache argument is never reference=
-d.
-Instead, nested operations like mmu_page_add_parent_pte() continue to
-implicitly use vcpu->arch.mmu_pte_list_desc_cache from the vcpu struct.
-
-> +			       struct kvm_mmu_page *sp)
->  {
->  	u64 spte;
-> =20
->  	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK !=3D PT_WRITABLE_MASK);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626112634.1778=
-506-1-pbonzini@redhat.com?part=3D13
+Thanks,
+drew
