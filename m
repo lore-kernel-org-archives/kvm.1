@@ -1,110 +1,146 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971843DC4D8;
-	Fri, 26 Jun 2026 07:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536413DBD4E
+	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 07:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782457508; cv=none; b=OXOK7x9stAeNjzZ4MdpoNgVxPCZKelizvTceHn12qF9bYOCK7yzcCAQN2Alpq6jYpiyySalyLpx1lrf03YokcDhUN6f1AnBIQ/Tc/U5SVvuB4DcuPbt80MKYi8K76OJ9rWTzNszDXlNvpqMsBhLSMViV6jPDCxb+uLxPvknEOoY=
+	t=1782457601; cv=none; b=M8WnDXkbvKFQHer/jl43Gz9FvOOeSg7iFxx3tgrDtvkCQsgj2OD2lCx2ozWFMzYiyQLZAGmVKl7L2EvmfC2fHFEo3PtF3nNEQGe+EOf98Mjx+Kgn2ErvKrDVbJy6Z0DS6kj7FvcX6mo2DEX5YCkRvyjMDOOF9ncakB7jUfFCTDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782457508; c=relaxed/simple;
-	bh=RW1jPPYUb7bCu9ec/0Fv/4Q/N/7nYv7QouMskKa0t6o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UpKakUm+t4JVd1LSdVvIGccrKDnEDgpiy3i4/9IlV0wnvoTT1uNiLWZa25gpnVRr3zx4FnUkabh26rVUfAp5/HN1A6Z1gJxPa7T/9jm3FMh/I6SdeJM4M/zfOYGEwnIZaiJA9Oi5QugQTfTdgg1fniuLONzNVS3t4ofhTOm2bvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VqNt3WOT; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VqNt3WOT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=6+
-	fhL15IpXELWBk5X5Yj6nvB2KblT0bo0DI5mw+pYgU=; b=VqNt3WOTTzEg46+myV
-	qEGM1V/jAIWA0OG52dQI20qc6XZ0nANoMyXXdrI+sBDZOkDHsNoQ/4BPZLubhZ3N
-	d/Z9PvN+rSx8nbgb3SYYwkFW5UixLkpTXi/TzQdxBatrSkQNiiI38jCcloCT0FfM
-	aJAYFc206obsV0QNpvsD0eVwc=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgCXH_GKJD5qqPCwEA--.52186S2;
-	Fri, 26 Jun 2026 15:04:43 +0800 (CST)
-From: "rom.wang" <r4o5m6e8o@163.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Yufeng Wang <wangyufeng@kylinos.cn>
-Subject: [PATCH v2] vhost/net: fix clear_user start address in VHOST_GET_FEATURES_ARRAY
-Date: Fri, 26 Jun 2026 15:04:38 +0800
-Message-Id: <20260626070438.59149-1-r4o5m6e8o@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1782457601; c=relaxed/simple;
+	bh=pqYqDss+We3+fWbvaNY96iNE/l1ss4C7O7FCExvRb6Q=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=Wy0fcopHklwNXITnlZqwr3jjMnxIG9dW13b7dpzeXTQMA/gGQbOCzMlKAH+diTA5sbI6wjQBSBebo9X9uTr05wYVJDyDzoRHHodfnV8vwJ85wNGllA5KshMUXdvzzRZn+l+wAXer35vZOu0Jw6bukTXNNIdOwOJL0kMXxyFQmHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-48e77e6a63bso1219880b6e.0
+        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 00:06:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782457599; x=1783062399;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o+gKfN7c60i0SfByDcT2rkIdmUDIAot8wJ+q//zIWXU=;
+        b=euvzXjmzoioTycNZRAzprEXbN2uDvLqj3oh+Iah7YS4aDozjQX4rk/yjivcp/qlc5G
+         vcXyXuXqwwMFX2tfF9KSIPDQf1U4fdUPQNr4ojS4O66vLD42ZLmD8GGJwDq4M0m9NKTT
+         B2rScQy/a0OaI4NGIScdvB4/Cwm5BWE37cx2kNbTT4WLv2V/+a2WML4uVv+vKf4tq8Z/
+         OtVboIsSer3i4LHSC4uGNqKUtP88o9NtFYOTF16+92q84TxIsanhNMVZcCX0BeViYDKM
+         +9wSMoBiEQ2kKKn3if5NNjV0hSgb7AMemuooFSVT1Q4ntw9apTEoBj8RtXLKlRAXnUv/
+         KF9w==
+X-Forwarded-Encrypted: i=1; AFNElJ9NlszQfVLDltC4e5o/bJrrHpoIm/8rQZFI8pzCW5wLsvhEJEfRRJsv7AjzBFvxE2YRVH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzewUYQ28eL96TweqwKPVirb2ZvFJrFC2TcZCKT7tP8Zd7U45mp
+	nEuWBhuBa4QkBg9VwpIkq7N80F2DFdp53mz3I6J4Seo+qThv3JNxKKlWXctp8CKDXp4/O6DcpCS
+	rIcbltWzcOgQ01ayGdP7GVcSxUDT0zqLcY0zfMFtAbctDFkYGnmE6b/6Idek=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgCXH_GKJD5qqPCwEA--.52186S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF18Jw1fJr1rKr4rAF43ZFb_yoW8ZF1xpF
-	Z7K3y5AFW5Cr4jyan2yrsrW3W8u3WfGFW0krW293y5CFn8Xry2yFs2kFW2qwnrWrWrJr13
-	AFn0qr15JFWDu37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jUrc-UUUUU=
-X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbCzQxWy2o+JIx8MQAA3t
+X-Received: by 2002:a05:6808:181c:b0:486:caa4:ea44 with SMTP id
+ 5614622812f47-48ee2660937mr9593907b6e.6.1782457599446; Fri, 26 Jun 2026
+ 00:06:39 -0700 (PDT)
+Date: Fri, 26 Jun 2026 00:06:39 -0700
+In-Reply-To: <20260625223623.3376478-1-seanjc@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a3e24ff.bd346d9a.250aae.0008.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+From: syzbot ci <syzbot+ci6c27aad5db86e5b9@syzkaller.appspotmail.com>
+To: dwmw2@infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	paul@xen.org, pbonzini@redhat.com, seanjc@google.com, 
+	syzbot@syzkaller.appspotmail.com, vkuznets@redhat.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Yufeng Wang <wangyufeng@kylinos.cn>
+syzbot ci has tested the following series
 
-The clear_user() call in VHOST_GET_FEATURES_ARRAY incorrectly starts
-at argp, which is the beginning of the features array, overwriting the
-data just written by copy_to_user(). It should start after the copied
-elements at argp + copied * sizeof(u64) to only zero the trailing
-unused space.
+[v3] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
+https://lore.kernel.org/all/20260625223623.3376478-1-seanjc@google.com
+* [PATCH v3 01/10] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
+* [PATCH v3 02/10] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
+* [PATCH v3 03/10] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
+* [PATCH v3 04/10] KVM: x86/xen: Punt singleshot timer hcalls to userspace if Xen vCPU ID isn't set
+* [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU ID for singleshot timer hypercalls
+* [PATCH v3 06/10] KVM: Initialize a vCPU's index to '-1' while it's being created
+* [PATCH v3 07/10] KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
+* [PATCH v3 08/10] KVM: x86: Treat a vCPU as unreachable if its index is invalid
+* [PATCH v3 09/10] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
+* [PATCH v3 10/10] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
 
-Use size_mul() for both the offset and length calculations so the
-arithmetic stays consistent with the surrounding code and remains
-overflow-safe.
+and found the following issue:
+WARNING in kvm_hv_vcpu_uninit
 
-Fixes: 333c515d1896 ("vhost-net: allow configuring extended features")
-Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
+Full report is available here:
+https://ci.syzbot.org/series/6864cbe8-ce00-47d1-b4b1-abc7d1528d4e
+
+***
+
+WARNING in kvm_hv_vcpu_uninit
+
+tree:      kvm-next
+URL:       https://kernel.googlesource.com/pub/scm/virt/kvm/kvm/
+base:      a204badd8432f93b7e862e7dac6db0fe3d65f370
+arch:      amd64
+compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+config:    https://ci.syzbot.org/builds/0627391d-c4d6-4820-99f0-31a8b51ba783/config
+syz repro: https://ci.syzbot.org/findings/cdadfdf2-8445-4193-a3a6-bf878176b493/syz_repro
+
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || vcpu->vcpu_idx < 0 || !refcount_read(&vcpu->kvm->users_count))
+WARNING: ./include/linux/kvm_host.h:996 at kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline], CPU#1: syz.1.34/5967
+WARNING: ./include/linux/kvm_host.h:996 at to_hv_vcpu arch/x86/kvm/hyperv.h:79 [inline], CPU#1: syz.1.34/5967
+WARNING: ./include/linux/kvm_host.h:996 at kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906, CPU#1: syz.1.34/5967
+Modules linked in:
+CPU: 1 UID: 0 PID: 5967 Comm: syz.1.34 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kvm_lockdep_assert_vcpu_is_locked_or_unreachable include/linux/kvm_host.h:994 [inline]
+RIP: 0010:to_hv_vcpu arch/x86/kvm/hyperv.h:79 [inline]
+RIP: 0010:kvm_hv_vcpu_uninit+0x198/0x210 arch/x86/kvm/hyperv.c:906
+Code: 48 89 df e8 0a 55 d8 00 48 c7 03 00 00 00 00 eb 05 e8 5c 16 6d 00 5b 41 5c 41 5e 41 5f 5d e9 ff 16 4d 0a cc e8 49 16 6d 00 90 <0f> 0b 90 e9 65 ff ff ff 48 c7 c1 e0 bb 2f 90 80 e1 07 80 c1 03 38
+RSP: 0018:ffffc9000390f960 EFLAGS: 00010293
+RAX: ffffffff8158e9e7 RBX: ffff8881bc192880 RCX: ffff88816ac70000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000001 R08: ffff888101fa1743 R09: 1ffff110203f42e8
+R10: dffffc0000000000 R11: ffffed10203f42e9 R12: 0000000000000000
+R13: 00000000fffffff8 R14: ffff888101fa1740 R15: dffffc0000000000
+FS:  00007f47c1e886c0(0000) GS:ffff8882a92b6000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000c64000 CR3: 000000016a5e7000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kvm_arch_vcpu_destroy+0x1a9/0x380 arch/x86/kvm/x86.c:9413
+ kvm_vm_ioctl_create_vcpu+0x615/0x990 virt/kvm/kvm_main.c:4269
+ kvm_vm_ioctl+0x886/0xd30 virt/kvm/kvm_main.c:5168
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f47c0f9caeb
+Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1c 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+RSP: 002b:00007f47c1e87ee0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f47c1215fa0 RCX: 00007f47c0f9caeb
+RDX: 0000000000000000 RSI: 000000000000ae41 RDI: 00000000000000f7
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000200000c00000 R11: 0000000000000246 R12: 0000200000c00000
+R13: 0000000000000153 R14: 0000200000000400 R15: 00007ffe526558c8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
 ---
-Changes in v2:
-- Use size_mul() for the offset calculation as well, per review feedback.
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-Link to v1: https://lore.kernel.org/all/20260526080336.61296-1-r4o5m6e8o@163.com/
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
 
-Note:
-Thank you for your review and suggestions.
-
-I tried to add a switch in tools/virtio/vhost_net_test.c.
-The switch is meant to use VHOST_GET_FEATURES_ARRAY and
-VHOST_SET_FEATURES_ARRAY instead of the legacy versions.
-
-However, when I ran `make virtio` in the tools directory,
-the build failed with an error: missing asm/percpu_types.h.
-I fixed that error, but then another error appeared.
-
-Would it be acceptable to postpone the submission of
-this test case until I have sorted out all the build
-errors?
----
- drivers/vhost/net.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 77b59f49bddb..4b963dafa233 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1784,7 +1784,8 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 			return -EFAULT;
- 
- 		/* Zero the trailing space provided by user-space, if any */
--		if (clear_user(argp, size_mul(count - copied, sizeof(u64))))
-+		if (clear_user(argp + size_mul(copied, sizeof(u64)),
-+			       size_mul(count - copied, sizeof(u64))))
- 			return -EFAULT;
- 		return 0;
- 	case VHOST_SET_FEATURES_ARRAY:
--- 
-2.34.1
-
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
