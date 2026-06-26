@@ -1,176 +1,124 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0686A3CD8C9
-	for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 21:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6223B27CD;
+	Fri, 26 Jun 2026 21:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782509763; cv=none; b=s+/L45znJ6oXGAAEIAzSggRjgtiCGbJ23aCkOCDKQZCriZTrf9i0ek0s23ZhoDY+ZfORxLzLh6csW1valoMyco2E6ugvKEevXlbzjtNeTI6Kc0QKzEI9hS75OA4RF6WUBFt88jxHCwkQlykbSNTZmFyCxqxeVoyEbZlAenWmXsY=
+	t=1782510125; cv=none; b=FqMsO31bvwfTZleeyIkb7swmbIG55+sYmbXKHrCrwLhZv+++kML+jvNYiohbWdKnIvZ+pt8Or+VKbP+IySeYDUcBXiMDkm0qkS6BUqm3upLSyWjpwQj+GB66L6iETuEjHKGfd4ZYN2Dy1qbJ6VcnqiJTHMjosLfAoBpF9MhaoFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782509763; c=relaxed/simple;
-	bh=7417aI7o8+VY0zFgJhxw12Swg3ymzFrCld14qvLBip0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hqKBDS95sWD3s/zVuwT1wOWbXJoU7MOEaPFVKpJGE5KorBzc9bRiHxGgc4g5nBbKsjWVSdjkBnAmjhS8qGS7eaFYV5CxWcXt3Zbd8Tw+HNLchV0Nn1ZPSnjoix5cOTJvpa3Eu9LhF996BlaOvi9TLhXCu85wjfr88R3ecp3DE7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UuyO7NxZ; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782510125; c=relaxed/simple;
+	bh=gaICnOXeEj9JMSZMFokM9Oe2hECCyowEvIQ3nPKqJgg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=kNLTLr2SdiPoYdRv9IjB99YSH5WbE/e/UlYm/gc05Mbr/X07WPS5bdSAX/rHXBwXh41LpTH1c7WsvQCQEQi9SvhgfA9BW5ngX6BnAxhlq/ONVIYmfRYT8T5SGwtOPDFNCrlWM+jrIEmCu0Il4xoEbKKz/QujO83vSvBh2/rNreQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwhAatFT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UuyO7NxZ"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37c6916c768so1750542a91.3
-        for <kvm@vger.kernel.org>; Fri, 26 Jun 2026 14:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782509758; x=1783114558; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=37AjqTPC3Cofz5c5D7lHCWd7gT64KCMX7KZ8N6F2Usg=;
-        b=UuyO7NxZ9XJ5uvgj2f3gvueo0otRYNCHzgCJc8KgXPc42VOeHDLwxmJ4Fv7sT5Z380
-         gjCk1L8/5WoKVVE2KCvEHPrRk7wrmhSofDhel09EHRZCgbvkvbVxulj5cYSziS2f/45P
-         vFf8TV3NZ5sXx0zK2+dGF6vjMOWgCbVxjQSNVUrEjwjwjldM3+o07xaKJ5auy/zyaa5M
-         MASnxP+eWgBAA+khVzQUVgFOqgU4XDJbR6/3g2WBttjJEMHLNxFTCiJLMVRJXIY3PEPv
-         wu7nsjNpk/D4b11hJRQGTVUXvDJHJ1Gg3MCn/SwCashj7YAciya6H2QQluz0TuVdYSN6
-         gcfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782509758; x=1783114558;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=37AjqTPC3Cofz5c5D7lHCWd7gT64KCMX7KZ8N6F2Usg=;
-        b=eD3GfXgpyZfzAPobg8te5AP4lDdndUNXy4risGwe3H1h/wFGREia1fpxE868WjK0bK
-         2/CIr5vTS6jpsN8XSoZxMYt78gKIvGhPnAW1WFTaMLGxGlAYXpeHEspklX6NNRx8ocwg
-         9w5MtVHUhYW1NyLnBEaqE7oXgCuxWqm/YsjPV4CwNBeqU2r0fyO87PVV5evKxS9sAG2C
-         gRHKJCFpNHCG4omWYfy0nP4921B2tJB0xD08MOUeFNlbbemsc+XndiOmq3TPzYntH22u
-         2tMf4M8vHQ3mdtBXzPgxrExNw/JpFZyrANwYYqtvqoXMjSF52nCrNkOcF8evEzXrQMLA
-         Yrow==
-X-Forwarded-Encrypted: i=1; AHgh+RotmMBZc0/MW+jWWd/6RikT+X2NruTfRgcienJamnjqcGuTSRVLfJIp+3THKHGZ0doo7cM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwopPv1m3/68XcwSs2QmP0J9pzZ9cWxMTSiBnrOR8rDcUmQO6MF
-	4QoZt+zpvro2hAFUdHKVjB0Svwbt1YXPA6jHDIMuE7BTC1p0vUr+GM1zei9LOQaZcFuXiHfXsRp
-	r/2a5KA==
-X-Received: from pjyl13.prod.google.com ([2002:a17:90a:ec0d:b0:37d:f8a4:accb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4cd0:b0:36b:9daf:1504
- with SMTP id 98e67ed59e1d1-37dfa250f22mr8077365a91.14.1782509758025; Fri, 26
- Jun 2026 14:35:58 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 26 Jun 2026 14:35:31 -0700
-In-Reply-To: <20260626213534.3866178-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwhAatFT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4F51F000E9;
+	Fri, 26 Jun 2026 21:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782510124;
+	bh=Xnpjlqk5HXJKq4J1suxdS53iM6NAZ5D3T+1I90MerKU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HwhAatFTeqyblEnZLsfEWjJcIyVbMMX6tfrzgSNSYCBgpXpMcAdMLkWa0AwEkuiOg
+	 lRZITA4mb9K+38jtSbN4JVXFWCRBRB+50pmnm5oCl6IapCYZc5hvZ2GMng8qnat0s4
+	 KmxdNkV/UnKzj2wUvRGuayF9F1RsJeRFDRn2dWe+PuY0rnMvPy3rZzLYGq+EvmUIud
+	 gYbVRJIRzyDZfoN8UUEkMrlJrovO56OF6c1KGLRhcf06w7Bn0fQlqiEnsZWBRKgNzT
+	 ORbH5nZ7/gxi8n+X9daEK+8GCdEt7Qxfs6bVtIjuKDRjb2b68MBizm8lx0kzAqiPNx
+	 WPECZtakDx+4w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 08/20] KVM: selftests: Add helper to get host IRQ
+ from device MSI-X for IRQ bypass test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver
+ Upton" <oupton@kernel.org>
+In-Reply-To: <20260626213534.3866178-9-seanjc@google.com>
+References: <20260626213534.3866178-1-seanjc@google.com>
+ <20260626213534.3866178-9-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 26 Jun 2026 21:42:03 +0000
+Message-Id: <20260626214203.CD4F51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260626213534.3866178-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260626213534.3866178-19-seanjc@google.com>
-Subject: [PATCH v8 18/20] KVM: selftests: Verify vCPU migration during IRQ
- delivery in IRQ test
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, 
-	Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-From: David Matlack <dmatlack@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The 4096-byte buffer used to read `/proc/interrupts` is too smal=
+l for systems with many CPUs, causing line truncation and leading to either=
+ deterministic test crashes or silent parsing of incorrect IRQ numbers.
+--
 
-Extend the eventfd IRQ test with a '-m' flag to have the test migrate the
-target vCPU to a random physical CPU before triggering its interrupt, e.g.
-to validate KVM's ability to update device posted IRQ routing.
+commit 87caa5d203166722732c2c1909ec869049e95fe7
+Author: David Matlack <dmatlack@google.com>
 
-Signed-off-by: David Matlack <dmatlack@google.com>
-Co-developed-by: Josh Hilke <jrhilke@google.com>
-Signed-off-by: Josh Hilke <jrhilke@google.com>
-[sean: pin one vCPU at a time to simplify things, use main()'s affinity]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/irq_test.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+KVM: selftests: Add helper to get host IRQ from device MSI-X for IRQ bypass=
+ test
 
-diff --git a/tools/testing/selftests/kvm/irq_test.c b/tools/testing/selftests/kvm/irq_test.c
-index 48520c6dea69..c0ff6e60b167 100644
---- a/tools/testing/selftests/kvm/irq_test.c
-+++ b/tools/testing/selftests/kvm/irq_test.c
-@@ -157,13 +157,14 @@ static const char *probe_iommu_type(void)
- 
- static void help(const char *name)
- {
--	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-n] [-t iommu_type]\n", name);
-+	printf("Usage: %s [-a] [-d <segment:bus:device.function>] [-e] [-h] [-i nr_irqs] [-m] [-n] [-t iommu_type]\n", name);
- 	printf("\n");
- 	printf("Tests KVM interrupt routing and delivery via irqfd.\n");
- 	printf("-a	Affine the device's host IRQ to a random physical CPU\n");
- 	printf("-d	Use a VFIO device to send MSI-X interrupts instead of manually signaling the eventfd\n");
- 	printf("-e	Set empty GSI routing in-between some interrupts\n");
- 	printf("-i	The number of IRQs to generate during the test\n");
-+	printf("-m	Pin target vCPU to random physical CPU before triggering interrupt\n");
- 	printf("-n	Deliver 50 percent of IRQs as non-maskable interrupts\n");
- 	printf("-t	Override the IOMMU type to use (vfio_type1_iommu or iommufd)\n");
- 	printf("\n");
-@@ -195,12 +196,14 @@ int main(int argc, char **argv)
- 	const char *device_bdf = NULL;
- 	const char *iommu_type = NULL;
- 	int i, j, c, msix, eventfd;
-+	bool migrate_vcpus = false;
-+	cpu_set_t available_cpus;
- 	bool use_nmi = false;
- 	struct iommu *iommu;
- 	struct kvm_vm *vm;
- 	int irq, irq_cpu;
- 
--	while ((c = getopt(argc, argv, "ad:ehi:nt:")) != -1) {
-+	while ((c = getopt(argc, argv, "ad:ehi:mnt:")) != -1) {
- 		switch (c) {
- 		case 'a':
- 			irq_affinity = true;
-@@ -214,6 +217,9 @@ int main(int argc, char **argv)
- 		case 'i':
- 			nr_irqs = atoi_positive("Number of IRQs", optarg);
- 			break;
-+		case 'm':
-+			migrate_vcpus = true;
-+			break;
- 		case 'n':
- 			use_nmi = true;
- 			break;
-@@ -248,7 +254,6 @@ int main(int argc, char **argv)
- 
- 		eventfd = kvm_new_eventfd();
- 		irq = -1;
--		irq_cpu = -1;
- 	}
- 
- 	pr_info("Injecting interrupts for GSI %d (guest vector 0x%x) %d times\n",
-@@ -256,6 +261,9 @@ int main(int argc, char **argv)
- 
- 	kvm_assign_irqfd(vm, gsi, eventfd);
- 
-+	if (migrate_vcpus)
-+		kvm_sched_getaffinity(0, sizeof(available_cpus), &available_cpus);
-+
- 	for (i = 0; i < nr_vcpus; i++)
- 		pthread_create(&vcpu_threads[i], NULL, vcpu_thread_main, vcpus[i]);
- 
-@@ -266,6 +274,8 @@ int main(int argc, char **argv)
- 			continue;
- 	}
- 
-+	irq_cpu = -1;
-+
- 	for (i = 0; i < nr_irqs; i++) {
- 		const bool do_set_empty_routing = set_empty_routing && (i & BIT(3));
- 		const bool do_use_nmi = use_nmi && (i & BIT(2));
-@@ -282,6 +292,9 @@ int main(int argc, char **argv)
- 			proc_irq_set_smp_affinity(irq, irq_cpu);
- 		}
- 
-+		if (migrate_vcpus)
-+			pin_task_to_random_cpu(vcpu_threads[i % nr_vcpus], &available_cpus);
-+
- 		for (j = 0; j < nr_vcpus; j++) {
- 			TEST_ASSERT(!GUEST_RECEIVED_IRQ(vcpus[j]),
- 				    "IRQ flag for vCPU %d not clear prior to test",
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+This commit introduces proc_util.c and adds vfio_msix_to_host_irq() to
+parse /proc/interrupts and get the host Linux IRQ for a given VFIO device
+BDF and MSI-X vector.
 
+> diff --git a/tools/testing/selftests/kvm/lib/proc_util.c b/tools/testing/=
+selftests/kvm/lib/proc_util.c
+> new file mode 100644
+> index 0000000000000..84d30f055a0a9
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/proc_util.c
+[ ... ]
+> +unsigned int vfio_msix_to_host_irq(const char *device_bdf, int msix)
+> +{
+> +	char search_string[64];
+> +	char line[4096];
+> +	int irq =3D -1;
+> +	FILE *fp;
+> +
+> +	fp =3D open_proc_interrupts();
+> +
+> +	snprintf(search_string, sizeof(search_string), "vfio-msix[%d]", msix);
+> +
+> +	while (fgets(line, sizeof(line), fp)) {
+> +		if (strstr(line, device_bdf) && strstr(line, search_string)) {
+> +			TEST_ASSERT_EQ(1, sscanf(line, "%d:", &irq));
+
+[Severity: Medium]
+Will this 4096-byte buffer truncate lines on systems with many CPUs?
+
+When /proc/interrupts is read on a host with a large number of CPUs
+(e.g., >360 CPUs), the per-CPU interrupt counts can cause the line to exceed
+the fixed 4096-byte limit, causing fgets() to split the line into multiple
+chunks.
+
+If the final chunk contains the device strings (device_bdf and search_strin=
+g)
+but not the original IRQ number at the start of the line, sscanf() could
+evaluate incorrectly.
+
+If the trailing chunk begins with a CPU count, sscanf(line, "%d:", &irq)
+would extract the count, ignore the missing colon, return 1, and silently
+assign the wrong IRQ.
+
+If the chunk starts with non-numeric text, sscanf() returns 0, failing
+TEST_ASSERT_EQ() and aborting the test.
+
+Does this regression require a larger fixed buffer or dynamic allocation to
+handle systems with higher CPU counts?
+
+> +			break;
+> +		}
+> +	}
+> +
+> +	fclose(fp);
+> +
+> +	TEST_ASSERT(irq !=3D -1, "Failed to locate IRQ for %s %s", device_bdf,
+> +		    search_string);
+> +	return (unsigned int)irq;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260626213534.3866=
+178-1-seanjc@google.com?part=3D8
