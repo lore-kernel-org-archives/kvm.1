@@ -1,57 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8452BEC2E;
-	Sat, 27 Jun 2026 16:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD5A19E96D;
+	Sat, 27 Jun 2026 18:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782578138; cv=none; b=UXIRh5p8eIcH2YooEmAR9Zvcf8GdJdf7qaaaEbuBY+dfuF1BUNwinTqGz6PG73q/IQQZ0d5MsD4w5PWwYQMmY4dl4Lngk99hfJMo8sLeecAGm2mlzJjyXM29RnpY+lsIPn+QdGX7Tk9e18D7MOIvmdeFoxDTu/LJ8kWwPXgnaiA=
+	t=1782584059; cv=none; b=javVV8tCBecz+ci62MdjqtVliVD6ch54LxSYKbCfe2VY9NQAtN8acpf2S6fPurSq0GypgPlfHktfh+WpaJKNq67NoNcdfDpp7Qnf4QxMKc1cE4I2hbN9wluO4g5DjLM8/bNQRgQgk+1VBiAwyneS2M0LFYwzVM3zX+Gr3hxNd/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782578138; c=relaxed/simple;
-	bh=kOWX5T5MM3vuhQ9tOzaxdl18xLGzacWSoSkvEVLl08I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dop+BYOJmo8wzby6YW//D9HRP3WxApY6uftF12VznRtq7t6MdlbxrDx5l7vc5D11Twr/77zEbmmUejf0q8v+QJnOmep0eFzdq8/QvRQPQVCBPsNDTkCMytIvcyZkfE8HVvfNjoqIdm0mUf/edQpdnFmpOEY6VAA1BNOEEUzEmx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eLUPRvBz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782584059; c=relaxed/simple;
+	bh=VLytSmv76aAtmvOH4sOQyjPk/l3NyF8qD/q6hgZZ37E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dZ+yb7uAL2zHRqOlbih4BroLb4JATVWLu95oBU10pV/MF788BuY25iIEswINZIqMb46nhEA+1laoTJLQZNN8IwY1GuhGTv9FEF/XrNEjt8OBgXvBqTN1oEeOPiE9BIJw7xgZGxw1LVEK7gpkxa/1PFUcBM1jd4809KpkAHbx1rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APO/n1Yi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eLUPRvBz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758481F00A3A;
-	Sat, 27 Jun 2026 16:35:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APO/n1Yi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ED11F000E9;
+	Sat, 27 Jun 2026 18:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782578137;
-	bh=hUj/9j1/bvY+P3doiDH0AIBXoKxdi9IwnN0sGstE66g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eLUPRvBz6N4kryV6ipVlEXbswKFjsltTHHhlir8IvUt5XRaLeP0tt/rfNfTrXstNx
-	 mQQ/U9t05ysnc5hJ1Pd3n44IzzmzXrICczVI7SPqb2hNDaX2KO+5/GlV0g84Ka1AR8
-	 6mpDAcQ7SnEeuU6VnRJZpP4sPXrqIG4bPMonpNNd/pJ2uVqC3UnPDDWY9Oaib4J0N4
-	 kG1cWUxPi4YdiyG10fcT6lwHT/1MqVR0IV/Vwr0MGiw3nlqAjBJVVEtCi72npPTE4f
-	 VTOFYd0C4cAB0tZDFIbLaZ+z2na/OA9RSbnwXJyXfGAQOlPCjy69LY/gzm4OTYnMle
-	 +lb7j7H4OcMFQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
+	s=k20260515; t=1782584057;
+	bh=NCFBk4z1YdNB5CVZ8KnAPTlpBzRh0FzV5le6Diwn4J8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=APO/n1Yie1DJOoHiEh3PHnZKJaDxiKeBnXG3mCW4hU2hfInX5KM9w+oxNPkNzOgf8
+	 GJ1kjU2jw6KbofMQaCdX9OxrG+opwbCtAJt9r5Gc0q1+8+P1M2iYecpShEl/iR9uME
+	 kpAdB7yOL6g2O7FxMSll3QUs12QaZa3sDJFYWwst50QZkDWxPbctcqrS4Zpc2FHanY
+	 7agH9nQpSzt3OXFSZylcj7Ora+wKMS63XVsUhRbmuw46VRk0/Bk3boqH+vk7n04r4u
+	 umzWxlRF02l8nVmTh2lDL3EYiy2ubaeTGDF5ZcaHNlvlVylM12F7XpyUAh0SrJveR7
+	 gbd+KDzm7S3wg==
+Date: Sat, 27 Jun 2026 11:14:16 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Will Deacon <will@kernel.org>,
 	stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related issues
-Date: Sat, 27 Jun 2026 12:35:25 -0400
-Message-ID: <stable-reply-item009-kvm-515-20260627162226@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260626174620.1819772-1-pbonzini@redhat.com>
-References: <20260626174620.1819772-1-pbonzini@redhat.com>
+Subject: Re: [PATCH v2] KVM: Move kvm_io_bus_get_dev() locking
+ responsibilities to callers
+Message-ID: <akAS-LN7XZMaZdAQ@kernel.org>
+References: <20260627105105.1005990-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260627105105.1005990-1-maz@kernel.org>
 
-On Fri, 26 Jun 2026 19:46 +0200, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related issues
-> Please apply this instead of v1, due to a missing line in the last patch.
+On Sat, Jun 27, 2026 at 11:51:05AM +0100, Marc Zyngier wrote:
+> kvm_io_bus_get_dev() returns a device that is only matched by the
+> address, and nothing else. This can cause a lifetime issue if
+> the matched device is not the expected type, as by the time
+> the caller can introspect the object, it might be gone (the srcu
+> lock having been dropped).
+> 
+> Given that there is only a single user of this helper, the simplest
+> option is to move the locking responsibility to the caller, which
+> can keep the srcu lock held for as long as it wants.
+> 
+> Note that this aligns with other kvm_io_bus*() helpers, which
+> already require the srcu lock to be held by the callers.
+> 
+> Reported-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Fixes: 8a39d00670f07 ("KVM: kvm_io_bus: Add kvm_io_bus_get_dev() call")
+> Link: https://lore.kernel.org/all/20260626111344.802555-1-maz@kernel.org
+> Cc: stable@vger.kernel.org
 
-Queued the v2 series for 5.15.
+Thanks for respinning.
 
--- 
-Thanks,
-Sasha
+Reviewed-by: Oliver Upton <oupton@kernel.org>
