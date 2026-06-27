@@ -1,113 +1,139 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24801255F28;
-	Sat, 27 Jun 2026 04:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52D4211466;
+	Sat, 27 Jun 2026 10:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782535330; cv=none; b=EdkvTy9VK61bPF76M5Ft9e2dvS/e3y2eMPwkOqgiYhLf2aKP7NNI5oKXYsP8X7K5GAKMA3vlS3EvrsBmIpZOuigEgWjMzDDMEsO6iZ4jGFq5eWEWYFuws5+AudWJVSgxm+FNInu6SXCZKyUt0bXzalmDMcb5aYhQoClBRxWs0ck=
+	t=1782557477; cv=none; b=MwHt9ndROQrMb17fJ3Rn67ZrXh6o/pr6xpSs9EZEyzuobdpCm6DaICP4O2jwPSHCRI1Zp/TXZ7SHgpVsVz9U2XvuGTF3XTx5EFhr7U0qkmC/yHuhvh/XNfEpN1yDlBVoJFbupk1UOH9d2gBLOZ3qJYEOHv9waLJZOPtYq7d+7xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782535330; c=relaxed/simple;
-	bh=Dgkw6I0I8RngkbwnY3gthwrXSR/yIF6taaRLVq2DOJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHme5YiMPkqc7OgWciefMT4vYjrDWfjbNg7OsRvcR5tbhUqWcEwu3T3uqa7APtvyDN19/6M0T/cOZ0LEupTYLEarBm7cHy8MwbhpzN+wvqqMS5rcq9Mvl8LvgJO93aDaKlfHIv9lT48EIvzKgJ/Dlhe/OB/kJPCOaeLsfmA9r0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UfUGMpPV; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1782557477; c=relaxed/simple;
+	bh=eiQ91xo216xndNpSYDtCd7KMFnHhu+ZE9kzJMfsSQzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GsXXZbCofJaJeWEY+XXuN2XKn0Hu9CEfbY513Wlv3wgI0Jp/aggoEWrxquPk6G+heeYie4cB/Y7RX6+DUETK8KdXkV/YkCXuVX5PrNPVHoHkpMlVsZXGksD4WvqfrDuPgsFBOYOVzngPc/+pqUcxEVWZuQMrv1rmzSeFMEdJo3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1+X2Lz2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UfUGMpPV"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 98C6340E0031;
-	Sat, 27 Jun 2026 04:42:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id QMWryNQa_auT; Sat, 27 Jun 2026 04:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1782535315; bh=Hg5YVEN2E3ZCxT1JsO3LxWwlPcxZZD62Wso7eowdbLs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UfUGMpPVYc7eio76isweyOY9nyz/Q1E8BiXvGSUyoueWGJfHBtFTE5mIN6C3HsZ0z
-	 hHJdBZEjjt5Bs5ifx17kZbiRF9UiTFY3f+XP+GrQDS+ApZ46s7y4yGP7693CwPmP4z
-	 NyNOeMQUB9+CzLkPOdkBLRlrDUPYtXSobZVHbQVqeHvjdUnI9ul5Xy6kMvm2IkXjy1
-	 O9Pq+mf4473in7kWNQEyDsEyyvOVRhcoumJws1IiKj9jZeGHT8+mmgBZR7Rm8gni5g
-	 w33l+HcQc1jpCN9An5Nz9/OJn/9owhvJ0isq6jTGsc9lFiZstpzEUZ5wl2YduAlhfC
-	 HW7YP227tXuYho6P0S/P/fZRWZO9zJqrvqYohk+Y+VWSrv1dHZdi6znMoJ8bpAB49z
-	 spPGYYaA9x/Snhc4Fg8kS+0/mN1f4G8IGRbAHBV6OK0WT2YxT/UKKlczO12rQ2qmgD
-	 CXep+KbUsCfnCEka6HUNOPXbf9F0zfnJpJptTTAljRVWhb2v905WneyiFyOFqhZ7EA
-	 4k+BgljTJHQyAddQ+v+S6VLrx/IYX+r3Oz+Q+YW5fpsFO58UQcaRk5TakI6NPjlMtD
-	 cCBLHlZELXnJgP06v46LnLdZyjfMbtStEEJdyrt3f32RoHIkBEfOjTNY1Y7VSI9Dv1
-	 A1Uxl3MgMBSMexkDHdsnaO5A=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8C19A40E00BA;
-	Sat, 27 Jun 2026 04:41:20 +0000 (UTC)
-Date: Fri, 26 Jun 2026 21:41:17 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-Message-ID: <20260627044117.GEaj9UbSvTExfmFilu@fat_crate.local>
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
- <20260626164032.GDaj6rgHq4xPd-qjvG@fat_crate.local>
- <9d019b55-739d-429c-bb34-ce792e8340b6@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1+X2Lz2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFF51F000E9;
+	Sat, 27 Jun 2026 10:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782557476;
+	bh=D+aL5SBZJsWFJfZTfZtbheXuQGiHvpX7mm9bteynJkE=;
+	h=From:To:Cc:Subject:Date;
+	b=M1+X2Lz2a0tn1R7bVkejNLsLXl+Pk2NjtutG83/iQM/nReueTZGoIpT0LnUJuPCSS
+	 qjtpmXHJcQic8UxtzgWxykBQ17PbpwKmxjWXHPpbAVzAmyKgg6Vrja47WYCQQ5uTW0
+	 t9/SJymPGoU7/0DpNbvmGy0RO50SklyVQttYal3cg67fNBKRGM/mXaCLaYt5BmDQl+
+	 DCb9IZdT/fcCYIwKikrl1Mktm58YtVrI6ciLD1Jnqdr9sglR790Ur1cb12QfItEONp
+	 LIAVU045udJvqKVmxWAz9l1xQ0jykRBDLG8ta/IACZkXJQ+dlngYCDAnw/+Xn5X6aY
+	 gi2aEmrQT7aNQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wdQd0-0000000GZWr-09QM;
+	Sat, 27 Jun 2026 10:51:14 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
+Date: Sat, 27 Jun 2026 11:51:05 +0100
+Message-ID: <20260627105105.1005990-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9d019b55-739d-429c-bb34-ce792e8340b6@amd.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, pbonzini@redhat.com, will@kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Jun 26, 2026 at 03:59:34PM -0500, Kalra, Ashish wrote:
-> It can be that simple, and flag-free, by following the SNP_EN state:
+kvm_io_bus_get_dev() returns a device that is only matched by the
+address, and nothing else. This can cause a lifetime issue if
+the matched device is not the expected type, as by the time
+the caller can introspect the object, it might be gone (the srcu
+lock having been dropped).
 
-Maybe. But that doesn't mean that you should not clean things up first where
-needed. But I'll do a proper review once the dust from patchsets flying around
-settles.
+Given that there is only a single user of this helper, the simplest
+option is to move the locking responsibility to the caller, which
+can keep the srcu lock held for as long as it wants.
 
-> We also have to re-enable cpu hotplug on the init failure paths 
-> (snp_prepare()'s online != present check, and the SNP_INIT_EX / DF_FLUSH failures in 
-> __sev_snp_init_locked()), so a failed init leaves hotplug enabled, as it was before
-> this support.
+Note that this aligns with other kvm_io_bus*() helpers, which
+already require the srcu lock to be held by the callers.
 
-You could also block hotplug for the time being by grabbing cpus_read_lock().
-And only when you know you are all clear to disable hotplug, then you can do
-that in the end and drop the hotplug lock.
+Reported-by: Will Deacon <will@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Fixes: 8a39d00670f07 ("KVM: kvm_io_bus: Add kvm_io_bus_get_dev() call")
+Link: https://lore.kernel.org/all/20260626111344.802555-1-maz@kernel.org
+Cc: stable@vger.kernel.org
+---
 
-> The only extra case is a kexec target that boots with SNP_EN already set (legacy
-> firmware -- on X86_SNP_SHUTDOWN firmware the full shutdown required before kexec
-> clears SNP_EN, so the target re-inits normally). There snp_prepare() bails, so I
-> do the disable once at boot in snp_rmptable_init() when SNP_EN is already set.
-> That and the snp_prepare() disable can't both run -- SNP_EN is either already set
-> at boot, or it gets programmed by snp_prepare().
+Notes:
+    v2: Drop the previous filtering approach, and move the locking into
+        the only caller, similar to kvm_io_bus_{read,write}().
 
-Ok.
+ arch/arm64/kvm/vgic/vgic-its.c |  2 ++
+ virt/kvm/kvm_main.c            | 16 +++++-----------
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-Thx.
-
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 4477f870c7b36..740b39875728d 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -508,6 +508,8 @@ static struct vgic_its *__vgic_doorbell_to_its(struct kvm *kvm, gpa_t db)
+ 	struct kvm_io_device *kvm_io_dev;
+ 	struct vgic_io_device *iodev;
+ 
++	guard(srcu)(&kvm->srcu);
++
+ 	kvm_io_dev = kvm_io_bus_get_dev(kvm, KVM_MMIO_BUS, db);
+ 	if (!kvm_io_dev)
+ 		return ERR_PTR(-EINVAL);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 881f92d7a469e..1a529098eec98 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6069,25 +6069,19 @@ struct kvm_io_device *kvm_io_bus_get_dev(struct kvm *kvm, enum kvm_bus bus_idx,
+ 					 gpa_t addr)
+ {
+ 	struct kvm_io_bus *bus;
+-	int dev_idx, srcu_idx;
+-	struct kvm_io_device *iodev = NULL;
++	int dev_idx;
+ 
+-	srcu_idx = srcu_read_lock(&kvm->srcu);
++	lockdep_assert_held(&kvm->srcu);
+ 
+ 	bus = kvm_get_bus_srcu(kvm, bus_idx);
+ 	if (!bus)
+-		goto out_unlock;
++		return NULL;
+ 
+ 	dev_idx = kvm_io_bus_get_first_dev(bus, addr, 1);
+ 	if (dev_idx < 0)
+-		goto out_unlock;
+-
+-	iodev = bus->range[dev_idx].dev;
+-
+-out_unlock:
+-	srcu_read_unlock(&kvm->srcu, srcu_idx);
++		return NULL;
+ 
+-	return iodev;
++	return bus->range[dev_idx].dev;
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_io_bus_get_dev);
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.47.3
 
-https://people.kernel.org/tglx/notes-about-netiquette
