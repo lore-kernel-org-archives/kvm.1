@@ -1,55 +1,55 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7839E3AEF43;
-	Sat, 27 Jun 2026 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B0F1C5D72;
+	Sat, 27 Jun 2026 14:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782568725; cv=none; b=dk11+bUy9QGnxbcAEhvA2KZ47nrDC5ziSEFvkfha0aur+0ikR3u4vMXmd+z29HPoUbE2KqfoCQH3DZy4lDpgQuj/uypDAsqy/yFtqinTTFfRt86GfF3jIGnYeKk5wXorMmtRuSYw4zDgxIhhf42Zw/MoygbU6397lSNmWXPjuYQ=
+	t=1782569001; cv=none; b=q+lUIXK7sBa4KYFPa77o5sHc72tSUEzQIy5vuhZbrapCcmcPDk5uCqWY/oJxYHZ17+DicLgTEzGTp4z0OEz+5g5uOxHg99shgMU4CW3c+IS+BKJP3tYFg/cO8mKLAF2xFMFmwRAyjwFnadYph9W9sC5mSIrFA9BLZTPN6bRrGR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782568725; c=relaxed/simple;
-	bh=m9Js2iVSVe1Hvys0yoCqBUM7Mu3+Tg+ED7GrlndOixE=;
+	s=arc-20240116; t=1782569001; c=relaxed/simple;
+	bh=qND3wML3Eq1/a3k5SVv1WetF2hiIeZqkU9WQV+uPOwk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BF33xyqZuWy4u/cPaWktjUZ3dRGtPoBmZ8/rY5cMZv2+0M3Qb1gd69y693zQOQhB+B63KO/Wr79Z7aIy0L8rLcUJYBSqTUBwqPeVcW8pY3tbar6WgeN+VOkSA03ZID8lhQyK4OKWl4mb37TAuPa2qwrtoef3sNWSwqSGvqxXEkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RVSI9B0g; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=JW2r2hgPiHOMFIOGnrQWrrCMwqyDiNJHBA+ztNLOjdxprRLZ23ub7HsSl+O2Jm/xYAaYqLi7q02snoS1xcRbfPFa4Rsiexldvu+69rQvRns/lGRSERYzB39SbLiLsv523ZJlaToXu4mwnMpJDfzaeoP8Iw5WibTJ9AJik+ZiB8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nF9mEDrI; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RVSI9B0g"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nF9mEDrI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nyjCEgUuVZ/YvrblmZDXtqdD2ewOWOi8MRDAdyIfkcI=; b=RVSI9B0gg2hrZbykW3y7Q/kBPT
-	mrH2Ntz1EBzUfz+kbEpk475qPPHrixxPEOFpNo7QUWLxcEKvx/RFmpHJjhUARNsi9xx90kx+fw8bu
-	geeEGUEk1RaNZI/H+TZ6CZU7HzjLGV8EZxFyNJBlnPVoug6A59iuByIRejHE3b+o3I024SH8aHGLs
-	uZpGR4PmlHbeF2gEwk6sX//NPTJPiwPfWM34gFDxA4isPt1Ux91cEWEoSFXs9pk8QLBBywnVeMbXU
-	CZStQMVzPhP07JKi5MK0u8OqSP51b9vcGodla26d7Q07DhTi10F4vbG4gd9OevIdGJGAbMsGoz0Wu
-	/Q5rPLaw==;
+	bh=qND3wML3Eq1/a3k5SVv1WetF2hiIeZqkU9WQV+uPOwk=; b=nF9mEDrI4AYBwD9VDohLUKjwlz
+	OCmaNAGmG2Qd12jGmkQXzcXQwmZxymT4xY+w4o2i6ozLM5k0YOkiAGXhT/urXhCbkUimrLTspJQn2
+	UeUKIsaOl/34RVIa+2WdYLYJPik3yoD5YFhM/zWGAbPp8g7wLgGwOz8BEcvEuiMc3Yc+F27XaHqQs
+	cGZcePSxpYpXWzZFyK7ybELY1b9ZHhtBOeRrkUG8/TScSByLiTRbY2t0p6JFXBbHigwKxvp+FZNyP
+	D0IDs8+TV86cZBxpjiRi7h72EkgNjNXdIwR4Z6p0l+jjRUYLuhkQagtaX1oBibLlLG0xZrrbQ883L
+	B1Zvw4zQ==;
 Received: from [2001:8b0:10b:5:2974:86dd:e981:2b24] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wdTY8-00000000O7B-3Iy8;
-	Sat, 27 Jun 2026 13:58:25 +0000
-Message-ID: <f45b6d2310bb650438ffa67adf66f5be16736df2.camel@infradead.org>
-Subject: Re: [PATCH] KVM: x86/xen: Add
- KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE
+	id 1wdTcq-00000000ORA-3o2t;
+	Sat, 27 Jun 2026 14:03:17 +0000
+Message-ID: <26102f5f734a050db73a74755e7d7d06eee28afd.camel@infradead.org>
+Subject: Re: [PATCH v3 05/10] KVM: x86/xen: Consolidate checks on Xen vCPU
+ ID for singleshot timer hypercalls
 From: David Woodhouse <dwmw2@infradead.org>
 To: Sean Christopherson <seanjc@google.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Jonathan Corbet	 <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Thomas Gleixner	 <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Paul Durrant	
- <paul@xen.org>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Sat, 27 Jun 2026 14:58:24 +0100
-In-Reply-To: <aj6BSMT2LOd4JRpu@google.com>
-References: <c855535b4262ecd41f67734d19e8f48a7f014c2a.camel@infradead.org>
-	 <aj21KctIXuf7b_5G@google.com>
-	 <8edfdca645f691cb856e80ade830d78925fdc19d.camel@infradead.org>
-	 <aj6BSMT2LOd4JRpu@google.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Paul Durrant	 <paul@xen.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 
+	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
+	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com
+Date: Sat, 27 Jun 2026 15:03:16 +0100
+In-Reply-To: <aj7BFl5gzyS9n6zZ@google.com>
+References: <20260625223623.3376478-1-seanjc@google.com>
+	 <20260625223623.3376478-6-seanjc@google.com>
+	 <c574f7c48c2e4805fb63f38e7d31240ff4497aff.camel@infradead.org>
+	 <aj6KireObWQXDF-8@google.com>
+	 <5838fbf9c799d135b06ba61b7879a231e314f7b5.camel@infradead.org>
+	 <aj7BFl5gzyS9n6zZ@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-WLSoS8+/tKgjvv3ggQmc"
+	boundary="=-pDKcdomXICmedgDx/aFG"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa6 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,107 +60,25 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-WLSoS8+/tKgjvv3ggQmc
+--=-pDKcdomXICmedgDx/aFG
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-06-26 at 06:40 -0700, Sean Christopherson wrote:
-> On Fri, Jun 26, 2026, David Woodhouse wrote:
-> > On Thu, 2026-06-25 at 16:09 -0700, Sean Christopherson wrote:
-> > > > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> > > > index 91fd3673c09a..c16b4560c9e7 100644
-> > > > --- a/arch/x86/kvm/xen.c
-> > > > +++ b/arch/x86/kvm/xen.c
-> > > > @@ -907,6 +907,13 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcp=
-u, struct kvm_xen_vcpu_attr *data)
-> > > > =C2=A0{
-> > > > =C2=A0	int idx, r =3D -ENOENT;
-> > > > =C2=A0
-> > > > +	/*
-> > > > +	 * kvm_xen_write_hypercall_page() manages its own locking.
-> > > > +	 * Handle it before taking xen_lock to avoid a deadlock.
-> > >=20
-> > > Do we actually want the side effects that necessitate taking xen.xen_=
-lock?=C2=A0 From
-> > > a uAPI perspective, it's odd to effectively bundle KVM_XEN_ATTR_TYPE_=
-LONG_MODE
-> > > into KVM_XEN_VCPU_ATTR_TYPE_WRITE_HYPERCALL_PAGE.
-> >=20
-> > That's *guest* ABI, and it's derived from Xen behaviour. Xen will
-> > 'latch' its idea of whether a guest VM is 32-bit or 64-bit, for the
-> > purpose of shared data structures (shared_info page, vcpu_info,
-> > runstate).
-> >=20
-> > Xen latches this from the current mode of the running vCPU in *two*
-> > places:
-> > =C2=A0=E2=80=A2 When the hypercall MSR is invoked
-> > =C2=A0=E2=80=A2 When the guest sets the event channel GSI (HVM_PARAM_CA=
-LLBACK_IRQ).
-> >=20
-> > Thus far, the former has been handled in the kernel (in the code you're
-> > looking at), while the latter is why we have the ioctl to explicitly
-> > latch the guest's long_mode from userspace too, as userspace handles
-> > the HVMOP_set_param calls.
+On Fri, 2026-06-26 at 11:12 -0700, Sean Christopherson wrote:
 >=20
-> Right, and I'm pointing out that from a KVM uAPI perspective, bundling th=
-e first
-> one in a "write hypercall page" call is rather odd, especially since ther=
-e's
-> already uAPI to handle the latching.
+> I disagree.=C2=A0 The old code uses a common check for kvm_xen_timer_enab=
+led(), which
+> is confusing and actively dangerous, as evidenced by my goof, because it'=
+s easy
+> to miss that the only reason KVM can bail early for !kvm_xen_timer_enable=
+d() is
+> because it returns false.=C2=A0 Punting hypercalls that are never acceler=
+ated by KVM
+> because some other hypercall happens to be disabled is nasty.
 
-Mostly just because they came in the opposite order. The kernel was
-writing the hypercall page for itself for about a decade before there
-was anything to latch. And userspace wasn't *involved* when it happened
-(initially because there was no facility for userspace intercepting MSR
-writes).
+Fair enough. Go ahead then.
 
-> > > The other question is, why does kvm_xen_write_hypercall_page() drop x=
-en_lock
-> > > when writing guest memory?=C2=A0 That seems odd and unnecessary.
-> >=20
-> > Huh? It takes the lock to do the thing that needs the lock, then drops
-> > it. That is not "odd and unnecessary" at all.
-> >=20
-> > You've been spending too long with these scope-guarded locks.
->=20
-> No, I'm asking why KVM doesn't serialize the writes to guest memory.=C2=
-=A0 Usually
-> when KVM writes to guest memory, KVM is emulating something that is very =
-much
-> vCPU-specific, and so if there are races it's the guest's problem to deal=
- with.
->=20
-> The Xen MSR here is clearly VM-scoped though, which is why it feels odd t=
-o take
-> a per-VM lock, and then deliberately drop the lock before completing the =
-operation,
-> In practice it shouldn't matter, since it sounds like the same repeating =
-16 byte
-> pattern will be written every time, but it was a bit head-scratching when=
- reading
-> the code.
-
-The lock protects the long_mode latching. It wouldn't make sense to
-hold it around the actual writing of the hypercall page. It's not
-intended to be an *atomic* write, and holding some random lock around
-it wouldn't make it atomic with respect to all the other things that
-can write guest memory anyway.
-
-> We can/should return whatever kvm_vcpu_write_guest() returns, i.e. litera=
-lly
-> return its result directly.=C2=A0 Which of course is only ever going to b=
-e -EFAULT,
-> but in the extremely unlikely case that ever changes, we won't have to wo=
-rry
-> about creating misleading behavior in the Xen code.
-
-Yes, and if we do it with a wrapper as you suggested, we can return a
-proper error code and the MSR handler can convert that to 0/1.
-
-As it is, we were doing the conversion the other way round, which is
-why we were making up error numbers for the failure cause.
-
---=-WLSoS8+/tKgjvv3ggQmc
+--=-pDKcdomXICmedgDx/aFG
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -239,21 +157,21 @@ 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
-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
+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
-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
+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
 
 
---=-WLSoS8+/tKgjvv3ggQmc--
+--=-pDKcdomXICmedgDx/aFG--
