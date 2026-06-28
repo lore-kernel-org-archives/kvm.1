@@ -1,106 +1,146 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ECB3A2544
-	for <kvm@vger.kernel.org>; Sun, 28 Jun 2026 15:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020E22980A8;
+	Sun, 28 Jun 2026 18:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782661500; cv=none; b=nxcc8qBxi34EOYWC6KtEVkjD/LbziZlWSFS/1MWvzvHU9DDS5Ta3DFSBAG/d5wOSVdKXfUsJ9LwwdX4KZ3IHi1fy4lUBxqgeSCxjGxyTVanDuBj82GjIaLfCvuUGUZ5SVAIO10CvfNOpdtmUz8+hRVww8eyUyOCDmIMexRV/EdQ=
+	t=1782670887; cv=none; b=eFycUpUYyZzZvBALJCR2oay85EEyxnnxVcyof+Qnln9PpCNIfJGWmjrzJYCrGw+/OsyHjotf6g1D5Q3odtMMzYt4DUI8cWKXEdaeP/Gy3ZWBaphjITs/WZGRzziNIWlfNlnzK/1ghzZXsT2/GbgshBOOqlaQyhVw++0neZ0XbNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782661500; c=relaxed/simple;
-	bh=XbLC/hBePDUMf2KSfI/RNXhwv4brM6tuZ32DJhN/Ibs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R2QtgWnX5IwXKf7xfM6X++17XhN2d6KO28WEgFWNmhnU8Mm5z9OWffTexc6GsJjyH3v6TcVsYGnYf4FtfvD1p13FZ3RuOSE//48o25j77m1tV+xWuco0E6rGrYfXfMwI0ftuAOoFEcu6LQnJjHR+cPkV1dPJ+39qffCtuVfUhHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t4KI/Mfy; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1782670887; c=relaxed/simple;
+	bh=6ecvcZZwIGW0WNu/LrNgER3uaYd3SAlzeBRoHgs8h/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CPPt5G5CquDXnlnHhWXp3orHl2yaIc4bbKSDd9m4bC8noe6TrijDBDUsQKf0eGAwpKhF3RqkOVLczlNW6sXGUr0DRyFtK6uTJWOM+2rfOvd6C57reFZQAcAYygBII9FqlSgk+AKNJ6dKwQkvkLXGyyfs+DovXOeF6ZiKI8lW9jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=JOsp50a1; arc=none smtp.client-ip=155.212.184.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="t4KI/Mfy"
-Message-ID: <a6ccc7a8-488b-4454-81b1-f29dd875845c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782661486;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SoYBPS92T9jxSeucptjXLkmBHa33QEMKFqRqtKW/zko=;
-	b=t4KI/MfyAx/8dC/ImRGrYtKYp2FWHf5OATwSspzG2rLAQnlorpfLIdH5DHMsHBPpURHdEt
-	6CKebtCpB6rgyPOrrP0qezt0lCo8jnidSyMlnahfleW5Mkq/mBaiF7iluBceFe8CDBdU7O
-	vGGiCIiiTUexvIN4ivwxtVUCMxfmiAk=
-Date: Sun, 28 Jun 2026 23:44:25 +0800
+	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="JOsp50a1"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0396510046F;
+	Sun, 28 Jun 2026 21:21:04 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
+	t=1782670875; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=ybx06QVngD4wXg30CBktfaC6csvkv2GtKhVcyiALC80=;
+	b=JOsp50a1CfK0tIu32RlCpNbhKSHUAEX4Qgt6xM9TUtrxWmIRE+1Pza+t/J2T5YzYVvEXVL
+	d7iV7YGmPdQ26f7NhV+ASX+F7V7dCQ3aXEDFZolYadcjNzeWB9swYY+LpVbZ2TXeGoF90O
+	PoszX9e5GtAuMja7xYHTwksaTlza2eOfrN5b38A3yQxoNQvXjDI3wz3bxCQijWFmZSJJNj
+	BqkrbKQoS+44R1HkHlDUVrtXgkJ0BJvUXLc3AJzbQnSq2XNXvdmkwgcTCZymd55zZsCrwE
+	YO8FMzzfF/C9EUW/WL9vQJeE8pufrThJX5KA1VxuaCUShYmmhWrIc4GSDzI0kQ==
+From: Arseniy Krasnov <avkrasnov@rulkc.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	oxffffaa@gmail.com,
+	rulkc@linuxtesting.org,
+	Arseniy Krasnov <avkrasnov@rulkc.org>
+Subject: [PATCH net-next v4] vsock/virtio: rewrite MSG_ZEROCOPY flag handling
+Date: Sun, 28 Jun 2026 21:20:52 +0300
+Message-ID: <20260628182052.951760-1-avkrasnov@rulkc.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] KVM: selftests: fix steal_time for arm64 with host page
- size > 4K
-To: Sebastian Ott <sebott@redhat.com>
-Cc: Jiakai Xu <xujiakai2025@iscas.ac.cn>, Shuah Khan <shuah@kernel.org>,
- Andrew Jones <andrew.jones@oss.qualcomm.com>,
- Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kvmarm@lists.linux.dev,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>
-References: <20260504112808.21276-1-sebott@redhat.com>
- <7575a845-a542-4b16-b512-aec3126f97f3@linux.dev>
- <335f21e5-493d-012d-b07c-2e48cc2b9aeb@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <335f21e5-493d-012d-b07c-2e48cc2b9aeb@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 6/22/26 10:14 PM, Sebastian Ott wrote:
-> 
-> Fix the following failure when running with 16K host page size:
-> ==== Test Assertion Failure ====
->   lib/kvm_util.c:991: vm_adjust_num_guest_pages(vm->mode, npages) == npages
->   pid=873 tid=873 errno=0 - Success
->      1  0x0000000000405a27: vm_mem_add at kvm_util.c:991
->      2  0x000000000040241f: check_steal_time_uapi at steal_time.c:223 (discriminator 7)
->      3   (inlined by) main at steal_time.c:539 (discriminator 7)
->      4  0x00007fff8b57af3b: ?? ??:0
->      5  0x00007fff8b57b007: ?? ??:0
->      6  0x0000000000402b6f: _start at ??:?
->   Number of guest pages is not compatible with the host. Try npages=4
-> 
-> Fixes: fc240715fc50 ("KVM: selftests: arm64: Fix steal_time test after UAPI refactoring")
-> Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-> Link: https://lore.kernel.org/kvmarm/7575a845-a542-4b16-b512-aec3126f97f3@linux.dev/T/#u
-> Signed-off-by: Sebastian Ott <sebott@redhat.com>
-> ---
->  tools/testing/selftests/kvm/steal_time.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
-> index 76fcdd1fd3cb..cdb81f3ee4b2 100644
-> --- a/tools/testing/selftests/kvm/steal_time.c
-> +++ b/tools/testing/selftests/kvm/steal_time.c
-> @@ -208,6 +208,7 @@ static void check_steal_time_uapi(void)
->  {
->      struct kvm_vm *vm;
->      struct kvm_vcpu *vcpu;
-> +    unsigned int gpages;
->      u64 st_ipa;
->      int ret;
-> 
-> @@ -220,8 +221,9 @@ static void check_steal_time_uapi(void)
->      };
-> 
->      vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
-> -    vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, 1, 0);
-> -    virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, 1);
-> +    gpages = vm_calc_num_guest_pages(VM_MODE_DEFAULT, 1);
+Logically it was based on TCP implementation, so to make further support
+easier, rewrite it in the TCP way (like in 'tcp_sendmsg_locked()'). By
+this way, patch also adds handling case when 'msg_ubuf' is already set.
 
-Would vm_calc_num_guest_pages(VM_MODE_DEFAULT, STEAL_TIME_SIZE) be better
-to describe the number of pages we want to add?
+Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+---
+ Changelog v1->v2:
+ * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
+   already added.
+ Changelog v2->v3:
+ * Update commit message.
+ * Remove one empty line.
+ Changelog v3->v4:
+ * Update commit message.
 
-> +    vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, gpages, 0);
-> +    virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, gpages);
-> 
->      st_ipa = (ulong)ST_GPA_BASE | 1;
->      ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+ net/vmw_vsock/virtio_transport_common.c | 47 ++++++++++++-------------
+ 1 file changed, 22 insertions(+), 25 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 09475007165b..41c2a0b82a8e 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -328,38 +328,35 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
+ 		return pkt_len;
+ 
+-	if (info->msg) {
+-		/* If zerocopy is not enabled by 'setsockopt()', we behave as
+-		 * there is no MSG_ZEROCOPY flag set.
++	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
++		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
++		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
++		 * handling from 'tcp_sendmsg_locked()'.
+ 		 */
+-		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+-			info->msg->msg_flags &= ~MSG_ZEROCOPY;
++		if (info->msg->msg_ubuf) {
++			uarg = info->msg->msg_ubuf;
++			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
++		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
++			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
++						    NULL, false);
++			if (!uarg) {
++				virtio_transport_put_credit(vvs, pkt_len);
++				return -ENOMEM;
++			}
+ 
+-		if (info->msg->msg_flags & MSG_ZEROCOPY)
+ 			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
++			if (!can_zcopy)
++				uarg_to_msgzc(uarg)->zerocopy = 0;
+ 
++			have_uref = true;
++		}
++
++		/* 'can_zcopy' means that this transmission will be
++		 * in zerocopy way (e.g. using 'frags' array).
++		 */
+ 		if (can_zcopy)
+ 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+ 					    (MAX_SKB_FRAGS * PAGE_SIZE));
+-
+-		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+-		    info->op == VIRTIO_VSOCK_OP_RW) {
+-			uarg = info->msg->msg_ubuf;
+-
+-			if (!uarg) {
+-				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-							    pkt_len, NULL, false);
+-				if (!uarg) {
+-					virtio_transport_put_credit(vvs, pkt_len);
+-					return -ENOMEM;
+-				}
+-
+-				if (!can_zcopy)
+-					uarg_to_msgzc(uarg)->zerocopy = 0;
+-
+-				have_uref = true;
+-			}
+-		}
+ 	}
+ 
+ 	rest_len = pkt_len;
+-- 
+2.25.1
+
