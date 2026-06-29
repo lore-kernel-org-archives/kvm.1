@@ -1,204 +1,172 @@
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7DE3E5EF6;
-	Mon, 29 Jun 2026 08:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BE83EAC76
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 08:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720464; cv=none; b=U1VdrIJBosm2H0u7AjBnVALTqtwXXhAYwq5FrroOvYl+rtn3fpl4Fh3HowHQWuIGFcLo/rI6gTExpwk5UKUaz2fa8crmjaasLSxKWisGMjAkImd859Xz7tWCkq41PvfZWa6NIbGj1clQZaLQNo86Lo3SGW9b3p/CFKQK94g+wvc=
+	t=1782720633; cv=none; b=Bt1P0AEQ3ayVUMr29AnSR1sKU6V0LJHpfzepFWpT2DZEcMXXREM5mpTMCRP2Xn79qzDLqMjufWHwt3ZsohhWMX+OIW9a7SRUpBgHDLtvXFYGm62dIbT+wo2kXwsBY+UGwOEXQSM2CsxUoxOumRQByl9k40rDFaaPZwHsnabAuXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720464; c=relaxed/simple;
-	bh=JlQUQE0x6pAsBcJIhVnxetBcQ3/zlQq0fX7Yw1HEuNM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=YVrdCSFkdpENE45zlLCHhc5P07toTPdk6bCxxwldfpEzMCZvoG1PWUI8oE6RAVEvslvr527WH8f6B/x3t8ugFypXErELd0y2Wn4RkfJwoktXD9I7ztufserM+0E4lCUaG3Yx6YwLxxPR/wbkifst6n2ln6NKUFFH9vE/1CmafcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TEpYlNln; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c24Brf1S; arc=none smtp.client-ip=103.168.172.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1782720633; c=relaxed/simple;
+	bh=NOddyoW1QSFprsadGPfRc4eDcTb4qMBeBLKW310x0/A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W265lhVIgKogWEt/cWAloqMk4f80dtGcVBEN9j9QXsNBfSPuJTFnFjQKHeEsMQ6kb5BD+YHIrsGOUjf2HO0hfZP27/Oi3mI9l7JwFUcN2Jiw6zG+ZADOppUrZF8tSwpWgtHgqLjvhgkDZ3WYSFWjCILmPUsu6nhMVTBbnD+EhkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=Bj/+ZD8Q reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TEpYlNln";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c24Brf1S"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 95552138020B;
-	Mon, 29 Jun 2026 04:07:38 -0400 (EDT)
-Received: from phl-imap-05 ([10.202.2.95])
-  by phl-compute-04.internal (MEProxy); Mon, 29 Jun 2026 04:07:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1782720458;
-	 x=1782727658; bh=/WIe7fhbq6CJNEEuiOwk3r/zWUSncZp6R6QFRwJ6sZY=; b=
-	TEpYlNln6M/GwjHpSnfu7rcdvzFIRDl8PaPZdTR79bfu+93tv92bHNDr8ENAoz0o
-	I+3XOz+pyki2rkkp/RkwXg8QRaJpJiIvR1f0tt8I+SaQuvnEJlOAQI6CC1z6yuZ0
-	cVgd/4iHRc6MLkND4uxVIRG0nvMRx4MGsgfInhPlnKeJM8pUkN12VG8ueW2PsOxW
-	4MefLznfvAN244lHNATTmj+ua+WwiZat+gfP8BGqjCXRdi0M/+5lN5Uzmi8DBRk9
-	qOZeAPBpKTz28WGmYMtNgUnS3AhyykTIUnN8T+m0kvmDFl4Aj7gFAV/TTmsNx+r6
-	Jtg81SkeOZQVOe1HWz4Juw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782720458; x=
-	1782727658; bh=/WIe7fhbq6CJNEEuiOwk3r/zWUSncZp6R6QFRwJ6sZY=; b=c
-	24Brf1SGc6bjX+gJggjD7fmSOT+iM2lF24wJCuV8s2Amdzt3Twtd0vjLYD7Kbt7Z
-	+kQoptcHz/VtGk8XGv79LNoCZacAq5R7BAxPksArO05cBqn1akZdOx6QMuzHyKsp
-	jZ5aPv2lk/STvMi4lhBu2oUJ3KD+K5F5xqv9MBLZ6CU0PGJ3KI+fRCvE0f+e7q5T
-	uEQZkmuOQpm6EKiGmWuLksFY8y18pLeUcAz299olDRkgTanwR4wU8CSDkLsduURr
-	qyrnHb9qvfpeWKz95/irIS1jl+HSEg0BQDlK7TA+5DM9R3tqbP934xrod3JsNeCN
-	bn6beHziPLZyr1RaQBnnQ==
-X-ME-Sender: <xms:yCdCapri6_Fghw3mlaxsy_gFSSzhIwFXsDsNSMOFs66NbUuvHEYu7g>
-    <xme:yCdCamerjDzu3SkJsJt3qEPErm5Jr5VIrDx-XCtfJMJEoOf5pYL1aPAL4K1m0ol0d
-    u21Y6WhZ3M90bX6VcOFH8qU30t4-5iJBk_D2YIapVkzsHqYJk_o71YS>
-X-ME-Proxy-Cause: dmFkZTGqoTHHYaCI7RURCJhbWHvAkwwtWLTme13LzQ5hLxT15nHz8y1KVwyjgVqWxzHrQs
-    ToUxEitfKDOpnMGHxJtxeXXfPwSpUOYKCbLG3DvDrtRiFisamjIvbRYQ8eHCu3vuqKkFV+
-    oGsvHlqt2QnvGfcOvmRuOO3Rgzas4qMskWtx3Scnrrx20Qj6yj3iPd9+zKy3qioo1rB1kC
-    NbqXUUQhwk7CbH9jPKcbA4qnRTFNBVVyitidRmU/FN7E7sMWO92pJbypgI30pCru3tSGoX
-    4d3jRIE5+wGTHtOqlpEwsN0x3RyunobmR8KafNHjr3b8znb/Ht8a7MfJTFEzr6ZVtoIPkp
-    YEm/Y5IKpJ7BR9D7SOhiAKZmz+xhjw+Rj3xZl+UuPyzGO/ptf2uS48xftDP82jFSPGfW1i
-    WUFvAhWp7rn6kmw50O2IbqNmMpIJJk3N6j0QnhkZxe9rSsCXY+yz3p4OT2eGCGDnr01Arj
-    1sqDxkxM7AGOwRp2cqGArUzSLYhPKHqfyQLHeEzDtqWWPt2AfNkUlUPb4ugsBXY3ifDHcm
-    rEin2AiU1hzBEGVpJXGUq8YO8ASTb7YaAQ4Ms9TA2vnH06i8XtAwN9VbW6ypBxduNhUPiP
-    nLczW/MyU9OJ2FdWXbqKiIb/kfE3CMT7L0MTJSderW3WxiiH9wuQPU0UShyg
-X-ME-Proxy: <xmx:yCdCaqfbNNdmOfirtwC33qahd0NFGOxhg_dXK8UoYrkmnnmFjgFULw>
-    <xmx:yCdCakdFbzk9KweAfKAiLwLQgD4racV8i02VE4-Fx5JTJvZq9isCqw>
-    <xmx:yCdCakb8QFZewQ3ezXiHAUYXU4zyjwrQ2jNwpx7JVpowCgaV4w9SdQ>
-    <xmx:yCdCar0ySJMq0u8YC5UhoDauKTq85d7kaWxynrhTGphqhhBu2OB0Rg>
-    <xmx:yidCaoHTNZ_VOhE49MHuA-FguNtgyjgUdDsWkzp50DUo55mdeNXYC66h>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4D341182007E; Mon, 29 Jun 2026 04:07:36 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="Bj/+ZD8Q"
+Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 65T8A8FN080280
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 29 Jun 2026 17:10:20 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=45A0yc7fdzoVpIaOAtzzsDwOKquOmy46iehdiNNBXeY=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-Id:To:Subject:Date;
+        s=rs20250326; t=1782720620; v=1;
+        b=Bj/+ZD8QdgUvVlbQiSYUC1wPU5wF5e3gCYPMZVx/KEcsUzoiLI2SRnC3RFxpuPBR
+         E5iOlUqpWlTErxiJeJEykckol8a+j08F0Iwmgvug+Pvsi09Q5CSB+H9No25aVI34
+         VoNSZ7VFd0nZOCzfHE8A/Bg9yzMhphabUGan5R617HUemj+hEESZfIveM2KeCZHk
+         8ugI5Lo0fGOkWAkioaQIT+cU+rC024T9F8O6/7TZPNTyqg1aFR54AmTxWUtWj7D4
+         gXWxSs4HQYhhetpm91EXfiZK8Og8zBhqgTlWbo5JxZHRggsm4rtWclbfaZ1Dr42z
+         wlf12BKpJSXYt97KXhuPMg==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 29 Jun 2026 17:10:06 +0900
+Subject: [PATCH v7] target/arm: Always add pmu property for host and max
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ApSqBjiSqQZ-
-Date: Mon, 29 Jun 2026 10:06:54 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Juergen Gross" <jgross@suse.com>, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, x86@kernel.org,
- linux-acpi@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, virtualization@lists.linux.dev,
- linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-crypto@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
- platform-driver-x86@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- "Daniel Lezcano" <daniel.lezcano@kernel.org>,
- "Zhang Rui" <rui.zhang@intel.com>,
- "lukasz.luba@arm.com" <lukasz.luba@arm.com>,
- "Jason Baron" <jbaron@akamai.com>, "Borislav Petkov" <bp@alien8.de>,
- "Tony Luck" <tony.luck@intel.com>,
- "Yazen Ghannam" <yazen.ghannam@amd.com>, "Len Brown" <lenb@kernel.org>,
- "Pavel Machek" <pavel@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Sean Christopherson" <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- "Rick Edgecombe" <rick.p.edgecombe@intel.com>, "Pu Wen" <puwen@hygon.cn>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- "Ajay Kaher" <ajay.kaher@broadcom.com>,
- "Alexey Makhalov" <alexey.makhalov@broadcom.com>,
- "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>,
- "Reinette Chatre" <reinette.chatre@intel.com>,
- "Dave Martin" <Dave.Martin@arm.com>, "James Morse" <james.morse@arm.com>,
- "Babu Moger" <babu.moger@amd.com>,
- "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
- "Damien Le Moal" <dlemoal@kernel.org>,
- "Niklas Cassel" <cassel@kernel.org>, "Dave Airlie" <airlied@redhat.com>,
- "Helge Deller" <deller@gmx.de>, linux-geode@lists.infradead.org,
- "Olivia Mackall" <olivia@selenic.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "Linus Walleij" <linusw@kernel.org>,
- "Bartosz Golaszewski" <brgl@kernel.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
- "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
- "Guenter Roeck" <linux@roeck-us.net>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Namhyung Kim" <namhyung@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>,
- "Alexander Shishkin" <alexander.shishkin@linux.intel.com>,
- "Jiri Olsa" <jolsa@kernel.org>, "Ian Rogers" <irogers@google.com>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "James Clark" <james.clark@linaro.org>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Pawan Gupta" <pawan.kumar.gupta@linux.intel.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "Andy Lutomirski" <luto@kernel.org>,
- "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
- "Huang Rui" <ray.huang@amd.com>,
- "Mario Limonciello" <mario.limonciello@amd.com>,
- "Perry Yuan" <perry.yuan@amd.com>,
- "K Prateek Nayak" <kprateek.nayak@amd.com>,
- "srinivas.pandruvada@linux.intel.com"
- <srinivas.pandruvada@linux.intel.com>,
- "Artem Bityutskiy" <artem.bityutskiy@linux.intel.com>,
- "Artem Bityutskiy" <dedekind1@gmail.com>,
- "Miquel Raynal" <miquel.raynal@bootlin.com>,
- "Richard Weinberger" <richard@nod.at>,
- "Vignesh Raghavendra" <vigneshr@ti.com>,
- "Ashok Raj" <ashok.raj.linux@gmail.com>,
- "Hans de Goede" <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- "Rajneesh Bhardwaj" <irenic.rajneesh@gmail.com>,
- "David E Box" <david.e.box@intel.com>, xen-devel@lists.xenproject.org
-Message-Id: <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
-In-Reply-To: <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
-References: <20260629060526.3638272-1-jgross@suse.com>
- <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
- <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
-Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260629-pmu-v7-1-939518c349be@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23My27CMBCF4VdBXteWPb5NuuI9Kha+BdyKOEogI
+ kJ59xqiilbp8ozm++9kTENOI3nf3cmQpjzm0tVh33YknFx3TDTHuglwUNxAQ/vzlbqoW2MTBB0
+ 5qZ/9kNp8e1Y+DnWf8ngpw/yMTuJx/esnQTm1YBoB0iM6tY9u7vKNhXImj8AEL2SFWRFU1Mokk
+ /IQZdQbJP9BsiIMNgjU6ADsBqlfCPiKVEXgwAO2xnNsN0j/IM0FVyvSVFCfmoDW2mDRbJB5IS3
+ FikxF4L0JCOhikvthPLKQWWZXeilfc2EusM+eHJZl+QYzfaZhrAEAAA==
+X-Change-ID: 20240629-pmu-ad5f67e2c5d0
+To: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org,
+        devel@daynix.com, Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.16-dev-925f5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3881;
+ i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
+ bh=NOddyoW1QSFprsadGPfRc4eDcTb4qMBeBLKW310x0/A=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5aTRrbu9kd61/XYdxjNilDIlmgpfTEp5c3FKvWX/lrbn
+ SLqORI7SlkYxLgYZMUUWVKKdnNrRNd+KkyIb4GZw8oEMoSBi1MAJuK7h5HhEZvqG9vWKWkar6sl
+ P3t3c7zjqDScdZhBPWRR6PT9N6/bM/z3MbBda37myMkIxSvcb+fxCUVyL5RhdV1eMGun/r6Os1O
+ YAA==
+X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
+ fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-On Mon, Jun 29, 2026, at 09:01, J=C3=BCrgen Gro=C3=9F wrote:
-> On 29.06.26 08:52, Arnd Bergmann wrote:
->> On Mon, Jun 29, 2026, at 08:04, Juergen Gross wrote:
->>=20
->> I assume this is fine, but since you don't mention it explicitly here,
->> please clarify what this means for 32-bit CPUs without the rdmsrq
->> instruction. Those will continue using the same instructions as before
->> and just change the calling conventions, right?
->
-> Yes. I thought this would be clear from the following:
->
->    - They are based on primitives using 64-bit sized values anyway.
+kvm-steal-time and sve properties are added for KVM even if the
+corresponding features are not available. Always add pmu property for
+"host" and "max".
 
-Right, that was my reading of it as well, but it's not entirely
-clear when the function name is the same as the mnemonic of an
-instruction that only exists on newer CPUs and the later patch
-descriptions (e.g. 25/32 that I was Cc's on) have a much shorter
-explanation.
+Note that we still don't add the property for other CPUs that lack PMU.
+This is because we do not know what a PMU version should be enabled
+when the user sets the property to true while it is defined as an error
+for the "host" or "max" CPU when the hardware accelerator is enabled and
+the host doesn't have a PMU.
 
->>> Note that most patches of this series are independent from each othe=
-r.
->>> Only the patches removing a specific interface (patches 7, 15, 26 and
->>> 30) and the last two patches of the series depend on all previous
->>> patches.
->>=20
->> It looks like you are touching most files twice or more here, to
->> first convert from rdmsr to rdmsrq and then to change the
->> two-argument rdmsrq() macro to a single-argument inline. If you
->> introduce the inline version of rdmsrq() first, you should be
->> able to skip the second step (patch 31) as they could be able
->> to coexist.
->
-> I've discussed how to structure the series with Ingo Molnar before [1]=
-. The
-> current approach was his preference.
+This fixes qtest-aarch64/arm-cpu-features on the hosts that supports
+KVM but doesn't support PMU emulation.
 
-Ok.
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Changes in v7:
+- Reject pmu=on for "host" when PMU is unavailable.
+- Handle "max" too, since it maps to "host" with hwaccel.
+- Link to v6: https://lore.kernel.org/qemu-devel/20250531-pmu-v6-1-2bb6c828ade3@rsg.ci.i.u-tokyo.ac.jp
 
-      Arnd
+Changes in v6:
+- Limited the scope of the change to the "host" CPU.
+- Link to v5: https://lore.kernel.org/r/20250104-pmu-v5-1-be9c8777c786@daynix.com
+
+Changes in v5:
+- Rebased.
+- Link to v4: https://lore.kernel.org/r/20240720-pmu-v4-0-2a2b28f6b08f@daynix.com
+
+Changes in v4:
+- Split patch "target/arm/kvm: Fix PMU feature bit early" into
+  "target/arm/kvm: Set PMU for host only when available" and
+  "target/arm/kvm: Do not silently remove PMU".
+- Changed to define PMU also for Armv7.
+- Changed not to define PMU for M.
+- Extracted patch "hvf: arm: Raise an exception for sysreg by default"
+  from "hvf: arm: Properly disable PMU".
+- Rebased.
+- Link to v3: https://lore.kernel.org/r/20240716-pmu-v3-0-8c7c1858a227@daynix.com
+
+Changes in v3:
+- Dropped patch "target/arm: Do not allow setting 'pmu' for hvf".
+- Dropped patch "target/arm: Allow setting 'pmu' only for host and max".
+- Dropped patch "target/arm/kvm: Report PMU unavailability".
+- Added patch "target/arm/kvm: Fix PMU feature bit early".
+- Added patch "hvf: arm: Do not advance PC when raising an exception".
+- Added patch "hvf: arm: Properly disable PMU".
+- Changed to check for Armv8 before adding PMU property.
+- Link to v2: https://lore.kernel.org/r/20240716-pmu-v2-0-f3e3e4b2d3d5@daynix.com
+
+Changes in v2:
+- Restricted writes to 'pmu' to host and max.
+- Prohibited writes to 'pmu' for hvf.
+- Link to v1: https://lore.kernel.org/r/20240629-pmu-v1-0-7269123b88a4@daynix.com
+---
+ target/arm/cpu.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 86aae36ae552..4a4bed525359 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1345,11 +1345,11 @@ static void arm_set_pmu(Object *obj, bool value, Error **errp)
+ {
+     ARMCPU *cpu = ARM_CPU(obj);
+ 
+-    if (value) {
+-        set_feature(&cpu->env, ARM_FEATURE_PMU);
+-    } else {
+-        unset_feature(&cpu->env, ARM_FEATURE_PMU);
++    if (value && !arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
++        error_setg(errp, "'pmu' feature is not supported");
++        return;
+     }
++
+     cpu->has_pmu = value;
+ }
+ 
+@@ -1529,6 +1529,7 @@ static void arm_cpu_propagate_feature_implications(ARMCPU *cpu)
+ static void arm_cpu_post_init(Object *obj)
+ {
+     ARMCPU *cpu = ARM_CPU(obj);
++    ARMCPUClass *acc = ARM_CPU_GET_CLASS(obj);
+ 
+     /*
+      * Some features imply others. Figure this out now, because we
+@@ -1585,6 +1586,10 @@ static void arm_cpu_post_init(Object *obj)
+ 
+     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
+         cpu->has_pmu = true;
++    }
++
++    if (cpu->has_pmu || !strcmp(acc->info->name, "host") ||
++        !strcmp(acc->info->name, "max")) {
+         object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
+     }
+ 
+
+---
+base-commit: b83371668192a705b878e909c5ae9c1233cbd5fb
+change-id: 20240629-pmu-ad5f67e2c5d0
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+
