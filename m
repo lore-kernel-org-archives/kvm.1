@@ -1,191 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7B53FF8A4
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5EE401A3C
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782736401; cv=none; b=aReetQhjwntQJVBwWDLuCpF35K0AJPLbhJPO7GZZojnKBsOzgawAeDEUSPM7clCPVhXvH3MLRdi4/26n8K28h/zqvUG3yvUVrvHeU0sn5wk+Sjg6dDvu4HPgwo7/UkHCTrBu8HbuTpnwImiDMxe8uTgKQGE01D8DbeAt3PAPXvU=
+	t=1782736821; cv=none; b=NX+umJVEayYkyF9fp2rLpJ0QSkdGjXP/evbdk3AYXFxgrK70Oz0XI4/d7JOLqRvMzv0mgIzJiwSVCzgxtEkY62sa3z+GhRbsPIBnbX2L+0QM9ROQcOB6OiQD973UPJ7KGp5Wgkj40KE7AaXPknrv1jCdxx6XNMR3bg8ZPuEI0Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782736401; c=relaxed/simple;
-	bh=4KiDUgC3XUubVXJ72QMkOkYpiotmTAJGplioSZ0NKpA=;
+	s=arc-20240116; t=1782736821; c=relaxed/simple;
+	bh=EZ5vnA7buQPeiKXRc7zV3e0r9DnWF0YOpGJYUpP4BEI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=t20M0frCewZp358z+UCundGPEtwERT4jVjWxWYhYP/+OKzvng29dfAETf+6UzRIOuj+YIetlxglnm+yeDTeIzCq+U6hvjATHMwHEq4UWYAscs4XBjIyKBosvnFP95D1Abq/xYUI68GweYH7n4RAEbu7KySg0P8ND1NyNKydxIwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7J65pXR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=EVfcJNDXHonqoBdv33b7F202/M72yPjStNGRhq813wU5TTiE9y5AMx7IHvI63Fd6dkDI2Pw+9q9sfTJ+gYyAGzjhxfQqeowzUnMXIo1N0agYWn+WFjWoJL8D55bkShjN3DxYAsjLExc+t93stER1+gNnfp5UufmLq0SwYhqqmyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJvnEhZX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7J65pXR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF891F000E9;
-	Mon, 29 Jun 2026 12:33:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJvnEhZX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02361F000E9;
+	Mon, 29 Jun 2026 12:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782736400;
-	bh=zWPX/uQqChQ/okR+Zz41pi9Iv4LRCGx7h1uE+dPx5h4=;
+	s=k20260515; t=1782736820;
+	bh=7W56bPeni0TTgFiTl5WG5rRXJeZw54s8eacVxFPl7Kk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O7J65pXRA4g8s9Ti7z2lIFmlM0DJe05VLTBvPrtNZ0Fm0Tyv9DXTb9LAjhaH57QJd
-	 1EcZTIZn1O+FxpIsf5o3oczuDD2eJgIahoTy1HZWEl6Tm000NJo9gDCpogjBCHyAmt
-	 1kGobCqfS5IWTy+phCU7FYEbeIxj6eGrW0s5cfdO20495uYjSuyraeFB/2cgt/ZLCa
-	 CzqL4Nxxty4p+AhvvoKU23mY0EVBSczGLKgfxeBw7x5jpWp+6pGTl9BUAW9NbPf2yt
-	 c3N0mBZCYCfLW1vkuL7NpsoV3DHP9rI2AotEMK3r1P7zBtj4hwYLoK8Ct4DOZtSyrB
-	 aBXWsbgPrPXDg==
+	b=PJvnEhZXSZK6cIsT3gSHBhY50Sf71fYusw2XGaqA4p5VXbtj3mZyGiECZQD4hR7qr
+	 MvFQieqEWDtQn3orPtqXLcFnpkifxBWbMF9m7kjs1kNFTfVxT9cdQvmSFxf6i/7p52
+	 hQ4nc1pI9n+whJJtyqtNyR95xeE+pZXmo+XBsylGQUpo/GnGIV8SoI0WRktfhOm/22
+	 EI4e6Z+mBKnCHit4GWbgCs6LjyM67LcUYS7HcrxtyoCAjD+Ygg4iS2xMxdFq7N2Hqf
+	 UKRhzA5PG4b8mtkt8W6FTsbB4C4rJNFo7i2uMeNpgaIWi3Ys5gh3uWX/iFhnJyuDju
+	 0mrg3B1oQHJ7Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 07/15] mm: preserve RWP marker across PTE rewrites
+Subject: Re: [PATCH v7 09/15] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and
+ UFFDIO_RWPROTECT plumbing
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260629120749.566063-8-kirill@shutemov.name>
+In-Reply-To: <20260629120749.566063-10-kirill@shutemov.name>
 References: <20260629120749.566063-1-kirill@shutemov.name>
- <20260629120749.566063-8-kirill@shutemov.name>
+ <20260629120749.566063-10-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 12:33:19 +0000
-Message-Id: <20260629123320.1EF891F000E9@smtp.kernel.org>
+Date: Mon, 29 Jun 2026 12:40:19 +0000
+Message-Id: <20260629124019.B02361F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] do_swap_page bypasses RWP tracking on non-exclusive private pa=
-ges by resolving COW faults internally, dropping the RWP marker.
-- [High] move_huge_pmd() and move_huge_pte() unconditionally overwrite the =
-protection bits of ALL present huge entries in RWP-enabled VMAs, omitting m=
-arker validation.
-- [High] RWP markers (PAGE_NONE PTEs) are incorrectly made writable by subs=
-equent pte_mkwrite/pmd_mkwrite calls, violating PTE invariants.
+
+Pre-existing issues:
+- [High] userfaultfd_clear_vma() modifies page tables before write-locking =
+the VMA, allowing concurrent page faults to leak stray UFFD markers.
+- [High] UFFDIO_MOVE completely drops userfaultfd_wp protection markers on =
+present PTEs, silently breaking write protection tracking.
 --
 
-commit 5e6bf53c7874736a0aaea6decc0c390ca2b40f26
+commit 325a6bfce816d9aabb37133a65ed3422bc565fb2
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: preserve RWP marker across PTE rewrites
+userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
 
-This commit wires the preservation of the uffd RWP marker (PAGE_NONE
-semantics) through various paths that rewrite PTEs, PMDs, and huge PTEs
-on a VM_UFFD_RWP VMA. This includes swap, migration, fork, and mprotect
-paths to prevent tracking leaks on next access.
+This commit adds the userspace interface and internal plumbing for
+read-write protection tracking (RWP). It introduces UFFDIO_REGISTER_MODE_RWP
+and UFFDIO_RWPROTECT, which allow tracking access to memory ranges.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
 [ ... ]
-> @@ -2539,8 +2545,16 @@ bool move_huge_pmd(struct vm_area_struct *vma, uns=
-igned long old_addr,
->  			pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
->  		}
->  		pmd =3D move_soft_dirty_pmd(pmd);
-> -		if (vma_has_uffd_without_event_remap(vma))
-> +		if (vma_has_uffd_without_event_remap(vma)) {
-> +			/*
-> +			 * See __copy_present_ptes(): normalise RWP PMDs so
-> +			 * the destination starts accessible instead of taking
-> +			 * a numa-hinting fault on first access.
-> +			 */
-> +			if (pmd_present(pmd) && userfaultfd_rwp(vma))
-> +				pmd =3D pmd_modify(pmd, vma->vm_page_prot);
-
-[Severity: High]
-Does this unconditionally overwrite the protection bits of all present PMDs
-in RWP-enabled VMAs? By omitting a pmd_uffd(pmd) check, this could strip
-legitimate write permissions from private VMAs or inject write permissions
-into clean shared pages when mremap() is called on a VM_UFFD_RWP VMA with
-mixed RWP-protected and accessible huge pages.
-
->  			pmd =3D clear_uffd_wp_pmd(pmd);
-> +		}
->  		set_pmd_at(mm, new_addr, new_pmd, pmd);
-
-[ ... ]
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-[ ... ]
-> @@ -5060,10 +5075,22 @@ static void move_huge_pte(struct vm_area_struct *=
-vma, unsigned long old_addr,
->  		huge_pte_clear(mm, new_addr, dst_pte, sz);
->  	} else {
->  		if (need_clear_uffd_wp) {
-> -			if (pte_present(pte))
-> +			if (pte_present(pte)) {
-> +				/*
-> +				 * See __copy_present_ptes(): normalise RWP
-> +				 * PTEs so the destination starts accessible
-> +				 * instead of taking a numa-hinting fault on
-> +				 * first access.
-> +				 */
-> +				if (userfaultfd_rwp(vma)) {
-> +					pte =3D huge_pte_modify(pte, vma->vm_page_prot);
-
-[Severity: High]
-Is a huge_pte_uffd(pte) check missing here as well? Without it, any mremap()
-on an RWP-registered VMA could incorrectly modify all present huge PTEs
-regardless of their actual marker status.
-
-> +					pte =3D arch_make_huge_pte(pte, huge_page_shift(h),
-> +								 vma->vm_flags);
-> +				}
->  				pte =3D huge_pte_clear_uffd(pte);
-
-[ ... ]
-> diff --git a/mm/memory.c b/mm/memory.c
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-[ ... ]
-> @@ -896,6 +896,10 @@ static void restore_exclusive_pte(struct vm_area_str=
-uct *vma,
->  	if (pte_swp_uffd(orig_pte))
->  		pte =3D pte_mkuffd(pte);
+> @@ -2204,9 +2282,22 @@ static struct vm_area_struct *userfaultfd_clear_vm=
+a(struct vma_iterator *vmi,
+>  	if (start =3D=3D vma->vm_start && end =3D=3D vma->vm_end)
+>  		give_up_on_oom =3D true;
 > =20
-> +	/* See do_swap_page(): restore PAGE_NONE for RWP */
-> +	if (pte_swp_uffd(orig_pte) && userfaultfd_rwp(vma))
-> +		pte =3D pte_modify(pte, PAGE_NONE);
+> -	/* Reset ptes for the whole vma range if wr-protected */
+> -	if (userfaultfd_wp(vma))
+> -		uffd_wp_range(vma, start, end - start, false);
+> +	/* Clear the uffd bit and/or restore protnone PTEs */
+> +	if (userfaultfd_protected(vma)) {
+> +		unsigned int mm_cp_flags =3D 0;
+> +		struct mmu_gather tlb;
 > +
->  	if ((vma->vm_flags & VM_WRITE) &&
->  	    can_change_pte_writable(vma, address, pte)) {
->  		if (folio_test_dirty(folio))
+> +		if (userfaultfd_wp(vma))
+> +			mm_cp_flags |=3D MM_CP_UFFD_WP_RESOLVE;
+> +		if (userfaultfd_rwp(vma))
+> +			mm_cp_flags |=3D MM_CP_UFFD_RWP_RESOLVE;
+> +		if (vma_wants_manual_pte_write_upgrade(vma))
+> +			mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+> +
+> +		tlb_gather_mmu(&tlb, vma->vm_mm);
+> +		change_protection(&tlb, vma, start, end, mm_cp_flags);
+> +		tlb_finish_mmu(&tlb);
+> +	}
+> =20
+>  	ret =3D vma_modify_flags_uffd(vmi, prev, vma, start, end,
 
 [Severity: High]
-Could this create an invalid clean+writable PTE? If the folio is clean,
-pte_mkdirty() is skipped but the subsequent code calls pte_mkwrite() on
-the PAGE_NONE PTE. Writable PTEs must be dirty to avoid hardware faults on
-architectures without hardware A/D bit management.
+This isn't a bug introduced by this patch, but userfaultfd_clear_vma() in
+mm/userfaultfd.c appears to modify page tables before write-locking the VMA.
+
+By calling change_protection() before vma_modify_flags_uffd() triggers
+vma_start_write() to drain concurrent per-VMA readers, could a concurrent p=
+age
+fault thread that already acquired the per-VMA lock see the old VM_UFFD_WP =
+or
+VM_UFFD_RWP flags?
+
+If so, could it instantiate a new PTE with the _PAGE_UFFD marker after
+change_protection() has already scanned that address, leaking a stray marke=
+r?
 
 [ ... ]
-> @@ -5041,6 +5068,14 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	if (pte_swp_uffd(vmf->orig_pte))
->  		pte =3D pte_mkuffd(pte);
-> =20
-> +	/*
-> +	 * A page reclaimed while RWP-protected carries the uffd bit on
-> +	 * its swap entry. Re-apply PAGE_NONE on swap-in so the first access
-> +	 * still traps as an RWP fault. pte_modify() preserves _PAGE_UFFD.
-> +	 */
-> +	if (pte_swp_uffd(vmf->orig_pte) && userfaultfd_rwp(vma))
-> +		pte =3D pte_modify(pte, PAGE_NONE);
-> +
->  	/*
->  	 * Same logic as in do_wp_page(); however, optimize for pages that are
->  	 * certainly not shared either because we just allocated them without
+> @@ -1358,7 +1358,7 @@ static long move_present_ptes(struct mm_struct *mm,
+>  		orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+>  		/* Set soft dirty bit so userspace can notice the pte was moved */
+>  		if (pgtable_supports_soft_dirty())
+>  			orig_dst_pte =3D pte_mksoft_dirty(orig_dst_pte);
+>  		if (pte_dirty(orig_src_pte))
+>  			orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
+>  		orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
 
 [Severity: High]
-Similar to restore_exclusive_pte() above, does this lead to a clean+writable
-PAGE_NONE PTE during a read fault? In do_swap_page(), if it is a read fault,
-pte_mkwrite() is called but pte_mkdirty() is skipped, which violates the
-clean+writable PTE invariant.
+This is a pre-existing issue, but does UFFDIO_MOVE drop userfaultfd_wp
+protection markers on present PTEs here in move_present_ptes() in
+mm/userfaultfd.c?
 
-[Severity: Critical]
-What happens later in do_swap_page() for non-exclusive private pages on a
-write fault?
+When constructing the destination PTE with folio_mk_pte() and pte_mkwrite(),
+it doesn't seem to check if the source PTE was write-protected
+(e.g., via pte_uffd()), nor does it transfer the _PAGE_UFFD marker to the
+destination PTE.
 
-Since the RWP marker is restored as PAGE_NONE, do_swap_page() will eventual=
-ly
-call do_wp_page() to resolve the COW fault. However, wp_page_copy() appears
-to allocate a new page and map it with full accessible permissions, missing
-the PAGE_NONE protection.
-
-Does this completely bypass the userfaultfd RWP boundary for shared or
-forked swapped-out pages?
+Could this silently break write protection tracking on pages moved via
+UFFDIO_MOVE?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629120749.5660=
-63-1-kirill@shutemov.name?part=3D7
+63-1-kirill@shutemov.name?part=3D9
