@@ -1,261 +1,258 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A283400DE8
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96909401A02
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782736942; cv=none; b=jqo3sQUnJP3aN3qgLBHzDGj+zaYb5LQVpcIzctHdJ6ZSbkdXJEkfkOlGz4aHe4FbEHF3kVzrSwljKdh2vcjDK20wsq5mr/8mMUoVZAq24SZpumPc9ToZHx+WbMaJftcdrrefif7H6MFbE1x2qNJo0owmfHCi9978B3YtlUqoVMw=
+	t=1782737211; cv=none; b=iRYJZIJ8JqnaezS/tsxrNPe2ckjnKkdjfzYopZg5Xz81DP4roF0fsEsxswFxkYSKAeZ77l+too8wFbS/fgA5cwdAiqvzFkdBZRY1RKQ9y/yKdXlm95p/fRafPbsUETnuMH1Ta7tmesOECnlF+duCT+o+ryF90BJaN6nVnkwfhFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782736942; c=relaxed/simple;
-	bh=KSWe46LtRgPR6Jvo6bu006fjeB+IfNARujZdjmozaeY=;
+	s=arc-20240116; t=1782737211; c=relaxed/simple;
+	bh=oqs48+9jvkfY0hzwcO8iHhu99xBifqyRccT+3wCiQWM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bwgNNwlN4zTZjASUA7S42jzhAGl6UxHA5pbl3Lgy+/D+uEmRD2P2QQvVZC9cEstimJY0otcLvDnQAoUnY2rtkfh3zHd9mITawkVOaJfQztZxUCrCjMG69p80gwQ+Z1imJg0KIgC37AUU/tbRJfBn6yWbhA/q9b16ZkpBlmkIZ9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dc625Sui; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=U7Ace5Ys3rHJ6u0HDQ6w0VgkDmFbf2B3BhYYkHmaB91f58x+pun1EcfFRmRQg6Y6Gx1cOtg+2i67qXg80Yoam6z68CdH7Fvme5g/2yS9HppoXAiZib5wd67/pbiaqQLOC3WaJTizlCJoFN69l/1flA8ACezls5Ae4qBRawGHgRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+QoKviq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dc625Sui"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119C31F000E9;
-	Mon, 29 Jun 2026 12:42:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+QoKviq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2978E1F000E9;
+	Mon, 29 Jun 2026 12:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782736941;
-	bh=OfXFk2RjvFAMxv8j+ObIRPHGP7ORj42DiFfAv2I5O8U=;
+	s=k20260515; t=1782737210;
+	bh=RvQpt0HBZUo3VZf2hvBTnU83Yr4q/rewCVYAxbY445w=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dc625SuipVz2mrtPlLNO4YQhlRsT9ZwyIDgfdciJA5j9I8m/BXH8RAdCi2pT7+6N1
-	 +ctH8Hkx1q59DyE5eYwsO3O5lIjns2cwRmHuTw3OpTIhjw8efN2JB7BOS05KFzaM7T
-	 UHJUJWMGSNR82Lx2VNcoI6dwV8p9X4HCK6wJvvaFvliTqPKHzTMV2DSHqRi5WdgCSk
-	 /QGXMYXruhuiWAFZyEWKFVlUfQpgzxPL06y3/as9HyAlglwb3GyVhZPpIaCiTEkeLo
-	 bAC2RyveanSsU7IGfRx6DJep7rSTiKHi1PXMtuPUCIZFzapBOops5dprmXwGIAWs0o
-	 0lVf1OEz5KLAg==
+	b=Y+QoKviq/l0FClJJ+s2MsQoI74dR7MMFiAp0QchjtW6pw9NuR32nI87YbH93JZQUE
+	 D0nOihUOh8H+yjc3lycDlObrxTUYTozVctBUhbBsb+mln15izxvmfx1cK+D25Fd1qh
+	 f636VtyHH6cC3cjXi1WrMNXGYqhXbdUfV7WDuXBrsDMYsrXgRyr46MlXDipGOkKru+
+	 LnANMOLP6WSscx+lF8vvesmVNeEnI/YkGzoay4+AnlV/jf2Gg/QiE6i62snl6YnUoU
+	 7hDcZAWCy5nUDt7vNE11cvy+Q4kZLQZ2I7sOWSpCsKmkFVZLul7rzWpXMzbSkGEt1j
+	 GiiJ7sGkGQRlA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 10/15] mm/userfaultfd: add RWP fault delivery and
- expose UFFDIO_REGISTER_MODE_RWP
+Subject: Re: [PATCH v7 14/15] selftests/mm: add userfaultfd RWP tests
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260629120749.566063-11-kirill@shutemov.name>
+In-Reply-To: <20260629120749.566063-15-kirill@shutemov.name>
 References: <20260629120749.566063-1-kirill@shutemov.name>
- <20260629120749.566063-11-kirill@shutemov.name>
+ <20260629120749.566063-15-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 12:42:20 +0000
-Message-Id: <20260629124221.119C31F000E9@smtp.kernel.org>
+Date: Mon, 29 Jun 2026 12:46:49 +0000
+Message-Id: <20260629124650.2978E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-- [Critical] RWP fault resolution creates invalid clean+writable PTEs.
-- [High] Ambiguous PTE encoding between UFFD_RWP and NUMA hinting on UFFD_W=
-P pages causes spurious RWP faults and WP security bypass.
-- [High] FOLL_FORCE accesses (e.g., via /proc/pid/mem) silently bypass UFFD=
-_RWP tracking.
-- [High] UFFDIO_RWPROTECT skips unmapped PTEs, leaving them completely unpr=
-otected upon subsequent population.
+- [Medium] Dereferencing a `void *` pointer causes a compilation error in s=
+elftests.
+- [Medium] Impossible PAGEMAP_SCAN condition causes `rwp-mprotect` test to =
+vacuously pass.
+- [Medium] `rwp-mprotect` test will falsely pass if `mprotect()` completely=
+ strips the uffd-wp marker.
+- [Medium] `rwp-fork-pin` test will falsely pass if the uffd-wp marker is n=
+ot inherited by the child.
+- [Low] Uninitialized stack memory read when PAGEMAP_SCAN returns 0 regions.
 --
 
-commit 0937077addf68b8c5ba299257ab75ab0a674a8cd
+commit 636eb23e25c814d00a52fbe1a8d08dc386ad4472
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-    mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_=
-RWP
+selftests/mm: add userfaultfd RWP tests
 
-    This patch wires up the fault delivery side of read-write protection (R=
-WP)
-    tracking for userfaultfd and exposes the UFFDIO_REGISTER_MODE_RWP inter=
-face.
-    It updates page fault handlers to intercept PROT_NONE PTEs with the uff=
-d bit
-    set and route them to userfaultfd, falling back to NUMA hinting otherwi=
-se.
+This commit adds several tests for UFFDIO_REGISTER_MODE_RWP and
+UFFDIO_RWPROTECT to the userfaultfd selftests. It covers async and sync
+modes, PAGEMAP_SCAN, mprotect round-trips, GUP, and fork interactions.
 
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index d65e1833f08d6..8d5d6ca60b671 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing=
+/selftests/mm/uffd-unit-tests.c
+> index a6c14109e8188..8c49191835ea1 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
 [ ... ]
-> @@ -236,6 +236,18 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm=
-_area_struct *vma,
->  	return userfaultfd_wp(vma) && pmd_uffd(pmd);
->  }
-> =20
-> +static inline bool userfaultfd_pte_rwp(struct vm_area_struct *vma,
-> +				       pte_t pte)
+> @@ -602,6 +617,687 @@ void uffd_minor_collapse_test(uffd_global_test_opts=
+_t *gopts, uffd_test_args_t *
+[ ... ]
+> +static void uffd_rwp_pagemap_test(uffd_global_test_opts_t *gopts,
+> +					  uffd_test_args_t *args)
 > +{
-> +	return userfaultfd_rwp(vma) && pte_uffd(pte);
-> +}
-
-[Severity: High]
-Could FOLL_FORCE accesses bypass UFFD_RWP tracking entirely?
-
-When a VMA is made inaccessible (e.g., via mprotect(PROT_NONE)), GUP checks
-accessibility in gup_can_follow_protnone(). Because FOLL_FORCE overrides VMA
-accessibility restrictions, GUP successfully extracts the page.
-
-When verifying write permissions, can_follow_write_pte() checks
-userfaultfd_pte_wp() but appears to omit checking userfaultfd_pte_rwp():
-
-mm/gup.c:can_follow_write_pte() {
-    ...
-    return !userfaultfd_pte_wp(vma, pte);
-}
-
-Does this allow local privileged processes to read or write RWP-protected
-memory without triggering the userfaultfd handler?
-
 [ ... ]
-> diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfa=
-ultfd.h
-> index 7b78aa3b5318c..d803e76d47adc 100644
-> --- a/include/uapi/linux/userfaultfd.h
-> +++ b/include/uapi/linux/userfaultfd.h
-[ ... ]
-> @@ -54,13 +56,15 @@
->  	 (__u64)1 << _UFFDIO_MOVE |		\
->  	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
->  	 (__u64)1 << _UFFDIO_CONTINUE |		\
-> -	 (__u64)1 << _UFFDIO_POISON)
-> +	 (__u64)1 << _UFFDIO_POISON |		\
-> +	 (__u64)1 << _UFFDIO_RWPROTECT)
-
-[Severity: High]
-Does UFFDIO_RWPROTECT skip unmapped PTEs during registration?
-
-During UFFDIO_RWPROTECT, change_pte_range() iterates over the VMA's page
-tables. When it encounters pte_none entries, it skips them unless uffd_wp is
-true:
-
-mm/mprotect.c:change_pte_range() {
-    ...
-    } else if (pte_none(oldpte)) {
-        /*
-         * Nobody plays with any none ptes besides
-         * userfaultfd when applying the protections.
-         */
-        if (likely(!uffd_wp))
-            continue;
-    ...
-}
-
-Because RWP has no marker for unmapped pages, the entries remain empty. When
-a page fault subsequently occurs, do_anonymous_page() populates the page us=
-ing
-the default VMA permissions without PROT_NONE or the _PAGE_UFFD bit.
-
-Could this leave previously unmapped or zapped pages within an RWP-protected
-range completely unprotected?
-
-[ ... ]
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 978ead28c6d15..16b7596625abd 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-[ ... ]
-> @@ -6126,6 +6126,16 @@ static void numa_rebuild_large_mapping(struct vm_f=
-ault *vmf, struct vm_area_stru
->  		if (!pte_present(ptent) || !pte_protnone(ptent))
->  			continue;
-> =20
-> +		/*
-> +		 * RWP-armed PTEs are also protnone but carry _PAGE_UFFD as a
-> +		 * marker. Leave them alone -- rewriting to vm_page_prot would
-> +		 * stop the RWP trap. Gate on userfaultfd_rwp(vma) too:
-> +		 * NUMA balancing preserves _PAGE_UFFD on UFFD_WP-marked PTEs
-> +		 * when applying PROT_NONE, and those still need rebuilding.
-> +		 */
-> +		if (userfaultfd_rwp(vma) && pte_uffd(ptent))
-> +			continue;
-
-[Severity: High]
-Does this logic correctly differentiate between RWP and NUMA hinted pages?
-
-When a VMA has both UFFD_WP and UFFD_RWP enabled, NUMA balancing modifies P=
-TEs
-to PROT_NONE while preserving the _PAGE_UFFD bit (used by UFFD_WP). Because
-UFFD_RWP uses the same PROT_NONE + _PAGE_UFFD encoding, it appears a
-NUMA-hinted WP page would be falsely identified as an RWP page here.
-
-Could this skip rebuilding NUMA mappings for WP pages when the VMA also has
-RWP enabled?
-
-> +
->  		if (pfn_folio(pte_pfn(ptent)) !=3D folio)
->  			continue;
-> =20
-[ ... ]
-> @@ -6141,6 +6151,12 @@ static void numa_rebuild_large_mapping(struct vm_f=
-ault *vmf, struct vm_area_stru
->  	}
->  }
-> =20
-> +static vm_fault_t do_uffd_rwp(struct vm_fault *vmf)
-> +{
-> +	pte_unmap(vmf->pte);
-> +	return handle_userfault(vmf, VM_UFFD_RWP);
-> +}
-
-[Severity: Critical]
-Is it possible for do_uffd_rwp() to create an invalid clean and writable PT=
-E?
-
-When an RWP fault is resolved on a private anonymous exclusive page,
-can_change_pte_writable() can return true. The PTE is then upgraded to writ=
-able
-using pte_mkwrite():
-
-mm/memory.c:do_uffd_rwp() {
-    ...
-    if (!pte_write(pte) &&
-        vma_wants_manual_pte_write_upgrade(vmf->vma) &&
-        can_change_pte_writable(vmf->vma, vmf->address, pte))
-            pte =3D pte_mkwrite(pte, vmf->vma);
-    ...
-}
-
-It seems this fails to pair pte_mkwrite() with pte_mkdirty(). According to
-the MM subsystem invariants, a clean and writable PTE is invalid. On
-architectures that trap invalid PTE combinations, could this cause a kernel
-crash or silent data loss when data is dropped instead of being written bac=
-k?
-
-> +
->  static vm_fault_t do_numa_page(struct vm_fault *vmf)
-[ ... ]
-> @@ -6416,8 +6432,16 @@ static vm_fault_t handle_pte_fault(struct vm_fault=
- *vmf)
->  	if (!pte_present(vmf->orig_pte))
->  		return do_swap_page(vmf);
-> =20
-> -	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
-> +	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
-> +		/*
-> +		 * RWP-protected PTEs are protnone plus the uffd bit. On a
-> +		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
-> +		 * NUMA hinting and must still fall through to do_numa_page().
-> +		 */
-> +		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
-> +			return do_uffd_rwp(vmf);
-
-[Severity: High]
-Could this intercept NUMA hinting faults on UFFD_WP pages and route them
-incorrectly to the RWP handler?
-
-As noted above, NUMA hinting preserves the _PAGE_UFFD bit. If a VMA has both
-UFFD_WP and UFFD_RWP enabled, userfaultfd_pte_rwp() will return true for a
-NUMA-hinted UFFD_WP page because it relies on the same _PAGE_UFFD encoding.
-
-This routes the fault to do_uffd_rwp() instead of the NUMA handler, which
-clears the UFFD bit and destroys the WP protection. Could this silently
-allow unauthorized writes to write-protected memory?
-
->  		return do_numa_page(vmf);
+> +	if (ret !=3D 1 || regions[0].start !=3D start ||
+> +	    regions[0].end !=3D boundary) {
+> +		uffd_test_fail("hot set wrong: got %ld regions [0x%lx,0x%lx), expected=
+ 1 [0x%lx,0x%lx)",
+> +			       ret, (unsigned long)regions[0].start,
+> +			       (unsigned long)regions[0].end,
+> +			       (unsigned long)start, (unsigned long)boundary);
+> +		return;
 > +	}
-> =20
->  	spin_lock(vmf->ptl);
->  	entry =3D vmf->orig_pte;
+
+[Severity: Low]
+Will this evaluate uninitialized array elements if PAGEMAP_SCAN returns 0?
+
+The regions array is uninitialized, so if ret =3D=3D 0, the kernel won't po=
+pulate
+regions[0]. The check ret !=3D 1 is true, which leads to reading
+regions[0].start and regions[0].end in the failure message, printing
+undefined stack data.
+
+> +
+> +	uffd_test_pass();
+> +}
+[ ... ]
+> +static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
+> +				   uffd_test_args_t *args)
+> +{
+[ ... ]
+> +	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
+> +	if (mprotect(gopts->area_dst, nr_pages * page_size, PROT_NONE))
+> +		err("mprotect() PROT_NONE");
+> +	if (mprotect(gopts->area_dst, nr_pages * page_size,
+> +		     PROT_READ | PROT_WRITE))
+> +		err("mprotect() PROT_READ|PROT_WRITE");
+> +
+
+[Severity: Medium]
+Should the test verify the uffd-wp marker's presence immediately after the
+mprotect round-trip, before touching the pages?
+
+If a kernel bug causes mprotect to overwrite the PTE and clear the uffd-wp
+marker completely, the subsequent memory access will succeed without a fault
+and set the hardware accessed bit. A later scan for cold pages would still
+find 0 pages, allowing the test to falsely pass.
+
+> +	/* Touch every page. Async RWP must auto-resolve each fault. */
+> +	for (p =3D 0; p < nr_pages; p++) {
+> +		volatile char *page =3D gopts->area_dst + p * page_size;
+> +		(void)*page;
+> +	}
+> +
+> +	/*
+> +	 * After touching, no page should remain RW-protected. A stuck
+> +	 * uffd-wp bit would mean mprotect() silently dropped PROT_NONE and
+> +	 * the access never faulted.
+> +	 */
+> +	pagemap_fd =3D open("/proc/self/pagemap", O_RDONLY);
+> +	if (pagemap_fd < 0)
+> +		err("open pagemap");
+> +
+> +	memset(&pm_arg, 0, sizeof(pm_arg));
+> +	pm_arg.size =3D sizeof(pm_arg);
+> +	pm_arg.start =3D (uint64_t)gopts->area_dst;
+> +	pm_arg.end =3D (uint64_t)gopts->area_dst + nr_pages * page_size;
+> +	pm_arg.vec =3D (uint64_t)regions;
+> +	pm_arg.vec_len =3D ARRAY_SIZE(regions);
+> +	pm_arg.category_mask =3D PAGE_IS_ACCESSED;
+> +	pm_arg.category_inverted =3D PAGE_IS_ACCESSED;
+
+[Severity: Medium]
+Does this create an impossible PAGEMAP_SCAN condition?
+
+The test sets pm_arg.category_mask to PAGE_IS_ACCESSED, which requires the
+bit to be set, but also sets pm_arg.category_inverted to PAGE_IS_ACCESSED,
+requiring the bit to be clear.
+
+This impossible condition will cause PAGEMAP_SCAN to always return 0 region=
+s.
+Since the test passes if ret =3D=3D 0, it will silently pass regardless of =
+the
+actual page state, missing regressions.
+
+> +	pm_arg.return_mask =3D PAGE_IS_ACCESSED;
+> +
+> +	ret =3D ioctl(pagemap_fd, PAGEMAP_SCAN, &pm_arg);
+> +	close(pagemap_fd);
+[ ... ]
+> +static void uffd_rwp_fork_test(uffd_global_test_opts_t *gopts,
+> +			       uffd_test_args_t *args)
+> +{
+> +	unsigned long nr_pages =3D gopts->nr_pages;
+> +	unsigned long page_size =3D gopts->page_size;
+> +	int pagemap_fd;
+> +	uint64_t value;
+> +
+> +	if (uffd_register_rwp(gopts->uffd, gopts->area_dst,
+> +			      nr_pages * page_size))
+> +		err("register failed");
+> +
+> +	/* Populate + RWP-protect */
+> +	*gopts->area_dst =3D 1;
+
+[Severity: Medium]
+Will this cause a compilation error?
+
+The area_dst field in uffd_global_test_opts_t is a void pointer.
+Dereferencing a void pointer directly violates C semantics and will cause an
+invalid use of void expression error.
+
+Should this be cast to char * or volatile char * first?
+
+> +	rwprotect_range(gopts->uffd, (uint64_t)gopts->area_dst,
+> +			page_size, true);
+[ ... ]
+> +static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
+> +				   uffd_test_args_t *args)
+> +{
+> +	unsigned long page_size =3D gopts->page_size;
+> +	fork_event_args fevent_args =3D { .gopts =3D gopts, .child_uffd =3D -1 =
+};
+> +	pin_args pin_args =3D {};
+> +	int pagemap_fd, status;
+> +	pthread_t fevent_thread;
+> +	uint64_t value;
+> +	pid_t child;
+> +
+> +	if (uffd_register_rwp(gopts->uffd, gopts->area_dst, page_size))
+> +		err("register failed");
+> +
+> +	/* Populate. */
+> +	*gopts->area_dst =3D 1;
+
+[Severity: Medium]
+Will this also cause a compilation error due to dereferencing a void pointe=
+r,
+similar to the instance in uffd_rwp_fork_test?
+
+> +
+> +	/* RO-longterm pin so fork() takes copy_present_page() for this PTE. */
+> +	if (pin_pages(&pin_args, gopts->area_dst, page_size)) {
+[ ... ]
+> +	child =3D fork();
+> +	if (child < 0)
+> +		err("fork");
+> +	if (child =3D=3D 0) {
+> +		volatile char c;
+> +		int cfd;
+> +
+> +		/*
+> +		 * Read the pinned page. Only reaches the fault path if the
+> +		 * child PTE is protnone + uffd; async mode auto-resolves and
+> +		 * clears the uffd bit. If copy_present_page() dropped
+> +		 * PAGE_NONE, the read would silently succeed and the bit
+> +		 * would still be set.
+> +		 */
+> +		c =3D *(volatile char *)gopts->area_dst;
+
+[Severity: Medium]
+Should the child assert that the PM_UFFD_WP bit is set before performing th=
+is
+read?
+
+If a kernel bug causes fork to fail to copy the uffd-wp marker to the child,
+the read here will succeed without a fault, and the bit will already be
+clear. The child will exit 0, and the test will falsely pass, masking a
+potential regression in copy_present_page().
+
+> +		(void)c;
+> +
+> +		cfd =3D pagemap_open();
+> +		value =3D pagemap_get_entry(cfd, gopts->area_dst);
+> +		close(cfd);
+> +		_exit((value & PM_UFFD_WP) ? 1 : 0);
+> +	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629120749.5660=
-63-1-kirill@shutemov.name?part=3D10
+63-1-kirill@shutemov.name?part=3D14
