@@ -1,122 +1,155 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151FE3FD152;
-	Mon, 29 Jun 2026 11:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8B43B8948;
+	Mon, 29 Jun 2026 11:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782731971; cv=none; b=kt4k8I06UlyYG3MIvas2WvxK93aPMFYvQHMv2GmQYYVezqdYhsuhuUtpRDdS85F0pYCR5eJA4n/Puxz+iHsw0SDdjq2f1548xO4A8gW5U3ulYX1f9ivwp/XMi07H96EaMEyHnzoYdIP2jconaFt57Q/HppMbBQodJXarLFNVW/I=
+	t=1782732006; cv=none; b=AQUCzp2xsBU1nnGV+HaviC22xpOF1GGEAxURWdcIrLKeMLnmfPoSd1yPVBh63bOKqsEkbx5LSaJvquUBp6cZajbWNFlhB23UqXDRCFg6j2zrUEt95Mphl4gFx5C5fi1rAZZdPp/P4cNcEBwp7tUTNchyLT788bPvfbTtjW6NE/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782731971; c=relaxed/simple;
-	bh=Hlov7Nozzx9yYhHTSJZP/ZUhXHV/Gu1qftbUTIwp+Y4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drNLxo7fxzYho2v7eGzuzzokwY0G3kCzVqKMAbtdoDAdI1nx8MMZiMvWJHubYcV7pGTwDhfOfM+p5v2CZlrHjZVpolipg8GpoAfR09tA0oB/P9t7jTlPVQtusWeb19Obou9EI9A9F91m4Gd3nS5YpJa1WZManQWCD1JTCgAOejU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=K3IxTRqg; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782732006; c=relaxed/simple;
+	bh=4ntW/eGBOAgwWct2JF7ceVQci1kOYLbrbc3lwI4NGbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yi493zA2eZmShK767t9J5JoWU+8oKznaSeP8J5PBZ7gBRBboFClU++tc8CQtxbLGUq0WIU2Vtug0TUtgLP/XUfbwGNjvCSgd2mpyWzOTggD2pfaXi/UF05qR+y1rG1y1KntCPeM7Irv1RvQpdIljArzmlQ+QAYcaTsJRe1TRwmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isRnHms0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="K3IxTRqg"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AAEE358F;
-	Mon, 29 Jun 2026 04:19:25 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 794F73F905;
-	Mon, 29 Jun 2026 04:19:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782731969; bh=Hlov7Nozzx9yYhHTSJZP/ZUhXHV/Gu1qftbUTIwp+Y4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3IxTRqgv9VLVw7RvPJif9Wmw2DyJOcXp8Kl4ZNWUO24q7dKWTIDu2TpRIU2wk/jF
-	 KA1h3+9tZbvIX4wyYx7eoFYNuyVCZR/u9hQdnZnWYZXTMda5OTf3AvUFvlDbNGNumH
-	 rEs41n/Z5u/+3g3QgRrWtFtt2UeNLe0c3Vbhq5JM=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Saket Dumbre <saket.dumbre@intel.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isRnHms0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785D81F00A3E;
+	Mon, 29 Jun 2026 11:19:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782732005;
+	bh=B6cSgDNUNCaJrq5YwzbaI3oA+4ARO04BNnR9PnfFHCo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=isRnHms082rD0YpFSEFNAirC9nvfh4Nn4Wukfgndq3I2Za6wZ3cZIX3OAtKqyJ7Jk
+	 QbxmpIhxp4Zme+ZJuosxaLE4+d9zsfz/skW1tPR2ZZfSPRqJmpRppDTWUgZyVS1CHB
+	 5QsW3n3TKw6RWILA0r+sB1OCe6Mi/a2ArdZ+CsZawVZxFaC5s8Q66AfZ53Z96KwYuW
+	 uZGsBXS1+y0VFETJSXBfuVdng+45W1oD9ZySufSdDejxCtS40h2780fAI1q4GM1Tvr
+	 c3+dPOqi24Z4+uI+6dYF9faK4Re6IYH+Fd0D81x/uqCCnIeztFgIByQ88ta8CCLLl0
+	 zIbUQJ18s/EdQ==
+Date: Mon, 29 Jun 2026 13:19:43 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	x86@kernel.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+	linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"lukasz.luba@arm.com" <lukasz.luba@arm.com>,
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Chengwen Feng <fengchengwen@huawei.com>,
-	Leonardo Bras <leo.bras@arm.com>,
-	Kees Cook <kees@kernel.org>,
-	=?UTF-8?q?Miko=C5=82aj=20Lenczewski?= <miko.lenczewski@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Zeng Heng <zengheng4@huawei.com>,
-	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Pu Wen <puwen@hygon.cn>, Bjorn Helgaas <bhelgaas@google.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, Dave Airlie <airlied@redhat.com>,
+	Helge Deller <deller@gmx.de>, linux-geode@lists.infradead.org,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	James Clark <james.clark@linaro.org>,
-	Fuad Tabba <tabba@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Tian Zheng <zhengtian10@huawei.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [PATCH v2 13/13] KVM: arm64: Enable KVM_HW_DIRTY_BIT
-Date: Mon, 29 Jun 2026 12:18:01 +0100
-Message-ID: <20260629111820.1873540-14-leo.bras@arm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629111820.1873540-1-leo.bras@arm.com>
-References: <20260629111820.1873540-1-leo.bras@arm.com>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ashok Raj <ashok.raj.linux@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
+Message-ID: <akJUz0kYkEBdLSZ3@gmail.com>
+References: <20260629060526.3638272-1-jgross@suse.com>
+ <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
+ <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
+ <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1137; i=leo.bras@arm.com; h=from:subject; bh=Hlov7Nozzx9yYhHTSJZP/ZUhXHV/Gu1qftbUTIwp+Y4=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLKcQpLub72/bYvV7vYvLekhS/edDW7POb3Sevf/BcGxm htau2K3d5SyMIhxMciKKbLIPpq/iuf7lIwjV34sgJnDygQyhIGLUwAmsqOMkWGvqUmjw/nVLEp+ p9ivLBM7L99jt0JleWi9V/KtzSV2c30Z/infz8uNsu0MErrBejx1G3fFx9QLk7UcBIpsnXzUlk5 +zg8A
-X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
 
-Set the corresponding bit to enable hardware accelerated dirty-bitmap and
-dirty-ring cleaning for arm64. Actually using acceleration depends on the
-cpus enabling FEAT_HACDBS as well as the pre-requisite features for it,
-such as FEAT_HDBSS and FEAT_HAFDBS.
+* Arnd Bergmann <arnd@arndb.de> wrote:
 
-Signed-off-by: Leonardo Bras <leo.bras@arm.com>
----
- arch/arm64/kvm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+> >>> Note that most patches of this series are independent from each other.
+> >>> Only the patches removing a specific interface (patches 7, 15, 26 and
+> >>> 30) and the last two patches of the series depend on all previous
+> >>> patches.
+> >> 
+> >> It looks like you are touching most files twice or more here, to
+> >> first convert from rdmsr to rdmsrq and then to change the
+> >> two-argument rdmsrq() macro to a single-argument inline. If you
+> >> introduce the inline version of rdmsrq() first, you should be
+> >> able to skip the second step (patch 31) as they could be able
+> >> to coexist.
+> >
+> > I've discussed how to structure the series with Ingo Molnar before [1]. The
+> > current approach was his preference.
+> 
+> Ok.
 
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index 449154f9a485..db8487bf738b 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -27,20 +27,21 @@ menuconfig KVM
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select KVM_VFIO
- 	select HAVE_KVM_DIRTY_RING_ACQ_REL
- 	select NEED_KVM_DIRTY_RING_WITH_BITMAP
- 	select HAVE_KVM_MSI
- 	select HAVE_KVM_IRQCHIP
- 	select HAVE_KVM_IRQ_ROUTING
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_READONLY_MEM
- 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
-+	select HAVE_KVM_HW_DIRTY_BIT if ACPI
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
- 	select KVM_GUEST_MEMFD
- 	help
- 	  Support hosting virtualized guest machines.
- 
- 	  If unsure, say N.
- 
- if KVM
- 
--- 
-2.54.0
+Note that the individual patches are IMO significantly easier to review
+through the actual 32-bit => 64-bit variable assignment changes done
+in isolation (which sometimes include minor cleanups), while
+the Coccinelle semantic patch:
 
+   { a(b,c) => c = a(b) }
+
+which changes both the function signature and the order of terms as
+well, is just a single add-on treewide patch.
+
+Thanks,
+
+	Ingo
