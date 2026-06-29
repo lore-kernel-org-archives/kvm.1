@@ -1,127 +1,66 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB414657E7
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DBD276049;
+	Mon, 29 Jun 2026 17:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782753089; cv=none; b=N6J72yxAvnJ3hzL4nTo+YY+y6e7utyzpsEgaJod76DD8BrmdKTmvi7qEq0fAtbunli/edtERVIAIb0VHNC7LDZSoFb6nD3q5SKWdys63BJMGp+eaznfbmwqr5a12EolxOQsfdPn1hvpQSEgzxQvkbjyMIPpFTQBSiCpUOn6m05Y=
+	t=1782753735; cv=none; b=HlC28yNYkJAiuHA6//WOC6LmBleBXhcpdaurEkW5SitM2vHqQwc4ZVxDRPZf55Ts6rnrxEjwl129cuRLSMatatH7iBi+P6l8ckHSq4nFFOIbrFGJ8zafjOSOrUfaWHQPRufUDHk2pdHAVUDeDXybwEDD92ZJ0P5iW1e8OhPzxGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782753089; c=relaxed/simple;
-	bh=NzS+Cir/zCg/P5bHO1uwaI39NGJ0soZPEUZf3jpz04g=;
+	s=arc-20240116; t=1782753735; c=relaxed/simple;
+	bh=M0DeJ2sFGocMw0PyGSHvELWdraexiP68myqBLJQNHFM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nm9mP7TcADiljmQ711PadDHZooY85PHoJki3p6dUqnYwCMAlSrVJQdqSF8VctfSrZ96aRW+rQbaeJhmXtoWuqNNOYUeOXBT4HPdK/SgkF58EsLojNjvbjhmnugPeZCmCOviF/IJ1PYTUk9QXMFwsLhDxLAVsnt6yb6nPNrhgYzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=kRN6V9UH; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=m16Th1tTagZCDQpNLCtohoDhbTlbgLeRFLajAKsnmJM+K3FvpPctcLkgFIimFb1ceA2msOPQ3RkesWeQU5l9U4/Q38/8Q9SJavQEzwXtIOA2SlZzhwJCGTU7IHTgLZ3jgLPT8wr2RJ7gR/eOFoSmQ8FLTPYi1uoMJbV68hswb0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gbqz5hrO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="kRN6V9UH"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c05dcdf49so9955061cf.0
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 10:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782753086; x=1783357886; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C6+KY00whvPT5nv3+mPk4rrEbELgRer0MfbyQfoaO+U=;
-        b=kRN6V9UHAwpM/B7ZQj92hJHopNqlsQzIOmXqJMvTamcPlxklFV0LvQy3QWNM1QP7Cg
-         GH/B6j4NR8EjGWtJ7y0rtEMD72lM/Ol3O+kcCCLmBYgCUwpCnz6M1Vza/HDIPhr6Ho4g
-         FS0AYtSrLnOR62Sl4+Fp9dyFooraqcXxfpe7UwDAsCQUNyQjDBIydzrxtTHhX8muDIPl
-         2ceKAx0MDUrzb4lVg5ptX3iKHFRgKue5Hj9zJmMze7I9Iurb8+M5gdBoW3w835DtCSQO
-         1zERXqGaVZ5i0l6HUbCKx7j/x3Ayfyuf747TFFD7HbgApsGBKGgEEuj3GQDHNhvWC4aK
-         pBhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782753086; x=1783357886;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C6+KY00whvPT5nv3+mPk4rrEbELgRer0MfbyQfoaO+U=;
-        b=PNyzPPkAyq5RRSgqX4Ulj79nvpTjsYvt9xu6tRV1NV5EOvqCaEbwBTN/UqXnD1N444
-         lcmDoyctE4K/w60hM+qsB3Hs5SDIRA4+jIacXm1/uZ7hqsaIaRqxQ9F1uleXVEQ405Mq
-         2nxrc02KccdDSGZ8C/SGyFiKjGnpz8a89Ohswle0ldQwMohP5vmeVFyXXiUnkBeKd+vm
-         bdffzW5BCrSNBSu+VTWzzrrsc6wKxy+UYu3gBxws3qufmWKW1BJG5WDCJqQEgkn8Vjr7
-         cKNxSBsaMVO09ml8M9ZYTGsozdruP1cTrKG1RmD1cBdxp1hdsJhCTrolJ7Tl4UtWx//N
-         584g==
-X-Forwarded-Encrypted: i=1; AFNElJ8YDFhV2wO8QVeU/f7E8/kEe1/1JgHb3bylPjExb8/EpNCoeXEUrnHSq+G6bd4G03chNRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrrFqO3Bj7wRTiUu58c9IVYbtBVsl/RdQQ9D8KDFHeA4ypIXJH
-	dqrfAhFlx7Ct7X0AzCnmbwVh2ql7QrSbPFgnAmhvUE9D8ulWlvcGnAEU8IrO0yabHAc=
-X-Gm-Gg: AfdE7cmwnmfxVxc18xAa4GDiiWyjk9TdVAhti5AUnCWDW9NzwAtttaQYc+jYH7NujeC
-	XZZKqhlCRlycASgvRvsjou64+gyGt98qwXMi6TWcI5ZErkudbKi1j02pGYlu+Qwtb6SkGoECS+2
-	zDgit5qGE+PIJCMy1CZsNw3IpYmB6pbCXIJSRR+lrGyi1KM41IJkDitQ8iKYkrEqfPuYn0PFOG5
-	EVe/oPDtlm5WqUgwuQJRN8N5Rqt5OMDxa1p6T3bfkd70qXFWsOO3By/lVHGfVBuSFZ/6Q3/qcdZ
-	F7x3ywrrylcekwRHIG6ad+BvUGTrlmQAMY01C6kWoWWi8x8EuFQZg8Eov1r5tth11Jkhog9HjoO
-	ga92wnQQOznfHhpZBIe5wP2neM3fydnKtfurHI1/9n+HP9kZJaFUV0vFkpK1MLop8vN8RBkfnUC
-	IxTU3/P3I93Dwvkm5TyEQX7oMWpL1vxxZAQkD1wvAoBqTIiLoOk64p4mYzvAyn/xoE7MZ+++0in
-	Esm1n0=
-X-Received: by 2002:a05:622a:420b:b0:517:58f6:29c3 with SMTP id d75a77b69052e-51c107f633bmr2561751cf.32.1782753085667;
-        Mon, 29 Jun 2026 10:11:25 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c1080d4dcsm934601cf.5.2026.06.29.10.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 10:11:25 -0700 (PDT)
-Date: Mon, 29 Jun 2026 13:11:19 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
-Message-ID: <akKnNy64lhNqPtLL@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
- <akKWvnU2Ua-8ceSb@gourry-fedora-PF4VCD3F>
- <akKfAl-wdIAbexNR@lucifer>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gbqz5hrO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089DE1F000E9;
+	Mon, 29 Jun 2026 17:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782753734;
+	bh=MJcyRBCuDpTSk1/d5SQB/+Lx7UTikZcZTrFMFGtoOvg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Gbqz5hrO7fBgXQ2j8893haOH/rdMwMKj41c+b2V2Z0Uo3rrpysIT0kZCrTydl+GhZ
+	 145+yOuR91ka9e4QPcbrDM+idcikLa659R1gY+j1y1uS1dDmSNW8dXSuWr1B6lJkLL
+	 kAVrQppzIlhrGfDSiz2YNzptozjTEwWYYr7/tGdGPBs/fxoBW7Z+Ez2QfbLbdgFA9J
+	 ZykRMu6xyVfadkTOBtnK2AY5uTFemwfRyG7jHE0ykI9P7deLIn4g7Y8h2uLHtledv/
+	 lYvsaYxpKEGUe1vN5bOzExuP7k+IByZyCirBWzi7Zgz/NYHbLJhuUP/9cojUeTzoae
+	 wQB/XIUGPvRiQ==
+Date: Mon, 29 Jun 2026 10:22:12 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Saket Dumbre <saket.dumbre@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Kees Cook <kees@kernel.org>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	James Morse <james.morse@arm.com>, Zeng Heng <zengheng4@huawei.com>,
+	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Thomas Huth <thuth@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, Mark Brown <broonie@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	James Clark <james.clark@linaro.org>, Fuad Tabba <tabba@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tian Zheng <zhengtian10@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize
+ HACDBSIRQ
+Message-ID: <akKpxDulRN7zDrgM@kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com>
+ <20260629111820.1873540-6-leo.bras@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -130,36 +69,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akKfAl-wdIAbexNR@lucifer>
+In-Reply-To: <20260629111820.1873540-6-leo.bras@arm.com>
 
-On Mon, Jun 29, 2026 at 05:41:16PM +0100, Lorenzo Stoakes wrote:
-> On Mon, Jun 29, 2026 at 12:01:02PM -0400, Gregory Price wrote:
-> > On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
-> > > Update the file comment to clarify that both file-backed and anonymous
-> > > interval trees are provided, referencing the relevant data types for
-> > > clarity.
-> > >
-> >
-> > Isn't this self-evident by nature of the function definitions?
-> > (one takes a vm_area_struct, the other takes an anon_vma_chain)
+On Mon, Jun 29, 2026 at 12:17:53PM +0100, Leonardo Bras wrote:
+> Find via ACPI [1] the Id for HACDBSIRQ, initialize it as a per-cpu IRQ
+> and make sure any cpu able to run virtualization has it active.
 > 
-> Well you see you're already hitting up on issues there, they both take an
-> rb_root_cached and the vma_*() ones do not instantly scream 'file-backed' do
-> they? As VMAs are obviously used for buth anon and file-backed...
+> Introduce a per-cpu structure used by the HACDBSIRQ handler to keep track
+> of entries size and the status of HACDBS. Size is used to detect end of
+> processing in case the number of entries being processed is different of
+> the supported entries size.
 > 
-> But later patches fix this stuff :)
+> Status may look easily replaceable by checking HACDBS registers now, but
+> will make the OFF/IDLE detection easier in next patches.
 > 
-> And I feel it's hard visually to see where one set of definitions end and
-> another begins, which was really the motive for this, as trivial as it is!
+> Signed-off-by: Leonardo Bras <leo.bras@arm.com>
 > 
+> [1] https://github.com/tianocore/edk2/issues/12409
 
-Fair enough, I scanned the rest initially but trying to wrap my head
-around everything as i go through one by one.  Generally this really
-screams "fix the apis" not "comment the bad ones" - but i suppose that's
-the whole point here.
+Reference the ACPI specification instead please. Any link you want to
+include in a changelog should use the Link: footer, the linkage to the
+inline citation will be obvious.
 
-It's definitely an improvement either way.
+If we need to initialize the IRQ I'd really like to see device tree
+bindings for HACDBSIRQ as well. Pretty much any system us plebs can get
+our hands on is gonna be DT anyway.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+> +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
+> +{
+> +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
+> +
+> +	switch (err) {
+> +	case HACDBSCONS_EL2_ERR_REASON_NOF:
+> +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> +		break;
+> +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
+> +		/* When size not a power of two >= 4k, exit with reserved TTLW */
+> +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
+> +
+> +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
+> +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> +			break;
+> +		}
+> +		fallthrough;
+> +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
+> +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
+> +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
+> +		break;
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
 
-~Gregory
+I have a pretty extreme distaste for creating a state machine between
+the callsite and the IRQ handler. The callsite should poll HACDBS for
+completion. The thread has nothing better to do anyway.
+
+Thanks,
+Oliver
