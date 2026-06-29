@@ -1,125 +1,87 @@
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E46E43E4BA
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 16:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FA444102B;
+	Mon, 29 Jun 2026 16:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782748871; cv=none; b=ZYNlEvcqQxtXuE8Esv6xK92vhnjLNjd1AD3fIR/BeOc23rDU29QwaI3qHVAjgDThNDvWLs7wgTJNsTnVAVENMSY03VwapZBBsz4yx7aR+0DabZvGC9FygyMrcLCBLQyC14/+qO611RbxB52mAG3hFI/w9R06OGya5Fdvnm/RuJE=
+	t=1782748965; cv=none; b=lUkz8JscVfb5M5HOxwp5tAfQc0iWSG6sCIQIfWsAClrqUHDrKh4OnYivbE/r4zKmf/HmEfUwnLdkSJzr+JIDounBbnrAOXGhxcziRrfjeG79YyqVZLlwDcmUNGlVbA9LNvZJP3NflSfgdnbE9yCUHgPGFeP7exTXe2Vbft5Cwrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782748871; c=relaxed/simple;
-	bh=z4dmX8dXcX6a8GqR+YBU+JEoYI0/LpvWh746yKHnt/A=;
+	s=arc-20240116; t=1782748965; c=relaxed/simple;
+	bh=xUf6430MUJDHSC5orAznw95bP/KW4glg9syvaE6YZhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OOHT4h0+ur9AFhyo9Auxs84janycYfoFBAo3HD7RduZJvZitq8KE9B911LvTs5kdONpwMKs/0ujK4lT4LeKJLYxpB9/hi1v3N59Eb9Ur89yzEO96wVFYYnKe1zWrzQmPi/2WJF4iZKHMj4xKTURU79LueVTEBJw1aVgWOR8LKaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=WSc3BCtE; arc=none smtp.client-ip=74.125.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=KAULuRLcPFYjcm9RT9YF/CULLYC0uDcnM4aY6VQdYcNh9jqoFUcygD9bvQhNgMZHsXuFef7jo8i6cuFyOkG+estHDr9CY6u/Tgg442MP2oaNHghvbTTjAGcw/BAJgI6NKz/yY6+oZjRVVzpTCdQtGolzWoYyAUAmjCzRDGAfYYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=lterjNH4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=f4Prm+vx; arc=none smtp.client-ip=103.168.172.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="WSc3BCtE"
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-664c6304683so1600410d50.2
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 09:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782748868; x=1783353668; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4iCXvcvVpnsYDr5kbvWXbUhbyvnE3mHOMHboZJmxShw=;
-        b=WSc3BCtE8Cy+JHvUpBDEzKlYlMSsDumRTtNx0pLodh+z91ImCWQKXqvSA3g0StYP9q
-         WrorzSWt4Ci3VMAqva60P0tz6Ewj/7E5C1GTM6F39ZZ/ZWHoe35ol9bRRgqmO91Pz31h
-         bBjEsr1/d4aJh/ghwBfx971FN2EO+YVXdYERLnCkfp6ZBwMHOcygXzSS4LX1OECMt2TG
-         yWmqN6KXAEwQQwW0fMlQSaHo4lqTG47IHQowQvaM2FAK1rjDC87LmhLr7rfqqVICSflr
-         D/Fr2uGWOHOzSWVk415eHQ2p49zbKQCfYoi0dGLl/dfgkqDGA2z8qMmM7gO455uFLEKT
-         78JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782748868; x=1783353668;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4iCXvcvVpnsYDr5kbvWXbUhbyvnE3mHOMHboZJmxShw=;
-        b=BNibohQyIKdmupfzca5sIKvAKIUISLmWPHREMElrxTRacTozmupCY4aIyJc+aEHH54
-         KNXmGbtrN22Hv73UoMyjkOd3ZFzgLb2BkmFkA0jVG9TA01qsgmdmQYKg3MJ4ioMoojlx
-         zWca+itmB7Epl51WjyvkdYCfNXGrB77hy0Bf9sTp1QMiOdTYdk68Zze3DdJ5x5dKVmXT
-         rnX7WeYK5qO+wdkqjcyc/FlsCq7tGbKug+7iPGpPV+Lfua9c2uM1BbwI3frUKqor2G+d
-         2uypc+OWdLx0/fE6kNTBAp35c7xBFTRPyzASU5wgZKIlg0NpT9tDbU52ozigAh20V/NN
-         EeDw==
-X-Forwarded-Encrypted: i=1; AHgh+RpY5ZjVig5oPcYIH6K3LxoaGB65/K1OBn6T1sbw6T3TDmqNPVpAiSm0BP8o9vS5zU1Efu4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6O+0Z5LoHQTvgHnz0KRSLccG0APjxxDsspgYKd6t9ncIMjTXC
-	iv8L2slWOFG3MzKiV9d17lKMHRqMzA4JeQXpE0db1glVGx5CgSxU9xXVVchBiU6A3vs=
-X-Gm-Gg: AfdE7clE3TNC7ztDVigDqJdjiGTm49zzcbUzPg15N5rguVwAs5pcZLAgQhD6EHW7dTS
-	54BDFx42SqHy/S1Q7Sl8rJN5r0bXTqi0IJp5zDqlScrBkppM+IyW9t+d2VeRONtVoy3fL155PTm
-	goaygX071o1uD4h2iGqYliT/p2IJZPhhd6uuCha3c05pncn4hqkvOxgV87xvRXdPSBiWfcu6Yxz
-	fV8+sHGA/9YjsVZygUdDaIbHY2YfRsKriMr0u8FvU4olf9Vx3PMblOdvgJS4Opm3ZmJLL/2zN9Q
-	/wc177zY292tk3ja30MmKAtBq24Su/HS0QavH1XDIdFKmU3LP1jiTnsydFmlPW/3nOMxYZ66H+i
-	ybDwGwNFmHo+TUXoCquLsROFpl9uHzSWwj0SUVeoMsJKSE1QMwEdt1dMKFEP3X1LboZkck/RpLf
-	IKM1QE3K00InToOCZ65AK8qJycQs622GM7EyYBzx7vN+pk/LZQnPGwJBosSa883/qsL+AxfyThu
-	E+DnjI=
-X-Received: by 2002:a05:690e:d8c:b0:664:e66e:f965 with SMTP id 956f58d0204a3-664f974638cmr245066d50.7.1782748868214;
-        Mon, 29 Jun 2026 09:01:08 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a717edc7sm1112836d6.36.2026.06.29.09.01.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 09:01:07 -0700 (PDT)
-Date: Mon, 29 Jun 2026 12:01:02 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
-Message-ID: <akKWvnU2Ua-8ceSb@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="lterjNH4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="f4Prm+vx"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.phl.internal (Postfix) with ESMTP id 6FBBF138037E;
+	Mon, 29 Jun 2026 12:02:43 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Mon, 29 Jun 2026 12:02:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1782748963; x=
+	1782756163; bh=5M7UrWTmU2fnWKZojvoJwc5RGoqcaVVltooaRFZSbD8=; b=l
+	terjNH4SS6dbm7ZLR3cT8v0CQWM6BYPp7JwJx5JHs6wYmDrskeL9eFpXHU7x5FP9
+	i7ovNMukFffN45qrCtjS5pVHdrUWJQuIsxug6mnYgJ8XN1PRNJw/yVQufVv8vV7W
+	X25/eoFjgyFoGvv/DplYNLrPAV5fdPTMfp9adZ+5bzKIyTk6uVbaMcXvodkORq9m
+	rFz7oNrgxuYOPK4a5gD+/YhYEfqASmYZVM2laU8bM5n3xGFrX7mIEaj+7sRV+yIr
+	P9fS3RowK9esq9C4O+4JY6c03GlWm9STey+km/jkknM04NQGoy79z8VBAilMDjli
+	3ISCnhaa/y/MXCmTkojQg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1782748963; x=1782756163; bh=5M7UrWTmU2fnWKZojvoJwc5RGoqcaVVltoo
+	aRFZSbD8=; b=f4Prm+vxw0uPrjIauItnXpWZWosjcyK5uKoXRf3h8MOxc0RK/TQ
+	NxeUehuXq0dAp9HeDS6CARmGeyw6ESQNFvu11X8Zdy7XaU2nr0Jrwzc/+0s9c3RN
+	wnIGjqIIwd5En4IDHPFOA8jE6kMWpN5/L0zoZZEhliNp7YEioZGAM2trxB4bnNZX
+	UK6BlFw63n7yRsTEeZVRMNsD9gl9y4+lLXuC19yw09hvfS5RdqrC3SJT2ARSuID1
+	froiUydCH9CNMUaEOr+hXtUy87hkEW1knryg4vVMfH/cZfHcAeZs7azys99Izkgs
+	TnnqGCY/NaiYRZVVYMArKRvnHBoCtfUsQ8Q==
+X-ME-Sender: <xms:I5dCahmrywK2XmKKrXi34cxfd-7jZ5vYqMOZDLC0dONzWjSgGWB0IA>
+    <xme:I5dCalPY2ZqO546gF66vI4g5nJZD3yjlQCs-aNCcJMfRorFAHAyrva09ADxB68QqJ
+    WCZoneYSMMDZwQWA9yDBJYZiAI2vmZ_lYZdxTAl_oSAtJhs39SZai0>
+X-ME-Received: <xmr:I5dCah7z1q6CBoH2evDYJLFJ126BboKdoqYET9eu2yv8roOyvjPZ_-Mbc0P7Ow>
+X-ME-Proxy-Cause: dmFkZTFDlTNK+FNohJg4noCYbW5VpwAEJ/3lhl31ZFTIvh6wOi6MwAQn2pdhCP1fDqPjSp
+    DThp5HlJoStLNnqS7NKN1XFUvrVLCFaaDrqKHocOP7Q0yFfyk9vYJwPjD4MtZnSSU+huSE
+    0bkQ4ZIkzUfj30WTfAyH257AFUsdMzCDhw0NoGAJUakjPmDj4VwuK9ibUEs2fq3McnGv78
+    Nh2JYbn4djoiaQDuiejPXLoPHxDQPhQeipCwDaQnTK65xBeDKRnJz9LO1G0ubz+7ygczav
+    kf9ymsjv6R0e7EpJWlgyVS12qRilACHu4La+l0bLD0/MxAsnjj+YIo73t+IxeqDILoe3aI
+    EGi5XfI/jWveDG9g4WL+5X/HQPKMnj5RRBtKX05jMG7+yCi7C450Ue3g9/WkhfbZVE1DD+
+    BXn09yMHPghVteggvBz2uHm+ayYXAy4SInb/5Q8CrS2AiPIChqLo/yfuVTLXhZg9UKdLu2
+    BK7bij7g/xg9IyuQmHAsF2svJoFNX+gKUlLyXZVTwg0oU9NpZFhqZIhetDbTjdDqIw6FxV
+    NDL+Jg024Pzi/8xay+OtYIKFSFiKHP9C82afWChq9YWh8ws9G8Mxn40tP1FMgFeJw3igq/
+    7iPc6nh1nX/NB32lxDYrSzQ1mF4YU4WilWmhoSLeg78JloBwBmC45O+6h4XA
+X-ME-Proxy: <xmx:I5dCamKBecsIvHRTs86s7_UMNMQyF4VfTO6wv8sfOFicnMvOAY836Q>
+    <xmx:I5dCatKhWeWhuybIyaV1aL_pZOF0pD_VdovgDw0lObYC_lxqQBUnww>
+    <xmx:I5dCam1ygCErQMLo99_D0L_5-34w1LIlYTQEGpJyn4JSFaCCkqubHQ>
+    <xmx:I5dCatyNiRsJqyMNLB5UB_39zZ8g0COnUVokKpTu8WxgXOfpBZtTqA>
+    <xmx:I5dCam1Ngh67dJljnvhol0Oi168Rb156u1MIFMAysA-Umwqcqk0HfOvm>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jun 2026 12:02:42 -0400 (EDT)
+Date: Mon, 29 Jun 2026 17:02:41 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org, 
+	rppt@kernel.org, peterx@redhat.com, david@kernel.org
+Cc: kvm@vger.kernel.org, ljs@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
+	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 07/15] mm: preserve RWP marker across PTE rewrites
+Message-ID: <akKWzol3mExZhVYq@thinkstation>
+References: <20260629120749.566063-1-kirill@shutemov.name>
+ <20260629120749.566063-8-kirill@shutemov.name>
+ <20260629123320.1EF891F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -128,23 +90,13 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+In-Reply-To: <20260629123320.1EF891F000E9@smtp.kernel.org>
 
-On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
-> Update the file comment to clarify that both file-backed and anonymous
-> interval trees are provided, referencing the relevant data types for
-> clarity.
->
+On Mon, Jun 29, 2026 at 12:33:19PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Critical] do_swap_page bypasses RWP tracking on non-exclusive private pages by resolving COW faults internally, dropping the RWP marker.
 
-Isn't this self-evident by nature of the function definitions?
-(one takes a vm_area_struct, the other takes an anon_vma_chain)
+Okay, this one is real. I will add test-case for it and fix in v8.
 
-> -	VM_BUG_ON_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
-> +	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
->  
-
-For my own edification - I know not to add new BUG(), should I be
-converting BUG->WARN/something when i find them in areas i happen to be
-working in?
-
-~Gregory
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
