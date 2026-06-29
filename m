@@ -1,196 +1,155 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C69241B354
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 14:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2B83CA4B6
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 14:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782744195; cv=none; b=KtNNCrhDkGwQDOitajFqJ9LzO/j66eOtQzxkRj0C1ETP1aTedtOeD49fh1ZlJsKWHORL3dcDzSQUDSbpsu5mYM6vLtDUSMP3TwGQBQIDmgN4OlcH08672c15vVc9W74yPFGBDDKFin3bfRpkR2o4Yb6PdaIFGcOFHTC/8K7hIFA=
+	t=1782744489; cv=none; b=Cn19u2NA6J2DLDdEtaNQhsBh4LA6CQZxmnQNJ5Xc1W5mjHmRXNxl46o6S+r2G+ZsIYoiE/jT7LM9PwNVwU0taQdgID8ttKIIq1FHaAx2XtV2h0E36W/MtZk1hQGCaHzyoOF+DOQvS1wKF2mBTXS623CpcfEpiBWzcO7gVDyk0Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782744195; c=relaxed/simple;
-	bh=AWi8TIYnBq1iw+l4kEn1xWYlAXGI2IMzOVkcKmcJjoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Le2oOgTqDfOoZAO0nTnGvnimHmwUs3rCS/0t2DXu6pnlBv5QY5QxQIgFB7O6PHtp00LaAO1JO81geba9VRAcvztnJLevsgsMIlRB2E3WkeP/9PzjhYV+LW9xvjp1pJLL8GdU5CSOW+T+rubXsawnb1P77p+QxK6ExH0J9+Q6n6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ddl9Ag5g; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gpv9dimi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782744489; c=relaxed/simple;
+	bh=+pCNkkGZ56/6raU8EBpJrhM1D7spqmtSQE1bdpbcxMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=t6Ai/rfjLbNW4DX0oGPovkTCd3UCfJNAt6j7Um97+Ybd2GQJJpt8uvncHEot2OuyiFt2Lj+U7LFs4atDKWWRPpWeiXpgqcXubGyr2eWNH1mK+YjgVHQcZeVfxHjoESNwD+U+aTSf4Km36S9obeYvONFFw3xK6IqbPXw6xh0seOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=B2pVSlBC; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ddl9Ag5g";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gpv9dimi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782744193;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Y/BA1zbHhuuh8CjmEucVuFCUPw5lNOCIU8iLZzA+0W0=;
-	b=ddl9Ag5gqeUIINpv2HxTKNLYpX3bbeJmcFPM6mDTURea0s0d7qSFPi/slfRxnIrbx72siq
-	MBO3kkUrOHt7Yo4sigoznJQ6LOuwozAWKI5dFK5lpmmssUCnNwerGOweGbsSfd+AXHSNiK
-	2UKEJStQBRX/V5/jJddfdqFKwx3KnQ4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-dqpUUPfrN42aSdAon9WozA-1; Mon, 29 Jun 2026 10:43:09 -0400
-X-MC-Unique: dqpUUPfrN42aSdAon9WozA-1
-X-Mimecast-MFC-AGG-ID: dqpUUPfrN42aSdAon9WozA_1782744188
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4924207e640so29301215e9.3
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 07:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782744188; x=1783348988; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y/BA1zbHhuuh8CjmEucVuFCUPw5lNOCIU8iLZzA+0W0=;
-        b=Gpv9dimiDOTDVB7JtRGZrI8hDzGeJpPEtj7raY0gAkAdCVOqm5a+27Wr02UHnhrQl6
-         gmFgAqFdi2Y/Bm3VGIkHPmnBbt1E9OxPa3D12pobQzfcJgNs3AVVvtvO8FnU67rhhZeD
-         T6DtjfWNXkyrFgs5lFmZr3FXy/wQJfIRNhILgsD2jjyk1vDjJRwYpsjvrxKzLNmy64YX
-         JEmP2ffehJ45vNUqrQVKIhHI5AKUIN4fJql6/DOUFP7DO4SitWEdhbDiz++g1M2Hs6VC
-         KAOIawc8kpGGW4UJFIdXRxOurvPY4s5pictVExFpZCm4epCWyQn5Kskqv4p/2fTWrtYV
-         inwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782744188; x=1783348988;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y/BA1zbHhuuh8CjmEucVuFCUPw5lNOCIU8iLZzA+0W0=;
-        b=qsNLKchbAfDqU0vFUfg6cs/WaqnjPEX6MenCfDmMqQ20NheKCiETrhXtwjcij36X3P
-         qxWg2j9z1fR/0RtamfXo7+okfUzpkI2/D7VFfDq7kZ1pEAOHxfvv2A2apixqiKBnJWF6
-         jCiEk+dqZOvm09QJNXg5HZ5/QQYMBJUv6N3uuxSWZe6Yd6jl22zUjUpxKwR+69f0dpEq
-         kxQnqZTu+DzkKZWyiSTHwROv9M5ZxafN1EBRfQyBuiGNGwojxVuNtKBuCcDif5p4lyZG
-         yILnMCM4ZKYKrNkGy1x9qtngcDEgyNiEyLRcJsFxNVQqsNJb1dl0LpYpn6So6seop5NA
-         2dIw==
-X-Forwarded-Encrypted: i=1; AFNElJ8KgCuhkJYcgRL/f3gVLxyjoSDFxmDPKlYygPjD60VAmtNKfPa0yPXmDucaoDUoxyXGvuM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9q8HIY7j5QLten1owboDeZoRe7HI4hgvHC5ej6TMfdtsuM2YE
-	TcodG5PkOeLeTcHIodGxPPWs2utuT67W4ApsTZAfWS3y0lPIQiwOXYeQMakOCnJYrcO397iHF1Y
-	EgZptToixcM7Son7gg8s/Ec3f005ZbsFzT5Q0E+togSYtA4UxBTlZkg==
-X-Gm-Gg: AfdE7ckNO7CBqWF9ya57D4ZflDN0FafmMhEb8MbdyTjNMFAQbq7RHoBk0AJ5sbi3UO8
-	fE4BzfxsYb6gncoqC8ORsVhSRy4qxVH60sULUqBshD5lI3RTEMK0akHSOIWQrlTlIPPm1nDTLT+
-	9imii8qsa9JBNe7MVT69wRPkk2niMhXc5BJ2C7XTcHOFuU77DpHEtcALVBvIpxx0ln+SeE4EUUV
-	2NmUl+Qq+iaqKue0X8t9NZDEJFG5kujDN28PRRtT32APyksnRyu2ImHoHYtVVMn0/u5Y4F86AEz
-	jBz8AXhl4lv+h/Cc3BMZZsDkXi+EKL/xrbZwU8Zdapb60jP41J/YYb1tttOOLS4P6AxR3uQGjZe
-	9cwH43zVUAJAHUkzIa2A63V/aGNHc2ffKf8gRbj8SYl+yarG+nQ==
-X-Received: by 2002:a7b:c7c5:0:b0:492:63c3:8eeb with SMTP id 5b1f17b1804b1-4926fca4ce5mr138791105e9.35.1782744188325;
-        Mon, 29 Jun 2026 07:43:08 -0700 (PDT)
-X-Received: by 2002:a7b:c7c5:0:b0:492:63c3:8eeb with SMTP id 5b1f17b1804b1-4926fca4ce5mr138790685e9.35.1782744187831;
-        Mon, 29 Jun 2026 07:43:07 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493a7fd1b0fsm123655815e9.1.2026.06.29.07.43.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 07:43:07 -0700 (PDT)
-Message-ID: <99726741-229a-4230-b19e-63a7f27ba9f0@redhat.com>
-Date: Mon, 29 Jun 2026 16:43:05 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="B2pVSlBC"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6931416A3;
+	Mon, 29 Jun 2026 07:48:00 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD2D13F905;
+	Mon, 29 Jun 2026 07:48:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782744484; bh=+pCNkkGZ56/6raU8EBpJrhM1D7spqmtSQE1bdpbcxMw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B2pVSlBCQBm2Envdg9jvKjD6n+rnB3LoLf5kFWbO+8Q06YXHgPWssgdYDCnMx5BL5
+	 Xs/oTXNpxpK4ZAtoi82u9wB4/2uQn0FC/MsXRmZrhJtIbMI/oFfAb1+D1Ql71j7hBV
+	 XzOwJij/KMDptrK4WCjyAlPeONV5Zfv0DFi/YGtE=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+Date: Mon, 29 Jun 2026 15:47:51 +0100
+Message-ID: <akKFlzAdB43lRpi1@LeoBrasDK>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260629113645.BE6801F000E9@smtp.kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-3-leo.bras@arm.com> <20260629113645.BE6801F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/8] tests/functional: Add remote interrupts test for
- PowerNV
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
- Shivang Upadhyay <shivangu@linux.ibm.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- devel@lists.libvirt.org, Misbah Anjum N <misanjum@linux.ibm.com>,
- Anushree Mathur <anushree.mathur@linux.ibm.com>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, kvm@vger.kernel.org,
- Gautam Menghani <gautam@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
-References: <20260629110411.3051274-1-adityag@linux.ibm.com>
- <20260629110411.3051274-2-adityag@linux.ibm.com>
- <71cffeef-3398-44e6-8e13-130266e789c1@redhat.com>
- <akJXAebIn7BHhPRS@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Autocrypt: addr=clg@redhat.com; keydata=
- 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
- uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <akJXAebIn7BHhPRS@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On 6/29/26 13:39, Aditya Gupta wrote:
-> On 26/06/29 01:20PM, Cédric Le Goater wrote:
->> On 6/29/26 13:04, Aditya Gupta wrote:
->>> In the past there have been hard to recreate issues where XIVE changes
->>> cause qemu crashes due to multi-socket interrupts such as in [1].
->>>
->>> Add a functional test explicitly to test whether remote interrupts work.
->>>
->>> The test can also work as additional boot test for multi-socket boot,
->>> initrd boot test, as well as a check for e1000e to be working in powernv,
->>
->> you should consider moving to a more modern nic model: igb, which
->> has sr-iov support too.
+On Mon, Jun 29, 2026 at 11:36:45AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
 > 
-> yes, can do. with igb i see multiple irqs, so test will have to take sum
-> of all rx irqs, and compare:
+> New issues:
+> - [High] The default eager page splitting chunk size violates the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE UAPI contract by using a value that is not a valid block size for 16KB and 64KB page kernels.
 > 
-> 	2026-06-29 17:00:46,288: cat /proc/interrupts | grep eth0
-> 	2026-06-29 17:00:46,391: 135:          0          0          0  PNV-PCI-MSI 2416443392 Edge      eth0
-> 	2026-06-29 17:00:46,393: 136:          0          6          0  PNV-PCI-MSI 2416443393 Edge      eth0-rx-0
-> 	2026-06-29 17:00:46,394: 137:          0         14          0  PNV-PCI-MSI 2416443394 Edge      eth0-rx-1
-> 	2026-06-29 17:00:46,395: 138:          0          4          0  PNV-PCI-MSI 2416443395 Edge      eth0-rx-2
-> 	2026-06-29 17:00:46,397: 139:          0          4          0  PNV-PCI-MSI 2416443396 Edge      eth0-rx-3
-> 	2026-06-29 17:00:46,398: 140:          0         16          0  PNV-PCI-MSI 2416443397 Edge      eth0-tx-0
-> 	2026-06-29 17:00:46,399: 141:          0          6          0  PNV-PCI-MSI 2416443398 Edge      eth0-tx-1
-> 	2026-06-29 17:00:46,399: 142:          0          6          0  PNV-PCI-MSI 2416443399 Edge      eth0-tx-2
-> 	2026-06-29 17:00:46,400: 143:          0          4          0  PNV-PCI-MSI 2416443400 Edge      eth0-tx-3
+> Pre-existing issues:
+> - [Critical] Dropping mmu_lock between primary and nested stage-2 write-protection creates a window where nested guests can bypass dirty logging.
+> --
 > 
-> I feel e1000e suffices for this test, should i stay with e1000e or use
-> igb here ?
+> commit 09e1d250ed331b9dc20b42b7f9315892a86a5d50
+> Author: Leonardo Bras <leo.bras@arm.com>
+> 
+> KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+> 
+> This commit enables eager hugepage splitting by default for systems
+> supporting HDBSS, setting the default chunk size to 256K pages at
+> stage2 initialization.
+> 
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > index 6c941aaa10c63..e086c01a9325e 100644
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+> >  	for_each_possible_cpu(cpu)
+> >  		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
+> >  
+> > -	 /* The eager page splitting is disabled by default */
+> > -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > +	 /* The eager page splitting is disabled by default if system has no HDBSS */
+> > +	if (system_supports_hdbss())
+> > +		mmu->split_page_chunk_size = 256 * 1024 * PAGE_SIZE;
+> 
+> [Severity: High]
+> Does this hardcoded chunk size violate the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+> UAPI contract on kernels with 16KB or 64KB pages?
+> 
+> By setting the default chunk size to 256 * 1024 * PAGE_SIZE, this evaluates to
+> 4GB on 16KB page systems and 16GB on 64KB page systems.
+> 
+> However, in arch/arm64/kvm/arm.c:kvm_vm_ioctl_enable_cap(), the chunk size is
+> validated against valid architectural block sizes:
+> 
+>     if (!new_cap || kvm_is_block_size_supported(new_cap)) {
+>     ...
+> 
+> Since 4GB and 16GB are not valid block sizes on those configurations, a VMM
+> like QEMU attempting to read the default capability via KVM_CHECK_EXTENSION
+> and set it back via KVM_ENABLE_CAP will be rejected with -EINVAL.
 
-or use a single cpu per socket config. Which seems better for the test.
+Sure, changing this to something like PMD_SIZE or PUD_SIZE should be no issue.
+ 
+But this raises a topic I would like to understand:
+- Do we actually need this to be a block_size to assure correctness? or is 
+  it just about efficiency?
 
-Thanks,
+I was thinking on using PUD_SIZE here before, but that would mean very 
+different splitting granularity, as on 4k pagesize we would be splitting 
+512*512 pages (above mentioned 256k pages), but on 16k pagesize we would be 
+splitting 2048*2048 pages (4M), and on 64k pagesize it would be 8k*8k pages 
+(64M). 
 
-C.
+Doing that could defeat the purpose of chunk size to have a possible sleep 
+to not keep the lock hold for too long. In that case, would not it make 
+more sense to use a fixed number of pages instead?
 
+
+> 
+> [Severity: Critical]
+> This is a pre-existing issue, but by enabling eager hugepage splitting by
+> default for HDBSS, does this exacerbate a race condition with nested guests
+> bypassing dirty logging?
+> 
+> In arch/arm64/kvm/mmu.c:kvm_arch_mmu_enable_log_dirty_pt_masked(), KVM enables
+> dirty logging by write-protecting the primary stage-2 and then calling
+> kvm_mmu_split_huge_pages():
+> 
+>     if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+>         kvm_mmu_split_huge_pages(kvm, start, end);
+> 
+>     kvm_nested_s2_wp(kvm);
+> 
+> Because kvm_mmu_split_huge_pages() can drop the mmu_lock to top-up the memory
+> cache or reschedule, a race window is created before kvm_nested_s2_wp()
+> protects the nested stage-2 tables.
+> 
+> While the lock is dropped, a nested VCPU can fault, map the page via its
+> separate shadow stage-2 (which hasn't been write-protected yet), and write to
+> the page without setting the dirty bitmap, leading to silent memory corruption
+> after live migration.
+> 
+
+But if it's already write-protected in S2, if the nested VCPU faults 
+something, would not that be handled by non-nested faulting routine?
+
+I understand very little of nested, and I can't understand how does that 
+work properly. Maybe Marc or Wei Lin may have a better answer for that.
+
+CC: Wei Lin
+
+Thanks!
+Leo
 
