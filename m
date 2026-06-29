@@ -1,142 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8AF36C9ED
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 11:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FB43B584F;
+	Mon, 29 Jun 2026 11:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782731645; cv=none; b=Cq39sGOGVM48N12XNJovL8jlc9JQqPC0oo+p4tCwJVg/DooUkQleDBHMnUZ9A3dyk5BCW/mkG8qxA5pzOQ2ZUkj4sllykCzfxN6SKJaAcKlV/xseOTHemZsbE9bKzRZ8rOf86wSxykqGor9iBeMyizIq4wkmC/TJuvQmJnTyVxw=
+	t=1782731912; cv=none; b=C742jqSIy5eFEFXkjXpJzAxS/QCHmGoPU7lU4yWuxKgzBrGmAWTgu8LnxJY+cwV5bvh+ILtNhjHQPvJ9HkHV6KO34eFpnFke5tZpG5gLUrAo32SRghOjkKCBRtMzmvnm1EeG58iLDfW+1OAcMrMekor4BaAjxYMmgqNxImD0rpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782731645; c=relaxed/simple;
-	bh=frkeCdJzSGF5weW8BdPuybhjRSpQDbwpI0loDltyXcQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z2ZLDYSqu1Z345eqKqpP1f1gglZOt7fEIB3y7u5I26mAHFUxQE+2CFweuWnaM6lg66tlfjQfrkme6b8Ux3hUlt4Uo5HpePG2tPRc4ZiphxYZM59a4KiH22rm3AltxIxqbOht1EfM3Ozw1/ye56slM8bFbBUbG/0rED0Gpwrw7Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBwqbCM0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782731912; c=relaxed/simple;
+	bh=bjTI/f/n56/Fet0evzkJ68kz+ryPn+5y70fPRs2V5wA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H2OIfyo4ny6THesAshjQiUemqP+GP1AklVskBm47gTZZQbPqS9J0aneqNXPDxQCSIimDjfs73tK+1bQRikqquoxJVWDiqv0x8FxBD7Sd3UanpttfY35X1QxXS25V4i9hke1rj4EfIJTb3VutZIzWjGspvgjtMtAdSjWhEv9RUkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vcpBNJcT; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBwqbCM0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B061F000E9;
-	Mon, 29 Jun 2026 11:14:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782731643;
-	bh=0YYQvSc4ebTxcbnzv4ZM6ARzpCzaLSjk67XRFznK37s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nBwqbCM0eNYcDcpig8oL4fdpA+Csa1aQG/vtPAPETw790zAn0snS5rV5VfW2mIvet
-	 /w/Xwvl0XmiD/5zZlseLp0MB9dYb/QERr1AwfAEhI8XQkn73ezfhbtt0gkghVmgbTW
-	 xVDC/rdQ/SnS1rt0eYxlW1xUwSbVQaD8+InD9GVU+yLgYTNnaQCx4Ieh5TJhbMVB2Q
-	 eTykZsu3c3Cx7arwDmxxSHGwFM0CVhhpgin/vj1iu65PiH5LS3qzdWITJAZ69iHiEc
-	 m8Zf13+/R/c6aNe6biCvQS3zXWSb3cZX9OwfV+UpRDh0YOMXJR4JTXaQ9wiseWa5LY
-	 nLmZd4nRKzHWQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 3/3] KVM: selftests: dirty_log_perf_test: Add
- dirty-ring support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leonardo Bras" <leo.bras@arm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260629105950.1790259-4-leo.bras@arm.com>
-References: <20260629105950.1790259-1-leo.bras@arm.com>
- <20260629105950.1790259-4-leo.bras@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 11:14:03 +0000
-Message-Id: <20260629111403.99B061F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vcpBNJcT"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09E361655;
+	Mon, 29 Jun 2026 04:18:26 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0DB273F905;
+	Mon, 29 Jun 2026 04:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782731910; bh=bjTI/f/n56/Fet0evzkJ68kz+ryPn+5y70fPRs2V5wA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=vcpBNJcTiDlNBeEnJYl9HwTNgevqUpNYYJUku/hZ9+hzbG7dPtCnZ2wDCHh9KoK7v
+	 1BypgwHAtmUBqeHsQHb4KvwMQvJc7Nj1GLhfugu/17jMXIefZeB0rUd3WVAkXRiOyy
+	 2xCBmvCFbvbjurkFasOoaZgJd5peEg+bpdWIZRCA=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Saket Dumbre <saket.dumbre@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Miko=C5=82aj=20Lenczewski?= <miko.lenczewski@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Zeng Heng <zengheng4@huawei.com>,
+	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Fuad Tabba <tabba@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tian Zheng <zhengtian10@huawei.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH v2 00/13] KVM Dirty-bit cleaning hw accelerator (HACDBS)
+Date: Mon, 29 Jun 2026 12:17:48 +0100
+Message-ID: <20260629111820.1873540-1-leo.bras@arm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5680; i=leo.bras@arm.com; h=from:subject; bh=Jp5vKmq1QYgozZwl/v/dth/msI72XuhmrAqKkgXOajg=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLKcQuI5FsypOnXm/syrR2/fmb7t2Mu6fRJNlrtk5vQZF IcyXJ+5vaOUhUGMi0FWTJFF9tH8VTzfp2QcufJjAcwcViaQIQxcnAIwkYomRoYl1fV3CnN/Tl7L tOHa7NxmZ9ubS9gEXK5c0v+w7m82068fjAwnl9bqvFz6bdk57rtZ7NEXduzlPF8i8Zrh5/97Fb7 bTQ4xAgA=
+X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The return value of `kvm_vm_reset_dirty_ring` is checked for `< =
-0` using an unsigned integer, which silently masks ioctl failures.
-- [Medium] Incompatible and misleading performance metric aggregation for d=
-irty-ring vs. dirty-bitmap.
---
 
-commit d0262c7100918c7ec336d54627e1c035fb7368ec
-Author: Leonardo Bras <leo.bras@arm.com>
+Disclaimer: While this patchset is buildable and testable on it's own,
+it is not ready to be merged, as it depends on bits from another
+patchset that will superseed the one in [0], and will enable HDBSS.
+See note below on patches 1,2.
 
-KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+My expectation on sharing this earlier is to gather feedback on
+implementation and testing methods, to make sure it's sure it's ready
+when [0] becomes ready.
 
-This commit adds dirty-ring support to dirty_log_perf_test, allowing it to
-be used alongside dirty-bitmap for performance comparisons.
+===
 
-> diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/te=
-sting/selftests/kvm/dirty_log_perf_test.c
-> index 69b38791440e7..9bb14340bff5a 100644
-> --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-[ ... ]
-> @@ -29,9 +30,41 @@ static bool run_vcpus_while_disabling_dirty_logging;
-> =20
->  /* Host variables */
->  static u64 dirty_log_manual_caps;
-> +static u32 dirty_ring_size;
->  static bool host_quit;
->  static int iteration;
->  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-> +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-> +
-> +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-> +				struct timespec *ts)
-> +{
-> +	struct timespec start;
-> +	struct kvm_dirty_gfn *dirty_gfns =3D vcpu_map_dirty_ring(vcpu);
-> +	u32 ret, idx =3D *ring_idx;
+Create an arch-generic dirty-bit cleaning acceleration interface, which
+compiles-out if the arch does not implement it, and creates no new API.
+Using that, implement an arm64 accelerator based on HACDBS.
 
-[ ... ]
+This implementation is able to accelerate the cleaning on both
+dirty-bitmap and dirty-ring tracking mechanisms on KVM.
 
-> +	*ring_idx =3D idx;
-> +
-> +	ret =3D kvm_vm_reset_dirty_ring(vcpu->vm);
-> +
-> +	TEST_ASSERT(ret >=3D 0, "Error (%d) found when cleaning dirty-ring\n", =
-ret);
+Patch 1 & 2 are here just to make this testable, as this patchset
+depends on bits from HDBSS that are not upstream yet.
 
-[Severity: Medium]
-Will this TEST_ASSERT ever fail? The 'ret' variable is declared as a u32 ab=
-ove,
-so the condition 'ret >=3D 0' will always be true, masking negative error c=
-odes
-if kvm_vm_reset_dirty_ring() fails.
+Patch 2 should be included in the HDBSS patchset, and patch 1
+is a bunch of bits that I collected across other patches so this can
+work. So few free to ignore them on review, as they should be reviewed
+in the HDBSS patchset.
 
-> +
-> +	*ts =3D timespec_add(*ts, timespec_elapsed(start));
-> +}
+To be able to properly use HACDBS, it requires a PPI IRQ that triggers
+either on error, or when processing is complete. It's called
+HACDBSIRQ, and there is currently no upstream way of announcing it on
+ACPI tables, so this patchset uses the suggested table/index in [1],
+which at the moment is not merged.
 
-[ ... ]
+Kernel v7.2-rc1 + this patchset builds properly, passing both kvm selftests
+for dirty-bit tracking[2] and a qemu live migration test, with both
+HW HACDBS enabled or disabled.
 
-> @@ -195,6 +247,21 @@ static void run_test(enum vm_guest_mode mode, void *=
-arg)
->  		pr_info("Iteration %d dirty memory time: %ld.%.9lds\n",
->  			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
-> =20
-> +		if (dirty_ring_size) {
-> +			struct timespec iteration_sum =3D (struct timespec){0};
-> +
-> +			for (i =3D 0; i < nr_vcpus; i++)
-> +				iteration_sum =3D timespec_add(iteration_sum,
-> +							     vcpu_dirty_ring_collect[i]);
-> +
-> +			pr_info("Iteration %d clear dirty ring time: %ld.%.9lds\n",
-> +				iteration, iteration_sum.tv_sec, iteration_sum.tv_nsec);
-> +
-> +			clear_dirty_log_total =3D timespec_add(clear_dirty_log_total,
-> +							     iteration_sum);
+On terms of performance improvement, tests were done using
+dirty_log_perf_test[3] to measure the time spent on the following ioctl:
+a - KVM_GET_DIRTY_LOG,     using dirty-bitmap without manual protect
+    command:    ./dirty_log_perf_test -m 3 -m 6 -m 12 -g
+b - KVM_CLEAR_DIRTY_LOG,   using dirty-bitmap with manual protect
+    command:    ./dirty_log_perf_test -m 3 -m 6 -m 12
+c - KVM_RESET_DIRTY_RINGS, using dirty-ring, using 4096 entries/vcpu.
+    command:    ./dirty_log_perf_test -m 3 -m 6 -m 12 -d 4096
 
-[Severity: Medium]
-Does summing concurrent vCPU times here produce an accurate comparison agai=
-nst
-the single-threaded wall-clock metric used for the dirty-bitmap?
+Tests ran in the model show that runtime was reduced by:
+-(a) 82.19% (0.16% stdev) for 1GB memory, and
+     82.45% (0.02% stdev) for 3GB memory
+-(b) 81.74% (0.19% stdev) for 1GB memory, and
+     82.40% (0.38% stdev) for 3GB memory
+-(b) 70.90% (0.18% stdev) for 1GB memory, and
+     70.92% (0.01% stdev) for 3GB memory
 
-Since vcpu_dirty_ring_collect[] measures time collected concurrently across
-vCPUs, linearly adding them inflates 'clear dirty ring time' compared to
-the 'clear dirty log time' which seems to just measure the elapsed time
-on the main thread.
+Above numbers already take into account the improvements in S2
+hugepage-splitting that is implemented by [4].
 
-> +			continue;
-> +		}
+Please let me know of any question :)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629105950.1790=
-259-1-leo.bras@arm.com?part=3D3
+Thanks for reviewing!
+Leo
+
+
+Changes since v1:
+- Improvements on splitting with manual protect, skipping when cleaning
+  pages from the same level-2 entry. (new patch)
+- Got the correct concept of chunk_size and thus:
+  - Corrected it to a reasonable chunk to do page splitting before
+    rescheduling, considering new improvements from [4].
+  - TTWL is not based in chunk size, so fix it in LAST_LEVEL
+- Minor fixes, removing debugging traces
+v1 Link: https://lore.kernel.org/all/20260430111424.3479613-2-leo.bras@arm.com/
+
+
+[0]: https://lore.kernel.org/all/20260225040421.2683931-1-zhengtian10@huawei.com/
+[1]: https://github.com/tianocore/edk2/issues/12409
+[2]: dirty_log_test && dirty_log_perf_test
+[3]: using this patchset to enable dirty-ring on dirty_log_perf_test:
+     https://lore.kernel.org/all/20260629105950.1790259-1-leo.bras@arm.com/
+[4]: https://lore.kernel.org/all/20260618131447.764085-1-leo.bras@arm.com/
+
+Leonardo Bras (13):
+  KVM: arm64: HDBSS bits
+  KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+  arm64/cpufeature: Add system-wide FEAT_HACDBS detection
+  arm64/sysreg: Add HACDBS consumer and base registers
+  KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
+  KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+  kvm: Add arch-generic interface for hw-accelerated dirty-bitmap
+    cleaning
+  KVM: arm64: Add hardware-accelerated dirty-bitmap cleaning routine
+  KVM: arm64: Dirty-bitmap: avoid splitting previously split blocks
+  kvm/dirty_ring: Introduce get_memslot and move helpers to header
+  kvm/dirty_ring: Add arch-generic interface for hw-accelerated
+    dirty-ring cleaning
+  KVM: arm64: Add hardware-accelerated dirty-ring cleaning routine
+  KVM: arm64: Enable KVM_HW_DIRTY_BIT
+
+ arch/arm64/include/asm/acpi.h          |   3 +
+ arch/arm64/include/asm/cpufeature.h    |  10 +
+ arch/arm64/include/asm/kvm_dirty_bit.h |  67 ++++
+ arch/arm64/include/asm/kvm_pgtable.h   |   3 +
+ include/acpi/actbl2.h                  |   1 +
+ include/linux/kvm_dirty_bit.h          |  34 ++
+ include/linux/kvm_dirty_ring.h         |  12 +
+ include/linux/kvm_host.h               |   3 +
+ arch/arm64/kernel/cpufeature.c         |  20 ++
+ arch/arm64/kvm/arm.c                   |   5 +
+ arch/arm64/kvm/dirty_bit.c             | 411 +++++++++++++++++++++++++
+ arch/arm64/kvm/hyp/pgtable.c           |  15 +-
+ arch/arm64/kvm/mmu.c                   |  12 +-
+ virt/kvm/dirty_ring.c                  |  34 +-
+ virt/kvm/kvm_main.c                    |  13 +-
+ arch/arm64/kvm/Kconfig                 |   1 +
+ arch/arm64/kvm/Makefile                |   2 +-
+ arch/arm64/tools/cpucaps               |   2 +
+ arch/arm64/tools/sysreg                |  30 ++
+ virt/kvm/Kconfig                       |   3 +
+ 20 files changed, 659 insertions(+), 22 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
+ create mode 100644 include/linux/kvm_dirty_bit.h
+ create mode 100644 arch/arm64/kvm/dirty_bit.c
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.54.0
+
