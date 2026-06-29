@@ -1,291 +1,129 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8D29C327;
-	Mon, 29 Jun 2026 08:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5FB3F58DF
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 08:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782721788; cv=none; b=XjugwkiNDMSk55IX/UAdv4OLkeCXmf3b4OUnsEFYUwSMs98OWiVybDQ1HFqFlQgyfhDZEOL/k+Pra1xpgs5bKVjVc38OKa9StGun7EMKAO0/HuSFP6auDfbpYnCbNC0Hcwm1MWKmJLzPFZcBV9lCd7dQ+lgoW/KVtk9BFomHGqM=
+	t=1782721920; cv=none; b=nDoiKhNKZtV69qAXttJy9Vg38TVKSHuDWzmiLbHrXonDizClc9QH0kSHdzyF5jaQ2OPAhotxGLuc6rnJUHqyrjNsh50GW+UhOLyPB3/U9uwi2x2MOomvsyCnBLVViL+L2ABrXyYQ0rSlE/KVkSUKov7ItGMbSvpuoK2+qlD26ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782721788; c=relaxed/simple;
-	bh=Id9xLPNKbg5OWIdweCc1COuge7p5Pn8IIzoY8l3TedA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l9d3LZW3c0qX7YvgAm+UpHMJxilakwUiIi2mtJCSFGdFCzhBKZOQG4mahc5LwygvVhS3XP4Y/r9ELNzH55L0VC8TcMkc7LNc3YUa7DQzdORMRblPiQjfNVCNiInrBZcanvNXQwV9OoECPGz2aznN0D9pjd5+KDq0qPrpcGBU0js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=rqtdQ7f+; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1782721920; c=relaxed/simple;
+	bh=v0Vz5LRyfEj2M3C3U/KZzB8124hX+LVohUrXyefRk6o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=E3lqHDKJHYWXqcLM7KUu827kaw7Ju5cXqkVr1G1XskZA7SNSeSNFg/P0wVVC+vo175KyvWmWBHaZCxFLXE8FNWGKKa8xsLtcjkXdmKxHAVDo6D7Cp6Cdg5UljRsFq4E1y+V69meOc/84bURZBewQ3JctS8rOqMRvds+CnEdmXGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kb8X67rZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="rqtdQ7f+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1782721775; x=1782980975;
-	bh=WbqvebtWAj0YtJohER5RHxaa/NC/OEAtmPKk+oAJGis=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rqtdQ7f+5623PJZgD/6ikZQAA82lmfhviw31P8LaCrMIubC/1CLAU+eWVgvdJduAM
-	 eW0cyroTlKOYgK2ZAr+HrpbtL4Z+MCMqG3+tNZB/UFVqaPzkq+cF75NDsIf48AJIAX
-	 AuBYHy+/kL7XIPmbsqMpsrFq3TOPWqmWsmieubd2VBHSKFb/kQ1qB+CSV9rytIJT+a
-	 qO2K1t7jKE8416lJmREy7bwYZzR1HVirsix0uXh1t2iUGg+umXq/V05GZwsI1zw3hx
-	 FltgKv98KhEM0mAd9k0t9+Ney+BXoUrEy9PhM33xmDj+jRmJ2bHBXqNWkN62slRa7d
-	 6ypYQXY5zwfbg==
-X-Pm-Submission-Id: 4gpfZz39P0z1DDqt
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: leixiang <leenollei@gmail.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	ojeda@kernel.org
-Subject: Re: [RFC PATCH] KVM: rust: add Rust reimplementation of eventfd
-Date: Mon, 29 Jun 2026 11:29:05 +0300
-Message-ID: <20260629082930.23182-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260626083212.39611-1-leixiang@kylinos.cn>
-References: <20260626083212.39611-1-leixiang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kb8X67rZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C175D1F000E9;
+	Mon, 29 Jun 2026 08:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782721919;
+	bh=YN5Yf6C2fnzWVyotnVeZN8xTo9IDyNRMMIOJgShpHBM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Kb8X67rZn3Olu2MNJ3h2RI1sBOArkhtmfQrHvpvCwzc7VxTTa9vkT5HVJ4SPO32wN
+	 0Q2OBCPZF5SLKbvT1Ck+h7Xu6poxV17t9xYBTHYsx5oATnMjihEoRtm2m4eBjap2zM
+	 ATRUpaJxUf7E531tXrmBltc+pvVF8MReM0vKAFGvV/uBjsdeTrmIcDhFI0ZvyD7429
+	 x4fZ6mrcnRV9LxjyBvwdHMPlUCyBpNAfpi4N4f4BYirvpAfKZZFFO+6Q1ZTQduYhdh
+	 M0RrExvhpaB7bBc49lsjDS8TnoCqhYBI8OELs0O9RWMWutJhGnm88Ti4TTvFF76sEx
+	 FOnmviMlcg3lQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [RESEND PATCH v2] KVM: SVM: Add Bus Lock Detect support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260629081018.60618-1-shivansh.dhiman@amd.com>
+References: <20260629081018.60618-1-shivansh.dhiman@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jun 2026 08:31:58 +0000
+Message-Id: <20260629083158.C175D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, 26 Jun 2026 16:29:34 +0800=0D
-leixiang <leenollei@gmail.com> wrote:=0D
-=0D
-> From: ninol <leenollei@gmail.com>=0D
-> =0D
-> Introduce a Rust reimplementation of virt/kvm/eventfd.c, providing=0D
-> irqfd (interrupt injection via eventfd) and ioeventfd (MMIO/PIO write=0D
-> to eventfd signal) functionality with full C ABI compatibility.=0D
-> =0D
-> The Rust implementation leverages RAII guards for SRCU, mutex, and=0D
-> spinlock management, reducing the risk of resource leaks on error=0D
-> paths. It is selectable via CONFIG_RUST_KVM_EVENTFD and replaces=0D
-> the C eventfd.o with a shim providing only weak default functions.=0D
-> =0D
-> Signed-off-by: ninol <leenollei@gmail.com>=0D
-> ---=0D
-> =0D
-> Hi all,=0D
-> =0D
-> This is an experimental/exploratory RFC for a Rust reimplementation of=0D
-> virt/kvm/eventfd.c. It is intended as a learning exercise and a proof=0D
-> of concept to explore whether Rust can be practically applied to KVM=0D
-> subsystem components.=0D
-> =0D
-> I fully understand this may not be the direction the KVM community=0D
-> wants to take. If you feel this is not worth your time, please ignore=0D
-> it entirely. If, however, you find this approach interesting or have=0D
-> any feedback on the implementation, I would greatly appreciate=0D
-> your comments.=0D
-> =0D
-> The patch provides functionally equivalent irqfd and ioeventfd support,=0D
-> gated behind CONFIG_RUST_KVM_EVENTFD. It uses RAII guards for lock and=0D
-> resource management and maintains full ABI compatibility with the C=0D
-> implementation.=0D
-> =0D
-> Testing: Built and boot-tested on x86_64 with KVM enabled.=0D
-> =0D
-> Thanks for your time.=0D
-> =0D
->  rust/bindgen_parameters         |    2 +=0D
->  rust/bindings/bindings_helper.h |   18 +=0D
->  rust/helpers/eventfd.c          |   34 +=0D
->  rust/helpers/helpers.c          |    7 +=0D
->  rust/helpers/kvm.c              |  221 +++++=0D
->  rust/helpers/seqcount.c         |   30 +=0D
->  rust/kernel/kvm/eventfd.rs      | 1419 +++++++++++++++++++++++++++++++=0D
->  rust/kernel/kvm/mod.rs          |    8 +=0D
->  rust/kernel/lib.rs              |    2 +=0D
->  virt/kvm/Kconfig                |   15 +=0D
->  virt/kvm/Makefile.kvm           |    7 +-=0D
->  virt/kvm/eventfd_shim.c         |   52 ++=0D
->  12 files changed, 1814 insertions(+), 1 deletion(-)=0D
->  create mode 100644 rust/helpers/eventfd.c=0D
->  create mode 100644 rust/helpers/kvm.c=0D
->  create mode 100644 rust/helpers/seqcount.c=0D
->  create mode 100644 rust/kernel/kvm/eventfd.rs=0D
->  create mode 100644 rust/kernel/kvm/mod.rs=0D
->  create mode 100644 virt/kvm/eventfd_shim.c=0D
-> =0D
-> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters=0D
-> index 6f02d9720ad2..c433a6ca5336 100644=0D
-> --- a/rust/bindgen_parameters=0D
-> +++ b/rust/bindgen_parameters=0D
-> @@ -14,6 +14,8 @@=0D
->  --opaque-type alt_instr=0D
->  --opaque-type x86_msi_data=0D
->  --opaque-type x86_msi_addr_lo=0D
-> +--opaque-type hv_.*=0D
-> +--opaque-type IO_APIC_route_entry=0D
->  =0D
->  # If SMP is disabled, `arch_spinlock_t` is defined as a ZST which trigge=
-rs a Rust=0D
->  # warning. We don't need to peek into it anyway.=0D
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h=0D
-> index 446dbeaf0866..2d65f2b1672d 100644=0D
-> --- a/rust/bindings/bindings_helper.h=0D
-> +++ b/rust/bindings/bindings_helper.h=0D
-> @@ -65,8 +65,12 @@=0D
->  #include <linux/io-pgtable.h>=0D
->  #include <linux/ioport.h>=0D
->  #include <linux/iosys-map.h>=0D
-> +#include <linux/irqbypass.h>=0D
->  #include <linux/jiffies.h>=0D
->  #include <linux/jump_label.h>=0D
-> +#include <kvm/iodev.h>=0D
-> +#include <linux/kvm_host.h>=0D
-> +#include <linux/kvm_irqfd.h>=0D
->  #include <linux/mdio.h>=0D
->  #include <linux/mm.h>=0D
->  #include <linux/miscdevice.h>=0D
-> @@ -94,6 +98,20 @@=0D
->  #include <linux/xarray.h>=0D
->  #include <trace/events/rust_sample.h>=0D
->  =0D
-> +#ifdef CONFIG_RUST_KVM_EVENTFD=0D
-> +/* Custom helpers for eventfd.rs */=0D
-> +unsigned long rust_helper_spin_lock_irqsave(spinlock_t *lock);=0D
-> +void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long =
-flags);=0D
-> +void rust_helper_hlist_add_head_rcu(struct hlist_node *n, struct hlist_h=
-ead *h);=0D
-> +void rust_helper_hlist_del_init_rcu(struct hlist_node *n);=0D
-=0D
-[...]=0D
-=0D
-> +#[cfg(CONFIG_LOCKDEP)]=0D
-> +#[inline(always)]=0D
-> +unsafe fn spin_acquire(=0D
-> +    map: *mut bindings::lockdep_map,=0D
-> +    subclass: c_int,=0D
-> +    trylock: c_int,=0D
-> +    ip: core::ffi::c_ulong,=0D
-> +) {=0D
-> +    // SAFETY: Caller holds the corresponding lock; this is a lockdep an=
-notation only.=0D
-> +    unsafe { bindings::rust_helper_spin_acquire(map, subclass, trylock, =
-ip) }=0D
-> +}=0D
-> +=0D
-> +// RAII Guards=0D
-> +=0D
-> +/// RAII Guard for SRCU read lock.=0D
-> +struct SrcuGuard {=0D
-> +    srcu: *mut bindings::srcu_struct,=0D
-> +    idx: core::ffi::c_int,=0D
-> +    _not_thread_safe: crate::types::NotThreadSafe,=0D
-> +}=0D
-> +=0D
-=0D
-> +impl SrcuGuard {=0D
-> +    /// # Safety=0D
-> +    /// Caller must ensure `srcu` is a valid pointer.=0D
-> +    unsafe fn new(srcu: *mut bindings::srcu_struct) -> Self {=0D
-> +        // SAFETY: Caller guarantees `srcu` is valid.=0D
-> +        let idx =3D unsafe { bindings::srcu_read_lock(srcu) };=0D
-> +        Self {=0D
-> +            srcu,=0D
-> +            idx,=0D
-> +            _not_thread_safe: crate::types::NotThreadSafe,=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for SrcuGuard {=0D
-> +    fn drop(&mut self) {=0D
-> +        // SAFETY: We hold the lock `idx` on `srcu`.=0D
-> +        unsafe { bindings::srcu_read_unlock(self.srcu, self.idx) };=0D
-> +    }=0D
-> +}=0D
-=0D
-You are adding things that are already being implemented in much better way=
-. For=0D
-example, for SRCU we already have v10 [1]. But even before that I think thi=
-s=0D
-patch has even more serious problems. It has multiple fundamental issues an=
-d=0D
-things seem to be placed randomly all around.=0D
-=0D
-Regards,=0D
-Onur=0D
-=0D
-[1]: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev=
-=0D
-=0D
-> +=0D
-> +/// RAII Guard for mutex lock.=0D
-> +struct MutexGuard {=0D
-> +    lock: *mut bindings::mutex,=0D
-> +}=0D
-> +=0D
-> +impl MutexGuard {=0D
-> +    /// # Safety=0D
-> +    /// Caller must ensure `lock` is a valid pointer.=0D
-> +    unsafe fn new(lock: *mut bindings::mutex) -> Self {=0D
-> +        // SAFETY: Caller guarantees `lock` is valid.=0D
-> +        unsafe { bindings::mutex_lock(lock) };=0D
-> +        Self { lock }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for MutexGuard {=0D
-> +    fn drop(&mut self) {=0D
-> +        // SAFETY: We hold the lock.=0D
-> +        unsafe { bindings::mutex_unlock(self.lock) };=0D
-> +    }=0D
-=0D
-[...]=0D
-=0D
-> +#include <linux/kvm_irqfd.h>=0D
-> +#include <linux/irqbypass.h>=0D
-> +=0D
-> +bool __weak kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *ar=
-gs)=0D
-> +{=0D
-> +	return true;=0D
-> +}=0D
-> +=0D
-> +int __weak kvm_arch_set_irq_inatomic(=0D
-> +				struct kvm_kernel_irq_routing_entry *irq,=0D
-> +				struct kvm *kvm, int irq_source_id,=0D
-> +				int level,=0D
-> +				bool line_status)=0D
-> +{=0D
-> +	return -EWOULDBLOCK;=0D
-> +}=0D
-> +=0D
-> +#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)=0D
-> +void __weak kvm_arch_irq_bypass_stop(=0D
-> +				struct irq_bypass_consumer *cons)=0D
-> +{=0D
-> +}=0D
-> +=0D
-> +void __weak kvm_arch_irq_bypass_start(=0D
-> +				struct irq_bypass_consumer *cons)=0D
-> +{=0D
-> +}=0D
-> +=0D
-> +void __weak kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd=
-,=0D
-> +					  struct kvm_kernel_irq_routing_entry *old,=0D
-> +					  struct kvm_kernel_irq_routing_entry *new)=0D
-> +{=0D
-> +}=0D
-> +#endif=0D
-> +=0D
-> +/*=0D
-> + * The Rust implementation provides kvm_irq_has_notifier via #[no_mangle=
-].=0D
-> + * Symbol export for KVM-internal use must be done from C.=0D
-> + */=0D
-> +extern bool kvm_irq_has_notifier(struct kvm *kvm, unsigned int irqchip,=
-=0D
-> +				 unsigned int pin);=0D
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_irq_has_notifier);=0D
-> -- =0D
-> 2.43.0=0D
-> =0D
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] Nested DR6 fixed bits are manually calculated incorrectly, break=
+ing architectural invariants for Bus Lock Detect.
+- [Medium] L1 guests can bypass CPUID limits and enable Bus Lock Detect for=
+ L2 nested guests via the nested VMCB, even if X86_FEATURE_BUS_LOCK_DETECT =
+is disabled for L1.
+--
+
+commit 859bd7557c537342acbc2ffe091acc01a0a180b9
+Author: Ravi Bangoria <ravi.bangoria@amd.com>
+
+KVM: SVM: Add Bus Lock Detect support
+
+Add Bus Lock Detect support in AMD SVM. Bus Lock Detect is enabled through
+MSR_IA32_DEBUGCTLMSR and MSR_IA32_DEBUGCTLMSR is virtualized only if LBR
+Virtualization is enabled. Add this dependency in the SVM.
+
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index c1485c3e691c4..4fdc58d38afe0 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -808,7 +808,8 @@ static void nested_vmcb02_prepare_save(struct vcpu_sv=
+m *svm)
+> =20
+>  	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
+>  		vmcb02->save.dr7 =3D svm->nested.save.dr7 | DR7_FIXED_1;
+> -		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | DR6_ACTIVE_LOW;
+> +		/* DR6_RTM is a reserved bit on AMD and as such must be set to 1 */
+> +		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | DR6_FIXED_1 | DR6_RTM;
+
+[Severity: Medium]
+Will this assignment cause an L2 guest to incorrectly observe DR6 bit 11 as=
+ 0
+if the guest lacks the BUS_LOCK_DETECT feature?
+
+By bypassing kvm_dr6_fixed(vcpu) and hardcoding DR6_FIXED_1 | DR6_RTM, it
+appears KVM fails to force bit 11 (DR6_BUS_LOCK) to 1. If an untrusted
+L1 guest without X86_FEATURE_BUS_LOCK_DETECT runs an L2 guest and writes 0
+to bit 11 of vmcb12->save.dr6, won't the L2 guest read DR6 and incorrectly
+see bit 11 as 0 instead of 1?
+
+>  		vmcb_mark_dirty(vmcb02, VMCB_DR);
+>  	}
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 716be21fba335..c65dc3acb5d1d 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -783,7 +783,7 @@ BUILD_SVM_MSR_BITMAP_HELPERS(bool, test, test)
+>  BUILD_SVM_MSR_BITMAP_HELPERS(void, clear, __clear)
+>  BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
+> =20
+> -#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
+> +#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK=
+_DETECT))
+
+[Severity: Medium]
+Could this redefinition allow an L1 guest to bypass CPUID limits and enable
+Bus Lock Detect for L2 nested guests, even if X86_FEATURE_BUS_LOCK_DETECT
+is disabled for L1?
+
+Looking at nested_vmcb02_prepare_save() in arch/x86/kvm/svm/nested.c, it
+copies the nested guest's dbgctl MSR value directly into the hardware VMCB
+using this mask:
+
+	svm_copy_lbrs(&vmcb02->save, save);
+	vmcb02->save.dbgctl &=3D ~DEBUGCTL_RESERVED_BITS;
+
+Since this mask now allows the bus lock bit unconditionally without validat=
+ing
+against the L1 guest's CPUID limits, could an untrusted L1 guest with
+X86_FEATURE_LBRV write DEBUGCTLMSR_BUS_LOCK_DETECT to vmcb12->save.dbgctl
+and successfully enable the feature in L2?
+
+> =20
+>  /* svm.c */
+>  extern bool dump_invalid_vmcb;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629081018.6061=
+8-1-shivansh.dhiman@amd.com?part=3D1
