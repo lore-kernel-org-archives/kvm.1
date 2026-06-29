@@ -1,161 +1,199 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072C7403AEE
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out198-10.us.a.mail.aliyun.com (out198-10.us.a.mail.aliyun.com [47.90.198.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0F0402422;
+	Mon, 29 Jun 2026 12:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782737874; cv=none; b=kE0bQWc32eeTpOqyh+KP6YOqN5cju5e5j/abcDHV++ihr0PpE9wutNIIuxytMmx6cH+KNLzQK3ExytVc4H5Vnaqy0ImBoPYqCcwNiVM80bYGWNMcjXqNPeGdt/or1VDFn1vK19TXwMsjdtP1d6JqpCyHZtyr5PuQtITKO2steKg=
+	t=1782737883; cv=none; b=E4CwGDULeyiWl1MKZKvaNps9W0OUyDiMN3y17yttS+vcTLGJyQfEiukwS4q2Pb8LAUyjH8jFVyK8dYo29wUogpyRNJwIsKzVIvG0RpsdDZNlT7QHMyDGyI3JrCR5TQDe7TlhT4tjIVxO9xJY64i0hJ+HTIgHB96Xfht8t6NtEAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782737874; c=relaxed/simple;
-	bh=k+Vi/mZPK5IYdZqmsog4sgr1/S4FaklSXKezSkCwaHY=;
+	s=arc-20240116; t=1782737883; c=relaxed/simple;
+	bh=L+3z5OBW8Tqq5z5OhOgHrkPOoAIE8vrLsS9nHz3N0LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=WKmReUAbl084ooU2SStHePmBiFJcxXk5J1nAt08aRtdAm3oRi0gDPNJsMVl1oAX7gBzkDu+Myvq6VYqwZg1Od9jRGUM6OopjbbvfU5XreiQIv0T2u5VwAmrGEVxDTtgGvfYyLe+lERNLC2Jb4l0adPQePbIIpwiN4y8/zZ4eL6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Vtk/+sw/; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Vtk/+sw/"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2F9F1758;
-	Mon, 29 Jun 2026 05:57:47 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 84C6C3F905;
-	Mon, 29 Jun 2026 05:57:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782737872; bh=k+Vi/mZPK5IYdZqmsog4sgr1/S4FaklSXKezSkCwaHY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vtk/+sw/e6D7LdP1SknlHoHekEB8ljOqJ9TvT7A7VtHy+K5LO41Td//clWk7SOAEm
-	 1K7m1dvD4aicA0XZTgTARsxiKs+itS+ndngLMukzF98rE3rEz2WuL2tvX19W4kJdCD
-	 4+m+eF0okMGAlmuiRQeMOrM2L6JvRmiyXQ+bzJgw=
-From: Leonardo Bras <leo.bras@arm.com>
-To: kvmarm@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
+	 MIME-Version; b=LwAIG+AfMdCurekOBacr6lKdBoiTGbc0h04max5H1CVrSNLYmiop0HuLV1avtVIyBlbSIOwotunpRKGEOt9HDd49onNyH5C670LM6+YKH1U7Xxddph+BcI7HUxCvjKVCYDNYBhGV2VTeJGWDIsnYbJBaapiRZ+qR+gBnzwYeXSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=47.90.198.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0747187|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00377912-3.63415e-05-0.996185;FP=12594999332404137915|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.i8gsqO3_1782737537;
+Received: from tina-home.taild49858.ts.net(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.i8gsqO3_1782737537 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 29 Jun 2026 20:52:18 +0800
+From: Tina Zhang <zhang_wei@open-hieco.net>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org
-Subject: Re: [PATCH v2 01/13] KVM: arm64: HDBSS bits
-Date: Mon, 29 Jun 2026 13:57:45 +0100
-Message-ID: <akJryexouA8QrCt_@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629113457.0D7B61F000E9@smtp.kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-2-leo.bras@arm.com> <20260629113457.0D7B61F000E9@smtp.kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>,
+	zhouyanjing@hygon.cn,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] KVM: selftests: Add nested SVM DecodeAssists test
+Date: Mon, 29 Jun 2026 20:52:05 +0800
+Message-ID: <20260629125205.52394-3-zhang_wei@open-hieco.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260629125205.52394-1-zhang_wei@open-hieco.net>
+References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 29, 2026 at 11:34:56AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [Critical] Mapping writeable pages with both DBM and S2AP_W set causes `kvm_pgtable_stage2_wrprotect` to silently bypass software write-protection.
-> - [High] `has_vhe_hdbss` incorrectly uses `is_kernel_in_hyp_mode()` which evaluates to true during early boot for pKVM (nVHE), erroneously enabling VHE-specific features.
-> - [Low] Typo in the parameter name for `has_vhe_hdbss`.
-> --
-> 
-> commit 49089779295fae526ba79b7c7e78d31fbe6a9636
-> Author: Leonardo Bras <leo.bras@arm.com>
-> 
-> KVM: arm64: HDBSS bits
-> 
-> The commit introduces HDBSS bits from a future patchset to fulfill
-> dependencies and allow building.
-> 
-> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> > index 9a22df0c5120f..aa327eebaf1ca 100644
-> > --- a/arch/arm64/kernel/cpufeature.c
-> > +++ b/arch/arm64/kernel/cpufeature.c
-> 
-> [ ... ]
-> 
-> > @@ -2131,6 +2131,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
-> >  	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
-> >  }
-> >  
-> > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
->                                                                              ^^^^
-> [Severity: Low]
-> This isn't a bug, but there is a typo in the parameter name (cope instead
-> of scope).
-> 
-> > +{
-> > +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
-> 
-> [Severity: High]
-> Does using is_kernel_in_hyp_mode() here erroneously enable VHE-specific
-> features for pKVM (nVHE)?
-> 
-> During early boot feature detection, is_kernel_in_hyp_mode() evaluates to
-> true because the host kernel boots at EL2 and only drops privileges to
-> EL1 later during device_initcall_sync (finalize_pkvm()).
-> 
-> This early check could force ARM64_HAS_HDBSS to be enabled on pKVM
-> systems, propagating the KVM_PGTABLE_S2_DBM flag to hypervisor-managed
-> stage-2 page tables.
-> 
-> Should this use is_vhe_hyp_mode() instead to avoid incorrectly matching
-> during the nVHE privileged window?
-> 
+Add a selftest for nested SVM DecodeAssists virtualization.
 
-Copied from HDBSS patchset, so notes for Tian Zheng ^
+Run L2 with a non-present NPT mapping to trigger a nested page fault, then
+verify that L1 sees non-zero DecodeAssist state in VMCB12 and that the
+reported instruction bytes match the instruction at L2's RIP.  This covers
+the path that copies hardware-provided decode information from VMCB02 to
+VMCB12.
 
-> > +}
-> 
-> [ ... ]
-> 
-> > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> > index 91a7dfad66866..e16729f0b7bd2 100644
-> > --- a/arch/arm64/kvm/hyp/pgtable.c
-> > +++ b/arch/arm64/kvm/hyp/pgtable.c
-> 
-> [ ... ]
-> 
-> > @@ -731,9 +731,13 @@ static int stage2_set_prot_attr(struct kvm_pgtable *pgt, enum kvm_pgtable_prot p
-> >  	if (prot & KVM_PGTABLE_PROT_R)
-> >  		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R;
-> >  
-> > -	if (prot & KVM_PGTABLE_PROT_W)
-> > +	if (prot & KVM_PGTABLE_PROT_W) {
-> >  		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> >  
-> > +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
-> > +			attr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> 
-> [Severity: Critical]
-> Can setting KVM_PTE_LEAF_ATTR_HI_S2_DBM here lead to a silent bypass of
-> software write-protection?
-> 
-> When a page is mapped writable, both DBM and S2AP_W are set. If KVM later
-> write-protects the page via kvm_pgtable_stage2_wrprotect(), only S2AP_W
-> is cleared:
-> 
-> kvm_pgtable_stage2_wrprotect() {
->     ...
->     return stage2_update_leaf_attrs(pgt, addr, size, 0,
->                                     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
->                                     NULL, NULL,
->                                     KVM_PGTABLE_WALK_IGNORE_EAGAIN);
-> }
-> 
-> This leaves DBM intact. Hardware interprets DBM=1, S2AP_W=0 as a clean
-> writable page and automatically sets S2AP_W=1 on the next write without
-> generating a Permission Fault.
-> 
-> For pKVM, this allows a guest to bypass memory isolation. For nested
-> virtualization, nested guest writes will silently set S2AP_W=1 without
-> trapping to the host, resulting in lost dirty pages during live migration.
-> 
+Re-enter L2 at a VMMCALL after the #NPF and verify that any reported bytes
+match the new RIP.  KVM reuses VMCB02 across nested runs, so the second
+exit checks that DecodeAssist state from the earlier #NPF is not leaked
+into an unrelated nested VM-Exit.
 
-Is there any case where we want to write protect a page that was marked as 
-writeable, but not for dirty-tracking? 
-If so, we need to also clear DBM for that, and make sure it is done only 
-in those cases. 
+Also verify that KVM exposes DecodeAssists in L1's SVM CPUID leaf when the
+feature is supported by the host.
 
-The whole idea of HAFDBS / HDBSS is that the page is not actually write 
-protected, it just doing dirty-detection, and this is done much much 
-faster.
+Tested-by: Yongwei Xu <xuyongwei@hygon.cn>
+Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+---
+ tools/testing/selftests/kvm/Makefile.kvm      |  1 +
+ .../selftests/kvm/include/x86/processor.h     |  1 +
+ .../kvm/x86/svm_nested_decode_assists_test.c  | 99 +++++++++++++++++++
+ 3 files changed, 101 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
 
-Thanks!
-Leo
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 9118a5a51b89..23bf51074392 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -114,6 +114,7 @@ TEST_GEN_PROGS_x86 += x86/vmx_preemption_timer_test
+ TEST_GEN_PROGS_x86 += x86/svm_vmcall_test
+ TEST_GEN_PROGS_x86 += x86/svm_int_ctl_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
++TEST_GEN_PROGS_x86 += x86/svm_nested_decode_assists_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 77f576ee7789..ee4520ff2f89 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -201,6 +201,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_LBRV		KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 1)
+ #define	X86_FEATURE_NRIPS		KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 3)
+ #define X86_FEATURE_TSCRATEMSR          KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 4)
++#define X86_FEATURE_DECODEASSISTS       KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 7)
+ #define X86_FEATURE_PAUSEFILTER         KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 10)
+ #define X86_FEATURE_PFTHRESHOLD         KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 12)
+ #define	X86_FEATURE_V_VMSAVE_VMLOAD	KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 15)
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+new file mode 100644
+index 000000000000..6b5d38d9d36c
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "svm_util.h"
++
++#define L2_GUEST_STACK_SIZE 64
++
++static uint64_t npf_target __aligned(PAGE_SIZE);
++
++static void l2_guest_code(void)
++{
++	asm volatile("mov (%0), %%rax" : : "r"(&npf_target) : "rax", "memory");
++	GUEST_FAIL("L2 access did not cause a nested page fault");
++}
++
++static void l2_vmmcall_code(void)
++{
++	asm volatile("vmmcall");
++	GUEST_FAIL("L2 did not exit on VMMCALL");
++}
++
++/*
++ * Whenever hardware reports DecodeAssist information (insn_len != 0), the bytes
++ * KVM reflects into VMCB12 must be the instruction at the current RIP, never
++ * stale bytes carried over from a previous L2 exit.
++ */
++static void assert_decode_assists_sane(struct vmcb *vmcb)
++{
++	GUEST_ASSERT(vmcb->control.insn_len <=
++		     sizeof(vmcb->control.insn_bytes));
++	if (vmcb->control.insn_len)
++		GUEST_ASSERT(!memcmp(vmcb->control.insn_bytes,
++				     (void *)vmcb->save.rip,
++				     vmcb->control.insn_len));
++}
++
++static void l1_guest_code(struct svm_test_data *svm)
++{
++	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
++	struct vmcb *vmcb = svm->vmcb;
++
++	GUEST_ASSERT(this_cpu_has(X86_FEATURE_DECODEASSISTS));
++
++	generic_svm_setup(svm, l2_guest_code,
++			  &l2_guest_stack[L2_GUEST_STACK_SIZE]);
++
++	/* A real nested #NPF must reflect valid decode information to L1. */
++	run_guest(vmcb, svm->vmcb_gpa);
++
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
++	GUEST_ASSERT(vmcb->control.insn_len);
++	assert_decode_assists_sane(vmcb);
++
++	/*
++	 * Redirect L2 past the still-faulting access to a VMMCALL.  KVM reuses
++	 * its internal VMCB02, which now holds the #NPF's decode bytes, so this
++	 * exercises the path that must clear DecodeAssist state and ensures the
++	 * prior exit's bytes are not leaked into a subsequent exit.
++	 */
++	vmcb->save.rip = (u64)l2_vmmcall_code;
++	run_guest(vmcb, svm->vmcb_gpa);
++
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
++	assert_decode_assists_sane(vmcb);
++
++	GUEST_DONE();
++}
++
++int main(int argc, char *argv[])
++{
++	gva_t svm_gva, npf_gva;
++	gpa_t npf_gpa;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	u64 *pte;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_NPT));
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_DECODEASSISTS));
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++	vm_enable_npt(vm);
++	vcpu_alloc_svm(vm, &svm_gva);
++	npf_gva = (gva_t)&npf_target;
++	npf_gpa = addr_gva2gpa(vm, npf_gva);
++
++	tdp_identity_map_default_memslots(vm);
++	pte = tdp_get_pte(vm, npf_gpa);
++	*pte &= ~PTE_PRESENT_MASK(&vm->stage2_mmu);
++
++	vcpu_args_set(vcpu, 1, svm_gva);
++	vcpu_run(vcpu);
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
++
++	kvm_vm_free(vm);
++	return 0;
++}
+-- 
+2.43.0
+
