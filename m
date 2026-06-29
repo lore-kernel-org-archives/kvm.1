@@ -1,197 +1,471 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1787C4014B8;
-	Mon, 29 Jun 2026 13:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944D332B989
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 13:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782739772; cv=none; b=E3wxKIUlhV5sueJnFsU11xug+Pq97yjK1xg5zU9YdPq7Ku79KEFvWPiryaFQQCJ2pSuwlkDIbEYvJkA5BiP8JU9oV8vJ0L7BkIyDTo0hdjuNZNGdfmIW6Hwd2jB1hZpaQcl2Tik2IM8wDOr7dhRgBowMJCdJ4XZ59PxLsOEjE30=
+	t=1782741402; cv=none; b=f+05EW/QyGZtlaxMtHpCN80GQ2jzqggIj8Rwt+KxodXIyCqKIXUALR33JJha1tOu9adPkbuL/THiB2JlzxLsfUJqAMdrGsavZHPnFQt0dpQtp9LbFxlQ6WB3wZ6/ZUVzWMFIn7AeE0KBGGDze1z8RunJbgxY4BCkiT8vHcu+edI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782739772; c=relaxed/simple;
-	bh=hHGkUIL3XbzTEtEdl2KLoIec5eWy0rJ8aTHDI8/RaNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUHyi9dHngaeEtY6uzRfrpFeoP8PrNuf2NYkyc46JqGtFtuphic6uE4l/lnEJ2REJ1jZad90Kfi989/23htl9bURjBLozj2rQthQMFJwSfb90urqR6Rg3IWsmqI43p/uls8jsi7oyFODM/d/SyUV8CNMxBeOU91JSA8BzbmQwok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTF5aPGs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782741402; c=relaxed/simple;
+	bh=Bfe4DBZzQHsGL4rvG7nIN8Ksz2qGetbXxLJ5OQMHx90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PgXOYGLmB287Pr2ubKQn86BBVwAjP/ZEBiAmLthkEXZVe0HpYUSD5tyjDk6UNWgcCLbvKY9L6dkk+A3REDS7GgstyjHKVz6dIp6FnaDCmRF3iIG78zkD72MFlJNYy/K4jYOCJkh9Syk/OP0j7GxSkokIO2AG2uVhlhLDZP25G1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iTLJp6dT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OQmkdJX6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c8FwD76f; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0oUBUqEI; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTF5aPGs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE1B1F000E9;
-	Mon, 29 Jun 2026 13:29:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782739771;
-	bh=k4fPROCs1/T0mIyB4kYzuUwM6bdcJBB7jz2kwBE/rvQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eTF5aPGs0GAgr49vmxLmdCLyXPRoSqAh1q0h0Enl0xSpL7g0EqH97VBO1BlJMXYF4
-	 k9kWd/G9wptb3QSsCvDvGTBV/oH9GtxZPeLWxsAI2PiTDW3GAGho8BbmiJWtypGQt+
-	 6AetcN/460T1pZi5sYDxqrn7rvtIwSMkYbGLPuBL3Z7d2xjVF8Kb+mC0SfxAESPYGK
-	 UCqQdfbhOJZEVI/qHBKvIkDX8bZa3Ki0GQSfQVFeIqMxTOf/bpnBKba2EeurYPyeLI
-	 KOVPZ09ZK7FgvM48rQeYcpNZWz7BsO72znMrQIUqNIPHQlmH/EEgqjIxakI9jIOIJq
-	 fMroW9KzNm2Lg==
-Date: Mon, 29 Jun 2026 18:57:32 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] KVM: SVM: Drop unnecessary avic_vm_destroy() call on
- init failure
-Message-ID: <akJw3nXeWO-Xavc5@blrnaveerao1>
-References: <20260625220933.3357733-1-seanjc@google.com>
- <20260625220933.3357733-3-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iTLJp6dT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OQmkdJX6";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c8FwD76f";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0oUBUqEI"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E2E8075A06;
+	Mon, 29 Jun 2026 13:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782741398; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
+	b=iTLJp6dTtPrWQYOFyPqFVjgKvk21ha7IRKet+2dRtaNfbz8s93LWr177MlCDv93Lw+QRgD
+	7o1KqI/bt1LmxMLueusI/725nXlN/PgmszTfVyozUBHb6Qi8yVL//+sb4YJ/wG4ME16N53
+	RIAPJVnA6x+MsLvQe0ziepnssaApP5Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782741398;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
+	b=OQmkdJX6vvxzSc5XuWuW7iqNsLRnbCxEqoEScPBsy0F3tBM4YLHsmsqy0SrlxzhAOGwRGX
+	xhKvHI8OwBFGKHBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782741397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
+	b=c8FwD76f1Uwd6aWDKF6SNUoBEdd2a4NDbp8I0kHWLVFS513I7noTYBT1CKVGVbZLiFVsHG
+	pD06GBDt/jyh5PfkHZ/Jefe0wtV6rATtUyZvbZuabE43i6zJ0mEIuDaNLER8BdqsrSK6J8
+	06M8bH3/rTealQHdY4kKQ1MBnzVyIOg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782741397;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
+	b=0oUBUqEIguzuujB7xM2VRDIjsqG4lJtIX0A2z5+9RGQsCFq29svGSk6y0ZdWklp8T5lnNO
+	tljnfWx5rpptL/BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4D6E779A8;
+	Mon, 29 Jun 2026 13:56:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rfu3MpJ5Qmo6bAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 29 Jun 2026 13:56:34 +0000
+Message-ID: <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
+Date: Mon, 29 Jun 2026 15:56:33 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625220933.3357733-3-seanjc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Rob Clark
+ <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
+ Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_CC(0.00)[armlinux.org.uk,kernel.org,siemens-energy.com,HansenPartnership.com,gmx.de,redhat.com,alien8.de,linux.intel.com,mev.co.uk,visionengravers.com,pengutronix.de,gmail.com,ffwll.ch,oss.qualcomm.com,ideasonboard.com,nvidia.com,amd.com,shazbot.org,zeniv.linux.org.uk,linux.dev,suse.de,google.com,infradead.org,samsung.com,goodmis.org,huawei.com,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,lists.linux.dev,kvack.org,googlegroups.com,surriel.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[75];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Score: -2.80
 
-On Thu, Jun 25, 2026 at 03:09:33PM -0700, Sean Christopherson wrote:
-> Don't bother calling avic_vm_destroy() when allocating the logical ID table
-> fails, as there is nothing to clean up now that the physical ID table is
-> allocated later, on-demand at first vCPU creation.
-> 
-> For all intents and purposes, no functional change intended, as calling
-> avic_vm_destroy() is a big nop in this case.
-> 
-> Fixes: 54ffe74cc4ab ("KVM: SVM: Move AVIC Physical ID table allocation to vcpu_precreate()")
-> Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Hi
+
+Am 29.06.26 um 14:23 schrieb Lorenzo Stoakes:
+> There are a number of places where we open code what linear_page_index()
+> and linear_page_delta() calculate.
+>
+> Replace this code with the appropriate functions for consistency.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+
+For the DRM changes:
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+See below for two additional comments.
+
+
 > ---
->  arch/x86/kvm/svm/avic.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+>   arch/arm/mm/fault-armv.c              | 2 +-
+>   arch/x86/kernel/cpu/sgx/virt.c        | 3 ++-
+>   drivers/comedi/comedi_fops.c          | 3 ++-
+>   drivers/gpu/drm/etnaviv/etnaviv_gem.c | 3 ++-
+>   drivers/gpu/drm/gma500/gem.c          | 2 +-
+>   drivers/gpu/drm/msm/msm_gem.c         | 3 ++-
+>   drivers/gpu/drm/omapdrm/omap_gem.c    | 5 +++--
+>   drivers/gpu/drm/tegra/gem.c           | 3 ++-
+>   drivers/gpu/drm/ttm/ttm_bo_vm.c       | 7 ++++---
+>   drivers/vfio/pci/nvgrace-gpu/main.c   | 3 ++-
+>   drivers/vfio/pci/vfio_pci_core.c      | 3 ++-
+>   mm/nommu.c                            | 2 +-
+>   mm/vma.c                              | 2 +-
+>   virt/kvm/guest_memfd.c                | 2 +-
+>   14 files changed, 26 insertions(+), 17 deletions(-)
+>
 
-This LGTM, though I'm not sure this deserves a fixes tag.
+[...]
 
-FWIW, I have had a patch (part of a larger series I am going to post 
-soon) to move the logical_id_table allocation alongside the physical ID 
-table allocation. I'm fine if you want to queue your patch first, but 
-this is what I have locally:
+>   
+>   #include <linux/io.h>
+>   #include <linux/uaccess.h>
+> @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
+>   {
+>   	struct comedi_buf_map *bm = vma->vm_private_data;
+>   	unsigned long offset =
+> -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
+> +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
 
+This doesn't seem to belong here.
+
+>   
+>   	if (len < 0)
+>   		return -EINVAL;
+> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> index b0436a1e103f..2e4d6d117ee2 100644
+> --- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> +++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> @@ -6,6 +6,7 @@
+>   #include <drm/drm_prime.h>
+>   #include <drm/drm_print.h>
+>   #include <linux/dma-mapping.h>
+> +#include <linux/pagemap.h>
+>   #include <linux/shmem_fs.h>
+>   #include <linux/spinlock.h>
+>   #include <linux/vmalloc.h>
+> @@ -188,7 +189,7 @@ static vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
+>   	}
+>   
+>   	/* We don't use vmf->pgoff since that has the fake offset: */
+> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	pgoff = linear_page_delta(vma, vmf->address);
+>   
+>   	pfn = page_to_pfn(pages[pgoff]);
+>   
+> diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
+> index 88f1e86c8903..2708e8c68f4c 100644
+> --- a/drivers/gpu/drm/gma500/gem.c
+> +++ b/drivers/gpu/drm/gma500/gem.c
+> @@ -288,7 +288,7 @@ static vm_fault_t psb_gem_fault(struct vm_fault *vmf)
+>   
+>   	/* Page relative to the VMA start - we must calculate this ourselves
+>   	   because vmf->pgoff is the fake GEM offset */
+> -	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	page_offset = linear_page_delta(vma, vmf->address);
+>   
+>   	/* CPU view of the page, don't go via the GART for CPU writes */
+>   	if (pobj->stolen)
+> diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+> index efd3d3c9a449..cbf723a5d86f 100644
+> --- a/drivers/gpu/drm/msm/msm_gem.c
+> +++ b/drivers/gpu/drm/msm/msm_gem.c
+> @@ -9,6 +9,7 @@
+>   #include <linux/spinlock.h>
+>   #include <linux/shmem_fs.h>
+>   #include <linux/dma-buf.h>
+> +#include <linux/pagemap.h>
+>   
+>   #include <drm/drm_dumb_buffers.h>
+>   #include <drm/drm_prime.h>
+> @@ -360,7 +361,7 @@ static vm_fault_t msm_gem_fault(struct vm_fault *vmf)
+>   	}
+>   
+>   	/* We don't use vmf->pgoff since that has the fake offset: */
+> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	pgoff = linear_page_delta(vma, vmf->address);
+>   
+>   	pfn = page_to_pfn(pages[pgoff]);
+>   
+> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+> index 8e013e4f2c6b..00404fb6c29a 100644
+> --- a/drivers/gpu/drm/omapdrm/omap_gem.c
+> +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+> @@ -5,6 +5,7 @@
+>    */
+>   
+>   #include <linux/dma-mapping.h>
+> +#include <linux/pagemap.h>
+>   #include <linux/seq_file.h>
+>   #include <linux/shmem_fs.h>
+>   #include <linux/spinlock.h>
+> @@ -359,7 +360,7 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
+>   	pgoff_t pgoff;
+>   
+>   	/* We don't use vmf->pgoff since that has the fake offset: */
+> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	pgoff = linear_page_delta(vma, vmf->address);
+>   
+>   	if (omap_obj->pages) {
+>   		omap_gem_cpu_sync_page(obj, pgoff);
+> @@ -407,7 +408,7 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
+>   	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
+>   
+>   	/* We don't use vmf->pgoff since that has the fake offset: */
+> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	pgoff = linear_page_delta(vma, vmf->address);
+>   
+>   	/*
+>   	 * Actual address we start mapping at is rounded down to previous slot
+> diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+> index 436394e04812..1d8d27a5ea89 100644
+> --- a/drivers/gpu/drm/tegra/gem.c
+> +++ b/drivers/gpu/drm/tegra/gem.c
+> @@ -13,6 +13,7 @@
+>   #include <linux/dma-buf.h>
+>   #include <linux/iommu.h>
+>   #include <linux/module.h>
+> +#include <linux/pagemap.h>
+>   #include <linux/vmalloc.h>
+>   
+>   #include <drm/drm_drv.h>
+> @@ -564,7 +565,7 @@ static vm_fault_t tegra_bo_fault(struct vm_fault *vmf)
+>   	if (!bo->pages)
+>   		return VM_FAULT_SIGBUS;
+>   
+> -	offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> +	offset = linear_page_delta(vma, vmf->address);
+>   	page = bo->pages[offset];
+>   
+>   	return vmf_insert_page(vma, vmf->address, page);
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> index a80510489c45..88babf435ac2 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> @@ -32,6 +32,7 @@
+>   #define pr_fmt(fmt) "[TTM] " fmt
+>   
+>   #include <linux/export.h>
+> +#include <linux/pagemap.h>
+>   
+>   #include <drm/ttm/ttm_bo.h>
+>   #include <drm/ttm/ttm_placement.h>
+> @@ -208,9 +209,9 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+>   	if (unlikely(err != 0))
+>   		return VM_FAULT_SIGBUS;
+>   
+> -	page_offset = ((address - vma->vm_start) >> PAGE_SHIFT) +
+> -		vma->vm_pgoff - drm_vma_node_start(&bo->base.vma_node);
+> -	page_last = vma_pages(vma) + vma->vm_pgoff -
+> +	page_offset = linear_page_index(vma, address) -
+> +		drm_vma_node_start(&bo->base.vma_node);
+> +	page_last = vma_end_pgoff(vma) -
+>   		drm_vma_node_start(&bo->base.vma_node);
+
+Not your fault, but page_last seems misnamed here.
+
+Best regards
+Thomas
+
+>   
+>   	if (unlikely(page_offset >= PFN_UP(bo->base.size)))
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index d07dcacb76bd..963fd8ded20d 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/jiffies.h>
+>   #include <linux/sched.h>
+>   #include <linux/pci-p2pdma.h>
+> +#include <linux/pagemap.h>
+>   #include <linux/pm_runtime.h>
+>   #include <linux/memory-failure.h>
+>   
+> @@ -385,7 +386,7 @@ static unsigned long addr_to_pgoff(struct vm_area_struct *vma,
+>   	u64 pgoff = vma->vm_pgoff &
+>   		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+>   
+> -	return ((addr - vma->vm_start) >> PAGE_SHIFT) + pgoff;
+> +	return linear_page_delta(vma, addr) + pgoff;
+>   }
+>   
+>   static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index a28f1e99362c..55d4937d495a 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -19,6 +19,7 @@
+>   #include <linux/module.h>
+>   #include <linux/mutex.h>
+>   #include <linux/notifier.h>
+> +#include <linux/pagemap.h>
+>   #include <linux/pci.h>
+>   #include <linux/pm_runtime.h>
+>   #include <linux/slab.h>
+> @@ -1727,7 +1728,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+>   	struct vm_area_struct *vma = vmf->vma;
+>   	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+>   	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
+> -	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
+> +	unsigned long pgoff = linear_page_delta(vma, addr);
+>   	unsigned long pfn = vma_to_pfn(vma) + pgoff;
+>   	vm_fault_t ret = VM_FAULT_FALLBACK;
+>   
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index 60560b2c457e..7333d855e974 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -1332,7 +1332,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>   	*region = *vma->vm_region;
+>   	new->vm_region = region;
+>   
+> -	npages = (addr - vma->vm_start) >> PAGE_SHIFT;
+> +	npages = linear_page_delta(vma, addr);
+>   
+>   	if (new_below) {
+>   		region->vm_top = region->vm_end = new->vm_end = addr;
+> diff --git a/mm/vma.c b/mm/vma.c
+> index ee3a8ca13d07..185d07397ca6 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>   		new->vm_end = addr;
+>   	} else {
+>   		new->vm_start = addr;
+> -		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +		new->vm_pgoff += linear_page_delta(vma, addr);
+>   	}
+>   
+>   	err = -ENOMEM;
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index db57c5766ab6..f0e5da490866 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -440,7 +440,7 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+>   static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+>   					     unsigned long addr, pgoff_t *ilx)
+>   {
+> -	pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	pgoff_t pgoff = linear_page_index(vma, addr);
+>   	struct inode *inode = file_inode(vma->vm_file);
+>   
+>   	*ilx = inode->i_ino;
+
+-- 
 --
-    KVM: SVM: Consolidate allocation of AVIC Physical and Logical ID 
-    tables
-    
-    Allocate AVIC Logical ID table alongside AVIC Physical ID table
-    allocation in avic_alloc_physical_id_table() so as to keep allocations
-    of both AVIC related data structures together. Rename the function to
-    avic_vcpu_precreate() to reflect when it is invoked since it no longer
-    allocates only the Physical ID table. Convert avic_vm_init() to return a
-    void since it can no longer fail.
-    
-    Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
-
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 716be21fba33..722855be706f 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -945,9 +945,9 @@ extern struct kvm_x86_nested_ops svm_nested_ops;
- 
- bool __init avic_hardware_setup(void);
- void avic_hardware_unsetup(void);
--int avic_alloc_physical_id_table(struct kvm *kvm);
-+int avic_vcpu_precreate(struct kvm *kvm);
- void avic_vm_destroy(struct kvm *kvm);
--int avic_vm_init(struct kvm *kvm);
-+void avic_vm_init(struct kvm *kvm);
- void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb);
- int avic_incomplete_ipi_interception(struct kvm_vcpu *vcpu);
- int avic_unaccelerated_access_interception(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 0726f88e679a..fb5933c7421d 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -293,7 +293,7 @@ static int avic_get_physical_id_table_order(struct kvm *kvm)
- 	return get_order((__avic_get_max_physical_id(kvm, NULL) + 1) * sizeof(u64));
- }
- 
--int avic_alloc_physical_id_table(struct kvm *kvm)
-+int avic_vcpu_precreate(struct kvm *kvm)
- {
- 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
- 
-@@ -303,10 +303,16 @@ int avic_alloc_physical_id_table(struct kvm *kvm)
- 	if (kvm_svm->avic_physical_id_table)
- 		return 0;
- 
-+	kvm_svm->avic_logical_id_table = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
-+	if (!kvm_svm->avic_logical_id_table)
-+		return -ENOMEM;
-+
- 	kvm_svm->avic_physical_id_table = (void *)__get_free_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
- 								   avic_get_physical_id_table_order(kvm));
--	if (!kvm_svm->avic_physical_id_table)
-+	if (!kvm_svm->avic_physical_id_table) {
-+		free_page((unsigned long)kvm_svm->avic_logical_id_table);
- 		return -ENOMEM;
-+	}
- 
- 	return 0;
- }
-@@ -328,20 +334,15 @@ void avic_vm_destroy(struct kvm *kvm)
- 	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
- }
- 
--int avic_vm_init(struct kvm *kvm)
-+void avic_vm_init(struct kvm *kvm)
- {
- 	unsigned long flags;
--	int err = -ENOMEM;
- 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
- 	struct kvm_svm *k2;
- 	u32 vm_id;
- 
- 	if (!enable_apicv)
--		return 0;
--
--	kvm_svm->avic_logical_id_table = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
--	if (!kvm_svm->avic_logical_id_table)
--		goto free_avic;
-+		return;
- 
- 	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
-  again:
-@@ -360,12 +361,6 @@ int avic_vm_init(struct kvm *kvm)
- 	kvm_svm->avic_vm_id = vm_id;
- 	hash_add(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
- 	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
--
--	return 0;
--
--free_avic:
--	avic_vm_destroy(kvm);
--	return err;
- }
- 
- static phys_addr_t avic_get_backing_page_address(struct vcpu_svm *svm)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e6408c3e8419..a9a4fc105c6b 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1308,7 +1308,7 @@ void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_vmcb)
- 
- static int svm_vcpu_precreate(struct kvm *kvm)
- {
--	return avic_alloc_physical_id_table(kvm);
-+	return avic_vcpu_precreate(kvm);
- }
- 
- static int svm_vcpu_create(struct kvm_vcpu *vcpu)
-@@ -5302,12 +5302,7 @@ static int svm_vm_init(struct kvm *kvm)
- 	if (!pause_filter_count || !pause_filter_thresh)
- 		kvm_disable_exits(kvm, KVM_X86_DISABLE_EXITS_PAUSE);
- 
--	if (enable_apicv) {
--		int ret = avic_vm_init(kvm);
--		if (ret)
--			return ret;
--	}
--
-+	avic_vm_init(kvm);
- 	svm_srso_vm_init();
- 	return 0;
- }
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
 
 
-
- - Naveen
