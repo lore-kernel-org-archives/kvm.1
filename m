@@ -1,216 +1,419 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012026.outbound.protection.outlook.com [40.107.209.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC5713635E;
-	Mon, 29 Jun 2026 03:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782702728; cv=fail; b=NYCsQIODjXyvumF6TowKjAu/3UDm51n+1C/TMGm25Of3hoJN1NkG824LpHNE9g4wASeJu4fomtr87MA01gk+z+hzdn2pgU/1rfvjGeaIWCUhHXHxZDT3G/c8u+yz4sf6rBc/Rf2lQeTA59BYsQ99tmrZe2d7L4Oe3LfnQPtj9JU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782702728; c=relaxed/simple;
-	bh=MPZQmF4uZXzRFCGfEd3+cwpc0viSyY7+q9s5QT/f8r0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MefI547ZUZXd+0nsOZOV4+La7+Gt7zfSX1aIWQk9OuluGv4rz7cOFJjBCE+0GmQuowQ2sBSrDL0v/WxT0Ly0v6uPOSxTeFusch+5FN5d1ge1QwJBOeK1pEbmTHPYrb1hYWhzuqQKMjt+pYnBjiMXoqk7z/7806PN1vWORFGKwQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JQwnNhj6; arc=fail smtp.client-ip=40.107.209.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404928C037
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 06:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782713137; cv=none; b=FsaFC/REfTQqtFavk2AHledo/9BaSIkXJQd5ExDvbz7aR23JuPRVwUXdJh+xms29v6nGM+CFXNWEoXcCSOZVUi+a14WITCjIssIrLS5+qVF6y9lJjarBhpvBxwwsL8+iTByl4dlqfJl6WXFP4XLEeFOqrlOnZYls781ZDVh38F0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782713137; c=relaxed/simple;
+	bh=DarU8t3M1Fz7v5BFTrpcbT6v8AODn3pnviXSxdolNEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G6ukrdVf7zsGi0WtTRoTluicoS95h8Ev5/l8uoFj6KHP0W256B/2/ZKEzfeo/utzSyUrjKIwWU2KzLOG/7BF/oSaM9AMMthcOqVClUgrSVkIVr1NQqbMjvQ8DlNN5HQOMlW0YzOCwAAbwgLAVKga/Et5mEJ3wFfCZ4CoBn7AT7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rQOhue7e; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rQOhue7e; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JQwnNhj6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wjvddafg0DnAewFv+aO85bC3g/ZG4auwfBZF3oPytY+wYMl43wmdlwxoRQvaG4qMWaCj9PXABWbTKw6+6FxLlBjkzDaky5sZFnvKisUQWex6QPei6GK2QwT8qFuHGKsMbj/Me4BnvKyvWMJKsKMFUYIg2FZ2FwfKWyAKEB+H3tzCoklcGRK3F9l3y61wJoQpveI2SLW9Uxvn4PtDG4DXGGhrrymopORBS8znwjq4gBe7vt3eQ54TIJcHp/vbUcon2uSqYmAPBelWOxL4w82btEOc6XXbeBj3qzJEHKey+KlQmXnzevFsvBKT3cBuEV02LJEltkZuRIySlB4GBSnUlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XL7dWaXTcZk1r9nELZt9gEaPnC5pVpzDjqkTaCc0nLE=;
- b=K5KsatCPv2rCwu0WGJIEs7DzgkeK4JoK8vc7Ai3/Czm9NsS48hougH4wReq0qXL92PjgI0aG5cZSbVZUEV/0lcgg+8wsXbxabhR+zPtJBbA2QwmnF94kWC4CrvrGTe7FLGRRjZHF6YzOVzFnnxxIkQ9jSmB3Z++ojO9mOmAzeRKdeW6a1198xnZDl5WHp/kFb5rmzDvxEJ7K0B0G0qTHh057x7nI2ooi5zZH3J9KiYCaWOR4ppeFclrdHUgQyRjI9YSaDzFq4US4u+YaiBgzroS6wQK7V08Xvd5p8SRd7C5zyJCe0PPqoV5Weq2v7rlv7+omlyABg2/Y+6N8Ll3LlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XL7dWaXTcZk1r9nELZt9gEaPnC5pVpzDjqkTaCc0nLE=;
- b=JQwnNhj67JksWZ28etnadhsiN7zY8VGsRTsXsNY4ZzH2yALCGGcaGN25XoU1+OkqnQchnpcq9zt/KOlElsfnuccUgh6yAlo/SCixSCiL71g7ykgV29wSpBGgKw7wu+ypX3VNOv/ny4MoEz3p8tx+4lo/STR+RkV6Kk/lMshWav0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by PH7PR12MB8180.namprd12.prod.outlook.com (2603:10b6:510:2b6::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 03:12:00 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0159.012; Mon, 29 Jun 2026
- 03:12:00 +0000
-Message-ID: <976721b6-f6b7-4808-944d-3d15411e1582@amd.com>
-Date: Sun, 28 Jun 2026 22:11:59 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: K Prateek Nayak <kprateek.nayak@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, ackerleytng@google.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1782336473.git.ashish.kalra@amd.com>
- <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
- <20260625150253.GAaj1DHZC8ULg6PzbI@fat_crate.local>
- <7c64d96f-f932-4db9-8119-b9e40d5b7fd9@amd.com>
- <20260626164032.GDaj6rgHq4xPd-qjvG@fat_crate.local>
- <9d019b55-739d-429c-bb34-ce792e8340b6@amd.com>
- <20260627044117.GEaj9UbSvTExfmFilu@fat_crate.local>
- <75a397c3-5251-45c8-8aba-a185685b382d@amd.com>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <75a397c3-5251-45c8-8aba-a185685b382d@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1PR05CA0018.namprd05.prod.outlook.com
- (2603:10b6:806:2d2::18) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rQOhue7e";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rQOhue7e"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7B3FE75D0F;
+	Mon, 29 Jun 2026 06:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1782713132; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ucXwQadpGPBgriEK86cLgPUeZrADzv4dSH5gZLBm9SU=;
+	b=rQOhue7eG1RqOZRWiTw8jbCuylMHgYcRVVXmqtOaxabAsUR6H290EGbG1g90SBE8kfAqwf
+	xu2wV5hF+XiJ5Gzn226V2je0ZU54Dy6cNLbgR6f3rixfzMkKJrxVD78cfU42kZcGy4TTPt
+	MteQ3NP7j5ZUp3ss3go9PMVdq5ajvlo=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=rQOhue7e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1782713132; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ucXwQadpGPBgriEK86cLgPUeZrADzv4dSH5gZLBm9SU=;
+	b=rQOhue7eG1RqOZRWiTw8jbCuylMHgYcRVVXmqtOaxabAsUR6H290EGbG1g90SBE8kfAqwf
+	xu2wV5hF+XiJ5Gzn226V2je0ZU54Dy6cNLbgR6f3rixfzMkKJrxVD78cfU42kZcGy4TTPt
+	MteQ3NP7j5ZUp3ss3go9PMVdq5ajvlo=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0872E779A8;
+	Mon, 29 Jun 2026 06:05:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JTiaACoLQmotEQAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 29 Jun 2026 06:05:30 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	x86@kernel.org,
+	linux-acpi@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Pu Wen <puwen@hygon.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	David Airlie <airlied@redhat.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-geode@lists.infradead.org,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ashok Raj <ashok.raj.linux@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	David E Box <david.e.box@intel.com>,
+	xen-devel@lists.xenproject.org
+Subject: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
+Date: Mon, 29 Jun 2026 08:04:51 +0200
+Message-ID: <20260629060526.3638272-1-jgross@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH7PR12MB8180:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b6dfc74-0262-4608-9d20-08ded58c2f9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|4143699003|5023799004|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	SmVX2v1lN8hKkK3vyRTu3gHDwdrVoke1PMhgA0jxR2y845ChtMbm/1xbymZv2Sz5ziaeWGB0BY850RL2yN1G3NSF235s4iKPx16kfgkPWw+aF3LLaoHuhZCg78niQ1L9M5F2GOhQ5A8/6AqUp3hlZ9anf3V0OOTUi9OCPBokKOtJf4TcxFqyRPZzPZip17Dv7zQtrGvsWYmrvav6Mn5NvfW0e5/kdWTWeWuyMmrUU61vbYgK4nTcGh0jkBydpW51ARZEbY7ubAYIuzmwyhyOIvtRUoLbslVwg79SlWf2txD+lL/+xvxrrZsXf64c/roOWvNSZd6vb2aRh0YlC81gG1w/nx0GnJNLBpZXYsLipX/Q7sUG3/9udH5hIMz0rgXx/ototOwqF3RDXVO4vG+9VQdYVojYp1pYaQKTOxxOVusmvxDKxZFa+xpNF9cFHjH9ukyCVwwWl4v+TPzfqF50ssViDhSztR0Vi0FFhfJiSHXrqtfHQ5U7yyM0Mv1ShzWCSDZxJipgjFZ2VrBksqIUX6/pQ5kvJwZNSKHKg8EfSYO58xGwVrEJSdGvq0lfQmwC7H3o5Un7ENUbe9Lbvq2XejVXJQgAXdPPReEahZCThZQSR0TmtjjT4YITmuot22yZ0W0xLp9iq6/85GpQn/swff5iL/oh19DB7qrTmxCgpsw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(4143699003)(5023799004)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R3BialJLcmdueDV4Tnl1SUoyY05OQzExZDZ2N1RvRjVkOTBKVklqV3MyVnI1?=
- =?utf-8?B?OGlWRXE3eWRhMHlMTWhEUmVJdi90OXRidFRQN1NGeTlhT01XYm5IdUNKT3B5?=
- =?utf-8?B?YVNOV3FiZ0IzVjBtV3FjWElWalJHZGU0VjROUXFHenVOZkthZE9MQXNaSTJF?=
- =?utf-8?B?ZlQ2cjJSd21UMWhqU3JUSHNVb0RDemtqcG5aVEcwQnpnSXZGZlhnbkxGd0tH?=
- =?utf-8?B?TVVjK3Z2YlJMT3hTSTFFUkZQZWJsYnZFcXl6bnhUZXJ0bHlna2xRRDZGbDRF?=
- =?utf-8?B?THVPSzNteE92UGRrNEo1MVpyL2wveTBZa1VkZDN6OTFaZm0wNWMvNWRocFMv?=
- =?utf-8?B?cEY0OUpxdE9VckdDYWl0QjVYL1d1K0dUelZ2YmJwSDJwaHVsd2RTOERUdjdu?=
- =?utf-8?B?QU9iOHMrYzJMVUVFMHI5T1FCVU51a2FnNTl6MFB6NzJ5SkMxdmg1Z3graU9n?=
- =?utf-8?B?dHRERlpPSFI5UDVUblJydFZVWnFVUzBSR29iM1ZUOUFBSHYzRDliNTZCR2Zw?=
- =?utf-8?B?R2FlVXBhVlVvc0dxM2dnNlduS1JUMmxBZTRPSnZ3dlZwUjRQaUsvejE2RG1X?=
- =?utf-8?B?eVUrS29yNzdjUktzb1FCMTJUbHJOeXpYNXRQakRtRnRaWXI4NUJWRktXbEZL?=
- =?utf-8?B?cVp6eHp3NDExNnFyMUNvVEtpbEpnUmt1elFvcEJEQWxDTHJDV0Fldkx4Q2p0?=
- =?utf-8?B?blB3QlFONHdlL05QbDVONnZKVWd1Q252VFZSQitRMWk4WlA4SnFoZ29mRzM1?=
- =?utf-8?B?Mk1oME1XMUNrUUJZMmwra3p4Y0hSY083dUNvcS8yVWIyVTRuRTNWL2Z1WmxS?=
- =?utf-8?B?ZktXeHMvek5nZitOZjNrdk04R3V0K0toeHpYV2pCTjRlL242aXVDMlVXVkFH?=
- =?utf-8?B?Mm9NeXg5YjU3UXFvQ3VCQ0ovVjdBcTNpMmQzaXJnWW5XSkM0aWVpcnpTUWd3?=
- =?utf-8?B?WUIwbFcvOG9NTnNRaS9TTHlZMTQ0QWl5RmhFZlZSV0dVUFc0dFVTNFhMUm1E?=
- =?utf-8?B?U0ZnT0dIdnRZN0pRV3EzQ1FPY3RnZHVpTDNzY2JkSXRhMWk0M2pUZFJ5c0Vz?=
- =?utf-8?B?QkdyOEM3eFB4SVN0Z2pIbnpQMEFlQXQwa1hYaUpERUtIdEkvQWVoVjM1Sk5q?=
- =?utf-8?B?cFdsbVV5aWl5bGVOcmdwT0d0b1dGTU9GWll1NmtwNFhoZlJ5dkxYOElobHpH?=
- =?utf-8?B?dzNpbXl6RnlsV3MxQTZrcjlSYXV3TmhYRmVqVUgwRjdRK3R1Z2xSSkZHT001?=
- =?utf-8?B?eWptL1l5OUwxTEoxSm83UUdsMUNnL3JudkFuVi8vS3ZiOXVFMi9WeVk4TC9J?=
- =?utf-8?B?MG9hSk1MVSsxY29mcjEvN2JvdUFmVEVmWC81TTBVNEorTHBjWWtHckJzZFhj?=
- =?utf-8?B?NFFLc09XODdVZ1lKR21CTEJ6d1o4Zmx3aFlVaG9QZnhhZUlFSE5GM0Y3WkhX?=
- =?utf-8?B?aDdSVHcwWW1UeW9Wbk9scUtkWVVaTVdpTmxSMXUzRTFuRGRsYlZXRWU2S2Jv?=
- =?utf-8?B?UGFiWExyTHJjbVpRYnJsM2N3bk96NUpyOEFmTnV2dk9PdkN6U3NHaEpkbmFl?=
- =?utf-8?B?czNDWGs5aS9iYzc2S3Z2MHNydTlxOGN6RXE2YlpaUlA4L1BVYkZRUzV4TFMv?=
- =?utf-8?B?T1U0bGxDOUY4bXVXaHFmeVRjZGNrd2ZLQ2ZuOW44S2pteXc1bHRJKy9yZW05?=
- =?utf-8?B?Y253eEtWa21seEl5QStTWFd6NDY5UVE2TS92L1NjY0NWSWJ5ZHU0L2VlZGlW?=
- =?utf-8?B?L1F3RXdOVmc1clJUdlh0WUJUTnFuMDhxVWpvRTYwaTlBVysvYlU0a3lLRnFH?=
- =?utf-8?B?TUY0T0JPNXM4amo4ZndWSXRxZ0U3ZXVlU2VSTmN5RmYwampiY1Z5cEE5cU9S?=
- =?utf-8?B?V0dBdWhGQ2kyd1ZBUlBoK29jK1R4WmN1TGI5KzJzV3RidjN4cXRXYk5LcE04?=
- =?utf-8?B?MXpUZjdOeUpBMllOUDN0dDl0WElzRC9QOWQ1dUQ0T1R5SzNsaXY1SWtVTllI?=
- =?utf-8?B?SDd6dGc4K2FnNVlWTzhIV2FELytaeEM3dUV4YnZLM3VoY3RWdzJrcFdHelhl?=
- =?utf-8?B?WFBidzN6SDZoUzMranRxY0NVU2pmOGE1WUhab2JkTEg3cjZ1WFpBR2tIVjh3?=
- =?utf-8?B?MW4wSEJtazh1dmd1Wk50dkU5NFV2anB6VElsQVM2MHVFQkF2Z09VSkljcUND?=
- =?utf-8?B?NmFpUUMzOVVqb3ZXZWhvelFUckZHNENzc25JMlF2VXFJTiswVVg3V1JXd25C?=
- =?utf-8?B?dStkZTk4TEV3TzJOempVVi9ZU1RVb2dKdmo4Mnhnc1I2WWVxaWZyZ3NWUXdi?=
- =?utf-8?Q?oPei6vbltk/HKs70LM?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b6dfc74-0262-4608-9d20-08ded58c2f9c
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 03:12:00.5742
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KxrOU/iigHoh7YEl8rkFH03aWxANwONdWDTaV1VmdE4JpuAwIJJdGpA7NLgEdG9yt6QicOT7noKIB945yIYxrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8180
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 7B3FE75D0F
+X-Spam-Flag: NO
+X-Spam-Score: -1.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,intel.com,arm.com,akamai.com,alien8.de,amd.com,redhat.com,linux.intel.com,zytor.com,google.com,hygon.cn,broadcom.com,linaro.org,zhaoxin.com,gmx.de,lists.infradead.org,selenic.com,gondor.apana.org.au,arndb.de,linuxfoundation.org,microsoft.com,roeck-us.net,infradead.org,oracle.com,gmail.com,bootlin.com,nod.at,ti.com,lists.xenproject.org];
+	DKIM_TRACE(0.00)[suse.com:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RLw7a7tks1xijzu4pa8t4mi4c3)];
+	RCPT_COUNT_GT_50(0.00)[96];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
+For accessing the MSR registers on the local CPU, there are 2 types of
+interfaces: the "modern" 64-bit ones (rdmsrq() etc.) and the 32-bit
+ones (rdmsr() etc.) which are using the upper and lower 32-bit halves
+of the 64-bit wide MSR register values.
 
-On 6/28/2026 10:05 PM, K Prateek Nayak wrote:
-> Hello Boris,
-> 
-> On 6/27/2026 10:11 AM, Borislav Petkov wrote:
->> You could also block hotplug for the time being by grabbing cpus_read_lock().
->> And only when you know you are all clear to disable hotplug, then you can do
->> that in the end and drop the hotplug lock.
-> 
-> This is bad idea because it'll stall the tasks trying to do a hotplug
-> until the last SNP VM exits. Instead of simply getting an -EBUSY, the
-> users will start seeing a hung task splats in dmesg.
-> 
-> Also, since the last VM has to re-enable hotplug, you'll need a
-> up_read_non_owner() variant for cpus_read_unlock() to unlock the rwsem
-> from a different thread compared to the one that locks.
-> 
-> I think cpu_hotplug_disable() is the correct way to go forward but if
-> you are not a fan of the global "snp_cpu_hotplug_disabled" flag, maybe
-> it can be turned into an indicator like "snp_initialized" in
-> "struct sev_device". Thoughts?
-> 
+The 32-bit interfaces are not optimal for 3 reasons:
 
-As i mentioned in my previous reply, i have already removed the global
-"snp_cpu_hotplug_disabled", the new implementation is flag-free, and
-does hotplug disable/enable by following the SNP_EN state.
+- They are based on primitives using 64-bit sized values anyway.
 
-Thanks,
-Ashish
+- Modern x86 CPUs have added support for MSR access instructions using
+  an immediate value instead of a register for addressing the MSR,
+  while the value is in a 64-bit register.
+
+- rdmsr() is a macro storing the upper and lower 32-bit halves in
+  variables specified as macro parameters. This is obscuring variable
+  assignment through a macro. Additionally rdmsrq() is mimicking this
+  pattern by being a macro, too, with the target variable specified as
+  a parameter as well.
+
+For those reasons drop the 32-bit interfaces for accessing the x86 MSR
+registers completely and only use the 64-bit variants.
+
+This allows to switch all "high-level" MSR access macros to inline
+functions in the end.
+
+This series will be used as the base for further reorganisation of the
+MSR access functions, especially for completely inlining the MSR
+access instructions even with paravirtualization being active.
+
+Note that most patches of this series are independent from each other.
+Only the patches removing a specific interface (patches 7, 15, 26 and
+30) and the last two patches of the series depend on all previous
+patches.
+
+Based on kernel 7.2-rc1, tested with and without parvirtualization
+active, compile tested for x86 with 64- and 32-bit allyes and allno
+configs.
+
+Juergen Gross (32):
+  thermal/intel: Stop using 32-bit MSR interfaces
+  powercap: Stop using 32-bit MSR interfaces
+  edac: Stop using 32-bit MSR interfaces
+  acpi: Stop using 32-bit MSR interfaces
+  x86/mtrr: Stop using 32-bit MSR interfaces
+  x86/msr: Stop using 32-bit MSR interfaces in lib/msr-smp.c
+  x86/msr: Remove wrmsr_safe()
+  x86/mce: Stop using 32-bit MSR interfaces
+  KVM/x86: Stop using 32-bit MSR interfaces
+  x86/hygon: Stop using 32-bit MSR interfaces
+  x86/pci: Stop using 32-bit MSR interfaces
+  x86/amd: Stop using 32-bit MSR interfaces
+  x86/featctl: Stop using 32-bit MSR interfaces
+  x86/tsc: Stop using 32-bit MSR interfaces
+  x86/msr: Remove rdmsr_safe()
+  cpufreq: Stop using 32-bit MSR interfaces
+  x86/resctrl: Stop using 32-bit MSR interfaces
+  x86/apic: Stop using 32-bit MSR interfaces
+  x86/cpu: Stop using 32-bit MSR interfaces
+  drivers/ata: Stop using 32-bit MSR interfaces
+  agp/nvidia: Stop using 32-bit MSR interfaces
+  fbdev/geode: Stop using 32-bit MSR interfaces
+  hw_random/via-rng: Stop using 32-bit MSR interfaces
+  drivers/gpio: Stop using 32-bit MSR interfaces
+  drivers/misc: Stop using 32-bit MSR interfaces
+  x86/msr: Remove wrmsr()
+  x86/hyperv: Stop using 32-bit MSR interfaces
+  x86/olpc: Stop using 32-bit MSR interfaces
+  hwmon: Stop using 32-bit MSR interfaces
+  x86/msr: Remove rdmsr()
+  treewide: convert rdmsrq() from a macro to an inline function
+  x86/msr: Simplify some rdmsrq() use cases
+
+ arch/x86/coco/sev/core.c                      |  2 +-
+ arch/x86/events/amd/brs.c                     |  4 +-
+ arch/x86/events/amd/core.c                    |  8 +-
+ arch/x86/events/amd/ibs.c                     | 18 ++--
+ arch/x86/events/amd/lbr.c                     | 16 +--
+ arch/x86/events/amd/power.c                   |  8 +-
+ arch/x86/events/amd/uncore.c                  |  4 +-
+ arch/x86/events/core.c                        | 20 ++--
+ arch/x86/events/intel/core.c                  | 14 +--
+ arch/x86/events/intel/cstate.c                |  5 +-
+ arch/x86/events/intel/ds.c                    |  2 +-
+ arch/x86/events/intel/knc.c                   | 10 +-
+ arch/x86/events/intel/lbr.c                   | 25 ++---
+ arch/x86/events/intel/p4.c                    |  6 +-
+ arch/x86/events/intel/p6.c                    |  4 +-
+ arch/x86/events/intel/pt.c                    | 12 +--
+ arch/x86/events/intel/uncore.c                |  6 +-
+ arch/x86/events/intel/uncore_nhmex.c          |  4 +-
+ arch/x86/events/intel/uncore_snb.c            |  2 +-
+ arch/x86/events/intel/uncore_snbep.c          |  6 +-
+ arch/x86/events/msr.c                         |  2 +-
+ arch/x86/events/perf_event.h                  |  6 +-
+ arch/x86/events/rapl.c                        |  6 +-
+ arch/x86/events/zhaoxin/core.c                | 10 +-
+ arch/x86/hyperv/hv_apic.c                     | 17 ++--
+ arch/x86/hyperv/hv_init.c                     | 26 ++---
+ arch/x86/hyperv/hv_spinlock.c                 |  2 +-
+ arch/x86/include/asm/apic.h                   |  7 +-
+ arch/x86/include/asm/debugreg.h               |  6 +-
+ arch/x86/include/asm/fsgsbase.h               |  2 +-
+ arch/x86/include/asm/kvm_host.h               |  5 +-
+ arch/x86/include/asm/msr.h                    | 39 +-------
+ arch/x86/include/asm/paravirt.h               | 26 +----
+ arch/x86/include/asm/resctrl.h                |  5 +-
+ arch/x86/kernel/acpi/sleep.c                  | 20 ++--
+ arch/x86/kernel/apic/apic.c                   | 45 ++++-----
+ arch/x86/kernel/apic/apic_numachip.c          |  6 +-
+ arch/x86/kernel/cet.c                         |  2 +-
+ arch/x86/kernel/cpu/amd.c                     | 42 ++++----
+ arch/x86/kernel/cpu/aperfmperf.c              |  8 +-
+ arch/x86/kernel/cpu/bugs.c                    | 12 +--
+ arch/x86/kernel/cpu/bus_lock.c                |  8 +-
+ arch/x86/kernel/cpu/centaur.c                 | 35 +++----
+ arch/x86/kernel/cpu/common.c                  | 22 +++--
+ arch/x86/kernel/cpu/feat_ctl.c                | 27 +++---
+ arch/x86/kernel/cpu/hygon.c                   |  9 +-
+ arch/x86/kernel/cpu/intel.c                   | 12 +--
+ arch/x86/kernel/cpu/intel_epb.c               |  4 +-
+ arch/x86/kernel/cpu/mce/amd.c                 | 89 ++++++++---------
+ arch/x86/kernel/cpu/mce/core.c                | 10 +-
+ arch/x86/kernel/cpu/mce/inject.c              |  2 +-
+ arch/x86/kernel/cpu/mce/intel.c               | 18 ++--
+ arch/x86/kernel/cpu/mce/p5.c                  | 16 +--
+ arch/x86/kernel/cpu/mce/winchip.c             | 10 +-
+ arch/x86/kernel/cpu/microcode/intel.c         |  2 +-
+ arch/x86/kernel/cpu/mshyperv.c                |  6 +-
+ arch/x86/kernel/cpu/mtrr/amd.c                | 36 ++++---
+ arch/x86/kernel/cpu/mtrr/centaur.c            | 18 ++--
+ arch/x86/kernel/cpu/mtrr/cleanup.c            | 18 ++--
+ arch/x86/kernel/cpu/mtrr/generic.c            | 97 ++++++++++---------
+ arch/x86/kernel/cpu/mtrr/mtrr.c               |  4 +-
+ arch/x86/kernel/cpu/resctrl/core.c            |  9 +-
+ arch/x86/kernel/cpu/resctrl/monitor.c         | 27 +++---
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c     | 12 +--
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c        |  2 +-
+ arch/x86/kernel/cpu/topology.c                |  2 +-
+ arch/x86/kernel/cpu/topology_amd.c            |  4 +-
+ arch/x86/kernel/cpu/transmeta.c               |  9 +-
+ arch/x86/kernel/cpu/tsx.c                     | 10 +-
+ arch/x86/kernel/cpu/umwait.c                  |  2 +-
+ arch/x86/kernel/cpu/zhaoxin.c                 | 12 +--
+ arch/x86/kernel/fpu/core.c                    |  2 +-
+ arch/x86/kernel/hpet.c                        |  2 +-
+ arch/x86/kernel/kvm.c                         |  2 +-
+ arch/x86/kernel/mmconf-fam10h_64.c            |  6 +-
+ arch/x86/kernel/process.c                     |  4 +-
+ arch/x86/kernel/process_64.c                  | 14 +--
+ arch/x86/kernel/shstk.c                       |  8 +-
+ arch/x86/kernel/traps.c                       |  4 +-
+ arch/x86/kernel/tsc.c                         |  8 +-
+ arch/x86/kernel/tsc_msr.c                     | 15 +--
+ arch/x86/kernel/tsc_sync.c                    |  6 +-
+ arch/x86/kvm/svm/pmu.c                        |  4 +-
+ arch/x86/kvm/svm/svm.c                        |  4 +-
+ arch/x86/kvm/vmx/nested.c                     |  4 +-
+ arch/x86/kvm/vmx/pmu_intel.c                  |  8 +-
+ arch/x86/kvm/vmx/sgx.c                        |  6 +-
+ arch/x86/kvm/vmx/vmx.c                        | 54 ++++++-----
+ arch/x86/kvm/x86.c                            | 12 +--
+ arch/x86/lib/insn-eval.c                      |  6 +-
+ arch/x86/lib/msr-smp.c                        |  8 +-
+ arch/x86/mm/pat/memtype.c                     |  2 +-
+ arch/x86/pci/amd_bus.c                        |  8 +-
+ arch/x86/pci/mmconfig-shared.c                |  8 +-
+ arch/x86/platform/olpc/olpc-xo1-rtc.c         |  6 +-
+ arch/x86/platform/olpc/olpc-xo1-sci.c         | 11 ++-
+ arch/x86/power/cpu.c                          | 10 +-
+ arch/x86/realmode/init.c                      |  2 +-
+ arch/x86/virt/hw.c                            |  8 +-
+ arch/x86/virt/svm/sev.c                       | 18 ++--
+ arch/x86/virt/vmx/tdx/tdx.c                   |  8 +-
+ arch/x86/xen/suspend.c                        |  2 +-
+ drivers/acpi/processor_perflib.c              | 11 ++-
+ drivers/acpi/processor_throttling.c           | 14 +--
+ drivers/ata/pata_cs5535.c                     | 20 ++--
+ drivers/ata/pata_cs5536.c                     | 17 ++--
+ drivers/char/agp/nvidia-agp.c                 | 32 +++---
+ drivers/char/hw_random/via-rng.c              | 29 +++---
+ drivers/cpufreq/acpi-cpufreq.c                | 24 ++---
+ drivers/cpufreq/amd-pstate.c                  |  4 +-
+ drivers/cpufreq/e_powersaver.c                | 52 +++++-----
+ drivers/cpufreq/intel_pstate.c                | 30 +++---
+ drivers/cpufreq/longhaul.c                    | 23 ++---
+ drivers/cpufreq/longrun.c                     | 78 ++++++++-------
+ drivers/cpufreq/powernow-k6.c                 | 12 +--
+ drivers/cpufreq/powernow-k7.c                 | 10 +-
+ drivers/cpufreq/powernow-k8.c                 | 67 ++++++-------
+ drivers/cpufreq/speedstep-centrino.c          | 16 +--
+ drivers/cpufreq/speedstep-lib.c               | 63 ++++++------
+ drivers/edac/amd64_edac.c                     |  6 +-
+ drivers/edac/ie31200_edac.c                   | 10 +-
+ drivers/edac/mce_amd.c                        |  8 +-
+ drivers/gpio/gpio-cs5535.c                    | 10 +-
+ drivers/hv/mshv_vtl_main.c                    |  2 +-
+ drivers/hwmon/hwmon-vid.c                     | 11 ++-
+ drivers/idle/intel_idle.c                     | 26 ++---
+ drivers/misc/cs5535-mfgpt.c                   | 33 +++----
+ drivers/mtd/nand/raw/cs553x_nand.c            |  6 +-
+ drivers/platform/x86/intel/ifs/load.c         | 10 +-
+ drivers/platform/x86/intel/ifs/runtest.c      |  8 +-
+ drivers/platform/x86/intel/pmc/cnp.c          |  2 +-
+ .../intel/speed_select_if/isst_if_mbox_msr.c  |  6 +-
+ .../intel/speed_select_if/isst_tpmi_core.c    |  2 +-
+ drivers/platform/x86/intel_ips.c              | 20 ++--
+ drivers/powercap/intel_rapl_common.c          | 20 ++--
+ drivers/powercap/intel_rapl_msr.c             |  2 +-
+ drivers/thermal/intel/intel_hfi.c             |  8 +-
+ drivers/thermal/intel/intel_tcc.c             | 10 +-
+ drivers/thermal/intel/therm_throt.c           | 74 +++++++-------
+ drivers/thermal/intel/x86_pkg_temp_thermal.c  | 32 +++---
+ drivers/video/fbdev/geode/display_gx.c        |  8 +-
+ drivers/video/fbdev/geode/gxfb_core.c         |  2 +-
+ drivers/video/fbdev/geode/lxfb_ops.c          | 50 +++++-----
+ drivers/video/fbdev/geode/suspend_gx.c        | 24 ++---
+ drivers/video/fbdev/geode/video_gx.c          |  8 +-
+ include/linux/cs5535.h                        | 10 +-
+ 146 files changed, 1044 insertions(+), 1128 deletions(-)
+
+-- 
+2.54.0
+
