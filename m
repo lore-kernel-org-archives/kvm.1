@@ -1,186 +1,158 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E46363C74
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 21:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782770358; cv=pass; b=AcE1yfGEbjuM076a6RPxkVXGv45IWMk4UHpjjFtUyY26HJhY4a/t5h0gf5loUj98Nc3U4l04MkuGk5YU+1ocdLTnolSspVPH7QBOyd4vxPycnohI0g06ZWclCEPgwfyKPzrV3hcHM56RrcQTNHpcjXHQFsyHBVkmKr1NS9FkYOE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782770358; c=relaxed/simple;
-	bh=Yl/5usBaAeihkfuAw6Gfio3wAqhIA5xpeQQtp9pHiQc=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KflN9VWpwTHyfymoiiqPBh1+JvHFgmCTNNIACQqmgKJlpwx/00/idB5PRXyr8f05lm0we7BLR9czZczPXlynnUfSsmU1WnSVB5fa4O20Nw8Z9+ErSi9+7DD7I4MVYRDuV5PhkCL+hU2lAj2sLkME5ToJLmV1UlgSiaDm9LssUW8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nf7CJS/D; arc=pass smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED6217BA6
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 22:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782770554; cv=none; b=c484mVdiayj9qU68W4jHgH/FQy1Q/6Y/wptWUrW63do7+lQvPhSYWVIlVpXpzbmm5F5rMKYUNrAQUI/dkiqmAAJofrqzh5AEdUA6CtO16oyt7h166YwGOGdz+S1962N91Mb43TpG7ixeFSLq47vRkbYKNED2gtF4htzoVFmOlGQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782770554; c=relaxed/simple;
+	bh=T1ui5rQxsJ4ZDgmKCTatJkmDZuhRypTinUX72gLehS8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pwX+n/YYtW7wtbOeutgPJKHqjfkF6OZ0bM7OEf4l79fm8MlM9/0dnF3hzcqT97ean6mys2hx5EiYFkkSqYZ7U2pd8LXs9lNW5qETbfSY+CE36rxuTqBlzJqja/msO+9U2CIImUe3moiYWyiaplgFHq5bDM/Jd5zXRropP1ey74U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vzqCh1ym; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nf7CJS/D"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-13a97ffb312so1069414c88.0
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 14:59:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782770357; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HCxnvsVKoViaXsrl7oTOSgZGLFP2vtV+Hfa2V9SzrenLLBt/xUQxx8NrIUivtSLocg
-         3Yn55pDdl0+yFwGM9I6H40bH4+NIyYEU3yrmj7eCuIFiaQEXqevzV93/MWJwvwJxlI32
-         vTjNfwGiFk5CT+1SirLej9ojNK1VCUJMZvVgw+moWANQgmccSRUGPFEPYShVnF4bLL5a
-         poXkPuKBIBfJvIUcvlKqWvK/6CeFrHPyanykWCYrwL8aog32qIORtPwDrsU6lFSz/oMS
-         T9IWTpqTgV4SkXOYg2KvLwgUBUMBgFenKgNtLH/MWi8wZ+tzFdpnQvTf6ceD9jWiCwU7
-         D1cQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=8VbAtdzKoYpcz4FvVp8JaG2QoBdYN1HNNzXHgPIVa/s=;
-        fh=SH9t9TFPeQ8bPdsk3rquMb8Ls+3hlsbagh6aBc008A0=;
-        b=NEYTlBX0SGIkNGDfZK+AkDO6tXFmTC1yaKneDtE/3bfhtk8Xb5zEkvSDNxUTqRw8f9
-         Ihxq4VlT/Tz2AajZ94lJPCag3SC2TcXkpVhiDtFSBdOYsX0vmvkh6P2AMUt6h9YDlP6B
-         newNOYWl8zQw45BKj7jaG4Zfh88JzwZr9/e5m2jlnKVoCgmzaT8ROhyOfuDmTb1ZlCaZ
-         VOqrftfJKp3jTd1v251bZbN/P+MLURQvtQhlvv6ATdyFMfwi32ONhS+SjiwL6hu/dA0s
-         3Ms19xXlhM2o5gHQPQcDZex4jo0/+WpQsNeXV/tW8jlV2iP2hG+ss37M2P1M8fmbHkTd
-         +4kg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vzqCh1ym"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37fb51faa63so3272a91.0
+        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782770356; x=1783375156; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8VbAtdzKoYpcz4FvVp8JaG2QoBdYN1HNNzXHgPIVa/s=;
-        b=nf7CJS/D++6l/gF1bjyGk/WpULkpfkPu+UqIicP23yy7vjcym8hAmwfzt3uW1e4t4v
-         qFE2PIvrOFWArHziLBwxnUS/Wu7I9u8jt/bq4CySJ5WQcKrHgIgb2lvDh07FzR6/Ed+O
-         0CC8whyOPrWCUa1Vb0EEEWVf10dbiWU7aTtJ1MEPDssPwAKJQ725lkgrjLgCak375Uxq
-         IcjcZ+H4Rp9Wed47cTwlSByFww3tEFlLQdl050TQsjllGFQIO1vFZwE8N0aARWcJfF8n
-         SGYHLLjwCkgkFSrsJJt8f2zq7IprqcXAjLnqgqAPmoZDNY3xlUcV44jods5u7DBjAwsO
-         pmUw==
+        d=google.com; s=20251104; t=1782770552; x=1783375352; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HMo112Q1QX2gMdVrOPPjVAkdlX7RfH+smaOCRiFcEdc=;
+        b=vzqCh1ymYx9GZB4HecnKi8n70qR7O8ppb/Y2VBWYQskaxc81par30iu8ixZaZRwsT5
+         LhA7xM/o8zSj3GDsrQQgj7+2uYD0y26le10+bQdNl0SNJGtpx/S/qYg59AiUCzqKDPmH
+         HwpbzQrYC5Fk4jSbKWE8JcyWwCkGoxAqc3skOA598braopLiR1Vk04FGTvz/OCo8fAXm
+         IVPJ+z8YrmJ/LyI9V3LljZoZ3nff8JN1J1aBOXBOYhQxImQuhF7yvqKOqX/rb/wyHAgY
+         Mzas4PPCo1wbZ0AzcrFpEB3W3vAR0UCPciNYQlDf7k0uoLPW8CEaGe20k0m6YW/J4fnX
+         fy5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782770356; x=1783375156;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8VbAtdzKoYpcz4FvVp8JaG2QoBdYN1HNNzXHgPIVa/s=;
-        b=cQob2UkLFZy6O1Xa3BEUchC2v4U/rWwopP91lm452fZ+JHla5au6yjj0cu9ElIwS/w
-         jtEKwZaeIRl+m+3bYfab2FZw56sP9masvG/58twg113+ULrdv/jFmOAr40t1PFQnJRuF
-         Wa6kUHVyhNH1/dgLpQGiWeuqs91XC5mUfRQI699HnElnf1SfM6MqPP4CWAQ/k41UyvJC
-         5rnjFKO6ulQA6OZiGZdBLa951+7Lh/kS+aF9fPmGeu6banj1b7l0Gr69q/F/4WMYxPI3
-         gfj8dupgb1gz453/OOM1MFoZS0MJ3b2KnQHX1o/dRwKWQ9r1qbn2MFf+ZLBkYSx9Q1r3
-         4prQ==
-X-Gm-Message-State: AOJu0YxhkAeFVbEgKmowiBj1TvqEghqzdCCS0mDxL3OoNCnRSSUGq9Pa
-	Ksv6YpNoaqFtHAfFadYxPtOXqMiBfq3nIo7v4CFicKFn/2BFBjEysGr+OMCcXU2I2SYKXE0xhbj
-	C3NSFiJwvR2+4qlhYS9KpyuA6BYNVOJoDCcqC3ovh
-X-Gm-Gg: AfdE7cntfxCDZSOK1+SC3aTqcDZ549j7jYd+9IigeSq0eDngKmpVSQavNjAEO+ctV56
-	NyKM4+DKNh2CTiI/P8qjZiwD+ilSl2hzqm6Ue6nJETbzslRQfKGvuqsu6GpYGNZuNyVR3wP/UMF
-	QP0kmXLqTRxNPG4ttNsoRIsWYhGXSteSq80LP7prS6zHp9IlHSfdXNEibj1+5OCH7I/9Sae5oTI
-	7pOjTZRBwmae98Ds8bgGV4UHmnrUrmMUNBWG5KXJeiyjpLItqnoIGDMhybkLVuV2f5gXqkUEJdx
-	9P+OnDM1D0AUp4ThSiy/Bgl2zkInzqwPHAc4iWZSCXR+uEUWmpbWvV/PyLM=
-X-Received: by 2002:a05:7022:312:b0:12a:b39a:339f with SMTP id
- a92af1059eb24-13b2a18676dmr697625c88.21.1782770355880; Mon, 29 Jun 2026
- 14:59:15 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 29 Jun 2026 14:59:14 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 29 Jun 2026 14:59:14 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260626231416.3943216-8-seanjc@google.com>
-References: <20260626231416.3943216-1-seanjc@google.com> <20260626231416.3943216-8-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1782770552; x=1783375352;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HMo112Q1QX2gMdVrOPPjVAkdlX7RfH+smaOCRiFcEdc=;
+        b=fV770/JUXO895SGSwYZKUFAONzPlCdDDNbUPLESoIf+D+3dF/THA5gl+fDSyeS0C9V
+         O1BEodBKLry6W1cFUsHqavs+3oFiNHEZvkDhNGHRhjeB1Sayey+Pm0evvoJN6BzUJvxc
+         DZpWOS6oVjJnHcpu49q55K9CCQSRVpQAvy0KQschR+iHgoBiCj7FSRYggPUUru5QdM/C
+         zZPZCjtQj6BAs3/4PwDyj6iRufw3Y8wegYAaRs7iAYXBeTtser11rylx/o1MM1y4HRnl
+         HIKIXu71DYSZ7ETTm3yh3piqc1zmnNWGchPcXGi2MvHKJQMATjzq7W67IgAiOk9OlAUK
+         at0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RraWVl3YSXnxUZo9ujSiuUATWc84Ha1hv1jwsiCWd6QeSDARPLKbEpeteUTOc76mOS1CEU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz0xP3HECr5WEhYFF7E8C2goxTibFPF3m2pVlLJjUEgN1nmCK8
+	nQgrbIoAmHgzfNeFt6l7Tn8xZFYJmTUFrIO6lEwRevkhQouRS6cOwttDI/QEe47aqbpQ85QYAPA
+	aXwvT7w==
+X-Received: from pjdx1.prod.google.com ([2002:a17:90a:bc1:b0:36b:dbd1:f512])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5447:b0:37f:d265:18d2
+ with SMTP id 98e67ed59e1d1-3805337b000mr526877a91.7.1782770552384; Mon, 29
+ Jun 2026 15:02:32 -0700 (PDT)
+Date: Mon, 29 Jun 2026 15:02:31 -0700
+In-Reply-To: <CAEvNRgFt=pPi1XpwiaZm1-EWyZKa-1qm=QWOhFwBZ2ab_-oFVQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Mon, 29 Jun 2026 14:59:14 -0700
-X-Gm-Features: AVVi8CcX0nLY2yWu6B5RWX4GsYGIO39Tez9s4jQUoQ-VNR_xH1OWkDb2WiKOmUo
-Message-ID: <CAEvNRgFroTJTUTm3pUxCsueDV5S-D3qpAF6gqZRKE7pPLbxHkA@mail.gmail.com>
-Subject: Re: [PATCH v2 7/9] KVM: SEV: Forcefully invalidate SNP VMSA if its
- backing gmem page is zapped
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Mime-Version: 1.0
+References: <20260626231416.3943216-1-seanjc@google.com> <20260626231416.3943216-5-seanjc@google.com>
+ <CAEvNRgFt=pPi1XpwiaZm1-EWyZKa-1qm=QWOhFwBZ2ab_-oFVQ@mail.gmail.com>
+Message-ID: <akLrd4esRyuyrrGC@google.com>
+Subject: Re: [PATCH v2 4/9] KVM: Rework .gmem_invalidate() into .gmem_free_folio()
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, 
-	Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	Michael Roth <michael.roth@amd.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Sean Christopherson <seanjc@google.com> writes:
+On Mon, Jun 29, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> >
+> > [...snip...]
+> >
+> >
+> > -void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> > +void sev_gmem_free_folio(struct folio *folio)
+> >  {
+> > +	kvm_pfn_t start = page_to_pfn(folio_page(folio, 0));
+> > +	kvm_pfn_t end = start + (1ul << folio_order(folio));
+> >  	kvm_pfn_t pfn;
+> >
+> >  	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+> 
+> I thought we intended to draw the line such that the platforms don't
+> reference folios, and so this function should be parametrized by pfn.
+> 
+> I think we should still stick with
+> 
+>   .free_folio = kvm_gmem_free_folio
+> 
+> and kvm_gmem_free_folio() translates the folio to pfns and calls the
+> arch function, named something like .gmem_LIFECYCLE_ACTION_pfn_range.
+> 
+> Now for LIFECYCLE_ACTION, one way to think of it is that this should
+> represent the point in the lifecycle of guest_memfd memory where the
+> memory is removed from guest's private use, so perhaps "host_reclaim"?
 
->
-> [...snip...]
->
-> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-> index e36eba952705..69ca2a848ad6 100644
-> --- a/arch/x86/include/asm/kvm-x86-ops.h
-> +++ b/arch/x86/include/asm/kvm-x86-ops.h
-> @@ -134,6 +134,7 @@ KVM_X86_OP_OPTIONAL(mem_enc_unregister_region)
->  KVM_X86_OP_OPTIONAL(vm_copy_enc_context_from)
->  KVM_X86_OP_OPTIONAL(vm_move_enc_context_from)
->  KVM_X86_OP_OPTIONAL(guest_memory_reclaimed)
-> +KVM_X86_OP_OPTIONAL(reload_vmsa)
+kvm_arch_gmem_reclaim_memory()?  I don't want to include "host", because the
+"reclaim" may or may not be host initiated.  I don't want to use "pfn_range"
+because it's too close to "gfn_range".
 
-Regarding naming, this seems to be the most platform-specific KVM_X86_OP
-there is (VMSA is a SEV-ES/SNP only thing), though I can't think of a
-way to make this seem more general, to make it stick out less among the
-x86 ops. Maybe it's not necessary to make it blend in anyway.
+> Then kvm_gmem_free_folio() becomes:
+> 
+>    kvm_gmem_free_folio() {
+>        pfn_start, pfn_end = translate folio to pfn range;
+>        kvm_x86_call(gmem_host_reclaim_pfn_range)(pfn_start, pfn_end);
+>    }
+> 
+> 
+> And in conversions
+> 
+>    if (!to_private) {
+>        pfn_start, pfn_end = translate guest_memfd offset range to pfns;
+>        kvm_x86_call(gmem_host_reclaim_pfn_range)(pfn_start, pfn_end);
+>    }
+> 
+> (and now it is right for the !to_private check to remain in guest_memfd
+> since we're explicitly using that to guard a *host* reclaim function.
+> 
+> Another way to think of LIFECYCLE_ACTION is to have the hook represent
+> the point of time where the memory's attribute is being set. Perhaps
+> "set_attributes"?
+> 
+> Then kvm_gmem_free_folio() becomes:
+> 
+>    kvm_gmem_free_folio() {
+>        pfn_start, pfn_end = translate folio to pfn range;
+>        kvm_x86_call(gmem_set_attributes_pfn_range)(pfn_start, pfn_end, SHARED);
 
->  KVM_X86_OP(get_feature_msr)
->  KVM_X86_OP(check_emulate_instruction)
->  KVM_X86_OP(apic_init_signal_blocked)
-> @@ -148,6 +149,7 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
->  KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
->  KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> +KVM_X86_OP_OPTIONAL(gmem_invalidate_range)
+No, because this isn't about setting memory PRIVATE vs. SHARED, it's about freeing
+memory back to the host.  Which is why I suggested the comically verbose
+CONFIG_KVM_ARCH_GMEM_FREE_ON_SHARED_CONVERSION: SEV-SNP effectively frees memory
+when converting to shared.
 
-Clarification: .gmem_invalidate_range() should be thought of as "this is
-the hook called when some guest_memfd memory is invalidated" (as in,
-this is a point in the lifecycle of guest_memfd memory) and not "this
-hook invalidates guest memory in this range", right?
+>    }
+> 
+> because when freeing a folio we want to set the attributes to SHARED.
 
->  KVM_X86_OP_OPTIONAL(gmem_free_folio)
->  #endif
->  #endif
->
-> [...snip...]
->
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index adc1e1b244c7..9df6acf9a982 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -8167,6 +8167,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
->  				goto out;
->  			}
->  		}
-> +		if (kvm_check_request(KVM_REQ_VMSA_PAGE_RELOAD, vcpu))
-> +			kvm_x86_call(reload_vmsa)(vcpu);
+No, because the RMP isn't being moved to a "shared" state per se, rather the page
+is being unassigned.  And from KVM's perspective, freeing the folio can happen
+even if the memory isn't first converted to SHARED (in KVM's memory attributes).
 
-Should this be wrapped with an #ifdef to skip the check entirely for
-non-SNP platforms?
-
->  	}
->
->  	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
-> @@ -10592,6 +10594,10 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
->  #endif
->
->
-> [...snip...]
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 1618acc3ca64..8ec5041934db 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -185,6 +185,10 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
->  		}
->
->  		flush |= kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
-> +
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> +		kvm_arch_gmem_invalidate_range(kvm, &gfn_range);
-> +#endif
-
-In general, how do you think of using stubs vs @ifdefs?
-
-Would it be better to define a stub for kvm_arch_gmem_invalidate_range()
-that does nothing #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE?
-
->  	}
->
->  	if (flush)
-> --
-> 2.55.0.rc0.799.gd6f94ed593-goog
+> And in conversions
+> 
+>    if (kvm_x86_call(gmem_should_set_attributes_pfn_range)(SHARED)) {
+>        pfn_start, pfn_end = translate guest_memfd offset range to pfns;
+>        kvm_x86_call(gmem_set_attributes_pfn_range)(pfn_start, pfn_end, SHARED);
+>    }
+> 
+> This is biased towards conversions (related proposal at [1]).
+> 
+> [1] https://lore.kernel.org/all/CAEvNRgGX3GkazCWM=6y9YLgn=YemXuG==Oo+L58cac1Fd86_TQ@mail.gmail.com/
+> 
+> >
+> > [...snip...]
+> >
