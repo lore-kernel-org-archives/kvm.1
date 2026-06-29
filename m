@@ -1,125 +1,44 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0173E4514
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A32194AE6
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782747622; cv=none; b=ltSXL6SH5oaPDuS6PlXXROLdeuab7gbUJ5V/OWdeAYnTIUoMm0EQg+VCFBDUOQZIGKaVsZzNRSrzDTtZEMlfKfAExfoscs4dOVMmQeHib6+3+22YsktT4D5/JlMe/OEP06RcNpShdN7SH9D006b7QZFvAteixHVX1lBDu1t5CyY=
+	t=1782747815; cv=none; b=o/nx32T7IJQwVxfCwuSIa/G5dwIxJ7cT+HvJytJJ6EGJ1XWN3zIxof6mpCpDvGH+nD4KmZcX3gCizz0MOUKYa7XIsEtKl0FmDPxslH+JSpIjcp6KW9SG4wGIINVYo9ABtlyuP3r43khnp0gOH1N5SOirfrDRbjWwY/U+y1UfiSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782747622; c=relaxed/simple;
-	bh=wTZ867cLvl3NEk7csUy7NtkIFljCREofjieQ4f4eY6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WzVs6Th0WRQ296ciSwFOevfolpxPOKpfYTSzdfr/f6wkAxg+l9JnkX45Kh0g2p5x0lSpqXQd2NNO7NvlvbxHheyXsux61TOPOgOqBJbbOKyD7eJ9V917VhLNrzbnYNZr26BHwQiNC8uQRWBNzf+QNtZcZtJW8U39IoFRi2St5G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rlI/CDK2; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1782747815; c=relaxed/simple;
+	bh=6GolJiylRxOcj7cu03lGLgzPugnpFr9jX5w3dGIkXJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=NPALSseM0QO1KYIDx3bDFsnNAkXyCociJ9xs8LEZ3iOJbg65/kJ2Y+Ixa129hKHi7pAuHShwrqNX3P2aPWNCSyJtNtf8sRE3rsBt/UEZ6vQ8RexaXhnAoaVUHCEdorCxHeDewBe3SGCL9F93ERnhbdrH3aBnistY579R0vcOl10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cQ5gC3VB; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rlI/CDK2"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-519ff1c8b8bso41920481cf.3
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 08:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782747619; x=1783352419; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VwgemlAWVZOfyfvrJ+7cyHmQGRLai3JgFnH6EFj5//k=;
-        b=rlI/CDK2Me2Etlx0NUkaHtRU+6rVLYVzfsgo3i4Dopx/2QYpJJyxXzwr3cnt/dsnQi
-         c7ypbUJWyZrOclOTOo6xuS2x8j6h+YbrMDDzO04dRP/9MZI9xlFOaRleW2eF4FKXc2oP
-         1nhfYC3dofYj3kga3Ya0HWk6wBZo++TjajS3+6vEuC8oT/rb69G26r4OCj5ta+x+crBT
-         WNhEhQy+v48nJMdFyK8CO3cb5bpxZ08fg57jYe7qPCx9Xcs3739pKT89IDi+3yaD2yCN
-         aM+IejLgEjH9gnlRl0fCieJR2PcnGG96QNC64qauIdZ9x6GaO094v5hpKdyg7+5e84iQ
-         C+2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782747619; x=1783352419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VwgemlAWVZOfyfvrJ+7cyHmQGRLai3JgFnH6EFj5//k=;
-        b=p8p8xNgBPU7XlzR2vvzFSonrJPWKvRoXKxVAm1T95d9jWmgb+e+gKr7QO1HCGmlDr5
-         N5EPKN/7W2h4a4GrDnb71I5il6S4epGznbwnbSecK4274m+tfpnt/XVG5j9WiWzCpCck
-         umdWqCSOT3fWP9EU3A7JjEYFQRCAVReYEiu1s25NHH8yoffB6+//4vCQoqBhKAUVLocY
-         X+pNCiVZf6Z+xe56hCo0soDI7AxF1IrEbomk4tETzyF/BvEEHwObwPhETHM0Ghhsi5TP
-         1n2Ml78AU6sfULKnkAbbfYZymkJ9cGYSZJCqEwyMWkcDrnLv8VekqdXrLR0f5xbIWNR8
-         h39A==
-X-Forwarded-Encrypted: i=1; AFNElJ/8XSYHL9qllJEjFmnl07uAHNq4KZVgGxmYSIVdRJEpIiJrhdTEw6y5s+rQZF/O5J3/XoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF1TO+X8mxnZwtAt/4G5Xpl4Tb0yTkwvUmwndRfu/FqyxBfdON
-	5aOOfHs8B+HdmGfPbhHuK1Yj1wKz1b2Kg/Elyro87r/WzzFdquikoMm5e7MO5optEs0=
-X-Gm-Gg: AfdE7cldfnLPyWv3oB5W0JedsVT+7nWOKu3lyDR+bmkCZcAjSWvq6/X3zNe+09ndrZP
-	6KYnyh2XrmRZNoz73v9gaVOqze8Hi+QE5LbDV2KJq5q1Lc8CbM9PnUi5e2S7QlLSGpRknNBiQc5
-	IHDF++qRAYobv9hs7APBbIajvYhGCds4Fabz/VtyVjJB61AhvUXVU5at5EBLWZ7u993aOf6PCfF
-	5EHOsPARkgbIA4Fy92e//UnIYU/EoN/x4CqKyPCahzJES5MHgluaoC3W8CbyGASsk82NWwzsJp/
-	87SvaUO50s8ZieKx1zcVdVZOOIqjRMAXuD+Wit7dlR0BOAZ78w5Fr4CeZQtlcS/yk255W2LlPKt
-	NBeyBzxwKGCgjzBHGIK24ENU6xh6XRJFBvAKsggCFIQz+MVglSnFZKJXQoYDEoRALMntMxjW/Hh
-	8KDqhj9180Vcfov25KhFiPe1eXEVfYYayQqsi/KXyH4FOv53KFBZothECbhTM5C2+1fJeY
-X-Received: by 2002:a05:622a:5987:b0:51b:f635:9aa1 with SMTP id d75a77b69052e-51bf6359eadmr68650541cf.48.1782747619393;
-        Mon, 29 Jun 2026 08:40:19 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a876c888bsm78114501cf.9.2026.06.29.08.40.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 08:40:18 -0700 (PDT)
-Date: Mon, 29 Jun 2026 11:40:13 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 03/30] tools/testing/vma: use vma_start_pgoff() in merge
- tests
-Message-ID: <akKR3bFV7393yOUs@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cQ5gC3VB"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A959F26AC;
+	Mon, 29 Jun 2026 08:43:27 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 304523F673;
+	Mon, 29 Jun 2026 08:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782747812; bh=6GolJiylRxOcj7cu03lGLgzPugnpFr9jX5w3dGIkXJA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cQ5gC3VBrP6bMo5KEqoQSaxAE/JbbgBYAzpG5y0VLGvzbsaeqhKpaJ/RmD0xk4Ky4
+	 1PaZGcGFP8MmWu1dlGNabmQABqS1vBqSuco//sJqZYWS0ShViKuxkEIj7B9dUTT+4g
+	 BvUOnyfqkOFwkvxqHAIJwYtq91KaiIVTkc21eoMg=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvmarm@lists.linux.dev,
+	Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
+Date: Mon, 29 Jun 2026 16:43:29 +0100
+Message-ID: <akKSoZkYWDTE07hi@LeoBrasDK>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260629113242.9142A1F000E9@smtp.kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-6-leo.bras@arm.com> <20260629113242.9142A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -128,22 +47,362 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 29, 2026 at 01:23:14PM +0100, Lorenzo Stoakes wrote:
-> Now we have the vma_start_pgoff() helper, update the merge tests to make
-> use of it for consistency.
+On Mon, Jun 29, 2026 at 11:32:42AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 12 potential issue(s) to consider:
+> - [Critical] The `wfi()` loop in `dirty_bit_clear()` creates a check-then-sleep race condition that can stall the CPU indefinitely.
+> - [Critical] The level-triggered `HACDBSIRQ` is not acknowledged or cleared in the interrupt handler, resulting in an infinite interrupt storm.
+> - [High] Missing `isb()` context synchronization barrier after writing to control-plane system registers `HCR_EL2` and `SYS_HACDBSCONS_EL2`.
+> - [High] Missing memory barrier (`dmb ish`) before starting the HACDBS hardware engine.
+> - [High] The ACPI MADT parser registers `hacdbsirq_gsi` without verifying it is non-zero, risking a hijack of SGI 0.
+> - [High] Missing `default:` case in the error handling switch statement leaves the tracking status unchanged on unexpected hardware errors, causing a vCPU hang.
+> - [High] If HACDBS IRQ initialization fails, the feature remains enabled in KVM, causing a permanent host hang upon first use of dirty tracking.
+> - [Medium] ACPI GSI mapping is leaked if `request_percpu_irq()` fails.
+> - [Medium] Missing teardown of HACDBS resources if KVM subsystem initialization fails.
+> - [Medium] The per-cpu HACDBS status is initialized after enabling the per-cpu interrupt, causing a TOCTOU race.
+> - [Medium] Calling `smp_processor_id()` in a preemptible context triggers a kernel BUG/warning.
+> - [Low] A variable declaration immediately follows a case label, violating C syntax rules and causing a build failure.
+> --
 > 
-> No functional change intended.
+> commit a0d2df687f2678f7a10866e285efd8319bf84cea
+> Author: Leonardo Bras <leo.bras@arm.com>
 > 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
+> 
+> Find via ACPI the Id for HACDBSIRQ, initialize it as a per-cpu IRQ and make
+> sure any cpu able to run virtualization has it active. Introduce a per-cpu
+> structure used by the HACDBSIRQ handler to keep track of entries size and
+> the status of HACDBS.
+> 
+> Link: https://github.com/tianocore/edk2/issues/12409
+> 
+> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > index 50adfff75be82..dc1a4629aaeb9 100644
+> > --- a/arch/arm64/kvm/arm.c
+> > +++ b/arch/arm64/kvm/arm.c
+> [ ... ]
+> > @@ -2481,6 +2484,8 @@ static int __init init_subsystems(void)
+> >  	if (err)
+> >  		goto out;
+> >  
+> > +	kvm_hacdbs_init();
+> > +
+> >  	kvm_register_perf_callbacks();
+> >  
+> >  	err = kvm_hyp_trace_init();
+> 
+> [Severity: Medium]
+> If a subsequent initialization step like kvm_hyp_trace_init() fails, the
+> code branches to the out: error path and aborts KVM initialization. Does
+> this path need to call a teardown function to free the per-CPU IRQ and
+> release the GSI allocated by kvm_hacdbs_init()?
+> 
 
-Question: Should we have primitive tests for vma_*_pgoff() since
-the behavior changes depending on file/anon?
+Maybe. Another solution would be to put it after anything that may present 
+any error. I wonder how ofter do we get kvm to fail startup, though.
 
-Nice to have the cleanup and clarity. Maybe worth asserting no
-one ever breaks this.
+> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > index 32fe938d6bf70..789da8712b1b4 100644
+> > --- a/arch/arm64/kvm/dirty_bit.c
+> > +++ b/arch/arm64/kvm/dirty_bit.c
+> [ ... ]
+> > @@ -14,3 +21,93 @@
+> >  	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
+> >  #define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
+> >  #define HDBSS_ENTRY_IPA GENMASK_ULL(55, 12)
+> > +
+> > +static __ro_after_init int hacdbsirq = -1;
+> > +
+> > +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
+> > +{
+> > +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> > +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
+> > +
+> > +	switch (err) {
+> > +	case HACDBSCONS_EL2_ERR_REASON_NOF:
+> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > +		break;
+> > +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
+> > +		/* When size not a power of two >= 4k, exit with reserved TTLW */
+> > +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
+> 
+> [Severity: Low]
+> Does this variable declaration cause a build failure?
 
-for this patch though
+No
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+> Under standard C rules,
+> a label can only be attached to a statement, and a declaration is not a
+> statement.
+
+That's not a label.
+
+> 
+> > +
+> > +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
+> > +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > +			break;
+> > +		}
+> > +		fallthrough;
+> > +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
+> > +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
+> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
+> > +		break;
+> 
+> [Severity: High]
+> What happens if the hardware reports an undefined or reserved error reason
+> in HACDBSCONS_EL2_ERR_REASON?
+> 
+> Without a default: case, the tracking status wouldn't be updated, remaining
+> as HACDBS_RUNNING. Could this cause the synchronous wfi() wait loop in
+> dirty_bit_clear() to spin forever and lock up the host CPU?
+
+I get the error code by reading a 2-bit bitfield. There can only be 4 
+different combinations here, and all are dealt with. 
+
+> 
+> > +	}
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> 
+> [Severity: Critical]
+> Is it necessary to write back to a hardware register to acknowledge or clear
+> the active source of this interrupt before returning?
+> 
+> The ACPI MADT registers the HACDBS interrupt as ACPI_LEVEL_SENSITIVE.
+> Since a level-triggered interrupt remains asserted until explicitly cleared,
+> would returning IRQ_HANDLED without clearing the hardware signal trap the CPU
+> in an infinite loop of executing the ISR?
+> 
+
+I am pretty sure this is done by generic code.
+
+> > +
+> > +void kvm_hacdbs_cpu_up(void)
+> > +{
+> > +	if (hacdbsirq < 0)
+> > +		return;
+> > +
+> > +	enable_percpu_irq(hacdbsirq, IRQ_TYPE_LEVEL_HIGH);
+> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > +}
+> 
+> [Severity: Medium]
+> Could this sequence cause a race condition if a pending interrupt fires
+> immediately upon being unmasked?
+> 
+> If hacdbsirq_handler() executes and updates the state, and then
+> kvm_hacdbs_cpu_up() resumes and unconditionally overwrites the state
+> with HACDBS_IDLE, the handler's update would be lost. Should the status
+> be initialized before enabling the interrupt?
+
+This is a per-cpu irq, and above happens when we are enabling 
+virtualization on a CPU. Prior to the endo of kvm_hacdbs_cpu_up() there 
+should be no guest running in this cpu, so faulting is not an issue. 
+
+> 
+> > +
+> > +void kvm_hacdbs_cpu_down(void)
+> > +{
+> > +	if (hacdbsirq < 0)
+> > +		return;
+> > +
+> > +	disable_percpu_irq(hacdbsirq);
+> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_OFF);
+> > +}
+> > +
+> > +#ifdef CONFIG_ACPI
+> > +static int __init hacdbs_acpi_get_irq(void)
+> > +{
+> > +	struct acpi_madt_generic_interrupt *gicc;
+> > +	u32 gsi;
+> > +	int irq;
+> > +
+> > +	gicc = acpi_cpu_get_madt_gicc(smp_processor_id());
+> 
+> [Severity: Medium]
+> Is it safe to call smp_processor_id() here?
+> 
+> Since kvm_hacdbs_init() is called from init_subsystems() during a
+> device_initcall, preemption is enabled. Would calling smp_processor_id()
+> directly without disabling preemption trigger a kernel bug/warning if
+> CONFIG_DEBUG_PREEMPT is enabled? Should raw_smp_processor_id() or
+> get_cpu()/put_cpu() be used instead?
+
+This is called in init time, by kvm_arm_init(). Also, it should not matter 
+as we are not actually touching anything from that cpu, but instead just 
+fetching this read-only information about the IRQ.
+
+
+> 
+> > +	if (gicc->header.length < ACPI_MADT_GICC_HACDBSIRQ)
+> > +		return -ENXIO;
+> > +
+> > +	gsi =  gicc->hacdbsirq_gsi;
+> > +
+> > +	irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
+> 
+> [Severity: High]
+> Does the GSI read from ACPI need to be validated before registration?
+> 
+> If the firmware does not support HACDBS, it might leave this field as 0.
+> On ARM64, GSI 0 corresponds to Software Generated Interrupt (SGI) 0, which is
+> used for Inter-Processor Interrupts (IPIs). Could registering a device
+> interrupt handler on GSI 0 corrupt host IPI handling and crash the system?
+> 
+
+Adding a test here could be easy.
+In any case I remember testing with the table entry being zero and this 
+not being an issue.
+
+> > +	if (irq < 0) {
+> > +		pr_warn("ACPI: Unable to register HACDBS interrupt: %d\n", gsi);
+> > +		return -ENXIO;
+> > +	}
+> > +
+> > +	return irq;
+> > +}
+> 
+> [Severity: Medium]
+> If the subsequent call to request_percpu_irq() in kvm_hacdbs_init() fails,
+> how is this ACPI GSI mapping cleaned up?
+> 
+> Since hacdbs_acpi_get_irq() only returns the mapped IRQ and discards the
+> original GSI, it seems impossible for the caller to properly unregister it
+> via acpi_unregister_gsi(), which would result in leaking the resource.
+> 
+
+This feature should only be enabled if the whole system supports HACDBS, so 
+once one cpu succeeds in request_percpu_irq() every other one should 
+succeed as well.
+
+> > +#else
+> > +#define hacdbs_acpi_get_irq() (-ENXIO)
+> > +#endif
+> > +
+> > +void __init kvm_hacdbs_init(void)
+> > +{
+> > +	int irq;
+> > +
+> > +	/* FEAT_HACDBS is only supported if Linux runs in EL2 (VHE) */
+> > +	if (!system_supports_hacdbs() || !is_kernel_in_hyp_mode())
+> > +		return;
+> > +
+> > +	irq = hacdbs_acpi_get_irq();
+> > +	if (irq < 0)
+> > +		return;
+> > +
+> > +	if (request_percpu_irq(irq, hacdbsirq_handler, "HACDBSIRQ", &hacdbs_pcp) < 0)
+> > +		return;
+> 
+> [Severity: High]
+> If request_percpu_irq() or hacdbs_acpi_get_irq() fails, the function returns
+> early. Is there a global flag that needs to be unset to tell KVM that HACDBS
+> hardware cleaning is unavailable?
+
+The availability is tracked by hacdbsirq variable. Once it's set, it means 
+the whole system supports hacdbs, and the IRQ is available.
+
+
+> 
+> If KVM later assumes hardware support is available and calls
+> dirty_bit_clear() unconditionally, it might set the software status to
+> HACDBS_RUNNING and wait in a wfi() loop. Since the IRQ is disabled or
+> unmapped, the handler would never fire, resulting in a host hang.
+>
+> 
+> Additionally, I have a few questions regarding the implementation of
+> dirty_bit_clear() and hacdbs_start(), which appear to interact with the
+> features introduced in this patch:
+> 
+> [Severity: High]
+> In dirty_bit_clear(), is an isb() required after the write to HCR_EL2?
+>
+
+No, and __load_stage2 will do that anyway if needed, as it also sets 
+registers. Also, it's done at the end of hacdbs_start()
+ 
+> dirty_bit_clear() {
+>     ...
+>     write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
+>     __load_stage2(&kvm->arch.mmu);
+>     ...
+> }
+> 
+> Similarly, in hacdbs_start(), is an isb() required after writing to
+> SYS_HACDBSCONS_EL2?
+> 
+
+it's done at the end of hacdbs_start.
+
+> hacdbs_start() {
+>     ...
+>     sysreg_clear_set_s(SYS_HACDBSCONS_EL2,
+>                        HACDBSCONS_EL2_ERR_REASON | HACDBSCONS_EL2_INDEX, 0);
+> 
+>     br = (virt_to_phys(hw_entries) & HACDBSBR_EL2_BADDR_MASK) |
+>     ...
+> }
+> 
+> The ARM64 subsystem guidelines indicate that writes to control-plane system
+> registers must be followed by an isb() as the very next instruction to
+> ensure subsequent instructions do not execute with an architecturally
+> undefined pipeline state.
+> 
+
+Those intructions are unrelated between themselves, the one at the end of 
+hacdbs_start() should be enough.
+
+> [Severity: Critical]
+> Does the wfi() loop in dirty_bit_clear() contain a check-then-sleep race
+> condition?
+> 
+> dirty_bit_clear() {
+>     ...
+>     do {
+>         wfi();
+>     } while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
+>     ...
+> }
+> 
+> Although preemption is disabled, local interrupts are not disabled during this
+> check. If the hardware interrupt fires after the condition is checked but
+> before the wfi() executes, the CPU could service the interrupt, update the
+> status to HACDBS_IDLE, return, and then execute wfi(). The CPU would then
+> sleep indefinitely, causing a host hard lockup.
+
+Until the next interrupt, though. Very unlikely, but possible.
+
+Maybe a WFIT (timeout), then?
+
+> 
+> [Severity: High]
+> In hacdbs_start(), is a memory barrier like `dmb ish` required before starting
+> the hardware engine?
+> 
+> hacdbs_start() {
+>     ...
+>     if (size_b < size_p2)
+>         hw_entries[size] = HDBSS_ENTRY_VALID | HDBSS_ENTRY_TTWL_RESV;
+>     ...
+>     write_sysreg_s(br, SYS_HACDBSBR_EL2);
+>     isb();
+> }
+> 
+> A sentinel stop entry is written to the memory buffer before writing to
+> SYS_HACDBSBR_EL2 to enable the engine. Since system register writes are not
+> inherently ordered with respect to memory stores, the hardware engine might
+> begin reading before the stop entry is visible in coherent memory.
+> 
+
+And that could mean possibly running though entries that are not supposed 
+to be valid, but could be because we are talking about random data.
+So we need to make sure the write buffer is clear before setting the 
+register.
+
+Thanks
+Leo
+
+
