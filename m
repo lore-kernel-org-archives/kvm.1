@@ -1,242 +1,259 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012029.outbound.protection.outlook.com [40.107.209.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992F3A1E7E;
-	Mon, 29 Jun 2026 09:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782724772; cv=none; b=JSJS775Q4+J8vEf6EMKzea4INwO0BftrjBZFOM2gI7n1nIuDUdhPe9AM4POWkaj1z333r9ur99duNKOEry1iVhVAVXauscBdaSr55mhgiyFB+EbBLKqgrOYrZFzC+75MAJrAIg/C8/4FtcTp7jaEIbPltyPdGufkz1cw6adoxOc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782724772; c=relaxed/simple;
-	bh=isTs2bvSehS7eQvVpSzmhjEA8qLZJWOKB6ryjOqHMik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MhIlhVYmCBGQ6g2DT9X0hGxYaxRUJV3MOPQHbzrSUDcUlBtKS9Jw5YuVrv12xuka2ySWnUE5JTI6RmzGWRXriC+cKX95N+aIKLKqoXvd6WziguWhwM+iIUSdrEDkMksBUG0hJxnF4r0aWuCARuE/IODqKMPyXHZJx92446T1qTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pQ/1F+D2; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C73F9F41;
+	Mon, 29 Jun 2026 09:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782725993; cv=fail; b=DIe0k2Z83ujyV88tGDIs/6ozCboOG3NHo/bUEDbHHTuD2mb4QSCqn2M4QpwQPQ2KT9wc2Ev9Kkj1TcPYZTiqMwkUQJk6aTdZBkTNcMj5OdqgdOrpxP3FLVnMBityadGxUDl1JmLWklywxFetF6HjTBVHuZGeSbMbCmcgg22WP2I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782725993; c=relaxed/simple;
+	bh=kqCfx825k9YdFWmJR+68zP4e49hIRIRrIkmmJWl9deI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U3gINuuysHLqygimLwbsJXQiqDun+DLu3ySV/rcJtoCbtvNJ2cp1KZsZ/tS0NI2EP4Smv096vMl4wqq/DKB96tNCHyAcHzv2/PkV9vbSfQ/kZQvRSbbnijyah8tpYJxdu3LtGcqio/HCloP8jwZ5dwrootCUeacCZijppqfRVy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hinx2uMP; arc=fail smtp.client-ip=40.107.209.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pQ/1F+D2"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65T6mlYK2674768;
-	Mon, 29 Jun 2026 09:19:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=6GV/zJp4bky5621let/9XIeEm4iM0IqtMVjjh7sGe
-	OU=; b=pQ/1F+D20Hjj8OL/nu0yBLr4OproxkO7W7ILiA3h8ng8suxY0JWbQ5+kt
-	4vnc9Ht9mg3bqwPzJAXsxIWMzbo4czOQ55LIh7WKf7LjRnQaYku3we0zpfgMEO4g
-	CTbFGrHtFrDF9TtLvoZF2eq9gizGIkEWlbrtukWk4hWWlpRkLTKyMYRSl5PIgD4Q
-	pRHQzvp1BxW8QXFopgchvPMByPNsRIpwWHauESkhG6IY96bKXN6TCbQQrqeywJ+S
-	UdKX+HHGBb8Ic398kWEAooDkhYpyZgm/thNt/72te1KZXTb8R9a6migBY0t3zl0o
-	qRqsjYIQ4CPlhDsT7g9Malx3Wz1sg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26qfrge7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2026 09:19:28 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65T94fiK026824;
-	Mon, 29 Jun 2026 09:19:27 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2sujvq9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2026 09:19:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65T9JP5G12190280
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Jun 2026 09:19:26 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AECBA5805C;
-	Mon, 29 Jun 2026 09:19:25 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D38758054;
-	Mon, 29 Jun 2026 09:19:24 +0000 (GMT)
-Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Jun 2026 09:19:24 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        =?UTF-8?q?Nico=20B=C3=B6hr?= <nrb@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>
-Subject: [PATCH] s390x: stsi: regression test for the STSI 3.2.2 count clamp
-Date: Mon, 29 Jun 2026 11:19:21 +0200
-Message-ID: <20260629091921.710920-1-borntraeger@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hinx2uMP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=alLAYaqk+TUFYtWg1Hx+K/gYO7Vgb/vlGldClWCf3zHribaKqU9tjvziVU1j1BnBrDcRHCdskwTa+M/5J5/jhLYaOKAOmEmNF38uA3uKdEd+EiTMjc4/Jdb0Hkj7kaBJHu1UMU6u8mNV5Frt/Jm1jT221+aBfK16eJVo8e8TjkztYgXUPwSZwG4U1wHco9dfxBrm+mi5q0XkOLtNrxpj6pTf03GLFgwjl1VJTxG3T62ggQhhePTK0ALHcv7qAMxLU/i5IckmuqYJ+37X/BV5uUnhb0UrItmpIJbsEUNaXVPGhtGJIo6z/o4iSHIb5v/7IToXMqdyaLiJiNnHYuwo5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PTNRmu0BnXQV0IfAjMzKEVRAl4MsMaAgrhcPrepmsCs=;
+ b=OX8w9O0gmj7QzDeaSMMlTherfzsws7lSoqox5kc2FWGwNgVSnlqWL4sSIjvyVwo0kK8w86SgIMTyRWofIyBEuSrkPHoJAvHIUgjcfDGYAL/e/oti0qf4z63k5uAjzjt4fiExF46IpcJICDKwcZmXwJ09h8JSKPaFBeSalL9TogkHt7XS03mwIlrrZskEeC52IJYXMGJgiHHfCf+SyUB2BDaEEP11bmGjgLSdfdC6fYeIOqxmA/MjOi/KvDrVQ+Q2SuTcXMXID0vDhddv+ivJcEWJkhUzEBA72YqUyut5gE8DGenf50B/VVL85c8HifpVNImm973Bt54ZvQ0YCpzaSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PTNRmu0BnXQV0IfAjMzKEVRAl4MsMaAgrhcPrepmsCs=;
+ b=hinx2uMPgQ801rNPKVJwHMTcBJNSISVXZ0mrBTeVIID5mMZKQ4I9xFMt1Ju3N4G7lQRVYiS27QED3EAm2gNtq7CZ2U1eu3EYRR+Y84lvKPbPwL6gaYt2e3a75h7SjQTB4I+KEw/GFeD77qkeqpbOGuj+8m5ho5qV/ynpUcCG2697bCjUIw4nbpPh1Bk4YuhcbUftKNPlCBJziA1tfumRG1HUdQom4vwvojaupn4n5Le5wHrWbooiFIDbZ6g6AyXc4ZFlC19IMillVBB37fMQSD2QEIpKOjVTOK42UA2Oe666J+bDHVhpUdt/9o8JNPZbls7AahNT3dDIiyH7YMHo7Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by MW9PR12MB999207.namprd12.prod.outlook.com (2603:10b6:303:301::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Mon, 29 Jun
+ 2026 09:39:48 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 09:39:48 +0000
+Message-ID: <89b04dff-3cc6-4ce7-8909-30552aed653d@nvidia.com>
+Date: Mon, 29 Jun 2026 11:39:43 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
+ backend feature
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, netdev@vger.kernel.org
+References: <20260511094504.1619893-2-dtatulea@nvidia.com>
+ <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0223.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ac::16) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RYqgzVtv c=1 sm=1 tr=0 ts=6a4238a0 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8
- a=LAdyEf86j-jhdMKrYogA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDA3NCBTYWx0ZWRfX37fCybDyOMVK
- GfOGl/YaTZcqDIQXewGe7LptaY9HvfrGxCnkKu5XnwGnJrS++cVF8tfyTTpH3xv6VejafVYpfd9
- J6emEfWuibzjsoSjXQE6VyZ1AVWaaK8=
-X-Proofpoint-GUID: WOpmGi3gF8rw-6cfiyEUQUwTTT7x02GP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDA3NCBTYWx0ZWRfX7tnE56kfZNsZ
- cGZPXC296tEoyBGGegTaG6KMI5c+ArvnFZEHoWwoKZQPsGVBOVRh+CqmIasIM6QUIFuCb4HFcUR
- BzcFP47S4C25YCYjmmHK3XiI3qtX7xaVpt8H+WjETi4G6PsAv7BMLrqPEoeLJ0mMsxkU9qU+8um
- hQ8dp/cNInNrGSMSCvFjy+OAsCYee6+A6l/MDFskT+XSPD9wjY4/kY0Dp0QSORZBEXEOdgnSm4q
- iCFL0lOzjwkn7HZzxBh+CF6gDL2dLijXhFgkI9ZTMjWtbV0/QVKR3/7XyzjpK1ko7WSwJPCHcm1
- UUYr95b/Rg2psNrkT/wdN4gYJegYrYUzqscVVkGtssdrKYWChOA5UKozRwaE+b17qHsy5UdfKhc
- rZOHN3LOQJrwxblnAGDoJZkJAjnhjcgBGi/kMUPg1HQd/bE6aAMj25seW0tUXMrC8QqaGZtDrd6
- buUePzc48raEeDVJyZQ==
-X-Proofpoint-ORIG-GUID: WOpmGi3gF8rw-6cfiyEUQUwTTT7x02GP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-29_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606290074
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|MW9PR12MB999207:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2ab9994-b5ee-4bb2-b136-08ded5c25c1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	8+JIQeo7YItV78slYxS+CZr0x3854KftV4gAhxeACU2Y0bP7UBrhL6I7ISPIlD6J5hTGVdxZJXmS0piEBQjiJJMlZ2LzBROoE1OO5PAKNQsnvb/LqFNuigp+OgrGK4jj02G9Ntw6k4QP91XAO1KWfQ1QiioaZYMl59Mq3DJNtS5kHzm/4gXbIjgD976xR7PSLsf1Y+1HWTURlgpichvQDmbXE1WhPy24X3G8yaBt6iBH+z2vRI6x/6H3uONO7ZXs+qdHc0n8DCqXFG9rP5pR87c/XI5RW9yiMGVj4p52yKSR5gD/OZjIVIpVk3P9je3HYZX70qUeF2+PyApUzcp4qd/m7BN6MKP5i5cxD0g5BgKUzqWh37T322BTZknPha9TIiREOLo1mGTrApw+yt3oZAEe2iYyua4cmmY0lF0MKhKjCI/vAjVTFtjxgL8mKmdQlVfHPGzCwxuIitueQ2NweAYdGrFDHHf7RWEM6DsAKI9iSLeLhs26+nCTwH+O4GFRMSY30DrEM97fx+JqCtsDMfdbEaLZ9mdjoX0GaaRpHi27NeHP03XOSBSrtUNWv0etHfxc9YpeqYpJG6NDMnH3lP9SAwbxIyb0BWG59+5lrZR6F/zOa848Zj7ZuFmDVs+D++x5yB/W9XCF3iHscq0Oseho5FvGQ5vrZSLRp4H6+34=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MWx6YWk3SVVlbkVOOGZsVEhzVkovNlJJaW1mb3BXTTdzSVdzK3ZMQTZmL3VG?=
+ =?utf-8?B?MGJrNkQxemtrNDVzVXBiNjVvdTlwVS94bGxNZXpUSko2YWVRK0dJYWxWUnll?=
+ =?utf-8?B?aEdKRWJCb2ZoTWduZjhVbE9wMHVhNnFOeDd4R0ZHOGJHNzhuUUVERVlUb0tW?=
+ =?utf-8?B?NnNSYVlJWE1XZTBneHpkaVhaOEhyTkRWYXdnTTBTdzJPQ3ZXMEY5cVVkbHZC?=
+ =?utf-8?B?NHBETEJGazNwTmtNYWdBSk05ZkZiSGpOT2hLejl6N0NWamxZS0N6QWJYZXE0?=
+ =?utf-8?B?b2VuUStENDJibStUd2dYUEZBTTV0TjVnQ0ZwRnNKajErMm44L2NJZkdvaUEy?=
+ =?utf-8?B?aWRCcHhnV29UTXJ0NGM0MWc3b3FIaXR4WjY5ajJMakhuclhTSHNIVGlVbDdH?=
+ =?utf-8?B?WW9HNmF2aldiRnBrTzZDT0V0dFl5Qk1uTnE5bjg3cFhKMVdFaGQzdWRTbHZL?=
+ =?utf-8?B?bFdBTitwRXI2bnkrKzNEZzJiMDViMWxQTVZOa3A3d3h5TzlDMmlRVENJS1RX?=
+ =?utf-8?B?YzJpUDRrSWxvT2VWZmptQ0N6WTBmZ3orUTJrTmcxdHB0ckNpZmFaSlhoREZn?=
+ =?utf-8?B?OTI2dzhwSDhMTHpFZWVLWVBHQ1dOZEo4S1N1WXFuYmJXaVR5YUdhYmtBM0I4?=
+ =?utf-8?B?Vkd3WkNNc2QzeGZDVEt3SitKVVhGdkxhZmVDQk1QQ0FVNmlFUmpZazQ2L3c3?=
+ =?utf-8?B?QnVEUHUwUU9QYnhycm90eHpUQ3FVNDQ4V2ExNzhqTmtJcUtFQUlxZGZINWJP?=
+ =?utf-8?B?N0RVWk5VczJJQmd2bE9mOG9aMmNoRFVYZUwvMm1ZVWl2YkNUZE40RG1hRzJN?=
+ =?utf-8?B?bDRJbWdlYjV4V3NZcHVNQ2FNYytmMzZLM1RSLzFCNmxMcXVhckxZbVVza3Iz?=
+ =?utf-8?B?N0RDeFd0TGlEbGtqY0JLOFVRdzVmdlJFUHduMnVTR3F5aG5MSGtPRVBsWnFF?=
+ =?utf-8?B?L256ODhkbUJXVE1MQ1pBUkZKWlF2NFJNenlrQ1BHQ3VWR2ZETXBzSE5KRDQ2?=
+ =?utf-8?B?R1B5NWppQWR6R1NtQWlycW1ERmdBZ1VWNWlKY3c2ZEVIYm5RNEQyZElFbDl3?=
+ =?utf-8?B?dVNEOFlMWWYwNEhWNWx0SHpPVVhKelRzUFRZSS9DdE5RdTMrVDJzQUZ5ZWU2?=
+ =?utf-8?B?VHlhMmlLdVhmZTErRFRqRWJzYzRuVW9wVVBIaHpuazFlQW1wNE5aVk5PYVZh?=
+ =?utf-8?B?elpkOThGUi80Y0FPV0FybEYxam5salp4WElDNlZQcFFaRnhDVHhManpvYlJG?=
+ =?utf-8?B?cnF6U0NjSzdEZFVGTkJ6NjNvN1FBZ3gyK1YyVlhsaDdNN3ZUTUJURGpXYThK?=
+ =?utf-8?B?eGVKc1VWTHpqUXM4d3NqcmtYdXg0ZlNHcVZ5eSsxTlU4ekJ0T3JVdXlmY3NU?=
+ =?utf-8?B?YVowS1U0bmc3aUd6cysvMUZBTGZodWZsVm1NWW1ISllXL2EwWWt4M0o3NXR5?=
+ =?utf-8?B?KzVxb1NkTzAwSHF3QjE5ZTcvRnBycENBay9lR0VLME9tbVM3dUxZZXR1VnZS?=
+ =?utf-8?B?UXp5YWJRVGliOEFoM2hNb09sallJbTUraVNhS1RIRzRDd3lCRWl1YmZKWlF2?=
+ =?utf-8?B?RUlCMTEvZzE4TXRSanVjMDVORy94OVM3a0UvakFFbkl2aE5zUE04L09yekt0?=
+ =?utf-8?B?WXpMeEo0Z210ek5oSndQd0VWWXdEbVFGbnlMTTg5Y2Qxa2NBZDE3M3JjWHJJ?=
+ =?utf-8?B?VXZ6Q3pRQVlNNno2NlZOc2NORnZ0TnhCQ2RHOTNTUS9KWWh2OG1OR3djZFZu?=
+ =?utf-8?B?MVdNVS9NUk9kdGUyb0N3b0prTEYxWEhiNWhyOHh0VXZrYjFPNm1CSTVMVWtW?=
+ =?utf-8?B?SXNOb1B4ZGxpYS9uT0I3V3pCSlVkaEh2OFZjdVFwK3Y5WjZaQWU5M3ZpUnV3?=
+ =?utf-8?B?QVJ1dDBkdGdOdHBOK0JKeGdKb2EwNEZOWmtPVGFhQXhRcHF4Nnc0dzc0MW5H?=
+ =?utf-8?B?VEtGTkwreXJNYnQwMnNTbk5hZkZlZ29vNTNTZkdvbTdWZlhaWkRnQ3lra1dy?=
+ =?utf-8?B?L1p1TTZYYzNBVmsrNTFrZElyRzU2TUZ3dEcyUUZGWjVqM1ordWdONnNNWmI2?=
+ =?utf-8?B?SXFUQTBRUU9ZWS9iSmVxN3RtaUF6bkZJcjd5WTFkVzA3QnFnMW9KcGU4akdS?=
+ =?utf-8?B?aitFWkJjTU1STURtWW54NmhnVjNGTFN4d3NwWEkwckN4Y0VqQXhtTlhoUGlM?=
+ =?utf-8?B?T1dFaVNKWVhWSmJvSk5ycDJlVmsvV3pNdHZid3o3Y0RXU2VFR290WUpiL3hS?=
+ =?utf-8?B?RzFNd3dKa2hRVmovVCtOQ0s0d3luS3J0VTgzUm0yendwSmdBOEhtOS9nZWpk?=
+ =?utf-8?B?K2FqZmJRVE01aVYyTitzdEw3dExnRy9JUXRMTHZoUmt3VE90Q1ZsUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2ab9994-b5ee-4bb2-b136-08ded5c25c1c
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:39:48.1382
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jSMRecHuTyFREIa6eYsl4jfhsV0Ekhym//ej1uFuA/wk/E6UDFAqMxYgKADp6nSM7rjAxgdUF2VgIvhKQL+ZbQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW9PR12MB999207
 
-See https://lore.kernel.org/qemu-devel/20260622092035.400959-1-borntraeger@linux.ibm.com/
-for the QEMU fix.
-Add a regression test that races STSI 3.2.2 on one CPU against a second CPU
-that continuously forces an out-of-range count value.
-The out of bound access usually crashes/asserts QEMU with any sane
-distribution build of QEMU, so its more or less guest root can kill itself.
-We should test and fix nevertheless.
-Testcase piggybacks on the existing stsi test, so some cases will be
-tested twice. (with smp 1 and smp 2)
 
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Cornelia Huck <cohuck@redhat.com>
----
-If wanted we could split this into a separate file or always run the
-test with smp=2 to avoid the duplication
 
- s390x/stsi.c        | 76 ++++++++++++++++++++++++++++++++++++++++++++-
- s390x/unittests.cfg |  9 ++++++
- 2 files changed, 84 insertions(+), 1 deletion(-)
+On 21.05.26 10:26, Eugenio Perez Martin wrote:
+> On Mon, May 11, 2026 at 11:46 AM Dragos Tatulea <dtatulea@nvidia.com> wrote:
+>>
+>> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
+>> once DRIVER_OK is set. That is too strict for devices which can safely
+>> handle this during live migration flows.
+>>
+>> Bring back this behavior under a new vhost backend feature flag. The
+>> feature is supported by mlx5 and vdpa_sim devices.
+>>
+>> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is set")
+>> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+>> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> 
+> Acked-by: Eugenio Pérez <eperezma@redhat.com>
+> 
+>> ---
+>>  drivers/vdpa/mlx5/net/mlx5_vnet.c |  3 ++-
+>>  drivers/vdpa/vdpa_sim/vdpa_sim.c  |  3 ++-
+>>  drivers/vhost/vdpa.c              | 13 +++++++++++--
+>>  include/uapi/linux/vhost_types.h  |  4 ++++
+>>  4 files changed, 19 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>> index ad0d5fbbbca8..f89177957c76 100644
+>> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>> @@ -2906,7 +2906,8 @@ static void unregister_link_notifier(struct mlx5_vdpa_net *ndev)
+>>
+>>  static u64 mlx5_vdpa_get_backend_features(const struct vdpa_device *vdpa)
+>>  {
+>> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+>> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>>  }
+>>
+>>  static int mlx5_vdpa_set_driver_features(struct vdpa_device *vdev, u64 features)
+>> diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>> index 8cb1cc2ea139..253c7fb35ea0 100644
+>> --- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>> +++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>> @@ -428,7 +428,8 @@ static u64 vdpasim_get_device_features(struct vdpa_device *vdpa)
+>>
+>>  static u64 vdpasim_get_backend_features(const struct vdpa_device *vdpa)
+>>  {
+>> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+>> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>>  }
+>>
+>>  static int vdpasim_set_driver_features(struct vdpa_device *vdpa, u64 features)
+>> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+>> index 692564b1bcbb..67b3f49fa709 100644
+>> --- a/drivers/vhost/vdpa.c
+>> +++ b/drivers/vhost/vdpa.c
+>> @@ -682,7 +682,8 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+>>                         return -EFAULT;
+>>                 if (idx >= vdpa->ngroups || s.num >= vdpa->nas)
+>>                         return -EINVAL;
+>> -               if (ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK)
+>> +               if ((ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK) &&
+>> +                   !vhost_backend_has_feature(vq, VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK))
+>>                         return -EBUSY;
+>>                 if (!ops->set_group_asid)
+>>                         return -EOPNOTSUPP;
+>> @@ -791,7 +792,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>                                  BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST) |
+>>                                  BIT_ULL(VHOST_BACKEND_F_SUSPEND) |
+>>                                  BIT_ULL(VHOST_BACKEND_F_RESUME) |
+>> -                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK)))
+>> +                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>> +                                BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
+>>                         return -EOPNOTSUPP;
+>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) &&
+>>                      !vhost_vdpa_can_suspend(v))
+>> @@ -805,6 +807,13 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) &&
+>>                      !vhost_vdpa_has_desc_group(v))
+>>                         return -EOPNOTSUPP;
+> 
+> Ouch to me here. By reading the errno manual:
+> 
+> Nit: By reading errno(3):
+> ENOTSUP - Operation not supported (POSIX.1-2001).
+> EOPNOTSUPP - Operation not supported on socket (POSIX.1-2001).
+> 
+> I picked the wrong constant even if they share the same errno value
+> (by the same page of the manual). MST, is it worth changing it?
+> 
+>> +               if (features & BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)) {
+>> +                       if (!(features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)))
+>> +                               return -EINVAL;
+>> +                       if (!(vhost_vdpa_get_backend_features(v) &
+>> +                               BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
+>> +                               return -EOPNOTSUPP;
+>> +               }
+>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST)) &&
+>>                      !vhost_vdpa_has_persistent_map(v))
+>>                         return -EOPNOTSUPP;
+>> diff --git a/include/uapi/linux/vhost_types.h b/include/uapi/linux/vhost_types.h
+>> index 1c39cc5f5a31..ec1ff8a2e260 100644
+>> --- a/include/uapi/linux/vhost_types.h
+>> +++ b/include/uapi/linux/vhost_types.h
+>> @@ -197,5 +197,9 @@ struct vhost_vdpa_iova_range {
+>>  #define VHOST_BACKEND_F_DESC_ASID    0x7
+>>  /* IOTLB don't flush memory mapping across device reset */
+>>  #define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
+>> +/* Device supports changing the group ASID after DRIVER_OK.
+>> + * Requires VHOST_BACKEND_F_IOTLB_ASID.
+>> + */
+>> +#define VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK  0x9
+>>
+>>  #endif
+>> --
+>> 2.54.0
+>>
+> 
 
-diff --git a/s390x/stsi.c b/s390x/stsi.c
-index 94a579dc..96361143 100644
---- a/s390x/stsi.c
-+++ b/s390x/stsi.c
-@@ -2,7 +2,7 @@
- /*
-  * Store System Information tests
-  *
-- * Copyright (c) 2019 IBM Corp
-+ * Copyright IBM Corp. 2019,2026
-  *
-  * Authors:
-  *  Janosch Frank <frankja@linux.ibm.com>
-@@ -133,6 +133,79 @@ out:
- 	report_prefix_pop();
- }
- 
-+/*
-+ * Number of STSI 3.2.2 calls raced against the count corruptor below.
-+ * A memory write should be faster than an kvm->qemu exit, so 100 is
-+ * good enough.
-+ */
-+#define RACE_ITERATIONS 100
-+static u8 corrupt_count_value;
-+
-+static void count_corruptor(void)
-+{
-+	struct sysinfo_3_2_2 *data = (void *)pagebuf;
-+
-+	for (;;)
-+		*(volatile u8 *)&data->count = corrupt_count_value;
-+}
-+
-+/*
-+ * Race STSI 3.2.2 on the boot CPU against a secondary CPU that continuously
-+ * forces the given out-of-range value into the "count" field. Returns true
-+ * if every STSI returned cc == 0, false on an unexpected condition code.
-+ */
-+static bool race_count_value(uint8_t value)
-+{
-+	int i, cc;
-+
-+	corrupt_count_value = value;
-+	smp_cpu_setup(1, PSW_WITH_CUR_MASK(count_corruptor));
-+
-+	for (i = 0; i < RACE_ITERATIONS; i++) {
-+		cc = stsi(pagebuf, 3, 2, 2);
-+		if (cc) {
-+			report_fail("count 0x%02x: unexpected cc %d on iteration %d",
-+				    value, cc, i);
-+			break;
-+		}
-+	}
-+
-+	smp_cpu_stop(1);
-+	smp_cpu_destroy(1);
-+
-+	return i == RACE_ITERATIONS;
-+}
-+
-+/*
-+ * The count value is 8 bit and valid values are 1-8 if stsi 3.2.2 is present.
-+ * We test 0,9 as off-by-one, and 0xff as maximum value.
-+ */
-+static void test_3_2_2_race(void)
-+{
-+	report_prefix_push("3.2.2 count race");
-+
-+	if (stsi_get_fc() < 3) {
-+		report_skip("Running under lpar, no level 3 to test.");
-+		goto out;
-+	}
-+
-+	if (smp_query_num_cpus() < 2) {
-+		report_skip("Need at least 2 CPUs to race the count field.");
-+		goto out;
-+	}
-+
-+	if (race_count_value(0x0))
-+		report_pass("host survived racing STSI 3.2.2 count 0x00");
-+
-+	if (race_count_value(0x9))
-+		report_pass("host survived racing STSI 3.2.2 count 0x09");
-+
-+	if (race_count_value(0xff))
-+		report_pass("host survived racing STSI 3.2.2 count 0xff");
-+out:
-+	report_prefix_pop();
-+}
-+
- int main(void)
- {
- 	report_prefix_push("stsi");
-@@ -140,5 +213,6 @@ int main(void)
- 	test_specs();
- 	test_fc();
- 	test_3_2_2();
-+	test_3_2_2_race();
- 	return report_summary();
- }
-diff --git a/s390x/unittests.cfg b/s390x/unittests.cfg
-index ed4d069e..c1462506 100644
---- a/s390x/unittests.cfg
-+++ b/s390x/unittests.cfg
-@@ -81,6 +81,15 @@ qemu_params=-device diag288,id=watchdog0 --watchdog-action inject-nmi
- file = stsi.elf
- qemu_params=-name kvm-unit-test --uuid 0fb84a86-727c-11ea-bc55-0242ac130003 -smp 1,maxcpus=8
- 
-+# Regression test for the QEMU STSI 3.2.2 count clamp. Needs a second CPU to
-+# race the guest-visible count field, and only applies to QEMU's KVM path.
-+[stsi-3-2-2-race]
-+file = stsi.elf
-+qemu_params=-name kvm-unit-test --uuid 0fb84a86-727c-11ea-bc55-0242ac130003
-+smp = 2
-+accel = kvm
-+timeout = 30
-+
- [smp]
- file = smp.elf
- smp = 2
--- 
-2.53.0
+Gentle ping. Is this patch missing anything?
+
+Thanks,
+Dragos
 
