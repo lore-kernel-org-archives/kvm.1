@@ -1,67 +1,131 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012029.outbound.protection.outlook.com [40.107.209.29])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C73F9F41;
-	Mon, 29 Jun 2026 09:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784F63403FA;
+	Mon, 29 Jun 2026 09:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782725993; cv=fail; b=DIe0k2Z83ujyV88tGDIs/6ozCboOG3NHo/bUEDbHHTuD2mb4QSCqn2M4QpwQPQ2KT9wc2Ev9Kkj1TcPYZTiqMwkUQJk6aTdZBkTNcMj5OdqgdOrpxP3FLVnMBityadGxUDl1JmLWklywxFetF6HjTBVHuZGeSbMbCmcgg22WP2I=
+	t=1782726069; cv=fail; b=cQ1ssCdyKxGf0TNUbraxsYnr+0gOnAa6aK1Ow7Q2wQ2DT3H9TZYl6QrSNH6sqr74tukjo6iW3FSGSNkuQyCqyTVJjP+LePN1C2AT1qHF5v4WdoYWibfvRwIMTTvUMsAC+jYEEa1wM2RrVTyHDGfof5irqghDrumLb7eNaDNahrA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782725993; c=relaxed/simple;
-	bh=kqCfx825k9YdFWmJR+68zP4e49hIRIRrIkmmJWl9deI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=U3gINuuysHLqygimLwbsJXQiqDun+DLu3ySV/rcJtoCbtvNJ2cp1KZsZ/tS0NI2EP4Smv096vMl4wqq/DKB96tNCHyAcHzv2/PkV9vbSfQ/kZQvRSbbnijyah8tpYJxdu3LtGcqio/HCloP8jwZ5dwrootCUeacCZijppqfRVy8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hinx2uMP; arc=fail smtp.client-ip=40.107.209.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1782726069; c=relaxed/simple;
+	bh=mZiP7RACyxqKPo/363oWCucvy3Jirc5hGCIBfLRJl0g=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dWEYgmeYQyt0wZ1VobQGOoJvV+Sm6gFcO5WfltuzyMU99i++vizmJuRQnSNWAp63W+rJUrVueSa4ZdAJaZwCNmGsPny4WhSyKsOUrhPkGN81wmHI/guscuSrSkW2UzaO+GPY8zv5FDafze5KXMLIAzBg5MhuOOiQ9heFZPfARqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MNdv7NJw; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hinx2uMP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MNdv7NJw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782726068; x=1814262068;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=mZiP7RACyxqKPo/363oWCucvy3Jirc5hGCIBfLRJl0g=;
+  b=MNdv7NJwIHAEbVX82kZXzJDGPE3G0DjcIVm5iEpe5xAR4cyF+q/lTK99
+   US/gMo6LF1KjYYTFViSAh+Y1mbwwnNGvIyN63EvU8Z1+C0/jib4NY/ZJs
+   VRaK8M1LoXtp0eDMKjS72tjOhFEvctatsuUWewpFBkqDg0pAtc4Yx636v
+   aoKyJO7JAUkdBBxuuFEYHdjlA1AQUbNHBfoVSWkShI22Mk9t1R3bLSH0G
+   MxRBH0gfAG1ZCa4+UbCdu+akF0oePwtWFjnpG5TPfYwazK+C1Z6kY5r4m
+   JgEqL/LUeCmZOwy8VZxCkIvPgdMCrpWwHX+VBE92qX+WIJnWbj9RTWgBK
+   w==;
+X-CSE-ConnectionGUID: hUyiuf9eTDeEXBZFQdH39A==
+X-CSE-MsgGUID: rX61QN2USZmZUv9QciHICA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="83414590"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="83414590"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:41:07 -0700
+X-CSE-ConnectionGUID: 0DK3MJ6vTdOkS7peIT2O3g==
+X-CSE-MsgGUID: zkiDFfjoSgilglgINJ875g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="252048628"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:41:06 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 02:41:06 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 02:41:06 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.34) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 29 Jun 2026 02:41:05 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=alLAYaqk+TUFYtWg1Hx+K/gYO7Vgb/vlGldClWCf3zHribaKqU9tjvziVU1j1BnBrDcRHCdskwTa+M/5J5/jhLYaOKAOmEmNF38uA3uKdEd+EiTMjc4/Jdb0Hkj7kaBJHu1UMU6u8mNV5Frt/Jm1jT221+aBfK16eJVo8e8TjkztYgXUPwSZwG4U1wHco9dfxBrm+mi5q0XkOLtNrxpj6pTf03GLFgwjl1VJTxG3T62ggQhhePTK0ALHcv7qAMxLU/i5IckmuqYJ+37X/BV5uUnhb0UrItmpIJbsEUNaXVPGhtGJIo6z/o4iSHIb5v/7IToXMqdyaLiJiNnHYuwo5Q==
+ b=KSmMc09wq9M0hokLMcm1hcDHGDaXT03ebqBuCLZB/ZV3DXVFs1do23Roz+F79NR1D0iokZqEOeosGzDC/+0jDQ0cxsrRTpmS6+OMZjxKNzZsQoiH2a5z8/3e8TUj2VWKdR7YS/V6l0Bz7RNb+yFUX3+D8Chk4NpOmMLzbhN0febp0Ttl2z+PYEv3L0gE1mGEZtf/egSmGBqHIisaEVe4KBzjAN2NdqSHzOwiKYoxBHwOwVbBKwkYgVyhb/ccQIkfJQisVpKrATDAQEjTImtBtG3ArDInpG9XjXN40UkIq8Iukk3l5cihx1f9ZnmSCTigGcXJp1druTCr1cA9xiunpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PTNRmu0BnXQV0IfAjMzKEVRAl4MsMaAgrhcPrepmsCs=;
- b=OX8w9O0gmj7QzDeaSMMlTherfzsws7lSoqox5kc2FWGwNgVSnlqWL4sSIjvyVwo0kK8w86SgIMTyRWofIyBEuSrkPHoJAvHIUgjcfDGYAL/e/oti0qf4z63k5uAjzjt4fiExF46IpcJICDKwcZmXwJ09h8JSKPaFBeSalL9TogkHt7XS03mwIlrrZskEeC52IJYXMGJgiHHfCf+SyUB2BDaEEP11bmGjgLSdfdC6fYeIOqxmA/MjOi/KvDrVQ+Q2SuTcXMXID0vDhddv+ivJcEWJkhUzEBA72YqUyut5gE8DGenf50B/VVL85c8HifpVNImm973Bt54ZvQ0YCpzaSA==
+ bh=Vch3AhBzIbTU8RgBhzZ1dGBJfVm0NwQ3Na/dRm8OArY=;
+ b=qqGKC/jHYMb475mnJMi47ZksVARI9QffWLcydIM31M7ytSvekAUO9unYNn7kxzCNsIDYz54TfVbXXjoVw9RWYOvWgH2zhRwOMOtdZZDW5se7Bd8n+HG9Wc3PXwOjg0cV845kOz80frUd4t3gzT0NaFbiofeyfc8SpMtHIPituhFD8hi1oPOEV/iNgZ+bDf/EP1T9/VmN24JWl3SwgWJqnUgu0Ltf1QJWd+FLHkeh6ZLXZCw3apAvTZpCASV2nhX2XFqDvNu/Z9bUgLMq4TkYsoLAiq1Dbky5CTFJw4M0V2DKOweMRU+N+lSjTNKaNyOtElDmfSP+ZijB4cETTNk+Yg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PTNRmu0BnXQV0IfAjMzKEVRAl4MsMaAgrhcPrepmsCs=;
- b=hinx2uMPgQ801rNPKVJwHMTcBJNSISVXZ0mrBTeVIID5mMZKQ4I9xFMt1Ju3N4G7lQRVYiS27QED3EAm2gNtq7CZ2U1eu3EYRR+Y84lvKPbPwL6gaYt2e3a75h7SjQTB4I+KEw/GFeD77qkeqpbOGuj+8m5ho5qV/ynpUcCG2697bCjUIw4nbpPh1Bk4YuhcbUftKNPlCBJziA1tfumRG1HUdQom4vwvojaupn4n5Le5wHrWbooiFIDbZ6g6AyXc4ZFlC19IMillVBB37fMQSD2QEIpKOjVTOK42UA2Oe666J+bDHVhpUdt/9o8JNPZbls7AahNT3dDIiyH7YMHo7Q==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
- by MW9PR12MB999207.namprd12.prod.outlook.com (2603:10b6:303:301::24) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by DSSPR11MB9644.namprd11.prod.outlook.com (2603:10b6:8:374::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Mon, 29 Jun
- 2026 09:39:48 +0000
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 09:39:48 +0000
-Message-ID: <89b04dff-3cc6-4ce7-8909-30552aed653d@nvidia.com>
-Date: Mon, 29 Jun 2026 11:39:43 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
- backend feature
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Tariq Toukan <tariqt@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, netdev@vger.kernel.org
-References: <20260511094504.1619893-2-dtatulea@nvidia.com>
- <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0223.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ac::16) To CH3PR12MB8728.namprd12.prod.outlook.com
- (2603:10b6:610:171::12)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 09:40:58 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 09:40:58 +0000
+Date: Mon, 29 Jun 2026 17:40:43 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+Message-ID: <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com>
+ <ajnf5Z9nWZxoLS4x@google.com>
+ <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com>
+ <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
+ <ajxasFBzp_9KnQLq@google.com>
+ <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
+ <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+X-ClientProxiedBy: KL1PR01CA0155.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:149::10) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,191 +133,322 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|MW9PR12MB999207:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2ab9994-b5ee-4bb2-b136-08ded5c25c1c
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DSSPR11MB9644:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94ec3230-4391-4d73-4908-08ded5c285ec
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	8+JIQeo7YItV78slYxS+CZr0x3854KftV4gAhxeACU2Y0bP7UBrhL6I7ISPIlD6J5hTGVdxZJXmS0piEBQjiJJMlZ2LzBROoE1OO5PAKNQsnvb/LqFNuigp+OgrGK4jj02G9Ntw6k4QP91XAO1KWfQ1QiioaZYMl59Mq3DJNtS5kHzm/4gXbIjgD976xR7PSLsf1Y+1HWTURlgpichvQDmbXE1WhPy24X3G8yaBt6iBH+z2vRI6x/6H3uONO7ZXs+qdHc0n8DCqXFG9rP5pR87c/XI5RW9yiMGVj4p52yKSR5gD/OZjIVIpVk3P9je3HYZX70qUeF2+PyApUzcp4qd/m7BN6MKP5i5cxD0g5BgKUzqWh37T322BTZknPha9TIiREOLo1mGTrApw+yt3oZAEe2iYyua4cmmY0lF0MKhKjCI/vAjVTFtjxgL8mKmdQlVfHPGzCwxuIitueQ2NweAYdGrFDHHf7RWEM6DsAKI9iSLeLhs26+nCTwH+O4GFRMSY30DrEM97fx+JqCtsDMfdbEaLZ9mdjoX0GaaRpHi27NeHP03XOSBSrtUNWv0etHfxc9YpeqYpJG6NDMnH3lP9SAwbxIyb0BWG59+5lrZR6F/zOa848Zj7ZuFmDVs+D++x5yB/W9XCF3iHscq0Oseho5FvGQ5vrZSLRp4H6+34=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|22082099003|18002099003|4143699003|11063799006|5023799004|6133799003|56012099006;
+X-Microsoft-Antispam-Message-Info: avScEtzIaxtHis+AgtmBcHw0KAbZMBoItvuYeqB/Id3eB4owbeXaGFr2hOLOwUzPdb2TL8heGuh+fsjTWehfCI7RcIMZc34MpZtozw2SZRy7CBeTyFVDYfElEQ4CaGDQCiQgRfl9+S1j/t+bkdv090gGM0klLSvP0U8r/v9MuOXabszgEDWKtPh/fhXlrKMv3AScPnJPvabVZSMMWLT8p2K3DsiGB6X+3Bl81MXkjcvEy5e23ppEwQSy4dp3TtQHpTsVj+bq9Oq/giin18Tft9JD9uD9zRTModWsG91xBRvK4mkRI45rW1kS/PnKnhdNE4y480dBwWtAzJrI5VeIy5moA7t/4U861pOUlqSJsjGj7qpa6+GYvdbocpoELC+A2qumdMnFquQ0cPkg2Gn2ty4c9/OT58qAkje+7ZmIA6xh7AckstQN2VqHeafFLvTdyYL7sZPSUIiUhdeQkKm42JT8dbU3g66pIiMfVC7We1k+OLppQj+Ai3LipTxHZPkV6395jjG+QHR5MeBl7a1MJPqK2NMlLM6UPv7804XjNrkp8o2OTU4dJlvQeFOgRme0ZmTdSwkLDomp/e4a1xY76HsFK6c64F/i69XEo+9Kqp3Oy/8POjnpj30lWEG10+0MPFfrjPNjfzjjtjUJw/Ux6CPqaaz5wvynIbfFU1no11Y=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(4143699003)(11063799006)(5023799004)(6133799003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MWx6YWk3SVVlbkVOOGZsVEhzVkovNlJJaW1mb3BXTTdzSVdzK3ZMQTZmL3VG?=
- =?utf-8?B?MGJrNkQxemtrNDVzVXBiNjVvdTlwVS94bGxNZXpUSko2YWVRK0dJYWxWUnll?=
- =?utf-8?B?aEdKRWJCb2ZoTWduZjhVbE9wMHVhNnFOeDd4R0ZHOGJHNzhuUUVERVlUb0tW?=
- =?utf-8?B?NnNSYVlJWE1XZTBneHpkaVhaOEhyTkRWYXdnTTBTdzJPQ3ZXMEY5cVVkbHZC?=
- =?utf-8?B?NHBETEJGazNwTmtNYWdBSk05ZkZiSGpOT2hLejl6N0NWamxZS0N6QWJYZXE0?=
- =?utf-8?B?b2VuUStENDJibStUd2dYUEZBTTV0TjVnQ0ZwRnNKajErMm44L2NJZkdvaUEy?=
- =?utf-8?B?aWRCcHhnV29UTXJ0NGM0MWc3b3FIaXR4WjY5ajJMakhuclhTSHNIVGlVbDdH?=
- =?utf-8?B?WW9HNmF2aldiRnBrTzZDT0V0dFl5Qk1uTnE5bjg3cFhKMVdFaGQzdWRTbHZL?=
- =?utf-8?B?bFdBTitwRXI2bnkrKzNEZzJiMDViMWxQTVZOa3A3d3h5TzlDMmlRVENJS1RX?=
- =?utf-8?B?YzJpUDRrSWxvT2VWZmptQ0N6WTBmZ3orUTJrTmcxdHB0ckNpZmFaSlhoREZn?=
- =?utf-8?B?OTI2dzhwSDhMTHpFZWVLWVBHQ1dOZEo4S1N1WXFuYmJXaVR5YUdhYmtBM0I4?=
- =?utf-8?B?Vkd3WkNNc2QzeGZDVEt3SitKVVhGdkxhZmVDQk1QQ0FVNmlFUmpZazQ2L3c3?=
- =?utf-8?B?QnVEUHUwUU9QYnhycm90eHpUQ3FVNDQ4V2ExNzhqTmtJcUtFQUlxZGZINWJP?=
- =?utf-8?B?N0RVWk5VczJJQmd2bE9mOG9aMmNoRFVYZUwvMm1ZVWl2YkNUZE40RG1hRzJN?=
- =?utf-8?B?bDRJbWdlYjV4V3NZcHVNQ2FNYytmMzZLM1RSLzFCNmxMcXVhckxZbVVza3Iz?=
- =?utf-8?B?N0RDeFd0TGlEbGtqY0JLOFVRdzVmdlJFUHduMnVTR3F5aG5MSGtPRVBsWnFF?=
- =?utf-8?B?L256ODhkbUJXVE1MQ1pBUkZKWlF2NFJNenlrQ1BHQ3VWR2ZETXBzSE5KRDQ2?=
- =?utf-8?B?R1B5NWppQWR6R1NtQWlycW1ERmdBZ1VWNWlKY3c2ZEVIYm5RNEQyZElFbDl3?=
- =?utf-8?B?dVNEOFlMWWYwNEhWNWx0SHpPVVhKelRzUFRZSS9DdE5RdTMrVDJzQUZ5ZWU2?=
- =?utf-8?B?VHlhMmlLdVhmZTErRFRqRWJzYzRuVW9wVVBIaHpuazFlQW1wNE5aVk5PYVZh?=
- =?utf-8?B?elpkOThGUi80Y0FPV0FybEYxam5salp4WElDNlZQcFFaRnhDVHhManpvYlJG?=
- =?utf-8?B?cnF6U0NjSzdEZFVGTkJ6NjNvN1FBZ3gyK1YyVlhsaDdNN3ZUTUJURGpXYThK?=
- =?utf-8?B?eGVKc1VWTHpqUXM4d3NqcmtYdXg0ZlNHcVZ5eSsxTlU4ekJ0T3JVdXlmY3NU?=
- =?utf-8?B?YVowS1U0bmc3aUd6cysvMUZBTGZodWZsVm1NWW1ISllXL2EwWWt4M0o3NXR5?=
- =?utf-8?B?KzVxb1NkTzAwSHF3QjE5ZTcvRnBycENBay9lR0VLME9tbVM3dUxZZXR1VnZS?=
- =?utf-8?B?UXp5YWJRVGliOEFoM2hNb09sallJbTUraVNhS1RIRzRDd3lCRWl1YmZKWlF2?=
- =?utf-8?B?RUlCMTEvZzE4TXRSanVjMDVORy94OVM3a0UvakFFbkl2aE5zUE04L09yekt0?=
- =?utf-8?B?WXpMeEo0Z210ek5oSndQd0VWWXdEbVFGbnlMTTg5Y2Qxa2NBZDE3M3JjWHJJ?=
- =?utf-8?B?VXZ6Q3pRQVlNNno2NlZOc2NORnZ0TnhCQ2RHOTNTUS9KWWh2OG1OR3djZFZu?=
- =?utf-8?B?MVdNVS9NUk9kdGUyb0N3b0prTEYxWEhiNWhyOHh0VXZrYjFPNm1CSTVMVWtW?=
- =?utf-8?B?SXNOb1B4ZGxpYS9uT0I3V3pCSlVkaEh2OFZjdVFwK3Y5WjZaQWU5M3ZpUnV3?=
- =?utf-8?B?QVJ1dDBkdGdOdHBOK0JKeGdKb2EwNEZOWmtPVGFhQXhRcHF4Nnc0dzc0MW5H?=
- =?utf-8?B?VEtGTkwreXJNYnQwMnNTbk5hZkZlZ29vNTNTZkdvbTdWZlhaWkRnQ3lra1dy?=
- =?utf-8?B?L1p1TTZYYzNBVmsrNTFrZElyRzU2TUZ3dEcyUUZGWjVqM1ordWdONnNNWmI2?=
- =?utf-8?B?SXFUQTBRUU9ZWS9iSmVxN3RtaUF6bkZJcjd5WTFkVzA3QnFnMW9KcGU4akdS?=
- =?utf-8?B?aitFWkJjTU1STURtWW54NmhnVjNGTFN4d3NwWEkwckN4Y0VqQXhtTlhoUGlM?=
- =?utf-8?B?T1dFaVNKWVhWSmJvSk5ycDJlVmsvV3pNdHZid3o3Y0RXU2VFR290WUpiL3hS?=
- =?utf-8?B?RzFNd3dKa2hRVmovVCtOQ0s0d3luS3J0VTgzUm0yendwSmdBOEhtOS9nZWpk?=
- =?utf-8?B?K2FqZmJRVE01aVYyTitzdEw3dExnRy9JUXRMTHZoUmt3VE90Q1ZsUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2ab9994-b5ee-4bb2-b136-08ded5c25c1c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eDpftVZal5YwBsETx+F56UEPTzR77Yw7R/6LK8/wGqQrfykaXZxJcTkEWu9C?=
+ =?us-ascii?Q?AFPLO//afKXlOVNh+GoNXHnJcBLm7tLeDHxTKY98hQLc1xLG2N0uHrDpgYe6?=
+ =?us-ascii?Q?OIHwOJTZghsxHyQAYrhhMqi+aLHNnWMJciFunj20cdelRlJUSyoWXTwSee2l?=
+ =?us-ascii?Q?Y+KlyoFfhLqeYF5A4eKabo9z3jpgY9tMHOW2Z+2I30EDFMyXNAJtxXoG0x2K?=
+ =?us-ascii?Q?0P3d/MN5jRST40X6qTmP8voVrr6b1CYGtO9g2DlTaivhdqb3/3liGkXC2bpQ?=
+ =?us-ascii?Q?G7K610uRnf8l13GdSzBOXzCD5p6QCUmo5nJcdv9wbMboG/7jtQ9z3HtJtvCo?=
+ =?us-ascii?Q?wjZJ1mntN39/inqtvaAXfQBKAHNC0F8CjuaCnBQhFd6pPU4qx/9voDUTyeZ/?=
+ =?us-ascii?Q?FVSijqFD/jOsrOu69BDaQVPZVmXHvPrwKQUe+WmewhnQxGop11ebDHO5213d?=
+ =?us-ascii?Q?tzB0pNtGxEBU6Z7qa2rRw8bggulQiYtMGuSTi3c0O9Pk5Mg1zldhWDaGTpWL?=
+ =?us-ascii?Q?YDvXF2XHOLj5HohLzNSZonuOeidmtOqtI9A1B2F/bc9lzY1FUVxCQYrEwULH?=
+ =?us-ascii?Q?Kyk2P2pNqQ8dOlCYuhEatD8v3nfW8ita4F5M/yr5KlZTWet5S+SDeIcBAOjP?=
+ =?us-ascii?Q?rKe5aaMUAnVlo6Xb1oVNsGRW1N26+wKISztI259tW5b2wArukACsZjtYnh/o?=
+ =?us-ascii?Q?KCM3c9BOVdF0RY2B/usJSBSqUe9WB/J/DMs8RJIT6jVVCiPZUgRJr2i5BVHD?=
+ =?us-ascii?Q?ep3rCyn1i+xopyBdPqz0HQNmkG1uW2eHKacrUifLkB5JRzvR20ONHkiLUiq3?=
+ =?us-ascii?Q?XU1RTsPEzBQlYuTlCsO00cdG940SouFotZ8UnejlKlj4orKiV8qFR/7KCZ+r?=
+ =?us-ascii?Q?4yRAcJztD09MtV2HrPYJrKVZqpYwpMHFGxFXm2UuWopAx4hCvQKP9Y7jmNpB?=
+ =?us-ascii?Q?hz9Dx0immSpO0y/To/ofozXddF5G8CYKZtDAPPVJnmv2P3b9JvLNQbA/9UTC?=
+ =?us-ascii?Q?iri7kzf+IcjVt8ENgsHBXbosOCi8zsy3XHShWQwWNDKg/61ai+sthcWDmeYP?=
+ =?us-ascii?Q?tOSMhDN1uuNU1GECU20h34LsIh0T+RmZS3Ms4WvVX7REAs47R+xcEkdg0Z/Q?=
+ =?us-ascii?Q?zYoi6nNszFQ6b2POUN0qYP71UY3vy/wypCD7LVPxS6YESBHxRsJB0SZp9/FE?=
+ =?us-ascii?Q?2adFNrO41A0xWX9lt9HLd21ReX+jkpAxj9tc5MzrlZY8LKGVD+7pkTtGIhNi?=
+ =?us-ascii?Q?5MCS9h10pwlBVQCxn88z/+se2FanyB+XAbzYcJkIbLWYqanz+jGSOF+5dJiO?=
+ =?us-ascii?Q?0tPVyBMOGdzaB/YIfJ2vpQq60FLTRu/H7tVYa7LJKyyEs4lB7nZFFcHG1k+W?=
+ =?us-ascii?Q?Qlw2wTWWnP7ExLRYn0G9qC10jb19EZd6s5bg9VnkbcfXHrL55RzoSfrggd2j?=
+ =?us-ascii?Q?VdI9/rvtQjA9FIRQ2MLLtaY3KHjxAbBcTMDjRDMlz2xNrQpeYso6RlCmuv7b?=
+ =?us-ascii?Q?vbbAJ4vScX1tiIzYsaN23WifzNowavrf/8cS9IqrIO0zC/HTuozBJTCFjTnT?=
+ =?us-ascii?Q?A+SXVJGPoLkW2UWzCjMUtiaBn4CsUhhE7yg8+ne/tiy/KHYl6/KwwdRyPijz?=
+ =?us-ascii?Q?5YyTo8cSwixqdKF4OPl/v0uTdqHq6tYtS7qqfB0hQmC+THIuyH1vIUzecGMR?=
+ =?us-ascii?Q?/uuE3vauK5yFzrSqPqZ3LKHr02E9cSwLpWXUQvV/+YjaH7w03Y7Q8CQWKgnY?=
+ =?us-ascii?Q?N/FGy8+Nxw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: nUm46iTIb7S6NI3xtD0oMlWp97T1n141HP9JEB5qAnzQrc1zQBajbF9APLXzH//hkHiC+vMVuXj1d7S1p6viuID6HmG54fkC/kwYtA8zWsQTp8GOgIy3g6yZ0IZkKdiuEVSU9vQ1TOEXgQ3yrp1N9EsARvImpRgukVoSp+M5dBEfeQ5+IPzbD46HUNFIadPg+5xTtXKTA5wExeQGzM6+yUKzuuSOgaqubi+i/vf9TfxRJV6SDQzZT4umm4Dh1QWwASA0irY6hEwVLg34Zl/8qXaw2RTY22JGqi99jxGZkoVaMHu91Syh6dF1ghm/aiIz30DKkKKLVnk/OxIGE/7ZzA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94ec3230-4391-4d73-4908-08ded5c285ec
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:39:48.1382
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:40:58.3635
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jSMRecHuTyFREIa6eYsl4jfhsV0Ekhym//ej1uFuA/wk/E6UDFAqMxYgKADp6nSM7rjAxgdUF2VgIvhKQL+ZbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW9PR12MB999207
+X-MS-Exchange-CrossTenant-UserPrincipalName: sJYkH8ENloPTRtbJJkoQ33c9R5lcxIs/1ZGru5hoXse6Y75RvbuE9xxGQMRoF+5kBw7Z119gkBFFHFzWpwGP5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR11MB9644
+X-OriginatorOrg: intel.com
 
+On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
+> 
+> > On Thu, Jun 25, 2026 at 05:07:23PM -0700, Ackerley Tng wrote:
+> >> Yan Zhao <yan.y.zhao@intel.com> writes:
+> >>
+> >> > On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
+> >> >> Sean Christopherson <seanjc@google.com> writes:
+> >> >>
+> >> >> > On Tue, Jun 23, 2026, Yan Zhao wrote:
+> >> >> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
+> >> >> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
+> >> >> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
+> >> >> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
+> >> >> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
+> >> >> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >> >> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+> >> >> >> > > > >  		return -EIO;
+> >> >> >> > > > >
+> >> >> >> > > > > -	if (!src_page)
+> >> >> >> > > > > -		return -EOPNOTSUPP;
+> >> >> >> > > > > +	if (!src_page) {
+> >> >> >> > > > > +		if (!gmem_in_place_conversion)
+> >> >> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
+> >> >> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
+> >> >> >> > > > error.
+> >> >> >> > >
+> >> >> >> > > Why MMAP?
+> >> >> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
+> >> >> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
+> >> >> >> >
+> >> >> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
+> >> >> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
+> >> >> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
+> >> >> >> > > initialize the memory.
+> >> >> >> > Do you mean using up-to-date flag as below?
+> >> >> >
+> >> >> > Yes?  I didn't actually look at the implementation details.
+> >> >> >
+> >> >> >> > if (!src_page) {
+> >> >> >> > 	src_page = pfn_to_page(pfn);
+> >> >> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
+> >> >> >> > 		return -EOPNOTSUPP;
+> >> >> >> > }
+> >> >>
+> >> >> Yan is right that with the earlier patch "Zero page while getting pfn",
+> >> >> folio_test_uptodate() here will always return true.
+> >> >>
+> >> >> Actually, this is an alternative fix for the issue Sashiko pointed out
+> >> >> on v7 where userspace can do a populate() (either TDX or SNP) without
+> >> >> first allocating the page, with src_address == NULL, and leak
+> >> >> uninitialized memory into the guest.
+> >> >>
+> >> >> Advantage of using the uptodate check in populate: if the host never
+> >> >> allocates the page, populate doesn't incur zeroing before writing the
+> >> >> page anyway in populate().
+> >> >>
+> >> >> Disadvantage: Both TDX and SNP will have to implement this uptodate
+> >> >> check. guest_memfd can't check centrally because for SNP, for a
+> >> >> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
+> >> >> firmware will zero and there's no leakage of uninitialized host memory?
+> >> > Another disadvantage: the uptodate flag is per-folio. What if the folio
+> >> > is only partially initialized by the userspace especially after huge page is
+> >> > supported?
+> >> >
+> >>
+> >> Good point on huge pages!
+> >>
+> >> The uptodate flag on the folio in guest_memfd means "this folio has been
+> >> written to". As of now (before patch at [1]), this happens when
+> >>
+> >> + folio is zeroed on first use by userspace
+> >> + folio is zeroed on first use of the guest
+> >> + folio is populated
+> >>
+> >> When huge pages are supported, the folio can't partially be initialized?
+> >>
+> >> On allocation, if any part is shared, we split the page. The parts are
+> >> separate folios that have their own uptodate flags.
+> >>
+> >> On splitting, if the huge page is uptodate, the split pages will also be
+> >> uptodate. If the huge page is not uptodate, the split pages won't be
+> >> uptodate, but that's ok since they will be marked uptodate on first use.
+> >>
+> >> On merging, the non-uptodate parts have to be zeroed and then marked
+> > If that's true, it would be good.
+> >
+> >> uptodate. Any parts that are in use would have been marked uptodate
+> >> already, so there's no overwriting data that is in use. I'll need to
+> >> think more about when it's safe to zero.
+> >>
+> >> I'm still on the fence between the two options
+> >>
+> >> 1. Using uptodate check in populate to reject src_pages that have never
+> >>    been written to or
+> >> 2. Always zero before populate
+> > 2 does not work?
+> > The flow is
+> > 1. mmap gmem_fd, make GFN shared, and write initial content.
+> > 2. convert GFN to private
+> > 3. invoke ioctl to trigger populate.
+> >
+> 
+> This flow is correct, is what users of in-place conversion should do.
+> 
+> "Always" is the wrong word, I should have said "zero if not uptodate
+> before populate", as in, with patch at [1].
+> 
+> By doing the zeroing in __kvm_gmem_get_pfn instead, by the time populate
+> gets the pfn, the page would be zeroed, either because userspace faulted
+> it in, and the zeroing happened in kvm_gmem_fault_user_mapping(), or if
+> userspace never faulted it in, the zeroing would happen because
+> populate() allocated the page.
 
+I see.
 
-On 21.05.26 10:26, Eugenio Perez Martin wrote:
-> On Mon, May 11, 2026 at 11:46 AM Dragos Tatulea <dtatulea@nvidia.com> wrote:
->>
->> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
->> once DRIVER_OK is set. That is too strict for devices which can safely
->> handle this during live migration flows.
->>
->> Bring back this behavior under a new vhost backend feature flag. The
->> feature is supported by mlx5 and vdpa_sim devices.
->>
->> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is set")
->> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
->> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> >> but whether the uptodate flag is per-folio or not doesn't affect these
+> >> two options in terms of fixing the leak of uninitialized host memory,
+> >> right?
+> > yes, provided "On merging, the non-uptodate parts have to be zeroed and then
+> > marked uptodate".
+> >
 > 
-> Acked-by: Eugenio Pérez <eperezma@redhat.com>
+> Thank you so much for bringing this up, I hadn't considered this
+> before. I'll do that when I get to guest_memfd hugepage restructuring.
 > 
->> ---
->>  drivers/vdpa/mlx5/net/mlx5_vnet.c |  3 ++-
->>  drivers/vdpa/vdpa_sim/vdpa_sim.c  |  3 ++-
->>  drivers/vhost/vdpa.c              | 13 +++++++++++--
->>  include/uapi/linux/vhost_types.h  |  4 ++++
->>  4 files changed, 19 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
->> index ad0d5fbbbca8..f89177957c76 100644
->> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
->> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
->> @@ -2906,7 +2906,8 @@ static void unregister_link_notifier(struct mlx5_vdpa_net *ndev)
->>
->>  static u64 mlx5_vdpa_get_backend_features(const struct vdpa_device *vdpa)
->>  {
->> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
->> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
->> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
->>  }
->>
->>  static int mlx5_vdpa_set_driver_features(struct vdpa_device *vdev, u64 features)
->> diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
->> index 8cb1cc2ea139..253c7fb35ea0 100644
->> --- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
->> +++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
->> @@ -428,7 +428,8 @@ static u64 vdpasim_get_device_features(struct vdpa_device *vdpa)
->>
->>  static u64 vdpasim_get_backend_features(const struct vdpa_device *vdpa)
->>  {
->> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
->> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
->> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
->>  }
->>
->>  static int vdpasim_set_driver_features(struct vdpa_device *vdpa, u64 features)
->> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
->> index 692564b1bcbb..67b3f49fa709 100644
->> --- a/drivers/vhost/vdpa.c
->> +++ b/drivers/vhost/vdpa.c
->> @@ -682,7 +682,8 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
->>                         return -EFAULT;
->>                 if (idx >= vdpa->ngroups || s.num >= vdpa->nas)
->>                         return -EINVAL;
->> -               if (ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK)
->> +               if ((ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK) &&
->> +                   !vhost_backend_has_feature(vq, VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK))
->>                         return -EBUSY;
->>                 if (!ops->set_group_asid)
->>                         return -EOPNOTSUPP;
->> @@ -791,7 +792,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
->>                                  BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST) |
->>                                  BIT_ULL(VHOST_BACKEND_F_SUSPEND) |
->>                                  BIT_ULL(VHOST_BACKEND_F_RESUME) |
->> -                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK)))
->> +                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
->> +                                BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
->>                         return -EOPNOTSUPP;
->>                 if ((features & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) &&
->>                      !vhost_vdpa_can_suspend(v))
->> @@ -805,6 +807,13 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
->>                 if ((features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) &&
->>                      !vhost_vdpa_has_desc_group(v))
->>                         return -EOPNOTSUPP;
+> >> >
+> >> >> >> Another concern with this fix is that:
+> >> >> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
+> >> >> >> folio uptodate before reaching post_populate().
+> >> >> >>
+> >> >> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
+> >> >> >>
+> >> >> >> > One concern is that TDX now does not much care about the up-to-date flag since
+> >> >> >> > TDX doesn't rely on the flag to clear pages on conversions.
+> >> >> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
+> >> >> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
+> >> >> >> > user access.
+> >> >> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
+> >> >> >> > to have more effort than introducing a dedicated flag for TDX.
+> >> >> >> >
+> >> >> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
+> >> >> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
+> >> >> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
+> >> >> >> > > > 1. create guest_memfd with MMAP flag
+> >> >> >> > > > 2. mmap the guest_memfd.
+> >> >> >> > > > 3. convert the initial memory range to shared.
+> >> >> >> > > > 4. copy initial content to the source page.
+> >> >> >> > > > 5. convert the initial memory range to private
+> >> >> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
+> >> >> >> > > > 7. do not unmap the source backend.
+> >> >> >> > > >
+> >> >> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
+> >> >> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
+> >> >> >> > >
+> >> >> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
+> >> >> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+> >> >>
+> >> >> Yan, is your concern that userspace forgot to update the code and
+> >> >> forgets to provide a src_page, and if we keep the "Zero page while
+> >> > Yes. Previously, it would be rejected after GUP fails.
+> >> >
+> >>
+> >> I see, didn't realize previously it would be rejected because GUP
+> >> fails. GUP failed because it wasn't faulted into the host?
+> > GUP fails if 0 is not a valid user address.
+> > But GUP would not fail if 0 is a valid address. e.g., in below scenario:
+> >
+> > #include <sys/mman.h>
+> > #include <stdio.h>
+> > int main(void)
+> > {
+> >         void *p=mmap((void*)0,4096,PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+> >         if (p==MAP_FAILED) {
+> >                 perror("mmap");
+> >                 return 1;
+> >         }
+> >         *(char*)0='Y';
+> >         printf("addr0=%p val=%c\n",p,*(char*)0);
+> >         return 0;
+> > }
+> >
+> >
+> >> That's kind of orthogonal, I don't think GUP fail leading to rejecting
+> >> populate was meant to help userspace catch these issues. GUP would also
+> >> fail if the user did mmap(), write to it, unmap using
+> >> madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
+> > The original uAPI did not explicitly define 0 as an invalid uaddr. Whether 0 was
+> > rejected depended on whether the user mmap()'d address 0. If 0 was a valid
+> > mapping, populate() could proceed.
+> >
+> > commit 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating
+> > guest memory") changed the behavior though. It would return -EOPNOTSUPP for a 0
+> > uaddr.
+> >
 > 
-> Ouch to me here. By reading the errno manual:
+> I see, I only looked at this after commit 2a62345b3052.
 > 
-> Nit: By reading errno(3):
-> ENOTSUP - Operation not supported (POSIX.1-2001).
-> EOPNOTSUPP - Operation not supported on socket (POSIX.1-2001).
+> > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+> >
 > 
-> I picked the wrong constant even if they share the same errno value
-> (by the same page of the manual). MST, is it worth changing it?
+> I'd say the original uAPI perhaps just didn't document 0 as an
+> unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+> was perhaps accidentally changed and no customer complained, I think we
+> can move forward with 0 as an invalid src_address? I wouldn't think
+> anyone relies on 0 intentionally being a valid address.
 > 
->> +               if (features & BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)) {
->> +                       if (!(features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)))
->> +                               return -EINVAL;
->> +                       if (!(vhost_vdpa_get_backend_features(v) &
->> +                               BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
->> +                               return -EOPNOTSUPP;
->> +               }
->>                 if ((features & BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST)) &&
->>                      !vhost_vdpa_has_persistent_map(v))
->>                         return -EOPNOTSUPP;
->> diff --git a/include/uapi/linux/vhost_types.h b/include/uapi/linux/vhost_types.h
->> index 1c39cc5f5a31..ec1ff8a2e260 100644
->> --- a/include/uapi/linux/vhost_types.h
->> +++ b/include/uapi/linux/vhost_types.h
->> @@ -197,5 +197,9 @@ struct vhost_vdpa_iova_range {
->>  #define VHOST_BACKEND_F_DESC_ASID    0x7
->>  /* IOTLB don't flush memory mapping across device reset */
->>  #define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
->> +/* Device supports changing the group ASID after DRIVER_OK.
->> + * Requires VHOST_BACKEND_F_IOTLB_ASID.
->> + */
->> +#define VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK  0x9
->>
->>  #endif
->> --
->> 2.54.0
->>
-> 
+> I could document that, if it helps?
+What about just documenting that 0 is an unsupported uaddr which will be
+re-purposed as an indicator to use the target pfn as the source, regardless of
+whether gmem_in_place_conversion is true? i.e.,
 
-Gentle ping. Is this patch missing anything?
+if (!src_page) 
+	src_page = pfn_to_page(pfn);
 
-Thanks,
-Dragos
+I don't get why the two scenarios should be treated differently:
+1. gmem_in_place_conversion==true, shared memory is not from gmem 
+2. gmem_in_place_conversion==false, shared memory is not from gmem
 
+In both case, a 0 uaddr could be mapped to a valid page not from gmem.
+So why not update the uAPI to handle both cases consistently? :) 
+
+> >> >> getting pfn" patch, ends up with the guest silently having a zero page?
+> >> >> I think that would be found quite early in userspace VMM testing...
+> >> > I actually encountered this during testing this patch.
+> >> > I update most code path to follow this sequence. However, still some corner ones
+> >> > for TDVF HOB, which are less obvious and harder to update.
+> >> > The TD just booted up and hang silently.
+> >> >
+> >>
+> >> I think this is just the life of a close-to-hardware software engineer
+> >> :P no errors, got stuck somewhere, root cause is some unitialized
+> >> thing.
+> >>
+> >> >> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
+> >> >> >> > kernel to detect this mistake, similar to how it validates whether source_addr
+> >> >> >> > is PAGE_ALIGNED.
+> >> >> >
+> >> >> > The alignment case is different.  If userspace provides an unaligned value, KVM
+> >> >> > *can't* do what userspace is asking because hardware and thus KVM only supports
+> >> >> > converting on page boundaries.
+> >> >> >
+> >> >> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
+> >> >> > request would then be making assumptions about what userspace wants.
+> >> >> >
+> >> >>
+> >> >> Also, +1 on this, what if userspace, knowing that pages are zeroed on
+> >> >> allocation, actually wants to rely on that to get a zero page in the guest?
+> >> > What if 0 uaddr is a valid address? :)
+> >> >
+> >> >> >> > Since userspace already needs to perform additional steps to enable in-place
+> >> >> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
+> >> >> >> > intentional seems like a reasonable burden.
+> >> >> >
+> >> >> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
+> >> >> > just wen up with code that does:
+> >> >> >
+> >> >> > 	if (in-place) {
+> >> >> > 		src = NULL;
+> >> >> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
+> >> >> > 	}
+> >> >>
