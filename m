@@ -1,223 +1,200 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACD9337BA6;
-	Mon, 29 Jun 2026 15:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEFD3E8684
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782747814; cv=none; b=D7ise+PW4DMCW8ls8Jz+XdD2VrbyX+Yr0sDPieYp/x12XrLA9rora3emqpgPIn6c0jKmfOmsprzq3DQvw7PKWCuD34mVLMD75TK0k9Ev6Bxuv4KaBl0UY80Qf1FzIPAhj/u6tdkxXwMLwuxOQbFA/mabh54U1lF0uV7wuugjAVo=
+	t=1782748486; cv=none; b=n92ZQRdhT9GCDlvTmOVR3ka/71vwWDkqHywGIObqIbuD32Zw81IzFr9bVV1NEYdjPEKbDz6lF/Y9Pv+ReONzvLuFmA3CDiDIfzXke2dFR5tYxVsRZ5oQCNYJU/z8gFQQ1eFEhfe2S0Sj/xIjdgBDITgaBn67aPYjbEbaBJhPNUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782747814; c=relaxed/simple;
-	bh=5Y4BEJ8zwWvQTQHdqVwuTQLfjjB+iTFJRFh5ABHDOtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bJFb75OfJbgjRE5PB3LW8iUrOMsJYvoqzp3RJddgfL4A7dC/wKCsm59wKtHrmmOnpgxvagcSJOyYRZgnytwjYCRJxMfdntxUfWwONuiRxpU4pOEytZTVPGQ03kVE5nazR3CU4awG0+K/1UbVGHFRWE93MwOvU4HdlMyl5eyXGyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=D0uvl3Eh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YjcQppJ/; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1782748486; c=relaxed/simple;
+	bh=93ATUFGStUVoH8MghwH3wgB4RX0ZFq8ZxEEq8p1K4SQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=DfTxDJ2XBFQBAxS+RrDMulYMBnzId0GzWZGq+BmWrZLfc4FgGHgGgS/eX0mBaH1NN91HGSVnkGt+vwtT6CSs/CmpAkURNZMEpuVJ2ByChFcKqgdbs/m1JGVGCt0Olvxmu+q9/5Vq/llbdTIqWGsv2NBPH9Lus7gwCydOlaRMSjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XawM1eel; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="D0uvl3Eh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YjcQppJ/"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 9E605EC00DB;
-	Mon, 29 Jun 2026 11:43:30 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 29 Jun 2026 11:43:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1782747810;
-	 x=1782834210; bh=oBO9AlUgesLs7bhNb3C7hDuAqAmu4BXNEtMP6hAnZ4o=; b=
-	D0uvl3EhJ2nxveUtN2hJABuHyt+1M1gZkjd6hx+VrZ79ppspk5Zn0zuH/NpLm/hc
-	CwKh4yas4SWqU+drQAVxeDibCwX/IpLtw9lLwqqby9v8HPdhbVqMVQZLK6so2poi
-	7TO7572grW3nAW45CsbvyRCcFC8l3A+o++DFEFkPymQwKrbeOsRv6AJvQ7LCn+zG
-	FBYdi6I4RGibX25tYuUOVZpFeI6ryAr3V8dmE60hYKUSps/Zd+maIIHUNYtw3AiS
-	PIiZW3KmIX3K4JYuxbFwoh1DR2F+D7BxADAFpaHwDDdbwV2Z2VShshhCiwKv2BK3
-	TgEc1/IiEX5eIPWV9dcumQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782747810; x=
-	1782834210; bh=oBO9AlUgesLs7bhNb3C7hDuAqAmu4BXNEtMP6hAnZ4o=; b=Y
-	jcQppJ/IxGqBduXNk/9nPJbAhKjzZG4cBAmmjPD6+1RgX85V/+M3whIYeESWrYUB
-	rD0jdyS+pLhqgW6MscCYM2SOKC3C4LgBDo4aAhXOaOUmickDvPedenGdR/g/Idfc
-	dZNj3XNYSIQbk/adwd3YuKSuqfBujLYGIPiJO1R4SBPt+16AU7Hku8OIw+JYLlP6
-	qXbUaPQ2IDfk2KnknO3ilLUh8M6UAmRLt0+0z0fA5UjsMMuZClZw/9KdvWFZwHPH
-	XhADZ7GI1j7EFnQjPhcTthkvSehWU/t8j3g2Q2YW0cNkyT6mdWxL1tapLfEnYSTA
-	RjMWqCRC+bUm6CHFJzjOA==
-X-ME-Sender: <xms:oZJCaqn7E7GYlbrjvtza_sKhXD9RmAacgQtAFB_ovUUZMJc71i4_jA>
-    <xme:oZJCajY6FhobIvyFza-_UKKsPuo7h1FdmiY2urwjj52wTumc7ul89uWH1QSl1qkY-
-    eJJMkbw0NzZrT1Dhquw0UR1PxgALCvoTV2cidwW3UIleLI4vMV5Rak>
-X-ME-Received: <xmr:oZJCan7jFdj7sGXn0tIYLLRt3ll4K48EAzul60vsYJfv2FDo1IN8j3Rhch4>
-X-ME-Proxy-Cause: dmFkZTEHn75k5CFgeznKWlGGIrXbvs7qL+tjerljiXXOxMghxwvyGDwfT2S9oP9uhlX1A9
-    tuC4l6Vby03CawJ4JK7jAm/X3lKp5zXwWo1fjjxHIy6M/eEuqVh+q5JDBzJCLyESFMau0y
-    NVjUBZn4gCX0hkV0YU14kuqtEO9MwCJqgHvoJ3CJIwhaQ1ukdtTAKzLNJzJB1sG9g4kqSh
-    WhMHVxxBDHlZsrHs7aNm8PWsIvtWajeti0lzUrCXNV+b+GLyyUPmTzH7bF1UzRFHD0YogB
-    hmYlKsWmhEiWBpHeQpQmSCkXVtheO5p2FLys8xbSdIhP6bjBClZyhEBtl3zP+JDoZxVBVz
-    stZNU8ReUms4iutYZ8bWlZUVpBX2I64Fp8HSnjhsd68LRspWKO6AqftAsEhvCk4TX2m9jm
-    zsl3i3DXHeDmp2xy7BV2Ivz55DDyAOXx9IwHijY7/fL8Yx74yPNkGJ9HABwbf6j9zmW20C
-    OWJ+6lknm/hd/b/4ebBK1PlAMeGCzm4CVWKH+Lg5gsNQpTl/r+wnA4oeKvz9J1+oxDrQRq
-    /aw/lu8FdKwcJXZAfRBuY9AnVCUL41CopXHHUM83HtzC6Q5hF9Ym9czDDuYt+FBsWL+x2Y
-    QXMFK6wN9nnVMnBVm2uAWUgB/0vvof0FKiPiFrt5WTL/9tv2iKlyJFdI/CLw
-X-ME-Proxy: <xmx:oZJCalDi29KAquSyCPTfi9VtRyzDDkp_NPIGd4nkt2TMhkFN2oTxIw>
-    <xmx:oZJCat9JTCCBufPxC8iNE087OOX_B257OMbgP8PRmIqqZaE8VzRQyg>
-    <xmx:oZJCaoFM2BiKXwxM2Kg3eX504Rr9PQtF6cErSMCyUvVWIgivyiB4mA>
-    <xmx:oZJCanSasMq-HTDje7cIMomZF91S22UiBChdb9T5QXSp-GSMLc1_wg>
-    <xmx:opJCalYc49Sc2tAqYUmjU7LvPTXEXnTj9Zh-DBF3DqibJNVdziyu_MCy>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Jun 2026 11:43:28 -0400 (EDT)
-Date: Mon, 29 Jun 2026 09:43:26 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- alex@shazbot.org
-Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU
- to steering-tag mapping
-Message-ID: <20260629094326.779ab0ff@shazbot.org>
-In-Reply-To: <5b389fb6-7d0e-8fea-1fd9-b873efc028c3@huawei.com>
-References: <20260616104621.41915-1-fengchengwen@huawei.com>
-	<20260616104621.41915-9-fengchengwen@huawei.com>
-	<20260616144224.GB3577091@ziepe.ca>
-	<20260616105754.784be22d@shazbot.org>
-	<9105ceef-5e27-4e3c-8903-d46aef52a2bd@huawei.com>
-	<20260626092232.53ed3a7c@shazbot.org>
-	<5b389fb6-7d0e-8fea-1fd9-b873efc028c3@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XawM1eel"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D68E339;
+	Mon, 29 Jun 2026 08:54:37 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C9753F673;
+	Mon, 29 Jun 2026 08:54:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782748482; bh=93ATUFGStUVoH8MghwH3wgB4RX0ZFq8ZxEEq8p1K4SQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XawM1eelrbIxTK4y4PyFeJJICs4xBNgq5CArZNv2H+sd/1+eK0zIBfeRscVA0R6Ru
+	 WWarGTEbfltuuuTQUxufctIZdP80CCpk6ZbMvN/JWnx79sRnw+iFRi4fziwhCRZYjg
+	 i6DfvSd+mwZcl8Jd7RW+UFArrU349UsbKicYZV3c=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>
+Subject: Re: [PATCH v2 06/13] KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+Date: Mon, 29 Jun 2026 16:54:39 +0100
+Message-ID: <akKVP2_vE4Wskmfk@LeoBrasDK>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260629112948.9F4D01F00AC4@smtp.kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-7-leo.bras@arm.com> <20260629112948.9F4D01F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Sun, 28 Jun 2026 19:58:09 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
->=20
-> Thanks a lot for your extremely detailed and professional design breakdown
-> for the unified VFIO TPH uAPI framework. I=E2=80=99ve fully gone through =
-all your
-> design points and aligned my implementation plan accordingly. I have seve=
-ral
-> key implementation questions to confirm with you as below:
->=20
-> 1. Plan for dma-buf TPH metadata storage
->  =C2=A0 I plan to add the following TPH-related fields into struct=20
-> vfio_pci_dma_buf
->  =C2=A0 in my preparatory patch series, which can be fully reused after Z=
-hiping=E2=80=99s
->  =C2=A0 dma-buf TPH patches land upstream:
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u16 tph_st_ext;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 revoked:1;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st_valid:1;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st_ext_valid:1;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_ph:2;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_ph_valid:1;
->  =C2=A0 The tph_ph_valid bit is newly added to track whether a valid PH v=
-alue=20
-> is bound
->  =C2=A0 to the dma-buf. Is this field layout and validity flag design acc=
-eptable?
+On Mon, Jun 29, 2026 at 11:29:48AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [High] Missing Context Synchronization Event (ISB) after writes to control-plane system registers.
+> - [High] TOCTOU race in wfi() polling loop causes a lost wakeup and indefinite CPU stall.
+> - [High] Missing memory barrier (dsb) before starting the HACDBS hardware engine.
+> - [High] Missing speculative execution barrier (dsb) after disabling an asynchronous hardware engine.
+> --
+> 
+> commit 47f5964570817fd652e798e082c349d012b3edda
+> Author: Leonardo Bras <leo.bras@arm.com>
+> 
+> KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+> 
+> Introduce the basic cleaning routine that is going to be used for both
+> dirty-bitmap and dirty-ring routines. It sets the required registers with
+> the input buffer, and wait for HACDBSIRQ to happen, which means either
+> the task is done, or there was some error during processing.
+> 
+> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > index 789da8712b1b4..e4283828b7807 100644
+> > --- a/arch/arm64/kvm/dirty_bit.c
+> > +++ b/arch/arm64/kvm/dirty_bit.c
+> 
+> [ ... ]
+> 
+> > @@ -24,6 +25,86 @@ DEFINE_PER_CPU(struct hacdbs, hacdbs_pcp) = {
+> >  
+> >  static __ro_after_init int hacdbsirq = -1;
+> >  
+> > +static void hacdbs_start(u64 *hw_entries, int size)
+> > +{
+> > +	u64 br;
+> > +	/* Each entry is 8 bytes */
+> > +	int size_b = size * sizeof(hw_entries[0]);
+> > +	int size_p2 = max(roundup_pow_of_two(size_b), PAGE_SIZE);
+> > +
+> > +	/* If not using the full size of the array, put a stop entry at the end */
+> > +	if (size_b < size_p2)
+> > +		hw_entries[size] = HDBSS_ENTRY_VALID | HDBSS_ENTRY_TTWL_RESV;
+> > +
+> > +	sysreg_clear_set_s(SYS_HACDBSCONS_EL2,
+> > +			   HACDBSCONS_EL2_ERR_REASON | HACDBSCONS_EL2_INDEX, 0);
+> > +
+> 
+> [Severity: High]
+> Does this code need an immediate isb() after writing the control-plane system
+> register SYS_HACDBSCONS_EL2? The ARM64 guidelines indicate that an isb() must
+> be the very next instruction after writing a control-plane system register to
+> ensure the pipeline doesn't operate with architecturally undefined state.
 
-In Zhiping's design, the PH completer validity is bound to the ST
-validity.  In my proposal, the user makes a request relative to the
-namespace, EXTENDED set =3D 16-bit, clear =3D 8-bit.  Internally we do a
-.get_tph on the dmabuf based on the requested namespace and get back
-success or failure.  On success, the full PH + ST is provided to the
-user when running with DS or LITERAL capability available, otherwise the
-ST is withheld and only the PH is provided.  I don't see a need to track
-the ph validity separately.
+IIUC they will have no effect until the base register says enabled. So an 
+isb() at the end should be enough.
 
-> 2. Validation rule for VFIO_DEVICE_TPH_EXTENDED flag mismatches
->  =C2=A0 The VFIO_DEVICE_TPH_EXTENDED modifier you defined is an excellent=
- design,
->  =C2=A0 letting users select either 8-bit base ST or 16-bit extended ST w=
-hen=20
-> hardware
->  =C2=A0 supports both variants.
->  =C2=A0 But a mismatch risk exists: users may set ST entries via TPH_ST w=
-ith=20
-> EXTENDED,
->  =C2=A0 then later enable TPH requester in pure 8-bit mode only, causing=
-=20
-> inconsistency
->  =C2=A0 between shadow config and active hardware mode.
->=20
->  =C2=A0 My proposed solution: maintain two separate shadow ST tables insi=
-de VFIO,
->  =C2=A0 one for base 8-bit ST and one for extended 16-bit ST. When enabli=
-ng TPH
->  =C2=A0 requester mode, activate the shadow table matching the selected S=
-T width.
->  =C2=A0 For devices only supporting 8-bit ST, directly reject EXTENDED fl=
-ag=20
-> in all
->  =C2=A0 TPH_ST ioctl calls.
->=20
->  =C2=A0 Should we enforce strict cross-check between EXTENDED flag used d=
-uring ST
->  =C2=A0 programming and the final active requester ST width during=20
-> enablement? If yes,
->  =C2=A0 is the dual shadow table approach reasonable?
+> 
+> [Severity: High]
+> Additionally, should there be a dsb() between the memory store to
+> hw_entries[size] and the write to SYS_HACDBSBR_EL2 below? Without an explicit
+> memory barrier, the store buffer might not be globally visible before the
+> engine begins reading memory, which could cause it to miss the stop marker
+> and access out-of-bounds memory.
+> 
+> > +	br = (virt_to_phys(hw_entries) & HACDBSBR_EL2_BADDR_MASK) |
+> > +	     FIELD_PREP(HACDBSBR_EL2_SZ, ilog2(size_p2) - 12) |
+> > +	     FIELD_PREP(HACDBSBR_EL2_EN, 1);
+> > +
+> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_RUNNING);
+> > +	this_cpu_write(hacdbs_pcp.size, size);
+> > +	write_sysreg_s(br, SYS_HACDBSBR_EL2);
+> > +	isb();
+> > +}
+> 
+> [ ... ]
+> 
+> > +/*
+> > + * Clears dirty-bits for an array of pages (hw_entries) using HACDBS
+> > + * Returns the number of items cleaned from the array. If returns value < size,
+> > + *	there was an error in the processing.
+> > + */
+> > +static int dirty_bit_clear(struct kvm *kvm, u64 *hw_entries, int size)
+> > +{
+> > +	u64 hcr_el2;
+> > +	int ret;
+> > +
+> > +	preempt_disable();
+> > +
+> > +	hcr_el2 = read_sysreg(HCR_EL2);
+> > +	write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
+> > +	__load_stage2(&kvm->arch.mmu);
+> 
+> [Severity: High]
+> Is an isb() required immediately after writing HCR_EL2 before proceeding to
+> __load_stage2()? HCR_EL2 is a control-plane register, and delaying the barrier
+> can cause the pipeline to operate with architecturally undefined state.
+> 
 
-We've abandoned the apply at enable-time approach in this proposal, TPH
-must first be enabled in device config space.  There is also no
-buffering of user values, they're written straight through to hardware.
-If the user has enabled only 8-bit mode, then a TPH_ST with the
-EXTENDED flag set should generate an error.  Likewise, if the user
-calls TPH_ST while Requester Enable is 00b, this generates an error
-regardless of the namespace.
-=20
-> 3. Virtualization logic for TPH requester enable bits with heterogeneous
-> completer capabilities
->  =C2=A0 Two complex real hardware topologies need proper handling:
->  =C2=A0 - Case 1: Single device with multiple queues routing TLPs to host=
- memory
->  =C2=A0=C2=A0=C2=A0 and P2P peer memory via dma-buf flow; root port and P=
-2P TPH completer
->  =C2=A0=C2=A0=C2=A0 capabilities may differ.
->  =C2=A0 - Case 2: Root port has no TPH completer support, while endpoint =
-and P2P
->  =C2=A0=C2=A0=C2=A0 peers fully support TPH completer.
->=20
->  =C2=A0 I=E2=80=99m confused about how to virtualize the device=E2=80=99s=
- TPH requester=20
-> control bits.
->  =C2=A0 My tentative idea: take the minimum supported capability between =
-endpoint
->  =C2=A0 and host root port. If root port lacks TPH completer, block TPH=20
-> requester enable
->  =C2=A0 entirely.
->=20
->  =C2=A0 Is this the correct approach to handle heterogeneous completer ca=
-pability
->  =C2=A0 across different traffic paths?
+Again, it won't operate until the enable at the end of hacdbs_start()
 
-In case 1, this is why it doesn't work to allow the user to buffer per
-namespace STs to be applied based on the value written to Requester
-Enable.  Register value 11b allows the requester to operate in both
-namespaces simultaneously.  The only governance we can provide is to
-disallow EXTENDED STs to be written when Requester Enable is 01b.
+> > +
+> > +	hacdbs_start(hw_entries, size);
+> > +
+> > +	do {
+> > +		wfi();
+> > +	} while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
+> 
+> [Severity: High]
+> Could this polling loop cause a lost wakeup and indefinite CPU stall? The loop
+> unconditionally sleeps on the first iteration and checks the condition
+> non-atomically with respect to interrupts. 
+> 
+> If the HACDBSIRQ interrupt is delivered and serviced just before the wfi()
+> instruction executes, the wfi() will wait for a new interrupt that will never
+> arrive. Should the check be made atomic with the sleep, for example by masking
+> IRQs before the check?
+> 
 
-The peer completer's capability is provided through the dmabuf.  The
-user can ask for the requester's preferred namespace, use the alternate
-if available, or fail if there's no compatible namespace available,
-which includes no .get_tph support.
+Answered before. Yes, it's unlikely, but maybe we need a WFIT.
 
-In case 2, we're gated by the Linux TPH implementation and carry it
-through to the uAPI.  The overall TPH feature opt-in needs to depend on
-both TPH support in the requester (the user's device) AND TPH completer
-support at the root port (unless the requester itself is a RCiEP).  I
-had missed elaborating on this requirement in my write-up.
+> > +
+> > +	ret = hacdbs_stop();
+> > +
+> > +	write_sysreg(hcr_el2, HCR_EL2);
+> > +	isb();
+> 
+> [Severity: High]
+> Should there be a speculative execution barrier (dsb) after stopping the engine
+> in hacdbs_stop() and before changing the translation context here? 
+> 
+> The ARM64 guidelines mandate a speculative execution barrier (dsb + isb) after
+> disabling an asynchronous engine to definitively halt out-of-context execution
+> before updating the translation regime.
 
-I'm glad you're onboard with the design, please let me know if any
-further clarifications are needed.  Thanks,
 
-Alex
+There is LITERALY a comment below addressing this.
+
+> 
+> > +
+> > +	/*
+> > +	 * No DSB is needed here, as kvm_flush_remote_tlbs_memslot() that happens
+> > +	 * later in generic dirty-cleaning code already performs a DSB before
+> > +	 * doing the TLBI.
+> > +	 */
+> > +
+> > +	preempt_enable();
+> > +
+> > +	return ret;
+> > +}
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260629111820.1873540-1-leo.bras@arm.com?part=6
