@@ -1,352 +1,291 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53FA3ECBCF
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 08:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8D29C327;
+	Mon, 29 Jun 2026 08:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720926; cv=none; b=WFIIVlpA2Ij1pMXP1bIj7BExJEe8jfvLTXcrW665sBIR7DK0M8WeybQxhvtu2SKc/Js2w0VdXV+3MDY2bEeJP2ImGJlLqi4LD/XOmJ4ga0/P2Y5+ydfvWZ0zQe8oPkS1xYWjc1vkHFHR/igSdFNzotod7NLuKekZ4ofsYkXDaDY=
+	t=1782721788; cv=none; b=XjugwkiNDMSk55IX/UAdv4OLkeCXmf3b4OUnsEFYUwSMs98OWiVybDQ1HFqFlQgyfhDZEOL/k+Pra1xpgs5bKVjVc38OKa9StGun7EMKAO0/HuSFP6auDfbpYnCbNC0Hcwm1MWKmJLzPFZcBV9lCd7dQ+lgoW/KVtk9BFomHGqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720926; c=relaxed/simple;
-	bh=EFcqad+RHfpPRW5uGsg3GbffnIneF9Hua+4hjYZxpLk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VaOWCJNa5teZWpfRqplmQy9hFE1yjr6TYcrqxp4GzJp/Oo9Dzz9Mb665Js45Fi+phgNhDjNQurAkXTS4nuPy1VsoKIFx7bL1UrNh11G7jCTh9ch7OvE18htb9pmURRLyCQuDMTBjbkwgGbacsf4FdQm7qf+xghHA1BwMaCTJcFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fXyxL7eP; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1782721788; c=relaxed/simple;
+	bh=Id9xLPNKbg5OWIdweCc1COuge7p5Pn8IIzoY8l3TedA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l9d3LZW3c0qX7YvgAm+UpHMJxilakwUiIi2mtJCSFGdFCzhBKZOQG4mahc5LwygvVhS3XP4Y/r9ELNzH55L0VC8TcMkc7LNc3YUa7DQzdORMRblPiQjfNVCNiInrBZcanvNXQwV9OoECPGz2aznN0D9pjd5+KDq0qPrpcGBU0js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=rqtdQ7f+; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fXyxL7eP"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-697de23bd7dso4319039a12.1
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 01:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1782720920; x=1783325720; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EFcqad+RHfpPRW5uGsg3GbffnIneF9Hua+4hjYZxpLk=;
-        b=fXyxL7ePIae4jYA7WYIOfTJcUL3wvmsgNDv8G7pW25BF3Qet8pq/3QrwdSREHEDyCD
-         mx7Iwj7Nw67jcR9DLvM5/UWJ79lWzl06rt4faXJTNtRQZERI2/iI0i8yotUK8WKjlmA9
-         VWJVQJV8hGJoNS4+llicC813ygFntqxcXELc3BZBS9kcJAk0BfN3xbdthwZCQ2aCJvRF
-         BxFcX9bUT5xG83s0ZuX7xbp/QEz4/b4y2YTbehg9pR09IFcq34aRt7JTA2rz/CtLZX8G
-         wo1yZWXy8MkyQ+qSOurbMz2eZJxEwXnbuvecRmGnCrGS9VYdbJ2KIaPSAuC0mV9vKfkA
-         JOMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782720920; x=1783325720;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFcqad+RHfpPRW5uGsg3GbffnIneF9Hua+4hjYZxpLk=;
-        b=fClHDeHyNfO/klMd8poyzM4Jh0Y7X+i6Eg/0dlhSPBLNfRzadwCItGEgm4EUJyryDt
-         1uboQvJvteCjyztvrIvi9oLnlogJE/p3rRr6aPB9akXr/Bv8c0x1crFVJgpvl58+JGPt
-         3sB8xTt77kp32UkiYQEeashRiwvnwoAUZwfMFqToZzjoaizSWZ1iKIuGcGMLunisaZUS
-         n8q/VtR5jjpp8ALJc+yIEMya4jVl+hbtIHmDMYLepBHDv54IPYuZXpy3RxIgQes3iRCe
-         QKIKWLlH1Y7N4bWptajtL3rK1/UmU/agdAaqXs1HqD9bqRviD+IPIz/JxgF2d7Wq7vY6
-         Y6Rw==
-X-Forwarded-Encrypted: i=1; AHgh+RozEvrgNDaay7OPlimw4K8dplinCsNPAR9bFV+cyDLl6JCLNF9dZvbY2viwUcM/amHc/cs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs7EAyTMi5yM+bLLOVsM3IqRhM/tutoime5I+jqaDMK4Ge9hZ3
-	IN+ua65/QrNbjCfXIQe4V/lszuHbV/i0h5hUjjwXkWTEsVbMFq854V/ASQ0pCGNsmSQ=
-X-Gm-Gg: AfdE7cmv8BqD2xeG8jFMWzl3AV5XEG1GxPU6JhsIeHP+YqNAlqFx777t5D5CX0JDP8s
-	RUTs4lBivJLoYPhGDos91WPJo7jYIwhqpVhn55tLLwugZsdGpxHJ/h3uY366/0QPzIONcanVRCp
-	IFKMGcB2ZKat+FGqsHOplMCks38Mbd6hNX0s/InKKiTtbd8tZAStz/7+yVRQCKoMyMWgh5j+H8p
-	uMrJvSv+un5bZtLppS8Bi9nWL6bEB8RjduZ57vZPfHHvysDhIW3w1xRCtksd55iNRqhmyU0Nkif
-	uazD6owtGlH1q5xZ6J+zaBI7TzoqbBCi2WNCwJV2rXj3qvNtnENmrXKbeWf5SymPbHfcSTjV0v7
-	yGAWdkxvCHF+OlLrxJOMOAG23y0mVV/LibG5Qmw/tyL5OVtQNeU1hRpCiu16ZUtaCmZDXPBk2fA
-	zfcTmwQFajV5hv08MeLvjMhSK8gP34rzmA5QCPBS3dha/t/4U8RNDZWjfrZy2oJvMlYjPV/+A4p
-	enPLcvyUX8nu27EH/Ti9DsJCkm5Tp4oISlPuUmMzEQ=
-X-Received: by 2002:a05:6402:210b:b0:698:50ea:2d97 with SMTP id 4fb4d7f45d1cf-69850ea2f88mr1862351a12.20.1782720919821;
-        Mon, 29 Jun 2026 01:15:19 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69866085dfesm1213239a12.22.2026.06.29.01.15.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 01:15:19 -0700 (PDT)
-Message-ID: <9acced19-573d-4923-9329-8be408d2e555@suse.com>
-Date: Mon, 29 Jun 2026 10:15:17 +0200
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="rqtdQ7f+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1782721775; x=1782980975;
+	bh=WbqvebtWAj0YtJohER5RHxaa/NC/OEAtmPKk+oAJGis=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=rqtdQ7f+5623PJZgD/6ikZQAA82lmfhviw31P8LaCrMIubC/1CLAU+eWVgvdJduAM
+	 eW0cyroTlKOYgK2ZAr+HrpbtL4Z+MCMqG3+tNZB/UFVqaPzkq+cF75NDsIf48AJIAX
+	 AuBYHy+/kL7XIPmbsqMpsrFq3TOPWqmWsmieubd2VBHSKFb/kQ1qB+CSV9rytIJT+a
+	 qO2K1t7jKE8416lJmREy7bwYZzR1HVirsix0uXh1t2iUGg+umXq/V05GZwsI1zw3hx
+	 FltgKv98KhEM0mAd9k0t9+Ney+BXoUrEy9PhM33xmDj+jRmJ2bHBXqNWkN62slRa7d
+	 6ypYQXY5zwfbg==
+X-Pm-Submission-Id: 4gpfZz39P0z1DDqt
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: leixiang <leenollei@gmail.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	ojeda@kernel.org
+Subject: Re: [RFC PATCH] KVM: rust: add Rust reimplementation of eventfd
+Date: Mon, 29 Jun 2026 11:29:05 +0300
+Message-ID: <20260629082930.23182-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260626083212.39611-1-leixiang@kylinos.cn>
+References: <20260626083212.39611-1-leixiang@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
-To: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, x86@kernel.org,
- linux-acpi@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, virtualization@lists.linux.dev,
- linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-crypto@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
- platform-driver-x86@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- "lukasz.luba@arm.com" <lukasz.luba@arm.com>, Jason Baron
- <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
- Tony Luck <tony.luck@intel.com>, Yazen Ghannam <yazen.ghannam@amd.com>,
- Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Pu Wen <puwen@hygon.cn>,
- Bjorn Helgaas <bhelgaas@google.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
- Babu Moger <babu.moger@amd.com>, Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Dave Airlie <airlied@redhat.com>, Helge Deller <deller@gmx.de>,
- linux-geode@lists.infradead.org, Olivia Mackall <olivia@selenic.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Guenter Roeck <linux@roeck-us.net>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Huang Rui <ray.huang@amd.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
- "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
- Artem Bityutskiy <dedekind1@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Ashok Raj <ashok.raj.linux@gmail.com>, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
- David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
-References: <20260629060526.3638272-1-jgross@suse.com>
- <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
- <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
- <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ig3MhbNxJxQUxVNBJlyucMor"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ig3MhbNxJxQUxVNBJlyucMor
-Content-Type: multipart/mixed; boundary="------------V5dYQbMhs1ofcoBHIcwfa0ou";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, x86@kernel.org,
- linux-acpi@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, virtualization@lists.linux.dev,
- linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-crypto@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
- platform-driver-x86@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
- "lukasz.luba@arm.com" <lukasz.luba@arm.com>, Jason Baron
- <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
- Tony Luck <tony.luck@intel.com>, Yazen Ghannam <yazen.ghannam@amd.com>,
- Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Pu Wen <puwen@hygon.cn>,
- Bjorn Helgaas <bhelgaas@google.com>, Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
- Babu Moger <babu.moger@amd.com>, Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Dave Airlie <airlied@redhat.com>, Helge Deller <deller@gmx.de>,
- linux-geode@lists.infradead.org, Olivia Mackall <olivia@selenic.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Guenter Roeck <linux@roeck-us.net>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Huang Rui <ray.huang@amd.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
- "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
- Artem Bityutskiy <dedekind1@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Ashok Raj <ashok.raj.linux@gmail.com>, Hans de Goede <hansg@kernel.org>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
- David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
-Message-ID: <9acced19-573d-4923-9329-8be408d2e555@suse.com>
-Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
-References: <20260629060526.3638272-1-jgross@suse.com>
- <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
- <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
- <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
-In-Reply-To: <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
-
---------------V5dYQbMhs1ofcoBHIcwfa0ou
-Content-Type: multipart/mixed; boundary="------------v0Z2BN0RWOfGstVcmbBBEzK1"
-
---------------v0Z2BN0RWOfGstVcmbBBEzK1
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T24gMjkuMDYuMjYgMTA6MDYsIEFybmQgQmVyZ21hbm4gd3JvdGU6DQo+IE9uIE1vbiwgSnVu
-IDI5LCAyMDI2LCBhdCAwOTowMSwgSsO8cmdlbiBHcm/DnyB3cm90ZToNCj4+IE9uIDI5LjA2
-LjI2IDA4OjUyLCBBcm5kIEJlcmdtYW5uIHdyb3RlOg0KPj4+IE9uIE1vbiwgSnVuIDI5LCAy
-MDI2LCBhdCAwODowNCwgSnVlcmdlbiBHcm9zcyB3cm90ZToNCj4+Pg0KPj4+IEkgYXNzdW1l
-IHRoaXMgaXMgZmluZSwgYnV0IHNpbmNlIHlvdSBkb24ndCBtZW50aW9uIGl0IGV4cGxpY2l0
-bHkgaGVyZSwNCj4+PiBwbGVhc2UgY2xhcmlmeSB3aGF0IHRoaXMgbWVhbnMgZm9yIDMyLWJp
-dCBDUFVzIHdpdGhvdXQgdGhlIHJkbXNycQ0KPj4+IGluc3RydWN0aW9uLiBUaG9zZSB3aWxs
-IGNvbnRpbnVlIHVzaW5nIHRoZSBzYW1lIGluc3RydWN0aW9ucyBhcyBiZWZvcmUNCj4+PiBh
-bmQganVzdCBjaGFuZ2UgdGhlIGNhbGxpbmcgY29udmVudGlvbnMsIHJpZ2h0Pw0KPj4NCj4+
-IFllcy4gSSB0aG91Z2h0IHRoaXMgd291bGQgYmUgY2xlYXIgZnJvbSB0aGUgZm9sbG93aW5n
-Og0KPj4NCj4+ICAgICAtIFRoZXkgYXJlIGJhc2VkIG9uIHByaW1pdGl2ZXMgdXNpbmcgNjQt
-Yml0IHNpemVkIHZhbHVlcyBhbnl3YXkuDQo+IA0KPiBSaWdodCwgdGhhdCB3YXMgbXkgcmVh
-ZGluZyBvZiBpdCBhcyB3ZWxsLCBidXQgaXQncyBub3QgZW50aXJlbHkNCj4gY2xlYXIgd2hl
-biB0aGUgZnVuY3Rpb24gbmFtZSBpcyB0aGUgc2FtZSBhcyB0aGUgbW5lbW9uaWMgb2YgYW4N
-Cj4gaW5zdHJ1Y3Rpb24gdGhhdCBvbmx5IGV4aXN0cyBvbiBuZXdlciBDUFVzIGFuZCB0aGUg
-bGF0ZXIgcGF0Y2gNCg0KVGhlcmUgaXMgbm8gUkRNU1JRIGluc3RydWN0aW9uIG9uIGFueSB4
-ODYgQ1BVLiBBcmUgeW91IG1peGluZyB0aGlzIHVwIHdpdGgNCldSTVNSTlMvUkRNU1IgdXNp
-bmcgYW4gaW1tZWRpYXRlIGZvciBhZGRyZXNzaW5nIHRoZSBNU1I/DQoNCg0KSnVlcmdlbg0K
-
---------------v0Z2BN0RWOfGstVcmbBBEzK1
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
-
---------------v0Z2BN0RWOfGstVcmbBBEzK1--
-
---------------V5dYQbMhs1ofcoBHIcwfa0ou--
-
---------------ig3MhbNxJxQUxVNBJlyucMor
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmpCKZUFAwAAAAAACgkQsN6d1ii/Ey8v
-qwf/Y5mYk+cmsPDvlvvZ/oB0cOnaAjPaW0p0ZcuwURch/BiJvRVqrhFbXcKEzd5rwklAqsg7OjsE
-T4O6fRqL3CFwHhTWMzl6IvT6qLTomLzCHQVTF/d0OQP7bR6I5RVlwhf4lBD5v3Rp2+62+mof52kF
-+fYKWGuBEOZXqfcrMWn1xGHk38Uxya2nQf8kx7TDUegD6lTPVaprSHBZnmuh1g2uCqqR6JPK6l9F
-vt1HtC9t+gMwazkGqXm8PXcNJkZbO9b69HhI7TsGCkJ0wZSK8Bt+Ws7bdIt3kXoKQKy4080hK+i4
-9JQl9gaRvVSxlvBt4R+piXEEyJptBwGq9CHBel1PVQ==
-=EBKG
------END PGP SIGNATURE-----
-
---------------ig3MhbNxJxQUxVNBJlyucMor--
+On Fri, 26 Jun 2026 16:29:34 +0800=0D
+leixiang <leenollei@gmail.com> wrote:=0D
+=0D
+> From: ninol <leenollei@gmail.com>=0D
+> =0D
+> Introduce a Rust reimplementation of virt/kvm/eventfd.c, providing=0D
+> irqfd (interrupt injection via eventfd) and ioeventfd (MMIO/PIO write=0D
+> to eventfd signal) functionality with full C ABI compatibility.=0D
+> =0D
+> The Rust implementation leverages RAII guards for SRCU, mutex, and=0D
+> spinlock management, reducing the risk of resource leaks on error=0D
+> paths. It is selectable via CONFIG_RUST_KVM_EVENTFD and replaces=0D
+> the C eventfd.o with a shim providing only weak default functions.=0D
+> =0D
+> Signed-off-by: ninol <leenollei@gmail.com>=0D
+> ---=0D
+> =0D
+> Hi all,=0D
+> =0D
+> This is an experimental/exploratory RFC for a Rust reimplementation of=0D
+> virt/kvm/eventfd.c. It is intended as a learning exercise and a proof=0D
+> of concept to explore whether Rust can be practically applied to KVM=0D
+> subsystem components.=0D
+> =0D
+> I fully understand this may not be the direction the KVM community=0D
+> wants to take. If you feel this is not worth your time, please ignore=0D
+> it entirely. If, however, you find this approach interesting or have=0D
+> any feedback on the implementation, I would greatly appreciate=0D
+> your comments.=0D
+> =0D
+> The patch provides functionally equivalent irqfd and ioeventfd support,=0D
+> gated behind CONFIG_RUST_KVM_EVENTFD. It uses RAII guards for lock and=0D
+> resource management and maintains full ABI compatibility with the C=0D
+> implementation.=0D
+> =0D
+> Testing: Built and boot-tested on x86_64 with KVM enabled.=0D
+> =0D
+> Thanks for your time.=0D
+> =0D
+>  rust/bindgen_parameters         |    2 +=0D
+>  rust/bindings/bindings_helper.h |   18 +=0D
+>  rust/helpers/eventfd.c          |   34 +=0D
+>  rust/helpers/helpers.c          |    7 +=0D
+>  rust/helpers/kvm.c              |  221 +++++=0D
+>  rust/helpers/seqcount.c         |   30 +=0D
+>  rust/kernel/kvm/eventfd.rs      | 1419 +++++++++++++++++++++++++++++++=0D
+>  rust/kernel/kvm/mod.rs          |    8 +=0D
+>  rust/kernel/lib.rs              |    2 +=0D
+>  virt/kvm/Kconfig                |   15 +=0D
+>  virt/kvm/Makefile.kvm           |    7 +-=0D
+>  virt/kvm/eventfd_shim.c         |   52 ++=0D
+>  12 files changed, 1814 insertions(+), 1 deletion(-)=0D
+>  create mode 100644 rust/helpers/eventfd.c=0D
+>  create mode 100644 rust/helpers/kvm.c=0D
+>  create mode 100644 rust/helpers/seqcount.c=0D
+>  create mode 100644 rust/kernel/kvm/eventfd.rs=0D
+>  create mode 100644 rust/kernel/kvm/mod.rs=0D
+>  create mode 100644 virt/kvm/eventfd_shim.c=0D
+> =0D
+> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters=0D
+> index 6f02d9720ad2..c433a6ca5336 100644=0D
+> --- a/rust/bindgen_parameters=0D
+> +++ b/rust/bindgen_parameters=0D
+> @@ -14,6 +14,8 @@=0D
+>  --opaque-type alt_instr=0D
+>  --opaque-type x86_msi_data=0D
+>  --opaque-type x86_msi_addr_lo=0D
+> +--opaque-type hv_.*=0D
+> +--opaque-type IO_APIC_route_entry=0D
+>  =0D
+>  # If SMP is disabled, `arch_spinlock_t` is defined as a ZST which trigge=
+rs a Rust=0D
+>  # warning. We don't need to peek into it anyway.=0D
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h=0D
+> index 446dbeaf0866..2d65f2b1672d 100644=0D
+> --- a/rust/bindings/bindings_helper.h=0D
+> +++ b/rust/bindings/bindings_helper.h=0D
+> @@ -65,8 +65,12 @@=0D
+>  #include <linux/io-pgtable.h>=0D
+>  #include <linux/ioport.h>=0D
+>  #include <linux/iosys-map.h>=0D
+> +#include <linux/irqbypass.h>=0D
+>  #include <linux/jiffies.h>=0D
+>  #include <linux/jump_label.h>=0D
+> +#include <kvm/iodev.h>=0D
+> +#include <linux/kvm_host.h>=0D
+> +#include <linux/kvm_irqfd.h>=0D
+>  #include <linux/mdio.h>=0D
+>  #include <linux/mm.h>=0D
+>  #include <linux/miscdevice.h>=0D
+> @@ -94,6 +98,20 @@=0D
+>  #include <linux/xarray.h>=0D
+>  #include <trace/events/rust_sample.h>=0D
+>  =0D
+> +#ifdef CONFIG_RUST_KVM_EVENTFD=0D
+> +/* Custom helpers for eventfd.rs */=0D
+> +unsigned long rust_helper_spin_lock_irqsave(spinlock_t *lock);=0D
+> +void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long =
+flags);=0D
+> +void rust_helper_hlist_add_head_rcu(struct hlist_node *n, struct hlist_h=
+ead *h);=0D
+> +void rust_helper_hlist_del_init_rcu(struct hlist_node *n);=0D
+=0D
+[...]=0D
+=0D
+> +#[cfg(CONFIG_LOCKDEP)]=0D
+> +#[inline(always)]=0D
+> +unsafe fn spin_acquire(=0D
+> +    map: *mut bindings::lockdep_map,=0D
+> +    subclass: c_int,=0D
+> +    trylock: c_int,=0D
+> +    ip: core::ffi::c_ulong,=0D
+> +) {=0D
+> +    // SAFETY: Caller holds the corresponding lock; this is a lockdep an=
+notation only.=0D
+> +    unsafe { bindings::rust_helper_spin_acquire(map, subclass, trylock, =
+ip) }=0D
+> +}=0D
+> +=0D
+> +// RAII Guards=0D
+> +=0D
+> +/// RAII Guard for SRCU read lock.=0D
+> +struct SrcuGuard {=0D
+> +    srcu: *mut bindings::srcu_struct,=0D
+> +    idx: core::ffi::c_int,=0D
+> +    _not_thread_safe: crate::types::NotThreadSafe,=0D
+> +}=0D
+> +=0D
+=0D
+> +impl SrcuGuard {=0D
+> +    /// # Safety=0D
+> +    /// Caller must ensure `srcu` is a valid pointer.=0D
+> +    unsafe fn new(srcu: *mut bindings::srcu_struct) -> Self {=0D
+> +        // SAFETY: Caller guarantees `srcu` is valid.=0D
+> +        let idx =3D unsafe { bindings::srcu_read_lock(srcu) };=0D
+> +        Self {=0D
+> +            srcu,=0D
+> +            idx,=0D
+> +            _not_thread_safe: crate::types::NotThreadSafe,=0D
+> +        }=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl Drop for SrcuGuard {=0D
+> +    fn drop(&mut self) {=0D
+> +        // SAFETY: We hold the lock `idx` on `srcu`.=0D
+> +        unsafe { bindings::srcu_read_unlock(self.srcu, self.idx) };=0D
+> +    }=0D
+> +}=0D
+=0D
+You are adding things that are already being implemented in much better way=
+. For=0D
+example, for SRCU we already have v10 [1]. But even before that I think thi=
+s=0D
+patch has even more serious problems. It has multiple fundamental issues an=
+d=0D
+things seem to be placed randomly all around.=0D
+=0D
+Regards,=0D
+Onur=0D
+=0D
+[1]: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev=
+=0D
+=0D
+> +=0D
+> +/// RAII Guard for mutex lock.=0D
+> +struct MutexGuard {=0D
+> +    lock: *mut bindings::mutex,=0D
+> +}=0D
+> +=0D
+> +impl MutexGuard {=0D
+> +    /// # Safety=0D
+> +    /// Caller must ensure `lock` is a valid pointer.=0D
+> +    unsafe fn new(lock: *mut bindings::mutex) -> Self {=0D
+> +        // SAFETY: Caller guarantees `lock` is valid.=0D
+> +        unsafe { bindings::mutex_lock(lock) };=0D
+> +        Self { lock }=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +impl Drop for MutexGuard {=0D
+> +    fn drop(&mut self) {=0D
+> +        // SAFETY: We hold the lock.=0D
+> +        unsafe { bindings::mutex_unlock(self.lock) };=0D
+> +    }=0D
+=0D
+[...]=0D
+=0D
+> +#include <linux/kvm_irqfd.h>=0D
+> +#include <linux/irqbypass.h>=0D
+> +=0D
+> +bool __weak kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *ar=
+gs)=0D
+> +{=0D
+> +	return true;=0D
+> +}=0D
+> +=0D
+> +int __weak kvm_arch_set_irq_inatomic(=0D
+> +				struct kvm_kernel_irq_routing_entry *irq,=0D
+> +				struct kvm *kvm, int irq_source_id,=0D
+> +				int level,=0D
+> +				bool line_status)=0D
+> +{=0D
+> +	return -EWOULDBLOCK;=0D
+> +}=0D
+> +=0D
+> +#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)=0D
+> +void __weak kvm_arch_irq_bypass_stop(=0D
+> +				struct irq_bypass_consumer *cons)=0D
+> +{=0D
+> +}=0D
+> +=0D
+> +void __weak kvm_arch_irq_bypass_start(=0D
+> +				struct irq_bypass_consumer *cons)=0D
+> +{=0D
+> +}=0D
+> +=0D
+> +void __weak kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd=
+,=0D
+> +					  struct kvm_kernel_irq_routing_entry *old,=0D
+> +					  struct kvm_kernel_irq_routing_entry *new)=0D
+> +{=0D
+> +}=0D
+> +#endif=0D
+> +=0D
+> +/*=0D
+> + * The Rust implementation provides kvm_irq_has_notifier via #[no_mangle=
+].=0D
+> + * Symbol export for KVM-internal use must be done from C.=0D
+> + */=0D
+> +extern bool kvm_irq_has_notifier(struct kvm *kvm, unsigned int irqchip,=
+=0D
+> +				 unsigned int pin);=0D
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_irq_has_notifier);=0D
+> -- =0D
+> 2.43.0=0D
+> =0D
