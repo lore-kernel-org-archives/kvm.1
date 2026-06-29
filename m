@@ -1,155 +1,344 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2B83CA4B6
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 14:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235FD3E2AA1;
+	Mon, 29 Jun 2026 14:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782744489; cv=none; b=Cn19u2NA6J2DLDdEtaNQhsBh4LA6CQZxmnQNJ5Xc1W5mjHmRXNxl46o6S+r2G+ZsIYoiE/jT7LM9PwNVwU0taQdgID8ttKIIq1FHaAx2XtV2h0E36W/MtZk1hQGCaHzyoOF+DOQvS1wKF2mBTXS623CpcfEpiBWzcO7gVDyk0Ao=
+	t=1782745032; cv=none; b=k+3WDCFauvgrn3wjhCIfjjQlN18OhLIIUYCZE/vOwlGbxO19o0shaX8WQYww1KfC4bAKEA9grHmTP9qUEbom/hnPm3rC1WQyDqfm7ySvNW2sAFwPE1sUAXcbIpZIWKDBlVXSuqXozawHn1wOPNp9d+Mv7mD/k/2eDciEXwjIl6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782744489; c=relaxed/simple;
-	bh=+pCNkkGZ56/6raU8EBpJrhM1D7spqmtSQE1bdpbcxMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=t6Ai/rfjLbNW4DX0oGPovkTCd3UCfJNAt6j7Um97+Ybd2GQJJpt8uvncHEot2OuyiFt2Lj+U7LFs4atDKWWRPpWeiXpgqcXubGyr2eWNH1mK+YjgVHQcZeVfxHjoESNwD+U+aTSf4Km36S9obeYvONFFw3xK6IqbPXw6xh0seOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=B2pVSlBC; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782745032; c=relaxed/simple;
+	bh=LNgB0LZoHZw0fP3mNzpypR694eprJdbAT8t2kv7BsKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GI5/5Ra45V/YDwNMQz8ePGi4cIwOMbqC2HJnXjf5w0BEYBatRgQbj7tczWiijqHkQ7/4oIbkOokcphb3MA8FcCQX0eBE4REHvb6MyP2hRLev9vZbyT9xWMfZcF58B7hG+65FCiqyJotAVyWNfsJ7b8uKGTU9MMv6a+ggv3Fs/+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fb4gXdfC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="B2pVSlBC"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6931416A3;
-	Mon, 29 Jun 2026 07:48:00 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BD2D13F905;
-	Mon, 29 Jun 2026 07:48:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782744484; bh=+pCNkkGZ56/6raU8EBpJrhM1D7spqmtSQE1bdpbcxMw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2pVSlBCQBm2Envdg9jvKjD6n+rnB3LoLf5kFWbO+8Q06YXHgPWssgdYDCnMx5BL5
-	 Xs/oTXNpxpK4ZAtoi82u9wB4/2uQn0FC/MsXRmZrhJtIbMI/oFfAb1+D1Ql71j7hBV
-	 XzOwJij/KMDptrK4WCjyAlPeONV5Zfv0DFi/YGtE=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if HDBSS is available
-Date: Mon, 29 Jun 2026 15:47:51 +0100
-Message-ID: <akKFlzAdB43lRpi1@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629113645.BE6801F000E9@smtp.kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-3-leo.bras@arm.com> <20260629113645.BE6801F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fb4gXdfC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466751F00A3A;
+	Mon, 29 Jun 2026 14:56:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782745029;
+	bh=c8iLIqBeF3LyAyaueUWtK1sqEjRS1M9AqqZ5Dyw7Z58=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Fb4gXdfCr+2KFrFMF2IByaqjqN6OTvaWqQOC5SC3n+FH76BIVh2JDagVQM04zbj4i
+	 z9UqiAHTat+mRSFXdSoYoJyzmoUlF3p6Jal6xe6vOj0QLi7S2K5h9jaYFUYjI+BSuq
+	 9d7IwNlxDTjp3VQUkRtwL9oT//Ua6zIzQzWpQkWh48TlIzq75ChfxoMs7JMB6YBa+Q
+	 ZxwQy1+SAoBg4NhXVNiEOzrZ3Dhl/wVvyFl01n5vJfnD+QDhnTEyYlWVs30E2o8W8y
+	 wepBBBkvWmHWS2C9RD6SaF8XQCZzAuIK1yFyi3oKvRdndjk8kenHlAuuXYQ9iZ77Xx
+	 OWjGalyUwbbUQ==
+Date: Mon, 29 Jun 2026 15:56:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Rob Clark <robin.clark@oss.qualcomm.com>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
+Message-ID: <akKHUPxEVCSlifn5@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
+ <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
 
-On Mon, Jun 29, 2026 at 11:36:45AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> 
-> New issues:
-> - [High] The default eager page splitting chunk size violates the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE UAPI contract by using a value that is not a valid block size for 16KB and 64KB page kernels.
-> 
-> Pre-existing issues:
-> - [Critical] Dropping mmu_lock between primary and nested stage-2 write-protection creates a window where nested guests can bypass dirty logging.
-> --
-> 
-> commit 09e1d250ed331b9dc20b42b7f9315892a86a5d50
-> Author: Leonardo Bras <leo.bras@arm.com>
-> 
-> KVM: arm64: Enable eager hugepage splitting if HDBSS is available
-> 
-> This commit enables eager hugepage splitting by default for systems
-> supporting HDBSS, setting the default chunk size to 256K pages at
-> stage2 initialization.
-> 
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index 6c941aaa10c63..e086c01a9325e 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
-> > @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
-> >  	for_each_possible_cpu(cpu)
-> >  		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
-> >  
-> > -	 /* The eager page splitting is disabled by default */
-> > -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
-> > +	 /* The eager page splitting is disabled by default if system has no HDBSS */
-> > +	if (system_supports_hdbss())
-> > +		mmu->split_page_chunk_size = 256 * 1024 * PAGE_SIZE;
-> 
-> [Severity: High]
-> Does this hardcoded chunk size violate the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
-> UAPI contract on kernels with 16KB or 64KB pages?
-> 
-> By setting the default chunk size to 256 * 1024 * PAGE_SIZE, this evaluates to
-> 4GB on 16KB page systems and 16GB on 64KB page systems.
-> 
-> However, in arch/arm64/kvm/arm.c:kvm_vm_ioctl_enable_cap(), the chunk size is
-> validated against valid architectural block sizes:
-> 
->     if (!new_cap || kvm_is_block_size_supported(new_cap)) {
->     ...
-> 
-> Since 4GB and 16GB are not valid block sizes on those configurations, a VMM
-> like QEMU attempting to read the default capability via KVM_CHECK_EXTENSION
-> and set it back via KVM_ENABLE_CAP will be rejected with -EINVAL.
-
-Sure, changing this to something like PMD_SIZE or PUD_SIZE should be no issue.
- 
-But this raises a topic I would like to understand:
-- Do we actually need this to be a block_size to assure correctness? or is 
-  it just about efficiency?
-
-I was thinking on using PUD_SIZE here before, but that would mean very 
-different splitting granularity, as on 4k pagesize we would be splitting 
-512*512 pages (above mentioned 256k pages), but on 16k pagesize we would be 
-splitting 2048*2048 pages (4M), and on 64k pagesize it would be 8k*8k pages 
-(64M). 
-
-Doing that could defeat the purpose of chunk size to have a possible sleep 
-to not keep the lock hold for too long. In that case, would not it make 
-more sense to use a fixed number of pages instead?
-
-
-> 
-> [Severity: Critical]
-> This is a pre-existing issue, but by enabling eager hugepage splitting by
-> default for HDBSS, does this exacerbate a race condition with nested guests
-> bypassing dirty logging?
-> 
-> In arch/arm64/kvm/mmu.c:kvm_arch_mmu_enable_log_dirty_pt_masked(), KVM enables
-> dirty logging by write-protecting the primary stage-2 and then calling
-> kvm_mmu_split_huge_pages():
-> 
->     if (kvm_dirty_log_manual_protect_and_init_set(kvm))
->         kvm_mmu_split_huge_pages(kvm, start, end);
-> 
->     kvm_nested_s2_wp(kvm);
-> 
-> Because kvm_mmu_split_huge_pages() can drop the mmu_lock to top-up the memory
-> cache or reschedule, a race window is created before kvm_nested_s2_wp()
-> protects the nested stage-2 tables.
-> 
-> While the lock is dropped, a nested VCPU can fault, map the page via its
-> separate shadow stage-2 (which hasn't been write-protected yet), and write to
-> the page without setting the dirty bitmap, leading to silent memory corruption
-> after live migration.
-> 
-
-But if it's already write-protected in S2, if the nested VCPU faults 
-something, would not that be handled by non-nested faulting routine?
-
-I understand very little of nested, and I can't understand how does that 
-work properly. Maybe Marc or Wei Lin may have a better answer for that.
-
-CC: Wei Lin
+On Mon, Jun 29, 2026 at 03:56:33PM +0200, Thomas Zimmermann wrote:
+> Hi
+>
+> Am 29.06.26 um 14:23 schrieb Lorenzo Stoakes:
+> > There are a number of places where we open code what linear_page_index()
+> > and linear_page_delta() calculate.
+> >
+> > Replace this code with the appropriate functions for consistency.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> For the DRM changes:
+>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
 Thanks!
-Leo
 
+>
+> See below for two additional comments.
+>
+>
+> > ---
+> >   arch/arm/mm/fault-armv.c              | 2 +-
+> >   arch/x86/kernel/cpu/sgx/virt.c        | 3 ++-
+> >   drivers/comedi/comedi_fops.c          | 3 ++-
+> >   drivers/gpu/drm/etnaviv/etnaviv_gem.c | 3 ++-
+> >   drivers/gpu/drm/gma500/gem.c          | 2 +-
+> >   drivers/gpu/drm/msm/msm_gem.c         | 3 ++-
+> >   drivers/gpu/drm/omapdrm/omap_gem.c    | 5 +++--
+> >   drivers/gpu/drm/tegra/gem.c           | 3 ++-
+> >   drivers/gpu/drm/ttm/ttm_bo_vm.c       | 7 ++++---
+> >   drivers/vfio/pci/nvgrace-gpu/main.c   | 3 ++-
+> >   drivers/vfio/pci/vfio_pci_core.c      | 3 ++-
+> >   mm/nommu.c                            | 2 +-
+> >   mm/vma.c                              | 2 +-
+> >   virt/kvm/guest_memfd.c                | 2 +-
+> >   14 files changed, 26 insertions(+), 17 deletions(-)
+> >
+>
+> [...]
+>
+> >   #include <linux/io.h>
+> >   #include <linux/uaccess.h>
+> > @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
+> >   {
+> >   	struct comedi_buf_map *bm = vma->vm_private_data;
+> >   	unsigned long offset =
+> > -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
+> > +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
+>
+> This doesn't seem to belong here.
+
+Ah yeah, I'll move that on a respin thanks!
+
+>
+> >   	if (len < 0)
+> >   		return -EINVAL;
+> > diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > index b0436a1e103f..2e4d6d117ee2 100644
+> > --- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > +++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > @@ -6,6 +6,7 @@
+> >   #include <drm/drm_prime.h>
+> >   #include <drm/drm_print.h>
+> >   #include <linux/dma-mapping.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/spinlock.h>
+> >   #include <linux/vmalloc.h>
+> > @@ -188,7 +189,7 @@ static vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
+> >   	}
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	pfn = page_to_pfn(pages[pgoff]);
+> > diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
+> > index 88f1e86c8903..2708e8c68f4c 100644
+> > --- a/drivers/gpu/drm/gma500/gem.c
+> > +++ b/drivers/gpu/drm/gma500/gem.c
+> > @@ -288,7 +288,7 @@ static vm_fault_t psb_gem_fault(struct vm_fault *vmf)
+> >   	/* Page relative to the VMA start - we must calculate this ourselves
+> >   	   because vmf->pgoff is the fake GEM offset */
+> > -	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	page_offset = linear_page_delta(vma, vmf->address);
+> >   	/* CPU view of the page, don't go via the GART for CPU writes */
+> >   	if (pobj->stolen)
+> > diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+> > index efd3d3c9a449..cbf723a5d86f 100644
+> > --- a/drivers/gpu/drm/msm/msm_gem.c
+> > +++ b/drivers/gpu/drm/msm/msm_gem.c
+> > @@ -9,6 +9,7 @@
+> >   #include <linux/spinlock.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/dma-buf.h>
+> > +#include <linux/pagemap.h>
+> >   #include <drm/drm_dumb_buffers.h>
+> >   #include <drm/drm_prime.h>
+> > @@ -360,7 +361,7 @@ static vm_fault_t msm_gem_fault(struct vm_fault *vmf)
+> >   	}
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	pfn = page_to_pfn(pages[pgoff]);
+> > diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+> > index 8e013e4f2c6b..00404fb6c29a 100644
+> > --- a/drivers/gpu/drm/omapdrm/omap_gem.c
+> > +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+> > @@ -5,6 +5,7 @@
+> >    */
+> >   #include <linux/dma-mapping.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/seq_file.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/spinlock.h>
+> > @@ -359,7 +360,7 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
+> >   	pgoff_t pgoff;
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	if (omap_obj->pages) {
+> >   		omap_gem_cpu_sync_page(obj, pgoff);
+> > @@ -407,7 +408,7 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
+> >   	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	/*
+> >   	 * Actual address we start mapping at is rounded down to previous slot
+> > diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+> > index 436394e04812..1d8d27a5ea89 100644
+> > --- a/drivers/gpu/drm/tegra/gem.c
+> > +++ b/drivers/gpu/drm/tegra/gem.c
+> > @@ -13,6 +13,7 @@
+> >   #include <linux/dma-buf.h>
+> >   #include <linux/iommu.h>
+> >   #include <linux/module.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/vmalloc.h>
+> >   #include <drm/drm_drv.h>
+> > @@ -564,7 +565,7 @@ static vm_fault_t tegra_bo_fault(struct vm_fault *vmf)
+> >   	if (!bo->pages)
+> >   		return VM_FAULT_SIGBUS;
+> > -	offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	offset = linear_page_delta(vma, vmf->address);
+> >   	page = bo->pages[offset];
+> >   	return vmf_insert_page(vma, vmf->address, page);
+> > diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > index a80510489c45..88babf435ac2 100644
+> > --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > @@ -32,6 +32,7 @@
+> >   #define pr_fmt(fmt) "[TTM] " fmt
+> >   #include <linux/export.h>
+> > +#include <linux/pagemap.h>
+> >   #include <drm/ttm/ttm_bo.h>
+> >   #include <drm/ttm/ttm_placement.h>
+> > @@ -208,9 +209,9 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+> >   	if (unlikely(err != 0))
+> >   		return VM_FAULT_SIGBUS;
+> > -	page_offset = ((address - vma->vm_start) >> PAGE_SHIFT) +
+> > -		vma->vm_pgoff - drm_vma_node_start(&bo->base.vma_node);
+> > -	page_last = vma_pages(vma) + vma->vm_pgoff -
+> > +	page_offset = linear_page_index(vma, address) -
+> > +		drm_vma_node_start(&bo->base.vma_node);
+> > +	page_last = vma_end_pgoff(vma) -
+> >   		drm_vma_node_start(&bo->base.vma_node);
+>
+> Not your fault, but page_last seems misnamed here.
+
+Yeah :)
+
+>
+> Best regards
+> Thomas
+>
+> >   	if (unlikely(page_offset >= PFN_UP(bo->base.size)))
+> > diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> > index d07dcacb76bd..963fd8ded20d 100644
+> > --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> > +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> > @@ -11,6 +11,7 @@
+> >   #include <linux/jiffies.h>
+> >   #include <linux/sched.h>
+> >   #include <linux/pci-p2pdma.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/pm_runtime.h>
+> >   #include <linux/memory-failure.h>
+> > @@ -385,7 +386,7 @@ static unsigned long addr_to_pgoff(struct vm_area_struct *vma,
+> >   	u64 pgoff = vma->vm_pgoff &
+> >   		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+> > -	return ((addr - vma->vm_start) >> PAGE_SHIFT) + pgoff;
+> > +	return linear_page_delta(vma, addr) + pgoff;
+> >   }
+> >   static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> > index a28f1e99362c..55d4937d495a 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -19,6 +19,7 @@
+> >   #include <linux/module.h>
+> >   #include <linux/mutex.h>
+> >   #include <linux/notifier.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/pci.h>
+> >   #include <linux/pm_runtime.h>
+> >   #include <linux/slab.h>
+> > @@ -1727,7 +1728,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+> >   	struct vm_area_struct *vma = vmf->vma;
+> >   	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+> >   	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
+> > -	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
+> > +	unsigned long pgoff = linear_page_delta(vma, addr);
+> >   	unsigned long pfn = vma_to_pfn(vma) + pgoff;
+> >   	vm_fault_t ret = VM_FAULT_FALLBACK;
+> > diff --git a/mm/nommu.c b/mm/nommu.c
+> > index 60560b2c457e..7333d855e974 100644
+> > --- a/mm/nommu.c
+> > +++ b/mm/nommu.c
+> > @@ -1332,7 +1332,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >   	*region = *vma->vm_region;
+> >   	new->vm_region = region;
+> > -	npages = (addr - vma->vm_start) >> PAGE_SHIFT;
+> > +	npages = linear_page_delta(vma, addr);
+> >   	if (new_below) {
+> >   		region->vm_top = region->vm_end = new->vm_end = addr;
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index ee3a8ca13d07..185d07397ca6 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >   		new->vm_end = addr;
+> >   	} else {
+> >   		new->vm_start = addr;
+> > -		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +		new->vm_pgoff += linear_page_delta(vma, addr);
+> >   	}
+> >   	err = -ENOMEM;
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index db57c5766ab6..f0e5da490866 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -440,7 +440,7 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+> >   static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> >   					     unsigned long addr, pgoff_t *ilx)
+> >   {
+> > -	pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +	pgoff_t pgoff = linear_page_index(vma, addr);
+> >   	struct inode *inode = file_inode(vma->vm_file);
+> >   	*ilx = inode->i_ino;
+>
+> --
+> --
+> Thomas Zimmermann
+> Graphics Driver Developer
+> SUSE Software Solutions Germany GmbH
+> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+>
+>
+
+Cheers, Lorenzo
