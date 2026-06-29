@@ -1,16 +1,16 @@
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AF7394797
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 06:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CCA3890EA
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 06:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782713186; cv=none; b=EFzbkY6RDsXQ1ctnTXl6bCem+RAdeHhUtj11WmR8pUfRvHgIOUvKpNXNzAuWyXuhjjyQ6EXSmhIwLTTScw7S7Cv1oO+uKlfcj/dssLSNgoY8PiMh3/L1LKlnsmgjj4KNYW+yuLp0xMRV18qy1oh692HShC41J/lOc+/t3sAPva4=
+	t=1782713323; cv=none; b=bZEfRpwg8FjKUK8/LzU3hvKJpLRTnb6gD0LWogQHD43rthHV61+CSxymH3tXuzF0/SQfIpzswpdICgLDlr0x3C4oHhHSx/uENwq1NzeYYmYqxUPxQOWBfXXbaFpMIGsZ/CBTmmZjWGHavJ/3MdX2CV6+SSZONpGZ5DYRMKPul/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782713186; c=relaxed/simple;
-	bh=phg2XQItjNKrlp3CVEYwWnXy0k4ukjpYWgk5FyzbvtM=;
+	s=arc-20240116; t=1782713323; c=relaxed/simple;
+	bh=rcS/gP8Yquldsg+MuaSvyzRnJ1D10b3djwHCa+6cTpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4GnqeCOBvvq1/L+e0lL/ca036ttC9SDYEWWKdIJlUacdzFjfuHsxaae+Y3qAXzZu/SO3vkDbU7vWExQEStkyri1j5RuTufN82lfvwe9tpFp72dPOj515eCOLgVBuX35ax0GlzZJn0TeWtFPpvnkGYtSWZ9HfOXEbZ3CUWeBte4=
+	 MIME-Version; b=gjh+fpqJDdeQStSAYEjTfQoaQUj+6iCaIMk8RHIiHvRq5ZYkdn7pwJPu1ACtQqzoqZDblRvhc9ET7n4GwqvpiS+s7CnA0lPjVEiC2/MLiMAXMkGt2mWUZMmtPgAsgt2YgyLVV0/XIdYzRlt5HIXDVSQORUpnzTiMiEQKKyJfpaw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
@@ -18,38 +18,51 @@ Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8FE117599A;
-	Mon, 29 Jun 2026 06:06:23 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6516675A9A;
+	Mon, 29 Jun 2026 06:08:36 +0000 (UTC)
 Authentication-Results: smtp-out2.suse.de;
 	none
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 270E7779A8;
-	Mon, 29 Jun 2026 06:06:23 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D8BE779A8;
+	Mon, 29 Jun 2026 06:08:35 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pbgVCF8LQmruEQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Mon, 29 Jun 2026 06:06:23 +0000
+	id 0Zb6JOMLQmokFAAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 29 Jun 2026 06:08:35 +0000
 From: Juergen Gross <jgross@suse.com>
 To: linux-kernel@vger.kernel.org,
 	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
+	linux-perf-users@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	kvm@vger.kernel.org
 Cc: Juergen Gross <jgross@suse.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH 09/32] KVM/x86: Stop using 32-bit MSR interfaces
-Date: Mon, 29 Jun 2026 08:05:00 +0200
-Message-ID: <20260629060526.3638272-10-jgross@suse.com>
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 32/32] x86/msr: Simplify some rdmsrq() use cases
+Date: Mon, 29 Jun 2026 08:05:23 +0200
+Message-ID: <20260629060526.3638272-33-jgross@suse.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260629060526.3638272-1-jgross@suse.com>
 References: <20260629060526.3638272-1-jgross@suse.com>
@@ -63,7 +76,7 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Pre-Result: action=no action;
 	module=replies;
 	Message is reply to one we originated
-X-Rspamd-Queue-Id: 8FE117599A
+X-Rspamd-Queue-Id: 6516675A9A
 X-Spam-Flag: NO
 X-Spam-Score: -4.00
 X-Spam-Level: 
@@ -75,128 +88,283 @@ X-Rspamd-Pre-Result: action=no action;
 X-Spamd-Result: default: False [-4.00 / 50.00];
 	REPLY(-4.00)[]
 
-The 32-bit MSR interfaces rdmsr(), wrmsr() and  rdmsr_safe() are
-planned to be removed. Use the related 64-bit variants instead.
+After the conversion of rdmsrq() to an inline function some use cases
+can be simplified by dropping an intermediate variable.
 
 Signed-off-by: Juergen Gross <jgross@suse.com>
 ---
- arch/x86/kvm/vmx/vmx.c      | 24 +++++++++++++-----------
- arch/x86/kvm/x86.c          |  4 ++--
- arch/x86/virt/vmx/tdx/tdx.c |  6 ++++--
- 3 files changed, 19 insertions(+), 15 deletions(-)
+ arch/x86/events/amd/core.c      |  6 +-----
+ arch/x86/events/amd/lbr.c       | 12 ++----------
+ arch/x86/events/intel/core.c    |  6 +-----
+ arch/x86/events/intel/cstate.c  |  5 +----
+ arch/x86/events/intel/knc.c     |  6 +-----
+ arch/x86/events/intel/lbr.c     | 17 +++--------------
+ arch/x86/events/intel/uncore.c  |  6 +-----
+ arch/x86/events/rapl.c          |  4 +---
+ arch/x86/events/zhaoxin/core.c  |  6 +-----
+ arch/x86/hyperv/hv_apic.c       |  5 +----
+ arch/x86/include/asm/apic.h     |  5 +----
+ arch/x86/include/asm/debugreg.h |  6 +-----
+ arch/x86/include/asm/kvm_host.h |  5 +----
+ 13 files changed, 16 insertions(+), 73 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2325be57d3d7..49948bbaf2de 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2676,13 +2676,13 @@ static bool cpu_has_sgx(void)
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index ee08ed4f41ec..04f3c2e99c06 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -660,12 +660,8 @@ static __always_inline void amd_pmu_set_global_ctl(u64 ctl)
  
- static int adjust_vmx_controls(u32 ctl_min, u32 ctl_opt, u32 msr, u32 *result)
+ static inline u64 amd_pmu_get_global_status(void)
  {
--	u32 vmx_msr_low, vmx_msr_high;
-+	struct msr vmx_msr;
- 	u32 ctl = ctl_min | ctl_opt;
+-	u64 status;
+-
+ 	/* PerfCntrGlobalStatus is read-only */
+-	status = rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS);
+ }
  
--	rdmsr(msr, vmx_msr_low, vmx_msr_high);
-+	rdmsrq(msr, vmx_msr.q);
+ static inline void amd_pmu_ack_global_status(u64 status)
+diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
+index 0b6aec1e5bf1..ada5278285cd 100644
+--- a/arch/x86/events/amd/lbr.c
++++ b/arch/x86/events/amd/lbr.c
+@@ -74,20 +74,12 @@ static __always_inline void amd_pmu_lbr_set_to(unsigned int idx, u64 val)
  
--	ctl &= vmx_msr_high; /* bit == 0 in high word ==> must be zero */
--	ctl |= vmx_msr_low;  /* bit == 1 in low word  ==> must be one  */
-+	ctl &= vmx_msr.h;  /* bit == 0 in high word ==> must be zero */
-+	ctl |= vmx_msr.l;  /* bit == 1 in low word  ==> must be one  */
+ static __always_inline u64 amd_pmu_lbr_get_from(unsigned int idx)
+ {
+-	u64 val;
+-
+-	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
+-
+-	return val;
++	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2);
+ }
  
- 	/* Ensure minimum (required) set of control bits are supported. */
- 	if (ctl_min & ~ctl)
-@@ -2738,6 +2738,7 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	u64 _cpu_based_3rd_exec_control = 0;
- 	u32 _vmexit_control = 0;
- 	u32 _vmentry_control = 0;
-+	struct msr val;
- 	u64 basic_msr;
- 	u64 misc_msr;
+ static __always_inline u64 amd_pmu_lbr_get_to(unsigned int idx)
+ {
+-	u64 val;
+-
+-	val = rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
+-
+-	return val;
++	return rdmsrq(MSR_AMD_SAMP_BR_FROM + idx * 2 + 1);
+ }
  
-@@ -2787,8 +2788,9 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 				SECONDARY_EXEC_VIRTUALIZE_X2APIC_MODE |
- 				SECONDARY_EXEC_VIRTUAL_INTR_DELIVERY);
+ static __always_inline u64 sign_ext_branch_ip(u64 ip)
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index c6fc2d9079d9..02cc471cb5bd 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -2963,11 +2963,7 @@ static void intel_tfa_pmu_enable_all(int added)
  
--	rdmsr_safe(MSR_IA32_VMX_EPT_VPID_CAP,
--		&vmx_cap->ept, &vmx_cap->vpid);
-+	rdmsrq_safe(MSR_IA32_VMX_EPT_VPID_CAP, &val.q);
-+	vmx_cap->ept = val.l;
-+	vmx_cap->vpid = val.h;
+ static inline u64 intel_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+ }
  
- 	if (!(_cpu_based_2nd_exec_control & SECONDARY_EXEC_ENABLE_EPT) &&
- 	    vmx_cap->ept) {
-@@ -4435,7 +4437,7 @@ void vmx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
+ static inline void intel_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 69eb6cf51d3b..c6d9146d8ec8 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -322,10 +322,7 @@ static int cstate_pmu_event_init(struct perf_event *event)
+ 
+ static inline u64 cstate_pmu_read_counter(struct perf_event *event)
+ {
+-	u64 val;
+-
+-	val = rdmsrq(event->hw.event_base);
+-	return val;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ static void cstate_pmu_event_update(struct perf_event *event)
+diff --git a/arch/x86/events/intel/knc.c b/arch/x86/events/intel/knc.c
+index c4f81215f758..a74caa8280be 100644
+--- a/arch/x86/events/intel/knc.c
++++ b/arch/x86/events/intel/knc.c
+@@ -199,11 +199,7 @@ static void knc_pmu_enable_event(struct perf_event *event)
+ 
+ static inline u64 knc_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_KNC_IA32_PERF_GLOBAL_STATUS);
+ }
+ 
+ static inline void knc_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index e65a4ed121d7..0364655a8771 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -209,10 +209,7 @@ void intel_pmu_lbr_reset(void)
   */
- void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
+ static inline u64 intel_pmu_lbr_tos(void)
  {
--	u32 low32, high32;
-+	struct msr val;
- 	unsigned long tmpl;
- 	unsigned long cr0, cr3, cr4;
+-	u64 tos;
+-
+-	tos = rdmsrq(x86_pmu.lbr_tos);
+-	return tos;
++	return rdmsrq(x86_pmu.lbr_tos);
+ }
  
-@@ -4476,8 +4478,8 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
+ enum {
+@@ -311,26 +308,18 @@ static __always_inline u64 rdlbr_from(unsigned int idx, struct lbr_entry *lbr)
  
- 	vmcs_writel(HOST_RIP, (unsigned long)vmx_vmexit); /* 22.2.5 */
- 
--	rdmsr(MSR_IA32_SYSENTER_CS, low32, high32);
--	vmcs_write32(HOST_IA32_SYSENTER_CS, low32);
-+	rdmsrq(MSR_IA32_SYSENTER_CS, val.q);
-+	vmcs_write32(HOST_IA32_SYSENTER_CS, val.l);
- 
- 	/*
- 	 * SYSENTER is used for 32-bit system calls on either 32-bit or
-@@ -4492,8 +4494,8 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
- 	vmcs_writel(HOST_IA32_SYSENTER_EIP, tmpl);   /* 22.2.3 */
- 
- 	if (vmcs_config.vmexit_ctrl & VM_EXIT_LOAD_IA32_PAT) {
--		rdmsr(MSR_IA32_CR_PAT, low32, high32);
--		vmcs_write64(HOST_IA32_PAT, low32 | ((u64) high32 << 32));
-+		rdmsrq(MSR_IA32_CR_PAT, val.q);
-+		vmcs_write64(HOST_IA32_PAT, val.q);
- 	}
- 
- 	if (cpu_has_load_ia32_efer())
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index afcac1042947..9b645563ece9 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7633,9 +7633,9 @@ static void kvm_probe_feature_msr(u32 msr_index)
- 
- static void kvm_probe_msr_to_save(u32 msr_index)
+ static __always_inline u64 rdlbr_to(unsigned int idx, struct lbr_entry *lbr)
  {
--	u32 dummy[2];
-+	u64 dummy;
+-	u64 val;
+-
+ 	if (lbr)
+ 		return lbr->to;
  
--	if (rdmsr_safe(msr_index, &dummy[0], &dummy[1]))
-+	if (rdmsrq_safe(msr_index, &dummy))
- 		return;
+-	val = rdmsrq(x86_pmu.lbr_to + idx);
+-
+-	return val;
++	return rdmsrq(x86_pmu.lbr_to + idx);
+ }
  
- 	/*
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 42df8ea464c4..1b9ff749dd8e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1430,6 +1430,7 @@ static __init int record_keyid_partitioning(u32 *tdx_keyid_start,
- 					    u32 *nr_tdx_keyids)
+ static __always_inline u64 rdlbr_info(unsigned int idx, struct lbr_entry *lbr)
  {
- 	u32 _nr_mktme_keyids, _tdx_keyid_start, _nr_tdx_keyids;
-+	struct msr val;
- 	int ret;
+-	u64 val;
+-
+ 	if (lbr)
+ 		return lbr->info;
  
- 	/*
-@@ -1437,8 +1438,9 @@ static __init int record_keyid_partitioning(u32 *tdx_keyid_start,
- 	 *   Bit [31:0]:	Number of MKTME KeyIDs.
- 	 *   Bit [63:32]:	Number of TDX private KeyIDs.
- 	 */
--	ret = rdmsr_safe(MSR_IA32_MKTME_KEYID_PARTITIONING, &_nr_mktme_keyids,
--			&_nr_tdx_keyids);
-+	ret = rdmsrq_safe(MSR_IA32_MKTME_KEYID_PARTITIONING, &val.q);
-+	_nr_mktme_keyids = val.l;
-+	_nr_tdx_keyids = val.h;
- 	if (ret || !_nr_tdx_keyids)
- 		return -EINVAL;
+-	val = rdmsrq(x86_pmu.lbr_info + idx);
+-
+-	return val;
++	return rdmsrq(x86_pmu.lbr_info + idx);
+ }
+ 
+ static inline void
+diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+index 0067bd35aa7f..7240849a6633 100644
+--- a/arch/x86/events/intel/uncore.c
++++ b/arch/x86/events/intel/uncore.c
+@@ -169,11 +169,7 @@ struct intel_uncore_box *uncore_pmu_to_box(struct intel_uncore_pmu *pmu, int cpu
+ 
+ u64 uncore_msr_read_counter(struct intel_uncore_box *box, struct perf_event *event)
+ {
+-	u64 count;
+-
+-	count = rdmsrq(event->hw.event_base);
+-
+-	return count;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ void uncore_mmio_exit_box(struct intel_uncore_box *box)
+diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
+index 180cc18282ca..2d2376c59816 100644
+--- a/arch/x86/events/rapl.c
++++ b/arch/x86/events/rapl.c
+@@ -192,9 +192,7 @@ static inline unsigned int get_rapl_pmu_idx(int cpu, int scope)
+ 
+ static inline u64 rapl_read_counter(struct perf_event *event)
+ {
+-	u64 raw;
+-	raw = rdmsrq(event->hw.event_base);
+-	return raw;
++	return rdmsrq(event->hw.event_base);
+ }
+ 
+ static inline u64 rapl_scale(u64 v, struct perf_event *event)
+diff --git a/arch/x86/events/zhaoxin/core.c b/arch/x86/events/zhaoxin/core.c
+index 1980e5995e27..9203321c18b4 100644
+--- a/arch/x86/events/zhaoxin/core.c
++++ b/arch/x86/events/zhaoxin/core.c
+@@ -266,11 +266,7 @@ static void zhaoxin_pmu_enable_all(int added)
+ 
+ static inline u64 zhaoxin_pmu_get_status(void)
+ {
+-	u64 status;
+-
+-	status = rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+-
+-	return status;
++	return rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS);
+ }
+ 
+ static inline void zhaoxin_pmu_ack_status(u64 ack)
+diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
+index 4e30f9a11bc4..52ee8c237c2c 100644
+--- a/arch/x86/hyperv/hv_apic.c
++++ b/arch/x86/hyperv/hv_apic.c
+@@ -36,10 +36,7 @@ static struct apic orig_apic;
+ 
+ static u64 hv_apic_icr_read(void)
+ {
+-	u64 reg_val;
+-
+-	reg_val = rdmsrq(HV_X64_MSR_ICR);
+-	return reg_val;
++	return rdmsrq(HV_X64_MSR_ICR);
+ }
+ 
+ static void hv_apic_icr_write(u32 low, u32 id)
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index e028140fac49..993b52b52625 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -231,10 +231,7 @@ static inline void native_x2apic_icr_write(u32 low, u32 id)
+ 
+ static inline u64 native_x2apic_icr_read(void)
+ {
+-	unsigned long val;
+-
+-	val = rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
+-	return val;
++	return rdmsrq(APIC_BASE_MSR + (APIC_ICR >> 4));
+ }
+ 
+ extern int x2apic_mode;
+diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+index 426d48beef81..0b2f42c7f8eb 100644
+--- a/arch/x86/include/asm/debugreg.h
++++ b/arch/x86/include/asm/debugreg.h
+@@ -174,15 +174,11 @@ static inline unsigned long amd_get_dr_addr_mask(unsigned int dr)
+ 
+ static inline unsigned long get_debugctlmsr(void)
+ {
+-	unsigned long debugctlmsr = 0;
+-
+ #ifndef CONFIG_X86_DEBUGCTLMSR
+ 	if (boot_cpu_data.x86 < 6)
+ 		return 0;
+ #endif
+-	debugctlmsr = rdmsrq(MSR_IA32_DEBUGCTLMSR);
+-
+-	return debugctlmsr;
++	return rdmsrq(MSR_IA32_DEBUGCTLMSR);
+ }
+ 
+ static inline void update_debugctlmsr(unsigned long debugctlmsr)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index e9b4ad535643..c87545070347 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2415,10 +2415,7 @@ static inline void kvm_load_ldt(u16 sel)
+ #ifdef CONFIG_X86_64
+ static inline unsigned long read_msr(unsigned long msr)
+ {
+-	u64 value;
+-
+-	value = rdmsrq(msr);
+-	return value;
++	return rdmsrq(msr);
+ }
+ #endif
  
 -- 
 2.54.0
