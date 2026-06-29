@@ -1,182 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1161421F0D;
-	Mon, 29 Jun 2026 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDF03FF8A5
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 12:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782735925; cv=none; b=s2wBdpDlEQsFnN8GyuArHTQin2zMb6Df4ZoUJuuLJ4o19CRY6JNO/hal5MDGGdLmlyKH8hi7ATTKkbww+Wblh7nwQd5Gh0vnskR/p4wy5U0VXZfoSAQR5vlL4XbVYc42//BYcwwxP6zgnTExItr7v1gLdmRgh0OMRkqmxESE3rg=
+	t=1782736027; cv=none; b=TI9hDMbX/UQfURAzUgILHgiyVvzu2L7uqWo9+/LNMP3qfLfYSmbuju4JBG3ZfRjVK6vEC0wO5YIrTgDS0ncG2I/MQhe+qMqk5FyFJ2Q//zC8PpcdI+pR9VaryHeSIDVrY+iV0wL37ETFBQ8sWgk2tKsa3aW9/ndNm2A0/seVN8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782735925; c=relaxed/simple;
-	bh=t+8gFzSgortJ9Yri19Qk2JIjo2XNvjKtlYrTb45fUok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nv6jSK84k7RaAS/+jTMW6eyPByv2eF2AOzfLRjnNaU8+kMbL+/cvUXIi6rmByf4aS5ZgbVv+d1PrgxBSMgc+I3ah4toLOoiO9p2OKjAFNj08RePa14FPk14YsEFBcPpI9egxOOBNLGX5sXkw2OIxHobSHu3OHT5BPmiVhgz+9SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2fdxPuJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782736027; c=relaxed/simple;
+	bh=fq3QHl6LOU6sBnJEipFxZptWAGxX5hThavrcW/0yXmg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SifVbscPFbfdsgPWnHcFFGbUEWUR9Yat/MZzuw09w/3WLNrwa7hyPBh/iU4nzyerXAgIyDAiWFJJueIr0oUMx8euW8t4JetwFbtk2zkZwcTZBvl9+obZNlOja6dUqEUqMg5Zw62SrHMoITYGl5edONqMLliPmL1n2vY/YykJ/to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBmdsBrF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2fdxPuJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F691F00AC4;
-	Mon, 29 Jun 2026 12:25:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBmdsBrF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484661F000E9;
+	Mon, 29 Jun 2026 12:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735924;
-	bh=U1jtLkA6UuZsfpQiwXDViZ4TbQirP1iCEgORsJjMVIE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c2fdxPuJZracea4THiWagUGG3qtjKlYQLO8kI5qBAOAmNyUqU+Cz2tE0LZcZK/+x6
-	 6Xk6iEoGktAUHyeB9cblz74jdddGkwaBjm0aSRvDSQySW3n0Fr3QzWtICG5O83ECq+
-	 CpGzQfZJaEmCid2LM+2XsU2ThNJ23kEbysH1NlUtWxqEIESKzs4x6d5f0OSVrFyJfm
-	 j3TScuQr22512dqslB4Ah+zgS28CuS/F239kYvXoA+o5vDrfUPnKKgS1tQAkh4mNti
-	 ITFv6t9aZ5OoDpmTegOvjzsXL8lUZRPNTyuRby3AAe3GvKu9tkUXabe/jqKUOVL1Ww
-	 sDInYPPHhFcHQ==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org,
-	etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-mm@kvack.org,
-	iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	damon@lists.linux.dev,
-	Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 30/30] tools/testing/vma: output compared expression on ASSERT_[EQ, NE]()
-Date: Mon, 29 Jun 2026 13:23:41 +0100
-Message-ID: <432444fa4c12ae1c4047550e2b205d3e9bab458f.1782735110.git.ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
-References: <cover.1782735110.git.ljs@kernel.org>
+	s=k20260515; t=1782736026;
+	bh=WplG5+78J+M+vCWucjxaHpcu2g5pV58NrkHIGlZ+LCE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CBmdsBrFPQtdafQtddWhCHvB11Njqy2/n/zhJjLjmH5AD2jwncNQpIGIa1HTBceP/
+	 lGubS7d05nysjEiEFVySrIP4IrKisCWLho71vR8zUeJ8V+0/ff+X6aoWkoqzWaVv0I
+	 vAwEi056lMqt4qAv9vEA2t8NlR3ZRe0eaPN8NmsrizmwwD0d0x3YDAMojo2qeYBsXl
+	 DRJ4nFEgazhDgNiMISg6al/AH9oSbnl9QzbjFrbTXezh58lWPmNC6AkQ/wUcak9IUT
+	 l+g5QDFKTSw6XK2ltK44lRufvjqX13Ujq8+Q2xUUsuthfa+B4LPu28Yrl68VW5OZma
+	 K+Qx29h6zv2hA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 06/15] mm: add MM_CP_UFFD_RWP change_protection()
+ flag
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260629120749.566063-7-kirill@shutemov.name>
+References: <20260629120749.566063-1-kirill@shutemov.name>
+ <20260629120749.566063-7-kirill@shutemov.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jun 2026 12:27:05 +0000
+Message-Id: <20260629122706.484661F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Update the macros to output the compared values at hex for easier debugging
-when test asserts fail.
-
-Also remove unused IS_SET() macro.
-
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- tools/testing/vma/shared.h | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
-
-diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
-index ca4f1238f1c7..216be4cda369 100644
---- a/tools/testing/vma/shared.h
-+++ b/tools/testing/vma/shared.h
-@@ -21,19 +21,28 @@
- 		}							\
- 	} while (0)
-
--#define ASSERT_TRUE(_expr)						\
--	do {								\
--		if (!(_expr)) {						\
--			fprintf(stderr,					\
--				"Assert FAILED at %s:%d:%s(): %s is FALSE.\n", \
--				__FILE__, __LINE__, __FUNCTION__, #_expr); \
--			return false;					\
--		}							\
-+#define __ASSERT_TRUE(_expr, _fmt, ...)					   \
-+	do {								   \
-+		if (!(_expr)) {						   \
-+			fprintf(stderr,					   \
-+				"Assert FAILED at %s:%d:%s(): %s is FALSE" \
-+				_fmt ".\n",				   \
-+				__FILE__, __LINE__, __FUNCTION__, #_expr   \
-+				__VA_OPT__(,) __VA_ARGS__);		   \
-+			return false;					   \
-+		}							   \
- 	} while (0)
-
-+#define __TO_SCALAR(x)	((unsigned long long)(uintptr_t)(x))
-+
-+#define ASSERT_TRUE(_expr) __ASSERT_TRUE(_expr, "")
- #define ASSERT_FALSE(_expr) ASSERT_TRUE(!(_expr))
--#define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
--#define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
-+#define ASSERT_EQ(_val1, _val2)						\
-+	__ASSERT_TRUE((_val1) == (_val2), " (0x%llx != 0x%llx)",	\
-+		      __TO_SCALAR(_val1), __TO_SCALAR(_val2))
-+#define ASSERT_NE(_val1, _val2) \
-+	__ASSERT_TRUE((_val1) != (_val2), " (0x%llx == 0x%llx)", \
-+		       __TO_SCALAR(_val1), __TO_SCALAR(_val2))
-
- #define ASSERT_FLAGS_SAME_MASK(_flags, _flags_other) \
- 	ASSERT_TRUE(vma_flags_same_mask((_flags), (_flags_other)))
-@@ -53,8 +62,6 @@
- #define ASSERT_FLAGS_NONEMPTY(_flags) \
- 	ASSERT_FALSE(vma_flags_empty(_flags))
-
--#define IS_SET(_val, _flags) ((_val & _flags) == _flags)
--
- extern bool fail_prealloc;
-
- /* Override vma_iter_prealloc() so we can choose to fail it. */
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] MM_CP_UFFD_RWP silently destroys RWP protection and unmaps file-ba=
+cked THPs.
 --
-2.54.0
+
+commit 82229f238feb5343260ad7c878148b9a54c5893a
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+
+mm: add MM_CP_UFFD_RWP change_protection() flag
+
+This patch introduces the MM_CP_UFFD_RWP and MM_CP_UFFD_RWP_RESOLVE flags
+for userfaultfd RWP. The flags are wired through change_pte_range,
+change_huge_pmd, and hugetlb_change_protection to install PROT_NONE with
+a userfaultfd marker.
+
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 8340c8b228c67..7dcc94e7bfd60 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+[ ... ]
+> @@ -428,7 +441,7 @@ pgtable_split_needed(struct vm_area_struct *vma, unsi=
+gned long cp_flags)
+>  	 * (e.g. 2M shmem) because file thp is handled differently when
+>  	 * split by erasing the pmd so far.
+>  	 */
+> -	return (cp_flags & MM_CP_UFFD_WP) && !vma_is_anonymous(vma);
+> +	return (cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP)) && !vma_is_anonymo=
+us(vma);
+>  }
+
+[Severity: High]
+When a file-backed THP is split because pgtable_split_needed() returns true
+here, __split_huge_pmd() clears the PMD and change_pmd_prepare() allocates
+an empty PTE table with all none PTEs.
+
+Then change_pte_range() processes these none PTEs, but it has this check:
+
+mm/mprotect.c:change_pte_range() {
+    ...
+		} else if (pte_none(oldpte)) {
+			/*
+			 * Nobody plays with any none ptes besides
+			 * userfaultfd when applying the protections.
+			 */
+			if (likely(!uffd_wp))
+				continue;
+    ...
+}
+
+Since uffd_wp is false during an MM_CP_UFFD_RWP operation, won't this cause
+the none PTEs resulting from the THP split to be silently skipped?
+
+This would leave the previously populated file-backed THP pages unmapped and
+without any RWP protection markers. When they are accessed again, they might
+fault back in with default permissions, bypassing the requested RWP trackin=
+g.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629120749.5660=
+63-1-kirill@shutemov.name?part=3D6
