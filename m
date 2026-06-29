@@ -1,310 +1,131 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6EC386C1C
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 18:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782757328; cv=pass; b=btYLY8Co5p9Y4yqUJO5JX1Vmr9teAGnuBdywHaPRsTfixR0vJMnoygDKqCE0Iu6X//i2sOkpPlT1SkmczAS9k/bKrLtQ64J7EkJV9DUPeKvzMvlK8Dm8SX/EkOJPRHNNBDnKuAQhgbBFvKlBMh6qNIr29/G1nNpqsUyvn7CIb9I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782757328; c=relaxed/simple;
-	bh=rTCC+Q2QI/RNZdcYErq5nB4Tg1Xxg7Ybj1fhnVetaOY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iRLtq7dFHYBY19chKZ0YbFbB0XSH06yvmYWEzTtRhWQAmM7q0uf5g3T9s3v8P/z+NTFDP6KKXLPGR8LYzm+tZoyYazZPyLO40+7T120lqC7c7aX5BEy/qWhvk/sMmoLNkS6CGleSku5TMzuZ2aUEMZ5rmA1EGnZGuXsj9A2a9fQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZVlrTnH; arc=pass smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D908A397E73;
+	Mon, 29 Jun 2026 18:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782758281; cv=none; b=RHxtm9BGHe7LlTWXVnrfz+jJl5jCIWGT3NdknE1cGSyX8C4vx9cMe3EpOtxbkveMXewVBnhlw+CRITJK6k+TQOKycbBud77siWuEJESULQMjXe7rec7gGe5KNZEqmDTCovWKmxgUx3wP5S8wfssPzZ+GRkwAkr+jnytAQsG28iQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782758281; c=relaxed/simple;
+	bh=3AKK36BaWkeorLzWOpN5Tvibn3HevnVbwavTna18koY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s1clHMokxoyRzWM930tlhY6KF5J7Dlg1HGRUWoQda9KgM3qV8clbX1jduPxjbM39+R+5UgDtG3jy5P0eqBEXEtbDrZ0+LC4yWbkHxqD4hbf19vfsaFz4n9f8oPk5uKm6Ru63VsKVwa5O0gm5tKznxxQ03t7PJBZQbphwwzzTfYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ6l55K5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZVlrTnH"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4624a44e152so3347051f8f.2
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 11:22:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782757321; cv=none;
-        d=google.com; s=arc-20260327;
-        b=geBw6ZPTVSo5lFrkhhbmDX2/JamxwuGbSl2uY2Ez05Wl/5HGh3VumOyKa6jDKD1PaA
-         itM5+3rI8jfYfZueiQ640XwvirrHFBDiWs4J+DRVZTVDA20RtI4/758QfPCOhICxsMIr
-         ojXk5qLqpOxOXLlaCpCgBZZeJkY/k240peWS9JG+pq6YDGQ+Mxko7/KpYpgBHGLJj7Zy
-         OGHwq8OO7xypj29aDrAYjdFYIUQfbSZan9rXrgm6aQHl+lSmAtom0XEyJZf1VQRzMxFX
-         YPAuQBnkl2TsfIMntU0cbnO66UePmtwCYGH7AHGVAGhgVMtbkQd3ZZo5efjzzzOVzjN7
-         bTtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5NfKOjNU6srylE75C2adpej95bKtXYvziT0LYJSnVds=;
-        fh=hKeXtSuMMex33b2xF3liZRf7E7+eeipe8mEb5zTVMRM=;
-        b=NnxLsxJ3w3y6o3CaMJJEykdfew/XUCfEPte9zMLvGT+tRJYtM9wwbNbSZ13EO/1R7Q
-         qDU1wJFrbqb/U4htOu/euuo/aLgy0SjlEuyor3wYvOT7/vxvsAmJCxe7A+jloN9aO4WH
-         bvKZOGDS0qobCVz+7HuDnJgtS2htWk0WO4eVBdNnl6sTSv2yDoPPORSL1ByWy27IhADv
-         zECStQmZfZqVCMisyygt0wJiI1sYxdtKEl61puaNDygasXWUIu8syEtFpVSpGA9y/jP1
-         k4c//OnkvACFwgnld/zJjXBfb1EOKu/m1woCD+WIw1ti9sEIYn7SAPlsakkbWxY1FRo3
-         uq/g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782757321; x=1783362121; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5NfKOjNU6srylE75C2adpej95bKtXYvziT0LYJSnVds=;
-        b=lZVlrTnHAIE6MHhnr76cv5+Q9ab3WEF37l1jXtbCTR0zXFkwPQGjAcZs9ooF4TN2HA
-         0zv3vLRXJ/Z4ZopSsJuTeilRNAlXpdGx3QyUDpnwM2wLstJ3OzCQas6HEMKgpo0BeKYJ
-         qj7xeSFA26oJJb7ArIsLKQ8MBfTpLrvdPRsvqW2zDgjdJLFbP4TP+j14v/s7S+CqLrcc
-         8O0IDAPaVGDl2vZiXU9ZFXkSR/oXnO0+fTzcGsoxpCfMkTGKGgQauqdKcH0ChPVIRWEr
-         tD9o1Y7MPxLmN+a05ofn6At1meODNOzZbpa3hAkbYofXv4rW3ruTPeITd8d1GbJVn0wM
-         sevQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782757321; x=1783362121;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5NfKOjNU6srylE75C2adpej95bKtXYvziT0LYJSnVds=;
-        b=CrFgZEz/2xTJRuQZEQSWKvSrqwg3DcJ2Fr1qKe4sCbQ62HNMPMHY9yvtK0daXls5me
-         k6rdLK+jjbMqp5zAcSTt1mHMTQPJmpT28uSiVZNzC+JUlKjLFQoxK6apHrvtsoN7Rzpu
-         +yq1aHlqf9AjAeBWsD1xaMPSs8c+W7VL5eD76nqn4GffpHKMYiz7dTDirl3CzlV0dYWG
-         0KlmzOuPdiiBnD9BciZ1M/UmaWKfz2J/SMObz4LJocoH6VJocaRxrAT1g7tS9iHdIdKl
-         gNo4u4vpq+Yo41Ne1BulDLwQ4v0QCfkZbAjmL8/F3vEtj+Me5syxFmpXK4S/RaZ47Ii1
-         oz5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rofr3JBrTYX3/MW9W37ICAWeRE0VKosN8SZp7HgYK+MASw4aEhdm3qc9LKuA3PEN/NAK48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZw78a8iJKPIvnzdYRes5w+/Wqpn7D85w7Z5Xucxw94bt+s39A
-	Jd/fYiKi9STXNLDgT8+dlLde23aQgj4H3VJSQYxxUuH1oYSnF6DJI40L6G9KmItacWaAW2PDFIu
-	Wi5GkWyKd+mCdsLspA/iDzE11ZOdPgg0=
-X-Gm-Gg: AfdE7cmuMiKxF3Ozf0Q8S25Dxpd0Vzs9ErZ4x4RVKFTYoc5ZoBcJtgCSCaAtU2lWJ8b
-	Skx+nObuC9JIyVqiJWanv+XuX0fXEDUOdnQjhKI31of7UkMR8db3r9xPP7LRJvY1frQNrU2C+57
-	9O7uasxm6tQZU0mHjVaMEwIu+l4TPAjG221EJH+wVeTnOZQBgJU6w5K2jkKDDlLbtsJ8RxncQLJ
-	a4Qes4isytoyfXa023VKO0I8qImVnQQ7KLGY1gUDFsEqZl1qZfTOtyOmJicaPqimFPD13I20UI5
-	bvAQB+F2P8WQHnvS0ri7qWHCSyXwQg==
-X-Received: by 2002:a05:6000:460d:b0:473:6e8d:7f3 with SMTP id
- ffacd0b85a97d-475506e96a8mr558778f8f.1.1782757321163; Mon, 29 Jun 2026
- 11:22:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ6l55K5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421371F000E9;
+	Mon, 29 Jun 2026 18:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782758279;
+	bh=64OyJFZjyxk17y8fQvtUvOfVXfFmYipSgoTrYIU7HjY=;
+	h=From:To:Cc:Subject:Date;
+	b=HZ6l55K5LBmii7Ks32O0LyuDAv2g/M9lpzsDeqgLeqAUufB32BJDpLHGgZjsPXO5V
+	 7lge2qCKV3hJO0ga8yVKvCr5gWHDPYeEamfxbwTrW2Kp+CAZ7PcBFFcL2LMzUvK68G
+	 bPmIF9fb9pZeoBDO6miUlHxmNK677lvjwZEYxMkq9A52FM8wnK1EIw8622OaWkRXr9
+	 8o7IxIv0nV9oM7s/mI2KiVQQ5SsLinKFhumlRkz6WP3/Y8zpHgvSqxAcbBIGIUKGAQ
+	 gCSl+x6T+ZpY3bOiPEr2tB+oQPvDGOtfBTaufveOOQlLz4kaMrA8p2W0XBc1hmqJFL
+	 0J44vcu4NtkXg==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v3 00/10] KVM: selftests: Stress save+restore and #PF (ft. nested)
+Date: Mon, 29 Jun 2026 18:37:35 +0000
+Message-ID: <20260629183746.699840-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260611-rva23u64-hwprobe-v2-v4-0-3f01a2449488@gmail.com> <20260611-rva23u64-hwprobe-v2-v4-6-3f01a2449488@gmail.com>
-In-Reply-To: <20260611-rva23u64-hwprobe-v2-v4-6-3f01a2449488@gmail.com>
-From: Jesse T <mr.bossman075@gmail.com>
-Date: Mon, 29 Jun 2026 14:21:24 -0400
-X-Gm-Features: AVVi8CeVJe5kDV9ivsXrbK-CzxJfU-Om1AQNkB7-XLVhzZDb1etpOuW05CkKE0c
-Message-ID: <CAJFTR8RK2sR88ePKREmZw-9FRkWEpV_FH6s7M9TegaObqU1cwA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/16] riscv: Add Ziccamoa, Ziccif, Ziccrse, and Za64rs
- to cpufeature and hwprobe
-To: Guodong Xu <docular.xu@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>, 
-	Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Yixun Lan <dlan@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
-	Inochi Amaoto <inochiama@gmail.com>, linux-doc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Conor Dooley <conor@kernel.org>, devicetree@vger.kernel.org, 
-	spacemit@lists.linux.dev, sophgo@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, Palmer Dabbelt <palmer@sifive.com>, 
-	Andrew Jones <andrew.jones@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 11, 2026 at 4:14=E2=80=AFPM Guodong Xu <docular.xu@gmail.com> w=
-rote:
->
-> From: Andrew Jones <andrew.jones@oss.qualcomm.com>
->
-> Add Ziccamoa, Ziccif, and Za64rs to riscv_isa_ext[] so they can be
-> parsed from devicetree/ACPI ISA strings. Ziccrse is already present
-> in cpufeature; this patch only adds its hwprobe exposure.
->
-> Expose all four extensions via hwprobe through new bits in
-> RISCV_HWPROBE_KEY_IMA_EXT_1 (RISCV_HWPROBE_EXT_ZICCAMOA, _ZICCIF,
-> _ZICCRSE, _ZA64RS), so userspace can probe each of these
-> RVA23U64-mandatory extensions individually.
->
-> Rationale for the validation dependencies added for Ziccamoa and Za64rs:
->
-> 1) Ziccamoa depends on Zaamo.  The RVA23 profile prose was updated
-> post-ratification to spell out the Zaamo reference: commit
-> 2b218613752d in riscv/riscv-profiles ("Improve description of
-> Ziccamoa (#224)") reworded the rva23-profile.adoc (and other profiles
-> that include Ziccamoa) text from "must support all atomics in A" to
-> "must support all atomics in the Zaamo extension" [1].
->
-> 2) Za64rs depends on Zalrsc. The unprivileged ISA manual src/zars.adoc,
-> integrated in commit ebe06adc22cd ("Integrate profiles as Volume III
-> (#2771)"), defines Za64rs as: "The Za64rs extension requires that the
-> reservation sets used by the instructions in the Zalrsc extension be
-> contiguous, naturally aligned, and at most 64 bytes in size" [2].
->
-> Link: https://github.com/riscv/riscv-profiles/commit/2b218613752d63287286=
-b5ae801b820cbd8cc10c [1]
-> Link: https://github.com/riscv/riscv-isa-manual/blob/main/src/unpriv/zars=
-.adoc [2]
-> Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
+Add a stress test for save+restore while the guest is triggering and
+handling #PFs, in both L1 and L2. The goal was to create a generic
+selftest that would catch bugs like the one fixed by commit 5c247d08bc81
+("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested
+#VMEXIT"), instead of relying on high-level testing (e.g. building GCC
+in L2) to catch it.
 
-Reviewed-by: Jesse Taube <jtaubepe@redhat.com>
+The test tries to be as generic as possible by triggering #PFs in a
+guest and installing a proper #PF handler, while the host is
+continuously doing save+restore cycles. Exiting to userspace is randomly
+triggered by a second thread that constantly signals the vCPU thread.
 
-> ---
-> v4: No change.
-> v3: Indent the added hwprobe.rst entries to match the normalized style; n=
-o other change.
-> v2:
-> - Rebased to v7.1-rc2.
-> - Reworded subject and expanded commit message.
-> - Validation added for Ziccamoa depending on Zaamo and Za64rs depending
->   on Zalrsc.
-> ---
->  Documentation/arch/riscv/hwprobe.rst  | 16 ++++++++++++++++
->  arch/riscv/include/asm/hwcap.h        |  3 +++
->  arch/riscv/include/uapi/asm/hwprobe.h |  4 ++++
->  arch/riscv/kernel/cpufeature.c        | 21 +++++++++++++++++++++
->  arch/riscv/kernel/sys_hwprobe.c       |  4 ++++
->  5 files changed, 48 insertions(+)
->
-> diff --git a/Documentation/arch/riscv/hwprobe.rst b/Documentation/arch/ri=
-scv/hwprobe.rst
-> index 49d9fb68632d0..893e1a1215d23 100644
-> --- a/Documentation/arch/riscv/hwprobe.rst
-> +++ b/Documentation/arch/riscv/hwprobe.rst
-> @@ -405,3 +405,19 @@ The following keys are defined:
->    * :c:macro:`RISCV_HWPROBE_EXT_ZICCLSM`: The Zicclsm extension is suppo=
-rted,
->      as defined in the RISC-V Profiles specification starting from commit
->      b1d80660 ("Updated to ratified state.")
-> +
-> +  * :c:macro:`RISCV_HWPROBE_EXT_ZICCAMOA`: The Ziccamoa extension is sup=
-ported,
-> +    as defined in the RISC-V Profiles specification starting from commit
-> +    b1d80660 ("Updated to ratified state.")
-> +
-> +  * :c:macro:`RISCV_HWPROBE_EXT_ZICCIF`: The Ziccif extension is support=
-ed,
-> +    as defined in the RISC-V Profiles specification starting from commit
-> +    b1d80660 ("Updated to ratified state.")
-> +
-> +  * :c:macro:`RISCV_HWPROBE_EXT_ZICCRSE`: The Ziccrse extension is suppo=
-rted,
-> +    as defined in the RISC-V Profiles specification starting from commit
-> +    b1d80660 ("Updated to ratified state.")
-> +
-> +  * :c:macro:`RISCV_HWPROBE_EXT_ZA64RS`: The Za64rs extension is support=
-ed,
-> +    as defined in the RISC-V Profiles specification starting from commit
-> +    b1d80660 ("Updated to ratified state.")
-> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwca=
-p.h
-> index e8f4a7dd96a93..0acb7a01ecc0f 100644
-> --- a/arch/riscv/include/asm/hwcap.h
-> +++ b/arch/riscv/include/asm/hwcap.h
-> @@ -113,6 +113,9 @@
->  #define RISCV_ISA_EXT_ZICFILP          104
->  #define RISCV_ISA_EXT_ZICFISS          105
->  #define RISCV_ISA_EXT_ZICCLSM          106
-> +#define RISCV_ISA_EXT_ZICCAMOA         107
-> +#define RISCV_ISA_EXT_ZICCIF           108
-> +#define RISCV_ISA_EXT_ZA64RS           109
->
->  #define RISCV_ISA_EXT_XLINUXENVCFG     127
->
-> diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/u=
-api/asm/hwprobe.h
-> index 6819df159c51e..58d1e86e47ae7 100644
-> --- a/arch/riscv/include/uapi/asm/hwprobe.h
-> +++ b/arch/riscv/include/uapi/asm/hwprobe.h
-> @@ -117,6 +117,10 @@ struct riscv_hwprobe {
->  #define RISCV_HWPROBE_KEY_IMA_EXT_1            16
->  #define                RISCV_HWPROBE_EXT_ZICFISS       (1ULL << 0)
->  #define                RISCV_HWPROBE_EXT_ZICCLSM       (1ULL << 1)
-> +#define                RISCV_HWPROBE_EXT_ZICCAMOA      (1ULL << 2)
-> +#define                RISCV_HWPROBE_EXT_ZICCIF        (1ULL << 3)
-> +#define                RISCV_HWPROBE_EXT_ZICCRSE       (1ULL << 4)
-> +#define                RISCV_HWPROBE_EXT_ZA64RS        (1ULL << 5)
->
->  /* Increase RISCV_HWPROBE_MAX_KEY when adding items. */
->
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeatur=
-e.c
-> index 1fb595581adcf..b9538e69fa1b3 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -90,6 +90,24 @@ static int riscv_ext_f_depends(const struct riscv_isa_=
-ext_data *data,
->         return -EPROBE_DEFER;
->  }
->
-> +static int riscv_ext_zaamo_depends(const struct riscv_isa_ext_data *data=
-,
-> +                                  const unsigned long *isa_bitmap)
-> +{
-> +       if (__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZAA=
-MO))
-> +               return 0;
-> +
-> +       return -EPROBE_DEFER;
-> +}
-> +
-> +static int riscv_ext_zalrsc_depends(const struct riscv_isa_ext_data *dat=
-a,
-> +                                   const unsigned long *isa_bitmap)
-> +{
-> +       if (__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_ZAL=
-RSC))
-> +               return 0;
-> +
-> +       return -EPROBE_DEFER;
-> +}
-> +
->  static int riscv_ext_zicbom_validate(const struct riscv_isa_ext_data *da=
-ta,
->                                      const unsigned long *isa_bitmap)
->  {
-> @@ -502,6 +520,8 @@ const struct riscv_isa_ext_data riscv_isa_ext[] =3D {
->         __RISCV_ISA_EXT_SUPERSET_VALIDATE(zicbom, RISCV_ISA_EXT_ZICBOM, r=
-iscv_xlinuxenvcfg_exts, riscv_ext_zicbom_validate),
->         __RISCV_ISA_EXT_DATA_VALIDATE(zicbop, RISCV_ISA_EXT_ZICBOP, riscv=
-_ext_zicbop_validate),
->         __RISCV_ISA_EXT_SUPERSET_VALIDATE(zicboz, RISCV_ISA_EXT_ZICBOZ, r=
-iscv_xlinuxenvcfg_exts, riscv_ext_zicboz_validate),
-> +       __RISCV_ISA_EXT_DATA_VALIDATE(ziccamoa, RISCV_ISA_EXT_ZICCAMOA, r=
-iscv_ext_zaamo_depends),
-> +       __RISCV_ISA_EXT_DATA(ziccif, RISCV_ISA_EXT_ZICCIF),
->         __RISCV_ISA_EXT_DATA(zicclsm, RISCV_ISA_EXT_ZICCLSM),
->         __RISCV_ISA_EXT_DATA(ziccrse, RISCV_ISA_EXT_ZICCRSE),
->         __RISCV_ISA_EXT_SUPERSET_VALIDATE(zicfilp, RISCV_ISA_EXT_ZICFILP,=
- riscv_xlinuxenvcfg_exts,
-> @@ -516,6 +536,7 @@ const struct riscv_isa_ext_data riscv_isa_ext[] =3D {
->         __RISCV_ISA_EXT_DATA(zihintpause, RISCV_ISA_EXT_ZIHINTPAUSE),
->         __RISCV_ISA_EXT_DATA(zihpm, RISCV_ISA_EXT_ZIHPM),
->         __RISCV_ISA_EXT_DATA(zimop, RISCV_ISA_EXT_ZIMOP),
-> +       __RISCV_ISA_EXT_DATA_VALIDATE(za64rs, RISCV_ISA_EXT_ZA64RS, riscv=
-_ext_zalrsc_depends),
->         __RISCV_ISA_EXT_DATA(zaamo, RISCV_ISA_EXT_ZAAMO),
->         __RISCV_ISA_EXT_DATA(zabha, RISCV_ISA_EXT_ZABHA),
->         __RISCV_ISA_EXT_DATA(zacas, RISCV_ISA_EXT_ZACAS),
-> diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwpr=
-obe.c
-> index 9cf62266f1890..b15ac9adf7920 100644
-> --- a/arch/riscv/kernel/sys_hwprobe.c
-> +++ b/arch/riscv/kernel/sys_hwprobe.c
-> @@ -206,6 +206,10 @@ static void hwprobe_isa_ext1(struct riscv_hwprobe *p=
-air,
->                  */
->                 EXT_KEY(isainfo->isa, ZICFISS, pair->value, missing);
->                 EXT_KEY(isainfo->isa, ZICCLSM, pair->value, missing);
-> +               EXT_KEY(isainfo->isa, ZICCAMOA, pair->value, missing);
-> +               EXT_KEY(isainfo->isa, ZICCIF, pair->value, missing);
-> +               EXT_KEY(isainfo->isa, ZICCRSE, pair->value, missing);
-> +               EXT_KEY(isainfo->isa, ZA64RS, pair->value, missing);
->         }
->
->         /* Now turn off reporting features if any CPU is missing it. */
->
-> --
-> 2.43.0
->
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Patches (1-6) are prep patches, fixing GPR switching for nSVM and
+generalizing it to cover nVMX, which is needed for the test to run
+properly with nVMX. Patch 4 removes HORRIFIC_L2_UCALL_CLOBBER_HACK, as
+it is no longer needed. While this series does not have the "complete"
+fix added by commit 6783ca4105a7 ("KVM: selftests: Add a shameful hack
+to preserve/clobber GPRs across ucall"), it's a good step in the right
+direction.
+
+Patches (7-10) add the actual test. The test is first introduced as a
+simple (read: dummy) stress test that just explicitly syncs to userspace
+after each #PF handling to do save+restore, then gradually evolves to
+add the random signaling and nested support. After the last patch, the
+test reliably reproduces the CR2 bug.
+
+v2 -> v3:
+- Rebased on top of L2 stack rework in selftests.
+- Fix GPR array size (i.e. NR_GUEST_REGS) [Sashiko].
+- Handle evmcs_vmlaunch() and evmcs_vmresume() [Sashiko].
+- Fix off-by-one assertion error in intermediate patches.
+- Increase inter-signal delay from 100us to 1msec.
+
+v1 -> v2:
+- Switch guest_regs to an array, which simplifies the offsets
+  calculation and forgoes the dependency on using OFFSET() or defining
+  the struct offsets for assembly otherwise.
+- Move page table mapping to the test (instead of a generic helper), as
+  the helper mistakenly tried to map the entire memslot, not just page
+  tables.
+- Do not use identity mappings for page tables as it collisions with
+  GVAs used for ELF in some cases.
+- Simplify page table walking by using loops.
+- Make sure the signals are ignored before creating the signaling
+  thread [Sashiko]
+- Assert that the guest actually ran and had page faults [Sashiko]
+- Add a patch to fix RAX and RFLAGS offsets in run_guest() [Sashiko]
+- Initialize exception_has_payload when injecting a #UD [Sashiko]
+- Only check KVM_STATE_NESTED_GUEST_MODE when running in nested mode
+  [Sashiko]
+
+v1: https://lore.kernel.org/all/20260518202514.2037078-1-yosry@kernel.org/
+v2: https://lore.kernel.org/kvm/20260604203546.365658-1-yosry@kernel.org/
+
+Yosry Ahmed (10):
+  KVM: selftests: Move STR() and XSTR() definitions to test_util.h
+  KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
+  KVM: selftests: Use an array for guest_regs (and fix offsets)
+  KVM: selftests: Move GPR load/save definitions outside of nSVM code
+  KVM: selftests: Reuse GPR switching logic for nVMX
+  KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
+  KVM: selftests: Add basic stress test for save+restore and #PF
+    handling
+  KVM: selftests: Trigger save+restore randomly in the #PF stress test
+  KVM: selftests: Support running stress save+restore and #PF test in L2
+  KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../testing/selftests/kvm/include/test_util.h |   3 +
+ .../testing/selftests/kvm/include/x86/evmcs.h |  40 +--
+ .../selftests/kvm/include/x86/processor.h     |  55 ++-
+ tools/testing/selftests/kvm/include/x86/vmx.h |  63 ++--
+ .../testing/selftests/kvm/lib/x86/processor.c |   2 +
+ tools/testing/selftests/kvm/lib/x86/svm.c     |  60 ++--
+ tools/testing/selftests/kvm/lib/x86/ucall.c   |  32 +-
+ .../kvm/x86/evmcs_smm_controls_test.c         |   3 -
+ tools/testing/selftests/kvm/x86/smm_test.c    |   3 -
+ .../kvm/x86/stress_save_restore_pf_test.c     | 326 ++++++++++++++++++
+ 11 files changed, 441 insertions(+), 147 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
+
+
+base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
