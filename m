@@ -1,249 +1,139 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01F746AEE2
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC60472789;
+	Mon, 29 Jun 2026 17:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782754014; cv=none; b=aAKvOZBitJD8r6IAG7XSu25x/p1tPumMBuzOF4z4MJz6KflCECxayTex0N+3lDHYiISHjJw+kjYNuU/R5uPr1UqqIadPZvs3tOVpP5s6YtKSlEUHP/roLOTQbCfOmrHmdTqPB0MZESuvxq98+I14vsuovAhfLDkciBwHHwv2L6s=
+	t=1782754017; cv=none; b=rJhMDyYC5bTzbjFxt8uzgW2xioJjimf1qLxFBelxwM0a6NAGQWrHWwQeqw54SKp64Pluf+8yGW/Z1esWBrcoGA+OVi5BlhJ6US2n1NeAJK3zxl6/hWf8rPBV1x9h4bbGSrpTWGJeUdLvV8Lxn6SeizvZURihFhcFDHYg+Jug3Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782754014; c=relaxed/simple;
-	bh=twCp3UAdFQ3jI5FFB+ZfFejbSMS6e565YtXepbK/Ub8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=Q0RsrHZlTLBr35rZKoUg3g4S93tCf52YiOdCCL/OUrVvbmSMvES7tUj3/eyJErk6C6tvqkfAiT5ZtFhrVQDmcHdDxN0aJC7qUqwB/rexbTDnPsuZb9NWZHWDku+yjDLt+t6YPuZaBxnHC5hTs09n3MyDYRVXIPZ81C4R0EpshNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=glgu0d7S; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782754017; c=relaxed/simple;
+	bh=4/OzXg1kRwYcddjKntVN/+Mh8XEIs2dYDYalSRkf93E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q9HV9H5Wo7ZGHfieVrm7P+vmFm2WvsFXmOASXHT90TK9nxyoIjmcw8TwQ0wT9b/I3HPImiWzbqsrjcnjE0eGB1UVrAJFmM8eBPG0dynwIAh7PDtFXorI5OROuv8mjLYax0xqqdmvKsb1ZTLMUIqUzhwEZ5B48xyTN9IfQuWh1pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=DrnVVqD2; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="glgu0d7S"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA9A53565;
-	Mon, 29 Jun 2026 10:26:47 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A1B83F673;
-	Mon, 29 Jun 2026 10:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782754012; bh=twCp3UAdFQ3jI5FFB+ZfFejbSMS6e565YtXepbK/Ub8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glgu0d7SILxDx/NGXotdnQsRZOirBfCPKxssC6/UbNatYgB6JaljwgLYSXhSAfUX8
-	 L66B1yHFz3K2NDiJRJWNVFMEVFjsIzHAyPTPQi6F6sIDLGoeqeItpL63USMlmzKvYv
-	 WJq2yAj7VYG97KXsks0edv86g9MEhqUJfvGs37wY=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v2 12/13] KVM: arm64: Add hardware-accelerated dirty-ring cleaning routine
-Date: Mon, 29 Jun 2026 18:26:49 +0100
-Message-ID: <akKq2fvsUWPxuCHU@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629114921.2E78C1F000E9@smtp.kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-13-leo.bras@arm.com> <20260629114921.2E78C1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="DrnVVqD2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1782754012;
+	bh=y6eTx+9vg9xblvO487zhAd78ZW9yRyedKnZlH9n/Q1A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DrnVVqD25H/vFxEfW5d4xHnG7Pc1MM3ub184VCpBbrQ08+Vf4/gSGAFi9Ztv5RPIp
+	 +DPnMkZN0Rq1BNhf0To8wcmDt8naUQB/8DUZdLPKIhznKdibD3VFtLP4xlygASScPR
+	 jsVI3JtM7hii5yp3iVe3S/QopyVb9AmjDxnbUO6kZpGnB12C8gZHGGf8mnv9GP31s1
+	 jGj2WBAOwoUMmvyKZ0acx9Ot5s11nbcNxJo7i0ahlb/jltZ5HKISUIJeH/IQPiAlDQ
+	 t1Iw8z5AmbdTwwik49LDPiro0BE7UDScxaB0rz4itKI4TL3Oha7z1PZvGdCOzBO/iz
+	 D06sFOHWNMXaA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4gptVs3yzbz4w9j;
+	Tue, 30 Jun 2026 03:26:45 +1000 (AEST)
+Message-ID: <cc4e8b75-5b25-417c-898b-35b3fa41ccb2@ozlabs.org>
+Date: Mon, 29 Jun 2026 18:26:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/9] vfio/pci: Clean up BAR zap and revocation
+Content-Language: en-GB
+To: "Tian, Kevin" <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>
+Cc: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Pranjal Shrivastava <praan@google.com>, Alistair Popple
+ <apopple@nvidia.com>, "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+References: <20260610154327.37758-1-matt@ozlabs.org>
+ <20260610154327.37758-7-matt@ozlabs.org>
+ <DM6PR11MB3690CA709415069FFA5121838CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <DM6PR11MB3690CA709415069FFA5121838CE52@DM6PR11MB3690.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 29, 2026 at 11:49:20AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
-> 
-> New issues:
-> - [Critical] Unvalidated userspace memory accesses in dirty ring clearing lead to host DoS and memory corruption.
-> - [High] Missing TLB invalidation and DSB in dirty ring hardware path.
-> - [High] Hardware buffer allocation lacks strict physical alignment guarantees.
-> 
-> Pre-existing issues:
-> - [High] Missing architecturally required context synchronization (ISB) after control register writes.
-> - [High] Unsafe wfi() polling loop causes lost wakeups and CPU lockups.
-> - [Medium] Hardware dirty log clearing erroneously falls back to software due to incorrect return value processing.
-> --
-> 
-> commit 9f463875fd0f7eddcaa7053b557d7a2cc21e83c1
-> Author: Leonardo Bras <leo.bras@arm.com>
-> 
-> KVM: arm64: Add hardware-accelerated dirty-ring cleaning routine
-> 
-> This commit implements an arm64 version of kvm_arch_dirty_ring_clear using
-> FEAT_HACDBS. It translates dirty-ring entries into HDBSS entries and uses
-> the hardware mechanism to mark writable-dirty pages as clean. Invalid
-> entries are then cleared, falling back to software cleaning on error.
-> 
-> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
-> > --- a/arch/arm64/kvm/dirty_bit.c
-> > +++ b/arch/arm64/kvm/dirty_bit.c
-> [ ... ]
-> > static int dirty_bit_clear(struct kvm *kvm, u64 *hw_entries, int size)
-> > {
-> > 	u64 hcr_el2;
-> > 	int ret;
-> > 
-> > 	preempt_disable();
-> > 
-> > 	hcr_el2 = read_sysreg(HCR_EL2);
-> > 	write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
-> > 	__load_stage2(&kvm->arch.mmu);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does this missing ISB after control register
-> writes expose the pipeline to undefined architectural states?
-> 
-> Writing to HCR_EL2 requires an immediate context synchronization event.
-> Executing __load_stage2 immediately after without an isb means it might
-> operate under a stale configuration.
+Hi Kevin,
 
-See prev patches
+On 16/06/2026 10:18, Tian, Kevin wrote:
+>> From: Matt Evans <matt@ozlabs.org>
+>> Sent: Wednesday, June 10, 2026 11:43 PM
+>>
+>> Previously, vfio_pci_zap_bars() (and the wrapper
+>> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
+>> calls to vfio_pci_dma_buf_move().
+>>
+>> This commit replaces them with a unified new function,
+>> vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
+>> and the unmap_mapping_range(), making it harder for callers to omit
+>> one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
+>> the write memory_lock before zapping, and adds a new
+>> vfio_pci_unrevoke_bars() for the re-enable path.
+> 
+> It's unusual to have three verbs (lock/zap/revoke) in one function name.
+> 
+> I wonder whether it's simpler to have:
+> 	vfio_pci_zap_bars_locked() 	// caller already holds the lock
+> 	vfio_pci_zap_bars()
+> 
+> 'revoke' is just a side-effect of 'zap', not necessarily to highlight it in
+> the name.
 
+(Just found this one unacknowledged, apologies.)  If you reckon it's a
+handful, sure I can shorten them.
 
-> 
-> > 
-> > 	hacdbs_start(hw_entries, size);
-> > 
-> > 	do {
-> > 		wfi();
-> > 	} while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but can this unprotected wfi wait loop cause
-> a lost wakeup and an indefinite CPU stall?
-> 
-> Because local interrupts are not masked around this check and wait, a timely
-> interrupt could satisfy the condition prematurely before wfi executes.
-> 
+As it already has ..._unrevoke_bars(), it makes sense to use
+..._revoke_bars() and ..._lock_revoke_bars().  IMHO the zap is a
+secondary effect, and "revoke the BARs" means to make them inaccessible
+from both DMA and CPU.
 
-iden
+I don't want to go down the path of _locked() though right now; I just
+want to tidy the current pattern without pulling new duties up to the
+call sites.
 
-> [ ... ]
-> > 	if (idx != 0) {
-> > 		ret = dirty_bit_clear(kvm, hw_entries, idx);
-> > 		*flush = *flush || ret > 0;
-> > 	}
-> > out_err:
-> > 	if (unlikely(ret != idx)) {
+>> As of "vfio/pci: Convert BAR mmap() to use a DMABUF", the
+>> unmap_mapping_range() to zap is no longer performed for vfio-pci since
+>> the DMABUFs used for BAR mappings already zap PTEs when the
+>> vfio_pci_dma_buf_move() occurs.
+>>
+>> However, it must be assumed that VFIO drivers which override the .mmap
+>> op could create mappings _not_ backed by DMABUFs.  So, the zap is
+>> still performed on revoke if .mmap is overridden, using a new
+>> zap_bars_on_revoke flag.  A driver can explicitly opt out; the flag is
+>> cleared by the hisi_acc_vfio_pci driver, since its .mmap just wraps
+>> vfio_pci_core_mmap() and so still uses DMABUFs.
 > 
-> [Severity: Medium]
-> This is a pre-existing issue, but does this logic incorrectly evaluate a
-> successful batch outcome as an error?
+> the cost of unmap_mapping_range() is trivial when there is no mmap
+> on the device fd.
 > 
-> If the loop finishes exactly on a batch boundary, idx is reset to 0, but ret
-> holds the success count of the previous batch. This causes the mismatch check
-> to evaluate to true, forcing a -EAGAIN return and triggering an unnecessary
-> software fallback.
+> so it could be simpler by always doing:
 > 
+> 	vfio_pci_dma_buf_move();
+> 	unmap_mapping_range();
+> 
+> and remove the flag.
 
-iden
+I did consider this.  I do agree it's cheap, but I still prefer to avoid
+unnecessary activities (just to decouple and insulate against things
+somehow changing in future).  From previous postings, others didn't seem
+to mind the flag approach, at least.
 
-> [ ... ]
-> > @@ -256,6 +256,72 @@ int __kvm_arch_dirty_log_clear(struct kvm *kvm,
-> >  	return ret;
-> >  }
-> >  
-> > +int __kvm_arch_dirty_ring_clear(struct kvm *kvm, struct kvm_dirty_ring *ring,
-> > +				int *nr_entries_reset)
-> > +{
-> > +	u64 *hw_entries;
-> > +	u64 slot_offset = 0;
-> > +	u64 ttwl;
-> > +	int i, ret;
-> > +	u32 slot = -1;
-> > +
-> > +	if (signal_pending(current))
-> > +		return -EINTR;
-> > +
-> > +	ttwl = HDBSS_ENTRY_TTWL(KVM_PGTABLE_LAST_LEVEL);
-> > +
-> > +	hw_entries = kmalloc(max(ring->size * sizeof(u64), PAGE_SIZE), GFP_KERNEL);
-> 
-> [Severity: High]
-> Does this kmalloc call lack the strict physical alignment guarantees required
-> by the hardware accelerator?
-> 
-> Since kmalloc does not guarantee natural physical alignment for large buffers,
-> is it possible for physical address truncation to occur? This could cause the
-> hardware accelerator to parse unaligned memory and corrupt arbitrary page DBM
-> bits.
-
-I recall it had size-alignmen guarantees. Largest buffer size should be 
-64k x 8B, so it should be ok.
+Thanks,
 
 
-> 
-> > +	if (!hw_entries)
-> > +		return -ENOMEM;
-> > +
-> > +	for (i = 0; i < ring->size; i++) {
-> > +		struct kvm_dirty_gfn *entry;
-> > +		gfn_t gfn;
-> > +
-> > +		entry = &ring->dirty_gfns[(ring->reset_index + i) &
-> > +					  (ring->size - 1)];
-> > +
-> > +		if (!kvm_dirty_gfn_harvested(entry))
-> > +			break;
-> > +
-> > +		if (entry->slot != slot) {
-> > +			struct kvm_memory_slot *memslot;
-> > +
-> > +			memslot = kvm_dirty_ring_get_memslot(kvm, entry->slot);
-> > +			slot = entry->slot;
-> > +			slot_offset = memslot->base_gfn;
-> 
-> [Severity: Critical]
-> Can an invalid, user-provided entry->slot lead to a NULL pointer dereference
-> here?
-> 
-> The memslot pointer is dereferenced directly to read base_gfn without a NULL
-> check.
-> 
-> > +		}
-> > +
-> > +		gfn = slot_offset + entry->offset;
-> 
+Matt
 
-Correct. I have to verify the return value of get_memslot before using it.
-Will do in v3
-
-> [Severity: Critical]
-> Is entry->offset validated against the memslot bounds?
-> 
-> Using an unvalidated user-provided offset here allows arbitrary Stage-2 GPA
-> computation. This could enable Stage-2 memory corruption or privilege
-> escalation.
-
-Correct. Will verify the offset against memslot size before this.
-Will be done in v3.
-
-> 
-> > +
-> > +		hw_entries[i] = (gfn_to_gpa(gfn) & HDBSS_ENTRY_IPA) |
-> > +				ttwl | HDBSS_ENTRY_VALID;
-> > +	}
-> > +
-> > +	ret = dirty_bit_clear(kvm, hw_entries, i);
-> 
-> [Severity: High]
-> Does this path miss an architecturally required TLB invalidation and DSB?
-> 
-> dirty_bit_clear relies on the caller to handle the TLBI (as noted in its
-> internal comments for the log clearing path), but this ring clearing routine
-> appears to jump directly to invalidating the entries and returning.
-
-There is a dsb() and then a TLBI before returning to guest.
-
-> 
-> This could leave stale writable TLB entries in the guest.
-> 
-> > +
-> > +	/* Set as invalid all successfully cleaned entries */
-> > +	for (int j = 0; j < ret; j++) {
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260629111820.1873540-1-leo.bras@arm.com?part=12
-
-Thanks!
-Leo
