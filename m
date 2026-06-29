@@ -1,271 +1,204 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC4533F5BD
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 07:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7DE3E5EF6;
+	Mon, 29 Jun 2026 08:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782719884; cv=none; b=s8qWjrBNT1RxEqryZHvYExCCRrbUsh2KoUBulJnoRy1BNXhD5sI5FmRRdWmTqMKXItS60KqBFVg6ePXvVc0+vrCZrlPGNHpLtOq8RezhLUvIodVGU3PJwHEfrAS7RZdyrW+PaSZwBjNPOB8zWQjkioEjNzKIwRE9nBpEpPtVyJI=
+	t=1782720464; cv=none; b=U1VdrIJBosm2H0u7AjBnVALTqtwXXhAYwq5FrroOvYl+rtn3fpl4Fh3HowHQWuIGFcLo/rI6gTExpwk5UKUaz2fa8crmjaasLSxKWisGMjAkImd859Xz7tWCkq41PvfZWa6NIbGj1clQZaLQNo86Lo3SGW9b3p/CFKQK94g+wvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782719884; c=relaxed/simple;
-	bh=5n0fnq+Hutfte3U6TyqL5qF4Xdqip5As7mrjblHjUcY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=jZq2Qpb6520dkOOmmL9UGY8MK0Mau44nCmPTkTC6FZVt5YV0eKVRtuCBnr6x8HXPwtTjCKXkl9ClkndcItu2VgHJrLOU/jYgV1f/bbcwjdf/9pUWOsa9T6Cu6rKkwEvUFgxX85FfMWqq8Y4T7DYwYBM8e5nBtNEIJsaijXXlOIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxlniFJUJqRRcZAA--.39542S3;
-	Mon, 29 Jun 2026 15:57:57 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxHOF+JUJqCme3AA--.19891S3;
-	Mon, 29 Jun 2026 15:57:53 +0800 (CST)
-Subject: Re: [PATCH v4 2/3] LoongArch: KVM: Implement guest-side PV TLB flush
-To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, loongarch@lists.linux.dev
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-References: <20260615082154.42144-1-cui.tao@linux.dev>
- <20260615082154.42144-3-cui.tao@linux.dev>
- <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
- <1bfa4941-b94b-410a-9b64-c13f2712edf9@linux.dev>
- <9ec9d22b-93fd-3dcb-c6b8-19563f1b7c0a@loongson.cn>
- <404180d0-c734-4465-8752-f43279730692@linux.dev>
- <6f837e00-e606-ddaa-b22b-dd30348a18fb@loongson.cn>
- <084d7bec-592c-31b5-aa44-099bff87af9a@loongson.cn>
- <013459e1-f817-42b5-a0fd-20b38d9b6140@linux.dev>
- <835a9c5c-2f66-293b-d093-fc59bac26a01@loongson.cn>
- <416dfbf8-f765-442e-b6de-6fc0fe1a4b5f@linux.dev>
- <a7e7a17c-fdaa-b168-2a7b-d4cd4018b662@loongson.cn>
- <d09a90f7-94b1-4a2f-bcea-d42802d2353e@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <9701d2ee-1f5b-f576-b831-471111b6e5ba@loongson.cn>
-Date: Mon, 29 Jun 2026 15:54:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1782720464; c=relaxed/simple;
+	bh=JlQUQE0x6pAsBcJIhVnxetBcQ3/zlQq0fX7Yw1HEuNM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YVrdCSFkdpENE45zlLCHhc5P07toTPdk6bCxxwldfpEzMCZvoG1PWUI8oE6RAVEvslvr527WH8f6B/x3t8ugFypXErELd0y2Wn4RkfJwoktXD9I7ztufserM+0E4lCUaG3Yx6YwLxxPR/wbkifst6n2ln6NKUFFH9vE/1CmafcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TEpYlNln; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c24Brf1S; arc=none smtp.client-ip=103.168.172.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TEpYlNln";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c24Brf1S"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id 95552138020B;
+	Mon, 29 Jun 2026 04:07:38 -0400 (EDT)
+Received: from phl-imap-05 ([10.202.2.95])
+  by phl-compute-04.internal (MEProxy); Mon, 29 Jun 2026 04:07:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782720458;
+	 x=1782727658; bh=/WIe7fhbq6CJNEEuiOwk3r/zWUSncZp6R6QFRwJ6sZY=; b=
+	TEpYlNln6M/GwjHpSnfu7rcdvzFIRDl8PaPZdTR79bfu+93tv92bHNDr8ENAoz0o
+	I+3XOz+pyki2rkkp/RkwXg8QRaJpJiIvR1f0tt8I+SaQuvnEJlOAQI6CC1z6yuZ0
+	cVgd/4iHRc6MLkND4uxVIRG0nvMRx4MGsgfInhPlnKeJM8pUkN12VG8ueW2PsOxW
+	4MefLznfvAN244lHNATTmj+ua+WwiZat+gfP8BGqjCXRdi0M/+5lN5Uzmi8DBRk9
+	qOZeAPBpKTz28WGmYMtNgUnS3AhyykTIUnN8T+m0kvmDFl4Aj7gFAV/TTmsNx+r6
+	Jtg81SkeOZQVOe1HWz4Juw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782720458; x=
+	1782727658; bh=/WIe7fhbq6CJNEEuiOwk3r/zWUSncZp6R6QFRwJ6sZY=; b=c
+	24Brf1SGc6bjX+gJggjD7fmSOT+iM2lF24wJCuV8s2Amdzt3Twtd0vjLYD7Kbt7Z
+	+kQoptcHz/VtGk8XGv79LNoCZacAq5R7BAxPksArO05cBqn1akZdOx6QMuzHyKsp
+	jZ5aPv2lk/STvMi4lhBu2oUJ3KD+K5F5xqv9MBLZ6CU0PGJ3KI+fRCvE0f+e7q5T
+	uEQZkmuOQpm6EKiGmWuLksFY8y18pLeUcAz299olDRkgTanwR4wU8CSDkLsduURr
+	qyrnHb9qvfpeWKz95/irIS1jl+HSEg0BQDlK7TA+5DM9R3tqbP934xrod3JsNeCN
+	bn6beHziPLZyr1RaQBnnQ==
+X-ME-Sender: <xms:yCdCapri6_Fghw3mlaxsy_gFSSzhIwFXsDsNSMOFs66NbUuvHEYu7g>
+    <xme:yCdCamerjDzu3SkJsJt3qEPErm5Jr5VIrDx-XCtfJMJEoOf5pYL1aPAL4K1m0ol0d
+    u21Y6WhZ3M90bX6VcOFH8qU30t4-5iJBk_D2YIapVkzsHqYJk_o71YS>
+X-ME-Proxy-Cause: dmFkZTGqoTHHYaCI7RURCJhbWHvAkwwtWLTme13LzQ5hLxT15nHz8y1KVwyjgVqWxzHrQs
+    ToUxEitfKDOpnMGHxJtxeXXfPwSpUOYKCbLG3DvDrtRiFisamjIvbRYQ8eHCu3vuqKkFV+
+    oGsvHlqt2QnvGfcOvmRuOO3Rgzas4qMskWtx3Scnrrx20Qj6yj3iPd9+zKy3qioo1rB1kC
+    NbqXUUQhwk7CbH9jPKcbA4qnRTFNBVVyitidRmU/FN7E7sMWO92pJbypgI30pCru3tSGoX
+    4d3jRIE5+wGTHtOqlpEwsN0x3RyunobmR8KafNHjr3b8znb/Ht8a7MfJTFEzr6ZVtoIPkp
+    YEm/Y5IKpJ7BR9D7SOhiAKZmz+xhjw+Rj3xZl+UuPyzGO/ptf2uS48xftDP82jFSPGfW1i
+    WUFvAhWp7rn6kmw50O2IbqNmMpIJJk3N6j0QnhkZxe9rSsCXY+yz3p4OT2eGCGDnr01Arj
+    1sqDxkxM7AGOwRp2cqGArUzSLYhPKHqfyQLHeEzDtqWWPt2AfNkUlUPb4ugsBXY3ifDHcm
+    rEin2AiU1hzBEGVpJXGUq8YO8ASTb7YaAQ4Ms9TA2vnH06i8XtAwN9VbW6ypBxduNhUPiP
+    nLczW/MyU9OJ2FdWXbqKiIb/kfE3CMT7L0MTJSderW3WxiiH9wuQPU0UShyg
+X-ME-Proxy: <xmx:yCdCaqfbNNdmOfirtwC33qahd0NFGOxhg_dXK8UoYrkmnnmFjgFULw>
+    <xmx:yCdCakdFbzk9KweAfKAiLwLQgD4racV8i02VE4-Fx5JTJvZq9isCqw>
+    <xmx:yCdCakb8QFZewQ3ezXiHAUYXU4zyjwrQ2jNwpx7JVpowCgaV4w9SdQ>
+    <xmx:yCdCar0ySJMq0u8YC5UhoDauKTq85d7kaWxynrhTGphqhhBu2OB0Rg>
+    <xmx:yidCaoHTNZ_VOhE49MHuA-FguNtgyjgUdDsWkzp50DUo55mdeNXYC66h>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 4D341182007E; Mon, 29 Jun 2026 04:07:36 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <d09a90f7-94b1-4a2f-bcea-d42802d2353e@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxHOF+JUJqCme3AA--.19891S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GFWfWrWDZFWxKw4ruF4fXrc_yoWfWr48pr
-	W8JFyUtrWDGry8Ar1Utr1UXryjyr1UJ3WUXr1UtFy8Jrn8tr1jqr1UXr1j9F1DWr48Jr1U
-	tr1UJry7Zr1UJrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
+X-ThreadId: ApSqBjiSqQZ-
+Date: Mon, 29 Jun 2026 10:06:54 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Juergen Gross" <jgross@suse.com>, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, x86@kernel.org,
+ linux-acpi@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-ide@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-crypto@vger.kernel.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
+ platform-driver-x86@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Daniel Lezcano" <daniel.lezcano@kernel.org>,
+ "Zhang Rui" <rui.zhang@intel.com>,
+ "lukasz.luba@arm.com" <lukasz.luba@arm.com>,
+ "Jason Baron" <jbaron@akamai.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Tony Luck" <tony.luck@intel.com>,
+ "Yazen Ghannam" <yazen.ghannam@amd.com>, "Len Brown" <lenb@kernel.org>,
+ "Pavel Machek" <pavel@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Kirill A. Shutemov" <kas@kernel.org>,
+ "Rick Edgecombe" <rick.p.edgecombe@intel.com>, "Pu Wen" <puwen@hygon.cn>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Ajay Kaher" <ajay.kaher@broadcom.com>,
+ "Alexey Makhalov" <alexey.makhalov@broadcom.com>,
+ "Broadcom internal kernel review list"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>,
+ "Reinette Chatre" <reinette.chatre@intel.com>,
+ "Dave Martin" <Dave.Martin@arm.com>, "James Morse" <james.morse@arm.com>,
+ "Babu Moger" <babu.moger@amd.com>,
+ "Tony W Wang-oc" <TonyWWang-oc@zhaoxin.com>,
+ "Damien Le Moal" <dlemoal@kernel.org>,
+ "Niklas Cassel" <cassel@kernel.org>, "Dave Airlie" <airlied@redhat.com>,
+ "Helge Deller" <deller@gmx.de>, linux-geode@lists.infradead.org,
+ "Olivia Mackall" <olivia@selenic.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "Linus Walleij" <linusw@kernel.org>,
+ "Bartosz Golaszewski" <brgl@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
+ "Dexuan Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>,
+ "Guenter Roeck" <linux@roeck-us.net>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Alexander Shishkin" <alexander.shishkin@linux.intel.com>,
+ "Jiri Olsa" <jolsa@kernel.org>, "Ian Rogers" <irogers@google.com>,
+ "Adrian Hunter" <adrian.hunter@intel.com>,
+ "James Clark" <james.clark@linaro.org>,
+ "Josh Poimboeuf" <jpoimboe@kernel.org>,
+ "Pawan Gupta" <pawan.kumar.gupta@linux.intel.com>,
+ "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+ "Andy Lutomirski" <luto@kernel.org>,
+ "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
+ "Huang Rui" <ray.huang@amd.com>,
+ "Mario Limonciello" <mario.limonciello@amd.com>,
+ "Perry Yuan" <perry.yuan@amd.com>,
+ "K Prateek Nayak" <kprateek.nayak@amd.com>,
+ "srinivas.pandruvada@linux.intel.com"
+ <srinivas.pandruvada@linux.intel.com>,
+ "Artem Bityutskiy" <artem.bityutskiy@linux.intel.com>,
+ "Artem Bityutskiy" <dedekind1@gmail.com>,
+ "Miquel Raynal" <miquel.raynal@bootlin.com>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Vignesh Raghavendra" <vigneshr@ti.com>,
+ "Ashok Raj" <ashok.raj.linux@gmail.com>,
+ "Hans de Goede" <hansg@kernel.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ "Rajneesh Bhardwaj" <irenic.rajneesh@gmail.com>,
+ "David E Box" <david.e.box@intel.com>, xen-devel@lists.xenproject.org
+Message-Id: <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
+In-Reply-To: <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
+References: <20260629060526.3638272-1-jgross@suse.com>
+ <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
+ <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
+Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Jun 29, 2026, at 09:01, J=C3=BCrgen Gro=C3=9F wrote:
+> On 29.06.26 08:52, Arnd Bergmann wrote:
+>> On Mon, Jun 29, 2026, at 08:04, Juergen Gross wrote:
+>>=20
+>> I assume this is fine, but since you don't mention it explicitly here,
+>> please clarify what this means for 32-bit CPUs without the rdmsrq
+>> instruction. Those will continue using the same instructions as before
+>> and just change the calling conventions, right?
+>
+> Yes. I thought this would be clear from the following:
+>
+>    - They are based on primitives using 64-bit sized values anyway.
 
+Right, that was my reading of it as well, but it's not entirely
+clear when the function name is the same as the mnemonic of an
+instruction that only exists on newer CPUs and the later patch
+descriptions (e.g. 25/32 that I was Cc's on) have a much shorter
+explanation.
 
-On 2026/6/26 上午10:53, Tao Cui wrote:
-> 
-> 
-> 在 2026/6/26 09:37, Bibo Mao 写道:
->>
->>
->> On 2026/6/25 下午8:51, Tao Cui wrote:
->>>
->>>
->>> 在 2026/6/25 15:36, Bibo Mao 写道:
->>>>
->>>>
->>>> On 2026/6/25 下午3:15, Tao Cui wrote:
->>>>>
->>>>>
->>>>> 在 2026/6/25 14:11, Bibo Mao 写道:
->>>>>>
->>>>>>
->>>>>> On 2026/6/25 上午11:31, Bibo Mao wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 2026/6/25 上午10:27, Tao Cui wrote:
->>>>>>>>
->>>>>>>> Hi Bibo,
->>>>>>>>
->>>>>>>> 在 2026/6/17 09:05, Bibo Mao 写道:
->>>>>>>>>
->>>>>>>>>> Rather than argue from intuition, I'd like to try the hypercall approach
->>>>>>>>>> you suggested and measure the performance improvement against the current
->>>>>>>>>> path. I'll share the results with you once the testing is done, so we
->>>>>>>>>> can decide the direction based on the numbers.
->>>>>>>>> well, that is the best. It is my pleasure to discuss this with you.
->>>>>>>>>
->>>>>>>>
->>>>>>>> A quick update on the testing. I put both the hypercall and the
->>>>>>>> steal-time variants through two benchmarks on an 8-core host with a
->>>>>>>> 4:1 overcommitted guest (32 vCPUs), and wanted to share where things
->>>>>>>> stand.
->>>>>>>>
->>>>>>>> The two workloads:
->>>>>>>>      - ebizzy (all threads busy, mm-flush heavy)
->>>>>>>>      - tlb_bench in sleep-idle mode (1 flusher + 31 sleeping idle threads,
->>>>>>>>        so the idle vCPUs get preempted)
->>>>>>>>
->>>>>>>> ebizzy (records/s, higher is better), 32 vCPUs:
->>>>>>>>       no-PV       ~103,737
->>>>>>>>       hypercall   ~105,779
->>>>>>>>       steal-time  ~105,872
->>>>>>>>       -> all within noise (±2%); no measurable difference.
->>>>>>> Hi Tao,
->>>>>>>
->>>>>>> what is ebizzy command? ebizzy -m or ebizzy -M.
->>>>>>>
->>>>>>> could you try command on host and one VM without over-committed at first, and then two VMs and three VMs?
->>>>>>>
->>>>>>> Here is result on my 3C5000 Dual-way machines with 32 cores and two numa nodes:
->>>>>>>                     ./ebizzy -m          ./ebizzy -M
->>>>>>> host             8633                 158898
->>>>>>> VM(32 vCPUs)     6610                 133153
->>>>>>> VM/host          76%                  83%
->>>>>>>
->>>>>> just ./ebizzy -M is enough, it seems that CPU number is one key factor.
->>>>>>
->>>>>
->>>>> Sorry for the delay — it turned out my ebizzy command was wrong. I had
->>>>> been running `ebizzy -t <vcpus> -S 10`, which is neither -m nor -M, so
->>>>> neither mmap mode was active and the workload wasn't really stressing
->>>>> the TLB-flush path. Thanks for catching it.
->>>>>
->>>>> I re-ran with -m and -M on host and a single VM (8-core LoongArch
->>>>> KVM host, 8 vCPU guest, 1:1, no overcommit).
->>>>>
->>>>>                     ebizzy -m        ebizzy -M
->>>>> host             ~20,000          ~55,000
->>>>> VM (8 vCPU,1:1)  ~17,000          ~53,000
->>>>> VM/host          ~86%             ~97%
->>>>>
->>>>> The -m ratio (86%) is close to your 76%.
->>>> On my 3C5000 Dual-way machine, VM has the same CPU/memory topology with physical machine, the kernel is mainline without any patch.
->>>>                             ./ebizzy -M
->>>> Host (32 pCPUs)           158898
->>>> One VM(32 vCPUs)          133153                 83% of host
->>>> Two VMs(32 vCPUs each)    9083 + 9630 = 18713    11% of host
->>>>
->>>> It seems that with ebizzy benchmark, there is big difference if vCPU is preempted. Even if vCPU is not preempted, the performance is only 83% of host on my 3C5000 Dual-way machine.
->>>
->>> After fixing the ebizzy command, I
->>> have multi-VM overcommit results for both approaches.
->>>
->>> Setup: 8-core LoongArch (single-socket, single NUMA), KVM,
->>> linux-next-20260623, 8 vCPU per VM. All VMs run ebizzy -M
->>> simultaneously, 3 runs each. The PV-off baseline uses a guest kernel
->>> with CONFIG_PARAVIRT=y but without the PV TLB flush patches, so
->>> PV IPI and steal-time are active in all three columns.
->>>
->>> ebizzy -M, total records/s across all VMs:
->>>
->>>                 PV-off      steal-time   hypercall
->>>     1:1 (1VM)   53,600      53,800       53,900
->>>     2:1 (2VM)    2,600      42,600       45,300
->>>     3:1 (3VM)    2,800      44,700       46,000
->>>
->>> At 1:1 there is no difference — no vCPU gets preempted. Under
->>  From the previous result, the score on host is 55,000, with 1:1 mode the virtualization efficiency is 97%, it is hard to improve actually. On my 3C5000 Dual-way machine, the virtualization efficiency is 83%, I think it can improve even with 1:1 mode.
->>
->> Also the paper at https://dl.acm.org/doi/pdf/10.1145/2892242.2892245 proves it with 1:1 mode.
-> 
-> Thanks for the reference. That makes sense — the 1:1 overhead is
-> larger on multi-socket systems, so there may be room to improve
-> even without overcommit.
-> 
->>> overcommit, without PV TLB flush the throughput drops to ~3-5% of
->>> the single-VM case, because every remote TLB flush sends IPIs to
->>> preempted vCPUs. With either PV TLB flush variant, preempted vCPUs
->>> are skipped, and total throughput stays at ~85-90% of single-VM
->>> (bounded by physical cores).
->>>
->>> Hypercall is consistently 3-6% above steal-time in the overcommit
->>> cases. A possible reason is that the hypercall hands the entire
->>> target set to the host in one call, while steal-time still IPIs the
->>> running vCPUs and only defers the preempted ones.
->>>
->>> On our 8-core machine the collapse is more severe than on your
->>> 3C5000 (~5% vs 11% of host at 2 VMs), likely due to the smaller
->>> core count and single-NUMA topology.
->> yeap, with more CPUs the benefit is more high. I think that this kind of patch had better be tested on server platform if there is such hardware by hand after all KVM is used in server platform in most time. I will test the patch in later.
->>
-> 
-> I'll try to get access to a server-class LoongArch machine for
-> further testing. If you're able to run the patches on the 3C5000,
-> that would be great too.
-Sure, I will verify it on Server board. The flow may be slow since there 
-  are still many pending issues such as:
-   1. which TLB flush APIs should be hooked
-   2. On KVM hypervisor side, should fine-grained TLB flush be supported?
-      all TLBs or TLBs from GVA->GPA, or asid based TLBs flush
-   3. Or at first use a basic TLB flush method, and then optimize in later.
+>>> Note that most patches of this series are independent from each othe=
+r.
+>>> Only the patches removing a specific interface (patches 7, 15, 26 and
+>>> 30) and the last two patches of the series depend on all previous
+>>> patches.
+>>=20
+>> It looks like you are touching most files twice or more here, to
+>> first convert from rdmsr to rdmsrq and then to change the
+>> two-argument rdmsrq() macro to a single-argument inline. If you
+>> introduce the inline version of rdmsrq() first, you should be
+>> able to skip the second step (patch 31) as they could be able
+>> to coexist.
+>
+> I've discussed how to structure the series with Ingo Molnar before [1]=
+. The
+> current approach was his preference.
 
-All these require that there are the same test bed and test cases, then 
-we discuss it based the real performance data.
+Ok.
 
-Regards
-Bibo Mao
-> 
->> Regards
->> Bibo Mao
->>>
->>> Thanks,
->>> Tao
->>>
->>>>
->>>> Regards
->>>> Bibo Mao
->>>>>
->>>>> I then tried multi-VM overcommit (2 and 3 VMs, all running ebizzy -M
->>>>> simultaneously). The initial result showed a large gap between the
->>>>> PV-TLB-flush kernel and the baseline under overcommit. Both kernels
->>>>> have CONFIG_PARAVIRT enabled (PV IPI and steal-time are active in
->>>>> both), so PV TLB flush should be the main differentiator — but since
->>>>> they are two separate kernel images rather than a clean on/off toggle,
->>>>> there may be some noise from other differences. I'm now re-running
->>>>> with a QEMU CPU property (kvm-pv-tlb-flush on/off) on the same kernel
->>>>> to isolate the effect cleanly.
->>>>>
->>>>> I'll share the verified numbers once I have them.
->>>>>
->>>>> Thanks,
->>>>> Tao
->>>>>
->>>>>>> Regards
->>>>>>> Bibo Mao
->>>>>>>
->>>>>>>>
->>>>>>>> tlb_bench sleep-idle (ns/flush, lower is better), 1 flusher + 31 idle:
->>>>>>>>       no-PV       ~166,536
->>>>>>>>       steal-time  ~149,553
->>>>>>>>       hypercall    ~88,686
->>>>>>>>
->>>>>>>> ebizzy's workload is mostly threads staying busy with alloc/copy/free,
->>>>>>>> which drives remote TLB flushes against running vCPUs — that may not be
->>>>>>>> the path this feature is meant to optimize, so the flat result there
->>>>>>>> probably says more about the workload mismatch than about the feature
->>>>>>>> itself. I need to take another look at whether the benchmark actually
->>>>>>>> exercises the cases PV TLB flush targets before reading too much into
->>>>>>>> the numbers, including the tlb_bench figure above.
->>>>>>>>
->>>>>>>> So I'd hold off on any conclusion for now. Next I'll re-examine the
->>>>>>>> test setup / pick a workload that better matches the feature, and keep
->>>>>>>> you posted once I have something more representative.
->>>>>>>>
->>>>>>>> Best,
->>>>>>>> Tao
->>>>>>>>
->>>>>>
->>>>
->>
-
+      Arnd
