@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C093D16F1;
-	Mon, 29 Jun 2026 23:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCBE3CF047;
+	Mon, 29 Jun 2026 23:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782775736; cv=none; b=RqiVXujw1RRgW+FGYNoewVhvTC42TRVDzRzst6lmDCnu6fGsKLDx3I73TsqLk0nuRnFjyucgBeqCSKVUQQ3xc1lOFXHSHpYe7Vy33POIY27r/xrzFfkdmzFexEr1yCSCGdZRS55fv7ohH1hn7qLVXF4mAKhtUJd7gcRhLlI5iDs=
+	t=1782775736; cv=none; b=LNeEMy7kXAJFj7LHOP8bD+4VvhTner5H4FOeHIZHXQ1WCefKsk/TFl6zI9il50Pw5gVDePH4YFjUDP4akj0+yKvf1Iqh7dCnwUgmcf0V7B1vokvB/uYp9mTwdDeIPFNIpxTbn5BgBIwQhlq6i9hcIPCVA7B3/xIUaw5q8zmbUwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782775736; c=relaxed/simple;
-	bh=9dzQhVmK1a5TntAvMMq88dSvPO/uuN+L1ocKWyRDSsI=;
+	bh=Rb74TtPntcb6nfQvSzlTCZkzMQqty6wAk0rCb6Z8YOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qN7f20VlidQc/ks4NUponJdC+2MC+fym/dUCm72MB5eGcahfgrWqrXIcJSgP2Oq6KPquMf7xN1dp/EShDqMgL1O2pj0CX6/RhVnoL1YxtSeh3uxVCE4Amx3+ACizg2DpRCuAKgNRS/RIbhIqjhTwKmVF+JLkP53cRDt/FzXZdgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e76nk8+I; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=fQZ1exYFXFcKMZzhlJLIvcPoLq2C5jLdpDkFsPQgzGRxyJb+tqCJ4AYhbu4AVChF5emzcfRsLfvbVyzg45HxT98SFMdZAGliTn9ZdBfSHhSU3ordSbyiEUd1qiI4B/yn89wuadQg2ZkNSXWQs9E1PBSSeaNrq5dMxdD66s96sEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xqtec+V4; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e76nk8+I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xqtec+V4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782775729; x=1814311729;
+  t=1782775734; x=1814311734;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9dzQhVmK1a5TntAvMMq88dSvPO/uuN+L1ocKWyRDSsI=;
-  b=e76nk8+IUaOD7p0Tmnqs1zCJ/SiFRJYEjxmvmwria89RyJfnRAQhEBi1
-   3VRIFWg6Uwb5VS6Yie+00MCYPsPoEu2tN75v/BIVhI1IjU+LRqZLlXK1e
-   BzV7gUJxeZaFHC34o5PELS8t6GFR29B1bFXqmeSWOuK9dA/Fyr04lOApt
-   4pTWX0L+ggmngN5GVYfYjNsHnEHKKxc3mS1LlRAUbKiid00NT/UrVMhWD
-   rzC15RFXv95t0ndd4QAPmZIMB/FmDd0apGmOchM4aJF5UTAM63LXm1hWF
-   wE40hqSbmjrm+9q8icbHHJvU9Ma5lnzR6B5u23iD2voPPycgDdz22HWes
-   Q==;
-X-CSE-ConnectionGUID: M0bECPNhRmK5ibns9+hfWw==
-X-CSE-MsgGUID: qAA/0LNfRUWqv8nfxSd7xg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82593501"
+  bh=Rb74TtPntcb6nfQvSzlTCZkzMQqty6wAk0rCb6Z8YOI=;
+  b=Xqtec+V45WQNmG9bvvQR3H/K72Fwh6TScp9u5uPo5vNM5qicAhuMkyCK
+   4JcqNPTk6A4O5hM3Uh6Il/h/3NTMLJEYWQapVfOhqMmTCwd383RBx67Hx
+   6kZPq1G3/905MI0w9RsCVuwK0GLu3NSLiyWa3/UZV8yKOoCYWVjNaVA46
+   E5JFmmz+r4YY+o7fOuRxNtHBgBaShl2RSYmkX6CA4qivaBuzCUmqcAT77
+   xUiUqQ//D0uBE+9mbObUPV/RnkdTHDGG4K4l1zryR4isfH1/BEfpopPie
+   WWtq4stb2LjQGX6FD/YMrlmBU2qNqpDjUFesbg+AofTrzD/fIf63sPy3s
+   A==;
+X-CSE-ConnectionGUID: OhRG9HMETh+6V4QO60DtkA==
+X-CSE-MsgGUID: A5YxEF6UTZu80+/JUbw1EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82593506"
 X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="82593501"
+   d="scan'208";a="82593506"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
-X-CSE-ConnectionGUID: Yc0MH47+Queu3XdKGODNXQ==
-X-CSE-MsgGUID: Zp4uDeglRUqu/jKth8wZIw==
+X-CSE-ConnectionGUID: X8gWNsAfR5Wdz0MZOIVsew==
+X-CSE-MsgGUID: cEhoouwbRnCerFneENZwIg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="290220144"
+   d="scan'208";a="290220141"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
 From: Zide Chen <zide.chen@intel.com>
@@ -56,9 +56,9 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Falcon Thomas <thomas.falcon@intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v6 6/8] KVM: x86/pmu: Move RDPMC emulation into per-vendor callbacks
-Date: Mon, 29 Jun 2026 16:19:35 -0700
-Message-ID: <20260629231938.15129-7-zide.chen@intel.com>
+Subject: [PATCH v6 5/8] KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
+Date: Mon, 29 Jun 2026 16:19:34 -0700
+Message-ID: <20260629231938.15129-6-zide.chen@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260629231938.15129-1-zide.chen@intel.com>
 References: <20260629231938.15129-1-zide.chen@intel.com>
@@ -70,195 +70,231 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The current RDPMC emulation splits responsibility: rdpmc_ecx_to_pmc()
-in each vendor returns a kvm_pmc, then common code calls
-pmc_read_counter().
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-This design cannot support RDPMC reads that don't map to a counter,
-such as PERF_METRICS on Intel platforms.
+Bit 15 in IA32_PERF_CAPABILITIES indicates that the CPU provides
+built-in support for Topdown Microarchitecture Analysis (TMA) L1
+metrics via the IA32_PERF_METRICS MSR.
 
-Replace rdpmc_ecx_to_pmc() with emulate_rdpmc(), which takes full
-ownership of the emulation and writes the result directly into @data.
+Expose this capability only when mediated vPMU is enabled, as emulating
+IA32_PERF_METRICS in the legacy vPMU model is impractical.
 
-Also drop the redundant bitmask in intel_emulate_rdpmc() since
-pmc_read_counter() already applies the counter's bit-width mask.
+Pass IA32_PERF_METRICS through to the guest only when mediated vPMU is
+enabled and bit 15 is set in guest IA32_PERF_CAPABILITIES.  Allow
+kvm_pmu_{get,set}_msr() to handle this MSR for host accesses.
 
-No functional change intended.
+Save and restore this MSR on host/guest PMU context switches so that
+host PMU activity does not clobber the guest value, and guest state
+is not leaked into the host.
 
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
-v6: new patch.
+v5:
+- Remove host_initiated check in set/get MSR handlers.
+v4:
+- Remove WARN_ON_ONCE() and simply reject the guest accesses by checking
+  host_initiated. (Sashiko)
+- Passthru MSR_PERF_METRICS only if has_mediated_pmu is true. (Sashiko)
+- Remove the redundant !! in vcpu_has_perf_metrics().
+v3:
+- Replace WARN_ON() with WARN_ON_ONCE(). (Dapeng)
+- Add comments to explain why we don't validate writes on PERF_METRICS.
 ---
- arch/x86/include/asm/kvm-x86-pmu-ops.h |  2 +-
- arch/x86/kvm/pmu.c                     |  9 +--------
- arch/x86/kvm/pmu.h                     |  4 ++--
- arch/x86/kvm/svm/pmu.c                 | 13 +++++++++----
- arch/x86/kvm/vmx/pmu_intel.c           | 25 ++++++++++++-------------
- 5 files changed, 25 insertions(+), 28 deletions(-)
+ arch/x86/include/asm/kvm_host.h   |  1 +
+ arch/x86/include/asm/msr-index.h  |  1 +
+ arch/x86/include/asm/perf_event.h |  1 +
+ arch/x86/kvm/msrs.c               |  6 +++++-
+ arch/x86/kvm/pmu.h                |  5 +++++
+ arch/x86/kvm/vmx/pmu_intel.c      | 31 +++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/vmx.c            |  7 +++++++
+ 7 files changed, 51 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-pmu-ops.h b/arch/x86/include/asm/kvm-x86-pmu-ops.h
-index 4a223c2793e3..4b50ed058aed 100644
---- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
-@@ -13,7 +13,7 @@
-  * KVM_X86_PMU_OP_OPTIONAL() can be used for those functions that can have
-  * a NULL definition.
-  */
--KVM_X86_PMU_OP(rdpmc_ecx_to_pmc)
-+KVM_X86_PMU_OP(emulate_rdpmc)
- KVM_X86_PMU_OP(msr_idx_to_pmc)
- KVM_X86_PMU_OP_OPTIONAL(check_rdpmc_early)
- KVM_X86_PMU_OP(is_valid_msr)
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index f82ba63767d0..8ef2d4761790 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -768,8 +768,6 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
- int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
--	struct kvm_pmc *pmc;
--	u64 mask = ~0ull;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 80f638588bf7..96376d8a5199 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -630,6 +630,7 @@ struct kvm_pmu {
+ 	u64 global_status_rsvd;
+ 	u64 reserved_bits;
+ 	u64 raw_event_mask;
++	u64 perf_metrics;
+ 	struct kvm_pmc gp_counters[KVM_MAX_NR_GP_COUNTERS];
+ 	struct kvm_pmc fixed_counters[KVM_MAX_NR_FIXED_COUNTERS];
  
- 	if (!pmu->version)
- 		return 1;
-@@ -777,17 +775,12 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
- 	if (is_vmware_backdoor_pmc(idx))
- 		return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 18c4be75e927..fdcaeb6c8352 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -331,6 +331,7 @@
+ #define PERF_CAP_PEBS_FORMAT		0xf00
+ #define PERF_CAP_FW_WRITES		BIT_ULL(13)
+ #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
++#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
+ #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
+ #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
+ 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 1eb13673e889..bc2e1cbcd9b9 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -447,6 +447,7 @@ static inline bool is_topdown_idx(int idx)
+ #define GLOBAL_STATUS_ARCH_PEBS_THRESHOLD_BIT	54
+ #define GLOBAL_STATUS_ARCH_PEBS_THRESHOLD	BIT_ULL(GLOBAL_STATUS_ARCH_PEBS_THRESHOLD_BIT)
+ #define GLOBAL_STATUS_PERF_METRICS_OVF_BIT	48
++#define GLOBAL_STATUS_PERF_METRICS_OVF		BIT_ULL(GLOBAL_STATUS_PERF_METRICS_OVF_BIT)
  
--	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
--	if (!pmc)
--		return 1;
--
- 	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
- 	    (kvm_x86_call(get_cpl)(vcpu) != 0) &&
- 	    kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
- 		return 1;
+ #define GLOBAL_CTRL_EN_PERF_METRICS		BIT_ULL(48)
+ /*
+diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+index 3bf42d90ad14..c751a8dbd45d 100644
+--- a/arch/x86/kvm/msrs.c
++++ b/arch/x86/kvm/msrs.c
+@@ -230,7 +230,7 @@ static const u32 msrs_to_save_pmu[] = {
+ 	MSR_ARCH_PERFMON_FIXED_CTR0, MSR_ARCH_PERFMON_FIXED_CTR1,
+ 	MSR_ARCH_PERFMON_FIXED_CTR2, MSR_ARCH_PERFMON_FIXED_CTR3,
+ 	MSR_CORE_PERF_FIXED_CTR_CTRL, MSR_CORE_PERF_GLOBAL_STATUS,
+-	MSR_CORE_PERF_GLOBAL_CTRL,
++	MSR_CORE_PERF_GLOBAL_CTRL, MSR_PERF_METRICS,
+ 	MSR_IA32_PEBS_ENABLE, MSR_IA32_DS_AREA, MSR_PEBS_DATA_CFG,
  
--	*data = pmc_read_counter(pmc) & mask;
--	return 0;
-+	return kvm_pmu_call(emulate_rdpmc)(vcpu, idx, data);
- }
- 
- static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
+ 	/* This part of MSRs should match KVM_MAX_NR_INTEL_GP_COUNTERS. */
+@@ -2625,6 +2625,10 @@ static void kvm_probe_msr_to_save(u32 msr_index)
+ 		     intel_pt_validate_hw_cap(PT_CAP_num_address_ranges) * 2))
+ 			return;
+ 		break;
++	case MSR_PERF_METRICS:
++		if (!(kvm_caps.supported_perf_cap & PERF_CAP_PERF_METRICS))
++			return;
++		break;
+ 	case MSR_ARCH_PERFMON_PERFCTR0 ...
+ 	     MSR_ARCH_PERFMON_PERFCTR0 + KVM_MAX_NR_GP_COUNTERS - 1:
+ 		if (msr_index - MSR_ARCH_PERFMON_PERFCTR0 >=
 diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 3066cade5790..cdbefda844b9 100644
+index 1b2f66a2e915..3066cade5790 100644
 --- a/arch/x86/kvm/pmu.h
 +++ b/arch/x86/kvm/pmu.h
-@@ -24,8 +24,8 @@
- #define KVM_FIXED_PMC_BASE_IDX INTEL_PMC_IDX_FIXED
- 
- struct kvm_pmu_ops {
--	struct kvm_pmc *(*rdpmc_ecx_to_pmc)(struct kvm_vcpu *vcpu,
--		unsigned int idx, u64 *mask);
-+	int (*emulate_rdpmc)(struct kvm_vcpu *vcpu, unsigned int idx,
-+			     u64 *data);
- 	struct kvm_pmc *(*msr_idx_to_pmc)(struct kvm_vcpu *vcpu, u32 msr);
- 	int (*check_rdpmc_early)(struct kvm_vcpu *vcpu, unsigned int idx);
- 	bool (*is_valid_msr)(struct kvm_vcpu *vcpu, u32 msr);
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index c18286545a7a..0517fd4bbcd7 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -84,10 +84,15 @@ static int amd_check_rdpmc_early(struct kvm_vcpu *vcpu, unsigned int idx)
+@@ -279,6 +279,11 @@ static inline u64 kvm_vcpu_get_perf_caps(struct kvm_vcpu *vcpu)
+ 	return vcpu->arch.perf_capabilities;
  }
  
- /* idx is the ECX register of RDPMC instruction */
--static struct kvm_pmc *amd_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
--	unsigned int idx, u64 *mask)
-+static int amd_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx, u64 *data)
- {
--	return amd_pmu_get_pmc(vcpu_to_pmu(vcpu), idx);
-+	struct kvm_pmc *pmc = amd_pmu_get_pmc(vcpu_to_pmu(vcpu), idx);
++static inline bool kvm_vcpu_has_perf_metrics(struct kvm_vcpu *vcpu)
++{
++	return kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_PERF_METRICS;
++}
 +
-+	if (!pmc)
-+		return 1;
-+
-+	*data = pmc_read_counter(pmc);
-+	return 0;
- }
- 
- static struct kvm_pmc *amd_msr_idx_to_pmc(struct kvm_vcpu *vcpu, u32 msr)
-@@ -302,7 +307,7 @@ static bool amd_pmc_is_disabled_in_current_mode(struct kvm_pmc *pmc)
- }
- 
- struct kvm_pmu_ops amd_pmu_ops __initdata = {
--	.rdpmc_ecx_to_pmc = amd_rdpmc_ecx_to_pmc,
-+	.emulate_rdpmc = amd_emulate_rdpmc,
- 	.msr_idx_to_pmc = amd_msr_idx_to_pmc,
- 	.check_rdpmc_early = amd_check_rdpmc_early,
- 	.is_valid_msr = amd_is_valid_msr,
+ void kvm_pmu_deliver_pmi(struct kvm_vcpu *vcpu);
+ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned pmc, u64 *data);
+ int kvm_pmu_check_rdpmc_early(struct kvm_vcpu *vcpu, unsigned int idx);
 diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 225afd3937c3..080677372c9b 100644
+index e426ddc8add4..225afd3937c3 100644
 --- a/arch/x86/kvm/vmx/pmu_intel.c
 +++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -84,14 +84,13 @@ static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
- 	}
- }
+@@ -188,6 +188,8 @@ static bool intel_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
+ 	switch (msr) {
+ 	case MSR_CORE_PERF_FIXED_CTR_CTRL:
+ 		return kvm_pmu_has_perf_global_ctrl(pmu);
++	case MSR_PERF_METRICS:
++		return kvm_vcpu_has_perf_metrics(vcpu);
+ 	case MSR_IA32_PEBS_ENABLE:
+ 		ret = kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_PEBS_FORMAT;
+ 		break;
+@@ -345,6 +347,9 @@ static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	case MSR_CORE_PERF_FIXED_CTR_CTRL:
+ 		msr_info->data = pmu->fixed_ctr_ctrl;
+ 		break;
++	case MSR_PERF_METRICS:
++		msr_info->data = pmu->perf_metrics;
++		break;
+ 	case MSR_IA32_PEBS_ENABLE:
+ 		msr_info->data = pmu->pebs_enable;
+ 		break;
+@@ -394,6 +399,15 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		if (pmu->fixed_ctr_ctrl != data)
+ 			reprogram_fixed_counters(pmu, data);
+ 		break;
++	case MSR_PERF_METRICS:
++		/*
++		 * On platforms that support only hardware level-1, bits [63:32]
++		 * are reserved and ignored by hardware. If hardware level-2 is also
++		 * supported, they may contain valid metric data.
++		 * Either way, guest writes are passed through verbatim.
++		 */
++		pmu->perf_metrics = data;
++		break;
+ 	case MSR_IA32_PEBS_ENABLE:
+ 		if (data & pmu->pebs_enable_rsvd)
+ 			return 1;
+@@ -589,6 +603,11 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 		pmu->global_status_rsvd &=
+ 				~MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI;
  
--static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
--					    unsigned int idx, u64 *mask)
-+static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
-+			       u64 *data)
- {
- 	unsigned int type = idx & INTEL_RDPMC_TYPE_MASK;
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
--	struct kvm_pmc *counters;
-+	struct kvm_pmc *counters, *pmc;
- 	unsigned int num_counters;
--	u64 bitmask;
- 
- 	/*
- 	 * The encoding of ECX for RDPMC is different for architectural versus
-@@ -104,7 +103,9 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
- 	 * as KVM doesn't support such PMUs.
- 	 */
- 	if (WARN_ON_ONCE(!pmu->version))
--		return NULL;
-+		return 1;
++	if (perf_capabilities & PERF_CAP_PERF_METRICS) {
++		pmu->global_ctrl_rsvd &= ~GLOBAL_CTRL_EN_PERF_METRICS;
++		pmu->global_status_rsvd &= ~GLOBAL_STATUS_PERF_METRICS_OVF;
++	}
 +
-+	idx &= INTEL_RDPMC_INDEX_MASK;
+ 	if (perf_capabilities & PERF_CAP_PEBS_FORMAT) {
+ 		if (perf_capabilities & PERF_CAP_PEBS_BASELINE) {
+ 			pmu->pebs_enable_rsvd = counter_rsvd;
+@@ -632,6 +651,9 @@ static void intel_pmu_init(struct kvm_vcpu *vcpu)
  
- 	/*
- 	 * General Purpose (GP) PMCs are supported on all PMUs, and fixed PMCs
-@@ -118,23 +119,21 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
- 	case INTEL_RDPMC_FIXED:
- 		counters = pmu->fixed_counters;
- 		num_counters = pmu->nr_arch_fixed_counters;
--		bitmask = pmu->counter_bitmask[KVM_PMC_FIXED];
- 		break;
- 	case INTEL_RDPMC_GP:
- 		counters = pmu->gp_counters;
- 		num_counters = pmu->nr_arch_gp_counters;
--		bitmask = pmu->counter_bitmask[KVM_PMC_GP];
- 		break;
- 	default:
--		return NULL;
-+		return 1;
- 	}
- 
--	idx &= INTEL_RDPMC_INDEX_MASK;
- 	if (idx >= num_counters)
--		return NULL;
-+		return 1;
- 
--	*mask &= bitmask;
--	return &counters[array_index_nospec(idx, num_counters)];
-+	pmc = &counters[array_index_nospec(idx, num_counters)];
-+	*data = pmc_read_counter(pmc);
-+	return 0;
+ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
++
++	pmu->perf_metrics = 0;
+ 	intel_pmu_release_guest_lbr_event(vcpu);
  }
  
- static inline struct kvm_pmc *get_fw_gp_pmc(struct kvm_pmu *pmu, u32 msr)
-@@ -865,7 +864,7 @@ static void intel_mediated_pmu_put(struct kvm_vcpu *vcpu)
+@@ -803,6 +825,9 @@ static void intel_mediated_pmu_load(struct kvm_vcpu *vcpu)
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	u64 global_status, toggle;
+ 
++	if (kvm_vcpu_has_perf_metrics(vcpu))
++		wrmsrq(MSR_PERF_METRICS, pmu->perf_metrics);
++
+ 	rdmsrq(MSR_CORE_PERF_GLOBAL_STATUS, global_status);
+ 	toggle = pmu->global_status ^ global_status;
+ 	if (global_status & toggle)
+@@ -831,6 +856,12 @@ static void intel_mediated_pmu_put(struct kvm_vcpu *vcpu)
+ 	 */
+ 	if (pmu->fixed_ctr_ctrl_hw)
+ 		wrmsrq(MSR_CORE_PERF_FIXED_CTR_CTRL, 0);
++
++	if (kvm_vcpu_has_perf_metrics(vcpu)) {
++		pmu->perf_metrics = rdpmc(INTEL_PMC_FIXED_RDPMC_METRICS);
++		if (pmu->perf_metrics)
++			wrmsrq(MSR_PERF_METRICS, 0);
++	}
  }
  
  struct kvm_pmu_ops intel_pmu_ops __initdata = {
--	.rdpmc_ecx_to_pmc = intel_rdpmc_ecx_to_pmc,
-+	.emulate_rdpmc = intel_emulate_rdpmc,
- 	.msr_idx_to_pmc = intel_msr_idx_to_pmc,
- 	.is_valid_msr = intel_is_valid_msr,
- 	.get_msr = intel_pmu_get_msr,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b736b9ff965b..21eb4b339fa6 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4273,6 +4273,10 @@ static void vmx_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+ 				  MSR_TYPE_RW, intercept);
+ 	vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+ 				  MSR_TYPE_RW, intercept);
++
++	intercept = !has_mediated_pmu || !kvm_vcpu_has_perf_metrics(vcpu);
++	vmx_set_intercept_for_msr(vcpu, MSR_PERF_METRICS,
++				  MSR_TYPE_RW, intercept);
+ }
+ 
+ static void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+@@ -8095,6 +8099,9 @@ static __init u64 vmx_get_perf_capabilities(void)
+ 		perf_cap &= ~PERF_CAP_PEBS_BASELINE;
+ 	}
+ 
++	if (enable_mediated_pmu)
++		perf_cap |= kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS;
++
+ 	return perf_cap;
+ }
+ 
 -- 
 2.54.0
 
