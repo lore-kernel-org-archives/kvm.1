@@ -1,293 +1,271 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844493A874C;
-	Mon, 29 Jun 2026 07:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782719798; cv=fail; b=eUvzf7/ucQqHt4WngeeTXmzMDsWDKCWHexR227+tGsKCFZCuJd7ICbIlBzLQoDpRFTsxMgs0NL6r9Fbgr/f3kM3GnOJYydIed5HpYKbiTliMwYyP5MAHo5MwvwrEhxF1BmhFIVBZeofV2wzxmaSTMmVwvx4hEentVwtixQn4Ees=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782719798; c=relaxed/simple;
-	bh=oseWHzE2yctQ8NZdlYC7szAUZmyAkhucMCa6PtNxtyE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=O7XdoMSMqOjdo7kR0H/rvjaMNgJQI7JONfJiQPWxJOJLniXmXOJ45uPPxk+cOXpuvkBgnwvo3bmZgTowc53SSK3fjeDMG9WTNwtPvpJAEcJhp+ZV/6T4JxbZ1c0wLFDrxeUtDWguKMX/uYL0+6DRICKMybtOUBSUEPBQZwSkIKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k7sd8bTg; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k7sd8bTg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782719796; x=1814255796;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=oseWHzE2yctQ8NZdlYC7szAUZmyAkhucMCa6PtNxtyE=;
-  b=k7sd8bTgAI1XjZ1bGKKh6dMFXV02tN+bGsJng1Q7lWeZ9SSs5s3r5f2H
-   FeTtmqMPf+MbJlF6sIt5RtY0c9Lx8oFVRIlEL1tV8L2UlJsGuRhZ+tmxF
-   Cy+am/oF3o3b5mn+Dsr1jxTS11jCxnpHStsWfxEg6RaQdfwapIov9Uvyy
-   c3NjW9lVR728IKhy1uanHEkyDH3vVPYFpuMDgY6Z2yFEPJSoSABMJ2Xfs
-   Pra2ifqhtZ/SnlYd/vtm1UxDkQQPhpEbgSYMhVlithgBJNjJqsgVucnBE
-   nNuyM8CORA/T+sswK3mw2c+1Pm7OBebcEDPEGnEpKZtBP3NT0EYyc1EPI
-   w==;
-X-CSE-ConnectionGUID: 0A7TGwP9SPuTRTLAMdr9hQ==
-X-CSE-MsgGUID: 0ay4FZlqTbq5oGHhiXuIUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="100837816"
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
-   d="scan'208";a="100837816"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:56:35 -0700
-X-CSE-ConnectionGUID: KDkfxJIoRjW+TVQCdIQjQw==
-X-CSE-MsgGUID: BdZkgGk/TA6oQ8eCxAEocQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
-   d="scan'208";a="290008306"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 00:56:35 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 29 Jun 2026 00:56:34 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 00:56:34 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.31) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 29 Jun 2026 00:56:32 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CiKkRj05AKJCsvOaR8X/+u9OQJ5IrCj5qdL+Uj3SqjH/VIqOk+IDbG6sMPlw5WVkDYWalBx5s5sDUu23WgLL7/fV2E2bUYih160rxKmi2JjpVG/0+tNCR/BfGGEl9MqmvqwAon34DYio+BLMRoFdwGd1HvQhXKbFa3AtbDyQtWstuzIf+SOV24TBeIe1xFCgBcFprNiTZD7qoNmhs0bvFmIkf+PWZbbKlfqXqO0AJvSOxAxpwTo9sp4lCLefE/ADauofSI/pbEaB7+ACsBp3btJT7quLYLjOWYFmq9z3xIqLLxhkQhvjV5+Q5rv5ZAR59MzKIACNXRpdsM8M58HDIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7byLpCcgDzq3n43poHyLumkGtYMCtCkzMvwavRrlMGo=;
- b=QH6P6bmPJs8M3CeIVopQeLUu+5ssRor/QSnCiikrI4DKiX/yrVo89LxOpu7USw7N+40QC5CxpHHIBoLIqhPZPeglgJgrbrjYC51VLXNbhR65W3Kz7ZQSLJSDqfDcNfp1VNsrrsVzcPFxlWidp9WMfkigHyBrXWoB6l3PlFEu+dl1kwwU6JXjxXzj5QhYULPnP+g1/sstSOL8tjrJ7/BxtZq/PiKrgVYQB73HVbwWTzo4bOkjcbyUT8l3c7PB6Nmrq21HyohbE1Ub1mvbSFEkjrprfXl9Uw9WeuG1g0keVSocuPeVLNnlyYsaKm+LXIfrQYi5lr7AhkcC2HT4N+69YQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by SJ0PR11MB4878.namprd11.prod.outlook.com (2603:10b6:a03:2d8::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Mon, 29 Jun
- 2026 07:56:30 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 07:56:30 +0000
-Date: Mon, 29 Jun 2026 15:56:14 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-CC: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
-	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
-	<kishen.maloor@intel.com>, <tony.lindgren@linux.intel.com>,
-	<peter.fang@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
-	<dave.hansen@linux.intel.com>, <seanjc@google.com>
-Subject: Re: [PATCH v2 04/17] x86/virt/tdx: Add extra memory to TDX module
- for the extensions
-Message-ID: <akIlHqh0/Rna7aYY@intel.com>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-5-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260618081355.3253581-5-yilun.xu@linux.intel.com>
-X-ClientProxiedBy: KUZPR03CA0020.apcprd03.prod.outlook.com
- (2603:1096:d10:24::12) To BN7PR11MB2836.namprd11.prod.outlook.com
- (2603:10b6:406:ad::26)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC4533F5BD
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 07:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782719884; cv=none; b=s8qWjrBNT1RxEqryZHvYExCCRrbUsh2KoUBulJnoRy1BNXhD5sI5FmRRdWmTqMKXItS60KqBFVg6ePXvVc0+vrCZrlPGNHpLtOq8RezhLUvIodVGU3PJwHEfrAS7RZdyrW+PaSZwBjNPOB8zWQjkioEjNzKIwRE9nBpEpPtVyJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782719884; c=relaxed/simple;
+	bh=5n0fnq+Hutfte3U6TyqL5qF4Xdqip5As7mrjblHjUcY=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jZq2Qpb6520dkOOmmL9UGY8MK0Mau44nCmPTkTC6FZVt5YV0eKVRtuCBnr6x8HXPwtTjCKXkl9ClkndcItu2VgHJrLOU/jYgV1f/bbcwjdf/9pUWOsa9T6Cu6rKkwEvUFgxX85FfMWqq8Y4T7DYwYBM8e5nBtNEIJsaijXXlOIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8DxlniFJUJqRRcZAA--.39542S3;
+	Mon, 29 Jun 2026 15:57:57 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxHOF+JUJqCme3AA--.19891S3;
+	Mon, 29 Jun 2026 15:57:53 +0800 (CST)
+Subject: Re: [PATCH v4 2/3] LoongArch: KVM: Implement guest-side PV TLB flush
+To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, loongarch@lists.linux.dev
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
+References: <20260615082154.42144-1-cui.tao@linux.dev>
+ <20260615082154.42144-3-cui.tao@linux.dev>
+ <0c47ce21-9a4d-4cdc-9bec-ce749e31512e@loongson.cn>
+ <1bfa4941-b94b-410a-9b64-c13f2712edf9@linux.dev>
+ <9ec9d22b-93fd-3dcb-c6b8-19563f1b7c0a@loongson.cn>
+ <404180d0-c734-4465-8752-f43279730692@linux.dev>
+ <6f837e00-e606-ddaa-b22b-dd30348a18fb@loongson.cn>
+ <084d7bec-592c-31b5-aa44-099bff87af9a@loongson.cn>
+ <013459e1-f817-42b5-a0fd-20b38d9b6140@linux.dev>
+ <835a9c5c-2f66-293b-d093-fc59bac26a01@loongson.cn>
+ <416dfbf8-f765-442e-b6de-6fc0fe1a4b5f@linux.dev>
+ <a7e7a17c-fdaa-b168-2a7b-d4cd4018b662@loongson.cn>
+ <d09a90f7-94b1-4a2f-bcea-d42802d2353e@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <9701d2ee-1f5b-f576-b831-471111b6e5ba@loongson.cn>
+Date: Mon, 29 Jun 2026 15:54:36 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|SJ0PR11MB4878:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15312401-4791-41ca-ecb8-08ded5b3edf3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|18002099003|3023799007|4143699003|22082099003|6133799003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: l9ApBKTnoVBo6RDV088My7CYqLgXNx4MYUUXyacVIAqVBUi+WyP7y/o9LLlawpfKKdyxi5cEIROxVcKt4eLcLByVVZku0r3P/2rwlipIuoDV4P7lGBH/sthKfIkb3eP7klcHyzknWVgfcnGrxP6xVOlczi9MCgAT5u+xLcGI5tsEL+2EEhL6o6WPHCPRiy9lrUGStR1cjPCEQ5Hf1hjb2gbpfZIftygfxsdYkwH46NZQAMW6c8u4DLsl1fFedgq/Gs7VEJ5IvJ0r9a/FhpXQIT2dgth5g2cX/SGl/M09/Yv8gGjNzo9e8dm0Et1D3Lg4j7dLra8+wyEImtvtKcuzxZNmpt4HRASeyZuCubagLKh1b5vT0mcThMvCEoefWZfe4J3yihWP7N34DNgxnzaKmi6dNjzmVpR+sf8LWvD7HuBu7dwrOqHdumcOdk52QcdAcL5DT7WrhRxUaV6ciXYwGlpNRXk+3VoeY5kfDTvL4qElSzwiUMZvdDQexj8bL/tEjGRxlCgedvBQVf5WrQ6X/Aqez608iVGj+iIUpoxCcF6P3B20cuubrQ7pMKogOS3mAP/g+fKxI1ggfU0pXG8Y8Qr7Yl3yS5DId29beR8+5WadJJvnKqTpEp6Xp67a81gsE3H00vBcAtWuLDnhbeXSxw4/QkxSDhppbG96t3jsSiI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(18002099003)(3023799007)(4143699003)(22082099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aipbHJQ1iWXTvQ+vtsD61M/xixfUaA+ssgzOVl6Eh7UphWhLZiVbAcTnMO7f?=
- =?us-ascii?Q?H7iJ5pIHPC+dhuAq4R1twjieYWPeJS91+oAi+Ufw2hdEzLgUSg/oVOdyYJaA?=
- =?us-ascii?Q?wIKrjAkJ7kTv6XKz54Juw5gTYixRINO7TmufApL+9K4zP2m/u9KRa0FHllGo?=
- =?us-ascii?Q?q7WlupPAg6nSNCUFXizwySndu7z5BZSOcHvgW6BMyrV5pUncegN4Zs0ByvH0?=
- =?us-ascii?Q?A+z9jM4a6/Y/GvMlvy/8Ij328zomBpzQMBHkJvd1Bv5wlsg4SMNiTkKaeICg?=
- =?us-ascii?Q?2yrtCNbNHLbk5qVUcKaR9cLUi5yRYrxx4eryLsxH9GC43XAINgjTR7FwPwP8?=
- =?us-ascii?Q?IiafaGrG4z7vu6rHl9ZHwkqfiXwtnegAxqFWf+zHyltYsrQpkJqAyMC5VC3d?=
- =?us-ascii?Q?QREoIH7djNqElzH1XIYzSv6V8B5Y2oUAq45pUZuW+8yz3IHVxNGs63dr0zcB?=
- =?us-ascii?Q?MEyd3n7O5rvNPqkF148NXGZ0CCAX/m1qAjRuuBj72DxEHIFXa80NP/YExGcV?=
- =?us-ascii?Q?7hOyi0gwIiKL2bXVQprxhOhY3ExjUWHUAshnddw23qWm9VVukFGbgYlU6VgO?=
- =?us-ascii?Q?BSxgfanArsq92HZ7NDKsfG1NVhLzF9+bj312R2ujFSgHPWqI+U8es9KhRxEb?=
- =?us-ascii?Q?mdcf5ZE3w0gWW5oqf7s2vLU4zxXuuppnskcKDR2RyxT+fQ39q9uFB6Zmh2zZ?=
- =?us-ascii?Q?97nRdBtvzr56umCPEksgriSPTwODZ/BvN7neBGFd+iJ9ltXgb+wzPgLtpNPE?=
- =?us-ascii?Q?QpJbWJDJiFrXHi2wqLzvWekDHm4dtIndlaEKoCXn8jwkOGbaBWfdx1hH7qql?=
- =?us-ascii?Q?IxrxZZcTkYyraCyMDl58dBvK6le6dpIbylVpGDSwyjtGkPc48Wr2aqvXwLJG?=
- =?us-ascii?Q?ibGf4zmtgWauXZlaGLgQxMt0VEIrElz2pvDjNWpDp45btxUZ12o0h4C+AVPS?=
- =?us-ascii?Q?hJyQ8eT02tJG20LLnNCvYd387sWnbJp8Ace77nu+9+FsrCZHfPYugDAUp5kH?=
- =?us-ascii?Q?1XWfFH44Xf/ipbh1t7AYMIlHfOfJr6FMCPGRusyMO+a15wk4NSg5LF4UERQM?=
- =?us-ascii?Q?lQt1po3FbhwSCOWK/gXf6NouSdrYlZHTt6O5pDnbpRhRhPwOANXCam74TFTb?=
- =?us-ascii?Q?pS0knEEs6n2TGAcF0VcpVb+MJ4IaqEZsIvBj+j+gyd9JyKgIV9AAf3RBJueI?=
- =?us-ascii?Q?b3wJir/P5OnN+nSAH6Bhq5z5CNlLQDCJp09SPYFs3wVGB9j3jwV4r61XWpED?=
- =?us-ascii?Q?ihfjn/hTE3hMy+o5ZZzlQMu7798BTlNBYHsdm3U8Y7VkT053HYeKWbZH91gW?=
- =?us-ascii?Q?iyum00HgAlzVcj67jJ0l4Dzz/Ml8sFlHOVlXdceq1m4po+jtonc6oCq6A7Ic?=
- =?us-ascii?Q?NmZ3Ms0h8n3RUSoXC+sPXbNnsQx6wGPqW+Xn9nm07y/zsy+1Ew40j7dhIxsE?=
- =?us-ascii?Q?pf2wtAVcGpfiuk0fQRq9XA5ITUIOP4758y0aG/HpqGSomTK8xobfGOlc70qV?=
- =?us-ascii?Q?PJr3vvAOqbD83uHH6nvO2CWkweon9N/0YS6fyem21XDjjlwLpQSbThAxSi7o?=
- =?us-ascii?Q?4f27EbVqAYiyfTn4IGAJ09yQYR9pDFKJ3Sutymkkglx3L0XTwcohg8/n5kSR?=
- =?us-ascii?Q?VPeLBTvPXPej8qcb9lyGhSSxTTFXQN57uIiISgfOXCS/my1UH92nJeuDEmoc?=
- =?us-ascii?Q?p4DUv/olzTLxvkfsTpmkaiaa212NAEod2nRqFL5RkQvyLuIkKf9dnnGiWXzp?=
- =?us-ascii?Q?3o2NL9LqTg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: VHG4UDH83wK+CMdNl8n+Rj2khuRT1qxPqXm+NPDFT5GePm7rhXLpWXXZzgSPM7F8EWaePbAhZL3jIoOAJLRrIKduRDdjpPcTHjN6UUd4qZKwidz50sLozQPGF/UCAgvMBHJY0qbN5YZRpo15zzsHILAl7zEW1DB2NQou2J2r0YX3/EOVoFFyr8KMmPsrBB2UzzPvhdRsyt2udgq5dO1PN9jqenY0RUHrCXp1ChahPr8fbAHYc3AMs+Igy98c1jEwSS4y/POD5nsuS5q0pEz9yDkcETvX94vab0yttxhRaW1UAcUPdbpaMpU7Jg9rE+AavB029eTK/gF8HDzhcverBQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15312401-4791-41ca-ecb8-08ded5b3edf3
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:56:30.3975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ClL0RnRoP5Pu31evTVbLiViRw0oqmtfziKFzBow7KC7BrOumAjaqLGBezwfJJgFMT5zeWP3OHol6Td8vLguzMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4878
-X-OriginatorOrg: intel.com
+In-Reply-To: <d09a90f7-94b1-4a2f-bcea-d42802d2353e@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxHOF+JUJqCme3AA--.19891S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3GFWfWrWDZFWxKw4ruF4fXrc_yoWfWr48pr
+	W8JFyUtrWDGry8Ar1Utr1UXryjyr1UJ3WUXr1UtFy8Jrn8tr1jqr1UXr1j9F1DWr48Jr1U
+	tr1UJry7Zr1UJrcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
 
->+#define HPA_LIST_INFO_FIRST_ENTRY	GENMASK_U64(11, 3)
->+#define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
->+#define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
->+
->+static __init u64 to_hpa_list_info(struct page *hpa_list_page,
->+				   unsigned int nr_pages)
->+{
->+	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
->+	       FIELD_PREP(HPA_LIST_INFO_PFN, page_to_pfn(hpa_list_page)) |
->+	       FIELD_PREP(HPA_LIST_INFO_LAST_ENTRY, nr_pages - 1);
->+}
->+
->+static __init int tdx_ext_mem_add(struct page *hpa_list_page,
->+				  unsigned int nr_pages)
->+{
->+	struct tdx_module_args args = {
->+		.rcx = to_hpa_list_info(hpa_list_page, nr_pages),
->+	};
->+	u64 r;
->+
->+	do {
->+		/*
->+		 * TDH_EXT_MEM_ADD is designed to use output parameter RCX to
->+		 * override/update input parameter RCX, so the caller doesn't
->+		 * have to do manual parameter update on retry call.
->+		 */
 
-I am not sure about the "manual parameter update" part.
 
-how about:
-		/*
-		 * The TDX module overwrites RCX to track progress when
-		 * this SEAMCALL is interrupted. Use seamcall_ret() to
-		 * save and pass the updated value back on retry.
-		 */
+On 2026/6/26 上午10:53, Tao Cui wrote:
+> 
+> 
+> 在 2026/6/26 09:37, Bibo Mao 写道:
+>>
+>>
+>> On 2026/6/25 下午8:51, Tao Cui wrote:
+>>>
+>>>
+>>> 在 2026/6/25 15:36, Bibo Mao 写道:
+>>>>
+>>>>
+>>>> On 2026/6/25 下午3:15, Tao Cui wrote:
+>>>>>
+>>>>>
+>>>>> 在 2026/6/25 14:11, Bibo Mao 写道:
+>>>>>>
+>>>>>>
+>>>>>> On 2026/6/25 上午11:31, Bibo Mao wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 2026/6/25 上午10:27, Tao Cui wrote:
+>>>>>>>>
+>>>>>>>> Hi Bibo,
+>>>>>>>>
+>>>>>>>> 在 2026/6/17 09:05, Bibo Mao 写道:
+>>>>>>>>>
+>>>>>>>>>> Rather than argue from intuition, I'd like to try the hypercall approach
+>>>>>>>>>> you suggested and measure the performance improvement against the current
+>>>>>>>>>> path. I'll share the results with you once the testing is done, so we
+>>>>>>>>>> can decide the direction based on the numbers.
+>>>>>>>>> well, that is the best. It is my pleasure to discuss this with you.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> A quick update on the testing. I put both the hypercall and the
+>>>>>>>> steal-time variants through two benchmarks on an 8-core host with a
+>>>>>>>> 4:1 overcommitted guest (32 vCPUs), and wanted to share where things
+>>>>>>>> stand.
+>>>>>>>>
+>>>>>>>> The two workloads:
+>>>>>>>>      - ebizzy (all threads busy, mm-flush heavy)
+>>>>>>>>      - tlb_bench in sleep-idle mode (1 flusher + 31 sleeping idle threads,
+>>>>>>>>        so the idle vCPUs get preempted)
+>>>>>>>>
+>>>>>>>> ebizzy (records/s, higher is better), 32 vCPUs:
+>>>>>>>>       no-PV       ~103,737
+>>>>>>>>       hypercall   ~105,779
+>>>>>>>>       steal-time  ~105,872
+>>>>>>>>       -> all within noise (±2%); no measurable difference.
+>>>>>>> Hi Tao,
+>>>>>>>
+>>>>>>> what is ebizzy command? ebizzy -m or ebizzy -M.
+>>>>>>>
+>>>>>>> could you try command on host and one VM without over-committed at first, and then two VMs and three VMs?
+>>>>>>>
+>>>>>>> Here is result on my 3C5000 Dual-way machines with 32 cores and two numa nodes:
+>>>>>>>                     ./ebizzy -m          ./ebizzy -M
+>>>>>>> host             8633                 158898
+>>>>>>> VM(32 vCPUs)     6610                 133153
+>>>>>>> VM/host          76%                  83%
+>>>>>>>
+>>>>>> just ./ebizzy -M is enough, it seems that CPU number is one key factor.
+>>>>>>
+>>>>>
+>>>>> Sorry for the delay — it turned out my ebizzy command was wrong. I had
+>>>>> been running `ebizzy -t <vcpus> -S 10`, which is neither -m nor -M, so
+>>>>> neither mmap mode was active and the workload wasn't really stressing
+>>>>> the TLB-flush path. Thanks for catching it.
+>>>>>
+>>>>> I re-ran with -m and -M on host and a single VM (8-core LoongArch
+>>>>> KVM host, 8 vCPU guest, 1:1, no overcommit).
+>>>>>
+>>>>>                     ebizzy -m        ebizzy -M
+>>>>> host             ~20,000          ~55,000
+>>>>> VM (8 vCPU,1:1)  ~17,000          ~53,000
+>>>>> VM/host          ~86%             ~97%
+>>>>>
+>>>>> The -m ratio (86%) is close to your 76%.
+>>>> On my 3C5000 Dual-way machine, VM has the same CPU/memory topology with physical machine, the kernel is mainline without any patch.
+>>>>                             ./ebizzy -M
+>>>> Host (32 pCPUs)           158898
+>>>> One VM(32 vCPUs)          133153                 83% of host
+>>>> Two VMs(32 vCPUs each)    9083 + 9630 = 18713    11% of host
+>>>>
+>>>> It seems that with ebizzy benchmark, there is big difference if vCPU is preempted. Even if vCPU is not preempted, the performance is only 83% of host on my 3C5000 Dual-way machine.
+>>>
+>>> After fixing the ebizzy command, I
+>>> have multi-VM overcommit results for both approaches.
+>>>
+>>> Setup: 8-core LoongArch (single-socket, single NUMA), KVM,
+>>> linux-next-20260623, 8 vCPU per VM. All VMs run ebizzy -M
+>>> simultaneously, 3 runs each. The PV-off baseline uses a guest kernel
+>>> with CONFIG_PARAVIRT=y but without the PV TLB flush patches, so
+>>> PV IPI and steal-time are active in all three columns.
+>>>
+>>> ebizzy -M, total records/s across all VMs:
+>>>
+>>>                 PV-off      steal-time   hypercall
+>>>     1:1 (1VM)   53,600      53,800       53,900
+>>>     2:1 (2VM)    2,600      42,600       45,300
+>>>     3:1 (3VM)    2,800      44,700       46,000
+>>>
+>>> At 1:1 there is no difference — no vCPU gets preempted. Under
+>>  From the previous result, the score on host is 55,000, with 1:1 mode the virtualization efficiency is 97%, it is hard to improve actually. On my 3C5000 Dual-way machine, the virtualization efficiency is 83%, I think it can improve even with 1:1 mode.
+>>
+>> Also the paper at https://dl.acm.org/doi/pdf/10.1145/2892242.2892245 proves it with 1:1 mode.
+> 
+> Thanks for the reference. That makes sense — the 1:1 overhead is
+> larger on multi-socket systems, so there may be room to improve
+> even without overcommit.
+> 
+>>> overcommit, without PV TLB flush the throughput drops to ~3-5% of
+>>> the single-VM case, because every remote TLB flush sends IPIs to
+>>> preempted vCPUs. With either PV TLB flush variant, preempted vCPUs
+>>> are skipped, and total throughput stays at ~85-90% of single-VM
+>>> (bounded by physical cores).
+>>>
+>>> Hypercall is consistently 3-6% above steal-time in the overcommit
+>>> cases. A possible reason is that the hypercall hands the entire
+>>> target set to the host in one call, while steal-time still IPIs the
+>>> running vCPUs and only defers the preempted ones.
+>>>
+>>> On our 8-core machine the collapse is more severe than on your
+>>> 3C5000 (~5% vs 11% of host at 2 VMs), likely due to the smaller
+>>> core count and single-NUMA topology.
+>> yeap, with more CPUs the benefit is more high. I think that this kind of patch had better be tested on server platform if there is such hardware by hand after all KVM is used in server platform in most time. I will test the patch in later.
+>>
+> 
+> I'll try to get access to a server-class LoongArch machine for
+> further testing. If you're able to run the patches on the 3C5000,
+> that would be great too.
+Sure, I will verify it on Server board. The flow may be slow since there 
+  are still many pending issues such as:
+   1. which TLB flush APIs should be hooked
+   2. On KVM hypervisor side, should fine-grained TLB flush be supported?
+      all TLBs or TLBs from GVA->GPA, or asid based TLBs flush
+   3. Or at first use a basic TLB flush method, and then optimize in later.
 
->+		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
->+	} while (r == TDX_INTERRUPTED_RESUMABLE);
->+
->+	if (r != TDX_SUCCESS)
->+		return -EFAULT;
+All these require that there are the same test bed and test cases, then 
+we discuss it based the real performance data.
 
-why -EFAULT?
+Regards
+Bibo Mao
+> 
+>> Regards
+>> Bibo Mao
+>>>
+>>> Thanks,
+>>> Tao
+>>>
+>>>>
+>>>> Regards
+>>>> Bibo Mao
+>>>>>
+>>>>> I then tried multi-VM overcommit (2 and 3 VMs, all running ebizzy -M
+>>>>> simultaneously). The initial result showed a large gap between the
+>>>>> PV-TLB-flush kernel and the baseline under overcommit. Both kernels
+>>>>> have CONFIG_PARAVIRT enabled (PV IPI and steal-time are active in
+>>>>> both), so PV TLB flush should be the main differentiator — but since
+>>>>> they are two separate kernel images rather than a clean on/off toggle,
+>>>>> there may be some noise from other differences. I'm now re-running
+>>>>> with a QEMU CPU property (kvm-pv-tlb-flush on/off) on the same kernel
+>>>>> to isolate the effect cleanly.
+>>>>>
+>>>>> I'll share the verified numbers once I have them.
+>>>>>
+>>>>> Thanks,
+>>>>> Tao
+>>>>>
+>>>>>>> Regards
+>>>>>>> Bibo Mao
+>>>>>>>
+>>>>>>>>
+>>>>>>>> tlb_bench sleep-idle (ns/flush, lower is better), 1 flusher + 31 idle:
+>>>>>>>>       no-PV       ~166,536
+>>>>>>>>       steal-time  ~149,553
+>>>>>>>>       hypercall    ~88,686
+>>>>>>>>
+>>>>>>>> ebizzy's workload is mostly threads staying busy with alloc/copy/free,
+>>>>>>>> which drives remote TLB flushes against running vCPUs — that may not be
+>>>>>>>> the path this feature is meant to optimize, so the flat result there
+>>>>>>>> probably says more about the workload mismatch than about the feature
+>>>>>>>> itself. I need to take another look at whether the benchmark actually
+>>>>>>>> exercises the cases PV TLB flush targets before reading too much into
+>>>>>>>> the numbers, including the tlb_bench figure above.
+>>>>>>>>
+>>>>>>>> So I'd hold off on any conclusion for now. Next I'll re-examine the
+>>>>>>>> test setup / pick a workload that better matches the feature, and keep
+>>>>>>>> you posted once I have something more representative.
+>>>>>>>>
+>>>>>>>> Best,
+>>>>>>>> Tao
+>>>>>>>>
+>>>>>>
+>>>>
+>>
 
-In sc_retry_prerr(), most SEAMCALL errors are mapped to EIO. Maybe
-we should use EIO here.
-
->+
->+	return 0;
->+}
->+
->+struct tdx_hpa_list {
->+	u64 phys[PAGE_SIZE / sizeof(u64)];
->+};
->+
->+static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
->+
->+static __init int tdx_ext_mem_setup(unsigned int required_pages)
->+{
->+	struct tdx_hpa_list *hpa_list;
->+	struct page *page;
->+	unsigned int i;
->+	int ret;
->+
->+	/*
->+	 * memory_pool_required_pages == 0 means no need to add pages,
->+	 * skip the memory setup.
->+	 */
-
-There is no "memory_pool_required_pages" here.
-
->+	if (!required_pages)
->+		return 0;
->+
->+	hpa_list = kzalloc_obj(*hpa_list);
->+	if (!hpa_list)
->+		return -ENOMEM;
->+
->+	page = alloc_contig_pages(required_pages, GFP_KERNEL, numa_mem_id(),
->+				  &node_online_map);
->+	if (!page) {
->+		ret = -ENOMEM;
->+		goto out_free_hpa_list;
->+	}
->+
->+	i = 0;
->+	while (i < required_pages) {
->+		unsigned int nents = min(required_pages - i,
->+					 ARRAY_SIZE(hpa_list->phys));
->+		unsigned int j;
->+
->+		for (j = 0; j < nents; j++)
->+			hpa_list->phys[j] = page_to_phys(page + i + j);
->+
->+		ret = tdx_ext_mem_add(virt_to_page(hpa_list), nents);
->+		/*
->+		 * No SEAMCALLs to reclaim the added pages. For simple error
->+		 * handling, leak all pages.
->+		 */
->+		WARN(ret, "Fatal: TDX module rejected (%d) memory for extensions, stranded all pages\n",
->+		     ret);
-
-Printing 'ret' is useless since it's always -EFAULT.
-
-The real reason to WARN here isn't "no SEAMCALL to reclaim". It is "this
-SEAMCALL shouldn't fail, and if it does, things are broken enough that
-complex error handling isn't worth it".
-
->+		if (ret)
->+			break;
->+
->+		i += nents;
->+	}
->+
->+	/*
->+	 * Memory for extensions can't be reclaimed once added, print out the
->+	 * amount, stop tracking it and free the hpa_list page, no matter
->+	 * success or failure.
->+	 */
-
-This doesn't explain why it should be print. How about:
-
-	/*
-	 * Memory for TDX module extensions is never reclaimed and can be
-	 * tens of megabytes. Print the amount so users know the cost.
-	 */
-
->+	pr_info("%lu KB consumed for TDX module extensions\n",
->+		required_pages * PAGE_SIZE / 1024);
->+
->+out_free_hpa_list:
->+	kfree(hpa_list);
->+
->+	return ret;
->+}
