@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E003CFF50;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A343CFF69;
 	Mon, 29 Jun 2026 23:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782775745; cv=none; b=BEFAOQMv6Y5V8G/xdEAdkUZjfOplUD/hhtan3KWJGXXSSKSyNh5tSjfqjq7aZBf0dJY42ss1d3B0z7r4OqxmovjJeRoZ37R4xrdcOmcsl0xxc/oEfq2QH6VhaG45zbI9IDrSdNxXOYGBZmEyMEUFrKAy80GuqyxqNNkJKPCWfo4=
+	t=1782775745; cv=none; b=KMbeZGNqFfTbjlDO0SEE2hKIjU8IvOszdUsrEzMWJA2BFmeAy32Hw07wWUTMLFlEFB44CyfTn9rgyZBVmyfPQcwlzXyombe6oSbJBrMFXnlZi0p3jUCyS/LJU6bhKSaxp0QuTvqkizlkOFeG/rRZMkbKFkT4ZC0NKcSkAl56K0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782775745; c=relaxed/simple;
-	bh=70BiO6Je+x3B5kCMzOJGSRUYR0djZy793+zrXdScM0M=;
+	bh=4oJgFJbDGFksilKgDfzCAOyld9O3BnTqzG+NY/DtUyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBM6YdCo8a6Www5VCIvRzQ1oR3ykR84KAyjNWTU4OHPzkQSXkC+i9QI3uTHsuvExHnzkrDKWjsM3z020Y/PzsL21yA12mcymPCPrl7ZvrEIqNCEBCCyv3+ImgGbTXV78cHXJr4EYWjR+EuNiYrgdWU5TpavgFFiqyunQVS29oi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ivqRmQZo; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=F7RjSlFgH74EEOtIHb7u3mDp2CxndJWtAdon9GdhPIH/hnHP3pE2TALj2uF0ypbdmEFrGRTY/ZiIcYH3J2UglGqPLqo9w8i0djq/nI3F0LZrimwyp5gu9QF7UWMEF+WWfZI4aa/3EAiyd4tBgeUxl1CjyO8Q4GIlQNql1OToeNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TrCq6GQ5; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ivqRmQZo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TrCq6GQ5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1782775736; x=1814311736;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=70BiO6Je+x3B5kCMzOJGSRUYR0djZy793+zrXdScM0M=;
-  b=ivqRmQZoDON75BdlQg79ymceup4fMgMlr2nxIL2XgiRmJlN8FUTEyzDS
-   q6QvfDnmP8LHUQWdUdslTKpD6XXopuGczlalmz1WxWXrxCARBC+PoWsaO
-   eHcOZWaGRe4xucDAKqb5VAJVZHrQA5cb1NhG+n23CUo2SZcFZdG4NFHwI
-   FThqQR31sn1gmUkX+gM7egHkkbC08t3+W54Ihn48sEim1no5U6rBhJkoQ
-   6f9SyjSksmjy0p5/n1vJfHbQpf6VYanKDO0u5gk5t+p10gjPIXcH63KVO
-   6kybUVkVbgroAQCbg47dau4AdGPXONCekXx/aOc+waR6YvmYIHHJgNIf0
-   Q==;
-X-CSE-ConnectionGUID: UXuOBZ9qTEW1S4IX/ZL4gQ==
-X-CSE-MsgGUID: FpoMEKn8TJyX9Kb09WBNLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82593511"
+  bh=4oJgFJbDGFksilKgDfzCAOyld9O3BnTqzG+NY/DtUyk=;
+  b=TrCq6GQ5+63H/ryC9H02RhmrnYvCqms2MMcIM6iJyEM6vkk5Lfu11pC0
+   uUtfpgHdp9EDyFXjnL82DJLNdvRltUlbP4SU6W2gHEMPvDSewcNtaWj7c
+   i+P5NzpmuoLnMIUZ5OmPdregztKuS9ptiE5i4HOi0P3EZ1hsg//THQoms
+   S19E4qEkAFHCjVLt8+M19yPF9TrtUZOEMXK+DCVuxTV4a8Bso4+rf0QLt
+   DCCgwrJopighi+DsbSddu0T2zckTQjg6hNdNQenX8kmkUpCDEUcBY7A3C
+   dXJnM5gtro3Tc2hrAHtWeN3TyPqOv8VXv8TcRuPlCMpbXGeLMmvfDLi0P
+   g==;
+X-CSE-ConnectionGUID: q+gDHtIVRhObmZyi13rrWA==
+X-CSE-MsgGUID: gII4n3o+QtScxmevFYRE4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82593514"
 X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="82593511"
+   d="scan'208";a="82593514"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
-X-CSE-ConnectionGUID: tVs0ezNjTTicVKkyvyIXkQ==
-X-CSE-MsgGUID: ZkdTnCKlS4WSKVCdviIftQ==
+X-CSE-ConnectionGUID: JNIckwh6Rgm7ABYjqDwbYQ==
+X-CSE-MsgGUID: JUrh8J6bQJao4ACmP423hw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="290220147"
+   d="scan'208";a="290220149"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
 From: Zide Chen <zide.chen@intel.com>
@@ -56,9 +56,9 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Falcon Thomas <thomas.falcon@intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-Date: Mon, 29 Jun 2026 16:19:36 -0700
-Message-ID: <20260629231938.15129-8-zide.chen@intel.com>
+Subject: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed counter 3 tests
+Date: Mon, 29 Jun 2026 16:19:37 -0700
+Message-ID: <20260629231938.15129-9-zide.chen@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260629231938.15129-1-zide.chen@intel.com>
 References: <20260629231938.15129-1-zide.chen@intel.com>
@@ -70,84 +70,223 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the host has the PERF_METRICS capability but it's not present on
-the guest, RDPMC interception must be enabled and KVM should inject
-an #GP when the guest attempts a PERF_METRICS RDPMC.
+Add a test case to exercise IA32_PERF_METRICS, i.e. architectural
+support for Topdown (TMA) Level 1 metrics, enumerated by
+IA32_PERF_CAPABILITIES[15].
 
-If the guest has PERF_METRICS but RDPMC interception is enabled for
-other reasons, KVM needs to emulate RDPMC with type 2000H.
+Only check for non-zero metrics, as they are derived and depend on
+the workload, CPU model, and host scheduling, making precise
+expectations fragile.
 
-For simplicity, Metrics Clear Mode is not supported.
+Extend the PMU selftest to cover Intel fixed counter 3 by bumping
+MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
 v6:
-- Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
-- Reject non-zero index.
-v5:
-- new patch.
+- Move perf metrics test out of test_arch_events(); it doesn't belong
+  there, and this also avoids redundant runs of perf metrics test.
+- Correct the +/-3 error margin.
+v3:
+- Slightly reword comment to explain the sum of topdown metrics
+  is close to 100%.
+- Change abs() with explicit bounds (sum >= 0xfd && sum <= 0x102)
+  for better readability.
+v2:
+- New patch.
 ---
- arch/x86/kvm/pmu.c           |  7 +++++++
- arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
- 2 files changed, 21 insertions(+)
+ tools/arch/x86/include/asm/msr-index.h        |  1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
+ .../selftests/kvm/x86/pmu_counters_test.c     | 94 ++++++++++++++++++-
+ 3 files changed, 93 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 8ef2d4761790..04b9c840f218 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index eff29645719b..e7745e2cd543 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -331,6 +331,7 @@
+ #define PERF_CAP_PEBS_FORMAT		0xf00
+ #define PERF_CAP_FW_WRITES		BIT_ULL(13)
+ #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
++#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
+ #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
+ #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
+ 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
+diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
+index 608ed83d7c6a..6c19503e0bb7 100644
+--- a/tools/testing/selftests/kvm/include/x86/pmu.h
++++ b/tools/testing/selftests/kvm/include/x86/pmu.h
+@@ -52,6 +52,9 @@
+ /* Fixed PMC controls, Intel only. */
+ #define FIXED_PMC_GLOBAL_CTRL_ENABLE(_idx)	BIT_ULL((32 + (_idx)))
  
-+static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
++/* PERF_METRICS enable, Intel only. */
++#define PERF_METRICS_GLOBAL_CTRL_ENABLE		BIT_ULL(48)
++
+ #define FIXED_PMC_KERNEL			BIT_ULL(0)
+ #define FIXED_PMC_USER				BIT_ULL(1)
+ #define FIXED_PMC_ANYTHREAD			BIT_ULL(2)
+diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+index dc6afac3aa91..38057754e024 100644
+--- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
++++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+@@ -6,6 +6,7 @@
+ 
+ #include "pmu.h"
+ #include "processor.h"
++#include <linux/bitfield.h>
+ 
+ /* Number of iterations of the loop for the guest measurement payload. */
+ #define NUM_LOOPS			10
+@@ -241,17 +242,20 @@ do {										\
+ 	);									\
+ } while (0)
+ 
+-#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
++#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP)				\
+ do {										\
+-	wrmsr(_pmc_msr, 0);							\
+-										\
+ 	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))				\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflushopt %[m]", FEP);	\
+ 	else if (this_cpu_has(X86_FEATURE_CLFLUSH))				\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflush  %[m]", FEP);	\
+ 	else									\
+ 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop", FEP);		\
+-										\
++} while (0)
++
++#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
++do {										\
++	wrmsr(_pmc_msr, 0);							\
++	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP);				\
+ 	guest_assert_event_count(_idx, _pmc, _pmc_msr);				\
+ } while (0)
+ 
+@@ -318,6 +322,75 @@ static void guest_test_arch_event(u8 idx)
+ 				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
+ }
+ 
++static void __guest_test_perf_metrics(void)
 +{
-+	return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
-+		!kvm_vcpu_has_perf_metrics(vcpu);
++	int retiring, bad_spec, fe_bound, be_bound, sum;
++	u64 global_ctrl, metrics;
++
++	if ((guest_get_pmu_version() < 2) ||	/* Does guest have GLOBAL_CTRL? */
++	    !this_cpu_has(X86_FEATURE_PDCM) ||
++	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
++		return;
++
++	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
++	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
++	wrmsr(MSR_PERF_METRICS, 0);
++
++	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
++	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
++	global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
++		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
++
++	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
++
++	/* Check test results. */
++	metrics = rdmsr(MSR_PERF_METRICS);
++	retiring = FIELD_GET(GENMASK_ULL(7, 0), metrics);
++	bad_spec = FIELD_GET(GENMASK_ULL(15, 8), metrics);
++	fe_bound = FIELD_GET(GENMASK_ULL(23, 16), metrics);
++	be_bound = FIELD_GET(GENMASK_ULL(31, 24), metrics);
++
++	/*
++	 * Be conservative: the measured payload definitely retires work, so
++	 * Retiring should be non-zero.
++	 */
++	GUEST_ASSERT_NE(metrics, 0ULL);
++	GUEST_ASSERT_NE(retiring, 0ULL);
++
++	/*
++	 * Each level-1 topdown metrics is an integer fraction of 255.
++	 * An +/-3 error margin is chosen for a loose sanity check.
++	 */
++	sum = retiring + bad_spec + fe_bound + be_bound;
++	GUEST_ASSERT(sum >= 0xfc && sum <= 0x102);
++
++	/* Sanity check after PERF_METRICS disabled. */
++	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
++	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
++	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
++
++	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
 +}
 +
- bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
++static void guest_test_perf_metrics(void)
++{
++	__guest_test_perf_metrics();
++	GUEST_DONE();
++}
++
++static void test_perf_metrics(u8 pmu_version, u64 perf_capabilities)
++{
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++
++	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_perf_metrics,
++					 pmu_version, perf_capabilities);
++
++	run_vcpu(vcpu);
++
++	kvm_vm_free(vm);
++}
++
+ static void guest_test_arch_events(void)
  {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-@@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
- 		return true;
- 
- 	return kvm_need_any_pmc_intercept(vcpu) ||
-+	       kvm_need_perf_metrics_intercept(vcpu) ||
- 	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
- 	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
- }
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 080677372c9b..93b5a8360377 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -30,6 +30,7 @@
+ 	u8 i;
+@@ -361,7 +434,7 @@ static void test_arch_events(u8 pmu_version, u64 perf_capabilities,
+  * other than PMCs in the future.
   */
- #define INTEL_RDPMC_GP		0
- #define INTEL_RDPMC_FIXED	INTEL_PMC_FIXED_RDPMC_BASE
-+#define INTEL_RDPMC_METRICS	INTEL_PMC_FIXED_RDPMC_METRICS
+ #define MAX_NR_GP_COUNTERS	8
+-#define MAX_NR_FIXED_COUNTERS	3
++#define MAX_NR_FIXED_COUNTERS	4
  
- #define INTEL_RDPMC_TYPE_MASK	GENMASK(31, 16)
- #define INTEL_RDPMC_INDEX_MASK	GENMASK(15, 0)
-@@ -124,6 +125,19 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
- 		counters = pmu->gp_counters;
- 		num_counters = pmu->nr_arch_gp_counters;
- 		break;
-+	case INTEL_RDPMC_METRICS:
-+		if (!kvm_vcpu_has_perf_metrics(vcpu))
-+			return 1;
+ #define GUEST_ASSERT_PMC_MSR_ACCESS(insn, msr, expect_gp, vector)		\
+ __GUEST_ASSERT(expect_gp ? vector == GP_VECTOR : !vector,			\
+@@ -585,6 +658,7 @@ static void test_intel_counters(void)
+ 	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
+ 	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
+ 	u8 pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
++	u64 advertised_perf_caps = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
+ 	unsigned int i;
+ 	u8 v, j;
+ 	u32 k;
+@@ -592,6 +666,7 @@ static void test_intel_counters(void)
+ 	const u64 perf_caps[] = {
+ 		0,
+ 		PMU_CAP_FW_WRITES,
++		PERF_CAP_PERF_METRICS,
+ 	};
+ 
+ 	/*
+@@ -649,6 +724,10 @@ static void test_intel_counters(void)
+ 			if (!kvm_has_perf_caps && perf_caps[i])
+ 				continue;
+ 
++			/* Ignore unsupported features. */
++			if (perf_caps[i] & ~advertised_perf_caps)
++				continue;
 +
-+		/*
-+		 * The index in ECX[15:0] is implementation specific, but no
-+		 * platform currently supports a non-zero index.
-+		 */
-+		if (idx)
-+			return 1;
+ 			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
+ 				v, perf_caps[i]);
+ 
+@@ -675,6 +754,11 @@ static void test_intel_counters(void)
+ 				for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
+ 					test_fixed_counters(v, perf_caps[i], j, k);
+ 			}
 +
-+		*data = pmu->perf_metrics;
-+		return 0;
- 	default:
- 		return 1;
++			pr_info("Testing Perf Metrics, PMU version %u, perf_caps = %lx\n",
++				v, perf_caps[i]);
++
++			test_perf_metrics(v, perf_caps[i]);
+ 		}
  	}
+ }
 -- 
 2.54.0
 
