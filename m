@@ -1,200 +1,148 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEFD3E8684
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363D442188A
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782748486; cv=none; b=n92ZQRdhT9GCDlvTmOVR3ka/71vwWDkqHywGIObqIbuD32Zw81IzFr9bVV1NEYdjPEKbDz6lF/Y9Pv+ReONzvLuFmA3CDiDIfzXke2dFR5tYxVsRZ5oQCNYJU/z8gFQQ1eFEhfe2S0Sj/xIjdgBDITgaBn67aPYjbEbaBJhPNUA=
+	t=1782748496; cv=none; b=qvPoQObpCtlfL9x8iUQUac3XY0TcPHwSvdO16GlPebS4P/k+pjpNzZ1wNnZwmFe8HJu8DLhirDy9X7iCtiplq+sVdj1ENCncZAkI121fuUbXbsQzwWXphT764ZeVzR1BQkXVsg0++IGxEeHK6oM5Hdz/gWrTH/S/ZIyWr5E9D7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782748486; c=relaxed/simple;
-	bh=93ATUFGStUVoH8MghwH3wgB4RX0ZFq8ZxEEq8p1K4SQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=DfTxDJ2XBFQBAxS+RrDMulYMBnzId0GzWZGq+BmWrZLfc4FgGHgGgS/eX0mBaH1NN91HGSVnkGt+vwtT6CSs/CmpAkURNZMEpuVJ2ByChFcKqgdbs/m1JGVGCt0Olvxmu+q9/5Vq/llbdTIqWGsv2NBPH9Lus7gwCydOlaRMSjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XawM1eel; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782748496; c=relaxed/simple;
+	bh=vSc4ORRRpUbp5nwMJk1U6F/78ha49jf3UdrgblxYv9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GmgQyzakzX+xHIqKYoLaO+q6UfrYLiCp9j+9K2DgcFTl5S6nMnRiEJ3hlfjsj2eMl5SHpCxnXBt+LFsX7He5RouNlXxevqe8ePGLZpegXL0AcBoQakXMiIWHu+QArB3EvLZsfk4qhfO3EHGgxZlb/xA7DpToJcxySdyT91RiBLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=JM0fnN0H; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XawM1eel"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D68E339;
-	Mon, 29 Jun 2026 08:54:37 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C9753F673;
-	Mon, 29 Jun 2026 08:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782748482; bh=93ATUFGStUVoH8MghwH3wgB4RX0ZFq8ZxEEq8p1K4SQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XawM1eelrbIxTK4y4PyFeJJICs4xBNgq5CArZNv2H+sd/1+eK0zIBfeRscVA0R6Ru
-	 WWarGTEbfltuuuTQUxufctIZdP80CCpk6ZbMvN/JWnx79sRnw+iFRi4fziwhCRZYjg
-	 i6DfvSd+mwZcl8Jd7RW+UFArrU349UsbKicYZV3c=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Subject: Re: [PATCH v2 06/13] KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
-Date: Mon, 29 Jun 2026 16:54:39 +0100
-Message-ID: <akKVP2_vE4Wskmfk@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629112948.9F4D01F00AC4@smtp.kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-7-leo.bras@arm.com> <20260629112948.9F4D01F00AC4@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="JM0fnN0H"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8eec5dfdb65so9350646d6.0
+        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 08:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1782748493; x=1783353293; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4r3nyg8MsZ+G0ckW9OOGJtlL6QAvCNLsDtm+wiwuKtE=;
+        b=JM0fnN0HJKUi6uSnA3IrfoUPrcjauK6XThjH2DReQOmpX1gM2LZPfoF1ZbHc/BfOsW
+         XI9kmoGCt6lvgHoZXI6Sh1Ty6+UIIveqPkZsQXGuZVY3CysSg9QdBDdUJ6g0L87cTIHt
+         p/0MmTIL7mZvw71fhcyjCRfTkRh/O+Dwx6mRwAg+epfM+SqLwiyuwSs1n0Sz3N8cV2mH
+         AUIUyTmBdyr+54ccj7lbpXdws+p31Q+ZmFOiRb6ngfzp1k0eL6vsPmNcaCqY0tFQzoIQ
+         wj5Gh2CoyjJm0JjYVxbpgfxq/lylqC7ox+tH4VrNSX1XtlLyydAen95MqgFL+zI/X2z6
+         T5nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782748493; x=1783353293;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4r3nyg8MsZ+G0ckW9OOGJtlL6QAvCNLsDtm+wiwuKtE=;
+        b=XVYyiRdxnS8D+fEsWwZKloz2ZHOuZYPKonCOVGmMrs3YOqEKpQjuEQvQ95s7imtYFN
+         TijYURXstmfYylJL5RUtX9l+scrokrXsuYzFnGG3na0iabPZh67yBoPsNY/5xduY9Vso
+         erPETRxoRA/eXTzbDc0iTFZ/azmL7vFSXRHmguEAXGeJmF+8A1ySYYLVkJcaLVYUaGMr
+         jUkzuZI5rKtaRpxiqq2qrWo+QROGlR8if0UDi67LEZKeoICV3DHjo/MJ1S2wUrMCHtyZ
+         fZpvkDkbhwlqem3rr289Y510Q6kBjtUANCR4CYU+m8wLpmGnvUdMwWeVdqpDdNW7dejZ
+         /vOQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqVO2y3sxGZHL53WPssKKtc9gKKG+QKjkDAHVXrnHAwKCygVQlTb27QfhRW+Hpi34V4prM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsv6RhFgM8Q68YQLSyFTOaCyqP8KV8LBvjOle4m6wP77ZJCNtx
+	Z1XHR+YGQ4/QcGG9GazUSvKfezGpGgaNua/iNXUZyNHN5WxGWHwWb34CIyGsn69mA5g=
+X-Gm-Gg: AfdE7cmE15Jcg+T31gVKysqw9TEdzr5B67u/0CH4Ql+wu8kjc0bMeTXd6Jnu9jPKitE
+	GutrbO8bHAtftXZTou+7qztsSWAyRmKrSMaecEZTd+czbf1y40FJzh2vNu/y/HSS+pvlYBVWe4+
+	ObxUhbdp+CYckw16KnjS8YyJKvwfqOAy/sVTTdno195XA4qbulmULcU8bdXA0j3xEOBazlHNZ2b
+	Q756HplPPhUrBJxmiZGIMIf6BYu89M5nMHFtjeuYRpELDQVVk1IB6YX/G2gbzI/vSNyJ7oLZIrj
+	HtzTK3vkoJMoG6neQTXmQmVeGpa6ERfHudNeiiNDbwwfhc9UEIOkSdczkqVWmHI7aWfnrp60DRG
+	pC78iX+0OCioumy9wvzylCIZlKWe742dHb7fCBphnCDwo+TGF4El949RcHZx3u7H80vfZTsODW+
+	FDoczJU6vF4387rXkRXO/5YjgQGEaV080Bx4rhNFZciTDiRkMzW/Bz9swENmngzkn8boqdkNAPD
+	ynH4Sk=
+X-Received: by 2002:a05:6214:c65:b0:8f0:5b55:1f6c with SMTP id 6a1803df08f44-8f05b552223mr58558406d6.43.1782748492988;
+        Mon, 29 Jun 2026 08:54:52 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a26f1b34sm1726396d6.3.2026.06.29.08.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 08:54:52 -0700 (PDT)
+Date: Mon, 29 Jun 2026 11:54:47 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
+	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 04/30] mm: introduce and use vma_end_pgoff()
+Message-ID: <akKVR2wNSjbLDt1-@gourry-fedora-PF4VCD3F>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <e379a1cb6a897126ad96e3a263fdb91d6c11f6cb.1782735110.git.ljs@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <e379a1cb6a897126ad96e3a263fdb91d6c11f6cb.1782735110.git.ljs@kernel.org>
 
-On Mon, Jun 29, 2026 at 11:29:48AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
-> - [High] Missing Context Synchronization Event (ISB) after writes to control-plane system registers.
-> - [High] TOCTOU race in wfi() polling loop causes a lost wakeup and indefinite CPU stall.
-> - [High] Missing memory barrier (dsb) before starting the HACDBS hardware engine.
-> - [High] Missing speculative execution barrier (dsb) after disabling an asynchronous hardware engine.
-> --
+On Mon, Jun 29, 2026 at 01:23:15PM +0100, Lorenzo Stoakes wrote:
+> We already have vma_last_pgoff() which retrieves the last page offset
+> within a VMA.
 > 
-> commit 47f5964570817fd652e798e082c349d012b3edda
-> Author: Leonardo Bras <leo.bras@arm.com>
+> However, code often wishes to span a page offset range, which requires the
+> exclusive end of this range.
 > 
-> KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+> So provide this in vma_end_pgoff() and update vma_last_pgoff() to use this
+> function.
 > 
-> Introduce the basic cleaning routine that is going to be used for both
-> dirty-bitmap and dirty-ring routines. It sets the required registers with
-> the input buffer, and wait for HACDBSIRQ to happen, which means either
-> the task is done, or there was some error during processing.
+> No functional change intended.
 > 
-> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
-> > index 789da8712b1b4..e4283828b7807 100644
-> > --- a/arch/arm64/kvm/dirty_bit.c
-> > +++ b/arch/arm64/kvm/dirty_bit.c
-> 
-> [ ... ]
-> 
-> > @@ -24,6 +25,86 @@ DEFINE_PER_CPU(struct hacdbs, hacdbs_pcp) = {
-> >  
-> >  static __ro_after_init int hacdbsirq = -1;
-> >  
-> > +static void hacdbs_start(u64 *hw_entries, int size)
-> > +{
-> > +	u64 br;
-> > +	/* Each entry is 8 bytes */
-> > +	int size_b = size * sizeof(hw_entries[0]);
-> > +	int size_p2 = max(roundup_pow_of_two(size_b), PAGE_SIZE);
-> > +
-> > +	/* If not using the full size of the array, put a stop entry at the end */
-> > +	if (size_b < size_p2)
-> > +		hw_entries[size] = HDBSS_ENTRY_VALID | HDBSS_ENTRY_TTWL_RESV;
-> > +
-> > +	sysreg_clear_set_s(SYS_HACDBSCONS_EL2,
-> > +			   HACDBSCONS_EL2_ERR_REASON | HACDBSCONS_EL2_INDEX, 0);
-> > +
-> 
-> [Severity: High]
-> Does this code need an immediate isb() after writing the control-plane system
-> register SYS_HACDBSCONS_EL2? The ARM64 guidelines indicate that an isb() must
-> be the very next instruction after writing a control-plane system register to
-> ensure the pipeline doesn't operate with architecturally undefined state.
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-IIUC they will have no effect until the base register says enabled. So an 
-isb() at the end should be enough.
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-> 
-> [Severity: High]
-> Additionally, should there be a dsb() between the memory store to
-> hw_entries[size] and the write to SYS_HACDBSBR_EL2 below? Without an explicit
-> memory barrier, the store buffer might not be globally visible before the
-> engine begins reading memory, which could cause it to miss the stop marker
-> and access out-of-bounds memory.
-> 
-> > +	br = (virt_to_phys(hw_entries) & HACDBSBR_EL2_BADDR_MASK) |
-> > +	     FIELD_PREP(HACDBSBR_EL2_SZ, ilog2(size_p2) - 12) |
-> > +	     FIELD_PREP(HACDBSBR_EL2_EN, 1);
-> > +
-> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_RUNNING);
-> > +	this_cpu_write(hacdbs_pcp.size, size);
-> > +	write_sysreg_s(br, SYS_HACDBSBR_EL2);
-> > +	isb();
-> > +}
-> 
-> [ ... ]
-> 
-> > +/*
-> > + * Clears dirty-bits for an array of pages (hw_entries) using HACDBS
-> > + * Returns the number of items cleaned from the array. If returns value < size,
-> > + *	there was an error in the processing.
-> > + */
-> > +static int dirty_bit_clear(struct kvm *kvm, u64 *hw_entries, int size)
-> > +{
-> > +	u64 hcr_el2;
-> > +	int ret;
-> > +
-> > +	preempt_disable();
-> > +
-> > +	hcr_el2 = read_sysreg(HCR_EL2);
-> > +	write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
-> > +	__load_stage2(&kvm->arch.mmu);
-> 
-> [Severity: High]
-> Is an isb() required immediately after writing HCR_EL2 before proceeding to
-> __load_stage2()? HCR_EL2 is a control-plane register, and delaying the barrier
-> can cause the pipeline to operate with architecturally undefined state.
-> 
-
-Again, it won't operate until the enable at the end of hacdbs_start()
-
-> > +
-> > +	hacdbs_start(hw_entries, size);
-> > +
-> > +	do {
-> > +		wfi();
-> > +	} while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
-> 
-> [Severity: High]
-> Could this polling loop cause a lost wakeup and indefinite CPU stall? The loop
-> unconditionally sleeps on the first iteration and checks the condition
-> non-atomically with respect to interrupts. 
-> 
-> If the HACDBSIRQ interrupt is delivered and serviced just before the wfi()
-> instruction executes, the wfi() will wait for a new interrupt that will never
-> arrive. Should the check be made atomic with the sleep, for example by masking
-> IRQs before the check?
-> 
-
-Answered before. Yes, it's unlikely, but maybe we need a WFIT.
-
-> > +
-> > +	ret = hacdbs_stop();
-> > +
-> > +	write_sysreg(hcr_el2, HCR_EL2);
-> > +	isb();
-> 
-> [Severity: High]
-> Should there be a speculative execution barrier (dsb) after stopping the engine
-> in hacdbs_stop() and before changing the translation context here? 
-> 
-> The ARM64 guidelines mandate a speculative execution barrier (dsb + isb) after
-> disabling an asynchronous engine to definitively halt out-of-context execution
-> before updating the translation regime.
-
-
-There is LITERALY a comment below addressing this.
-
-> 
-> > +
-> > +	/*
-> > +	 * No DSB is needed here, as kvm_flush_remote_tlbs_memslot() that happens
-> > +	 * later in generic dirty-cleaning code already performs a DSB before
-> > +	 * doing the TLBI.
-> > +	 */
-> > +
-> > +	preempt_enable();
-> > +
-> > +	return ret;
-> > +}
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260629111820.1873540-1-leo.bras@arm.com?part=6
