@@ -1,292 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A343CFF69;
-	Mon, 29 Jun 2026 23:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B29E3D1AB7
+	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 23:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782775745; cv=none; b=KMbeZGNqFfTbjlDO0SEE2hKIjU8IvOszdUsrEzMWJA2BFmeAy32Hw07wWUTMLFlEFB44CyfTn9rgyZBVmyfPQcwlzXyombe6oSbJBrMFXnlZi0p3jUCyS/LJU6bhKSaxp0QuTvqkizlkOFeG/rRZMkbKFkT4ZC0NKcSkAl56K0E=
+	t=1782776709; cv=none; b=WzlJS2EopnSvqgfd+/kIVl3gFsdp9jEUsn6iQZTG57BIF5QCHxN926ct/9Lb+NO0fIEYyoCP+FVWSSR4ukbNZbguhLdnchg9dmTKP5EqsKYp3x4HZL/dRwDsMgphDdASkmmBap/VmfvKln+nKIlKsdvtJDdNrmeRgFGiLS7ukjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782775745; c=relaxed/simple;
-	bh=4oJgFJbDGFksilKgDfzCAOyld9O3BnTqzG+NY/DtUyk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7RjSlFgH74EEOtIHb7u3mDp2CxndJWtAdon9GdhPIH/hnHP3pE2TALj2uF0ypbdmEFrGRTY/ZiIcYH3J2UglGqPLqo9w8i0djq/nI3F0LZrimwyp5gu9QF7UWMEF+WWfZI4aa/3EAiyd4tBgeUxl1CjyO8Q4GIlQNql1OToeNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TrCq6GQ5; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782776709; c=relaxed/simple;
+	bh=u91mt2pWY/QeS7R/L7ePKxehGUjzRZq9qGfr1+oSNbE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=P0rZJ5LH0nzkuPa3a31+pGD/jkRM8HI16v7N1Rjhn100yheSoBHYq8evQ1nvLekaKjqkIp6YIrVKh8NP/nrPRg96cAmWz8JkxlsH78qSwrOfZ9yMbgyc1DxUqCz9oGeagwCuXBzfuAazhktfaHcS87UIhvYZs0iKIQyzY81lb8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QMWhljAd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TrCq6GQ5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782775736; x=1814311736;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4oJgFJbDGFksilKgDfzCAOyld9O3BnTqzG+NY/DtUyk=;
-  b=TrCq6GQ5+63H/ryC9H02RhmrnYvCqms2MMcIM6iJyEM6vkk5Lfu11pC0
-   uUtfpgHdp9EDyFXjnL82DJLNdvRltUlbP4SU6W2gHEMPvDSewcNtaWj7c
-   i+P5NzpmuoLnMIUZ5OmPdregztKuS9ptiE5i4HOi0P3EZ1hsg//THQoms
-   S19E4qEkAFHCjVLt8+M19yPF9TrtUZOEMXK+DCVuxTV4a8Bso4+rf0QLt
-   DCCgwrJopighi+DsbSddu0T2zckTQjg6hNdNQenX8kmkUpCDEUcBY7A3C
-   dXJnM5gtro3Tc2hrAHtWeN3TyPqOv8VXv8TcRuPlCMpbXGeLMmvfDLi0P
-   g==;
-X-CSE-ConnectionGUID: q+gDHtIVRhObmZyi13rrWA==
-X-CSE-MsgGUID: gII4n3o+QtScxmevFYRE4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="82593514"
-X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="82593514"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
-X-CSE-ConnectionGUID: JNIckwh6Rgm7ABYjqDwbYQ==
-X-CSE-MsgGUID: JUrh8J6bQJao4ACmP423hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,232,1774335600"; 
-   d="scan'208";a="290220149"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 16:28:44 -0700
-From: Zide Chen <zide.chen@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed counter 3 tests
-Date: Mon, 29 Jun 2026 16:19:37 -0700
-Message-ID: <20260629231938.15129-9-zide.chen@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629231938.15129-1-zide.chen@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMWhljAd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE3C1F000E9;
+	Mon, 29 Jun 2026 23:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782776708;
+	bh=N80gBL6usKaD42ewhw7dJwtbXJUJTkFe5DTCdVNlKK8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QMWhljAdtXbm1k2xSPDGWrFQuSHyCuqNUyld3uZ0UXcGIMX4X8768gUcd2Lniw4ju
+	 f6QPZeOfQKh10cnpJCFCNZdsCBBTumIvibPcWf1BT5wfFiQaoBOy6+0+fp2LykLh1c
+	 rOjB5KMiZteTOlA9qd6clnN3VVKTBKf2leWHq+o75SFKUv8UlETzQRMvN713TQcCmq
+	 5xKFtzmon9Sxv6+sLV8DDxC/nO2xKS2oK2nbCMDXTSbMfHeHvIUATGz8iJO7KUB8eS
+	 COTozJNy9YXshwKaYqcLFYTW+U83ojzjOPoAWgY4lVFPk5CbdQ0ZBkYl0Is2I7bHH4
+	 pNfO7wjx8OfzQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed
+ counter 3 tests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zide Chen" <zide.chen@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260629231938.15129-9-zide.chen@intel.com>
 References: <20260629231938.15129-1-zide.chen@intel.com>
+ <20260629231938.15129-9-zide.chen@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jun 2026 23:45:07 +0000
+Message-Id: <20260629234508.0DE3C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add a test case to exercise IA32_PERF_METRICS, i.e. architectural
-support for Topdown (TMA) Level 1 metrics, enumerated by
-IA32_PERF_CAPABILITIES[15].
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The newly added test for PERF_METRICS writes a non-zero value (0=
+xdeaddead) to MSR_PERF_METRICS and expects to read it back verbatim, which =
+violates Intel's architectural rules and will cause a #GP exception on hard=
+ware.
+--
 
-Only check for non-zero metrics, as they are derived and depend on
-the workload, CPU model, and host scheduling, making precise
-expectations fragile.
+commit 35ae6d43235ee910691fc703d1aee89a9dbe653a
+Author: Zide Chen <zide.chen@intel.com>
 
-Extend the PMU selftest to cover Intel fixed counter 3 by bumping
-MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
+KVM: selftests: Add PERF_METRICS and fixed counter 3 tests
 
-Signed-off-by: Zide Chen <zide.chen@intel.com>
----
-v6:
-- Move perf metrics test out of test_arch_events(); it doesn't belong
-  there, and this also avoids redundant runs of perf metrics test.
-- Correct the +/-3 error margin.
-v3:
-- Slightly reword comment to explain the sum of topdown metrics
-  is close to 100%.
-- Change abs() with explicit bounds (sum >= 0xfd && sum <= 0x102)
-  for better readability.
-v2:
-- New patch.
----
- tools/arch/x86/include/asm/msr-index.h        |  1 +
- tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
- .../selftests/kvm/x86/pmu_counters_test.c     | 94 ++++++++++++++++++-
- 3 files changed, 93 insertions(+), 5 deletions(-)
+This patch adds a test case to exercise IA32_PERF_METRICS, verifying
+architectural support for Topdown Level 1 metrics. It also extends the
+PMU selftest to cover Intel fixed counter 3 by bumping the max fixed
+counters and validating basic functionality.
 
-diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
-index eff29645719b..e7745e2cd543 100644
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -331,6 +331,7 @@
- #define PERF_CAP_PEBS_FORMAT		0xf00
- #define PERF_CAP_FW_WRITES		BIT_ULL(13)
- #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
-+#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
- #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
- #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
- 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
-diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
-index 608ed83d7c6a..6c19503e0bb7 100644
---- a/tools/testing/selftests/kvm/include/x86/pmu.h
-+++ b/tools/testing/selftests/kvm/include/x86/pmu.h
-@@ -52,6 +52,9 @@
- /* Fixed PMC controls, Intel only. */
- #define FIXED_PMC_GLOBAL_CTRL_ENABLE(_idx)	BIT_ULL((32 + (_idx)))
- 
-+/* PERF_METRICS enable, Intel only. */
-+#define PERF_METRICS_GLOBAL_CTRL_ENABLE		BIT_ULL(48)
-+
- #define FIXED_PMC_KERNEL			BIT_ULL(0)
- #define FIXED_PMC_USER				BIT_ULL(1)
- #define FIXED_PMC_ANYTHREAD			BIT_ULL(2)
-diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-index dc6afac3aa91..38057754e024 100644
---- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-+++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-@@ -6,6 +6,7 @@
- 
- #include "pmu.h"
- #include "processor.h"
-+#include <linux/bitfield.h>
- 
- /* Number of iterations of the loop for the guest measurement payload. */
- #define NUM_LOOPS			10
-@@ -241,17 +242,20 @@ do {										\
- 	);									\
- } while (0)
- 
--#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
-+#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP)				\
- do {										\
--	wrmsr(_pmc_msr, 0);							\
--										\
- 	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))				\
- 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflushopt %[m]", FEP);	\
- 	else if (this_cpu_has(X86_FEATURE_CLFLUSH))				\
- 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflush  %[m]", FEP);	\
- 	else									\
- 		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop", FEP);		\
--										\
-+} while (0)
-+
-+#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
-+do {										\
-+	wrmsr(_pmc_msr, 0);							\
-+	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP);				\
- 	guest_assert_event_count(_idx, _pmc, _pmc_msr);				\
- } while (0)
- 
-@@ -318,6 +322,75 @@ static void guest_test_arch_event(u8 idx)
- 				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
- }
- 
-+static void __guest_test_perf_metrics(void)
-+{
-+	int retiring, bad_spec, fe_bound, be_bound, sum;
-+	u64 global_ctrl, metrics;
-+
-+	if ((guest_get_pmu_version() < 2) ||	/* Does guest have GLOBAL_CTRL? */
-+	    !this_cpu_has(X86_FEATURE_PDCM) ||
-+	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
-+		return;
-+
-+	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
-+	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
-+	wrmsr(MSR_PERF_METRICS, 0);
-+
-+	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
-+	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
-+	global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
-+		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
-+
-+	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
-+
-+	/* Check test results. */
-+	metrics = rdmsr(MSR_PERF_METRICS);
-+	retiring = FIELD_GET(GENMASK_ULL(7, 0), metrics);
-+	bad_spec = FIELD_GET(GENMASK_ULL(15, 8), metrics);
-+	fe_bound = FIELD_GET(GENMASK_ULL(23, 16), metrics);
-+	be_bound = FIELD_GET(GENMASK_ULL(31, 24), metrics);
-+
-+	/*
-+	 * Be conservative: the measured payload definitely retires work, so
-+	 * Retiring should be non-zero.
-+	 */
-+	GUEST_ASSERT_NE(metrics, 0ULL);
-+	GUEST_ASSERT_NE(retiring, 0ULL);
-+
-+	/*
-+	 * Each level-1 topdown metrics is an integer fraction of 255.
-+	 * An +/-3 error margin is chosen for a loose sanity check.
-+	 */
-+	sum = retiring + bad_spec + fe_bound + be_bound;
-+	GUEST_ASSERT(sum >= 0xfc && sum <= 0x102);
-+
-+	/* Sanity check after PERF_METRICS disabled. */
-+	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
-+	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
-+	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
-+
-+	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
-+}
-+
-+static void guest_test_perf_metrics(void)
-+{
-+	__guest_test_perf_metrics();
-+	GUEST_DONE();
-+}
-+
-+static void test_perf_metrics(u8 pmu_version, u64 perf_capabilities)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_perf_metrics,
-+					 pmu_version, perf_capabilities);
-+
-+	run_vcpu(vcpu);
-+
-+	kvm_vm_free(vm);
-+}
-+
- static void guest_test_arch_events(void)
- {
- 	u8 i;
-@@ -361,7 +434,7 @@ static void test_arch_events(u8 pmu_version, u64 perf_capabilities,
-  * other than PMCs in the future.
-  */
- #define MAX_NR_GP_COUNTERS	8
--#define MAX_NR_FIXED_COUNTERS	3
-+#define MAX_NR_FIXED_COUNTERS	4
- 
- #define GUEST_ASSERT_PMC_MSR_ACCESS(insn, msr, expect_gp, vector)		\
- __GUEST_ASSERT(expect_gp ? vector == GP_VECTOR : !vector,			\
-@@ -585,6 +658,7 @@ static void test_intel_counters(void)
- 	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
- 	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
- 	u8 pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
-+	u64 advertised_perf_caps = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
- 	unsigned int i;
- 	u8 v, j;
- 	u32 k;
-@@ -592,6 +666,7 @@ static void test_intel_counters(void)
- 	const u64 perf_caps[] = {
- 		0,
- 		PMU_CAP_FW_WRITES,
-+		PERF_CAP_PERF_METRICS,
- 	};
- 
- 	/*
-@@ -649,6 +724,10 @@ static void test_intel_counters(void)
- 			if (!kvm_has_perf_caps && perf_caps[i])
- 				continue;
- 
-+			/* Ignore unsupported features. */
-+			if (perf_caps[i] & ~advertised_perf_caps)
-+				continue;
-+
- 			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
- 				v, perf_caps[i]);
- 
-@@ -675,6 +754,11 @@ static void test_intel_counters(void)
- 				for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
- 					test_fixed_counters(v, perf_caps[i], j, k);
- 			}
-+
-+			pr_info("Testing Perf Metrics, PMU version %u, perf_caps = %lx\n",
-+				v, perf_caps[i]);
-+
-+			test_perf_metrics(v, perf_caps[i]);
- 		}
- 	}
- }
--- 
-2.54.0
+> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/=
+testing/selftests/kvm/x86/pmu_counters_test.c
+> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+[ ... ]
+> @@ -318,6 +322,75 @@ static void guest_test_arch_event(u8 idx)
+>  				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
+>  }
+> =20
+> +static void __guest_test_perf_metrics(void)
+> +{
+[ ... ]
+> +	/* Sanity check after PERF_METRICS disabled. */
+> +	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
+> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
+> +	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
+> +
+> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
+> +}
 
+[Severity: Medium]
+Will this write to MSR_PERF_METRICS cause a #GP exception on hardware?
+
+According to the Intel SDM, software should only write 0 to clear the metri=
+cs,
+and writing a non-zero value like 0xdeaddead may trigger a general protecti=
+on
+fault.=20
+
+If this occurs on a host where MSR_PERF_METRICS writes are passed through
+to the physical CPU, could it cause the guest to crash with an unhandled
+#GP(0) exception and fail the selftest?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260629231938.1512=
+9-1-zide.chen@intel.com?part=3D8
