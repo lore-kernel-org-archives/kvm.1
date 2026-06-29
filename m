@@ -1,408 +1,223 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A32194AE6
-	for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 15:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACD9337BA6;
+	Mon, 29 Jun 2026 15:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782747815; cv=none; b=o/nx32T7IJQwVxfCwuSIa/G5dwIxJ7cT+HvJytJJ6EGJ1XWN3zIxof6mpCpDvGH+nD4KmZcX3gCizz0MOUKYa7XIsEtKl0FmDPxslH+JSpIjcp6KW9SG4wGIINVYo9ABtlyuP3r43khnp0gOH1N5SOirfrDRbjWwY/U+y1UfiSk=
+	t=1782747814; cv=none; b=D7ise+PW4DMCW8ls8Jz+XdD2VrbyX+Yr0sDPieYp/x12XrLA9rora3emqpgPIn6c0jKmfOmsprzq3DQvw7PKWCuD34mVLMD75TK0k9Ev6Bxuv4KaBl0UY80Qf1FzIPAhj/u6tdkxXwMLwuxOQbFA/mabh54U1lF0uV7wuugjAVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782747815; c=relaxed/simple;
-	bh=6GolJiylRxOcj7cu03lGLgzPugnpFr9jX5w3dGIkXJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=NPALSseM0QO1KYIDx3bDFsnNAkXyCociJ9xs8LEZ3iOJbg65/kJ2Y+Ixa129hKHi7pAuHShwrqNX3P2aPWNCSyJtNtf8sRE3rsBt/UEZ6vQ8RexaXhnAoaVUHCEdorCxHeDewBe3SGCL9F93ERnhbdrH3aBnistY579R0vcOl10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cQ5gC3VB; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782747814; c=relaxed/simple;
+	bh=5Y4BEJ8zwWvQTQHdqVwuTQLfjjB+iTFJRFh5ABHDOtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bJFb75OfJbgjRE5PB3LW8iUrOMsJYvoqzp3RJddgfL4A7dC/wKCsm59wKtHrmmOnpgxvagcSJOyYRZgnytwjYCRJxMfdntxUfWwONuiRxpU4pOEytZTVPGQ03kVE5nazR3CU4awG0+K/1UbVGHFRWE93MwOvU4HdlMyl5eyXGyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=D0uvl3Eh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YjcQppJ/; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cQ5gC3VB"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A959F26AC;
-	Mon, 29 Jun 2026 08:43:27 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 304523F673;
-	Mon, 29 Jun 2026 08:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782747812; bh=6GolJiylRxOcj7cu03lGLgzPugnpFr9jX5w3dGIkXJA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQ5gC3VBrP6bMo5KEqoQSaxAE/JbbgBYAzpG5y0VLGvzbsaeqhKpaJ/RmD0xk4Ky4
-	 1PaZGcGFP8MmWu1dlGNabmQABqS1vBqSuco//sJqZYWS0ShViKuxkEIj7B9dUTT+4g
-	 BvUOnyfqkOFwkvxqHAIJwYtq91KaiIVTkc21eoMg=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	kvmarm@lists.linux.dev,
-	Oliver Upton <oupton@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
-Date: Mon, 29 Jun 2026 16:43:29 +0100
-Message-ID: <akKSoZkYWDTE07hi@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629113242.9142A1F000E9@smtp.kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-6-leo.bras@arm.com> <20260629113242.9142A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="D0uvl3Eh";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YjcQppJ/"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9E605EC00DB;
+	Mon, 29 Jun 2026 11:43:30 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 29 Jun 2026 11:43:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782747810;
+	 x=1782834210; bh=oBO9AlUgesLs7bhNb3C7hDuAqAmu4BXNEtMP6hAnZ4o=; b=
+	D0uvl3EhJ2nxveUtN2hJABuHyt+1M1gZkjd6hx+VrZ79ppspk5Zn0zuH/NpLm/hc
+	CwKh4yas4SWqU+drQAVxeDibCwX/IpLtw9lLwqqby9v8HPdhbVqMVQZLK6so2poi
+	7TO7572grW3nAW45CsbvyRCcFC8l3A+o++DFEFkPymQwKrbeOsRv6AJvQ7LCn+zG
+	FBYdi6I4RGibX25tYuUOVZpFeI6ryAr3V8dmE60hYKUSps/Zd+maIIHUNYtw3AiS
+	PIiZW3KmIX3K4JYuxbFwoh1DR2F+D7BxADAFpaHwDDdbwV2Z2VShshhCiwKv2BK3
+	TgEc1/IiEX5eIPWV9dcumQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782747810; x=
+	1782834210; bh=oBO9AlUgesLs7bhNb3C7hDuAqAmu4BXNEtMP6hAnZ4o=; b=Y
+	jcQppJ/IxGqBduXNk/9nPJbAhKjzZG4cBAmmjPD6+1RgX85V/+M3whIYeESWrYUB
+	rD0jdyS+pLhqgW6MscCYM2SOKC3C4LgBDo4aAhXOaOUmickDvPedenGdR/g/Idfc
+	dZNj3XNYSIQbk/adwd3YuKSuqfBujLYGIPiJO1R4SBPt+16AU7Hku8OIw+JYLlP6
+	qXbUaPQ2IDfk2KnknO3ilLUh8M6UAmRLt0+0z0fA5UjsMMuZClZw/9KdvWFZwHPH
+	XhADZ7GI1j7EFnQjPhcTthkvSehWU/t8j3g2Q2YW0cNkyT6mdWxL1tapLfEnYSTA
+	RjMWqCRC+bUm6CHFJzjOA==
+X-ME-Sender: <xms:oZJCaqn7E7GYlbrjvtza_sKhXD9RmAacgQtAFB_ovUUZMJc71i4_jA>
+    <xme:oZJCajY6FhobIvyFza-_UKKsPuo7h1FdmiY2urwjj52wTumc7ul89uWH1QSl1qkY-
+    eJJMkbw0NzZrT1Dhquw0UR1PxgALCvoTV2cidwW3UIleLI4vMV5Rak>
+X-ME-Received: <xmr:oZJCan7jFdj7sGXn0tIYLLRt3ll4K48EAzul60vsYJfv2FDo1IN8j3Rhch4>
+X-ME-Proxy-Cause: dmFkZTEHn75k5CFgeznKWlGGIrXbvs7qL+tjerljiXXOxMghxwvyGDwfT2S9oP9uhlX1A9
+    tuC4l6Vby03CawJ4JK7jAm/X3lKp5zXwWo1fjjxHIy6M/eEuqVh+q5JDBzJCLyESFMau0y
+    NVjUBZn4gCX0hkV0YU14kuqtEO9MwCJqgHvoJ3CJIwhaQ1ukdtTAKzLNJzJB1sG9g4kqSh
+    WhMHVxxBDHlZsrHs7aNm8PWsIvtWajeti0lzUrCXNV+b+GLyyUPmTzH7bF1UzRFHD0YogB
+    hmYlKsWmhEiWBpHeQpQmSCkXVtheO5p2FLys8xbSdIhP6bjBClZyhEBtl3zP+JDoZxVBVz
+    stZNU8ReUms4iutYZ8bWlZUVpBX2I64Fp8HSnjhsd68LRspWKO6AqftAsEhvCk4TX2m9jm
+    zsl3i3DXHeDmp2xy7BV2Ivz55DDyAOXx9IwHijY7/fL8Yx74yPNkGJ9HABwbf6j9zmW20C
+    OWJ+6lknm/hd/b/4ebBK1PlAMeGCzm4CVWKH+Lg5gsNQpTl/r+wnA4oeKvz9J1+oxDrQRq
+    /aw/lu8FdKwcJXZAfRBuY9AnVCUL41CopXHHUM83HtzC6Q5hF9Ym9czDDuYt+FBsWL+x2Y
+    QXMFK6wN9nnVMnBVm2uAWUgB/0vvof0FKiPiFrt5WTL/9tv2iKlyJFdI/CLw
+X-ME-Proxy: <xmx:oZJCalDi29KAquSyCPTfi9VtRyzDDkp_NPIGd4nkt2TMhkFN2oTxIw>
+    <xmx:oZJCat9JTCCBufPxC8iNE087OOX_B257OMbgP8PRmIqqZaE8VzRQyg>
+    <xmx:oZJCaoFM2BiKXwxM2Kg3eX504Rr9PQtF6cErSMCyUvVWIgivyiB4mA>
+    <xmx:oZJCanSasMq-HTDje7cIMomZF91S22UiBChdb9T5QXSp-GSMLc1_wg>
+    <xmx:opJCalYc49Sc2tAqYUmjU7LvPTXEXnTj9Zh-DBF3DqibJNVdziyu_MCy>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jun 2026 11:43:28 -0400 (EDT)
+Date: Mon, 29 Jun 2026 09:43:26 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ alex@shazbot.org
+Subject: Re: [PATCH v17 08/12] PCI/TPH: Add sysfs binary file to export CPU
+ to steering-tag mapping
+Message-ID: <20260629094326.779ab0ff@shazbot.org>
+In-Reply-To: <5b389fb6-7d0e-8fea-1fd9-b873efc028c3@huawei.com>
+References: <20260616104621.41915-1-fengchengwen@huawei.com>
+	<20260616104621.41915-9-fengchengwen@huawei.com>
+	<20260616144224.GB3577091@ziepe.ca>
+	<20260616105754.784be22d@shazbot.org>
+	<9105ceef-5e27-4e3c-8903-d46aef52a2bd@huawei.com>
+	<20260626092232.53ed3a7c@shazbot.org>
+	<5b389fb6-7d0e-8fea-1fd9-b873efc028c3@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 29, 2026 at 11:32:42AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 12 potential issue(s) to consider:
-> - [Critical] The `wfi()` loop in `dirty_bit_clear()` creates a check-then-sleep race condition that can stall the CPU indefinitely.
-> - [Critical] The level-triggered `HACDBSIRQ` is not acknowledged or cleared in the interrupt handler, resulting in an infinite interrupt storm.
-> - [High] Missing `isb()` context synchronization barrier after writing to control-plane system registers `HCR_EL2` and `SYS_HACDBSCONS_EL2`.
-> - [High] Missing memory barrier (`dmb ish`) before starting the HACDBS hardware engine.
-> - [High] The ACPI MADT parser registers `hacdbsirq_gsi` without verifying it is non-zero, risking a hijack of SGI 0.
-> - [High] Missing `default:` case in the error handling switch statement leaves the tracking status unchanged on unexpected hardware errors, causing a vCPU hang.
-> - [High] If HACDBS IRQ initialization fails, the feature remains enabled in KVM, causing a permanent host hang upon first use of dirty tracking.
-> - [Medium] ACPI GSI mapping is leaked if `request_percpu_irq()` fails.
-> - [Medium] Missing teardown of HACDBS resources if KVM subsystem initialization fails.
-> - [Medium] The per-cpu HACDBS status is initialized after enabling the per-cpu interrupt, causing a TOCTOU race.
-> - [Medium] Calling `smp_processor_id()` in a preemptible context triggers a kernel BUG/warning.
-> - [Low] A variable declaration immediately follows a case label, violating C syntax rules and causing a build failure.
-> --
-> 
-> commit a0d2df687f2678f7a10866e285efd8319bf84cea
-> Author: Leonardo Bras <leo.bras@arm.com>
-> 
-> KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
-> 
-> Find via ACPI the Id for HACDBSIRQ, initialize it as a per-cpu IRQ and make
-> sure any cpu able to run virtualization has it active. Introduce a per-cpu
-> structure used by the HACDBSIRQ handler to keep track of entries size and
-> the status of HACDBS.
-> 
-> Link: https://github.com/tianocore/edk2/issues/12409
-> 
-> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > index 50adfff75be82..dc1a4629aaeb9 100644
-> > --- a/arch/arm64/kvm/arm.c
-> > +++ b/arch/arm64/kvm/arm.c
-> [ ... ]
-> > @@ -2481,6 +2484,8 @@ static int __init init_subsystems(void)
-> >  	if (err)
-> >  		goto out;
-> >  
-> > +	kvm_hacdbs_init();
-> > +
-> >  	kvm_register_perf_callbacks();
-> >  
-> >  	err = kvm_hyp_trace_init();
-> 
-> [Severity: Medium]
-> If a subsequent initialization step like kvm_hyp_trace_init() fails, the
-> code branches to the out: error path and aborts KVM initialization. Does
-> this path need to call a teardown function to free the per-CPU IRQ and
-> release the GSI allocated by kvm_hacdbs_init()?
-> 
+On Sun, 28 Jun 2026 19:58:09 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
+>=20
+> Thanks a lot for your extremely detailed and professional design breakdown
+> for the unified VFIO TPH uAPI framework. I=E2=80=99ve fully gone through =
+all your
+> design points and aligned my implementation plan accordingly. I have seve=
+ral
+> key implementation questions to confirm with you as below:
+>=20
+> 1. Plan for dma-buf TPH metadata storage
+>  =C2=A0 I plan to add the following TPH-related fields into struct=20
+> vfio_pci_dma_buf
+>  =C2=A0 in my preparatory patch series, which can be fully reused after Z=
+hiping=E2=80=99s
+>  =C2=A0 dma-buf TPH patches land upstream:
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u16 tph_st_ext;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 revoked:1;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st_valid:1;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_st_ext_valid:1;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_ph:2;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8=C2=A0 tph_ph_valid:1;
+>  =C2=A0 The tph_ph_valid bit is newly added to track whether a valid PH v=
+alue=20
+> is bound
+>  =C2=A0 to the dma-buf. Is this field layout and validity flag design acc=
+eptable?
 
-Maybe. Another solution would be to put it after anything that may present 
-any error. I wonder how ofter do we get kvm to fail startup, though.
+In Zhiping's design, the PH completer validity is bound to the ST
+validity.  In my proposal, the user makes a request relative to the
+namespace, EXTENDED set =3D 16-bit, clear =3D 8-bit.  Internally we do a
+.get_tph on the dmabuf based on the requested namespace and get back
+success or failure.  On success, the full PH + ST is provided to the
+user when running with DS or LITERAL capability available, otherwise the
+ST is withheld and only the PH is provided.  I don't see a need to track
+the ph validity separately.
 
-> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
-> > index 32fe938d6bf70..789da8712b1b4 100644
-> > --- a/arch/arm64/kvm/dirty_bit.c
-> > +++ b/arch/arm64/kvm/dirty_bit.c
-> [ ... ]
-> > @@ -14,3 +21,93 @@
-> >  	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
-> >  #define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
-> >  #define HDBSS_ENTRY_IPA GENMASK_ULL(55, 12)
-> > +
-> > +static __ro_after_init int hacdbsirq = -1;
-> > +
-> > +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
-> > +{
-> > +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
-> > +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
-> > +
-> > +	switch (err) {
-> > +	case HACDBSCONS_EL2_ERR_REASON_NOF:
-> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
-> > +		break;
-> > +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
-> > +		/* When size not a power of two >= 4k, exit with reserved TTLW */
-> > +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
-> 
-> [Severity: Low]
-> Does this variable declaration cause a build failure?
+> 2. Validation rule for VFIO_DEVICE_TPH_EXTENDED flag mismatches
+>  =C2=A0 The VFIO_DEVICE_TPH_EXTENDED modifier you defined is an excellent=
+ design,
+>  =C2=A0 letting users select either 8-bit base ST or 16-bit extended ST w=
+hen=20
+> hardware
+>  =C2=A0 supports both variants.
+>  =C2=A0 But a mismatch risk exists: users may set ST entries via TPH_ST w=
+ith=20
+> EXTENDED,
+>  =C2=A0 then later enable TPH requester in pure 8-bit mode only, causing=
+=20
+> inconsistency
+>  =C2=A0 between shadow config and active hardware mode.
+>=20
+>  =C2=A0 My proposed solution: maintain two separate shadow ST tables insi=
+de VFIO,
+>  =C2=A0 one for base 8-bit ST and one for extended 16-bit ST. When enabli=
+ng TPH
+>  =C2=A0 requester mode, activate the shadow table matching the selected S=
+T width.
+>  =C2=A0 For devices only supporting 8-bit ST, directly reject EXTENDED fl=
+ag=20
+> in all
+>  =C2=A0 TPH_ST ioctl calls.
+>=20
+>  =C2=A0 Should we enforce strict cross-check between EXTENDED flag used d=
+uring ST
+>  =C2=A0 programming and the final active requester ST width during=20
+> enablement? If yes,
+>  =C2=A0 is the dual shadow table approach reasonable?
 
-No
+We've abandoned the apply at enable-time approach in this proposal, TPH
+must first be enabled in device config space.  There is also no
+buffering of user values, they're written straight through to hardware.
+If the user has enabled only 8-bit mode, then a TPH_ST with the
+EXTENDED flag set should generate an error.  Likewise, if the user
+calls TPH_ST while Requester Enable is 00b, this generates an error
+regardless of the namespace.
+=20
+> 3. Virtualization logic for TPH requester enable bits with heterogeneous
+> completer capabilities
+>  =C2=A0 Two complex real hardware topologies need proper handling:
+>  =C2=A0 - Case 1: Single device with multiple queues routing TLPs to host=
+ memory
+>  =C2=A0=C2=A0=C2=A0 and P2P peer memory via dma-buf flow; root port and P=
+2P TPH completer
+>  =C2=A0=C2=A0=C2=A0 capabilities may differ.
+>  =C2=A0 - Case 2: Root port has no TPH completer support, while endpoint =
+and P2P
+>  =C2=A0=C2=A0=C2=A0 peers fully support TPH completer.
+>=20
+>  =C2=A0 I=E2=80=99m confused about how to virtualize the device=E2=80=99s=
+ TPH requester=20
+> control bits.
+>  =C2=A0 My tentative idea: take the minimum supported capability between =
+endpoint
+>  =C2=A0 and host root port. If root port lacks TPH completer, block TPH=20
+> requester enable
+>  =C2=A0 entirely.
+>=20
+>  =C2=A0 Is this the correct approach to handle heterogeneous completer ca=
+pability
+>  =C2=A0 across different traffic paths?
 
-> Under standard C rules,
-> a label can only be attached to a statement, and a declaration is not a
-> statement.
+In case 1, this is why it doesn't work to allow the user to buffer per
+namespace STs to be applied based on the value written to Requester
+Enable.  Register value 11b allows the requester to operate in both
+namespaces simultaneously.  The only governance we can provide is to
+disallow EXTENDED STs to be written when Requester Enable is 01b.
 
-That's not a label.
+The peer completer's capability is provided through the dmabuf.  The
+user can ask for the requester's preferred namespace, use the alternate
+if available, or fail if there's no compatible namespace available,
+which includes no .get_tph support.
 
-> 
-> > +
-> > +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
-> > +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
-> > +			break;
-> > +		}
-> > +		fallthrough;
-> > +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
-> > +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
-> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
-> > +		break;
-> 
-> [Severity: High]
-> What happens if the hardware reports an undefined or reserved error reason
-> in HACDBSCONS_EL2_ERR_REASON?
-> 
-> Without a default: case, the tracking status wouldn't be updated, remaining
-> as HACDBS_RUNNING. Could this cause the synchronous wfi() wait loop in
-> dirty_bit_clear() to spin forever and lock up the host CPU?
+In case 2, we're gated by the Linux TPH implementation and carry it
+through to the uAPI.  The overall TPH feature opt-in needs to depend on
+both TPH support in the requester (the user's device) AND TPH completer
+support at the root port (unless the requester itself is a RCiEP).  I
+had missed elaborating on this requirement in my write-up.
 
-I get the error code by reading a 2-bit bitfield. There can only be 4 
-different combinations here, and all are dealt with. 
+I'm glad you're onboard with the design, please let me know if any
+further clarifications are needed.  Thanks,
 
-> 
-> > +	}
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> 
-> [Severity: Critical]
-> Is it necessary to write back to a hardware register to acknowledge or clear
-> the active source of this interrupt before returning?
-> 
-> The ACPI MADT registers the HACDBS interrupt as ACPI_LEVEL_SENSITIVE.
-> Since a level-triggered interrupt remains asserted until explicitly cleared,
-> would returning IRQ_HANDLED without clearing the hardware signal trap the CPU
-> in an infinite loop of executing the ISR?
-> 
-
-I am pretty sure this is done by generic code.
-
-> > +
-> > +void kvm_hacdbs_cpu_up(void)
-> > +{
-> > +	if (hacdbsirq < 0)
-> > +		return;
-> > +
-> > +	enable_percpu_irq(hacdbsirq, IRQ_TYPE_LEVEL_HIGH);
-> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
-> > +}
-> 
-> [Severity: Medium]
-> Could this sequence cause a race condition if a pending interrupt fires
-> immediately upon being unmasked?
-> 
-> If hacdbsirq_handler() executes and updates the state, and then
-> kvm_hacdbs_cpu_up() resumes and unconditionally overwrites the state
-> with HACDBS_IDLE, the handler's update would be lost. Should the status
-> be initialized before enabling the interrupt?
-
-This is a per-cpu irq, and above happens when we are enabling 
-virtualization on a CPU. Prior to the endo of kvm_hacdbs_cpu_up() there 
-should be no guest running in this cpu, so faulting is not an issue. 
-
-> 
-> > +
-> > +void kvm_hacdbs_cpu_down(void)
-> > +{
-> > +	if (hacdbsirq < 0)
-> > +		return;
-> > +
-> > +	disable_percpu_irq(hacdbsirq);
-> > +	this_cpu_write(hacdbs_pcp.status, HACDBS_OFF);
-> > +}
-> > +
-> > +#ifdef CONFIG_ACPI
-> > +static int __init hacdbs_acpi_get_irq(void)
-> > +{
-> > +	struct acpi_madt_generic_interrupt *gicc;
-> > +	u32 gsi;
-> > +	int irq;
-> > +
-> > +	gicc = acpi_cpu_get_madt_gicc(smp_processor_id());
-> 
-> [Severity: Medium]
-> Is it safe to call smp_processor_id() here?
-> 
-> Since kvm_hacdbs_init() is called from init_subsystems() during a
-> device_initcall, preemption is enabled. Would calling smp_processor_id()
-> directly without disabling preemption trigger a kernel bug/warning if
-> CONFIG_DEBUG_PREEMPT is enabled? Should raw_smp_processor_id() or
-> get_cpu()/put_cpu() be used instead?
-
-This is called in init time, by kvm_arm_init(). Also, it should not matter 
-as we are not actually touching anything from that cpu, but instead just 
-fetching this read-only information about the IRQ.
-
-
-> 
-> > +	if (gicc->header.length < ACPI_MADT_GICC_HACDBSIRQ)
-> > +		return -ENXIO;
-> > +
-> > +	gsi =  gicc->hacdbsirq_gsi;
-> > +
-> > +	irq = acpi_register_gsi(NULL, gsi, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_HIGH);
-> 
-> [Severity: High]
-> Does the GSI read from ACPI need to be validated before registration?
-> 
-> If the firmware does not support HACDBS, it might leave this field as 0.
-> On ARM64, GSI 0 corresponds to Software Generated Interrupt (SGI) 0, which is
-> used for Inter-Processor Interrupts (IPIs). Could registering a device
-> interrupt handler on GSI 0 corrupt host IPI handling and crash the system?
-> 
-
-Adding a test here could be easy.
-In any case I remember testing with the table entry being zero and this 
-not being an issue.
-
-> > +	if (irq < 0) {
-> > +		pr_warn("ACPI: Unable to register HACDBS interrupt: %d\n", gsi);
-> > +		return -ENXIO;
-> > +	}
-> > +
-> > +	return irq;
-> > +}
-> 
-> [Severity: Medium]
-> If the subsequent call to request_percpu_irq() in kvm_hacdbs_init() fails,
-> how is this ACPI GSI mapping cleaned up?
-> 
-> Since hacdbs_acpi_get_irq() only returns the mapped IRQ and discards the
-> original GSI, it seems impossible for the caller to properly unregister it
-> via acpi_unregister_gsi(), which would result in leaking the resource.
-> 
-
-This feature should only be enabled if the whole system supports HACDBS, so 
-once one cpu succeeds in request_percpu_irq() every other one should 
-succeed as well.
-
-> > +#else
-> > +#define hacdbs_acpi_get_irq() (-ENXIO)
-> > +#endif
-> > +
-> > +void __init kvm_hacdbs_init(void)
-> > +{
-> > +	int irq;
-> > +
-> > +	/* FEAT_HACDBS is only supported if Linux runs in EL2 (VHE) */
-> > +	if (!system_supports_hacdbs() || !is_kernel_in_hyp_mode())
-> > +		return;
-> > +
-> > +	irq = hacdbs_acpi_get_irq();
-> > +	if (irq < 0)
-> > +		return;
-> > +
-> > +	if (request_percpu_irq(irq, hacdbsirq_handler, "HACDBSIRQ", &hacdbs_pcp) < 0)
-> > +		return;
-> 
-> [Severity: High]
-> If request_percpu_irq() or hacdbs_acpi_get_irq() fails, the function returns
-> early. Is there a global flag that needs to be unset to tell KVM that HACDBS
-> hardware cleaning is unavailable?
-
-The availability is tracked by hacdbsirq variable. Once it's set, it means 
-the whole system supports hacdbs, and the IRQ is available.
-
-
-> 
-> If KVM later assumes hardware support is available and calls
-> dirty_bit_clear() unconditionally, it might set the software status to
-> HACDBS_RUNNING and wait in a wfi() loop. Since the IRQ is disabled or
-> unmapped, the handler would never fire, resulting in a host hang.
->
-> 
-> Additionally, I have a few questions regarding the implementation of
-> dirty_bit_clear() and hacdbs_start(), which appear to interact with the
-> features introduced in this patch:
-> 
-> [Severity: High]
-> In dirty_bit_clear(), is an isb() required after the write to HCR_EL2?
->
-
-No, and __load_stage2 will do that anyway if needed, as it also sets 
-registers. Also, it's done at the end of hacdbs_start()
- 
-> dirty_bit_clear() {
->     ...
->     write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
->     __load_stage2(&kvm->arch.mmu);
->     ...
-> }
-> 
-> Similarly, in hacdbs_start(), is an isb() required after writing to
-> SYS_HACDBSCONS_EL2?
-> 
-
-it's done at the end of hacdbs_start.
-
-> hacdbs_start() {
->     ...
->     sysreg_clear_set_s(SYS_HACDBSCONS_EL2,
->                        HACDBSCONS_EL2_ERR_REASON | HACDBSCONS_EL2_INDEX, 0);
-> 
->     br = (virt_to_phys(hw_entries) & HACDBSBR_EL2_BADDR_MASK) |
->     ...
-> }
-> 
-> The ARM64 subsystem guidelines indicate that writes to control-plane system
-> registers must be followed by an isb() as the very next instruction to
-> ensure subsequent instructions do not execute with an architecturally
-> undefined pipeline state.
-> 
-
-Those intructions are unrelated between themselves, the one at the end of 
-hacdbs_start() should be enough.
-
-> [Severity: Critical]
-> Does the wfi() loop in dirty_bit_clear() contain a check-then-sleep race
-> condition?
-> 
-> dirty_bit_clear() {
->     ...
->     do {
->         wfi();
->     } while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
->     ...
-> }
-> 
-> Although preemption is disabled, local interrupts are not disabled during this
-> check. If the hardware interrupt fires after the condition is checked but
-> before the wfi() executes, the CPU could service the interrupt, update the
-> status to HACDBS_IDLE, return, and then execute wfi(). The CPU would then
-> sleep indefinitely, causing a host hard lockup.
-
-Until the next interrupt, though. Very unlikely, but possible.
-
-Maybe a WFIT (timeout), then?
-
-> 
-> [Severity: High]
-> In hacdbs_start(), is a memory barrier like `dmb ish` required before starting
-> the hardware engine?
-> 
-> hacdbs_start() {
->     ...
->     if (size_b < size_p2)
->         hw_entries[size] = HDBSS_ENTRY_VALID | HDBSS_ENTRY_TTWL_RESV;
->     ...
->     write_sysreg_s(br, SYS_HACDBSBR_EL2);
->     isb();
-> }
-> 
-> A sentinel stop entry is written to the memory buffer before writing to
-> SYS_HACDBSBR_EL2 to enable the engine. Since system register writes are not
-> inherently ordered with respect to memory stores, the hardware engine might
-> begin reading before the stop entry is visible in coherent memory.
-> 
-
-And that could mean possibly running though entries that are not supposed 
-to be valid, but could be because we are talking about random data.
-So we need to make sure the write buffer is clear before setting the 
-register.
-
-Thanks
-Leo
-
-
+Alex
