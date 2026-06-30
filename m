@@ -1,92 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED89404BFD
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 12:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253C53FA5D8
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 12:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782823182; cv=none; b=UEgv4OoiVMOi+14+Qi1q2uSpM/f8NPcsTHz0newJZDZq/R68ocnpXkWd2sUAerPUsGVUUvOsYyDh0BP94XrFeZrmuHexnNBGAg0Y3nayrgROPUT77fWR+5GUgQnKngGt90B7IXRM6yVauXDv+Ks3NrCUy/ROXd+drAOA388gLPo=
+	t=1782823557; cv=none; b=MDm5vMsD7yvgjwSyv4Ff5lxIpl6q1aMTBgc76RO+mR7lHyDrvONiR+kmvNYU62d2SVSZ26RGZdpsERrzUVLg0bYPynXT8F3J+LTiV9m8/AcPp2EZE6loa8WiMa0NPTsXPIYG5dAlSsHZum1Dvw20ORzhoxDJJiarnq3BaIY27UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782823182; c=relaxed/simple;
-	bh=VwYiaIOctNoh585NIztzC6xWPLmQ71URx+DbYZxb5Ak=;
+	s=arc-20240116; t=1782823557; c=relaxed/simple;
+	bh=rnqTc9VcuxQmrucqXv/X4rxwWBjO4aintFdu4oYQwos=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=snfZlcktdvRNdXDGZfIQgShyr+5l6NYO89uzDmK7jq15zdApBrgxGbfcT1ulD3FHVnqRsZBJnZQJZSW3JyoGXUQlnEhunaNf0gMumu9ETSgAnhD7W1/eJ+xZskG5tuIuR7xbRYl0yI4VaBvlJ6+OiOJyy1RvlR0PaLloL6xS1eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sr60LC1w; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=McXhK1yN; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4Qje/I9OGhdUeL7qf0+GBzqwmjV0gwPnc056g8CFJpT+r6uHImaDCtK6FIF4Dxq/YS12M37WQBTjnPPECwfNMlAHh3sg75VTdpOfPOww5bRnyFaYxooxgisHhSYElzYZ75iOmHaZSz9B+KoKgVUgaKkOtYu2qiMIhe1WjuTdfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaPIdxH6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GjgA53JE; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sr60LC1w";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="McXhK1yN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaPIdxH6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GjgA53JE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782823180;
+	s=mimecast20190719; t=1782823555;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DhYoswPadKQqsKhwI9bNhjFKctjkWor2chy9aJkH7jQ=;
-	b=Sr60LC1wO2A54eGESptTL61RGjXnCB5tE2PjgBmqKiEFxIogD9V19rJlYm9y261lagyms3
-	8eIvD7KpUbkGkbOz+gfxpZMUmayZdnUlrPSpPmSrf/wpEnYIwmqvnVURlRJL6Qej5u0wiw
-	PFPOs6Yl8f9qHcxwIEaIu3GiM5Kodjo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+	b=JaPIdxH62TmbcFmcKDr3zI6riSzqBULhGp0rvTKjXe09gTN/fODNhzN+2pEZAVz+b9eniz
+	REPoi1CaM5jW6e+NS8aTegZDLpUU1rTZXMnyQWa1cKt8lBmI4/Pn9xqByb2P11RP0jiV0N
+	JekKZ6EfeSuawTqDHmxxMqvvJa1iCmQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-nASAS4P2M8mdK4r8ECkA9w-1; Tue, 30 Jun 2026 08:39:38 -0400
-X-MC-Unique: nASAS4P2M8mdK4r8ECkA9w-1
-X-Mimecast-MFC-AGG-ID: nASAS4P2M8mdK4r8ECkA9w_1782823178
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493bb6a4336so5416715e9.3
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 05:39:38 -0700 (PDT)
+ us-mta-599-37bBlfX4PDaKWFGdEUXoKw-1; Tue, 30 Jun 2026 08:45:53 -0400
+X-MC-Unique: 37bBlfX4PDaKWFGdEUXoKw-1
+X-Mimecast-MFC-AGG-ID: 37bBlfX4PDaKWFGdEUXoKw_1782823553
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4924583c7baso50113815e9.1
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 05:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782823158; x=1783427958; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1782823552; x=1783428352; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DhYoswPadKQqsKhwI9bNhjFKctjkWor2chy9aJkH7jQ=;
-        b=McXhK1yNAOvan4mzbfUpRI+osHx1xroLtonszHSf4aPkBNjqKN+gHd21FuZ8UjBRrX
-         rgWm5IClSTD6Paogj+RsfrL7kA/09TWEt8knVVOA4uhqBbPeFrsUt2a71SDhyhoGBVb6
-         StNqNIGw9UF8XKqEW35/TEDnteJfflpPwcBoq+dD1ax5cbgJReG/iZzdTnbf5/jaunIr
-         BP1Us38XKX/fjkFrtXwfeSkf47FSRY1ivI1boXxjWd6Xnk0X8oRFpMVYjTkjJKwGoxgd
-         jTDSm7UvgFR+hD8EiL+ZOvIMqkw3Dt/csx+Hz+vOBawNc5yfJRSa43VtlKkObQtOv8JJ
-         fzEA==
+        bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+        b=GjgA53JEaOxRxXvEbWfsLIh911fN+VQiRIkSEYvjTE2X8Vj8w2T58/KUOigDNP3oV3
+         1epjt84uggneblWryK+nNIagp+6pxuEjBRW9oqIJq9cZEmDozsvBT1g/m2iyc8tKuD3w
+         m4lZ3QSK26RiNmXNjZhAFnPMarYsG1NzDG/vCfs9z8Q8Kkntbb5/TI3JJM08/mR8WCCB
+         K8YIaaa7JYmLV62Ptqtdd5DtiZM1Rciu9A5C0JrxvsUTlJ7nzjPUuvkZJwinulqBkfAC
+         bQ/pFvV25CNriBBN0xtBwmYlkWxUyrmg15OXoYDUnFymWhyM/J5JeKTT0RpTsQafJhss
+         F9qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782823158; x=1783427958;
+        d=1e100.net; s=20251104; t=1782823552; x=1783428352;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DhYoswPadKQqsKhwI9bNhjFKctjkWor2chy9aJkH7jQ=;
-        b=o9CuvKPtT9tr4guBXWX85LVfYn9lBfU27vB7TrZqTeD5DBBt+KCfvVD1DUpqN+/NVE
-         Fu6OTrPwtKlQ6WwIrQ2jFN+nyj+qgtN/eJa+/itG6eG3My9l2lPa7ShQUPnWCEKMGv1a
-         plCuQWCoy1GmBom1Ck+NkoopT1gwAtabvu6HIwzgZsnDRfiQAVkQtDXAyIKHz6dZOaAQ
-         /dwbN+k7r+CudQ8TF25MlT2Jg2NLb4ajg+mVDMSsX7iIT1FdKqZDdWlLCys4ZkVrTVGS
-         b/OTm2uAhPSplMz8isTpLYNaogGMLillaaTs+PGUa2tdkSQZPj3oCSqqPpjUZay3bvnI
-         enBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/NR+q8v1H6WXH8pRwBGUgV967dEHq87hE1OQZGm3dZij+6ub0MCzoQXJ01cpwck8xsZik=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr1uUKEf5MVGLeQ4SR8W5S39CuX29WW2mCM1tp3ZETT9+IqMSg
-	IonSfAExkbZTQs9mCHu5CMBGE9hxEZObW3I1s0iR2KcSFcb90sOQEXJQN14P+WkYrYYspWZ02/1
-	FSoxMAQyWSw1yBIrFwbMmvY2zdJ61FvEJ3/vuFdsdIZMwBHXaQrpDWw==
-X-Gm-Gg: AfdE7cmYBiZz1ucmst2z7NPhJw8JNGydBEzSk4yoHEp21LEQcbsfWmRSb885ulTeKkQ
-	rAxmI8wYnbN2k2v6D4q6hiP/l+Zs6G+A+nksB8qV25xsE54S6wIJ0WgNsFRWgO5Xvp2xsg0c3LV
-	q4TffFS7Q/+OKKMWHFg2w6KNvplzqpLDD6tXfCQQk3AV9z7awA/5uvScw8NLVSCX8Oq1JlXlrVH
-	SbistLK53iVXXrkc2r2P5NfaNTrcW+Ms/ZWGmNBEB+rmM6OrDZ9MCXHeBbbZXnytaQsj4F+i4wy
-	bTsuujz9h7sHHDWW8ituGEVeOGUWIS6yLK3liN5Ti0g0Pf20nIIlldupaPVJj38ppj8syaEL/1I
-	8Kl88smpQwq3ftNORh2I+uRQYZvsEIgFjVhPy7RIVcFND6IjqGn82glxM7IsL
-X-Received: by 2002:a05:600c:c493:b0:493:b61c:72c3 with SMTP id 5b1f17b1804b1-493b82b6360mr51871265e9.32.1782823157952;
-        Tue, 30 Jun 2026 05:39:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:c493:b0:493:b61c:72c3 with SMTP id 5b1f17b1804b1-493b82b6360mr51870825e9.32.1782823157370;
-        Tue, 30 Jun 2026 05:39:17 -0700 (PDT)
+        bh=9xE5wahl+eqalpRYfV0fnyzHdxALUWLBp0RetJPvoas=;
+        b=AxQKmdVSjCGN7iTPVdOd9b5FqcS+sgEAnuGYxV26n4+foHx1wF1151rcUdn9BX3N/Y
+         JuHpKxSDonyTWTE/HkTBY6oYP8hH8KswQa0G5+tiUnPpe0eyMIvfhpq/LWM8vndpKE31
+         z06Jp+0aaGCpfDKcMYx7OfMUUSgQNa0rQWn4V7/pYl0bLw4Ji1b8kDqR5qwiphhw2DDy
+         Kkhf0ZV6hwmL59xkQy5smsoUrjflytKGmMCLbBrvi0A51Mvs3zlfbuTeN2HqbzcW566u
+         AyIOZwsmpWxorR19xWDbrISjjyGldbfn+a9LtYx3BzjYjvsTeOafLX4enfWel55jpOVt
+         vMEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/9hzM2BidyvZ1BTTMeF8edfDfr4ND1W2LKQxCevjGGotWQGaiuWSYWhr2IhoKaUqKOetU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAWuuEvv9Qd1O8e0aJhUHn6cbLmbR4PI2wRW2JJA8tXrMP3VwT
+	pBOocvbrJ/EY+d9mju8ZruuLJXuSJnfKXJhV1KoM6lxWYVb3JVU4eEw/BKAF9WxTaOxVuKDHxT2
+	sb006NMLaKG+mYQ9CbEwcAacmHSePXrzBSUgKshd71WudjKkO6Lr1Sg==
+X-Gm-Gg: AfdE7clE/NlHH58C2FfzUs+Vpk5PdP6wBEBhBByXd+zFM2r/KsM+v46VKaNOIikPy/6
+	LtpHKl6+NGhm78lnnK7R8JzdohmLv651KiUrJ1g0mQmRFEweef6fDD7UEEIJiTbnOtOTV73h9XN
+	HqeRmqnuvbQnMsg7b+a79gTrgrmrB8jAq8NqMQsM7MdN+vacy7UG5m39zl4yovWPdYyurr7X9zn
+	Ae74tC/SvkPAmjxJfRgeQcs+HMTz063uVZIoTUzxGodWqOrQJAjquPfgx0z3QsOT6glHzrA37Yb
+	U/KutaA+LHLbWzLDObk6ml67o/lAy4S/gg3kg0I4E3FPYEWx0f3cKtZsy8kFFgnx44Q5n42cfto
+	E+gQJEsoGHkWEYgYt8Vqk9inpOAoaGbiHfx3/mASZ0NHjo+batjsBB1I2Wenx
+X-Received: by 2002:a05:600c:a086:b0:490:b0e0:3de2 with SMTP id 5b1f17b1804b1-493bda874famr6557605e9.33.1782823552456;
+        Tue, 30 Jun 2026 05:45:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:a086:b0:490:b0e0:3de2 with SMTP id 5b1f17b1804b1-493bda874famr6556975e9.33.1782823551880;
+        Tue, 30 Jun 2026 05:45:51 -0700 (PDT)
 Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8c8d92dsm71175085e9.0.2026.06.30.05.39.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bb1bf712sm30233055e9.2.2026.06.30.05.45.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 05:39:16 -0700 (PDT)
-Date: Tue, 30 Jun 2026 14:39:11 +0200
+        Tue, 30 Jun 2026 05:45:51 -0700 (PDT)
+Date: Tue, 30 Jun 2026 14:45:46 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
 	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
 	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
 	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v3 2/4] vhost/vsock: suppress EHOSTUNREACH fast-fail
- during CPR pause
-Message-ID: <akOUbsbSdNzfNnSR@sgarzare-redhat>
+Subject: Re: [PATCH v3 3/4] vhost/vsock: re-scan TX virtqueue on device start
+Message-ID: <akO5DNoEsjukV5az@sgarzare-redhat>
 References: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
- <20260625155416.480669-3-andrey.drobyshev@virtuozzo.com>
+ <20260625155416.480669-4-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -95,118 +94,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260625155416.480669-3-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20260625155416.480669-4-andrey.drobyshev@virtuozzo.com>
 
-On Thu, Jun 25, 2026 at 06:54:14PM +0300, Andrey Drobyshev wrote:
->Earlier commit bb26ed5f3a8b ("vhost/vsock: Refuse the connection
->immediately when guest isn't ready") added a fast-fail in
->vhost_transport_send_pkt().  It rejects every host send with -EHOSTUNREACH
->until the destination calls SET_RUNNING(1).  The fast-fail condition checks
->whether device's backends are dropped, and if they're, the guest is
->considered to be not ready.
+On Thu, Jun 25, 2026 at 06:54:15PM +0300, Andrey Drobyshev wrote:
+>During QEMU CPR live-update (and VHOST_RESET_OWNER in general) the guest
+>keeps running while the host drops and later re-attaches vhost backends.
+>If the guest adds a buffer to the TX virtqueue (guest->host) and kicks
+>while the backend is temporarily NULL (between vhost_vsock_drop_backends()
+>and the next vhost_vsock_start()), then the kick is delivered to the
+>vhost worker, handle_tx_kick() sees a NULL backend and returns, and the
+>kick signal is consumed.  The buffer is then left in the ring.
 >
->However, there might be other reasons for backends to be nulled.  In
->particular, when QEMU is performing CPR (checkpoint-restore) migration,
->device ownership is being RESET and SET again, which leads to backends
->drop and reattach.  If we end up connecting during this window, an
->AF_VSOCK client gets -EHOSTUNREACH, which is wrong.
+>Then upon device start vhost_vsock_start() only re-kicks the RX send
+>worker, never the TX VQ, so the buffer is processed only if the guest
+>happens to kick again.  But if the guest itself is now waiting for data
+>from the host, it will never kick TX VQ again, and we end up in a
+>deadlock.
+>
+>The issue itself is pre-existing, but it only manifests during a brief
 
-nit: IMO we should make it clear that this behavior has not yet been 
-implemented, so this patch is a preparation patch to support RESET. In 
-this way it is clear that it is not a fix to be backported.
+Why "brief"? I mean, there's no limit, and the user process could stay
+there forever, right?
 
->
->Add a 'started' flag which is set once in vhost_vsock_start() and is
->never cleared.  The behaviour changes to:
->
->  * When device was never started -> flag is unset -> no listener can
->    exist yet -> fast-fail;
->  * Once the device starts -> flag is set -> we don't fast-fail ->
->    we queue and preserve during any later stop / CPR pause.
->
->Important caveat: after the first start, a connect during any stopped
->window is queued instead of fast-failed.  That was the behaviour before
->the patch bb26ed5f3a8b, and we're restoring it now.  However we still
->keep the behaviour originally intended by that commit (i.e. fast-fail if
->there's no real listener yet) while fixing the CPR path.
->
+>pause caused by VHOST_RESET_OWNER.  Namely, the deadlock is reproduced
 
-Suggested-by tag is nice to use in this case.
+Again, please make it clear that VHOST_RESET_OWNER support will come
+later, so this is in prepartion for it.
 
->Signed-off-by: Denis V. Lunev <den@openvz.org>
+>during active host->guest socat data transfer under multiple consecutive
+>CPR live-update's.
+>
+>To fix this, in vhost_vsock_start(), after kicking the RX send worker, also
+>queue the TX vq poll so any buffers the guest enqueued while we were paused
+>get scanned.
+>
 >Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 >Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 >---
-> drivers/vhost/vsock.c | 22 ++++++++++++----------
-> 1 file changed, 12 insertions(+), 10 deletions(-)
+> drivers/vhost/vsock.c | 7 +++++++
+> 1 file changed, 7 insertions(+)
 >
 >diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index b12221ce6faf..bec6bcfd885f 100644
+>index bec6bcfd885f..81d4f7209719 100644
 >--- a/drivers/vhost/vsock.c
 >+++ b/drivers/vhost/vsock.c
->@@ -61,6 +61,7 @@ struct vhost_vsock {
+>@@ -646,6 +646,13 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
+> 	 */
+> 	vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
 >
-> 	u32 guest_cid;
-> 	bool seqpacket_allow;
->+	bool started;		/* set on first SET_RUNNING(1); never cleared */
+>+	/*
+>+	 * Some packets might've also been queued in TX VQ.  That is the case
+>+	 * during the brief device pause caused by VHOST_RESET_OWNER.  Re-scan
 
-`started` was my initial proposal when I was thiking we should have to
-set it to false when the device is stopped.
+Ditto about "brief", I don't think is adding anything.
 
-Now I think this name is confusing, so what about `ever_started` to be
-reused in the future, or just `fast_fail` since this is what that
-variable is controlloing right now.
-
-The rest LGTM.
+BTW the code LGTM.
 
 Thanks,
 Stefano
 
-> };
->
-> static u32 vhost_transport_get_local_cid(void)
->@@ -302,17 +303,12 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
-> 		return -ENODEV;
-> 	}
->
->-	/* Fast-fail if the guest hasn't enabled the RX vq yet. Queuing the packet
->-	 * and making the caller wait is pointless: even if the guest manages to init
->-	 * within the timeout, it'll immediately reply with RST, because there's no
->-	 * listener on the port yet.
->-	 *
->-	 * vhost_vq_get_backend() without vq->mutex is acceptable here: locking
->-	 * the mutex would be too expensive in this hot path, and we already have
->-	 * all the outcomes covered: if the backend becomes NULL right after the check,
->-	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
->+	/* Fast-fail until the guest first enables the device (SET_RUNNING(1)).
->+	 * Before that there is no listener, so queuing is pointless. 'started'
->+	 * is never cleared, so once we're up we keep queuing across later
->+	 * stop / CPR-pause windows.
-> 	 */
->-	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))) {
->+	if (unlikely(!READ_ONCE(vsock->started))) {
-> 		rcu_read_unlock();
-> 		kfree_skb(skb);
-> 		return -EHOSTUNREACH;
->@@ -640,6 +636,11 @@ static int vhost_vsock_start(struct vhost_vsock *vsock)
-> 		mutex_unlock(&vq->mutex);
-> 	}
->
->+	/* Set 'started' flag on the first start; never cleared, so send_pkt
->+	 * keeps queuing (instead of fast-failing) on later stop / CPR pauses.
+>+	 * the TX VQ here, mirroring the RX send-worker kick above.
 >+	 */
->+	WRITE_ONCE(vsock->started, true);
+>+	vhost_poll_queue(&vsock->vqs[VSOCK_VQ_TX].poll);
 >+
-> 	/* Some packets may have been queued before the device was started,
-> 	 * let's kick the send worker to send them.
-> 	 */
->@@ -728,6 +729,7 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
->
-> 	vsock->guest_cid = 0; /* no CID assigned yet */
-> 	vsock->seqpacket_allow = false;
->+	vsock->started = false;
->
-> 	atomic_set(&vsock->queued_replies, 0);
+> 	mutex_unlock(&vsock->dev.mutex);
+> 	return 0;
 >
 >-- 
 >2.47.1
