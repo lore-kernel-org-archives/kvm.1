@@ -1,68 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415BE3ECBD9;
-	Tue, 30 Jun 2026 16:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1493546D3
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 16:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782835405; cv=none; b=bYV7sVYoiEVkZ41y8rImsQ9otzqU1eY3xF28do4q7RWN1Rd/jZ89CHwmcIw3dc3J3FUxeSmr3qT+jUAzUTLu7jGXnMikmlPD4wKvz7GOzuZ6hMw7GAV8iaykInS6M96BNkGk3XtH+1HzNWvHCQN2WTvITJCqAaXpfInXlQOzh5M=
+	t=1782835865; cv=none; b=GaLalW/DewAg8k7wX05qkNTnVPQbqGw0DThbw7j7IIh4rY0ElE9TsN6SxdTmqiVx+Q2FOYazjjUGgGvH21kKYTeTNaIpQVfGXWFw6l/FcmFIC5oxS4nIg6fXLuOcP95fXURUVcS+W5oWtbgXnUo+x5UCaVYQKfVOS9ujRgnUnDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782835405; c=relaxed/simple;
-	bh=ABuThJyR8wyeoG94qcZrGY4E3LiVrg4Ii6UTcMv76jg=;
+	s=arc-20240116; t=1782835865; c=relaxed/simple;
+	bh=E0eU5nhvTFD4DWVVVB7Fn9+9/2caLSntf1FEiUYyu7E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aO7GrbqqN3a7h2occ9mI0fJJIUMMgoB/rF3yc42kpVCOd4uB8fA1EbPMAZK/IQV8TMgpzpbR+UN3Xk3uDaubr3qneYmCBjSF23ShN8Ea+HiJuTWlMDQX3CWBChURrAl/Mcv6eLLOK7uN3L5JIEAc8891rpMiw3sNMSLglqp3mpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVWIo26A; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z+EFDG47CrNbgGzEjyj+oyLiy71+cxeR9is9RGBeJvQ4Kn4B9uaiUY62B0xokfkcm+uAqmopftWAZzo9ZlIc/fDgxnb+VbGlwAgcU0uKK3OUFosfZGex8KRw8/sbArCXpgQwnqU7PQzEn6BFRkUXMj4TGx4VxlwlahgzZ7pGWDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IwF0sdvk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bgYhnYR3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IwF0sdvk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bgYhnYR3; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVWIo26A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2431F000E9;
-	Tue, 30 Jun 2026 16:03:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782835402;
-	bh=5orsAk4mxkk0xAiwGeSLhKn5054x2lo0gntH314gJng=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QVWIo26AMO7GP6c94JvYh/Y7RzmhCi07mxsA6UYNrJbFnIynTHhPa0jmUuQSrg8QL
-	 Hbzo3P8h/Riz1MauTUCNiy9zCP8H1OiRPBun55CjzObt8N3SYJv1appZ++ltSy8T8c
-	 8Ubj0ttWvKMGw8Qmyr91ofP4GGc2WRW5qnMmVyBsf+b9Pw7eW79+bjWaGuqH0N4FYq
-	 mn5xRtyDidGKpUKiLbZpcUA6ouvS2lxYQ6AosYDPrnOnB+h31btCpOIs3DVTYHfPl/
-	 pXgeHKU+FtWHm++YApJL9TmkDQVdpctUyqUeXEXUfG6wY6O1dS3va+gW/hheUHWrV3
-	 1sNwAqk1ECFAQ==
-Date: Tue, 30 Jun 2026 09:03:20 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Leonardo Bras <leo.bras@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Saket Dumbre <saket.dumbre@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Chengwen Feng <fengchengwen@huawei.com>,
-	Kees Cook <kees@kernel.org>,
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
-	James Morse <james.morse@arm.com>, Zeng Heng <zengheng4@huawei.com>,
-	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
-	Thomas Huth <thuth@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>, Mark Brown <broonie@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	James Clark <james.clark@linaro.org>, Fuad Tabba <tabba@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Tian Zheng <zhengtian10@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize
- HACDBSIRQ
-Message-ID: <akPoyAGX5_ankwWD@kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com>
- <20260629111820.1873540-6-leo.bras@arm.com>
- <akKpxDulRN7zDrgM@kernel.org>
- <akPXqZQBKET1SyvN@LeoBrasDK>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IwF0sdvk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bgYhnYR3";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IwF0sdvk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bgYhnYR3"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id ADF6475E37;
+	Tue, 30 Jun 2026 16:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782835861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enh86INh5aPyeQRC5FbGcxm3ol0yZA5m0JCiaGOsbqQ=;
+	b=IwF0sdvkgDT0ywrxORuihJFKtyA1KHRCoDOKzKbvg9BIDJdqdODF5iWwzOmsBi+F+KjbaQ
+	O6cLrLHNox+vjLvZvZ+dqbhG5JVZryHRMGWpS8jEGrlEBgOI+QVjnv8uq3GseiV1Q2mzmR
+	dtPpTgbksxtcY6XH3YoglNaLWh3fHvI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782835861;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enh86INh5aPyeQRC5FbGcxm3ol0yZA5m0JCiaGOsbqQ=;
+	b=bgYhnYR3d6f1m6ge64B/dD6u41RcMeo/cCcwHeLVoY/3II2h+7UNg4nFxHHb7bL9zQTB8S
+	A6ptz4JAATsUE9BA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=IwF0sdvk;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bgYhnYR3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782835861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enh86INh5aPyeQRC5FbGcxm3ol0yZA5m0JCiaGOsbqQ=;
+	b=IwF0sdvkgDT0ywrxORuihJFKtyA1KHRCoDOKzKbvg9BIDJdqdODF5iWwzOmsBi+F+KjbaQ
+	O6cLrLHNox+vjLvZvZ+dqbhG5JVZryHRMGWpS8jEGrlEBgOI+QVjnv8uq3GseiV1Q2mzmR
+	dtPpTgbksxtcY6XH3YoglNaLWh3fHvI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782835861;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=enh86INh5aPyeQRC5FbGcxm3ol0yZA5m0JCiaGOsbqQ=;
+	b=bgYhnYR3d6f1m6ge64B/dD6u41RcMeo/cCcwHeLVoY/3II2h+7UNg4nFxHHb7bL9zQTB8S
+	A6ptz4JAATsUE9BA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE1AA779A8;
+	Tue, 30 Jun 2026 16:10:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VCclJ5DqQ2rmZQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:10:56 +0000
+Date: Tue, 30 Jun 2026 17:10:55 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 01/30] mm: move vma_start_pgoff() into mm.h and clean up
+Message-ID: <akPqIfmQLOs4gI7h@pedro-suse.lan>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,93 +118,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akPXqZQBKET1SyvN@LeoBrasDK>
+In-Reply-To: <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+X-Spam-Flag: NO
+X-Rspamd-Action: no action
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,armlinux.org.uk,kernel.org,siemens-energy.com,hansenpartnership.com,gmx.de,redhat.com,alien8.de,linux.intel.com,mev.co.uk,visionengravers.com,pengutronix.de,gmail.com,ffwll.ch,suse.de,oss.qualcomm.com,ideasonboard.com,nvidia.com,amd.com,shazbot.org,zeniv.linux.org.uk,linux.dev,google.com,infradead.org,samsung.com,goodmis.org,huawei.com,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,lists.linux.dev,kvack.org,googlegroups.com,surriel.com];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_GT_50(0.00)[75];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: ADF6475E37
+X-Spam-Score: -3.01
 
-On Tue, Jun 30, 2026 at 03:50:17PM +0100, Leonardo Bras wrote:
-> On Mon, Jun 29, 2026 at 10:22:12AM -0700, Oliver Upton wrote:
-> > If we need to initialize the IRQ I'd really like to see device tree
-> > bindings for HACDBSIRQ as well. Pretty much any system us plebs can get
-> > our hands on is gonna be DT anyway.
+On Mon, Jun 29, 2026 at 01:23:12PM +0100, Lorenzo Stoakes wrote:
+> vma_last_pgoff() already lives there, so it's a bit odd to keep
+> vma_start_pgoff() in mm/interval_tree.c. Move them together.
+
+Hmm, a part of me wonders if this is the part where we should start cleaning
+up mm.h into vma.h or something. Probably not, it would be extra churn right
+now.
+
 > 
-> Agree. I started out with ACPI because that's what the main target is, as 
-> dirty-logging is focused in Live Migration, which is usually more 
-> appreciated in the server space, which generally uses ACPI.
+> These each return unsigned long, which pgoff_t is typedef'd to. Make this
+> consistent and have these functions return pgoff_t instead.
 > 
-> I spoke to some people, and I could not hear of anyone releasing a product 
-> based in DT that would implement this yet, so I postponed the DT 
-> enablement.
-
-Nested virt is always a good example. In some distant future KVM could
-expose FEAT_HACDBS to the L1 hypervisor, and the VMM may be using DT
-instead of ACPI (like kvmtool).
-
-> > 
-> > > +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
-> > > +{
-> > > +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
-> > > +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
-> > > +
-> > > +	switch (err) {
-> > > +	case HACDBSCONS_EL2_ERR_REASON_NOF:
-> > > +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
-> > > +		break;
-> > > +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
-> > > +		/* When size not a power of two >= 4k, exit with reserved TTLW */
-> > > +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
-> > > +
-> > > +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
-> > > +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
-> > > +			break;
-> > > +		}
-> > > +		fallthrough;
-> > > +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
-> > > +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
-> > > +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
-> > > +		break;
-> > > +	}
-> > > +
-> > > +	return IRQ_HANDLED;
-> > > +}
-> > 
-> > I have a pretty extreme distaste for creating a state machine between
-> > the callsite and the IRQ handler. The callsite should poll HACDBS for
-> > completion. The thread has nothing better to do anyway.
+> Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
+> we wrap the vma->vm_pgoff access, we may as well use it here.
 > 
-> Well, there is one argument it could just wait and save some energy, but I 
-> agree it is not relevant in server space.
-
-I wouldn't suggest polling in a tight loop :) I'd say use something like
-__mdelay() to get the core into a low-power state w/o using a naked WFI.
-In fact, that already uses WFxT under the hood.
-
-> The main reason I did this is 
-> because I am planning on later doing an improved version of this that would 
-> clean the dirty-bit *while* running the guest, and having the IRQ is needed 
-> for exiting guest so we can notify userspace the cleaning is done. So I 
-> laid the HACDBSIRQ infra here so we don't have both polling and IRQ options 
-> happening. 
+> Also while we're here, const-ify the VMA and cleanup a bit.
 > 
-> That idea would require us to add new API (a return value for 'cleaned'), 
-> and also a new flag for the clean ioctl. We also need the VMM to 
-> implement that, but then we get a proper cpu usage of cleaning time.
->
-> I wanted to start with a backwards compatible version, and do the above 
-> idea once I put my hands in hardware that implements HACDBS, so I can 
-> properly measure how much performance we get on above strategy.
+> No functional change intended.
 > 
-> What do you think?
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Yeah, I'd want to see some extremely compelling performance numbers for
-this approach before considering it, alongside the necessary VMM patches
-to actually activate it.
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Seems likely to me that the VMM will want the background thread back
-ASAP that calls the clean ioctl so you'll need to work out how to cope
-with idle vCPUs in that case.
+> ---
+>  include/linux/mm.h | 9 +++++++--
+>  mm/interval_tree.c | 5 -----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..059144435729 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4278,9 +4278,14 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+>  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+>  }
+>  
+> -static inline unsigned long vma_last_pgoff(struct vm_area_struct *vma)
+> +static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+>  {
+> -	return vma->vm_pgoff + vma_pages(vma) - 1;
+> +	return vma->vm_pgoff;
+> +}
+> +
+> +static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+> +{
+> +	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
+>  }
+>  
+>  static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
+> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+> index 32bcfbfcf15f..344d1f5946c7 100644
+> --- a/mm/interval_tree.c
+> +++ b/mm/interval_tree.c
+> @@ -10,11 +10,6 @@
+>  #include <linux/rmap.h>
+>  #include <linux/interval_tree_generic.h>
+>  
+> -static inline unsigned long vma_start_pgoff(struct vm_area_struct *v)
+> -{
+> -	return v->vm_pgoff;
+> -}
+> -
+>  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
+>  		     unsigned long, shared.rb_subtree_last,
+>  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
+> -- 
+> 2.54.0
+> 
 
-Even still, with this hypothetical approach I'd expect KVM to inspect
-the HACDBS state on every exit. The IRQ is just a convenient kick back
-out to the main KVM_RUN loop.
-
-Thanks,
-Oliver
+-- 
+Pedro
