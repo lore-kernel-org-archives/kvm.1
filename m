@@ -1,169 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A424D41B37D;
-	Tue, 30 Jun 2026 10:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58A426693;
+	Tue, 30 Jun 2026 10:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782816937; cv=none; b=mvbsAFgNePhUo4V2WmV9qiqv6boOxLaq5oqYz4cXr2MZGQ/JX9sFlE4wVleC8Xt3kkm6M+9BcI1/OLoDLbD3HUECHsk4vwl5pFvy6OvkdOM3m258uTaPin/POwgXAtCSlmtMfpCUCcL1iOfwHuwZb8+HzxhQfLnXWHEGhJsDT1E=
+	t=1782816950; cv=none; b=QOZwI9sTvel9NU3U3MlEA4uOZFZgf2d3G93C3UV9BAGpc27gasCx3z1IP9pTnKmfhNhagg4p5gZnXJ3aj8MR8fbxeViTXAhMgsrlUFfVp6/D0zvELfT6HlAST4/H3X3UAIHEwn842aj2hPXVlm2RKRCwQsQMm7Kkz/TxVyjhiME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782816937; c=relaxed/simple;
-	bh=OinqCn7yZwhhZsCKKCwIFGV4JtEuLIbKl0RX5IPXpt0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NfFFGa0+0KibowYjoZ3agQcYdR+CcBaNgTgfyCGa29o/daamfLt2w3MsPyufM4HPGrrBR8c749zwmSVwGCUHyZoxznWluxNV5rgm/KY5QdMlI7itjQqo5tV/qWOdQI2u/+Mv8ttqNrqLMWMYZEF0Gh4mjDvmgehj0IZFKl925Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HU4nsEpy; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782816950; c=relaxed/simple;
+	bh=MVRiXQlQNp+hpHc60JFHtz2KyRo6MC6T9xNC4U55VIs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DYHUw77+4EdHQ4lyUahgTyPYRKkJLZJdyAXjb50SFVQUsQUPRRPirkoIhHk09ZgRCFEoYpXMCVaVqowD0HgPaalUZX+Iz7FbcCM6378Uzy4JXKZinFyyCWlCVJPAcXIffAZcW1vDBvkvc7JDe0ZClw+Xl3+iZhYnCO+WsrRo5yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B//pSUZ5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HU4nsEpy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782816932; x=1814352932;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OinqCn7yZwhhZsCKKCwIFGV4JtEuLIbKl0RX5IPXpt0=;
-  b=HU4nsEpyZFVubkTkW/GtIp+Q6UfQRT/qtAsyb5s8qD5w8pnUWeFy/I5F
-   jxtY8sU8I0YHRKK2orDN5Ej+HnRAOIRaBiUxYZhFfXCoppxV8+netiYmq
-   XLpvfXByf3TKzDbKPHSEil7gNrWW6Xo6Lc5wE2oqXtNltBGjAhOwIL1Qn
-   FvCEQyB1Lf0jEAiKK/qW96g0XXwNNXK2Z+Y7U7kNYl4xeat8cohBYmZ4M
-   +wYeJGPsEHuLUCnjixDrhuhZrSjC0CGUa1NBvzdQYIl7gJ5Cp/A6a3p3w
-   vKdvNCgYPkyifJPW2AHBVVMTOrkVp+AmFFgRi9mdQZMs0pllqP/CXuCbQ
-   w==;
-X-CSE-ConnectionGUID: hvAO08+JRqOyqmEu50xLtA==
-X-CSE-MsgGUID: oCA/cxp/S6Swn/kyRfDLTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94677483"
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="94677483"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:55:31 -0700
-X-CSE-ConnectionGUID: QRJE9D0fTAuqi24otunImw==
-X-CSE-MsgGUID: xXZpy8SqQASrfl6ZIk3hPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="290361286"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:55:17 -0700
-Message-ID: <39671141-d317-40ab-8c50-66252015514c@intel.com>
-Date: Tue, 30 Jun 2026 18:55:14 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B//pSUZ5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C08B1F00A3A;
+	Tue, 30 Jun 2026 10:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782816943;
+	bh=r4M6In1JQ8Z6U2OcHZTfWcB+V1K7l4VIpB1HiCw//yE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=B//pSUZ5OXyzcNwvNi71Jm8usrvqDD/ojRr+nhrQY0Dlct8MlX3OiuMOqwgV1pNzh
+	 kSspsXweGXDFkTpDrd2kWCQ5QByHxXzQJXnCw4CoFsOvVbrbmsn7dvZkqmfLBFAbzb
+	 s0xMcmlQvwyCEjoJYxQojWoFKCh4U+9EyLxZ0l1JAzW4A2HhwVy2p1n/fB1RQdGRYC
+	 hi8XIOcdIG+787k0Beerm/ySZiFA/xoWpDnNITVftpZNbLkiutUz3kP9uXPIMih8f+
+	 hRXEyfXriz2P8StiP+pBX1q5KS3Ab2RsRCTnIGtAnKvEEkQ9BaOCQNIiBA+xQIHC1M
+	 OWTgnIBQ2Tu/A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 02/15] s390/vfio-ap: Data structures for facilitating
+ vfio device migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260630104132.1598851-3-akrowiak@linux.ibm.com>
+References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
+ <20260630104132.1598851-3-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 10:55:42 +0000
+Message-Id: <20260630105543.1C08B1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- selectable
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-> that might use vm_memory_attributes.
-> 
-> Also document CONFIG_KVM_VM_MEMORY_ATTRIBUTES to specifically be about the
-> private/shared attribute.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] Out-of-bounds read in `do_post_copy_validation` due to redunda=
+nt and unsynchronized size fields (`num_queues` and `config_sz`) during fra=
+gmented migration stream writes.
+- [Low] Use of the architecture-dependent type `size_t` in a binary structu=
+re intended for serialization.
+- [Low] Severe mismatch between kernel-doc comments and actual structure fi=
+elds in `vfio_ap_migration_data` and `vfio_ap_config`.
+--
 
-I think this patch needs to be moved later after per-gmem shared/private 
-attribute is implemented. Because so far, TDX/SEV indeed depend on 
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+commit b64c84539884d50cda90f18a69a0a94397d84158
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Not to discuss if it makes sense to report TDX as supported VM TYPE when 
-CONFIG_KVM_VM_MEMORY_ATTRIBUTES is not enabled, this patch just fails 
-the compilation when
+s390/vfio-ap: Data structures for facilitating vfio device migration
 
-   CONFIG_KVM_VM_MEMORY_ATTRIBUTES = n
+This commit introduces the foundational data structures needed to facilitate
+state transitions during vfio device migration for the s390 vfio-ap driver.
+It adds structures for migration data, queue information, and AP configurat=
+ion.
 
-and KVM_INTEL_TDX/KVM_AMD_SEV is enabled:
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> new file mode 100644
+> index 0000000000000..239168c4b7fff
+> --- /dev/null
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -0,0 +1,56 @@
 
-arch/x86/kvm/../../../virt/kvm/guest_memfd.c: In function 
-‘__kvm_gmem_populate’:
-arch/x86/kvm/../../../virt/kvm/guest_memfd.c:918:14: error: implicit 
-declaration of function ‘kvm_range_has_memory_attributes’ 
-[-Werror=implicit-function-declaration]
-   918 |         if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-       |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[ ... ]
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/kvm/Kconfig | 9 +++++----
->   1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 24f96396cfa1c..c28393dc664eb 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -81,13 +81,16 @@ config KVM_WERROR
->   	  If in doubt, say "N".
->   
->   config KVM_VM_MEMORY_ATTRIBUTES
-> -	bool
-> +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-> +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
-> +	help
-> +	  Enable support for tracking PRIVATE vs. SHARED memory using per-VM
-> +	  memory attributes.
->   
->   config KVM_SW_PROTECTED_VM
->   	bool "Enable support for KVM software-protected VMs"
->   	depends on EXPERT
->   	depends on KVM_X86 && X86_64
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	help
->   	  Enable support for KVM software-protected VMs.  Currently, software-
->   	  protected VMs are purely a development and testing vehicle for
-> @@ -138,7 +141,6 @@ config KVM_INTEL_TDX
->   	bool "Intel Trust Domain Extensions (TDX) support"
->   	default y
->   	depends on INTEL_TDX_HOST
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
->   	help
->   	  Provides support for launching Intel Trust Domain Extensions (TDX)
-> @@ -162,7 +164,6 @@ config KVM_AMD_SEV
->   	depends on KVM_AMD && X86_64
->   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->   	select ARCH_HAS_CC_PLATFORM
-> -	select KVM_VM_MEMORY_ATTRIBUTES
->   	select HAVE_KVM_ARCH_GMEM_PREPARE
->   	select HAVE_KVM_ARCH_GMEM_INVALIDATE
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
-> 
+> +/**
+> + * vfio_ap_migration_data - the data needed to migrate a guest with pass=
+-through
+> + *			    access to AP devices
+> + *
+> + * @mig_state:		the current migration state
+> + * @resuming_migf:	the object used to resume the target guest
+> + * @saving_migf:	the object used to save the state of the source guest
+> + */
+> +struct vfio_ap_migration_data {
+> +	enum vfio_device_mig_state	mig_state;
+> +
+> +	struct {
+> +		struct file *filp;
+> +		struct vfio_ap_config	*ap_config;
+> +		size_t			config_sz;
+> +	} resuming_mig_state;
+> +
+> +	struct file			*stop_copy_mig_file;
+> +};
 
+[Severity: Low]
+Are the kernel-doc fields for vfio_ap_migration_data out of sync with the
+implementation? The comments document resuming_migf and saving_migf, but the
+actual fields are resuming_mig_state and stop_copy_mig_file.
+
+[ ... ]
+
+> +/**
+> + * vfio_ap_config - the guest's AP configuration
+> + *
+> + * @num_queues:	the number of queues passed through to the guest
+> + * @reserved: padding to ensure proper alignment of qinfo array
+> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
+> + *		queue information for a queue passed through to the guest
+> + */
+> +struct vfio_ap_config {
+> +	u32				num_queues;
+> +	u8				reserved[4];
+> +	size_t				config_sz;
+
+[Severity: Low]
+Does the kernel-doc block for vfio_ap_config need an update to include the
+config_sz field?
+
+[Severity: Low]
+Could the use of size_t here cause consistency issues? Since size_t has
+variable width depending on the architecture, using it in a binary structure
+intended for serialization over file descriptors or the network is generally
+avoided in favor of fixed-width types.
+
+[Severity: Critical]
+Could having both num_queues and config_sz in this struct lead to an
+out-of-bounds read later during migration?
+
+If a fragmented migration stream write manipulates config_sz to be a smaller
+value than expected, the validation checks in reallocate_ap_config() could =
+be
+bypassed:
+
+reallocate_ap_config() {
+    cur_cfg_sz =3D ap_config->config_sz;
+    num_queues =3D ap_config->num_queues;
+    if (cur_cfg_sz >=3D sizeof(struct vfio_ap_config)) {
+        ...
+    } else {
+        new_cfg_sz =3D cur_cfg_sz + len;
+    }
+}
+
+This could cause an out-of-bounds read in do_post_copy_validation() when
+looping num_queues times over the qinfo array:
+
+queues_available_on_target_system() {
+    for (int i =3D 0; i < source_config->num_queues; i++) {
+        apqn =3D source_config->qinfo[i].apqn;
+...
+}
+
+Is it possible to synchronize these fields or derive the size directly from
+num_queues to prevent a mismatch?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
+851-1-akrowiak@linux.ibm.com?part=3D2
