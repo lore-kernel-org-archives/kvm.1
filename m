@@ -1,76 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0BF1A7264;
-	Tue, 30 Jun 2026 15:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415BE3ECBD9;
+	Tue, 30 Jun 2026 16:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782835190; cv=none; b=fsKdlWTsAkANw3XhcEiBrEVlvKboBZVQ5z6oSkzcwOgs7nAGbDprwj5Mi+0PPeuLOHZbllWyETKjYFKl9FD07/r5yt55IxVUbu9v+BtLvRsBEE2xO3YQ4dEZvbxlfKscEysfuoaoooAaCTn3SSE6kCUemDXa2IiaMp84DZ8WVHE=
+	t=1782835405; cv=none; b=bYV7sVYoiEVkZ41y8rImsQ9otzqU1eY3xF28do4q7RWN1Rd/jZ89CHwmcIw3dc3J3FUxeSmr3qT+jUAzUTLu7jGXnMikmlPD4wKvz7GOzuZ6hMw7GAV8iaykInS6M96BNkGk3XtH+1HzNWvHCQN2WTvITJCqAaXpfInXlQOzh5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782835190; c=relaxed/simple;
-	bh=Jpqlio7c6IwdURKLwRpFgqWlGfFzVK3YBZ3R69sS8Ds=;
+	s=arc-20240116; t=1782835405; c=relaxed/simple;
+	bh=ABuThJyR8wyeoG94qcZrGY4E3LiVrg4Ii6UTcMv76jg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQm4u9/V63FwacKtz1IK1L5YY/IKF6dST8qizWSPYHmeZeF6+g6fScbqZjaJC4fthizbo4vDn/h/ysRUJTe24AMhm5Y53lY66yHsLlMCY9lQohwO3B3tu78yGiNKQ7LornYrDopeFN4FLLGjhtFPsk0NtV2x3WuAgzGjLDtWQrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ci9AAqdO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=aO7GrbqqN3a7h2occ9mI0fJJIUMMgoB/rF3yc42kpVCOd4uB8fA1EbPMAZK/IQV8TMgpzpbR+UN3Xk3uDaubr3qneYmCBjSF23ShN8Ea+HiJuTWlMDQX3CWBChURrAl/Mcv6eLLOK7uN3L5JIEAc8891rpMiw3sNMSLglqp3mpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVWIo26A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ci9AAqdO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B121F000E9;
-	Tue, 30 Jun 2026 15:59:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVWIo26A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2431F000E9;
+	Tue, 30 Jun 2026 16:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782835189;
-	bh=djpiGDB5pDyZxxVDzk8Ai71BtRGChWWd/YRJODi7goY=;
+	s=k20260515; t=1782835402;
+	bh=5orsAk4mxkk0xAiwGeSLhKn5054x2lo0gntH314gJng=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ci9AAqdOLAohpCehoyGUTmmcFqfPa2oLGOqbZA9HwlKfiaK/2p+dH9vORoffpCm86
-	 q8leL4Dlsp1qy9Yr94qQi7IzIRGWwUp03Ox/TCewfjXjcvq8BGq/g74kymFs9rHjA5
-	 MrW1vu5+Lfkqui3LnQKB/7BAsBT57d2t8ggydNB9+a5PQ570qdOVWQBGkR3rpMUr1z
-	 JR1FOW8X2W4fY5MIuIHaayJTXpVa54bwLi465HUMNq3LdKWZJ3bAmB/5zZjweWZmk3
-	 TM+KPanljb5plGckEArrF2iME4cvjeiarlcd3PZEyevECQ2zF5DwH5Jlh1E+7SjwTb
-	 ITPrvbrgepgTg==
-Date: Tue, 30 Jun 2026 16:59:27 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 09/30] mm/rmap: parameterise anon_vma_interval_tree_*()
- by anon_vma
-Message-ID: <akPnjlGP9EDhrIrw@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <1c1df7b905ef340cbf2effef769a4e770a8e0eb1.1782735110.git.ljs@kernel.org>
- <akPk5o_gHD1SxX_0@gourry-fedora-PF4VCD3F>
- <akPlUrNWzl1ZPw1S@lucifer>
- <akPm4FlwTj0FsZU9@gourry-fedora-PF4VCD3F>
+	b=QVWIo26AMO7GP6c94JvYh/Y7RzmhCi07mxsA6UYNrJbFnIynTHhPa0jmUuQSrg8QL
+	 Hbzo3P8h/Riz1MauTUCNiy9zCP8H1OiRPBun55CjzObt8N3SYJv1appZ++ltSy8T8c
+	 8Ubj0ttWvKMGw8Qmyr91ofP4GGc2WRW5qnMmVyBsf+b9Pw7eW79+bjWaGuqH0N4FYq
+	 mn5xRtyDidGKpUKiLbZpcUA6ouvS2lxYQ6AosYDPrnOnB+h31btCpOIs3DVTYHfPl/
+	 pXgeHKU+FtWHm++YApJL9TmkDQVdpctUyqUeXEXUfG6wY6O1dS3va+gW/hheUHWrV3
+	 1sNwAqk1ECFAQ==
+Date: Tue, 30 Jun 2026 09:03:20 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Saket Dumbre <saket.dumbre@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Kees Cook <kees@kernel.org>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	James Morse <james.morse@arm.com>, Zeng Heng <zengheng4@huawei.com>,
+	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Thomas Huth <thuth@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, Mark Brown <broonie@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	James Clark <james.clark@linaro.org>, Fuad Tabba <tabba@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tian Zheng <zhengtian10@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize
+ HACDBSIRQ
+Message-ID: <akPoyAGX5_ankwWD@kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com>
+ <20260629111820.1873540-6-leo.bras@arm.com>
+ <akKpxDulRN7zDrgM@kernel.org>
+ <akPXqZQBKET1SyvN@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,46 +71,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akPm4FlwTj0FsZU9@gourry-fedora-PF4VCD3F>
+In-Reply-To: <akPXqZQBKET1SyvN@LeoBrasDK>
 
-On Tue, Jun 30, 2026 at 11:55:12AM -0400, Gregory Price wrote:
-> On Tue, Jun 30, 2026 at 04:49:45PM +0100, Lorenzo Stoakes wrote:
-> > On Tue, Jun 30, 2026 at 11:46:46AM -0400, Gregory Price wrote:
-> > > On Mon, Jun 29, 2026 at 01:23:20PM +0100, Lorenzo Stoakes wrote:
-> > > > Similar to what we did with mapping_interval_tree*(), let's declare
-> > > > anon_vma_interval_tree*() in terms of anon_vma rather than rb_root_cached.
-> > > >
-> > > > In each case the rb tree referenced is &anon_vma->rb_root, so just pass
-> > > > anon_vma and the functions can figure this out themselves.
-> > > >
-> > > > Additionally, rename 'node' to 'avc', 'index' to 'pgoff_start', and 'last'
-> > > > to 'pgoff_last' to make clear what is being passed.
-> > > >
-> > >
-> > > would it be possible to split the pure rename changes out from the
-> > > changed function declarations?  It's hard to pick out this as something
-> > > that needs to be looked at as more than just a %s/x/y/
-> >
-> > Hmmm do I have to? :P
+On Tue, Jun 30, 2026 at 03:50:17PM +0100, Leonardo Bras wrote:
+> On Mon, Jun 29, 2026 at 10:22:12AM -0700, Oliver Upton wrote:
+> > If we need to initialize the IRQ I'd really like to see device tree
+> > bindings for HACDBSIRQ as well. Pretty much any system us plebs can get
+> > our hands on is gonna be DT anyway.
+> 
+> Agree. I started out with ACPI because that's what the main target is, as 
+> dirty-logging is focused in Live Migration, which is usually more 
+> appreciated in the server space, which generally uses ACPI.
+> 
+> I spoke to some people, and I could not hear of anyone releasing a product 
+> based in DT that would implement this yet, so I postponed the DT 
+> enablement.
+
+Nested virt is always a good example. In some distant future KVM could
+expose FEAT_HACDBS to the L1 hypervisor, and the VMM may be using DT
+instead of ACPI (like kvmtool).
+
+> > 
+> > > +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
+> > > +{
+> > > +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> > > +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
+> > > +
+> > > +	switch (err) {
+> > > +	case HACDBSCONS_EL2_ERR_REASON_NOF:
+> > > +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > > +		break;
+> > > +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
+> > > +		/* When size not a power of two >= 4k, exit with reserved TTLW */
+> > > +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
+> > > +
+> > > +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
+> > > +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > > +			break;
+> > > +		}
+> > > +		fallthrough;
+> > > +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
+> > > +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
+> > > +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	return IRQ_HANDLED;
+> > > +}
+> > 
+> > I have a pretty extreme distaste for creating a state machine between
+> > the callsite and the IRQ handler. The callsite should poll HACDBS for
+> > completion. The thread has nothing better to do anyway.
+> 
+> Well, there is one argument it could just wait and save some energy, but I 
+> agree it is not relevant in server space.
+
+I wouldn't suggest polling in a tight loop :) I'd say use something like
+__mdelay() to get the core into a low-power state w/o using a naked WFI.
+In fact, that already uses WFxT under the hood.
+
+> The main reason I did this is 
+> because I am planning on later doing an improved version of this that would 
+> clean the dirty-bit *while* running the guest, and having the IRQ is needed 
+> for exiting guest so we can notify userspace the cleaning is done. So I 
+> laid the HACDBSIRQ infra here so we don't have both polling and IRQ options 
+> happening. 
+> 
+> That idea would require us to add new API (a return value for 'cleaned'), 
+> and also a new flag for the clean ioctl. We also need the VMM to 
+> implement that, but then we get a proper cpu usage of cleaning time.
 >
-> I mean, no :]
->
-> > I mean sure I can on a respin potentially, but it is a
-> > pretty trivial change? Just mechnically as above.
-> >
->
-> And yeah certainly not worth a respin.  Just learning some of the
-> friction points of reviewing as I spend a little more time doing it
-> every day.
+> I wanted to start with a backwards compatible version, and do the above 
+> idea once I put my hands in hardware that implements HACDBS, so I can 
+> properly measure how much performance we get on above strategy.
+> 
+> What do you think?
 
-Oh in the end you will be driven absolutely insane, David and I are already
-there and soon you will join us! :) <- nervous smiley
+Yeah, I'd want to see some extremely compelling performance numbers for
+this approach before considering it, alongside the necessary VMM patches
+to actually activate it.
 
-But yeah, sorry if that made it harder to track what I'm doing here! Usually I
-really try to split up to make each patch as easy as possibel to review, but
-this one I thought 'why not at the same time' :P
+Seems likely to me that the VMM will want the background thread back
+ASAP that calls the clean ioctl so you'll need to work out how to cope
+with idle vCPUs in that case.
 
->
-> ~Gregory
+Even still, with this hypothetical approach I'd expect KVM to inspect
+the HACDBS state on every exit. The IRQ is just a convenient kick back
+out to the main KVM_RUN loop.
 
-Cheers, Lorenzo
+Thanks,
+Oliver
