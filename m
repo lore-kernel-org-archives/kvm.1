@@ -1,131 +1,115 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8854232E134
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782832324; cv=pass; b=pAQSAwZiFd2tnTsLDE5BCNKMDfS8OlnohvSlp46cJrsjF24OGKHzAxcwodQJfamZxyl1jfGWv5oSg1nMGXGiUNuWSCaSmR24IZDgKEvPEKvX9dq3nTZwl8436uyDmxwu82TP+EX8N8fpNNeGcZVtOMMToCGaeV/inizVn37f5uE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782832324; c=relaxed/simple;
-	bh=hrZDgF7vfcUcbqsKeZ8056ezru3yyztiNpn9LSe10Cw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dZ4n/MHrnxhmNie4c1Yd7yFc5+9h6Ih81VwN0lQ64FbdW/IlMWJoyvKyAnBa52nR79x3Vo2QhZlVIj1TeB9byTXY63MBfMEskBrQS7dXJVPDoH++Icn67IcmFt7/lv5ks1tEokw5prWaTXJvSpNtMFgJC/4dG3yrFAg+faAQkuI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wowsfxxl; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532C0365A0B;
+	Tue, 30 Jun 2026 15:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782832989; cv=none; b=vAmB9frnSmofYBaOQPLz2q5SCUU8AfnfmeoN6eaOhjM635aFYENG5wjRyPVO/vchbpxF2ONngRr8/PJIuHB7qBN/0zgZWgl4M4nMyjz6KU2z9hJkQe25Av1+I1CWm3Z18z44IrulrC7hqZDZ4Thjgn0pf1jpIu4rYBbXVrVX99U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782832989; c=relaxed/simple;
+	bh=mnhOZlEbmNxq5YsCTla36EPa18OakR+bG+jTvbDU7EM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QEpVwiMe/qfO62U9HvuEZ+3Lv4pLd3W+kx0RwPfT/WFqpZGtQi2ldL4QPilbSq624sjN0RknBbvRdhF8vDqD39lUYI0NdtNOBN7sq9unn1g2LIaJJunpv32NWQHy2gFVeGcwCUzCC7FWotu5SXfkVybeCmALy3HZ4AJq2si50Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHc1saCt; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wowsfxxl"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-698411099d6so13478a12.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 08:12:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782832322; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bNJ13tmlqkg1Ck5ib/uZ2eKMBrVbdCM172EVGDXRQEH8sOqAYKlPKre9Pi9ZiLhfBV
-         YiXqfE3ROPkEpedmFFBYyM1DdYoh/DDuKIaXwttevWwaIOpfje0CrgESVCYJpTaA1TJw
-         k4dNC0n2mv+g+5+mF3CT0VSVDOHUCobKGly5ZzZ0ZHYyDSp8qnb7C/b19BAqviXkcSmi
-         9YVnxPJt63oEpv45FVom8X43kndi2hde4hA0pFVTIm/3oPY4FXXjGkD4H15YuhIB9pPD
-         iIXhNPMKkqciND2mKuDs6/EvdWhxA8mDrj37EAIkwyQp2YAW1M8ZWkkXH4MrZuZWrCBH
-         Ukcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lUrWRgHGWU8z5e51oajKgawX/7aP5NXC+F/I3KuFlZA=;
-        fh=32Iq/9XK//W43cEIjjn9vep7mEgpWrVX36x05cDfbNk=;
-        b=MOAHZb68K5iTMPqlhbvYvCqmfsqtQUxxxUsVFdQT3lmhflzWsDERHYBuVZ7LDxY5qL
-         GhgZjwHHTqv7PfFzYX4r7IGxqso7yCzmqxhhi8//Om3LIwQ+VCbtcXItQcnkItntbN/I
-         /sO/McuYIvkvTFbGpKEGdG5MSKTdwtjlVWJNp8gOHFKV2yePnSmxFbIvu/U6vt1ArGbp
-         WtuQZJJK5CDi60S1jjS7z0YYARHleyIxMY56kZxmUhUyr6e+9Im8MT6XFo2UB5OM0GL9
-         LsCZpaceMD3Cu1iVcdw5seh9lEfC4KIEEVtT46gHBK57z1ai4+wLXJdrxk2q9i9qOY9l
-         OWmw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782832322; x=1783437122; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lUrWRgHGWU8z5e51oajKgawX/7aP5NXC+F/I3KuFlZA=;
-        b=WowsfxxlkRgva8mX9WQvxR40keG3W5A45XgvSlnZv89fIfhRCtWJI6yQbSo/SBYkmU
-         hZ2ehNIqTffCxmK7+bC87Egy4PJIO91DBiHBduPudiOVhJhMLhpLkM/gMHVxGwGcwegi
-         oXzWS86d1dvuH/ZM7KL9AsOj34KUeE7AHNfDSBfdlvZEN823bWxPPOgKlC3GTjsFi3uB
-         ldpCC1/tHks8NmOTii2PUGD1012xx6iAiNJkKibc3MGpyPH0zlgtwH1aoMdg7kKWFtCO
-         1i3i21MzSQPmGGu4SH99MMgAXoLmd8mcpuIcvW+MGdNWl7t6p1x0nBOkdnPAv/MjduZ/
-         7tlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782832322; x=1783437122;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lUrWRgHGWU8z5e51oajKgawX/7aP5NXC+F/I3KuFlZA=;
-        b=NzzjEPyiLu3lpxzIg2n9shdSg2/VwoSnZRjCHNPS98VuCoGg+W9Pg1JorOK4omygrq
-         aiLxbmOJ1nykUmyO+zuju4bP5EnqV+AHfpnxZzZIPwT2/Z4aU5cL97MBBPV2JKDhbF2l
-         9nZKeBf/XXEXmUQLihZuDdIaMn4t74pgv0phmmnji/PGqYPibMdXBUZ5GYmj6vuhRT5s
-         neHCDTV6QCoDnRp/9PAxqo4EXwHEq1Qy7xCh0sjm5lb6hDoo7g5S8Y2sHaELBaMLeutq
-         sLUJcGwM7fisBGMFse9v3C5zfPEfPqgsKSNjTxup+BNV3gcGHLXXTnMunZsiV4j7ZU8h
-         GNCA==
-X-Forwarded-Encrypted: i=1; AHgh+RovoYPpJo4rMNlOvYNsSbhuTOICdavGQ5is5sVtbO96O2lW6b5SW8FDTsk5H+pUI7zMHOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh1xPav1AsMTLTD7su4JI9RLZYPteLLos/8y93Hdat3Y4rGMuB
-	ib2z42rqH6V7Wg0HkyxTGU3BcjHjKDtE7cq+WFDwOS/lLlLzL0FlPT7PaJ8AdOgQ/6dBeW3MILu
-	1GhdxcQ4C+CwYPJOGlh+2szxq9cFgUE24MldP2Xc3
-X-Gm-Gg: AfdE7clHnG1aO/au41y/S9x0EwXWcwWoucEgFdJkqPKMz77MJE0LYKN/Ec0N7d+Zs1E
-	1tyfPvXI+O7sY/er1pMSRCiDTeSLJpDRCc0uRhSoc1pQd2reiAAK0tTm3fgFXHC2F0tj3//ErjO
-	GtgAQglCMQM/LYxzN5tV9Ddk6QWnu1nrbut//S6WaYIo320uBYAm4LqQ8tP7iL5foSBMXILIPns
-	htFyZKMSpKn6UXzRC8HZ3sCDch6zOktz/ppONPEKk2UnceoB4zOjVGpLYAgapdDCqRwW7tVHdDT
-	JAFU2kU=
-X-Received: by 2002:aa7:df8b:0:b0:698:a99:445 with SMTP id 4fb4d7f45d1cf-698884f9fc5mr9376a12.5.1782832321436;
- Tue, 30 Jun 2026 08:12:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHc1saCt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782832988; x=1814368988;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=mnhOZlEbmNxq5YsCTla36EPa18OakR+bG+jTvbDU7EM=;
+  b=MHc1saCtMsiBF66Fg81f6NeGqR5kPocL6EBqbk7JMtVxhyzCaGzaiCNu
+   K4hToOvkqG1nldxuyvxUADU7bLXxDVd+FncWUlt5vhbsWSOTCiYRydoHm
+   nI+AtOsvVnIgZbRD78HBZzjD29t6SjSe6tMM7xZu3y7Y+utUbNDVt2tWZ
+   V86GnJYPKH3CXFTpjG/Sm3iRjK4QeFvxJdx3Uhyxkm5u5kzV5pPjmsbAH
+   GHHFnR79hhXJg5E4Nfu0M5kPqe1hUaZ12pu/RxD0AGPRmVuRMltAnAXrS
+   IyhtMB4/xZpr0s16OqK4Yibs3k8/IJNHirUySwroFslhzlPF02Gn3sTyb
+   A==;
+X-CSE-ConnectionGUID: TqBX5rh4R+qB3nYFulFVLQ==
+X-CSE-MsgGUID: B0anJVctRvmxLz0kjTY0xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94933094"
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="94933094"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:23:07 -0700
+X-CSE-ConnectionGUID: koRW/7MOQAWk92/0rXPmZQ==
+X-CSE-MsgGUID: uXiMTSzqQL6ITT9qU5pf5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="254200312"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.232.239]) ([10.124.232.239])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:22:54 -0700
+Message-ID: <a1b06afb-af6e-4666-8c7d-990e7fa150fa@intel.com>
+Date: Tue, 30 Jun 2026 23:22:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629125205.52394-1-zhang_wei@open-hieco.net> <20260629125205.52394-2-zhang_wei@open-hieco.net>
-In-Reply-To: <20260629125205.52394-2-zhang_wei@open-hieco.net>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 30 Jun 2026 08:11:47 -0700
-X-Gm-Features: AVVi8CfmH7gR--RQmsRN3nohzSvaOtP7G-C4hCuuv52f12gENQAEu4z6Xj4jRFE
-Message-ID: <CALMp9eQTXh5itog_mcmOB6b2dFys+gLNfrdMgMV1Do7q6uGEYg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: nSVM: Virtualize DecodeAssists for nested guests
-To: Tina Zhang <zhang_wei@open-hieco.net>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 29, 2026 at 5:56=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
-t> wrote:
->
-> Hardware records DecodeAssist information, i.e. the instruction length an=
-d
-> bytes, in the VMCB for exits such as #NPF.  KVM does not currently expose
-> that information when an L2 exit is reflected to L1, so a nested hypervis=
-or
-> cannot consume the hardware-provided decode state and may need to fetch a=
-nd
-> decode the L2 instruction itself.
->
-> Advertise DecodeAssists to L1 when the host supports it, and copy
-> insn_len/insn_bytes from VMCB02 to VMCB12 for nested VM-Exits that
-> reflect a real hardware exit.  Gate the copy on L1's guest CPUID so the
-> advertised feature and the propagated state stay in sync.
->
-> Report decode information only for exits that actually have fresh hardwar=
-e
-> state.  KVM synthesizes several nested VM-Exits, e.g. VMRUN failures,
-> synthetic #NPF exits, reflected exceptions, and interrupt/NMI windows, th=
-at
-> do not carry VMCB02 DecodeAssist output.  Track only the verbatim VMCB02
-> reflection path with nested.decode_assists_valid, clear VMCB02's decode
-> fields before VMRUN, and clear VMCB12's fields for ineligible exits.  Use
-> insn_len =3D=3D 0 to tell L1 that no decode information is available, and=
- avoid
-> exposing stale bytes from a previous L2 exit.
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> -				     unsigned long mask, unsigned long attrs);
+> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> +					unsigned long mask, unsigned long attrs);
+>   bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+>   					struct kvm_gfn_range *range);
+>   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
 
-You can't just set instr_len to 0 on a whim. Per the APM, "The default
-number of bytes is always 15. Fewer bytes are returned only if a fault
-occurs while fetching." Every #PF and #NPF VM-exit to L1 *must*
-provide this information, even in cases where you can't simply copy
-the information from VMCB02.
+We have
+
+  - kvm_pre_set_memory_attributes()
+  - kvm_arch_pre_set_memory_attributes()
+  - kvm_arch_post_set_memory_attributes()
+
+left, do they need to be renamed as well?
+
+then the interesting one is kvm_vm_set_mem_attributes(), which contains 
+"vm" already while it means "vm ioctl". Do we need to rename it to
+kvm_vm_set_vm_mem_attributes()?
+
