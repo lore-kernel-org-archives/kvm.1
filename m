@@ -1,459 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD783FFFB8;
-	Tue, 30 Jun 2026 11:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9072A3C9894;
+	Tue, 30 Jun 2026 11:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782819476; cv=none; b=pCBCwWJo3mzIjs1ajXJ3mzecrBlb8GJnrAInEqN9YQOrJ0ZL/qDgzEgvzfuk3OXl1NZ52GnxFHIrvDomgarIcTHodsaKzqdi/QZoTow+SPHvNaKBy8OK2g8C3GsySs96VAuxWkjbLYuVQFTth/6Y/KnCb4yWYTA327Le/H+zwYY=
+	t=1782819626; cv=none; b=pj7hjQMAJuvjVw0YAyTPAFNbt1ALB8cHTNIrVp1J/LhEZNV1XPV8pv9qHCgoRytfqX1H1zPS2Sxsk6ZxCVXpcUzwWf4qBneZAa93o3PhoDnVqjV2u2rmv5u4tG8ZkIpK1zM0bPr5dHrivS7v2TenbixdZLJ/sik9uNC+8uo8G1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782819476; c=relaxed/simple;
-	bh=1flJO7IUa2mJJoFYYUiSjZ8P8cMprvT/eeHFRkdkJfA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LqvXnBC68epY/83rh53VimM95cO0Qzav1Kp0cquQvK0MoICbhVOgCjQW3eQ28NHzF3+DIVSdvnQlJZwRG2jhrJoWmMyAQaPGb2m7mPNs+pVvlys85wrexBjJFtEZFXZZVYvBPcrYElbVqbqe2GDzxDNynysrsdAn2c5LhLO9ve0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBuf3vLS; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBuf3vLS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A56B1F00A3D;
-	Tue, 30 Jun 2026 11:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782819474;
-	bh=CjK4yXnQcEmtWgxVwe4yZ7wSnJ5q5zRlpnDa0Y29+I8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PBuf3vLSPvjJ8ZQ7pCUvEFJiGBIZgyD6OGkaj8xnSO/HSO03V5eq5lG2bcG+XExrN
-	 jzMQmrUdXC6+3f+2X7i3ILvJa8U9XEM333r8eXNSJ9gXNY0libaWUreGqTk5HhWXoH
-	 b3JjsbjQSrFrP4BysZzsLZwEXP9pF7VXrlP1dAwSGFz8gEK2m7fAxV72CcDyQqEnZw
-	 4UkLSgxur0FKAZZ4sI8R1AQnA5bFjmkref6rV8bgolLB43BW9NCE3sTaDl0L42zyin
-	 0Z6uvzoZTP9N4YMI27qEtWL87SuJ6KHzhwfzKt+y9Ynq/cBBBDglRmDHS6yLBnjOZ/
-	 g11X1qm0AQ8eA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 10/15] s390/vfio-ap: File ops called to resume the
- vfio device migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260630104132.1598851-11-akrowiak@linux.ibm.com>
-References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
- <20260630104132.1598851-11-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 11:37:53 +0000
-Message-Id: <20260630113754.1A56B1F00A3D@smtp.kernel.org>
+	s=arc-20240116; t=1782819626; c=relaxed/simple;
+	bh=DqUHoNjNUWlvQmhHLBAHiYFqfAgDMqXnoUHPxtf/IDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SEk9ceRdLdKs824nQOeYq1YmnpwZq9crbHqIZ2NvmonfkM7WNb+hGw/J3ddP7dM9IeQN6qKpnX5VTugM+CPOjR+Zu7m6mRP0wWdZ711gQInIu42wo7iDiNLWTl46JGYktaZ0xohAYCESkZWfvrRldTUQL6fesK1iHCfh5anHAD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gqLmb4cdhz5BNS0;
+	Tue, 30 Jun 2026 19:40:15 +0800 (CST)
+Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
+	by mse-fl1.zte.com.cn with SMTP id 65UBe6El085767;
+	Tue, 30 Jun 2026 19:40:06 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from localhost.localdomain (unknown [10.234.74.162])
+	by smtp (Zmail) with SMTP;
+	Tue, 30 Jun 2026 19:40:09 +0800
+X-Zmail-TransId: 3e816a43ab18007-da7c9
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: wang.yechao255@zte.com.cn
+From: Wang Yechao <wang.yechao255@zte.com.cn>
+To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
+        Alexandre Ghiti <alex@ghiti.fr>,
+        Wang Yechao <wang.yechao255@zte.com.cn>
+Subject: [PATCH v4 0/5] Implement Eager Page Splitting for RISC-V
+Date: Tue, 30 Jun 2026 19:39:23 +0800
+Message-ID: <20260630113934.75100-1-wang.yechao255@zte.com.cn>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL:mse-fl1.zte.com.cn 65UBe6El085767
+X-TLS: YES
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Tue, 30 Jun 2026 19:40:15 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A43AB1F.000/4gqLmb4cdhz5BNS0
 
-Thank you for your contribution! Sashiko AI review found 11 potential issue=
-(s) to consider:
-- [Critical] The `guest_matrix` struct is allocated on the stack without in=
-itialization, leading to uninitialized kernel stack memory being applied to=
- the guest's AP configuration.
-- [Critical] Error paths and `krealloc` usage leave dangling pointers in `m=
-ig_data->resuming_mig_state.ap_config`, resulting in Use-After-Free and Dou=
-ble Free vulnerabilities.
-- [High] Unsafe use of `mutex_is_locked` to conditionally unlock `mdevs_loc=
-k` can release a mutex held by another thread.
-- [High] A short write smaller than `sizeof(struct vfio_ap_config)` bypasse=
-s size checks and prematurely triggers post-copy validation, leading to out=
--of-bounds heap reads.
-- [High] A double fetch of the `num_queues` field from userspace allows an =
-attacker to bypass bounds checks and trigger out-of-bounds heap reads.
-- [High] Partial writes to the migration stream leak the dynamically alloca=
-ted configuration buffer and permanently break the state machine.
-- [High] The `vfio_ap_resuming_write` function unconditionally returns `-ES=
-PIPE` because it assumes `pos` can be NULL for normal writes, breaking migr=
-ation entirely.
-- [High] Dropping `mdevs_lock` while using `&filp->f_pos` on a stream witho=
-ut `FMODE_ATOMIC_POS` leads to data races.
-- [Medium] The hardware compatibility check bypasses the requirement that B=
-S bits must be 0 if the source and target queues have identical hardware in=
-formation.
-- [Medium] Strict equality checks on the `fac` bitfield override and break =
-the intended backward compatibility for functionality classes.
-- [Medium] The migration functionality completely ignores AP control domain=
-s (`adm`), silently dropping them during live migration.
---
 
-commit 1f07710d77bb19f343d29ddba26d02cffa013a44
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-s390/vfio-ap: File ops called to resume the vfio device migration
+--=====_001_next=====
+Content-Type: multipart/related;
+	boundary="=====_002_next====="
 
-This commit implements the write callback function to restore the state
-of the vfio-ap device on the destination system during migration. It
-copies the source guest's AP configuration from userspace, validates it,
-and configures it on the destination host.
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index e917cc995d352..9cd1e7a3f7430 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-[ ... ]
-> @@ -187,10 +219,12 @@ static int vfio_ap_store_queue_info(struct ap_matri=
-x_mdev *matrix_mdev,
->  {
->  	unsigned long *apm, *aqm, num_queues, apid, apqi, apqn;
->  	struct ap_tapq_hwinfo source_hwinfo;
-> +	const char *mdev_name;
->  	int ret;
-> =20
->  	lockdep_assert_held(&matrix_dev->mdevs_lock);
-> =20
-> +	mdev_name =3D dev_name(matrix_mdev->vdev.dev);
->  	apm =3D matrix_mdev->shadow_apcb.apm;
->  	aqm =3D matrix_mdev->shadow_apcb.aqm;
->  	num_queues =3D 0;
-> @@ -199,7 +233,7 @@ static int vfio_ap_store_queue_info(struct ap_matrix_=
-mdev *matrix_mdev,
->  		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
->  			apqn =3D AP_MKQID(apid, apqi);
-> =20
+--=====_002_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
 
-[Severity: Medium]
-Are we missing the control domains (adm) here? It appears the migration
-functionality iterates over apm and aqm, but leaves out adm entirely. Will
-guests with AP control domain capabilities silently lose these resources
-after live migration?
 
-> -			ret =3D get_hardware_info_for_queue(matrix_mdev,
-> +			ret =3D get_hardware_info_for_queue(mdev_name,
->  							  &source_hwinfo, apqn);
->  			if (ret)
->  				return ret;
-[ ... ]
-> +static ssize_t allocate_ap_config(struct vfio_ap_config **ap_config,
-> +				  const char __user *buf, size_t len)
-> +{
-> +	struct vfio_ap_config tmp_ap_config;
-> +	ssize_t config_size;
-> +	size_t copy_size;
-> +
-> +	/*
-> +	 * If the length of the data sent exceeds the size of the vfio_ap_config
-> +	 * structure, then we will copy enough data from userspace to get the
-> +	 * number of queues which we can use to allocate enough space all of
-> +	 * the queue information.
-> +	 */
-> +	copy_size =3D min(len, sizeof(tmp_ap_config));
-> +
-> +	if (copy_from_user(&tmp_ap_config, buf, copy_size))
-> +		return -EIO;
-> +
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-[Severity: High]
-We are copying tmp_ap_config from userspace here to validate num_queues
-and size the buffer. In vfio_ap_resuming_write(), a second copy_from_user
-is performed directly into the allocated buffer without re-validating
-num_queues.
+RWFnZXIgUGFnZSBTcGxpdHRpbmcgaXMgaW1wbGVtZW50ZWQgb24geDg2IGFuZCBBUk0uIEl0IGlt
+cHJvdmVzIHRoZQ0KcGVyZm9ybWFuY2Ugb2YgZGlydHkgbG9nZ2luZyAodXNlZCBpbiBsaXZlIG1p
+Z3JhdGlvbnMpIHdoZW4gZ3Vlc3QgbWVtb3J5DQppcyBiYWNrZWQgYnkgaHVnZSBwYWdlcy4NCg0K
+VGhpcyBzZXJpZXMgaW1wbGVtZW50IEVhZ2VyIFBhZ2UgU3BsaXR0aW5nIGZvciBSSVNDLVYuIFRo
+ZSBJbXBsZW1lbnRhdGlvbg0Kc2ltaWxhciB0byB4ODYgYW5kIEFSTS4gSXQgcHJvdmlkZXMgdHdv
+IHdheXMgdG8gc3BsaXQgaHVnZSBwYWdlcyBpbiBpb2N0bA0KY29udGV4dCBpbnN0ZWFkIG9mIG9u
+IGZhdWx0IGluIHZDUFUgY29udGV4dDoNCg0KLSBTcGxpdCBodWdlIHBhZ2VzIHdoZW4gZGlydHkg
+bG9nZ2luZyBpcyBlbmFibGVkIHdoZW4NCiAgS1ZNX0RJUlRZX0xPR19JTklUSUFMTFlfU0VUIGlz
+IG5vdCBzZXQuIFRoaXMgaGFwcGVucyB3aGVuIGVuYWJsaW5nIHRoZQ0KICBLVk1fTUVNX0xPR19E
+SVJUWV9QQUdFUyBmbGFnIG9mIGEgbWVtc2xvdCwgYW5kIHNwbGl0cyB0aGUgd2hvbGUgbWVtc2xv
+dA0KICBpbnRvIDRLIG1hcHBpbmdzLg0KDQotIFNwbGl0IGh1Z2UgcGFnZXMgZHVyaW5nIEtWTV9D
+TEVBUl9ESVJUWV9MT0cgd2hlbg0KICBLVk1fRElSVFlfTE9HX0lOSVRJQUxMWV9TRVQgaXMgc2V0
+LiBUaGlzIGhhcHBlbnMgd2hlbiBlbmFibGluZyBkaXJ0eSBsb2cNCiAgaW4gc21hbGwgY2h1bmtz
+LiBJdCBkb2VzIG5vdCBzcGxpdCB0aGUgd2hvbGUgbWVtc2xvdCwgYnV0IG9ubHkgdGhlDQogIHJl
+cXVlc3RlZCBjaHVuayByYW5nZS4NCg0KQ2hhbmdlcyBpbiB2NDoNCiAtIFJlYmFzZSBvbiB2Ny4y
+LXJjMSB2ZXJzaW9uLg0KIHNhc2hpa28tYm90IEFJIHJldmlldw0KIChodHRwczovL3Nhc2hpa28u
+ZGV2LyMvcGF0Y2hzZXQvMjAyNjA2MjQxNjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRl
+LmNvbS5jbikNCiAtIEFkZCB0aGUgcndsb2NrX25lZWRicmVhaygpIGNoZWNrIHdoZW4gdG91cCBz
+cGxpdCBjYWNoZS4NCiAtIEFMSUdOX0RPV04gdGhlIHN0YXJ0IGFkZHIgdG8gUE1EX1NJWkUuDQoN
+CkNoYW5nZXMgaW4gdjMgcmVzZW5kOg0KIC0gRml4IHBhdGNoIGZvcm1hdCB0byBlbnN1cmUgZW1h
+aWxzIHJlYWNoIHRoZSBsaW51eC1yaXNjdiBhbmQga3ZtLXJpc2N2DQogICBtYWlsaW5nIGxpc3Rz
+Lg0KIC0gTW92ZSB0aGUgZnJlZSBwZ2Rfc3BsaXRfcGFnZV9jYWNoZSBpbnRvIGt2bV9hcmNoX2Rl
+c3Ryb3lfdm0oKS4NCiBodHRwczovL2xvcmUua2VybmVsLm9yZy9rdm0tcmlzY3YvMjAyNjA2MjQx
+NjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRlLmNvbS5jbi8NCg0KQ2hhbmdlcyBpbiB2
+MzoNCiAtIFJlYmFzZSBvbiB2Ny4xIHZlcnNpb24uDQogLSBBZGQgcGF0Y2gwMyB0byByZW1vdmUg
+dGhlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucy4NCiANCiBzYXNoaWtvLWJvdCBBSSBy
+ZXZpZXcNCiAoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4NDcuOTY5
+MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKQ0KIC0gQ2hlY2sgdGhlIGt2bS0+YXJjaC5wZ2Qg
+YmVmb3JlIHNwbGl0IGh1Z2UgcGFnZXMuDQogLSBBbGlnbiB0aGUgc3RhcnQgYWRkcmVzcyB0byBQ
+TURfU0laRSBiZWZvcmUgc3BsaXQuDQogLSBGbHVzaGluZyByZW1vdGUgVExCcyBiZWZvcmUgRHJv
+cHBpbmcgbW11X2xvY2suDQoNCkNoYW5nZXMgaW4gdjI6DQogLSBSZW5hbWUgdGhlIHNwbGl0X3Bh
+Z2VfY2FjaGUuDQogLSBSZW5hbWUgdGhlIGt2bV9yaXNjdl9zcGxpdF9odWdlX3BhZ2VzIGFuZA0K
+ICAga3ZtX3Jpc2N2X3NwbGl0X21lbW9yeV9yZWdpb24uDQogLSBBZGQgbG9ja2RlcF9hc3NlcnRf
+aGVsZCBjaGVjayBiZWZvcmUgc3BsaXQgaHVnZSBwYWdlcy4NCiAtIFVwZGF0ZSBEb2N1bWVudGF0
+aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dC4NCiAtIExpbmsgdG8gdjINCiBo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1yaXNjdi8yMDI2MDYwMzE3NTI1NjQwOEwwam5x
+R3MxY0pHYzBpakNkdWpjaUB6dGUuY29tLmNuLw0KDQogLSBMaW5rIHRvIHYxOg0KIGh0dHBzOi8v
+bG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYwNTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5
+b0laaThhR0lzQHp0ZS5jb20uY24vDQoNCldhbmcgWWVjaGFvICg1KToNCiAgUklTQy1WOiBLVk06
+IEFkZCB0aGUgc3BsaXQgcGFnZSBjYWNoZSBmb3IgaW9jdGwgY29udGV4dA0KICBSSVNDLVY6IEtW
+TTogU3BsaXQgaHVnZSBwYWdlcyB3aGVuIGRpcnR5IGxvZ2dpbmcgaXMgZW5hYmxlZA0KICBSSVND
+LVY6IEtWTTogUmVtb3ZlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucw0KICBSSVNDLVY6
+IEtWTTogU3BsaXQgaHVnZSBwYWdlcyBkdXJpbmcgS1ZNX0NMRUFSX0RJUlRZX0xPRw0KICBSSVND
+LVY6IEtWTTogQWRkIHRoZSBlYWdlcl9wYWdlX3NwbGl0IG1vZHVsZSBwYXJhbWV0ZXINCg0KIC4u
+Li9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQgICAgICAgICB8ICA3ICstDQogYXJj
+aC9yaXNjdi9pbmNsdWRlL2FzbS9rdm1fZ3N0YWdlLmggICAgICAgICAgIHwgIDYgKy0NCiBhcmNo
+L3Jpc2N2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmggICAgICAgICAgICAgfCAgMSArDQogYXJjaC9y
+aXNjdi9rdm0vZ3N0YWdlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgMjMgKysrLS0NCiBhcmNo
+L3Jpc2N2L2t2bS9tbXUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCA5MyArKysrKysrKysr
+KysrKysrKystDQogYXJjaC9yaXNjdi9rdm0vdm0uYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgIDYgKysNCiA2IGZpbGVzIGNoYW5nZWQsIDExOSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlv
+bnMoLSkNCg0KLS0gDQoyLjQzLjU=
 
-Could userspace modify num_queues between these two fetches to a large
-value, bypassing bounds checks and leading to out-of-bounds heap reads
-during subsequent validation loops?
 
-> +	/*
-> +	 * If the length of data sent includes the number of queues
-> +	 * in the AP configuration, then calculate its size; otherwise
-> +	 * set config_size to the length of data sent.
-> +	 */
-> +	if (len >=3D sizeof(struct vfio_ap_config)) {
-> +		config_size =3D calculate_ap_config_size(tmp_ap_config.num_queues);
-> +
-> +		/* If the calculation returned an error */
-> +		if (config_size < 0)
-> +			return config_size;
-> +	} else {
-> +		config_size =3D len;
-> +	}
-> +
+--=====_003_next=====
+Content-Type: text/html ;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-[Severity: High]
-If len is less than sizeof(struct vfio_ap_config), we set config_size to
-len. Does this bypass the size validation and allocate an undersized
-buffer? Later in vfio_ap_resuming_write(), this can prematurely trigger
-post-copy validation on uninitialized heap memory.
+RWFnZXImbmJzcDtQYWdlJm5ic3A7U3BsaXR0aW5nJm5ic3A7aXMmbmJzcDtpbXBsZW1lbnRlZCZu
+YnNwO29uJm5ic3A7eDg2Jm5ic3A7YW5kJm5ic3A7QVJNLiZuYnNwO0l0Jm5ic3A7aW1wcm92ZXMm
+bmJzcDt0aGU8YnIgLz5wZXJmb3JtYW5jZSZuYnNwO29mJm5ic3A7ZGlydHkmbmJzcDtsb2dnaW5n
+Jm5ic3A7KHVzZWQmbmJzcDtpbiZuYnNwO2xpdmUmbmJzcDttaWdyYXRpb25zKSZuYnNwO3doZW4m
+bmJzcDtndWVzdCZuYnNwO21lbW9yeTxiciAvPmlzJm5ic3A7YmFja2VkJm5ic3A7YnkmbmJzcDto
+dWdlJm5ic3A7cGFnZXMuPGJyIC8+DTxiciAvPlRoaXMmbmJzcDtzZXJpZXMmbmJzcDtpbXBsZW1l
+bnQmbmJzcDtFYWdlciZuYnNwO1BhZ2UmbmJzcDtTcGxpdHRpbmcmbmJzcDtmb3ImbmJzcDtSSVND
+LVYuJm5ic3A7VGhlJm5ic3A7SW1wbGVtZW50YXRpb248YnIgLz5zaW1pbGFyJm5ic3A7dG8mbmJz
+cDt4ODYmbmJzcDthbmQmbmJzcDtBUk0uJm5ic3A7SXQmbmJzcDtwcm92aWRlcyZuYnNwO3R3byZu
+YnNwO3dheXMmbmJzcDt0byZuYnNwO3NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7aW4m
+bmJzcDtpb2N0bDxiciAvPmNvbnRleHQmbmJzcDtpbnN0ZWFkJm5ic3A7b2YmbmJzcDtvbiZuYnNw
+O2ZhdWx0Jm5ic3A7aW4mbmJzcDt2Q1BVJm5ic3A7Y29udGV4dDo8YnIgLz4NPGJyIC8+LSZuYnNw
+O1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7d2hlbiZuYnNwO2RpcnR5Jm5ic3A7bG9n
+Z2luZyZuYnNwO2lzJm5ic3A7ZW5hYmxlZCZuYnNwO3doZW48YnIgLz4mbmJzcDsmbmJzcDtLVk1f
+RElSVFlfTE9HX0lOSVRJQUxMWV9TRVQmbmJzcDtpcyZuYnNwO25vdCZuYnNwO3NldC4mbmJzcDtU
+aGlzJm5ic3A7aGFwcGVucyZuYnNwO3doZW4mbmJzcDtlbmFibGluZyZuYnNwO3RoZTxiciAvPiZu
+YnNwOyZuYnNwO0tWTV9NRU1fTE9HX0RJUlRZX1BBR0VTJm5ic3A7ZmxhZyZuYnNwO29mJm5ic3A7
+YSZuYnNwO21lbXNsb3QsJm5ic3A7YW5kJm5ic3A7c3BsaXRzJm5ic3A7dGhlJm5ic3A7d2hvbGUm
+bmJzcDttZW1zbG90PGJyIC8+Jm5ic3A7Jm5ic3A7aW50byZuYnNwOzRLJm5ic3A7bWFwcGluZ3Mu
+PGJyIC8+DTxiciAvPi0mbmJzcDtTcGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcyZuYnNwO2R1cmlu
+ZyZuYnNwO0tWTV9DTEVBUl9ESVJUWV9MT0cmbmJzcDt3aGVuPGJyIC8+Jm5ic3A7Jm5ic3A7S1ZN
+X0RJUlRZX0xPR19JTklUSUFMTFlfU0VUJm5ic3A7aXMmbmJzcDtzZXQuJm5ic3A7VGhpcyZuYnNw
+O2hhcHBlbnMmbmJzcDt3aGVuJm5ic3A7ZW5hYmxpbmcmbmJzcDtkaXJ0eSZuYnNwO2xvZzxiciAv
+PiZuYnNwOyZuYnNwO2luJm5ic3A7c21hbGwmbmJzcDtjaHVua3MuJm5ic3A7SXQmbmJzcDtkb2Vz
+Jm5ic3A7bm90Jm5ic3A7c3BsaXQmbmJzcDt0aGUmbmJzcDt3aG9sZSZuYnNwO21lbXNsb3QsJm5i
+c3A7YnV0Jm5ic3A7b25seSZuYnNwO3RoZTxiciAvPiZuYnNwOyZuYnNwO3JlcXVlc3RlZCZuYnNw
+O2NodW5rJm5ic3A7cmFuZ2UuPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Y0Ojxi
+ciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjItcmMxJm5ic3A7dmVyc2lv
+bi48YnIgLz4mbmJzcDtzYXNoaWtvLWJvdCZuYnNwO0FJJm5ic3A7cmV2aWV3PGJyIC8+Jm5ic3A7
+KGh0dHBzOi8vc2FzaGlrby5kZXYvIy9wYXRjaHNldC8yMDI2MDYyNDE2MDA1NDQ2M3djRHZKYU1v
+eWRTZ2djTk9XZ2NmQkB6dGUuY29tLmNuKTxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDt0aGUm
+bmJzcDtyd2xvY2tfbmVlZGJyZWFrKCkmbmJzcDtjaGVjayZuYnNwO3doZW4mbmJzcDt0b3VwJm5i
+c3A7c3BsaXQmbmJzcDtjYWNoZS48YnIgLz4mbmJzcDstJm5ic3A7QUxJR05fRE9XTiZuYnNwO3Ro
+ZSZuYnNwO3N0YXJ0Jm5ic3A7YWRkciZuYnNwO3RvJm5ic3A7UE1EX1NJWkUuPGJyIC8+DTxiciAv
+PkNoYW5nZXMmbmJzcDtpbiZuYnNwO3YzJm5ic3A7cmVzZW5kOjxiciAvPiZuYnNwOy0mbmJzcDtG
+aXgmbmJzcDtwYXRjaCZuYnNwO2Zvcm1hdCZuYnNwO3RvJm5ic3A7ZW5zdXJlJm5ic3A7ZW1haWxz
+Jm5ic3A7cmVhY2gmbmJzcDt0aGUmbmJzcDtsaW51eC1yaXNjdiZuYnNwO2FuZCZuYnNwO2t2bS1y
+aXNjdjxiciAvPiZuYnNwOyZuYnNwOyZuYnNwO21haWxpbmcmbmJzcDtsaXN0cy48YnIgLz4mbmJz
+cDstJm5ic3A7TW92ZSZuYnNwO3RoZSZuYnNwO2ZyZWUmbmJzcDtwZ2Rfc3BsaXRfcGFnZV9jYWNo
+ZSZuYnNwO2ludG8mbmJzcDtrdm1fYXJjaF9kZXN0cm95X3ZtKCkuPGJyIC8+Jm5ic3A7aHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcva3ZtLXJpc2N2LzIwMjYwNjI0MTYwMDU0NDYzd2NEdkphTW95ZFNn
+Z2NOT1dnY2ZCQHp0ZS5jb20uY24vPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Yz
+OjxiciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjEmbmJzcDt2ZXJzaW9u
+LjxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDtwYXRjaDAzJm5ic3A7dG8mbmJzcDtyZW1vdmUm
+bmJzcDt0aGUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJzcDtmbHVzaCZuYnNwO29wZXJhdGlv
+bnMuPGJyIC8+Jm5ic3A7DTxiciAvPiZuYnNwO3Nhc2hpa28tYm90Jm5ic3A7QUkmbmJzcDtyZXZp
+ZXc8YnIgLz4mbmJzcDsoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4
+NDcuOTY5MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKTxiciAvPiZuYnNwOy0mbmJzcDtDaGVj
+ayZuYnNwO3RoZSZuYnNwO2t2bS0mZ3Q7YXJjaC5wZ2QmbmJzcDtiZWZvcmUmbmJzcDtzcGxpdCZu
+YnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7QWxpZ24mbmJzcDt0aGUmbmJz
+cDtzdGFydCZuYnNwO2FkZHJlc3MmbmJzcDt0byZuYnNwO1BNRF9TSVpFJm5ic3A7YmVmb3JlJm5i
+c3A7c3BsaXQuPGJyIC8+Jm5ic3A7LSZuYnNwO0ZsdXNoaW5nJm5ic3A7cmVtb3RlJm5ic3A7VExC
+cyZuYnNwO2JlZm9yZSZuYnNwO0Ryb3BwaW5nJm5ic3A7bW11X2xvY2suPGJyIC8+DTxiciAvPkNo
+YW5nZXMmbmJzcDtpbiZuYnNwO3YyOjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
+bmJzcDtzcGxpdF9wYWdlX2NhY2hlLjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
+bmJzcDtrdm1fcmlzY3Zfc3BsaXRfaHVnZV9wYWdlcyZuYnNwO2FuZDxiciAvPiZuYnNwOyZuYnNw
+OyZuYnNwO2t2bV9yaXNjdl9zcGxpdF9tZW1vcnlfcmVnaW9uLjxiciAvPiZuYnNwOy0mbmJzcDtB
+ZGQmbmJzcDtsb2NrZGVwX2Fzc2VydF9oZWxkJm5ic3A7Y2hlY2smbmJzcDtiZWZvcmUmbmJzcDtz
+cGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7VXBkYXRlJm5ic3A7
+RG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQuPGJyIC8+Jm5i
+c3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNwO3YyPGJyIC8+Jm5ic3A7aHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvbGludXgtcmlzY3YvMjAyNjA2MDMxNzUyNTY0MDhMMGpucUdzMWNKR2MwaWpDZHVq
+Y2lAenRlLmNvbS5jbi88YnIgLz4NPGJyIC8+Jm5ic3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNw
+O3YxOjxiciAvPiZuYnNwO2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYw
+NTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5b0laaThhR0lzQHp0ZS5jb20uY24vPGJyIC8+DTxiciAv
+PldhbmcmbmJzcDtZZWNoYW8mbmJzcDsoNSk6PGJyIC8+Jm5ic3A7Jm5ic3A7UklTQy1WOiZuYnNw
+O0tWTTombmJzcDtBZGQmbmJzcDt0aGUmbmJzcDtzcGxpdCZuYnNwO3BhZ2UmbmJzcDtjYWNoZSZu
+YnNwO2ZvciZuYnNwO2lvY3RsJm5ic3A7Y29udGV4dDxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjom
+bmJzcDtLVk06Jm5ic3A7U3BsaXQmbmJzcDtodWdlJm5ic3A7cGFnZXMmbmJzcDt3aGVuJm5ic3A7
+ZGlydHkmbmJzcDtsb2dnaW5nJm5ic3A7aXMmbmJzcDtlbmFibGVkPGJyIC8+Jm5ic3A7Jm5ic3A7
+UklTQy1WOiZuYnNwO0tWTTombmJzcDtSZW1vdmUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJz
+cDtmbHVzaCZuYnNwO29wZXJhdGlvbnM8YnIgLz4mbmJzcDsmbmJzcDtSSVNDLVY6Jm5ic3A7S1ZN
+OiZuYnNwO1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7ZHVyaW5nJm5ic3A7S1ZNX0NM
+RUFSX0RJUlRZX0xPRzxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjombmJzcDtLVk06Jm5ic3A7QWRk
+Jm5ic3A7dGhlJm5ic3A7ZWFnZXJfcGFnZV9zcGxpdCZuYnNwO21vZHVsZSZuYnNwO3BhcmFtZXRl
+cjxiciAvPg08YnIgLz4mbmJzcDsuLi4vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZu
+YnNwOyZuYnNwOzcmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gvcmlzY3YvaW5jbHVkZS9hc20va3Zt
+X2dzdGFnZS5oJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOyZuYnNwOzYmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gv
+cmlzY3YvaW5jbHVkZS9hc20va3ZtX2hvc3QuaCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJzcDsm
+bmJzcDsxJm5ic3A7KzxiciAvPiZuYnNwO2FyY2gvcmlzY3Yva3ZtL2dzdGFnZS5jJm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOzIzJm5ic3A7KysrLS08YnIgLz4mbmJzcDthcmNoL3Jpc2N2
+L2t2bS9tbXUuYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJz
+cDs5MyZuYnNwOysrKysrKysrKysrKysrKysrKy08YnIgLz4mbmJzcDthcmNoL3Jpc2N2L2t2bS92
+bS5jJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNw
+OyZuYnNwOzYmbmJzcDsrKzxiciAvPiZuYnNwOzYmbmJzcDtmaWxlcyZuYnNwO2NoYW5nZWQsJm5i
+c3A7MTE5Jm5ic3A7aW5zZXJ0aW9ucygrKSwmbmJzcDsxNyZuYnNwO2RlbGV0aW9ucygtKTxiciAv
+Pg08YnIgLz4tLSZuYnNwOw08YnIgLz4yLjQzLjU8YnIgLz4=
 
-> +	*ap_config =3D kzalloc(config_size, GFP_KERNEL_ACCOUNT);
-> +	if (!*ap_config)
-> +		return -ENOMEM;
-> +
-> +	return config_size;
-> +}
-> +
-> +/**
-> + * reallocate_ap_config:
-[ ... ]
-> +static ssize_t reallocate_ap_config(struct vfio_ap_config **mig_ap_confi=
-g,
-> +				    size_t len)
-> +{
-> +	struct vfio_ap_config *ap_config =3D *mig_ap_config;
-> +	struct vfio_ap_config *new_ap_config;
-> +	size_t new_cfg_sz, cur_cfg_sz;
-> +	unsigned int num_queues;
-> +
-> +	cur_cfg_sz =3D ap_config->config_sz;
-> +	num_queues =3D ap_config->num_queues;
-[ ... ]
-> +	new_ap_config =3D krealloc(ap_config, new_cfg_sz, GFP_KERNEL_ACCOUNT);
-> +	if (!new_ap_config)
-> +		return -ENOMEM;
-> +
-> +	*mig_ap_config =3D new_ap_config;
-> +
-> +	return new_cfg_sz;
-> +}
-> +
 
-[Severity: Critical]
-krealloc() frees the old memory and returns a new pointer, updating the
-local variable but not the global mig_data pointer until the transfer is
-fully complete in vfio_ap_resuming_write(). Can a subsequent write or an
-error path dereference the freed pointer?
+--=====_003_next=====--
 
-> +/**
-> + * qdev_is_bound_to_vfio_ap:
-[ ... ]
-> +static bool queue_hardware_info_is_compatible(const char *mdev_name,
-> +					      unsigned long apqn,
-> +					      struct ap_tapq_hwinfo *src_hwinfo,
-> +					      struct ap_tapq_hwinfo *target_hwinfo)
-> +{
-> +	unsigned long src_bits, target_bits;
-> +
-> +	src_bits =3D src_hwinfo->value & QINFO_DATA_MASK;
-> +	target_bits =3D target_hwinfo->value & QINFO_DATA_MASK;
-> +
-> +	/* If all bits match the queues are compatible */
-> +	if (src_bits =3D=3D target_bits)
-> +		return true;
-> +
+--=====_002_next=====--
 
-[Severity: Medium]
-The specification requires that the Bind/Associate State (BS) bits must be
-0 for both queues. Does returning true early when src_bits =3D=3D target_bi=
-ts
-bypass this requirement if both queues have identical, non-zero BS bits?
+--=====_001_next=====--
 
-> +	if (src_hwinfo->fac =3D=3D target_hwinfo->fac &&
-> +	    src_hwinfo->at <=3D target_hwinfo->at &&
-> +	    classes_compatible(src_hwinfo, target_hwinfo) &&
-> +	    (src_hwinfo->bs =3D=3D 0 && target_hwinfo->bs =3D=3D 0)) {
-> +		return true;
-> +	}
-> +
-
-[Severity: Medium]
-The fac bitfield structurally encompasses the class field. If the source
-and target queues have different classes (e.g., stateless vs native), will
-src_hwinfo->fac =3D=3D target_hwinfo->fac unconditionally evaluate to false=
- and
-break the intended backward compatibility logic in classes_compatible()?
-
-> +	report_qinfo_incompatibilities(mdev_name, apqn, src_hwinfo, target_hwin=
-fo);
-> +
-> +	return false;
-> +}
-[ ... ]
-> +static void setup_ap_matrix_from_ap_config(const char *mdev_name,
-> +					   struct vfio_ap_config *ap_config,
-> +					   struct ap_matrix *guest_matrix)
-> +{
-> +	struct vfio_ap_queue_info qinfo;
-> +	unsigned long apid, apqi;
-> +
-> +	for (int i =3D 0; i < ap_config->num_queues; i++) {
-> +		qinfo =3D ap_config->qinfo[i];
-> +		apid =3D AP_QID_CARD(qinfo.apqn);
-> +		apqi =3D AP_QID_QUEUE(qinfo.apqn);
-> +
-> +		if (!test_bit_inv(apid, guest_matrix->apm))
-> +			set_bit_inv(apid, guest_matrix->apm);
-> +		if (!test_bit_inv(apqi, guest_matrix->aqm))
-> +			set_bit_inv(apqi, guest_matrix->aqm);
-> +	}
-> +}
-> +
-
-[Severity: Medium]
-Similar to vfio_ap_store_queue_info(), this reconstruction appears to
-discard the adm control domains.
-
->  static ssize_t vfio_ap_resuming_write(struct file *filp, const char __us=
-er *buf,
->  				      size_t len, loff_t *pos)
->  {
-> -	/* TODO */
-> -	return -EOPNOTSUPP;
-> +	struct vfio_ap_migration_data *mig_data;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	struct vfio_ap_config *ap_config;
-> +	struct ap_matrix guest_matrix;
-> +	ssize_t ret =3D 0, cfg_sz;
-> +	const char *mdev_name;
-> +
-
-[Severity: Critical]
-Is guest_matrix fully initialized before use? It is allocated on the stack,
-and setup_ap_matrix_from_ap_config() only modifies the apm and aqm bits.
-Does passing this to vfio_ap_set_new_guest_config() apply uninitialized
-kernel stack memory (including the uninitialized adm bits) to the guest's
-cryptographic configuration?
-
-> +	/*
-> +	 * When userspace calls write() with an explicit offset (pwrite), pos is
-> +	 * non-NULL and the function rejects it with -ESPIPE (illegal seek). For
-> +	 * normal write() calls, pos is NULL, so we'll use the file's internal
-> +	 * position filp->f_pos
-> +	 */
-> +	if (pos)
-> +		return -ESPIPE;
-> +
-
-[Severity: High]
-The VFS layer always passes a valid pos pointer to the write callback
-(never NULL). Does this mean normal writes will unconditionally fail with
--ESPIPE and break migration entirely?
-
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-> +	pos =3D &filp->f_pos;
-> +
-> +	ret =3D validate_resuming_write_parms(filp, len, pos);
-> +	if (ret)
-> +		goto done;
-> +
-> +	matrix_mdev =3D filp->private_data;
-> +	mig_data =3D matrix_mdev->mig_data;
-> +	mdev_name =3D dev_name(matrix_mdev->vdev.dev);
-> +
-> +	/*
-> +	 * If this is the first write operation, then allocate storage for the
-> +	 * AP configuration information; otherwise, reallocate the
-> +	 * struct vfio_ap_config object used to store the AP configuration data
-> +	 * sent from userspace.
-> +	 */
-> +	if (*pos =3D=3D 0) {
-> +		ret =3D allocate_ap_config(&ap_config, buf, len);
-> +
-> +		/* If the allocation failed, we'll return the error */
-> +		if (ret < 0)
-> +			goto done;
-> +
-> +		cfg_sz =3D ret;
-> +	} else {
-> +		ap_config =3D mig_data->resuming_mig_state.ap_config;
-> +
-> +		ret =3D reallocate_ap_config(&ap_config, len);
-> +		if (ret < 0)
-> +			goto cleanup;
-> +
-> +		cfg_sz =3D ret;
-> +	}
-> +
-> +	if (*pos + len > cfg_sz) {
-> +		ret =3D -EIO;
-> +		goto cleanup;
-> +	}
-> +
-> +	/*
-> +	 * We don't want to lock all mdevs while copying data from userspace so
-> +	 * we don't block all other mdevs in case the I/O takes a long time.
-> +	 * From here on out we don't need this lock because we are not
-> +	 * accessing the matrix_mdev until we need to get the update
-> +	 * locks to set the new destination guest's AP configuration in which
-> +	 * case this lock will be taken then.
-> +	 */
-> +	mutex_unlock(&matrix_dev->mdevs_lock);
-> +
-
-[Severity: High]
-Since the file is opened with stream_open (which unsets FMODE_ATOMIC_POS),
-f_pos_lock is not held by VFS. Does dropping mdevs_lock here allow
-concurrent writes to race on filp->f_pos, leading to data races and memory
-corruption?
-
-> +	if (copy_from_user((char *)ap_config + *pos, buf, len)) {
-> +		ret =3D -EIO;
-> +		goto cleanup;
-> +	}
-> +
-> +	/* Check if we've completed writing the entire configuration */
-> +	if (*pos + len =3D=3D cfg_sz) {
-> +		ret =3D do_post_copy_validation(mdev_name, ap_config);
-> +		if (ret < 0)
-> +			goto cleanup;
-> +
-
-[Severity: High]
-If a short write occurred where len is less than sizeof(struct
-vfio_ap_config), could *pos + len =3D=3D cfg_sz evaluate to true prematurel=
-y?
-Will this trigger post-copy validation on an undersized and partially
-uninitialized buffer, leading to out-of-bounds heap reads?
-
-> +		setup_ap_matrix_from_ap_config(mdev_name, ap_config,
-> +					       &guest_matrix);
-> +
-> +		/* Acquire locks required to update the guest's AP config */
-> +		mutex_lock(&ap_attr_mutex);
-> +		get_update_locks_for_mdev(matrix_mdev);
-> +
-> +		ret =3D vfio_ap_set_new_guest_config(matrix_mdev, &guest_matrix,
-> +						   false);
-> +		if (!ret) {
-> +			mig_data->resuming_mig_state.ap_config =3D ap_config;
-> +			mig_data->resuming_mig_state.config_sz =3D cfg_sz;
-> +		}
-> +
-
-[Severity: High]
-If a write is partial, it returns before hitting this block. Does this leak
-the dynamically allocated configuration buffer since it isn't assigned to
-mig_data? And does this permanently break the state machine, as the next
-write will fail the validation in validate_resuming_write_parms()?
-
-> +		release_update_locks_for_mdev(matrix_mdev);
-> +		mutex_unlock(&ap_attr_mutex);
-> +
-> +		if (ret)
-> +			goto cleanup;
-> +	}
-> +
-> +	ret =3D len;
-> +	*pos +=3D len;
-> +	goto done;
-> +
-> +cleanup:
-> +	kfree(ap_config);
-
-[Severity: Critical]
-In the error path, we kfree(ap_config). Because krealloc() might have freed
-the memory stored in mig_data->resuming_mig_state.ap_config during a prior
-reallocate_ap_config(), could calling kfree(ap_config) here without
-clearing the global state lead to a Double Free later when the file is
-released?
-
-> +done:
-> +	if (mutex_is_locked(&matrix_dev->mdevs_lock))
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +
-
-[Severity: High]
-The mutex_is_locked() function only checks if the lock is held by any
-thread, not necessarily the current thread. If another thread has acquired
-mdevs_lock while this thread was unlocked, will we erroneously unlock it
-here and destroy mutual exclusion?
-
-> +	return ret;
->  }
-> =20
->  static const struct file_operations vfio_ap_resume_fops =3D {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
-851-1-akrowiak@linux.ibm.com?part=3D10
