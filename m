@@ -1,240 +1,174 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77EC40862E;
-	Tue, 30 Jun 2026 11:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630B53F0765;
+	Tue, 30 Jun 2026 12:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782820799; cv=none; b=YBNfsZIDU2z/N5RDTjqLpUWGCkNHfDQdPJRrhAxkO/4ujc5EwcaSEKXGA8hl120BqsiVjAwR+sMd2tMH+rfukQlKyeZmcVxEMLraMql2Us/zYRuF6O/FymYSzOcImgGakJjSoM2icGaidNv/JGoh2EjsnFJwznWQ/wiDt+BhXRk=
+	t=1782821985; cv=none; b=idRnb0hbETsmokcU1Y/YiKnp7inS78YQbmrZUNBM/uuwTOUCT+f6xYIC8SIHnXk1Rx6ZQyrfDS8s4SXrNxgVmsZZNkWQU1VKP+PPZvWKKztSBS8yv7YzV032KqZf/G4IEcCExZwZIs+/+/PCCIbfrrQEwcPPQd1ABvkuEYRu/bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782820799; c=relaxed/simple;
-	bh=DqUHoNjNUWlvQmhHLBAHiYFqfAgDMqXnoUHPxtf/IDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pCJAcgCdr/5PUVjEMeBFNhs2cW4lJ0CDbl0Ug/qo0cHVENeKFjKJq/FxEOQLqvGBGepzS/YBIIzFXJvx5VfSQXPTOfbE7TcqaNf/bNneIHioliNtIW3RZK5nUMIjCkdxXOEURUFcBkvITOQ4zDdJKNU0BgEgIHbI4JL5zguTjLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gqMCB2Bj8z8XrrX;
-	Tue, 30 Jun 2026 19:59:50 +0800 (CST)
-Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
-	by mse-fl2.zte.com.cn with SMTP id 65UBxdXn079907;
-	Tue, 30 Jun 2026 19:59:39 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from localhost.localdomain (unknown [10.234.74.162])
-	by smtp (Zmail) with SMTP;
-	Tue, 30 Jun 2026 19:59:42 +0800
-X-Zmail-TransId: 3e816a43afad007-db7fa
-X-Zmail-LocalSMTP: 1
-X-Zmail-RealSender: wang.yechao255@zte.com.cn
-From: Wang Yechao <wang.yechao255@zte.com.cn>
-To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
-        Alexandre Ghiti <alex@ghiti.fr>,
-        Wang Yechao <wang.yechao255@zte.com.cn>
-Subject: [PATCH v4 0/5] Implement Eager Page Splitting for RISC-V
-Date: Tue, 30 Jun 2026 19:54:57 +0800
-Message-ID: <20260630115509.75811-1-wang.yechao255@zte.com.cn>
-X-Mailer: git-send-email 2.41.0
+	s=arc-20240116; t=1782821985; c=relaxed/simple;
+	bh=eazOhytQrFMvUq1ReP67qLKPgCSBV6aajIEIlT27i24=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y2DTPpnn4xof2jwePa5r0PuOg7ZXk3X1+I7CciAc5p8Ge1s9h+yx3zpFF8+hWZ4pVCkO0CeG8ONl1nLh/FmoPokMwnZcxG6R0nH5N7YpIhyNBpo3XGJRJoiu6wJ0qiwGIIsew/szDipYu+GvhiQbdJxAnvxp55D6QbhEOFipS7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FGJaBBIF; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FGJaBBIF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782821984; x=1814357984;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eazOhytQrFMvUq1ReP67qLKPgCSBV6aajIEIlT27i24=;
+  b=FGJaBBIFz6yvBo2f2TDAFh0t9d7AI//1zWaI3NCu6PKQLGp3tAP6Id8G
+   +KV99JMcVrm+DAzVSDMMHDfzFRi5EQ3QHqZmXoGo4lcAAbFTwWsKdjK8e
+   1HpP45qFSO2o7kz5Xgd3r4+AZaiV/dmA7XFZamR6ZhNM55Xx0VVPlxAFb
+   Dj3MFQqx6GWO0qG/blCOb8m3GXrYtmqOUDtMjuA3FjPR6KSXUcydXNV/r
+   6WokWulxqzoDW/eM/upNg4+BwqMxan8CK4dnxMoVFOPIp10ObdBpfFudd
+   d/N2513uEySoDvsj7XIxicTJiqA2r2jT7yD+PmIMWDX8blSN8dSXoc3G6
+   w==;
+X-CSE-ConnectionGUID: caNl5UQ1SRuRB/eovcqpvg==
+X-CSE-MsgGUID: a3FKF91CS0GeysoFxyXfoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94683316"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="94683316"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:44 -0700
+X-CSE-ConnectionGUID: B7OjnqsRQEixcvKJEwnbxg==
+X-CSE-MsgGUID: dfLIyfHYTAKDobdyePXMlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="254160487"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:30 -0700
+Message-ID: <a8b4641f-ae3b-4b19-81e5-84e3c05b9760@intel.com>
+Date: Tue, 30 Jun 2026 20:19:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL:mse-fl2.zte.com.cn 65UBxdXn079907
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 30 Jun 2026 19:59:50 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A43AFB6.000/4gqMCB2Bj8z8XrrX
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
+ GFN private/shared status
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Introduce function for KVM to check the private/shared status of guest
+> memory at a given GFN.
+> 
+> This will be used in a later patch.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
+With binbin's comment resolved,
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
+BTW, it looks better to move the patch 01 just behind this one.
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
-
-
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-RWFnZXIgUGFnZSBTcGxpdHRpbmcgaXMgaW1wbGVtZW50ZWQgb24geDg2IGFuZCBBUk0uIEl0IGlt
-cHJvdmVzIHRoZQ0KcGVyZm9ybWFuY2Ugb2YgZGlydHkgbG9nZ2luZyAodXNlZCBpbiBsaXZlIG1p
-Z3JhdGlvbnMpIHdoZW4gZ3Vlc3QgbWVtb3J5DQppcyBiYWNrZWQgYnkgaHVnZSBwYWdlcy4NCg0K
-VGhpcyBzZXJpZXMgaW1wbGVtZW50IEVhZ2VyIFBhZ2UgU3BsaXR0aW5nIGZvciBSSVNDLVYuIFRo
-ZSBJbXBsZW1lbnRhdGlvbg0Kc2ltaWxhciB0byB4ODYgYW5kIEFSTS4gSXQgcHJvdmlkZXMgdHdv
-IHdheXMgdG8gc3BsaXQgaHVnZSBwYWdlcyBpbiBpb2N0bA0KY29udGV4dCBpbnN0ZWFkIG9mIG9u
-IGZhdWx0IGluIHZDUFUgY29udGV4dDoNCg0KLSBTcGxpdCBodWdlIHBhZ2VzIHdoZW4gZGlydHkg
-bG9nZ2luZyBpcyBlbmFibGVkIHdoZW4NCiAgS1ZNX0RJUlRZX0xPR19JTklUSUFMTFlfU0VUIGlz
-IG5vdCBzZXQuIFRoaXMgaGFwcGVucyB3aGVuIGVuYWJsaW5nIHRoZQ0KICBLVk1fTUVNX0xPR19E
-SVJUWV9QQUdFUyBmbGFnIG9mIGEgbWVtc2xvdCwgYW5kIHNwbGl0cyB0aGUgd2hvbGUgbWVtc2xv
-dA0KICBpbnRvIDRLIG1hcHBpbmdzLg0KDQotIFNwbGl0IGh1Z2UgcGFnZXMgZHVyaW5nIEtWTV9D
-TEVBUl9ESVJUWV9MT0cgd2hlbg0KICBLVk1fRElSVFlfTE9HX0lOSVRJQUxMWV9TRVQgaXMgc2V0
-LiBUaGlzIGhhcHBlbnMgd2hlbiBlbmFibGluZyBkaXJ0eSBsb2cNCiAgaW4gc21hbGwgY2h1bmtz
-LiBJdCBkb2VzIG5vdCBzcGxpdCB0aGUgd2hvbGUgbWVtc2xvdCwgYnV0IG9ubHkgdGhlDQogIHJl
-cXVlc3RlZCBjaHVuayByYW5nZS4NCg0KQ2hhbmdlcyBpbiB2NDoNCiAtIFJlYmFzZSBvbiB2Ny4y
-LXJjMSB2ZXJzaW9uLg0KIHNhc2hpa28tYm90IEFJIHJldmlldw0KIChodHRwczovL3Nhc2hpa28u
-ZGV2LyMvcGF0Y2hzZXQvMjAyNjA2MjQxNjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRl
-LmNvbS5jbikNCiAtIEFkZCB0aGUgcndsb2NrX25lZWRicmVhaygpIGNoZWNrIHdoZW4gdG91cCBz
-cGxpdCBjYWNoZS4NCiAtIEFMSUdOX0RPV04gdGhlIHN0YXJ0IGFkZHIgdG8gUE1EX1NJWkUuDQoN
-CkNoYW5nZXMgaW4gdjMgcmVzZW5kOg0KIC0gRml4IHBhdGNoIGZvcm1hdCB0byBlbnN1cmUgZW1h
-aWxzIHJlYWNoIHRoZSBsaW51eC1yaXNjdiBhbmQga3ZtLXJpc2N2DQogICBtYWlsaW5nIGxpc3Rz
-Lg0KIC0gTW92ZSB0aGUgZnJlZSBwZ2Rfc3BsaXRfcGFnZV9jYWNoZSBpbnRvIGt2bV9hcmNoX2Rl
-c3Ryb3lfdm0oKS4NCiBodHRwczovL2xvcmUua2VybmVsLm9yZy9rdm0tcmlzY3YvMjAyNjA2MjQx
-NjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRlLmNvbS5jbi8NCg0KQ2hhbmdlcyBpbiB2
-MzoNCiAtIFJlYmFzZSBvbiB2Ny4xIHZlcnNpb24uDQogLSBBZGQgcGF0Y2gwMyB0byByZW1vdmUg
-dGhlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucy4NCiANCiBzYXNoaWtvLWJvdCBBSSBy
-ZXZpZXcNCiAoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4NDcuOTY5
-MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKQ0KIC0gQ2hlY2sgdGhlIGt2bS0+YXJjaC5wZ2Qg
-YmVmb3JlIHNwbGl0IGh1Z2UgcGFnZXMuDQogLSBBbGlnbiB0aGUgc3RhcnQgYWRkcmVzcyB0byBQ
-TURfU0laRSBiZWZvcmUgc3BsaXQuDQogLSBGbHVzaGluZyByZW1vdGUgVExCcyBiZWZvcmUgRHJv
-cHBpbmcgbW11X2xvY2suDQoNCkNoYW5nZXMgaW4gdjI6DQogLSBSZW5hbWUgdGhlIHNwbGl0X3Bh
-Z2VfY2FjaGUuDQogLSBSZW5hbWUgdGhlIGt2bV9yaXNjdl9zcGxpdF9odWdlX3BhZ2VzIGFuZA0K
-ICAga3ZtX3Jpc2N2X3NwbGl0X21lbW9yeV9yZWdpb24uDQogLSBBZGQgbG9ja2RlcF9hc3NlcnRf
-aGVsZCBjaGVjayBiZWZvcmUgc3BsaXQgaHVnZSBwYWdlcy4NCiAtIFVwZGF0ZSBEb2N1bWVudGF0
-aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dC4NCiAtIExpbmsgdG8gdjINCiBo
-dHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1yaXNjdi8yMDI2MDYwMzE3NTI1NjQwOEwwam5x
-R3MxY0pHYzBpakNkdWpjaUB6dGUuY29tLmNuLw0KDQogLSBMaW5rIHRvIHYxOg0KIGh0dHBzOi8v
-bG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYwNTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5
-b0laaThhR0lzQHp0ZS5jb20uY24vDQoNCldhbmcgWWVjaGFvICg1KToNCiAgUklTQy1WOiBLVk06
-IEFkZCB0aGUgc3BsaXQgcGFnZSBjYWNoZSBmb3IgaW9jdGwgY29udGV4dA0KICBSSVNDLVY6IEtW
-TTogU3BsaXQgaHVnZSBwYWdlcyB3aGVuIGRpcnR5IGxvZ2dpbmcgaXMgZW5hYmxlZA0KICBSSVND
-LVY6IEtWTTogUmVtb3ZlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucw0KICBSSVNDLVY6
-IEtWTTogU3BsaXQgaHVnZSBwYWdlcyBkdXJpbmcgS1ZNX0NMRUFSX0RJUlRZX0xPRw0KICBSSVND
-LVY6IEtWTTogQWRkIHRoZSBlYWdlcl9wYWdlX3NwbGl0IG1vZHVsZSBwYXJhbWV0ZXINCg0KIC4u
-Li9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQgICAgICAgICB8ICA3ICstDQogYXJj
-aC9yaXNjdi9pbmNsdWRlL2FzbS9rdm1fZ3N0YWdlLmggICAgICAgICAgIHwgIDYgKy0NCiBhcmNo
-L3Jpc2N2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmggICAgICAgICAgICAgfCAgMSArDQogYXJjaC9y
-aXNjdi9rdm0vZ3N0YWdlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgMjMgKysrLS0NCiBhcmNo
-L3Jpc2N2L2t2bS9tbXUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCA5MyArKysrKysrKysr
-KysrKysrKystDQogYXJjaC9yaXNjdi9rdm0vdm0uYyAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgIDYgKysNCiA2IGZpbGVzIGNoYW5nZWQsIDExOSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlv
-bnMoLSkNCg0KLS0gDQoyLjQzLjU=
-
-
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
-
-RWFnZXImbmJzcDtQYWdlJm5ic3A7U3BsaXR0aW5nJm5ic3A7aXMmbmJzcDtpbXBsZW1lbnRlZCZu
-YnNwO29uJm5ic3A7eDg2Jm5ic3A7YW5kJm5ic3A7QVJNLiZuYnNwO0l0Jm5ic3A7aW1wcm92ZXMm
-bmJzcDt0aGU8YnIgLz5wZXJmb3JtYW5jZSZuYnNwO29mJm5ic3A7ZGlydHkmbmJzcDtsb2dnaW5n
-Jm5ic3A7KHVzZWQmbmJzcDtpbiZuYnNwO2xpdmUmbmJzcDttaWdyYXRpb25zKSZuYnNwO3doZW4m
-bmJzcDtndWVzdCZuYnNwO21lbW9yeTxiciAvPmlzJm5ic3A7YmFja2VkJm5ic3A7YnkmbmJzcDto
-dWdlJm5ic3A7cGFnZXMuPGJyIC8+DTxiciAvPlRoaXMmbmJzcDtzZXJpZXMmbmJzcDtpbXBsZW1l
-bnQmbmJzcDtFYWdlciZuYnNwO1BhZ2UmbmJzcDtTcGxpdHRpbmcmbmJzcDtmb3ImbmJzcDtSSVND
-LVYuJm5ic3A7VGhlJm5ic3A7SW1wbGVtZW50YXRpb248YnIgLz5zaW1pbGFyJm5ic3A7dG8mbmJz
-cDt4ODYmbmJzcDthbmQmbmJzcDtBUk0uJm5ic3A7SXQmbmJzcDtwcm92aWRlcyZuYnNwO3R3byZu
-YnNwO3dheXMmbmJzcDt0byZuYnNwO3NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7aW4m
-bmJzcDtpb2N0bDxiciAvPmNvbnRleHQmbmJzcDtpbnN0ZWFkJm5ic3A7b2YmbmJzcDtvbiZuYnNw
-O2ZhdWx0Jm5ic3A7aW4mbmJzcDt2Q1BVJm5ic3A7Y29udGV4dDo8YnIgLz4NPGJyIC8+LSZuYnNw
-O1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7d2hlbiZuYnNwO2RpcnR5Jm5ic3A7bG9n
-Z2luZyZuYnNwO2lzJm5ic3A7ZW5hYmxlZCZuYnNwO3doZW48YnIgLz4mbmJzcDsmbmJzcDtLVk1f
-RElSVFlfTE9HX0lOSVRJQUxMWV9TRVQmbmJzcDtpcyZuYnNwO25vdCZuYnNwO3NldC4mbmJzcDtU
-aGlzJm5ic3A7aGFwcGVucyZuYnNwO3doZW4mbmJzcDtlbmFibGluZyZuYnNwO3RoZTxiciAvPiZu
-YnNwOyZuYnNwO0tWTV9NRU1fTE9HX0RJUlRZX1BBR0VTJm5ic3A7ZmxhZyZuYnNwO29mJm5ic3A7
-YSZuYnNwO21lbXNsb3QsJm5ic3A7YW5kJm5ic3A7c3BsaXRzJm5ic3A7dGhlJm5ic3A7d2hvbGUm
-bmJzcDttZW1zbG90PGJyIC8+Jm5ic3A7Jm5ic3A7aW50byZuYnNwOzRLJm5ic3A7bWFwcGluZ3Mu
-PGJyIC8+DTxiciAvPi0mbmJzcDtTcGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcyZuYnNwO2R1cmlu
-ZyZuYnNwO0tWTV9DTEVBUl9ESVJUWV9MT0cmbmJzcDt3aGVuPGJyIC8+Jm5ic3A7Jm5ic3A7S1ZN
-X0RJUlRZX0xPR19JTklUSUFMTFlfU0VUJm5ic3A7aXMmbmJzcDtzZXQuJm5ic3A7VGhpcyZuYnNw
-O2hhcHBlbnMmbmJzcDt3aGVuJm5ic3A7ZW5hYmxpbmcmbmJzcDtkaXJ0eSZuYnNwO2xvZzxiciAv
-PiZuYnNwOyZuYnNwO2luJm5ic3A7c21hbGwmbmJzcDtjaHVua3MuJm5ic3A7SXQmbmJzcDtkb2Vz
-Jm5ic3A7bm90Jm5ic3A7c3BsaXQmbmJzcDt0aGUmbmJzcDt3aG9sZSZuYnNwO21lbXNsb3QsJm5i
-c3A7YnV0Jm5ic3A7b25seSZuYnNwO3RoZTxiciAvPiZuYnNwOyZuYnNwO3JlcXVlc3RlZCZuYnNw
-O2NodW5rJm5ic3A7cmFuZ2UuPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Y0Ojxi
-ciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjItcmMxJm5ic3A7dmVyc2lv
-bi48YnIgLz4mbmJzcDtzYXNoaWtvLWJvdCZuYnNwO0FJJm5ic3A7cmV2aWV3PGJyIC8+Jm5ic3A7
-KGh0dHBzOi8vc2FzaGlrby5kZXYvIy9wYXRjaHNldC8yMDI2MDYyNDE2MDA1NDQ2M3djRHZKYU1v
-eWRTZ2djTk9XZ2NmQkB6dGUuY29tLmNuKTxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDt0aGUm
-bmJzcDtyd2xvY2tfbmVlZGJyZWFrKCkmbmJzcDtjaGVjayZuYnNwO3doZW4mbmJzcDt0b3VwJm5i
-c3A7c3BsaXQmbmJzcDtjYWNoZS48YnIgLz4mbmJzcDstJm5ic3A7QUxJR05fRE9XTiZuYnNwO3Ro
-ZSZuYnNwO3N0YXJ0Jm5ic3A7YWRkciZuYnNwO3RvJm5ic3A7UE1EX1NJWkUuPGJyIC8+DTxiciAv
-PkNoYW5nZXMmbmJzcDtpbiZuYnNwO3YzJm5ic3A7cmVzZW5kOjxiciAvPiZuYnNwOy0mbmJzcDtG
-aXgmbmJzcDtwYXRjaCZuYnNwO2Zvcm1hdCZuYnNwO3RvJm5ic3A7ZW5zdXJlJm5ic3A7ZW1haWxz
-Jm5ic3A7cmVhY2gmbmJzcDt0aGUmbmJzcDtsaW51eC1yaXNjdiZuYnNwO2FuZCZuYnNwO2t2bS1y
-aXNjdjxiciAvPiZuYnNwOyZuYnNwOyZuYnNwO21haWxpbmcmbmJzcDtsaXN0cy48YnIgLz4mbmJz
-cDstJm5ic3A7TW92ZSZuYnNwO3RoZSZuYnNwO2ZyZWUmbmJzcDtwZ2Rfc3BsaXRfcGFnZV9jYWNo
-ZSZuYnNwO2ludG8mbmJzcDtrdm1fYXJjaF9kZXN0cm95X3ZtKCkuPGJyIC8+Jm5ic3A7aHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcva3ZtLXJpc2N2LzIwMjYwNjI0MTYwMDU0NDYzd2NEdkphTW95ZFNn
-Z2NOT1dnY2ZCQHp0ZS5jb20uY24vPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Yz
-OjxiciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjEmbmJzcDt2ZXJzaW9u
-LjxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDtwYXRjaDAzJm5ic3A7dG8mbmJzcDtyZW1vdmUm
-bmJzcDt0aGUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJzcDtmbHVzaCZuYnNwO29wZXJhdGlv
-bnMuPGJyIC8+Jm5ic3A7DTxiciAvPiZuYnNwO3Nhc2hpa28tYm90Jm5ic3A7QUkmbmJzcDtyZXZp
-ZXc8YnIgLz4mbmJzcDsoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4
-NDcuOTY5MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKTxiciAvPiZuYnNwOy0mbmJzcDtDaGVj
-ayZuYnNwO3RoZSZuYnNwO2t2bS0mZ3Q7YXJjaC5wZ2QmbmJzcDtiZWZvcmUmbmJzcDtzcGxpdCZu
-YnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7QWxpZ24mbmJzcDt0aGUmbmJz
-cDtzdGFydCZuYnNwO2FkZHJlc3MmbmJzcDt0byZuYnNwO1BNRF9TSVpFJm5ic3A7YmVmb3JlJm5i
-c3A7c3BsaXQuPGJyIC8+Jm5ic3A7LSZuYnNwO0ZsdXNoaW5nJm5ic3A7cmVtb3RlJm5ic3A7VExC
-cyZuYnNwO2JlZm9yZSZuYnNwO0Ryb3BwaW5nJm5ic3A7bW11X2xvY2suPGJyIC8+DTxiciAvPkNo
-YW5nZXMmbmJzcDtpbiZuYnNwO3YyOjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
-bmJzcDtzcGxpdF9wYWdlX2NhY2hlLjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
-bmJzcDtrdm1fcmlzY3Zfc3BsaXRfaHVnZV9wYWdlcyZuYnNwO2FuZDxiciAvPiZuYnNwOyZuYnNw
-OyZuYnNwO2t2bV9yaXNjdl9zcGxpdF9tZW1vcnlfcmVnaW9uLjxiciAvPiZuYnNwOy0mbmJzcDtB
-ZGQmbmJzcDtsb2NrZGVwX2Fzc2VydF9oZWxkJm5ic3A7Y2hlY2smbmJzcDtiZWZvcmUmbmJzcDtz
-cGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7VXBkYXRlJm5ic3A7
-RG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQuPGJyIC8+Jm5i
-c3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNwO3YyPGJyIC8+Jm5ic3A7aHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtcmlzY3YvMjAyNjA2MDMxNzUyNTY0MDhMMGpucUdzMWNKR2MwaWpDZHVq
-Y2lAenRlLmNvbS5jbi88YnIgLz4NPGJyIC8+Jm5ic3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNw
-O3YxOjxiciAvPiZuYnNwO2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYw
-NTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5b0laaThhR0lzQHp0ZS5jb20uY24vPGJyIC8+DTxiciAv
-PldhbmcmbmJzcDtZZWNoYW8mbmJzcDsoNSk6PGJyIC8+Jm5ic3A7Jm5ic3A7UklTQy1WOiZuYnNw
-O0tWTTombmJzcDtBZGQmbmJzcDt0aGUmbmJzcDtzcGxpdCZuYnNwO3BhZ2UmbmJzcDtjYWNoZSZu
-YnNwO2ZvciZuYnNwO2lvY3RsJm5ic3A7Y29udGV4dDxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjom
-bmJzcDtLVk06Jm5ic3A7U3BsaXQmbmJzcDtodWdlJm5ic3A7cGFnZXMmbmJzcDt3aGVuJm5ic3A7
-ZGlydHkmbmJzcDtsb2dnaW5nJm5ic3A7aXMmbmJzcDtlbmFibGVkPGJyIC8+Jm5ic3A7Jm5ic3A7
-UklTQy1WOiZuYnNwO0tWTTombmJzcDtSZW1vdmUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJz
-cDtmbHVzaCZuYnNwO29wZXJhdGlvbnM8YnIgLz4mbmJzcDsmbmJzcDtSSVNDLVY6Jm5ic3A7S1ZN
-OiZuYnNwO1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7ZHVyaW5nJm5ic3A7S1ZNX0NM
-RUFSX0RJUlRZX0xPRzxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjombmJzcDtLVk06Jm5ic3A7QWRk
-Jm5ic3A7dGhlJm5ic3A7ZWFnZXJfcGFnZV9zcGxpdCZuYnNwO21vZHVsZSZuYnNwO3BhcmFtZXRl
-cjxiciAvPg08YnIgLz4mbmJzcDsuLi4vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZu
-YnNwOyZuYnNwOzcmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gvcmlzY3YvaW5jbHVkZS9hc20va3Zt
-X2dzdGFnZS5oJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOyZuYnNwOzYmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gv
-cmlzY3YvaW5jbHVkZS9hc20va3ZtX2hvc3QuaCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJzcDsm
-bmJzcDsxJm5ic3A7KzxiciAvPiZuYnNwO2FyY2gvcmlzY3Yva3ZtL2dzdGFnZS5jJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOzIzJm5ic3A7KysrLS08YnIgLz4mbmJzcDthcmNoL3Jpc2N2
-L2t2bS9tbXUuYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJz
-cDs5MyZuYnNwOysrKysrKysrKysrKysrKysrKy08YnIgLz4mbmJzcDthcmNoL3Jpc2N2L2t2bS92
-bS5jJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNw
-OyZuYnNwOzYmbmJzcDsrKzxiciAvPiZuYnNwOzYmbmJzcDtmaWxlcyZuYnNwO2NoYW5nZWQsJm5i
-c3A7MTE5Jm5ic3A7aW5zZXJ0aW9ucygrKSwmbmJzcDsxNyZuYnNwO2RlbGV0aW9ucygtKTxiciAv
-Pg08YnIgLz4tLSZuYnNwOw08YnIgLz4yLjQzLjU8YnIgLz4=
-
-
---=====_003_next=====--
-
---=====_002_next=====--
-
---=====_001_next=====--
+> ---
+>   include/linux/kvm_host.h |  2 ++
+>   virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
+>   2 files changed, 33 insertions(+)
+> 
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3915da2a61778..27687fb9d5201 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2575,6 +2575,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+>   
+>   #ifdef CONFIG_KVM_GUEST_MEMFD
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
+> +
+>   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+>   		     int *max_order);
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 8101f64e0366f..bca912db5be6e 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>   	return 0;
+>   }
+>   
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> +{
+> +	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> +	struct inode *inode;
+> +
+> +	/*
+> +	 * If this gfn has no associated memslot, there's no chance of the gfn
+> +	 * being backed by private memory, since guest_memfd must be used for
+> +	 * private memory, and guest_memfd must be associated with some memslot.
+> +	 */
+> +	if (!slot)
+> +		return 0;
+> +
+> +	CLASS(gmem_get_file, file)(slot);
+> +	if (!file)
+> +		return 0;
+> +
+> +	inode = file_inode(file);
+> +
+> +	/*
+> +	 * Rely on the maple tree's internal RCU lock to ensure a
+> +	 * stable result. This result can become stale as soon as the
+> +	 * lock is dropped, so the caller _must_ still protect
+> +	 * consumption of private vs. shared by checking
+> +	 * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> +	 * against ongoing attribute updates.
+> +	 */
+> +	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+> +
+>   static struct file_operations kvm_gmem_fops = {
+>   	.mmap		= kvm_gmem_mmap,
+>   	.open		= generic_file_open,
+> 
 
