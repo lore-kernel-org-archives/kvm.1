@@ -1,147 +1,153 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E75333B6D0
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 22:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E872DF3DA;
+	Tue, 30 Jun 2026 23:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782860203; cv=none; b=hnThPndhHq9nliLWiF/hbz0yUPVls4nQ0Sn6fytF+PwhI7YbI/U6l4+sP2j3xrBzRIxn+PMgo8HMFwpx08Vp5L2MR9lB3Kk3wJvRXaAIumkZ50TnUDr1lxw1loymjAv5ETy3PoMrDjhUsErT2OdnSIZQfI+PVFx4d/kxRVH5nFI=
+	t=1782860491; cv=none; b=MR1D4wfWHy3H2ex8MteRTxauieFHO62KXeST1IrjkvXVAtFvikY1rnTDGFz8uPQYTpLVXcVj7uUu3MBIRJfwsQMqE+J7Be5/D/U9ngs36eJoVcn0yO/LPHRgAIHsradvsB7CwSEZwRlxGC7MWTfqV5MrE1ZlEBw7uaw/t8QGKp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782860203; c=relaxed/simple;
-	bh=aFSs9Q8+e/pr9i4DU49iyo/EgqSuHAAL/+8UT3Q2WM8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bx0GphWzpmpvBb+q2RwMg2YR3CsMUwTXq+45P9RxmT9lgPfQjNaZjKdt1sNykSp4FewzH0Bwz95b5bsVMrndsEfXa8kqxGTlEb7+WoQpsIdN10Oaxrp1pu5zUUhmgGOELzsfWOUPLQ2V4kiU/mH0eV0XsITkInKmWzC43AqENxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cKDGfH5/; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782860491; c=relaxed/simple;
+	bh=lbwayHLyKaxoCSC4ZlDiAfGvoLf72jfrhPKZjEugBVA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cIiLQMOCY5zx+1jNv+yFHjrrZ9MrbqGAKXGvSmiTFVFYqkYhqFii0Hl595RrDO8/kbOeuNyx3Q2xgxNko9XREdquIxZeOKAlfZhixkyPHc9mkl3YNyOWKT9gUCngahS1FisSJ5fr6auSjddwQCFrYkypZRKUBVBju/TgiGr2CRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFrRqqP9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cKDGfH5/"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ca3b3141a6so396295ad.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:56:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782860187; x=1783464987; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=QmYBghqHUKPoeMw22kA+ghFmoINHnkT1ApDfr27UyD8=;
-        b=cKDGfH5/Eis4WQutVIu4XUfEzFmdo30ROPbhewh5/BCiluX/V1ceSQzJXwJTqli0jC
-         XfLYnbljhSORrVvXwSRBLMqCeCDQyRIMCHT0dk4UIKIr63V9o69O5dZIcsfRiLwP52cb
-         ph2FjNf0yl/AQQtDpYVbfvgIEW8hGOlXG25BUR5MEO3auAuZvXjvF4dtb6fMAl2Tlgwx
-         orFTHELIrPI+zfZSCLDVIHMFLMkgCFRemOkDGwiLsEbJLAt5K76DopLePJYMVuXeDMuf
-         Oxndp1tIz4OAxo7YMlg9IWWbQWLM/vZVoFpAI0OXJPmHdMiJd9SiO/wZCgYzePvgN1ql
-         4wrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782860187; x=1783464987;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QmYBghqHUKPoeMw22kA+ghFmoINHnkT1ApDfr27UyD8=;
-        b=JmZbWraqQNLOOUE1RxeqoYzrpeYAHLVRBoYVRL8mxvlkvrCRENUaLUbiYLYP0yiYCx
-         TtjqMY1LaKOGwOIdykFaiquzd/CBLL4N0SSCUzZXhlSNqZdnTUypgfAtA5ri9YigtBRW
-         77c8PUCZ2VmyW64x4FntQencDXD6Zi/v4tfik9ZiNF0XH9prv8CMKmu3ED1cXfbeKZTx
-         JM+Sib34Pot2REWwRj1i/JujXpF3d4cJc3hZMASIrvZnpdOQ7iw/d4MUrY30eAXQo34X
-         nvCN6Mek9d458DfJwGSuLY/7dz82GTYOMMsuo79z4nNR6gYy5CdwBX/O30/mLeuaMdZ9
-         /ECA==
-X-Gm-Message-State: AOJu0YwH1/BXRNvWGhwK/8CyjqkjhoQ1XKmyOWL+xL2DQMfeKOIv+tFF
-	BsrQOsiRR9CJVZNkX3k7uiTgqIiDRcVoNkYQWQ5ms9CcWvmqifQaC8pHx49ppSapWXA782gTe0W
-	l2La3Bw==
-X-Received: from plbiy8.prod.google.com ([2002:a17:903:1308:b0:2c1:220c:ccc1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:46c7:b0:2c2:bd0d:3cf0
- with SMTP id d9443c01a7336-2ca5a5f0676mr20575585ad.25.1782860187196; Tue, 30
- Jun 2026 15:56:27 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Jun 2026 15:56:13 -0700
-In-Reply-To: <20260630225619.511632-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFrRqqP9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED71F000E9;
+	Tue, 30 Jun 2026 23:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782860489;
+	bh=h7/rUadFnk6bFerkVUrWSluDDuNjcx7d02Lw705w0BQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SFrRqqP9DAe4/CZpJ8SEJlXWCF3d8XQfIeXYVsmKvUtdczAZUN53X3QFdhD1LvWKJ
+	 GhxUETZfq/F9dQT9aNor9xj78dTC3r9jFJtLXOt85u2NwwLxyR9qjbXnnU5CVexldT
+	 10kMfYWxq5IjV1dxE/HNlsxTW9eoh5pwFm7L9WyS7/05EQhU7Zf1J3LGbfDPldhF1u
+	 5cPkeYA0NSW+pvwODWwoULhupeWGrML19s+2P5gEYMpRz/yNVBLF/gssGt+b3SrNCi
+	 N2qnu+4pczk6DSOu0ZwqFIv7m0b7DJmLIisBzWh6M6eAFs2DC+s1kCQHgPbAJBKBWs
+	 0OHRD3UXBJBVA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 2/4] dma-buf: add optional get_pci_tph() callback
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, kvm@vger.kernel.org
+In-Reply-To: <20260630224328.3218796-3-zhipingz@meta.com>
+References: <20260630224328.3218796-1-zhipingz@meta.com>
+ <20260630224328.3218796-3-zhipingz@meta.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 23:01:28 +0000
+Message-Id: <20260630230129.63ED71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260630225619.511632-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260630225619.511632-7-seanjc@google.com>
-Subject: [PATCH v4 06/11] KVM: x86/xen: Punt singleshot timer hcalls to
- userspace if Xen vCPU ID isn't set
-From: Sean Christopherson <seanjc@google.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
-	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com, 
-	David Woodhouse <dwmw@amazon.co.uk>
-Content-Type: text/plain; charset="UTF-8"
 
-Explicitly invalidate KVM's internal Xen vCPU ID during vCPU creation
-instead of *trying* to set the Xen ID to the vCPU index by default, and
-forward singleshot timer hypercalls to userspace if the VMM hasn't set the
-Xen ID via KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID.  Using the vCPU's index as its
-default Xen ID is reasonable in concept, but in practice is horribly flawed
-as the index is left as '0' until after vCPU initialization completes, i.e.
-every vCPU gets a Xen ID of '0' by default.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The newly added dma-buf API `dma_buf_get_pci_tph()` and its corresp=
+onding `get_pci_tph` callback are missing from the centralized dma-buf lock=
+ing convention documentation.
+--
 
-Forward hypercalls to userspace instead of trying to salvage any kind of
-default behavior, as all userspace implementations that support multiple
-vCPUs either don't enable the timer, are guaranteed to set Xen ID, or work
-only because *all* guests also screw up the singleshot timer hypercalls.
-The last scenarios is extremely unlikely given that Linux-as-a-guest uses
-the actual Xen vCPU ID when making timer hypercalls.  In other words, for
-all intents and purposes, KVM's ABI is already that userspace must set the
-Xen vCPU ID, so just commit to that ABI.
+commit aa25de1b77cd2b1778e96e6bffe1b1b6ce39fd9c
+Author: Zhiping Zhang <zhipingz@meta.com>
 
-Note, KVM's handling of KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID restricts the ID to
-KVM_MAX_VCPUS, so there's no chance of a valid ID colliding with U32_MAX.
-Add a compile-time assertion to ensure this holds true in the future (KVM
-doesn't care what value is used for "invalid", only that there can't be a
-collision).
+dma-buf: add optional get_pci_tph() callback
 
-Link: https://lore.kernel.org/all/20260612233017.1F9771F000E9@smtp.kernel.org
-Suggested-by: David Woodhouse <dwmw2@infradead.org>
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/xen.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+This commit adds an optional get_pci_tph callback to dma_buf_ops and a
+corresponding wrapper function dma_buf_get_pci_tph() for importers. These
+allow importers to retrieve PCIe TLP Processing Hint (TPH) metadata for
+peer-to-peer DMA. Both the callback and the wrapper require the dma-buf
+reservation lock to be held.
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 7a0d89faca85..eef378d0bb45 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -22,6 +22,7 @@
- #include <xen/interface/version.h>
- #include <xen/interface/event_channel.h>
- #include <xen/interface/sched.h>
-+#include <xen/xen-ops.h>
- 
- #include <asm/xen/cpuid.h>
- #include <asm/pvclock.h>
-@@ -1103,6 +1104,8 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data)
- 		break;
- 
- 	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID:
-+		BUILD_BUG_ON(XEN_VCPU_ID_INVALID < KVM_MAX_VCPUS);
-+
- 		if (data->u.vcpu_id >= KVM_MAX_VCPUS)
- 			r = -EINVAL;
- 		else {
-@@ -1614,6 +1617,9 @@ static bool kvm_xen_hcall_vcpu_op(struct kvm_vcpu *vcpu, bool longmode, int cmd,
- 	if (!kvm_xen_timer_enabled(vcpu))
- 		return false;
- 
-+	if (vcpu->arch.xen.vcpu_id == XEN_VCPU_ID_INVALID)
-+		return false;
-+
- 	/*
- 	 * Reject the hypercall if the guest is trying to start/stop the timer
- 	 * for a different vCPU.  Xen per-vCPU hypercalls take a target vCPU as
-@@ -2300,7 +2306,7 @@ static bool kvm_xen_hcall_evtchn_send(struct kvm_vcpu *vcpu, u64 param, u64 *r)
- 
- void kvm_xen_init_vcpu(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.xen.vcpu_id = vcpu->vcpu_idx;
-+	vcpu->arch.xen.vcpu_id = XEN_VCPU_ID_INVALID;
- 	vcpu->arch.xen.poll_evtchn = 0;
- 
- 	timer_setup(&vcpu->arch.xen.poll_timer, cancel_evtchn_poll, 0);
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index d504c636dc294..7a4c9b0d5dab4 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+[ ... ]
+> @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *atta=
+ch)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+> =20
+> +/**
+> + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadata
+> + * @dmabuf: DMA buffer to query
+> + * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> + * @steering_tag: returns the raw steering tag for the requested namespa=
+ce
+> + * @ph: returns the TPH processing hint
+> + *
+> + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
+> + *
+> + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
+> + * exporter does not implement the callback or has no metadata for the
+> + * requested namespace.
+> + */
+> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
+> +			u16 *steering_tag, u8 *ph)
+> +{
+> +	dma_resv_assert_held(dmabuf->resv);
 
+[Severity: Low]
+This isn't a bug, but should dma_buf_get_pci_tph() be added to the list of
+functions in the "DOC: locking convention" block earlier in this file?
+
+The centralized documentation block serves as a single source of truth for
+importers by listing all functions that require the dma-buf reservation loc=
+k,
+such as dma_buf_pin() and dma_buf_vmap(). Adding this new function to that
+list would help keep the locking documentation complete.
+
+> +
+> +	if (!dmabuf->ops->get_pci_tph)
+> +		return -EOPNOTSUPP;
+> +
+> +	return dmabuf->ops->get_pci_tph(dmabuf, extended, steering_tag, ph);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(dma_buf_get_pci_tph, "DMA_BUF");
+
+[ ... ]
+
+> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> index d1203da56fc5f..53b2686ad8fc6 100644
+> --- a/include/linux/dma-buf.h
+> +++ b/include/linux/dma-buf.h
+[ ... ]
+> @@ -113,6 +113,26 @@ struct dma_buf_ops {
+>  	 */
+>  	void (*unpin)(struct dma_buf_attachment *attach);
+> =20
+> +	/**
+> +	 * @get_pci_tph:
+> +	 *
+> +	 * Retrieve PCIe TLP Processing Hint (TPH) steering metadata for
+> +	 * this buffer so an importer can program a matching ST/PH hint on
+> +	 * outbound TLPs targeting the exporter for peer-to-peer DMA.
+> +	 *
+> +	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
+> +	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> +	 * @steering_tag: Returns the raw TPH steering tag for the requested
+> +	 *                namespace
+> +	 * @ph: Returns the TPH processing hint (2-bit value)
+> +	 *
+> +	 * Optional callback for dma_buf_get_pci_tph(). Called with
+> +	 * &dma_buf.resv held. Returns 0 on success or -EOPNOTSUPP when
+> +	 * the exporter has no metadata for the requested namespace.
+> +	 */
+> +	int (*get_pci_tph)(struct dma_buf *dmabuf, bool extended,
+> +			   u16 *steering_tag, u8 *ph);
+
+[Severity: Low]
+Similarly, should &dma_buf_ops.get_pci_tph() be appended to the list of
+callbacks in the same "DOC: locking convention" block?
+
+The existing documentation explicitly calls out exporter callbacks that are
+invoked with the locked dma-buf reservation, so updating it here would keep
+the locking contract documentation consistent.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630224328.3218=
+796-1-zhipingz@meta.com?part=3D2
