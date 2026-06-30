@@ -1,104 +1,191 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17C141931D
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587B8419303
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782825719; cv=none; b=fnLWocLSFTKmnWafivl+xft/fUakpSlwnl4DW4Xr2ykAhkDtKABCcO2B/WAcLsgokMoIprRn956U+vmtQofeoFGX6Kqd1+pKPNfxuAtI+vZh3PaYQg5gONX6Icjl2u5VVWg73J7TqN76A6QE3acZ74MlZOXzF3clGpErhewwS+I=
+	t=1782826030; cv=none; b=qHBsrz5m+N5oWpJotEssOu2jxcpdSZYkFzUgC5fziE4UrBHcvzICBD10tq/GU6/sB1tSxZciVPvgrv5FGg4SJSckY1sqO+AtJy+Cd9bBsXukK0HVH5d7gmHd2jNsF1z6hKmDKK8oGKkWc+IQGHHJJdxJQ8bxnXDuJ85jy4IJQc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782825719; c=relaxed/simple;
-	bh=fvvCtgRg2vwFmeJK+BSLf33yAtiofR7jA0bQsJGULQU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ExrR4gCHTUAiQJHgZBM9XMdqVtk9ByQpP9k8Sxz6Qt/r/ADy17HWSXdPmelWmxi+j+U+BR/23WpeiA4PMWedvnwSroa5F/fuKMVlNsX/YZaxvluXbqNv76qqaXcZ/DJrDiFrztF0JGKxsjEQTwo7j7rq5Yso9IJxPU0xnC5eww4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R27erYfL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782826030; c=relaxed/simple;
+	bh=kfZMo0p6hs1cAypJ2ukMYvmmWfmbsMXBTl6UnRGRZI0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AhkPz87gfKZIp5GawaYdHE6Md3QoXYw95LPGyA7iqm7jvyMO73OJrBsaK/Peot5fKBksCXc+8OE/vCFACwgvATiCnaxdqPv7AlWJVN31FWwcoi4TxFNSruzSY9rw5psnGmcTCi05rKgrfT3BuHFQyjA7WVo+LHAjD/9KGSqhocg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vbTNfpwp; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R27erYfL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782825716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=id6Gn72flvltTtLNae1NVFOonek88cQ4TW8gPOjfsjY=;
-	b=R27erYfL/y1YfGncw8kskYFIHV9iqc4Q6jXpjfVu3ksgd+uu1GjgewiJBF020+rqZGVSy6
-	OzaU5K1bhviU6vRplUEoyH7ST030gjJP6MSfUHBGjoOyzwah5FCYbrGPWYSMqthXgObK2n
-	+T1lqXvc0tj9+WLtFN5x0oi5GOGFM5M=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-298-USCyT9AgNUyJnVoqc8Mr2Q-1; Tue,
- 30 Jun 2026 09:21:54 -0400
-X-MC-Unique: USCyT9AgNUyJnVoqc8Mr2Q-1
-X-Mimecast-MFC-AGG-ID: USCyT9AgNUyJnVoqc8Mr2Q_1782825713
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D57E71955D5A;
-	Tue, 30 Jun 2026 13:21:52 +0000 (UTC)
-Received: from localhost (unknown [10.44.34.134])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 23217364F7;
-	Tue, 30 Jun 2026 13:21:51 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Nico
- =?utf-8?Q?B=C3=B6hr?= <nrb@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, Christian Borntraeger
- <borntraeger@linux.ibm.com>
-Subject: Re: [PATCH] s390x: stsi: regression test for the STSI 3.2.2 count
- clamp
-In-Reply-To: <20260629091921.710920-1-borntraeger@linux.ibm.com>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Avril Crosse O'Flaherty"
-References: <20260629091921.710920-1-borntraeger@linux.ibm.com>
-User-Agent: Notmuch/0.40 (https://notmuchmail.org)
-Date: Tue, 30 Jun 2026 15:21:49 +0200
-Message-ID: <87ik70kvte.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vbTNfpwp"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8478d2bea7cso597544b3a.1
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 06:27:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782826027; x=1783430827; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
+        b=vbTNfpwpTjalJknxI+tlYlqfWqrvuhra6xbl8pSkBmpk7DDaYEaMG7BBBJ5oytQaM3
+         aCApDzw5WAm7up9RG4nE5tMWR/z9n83YWdSkogblMs4HhDZ0pNhYqle79o1d0AHFkYp7
+         EMr3QWLyYMr0ZERrsEBMijg1zEa+o51TFYcpwpk795Hlh+qtGijeNembBBdUIUB9EL32
+         D0ZMfTQBU64qtCZM4tbpeVJ+63+AUb5FJP5Qyq9At9vHjZqsFJhn930RxoPjQrJ56MU1
+         PU9TRtlaSsyGsJ7JYMeh2C/wmJG0vbJ053fJeh8jpimlwr0PrAxO1lk588E6hIyjx6GO
+         0vgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782826027; x=1783430827;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
+        b=llsMUPeO8HlLYEe4myI8SvStKG7lGpPJVoG1lK7/tiadtAVaRTNN1subbGUN1ykKUo
+         NMwMDembCLZ5cwrZuugfjdoegdPsnQsNKq3o0zpFKqeBiF8E7MEcAJUI221JVS9bDC/Y
+         8yyh/ENoimSTjQbLDBt2k3xNMJZ8QFmblbNeRSVDirq6yae8qggy/kChkYDQhkYz7Gl2
+         qiD2uJncac3iKZVrvsuDK24cxuAb884y/dBRQAGn3arlh1mutEaDXdaB+dRNO9Nb3m6u
+         wyhK3ovNwPefJkS57S0wk7JwerkG8kFi4pGT1oxDUnhMsPNCfvu30IeY1Zg080VK8g4i
+         hCUA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqa32Z+TcGuUBGW8ImAXk3PuhftNqu9XiatRzXXnJ1UuCiSWwvP+uN3WwnBE1EIJjIoV7o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNRlADDg+Gytp47CBK15VBFGnNC0s2MKocsNqTZLoFS65jQ02a
+	w1+sc9IZKZYcv1BDZWt2xBqzqyDiu6j0pdQgij2UIVdKe7UXxeaVbJCxMg7457ffH6zqfyAxMYD
+	mit6UAA==
+X-Received: from pfqy13.prod.google.com ([2002:aa7:9e0d:0:b0:845:ec34:5047])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1143:b0:845:ebe6:417d
+ with SMTP id d2e1a72fcca58-847a8224797mr1270415b3a.24.1782826026676; Tue, 30
+ Jun 2026 06:27:06 -0700 (PDT)
+Date: Tue, 30 Jun 2026 06:27:06 -0700
+In-Reply-To: <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Mime-Version: 1.0
+References: <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com> <ajxasFBzp_9KnQLq@google.com>
+ <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com> <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+ <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com> <akMPZePBdwQlD74H@google.com> <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
+Message-ID: <akPEKslqAhygyjhg@google.com>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, "aik@amd.com" <aik@amd.com>, 
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "brauner@kernel.org" <brauner@kernel.org>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "david@kernel.org" <david@kernel.org>, 
+	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
+	"pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, "qperret@google.com" <qperret@google.com>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "rientjes@google.com" <rientjes@google.com>, 
+	"shivankg@amd.com" <shivankg@amd.com>, "steven.price@arm.com" <steven.price@arm.com>, 
+	"tabba@google.com" <tabba@google.com>, "willy@infradead.org" <willy@infradead.org>, 
+	"wyihan@google.com" <wyihan@google.com>, "forkloop@google.com" <forkloop@google.com>, 
+	"pratyush@kernel.org" <pratyush@kernel.org>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "liam@infradead.org" <liam@infradead.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 29 2026, Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
+On Tue, Jun 30, 2026, Yan Zhao wrote:
+> On Tue, Jun 30, 2026 at 08:35:49AM +0800, Sean Christopherson wrote:
+> > Gah, I thought I had sent this out this morning, long before Ackerley's response.
+> > But I got distracted by a meeting and forgot to get back to this... *sigh*
+> > 
+> > Sending what I already wrote, even though there's a lot of overlap with Ackerley's
+> > mail.
+> > 
+> > On Mon, Jun 29, 2026, Yan Zhao wrote:
+> > > On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
+> > > > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > > > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> > > > > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> > > > > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+> > > > >
+> > > > 
+> > > > I'd say the original uAPI perhaps just didn't document 0 as an
+> > > > unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+> > > > was perhaps accidentally changed and no customer complained, I think we
+> > > > can move forward with 0 as an invalid src_address? I wouldn't think
+> > > > anyone relies on 0 intentionally being a valid address.
+> > > > 
+> > > > I could document that, if it helps?
+> > > What about just documenting that 0 is an unsupported uaddr which will be
+> > > re-purposed as an indicator to use the target pfn as the source, regardless of
+> > > whether gmem_in_place_conversion is true? i.e.,
+> > > 
+> > > if (!src_page) 
+> > > 	src_page = pfn_to_page(pfn);
+> > 
+> > Because KVM can't generally use the target page as the source without in-place
+> > conversion, it's not supported today, and out-of-place conversion is being
+> > deprecated.
+> By "out-of-place conversion", do you mean using per-VM memory attribute
+> conversion?
 
-> See https://lore.kernel.org/qemu-devel/20260622092035.400959-1-borntraeger@linux.ibm.com/
-> for the QEMU fix.
+Yep, I couldn't come up with a better description.
 
-Could now also refer to QEMU commit a57e4612b61d ("s390x/kvm: clamp stsi
-3.2.2 size") directly.
+> > > I don't get why the two scenarios should be treated differently:
+> > > 1. gmem_in_place_conversion==true, shared memory is not from gmem 
+> > > 2. gmem_in_place_conversion==false, shared memory is not from gmem
+> > > 
+> > > In both case, a 0 uaddr could be mapped to a valid page not from gmem.
+> > 
+> > That's immaterial.  KVM's ABI (that we're solidifying) is that an address of '0'
+> > for the source means NULL.  The fact that userspace could have a valid mapping
+> > at virtual address '0' is irrelevant.
+> So, I'm wondering if we can document that 0 uaddr could always mean using target
+> PFN.
 
-> Add a regression test that races STSI 3.2.2 on one CPU against a second CPU
-> that continuously forces an out-of-range count value.
-> The out of bound access usually crashes/asserts QEMU with any sane
-> distribution build of QEMU, so its more or less guest root can kill itself.
-> We should test and fix nevertheless.
-> Testcase piggybacks on the existing stsi test, so some cases will be
-> tested twice. (with smp 1 and smp 2)
->
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Cornelia Huck <cohuck@redhat.com>
-> ---
-> If wanted we could split this into a separate file or always run the
-> test with smp=2 to avoid the duplication
+I would document it as saying "no source page", and then state that a source page
+is required if in-place conversion isn't enabled/supported/allowed.
 
-I think it's reasonable to keep this with the other STSI tests.
+> i.e., for both scenarios 1 and 2, al long as 0 uaddr is specified, we always
+> use target PFN as source for in-place add.
+> 
+> > Again, just because something is technically possible doesn't mean it needs to
+> > be supported by every piece of KVM's uAPI.
+> > 
+> > > So why not update the uAPI to handle both cases consistently? :)
+> > 
+> > Because retroactively adding support for out-of-place conversion is pointless
+> > (requires a userspace update for a feature that's being deprecated), KVM can't
+> > generally support using the source for out-of-place conversion (it's effectively
+> > an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
+> > scenario is valuable for KVM developers, e.g. to help newcomers understand what
+> > exactly is and isn't possible.
+> Ok. You mean per-VM memory attribute is deprecating, and source page from !gmem
+> backend is also deprecating, so we don't want to change uAPI for scenarios under
+> gmem_in_place_conversion==false. Right?
 
->
->  s390x/stsi.c        | 76 ++++++++++++++++++++++++++++++++++++++++++++-
->  s390x/unittests.cfg |  9 ++++++
->  2 files changed, 84 insertions(+), 1 deletion(-)
->
+Right.
 
-FWIW,
+> 
+> > Side topic, isn't TDX broken if target page has already been added to the TD?
+> > IIUC, kvm_tdp_mmu_map_private_pfn() will be a glorified nop due to the page
+> > already having a valid S-EPT mapping, and so KVM will incorrectly allow a double
+> Not sure if my understand out-of-place conversion correctly.
+> Given target PFNs and GFNs are not duplicated, what would cause double add? :)
 
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+I was working through what would happen if userspace did KVM_TDX_INIT_MEM_REGION
+on the same target page multiple times.
 
+> 
+> > add.  Ahhh, no, because KVM will return RET_PF_SPURIOUS and
+> > kvm_tdp_mmu_map_private_pfn() will then return -EIO.
+> My asking was if we could document uaddr always means using target PFN, since
+> TDX's in-place add does not rely on gmem in-place conversion.
+
+Yeah, I was on a tangent, ignore everything from "Side topic" on.
