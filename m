@@ -1,242 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2909407CC6;
-	Tue, 30 Jun 2026 11:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77EC40862E;
+	Tue, 30 Jun 2026 11:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782820593; cv=none; b=NTrrzIT+9/h/q5QuiUK4I2R1FExdRWncr8dAoFbpUswgDlzEBxMb/hm2OC9bSPiABGEqfELPLP/BNZfhq6tOllllyFL8W9TPe6GbhVDl/ZSAZd8Y5HCw8IuuwKpLcg7SCVLYYFrE8Sz+CH61LUpKVndASpNrRvlfxTmERwkvi48=
+	t=1782820799; cv=none; b=YBNfsZIDU2z/N5RDTjqLpUWGCkNHfDQdPJRrhAxkO/4ujc5EwcaSEKXGA8hl120BqsiVjAwR+sMd2tMH+rfukQlKyeZmcVxEMLraMql2Us/zYRuF6O/FymYSzOcImgGakJjSoM2icGaidNv/JGoh2EjsnFJwznWQ/wiDt+BhXRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782820593; c=relaxed/simple;
-	bh=SKYr8wXvNFDtwpUYFpXRKPRIZE4i6d8qwGIYJZJJCD4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hnae6HsY2zvzZQ8d5V60Uof2HSsu2cio6VwCNUSvRe5mQzo8stBG6sMDUMCQ+KeH5FBGNDrSe3qz3h02s4Ei/YTiZFs/7rvhY/xeZOHW8SVbgoTF4/bUbWi7TJ6n+JQhxSQKe/69CP0/1A1RRqlFDzruVVo0rt456zIC3Px7BGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IA8qlb+c; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IA8qlb+c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01EB1F00A3A;
-	Tue, 30 Jun 2026 11:56:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782820591;
-	bh=iCb5V49aIDl5k1qs08gc+VxaDrOeOLHdpWh02mrywkM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IA8qlb+c6earjGnTdwsmu//h1oNY3zuPFBRi9WiRxVAz5p5iZFhMRbnqoFOQFttrH
-	 zRAMFd1X4bTLl2CVj8fbloNbxC7Na7lumFiUilpthcatnCWmIkfKKp3ghqAmjMK0Nn
-	 r5uf3h4zvk2m1+S1rRI7Q+ukKa9DalYRdmhBUqiJbJYU9T2wcqzgubmBt9N605wP2I
-	 BEELNvWRhFNK4u82OpIqaarENfdmkoj/A96jCX6GTfRKTMsLdQaEDR6pWl8oYZ+NWZ
-	 HEdzVYFcGFmM8umBCrDV53wkrt9ZjagHtmulmctLzA3sb3U46Exr/EvhOY2xN99xKT
-	 JKuQtrIskE/WA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 14/15] s390/vfio-ap: Add 'migratable' feature to
- sysfs 'features' attribute
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260630104132.1598851-15-akrowiak@linux.ibm.com>
-References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
- <20260630104132.1598851-15-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 11:56:30 +0000
-Message-Id: <20260630115630.F01EB1F00A3A@smtp.kernel.org>
+	s=arc-20240116; t=1782820799; c=relaxed/simple;
+	bh=DqUHoNjNUWlvQmhHLBAHiYFqfAgDMqXnoUHPxtf/IDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pCJAcgCdr/5PUVjEMeBFNhs2cW4lJ0CDbl0Ug/qo0cHVENeKFjKJq/FxEOQLqvGBGepzS/YBIIzFXJvx5VfSQXPTOfbE7TcqaNf/bNneIHioliNtIW3RZK5nUMIjCkdxXOEURUFcBkvITOQ4zDdJKNU0BgEgIHbI4JL5zguTjLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gqMCB2Bj8z8XrrX;
+	Tue, 30 Jun 2026 19:59:50 +0800 (CST)
+Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
+	by mse-fl2.zte.com.cn with SMTP id 65UBxdXn079907;
+	Tue, 30 Jun 2026 19:59:39 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from localhost.localdomain (unknown [10.234.74.162])
+	by smtp (Zmail) with SMTP;
+	Tue, 30 Jun 2026 19:59:42 +0800
+X-Zmail-TransId: 3e816a43afad007-db7fa
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: wang.yechao255@zte.com.cn
+From: Wang Yechao <wang.yechao255@zte.com.cn>
+To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
+        Alexandre Ghiti <alex@ghiti.fr>,
+        Wang Yechao <wang.yechao255@zte.com.cn>
+Subject: [PATCH v4 0/5] Implement Eager Page Splitting for RISC-V
+Date: Tue, 30 Jun 2026 19:54:57 +0800
+Message-ID: <20260630115509.75811-1-wang.yechao255@zte.com.cn>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed;
+	boundary="=====_001_next====="
+X-MAIL:mse-fl2.zte.com.cn 65UBxdXn079907
+X-TLS: YES
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 30 Jun 2026 19:59:50 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A43AFB6.000/4gqMCB2Bj8z8XrrX
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] Dangling pointer in migration data after `krealloc`.
-- [High] Unlocking an arbitrary thread's mutex using `mutex_is_locked()`.
-- [High] Failure to persist `ap_config` pointer during chunked resuming wri=
-tes causes memory leaks and breaks subsequent writes.
-- [High] Uninitialized `config_sz` sent over the wire breaks buffer realloc=
-ation on the destination host.
---
 
-commit 0de28964ca6b520852841fe66380c0b0caacaec6
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-Date:   Tue Jun 30 10:41:24 2026 +0000
 
-    s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
-   =20
-    Add the 'migratable' feature to the features provided by the sysfs
-    /sys/devices/vfio_ap/matrix/feature attribute to indicate that migration
-    of vfio devices is supported.
+--=====_001_next=====
+Content-Type: multipart/related;
+	boundary="=====_002_next====="
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> new file mode 100644
-> index 0000000000000..83e1ce2c40c0c
-> --- /dev/null
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> @@ -0,0 +1,1373 @@
 
-[ ... ]
+--=====_002_next=====
+Content-Type: multipart/alternative;
+	boundary="=====_003_next====="
 
-> +static int
-> +vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev,
-> +		   struct vfio_ap_config **ap_config, size_t *ap_config_size)
-> +{
-> +	struct vfio_ap_config *ap_configuration;
-> +	int num_queues, ret;
-> +
-> +	*ap_config_size =3D vfio_ap_config_size(matrix_mdev, &num_queues);
-> +
-> +	ap_configuration =3D kzalloc(*ap_config_size, GFP_KERNEL_ACCOUNT);
-> +	if (!ap_configuration)
-> +		return -ENOMEM;
-> +
-> +	ap_configuration->num_queues =3D num_queues;
 
-[Severity: High]
-Does this code fail to initialize ap_configuration->config_sz before sending
-it over the wire during vfio_ap_stop_copy_read()?
+--=====_003_next=====
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-The config_sz field is left as 0, which is then sent to the destination hos=
-t.
+RWFnZXIgUGFnZSBTcGxpdHRpbmcgaXMgaW1wbGVtZW50ZWQgb24geDg2IGFuZCBBUk0uIEl0IGlt
+cHJvdmVzIHRoZQ0KcGVyZm9ybWFuY2Ugb2YgZGlydHkgbG9nZ2luZyAodXNlZCBpbiBsaXZlIG1p
+Z3JhdGlvbnMpIHdoZW4gZ3Vlc3QgbWVtb3J5DQppcyBiYWNrZWQgYnkgaHVnZSBwYWdlcy4NCg0K
+VGhpcyBzZXJpZXMgaW1wbGVtZW50IEVhZ2VyIFBhZ2UgU3BsaXR0aW5nIGZvciBSSVNDLVYuIFRo
+ZSBJbXBsZW1lbnRhdGlvbg0Kc2ltaWxhciB0byB4ODYgYW5kIEFSTS4gSXQgcHJvdmlkZXMgdHdv
+IHdheXMgdG8gc3BsaXQgaHVnZSBwYWdlcyBpbiBpb2N0bA0KY29udGV4dCBpbnN0ZWFkIG9mIG9u
+IGZhdWx0IGluIHZDUFUgY29udGV4dDoNCg0KLSBTcGxpdCBodWdlIHBhZ2VzIHdoZW4gZGlydHkg
+bG9nZ2luZyBpcyBlbmFibGVkIHdoZW4NCiAgS1ZNX0RJUlRZX0xPR19JTklUSUFMTFlfU0VUIGlz
+IG5vdCBzZXQuIFRoaXMgaGFwcGVucyB3aGVuIGVuYWJsaW5nIHRoZQ0KICBLVk1fTUVNX0xPR19E
+SVJUWV9QQUdFUyBmbGFnIG9mIGEgbWVtc2xvdCwgYW5kIHNwbGl0cyB0aGUgd2hvbGUgbWVtc2xv
+dA0KICBpbnRvIDRLIG1hcHBpbmdzLg0KDQotIFNwbGl0IGh1Z2UgcGFnZXMgZHVyaW5nIEtWTV9D
+TEVBUl9ESVJUWV9MT0cgd2hlbg0KICBLVk1fRElSVFlfTE9HX0lOSVRJQUxMWV9TRVQgaXMgc2V0
+LiBUaGlzIGhhcHBlbnMgd2hlbiBlbmFibGluZyBkaXJ0eSBsb2cNCiAgaW4gc21hbGwgY2h1bmtz
+LiBJdCBkb2VzIG5vdCBzcGxpdCB0aGUgd2hvbGUgbWVtc2xvdCwgYnV0IG9ubHkgdGhlDQogIHJl
+cXVlc3RlZCBjaHVuayByYW5nZS4NCg0KQ2hhbmdlcyBpbiB2NDoNCiAtIFJlYmFzZSBvbiB2Ny4y
+LXJjMSB2ZXJzaW9uLg0KIHNhc2hpa28tYm90IEFJIHJldmlldw0KIChodHRwczovL3Nhc2hpa28u
+ZGV2LyMvcGF0Y2hzZXQvMjAyNjA2MjQxNjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRl
+LmNvbS5jbikNCiAtIEFkZCB0aGUgcndsb2NrX25lZWRicmVhaygpIGNoZWNrIHdoZW4gdG91cCBz
+cGxpdCBjYWNoZS4NCiAtIEFMSUdOX0RPV04gdGhlIHN0YXJ0IGFkZHIgdG8gUE1EX1NJWkUuDQoN
+CkNoYW5nZXMgaW4gdjMgcmVzZW5kOg0KIC0gRml4IHBhdGNoIGZvcm1hdCB0byBlbnN1cmUgZW1h
+aWxzIHJlYWNoIHRoZSBsaW51eC1yaXNjdiBhbmQga3ZtLXJpc2N2DQogICBtYWlsaW5nIGxpc3Rz
+Lg0KIC0gTW92ZSB0aGUgZnJlZSBwZ2Rfc3BsaXRfcGFnZV9jYWNoZSBpbnRvIGt2bV9hcmNoX2Rl
+c3Ryb3lfdm0oKS4NCiBodHRwczovL2xvcmUua2VybmVsLm9yZy9rdm0tcmlzY3YvMjAyNjA2MjQx
+NjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRlLmNvbS5jbi8NCg0KQ2hhbmdlcyBpbiB2
+MzoNCiAtIFJlYmFzZSBvbiB2Ny4xIHZlcnNpb24uDQogLSBBZGQgcGF0Y2gwMyB0byByZW1vdmUg
+dGhlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucy4NCiANCiBzYXNoaWtvLWJvdCBBSSBy
+ZXZpZXcNCiAoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4NDcuOTY5
+MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKQ0KIC0gQ2hlY2sgdGhlIGt2bS0+YXJjaC5wZ2Qg
+YmVmb3JlIHNwbGl0IGh1Z2UgcGFnZXMuDQogLSBBbGlnbiB0aGUgc3RhcnQgYWRkcmVzcyB0byBQ
+TURfU0laRSBiZWZvcmUgc3BsaXQuDQogLSBGbHVzaGluZyByZW1vdGUgVExCcyBiZWZvcmUgRHJv
+cHBpbmcgbW11X2xvY2suDQoNCkNoYW5nZXMgaW4gdjI6DQogLSBSZW5hbWUgdGhlIHNwbGl0X3Bh
+Z2VfY2FjaGUuDQogLSBSZW5hbWUgdGhlIGt2bV9yaXNjdl9zcGxpdF9odWdlX3BhZ2VzIGFuZA0K
+ICAga3ZtX3Jpc2N2X3NwbGl0X21lbW9yeV9yZWdpb24uDQogLSBBZGQgbG9ja2RlcF9hc3NlcnRf
+aGVsZCBjaGVjayBiZWZvcmUgc3BsaXQgaHVnZSBwYWdlcy4NCiAtIFVwZGF0ZSBEb2N1bWVudGF0
+aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dC4NCiAtIExpbmsgdG8gdjINCiBo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1yaXNjdi8yMDI2MDYwMzE3NTI1NjQwOEwwam5x
+R3MxY0pHYzBpakNkdWpjaUB6dGUuY29tLmNuLw0KDQogLSBMaW5rIHRvIHYxOg0KIGh0dHBzOi8v
+bG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYwNTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5
+b0laaThhR0lzQHp0ZS5jb20uY24vDQoNCldhbmcgWWVjaGFvICg1KToNCiAgUklTQy1WOiBLVk06
+IEFkZCB0aGUgc3BsaXQgcGFnZSBjYWNoZSBmb3IgaW9jdGwgY29udGV4dA0KICBSSVNDLVY6IEtW
+TTogU3BsaXQgaHVnZSBwYWdlcyB3aGVuIGRpcnR5IGxvZ2dpbmcgaXMgZW5hYmxlZA0KICBSSVND
+LVY6IEtWTTogUmVtb3ZlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucw0KICBSSVNDLVY6
+IEtWTTogU3BsaXQgaHVnZSBwYWdlcyBkdXJpbmcgS1ZNX0NMRUFSX0RJUlRZX0xPRw0KICBSSVND
+LVY6IEtWTTogQWRkIHRoZSBlYWdlcl9wYWdlX3NwbGl0IG1vZHVsZSBwYXJhbWV0ZXINCg0KIC4u
+Li9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQgICAgICAgICB8ICA3ICstDQogYXJj
+aC9yaXNjdi9pbmNsdWRlL2FzbS9rdm1fZ3N0YWdlLmggICAgICAgICAgIHwgIDYgKy0NCiBhcmNo
+L3Jpc2N2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmggICAgICAgICAgICAgfCAgMSArDQogYXJjaC9y
+aXNjdi9rdm0vZ3N0YWdlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgMjMgKysrLS0NCiBhcmNo
+L3Jpc2N2L2t2bS9tbXUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCA5MyArKysrKysrKysr
+KysrKysrKystDQogYXJjaC9yaXNjdi9rdm0vdm0uYyAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgIDYgKysNCiA2IGZpbGVzIGNoYW5nZWQsIDExOSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlv
+bnMoLSkNCg0KLS0gDQoyLjQzLjU=
 
-> +
-> +	ret =3D vfio_ap_store_queue_info(matrix_mdev, ap_configuration);
 
-[ ... ]
+--=====_003_next=====
+Content-Type: text/html ;
+	charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-> +static ssize_t reallocate_ap_config(struct vfio_ap_config **mig_ap_confi=
-g,
-> +				    size_t len)
-> +{
-> +	struct vfio_ap_config *ap_config =3D *mig_ap_config;
-> +	struct vfio_ap_config *new_ap_config;
-> +	size_t new_cfg_sz, cur_cfg_sz;
-> +	unsigned int num_queues;
-> +
-> +	cur_cfg_sz =3D ap_config->config_sz;
-> +	num_queues =3D ap_config->num_queues;
-> +
-> +	/*
-> +	 * If the current configuration size is greater than the
-> +	 * size of a vfio_ap_config structure (i.e., contains the num_queues
-> +	 * field), then there should already be enough storage allocated
-> +	 * to store the source guest's AP configuration. Let's verify that the
-> +	 * amount of storage allocated is what we expect based on the number of
-> +	 * vfio_ap_queue_info objects that must be stored.
-> +	 */
-> +	if (cur_cfg_sz >=3D sizeof(struct vfio_ap_config)) {
+RWFnZXImbmJzcDtQYWdlJm5ic3A7U3BsaXR0aW5nJm5ic3A7aXMmbmJzcDtpbXBsZW1lbnRlZCZu
+YnNwO29uJm5ic3A7eDg2Jm5ic3A7YW5kJm5ic3A7QVJNLiZuYnNwO0l0Jm5ic3A7aW1wcm92ZXMm
+bmJzcDt0aGU8YnIgLz5wZXJmb3JtYW5jZSZuYnNwO29mJm5ic3A7ZGlydHkmbmJzcDtsb2dnaW5n
+Jm5ic3A7KHVzZWQmbmJzcDtpbiZuYnNwO2xpdmUmbmJzcDttaWdyYXRpb25zKSZuYnNwO3doZW4m
+bmJzcDtndWVzdCZuYnNwO21lbW9yeTxiciAvPmlzJm5ic3A7YmFja2VkJm5ic3A7YnkmbmJzcDto
+dWdlJm5ic3A7cGFnZXMuPGJyIC8+DTxiciAvPlRoaXMmbmJzcDtzZXJpZXMmbmJzcDtpbXBsZW1l
+bnQmbmJzcDtFYWdlciZuYnNwO1BhZ2UmbmJzcDtTcGxpdHRpbmcmbmJzcDtmb3ImbmJzcDtSSVND
+LVYuJm5ic3A7VGhlJm5ic3A7SW1wbGVtZW50YXRpb248YnIgLz5zaW1pbGFyJm5ic3A7dG8mbmJz
+cDt4ODYmbmJzcDthbmQmbmJzcDtBUk0uJm5ic3A7SXQmbmJzcDtwcm92aWRlcyZuYnNwO3R3byZu
+YnNwO3dheXMmbmJzcDt0byZuYnNwO3NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7aW4m
+bmJzcDtpb2N0bDxiciAvPmNvbnRleHQmbmJzcDtpbnN0ZWFkJm5ic3A7b2YmbmJzcDtvbiZuYnNw
+O2ZhdWx0Jm5ic3A7aW4mbmJzcDt2Q1BVJm5ic3A7Y29udGV4dDo8YnIgLz4NPGJyIC8+LSZuYnNw
+O1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7d2hlbiZuYnNwO2RpcnR5Jm5ic3A7bG9n
+Z2luZyZuYnNwO2lzJm5ic3A7ZW5hYmxlZCZuYnNwO3doZW48YnIgLz4mbmJzcDsmbmJzcDtLVk1f
+RElSVFlfTE9HX0lOSVRJQUxMWV9TRVQmbmJzcDtpcyZuYnNwO25vdCZuYnNwO3NldC4mbmJzcDtU
+aGlzJm5ic3A7aGFwcGVucyZuYnNwO3doZW4mbmJzcDtlbmFibGluZyZuYnNwO3RoZTxiciAvPiZu
+YnNwOyZuYnNwO0tWTV9NRU1fTE9HX0RJUlRZX1BBR0VTJm5ic3A7ZmxhZyZuYnNwO29mJm5ic3A7
+YSZuYnNwO21lbXNsb3QsJm5ic3A7YW5kJm5ic3A7c3BsaXRzJm5ic3A7dGhlJm5ic3A7d2hvbGUm
+bmJzcDttZW1zbG90PGJyIC8+Jm5ic3A7Jm5ic3A7aW50byZuYnNwOzRLJm5ic3A7bWFwcGluZ3Mu
+PGJyIC8+DTxiciAvPi0mbmJzcDtTcGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcyZuYnNwO2R1cmlu
+ZyZuYnNwO0tWTV9DTEVBUl9ESVJUWV9MT0cmbmJzcDt3aGVuPGJyIC8+Jm5ic3A7Jm5ic3A7S1ZN
+X0RJUlRZX0xPR19JTklUSUFMTFlfU0VUJm5ic3A7aXMmbmJzcDtzZXQuJm5ic3A7VGhpcyZuYnNw
+O2hhcHBlbnMmbmJzcDt3aGVuJm5ic3A7ZW5hYmxpbmcmbmJzcDtkaXJ0eSZuYnNwO2xvZzxiciAv
+PiZuYnNwOyZuYnNwO2luJm5ic3A7c21hbGwmbmJzcDtjaHVua3MuJm5ic3A7SXQmbmJzcDtkb2Vz
+Jm5ic3A7bm90Jm5ic3A7c3BsaXQmbmJzcDt0aGUmbmJzcDt3aG9sZSZuYnNwO21lbXNsb3QsJm5i
+c3A7YnV0Jm5ic3A7b25seSZuYnNwO3RoZTxiciAvPiZuYnNwOyZuYnNwO3JlcXVlc3RlZCZuYnNw
+O2NodW5rJm5ic3A7cmFuZ2UuPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Y0Ojxi
+ciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjItcmMxJm5ic3A7dmVyc2lv
+bi48YnIgLz4mbmJzcDtzYXNoaWtvLWJvdCZuYnNwO0FJJm5ic3A7cmV2aWV3PGJyIC8+Jm5ic3A7
+KGh0dHBzOi8vc2FzaGlrby5kZXYvIy9wYXRjaHNldC8yMDI2MDYyNDE2MDA1NDQ2M3djRHZKYU1v
+eWRTZ2djTk9XZ2NmQkB6dGUuY29tLmNuKTxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDt0aGUm
+bmJzcDtyd2xvY2tfbmVlZGJyZWFrKCkmbmJzcDtjaGVjayZuYnNwO3doZW4mbmJzcDt0b3VwJm5i
+c3A7c3BsaXQmbmJzcDtjYWNoZS48YnIgLz4mbmJzcDstJm5ic3A7QUxJR05fRE9XTiZuYnNwO3Ro
+ZSZuYnNwO3N0YXJ0Jm5ic3A7YWRkciZuYnNwO3RvJm5ic3A7UE1EX1NJWkUuPGJyIC8+DTxiciAv
+PkNoYW5nZXMmbmJzcDtpbiZuYnNwO3YzJm5ic3A7cmVzZW5kOjxiciAvPiZuYnNwOy0mbmJzcDtG
+aXgmbmJzcDtwYXRjaCZuYnNwO2Zvcm1hdCZuYnNwO3RvJm5ic3A7ZW5zdXJlJm5ic3A7ZW1haWxz
+Jm5ic3A7cmVhY2gmbmJzcDt0aGUmbmJzcDtsaW51eC1yaXNjdiZuYnNwO2FuZCZuYnNwO2t2bS1y
+aXNjdjxiciAvPiZuYnNwOyZuYnNwOyZuYnNwO21haWxpbmcmbmJzcDtsaXN0cy48YnIgLz4mbmJz
+cDstJm5ic3A7TW92ZSZuYnNwO3RoZSZuYnNwO2ZyZWUmbmJzcDtwZ2Rfc3BsaXRfcGFnZV9jYWNo
+ZSZuYnNwO2ludG8mbmJzcDtrdm1fYXJjaF9kZXN0cm95X3ZtKCkuPGJyIC8+Jm5ic3A7aHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcva3ZtLXJpc2N2LzIwMjYwNjI0MTYwMDU0NDYzd2NEdkphTW95ZFNn
+Z2NOT1dnY2ZCQHp0ZS5jb20uY24vPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Yz
+OjxiciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjEmbmJzcDt2ZXJzaW9u
+LjxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDtwYXRjaDAzJm5ic3A7dG8mbmJzcDtyZW1vdmUm
+bmJzcDt0aGUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJzcDtmbHVzaCZuYnNwO29wZXJhdGlv
+bnMuPGJyIC8+Jm5ic3A7DTxiciAvPiZuYnNwO3Nhc2hpa28tYm90Jm5ic3A7QUkmbmJzcDtyZXZp
+ZXc8YnIgLz4mbmJzcDsoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4
+NDcuOTY5MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKTxiciAvPiZuYnNwOy0mbmJzcDtDaGVj
+ayZuYnNwO3RoZSZuYnNwO2t2bS0mZ3Q7YXJjaC5wZ2QmbmJzcDtiZWZvcmUmbmJzcDtzcGxpdCZu
+YnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7QWxpZ24mbmJzcDt0aGUmbmJz
+cDtzdGFydCZuYnNwO2FkZHJlc3MmbmJzcDt0byZuYnNwO1BNRF9TSVpFJm5ic3A7YmVmb3JlJm5i
+c3A7c3BsaXQuPGJyIC8+Jm5ic3A7LSZuYnNwO0ZsdXNoaW5nJm5ic3A7cmVtb3RlJm5ic3A7VExC
+cyZuYnNwO2JlZm9yZSZuYnNwO0Ryb3BwaW5nJm5ic3A7bW11X2xvY2suPGJyIC8+DTxiciAvPkNo
+YW5nZXMmbmJzcDtpbiZuYnNwO3YyOjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
+bmJzcDtzcGxpdF9wYWdlX2NhY2hlLjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
+bmJzcDtrdm1fcmlzY3Zfc3BsaXRfaHVnZV9wYWdlcyZuYnNwO2FuZDxiciAvPiZuYnNwOyZuYnNw
+OyZuYnNwO2t2bV9yaXNjdl9zcGxpdF9tZW1vcnlfcmVnaW9uLjxiciAvPiZuYnNwOy0mbmJzcDtB
+ZGQmbmJzcDtsb2NrZGVwX2Fzc2VydF9oZWxkJm5ic3A7Y2hlY2smbmJzcDtiZWZvcmUmbmJzcDtz
+cGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7VXBkYXRlJm5ic3A7
+RG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQuPGJyIC8+Jm5i
+c3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNwO3YyPGJyIC8+Jm5ic3A7aHR0cHM6Ly9sb3JlLmtl
+cm5lbC5vcmcvbGludXgtcmlzY3YvMjAyNjA2MDMxNzUyNTY0MDhMMGpucUdzMWNKR2MwaWpDZHVq
+Y2lAenRlLmNvbS5jbi88YnIgLz4NPGJyIC8+Jm5ic3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNw
+O3YxOjxiciAvPiZuYnNwO2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYw
+NTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5b0laaThhR0lzQHp0ZS5jb20uY24vPGJyIC8+DTxiciAv
+PldhbmcmbmJzcDtZZWNoYW8mbmJzcDsoNSk6PGJyIC8+Jm5ic3A7Jm5ic3A7UklTQy1WOiZuYnNw
+O0tWTTombmJzcDtBZGQmbmJzcDt0aGUmbmJzcDtzcGxpdCZuYnNwO3BhZ2UmbmJzcDtjYWNoZSZu
+YnNwO2ZvciZuYnNwO2lvY3RsJm5ic3A7Y29udGV4dDxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjom
+bmJzcDtLVk06Jm5ic3A7U3BsaXQmbmJzcDtodWdlJm5ic3A7cGFnZXMmbmJzcDt3aGVuJm5ic3A7
+ZGlydHkmbmJzcDtsb2dnaW5nJm5ic3A7aXMmbmJzcDtlbmFibGVkPGJyIC8+Jm5ic3A7Jm5ic3A7
+UklTQy1WOiZuYnNwO0tWTTombmJzcDtSZW1vdmUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJz
+cDtmbHVzaCZuYnNwO29wZXJhdGlvbnM8YnIgLz4mbmJzcDsmbmJzcDtSSVNDLVY6Jm5ic3A7S1ZN
+OiZuYnNwO1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7ZHVyaW5nJm5ic3A7S1ZNX0NM
+RUFSX0RJUlRZX0xPRzxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjombmJzcDtLVk06Jm5ic3A7QWRk
+Jm5ic3A7dGhlJm5ic3A7ZWFnZXJfcGFnZV9zcGxpdCZuYnNwO21vZHVsZSZuYnNwO3BhcmFtZXRl
+cjxiciAvPg08YnIgLz4mbmJzcDsuLi4vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZu
+YnNwOyZuYnNwOzcmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gvcmlzY3YvaW5jbHVkZS9hc20va3Zt
+X2dzdGFnZS5oJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOyZuYnNwOzYmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gv
+cmlzY3YvaW5jbHVkZS9hc20va3ZtX2hvc3QuaCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJzcDsm
+bmJzcDsxJm5ic3A7KzxiciAvPiZuYnNwO2FyY2gvcmlzY3Yva3ZtL2dzdGFnZS5jJm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOzIzJm5ic3A7KysrLS08YnIgLz4mbmJzcDthcmNoL3Jpc2N2
+L2t2bS9tbXUuYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJz
+cDs5MyZuYnNwOysrKysrKysrKysrKysrKysrKy08YnIgLz4mbmJzcDthcmNoL3Jpc2N2L2t2bS92
+bS5jJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNw
+OyZuYnNwOzYmbmJzcDsrKzxiciAvPiZuYnNwOzYmbmJzcDtmaWxlcyZuYnNwO2NoYW5nZWQsJm5i
+c3A7MTE5Jm5ic3A7aW5zZXJ0aW9ucygrKSwmbmJzcDsxNyZuYnNwO2RlbGV0aW9ucygtKTxiciAv
+Pg08YnIgLz4tLSZuYnNwOw08YnIgLz4yLjQzLjU8YnIgLz4=
 
-[Severity: High]
-Can this condition fail unexpectedly due to the uninitialized config_sz sent
-from the source host?
 
-During restoration, allocate_ap_config() receives the first chunk, storing 0
-in config_sz. On the next chunk, reallocate_ap_config() reads cur_cfg_sz as=
- 0.
+--=====_003_next=====--
 
-The else branch is taken, where new_cfg_sz =3D cur_cfg_sz + len calculates =
-len,
-truncating the buffer to just the size of the incoming chunk, causing immed=
-iate
--EIO failures.
+--=====_002_next=====--
 
-> +		new_cfg_sz =3D calculate_ap_config_size(num_queues);
+--=====_001_next=====--
 
-[ ... ]
-
-> +static ssize_t vfio_ap_resuming_write(struct file *filp, const char __us=
-er *buf,
-> +				      size_t len, loff_t *pos)
-> +{
-> +	struct vfio_ap_migration_data *mig_data;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	struct vfio_ap_config *ap_config;
-> +	struct ap_matrix guest_matrix;
-> +	ssize_t ret =3D 0, cfg_sz;
-> +	const char *mdev_name;
-
-[ ... ]
-
-> +	/*
-> +	 * If this is the first write operation, then allocate storage for the
-> +	 * AP configuration information; otherwise, reallocate the
-> +	 * struct vfio_ap_config object used to store the AP configuration data
-> +	 * sent from userspace.
-> +	 */
-> +	if (*pos =3D=3D 0) {
-> +		ret =3D allocate_ap_config(&ap_config, buf, len);
-> +
-> +		/* If the allocation failed, we'll return the error */
-> +		if (ret < 0)
-> +			goto done;
-> +
-> +		cfg_sz =3D ret;
-
-[Severity: High]
-Is it possible for a chunked write to fail to persist the ap_config pointer?
-
-If allocate_ap_config() succeeds but the write does not contain the complete
-configuration (*pos + len !=3D cfg_sz), ap_config is not assigned to
-mig_data->resuming_mig_state.ap_config before the function returns.
-
-The allocated ap_config memory leaks, and on the next chunk, *pos > 0 but t=
-he
-state pointer remains NULL. This will cause validate_resuming_write_parms()=
- to
-falsely detect an illegal state and return -EFAULT.
-
-> +	} else {
-> +		ap_config =3D mig_data->resuming_mig_state.ap_config;
-> +
-> +		ret =3D reallocate_ap_config(&ap_config, len);
-
-[Severity: Critical]
-Does this code create a dangling pointer in the migration data after kreall=
-oc()?
-
-The reallocate_ap_config() call uses krealloc(), which may free the old buf=
-fer
-and return a new one. The new pointer is stored in the local ap_config vari=
-able,
-but it isn't updated in mig_data->resuming_mig_state.ap_config unless the
-entire configuration is received successfully.
-
-If copy_from_user() fails below, the new buffer is freed via kfree(ap_confi=
-g),
-but mig_data retains the old, already-freed pointer. When the file is close=
-d,
-vfio_ap_release_resuming_file() calls kfree() on the old pointer again,
-leading to a double-free.
-
-> +		if (ret < 0)
-> +			goto cleanup;
-> +
-> +		cfg_sz =3D ret;
-> +	}
-
-[ ... ]
-
-> +cleanup:
-> +	kfree(ap_config);
-> +done:
-> +	if (mutex_is_locked(&matrix_dev->mdevs_lock))
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-
-[Severity: High]
-Does this error path illegally unlock matrix_dev->mdevs_lock if it is held =
-by
-another thread?
-
-Because mutex_is_locked() just checks if the lock is held by any thread, and
-vfio_ap_resuming_write() dropped mdevs_lock earlier to call copy_from_user(=
-),
-if a concurrent thread is currently holding mdevs_lock, this will unlock it.
-
-This leads to race conditions and potential data corruption.
-
-> +
-> +	return ret;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
-851-1-akrowiak@linux.ibm.com?part=3D14
