@@ -1,148 +1,150 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449133DFC93
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 18:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78603822AE
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 19:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782845945; cv=none; b=ePehZ4fgJcZt0odvgYxY8jYXPB/7iZs/kYv+gO+GZ5pTmW3g13F/SRlPz3HVjcC0e6hwo5xOzxBpDIQbpfR50MoHys6Sv5IRjuJLPUrR0vh00c1pjNawu9RPaqoQtaPIpAAzvfdu7VtcQ+G0RssusM71EAeCREnHXNyVkqh4z1o=
+	t=1782846037; cv=none; b=BKqdIt9N+iBgRuQiGH1IjSTr+wYDuu2pHjS3MDw69DZjbpwyIU06YxLTuWNgpoQXh4phD6DC+woBggMSkfp/vKA9hCSbgHnBpTSSAA3MS2voJzvzwDsDP7r4roKMkk1QsCxc2XQMrnnfbia09kiozKAAgk/MN3j9bjqpSOfcBGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782845945; c=relaxed/simple;
-	bh=XGgg+xXUmnlRvAbgTK542VK34Jp1hfwPb9Na535wrug=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BMgWJglRA2H8XklqDXZCgzUUOV5xVUKDCI5E6GVnaQD2VTNJ3baj3+QZZn9LWxXAJMNt49e4GOWvaSqiBvUJfkP5/BbwHOtFw06KidyUHcN78ikvxMdvihQH+vVma72ZADIEluClco1ocakZF2tvQoXqJYBouVscdQqiLMs4f+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I/3WEowT; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782846037; c=relaxed/simple;
+	bh=sejmIqPMXnv+0ZyiikjnKODpWk3WcEmhPm49cB8zKPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxcAlExo0/ydrA0NLWBU3Xo7YJHTA+kginOrUtqzVvamcRhiGLChdZJjN0iLPhSsFCl2IaGrogGGH/PuAd/4cHMPPjTHKZr+xCZdjYJOO+Lv/nZwfzqFRl/qMIWOrgsoxW+xchJN5J4lGc5ywmc6hd1lh8PBqUneBWfGNah+Q0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AZjEU9t7; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I/3WEowT"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ca0331d0b1so34252405ad.3
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 11:59:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782845943; x=1783450743; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+HRXjFGgcPzOleYtd12nce6K890KkClpjKYcrzynFs=;
-        b=I/3WEowTJRiihaVlRhDqzwj+YFRhy3c6bZt1KMXwh9x+om89q3OC+JV0rMtABHuHPF
-         qKTGPEF+LctDdirA+uM3nYkHMtqx7fzxbKIo7F/ANMmPr47Kwsrrnm8E9Yb1Y2eCZ8WT
-         pb40zvGu2vMFonNzF5uChbhNUm+4Abp0wLfh+8tBFirSreUkERpYPrulspJkbT2ABs3t
-         54e3TQ4JLV7EMB4ti1zVIN8Zf+GguCJY/CTwPz2Vs6GJbsvvrBWQB+i8mbiTIY3WqJ2b
-         z/S25V9ZGlAtRn3L2wb//Dbu0OlwWKm5mOpsVZXv+wJ2t9RD6W6vx1WOb8AUFiiio86v
-         g6uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782845943; x=1783450743;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e+HRXjFGgcPzOleYtd12nce6K890KkClpjKYcrzynFs=;
-        b=CAyj6cQWCGQDuD8P0FVyqVtOgRrEI9Yk2e5J0WPjsd8r5m9tOu7nzcJQQ8sYaUoCb1
-         N0Ytrda+cuxmjvdhKJsK2IRwDkRrsiWxtDu7j4QzNgl2iZaV7P85o4WsHmC+V0uTKn4L
-         OzQ0JzRl0gdYTicXkuz0QMPW+InpdbppmhRx0ooDOTZ+p5xTFCAYsz4H57mpesylGxeA
-         4sBaFZtOXsYXpkZa0ue8QkPffqmaA2Hn6WfKbfK2qnbU7FaxRPuWkPL7U7UJe1dp5UIS
-         aEtm5dxN735dRIWXG5oXYUDDQAkbxLOvvOtfeKVul3h9ykMuETs92czdtctKVzt618mT
-         mzuw==
-X-Forwarded-Encrypted: i=1; AHgh+RoZccnpl3NUD7OtEkQsJxhPBPPNB+QQSQKKQoJn3c6qrlNMM47MPjU79HNM4ASIGi09KGg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrrheitE+BrxUYrQLnx+q31pmMn/gVltwd1rqF43UnPGHqpGQq
-	GtPs0an1djMpdXlj3aKTsPwOGhLWiyuGRMoX3Bx4CeIX2S6+uMlz7I12x0qwZixw905nvjKsZui
-	Vh1j58w==
-X-Received: from plbko12.prod.google.com ([2002:a17:903:7cc:b0:2c6:9f66:d581])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:acd:b0:2c9:c517:d075
- with SMTP id d9443c01a7336-2ca5a581ab5mr15124165ad.15.1782845942348; Tue, 30
- Jun 2026 11:59:02 -0700 (PDT)
-Date: Tue, 30 Jun 2026 11:59:01 -0700
-In-Reply-To: <akJUz0kYkEBdLSZ3@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AZjEU9t7"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEIK152428613;
+	Tue, 30 Jun 2026 19:00:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ElTZQC3ltpWU8XHXG0tTGEayNitJcZ
+	fvL+dMd8vptQk=; b=AZjEU9t7x9lweDtVI9S3zDBWbyasYQ+DucxzzJbZOvCBuH
+	QN+xN+uHF+T875ibmEhvxxzEy+G4n7o7njVmZMgqSe001NWIEGhpeF+lH309QcLW
+	CuiOrnlVeLsJYBinodG0C7ZYlRSVAXZiqTj/DX2QGPgr6kUcDm+bVYZ89PyA17kO
+	PSL9FNUmnnU5h8fXKTgdP3DS6q9TQxSQUKXyovRaugh05lpKSuU3RGXCV0Z0FA1Z
+	DLMj7WUd1CxkkkPhArip2SWyQWTiDpY4sVTCFtE6FJ+Cbi86fJo2AC3aReX7QiTR
+	ukfmhjDAwFBpyjBnMbcFSbhxpzP8lqLABX5gnHEA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26qg0ktt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jun 2026 19:00:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65UInb7P011224;
+	Tue, 30 Jun 2026 19:00:13 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2s7w3wee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jun 2026 19:00:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65UJ085661604280
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Jun 2026 19:00:08 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 849192004F;
+	Tue, 30 Jun 2026 19:00:08 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C8FA20040;
+	Tue, 30 Jun 2026 19:00:01 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.39.22.35])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 30 Jun 2026 19:00:01 +0000 (GMT)
+Date: Wed, 1 Jul 2026 00:29:58 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Nikhil Kumar Singh <nikhilks@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: Re: [PATCH 3/8] tests/qtest: Add Power11 chip & machine to qtests
+Message-ID: <akQRrF4jFTUTPxSz@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+References: <20260623141933.577981-1-adityag@linux.ibm.com>
+ <20260623141933.577981-4-adityag@linux.ibm.com>
+ <2870a679-dc81-45d1-a686-c1b0aaee98f2@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629060526.3638272-1-jgross@suse.com> <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
- <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com> <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
- <akJUz0kYkEBdLSZ3@gmail.com>
-Message-ID: <akQR9YMtMHReJTfB@google.com>
-Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
-From: Sean Christopherson <seanjc@google.com>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Juergen Gross <jgross@suse.com>, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, 
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, x86@kernel.org, linux-acpi@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-ide@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, 
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, linux-hyperv@vger.kernel.org, 
-	linux-hwmon@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Zhang Rui <rui.zhang@intel.com>, "lukasz.luba@arm.com" <lukasz.luba@arm.com>, 
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, 
-	Yazen Ghannam <yazen.ghannam@amd.com>, Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Pu Wen <puwen@hygon.cn>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
-	Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Reinette Chatre <reinette.chatre@intel.com>, 
-	Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, 
-	Babu Moger <babu.moger@amd.com>, Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>, 
-	Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Dave Airlie <airlied@redhat.com>, 
-	Helge Deller <deller@gmx.de>, linux-geode@lists.infradead.org, 
-	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Guenter Roeck <linux@roeck-us.net>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Andy Lutomirski <luto@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Huang Rui <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>, 
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, Artem Bityutskiy <dedekind1@gmail.com>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Ashok Raj <ashok.raj.linux@gmail.com>, 
-	Hans de Goede <hansg@kernel.org>, 
-	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, 
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>, David E Box <david.e.box@intel.com>, 
-	xen-devel@lists.xenproject.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2870a679-dc81-45d1-a686-c1b0aaee98f2@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RYqgzVtv c=1 sm=1 tr=0 ts=6a44123e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=mwgEtBXlT-Sc2TMNPJgA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDE4MSBTYWx0ZWRfXyCYKn3UpIR+k
+ wQpCtjzQ83Op838D6gqt5bDtJSWPMf5FVPYcw4ps3J6P7eQQ8OOq/2W2IdlmT9vAMio0bgTMo56
+ llHsh29KKGo3WWh0AMJZybCkUvH8gPc=
+X-Proofpoint-GUID: eiGriTlqa3wDTInjW5TI8xwbsY1D1_ja
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE4MSBTYWx0ZWRfX0Pt9DA8xK2dh
+ wExkxZK4LikVZk0BrweVJDIrPGku5G1H6nZdBgBiOmA35WhWG2Boi0fWc/0CNAWr6ArwcgXvwcf
+ ycYPQPywSeqO8wxgq9cNceWA2DgSO/O/Mr9Unz/GZVpAd1oaMqK2v2IfBuMjILgapEI8/PIAeUD
+ BW65XGnjDrEmdWSDCNQBGq8C41qWh61qtbv3pQbEEEWwsu5KivDbxoRSFrVpJq7GSskpyfWjnWM
+ QXhpe4QXjXqBOr2SwUzq5XNsQhwgZRnH+BwXVyPWnhcgIeaT4aHags6Jd8pz8xeNkS3Zl9FTlXb
+ ssnevMLISQnwi6EI1ibo24xAM6u1gRhUByeQyuK3pqpUY6CL9gwbuHFHWNcFfjP7QZdxQbb7Uyz
+ 5u9mM+2Q0zBjrnvQ8Js5MP1lx1wsn1Ry01TeuQYFYOxXtFvB2UgZhkNT5LPJ1O5vLQmXX6I0YAb
+ Ly9df9I94hrkXNZEa7w==
+X-Proofpoint-ORIG-GUID: MvG9Ho1s-CiVUgFPwc0ESMWww5axuaXV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300181
 
-On Mon, Jun 29, 2026, Ingo Molnar wrote:
-> * Arnd Bergmann <arnd@arndb.de> wrote:
+On 26/06/30 10:08AM, Nikhil Kumar Singh wrote:
+> Hi Aditya,
 > 
-> > >>> Note that most patches of this series are independent from each other.
-> > >>> Only the patches removing a specific interface (patches 7, 15, 26 and
-> > >>> 30) and the last two patches of the series depend on all previous
-> > >>> patches.
-> > >> 
-> > >> It looks like you are touching most files twice or more here, to
-> > >> first convert from rdmsr to rdmsrq and then to change the
-> > >> two-argument rdmsrq() macro to a single-argument inline. If you
-> > >> introduce the inline version of rdmsrq() first, you should be
-> > >> able to skip the second step (patch 31) as they could be able
-> > >> to coexist.
-> > >
-> > > I've discussed how to structure the series with Ingo Molnar before [1]. The
-> > > current approach was his preference.
-> > 
-> > Ok.
+> One comment below regarding test coverage.
 > 
-> Note that the individual patches are IMO significantly easier to review
-> through the actual 32-bit => 64-bit variable assignment changes done
-> in isolation (which sometimes include minor cleanups), while
-> the Coccinelle semantic patch:
+> On 23/06/26 19:49, Aditya Gupta wrote:
+> > @@ -548,7 +548,7 @@ static void test_xive(void)
+> >   {
+> >       QTestState *qts;
+> > -    qts = qtest_initf("-M powernv10 -smp %d,cores=1,threads=%d -nographic "
+> > +    qts = qtest_initf("-M powernv11 -smp %d,cores=1,threads=%d -nographic "
+> >                         "-nodefaults -serial mon:stdio -S "
+> >                         "-d guest_errors -trace '*xive*'",
+> >                         SMT, SMT);
+> By replacing the hardcoded machine type here instead of testing both,
+> QEMU will no longer exercise the XIVE2 path on Power10.
 > 
->    { a(b,c) => c = a(b) }
+> If a future change breaks the Power10 machine initialization while
+> Power11 continues to work, this test would still pass.
 > 
-> which changes both the function signature and the order of terms as
-> well, is just a single add-on treewide patch.
+> Would it make sense to run this test for both `powernv10` and
+> `powernv11`, similar to how the SPI qtest iterates over the supported
+> machines?
 
-Is the plan for subsystem maintainers to pick up the relevant patches, and then
-do the treewide change one release cycle later?
+Since power11's interrupt controller is the same as power10, power10's
+xive breakage should break power11 too.
+But I get it, safer to have both, will do it in v4.
+
+Thanks,
+- Aditya G
+
+> 
+> Thanks,
+> Nikhil
