@@ -1,119 +1,123 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A84F3009D4
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893292F6918
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782854857; cv=none; b=CtQGBu79F0dHg3TDk64MYr98WVWQFO91iFcXT2810PVzbhg6JsrGJpe/wUdKVi+iEqNUk42miUr8qcKXumc/W/4DEQNJSR/B4GfyXB6o7FJn2cXxrzjzArQYXAbF0WlDDqRmPs8hWV3L/vXtH3Ud72NsysExtWaZK8h42fqN67g=
+	t=1782854900; cv=none; b=Gb3lRC6spVxil6aXJr9KrE8D7+NwUEAbqveJ/L5aAzrXb+mAAPYTUagNeISIT44v24PMk8q0Jm9xc8lZI4c0w8aug2xk8j+4OcrheQHaVcPD/apabFyi9+4DyHzCtYlje+4Da0EKeuVHM/Ym1fsA5TUVqdnpWjmTZbwn75dldBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782854857; c=relaxed/simple;
-	bh=vLjNoL+SKTKzAFgZ/zHzNmMEtP1L0SW73bb+C8wvkj8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UWO2QIuEDe+HW5QGV9Bienftfk7OT78AlPtYwF4Y7yXmHXucsaQwFCaTdMUbG8NigmsRUDyWO+BoS04vqcsu4rggFlmI8F5fYF25dO0qX6ugY0N0TT4RbdvEKGeeH2B5lnIwpyq4sMRxRHpBj2/UbxjykIJTLVUXqvJCs0a5bQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DK6RnmEJ; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1782854900; c=relaxed/simple;
+	bh=b8RnFfiemRCSiKgp7BSai6DqR7scjQ7rM1MZat3I3Zk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mC8O6McWigIkwTACOBFtig4lDjYmrraicFOMOYzJLCppjLcAc17z04A+Vc/DRYpIunnH7IHWOlt3cn9Cv+meFdN1/jwH4flrEC7VXN4P5hZO1YgAPU1YCejNfeuEU54IUbNvlGFNOeVhn7C+P8NCX0CrCVG9xZddS6P6fQD14Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VvcfyXm1; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DK6RnmEJ"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c6bbd0afffso94255ad.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:27:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VvcfyXm1"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ca1f16e391so14619925ad.2
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:28:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782854854; x=1783459654; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rVDe7KS7mIi3eI2da6sI/3OeXJKsaxKL11W5ZtPqYz0=;
-        b=DK6RnmEJmmBVt8JR8MYRRb9AA6isdygFLH6rGmoxOLrKV6AhIJ37jVCkfDrDbARXg9
-         ldjLZSI1HVc56a2hsMEbIa00SE4waGUTi+B1STPN+lvO2OGjNYtwXSUOIk7rNNOqXOuE
-         WO5Rm/NrwMpb4lJJvNZWxBFD/4BsVVW6+QLO5C66lCvbDo62tW2cAuQCFlNXv+zQM2PY
-         zNlYiYpUZ6xcMPfPEbpWMVU14wO7n4w4giP1jZT35jmHmjKrurpnAe5J0wFAOZfZ4ld6
-         ViERWHLZAEfgrW+XW0CP5bEIVkVxq7B3JvR1dItiaHiQ98ECdYece0nKkZ6HsHlcQxuV
-         uHlA==
+        d=google.com; s=20251104; t=1782854897; x=1783459697; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vmjNTs+qY7n634WoJJiK9mzDi+CLz08woczbBq1WjCg=;
+        b=VvcfyXm1PJnqSvVp05GzPmPHY2AKPLkwX7Yjg4NAqEDK7iFOkn/bkDbFACjLRnKHRg
+         lCUsizhOLtH2SHkBk8jpqhqUYpyRzznAHajj5w3oxdkxJvpYHKujMb5vXRi4S3a9YaEK
+         srmlF8he8AJpBqzpmvs5K8y43GHA3BWgZFRUco96C5lL+/TDcnYNvaEKwKo9ntpjYjbD
+         ccn9Cj/TK4+T4oGT+ZPIaSGyn1AmVLmgCkss64KgfaILq5PU3HHyLRA6LpGIYsc2PhDx
+         aurma2QTVBhzSRsERIF77LEm1yc+bfMJaBvf7ZiRXue8PgWKACSvGNHs9KmtgP8yyc8t
+         RzcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782854854; x=1783459654;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rVDe7KS7mIi3eI2da6sI/3OeXJKsaxKL11W5ZtPqYz0=;
-        b=d+HI0C0HgQhBQSJ+D1izN1wUyLDm6ArAne7lLMPQmZWPaIQH66BTyPVr4bfpIzlweE
-         T0QAJTkisMui4y8bRuRwvY9JuzhYoJkI2I6cRl3imrZLEruWrIvdt9s2AUcdQFU/aquE
-         t8YVirRXF3k9WsPFN0PFoD98Fbx1qK3u7eZ5G4AC8vRjusizTMaMAD/zIjChskfKK2MW
-         DPfoWrPMKrWV/xdGMNwoDuiurTXh0aJu8UJkl8fJ8YgJoCe+dF/zgOlMdJxTGXJgRok4
-         pj1YsgXD+tQT/m463u5SwHvvN+VKiEqMux9mJN0m5s1btqL1OnYVwT3LTuT41q0ojIa7
-         L5Og==
-X-Gm-Message-State: AOJu0YzDSgsz5GO3tzdZaO1lTEQ+nh78Psf/lPtdKD09rZXPmFT+Jzfx
-	1j9D9Gn48JKVZrtaDkvHnWvgkiv02fPg+qx5KPCrlhP8ggMyLfY+FL5E+zRyQUijP5B4beKTfXN
-	2bvhImQ==
-X-Received: from plbkw14.prod.google.com ([2002:a17:902:f90e:b0:2c7:37d5:c0cc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e546:b0:2c9:d298:6c06
- with SMTP id d9443c01a7336-2ca2e714345mr42643205ad.25.1782854854363; Tue, 30
- Jun 2026 14:27:34 -0700 (PDT)
-Date: Tue, 30 Jun 2026 14:27:33 -0700
-In-Reply-To: <20260630211556.05EA91F000E9@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1782854897; x=1783459697;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vmjNTs+qY7n634WoJJiK9mzDi+CLz08woczbBq1WjCg=;
+        b=lTbXIK+udr0IvJpPUEsXMWdJw33dHeTUtq6xzY3A9c1vZUpISEbPxqCCWj9/danXli
+         yHADHCYLmm1OS4pXMmh3c924uxzpSeoIumR3kZf9joZP+V66nwU3BEu+bZrlj7wEPPQC
+         azqpGstz+eKliqf2gqp4A9klYxnmtF52DfodhpNkzFPH/1mqwlxL6rUyTUkXQq6lV0Zo
+         RMbJRgzxZTFtCjAr/sOdOeVEt1nuEQa0UePMS56efgwoAf5TeOnKZuJvKiWqSHrCnWIT
+         pXD2TNcTav88njTzZPqrXznARcpBg7Uf4jz3XoC8fXuVYC5qfsAho7NtDaF2IzxzYaLj
+         pPWw==
+X-Gm-Message-State: AOJu0YylYdF9CBqwiKa52HzJPG1usOIShqPUUZFWqk3GtGtWqoSzsWeZ
+	TV8AZ/Ce1PLnUdL+jpKbydmZZ6xWiCgGm/Ff9iTOf5eAdCQD8sxulpGGYzS7TxGgkq2g7Jp+Fva
+	htKCvFw==
+X-Received: from plau11.prod.google.com ([2002:a17:903:304b:b0:2b0:5538:b55b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f788:b0:2c0:ab82:6bb8
+ with SMTP id d9443c01a7336-2ca5a5eefbcmr18599625ad.27.1782854896675; Tue, 30
+ Jun 2026 14:28:16 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 30 Jun 2026 14:28:05 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260630210156.457151-1-seanjc@google.com> <20260630210156.457151-4-seanjc@google.com>
- <20260630211556.05EA91F000E9@smtp.kernel.org>
-Message-ID: <akQ0xSvDXSVoLC6e@google.com>
-Subject: Re: [PATCH v2 3/3] KVM: SVM: Remove VM from the GA Log notifier list
- before VM destruction
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260630212805.474418-1-seanjc@google.com>
+Subject: [PATCH] vfio: selftests: Add luuid to libvfio.mk's list of libraries,
+ not to the Makefile
 From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 30, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> > index d71a2fed1a08b..c5b1d294b15a2 100644
-> > --- a/arch/x86/kvm/svm/avic.c
-> > +++ b/arch/x86/kvm/svm/avic.c
-> > @@ -374,9 +374,20 @@ int avic_vcpu_precreate(struct kvm *kvm)
-> >  	return 0;
-> >  }
-> >  
-> > +void avic_vm_pre_destroy(struct kvm *kvm)
-> > +{
-> > +	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
-> > +
-> > +	if (WARN_ON_ONCE(!enable_apicv) || !kvm_svm->avic_vm_id)
-> > +		return;
-> > +
-> > +	guard(spinlock_irqsave)(&svm_vm_data_hash_lock);
-> > +
-> > +	hash_del(&kvm_svm->hnode);
-> > +}
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but could there still be a
-> Time-Of-Check to Time-Of-Use race in avic_ga_log_notifier()?
-> 
-> If a notification arrives and avic_ga_log_notifier() finds the VM and its
-> vCPU pointer under svm_vm_data_hash_lock, it drops the lock before calling
-> kvm_vcpu_wake_up():
-> 
-> arch/x86/kvm/svm/avic.c:avic_ga_log_notifier() {
->     ...
->     spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
-> 
->     if (vcpu)
->         kvm_vcpu_wake_up(vcpu);
-> }
-> 
-> If avic_ga_log_notifier() is preempted right after releasing the lock,
-> couldn't avic_vm_pre_destroy() still run concurrently, remove the VM from
-> the hash table here, and allow the remaining teardown process to free the
-> vCPUs?
-> 
-> Would this result in avic_ga_log_notifier() calling kvm_vcpu_wake_up()
-> on a freed vCPU pointer once it resumes execution?
+Link to the uuid library as part of libvfio.mk instead of as only linking
+it via VFIO selftests' Makefile, as the whole point of providing libvfio.mk
+is to allow linking the VFIO library functionality into KVM selftests,
+without KVM selftests having to know the gory details or duplicate code.
 
-Ugh, yes, that's theoretically possible.  I *think* we can simply move the call
-to kvm_vcpu_wake_up() inside the spinlock.  There is a potential deadlock that's
-near this code[*], but I don't think svm_vm_data_hash_lock will have the same
-problem as ir_list_lock?  Regardless, I'll tackle this one in a separate patch,
-unless it looks like we'll have to completely redo the entire scheme.
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>
+Cc: Alex Williamson <alex@shazbot.org>
+Fixes: e65f1bf8a2db ("vfio: selftests: Extend container/iommufd setup for passing vf_token")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
 
-[*] https://lore.kernel.org/all/aUmdSb3d7Z5REMLk@google.com
+I would either like to land this in 7.2-rcN (ideally rc2 or rc3), or take it
+through the KVM x86 tree for 7.3, as it's blocking a KVM selftest[*] that's
+been in the works for more than a year.  I can throw the IRQ selftest in its
+own topic branch, so even 7.2-rc5 would be "fine", but I would much prefer to
+get this (or an equivalent fix) into Linus' tree sooner than later.
+
+[*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com
+
+ tools/testing/selftests/vfio/Makefile       | 2 --
+ tools/testing/selftests/vfio/lib/libvfio.mk | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index e6e8cb52ab03..2c32c48db509 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -29,8 +29,6 @@ CFLAGS += $(EXTRA_CFLAGS)
+ 
+ LDFLAGS += -pthread
+ 
+-LDLIBS += -luuid
+-
+ $(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBVFIO_O)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
+ 
+diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
+index 2b8d73b7d329..67942b085068 100644
+--- a/tools/testing/selftests/vfio/lib/libvfio.mk
++++ b/tools/testing/selftests/vfio/lib/libvfio.mk
+@@ -26,6 +26,8 @@ $(LIBVFIO_O_DIRS):
+ 
+ CFLAGS += -I$(LIBVFIO_SRCDIR)/include
+ 
++LDLIBS += -luuid
++
+ $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ 
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
