@@ -1,154 +1,84 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9019C1D88D7
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 00:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B1915B998
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 00:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782779752; cv=none; b=SvHXGv4v7oO1oaMc2Mc781o8Kf99Wyz/tr0GXZxJY58AmBu7610hx66tt3EMJFdC4KUOJzp1q4LDPZtgr2n6piXH5ef4GTFspEWwwB14+fVvjoZ+5z/+YuUbvqN0WKjm4khYSOus+i4kn5GKW1RqjSJzVh1k0PhI+MfWi7ptp/k=
+	t=1782779844; cv=none; b=N5GrXFGgqfWv2Jz6Y70/dL5+9HK8f1C/xjTsz8SNTYGci60v/D8jvGe+S36R9PPJf4L7QmrYI4ZBR/0ZDOFsALk2hdU2GISvKG79gaM8+5mVFaeTGDHYx+V2RsmAZOnCN3YZPDAoEFxWpLOdBRVEyinTthxzkh4YotaueV+vDNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782779752; c=relaxed/simple;
-	bh=7M+rMoTWxaTD/6h79/TOwhCZDLAteUyb3KP56APKsSs=;
+	s=arc-20240116; t=1782779844; c=relaxed/simple;
+	bh=dGW4RFk+phOZLtM3wOZBLttvDNqv+AwSk9KuOQKGHa0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HHGdU/KnLf624MXOoxQvSUGoD5aWxxGg7649NmsDrjw077dHzo/JB8QLoeIjFO1dcfqGHAZN42voW1GTbZ6dcPcu6jTqR6dDYq4xX6BmEHfRuKLzeoo2BPnfgqJ0ig/6cbFfojBuitnkBBloHzVz+Omr91w2LgLE64SITbmwzS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=khZ0YABF; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=eIPwUzwZysmR6X5jFBesZW3RCRqj7xm9GjQ3IgNN8LSPtaqcE4DPniJFucERT9p+5f/FV9lXxsK/zUwWoa4c8F7lpXAhWBaMRXlCNufpMuXHtUCDTC9JpuvoqxgJSEnM9Raq0fpARvldmX99YWGI1e8YjTm2FIkJUiSzrZCD9AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ryDEglHI; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="khZ0YABF"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88aab7c1fcso2016214a12.3
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:35:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ryDEglHI"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8969083f23so2104683a12.1
+        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782779751; x=1783384551; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782779842; x=1783384642; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mG7UMEOa4l/HjKEvkoTYx4SxOpxm9xemhK9kHyjngUI=;
-        b=khZ0YABFAycRoG+rXhFYJVrqcfsJQ2pqE+vtrMgXtat3mBzunEdy0fqGnaq2OU5u+j
-         CnOS9XtI5gB3yqmc0ooekokBSx16w5aH8rhc3IIlGOuQWo3bZ5u9xuMv4Rv20Cx51YpC
-         KSkyq4/jeQmZ8zaICnERrDr9QufXJXdScu+3bbsGU1q/cT8HJlF8grDx84vFYoQ6k2+y
-         a2K7XES+SjqGqsS9voN7GghEVtgB2URUbhP69nd+CalXpddR2LL/smRHwvgyVygAvj4j
-         +AmpUv4bTeYkOeNYX7qnGlsyBvdTjUKOkRh4fW3oDzNA5W+Y2Egj7myB3eyE/vlpJCnZ
-         6MKA==
+        bh=BKV7MubbT236XgrwpvmR2un3HfsGFp5e/uG2tY2I0c4=;
+        b=ryDEglHI9LF+P/IRZaDnHV/jvGBE4T7M4omYEuXl9R49WuJdWgKWK5+b35kAa8E91s
+         gK9nPdU0SjNsQiE8FEWAUT43y4fNAzFq0OBYey/qv8o+CJTYTZfOEh6IZ6pMTbPbzcnw
+         LFFUn9mPD/+PhjpE6TyZpAWI74V9aIAUWvSmekxR39U9yluaHZoFMSZFMpFa4qjxFADh
+         sxoOL8Q4NhC/H4FMP06UPi+tOMji53JDFsMlcGYnAWcNGIyAmYe3tw+e/Fcl/Tz4dU+U
+         8CMQkDa763Cj10EfA6AIBLALCQPhPtcI9jFbELXnnIQp082S3bkwltFlyp/orMyi1Hsq
+         3xrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782779751; x=1783384551;
+        d=1e100.net; s=20251104; t=1782779842; x=1783384642;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mG7UMEOa4l/HjKEvkoTYx4SxOpxm9xemhK9kHyjngUI=;
-        b=ernMbW2EZsZEBqMczXOaQrNOhw04n+K3kVny07lU/XwLQUSsFJwPMohWycdAcqQex2
-         mInuRDbj0wpu8/dKJ78kMtR88D9LJ1SQNyCgbxFzo0ukVGhSabgr4bhKVGiqd6FtnaPL
-         teC1XyLCjeBj3ewF6wzDmInRR3OX4rp71Whz903OlL30dwgDSHiBa4t3YeidxgB0bKdJ
-         gZH11EktWt6mK/awRnskOj4Pu8W9AL4SZWcPdrbeQ3YAD6llblZAw8AIiVWq5J4zItRB
-         LuwkWrdkeh3dC9fhAze9mZyhIF6ahVxkfISN5QliN28PsfLfdGhK3eaj8xv9OwzSAWcV
-         IGyw==
-X-Forwarded-Encrypted: i=1; AFNElJ8VM6MGhOFiOKmW/E42xFDcK8hXyt6mkUOShZY3v2LnwzRGACKDxLmR2JydfbqyGYR007g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyFb81mTLDp9pzYbESVJ+TTGW0LmSGjs/YLI5i/Z7uh062eBe6
-	pC5xh8HSqqkR8drJBj8SCXk7QD6L1ST/y0q3IXoyGyxhfzl1E8DAhYbTqmc/TF+MmdOu8J0XY4g
-	Mbksp+w==
-X-Received: from pgvq1.prod.google.com ([2002:a65:6241:0:b0:c89:2504:2df5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6713:b0:3bf:b3d5:ce2d
- with SMTP id adf61e73a8af0-3bfc50b8944mr1254419637.7.1782779750525; Mon, 29
- Jun 2026 17:35:50 -0700 (PDT)
-Date: Mon, 29 Jun 2026 17:35:49 -0700
-In-Reply-To: <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com>
+        bh=BKV7MubbT236XgrwpvmR2un3HfsGFp5e/uG2tY2I0c4=;
+        b=HVxJfsrMJoeEKLzPOFHTRNYCP253tSjzT/JVivrdIpzHvYjh7v5dzQwlFnonhO8TNm
+         VHkqfhdR/6rJhp7dWZKt2wXx09sm+3eq79IC7iOD9AyEm4P4KM4BNFiC2Pvbdib9ZL8D
+         kVG0/5JGfjSg7L8PIBIYAWSVLFhcZ9Lrnsq0EBgAJnPXom5V0/2rMDGGLf8LDn5PAh61
+         EvhnrVi+YsmEoMpfdUYPX48Vo6acC0OimkoBvHvFsSFZ3iRdgaALB4J/iUdejARS9son
+         qa6pqP56ZDk0+1MAB17HTlteGPkdSvtcULty+PSXm2CQnk+MorA83vL/xjeaeGv5ukdF
+         j3ug==
+X-Gm-Message-State: AOJu0Yz1DL0ta4WlZziPOOychYInVFJSrnt6CN251ju4EoI9kiSDz6Ka
+	sopWGqbeH8GftUcX7u77CFlABfGqFnaGBpPENZ4Rp+YjWzqMicG529Rw6D5Dvuy90DDso4YPAz6
+	j0tlygg==
+X-Received: from pfbfc21.prod.google.com ([2002:a05:6a00:2e15:b0:847:8c62:85d5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a27:b0:847:80c8:dfdb
+ with SMTP id d2e1a72fcca58-8479f4482a5mr1155351b3a.55.1782779841830; Mon, 29
+ Jun 2026 17:37:21 -0700 (PDT)
+Date: Mon, 29 Jun 2026 17:37:21 -0700
+In-Reply-To: <e6515066-3768-459d-8ae4-82c0243556a1@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <ajnf5Z9nWZxoLS4x@google.com> <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com>
- <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com> <ajxasFBzp_9KnQLq@google.com>
- <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
- <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
- <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com> <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
- <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com>
-Message-ID: <akMPZePBdwQlD74H@google.com>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+References: <20260604023314.3907511-1-binbin.wu@linux.intel.com>
+ <20260604023314.3907511-2-binbin.wu@linux.intel.com> <aj1fi_0SBxMK5WOB@google.com>
+ <e6515066-3768-459d-8ae4-82c0243556a1@linux.intel.com>
+Message-ID: <akMPwaQ9nFDnGbYg@google.com>
+Subject: Re: [RFC PATCH v2 1/4] KVM: x86: TDX: Track supported configurable
+ CPUID bits
 From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	rick.p.edgecombe@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com, 
+	kai.huang@intel.com
 Content-Type: text/plain; charset="us-ascii"
 
-Gah, I thought I had sent this out this morning, long before Ackerley's response.
-But I got distracted by a meeting and forgot to get back to this... *sigh*
-
-Sending what I already wrote, even though there's a lot of overlap with Ackerley's
-mail.
-
-On Mon, Jun 29, 2026, Yan Zhao wrote:
-> On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
-> > Yan Zhao <yan.y.zhao@intel.com> writes:
-> > > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
-> > > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
-> > > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
-> > >
-> > 
-> > I'd say the original uAPI perhaps just didn't document 0 as an
-> > unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
-> > was perhaps accidentally changed and no customer complained, I think we
-> > can move forward with 0 as an invalid src_address? I wouldn't think
-> > anyone relies on 0 intentionally being a valid address.
-> > 
-> > I could document that, if it helps?
-> What about just documenting that 0 is an unsupported uaddr which will be
-> re-purposed as an indicator to use the target pfn as the source, regardless of
-> whether gmem_in_place_conversion is true? i.e.,
+On Mon, Jun 29, 2026, Binbin Wu wrote:
+> On 6/26/2026 1:04 AM, Sean Christopherson wrote:
+> > On Thu, Jun 04, 2026, Binbin Wu wrote:
+> > CPUID.0x1E is a bit different because it's kinda sorta a feature?  That one is
+> > probably worth restricting, but again that's easy to do in a case-statement.
 > 
-> if (!src_page) 
-> 	src_page = pfn_to_page(pfn);
+> Only CPUID.0x1E.EAX has TDX directly configurable bits currently, no special
+> handling needed for the rest of CPUID.0x1E.
 
-Because KVM can't generally use the target page as the source without in-place
-conversion, it's not supported today, and out-of-place conversion is being
-deprecated.
+But isn't the whole point to guard against TDX Modules gaining support for features
+KVM doesn't know about?  What happens if hardware extends into CPUID.0x1E.ECX,
+and the TDX Module follows suit?
 
-> I don't get why the two scenarios should be treated differently:
-> 1. gmem_in_place_conversion==true, shared memory is not from gmem 
-> 2. gmem_in_place_conversion==false, shared memory is not from gmem
-> 
-> In both case, a 0 uaddr could be mapped to a valid page not from gmem.
-
-That's immaterial.  KVM's ABI (that we're solidifying) is that an address of '0'
-for the source means NULL.  The fact that userspace could have a valid mapping
-at virtual address '0' is irrelevant.
-
-Again, just because something is technically possible doesn't mean it needs to
-be supported by every piece of KVM's uAPI.
-
-> So why not update the uAPI to handle both cases consistently? :)
-
-Because retroactively adding support for out-of-place conversion is pointless
-(requires a userspace update for a feature that's being deprecated), KVM can't
-generally support using the source for out-of-place conversion (it's effectively
-an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
-scenario is valuable for KVM developers, e.g. to help newcomers understand what
-exactly is and isn't possible.
-
-Side topic, isn't TDX broken if target page has already been added to the TD?
-IIUC, kvm_tdp_mmu_map_private_pfn() will be a glorified nop due to the page
-already having a valid S-EPT mapping, and so KVM will incorrectly allow a double
-add.  Ahhh, no, because KVM will return RET_PF_SPURIOUS and
-kvm_tdp_mmu_map_private_pfn() will then return -EIO.
+I guess that applies to all the feature leaves?
