@@ -1,199 +1,134 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC15540961B
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 12:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D835841322F
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782824337; cv=none; b=bC8pjujQGtygNeNfpIUX7R7J7zg5AeQGbhLnzBJhu0b6gq/L19Gr3sEziEKzA/c9HsxfC89dJ76HStITX8CwjOkQCfa65jNZyZlO3/AifHJIJQUw7sJVOPBRStFWaidD3mhfVHGU0ItMQsYvKBxN8xyACB4qGkOMhIKczyxsN34=
+	t=1782824809; cv=none; b=oXG8DXB+56OdWnr5mFKNN2C3C/dYlOuHMPeqdkmAyyMah7WT+0Yn565uDF4T4NCHpT4pxrZ0BoLcFkrzhGcG40oJY02FwkjbCD9p+ABmT2f2abi6V+IquHxJ7YoDNHQ/f8qPoLZsI/6ho01oiwR7DWFUOla3QFFwB/BpNMSwcIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782824337; c=relaxed/simple;
-	bh=rQy6ufZS/d06sy42Nw501NI/EZ81qs0zBsu6gj+Ji9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=nja2/KtoqW9IYQDIUCj6TrOQKufSZ6x5qo3sZVlRfrm87Jf7npT0qJTvdi9kEpxdOpGF2f2YJocQicSsf+GXoShMtYdEqQuHMhW57tNmDetV8MopQRo+248jiylOGsj5LE1myyJ7FQjO3b52PKAMYU/Io/tiph5wRh6tHenRG+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=c3QxyXBT; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782824809; c=relaxed/simple;
+	bh=CyC5ny1bAKX8WJocn0Ihrx94MGIS+dltREW/5h3LDKw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=P6iu9zVhZyECa0nUw7Nm10501i0rsDSvRipqudomfRsuAq1NWVf2jLOYAtk9h4aJ9FFr5UCpcBsg/FNJZ/Wo0L7qASoXILrds9rENNj1A4f5NWcXhvNcbiSAkJp6niEJNIyv05LAHD/BNI5Qfzx9O78Z6JfUyPQYuzJ3cLVgbrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sraIy6fQ; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="c3QxyXBT"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA31016F8;
-	Tue, 30 Jun 2026 05:58:49 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2E6F43F905;
-	Tue, 30 Jun 2026 05:58:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782824334; bh=rQy6ufZS/d06sy42Nw501NI/EZ81qs0zBsu6gj+Ji9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3QxyXBT0n3rNLXsrfGjdolNmH2SKD+rk1rGRJQT1fdpDUF5wBkAe5GpMLivflJ7k
-	 bqbOMbwtOglkrWwBDb7/VqTHg5ZxgU3zsGX/cAB0WkWuehN7eWjArjntbJVfv3BpBN
-	 vijushwNdXxGe3uHgDG5F7Ytt0w5M8qWHM+fhKi0=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	sashiko-reviews@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if HDBSS is available
-Date: Tue, 30 Jun 2026 13:58:48 +0100
-Message-ID: <akO9iHJmKN7MzTjM@LeoBrasDK>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <akKmHqRaZEUjN3zY@kernel.org>
-References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-3-leo.bras@arm.com> <20260629113645.BE6801F000E9@smtp.kernel.org> <akKFlzAdB43lRpi1@LeoBrasDK> <akKmHqRaZEUjN3zY@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sraIy6fQ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37e1f96b248so1348807a91.3
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 06:06:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782824806; x=1783429606; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
+        b=sraIy6fQUAc9T2fRHpKRf5UIjBi0jiWOeptfzHjJGemwp260d1pQnh1JKRazxc0NNJ
+         ovXNZnB36PaChp8qyWvb1TQiY+ALfjd1/FBY95Iol2/sTjiT5FAZr+46ZaTJUQQszlWB
+         /Od4z6goREAn123zyfofwdZAkLf82+ijSFBaxAii4NMcyBu9TpVI7WoQx0cAAkBpeof+
+         YOi9dY3u/m/Hl+q4OmjZ7tqKvUvfkTeQXEiitrQdM/DL8NefX/Vbd4RQzHBi2Hors8EI
+         j3u1K5XdOQZWeIEc2laW5j3gRFd3ToFT4TiJIXqHi8sfbxG8P90ThZCIA3p24G6PMaP8
+         YK7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782824806; x=1783429606;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
+        b=a+/rqD95qglCym7jIKFyXtjw8S2v2Dz+iDzencIfJNmYZkhud0KFkEU3fPRPvGWTwx
+         d/j2KskgHDuhgOm8P+/7PI/+coU37vCLsD5/vXYuCUj4u8h62lEu2j/SXWX7PhjGuOHb
+         SAsWiffpy7YExXQehD9gvhdBpKVdgdudHhLwtoGvDUrVKr0OF5C+S0oYPtf3i+AAF6Cx
+         enAVeijgNxx1wUeV2St55P/KYtEp6JLVGn8ogil4k/+EKDlbdX43AYKVcNN5h45FOs6U
+         ai+o7isYlQesIuWcYOkL69fFwQH02RAu3Wk93bq8RRJnwIAzF0JTGvhrMRsrJj2/eldR
+         fCLA==
+X-Forwarded-Encrypted: i=1; AHgh+RrkTPQIGpeqqY4AsYipqd9Aq+A22CE90+fI0HwD5jIT6TQVWtNjyivcAJu0pvMoFdTX5i4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIBVU72rkOiV8fHjhorfRrgdfR5L2EO7Dcgf4DmFZfd/SeAdva
+	tliBEFSD9Q8f/GFOqJxZ6aIolx7CXjLk9uwLByA+cgS5DP4+bCSviCqZTrShSqh8FU294aJtVUS
+	FQ2ZHBw==
+X-Received: from pjboo8.prod.google.com ([2002:a17:90b:1c88:b0:37d:8595:7a08])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390b:b0:380:540:d49a
+ with SMTP id 98e67ed59e1d1-3808bd2ffe9mr347677a91.7.1782824805381; Tue, 30
+ Jun 2026 06:06:45 -0700 (PDT)
+Date: Tue, 30 Jun 2026 06:06:43 -0700
+In-Reply-To: <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com> <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
+Message-ID: <akO_Y0-ERgBoCqoQ@google.com>
+Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 29, 2026 at 10:06:38AM -0700, Oliver Upton wrote:
-> On Mon, Jun 29, 2026 at 03:47:51PM +0100, Leonardo Bras wrote:
-> > On Mon, Jun 29, 2026 at 11:36:45AM +0000, sashiko-bot@kernel.org wrote:
-> > > Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> > > 
-> > > New issues:
-> > > - [High] The default eager page splitting chunk size violates the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE UAPI contract by using a value that is not a valid block size for 16KB and 64KB page kernels.
-> > > 
-> > > Pre-existing issues:
-> > > - [Critical] Dropping mmu_lock between primary and nested stage-2 write-protection creates a window where nested guests can bypass dirty logging.
-> > > --
-> > > 
-> > > commit 09e1d250ed331b9dc20b42b7f9315892a86a5d50
-> > > Author: Leonardo Bras <leo.bras@arm.com>
-> > > 
-> > > KVM: arm64: Enable eager hugepage splitting if HDBSS is available
-> > > 
-> > > This commit enables eager hugepage splitting by default for systems
-> > > supporting HDBSS, setting the default chunk size to 256K pages at
-> > > stage2 initialization.
-> > > 
-> > > > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > > > index 6c941aaa10c63..e086c01a9325e 100644
-> > > > --- a/arch/arm64/kvm/mmu.c
-> > > > +++ b/arch/arm64/kvm/mmu.c
-> > > > @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
-> > > >  	for_each_possible_cpu(cpu)
-> > > >  		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
-> > > >  
-> > > > -	 /* The eager page splitting is disabled by default */
-> > > > -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
-> > > > +	 /* The eager page splitting is disabled by default if system has no HDBSS */
-> > > > +	if (system_supports_hdbss())
-> > > > +		mmu->split_page_chunk_size = 256 * 1024 * PAGE_SIZE;
-> > > 
-> > > [Severity: High]
-> > > Does this hardcoded chunk size violate the KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
-> > > UAPI contract on kernels with 16KB or 64KB pages?
-> > > 
-> > > By setting the default chunk size to 256 * 1024 * PAGE_SIZE, this evaluates to
-> > > 4GB on 16KB page systems and 16GB on 64KB page systems.
-> > > 
-> > > However, in arch/arm64/kvm/arm.c:kvm_vm_ioctl_enable_cap(), the chunk size is
-> > > validated against valid architectural block sizes:
-> > > 
-> > >     if (!new_cap || kvm_is_block_size_supported(new_cap)) {
-> > >     ...
-> > > 
-> > > Since 4GB and 16GB are not valid block sizes on those configurations, a VMM
-> > > like QEMU attempting to read the default capability via KVM_CHECK_EXTENSION
-> > > and set it back via KVM_ENABLE_CAP will be rejected with -EINVAL.
+On Tue, Jun 30, 2026, Xiaoyao Li wrote:
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> >   arch/x86/include/asm/kvm_host.h | 4 +++-
+> >   include/linux/kvm_host.h        | 2 +-
+> >   2 files changed, 4 insertions(+), 2 deletions(-)
 > > 
-> > Sure, changing this to something like PMD_SIZE or PUD_SIZE should be no issue.
-> >  
-> > But this raises a topic I would like to understand:
-> > - Do we actually need this to be a block_size to assure correctness? or is 
-> >   it just about efficiency?
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+> >   		       int tdp_max_root_level, int tdp_huge_page_level);
+> > -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> > +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
+> > +	defined(CONFIG_KVM_INTEL_TDX) ||	\
+> > +	defined(CONFIG_KVM_AMD_SEV)
 > 
-> What value is there in having a chunk size larger than the largest
-> possible block mapping? The whole UAPI is deliberately tied up with page
-> table geometry.
+> Maybe we can just remove the #ifdef and make it always avaiable?
 
-Not larger, possibly smallerv My concern was the difference in pages to 
-split between 4k, 16k and 64k.
+No, because common KVM keys off the macro to determine whether or not PRIVATE is
+a supported attribute:
 
-> 
-> Overall, I'm not buying the argument for changing the behavior of
-> KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE. There are very good reasons for
-> *not* eagerly splitting the entire address space, especially if you know
-> the working set of the VM is small.
-> 
-> You can still use HDBSS without eagerly splitting, so long as block
-> mappings are {DBM, S2AP_W} = {0, 0} and leaf mappings (which have
-> a writable PFN) are {1, 0}.
-> 
+  #ifdef kvm_arch_has_private_mem
+  static u64 kvm_supports_private_mem(struct kvm *kvm)
+  {
+	return !kvm || kvm_arch_has_private_mem(kvm);
+  }
+  #else
+  #define kvm_supports_private_mem(kvm) false
+  #endif
 
-Block mappings being read-only, and leaf mappings being writable-clean, 
-then? Could you please ellaborate on why does not it need eager-split?
+And also whether or not to provide the in-place conversion param (without PRIVATE,
+conversions aren't supported in general):
 
-As a review, what I recall from the strategy for hw dirty-logging was:
-- If we have HDBSS, add DBM for all writable pages {1, 1}
-- On dirty-logging start, make them writable-clean {1, 0}
-  - Can be done using HACDBS
-  - Enable HDBSS & HAFDBS
+  #ifdef kvm_arch_has_private_mem
+  bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
+  module_param(gmem_in_place_conversion, bool, 0444);
+  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
+  #endif
 
-We don't have a fault for making pages dirty anymore, as this is done 
-by HAFDBS and recorded by HDBSS, so splitting does not happen on demand 
-anymore. So if we want to split pages, for better tracking granularity, or 
-anything, we have to eager-split them.
-
-Not doing so may cause us to have different level leaf sizes (pages & 
-hugepages) mixed up in HDBSS, which adds complexity, on top of possibly 
-making a live migration slower (the whole leaf entry has to be sent over 
-network).
-
-> > > [Severity: Critical]
-> > > This is a pre-existing issue, but by enabling eager hugepage splitting by
-> > > default for HDBSS, does this exacerbate a race condition with nested guests
-> > > bypassing dirty logging?
-> > > 
-> > > In arch/arm64/kvm/mmu.c:kvm_arch_mmu_enable_log_dirty_pt_masked(), KVM enables
-> > > dirty logging by write-protecting the primary stage-2 and then calling
-> > > kvm_mmu_split_huge_pages():
-> > > 
-> > >     if (kvm_dirty_log_manual_protect_and_init_set(kvm))
-> > >         kvm_mmu_split_huge_pages(kvm, start, end);
-> > > 
-> > >     kvm_nested_s2_wp(kvm);
-> > > 
-> > > Because kvm_mmu_split_huge_pages() can drop the mmu_lock to top-up the memory
-> > > cache or reschedule, a race window is created before kvm_nested_s2_wp()
-> > > protects the nested stage-2 tables.
-> > > 
-> > > While the lock is dropped, a nested VCPU can fault, map the page via its
-> > > separate shadow stage-2 (which hasn't been write-protected yet), and write to
-> > > the page without setting the dirty bitmap, leading to silent memory corruption
-> > > after live migration.
-> > > 
-> > 
-> > But if it's already write-protected in S2, if the nested VCPU faults 
-> > something, would not that be handled by non-nested faulting routine?
-> > 
-> > I understand very little of nested, and I can't understand how does that 
-> > work properly. Maybe Marc or Wei Lin may have a better answer for that.
-> 
-> The only time this would be an issue is if we allowed userspace to
-> observe a clean dirty bitmap with a stale, writable shadow stage-2. All
-> roads go through the slots_lock, so I don't believe this is actually an
-> issue.
-> 
-
-Awesome! 
-
-> The order of events Sashiko mentions makes no sense. If the shadow
-> stage-2 translation is already writable there would be no intervening
-> fault. Since the dirty bitmap is already cleared for these GFNs, a
-> racing write permission fault would actually set the dirty bitmap.
-> 
-> With that being said, I'd be happy with kvm_nested_s2_wp() getting moved
-> up earlier in the function anyway as it is easy to forget that the
-> mmu_lock could be dropped in between.
-> 
-
-Makes sense.
-
-Thanks!
-Leo
+I agree the #ifdeffery is ugly, but kvm_supports_private_mem() in particular
+needs to evaluate to false if PRIVATE memory isn't supported.
