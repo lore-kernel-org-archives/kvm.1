@@ -1,282 +1,186 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E2B37C92C
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 04:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782793165; cv=none; b=OPCaxJgJMzDoeYcgnrck9qfrk6jqPG+YzuGhfmMlg2AVaSEpuCX3JQMipLZhVB/gy1qlA4SJFewkO1c46gwKUI7mIp6zD96GW4JlF4CGPUIm2wzjrVarVoioz7+r6sa//Oe+tnR8JNYIqv4um2+WmNvpeEfKRQyZbLD2Oy5LHSQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782793165; c=relaxed/simple;
-	bh=TLw3nTeW8XQFYA6a608C/h3aeD9fiv7wxawZ3jx+Iwc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=t+wQ3ULyRxnUZwbthK2P5b7V0N0N7STRkfapHivuHHLmc3JiBOMjhGm18G4FeZB5IkwQdSLoozjlSsq7MNBX5B5OJS4Gt3TfQh8dtKFR65ZWh7b8xIscVyb7uWgwdotYRIDpdOa7A6mUcSBY+owjXPAmG24feVp10xsGXRWRepk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bRd7eGYe; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1C732B127;
+	Tue, 30 Jun 2026 04:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782793338; cv=fail; b=uQrANpoceNX3PsH1b9FVOXe8XtiOu0wGjvjQXN5H/6m++L4HWQw+yt5JgS+iGfFG1Xed/zMbktEHcR8xgY+FvRWxN2WLwfvE2iElgoxI69DTAIDYsmEyM6KC9ifExI+DGeGkFMvpE3dpwjbYHwTPrjVVutTEzqxHCCpHlYgkVs4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782793338; c=relaxed/simple;
+	bh=4fhIzl+0m3HksSzXbhb7q0VfRFzA2SGZ1vwUH4+8/ro=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tjcG7W8DyN2xoJfPqkCUnSahKI/oSQSACkl9z2A2uK8ShI3ygT+eMCpkje/WBafak9gU7oZ1f4gBjMNSuC/xnQubhqx1Necnq9Pl7b0gdh5gJ6RX+leDjSfOKTHVuMrmOXzwiwNyfvGpO+7NrqevJ4JKN+2lgM+YcJDBd/5uo7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f4WUxvIy; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bRd7eGYe"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U1K25N496660;
-	Tue, 30 Jun 2026 04:19:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=L0YN30
-	9aJJvMpx0MYGGAhwg1KFcUfzCjiT/Jxs/srvA=; b=bRd7eGYePSjUwrObWmSpZ5
-	psX3+AFGzl+5+08tkUN1RHv/wqYZqmZvDFw8znRgQjcQcyHB2RaGy5GLwgD9x+4q
-	C5I+StNsmZs7dOuey0eu/aLYUnbAntfgDaQXuTWha7+wIRVwN/963nCTsxO5At3o
-	Q5uMzcscoJp/4zwdyA4FDUsGtUMSktRLl9BiMdceWuwNUWectJZI/GWggMd3rFPr
-	FVG2cKaVcu1vFJgxsQ47lqdEV0pLkrGqJIZu4UZUiTih5o700sYJva4VD66ocn7Z
-	JwORfVDUQ3VeCajFuzERNknxiFqTiaCEUK00hhalN1zcQGxdEXPReLR2pGf5P4EQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26mjmedk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 04:19:11 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65U44m1l019690;
-	Tue, 30 Jun 2026 04:19:11 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2uhy86p8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 04:19:11 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65U4JA8e7209554
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 04:19:10 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2396658061;
-	Tue, 30 Jun 2026 04:19:10 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 95DC95805D;
-	Tue, 30 Jun 2026 04:19:08 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 04:19:08 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4WUxvIy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782793336; x=1814329336;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=4fhIzl+0m3HksSzXbhb7q0VfRFzA2SGZ1vwUH4+8/ro=;
+  b=f4WUxvIyMpuc9KC5tu06pxXKnLDO7gHUE+F+IrqHLOqfk1PJS7lxl8qy
+   PkKv/G07frynf/m7kEcF25GF2bvuFlz7VVRiOU/CNwgv6Bo9LffMvAoPq
+   XpxAUqrdrhIWBUue5qgjn/Xkc1yHqtYeBSrGT4wogJhAhtXQJ2uK/HtTO
+   lEgv35m5vmIb5sKPPB9Na2pOwTu1bU+ougrGUUAq5nAw6Lkkm/gJEh2Aq
+   ctZ75DZHhF3/6sIS64OTXXqr4OVjJcbGpyTAbt5Go7BrcgdHoSvnnhS/z
+   m9+qJV7ulA5pW41vVIDtWeTEcanjVt+wAHAmWHgzTkB++NxevfLObxfLU
+   w==;
+X-CSE-ConnectionGUID: lsFdfeJKQH6wZK+S2AWEXg==
+X-CSE-MsgGUID: Zand1V6FRB2mXDvHd3GlMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="95005486"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="95005486"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 21:22:16 -0700
+X-CSE-ConnectionGUID: XOOXmMNTQC6XexuFf2qEPw==
+X-CSE-MsgGUID: tJZyAZTCS8ukEpwLw0ZPtw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="251092670"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 21:22:16 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 21:22:15 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 21:22:15 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.69) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 21:22:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j4xSzVJzx0GqsDq1YopLB3xRB4cnwyFTanECybYF/n88xhajIdL/ETHqpOOWSjlL/ptTxNmwuGYbtvQ7GicFKIjifXnf+6yuuL0h9jeRgPgmfAym7jYnV1eiAlFouxF1d1PRJt1O53rv7zWxvIEipQyh/t0iKe+JDNksReLZyW2TnFr7HCTEqN4vO2JR1aFwncVW1WdomzYzI5nkHB0H8qEe5F3w5t6Axdvl71silbVG0e6gmNULnp8ytvqRjuINbaE+N1Tq25lD0IOsK16gtzL6S/Ygnv7Bi7DQsqr9/8sGVYAZ6L5TH9F0Hiu1RcT+87nUZnRgRmquj2dFLyaiQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KHgYZb/5i7liWibEHYFQI0cKyLwQ/CLix5B6hU3rTmY=;
+ b=Hgeb324eFXt+qXQgbpskFMFkc/dzayRvKX6Xm1bEfo6+icd1jUpY9RzW5A/8/b97T9JLjtK69RmhYzRbLJpjVZ10AKx+JCLGByFQJNEEIwY9MfE1gNk/LG0bGYlb0ptoW9hKq16txEEZFM7ob+BkKNrpL5Hno+bq28LsJ3QbaAQLVT0A6ODQAezl8aDKXFy9YDTaWKftAupGDM0w82QV4xx+JhB/2OZ2BCeW41cmSI0W9UG6Zk0SVknxpBXAIGl4zoIyTzgwjbuV28y7MZIlc2c5jEaDhE9Anx2gXSRmWzFXOC5LcPrOhOohG92aqIhY29QFrcuzVS7LtkPrfBwzHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
+ by PH7PR11MB6745.namprd11.prod.outlook.com (2603:10b6:510:1af::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
+ 2026 04:22:10 +0000
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
+ 04:22:09 +0000
+Date: Mon, 29 Jun 2026 21:22:08 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+CC: Xu Yilun <yilun.xu@linux.intel.com>, <x86@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
+	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
+	<kishen.maloor@intel.com>, <baolu.lu@linux.intel.com>,
+	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
+	<dave.hansen@linux.intel.com>, <seanjc@google.com>
+Subject: Re: [PATCH v2 11/17] x86/virt/tdx: Add interface to generate a Quote
+Message-ID: <20260630042208.GC1743876@pedri>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-12-yilun.xu@linux.intel.com>
+ <ajzFKBZWpbwefE03@tlindgre-MOBL1>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ajzFKBZWpbwefE03@tlindgre-MOBL1>
+X-ClientProxiedBy: SJ0PR13CA0218.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c1::13) To SJ0PR11MB5645.namprd11.prod.outlook.com
+ (2603:10b6:a03:3b9::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 30 Jun 2026 09:49:08 +0530
-From: Misbah Anjum N <misanjum@linux.ibm.com>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-        Harsh Prateek Bora
- <harshpb@linux.ibm.com>,
-        =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Shivang
- Upadhyay <shivangu@linux.ibm.com>,
-        =?UTF-8?Q?Daniel_P_=2E_Berrang?=
- =?UTF-8?Q?=C3=A9?= <berrange@redhat.com>,
-        Sourabh Jain
- <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas
- Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano
- Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini
- <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Anushree Mathur
- <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani
- <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH v3 0/8] Testcase improvements and Power8E/NVL removal
-In-Reply-To: <20260629110411.3051274-1-adityag@linux.ibm.com>
-References: <20260629110411.3051274-1-adityag@linux.ibm.com>
-Message-ID: <9eefc074b799f7380cf61885bc37642a@linux.ibm.com>
-X-Sender: misanjum@linux.ibm.com
-Organization: IBM
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDAzNiBTYWx0ZWRfX84hgtQ37z8CT
- CXdGE8ZvZhGFy0BAcXdp1mUopHXG5kXgJXXWELw5UdHbZTmIpXMH4vHBbpEFw8L7t0EOUaJpH7Z
- YIn8Rbu+w2BfVrq4dNVKX2rFUpmfwUH619Sg4oMrip3bdU41k7IhVXAW+wx8HDBKMKc0vPjnww3
- bYGwd8aiTAb2Q/1aPIUvzjj/oVJ97IUEHN5AiD+IBFbD3oFeXGkDWE89F/Xod9lwNZjH1HZncN9
- sY+eRbnmqomzRfZb6G4SoVG4zMrwiMRGTFCUjGYRKKmZxy8oTXwOrYmE/AnzIIWIo7VFrSn+mZF
- yvdLsw/eC5YKm7SVp3ib8SfOJv5k+y/pGG6Qi/1Q1tZ+CwSkhIwOnH+zMmtxBqHTDnMNoSxhZlM
- Ys6jr05pVUj21Ee4BdCzsCF6xvDsC5XTqXidEBPHCfoifeoVdPuJ+myYv6rRih/fVR50KX/9rqQ
- 8lY3eBY3/LslrAFG9NQ==
-X-Proofpoint-GUID: 57Wx2g3DoP64RcIGPHXkOykuDF_fqS5w
-X-Authority-Analysis: v=2.4 cv=Z8bc2nRA c=1 sm=1 tr=0 ts=6a4343c0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=p0WdMEafAAAA:8 a=VnNF1IyMAAAA:8 a=uOxguaagmlPXxrVSXkIA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDAzNiBTYWx0ZWRfX3r7Fck0ECgc4
- ZqcB1LfQoTMoXVDEJwFyVpiQblxnP/GLGIFbzXcC+nTk0LRE6Frm/zJcELZvHN2f9Aff05gfNmu
- TUkwUkomajpw532ECVec/TKAyeYMr+w=
-X-Proofpoint-ORIG-GUID: BGA5pzcRe6mfUjf436klFX06Mx8cAVvH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_01,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300036
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|PH7PR11MB6745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 431b7d4a-3386-431d-2563-08ded65f26f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014|23010399003|3023799007|22082099003|18002099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: OjLeBQrEOtoTlzKXw8yRdNYDpJJyfxu0o0HPLMfEM/TUW4H0d00juUxQx+B3R3Nb1G3WYr7fuFHxkfn4gplYC+khNO06hrQIgpnCaSsOsVFvud9RAiQNXkrAXfIBG3gacsbIyeoatIHXatoSgkpPBNH43zHBI+EZyIQJbJ3Wcegy6Iyl1PLH+vfRao603Dq+3ioBHtoxjQ2RO1NViEVUgOu1zbcvILhkj64xriFy19A4LuvL7S2JlNMZoRTu6cioZ4FYRgXgvlVZPAft0cxeRFyxDjN7lG3Asy8Ofx5LajwlaFORZVsQWu59bO9ZC/GB1VjVsXb50/fGurQWHmnQ9SqEsKrvUn7dUqksIZzn3shwGNCzFRhr6o7KuJ/8ESS3ISj2RZjy1aAcWPFrf1pgrDYUatY251zfXmH9UHtNGDGtBBwkKlBqh2YBJ9AcupE9wBlJyKcO7QtfVPGFCNlMtQrZ0EJ5ahe/05n6n9sLjlbTCa0O92zeBOPdtZAXRbvszQ0fqMMdtT7IjwRUix8TfFsl/XXPvxWhBOqh1hd2qix/n9oZ8twW7D1Br2gyCdkOPQ+QuwuFZeOkwLAK3M3k6vB9jMggVnnVPjbicf9sqeyKFTdtbK3/mIqbSfwWEB8ljxOghsc58j+xQKdsE+fQAFTz2ymAmBn+F7b2gt3p7uY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(23010399003)(3023799007)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mElrxWGzXO72vg2TnmpIzmnEuwwTADiCtNT/QUh9teKGCv61W2HhfyOsERVt?=
+ =?us-ascii?Q?WA+NWMbpXMbCTTsMUQmncDNXTpKhMa1bqBSHOiBMcOAAkoGSVccqDWL904nh?=
+ =?us-ascii?Q?mmYuEVazN3nA0yNE+i03ocZsGTcHJCim/qdIiHpxr70qNKtgTLLL8WyBXWF6?=
+ =?us-ascii?Q?lVRhDd2GJ95oZCozId7UoQhiAA80w6S4f92y17A3Wv0quiKdGPiUDy9TcRGz?=
+ =?us-ascii?Q?+y9UHKjun+zXXDcMB9Y7wOQic9yORrAregutl1guTfPJGScrtuM3nh2TxUBl?=
+ =?us-ascii?Q?MaCDyXdvt/NTJtwIPVWs4yYTtUmcY3SEcsXutx0mjtn/EBvmHHEhfOeDU1Wk?=
+ =?us-ascii?Q?H3gL6Xfhu0BKF4Uesb3ljrYIYNkPeJAZIQFEUoPVuJczrUZoodyXENz2cAVV?=
+ =?us-ascii?Q?6+oY450PNeRMKlqaF0tc4RElavsnKlIo4aemjPsIbrxNOPhkWuJDeFIusv4K?=
+ =?us-ascii?Q?d96BIz5DCs3ftAsr/2NXM5fSvnyiMhK1evzMYlYeiGbbSD1sO6M4mh4c+kFX?=
+ =?us-ascii?Q?JvCglIzxdpgZjnbOopuri2kv8Z7eNx5oFCWZpCDSUx7XfM0OvD14IUpuW5Wb?=
+ =?us-ascii?Q?nVbpv7UOmmkwYybuLe2fa9YDuWMvbS5nZMJ5tRhmhBBI5C0A3iN4rpgKZE5E?=
+ =?us-ascii?Q?WIgifNcqsGM2UzKTnH0ZPjjA4vqJmGeKGi6F/r/ty+lYLUL7owQUXGm9ZYqH?=
+ =?us-ascii?Q?kFZjDxrH4+n8LXdtCCFY/N1DxC3uyTidQVNgME1pplYgeSqoriWpVfZDoLPN?=
+ =?us-ascii?Q?3dxrVsQnJzRjlxFsyR6VW9Eap0mJMdZ4wrRyf505FEKuq2agbPIYtdBoDS0v?=
+ =?us-ascii?Q?Epm3IBAq1/byhsw0RopbNshcy13JijbhUO/C9m+WJHxZC0EsPBMwPTO7xkDb?=
+ =?us-ascii?Q?vYn5FfzHwv9Y0eAtI1Rz70pbZskfUBZ+X0jn02ryF1qmpQ+sCTZUuHssULNY?=
+ =?us-ascii?Q?NtrxbU1jMzUhq+5p8fenHqV7WkaubmXoOcJXThKLfBku+HU1uxYLJmegK8GO?=
+ =?us-ascii?Q?cxNDDSoF+8pocUqxiJGA+LbSVqUFhbk5qXCIZz29ubMXNIGKd2c19vsjNUk5?=
+ =?us-ascii?Q?bBzYhsnZwbZFBalXKukuSmEUsq3cIZiYhgSPUty6ZG+ioW2gPfezR0nTZezk?=
+ =?us-ascii?Q?dmVCqxCxZi43KG6cbR4DoGevh+/RLQU2vIC+hfg3tnTr+UTlO33vM9UPgEwh?=
+ =?us-ascii?Q?UGzsFxkcNd6Gwe7xei78RWofSdKGB2XsNtdcGL7eunZ5N3pnIc5aW+2lep9D?=
+ =?us-ascii?Q?/1TmhgxS3LvjVZHj5GhaMVjAyHq75JZ9U0NsKuZaELeTvYgP3/C4tFU1mTkT?=
+ =?us-ascii?Q?2qSGfEEu6wfXCdnRWz4qbYqxFXXUT9phlLfDEVLLk+oeytmhUiBKuZlqKCHu?=
+ =?us-ascii?Q?92LcQAaOOswyHiXKdh1cZSMFkz9pDdBtVCMAeFBpCEP4WqtpInD9UKu3ihOZ?=
+ =?us-ascii?Q?qS157GxWi89gn233QXaK+vSYSm68HpoZTEZvsxHHKyujsww5FZrkNxeg793o?=
+ =?us-ascii?Q?b7DCNiYpYyy/atcKSxR46M7ovpZdvTiBQTsJDYAM1mQyYh1FKc/o3MoCWqmy?=
+ =?us-ascii?Q?Ac4NEslwlsP33QO/Nl9s9n5yLqP8X4eu57+82tDKYN3XERCaDapkSYMCJmmE?=
+ =?us-ascii?Q?pi/S2M5Yw59emJuGrYXue7pdOxu8Tot4G3H0DAlO2V+uBWnObVpNywIrxLn8?=
+ =?us-ascii?Q?ljlypExrga4QbUOaZhb+Zf6X05D9oLJb3bB89GBXp8Tq0C+HtAmwBpdy4gQ9?=
+ =?us-ascii?Q?2sxnOLuyAg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: Zu2dxNpMjdqmpjMjUnnCdjpr5ob6HHIq3trvPlAX5/kgzy3LG+D3oCIJGpjW/GjgqN7bE3echDG4NhoGa3vyiwHuIDZAOfgJh14JJuKdHwPSER6EAIeE194cUhkLDisSghNWWyV4wsusP2zyigfjvTAyxkWKipoP83qLYwpimXRdJT8y14nicqx3ySTYLTCG0QEBxgs4MUjvD+kKEbB2BvFvti9qDqdPrR5+4n/9vKmK8/GF1glT2L1FTtPaA5IcFYIRJebWy05iMWO1Vpql/EqWfi8uDHgWd905U895MsOzh+eB0R5K+I1tCx8CJOGAehLL/jbdOGDPIDhgaFxuZQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 431b7d4a-3386-431d-2563-08ded65f26f6
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 04:22:09.8250
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HVblWo5af1nZta2qTORzWar7WfFS/SRCWnheWABk/58BOcOjFqLA15ytANgDB+4Rp9QfML8FD92CXEC0VFBOiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6745
+X-OriginatorOrg: intel.com
 
-On 2026-06-29 16:34, Aditya Gupta wrote:
-> Overview
-> ========
+On Thu, Jun 25, 2026 at 09:05:28AM +0300, Tony Lindgren wrote:
+> On Thu, Jun 18, 2026 at 04:13:49PM +0800, Xu Yilun wrote:
+> > From: Peter Fang <peter.fang@intel.com>
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> ...
+> > +void *tdx_quote_generate(struct tdx_td *td, void *in_data, u32 in_data_len,
+> > +			 u32 *quote_len)
+> > +{
+> > +	struct tdx_quote_data *qdata = &tdx_quote;
+> > +	void *quote_dup = NULL;
+> > +	u64 r, out_len;
+> > +
+> > +	if (!tdx_quote_enabled())
+> > +		return NULL;
+> > +
+> > +	mutex_lock(&tdx_quote_lock);
 > 
-> This patch series merged two patch series sent earlier:
-> 	"Testcase improvements for PowerNV"
-> 	"Remove deprecated Power8E and 8NVL CPUs"
-> since the Power8E removal series depended on the former due to pnv-spi 
-> test
+> How about make the pre-generated static tdx_quote a template page that only
+> gets read and copied to an allocated bufer here?
 > 
-> Broadly contains 3 changes:
-> 1. Testcase improvements:
->     Add a testcase to detect regression in remote interrupts when XIVE 
-> changes,
->     since such regression had occurred during Power11 XIVE changes:
-> 
-> https://lore.kernel.org/qemu-devel/baf6c854-832b-4a2e-922f-d34e6dadf821@redhat.com/
-> 
->     Also add Power11 chip and testcase in qtests, and fadump functional 
-> test
-> 
-> 2. Power8E/Power8NVL removal
->     Power8E and Power8NVL were deprecated since QEMU 10.1, with
->     commit 264a604e7163 ("target/ppc: Deprecate Power8E and Power8NVL")
-> 
->     Hence, remove usage (chip and core types) of Power8E and 8NVL from 
-> PowerNV,
->     PSeries as well as testcases.
-> 
-> 3. Maintainer changes
->     Add myself as maintainer for PowerNV machine
-> 
-> Testing
-> =======
-> 
-> * Git tree for testing:
-> https://gitlab.com/adi-g15-ibm/qemu/tree/feat_maintainer-v3
-> * Gitlab pipeline: 
-> https://gitlab.com/adi-g15-ibm/qemu/-/pipelines/2635562383
-> * Successful ppc64 functional tests, qtests, boot tests, builds at all 
-> commits
-> 
-> Changelog
-> =========
-> v3:
-> + #3: use machine_type array in pnv_xscom_addr, as suggested by
-> shivang, harsh and balaton
-> 
-> v2:
-> + #1: put e1000e on socket 1, and disable it's cpu, as suggested by 
-> cedric
-> + #1: pull out command fail checks into a helper, as suggested by 
-> shivang
-> + #2: use g_autofree, suggested by cedric
-> + #3: use g_autofree in tests updated
-> + #8: remove G:, as suggested by daniel
-> + rebased to upstream
-> 
-> from previous split series:
-> + #1: added checks to see if network is up and interrupts happened,
-> based on shivang's review
-> + #3: replaced common if-else-if check for machine type with
-> pnv_get_machine_type
-> + #7: added doc in removed-features, as suggested by cedric
-> + #6,7: added rb from philippe
-> + #8: new patch, maintainer change
-> 
-> Aditya Gupta (8):
->   tests/functional: Add remote interrupts test for PowerNV
->   tests/qtest/pnv_spi: Test Power11 PNV_SPI
->   tests/qtest: Add Power11 chip & machine to qtests
->   tests/functional: Use default powernv machine instead of power10
->   ppc/pnv: Replace Power8E with Power11 for 'none' machine test
->   ppc/pnv: Remove Power8E and Power8NVL pnv chips
->   ppc/pnv: Remove Power8E and Power8NVL CPUs
->   MAINTAINERS: Add self as maintainer for PowerNV
-> 
->  MAINTAINERS                            |  2 +-
->  docs/about/deprecated.rst              |  9 ---
->  docs/about/removed-features.rst        |  8 +++
->  docs/system/ppc/powernv.rst            |  2 +-
->  docs/system/ppc/pseries.rst            |  2 +-
->  hw/ppc/pnv.c                           | 62 -----------------
->  hw/ppc/pnv_core.c                      |  2 -
->  hw/ppc/spapr_cpu_core.c                |  2 -
->  include/hw/ppc/pnv.h                   |  8 ---
->  target/ppc/cpu-models.c                |  6 --
->  target/ppc/cpu-models.h                |  4 --
->  target/ppc/cpu_init.c                  |  6 --
->  target/ppc/kvm.c                       |  4 +-
->  tests/functional/ppc64/test_fadump.py  |  2 +-
->  tests/functional/ppc64/test_powernv.py | 95 ++++++++++++++++++++++++++
->  tests/qtest/machine-none-test.c        |  2 +-
->  tests/qtest/pnv-host-i2c-test.c        | 10 ++-
->  tests/qtest/pnv-spi-seeprom-test.c     | 20 ++++--
->  tests/qtest/pnv-xive2-test.c           |  2 +-
->  tests/qtest/pnv-xscom-test.c           | 22 ++----
->  tests/qtest/pnv-xscom.h                | 41 +++++++----
->  21 files changed, 162 insertions(+), 149 deletions(-)
-> 
-> 
-> base-commit: 20553466cc47af6a8c95f665b601fce3c852e503
+> If the tdx_quote template is only read for copying here, seems you're not
+> going to need the mutex at all? That is assuming tdx_quote template does
+> not change after init.
 
-Hi Aditya,
-
-I've tested the v3 patch series on PowerNV and pSeries guests including 
-the new remote interrupts functional test and Power8E/NVL removal.
-
-Testing Environment:
-- Host: Fedora 42 ppc64le
-- Arch: ppc64le
-- QEMU: emulator version 11.0.50 (v11.0.0-2400-g20553466cc-dirty)
-
-PowerNV Guest Bringup
-Status: Success
-qemu-system-ppc64 -name test-vm -machine powernv -m 4096 -smp 4 
--nographic -kernel 
-~/.cache/qemu/download/6fd29aff9ad4362511ea5d0acbb510667c7031928e97d64ec15bbc5daf4b8151 
--drive 
-file=~/.cache/qemu/download/aee2192b692077c4bde31cb56ce474424b358f17cec323d5c94af3970c9aada2,format=raw,if=none,id=drive0,readonly=on 
--device nvme,drive=drive0,bus=pcie.2,addr=0x0,serial=1234 -append 
-"root=/dev/nvme0n1 console=tty0 console=hvc0"
-
-PSeries Guest Bringup
-Status: Success
-qemu-system-ppc64 -name test-vm -machine pseries,accel=kvm -m 4096 smp 
-8,sockets=1,cores=8,threads=1 -nographic -serial mon:stdio -drive 
-file=/home/kvmci/tests/data/avocado-vt/images/rhel8.0devel-ppc64le.qcow2,if=virtio,format=qcow2 
--netdev bridge,id=net0,br=virbr0 -device virtio-net-pci,netdev=net0
-
-Power8E/NVL Removal Verification
-Status: Success (both correctly rejected after removal)
-   qemu-system-ppc64: unable to find CPU model 'power8e_v2.1'
-   qemu-system-ppc64: unable to find CPU model 'power8nvl_v1.0'
-
-QEMU Functional Test Results (make check-functional-ppc64)
-Status: Success
-Ok:                 12
-Fail:               0
-Skipped:            4
-
-QEMU Unit Test Results (make check-qtest-ppc64)
-Status: Success
-Ok:                 33
-Fail:               0
-Skipped:            0
-
-Result: All tests passed successfully.
-
-Tested-by: Misbah Anjum N <misanjum@linux.ibm.com>
-
-Thanks,
-Misbah Anjum N
+Hm, actually tdx_quote is an output buffer as well (in the form of a
+head pointer: qdata->hpa_entries_pa). Maybe this code needs better
+commenting...
