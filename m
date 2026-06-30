@@ -1,178 +1,148 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AF13F788D
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 11:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B03367B84;
+	Tue, 30 Jun 2026 11:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818196; cv=none; b=Pmuz4znrPnosBGr3zASusaqUOWfH9FSSud11tTqTAcb6NCLJLISNIyusJsFoi+M+YPidMuoQVagTAeEu2E/RDovLEjuq1fTcnisRMCr/ygALn2cbSbJrzfsuUZjoQ5avAKVHdcCQcoy2NpXivu7O8No8ANz09hG9fM5ky1RfXQw=
+	t=1782818621; cv=none; b=Jmd+hcDs3uQ5Q9V9mc3oSbabMBoQH8ECn7rTmdPsUIsiDEFIEA3MF+ZzpA/FBsvazb8HPoQWDAYp3uVGV1AsGxgV3JVGZq6W3jO6VTmpy1AcBmVuu7i5QB5XBjrZoY5Vu6FLArfqYedXydirUm+E1qZ7KVfUru/hj7f2b37tIWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818196; c=relaxed/simple;
-	bh=wPJxsDL/WLjTdSoGwJyGp+BtFFs4irrrsFk8NuVJHso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U4UW1fqdupk+xOocDE0sNdCS/CUhssrFlu9LRYY2HXZZ+hhEa2J68v8slgEcjte9lRpijeNKU1saYRie467oa81ypIpo6L3GItL6+KXiKF2bfdMP7tUTFkJ3VuNR4S3SwVQnDkdeV2xAcWu3+ZZxU++JOF8lMFXpT8rh1YGd7jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N+2VxTvl; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782818621; c=relaxed/simple;
+	bh=BmYQlyg6DPo5W20GbYFNTHyYCjZbTimUzZODM+rPPH4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KA70C9KS2zPXQGr5Vepj0wBj2hGVLPjI5BeUE+Q70a/4/PP3AZo1hAsePCaNpnYN/MpDkr0qjBX2vTm9Xlg9isEMgqxGSQNpga/6pR1N+w6RI/nv3cbM0Iz0l3H4OQb/Rh3VzvTDTFZiA2JThZ1SzT4EOJVdqSBUm49vj+5JXRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYywgAMj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N+2VxTvl"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U9nr1C1535952;
-	Tue, 30 Jun 2026 11:16:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=J1TFxY
-	W1LU7d7iHpkdg6fNMWOd95aruizz1U7PXdBGQ=; b=N+2VxTvlh5kVyid+J9+c/s
-	EI+k16NbSF5FaU4CpDvJqDkBlTi9vzdpNgGr9L9WqSzUTezs3GS3rlYNvMslhtU1
-	yJQhcTfdzza4oblu0gwYJMdom/m+2bA+WzonHwcqMrTTxvuuDGHIT/elaJGIdIi4
-	AZX/y93ouXRnkm+X89TVHsj3h2YU6retQGQC0Y0eHZfkk8ksUIrvFM4IKcg5rj45
-	A99C41zZWQ5sn1yWZqVivFGmbc9J5sDaGu1jj+kus5YYP1LdNB3S6Xz+ZlSGghhj
-	Bfzmd0JC+HGBnq0kwomvJB1468I00CAiDFtvtWhfn1qVUS/NsjN/06XivOJqmPaQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26mjp3d3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 11:16:25 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65UB4cbo001235;
-	Tue, 30 Jun 2026 11:16:24 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2u2g9qgn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 11:16:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65UBGKbK52494600
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 11:16:20 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B3AD92004B;
-	Tue, 30 Jun 2026 11:16:20 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17C1120043;
-	Tue, 30 Jun 2026 11:16:16 +0000 (GMT)
-Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.123.10.203])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 30 Jun 2026 11:16:15 +0000 (GMT)
-Date: Tue, 30 Jun 2026 16:46:14 +0530
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: Re: [PATCH v3 1/8] tests/functional: Add remote interrupts test for
- PowerNV
-Message-ID: <akOlUFpWqeRz0Ft6@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
-References: <20260629110411.3051274-1-adityag@linux.ibm.com>
- <20260629110411.3051274-2-adityag@linux.ibm.com>
- <71cffeef-3398-44e6-8e13-130266e789c1@redhat.com>
- <akJXAebIn7BHhPRS@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
- <99726741-229a-4230-b19e-63a7f27ba9f0@redhat.com>
- <b489fbd0-a1f8-429a-90f0-9ed950cfda1a@linux.ibm.com>
- <dcffa5bb-c092-422c-8685-6f247ffed004@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYywgAMj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E09D1F000E9;
+	Tue, 30 Jun 2026 11:23:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782818620;
+	bh=Y54KlgvkpmlsfsNNcAQh4EUQ3Fj/F0JMr3x/DzBJXOQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oYywgAMjZpz3twqqKSubeal2hOB8n/vkpaGJIh+Luf+kL3leI+66qOVbOXUgxFfKB
+	 x370xUvHy+QXQrSRZpEecMrM8IVm1SdP5ESQE84oOZp9DFgHjRi9S4kfvdSos2a2vN
+	 1LzFYWLLbPiuA2Z0DcehoJT5WQ9ZaxnW3kvheYv/5ij1M5Ty3ZEHWens3kS338en3+
+	 677h9rbfWYRvgB7wxnVw7P6bCxpg2JeXWURtnvjBCG2eBYwKEbKWkSRIJn1JrzwpvJ
+	 NoxpLs6Azcf5e/VFKD5/mcL0cwX6ceG3xN5nH2XR7i7L/9wAL/cYKxKKb9vo43ElIh
+	 xaJp5CNzJmiwA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 06/15] s390/vfio-ap: Transition guest migration state
+ from STOP to STOP_COPY
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260630104132.1598851-7-akrowiak@linux.ibm.com>
+References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
+ <20260630104132.1598851-7-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 11:23:39 +0000
+Message-Id: <20260630112340.1E09D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dcffa5bb-c092-422c-8685-6f247ffed004@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDA5MyBTYWx0ZWRfX2LZplNCV/7UF
- wixGrKecyqay35lE4RjfhrCR/ldTyfSIPyi3LAyg7G2UE0kDaNExkb2ufUAK+fsRVVfnDNvn1/9
- vrLW9D52F+SBliD8Zu6ozD4mrL2bFp8EUEerikWN6qzZqQwtRzg3ku4oFUlZUS2UaIdNdpEuDKD
- mQWwpuUhVhT7ZWBX7PnceiaJC27i2kGbfp12Md0a/ThoKv/41V1PnpF6v5uc3Ay6un/byGOtgH7
- y3z2y0rrjt/rQC8KLmfI7TkxT/hiwAF/aNLx70C+qLjGOuudhRF7RlMEma6f4W+C42dmgS6ytkl
- QYbD1K8jbdFMbAmb6MLFmyiRjUolV1GZjxkDAYrb2jF1s334OhyUoplG2heNCARx9G3aJ/g0J3A
- iEhu/lKGN/blVsltV5MGeZ4+0dvZwPLT32GDRiA5uIxwepebWtQGxGZ7nmxvnQrKk5I+k7P/Gnh
- LpyA+txZlVYOc6u2TPg==
-X-Proofpoint-GUID: RpcKSz7DQPqOosIfOvX69FVnFpoIYhEg
-X-Authority-Analysis: v=2.4 cv=Z8bc2nRA c=1 sm=1 tr=0 ts=6a43a589 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=iHSUZDvydOyf3PkQ_0oA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDA5MyBTYWx0ZWRfX08rsBUHLsumd
- VDdVEvOzXOOHfN9qbC9kxgcjj4tggKGAev8V/XnPWO8d0o/IwUPSSwwCAizTjsAUBQqtayMH+FT
- xLG7ve7OuECJ6VyHwFy1BYPM15PuWK0=
-X-Proofpoint-ORIG-GUID: 7oSPOV3y4IqiKOBd_9y5qfKfh7q3D811
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300093
 
-On 26/06/30 01:13PM, Cédric Le Goater wrote:
-> On 6/30/26 13:04, Aditya Gupta wrote:
-> > 
-> > On 29/06/26 20:13, Cédric Le Goater wrote:
-> > > On 6/29/26 13:39, Aditya Gupta wrote:
-> > > > On 26/06/29 01:20PM, Cédric Le Goater wrote:
-> > > > > On 6/29/26 13:04, Aditya Gupta wrote:
-> > > > > > In the past there have been hard to recreate issues where XIVE changes
-> > > > > > cause qemu crashes due to multi-socket interrupts such as in [1].
-> > > > > > 
-> > > > > > Add a functional test explicitly to test whether remote interrupts work.
-> > > > > > 
-> > > > > > The test can also work as additional boot test for multi-socket boot,
-> > > > > > initrd boot test, as well as a check for e1000e to be working in powernv,
-> > > > > 
-> > > > > you should consider moving to a more modern nic model: igb, which
-> > > > > has sr-iov support too.
-> > > > 
-> > > > yes, can do. with igb i see multiple irqs, so test will have to take sum
-> > > > of all rx irqs, and compare:
-> > > > 
-> > > >     2026-06-29 17:00:46,288: cat /proc/interrupts | grep eth0
-> > > >     2026-06-29 17:00:46,391: 135:          0          0 0 PNV-PCI-MSI 2416443392 Edge      eth0
-> > > >     2026-06-29 17:00:46,393: 136:          0          6 0 PNV-PCI-MSI 2416443393 Edge      eth0-rx-0
-> > > >     2026-06-29 17:00:46,394: 137:          0         14 0 PNV-PCI-MSI 2416443394 Edge      eth0-rx-1
-> > > >     2026-06-29 17:00:46,395: 138:          0          4 0 PNV-PCI-MSI 2416443395 Edge      eth0-rx-2
-> > > >     2026-06-29 17:00:46,397: 139:          0          4 0 PNV-PCI-MSI 2416443396 Edge      eth0-rx-3
-> > > >     2026-06-29 17:00:46,398: 140:          0         16 0 PNV-PCI-MSI 2416443397 Edge      eth0-tx-0
-> > > >     2026-06-29 17:00:46,399: 141:          0          6 0 PNV-PCI-MSI 2416443398 Edge      eth0-tx-1
-> > > >     2026-06-29 17:00:46,399: 142:          0          6 0 PNV-PCI-MSI 2416443399 Edge      eth0-tx-2
-> > > >     2026-06-29 17:00:46,400: 143:          0          4 0 PNV-PCI-MSI 2416443400 Edge      eth0-tx-3
-> > > > 
-> > > > I feel e1000e suffices for this test, should i stay with e1000e or use
-> > > > igb here ?
-> > > 
-> > > or use a single cpu per socket config. Which seems better for the test.
-> > 
-> > 
-> > The test uses single cpu per socket, since i have `-smp 4,sockets=4,threads=1`. Was this what you meant ?
-> 
-> yes. or cores=1, as you wish.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The migration file descriptor does not hold a reference to `matrix=
+_mdev` nor uses an independent context structure, leading to a Use-After-Fr=
+ee when the migration file is closed after the device is removed.
+- [High] `vfio_ap_release_mig_file()` accesses and modifies `matrix_mdev->m=
+ig_data` without holding `matrix_dev->mdevs_lock`, leading to a TOCTOU race=
+ and Use-After-Free.
+--
 
-sure, will add cores=1 for clarity.
+commit 24121dd0a897a029f9bc2979eb21b1bf31847440
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-do you have any further comments before i send a v4 with this change,
-and #include's removed ?
+s390/vfio-ap: Transition guest migration state from STOP to STOP_COPY
 
-Thanks,
-- Aditya G
+This patch implements the transition to the STOP_COPY migration state for
+vfio-ap devices. It sets up the migration infrastructure by creating a file
+stream used to read the guest's AP configuration. The file operations are
+introduced with a stub read implementation.
 
-> 
-> Thanks,
-> 
-> C.
-> 
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 8274e7b65eea4..76e06abe5a9e9 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+[ ... ]
+> @@ -57,6 +58,57 @@ struct vfio_ap_config {
+>  	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+>  };
+> =20
+[ ... ]
+> +static int vfio_ap_release_mig_file(struct inode *file_inode, struct fil=
+e *filp)
+> +{
+> +	struct ap_matrix_mdev *matrix_mdev =3D filp->private_data;
+> +
+
+[Severity: High]
+Does this code race with device closure?
+
+If userspace concurrently closes the main VFIO device FD and the migration
+FD, one thread could process the main FD closure, acquire the mdevs_lock,
+and free matrix_mdev->mig_data.
+
+If vfio_ap_release_mig_file() is called by the other thread and accesses
+matrix_mdev->mig_data without acquiring matrix_dev->mdevs_lock, could it
+dereference a freed mig_data pointer?
+
+> +	if (!matrix_mdev || !matrix_mdev->mig_data)
+> +		return -ENODEV;
+> +
+> +	if (filp =3D=3D matrix_mdev->mig_data->stop_copy_mig_file)
+> +		vfio_ap_release_stop_copy_file(matrix_mdev->mig_data);
+> +	else
+> +		return -ENOENT;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct file_operations vfio_ap_stop_copy_fops =3D {
+> +	.owner =3D THIS_MODULE,
+> +	.read =3D vfio_ap_stop_copy_read,
+> +	.compat_ioctl =3D compat_ptr_ioctl,
+> +	.release =3D vfio_ap_release_mig_file,
+> +};
+> +
+> +static struct file *vfio_ap_open_file_stream(struct ap_matrix_mdev *matr=
+ix_mdev,
+> +					     const struct file_operations *fops,
+> +					     int flags)
+> +{
+> +	struct file *filp;
+> +
+> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
+> +
+> +	filp =3D anon_inode_getfile("vfio_ap_mig_file", fops, matrix_mdev, flag=
+s);
+
+[Severity: High]
+Can this lead to a use-after-free of matrix_mdev?
+
+Because the migration file descriptor does not hold a reference to
+matrix_mdev, what happens if userspace closes the main VFIO device FD
+while keeping the migration FD open, and the administrator removes the
+mediated device?
+
+The VFIO core might wait for the main device FD to close and then free the
+matrix_mdev object. When userspace eventually closes the migration FD,
+vfio_ap_release_mig_file() will dereference filp->private_data which
+points to the freed matrix_mdev memory.
+
+> +	if (!IS_ERR(filp))
+> +		stream_open(filp->f_inode, filp);
+> +
+> +	return filp;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
+851-1-akrowiak@linux.ibm.com?part=3D6
