@@ -1,186 +1,570 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1C732B127;
-	Tue, 30 Jun 2026 04:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782793338; cv=fail; b=uQrANpoceNX3PsH1b9FVOXe8XtiOu0wGjvjQXN5H/6m++L4HWQw+yt5JgS+iGfFG1Xed/zMbktEHcR8xgY+FvRWxN2WLwfvE2iElgoxI69DTAIDYsmEyM6KC9ifExI+DGeGkFMvpE3dpwjbYHwTPrjVVutTEzqxHCCpHlYgkVs4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782793338; c=relaxed/simple;
-	bh=4fhIzl+0m3HksSzXbhb7q0VfRFzA2SGZ1vwUH4+8/ro=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tjcG7W8DyN2xoJfPqkCUnSahKI/oSQSACkl9z2A2uK8ShI3ygT+eMCpkje/WBafak9gU7oZ1f4gBjMNSuC/xnQubhqx1Necnq9Pl7b0gdh5gJ6RX+leDjSfOKTHVuMrmOXzwiwNyfvGpO+7NrqevJ4JKN+2lgM+YcJDBd/5uo7o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f4WUxvIy; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C343B71D7
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 04:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782793656; cv=none; b=LFWM/ybqZsfonijIBOqYMhLoYRyHVUS4BOsg8mMJuBjoGpNvNptA76BlSLqDlUvEviNM7ialOuVoVXeeqVqmWGuCVpR4ZK9YZhiT67ntqHRHhlwNKHu+CuJT06Zy6dGW/Mg8OF29wTi/JY+gTgga4+KH2qz4tcqxilW2SqirsB8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782793656; c=relaxed/simple;
+	bh=UYzJbObuxMCTJLvc6ROVC19Ddwad4MHiUWNs/FLSck4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fSHN8rLIbVcSvq8ZIOhL5AwYgkBYCmgovX43oF/9/qMCzE2hH0JHQxMzDKt2nUq9BMv8qqOVXIKIoVCiA4E0psziMItXaPeopaCVaWry/GkkfSalTxRmFUAG51h5yPpwBO3CRz4/gs7bGhoY38/oNO6ujXA2mDB7heq7DHmSYbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=islY7ez5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4WUxvIy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782793336; x=1814329336;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=4fhIzl+0m3HksSzXbhb7q0VfRFzA2SGZ1vwUH4+8/ro=;
-  b=f4WUxvIyMpuc9KC5tu06pxXKnLDO7gHUE+F+IrqHLOqfk1PJS7lxl8qy
-   PkKv/G07frynf/m7kEcF25GF2bvuFlz7VVRiOU/CNwgv6Bo9LffMvAoPq
-   XpxAUqrdrhIWBUue5qgjn/Xkc1yHqtYeBSrGT4wogJhAhtXQJ2uK/HtTO
-   lEgv35m5vmIb5sKPPB9Na2pOwTu1bU+ougrGUUAq5nAw6Lkkm/gJEh2Aq
-   ctZ75DZHhF3/6sIS64OTXXqr4OVjJcbGpyTAbt5Go7BrcgdHoSvnnhS/z
-   m9+qJV7ulA5pW41vVIDtWeTEcanjVt+wAHAmWHgzTkB++NxevfLObxfLU
-   w==;
-X-CSE-ConnectionGUID: lsFdfeJKQH6wZK+S2AWEXg==
-X-CSE-MsgGUID: Zand1V6FRB2mXDvHd3GlMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="95005486"
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="95005486"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 21:22:16 -0700
-X-CSE-ConnectionGUID: XOOXmMNTQC6XexuFf2qEPw==
-X-CSE-MsgGUID: tJZyAZTCS8ukEpwLw0ZPtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="251092670"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 21:22:16 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 29 Jun 2026 21:22:15 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 21:22:15 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.69) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 29 Jun 2026 21:22:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j4xSzVJzx0GqsDq1YopLB3xRB4cnwyFTanECybYF/n88xhajIdL/ETHqpOOWSjlL/ptTxNmwuGYbtvQ7GicFKIjifXnf+6yuuL0h9jeRgPgmfAym7jYnV1eiAlFouxF1d1PRJt1O53rv7zWxvIEipQyh/t0iKe+JDNksReLZyW2TnFr7HCTEqN4vO2JR1aFwncVW1WdomzYzI5nkHB0H8qEe5F3w5t6Axdvl71silbVG0e6gmNULnp8ytvqRjuINbaE+N1Tq25lD0IOsK16gtzL6S/Ygnv7Bi7DQsqr9/8sGVYAZ6L5TH9F0Hiu1RcT+87nUZnRgRmquj2dFLyaiQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KHgYZb/5i7liWibEHYFQI0cKyLwQ/CLix5B6hU3rTmY=;
- b=Hgeb324eFXt+qXQgbpskFMFkc/dzayRvKX6Xm1bEfo6+icd1jUpY9RzW5A/8/b97T9JLjtK69RmhYzRbLJpjVZ10AKx+JCLGByFQJNEEIwY9MfE1gNk/LG0bGYlb0ptoW9hKq16txEEZFM7ob+BkKNrpL5Hno+bq28LsJ3QbaAQLVT0A6ODQAezl8aDKXFy9YDTaWKftAupGDM0w82QV4xx+JhB/2OZ2BCeW41cmSI0W9UG6Zk0SVknxpBXAIGl4zoIyTzgwjbuV28y7MZIlc2c5jEaDhE9Anx2gXSRmWzFXOC5LcPrOhOohG92aqIhY29QFrcuzVS7LtkPrfBwzHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by PH7PR11MB6745.namprd11.prod.outlook.com (2603:10b6:510:1af::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 04:22:10 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
- 04:22:09 +0000
-Date: Mon, 29 Jun 2026 21:22:08 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Tony Lindgren <tony.lindgren@linux.intel.com>
-CC: Xu Yilun <yilun.xu@linux.intel.com>, <x86@kernel.org>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
-	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
-	<kishen.maloor@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <dave.hansen@intel.com>,
-	<dave.hansen@linux.intel.com>, <seanjc@google.com>
-Subject: Re: [PATCH v2 11/17] x86/virt/tdx: Add interface to generate a Quote
-Message-ID: <20260630042208.GC1743876@pedri>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-12-yilun.xu@linux.intel.com>
- <ajzFKBZWpbwefE03@tlindgre-MOBL1>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ajzFKBZWpbwefE03@tlindgre-MOBL1>
-X-ClientProxiedBy: SJ0PR13CA0218.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::13) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="islY7ez5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B395D1F000E9
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 04:27:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782793652;
+	bh=GyJZZiADxFDgtejPe6CZLylJN/kIfStCGXrgblz45RY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=islY7ez5TznRi0C1iLek4N2X7TvVISCI4ouIUkurnDuH+ALx9gBG3/qSqcVS92eMH
+	 mLyLLulAiiUQVFFjNhSrhFzd5bhlt/7fNN7xQEfgHuQ8CxS/2+rLreI6CHZwo4ECTx
+	 4nMh99WMcz57GTlcMeRMRm2jTS0/faCimTHbRbgvezZWtT8V4tDMkYKVUQ5c6Q5Ncz
+	 K2Pl1RyCDtdbi72++Z5QpWLEbgpE0/I68zcIQzmhJcfiNgl75RaO6O8gbLyFDaTsk8
+	 0cwh0BuJOuylzoVKYrGLEj4sbNYA1HABSjjmD1jjo7ZtzPstNqXS51SKrNSOLgKFKj
+	 Jpq6QC4XK8RNQ==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-69857dc1d5eso3683631a12.3
+        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 21:27:32 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzPphNzw0yRhefZhNCiiP+JLkpbCW2f/XSRyLGSuuvwvQO4yaG4
+	mWYR+SH0HomiTkOAiBN680Cbtj3e0tngKR4zk7C/3R/1besxbNeIR3/ubyAx9+SjG5pIAak+IlB
+	Pxe7WkirM5jgApXBVY2NZTnqLskhGK5A=
+X-Received: by 2002:a05:6402:4415:b0:698:3b7c:3b33 with SMTP id
+ 4fb4d7f45d1cf-69879e4bb30mr737165a12.31.1782793651295; Mon, 29 Jun 2026
+ 21:27:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|PH7PR11MB6745:EE_
-X-MS-Office365-Filtering-Correlation-Id: 431b7d4a-3386-431d-2563-08ded65f26f6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014|23010399003|3023799007|22082099003|18002099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: OjLeBQrEOtoTlzKXw8yRdNYDpJJyfxu0o0HPLMfEM/TUW4H0d00juUxQx+B3R3Nb1G3WYr7fuFHxkfn4gplYC+khNO06hrQIgpnCaSsOsVFvud9RAiQNXkrAXfIBG3gacsbIyeoatIHXatoSgkpPBNH43zHBI+EZyIQJbJ3Wcegy6Iyl1PLH+vfRao603Dq+3ioBHtoxjQ2RO1NViEVUgOu1zbcvILhkj64xriFy19A4LuvL7S2JlNMZoRTu6cioZ4FYRgXgvlVZPAft0cxeRFyxDjN7lG3Asy8Ofx5LajwlaFORZVsQWu59bO9ZC/GB1VjVsXb50/fGurQWHmnQ9SqEsKrvUn7dUqksIZzn3shwGNCzFRhr6o7KuJ/8ESS3ISj2RZjy1aAcWPFrf1pgrDYUatY251zfXmH9UHtNGDGtBBwkKlBqh2YBJ9AcupE9wBlJyKcO7QtfVPGFCNlMtQrZ0EJ5ahe/05n6n9sLjlbTCa0O92zeBOPdtZAXRbvszQ0fqMMdtT7IjwRUix8TfFsl/XXPvxWhBOqh1hd2qix/n9oZ8twW7D1Br2gyCdkOPQ+QuwuFZeOkwLAK3M3k6vB9jMggVnnVPjbicf9sqeyKFTdtbK3/mIqbSfwWEB8ljxOghsc58j+xQKdsE+fQAFTz2ymAmBn+F7b2gt3p7uY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(23010399003)(3023799007)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mElrxWGzXO72vg2TnmpIzmnEuwwTADiCtNT/QUh9teKGCv61W2HhfyOsERVt?=
- =?us-ascii?Q?WA+NWMbpXMbCTTsMUQmncDNXTpKhMa1bqBSHOiBMcOAAkoGSVccqDWL904nh?=
- =?us-ascii?Q?mmYuEVazN3nA0yNE+i03ocZsGTcHJCim/qdIiHpxr70qNKtgTLLL8WyBXWF6?=
- =?us-ascii?Q?lVRhDd2GJ95oZCozId7UoQhiAA80w6S4f92y17A3Wv0quiKdGPiUDy9TcRGz?=
- =?us-ascii?Q?+y9UHKjun+zXXDcMB9Y7wOQic9yORrAregutl1guTfPJGScrtuM3nh2TxUBl?=
- =?us-ascii?Q?MaCDyXdvt/NTJtwIPVWs4yYTtUmcY3SEcsXutx0mjtn/EBvmHHEhfOeDU1Wk?=
- =?us-ascii?Q?H3gL6Xfhu0BKF4Uesb3ljrYIYNkPeJAZIQFEUoPVuJczrUZoodyXENz2cAVV?=
- =?us-ascii?Q?6+oY450PNeRMKlqaF0tc4RElavsnKlIo4aemjPsIbrxNOPhkWuJDeFIusv4K?=
- =?us-ascii?Q?d96BIz5DCs3ftAsr/2NXM5fSvnyiMhK1evzMYlYeiGbbSD1sO6M4mh4c+kFX?=
- =?us-ascii?Q?JvCglIzxdpgZjnbOopuri2kv8Z7eNx5oFCWZpCDSUx7XfM0OvD14IUpuW5Wb?=
- =?us-ascii?Q?nVbpv7UOmmkwYybuLe2fa9YDuWMvbS5nZMJ5tRhmhBBI5C0A3iN4rpgKZE5E?=
- =?us-ascii?Q?WIgifNcqsGM2UzKTnH0ZPjjA4vqJmGeKGi6F/r/ty+lYLUL7owQUXGm9ZYqH?=
- =?us-ascii?Q?kFZjDxrH4+n8LXdtCCFY/N1DxC3uyTidQVNgME1pplYgeSqoriWpVfZDoLPN?=
- =?us-ascii?Q?3dxrVsQnJzRjlxFsyR6VW9Eap0mJMdZ4wrRyf505FEKuq2agbPIYtdBoDS0v?=
- =?us-ascii?Q?Epm3IBAq1/byhsw0RopbNshcy13JijbhUO/C9m+WJHxZC0EsPBMwPTO7xkDb?=
- =?us-ascii?Q?vYn5FfzHwv9Y0eAtI1Rz70pbZskfUBZ+X0jn02ryF1qmpQ+sCTZUuHssULNY?=
- =?us-ascii?Q?NtrxbU1jMzUhq+5p8fenHqV7WkaubmXoOcJXThKLfBku+HU1uxYLJmegK8GO?=
- =?us-ascii?Q?cxNDDSoF+8pocUqxiJGA+LbSVqUFhbk5qXCIZz29ubMXNIGKd2c19vsjNUk5?=
- =?us-ascii?Q?bBzYhsnZwbZFBalXKukuSmEUsq3cIZiYhgSPUty6ZG+ioW2gPfezR0nTZezk?=
- =?us-ascii?Q?dmVCqxCxZi43KG6cbR4DoGevh+/RLQU2vIC+hfg3tnTr+UTlO33vM9UPgEwh?=
- =?us-ascii?Q?UGzsFxkcNd6Gwe7xei78RWofSdKGB2XsNtdcGL7eunZ5N3pnIc5aW+2lep9D?=
- =?us-ascii?Q?/1TmhgxS3LvjVZHj5GhaMVjAyHq75JZ9U0NsKuZaELeTvYgP3/C4tFU1mTkT?=
- =?us-ascii?Q?2qSGfEEu6wfXCdnRWz4qbYqxFXXUT9phlLfDEVLLk+oeytmhUiBKuZlqKCHu?=
- =?us-ascii?Q?92LcQAaOOswyHiXKdh1cZSMFkz9pDdBtVCMAeFBpCEP4WqtpInD9UKu3ihOZ?=
- =?us-ascii?Q?qS157GxWi89gn233QXaK+vSYSm68HpoZTEZvsxHHKyujsww5FZrkNxeg793o?=
- =?us-ascii?Q?b7DCNiYpYyy/atcKSxR46M7ovpZdvTiBQTsJDYAM1mQyYh1FKc/o3MoCWqmy?=
- =?us-ascii?Q?Ac4NEslwlsP33QO/Nl9s9n5yLqP8X4eu57+82tDKYN3XERCaDapkSYMCJmmE?=
- =?us-ascii?Q?pi/S2M5Yw59emJuGrYXue7pdOxu8Tot4G3H0DAlO2V+uBWnObVpNywIrxLn8?=
- =?us-ascii?Q?ljlypExrga4QbUOaZhb+Zf6X05D9oLJb3bB89GBXp8Tq0C+HtAmwBpdy4gQ9?=
- =?us-ascii?Q?2sxnOLuyAg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: Zu2dxNpMjdqmpjMjUnnCdjpr5ob6HHIq3trvPlAX5/kgzy3LG+D3oCIJGpjW/GjgqN7bE3echDG4NhoGa3vyiwHuIDZAOfgJh14JJuKdHwPSER6EAIeE194cUhkLDisSghNWWyV4wsusP2zyigfjvTAyxkWKipoP83qLYwpimXRdJT8y14nicqx3ySTYLTCG0QEBxgs4MUjvD+kKEbB2BvFvti9qDqdPrR5+4n/9vKmK8/GF1glT2L1FTtPaA5IcFYIRJebWy05iMWO1Vpql/EqWfi8uDHgWd905U895MsOzh+eB0R5K+I1tCx8CJOGAehLL/jbdOGDPIDhgaFxuZQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 431b7d4a-3386-431d-2563-08ded65f26f6
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 04:22:09.8250
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HVblWo5af1nZta2qTORzWar7WfFS/SRCWnheWABk/58BOcOjFqLA15ytANgDB+4Rp9QfML8FD92CXEC0VFBOiw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6745
-X-OriginatorOrg: intel.com
+References: <20260629023213.597030-1-maobibo@loongson.cn> <20260629023213.597030-3-maobibo@loongson.cn>
+In-Reply-To: <20260629023213.597030-3-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 30 Jun 2026 12:27:56 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7OHMnugy2bT85jTHkW=NBchSCzuKywKMkq4-mdK07rKg@mail.gmail.com>
+X-Gm-Features: AVVi8CewrltEH45AJ4erezyHGZzpSd0R16uQczvhMYBGa9OC7JJ-SFUg_g84SPM
+Message-ID: <CAAhV-H7OHMnugy2bT85jTHkW=NBchSCzuKywKMkq4-mdK07rKg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] LoongArch: KVM: Replace kvm_err() with WARN_ONCE()
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 25, 2026 at 09:05:28AM +0300, Tony Lindgren wrote:
-> On Thu, Jun 18, 2026 at 04:13:49PM +0800, Xu Yilun wrote:
-> > From: Peter Fang <peter.fang@intel.com>
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> ...
-> > +void *tdx_quote_generate(struct tdx_td *td, void *in_data, u32 in_data_len,
-> > +			 u32 *quote_len)
-> > +{
-> > +	struct tdx_quote_data *qdata = &tdx_quote;
-> > +	void *quote_dup = NULL;
-> > +	u64 r, out_len;
-> > +
-> > +	if (!tdx_quote_enabled())
-> > +		return NULL;
-> > +
-> > +	mutex_lock(&tdx_quote_lock);
-> 
-> How about make the pre-generated static tdx_quote a template page that only
-> gets read and copied to an allocated bufer here?
-> 
-> If the tdx_quote template is only read for copying here, seems you're not
-> going to need the mutex at all? That is assuming tdx_quote template does
-> not change after init.
+Hi, Bibo,
 
-Hm, actually tdx_quote is an output buffer as well (in the form of a
-head pointer: qdata->hpa_entries_pa). Maybe this code needs better
-commenting...
+On Mon, Jun 29, 2026 at 10:32=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
+te:
+>
+> Since guest kernel and ioctl parameter from user mode is untrusted,
+> there may be noise kernel log output in host hypervisor with abnormal
+> state. Here replace kvm_err() with WARN_ONCE() to reduce this kind
+> of noise kernel log, and there is no function change.
+Maybe kvm_pr_unimpl() is a little better than WARN_ONCE()? At least it
+is a KVM API.
+
+Huacai
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  arch/loongarch/kvm/exit.c         | 15 +++++++--------
+>  arch/loongarch/kvm/intc/dmsintc.c |  8 ++++----
+>  arch/loongarch/kvm/intc/eiointc.c | 18 ++++++++---------
+>  arch/loongarch/kvm/intc/ipi.c     | 32 +++++++++++++++----------------
+>  arch/loongarch/kvm/intc/pch_pic.c | 12 ++++++------
+>  arch/loongarch/kvm/vcpu.c         |  2 +-
+>  6 files changed, 43 insertions(+), 44 deletions(-)
+>
+> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+> index 8572b63478bb..4ad006e27a4d 100644
+> --- a/arch/loongarch/kvm/exit.c
+> +++ b/arch/loongarch/kvm/exit.c
+> @@ -252,7 +252,7 @@ int kvm_complete_iocsr_read(struct kvm_vcpu *vcpu, st=
+ruct kvm_run *run)
+>                 *gpr =3D *(s64 *)run->iocsr_io.data;
+>                 break;
+>         default:
+> -               kvm_err("Bad IOCSR length: %d, addr is 0x%lx\n",
+> +               WARN_ONCE(1, "Bad IOCSR length: %d, addr is 0x%lx\n",
+>                                 run->iocsr_io.len, vcpu->arch.badv);
+>                 er =3D EMULATE_FAIL;
+>                 break;
+> @@ -326,7 +326,7 @@ static int kvm_trap_handle_gspr(struct kvm_vcpu *vcpu=
+)
+>
+>         /* Rollback PC only if emulation was unsuccessful */
+>         if (er =3D=3D EMULATE_FAIL) {
+> -               kvm_err("[%#lx]%s: unsupported gspr instruction 0x%08x\n"=
+,
+> +               WARN_ONCE(1, "[%#lx]%s: unsupported gspr instruction 0x%0=
+8x\n",
+>                         curr_pc, __func__, inst.word);
+>
+>                 kvm_arch_vcpu_dump_regs(vcpu);
+> @@ -491,7 +491,7 @@ int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_in=
+st inst)
+>                 return EMULATE_DO_MMIO;
+>         }
+>
+> -       kvm_err("Read not supported Inst=3D0x%08x @%lx BadVaddr:%#lx\n",
+> +       WARN_ONCE(1, "Read not supported Inst=3D0x%08x @%lx BadVaddr:%#lx=
+\n",
+>                         inst.word, vcpu->arch.pc, vcpu->arch.badv);
+>         kvm_arch_vcpu_dump_regs(vcpu);
+>         vcpu->mmio_needed =3D 0;
+> @@ -529,7 +529,7 @@ int kvm_complete_mmio_read(struct kvm_vcpu *vcpu, str=
+uct kvm_run *run)
+>                 *gpr =3D *(s64 *)run->mmio.data;
+>                 break;
+>         default:
+> -               kvm_err("Bad MMIO length: %d, addr is 0x%lx\n",
+> +               WARN_ONCE(1, "Bad MMIO length: %d, addr is 0x%lx\n",
+>                                 run->mmio.len, vcpu->arch.badv);
+>                 er =3D EMULATE_FAIL;
+>                 break;
+> @@ -656,7 +656,7 @@ int kvm_emu_mmio_write(struct kvm_vcpu *vcpu, larch_i=
+nst inst)
+>         }
+>
+>         vcpu->arch.pc =3D curr_pc;
+> -       kvm_err("Write not supported Inst=3D0x%08x @%lx BadVaddr:%#lx\n",
+> +       WARN_ONCE(1, "Write not supported Inst=3D0x%08x @%lx BadVaddr:%#l=
+x\n",
+>                         inst.word, vcpu->arch.pc, vcpu->arch.badv);
+>         kvm_arch_vcpu_dump_regs(vcpu);
+>         /* Rollback PC if emulation was unsuccessful */
+> @@ -748,8 +748,7 @@ static int kvm_handle_fpu_disabled(struct kvm_vcpu *v=
+cpu, int ecode)
+>          * treated as a reserved instruction!
+>          * If FPU already in use, we shouldn't get this at all.
+>          */
+> -       if (WARN_ON(vcpu->arch.aux_inuse & KVM_LARCH_FPU)) {
+> -               kvm_err("%s internal error\n", __func__);
+> +       if (WARN_ON_ONCE(vcpu->arch.aux_inuse & KVM_LARCH_FPU)) {
+>                 run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+>                 return RESUME_HOST;
+>         }
+> @@ -943,7 +942,7 @@ static int kvm_fault_ni(struct kvm_vcpu *vcpu, int ec=
+ode)
+>         /* Fetch the instruction */
+>         inst =3D vcpu->arch.badi;
+>         badv =3D vcpu->arch.badv;
+> -       kvm_err("ECode: %d PC=3D%#lx Inst=3D0x%08x BadVaddr=3D%#lx ESTAT=
+=3D%#lx\n",
+> +       WARN_ONCE(1, "ECode: %d PC=3D%#lx Inst=3D0x%08x BadVaddr=3D%#lx E=
+STAT=3D%#lx\n",
+>                         ecode, vcpu->arch.pc, inst, badv, read_gcsr_estat=
+());
+>         kvm_arch_vcpu_dump_regs(vcpu);
+>         kvm_queue_exception(vcpu, EXCCODE_INE, 0);
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
+dmsintc.c
+> index de25735ce039..708abbcd55bf 100644
+> --- a/arch/loongarch/kvm/intc/dmsintc.c
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -114,7 +114,7 @@ static int kvm_dmsintc_ctrl_access(struct kvm_device =
+*dev,
+>                 }
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown dmsintc register, addr =3D %d\n", __=
+func__, addr);
+> +               WARN_ONCE(1, "%s: unknown dmsintc register, addr =3D %d\n=
+", __func__, addr);
+>                 return -ENXIO;
+>         }
+>
+> @@ -128,7 +128,7 @@ static int kvm_dmsintc_set_attr(struct kvm_device *de=
+v,
+>         case KVM_DEV_LOONGARCH_DMSINTC_GRP_CTRL:
+>                 return kvm_dmsintc_ctrl_access(dev, attr, true);
+>         default:
+> -               kvm_err("%s: unknown group (%d)\n", __func__, attr->group=
+);
+> +               WARN_ONCE(1, "%s: unknown group (%d)\n", __func__, attr->=
+group);
+>                 return -EINVAL;
+>         }
+>  }
+> @@ -139,13 +139,13 @@ static int kvm_dmsintc_create(struct kvm_device *de=
+v, u32 type)
+>         struct loongarch_dmsintc *s;
+>
+>         if (!dev) {
+> -               kvm_err("%s: kvm_device ptr is invalid!\n", __func__);
+> +               WARN_ONCE(1, "%s: kvm_device ptr is invalid!\n", __func__=
+);
+>                 return -EINVAL;
+>         }
+>
+>         kvm =3D dev->kvm;
+>         if (kvm->arch.dmsintc) {
+> -               kvm_err("%s: LoongArch DMSINTC has already been created!\=
+n", __func__);
+> +               WARN_ONCE(1, "%s: LoongArch DMSINTC has already been crea=
+ted!\n", __func__);
+>                 return -EINVAL;
+>         }
+>
+> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
+eiointc.c
+> index 2b14485d14a7..555e55246f0c 100644
+> --- a/arch/loongarch/kvm/intc/eiointc.c
+> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> @@ -47,7 +47,7 @@ static void eiointc_update_irq(struct loongarch_eiointc=
+ *s, int irq, int level)
+>         cpu =3D s->sw_coremap[irq];
+>         vcpu =3D kvm_get_vcpu_by_id(s->kvm, cpu);
+>         if (unlikely(vcpu =3D=3D NULL)) {
+> -               kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+> +               WARN_ONCE(1, "%s: invalid target cpu: %d\n", __func__, cp=
+u);
+>                 return;
+>         }
+>
+> @@ -165,12 +165,12 @@ static int kvm_eiointc_read(struct kvm_vcpu *vcpu,
+>         struct loongarch_eiointc *eiointc =3D vcpu->kvm->arch.eiointc;
+>
+>         if (!eiointc) {
+> -               kvm_err("%s: eiointc irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: eiointc irqchip not valid!\n", __func__=
+);
+>                 return 0;
+>         }
+>
+>         if (addr & (len - 1)) {
+> -               kvm_err("%s: eiointc not aligned addr %llx len %d\n", __f=
+unc__, addr, len);
+> +               WARN_ONCE(1, "%s: eiointc not aligned addr %llx len %d\n"=
+, __func__, addr, len);
+>                 return 0;
+>         }
+>
+> @@ -297,12 +297,12 @@ static int kvm_eiointc_write(struct kvm_vcpu *vcpu,
+>         struct loongarch_eiointc *eiointc =3D vcpu->kvm->arch.eiointc;
+>
+>         if (!eiointc) {
+> -               kvm_err("%s: eiointc irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: eiointc irqchip not valid!\n", __func__=
+);
+>                 return 0;
+>         }
+>
+>         if (addr & (len - 1)) {
+> -               kvm_err("%s: eiointc not aligned addr %llx len %d\n", __f=
+unc__, addr, len);
+> +               WARN_ONCE(1, "%s: eiointc not aligned addr %llx len %d\n"=
+, __func__, addr, len);
+>                 return 0;
+>         }
+>
+> @@ -345,7 +345,7 @@ static int kvm_eiointc_virt_read(struct kvm_vcpu *vcp=
+u,
+>         struct loongarch_eiointc *eiointc =3D vcpu->kvm->arch.eiointc;
+>
+>         if (!eiointc) {
+> -               kvm_err("%s: eiointc irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: eiointc irqchip not valid!\n", __func__=
+);
+>                 return 0;
+>         }
+>
+> @@ -375,7 +375,7 @@ static int kvm_eiointc_virt_write(struct kvm_vcpu *vc=
+pu,
+>         struct loongarch_eiointc *eiointc =3D vcpu->kvm->arch.eiointc;
+>
+>         if (!eiointc) {
+> -               kvm_err("%s: eiointc irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: eiointc irqchip not valid!\n", __func__=
+);
+>                 return 0;
+>         }
+>
+> @@ -502,7 +502,7 @@ static int kvm_eiointc_regs_access(struct kvm_device =
+*dev,
+>                 p =3D (void *)s->coremap + offset * 4;
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown eiointc register, addr =3D %d\n", __=
+func__, addr);
+> +               WARN_ONCE(1, "%s: unknown eiointc register, addr =3D %d\n=
+", __func__, addr);
+>                 return -EINVAL;
+>         }
+>
+> @@ -546,7 +546,7 @@ static int kvm_eiointc_sw_status_access(struct kvm_de=
+vice *dev,
+>                 p =3D &s->status;
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown eiointc register, addr =3D %d\n", __=
+func__, addr);
+> +               WARN_ONCE(1, "%s: unknown eiointc register, addr =3D %d\n=
+", __func__, addr);
+>                 return -EINVAL;
+>         }
+>         spin_lock_irqsave(&s->lock, flags);
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.=
+c
+> index d70bf415c7fc..8d9dacfc1b15 100644
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+> @@ -30,7 +30,7 @@ static void ipi_send(struct kvm *kvm, uint64_t data)
+>         cpu =3D ((data & 0xffffffff) >> 16) & 0x3ff;
+>         vcpu =3D kvm_get_vcpu_by_cpuid(kvm, cpu);
+>         if (unlikely(vcpu =3D=3D NULL)) {
+> -               kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+> +               WARN_ONCE(1, "%s: invalid target cpu: %d\n", __func__, cp=
+u);
+>                 return;
+>         }
+>
+> @@ -105,7 +105,7 @@ static int mail_send(struct kvm *kvm, uint64_t data)
+>         cpu =3D ((data & 0xffffffff) >> 16) & 0x3ff;
+>         vcpu =3D kvm_get_vcpu_by_cpuid(kvm, cpu);
+>         if (unlikely(vcpu =3D=3D NULL)) {
+> -               kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+> +               WARN_ONCE(1, "%s: invalid target cpu: %d\n", __func__, cp=
+u);
+>                 return 0;
+>         }
+>         mailbox =3D ((data & 0xffffffff) >> 2) & 0x7;
+> @@ -139,7 +139,7 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t=
+ addr, uint64_t data)
+>                 ret =3D kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, 4, &va=
+l);
+>                 srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>                 if (unlikely(ret)) {
+> -                       kvm_err("%s: : read data from addr %llx failed\n"=
+, __func__, addr);
+> +                       WARN_ONCE(1, "%s: : read data from addr %llx fail=
+ed\n", __func__, addr);
+>                         return 0;
+>                 }
+>                 /* Construct the mask by scanning the bit 27-30 */
+> @@ -155,7 +155,7 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t=
+ addr, uint64_t data)
+>         ret =3D kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, 4, &val);
+>         srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>         if (unlikely(ret))
+> -               kvm_err("%s: : write data to addr %llx failed\n", __func_=
+_, addr);
+> +               WARN_ONCE(1, "%s: : write data to addr %llx failed\n", __=
+func__, addr);
+>
+>         return 0;
+>  }
+> @@ -168,7 +168,7 @@ static int any_send(struct kvm *kvm, uint64_t data)
+>         cpu =3D ((data & 0xffffffff) >> 16) & 0x3ff;
+>         vcpu =3D kvm_get_vcpu_by_cpuid(kvm, cpu);
+>         if (unlikely(vcpu =3D=3D NULL)) {
+> -               kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+> +               WARN_ONCE(1, "%s: invalid target cpu: %d\n", __func__, cp=
+u);
+>                 return 0;
+>         }
+>         offset =3D data & 0xffff;
+> @@ -200,14 +200,14 @@ static int loongarch_ipi_readl(struct kvm_vcpu *vcp=
+u, gpa_t addr, int len, void
+>                 break;
+>         case IOCSR_IPI_BUF_20 ... IOCSR_IPI_BUF_38 + 7:
+>                 if (offset + len > IOCSR_IPI_BUF_38 + 8) {
+> -                       kvm_err("%s: invalid offset or len: offset =3D %d=
+, len =3D %d\n",
+> +                       WARN_ONCE(1, "%s: invalid offset or len: offset =
+=3D %d, len =3D %d\n",
+>                                 __func__, offset, len);
+>                         break;
+>                 }
+>                 res =3D read_mailbox(vcpu, offset, len);
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown addr: %llx\n", __func__, addr);
+> +               WARN_ONCE(1, "%s: unknown addr: %llx\n", __func__, addr);
+>                 break;
+>         }
+>         *(uint64_t *)val =3D res;
+> @@ -242,7 +242,7 @@ static int loongarch_ipi_writel(struct kvm_vcpu *vcpu=
+, gpa_t addr, int len, cons
+>                 break;
+>         case IOCSR_IPI_BUF_20 ... IOCSR_IPI_BUF_38 + 7:
+>                 if (offset + len > IOCSR_IPI_BUF_38 + 8) {
+> -                       kvm_err("%s: invalid offset or len: offset =3D %d=
+, len =3D %d\n",
+> +                       WARN_ONCE(1, "%s: invalid offset or len: offset =
+=3D %d, len =3D %d\n",
+>                                 __func__, offset, len);
+>                         break;
+>                 }
+> @@ -258,7 +258,7 @@ static int loongarch_ipi_writel(struct kvm_vcpu *vcpu=
+, gpa_t addr, int len, cons
+>                 any_send(vcpu->kvm, data);
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown addr: %llx\n", __func__, addr);
+> +               WARN_ONCE(1, "%s: unknown addr: %llx\n", __func__, addr);
+>                 break;
+>         }
+>
+> @@ -301,7 +301,7 @@ static int kvm_ipi_regs_access(struct kvm_device *dev=
+,
+>
+>         vcpu =3D kvm_get_vcpu_by_id(dev->kvm, cpu);
+>         if (unlikely(vcpu =3D=3D NULL)) {
+> -               kvm_err("%s: invalid target cpu: %d\n", __func__, cpu);
+> +               WARN_ONCE(1, "%s: invalid target cpu: %d\n", __func__, cp=
+u);
+>                 return -EINVAL;
+>         }
+>
+> @@ -335,7 +335,7 @@ static int kvm_ipi_regs_access(struct kvm_device *dev=
+,
+>                 len =3D 8;
+>                 break;
+>         default:
+> -               kvm_err("%s: unknown ipi register, addr =3D %d\n", __func=
+__, addr);
+> +               WARN_ONCE(1, "%s: unknown ipi register, addr =3D %d\n", _=
+_func__, addr);
+>                 return -EINVAL;
+>         }
+>
+> @@ -369,7 +369,7 @@ static int kvm_ipi_get_attr(struct kvm_device *dev,
+>         case KVM_DEV_LOONGARCH_IPI_GRP_REGS:
+>                 return kvm_ipi_regs_access(dev, attr, false);
+>         default:
+> -               kvm_err("%s: unknown group (%d)\n", __func__, attr->group=
+);
+> +               WARN_ONCE(1, "%s: unknown group (%d)\n", __func__, attr->=
+group);
+>                 return -EINVAL;
+>         }
+>  }
+> @@ -381,7 +381,7 @@ static int kvm_ipi_set_attr(struct kvm_device *dev,
+>         case KVM_DEV_LOONGARCH_IPI_GRP_REGS:
+>                 return kvm_ipi_regs_access(dev, attr, true);
+>         default:
+> -               kvm_err("%s: unknown group (%d)\n", __func__, attr->group=
+);
+> +               WARN_ONCE(1, "%s: unknown group (%d)\n", __func__, attr->=
+group);
+>                 return -EINVAL;
+>         }
+>  }
+> @@ -394,13 +394,13 @@ static int kvm_ipi_create(struct kvm_device *dev, u=
+32 type)
+>         struct loongarch_ipi *s;
+>
+>         if (!dev) {
+> -               kvm_err("%s: kvm_device ptr is invalid!\n", __func__);
+> +               WARN_ONCE(1, "%s: kvm_device ptr is invalid!\n", __func__=
+);
+>                 return -EINVAL;
+>         }
+>
+>         kvm =3D dev->kvm;
+>         if (kvm->arch.ipi) {
+> -               kvm_err("%s: LoongArch IPI has already been created!\n", =
+__func__);
+> +               WARN_ONCE(1, "%s: LoongArch IPI has already been created!=
+\n", __func__);
+>                 return -EINVAL;
+>         }
+>
+> @@ -420,7 +420,7 @@ static int kvm_ipi_create(struct kvm_device *dev, u32=
+ type)
+>         ret =3D kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS, IOCSR_IPI_BAS=
+E, IOCSR_IPI_SIZE, device);
+>         mutex_unlock(&kvm->slots_lock);
+>         if (ret < 0) {
+> -               kvm_err("%s: Initialize IOCSR dev failed, ret =3D %d\n", =
+__func__, ret);
+> +               WARN_ONCE(1, "%s: Initialize IOCSR dev failed, ret =3D %d=
+\n", __func__, ret);
+>                 goto err;
+>         }
+>
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
+pch_pic.c
+> index 175a630aceb4..299b4db26833 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -151,12 +151,12 @@ static int kvm_pch_pic_read(struct kvm_vcpu *vcpu,
+>         struct loongarch_pch_pic *s =3D vcpu->kvm->arch.pch_pic;
+>
+>         if (!s) {
+> -               kvm_err("%s: pch pic irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: pch pic irqchip not valid!\n", __func__=
+);
+>                 return ret;
+>         }
+>
+>         if (addr & (len - 1)) {
+> -               kvm_err("%s: pch pic not aligned addr %llx len %d\n", __f=
+unc__, addr, len);
+> +               WARN_ONCE(1, "%s: pch pic not aligned addr %llx len %d\n"=
+, __func__, addr, len);
+>                 return ret;
+>         }
+>
+> @@ -250,12 +250,12 @@ static int kvm_pch_pic_write(struct kvm_vcpu *vcpu,
+>         struct loongarch_pch_pic *s =3D vcpu->kvm->arch.pch_pic;
+>
+>         if (!s) {
+> -               kvm_err("%s: pch pic irqchip not valid!\n", __func__);
+> +               WARN_ONCE(1, "%s: pch pic irqchip not valid!\n", __func__=
+);
+>                 return ret;
+>         }
+>
+>         if (addr & (len - 1)) {
+> -               kvm_err("%s: pch pic not aligned addr %llx len %d\n", __f=
+unc__, addr, len);
+> +               WARN_ONCE(1, "%s: pch pic not aligned addr %llx len %d\n"=
+, __func__, addr, len);
+>                 return ret;
+>         }
+>
+> @@ -390,13 +390,13 @@ static int kvm_pch_pic_set_attr(struct kvm_device *=
+dev,
+>                                 return -EFAULT;
+>
+>                         if (!dev->kvm->arch.pch_pic) {
+> -                               kvm_err("%s: please create pch_pic irqchi=
+p first!\n", __func__);
+> +                               WARN_ONCE(1, "%s: please create pch_pic i=
+rqchip first\n", __func__);
+>                                 return -ENODEV;
+>                         }
+>
+>                         return kvm_pch_pic_init(dev, addr);
+>                 default:
+> -                       kvm_err("%s: unknown group (%d) attr (%lld)\n", _=
+_func__, attr->group,
+> +                       WARN_ONCE(1, "%s: unknown group (%d) attr (%lld)\=
+n", __func__, attr->group,
+>                                         attr->attr);
+>                         return -EINVAL;
+>                 }
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..361fca46e2b3 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1473,7 +1473,7 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,=
+ struct kvm_interrupt *irq)
+>         else if (intr < 0)
+>                 kvm_dequeue_irq(vcpu, -intr);
+>         else {
+> -               kvm_err("%s: invalid interrupt ioctl %d\n", __func__, irq=
+->irq);
+> +               WARN_ONCE(1, "%s: invalid interrupt ioctl %d\n", __func__=
+, irq->irq);
+>                 return -EINVAL;
+>         }
+>
+> --
+> 2.39.3
+>
