@@ -1,164 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58A426693;
-	Tue, 30 Jun 2026 10:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F33F8236;
+	Tue, 30 Jun 2026 11:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782816950; cv=none; b=QOZwI9sTvel9NU3U3MlEA4uOZFZgf2d3G93C3UV9BAGpc27gasCx3z1IP9pTnKmfhNhagg4p5gZnXJ3aj8MR8fbxeViTXAhMgsrlUFfVp6/D0zvELfT6HlAST4/H3X3UAIHEwn842aj2hPXVlm2RKRCwQsQMm7Kkz/TxVyjhiME=
+	t=1782817495; cv=none; b=Kk9t1nB2XGMXePk1PQHt4O/6Am4IQMTo0ucneYjoX9lhFQf8Ua3xhBqO4mo87Os24hPwT7xoYnK1+pmnrYBa63L9lSjwzakvSxjps9Su6qlIkHuDoPerzRsQTU3x2irXxOLkJ4MmNVLQI2jqXnurtB9PP/rp3hJszOB8EjXYIrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782816950; c=relaxed/simple;
-	bh=MVRiXQlQNp+hpHc60JFHtz2KyRo6MC6T9xNC4U55VIs=;
+	s=arc-20240116; t=1782817495; c=relaxed/simple;
+	bh=N9/bH/yp/PkL6WR/lUUvUIJHqDTDNEvrPZQppyFucxA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DYHUw77+4EdHQ4lyUahgTyPYRKkJLZJdyAXjb50SFVQUsQUPRRPirkoIhHk09ZgRCFEoYpXMCVaVqowD0HgPaalUZX+Iz7FbcCM6378Uzy4JXKZinFyyCWlCVJPAcXIffAZcW1vDBvkvc7JDe0ZClw+Xl3+iZhYnCO+WsrRo5yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B//pSUZ5; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=joVE9e+ovTV53/u/xIh6gszN7wJ4kRD2Lx9lein4wOuUV+6saZykcx1V1c4sm4IAj2ZLKqeytYL1e+rHiD9WG6eZFD9E6S5gj6CqRDh0oTBYNbMMdbOaKXyrNa6A3RYxzgqTAGD36cblnJAjajUSuBNQ1cHZ0akVZtoehY1A0PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeowBjvC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B//pSUZ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C08B1F00A3A;
-	Tue, 30 Jun 2026 10:55:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeowBjvC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E121F000E9;
+	Tue, 30 Jun 2026 11:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782816943;
-	bh=r4M6In1JQ8Z6U2OcHZTfWcB+V1K7l4VIpB1HiCw//yE=;
+	s=k20260515; t=1782817494;
+	bh=gOW7gUurJ4uVHBkmFyzwUE3xZenwq/l96TeNgbtvpio=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B//pSUZ5OXyzcNwvNi71Jm8usrvqDD/ojRr+nhrQY0Dlct8MlX3OiuMOqwgV1pNzh
-	 kSspsXweGXDFkTpDrd2kWCQ5QByHxXzQJXnCw4CoFsOvVbrbmsn7dvZkqmfLBFAbzb
-	 s0xMcmlQvwyCEjoJYxQojWoFKCh4U+9EyLxZ0l1JAzW4A2HhwVy2p1n/fB1RQdGRYC
-	 hi8XIOcdIG+787k0Beerm/ySZiFA/xoWpDnNITVftpZNbLkiutUz3kP9uXPIMih8f+
-	 hRXEyfXriz2P8StiP+pBX1q5KS3Ab2RsRCTnIGtAnKvEEkQ9BaOCQNIiBA+xQIHC1M
-	 OWTgnIBQ2Tu/A==
+	b=GeowBjvCqhk7zkrQUdbrRuF4Gr5rT0QCMZRjV4FU6WstnI86M4C5A4lCwfHULm0gL
+	 E5XMoJY/al675x8NcXXV0cghLJTcvcKOlq646cAD4Z4xPNqx2m0UgjY7jcPDT7fzLX
+	 DeLPf6wV9QQ80hixW7s0k0zPZ70AMOiOTkw/a1+QjH6VlzqC6NLd5m5iF7LOQDstaf
+	 nbji3FFvQEaQDdXce1vH9ErwwIqNUMkjBMIzV/JX76f9/q0En6S+AsdwHDTkofg8Kj
+	 gFgFzrVjZTlcmAHwXRJE/xf9DUhFxk0cuk4i6KkO2EJLtVjqXDw79TdXczPuKFX1NJ
+	 RraUWAY8JLEtA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 02/15] s390/vfio-ap: Data structures for facilitating
- vfio device migration
+Subject: Re: [PATCH v3 03/15] s390/vfio-ap: Initialize/release vfio device
+ migration data
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260630104132.1598851-3-akrowiak@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260630104132.1598851-4-akrowiak@linux.ibm.com>
 References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
- <20260630104132.1598851-3-akrowiak@linux.ibm.com>
+ <20260630104132.1598851-4-akrowiak@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 10:55:42 +0000
-Message-Id: <20260630105543.1C08B1F00A3A@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 11:04:53 +0000
+Message-Id: <20260630110453.A2E121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Out-of-bounds read in `do_post_copy_validation` due to redunda=
-nt and unsynchronized size fields (`num_queues` and `config_sz`) during fra=
-gmented migration stream writes.
-- [Low] Use of the architecture-dependent type `size_t` in a binary structu=
-re intended for serialization.
-- [Low] Severe mismatch between kernel-doc comments and actual structure fi=
-elds in `vfio_ap_migration_data` and `vfio_ap_config`.
+- [High] Self-deadlock in the error path of vfio_ap_mdev_probe() when vfio_=
+register_emulated_iommu_dev() fails.
 --
 
-commit b64c84539884d50cda90f18a69a0a94397d84158
+commit 5aa03de641783e67e8d873c30619dc8b515b536e
 Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-s390/vfio-ap: Data structures for facilitating vfio device migration
+s390/vfio-ap: Initialize/release vfio device migration data
 
-This commit introduces the foundational data structures needed to facilitate
-state transitions during vfio device migration for the s390 vfio-ap driver.
-It adds structures for migration data, queue information, and AP configurat=
-ion.
+This commit provides functions to initialize and release data structures
+used during live guest migration. It also adds a release callback for the
+vfio device to clean up the migration data when the mdev is released.
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> new file mode 100644
-> index 0000000000000..239168c4b7fff
-> --- /dev/null
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> @@ -0,0 +1,56 @@
-
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
 [ ... ]
-
-> +/**
-> + * vfio_ap_migration_data - the data needed to migrate a guest with pass=
--through
-> + *			    access to AP devices
-> + *
-> + * @mig_state:		the current migration state
-> + * @resuming_migf:	the object used to resume the target guest
-> + * @saving_migf:	the object used to save the state of the source guest
-> + */
-> +struct vfio_ap_migration_data {
-> +	enum vfio_device_mig_state	mig_state;
+> +static void vfio_ap_mdev_release_dev(struct vfio_device *vdev)
+> +{
+> +	struct ap_matrix_mdev *matrix_mdev;
 > +
-> +	struct {
-> +		struct file *filp;
-> +		struct vfio_ap_config	*ap_config;
-> +		size_t			config_sz;
-> +	} resuming_mig_state;
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	vfio_ap_release_migration_data(matrix_mdev);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +}
 > +
-> +	struct file			*stop_copy_mig_file;
-> +};
-
-[Severity: Low]
-Are the kernel-doc fields for vfio_ap_migration_data out of sync with the
-implementation? The comments document resuming_migf and saving_migf, but the
-actual fields are resuming_mig_state and stop_copy_mig_file.
-
+>  static int vfio_ap_mdev_probe(struct mdev_device *mdev)
 [ ... ]
+> @@ -797,19 +809,30 @@ static int vfio_ap_mdev_probe(struct mdev_device *m=
+dev)
+>  	if (IS_ERR(matrix_mdev))
+>  		return PTR_ERR(matrix_mdev);
+> =20
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +
+[ ... ]
+>  	ret =3D vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
+>  	if (ret)
+>  		goto err_put_vdev;
+[ ... ]
+>  err_put_vdev:
+>  	vfio_put_device(&matrix_mdev->vdev);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
 
-> +/**
-> + * vfio_ap_config - the guest's AP configuration
-> + *
-> + * @num_queues:	the number of queues passed through to the guest
-> + * @reserved: padding to ensure proper alignment of qinfo array
-> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
-> + *		queue information for a queue passed through to the guest
-> + */
-> +struct vfio_ap_config {
-> +	u32				num_queues;
-> +	u8				reserved[4];
-> +	size_t				config_sz;
+[Severity: High]
+Does this create a self-deadlock when vfio_register_emulated_iommu_dev()
+fails?
 
-[Severity: Low]
-Does the kernel-doc block for vfio_ap_config need an update to include the
-config_sz field?
+In this error path, matrix_dev->mdevs_lock is held when calling
+vfio_put_device(). If this drops the last reference, it will synchronously
+invoke the device's release callback, vfio_ap_mdev_release_dev().
 
-[Severity: Low]
-Could the use of size_t here cause consistency issues? Since size_t has
-variable width depending on the architecture, using it in a binary structure
-intended for serialization over file descriptors or the network is generally
-avoided in favor of fixed-width types.
+Looking at the newly added vfio_ap_mdev_release_dev() above, it
+unconditionally attempts to acquire the exact same matrix_dev->mdevs_lock.
+Could this cause the thread to hang indefinitely since the non-recursive
+lock is already held by vfio_ap_mdev_probe()?
 
-[Severity: Critical]
-Could having both num_queues and config_sz in this struct lead to an
-out-of-bounds read later during migration?
-
-If a fragmented migration stream write manipulates config_sz to be a smaller
-value than expected, the validation checks in reallocate_ap_config() could =
-be
-bypassed:
-
-reallocate_ap_config() {
-    cur_cfg_sz =3D ap_config->config_sz;
-    num_queues =3D ap_config->num_queues;
-    if (cur_cfg_sz >=3D sizeof(struct vfio_ap_config)) {
-        ...
-    } else {
-        new_cfg_sz =3D cur_cfg_sz + len;
-    }
-}
-
-This could cause an out-of-bounds read in do_post_copy_validation() when
-looping num_queues times over the qinfo array:
-
-queues_available_on_target_system() {
-    for (int i =3D 0; i < source_config->num_queues; i++) {
-        apqn =3D source_config->qinfo[i].apqn;
-...
-}
-
-Is it possible to synchronize these fields or derive the size directly from
-num_queues to prevent a mismatch?
+>  	return ret;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
-851-1-akrowiak@linux.ibm.com?part=3D2
+851-1-akrowiak@linux.ibm.com?part=3D3
