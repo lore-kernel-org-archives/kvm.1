@@ -1,117 +1,66 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EC31DDC2B
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 00:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A22D42AA6
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 00:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782780127; cv=none; b=U+68Uo98TUim86byx95tUh2gDx/FfSvauLsrzvM8xpMFYOFCdtRl2Oe7VDL9vPpfhmkvXd64vWvDSDrjZ6/5vIzmHj8gomqN22SnrPAx0HxDyPX/tbvQlBaymaDoT6aGsnUzjNvdfwGp/MuWOP1nUVc07ua0ZKAQnnIuYWra920=
+	t=1782780304; cv=none; b=Yyzy5I1hrGY31zMxvuCOO425d/KXAyrjjySE/vutmc339WzxkdxoFrOaTkdt1jvp6vep7X+nrkYXf8YS6GbRlu3hupH/l4mOazmMV+3Wfdg3CYOA95FlhpN8150fU792lcXneKHg8wTeWtOpN0Y3j4y9PyQ24ttbU7YyJUCHMmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782780127; c=relaxed/simple;
-	bh=cshAbN6D5LTzAQCSGrGvu9YTiIKTGytpePf2gXb3rXw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CdAKNVUxhkHwaBcY85Xwhm7+lz3N0MFLIUX+hMEVmfv26QmXkdTboRzwXWy+e6VQsrCjXNscyqJ3KHpPoxlWX4G8yIs6XUCnOIZH/ANnRtNXSXQSUSyNHLXHn8x2qw9rW0YuhuwNPy26kj9B2cBVCZnZwDV+G/ywrYyGgtHwmQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lKUshsct; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1782780304; c=relaxed/simple;
+	bh=LFEtXrsP07lkbT+qoXoQ0MRqr+Jm2xtPU2x9es3aaTE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=METrBwUwximS6uIl4kq8nBsOEQ4wXBLP5xi463zCRAfs9yT+gaxN62UhJ0TCna+1Ds4m0dWhpGIQvYIWpUXw6TxJgvhJsuoqbDY4RdJlNACSrxr64FO8yLphjuaJLxdfirhEmnrmZTNcmBVn1MJqAq816HOyPxL0fpb9re9oIi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=stFd/Eug; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lKUshsct"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84696ed3b24so1265247b3a.1
-        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:42:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="stFd/Eug"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37c9127e316so2698639a91.1
+        for <kvm@vger.kernel.org>; Mon, 29 Jun 2026 17:45:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782780125; x=1783384925; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Gh6LWY0rzUQKB9FLNPeE5dt4Ox2OdfcTUONU/T6FNY=;
-        b=lKUshsctRuAaDyX1NUON6w0x3Wg1N8qrJPd1xpf6pjlxm1fprEEjaEDnCW5cVq/Iag
-         pmO90Q32c7MR2B/bRGhyccwGBOFMhcXBuqTOFSZoLydcIITTwo3g7ggVFKEIkVCG2Nvi
-         K3Pxw1c/UvVwhZD+MBVISXTG7a8+1zIabaOTjx8zX8qgiGrhtpVjjKFib5K24WdHP3q6
-         tCMh0FKbBEYLBI7Eghb0P0Tw7pdk2w7t1UGb4JqstdSIRRku47bQm/Dxy6o8wG1SlBAo
-         KqCxu9/AfpTaKVGDt4AlOefGWkqgIqpYgGuBV2WYdgAuFc1BPIzqP2+LaqbDYJsN5Hkj
-         Mq6g==
+        d=google.com; s=20251104; t=1782780302; x=1783385102; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LFEtXrsP07lkbT+qoXoQ0MRqr+Jm2xtPU2x9es3aaTE=;
+        b=stFd/Eugjkhmn8BkLvWgV0dnfNdYsaAb32V1qLlpg4DssoYhmYkYKUg1bvqukYQ1Lc
+         j7FJjr3ioGoo7jzZGnOW3oAPJq+4EFg/GASBwV1bg/UYv0fTXioxoqAUdsLefLmeoYRy
+         PBJ2n00v1MbYgQhujzKUPasFaKZgG3Oo0EQBCS463KL28E9XPSavfd0KaN7kAV88e7yJ
+         /Hv89Vqgqwh9a34uZHH0j5XfuwerQmXNJHFGfy0WawIGWIkoBEc6bQPkLBrrfiiTL6CP
+         eTEIRpnvDLjD2NH/lNY75PaGs7BmvWGwJgzLOpyCwW6yRc9+3jAzUduFkyBUMnXMw4Ta
+         SFlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782780125; x=1783384925;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/Gh6LWY0rzUQKB9FLNPeE5dt4Ox2OdfcTUONU/T6FNY=;
-        b=R5e1beSo6rB2o+V5jhpCkT5fQgYaeVRqQIJfyP3Wrm6I8HIH49QiZX9EQGYugRwrG6
-         qLPAzfe+AwhktyguiuXvj4ggradkamNiPOer505kz4UBVdFIQcLl2TK0oZWocmBihhS7
-         1vm1NU7FpaeLCPidByAQXSRmCb1L3iEXYP+QT/3gveKAMdo9DfxUEZYAWpOFqnTVIIKC
-         pbk3SHaxD7MSJZvA9Gf0yJhbLzpZXVjHrrWHYvPDvRcicLq3M9UXZ0XZTdkGUKHJw5w8
-         jiof2YJw2bJGlYG1qoYj3jW88+39cPrAtn3iL/ADORkYGPdH7VkZjW4PK/eBftq4Zw28
-         VGSg==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZjNqLDMWxNAFzsMdXweT9M5ZIwogGx4KqjMlw4foiaWNS+AvY0ZLnRg0GT0hAo+zykAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7B1D3AkPvpm8iH+QEUsuUPK5UpUGHZ4xR3xy/4f8PwVz1YRdL
-	FeZsoX+BscGtGQDrPA5ddXyFudCqKYoWXtElJLgcr5zQ1DEu+Zqw3U0yNNPnXMBYCroGK5l3f3J
-	ioGr4xw==
-X-Received: from pgge11.prod.google.com ([2002:a63:db0b:0:b0:c94:ebb:92dc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:6713:b0:3bf:b3d5:ce2d
- with SMTP id adf61e73a8af0-3bfc50b8944mr1267082637.7.1782780125319; Mon, 29
- Jun 2026 17:42:05 -0700 (PDT)
-Date: Mon, 29 Jun 2026 17:42:04 -0700
-In-Reply-To: <20260629100301.GA1743876@pedri>
+        d=1e100.net; s=20251104; t=1782780302; x=1783385102;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LFEtXrsP07lkbT+qoXoQ0MRqr+Jm2xtPU2x9es3aaTE=;
+        b=IHPcXyPcWzA3SOfxOANhaASbG654VznJFTxe0TRdzKvj6A406PiTuAQrEJ2TITsm9z
+         0M5ZDIH1IqMRXv2ZDUVkjZDi9oHuhd3CfzfnsqDR2649Gv8YkXzjo4KXcP40rLP6xLuG
+         +am15fx1OrFkAQxH98jU5IC0ty6D8UNzQzP7VCoRqcaXYxsRGj5wKRHhoovotXiTIIsD
+         C2qW/wWjQAWlalJ4HKhR+C6QlZZ0SXYCcQwLPPIhLSgxQP+5p61v99oC9jHSwECWdwTN
+         hf7S/XYL9Ghamqq+oqumhAmWkzqGFRRWIalRZ8jZDeSkmK0S5C56lsgxqNIbZBJhpsXW
+         KWyw==
+X-Gm-Message-State: AOJu0YzgUYQrDrS7jyNPI8AS59e4d0lhfYh3+K7WFRuL7cE8Yopjs6My
+	75OzYmuXCrKXjOGiMaj3Ske0e5XgMY1iVwTbaVIn+5YZbnXlAn6limQmBChICtXeJiPJbOIq93W
+	gUGVnoA==
+X-Received: from pjbjx19.prod.google.com ([2002:a17:90b:46d3:b0:37f:6c08:3ef1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5251:b0:36d:8e49:d8
+ with SMTP id 98e67ed59e1d1-380526df382mr944296a91.15.1782780302382; Mon, 29
+ Jun 2026 17:45:02 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 29 Jun 2026 17:44:55 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-17-yilun.xu@linux.intel.com> <aj1tFuwZWdPGfUoG@google.com>
- <20260629100301.GA1743876@pedri>
-Message-ID: <akMQ3J6fK3DUBsPH@google.com>
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260630004455.120819-1-seanjc@google.com>
+Subject: [ANNOUNCE] PUCK Agenda - 2026.07.01 - CANCELED
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, djbw@kernel.org, 
-	kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
-	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, dave.hansen@intel.com, 
-	dave.hansen@linux.intel.com
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 29, 2026, Peter Fang wrote:
-> On Thu, Jun 25, 2026 at 11:01:58AM -0700, Sean Christopherson wrote:
-> > On Thu, Jun 18, 2026, Xu Yilun wrote:
-> > > From: Peter Fang <peter.fang@intel.com>
-> > > 
-> > > Provide an in-kernel path for Quote generation when handling
-> > > TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
-> > 
-> > Why?
-> > 
-> 
-> Hi Sean,
-> 
-> This is mainly to avoid a round trip to userspace for the GetQuote flow.
-
-Again, why?
-
-> New TDX modules can now get a Quote directly via an "extension SEAMCALL"
-> instead of exiting to userspace and using an SGX enclave. Exiting to
-> userspace for GetQuote no longer seems worth the overhead/complexity.
-
-I dunno, from a kernel perspective, this is more complexity, not less:
-
- Documentation/arch/x86/tdx.rst |  19 ++---
- Documentation/virt/kvm/api.rst |   3 +
- arch/x86/include/asm/tdx.h     |   9 +++
- arch/x86/kvm/vmx/tdx.h         |   6 ++
- arch/x86/kvm/vmx/tdx.c         | 135 ++++++++++++++++++++++++++++++++-
- virt/kvm/kvm_main.c            |   1 +
- 6 files changed, 163 insertions(+), 10 deletions(-)
-
-> The first half of the series enables extension SEAMCALLs. They implement
-> simple APIs for higher-order security protocols that would otherwise need
-> to be broken into smaller routines. For Quoting, this allows KVM to get
-> a Quote directly through TDH.QUOTE.GET. The TDX module needs only the
-> input data from TDG.VP.VMCALL<GetQuote> for that call.
-
-Answering my own question (though probably poorly), IIUC the answer is that
-DICE-based quoting is done through the TDX Module, whereas existing quoting is
-done through an SGX enclave and so was routed through userspace.
-
-If that's all there is too this, then why is KVM involved?  I.e. why doesn't the
-TDX Module provide the quote directly to the guest?
+PUCK is canceled this week, as I expect many people will be offline for the US
+holiday where we make bad/fun decisions.
