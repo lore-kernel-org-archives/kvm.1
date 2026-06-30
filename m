@@ -1,167 +1,201 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90439E19A
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 20:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6DD47887A;
+	Tue, 30 Jun 2026 20:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782850229; cv=none; b=qwaEzwZ7VZk7+77nzQLkQXrQkwLdjmVJfZ20f/SPuYcq3MM8lBRvqad9TPY4Qq6bA6C22Pheebyk4DL9EfpplJhLVaswanR7rgF5n5+Z4YywFHYhJ5CAmUliIMuFwfE/vca61O0qPgxLMwbh/1oTHGK3A+8HB7OGcEiIXJGPovs=
+	t=1782851084; cv=none; b=mK9HGYVl0eaAGcYURX+8clQ7rxB24mkSrmM1fgZ5JaUPomCZ6Tv1ONHO22Ldr+DKfBLyLl/FDuBJm7uMIAdNRpcD3ZL8FzpDPWt1xvnSi3LuiatPTGb6m8LZoR1EhixK4VPk51ZmYLq+K40m1qrSM685+jXXmyHlMFyWCOA8zco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782850229; c=relaxed/simple;
-	bh=ERr+1tk1uPRrobaMFGfJ/Q1xkES2hUiXZ6Zmeni1OxM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=gNUU4SDlGmRvwroPhIbhKHIqtaz3WYVxgd63D2mX3Zqj6wWz64lxlY6ggf3P8eBuHtyBNylvf26c1OOWONiombiD/vLT+N9GO3SQ8YH1l0LZznpgHkMWd14cGUN7kz8cu7kiCwpM1zgu2m1IauDDYjiVoYafAL8MPa/8HTM7yrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-495b8120909so4036285b6e.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:10:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782850227; x=1783455027;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OZhqN4D3ehCcmgRo3CnnRFx/c5S54WSVUGiSXQDX+TE=;
-        b=WBTq7hfnKzDGibSiB1lR/0+5/CgWAXJb1tl4cSaq+srBzu6qjyaCujGluVuhV2iSEU
-         n9bI3OKGJfxPzmfC44cTK106Q2/NvJ5mFFOMtpg0sKQAUQ80qZAEaw+2oHR+yvk26GoJ
-         ZTpkinlXO3+DEdknABJiWCXMyzuyJJBuwToVhc9ohZd3wwzFiv7bJTNwM7W/10vK+nUi
-         Bg+QOojnpAHvxtCTwFSD4l1lcDcNa2L5LI9OALdvAKdO+GldPsV5uTWjrAmik4RlI0Jy
-         3MqBJ7d5+VL2etN6IP6UWtbkfBcqQyF7IsZp8fVQHB7gATPlOE4U/YVwb+KL8fvqi856
-         /TiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9BwUnVWMofXUn/fsS1TLm6mn9N2jKLWE4XsoDtQL1w8EHAGRrPpeXfqDi42UJT8hdbSyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzhoJLoy6yn0nlfNvh2VKwTDKiRAB3gIc3hvSrvCu9uFtEnAnV
-	oF/SRVmaoo/v++/5D6ReQ2gqRmsSzujUVD8toTzGKKZF3+pW4opJviEx35AK2iLJmEE8nkOVGJk
-	rBA6JxRWS4SERXIt9EI05GouwkU193URZYTD+GoDX3W9rYMfX0EcVbkxCXGY=
+	s=arc-20240116; t=1782851084; c=relaxed/simple;
+	bh=lvnSDXwnO2IamEnDSVp9Sr31rByjrt2f9gYfHAIvtUo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GlSAlkFRxFow8ZVhUjnE8VZbPacHYiyC5FmqRtpFlgEBQOF249CIyNGQMgMZm+mdFvICDK+gvSkzaN7i52a2O80KKilhLtxvFrTEjbUsXrza9JdjeO+hmSaa9OIhKUaDTLgVe9WMXRBB1IAKyMNuiLNPxEPYrRi15ji0NEbz+mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=K5lFI3Zq; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="K5lFI3Zq"
+Received: from [IPV6:2601:646:8081:7da1:c71f:dfcf:59c7:993c] ([IPv6:2601:646:8081:7da1:c71f:dfcf:59c7:993c])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65UK6ofd3661806
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 30 Jun 2026 13:06:51 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65UK6ofd3661806
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1782850020;
+	bh=i2G6UAafySOmb8rY0Of+scGPJBnbme4rl6a4zKkZXos=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K5lFI3Zq4F/mIozRU6/PLoKoYWvuV/6E6cXfs0gd3x7InpQddwy7n7lCqU9zTol6p
+	 iERjS1DYHe87ViLOQDzm87qe53A2nTT739eUJgh3GED1sB/6THV4FmbnfKfjF+gZM6
+	 V3hs8AlxsrgKHqVEonk0hhP6kKL9gYgNa+4EuHtRIhIHX/70mvzshRnY18tWCCdI5w
+	 Ll1EMcK2sxp8iMYsZYSnfeyWpSYeZ1t3FhRicQwouhz9KMqYRLpgCuNpQxbhJ9r8I9
+	 ZsFBJMIoIbws3i0Y3H2zHi5XFwogldA2J2JWZnvAJa/cf38a+7JjgFWPQpcUApHU2I
+	 YRs6tPbYTSHfg==
+Message-ID: <ccd35c56-08ac-46b1-9c76-2554d5a234a9@zytor.com>
+Date: Tue, 30 Jun 2026 13:06:44 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:88c9:b0:495:fd99:66a7 with SMTP id
- 5614622812f47-495fd99688amr1265977b6e.34.1782850227422; Tue, 30 Jun 2026
- 13:10:27 -0700 (PDT)
-Date: Tue, 30 Jun 2026 13:10:27 -0700
-In-Reply-To: <6a426dd2.854d4ab9.360e1d.0008.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4422b3.35583610.9b6d.0002.GAE@google.com>
-Subject: Re: [syzbot] [kvm-x86?] KASAN: use-after-free Read in kvm_setup_guest_pvclock
-From: syzbot <syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com>
-To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
-	tglx@kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
+To: Arnd Bergmann <arnd@arndb.de>, Juergen Gross <jgross@suse.com>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+        x86@kernel.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
+        platform-driver-x86@vger.kernel.org
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        "lukasz.luba@arm.com" <lukasz.luba@arm.com>,
+        Jason Baron
+ <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+        Tony Luck <tony.luck@intel.com>, Yazen Ghannam <yazen.ghannam@amd.com>,
+        Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini
+ <pbonzini@redhat.com>,
+        "Kirill A. Shutemov" <kas@kernel.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>, Pu Wen <puwen@hygon.cn>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Ajay Kaher <ajay.kaher@broadcom.com>,
+        Alexey Makhalov <alexey.makhalov@broadcom.com>,
+        Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+        Babu Moger <babu.moger@amd.com>,
+        Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+        Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+        Dave Airlie <airlied@redhat.com>, Helge Deller <deller@gmx.de>,
+        linux-geode@lists.infradead.org, Olivia Mackall <olivia@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Linus Walleij <linusw@kernel.org>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        James Clark
+ <james.clark@linaro.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Huang Rui <ray.huang@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Perry Yuan <perry.yuan@amd.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+        Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+        Artem Bityutskiy <dedekind1@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Ashok Raj <ashok.raj.linux@gmail.com>,
+        Hans de Goede <hansg@kernel.org>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+        David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
+References: <20260629060526.3638272-1-jgross@suse.com>
+ <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
+ <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
+ <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
+ <9acced19-573d-4923-9329-8be408d2e555@suse.com>
+ <d315e0a8-e4e9-4f7e-80a9-7c236849eabd@app.fastmail.com>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <d315e0a8-e4e9-4f7e-80a9-7c236849eabd@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot has found a reproducer for the following issue on:
+On 2026-06-29 01:38, Arnd Bergmann wrote:
+>>
+>> There is no RDMSRQ instruction on any x86 CPU. Are you mixing this up with
+>> WRMSRNS/RDMSR using an immediate for addressing the MSR?
+> 
+> Yes, I was just confused about the exact definition here and assumed
+> the single-register output version was actually called rdmsrq.
+> 
+So just to be clear:
 
-HEAD commit:    7de6ae9e1220 Add linux-next specific files for 20260629
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=163d19de580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=93f99737ecde604c
-dashboard link: https://syzkaller.appspot.com/bug?extid=fb7c2dd166d3ea63df2a
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1309af41580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11f28bae580000
+There are three instructions(*):
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a09187a6eb8d/disk-7de6ae9e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/f0a76dd86b32/vmlinux-7de6ae9e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/864b9d8296e7/bzImage-7de6ae9e.xz
+	wrmsr		- implicit form only
+	wrmsrns		- implicit or immediate
+	rdmsr		- implicit or immediate
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com
+The implicit form are the same on 32 and 64 bits (and, in fact, 16 bits): they
+take a MSR register address in %ecx and the data as two 32-bit words in
+%edx:%eax. This interface predates x86-64 by about a decade, and the Linux MSR
+interfaces were designed when Linux was 32-bit only, so it made sense at the
+time to treat them as two halves, especially since MSRs often are various
+kinds of bitfields. It didn't help that gcc at the time was extremely
+inefficient in its handling of multiword arithmetic (it is much better now),
+so using a u64 would have made for much worse code.
 
-==================================================================
-BUG: KASAN: use-after-free in kvm_setup_guest_pvclock+0x439/0x620 arch/x86/kvm/x86.c:1728
-Read of size 4 at addr ffff88804d02c320 by task syz.1.180/6591
+The immediate forms are 64-bit only and use a single arbitrary 64-bit
+register; the MSR address is kept in an immediate in the instruction, just
+like they are for most other register types. The only thing that is "special"
+there is that the possible register address space is very large (2^32)
+although in practice a very small fraction of that is (currently) used.
 
-CPU: 1 UID: 0 PID: 6591 Comm: syz.1.180 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_address_description+0x55/0x1e0 mm/kasan/report.c:378
- print_report+0x58/0x70 mm/kasan/report.c:482
- kasan_report+0x117/0x150 mm/kasan/report.c:595
- kvm_setup_guest_pvclock+0x439/0x620 arch/x86/kvm/x86.c:1728
- kvm_guest_time_update+0xa32/0xe60 arch/x86/kvm/x86.c:1864
- vcpu_enter_guest arch/x86/kvm/x86.c:8038 [inline]
- vcpu_run+0x150d/0x73e0 arch/x86/kvm/x86.c:8596
- kvm_arch_vcpu_ioctl_run+0xe51/0x1960 arch/x86/kvm/x86.c:8929
- kvm_vcpu_ioctl+0xa64/0xfe0 virt/kvm/kvm_main.c:4470
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbebb04ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fbeba68d028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fbebb2c6090 RCX: 00007fbebb04ce59
-RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-RBP: 00007fbebb0e2e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbebb2c6128 R14: 00007fbebb2c6090 R15: 00007ffefb5754e8
- </TASK>
+The immediate forms are expected to be faster, and provide for further
+performance improvements in future microarchitectures. This is important,
+because it provides a fine-grain uniform architecture for supervisor-only
+state, instead of having to give a bulk ISA (XSAVES/XRSTORS) that is different
+from the fine-grained architecture, and still get good performance. This gives
+the kernel very fine level control over the context switch flows, for one thing.
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x200000000 pfn:0x4d02c
-flags: 0x80000000000000(node=0|zone=1)
-raw: 0080000000000000 ffffea000159c008 ffff8880b8642f70 0000000000000000
-raw: 0000000200000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 0, migratetype Movable, gfp_mask 0x140dca(GFP_HIGHUSER_MOVABLE|__GFP_ZERO|__GFP_COMP), pid 6589, tgid 6589 (syz.1.180), ts 149074813359
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1861
- prep_new_page mm/page_alloc.c:1869 [inline]
- get_page_from_freelist+0x264c/0x26c0 mm/page_alloc.c:3949
- __alloc_frozen_pages_noprof+0x1a6/0x390 mm/page_alloc.c:5322
- alloc_pages_mpol+0xce/0x280 mm/mempolicy.c:2490
- folio_alloc_mpol_noprof+0x3b/0x1e0 mm/mempolicy.c:2509
- vma_alloc_folio_noprof+0xe1/0x1e0 mm/mempolicy.c:2544
- folio_prealloc mm/memory.c:-1 [inline]
- alloc_anon_folio mm/memory.c:5247 [inline]
- do_anonymous_page mm/memory.c:5342 [inline]
- do_pte_missing+0x835/0x28f0 mm/memory.c:4564
- handle_pte_fault mm/memory.c:6379 [inline]
- __handle_mm_fault mm/memory.c:6517 [inline]
- handle_mm_fault+0xe0b/0x1520 mm/memory.c:6686
- do_user_addr_fault+0xa4d/0x1340 arch/x86/mm/fault.c:1343
- handle_page_fault arch/x86/mm/fault.c:1483 [inline]
- exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1536
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
-page last free pid 6590 tgid 6589 ts 149102566230 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1408 [inline]
- __free_frozen_pages+0x10de/0x11c0 mm/page_alloc.c:2952
- __folio_put+0x30f/0x3c0 mm/swap.c:112
- hva_to_pfn_retry virt/kvm/pfncache.c:246 [inline]
- __kvm_gpc_refresh+0x1277/0x1710 virt/kvm/pfncache.c:330
- __kvm_gpc_activate+0x289/0x3b0 virt/kvm/pfncache.c:424
- kvm_xen_vcpu_set_attr+0x1d3/0x1190 arch/x86/kvm/xen.c:938
- kvm_arch_vcpu_ioctl+0x1467/0x23f0 arch/x86/kvm/x86.c:3815
- kvm_vcpu_ioctl+0x7e6/0xfe0 virt/kvm/kvm_main.c:4647
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+WRMSRNS is a non-serializing form of WRMSR, which is defined as an
+architecturally hard-serializing instruction, although some MSRs have been
+retconned as non-serializing (and the set is different between vendors.) We
+want to switch that over to the model where the kernel explicitly opts in to
+nonserialization, but that means using alternatives since not all CPUs have
+the WRMSRNS instruction.
 
-Memory state around the buggy address:
- ffff88804d02c200: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88804d02c280: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff88804d02c300: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                               ^
- ffff88804d02c380: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88804d02c400: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
+Furthermore, we want to use alternatives so we can make use of the
+immediate-format instructions when the MSR address is known at compile time,
+which it is in *nearly* all cases. If we are smart about it we can also use
+this to let the tracing framework be specific about what MSRs to trace, since
+some MSRs are frequently accessed, but many are set at startup and then
+rarely, if ever, touched.
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+(*) There are actually two more instructions:
+
+	RDMSRLIST
+	WRMSRLIST
+
+... which are bulk versions of RDMSR and WRMSRNS respectively. They can be
+useful to save and restore entire groups of MSRs in one shot, such as
+performance counter configurations. By architecturally allowing the memory
+operations and MSR operations to operate asynchronously, they give some of the
+pipeline benefits of the immediate MSR operations without requiring the MSR
+set to have been set at compile time or code to be dynamically generated.
+
+However, they expose an entirely different programming model, whereas the
+immediate- and -NS instruction choices can be entirely hidden at the C level.
+
