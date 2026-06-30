@@ -1,1033 +1,248 @@
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010030.outbound.protection.outlook.com [52.101.61.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A49425CF9
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782828723; cv=none; b=IH0OrMziRUMTESjS9eRoS8/ttiqZdUNnqoLCS7sCnmbxLVKX2ooT27atMm/0yqJ8T5tMe5uM8ZMgM9rG7UjS5XbnhZ0hW+uga9t+V86Lceh5C430zzb9qvbu1ZHhsVYaVbIRzy1TBsG+cNuzQE1ZwIembKg7chAEva/L0C2X52k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782828723; c=relaxed/simple;
-	bh=JzP1yxmg6e+Mtu+IeE4xuIgbRjLfd5PdDeIp224oNjU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VSaSU6tjjzzDrdwtcedI7RqSas/eFPNaYuydFm3ZdJyyrziy/YmpALOazGGTsuZceQj91ivUe4O0OJZHaByZVx/xcrgzsm9Ea6xNuf5zBfPR3BnY/ASs7GsgOfs0+MdaMe7ofA/GN05KrPPOGdKLLb41fPWFRWKhGffYE2YHwk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QgPEo0PR; arc=none smtp.client-ip=74.125.82.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C2E423152;
+	Tue, 30 Jun 2026 14:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782829131; cv=fail; b=WIy8u6TUXfhretA4uwAh9tq+osi0cYzZhYl1HF1ShF/A7Q6H26ZXmzlkYQplOBhIYDTytxZzvXhbc89JOdM5fx315rlWoEWdMYqh99+T0Bl1z2ZrYfkyyzm6C6wU2G1Gg4aQxIY3C1pY0ngl9lE79zkILwq1uUkYTwd+UWKhcAA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782829131; c=relaxed/simple;
+	bh=SzRRrG9agKQps18enGZP6awS/H0J5J5N4NXVBspDEuE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kwvCMKWy9gwSHqk0jBLQ3e++R9rppwMjpazNes5GL1ZVleMQfJbi4LOwFnC6hDFIJvtyecHtpVyD9zI2EVFo6SHnNK1P2p3Qtn2/TXsalFjtIgUfp6D3gZ6dY3cp4SXIPsQxjq9C22SYZa2vZu1eMaTFPBg4z8Rm2Wp6mbrL2Mw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gVOyawF1; arc=fail smtp.client-ip=52.101.61.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QgPEo0PR"
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-13980b6561dso14034402c88.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 07:12:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782828720; x=1783433520; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E5/ECPpXuCvMKEHtyjrc4cXo1HwIzQL9XhONegyQaRk=;
-        b=QgPEo0PRLMVmiHMuh3IxBK5CIPdi0noHQZFLKkUe/FxYxRDfNye0xyim0uO1654sb/
-         H5Fez7KOLqV24MAQc6nQY497x+EtlQaYIXrtaLid7RHbf8eH/WKCGr0GOTT9h79NWyXq
-         yWqiCa6H2y0s39lf5N0wO8vqE9ZdnLTcOgXTNZEJjv5Qudu1FElS0KoTi57EQ7fiM9/I
-         w8wAUoS5srfvAP1sI/4Q3Wi0MI8TAXmSY3Mj+a2xkxQGKQrNBHsEO8xyVp21jE3Q3UyD
-         anf6OqqbCEbG5iM6/asv8H3rql4sFZ/A4fiJzpC/xixb2A7TTCUZJTEreXoYJaVPk6Qx
-         VcZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782828720; x=1783433520;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E5/ECPpXuCvMKEHtyjrc4cXo1HwIzQL9XhONegyQaRk=;
-        b=jYnwckjDH1c61e1tRwM8k3iVdGX9mOPVrJpffA/A7oyuJZBeSngyZlPTq7E1VuNLoQ
-         qhacTlpNoIwT+WsbI/zidoSHJCASDcZKnfiks2PCNfo9t/nnIgOjbk2kZb04P1zqlDqz
-         8Y9DhiXGBKNPkzjJ5ofQPL5FXwNbuLz+6KJqgUTWc7vgaYGNHCtx7gRBdamhMoriyK6T
-         0CPolJR5EHStq0Zuh0pbSnJyqUdoo5VXhhVDS8EDSPaobIPnwvamfTzI/XcfPPPYnfhx
-         yCikQv8gUEAwxQq3J21omgOAiTPtdXNbIJoGx/5EiLk8GDq52xNhm7bBGcG9jIR/9FhL
-         d+gw==
-X-Forwarded-Encrypted: i=1; AFNElJ9vXp5cdh80C86UauSbwc4al/46Hd1EIE1viFS8gtK+g2TnwxKedBPgL/8bqC1IAUEwNUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHip4k9nf87fAf0alEM6n8lr2wD/+HZGO/QXykbiYlEOs4uIid
-	SDOvaPIlf3TKqpTSENyT+R12cAQQmYC7JXfBVsAjRcf7GPCEJ+5F3CbY6EjrLHMJqI6K6gFwGwH
-	yVe2DpnOJhSKNwsFL9WVM5Q==
-X-Received: from dlbcm2.prod.google.com ([2002:a05:7022:6882:b0:138:90f:8181])
- (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7023:b16:b0:139:90ab:36bc with SMTP id a92af1059eb24-13b2a1dcbb5mr2425952c88.38.1782828719580;
- Tue, 30 Jun 2026 07:11:59 -0700 (PDT)
-Date: Tue, 30 Jun 2026 14:11:52 +0000
-In-Reply-To: <20260630141152.3757722-1-aaronlewis@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gVOyawF1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EIZGb4KZdyBmnF5mzh28FLnLIrfrLjC9SDIdB7dazrFXX6wj7NqvH7WEkYJN7xOREaNvIj34QGgNsEZ3hwbVtNhlFEhCBkEsowqwlQWo26kIsqKSmdHw6S9kYpFzp2vg9lD4kt7+X+GBP3eu6UBOhvvItf/YjlvbR18ievfZhtpBXZ7l6j9wcjDMycA5A/ObwqL/aXPm0eUmUZ23BJPvyOXbzwNqa3NP7QCKyWpxLKF5qN/SWP1hlTaYT8YXUb1Ri61qArbI2mZ4vM39XMkCh3oEs4QszWikWR5BZrrLWS0ixZG/p+5v4IpiMwGHVUFd46BPVKfjvC/cB1yd+rxXIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CweVT+oMb3viipkdZzlp8Y/c/7poTbUOlGVYHs/y60Q=;
+ b=RQpyzckhdCwhk23kcvdDNiUudS9kVxHQl+SuU9hGBVTJW6WxWj+X+4EA/bK8OXTviNipY2CVHDc4ZZHX9a/o8bxXzcja/vWs1gcKggmIJyFBX3Uf3L6crewjOwvYM07Ui9OHE9rAXdLONri2f6MTw9oXwXJHqtwv63tIuUr5WtLVSsBkLguXwZFtEPwD+T3yfsmuVVWJ1uazqu6RHCTQgADwz47sX3Wv9qkCf27GBmvpxtCyY5qaSSh203AgGkGAjbaMN59VmrPfPfYfSI8figo04jeVU/rAYm2ZQOItf7JlXE+YKB2ohekltApUw93eflMuAn3rglJQL4Sf3O3dTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CweVT+oMb3viipkdZzlp8Y/c/7poTbUOlGVYHs/y60Q=;
+ b=gVOyawF13Mkb2QVv8wTnKFmozqVd/VbD2SCHqapR4RfNNuFtGDYjJFyTqQOHj45ORR3bEFE/9BiwOxIfxjXy25hQ1s2Ns8IVSOy/iXL5zV3D9qIloiHMwtRteE+54Pb9P0Tpr+gtZFHb+19HGJ2Ypt1duilKDGIIo0rXZTr+vCY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
+ by SA1PR12MB5639.namprd12.prod.outlook.com (2603:10b6:806:22b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Tue, 30 Jun
+ 2026 14:18:45 +0000
+Received: from SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
+ ([fe80::c2dd:62c5:67fe:aa46%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
+ 14:18:45 +0000
+Message-ID: <c2752d05-617d-45a7-8a82-6c5dffc90518@amd.com>
+Date: Tue, 30 Jun 2026 09:18:41 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/6] x86/sev: Disable CPU hotplug while SNP is active
+To: K Prateek Nayak <kprateek.nayak@amd.com>,
+ Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, ackerleytng@google.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1782336473.git.ashish.kalra@amd.com>
+ <ba146ca15b7f76eee386c8c073fb3f1cc36e5781.1782336473.git.ashish.kalra@amd.com>
+ <fe9927ad-a06a-4a4b-8122-12644513ed14@amd.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <fe9927ad-a06a-4a4b-8122-12644513ed14@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0127.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c2::17) To SN7PR12MB8131.namprd12.prod.outlook.com
+ (2603:10b6:806:32d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260630141152.3757722-1-aaronlewis@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260630141152.3757722-2-aaronlewis@google.com>
-Subject: [PATCH 1/1] tools/bpftrace: Add a simple instrumented kernel profiler
-From: Aaron Lewis <aaronlewis@google.com>
-To: peterz@infradead.org, mingo@redhat.com, acme@kernel.org, 
-	namhyung@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
-	james.clark@linaro.org, seanjc@google.com, dmatlack@google.com
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
-	Aaron Lewis <aaronlewis@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|SA1PR12MB5639:EE_
+X-MS-Office365-Filtering-Correlation-Id: 201d0212-be52-40ab-aeb2-08ded6b27df1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|921020|6133799003|22082099003|3023799007|4143699003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	bdr73dxXlK01hA2yeXq1G2J74nMRpdlnIvWIU5OAYzV6g3rtIsG2Ck3L5LVJ/ik0VESjYYwsOdpQYoz3ckXkGfDgV8PylksFYbBM8RWAAsajV7P0IbMhmi0mbZn9LveyhxmES8/N1Qpux8TuuAo4lLPL6dHxCrR8Gue0W2RvknzsnkG/flT8T5bnDd2mFAGlYv+r1mlgi/UKib8YsxexbQJe+g/cjpU7vDvsm/1OnuqohD0lPU+hgpxSp4Knw75lZTmq+r6xNhLgQutpRkEoDdRNq0/TJs3KQa/uUKiEzA2PEbAFjCf5vPLGqW/CWh7SeZ1nZCybMB0tA1k3HdRxuV0pznzrz8crUA769KQXM+XxYFysTHRZ14TPUh7YUlQYYazToC0yN00noHfgUjd7sHlLpTd6/NZjWHRofjMQbca/OAQRHyZrL/8eXkGQgJB5AcSVqzBooGyFsn+IuuBm5gj8cTosnZ7OMEBe+GrkTeeHDLDp8JGG2bcBe+4pt9C6alBe6x4MHhjM728TZT2o3/uoFe4qAw29nWilr13o3itK3mrl+uvz68rdWcJcCqnBFr/ieV3wSPzL7BOvYJlUkhqRgD9n4nngqHxbrR20T9b5i0rimhxyZ7NFZ6zq9jlR66hBGvR+s5cc9fR8pr8CMNITkngcejwht3urjirZ8eAGoDnRjTbD+Axd5JLYPqTMDyJJEFgukAUw7yAL6aF+ig==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(921020)(6133799003)(22082099003)(3023799007)(4143699003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b3k1bHRvV0RWTHlDMlZDL0drYVFCTXF1OWFmOEw4eUFFcUpKelBIMnJERXFw?=
+ =?utf-8?B?ejVaWGl1UldhaXZrL2k4RUVLelRIRnhJQXNSbWtiV2hNY3pENHlSUHcydzBU?=
+ =?utf-8?B?S3Q2UG93M0IwUzMzd0M0V2h6bjR6dFVISmpmNVdiaE45M0tpTkZld01tb1Bu?=
+ =?utf-8?B?YTYxcEhrRFZHWUZRK091NmErMW9rY09PTlI4eGx4MHZsNzVzVFY0OVV5ODBS?=
+ =?utf-8?B?Y3FCNUtOWGdBdSt2V3ZZcHFndWp2TkoreVhPcmRyZS9HendhVEZWcjJOSy9Z?=
+ =?utf-8?B?SVd2R0xVbDJIQkkvczh0WVR5QjlMWU9pb09hWk0xd0lpY014bXFGN1hLbnVL?=
+ =?utf-8?B?MDFLbVUySzJDSGhHZE9pa1V5OHBRQVg3dVdEYmIwOW1WVTB0UjJsUzZvMlBW?=
+ =?utf-8?B?bmNEVzZ6TDJON252c1F1cGo2bHExck80ZFFXQWtwbVI5WWV3OUxSeTFhNXdL?=
+ =?utf-8?B?dWgxWHJTK3p4UHlZdEh3UHhYbjVONzdrZy9pVmZCYjdHbnpRTzVZcW1MQzZC?=
+ =?utf-8?B?dlpURVhmempMYlBzNWtkbnJUaTZCOUxrazA5a3NkUnRFLzRsTWN3SG9tZUlX?=
+ =?utf-8?B?TDMzZDNxSTAzSHF6UE5kK3ZOV1F2bzMwNzFqRXNvQ0NIalZZU1lHeC9CZHBU?=
+ =?utf-8?B?TUNGS3ZWMDZBZWpEYlVWZHJZMS9sYXVndmg2QUpIaDZhL1hTRm93b3JzT0hY?=
+ =?utf-8?B?clJhOCtaY3pYcmRYb2EvUHFCSlVCWkpXQUZ0Tmx1L2NFUGF0d2tDbHFLVWl5?=
+ =?utf-8?B?OUFJSE9FQnJ5UDlncmtFd1RCeW1oc0pra2IzZEZJL1MxQXZ6aXFRQWVLNDl5?=
+ =?utf-8?B?RjkwQndNTFFrdkRFY0JRb1VNRXZMQ3BoTnRmVWxpc0k3WVpEZ3RUUmhWcWJW?=
+ =?utf-8?B?d1Z5MEJIOGU5N2lLSDFtSVdYQjZaR0lodzlwcE9IZDRNWklPRzk1K3lFWkdi?=
+ =?utf-8?B?MmhSMVl2S1kxeWdZcFJIU042MEFJRzFrcVlwN3A3YjNTR0U0QXdCZitPT2Q0?=
+ =?utf-8?B?RkZsc2tiaHdwZzRwalF6TFJQbmE4ZmNQeFpUSThGdjFLNnJmQklOR21LcXJs?=
+ =?utf-8?B?VXQ3cW9sVzFNd3ROSVdyN09nQ2tSZHBvOGYvWjZRRHpzU0k4aVk1UEhoWEh5?=
+ =?utf-8?B?YlN5M3BrZ2ZmTXdOR3VjQU02anhicXZhTHR3ZGZJNGFZY0FiOFF1ZUhqWTh6?=
+ =?utf-8?B?eWNRUmtaRnU4NSt3UDgzV0hDeDNMb1MxNkFiaXNQM210VEFGODdyUUtkNkg5?=
+ =?utf-8?B?WmFKRlFRUHJrNHZ6UWRKSSthcHpvdGs5WDdaYXhIc3h4NThaU0hnSldoK3Fl?=
+ =?utf-8?B?OHZBbitiS3FwanAvK0ZhU0V6QzFRZlBwYW1oQUtBQlVjdEdHOWRZTmNLbDU5?=
+ =?utf-8?B?NkkvZWpldVRaclNHdnk2MFRabkVoU3U3ci9wdXRKb0VkZkVWbUcyUURJRGIw?=
+ =?utf-8?B?Q2xxNDlPR0FRdVFWNTl4aWVLQ0hKbUQ2RWhMeGJNK1JsVXVSVUIyeWJzV1hn?=
+ =?utf-8?B?dWdMRVlZVkVHYjhPcDJSeU5pckVkQWtKb0xJYXFEQ1V1R1d5VFROa2t2MjZN?=
+ =?utf-8?B?NDdMeElUMElRVmxIbDdhYnV4czEwdFJBN2NEQ0d2WkFRcFZEeUNTVHlYMzh2?=
+ =?utf-8?B?RUVkdEJWLzM3ZWhycThsaUE3OFJzOGlybGdjQUVpRzM5eVVQWlU1TWgzWUhp?=
+ =?utf-8?B?blFtZkI5K01wdlZ0VkJLZlFUTzNKU1ZNbllqVW9oNGREK3dDc2tWLzdBL0Mr?=
+ =?utf-8?B?bXR0NU9HUDY0YzVWRXRNWjlIUFlzWWRHdkVoTlNnREV1bnRtdStrQ01YdmNR?=
+ =?utf-8?B?Ym1RZ0FOYVV0V1pRci85cEFJcjE1VGwyS3l1TUIxK2xCRE1ZSllIWjdqMTJJ?=
+ =?utf-8?B?dHJrNDZBTHpNMkNlaVBIWDZDZTVWUmhQSDdzWmlOdUpuUWVoZC9PemlEcWpr?=
+ =?utf-8?B?NEVYTDhKQWlLVlp6OVlyK2ZDc1JXZGNSRWRHbVJReDUzRlVqcHhDM3NoMmoz?=
+ =?utf-8?B?RnZKNFkwVGVMWGUvWVlheUZlYUdmdnM5dlMvTXR6cVhFSHlDVmhQeWtwdWVm?=
+ =?utf-8?B?eGVkOFRwMzBvc3NvMmc5YWtRRUswS2dSQ21pMGhmbWp6eUwyaU11R2kyU2l6?=
+ =?utf-8?B?WGZTMWlVTnBGcTJnK20xL3dpbUJObCtiWWdOdUttZGRHNTZsY2xIQmdUVWJV?=
+ =?utf-8?B?bTMxTE4yNnY1MXhTUFhMSHFld0s2djh1ZzQxNC9obHE4d1NxdnhPV1VNMEFF?=
+ =?utf-8?B?Tmp5RXlacWZWb2V1VTJRWGpSZUdVdFpSY0RKSHNPSUFpR254bWRZUG9CVTZM?=
+ =?utf-8?Q?34TH2w46YCZ2QJrmzs?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 201d0212-be52-40ab-aeb2-08ded6b27df1
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 14:18:44.5391
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OxEx4Q9T96Z4NkDcqS/NWywe9CIoepwryXm1eCXqhGZ1giyeoTtbllWBz+lvcEQ4+ExVM6jk3pdWW0+j2xn8+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5639
 
-Introduce a simple instrumented profiler for the kernel using BpfTrace.
-This profiler can arbitrarily trace kernel functions and tracepoints.
-The results are then aggregated to display a hierarchical view with
-accompanying timing data.
+On 6/24/26 22:45, K Prateek Nayak wrote:
+> Hello Ashish,
+> 
+> On 6/25/2026 3:26 AM, Ashish Kalra wrote:
+>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>
+>> While SNP is active, every memory write is checked against the RMP to
+>> protect the integrity of SEV-SNP guest memory.  By the SNP architecture
+>> these checks cannot be disabled on a subset of CPUs: they are gated
+>> per-core by SYSCFG[SNP_EN], which the SEV firmware requires to be set on
+>> every present CPU before SNP initialization.  A CPU that does not have
+>> SNP_EN set and was not initialized via SNP_INIT performs no RMP checks at
+>> all, so there is no valid configuration with SNP active and any CPU exempt
+>> from RMP checks.
+>>
+>> The firmware determines which CPUs are present from the processor and the
+>> BIOS/UEFI configuration (e.g. SMT disabled in the BIOS) and enumerates
+>> them at SNP init; it is not aware of the OS bringing CPUs online or
+>> offline afterwards.  A CPU brought online after SNP init was not
+>> enumerated at SNP_INIT and does not have SNP_EN set, so writes from it are
 
-This approach allows a BpfTrace script to be used as a dedicated
-kernel tracing tool (e.g., kvm_trace.bt or vfio_trace.bt) that captures
-instrumented profiling data. The captured data can then be
-post-processed using the provided Python script,
-aggregate_bpf_results.py, which summarizes the output into a concise and
-readable format.
+SNP_INIT will fail if not all of the CPUs have SnpEn set. So if the CPU
+was offline and didn't have SnpEn set, SNP_INIT will fail and so you can't
+have SNP guest memory.
 
-To capture a kernel trace of the KVM selftest userspace_msr_exit_test.c
-with aggregated results, run the following steps:
+Thanks,
+Tom
 
-  1. Ensure BpfTrace is installed on the host machine.
-  2. Start the tracing script:
-       $ bpftrace kvm_trace.bt > kvm_trace.txt
-  3. Run the experiment, e.g. selftest.
-  4. Press Ctrl+C to stop the trace. The results will be written to
-     kvm_trace.txt.
-  5. Run the Python script to aggregate the results:
-       $ python aggregate_bpf_results.py kvm_trace.txt
-
-Example output from the python script:
-
-  kvm_arch_vcpu_load, thread_time = 0.14ms, wall_time = 72.19ms, max = 0.01, avg = 0.00, count = 79, thread_count = 4
-  kvm_arch_vcpu_put, thread_time = 0.14ms, wall_time = 72.16ms, max = 0.00, avg = 0.00, count = 79, thread_count = 4
-  kvm_arch_vcpu_ioctl_run, thread_time = 1.24ms, wall_time = 51.62ms, max = 0.30, avg = 0.03, count = 37, thread_count = 3
-    kvm_arch_vcpu_load, thread_time = 0.06ms, wall_time = 51.52ms, max = 0.00, avg = 0.00, count = 37, thread_count = 3
-    run_guest, thread_time = 0.23ms, wall_time = 51.36ms, max = 0.01, avg = 0.00, count = 83, thread_count = 3
-    kvm_vcpu_block, thread_time = 0.13ms, wall_time = 47.79ms, max = 0.01, avg = 0.00, count = 54, thread_count = 3
-    kvm_arch_vcpu_put, thread_time = 0.07ms, wall_time = 51.32ms, max = 0.00, avg = 0.00, count = 37, thread_count = 3
-
-Similarly, running the profiler against the VFIO selftest
-"vfio_dma_mapping_test.c" produces:
-
-  vfio_group_ioctl_get_device_fd, thread_time = 3039.11ms, wall_time = 6148.26ms, max = 128.16, avg = 126.63, count = 24, thread_count = 24
-    vfio_df_open, thread_time = 3038.71ms, wall_time = 6148.23ms, max = 128.14, avg = 126.61, count = 24, thread_count = 24
-      pcie_flr, thread_time = 2488.03ms, wall_time = 6135.88ms, max = 104.89, avg = 103.67, count = 24, thread_count = 24
-        pci_dev_wait, thread_time = 0.08ms, wall_time = 6031.91ms, max = 0.00, avg = 0.00, count = 24, thread_count = 24
-  vfio_iommu_type1_map_dma, thread_time = 0.14ms, wall_time = 4640.25ms, max = 0.03, avg = 0.02, count = 8, thread_count = 8
-    vfio_pin_map_dma, thread_time = 0.11ms, wall_time = 4407.45ms, max = 0.02, avg = 0.02, count = 6, thread_count = 6
-      vfio_pin_pages_remote, thread_time = 0.06ms, wall_time = 4407.44ms, max = 0.01, avg = 0.01, count = 6, thread_count = 6
-        vaddr_get_pfns, thread_time = 0.04ms, wall_time = 4407.44ms, max = 0.01, avg = 0.01, count = 6, thread_count = 6
-  vfio_iommu_type1_unmap_dma, thread_time = 0.07ms, wall_time = 4640.17ms, max = 0.01, avg = 0.01, count = 8, thread_count = 8
-    vfio_unmap_unpin, thread_time = 0.05ms, wall_time = 4407.37ms, max = 0.01, avg = 0.01, count = 6, thread_count = 6
-      vfio_sync_unpin, thread_time = 0.03ms, wall_time = 4407.37ms, max = 0.01, avg = 0.01, count = 6, thread_count = 6
-  pcie_flr, thread_time = 2483.20ms, wall_time = 6134.88ms, max = 103.72, avg = 103.47, count = 24, thread_count = 24
-    pci_dev_wait, thread_time = 0.08ms, wall_time = 6032.00ms, max = 0.01, avg = 0.00, count = 24, thread_count = 24
-  vfio_df_ioctl_bind_iommufd, thread_time = 762.41ms, wall_time = 5926.98ms, max = 127.29, avg = 127.07, count = 6, thread_count = 6
-    vfio_df_open, thread_time = 762.38ms, wall_time = 5926.97ms, max = 127.28, avg = 127.06, count = 6, thread_count = 6
-      pcie_flr, thread_time = 621.72ms, wall_time = 5903.59ms, max = 104.03, avg = 103.62, count = 6, thread_count = 6
-        pci_dev_wait, thread_time = 0.02ms, wall_time = 5800.05ms, max = 0.00, avg = 0.00, count = 6, thread_count = 6
-  vfio_df_unbind_iommufd, thread_time = 622.29ms, wall_time = 5903.73ms, max = 103.78, avg = 103.71, count = 6, thread_count = 6
-    pcie_flr, thread_time = 621.52ms, wall_time = 5903.60ms, max = 103.66, avg = 103.59, count = 6, thread_count = 6
-      pci_dev_wait, thread_time = 0.02ms, wall_time = 5800.07ms, max = 0.01, avg = 0.00, count = 6, thread_count = 6
-
-The results display a variety of metrics, defined as follows:
-
-  - "thread_time": The total time captured across all threads for a given
-    function or tracepoint between START_TIMER() and STOP_TIMER().
-  - "wall_time": The elapsed time from when the first START_TIMER() was
-    captured for a given function or tracepoint until the last STOP_TIMER().
-  - "max": The largest single duration recorded from START_TIMER() to
-    STOP_TIMER().
-  - "avg": The average duration of a given function or tracepoint from
-    START_TIMER() to STOP_TIMER().
-  - "count": The number of occurrences a given function or tracepoint was
-    encountered.
-  - "thread_count": The number of unique threads on which a given function
-    or tracepoint was observed.
-
-It is important to note that this profiler does not come with zero
-overhead. Because it relies on BpfTrace, recording the trace data
-inherently introduces overhead. Tracing a high volume of events in a
-short period will proportionally increase this overhead. Therefore, the
-goal is not to create an instrumented profiler that traces everything in
-the kernel with a single script. Instead, the goal is to create a
-focused script that captures targeted, concrete timing data. This data
-can then be paired with a sample profiler (e.g., perf) and
-potentially an off-CPU profiler to more accurately reason about
-performance bottlenecks.
-
-For example, having both the total duration of a function and its
-off-CPU time allows us to determine the exact breakdown of time spent
-running versus sleeping. If a function spends the majority of its time
-running, the perf data will highlight the bottleneck; conversely, if
-more time is spent sleeping, the off-CPU trace will pinpoint the issue.
-By providing the total time, we can definitively point to where the problem
-lies. Furthermore, this approach adds critical context to the sample
-profiler by grounding its data with concrete run times.
-
-Alternatively, this tool can be utilized for general runtime monitoring.
-It provides visibility into code execution flow, tracks the frequency
-of function calls, and offers an overall understanding of system runtime
-behavior.
-
-A future development opportunity could be to extend a flamegraph
-generator to accept this tool's output. Given the hierarchy, the
-function name, and the thread time, all the necessary data is already
-present to successfully generate a flamegraph.
----
- .../aggregate_bpf_results.py                  | 318 ++++++++++++++++++
- .../samples/kvm_trace.bt                      | 197 +++++++++++
- .../samples/vfio_trace.bt                     | 315 +++++++++++++++++
- 3 files changed, 830 insertions(+)
- create mode 100644 tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py
- create mode 100644 tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt
- create mode 100644 tools/bpftrace/instrumented_profiler/samples/vfio_trace.bt
-
-diff --git a/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py b/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py
-new file mode 100644
-index 000000000000..f4ffe8cff441
---- /dev/null
-+++ b/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py
-@@ -0,0 +1,318 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# Prints the aggregate results of an instrumented BPF trace.
-+#
-+# Copyright 2026 Google LLC
-+#
-+# Author: Aaron Lewis <aaronlewis@google.com>
-+
-+import fileinput
-+import re
-+import sys
-+import warnings
-+from typing import List, Sequence
-+
-+class ProfilerResult:
-+  """Class for holding the profiler results."""
-+
-+  def __init__(
-+      self,
-+      name: str,
-+      thread_usec: int,
-+      wall_usec: int,
-+      max_usec: int,
-+      avg_usec: int,
-+      count: int,
-+      thread_count: int,
-+      incomplete_count: int,
-+      depth: int,
-+  ):
-+    self.name = name
-+    self.thread_usec = thread_usec
-+    self.wall_usec = wall_usec
-+    self.max_usec = max_usec
-+    self.avg_usec = avg_usec
-+    self.count = count
-+    self.thread_count = thread_count
-+    self.incomplete_count = incomplete_count
-+    self.depth = depth
-+
-+class BpfTimer:
-+  """Class for holding a timer."""
-+
-+  def __init__(
-+      self,
-+      name: str,
-+      start_time_us: int,
-+      duration_us: int,
-+      depth: int,
-+  ):
-+    self.name = name
-+    self.start_time_us = start_time_us
-+    self.duration_us = duration_us
-+    self.depth = depth
-+
-+class BpfResult:
-+  """Class for holding the profiler results."""
-+
-+  def __init__(
-+      self,
-+      name: str,
-+      wall_time_start_us: int,
-+      wall_time_end_us: int,
-+      thread_us: int,
-+      max_us: int,
-+      avg_us: int,
-+      count: int,
-+      thread_count: int,
-+      depth: int,
-+      tid: int,
-+  ):
-+    self.name = name
-+    self.wall_time_start_us = wall_time_start_us
-+    self.wall_time_end_us = wall_time_end_us
-+    self.thread_us = thread_us
-+    self.max_us = max_us
-+    self.avg_us = avg_us
-+    self.count = count
-+    self.thread_count = thread_count
-+    self.depth = depth
-+    self.children = []
-+    self.child_index = {}
-+    self.threads = {}
-+    self.threads[tid] = True
-+
-+def update_child(r: BpfResult, timer: BpfTimer, tid: int) -> int:
-+  i = r.child_index.get(timer.name)
-+  if i is None:
-+    i = len(r.children)
-+    r.children.append(BpfResult(
-+        timer.name,
-+        timer.start_time_us,
-+        timer.start_time_us + timer.duration_us,
-+        timer.duration_us,
-+        timer.duration_us,
-+        timer.duration_us,
-+        1,
-+        1,
-+        timer.depth,
-+        tid))
-+    r.child_index[timer.name] = i
-+  else:
-+    r.children[i].wall_time_start_us = min(r.children[i].wall_time_start_us, timer.start_time_us)
-+    r.children[i].wall_time_end_us = max(r.children[i].wall_time_end_us, timer.start_time_us + timer.duration_us)
-+    r.children[i].thread_us += timer.duration_us
-+    r.children[i].max_us = max(r.children[i].max_us, timer.duration_us)
-+    r.children[i].count += 1
-+    r.children[i].avg_us = r.children[i].thread_us / r.children[i].count
-+    if r.children[i].threads.get(tid) is None:
-+      r.children[i].threads[tid] = True
-+      r.children[i].thread_count += 1
-+
-+  return i
-+
-+def merge_recursive(r: BpfResult, tid: int, timers: List[BpfTimer], index: int, child_index: int) -> int:
-+  while index < len(timers):
-+    while index < len(timers) and timers[index] == None:
-+      index += 1
-+
-+    if index >= len(timers):
-+      return index
-+
-+    # The timer is a child of 'r'. (Child case)
-+    if timers[index].depth == (r.depth + 1):
-+      # Add child
-+      child_index = update_child(r, timers[index], tid)
-+
-+      # Now that the timer has been handled increment to the next one.
-+      index += 1
-+
-+    # The timer is a child of 'r'. (Grandchild case)
-+    elif timers[index].depth == (r.depth + 2):
-+      if child_index < 0:
-+        raise ValueError("Invalid 'child_index'")
-+      # Recurse down the child becuase that is the parent this timer.
-+      index = merge_recursive(r.children[child_index], tid, timers, index, child_index)
-+
-+    # The timer is a descendant of 'r', but not the child... Invalid case!
-+    elif timers[index].depth > (r.depth + 2):
-+      raise ValueError("Invalid depth.  descendant can only be children. name = '%s', tid = %d, index = %d" % (timers[index].name, tid, index))
-+
-+    # New family tree.  Pop out of this one.
-+    elif timers[index].depth <= r.depth:
-+      # The timer is an ancestor of 'r'.  Return so it can be processed elsewhere.
-+      return index
-+
-+  return index
-+
-+def merge_timers(r: BpfResult, tid: int, timers: List[BpfTimer]):
-+  if len(timers) == 0:
-+    return
-+
-+  if timers[0].depth != 0:
-+    raise ValueError("Expected a depth of 0.  '%s', depth = %d" % (timers[0].name, timers[0].depth))
-+
-+  merge_recursive(r, tid, timers, 0, -1)
-+
-+def print_recursive(r: BpfResult, results : List[ProfilerResult]):
-+  thread_time = float(r.thread_us) / 1000.0
-+  wall_time_us = r.wall_time_end_us - r.wall_time_start_us
-+  wall_time = float(wall_time_us) / 1000.0
-+  max_time = float(r.max_us) / 1000.0
-+  avg_time = float(r.avg_us) / 1000.0
-+
-+  indent = ""
-+  for i in range(r.depth):
-+    indent += "  "
-+
-+  print("%s%s, thread_time = %.2fms, wall_time = %.2fms, max = %.2f, avg = %.2f, count = %d, thread_count = %d" %
-+        (indent, r.name, thread_time, wall_time, max_time, avg_time, r.count, r.thread_count));
-+
-+  results.append(
-+      ProfilerResult(
-+          r.name,
-+          r.thread_us,
-+          wall_time_us,
-+          r.max_us,
-+          r.avg_us,
-+          r.count,
-+          r.thread_count,
-+          0,
-+          r.depth,
-+      )
-+  )
-+
-+  for child in r.children:
-+    print_recursive(child, results)
-+
-+def print_results(r: BpfResult, results : List[ProfilerResult]):
-+  for child in r.children:
-+    print_recursive(child, results)
-+
-+def generate_from_log(files: Sequence[str]):
-+  """Read the trace and return a list of ProfilerResult objects."""
-+
-+  timer_counts = {}
-+  all_timers = {}
-+
-+  count_regex = re.compile(
-+      r"^@timer_count\[(?P<tid>[0-9]+)\]:\W(?P<count>[-0-9]+)"
-+  )
-+  name_regex = re.compile(
-+      r"^@timer_name\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<name>[\w\.0-9]+)"
-+  )
-+  start_time_regex = re.compile(
-+      r"^@timer_start\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<start_time_us>[-0-9]+)"
-+  )
-+  duration_regex = re.compile(
-+      r"^@timer_duration\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<duration_us>[-0-9]+)"
-+  )
-+  depth_regex = re.compile(
-+      r"^@timer_depth\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<depth>[-0-9]+)"
-+  )
-+
-+  attaching_regex = re.compile(
-+      r"^Attaching.*"
-+  )
-+
-+  # Get all counts.  That way we know how many timers each thread used.
-+  for line in fileinput.input(files=files):
-+    line = line.rstrip()
-+
-+    m = re.fullmatch(duration_regex, line)
-+    if m:
-+      tid = int(m.group("tid"))
-+      index = int(m.group("index"))
-+      duration_str = m.group("duration_us")
-+      duration = int(m.group("duration_us"))
-+
-+      if not tid in timer_counts:
-+        timer_counts[tid] = index
-+      else:
-+        timer_counts[tid] = max(timer_counts[tid], index)
-+
-+  # Allocate enough timers to fit the trace.
-+  for tid, count in timer_counts.items():
-+    all_timers[tid] = [None] * (count + 1)
-+
-+  # Populate the trace.
-+  for line in fileinput.input(files=files):
-+    line = line.rstrip()
-+
-+    m = re.fullmatch(name_regex, line)
-+    if m:
-+      tid = int(m.group("tid"))
-+      index = int(m.group("index"))
-+      name = m.group("name")
-+      if all_timers[tid][index] == None:
-+        all_timers[tid][index] = BpfTimer("", 0, -1, -1)
-+      all_timers[tid][index].name = name
-+      continue
-+
-+    m = re.fullmatch(start_time_regex, line)
-+    if m:
-+      tid = int(m.group("tid"))
-+      index = int(m.group("index"))
-+      start_time = int(m.group("start_time_us"))
-+      if all_timers[tid][index] == None:
-+        all_timers[tid][index] = BpfTimer("", 0, -1, -1)
-+      all_timers[tid][index].start_time_us = start_time
-+      continue
-+
-+    m = re.fullmatch(duration_regex, line)
-+    if m:
-+      tid = int(m.group("tid"))
-+      index = int(m.group("index"))
-+      duration = int(m.group("duration_us"))
-+      if all_timers[tid][index] == None:
-+        all_timers[tid][index] = BpfTimer("", 0, -1, -1)
-+      all_timers[tid][index].duration_us = duration
-+      continue
-+
-+    m = re.fullmatch(depth_regex, line)
-+    if m:
-+      tid = int(m.group("tid"))
-+      index = int(m.group("index"))
-+      depth = int(m.group("depth"))
-+      if all_timers[tid][index] == None:
-+        all_timers[tid][index] = BpfTimer("", 0, -1, -1)
-+      all_timers[tid][index].depth = depth
-+      continue
-+
-+    if re.fullmatch(count_regex, line):
-+      # Skip this case.  It's already been processed.
-+      continue
-+    if re.fullmatch(attaching_regex, line):
-+      # Skip "Attaching XX probes..."
-+      continue
-+    if not line:
-+      # Skip empty strings.
-+      continue
-+
-+    raise ValueError("Invalid input, '%s'" % (line))
-+
-+  root = BpfResult("", 0, 0, 0, 0, 0, 1, 1, -1, -1)
-+  results = []
-+  for tid, timers in all_timers.items():
-+    merge_timers(root, tid, timers)
-+  print_results(root, results)
-+
-+  if fileinput.fileno() == 0:
-+    raise ValueError("Expected a file to read.")
-+
-+  if fileinput.fileno() > 1:
-+    raise ValueError("Too many files read.  Expected 1")
-+
-+def main() -> None:
-+  """Main function."""
-+
-+  if len(sys.argv) <= 1:
-+    print("Error: Not enough command-line arguments. Expected an input file", file=sys.stderr)
-+    sys.exit(1)
-+
-+  generate_from_log(sys.argv[1:])
-+
-+
-+if __name__ == "__main__":
-+  main()
-diff --git a/tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt b/tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt
-new file mode 100644
-index 000000000000..bd341e408570
---- /dev/null
-+++ b/tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt
-@@ -0,0 +1,197 @@
-+#define usecs (nsecs / 1000)
-+#define msecs (nsecs / 1000 / 1000)
-+#define DURATION_UNSET ((uint64)-1)
-+
-+config = { max_map_keys=4194304; }
-+
-+macro INIT_MAPS(@trace_stack_top, @timer_count)
-+{
-+	@trace_stack_top[0] = 0;
-+	@timer_count[0] = 0;
-+}
-+
-+macro CLEAR_MAPS(@trace_stack, @trace_stack_top, @timer_count)
-+{
-+	clear(@trace_stack);
-+	clear(@trace_stack_top);
-+	clear(@timer_count);
-+}
-+
-+macro START_TIMER(name, @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		  @timer_depth, @timer_count, @trace_stack_top)
-+{
-+	@timer_name[tid, @timer_count[tid]] = name;
-+	@trace_stack[tid, @trace_stack_top[tid]] = @timer_count[tid];
-+	@timer_start[tid, @timer_count[tid]] = usecs;
-+	@timer_duration[tid, @timer_count[tid]] = DURATION_UNSET;
-+	@timer_depth[tid, @timer_count[tid]] = @trace_stack_top[tid];
-+	@timer_count[tid]++;
-+	@trace_stack_top[tid]++;
-+}
-+
-+/*
-+ * Unfortunately branch statements crash the bpftrace compiler.  As a result,
-+ * the branch has been moved directly into the probe.  Reverse this if the
-+ * compiler ever gets that fixed.
-+ */
-+macro STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start)
-+{
-+	$idx = @trace_stack[tid, --@trace_stack_top[tid]];
-+	@timer_duration[tid, $idx] = usecs - @timer_start[tid, $idx];
-+}
-+
-+BEGIN
-+{
-+	INIT_MAPS(@trace_stack_top, @timer_count);
-+}
-+
-+/*
-+ * Time 'kvm_sched_in()'.
-+ *
-+ * Check: sudo grep kvm_sched_in /proc/kallsyms
-+ */
-+kfunc:kvm_sched_in
-+{
-+	START_TIMER("kvm_sched_in",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_sched_in
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'kvm_sched_out()'.
-+ *
-+ * Check: sudo grep kvm_sched_out /proc/kallsyms
-+ */
-+kfunc:kvm_sched_out
-+{
-+	START_TIMER("kvm_sched_out",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+
-+kretfunc:kvm_sched_out
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'kvm_arch_vcpu_load()'.
-+ *
-+ * Check: sudo grep kvm_arch_vcpu_load /proc/kallsyms
-+ */
-+kfunc:kvm_arch_vcpu_load
-+{
-+	START_TIMER("kvm_arch_vcpu_load",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_arch_vcpu_load
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'kvm_arch_vcpu_put()'.
-+ *
-+ * Check: sudo grep kvm_arch_vcpu_put /proc/kallsyms
-+ */
-+kfunc:kvm_arch_vcpu_put
-+{
-+	START_TIMER("kvm_arch_vcpu_put",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_arch_vcpu_put
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'KVM_RUN', i.e. kvm_arch_vcpu_ioctl_run().
-+ *
-+ * Check: sudo grep kvm_arch_vcpu_ioctl_run /proc/kallsyms
-+ */
-+kfunc:kvm_arch_vcpu_ioctl_run
-+{
-+	START_TIMER("kvm_arch_vcpu_ioctl_run",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_arch_vcpu_ioctl_run
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time how long a guest runs using tracepoints "kvm_entry" and "kvm_exit".
-+ */
-+tracepoint:kvm:kvm_entry
-+{
-+	START_TIMER("run_guest",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+tracepoint:kvm:kvm_exit
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'kvm_vcpu_block()'.
-+ *
-+ * Check: sudo grep kvm_vcpu_block /proc/kallsyms
-+ */
-+kfunc:kvm_vcpu_block
-+{
-+	START_TIMER("kvm_vcpu_block",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_vcpu_block
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'kvm_mmu_page_fault()'.
-+ *
-+ * Check: sudo grep kvm_mmu_page_fault /proc/kallsyms
-+ */
-+kfunc:kvm_mmu_page_fault
-+{
-+	START_TIMER("kvm_vcpu_block",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:kvm_mmu_page_fault
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Dump the results to stdout.
-+ */
-+END
-+{
-+	CLEAR_MAPS(@trace_stack, @trace_stack_top, @timer_count);
-+}
-diff --git a/tools/bpftrace/instrumented_profiler/samples/vfio_trace.bt b/tools/bpftrace/instrumented_profiler/samples/vfio_trace.bt
-new file mode 100644
-index 000000000000..3b8cb7ff6210
---- /dev/null
-+++ b/tools/bpftrace/instrumented_profiler/samples/vfio_trace.bt
-@@ -0,0 +1,315 @@
-+#define usecs (nsecs / 1000)
-+#define msecs (nsecs / 1000 / 1000)
-+#define DURATION_UNSET ((uint64)-1)
-+
-+config = { max_map_keys=4194304; }
-+
-+macro INIT_MAPS(@trace_stack_top, @timer_count)
-+{
-+	@trace_stack_top[0] = 0;
-+	@timer_count[0] = 0;
-+}
-+
-+macro CLEAR_MAPS(@trace_stack, @trace_stack_top, @timer_count)
-+{
-+	clear(@trace_stack);
-+	clear(@trace_stack_top);
-+	clear(@timer_count);
-+}
-+
-+macro START_TIMER(name, @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		  @timer_depth, @timer_count, @trace_stack_top)
-+{
-+	@timer_name[tid, @timer_count[tid]] = name;
-+	@trace_stack[tid, @trace_stack_top[tid]] = @timer_count[tid];
-+	@timer_start[tid, @timer_count[tid]] = usecs;
-+	@timer_duration[tid, @timer_count[tid]] = DURATION_UNSET;
-+	@timer_depth[tid, @timer_count[tid]] = @trace_stack_top[tid];
-+	@timer_count[tid]++;
-+	@trace_stack_top[tid]++;
-+}
-+
-+/*
-+ * Unfortunately branch statements crash the bpftrace compiler.  As a result,
-+ * the branch has been moved directly into the probe.  Reverse this if the
-+ * compiler ever gets that fixed.
-+ */
-+macro STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start)
-+{
-+	$idx = @trace_stack[tid, --@trace_stack_top[tid]];
-+	@timer_duration[tid, $idx] = usecs - @timer_start[tid, $idx];
-+}
-+
-+BEGIN
-+{
-+	INIT_MAPS(@trace_stack_top, @timer_count);
-+}
-+
-+/*
-+ * Time 'vfio_group_fops_unl_ioctl()'.
-+ *
-+ * VFIO_GROUP_GET_DEVICE_FD = 0x3b6a
-+ *
-+ * Check: sudo grep vfio_group_fops_unl_ioctl /proc/kallsyms
-+ */
-+kfunc:vfio_group_fops_unl_ioctl /args->cmd == 0x3b6a/
-+{
-+	START_TIMER("vfio_group_ioctl_get_device_fd",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_group_fops_unl_ioctl /args->cmd == 0x3b6a/
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_df_ioctl_bind_iommufd()'.
-+ *
-+ * Check: sudo grep vfio_df_ioctl_bind_iommufd /proc/kallsyms
-+ */
-+kfunc:vfio_df_ioctl_bind_iommufd
-+{
-+	START_TIMER("vfio_df_ioctl_bind_iommufd",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_df_ioctl_bind_iommufd
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_df_unbind_iommufd()'.
-+ *
-+ * Check: sudo grep vfio_df_unbind_iommufd /proc/kallsyms
-+ */
-+kfunc:vfio_df_unbind_iommufd
-+{
-+	START_TIMER("vfio_df_unbind_iommufd",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_df_unbind_iommufd
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_df_open()'.
-+ *
-+ * Check: sudo grep vfio_df_open /proc/kallsyms
-+ */
-+kfunc:vfio_df_open
-+{
-+	START_TIMER("vfio_df_open",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_df_open
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'pcie_flr()'.
-+ *
-+ * Check: sudo grep pcie_flr /proc/kallsyms
-+ */
-+kfunc:pcie_flr
-+{
-+	START_TIMER("pcie_flr",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:pcie_flr
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'pci_dev_wait()'.
-+ *
-+ * Check: sudo grep pci_dev_wait /proc/kallsyms
-+ */
-+kfunc:pci_dev_wait
-+{
-+	START_TIMER("pci_dev_wait",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:pci_dev_wait
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_iommu_type1_ioctl()' when 'VFIO_IOMMU_MAP_DMA' is called.
-+ *
-+ *
-+ * VFIO_IOMMU_MAP_DMA = 0x3b71
-+ *
-+ * Check: sudo grep vfio_iommu_type1_ioctl /proc/kallsyms
-+ */
-+kfunc:vfio_iommu_type1_ioctl /args->cmd == 0x3b71/
-+{
-+	START_TIMER("vfio_iommu_type1_map_dma",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_iommu_type1_ioctl /args->cmd == 0x3b71/
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_pin_map_dma()'.
-+ *
-+ * Check: sudo grep vfio_pin_map_dma /proc/kallsyms
-+ */
-+kfunc:vfio_pin_map_dma
-+{
-+	START_TIMER("vfio_pin_map_dma",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_pin_map_dma
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_pin_pages_remote()'.
-+ *
-+ * Check: sudo grep vfio_pin_pages_remote /proc/kallsyms
-+ */
-+kfunc:vfio_pin_pages_remote
-+{
-+	START_TIMER("vfio_pin_pages_remote",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_pin_pages_remote
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vaddr_get_pfns()'.
-+ *
-+ * Check: sudo grep vaddr_get_pfns /proc/kallsyms
-+ */
-+kfunc:vaddr_get_pfns
-+{
-+	START_TIMER("vaddr_get_pfns",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vaddr_get_pfns
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+// /*
-+//  * Time 'iommu_map()'.
-+//  *
-+//  * Check: sudo grep iommu_map /proc/kallsyms
-+//  */
-+// kfunc:iommu_map
-+// {
-+// 	START_TIMER("iommu_map",
-+// 		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+// 		    @timer_depth, @timer_count, @trace_stack_top);
-+// }
-+// kretfunc:iommu_map
-+// {
-+// 	if (@trace_stack_top[tid] > 0) {
-+// 		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+// 	}
-+// }
-+
-+
-+
-+/*
-+ * Time 'vfio_iommu_type1_ioctl()' when 'VFIO_IOMMU_UNMAP_DMA' is called.
-+ *
-+ * VFIO_IOMMU_UNMAP_DMA = 0x3b72
-+ *
-+ * Check: sudo grep vfio_iommu_type1_ioctl /proc/kallsyms
-+ */
-+kfunc:vfio_iommu_type1_ioctl /args->cmd == 0x3b72/
-+{
-+	START_TIMER("vfio_iommu_type1_unmap_dma",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_iommu_type1_ioctl /args->cmd == 0x3b72/
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_unmap_unpin()'.
-+ *
-+ * Check: sudo grep vfio_unmap_unpin /proc/kallsyms
-+ */
-+kfunc:vfio_unmap_unpin
-+{
-+	START_TIMER("vfio_unmap_unpin",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_unmap_unpin
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Time 'vfio_sync_unpin()'.
-+ *
-+ * Check: sudo grep vfio_sync_unpin /proc/kallsyms
-+ */
-+kfunc:vfio_sync_unpin
-+{
-+	START_TIMER("vfio_sync_unpin",
-+		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-+		    @timer_depth, @timer_count, @trace_stack_top);
-+}
-+kretfunc:vfio_sync_unpin
-+{
-+	if (@trace_stack_top[tid] > 0) {
-+		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_start);
-+	}
-+}
-+
-+/*
-+ * Dump the results to stdout.
-+ */
-+END
-+{
-+	CLEAR_MAPS(@trace_stack, @trace_stack_top, @timer_count);
-+}
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+>> not RMP-checked and could corrupt SEV-SNP guest memory, and there is no
+>> way to keep work off such a CPU once it is online.  OS CPU hotplug can thus
+>> diverge from the firmware's expectations and break SNP.
+> 
+> If this is true ...
+> 
+> [..snip..]
+> 
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> index 217b6b19802e..66475145b3fa 100644
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -1479,6 +1479,9 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
+>>  
+>>  	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
+>>  
+>> +	/* Disable CPU hotplug while SNP is active (see snp_disable_cpu_hotplug). */
+>> +	snp_disable_cpu_hotplug();
+> 
+> ... then this should be done at snp_prepare() before
+> on_each_cpu(snp_enable) right?
+> 
+> If not, then any CPU hotplug between the cpus_read_unlock() there and
+> the snp_disable_cpu_hotplug() here will not have the SNP_EN set.
+> 
+> Isn't that a concern?
+> 
+> Also, this patch can probably go first since the FW assumptions on
+> hotplug exists independent of RMPOPT bits.
+> 
+>> +
+>>  	snp_setup_rmpopt();
+>>  
+>>  	sev->snp_initialized = true;
+> 
 
