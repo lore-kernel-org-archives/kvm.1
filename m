@@ -1,191 +1,246 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587B8419303
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3D03655DB
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782826030; cv=none; b=qHBsrz5m+N5oWpJotEssOu2jxcpdSZYkFzUgC5fziE4UrBHcvzICBD10tq/GU6/sB1tSxZciVPvgrv5FGg4SJSckY1sqO+AtJy+Cd9bBsXukK0HVH5d7gmHd2jNsF1z6hKmDKK8oGKkWc+IQGHHJJdxJQ8bxnXDuJ85jy4IJQc4=
+	t=1782826821; cv=none; b=OsWREtetN6Rz2UD0OmAwDES+3HU1RjDih0c4KrMv3JqX+COSogZ2DvCZ/vkSyjOL9VlXDkuwUsE6stG2HgF0Wol9WYcgYtF3BlNaMNLOgNnslgmqM9aOANVvfMqiusLMVizWxnzHSLRFSZ8h9/FYVMVRy00eWY3seb6tr9BW90k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782826030; c=relaxed/simple;
-	bh=kfZMo0p6hs1cAypJ2ukMYvmmWfmbsMXBTl6UnRGRZI0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AhkPz87gfKZIp5GawaYdHE6Md3QoXYw95LPGyA7iqm7jvyMO73OJrBsaK/Peot5fKBksCXc+8OE/vCFACwgvATiCnaxdqPv7AlWJVN31FWwcoi4TxFNSruzSY9rw5psnGmcTCi05rKgrfT3BuHFQyjA7WVo+LHAjD/9KGSqhocg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vbTNfpwp; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782826821; c=relaxed/simple;
+	bh=+uAe7+vHveJ9Xr7bLTlrloHySuIi1wTIpGjyEF60J/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EU5BnTA6rRSvaDDafwG9LjRxgSOnSwxOcenJA5MVNVUeBQ6XDr+e82EWWFlLkhY7abCskSwGzW2X8XfA5c5Hr2L6j/JWuCOsqcgVEhn3zg22RtjsqyGBH0MSZfdWFVNAM17toXaR269U6+zaVkjWe5b5l7EvNTa8H6i85l7uUqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LJn/R6VQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=O8iDckx2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vbTNfpwp"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8478d2bea7cso597544b3a.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 06:27:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LJn/R6VQ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="O8iDckx2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782826818;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xOH8U/mrUVa3IrW9OZzzYZ2ne3D4EbewCYpfQEKTXKM=;
+	b=LJn/R6VQSA7Hi2OUnZYb5L9i4yz2rInQFhSYTJ+6Ms0T6IHchNbu67eH1DL6nC7rNq0FL6
+	ZFNloTdWOsGbPfP82PTmHG4bZz3zB0HWB752kAFod4UPP86Opv21+q+4iqjNENttLLZy0O
+	CcijGvajdaNTfTB4mpbFprFrypifzuE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-218-m-Ky5g8UNSCG0G6RkmDILQ-1; Tue, 30 Jun 2026 09:40:13 -0400
+X-MC-Unique: m-Ky5g8UNSCG0G6RkmDILQ-1
+X-Mimecast-MFC-AGG-ID: m-Ky5g8UNSCG0G6RkmDILQ_1782826812
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-473e18559b2so1285411f8f.0
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 06:40:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782826027; x=1783430827; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
-        b=vbTNfpwpTjalJknxI+tlYlqfWqrvuhra6xbl8pSkBmpk7DDaYEaMG7BBBJ5oytQaM3
-         aCApDzw5WAm7up9RG4nE5tMWR/z9n83YWdSkogblMs4HhDZ0pNhYqle79o1d0AHFkYp7
-         EMr3QWLyYMr0ZERrsEBMijg1zEa+o51TFYcpwpk795Hlh+qtGijeNembBBdUIUB9EL32
-         D0ZMfTQBU64qtCZM4tbpeVJ+63+AUb5FJP5Qyq9At9vHjZqsFJhn930RxoPjQrJ56MU1
-         PU9TRtlaSsyGsJ7JYMeh2C/wmJG0vbJ053fJeh8jpimlwr0PrAxO1lk588E6hIyjx6GO
-         0vgw==
+        d=redhat.com; s=google; t=1782826812; x=1783431612; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xOH8U/mrUVa3IrW9OZzzYZ2ne3D4EbewCYpfQEKTXKM=;
+        b=O8iDckx2zgI6tlFnSTYgIu/ISUk0PehAz/seSGxqw0E2VqRIggAXAZN69zmQMYD8E6
+         Ka6/UgoC8EdzW5z8LbXZpQfhiL/wN7PetWCt85dR4yNp7R7tn1Q7s5EmUGNvoeAJ2hRd
+         Qv8PRBaF/mpD2TXl5K5tcvgVnAeqxrI7yNRvkSNAruM2UpOc3vDoc4AxMDRlIkpMyD+7
+         zxObV9SS6VgmJAFZb5lQhybdb4ttbvMwCnGPkxy4zMHuR9jlkd2vb5BGkvWXP/xc1S8O
+         1rjQ20+8sTxTCy6yfkVKlJ440bL63AZ6r1Nb8QCTJLyxHLmS2+HxkFCBfX55Dft4c3i4
+         9Oiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782826027; x=1783430827;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AhLYh/cBIA1fFqX5RYZRm50yWfU0LfaJB+fi+NtWOq0=;
-        b=llsMUPeO8HlLYEe4myI8SvStKG7lGpPJVoG1lK7/tiadtAVaRTNN1subbGUN1ykKUo
-         NMwMDembCLZ5cwrZuugfjdoegdPsnQsNKq3o0zpFKqeBiF8E7MEcAJUI221JVS9bDC/Y
-         8yyh/ENoimSTjQbLDBt2k3xNMJZ8QFmblbNeRSVDirq6yae8qggy/kChkYDQhkYz7Gl2
-         qiD2uJncac3iKZVrvsuDK24cxuAb884y/dBRQAGn3arlh1mutEaDXdaB+dRNO9Nb3m6u
-         wyhK3ovNwPefJkS57S0wk7JwerkG8kFi4pGT1oxDUnhMsPNCfvu30IeY1Zg080VK8g4i
-         hCUA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqa32Z+TcGuUBGW8ImAXk3PuhftNqu9XiatRzXXnJ1UuCiSWwvP+uN3WwnBE1EIJjIoV7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNRlADDg+Gytp47CBK15VBFGnNC0s2MKocsNqTZLoFS65jQ02a
-	w1+sc9IZKZYcv1BDZWt2xBqzqyDiu6j0pdQgij2UIVdKe7UXxeaVbJCxMg7457ffH6zqfyAxMYD
-	mit6UAA==
-X-Received: from pfqy13.prod.google.com ([2002:aa7:9e0d:0:b0:845:ec34:5047])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1143:b0:845:ebe6:417d
- with SMTP id d2e1a72fcca58-847a8224797mr1270415b3a.24.1782826026676; Tue, 30
- Jun 2026 06:27:06 -0700 (PDT)
-Date: Tue, 30 Jun 2026 06:27:06 -0700
-In-Reply-To: <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
+        d=1e100.net; s=20251104; t=1782826812; x=1783431612;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xOH8U/mrUVa3IrW9OZzzYZ2ne3D4EbewCYpfQEKTXKM=;
+        b=UdIXpF2DdMyT7eEMhmEYaZ63zlBMWum9CV/FcYYidwxNkgXPiM86IXAScjaEBAoKEg
+         lmI0t+jDmXfxFoTSncCbJa8Jc2N3/eMpo8bSqcvXtmFeivSh+TDsrfnezYlIipN5kPqG
+         6EHxYOmgP9bIhPnkk/Xomur8LxT8zj0Rp1CRq+Ho6IhTuSAybQLRh6TgWqzQrwmhCXRB
+         8nEBykeel3sZkTTyTXwXOTWfSIE2m84/hR9aT6kkKd70AnNIY4cBL8gNXrsHq+hSC5a0
+         4Pwqz6/kmoIkp/V6bB038Sdwtor22o2r6Ac9bnd7i3Syg5L2gSyJvIMgcL/p9ay6cKha
+         jHkQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpiHVYwyVE36pgy4xwxyTVib/NgahgQ4/aB4G9iPPpmM4l9Refsze7bFmvb8RWzMRjXan8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXf8wyLOzVEuy/9Ck9jWlONgQGIku4d5uiRzGz9UjGdVz/SZ9m
+	SoUIrs+D3AdAKVL41nZxUyCV6N+8RLLB/xPr4srgoZjXR4/1lm4Rmj21ottR2XNEJBrPA6dDYlN
+	n9mCBZ5nBt6118o6QQN50UTs408oiC0N8YPcB2ZeD9kEHAmxZpP5SlQ==
+X-Gm-Gg: AfdE7cmaG3vVak+LT2YmfdlJy/iw/7fbwNlX3E/YO9AjBrs7tMZvBNootHfuUkptIOa
+	nhpq5OuRumwSBsfpUQ1ADf4AzuYhBMHO6WQsH6/SpvAq2NvG4+AK1LlD/a7u62L41Wkg3qfhuW9
+	EIfrQpE5shEfxu7Ttm/CRUi0MEoDz87Mg0FT06Mnfgl7vJE8qWNxnhx+FfdIor6Bl7mGjXneofh
+	M3u8ZF3AQd9XahpIEM0c8PKzUAL74vktV2W5aziYXr4U0R+uchcaY82oZW/+AP3zX1pt3Bja/QC
+	2MYeG0rTIb9civ+vlsykZ5/y9Lq+hyjBI19SAX5XO8VmiAA/4amHkj1gG9cEognrTgv2n4j75pq
+	ic1N1fNYnXoQdwmlgi434zM6LHBk6pTm+rPL/8mszrBr5ZWgvEB/kB2k6VUlu
+X-Received: by 2002:a05:6000:25c5:b0:475:f0f0:9ec6 with SMTP id ffacd0b85a97d-475f0f09f97mr2841838f8f.49.1782826812365;
+        Tue, 30 Jun 2026 06:40:12 -0700 (PDT)
+X-Received: by 2002:a05:6000:25c5:b0:475:f0f0:9ec6 with SMTP id ffacd0b85a97d-475f0f09f97mr2841772f8f.49.1782826811836;
+        Tue, 30 Jun 2026 06:40:11 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756797a8besm8461092f8f.35.2026.06.30.06.40.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 06:40:10 -0700 (PDT)
+Date: Tue, 30 Jun 2026 15:40:03 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v3 4/4] vhost/vsock: add VHOST_RESET_OWNER ioctl
+Message-ID: <akO6tps94iFxCAWv@sgarzare-redhat>
+References: <20260625155416.480669-1-andrey.drobyshev@virtuozzo.com>
+ <20260625155416.480669-5-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com> <ajxasFBzp_9KnQLq@google.com>
- <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
- <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
- <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com> <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
- <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com> <akMPZePBdwQlD74H@google.com> <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
-Message-ID: <akPEKslqAhygyjhg@google.com>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, "aik@amd.com" <aik@amd.com>, 
-	"andrew.jones@linux.dev" <andrew.jones@linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "brauner@kernel.org" <brauner@kernel.org>, 
-	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, "david@kernel.org" <david@kernel.org>, 
-	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com" <jthoughton@google.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"pankaj.gupta@amd.com" <pankaj.gupta@amd.com>, "qperret@google.com" <qperret@google.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"shivankg@amd.com" <shivankg@amd.com>, "steven.price@arm.com" <steven.price@arm.com>, 
-	"tabba@google.com" <tabba@google.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"wyihan@google.com" <wyihan@google.com>, "forkloop@google.com" <forkloop@google.com>, 
-	"pratyush@kernel.org" <pratyush@kernel.org>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
-	"aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>, "liam@infradead.org" <liam@infradead.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260625155416.480669-5-andrey.drobyshev@virtuozzo.com>
 
-On Tue, Jun 30, 2026, Yan Zhao wrote:
-> On Tue, Jun 30, 2026 at 08:35:49AM +0800, Sean Christopherson wrote:
-> > Gah, I thought I had sent this out this morning, long before Ackerley's response.
-> > But I got distracted by a meeting and forgot to get back to this... *sigh*
-> > 
-> > Sending what I already wrote, even though there's a lot of overlap with Ackerley's
-> > mail.
-> > 
-> > On Mon, Jun 29, 2026, Yan Zhao wrote:
-> > > On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
-> > > > Yan Zhao <yan.y.zhao@intel.com> writes:
-> > > > > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
-> > > > > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
-> > > > > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
-> > > > >
-> > > > 
-> > > > I'd say the original uAPI perhaps just didn't document 0 as an
-> > > > unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
-> > > > was perhaps accidentally changed and no customer complained, I think we
-> > > > can move forward with 0 as an invalid src_address? I wouldn't think
-> > > > anyone relies on 0 intentionally being a valid address.
-> > > > 
-> > > > I could document that, if it helps?
-> > > What about just documenting that 0 is an unsupported uaddr which will be
-> > > re-purposed as an indicator to use the target pfn as the source, regardless of
-> > > whether gmem_in_place_conversion is true? i.e.,
-> > > 
-> > > if (!src_page) 
-> > > 	src_page = pfn_to_page(pfn);
-> > 
-> > Because KVM can't generally use the target page as the source without in-place
-> > conversion, it's not supported today, and out-of-place conversion is being
-> > deprecated.
-> By "out-of-place conversion", do you mean using per-VM memory attribute
-> conversion?
+On Thu, Jun 25, 2026 at 06:54:16PM +0300, Andrey Drobyshev wrote:
+>From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+>
+>This ioctl is needed for QEMU's CPR (checkpoint-restore) migration of
+>the guest with vhost-vsock device.  For this to work, we need to reset
+>the device ownership on the source side by calling RESET_OWNER, and then
+>claim it on the dest side by calling SET_OWNER.  We expect not to lose any
+>AF_VSOCK connection while this happens.
+>
+>RESET_OWNER keeps the guest CID hashed, so that connections survive. That
+>leaves the device reachable by a lockless send/cancel path while the worker
+>is being torn down: a concurrent vhost_transport_send_pkt() or
+>vhost_transport_cancel_pkt() can call vhost_vq_work_queue() as
+>vhost_workers_free() frees the worker.  That might cause a use-after-free
+>of vq->worker.  In addition, any work queued onto the dying worker leaves
+>VHOST_WORK_QUEUED stuck, stalling send_pkt_queue after resume.
+>
+>Fence the send/cancel paths around the teardown: send_pkt()/cancel_pkt()
+>only kick the worker while the backend is alive.  And reset_owner() calls
+>synchronize_rcu() after drop_backends() so in-flight send/cancel finish
+>before the worker is freed.
+>
+>Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vsock.c | 51 +++++++++++++++++++++++++++++++++++++++++--
+> 1 file changed, 49 insertions(+), 2 deletions(-)
+>
+>diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+>index 81d4f7209719..f0a0aa7d3200 100644
+>--- a/drivers/vhost/vsock.c
+>+++ b/drivers/vhost/vsock.c
+>@@ -318,7 +318,14 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
+> 		atomic_inc(&vsock->queued_replies);
+>
+> 	virtio_vsock_skb_queue_tail(&vsock->send_pkt_queue, skb);
+>-	vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX], &vsock->send_pkt_work);
+>+
+>+	/* Skip the kick once the backend is gone (stop/RESET_OWNER); the skb
+>+	 * stays queued and vhost_vsock_start() drains it. Pairs with the
+>+	 * synchronize_rcu() in vhost_vsock_reset_owner().
+>+	 */
 
-Yep, I couldn't come up with a better description.
+Please explain better (as done by commit bb26ed5f3a8b ("vhost/vsock: 
+Refuse the connection immediately when guest isn't ready") in the 
+comment removed by this seris) why we can use vhost_vq_get_backend() 
+without vq->mutex held.
 
-> > > I don't get why the two scenarios should be treated differently:
-> > > 1. gmem_in_place_conversion==true, shared memory is not from gmem 
-> > > 2. gmem_in_place_conversion==false, shared memory is not from gmem
-> > > 
-> > > In both case, a 0 uaddr could be mapped to a valid page not from gmem.
-> > 
-> > That's immaterial.  KVM's ABI (that we're solidifying) is that an address of '0'
-> > for the source means NULL.  The fact that userspace could have a valid mapping
-> > at virtual address '0' is irrelevant.
-> So, I'm wondering if we can document that 0 uaddr could always mean using target
-> PFN.
+>+	if (data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))
+>+		vhost_vq_work_queue(&vsock->vqs[VSOCK_VQ_RX],
+>+				    &vsock->send_pkt_work);
 
-I would document it as saying "no source page", and then state that a source page
-is required if in-place conversion isn't enabled/supported/allowed.
+BTW I'm now confused about what we are preventing here. A better
+explanation should be added both in the commit and in the comment,
+because it's hard to understand what we're preventing.
 
-> i.e., for both scenarios 1 and 2, al long as 0 uaddr is specified, we always
-> use target PFN as source for in-place add.
-> 
-> > Again, just because something is technically possible doesn't mean it needs to
-> > be supported by every piece of KVM's uAPI.
-> > 
-> > > So why not update the uAPI to handle both cases consistently? :)
-> > 
-> > Because retroactively adding support for out-of-place conversion is pointless
-> > (requires a userspace update for a feature that's being deprecated), KVM can't
-> > generally support using the source for out-of-place conversion (it's effectively
-> > an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
-> > scenario is valuable for KVM developers, e.g. to help newcomers understand what
-> > exactly is and isn't possible.
-> Ok. You mean per-VM memory attribute is deprecating, and source page from !gmem
-> backend is also deprecating, so we don't want to change uAPI for scenarios under
-> gmem_in_place_conversion==false. Right?
+That said, if there is a problem, perhaps it should be fixed in vhost.c,
+because it seems more like a generic issue.
 
-Right.
+vhost_vq_work_queue() has `worker = rcu_dereference(vq->worker);` so
+should already prevent UAF, no?
 
-> 
-> > Side topic, isn't TDX broken if target page has already been added to the TD?
-> > IIUC, kvm_tdp_mmu_map_private_pfn() will be a glorified nop due to the page
-> > already having a valid S-EPT mapping, and so KVM will incorrectly allow a double
-> Not sure if my understand out-of-place conversion correctly.
-> Given target PFNs and GFNs are not duplicated, what would cause double add? :)
+Or maybe vhost_workers_free() is missing a synchronize_rcu()?
 
-I was working through what would happen if userspace did KVM_TDX_INIT_MEM_REGION
-on the same target page multiple times.
+>
+> 	rcu_read_unlock();
+> 	return len;
+>@@ -346,7 +353,15 @@ vhost_transport_cancel_pkt(struct vsock_sock *vsk)
+> 		int new_cnt;
+>
+> 		new_cnt = atomic_sub_return(cnt, &vsock->queued_replies);
+>-		if (new_cnt + cnt >= tx_vq->num && new_cnt < tx_vq->num)
+>+
+>+		/* Skip the kick once the backend is gone (stop/RESET_OWNER):
+>+		 * vhost_poll_queue() would touch the worker which is being freed
+>+		 * by teardown, e.g. on RESET_OWNER.  Pairs with the
+>+		 * synchronize_rcu() in vhost_vsock_reset_owner().  The TX VQ is
 
-> 
-> > add.  Ahhh, no, because KVM will return RET_PF_SPURIOUS and
-> > kvm_tdp_mmu_map_private_pfn() will then return -EIO.
-> My asking was if we could document uaddr always means using target PFN, since
-> TDX's in-place add does not rely on gmem in-place conversion.
+Ditto about the comment.
 
-Yeah, I was on a tangent, ignore everything from "Side topic" on.
+>+		 * re-kicked by vhost_vsock_start().
+>+		 */
+>+		if (data_race(vhost_vq_get_backend(tx_vq)) &&
+>+		    new_cnt + cnt >= tx_vq->num && new_cnt < tx_vq->num)
+> 			vhost_poll_queue(&tx_vq->poll);
+> 	}
+>
+>@@ -903,6 +918,36 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+> 	return -EFAULT;
+> }
+>
+>+static int vhost_vsock_reset_owner(struct vhost_vsock *vsock)
+
+Why returning int?
+
+We are defining err as long here, also the caller vhost_vsock_dev_ioctl()
+returns long, so it is not clear to me why here we are not just
+returning long.
+
+>+{
+>+	struct vhost_iotlb *umem;
+>+	long err;
+>+
+>+	mutex_lock(&vsock->dev.mutex);
+>+	err = vhost_dev_check_owner(&vsock->dev);
+>+	if (err)
+>+		goto done;
+>+	umem = vhost_dev_reset_owner_prepare();
+>+	if (!umem) {
+>+		err = -ENOMEM;
+>+		goto done;
+>+	}
+>+	vhost_vsock_drop_backends(vsock);
+>+
+>+	/* Let in-flight send_pkt() callers stop touching the worker before the
+>+	 * flush + free below. Pairs with the backend check in
+>+	 * vhost_transport_send_pkt().
+
+This is also paired with vhost_transport_cancel_pkt(), so please update
+this comment.
+
+>+	 */
+>+	synchronize_rcu();
+>+
+>+	vhost_vsock_flush(vsock);
+>+	vhost_dev_stop(&vsock->dev);
+>+	vhost_dev_reset_owner(&vsock->dev, umem);
+>+done:
+>+	mutex_unlock(&vsock->dev.mutex);
+>+	return err;
+>+}
+>+
+> static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
+> 				  unsigned long arg)
+> {
+>@@ -946,6 +991,8 @@ static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
+> 			return -EOPNOTSUPP;
+> 		vhost_set_backend_features(&vsock->dev, features);
+> 		return 0;
+>+	case VHOST_RESET_OWNER:
+>+		return vhost_vsock_reset_owner(vsock);
+> 	default:
+> 		mutex_lock(&vsock->dev.mutex);
+> 		r = vhost_dev_ioctl(&vsock->dev, ioctl, argp);
+>-- 
+>2.47.1
+>
+
