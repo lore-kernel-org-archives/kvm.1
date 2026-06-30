@@ -1,53 +1,54 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893292F6918
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134131DED5C
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782854900; cv=none; b=Gb3lRC6spVxil6aXJr9KrE8D7+NwUEAbqveJ/L5aAzrXb+mAAPYTUagNeISIT44v24PMk8q0Jm9xc8lZI4c0w8aug2xk8j+4OcrheQHaVcPD/apabFyi9+4DyHzCtYlje+4Da0EKeuVHM/Ym1fsA5TUVqdnpWjmTZbwn75dldBU=
+	t=1782855436; cv=none; b=QsChBUM2q+H3JnAc7FxQ7VS+YH608l4P49OYuDfyFO9HisqsnwLBlfWS1RK1/rpWj9SmLR5MjGkLs/CX2mrrMxTFyQNKZj6SkRiTAxzrjciajFgmXnmv6NDJmcXABz3b8qWYTZlReRq1kjbyPzuCgmi2fbviAGwJ2dTJvzsHdgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782854900; c=relaxed/simple;
-	bh=b8RnFfiemRCSiKgp7BSai6DqR7scjQ7rM1MZat3I3Zk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mC8O6McWigIkwTACOBFtig4lDjYmrraicFOMOYzJLCppjLcAc17z04A+Vc/DRYpIunnH7IHWOlt3cn9Cv+meFdN1/jwH4flrEC7VXN4P5hZO1YgAPU1YCejNfeuEU54IUbNvlGFNOeVhn7C+P8NCX0CrCVG9xZddS6P6fQD14Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VvcfyXm1; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1782855436; c=relaxed/simple;
+	bh=nIZGKje8UwhYBZ9kwvCNQ5q2oYFunQ9OO5lUc8brH/I=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=a8jiZMxIPyhcFAtf5/Y0FaEhRMNmpCUy3/plsr949HXAqc1slRkOiqIyJcYUlCuW+fLoX5BDxk6wa6UcieJrHHO1OEDGGMugEEiVIQYj73W4KFAcowBshDlGExuLT7BQoA3UV8J2Ko78dy2dRKWzbo6bEdmEpNcm58uM3STfm+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XMV3KarD; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VvcfyXm1"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ca1f16e391so14619925ad.2
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:28:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XMV3KarD"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37c9127e316so12660a91.1
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782854897; x=1783459697; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782855433; x=1783460233; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vmjNTs+qY7n634WoJJiK9mzDi+CLz08woczbBq1WjCg=;
-        b=VvcfyXm1PJnqSvVp05GzPmPHY2AKPLkwX7Yjg4NAqEDK7iFOkn/bkDbFACjLRnKHRg
-         lCUsizhOLtH2SHkBk8jpqhqUYpyRzznAHajj5w3oxdkxJvpYHKujMb5vXRi4S3a9YaEK
-         srmlF8he8AJpBqzpmvs5K8y43GHA3BWgZFRUco96C5lL+/TDcnYNvaEKwKo9ntpjYjbD
-         ccn9Cj/TK4+T4oGT+ZPIaSGyn1AmVLmgCkss64KgfaILq5PU3HHyLRA6LpGIYsc2PhDx
-         aurma2QTVBhzSRsERIF77LEm1yc+bfMJaBvf7ZiRXue8PgWKACSvGNHs9KmtgP8yyc8t
-         RzcA==
+        bh=SJUsAy2mnvXDwvwqEHFWU0D1eamvTWzS2kE4hxz8/r0=;
+        b=XMV3KarDoCP5yCN41NoQuMrTbsA6nmwynIBEjXBrLdOZ7PFfG0MXw/CUFPH4fZN/um
+         KP5VAyIktkRrnsZI4aEToXdY93fd8Tcol9SP23+i9dR7jahr58CI1H5S+7LUhTecyOS2
+         dhWemlW901Mm4vJtkUw0jv25Y2QDHDD0d0RqwOw7zOfrwpQUidueb6vWQ+eRmVrNm+3W
+         0kI8jJ6lVVhwfNTU4/pFzcQJCIeW2tGJ715TabyMTEEJsdrl+0cHS81g9bu9UFjxPi1/
+         2sA3hKhLf4Ry9pNx2Q+dzEDJ415jMy4QwBIMbwO1rRrhMuIilSRil+C+AMfHXKBCyacU
+         0NeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782854897; x=1783459697;
+        d=1e100.net; s=20251104; t=1782855433; x=1783460233;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vmjNTs+qY7n634WoJJiK9mzDi+CLz08woczbBq1WjCg=;
-        b=lTbXIK+udr0IvJpPUEsXMWdJw33dHeTUtq6xzY3A9c1vZUpISEbPxqCCWj9/danXli
-         yHADHCYLmm1OS4pXMmh3c924uxzpSeoIumR3kZf9joZP+V66nwU3BEu+bZrlj7wEPPQC
-         azqpGstz+eKliqf2gqp4A9klYxnmtF52DfodhpNkzFPH/1mqwlxL6rUyTUkXQq6lV0Zo
-         RMbJRgzxZTFtCjAr/sOdOeVEt1nuEQa0UePMS56efgwoAf5TeOnKZuJvKiWqSHrCnWIT
-         pXD2TNcTav88njTzZPqrXznARcpBg7Uf4jz3XoC8fXuVYC5qfsAho7NtDaF2IzxzYaLj
-         pPWw==
-X-Gm-Message-State: AOJu0YylYdF9CBqwiKa52HzJPG1usOIShqPUUZFWqk3GtGtWqoSzsWeZ
-	TV8AZ/Ce1PLnUdL+jpKbydmZZ6xWiCgGm/Ff9iTOf5eAdCQD8sxulpGGYzS7TxGgkq2g7Jp+Fva
-	htKCvFw==
-X-Received: from plau11.prod.google.com ([2002:a17:903:304b:b0:2b0:5538:b55b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f788:b0:2c0:ab82:6bb8
- with SMTP id d9443c01a7336-2ca5a5eefbcmr18599625ad.27.1782854896675; Tue, 30
- Jun 2026 14:28:16 -0700 (PDT)
+        bh=SJUsAy2mnvXDwvwqEHFWU0D1eamvTWzS2kE4hxz8/r0=;
+        b=XOOa/D3/0GruFclKXgLrVfrUbwF+wQGMsEGavIQ5v10RyAfU3sB5QHbWKV362QbrHT
+         kPDQzLnq11G0cissXlTtd2gxjKrWUBj6QUKKiKt6ROSDraHnEqW1Pi1duqnNH++qJbpm
+         uYZaorFQ/a7yiPsOq9wk4e4enCFQchEn3oGEkeMOxnpXawoKU48CJPC1gHKBVoVpp8Z4
+         SFtJMTvVavoOj0PuDZ8G36qx1PYKSbc60lvNMqMfbENlpuiEXivqjguW+0VU5nWRA9XP
+         IsNMNDkBHVYGwg3/7LEMssKkmyFBJYH7J5tL+/Ioc1BZP19cDlCpdF5TXL+dPDlY3kr3
+         ddwg==
+X-Forwarded-Encrypted: i=1; AHgh+RocYX6SYvm6GhT8ibWYX7b9yzC/wuMKRNklMe3dXbojzpmS3KtgGM9OYKR38qkuVwe5/fg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUygsfwTdsMhZIkGNG1zIbv1ouYg/HJavM+DsiXl6rZUDPBI/F
+	7PrMd1SUswzLebnEpew2ph9d3Pf4XZUQ9nt2f6fEeyzXgpluhtJyLl0qIpt+7TbZfRIuhAWDwtc
+	2E0/24w==
+X-Received: from pjvc8.prod.google.com ([2002:a17:90a:d908:b0:380:64e0:790e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3810:b0:36d:ae6a:22fe
+ with SMTP id 98e67ed59e1d1-3808bfce9f7mr1673537a91.16.1782855433058; Tue, 30
+ Jun 2026 14:37:13 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Jun 2026 14:28:05 -0700
+Date: Tue, 30 Jun 2026 14:37:09 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,69 +56,47 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260630212805.474418-1-seanjc@google.com>
-Subject: [PATCH] vfio: selftests: Add luuid to libvfio.mk's list of libraries,
- not to the Makefile
+Message-ID: <20260630213711.479692-1-seanjc@google.com>
+Subject: [PATCH v2 0/2] KVM: x86: gmem populate fix and cleanups
 From: Sean Christopherson <seanjc@google.com>
-To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Raghavendra Rao Ananta <rananta@google.com>, Vipin Sharma <vipinsh@google.com>, 
-	Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Sashiko Bot <sashiko-bot@kernel.org>, Joerg Roedel <joerg.roedel@amd.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Link to the uuid library as part of libvfio.mk instead of as only linking
-it via VFIO selftests' Makefile, as the whole point of providing libvfio.mk
-is to allow linking the VFIO library functionality into KVM selftests,
-without KVM selftests having to know the gory details or duplicate code.
+Fix a user-triggerable WARN due to KVM not pre-checking that userspace
+provided a source page for non-ZERO pages for SNP_LAUNCH_UPDATE, and then
+clean up the equivalent TDX code to also explicitly check the incoming
+source page *before* calling into guest_memfd, and to return -EINVAL, not
+-EOPNOTSUPP.
 
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: David Matlack <dmatlack@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>
-Cc: Alex Williamson <alex@shazbot.org>
-Fixes: e65f1bf8a2db ("vfio: selftests: Extend container/iommufd setup for passing vf_token")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
+v2:
+ - Rewrite the SNP patch changelog.
+ - Tweak the code to avoid checking KVM_SEV_SNP_PAGE_TYPE_ZERO twice.
+ - Drop what is now effectively a sanity check in sev_gmem_post_populate(),
+   so that we don't have to duplicate the logic when in-place conversion comes
+   along.
+ - Tack on the TDX change.
 
-I would either like to land this in 7.2-rcN (ideally rc2 or rc3), or take it
-through the KVM x86 tree for 7.3, as it's blocking a KVM selftest[*] that's
-been in the works for more than a year.  I can throw the IRQ selftest in its
-own topic branch, so even 7.2-rc5 would be "fine", but I would much prefer to
-get this (or an equivalent fix) into Linus' tree sooner than later.
+v1: https://lore.kernel.org/all/20260623091556.1500930-2-joro@8bytes.org
 
-[*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com
+Joerg Roedel (1):
+  KVM: SEV: Explicitly disallow NULL user address for SNP_LAUNCH_UPDATE
 
- tools/testing/selftests/vfio/Makefile       | 2 --
- tools/testing/selftests/vfio/lib/libvfio.mk | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Sean Christopherson (1):
+  KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION
+    source
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index e6e8cb52ab03..2c32c48db509 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -29,8 +29,6 @@ CFLAGS += $(EXTRA_CFLAGS)
- 
- LDFLAGS += -pthread
- 
--LDLIBS += -luuid
--
- $(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBVFIO_O)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
- 
-diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-index 2b8d73b7d329..67942b085068 100644
---- a/tools/testing/selftests/vfio/lib/libvfio.mk
-+++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-@@ -26,6 +26,8 @@ $(LIBVFIO_O_DIRS):
- 
- CFLAGS += -I$(LIBVFIO_SRCDIR)/include
- 
-+LDLIBS += -luuid
-+
- $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
- 
+ arch/x86/kvm/svm/sev.c | 11 +++++------
+ arch/x86/kvm/vmx/tdx.c |  7 ++-----
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+
+base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
