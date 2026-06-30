@@ -1,141 +1,199 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F73F5BEE
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 09:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028A391E77
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 09:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782811548; cv=none; b=StdbF4DUurDCsviNa1GXXYz+JlefVOQMjs1KrwW2u5nicgvnIp4p8Io4Gti0lmMRD4KFiSREepdRfpHgecIYTh79X5wwzSnj6BQu/LufmnJx1bwfiLGbEr9gzJzZYB2Lkhq2VIli1oFx4JnmGHr/4yZiZsQAdKcKpRTrc6bhtYM=
+	t=1782812480; cv=none; b=liuQERIbkXfhSRy1lAvp/kr9cdx9pYBOknt/qd/fcuNh7i8MvM+LNjA1JpB6An2Hzfr9oH0HzA6hlFgHf3obkEhDrdChFIFv1nHEbT5iwOa3wvCSIeG483VHplri1+GvBAcUcNRusfWPFg83zzF6isqPP2cY/ozhKI7Vvibzx/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782811548; c=relaxed/simple;
-	bh=/L0JztPl1fAH1NKvIkHQ2Z8SbljQvBWmCee1fQtoXjc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ilu9DCvbawsF1PgsBGmCQ4ZAhV4jk+ItBGuom/JrBkp8xuwSWwBU4pH96jy3GT5BzB8RBwvNCHdZDCh8XW7h2CKwxF+R7hrVA9YKycioaOHW6ddT7h5/ZTncNZkKw5+koL3wt8+Ht9vIhS717QNNSlM6ueHY7Aav7cnU3LDnou8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=TVrvLyfQ; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1782812480; c=relaxed/simple;
+	bh=YqmB8gQ2CSWotm3YyLmOYcMApzVTX/fpUiUxd3r4ALA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o8ZgPvEgX4WjdZJfv9AtF+/pHIz75sJrjLNfYfwiU9w3GjOEBblEhwpvKfSn5rzaJlv+XyuFwxmawvJXGyQjLgxkLaFGvIgYuuRwy0j+Hi7d6a1mziQh/Cg0YNcFBCf+87rp8Hx1kFgBZEll/NiBDbWT5UNN0JXitELpmimKarI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CzF9Nw1t; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dQ7dT7oF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="TVrvLyfQ"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-463f1165e16so4310104f8f.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 02:25:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CzF9Nw1t";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dQ7dT7oF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782812477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sT7VxdFpL+bwbQAtpOmSJ4nkpUzUgPkf4e0PHfftdcI=;
+	b=CzF9Nw1tmh2x9OtJlBfxLSmRJaJLGeo/g63vHOLbQlGPMSSX3ukwDtLUem+Kz3NEdq5eWH
+	c04CLoTY757TaO+ZVwBgpN9dVXslPYbiQFK3b2+XGqlGD9UdYzssul3xd1Po6tyxhWQM5e
+	ND7kfbQ/ckYvNCsC1qNNoGR514lwaxk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-sufNnr7LO5CorZQSUOd2zg-1; Tue, 30 Jun 2026 05:41:14 -0400
+X-MC-Unique: sufNnr7LO5CorZQSUOd2zg-1
+X-Mimecast-MFC-AGG-ID: sufNnr7LO5CorZQSUOd2zg_1782812473
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767b782so33281665e9.2
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 02:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1782811545; x=1783416345; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mWXuvrdGO01kY7ek3iU/KtbfaHe60/89WOqzzwryweQ=;
-        b=TVrvLyfQwc3+F+jRXnep9Fg7/SFkJEXOu+8FIABM2thMU0vNZpmwtdrSA6XgAlVa54
-         k2X278Zt4Fio54NQ0qp0ByXGFhXxRaB5gxCPSZo8UQvHTrMI0V7nQ/e9B+PxwZyLDlD7
-         2bWeYh7opx9+iu5n6ynD33Xg9Mg9Ypb5KPk79JeiWKOwN4QZ8UG5jF8bFr3ugtaup1+f
-         lNVrygSGPYt/bRg4LU/bO1GbjXxctFFHTh8MQdI0uBMWthmCVy6gjW+00f0Ptegou8MW
-         pe/dFTy+OVGppovYsN3TivEjBO8+333ScyORHJ2y41nP90SntXHcEK7mdn2hbvF2R9Iv
-         Eg1g==
+        d=redhat.com; s=google; t=1782812473; x=1783417273; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sT7VxdFpL+bwbQAtpOmSJ4nkpUzUgPkf4e0PHfftdcI=;
+        b=dQ7dT7oF2RDGNQd5S4pmUOsVKHR/kc7gZlJYMGC4Nxjwbk0zSIfJrBdZYwxrCZ1rix
+         yBe+WffP77YzzIE0VNJo2xn8vbXSkuQoVmXOa4TpodHOH2WtXkS8AmnTt+eDez4oRkh9
+         O3IjrzcCQH9k6mfpd+GZGP4XDv4u+2wGLdiEtNRt66YyWH2rxw3BwEPMIf8N/Ne6dGVm
+         3Z/d2QDeicKnX9AAs6V53CM3XpPhsadBguevzSYJqIK8I39fTp6paJKV9JugCBn8QL5s
+         /M3gshpdqlqX60DGQxbqfOJIkGtDCxM5R2/yXoWMxZTXvN4faKNIDOQAW2hrnyJh2jIx
+         l5Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782811545; x=1783416345;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mWXuvrdGO01kY7ek3iU/KtbfaHe60/89WOqzzwryweQ=;
-        b=LcK5TmsluN/EGMlaIqzrfpqvFM76D5J4Gb6v76YhUqZ1SEcMDTQl5vIwlPKwpFPbZJ
-         FV7x9TW7mEpzFTU2/i6t4vB6d6aM4aCuAxi4V9fy9hL8Yj76MKzEFT8VJ6LUWZWW0wO6
-         tFtTrOuKjPkbkfZKZp7LuzTZ/DF+eMoRPEl3dCb9U16/3kNW2feD7JTW7EUxSgAZT+I+
-         MpEgnaaWYeCi+t0yUFazFX6d/N713/msYN5SlaD7pq6kG85mZscNgCwfMBGvJmX5OHqz
-         XS5oFMTjIhQEKzdN01/9IxVI0mca3W4aj3On6Dt+Z0eSd515jzV/gjfknQOc2l9U8yJI
-         dfHg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0pbCW96M3Obdc2PxkcuikddlDlkuihOE8Dc9RlfTaE7l13Hf+c6bkG5YhMlJSAVFNkTc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOXxGZF5/tJWFtJQW+pxwMqS+LqVn0ivbT+w6QCr+LXz3DDMtO
-	anjWOsKNwrfTmPWiNn0gZROdvuHRY9huz3OIiOUhfaSrsMIVRmb32srz8BXwalCihKU=
-X-Gm-Gg: AfdE7cm0MRvPOfpJYeIeNY86wghyOkD98g41QCBbFLW+VMB/sC6v1b7YtofowMSwFey
-	MSocAf/YNLLGdBrXrQi7mwHVO9m/t7kBAGHih35Fkq+cRSx28KP/64NM8z/7Sxz7OH4Ya4YncUT
-	hwp5G9ss6bwdy38NEOlPutDDhK4bI91AlI6/s53g1WiikXt97Ws5u2vGXtMn1U2VWxaAYAKo7ls
-	QrY72J0Djvlch8dQn+oHoPP9SkqZqWuy1XCl3ASMmcJAYsNpMu2hSqnxvjF4biombawfXM8plBu
-	wKkHYZzpVSuY1oG+HRCBapmujJiRUkeSIXwQUdIH/acd9vIfPi8Cdi1sd3BQ2j8rM+1klrzFmgf
-	v4UHgXHSHMfcgj5GKuFN6WwhXPlbZ4Umb1K+9cSHaL/p0vp5q82NzjSyyNFHawwUVWt5LDAaj9I
-	UhBhksQURnIDSivakON5Sbg40iciesMz/r1Lt/x6zlU6wKhuGldOFgotBmljN51r/zWQ9p1++tD
-	OBX
-X-Received: by 2002:a05:6000:430a:b0:475:2171:ac1 with SMTP id ffacd0b85a97d-4755297271amr3571604f8f.32.1782811545165;
-        Tue, 30 Jun 2026 02:25:45 -0700 (PDT)
-Received: from localhost (p200300f65f47db042c439d749f38355a.dip0.t-ipconnect.de. [2003:f6:5f47:db04:2c43:9d74:9f38:355a])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-475671d0403sm6335542f8f.29.2026.06.30.02.25.44
+        d=1e100.net; s=20251104; t=1782812473; x=1783417273;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sT7VxdFpL+bwbQAtpOmSJ4nkpUzUgPkf4e0PHfftdcI=;
+        b=k44BseyEzcgKd75cYahKKUL75mevvDnK380UenDnrE8NRcrPkpBWYfdiq1PNvhuFVu
+         jlWS7ZX1zdjNtaamEpmo+eFZ+rc6EjxxN2PSoJDZQbw4gKwU91yUEWg4gC+sHRqHWzEu
+         3Kp/aZJ/3dU/rpfjCmnYfnQmS0XOQNmX1+5b4uiU1lt7MlpUIiDhTVbQoWdgZsT5B8yS
+         bXsPeW0UPUUd/vKjggxBylmtxezlJ/mQ5vwzbD/Fq2uPYgk1Ak75N4otof2SjdaKyIIP
+         FkxST0owYzEC+ixZl2qvTSUI/SOKt6jT8OU1f95WbcXjb+JATtZ5g5kQqmAgcS1azQgL
+         FMTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Fho6EE/U/V4Qf+xcu8JHstIkZBr2JQinlkDffn7FStX6LjCFu5/oeyCEh9wsfOpF8NgM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi4xxKCVz1f6a4t5dbtBnEqptQDlGPZdLAzoOIl1rJbOw/6ly5
+	vpu5cZKEE4epMUVov1U0seK2Bk6Bm4uCuHyHGyAp8JyxQpJKOQYFFjZDTmNbvfbQRdxHQ7y3UFX
+	tUk9gNfXkkQH4mOYk3Vj0zQreKGEe81491Cxr3OETlVbRw4gZ6I29pQ==
+X-Gm-Gg: AfdE7cmPSsQxFRG82Nw+EHD0+iLFQf8r6OD5th/OgHfCBv619MMijQfya5vGeq5oSOx
+	mk7cwdkQ89vxJfvCBkXQ+d3Z0iWjibkSofQHY99D2DgoLfnc3KZt6TpEspedZjpZS/+LnYuB0H0
+	uz0EXiLZtVdk3qXdhgCmADqe0bdaTe29Iw3m5yEFT6SqzoNtIvvvBofzrji0zANAbt67sPQxGgP
+	cAi8g+GyASb7JEoE37NVN9rCBmxe1IxzXGRjxXmtfbrfV9v/OYnUDLHlPaG6V7n7bPksvTWkAIv
+	GjBtLB2H5hsD8DWEn97OgpmjUuDuPz7HCQjjNetMJvoChEE6LrFhWoYVZK/sSsHkLkZxvkJA3ZW
+	3/3Niv70TOEyv2D8Y6VEwy5Cpkh1UrWlGcOSaRFAQpLKSWMhONG88G1NTxtZ/
+X-Received: by 2002:a05:600c:a403:b0:493:a5d0:d1a1 with SMTP id 5b1f17b1804b1-493b82bc279mr38092615e9.31.1782812473041;
+        Tue, 30 Jun 2026 02:41:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:a403:b0:493:a5d0:d1a1 with SMTP id 5b1f17b1804b1-493b82bc279mr38092065e9.31.1782812472479;
+        Tue, 30 Jun 2026 02:41:12 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8d0bbbcsm64869355e9.13.2026.06.30.02.41.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 02:25:44 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH v4 13/17] LoongArch: KVM: Add include defining struct cpu_feature
-Date: Tue, 30 Jun 2026 11:24:32 +0200
-Message-ID: <052feec0e04ea8f5b2706a19a5b236679eed0aba.1782808461.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1782808460.git.u.kleine-koenig@baylibre.com>
-References: <cover.1782808460.git.u.kleine-koenig@baylibre.com>
+        Tue, 30 Jun 2026 02:41:11 -0700 (PDT)
+Date: Tue, 30 Jun 2026 11:41:07 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Arseniy Krasnov <avkrasnov@rulkc.org>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
+	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	oxffffaa@gmail.com, rulkc@linuxtesting.org
+Subject: Re: [PATCH net-next v4] vsock/virtio: rewrite MSG_ZEROCOPY flag
+ handling
+Message-ID: <akOOf7ShQS4OBJrd@sgarzare-redhat>
+References: <20260628182052.951760-1-avkrasnov@rulkc.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1623; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=/L0JztPl1fAH1NKvIkHQ2Z8SbljQvBWmCee1fQtoXjc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqQ4tpQQNXJcLb2chDA6Rfwf/Tlj5ry8+TBqXEf yRqVuJ/alSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCakOLaQAKCRCPgPtYfRL+ Tn3UB/9dZ07ubgytZcCLAH8wn9bojhx3+qaDHyC3ka2A956syohAPk4ZTqew39mkqYPxnq4uFWi 1ME/nf+U6xtadYh+K1L1irdpQa1bYXgaMk3MIhNLmqtlqBIdb/KPgYEQ1vyhmE6dns0DdFNdonc R+1PMNywpGP+Z8d7ZejYO3tKP1JE55BeyNAMfRpx/dmcmnVUJ9kWaLxGKJ/lnBoBMHxHcf1EhtA rX0bScMIfWHIcFnQlIjHH/tzZXOcPVULstwVrUU9+7bfDRW/67PGP91QfB9yySiFKep7POcfrpq NgiiMoeJlsJn2SUVDOLwxkAtFkFr4nqwTyxE5ArBsxOsyb6j
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260628182052.951760-1-avkrasnov@rulkc.org>
 
-Traditionally <linux/mod_devicetable.h> was a header defining a plethora
-of structs, among them struct cpu_features. This was split now with the
-objective that only the relevant bits are included.
+On Sun, Jun 28, 2026 at 09:20:52PM +0300, Arseniy Krasnov wrote:
+>Logically it was based on TCP implementation, so to make further support
+>easier, rewrite it in the TCP way (like in 'tcp_sendmsg_locked()'). By
+>this way, patch also adds handling case when 'msg_ubuf' is already set.
 
-Currently <linux/mod_devicetable.h> is transitively included in
-arch/loongarch/kvm/main.c via:
+Thanks for this!
 
-	arch/loongarch/kvm/main.c ->
-	<linux/kvm_host.h> ->
-	<linux/entry-virt.h> ->
-	<linux/resume_user_mode.h> ->
-	<linux/memcontrol.h> ->
-	<linux/cgroup.h> ->
-	<linux/kernel_stat.h> ->
-	<linux/interrupt.h> ->
-	<linux/hardirq> ->
-	<asm/hardirq.h> ->
-	<linux/irq.h> ->
-	<asm/irq.h> ->
-	<linux/irqdomain.h> ->
-	<linux/of.h> ->
-	<linux/mod_devicetable.h>
+IIUC the result will be similar of commit eb315a7d1396 ("tcp: support 
+externally provided ubufs") for tcp. Maybe I would have added it to the 
+commit description, anyway the patch LGTM:
 
-To keep struct cpu_features available once <linux/of.h> stops including
-<linux/mod_devicetable.h>, include it here explicitly.
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/dd99dd31bbdb74884b27ea940e76872913b6dc1e.1782682124.git.ukleinek@kernel.org
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
----
- arch/loongarch/kvm/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index f105a86143f5..aa0fb4c90d90 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -5,6 +5,7 @@
- 
- #include <linux/err.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h> /* for struct cpu_feature */
- #include <linux/kvm_host.h>
- #include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
--- 
-2.47.3
+>
+>Signed-off-by: Arseniy Krasnov <avkrasnov@rulkc.org>
+>---
+> Changelog v1->v2:
+> * Rebase on last 'net-next'. Don't need 'skb_zcopy_set()' now - it was
+>   already added.
+> Changelog v2->v3:
+> * Update commit message.
+> * Remove one empty line.
+> Changelog v3->v4:
+> * Update commit message.
+>
+> net/vmw_vsock/virtio_transport_common.c | 47 ++++++++++++-------------
+> 1 file changed, 22 insertions(+), 25 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 09475007165b..41c2a0b82a8e 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -328,38 +328,35 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+> 	if (pkt_len == 0 && info->op == VIRTIO_VSOCK_OP_RW)
+> 		return pkt_len;
+>
+>-	if (info->msg) {
+>-		/* If zerocopy is not enabled by 'setsockopt()', we behave as
+>-		 * there is no MSG_ZEROCOPY flag set.
+>+	if (info->msg && (info->msg->msg_flags & MSG_ZEROCOPY)) {
+>+		/* If 'info->msg' is not NULL, this is only VIRTIO_VSOCK_OP_RW.
+>+		 * 'MSG_ZEROCOPY' flag handling here is based on the same flag
+>+		 * handling from 'tcp_sendmsg_locked()'.
+> 		 */
+>-		if (!sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY))
+>-			info->msg->msg_flags &= ~MSG_ZEROCOPY;
+>+		if (info->msg->msg_ubuf) {
+>+			uarg = info->msg->msg_ubuf;
+>+			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+>+		} else if (sock_flag(sk_vsock(vsk), SOCK_ZEROCOPY)) {
+>+			uarg = msg_zerocopy_realloc(sk_vsock(vsk), pkt_len,
+>+						    NULL, false);
+>+			if (!uarg) {
+>+				virtio_transport_put_credit(vvs, pkt_len);
+>+				return -ENOMEM;
+>+			}
+>
+>-		if (info->msg->msg_flags & MSG_ZEROCOPY)
+> 			can_zcopy = virtio_transport_can_zcopy(t_ops, info, pkt_len);
+>+			if (!can_zcopy)
+>+				uarg_to_msgzc(uarg)->zerocopy = 0;
+>
+>+			have_uref = true;
+>+		}
+>+
+>+		/* 'can_zcopy' means that this transmission will be
+>+		 * in zerocopy way (e.g. using 'frags' array).
+>+		 */
+> 		if (can_zcopy)
+> 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+> 					    (MAX_SKB_FRAGS * PAGE_SIZE));
+>-
+>-		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+>-		    info->op == VIRTIO_VSOCK_OP_RW) {
+>-			uarg = info->msg->msg_ubuf;
+>-
+>-			if (!uarg) {
+>-				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+>-							    pkt_len, NULL, false);
+>-				if (!uarg) {
+>-					virtio_transport_put_credit(vvs, pkt_len);
+>-					return -ENOMEM;
+>-				}
+>-
+>-				if (!can_zcopy)
+>-					uarg_to_msgzc(uarg)->zerocopy = 0;
+>-
+>-				have_uref = true;
+>-			}
+>-		}
+> 	}
+>
+> 	rest_len = pkt_len;
+>-- 
+>2.25.1
+>
 
