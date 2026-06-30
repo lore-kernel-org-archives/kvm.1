@@ -1,62 +1,67 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF70A29C327
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 22:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C339B3242B0
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 22:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782858371; cv=none; b=HIpSDgCOHaPM7XKgKP4ohZL2tg6sfNmfMgTMIvxhnB8sBzlMEIvaTJHKCh3rnT02SbZV+LpdAO3TWE76pG0/ifc3tTd9VcnDcshK50b+SypOpV5Vrl8XkOX81bl7sckd1yWJ2g0IWj+ENoeVf6y2hayQCrG1Jr7aFj3OX54DWkM=
+	t=1782858372; cv=none; b=IgOqmWNlpIAuyCSookGoXHnZGGnPbcN0cMJ6XUM5oe6uJ28k0GFg1MrvyzyZ9w3c7ySuaBGuj76U4Pfozjux8ce8+fAheLCyHZImPI94zsj6klHmz2/HsfdD546aKz8XENCpuKiWxx1iFu28zkxyV83juK4d4rXF1naJc9VfjD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782858371; c=relaxed/simple;
-	bh=uiCrtv3aDzulPW42QCJuUCaXWdmlvRWjXln/YO3nl6A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WARFp5MPtJIrH9YW0cmMN2Ep8lDckj/Mxta02W2BygbwOayUx4KKk2iXxsu1LNt2U1pkl8lk0MfNdIzSgqF09XHEHeo39cUIPOQgBcpa4TfG7KHQJFzzt7s3OkutfPhmXcrBGYnRufg34lEj6CUqi/2c4VHQ3/VF94CUICHXXBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s/TX+QGY; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1782858372; c=relaxed/simple;
+	bh=uVi2Chp1vV6EahdIjFvu+n1EWpXA4p58psRCFDcnczw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tzistqY2nqW/0Zx0NUY949XY9y4DrLxVVZyHBqREcqdXld1nLJtPWN0BGs2J1R2GFeMUNR8DodNH+KhM/K/p4UAilQQUkmJlD+C+Q/7nBba26K1sT3IeQsIa2RqiCYWDhxQyVuFWNSXoNnI1iMWOml4nmn/FxJI1rJfrug5PFxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m//vPAst; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/TX+QGY"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847a90cc5e2so62618b3a.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:26:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m//vPAst"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c825562f8bso229005ad.2
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:26:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782858369; x=1783463169; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZGViHahQdgswaxP3CojmrrY7hBCH/xgTjZd+P0YB0TA=;
-        b=s/TX+QGY9zM1nU3l4V/qnf0REC2zaviOQ6aqZaJtTfkIWMysYogxoTd7OX9yfc5dr3
-         gBXCDcSKor/J8FGEh5uWSpL1pOId2ifLnxhE6ggov+m4qG34TGw5KcPG6ggWIztdQ9IR
-         G9crdX+WTL2pYS4t+pWKUXnHWa3RZLFrbOIEZLuMN4+ni8A2VjyHdW0QPL6lg9P120Jr
-         brjyUJ2yFEl/904td/GGiq57BZwTr/El5o3fCJQ/7dIct7VT/58qQLf5DVrBinjZCWWB
-         n0XygZiUEnrQx3L7OrEtbNWjEd/g6OAOZmTRWeNTb61IhRGWwzjlYY0byneqCoFmQf0W
-         o5Qw==
+        d=google.com; s=20251104; t=1782858370; x=1783463170; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Qg5ogp3hVy4JjWswKtD5TCuxaTIlYXYqGp8/XcN0yA=;
+        b=m//vPAst7MKC8YDhCmMKfDXBpr3t0QRllxiw/0DV7Cnst33gQvUnygKQ25ThQdaBYd
+         di+qFbMtFRsLfYQgw0oImrThRF/hbCW2OFGfUUd8sq5CY6GuiQOdzPJc8st3Lzf07NqQ
+         Yep8bjT9+scuqJzJ4d0LXgprbGj/qaY35gy6D8mX1YP5lqr1N2upuEGxHWzdfxCB4rtD
+         oI3SjVprdY7+duL6QTr142HWpTM2RLXKBGxsyi7pVAoTfEon8h1BDAWluJyWE2OUI9Ai
+         drI/Pbu65gcoUyCbGHtFfpyPzwcAfZoWXqw4DOaSC+dY8TnXwYdOiBnvHPOd8tbUxRML
+         VJHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782858369; x=1783463169;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZGViHahQdgswaxP3CojmrrY7hBCH/xgTjZd+P0YB0TA=;
-        b=U8SLBNXuGHq0yyoPJaLyTZd/4vVqKnZAtsfGosDEyBS7A47aKBMQPvFD8GKBrGyfAx
-         5jjTGCHxrw8l3REKePh5AMJKgip6LO52HMvLWnGDJ/jxFHLBnlLxqr7NS1yalkPcAeI3
-         B5TBi6vqxNHabTG5JpWX7Oe9Yt2ZXWOjOzcD839tWCeayxg8yuhosigexpWKfriCID3f
-         FPS45sU0EE1zArUqLoPsLNduK/h3xo3wSUfsITvqcjXIr0YRNAhwFFrCnw8jZh8qKuqS
-         G4bNiwilN46oluJqWQhIvDXRqi/dRbdGvza8GEdL0hnkcOedbvPccRuyh3JygLuriq8F
-         LhIw==
-X-Gm-Message-State: AOJu0YxEnKWWIn0ge72+BloiKxw4VLMeDWk08zyw6lsbNmcBMARXJryL
-	qF0EhoAMTyZTGsKcThEG//7izYoiQrsbl0+SUZPAvsgJdZE+p6qPB3rWcSOiSfPft2WJT/XI/ZU
-	NEh+NyQ==
-X-Received: from pgct17.prod.google.com ([2002:a05:6a02:5291:b0:c9a:7d72:c316])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:23c6:b0:842:672e:7b5d
- with SMTP id d2e1a72fcca58-847add9a0bcmr2445990b3a.17.1782858368833; Tue, 30
- Jun 2026 15:26:08 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782858370; x=1783463170;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1Qg5ogp3hVy4JjWswKtD5TCuxaTIlYXYqGp8/XcN0yA=;
+        b=dIx9wCtNKh/j9hgsT8aM0LFBvvoqbzky4fkC4TKKMKyQltoXS8amcBJvspESZbzljH
+         5mjeagwXeHOxPppw4/BIvtAwWkE6uTLN513mVgWOfbglHxkEHyXYl1jBuKER2p7RSu9O
+         CNrksVSTID85LyqH8z5SE1BhQSEiNk8wrxQI+Dku37xya4dD9A8Yd8q357MdJqdCHENL
+         Y4vPuQnHEP/8j8DXAJTgqrZK4ZG+4uv2xBSAssPJGJNHxCl6ExuX46KQGRQzZ6Sc0kUc
+         US50lBqZEw/d7CUXinOEQo6UeqOJ7EJpxw1nwSg0gcr3jpGnMg9SiJsGF3bPfrvvFncn
+         G73w==
+X-Gm-Message-State: AOJu0Yxgx+5XzS3aUNsU6w7GD3TdApYp0U2Zuo+bz/gh+yZPy5Aj5shj
+	PNPOWnRecHl2/iuPiB/MxcScRUiXxZ+n+l8fZHS+Gl7+ph1C3nC+waPPogQSj76dzutlQznbAZP
+	jXZFloA==
+X-Received: from plok16.prod.google.com ([2002:a17:903:3bd0:b0:2b0:ba5a:1fe])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2a84:b0:2c9:d88e:f996
+ with SMTP id d9443c01a7336-2ca2d580115mr46689875ad.9.1782858369871; Tue, 30
+ Jun 2026 15:26:09 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 30 Jun 2026 15:25:55 -0700
+Date: Tue, 30 Jun 2026 15:25:56 -0700
+In-Reply-To: <20260630222607.497895-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260630222607.497895-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260630222607.497895-1-seanjc@google.com>
-Subject: [PATCH v3 00/12] KVM: SEV: Fix RMP #PF due to freeing in-use VMSA
+Message-ID: <20260630222607.497895-2-seanjc@google.com>
+Subject: [PATCH v3 01/12] KVM: SEV: Track the GPA of the guest-controlled VMSA
+ used for SNP guests
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -65,65 +70,102 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"=?UTF-8?q?J=C3=B6rg=20R=C3=B6del?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Rework KVM's handling of guest-provided (and always guest_memfd-backed) VMSAs
-to forcefully reclaim VMSA pages when the pages are being freed from their
-backing gmem instance, e.g. in response to PUNCH_HOLE.  In the worst case
-scenario, marking the page SHARED in the RMP will fail due to the page being
-IN_USE, ultimately leading to RMP #PF violations due to guest_memfd freeing
-the memory back to the kernel while it's still assigned to a VM.
+Track the GPA of the guest-provided VMSA used after AP_CREATION events when
+running SNP guests, instead of simply tracking whether or not the vCPU is
+using a guest-provided VMSA.  KVM needs to know the GPA of the VMSA that's
+actively being used so that it can react to MMU invalidation events, i.e.
+so that KVM can drop the VMSA if its backing guest_memfd page is punched
+out of existence.
 
-Note, the implementation nearly identical to that used by KVM for VMX's APIC
-access page (which isn't guest controlled, but is migratable and whose PA is
-shoved directly into a vCPU control structure).
+Opportunistically rename snp_vmsa_gpa to clarify that it tracks the pending
+VMSA GPA, whereas snp_guest_vmsa_gpa now tracks the in-use VMSA GPA.
 
-v3:
- - Ensure disabling quirks while the VM is live won't result in KVM skipping
-   the back-half of "zap all fast". [Sashiko]
- - s/gmem_free_folio/gmem_reclaim_memory. [Ackerley]
- - Use {READ,WRITE}_ONCE() when accessing the guest's VMSA GPA outside of the
-   per-vCPU mutex, and comment. [Sashiko]
+Note!  Take care to track the GPA, not the GFN, as VALID_PAGE() won't
+behave correctly if an invalid GFN is converted to a GPA for checking.
 
-v2:
- - https://lore.kernel.org/all/20260626231416.3943216-1-seanjc@google.com
- - Invalidate VMSAs if the memslot is DELETED or MOVED. [Sashiko]
- - Limit stable@ patches without a Fixes to 6.12+.
+Note #2!  Keep snp_has_guest_vmsa so that switching to a guest-provided
+VMSA is sticky, even if the guest-provided VMSA becomes invalid.
 
-v1: https://lore.kernel.org/all/20260625222229.3367197-2-seanjc@google.com
+No functional change intended.
 
-Sean Christopherson (12):
-  KVM: SEV: Track the GPA of the guest-controlled VMSA used for SNP
-    guests
-  KVM: SEV: Extract loading of guest-provided VMSA to a separate helper
-  KVM: SEV: Mark vCPU RUNNABLE after AP_CREATE, even if VMSA is unusable
-  KVM: Rename .gmem_invalidate() to .gmem_reclaim_memory()
-  KVM: x86: Serialize writes to disabled_quirks using kvm->lock
-  KVM: x86: Ensure runtime reads of disabled_quirks are resolved once
-  KVM: x86/mmu: Fold kvm_mmu_zap_memslot() into
-    kvm_arch_flush_shadow_memslot()
-  KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back"
-    halves
-  KVM: x86/mmu: Use split "zap all fast" helpers when invalidating
-    memslot
-  KVM: SEV: Forcefully invalidate SNP VMSA if its backing gmem page is
-    zapped
-  KVM: x86: Guard .gmem_prepare() declarations with
-    HAVE_KVM_GMEM_PREPARE=y
-  KVM: SEV: Mark vCPU has having guest-provided VMSA even if its invalid
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 14 +++++++++-----
+ arch/x86/kvm/svm/svm.h |  3 ++-
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
- arch/x86/include/asm/kvm-x86-ops.h |   8 +-
- arch/x86/include/asm/kvm_host.h    |  10 +-
- arch/x86/kvm/mmu/mmu.c             |  74 +++++++------
- arch/x86/kvm/svm/sev.c             | 163 +++++++++++++++++++++--------
- arch/x86/kvm/svm/svm.c             |   6 +-
- arch/x86/kvm/svm/svm.h             |   8 +-
- arch/x86/kvm/x86.c                 |  15 ++-
- arch/x86/kvm/x86.h                 |   2 +-
- include/linux/kvm_host.h           |   3 +-
- virt/kvm/guest_memfd.c             |   6 +-
- 10 files changed, 210 insertions(+), 85 deletions(-)
-
-
-base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 74fb15551e83..827f5dc06102 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4003,6 +4003,7 @@ static void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
+ 
+ 	/* Clear use of the VMSA */
+ 	svm->vmcb->control.vmsa_pa = INVALID_PAGE;
++	svm->sev_es.snp_guest_vmsa_gpa = INVALID_PAGE;
+ 
+ 	/*
+ 	 * When replacing the VMSA during SEV-SNP AP creation,
+@@ -4010,11 +4011,11 @@ static void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
+ 	 */
+ 	vmcb_mark_all_dirty(svm->vmcb);
+ 
+-	if (!VALID_PAGE(svm->sev_es.snp_vmsa_gpa))
++	if (!VALID_PAGE(svm->sev_es.snp_pending_vmsa_gpa))
+ 		return;
+ 
+-	gfn = gpa_to_gfn(svm->sev_es.snp_vmsa_gpa);
+-	svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
++	gfn = gpa_to_gfn(svm->sev_es.snp_pending_vmsa_gpa);
++	svm->sev_es.snp_pending_vmsa_gpa = INVALID_PAGE;
+ 
+ 	slot = gfn_to_memslot(vcpu->kvm, gfn);
+ 	if (!slot)
+@@ -4039,6 +4040,7 @@ static void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
+ 	svm->sev_es.snp_has_guest_vmsa = true;
+ 
+ 	/* Use the new VMSA */
++	svm->sev_es.snp_guest_vmsa_gpa = gfn_to_gpa(gfn);
+ 	svm->vmcb->control.vmsa_pa = pfn_to_hpa(pfn);
+ 
+ 	/* Mark the vCPU as runnable */
+@@ -4105,10 +4107,10 @@ static int sev_snp_ap_creation(struct vcpu_svm *svm)
+ 			return -EINVAL;
+ 		}
+ 
+-		target_svm->sev_es.snp_vmsa_gpa = svm->vmcb->control.exit_info_2;
++		target_svm->sev_es.snp_pending_vmsa_gpa = svm->vmcb->control.exit_info_2;
+ 		break;
+ 	case SVM_VMGEXIT_AP_DESTROY:
+-		target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
++		target_svm->sev_es.snp_pending_vmsa_gpa = INVALID_PAGE;
+ 		break;
+ 	default:
+ 		vcpu_unimpl(vcpu, "vmgexit: invalid AP creation request [%#x] from guest\n",
+@@ -4791,6 +4793,8 @@ int sev_vcpu_create(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
+ 
+ 	svm->sev_es.vmsa = page_address(vmsa_page);
++	svm->sev_es.snp_pending_vmsa_gpa = INVALID_PAGE;
++	svm->sev_es.snp_guest_vmsa_gpa = INVALID_PAGE;
+ 
+ 	vcpu->arch.guest_tsc_protected = snp_is_secure_tsc_enabled(vcpu->kvm);
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 716be21fba33..d077783c287e 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -271,7 +271,8 @@ struct vcpu_sev_es_state {
+ 	u64 ghcb_registered_gpa;
+ 
+ 	struct mutex snp_vmsa_mutex; /* Used to handle concurrent updates of VMSA. */
+-	gpa_t snp_vmsa_gpa;
++	gpa_t snp_pending_vmsa_gpa;
++	gpa_t snp_guest_vmsa_gpa;
+ 	bool snp_ap_waiting_for_reset;
+ 	bool snp_has_guest_vmsa;
+ };
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
