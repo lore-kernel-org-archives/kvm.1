@@ -1,297 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884654279F6;
-	Tue, 30 Jun 2026 14:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E5143C07E;
+	Tue, 30 Jun 2026 14:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782829406; cv=none; b=eH5E8uYMy/D5uMn4EZiFcTzdsOJ5UeVFfTqvrCDM/UYC/lJ/0T/Dpc5iwT/0QiKtjGyf6GExG+XEfg3/UouU6gKqepMs4O9yp+iVULkn0mJiKIQ8JlOs0AE9/e39j8i02+0UAvR0Kisy/cjO6rbrKN2kd5AOl+KfVM7RyxQ/tzg=
+	t=1782831032; cv=none; b=nIkBvCvdRAAIzCHGqqGp2vdrRbCecpE0HdJ04NpsJC5Mtm+s4MCTYuNa0rxTWtKt3f5gVr1bvUb02pp2MNmi22IB5nX6YZss6hCiW57h+OIbpXFjeif5Fzf/JOAOnzcDGAKuF1pB2YYO+hjslrIFaq0ZXgdKyX0VEYOBDm3iQDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782829406; c=relaxed/simple;
-	bh=4Mdk6PeJVz2qKvGO8sh40YuDeFqEaJZUp90ErRdeae4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YknTcq6S+P5/aP7NkRN76R/Bj6Bj8ZEGXp35h45XEypDi+cru5evaWhODPD3BUj64vrc/XlG4ZrY7gHsvDovw5dTIr6mKwN81hmbNQxM9+kvnWd6Ryy7vH+PgakwcTMip8J+cRAKxUkY8ug25ZxFuN1zN3nU1r0f//WUBV5YsgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVINqA4+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782831032; c=relaxed/simple;
+	bh=FmGcRpgqVH1Jyet3amoELywEs1aHDjFjiXmR4Ai9K98=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=cbU1dpXLN0so3U/t5neY0zKJuRZ75QjCyH5K7LX6H6SIbQ2enZHPWkt6LqRIYpiFHfDdBV9ND8GFrVUmIXnwGkx0XDbaYo7ngBQhylCnt0yUDyOJgzifgqRrxnWP9tnERqsDKbLR/iZ6cSLTCXXRgQryxxUTFlq0k2OmKfdVq/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=DEus4bOr; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVINqA4+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDC11F000E9;
-	Tue, 30 Jun 2026 14:23:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782829405;
-	bh=fUSz7eEHYpvlOzsm+PvIOL5UMpwSX4asWnIG8SXRQ9w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AVINqA4+0mKW2mbjg4vu8fM695FCCJx6R/nwzY2PZ9fiJJhPzAVXWL6lf61XNUJX/
-	 YJgPmk14Czg6d1p3zQ6jRrrqJiVjg6hCw20WvCNSVB2/3Dg9hyUFMK01SFn0i6YZRA
-	 ke5H+Ol0omhT/06YZVLMeNP6fYuOXzNwNNlxEV118f0F4Tr2ws4GZeVIEezcbOhCz8
-	 DTr5q5lTordecxRlTR2Dbk80KcMsX0bQKQlehHmdhtqGOoOAMc3So3Md5K+aaIi383
-	 9ps14BNr62/RAx+azFG7eu+B8stugu9/fNb0XdtiwTXekuzayIMYXk3s6e8QJcq7CS
-	 q5oaNrL6Oi12Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] tools/bpftrace: Add a simple instrumented kernel
- profiler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Aaron Lewis" <aaronlewis@google.com>
-Cc: bpf@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260630141152.3757722-2-aaronlewis@google.com>
-References: <20260630141152.3757722-1-aaronlewis@google.com>
- <20260630141152.3757722-2-aaronlewis@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 14:23:24 +0000
-Message-Id: <20260630142325.0FDC11F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="DEus4bOr"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44C282ED2;
+	Tue, 30 Jun 2026 07:50:24 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A158A3F85F;
+	Tue, 30 Jun 2026 07:50:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782831028; bh=FmGcRpgqVH1Jyet3amoELywEs1aHDjFjiXmR4Ai9K98=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DEus4bOrMtPLgrSAGt0EtnVJSrPt183sUxeCw5swqIK7G/W+bDiUNlIa/ENsn1q9S
+	 Ix+mwplKNj5DpeBcrAHKKzV8K/1MCOx6g4fV2IBjAXx7Kuo0F4lJTHOlnrbbqtsCKY
+	 2dyl9M0CURgvFIFZVqY/6Inv2dcOymDf4jQSKr4o=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Saket Dumbre <saket.dumbre@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Kees Cook <kees@kernel.org>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Zeng Heng <zengheng4@huawei.com>,
+	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Fuad Tabba <tabba@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tian Zheng <zhengtian10@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 05/13] KVM: arm64: Detect (via ACPI) and initialize HACDBSIRQ
+Date: Tue, 30 Jun 2026 15:50:17 +0100
+Message-ID: <akPXqZQBKET1SyvN@LeoBrasDK>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <akKpxDulRN7zDrgM@kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-6-leo.bras@arm.com> <akKpxDulRN7zDrgM@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [Medium] Incomplete timers (DURATION_UNSET) are blindly aggregated, corru=
-pting profile metrics.
-- [Medium] The `kvm_mmu_page_fault` probe incorrectly names its timer `kvm_=
-vcpu_block`.
-- [Medium] Two-pass parsing architecture breaks when reading from standard =
-input, causing an AttributeError.
-- [Medium] Fragile parsing logic crashes the script if any BPF trace map ev=
-ents are dropped.
-- [Low] File validation checks evaluate against closed file descriptors, re=
-ndering them dead code.
---
+On Mon, Jun 29, 2026 at 10:22:12AM -0700, Oliver Upton wrote:
+> On Mon, Jun 29, 2026 at 12:17:53PM +0100, Leonardo Bras wrote:
+> > Find via ACPI [1] the Id for HACDBSIRQ, initialize it as a per-cpu IRQ
+> > and make sure any cpu able to run virtualization has it active.
+> > 
+> > Introduce a per-cpu structure used by the HACDBSIRQ handler to keep track
+> > of entries size and the status of HACDBS. Size is used to detect end of
+> > processing in case the number of entries being processed is different of
+> > the supported entries size.
+> > 
+> > Status may look easily replaceable by checking HACDBS registers now, but
+> > will make the OFF/IDLE detection easier in next patches.
+> > 
+> > Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+> > 
+> > [1] https://github.com/tianocore/edk2/issues/12409
+> 
+> Reference the ACPI specification instead please.
 
-commit 991cf3dc11faba4afe46fa2281e4850e5407d45b
-Author: Aaron Lewis <aaronlewis@google.com>
+It's not accepted yet, unfortunately. I commented that into the cover 
+letter, but forgot to add it here.
 
-tools/bpftrace: Add a simple instrumented kernel profiler
+> Any link you want to
+> include in a changelog should use the Link: footer, the linkage to the
+> inline citation will be obvious.
 
-This commit introduces a simple instrumented profiler for the kernel using
-BpfTrace. It allows arbitrary tracing of kernel functions and tracepoints,
-and includes a Python script to aggregate and display the results in a
-hierarchical view with timing data.
+Sure, will remember that in the future.
 
-> diff --git a/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.p=
-y b/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py
-> new file mode 100644
-> index 0000000000000..f4ffe8cff4418
-> --- /dev/null
-> +++ b/tools/bpftrace/instrumented_profiler/aggregate_bpf_results.py
+> 
+> If we need to initialize the IRQ I'd really like to see device tree
+> bindings for HACDBSIRQ as well. Pretty much any system us plebs can get
+> our hands on is gonna be DT anyway.
 
-[ ... ]
+Agree. I started out with ACPI because that's what the main target is, as 
+dirty-logging is focused in Live Migration, which is usually more 
+appreciated in the server space, which generally uses ACPI.
 
-> +def update_child(r: BpfResult, timer: BpfTimer, tid: int) -> int:
-> +  i =3D r.child_index.get(timer.name)
-> +  if i is None:
-> +    i =3D len(r.children)
-> +    r.children.append(BpfResult(
-> +        timer.name,
-> +        timer.start_time_us,
-> +        timer.start_time_us + timer.duration_us,
-> +        timer.duration_us,
-> +        timer.duration_us,
-> +        timer.duration_us,
-> +        1,
-> +        1,
-> +        timer.depth,
-> +        tid))
-> +    r.child_index[timer.name] =3D i
-> +  else:
-> +    r.children[i].wall_time_start_us =3D min(r.children[i].wall_time_sta=
-rt_us, timer.start_time_us)
-> +    r.children[i].wall_time_end_us =3D max(r.children[i].wall_time_end_u=
-s, timer.start_time_us + timer.duration_us)
-> +    r.children[i].thread_us +=3D timer.duration_us
-> +    r.children[i].max_us =3D max(r.children[i].max_us, timer.duration_us)
+I spoke to some people, and I could not hear of anyone releasing a product 
+based in DT that would implement this yet, so I postponed the DT 
+enablement.
 
-[Severity: Medium]
-When a traced function does not complete before tracing ends (for example, =
-if
-interrupted via Ctrl-C), the duration remains at its initialization value of
-DURATION_UNSET (-1 cast to uint64).
+> 
+> > +static irqreturn_t hacdbsirq_handler(int irq, void *pcpu)
+> > +{
+> > +	u64 cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> > +	unsigned long err = FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons);
+> > +
+> > +	switch (err) {
+> > +	case HACDBSCONS_EL2_ERR_REASON_NOF:
+> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > +		break;
+> > +	case HACDBSCONS_EL2_ERR_REASON_IPAHACF:
+> > +		/* When size not a power of two >= 4k, exit with reserved TTLW */
+> > +		int index = FIELD_GET(HACDBSCONS_EL2_INDEX, cons);
+> > +
+> > +		if (index >= this_cpu_read(hacdbs_pcp.size)) {
+> > +			this_cpu_write(hacdbs_pcp.status, HACDBS_IDLE);
+> > +			break;
+> > +		}
+> > +		fallthrough;
+> > +	case HACDBSCONS_EL2_ERR_REASON_STRUCTF:
+> > +	case HACDBSCONS_EL2_ERR_REASON_IPAF:
+> > +		this_cpu_write(hacdbs_pcp.status, HACDBS_ERROR);
+> > +		break;
+> > +	}
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> 
+> I have a pretty extreme distaste for creating a state machine between
+> the callsite and the IRQ handler. The callsite should poll HACDBS for
+> completion. The thread has nothing better to do anyway.
 
-Are we blindly aggregating incomplete timers here?
+Well, there is one argument it could just wait and save some energy, but I 
+agree it is not relevant in server space. The main reason I did this is 
+because I am planning on later doing an improved version of this that would 
+clean the dirty-bit *while* running the guest, and having the IRQ is needed 
+for exiting guest so we can notify userspace the cleaning is done. So I 
+laid the HACDBSIRQ infra here so we don't have both polling and IRQ options 
+happening. 
 
-Adding this massive sentinel value directly to thread_us and max_us will
-severely corrupt the aggregated timing metrics.
+That idea would require us to add new API (a return value for 'cleaned'), 
+and also a new flag for the clean ioctl. We also need the VMM to 
+implement that, but then we get a proper cpu usage of cleaning time.
 
-[ ... ]
+I wanted to start with a backwards compatible version, and do the above 
+idea once I put my hands in hardware that implements HACDBS, so I can 
+properly measure how much performance we get on above strategy.
 
-> +def merge_recursive(r: BpfResult, tid: int, timers: List[BpfTimer], inde=
-x: int, child_index: int) -> int:
-> +  while index < len(timers):
-> +    while index < len(timers) and timers[index] =3D=3D None:
-> +      index +=3D 1
-> +
-> +    if index >=3D len(timers):
-> +      return index
-> +
-> +    # The timer is a child of 'r'. (Child case)
-> +    if timers[index].depth =3D=3D (r.depth + 1):
-> +      # Add child
-> +      child_index =3D update_child(r, timers[index], tid)
-> +
-> +      # Now that the timer has been handled increment to the next one.
-> +      index +=3D 1
-> +
-> +    # The timer is a child of 'r'. (Grandchild case)
-> +    elif timers[index].depth =3D=3D (r.depth + 2):
-> +      if child_index < 0:
-> +        raise ValueError("Invalid 'child_index'")
-> +      # Recurse down the child becuase that is the parent this timer.
-> +      index =3D merge_recursive(r.children[child_index], tid, timers, in=
-dex, child_index)
-> +
-> +    # The timer is a descendant of 'r', but not the child... Invalid cas=
-e!
-> +    elif timers[index].depth > (r.depth + 2):
-> +      raise ValueError("Invalid depth.  descendant can only be children.=
- name =3D '%s', tid =3D %d, index =3D %d" % (timers[index].name, tid, index=
-))
+What do you think?
 
-[Severity: Medium]
-Will this script crash with a ValueError or IndexError if bpftrace drops any
-map events due to ring buffer overflow or map eviction under heavy load?
+Thanks!
+Leo
 
-The parsing logic appears to assume a flawless 1:1 correlation across all
-dumped maps. If events are dropped, it might create a gap in the call depth
-triggering this strict ValueError, or result in an IndexError during array
-assignment in generate_from_log() when index expectations are broken.
-
-[ ... ]
-
-> +def generate_from_log(files: Sequence[str]):
-> +  """Read the trace and return a list of ProfilerResult objects."""
-> +
-> +  timer_counts =3D {}
-> +  all_timers =3D {}
-> +
-> +  count_regex =3D re.compile(
-> +      r"^@timer_count\[(?P<tid>[0-9]+)\]:\W(?P<count>[-0-9]+)"
-> +  )
-> +  name_regex =3D re.compile(
-> +      r"^@timer_name\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<name>=
-[\w\.0-9]+)"
-> +  )
-> +  start_time_regex =3D re.compile(
-> +      r"^@timer_start\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<star=
-t_time_us>[-0-9]+)"
-> +  )
-> +  duration_regex =3D re.compile(
-> +      r"^@timer_duration\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<d=
-uration_us>[-0-9]+)"
-> +  )
-> +  depth_regex =3D re.compile(
-> +      r"^@timer_depth\[(?P<tid>[0-9]+),\W*(?P<index>[0-9]+)\]:\W(?P<dept=
-h>[-0-9]+)"
-> +  )
-> +
-> +  attaching_regex =3D re.compile(
-> +      r"^Attaching.*"
-> +  )
-> +
-> +  # Get all counts.  That way we know how many timers each thread used.
-> +  for line in fileinput.input(files=3Dfiles):
-
-[Severity: Medium]
-Could this two-pass parsing architecture break when reading trace data dire=
-ctly
-from standard input?
-
-If a user pipes bpftrace output into this script, this first loop will cons=
-ume
-the entire stream until EOF.
-
-The second fileinput.input() loop below will then read nothing, leaving the
-timer arrays filled with None values. This leads to an AttributeError in
-merge_timers() when attempting to read timers[0].depth.
-
-> +    line =3D line.rstrip()
-> +
-> +    m =3D re.fullmatch(duration_regex, line)
-> +    if m:
-> +      tid =3D int(m.group("tid"))
-> +      index =3D int(m.group("index"))
-> +      duration_str =3D m.group("duration_us")
-> +      duration =3D int(m.group("duration_us"))
-> +
-> +      if not tid in timer_counts:
-> +        timer_counts[tid] =3D index
-> +      else:
-> +        timer_counts[tid] =3D max(timer_counts[tid], index)
-> +
-> +  # Allocate enough timers to fit the trace.
-> +  for tid, count in timer_counts.items():
-> +    all_timers[tid] =3D [None] * (count + 1)
-> +
-> +  # Populate the trace.
-> +  for line in fileinput.input(files=3Dfiles):
-
-[ ... ]
-
-> +  root =3D BpfResult("", 0, 0, 0, 0, 0, 1, 1, -1, -1)
-> +  results =3D []
-> +  for tid, timers in all_timers.items():
-> +    merge_timers(root, tid, timers)
-> +  print_results(root, results)
-> +
-> +  if fileinput.fileno() =3D=3D 0:
-> +    raise ValueError("Expected a file to read.")
-
-[Severity: Low]
-Does this file validation check evaluate against closed file descriptors?
-
-The fileinput loops have already exhausted and closed the files by this poi=
-nt.
-Calling fileinput.fileno() returns the active UNIX file descriptor, which is
--1 when closed, not the count of parsed files.
-
-Both this check and the one below will always evaluate to false, rendering
-this block dead code.
-
-> +
-> +  if fileinput.fileno() > 1:
-> +    raise ValueError("Too many files read.  Expected 1")
-> +
-> +def main() -> None:
-
-[ ... ]
-
-> diff --git a/tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt b/=
-tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt
-> new file mode 100644
-> index 0000000000000..bd341e408570e
-> --- /dev/null
-> +++ b/tools/bpftrace/instrumented_profiler/samples/kvm_trace.bt
-
-[ ... ]
-
-> +/*
-> + * Time 'kvm_mmu_page_fault()'.
-> + *
-> + * Check: sudo grep kvm_mmu_page_fault /proc/kallsyms
-> + */
-> +kfunc:kvm_mmu_page_fault
-> +{
-> +	START_TIMER("kvm_vcpu_block",
-> +		    @timer_name, @trace_stack, @timer_start, @timer_duration,
-> +		    @timer_depth, @timer_count, @trace_stack_top);
-> +}
-
-[Severity: Medium]
-Is there a copy-paste error here where the timer for kvm_mmu_page_fault is
-incorrectly named kvm_vcpu_block?
-
-This will falsely attribute page fault durations to kvm_vcpu_block, distort=
-ing
-the captured metrics for the profile.
-
-> +kretfunc:kvm_mmu_page_fault
-> +{
-> +	if (@trace_stack_top[tid] > 0) {
-> +		STOP_TIMER(@trace_stack_top, @trace_stack, @timer_duration, @timer_sta=
-rt);
-> +	}
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630141152.3757=
-722-2-aaronlewis@google.com?part=3D1
+  
