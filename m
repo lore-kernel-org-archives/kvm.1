@@ -1,260 +1,366 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5412C237E
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 09:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B395E3EFD22
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 10:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782813194; cv=none; b=nEzSN5vM1dOnDziKkTzeMArCjKWJ9rEiP+UQ0lhldxVlLi9O9oVIB8fDUbqUTzBz2N3XB7z8DVcICnSIF/ncvLz3gD0vLYe+Fintr56htORAX4hUct4v65y9z+IGjeId3QGr0unbgd2uqyyedBDFdCMunAfbLpsfUEMSe8Y62KU=
+	t=1782814744; cv=none; b=kMAjgHXVMfSMbvycMoGftm4ZjY7s8ikN5h0hlhHHnvrUXj9esjsblyvFtgEI4K0TpxnCZo1ND/bLW2UP/Ukv56hTpk9qHbRBXfUOzFVT4tikInpGUlpiifWaPHMkN3i9s1QJ1axCkDPahEAtVqgf5BGExA5e4/QySWbMViIiJXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782813194; c=relaxed/simple;
-	bh=NbDEHp0gquR5Nq2A/cm+7E2L5SZ1Jhgmv94kZhkUywY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DkvklrK4z6OR1CfuMJxMQwdORDEPjHHxfDRb191YIz7iyqyS3bZ3Vi4IJqklfcNrOdc1CtNdjL1roD3i4IUPuwMfOvh404g6GyM9MagrP0l0wFDmo/u3ITk9OHQejUMIoAPzgUth9T0+LOiiQ1slVRmjTQ5cI/FUMGUF3zqNZOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C5umb2BG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=flG5IDJ2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1782814744; c=relaxed/simple;
+	bh=aPKq/6IHE64Ld3RcwNTW+lo941pl3E9dYyDTa4chBOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/w+RjTdEqDSPM3HWRMBmMeqFnNxRrb0j6fn50Esu0+wQX4Y5u65qbyg6AJDpxJew5Bg1B3OLN6/fJ51xVhbnB0HMUbpNG46NGfxQnfGawbBhv1VEYR1ui8lsbsBDptb2UNt4NhzDU0H73ckWfXARDjQbT1+0cyw8iF5fDxItrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EC1Jaq9Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C5umb2BG";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="flG5IDJ2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782813192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4wTpFP+uURpV7Es5gbDN0xr6tXZLlBB9VR1MULvKZf4=;
-	b=C5umb2BGPMCRvH/AL2ijiS3Iy2RTgFJyXyE2AQmrw4nv273PJAV/8bLBAf21d5oeMWTcc7
-	Y7NXcaq9vtEjPi7NU+Y2CI1HOFaY9COuAwFATAjL0AWE2NdOBl3Rcbb9wsOrvrgX2NmEmz
-	6dMeiw8oDooP6bpOg74y/vcMmkZUeRg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-p7xOtdPKMvK6XSnzCZO5ew-1; Tue, 30 Jun 2026 05:53:11 -0400
-X-MC-Unique: p7xOtdPKMvK6XSnzCZO5ew-1
-X-Mimecast-MFC-AGG-ID: p7xOtdPKMvK6XSnzCZO5ew_1782813188
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-46cffa7200bso365955f8f.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 02:53:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1782813188; x=1783417988; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4wTpFP+uURpV7Es5gbDN0xr6tXZLlBB9VR1MULvKZf4=;
-        b=flG5IDJ2hqHW0esT+mbR1XlgzZp+A3gpWkh+I4LyDmUY21Ok86j1MXal/n3wpcvbPa
-         EUfEzabuf4xebj87SDEHm8gtvrsUe3JJlOhC9XW/naZdU/qAdYABRt3JRjgiB6uS5eSN
-         oQ8mCFg7JRyQGhnLjuOtQtZKIZJ15+bFVGrDmPlSAZOStGKRQAH3f+lwHDGwlDQKtyy/
-         DnjcGAoFMdNagtSMyCZbOVIkxB5EOadqirFKlR1d8lZjD5MiAEB3IMBD0VMu6U5Cmq0j
-         ZvPNlaeiVYrLdXgLH5msXPaVcUDBr9u8IZ3BCiKtFgBf0Dg7/FE/gq1cGS24n3hUHYut
-         OYEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782813188; x=1783417988;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4wTpFP+uURpV7Es5gbDN0xr6tXZLlBB9VR1MULvKZf4=;
-        b=rDFyGtsQx/Qu20TlXLgLNiApyOj+5VzpGoOGdiS0gkflzmQAFsuYJYstc38HRWfPq6
-         L00hat29WfLppsJmMDJBAIyXSWXBYzvsdwQp2Yg10MXUnrjOgYYuWxZAUWilQiuNIwif
-         f6iLVlAxFRsVz8fPBIpdOXxMf2HiDIaBb1gmM89U6tbq+pvipJt4jolSckKT+CJtEAHs
-         V8W/U6V7qb535hUGWGdX2Us/nlzG1moOuab178qK9xQjWP9iTNDkAEdFThAMF378+JTt
-         kPIOtaEPBhWPLfEmQ/YOYK6yQHPRxDFvqCO5T1WqobnLJIeihLsJUP+b2A5HZDXPUFAu
-         SwVA==
-X-Forwarded-Encrypted: i=1; AHgh+RpeOF0a02UMqQhgQmgYFVDCoRDaDST7Qq0L1YBY30SftG/5pyTyHQiqOcZECcqNSADE3fU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy77H0sNayo8n7t5YUq1x0d0UFrEQq0ema4uAZn8hkogsvEhLr4
-	jTzx2JfhyfkP2QIslhfud/Pin5MwW7q5hTsC43ayTBgAzjaWopJEXKZ9P48xIQh3FmdWOWKe+wK
-	+NhZD1BAV7LFPPZO/lx5Pym6QohEKErJoo1BbMb9of9vus3VtK2rMdQ==
-X-Gm-Gg: AfdE7cknxhFt8cRLe1yEQVk5HoAbeGDomuKKHtDoxjTYMd/zUFBccF/WUdvyp0pqCKI
-	AoUY5tqLC09sPWVkpuS2hyBlrCnKXWCl9+HJuHh8vcmvpq8yQG0JFFZF8TRqhXCcMeFcyvzHNi3
-	3MENvx5BCQmkyCFiV2OL3gnBNu1LE1GXCiYU7N6yPEhwqymsY9ElrCO74a/8hfE10UtFHbkuKug
-	iMgnL9ifSXwZKp6RNAVk+MLQt6oXfI9UQEN5TIG1r31Zotj96bHxal6/5RqX49pE2zYQg8FN+A6
-	dC0wBHQQhWb3Wx3kCukFRMsRkX95gtp2W2c+hNHROrMERHTxQKbfXcoHHO8+v43PCK34j9fh7bm
-	p4rA01qktRUgXA544CovhPbVapSg82OOJ55QL9c+4cXa7sFzBX0jIdSq/HEpZbSpi+pTqWZW6Jr
-	KpTXAi83IyBA==
-X-Received: by 2002:a05:6000:1847:b0:45d:4c30:81a6 with SMTP id ffacd0b85a97d-475f4fb5d50mr1344052f8f.5.1782813188239;
-        Tue, 30 Jun 2026 02:53:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:1847:b0:45d:4c30:81a6 with SMTP id ffacd0b85a97d-475f4fb5d50mr1344016f8f.5.1782813187784;
-        Tue, 30 Jun 2026 02:53:07 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:5521:6b10:2eb7:f61a:75:4534? ([2a0d:3344:5521:6b10:2eb7:f61a:75:4534])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf65sm6669391f8f.21.2026.06.30.02.53.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 02:53:05 -0700 (PDT)
-Message-ID: <6a6be4b0-e02d-46ca-b8bf-c27bd681d253@redhat.com>
-Date: Tue, 30 Jun 2026 11:53:04 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EC1Jaq9Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A7D1F000E9;
+	Tue, 30 Jun 2026 10:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782814739;
+	bh=vRwimpREReUGgShdpW79yNcehG6qrB1csDNTOa25d28=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EC1Jaq9ZLVVay5+hzONK6kAI9BqttyjOTP4woTeVrenXD8MSuAiHLRYLPy6pxTB+7
+	 IOccPNlNy+DBtw4dpQuzU7w5xWNUut2Tsxle2+iaRzFzBtNNHnaAFhezYTr7NGp+iu
+	 hbUBIE2AnBYc++064E2kXhRt35w1223AztibP2UhV6YBy3g9wi/TNGfVtgWE6ajZn7
+	 6ruT4GpXWF97sfnmqG+zUgyzh+3xRRZHLXJTDB2y6XvHG06+yZYjnkQVr9HJ0S3RYl
+	 NmAaFrrH0EctO/0D2mt9iz/T9bvBACCeVTKQA6fUiYcVaeVPRgm4sctcFjpaBDIjhS
+	 N/qFluKZUfDXg==
+Date: Tue, 30 Jun 2026 12:18:51 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+	berrange@redhat.com, armbru@redhat.com, pankaj.gupta@amd.com,
+	isaku.yamahata@intel.com, xiaoyao.li@intel.com,
+	chao.p.peng@linux.intel.com, david@kernel.org, ashish.kalra@amd.com,
+	ackerleytng@google.com
+Subject: Re: [PATCH RFC 00/12] guest_memfd: support in-place memory conversion
+Message-ID: <akOYC+3drsxA+/Gv@lpieralisi>
+References: <20260528000416.8161-1-michael.roth@amd.com>
+ <ajkrWSfmODM8NTZ5@lpieralisi>
+ <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under memory
- pressure
-To: Stefano Garzarella <sgarzare@redhat.com>, netdev@vger.kernel.org
-Cc: Jason Wang <jasowang@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, stable@vger.kernel.org,
- Brien Oberstein <brienpub@gmail.com>
-References: <20260626134823.206676-1-sgarzare@redhat.com>
- <20260626134823.206676-2-sgarzare@redhat.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260626134823.206676-2-sgarzare@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bdg5gb5m4tnm5pmq54vafyykbegefsrz4qupn44ofwfiwkpwk4@zwg7e35l5zps>
 
-On 6/26/26 3:48 PM, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
+On Thu, Jun 25, 2026 at 04:21:52PM -0500, Michael Roth wrote:
+> On Mon, Jun 22, 2026 at 02:32:25PM +0200, Lorenzo Pieralisi wrote:
+> > On Wed, May 27, 2026 at 07:03:25PM -0500, Michael Roth wrote:
+> > > This patchset is also available at:
+> > > 
+> > >   https://github.com/amdese/qemu/commits/snp-inplace-rfc1
+> > > 
+> > > which is in turn based on the following series:
+> > > 
+> > >   [PATCH 0/4] "guest_memfd: Fix handling for conversions of MMIO ranges"
+> > >   https://lists.gnu.org/archive/html/qemu-devel/2026-05/msg07547.html
+> > > 
+> > > 
+> > > OVERVIEW
+> > > --------
+> > > 
+> > > This series adds guest_memfd support for in-place conversion of memory
+> > > between private/shared, and enables it for SEV-SNP guests. It is based
+> > > on recently-added kernel support for mmap()-able guest_memfd
+> > > instances[1], which allow it to be used for shared memory, and the
+> > > following patchset[2], which adds additional guest_memfd interfaces to
+> > > allow it to be used to perform in-place conversion:
+> > > 
+> > >   "[PATCH v7 00/42] guest_memfd: In-place conversion support"
+> > >   https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
+> > > 
+> > > That series also introduces a new 'vm_memory_attributes' KVM
+> > > module option, which sets whether memory attributes are tracked
+> > > VM-wide by KVM (vm_memory_attributes=1: the existing 'legacy' mode),
+> > > or per-guest_memfd instance (vm_memory_attributes=0: the new mode
+> > > which allows for in-place conversion). The latter is intended to
+> > > eventually deprecate the legacy mode, at which point in-place
+> > > conversion would become the primarily-supported mode.
+> > > 
+> > > 
+> > > MOTIVATION
+> > > ----------
+> > > 
+> > > Today, SEV-SNP guests (and other CoCo VM types using guest_memfd) keep
+> > > shared and private memory on separate physical backings: a userspace
+> > > memory-backend object for shared pages, and a kernel-allocated
+> > > guest_memfd file descriptor for private pages. KVM_SET_MEMORY_ATTRIBUTES
+> > > flips which backing the guest sees for a given GPA range, and the old
+> > > backing is typically discarded / hole-punched on conversion to avoid
+> > > doubled memory usage.
+> > 
+> > Hi Michael,
 > 
-> When many small packets accumulate in the receive queue, the skb overhead
-> can exceed buf_alloc even while the payload is within bounds. This causes
-> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
-> resets during large transfers under backpressure.
+> Hi Lorenzo,
 > 
-> The issue was reported by Brien, who has a reproducer, but it is also
-> easily reproducible with iperf-vsock [1] using a small packet size:
+> > 
+> > I am giving this a go on Arm CCA on top of Ackerley's KVM patches.
 > 
->   iperf3 --vsock -c $CID -l 129
+> Nice!
 > 
-> which fails immediately without this patch but with commit 059b7dbd20a6
-> ("vsock/virtio: fix potential unbounded skb queue").
+> > 
+> > When convert-in-place is switched on I think that the post conversion
+> > hook should not trigger discard+hole-punch since now guest-memfd _is_
+> > the memory back-end but it looks like there is no guard in place against
+> > that (I noticed that ram_block_discard_range() triggers a hole-punch in
+> > kvm_post_convert_section() - when the CCA guest first requests a
+> > KVM_EXIT_MEMORY_FAULT to convert to private).
+> > 
+> > It is a question really.
 > 
-> Inspired by TCP's tcp_collapse() which solves a similar problem, add
-> virtio_transport_collapse_rx_queue() that walks the receive queue and
-> re-copies data into compact linear skbs to reduce the overhead.
+> Yes, I agree that it does not make much sense to try to hole-punch for
+> in-place conversion, it's just uncessary churn on the gmem side. In my
+
+FWIW - on CCA I am not sure it is just "churn" especially if it is done on
+transition to private when guest-memfd pages are already private.
+
+> internal branches I generally disabled this path but for some reason
+> left that out of this series. I've tested with the below change and it
+> should do the trick though; I'll roll something similar into v2 of the
+> series.
+
+Thanks a lot, I will give it a spin.
+
+Thanks !
+Lorenzo
+
+>   diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+>   index 5840daa7c8..2faec929b5 100644
+>   --- a/accel/kvm/kvm-all.c
+>   +++ b/accel/kvm/kvm-all.c
+>   @@ -3619,17 +3619,19 @@ static int kvm_post_convert_section(MemoryRegionSection *section, bool to_privat
+>            }
+>        }
+>    
+>   -    if (to_private) {
+>   -        if (rb->page_size != qemu_real_host_page_size()) {
+>   -            /*
+>   -             * shared memory is backed by hugetlb, which is supposed to be
+>   -             * pre-allocated and doesn't need to be discarded
+>   -             */
+>   -            return 0;
+>   +    if (current_machine->cgs && current_machine->cgs->convert_in_place) {
+>   +        if (to_private) {
+>   +            if (rb->page_size != qemu_real_host_page_size()) {
+>   +                /*
+>   +                 * shared memory is backed by hugetlb, which is supposed to be
+>   +                 * pre-allocated and doesn't need to be discarded
+>   +                 */
+>   +                return 0;
+>   +            }
+>   +            ret = ram_block_discard_range(rb, offset, size);
+>   +        } else {
+>   +            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+>            }
+>   -        ret = ram_block_discard_range(rb, offset, size);
+>   -    } else {
+>   -        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+>        }
+>    
+>        return 0;
 > 
-> The collapse is triggered from virtio_transport_recv_enqueue() when
-> virtio_transport_inc_rx_pkt() fails. A pre-scan counts the eligible bytes
-> to size each allocation precisely, avoiding waste for isolated small
-> packets. Partially consumed skbs are kept as-is to preserve
-> buf_used/fwd_cnt accounting, EOM-marked skbs to maintain SEQPACKET
-> message boundaries, and skbs already larger than the collapse target
-> because they already have a good data-to-overhead ratio.
+> Thanks!
 > 
-> [1] https://github.com/stefano-garzarella/iperf-vsock
+> -Mike
 > 
-> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> Cc: stable@vger.kernel.org
-> Reported-by: Brien Oberstein <brienpub@gmail.com>
-> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
-> Tested-by: Brien Oberstein <brienpub@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 148 +++++++++++++++++++++++-
->  1 file changed, 146 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 09475007165b..304ea424995d 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -420,6 +420,137 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	return ret;
->  }
->  
-> +static bool virtio_transport_can_collapse(struct sk_buff *skb,
-> +					  unsigned int size)
-
-Why passing a `size` argument here? AFAICS the actual argument is always
-a constant and IMHO rightfully so.
-
-> +{
-> +	/* skbs that are partially consumed, mark a SEQPACKET message boundary,
-> +	 * or are already large enough should not be collapsed: they either
-> +	 * need special accounting, carry protocol state, or already have a
-> +	 * good data-to-overhead ratio.
-> +	 */
-> +	if (VIRTIO_VSOCK_SKB_CB(skb)->offset)
-> +		return false;
-> +	if (le32_to_cpu(virtio_vsock_hdr(skb)->flags) & VIRTIO_VSOCK_SEQ_EOM)
-> +		return false;
-> +	if (skb->len >= size)
-> +		return false;
-> +	return true;
-> +}
-> +
-> +/* Iterate through the packets in the queue starting from the current skb to
-> + * count the number of bytes we can collapse.
-> + */
-> +static unsigned int
-> +virtio_transport_collapse_size(struct sk_buff *skb,
-> +			       struct sk_buff_head *queue,
-> +			       unsigned int max_size)
-> +{
-> +	unsigned int target = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +	while ((skb = skb_peek_next(skb, queue)) &&
-> +	       virtio_transport_can_collapse(skb, max_size)) {
-> +		unsigned int len = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +		if (len > max_size - target)
-> +			return target;
-> +
-> +		target += len;
-> +	}
-> +
-> +	return target;
-> +}
-> +
-> +/* Called under lock_sock when skb overhead exceeds the budget. */
-> +static void virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs)
-> +{
-> +	/* Use the same linear allocation threshold as virtio_vsock_alloc_skb()
-> +	 * to avoid adding pressure on the page allocator.
-> +	 */
-> +	unsigned int collapse_max = SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM,
-> +						  PAGE_ALLOC_COSTLY_ORDER);
-> +	struct sk_buff *skb, *next_skb, *new_skb = NULL;
-> +	struct sk_buff_head new_queue;
-> +
-> +	__skb_queue_head_init(&new_queue);
-> +
-> +	skb_queue_walk_safe(&vvs->rx_queue, skb, next_skb) {
-
-If the queue is relevantly big, walking all of it may take a significant
-amount of time/cache misses and causes traffic burstines. I think you
-could add an additional stop condition, i.e. when the current queue size
-is below a reasonable threshold (allowing the current packet to be
-inserted plus some more slack).
-
-/P
-
-> +		struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +		u32 src_off = VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +		u32 src_len = skb->len - src_off;
-> +		bool keep = false;
-> +
-> +		if (!virtio_transport_can_collapse(skb, collapse_max)) {
-
-Minor nit, possibly something alike the following lead to more
-compact/more readable code:
-
-
-		keep = !virtio_transport_can_collapse(skb, collapse_max);
-		if (keep) {
-
-> +			/* Finalize pending collapsed skb to preserve packet
-> +			 * ordering.
-> +			 */
-> +			if (new_skb) {
-> +				__skb_queue_tail(&new_queue, new_skb);
-> +				new_skb = NULL;
-> +			}
-> +			keep = true;
-> +			goto next;
-> +		}
-> +
-> +		/* Finalize if this packet won't fit in the remaining tailroom,
-> +		 * so we can allocate a right-sized new_skb.
-> +		 */
-> +		if (new_skb && src_len > skb_tailroom(new_skb)) {
-> +			__skb_queue_tail(&new_queue, new_skb);
-> +			new_skb = NULL;
-
-Possibly introduce an helper for the above 2 statements?
-
-/P
-
+> > 
+> > Thanks,
+> > Lorenzo
+> > 
+> > > That model works, but has a number of downsides that impact certain
+> > > use-cases:
+> > > 
+> > >   - Each conversion involves discarding pages on one side and faulting
+> > >     them in on the other, which incurs allocation overheads in the
+> > >     host kernel for every conversion.
+> > > 
+> > >   - Some use-cases, like pKVM[3], rely on memory isolation rather than
+> > >     encryption and rely on in-place conversion to pass through things
+> > >     like secured framebuffer memory without needing to bounce data
+> > >     through separate shared/private HPAs, which would introduce
+> > >     unacceptable latency for that sort of workload.
+> > > 
+> > >   - Hugetlb support[4] for guest_memfd will rely on it, since things like
+> > >     1GB hugepages with a mix of shared/private sub-ranges would generally
+> > >     require 2 1GB hugetlb pages to remain available to handle shared vs.
+> > >     private accesses, which quickly causes doubling of guest memory usage.
+> > > 
+> > > Recent kernel work[2] makes guest_memfd mmap()-able and lets the *same*
+> > > physical pages be used for both shared and private states for a given
+> > > GPA range, allowing the above pitfalls to be naturally avoided.
+> > > 
+> > > This series wires that support up in QEMU.
+> > > 
+> > > 
+> > > DESIGN
+> > > ------
+> > > 
+> > > A new dedicated memory backend, memory-backend-guest-memfd, allocates
+> > > its memory via a guest_memfd file descriptor obtained from KVM with
+> > > the GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED flags. The fd
+> > > is mmap()ed so userspace can access pages directly while they are in
+> > > the shared state. For a normal/non-confidential VM, this backend can
+> > > be used in a similar fashion as the existing memory-backend-memfd.
+> > > 
+> > > For confidential VMs, a new 'convert-in-place' flag is added to switch
+> > > on in-place conversion support. When running in this mode, the user
+> > > *MUST* use memory-backend-guest-memfd for backing guest RAM. A new
+> > > RAM_GUEST_MEMFD_SHARED RAMBlock flag is added to track/enforce the
+> > > dependency. Additionally, QEMU is modified to use mmap()-able
+> > > guest_memfd and set this flag for other cases where it allocates RAM
+> > > internally. As a result, block->fd will generally always a guest_memfd,
+> > > and when RAM_GUEST_MEMFD_SHARED is set then that block->fd will be
+> > > qemu_dup()'d as the FD handle for private memory is well (which is
+> > > currently what block->guest_memfd point to). This allows the prior
+> > > non-in-place handling around block->guest_memfd to be kept mostly
+> > > unchanged.
+> > > 
+> > > When running with convert-in-place=true, shared/private conversions
+> > > are no longer handled directly by KVM, but instead by a new guest_memfd
+> > > ioctl, KVM_SET_MEMORY_ATTRIBUTES2, which purposely provides similar
+> > > naming/implementation to the KVM_SET_MEMORY_ATTRIBUTES KVM ioctl that
+> > > it replaces. This series adds handling to route conversion requests to
+> > > the appropriate ioctls based on whether or not in-place conversion is
+> > > enabled.
+> > > 
+> > > Since guest_memfd ioctls need to be called against the specific
+> > > guest_memfd inode associated with each memory slot/region, some
+> > > refactoring is needed to handle conversions on a per-section. Much of
+> > > that is inherited from the bugfix series this patchset is based on top
+> > > of, which adds the initial logic for handling multiple sections within
+> > > a range that gets heavily re-used here.
+> > > 
+> > > 
+> > > USAGE
+> > > -----
+> > > 
+> > > After applying this series against a kernel with the RFC patches above
+> > > present, an SEV-SNP guest can be started with in-place conversion via:
+> > > 
+> > >     qemu-system-x86_64 \
+> > >         -machine q35,confidential-guest-support=sev0,memory-backend=ram0 \
+> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
+> > >         -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,\
+> > >                 convert-in-place=on \
+> > >         ...
+> > > 
+> > > The new memory-backend-guest-memfd can also be used by normal VMs:
+> > > 
+> > >     qemu-system-x86_64 \
+> > >         -machine q35,memory-backend=ram0 \
+> > >         -object memory-backend-guest-memfd,id=ram0,size=8G,share=on \
+> > >         ...
+> > > 
+> > > This is mainly only useful atm for testing, but in the future there may
+> > > be more use-cases around using guest_memfd as a general-purpose backend
+> > > for non-confidential VMs, so it is intended to work in this manner as
+> > > well.
+> > > 
+> > > 
+> > > NOTES/TODO
+> > > ----------
+> > > 
+> > >   - the CPR handling to support resetting of confidential VMs is
+> > >     currently disabled when in-place conversion is enabled.
+> > >   - TDX testing would be great, in theory it can be enabled with this
+> > >     series (similarly to the top patch) but I'm not sure if there are
+> > >     other special requirements before we can switch it on.
+> > >   - kernel patches are still in-flight, but fairly mature at this point
+> > >     and nearing upstream
+> > > 
+> > > 
+> > > REFERENCES
+> > > ----------
+> > > 
+> > > [1] https://lore.kernel.org/kvm/20250729225455.670324-1-seanjc@google.com/
+> > > [2] https://lore.kernel.org/kvm/20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com/
+> > > [3] https://www.youtube.com/watch?v=MMfAGNW9RVg
+> > > [4] 1GB hugetlb v2
+> > > 
+> > > 
+> > > Thoughts, feedback, and testing are very much appreciated.
+> > > 
+> > > Thanks,
+> > > 
+> > > Mike
+> > > 
+> > > 
+> > > ----------------------------------------------------------------
+> > > Michael Roth (12):
+> > >       accel/kvm: Decouple guest_memfd checks from memory attribute checks
+> > >       hostmem: Introduce dedicated memory backend for guest_memfd
+> > >       linux-headers: Update headers for v7 of in-place conversion kernel support
+> > >       accel/kvm: Add CGS option to control in-place conversion support
+> > >       system/memory: Re-use memory-backend-guest-memfd inode for private memory
+> > >       system/memory: Default to guest_memfd for RAM for in-place conversion
+> > >       accel/kvm: Move post-conversion updates to a separate helper
+> > >       accel/kvm: Re-order attribute notifications for in-place conversion
+> > >       accel/kvm: Support shared/private conversions via guest_memfd ioctls
+> > >       accel/kvm: Don't default to private attributes for in-place conversion
+> > >       i386/sev: Update SNP_LAUNCH_UPDATE for in-place conversion
+> > >       i386/sev: Allow in-place conversion for SEV-SNP guests
+> > > 
+> > >  accel/kvm/kvm-all.c                                | 286 +++++++++++--
+> > >  accel/stubs/kvm-stub.c                             |   9 +-
+> > >  backends/confidential-guest-support.c              |  25 ++
+> > >  backends/hostmem-guest-memfd.c                     |  93 +++++
+> > >  backends/meson.build                               |   1 +
+> > >  include/standard-headers/drm/drm_fourcc.h          |  28 +-
+> > >  include/standard-headers/linux/const.h             |  18 +
+> > >  include/standard-headers/linux/ethtool.h           |  28 +-
+> > >  include/standard-headers/linux/input-event-codes.h |  13 +
+> > >  include/standard-headers/linux/pci_regs.h          |  71 +++-
+> > >  include/standard-headers/linux/typelimits.h        |   8 +
+> > >  include/standard-headers/linux/virtio_ring.h       |   5 +-
+> > >  include/standard-headers/linux/virtio_rtc.h        | 237 +++++++++++
+> > >  include/standard-headers/linux/vmclock-abi.h       |  20 +
+> > >  include/system/confidential-guest-support.h        |  14 +
+> > >  include/system/hostmem.h                           |   1 +
+> > >  include/system/kvm.h                               |   3 +-
+> > >  include/system/memory.h                            |   8 +-
+> > >  linux-headers/asm-arm64/kvm.h                      |   1 +
+> > >  linux-headers/asm-arm64/unistd_64.h                |   1 +
+> > >  linux-headers/asm-generic/unistd.h                 |   5 +-
+> > >  linux-headers/asm-loongarch/kvm.h                  |   5 +
+> > >  linux-headers/asm-loongarch/kvm_para.h             |   1 +
+> > >  linux-headers/asm-loongarch/unistd_64.h            |   2 +
+> > >  linux-headers/asm-mips/unistd_n32.h                |   1 +
+> > >  linux-headers/asm-mips/unistd_n64.h                |   1 +
+> > >  linux-headers/asm-mips/unistd_o32.h                |   1 +
+> > >  linux-headers/asm-powerpc/unistd_32.h              |   1 +
+> > >  linux-headers/asm-powerpc/unistd_64.h              |   1 +
+> > >  linux-headers/asm-riscv/kvm.h                      |  11 +-
+> > >  linux-headers/asm-riscv/ptrace.h                   |  37 ++
+> > >  linux-headers/asm-riscv/unistd_32.h                |   1 +
+> > >  linux-headers/asm-riscv/unistd_64.h                |   1 +
+> > >  linux-headers/asm-s390/unistd_32.h                 | 446 ---------------------
+> > >  linux-headers/asm-s390/unistd_64.h                 |   1 +
+> > >  linux-headers/asm-x86/kvm.h                        |  21 +-
+> > >  linux-headers/asm-x86/unistd_32.h                  |   1 +
+> > >  linux-headers/asm-x86/unistd_64.h                  |   1 +
+> > >  linux-headers/asm-x86/unistd_x32.h                 |   1 +
+> > >  linux-headers/linux/const.h                        |  18 +
+> > >  linux-headers/linux/iommufd.h                      |  48 +++
+> > >  linux-headers/linux/kvm.h                          |  62 ++-
+> > >  linux-headers/linux/mshv.h                         |   4 +-
+> > >  linux-headers/linux/psp-sev.h                      |   2 +-
+> > >  linux-headers/linux/stddef.h                       |   4 +
+> > >  linux-headers/linux/vduse.h                        |  85 +++-
+> > >  linux-headers/linux/vfio.h                         |  30 +-
+> > >  qapi/qom.json                                      |  35 +-
+> > >  qemu-options.hx                                    |   5 +
+> > >  system/memory.c                                    |  22 +-
+> > >  system/physmem.c                                   |  50 ++-
+> > >  target/i386/sev.c                                  |  12 +-
+> > >  52 files changed, 1253 insertions(+), 533 deletions(-)
+> > >  create mode 100644 backends/hostmem-guest-memfd.c
+> > >  create mode 100644 include/standard-headers/linux/typelimits.h
+> > >  create mode 100644 include/standard-headers/linux/virtio_rtc.h
+> > >  delete mode 100644 linux-headers/asm-s390/unistd_32.h
+> > > 
