@@ -1,233 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC1409610;
-	Tue, 30 Jun 2026 11:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4493CB8F1
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 11:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782817903; cv=none; b=Lp6wYadu29aAg/+s6Ly676edv5EZVj/OOCsFNptmpmZZH1Zf0AxO/eOHmYPYyvvpISOKqWAQ50hLmPUIPP7GHx/PVJjtme4c7TeQ15Cpv3Ywlz9xKoRh7HL2fW3KNv4veeGHmnbjTMij/vIaSe6YULel0NROEnfBQFroSGKOabM=
+	t=1782818018; cv=none; b=PqgY6ME4OWQKbVcETziIsfrCrEFoNeGGVD+3Ujo6CHIhbqfg2bDsG65kN9aaFBvoz28DY2xFAl55I2NFuqhKMbNWmhT34Kk9nVagHhaJN6plCBMUqbKEI8FoHzhi3cPmreOEwYEVEn6OBg1QzJEey+tRloBuoPRuiJE+AlxocNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782817903; c=relaxed/simple;
-	bh=v8emd0+iJg73lla8cZKdlKAEjPum1TXArUvYoWrvMgg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BTH6rVhV0nusuJw+F3dsFkIbEIVCoIOgWn6rDBZ3bo9vKjarechuZ2ULLTEKpTswQzU7f2ao7xa15SRsyvhNSgOTT9hIlzjdBz4qDE5xUnQF70uyp21uAj67N8Kf2y3WKktR56mSdaos/BaHEhZ4z4M1H/FiOJcZBp+mQZURd5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqSLLoIV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782818018; c=relaxed/simple;
+	bh=Nx/5w6TudJfJguAv3rQnOEBV9HRO+eOhHCmz1PfhHCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hqIVVVmjqRwn2DUJNHSpNGm8MzGJQ42OHwPQS/WNylHkQ24G4K7x+GvhZuoL7P5bwEZTEygTZU9n3ZYkzIHZA1y4KliDW7rsNU8mdOf7yn/30FPUnm4fAz+oN3zEWDapWcwCNskPqIh6BA8jxRxqy6L65pwdfrWBxYLoV/zVUts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d72jtBxj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ppKUUU7d; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqSLLoIV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F0A1F00A3A;
-	Tue, 30 Jun 2026 11:11:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782817902;
-	bh=tzicFelJ83Aw1XQxph/oLJq5DnR+vyQ2AWf/pH5gfKk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OqSLLoIVMAas1myasolyFvK8Yl5dBDVZf32u/ZbDGGKE+uQdpx3lgQKpWDEeBRV/g
-	 W16wxOFIJ0Hnae5uVAykSI2kLOxE6UgvMTI7LN6z0FYhRXWng4kneuisOQ/xTGRYIO
-	 6LuZLMqlhQHqgAZFt1mbXgXHZJH8bIOw7ugxtuf8kJhlbDTG/uCZy9oZlhN1Miqp1A
-	 MWA193gJs5f7+ZipTTd7kzBlVBT65Cq37Adw2y8wxZ5bey5x1Z0gXkjzF52p8ZHPAe
-	 kJSptIZeJOEBJm0crU1Fw/Mt5Yn9wFwifN0MNOR5axe8NoAD74JNwbIK2eAOL3XEDs
-	 CB9N9aC69i0Wg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 05/15] s390-vfio-ap: Callback to get/set vfio device
- mig state during guest migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260630104132.1598851-6-akrowiak@linux.ibm.com>
-References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
- <20260630104132.1598851-6-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 11:11:41 +0000
-Message-Id: <20260630111142.08F0A1F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d72jtBxj";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ppKUUU7d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782818015;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=TvZNdWrFNeL0P+tCrhQtOwz2zOdGFPTOyf6fP5xrjeE=;
+	b=d72jtBxjpOGCqg2NhlrNvxf12gWBPClRQd8HxwKns0BcH+Jbi9gAoZBT7O+JvJW0vXCYpf
+	iuCuuGi2LSn0p2r+yKxXGiMl7uF720eMBoVJ9Tw3KRUBohK4QCeiyjV9PMwLOggt6k54nA
+	+eKx9A+rWMVn6WYSKVGwulDelSqJBPQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-590-A4WgvyPMPLyvv_YhKJYH-Q-1; Tue, 30 Jun 2026 07:13:33 -0400
+X-MC-Unique: A4WgvyPMPLyvv_YhKJYH-Q-1
+X-Mimecast-MFC-AGG-ID: A4WgvyPMPLyvv_YhKJYH-Q_1782818012
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493ba771d1bso7660745e9.2
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 04:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782818012; x=1783422812; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TvZNdWrFNeL0P+tCrhQtOwz2zOdGFPTOyf6fP5xrjeE=;
+        b=ppKUUU7dse/uNjB+LHTi3XBciYS2JHe9JK2O/CUNKlK+gI9NvJAxME32ePAkYGIMn1
+         FiUkSugaGg5dBs8kahmNo8MKVC9G7/xORdN2QJwb9O7Ztxu9g761x5jLvMWujO3FLTX6
+         Eg1Piu4edTQ0GoMKBwaoe4WLYn3vx4qBXlMbQpCOESm08zMSbOLT6BmRVe5HmrU+JRVQ
+         fDPWVhtmf9LwGUhIXu/Ohi29B7udP/DzJodToaX3yxpz9EEmHiYngacS8Hbo6qiIPTmd
+         LXErLz3WrRipvnkPcwI6aJHjmUrqTrztElK9ewD3aTYCKNo26zX6LfJ6BTiablM+07iV
+         hsLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782818012; x=1783422812;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TvZNdWrFNeL0P+tCrhQtOwz2zOdGFPTOyf6fP5xrjeE=;
+        b=kpjyiWb1YK13ND0T4qMWk16mmfxvqx1EpY1HlrEdZZsubMQqcT2CawCUeFMuj/K6EN
+         Iwlec93Oy9TDltN+0KeXvGeFJIdeO65dqMV3t1jMHnVe94z8vN1LBCXWVvjlMRq3ENXs
+         6WGXFt92GolcNylDgqfWky8K6g0th9qi9WBBbJfmY9mCitrHi2kzZe9hua3I17Uz4/lz
+         MmfDxZPPqsAeR2ndYCtTnrESLM3O2BvOmnIAC7ti5ci2LDi0KmKYInt7uQl0qdDC++Yj
+         oYB+GO9LixXaaGetofgF73jA1FoZdlnFV4jtWfyZfqcN3F5kaNXzC/FW/yzEcPOVu6m1
+         ozgw==
+X-Forwarded-Encrypted: i=1; AFNElJ9K7QUy2GyW/1Cbht0/Gu5XIZsdnKrOISLC3noKe7/W2r8340Vq+m4dSayI+YiMPl3bgqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2y6GDUFJnUeGjRQ+LXoX9+ElfF0VgRa8GowQVDRVeynvlsu5u
+	eXn9xcIeRoHO9ZfffFLURwwx47NzAnYYH09ZthfcZg4p1L09iMpVdYGVHNNhpegAT5oYGLpogaT
+	9qsBgw1epoZ3mHLwOOV2cDtJnPffXfq4Zf759GvkMufnR5vbx3qKAVg==
+X-Gm-Gg: AfdE7ck1VbFsC/RF1u6N0o15d7SFe/NkBR8DjPQkh5FTzMTZQjJyfLEqdkn6MOmDPYx
+	W12dGtPCwxvgdOY48sMA3672QaOkI6/ejmz+ZCuBzrJLZWQ+V+yMCWpjNrZHvc0Y8A/ZHmZHbTH
+	rEsWG9gOytemBTubtvWvkFJ/dQmj7iemBEX2AtHX8es4/eGcbCNH0AHlyhoM1qBiZCVWFQkrUNv
+	KtaK9Fx0rmAbwW09CpusIcTrmIxvq9bE8fdsf/D5jAcblh8HtZbPtJw4ePWU754otXDV4T5hGRF
+	aOoGSVNTXonr+NVTGQ15y8BB+AM/m7Tzuhps0yC55/mPniWtgi6oi4HQ3lKTwMzr+V3WtxMK8eO
+	VsIXxrEUd6rgMJCnlqqTp4TujttSIkra3dNV65U3frsjeWxJfLw==
+X-Received: by 2002:a05:600c:c4b7:b0:493:bab4:183a with SMTP id 5b1f17b1804b1-493bab418b0mr29449235e9.5.1782818012457;
+        Tue, 30 Jun 2026 04:13:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:c4b7:b0:493:bab4:183a with SMTP id 5b1f17b1804b1-493bab418b0mr29448685e9.5.1782818011973;
+        Tue, 30 Jun 2026 04:13:31 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4756636cf65sm7402611f8f.21.2026.06.30.04.13.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 04:13:31 -0700 (PDT)
+Message-ID: <dcffa5bb-c092-422c-8685-6f247ffed004@redhat.com>
+Date: Tue, 30 Jun 2026 13:13:30 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] tests/functional: Add remote interrupts test for
+ PowerNV
+To: Aditya Gupta <adityag@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+ Shivang Upadhyay <shivangu@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ devel@lists.libvirt.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.ibm.com>,
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, kvm@vger.kernel.org,
+ Gautam Menghani <gautam@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>
+References: <20260629110411.3051274-1-adityag@linux.ibm.com>
+ <20260629110411.3051274-2-adityag@linux.ibm.com>
+ <71cffeef-3398-44e6-8e13-130266e789c1@redhat.com>
+ <akJXAebIn7BHhPRS@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+ <99726741-229a-4230-b19e-63a7f27ba9f0@redhat.com>
+ <b489fbd0-a1f8-429a-90f0-9ed950cfda1a@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <b489fbd0-a1f8-429a-90f0-9ed950cfda1a@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [Critical] Race condition in `vfio_ap_release_mig_file` accessing `mig_da=
-ta` without locking, resulting in Use-After-Free and memory leak.
-- [High] Removal of migration file cleanup logic from vfio_ap_reset_migrati=
-on_state leaves stale file pointers, causing resource leaks.
-- [High] The device state is not updated to VFIO_DEVICE_STATE_ERROR when a =
-state transition fails.
-- [Medium] Unratelimited dev_err allows unprivileged users to flood the ker=
-nel log.
-- [Medium] Use of global mutex for device-specific state operations allows =
-cross-VM interference.
---
+On 6/30/26 13:04, Aditya Gupta wrote:
+> 
+> On 29/06/26 20:13, Cédric Le Goater wrote:
+>> On 6/29/26 13:39, Aditya Gupta wrote:
+>>> On 26/06/29 01:20PM, Cédric Le Goater wrote:
+>>>> On 6/29/26 13:04, Aditya Gupta wrote:
+>>>>> In the past there have been hard to recreate issues where XIVE changes
+>>>>> cause qemu crashes due to multi-socket interrupts such as in [1].
+>>>>>
+>>>>> Add a functional test explicitly to test whether remote interrupts work.
+>>>>>
+>>>>> The test can also work as additional boot test for multi-socket boot,
+>>>>> initrd boot test, as well as a check for e1000e to be working in powernv,
+>>>>
+>>>> you should consider moving to a more modern nic model: igb, which
+>>>> has sr-iov support too.
+>>>
+>>> yes, can do. with igb i see multiple irqs, so test will have to take sum
+>>> of all rx irqs, and compare:
+>>>
+>>>     2026-06-29 17:00:46,288: cat /proc/interrupts | grep eth0
+>>>     2026-06-29 17:00:46,391: 135:          0          0 0 PNV-PCI-MSI 2416443392 Edge      eth0
+>>>     2026-06-29 17:00:46,393: 136:          0          6 0 PNV-PCI-MSI 2416443393 Edge      eth0-rx-0
+>>>     2026-06-29 17:00:46,394: 137:          0         14 0 PNV-PCI-MSI 2416443394 Edge      eth0-rx-1
+>>>     2026-06-29 17:00:46,395: 138:          0          4 0 PNV-PCI-MSI 2416443395 Edge      eth0-rx-2
+>>>     2026-06-29 17:00:46,397: 139:          0          4 0 PNV-PCI-MSI 2416443396 Edge      eth0-rx-3
+>>>     2026-06-29 17:00:46,398: 140:          0         16 0 PNV-PCI-MSI 2416443397 Edge      eth0-tx-0
+>>>     2026-06-29 17:00:46,399: 141:          0          6 0 PNV-PCI-MSI 2416443398 Edge      eth0-tx-1
+>>>     2026-06-29 17:00:46,399: 142:          0          6 0 PNV-PCI-MSI 2416443399 Edge      eth0-tx-2
+>>>     2026-06-29 17:00:46,400: 143:          0          4 0 PNV-PCI-MSI 2416443400 Edge      eth0-tx-3
+>>>
+>>> I feel e1000e suffices for this test, should i stay with e1000e or use
+>>> igb here ?
+>>
+>> or use a single cpu per socket config. Which seems better for the test.
+> 
+> 
+> The test uses single cpu per socket, since i have `-smp 4,sockets=4,threads=1`. Was this what you meant ?
 
-commit d82cbc8a070306f90cbac1743dbb46ba5b58d080
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+yes. or cores=1, as you wish.
 
-s390-vfio-ap: Callback to get/set vfio device mig state during guest migrat=
-ion
+Thanks,
 
-Implements two callbacks related to the current state of a vfio-ap device:
-* The callback that sets a new migration state of a vfio-ap device during
-  live migration of guests with pass-through access to AP devices. This
-  callback is mandatory for VFIO_DEVICE_FEATURE_MIGRATION support.
+C.
 
-  The function pointer for this callback is specified via the
-  'migration_set_state' field of the 'vfio_migration_ops' structure
-  which is stored with the VFIO device when the 'vfio_device'
-  structure representing the mediated device is initialized.
-
-* The callback that returns the current vfio device migration state during
-  live migration of guests with pass-through access to AP devices.
-
-  The function pointer for this callback is specified via the
-  'migration_get_state' field of the 'vfio_migration_ops' structure
-  which is stored with the VFIO device when the 'vfio_device'
-  structure representing the mediated device is initialized.
-
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index c7c71980bdbb8..8274e7b65eea4 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-[ ... ]
-> @@ -56,16 +57,140 @@ struct vfio_ap_config {
->  	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
->  };
-> =20
-[ ... ]
-> +static struct file *vfio_ap_set_state(struct vfio_device *vdev,
-> +				      enum vfio_device_mig_state  new_state)
->  {
-> -	return NULL;
-> +	int ret;
-> +	struct file *filp =3D NULL;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	enum vfio_device_mig_state next_state;
-> +	struct vfio_ap_migration_data *mig_data;
-> +
-> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
-> +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-
-[Severity: Medium]
-Does using the global mdevs_lock here allow an attacker controlling a guest=
-=20
-to heavily contend the lock by repeatedly calling the migration ioctl? Woul=
-d=20
-it be better to use a per-device lock to prevent potential cross-VM=20
-interference?
-
-> +	if (ap_is_se_guest()) {
-> +		dev_err(matrix_mdev->vdev.dev,
-> +			"Migration not allowed from or to a Secure Execution guest\n");
-
-[Severity: Medium]
-Could this unratelimited error message allow an unprivileged user program t=
-o=20
-flood the kernel log by calling the ioctl in a tight loop?
-
-> +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +		return ERR_PTR(-EPERM);
-> +	}
-> +
-> +	mig_data =3D matrix_mdev->mig_data;
-> +
-[ ... ]
-> +	while (mig_data->mig_state !=3D new_state) {
-> +		ret =3D vfio_mig_get_next_state(vdev, mig_data->mig_state,
-> +					      new_state, &next_state);
-> +		if (ret) {
-> +			filp =3D ERR_PTR(ret);
-> +			break;
-> +		}
-> +
-> +		filp =3D vfio_ap_transition_to_state(matrix_mdev, next_state);
-> +		if (IS_ERR(filp))
-> +			break;
-
-[Severity: High]
-If a state transition fails here, should the device be placed into=20
-VFIO_DEVICE_STATE_ERROR? The current logic seems to break the loop and=20
-return the error, but mig_data->mig_state is left unmodified, so subsequent=
-=20
-calls might report the old valid state instead of the required error state.
-
-> +
-> +		mig_data->mig_state =3D next_state;
-> +
-> +		if (WARN_ON(filp && new_state !=3D next_state)) {
-> +			fput(filp);
-> +			filp =3D ERR_PTR(-EINVAL);
-> +			break;
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&matrix_dev->mdevs_lock);
-> +
-> +	return filp;
->  }
-> =20
->  static int vfio_ap_get_state(struct vfio_device *vdev,
->  			     enum vfio_device_mig_state  *current_state)
->  {
-> -	return -EOPNOTSUPP;
-> +	struct ap_matrix_mdev *matrix_mdev;
-> +	struct vfio_ap_migration_data *mig_data;
-> +
-> +	mutex_lock(&matrix_dev->mdevs_lock);
-
-[Severity: Medium]
-Similar to the concern in vfio_ap_set_state(), could acquiring the global=20
-mdevs_lock just to read the device-specific state lead to cross-VM lock=20
-contention?
-
-> +
-> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
-> +	mig_data =3D  matrix_mdev->mig_data;
-> +
-[ ... ]
-> @@ -146,6 +271,5 @@ void vfio_ap_reset_migration_state(struct ap_matrix_m=
-dev *matrix_mdev)
->  	if (!matrix_mdev->mig_data)
->  		return;
-> =20
-> -	vfio_ap_release_mig_files(matrix_mdev);
->  	matrix_mdev->mig_data->mig_state =3D VFIO_DEVICE_STATE_RUNNING;
->  }
-
-[Severity: High]
-Is it safe to remove the call to vfio_ap_release_mig_files() here? If=20
-userspace starts a new migration, won't the new file pointers overwrite the=
-=20
-old ones in mig_data? When the old file descriptors are closed later, the=20
-driver's release callback won't find a match in mig_data, which appears to=
-=20
-result in a permanent memory leak of the associated allocations.
-
-[Severity: Critical]
-Are there also race conditions related to accessing mig_data without locks=
-=20
-during release? Looking at vfio_ap_release_mig_file():
-
-    struct ap_matrix_mdev *matrix_mdev =3D filp->private_data;
-
-    if (!matrix_mdev || !matrix_mdev->mig_data)
-        return -ENODEV;
-
-    if (filp =3D=3D matrix_mdev->mig_data->stop_copy_mig_file)
-
-Could an unprivileged process cause a use-after-free by closing the VFIO=20
-device file descriptor while keeping the migration file descriptor open,=20
-and then closing the migration file descriptor? Since mig_data is accessed=
-=20
-locklessly here, it seems it could be freed concurrently during device=20
-closure, leading to a dereference of freed memory.
-
-Additionally, if vfio_ap_release_migration_data() is called concurrently,=20
-does it properly free internal allocations like resuming_mig_state.ap_confi=
-g,=20
-or are those leaked when the parent mig_data is freed?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
-851-1-akrowiak@linux.ibm.com?part=3D5
