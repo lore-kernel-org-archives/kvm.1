@@ -1,240 +1,268 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9072A3C9894;
-	Tue, 30 Jun 2026 11:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95F3F20E7;
+	Tue, 30 Jun 2026 11:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782819626; cv=none; b=pj7hjQMAJuvjVw0YAyTPAFNbt1ALB8cHTNIrVp1J/LhEZNV1XPV8pv9qHCgoRytfqX1H1zPS2Sxsk6ZxCVXpcUzwWf4qBneZAa93o3PhoDnVqjV2u2rmv5u4tG8ZkIpK1zM0bPr5dHrivS7v2TenbixdZLJ/sik9uNC+8uo8G1s=
+	t=1782819971; cv=none; b=B+zwCkbb8aZGVgE/qnZJXvuQ8bS9BKsaH7LRzkLZ7McDj39XvaJpL0dzNwTAtNICMHWb5IUbcL34ufcTfW1RWGTnOchcR+5Y2TOU82Gn4zQGS2m5kt7q44aH9pFRQqeisHSJhPQ1bJUMJPC3jwE5CiK0fpyttbx0jH4wBNfttbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782819626; c=relaxed/simple;
-	bh=DqUHoNjNUWlvQmhHLBAHiYFqfAgDMqXnoUHPxtf/IDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SEk9ceRdLdKs824nQOeYq1YmnpwZq9crbHqIZ2NvmonfkM7WNb+hGw/J3ddP7dM9IeQN6qKpnX5VTugM+CPOjR+Zu7m6mRP0wWdZ711gQInIu42wo7iDiNLWTl46JGYktaZ0xohAYCESkZWfvrRldTUQL6fesK1iHCfh5anHAD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gqLmb4cdhz5BNS0;
-	Tue, 30 Jun 2026 19:40:15 +0800 (CST)
-Received: from szxlzmapp01.zte.com.cn ([10.5.231.85])
-	by mse-fl1.zte.com.cn with SMTP id 65UBe6El085767;
-	Tue, 30 Jun 2026 19:40:06 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from localhost.localdomain (unknown [10.234.74.162])
-	by smtp (Zmail) with SMTP;
-	Tue, 30 Jun 2026 19:40:09 +0800
-X-Zmail-TransId: 3e816a43ab18007-da7c9
-X-Zmail-LocalSMTP: 1
-X-Zmail-RealSender: wang.yechao255@zte.com.cn
-From: Wang Yechao <wang.yechao255@zte.com.cn>
-To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
-        Alexandre Ghiti <alex@ghiti.fr>,
-        Wang Yechao <wang.yechao255@zte.com.cn>
-Subject: [PATCH v4 0/5] Implement Eager Page Splitting for RISC-V
-Date: Tue, 30 Jun 2026 19:39:23 +0800
-Message-ID: <20260630113934.75100-1-wang.yechao255@zte.com.cn>
-X-Mailer: git-send-email 2.41.0
+	s=arc-20240116; t=1782819971; c=relaxed/simple;
+	bh=0M8BWWo9/GxP5o5rF8LuNNvbjnZhOjooxiqmThhj2xM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=FRRHLId+SxLezgpiEV23KD8zOZgn10MWOeoyOFclNvF8l0EvZ8Hrw06KPc4aHZqfhYCrfSJ6CaXBAfh/PXoyTIA5AnEqMZ0OTg40UtEEFGjtRpCUhq2Kj972zABjA7wVOHtW81cLq7pFGUpQ2Plg8wWtQrnWvXJ85YSIDWoBnR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6k0k2Uz; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6k0k2Uz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5D31F000E9;
+	Tue, 30 Jun 2026 11:46:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782819970;
+	bh=WtiAOhoHW6NEQnN1cC1a3zGTJjkSZxBWxk4Xva6XtKE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Z6k0k2UzA0xIK49BIHXy8JfNTxSo96nL0m+bVIolbLj3tg3iekiHt+toKUlAUt8ZB
+	 FtPzUMD3ob3U8USLS6IHZ/vv1rEYfIfmLh8e4qTeUHnXZrmk9vAmWaw3WQey3jZvw6
+	 XyG6Fj9LVR9IySpuoprs+RTnnkKIAmfUzm08sEXjCoUCmKuhYIPoXiI052od9k9ur5
+	 SBg9+QwjWJaYcg6ZxMNGTdnYObxsNpjsoWTDOvyDx21ZDhzwFb2k9bTdHvbJB0OEsT
+	 Yd6CYRb1mIKpPaQUJApFVw12JSt3HXFdeBmDityWaqd2ngHkst/0mcdk3fZeVsEILO
+	 GQjRcKQF1NQbQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 11/15] s390/vfio-ap: Transition device migration
+ state to STOP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260630104132.1598851-12-akrowiak@linux.ibm.com>
+References: <20260630104132.1598851-1-akrowiak@linux.ibm.com>
+ <20260630104132.1598851-12-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 11:46:09 +0000
+Message-Id: <20260630114609.DE5D31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL:mse-fl1.zte.com.cn 65UBe6El085767
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 30 Jun 2026 19:40:15 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A43AB1F.000/4gqLmb4cdhz5BNS0
 
+Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+s) to consider:
 
+New issues:
+- [High] Migration stream file descriptors are not invalidated upon transit=
+ioning out of data transfer states, allowing untrusted userspace to modify =
+running guest state.
+- [High] The driver unconditionally allows the transition from RESUMING to =
+STOP, failing to reject incomplete migration data as required by the VFIO s=
+pecification.
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+Pre-existing issues:
+- [Critical] Chunked or partial writes to the RESUMING fd leak memory and c=
+ause a NULL pointer dereference on subsequent chunks.
+- [Critical] Migration file descriptors do not hold a reference to the `vfi=
+o_device` or `matrix_mdev`, leading to a Use-After-Free if the device is re=
+moved while the migration FD is kept open.
+- [Critical] vfio_ap_release_mig_file accesses and modifies migration state=
+ without holding matrix_dev->mdevs_lock, leading to UAF.
+- [High] Writing fewer than `sizeof(struct vfio_ap_config)` bytes to the re=
+suming stream bypasses size validation, triggering a Heap Out-of-Bounds rea=
+d.
+- [High] The dynamically allocated `ap_config` is permanently leaked if the=
+ VFIO device is closed while the migration file descriptor remains open.
+--
 
+commit 1ef55b17508b1d713795918bce912d07492d77e0
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+s390/vfio-ap: Transition device migration state to STOP
 
+This commit updates the vfio-ap migration state machine to allow
+transitions to the stop state. It allows returning null when
+transitioning from resuming or stop copy to stop.
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 9cd1e7a3f7430..1b526b743ad02 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -1159,12 +1159,17 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev=
+ *matrix_mdev,
+>  		return filp;
+>  	}
+> =20
+> +	/*
+> +	 * Terminates the data transfer session of the vfio-ap device state
+> +	 * between the source and target hosts. Since the vfio-ap device does
+> +	 * not virtualize a DMA device, there is no internal device state to
+> +	 * incorporate into the vfio-ap device on the target.
+> +	 */
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP) ||
+>  	    (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
+> -		/* TODO */
+> -		return ERR_PTR(-EOPNOTSUPP);
+> +		return NULL;
 
-RWFnZXIgUGFnZSBTcGxpdHRpbmcgaXMgaW1wbGVtZW50ZWQgb24geDg2IGFuZCBBUk0uIEl0IGlt
-cHJvdmVzIHRoZQ0KcGVyZm9ybWFuY2Ugb2YgZGlydHkgbG9nZ2luZyAodXNlZCBpbiBsaXZlIG1p
-Z3JhdGlvbnMpIHdoZW4gZ3Vlc3QgbWVtb3J5DQppcyBiYWNrZWQgYnkgaHVnZSBwYWdlcy4NCg0K
-VGhpcyBzZXJpZXMgaW1wbGVtZW50IEVhZ2VyIFBhZ2UgU3BsaXR0aW5nIGZvciBSSVNDLVYuIFRo
-ZSBJbXBsZW1lbnRhdGlvbg0Kc2ltaWxhciB0byB4ODYgYW5kIEFSTS4gSXQgcHJvdmlkZXMgdHdv
-IHdheXMgdG8gc3BsaXQgaHVnZSBwYWdlcyBpbiBpb2N0bA0KY29udGV4dCBpbnN0ZWFkIG9mIG9u
-IGZhdWx0IGluIHZDUFUgY29udGV4dDoNCg0KLSBTcGxpdCBodWdlIHBhZ2VzIHdoZW4gZGlydHkg
-bG9nZ2luZyBpcyBlbmFibGVkIHdoZW4NCiAgS1ZNX0RJUlRZX0xPR19JTklUSUFMTFlfU0VUIGlz
-IG5vdCBzZXQuIFRoaXMgaGFwcGVucyB3aGVuIGVuYWJsaW5nIHRoZQ0KICBLVk1fTUVNX0xPR19E
-SVJUWV9QQUdFUyBmbGFnIG9mIGEgbWVtc2xvdCwgYW5kIHNwbGl0cyB0aGUgd2hvbGUgbWVtc2xv
-dA0KICBpbnRvIDRLIG1hcHBpbmdzLg0KDQotIFNwbGl0IGh1Z2UgcGFnZXMgZHVyaW5nIEtWTV9D
-TEVBUl9ESVJUWV9MT0cgd2hlbg0KICBLVk1fRElSVFlfTE9HX0lOSVRJQUxMWV9TRVQgaXMgc2V0
-LiBUaGlzIGhhcHBlbnMgd2hlbiBlbmFibGluZyBkaXJ0eSBsb2cNCiAgaW4gc21hbGwgY2h1bmtz
-LiBJdCBkb2VzIG5vdCBzcGxpdCB0aGUgd2hvbGUgbWVtc2xvdCwgYnV0IG9ubHkgdGhlDQogIHJl
-cXVlc3RlZCBjaHVuayByYW5nZS4NCg0KQ2hhbmdlcyBpbiB2NDoNCiAtIFJlYmFzZSBvbiB2Ny4y
-LXJjMSB2ZXJzaW9uLg0KIHNhc2hpa28tYm90IEFJIHJldmlldw0KIChodHRwczovL3Nhc2hpa28u
-ZGV2LyMvcGF0Y2hzZXQvMjAyNjA2MjQxNjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRl
-LmNvbS5jbikNCiAtIEFkZCB0aGUgcndsb2NrX25lZWRicmVhaygpIGNoZWNrIHdoZW4gdG91cCBz
-cGxpdCBjYWNoZS4NCiAtIEFMSUdOX0RPV04gdGhlIHN0YXJ0IGFkZHIgdG8gUE1EX1NJWkUuDQoN
-CkNoYW5nZXMgaW4gdjMgcmVzZW5kOg0KIC0gRml4IHBhdGNoIGZvcm1hdCB0byBlbnN1cmUgZW1h
-aWxzIHJlYWNoIHRoZSBsaW51eC1yaXNjdiBhbmQga3ZtLXJpc2N2DQogICBtYWlsaW5nIGxpc3Rz
-Lg0KIC0gTW92ZSB0aGUgZnJlZSBwZ2Rfc3BsaXRfcGFnZV9jYWNoZSBpbnRvIGt2bV9hcmNoX2Rl
-c3Ryb3lfdm0oKS4NCiBodHRwczovL2xvcmUua2VybmVsLm9yZy9rdm0tcmlzY3YvMjAyNjA2MjQx
-NjAwNTQ0NjN3Y0R2SmFNb3lkU2dnY05PV2djZkJAenRlLmNvbS5jbi8NCg0KQ2hhbmdlcyBpbiB2
-MzoNCiAtIFJlYmFzZSBvbiB2Ny4xIHZlcnNpb24uDQogLSBBZGQgcGF0Y2gwMyB0byByZW1vdmUg
-dGhlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucy4NCiANCiBzYXNoaWtvLWJvdCBBSSBy
-ZXZpZXcNCiAoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4NDcuOTY5
-MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKQ0KIC0gQ2hlY2sgdGhlIGt2bS0+YXJjaC5wZ2Qg
-YmVmb3JlIHNwbGl0IGh1Z2UgcGFnZXMuDQogLSBBbGlnbiB0aGUgc3RhcnQgYWRkcmVzcyB0byBQ
-TURfU0laRSBiZWZvcmUgc3BsaXQuDQogLSBGbHVzaGluZyByZW1vdGUgVExCcyBiZWZvcmUgRHJv
-cHBpbmcgbW11X2xvY2suDQoNCkNoYW5nZXMgaW4gdjI6DQogLSBSZW5hbWUgdGhlIHNwbGl0X3Bh
-Z2VfY2FjaGUuDQogLSBSZW5hbWUgdGhlIGt2bV9yaXNjdl9zcGxpdF9odWdlX3BhZ2VzIGFuZA0K
-ICAga3ZtX3Jpc2N2X3NwbGl0X21lbW9yeV9yZWdpb24uDQogLSBBZGQgbG9ja2RlcF9hc3NlcnRf
-aGVsZCBjaGVjayBiZWZvcmUgc3BsaXQgaHVnZSBwYWdlcy4NCiAtIFVwZGF0ZSBEb2N1bWVudGF0
-aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dC4NCiAtIExpbmsgdG8gdjINCiBo
-dHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1yaXNjdi8yMDI2MDYwMzE3NTI1NjQwOEwwam5x
-R3MxY0pHYzBpakNkdWpjaUB6dGUuY29tLmNuLw0KDQogLSBMaW5rIHRvIHYxOg0KIGh0dHBzOi8v
-bG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYwNTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5
-b0laaThhR0lzQHp0ZS5jb20uY24vDQoNCldhbmcgWWVjaGFvICg1KToNCiAgUklTQy1WOiBLVk06
-IEFkZCB0aGUgc3BsaXQgcGFnZSBjYWNoZSBmb3IgaW9jdGwgY29udGV4dA0KICBSSVNDLVY6IEtW
-TTogU3BsaXQgaHVnZSBwYWdlcyB3aGVuIGRpcnR5IGxvZ2dpbmcgaXMgZW5hYmxlZA0KICBSSVND
-LVY6IEtWTTogUmVtb3ZlIHJlZHVuZGFudCBUTEIgZmx1c2ggb3BlcmF0aW9ucw0KICBSSVNDLVY6
-IEtWTTogU3BsaXQgaHVnZSBwYWdlcyBkdXJpbmcgS1ZNX0NMRUFSX0RJUlRZX0xPRw0KICBSSVND
-LVY6IEtWTTogQWRkIHRoZSBlYWdlcl9wYWdlX3NwbGl0IG1vZHVsZSBwYXJhbWV0ZXINCg0KIC4u
-Li9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQgICAgICAgICB8ICA3ICstDQogYXJj
-aC9yaXNjdi9pbmNsdWRlL2FzbS9rdm1fZ3N0YWdlLmggICAgICAgICAgIHwgIDYgKy0NCiBhcmNo
-L3Jpc2N2L2luY2x1ZGUvYXNtL2t2bV9ob3N0LmggICAgICAgICAgICAgfCAgMSArDQogYXJjaC9y
-aXNjdi9rdm0vZ3N0YWdlLmMgICAgICAgICAgICAgICAgICAgICAgIHwgMjMgKysrLS0NCiBhcmNo
-L3Jpc2N2L2t2bS9tbXUuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCA5MyArKysrKysrKysr
-KysrKysrKystDQogYXJjaC9yaXNjdi9rdm0vdm0uYyAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgIDYgKysNCiA2IGZpbGVzIGNoYW5nZWQsIDExOSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlv
-bnMoLSkNCg0KLS0gDQoyLjQzLjU=
+[Severity: High]
+Does transitioning to the stop state here leave the active file stream
+pointers open for abuse? By simply returning null without clearing
+mig_data->resuming_mig_state.filp, userspace might be able to
+transition the device to stop and then running, while keeping the
+resuming file descriptor open to write to it.
 
+In validate_resuming_write_parms(), it only validates that filp matches
+the cached pointer without checking if the device is actually in the
+VFIO_DEVICE_STATE_RESUMING state:
 
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+validate_resuming_write_parms() {
+    if (filp !=3D matrix_mdev->mig_data->resuming_mig_state.filp) {
+        ret =3D -ENXIO;
+        goto done;
+    }
+}
 
-RWFnZXImbmJzcDtQYWdlJm5ic3A7U3BsaXR0aW5nJm5ic3A7aXMmbmJzcDtpbXBsZW1lbnRlZCZu
-YnNwO29uJm5ic3A7eDg2Jm5ic3A7YW5kJm5ic3A7QVJNLiZuYnNwO0l0Jm5ic3A7aW1wcm92ZXMm
-bmJzcDt0aGU8YnIgLz5wZXJmb3JtYW5jZSZuYnNwO29mJm5ic3A7ZGlydHkmbmJzcDtsb2dnaW5n
-Jm5ic3A7KHVzZWQmbmJzcDtpbiZuYnNwO2xpdmUmbmJzcDttaWdyYXRpb25zKSZuYnNwO3doZW4m
-bmJzcDtndWVzdCZuYnNwO21lbW9yeTxiciAvPmlzJm5ic3A7YmFja2VkJm5ic3A7YnkmbmJzcDto
-dWdlJm5ic3A7cGFnZXMuPGJyIC8+DTxiciAvPlRoaXMmbmJzcDtzZXJpZXMmbmJzcDtpbXBsZW1l
-bnQmbmJzcDtFYWdlciZuYnNwO1BhZ2UmbmJzcDtTcGxpdHRpbmcmbmJzcDtmb3ImbmJzcDtSSVND
-LVYuJm5ic3A7VGhlJm5ic3A7SW1wbGVtZW50YXRpb248YnIgLz5zaW1pbGFyJm5ic3A7dG8mbmJz
-cDt4ODYmbmJzcDthbmQmbmJzcDtBUk0uJm5ic3A7SXQmbmJzcDtwcm92aWRlcyZuYnNwO3R3byZu
-YnNwO3dheXMmbmJzcDt0byZuYnNwO3NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7aW4m
-bmJzcDtpb2N0bDxiciAvPmNvbnRleHQmbmJzcDtpbnN0ZWFkJm5ic3A7b2YmbmJzcDtvbiZuYnNw
-O2ZhdWx0Jm5ic3A7aW4mbmJzcDt2Q1BVJm5ic3A7Y29udGV4dDo8YnIgLz4NPGJyIC8+LSZuYnNw
-O1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7d2hlbiZuYnNwO2RpcnR5Jm5ic3A7bG9n
-Z2luZyZuYnNwO2lzJm5ic3A7ZW5hYmxlZCZuYnNwO3doZW48YnIgLz4mbmJzcDsmbmJzcDtLVk1f
-RElSVFlfTE9HX0lOSVRJQUxMWV9TRVQmbmJzcDtpcyZuYnNwO25vdCZuYnNwO3NldC4mbmJzcDtU
-aGlzJm5ic3A7aGFwcGVucyZuYnNwO3doZW4mbmJzcDtlbmFibGluZyZuYnNwO3RoZTxiciAvPiZu
-YnNwOyZuYnNwO0tWTV9NRU1fTE9HX0RJUlRZX1BBR0VTJm5ic3A7ZmxhZyZuYnNwO29mJm5ic3A7
-YSZuYnNwO21lbXNsb3QsJm5ic3A7YW5kJm5ic3A7c3BsaXRzJm5ic3A7dGhlJm5ic3A7d2hvbGUm
-bmJzcDttZW1zbG90PGJyIC8+Jm5ic3A7Jm5ic3A7aW50byZuYnNwOzRLJm5ic3A7bWFwcGluZ3Mu
-PGJyIC8+DTxiciAvPi0mbmJzcDtTcGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcyZuYnNwO2R1cmlu
-ZyZuYnNwO0tWTV9DTEVBUl9ESVJUWV9MT0cmbmJzcDt3aGVuPGJyIC8+Jm5ic3A7Jm5ic3A7S1ZN
-X0RJUlRZX0xPR19JTklUSUFMTFlfU0VUJm5ic3A7aXMmbmJzcDtzZXQuJm5ic3A7VGhpcyZuYnNw
-O2hhcHBlbnMmbmJzcDt3aGVuJm5ic3A7ZW5hYmxpbmcmbmJzcDtkaXJ0eSZuYnNwO2xvZzxiciAv
-PiZuYnNwOyZuYnNwO2luJm5ic3A7c21hbGwmbmJzcDtjaHVua3MuJm5ic3A7SXQmbmJzcDtkb2Vz
-Jm5ic3A7bm90Jm5ic3A7c3BsaXQmbmJzcDt0aGUmbmJzcDt3aG9sZSZuYnNwO21lbXNsb3QsJm5i
-c3A7YnV0Jm5ic3A7b25seSZuYnNwO3RoZTxiciAvPiZuYnNwOyZuYnNwO3JlcXVlc3RlZCZuYnNw
-O2NodW5rJm5ic3A7cmFuZ2UuPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Y0Ojxi
-ciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjItcmMxJm5ic3A7dmVyc2lv
-bi48YnIgLz4mbmJzcDtzYXNoaWtvLWJvdCZuYnNwO0FJJm5ic3A7cmV2aWV3PGJyIC8+Jm5ic3A7
-KGh0dHBzOi8vc2FzaGlrby5kZXYvIy9wYXRjaHNldC8yMDI2MDYyNDE2MDA1NDQ2M3djRHZKYU1v
-eWRTZ2djTk9XZ2NmQkB6dGUuY29tLmNuKTxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDt0aGUm
-bmJzcDtyd2xvY2tfbmVlZGJyZWFrKCkmbmJzcDtjaGVjayZuYnNwO3doZW4mbmJzcDt0b3VwJm5i
-c3A7c3BsaXQmbmJzcDtjYWNoZS48YnIgLz4mbmJzcDstJm5ic3A7QUxJR05fRE9XTiZuYnNwO3Ro
-ZSZuYnNwO3N0YXJ0Jm5ic3A7YWRkciZuYnNwO3RvJm5ic3A7UE1EX1NJWkUuPGJyIC8+DTxiciAv
-PkNoYW5nZXMmbmJzcDtpbiZuYnNwO3YzJm5ic3A7cmVzZW5kOjxiciAvPiZuYnNwOy0mbmJzcDtG
-aXgmbmJzcDtwYXRjaCZuYnNwO2Zvcm1hdCZuYnNwO3RvJm5ic3A7ZW5zdXJlJm5ic3A7ZW1haWxz
-Jm5ic3A7cmVhY2gmbmJzcDt0aGUmbmJzcDtsaW51eC1yaXNjdiZuYnNwO2FuZCZuYnNwO2t2bS1y
-aXNjdjxiciAvPiZuYnNwOyZuYnNwOyZuYnNwO21haWxpbmcmbmJzcDtsaXN0cy48YnIgLz4mbmJz
-cDstJm5ic3A7TW92ZSZuYnNwO3RoZSZuYnNwO2ZyZWUmbmJzcDtwZ2Rfc3BsaXRfcGFnZV9jYWNo
-ZSZuYnNwO2ludG8mbmJzcDtrdm1fYXJjaF9kZXN0cm95X3ZtKCkuPGJyIC8+Jm5ic3A7aHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcva3ZtLXJpc2N2LzIwMjYwNjI0MTYwMDU0NDYzd2NEdkphTW95ZFNn
-Z2NOT1dnY2ZCQHp0ZS5jb20uY24vPGJyIC8+DTxiciAvPkNoYW5nZXMmbmJzcDtpbiZuYnNwO3Yz
-OjxiciAvPiZuYnNwOy0mbmJzcDtSZWJhc2UmbmJzcDtvbiZuYnNwO3Y3LjEmbmJzcDt2ZXJzaW9u
-LjxiciAvPiZuYnNwOy0mbmJzcDtBZGQmbmJzcDtwYXRjaDAzJm5ic3A7dG8mbmJzcDtyZW1vdmUm
-bmJzcDt0aGUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJzcDtmbHVzaCZuYnNwO29wZXJhdGlv
-bnMuPGJyIC8+Jm5ic3A7DTxiciAvPiZuYnNwO3Nhc2hpa28tYm90Jm5ic3A7QUkmbmJzcDtyZXZp
-ZXc8YnIgLz4mbmJzcDsoaHR0cHM6Ly9zYXNoaWtvLmRldi8jL21lc3NhZ2UvMjAyNjA2MDMxMDQ4
-NDcuOTY5MkMxRjAwODkzJTQwc210cC5rZXJuZWwub3JnKTxiciAvPiZuYnNwOy0mbmJzcDtDaGVj
-ayZuYnNwO3RoZSZuYnNwO2t2bS0mZ3Q7YXJjaC5wZ2QmbmJzcDtiZWZvcmUmbmJzcDtzcGxpdCZu
-YnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7QWxpZ24mbmJzcDt0aGUmbmJz
-cDtzdGFydCZuYnNwO2FkZHJlc3MmbmJzcDt0byZuYnNwO1BNRF9TSVpFJm5ic3A7YmVmb3JlJm5i
-c3A7c3BsaXQuPGJyIC8+Jm5ic3A7LSZuYnNwO0ZsdXNoaW5nJm5ic3A7cmVtb3RlJm5ic3A7VExC
-cyZuYnNwO2JlZm9yZSZuYnNwO0Ryb3BwaW5nJm5ic3A7bW11X2xvY2suPGJyIC8+DTxiciAvPkNo
-YW5nZXMmbmJzcDtpbiZuYnNwO3YyOjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
-bmJzcDtzcGxpdF9wYWdlX2NhY2hlLjxiciAvPiZuYnNwOy0mbmJzcDtSZW5hbWUmbmJzcDt0aGUm
-bmJzcDtrdm1fcmlzY3Zfc3BsaXRfaHVnZV9wYWdlcyZuYnNwO2FuZDxiciAvPiZuYnNwOyZuYnNw
-OyZuYnNwO2t2bV9yaXNjdl9zcGxpdF9tZW1vcnlfcmVnaW9uLjxiciAvPiZuYnNwOy0mbmJzcDtB
-ZGQmbmJzcDtsb2NrZGVwX2Fzc2VydF9oZWxkJm5ic3A7Y2hlY2smbmJzcDtiZWZvcmUmbmJzcDtz
-cGxpdCZuYnNwO2h1Z2UmbmJzcDtwYWdlcy48YnIgLz4mbmJzcDstJm5ic3A7VXBkYXRlJm5ic3A7
-RG9jdW1lbnRhdGlvbi9hZG1pbi1ndWlkZS9rZXJuZWwtcGFyYW1ldGVycy50eHQuPGJyIC8+Jm5i
-c3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNwO3YyPGJyIC8+Jm5ic3A7aHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtcmlzY3YvMjAyNjA2MDMxNzUyNTY0MDhMMGpucUdzMWNKR2MwaWpDZHVq
-Y2lAenRlLmNvbS5jbi88YnIgLz4NPGJyIC8+Jm5ic3A7LSZuYnNwO0xpbmsmbmJzcDt0byZuYnNw
-O3YxOjxiciAvPiZuYnNwO2h0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXJpc2N2LzIwMjYw
-NTEzMTUzNjU2ODQ3bDNjNGZJNWhCc0F5b0laaThhR0lzQHp0ZS5jb20uY24vPGJyIC8+DTxiciAv
-PldhbmcmbmJzcDtZZWNoYW8mbmJzcDsoNSk6PGJyIC8+Jm5ic3A7Jm5ic3A7UklTQy1WOiZuYnNw
-O0tWTTombmJzcDtBZGQmbmJzcDt0aGUmbmJzcDtzcGxpdCZuYnNwO3BhZ2UmbmJzcDtjYWNoZSZu
-YnNwO2ZvciZuYnNwO2lvY3RsJm5ic3A7Y29udGV4dDxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjom
-bmJzcDtLVk06Jm5ic3A7U3BsaXQmbmJzcDtodWdlJm5ic3A7cGFnZXMmbmJzcDt3aGVuJm5ic3A7
-ZGlydHkmbmJzcDtsb2dnaW5nJm5ic3A7aXMmbmJzcDtlbmFibGVkPGJyIC8+Jm5ic3A7Jm5ic3A7
-UklTQy1WOiZuYnNwO0tWTTombmJzcDtSZW1vdmUmbmJzcDtyZWR1bmRhbnQmbmJzcDtUTEImbmJz
-cDtmbHVzaCZuYnNwO29wZXJhdGlvbnM8YnIgLz4mbmJzcDsmbmJzcDtSSVNDLVY6Jm5ic3A7S1ZN
-OiZuYnNwO1NwbGl0Jm5ic3A7aHVnZSZuYnNwO3BhZ2VzJm5ic3A7ZHVyaW5nJm5ic3A7S1ZNX0NM
-RUFSX0RJUlRZX0xPRzxiciAvPiZuYnNwOyZuYnNwO1JJU0MtVjombmJzcDtLVk06Jm5ic3A7QWRk
-Jm5ic3A7dGhlJm5ic3A7ZWFnZXJfcGFnZV9zcGxpdCZuYnNwO21vZHVsZSZuYnNwO3BhcmFtZXRl
-cjxiciAvPg08YnIgLz4mbmJzcDsuLi4vYWRtaW4tZ3VpZGUva2VybmVsLXBhcmFtZXRlcnMudHh0
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZu
-YnNwOyZuYnNwOzcmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gvcmlzY3YvaW5jbHVkZS9hc20va3Zt
-X2dzdGFnZS5oJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOyZuYnNwOzYmbmJzcDsrLTxiciAvPiZuYnNwO2FyY2gv
-cmlzY3YvaW5jbHVkZS9hc20va3ZtX2hvc3QuaCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJzcDsm
-bmJzcDsxJm5ic3A7KzxiciAvPiZuYnNwO2FyY2gvcmlzY3Yva3ZtL2dzdGFnZS5jJm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7fCZuYnNwOzIzJm5ic3A7KysrLS08YnIgLz4mbmJzcDthcmNoL3Jpc2N2
-L2t2bS9tbXUuYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO3wmbmJz
-cDs5MyZuYnNwOysrKysrKysrKysrKysrKysrKy08YnIgLz4mbmJzcDthcmNoL3Jpc2N2L2t2bS92
-bS5jJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7fCZuYnNw
-OyZuYnNwOzYmbmJzcDsrKzxiciAvPiZuYnNwOzYmbmJzcDtmaWxlcyZuYnNwO2NoYW5nZWQsJm5i
-c3A7MTE5Jm5ic3A7aW5zZXJ0aW9ucygrKSwmbmJzcDsxNyZuYnNwO2RlbGV0aW9ucygtKTxiciAv
-Pg08YnIgLz4tLSZuYnNwOw08YnIgLz4yLjQzLjU8YnIgLz4=
+Could this trigger asynchronous mutation of the AP hardware
+configuration of a live guest?
 
+[Severity: High]
+Does unconditionally returning null here bypass verifying the completeness
+of the migration data transfer?
 
---=====_003_next=====--
+If userspace writes a partial configuration and transitions to stop,
+will the device silently remain unconfigured without signaling an error
+to userspace?
 
---=====_002_next=====--
+>  	}
+> =20
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
 
---=====_001_next=====--
+[Severity: Critical]
+This is a pre-existing issue, but do chunked or partial writes to the
+resuming file descriptor leak memory and cause a null pointer dereference?
 
+If a user writes a partial chunk in vfio_ap_resuming_write() where the size
+is less than cfg_sz, it skips assigning the dynamically allocated ap_config
+back to the global state:
+
+vfio_ap_resuming_write() {
+    ...
+    if (*pos + len =3D=3D cfg_sz) {
+        ret =3D do_post_copy_validation(mdev_name, ap_config);
+    ...
+}
+
+On the subsequent write chunk, retrieving ap_config from mig_data fetches
+null, which then gets passed to reallocate_ap_config():
+
+reallocate_ap_config() {
+    struct vfio_ap_config *ap_config =3D *mig_ap_config;
+    ...
+    cur_cfg_sz =3D ap_config->config_sz;
+}
+
+Will this dereference cause a kernel oops?
+
+[Severity: High]
+This is a pre-existing issue, but does writing fewer than the expected size
+bypass size validation and trigger a heap out-of-bounds read?
+
+In allocate_ap_config(), writing an undersized buffer sets config_size
+to the short length:
+
+allocate_ap_config() {
+    ...
+    } else {
+        config_size =3D len;
+    }
+}
+
+If vfio_ap_resuming_write() sees that the received size matches cfg_sz,
+it assumes the configuration is fully received and passes the undersized
+buffer for validation.
+
+Since userspace controls num_queues, will iterating over it read out
+of bounds?
+
+queues_available_on_target_system() {
+    for (int i =3D 0; i < source_config->num_queues; i++) {
+        apqn =3D source_config->qinfo[i].apqn;
+    ...
+}
+
+[Severity: High]
+This is a pre-existing issue, but is the dynamically allocated ap_config
+permanently leaked if the device is closed while the migration file
+descriptor remains open?
+
+If userspace closes the main device file descriptor, the container struct
+is freed:
+
+vfio_ap_release_migration_data() {
+    ...
+    kfree(matrix_mdev->mig_data);
+    matrix_mdev->mig_data =3D NULL;
+}
+
+When the migration file descriptor is later closed, it bails out early
+if the container is null, leaving the nested ap_config allocation orphaned:
+
+vfio_ap_release_mig_file() {
+    if (!matrix_mdev || !matrix_mdev->mig_data)
+        return -ENODEV;
+    ...
+}
+
+[Severity: Critical]
+This is a pre-existing issue, but do migration file descriptors fail to
+hold a reference to the vfio_device or matrix_mdev?
+
+When opening the stream, anon_inode_getfile() is called without bumping
+the reference count:
+
+vfio_ap_open_file_stream() {
+    filp =3D anon_inode_getfile("vfio_ap_mig_file", fops, matrix_mdev, flag=
+s);
+    ...
+}
+
+If the device is removed via sysfs while the migration file descriptor
+is open, will the final reference be dropped?
+
+vfio_ap_mdev_remove() {
+    ...
+    vfio_put_device(&matrix_mdev->vdev);
+}
+
+Could subsequent operations on the open migration file descriptor
+dereference the freed matrix_mdev and result in a use-after-free?
+
+[Severity: Critical]
+This is a pre-existing issue, but does accessing the migration state
+locklessly in vfio_ap_release_mig_file() lead to a use-after-free?
+
+The function checks mig_data without holding a lock:
+
+vfio_ap_release_mig_file() {
+    if (!matrix_mdev || !matrix_mdev->mig_data)
+        return -ENODEV;
+
+    if (filp =3D=3D matrix_mdev->mig_data->stop_copy_mig_file)
+    ...
+}
+
+If userspace concurrently triggers closure of the primary device, can
+the memory be freed under the mdevs_lock?
+
+vfio_ap_release_migration_data() {
+    kfree(matrix_mdev->mig_data);
+    matrix_mdev->mig_data =3D NULL;
+}
+
+Could this allow vfio_ap_release_mig_file() to dereference mig_data
+immediately after it is freed?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630104132.1598=
+851-1-akrowiak@linux.ibm.com?part=3D11
