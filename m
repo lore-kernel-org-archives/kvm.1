@@ -1,110 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21962273D8F
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6026266576;
+	Tue, 30 Jun 2026 21:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782856194; cv=none; b=APJofsTcJKraZk0jTAW83WaUqgjOD07eCj/TMM/yeLpvbWXH/aG5GVZ5jn/aYazfl6HfwbuPTTzjfgso5Gyz98zvI7YWt5S/M7uHNRJTymH+oPJ7YKUWqsVTuu3MWVQKTBe76HM5ZAQoPm3OTwOpkFgjstLB6MW57e27jVxWZ7s=
+	t=1782856229; cv=none; b=kdvg9VCtps5i2PH1bOgB+WRYQNU+AX91C1xz8WkDdc9TcrYyQy4LdVXts5L2uXGRL2u0HHr0Xm2/DMbVoIMXZVxhDf7PqmcVzeQBg07ol7/MCFJxevMR2s6j3CBR/ZAHP8KzHj++GRyw3PkIliE7EyjLnQoPMVtyPTXdUdsqLEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782856194; c=relaxed/simple;
-	bh=5oHZM1G/pB5uVo8VNfJ7qIsnV3vePY3BtDHPoQJS7ag=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=a7n8QD+sQlttsyXCOxMH8SHvaq5iwu4oIrkjAp6yqTy+u92QQiHvBmbO9kHnJUvwrp5q+JuLbUlZSGfR/r2ZShMTI3bR0eHXO3sRlvjKeVSNT6tBL5dzi4TRSf3wFSgCDG3NgA+RSbvSN6b5eVQs+E6UwWgrZku82twiq3we0V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGKaJ085; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782856229; c=relaxed/simple;
+	bh=BhdtcsOh1lYT90bHtO7li9mFb6os8tAJZTfI3aV4eUU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F6mvXbZzAgxphlhm6lKJw5l8hBX5e/t0CgNz3xA3bYw+SsePo9/J0STjv4KJiewFnsEswjCpjTBxwhXf67JZUHODwcIpMS81q10+p/lDCgFwbxhmDnvi8W9Wx+OxtcmV1UrFIVEiE4z+Wa0H/BHIRocoVRXP75oxOOLZ+fOOj2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=DuLE3Llc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ry7ea02b; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGKaJ085"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C851F000E9;
-	Tue, 30 Jun 2026 21:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782856192;
-	bh=n3odR8yjDIctjxr0hgGl14/ZpKv3Rz/gcceMw8EOtCQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SGKaJ0856559ryFmwtD5eGPWYO7+knw52/F8yVqOv9WafkfTjxITahALAmQfFZX1v
-	 MD2O0i8I1LQOtDj0bLPPCKIufpz+mYsdZEyfiRGUmWcEtqylAPq1BTnMSua0NAamX9
-	 XK8OxaOVq2RuZ7l49XoAiBva1gJ7BxObTKDAjnjPz6PhYS8t29w/0ZCoFX6YG0+kSn
-	 /ltxlp7zH0pkGigw+GxRIpI/DXbwX8a0e++HMtlxCs2iO/Y7mPxoD2PFzHJL+BED+L
-	 v0w9nuZ+it5jroOQsrv5bZy0FDkbEP/3/UQTiCDE+Z6iMnRl/u2xt+FK3cJS1cGzhf
-	 QiG5lkp7NvTLA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for
- NULL INIT_MEM_REGION source
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260630213711.479692-3-seanjc@google.com>
-References: <20260630213711.479692-1-seanjc@google.com>
- <20260630213711.479692-3-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 21:49:52 +0000
-Message-Id: <20260630214952.98C851F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="DuLE3Llc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ry7ea02b"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id C03BB7A0133;
+	Tue, 30 Jun 2026 17:50:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 30 Jun 2026 17:50:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782856225;
+	 x=1782942625; bh=FtW04vCW3OqAUmDv/lvhOw4gBZ2rhR+DzNAJYuMHVCM=; b=
+	DuLE3Llcvu+U5PelESVKc0RwCn3jPX/Rk/MFY/29olija77xAQcLhOxvdfOVJAL0
+	ze2lgBPN8r3uRQLWfnhvU/9S0NwEUk45Hqghp+1JhVvs6i3an9EVS5jp67b4voaJ
+	DrsZXocOAkfAMAGx2ODAZyzP/+0RexRCniVXY+T3HSnze3Hgvp7AbM7izERq5x+H
+	LNUCB6fqCuSmVEn58zO3w273maqC0P3S/Vewl3JcLZ5IyrZ0/W5VoEqck9QfvOJa
+	vJdhzYCpehLkOnkb8x9XHrXE+6WhvUWtFhKkaaozeavlEGj2KqMSwkKksRcdbRll
+	tMUeu49sR2uPvNsbYqKMgA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782856225; x=
+	1782942625; bh=FtW04vCW3OqAUmDv/lvhOw4gBZ2rhR+DzNAJYuMHVCM=; b=R
+	y7ea02bUAqmJBN7Pg+cDnYvZkbGzIwq+/RQ0aeALbO/XO3SrWHz+CXuSXR8FSAVm
+	CMeF3Bn0zEcsJnaEbqUX5lPOKCeUSB/B1T/7dD2yo6ws72iQN9TBefgz82v5VqqR
+	7rjcZoOh7aDfAprxmvWXbtUIz5eIQ/CltkMinV3BH9vMuWWIBnSfHU4oJJQ1GIeP
+	5DqQpk7xlZ6xMTy6pjyS7NnwNX1RNl6l6vV83wnlrmxSUoZ5Po1RbbNN/VsN6g5L
+	9eO1Tq7JjA2WAuf08Zrau6ksuXO5mQfK3fbK1p8dWCW2NA9eSDyqyaYnFta/Bc1X
+	gyRto5s17AcFlReLXF4Yg==
+X-ME-Sender: <xms:ITpEamzgobfB5qg6AaaDCvV35cJ0Hb7anZGl5Dj0PmBYi9CWIdMCyg>
+    <xme:ITpEai8EzbkNNwjut4L54JusyqWo-7c54apUG4_LZT9hGxB66eYTKCEGKbEreCgXt
+    tiXnGG_RVXe_lvvoMKRH68t2CMvbSbZsDkJWkiHZimioRMLAAau6A>
+X-ME-Received: <xmr:ITpEamjWFTODTBrKsXiPWIpCJlxPk3T1_CF8fM_yRiTjQ7mDxpPmX6BWuX0>
+X-ME-Proxy-Cause: dmFkZTEfzDn5iE36M7bC7fO+VDKjXDAZq/6tQa9vlTO5s0o42UsGE9XeU9fcrEUs4o3ymk
+    8heez+YYyFyvdfpd77/APi38vZv/r4d8q/XRst/ibcJRPYvn6N1yV9ehqIo8KORLBvE0yC
+    7Kl9ubL/Cut1Ko/x9AndpQ39zOAWQaNDbdtY6ncSdOiURYxJztOecd31H/lJWT/wkVQpqJ
+    jKKd2dOmKx5/n2oJBtSuLY6C++zyejkYvedIG/mtwL6XPCPwY16CmAjAT+xgcA708tXpfG
+    ZCKp9pMHm235wLYY8BLBvs7cm5cDaCaWut4klOKKeKMRfHqF+E8Z7vT+vurKnO63UnMzev
+    eq7VBdbIWTszzB86QU4KIX6y06HUYBpokVjnxaSA2OgyZXTfdXLd9K2Uzec3DMYgszMV/O
+    CBfZDbusyIKx4EPY04CQFGcCYExzl80mJd6hW04UBGypnlblRLdudq64xEIGWRVb/kPkII
+    dUevUSKHMsrJ2gHUlExq/CKkkw939XuVFeUAGxv5jOXV+vVM/HN0C4rh5ZBdZT3duLq3N9
+    jH44kz2/jHBSDVY8J/8eyJkNCTNgiv1ELVrUWXk1JgmeD54pFZNn0WGQTS3qvMkx9XhQnu
+    Xpy4l4sriPegl23rD+6wcEdKDTlH7JRUALq055+JsL+7sMcdWi/C32HmIl6g
+X-ME-Proxy: <xmx:ITpEahEaG4lvEif7iexyzf5SH8uhR_gj_eQYTD6R1jle7LulNybZIA>
+    <xmx:ITpEat-6e_ONzo2xZvNJ_cQmYXwwI3v61lybLFdRSpwfKTPWk3auew>
+    <xmx:ITpEagzmjwt-KrqdpGFs2TteAlvPcRLE4rOuf4QHqBNpWtzInJrZ4A>
+    <xmx:ITpEahN5kEMbcOjW0eWiFbNoTZe-ghyH3YCXWu7kN6ezaF0r-4AG5A>
+    <xmx:ITpEanR7tjMO7t-z2bwm2pbzCCJXrmYyq2Fyc_R4cJRrCPmfkjaBRkRD>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Jun 2026 17:50:24 -0400 (EDT)
+Date: Tue, 30 Jun 2026 15:50:23 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>,
+ Vipin Sharma <vipinsh@google.com>, alex@shazbot.org
+Subject: Re: [PATCH] vfio: selftests: Add luuid to libvfio.mk's list of
+ libraries, not to the Makefile
+Message-ID: <20260630155023.2ffb3226@shazbot.org>
+In-Reply-To: <akQ4p3sPdNzSnAc9@google.com>
+References: <20260630212805.474418-1-seanjc@google.com>
+	<akQ4p3sPdNzSnAc9@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Tue, 30 Jun 2026 21:44:07 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-Pre-existing issues:
-- [High] The `region.nr_pages << PAGE_SHIFT` calculation can overflow a 64-=
-bit integer, bypassing GPA boundary validation and leading to a host denial=
- of service.
---
+> On 2026-06-30 02:28 PM, Sean Christopherson wrote:
+> > Link to the uuid library as part of libvfio.mk instead of as only linking
+> > it via VFIO selftests' Makefile, as the whole point of providing libvfio.mk
+> > is to allow linking the VFIO library functionality into KVM selftests,
+> > without KVM selftests having to know the gory details or duplicate code.
+> > 
+> > Cc: Raghavendra Rao Ananta <rananta@google.com>
+> > Cc: David Matlack <dmatlack@google.com>
+> > Cc: Vipin Sharma <vipinsh@google.com>
+> > Cc: Alex Williamson <alex@shazbot.org>
+> > Fixes: e65f1bf8a2db ("vfio: selftests: Extend container/iommufd setup for passing vf_token")
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>  
+> 
+> Reviewed-by: David Matlack <dmatlack@google.com>
+> 
+> > ---
+> > 
+> > I would either like to land this in 7.2-rcN (ideally rc2 or rc3), or take it
+> > through the KVM x86 tree for 7.3, as it's blocking a KVM selftest[*] that's
+> > been in the works for more than a year.  I can throw the IRQ selftest in its
+> > own topic branch, so even 7.2-rc5 would be "fine", but I would much prefer to
+> > get this (or an equivalent fix) into Linus' tree sooner than later.
+> > 
+> > [*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com  
+> 
+> Sounds good to me. Alex can we take this in one of the next RCs?
 
-commit a54da29c3e4be3226e4ebf9df2f4182c350df998
-Author: Sean Christopherson <seanjc@google.com>
+I'm intending a pull request this week with the bitfield and module
+option latching fixes that are currently in linux-next, I'll pull this
+into that as well.  Thanks,
 
-KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION source
-
-Return EINVAL instead of EOPNOTSUPP if userspace attempts to pass a NULL
-pointer for the source page of INIT_MEM_REGION, so that KVM's ABI is
-consistent between TDX and SNP.
-
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index ffe9d0db58c59..b0ec054732b90 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-
-[ ... ]
-
-> @@ -3247,8 +3244,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu=
- *vcpu, struct kvm_tdx_cmd *c
->  	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
->  		return -EFAULT;
-> =20
-> -	if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
-> -	    !region.nr_pages ||
-> +	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
-> +	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
->  	    region.gpa + (region.nr_pages << PAGE_SHIFT) <=3D region.gpa ||
->  	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
->  	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_S=
-HIFT) - 1))
-
-[Severity: High]
-This is a pre-existing issue, but in tdx_vcpu_init_mem_region(), does the
-calculation region.nr_pages << PAGE_SHIFT overflow a 64-bit integer?
-
-If userspace calls KVM_TDX_INIT_MEM_REGION with region.nr_pages set to a
-value where the top 12 bits are non-zero (e.g., (1ULL << 52) + 1), the left
-shift by PAGE_SHIFT discards the top 12 bits, evaluating to a small value.
-
-Does this allow a malicious host userspace to bypass the overflow check
-region.gpa + (region.nr_pages << PAGE_SHIFT) <=3D region.gpa and the
-vt_is_tdx_private_gpa bounds check?
-
-If bypassed, the while loop would then iterate based on the large un-shifted
-region.nr_pages value. If a guest_memfd is mapped at a shared GPA and
-initialization is started just before it, the loop could incrementally walk
-into the shared GPA space.
-
-Since KVM invokes tdh_mr_extend on that shared GPA, which the TDX module
-rejects, could this trigger KVM's TDX_BUG_ON_2 and cause a host denial of
-service?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630213711.4796=
-92-1-seanjc@google.com?part=3D2
+Alex
