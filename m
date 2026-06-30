@@ -1,150 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9122332610;
-	Tue, 30 Jun 2026 23:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD933374F
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 23:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782860923; cv=none; b=cbGN7vkRBZSpuPkhThamEflfLQzv/pS7pQLT0NrfST/jiN0dhFV/FXQKLsmm6ffQ1++wmGo8JDD+dUTe7slulQQH6M0uEgERq3Z3XOCmOwcrGhAztSngyWTlEk1ymHD+34oqz4Rg1bZA0NZeMUouhim0cumhhR25NXffRUrzONI=
+	t=1782860934; cv=none; b=I0giVAlkZ8BvJXlrxXIZUfLI7RPPcEqWsrfJklYeR+k8zS3ji5ggNkBIXDUWy/rNZJJakqWpS7nQFYiHYP96gsKUipZZEMM2J0w/aKzw/4DmSQYNkfCCWuuZSAedhOlNN0rRAkw/m6GALcuLM6+aOrJt9Nf6O1YyacmsMfuhsEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782860923; c=relaxed/simple;
-	bh=IXjCB+J5alKxR7zrUb51/9sJO+axFt0zkGS8KIILwi8=;
+	s=arc-20240116; t=1782860934; c=relaxed/simple;
+	bh=wshvdllqEfkvoYxIj2v+2kgDt/1iHE9xpTWJpYJpjRY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RfMRDUOAZpxrWISLMEb7IEDg54gWKp2s9HNZkHJqawZWUfVGkyuYXKNKGt7gfW1z7AjX8tmBPmN/rGORd8k/dyPwUTWQEbnn7MKJnee/fylVadRg7skxee/FbbnhLv+WpQ2FYDYmWLpCp6H8Q2FObLVkXohZoSch9SIVbgAoffQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BasXIBhI; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=er70h0X5Q88yH60O8gCXP0Sjo+BkgQ7owJJJz3A0Y0s4ysRycuYB3mYpkIe9k/IPZ7cACDmwi8peFKW5nwfQOiQ2yKsKeguk3bZqq+S6/4f5FbYk1tbCcT7QjvvUc+aQ/mVsBs0ysjDzX6XJrmRkyrE1FWkZ8tpcm6UvrT1sj3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JA2f6NpF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BasXIBhI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4C51F000E9;
-	Tue, 30 Jun 2026 23:08:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JA2f6NpF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE9B1F000E9;
+	Tue, 30 Jun 2026 23:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782860921;
-	bh=E9FuaoOJzCGZBbZKMbcQWsELlnnFjqrAYZ4zRijrd48=;
+	s=k20260515; t=1782860933;
+	bh=y4r85KAU1t6lbkWTspgitqTdtw5LjllMZGEj8vi6Jus=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BasXIBhIznEyleLufZSQKEe3/m/9U0UssRw/bMzftb/bLoO2RVnMARF5ley+dUonL
-	 x2AtfdFjz/FWrjqAdxvS7jHByBguJDONIt+GuoDhB5GnAuDZPu/KznLxk5inBFUVFK
-	 +k6A4kGan94PZpUDjthUOtUHjtCltbbG1SCZGdq2H2u3ZzV8GVsBdacWngsBLTsnOS
-	 YlBXg0fRDp0VSbupSX4PP5/QnNfBK3xySF8rTTpRQfvTwZXbnVX0X8bqkYtLvSLQvd
-	 JgRzVHRHnTWuKlFEoxXe3ud74f+7HmnnRCjid9lhWg6d8ZgUf0JhaBbKUoDMr49edZ
-	 O7OF2yGZgrsxQ==
+	b=JA2f6NpFVc0ocPkuI950VItzBKnP0zW4JpESaoTsIfpJgtABWEekN4bj2jupY+aO2
+	 hGJxEmu09F5j2rgqQl0/qElc/tkwpi/7T6OFgrXN9Cwu8Uv7D6EeklCXQAiXVZv1Zo
+	 tU9tjy11o0fqhcIFJYrbN5R7H/GqWTerfe5gSKyy7/QZ4RqoCjx4jjTsBkxhlOjM50
+	 iki7uqmyWO0aATCw4aI3UEvavEP0BHWBOYP7lOGSNMV+bQiYQMWDS1aaHB5lR9O4Jd
+	 VZpME6nLXpTCNYQpFu50Syhg1CU2ktvTw75oiZJ/dXECN4vUIvaXyEeGxdh7i8Iwgg
+	 3ZA74+o/uAZmg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH
- feature
+Subject: Re: [PATCH v4 06/11] KVM: x86/xen: Punt singleshot timer hcalls to
+ userspace if Xen vCPU ID isn't set
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhiping Zhang" <zhipingz@meta.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260630224328.3218796-4-zhipingz@meta.com>
-References: <20260630224328.3218796-1-zhipingz@meta.com>
- <20260630224328.3218796-4-zhipingz@meta.com>
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260630225619.511632-7-seanjc@google.com>
+References: <20260630225619.511632-1-seanjc@google.com>
+ <20260630225619.511632-7-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 30 Jun 2026 23:08:41 +0000
-Message-Id: <20260630230841.7E4C51F000E9@smtp.kernel.org>
+Date: Tue, 30 Jun 2026 23:08:52 +0000
+Message-Id: <20260630230852.DCE9B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Lockless plain load of `priv->vdev` races with concurrent modificat=
-ion in cleanup path.
-- [Low] Missing `WRITE_ONCE()` for `priv->revoked` leads to data race with =
-`READ_ONCE()`.
+- [High] KVM_XEN_VCPU_SET_ATTR unconditionally rejects the uninitialized st=
+ate (XEN_VCPU_ID_INVALID) returned by KVM_XEN_VCPU_GET_ATTR, breaking live =
+migration.
 --
 
-commit d524eab36e9482385fe1c1a6c6280e667bf56a9c
-Author: Zhiping Zhang <zhipingz@meta.com>
-Subject: vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
+commit a0e30df39328c44b4229534da902c6e3bed5d228
+Author: Sean Christopherson <seanjc@google.com>
 
-This commit implements dma-buf get_pci_tph for vfio-pci exported
-dma-bufs and adds VFIO_DEVICE_FEATURE_DMA_BUF_TPH. This allows
-userspace to publish TPH metadata for a VFIO-owned device.
+KVM: x86/xen: Punt singleshot timer hcalls to userspace if Xen vCPU ID isn'=
+t set
 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
-ci_dmabuf.c
-> index c16f460c01d68..8de72f9e75024 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -30,7 +38,7 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmab=
-uf,
->  	if (!attachment->peer2peer)
->  		return -EOPNOTSUPP;
+This commit explicitly invalidates the Xen vCPU ID at creation instead of
+trying to default it to the vCPU index. It also forwards singleshot timer
+hypercalls to userspace if the VMM hasn't explicitly set the Xen vCPU ID.
+
+Link: https://lore.kernel.org/all/20260612233017.1F9771F000E9@smtp.kernel.o=
+rg
+
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -1103,6 +1104,8 @@ int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, st=
+ruct kvm_xen_vcpu_attr *data)
+>  		break;
 > =20
-> -	if (priv->revoked)
-> +	if (READ_ONCE(priv->revoked))
-
-[Severity: Low]
-Since this updates the read of priv->revoked to use READ_ONCE(), should the
-corresponding writers in vfio_pci_dma_buf_move() also be updated to use
-WRITE_ONCE()?
-
-For example, when a concurrent state change like a device reset writes to
-this field:
-
-vfio_pci_dma_buf_move() {
-        ...
-        priv->revoked =3D true;
-        ...
-}
-
-Will the lack of WRITE_ONCE() here trigger KCSAN data race warnings when
-evaluated concurrently by the new READ_ONCE() check?
-
->  		return -ENODEV;
-> =20
->  	if (!dma_buf_attach_revocable(attachment))
-
-[ ... ]
-
-> @@ -333,6 +362,72 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
-re_device *vdev, u32 flags,
->  	return ret;
->  }
-> =20
-> +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-> +				      u32 flags,
-> +				      struct vfio_device_feature_dma_buf_tph __user *arg,
-> +				      size_t argsz)
-> +{
-
-[ ... ]
-
-> +	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
-> +	if (IS_ERR(dmabuf))
-> +		return PTR_ERR(dmabuf);
+>  	case KVM_XEN_VCPU_ATTR_TYPE_VCPU_ID:
+> +		BUILD_BUG_ON(XEN_VCPU_ID_INVALID < KVM_MAX_VCPUS);
 > +
-> +	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-> +		ret =3D -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	priv =3D dmabuf->priv;
-> +	if (priv->vdev !=3D vdev) {
+>  		if (data->u.vcpu_id >=3D KVM_MAX_VCPUS)
+>  			r =3D -EINVAL;
+>  		else {
 
-[Severity: Low]
-Can this lockless read of priv->vdev race with concurrent modifications in
-the cleanup path?
+[Severity: High]
+Will this break live migration by making GET and SET operations asymmetric?
 
-If userspace calls the VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl on device A,
-passing a dmabuf_fd belonging to device B, while device B is concurrently
-being closed, could this race with vfio_pci_dma_buf_cleanup()?
+Since kvm_xen_init_vcpu() now initializes the vCPU ID to XEN_VCPU_ID_INVALI=
+D:
 
-vfio_pci_dma_buf_cleanup() {
-        ...
-        priv->vdev =3D NULL;
-        ...
-}
+kvm_xen_init_vcpu()
+   vcpu->arch.xen.vcpu_id =3D XEN_VCPU_ID_INVALID;
 
-Will this concurrent plain store trigger KCSAN warnings during the pointer
-equality check?
+During live migration, if the VMM hasn't explicitly configured the ID, the
+source VMM will read this initial state via kvm_xen_vcpu_get_attr(), receiv=
+ing
+the U32_MAX value.
 
-> +		ret =3D -EINVAL;
-> +		goto out_put;
-> +	}
-> +
-> +	ret =3D dma_resv_lock_interruptible(dmabuf->resv, NULL);
+When the destination VMM attempts to restore this exact state using
+kvm_xen_vcpu_set_attr(), it appears it will be unconditionally rejected here
+because U32_MAX is >=3D KVM_MAX_VCPUS, returning -EINVAL.
+
+Should kvm_xen_vcpu_set_attr() be updated to explicitly allow restoring
+XEN_VCPU_ID_INVALID to preserve standard save and restore loops?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630224328.3218=
-796-1-zhipingz@meta.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630225619.5116=
+32-1-seanjc@google.com?part=3D6
