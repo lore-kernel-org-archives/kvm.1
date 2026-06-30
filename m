@@ -1,125 +1,46 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DBD450909
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0CA34EEFD;
+	Tue, 30 Jun 2026 15:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834147; cv=none; b=duM03RnC/ZEzoZDcKqvk02JU0+Rb8eXS6u+1ycPBu4IN12XfOehuII71k53SpWACOLu5MhCtYmdc1VlONzH/R146rgjrc+iUhG+Ms0ORC6Snw6bRBbIkltBDsh7J/DJdOiTgL3j4zkG3l9IRgov6GML84S2zOtVW1k8Tjsr80oo=
+	t=1782834263; cv=none; b=Ev1MV37M6Dy8lI6RCeJ72DhXo6Dp34gs9Kp4JNO+q54B5LauaCdqbUE9Q4RpSeHr0/6EkUGOz8zb9Gx4Yowj+ffGclo8jG9yoqc7limZ+kmhNvxEMSG2w6sec67NkzNk28Zz2dIEtILJ6TsAaFK4cw3/WyCZk/4yuhTV1SGr5ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834147; c=relaxed/simple;
-	bh=G7yBa9qRXwqvk5O66eyJS/F0IvVRBRnFUCu+8taoCIs=;
+	s=arc-20240116; t=1782834263; c=relaxed/simple;
+	bh=xJlETisceaoQr6SOFhAjR4tLS6ntrZvAD9La15OrU+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gt1SfAc2ZJ1AENM6V3/V9GPENrcXpRkOEWn3xErWyd+xD/UpjCKiYBkqiklZ8lsIXAkwd9uT6aUCS5FOSgVF/Vl5diPw0fIlULw1/5M8km6cO6D5gDWWpjfHZU0cBWfMBwKxmVCItn2h9QLE/pWsKh403aRimZDz1reJ6WNQ8bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=OdjAdTKP; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTOg/2iIZ+0c/ddBTU8h1t2lPcsgoZc7UA1udaDvu/SN9nokkAfj9RHFlQ7FDWwO0YSDpeX+JC/kbT3Y359/GGGA2arhtXrsb3eLcE7l+rrB+SJYr8MyLk0cVOZcWvOWuwpqZft7Izck1vYYitqKkQ+LaqT6lfc8zAqTfYq2Z4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPJtyVuV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="OdjAdTKP"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92b21f65b60so75225485a.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 08:42:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782834144; x=1783438944; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QB3LlP562wM9vhAInyZtqjaYedctMNHlJgLHcqpXNiE=;
-        b=OdjAdTKP1VGO8zRZIYKW6T7YC7dp4kGd+TLOLZBrfsmVd50jWCMuSIKvP7n5Q3aytm
-         7y2yKNcengqSId/fVcnWUhs+mgEBA+QOUb0OSHXmmarHNnEsbrpU4OURxH2VUa53JCkM
-         POrRA+mpxapavmM5StO0HJvd2wH6vvbHdouA1wzC4B3542vH341QzuvAy02pjh/UL0V+
-         MisLKxDdvdCl3YVgpFGit4upC4z+10tmJoELCaRYpHzDYuL2HyfH2mJ0diC2zJDIF8XW
-         E+p9wtX3S3Axbso4ew8IgNmOl7eHU7jpcJ4DsFh/HdFdxEaBAEhnWmwfQwIcg1w2xssn
-         bhsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782834144; x=1783438944;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QB3LlP562wM9vhAInyZtqjaYedctMNHlJgLHcqpXNiE=;
-        b=EZasEpfBhmsyR0fxvfcG0iHx4st93NZWl9C0eYJg9qQ3F7+yb9Sf5UqyZJ1RAjoRtf
-         wnXTKaHUzgEGyWnDUmlF41g1YB/vYcPaHXIgHRj/p33TBk/qOpyvKPSWj3WhxmI3DnRT
-         km/WkQAeC/0LUtN3JgLRsIDgdcRCtLW+Qm4vFBXbuGrhqsLLOsTFKbObkj1vAxgi5O0k
-         1tN/ZNBZ86fR6jFEHKrmGSS/6C26DYQCsgFEAan3hpr1cxV2hGji+OTCdz+vEttCFvhe
-         9AGuEn/vY6M/28zPKTJVpvsR22oK85XbNPJ0+4vKrW8pnh1oN4ZHDXZkR19zukAf5nVm
-         XaFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8DPzirQW+2OjO14y4PxLSJOnqlNGm9A06v8cfCdgR4RgR85W1Ek48iBtkC29VVCMMkqqY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIq/ntm4F4/b0MkeVXqyMLJqpzQp/E/aXD2mMW255QSywXzV+3
-	9qZ+fASsDudcgpSbhbJ/clRVkyxSvxn4xYFjtjmlaSLWs1L5JhXvdET/4Lla2CINdTg=
-X-Gm-Gg: AfdE7cmcT7tc4p/OdQazcEGUSzNsZtVgGdjkNtNqiN/atRkQlEK5hFVy1XP+ssThXch
-	IMP/E4yi4FqSvI7FBhNw7Y2hQ18uhvj3pjJ+A7wjHgW1W0hZvEiCMU8FE+kdtwOCvwFOIDHjtpl
-	GJgWLCRAbwbd6+J4G1NFaTohOgL4fSSmaxdbifjor6+YamB1O1SLZIIXgrQHbOO/T1rdDcwR7Ae
-	ax2OU0yoGTAKn4yZVWT2bb7NowSRuM+HDHNeVH+hxoazENPT7gXYq1K4infXL29Eit0fIAHEF4F
-	vdPkvr7w5pURslxCey5bnvHoOZXcY+B2OrN5rnot20hJUyCacmeNoMhjRH7oYI4e841yshOQYCn
-	K3cEBbMEGnXSZCL+REWLettjo8WwA9JXllqWhvXu8Z64NA8OeuU+hYrIQ2/gMJBNXiIxchuvUXc
-	ek7eb/OTIw5QUIjXXT1uTkOAXtarlvsvQg65Bd8ie1v6R+QbYunsbo4wa4KQpLka1AMcF9
-X-Received: by 2002:a05:620a:271d:b0:91e:712d:f79d with SMTP id af79cd13be357-92e6984d3d1mr270456885a.40.1782834143842;
-        Tue, 30 Jun 2026 08:42:23 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e6234dc50sm263249085a.39.2026.06.30.08.42.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:42:23 -0700 (PDT)
-Date: Tue, 30 Jun 2026 11:42:18 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 08/30] mm/rmap: rename vma_interval_tree_*() to
- mapping_interval_tree_*()
-Message-ID: <akPj2snngOp5nOYq@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <f95462457025370efd047b9dfb039e76bbddf58b.1782735110.git.ljs@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPJtyVuV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895A21F000E9;
+	Tue, 30 Jun 2026 15:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782834261;
+	bh=kC71ZF1kU53NLjP9UflQ+W4nP0189uDbEuX/DDRpMDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EPJtyVuVdzjkHUcPss+Ig2MSQjEu5Ef8JMWUxUcjBPCJL6k3RrqZsGxPXV85bt7ml
+	 6g35L5LEW+F1PCyzAx2FIGPPnpjXuionvHgkkWl4r77GYyns05i/DQIaMTJbCU0Ltb
+	 PIKheb/4o1RbneFocrwvReKWLB886gaVK0dbM6OHAOayE8XeSDRyF4n+ZiRxM1jXIf
+	 gDgDf+FKDLERrDaQ2TYEga6t4ejSkUMKJAwBNSwqhC5vcjBPPy6EGuFRgRK0nASk+I
+	 pdBVTkPRCU5YOoD4Oc9dVqQ/KKPc47FjM7Y9RiAK4lbjjA7L6pIjzIJV0U+ZmWhj6e
+	 qz4lvMSQQ2BEA==
+Date: Tue, 30 Jun 2026 08:44:20 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: sashiko-reviews@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if
+ HDBSS is available
+Message-ID: <akPkVASjWWYQpkx1@kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com>
+ <20260629111820.1873540-3-leo.bras@arm.com>
+ <20260629113645.BE6801F000E9@smtp.kernel.org>
+ <akKFlzAdB43lRpi1@LeoBrasDK>
+ <akKmHqRaZEUjN3zY@kernel.org>
+ <akO9iHJmKN7MzTjM@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -128,27 +49,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f95462457025370efd047b9dfb039e76bbddf58b.1782735110.git.ljs@kernel.org>
+In-Reply-To: <akO9iHJmKN7MzTjM@LeoBrasDK>
 
-On Mon, Jun 29, 2026 at 01:23:19PM +0100, Lorenzo Stoakes wrote:
-> The family of vma_interval_tree_() functions manipulate the
-> address_space (which, of course, is generally referred to as 'mapping')
-> reverse mapping, but are named the 'VMA' interval tree.
+On Tue, Jun 30, 2026 at 01:58:48PM +0100, Leonardo Bras wrote:
+> On Mon, Jun 29, 2026 at 10:06:38AM -0700, Oliver Upton wrote:
+> > > But this raises a topic I would like to understand:
+> > > - Do we actually need this to be a block_size to assure correctness? or is 
+> > >   it just about efficiency?
+> > 
+> > What value is there in having a chunk size larger than the largest
+> > possible block mapping? The whole UAPI is deliberately tied up with page
+> > table geometry.
 > 
-> VMAs may be mapped by an anon_vma, an address_space, or both. Therefore
-> calling the mapping interval tree a 'VMA' interval tree is rather
-> confusing.
-> 
-> This is also inconsistent with the anon_vma_interval_tree_*() functions
-> which explicitly reference the rmap object to which they pertain.
-> 
-> Rename the vma_interval_tree_*() functions to mapping_interval_tree_*() to
-> correct this.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Not larger, possibly smallerv My concern was the difference in pages to 
+> split between 4k, 16k and 64k.
 
-obligatory "naming is hard", this patch helps, thank you.
+Ok, well in any case the upper bound is going to be the largest possible
+block mapping for a given page granule.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+> > 
+> > Overall, I'm not buying the argument for changing the behavior of
+> > KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE. There are very good reasons for
+> > *not* eagerly splitting the entire address space, especially if you know
+> > the working set of the VM is small.
+> > 
+> > You can still use HDBSS without eagerly splitting, so long as block
+> > mappings are {DBM, S2AP_W} = {0, 0} and leaf mappings (which have
+> > a writable PFN) are {1, 0}.
+> > 
+> 
+> Block mappings being read-only, and leaf mappings being writable-clean, 
+> then? Could you please ellaborate on why does not it need eager-split?
+
+Read-only translations will continue to generate permission faults
+whereas writable-clean descriptors can be updated by hardware. You get
+the opportunity to split a block mapping lazily while preserving
+hardware dirty tracking for page mappings.
+
+> As a review, what I recall from the strategy for hw dirty-logging was:
+> - If we have HDBSS, add DBM for all writable pages {1, 1}
+> - On dirty-logging start, make them writable-clean {1, 0}
+>   - Can be done using HACDBS
+>   - Enable HDBSS & HAFDBS
+> 
+> We don't have a fault for making pages dirty anymore, as this is done 
+> by HAFDBS and recorded by HDBSS, so splitting does not happen on demand 
+> anymore. So if we want to split pages, for better tracking granularity, or 
+> anything, we have to eager-split them.
+
+What I'm saying is the presumption that eager page splitting is always a
+net-win is wrong. Nor is eager page splitting a hard requirement for
+using HDBSS since you can set up the stage-2 in such a way that only
+page granularity mappings are dirtied by hardware.
+
+You could, in theory, have a workload that is read-heavy for a majority
+of the VM's address space and writes to only a subset of that memory.
+Eagerly splitting pages would likely regress the workload from a higher
+rate of TLB refills / more TLB walk steps.
+
+Lazily splitting would have the effect of leaving block mappings in
+place for most of the VM. This is exactly why the VMM is in the driver
+seat for deciding whether to lazily or eagerly split the stage-2.
+
+The approach I think we may need is:
+
+ - Use a software bit in the PTE to stash whether or not a PFN is
+   'software-writable' when constructing the stage-2. By this I mean
+   we've already faulted it in for write from the primary MMU.
+
+ - At the time of write protection, reap the hardware-writable state
+   from all PTEs but preserve the software-writable bit.
+
+ - Whenever splitting a block mapping, set the DBM bit in the page-level
+   PTEs if the block was software-writable and HDBSS is present.
+
+That way you'd have sufficient metadata in the PTE to safely set DBM. We
+could even make use of that metadata for write faults on non-HDBSS
+hardware to avoid the overheads of user_mem_abort() (e.g. VMA lookup)
+and treat it more like access flag updates.
+
+The last point still needs some thought.
+
+Thanks,
+Oliver
