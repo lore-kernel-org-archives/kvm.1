@@ -1,127 +1,129 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6026266576;
-	Tue, 30 Jun 2026 21:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF70A29C327
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 22:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782856229; cv=none; b=kdvg9VCtps5i2PH1bOgB+WRYQNU+AX91C1xz8WkDdc9TcrYyQy4LdVXts5L2uXGRL2u0HHr0Xm2/DMbVoIMXZVxhDf7PqmcVzeQBg07ol7/MCFJxevMR2s6j3CBR/ZAHP8KzHj++GRyw3PkIliE7EyjLnQoPMVtyPTXdUdsqLEc=
+	t=1782858371; cv=none; b=HIpSDgCOHaPM7XKgKP4ohZL2tg6sfNmfMgTMIvxhnB8sBzlMEIvaTJHKCh3rnT02SbZV+LpdAO3TWE76pG0/ifc3tTd9VcnDcshK50b+SypOpV5Vrl8XkOX81bl7sckd1yWJ2g0IWj+ENoeVf6y2hayQCrG1Jr7aFj3OX54DWkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782856229; c=relaxed/simple;
-	bh=BhdtcsOh1lYT90bHtO7li9mFb6os8tAJZTfI3aV4eUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F6mvXbZzAgxphlhm6lKJw5l8hBX5e/t0CgNz3xA3bYw+SsePo9/J0STjv4KJiewFnsEswjCpjTBxwhXf67JZUHODwcIpMS81q10+p/lDCgFwbxhmDnvi8W9Wx+OxtcmV1UrFIVEiE4z+Wa0H/BHIRocoVRXP75oxOOLZ+fOOj2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=DuLE3Llc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ry7ea02b; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1782858371; c=relaxed/simple;
+	bh=uiCrtv3aDzulPW42QCJuUCaXWdmlvRWjXln/YO3nl6A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WARFp5MPtJIrH9YW0cmMN2Ep8lDckj/Mxta02W2BygbwOayUx4KKk2iXxsu1LNt2U1pkl8lk0MfNdIzSgqF09XHEHeo39cUIPOQgBcpa4TfG7KHQJFzzt7s3OkutfPhmXcrBGYnRufg34lEj6CUqi/2c4VHQ3/VF94CUICHXXBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s/TX+QGY; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="DuLE3Llc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ry7ea02b"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id C03BB7A0133;
-	Tue, 30 Jun 2026 17:50:25 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 30 Jun 2026 17:50:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1782856225;
-	 x=1782942625; bh=FtW04vCW3OqAUmDv/lvhOw4gBZ2rhR+DzNAJYuMHVCM=; b=
-	DuLE3Llcvu+U5PelESVKc0RwCn3jPX/Rk/MFY/29olija77xAQcLhOxvdfOVJAL0
-	ze2lgBPN8r3uRQLWfnhvU/9S0NwEUk45Hqghp+1JhVvs6i3an9EVS5jp67b4voaJ
-	DrsZXocOAkfAMAGx2ODAZyzP/+0RexRCniVXY+T3HSnze3Hgvp7AbM7izERq5x+H
-	LNUCB6fqCuSmVEn58zO3w273maqC0P3S/Vewl3JcLZ5IyrZ0/W5VoEqck9QfvOJa
-	vJdhzYCpehLkOnkb8x9XHrXE+6WhvUWtFhKkaaozeavlEGj2KqMSwkKksRcdbRll
-	tMUeu49sR2uPvNsbYqKMgA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782856225; x=
-	1782942625; bh=FtW04vCW3OqAUmDv/lvhOw4gBZ2rhR+DzNAJYuMHVCM=; b=R
-	y7ea02bUAqmJBN7Pg+cDnYvZkbGzIwq+/RQ0aeALbO/XO3SrWHz+CXuSXR8FSAVm
-	CMeF3Bn0zEcsJnaEbqUX5lPOKCeUSB/B1T/7dD2yo6ws72iQN9TBefgz82v5VqqR
-	7rjcZoOh7aDfAprxmvWXbtUIz5eIQ/CltkMinV3BH9vMuWWIBnSfHU4oJJQ1GIeP
-	5DqQpk7xlZ6xMTy6pjyS7NnwNX1RNl6l6vV83wnlrmxSUoZ5Po1RbbNN/VsN6g5L
-	9eO1Tq7JjA2WAuf08Zrau6ksuXO5mQfK3fbK1p8dWCW2NA9eSDyqyaYnFta/Bc1X
-	gyRto5s17AcFlReLXF4Yg==
-X-ME-Sender: <xms:ITpEamzgobfB5qg6AaaDCvV35cJ0Hb7anZGl5Dj0PmBYi9CWIdMCyg>
-    <xme:ITpEai8EzbkNNwjut4L54JusyqWo-7c54apUG4_LZT9hGxB66eYTKCEGKbEreCgXt
-    tiXnGG_RVXe_lvvoMKRH68t2CMvbSbZsDkJWkiHZimioRMLAAau6A>
-X-ME-Received: <xmr:ITpEamjWFTODTBrKsXiPWIpCJlxPk3T1_CF8fM_yRiTjQ7mDxpPmX6BWuX0>
-X-ME-Proxy-Cause: dmFkZTEfzDn5iE36M7bC7fO+VDKjXDAZq/6tQa9vlTO5s0o42UsGE9XeU9fcrEUs4o3ymk
-    8heez+YYyFyvdfpd77/APi38vZv/r4d8q/XRst/ibcJRPYvn6N1yV9ehqIo8KORLBvE0yC
-    7Kl9ubL/Cut1Ko/x9AndpQ39zOAWQaNDbdtY6ncSdOiURYxJztOecd31H/lJWT/wkVQpqJ
-    jKKd2dOmKx5/n2oJBtSuLY6C++zyejkYvedIG/mtwL6XPCPwY16CmAjAT+xgcA708tXpfG
-    ZCKp9pMHm235wLYY8BLBvs7cm5cDaCaWut4klOKKeKMRfHqF+E8Z7vT+vurKnO63UnMzev
-    eq7VBdbIWTszzB86QU4KIX6y06HUYBpokVjnxaSA2OgyZXTfdXLd9K2Uzec3DMYgszMV/O
-    CBfZDbusyIKx4EPY04CQFGcCYExzl80mJd6hW04UBGypnlblRLdudq64xEIGWRVb/kPkII
-    dUevUSKHMsrJ2gHUlExq/CKkkw939XuVFeUAGxv5jOXV+vVM/HN0C4rh5ZBdZT3duLq3N9
-    jH44kz2/jHBSDVY8J/8eyJkNCTNgiv1ELVrUWXk1JgmeD54pFZNn0WGQTS3qvMkx9XhQnu
-    Xpy4l4sriPegl23rD+6wcEdKDTlH7JRUALq055+JsL+7sMcdWi/C32HmIl6g
-X-ME-Proxy: <xmx:ITpEahEaG4lvEif7iexyzf5SH8uhR_gj_eQYTD6R1jle7LulNybZIA>
-    <xmx:ITpEat-6e_ONzo2xZvNJ_cQmYXwwI3v61lybLFdRSpwfKTPWk3auew>
-    <xmx:ITpEagzmjwt-KrqdpGFs2TteAlvPcRLE4rOuf4QHqBNpWtzInJrZ4A>
-    <xmx:ITpEahN5kEMbcOjW0eWiFbNoTZe-ghyH3YCXWu7kN6ezaF0r-4AG5A>
-    <xmx:ITpEanR7tjMO7t-z2bwm2pbzCCJXrmYyq2Fyc_R4cJRrCPmfkjaBRkRD>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Jun 2026 17:50:24 -0400 (EDT)
-Date: Tue, 30 Jun 2026 15:50:23 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>,
- Vipin Sharma <vipinsh@google.com>, alex@shazbot.org
-Subject: Re: [PATCH] vfio: selftests: Add luuid to libvfio.mk's list of
- libraries, not to the Makefile
-Message-ID: <20260630155023.2ffb3226@shazbot.org>
-In-Reply-To: <akQ4p3sPdNzSnAc9@google.com>
-References: <20260630212805.474418-1-seanjc@google.com>
-	<akQ4p3sPdNzSnAc9@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/TX+QGY"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847a90cc5e2so62618b3a.0
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 15:26:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782858369; x=1783463169; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZGViHahQdgswaxP3CojmrrY7hBCH/xgTjZd+P0YB0TA=;
+        b=s/TX+QGY9zM1nU3l4V/qnf0REC2zaviOQ6aqZaJtTfkIWMysYogxoTd7OX9yfc5dr3
+         gBXCDcSKor/J8FGEh5uWSpL1pOId2ifLnxhE6ggov+m4qG34TGw5KcPG6ggWIztdQ9IR
+         G9crdX+WTL2pYS4t+pWKUXnHWa3RZLFrbOIEZLuMN4+ni8A2VjyHdW0QPL6lg9P120Jr
+         brjyUJ2yFEl/904td/GGiq57BZwTr/El5o3fCJQ/7dIct7VT/58qQLf5DVrBinjZCWWB
+         n0XygZiUEnrQx3L7OrEtbNWjEd/g6OAOZmTRWeNTb61IhRGWwzjlYY0byneqCoFmQf0W
+         o5Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782858369; x=1783463169;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZGViHahQdgswaxP3CojmrrY7hBCH/xgTjZd+P0YB0TA=;
+        b=U8SLBNXuGHq0yyoPJaLyTZd/4vVqKnZAtsfGosDEyBS7A47aKBMQPvFD8GKBrGyfAx
+         5jjTGCHxrw8l3REKePh5AMJKgip6LO52HMvLWnGDJ/jxFHLBnlLxqr7NS1yalkPcAeI3
+         B5TBi6vqxNHabTG5JpWX7Oe9Yt2ZXWOjOzcD839tWCeayxg8yuhosigexpWKfriCID3f
+         FPS45sU0EE1zArUqLoPsLNduK/h3xo3wSUfsITvqcjXIr0YRNAhwFFrCnw8jZh8qKuqS
+         G4bNiwilN46oluJqWQhIvDXRqi/dRbdGvza8GEdL0hnkcOedbvPccRuyh3JygLuriq8F
+         LhIw==
+X-Gm-Message-State: AOJu0YxEnKWWIn0ge72+BloiKxw4VLMeDWk08zyw6lsbNmcBMARXJryL
+	qF0EhoAMTyZTGsKcThEG//7izYoiQrsbl0+SUZPAvsgJdZE+p6qPB3rWcSOiSfPft2WJT/XI/ZU
+	NEh+NyQ==
+X-Received: from pgct17.prod.google.com ([2002:a05:6a02:5291:b0:c9a:7d72:c316])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:23c6:b0:842:672e:7b5d
+ with SMTP id d2e1a72fcca58-847add9a0bcmr2445990b3a.17.1782858368833; Tue, 30
+ Jun 2026 15:26:08 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 30 Jun 2026 15:25:55 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260630222607.497895-1-seanjc@google.com>
+Subject: [PATCH v3 00/12] KVM: SEV: Fix RMP #PF due to freeing in-use VMSA
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ackerley Tng <ackerleytng@google.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	"=?UTF-8?q?J=C3=B6rg=20R=C3=B6del?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 30 Jun 2026 21:44:07 +0000
-David Matlack <dmatlack@google.com> wrote:
+Rework KVM's handling of guest-provided (and always guest_memfd-backed) VMSAs
+to forcefully reclaim VMSA pages when the pages are being freed from their
+backing gmem instance, e.g. in response to PUNCH_HOLE.  In the worst case
+scenario, marking the page SHARED in the RMP will fail due to the page being
+IN_USE, ultimately leading to RMP #PF violations due to guest_memfd freeing
+the memory back to the kernel while it's still assigned to a VM.
 
-> On 2026-06-30 02:28 PM, Sean Christopherson wrote:
-> > Link to the uuid library as part of libvfio.mk instead of as only linking
-> > it via VFIO selftests' Makefile, as the whole point of providing libvfio.mk
-> > is to allow linking the VFIO library functionality into KVM selftests,
-> > without KVM selftests having to know the gory details or duplicate code.
-> > 
-> > Cc: Raghavendra Rao Ananta <rananta@google.com>
-> > Cc: David Matlack <dmatlack@google.com>
-> > Cc: Vipin Sharma <vipinsh@google.com>
-> > Cc: Alex Williamson <alex@shazbot.org>
-> > Fixes: e65f1bf8a2db ("vfio: selftests: Extend container/iommufd setup for passing vf_token")
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>  
-> 
-> Reviewed-by: David Matlack <dmatlack@google.com>
-> 
-> > ---
-> > 
-> > I would either like to land this in 7.2-rcN (ideally rc2 or rc3), or take it
-> > through the KVM x86 tree for 7.3, as it's blocking a KVM selftest[*] that's
-> > been in the works for more than a year.  I can throw the IRQ selftest in its
-> > own topic branch, so even 7.2-rc5 would be "fine", but I would much prefer to
-> > get this (or an equivalent fix) into Linus' tree sooner than later.
-> > 
-> > [*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com  
-> 
-> Sounds good to me. Alex can we take this in one of the next RCs?
+Note, the implementation nearly identical to that used by KVM for VMX's APIC
+access page (which isn't guest controlled, but is migratable and whose PA is
+shoved directly into a vCPU control structure).
 
-I'm intending a pull request this week with the bitfield and module
-option latching fixes that are currently in linux-next, I'll pull this
-into that as well.  Thanks,
+v3:
+ - Ensure disabling quirks while the VM is live won't result in KVM skipping
+   the back-half of "zap all fast". [Sashiko]
+ - s/gmem_free_folio/gmem_reclaim_memory. [Ackerley]
+ - Use {READ,WRITE}_ONCE() when accessing the guest's VMSA GPA outside of the
+   per-vCPU mutex, and comment. [Sashiko]
 
-Alex
+v2:
+ - https://lore.kernel.org/all/20260626231416.3943216-1-seanjc@google.com
+ - Invalidate VMSAs if the memslot is DELETED or MOVED. [Sashiko]
+ - Limit stable@ patches without a Fixes to 6.12+.
+
+v1: https://lore.kernel.org/all/20260625222229.3367197-2-seanjc@google.com
+
+Sean Christopherson (12):
+  KVM: SEV: Track the GPA of the guest-controlled VMSA used for SNP
+    guests
+  KVM: SEV: Extract loading of guest-provided VMSA to a separate helper
+  KVM: SEV: Mark vCPU RUNNABLE after AP_CREATE, even if VMSA is unusable
+  KVM: Rename .gmem_invalidate() to .gmem_reclaim_memory()
+  KVM: x86: Serialize writes to disabled_quirks using kvm->lock
+  KVM: x86: Ensure runtime reads of disabled_quirks are resolved once
+  KVM: x86/mmu: Fold kvm_mmu_zap_memslot() into
+    kvm_arch_flush_shadow_memslot()
+  KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back"
+    halves
+  KVM: x86/mmu: Use split "zap all fast" helpers when invalidating
+    memslot
+  KVM: SEV: Forcefully invalidate SNP VMSA if its backing gmem page is
+    zapped
+  KVM: x86: Guard .gmem_prepare() declarations with
+    HAVE_KVM_GMEM_PREPARE=y
+  KVM: SEV: Mark vCPU has having guest-provided VMSA even if its invalid
+
+ arch/x86/include/asm/kvm-x86-ops.h |   8 +-
+ arch/x86/include/asm/kvm_host.h    |  10 +-
+ arch/x86/kvm/mmu/mmu.c             |  74 +++++++------
+ arch/x86/kvm/svm/sev.c             | 163 +++++++++++++++++++++--------
+ arch/x86/kvm/svm/svm.c             |   6 +-
+ arch/x86/kvm/svm/svm.h             |   8 +-
+ arch/x86/kvm/x86.c                 |  15 ++-
+ arch/x86/kvm/x86.h                 |   2 +-
+ include/linux/kvm_host.h           |   3 +-
+ virt/kvm/guest_memfd.c             |   6 +-
+ 10 files changed, 210 insertions(+), 85 deletions(-)
+
+
+base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
