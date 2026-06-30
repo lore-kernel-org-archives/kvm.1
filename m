@@ -1,98 +1,96 @@
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3823CF960
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 20:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543D22FE057
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782853009; cv=none; b=A6YNs9BZMDDjNPCgZo3asm6KJFxSXy0UMibGmT/yO/88EVjePzmfyw+Jd1TiIMa+qzkucascWOvqdjzCKe1fgQh4NQtf8cQPkIo0TtpKYmBrimA7Lz1X3SlPziHduTZabpnZuXKipKAqF2CNAMqYiVHPMsAKh+DVo4n2rTqK3qE=
+	t=1782853321; cv=none; b=Wj0HmCxmcWQeZFqtbGWrrn0e4WZWhQxbEU9zJ56zp064tbnCcIKKJrJ1CyXCbeRBU25ZcJSGAZuO7bEaj77Kv8jpKyY3JBpNfoQH9laZDqZx+pOMFM7PDwH0Hqdq8jMxC3BxZVK92VL1BLxh8Zbabtx0empBx+Xhx9f7dMgNhOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782853009; c=relaxed/simple;
-	bh=ld1EK44F94Iexb0qxSlrHxVHWj3CVMGNVdp/fJue34E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=t68OuqN6jyIn/WG9ClONe5kPW3CguH7zg8OCzLUedW2yQZKSuG9Jgb+nAankqp25fth7d54JUOdbNXIOvQYPN+m6hsmpf0kx1yfbgsv6fkbl7jtN6Cp5WKFeLZPSTwWVkIVKgNupJK8QcBbsEi5jL6W160YIXnlOUT7YzJz/eho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OlWfLUIq; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782853321; c=relaxed/simple;
+	bh=GDHJHk9xJFc4s572XwGqyqIUo9AWSEBZuzsu25ai5mY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bDk0eelWmn1oSrolNct1HkpGgWtxvvlkNO0HONBF19PVRxDjYDMeBPIU51Bsau3rwCXDKrMFnsraxBP4kvEFw7KoPLi/iN7h7Lt1ls66LHxbi6GlUokIVRlu+DFV41U0tdSSPYUbYN2p2OBuuZE7hGiKCqQ+xifMczyFYMzGgaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GRDM4Dd9; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OlWfLUIq"
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e9b895ee02so3069378a34.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 13:56:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GRDM4Dd9"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6a20348ceso47101055ad.1
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782853007; x=1783457807; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ld1EK44F94Iexb0qxSlrHxVHWj3CVMGNVdp/fJue34E=;
-        b=OlWfLUIqXBJuECnBrubNj70YYTjxV+TG+dFSqAAtRBJ+WttAgJko4w3kPjixO/4AHy
-         eG4Jiqp2uT7XYR6GVLJ0B0YXVzci2487DwK4S8DlYgTlRNw3GuqY6Wb7Bf9HciZEQF0n
-         JEKElNYXgwxtvqshZ+TKvhE69FIJ6LpY4NX9tdej1vDZJXRt6ejwSS7ITNpJAj68dmXh
-         TVE808NwA7fALCWBzNiDUMwjZelsE6aeedTu4uLPTyiKQcQLLDVmgPxkBq+iaKSqhtYN
-         dtiNEiWbCrDQYUvI1muy2UPCTCDXGn0KAQ0yICyOGSQ+zcw8RI08W0h4x1f1Yt5XK0nD
-         xe1w==
+        d=google.com; s=20251104; t=1782853319; x=1783458119; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HeBuQg54UmkKv5OMu/rjdAfTILnkydvlbj+5lFo+p9o=;
+        b=GRDM4Dd9PBzSzQFG/lYEFoiLC3SHcKhgqgOQQdaX0JIbJodwbQMofF3aVPjCh7pgWH
+         b+nxnMJTowXBxXm0/+ex4Q/ZVjFczxWlDl9YSIJ6/3PcJYs+YB3DIZppgbn265DeDjvr
+         AUA37Xqw9C7O5iETZKs/WKSYe28EvGatdw6kTLVq1yJc8KrYX+4i36KIy5vNTP9nOzcp
+         tv1K/HQrRomLjp+vHZhXvSfz8vJKNb9ZNZsiQkS+pRa/o+VkOofcfrvTQVanIGmtJXBY
+         pXv9VIkXGHuaInkbKjEz+CRKrSPykgJ0ScncabEAARZdzH7Awa93PVaeYRciHmJY/zRD
+         S/nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782853007; x=1783457807;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ld1EK44F94Iexb0qxSlrHxVHWj3CVMGNVdp/fJue34E=;
-        b=jGa/SollgEw9+hDoLzqZYHqMSANgorbn1nUnyoEYZjhuX0fUyYhBfUm2jGVclcOwGB
-         tmECqFlnuwDuAUzqdqpMgkTUR4tyvbFIYM+31ZOH7pjGIaP4QpJuBVOif9Mu07ydfSNc
-         NLCyKXl1Y6vwmTYVvbcS9YEvXuOtc+O1rlwXi53SP5MyBpNZrZwHRuJDLfAhVHvgSuQv
-         8M/+WxsAcajMF94Ybte07cU4kGexKiaOZFZ5C1Sas3LKG3f5kYTR2nPqVRgdpmXccGeY
-         qyBSyPnpKyJXMbx7TASq0otLSJ+ZLbSqN8rZRS7+ziDAR8CB9BOsYwLMw5R7mT6A1q9D
-         bmqw==
-X-Forwarded-Encrypted: i=1; AFNElJ8BJSlVSAV8EacCe9OYFUGgp8tQEbnxBQ+IvorLJOYnfopj1zLQJQN1fJdXW+4AyXEneGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy83i4x0NBnShy2QuLtoOEPrEhIw+K63ibElf6yyOuX1yns+hRv
-	IvpR3GxJ/Ea5BSGuNj2U7bzMxAi7mOKCVZH2Qjc4dpZF8X928dzGfqBt
-X-Gm-Gg: AfdE7ckEUeiYmFWDItc/lEM27EGVYn94GsdKG+JcNTpW4gCfBu3Qeq5qEyZNQoBqKKp
-	tooSYQeT24JiB7sINIOr3XP8dblXTc8At7iVE94LZh/IilvJ7Oo2ZRkLdbS4rqhIYzKSWHdzO0+
-	x8zIUQ4ju5t2UOHuxT1VFZsuS1y5uwBilvHP3p4j2WrXXY/3KwfcLUjyok/YRr8lDF/51pBBcRx
-	RGEAeYBnC780tjihqM2zzCF82PD01BT7JqX/NPbRdMvcf4P/gPrYUzI/kF+JUtvvWL5R5SlAFa7
-	3FaO2s1bGBgcezaVlKcKv/EbwXzMKraTfarHk7UarAsZtEcmS6cUaUPAzwpOxVP35I+jkfGm/FH
-	vB04dYjz98qvp+99kL1QsvoYXwoefX12wOH3aUVM9vDJh7mI00wvwDKwiaFOCGOj9pyQN1rLkU+
-	jG3taKNc4wi1wt6ed44X/JTP236LiLW6TlReCmoWLBfmL6zX3WwmakH6rw8SB8bfH3b38A9AKLl
-	rqPsQ==
-X-Received: by 2002:a05:6830:264b:b0:7e9:e860:6ee with SMTP id 46e09a7af769-7e9fc096ea7mr1417099a34.31.1782853007039;
-        Tue, 30 Jun 2026 13:56:47 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:5::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e9ec307edesm3163887a34.21.2026.06.30.13.56.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 13:56:46 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782853319; x=1783458119;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HeBuQg54UmkKv5OMu/rjdAfTILnkydvlbj+5lFo+p9o=;
+        b=fexSasnFTvVrOYAJWaOZlutw+pTAW6Us3YZoguglc2iMbKw8M496gRZo3iKLEtG96X
+         5f0W/1aAXpPMCrGhEAh3jfvzmpSyETIF49hnw3c0WXAP6hKV0DPQQ9n1z+WQnqPLJ9os
+         jTsrw7g8jKfDPOW1MYfFwA4UTdu7VWW3mCxiw8l7qRRuz+v/P6EY0+BUD0ioUuDQpzZ6
+         MvMvNZzAU7hl8TbpMpTDQxgs0FEe1vnzO6mhLZN/4bimmeCb3Jp6mvl1ra/LJywamQnK
+         lBWmi+Z41uB3dGf3sOq8q7qq8tFgJfD755DL80Tu+HSscV6CSFA6W9fVWv6AaG6iW+Bw
+         +Y5g==
+X-Gm-Message-State: AOJu0YwMSk7JCdVFNYUebaxkXS7xs95ZcXRFjAexgT9u/UxXaoffAXaa
+	Xjw1ROpF0zhwDvR2c2DaE1GOFwVYQ2fr5BRsIIVcF3sy0T0JZ7+oo4nm21DFv7mARBOKRZwlHZn
+	OTTevNQ==
+X-Received: from plge7.prod.google.com ([2002:a17:902:cf47:b0:2bf:10b7:41d7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:283:b0:2c9:b09c:5a3
+ with SMTP id d9443c01a7336-2ca2d543260mr44084455ad.4.1782853319366; Tue, 30
+ Jun 2026 14:01:59 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 30 Jun 2026 14:01:53 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 13:56:45 -0700
-Message-Id: <DJMON7ZNGXAE.1VLWYJBVWKWD3@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Aaron Lewis" <aaronlewis@google.com>, <peterz@infradead.org>,
- <mingo@redhat.com>, <acme@kernel.org>, <namhyung@kernel.org>,
- <mark.rutland@arm.com>, <alexander.shishkin@linux.intel.com>,
- <jolsa@kernel.org>, <irogers@google.com>, <adrian.hunter@intel.com>,
- <james.clark@linaro.org>, <seanjc@google.com>, <dmatlack@google.com>
-Cc: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <bpf@vger.kernel.org>
-Subject: Re: [PATCH 0/1] Introduce an instrumented profiler using BpfTrace
-X-Mailer: aerc
-References: <20260630141152.3757722-1-aaronlewis@google.com>
-In-Reply-To: <20260630141152.3757722-1-aaronlewis@google.com>
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260630210156.457151-1-seanjc@google.com>
+Subject: [PATCH v2 0/3] KVM: SVM: Fix a (very) unlikely UAF for GA Log IRQs
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Naveen N Rao <naveen@kernel.org>, Xiao Wu <xiaowu.417@qq.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue Jun 30, 2026 at 7:11 AM PDT, Aaron Lewis wrote:
-> I am proposing this patch as a simple way of turning BpfTrace into an
-> instrumented profiler. This approach has come in handy for me more than
-> once, so I felt like it could be useful for others as well.
->
-> I am not entirely sure where something like this should live in the
-> kernel tree, so I took a chance and put it in
-> "tools/bpftrace/instrumented_profiler". I am not attached to this
-> location, so please feel free to recommend a better place for it to live
-> if this doesn't seem appropriate.
+Fix a potential UAF due to freeing vCPUs while they're still reachable through
+the global hashed list used to handle GA Log notifications.
 
-Nice work, but, sorry, this kind of tools don't belong in the kernel tree.
-'tools' directory is for things that kernel itself needs to build or debug.
-'tools/perf' is the only true exception.
+v2:
+ - Defer adding the VM to the GA Log list until a vCPU is created (KVM only
+   needs GA Lot notifications to wake blocking vCPUs), so that removing the
+   VM from the list can be done during pre-destroy without having to handle
+   the scenario where VM creation fails at a later stage. [Sashiko, Xiao]
+ - Drop the stable@ tag, as it's not clear to me that the bug can actually
+   occur in the wild, whereas the changes themselves are somewhat risky.
+
+v1: https://lore.kernel.org/all/20260625220933.3357733-1-seanjc@google.com
+
+Sean Christopherson (3):
+  KVM: SVM: Make kvm_x86_ops.vcpu_precreate() hook fully AVIC specific
+  KVM: SVM: Do all per-VM AVIC initialization during vCPU precreation
+    phase
+  KVM: SVM: Remove VM from the GA Log notifier list before VM
+    destruction
+
+ arch/x86/kvm/svm/avic.c | 96 +++++++++++++++++++++++++++--------------
+ arch/x86/kvm/svm/svm.c  | 16 ++-----
+ arch/x86/kvm/svm/svm.h  |  3 +-
+ 3 files changed, 69 insertions(+), 46 deletions(-)
+
+
+base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
