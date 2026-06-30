@@ -1,183 +1,145 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEE33EB10
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 18:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC053BC680;
+	Tue, 30 Jun 2026 18:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782844496; cv=none; b=SngsaMekZF3jbgJ3KMySWvTxrB4hQZKakvISyvwVQ3PxkbP8DNuRC6PEmnYcz1CCEI+OV//FCCohCe+DNmm0ELEJlB/03mGd8IrphqFkIgQ+MBRdEhdct18f3/w7g3FC0onY232P3sw2+ufUPJeRJ+4F0HcILpGDC6l8mtcdp9Q=
+	t=1782844984; cv=none; b=bHRBHAONQDkhufXnnas0IUfdqQy8F0mI4P+VkCOLL8z0299GRdwT/LKo2hi7HQElRoXAanXk/i54kFUaUBPinG2C36HHeW77JwnijLf2jYiLOGjz87s1lecLzIX524N1kpaca2Eu9ZOmCaS/9tPlEq/o6SDfOa/ww9w8QYUBSXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782844496; c=relaxed/simple;
-	bh=C67zTDfUC570nxD7H4/DmblbSDbZ/3LKGiLQvSboP74=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YDFb5wETGDltCl1c2q8An2C80ze5tCH8qDu8MIc9WUYqwegRP6no6Y2Eq2vTYksHG6XaG3a3mkuMIE0sc/2Qypd+ke3nw7+Wps1tSzmyT733vSx4yqinofUu3578ctoub4p5y2p8Hsf2fE85HSyZi646D77ygpTNbRYFM9IaS0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JatE03W7; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782844984; c=relaxed/simple;
+	bh=KCpPnllPAwe9Z27cf/4FimUMcyNxdIrK1MgP/ku1r34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bFpUSuIUFPPidwaSqzPyCwrNa97HYzJBAqFtqE/fXynVW3/eT3XQFrxi4oyyco7vza7sSrDDW8PujDutS9kEC9/5mjYZJZOrOekyQSzF1pwfW5vppBes4eoFeESyVPOuV/rX7WprF6cVqFjR5k6NKmWKWbJel+J/M+70sALKHBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQtWrNY6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JatE03W7"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEIc8t2171251;
-	Tue, 30 Jun 2026 18:34:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xMwXUV
-	4ej667qW/ukKiVjWOVOdoMrryVkbVp9K4ur5s=; b=JatE03W7vTUN/CIQjf19Zl
-	4rBXLSvJXqqx9IdPoefaWyO/cQFxPWix2LusKLXEdu5YhRORySnXwJOfiw7FY/Qj
-	zHHjMxFx48eoS5lMF7Deg0JnxxXL1yrxlxDG+QF5a5Sh5GpgnDvbJI4Ayz77+CpV
-	juCM/A9Q14rFJy2rlPHlUoqtFT2sNorkdflBty+fdNO2ekRYWoA/u62NvI1UVMMn
-	nLjyClvg7994e0Oh9oLu3o4rkxtXlCRyYpnXPgbcZOYZSzGX0ia2mxxxwlcbJ586
-	6l1pL+BqteX0taUQj8FAaJcykg/UeNYp5fs8qdJIO8yqnSL9Z92CwfX73EXUZ2Jg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26rf07cu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 18:34:45 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65UIJb4c015060;
-	Tue, 30 Jun 2026 18:34:45 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhbnqd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 18:34:45 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65UIYfmL27132312
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 18:34:41 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3604720043;
-	Tue, 30 Jun 2026 18:34:41 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BE1D2004B;
-	Tue, 30 Jun 2026 18:34:27 +0000 (GMT)
-Received: from [9.39.22.35] (unknown [9.39.22.35])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 18:34:27 +0000 (GMT)
-Message-ID: <9eb293a6-4619-4499-8ba8-e63a1d703ac2@linux.ibm.com>
-Date: Wed, 1 Jul 2026 00:04:01 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQtWrNY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6874A1F000E9;
+	Tue, 30 Jun 2026 18:43:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782844982;
+	bh=oQ+QKmGqWrf4GF4IimLK8GVC3TpRZgBWH53NHUwQR9E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NQtWrNY6deyk6hU0I6nlk4xSdhwxHXR6kR9B4J1sHsU6FnRp2n6GEO/jH3bNsx4xQ
+	 Hl+pa43WV1nCLHUEpRdsJwFV5obDUWIqJbkI+UVSscYCYT2Z9vjt8zaCw9JAon8U9J
+	 wiqkI67jof5FRKXkHetzhSr//hCaDgM14Tn601cxT7MlY+liS/bC6vYVX57Ltxm5B5
+	 d7R1n0y5BJUJ87vGwq73g5/UwgcMIDIPDUF5fS9bYKAZ3LdkulFhDu8tIxMOnefWid
+	 kOtkPEWL+FE8GMUnU9bja8mUEfopDaar4Y4+cTeWsG2ycAXC/eWU8LP65eOWp9jsBg
+	 rLKJc+WuAT/Lg==
+Date: Tue, 30 Jun 2026 11:43:01 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: sashiko-reviews@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if
+ HDBSS is available
+Message-ID: <akQONWoRRZXu1-56@kernel.org>
+References: <20260629111820.1873540-1-leo.bras@arm.com>
+ <20260629111820.1873540-3-leo.bras@arm.com>
+ <20260629113645.BE6801F000E9@smtp.kernel.org>
+ <akKFlzAdB43lRpi1@LeoBrasDK>
+ <akKmHqRaZEUjN3zY@kernel.org>
+ <akO9iHJmKN7MzTjM@LeoBrasDK>
+ <akPkVASjWWYQpkx1@kernel.org>
+ <akP4ZDjZIu2_CfVF@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/8] Testcase improvements and Power8E/NVL removal
-To: Misbah Anjum N <misanjum@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>
-References: <20260629110411.3051274-1-adityag@linux.ibm.com>
- <9eefc074b799f7380cf61885bc37642a@linux.ibm.com>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <9eefc074b799f7380cf61885bc37642a@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=a4kAM0SF c=1 sm=1 tr=0 ts=6a440c46 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=C9BDwd5fFWHTyHC46gQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: qgHq8iGx1BOwy5u4DcpFOjgtT-tOuA8l
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE3NSBTYWx0ZWRfX/OIIw2DTGf+M
- Xu5EH+kePlX7npn3rK8GAcpF+AqqsWqjbzYHnlI9o1MaQ2Jo61DfbATjOvFj9WLoFnfZZw98QyH
- 4clSDhflnvfP/P9cP9tmu/KUFHJfC9kMEgKBmFJtVxzPFa2F6NnW0NPBOh2/ZvERFjh+NcKMAyi
- vMJiur4E2UmelG4jxAH46mKnYtzDKoC//pg5ExjsH7frLhf/BYsMlF/ZvM1qo+tK2NeDmOrvwzR
- JK6YcfiYFARx16XHgTNwPJl4/Hnf5An0vGkaVrK3hsBZckQTgEdRmyXJr7SeCKDNM3umKPpfkJH
- iUZqB5mH0dYkIX6en+IzArPr/nnojRkGeANAVTfIU74VzjTtNlSKi9WdxkqnLPQc3Ji4mXDuQvL
- xox/Txaz4YOCszdEveKJwmn9cr65gYjLZbS3UUAMeIHs0sXyHwMg6fM1LEt5weHpbBTT0ABXXMJ
- 1rxOQE6Ys3FiaTCwK0A==
-X-Proofpoint-GUID: 3P-6R5aZUoDbSgkA86zm_rCdVOX4gFhO
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDE3NSBTYWx0ZWRfX0jlt5WXJJnKZ
- L4XrOPhNoQyxN05xfLY8hANtQxhLTVKmLyXQqHjJLcQc8TaUuRamiuV6rlAqHV8kdxVA/y2JT59
- 1rvwoaqZed63WkAXypojKPEglllvKmg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
- spamscore=0 priorityscore=1501 adultscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300175
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akP4ZDjZIu2_CfVF@LeoBrasDK>
 
+On Tue, Jun 30, 2026 at 06:09:56PM +0100, Leonardo Bras wrote:
+> On Tue, Jun 30, 2026 at 08:44:20AM -0700, Oliver Upton wrote:
+> > On Tue, Jun 30, 2026 at 01:58:48PM +0100, Leonardo Bras wrote:
+> > > On Mon, Jun 29, 2026 at 10:06:38AM -0700, Oliver Upton wrote:
+> > > > > But this raises a topic I would like to understand:
+> > > > > - Do we actually need this to be a block_size to assure correctness? or is 
+> > > > >   it just about efficiency?
+> > > > 
+> > > > What value is there in having a chunk size larger than the largest
+> > > > possible block mapping? The whole UAPI is deliberately tied up with page
+> > > > table geometry.
+> > > 
+> > > Not larger, possibly smallerv My concern was the difference in pages to 
+> > > split between 4k, 16k and 64k.
+> > 
+> > Ok, well in any case the upper bound is going to be the largest possible
+> > block mapping for a given page granule.
+> >
+> 
+> Sure, we can do this.
 
-On 30/06/26 09:49, Misbah Anjum N wrote:
-> On 2026-06-29 16:34, Aditya Gupta wrote:
->> <...snip...>
->>
->> base-commit: 20553466cc47af6a8c95f665b601fce3c852e503
->
-> Hi Aditya,
->
-> I've tested the v3 patch series on PowerNV and pSeries guests 
-> including the new remote interrupts functional test and Power8E/NVL 
-> removal.
->
-> Testing Environment:
-> - Host: Fedora 42 ppc64le
-> - Arch: ppc64le
-> - QEMU: emulator version 11.0.50 (v11.0.0-2400-g20553466cc-dirty)
->
-> PowerNV Guest Bringup
-> Status: Success
-> qemu-system-ppc64 -name test-vm -machine powernv -m 4096 -smp 4 
-> -nographic -kernel 
-> ~/.cache/qemu/download/6fd29aff9ad4362511ea5d0acbb510667c7031928e97d64ec15bbc5daf4b8151 
-> -drive 
-> file=~/.cache/qemu/download/aee2192b692077c4bde31cb56ce474424b358f17cec323d5c94af3970c9aada2,format=raw,if=none,id=drive0,readonly=on 
-> -device nvme,drive=drive0,bus=pcie.2,addr=0x0,serial=1234 -append 
-> "root=/dev/nvme0n1 console=tty0 console=hvc0"
->
-> PSeries Guest Bringup
-> Status: Success
-> qemu-system-ppc64 -name test-vm -machine pseries,accel=kvm -m 4096 smp 
-> 8,sockets=1,cores=8,threads=1 -nographic -serial mon:stdio -drive 
-> file=/home/kvmci/tests/data/avocado-vt/images/rhel8.0devel-ppc64le.qcow2,if=virtio,format=qcow2 
-> -netdev bridge,id=net0,br=virbr0 -device virtio-net-pci,netdev=net0
->
-> Power8E/NVL Removal Verification
-> Status: Success (both correctly rejected after removal)
->   qemu-system-ppc64: unable to find CPU model 'power8e_v2.1'
->   qemu-system-ppc64: unable to find CPU model 'power8nvl_v1.0'
->
-> QEMU Functional Test Results (make check-functional-ppc64)
-> Status: Success
-> Ok:                 12
-> Fail:               0
-> Skipped:            4
->
-> QEMU Unit Test Results (make check-qtest-ppc64)
-> Status: Success
-> Ok:                 33
-> Fail:               0
-> Skipped:            0
->
-> Result: All tests passed successfully.
->
-> Tested-by: Misbah Anjum N <misanjum@linux.ibm.com>
+I'm describing the UAPI behavior of what we already have. Please do not
+change anything and continue to leave userspace in charge of eager
+splitting / chunk size.
 
-Thank you for thoroughly testing this misbah !
+> > > > 
+> > > > Overall, I'm not buying the argument for changing the behavior of
+> > > > KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE. There are very good reasons for
+> > > > *not* eagerly splitting the entire address space, especially if you know
+> > > > the working set of the VM is small.
+> > > > 
+> > > > You can still use HDBSS without eagerly splitting, so long as block
+> > > > mappings are {DBM, S2AP_W} = {0, 0} and leaf mappings (which have
+> > > > a writable PFN) are {1, 0}.
+> > > > 
+> > > 
+> > > Block mappings being read-only, and leaf mappings being writable-clean, 
+> > > then? Could you please ellaborate on why does not it need eager-split?
+> > 
+> > Read-only translations will continue to generate permission faults
+> > whereas writable-clean descriptors can be updated by hardware. You get
+> > the opportunity to split a block mapping lazily while preserving
+> > hardware dirty tracking for page mappings.
+> > 
+> 
+> So you suggest we only enable DBM bit after we split the block, that will 
+> happen only after a block is dirtied for the first time after dirty-log 
+> starts? 
 
-- Aditya G
+If the VMM wants to do lazy splitting, yes. Otherwise this would happen
+as part of eager page splitting for block mappings that are known to be
+writable.
 
->
-> Thanks,
-> Misbah Anjum N
+> > The approach I think we may need is:
+> > 
+> >  - Use a software bit in the PTE to stash whether or not a PFN is
+> >    'software-writable' when constructing the stage-2. By this I mean
+> >    we've already faulted it in for write from the primary MMU.
+> > 
+> >  - At the time of write protection, reap the hardware-writable state
+> >    from all PTEs but preserve the software-writable bit.
+> > 
+> >  - Whenever splitting a block mapping, set the DBM bit in the page-level
+> >    PTEs if the block was software-writable and HDBSS is present.
+> > 
+> > That way you'd have sufficient metadata in the PTE to safely set DBM.
+> 
+> I remember that, for some reason I can't recall, it would not be great to 
+> set DBM during dirty-log start, and instead we should have it since VM 
+> creation. Maybe it had to do with part of the pagetable using the old 
+> encoding (no DBM), and the other part using the new one.
+> 
+> IIRC, only blocks that are backed by writable memory (S1) were supposed to 
+> receive the DBM bit. We could use that info for deciding what to split, 
+> then.
+
+That's why I'm saying to use a software bit. We can't leave DBM=1 on
+block mappings and set VTCR_EL2.HD=1 for obvious reasons.
+
+> Another option would be to split when we are collecting a dirty-entry from 
+> HDBSS, but for live migration that would mean we have to transfer the whole 
+> block (possibly a large LEVEL1 block), because we have no idea which part 
+> of it got dirty.
+
+We need to do dirty tracking at page granularity. The only scenario
+where we have writable block mappings while dirty logging is enabled on
+a memslot is if the VMM enabled KVM_DIRTY_LOG_INITIALLY_SET.
+
+Thanks,
+Oliver
