@@ -1,109 +1,110 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5620731E858
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21962273D8F
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782855855; cv=none; b=RdxA/XMYwyPIzJyTPqVb1QzqsXHdzF4fbWja5Ea08iTJNPuK/TZVDDj2RIJZ/QJWGerYAxVkaXYEBDaNtQjjnlNNCh/zv84lKwZa5mKVDoMdPDZky7wLalD+m8yzi/biZ70aXF2UBfd3swyTG7Kiw/ozt0ovY8r/W1NbHdtpDoI=
+	t=1782856194; cv=none; b=APJofsTcJKraZk0jTAW83WaUqgjOD07eCj/TMM/yeLpvbWXH/aG5GVZ5jn/aYazfl6HfwbuPTTzjfgso5Gyz98zvI7YWt5S/M7uHNRJTymH+oPJ7YKUWqsVTuu3MWVQKTBe76HM5ZAQoPm3OTwOpkFgjstLB6MW57e27jVxWZ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782855855; c=relaxed/simple;
-	bh=7gdMP7g4es8HKlRkPDE3eeTsHBjBSWziFiloyUrEOiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ieD5fhW82aV1YaIfxkRmObEkIsyv4npdd1+QadUSBnU9Zh9cf0xwfuQdXIgKGj3OWbEF262y+kJ6XL/23BVx6kOqFN+bOVypGqXHnd98xAQXw2XFHRBQo1uj5JQeUhiURqYTsbUtQZil9SevyuX/nf5OlHRBbj87bJanGG4TLyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DBm8ntWU; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1782856194; c=relaxed/simple;
+	bh=5oHZM1G/pB5uVo8VNfJ7qIsnV3vePY3BtDHPoQJS7ag=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=a7n8QD+sQlttsyXCOxMH8SHvaq5iwu4oIrkjAp6yqTy+u92QQiHvBmbO9kHnJUvwrp5q+JuLbUlZSGfR/r2ZShMTI3bR0eHXO3sRlvjKeVSNT6tBL5dzi4TRSf3wFSgCDG3NgA+RSbvSN6b5eVQs+E6UwWgrZku82twiq3we0V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGKaJ085; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DBm8ntWU"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c8fee9f63d5so2040331a12.0
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 14:44:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782855852; x=1783460652; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Pw6lIALG0Spiu3IV0fArIcOqMCFn4hZoj0j6EEKXW5o=;
-        b=DBm8ntWUJ/umuKES8UR6WXgKM07+90owOBYa5/f+6hrXLkn6U8+GI9Webi+AumV8ak
-         Uwk5S+rOeh/fwupPi01ljTSF4Nimdh6cBaU6IG+z8QCrk/pXVxTvLIPUWzuiFJXJWu8j
-         toYhZBi4/YCqhg1nWtWmm58f73ksPzocckD5KfevG82oZ/hbXdKMvvGeif77bqIqoI26
-         BLEEwJnZ547U+IcPFt5A+8wY13g/YULUZ3R8NylsWkpca1vgElF6ySElukPkSA/sTHT6
-         B3UuAcb7fW/Wdkbx8WAtOGWhPZS1/M6y4UllxgEmtiFsSQYMlLtWFvas4ol164Qyzug2
-         ZRUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782855852; x=1783460652;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pw6lIALG0Spiu3IV0fArIcOqMCFn4hZoj0j6EEKXW5o=;
-        b=Ic3lQM9PgEBOf0Xrr/9p7YzdyV299Lwu4a7tccZPZnqJHfqZxs1jdoKlag0K/6JG52
-         gm7h2Ls++j0XzkND/FbLKQ7l9SRASKXS6b+63FKyWw4jLNFxMf6e4vyaMM/PRnClrHVw
-         uk+vcDOwf32ou5LuV5bRtwGzLOkKSn6xnSt3t5XtqadhKGH81WQChgrRGdvuDwfMjUVd
-         hp8wdMXlmKX460kua2QEocAFTEIEb2cFYpVi+4UW/5ZgqbXKXda1hjEFIlMYrkw/FT4b
-         en3qH6T4C06AoBif/s9U3yuicGEX8KZEus/SfZbve9QL3kGTgZuWihyFqL1VBeBjcTtt
-         dSpw==
-X-Forwarded-Encrypted: i=1; AFNElJ+TEiHdTCvZGMwr7ik7WPbAqcy2Ya8flBNeB3igE06wjqpL95uSaB4irqfnr76gsIQRDas=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrDsn4OspLyZsc6CaOMhKr6KbyVCpgUXUXqlsdxa4Jgpxva9U3
-	CERJKQIIoPkwoixbXpxb68ooNicYg3UI5sX4bOaBrsx/TNXKSaosw1PWi1Wxupl86udggwKv85D
-	ueob7Dw==
-X-Gm-Gg: AfdE7cm80j3EEcplWxLL8CuJ/Sd+v/+BJngeGe/bVMRLJrK6fMfZVsgAaf6iP7dSe+F
-	m/GpANMN40KB3xuGiYvCXZYLFyxNkncVQVQmz34B9tqg08td5FHjJaIb/nN7VvmB7QvCFNyCYKU
-	9SwFr/CGC0uF8A9lxqUTcT92BEHnKASQHTa8ZuGDjJMtE8aAENZhdtTFa7iLME9ReXPgWKKD7TG
-	lSlcQgLkotxWiH7q9gkVVkrWV7ClRGNY0oafN8l7rhye422WketCoWS6/Cm0+zfxaTdg9RyWm/O
-	4if+UnlC7mQ4FdflzcgRoyf578sB03kzwkGgkHMyOPfZ3ZgJNX12VHdukUhP55oOyk0oU/oQtaE
-	vpJmUELC3XfLgQ0+ZrU33tZE4VupaAqXPDKe0g0xILzfCBH07Hl2VFIc4dZNF/kV7LSXQIcEla4
-	0LF1p8IPB8rQi+zYgGLAJp3nim6MqmVuEhB31z4V9HVCNjRph5Tm2qZCBeQlUe1Q==
-X-Received: by 2002:a05:6a00:1896:b0:845:d4f0:98c6 with SMTP id d2e1a72fcca58-8479eecc353mr4683285b3a.4.1782855852080;
-        Tue, 30 Jun 2026 14:44:12 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8479fff4ca8sm2852868b3a.15.2026.06.30.14.44.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 14:44:11 -0700 (PDT)
-Date: Tue, 30 Jun 2026 21:44:07 +0000
-From: David Matlack <dmatlack@google.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH] vfio: selftests: Add luuid to libvfio.mk's list of
- libraries, not to the Makefile
-Message-ID: <akQ4p3sPdNzSnAc9@google.com>
-References: <20260630212805.474418-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGKaJ085"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C851F000E9;
+	Tue, 30 Jun 2026 21:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782856192;
+	bh=n3odR8yjDIctjxr0hgGl14/ZpKv3Rz/gcceMw8EOtCQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SGKaJ0856559ryFmwtD5eGPWYO7+knw52/F8yVqOv9WafkfTjxITahALAmQfFZX1v
+	 MD2O0i8I1LQOtDj0bLPPCKIufpz+mYsdZEyfiRGUmWcEtqylAPq1BTnMSua0NAamX9
+	 XK8OxaOVq2RuZ7l49XoAiBva1gJ7BxObTKDAjnjPz6PhYS8t29w/0ZCoFX6YG0+kSn
+	 /ltxlp7zH0pkGigw+GxRIpI/DXbwX8a0e++HMtlxCs2iO/Y7mPxoD2PFzHJL+BED+L
+	 v0w9nuZ+it5jroOQsrv5bZy0FDkbEP/3/UQTiCDE+Z6iMnRl/u2xt+FK3cJS1cGzhf
+	 QiG5lkp7NvTLA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for
+ NULL INIT_MEM_REGION source
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260630213711.479692-3-seanjc@google.com>
+References: <20260630213711.479692-1-seanjc@google.com>
+ <20260630213711.479692-3-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jun 2026 21:49:52 +0000
+Message-Id: <20260630214952.98C851F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630212805.474418-1-seanjc@google.com>
 
-On 2026-06-30 02:28 PM, Sean Christopherson wrote:
-> Link to the uuid library as part of libvfio.mk instead of as only linking
-> it via VFIO selftests' Makefile, as the whole point of providing libvfio.mk
-> is to allow linking the VFIO library functionality into KVM selftests,
-> without KVM selftests having to know the gory details or duplicate code.
-> 
-> Cc: Raghavendra Rao Ananta <rananta@google.com>
-> Cc: David Matlack <dmatlack@google.com>
-> Cc: Vipin Sharma <vipinsh@google.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Fixes: e65f1bf8a2db ("vfio: selftests: Extend container/iommufd setup for passing vf_token")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Reviewed-by: David Matlack <dmatlack@google.com>
+Pre-existing issues:
+- [High] The `region.nr_pages << PAGE_SHIFT` calculation can overflow a 64-=
+bit integer, bypassing GPA boundary validation and leading to a host denial=
+ of service.
+--
 
-> ---
-> 
-> I would either like to land this in 7.2-rcN (ideally rc2 or rc3), or take it
-> through the KVM x86 tree for 7.3, as it's blocking a KVM selftest[*] that's
-> been in the works for more than a year.  I can throw the IRQ selftest in its
-> own topic branch, so even 7.2-rc5 would be "fine", but I would much prefer to
-> get this (or an equivalent fix) into Linus' tree sooner than later.
-> 
-> [*] https://lore.kernel.org/all/20260626213534.3866178-1-seanjc@google.com
+commit a54da29c3e4be3226e4ebf9df2f4182c350df998
+Author: Sean Christopherson <seanjc@google.com>
 
-Sounds good to me. Alex can we take this in one of the next RCs?
+KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION source
+
+Return EINVAL instead of EOPNOTSUPP if userspace attempts to pass a NULL
+pointer for the source page of INIT_MEM_REGION, so that KVM's ABI is
+consistent between TDX and SNP.
+
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index ffe9d0db58c59..b0ec054732b90 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+
+[ ... ]
+
+> @@ -3247,8 +3244,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu=
+ *vcpu, struct kvm_tdx_cmd *c
+>  	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
+>  		return -EFAULT;
+> =20
+> -	if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
+> -	    !region.nr_pages ||
+> +	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
+> +	    !PAGE_ALIGNED(region.gpa) || !region.nr_pages ||
+>  	    region.gpa + (region.nr_pages << PAGE_SHIFT) <=3D region.gpa ||
+>  	    !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+>  	    !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << PAGE_S=
+HIFT) - 1))
+
+[Severity: High]
+This is a pre-existing issue, but in tdx_vcpu_init_mem_region(), does the
+calculation region.nr_pages << PAGE_SHIFT overflow a 64-bit integer?
+
+If userspace calls KVM_TDX_INIT_MEM_REGION with region.nr_pages set to a
+value where the top 12 bits are non-zero (e.g., (1ULL << 52) + 1), the left
+shift by PAGE_SHIFT discards the top 12 bits, evaluating to a small value.
+
+Does this allow a malicious host userspace to bypass the overflow check
+region.gpa + (region.nr_pages << PAGE_SHIFT) <=3D region.gpa and the
+vt_is_tdx_private_gpa bounds check?
+
+If bypassed, the while loop would then iterate based on the large un-shifted
+region.nr_pages value. If a guest_memfd is mapped at a shared GPA and
+initialization is started just before it, the loop could incrementally walk
+into the shared GPA space.
+
+Since KVM invokes tdh_mr_extend on that shared GPA, which the TDX module
+rejects, could this trigger KVM's TDX_BUG_ON_2 and cause a host denial of
+service?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260630213711.4796=
+92-1-seanjc@google.com?part=3D2
