@@ -1,206 +1,181 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CD63CB2D0
-	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 16:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D2D3C4B83
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 16:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782837389; cv=none; b=bK6tzaH3Fct/fWnn5GH+oL91XN6F0ZGfRE4SR92s5FvmPt6y3XjX7w746z2nxBCqMpVbF2njdeoUWiCzHMjmyM0T0X68VaHhOe1JxUi7hqgmKuvAeyTxHkY+7J17vCijzGXt/lWsaSgEFj5hZr56VADzoft9ig/qj3mjBAupNOI=
+	t=1782837957; cv=none; b=aLWBrvXa2wJsATOtwbyjOuQAXMbsEyiQgFTOVJHfBrlO5ehE1Gfu8qDnM4s+H2IMm2j5Btc3yNn+fLkOploELgzDQi0YDRrxTlDD/gSzZJzlNId125j/cTJQFlTG0eOx7K/+cNaP/Dg/OPmMb00zJlGrVjwB96L8jR38txXyS3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782837389; c=relaxed/simple;
-	bh=d9wug2nxL1uyn9+xDv1rDebfpG+gnaq49E2sbVFw0kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GBln4MFwfjnKjxiiNgpmqjR5DFTbiPycDhXdHMdwL39XnwyuF0uNfwM56B2KrDGX+Mm6q/e0xrAaaCO/Iz91b5jUDEp0EpwQEIO1E2RAJ0J2hgSrQhR6DMoYxmqm86hxrQMTXAJiUFbbzyqcDuJGuHfc8fF8M2H+0yMz0NlyN9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Csm/0TAQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SuTooq+C; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Csm/0TAQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SuTooq+C; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1782837957; c=relaxed/simple;
+	bh=tOylSTeK1/et88nUOdoHMPwJCZzkJ8qTh4JcTBRo7RM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=aVU02Rk8dB+UlDRjyglZJn6cgR9h1WnZ7nDd/7EuMPimzwI3DFFdXZSmfAqy6P5V5Uq5COheF+ssqG3UVxAiq23hwRz4edmKPpjfDvpNGM3aMTvSwdjs730ZqlHnU4eivsPvLb5zCGkRmd0NqI/fAtkcvSzjMHC6Bx6L2nM0k6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WlcIYofd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RMyMowbU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Csm/0TAQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SuTooq+C";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Csm/0TAQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SuTooq+C"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9485D75953;
-	Tue, 30 Jun 2026 16:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
-	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
-	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837384;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
-	1ruN1lCKBfY39zDg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
-	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
-	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837384;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
-	1ruN1lCKBfY39zDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E748F779A8;
-	Tue, 30 Jun 2026 16:36:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GZUpNYPwQ2qifgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:36:19 +0000
-Date: Tue, 30 Jun 2026 17:36:18 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 12/30] mm/vma: clean up anon_vma_compatible()
-Message-ID: <akPwbHbGiF1FxL6m@pedro-suse.lan>
-References: <cover.1782735110.git.ljs@kernel.org>
- <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WlcIYofd";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RMyMowbU"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65UEDRJg2199805
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 16:45:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	U3na9UkHS5H0EdRatGfrYFloO7dlcC1NaROMwvFcLHk=; b=WlcIYofd0TKj1RFi
+	Zc7FOeuvtbaXqFV9DaLqiXBNIcqumqfqD4GexonA6tW3Huf28vM7ZG8fNFlHXGRM
+	/npCa7edFxUWcfiDgU3Ljty3RvtQ/9txAzgk7ERROWi9mjbYBlnHxVi3JiAUbVhA
+	xoGOQKy3Dk8AKfdwFb2YON7dwiQ+JIc70Xbh8vkDqqmQKaocD2PCgYZz8NLo5jiy
+	BT2lvL9UTToezbIJ/nv11m7nB9c1hS66R+K4j1TVUtnrWAJUa00ZyEIcjEhYSBLi
+	xTqPoJNEfotMTYYGR7IkiyyVuZ9ngBZR5YlbhfI4T3zToGCka+FT1sKo5tX6S7bX
+	uTJUmw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f4fc08peg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 16:45:55 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e55721a8cso386454485a.1
+        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 09:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782837954; x=1783442754; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U3na9UkHS5H0EdRatGfrYFloO7dlcC1NaROMwvFcLHk=;
+        b=RMyMowbUMvTCnPGIqQ1P/V0q3RKWcOYQ9O+Pf1tYF0WO8V/fe1WWmw353dyDzzVq/S
+         DRDtc+zc1arwu0mkQXxosfMaZRoezJkBfuEVKcPucE8iokM6vDoLMEuo06bRYILfIGpD
+         Q4UGWGhQhKg3sdsjd4VcLRiASm4umiIbk0Q6WqbjtuZzP6ESXQJ9dprZzW6EENMYtzIZ
+         Tzsw9CDhKR4eevPCI12uQydF5dLoQkVvv0Ob0HUidk15I531HaqutIBhYn5w5aD1YLSI
+         VdXgHuExdNWAVC8t0jaywxEBWHW1XdqSkXaG8PFPWqhXkcMh6hQgg/FP8pItJICng682
+         prlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782837954; x=1783442754;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U3na9UkHS5H0EdRatGfrYFloO7dlcC1NaROMwvFcLHk=;
+        b=pdy7I40nVRM6JeFZ/uc3roCfTARJq4ZwNFDEWICgfduCymzi/kvD8+mS2R5xIiBAqC
+         yvesJnNwUdfD2jIyvua5hVIjH2ek0VhZgsDdn9AJDwb0GxD7Nsefu8uA45rlJpE2AQ36
+         2rOlSGy5ZVYcYdAeYufjcZx1oME5gTsuwcF7rvVJi2E3QrI+o6JvLhHnp2YpLVy/tcRQ
+         wk8BROtV5lEiVtqwBvBBywa0wa+C87LiH/h+MUgsEVTow7T05FCoQ3cTWW9TlnIuML0h
+         jmHujD2AJVQUcYK9xhIGr1Nh9lrUts8oNyKRZnpV+PVKtKNRUQ3Nliww+nDqUN2Mx5y8
+         Qy6A==
+X-Forwarded-Encrypted: i=1; AFNElJ+7/+m+DtMM50S3lcbGYbCArdtd6u0xYOqFhM85qLxk8s7v6ADOd6TQWMGxfTEkLm9u4Qo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy29eCXfBMn2G8rjVj34vtBeG+ikr0n6/9wDvcDQq/YUXOpNLbv
+	v//0dys472nFKunkQ1Eb0giWBPi6yFclcEb3CGAsr1I4pESGnETR1S9nhxsDnFfwHFjg9+AvnXY
+	SrCUr6MvWb/2VetcInrhC3tyOUHGBj2enrKriXevvDx7p2wLlXENDwJw=
+X-Gm-Gg: AfdE7cl5L/1J0ugJdWeIzfAfWIH09L8ME/bbXXaH4hASW0cQkzuY7T2YuZnxWD0zQ0A
+	zZ43JrzmCCfGun1fICmfUTrMWUqt6Ni1l77a28o+9W72KRq/jRMc2zqDPdiAmb+4ByLgMl2gN8t
+	mQYLmTZt781LV/rVOSme1u4gqTR98PLViRVhZDpIbHZnhJaLQ6V0qothx7PXE0cEGAxub/qK3IS
+	+IODZzNwJheuax27r2vLkTridTSLc/vagKr+Lx1s56XkeDb3jMZr7saNOP2JOaDNfN/kj8YMqQF
+	RB+aok3Q7QkhHFDo1DYI4PVWHT4lHvMhOLhUkUzbAi7Gv8T1+UERui4HiG+KY2te7VueRtM9KDs
+	Y36MNRIQ6DYByXGpTYuad+RH/IV6fRxn69SKtvoHp/cEblBc=
+X-Received: by 2002:a05:620a:2894:b0:92e:5028:dbe8 with SMTP id af79cd13be357-92e626718eemr717535085a.21.1782837954411;
+        Tue, 30 Jun 2026 09:45:54 -0700 (PDT)
+X-Received: by 2002:a05:620a:2894:b0:92e:5028:dbe8 with SMTP id af79cd13be357-92e626718eemr717529285a.21.1782837953875;
+        Tue, 30 Jun 2026 09:45:53 -0700 (PDT)
+Received: from localhost (ip-86-49-247-5.bb.vodafone.cz. [86.49.247.5])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1288f0cb41sm153934166b.38.2026.06.30.09.45.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jun 2026 09:45:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
-X-Spam-Flag: NO
-X-Rspamd-Action: no action
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,armlinux.org.uk,kernel.org,siemens-energy.com,hansenpartnership.com,gmx.de,redhat.com,alien8.de,linux.intel.com,mev.co.uk,visionengravers.com,pengutronix.de,gmail.com,ffwll.ch,suse.de,oss.qualcomm.com,ideasonboard.com,nvidia.com,amd.com,shazbot.org,zeniv.linux.org.uk,linux.dev,google.com,infradead.org,samsung.com,goodmis.org,huawei.com,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,lists.linux.dev,kvack.org,googlegroups.com,surriel.com];
-	FROM_HAS_DN(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_GT_50(0.00)[75];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pedro-suse.lan:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 9485D75953
-X-Spam-Score: -3.01
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Jun 2026 18:45:51 +0200
+Message-Id: <DJMJB4B8Q57Y.34SUOKB6MD8IE@oss.qualcomm.com>
+Subject: Re: [PATCH v2 01/16] riscv: Introduce instruction table generation
+Cc: "Paul Walmsley" <pjw@kernel.org>, "Palmer Dabbelt" <palmer@dabbelt.com>,
+        "Nam Cao" <namcao@linutronix.de>, "Alexandre Ghiti" <alex@ghiti.fr>,
+        "Anup
+ Patel" <anup@brainfault.org>,
+        "Atish Patra" <atish.patra@linux.dev>,
+        "Conor
+ Dooley" <conor@kernel.org>,
+        "Paolo Bonzini" <pbonzini@redhat.com>,
+        "Andrew
+ Morton" <akpm@linux-foundation.org>,
+        "Shuah Khan" <shuah@kernel.org>, <linux-riscv@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <kvm-riscv@lists.infradead.org>, <linux-kselftest@vger.kernel.org>
+To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?=
+ <radim.krcmar@oss.qualcomm.com>
+References: <20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com>
+ <20260621-riscv_insn_table-v2-1-7f0810ee2274@gmail.com>
+In-Reply-To: <20260621-riscv_insn_table-v2-1-7f0810ee2274@gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDE1OCBTYWx0ZWRfXxaiVyJaEr2n0
+ vPZVZFNzJFbb9w9h2ra0Zj85SuHi7wT66MsfZNHVrhZknxKpIoGC8mzJrNZ3ko9oxKSwdSrHLZ6
+ So099MoQ5aBubPG4j2gv0aW+kzWRvVq/Gny8MK/F99EjdYuzSPNUYQKD5Q15oOwFJGKpc+6cpN2
+ XHXlpXHI2kVE8y8KT7/Lw1bN8NcfwyPOUIjVN/5RpKBeikUEFvX1AhulGnIc9VLMMbiY5nGDFR6
+ 2NgeSzaYMD4HeJyFrAt2WK0FcSyLBeDAC/XQv5QnZausQXzbdfrLYw/eWVc5jGYeHfon6kt1P9B
+ eOdpENaEZCNoLaCQWYJwKwFOsknzHP0KSCMZLwIKcKVsY4AA4fWcb79QaeBgZiV6iZLkw3RKcgl
+ XuNWsGSTiDFAXgtlyyBhhV8T9xTfSTwjugoND+AIcenT1FU3+lIMe5c0poM+EaOTjGpU6lZU0k+
+ GBWmvG/v4QDpjYPAw3w==
+X-Proofpoint-GUID: vWn3Zzd3McjOzmT4w1w-AWnx41YY9CzK
+X-Proofpoint-ORIG-GUID: vWn3Zzd3McjOzmT4w1w-AWnx41YY9CzK
+X-Authority-Analysis: v=2.4 cv=Ivkutr/g c=1 sm=1 tr=0 ts=6a43f2c3 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=aYZ+cQcEYoLAp2L633VOig==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=5Hg8iMh3NijzzsoxLLcA:9
+ a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDE1OCBTYWx0ZWRfX5TVhL8wfBb4H
+ GOAjlvyaaxns/qIbisStYCqlZ/8DN0q+0/q77CP6BIFGyre+eyj/9VTyqDu6m4xw+509Lz6M7WE
+ oTHejKLzd8sVgexCaDtdMykkTMiLHvk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-30_04,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 impostorscore=0 clxscore=1011 malwarescore=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300158
 
-On Mon, Jun 29, 2026 at 01:23:23PM +0100, Lorenzo Stoakes wrote:
-> Break up the existing very large conditional, add comments and use
-> vma_[start/end]_pgoff() to make clearer what we're doing here.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+2026-06-21T21:01:19-07:00, Charlie Jenkins via B4 Relay <devnull+thecharles=
+jenkins.gmail.com@kernel.org>:
+> From: Charlie Jenkins <thecharlesjenkins@gmail.com>
+>
+> Eliminate the need to hand-write riscv instructions by using a shell
+> script to autogenerate a header from an instruction table. This is modele=
+d
+> after the syscall table infrastructure.
+>
+> The table is generated externally by riscv-unified-db [1], but is
+> in a simple format to make it possible to use other tools or modify
+> manually.
+>
+> [1] https://github.com/riscv-software-src/riscv-unified-db
+>
+> Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
+>
 > ---
->  mm/vma.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index b60375c6c5c3..6296acecf3b7 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -1967,14 +1967,25 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
->  {
->  	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
->  
-> +	/* Ignore flags that mprotect() can change. */
->  	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
-> +	/* Ignore flags that do not impact merging. */
->  	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
->  
-> -	return a->vm_end == b->vm_start &&
-> -		mpol_equal(vma_policy(a), vma_policy(b)) &&
-> -		a->vm_file == b->vm_file &&
-> -		vma_flags_empty(&diff) &&
-> -		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
-> +	/* Must be adjacent. */
-> +	if (a->vm_end != b->vm_start)
-> +		return false;
-> +	/* Must have matching policy. */
-> +	if (!mpol_equal(vma_policy(a), vma_policy(b)))
-> +		return false;
-> +	/* Must both be anon or map the same file (MAP_PRIVATE case). */
-> +	if (a->vm_file != b->vm_file)
-> +		return false;
-> +	/* Flags must be equivalent modulo mprotect(). */
-> +	if (!vma_flags_empty(&diff))
-> +		return false;
-> +	/* Page offset must align. */
-> +	return vma_end_pgoff(a) == vma_start_pgoff(b);
+> diff --git a/arch/riscv/tools/insn.tbl b/arch/riscv/tools/insn.tbl
+> @@ -0,0 +1,1392 @@
+> +# SPDX-License-Identifier: BSD-3-Clause-Clear
+> +#
+> +# GENERATED WITH https://github.com/riscv-software-src/riscv-unified-db
+> +# "./bin/generate inst-table -o test_table.txt"
 
-Very nice.
+I checked out the repo, ran the command, and got a different table:
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> +andn common 0100000<25|111<12|0110011<0 xs2=3D24-20 xs1=3D19-15 xd=3D11-=
+7
+   andn common 0100000<31|111<14|0110011<7 xs2=3D24-20 xs1=3D19-15 xd=3D11-=
+7
 
--- 
-Pedro
+I assume there were some recent changes in the output format...
+
+I think it would be nice to use their latest format and also note the
+UDB commit that was used, so it's easier to reproduce our file.
+Hopefully there won't be breaking changes too often. :)
+
+Thanks.
+
+---
+Sashiko seems to have noticed a plenty of other issues, so I didn't
+review more...
