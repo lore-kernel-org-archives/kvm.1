@@ -1,54 +1,54 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7262F431E6F
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3BE431E79
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782938010; cv=none; b=E2gJ5mcTB5KvranVYqu3De+wXB5PKiYvZbENaLy/lGR0EkQy6zv+a1JQuVAEAzk1fUiMNPgF1r7+srsRw8WfxM11J0bzQ6AO/XPj+MsXiKcWh/ir3JYGbrP58PHHW4blHqDxGVKbCCEr5J7pIn5cyTgDM2vriKC8K2o2VxwtmfE=
+	t=1782938012; cv=none; b=qOxIq3nP4T00fxPq91GOcGCn8TY26MKut6LXGaWYRP7HpHYdpTxBDwLxR/EF/qYFNSsVku5ZHNp+go19usFZV/QNdoz/5+hcw75B47lRgKq43fKSIRUt63jC010iCdNhyEmMtYKKF8x9z1OdTiXi+dLqr+8GxYS8w1Rf6Yl0a8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782938010; c=relaxed/simple;
-	bh=OG0wbX1YHbbRtpOyPrbkH9ec7NoNJd/XAQ/iD3VEdpA=;
+	s=arc-20240116; t=1782938012; c=relaxed/simple;
+	bh=awBOo4nTYXpKS1+w5skam6omYXt4A2jbnL/6xzaEsYo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LdAZcYprhjdneVBhV49B3UHm63qY35trN0zbLDVbQBSRvr5eVFo+ar1kEywTvGw04iw1Ot5hekgRTcDcb+P5nwYxReKwXv+EUrj4DxNYk1yF+MsDoCyEvo0tkKy4c7GB/k5dUVnQIeQIt2c6EMrHJrB7cYRS1lwjg5xDbyieRsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kq9ud/gH; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=cs4HzgffS5X5O5B8lGo5RAfJ9TOlhy57lpq87vb8TkmSWLMJ/BjaNhkutzA+BWFUlfThXO5BKPFc5i+hWtRKQYTGmp7PDOZsHvOEGNDEl+JG1aRc6N4o6MZl1MXAQudpKW512dwEf/VtK5lohefABsE7QkD0ITyHaoUwVnAbWC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SRNKY9jo; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kq9ud/gH"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37fa907f98eso967672a91.2
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:33:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SRNKY9jo"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8895156101so937482a12.1
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:33:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782938009; x=1783542809; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782938010; x=1783542810; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=trFkLGElpB18qg+gQX3raUFt9xbGcfz4Dubn+4t0CYI=;
-        b=kq9ud/gHkpa8Q9y5MtP/MulVmPxyE6brrgikg/SzVN2q3fYfqa4+98A9XmsBAkbVEY
-         uhmW8U3Ovr5JMoMFUXZiglby3+1LKdpDM8A1lhw4zU6VKoqkrrovkDUyY5/JW13+9pIV
-         0k/KASsHW6iYQ/BWMoIzc+Foo0g0z8qiDXd1/32ak1MZ8qaBAKhB1VplgKAyWCkZ5IfK
-         YCWmHMrkBkiPI7ViCJRTxAoxf7wlDaEY3xnX3LMT3/JKx8Oa0Z9srK0cKpmZ/IftQSJx
-         DnF8MjuJiV/24d4hmt0eqkgayz3VP+cS+VKEE3YoENnHzuXK2DjkjRCDst4r6j249k72
-         ffMQ==
+        bh=2y6QahbiYEeFWW4jLSow2z11zFEVCFP/ftrpD9J9AgE=;
+        b=SRNKY9jo/ORVq8ZJ/0WHl1exzcC7RZub5Mm6B2Al5lcnBpibHJets3nO5UrPxbAPjp
+         hMYgGTRgsDNS4JwANysIqV97dD8o3ildPuGb3uen1fcxx0IwdbcR7r//kLT4nbIvu9C5
+         khSL4v0C8iCUAciaQNqT7scariFKXsPBBg9G4EV2Lz/cdhgFKFLCQyEJ5pVBbZ0WiWQu
+         FKyyDsZbpQ4spQYFe5FaY3hcpiqu0k/JOnhCFTloWvvAHOhZqg++uluEXkW9Ndhr3hhq
+         Rv2qCh/kmsF4inMS396HdK2pMoyyq+AHvU9vM+XeQ898MnAmD1KtwSt7O7USj8/1mVcP
+         MjUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782938009; x=1783542809;
+        d=1e100.net; s=20251104; t=1782938010; x=1783542810;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=trFkLGElpB18qg+gQX3raUFt9xbGcfz4Dubn+4t0CYI=;
-        b=Z8N/1OOmQ4NqhLKIc7aNdvVGkevMJC79Q7Zb8RN5BmhLLw5z0gEay9fp0UzeSBvDay
-         llESH0KxWy9nlQmCk/zAuFbUhN1p47mbiLv6ROYp9d5RKLf0d62AzGbipcwTl1GV8wtw
-         DBSDP4ztscC5QSsgnHDVzYQIroTq5z2D3nlTHp+r/EGZb91hzVZpQvTDhp8szG+BYceK
-         6nxylffVD8lfySNPHxnOFehcZ29jLNs7FpB5h/pNqaJGwS8OFOPZlnwilKFe89DxtC4Z
-         EHB2q43ABPInRXJq3FYRUR0iURCNbXSZmXKRQsGLCulDophXOPXLUsmtbmKukbZV8nZA
-         B3Ug==
-X-Gm-Message-State: AOJu0Yxc1daBwq3El46zQRXGCjxoM4cDOhibdfzi727AIhOFF02VvxZB
-	OZl8XiWKbb1U6Zl1Q9SFSKdkAh+MD9cNsB9VkcF6mIP1UI8mUE0BIe86xuQm/TocE1xhnXoGfBv
-	Nx4Wn/TfNilC/JbvLIddwPew/Fqh2qLpkmu8CSY2zyQUdWIfQQuIDd7cBlrk8gmFnhA5CIhEvmI
-	GboJM+OKpLQcpja3HZ96rgvouPRbREs/oRyMzu7ChixHBpSQ7eG3PZWA==
-X-Received: from dyce14.prod.google.com ([2002:a05:7300:724e:b0:30e:eb5c:9ab3])
+        bh=2y6QahbiYEeFWW4jLSow2z11zFEVCFP/ftrpD9J9AgE=;
+        b=L7+QYO/A0FrL2RGhCrq3NAfy9zAz8X7zaOUtSdcuYgQImej+/yVL7PyBBriUC8yXSu
+         IAS5AlRmu5PUlVE2++KTxP+GdvbnnXV+qbGI8YPM4dmTyoUehDERKm/hiuMRW5J8Igep
+         HjfGP3zvlWcAEtXoI5W/LOE9UwOmUCe0CBtmQZ2mRwyqJaCZROcPUlXOyRJenayybI6w
+         6gunpi0KzFWC+99QkjXcRDYazt48K/Vg1XuyvQeT9F3iNZxAu8DFm7QM5NH4zAYPyCxy
+         PGW1pSO+OE0FslnOYcBeLozF0EUZ00547qSz8Aq67qrP8XwDECp5kdd9BIuumtUahlII
+         LfHg==
+X-Gm-Message-State: AOJu0YyY8nkXYrpUMVjcN+9ruRyKE0lCUMrReDdNBQGk/wszAvFLRbYi
+	SURPHbNT0+cwxrh97wWrG2WGe43Nrehz9JhQHxpnfbUCeHqcMRFMUe28fC+YBIc53RVHbhaNTfl
+	BqmR+dDwr1PW0UwFVM0eq5CIc8xvkkWIcW9HonJUnj+zq5a7yI8fQhwVTysNE02fA4oYLYQgQcJ
+	uvz5N8jF/D3C6dzNDOrR/MsxtycGJloKX9Poav8XIyFmk5iCbIy/iM+Q==
+X-Received: from dlbpv9.prod.google.com ([2002:a05:7023:909:b0:139:db57:c30b])
  (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e7ce:b0:37d:8426:40de with SMTP id 98e67ed59e1d1-380aa0ad396mr2899164a91.1.1782938008317;
- Wed, 01 Jul 2026 13:33:28 -0700 (PDT)
-Date: Wed,  1 Jul 2026 20:33:09 +0000
+ 2002:a05:6300:6715:b0:3bf:a0e5:999a with SMTP id adf61e73a8af0-3bfed41d909mr3477352637.48.1782938009973;
+ Wed, 01 Jul 2026 13:33:29 -0700 (PDT)
+Date: Wed,  1 Jul 2026 20:33:10 +0000
 In-Reply-To: <20260701203311.326798-1-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,213 +58,213 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260701203311.326798-1-aaronlewis@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701203311.326798-3-aaronlewis@google.com>
-Subject: [PATCH 2/4] vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+Message-ID: <20260701203311.326798-4-aaronlewis@google.com>
+Subject: [PATCH 3/4] vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
 From: Aaron Lewis <aaronlewis@google.com>
 To: kvm@vger.kernel.org
 Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
 	Aaron Lewis <aaronlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a second test to "vfio_dma_mapping_perf_test" to evaluate memfd
-latencies. A key motivator for adding this test is to demonstrate that
-the IOMMU_IOAS_MAP_FILE ioctl is significantly faster than other methods
-of mapping DMA regions. While this performance difference is not fully
-apparent with the test's current capabilities, it will become evident
-as more features are introduced later in the series.
+Allow the user to specify a DMA region size via the command line for
+vfio_dma_mapping_perf_test.
 
-To support this, add IOMMU_IOAS_MAP_FILE ioctl support to the VFIO
-selftest library via iommufd_map_file().
+Because the selftest harness also parses command-line parameters, sharing
+them directly is problematic. Adding options directly to the test could
+create conflicts with harness-defined options. Even without conflicts, the
+harness would need to be updated to recognize test-specific options to avoid
+failing on unknown parameters.
+
+Resolve this by isolating the two sets of parameters. The standard command-line
+options are consumed by the test itself. To pass options through to the test
+harness, introduce a new '-a' option.
+
+For example, both the test size and the test harness options can be set
+like this:
+
+./vfio_dma_mapping_perf_test -b 16G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
+
+This invocation configures a 16G DMA region and restricts execution to the
+specified test variant, which is useful when debugging DMA mapping latency
+issues for a specific IOMMU type.
 
 Signed-off-by: Aaron Lewis <aaronlewis@google.com>
 ---
- .../vfio/lib/include/libvfio/iommu.h          |   7 ++
- tools/testing/selftests/vfio/lib/iommu.c      |  24 ++++
- .../vfio/vfio_dma_mapping_perf_test.c         | 118 ++++++++++++++++++
- 3 files changed, 149 insertions(+)
+ .../vfio/vfio_dma_mapping_perf_test.c         | 132 +++++++++++++++++-
+ 1 file changed, 129 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-index e9a3386a4719..eeef5990292c 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
-@@ -35,6 +35,13 @@ struct iommu {
- struct iommu *iommu_init(const char *iommu_mode);
- void iommu_cleanup(struct iommu *iommu);
- 
-+int __iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd);
-+
-+static inline void iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd)
-+{
-+	VFIO_ASSERT_EQ(__iommufd_map_file(iommu, region, fd), 0);
-+}
-+
- int __iommu_map(struct iommu *iommu, struct dma_region *region);
- 
- static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
-diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
-index 035dac069d60..6730b39060ca 100644
---- a/tools/testing/selftests/vfio/lib/iommu.c
-+++ b/tools/testing/selftests/vfio/lib/iommu.c
-@@ -97,6 +97,30 @@ iova_t iommu_hva2iova(struct iommu *iommu, void *vaddr)
- 	return iova;
- }
- 
-+int __iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd)
-+{
-+	VFIO_ASSERT_TRUE(iommu->iommufd, "IOMMU_IOAS_MAP_FILE is an IOMMUFD IOCTL.");
-+
-+	struct iommu_ioas_map_file args = {
-+		.size = sizeof(args),
-+		.flags = IOMMU_IOAS_MAP_READABLE |
-+			IOMMU_IOAS_MAP_WRITEABLE |
-+			IOMMU_IOAS_MAP_FIXED_IOVA,
-+		.ioas_id = iommu->ioas_id,
-+		.fd = fd,
-+		.start = 0,
-+		.iova = region->iova,
-+		.length = region->size,
-+	};
-+
-+	if (ioctl(iommu->iommufd, IOMMU_IOAS_MAP_FILE, &args))
-+		return -errno;
-+
-+	list_add(&region->link, &iommu->dma_regions);
-+
-+	return 0;
-+}
-+
- static int vfio_iommu_map(struct iommu *iommu, struct dma_region *region)
- {
- 	struct vfio_iommu_type1_dma_map args = {
 diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-index 87d84450fc47..4639bda7ebaa 100644
+index 4639bda7ebaa..6c025e9c4420 100644
 --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
 +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-@@ -117,6 +117,124 @@ TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
- 	printf("Completed munmap() in %.2lfms\n", timer_elapsed_ms(start));
+@@ -4,6 +4,7 @@
+ #include <sys/mman.h>
+ #include <time.h>
+ #include <unistd.h>
++#include <wordexp.h>
+ 
+ #include <linux/iommufd.h>
+ #include <linux/limits.h>
+@@ -19,6 +20,12 @@
+ 
+ static const char *device_bdf;
+ 
++struct test_params {
++	u64 size;
++};
++
++struct test_params test_params;
++
+ struct iommu_mapping {
+ 	u64 pgd;
+ 	u64 p4d;
+@@ -80,7 +87,7 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
+ 
+ TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
+ {
+-	const u64 size = SZ_1G;
++	const u64 size = test_params.size;
+ 	const int flags = variant->mmap_flags;
+ 	struct dma_region region;
+ 	struct timespec start;
+@@ -204,7 +211,7 @@ static void teardown_memfd(int fd, u64 size, void *vaddr)
+ 
+ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+ {
+-	const u64 size = SZ_1G;
++	const u64 size = test_params.size;
+ 	struct dma_region region;
+ 	struct timespec start;
+ 	u64 unmapped;
+@@ -235,8 +242,127 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+ 	teardown_memfd(fd, size, region.vaddr);
  }
  
-+FIXTURE(vfio_dma_mapping_perf_memfd_test) {
-+	struct iommu *iommu;
-+	struct vfio_pci_device *device;
-+	struct iova_allocator *iova_allocator;
++/*
++ * Parses "[0-9]+[kmgt]?".
++ */
++size_t parse_size(const char *size)
++{
++	size_t base;
++	char *scale;
++	int shift = 0;
++
++	VFIO_ASSERT_TRUE(size && isdigit(size[0]),
++			 "Need at least one digit in '%s'.", size);
++
++	base = strtoull(size, &scale, 0);
++
++	VFIO_ASSERT_TRUE(base != ULLONG_MAX, "Overflow parsing size!");
++
++	switch (tolower(*scale)) {
++	case 't':
++		shift = 40;
++		break;
++	case 'g':
++		shift = 30;
++		break;
++	case 'm':
++		shift = 20;
++		break;
++	case 'k':
++		shift = 10;
++		break;
++	case 'b':
++	case '\0':
++		shift = 0;
++		break;
++	default:
++		VFIO_FAIL("Unknown size letter '%c'.", *scale);
++	}
++
++	VFIO_ASSERT_TRUE((base << shift) >> shift == base,
++			 "Overflow scaling size!");
++
++	return base << shift;
++}
++
++static void help(char *name)
++{
++	puts("");
++	printf("usage: %s [-h] [-b bytes] [-a \"test harness args\"]\n", name);
++	puts("");
++	printf(" -h: Display this help message.\n"
++	       " -b: Specify the size of the DMA region to be mapped\n"
++	       "     and unmapped. e.g. 16M or 8G, (default: 1G)\n"
++	       " -a: Args that are forwarded to the test harness,\n"
++	       "     e.g. -a \"-t dma_map_unmap_from_file\"\n");
++}
++
++struct harness_args
++{
++	int argc;
++	char **argv;
++	wordexp_t exp;
 +};
 +
-+FIXTURE_VARIANT(vfio_dma_mapping_perf_memfd_test) {
-+	const char *iommu_mode;
-+	int mmap_flags;
-+	int memfd_flags;
-+};
-+
-+#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _mmap_flags, _memfd_flags) \
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, _iommu_mode ## _ ## _name) {    \
-+	.iommu_mode = #_iommu_mode,						      \
-+	.mmap_flags = MAP_SHARED | (_mmap_flags),				      \
-+	.memfd_flags = MAP_SHARED | (_memfd_flags),				      \
++static void populate_harness_args(struct harness_args *args, const char *argv_0,
++				  const char *cmdlne)
++{
++	if (wordexp(argv_0, &args->exp, WRDE_NOCMD) == 0 &&
++	    wordexp(cmdlne, &args->exp, WRDE_APPEND | WRDE_NOCMD) == 0) {
++		args->argc = args->exp.we_wordc;
++		args->argv = args->exp.we_wordv;
++	}
 +}
 +
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(memfd, 0, 0);
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(memfd_hugetlb_2mb,
-+				    MAP_HUGETLB | MAP_HUGE_2MB,
-+				    MFD_HUGETLB | MFD_HUGE_2MB);
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(memfd_hugetlb_1gb,
-+				    MAP_HUGETLB | MAP_HUGE_1GB,
-+				    MFD_HUGETLB | MFD_HUGE_1GB);
-+
-+#undef FIXTURE_VARIANT_ADD_IOMMU_MODE
-+
-+FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
++static void setup_test(struct harness_args *args, int argc, char *argv[])
 +{
-+	self->iommu = iommu_init(variant->iommu_mode);
-+	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+	self->iova_allocator = iova_allocator_init(self->iommu);
-+}
++	int opt;
 +
-+FIXTURE_TEARDOWN(vfio_dma_mapping_perf_memfd_test)
-+{
-+	iova_allocator_cleanup(self->iova_allocator);
-+	vfio_pci_device_cleanup(self->device);
-+	iommu_cleanup(self->iommu);
-+}
++	test_params = (struct test_params) {
++		.size = SZ_1G,
++	};
 +
-+static void *setup_memfd(int *fd, u64 size, int mmap_flags, int mfd_flags)
-+{
-+	void *buf = MAP_FAILED;
-+	struct timespec start;
-+
-+	timer_start(&start);
-+	*fd = memfd_create("vfio_dma_mapping_perf_memfd_test", mfd_flags);
-+	printf("Completed memfd_create() in %.2lfms\n", timer_elapsed_ms(start));
-+	if (*fd <= 0)
-+		return MAP_FAILED;
-+
-+	if (ftruncate(*fd, size))
-+		goto out;
-+
-+	timer_start(&start);
-+	buf = mmap(NULL, size, PROT_READ | PROT_WRITE, mmap_flags, *fd, 0);
-+	printf("Completed mmap() for memfd in %.2lfms\n", timer_elapsed_ms(start));
++	while ((opt = getopt(argc, argv, "a:b:h")) != -1) {
++		switch (opt) {
++		case 'a':
++			populate_harness_args(args, argv[0], optarg);
++			break;
++		case 'b':
++			test_params.size = parse_size(optarg);
++			break;
++		case 'h':
++		default:
++			help(argv[0]);
++			goto out;
++		}
++	}
 +
 +out:
-+	if (buf == MAP_FAILED)
-+		close(*fd);
-+
-+	return buf;
++	// Reset getopt() state to allow the test harness to use it.
++	optind = 1; 
 +}
 +
-+static void teardown_memfd(int fd, u64 size, void *vaddr)
++static void teardown_test(struct harness_args *args)
 +{
-+	struct timespec start;
-+
-+	if (vaddr != MAP_FAILED) {
-+		timer_start(&start);
-+		munmap(vaddr, size);
-+		printf("Completed munmap() in %.2lfms\n", timer_elapsed_ms(start));
++	if (args->argv) {
++		args->argc = 0;
++		args->argv = NULL;
++		wordfree(&args->exp);
 +	}
-+
-+	if (fd != -1) {
-+		timer_start(&start);
-+		close(fd);
-+		printf("Completed close() in %.2lfms\n", timer_elapsed_ms(start));
-+	}
-+}
-+
-+TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
-+{
-+	const u64 size = SZ_1G;
-+	struct dma_region region;
-+	struct timespec start;
-+	u64 unmapped;
-+	int rc, fd;
-+
-+	region.vaddr = setup_memfd(&fd, size, variant->mmap_flags, variant->memfd_flags);
-+	ASSERT_NE(region.vaddr, MAP_FAILED);
-+
-+	region.iova = iova_allocator_alloc(self->iova_allocator, size);
-+	region.size = size;
-+
-+	timer_start(&start);
-+	if (strcmp(variant->iommu_mode, MODE_IOMMUFD) == 0) {
-+		iommufd_map_file(self->iommu, &region, fd);
-+	} else {
-+		iommu_map(self->iommu, &region);
-+	}
-+	printf("Mapped HVA %p (size %luG) at IOVA 0x%lx in %.2lfms\n",
-+	       region.vaddr, size / SZ_1G, region.iova, timer_elapsed_ms(start));
-+	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
-+
-+	timer_start(&start);
-+	rc = __iommu_unmap(self->iommu, &region, &unmapped);
-+	printf("Unmapped IOVA 0x%lx in %.2lfms\n", region.iova, timer_elapsed_ms(start));
-+	ASSERT_EQ(rc, 0);
-+	ASSERT_EQ(unmapped, region.size);
-+
-+	teardown_memfd(fd, size, region.vaddr);
 +}
 +
  int main(int argc, char *argv[])
  {
++	struct harness_args args = (struct harness_args) {
++		.argc = 0,
++		.argv = NULL,
++	};
++	int r;
++
++	setup_test(&args, argc, argv);
  	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+-	return test_harness_run(argc, argv);
++	r = test_harness_run(args.argc, args.argv);
++	teardown_test(&args);
++
++	return r;
+ }
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
