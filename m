@@ -1,157 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369203644C5
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 09:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7702634CFC6;
+	Wed,  1 Jul 2026 09:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782896521; cv=none; b=kndgo+yfd4FbRIv2Uzfkl/M/CiM+V7mHSWLdC4rIwA2PEf1gV8e1ojlp6j0NORI7SZ0I120SASz1yDZBcdiZp4n/rDqaY+sY8h9YY2vp50cu6EZvlTiEdFLVjAjFs58uNcfD36/KyiMMwo6e2jBkVhIHCbosKA9Z8MLjS6sj3ng=
+	t=1782896665; cv=none; b=eP+KWhs1O56ye7sBBU0Pb+cTF3pjNKoufvrxYiYg7m6MYm0oWfRiCr90Nu0mQORQYR1jznRq5tYAxtqfaVOa9vU30E9T9wKSc9WHF8NelrItJ/1oB2HaY6BoXj5M9aIPFFZf27uYSYyYio+BSGyF6ZP1un8qqWZIJGagwMbg3Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782896521; c=relaxed/simple;
-	bh=tjvABtOy9UQFjgYlI/sfPc8RUJxBLIcfNPOGaS6JgKQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j3DyjqmQs2wtb6sEPiRxTiiUZu8vl/noWpB0F6krt8dyO7ESQYH/ETx125cOszt1RQJKv70BvzgaWOg9AZm7r9QqjAOciS+VFo8JZWIG24Vr6o+Ijz+OwbOVtjBSnE6/1BenXxld32HvsFuMk4Vr5JLqMdvp0uGWVJL+LY5NQK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/PXsK4d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782896665; c=relaxed/simple;
+	bh=o6HO5yighH0lbPMGOWuebg9WNrWtRExEVC5nSB71uk4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GVxEBjr45GS+l+TKj+HN1DoT3OygeFeZX3TxTGAsNS6nzsktiD0/8W+CnHjluw3xh9wO0iHZHFZhdGiUgsm+xJKHVHKfCWVtPv3RJjxY5fwSs5s4XfwOt7cUf7sn/GPvtHBiy3iB4RGqnIv/2WDPkYx0YCDvLGSfP/qNU0ZIFyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bkktkk3L; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/PXsK4d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966781F000E9;
-	Wed,  1 Jul 2026 09:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782896519;
-	bh=RFLOdTXs7daKOkcY53dIJYvJSRfDAyZpEsMrVnu5lvQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E/PXsK4diMvlOp4KCZWJ3XReXJfRO8B9cqUvauw3u6PdLGbvpPb++o92igQXnSaF7
-	 FCny0b5nL/Se14U6sQQOio/a1qgypiefxDpA7CRPejgbY9QR9y/+9E7BXCQM/gWfuK
-	 wRAbrhd3snS3Msvm/IZ+E1gwRbvY3Q/hwQBeRfS/booeLT9CFaPV+FHCNWmG6+/WVT
-	 U6ukgcy066SpLDG1T03w6Z7DxlAjFTCCzwIaBTC0KKJ29T/Jy6DPiXCrOR7bfyJ7Kx
-	 9C42/gPyx8+2DmN7zXSDoz+bsAEnqvgIcSK3FZwotf+s924SVLI2nZWmymHrTc0JDn
-	 bNhgPZk7P8hBA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] riscv: ptdump: Move pagetable definitions to common
- header
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Dylan.Wu <fredwudi0305@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701085030.124579-2-fredwudi0305@gmail.com>
-References: <20260701085030.124579-1-fredwudi0305@gmail.com>
- <20260701085030.124579-2-fredwudi0305@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 09:01:59 +0000
-Message-Id: <20260701090159.966781F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bkktkk3L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782896664; x=1814432664;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=o6HO5yighH0lbPMGOWuebg9WNrWtRExEVC5nSB71uk4=;
+  b=Bkktkk3Lltr2ttw4gghBuNxutlTWIbHY6gy2R8pRdO9Lr7piUso5vbCh
+   r10RPrPai4Nygl/oIVkmHkiq/r/ENtfy58rcC1AEma/Rehuycd7I189UJ
+   8YdTrE+dty0QDKGYMk7rzUmoPmTbUt8d72zanjJWpC6KiMFCadmx1iA0x
+   yqyJhsJvnYgAjGe2kQrHQtaRyy/05hNyG1bUDiu4iShc1uFAxz1fd3t6/
+   qd8f7yUGUk0ZKBUYbVpzIvwCYOMy1MxJaoUuLGzGaUNAK23Wb7Kp8bNyv
+   0yNW7nRCDyLGYYabOfpSVM6972pD7GS0264xKhvt76hfEI6eHFAO2KS2I
+   g==;
+X-CSE-ConnectionGUID: 2/u/KVVpQYClfO2eAZzqZQ==
+X-CSE-MsgGUID: qaXHPnuLRMa/+1Gh4I1ECw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="71146239"
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="71146239"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:04:23 -0700
+X-CSE-ConnectionGUID: RfVhV5zfSDWv+vMwhlsJyA==
+X-CSE-MsgGUID: bSAPRm+uSA+mXv3+cFiw0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="252641956"
+Received: from unknown (HELO [10.239.158.49]) ([10.239.158.49])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:04:02 -0700
+Message-ID: <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
+Date: Wed, 1 Jul 2026 17:03:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise
+ KVM_SET_MEMORY_ATTRIBUTES2 ioctl
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Uninitialized `bits` and `num` fields in `kernel_pg_levels` comp=
-letely suppress page table attribute output in debugfs.
-- [Low] Folded PMD levels on 32-bit RISC-V (RV32) will incorrectly display =
-as 'PMD' instead of 'PGD'.
---
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> @@ -4969,6 +4973,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+>   		return 1;
+>   	case KVM_CAP_GUEST_MEMFD_FLAGS:
+>   		return kvm_gmem_get_supported_flags(kvm);
+> +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
+> +		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
+> +			return 0;
+> +
+> +		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>   #endif
+>   	default:
+>   		break;
 
-commit f96cd5eefaf170c680412811c0fe9c407b08f9a0
-Author: Dylan.Wu <fredwudi0305@gmail.com>
+this looks inconsistent with the
 
-riscv: ptdump: Move pagetable definitions to common header
+	case KVM_SET_MEMORY_ATTRIBUTES2:
+		if (!gmem_in_place_conversion)
+			return -ENOTTY;
 
-Move the pagetable walking state and level definitions to a new
-arch/riscv/include/asm/ptdump.h header to allow reuse of the attribute pars=
-ing
-logic. The attribute parsing logic in dump_prot() is updated to use attribu=
-te
-bits defined within the pg_level structure rather than a global array.
+Well, the check of
 
-> diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-> index f4b4a9fcbbd88..7e55656cbbc92 100644
-> --- a/arch/riscv/mm/ptdump.c
-> +++ b/arch/riscv/mm/ptdump.c
+	if (!kvm_arch_has_private_mem(f->kvm))
+		return -EINVAL;
 
-[ ... ]
-
-> @@ -183,52 +152,48 @@ static const struct prot_bits pte_bits[] =3D {
->  	}
->  };
-> =20
-> -/* Page Level */
-> -struct pg_level {
-> -	const char *name;
-> -	u64 mask;
-> -};
-> -
-> -static struct pg_level pg_level[] =3D {
-> +static struct ptdump_pg_level kernel_pg_levels[] =3D {
->  	{ /* pgd */
->  		.name =3D "PGD",
->  	}, { /* p4d */
-> -		.name =3D (CONFIG_PGTABLE_LEVELS > 4) ? "P4D" : "PGD",
-> +		.name =3D "P4D",
->  	}, { /* pud */
-> -		.name =3D (CONFIG_PGTABLE_LEVELS > 3) ? "PUD" : "PGD",
-> +		.name =3D "PUD",
->  	}, { /* pmd */
-> -		.name =3D (CONFIG_PGTABLE_LEVELS > 2) ? "PMD" : "PGD",
-> +		.name =3D "PMD",
-
-[Severity: Low]
-For 32-bit RISC-V (RV32) architectures that use a 2-level page table where =
-PMD
-is folded into PGD, will this cause the top-level entries to incorrectly
-display as PMD instead of PGD?
-
-The original code dynamically renamed the PMD level to PGD based on
-CONFIG_PGTABLE_LEVELS, but this appears to be omitted from the new code.
-
->  	}, { /* pte */
->  		.name =3D "PTE",
->  	},
->  };
-> =20
-> -static void dump_prot(struct pg_state *st)
-> +static void dump_prot(struct ptdump_pg_state *st)
->  {
->  	unsigned int i;
-> +	const struct ptdump_pg_level *lvl =3D &st->pg_level[st->level];
-> +	const struct ptdump_prot_bits *bits =3D lvl->bits;
-> =20
-> -	for (i =3D 0; i < ARRAY_SIZE(pte_bits); i++) {
-> +	for (i =3D 0; i < lvl->num; i++) {
-
-[Severity: Medium]
-Will this loop ever execute?
-
-The kernel_pg_levels array is statically initialized without setting the .b=
-its
-or .num fields. Since .num is implicitly 0, it looks like this loop is enti=
-rely
-skipped, which will silently discard printing page table protection attribu=
-tes
-to debugfs.
-
-[ ... ]
-
-> @@ -446,12 +414,12 @@ static int __init ptdump_init(void)
-> =20
->  	kernel_ptd_info.base_addr =3D KERN_VIRT_START;
-> =20
-> -	pg_level[1].name =3D pgtable_l5_enabled ? "P4D" : "PGD";
-> -	pg_level[2].name =3D pgtable_l4_enabled ? "PUD" : "PGD";
-> +	kernel_pg_levels[1].name =3D pgtable_l5_enabled ? "P4D" : "PGD";
-> +	kernel_pg_levels[2].name =3D pgtable_l4_enabled ? "PUD" : "PGD";
-> =20
-> -	for (i =3D 0; i < ARRAY_SIZE(pg_level); i++)
-> +	for (i =3D 0; i < ARRAY_SIZE(kernel_pg_levels); i++)
->  		for (j =3D 0; j < ARRAY_SIZE(pte_bits); j++)
-> -			pg_level[i].mask |=3D pte_bits[j].mask;
-> +			kernel_pg_levels[i].mask |=3D pte_bits[j].mask;
-
-Does this dynamic initialization loop need to populate the .bits and .num f=
-ields
-for kernel_pg_levels as well?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701085030.1245=
-79-1-fredwudi0305@gmail.com?part=3D1
+is buried in the following kvm_gmem_set_attributes(). How about moving 
+of kvm_arch_has_private_mem() check to put it along with 
+gmem_in_place_conversion check in kvm_gmem_ioctl() in Patch 13?
