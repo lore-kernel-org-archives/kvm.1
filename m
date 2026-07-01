@@ -1,146 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010039.outbound.protection.outlook.com [52.101.85.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA953F5BC3;
-	Wed,  1 Jul 2026 22:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782943635; cv=none; b=Lgdip7Q4RaVmXOGervUBkmNDGKVDvRapjw0I4gxI+0SDk2KVLBlIYCfjKfMwLE4H/G5ufgOWTmr/Xan3TrEhPbpMUMo+Qk2ShUYxhv4MTkWcZBCvKYgUxD0FzX4KNPn2uJq8eafv7GwZhzOwWpdm53vdMunDlTwMtUMJPUtXrZ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782943635; c=relaxed/simple;
-	bh=AbAiagAJwRat9D7ch8WTO33ofDAFaMYT6mWvFoC2sIo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oINLJOODtgU2dajunTtB40iSVZUhO78Ue2iQPgCByboI44CzhgBqyZRkP3FMQ93JwPJu7eXlaLdBaIHsfftQJ+74dQ4Di1H5veZ//OqO2TeYnin9asaqBk9lr4MZAY+djdntZZuEPdhC3Db9Z3qWLPnnpXl7PXFC+lCfRBRJW4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YkRYPQBw; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE1361DDE;
+	Wed,  1 Jul 2026 22:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782946147; cv=fail; b=F5qEFWhyLe28PrRbCLraNryXgqpBh93Xy5TBhEz9qSkR7bT2OzTrSceei08+n2ofJROvOx9XqdP1m158NctRV6jIipC+i3X3rdDktsYpKo1eQ/NhUqU0MGjxhxB+mgtsaxb38RySufZgNFxmuwKXzOf28+0REpcIaCv1QQJEMII=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782946147; c=relaxed/simple;
+	bh=qHM8cm/Zyb/X8PyN6NrCD6P+M8HuJ147KnjvAw1fVAk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KtQTjP7a+Ah89hYNK4hKujYVnmnknKdV0X+pyLVQw4E6CWFCOrMhpogEI6EjnQ1SXECXQxtl0fzqOe0RLsau9PqBogg8Tz4VsTSfOzBRVaNytROlPVFMrx0oPxbTk422EQsSv9ZvLRLwkYGOwfEktm6LtAr2sIm5stVx43IWoVw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=H9cfEkeu; arc=fail smtp.client-ip=52.101.85.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YkRYPQBw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782943629; x=1814479629;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AbAiagAJwRat9D7ch8WTO33ofDAFaMYT6mWvFoC2sIo=;
-  b=YkRYPQBwu+AwmlF7zOL1tMreA7wkycpMpEbRsNpjsI5AfqZfNyJGWoeW
-   uauEYdz4aJtX1NBdu/yoxPvseoxtCvFY/24fzzpgu/eAruVh0cWM4RQ9Q
-   Mj23ay03FPzhYhfz/6iUo9zPCNN9yW1KOLhSE1slI2fkLln98fChOzZUj
-   sNyECt991sjLf4UzKRYbjDCgGVix6+EfEyeDPSWfcj4jEYgPVozlXbIus
-   4qS5wmJkEx8LzD42AUoF8luPV0avclrLfF2DQbjcBxYpGiYpr7GJOglh6
-   hUO5a9QhhPZjNWTxWm1d74RENbh39L+veCo6EBUe6fuFvTBn4jyTtdrWk
-   A==;
-X-CSE-ConnectionGUID: xpa3ezeVRpGQYlQUJ2rjsA==
-X-CSE-MsgGUID: LP4xoudMS+O5YeHpLfvfJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="82804467"
-X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
-   d="scan'208";a="82804467"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 15:07:08 -0700
-X-CSE-ConnectionGUID: hAQ5CNadQ8SCx6PBZsM4Ug==
-X-CSE-MsgGUID: 3kf4NTiJQ9mniKylGJGRFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
-   d="scan'208";a="256600910"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.110.90]) ([10.125.110.90])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 15:06:49 -0700
-Message-ID: <e06806e8-7334-4533-b1a3-e1efbe3fab8a@intel.com>
-Date: Wed, 1 Jul 2026 12:56:19 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="H9cfEkeu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BkpfjG+DLEJMWDn1sGamW8Dt/efapmrkOl4fVMO0sp4Ka+jQTUTE21fALNzqZSEG8WUG2LhoYqvcF81TNqGpwsaT/qCrHG0QNOjubJhCrDHkwcOHGuacPuttxKGQRria3+DnRU7roUDnokXek10HqUpftn/2kVY7iaDMgsGrWZMM+HUUkSQkbK7iEucCIb0QX8Ff9SF2N07c/Rw4Gimd8pkSWLmVL1PQ1olMijboa9IeyBIYKivy1eyKQ4W6kr52YwIIVRrdZwKtXoowEIG+3c/gy9mZkNiabH534OL27C1O5YiDPFHFHuSy4y8GOKHUF/N+lAHgNdbNtjX3THwA1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RwXqRIh1c/FWMjIk7wTKdwpF2Bywt3m5HE9ybhSO+G0=;
+ b=i8rlBu3zwVk/N0MZUMQdl3qHIyIjs1i7FyNDPG7Zadg/lf7ZLPB00JAqxzxMlfJh45zCtEYDIw08v+uNQUEHZFUCHsSMOhCaK7d+QGOiIVzG3CkxbCs/w0C3Na3EzA3JDJUr746Ah9VBRvjqY8vIMDQjiBgk66Bh9oXL7OSy0VgRNPBl2pH/V/gW1eNwvVqiTXAhaQVZevlWtDBZB0sYdyV5/fnQq2K4XrJ6F15NF0u3qyHdXgDZE866USMiRcDNHM1YM39Vo36gWp29Nbxgm64CyxdMnMsLGhoM0aeoBPb9hRsZ/fHSMiUOHLwgHTciFva9+RjYzWBJHcyx2KNyyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RwXqRIh1c/FWMjIk7wTKdwpF2Bywt3m5HE9ybhSO+G0=;
+ b=H9cfEkeuaZylTNl1SvkbDezTvrMMfdwHp7bQnZZ6dxFZRD+jXwFouw7MhImH2jvW1nbUsHhbJ7VhoGCroAyBlx34hApunukPuKBatc70V7ja1IbcjNOvQC1oXOhs2NrIPGOqRBWauklW2JMZZ0MzeHDv3HP53IB4QCkcl5GtNMo=
+Received: from CYZPR05CA0006.namprd05.prod.outlook.com (2603:10b6:930:89::10)
+ by MW6PR12MB8916.namprd12.prod.outlook.com (2603:10b6:303:24b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 22:49:02 +0000
+Received: from CY4PEPF0000EE35.namprd05.prod.outlook.com
+ (2603:10b6:930:89:cafe::71) by CYZPR05CA0006.outlook.office365.com
+ (2603:10b6:930:89::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Wed, 1
+ Jul 2026 22:49:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000EE35.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 1 Jul 2026 22:49:01 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 1 Jul
+ 2026 17:49:00 -0500
+Date: Wed, 1 Jul 2026 17:19:08 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Ackerley Tng <ackerleytng@google.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH v3 09/12] KVM: x86/mmu: Use split "zap all fast" helpers
+ when invalidating memslot
+Message-ID: <j3yuitpzh5ttgtajpwfosdiqz4rz7ieidfl4vzwkccnzih4hs3@bstoftpjbsbq>
+References: <20260630222607.497895-1-seanjc@google.com>
+ <20260630222607.497895-10-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/17] x86/virt/tdx: Prepare Quote buffer during
- extension bringup
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
- yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
- adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- dave.hansen@linux.intel.com, seanjc@google.com
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-9-yilun.xu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260618081355.3253581-9-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260630222607.497895-10-seanjc@google.com>
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE35:EE_|MW6PR12MB8916:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57c1fa8b-40a4-4276-cafa-08ded7c2f1dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|82310400026|36860700016|18002099003|22082099003|5023799004|11063799006|4143699003|6133799003|56012099006|27256017;
+X-Microsoft-Antispam-Message-Info:
+	+jlh1JNhmmlzQS31mukOKjGneCYz6A709YVFdnhJp9n3xdx/fw8ZIAOkOYy8gLhc2PdHfPMjHnRKA8d5lk6birOe+F/OF9P6Fcefj0KJYSOKjvpSeLIicre6WpXfgBayIUCuJ7N1w0yitk+lcnIeUKn61P02vaf/aNvVpeI6GdLjhb2GiskTz9Uaa0GTzbcgdM0zDp6wCzVvSuQmWXJi3JOokdLrddDMD88q1paeuV0zvTWz8PxnwysbSpEFdmBm0zMm4RWMflBaDxuMLHV/5id3CpR4qEmsFj+07eR9zEQj/uGtPZtNl32sMR+vH9tuGd9XFIGA/DaEVsQ454i6UDgoSl64lz0jd02v0D3//PF2dIy0MrKkj1i3faSXDTQ8ryo0PdVcA4Y8hCV+WoaeyBjb6KMNo4QazXubcImchYhVcS1C71bjajxXX5Oy2DWDrxJ5GqjNjlgaNlc7fxXQW/dePMYSGSXIpZw5YtFt12oczBTNkVbrAKZpzukHyB/QhO0ZbBkw3LH5bpisIzELw6AQ/6I75JGqMFhdn1Oxc7gJZm3WeR1OzQhlPf/r3Pr3l9ZgGBsyTdsQQQW5CwgQ8x7pl3PBxQerXeA8QKbxqCcL07AOWaTB4Nweti9bTEFr+kaMzsKCxy3aW4WejyHYzJ0hOpun29WbD/LDadziRYyDqwXrDA5tdkg92u8iDMu85iTGmQtVlXtTM0DsFTSlXaiRlkTfZu5z/e2OCkFtJt9UJ9jozoWh+M1fG/i9km3c
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(82310400026)(36860700016)(18002099003)(22082099003)(5023799004)(11063799006)(4143699003)(6133799003)(56012099006)(27256017);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	7iUh0D0TxLZa4ZgR4vePag8bNRFsVTjbA9AKAa5dMOMOjosilGoWs+Sf6rhkIQD11C9yZSuIRumTcK6Lohd5nPooiUKpdim3O4BIyiYsN1BGLYbdhfNGdYKkFlvX5j/xccfN/86gEANibvW7VwEAODm5w4DAwletpufp3ptv571Kh5crKKE20ShWu4EptVr7d0l//m2yT8GPCBOwAlKePqZPAgbtRnV+51FQNCunK9mDkKcvXhkQlHGpzcOIkppbJLdosabWBT3YN8QNGhMP/g+ZcC4nD8+KQILCgNlTzrCFHCx8wZLbwNIDj0FkY+SJ+6pqyr3Imgsw9XGUchDLyiZ67hxAzereNI38KNLWGxI1Ah9PaQkRxMRun9fODfixp29hP+BHYJrJbq1uxS1XcLr0U++8qs9Ijp1vMuMsB8U2RkTeD79xryE0dQ3pfZpQ
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 22:49:01.3709
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57c1fa8b-40a4-4276-cafa-08ded7c2f1dc
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE35.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8916
 
-On 6/18/26 01:13, Xu Yilun wrote:
-> For simplicity, let all guests share a global buffer. Build the buffer's
-> HPA_LINKED_LIST at Quoting extension bringup. This saves a bunch of
-> va-to-pa conversions at runtime.
+On Tue, Jun 30, 2026 at 03:26:04PM -0700, Sean Christopherson wrote:
+> Manually invoke the front half and back half of the "zap all fast" flow
+> when invalidating a memslot so that mmu_lock is acquired at function scope
+> in kvm_arch_flush_shadow_memslot().   This will allow putting more code
+> inside the critical section without having to take mmu_lock twice in quick
+> succession.
+> 
+> Opportunistically open code checking whether or not to do the fast zap, to
+> discourage removing the local "zap_all" in a future cleanup, i.e. to ensure
+> the SLOT_ZAP_ALL quirk is queried exactly once.  Processing the front half
 
-va-to-pa conversions are not expensive. Even for vmalloc() memory.If
+Enforcement through finger punishment? That sounds surprisingly effective :)
 
-I don't like the global buffer. It just generally seems like a bad idea.
-It needs locking, it wastes memory when nobody is doing quotes, etc..
+> but not the back half of the fast zap (if SLOT_ZAP_ALL were disabled
+> concurrently) would result in KVM unnecessarily keeping invalid TDP MMU
+> roots until the VM is destroyed.
+> 
+> No functional change intended.
+> 
+> Cc: stable@vger.kernel.org # 6.12.x
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Is there a way to do this without vmalloc()?
+Reviewed-by: Michael Roth <michael.roth@amd.com>
 
-Could userspace provide the memory and then the kernel just does a gup
-to keep it in place while the TDX module is writing to it? Or, could it
-just be allocated:
-
-	void *buffer = vmalloc(size);
-	mutex_lock();
-	// talk to TDX module
-	mutex_unlock();
-	vfree(buffer);
-
-	return ret;
-
-That actually has some nice properties. It doesn't require locking for
-the buffer. It also penalizes folks doing lots of quotes. If you hammer
-on quoting, you hammer on the memory allocator and TLB flushing code and
-slow yourself down more. If you hammer on it from multiple threads, it
-gets even worse.
-
-That seems like a feature not a bug.
+> ---
+>  arch/x86/kvm/mmu/mmu.c | 21 +++++++++++----------
+>  1 file changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index a5c2a560a88a..3eb1f86593b1 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -7573,12 +7573,6 @@ static void kvm_mmu_zap_memslot_pages_and_flush(struct kvm *kvm,
+>  	kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, flush);
+>  }
+>  
+> -static inline bool kvm_memslot_flush_zap_all(struct kvm *kvm)
+> -{
+> -	return kvm->arch.vm_type == KVM_X86_DEFAULT_VM &&
+> -	       kvm_check_has_quirk(kvm, KVM_X86_QUIRK_SLOT_ZAP_ALL);
+> -}
+> -
+>  void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+>  				   struct kvm_memory_slot *slot)
+>  {
+> @@ -7589,16 +7583,23 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+>  		.may_block = true,
+>  		.attr_filter = KVM_FILTER_PRIVATE | KVM_FILTER_SHARED,
+>  	};
+> +	bool zap_all = kvm->arch.vm_type == KVM_X86_DEFAULT_VM &&
+> +		       kvm_check_has_quirk(kvm, KVM_X86_QUIRK_SLOT_ZAP_ALL);
+>  	bool flush;
+>  
+> -	if (kvm_memslot_flush_zap_all(kvm)) {
+> -		kvm_mmu_zap_all_fast(kvm);
+> +	write_lock(&kvm->mmu_lock);
+> +
+> +	if (zap_all) {
+> +		__kvm_mmu_zap_all_fast_front_half(kvm);
+>  	} else {
+> -		write_lock(&kvm->mmu_lock);
+>  		flush = kvm_unmap_gfn_range(kvm, &range);
+>  		kvm_mmu_zap_memslot_pages_and_flush(kvm, slot, flush);
+> -		write_unlock(&kvm->mmu_lock);
+>  	}
+> +
+> +	write_unlock(&kvm->mmu_lock);
+> +
+> +	if (zap_all)
+> +		__kvm_mmu_zap_all_fast_back_half(kvm);
+>  }
+>  
+>  void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen)
+> -- 
+> 2.55.0.rc0.799.gd6f94ed593-goog
+> 
