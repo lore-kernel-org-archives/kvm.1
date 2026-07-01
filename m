@@ -1,144 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F13C431E5C
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6001933F8CA
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782936597; cv=none; b=ujQnq/wjSuSH8898APYw4LEa1DG2XArdD8JHzo8rIKrXI4GzqsQ/MMVBmkS36AZAGMuR+l11tvoaM7gOknrLI0idqpfUgY4b4Ugo7gAkAWkrniko+V1nULPZjRWHeXnYDllsrxnBEzGLW/NCMtTws69blZ9xwVEsR2ukR5US6jw=
+	t=1782936657; cv=none; b=ARQjmVw16G2hqO/HSvXw53yEgs2Nm+N3Zl1vWjTSTsudLhMzi/aHeLTR+WfLzDwd25NB8gJ+rG3ce+f2enWpfnU7BohuyiokFRSJkkgNtFhCHKa8HH2AILZE4MmZVH/qjVdzjA0dPIqZjCbTv+9l/iAF2kXb4J/AyvUw0DKCjKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782936597; c=relaxed/simple;
-	bh=1au6xaiF6Sb5/G4byv6O0JhmoOBtoV9mHNMnx3UpTRg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VAQ8seKhoqk75G1PD6OKC4i2ODM5dEdcNuso/WW8HY43CZ6y6zB3Ei1p248knULTrqA6l06SK86N9KQ/AxhYjceYUhRzDtHYhS9cD7P/DbCyRgd3lk6QUauZK7sD2c6z6Nnw6DhiAjIwTAfqR2WJvO4YeJIDdZGiM2+/f+q8duI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJDUwaBX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782936657; c=relaxed/simple;
+	bh=43WttSzZ/4iTDPskppZ059v5eB4O8aQemipf1MF1YBg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fs33Mz4oIIC9XiK4F0Eph3nrt2nbEJRaAfyNGjkNVP/iw8+IkhIwq8VwML1nwtoHP4A5n97iwowhuAgm78nEXehdjz5dQiSKKBoYqWA14BgXG1SILKozGoXjes9qLWnMBdU3cGl7LSnj1URasUYpmzLFCZwzOuPkgiTckgi+1J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dgC8aXmM; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJDUwaBX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A771F000E9;
-	Wed,  1 Jul 2026 20:09:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782936595;
-	bh=YEHLKq0j0vpWEUkxvQPA/aADrztXnIQno+6Zjy0mF8Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RJDUwaBX4miosR+X9tNQxWn0bxgGGiJuZEeW5dVvpOFZ30khDBdgCSQHVLXVfszts
-	 uMBLfYAJ2NvJD7PFG3K6N0XW8oRfLPRpWpg86x4bengRq2bTUPPfD5I+SODiW5l6A+
-	 gmME74242t1LuSWsFabBaQch6wvDeqk5zVe4VY3MFaQhE3/ifpk23ng+D/7O93KVIF
-	 KqNIJrorkS3ALt085JnXIbes8d0heIPhALKWkN5h1vivom/NvjtWkxgxlTikqpIXnM
-	 Fgrq7o7qtFNAu9J8ibTm52ndWQffWSzPPFWrUqxDxAmIMKlRy2h1z0y8P5qWPV5CH6
-	 7IhvclvfjvHoQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/1] kvm: reject unknown flags in device and dirty-log
- ioctls
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?SXbDoW4gRXplcXVpZWwgUm9kcmlndWV6?= <ivanrwcm25@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701194946.768731-2-ivanrwcm25@gmail.com>
-References: <20260701194946.768731-1-ivanrwcm25@gmail.com>
- <20260701194946.768731-2-ivanrwcm25@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 20:09:54 +0000
-Message-Id: <20260701200955.77A771F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dgC8aXmM"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ca53c486f2so13279865ad.3
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:10:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782936656; x=1783541456; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9pJ28VwnY7W5YCQbhrbSfDCIDP0Ys0N8XOcjlnDCvHU=;
+        b=dgC8aXmMSpmhBaxZgshQSJ0YRAE7osrdB0SUNll9sA5nqk3gvknISHTyRwsFJaQudx
+         hWrmIEe6oC+zjP0MLqRnQ3sIfSd/+Y8x6xZlUPNMm9O+jv4k1Zm55KRBxG8dYSx0ycax
+         w4h5mHrvp9EZC4i2StQD/2fumCvKSgVGIp1teo28WwFYiMAqC+q6wMZsZR87nAwOOT/v
+         yQfoRm2AfuioZhXg1kNDH54yipCqqsLgHKus1MZkYEszbkmUO58BzqP6Q3/KfWU/yxm3
+         yb9EDlCSMzbLpiruvu7D/MBZ7JuI4tzl51u5goklwLsSHQ2ewwE+WP1rGQYK0ZC78Ndk
+         XnFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782936656; x=1783541456;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9pJ28VwnY7W5YCQbhrbSfDCIDP0Ys0N8XOcjlnDCvHU=;
+        b=Px7jbYUzMUEgPDyx0eWOUNGAFA5JjJ2ywHADaMt4IQZ/k5zxbZijwNeObeBzQxu4R0
+         U03uTcVe2relQH67sYvRZMwfwxmwU8IkgghsQRLKqdonUGU6KE4/kV3fq/mswAGoefoU
+         tvZRJcxhC3wt1JKuuhI+fWAs1JAZQPgjLGk0Mgf4mI5K3hFdHj2zdI1WvHPyZeNpCD+L
+         w8Cc8eGz3IQGgfsLLd/vIrTwOohDYFEE7aM2Q5gKVP79gpEz8fXsBvQrEzdGhqPzaSdy
+         oMidyQ2+yJDDUcuBO7HS0bay403b5TOi3IkGK/30hHGI69Uw16LqiT5QsmpC1cXPuyxE
+         gKdQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpmcKz46Srj2uO+nA93jEprZB9OtlnxJt9PGf09EEWnEUgGg3ewgzpj6FIIxjxHD0jddfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1c4F5p8v7NLtq1rIlzELVEz8C0GTOeADLOjpjHqX/90Js6v/1
+	hYHbeIxjX3Fu2Zvp7a8Q2sNBQD1MD7Em1PGprTrvv2EwpxyGLPhIfnYMVNWkmK2dCDlcqvsDjuS
+	CvZkM2A==
+X-Received: from plbkw11.prod.google.com ([2002:a17:902:f90b:b0:2c6:9f4f:f3b8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c65:b0:2c9:c083:cd50
+ with SMTP id d9443c01a7336-2ca9114e60bmr21403685ad.17.1782936655509; Wed, 01
+ Jul 2026 13:10:55 -0700 (PDT)
+Date: Wed, 1 Jul 2026 13:10:54 -0700
+In-Reply-To: <20260701195245.467DB1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260701193212.749551-1-seanjc@google.com> <20260701193212.749551-13-seanjc@google.com>
+ <20260701195245.467DB1F00A3A@smtp.kernel.org>
+Message-ID: <akV0ToNvWYKi8HVm@google.com>
+Subject: Re: [PATCH v5 12/51] x86/acrn: Register TSC/CPU frequency callbacks
+ iff frequency is actually in CPUID
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-hyperv@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Wed, Jul 01, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
+> > index ad8f2da8003b3..dc71a6fdd4613 100644
+> > --- a/arch/x86/kernel/cpu/acrn.c
+> > +++ b/arch/x86/kernel/cpu/acrn.c
+> [ ... ]
+> > @@ -26,13 +28,19 @@ static u32 __init acrn_detect(void)
+> >  
+> >  static unsigned int __init acrn_get_tsc_khz(void)
+> >  {
+> > -	return cpuid_eax(ACRN_CPUID_TIMING_INFO);
+> > +	return acrn_tsc_khz_cpuid;
+> >  }
+> >  
+> >  static void __init acrn_init_platform(void)
+> >  {
+> >  	/* Install system interrupt handler for ACRN hypervisor callback */
+> >  	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callback);
+> > +
+> > +	acrn_tsc_khz_cpuid = cpuid_eax(ACRN_CPUID_TIMING_INFO);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but does hardcoding ACRN_CPUID_TIMING_INFO to
+> 0x40000010 without dynamically applying the base offset break nested setups?
+> 
+> If Linux is booted as an L2 guest with an L0 hypervisor like KVM occupying
+> the base 0x40000000 leaf, and L1 ACRN resides at 0x40000100, acrn_detect()
+> correctly finds ACRN using cpuid_base_hypervisor() at the 0x40000100 base.
+> 
+> However, acrn_init_platform() hardcodes the fetch:
+> 
+> arch/x86/include/asm/acrn.h:
+> #define ACRN_CPUID_TIMING_INFO        0x40000010
+> 
+> Will this bypass the dynamic base detected earlier and read the timing info
+> from the wrong hypervisor's CPUID space (e.g., KVM's L0 frequency)?
+> 
+> If nested under a hypervisor that returns garbage for 0x40000010, could
+> acrn_tsc_khz_cpuid be populated with a non-zero bogus value and corrupt
+> guest timekeeping?
 
-New issues:
-- [Critical] Adding strict flag validation to previously ignored ioctl para=
-meters breaks backwards compatibility for existing userspace applications.
-
-Pre-existing issues:
-- [Medium] The validation for `kvm_device_attr.flags` is incomplete and mis=
-ses the VM, VCPU, and System ioctl paths.
---
-
-commit c3cf74adec51cd659e1e4d1a49a36240977087b9
-Author: Iv=C3=A1n Ezequiel Rodriguez <ivanrwcm25@gmail.com>
-
-kvm: reject unknown flags in device and dirty-log ioctls
-
-KVM_CREATE_DEVICE only defines KVM_CREATE_DEVICE_TEST, but unknown
-flag bits were silently ignored. kvm_device_attr.flags is documented
-as unused yet was never checked centrally. KVM_ENABLE_CAP for
-KVM_CAP_DIRTY_LOG_RING and KVM_CAP_DIRTY_LOG_RING_ACQ_REL requires
-cap->flags to be zero per api.rst, but the generic handler did not
-enforce it.
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index e44c20c049610..a2aecc06ab67e 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -4719,6 +4719,9 @@ static int kvm_device_ioctl_attr(struct kvm_device =
-*dev,
->  	if (copy_from_user(&attr, (void __user *)arg, sizeof(attr)))
->  		return -EFAULT;
-> =20
-> +	if (attr.flags)
-> +		return -EINVAL;
-
-[Severity: Critical]
-Does adding strict flag validation here break backwards compatibility for
-existing userspace applications? If userspace previously allocated
-struct kvm_device_attr on the stack without explicitly zero-initializing the
-flags field, won't it now fail with -EINVAL since the kernel used to
-silently ignore it?
-
-[Severity: Medium]
-This is a pre-existing issue, but the commit message states
-kvm_device_attr.flags is now checked "centrally". However, doesn't
-kvm_device_ioctl_attr() only handle device file descriptors?
-
-The same device attribute ioctls (KVM_HAS_DEVICE_ATTR, KVM_GET_DEVICE_ATTR,
-KVM_SET_DEVICE_ATTR) can be called on VM or VCPU file descriptors, which
-are handled in architecture-specific code like kvm_vcpu_ioctl_device_attr()
-in arch/x86/kvm/x86.c or kvm_arch_vcpu_ioctl() in arch/arm64/kvm/arm.c.
-
-Doesn't this bypass the new validation entirely?
-
-> +
->  	return accessor(dev, &attr);
->  }
-> =20
-> @@ -4811,6 +4814,9 @@ static int kvm_ioctl_create_device(struct kvm *kvm,
->  	int type;
->  	int ret;
-> =20
-> +	if (cd->flags & ~KVM_CREATE_DEVICE_TEST)
-> +		return -EINVAL;
-
-[Severity: Critical]
-Similar to the issue above, does rejecting unknown flags retroactively break
-applications that pass uninitialized stack memory in cd->flags when calling
-KVM_CREATE_DEVICE?
-
-> +
->  	if (cd->type >=3D ARRAY_SIZE(kvm_device_ops_table))
->  		return -ENODEV;
-> =20
-[ ... ]
-> @@ -5061,6 +5067,9 @@ static int kvm_vm_ioctl_enable_cap_generic(struct k=
-vm *kvm,
->  		if (!kvm_vm_ioctl_check_extension_generic(kvm, cap->cap))
->  			return -EINVAL;
-> =20
-> +		if (cap->flags)
-> +			return -EINVAL;
-
-[Severity: Critical]
-Will this retroactively break backwards compatibility for applications
-enabling KVM_CAP_DIRTY_LOG_RING or KVM_CAP_DIRTY_LOG_RING_ACQ_REL if they
-haven't explicitly zero-initialized cap->flags?
-
-> +
->  		return kvm_vm_ioctl_enable_dirty_log_ring(kvm, cap->args[0]);
->  	case KVM_CAP_DIRTY_LOG_RING_WITH_BITMAP: {
->  		int r =3D -EINVAL;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701194946.7687=
-31-2-ivanrwcm25@gmail.com?part=3D1
+Yes, but it's not at all clear that ACRN supports advertising itself anywhere
+but at 0x40000000.  Regardless, this can and should be addressed separately.
