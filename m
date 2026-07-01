@@ -1,180 +1,147 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC60C33F5B1;
-	Wed,  1 Jul 2026 10:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C578B3EFD37;
+	Wed,  1 Jul 2026 11:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782903208; cv=none; b=VN6OCoXrOvwBhSsku2J96IFWROZw1L4FJPXXFSUOH8BZYU/mWtOBjt7jk+eYKz03pnYMHMcYT2dhCyMJJ29EH7pu0GsTjwe4pG6vJX6S7bw+Hp0WzygiaetwRU1RL1tbyyfxrAZrAoFndI8ZPL0jHOx/A9t9MNc0QoeI2XJcrZ4=
+	t=1782903955; cv=none; b=IMOpiuSyRhr+lVNd0zGSNLRRY8cXY2L7HjP7/NQBatVp5mUEilMV9akBMoTSIM9bSSqlCmZuKtiGvJhZx7qmepkiAXBPmk251c11oiF7lP+cZfuhaYnAqOxLXwCfbviCd0NeF4gOqbosBFahrjgB9Dl4bg61gBGp6lOuqNlCHxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782903208; c=relaxed/simple;
-	bh=JZ56j9O/E/kb3CIeJoDp5K9QusgKfml7k5WJLhXC098=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MtGyzdnO/hbL6xcGeeB9WBc2r7FYbvWL3sKHj97Zg4AObBFUft4Hz/ANOjgqcJ+JhFeejoGeEEUV5jH7Yic3o1E6zB+i9ybpU74sUyITd7LdHd3IMcxE5PmOTF2KAxGlZorAds0q2wFlSeY4muDDHvT7pzGzbHs6P+8kOLzc7dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kWk13RqK; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1782903955; c=relaxed/simple;
+	bh=T+bIugystx1BDC45M21sJdMyM+in5SsT15xSJ8iZ27k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iWNeekdpsXn3RgjL248o4g6g5ZX/RCdjwIhiZMjh1ts/kfwuNWUX/ScxXr0u5sEYn824sP7BIroPXm37mfpdZ4WiGNXw/8HIzoXmY2HkQEBQ08y7btmhXnapMumR6V1yMpm5eYGfKSdq8bvryB4xFNsTqsCRk6M5MhOf6TvGmuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ItZrKVsz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Pwqfeo4V; arc=none smtp.client-ip=103.168.172.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kWk13RqK"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5D242247;
-	Wed,  1 Jul 2026 03:53:20 -0700 (PDT)
-Received: from [10.57.37.248] (unknown [10.57.37.248])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22C093F85F;
-	Wed,  1 Jul 2026 03:53:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782903205; bh=JZ56j9O/E/kb3CIeJoDp5K9QusgKfml7k5WJLhXC098=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kWk13RqKQ05yF/keJKKAoG2johPDXGZZNyWNrYJu6wcvzr07ub1fzAWpTdwka/E6q
-	 Uq1BFIYlBLNqglC/uQ0SRczjha3tUTsAs/HJXvv8ybID9ynHz/NQIPxK+7xL/QRR+s
-	 NlwIFfzy0G7AW2cO1hqgGlJ/eZ6wnw6/sj9T/I3Y=
-Message-ID: <8c0e6a32-2de2-4b94-9fe2-e32f5e9bcc4a@arm.com>
-Date: Wed, 1 Jul 2026 11:53:17 +0100
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ItZrKVsz";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Pwqfeo4V"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.phl.internal (Postfix) with ESMTP id EDE1913803F1;
+	Wed,  1 Jul 2026 07:05:51 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Wed, 01 Jul 2026 07:05:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1782903951; x=1782911151; bh=S7TBJiUa54
+	KOKCAQ1GMPRZLT8SieeYtP5zVEkMW4AdE=; b=ItZrKVszptxCOJrUVXN3UDIbmQ
+	Eekt1rj6vxSa9TX5Vw7TKbqv/y1kyVEnQMkVrM7ZCSg3lviT01sHX62w9M9vdQ++
+	TfjGo1S5VVxlz3CEJZ0fXVHUvh7oKgGES+n+uIrla6fx3tzRD8ymljbLhhb5mQFH
+	uKKU0IMnnVNWYFSuRBwrZayPgAdg6YX9PjSy27yR6YXsnRcn30YD0QTrr4DZh+W1
+	+Fp/qucHvsz8e39s6OZbjStGb4Dm6FlCi7ZsQyUcAff7dtomIHyCHojCjjQySWBT
+	w30cX0Vr0pzxiRWFXuI8JZP0MCFzNZS/olEt1pzCZPGLY7d+nj/XxaYLo/Gg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1782903951; x=1782911151; bh=S7TBJiUa54KOKCAQ1GMPRZLT8SieeYtP5zV
+	EkMW4AdE=; b=Pwqfeo4Vrye7XBkKmN6LL+/AlsRszFHycwVWecLxDsmULUtmS4x
+	RBnl/qAa8a0P7CEYXzBT/fVheErSW2k5WY2CxLhq5+tF8UiI4pR8RugyDfLYFJd6
+	hHC7GYimBnfRnIHYIy0NOPSNNcFhtnClBbFSLALTG6aK7sTL+xF7522i/VDimVeN
+	69aOroE+SgXRfz/m9Kfo+D1H1ycJbFQ5DiIZY0bKDlT7F343lRE1gB99VgkwDao/
+	ef4++iAKa0pMoSrSpaj68OS2kLykU2ouviMgnvVO2TpGSXhIeoTbgmrCemMY/1U9
+	Hef0in9VEEs9QQmJrH2QgbsnSqh0RKpYXLA==
+X-ME-Sender: <xms:j_REanYDyi8qhIFJjLBx6WNH0iNLYlJ2OYs6x1kq8tp1zBAaRbalVQ>
+    <xme:j_REajnUH3P0jj6x5LdtBn40l9TWOPB_zq-3ef1JkK24xb_EhZIHEHzwiQRzSl-cl
+    P7CEJKUK4hGshmHqAuReZRxxCwzRriIXcRvcweBjYHE-4AS9_bS5HE>
+X-ME-Received: <xmr:j_REaucKfKc291LEnycpjwkNz2bc19v4OvlCtLtT1ObyG-nBBdL_5wzA-EHDBA>
+X-ME-Proxy-Cause: dmFkZTE+8mg3IR1S/qQZa32DtIGlJoWSADNz2iPyzMqQ23r9HmFUb/Q3lf3xbgS4LHx8zv
+    wCiUQ5asqismvQiyd23z3Tk80Xrp/qa/SFf7ZsuwRbwFFeFRCQS+l/PBt5p+jB+5ryRNbZ
+    3H9kpmDIHXDuuU8CjEK+lnKEoUkEM6eDvvb6lo986uExS39Wm/lJtuFmNSAXAclt4KAxHl
+    dgWw/MEF05ri1JO6LPPgcoGPlgX6mXa5uOKFPdddV6g/Tl0oenJBDfmmP9MB+A0oKNJQfa
+    LwEIJJIQCZ1eAX/iGNGEBi5Z3ij9/V3fVP1D0fEJJu0NGqfVptRDFnYX60MGJiHz/u0TXi
+    y/oFCQYXOLwd0bSsUqxALdbC5X/HfXxEDCD3yEA37FH59dTRHNFsy+6Gdd0ovklfbRqLBH
+    QgHsI0hcw+zh1VQ6zSTQwp45bDkolx9jM8Ifu0YUAbX1MYWehXvNHXTgTkS98pxie3LdDS
+    8zH/M09uqCBr5tEAX9PAbEvd4coP/2CYVw0K/+4I+9ZA/YmJTCdetzAm9yOgVkG5gNoAIi
+    hshGIiGuAk6aosBKyE4ce2s0a6wrcnRBPbrlZ7zBsBcT2nl5MLBNUifcwL1gKjCU5dZNUb
+    LZUsycneobx/yjWbZRG57UNz96y2QmwOl04+jbUdeUU4Olb0DoLMtXbaO/SQ
+X-ME-Proxy: <xmx:j_REap01WTb0XFyFU9efRwmzja9qTcJY248nxPJrxnQSaTVxwrs7DA>
+    <xmx:j_REajnHpENh_b_KuHEBXSWdoNMgPBFo3ccHZc8Jp7CC-uso_8G-Pw>
+    <xmx:j_REaiaww7QPh1K8cWEj7jjwV6ZocXPsdC_R8IwxrWVPv4NRSWMfAQ>
+    <xmx:j_REaprAluwxl7VSv-wHJnHwjIe-Vw5mYGT0zXL768WxAr1psa8h0g>
+    <xmx:j_REaizUHYE6wj_x0y7xm8yl7jk3O8ag4a5fV9R7PX7EI5z_18ZmTiYT>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Jul 2026 07:05:51 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Dan Williams <djbw@kernel.org>,
+	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [PATCH v5 0/3] x86/tdx: Fix port I/O handling bugs
+Date: Wed,  1 Jul 2026 12:05:44 +0100
+Message-ID: <20260701110547.764083-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 00/44] arm64: Support for Arm CCA in KVM
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo.Pieralisi2@arm.com
-References: <20260513131757.116630-1-steven.price@arm.com>
- <akR0eX0nCumIgnlh@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <akR0eX0nCumIgnlh@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 01/07/2026 03:15, Kohei Enju wrote:
-> On 05/13 14:17, Steven Price wrote:
->> This series adds support for running protected VMs using KVM under the
->> Arm Confidential Compute Architecture (CCA).
->>
->> This is rebased on v7.1-rc1, but still targets RMM v2.0-bet1[1].
->>
->> The major updates from v13 remain but have been more fully implemented:
->> the RMM uses the host's page size, range based RMI APIs mean we don't
->> have to break everything down to base page sizes, the GIC state is
->> passed via system registers, and the uAPI has been simplified.
->>
->> The main changes since v13 are:
->>
->>  * The RMI definitions and wrappers have been fully updated for RMM
->>    v2.0-bet1. In particular the temporary RMM v1.0 SMC compatibility
->>    patch has been dropped.
->>
->>  * The PSCI completion ioctl has been removed. RMM v2.0-bet1 still
->>    requires the host to provide the target REC for PSCI calls which
->>    name another vCPU, but KVM now performs the RMI PSCI completion
->>    automatically before entering the REC again. Userspace no longer
->>    needs to issue KVM_ARM_VCPU_RMI_PSCI_COMPLETE. A future spec should
->>    remove the need for the host to provide the MPIDR mapping.
->>
->>  * The generic RMI init, RMM configuration, GPT setup,
->>    delegate/undelegate helpers and SRO infrastructure have moved out of
->>    KVM into arch/arm64/kernel/rmi.c. RMI is expected to be used by
->>    features outside KVM, so this code should be available even when KVM
->>    is not built.
->>
->>  * RMI_GRANULE_TRACKING_GET has been updated to work on a range, this
->>    allows it to work when the region is not aligned to the tracking
->>    size. Solves the problem reported by Mathieu[2].
->>
->>  * SRO support has been moved earlier in the series and improved. It
->>    provides a cleaner way for the host to provide the RMM with the extra
->>    memory it requires. However support is still incomplete where the
->>    TF-RMM code does not yet implement it. This is noted by FIXMEs in the
->>    code.
->>
->>  * The ARM VM type encoding has been reworked to coexist with the
->>    upstream pKVM KVM_VM_TYPE_ARM_PROTECTED bit.
->>
->>  * The private-memory documentation now notes that arm64 uses
->>    KVM_CAP_MEMORY_ATTRIBUTES.
->>
->>  * PMU support is dropped for now. It will be added later in a separate
->>    series. Similarly for selecting the hash algorithm and RPV.
-> 
-> Hi Steven,
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Hi,
+Three fixes for emulated port I/O in the TDX guest #VE handler.
 
-> Is there any plan to add support for selecting the MEC policy (shared or
-> private)? We have been working on adding support for this on top of your
-> series. If this is not already in the works, we may upstream our
-> implementation later.
+Patch 1 fixes an off-by-one in the GENMASK() used by handle_in() and
+handle_out(): the mask was one bit too wide for every I/O size.
 
-I've been trying to focus on getting the minimum useful series
-upstreamed before looking at additional features (such as hash
-algorithm, MEC policy etc). If you've already got support then yes
-please do upstream it later when we've got this series landed.
+Patch 3 fixes 32-bit port IN to zero-extend into RAX, per x86
+semantics, instead of preserving the upper 32 bits. To avoid
+open-coding the partial-register-write rules, patch 2 first lifts KVM's
+assign_register() helper into <asm/insn-eval.h> as insn_assign_reg() so
+both KVM and the #VE handler can share it.
 
-Thanks,
-Steve
+Patch 2 touches arch/x86/kvm/emulate.c (it removes assign_register() and
+routes the callers through the new helper), so an ack from the KVM
+maintainers would be appreciated before this goes through the x86 tree.
 
-> Thanks,
-> Kohei
-> 
->>
->> There are also the usual rebase updates and smaller fixes, including
->> changes to the RMM v2.0-bet1 range APIs, removal of REC auxiliary
->> granule handling, fixes to the address range descriptor encoding, and
->> cleanups around realm stage-2 teardown.
->>
->> Stateful RMI Operations
->> -----------------------
->>
->> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
->> the RMM to complete an operation over several SMC calls while requesting
->> or returning memory to the host. This allows interrupts to be handled in
->> the middle of an operation and lets the RMM dynamically allocate memory
->> for internal tracking purposes. For example, RMI_REC_CREATE no longer
->> needs auxiliary granules to be provided up front, and can instead
->> request memory during the operation.
->>
->> This series includes the generic SRO infrastructure in
->> arch/arm64/kernel/rmi.c and uses it for REC create/destroy. The other
->> cases are not yet used by TF-RMM and a future revision will be needed to
->> finish those paths in Linux.
->>
->> This series is based on v7.1-rc1. It is also available as a git
->> repository:
->>
->> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v14
->>
->> Work in progress changes for kvmtool are available from the git
->> repository below:
->>
->> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v12
->>
->> The TF-RMM has not yet merged the RMM v2.0 support, so you will need to
->> use a branch with RMM v2.0-bet1 support. At the time of writing the
->> following branch is being used:
->>
->> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_2
->> (tested on commit 3340667a291a)
->>
->> There is a kvm-unit-test branch which has been updated to support the
->> attestation used in RMMv2.0 available here:
->>
->> https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
->>
->> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
->> [2] https://lore.kernel.org/all/acrj-cKphy4hJsEG@p14s/
+Changes since v4:
+  - Rebase onto v7.2-rc1.
+  - insn_assign_reg(): drop the arithmetic read-modify-write body from
+    v4 and lift KVM's assign_register() verbatim (typed-pointer writes).
+    This fixes the unaligned access / adjacent-register clobber for
+    high-byte registers (AH/CH/DH/BH) that Sashiko flagged on v4, where
+    the emulator hands the helper a pointer offset by one byte. Update
+    the changelog to match.
+  - Cc: stable on the insn_assign_reg() patch, as it is a prerequisite
+    for the patch 3 fix.
+  - Collect Reviewed-by from Binbin Wu and Rick Edgecombe.
+
+v4: https://lore.kernel.org/all/cover.1780584300.git.kas@kernel.org/
+
+Kiryl Shutsemau (Meta) (3):
+  x86/tdx: Fix off-by-one in port I/O handling
+  x86/insn-eval: Add insn_assign_reg() helper
+  x86/tdx: Fix zero-extension for 32-bit port I/O
+
+ arch/x86/coco/tdx/tdx.c          | 10 ++++------
+ arch/x86/include/asm/insn-eval.h | 30 ++++++++++++++++++++++++++++++
+ arch/x86/kvm/emulate.c           | 26 ++++----------------------
+ 3 files changed, 38 insertions(+), 28 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.54.0
 
