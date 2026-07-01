@@ -1,372 +1,195 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6989F23EA83;
-	Wed,  1 Jul 2026 18:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BB44BC00F;
+	Wed,  1 Jul 2026 18:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782929119; cv=none; b=YEvIIpehJEZXtMYxTJ///lItHlep4hybLMi3FrGSNCyGfMIihzhg6qTK2oDooZYffkMboXrsPL4n3eaPZl4vkUEhssL5gMLZrfkC25QvOlK+cn9bfGOxzkuK2CwJmvMhQMcyzR/N69wYy0uo/2GHhMkwx7PEOCt2fi2wV57RDYY=
+	t=1782929227; cv=none; b=eBiIMo6m5xCpB5ChacZjuuhEBqmv2l7gF8eeNGXN0Ao7Vhn0JpALz11+mnrBT1jKM6ERznPcA6XTI2Iq3ETY0Rb76MWKXUXGjBvxV35k4BBD2guhFOsP8a5nB7eYUlCyXK2lg+8WjzHjxIVfLgyPaGGF65YNX3wm9onpBs88I8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782929119; c=relaxed/simple;
-	bh=nLjajmQi1J5FJfayF5TV3rP6NthhUhpRX9w72ZQtJcw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FWMOnfSVa9nBOMTUgHNjeA14pVi745hIa5jEXYHFwh5tfuP3MD7joux4o6HRsYtVYs6a10qXjRxS7HtUEeHC4zLs6bNJ9fgUneiAbLVJleso9WcuGVaLkIwvAvABY/76cGvGN8Y2Hmer0oHvKmiFZnm70ybqBhDjgeYlbRKLp1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gwJJolis; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782929227; c=relaxed/simple;
+	bh=gwar5tNYM6be9xihwD/IsTkYs1Crb719n98SigRiw0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oUughGA2tiUDS6p8e8TflRFSeWkr9U10yByZEPveLy0CsFy7YPiuvK8zA/DkqWNMuelTkWIWl5mjri39BSaOz9xIFNgQphyLAlSY6nrw7GEsAqP/XXFD+aPfb66jAnk1DnTK98dt9X8AJhyJEotwnporbrRZjf/jM6DIzdYr+Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=gcvbEmFN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iOcyrwU5; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gwJJolis"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 661GmeJo1398715;
-	Wed, 1 Jul 2026 18:05:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=shndhi
-	Zek8hzHKFimPlGuQnjukXHCg1p9/th+He453Q=; b=gwJJolis11WcLYk7PLWrbD
-	HCM4cJI50WCrt0kJCDgPusp71oIAGo0euuevQtWE0Ob/zm7u9ROQQlfy8hT45zcD
-	zXyffEExx/JLX5S2q2fIJYv8l7BNPB8q90d87Bu1OmPtElmv3alsPBgj3N7BDIxl
-	hBHF+lONvyzVBR4cVPXCWYl7IROW88UEl5WijPhvwXppXykEOnJJqWQeyQRivZVU
-	YLDk9//RHv5lIr2Vx7qI95D2hbAjGGPH7rM2CkEO1/YjDA6F+l9Rs2CPpyocbNJ1
-	LcH6VwmdGikTHGdEOhMYAJm9PSDeiTchkglA4uDczJHFiP4MCNRp850NbRq0ym9Q
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26n5wyj3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 18:04:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 661I4hiS018051;
-	Wed, 1 Jul 2026 18:04:59 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2u2ggc8w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 18:04:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 661I4tPp47644928
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Jul 2026 18:04:55 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 51A0D20049;
-	Wed,  1 Jul 2026 18:04:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A704F20040;
-	Wed,  1 Jul 2026 18:04:52 +0000 (GMT)
-Received: from [9.39.23.199] (unknown [9.39.23.199])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Jul 2026 18:04:52 +0000 (GMT)
-Message-ID: <08b76ac0-9c01-450a-a54c-bdae7379af74@linux.ibm.com>
-Date: Wed, 1 Jul 2026 23:34:51 +0530
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="gcvbEmFN";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iOcyrwU5"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 27344EC00FB;
+	Wed,  1 Jul 2026 14:07:04 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Wed, 01 Jul 2026 14:07:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1782929224;
+	 x=1783015624; bh=pcS+lZQq4yNpKC+RPjg+DV+HTSzs32SQph4KqdacYYM=; b=
+	gcvbEmFNUOYmmRZUCYW4lLbB7Gx8bs4E60P5PsjgsM6G4bhqQ0YXuoFNICto7csV
+	1KZu49kueMvqznGIi6M6ov/7xmapCpCsy5dBFleuZ0dXJBPaEsU9dBS/kC5l4W1t
+	Dcmu9dgAKOK1x/mDq19yML9GsM7qbz6zvYFcIc9CqYXtSzrZNMh2VwTvHQtizUX6
+	NP3ElZbO5e17bWlIbfRtK8R6KE8w1yB4xLf0mcL3tH4MdaQBtezH6qF1ZCLBVFqP
+	sN0OJcE1aLBTJxq2epQ4vqfaCxXUbFFFd42JOfggPnYf/snzCK9Je9gyTjPX4Omj
+	SjpElNkQuk3Qr7lN+K7sLA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782929224; x=
+	1783015624; bh=pcS+lZQq4yNpKC+RPjg+DV+HTSzs32SQph4KqdacYYM=; b=i
+	OcyrwU5TIggvOJieta1y+pnDr8IlLsmAMmizOzvLsoGY4N/+S1NAsm5Fx/zcPQCY
+	vjRanoGRTjSafIixteb4e3c8TlBNrJiZ2MGa9y3MKov9Zy0m0+RYBky/+WZjbfrv
+	RMeUlV3lc6XSIzMN+RPMEOpIjSVCS63FI4e2LeBbraG+ooAt/sHS+U94XyqGmZ8q
+	8gBPVozyj5bgQretznAMq3fbEPoEZ1WLLnPbqh1PbMlrcEeWSVcN4sSenJWjumRj
+	Ya/gwRGbP+/XKJ4w2xhSGvy1vtU6qd8OBFZtSTdN2mozNrZxIg+Q+AsFKMIe6xnR
+	pQFSDFsY+n+jEtTsavSlA==
+X-ME-Sender: <xms:R1dFavy1rllvAqheCszWFioW3E1RJBsDYYwuG-d6Mgx_-arp5ulQbQ>
+    <xme:R1dFatpinsUib8YbOcw7vSTTZ7UJf6iNEiPGRKqVBHjcUZttSgv4gSxMcDLnLvFGj
+    ZCWzgscG2aRAehvi5YIGCUbiFCkgm1G19dGSizX0w7PolR6-IOr>
+X-ME-Received: <xmr:R1dFalkUKBvnMGvUugt8UqwipjHBZpPl90E01aId7HiTTWIY6F4XbKWTsws>
+X-ME-Proxy-Cause: dmFkZTEsqF3YcRMX1ZByFD9HqbYscsOK9I0FwN8j50pdfvmv36eqfHTwa4zN5nAQHA4qYk
+    nPHLEFUu9x60BiC3L9ob5nuN7E3/c8akgg0Ie5g3eL7MpluAS/YEI81k0QPgOtmixhZ81T
+    26gai6XxLr3SHT8j+tvMCFvHaOnK53LAUjqFN5ATPC1f+pac0e0HrR/0r9CHe77/OaIAQk
+    ZGSmzgNY8j2m7cmK7kDESiGn3Z97yYDSB32vUMKD2SGVK7n4zbMJNLLIr9jgmBtR2AMrt/
+    RdgmXmbfLC+ObQ2R83VT1Bu+PayFWHslz/SQmcMSjp34LRzvSLpXV2Rf3SCKgJLiCU0+qE
+    uwYGBFspkiu6Yv6H1Dow08w9FnCa6Nn6J2wJPQn/mF5GbAkYUgwUvBQ8CMjwr4makqJTLH
+    h8EOBsFy7ajCUOu9o50KtUD6DrWLr81ryvxzEBznUfO9271AKTRV7vX+A7ytkQYQ29FaiV
+    YGDr+ZwndSGqrdsGZfJ6pDT4u7llRzaFmnqLQm6WSclAhJKBTl3gTr2ye8v75vm0Rhop89
+    zLmTRkQUy3ZiOMLWuMYJxlQNFM2KzTLBRVfMAX1fdC5zMAjVJg7C9Wju+cxdJEghdA4FAn
+    2J7hWB3AEn5WIBYtkg2gbojz2jXDEmyLh7mfI4fkjM0Wz1B7U2nl31ZZbloA
+X-ME-Proxy: <xmx:R1dFanU_0ufR96_JOPu5jgonk_ZVxbfGoPQk31DYqoROb_zdFYGkGA>
+    <xmx:R1dFapotTiiSf1Z1RHsjVw9R_vfbjkjZnizKXa77sk2YhJWOqA7T7g>
+    <xmx:R1dFaoUS5AlUKIVQ7cjM_h5kfq__panLvdy4efT4EaDW7WtdbOF3kQ>
+    <xmx:R1dFaqFDSQFuYaYkCih5eMAQCNN1zTtxQxW-uVVm4Tti6ZgMxr9OrQ>
+    <xmx:SFdFahcwd0hPubhQt8LEeu4CzGRyQxeZc0n1ImdCnfgxJQC48l_ls4qj>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Jul 2026 14:07:02 -0400 (EDT)
+Date: Wed, 1 Jul 2026 12:07:00 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Michael Guralnik <michaelgur@nvidia.com>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Christian Konig <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, <kvm@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, alex@shazbot.org
+Subject: Re: [PATCH v10 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH
+ feature
+Message-ID: <20260701120700.58bcafa1@shazbot.org>
+In-Reply-To: <20260630224328.3218796-4-zhipingz@meta.com>
+References: <20260630224328.3218796-1-zhipingz@meta.com>
+	<20260630224328.3218796-4-zhipingz@meta.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] KVM: powerpc/book3s_hv: Use generic xfer to guest
- work function
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        gautam@linux.ibm.com, bigeasy@linutronix.de,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, maddy@linux.ibm.com
-References: <20260626105449.2897924-2-vishalc@linux.ibm.com>
- <20260626105449.2897924-4-vishalc@linux.ibm.com>
- <ba65ad87-2d59-49c3-9b76-7068a9c0dac2@linux.ibm.com>
-Content-Language: en-US, en-IN
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-In-Reply-To: <ba65ad87-2d59-49c3-9b76-7068a9c0dac2@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDE5MCBTYWx0ZWRfX7pKeK+Uf+y/e
- UFZRxFZslFqbtRHL9boRhTVshV7RNV5wJWx0vmJYb/9PZFiiypHUHzi5hTuJuc0Q4egqUb087c2
- zRQjQVxsXEOyLsQgda0bkJuPfdE+VgvfpLW8O2QTf7fXusWhp0fEz/D2YiQgkL1F3f6l/2bVE6m
- FOlbUqZf3ueuD8w4D3KiSmlh7m3vNj3Gk8yGKHTwTE5YEXBRkH00glJ0a3hkkZ0IQQHVBoBS8Kq
- Z8p4bPkCeHiWG8URzyOrdgGddL1xTHiM3cnYzGHyJUSTDv0+GkpJAvxADkYKHsD8UWCBqBtaN0u
- 4C+7H+dwcpHNC5mjreKO6wsBmewReL1vV5rLZDmJZvFjoNmKUzBIbRGxsvSlvmyC/IQ2D9mBAnW
- EnVKOG4OnrFmmYY+bUpNkbqByBrHw/OKuDMasKioBJclKNaOWpKN/lBqzXyuuEiaoiLog/w/JEE
- Q2bZ1N08Hm5OILNw98Q==
-X-Authority-Analysis: v=2.4 cv=V45NF+ni c=1 sm=1 tr=0 ts=6a4556cc cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=e6rxw4hy6MCZb7Uc7toA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: VDK6S743VZ7OE1HVem1gJFUIGIxaMUT4
-X-Proofpoint-GUID: oclSDBocyI5B2lDTuGbqyEJ9fE0R23Y5
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDE5MCBTYWx0ZWRfX4Es0U7GjBnAt
- 9QY0PAoCjUYGiXRbscJWLdpON8ET0r8duQQpwMVUX+1iND4dU8bkNyAbW5Heelv1EJ/M5BjKzb8
- 1yJFcL8LesZh8YIQBvZxnQH4ADO33D8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_04,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010190
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, 30 Jun 2026 15:42:25 -0700
+Zhiping Zhang <zhipingz@meta.com> wrote:
 
-On 01/07/26 11:43, Shrikanth Hegde wrote:
-> Hi Vishal,
-Hi Shrikanth, Thanks for looking into it.
->
-> On 6/26/26 4:23 PM, Vishal Chourasia wrote:
->> Use the generic infrastructure to check for and handle pending work
->> before transitioning into guest mode, replacing the open-coded
->> need_resched() and cond_resched() checks.
->>
->> This picks up handling for TIF_NOTIFY_RESUME, which was previously
->> ignored, meaning task work will now be correctly handled on every
->> guest re-entry.
-Yes
->
-> It would indeed be good if powerpc moves go generic 
-> VIRT_XFER_TO_GUEST_WORK.
-> It does take care of RESUME.
->
-> In addition today, I doubt powerpc kvm works well for LAZY preemption.
-> generic infra will take care of it too.
->
-nice
->>
->> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
->> ---
->>   arch/powerpc/kvm/Kconfig     |  1 +
->>   arch/powerpc/kvm/book3s_hv.c | 58 +++++++++++++++++++++++++++++++-----
->>   2 files changed, 52 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
->> index 9a0d1c1aca6c..36aec58c5f22 100644
->> --- a/arch/powerpc/kvm/Kconfig
->> +++ b/arch/powerpc/kvm/Kconfig
->> @@ -81,6 +81,7 @@ config KVM_BOOK3S_64_HV
->>       depends on KVM_BOOK3S_64 && PPC_POWERNV
->>       select KVM_BOOK3S_HV_POSSIBLE
->>       select KVM_BOOK3S_HV_PMU
->> +    select VIRT_XFER_TO_GUEST_WORK
->
-> This takes care of HV only.
-> Does PR/booke run into the same problem?
-Yes, I would think so, if the KVM vCPU runs inside system.
-> Does anyone out there who runs them still and care about cgroup 
-> bandwidth control mechanism on it?
->
-> It may be worth adding comment that PR still runs into the same issue.
->
->>       select CMA
->>       help
->>         Support running unmodified book3s_64 guest kernels in
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 61dbeea317f3..b012512342e6 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -3850,10 +3850,20 @@ static noinline void kvmppc_run_core(struct 
->> kvmppc_vcore *vc)
->>        * and return without going into the guest(s).
->>        * If the mmu_ready flag has been cleared, don't go into the
->>        * guest because that means a HPT resize operation is in progress.
->> +     *
->> +     * xfer_to_guest_mode_work_pending() is the IRQs-disabled 
->> recheck for
->> +     * pending guest-mode work (reschedule, signals, and 
->> TIF_NOTIFY_RESUME
->> +     * task_work such as the deferred CFS throttle). It is the 
->> pre-POWER9
->> +     * analog of the final gate in kvmhv_run_single_vcpu(), and a 
->> superset
->> +     * of the old need_resched() check: it catches work that raced 
->> in after
->> +     * the drain in kvmppc_run_vcpu(), so a CPU-bound vCPU is 
->> throttled here
->> +     * instead of running one more guest dispatch past its quota. 
->> IRQs are
->> +     * hard-disabled just above, so the non-__ variant (which 
->> asserts that)
->> +     * is the correct one.
->>        */
->>       local_irq_disable();
->>       hard_irq_disable();
->> -    if (lazy_irq_pending() || need_resched() ||
->> +    if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
->>           recheck_signals_and_mmu(&core_info)) {
->>           local_irq_enable();
->>           vc->vcore_state = VCORE_INACTIVE;
->> @@ -4824,10 +4834,24 @@ static int kvmppc_run_vcpu(struct kvm_vcpu 
->> *vcpu)
->>           vc->runner = vcpu;
->>           if (n_ceded == vc->n_runnable) {
->>               kvmppc_vcore_blocked(vc);
->> -        } else if (need_resched()) {
->> +        } else if (__xfer_to_guest_mode_work_pending()) {
->>               kvmppc_vcore_preempt(vc);
->> -            /* Let something else run */
->> -            cond_resched_lock(&vc->lock);
->> +            /*
->> +             * Let something else run, and run pending guest-mode
->> +             * work (reschedule, and TIF_NOTIFY_RESUME task_work such
->> +             * as the deferred CFS throttle) before we would re-enter
->> +             * the guest, so a CPU-bound vCPU is actually throttled
->> +             * here instead of running past its quota. This is a
->> +             * superset of the old need_resched() check. Use the raw
->> +             * helper, not the kvm_ wrapper: signals (KVM_EXIT_INTR
->> +             * and the signal_exits stat) are accounted by this path's
->> +             * existing handling below, so going through the wrapper
->> +             * here would double-count them. The helper may schedule(),
->> +             * so the vcore lock is dropped around it.
->> +             */
->> +            spin_unlock(&vc->lock);
->> +            xfer_to_guest_mode_handle_work();
->> +            spin_lock(&vc->lock);
->>               if (vc->vcore_state == VCORE_PREEMPT)
->>                   kvmppc_vcore_end_preempt(vc);
->>           } else {
->> @@ -4899,8 +4923,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu 
->> *vcpu, u64 time_limit,
->>           }
->>       }
->>   -    if (need_resched())
->> -        cond_resched();
->> +    /*
->> +     * Run pending work before (re-)entering the guest, most 
->> importantly
->> +     * task_work queued via TWA_RESUME (e.g. the deferred CFS bandwidth
->> +     * throttle, which only sets TIF_NOTIFY_RESUME). Without this a 
->> CPU-bound
->> +     * vCPU that keeps returning RESUME_GUEST never reaches an 
->> exit-to-user
->> +     * point, so the throttle is never enforced and the task runs 
->> far beyond
->> +     * its quota. The helper also handles reschedule and signals, 
->> replacing
->> +     * the cond_resched() that was here. It may schedule(), so it 
->> runs before
->> +     * preemption and IRQs are disabled, with no vcore/KVM locks 
->> held. This
->> +     * is the per-reentry site shared by the bare-metal and pseries 
->> (nested)
->> +     * paths, so both are covered.
->> +     */
->> +    r = kvm_xfer_to_guest_mode_handle_work(vcpu);
->> +    if (r)    /* -EINTR: signal pending, exit to userspace 
->> (KVM_EXIT_INTR) */
->> +        return r;
->>         kvmppc_update_vpas(vcpu);
->>   @@ -4916,7 +4953,14 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu 
->> *vcpu, u64 time_limit,
->>         if (signal_pending(current))
->>           goto sigpend;
->
-> xfer_to_guest_mode_work_pending checks for signals too right?
->
-> #define XFER_TO_GUEST_MODE_WORK                                         \
->         (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY | _TIF_SIGPENDING | \
->          _TIF_NOTIFY_SIGNAL | _TIF_NOTIFY_RESUME |                      \
->          ARCH_XFER_TO_GUEST_MODE_WORK)
-Yes, I see originally we only had need_resched() check. will remove in v2
->
->> -    if (need_resched() || !kvm->arch.mmu_ready)
->> +    /*
->> +     * Re-check for pending guest-mode work with IRQs disabled, to 
->> catch
->> +     * anything (e.g. a TIF_NOTIFY_RESUME task_work such as the 
->> deferred CFS
->> +     * throttle) that raced in after the check above. Bail back to 
->> the outer
->> +     * loop, which re-enters here and runs the work. This is a 
->> superset of
->> +     * the previous need_resched() check.
->> +     */
->> +    if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
->>           goto out;
->>         vcpu->cpu = pcpu;
->
-> Copying from the discussion thread at that time,
->
-> """
-> on x86:
-> kvm_arch_vcpu_ioctl_run
->     vcpu_run
->         for () {
->             .. run guest..
->             xfer_to_guest_mode_handle_work
->                 schedule
->         }
->
->
-> on Powerpc:  ( taking book3s_hv flavour):
-> kvm_arch_vcpu_ioctl_run
-> kvmppc_vcpu_run_hv  *1
->     do while() {
->         kvmhv_run_single_vcpu or kvmppc_run_vcpu
->             -- checking for need_resched and signals and bails out *2
->     }
->
->
-> *1 - checks for need resched and signals before entering guest
-> *2 - checks for need resched and signals while running the guest
->
->
-> This patch is addressing only *1 but it needs to address *2 as well 
-> using generic framework.
+> Implement dma-buf get_pci_tph for vfio-pci exported dma-bufs and add
+> VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
+> for a VFIO-owned device.
+>=20
+> 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
+> uAPI carries both with explicit validity flags, and get_pci_tph()
+> returns the value matching the importer's requested namespace or
+> -EOPNOTSUPP.
+>=20
+> Publish and read the TPH descriptor under dmabuf->resv, matching the
+> locking used for other importer-visible dma-buf state. The SET ioctl
+> takes dma_resv_lock_interruptible(), while the callback runs under
+> DMA-buf's asserted resv lock.
+>=20
+> Reject requests the device cannot consume as a completer:
+> pcie_tph_completer_type() must report at least
+> PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
+> PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Make PROBE follow the same hardware
+> gate so the feature only probes as supported when the device can really
+> consume it.
+>=20
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c   |  3 +
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 99 +++++++++++++++++++++++++++++-
+>  drivers/vfio/pci/vfio_pci_priv.h   | 12 ++++
+>  include/uapi/linux/vfio.h          | 43 +++++++++++++
+>  4 files changed, 155 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index a28f1e99362c..c7d6902bc61b 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1572,6 +1572,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device =
+*device, u32 flags,
+>  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
+>  	case VFIO_DEVICE_FEATURE_DMA_BUF:
+>  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
+> +	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
+> +		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
+> +							 argsz);
+>  	default:
+>  		return -ENOTTY;
+>  	}
+> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
+ci_dmabuf.c
+> index c16f460c01d6..8de72f9e7502 100644
+> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> @@ -3,6 +3,7 @@
+>   */
+>  #include <linux/dma-buf-mapping.h>
+>  #include <linux/pci-p2pdma.h>
+> +#include <linux/pci-tph.h>
+>  #include <linux/dma-resv.h>
+> =20
+>  #include "vfio_pci_priv.h"
+> @@ -19,7 +20,14 @@ struct vfio_pci_dma_buf {
+>  	u32 nr_ranges;
+>  	struct kref kref;
+>  	struct completion comp;
+> -	u8 revoked : 1;
+> +
+> +	/* Protected by dmabuf->resv. */
+> +	u16 tph_st_ext;
+> +	u8 tph_st;
+> +	bool revoked;
+> +	u8 tph_st_valid:1;
+> +	u8 tph_st_ext_valid:1;
+> +	u8 tph_ph:2;
 
-Not sure about *2 (while running the guest) part. Here the patch checks 
-twice before entering the guest.
-Once when IRQs are not disabled and once after disabling IRQs.
+Since it seems there will be a v11, note again the comment made here on
+v9:
 
-> I think it is doable for books3s_hv atleast. (though might need rewrite)
-do what exactly?
-> """
->
->
-> A few questions that comes to my mind.
->
-> 1. I think you are doing for both *1 and *2 right? Is *1 necessary 
-> still for powerpc?
-yes, before entering the guest we check twice. Once when IRQs are not 
-disabled and once after disabling IRQs.
-> 2. There is a for loop. What is it doing? Does this still need similar 
-> checks?
->
->         if (is_kvmppc_resume_guest(r) && 
-> !kvmppc_vcpu_check_block(vcpu)) {
->                 kvmppc_set_timer(vcpu);
->
->                 prepare_to_rcuwait(wait);
->                 for (;;) {
->                         set_current_state(TASK_INTERRUPTIBLE);
->                         if (signal_pending(current)) {
->                                 vcpu->stat.signal_exits++;
->                                 run->exit_reason = KVM_EXIT_INTR;
->                                 vcpu->arch.ret = -EINTR;
->                                 break;
->                         }
->
->                         if (kvmppc_vcpu_check_block(vcpu))
->                                 break;
->
->                         trace_kvmppc_vcore_blocked(vcpu, 0);
->                         schedule();
->                         trace_kvmppc_vcore_blocked(vcpu, 1);
->                 }
->                 finish_rcuwait(wait);
->         }
->         vcpu->arch.ceded = 0;
+On Tue, 23 Jun 2026 22:24:54 -0700
+Zhiping Zhang <zhipingz@meta.com> wrote:
+> On Tue, Jun 23, 2026 at 11:17=E2=80=AFAM Alex Williamson <alex@shazbot.or=
+g> wrote:
+> >
+> > Nit, it would be more accurate to say:
+> >
+> >         /*
+> >          * Updates protected by dmabuf->resv, @revoked additionally
+> >          * protected by memory_lock.
+> >          */
+> >
+> > revoked also has an unprotected read, but it's previously existing and
+> > benign, and likely just needs a READ_ONCE() annotation.
+> > =20
+>=20
+> Agreed, I'll update the comment and add READ_ONCE() as well.
 
-IIUC, the vCPU has voluntarily went idle in the guest and it's
-about to re-enter, but there's genuinely nothing to deliver yet.
-So, it parks itself here until, something actually wake this vCPU.
+The READ_ONCE was added, but the comment remains as in v9.  The
+READ_ONCE rationale should be described in the commit log too.  Thanks,
 
-I am not quite sure, if signal_pending() should be replaced with
-xfer_*_pending() check, because vCPU is not re-entering the guest.
-
-Adding the xfer_*_pending() check here will break the loop even
-when other flags causing busy spins (cede/re-enter).
-
->
-> PS: cc'ing me would have helped me to see the mail earlier since you 
-> had referred
-> to the patch I had sent.
-
-Yes. I missed it.
-
+Alex
