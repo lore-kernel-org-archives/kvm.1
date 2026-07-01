@@ -1,138 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B0B38332E
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7619438332E
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782938619; cv=none; b=aLpUkK/fRHKXNfLyvyMYDNshApsN59lkJLbkqSQwAKl5dVra9GVFVxutBXB8iA59tn7C/8WU6F+kr7dIshhix/Vr3OFor5nf7DpVpeEHmch+6FJE2rQbAYp7TBf/3MTsj/8wVt8fmXsri2BjRkedjZtnCNR61Jn2yJ/V8/kuCyU=
+	t=1782938648; cv=none; b=H03uQ8HPsIhVHNMyYrHNrpfk+xrevZS8E/h+licK4tZEryiYZ4qKSZGFkVamB/CPlXR/kGEkrL1KZ+kocpynnD+quEZZcVuBNHh3dwR5pyKeHU7FwJSdR4PUhLgI5x9m9grXeR8hFn1iHsJwktFZUAWUMDq1POA4VmSCV3M+Lag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782938619; c=relaxed/simple;
-	bh=flnzMXEUdYeeLUQNzPH9+LmsQDpzt3ePD5amC80Txio=;
+	s=arc-20240116; t=1782938648; c=relaxed/simple;
+	bh=oJP+in/i18lJrPOUpqVuxVsQjPEcF8LTmnvJMKYr4nw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JsCgLwtz1iIlvSFcWPG1dYKzkp3uUTlkpwGxLQOS0P4mMkEzUYDFpcI4VNwcGnWmsHbT7MMimx1uQdzsmAZ2WPYiw3Yru22DEZ/Da1pggH/UDWNnGy4UGwB0gel3KxL5Q9VC+EZfEqnNYTjf9Zn7DEGhPfLsN7Pa/dwPoBPZ3ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKecsOeq; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gglakdRh7zTT4ik3sbSK8ClwghGuH8uTnOixGLXIG/DFH4O6hqQB8poFBCPCbthLPZEkNETV4FTwz654soWCwSLbSRsiZCTHq+e/BqmBz5VtyihjSJO8trh1mXAYiMuHkXO9f9RzjPR8hVFCHuxMd1plio+e5p1yFbPRvjYbs78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fTNVTDOW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKecsOeq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB561F000E9;
-	Wed,  1 Jul 2026 20:43:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fTNVTDOW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F9A1F00A3A;
+	Wed,  1 Jul 2026 20:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782938618;
-	bh=h+dgLf1m0zB/eH8Ha9k1wCFbNFSwFiozL+eCL7MyZ30=;
+	s=k20260515; t=1782938647;
+	bh=SHmZ0HrsGA7YlwwnGI8hj9wvSkqUoHvpQ1l5M5tX960=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RKecsOeqYQHcMVdmXEJ7kdpSW3hz7q5fi0AlikX/Fmg+JH/7pQD6onVQEnj5p6ZQy
-	 lBmLqVJyanny6ySae1Y77b1HAAPQfwG5EAhhGt0XN1tJZ9qE22zlUJ1C8RfuTxDnfN
-	 eO6XTjTH2dR6df94oNjCNYOsOs4LoxhTXYLYb3Q734RQG99PCOVzdmTNymAGZ5d9Iv
-	 TmgepdopWUy3kiaVKSArbRnjUUvtJNdHMxf2JEATvLOPrO3FhrruLDQWjfRo9hitbW
-	 /XlRjBrwlzXfyFTpFsbuiITs294AYkOJSh4SiLFmEVWcqCt1RFHjZiDr1mGNdrxElk
-	 vIVxPTdMedJvA==
+	b=fTNVTDOW20zsd14WfVJ222/y8KGLKA0bSnk7jBhpb1UxfAeC2krXu72gvz0vxLd47
+	 ratdztxuy0VJq59KUUH3LMVGwndEan4OQ7HjcOkpfDSQpZrQq0P2YG2Be7pfZz1aBX
+	 6i1c3WhrtIesxgHSyInsav0skNjpeLMT1lTvhNeJ6Lyv8IpMdBW9oKI/gwIc8SlKOk
+	 81L1WwnRXPmWRH2LeN/fgin2i/v7VIsxYmsAsJ80Oltw1pQCy6/6EdSSCrFkSglFDe
+	 KpMSFGtetqIqE4pRCVn/iQ1tGkIl84mijdgi1no0TYW/iqc662UQw/SiAXnMMF2XFk
+	 0suS3hw+e61mw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/4] vfio: selftests: Add memfd test to
+Subject: Re: [PATCH 1/4] vfio: selftests: Introduce
  vfio_dma_mapping_perf_test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Aaron Lewis" <aaronlewis@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701203311.326798-3-aaronlewis@google.com>
+In-Reply-To: <20260701203311.326798-2-aaronlewis@google.com>
 References: <20260701203311.326798-1-aaronlewis@google.com>
- <20260701203311.326798-3-aaronlewis@google.com>
+ <20260701203311.326798-2-aaronlewis@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 20:43:36 +0000
-Message-Id: <20260701204337.0EB561F000E9@smtp.kernel.org>
+Date: Wed, 01 Jul 2026 20:44:06 +0000
+Message-Id: <20260701204407.30F9A1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Missing SKIP fallback for hugepage allocation failures.
-- [Low] MAP_SHARED (an mmap flag) is incorrectly passed to memfd_create() v=
-ia memfd_flags.
-- [Low] memfd_create() return value is incorrectly validated against <=3D 0=
-, which rejects fd 0 and leaks it.
+- [Medium] Format String Mismatch (Undefined Behavior) for 64-bit `u64` val=
+ues.
+- [Low] Unused struct `iommu_mapping` definition.
 --
 
-commit ffa43469ab562932001b32361e9549a362e44c3c
+commit ed41e119412fd95d65a62de77183ae8dfc8f2449
 Author: Aaron Lewis <aaronlewis@google.com>
 
-vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+vfio: selftests: Introduce vfio_dma_mapping_perf_test
 
-Add a second test to "vfio_dma_mapping_perf_test" to evaluate memfd
-latencies. A key motivator for adding this test is to demonstrate that
-the IOMMU_IOAS_MAP_FILE ioctl is significantly faster than other methods
-of mapping DMA regions.
+Introduce a tool to aid in latency testing rather than a traditional
+pass/fail test. Start with a basic test that performs a simple DMA
+map/unmap and reports the duration of each operation.
 
 > diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/=
 tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> index 87d84450fc47e..4639bda7ebaa3 100644
-> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> new file mode 100644
+> index 0000000000000..87d84450fc47e
+> --- /dev/null
 > +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+> @@ -0,0 +1,124 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
 [ ... ]
-> +#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _mmap_flags, =
-_memfd_flags) \
-> +FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, _iommu_mode ## _ #=
-# _name) {    \
-> +	.iommu_mode =3D #_iommu_mode,						      \
-> +	.mmap_flags =3D MAP_SHARED | (_mmap_flags),				      \
-> +	.memfd_flags =3D MAP_SHARED | (_memfd_flags),				      \
+> +static const char *device_bdf;
+> +
+> +struct iommu_mapping {
+> +	u64 pgd;
+> +	u64 p4d;
+> +	u64 pud;
+> +	u64 pmd;
+> +	u64 pte;
+> +};
 
 [Severity: Low]
-Does this incorrectly pass the mmap flag MAP_SHARED to memfd_create() via
-memfd_flags?
+This isn't a bug, but struct iommu_mapping is defined and never used in this
+file. Is it needed, or is it left over from earlier iterations?
 
-MAP_SHARED (0x01) aliases with MFD_CLOEXEC (0x0001U) in the memfd flag
-namespace, which silently sets close-on-exec rather than failing at runtime.
-Could conflating the namespaces here cause confusion?
-
-> +}
-> +
 [ ... ]
-> +static void *setup_memfd(int *fd, u64 size, int mmap_flags, int mfd_flag=
-s)
-> +{
-> +	void *buf =3D MAP_FAILED;
-> +	struct timespec start;
-> +
-> +	timer_start(&start);
-> +	*fd =3D memfd_create("vfio_dma_mapping_perf_memfd_test", mfd_flags);
-> +	printf("Completed memfd_create() in %.2lfms\n", timer_elapsed_ms(start)=
-);
-> +	if (*fd <=3D 0)
-> +		return MAP_FAILED;
-
-[Severity: Low]
-Could this leak fd 0 if memfd_create() successfully returns it?
-
-File descriptors can validly be 0 if the test is run with stdin closed.
-Would it be better to check if (*fd < 0) instead so it doesn't reject fd 0?
-
-> +
-> +	if (ftruncate(*fd, size))
-> +		goto out;
-[ ... ]
-> +TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
+> +TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
 > +{
 > +	const u64 size =3D SZ_1G;
+> +	const int flags =3D variant->mmap_flags;
 > +	struct dma_region region;
 > +	struct timespec start;
 > +	u64 unmapped;
-> +	int rc, fd;
-> +
-> +	region.vaddr =3D setup_memfd(&fd, size, variant->mmap_flags, variant->m=
-emfd_flags);
-> +	ASSERT_NE(region.vaddr, MAP_FAILED);
+> +	int rc;
+[ ... ]
+> +	timer_start(&start);
+> +	iommu_map(self->iommu, &region);
+> +	printf("Mapped HVA %p (size %luG) at IOVA 0x%lx in %.2lfms\n",
+> +	       region.vaddr, size / SZ_1G, region.iova, timer_elapsed_ms(start)=
+);
 
 [Severity: Medium]
-Will this unconditional ASSERT_NE cause the test suite to fail on systems
-that do not have sufficient hugepages configured (e.g., for MFD_HUGE_1GB or
-MFD_HUGE_2MB) instead of gracefully skipping the unsupported variants?
+Does this printf format string mismatch cause stack misalignment on 32-bit
+platforms?
 
+Because size / SZ_1G and region.iova are 64-bit u64 values, using %lu and %=
+lx
+instead of %llu and %llx can misalign the variadic arguments. On 32-bit
+systems, %lu expects a 32-bit value, so printf will misread the 64-bit inte=
+ger,
+corrupting the subsequent double argument and producing garbage output for
+timer_elapsed_ms().
+
+> +	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
 > +
-> +	region.iova =3D iova_allocator_alloc(self->iova_allocator, size);
-> +	region.size =3D size;
+> +	timer_start(&start);
+> +	rc =3D __iommu_unmap(self->iommu, &region, &unmapped);
+> +	printf("Unmapped IOVA 0x%lx in %.2lfms\n", region.iova, timer_elapsed_m=
+s(start));
+
+[Severity: Medium]
+Similarly here, does region.iova need %llx to avoid stack misalignment issu=
+es
+with the subsequent double on 32-bit platforms?
+
+> +	ASSERT_EQ(rc, 0);
+> +	ASSERT_EQ(unmapped, region.size);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701203311.3267=
-98-1-aaronlewis@google.com?part=3D2
+98-1-aaronlewis@google.com?part=3D1
