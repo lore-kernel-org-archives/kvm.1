@@ -1,166 +1,181 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1628538F244
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 17:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782926714; cv=none; b=i3vQSfVp1aHXWYwACW8T9/F5gCa7ZH9qrPvCzqjE8SEhUWe951KtIrBW2nRX4mFq6+stpeipViZ7iD1sdLb6knlggGLRjlh1VZrq9/ozlIHU8Ooqmg3HczJ4r5JcTcwN8tkhu9TE6x0AXYZqYsWlUj6i9SPcgT2GDSfLGFySniI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782926714; c=relaxed/simple;
-	bh=uq9mftAVkqg2VPJr4cBMZLEVHMpbU5TYZwZql0DNjWs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HvU9FST0TRFcxKFfWI2y0AwfdIyLjt7lRm2Ut7/mjS+PCM78JGH+68zpSmjSl9qIRyf7TG6lF8gjS5SGgJf0I/UKxPAKcRvY33t7aLpH3Jmh+w9E2VCthxwOTPRfETSUIGx8/6xEcTZbwG3nfCszDqVomh6WnfChaitQBEgzda4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ih0mQw5u; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AB137DAAD
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 17:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=67.231.145.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782928426; cv=pass; b=PoxkhL3oCg4BtDpAeP/geQBL8q/kKA6t7cTcpHlGTZ23TgARB44vq+FVDRQi2kk9K1cLn7zT1HoCeddTzpS74nAaIM3QXdkFbQ5/xyowNd6L0371yy72RASoOdvwOCUMM9Y2TN5bCfklr2SOCEA2o45QZwogmtDlGoNi/7mLMM8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782928426; c=relaxed/simple;
+	bh=6RtQ4aX4MIiDBOUtFN4cE0U13b1ydyIimdMtAEGn2wg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jxygj+bmqtXMFg3/7EOpJu7CB1AuZ1l9c6m9eNG/Op1o+MEL9CLJ+ZORwRx8Wb584AI8INAb/4ZdZsgTe76v4novxBM0UxEqpfrbBHbD/Ya39RT64cTVTxLQrO9nR1H76fZNrnJyCAxKJ+5+NLNs51/llnRp77VymFEGy6Bs9kM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=te9NKp0K; arc=pass smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ih0mQw5u"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c7f385887bso20763575ad.0
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 10:25:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782926712; x=1783531512; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GY/K611H4+IH7+nHcd47WRcy75RcHzOXMZTnRVs6V4s=;
-        b=ih0mQw5uh2TdPR2Z+6ExyuSb8YZ5UD7xG+9oD091SgNasacT5uAxnkKhgiAbNAxwy9
-         S1EiN3IaJ9Wc5nwp2g5NVZPNYG00XZuMTukHEslA7m55QmjO7URhGqa18BWMO0+jHQkZ
-         CANlT6g0FT7KewIBDUeWn2rjceAfLd2SiO7mSyFitbzlszjzL0NZMoPTUa9CMvQ8i9Fm
-         UNCKEmWT8BELaYd2NR5GlfchNxBZQhIEiuZXHCK/JDQ+LfegcGlywgg46OARAja4wRGw
-         4mB11n1U88QPh+cq52mlcg8D6K6IQ1NCAw+6Zu+kzLcJCjZl9B1aHAXT4h9ikAXVWNDO
-         CKrA==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="te9NKp0K"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 661GqLqc600642
+	for <kvm@vger.kernel.org>; Wed, 1 Jul 2026 10:53:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=e7kmcvrJXFeA+SwUp+Q4JZ9GBs/Tu0VczqJ6zfGHtFQ=; b=te9NKp0KSuAB
+	gJAStcqVmXyO90PdrOMhuz1QH+omYd4+Mw3B8TEdXPLJtkYQrsX/45BVNWyEblz+
+	JCUQhK20eJ/NvICPYCtpkvbiKi0EHSaSmpoWEug8KslbHuTVqxo1Cyiq8npvWq8O
+	iWJN4c+SNKe9prCgyypFFuDT+2fW//iCpWAfn5FZiHT3Ma+UfgQldfxu1JwL3wjT
+	puoEMSaFB2J+gLTdLoKhlZdm4JHFAsQvSKn60MMl3h0pRepyXYCBK4DH/emUGdVP
+	7d65A6CTugo700ojlRhKudPV6DZBXhMFm8x8LUWJmnAbgYzkzF4XYX6nodZkJ3HT
+	F2Y7Da8ekA==
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4f48n3x535-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 10:53:38 -0700 (PDT)
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7e7624e584dso1347167a34.2
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 10:53:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782928418; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hF0Dxg075Da8KhXEQnt58Ne1xrjAs9FKKBK54b4TtCSocT/EYmJ2AP/0vfQMtU9ZfF
+         MhptbaQYkbFmWbro3njePzPYIpGfCsGwnfsPex4KasnPwp4Th6XJE4yfiwvvrLtpbfag
+         beR9dGnx6TuGJ6kawpBiqdWqGkYtAbjGIEgQHwjG/WTVXLLsdQUOMIZ1bgLBgZO4WH8L
+         MbKaokESWefD4NWD7RpVzm/IBsdDW3R2kk9ScNbqs7vE21Xu5Du/ZmWkv7l5Kk2vVhZK
+         /eKGLAxIkm56+j3BRPxyzT6yQamoDHQ6VgO6C7yD6/ahbLOEw6wE5+IBL5LLrZyfw4we
+         0/1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=e7kmcvrJXFeA+SwUp+Q4JZ9GBs/Tu0VczqJ6zfGHtFQ=;
+        fh=otB2vlEUxIeixCycL9YcGAx14LdLYNjsWppH4fhHDa8=;
+        b=dlY0bhNU6CmHblLr2nDxUZ1Il+yEmYJjqJX0UplJIyV7fEPU4cwKQkS5bPV1m0D2nA
+         N20tOF7vbL2o+EDPNT3RPQ4W4/j3jVYMHKZ9hJq7eVvLkVXTfI3bUy9+Z06ZE8wwTOMV
+         HVESb8uDp8tub2j1yGyeMF7AYq2zlEMPS61zVhU5zoCvEGquCV7RwA1I5gMbnCHDG3XU
+         Y44uof8R+53pqyNNBbM54TDqwKU0ORYyzi8ffdZnst7DVgVWMvUMGE7iCVZmxGZIMU5W
+         byguCmvSu1p5yUjJQxOraB/Rg0byyu+vMYH9GorNMlzQLfDm+HyLrestMopvo3W+DqDs
+         YOow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782926712; x=1783531512;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GY/K611H4+IH7+nHcd47WRcy75RcHzOXMZTnRVs6V4s=;
-        b=UGv8arAinZXq4F/FfH7e6BJTap1qYmLp/SBM5m18/WcnCB508/DgPPpcTpmdTH3te2
-         xrkccgaK5wxY230PhRaEq0y+WueOw+wJmKNJqODA7y6auyhVVGzVcP8YuEZPpwupnk3V
-         qSkKOU7YsC75fC5cRwuPqErrvNmUH4zTrFMs8XTWZJTCxc6Ntk07Wo9yW2Q7ep+w4sk/
-         zCXnwewuFSs343STrvg2oaY9hEPHPxQY8svWqzDqjMn+LDiCXFrud6l/dSlhBfLmdODk
-         dNfX4/jghO+T3RZ6miKDMxqeBWite8WJjVkF2SRblHLsdW5Onu9FNk5jK8T7ESnahaPu
-         cr+w==
-X-Forwarded-Encrypted: i=1; AHgh+RqGoV7PjxDAWiRAl3RuqT2fm/da4e24h9QekF17Q1im+XSkJgc1qHmZgLiS05MT2+tP0iQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMzGY9ai/Wffo4PA0KeLx7OpuX2iWZ5dlKR6x4dIRIEkS09zin
-	AgarepmkAH+VVoZ2Q3WeZL6JtaCeDgt4jbr6lDYC6XQR3AjqhjzuCP4NBVAYWlhzhek0wKb+jz4
-	gnm0l2A==
-X-Received: from plbky5.prod.google.com ([2002:a17:902:f985:b0:2c6:e595:44e1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4cd:b0:2c9:bd64:8c81
- with SMTP id d9443c01a7336-2ca7e6d9f27mr25313235ad.18.1782926711942; Wed, 01
- Jul 2026 10:25:11 -0700 (PDT)
-Date: Wed, 1 Jul 2026 10:25:11 -0700
-In-Reply-To: <6a445e4be6b12_3a3568100db@djbw-dev.notmuch>
+        d=1e100.net; s=20251104; t=1782928418; x=1783533218;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e7kmcvrJXFeA+SwUp+Q4JZ9GBs/Tu0VczqJ6zfGHtFQ=;
+        b=WZvtLpo+wJF2Fv9Hqq7MbkUf3pj5bRaqECY2nrEI7wqf9e1TmRlt2ad714lkQVnM5h
+         g7HeOdOB3FnkZzLXKjFJm9MVhtDI9t5U3H3bj9LiJnI+H4hQSbBZKI2YWD5lVHy1xoxk
+         RPb/yiVN8ocez7dzcOsq4omzfAH2EmqFGYTtlPtHYBLLl6bPfe7nkLr3Kv3uUYsp1i9F
+         oLTNpwUTMdWnUnYbsDWPiWO4YNT8fvjtWa2yonhjukvEGDXQEN6XBwbAOTpcoFNWKgc5
+         W1zL/eQzHGLmrJz7J9bs+LfhXXSmrTK09pyZCtnusp7obxK9c+4dBvt67rXVnc0VX+HF
+         bVXA==
+X-Forwarded-Encrypted: i=1; AFNElJ/cHwLe0Yj8fK5vxSje7wo6mMpV/Z9+7xmzMBNBbWS+27EfKGACqEQYQXulFyb5mGVwPuI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU+Gq4k2s8flfz3zzdbI7tVOgi/f6JgYn7MsJSv39rpDAjMIjE
+	HTHsYkKBU13Z8+QNOjoavhYLo4KGEX4sSJ+VjjMgu5I4svSnzziPG3hHwO+JqkhuUpajkmdczmE
+	qHkFZSKiqBIht0qCrCnsV5fb4ba6g60oV2wUwPVn6bBZsyQSkqhPLriIEaWeDYUCe+EO5utR/Tm
+	7KtVxB32lrSbxpRY4ETpGKIxYY4Yc=
+X-Gm-Gg: AfdE7ck8bA7iLJFRoeZlLrSpQURo8x3PL3vQI7JgR5eZOGqURvnkAQUuARrzaAvkWzT
+	ooo6iNV6KSU/yNXHGTn+HqNEN50HRrZ6HEeIY2J0UW8h104j/QdeI0WvfQRJbeNRpzWkbBjVUMi
+	D7uDG5m9EXgyc1VbKpJkw23rc9GP4+Rp0qrYo/JllCk28sYSsvu4AEJbzme32IZAu+VymvIxCeE
+	XyFp6JPJw==
+X-Received: by 2002:a05:6830:348f:b0:7e7:62f:727e with SMTP id 46e09a7af769-7eb505175d6mr1172068a34.22.1782928417970;
+        Wed, 01 Jul 2026 10:53:37 -0700 (PDT)
+X-Received: by 2002:a05:6830:348f:b0:7e7:62f:727e with SMTP id
+ 46e09a7af769-7eb505175d6mr1172044a34.22.1782928417437; Wed, 01 Jul 2026
+ 10:53:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-17-yilun.xu@linux.intel.com> <aj1tFuwZWdPGfUoG@google.com>
- <20260629100301.GA1743876@pedri> <akMQ3J6fK3DUBsPH@google.com>
- <23a9173f6e278ca7dfedce3374626c6ea3e1b47a.camel@intel.com> <6a445e4be6b12_3a3568100db@djbw-dev.notmuch>
-Message-ID: <akVNdxCzk-n4bgMv@google.com>
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
-From: Sean Christopherson <seanjc@google.com>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, Peter Fang <peter.fang@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yilun Xu <yilun.xu@intel.com>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Sohil Mehta <sohil.mehta@intel.com>, 
-	Zhenzhong Duan <zhenzhong.duan@intel.com>, Kishen Maloor <kishen.maloor@intel.com>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260630224328.3218796-1-zhipingz@meta.com> <20260630224328.3218796-3-zhipingz@meta.com>
+ <e132eb91-554e-493f-9da2-aff5a538da6a@amd.com>
+In-Reply-To: <e132eb91-554e-493f-9da2-aff5a538da6a@amd.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Wed, 1 Jul 2026 10:53:26 -0700
+X-Gm-Features: AVVi8CfUmWw3yG8Q376o8lxaFsAzKao0Cd3LEJcq9dJNu4sURoDLmPjujqACaso
+Message-ID: <CAH3zFs2tkxA9w-oCr0N4ixe2VupXXQF-cA2o8-fToj6uFyuMJQ@mail.gmail.com>
+Subject: Re: [PATCH v10 2/4] dma-buf: add optional get_pci_tph() callback
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Michael Guralnik <michaelgur@nvidia.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Alex Williamson <alex@shazbot.org>,
+        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDE5MSBTYWx0ZWRfX1Vz1hQAfIekZ
+ 8ZP8f0+4BoQWkRfaJQEYYEz4eFCMrxUoC41d89D1bZnwBC58yHq8MKZFH/vnkBJamX/G6zv7bnF
+ RiAE9bJAGRAelktrf7aeIxwiwaXRjCM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDE5MSBTYWx0ZWRfXw+q5aY1NshUU
+ t+bFqWFpl4otM1tI+hKUfjHC8xONFxoXLU59urf9jlGeTImonZ8mzmWAF+yw+7dWWqzafilA6OA
+ SS986Jtd0wZ0iJBMQ8ZZqI9xV3uY6SEZZbqZs7m680vKyIKoapzceakv52LNYge/FfqpMZBggwM
+ NGcoTW132JmW7CtuITXcmtFe/XIZKlCXk4xmrQdSRMIA8vddtxqwVPZS+f8gr1EhcNNVFnfjIEU
+ wVsENVFX02d/K4q18cxFIMUnWxHWcT3SS5qCi4G8Z6ztHRIxFFwW6xhoOu9nanFvUYStHtgMyNV
+ sKancFYu4v8knOq7zgsOajrIeDCh8HjOtBSLFO2zwCJ/3D5nGzjatic1uahE282l6Za+xM2sl1n
+ 9X8jqF4a5Ez95nanRL6XrhKF3LwOS4pqSf7znb4R0W8mFG8h+yNI/S+iTrPysatHh9EdBV2FnaS
+ h8RVxkfqg8akPxPJrhA==
+X-Proofpoint-GUID: 64AS8TiyZ_3vlf2eWjyvTyyvstnbL2CM
+X-Proofpoint-ORIG-GUID: 64AS8TiyZ_3vlf2eWjyvTyyvstnbL2CM
+X-Authority-Analysis: v=2.4 cv=VOPtWdPX c=1 sm=1 tr=0 ts=6a455422 cx=c_pps
+ a=OI0sxtj7PyCX9F1bxD/puw==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22
+ a=I4J65MU22ScPYueRrkgA:9 a=QEXdDO2ut3YA:10 a=Z1Yy7GAxqfX1iEi80vsk:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-01_04,2026-06-26_01,2025-10-01_01
 
-On Tue, Jun 30, 2026, Dan Williams (nvidia) wrote:
-> Edgecombe, Rick P wrote:
-> > On Mon, 2026-06-29 at 17:42 -0700, Sean Christopherson wrote:
-> > > Answering my own question (though probably poorly), IIUC the answer i=
-s that
-> > > DICE-based quoting is done through the TDX Module, whereas existing q=
-uoting is
-> > > done through an SGX enclave and so was routed through userspace.
-> > >=20
-> > > If that's all there is too this, then why is KVM involved?=C2=A0 I.e.=
- why doesn't the
-> > > TDX Module provide the quote directly to the guest?
-> >=20
-> > That is a good question. The answer is partly historical reasons, but I=
- think
-> > the pros/cons don=E2=80=99t really move the needle too much.
-> >=20
-> > The main benefit of doing it with the host in the loop is that the gues=
-t side
-> > TDVMCALL quoting interface can stay the same. There is also a wrinkle i=
-n that
-> > there is a limited HW resource involved in the quoting,
+> > diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> > index d504c636dc29..7a4c9b0d5dab 100644
+> > --- a/drivers/dma-buf/dma-buf.c
+> > +++ b/drivers/dma-buf/dma-buf.c
+> > @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *at=
+tach)
+> >  }
+> >  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+> >
+> > +/**
+> > + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metad=
+ata
+> > + * @dmabuf: DMA buffer to query
+> > + * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> > + * @steering_tag: returns the raw steering tag for the requested names=
+pace
+> > + * @ph: returns the TPH processing hint
+> > + *
+> > + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
+> > + *
+> > + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
+> > + * exporter does not implement the callback or has no metadata for the
+> > + * requested namespace.
+>
+> Please add something like this:
+>
+> * The returned information is only valid till the next invalidate_mapping=
+s() callback from the exporter and should be re-queried when a new mapping =
+is created after invalidation.
+>
 
-What is this magical resource?
+Thanks, Will do in v11!
 
-> > so we want to do these operations one at a time. Having a mutex on the =
-host
-> > is the KISS way of accomplishing some level of fairness for DOS prevent=
-ion.
+> Apart from that it looks good to me, but I still think we need some kind =
+of example that this works for other DMA-buf users as well.
+>
+> Just demonstrating that this also works with some simple FPGA or similar =
+PCIe endpoint should be sufficient.
+>
+> Regards,
+> Christian.
+>
 
-At the risk of unintentionally causing effecitvely DoS by introducing a sys=
-tem-
-wide lock.
+On v10, I have validated a second importer: another vendor's NIC
+(driver not upstream yet, so locally patched to
+call dma_buf_get_pci_tph). A PCIe analyzer confirms the TLP steering
+tag matches the exporter's for both mlx5/ConnectX-8
+and this second NIC =E2=80=94 two unrelated importer drivers exercising the
+API end-to-end.
 
-> > We should've explained this more, but TBH this solution is *way* simple=
-r than
-> > the initial one that never saw the light of day. So this extra host wor=
-k seemed
-> > quite small compared to what we have been staring at and we kinda overl=
-ooked it.
-
-Simpler for what?
-
-> > The other relevant tidbit is that the TDX module folks have some proble=
-ms to
-> > solve before they can support TDG calls to TDX module extensions. I thi=
-nk we can
-> > get them to though. The question is probably really: do we want the gue=
-st
-> > trying/selecting multiple interfaces, or the host.
->=20
-> tl;dr: FWIW, host, if only because this is one of many blob transports
-> across multiple archs that need host coordination.
->=20
-> While TDG calls to do the same helps a TDX problem it does not generally
-> reduce the Linux problem of multiple archs having multiple blob protocols
-> to shuffle data from host to guest in shared memory.
-
-Why is that KVM's problem?
-
-> The current direction for other archs (CCA, SEV-SNP) and blobs (e.g. PCI
-> attestation collateral) is shift the burden from arch/*/kvm/ to
-> drivers/. There might be a later opportunity to consolidate some of
-> those drivers' internals on a cross-arch generic transport (AF_VSOCK),
-> but there remains a requirement to talk to the host.
-
-Why?
-
-Bluntly, this series is unreviewable.  I've speed read through most of the =
-patches,
-and I have *zero* clue as to *why* any of the design decisions were made.  =
-E.g.
-why is there a common buffer that's apparently shared by all CPUs and VMs, =
-only
-for the API to immediately allocate per-quote memory and copy out the buffe=
-r?
-
-The changelogs are all heavy on the "what", but explanations of why any of =
-this
-is being done, and in the exact way it's being done, are non-existent.
-
-So, back up to the beginning and explain why I should spend any time deciph=
-ering
-this series, because as-is I don't have the interest or the time.
+Thanks,
+Zhiping
