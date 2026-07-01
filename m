@@ -1,131 +1,132 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72943F5BE3
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 09:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D592828CF6F;
+	Wed,  1 Jul 2026 09:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782899291; cv=none; b=oa8js2tct16PsQMhpShla/atxtkSOSIurHT0A/USA5PJtWdswL+N636supMXucCmZ+ZiQ1bXl67YbXJAefDWDVxk5GmbBPge3l0cIij8fw/ucq1LPHXOaeVF18G+kllXoUMY0yJlABKwFmhbIWsWVttifQ517szFU/J6sxUWofs=
+	t=1782899772; cv=none; b=kceDGGS7/QjytITP4egY5hcrlwbN67FoAmo1O66tDplQ0plZQeFL/XYkSBWipAf6gFATAgAPOua6qDwpG7rlbxgNpgHlH//l0Vqhv945jFsqKTuezd0iFJo6JHkowXRLXA+Ezx4lwDxwWk81I7WgBYtdvZNMig33vQ4YVAIbTKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782899291; c=relaxed/simple;
-	bh=QAHqvy9R7O55EL8/sUBZYy1pp/iDzktOlvYcuERAmmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rja+jOC/owiAvKnZfnGt+jPqQ/Z4/WSwWI6lMPQNLTFoREtAwTMWoyq94Itq9B3x2JbIT69XJU0wFbEliPfdYML8sjFI1H2yEmOzoKzjqx9cVEiYAuVHKlslhuhVfE0OElTcJzZwUtXhcm1uJOwJJ3BEAjF56Rotp9mO0HKXCqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qais1FDz; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782899772; c=relaxed/simple;
+	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LL6k1UXjE5Hgp/SbC5GV0H15sXL58BgCl1xFY3MSrSxyVmTNZf4/wXlMoGjuUly4vx/d1xl/uNqdoovM2Tks8EvgHd1vYmyfl6wSVeIHYwE3ZfJukVANhYleT21suTCUfwN4l3msgZyrPlDE8tPf7s36ss5/53gWLRuu71I+Jig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hn05lo+y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qais1FDz"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c9254669d0cso244553a12.3
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 02:48:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782899288; x=1783504088; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MVL4Q3g2uFBrFhtqEHVihrv/zmgdiC+pHWdUndlTmlw=;
-        b=Qais1FDz9/lJFaoN61xhCGSlVDfLj3O5QQINNbMQXr1L1wwsNDXAxdFZNT+u3LyAxS
-         5BOA0Sybx62KZxi7PUvkhYLGsSyvwADzBelrE8Dc/P4LGuNgAhfnBHo5LFlU6Xy5q+m1
-         Jefut49XswC+6hnXr0bP1skem8lMabnn8TL6qoz1Io7gId73wnIqKIxMkeFYQWKMIFvF
-         GsDS08d9ayz99Pik9DyZsux9pyoYtwtXv0YTkP6GvgF2y0QSgN/tkOxmQCK+qIejPo75
-         GbqgFquJk3lHBGi+FcbT+FIOj08R6DGpTB4MihOM8K/bjC2SJwhetT/dkCm8aLgVpd5X
-         Jljw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782899288; x=1783504088;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MVL4Q3g2uFBrFhtqEHVihrv/zmgdiC+pHWdUndlTmlw=;
-        b=ohJQ1KaTF3DHia7iRdPu7eiEIKS5BhL3VPod0A7ou50g8mf/kbfDeum8UhasQuNc6B
-         V71xddFZFZ0iYE5J8veWTeyqbYHhQ9bOSQXO6tNpZ4eaC3gy/8umeAK2cXUudJwZfp1/
-         OEpwjlKATSWA/kqEb9QFo+wzEqwW6cGhElCV9Ew17YAZbEiOGrdmB3IJO9YXb8rH2l6Q
-         rQAbLNiKSa4F/MYThWOk3dsYjdmQm5yWtL6frsVt/lgtXVvI7AouIava9nyLe0qCeP7t
-         w1QeP1ZBt12Yyppeg/ClVTLohpcHoRcKToRv5PdCrL7wn4Jgg1MOXW5ghUqH5pSO0A4P
-         aGxg==
-X-Forwarded-Encrypted: i=1; AHgh+RpaS8fJoNDXwnYVOEHqrE0BDTCbDFqg3UhD3eIfU+AsLt7aI4ZQNZZ7l3qW9H//BD3UkZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaHyHQ0vRzb40ildO4Nb5r8mX9Yim7o2CM28ueDAuZ7PGgdIBE
-	m+j6JKHuyeMb2vVQ4cur6N0diVS44GxyiJ++oma8tRbYGdhDnh1E6vjv
-X-Gm-Gg: AfdE7cmmsxaPDbRQfM088NHklx5hg+D/R9ryh0yAeuTblpwq+XvwBlQUbKm+JxSwYbo
-	+aNBAChHLuAkdYckV8G6n6cwy1CLM41kcoEwdVBjFi/4d1zXM+STaysoVxthfCsg1FxoKcEpCXX
-	YI6S7laK0HnaR4iAYBCCArNe6RLbG/2jQz2LVpw6EDTq5MNmh7fZnt/VfzmYsLIg7MtUocBf7vb
-	mJP/UhP/6BE9GrgPx+lKSdKS5GfGPkux1OSehIcKgUHi83lSR/fDdNwxiKu1KeL9nf0VOVTF42J
-	vYgp93Ml2dMVYR2CqiV+CGr1X5t341PjFqjvUrleg9+EeKH4KL5NAIzZWtd7cPrYpuFtOX3Q1zP
-	KgWbK7secOosfg8+vk7j11m8pE3mD6WLepaurAVj4XKzcP6/ND8w7eiOoGop1ZxYB8HwhNIyGoz
-	v1DV4ElJiOeow=
-X-Received: by 2002:a05:6a00:9aa:b0:847:8250:2b2b with SMTP id d2e1a72fcca58-847c51a497emr24293b3a.52.1782899288038;
-        Wed, 01 Jul 2026 02:48:08 -0700 (PDT)
-Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847a0395a97sm3662539b3a.51.2026.07.01.02.48.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 02:48:07 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>
-Cc: Inochi Amaoto <inochiama@gmail.com>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH 3/3] RISC-V: KVM: Reset the SBI extension when disable it
-Date: Wed,  1 Jul 2026 17:47:30 +0800
-Message-ID: <20260701094731.1022163-4-inochiama@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260701094731.1022163-1-inochiama@gmail.com>
-References: <20260701094731.1022163-1-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hn05lo+y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEB71F000E9;
+	Wed,  1 Jul 2026 09:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782899768;
+	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hn05lo+yqTo162vzSSvmLgoHkc8sZFXTO73a3zpugE032j41FtZRAcgR5cC/mIsWC
+	 oqb+WxZyigte/GQZKBkZXaiYmAep0fVWbliyTXXxFOHdLIA7ZB+tMSio0XPY3sBbJD
+	 xp1cndGs6No9+YfwSniB6tXQcpWnVEn7s0jLOOyrTHsS3hH1QGk++EdC7x7glsCzx2
+	 ooQPJops5d+rLUK2ebXz4gbnEltEwqB5O9z9G9A+zLJBaWmKUz/FSVMRs5+u0CJBcF
+	 9YJUExToRs6x/TXjrPjHcKoRJgS2PsOr32tKYv6tYSwkl+1flbn88u/WCVI5PjKVif
+	 CCXDS3L8jpcpw==
+Date: Wed, 1 Jul 2026 10:55:46 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
+Message-ID: <akThthi2yrXY1meF@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+ <akPrTU96BwQJoygw@pedro-suse.lan>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akPrTU96BwQJoygw@pedro-suse.lan>
 
-The SBI extension validation callback can only fix the parameter if
-the extension is enabled. However, if the extension is disabled after
-modifty some parameters, the state of the extension is still broken.
+On Tue, Jun 30, 2026 at 05:16:51PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
+> > Update the file comment to clarify that both file-backed and anonymous
+> > interval trees are provided, referencing the relevant data types for
+> > clarity.
+> >
+> > Also add comments to indicate which parts of the file apply to each.
+> >
+> > While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>
+> This is fine for now, but I'm wondering if it doesn't make sense to, in the
+> long term, have:
+>
+> mm/rmap.c - common rmap mechanisms
+> mm/anon_rmap.c - anon rmap gunk
+> mm/file_rmap.c - file rmap gunk
+>
+> or even something like mm/rmap/{core,anon,file,ksm??}.c
+>
+> While working on my file rmap patches I noticed there's so much stuff just
+> splurged all over rmap.c - interval_tree.c - fs.h - fs/inode.c.
+> It's a little silly.
 
-Reset the extension when the extenion is disabled so it can have
-a clear context.
+Well, Wei had something like this idea a way back, but I'd rather avoid it.
 
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
----
- arch/riscv/kvm/vcpu_sbi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Firstly, with scalable cow coming, I'd rather us not make anon_vma a special
+citizen in any way, and I'm going to be heavily modifying all this anyway.
 
-diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-index b737e9a7a12a..3eb7b7c57059 100644
---- a/arch/riscv/kvm/vcpu_sbi.c
-+++ b/arch/riscv/kvm/vcpu_sbi.c
-@@ -221,6 +221,7 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
- {
- 	struct kvm_vcpu_sbi_context *scontext = &vcpu->arch.sbi_context;
- 	const struct kvm_riscv_sbi_extension_entry *sext;
-+	const struct kvm_vcpu_sbi_extension *ext;
- 
- 	if (reg_val != 1 && reg_val != 0)
- 		return -EINVAL;
-@@ -229,6 +230,15 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
- 	if (!sext || scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_UNAVAILABLE)
- 		return -ENOENT;
- 
-+	ext = sext->ext_ptr;
-+
-+	if (!reg_val && scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_ENABLED) {
-+		if (ext->reset) {
-+			ext->reset(vcpu);
-+			vcpu->arch.csr_dirty = true;
-+		}
-+	}
-+
- 	scontext->ext_status[sext->ext_idx] = (reg_val) ?
- 			KVM_RISCV_SBI_EXT_STATUS_ENABLED :
- 			KVM_RISCV_SBI_EXT_STATUS_DISABLED;
--- 
-2.55.0
+On the interval tree side, I'm simply going to get rid of the anon side of it
+altogether with scalable CoW also so that can live as it is now for the time
+being.
 
+In general we try to have generalised rmap walk logic for file vs. anon with
+rmap_walk -> rmap_walk_[anon, file]() for one obviously.
+
+But obviously there's separate rmap walker logic for file vs. anon.
+
+I used to harbour a belief that we could make anon like file-backed but now I'm
+kind of thinking that's not possible :)
+
+So I guess the real answer is - yeah, but let's revisit it after scalable CoW
+(and anyway I'm likely to do sensible architectural breakouts as part of that
+work anyway).
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
