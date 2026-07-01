@@ -1,151 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596B13955C6;
-	Wed,  1 Jul 2026 20:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B60628F949
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782938368; cv=none; b=tV7tA25ICIMdrnllipmZwgBnSV/7582EdqoJqaHO96Cxv0sWHRsiQwWIjChNL1QQPhdRhQF5YIxKiE8lcw3/GMmQpcRoGPfJZbtJHkudrdOd+2VYW/ZzqcUEo0b83fHrvKJKYzmFjZRpac8ojG9+GP+QFYj917NIVioH5hrJgl0=
+	t=1782938587; cv=none; b=WhuQ2+EXdIr9eqRMbP8K7mtrUhFDOufu0MtMQoaXRIpFhLeDowr1iu21X9OBErJzdj9Cu7mE56zRlKxMiWRQBgfSMRStT4SMGRwt43ZeiVhz/0dUUMi34gQraUODh+n03qOzzcxOLKAqcT0D22THZC8VaMJ4V/v9rS4zACCkm9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782938368; c=relaxed/simple;
-	bh=K2JyJxCXLtM1eTdlopzD3fjkU2xPZMINicFo0HL5CgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z/uI6peXbqzGKkuQSoY47bCoVaoUXvQ2QpGjsI8+6/YjevlMklLHzRFp9gjRRQHwag6cD/j7dCW7WoLHRKnz4tikoMwbCB3A6lz809c3V7nBlzWMqfzONIHhKPXaZ/qKkFNkE8Cz4nQ+uVXl5d0sTLojADZMYjj1CtrCf4hIiPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJRDi4cw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782938587; c=relaxed/simple;
+	bh=MJHAY/0lOZtESReKmEZbrT/tBa8Uv8X4qGxYXF2Xvm4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=L+GO8RJCbOxoljm8Mp++2NAxqd0VHBBj05PGG5tz5vR1Ptglm6WPR57AnrDwHRmeSzggs7AlmQaO1+6E7w4ygCqoEoLX3yIA7OK/YqQfUjX3hfRkjEk6/+94ptuLGau+OnLlJBbDXqL5rb8h+EtxtBINhDltaAF2aqGC/DrW1Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VwfB1yqm; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJRDi4cw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC711F000E9;
-	Wed,  1 Jul 2026 20:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782938367;
-	bh=f6QVBJJnOqTAmv9bGgn42fUJj2cY0FZxJ1ME1xdC+T8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RJRDi4cwA05SdSW+713uFlPiyHLZCwR49gpm/dBeCn1+LQodBzos5L0rNrOeB3byQ
-	 WYhZPYks9Se42SWieNvBWgUMjEsqBcwWOs4xOFFLRMbHi6ddQDqKg30NUNu0SRnybo
-	 Dxb53nC6CoI0/DRmyz5F3NPVghBQyDdplb73P47xUpH/v/YS8//CW0poBUhA6iC8QZ
-	 umZIFhJEUn1UA3tMpqYUH5xGl95l2jJ2JSaktuQKz/5/5/JCb3OwudfJXCtAean9jS
-	 MjQR6siiOHHeuqOsor+6mVOYZFjNM2kgMm41a5faaSghy28LcMtS8/BW+wK19MQomK
-	 Bdzqn1x2pljIA==
-Date: Wed, 1 Jul 2026 21:39:19 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Guodong Xu <docular.xu@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <chen.wang@linux.dev>, linux-doc@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Jesse Taube <jtaubepe@redhat.com>,
-	Charlie Jenkins <thecharlesjenkins@gmail.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	devicetree@vger.kernel.org, spacemit@lists.linux.dev,
-	sophgo@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v5 08/17] dt-bindings: riscv: Require block-size for
- Zicbom, Zicbop, and Zicboz
-Message-ID: <20260701-squiggle-aging-459cd99cb2dc@spud>
-References: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
- <20260701-rva23u64-hwprobe-v2-v5-8-2c61f94a695a@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VwfB1yqm"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c80f89b64bso16879145ad.2
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782938586; x=1783543386; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ul4KfkOuOrRVfcOqe8UUYQTjm8np2xMi7aWFEy9eSTw=;
+        b=VwfB1yqm00QIqg/S42/9JTfGZe9/EKbHe+FtDGHxY23fc62s9CUL/emsZghT9XB2jY
+         KKl/htZiejIevLAfnxG7JydFsJThnhvaGgQIJhpgnvfQ8U9qLIh8jG5r610gMiwL07GY
+         iKJyMMgxZsPog4eKe+0ZcCH2lVw+kuR29/gFpCQpqFz6V59mkYoMnIIbC7gVQHC1427j
+         pfc3z1nMgrXK0Fy6ryR6V2KhFU/t4upNUlUIilBEuJnHd7v8MB6kbD0Akka0tfj1HBsv
+         LO8qCSxt1gr+p6YLcxmsrKJQ8BZk/m3E6aWM6j+HECBmqY5BYmGZFNGnGBwWuWyBoqJ8
+         9OuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782938586; x=1783543386;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ul4KfkOuOrRVfcOqe8UUYQTjm8np2xMi7aWFEy9eSTw=;
+        b=QBBDEvrBKKG2MKZ/Ebqoj4gtaEsxUeHZ7zLfkqk2i+byXxt2WgX/ENRc4aM7AlIIgs
+         +J2jmk37V+eWFFvsVL4g9toxQpuE5oHP/SM+40q6dHp1dLjWEtF9tMkK/xihnxzmPpw2
+         TS0harS4pgs1LYjG4tAIRkSowNbXQEGcJm1up4vS9EAf9ESZhfohXcer09qAjHyjkPeC
+         Zz+AXcASTnyGl1Sg0dL0NmZIYRJncgRso85e6ctIGIv1mjFc0Ho3OQ8ZZYIle8MU1XSk
+         yyz8ZuVLVLBCvSBpeE+5klVQevbG57jbSWQnconHiZmeF6vmtcsmWFCCpULrullwR1r3
+         ELBQ==
+X-Gm-Message-State: AOJu0YxrgXwLJ8V4mZDlDWHMsesjM/ENR/mRRSJuBLyoJ4HMR3koKECN
+	+a0qR6B7U1EtKCsRRbtcfHDgki/Kc8GbYKAY6UhCqYrNQ5TDksZvZ+Vle4kVktdNX9Mf0CvExdC
+	O7zjQRA==
+X-Received: from plbla16.prod.google.com ([2002:a17:902:fa10:b0:2bd:4b8c:fd31])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e785:b0:2c9:c16f:eda6
+ with SMTP id d9443c01a7336-2ca7e8a899dmr38410135ad.39.1782938585487; Wed, 01
+ Jul 2026 13:43:05 -0700 (PDT)
+Date: Wed, 1 Jul 2026 13:43:04 -0700
+In-Reply-To: <20260701200318.B83061F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dKXZ0SKTAmT4FGH2"
-Content-Disposition: inline
-In-Reply-To: <20260701-rva23u64-hwprobe-v2-v5-8-2c61f94a695a@gmail.com>
+Mime-Version: 1.0
+References: <20260701193212.749551-1-seanjc@google.com> <20260701193212.749551-30-seanjc@google.com>
+ <20260701200318.B83061F000E9@smtp.kernel.org>
+Message-ID: <akV72B0ORjG1rOch@google.com>
+Subject: Re: [PATCH v5 29/51] x86/kvm: Don't disable kvmclock on BSP in syscore_suspend()
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, linux-hyperv@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
---dKXZ0SKTAmT4FGH2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 01, 2026, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> Does this change inadvertently leave the BSP's kvmclock enabled when
+> powering off the machine for ACPI S4 hibernation?
+> 
+> Looking at the final S4 power-off path in hibernation_platform_enter() in
+> kernel/power/hibernate.c, it calls syscore_suspend() but does not call
+> save_processor_state(). Because this patch removes the unconditional BSP
+> kvmclock_disable() from syscore_suspend() and relies on
+> kvm_save_sched_clock_state() (which only fires during image creation),
+> kvmclock appears to remain fully enabled during the S4 power-off.
 
-On Wed, Jul 01, 2026 at 08:52:21AM -0400, Guodong Xu wrote:
-> Zicbom, Zicbop, and Zicboz have no default cache block size, so a
-> devicetree that declares one must also provide the matching
-> riscv,cbom/cbop/cboz-block-size property. Make it required so a
-> missing block-size property can be caught by dtbs_check.
->=20
-> Suggested-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
-> ---
-> v5: New patch.
-> ---
->  .../devicetree/bindings/riscv/extensions.yaml      | 26 ++++++++++++++++=
-++++++
->  1 file changed, 26 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Do=
-cumentation/devicetree/bindings/riscv/extensions.yaml
-> index 5ffc40d599c02..f4dd34d446c02 100644
-> --- a/Documentation/devicetree/bindings/riscv/extensions.yaml
-> +++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
-> @@ -1142,6 +1142,32 @@ allOf:
->            not:
->              contains:
->                const: zilsd
-> +  # All three Zicbo* extensions require their block size property as the=
-re's no
-> +  # default.
-> +  - if:
-> +      properties:
-> +        riscv,isa-extensions:
-> +          contains:
-> +            const: zicbom
+No?
 
-I think the way to fix this is to add
-  required:
-    - riscv,isa-extensions
-to each of these if conditions
-(not got time to test it right now, sorry)
+  hibernate()
+  |
+  -> hibernation_snapshot()
+  |  |
+  |  -> create_image()
+  |     |
+  |     -> save_processor_state()
+  |
+  -> power_down()
+     |
+     -> hibernation_platform_enter()
 
-> +    then:
-> +      required:
-> +        - riscv,cbom-block-size
-> +  - if:
-> +      properties:
-> +        riscv,isa-extensions:
-> +          contains:
-> +            const: zicbop
-> +    then:
-> +      required:
-> +        - riscv,cbop-block-size
-> +  - if:
-> +      properties:
-> +        riscv,isa-extensions:
-> +          contains:
-> +            const: zicboz
-> +    then:
-> +      required:
-> +        - riscv,cboz-block-size
-> =20
->  additionalProperties: true
->  ...
->=20
-> --=20
-> 2.43.0
->=20
+I'm not familiar with the /dev/snapshot interface, but I gotta imagine userspace
+needs to do SNAPSHOT_CREATE_IMAGE before SNAPSHOT_POWER_OFF if it actually wants
+to restore state after S4.
 
---dKXZ0SKTAmT4FGH2
-Content-Type: application/pgp-signature; name=signature.asc
+> [Severity: Critical]
+> This isn't a bug introduced by this patch, but is there a use-after-free
+> risk with the stack-allocated waitqueue head in the async page fault
+> handling in arch/x86/kernel/kvm.c?
 
------BEGIN PGP SIGNATURE-----
+And I thought I had a problem with scope creep during review...
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakV69wAKCRB4tDGHoIJi
-0qZuAPsE7PpkS7Q9Q/QdOXMXVi0vMgDYbeEgMRtzf0lMlv6w6gEA1JDV5vGVvkwY
-e3dZ2Ec1Eq1CjjFHEnDtDfSSbocyhQw=
-=AQmB
------END PGP SIGNATURE-----
+> When a guest task waits for an async page fault in
+> kvm_async_pf_task_wait_schedule(), it waits on a stack-allocated struct
+> kvm_task_sleep_node. Concurrently, when a waker CPU executes
+> apf_task_wake_one(), it unhashes the node via hlist_del_init().
+> 
+> The waiter checks hlist_unhashed() locklessly. If it observes the unhashed
+> state before the waker is finished, the waiter can break its loop, return,
+> and destroy the stack frame. The waker might then dereference the
+> deallocated waitqueue head to call swake_up_one(), potentially corrupting
+> stack memory.
+> 
+> Can this sequence occur during concurrent page fault completions?
 
---dKXZ0SKTAmT4FGH2--
+No idea, definitely something to sort out at a different time.
