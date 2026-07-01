@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C829420342
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 19:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDBE4229C8
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 19:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782934390; cv=none; b=PNU3ZeYVp5YDpZC9th3drI/eEJ8/1QYxWGjdCuFu7kYsBgeHfYukXL1BJZv/Zbd+6nuNERrckhCbPXuziULA9CmHGziaZYSLaCgHDra/jiEkb78xfHqS4knSfC9Z7gSyhWpGhf1Z5Own1YY39DooLP/LCFjlnTou88SYxm7MBhs=
+	t=1782934391; cv=none; b=qwzxnlLKj+IYRe5rirVdjpCS3L5994nw8T9QiT3p03ZDktATFPyNlJrGQNr4M+XlWq3u924IQPV2YByr2aVyCvzvnvTCv24U0ldE44aauSH5Cn1yUQWsGEy/RqZLV4mxjruF2EC6M2ZuUtveSzk5ERiM2DTlgQmfRiXV72b5K9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782934390; c=relaxed/simple;
-	bh=5/4rpGq8pP4WFlnF7BCVmKa3cW2DZdTgtPTfQ+oV+pg=;
+	s=arc-20240116; t=1782934391; c=relaxed/simple;
+	bh=odtTAw4qAyKVMoQOFS9NQKiMBl8SSPflZ8sexqq+tVc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TZ4E7BtYbfTzO3na8WkRx1fy6sQOQS4NMOgTez9wduiqmXPEVLDVa3FQUsaHWDeW31bhFkYQU/sXzpomEjPGvfy32sBs/2tuSiVtaHFmSKxf5Q+SiQOlv5rOG3wNwlCGAiJVlVVsOnpCIdYkJm0zfG2B9aWKEDtJEJeA4BhLgOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLASufuA; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=mJ6tlr1jc+CBtSAnum2ZYvKOI+j+FMjCoG4VwEH173haYV1VAX0Z9uz5+hfa1KABgSmb/imYvGiTSZrZwe16xo3fGvKUPre08PKj6OAtxvs2ZiIS9iBQ/c65yH+AN7OvhaIirW4V8rZqHcwOS7n6S4DSIxv5DjTjXAWk23vZMM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z9pbLP8R; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLASufuA"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37f72223fc9so840065a91.3
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 12:33:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z9pbLP8R"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84622d6102dso1271218b3a.1
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 12:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782934387; x=1783539187; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782934388; x=1783539188; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=p58sqQbLovUVGNo0nSS6BNMoKcJfer5lPY7RvPBWYyU=;
-        b=oLASufuADpfOP1zD987GWRs0yrRBRV79VQcj4d/K2HIOR8FR69NvJORm8Cmcu2y+Hd
-         dide+xgWpy6Kq89BdJtt/DwAud+VolNgrKsntUyONuj3iIwTPrRafeUg3kUju3VCyKoe
-         47Vh2hAwB+GkuTCucloUzoTaR52H0F1BACnxfydzJML3RnlDilMH7As9MzFJB+pcJ8Dd
-         pQhnYtXYDN/j/BD0S2tVPkKK2FsUWCKpHJJF6JH/ZnzLtVgtetDKqIfiC9kxuTdOGDmW
-         /lHkfzegW2tVd0fWB0pH3Nu7R3PP8u8s/FG7zWmjWLMpHgpSO0rJA0RMlgXWtFolEHIL
-         9wYQ==
+        bh=qFfbhUmYyCU6tRW/uev50JnnPJRuq59CtmTnO4qaTps=;
+        b=Z9pbLP8RzwzuKuLzlfrm5Prb7daDS39w3We9CUaV2F7dzjc6vupfNsHYXJ/uNF7kwk
+         1/CQ7RZDZAMKJdACXon7ImfdCh18M3GAaYVJ5JUuOI2qob2Dsuvg2RDEYnbMsP1qHk1r
+         V4r3aOAeOAmlVLsq3rExkfbeX/iZg7F1Jm7MNss9hgyXbbzPLh2YglTzpzAqm70HHsXr
+         +r4oesTjqHEgu94n6ZOkXp5DK/LfSKpT5llxFjm0Grku+sZiy5fLD+XKQ5KE8xTenb//
+         ibgdBS3M/qzvqtJO3yFXP8N2WZfIVjx5edXZeg/w3UvEpsLMZu3rC7y0CG4TbeTmQQzC
+         3bEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782934387; x=1783539187;
+        d=1e100.net; s=20251104; t=1782934388; x=1783539188;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p58sqQbLovUVGNo0nSS6BNMoKcJfer5lPY7RvPBWYyU=;
-        b=aa0Rjgot/XRLKmHYjmhNzbbCTMkMFQw603a8BFoeJL2Gw70cClvDSHCHtw7122GQbW
-         hX0ZDe0qoCcOsVwQezpwJXRB6xdqGKA9VGXymbXLwHk2lfeWP/TXCUM2X0HTeD7C3ahQ
-         IVtDStrqHT2QaKNUNppqoTRhETxp4bHqg6nXlMsnV1ETlNXEPOLHWf3sZYi+cI355pRL
-         GbK7XImUi9aJPozYPqKA3aay2blisiNwX0wsqYys1vJyAo6LzaULB/K6ubLxIvu3PMWo
-         SeJY3vuFjKGf5J4i0SXuRYBKARjkD6LMLYbTpEPNG/evi5+1v9FCPiiDAJ/kNrhxkwco
-         0nNw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr+x9KGTIaO30Nc+NXgD7NJf0ZSRH9MuBNBEwDY/lpqY0XnSAVSAJ8jwg5CllwYMbWzeco=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsQZHhkwNc48ttoUxVPJVhqEz14ucvOE5+wxY8+d9kz6saJlfL
-	FKFpDnud03uRKCe+uJc9w2VA+HU1BSlH1KB06pn4s+oqzr4ikojiqCoGmPJrrECsZpu0B8A0UDi
-	SqQ054g==
-X-Received: from pjbco22.prod.google.com ([2002:a17:90a:fe96:b0:36b:7f07:6fcd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5823:b0:366:3517:1aa2
- with SMTP id 98e67ed59e1d1-380a9e519bdmr3237404a91.0.1782934386500; Wed, 01
- Jul 2026 12:33:06 -0700 (PDT)
+        bh=qFfbhUmYyCU6tRW/uev50JnnPJRuq59CtmTnO4qaTps=;
+        b=oLTBwhUxqllp0zwmo5SvTQd/PG1UU4D+u+uQ+MbKZvagSFYRskkSLWYo/Dk3/PguSa
+         uaWbZtgehWao2bMBPukrjeWjaR8z8wltDAG3e9+9KMVUs2xIqPOc1cq1PaWGlCLBCGWu
+         D5rU1EoRHS5Sk9mWrOYsa+QbCOxU7POxRyCYKTo1hVttWiTGNn+U5ULdYOlopkF2uXGA
+         ridGssP2dQTwox4s7plZbv5Ych30wMFoSrDSs9rTX+rD9j1sRuaPO0ahH9KwemV2PDcs
+         qyp7YS9IGoBhHtcwua6r3y+iKTz4j1XTydpJRPaBW8txzr5hF2sZRWPhHlIL1vTiWQ5h
+         gYRg==
+X-Forwarded-Encrypted: i=1; AFNElJ+WTjq8pw4Dvb8ziUKbIDRjDThJS3Kz7jPST/5msGBNudxzQNsJiWPsO5LZ4tH8lpWJSZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7kwuUxkXi00P/w0FoJTVAhEwYB6sSVHFNnN6FCVBw8jjHbrNT
+	RFoL5vHwrfJy0IfdVx2tws3mMYLLhYozvB0m7pqsJvmU5L7AiKK+1h9ByRuiNJcqwzZ3mxSoLAx
+	3A7P4fQ==
+X-Received: from pfvx7.prod.google.com ([2002:a05:6a00:2707:b0:847:8f34:1b76])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8f0a:b0:847:86d8:5937
+ with SMTP id d2e1a72fcca58-847c51e4a35mr1955201b3a.50.1782934387701; Wed, 01
+ Jul 2026 12:33:07 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  1 Jul 2026 12:31:53 -0700
+Date: Wed,  1 Jul 2026 12:31:54 -0700
 In-Reply-To: <20260701193212.749551-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260701193212.749551-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701193212.749551-33-seanjc@google.com>
-Subject: [PATCH v5 32/51] x86/kvmclock: Move sched_clock save/restore helpers
- up in kvmclock.c
+Message-ID: <20260701193212.749551-34-seanjc@google.com>
+Subject: [PATCH v5 33/51] x86/xen/time: NOP-ify x86_platform's sched_clock
+ save/restore hooks
 From: Sean Christopherson <seanjc@google.com>
 To: Jonathan Corbet <corbet@lwn.net>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -87,157 +87,33 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Move kvmclock's sched_clock save/restore helper "up" so that they can
-(eventually) be referenced by kvm_sched_clock_init().
-
-No functional change intended.
+NOP-ify the x86_platform sched_clock save/restore hooks when setting up
+Xen's PV clock to make it somewhat obvious the hooks aren't used when
+running as a Xen guest (Xen uses a paravirtualized suspend/resume flow).
 
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/kvmclock.c | 108 ++++++++++++++++++-------------------
- 1 file changed, 54 insertions(+), 54 deletions(-)
+ arch/x86/xen/time.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 4bc0495f1f9e..07e875738c39 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -71,6 +71,25 @@ static int kvm_set_wallclock(const struct timespec64 *now)
- 	return -ENODEV;
- }
- 
-+static void kvm_register_clock(char *txt)
-+{
-+	struct pvclock_vsyscall_time_info *src = this_cpu_hvclock();
-+	u64 pa;
-+
-+	if (!src)
-+		return;
-+
-+	pa = slow_virt_to_phys(&src->pvti) | 0x01ULL;
-+	wrmsrq(msr_kvm_system_time, pa);
-+	pr_debug("kvm-clock: cpu %d, msr %llx, %s", smp_processor_id(), pa, txt);
-+}
-+
-+static void kvmclock_disable(void)
-+{
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0);
-+}
-+
- static u64 kvm_clock_read(void)
- {
- 	u64 ret;
-@@ -112,6 +131,30 @@ static noinstr u64 kvm_sched_clock_read(void)
- 	return pvclock_clocksource_read_nowd(this_cpu_pvti()) - kvm_sched_clock_offset;
- }
- 
-+static void kvm_save_sched_clock_state(void)
-+{
+diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
+index 487ad838c441..477441752f40 100644
+--- a/arch/x86/xen/time.c
++++ b/arch/x86/xen/time.c
+@@ -567,6 +567,12 @@ static void __init xen_init_time_common(void)
+ 	xen_sched_clock_offset = xen_clocksource_read();
+ 	static_call_update(pv_steal_clock, xen_steal_clock);
+ 	paravirt_set_sched_clock(xen_sched_clock);
 +	/*
-+	 * Stop host writes to kvmclock immediately prior to suspend/hibernate.
-+	 * If the system is hibernating, then kvmclock will likely reside at a
-+	 * different physical address when the system awakens, and host writes
-+	 * to the old address prior to reconfiguring kvmclock would clobber
-+	 * random memory.
++	 * Xen has paravirtualized suspend/resume and so doesn't use the common
++	 * x86 sched_clock save/restore hooks.
 +	 */
-+	kvmclock_disable();
-+}
-+
-+#ifdef CONFIG_SMP
-+static void kvm_setup_secondary_clock(void)
-+{
-+	kvm_register_clock("secondary cpu clock");
-+}
-+#endif
-+
-+static void kvm_restore_sched_clock_state(void)
-+{
-+	kvm_register_clock("primary cpu clock, resume");
-+}
-+
- static inline void kvm_sched_clock_init(bool stable)
- {
- 	kvm_sched_clock_offset = kvm_clock_read();
-@@ -124,6 +167,17 @@ static inline void kvm_sched_clock_init(bool stable)
- 		sizeof(((struct pvclock_vcpu_time_info *)NULL)->system_time));
- }
++	x86_platform.save_sched_clock_state = x86_init_noop;
++	x86_platform.restore_sched_clock_state = x86_init_noop;
  
-+void kvmclock_cpu_action(enum kvm_guest_cpu_action action)
-+{
-+	/*
-+	 * Don't disable kvmclock on the BSP during suspend.  If kvmclock is
-+	 * being used for sched_clock, then it needs to be kept alive until the
-+	 * last minute, and restored as quickly as possible after resume.
-+	 */
-+	if (action != KVM_GUEST_BSP_SUSPEND)
-+		kvmclock_disable();
-+}
-+
- /*
-  * If we don't do that, there is the possibility that the guest
-  * will calibrate under heavy load - thus, getting a lower lpj -
-@@ -183,60 +237,6 @@ static struct clocksource kvm_clock = {
- 	.enable		= kvm_cs_enable,
- };
- 
--static void kvm_register_clock(char *txt)
--{
--	struct pvclock_vsyscall_time_info *src = this_cpu_hvclock();
--	u64 pa;
--
--	if (!src)
--		return;
--
--	pa = slow_virt_to_phys(&src->pvti) | 0x01ULL;
--	wrmsrq(msr_kvm_system_time, pa);
--	pr_debug("kvm-clock: cpu %d, msr %llx, %s", smp_processor_id(), pa, txt);
--}
--
--static void kvmclock_disable(void)
--{
--	if (msr_kvm_system_time)
--		native_write_msr(msr_kvm_system_time, 0);
--}
--
--static void kvm_save_sched_clock_state(void)
--{
--	/*
--	 * Stop host writes to kvmclock immediately prior to suspend/hibernate.
--	 * If the system is hibernating, then kvmclock will likely reside at a
--	 * different physical address when the system awakens, and host writes
--	 * to the old address prior to reconfiguring kvmclock would clobber
--	 * random memory.
--	 */
--	kvmclock_disable();
--}
--
--static void kvm_restore_sched_clock_state(void)
--{
--	kvm_register_clock("primary cpu clock, resume");
--}
--
--void kvmclock_cpu_action(enum kvm_guest_cpu_action action)
--{
--	/*
--	 * Don't disable kvmclock on the BSP during suspend.  If kvmclock is
--	 * being used for sched_clock, then it needs to be kept alive until the
--	 * last minute, and restored as quickly as possible after resume.
--	 */
--	if (action != KVM_GUEST_BSP_SUSPEND)
--		kvmclock_disable();
--}
--
--#ifdef CONFIG_SMP
--static void kvm_setup_secondary_clock(void)
--{
--	kvm_register_clock("secondary cpu clock");
--}
--#endif
--
- static void __init kvmclock_init_mem(void)
- {
- 	unsigned long ncpus;
+ 	x86_init.hyper.get_tsc_khz = xen_tsc_khz;
+ 	x86_platform.get_wallclock = xen_get_wallclock;
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
