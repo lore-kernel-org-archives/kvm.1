@@ -1,108 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319112E718F;
-	Wed,  1 Jul 2026 14:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE69A3446C0
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 14:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782915752; cv=none; b=YD69aW2cP/Fuf9iAsGum+0K0CcgSBNDP4A+k+tXRqrF5MK5rOufE5EoeEcTwaPgswwxtpxfb+3pNtDDK77B35KtTm+P8cObs0DHY17eNClOi8Wlb5e+6kXtEAgpTcJDudOD9hFJBXqX0N/aAVKgBCBtSdHO2DYWo+HxrHvBcBaU=
+	t=1782916087; cv=none; b=YzgD8407S2pexFgQ69OB3ibL19z9VaaflkNJ3Ts6n+gKWmRC5iLesrFIj0DG10jyvIEweyeTU2kD8cMKgEQdCNtgEVBKp5qTZ8FxeMXoQk2Y8ntoV7xDimkjg/5tXH/GM465wTM9wqGpVtJ9I3CXYAW+FgrjlTlxb3GJIbD6Fpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782915752; c=relaxed/simple;
-	bh=pUVoqaf3yR2fGL7+sy119A3Wys2CCgPBVAfgLXlvIaU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=siMAdIz3+300Y9fiL0UhB/oYvXqUiUR7L6J9jx3AMTfp8uvz8KukpD9J3AWL3NM6ekHcXfLY89lBSY2iPgSjuXQs5ww1ysj30QDn0+DB8wQFNTMqPuBVGX7yJFFITrzTSiGyxSwOChnHwZ31JZcfJ/e/gKdIouU91NmDKTVU8Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=miYv6y+A; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782916087; c=relaxed/simple;
+	bh=5ew/42B4Jt8XUgSR0qzNVkoNj1X9e/Rmpc6KW/G7P8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bmrwng9M81IVts8c1QMQQEmJr2RY+VszRbirEIdoX84giHaqIEtd5QWdrchSF/iyR8xIqiD3HYsEBL/EvRKWvZ/HC2UxdubuphtoDY/fQplEucPTtS8yN6YColMwAKstalPy38GhHjU1FyKg7jjwbIBRpV1fbfSr1sudn047H0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=frdtDOjK; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="miYv6y+A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A575F1F000E9;
-	Wed,  1 Jul 2026 14:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782915750;
-	bh=8yTJxssIaLikMoxDEWEoO3zvRFqHjgS1dpCIsoBmQcU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=miYv6y+AIqSQmaZkXYkguOvOnfelmb8XgnPxKZ9u2k7qLf5FPC5jYgCGOOIEEYJtr
-	 5laughCl8tLmcuisVr2bj8aUJW06Dv8A82GsF4JNNdz/SkCbuUY+dM0bki8q93/hNw
-	 fp+Lq0XDY7Fz+P71WR/WTugT25cHrgKft/sXMVKGNhgvXy0BJjAnn+trBByYWId8Qe
-	 8Z4ioVf5DuRHLv4NjP81g9XOgHJftdzGyTYSsg2OIqtV0EicRpFXlfR0gbSmH9tBMq
-	 vI5BiLSdVkY129fTuiZcqrgWekCboVbOzyv7bw5PpBdNpbD9t0L5SmEG0WeO+Qqt1D
-	 7xILLYxKgHbnQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 15/17] riscv: cpufeature: Introduce ISA bases bitmap
- and rva23u64 detection
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guodong Xu" <docular.xu@gmail.com>
-Cc: kvm@vger.kernel.org, robh@kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org
-In-Reply-To: <20260701-rva23u64-hwprobe-v2-v5-15-2c61f94a695a@gmail.com>
-References: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
- <20260701-rva23u64-hwprobe-v2-v5-15-2c61f94a695a@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 14:22:29 +0000
-Message-Id: <20260701142230.A575F1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="frdtDOjK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=xO
+	TFH5k6Ji9MYeLzPy0mbMBJQbUtBCk8vx/09Io1rFs=; b=frdtDOjK47uv7+Ltf1
+	Lg0ueCfpZzwoRXHLsnvnc1x9nWu9Kvmx/61Bp2s/8sbDqpDEdtrLbMUZUcXhR34z
+	I0LPI23IhMlo1/53toeEKnAaWUnfeg+3vH38uxjQbdbi7eErGDEPsRW3Oo+/1j4K
+	KQcsTzTIwPbYM5fM/7oszvySA=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD35mzeI0VqYpWYGg--.10116S2;
+	Wed, 01 Jul 2026 22:27:43 +0800 (CST)
+From: Jinyu Tang <tjytimi@163.com>
+To: kvm@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Jinyu Tang <tjytimi@163.com>
+Subject: [RFC PATCH 0/2] PCI bus/CPU address translation for MMIO
+Date: Wed,  1 Jul 2026 22:26:52 +0800
+Message-ID: <20260701142654.483659-1-tjytimi@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD35mzeI0VqYpWYGg--.10116S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr45Jry3uFWrKrWUtF13urg_yoWDCrX_uw
+	1xCrZ5JrWUXFZrCFWYywnxtryUC3y0yF4DJ3Z5Xr1fGFyqyrnxGw1UtFsrW3WrWrs0yryD
+	Wr93Gr1xZ343GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRENBMPUUUUU==
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC8R-rZGpFI981ggAA3F
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The RVA23U64 base detection wrongly mandates the legacy broad `B=
-` extension superset instead of its required bitmanip constituent extension=
-s (`Zba`, `Zbb`, `Zbs`).
---
+PCI BARs contain PCI bus addresses, while KVM MMIO exits and ioctls use
+CPU physical addresses.
 
-commit e73d8757f0ce7270b4b39989368d4e83e5a355fc
-Author: Guodong Xu <docular.xu@gmail.com>
+kvmtool currently assumes that these two address spaces are identical.
+That is true for the existing default layouts, but it breaks once an
+architecture exposes a non-identity PCI MMIO window to the guest.
 
-riscv: cpufeature: Introduce ISA bases bitmap and rva23u64 detection
+This series adds PCI bus/CPU address translation hooks with an identity
+default, then wires up RISC-V to exercise a non-identity PCI MMIO window
+through a new --pci-mmio-cpu-base option.
 
-This commit introduces a per-hart and host-wide bitmap of conformant ISA
-profile bases, such as IMA and RVA23U64. The bitmap is computed during
-init by riscv_init_isa_bases() and registered as a subsys_initcall.
+Jinyu Tang (2):
+  pci: translate BAR addresses for MMIO users
+  riscv: allow a non-identity PCI MMIO CPU base
 
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeatur=
-e.c
-> index 4c3bf813af052..fa8471aef42ee 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
+ include/kvm/pci.h                   | 17 ++++++++++
+ riscv/fdt.c                         |  2 +-
+ riscv/include/kvm/kvm-arch.h        |  5 ++-
+ riscv/include/kvm/kvm-config-arch.h |  4 +++
+ riscv/pci.c                         | 49 ++++++++++++++++++++++++++---
+ vfio/core.c                         | 25 ++++++++++-----
+ vfio/pci.c                          | 31 ++++++++++++------
+ virtio/pci-legacy.c                 |  6 ++--
+ virtio/pci-modern.c                 |  2 ++
+ virtio/pci.c                        | 25 ++++++++++-----
+ 10 files changed, 133 insertions(+), 33 deletions(-)
 
-[ ... ]
+-- 
+2.43.0
 
-> @@ -1304,3 +1307,90 @@ void __init_or_module riscv_cpufeature_patch_func(=
-struct alt_entry *begin,
->  	}
->  }
->  #endif
-
-[ ... ]
-
-> +	/* RVA23U64 */
-> +
-> +	/* Supm with PMLEN=3D7 */
-> +	if (!riscv_have_user_pmlen(7))
-> +		return;
-> +
-> +	__set_bit(RISCV_ISA_EXT_F, ext_mask);
-> +	__set_bit(RISCV_ISA_EXT_D, ext_mask);
-> +	__set_bit(RISCV_ISA_EXT_C, ext_mask);
-> +	__set_bit(RISCV_ISA_EXT_B, ext_mask);
-
-[Severity: Medium]
-Does this incorrectly mandate the legacy broad B extension for RVA23U64?
-
-If a RISC-V device tree advertises the RVA23U64 constituent bitmanip
-extensions (e.g., zba, zbb, zbs) but omits the legacy unratified 'b'
-string, it appears this check will fail because RISCV_ISA_EXT_B won't be
-synthesized. Should this instead check for the individual constituent
-extensions required by the profile?
-
-> +	__set_bit(RISCV_ISA_EXT_ZICSR, ext_mask);
-> +	__set_bit(RISCV_ISA_EXT_ZICNTR, ext_mask);
-> +	__set_bit(RISCV_ISA_EXT_ZIHPM, ext_mask);
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701-rva23u64-h=
-wprobe-v2-v5-0-2c61f94a695a@gmail.com?part=3D15
