@@ -1,144 +1,126 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702FF492532
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 16:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634751B4F1F;
+	Wed,  1 Jul 2026 16:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782922171; cv=none; b=rJ6qupL4xUxudn83gMNcGoJHLEbBnF3yL9anFcgreHQTd10Sgs9Q85qGplHGep+4lhl2br00EU3zPXH1E9Ww76fw5PuosU4hgttlT9kf5HKjwynCiYFoNUvxoX+7S/8FDg94qyeS5aZAG3c1rBJ4Xe7oKjDZF089VUp51HM20D8=
+	t=1782923110; cv=none; b=F3oRFyQJHm0zaiSXzFxDsqr6suxV9ei00Ifkeb+oDyRflm3wZCpTFNXrtH/lAAtxxZru3HPM34j3x4G2n5f6FK/U2eTa2G3nef2LAfjdgZN/sBljzZd5Q3pRUuyxnfiDPy4T1ZRlL+TBGvcOypQJbNqiv+cLOBWn64EXbWzllu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782922171; c=relaxed/simple;
-	bh=PZdjWM7sO+nieQyt0RiywxeCxZBtDRu0HUNeH72ZpVs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oPXTbYr0knxOkmnubmQ5IpUXOTaAbYJgia/eiLRxyUqv0u6wq9wJLHJXiSn5VI8EV8nH3vVoOoS/uvUTeCFAqSJEUjcubYO0PtMWIWw/d8CNOw5N5HogO+wpe2JYuqCzyuabwfT4ekUbbMgA6p67EbsQeUsShPXm/8jORMit5e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FRheYWg2; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782923110; c=relaxed/simple;
+	bh=lqsOJR/BbSNegBOyjPqkgkptv5bfw+hMnCbYPjLHsXA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RtcTCfkakgVt8pIH6G+v0IuXWd3KL6YAjM2bMmzZTlQVZYCIpbJdgvvDaXMS5AIBVG1TaEC4Vkum8D/VNeXpu529Fx2yHcQboyFXJAAkK56kIXxtss2MSlv+GHw3rljBRyK8isugHxJ9gw5QEhSKWO1zBHiZbwUOghqi6ceSXQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cC0aCr05; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FRheYWg2"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-38096457d3aso983739a91.2
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 09:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782922170; x=1783526970; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fb46jkRTl6zwGFz7DUfAUgbXgotI+sXKJjyrZvcz3JQ=;
-        b=FRheYWg2+u/d6OdGw/gZUSY4H+/LH75+ctJGPzMkU/tbBN4cCcXKUE1OcjKZtsfb1M
-         iVfLOhqxBH5zcx5m5J0LTdF9aVN4C1Gyn0LqUUKGoF9vc/Mi1t1kjQYispMayc2KY7Gf
-         0ulidEQv0PQAAQv6BXZ1wM53CtD+DeamxWtom/lwTspHqvO1CgqJjzbH4NT9DTMkSKzM
-         5s9VQXqtK4IPMhFNVtep3D0WK/+0S3DhNJnWXnZe9XsH2ogomSSf7/0KgNk3lO+RDih9
-         5zH2AzlbWhClTZPEOZ3yZ+JlOJeYo4a2veXdHLgrELGHHEHFRO8PYqY6f9MHFvylj7wo
-         FM8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782922170; x=1783526970;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fb46jkRTl6zwGFz7DUfAUgbXgotI+sXKJjyrZvcz3JQ=;
-        b=Au7RXIezDaQDMvWumkpjX99vf7Cmh4ffQQc5595cV91QAcFQ1P3zsOLxsgIlIRZuzk
-         A57UAa5FAjDfzvSOpBFLZijZVgeBTPQxSrUJMm7dpRdir3DYCv7WG43K9j4vak9pO8Ks
-         mhTeCNuS3jqDl0fjoGsnA0gl6flXEZtMtojmbw5W/G9UyuSZVgdHtmqDbQhTvGuv6o9e
-         c36tvE2MmGHXMb2gWxkzuOohMT9Jm2WOJoO8DWkOsofOpeQ7OBlNq43ovnhTS8anvmlu
-         VwN+G0zV5+0w9K+yJLDpEZsaDS1mnqEU4bm01C9bAGjISjma79/zXcHWQS6nJwY5WO8f
-         TCIQ==
-X-Forwarded-Encrypted: i=1; AHgh+RozeKiQCNYRnCipve+Prajao6NsIHRNOXAoHCTYkv7kF3rF2UJvLtuV+cuQh1OBORS02FM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxcD3VF3Q7NBjI3h5cm4CbVLsF23+7n9wE+9nq2KGYLEFUNrzl
-	xTQMX3+K5xqMJXU4wlcoIHgptST4m1haWocmvGKEyFlJwN2qWxC2XX8doDu9ZdyTcqHR56qPpH5
-	Z9NGloA==
-X-Received: from pjbnl12.prod.google.com ([2002:a17:90b:384c:b0:380:8669:e33b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c03:b0:37f:9ce3:ca96
- with SMTP id 98e67ed59e1d1-380aa20dab8mr1881109a91.31.1782922169200; Wed, 01
- Jul 2026 09:09:29 -0700 (PDT)
-Date: Wed, 1 Jul 2026 09:09:28 -0700
-In-Reply-To: <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cC0aCr05"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBF31F000E9;
+	Wed,  1 Jul 2026 16:25:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782923109;
+	bh=cDSawky3ccQXP0+xdI0mkHoa6RVjDOuv9wr33ov+yPg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cC0aCr05PUAY79FDqayuKE5r+0ONeK+qXDsAOGkeUFxKheIYSFtQWXxvvNvh0ROV1
+	 HfpyF9cLqarZ01mw7BxhGdiovHNjDTFvXg+GJcpd/vpB+W3NtF3pxJbQws0aNSEAi6
+	 e2/TU3cDVDg6WUwM/qjurLKHtqc2MEW0XKOU8GHV3OG7fQG/8aFnPPDBIrJoy+hjQQ
+	 7JG35tcSOn07NTOCmkqstG7EQZ3AWsVllvpGS6yi+drQt2+jwsgItBhK9Tvyqs06+v
+	 47lz7h9hFu0oGlGKr0F1xXB6vx94JLxdVh3M1NHjfgyb2+ZuS1BEkPVI7jg9N0GxNQ
+	 5445tVNPArwfA==
+Message-ID: <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
+Date: Wed, 1 Jul 2026 18:25:03 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com> <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
-Message-ID: <akU7uAKb5E_Tklx-@google.com>
-Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2
- ioctl
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
+ registration
+To: Pankaj Gupta <pankaj.gupta@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com,
+ dave.hansen@linux.intel.com
+Cc: bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
+ yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260701144543.39582-1-pankaj.gupta@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260701144543.39582-1-pankaj.gupta@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 01, 2026, Xiaoyao Li wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> > @@ -4969,6 +4973,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
-> >   		return 1;
-> >   	case KVM_CAP_GUEST_MEMFD_FLAGS:
-> >   		return kvm_gmem_get_supported_flags(kvm);
-> > +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
-> > +		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
-> > +			return 0;
-> > +
-> > +		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> >   #endif
-> >   	default:
-> >   		break;
+On 7/1/26 16:45, Pankaj Gupta wrote:
+> commit 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering encrypted memory regions")
+> added FOLL_LONGTERM to sev_mem_enc_register_region() so anonymous guest RAM is
+> migrated out of MIGRATE_CMA/ZONE_MOVABLE before a long term pin. This breaks
+> virtio-pmem which has file backed (MAP_SHARED) host mapping where GUP rejects
+> FOLL_WRITE | FOLL_LONGTERM since:
 > 
-> this looks inconsistent with the
+> commit 8ac268436e6d ("mm/gup: disallow FOLL_LONGTERM GUP-nonfast writing to file-backed mappings")
+> commit a6e79df92e4a ("mm/gup: disallow FOLL_LONGTERM GUP-fast writing to file-backed mappings").
 > 
-> 	case KVM_SET_MEMORY_ATTRIBUTES2:
-> 		if (!gmem_in_place_conversion)
-> 			return -ENOTTY;
-> 
-> Well, the check of
-> 
-> 	if (!kvm_arch_has_private_mem(f->kvm))
-> 		return -EINVAL;
-> 
-> is buried in the following kvm_gmem_set_attributes(). How about moving of
-> kvm_arch_has_private_mem() check to put it along with
-> gmem_in_place_conversion check in kvm_gmem_ioctl() in Patch 13?
+> Drop FOLL_LONGTERM when registering encrypted memory regions and restore
+> the previous behavior.
 
-Me confused, patch 13 already adds the kvm_arch_has_private_mem() in
-kvm_gmem_set_attributes().
+But that breaks the original issue of breaking ZONE_MOVABLE/CMA?
 
-That said, the ordering here is wonky and misleading.  A cursory read of the series
-would make one think that waiting to advertise KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES
-makes it safe/ok for KVM to plumb in support for KVM_SET_MEMORY_ATTRIBUTES2 over
-multiple patches.  But that's not actually true, because the ioctl becomes live
-the instant the code exists, userspace doesn't need to wait for KVM to formally
-advertise support.
+If it is a longterm pin, it must use FOLL_LONGTERM. :/
 
-To further confuse matters, it is actually safe/ok to iteratively add support,
-because it's all effectively dead code until "Let userspace disable per-VM mem
-attributes, enable per-gmem attributes".
+I assume we fail in check_vma_flags()
 
-So, I think we should go a step further than what I think Xiaoyao is suggesting,
-and fully squash patch 17 into patch 13.  That way the reader doesn't have to jump
-through as many mental hoops to piece together what is happening.  It'll obviously
-be a bigger patch, but should be easier to review/understand overall.
+	if ((gup_flags & FOLL_LONGTERM) && vma_is_fsdax(vma))
+		return -EOPNOTSUPP;
 
-Oh, and that combined patch should carve out error_offset straightaway, so that
-the full uAPI can be reviewed in a single patch.
+IIRC, fsdax cannot tolerate unbounded pins. Is that the case we are running into?
+
+How does vfio deal with that? (does it?)
+
+-- 
+Cheers,
+
+David
