@@ -1,141 +1,146 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844F03A5433
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 21:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA953F5BC3;
+	Wed,  1 Jul 2026 22:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782942464; cv=none; b=uyilwGn2XoC8XbiFHAb3wn8hDLpxo/dKnYdk8Dmunp/9flgnQwdKPmLb5hGE6gCw+SsWiYWhkGioRqv+jQuqe66NB48bg2S8IPnoX9NSJbQY8XSlMZBJ0uxShEY/aEo1KpayewcSzvFlag/AD9VYFdidF6W1s0/n9fjxJrAQrHw=
+	t=1782943635; cv=none; b=Lgdip7Q4RaVmXOGervUBkmNDGKVDvRapjw0I4gxI+0SDk2KVLBlIYCfjKfMwLE4H/G5ufgOWTmr/Xan3TrEhPbpMUMo+Qk2ShUYxhv4MTkWcZBCvKYgUxD0FzX4KNPn2uJq8eafv7GwZhzOwWpdm53vdMunDlTwMtUMJPUtXrZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782942464; c=relaxed/simple;
-	bh=s6Cr8zkyzrstP1cxKPxKWWNP4yvLxKRkyvcOWVE4+90=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gzWiWtx9uKO1Dk6wCi9Fwq499CaXD/13BxLpMEke+Pn2DQbw5RN2jlqcMVAz0InSqhcS1MOgVOtlOKWdpymq9AesbRPfZIGNrOQTMVWiE6FopN19D0PcEa/6M9oVhpiljkfDC0L7X/nrun4il7FwC4eG4aTb2GKnIHEIGf1RMEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rVpsp6AZ; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782943635; c=relaxed/simple;
+	bh=AbAiagAJwRat9D7ch8WTO33ofDAFaMYT6mWvFoC2sIo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oINLJOODtgU2dajunTtB40iSVZUhO78Ue2iQPgCByboI44CzhgBqyZRkP3FMQ93JwPJu7eXlaLdBaIHsfftQJ+74dQ4Di1H5veZ//OqO2TeYnin9asaqBk9lr4MZAY+djdntZZuEPdhC3Db9Z3qWLPnnpXl7PXFC+lCfRBRJW4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YkRYPQBw; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rVpsp6AZ"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c804e38c65so21351385ad.2
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 14:47:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782942463; x=1783547263; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zcs7QN5Kd/BsLm+PUgFcojzf1bXkoGYIJwLkqkM7zHA=;
-        b=rVpsp6AZSOy/NLznGTKp2Pw0DZ0B+eF94ddmhpHVgoxEcys5CrnXYKghzp3ABlufZF
-         1g5AedcwCOYpu8w4IjF2J9wDkww5bJFp6KEUHRuqyno36Noz4OAjLa8DUFJL8n/YdrqU
-         a8VxfcQAbUtpiBel3y07+M6myY0PYPjLlRtpS8nLFQbkUYuL94DgIpp475jnWAjq+Wdh
-         hUizv2HLC1hdwRwlSccQzYDddIQjKqlMWg17WvSQvPMQZhz3F5Pr6qdiD6wVTVYXpSk1
-         fOzpNm89My0UVP3OTI+55vYxTZqldejdJeDdcz8IT1pm2o6o1txbfhCvM9OzVmeDxkME
-         bf/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782942463; x=1783547263;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zcs7QN5Kd/BsLm+PUgFcojzf1bXkoGYIJwLkqkM7zHA=;
-        b=dy4747k6ZSh2RTTIGczqgLF4xTQ8PzYwvpfnDveHFtELEzZLH990nrdBo0BIhv5TZ5
-         2ao59WrSp4Nhq7S7b9sIbuU5gnbi0LlE0fq6nBkaShvk8qE3b2kcBW4CzzUSQ4fIXBy8
-         +QVggnXDMR/AKUoFwLsdmO9MkIY4kk9OZYm+P2cQOVGrzSsajue3Xip/1yojwVmAbuok
-         gjXN87NHiKRMw0l/b6vuy1syD2n0z0gzZM1ssHEGJc/lrhGaszMSo3eAn9H0vB0mpNNi
-         SQ7l7fAlOEYqgYogOcXC5ciZny4mvOyJTGcXyAXH/aYcaSuCR1/T7AdSWGDda36K3bpU
-         K9wQ==
-X-Forwarded-Encrypted: i=1; AHgh+RobdF9GlzND+nxH3KSo0plnXSha1t/mCQwX/RIbkc22w23jX/fXCUvnbb5uqCfXx/VF08U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybKwC8LHHr8ATv6iqvZi4vbkiigYRLDQUHeX2hplspQNkkVGh2
-	N4cT6i9eSdNwKxb6Q9vgPXdlKJnUCEm0F6TaDDZ2/bIfi3L1vBqE2UkiGAdRjMaK6XU+6Yx4czq
-	vty+SXA==
-X-Received: from plzv3.prod.google.com ([2002:a17:902:b7c3:b0:2c8:7fe:29ac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:32cc:b0:2c9:c083:cd49
- with SMTP id d9443c01a7336-2ca7e69dfe3mr34635215ad.14.1782942462488; Wed, 01
- Jul 2026 14:47:42 -0700 (PDT)
-Date: Wed, 1 Jul 2026 14:47:41 -0700
-In-Reply-To: <20260608145455.89187-9-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YkRYPQBw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782943629; x=1814479629;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AbAiagAJwRat9D7ch8WTO33ofDAFaMYT6mWvFoC2sIo=;
+  b=YkRYPQBwu+AwmlF7zOL1tMreA7wkycpMpEbRsNpjsI5AfqZfNyJGWoeW
+   uauEYdz4aJtX1NBdu/yoxPvseoxtCvFY/24fzzpgu/eAruVh0cWM4RQ9Q
+   Mj23ay03FPzhYhfz/6iUo9zPCNN9yW1KOLhSE1slI2fkLln98fChOzZUj
+   sNyECt991sjLf4UzKRYbjDCgGVix6+EfEyeDPSWfcj4jEYgPVozlXbIus
+   4qS5wmJkEx8LzD42AUoF8luPV0avclrLfF2DQbjcBxYpGiYpr7GJOglh6
+   hUO5a9QhhPZjNWTxWm1d74RENbh39L+veCo6EBUe6fuFvTBn4jyTtdrWk
+   A==;
+X-CSE-ConnectionGUID: xpa3ezeVRpGQYlQUJ2rjsA==
+X-CSE-MsgGUID: LP4xoudMS+O5YeHpLfvfJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="82804467"
+X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
+   d="scan'208";a="82804467"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 15:07:08 -0700
+X-CSE-ConnectionGUID: hAQ5CNadQ8SCx6PBZsM4Ug==
+X-CSE-MsgGUID: 3kf4NTiJQ9mniKylGJGRFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,142,1779174000"; 
+   d="scan'208";a="256600910"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.110.90]) ([10.125.110.90])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 15:06:49 -0700
+Message-ID: <e06806e8-7334-4533-b1a3-e1efbe3fab8a@intel.com>
+Date: Wed, 1 Jul 2026 12:56:19 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260608145455.89187-1-dwmw2@infradead.org> <20260608145455.89187-9-dwmw2@infradead.org>
-Message-ID: <akWK_duG7ZsIekt7@google.com>
-Subject: Re: [PATCH v5 08/34] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the
- documentation on TSC migration
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/17] x86/virt/tdx: Prepare Quote buffer during
+ extension bringup
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
+ yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com,
+ adrian.hunter@intel.com, kishen.maloor@intel.com,
+ tony.lindgren@linux.intel.com, peter.fang@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ dave.hansen@linux.intel.com, seanjc@google.com
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-9-yilun.xu@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <20260618081355.3253581-9-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 08, 2026, David Woodhouse wrote:
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index c1897d939da9..6337f9b9d7ac 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5930,6 +5930,9 @@ static int kvm_arch_tsc_has_attr(struct kvm_vcpu *vcpu,
->  	case KVM_VCPU_TSC_OFFSET:
->  		r = 0;
->  		break;
-> +	case KVM_VCPU_TSC_SCALE:
-> +		r = kvm_caps.has_tsc_control ? 0 : -ENXIO;
-> +		break;
->  	default:
->  		r = -ENXIO;
->  	}
-> @@ -5950,6 +5953,22 @@ static int kvm_arch_tsc_get_attr(struct kvm_vcpu *vcpu,
->  			break;
->  		r = 0;
->  		break;
-> +	case KVM_VCPU_TSC_SCALE: {
-> +		struct kvm_vcpu_tsc_scale scale;
-> +
-> +		if (!kvm_caps.has_tsc_control) {
-> +			r = -ENXIO;
-> +			break;
-> +		}
+On 6/18/26 01:13, Xu Yilun wrote:
+> For simplicity, let all guests share a global buffer. Build the buffer's
+> HPA_LINKED_LIST at Quoting extension bringup. This saves a bunch of
+> va-to-pa conversions at runtime.
 
-Uber nit.  For consistency with KVM's bizarre pattern here:
+va-to-pa conversions are not expensive. Even for vmalloc() memory.If
 
-		r = -ENXIO;
-		if (!kvm_caps.has_tsc_control)
-			break;
+I don't like the global buffer. It just generally seems like a bad idea.
+It needs locking, it wastes memory when nobody is doing quotes, etc..
 
-> +
-> +		scale.tsc_ratio = vcpu->arch.l1_tsc_scaling_ratio;
-> +		scale.tsc_frac_bits = kvm_caps.tsc_scaling_ratio_frac_bits;
-> +		r = -EFAULT;
-> +		if (copy_to_user(uaddr, &scale, sizeof(scale)))
-> +			break;
-> +		r = 0;
-> +		break;
-> +	}
->  	default:
->  		r = -ENXIO;
->  	}
-> @@ -5989,6 +6008,9 @@ static int kvm_arch_tsc_set_attr(struct kvm_vcpu *vcpu,
->  		r = 0;
->  		break;
->  	}
-> +	case KVM_VCPU_TSC_SCALE:
+Is there a way to do this without vmalloc()?
 
-Another stupid consistency nit.  Probably do this?
+Could userspace provide the memory and then the kernel just does a gup
+to keep it in place while the TDX module is writing to it? Or, could it
+just be allocated:
 
-		/*
-		 * TSC scaling information is read-only (it's a reflection of
-		 * the TSC frequency, which can be set by userspace).
-		 */
-		r = kvm_caps.has_tsc_control ? -EINVAL : -ENXIO;
+	void *buffer = vmalloc(size);
+	mutex_lock();
+	// talk to TDX module
+	mutex_unlock();
+	vfree(buffer);
 
-> +		r = -EINVAL; /* Read only */
-> +		break;
->  	default:
->  		r = -ENXIO;
->  	}
+	return ret;
+
+That actually has some nice properties. It doesn't require locking for
+the buffer. It also penalizes folks doing lots of quotes. If you hammer
+on quoting, you hammer on the memory allocator and TLB flushing code and
+slow yourself down more. If you hammer on it from multiple threads, it
+gets even worse.
+
+That seems like a feature not a bug.
