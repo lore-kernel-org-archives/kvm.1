@@ -1,129 +1,96 @@
-Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A6F3BFACE
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 07:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E4D3CAE75;
+	Wed,  1 Jul 2026 08:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782892382; cv=none; b=lRIlqCqjzjVH3GL/gZw0K9tsZUQc16SAz2+IbX+R6eQIAGoL2giCeL4dMuPz1t/udlBCn/S8BkOMDPhB/kOOAJvJjob1HZZHu0J0GzgUTqY7pmv0VlG/1W1jzCZIfxhA1UFT5QtZBof3y49iZJ4YneSqnZf/PDTplZtSMusn6M0=
+	t=1782892968; cv=none; b=phyn/raNzdmPidfQLT7OahVYHb2NVyBvzGCoODioXoKk81p7WCxfsE+kZ+/wGiX+ff8+F/HuRNdkW/9o9feFBxuHB8RaGxedE4CIVjul+tWDdMcI5XIRJvD96cKST1fkRA1xmqYYp6l9KONxQA3SBJd2kGiFBKyG6O/ajNlHvoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782892382; c=relaxed/simple;
-	bh=PqVmucT/+U6UL39ZVNO8iSgump03Go9bnfbgSBn2Zlc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CxTytwJkfMQh5nm0I8mKX92Mgb0hqmXF1r2ONndISMYvxVO5WfeSBD64h70bUVOipppIDK8NIkvBX/rCjt11EUm4DAjPXV2fZ1h5CmZ+JrHqKfE8FbCu6LADm66AvVPyfQDT+E5bKpRWV9/5NenQlmfsCzrtyp+uFhvyPDjYl2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FXNrM5lE; arc=none smtp.client-ip=74.125.228.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782892968; c=relaxed/simple;
+	bh=gs91U4urshrpyhxajeGAiyZrHp+mWkTmV2lV7ilyUlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L/RGeYvO8vSA+O5fyStlW4g7Fs3GqLa+qQfMDLD0GfcIlcxAIDHwtL6DeLWwmVWvtfQWoqZ2Prl6tRyv7mgRaA8699qvHXMnAtLWz7jZD+1JAb24FeDM80oJW5P9b2aDq1XLo0LV3jyggxQt1uIUzOUt//FGcLmDIFNNjP5m+2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BA7Nbj73; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FXNrM5lE"
-Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-c96739a46acso131352a12.1
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 00:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782892381; x=1783497181; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=puBKmxakpyuhyti8JVghjO1VLPpzeh7Dz9u+N6AR8/o=;
-        b=FXNrM5lEqXGSbVArrpOu7bpeeGaDiYGEXJCcww2gQfZ2KRipnItc9M+ZgY0rZL1DWJ
-         epN1v1jkojQggTd5Q4rMQ5Fifph6EJtHoFqXQvPbfuYvbsTfIbqQ1y/ETst+iZgbymPj
-         2BetxzmLxopGHyoynRXCap7MhyLzXxhkjHtTWNIik0XrvZZEJcIopk+layY1u9bN2TMh
-         5+nio1H8mExstk8+jE5H/rPf+3gfJaAvrg4FQX3FQ3eN403MjJtrbWfEhBIr6PgKzuMJ
-         z1IDsiv7SUo9GubsF7LctxkB5czjTj45fjzBqn/B7DnMGXVc5LdVZ1f5hjDvEMosJS7J
-         X8dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782892381; x=1783497181;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=puBKmxakpyuhyti8JVghjO1VLPpzeh7Dz9u+N6AR8/o=;
-        b=PzyYpM9wHRvEf0G7ExlpNkkTWlUFHO2IWPfZ3iOukIbCQpV9Viu05+qd9nrdFmTWj2
-         Hz9IahebhvHtPqPTjYn2v4xM2SwHb6PyZkdS0xYVhWYovuBY5twxQnQs35zZzr63uVAW
-         igDqeJ5hjIhj9w2OqYYW1+dVZiCylmz388uYwSo9YTjFdvg3pNcK3+DdsKdG44QicQZb
-         fOpEAvFaM4JCbDubWU/ckwjgzq/iNPfG37XD2rjgFu9z/hv4sqstyTpm7m1BPSS+Bbiv
-         PdicqxWPEuhaptyx4mobP776Ii5N3tgYPTCNiIFgpl0aRJr1s7B/7Fx68gX9N6RGJ/09
-         TqrQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpfQDHrvub5+fbB/uszQ2S6hvig8ndgvJA5bWLQ+hg+58Y14fMePQZGxsaw8VAc8M7QTaE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZdjeY5GUpy4n3kiEoycKRrYu+7teu4l+CMUCeE/Dg07KmvDch
-	aYSUY1qgD1pgYbIOgrSLkUKn5PPv+lbWzrFfp8IgDb0lkiAxvfjXcwwIkAS0eWMeAJcMk2inoNB
-	Tyw==
-X-Gm-Gg: AfdE7clbHLlPUeDfVZoyYBOW3CqSE8cpkA/ebexdWI5WeKFjztxvfwvUOHcrrBSMXLB
-	MML86sJIZiCwvpmy2xTztajQvC+54zEZBhhy0FtL+7h1oeP2vGN4+ONtbm8hd5Bec0CWSdfVjqb
-	22swYziBh2UUXG5FOS3PoTmyvdhzxsFtvu4qBRnn14qoOUwyx9beGMVlUarasgJEwjlgTEVSi7d
-	Xqnp8I/Y+nqiw30dePzpoCJYbYlAiK3NjwDBzsJ/UnUpqnJanscnzIQ/fZTJRnKhE6NuZ7H4voQ
-	l0pcM7vCfqui94+vv+v6lomYxpUVUMBWpfa+sAxdH4cmgarb8yN5N+Dekp2BU2ZsPb7GHNl7k0b
-	p2sba3A2mi+aIH3l6ZkRYBq1hvtrwJfcaMXPjGQVQK6Yu1SoPodgd8TGmPyfVDm1LsSYWc7M8bM
-	utrDAJF3/KoYB5QS/3cm653iHnJEsqMTk=
-X-Received: by 2002:a05:6a00:3d56:b0:845:e9e5:cdec with SMTP id d2e1a72fcca58-847c097e705mr532613b3a.62.1782892380950;
-        Wed, 01 Jul 2026 00:53:00 -0700 (PDT)
-Received: from wud.bbrouter ([2409:8a1e:9473:9f10:5de9:783b:c249:18c5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8479ff8f959sm3608232b3a.3.2026.07.01.00.52.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 00:53:00 -0700 (PDT)
-From: "Dylan.Wu" <fredwudi0305@gmail.com>
-To: anup@brainfault.org,
-	palmer@dabbelt.com
-Cc: atish.patra@linux.dev,
-	pjw@kernel.org,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	zhouquan@iscas.ac.cn,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"Dylan.Wu" <fredwudi0305@gmail.com>
-Subject: [PATCH] riscv: kvm: Skip preventive hfence.gvma for new G-stage mappings with Svvptc
-Date: Wed,  1 Jul 2026 03:52:39 -0400
-Message-Id: <20260701075239.95542-1-fredwudi0305@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BA7Nbj73"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782892966; x=1814428966;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gs91U4urshrpyhxajeGAiyZrHp+mWkTmV2lV7ilyUlk=;
+  b=BA7Nbj739I6rccnQQUGD60TN1cv5Z/BNAI6yG73QCCiWIL0dKkH//cK8
+   3033NXk7Atqf+MlXNAkyOBkXFW2urzpV7jnHtrnesej7gCH0Vm5ydxvlV
+   hC4+CddjsfNWF2jkpOr9Kd4c0MVp1qg3iWBJ4pk/c2IRwgHhfK1UQZdIi
+   Ju+kHczvZ4p0rR2G73UvmRvJgUgfxatiKoHJ6d93oEekE7MsJksidB5BN
+   +hbVTy4pZQ15J+QKuMuwipTbMI7iQfrZIq6xNvz71T6n61HvK2QPfEBUO
+   XQVyqHqgtrFIzAfFQg9wJTiIKy0VhNESrUtqjhExC4aK57VlkM1rLkOJs
+   A==;
+X-CSE-ConnectionGUID: xnvuQhIwSSKNhXzKK0xxwA==
+X-CSE-MsgGUID: goTLXkIfSuSdacgKU1Ld1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="109163585"
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="109163585"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 01:02:44 -0700
+X-CSE-ConnectionGUID: RGH33WRNQVmSpOZLXBWB1w==
+X-CSE-MsgGUID: m+yLhzAJS6yr8hx+8z+Gxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="249848219"
+Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 01:02:39 -0700
+Message-ID: <323a9a1a-6cf9-4a68-b92a-867f497b3d34@linux.intel.com>
+Date: Wed, 1 Jul 2026 16:02:36 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL
+ INIT_MEM_REGION source
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Sashiko Bot <sashiko-bot@kernel.org>, Joerg Roedel <joerg.roedel@amd.com>,
+ Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>
+References: <20260630213711.479692-1-seanjc@google.com>
+ <20260630213711.479692-3-seanjc@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260630213711.479692-3-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For Invalid->Valid G-stage leaf PTE updates, the flush in
-kvm_riscv_gstage_set_pte() is preventive. When Svvptc is available, new
-valid PTEs become visible to the page-table walker within a bounded
-time, so an immediate hfence.gvma is unnecessary.
+On 7/1/2026 5:37 AM, Sean Christopherson wrote:
+> Return EINVAL instead of EOPNOTSUPP if userspace attempts to pass a NULL
+> pointer for the source page of INIT_MEM_REGION, so that KVM's ABI is
+> consistent between TDX and SNP (for LAUNCH_UPDATE).  EOPNOTSUPP was chosen
+> to be a forward-looking error code for when guest_memfd supports in-place
+> conversion, but even when in-place conversion comes along, it's an awkward
+> error code as KVM is deliberately choosing to disallow virtual address '0',
+> which is technically a legal userspace address.  I.e. it's not so much a
+> lack of support as it is that KVM reserves address '0' to simplify KVM's
+> internal implementation.
 
-Skip gstage_tlb_flush() for that case. Permission-restricting updates
-continue to use the existing flush path.
+Nit:
+Do you think it's worth calling this out in the documentation?
 
-Assisted-by: YuanSheng: deepseek-v4-pro
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Dylan.Wu <fredwudi0305@gmail.com>
----
- arch/riscv/kvm/gstage.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> Opportunistically move the check so that it's co-located with the other
+> checks on the userspace address, and so that it's more obvious that a NULL
+> source address is explicitly disallowed.
+> 
+> Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+> Cc: Yan Zhao <yan.y.zhao@intel.com>
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index c4c3b7956..7b805112d 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -10,6 +10,8 @@
- #include <linux/module.h>
- #include <linux/pgtable.h>
- #include <asm/kvm_gstage.h>
-+#include <asm/cpufeature.h>
-+#include <asm/hwcap.h>
- 
- #ifdef CONFIG_64BIT
- unsigned long kvm_riscv_gstage_max_pgd_levels __ro_after_init = 3;
-@@ -171,8 +173,11 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
- 	}
- 
- 	if (pte_val(*ptep) != pte_val(map->pte)) {
-+		bool was_invalid = !pte_val(*ptep);
- 		set_pte(ptep, map->pte);
--		if (gstage_pte_leaf(ptep))
-+		if (gstage_pte_leaf(ptep) &&
-+		    !(was_invalid &&
-+		      riscv_has_extension_unlikely(RISCV_ISA_EXT_SVVPTC)))
- 			gstage_tlb_flush(gstage, current_level, map->addr);
- 	}
- 
--- 
-2.34.1
-
+Reviewed-by: Binbin Wu <binbin.wu@linxu.intel.com>
