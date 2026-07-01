@@ -1,187 +1,130 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EB43B47E3
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 21:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782940517; cv=pass; b=ZOEJIqvgUb6LOUuZ7ATJpdoHxKz8CrjJI7VLn9BATrr2s7DiKAK9QECVKhQ7kvxqEuLh6qCgeQjK7GLBzCtWvAvLCvgfh/DfiRrCqkF6wL/g0l4F9aMM7R2zFU/ir1t/1QDrbXy3cxIl0jwvnohU/W2L3s6v7l9yulVM39Qt39s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782940517; c=relaxed/simple;
-	bh=CkwVfY1nmZ3D1jFCA3niLHpZ2cVyZBfyXndQ5/TEkzI=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PxxuECshvDMQkYsJ3S0thUoPsnKpjM6/qqI2NPIBBbwVwBU+g+WpEbzilx4hOO5kRyZ0xqfzpyiC0ULC74lM6mNh4ya4K5uzFlTXEcb81gq/q192PH1Pb0VHroGBxStQPm9NMOocnTZ4Og9wAommo4qF+TiriprleXURpsCVQwM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a1Y7I98T; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740EA3955C6;
+	Wed,  1 Jul 2026 21:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782940518; cv=none; b=SEO0CUW6rJPDhIu4EKtGR13SpELmPwMmV7XT9CkI7CrEMlAQICswX72LHTXaI5cpTUgp0XR1ZyO4CRsrDKj/Fhts5SeM7aVK4fcfxTsBRGCiA3+q9PCFVeOQ6YBq5wUfGvBDP6CQ49inFz4LtYZCcVie1bMoQjZd8DhMMBEf5Ws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782940518; c=relaxed/simple;
+	bh=LqjMYeE1My1iHsBk9myuqFspXffB+Az6ckMNTFG6n4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=D8wGgXUYnTP3rEFinZXIFRnMm5gbzCmTLy2Frv7lDcUZ0ErmC+qGzXtYzy8+lXYpVKE6ASLX3URUiuQoMVyq3iVC6nbLm0f4vE4OfhzcSbq2YLMagkJmvOj0qRn6iLj5j9jjcYc9my3ocytID9qaYm+slGEIMleBEtr2i/OP4JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQvde2K6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a1Y7I98T"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c9878bbe88so10724935ad.0
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 14:15:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782940515; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kSHHKWu4Q/8qRsFb7ijrZ00tGhSVgOLEJ6MgXDG8yQqsUvTtCcJblOtdowxZnY8FNJ
-         bLyCrxa91qrAOWEG3ysS7EeU/Otl5q5VXoe+R6iu9FWjhwCKPdx9QFQCriMLlCLzWp7I
-         YLUJKFx2+7jSuYLtAJSupIwr0FBgOR9kwJwJfqRuI9B210ME28Zoq3YbNqMTKBlL8GXq
-         DJn1yQ/1V7jUnpZ1+BlBepoCpsmIPEDd9O11AeOF3RqxAnpW+zIw2xGvquZ7RuxiC5no
-         gVPar8g7WddIQ5T2BhE4zDI1VXGj6yoNmcncyesrMJORayxGZRr0yhqoSEQdrc+7Ql8H
-         leGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=hdj0HDgY6Dfd9B3CG41MszDY29ma1ezvlMosUMSNXGo=;
-        fh=vZhqcWQo83ssX6+1PfqiT7UtjKE+WlRaE+l+3EK3eZc=;
-        b=IqrCCsli5bokZVo6N84ZWvgFS/RKD7YOdV318/ujH4ufkCm2o221kjrH2abbXVAY7h
-         7fZVlXnkk786c2H6yW0xm+z+0Updml5HwGlCBNltl7patVdyoSECZZL2F9Ypp7eO1xw5
-         ZAJcAtzaA8QaAIbeCWPTF7YPFB9tA61r0ELyaylq5Ukjda4QFNBBZlqOMutEx8ss0ffA
-         lajpdHINg/eNadngnu4bxptAE1g8XqgdlRU4+h9wayGSJCwSxhbZb/QC2HlH8ObOvQkc
-         VsksHWJjGcYq1cjW8QFxhgkfZjNLSkPQNQzo1RKTsimGUhUtfiBQqWziZYTUWQ1RsnuI
-         kgOg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782940515; x=1783545315; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdj0HDgY6Dfd9B3CG41MszDY29ma1ezvlMosUMSNXGo=;
-        b=a1Y7I98TNmQA8O/yqkNfry3o7hfOTPAMLWDNSFWkrDZw/QnDvPLNXhjQ3ntIvJOnjm
-         /YTf5ma8Xrkl/UzFdTQC++pyR8nK11LvGx1tWWUFYaXHwvQ35TuSjb6cJ2b8uWuqWlCo
-         QIj1SGR2C/ToGJl9JXdA2stXp8nCrI1hRzYBS+yNfdsHf6LH++lLypdllUv2p9f66gRY
-         KUoKNdygGM1MGGEVj6YkVASuEVTGtuhPfjwbv/HchMrOg/8Xd40gi4shgqAj50V1przZ
-         VsnPA7aeaZe201207W5PXzdm01xhDX1MJCNH7P1hYwOmw++e7AliYTEGgT6H65NsZ4zU
-         6TCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782940515; x=1783545315;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hdj0HDgY6Dfd9B3CG41MszDY29ma1ezvlMosUMSNXGo=;
-        b=ocoESQ8UqKQpTOaPuhmM6GsnvpOzJM9TRnSgkv5e3UNW8veAyQGVV1hrDxOqoXN/GS
-         2/HGehQiva2HthXQr6lKcP4wOATJc2/4j5CfX3B+6OyzjYROwQSLTa9hsqUwph8vT+gK
-         E9rXkrxAiFGTvSBpJe4/q/lziT8WJExIea6EtRvk0oQYl8OitmcTq0bAsEDmkLK1gsZd
-         h6AUJGUrHiZuFYJ6zrHr8maXJYEL2xllmZrgV1YoAXTAslsuuH+VPHBys6lCMdrJAe3m
-         Ql2bX6vAkm8pO1k8y2xlXL21lnWK4qlEcHAPzUmBLbpQLoGbCGMXPHxIajYtIVZSATgi
-         /Hiw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq+8Tbr//ci1tee1aVqJmG4AUXkexM3F5XX2dvwgMiq81aydmHYIqvRWt6VuaMBlZGm1PQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywg5cEUyLhlfzgff+a98Mx8+smAjjQhdmhWufFkj7enneFYDELB
-	+D9HQ2eKtJFV3x9MbOY528rwPCU5TgyA+80YEXYeLQk9qM7VBrJBItIq5S64OavnEmf0nTc/4lt
-	2K8jKbZZEPPpJBNFviDABi7r96/u2pIbjOHRanBsL
-X-Gm-Gg: AfdE7clpTV7FM642g3cGmX/d0NlCzb0P/KQxsWuWIobWeb6RoVptaY/inJaN9V3pO+y
-	lnTphJ4ITzEW7Q8fdZCCSES8ex3ThnLTAF5Wkc7XzG5IPcwyDqjTE+95DkTsyXlYiYhnl7iz0cx
-	XNG25OFJfvt58ssBEqQHkbOf5RyJFMvxIvoza0zPOnA4KJZToj/AYm6pVhRTEub2mbZf8uUNEiH
-	B21e+vr0GktjCP4M9WUhPWw8zCxRISqfEyLOWCswt5I4ViS/0+ExoC3AjevhwqKTfCQFHo9fim2
-	aghyMQDa4G8GQl07fDxx47hpainm5kQAImrVSJpdQjPUYgl2v4IOT3BrO6A=
-X-Received: by 2002:a17:903:fa3:b0:2c7:c385:c5a7 with SMTP id
- d9443c01a7336-2ca44a3c734mr65598715ad.26.1782940514709; Wed, 01 Jul 2026
- 14:15:14 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 1 Jul 2026 14:15:13 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 1 Jul 2026 14:15:13 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260630213711.479692-2-seanjc@google.com>
-References: <20260630213711.479692-1-seanjc@google.com> <20260630213711.479692-2-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQvde2K6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110651F000E9;
+	Wed,  1 Jul 2026 21:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782940517;
+	bh=ST5XJ3qWoqmoFi2Pnu/be6GaGojp4wfpLlZ4lIOZGEA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=HQvde2K6xIG4LDeLWg1opVnBNcOByUfAUML5CkvgpbeOXkd6QuA7qjtTXu8+5Q1fg
+	 eJQth6EWn5+/7UADpEFS2icad+ZmPZlpGfeug+wikYLqcpys5oSKAKD48T7TawM62O
+	 CMZjbLgWOL2Yf21DSV1ajWzvE7OcDPhWWHXZ209DKfoJT4ieRfPCnVFXMtDy9t7feY
+	 fhPDjKqZuOku4of0ERbySgBg1SYHXWaccC1rYi/HAatyMwcg0bPP7sR4Y5vo7zqW2N
+	 nciM6RZrdV8psIIcdQQ1tp2jjZ1dUDnqatqYgbfKZYdAEpr31cFkgqlM3h0XwpZmtx
+	 fa0OWKI3I03uA==
+Date: Wed, 1 Jul 2026 16:15:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 01/10] PCI/P2PDMA: Split pool-related cleanup out of
+ pci_p2pdma_release()
+Message-ID: <20260701211515.GA351212@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 1 Jul 2026 14:15:13 -0700
-X-Gm-Features: AVVi8CePIGZCD784dZYKnrRLqlsP0VAkKm3avleV_AoQHT__5sr4MRrtBRokfdg
-Message-ID: <CAEvNRgEK+LH+M32LrxFSbN3Nf9sYtAVkr2c2vYq5FHzJmJqL7g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] KVM: SEV: Explicitly disallow NULL user address
- for SNP_LAUNCH_UPDATE
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Joerg Roedel <joerg.roedel@amd.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701171245.90111-2-matt@ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Wed, Jul 01, 2026 at 06:12:13PM +0100, Matt Evans wrote:
+> Preparing for a refactor in a subsequent patch, split the pool-related
+> release code into a new pci_p2pdma_release_pool() function.
+> 
+> This allows future compile-time selection of a null implementation for
+> pci_p2pdma_release_pool(), when p2pdma.c is refactored into core- and
+> P2P-related files.
+> 
+> Signed-off-by: Matt Evans <matt@ozlabs.org>
 
-> From: Joerg Roedel <joerg.roedel@amd.com>
->
-> Explicitly reject a NULL userspace virtual address for the source page of
-> SNP_LAUNCH_UPDATE instead of relying on the post-populate callback to do
-> the check, and don't WARN on failure, as the scenario is blatantly user-
-> triggerable, as reported by Sashiko.  Waiting until post-populate to check
-> the address "works", but makes it unnecessarily difficult to see that KVM's
-> ABI is to disallow a NULL source page for non-ZERO pages.
->
-> Note, several existing VMMs pass a valid userspace address for the ZERO
-> case, i.e. KVM can't *require* the userspace address to be NULL for ZERO
-> pages, at least not without breaking userspace.
->
-> Fixes: dee5a47cc7a4 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_UPDATE command")
-> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260611125849.9ED631F00893@smtp.kernel.org
-> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+
 > ---
->  arch/x86/kvm/svm/sev.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 74fb15551e83..621a2eaa58f2 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2330,9 +2330,6 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->  	int level;
->  	int ret;
->
-> -	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
-> -		return -EINVAL;
+>  drivers/pci/p2pdma.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+> index 7c898542af8d..a5a1baebc34e 100644
+> --- a/drivers/pci/p2pdma.c
+> +++ b/drivers/pci/p2pdma.c
+> @@ -226,6 +226,17 @@ static const struct dev_pagemap_ops p2pdma_pgmap_ops = {
+>  	.folio_free = p2pdma_folio_free,
+>  };
+>  
+> +static void pci_p2pdma_release_pool(struct pci_dev *pdev,
+> +				    struct pci_p2pdma *p2pdma)
+> +{
+> +	if (!p2pdma->pool)
+> +		return;
+> +
+> +	synchronize_rcu();
+> +	gen_pool_destroy(p2pdma->pool);
+> +	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
+> +}
+> +
+>  static void pci_p2pdma_release(void *data)
+>  {
+>  	struct pci_dev *pdev = data;
+> @@ -237,15 +248,8 @@ static void pci_p2pdma_release(void *data)
+>  
+>  	/* Flush and disable pci_alloc_p2p_mem() */
+>  	pdev->p2pdma = NULL;
+> -	if (p2pdma->pool)
+> -		synchronize_rcu();
+> +	pci_p2pdma_release_pool(pdev, p2pdma);
+>  	xa_destroy(&p2pdma->map_types);
 > -
->  	ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
->  	if (ret || assigned) {
->  		pr_debug("%s: Failed to ensure GFN 0x%llx RMP entry is initial shared state, ret: %d assigned: %d\n",
-> @@ -2421,10 +2418,12 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  	     params.type != KVM_SEV_SNP_PAGE_TYPE_CPUID))
->  		return -EINVAL;
->
-> -	src = params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO ? NULL : u64_to_user_ptr(params.uaddr);
+> -	if (!p2pdma->pool)
+> -		return;
 > -
-> -	if (!PAGE_ALIGNED(src))
-> +	if (params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO)
-> +		src = NULL;
-> +	else if (!params.uaddr || !PAGE_ALIGNED(params.uaddr))
->  		return -EINVAL;
-> +	else
-> +		src = u64_to_user_ptr(params.uaddr);
->
-
-I think separating validation from src assignment logic is better, like
-
-    if (!PAGE_ALIGNED(params.uaddr))
-	return -EINVAL;
-
-    if (!params.uaddr && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-        return -EINVAL;
-
-    src = params.type == KVM_SEV_SNP_PAGE_TYPE_ZERO ? NULL :
-u64_to_user_ptr(params.uaddr);
-
-This version is also slightly stricter, since it enforces that
-params.uaddr is aligned even if params.type is ZERO. (unless the
-intention is to really not care about uaddr and permit an unaligned
-uaddr?)
-
-And then with conversions I'll add
-
-    if (!gmem_in_place_conversion &&
-        !params.uaddr && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
-
-
-Just a suggestion:
-
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-
->  	npages = params.len / PAGE_SIZE;
->
-> --
-> 2.55.0.rc0.799.gd6f94ed593-goog
+> -	gen_pool_destroy(p2pdma->pool);
+> -	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
+>  }
+>  
+>  /**
+> @@ -932,8 +936,8 @@ void *pci_alloc_p2pmem(struct pci_dev *pdev, size_t size)
+>  	struct pci_p2pdma *p2pdma;
+>  
+>  	/*
+> -	 * Pairs with synchronize_rcu() in pci_p2pdma_release() to
+> -	 * ensure pdev->p2pdma is non-NULL for the duration of the
+> +	 * Pairs with synchronize_rcu() in pci_p2pdma_release_pool()
+> +	 * to ensure pdev->p2pdma is non-NULL for the duration of the
+>  	 * read-lock.
+>  	 */
+>  	rcu_read_lock();
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
