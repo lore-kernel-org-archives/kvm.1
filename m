@@ -1,122 +1,198 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7702634CFC6;
-	Wed,  1 Jul 2026 09:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B7B3F2118
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 09:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782896665; cv=none; b=eP+KWhs1O56ye7sBBU0Pb+cTF3pjNKoufvrxYiYg7m6MYm0oWfRiCr90Nu0mQORQYR1jznRq5tYAxtqfaVOa9vU30E9T9wKSc9WHF8NelrItJ/1oB2HaY6BoXj5M9aIPFFZf27uYSYyYio+BSGyF6ZP1un8qqWZIJGagwMbg3Z8=
+	t=1782896813; cv=none; b=czIAD8DGqsdHE5pYnA+UGQBxwFDJ4mHlvPrIZONewCsC+uXqYzu1Ut5SVDoGJrNwIfxTZq0Gkrjb/fAZwBHN1tfVjXgabUeX+3dEJ9mczUNA/Cz06GxzjpDVY3Gv1vWCJ/64vdb7TrH/h4L17dSXHoK9l20Ky40NxTKYUwrZLIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782896665; c=relaxed/simple;
-	bh=o6HO5yighH0lbPMGOWuebg9WNrWtRExEVC5nSB71uk4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GVxEBjr45GS+l+TKj+HN1DoT3OygeFeZX3TxTGAsNS6nzsktiD0/8W+CnHjluw3xh9wO0iHZHFZhdGiUgsm+xJKHVHKfCWVtPv3RJjxY5fwSs5s4XfwOt7cUf7sn/GPvtHBiy3iB4RGqnIv/2WDPkYx0YCDvLGSfP/qNU0ZIFyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bkktkk3L; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782896813; c=relaxed/simple;
+	bh=APt3qDISUO5fwexgZfwo+Q+3o/uIbSmiRZfFeUjBrAE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JF7CVomufzoUFBFECascMvhlaMhyBwd4JFLEbBl1fI93IvK3+lmyn4kl8cMmZmSQFIaGaZlnuAVYY3X2cio/HGjo2PUQW94NAVziZapM8gYBqdO89RY9kLYs+AMSCmriIVXNBVSHGAGbPFlBLPDAryDh2CAt6SIsmbDxGFVgg1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnCfIZFH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bkktkk3L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782896664; x=1814432664;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=o6HO5yighH0lbPMGOWuebg9WNrWtRExEVC5nSB71uk4=;
-  b=Bkktkk3Lltr2ttw4gghBuNxutlTWIbHY6gy2R8pRdO9Lr7piUso5vbCh
-   r10RPrPai4Nygl/oIVkmHkiq/r/ENtfy58rcC1AEma/Rehuycd7I189UJ
-   8YdTrE+dty0QDKGYMk7rzUmoPmTbUt8d72zanjJWpC6KiMFCadmx1iA0x
-   yqyJhsJvnYgAjGe2kQrHQtaRyy/05hNyG1bUDiu4iShc1uFAxz1fd3t6/
-   qd8f7yUGUk0ZKBUYbVpzIvwCYOMy1MxJaoUuLGzGaUNAK23Wb7Kp8bNyv
-   0yNW7nRCDyLGYYabOfpSVM6972pD7GS0264xKhvt76hfEI6eHFAO2KS2I
-   g==;
-X-CSE-ConnectionGUID: 2/u/KVVpQYClfO2eAZzqZQ==
-X-CSE-MsgGUID: qaXHPnuLRMa/+1Gh4I1ECw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="71146239"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="71146239"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:04:23 -0700
-X-CSE-ConnectionGUID: RfVhV5zfSDWv+vMwhlsJyA==
-X-CSE-MsgGUID: bSAPRm+uSA+mXv3+cFiw0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="252641956"
-Received: from unknown (HELO [10.239.158.49]) ([10.239.158.49])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:04:02 -0700
-Message-ID: <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
-Date: Wed, 1 Jul 2026 17:03:59 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnCfIZFH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9581F00A3A;
+	Wed,  1 Jul 2026 09:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782896810;
+	bh=6uBQ0A17Lk+l7IOXnXHlTtwvsc7+h7PiOygi1exzUkA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lnCfIZFHh2N5QKCnHbrGiUPXEvl8TL/zaULkK5eO+SeuR7pz+2opPw9aw6clxPb7j
+	 /o3B84UxqYQPXRIcdcsGlCX9x9Py/OPlvVr86T8YRS6c/fqaBVU6WtcdFj4JXHX01G
+	 xi4Gevh+uGo8t0rzKc6Loqi3gzpDTAxVNzHkApb4o/zhG6gplKno0Mmm2D5jPbffnG
+	 lWpry1JXLCibzN72u6EKi1QE9YV0X82WuKU0xn9eXiMnsb7R1ihkUs1pZHgPXNchLt
+	 djVN6nYSMWymGYzI11e1jfPAYPNc1+4p3yBb65+Yp4JNdjKpXoRElevs4+t/RSfRK5
+	 JEDghfPsTO0Nw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: riscv: Register ptdump with debugfs on guest
+ creation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Dylan.Wu <fredwudi0305@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260701085030.124579-3-fredwudi0305@gmail.com>
+References: <20260701085030.124579-1-fredwudi0305@gmail.com>
+ <20260701085030.124579-3-fredwudi0305@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 01 Jul 2026 09:06:50 +0000
+Message-Id: <20260701090650.6F9581F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise
- KVM_SET_MEMORY_ATTRIBUTES2 ioctl
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> @@ -4969,6 +4973,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
->   		return 1;
->   	case KVM_CAP_GUEST_MEMFD_FLAGS:
->   		return kvm_gmem_get_supported_flags(kvm);
-> +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
-> +		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
-> +			return 0;
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] Lockless reads of the guest PGD pointer (`kvm->arch.pgd`) outside =
+`kvm->mmu_lock` lead to a Use-After-Free (UAF) and potential kernel stack o=
+verflow via undefined behavior.
+- [High] Unbounded full page table walk under `mmu_lock` combined with `sin=
+gle_open` buffer restarts causes severe lock contention.
+- [Medium] Concurrent reads of the debugfs file cause a data race by modify=
+ing the global static array `gstage_pg_levels` without synchronization.
+- [Medium] The page table walk hardcodes the loop bound to `PTRS_PER_PTE`, =
+silently truncating the guest address space dump for concatenated root tabl=
+es.
+--
+
+commit efa8af5af3c60372dfe6205bc307cb96b4b1cf7a
+Author: Dylan.Wu <fredwudi0305@gmail.com>
+Subject: KVM: riscv: Register ptdump with debugfs on guest creation
+
+Introduce KVM ptdump to show the guest gstage pagetables. This registers
+a 'gstage_page_tables' file under the guest debugfs directory.
+Userspace can now inspect the gstage layout and permissions, which
+is useful for architectural debugging and memory management audits.
+
+> diff --git a/arch/riscv/kvm/ptdump.c b/arch/riscv/kvm/ptdump.c
+> new file mode 100644
+> index 0000000000000..972d45d691b2b
+> --- /dev/null
+> +++ b/arch/riscv/kvm/ptdump.c
+
+[ ... ]
+
+> +static void kvm_ptdump_walk_level(struct ptdump_state *pt_st,
+> +				  unsigned long *tbl, int level,
+> +				  unsigned long start_addr)
+> +{
+> +	unsigned long addr =3D start_addr;
+> +	unsigned long next, virt_addr;
+> +	int i;
+> +	unsigned long step =3D 1UL << (PAGE_SHIFT + (4 - level) * 9);
+
+[Severity: High]
+Can step calculation result in a negative bitwise shift? If level > 4 (which
+could occur if pgd_levels is read as 0 due to concurrent VM destruction), t=
+his
+triggers undefined behavior.
+
 > +
-> +		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
->   #endif
->   	default:
->   		break;
+> +	for (i =3D 0; i < PTRS_PER_PTE; i++, addr +=3D step) {
 
-this looks inconsistent with the
+[Severity: Medium]
+Does this hardcoded loop bound truncate the guest address space dump? RISC-=
+V=20
+KVM uses concatenated page tables for the top-level gstage directory (up to=
+=20
+2048 entries for a 16KB root table), but this caps iteration at PTRS_PER_PT=
+E.
 
-	case KVM_SET_MEMORY_ATTRIBUTES2:
-		if (!gmem_in_place_conversion)
-			return -ENOTTY;
+> +		unsigned long val =3D tbl[i];
 
-Well, the check of
+[ ... ]
 
-	if (!kvm_arch_has_private_mem(f->kvm))
-		return -EINVAL;
+> +static int kvm_ptdump_visitor(struct seq_file *m, void *v)
+> +{
+> +	struct kvm_ptdump_state *st =3D m->private;
+> +	struct kvm *kvm =3D st->kvm;
+> +	unsigned long *pgd =3D (unsigned long *)kvm->arch.pgd;
+> +	int start_level =3D 5 - kvm->arch.pgd_levels;
 
-is buried in the following kvm_gmem_set_attributes(). How about moving 
-of kvm_arch_has_private_mem() check to put it along with 
-gmem_in_place_conversion check in kvm_gmem_ioctl() in Patch 13?
+[Severity: High]
+Are these lockless reads of pgd and pgd_levels safe? If the VM is torn down=
+=20
+concurrently, kvm_riscv_mmu_free_pgd() could clear these fields and free th=
+e=20
+pages. This read happens outside of mmu_lock, which might result in a dangl=
+ing
+pointer being passed to the page table walker.
+
+> +	int i, j;
+> +
+> +	st->parser_state.level =3D -1;
+> +	st->parser_state.start_address =3D 0;
+> +	st->parser_state.seq =3D m;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(gstage_pg_levels); i++) {
+> +		gstage_pg_levels[i].bits =3D gstage_pte_bits;
+
+[Severity: Medium]
+Does this loop modify the global static array gstage_pg_levels without any=
+=20
+synchronization? If multiple threads read the debugfs file concurrently, th=
+is
+data race could cause corrupted or incomplete page table dumps.
+
+> +		gstage_pg_levels[i].num =3D ARRAY_SIZE(gstage_pte_bits);
+> +		gstage_pg_levels[i].mask =3D 0;
+> +		for (j =3D 0; j < ARRAY_SIZE(gstage_pte_bits); j++)
+> +			gstage_pg_levels[i].mask |=3D gstage_pte_bits[j].mask;
+> +	}
+> +
+> +	read_lock(&kvm->mmu_lock);
+> +	if (pgd) {
+> +		kvm_ptdump_walk_level(&st->parser_state.ptdump, pgd,
+> +			start_level, 0);
+> +	}
+> +	read_unlock(&kvm->mmu_lock);
+
+[Severity: High]
+Could walking the entire page table under mmu_lock cause severe lock conten=
+tion
+or a soft lockup for the guest VM, especially when combined with the buffer=
+=20
+restarts from single_open() below?
+
+> +
+> +	note_page(&st->parser_state.ptdump, 0, -1, 0);
+> +	return 0;
+> +}
+> +
+> +static int kvm_ptdump_open(struct inode *inode, struct file *file)
+> +{
+> +	struct kvm *kvm =3D inode->i_private;
+> +	struct kvm_ptdump_state *st;
+> +	int ret;
+
+[ ... ]
+
+> +	st->parser_state.marker =3D st->marker;
+> +	st->parser_state.pg_level =3D gstage_pg_levels;
+> +	st->parser_state.ptdump.range =3D st->range;
+> +
+> +	ret =3D single_open(file, kvm_ptdump_visitor, st);
+
+[Severity: High]
+Does using single_open() here risk excessive retries? Since single_open()=20
+collects output into a contiguous buffer, if the output exceeds the initial=
+=20
+buffer size, it discards it, doubles the allocation, and restarts the visit=
+or.=20
+Each restart would repeat the entire recursive page table walk under the=20
+mmu_lock.
+
+> +	if (ret) {
+> +		kfree(st);
+> +		kvm_put_kvm(kvm);
+> +	}
+> +	return ret;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701085030.1245=
+79-1-fredwudi0305@gmail.com?part=3D2
