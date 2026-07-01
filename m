@@ -1,257 +1,244 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011023.outbound.protection.outlook.com [52.101.62.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E2D3A4F50
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 08:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782894281; cv=none; b=tC66azgf85M3PGHWzblGaS5EuPgkhCdQwG51NMEsEF3aoUT/b9+O1v++YrpPEyYwzXo2/DjnxkpTMMFbgolwNBlBvc6uDxJLNyb2kDau6qMd2gF/Q67J7gdCvJQjT6AxEiPNT11iQxMSypeXmf/2RPo6ouPl4F1T1eU+AwTpGXg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782894281; c=relaxed/simple;
-	bh=5TxBaUflgz5eQVK869IdrRT8vAYXJTbqjpiDWLh0tLY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sB8miHXUudAFkBc4FLnrRvonHyA0CQdfvUmSDPvJkOYNYIYdzP/IFw3tLbejFE9sNh6ku0DQUbhvFvMZaDbNVyt6ORPeWXaLzpRTzkDiQRC5nxwmWG4Do6piU+33dlcNrjbMFaceMGFAlHKJ2IZv9G6tpoclr2obAw8/ZObtSU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jhIc89Hi; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42043E0C57;
+	Wed,  1 Jul 2026 08:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782894354; cv=fail; b=fDElzT7vUSAdlGFqA2LA18CHFJlAYmXWwMJBDeCD67g2Xii++iVOIAPKtSCpLF5zF64+nqUuOIQULNjg0u132YOyivsubaOVqUhtgj1F5WCccyeXYAOL09RXjSvy54TEl6tz+r+Oh0JNa3lvz3EIFU81ItsMFypo/nZIuq9EZMY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782894354; c=relaxed/simple;
+	bh=xSTEywQGMpIJr+ajtaXdLJJIcf8NKa41LyV4hEPyzhE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=l4RJ/XoAZmFYJYesa79GsEFnbAsA1cfJ/vPLyk0CJqiIPEe8/Q8UPQgIz2yyjqf0TnduVnRq0z2m8zvvV2LRvl6n+XKJMx8jw0dkrVPeGebUm+Ppnp4MkffXCvlZ8oYkpZ/9LV1XFzsZ3UM1BgXUxI1KgVhbBOX1VBlWvIMHZMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GQoGDLmC; arc=fail smtp.client-ip=52.101.62.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jhIc89Hi"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6618IEEX356559;
-	Wed, 1 Jul 2026 08:24:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Bbsppc
-	mqLRNPoG0lCmOTk1sTE819Y+Maaf5A/EqIDpI=; b=jhIc89Hi2fhMtAKwvpq5Z/
-	we6JmMnryOM2TcfkpXl3qp7re3l0FWm4rMhITll/MOBegO2xWyl/SnyER09b3K1Y
-	9PIH6EhCmE+ARhi+WoIe0XkvHrKGG6w+5zj5E6GATPuQymmch2pgwDQOL8FhugZq
-	anZgKTlpNSiGwmh112ERi6d+p+VdP1B3SM0Sb5nDFRslH0uUjXXGC64WdpeNUAcO
-	8LoTAJzgAoNaYabB1MrhaY9Z8Iphu4rFdYzGA9DUKhqddc0gNVWypip9EPNyQj6t
-	jhiPDGBEexDFWV8D+W6COhUGsXtSiaDFBv+Jfp4Isifwdkd0MDDRjQxSimC7ycRA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26pe3egx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 08:24:28 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6618K4I8011940;
-	Wed, 1 Jul 2026 08:24:27 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2s7w6fxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 08:24:27 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6618OMeU43057438
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Jul 2026 08:24:23 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DBCE920043;
-	Wed,  1 Jul 2026 08:24:22 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5A7D2004B;
-	Wed,  1 Jul 2026 08:24:22 +0000 (GMT)
-Received: from [9.224.78.25] (unknown [9.224.78.25])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Jul 2026 08:24:22 +0000 (GMT)
-From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Wed, 01 Jul 2026 10:23:53 +0200
-Subject: [PATCH v3 2/2] s390x/kvm: Add ASTFLE facility 2 for nested
- virtualization
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GQoGDLmC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=azbMyLF51uzlyLjkQzHa6wGCz5yPc2mbvojwkZeUNNOZrvztyefUUh2Pbn/2zG9p/NEh1+P3fiF/OPsOupb4m9ZTWPs8f/ZnuX4ZMMCrT3gN4bgRsE8p6nyWd8skDWQM88jXGO89ZW691ZZvsjkPTiPsKmybCCX4PlX5ExeK/EatTScG5X0SVqAIn8Ll3DKq1TBd9UqRfRdiSRgepQMk4BATDZCQ6eRSEeVYqHJjRcH+mI1PgkCCVJzrJbGjLpwc4bMY+SYr4zuLmkzFTwQmU45WfoSdTOqxnZ8RrE506VUQwD/1eeUOxpdCocKPLb1lYhkfUbOWYU3ldYEOcocmZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sZWYg95CS3JmMphTfjHJXDa3klH27N6KybtROr5FkCE=;
+ b=ni+8mUyyhNfCK6e+7TnJjoS3xaC8UwOTMdSVemlzWZ/VxKM061lCf6O6pnxgouryRXE1neCaWC4v0V8zBefnAl8yz8+bjxsKoUBX4/qRDIeM3lcDz4ajPsFI3//2uWrOP0cdoCh+BRw3rwCxjwVI57GN0BkvNfjeREchtEMAV48VCoD/uP+BEu+D7YhwWFUfLjvW/BZuFiuYI02R4C05RjvsVw9FlkCrejhzfEoVOTAOBYY+m8gnmIWE27nXM2O6dgJPUEnxsQQfOOdDj0P0Owcv3RYtXCLoSJkFI9WKAEmRaYmkivckQGT6dsvfMjNUJaH7tplxhzu3gBXQIPN55A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sZWYg95CS3JmMphTfjHJXDa3klH27N6KybtROr5FkCE=;
+ b=GQoGDLmCPjgBQAeTIMN6NztbowATxQwvngC6z4j5XUWkjgSUgyUT99pLZ6a75lUnCJbsKVg197Vj8YIpsW+DKWYZwGmXmCPGtTBiepI5BjzXzlLaVqCEYqTJraYG2Ii33myrS8j0B1GohqUn6NlAjNw8rb00MWpmTMBeqxUA7gs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SN7PR12MB6930.namprd12.prod.outlook.com (2603:10b6:806:262::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 08:25:46 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
+ 08:25:46 +0000
+Message-ID: <e132eb91-554e-493f-9da2-aff5a538da6a@amd.com>
+Date: Wed, 1 Jul 2026 10:25:39 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/4] dma-buf: add optional get_pci_tph() callback
+To: Zhiping Zhang <zhipingz@meta.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Michael Guralnik <michaelgur@nvidia.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20260630224328.3218796-1-zhipingz@meta.com>
+ <20260630224328.3218796-3-zhipingz@meta.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260630224328.3218796-3-zhipingz@meta.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0248.namprd13.prod.outlook.com
+ (2603:10b6:208:2ba::13) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260701-astfleie2-v3-2-f692dc7f4f24@linux.ibm.com>
-References: <20260701-astfleie2-v3-0-f692dc7f4f24@linux.ibm.com>
-In-Reply-To: <20260701-astfleie2-v3-0-f692dc7f4f24@linux.ibm.com>
-To: qemu-s390x@nongnu.org
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        David Hildenbrand <david@kernel.org>,
-        Eric Farman <farman@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
-        qemu-devel@nongnu.org, Christoph Schlameuss <schlameuss@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5540;
- i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=5TxBaUflgz5eQVK869IdrRT8vAYXJTbqjpiDWLh0tLY=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFku57bu/Ge2S7Rj1yLvsH8Zipn+GbXL9qzmlu9bsea61
- OzdHwLudZSyMIhxMciKKbJUi1vnVfW1Lp1z0PIazBxWJpAhDFycAjARDjdGhtNRO6P2hHUJBa8t
- 137p8f7iioWbulsWXl17/Gn97+T0NRsYGY5EPZgTnrHm89QVBbOZJ6TeuBIe+Pj5y99Oz+4fWsr
- YaM0HAA==
-X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
- fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G-MeYObjR48Q6w2wTf1V-PnwDxhcHb1T
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDA4NCBTYWx0ZWRfX1gUx/HfPamvU
- YhZmAR7lW/i2sGpC7dHB89Qk6JvBQWZlt+enMRQtAi2Gubx84OttPkRi7TdCAWCOOXH3yl9W3d0
- 0N9vCWCEGDVT5F8G4ChXwIWLw66XhwM=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a44cebc cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=c4FJ2arq-s_u2TxWmaEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDA4NCBTYWx0ZWRfX9NoCC7iVlB2L
- hqwxlDTcAfgKjbtftG0dX5rlWM1RNNjjRahhvzxi6WEqrecCbwI12wNAUNfGDFxk6FFi0RCqH6D
- ogMhKNtz8nL72Y9z2GBJCqbxdECTKz6Wlz6hE1EaFN3FF+vz1zlfly3bMC4tKT0rxIEIp1mG9vE
- okpFjj46BSOo4qDO792Ed+YGPQIJyDQvulDwDiznJM97/AS14nW6mglKWRehV/LbDxjtxDJeukI
- 898q3CYwd0XgawkORm+AHwHiqSX8zYlSzhXCUIxUZvFWWMaDNqc7EOpsDblFK6JY2wFeltkpr2h
- xy54h66n12P75a8F4AR2U7SZZCucGJqG3wA790NVhLJZdBRbi8BCr76W/ddxZuI+C9MCaU7khp1
- oRPlXACFg9+dVCOX0zrda8BvtVCretUESpwUz5iWxyGnqos4b/HFzHeUpwHyJoidNJ7H6rePvSf
- RU1LMEayxug+ftalWVg==
-X-Proofpoint-ORIG-GUID: G-MeYObjR48Q6w2wTf1V-PnwDxhcHb1T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010084
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB6930:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf865c8a-e46e-4e81-5c32-08ded74a5994
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|22082099003|18002099003|11063799006|4143699003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	WrWv53ZKQumZp2YK1jFgwayi+P9/QkFtW42fgbFOA7TZ7ttXFL/c3MjQZZFsGgYtHqvLQFdYBpVX/55hzo4TGbJc2QxXP3EY2zfq54P8YpYtOxS0k2Ix2SWnKrkdNACRNrCxIy1HPnd7aMNGLUc7brNdhkSzEoyYSV+iK7ysFGOa5HFpqnzH+GFZqAy8sKWZwnI7/CnIxcnNW2CH7vxNnz49SwWN2b/GxriXook8+82M4I2XLKftntAzX0yZkKsJ3iflbIm6HrvmH+h+Q9U0TImxbk95Hm25ECAhOcifOcfUPGoJMLENYvbkx7hjTmCZdKboIXxmiWUVe6J+ePALHcdYjjQTCccMr+5KILRFIz3AecD1/XLy/rSJOwIUZci4qn9Ru8/LRCTiU+xyjHoXBRFpIA/niYYj/bK2w4AvFivlGYpEzAf6/PByabgaDkX+aHtj+rzaDmoWY+T3eKmMAqT7eTDZOdU/ZlebtKm0geSUNNVR//Vgi9tLVKgf5GM7gmrsKsz8xVi0yDqkMG/mQDIfaYSJVk/IDKQw+IfbDq1IFOyfNtYMrjUWm1CPDmg/HU4LaSKLMFk8WgA8TKr5JeO1P8Hb0H38H5d5HudYzB2hidOjYJHRZ4NoIWmDFc5xlE5P66wQ4PdUrKNKqxkp8Ibh1CBdJCRhJF2SlZSqiPY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TXlvY1BoaUJsRVVHYTEza3hEZEROM2diU2xzK08zNUdYaHBBaHJCNlpZaEZH?=
+ =?utf-8?B?a1R2dmd3Ym1oS2wwWmdVbEhGV1Q2bU55QWtPdUF3d3lVamsvUW9wUEZERXhS?=
+ =?utf-8?B?MnJ6RUZ1SDd1N21LQ0ZXYXFjVlZRT0hqb2lGaW0zTll1MU1uRENlMVFrcDJY?=
+ =?utf-8?B?U25kYWhNc3IySGgzdGR4aXR2aUllTVhXd0ZFN0dtb1dnSms2bmVBaUFRbGZ5?=
+ =?utf-8?B?czZwZTZ4UjZncTZ6SFNSYXl3SmIwakZRVXFObjV6UjZENTNzaUtzakFIVG41?=
+ =?utf-8?B?d0Z4RXVrUU92c0xPdExvOFdRYzduYUJUT0RyRDMyaHhSblZEL1I0RXZyV3Ba?=
+ =?utf-8?B?RndoenhHaSsrNDZROGxwc3BnN0dHbm1DVDF4R3E0WUpIempkWDE1Wlcwb3hl?=
+ =?utf-8?B?TXZmTkVjeFBTa0g0Y1dLRHUrcmhpUXEwaEc0VUloMHdYNDJ4cldOQ002NCtF?=
+ =?utf-8?B?V3NCeVFCNHBrK0lPS0VDR0poNyt5N0tWK1Z2SEZmYjAwb0VqUml2K1FuWi80?=
+ =?utf-8?B?eENjSExEZ3o5T3g2MTlodVRiQ0NZbWcxZ2J2OWlJN2Z2d3QwZDNROSs3UlUr?=
+ =?utf-8?B?czh2KzRWbW55Y28zc1F3b0w0bitVUVZza3BoVmF0Zm1jc2U4Q09BWEE4Mk54?=
+ =?utf-8?B?VFZBZndiNUd4RkNiQ3Y4U21GVWFRTHRrZ2pORFBUVGZCRGlVWFIrNTdNNktu?=
+ =?utf-8?B?Zk5FWEl6MjNaSUZrVzFQVFFnL3lqbURFUlVLcURaZTdac1M1ZEc4Q2k1UUln?=
+ =?utf-8?B?TnovNGRSRWxXMDE4UnFHdzJIMVB2c21jMm9UOG5qa2JxWDNHUG1xdGx4SHhC?=
+ =?utf-8?B?V1BEVURUc0h1REF4STNRUnpUUlNtSHo4SnFhL2ppaFNnUy9PNGFoODhHMHUy?=
+ =?utf-8?B?STgrQnBqNVpFM25aTUVUR0FCUGFmWDVac3hjcnNCS3dQS2ZibUxEVnZWcGF2?=
+ =?utf-8?B?VVQvNXlnakJubnhrY3RIeEJvQ1c2RGV3MGNSVUVkNE9JVEdTMHpQeW9taTlj?=
+ =?utf-8?B?RGJaUXFhaGowQ0pDL2pYY1pVSHpFRG96REFqZUFjR1VybE9UNlJNYXFlZVRx?=
+ =?utf-8?B?aEZWanhFcm9PSU5NYkQvZGJWaGtaVkwrK3RxWFpMNjRpUlhPbm1oOUg3andH?=
+ =?utf-8?B?N2NnMURteWowY3ZXZDVXWHkxNWt6L1VGWVJkKzB4YTY0MzUxS0VaaFhWcWF3?=
+ =?utf-8?B?dzRqSlpBN3RwU2dTTzNtKzQvZko5Umo4WmpaVFQwTFN5K1FmVEFNY29VTTVv?=
+ =?utf-8?B?UHErMlJSSlY1MC8yV3dQZTQ5UG4vOGVVejFBNDlERXRJU001K0t1L3dLKzhw?=
+ =?utf-8?B?VU5XWTEremFvK2dJLzNOenlrZlhMWGJ3ZEJlQXNSeTk4WnZ6TFdKaFpFTUdO?=
+ =?utf-8?B?QldPZ2E3QkI3Rmt2YlV3eTBwU2pQUWp4bktoNHl2NVlGMzk0OTV5TlZua0ZJ?=
+ =?utf-8?B?dnN5SWdZK0wwNkxJV2cxL2VMWnVpSVdUQmJXOGpyNUVTVi9jcFpMQ0FyZXo3?=
+ =?utf-8?B?dklzK1pGMUtRS29lUXpJY1d1bkE4NEV0bmM0M0ZlVUViS0duWlBrTXlPbDJj?=
+ =?utf-8?B?RG53bHpicHJkcHJnQWtYVFJBR3NCeC9vd1FOY2JTVE80WTJ5UkdlZDZkYkNo?=
+ =?utf-8?B?akp2aU1sbHVQNWR0cVk0YUp2Mkp3Y2hTYTllMTI1cENTZHpCVWZNWHlLVWxa?=
+ =?utf-8?B?SElpUjY1YjFxOSt5YlIyeGJ1SkoyWDZTQUJDYndtaHhxc29DSmE1a2ZIWUVQ?=
+ =?utf-8?B?NjJoRXNwT1YwS3FwL3JCWHhkakJQWjF2dDV3Ym9GSmtLc2cyTFk0azVXUkRz?=
+ =?utf-8?B?dU9Ram9RSTQxQmlXUjRYaDlMTElZNWJQODRnb0hiZ1F2eE9aSkJLYkhuY0xw?=
+ =?utf-8?B?cXJMWC9JN3JEU3VGUXd4dDhRYUlsMkxYQUt6cU9wZHNCQmw0T0FuMDVJVHZG?=
+ =?utf-8?B?R1Bad2psOFk0T1l1TGZRZUUwUXFicTNZRE85NEs2c1MyVU9SSGRQVThDY2RJ?=
+ =?utf-8?B?Q09NcW9kL0xmRHEvY1JQR1IwalkzR3R0S0o5N0pFL1BXSFBHem0yK2VGUGx4?=
+ =?utf-8?B?enNLWGhiTm9jWGZsYzZOV2tBT0laYmRKWFpLR3h5TW4wLzNFWHRaMmx0MWUv?=
+ =?utf-8?B?S25mZHRJMzh6bmhKbzZCaysvSURVdGdsY2w1dHpWV0FGbld6RzViZ091a0x3?=
+ =?utf-8?B?R1ZqSHNPK3dtNXF6eS9zMHpmb1hBZThYNEZMcVcwM1IvZkhxQit5RytOK01o?=
+ =?utf-8?B?UmN3MjB3eHJreTdqR00rN0JTSE1KSWxacmovYnZhSzBYT0JobTF4VjlFeFNP?=
+ =?utf-8?Q?AHO3w4aX6SwAG2Vp4H?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf865c8a-e46e-4e81-5c32-08ded74a5994
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 08:25:46.5288
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5ZIivxfv06jVkznQhPMvWJizJuPhBGtHi11YKMrDoixeqPm5Ns8Kl7Jd8AHLXOS6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6930
 
-Allow propagation of the ASTFLEIE2 feature bit.
+On 7/1/26 00:42, Zhiping Zhang wrote:
+> Add an optional dma_buf_ops.get_pci_tph callback and a
+> DMA-buf importer wrapper, dma_buf_get_pci_tph().
+> 
+> TPH is PCIe TLP Processing Hint. 8-bit ST and 16-bit Extended ST are
+> distinct PCIe TPH namespaces, so the importer requests the namespace it
+> can emit and the exporter returns the matching ST/PH tuple or
+> -EOPNOTSUPP.
+> 
+> dma_buf_get_pci_tph() is the importer entry point. It requires
+> &dmabuf->resv to be held while the callback runs and returns
+> -EOPNOTSUPP when the exporter does not provide PCI TPH metadata.
+> 
+> The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
+> mlx5 as the first importer.
+> 
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> ---
+>  drivers/dma-buf/dma-buf.c | 25 +++++++++++++++++++++++++
+>  include/linux/dma-buf.h   | 22 ++++++++++++++++++++++
+>  2 files changed, 47 insertions(+)
+> 
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index d504c636dc29..7a4c9b0d5dab 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+> @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *attach)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+>  
+> +/**
+> + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadata
+> + * @dmabuf: DMA buffer to query
+> + * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> + * @steering_tag: returns the raw steering tag for the requested namespace
+> + * @ph: returns the TPH processing hint
+> + *
+> + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
+> + *
+> + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
+> + * exporter does not implement the callback or has no metadata for the
+> + * requested namespace.
 
-If the host does have the ASTFLE Interpretive Execution Facility 2 the
-guest can enable the ASTFLE format 2 for its guests.
+Please add something like this:
 
-Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
----
- hw/s390x/sclp.c                     | 2 ++
- include/hw/s390x/sclp.h             | 4 +++-
- target/s390x/cpu_features.c         | 3 +++
- target/s390x/cpu_features.h         | 1 +
- target/s390x/cpu_features_def.h.inc | 3 +++
- target/s390x/cpu_models.c           | 2 ++
- target/s390x/gen-features.c         | 1 +
- target/s390x/kvm/kvm.c              | 1 +
- 8 files changed, 16 insertions(+), 1 deletion(-)
+* The returned information is only valid till the next invalidate_mappings() callback from the exporter and should be re-queried when a new mapping is created after invalidation.
 
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index b9c3983df195..2d2cde7803ff 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -146,6 +146,8 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
-     if (s390_has_feat(S390_FEAT_EXTENDED_LENGTH_SCCB)) {
-         s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC134,
-                             &read_info->fac134);
-+        s390_get_feat_block(S390_FEAT_TYPE_SCLP_FAC139,
-+                            &read_info->fac139);
-     }
- 
-     read_info->facilities = cpu_to_be64(SCLP_HAS_CPU_INFO |
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index ddc61f1c2148..e1f9b0f6bc10 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -136,7 +136,9 @@ typedef struct ReadInfo {
-     uint32_t hmfai;
-     uint8_t  _reserved7[134 - 128];     /* 128-133 */
-     uint8_t  fac134;
--    uint8_t  _reserved8[144 - 135];     /* 135-143 */
-+    uint8_t  _reserved8[139 - 135];     /* 135-138 */
-+    uint8_t  fac139;
-+    uint8_t  _reserved9[144 - 140];     /* 140-143 */
-     struct CPUEntry entries[];
-     /*
-      * When the Extended-Length SCCB (ELS) feature is enabled the
-diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
-index 4b5be6798ef5..896914888aa9 100644
---- a/target/s390x/cpu_features.c
-+++ b/target/s390x/cpu_features.c
-@@ -148,6 +148,9 @@ void s390_fill_feat_block(const S390FeatBitmap features, S390FeatType type,
-     case S390_FEAT_TYPE_SCLP_FAC134:
-         clear_be_bit(s390_feat_def(S390_FEAT_DIAG_318)->bit, data);
-         break;
-+    case S390_FEAT_TYPE_SCLP_FAC139:
-+        clear_be_bit(s390_feat_def(S390_FEAT_SIE_ASTFLEIE2)->bit, data);
-+        break;
-     default:
-         return;
-     }
-diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
-index 5635839d0329..52a82da751ec 100644
---- a/target/s390x/cpu_features.h
-+++ b/target/s390x/cpu_features.h
-@@ -24,6 +24,7 @@ typedef enum {
-     S390_FEAT_TYPE_SCLP_CONF_CHAR,
-     S390_FEAT_TYPE_SCLP_CONF_CHAR_EXT,
-     S390_FEAT_TYPE_SCLP_FAC134,
-+    S390_FEAT_TYPE_SCLP_FAC139,
-     S390_FEAT_TYPE_SCLP_CPU,
-     S390_FEAT_TYPE_MISC,
-     S390_FEAT_TYPE_PLO,
-diff --git a/target/s390x/cpu_features_def.h.inc b/target/s390x/cpu_features_def.h.inc
-index c017bffcdc4d..a822f0f2fe99 100644
---- a/target/s390x/cpu_features_def.h.inc
-+++ b/target/s390x/cpu_features_def.h.inc
-@@ -139,6 +139,9 @@ DEF_FEAT(SIE_IBS, "ibs", SCLP_CONF_CHAR_EXT, 10, "SIE: Interlock-and-broadcast-s
- /* Features exposed via SCLP SCCB Facilities byte 134 (bit numbers relative to byte-134) */
- DEF_FEAT(DIAG_318, "diag318", SCLP_FAC134, 0, "Control program name and version codes")
- 
-+/* Features exposed via SCLP SCCB Facilities byte 139 (bit numbers relative to byte-139) */
-+DEF_FEAT(SIE_ASTFLEIE2, "astfleie2", SCLP_FAC139, 1, "SIE: ASTFLE interpretation execution facility 2")
-+
- /* Features exposed via SCLP CPU info. */
- DEF_FEAT(SIE_F2, "sief2", SCLP_CPU, 4, "SIE: interception format 2 (Virtual SIE)")
- DEF_FEAT(SIE_SKEY, "skey", SCLP_CPU, 5, "SIE: Storage-key facility")
-diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 0b88868289bf..2dd9aac8078c 100644
---- a/target/s390x/cpu_models.c
-+++ b/target/s390x/cpu_models.c
-@@ -263,6 +263,7 @@ bool s390_has_feat(S390Feat feat)
-         case S390_FEAT_SIE_PFMFI:
-         case S390_FEAT_SIE_IBS:
-         case S390_FEAT_CONFIGURATION_TOPOLOGY:
-+        case S390_FEAT_SIE_ASTFLEIE2:
-             return false;
-             break;
-         default:
-@@ -553,6 +554,7 @@ static void check_consistency(const S390CPUModel *model)
-         { S390_FEAT_PLO_QSTG, S390_FEAT_PLO_EXT },
-         { S390_FEAT_PLO_QSTX, S390_FEAT_PLO_EXT },
-         { S390_FEAT_PLO_QSTO, S390_FEAT_PLO_EXT },
-+        { S390_FEAT_SIE_ASTFLEIE2, S390_FEAT_STFLE },
-     };
-     int i;
- 
-diff --git a/target/s390x/gen-features.c b/target/s390x/gen-features.c
-index 8218e6470ec9..a309dc2c09ab 100644
---- a/target/s390x/gen-features.c
-+++ b/target/s390x/gen-features.c
-@@ -720,6 +720,7 @@ static uint16_t full_GEN16_GA1[] = {
-     S390_FEAT_PAIE,
-     S390_FEAT_UV_FEAT_AP,
-     S390_FEAT_UV_FEAT_AP_INTR,
-+    S390_FEAT_SIE_ASTFLEIE2,
- };
- 
- static uint16_t full_GEN17_GA1[] = {
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index fdef8f9e8acc..9af2a397f5a2 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -2288,6 +2288,7 @@ static int kvm_to_feat[][2] = {
-     { KVM_S390_VM_CPU_FEAT_PFMFI, S390_FEAT_SIE_PFMFI},
-     { KVM_S390_VM_CPU_FEAT_SIGPIF, S390_FEAT_SIE_SIGPIF},
-     { KVM_S390_VM_CPU_FEAT_KSS, S390_FEAT_SIE_KSS},
-+    { KVM_S390_VM_CPU_FEAT_ASTFLEIE2, S390_FEAT_SIE_ASTFLEIE2 },
- };
- 
- static int query_cpu_feat(S390FeatBitmap features)
+Apart from that it looks good to me, but I still think we need some kind of example that this works for other DMA-buf users as well.
 
--- 
-2.54.0
+Just demonstrating that this also works with some simple FPGA or similar PCIe endpoint should be sufficient.
+
+Regards,
+Christian.
+
+> + */
+> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
+> +			u16 *steering_tag, u8 *ph)
+> +{
+> +	dma_resv_assert_held(dmabuf->resv);
+> +
+> +	if (!dmabuf->ops->get_pci_tph)
+> +		return -EOPNOTSUPP;
+> +
+> +	return dmabuf->ops->get_pci_tph(dmabuf, extended, steering_tag, ph);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(dma_buf_get_pci_tph, "DMA_BUF");
+> +
+>  /**
+>   * dma_buf_map_attachment - Returns the scatterlist table of the attachment;
+>   * mapped into _device_ address space. Is a wrapper for map_dma_buf() of the
+> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> index d1203da56fc5..53b2686ad8fc 100644
+> --- a/include/linux/dma-buf.h
+> +++ b/include/linux/dma-buf.h
+> @@ -113,6 +113,26 @@ struct dma_buf_ops {
+>  	 */
+>  	void (*unpin)(struct dma_buf_attachment *attach);
+>  
+> +	/**
+> +	 * @get_pci_tph:
+> +	 *
+> +	 * Retrieve PCIe TLP Processing Hint (TPH) steering metadata for
+> +	 * this buffer so an importer can program a matching ST/PH hint on
+> +	 * outbound TLPs targeting the exporter for peer-to-peer DMA.
+> +	 *
+> +	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
+> +	 * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> +	 * @steering_tag: Returns the raw TPH steering tag for the requested
+> +	 *                namespace
+> +	 * @ph: Returns the TPH processing hint (2-bit value)
+> +	 *
+> +	 * Optional callback for dma_buf_get_pci_tph(). Called with
+> +	 * &dma_buf.resv held. Returns 0 on success or -EOPNOTSUPP when
+> +	 * the exporter has no metadata for the requested namespace.
+> +	 */
+> +	int (*get_pci_tph)(struct dma_buf *dmabuf, bool extended,
+> +			   u16 *steering_tag, u8 *ph);
+> +
+>  	/**
+>  	 * @map_dma_buf:
+>  	 *
+> @@ -563,6 +583,8 @@ void dma_buf_detach(struct dma_buf *dmabuf,
+>  		    struct dma_buf_attachment *attach);
+>  int dma_buf_pin(struct dma_buf_attachment *attach);
+>  void dma_buf_unpin(struct dma_buf_attachment *attach);
+> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
+> +			u16 *steering_tag, u8 *ph);
+>  
+>  struct dma_buf *dma_buf_export(const struct dma_buf_export_info *exp_info);
+>  
 
