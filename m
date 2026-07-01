@@ -1,119 +1,90 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DD925B0BB
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 13:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853D1125AA;
+	Wed,  1 Jul 2026 13:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782914002; cv=none; b=RVx5YVyBbTh8aXj8dGeAj2lEPmuxPke3PlXfjlq9z+YVP9Z068ME0zl4WLhdjb+84Cr7oxBOmoXDhc3IvK/Qv24lCSP3sOeJq550ulIbyhDyc9+NQDYge0Z6k04//fuCpJNT/ndcw4KIimKHGNjAVg+b8xHk23gYuahRQDqer5c=
+	t=1782914039; cv=none; b=G8Kebb8UjY5n3UIsniA2jV+Sc9qc72I7TucGAbLrzUZNoH5b6u9HsE0gXX6xWg/tBhwVIy+GxwSmyzpMm4rjmxyBXu2Dd4g8q2vwtm0Iow+EMao8QM/mVgeuHe939EqhGxuDCxuWZCaLxLLDZMp3gF6y26PDJa7pC+A6bTrkrLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782914002; c=relaxed/simple;
-	bh=k6UrRFYCyc5Lzmrh2nnW7+82Ut94TI2p/klH6GO/JIw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jvWfz/sZYX929B70Uw9o3Ff+TVQ//5Zs6i/dtqDFcsTnPO8dYz51Yd+/JzioKIx6kTlpIqwzjYTrt2xEWH7CGGhQ7FO8Ang61ErQsSXWxl83XwmgCtzhFxLCtiA+HDnAIA7AMzGfL9IsfmR/kR+97XEs4siOHlrJCvrWnHfCSYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hGcnKqXu; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1782914039; c=relaxed/simple;
+	bh=k7hhghhQCCr5+P0V75toB9zQuyOKGTvbO69r8w5IP0c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=dLEuoYWwhBQx2qz1GvJI+kSz4mlMmpG4oUCHSdDPmO+F5CqTYVw3S9ecpYrgPQDGkm5Ge6hvXyFsAHhJxc17xPcrtPCjVTVbv7BtR4SLOZ+0qkDHtQGM8cOh5M/NFRt02d3G1c562pen2r2R1cJjw+pucbI21C06c8bcHUtx6/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnkG3Fyy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hGcnKqXu"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c889d1eebafso958802a12.0
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 06:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782914001; x=1783518801; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2dlvRC/ivhzraYV58bWG4aEWroXr163d0LU1VPS4Meg=;
-        b=hGcnKqXuDyYBtXoz9E2s3EvKuJde3fA/I5zDuDTQCmF6lWrrXkDMU0cj8a8RKAbP2J
-         /vFmnMvZyvCBxsw0bVZY0nlu3fLi+eNFRQFTgMYadZw4hFSdmS/v4cq+UYOB10mH2fKc
-         Szj8jhMEgAmjeeJjbDE5B7hVFPJH5CyBa1CXPLHY7v2XvnL4ofCnHuVvdiQe+zsrf+0E
-         zwBQmocxPDeUJnF8rRf28lut7Wfx6N04gQwxVdiGJfSMIt7wlS62ph7/xmfuprtT4hG1
-         T3TGu0K0scVdN/7hVThvmPEt3PaNQmGmRP3JQIV1R8F6k88Im7Vfc3/qVuo7HGoLufi+
-         67Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782914001; x=1783518801;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2dlvRC/ivhzraYV58bWG4aEWroXr163d0LU1VPS4Meg=;
-        b=n0WQucSxWIzJ8zjYJJY3Nh7FOicDNy/ZZX0VXxyKTG+S29rtzjPwYk8nTv+F9zvlPl
-         63jappOgraaAz6JFL49vw01+ILa85KzgPJKGfqUSu8hcMTGHRHdCdgD2Ut54a/snFaCy
-         V2mDvsJHhQXWbsqLEetr7Ya63FDFAIRx6SzZthOl0dabDfNZyYaFZQdMVEA30mQHq7L1
-         svilWE4jKzOCN8xI/dkkhAIqH9T8bp0zNd/Hnk0ONaJQZ16Hr7pzjbmtROoVhi47dA/Y
-         /OxeDXTynvubJapb0IvfJqVttuUdZqLGYMmJNIxKF4i5xXOUB5D9B8hoIkX2AWT3Q1Hp
-         hn4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/zMLvuW9ngd6HxhTJXyH8r86P3cs5AWqXDH4AoCvEmpn+YkSMVuwHw7+y12tQSC5CLbhs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx61cUZSHqMp2fjQM3M+Ga7MKSUWD7JmuUV19N8jTfivtbokoW/
-	b9Bismo1qBcvctUkuMX2mRgSw4Dgo/2qkrYybiyFLZEtVi4brPf7KtMmRsbDV/x04YtrFPw6NwI
-	WOvqetA==
-X-Received: from pgam26.prod.google.com ([2002:a05:6a02:2b5a:b0:c99:aff5:707d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a11:b0:3bf:acb2:5d48
- with SMTP id adf61e73a8af0-3bff4227b8fmr926021637.38.1782914000204; Wed, 01
- Jul 2026 06:53:20 -0700 (PDT)
-Date: Wed, 1 Jul 2026 06:53:19 -0700
-In-Reply-To: <25fdb77d-20f6-4b3a-8b3a-dbba0dc47046@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnkG3Fyy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CE91F00A3A;
+	Wed,  1 Jul 2026 13:53:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782914038;
+	bh=HbDXdgaUeBgOJU7aFzlWMhXoQzp5l+xfZDaTm/LuWa4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BnkG3Fyy6fZzt+p2ZQ+JpFrk1rAgpxAwN4msIPAoaF8HqGrs/49YFnrV/c6OPTE4C
+	 bf1Wo8Enf6ejekLmquVV+5g2yU30+8IBhJ/tUR5gv509bVo4GR4dEnivqIIjAODC6a
+	 cBsKXobbs1hunvRh9Gf/nclop41DvxAI/CtDyf3Eo+2+y9jLHuCCqhGri8A5rp4z4r
+	 jUB2F4jKssaBrhzUorK238ylBnqef0gJ5vb/CpEg7DYj92or6DHji1Q5425Xajf7Yn
+	 e661JLzesy++MQFDnWU7Gl4fB+pJ1QngWt/7ZAEM08dLYgRSe6Zpa6eCbXfw/vJbdQ
+	 Nkk9oLWBL8Y3g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 10/17] riscv: Add Zic64b to cpufeature and hwprobe
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guodong Xu" <docular.xu@gmail.com>
+Cc: kvm@vger.kernel.org, robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
+In-Reply-To: <20260701-rva23u64-hwprobe-v2-v5-10-2c61f94a695a@gmail.com>
+References: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
+ <20260701-rva23u64-hwprobe-v2-v5-10-2c61f94a695a@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 01 Jul 2026 13:53:57 +0000
+Message-Id: <20260701135357.E8CE91F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
- <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com> <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
- <ajx5Vrz9ma--hrGH@google.com> <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com>
- <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com> <aj087H1UWSFxbShR@google.com>
- <aj3H2sxymOYTWTnE@yzhao56-desk.sh.intel.com> <aj7NwCRwWEfLK-gQ@google.com> <25fdb77d-20f6-4b3a-8b3a-dbba0dc47046@intel.com>
-Message-ID: <akUbz_kJvYulaboo@google.com>
-Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default\
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 01, 2026, Xiaoyao Li wrote:
-> On 6/27/2026 3:06 AM, Sean Christopherson wrote:
-> > On Fri, Jun 26, 2026, Yan Zhao wrote:
-> > > My first impression of gmem_in_place_conversion=true was that it enforces gmem
-> > > in-place conversion. However, it actually only enforces per-gmem private/shared
-> > > attribute.
-> > > My worry was that people might think it's a kernel bug if userspace can still
-> > > have shared memory from other sources after they configured
-> > > gmem_in_place_conversion=true.
-> > Ah, I see where you're coming from.  FWIW, truly enforcing in-place conversion
-> > is flat out impossible.  E.g. userspace can simply replace the memslot, at which
-> > point the memory effectively reverts to shared.
-> 
-> would something like below enforce the in-place conversion?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The Zic64b extension is exported to userspace via hwprobe but la=
+cks corresponding KVM support, preventing VMMs from discovering and exposin=
+g it to guests.
+--
 
-No.
+commit 071fffe45b5cfa38ee92c48f5063587d8cccb183
+Author: Qingwei Hu <qingwei.hu@bytedance.com>
+riscv: Add Zic64b to cpufeature and hwprobe
 
-> Userspace can create a memslot without gmem fd, but that memslot can only
-> serve as shared memory and cannot be converted. So it doesn't violate the
-> in-place conversion.
+This commit adds support for the Zic64b extension to cpufeature and hwprobe.
+It introduces a validation callback to ensure consistent CBO block sizes and
+exports the capability to userspace.
 
-But userspace can delete said memslot and replace it with a memslot pointing at
-a guest_memfd instance that was created without INIT_SHARED, at which point
-userspace has effected a shared=>private conversion.
+Link: https://lists.riscv.org/g/tech-unprivileged/topic/question_about_zic6=
+4b_and/119631059
+
+> diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/u=
+api/asm/hwprobe.h
+> index 430dc49a82863..36ec8ab470423 100644
+> --- a/arch/riscv/include/uapi/asm/hwprobe.h
+> +++ b/arch/riscv/include/uapi/asm/hwprobe.h
+> @@ -122,6 +122,7 @@ struct riscv_hwprobe {
+>  #define		RISCV_HWPROBE_EXT_ZICCRSE	(1ULL << 4)
+>  #define		RISCV_HWPROBE_EXT_ZA64RS	(1ULL << 5)
+>  #define		RISCV_HWPROBE_EXT_B		(1ULL << 6)
+> +#define		RISCV_HWPROBE_EXT_ZIC64B	(1ULL << 7)
+
+[Severity: Medium]
+Since Zic64b is being exported to userspace via hwprobe here, should it also
+be added to the KVM UAPI?
+
+Without corresponding KVM support in enum KVM_RISCV_ISA_EXT_ID in
+arch/riscv/include/uapi/asm/kvm.h and kvm_isa_ext_arr in arch/riscv/kvm/isa=
+.c,
+VMMs will be unable to negotiate and expose this capability to guests.
+
+Does this patch need parallel KVM API plumbing to ensure virtualization
+parity for this mandatory extension?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701-rva23u64-h=
+wprobe-v2-v5-0-2c61f94a695a@gmail.com?part=3D10
