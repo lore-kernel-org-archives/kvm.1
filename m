@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF3528504D
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 05:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0161B28504D
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 05:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782883638; cv=none; b=jlPWuAW4ZO5PzVB817yge+x5ZNSl3/vx8EKJ6GFow0qV3WPyCbcIpqCuqJzQkylouxhnUiuPSklw0BJzmHUV4yHt8NV+HEui1HjnGU9i4VfmmXENVpWRRusUJm/ROAfnQKe8q+G4e66Gl7sUqpOreSKDpC03YKO3bcXXVUGN5N0=
+	t=1782883703; cv=none; b=lkDhW4SljAN0ttPU1jrEwNbFlVVi811rXiiwfOhVmQy4lBCqZhPRX8h/EKj5z90wnUxq4B66P68zlzqspw8WF+qlXyKKMMEcGRPBc9148KRp/1cOX19KT20aP9r65KkcBFTJPxK4BRuT3lInUFWY8IlCt633VM7tpq9p9pwDSzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782883638; c=relaxed/simple;
-	bh=PtF9NP2jfSqBFIWOH4WP/WuMe7aOxq0WtkX3ft5O6kc=;
+	s=arc-20240116; t=1782883703; c=relaxed/simple;
+	bh=ItTocOQpka7cJj1iPl/4p0yOzFa4iIXhIUHeFksxqfU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Dyuv8l5wqOCJA2R6fAYxmrSUn+/9SV57yVQeUSHtwUd6YC6XUDY2XpgrVWPNNr2W+5RWO+Zi9ukWsM/XvVGm/HUwCc9dboaTc4XXRiGOGXFf9gEdwzKqst8n9vcM8Yn+4gBqV9yZ7NOcQ4AD/rZ7+prNh8fydfU4YYwMSmI5Vxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSEOSk9y; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=c7NUibzPX7O0L3e5tv0RHZ3KOvy+u4Pz2GBcQOOUhzBA9mu2UCSPUSE78MMA4PlI+TBJRMPwBdX2ilkAR9X4W+At2T2HDLOCMdzAjBvxq1/h1iQgEKCKapCTqbkEQkhQxaqxtlVOjChZKob7mIYqnDY9lIHZ7C9hj4gzA391Owk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7d+My6N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSEOSk9y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E3A1F000E9;
-	Wed,  1 Jul 2026 05:27:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7d+My6N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95641F000E9;
+	Wed,  1 Jul 2026 05:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782883637;
-	bh=DCqsF9F+cgcf4prkqdU+JfrE3XVCLjDHwNm/RUacc38=;
+	s=k20260515; t=1782883701;
+	bh=pyjl4SOjgI2WyiLfCDzEkXwMMMcHfeNoKHN+33gTieU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PSEOSk9yoRbdreDJUOieD73IGD8Hwz0yFu3DOMA1eQCXhXDzfeGl8+0Q5B8S/rNjW
-	 Pt7CErXAwML7qifPTRvLUxRfk5IQLYN8WXjP7SnzROvO1DvbWf0Coqf6l8YUmZQHIf
-	 slimbNVg4qAWcX06hfDWUEERQuDcCTXIiL8ZEa5Qe+2jZ1t8YKlhyAR62Gx5dRLV3Z
-	 vN8/dhew33209+K6PF/99xr9sLkBiUTP85fMlqyaO6gVXuGgid2rGwLDiysBZYPTIJ
-	 Q4O3mR4uQaJi0LGGNwRMC7gA9mtoCofzBkFWDmkK6mXdRyHCwivFb6vDZsCaQJ22OW
-	 vUi2qQQ6z7P3Q==
+	b=c7d+My6NrGqJ9UTkM4e5cINhct3uLg38gugv52Cs3frmY16dqYEWN4iJSP/rOJ18T
+	 eLQHJezvksYpR2zRceIBmL1O6ykjbWX02iXX1YDsvYEBhou+V1ODMfOf7h1q8wV7+M
+	 6ifrFydYyJMyxfeyWnJHs0dFEdJcxcMX4k6b3z5212JvOzL1KDdRVrWXXPGXXQpJur
+	 Ylhl0nOfGE0KZdlwRq5bjQ1WSHRovnd/WUcpRp1RHKelHCPGQefUewuA8YEcPrHAEI
+	 bVRWeSObEU/lO3ErVIySxcBLolmjW9+/itBsBOWVX494uzV5EfcsEuZwYBGOGn8SQS
+	 a6gwsQmh0uJ0w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/4] KVM: PPC: Book3S HV: Add support for compat CPU
- capabilities for KVM on PowerNV
+Subject: Re: [PATCH v5 4/4] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701051409.51820-4-amachhiw@linux.ibm.com>
+In-Reply-To: <20260701051409.51820-5-amachhiw@linux.ibm.com>
 References: <20260701051409.51820-1-amachhiw@linux.ibm.com>
- <20260701051409.51820-4-amachhiw@linux.ibm.com>
+ <20260701051409.51820-5-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 05:27:16 +0000
-Message-Id: <20260701052716.F3E3A1F000E9@smtp.kernel.org>
+Date: Wed, 01 Jul 2026 05:28:20 +0000
+Message-Id: <20260701052821.A95641F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,103 +48,149 @@ Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
 New issues:
-- [Low] Reading the `cpu-version` device tree property using `of_get_proper=
-ty` without validating its length can result in an out-of-bounds read if th=
-e property is malformed.
-- [Low] Endianness type signature mismatch for `cpu_version` parameter caus=
-es Sparse static analysis warnings.
+- [Medium] The documentation specifies the ioctl returns `-ENOTTY` on non-p=
+series platforms, but the code returns `-EINVAL`.
+- [Low] The ioctl parameter is documented as an `(out)` parameter, but it i=
+s actually an `(in/out)` parameter.
 
 Pre-existing issues:
-- [High] An unprivileged host user can trigger a `WARN_ON_ONCE` in `kvmppc_=
-get_compat_caps()`, leading to a host denial of service.
+- [High] The UAPI unconditionally overwrites the user's `size` field with t=
+he kernel's struct size on success, leading to future user-space buffer ove=
+rflows.
 --
 
-commit 0383e83d38076b8b273c1d04bf2b738d14a3bbc2
+commit 2c871fad53b6cd5636eeb954745af1ef601fd441
 Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on Pow=
-erNV
+KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
 
-This commit extends host CPU compatibility capability reporting to support
-nested virtualization on PowerNV systems. For nested API v1, it derives the
-compatibility capabilities from the L1 guest by reading the cpu-version
-property from the device tree and mapping it to the corresponding KVM
-capability bitmap.
+Add documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the KVM API
+documentation. The ioctl exposes host processor compatibility modes support=
+ed
+for nested KVM guests on PowerPC systems.
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8799124b80960..70dcd370fd9ac 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-
-[ ... ]
-
-> @@ -6510,20 +6510,58 @@ static bool kvmppc_hash_v3_possible(void)
->  	return true;
->  }
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
+rst
+> index a5f9ee92f43e8..43810c451317f 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6566,6 +6566,85 @@ KVM_S390_KEYOP_SSKE
+>    Sets the storage key for the guest address ``guest_addr`` to the key
+>    specified in ``key``, returning the previous value in ``key``.
 > =20
-> +static int kvmppc_map_compat_capabilities(const __be32 cpu_version,
-> +				      unsigned long *capabilities)
+> +4.145 KVM_PPC_GET_COMPAT_CAPS
+> +-----------------------------
+> +:Capability: KVM_CAP_PPC_COMPAT_CAPS
+> +:Architectures: powerpc
+> +:Type: vm ioctl
+> +:Parameters: struct kvm_ppc_compat_caps (out)
 
 [Severity: Low]
-Is cpu_version actually host-endian here? The parameter is declared as
-const __be32, but kvmppc_get_compat_caps() passes a host-endian u32 value
-to it. Could this cause Sparse static analysis tools to warn about a
-restricted __be32 degrading to an integer?
+Since userspace must set the size and flags fields before calling
+the ioctl, should this parameter be designated as (in/out) rather than
+just (out)?
 
-> +{
-> +	switch (cpu_version) {
-> +	case PVR_ARCH_31_P11:
+> +:Returns: 0 on success, negative value on failure
+> +
+> +Errors include:
+> +
+> +  =3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +  EFAULT   if ``struct kvm_ppc_compat_caps`` cannot be read from or
+> +           written to userspace
+> +  EINVAL   if the ``size`` field is smaller than
+> +           ``KVM_PPC_COMPAT_CAPS_SIZE_VER0``, if the ``flags`` field
+> +           is non-zero, or if the backend fails to retrieve or map
+> +           CPU compatibility capabilities
+> +  E2BIG    if ``size`` is larger than the kernel's struct size
+> +           (new userspace on old kernel); the kernel writes back its
+> +           own struct size into the ``size`` field so userspace can
+> +           retry with the correct size
+> +  ENOTTY   if the backend does not implement the ``get_compat_caps``
+> +           operation (e.g., on non-pseries platforms or when the
+> +           required KVM operations are not available)
 
-[ ... ]
+[Severity: Medium]
+Is this error code accurate for non-pseries platforms?
 
->  static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
->  {
-> +	struct device_node *np;
->  	unsigned long capabilities =3D 0;
-> +	const __be32 *prop =3D NULL;
->  	long rc =3D -EINVAL;
-> +	u32 cpu_version;
-> =20
->  	if (kvmhv_on_pseries()) {
->  		if (kvmhv_is_nestedv2()) {
->  			WARN_ON_ONCE(!nested_capabilities);
+Looking at kvmppc_get_compat_caps() in arch/powerpc/kvm/book3s_hv.c,
+it appears to return -EINVAL instead:
+
+arch/powerpc/kvm/book3s_hv.c:kvmppc_get_compat_caps() {
+    long rc =3D -EINVAL;
+
+    if (kvmhv_on_pseries()) {
+        ...
+    }
+
+    if (rc < 0)
+        return rc;
+}
+
+> +  =3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +IBM POWER system server-based processors provide a compatibility mode fe=
+ature
+> +where an Nth generation processor can operate in modes consistent with e=
+arlier
+> +generations such as (N-1) and (N-2).
+> +
+> +This ioctl provides userspace with information about the CPU compatibili=
+ty modes
+> +supported by the current host processor for booting the nested KVM guest=
+s on
+> +KVM on PowerNV (nested API v1) and KVM on PowerVM (nested API v2) platfo=
+rms.
+> +
+> +::
+> +
+> +  struct kvm_ppc_compat_caps {
+> +	__u64	size;			/* Size of this structure */
+> +	__u64	flags;			/* Reserved for future use, must be 0 */
+> +	__u64	compat_capabilities;	/* Capabilities supported by the host */
+> +  };
+> +
+> +Before calling this ioctl, userspace must set the ``size`` field to
+> +``sizeof(struct kvm_ppc_compat_caps)`` and zero the ``flags`` field.
+> +The kernel rejects non-zero ``flags`` with ``-EINVAL`` to prevent
+> +uninitialized stack values from being silently accepted, keeping the
+> +field available for future use without ABI ambiguity.
+> +
+> +The ioctl uses ``copy_struct_from_user()`` and ``copy_struct_to_user()``
+> +to support extensible versioning: if userspace passes a struct smaller
+> +than the current kernel version (``size >=3D KVM_PPC_COMPAT_CAPS_SIZE_VE=
+R0``),
+> +the kernel zero-pads unknown trailing fields.
 
 [Severity: High]
-This is a pre-existing issue, but can this assertion be triggered by
-unprivileged userspace?=20
+This isn't a bug introduced by this patch, but while documenting the extens=
+ible
+versioning, does the existing code in kvm_arch_vm_ioctl() handle successful
+calls correctly for smaller user structs?
 
-If the KVM_PPC_GET_COMPAT_CAPS ioctl is called when nested_capabilities is 0
-(for example, if the host hypervisor initializes nestedv2 but does not retu=
-rn
-the capability flags), would this trigger a WARN_ON_ONCE?=20
+arch/powerpc/kvm/powerpc.c:kvm_arch_vm_ioctl() {
+    ...
+        host_caps.size =3D sizeof(host_caps);
+        r =3D copy_struct_to_user(argp, usize, &host_caps,
+                                sizeof(host_caps), NULL);
+    ...
+}
 
-According to KVM guidelines, adversary-reachable WARN_ON assertions can be
-host-side denial of service vectors if panic_on_warn is enabled.
+By unconditionally overwriting host_caps.size with the kernel's struct size
+on success, if the kernel struct is extended in the future (e.g., from 24 to
+32 bytes), a userspace application passing size =3D 24 will get a success r=
+eturn
+but have its size field overwritten with 32.
 
->  			capabilities =3D nested_capabilities;
->  			rc =3D 0;
-> +		} else {
-> +			for_each_node_by_type(np, "cpu") {
-> +				prop =3D of_get_property(np, "cpu-version", NULL);
-> +				if (prop) {
-> +					cpu_version =3D be32_to_cpup(prop);
-
-[Severity: Low]
-Could this read out of bounds if the cpu-version device tree property is
-malformed and less than 4 bytes long?
-
-The pointer returned by of_get_property() in kvmppc_get_compat_caps() is
-dereferenced by be32_to_cpup() without checking the length. Would using
-of_property_read_u32() natively validate the length and securely handle
-the endianness conversion?
-
-> +					of_node_put(np);
-> +					break;
-> +				}
-> +			}
-
-[ ... ]
+If userspace then reuses this struct for a subsequent ioctl call without
+reinitializing the size field, it will pass size =3D 32. Will the kernel th=
+en read
+and write 32 bytes to the user's 24-byte buffer, potentially corrupting mem=
+ory?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701051409.5182=
-0-1-amachhiw@linux.ibm.com?part=3D3
+0-1-amachhiw@linux.ibm.com?part=3D4
