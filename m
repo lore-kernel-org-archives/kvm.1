@@ -1,185 +1,151 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58E739A7FD
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596B13955C6;
+	Wed,  1 Jul 2026 20:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782938014; cv=none; b=C6tswf1bznwegJa+KVmc/1XAgg6PnPr3XsKXcwhLZXWZ/dcGlZ3AQajSVPEb9ZVrr331fmvwcXtHTH683O5qpv7CJXo+sf0Udh+JaUmfAow1K6fuTyb1vfAd7cjmjbcJYO0tDl/kr4vIzmkW67FM1HPPDG47xGXVmlpztZtW0DE=
+	t=1782938368; cv=none; b=tV7tA25ICIMdrnllipmZwgBnSV/7582EdqoJqaHO96Cxv0sWHRsiQwWIjChNL1QQPhdRhQF5YIxKiE8lcw3/GMmQpcRoGPfJZbtJHkudrdOd+2VYW/ZzqcUEo0b83fHrvKJKYzmFjZRpac8ojG9+GP+QFYj917NIVioH5hrJgl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782938014; c=relaxed/simple;
-	bh=ZawwhdxIywgO/9ECYKUMwpymOQ1YpDFfdOfU92GhLlI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U26tcmdGCeeFf1JsH4gI0nac27EZ9njjaJKDfZlMT9gfnPocdAEV5bXtnTlDtA8cLprBtOjSmhcBT0949LXTPTpTGKee3njRQfdPIfQXxv/LuA765H58RblwvsQwe1goZCS2xb69/yEXfQe25UltJ9IRu7jTpxmXzhzl6ZzdDsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QKoDDyzc; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
+	s=arc-20240116; t=1782938368; c=relaxed/simple;
+	bh=K2JyJxCXLtM1eTdlopzD3fjkU2xPZMINicFo0HL5CgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z/uI6peXbqzGKkuQSoY47bCoVaoUXvQ2QpGjsI8+6/YjevlMklLHzRFp9gjRRQHwag6cD/j7dCW7WoLHRKnz4tikoMwbCB3A6lz809c3V7nBlzWMqfzONIHhKPXaZ/qKkFNkE8Cz4nQ+uVXl5d0sTLojADZMYjj1CtrCf4hIiPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJRDi4cw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QKoDDyzc"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c9c26587e67so938480a12.0
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782938012; x=1783542812; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PA6Ga9DsEjOFAGVfXcfvRvkGuXPbbRqNCm/bUuUUIw=;
-        b=QKoDDyzc1OZZUoacVtNlbpMAMlsV/PzpCV8uqyIzq4xCMBGfB8M+mOr/12KkkP1WQG
-         CLf0S+jpou/1eJ+ao36QdDfPVPX1Mbw2+Nsa9natcG4IIsHQHHbBHFB3Tngxc2cWZyaP
-         QummFXRG0ssr5G7mxXHZbwB54FWfpkw2IT1lqmfuv13tTxv0BtrWULWcBgVrrVoRAnkO
-         d8bJYaYfPQBUad5SOKKToPYNjQTmpez7ScYEAR1Fk+BhkGlR3gy8PvpprGuC3K1Y6nrC
-         fTsYHTYJ0XkFDcpwZRCWSGBFDkxdhMlAJSdKmcRMsxYBc2k2BaSAsz9amMDQtY+NFxNM
-         1lrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782938012; x=1783542812;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PA6Ga9DsEjOFAGVfXcfvRvkGuXPbbRqNCm/bUuUUIw=;
-        b=HVH/IKZIMDNdrKSoVbxe7AlCFfEY+eSLD97Z1fpCKI9RkvT/nTPG+IadcO1VtucHTH
-         ePQR+xsLtkj6NTtFWzMkpQcnbjjo8RZeCze1UK35GS76a+TztnS6+Lhw8UAmp4Ab49no
-         iZVQTDxPElFiYfXBjHWce2Nt5yrAyTzIebFCD3ZzQtrcoMlPYwkh7WU6YcgvOC6vKpuU
-         aS1ecaAEnO5WY/njkPBOsaex7l+s7L3RxiNYpoQNmMEx+3JbHov+xApib36UALzcEWjn
-         yjLpJoqXu0uDy2/czK1lPMwZWVEZziA6+f+EQNZ682Phiipik48yNkS5rrlVoAMfp+7o
-         RVGw==
-X-Gm-Message-State: AOJu0YxUC6ffNnxIDrxGeoQuA8HId9n5JLApRs3SiXoW+Xlsn0vba3aI
-	MO+iy8ABsarxW0xfBRnf3QY1GlLiZJO0S300i1iDaaLrjf0IQk2OW+wTSPkq7vPfhJsl/Yz6+8Y
-	jkDiCwVad2FZsYapPFXS93LTPbi7KaBp1xIxfc3pY1+Jyamm7NSh/sRb4MkbchLrq22+SWVkIJa
-	/FwFrU12Byy1GSsbz1fsjdFP5rAl3EcXeoJz3n28O+cJBmxABjEequrA==
-X-Received: from dyckg24.prod.google.com ([2002:a05:7301:d198:b0:30c:b614:bad5])
- (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:690:b0:3bf:8a0e:dd99 with SMTP id adf61e73a8af0-3bfd26acbacmr6991059637.17.1782938011846;
- Wed, 01 Jul 2026 13:33:31 -0700 (PDT)
-Date: Wed,  1 Jul 2026 20:33:11 +0000
-In-Reply-To: <20260701203311.326798-1-aaronlewis@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJRDi4cw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC711F000E9;
+	Wed,  1 Jul 2026 20:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782938367;
+	bh=f6QVBJJnOqTAmv9bGgn42fUJj2cY0FZxJ1ME1xdC+T8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RJRDi4cwA05SdSW+713uFlPiyHLZCwR49gpm/dBeCn1+LQodBzos5L0rNrOeB3byQ
+	 WYhZPYks9Se42SWieNvBWgUMjEsqBcwWOs4xOFFLRMbHi6ddQDqKg30NUNu0SRnybo
+	 Dxb53nC6CoI0/DRmyz5F3NPVghBQyDdplb73P47xUpH/v/YS8//CW0poBUhA6iC8QZ
+	 umZIFhJEUn1UA3tMpqYUH5xGl95l2jJ2JSaktuQKz/5/5/JCb3OwudfJXCtAean9jS
+	 MjQR6siiOHHeuqOsor+6mVOYZFjNM2kgMm41a5faaSghy28LcMtS8/BW+wK19MQomK
+	 Bdzqn1x2pljIA==
+Date: Wed, 1 Jul 2026 21:39:19 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Guodong Xu <docular.xu@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Chen Wang <chen.wang@linux.dev>, linux-doc@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Jesse Taube <jtaubepe@redhat.com>,
+	Charlie Jenkins <thecharlesjenkins@gmail.com>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	devicetree@vger.kernel.org, spacemit@lists.linux.dev,
+	sophgo@lists.linux.dev, linux-kselftest@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v5 08/17] dt-bindings: riscv: Require block-size for
+ Zicbom, Zicbop, and Zicboz
+Message-ID: <20260701-squiggle-aging-459cd99cb2dc@spud>
+References: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
+ <20260701-rva23u64-hwprobe-v2-v5-8-2c61f94a695a@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260701203311.326798-1-aaronlewis@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260701203311.326798-5-aaronlewis@google.com>
-Subject: [PATCH 4/4] vfio: selftests: Allow the flag MAP_POPULATE to be set on
- the cmdline
-From: Aaron Lewis <aaronlewis@google.com>
-To: kvm@vger.kernel.org
-Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
-	Aaron Lewis <aaronlewis@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dKXZ0SKTAmT4FGH2"
+Content-Disposition: inline
+In-Reply-To: <20260701-rva23u64-hwprobe-v2-v5-8-2c61f94a695a@gmail.com>
 
-Add a command-line option to vfio_dma_mapping_perf_test to set the
-MAP_POPULATE flag during mmap(). This ensures consistent and accurate DMA
-mapping latency measurements by forcing page prefaulting to occur during
-the mmap() phase, rather than during the DMA mapping ioctl.
+--dKXZ0SKTAmT4FGH2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For example, mapping a 32G region without the -p (MAP_POPULATE) flag
-results in:
+On Wed, Jul 01, 2026 at 08:52:21AM -0400, Guodong Xu wrote:
+> Zicbom, Zicbop, and Zicboz have no default cache block size, so a
+> devicetree that declares one must also provide the matching
+> riscv,cbom/cbop/cboz-block-size property. Make it required so a
+> missing block-size property can be caught by dtbs_check.
+>=20
+> Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Guodong Xu <docular.xu@gmail.com>
+> ---
+> v5: New patch.
+> ---
+>  .../devicetree/bindings/riscv/extensions.yaml      | 26 ++++++++++++++++=
+++++++
+>  1 file changed, 26 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/riscv/extensions.yaml b/Do=
+cumentation/devicetree/bindings/riscv/extensions.yaml
+> index 5ffc40d599c02..f4dd34d446c02 100644
+> --- a/Documentation/devicetree/bindings/riscv/extensions.yaml
+> +++ b/Documentation/devicetree/bindings/riscv/extensions.yaml
+> @@ -1142,6 +1142,32 @@ allOf:
+>            not:
+>              contains:
+>                const: zilsd
+> +  # All three Zicbo* extensions require their block size property as the=
+re's no
+> +  # default.
+> +  - if:
+> +      properties:
+> +        riscv,isa-extensions:
+> +          contains:
+> +            const: zicbom
 
-  $ ./vfio_dma_mapping_perf_test -b 32G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
-  Completed mmap() for memfd in 0.00ms
-  Mapped HVA 0x7f1840000000 (size 32G) at IOVA 0x800000000 in 2887.56ms
+I think the way to fix this is to add
+  required:
+    - riscv,isa-extensions
+to each of these if conditions
+(not got time to test it right now, sorry)
 
-Here, the mmap() call completes instantly, but the ioctl to map the DMA
-region incurs the ~3s cost of prefaulting the pages.
+> +    then:
+> +      required:
+> +        - riscv,cbom-block-size
+> +  - if:
+> +      properties:
+> +        riscv,isa-extensions:
+> +          contains:
+> +            const: zicbop
+> +    then:
+> +      required:
+> +        - riscv,cbop-block-size
+> +  - if:
+> +      properties:
+> +        riscv,isa-extensions:
+> +          contains:
+> +            const: zicboz
+> +    then:
+> +      required:
+> +        - riscv,cboz-block-size
+> =20
+>  additionalProperties: true
+>  ...
+>=20
+> --=20
+> 2.43.0
+>=20
 
-Running the same test with the -p flag results in:
+--dKXZ0SKTAmT4FGH2
+Content-Type: application/pgp-signature; name=signature.asc
 
-  $ ./vfio_dma_mapping_perf_test -p -b 32G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
-  Completed mmap() for memfd in 2887.41ms
-  Mapped HVA 0x7f8000000000 (size 32G) at IOVA 0x800000000 in 11.51ms
+-----BEGIN PGP SIGNATURE-----
 
-By shifting the prefaulting overhead to mmap(), the actual DMA mapping
-latency is isolated and accurately reported as 11.51ms.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakV69wAKCRB4tDGHoIJi
+0qZuAPsE7PpkS7Q9Q/QdOXMXVi0vMgDYbeEgMRtzf0lMlv6w6gEA1JDV5vGVvkwY
+e3dZ2Ec1Eq1CjjFHEnDtDfSSbocyhQw=
+=AQmB
+-----END PGP SIGNATURE-----
 
-With user-defined mapping sizes and prefaulting in place, this test now
-clearly demonstrates the difference in mapping speeds between VFIO's Type 1
-IOMMU and IOMMUFD (i.e., IOMMU_IOAS_MAP_FILE).
-
-Running the same configuration with the "iommufd_memfd_hugetlb_1gb" variant
-highlights this difference:
-
-$ ./vfio_dma_mapping_perf_test -p -b 32G -a "-v iommufd_memfd_hugetlb_1gb"
-Mapped HVA 0x7f4fc0000000 (size 32G) at IOVA 0x800000000 in 0.11ms
-
-The DMA mapping time drops dramatically from 11.51ms to 0.11ms.
-
-Signed-off-by: Aaron Lewis <aaronlewis@google.com>
----
- .../vfio/vfio_dma_mapping_perf_test.c         | 20 +++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-index 6c025e9c4420..8032f51c1a3e 100644
---- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-+++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-@@ -22,6 +22,7 @@ static const char *device_bdf;
- 
- struct test_params {
- 	u64 size;
-+	int mmap_flags;
- };
- 
- struct test_params test_params;
-@@ -88,7 +89,7 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
- TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
- {
- 	const u64 size = test_params.size;
--	const int flags = variant->mmap_flags;
-+	const int flags = variant->mmap_flags | test_params.mmap_flags;
- 	struct dma_region region;
- 	struct timespec start;
- 	u64 unmapped;
-@@ -217,7 +218,9 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
- 	u64 unmapped;
- 	int rc, fd;
- 
--	region.vaddr = setup_memfd(&fd, size, variant->mmap_flags, variant->memfd_flags);
-+	region.vaddr = setup_memfd(&fd, size,
-+				   variant->mmap_flags | test_params.mmap_flags,
-+				   variant->memfd_flags);
- 	ASSERT_NE(region.vaddr, MAP_FAILED);
- 
- 	region.iova = iova_allocator_alloc(self->iova_allocator, size);
-@@ -288,11 +291,16 @@ size_t parse_size(const char *size)
- static void help(char *name)
- {
- 	puts("");
--	printf("usage: %s [-h] [-b bytes] [-a \"test harness args\"]\n", name);
-+	printf("usage: %s [-h|-p] [-b bytes] [-a \"test harness args\"]\n", name);
- 	puts("");
- 	printf(" -h: Display this help message.\n"
- 	       " -b: Specify the size of the DMA region to be mapped\n"
- 	       "     and unmapped. e.g. 16M or 8G, (default: 1G)\n"
-+	       " -p: Append 'MAP_POPULATE' to the mmap() flags to avoid\n"
-+	       "     prefaulting while mapping DMA regions. Instead, any\n"
-+	       "     and all prefaulting needed will happen during the\n"
-+	       "     mmap() call. This will make mapping DMA regions\n"
-+	       "     more consistent.\n"
- 	       " -a: Args that are forwarded to the test harness,\n"
- 	       "     e.g. -a \"-t dma_map_unmap_from_file\"\n");
- }
-@@ -320,9 +328,10 @@ static void setup_test(struct harness_args *args, int argc, char *argv[])
- 
- 	test_params = (struct test_params) {
- 		.size = SZ_1G,
-+		.mmap_flags = 0,
- 	};
- 
--	while ((opt = getopt(argc, argv, "a:b:h")) != -1) {
-+	while ((opt = getopt(argc, argv, "a:b:ph")) != -1) {
- 		switch (opt) {
- 		case 'a':
- 			populate_harness_args(args, argv[0], optarg);
-@@ -330,6 +339,9 @@ static void setup_test(struct harness_args *args, int argc, char *argv[])
- 		case 'b':
- 			test_params.size = parse_size(optarg);
- 			break;
-+		case 'p':
-+			test_params.mmap_flags = MAP_POPULATE;
-+			break;
- 		case 'h':
- 		default:
- 			help(argv[0]);
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
-
+--dKXZ0SKTAmT4FGH2--
