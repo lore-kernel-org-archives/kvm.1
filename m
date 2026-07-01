@@ -1,316 +1,294 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9D374A00;
-	Wed,  1 Jul 2026 06:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782886462; cv=none; b=njQQURJHj+4SaCEgFRkP+fagSnO2zIV+s3k8irWSJNU6+7th2jhFnDySuKdoYkYC2b9qci26B7Tdfmd/GVi3CdhDnhtkKkFcJQEutNlWlxTiGZIbJZvOfz2k4hariLFx3tYqT/kb2fRT3Jov/A/xEfke13dy19zKLIp24JkZA8U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782886462; c=relaxed/simple;
-	bh=rxkjIeeorWqjB/P0kD0/Uwwr7SkXixOKABaS+n4yPds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l4xYWW9rVGnsRgaMgf4VxHvngRN5V2HklvxM2L2sxvP3qUFHoe7ZrCQpAqdopf8g0IVEMKoWPiIrY34CtrAyEQ6ryz2ErB4PVSlw14UZRYLKMfUcvUhtJsOxyX8vJTbvpusfW+vlUBEltpTtMIlxBxQp6zIIewOhSG0x5J1khNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GKz1U5iD; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590251CAA7D;
+	Wed,  1 Jul 2026 06:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782886902; cv=fail; b=OSeXBj0jyUhTqk4HnjBjNj3nmMmzP0KzAzGgVfotSoTj1QP/e73YCgDH0T9caEglA4lxP35Yef8bbMm97uBuD0qMLnX4Lb3sIOFTfMc1kRTxDOXe+CHU/JxntRLMVLAqW+Txet1ujjEDC6oh23T49YJltlBK2NupKvVzCsieCIA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782886902; c=relaxed/simple;
+	bh=0v6/A9exmoiLbAUZFuPt7tSPf9Sc/HgDu6SYRfco4bQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bWoo/cNqLZ8zS9hx4rtbQ0pYln3FbLANDFcJx+VZ7KNLIPDD8vVCu9RvzYua/X/s0AT4aKstlXU8/JAtjg+h+4qEB19HFSESu4lQiDrTASPpGFxVbH0c6vm9ZQglTgUfuV1rJb7kfNAj09IgZgLMj3mm/PNqDdBKlil4y3CE+7Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KP0o6AFv; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GKz1U5iD"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6613ImK53760418;
-	Wed, 1 Jul 2026 06:13:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Sd9wi4
-	YQPSjUdpxHuMLpJeyDBsYtsd/zPnTpZW9Oxq8=; b=GKz1U5iD6DN8/6643BK9ZZ
-	yLTlEfapxG1Q4v48ftLvXhdeM4T3O08FxJS2+GQ/8q+X3h4/UBITAvNi0dWTHO9K
-	moYB+j+uuwsj28ZB8vhpUtOfJuYenlkhJwdZ6alqv9gxN5lLf0jrzsHCgY8xKnxg
-	mfQgdmedzNGDgoAebzIzWi+ud5pUHS0RMXrxw/FRwzAkM8qMsnEOU2rngTxGbWAx
-	5H122AgdgsjYoUxveC4XAU7WJUAidcxsFG9IBk2m/b1smzVY3SQWB6rD2Sji/D1H
-	EAtuDcHIf473RJTTIHLE1+sFa0FT9dU8tMVdqCd2PQTrMrMfv/MO8D9z4XpKijBA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26mjtj44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 06:13:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66164c6O004056;
-	Wed, 1 Jul 2026 06:13:55 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2uhydph5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Jul 2026 06:13:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6616Dp2f18219364
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Jul 2026 06:13:51 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F70C20043;
-	Wed,  1 Jul 2026 06:13:51 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4EA1A2004B;
-	Wed,  1 Jul 2026 06:13:47 +0000 (GMT)
-Received: from [9.67.14.28] (unknown [9.67.14.28])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Jul 2026 06:13:46 +0000 (GMT)
-Message-ID: <ba65ad87-2d59-49c3-9b76-7068a9c0dac2@linux.ibm.com>
-Date: Wed, 1 Jul 2026 11:43:45 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KP0o6AFv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782886900; x=1814422900;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=0v6/A9exmoiLbAUZFuPt7tSPf9Sc/HgDu6SYRfco4bQ=;
+  b=KP0o6AFvatkwpRJvKLfyWWOAeQaaB3K5khexBs65D4I38p4QGtUeaktp
+   9KrADHrfd3225KsykbNm6vzPq2KMQ31iyHnUmCAkUZ6JFg/kYEEi1wSRk
+   C/YJirtKIWeZdLQKSygPRE+oIw5QiWZ4ycK4S16mOJ0jlaRUazf+Sflgk
+   ZMes+R/3HR0BL6OpeRcYEThMsozehKK9rY7yRhhav9qGxfjeQVBqOMOaX
+   lpXhPnZDREvp3oTu/4Wd/vqWUhioFsUYlZ4deey40grjWWadtrvc4kO2T
+   8QfXrGxuADy5rGkeUitbGA6d3Z58Tl7ydQxk8IXhgfdGaJiN652+foObe
+   A==;
+X-CSE-ConnectionGUID: PeU9X8YCS6avDLAysAeokQ==
+X-CSE-MsgGUID: TsfvBDuPQVCuZtoT9Ef/+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="101152947"
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="101152947"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 23:21:39 -0700
+X-CSE-ConnectionGUID: w2oJwlgrR8iLFTPwFHILqA==
+X-CSE-MsgGUID: BGz0T9ePTauVR6V4ruR7Tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="246123222"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 23:21:39 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 30 Jun 2026 23:21:38 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 30 Jun 2026 23:21:38 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.66) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 30 Jun 2026 23:21:38 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E8StSzEVoOrUnbBO31oFtSQyYEJpgRgpCMjVwNn86i+9G+lxq2hkpKnjgVeVMUSaFgw8Qm/xmFTO6PLAa65zg0YTTsNS8G0jprTrarsvMp77hSZbP3fkhRJ2M9AsI4X/Q6nZCZbQ74ANPG01I6/sdWj5IbT17FDHM9C1z5bMQOEA9SfwmOl5++TTFyILP1g86ZB7Hc3HA410DBqcwBiHPrsXK9iD/vAR3ECQAqCNm55h6X1AGJwmqNQtJkdOH16RJjn5PIij1ysZuesQrndPl1CRTMbiSMbSpn2TgA2UQUPJtI7XCCmTQV2nfcZ9wSIFR3vAvJ9qU4ioz6+t++9Aeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yTC+9gNE+FmiaFqMdLbsdgatWXyJwBKNSZDjnjS+5+4=;
+ b=nxcVDHBj+tUaAJ70fGfncXoHIxhjmfhYtAC9cmiM4YAI8+zzTIFpic3ZHrLWTle2w3y80144UB139zHSM+p3REitBpKOO9LgSOwU6fubi2nBXNp+F014gLqxHMkaWwwJBbg2qm9nQh167fDULNHPYwP2W6tKYSpWN54fkXHlIODzD5cfEJkL7sMOMC1r/0hAMDvnD0cLfjuBSjsWZw62mz4h5S1KAA4tR919dKlsfAM4Dksrc/TZJlPDAArpgekGfAo1ePlSXpaXiz+/JADvyiKQ/tu031h7STSPOqT25slAHC89JtnUZ02rXtHN1gZOkgjYgrSlnVF8SVSKY5uxBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by PH7PR11MB8569.namprd11.prod.outlook.com (2603:10b6:510:304::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 06:21:28 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
+ 06:21:23 +0000
+Date: Wed, 1 Jul 2026 14:21:04 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Ackerley Tng <ackerleytng@google.com>, "aik@amd.com" <aik@amd.com>,
+	"andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "brauner@kernel.org"
+	<brauner@kernel.org>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>, "david@kernel.org" <david@kernel.org>,
+	"jmattson@google.com" <jmattson@google.com>, "jthoughton@google.com"
+	<jthoughton@google.com>, "michael.roth@amd.com" <michael.roth@amd.com>,
+	"oupton@kernel.org" <oupton@kernel.org>, "pankaj.gupta@amd.com"
+	<pankaj.gupta@amd.com>, "qperret@google.com" <qperret@google.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "rientjes@google.com"
+	<rientjes@google.com>, "shivankg@amd.com" <shivankg@amd.com>,
+	"steven.price@arm.com" <steven.price@arm.com>, "tabba@google.com"
+	<tabba@google.com>, "willy@infradead.org" <willy@infradead.org>,
+	"wyihan@google.com" <wyihan@google.com>, "forkloop@google.com"
+	<forkloop@google.com>, "pratyush@kernel.org" <pratyush@kernel.org>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "aneesh.kumar@kernel.org"
+	<aneesh.kumar@kernel.org>, "liam@infradead.org" <liam@infradead.org>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, "H. Peter
+ Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Annapurve,
+ Vishal" <vannapurve@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi
+	<shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Barry Song
+	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
+	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Baoquan He
+	<baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka
+	<vbabka@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+Message-ID: <akSx0Bx1RKe9DCXw@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <ajxasFBzp_9KnQLq@google.com>
+ <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
+ <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+ <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com>
+ <akMPZePBdwQlD74H@google.com>
+ <akMoFqj/8Af2i/Al@yzhao56-desk.sh.intel.com>
+ <akPEKslqAhygyjhg@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <akPEKslqAhygyjhg@google.com>
+X-ClientProxiedBy: SG2P153CA0043.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::12)
+ To DS0PR11MB7457.namprd11.prod.outlook.com (2603:10b6:8:140::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] KVM: powerpc/book3s_hv: Use generic xfer to guest
- work function
-To: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        gautam@linux.ibm.com, bigeasy@linutronix.de,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, maddy@linux.ibm.com
-References: <20260626105449.2897924-2-vishalc@linux.ibm.com>
- <20260626105449.2897924-4-vishalc@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260626105449.2897924-4-vishalc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDA1NyBTYWx0ZWRfXxmwjXZ7oIwlm
- 5N5WwlU52OF8hkFFKUZ+m7KvwCkxwIsgTdIJRl+dseNLlmcRDtFofacNOv7ARSpkNdS94sXpK8O
- X9aMBvnfIOKWbUASXHgvHyZhSNtRethtBSagrdzSaWZUBVWQ3D5RsjW9ULiUV6hMN/tkf0ZN387
- 3JDiX6k7orV2EP5n8nXV/I50k7GK3KkPuwWC8WNpz0JljJMC0uWybwdIhbj3QLdURFBxPjn1Qdo
- Zm1UlkRRrDmnMncrJVPD+V1uNZjCC0e2p1v+lFzReZrQSrzSnWSMDsq4vhsf9ZXQT4jVnq5l3Ey
- GUZVwvo9zjDKYLfI+f4WpBoVAcUW8m3xa/B8WYRW3oR34/IYeM8wRbiDIyUGmhBC9mFXWhPoCP4
- xYlifBdliG4tdrfpRlz9dvpqDU8BF+tSxBgu2pya4DNrArq8iQWfs9TNsQ5twxEIMXAlnbM/s2o
- w+JlEppsCv0GbOdOb/Q==
-X-Proofpoint-GUID: cQTXXnTFnRv6qLR1xhO94M9rZe6K9a4z
-X-Authority-Analysis: v=2.4 cv=Z8bc2nRA c=1 sm=1 tr=0 ts=6a44b024 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=p6WJHf5vwoid_y1ymPMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDA1NyBTYWx0ZWRfX5QOGSF4xMhZP
- AFdVeqOO30SUqRYpJuuClEM4Ft1RX+srfXMY1kNJpMvWqt7YN+yNXg28RwTG/oKaHe7ecjYbgVi
- /bN+8HlG172IjUEizqVAU3Qbh0hEjGo=
-X-Proofpoint-ORIG-GUID: -XoToUgpwvoRZ2Kvl53dZvpzGSP3wlHg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-01_01,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010057
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|PH7PR11MB8569:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea5feda6-d454-4ae1-af2d-08ded738f781
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|7416014|22082099003|18002099003|56012099006|6133799003|11063799006|5023799004|4143699003;
+X-Microsoft-Antispam-Message-Info: TIBhdt14i1KOIsWl1r83x4gNKRMLEPAcrrPShwfFmwZpkZU05q83rcchMc0uj+aawyDrjf+JBD2hsjiR4w/8iMH4+HGaR8l5BM6TC8D2smhw8dv1wKBq+ifZRXxEXYhXjbx5VJE1EuHoN6WAxKslVxMOxZBmBqwLLB0K7jdmPoJ3mlGo+R7maLlf2SvVuZLfVT08u+T9BNvYsotHdSwkJeaTMrX4K3U7Ofu78CMX2YC4vbjWUPsJMftaGshouyNnKxFJMeShy2t0/wfbaaIunUgc/GjUjFVChNFFIa3JpKYkhOMBkKNaghD+FvqBaOL5gU7Ci2OcSd2+P0frxf11ikv6bsEKrYPpFq49pPCI+aGmxdmlJkY7sCCgLJx83IiyStTz445hKRx1v+ifdIjlHMO2ApcVJTfATV6Eqt4IqqqKpP2kiVLttF+N2sDSIL2Bse6XqfAJ+1sfTKVJpbpZ15SpoF5nMQGs33mpLJVlh3PBRRcY7SM/MuNrSCqaiE6+t9unAbb4LW/Lc3ke7xUmKdd1Wirp5AiWOfOxxMCZNGdkZPa8sS8QQoBPer0Ze91223v3bibVtKLQAGw8worp5UO68iU/ILSXOrfI+F5NdybFpPoTfMDH+YbbMYrT01MLw2yVvndbD6zATp3KYLElVU/20ekbRf+H9ZYMCEbqMRM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(7416014)(22082099003)(18002099003)(56012099006)(6133799003)(11063799006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EP06XLeT0M1WdJ7dCuR+pZ61FhdZEu+e1wF39e7zHQ0q7N4wBS8U5BifYTGr?=
+ =?us-ascii?Q?14dWcU6CNLtggzCOQC5VAwZk12Yn5QXV2Xt568l4r1JaXkTLnDzQUFmKGnqU?=
+ =?us-ascii?Q?c9Xy+rNsuc5hbwAZSDC7mo3dz6Ck866lGBMvn/5la5ZuButra3XyoktMUNFQ?=
+ =?us-ascii?Q?keN4YCyQJzGUY03LVwwGEC8JpSh2o+uKvZxSRlDGAvVFd1FgfUHaBLeIv3JG?=
+ =?us-ascii?Q?8zfqFlhEhjJAq7+6A6xI/FTdEL3ZA56SIeEMz6bNlzZJtP3k9HUj6YRoZMSE?=
+ =?us-ascii?Q?Gk7s6q0tax9Hhd4O7Jn8MEmCeJIG7arYcYQzHiOzFfjvvE8uojInFnJHhWWr?=
+ =?us-ascii?Q?wTxUW2ldQtwrzzdkHrR8V2Qe40WPCpfRnxs5hVbAfT5umruurzd+jOxaTPy6?=
+ =?us-ascii?Q?+jAMOk9MxEF4Ve/nYy7+trGlg8iMQMQRzDuHonD+cuTOMuk1MRtI8Gz77lBI?=
+ =?us-ascii?Q?nI6h2JgEAibUTFoD2OuZ6VCoI5Q0vnF7OOQnDSbGtDY/e5mWIJzbjONKKKiS?=
+ =?us-ascii?Q?UWGxmg1sNoO7+DYQdZu3Soiw8H9JLgK7b5kLZXzKiDyfPUKLGOrj5tcNOAvh?=
+ =?us-ascii?Q?fFqGL3iM2OzJHMTr8Am3hTulbHZHnmu6Df+uftHKQbRsOoa1IDcfyvUqyl8q?=
+ =?us-ascii?Q?BoBkYyYAZ1z9Eh6/949cNy38ae765Eml767TFGtsthLvIHUKdZYTo7CmYtoQ?=
+ =?us-ascii?Q?Z+oWHZh0T0O8xgMQ9jzvFiDIhET2m8mmBJfYY5DqmoqmjaKKGXJ9PxK9RX0f?=
+ =?us-ascii?Q?Yr6pegkw2WgGz0Q76XqkR603fodPYAq8784nJdaGLgsB/TvGE7TLEzpfUjn+?=
+ =?us-ascii?Q?6lWXjE/BYA2J9J+8RQT5QmK/PkgzkOLrUimB/twAjohTZ+fYq2iBQ5UcpEjt?=
+ =?us-ascii?Q?YWLY547DCD0xL5zE2dqfjSfFQCLOwbftUsrwBv14nLNHPHW3kSu291GNgRLi?=
+ =?us-ascii?Q?oHzyxP1LxW9YI9diRMECLw290IVRcKNyqKplQpQ4EYi4QFtYNNW2jtJjdwz/?=
+ =?us-ascii?Q?SLYDWbU6clbE9gIW/ZjAs28lKi5ZRjch/g5PrVeGgqyEbQgsRw8RlK535cCV?=
+ =?us-ascii?Q?PiuuFG9EulrexWZhUKzYJNzTKLW7HAYMY71JEHy/tk3M8MFGg2yENDCS9apG?=
+ =?us-ascii?Q?wz78zRi9snp4O3jwk2hiQ9eSX08ib7tXN0wbbE9P3gGt8KD6dGTTBxRvU3t9?=
+ =?us-ascii?Q?KSZ3AUCGjQkAUXeIBD9WorUXaaNIsDeEw8eLVWgojEY6izx1uEvD87QOjLkP?=
+ =?us-ascii?Q?93B2aqqmyh3VU6Y3eLneG/MbX47+bAo7utaxYTVhot5okE7+Za8yt24P4Wqb?=
+ =?us-ascii?Q?m1TNMlrXrWvoYIjWt2YIR6o2jkdZ3GHFBf49fCYFbZaxlZ+Crp8u5r+MSEK7?=
+ =?us-ascii?Q?Kf4fy2ivtuIR1usmDMiuw/AuQDPCQyLXd3LMFsf5x75oPAwY2674MEZdqeI+?=
+ =?us-ascii?Q?d6NJXrNwRGkzM7dUS0tMJDLjrhLYANow3XnFp5pNMmNi3iOKR8Upk5xOQ81m?=
+ =?us-ascii?Q?uYXfXedxHfilSV0oPn42DNcFqzPWpDyg6ylf07IIahVP6PYnDpXjMDYQAF6M?=
+ =?us-ascii?Q?3ZPxS62q9byfJW33jikSgZ+puKzK5YXWoq44dUaG36fNp/1kcsvPLl4eVjWj?=
+ =?us-ascii?Q?5CJa6GZnEcWbjJJJHsPKAMphwfI0bX2M+DdEPbT5SCL6G06WdAVQyTa1Yg87?=
+ =?us-ascii?Q?uOrZ+h+UiMQv6kLRIUexpQSIkLp34sgvHspMwJFy67hU0nQQNa/X/X0qRrQj?=
+ =?us-ascii?Q?OJB4LzkwQA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: IjKNy7rMZWmyxCtsy4MDpNw7wXRPcigoGAyzpwQ5KTUkDP75KacsndnXERkpvRLT0wFMLLmBr4rSFdb8E3oCTsyb+MXSh98kK/mV0FAG5xocIRHHXdldeoatyeKs3sWVjR057OhWUMl+IwNa4BgFQr+F83pRzvN4sVNvcffWLOBiwicE0lekOAfMmL78Nzy2fI3CElhfRr28j23ZI+bx9OMqZHWWStJFC3unrFmX6P68YAJSkS5AG2rhqyKO1pArlh18kBrHyCmXk0drF/IOeFVjQ/0t8c+kAz6jba4vkuvk8z6VD8tk4Pxy8VER2fcp3MBF4fk/Ky7SnSkd6/2dEA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea5feda6-d454-4ae1-af2d-08ded738f781
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7457.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 06:21:22.1480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u7A8QecHbWXhR+HeFhZ9l5w1gE/S24jhTMRXPdW4OGNPDR688kVObMlKg+IpoWvl2jsv0x7OW7vcbMzE5icpHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8569
+X-OriginatorOrg: intel.com
 
-Hi Vishal,
-
-On 6/26/26 4:23 PM, Vishal Chourasia wrote:
-> Use the generic infrastructure to check for and handle pending work
-> before transitioning into guest mode, replacing the open-coded
-> need_resched() and cond_resched() checks.
+On Tue, Jun 30, 2026 at 09:27:06PM +0800, Sean Christopherson wrote:
+> On Tue, Jun 30, 2026, Yan Zhao wrote:
+> > On Tue, Jun 30, 2026 at 08:35:49AM +0800, Sean Christopherson wrote:
+> > > Gah, I thought I had sent this out this morning, long before Ackerley's response.
+> > > But I got distracted by a meeting and forgot to get back to this... *sigh*
+> > > 
+> > > Sending what I already wrote, even though there's a lot of overlap with Ackerley's
+> > > mail.
+> > > 
+> > > On Mon, Jun 29, 2026, Yan Zhao wrote:
+> > > > On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
+> > > > > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > > > > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> > > > > > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> > > > > > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+> > > > > >
+> > > > > 
+> > > > > I'd say the original uAPI perhaps just didn't document 0 as an
+> > > > > unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+> > > > > was perhaps accidentally changed and no customer complained, I think we
+> > > > > can move forward with 0 as an invalid src_address? I wouldn't think
+> > > > > anyone relies on 0 intentionally being a valid address.
+> > > > > 
+> > > > > I could document that, if it helps?
+> > > > What about just documenting that 0 is an unsupported uaddr which will be
+> > > > re-purposed as an indicator to use the target pfn as the source, regardless of
+> > > > whether gmem_in_place_conversion is true? i.e.,
+> > > > 
+> > > > if (!src_page) 
+> > > > 	src_page = pfn_to_page(pfn);
+> > > 
+> > > Because KVM can't generally use the target page as the source without in-place
+> > > conversion, it's not supported today, and out-of-place conversion is being
+> > > deprecated.
+> > By "out-of-place conversion", do you mean using per-VM memory attribute
+> > conversion?
 > 
-> This picks up handling for TIF_NOTIFY_RESUME, which was previously
-> ignored, meaning task work will now be correctly handled on every
-> guest re-entry.
-
-It would indeed be good if powerpc moves go generic VIRT_XFER_TO_GUEST_WORK.
-It does take care of RESUME.
-
-In addition today, I doubt powerpc kvm works well for LAZY preemption.
-generic infra will take care of it too.
-
+> Yep, I couldn't come up with a better description.
 > 
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> ---
->   arch/powerpc/kvm/Kconfig     |  1 +
->   arch/powerpc/kvm/book3s_hv.c | 58 +++++++++++++++++++++++++++++++-----
->   2 files changed, 52 insertions(+), 7 deletions(-)
+> > > > I don't get why the two scenarios should be treated differently:
+> > > > 1. gmem_in_place_conversion==true, shared memory is not from gmem 
+> > > > 2. gmem_in_place_conversion==false, shared memory is not from gmem
+> > > > 
+> > > > In both case, a 0 uaddr could be mapped to a valid page not from gmem.
+> > > 
+> > > That's immaterial.  KVM's ABI (that we're solidifying) is that an address of '0'
+> > > for the source means NULL.  The fact that userspace could have a valid mapping
+> > > at virtual address '0' is irrelevant.
+> > So, I'm wondering if we can document that 0 uaddr could always mean using target
+> > PFN.
 > 
-> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-> index 9a0d1c1aca6c..36aec58c5f22 100644
-> --- a/arch/powerpc/kvm/Kconfig
-> +++ b/arch/powerpc/kvm/Kconfig
-> @@ -81,6 +81,7 @@ config KVM_BOOK3S_64_HV
->   	depends on KVM_BOOK3S_64 && PPC_POWERNV
->   	select KVM_BOOK3S_HV_POSSIBLE
->   	select KVM_BOOK3S_HV_PMU
-> +	select VIRT_XFER_TO_GUEST_WORK
+> I would document it as saying "no source page", and then state that a source page
+> is required if in-place conversion isn't enabled/supported/allowed.
+Ok.
 
-This takes care of HV only.
-Does PR/booke run into the same problem?
-Does anyone out there who runs them still and care about cgroup bandwidth control mechanism on it?
+> > i.e., for both scenarios 1 and 2, al long as 0 uaddr is specified, we always
+> > use target PFN as source for in-place add.
+> > 
+> > > Again, just because something is technically possible doesn't mean it needs to
+> > > be supported by every piece of KVM's uAPI.
+> > > 
+> > > > So why not update the uAPI to handle both cases consistently? :)
+> > > 
+> > > Because retroactively adding support for out-of-place conversion is pointless
+> > > (requires a userspace update for a feature that's being deprecated), KVM can't
+> > > generally support using the source for out-of-place conversion (it's effectively
+> > > an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
+> > > scenario is valuable for KVM developers, e.g. to help newcomers understand what
+> > > exactly is and isn't possible.
+> > Ok. You mean per-VM memory attribute is deprecating, and source page from !gmem
+> > backend is also deprecating, so we don't want to change uAPI for scenarios under
+> > gmem_in_place_conversion==false. Right?
+> 
+> Right.
+> 
+> > 
+> > > Side topic, isn't TDX broken if target page has already been added to the TD?
+> > > IIUC, kvm_tdp_mmu_map_private_pfn() will be a glorified nop due to the page
+> > > already having a valid S-EPT mapping, and so KVM will incorrectly allow a double
+> > Not sure if my understand out-of-place conversion correctly.
+> > Given target PFNs and GFNs are not duplicated, what would cause double add? :)
+> 
+> I was working through what would happen if userspace did KVM_TDX_INIT_MEM_REGION
+> on the same target page multiple times.
+Oh. To have KVM_TDX_INIT_MEM_REGION on the same target page multiple times, the
+user needs to invoke KVM_TDX_INIT_MEM_REGION on the same GPA multiple times.
+In that case, yes, kvm_tdp_mmu_map_private_pfn() will return -EIO.
 
-It may be worth adding comment that PR still runs into the same issue.
-
->   	select CMA
->   	help
->   	  Support running unmodified book3s_64 guest kernels in
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..b012512342e6 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3850,10 +3850,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
->   	 * and return without going into the guest(s).
->   	 * If the mmu_ready flag has been cleared, don't go into the
->   	 * guest because that means a HPT resize operation is in progress.
-> +	 *
-> +	 * xfer_to_guest_mode_work_pending() is the IRQs-disabled recheck for
-> +	 * pending guest-mode work (reschedule, signals, and TIF_NOTIFY_RESUME
-> +	 * task_work such as the deferred CFS throttle). It is the pre-POWER9
-> +	 * analog of the final gate in kvmhv_run_single_vcpu(), and a superset
-> +	 * of the old need_resched() check: it catches work that raced in after
-> +	 * the drain in kvmppc_run_vcpu(), so a CPU-bound vCPU is throttled here
-> +	 * instead of running one more guest dispatch past its quota. IRQs are
-> +	 * hard-disabled just above, so the non-__ variant (which asserts that)
-> +	 * is the correct one.
->   	 */
->   	local_irq_disable();
->   	hard_irq_disable();
-> -	if (lazy_irq_pending() || need_resched() ||
-> +	if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
->   	    recheck_signals_and_mmu(&core_info)) {
->   		local_irq_enable();
->   		vc->vcore_state = VCORE_INACTIVE;
-> @@ -4824,10 +4834,24 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
->   		vc->runner = vcpu;
->   		if (n_ceded == vc->n_runnable) {
->   			kvmppc_vcore_blocked(vc);
-> -		} else if (need_resched()) {
-> +		} else if (__xfer_to_guest_mode_work_pending()) {
->   			kvmppc_vcore_preempt(vc);
-> -			/* Let something else run */
-> -			cond_resched_lock(&vc->lock);
-> +			/*
-> +			 * Let something else run, and run pending guest-mode
-> +			 * work (reschedule, and TIF_NOTIFY_RESUME task_work such
-> +			 * as the deferred CFS throttle) before we would re-enter
-> +			 * the guest, so a CPU-bound vCPU is actually throttled
-> +			 * here instead of running past its quota. This is a
-> +			 * superset of the old need_resched() check. Use the raw
-> +			 * helper, not the kvm_ wrapper: signals (KVM_EXIT_INTR
-> +			 * and the signal_exits stat) are accounted by this path's
-> +			 * existing handling below, so going through the wrapper
-> +			 * here would double-count them. The helper may schedule(),
-> +			 * so the vcore lock is dropped around it.
-> +			 */
-> +			spin_unlock(&vc->lock);
-> +			xfer_to_guest_mode_handle_work();
-> +			spin_lock(&vc->lock);
->   			if (vc->vcore_state == VCORE_PREEMPT)
->   				kvmppc_vcore_end_preempt(vc);
->   		} else {
-> @@ -4899,8 +4923,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   		}
->   	}
->   
-> -	if (need_resched())
-> -		cond_resched();
-> +	/*
-> +	 * Run pending work before (re-)entering the guest, most importantly
-> +	 * task_work queued via TWA_RESUME (e.g. the deferred CFS bandwidth
-> +	 * throttle, which only sets TIF_NOTIFY_RESUME). Without this a CPU-bound
-> +	 * vCPU that keeps returning RESUME_GUEST never reaches an exit-to-user
-> +	 * point, so the throttle is never enforced and the task runs far beyond
-> +	 * its quota. The helper also handles reschedule and signals, replacing
-> +	 * the cond_resched() that was here. It may schedule(), so it runs before
-> +	 * preemption and IRQs are disabled, with no vcore/KVM locks held. This
-> +	 * is the per-reentry site shared by the bare-metal and pseries (nested)
-> +	 * paths, so both are covered.
-> +	 */
-> +	r = kvm_xfer_to_guest_mode_handle_work(vcpu);
-> +	if (r)	/* -EINTR: signal pending, exit to userspace (KVM_EXIT_INTR) */
-> +		return r;
->   
->   	kvmppc_update_vpas(vcpu);
->   
-> @@ -4916,7 +4953,14 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	if (signal_pending(current))
->   		goto sigpend;
-
-xfer_to_guest_mode_work_pending checks for signals too right?
-
-#define XFER_TO_GUEST_MODE_WORK                                         \
-         (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY | _TIF_SIGPENDING | \
-          _TIF_NOTIFY_SIGNAL | _TIF_NOTIFY_RESUME |                      \
-          ARCH_XFER_TO_GUEST_MODE_WORK)
-
-> -	if (need_resched() || !kvm->arch.mmu_ready)
-> +	/*
-> +	 * Re-check for pending guest-mode work with IRQs disabled, to catch
-> +	 * anything (e.g. a TIF_NOTIFY_RESUME task_work such as the deferred CFS
-> +	 * throttle) that raced in after the check above. Bail back to the outer
-> +	 * loop, which re-enters here and runs the work. This is a superset of
-> +	 * the previous need_resched() check.
-> +	 */
-> +	if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
->   		goto out;
->   
->   	vcpu->cpu = pcpu;
-
-Copying from the discussion thread at that time,
-
-"""
-on x86:
-kvm_arch_vcpu_ioctl_run
-	vcpu_run
-		for () {
-			.. run guest..
-			xfer_to_guest_mode_handle_work
-				schedule
-		}
-
-
-on Powerpc:  ( taking book3s_hv flavour):
-kvm_arch_vcpu_ioctl_run
-kvmppc_vcpu_run_hv  *1
-	do while() {
-		kvmhv_run_single_vcpu or kvmppc_run_vcpu
-			-- checking for need_resched and signals and bails out *2
-	}
-
-
-*1 - checks for need resched and signals before entering guest
-*2 - checks for need resched and signals while running the guest
-
-
-This patch is addressing only *1 but it needs to address *2 as well using generic framework.
-I think it is doable for books3s_hv atleast. (though might need rewrite)
-"""
-
-
-A few questions that comes to my mind.
-
-1. I think you are doing for both *1 and *2 right? Is *1 necessary still for powerpc?
-2. There is a for loop. What is it doing? Does this still need similar checks?
-
-         if (is_kvmppc_resume_guest(r) && !kvmppc_vcpu_check_block(vcpu)) {
-                 kvmppc_set_timer(vcpu);
-
-                 prepare_to_rcuwait(wait);
-                 for (;;) {
-                         set_current_state(TASK_INTERRUPTIBLE);
-                         if (signal_pending(current)) {
-                                 vcpu->stat.signal_exits++;
-                                 run->exit_reason = KVM_EXIT_INTR;
-                                 vcpu->arch.ret = -EINTR;
-                                 break;
-                         }
-
-                         if (kvmppc_vcpu_check_block(vcpu))
-                                 break;
-
-                         trace_kvmppc_vcore_blocked(vcpu, 0);
-                         schedule();
-                         trace_kvmppc_vcore_blocked(vcpu, 1);
-                 }
-                 finish_rcuwait(wait);
-         }
-         vcpu->arch.ceded = 0;
-
-
-PS: cc'ing me would have helped me to see the mail earlier since you had referred
-to the patch I had sent.
+> > 
+> > > add.  Ahhh, no, because KVM will return RET_PF_SPURIOUS and
+> > > kvm_tdp_mmu_map_private_pfn() will then return -EIO.
+> > My asking was if we could document uaddr always means using target PFN, since
+> > TDX's in-place add does not rely on gmem in-place conversion.
+> 
+> Yeah, I was on a tangent, ignore everything from "Side topic" on.
+> 
