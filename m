@@ -1,115 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1BE3B14C6;
-	Wed,  1 Jul 2026 08:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEAB38F259
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 08:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782893142; cv=none; b=uqiyMRH76Ku3aB67QkH5z2Bbsy4O+airmFZvIIe+d9eaNZ4MVsNXzVlzxk6Qn1yd+KFbaLRs3Vgi+JMqEgZmZQpmMhjFInLdFAz90Ib/Mt2p0thW7iWYO0wNdoH4pdnmG/w/KhR+ELLMSZPT2ZXkMXS0GKmOYUr5HEv99ScYkbA=
+	t=1782893441; cv=none; b=H/FvBbbPxMhYsf7GMnlrTXJGoFw50/+i5JwEGeC4Ii4j/4ocaGvZ5qaOdKa+7aQlizMcq3HzSjbvZaedNYuq5XoA6QhALNH1i/Bw7FKFjvL6aKoS9bEXTC0zK4KxN+bjrfE8UOEN5VPzRM+MOr22c03D8A48SK856JsHl36xJP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782893142; c=relaxed/simple;
-	bh=DP0eg4B0OM8TO8XnS8C6gHlWxSavTjQl03mk/DOj9RE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X3ZIxQPx92l8bZuMB158lw1IPu0mq715AjPCOzWV7Yn8XkIZoLgw2ULu2wsXaZXJG6fbtZpeTXoGdOB+BJzZWqqDpUgajsY/SkQaxzrfq8hs0iro4/1fni0e0hbvEzT4Zcd7stP6k23/dKszWQSGJpgF3Q7985uI0qU5z+iusSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQnMfZY0; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1782893441; c=relaxed/simple;
+	bh=AtlvuS3//WNdIMQdJ4WWq8HTLDiwv4m6iAdVOz8QhuE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=V6n8DBRU1ZdtqURr8yXKPNtFhVZW+geqmoFOEVjRH/EoG7qwPPSdFWhkjc9VOa7vD4jjqlAvvYN+eFLkFie7Zl/n9b+axOgQdKLJo5+bNuAGAQOqnSxHLXr5gIaOtW33AivfpNB+/ybDK+8SsnRD3AnbLVi/IWdQwOjRCiVKMRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SupUb/PY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQnMfZY0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782893139; x=1814429139;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DP0eg4B0OM8TO8XnS8C6gHlWxSavTjQl03mk/DOj9RE=;
-  b=FQnMfZY00VYPxz8UpUgTtZallSt5HLZjXvQLkIj4CZE9Xhaj6rSkI5e5
-   lvSBLjLLeDzMpZcP/8RaPMx1reZKbmKqxCH4QmCOcyM3WNzRKZUzBc1i+
-   IWNo1OIo0QXVyHQnVEayNSfOIg+cp/5Bxn2NNcqSQnpAwLCaMWmugIdvu
-   HRP0kNWN+3qiU5D+6h2lejaHT8Hf0eiBIP8Vwj6AZ0bavlZR/NOHmcmok
-   q/c5JnE1/PWTJid4Bj8sAVi5A8/gOx+DkmgCX5tg1O96fizfOVNbvReFa
-   KlMckIPpFNf92j7LsSH+1zoR35IorV2anSD1/iscz8HnJqIjyPS1n+rsO
-   A==;
-X-CSE-ConnectionGUID: l98uhD6OSMS9e2lcfhniWg==
-X-CSE-MsgGUID: 5TgCtMTJSB2FxG9MwSPVyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="94217852"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="94217852"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 01:05:26 -0700
-X-CSE-ConnectionGUID: lVWuAtoZRb+S8bw6cD6rzw==
-X-CSE-MsgGUID: G3cj1NKaRzaUjG0LX4qnIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="257401196"
-Received: from unknown (HELO [10.239.158.49]) ([10.239.158.49])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 01:05:04 -0700
-Message-ID: <3b64e897-93a8-4f9c-88a9-f416ff44b09d@intel.com>
-Date: Wed, 1 Jul 2026 16:05:00 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SupUb/PY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFFE1F00A3A;
+	Wed,  1 Jul 2026 08:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782893432;
+	bh=dMf6w0D7vQKGeOrKjG4EMAME89drd934JDkmXhkdNuA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=SupUb/PYCKjaqL20lqhKQxhAVmop4TF7xFTWqHRVnu3Jq/ZrwbiI6QDAx0hoOEFhi
+	 pO6+huTiG33BrEDK+/4NWbVlvjRYW2+T6WdItU6EcbFn8iquHSNrC9Dvl6k70sQc57
+	 P3TuKFffeMD1hMooKfiy1E9qDNjr6tdQvbAKGwvr3Eo3cq3nOps0sjLjmDA8SRQljE
+	 CpAIpAQ5Jd98679tWxMR2cdzvfWAL1nthErWLKr9Ct0iGnU+W4AsvlJyp53lUPzirz
+	 8DQZ9hDVv+6j9uUCr1Ji+I7hc7nb5LocXLmQtT1Rzrf8biBq83FkvDuaj1eDeg2Sfk
+	 X7V01RxGbS9xw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] riscv: kvm: Skip preventive hfence.gvma for new G-stage
+ mappings with Svvptc
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Dylan.Wu <fredwudi0305@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260701075239.95542-1-fredwudi0305@gmail.com>
+References: <20260701075239.95542-1-fredwudi0305@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 01 Jul 2026 08:10:30 +0000
+Message-Id: <20260701081031.DDFFE1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/46] KVM: guest_memfd: Only prepare folios for
- private pages
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-12-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-12-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> All-shared guest_memfd used to be only supported for non-CoCo VMs where
-> preparation doesn't apply. INIT_SHARED is about to be supported for CoCo
-> VMs in a later patch in this series.
-> 
-> In addition, KVM_SET_MEMORY_ATTRIBUTES2 is about to be supported in
-> guest_memfd in a later patch in this series.
-> 
-> This means that the kvm fault handler may now call kvm_gmem_get_pfn() on a
-> shared folio for a CoCo VM where preparation applies.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-I don't get it clear why preparation isn't needed or should not be 
-performed for shared folio.
+Pre-existing issues:
+- [High] Missing `smp_wmb()` before linking newly allocated intermediate pa=
+ge tables, exposing uninitialized memory to concurrent hardware page table =
+walkers.
+- [High] Non-atomic write-protection of G-stage PTEs clobbers hardware Acce=
+ss/Dirty bit updates.
+--
 
-Before this patch, userspace VMM can create the gmem with FLAG_MMAP and 
-FLAG_INIT_SHARED. And KVM always faultin the pfn from gmem. In this 
-case, the gmem is always shared, and kvm_gmem_prepare_folio() is always 
-called when faultin from gmem. So it's OK to call preparation for shared 
-folio, right? Then what is the actual reason we cannot do it now?
+commit 8c5791358f444706f77027dbaa2cea7abc95b1e0
+Author: Dylan.Wu <fredwudi0305@gmail.com>
+
+riscv: kvm: Skip preventive hfence.gvma for new G-stage mappings with Svvptc
+
+For Invalid->Valid G-stage leaf PTE updates, the flush in
+kvm_riscv_gstage_set_pte() is preventive. When Svvptc is available, new
+valid PTEs become visible to the page-table walker within a bounded
+time, so an immediate hfence.gvma is unnecessary. Skip gstage_tlb_flush()
+for that case.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index c4c3b79567f10..7b805112d2829 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+
+[ ... ]
+
+> @@ -171,8 +173,11 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gsta=
+ge,
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does
+kvm_riscv_gstage_set_pte() need an smp_wmb() before linking a newly
+allocated intermediate page table?
+
+When a new page table is allocated during a guest page fault, the setup
+looks like this:
+
+	next_ptep =3D kvm_mmu_memory_cache_alloc(pcache);
+	if (!next_ptep)
+		return -ENOMEM;
+	set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
+			      __pgprot(_PAGE_TABLE)));
+
+Without a memory barrier before set_pte(), the zeroing of the newly
+allocated page table could be delayed past its publication in the parent
+page table.
+
+If a concurrent hardware page table walker follows the pointer to the new
+page table and observes uninitialized memory, could it interpret random old
+data as valid PTEs and cause wild memory accesses or guest memory
+corruption?
+
+>  	}
+> =20
+>  	if (pte_val(*ptep) !=3D pte_val(map->pte)) {
+> +		bool was_invalid =3D !pte_val(*ptep);
+>  		set_pte(ptep, map->pte);
+> -		if (gstage_pte_leaf(ptep))
+> +		if (gstage_pte_leaf(ptep) &&
+> +		    !(was_invalid &&
+> +		      riscv_has_extension_unlikely(RISCV_ISA_EXT_SVVPTC)))
+>  			gstage_tlb_flush(gstage, current_level, map->addr);
+>  	}
+> =20
+
+[Severity: High]
+This is a pre-existing issue, but can the non-atomic write-protection in
+kvm_riscv_gstage_op_pte() clobber hardware Access/Dirty bit updates?
+
+During dirty logging, GSTAGE_OP_WP uses a non-atomic read-modify-write
+to clear the write bit:
+
+	else if (op =3D=3D GSTAGE_OP_WP)
+		set_pte(ptep, __pte(pte_val(ptep_get(ptep)) & ~_PAGE_WRITE));
+
+If the hardware page-table walker asynchronously updates the Access or
+Dirty bit between ptep_get() and set_pte(), would that hardware update be
+silently overwritten and lost?
+
+Losing a Dirty bit might cause KVM to treat a modified page as clean
+during dirty logging. Could this lead to silent data corruption during
+live migration since the modified guest data wouldn't be transferred?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701075239.9554=
+2-1-fredwudi0305@gmail.com?part=3D1
