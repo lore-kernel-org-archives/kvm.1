@@ -1,207 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C68D326D65
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 02:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF973644C6
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 02:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782872912; cv=none; b=OGtQypRWUA2EscoZp2Jn4mptnyfxcny7xXKoW1tD89C8W1gkoWkzLZsXytjNQX3FtClFS4z52EHNPC8U9JbFvFIVRBaqHy4ouD28iMQpC4yrfoJ5APPJShmvUJyIPImjJSaQ9iSHpfSkgnuAbXIfOG4YiLL3wHPDY+mevU3a0Rg=
+	t=1782873049; cv=none; b=Pj/oT/MxuyLPhOZ4j3GMvRJuAkPSdspkVTINgVdEdI6YDDJMUPc7HYoOWzldxhpKd8+Tjldezz/Y+s+2PmIT0ibYK9tj1DdvD7u3Lj9V44uVcF3GGEoIjyVusLRimmrgNZQQN2A5O/hf5AH5WEn471G3whqRmNA8V7FtIg9sUC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782872912; c=relaxed/simple;
-	bh=FZ4873317Pr+shg2VaGIYvk69RuynjD8OYHCTt4+rec=;
+	s=arc-20240116; t=1782873049; c=relaxed/simple;
+	bh=TCNVLGaRrAsH30hPLNTcsdRMyfId4JH62OB0RbBjP3Y=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ajw6+0LIxOkJYKwwcHNKJ7i0motXHtvt5Z9SzYxuIt8LKj9Gh2P/jImeulxooMbE9kdkKY5AOoUZmGeS85BTN7WDZ5WthU3ReZCTjREjps2wE15QThLQIzOYKuPCnelYszKd9F2dsGWWNuzVIIrX1j8pLaB9sjnTxtcwnbPi5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLi9f9p+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hfS6Oe30k1bDo85amNnw70Hbc3qUi2PKC/AbtJhU/wpta4CVc+xZ6bCd67I8aQrgd6j/o0SLgW+Vkyr6E2xLCC2KOgBh01DgJ50rh7y6/FlfxeaSbmKjijznidbL4EwCBocca5GnMkX2yY1t2ztZ/0bruWSspbc/mVI7ktzivkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzmbkaWK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLi9f9p+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFF21F000E9;
-	Wed,  1 Jul 2026 02:28:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzmbkaWK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155F81F000E9;
+	Wed,  1 Jul 2026 02:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782872911;
-	bh=cbIQblnRws4Ab/6XEVbt87D+8YLjbXFJk8bR1XDPprA=;
+	s=k20260515; t=1782873046;
+	bh=4TXEp4mAOSK5Lm5OrhwdFEDYvvbBtpjbpI9UBfBP0ag=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KLi9f9p+0XzJ7CDURGqGZfECA4zy3smGd0SYjTjXCxtM8eVqVL+CGlbTpO7lF8fuI
-	 2vFOGlUoMwxc2uYT1huQoFR+Zr/QvpWZFOJ7OL5mm/l1jzKWnsKh8Ao/1CQ8ZdLPah
-	 t9SuHT/a1WTKjUUogS0VW7CBfmyImGat/9w40aA53QWH31dNjOZmGf/LhJGLc6iJm+
-	 9ymugjWyDH1u9WzILkVujEKVBO3Wy8HB+frAFT3qukeh92T/pEUBFySwSKZpwr4jZQ
-	 jLdnN1BQtWpu6mOKy6J4k7kZcprg4/JXkibFCQMf3mZ2ynXh3foyntpY8WViRlrH8c
-	 mTV3PzK5o9ThA==
+	b=ZzmbkaWK021pogc5h6cALlO4En6vRwSpCQvDIhxAT8nJ1DY+HJwQ1zy/hwKavQ7nE
+	 IsUOP91H1xXlJ1XrOlExBdxa0uayOlvwyyC1H3gxCTkEHlonjrEIJhlm6U+il11t2W
+	 qJrFT/g1TLk02QMDh2Lb/S2kn8NT0UUPcDbeWDV6x/Z3U5JweVRRJ8pi38CTOGLf4A
+	 tYDH/idjViiCAbwIyIXXz5H2HyNq0EjIbmYUwTItNlvnCFD0kUgM61NvPA/clwsFcq
+	 WBUi0jcZu1Cz/h4rJivbMFXjCyKINCLB3ODMyp+n2oG6wU2udKw/O0IjKm1jp/bqRt
+	 6/4tvBkd0hZJg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/8] RISC-V: KVM: Add ssp context save/restore
+Subject: Re: [PATCH v4 1/8] RISC-V: KVM: Add support for Svadu FWFT features
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Inochi Amaoto" <inochiama@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701020746.170157-5-inochiama@gmail.com>
+In-Reply-To: <20260701020746.170157-2-inochiama@gmail.com>
 References: <20260701020746.170157-1-inochiama@gmail.com>
- <20260701020746.170157-5-inochiama@gmail.com>
+ <20260701020746.170157-2-inochiama@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 02:28:30 +0000
-Message-Id: <20260701022830.DDFF21F000E9@smtp.kernel.org>
+Date: Wed, 01 Jul 2026 02:30:45 +0000
+Message-Id: <20260701023046.155F81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Missing addition of the ZICFISS register count in `num_csr_regs()`=
- causes KVM to under-calculate the required register list size, leading to =
-an out-of-bounds write during the `KVM_GET_REG_LIST` ioctl.
-- [Medium] Modifying CSR_SSP in C code before entering the VCPU assembly lo=
-op, and zeroing it upon return, overwrites the host's active Shadow Stack P=
-ointer, potentially causing a host kernel panic if the host utilizes Superv=
-isor-mode shadow stacks.
-- [Medium] The guest's ZICFISS Shadow Stack Pointer (`zicfiss_csr`) is not =
-cleared during VCPU context reset, leading to guest state leakage across re=
-boots.
+- [High] Missing Nested Virtualization (NACL) Synchronization in FWFT setter
+- [High] State Corruption on Reset for SVADU-only guests
 --
 
-commit 3d9e79d289458c01fff126fe0b09e2d1859aeecc
+commit 3a9bb56abfad9f69ff748e7562ad8693be40c7f9
 Author: Inochi Amaoto <inochiama@gmail.com>
+RISC-V: KVM: Add support for Svadu FWFT features
 
-RISC-V: KVM: Add ssp context save/restore
+This commit adds support for the Svadu FWFT feature in RISC-V KVM.
+It exposes the PTE A/D hardware updating feature if both Svadu and Svade
+are supported, and adds helper functions to get and set the ISA extension
+state for the guest.
 
-This commit adds ssp context save/restore for guest VCPUs. It also adds the
-Zicfiss registers to the ONE_REG interface to allow access from user space.
-
-> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
-vm_host.h
-> index 60017ceec9d2a..e5ed3b0e5a55b 100644
-> --- a/arch/riscv/include/asm/kvm_host.h
-> +++ b/arch/riscv/include/asm/kvm_host.h
+> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
+t.c
+> index ab39ac464ffd8..7192c229a19e2 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
 [ ... ]
-> @@ -203,6 +207,9 @@ struct kvm_vcpu_arch {
->  	/* CPU Smstateen CSR context of Guest VCPU */
->  	struct kvm_vcpu_smstateen_csr smstateen_csr;
-> =20
-> +	/* CPU Zicfiss CSR context of Guest VCPU */
-> +	struct kvm_vcpu_zicfiss_csr zicfiss_csr;
-> +
-
-[Severity: Medium]
-Is the zicfiss_csr structure cleared during a VCPU reset?
-
-Looking at kvm_riscv_vcpu_context_reset() in arch/riscv/kvm/vcpu.c,
-it doesn't appear to be zeroed:
-
-	memset(cntx, 0, sizeof(*cntx));
-	memset(csr, 0, sizeof(*csr));
-	memset(&vcpu->arch.smstateen_csr, 0, sizeof(vcpu->arch.smstateen_csr));
-
-Could this lead to the guest's shadow stack pointer being preserved
-across warm reboots or kexec, leaking architectural state?
-
->  	/* CPU reset state of Guest VCPU */
->  	struct kvm_vcpu_reset_state reset_state;
-> =20
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index cf6e231e76e25..1c2775a4834eb 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -720,6 +720,7 @@ static void kvm_riscv_update_hvip(struct kvm_vcpu *vc=
-pu)
-> =20
->  static __always_inline void kvm_riscv_vcpu_swap_in_guest_state(struct kv=
-m_vcpu *vcpu)
->  {
-> +	struct kvm_vcpu_zicfiss_csr *zicficsr =3D &vcpu->arch.zicfiss_csr;
->  	struct kvm_vcpu_smstateen_csr *smcsr =3D &vcpu->arch.smstateen_csr;
->  	struct kvm_vcpu_csr *csr =3D &vcpu->arch.guest_csr;
-> =20
-> @@ -727,10 +728,13 @@ static __always_inline void kvm_riscv_vcpu_swap_in_=
-guest_state(struct kvm_vcpu *
->  	vcpu->arch.host_senvcfg =3D csr_swap(CSR_SENVCFG, csr->senvcfg);
->  	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
->  		vcpu->arch.host_sstateen0 =3D csr_swap(CSR_SSTATEEN0, smcsr->sstateen0=
-);
-> +	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZICFISS))
-> +		csr_write(CSR_SSP, zicficsr->ssp);
-
-[Severity: Medium]
-Since this modifies the host's CSR_SSP while still executing host C code,
-will this cause any subsequent host function returns (before entering
-assembly) to use the guest's shadow stack?
-
-If the host kernel utilizes hardware shadow stacks for Supervisor mode,
-this could result in a host kernel panic from an sspopchk failure.
-
+> @@ -94,6 +94,45 @@ static bool kvm_fwft_is_defined_feature(enum sbi_fwft_=
+feature_t feature)
+>  	return false;
 >  }
 > =20
->  static __always_inline void kvm_riscv_vcpu_swap_in_host_state(struct kvm=
-_vcpu *vcpu)
->  {
-> +	struct kvm_vcpu_zicfiss_csr *zicficsr =3D &vcpu->arch.zicfiss_csr;
->  	struct kvm_vcpu_smstateen_csr *smcsr =3D &vcpu->arch.smstateen_csr;
->  	struct kvm_vcpu_csr *csr =3D &vcpu->arch.guest_csr;
-> =20
-> @@ -738,6 +742,8 @@ static __always_inline void kvm_riscv_vcpu_swap_in_ho=
-st_state(struct kvm_vcpu *v
->  	csr->senvcfg =3D csr_swap(CSR_SENVCFG, vcpu->arch.host_senvcfg);
->  	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
->  		smcsr->sstateen0 =3D csr_swap(CSR_SSTATEEN0, vcpu->arch.host_sstateen0=
-);
-> +	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZICFISS))
-> +		zicficsr->ssp =3D csr_swap(CSR_SSP, 0);
-
-[Severity: Medium]
-Will hardcoding CSR_SSP to 0 here overwrite the host's shadow stack pointer
-rather than correctly restoring the saved host state?
-
->  }
-> =20
->  /*
-> diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
-> index bb920e8923c93..bd59aebc8b2e9 100644
-> --- a/arch/riscv/kvm/vcpu_onereg.c
-> +++ b/arch/riscv/kvm/vcpu_onereg.c
-[ ... ]
-> @@ -688,7 +732,7 @@ static int copy_csr_reg_indices(const struct kvm_vcpu=
- *vcpu,
->  				u64 __user *uindices)
->  {
->  	int n1 =3D sizeof(struct kvm_riscv_csr) / sizeof(unsigned long);
-> -	int n2 =3D 0, n3 =3D 0;
-> +	int n2 =3D 0, n3 =3D 0, n4 =3D 0;
-> =20
->  	/* copy general csr regs */
->  	for (int i =3D 0; i < n1; i++) {
-> @@ -740,7 +784,25 @@ static int copy_csr_reg_indices(const struct kvm_vcp=
-u *vcpu,
->  		}
->  	}
-> =20
-> -	return n1 + n2 + n3;
-> +	/* copy Zicfiss csr regs */
-> +	if (riscv_isa_extension_available(vcpu->arch.isa, ZICFISS)) {
-> +		n4 =3D sizeof(struct kvm_riscv_zicfiss_csr) / sizeof(unsigned long);
+> +static void kvm_sbi_fwft_env_flag_reset_helper(struct kvm_vcpu *vcpu,
+> +					       u64 flag)
+> +{
+> +	vcpu->arch.cfg.henvcfg &=3D ~flag;
+> +}
 > +
-> +		for (int i =3D 0; i < n4; i++) {
-> +			u64 size =3D IS_ENABLED(CONFIG_32BIT) ?
-> +				   KVM_REG_SIZE_U32 : KVM_REG_SIZE_U64;
-> +			u64 reg =3D KVM_REG_RISCV | size | KVM_REG_RISCV_CSR |
-> +					  KVM_REG_RISCV_CSR_ZICFISS | i;
+> +static long kvm_sbi_fwft_env_flag_set_helper(struct kvm_vcpu *vcpu,
+> +					     struct kvm_sbi_fwft_config *conf,
+> +					     bool one_reg_access,
+> +					     unsigned long value, u64 flag)
+> +{
+> +	struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
 > +
-> +			if (uindices) {
-> +				if (put_user(reg, uindices))
-> +					return -EFAULT;
-> +				uindices++;
-> +			}
-> +		}
+> +	if (value =3D=3D 0)
+> +		cfg->henvcfg &=3D ~flag;
+> +	else if (value =3D=3D 1)
+> +		cfg->henvcfg |=3D flag;
+> +	else
+> +		return SBI_ERR_INVALID_PARAM;
+> +
+> +	if (!one_reg_access) {
+> +		csr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
+> +		if (IS_ENABLED(CONFIG_32BIT))
+> +			csr_write(CSR_HENVCFGH, vcpu->arch.cfg.henvcfg >> 32);
 > +	}
-> +
-> +	return n1 + n2 + n3 + n4;
->  }
 
 [Severity: High]
-Does num_csr_regs() also need to be updated to include the ZICFISS register
-count?
+Will this cause state corruption when KVM nested acceleration (NACL) is
+active?
 
-If num_csr_regs() doesn't include the ZICFISS registers, userspace might
-allocate a smaller array for KVM_GET_REG_LIST, causing the put_user()
-calls above to write past the end of the userspace array.
+When KVM acts as an L1 hypervisor using NACL, updating the CSR directly
+with csr_write() fails to update the NACL shared memory page (nacl_shmem).
+
+When L0 later switches context or resumes the L2 guest, it will reload
+CSR_HENVCFG from the unmodified nacl_shmem, silently discarding the L2
+guest's FWFT update.
+
+Should this use ncsr_write() instead to ensure safe H-mode CSR
+modifications for nested virtualization?
+
+> +
+> +	return SBI_SUCCESS;
+> +}
+[ ... ]
+> @@ -137,6 +176,33 @@ static long kvm_sbi_fwft_get_misaligned_delegation(s=
+truct kvm_vcpu *vcpu,
+>  	return SBI_SUCCESS;
+>  }
+> =20
+> +static bool kvm_sbi_fwft_pte_ad_hw_updating_supported(struct kvm_vcpu *v=
+cpu)
+> +{
+> +	return riscv_isa_extension_available(vcpu->arch.isa, SVADU) &&
+> +		riscv_isa_extension_available(vcpu->arch.isa, SVADE);
+> +}
+> +
+> +static void kvm_sbi_fwft_reset_pte_ad_hw_updating(struct kvm_vcpu *vcpu)
+> +{
+> +	kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_ADUE);
+> +}
+
+[Severity: High]
+Could this break A/D bit updates for SVADU-only guests after a reboot?
+
+A VCPU configured with SVADU but without SVADE requires ENVCFG_ADUE to be
+set to 1 to function properly. This is correctly initialized the first
+time in kvm_riscv_vcpu_config_ran_once().
+
+However, when the guest initiates a system reset, this reset handler
+unconditionally clears ENVCFG_ADUE. Because vcpu->arch.ran_atleast_once
+is already true and is not cleared on reset,
+kvm_riscv_vcpu_config_ran_once() will not run again.
+
+Does this leave the SVADU-only VCPU resuming with ENVCFG_ADUE cleared,
+causing hardware to fail updating A/D bits without SVADE to trap them?
+
+> +
+> +static long kvm_sbi_fwft_set_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> +						struct kvm_sbi_fwft_config *conf,
+> +						bool one_reg_access, unsigned long value)
+> +{
+> +	return kvm_sbi_fwft_env_flag_set_helper(vcpu, conf, one_reg_access,
+> +						value, ENVCFG_ADUE);
+> +}
+> +
+> +static long kvm_sbi_fwft_get_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> +						struct kvm_sbi_fwft_config *conf,
+> +						bool one_reg_access, unsigned long *value)
+> +{
+> +	return kvm_sbi_fwft_env_flag_get_helper(vcpu, conf, one_reg_access,
+> +						value, ENVCFG_ADUE);
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701020746.1701=
-57-1-inochiama@gmail.com?part=3D4
+57-1-inochiama@gmail.com?part=3D1
