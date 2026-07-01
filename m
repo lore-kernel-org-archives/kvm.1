@@ -1,130 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F95B3B1EFC
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 06:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9193B442F;
+	Wed,  1 Jul 2026 07:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782889116; cv=none; b=rk7naBh2wUAnqkzc9alAkJcqpLPYZ+dT+cxOxlHNs1onzjRBNl1YUICJSPuk0/8aJahtNz3XrE9O2Gb0j0wteqbbQMOGxSfUSx27NjDD1eQLW5USh7ZldOFG0OTXQDoKl8Inr0ArsszpDRmWtIAv8QvtQpy9P0DP9VkA16KhfqQ=
+	t=1782889333; cv=none; b=NuIyOQ29F08W5RrZzl6qCKWyU+Q7axHjdfcaESY6tQH/Sff3mMqDx40UhjO90MYpEver9LEFGqARQ4J2OXMwQOAYYjcx3Naqng+7n4dwYyzgtPKabuBmoxT6Akeac4htXOVcWRTrvdaV9I3E/61PR8flRv/fD3iM4V+ZRu/v45Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782889116; c=relaxed/simple;
-	bh=OSxKuQU9blydA7z3UyaLJUM5clMCvPHnvraDhCaYhg8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uIVfyYve4kvspgV+v0kVkVF4zPAqiU/GA66+CcjDyS8Nl1RxXN23q3/tQFUFtwUn0QjtWN7J7+R7uqKDqIXKN75EKFt5hxwUn6fDBn6FeSx9ffvGKR+nNy6efgcEI6A40Qu/7gdeb3NfJCf3oiUxo+SMpuMWXu7ZPkIKiR1xhjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WC2CJmTq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782889333; c=relaxed/simple;
+	bh=uTemCS9hJuZwaBtUWAiWvpe3nJ0DnwAEJpllNENNMkc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jq3J8AfXnHTCleVp+J51yzBfn7pUq4WOTICxEVg7OmRXEqP/OeHCTig/oA4ON+RuiiFiRepxj+kPLEyAsdq+CEJV9683ybnMzwl6aEWvk++2FITgAGBRWPq8vobEFE1210GAOtmdPEltGHv4VZPQHlK4JQlT0sF19dRAigCvayo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BsZxu9in; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WC2CJmTq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594861F00A3D
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 06:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782889115;
-	bh=woSofrP5WTJbErYpMgun4CWCtNv+L3OjsKwS/qCrAS0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WC2CJmTqiW60GWZm82Pfl5EhulZ1B124/09pLVqbu4huSV0+P/xHmeaSyj+OGNFdV
-	 YmU2VfK6uGj3YlY6BGxjR94lJE3kaO2nXRK2tjHCmNA7zee2WbuUmztQ3iw6UNK2No
-	 Pggt8XFZij1gZ41NaCQvfr+2wPewUea05R/Xd/CR5FAgTZbFBhd7y1hxsoZpUgSiWi
-	 lRQrbblJfAiSEMQi4LrxocQQgaCWZQRA8oX7WuTrvNz8hCgzm0kzuB8hRyXedSiME4
-	 A8svViPdymLkkQ1g5jR2QNoRqNaZedrWc2o9/qIMAj03E/A0rJARrqUoJ0GjNsb2yI
-	 zwxIXlOC8x8Cg==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c0e124d2a21so42037866b.2
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 23:58:35 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyKt16P497EqlaXBWSKYQwqZhZ4BSeFRRKGScj62P9TWsYlsa88
-	UzC8lqKPgPw+BMaD+k8veKwBiDDo4cL2y2mco+QgYlktfcaCrg6a44w9DsILr5dTXzVHx1SadAQ
-	PSXNI1gSzrGFYzZrzgjI825H7Ur79foc=
-X-Received: by 2002:a17:907:a893:b0:c12:a588:4113 with SMTP id
- a640c23a62f3a-c12a9dcba49mr11041366b.29.1782889114308; Tue, 30 Jun 2026
- 23:58:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BsZxu9in"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782889332; x=1814425332;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=uTemCS9hJuZwaBtUWAiWvpe3nJ0DnwAEJpllNENNMkc=;
+  b=BsZxu9inLJyO6hlBjk+JmUAqD7xGtSvRyNfHKsI/QE1xmwSDjJpZiEoT
+   /AxOz6NWKW2Y2ybAphGGoyBRYDO8eN36V81zzLHkukAjqbit35Nl6WG7+
+   7eIGJ5zACZJc1fuEtFzkwJSYVTaOhjPX5LbByr/u2fr3g5kd72BXXoPVj
+   579v6TzS8Re53L1Uo7x2S11U2uLxo0CczUA/djVJ73F5zHsNyX2/zoHIo
+   KJjaTmUu28JOWlcQC++i1qvFNW7lQBi/pIfu9SNLfs/7hFZZERwlbxc5G
+   VwSbs6A+IS7ygR72cyh+HaUP9QDjEupaSx1c01W2kPc3Qu8z0+KQ12ZuG
+   A==;
+X-CSE-ConnectionGUID: E51+qz05Q1i+YHbwnYFRSw==
+X-CSE-MsgGUID: qNcvIzXzQa2qFKuW0EbqMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="82728594"
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="82728594"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 00:02:11 -0700
+X-CSE-ConnectionGUID: IOyXLa5dSF2JqjSse/2n1w==
+X-CSE-MsgGUID: JbKqh+eBRZqdMAtXHVxILg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
+   d="scan'208";a="275705575"
+Received: from unknown (HELO [10.239.158.49]) ([10.239.158.49])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 00:01:53 -0700
+Message-ID: <e5876e41-a11a-4d5e-958f-9e247c19d387@intel.com>
+Date: Wed, 1 Jul 2026 15:01:35 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260630234716.3039031-1-yosry@kernel.org> <20260630234716.3039031-6-yosry@kernel.org>
- <20260630235208.0FEBD1F000E9@smtp.kernel.org> <CAO9r8zOBQxSNO==og6b1kX6WLYVimHrTs9owy8UrttpSs2pyaA@mail.gmail.com>
-In-Reply-To: <CAO9r8zOBQxSNO==og6b1kX6WLYVimHrTs9owy8UrttpSs2pyaA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 30 Jun 2026 23:58:23 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNgnMoa5+X-hbDo1BK7XEu+euYO2vyoVV15VOJmK2S7gw@mail.gmail.com>
-X-Gm-Features: AVVi8CffLr779ASl52FHnJzzlZu1bJO4GPxQGhIC1GoPXj1pHanKGMtZPx4Jmwc
-Message-ID: <CAO9r8zNgnMoa5+X-hbDo1BK7XEu+euYO2vyoVV15VOJmK2S7gw@mail.gmail.com>
-Subject: Re: [PATCH 5/7] KVM: x86: Reverse the polarity of efer_reserved_bits
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
+To: Sean Christopherson <seanjc@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+ <a1b06afb-af6e-4666-8c7d-990e7fa150fa@intel.com>
+ <akP9Qv_IPVEh7GAB@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <akP9Qv_IPVEh7GAB@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 30, 2026 at 4:54=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Tue, Jun 30, 2026 at 4:52=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential is=
-sue(s) to consider:
-> > - [High] Incorrect bitwise logic in EFER validation rejects valid zero =
-values (breaking guest boot) and allows guests to set reserved bits (trigge=
-ring VMENTRY failures).
-> > --
-> >
-> > commit 4bd740e43933efd5aaca18b2bd83e1696dbbd7dd
-> > Author: Yosry Ahmed <yosry@kernel.org>
-> >
-> > KVM: x86: Reverse the polarity of efer_reserved_bits
-> >
-> > This commit reverses the polarity of the EFER validation variable, rena=
-ming
-> > efer_reserved_bits to efer_supported_bits to align with other fields in
-> > kvm_caps. The stated intent is that no functional change is introduced.
-> >
-> > > diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-> > > index 17d4c813a9e8a..b9a16a27f6c23 100644
-> > > --- a/arch/x86/kvm/msrs.c
-> > > +++ b/arch/x86/kvm/msrs.c
-> >
-> > [ ... ]
-> >
-> > > @@ -606,7 +606,7 @@ static bool __kvm_valid_efer(struct kvm_vcpu *vcp=
-u, u64 efer)
-> > >  }
-> > >  bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
-> > >  {
-> > > -     if (efer & efer_reserved_bits)
-> > > +     if (!(efer & efer_supported_bits))
-> >
-> > [Severity: High]
-> > Does this bitwise logic inadvertently reject valid zero values and allo=
-w
-> > guests to set reserved bits?
-> >
-> > If a guest writes 0 to the EFER MSR, (efer & efer_supported_bits) evalu=
-ates
-> > to 0, and the negation makes this condition true, improperly rejecting =
-it.
-> >
-> > Additionally, if a guest writes an EFER value containing both a support=
-ed
-> > bit and a reserved bit, the condition evaluates to false, allowing the
-> > reserved bit to be set.
-> >
-> > Should this check instead be (efer & ~efer_supported_bits)?
->
-> Yes, I completely screwed this up :)
->
-> The tests don't fail because we only have tests for SREGS setting EFER
-> (added in this series), and __kvm_valid_efer() still properly catches
-> invalid bits for this path (because KVM caps =3D=3D guest caps).
+On 7/1/2026 1:30 AM, Sean Christopherson wrote:
+> On Tue, Jun 30, 2026, Xiaoyao Li wrote:
+>> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+>>> -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>>> -				     unsigned long mask, unsigned long attrs);
+>>> +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+>>> +					unsigned long mask, unsigned long attrs);
+>>>    bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+>>>    					struct kvm_gfn_range *range);
+>>>    bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+>>
+>> We have
+>>
+>>   - kvm_pre_set_memory_attributes()
+>>   - kvm_arch_pre_set_memory_attributes()
+>>   - kvm_arch_post_set_memory_attributes()
+> 
+> Yeah, that's probably for the best.
+> 
+>> left, do they need to be renamed as well?
+>>
+>> then the interesting one is kvm_vm_set_mem_attributes(), which contains "vm"
+>> already while it means "vm ioctl". Do we need to rename it to
+>> kvm_vm_set_vm_mem_attributes()?
+> 
+> I say "no" on this last one, the fact that the function is scoped to a VM ioctl
+> is enough to communicate that it applies to per-VM attributes.
+> 
+> Actually, since it's a local helper, we could go with kvm_set_vm_mem_attributes()
+> to be consistent with the other functions.  That just leaves
+> kvm_vm_ioctl_set_mem_attributes(), which I think it appropriately scoped.
 
-For the record, I was curious why my hacky AI-generated reproducer
-didn't fail with this bug.
-
-Turns out it was trying to write efer=3DEFER.SVME, which means that:
-(a) If nested=3D1, (efer & efer_supported_bits) would be 1, and
-set_efer() would succeed as expected.
-(b) If nested=3D0, (efer & efer_supported_bits) would be 0, and
-set_efer() would (accidentally) fail as expected.
-
-I updated the reproducer to read the value of EFER first, then write
-efer=3D(old_efer | EFER.SVME). With nested=3D0, setting EFER.SVME would
-(unexpectedly) succeed with the incorrect check above, because (efer &
-efer_supported_bits) is non-zero. Fixing the check to be (efer &
-~efer_supported_bits) makes the reproducer pass as expected.
+If we finally choose to rename kvm_vm_set_mem_attributes() to 
+kvm_set_vm_mem_attributes(), I think the trace 
+trace_kvm_vm_set_mem_attributes() needs to be renamed to keep it consistent?
