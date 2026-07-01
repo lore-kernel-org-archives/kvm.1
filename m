@@ -1,154 +1,175 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011004.outbound.protection.outlook.com [40.107.208.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1EA224FA;
-	Wed,  1 Jul 2026 16:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782923991; cv=fail; b=CUXJom9aA9C9oH6+cMgpc8OD4HZcNG+ohyBlEMNduX424xjb8gmZFPF+WnNeEgyOqOm1aTtV98RvYpDpsPFkAMQ75XikeZtXkuwBUzqYfbbcoNQgnb2N5/7HJ6YyshfSM5KyEd3m9QPJI0oCYnncELb/AJZUTKAbiHy5rZ5Hddk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782923991; c=relaxed/simple;
-	bh=tgdNAoVZg7mplGsWra5QTHD8JRendvbnojlpPuxPFcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uhbNbUSJKka35p0GAeNWuLAZmnT0iRFoDctg16JX1Qps56VH5QT1rGyZXZmqEx3RI4b2zrX0DBfCQs8oFF1T0xmNDVjO7IRU6+76NZGgTcXUCacCAVB0vU6+B36zHULFZkFwF0riS8eGV2rV1KBjvnKr1CGMDJOyEY4l2skou9k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HykhPurz; arc=fail smtp.client-ip=40.107.208.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC2137C92D
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 16:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782924903; cv=none; b=lR7/qJRDfss2lO2CMmwftI18DNZV2kazikMP4BUiZNgUao/2u2SnYwAArUzzs4XtdrbMBfpAjrgdD70y6LpTCEeje0ZEHorz1e0DqUvDgodBXi5QqT+SRczKyOjBK3CXB72Yhq2L5TfjHIzryTOSkcoO4cDMMPedkgo0+B+VjOQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782924903; c=relaxed/simple;
+	bh=L5c3o9vgdgjXHGOQSuIW9q3/2N3iJk6DLv8bljpS7DA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WA/uFBcUSOMLXBc8gc9cSCrHRqxKhYE7r7QvJYMm6NKaJrasRjhhZ3mplibSBETP8LOQJxWEbvyzsnTohfvACWpQcPWltmJCecEJ0y+Eg3MT+x0gyZsTHMg8WsM42Gr3tNqk6/hyFa3uPJa7Vhzk/b3Azv2H91yIyB+EzkWmmuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bm16Jk10; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HykhPurz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WeWuAfcnUh5EW5tNRPIKTtvg7kqk9WXozrCdzF/K3KM802hIMzQKolupZWvZ3NMQs7MVlIM3MNQaVNGuFHC294oXxoFEZ9KPYuYnHKOY2K22qYt6QclT2plcymRj+kenVD/Y8NdxAEeN2jkQeF+PL/fD4n7KF4p4uMG4En1P7MQNrNqv0i8qiFPJZmAYULYRaKBQsvklz8jeMHniMdS33w47/fxtjYRSw0hWwc45sTwNeCarwmA+Ak1oQ2RiEwy/TQbcqb2NToGPeU2r4woFKytFod2b9DKvCk2aJyMRKBCzHtRS3ILO3daNo6OF+fIr1FdL5+WK9RMtuYInrxz/zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8YP7lBkCMNTZySMbtLV6SGEVf0BZgXUulJBWXg0Bh9w=;
- b=oCcBzPwrzQv63YAw0a1XY9Ou1eaA5gN3jnMvz+QvlYOMNxRwn1Rmdxb/oJf7PfKcC+Tp0TfOXT4rzXNhmb4K/YgOMbBDMdwBGoPtz89h7QalM34tniE5qyBfyHKvYXO0F9myiKISQn2TBi40twxT3mBRCPzd3CGq3xLyxgUagWmaVqnkJbXY/ICDtzQjMv99XrpBk3UAkLWRogMfzQS8PBA114DlY24AdmjQxzEIWSZVMcOcJtCvNmlZcltlnkY2aCQ0JwMcZjYgzxkUYT6PUerJZSn4JKz0eHoq+nLWQf3JWdF6HAem4dpZsv7mF1Ra9icxJ48EMk8pChNLqg4UMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=fortanix.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8YP7lBkCMNTZySMbtLV6SGEVf0BZgXUulJBWXg0Bh9w=;
- b=HykhPurzecS+njchQvFD1L6G17Sa5N1GYZ6WkCV/rKxJ8LA7lz6djWnmlo8plFTv/MseeVhSiMKbA6gS7NaEZlAHNXsP65A9R5dZvDBTTWNgpxjkIfmKpfPJXlV1Iq35loVTJcZYoHHPjqs9jd471WXvjdXVgLnMtTY6bIot2cE=
-Received: from BN9PR03CA0430.namprd03.prod.outlook.com (2603:10b6:408:113::15)
- by IA1PR12MB6387.namprd12.prod.outlook.com (2603:10b6:208:389::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 16:39:41 +0000
-Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
- (2603:10b6:408:113:cafe::8a) by BN9PR03CA0430.outlook.office365.com
- (2603:10b6:408:113::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Wed, 1
- Jul 2026 16:39:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Wed, 1 Jul 2026 16:39:40 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 1 Jul
- 2026 11:39:40 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 1 Jul
- 2026 11:39:40 -0500
-Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 1 Jul 2026 11:39:29 -0500
-Message-ID: <8477525d-55ad-4fc4-b7c6-05bab3d7a861@amd.com>
-Date: Wed, 1 Jul 2026 22:09:28 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bm16Jk10"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c890bac374eso909576a12.1
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 09:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782924901; x=1783529701; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbVYdv7/FNdOOvrw/bcfsmdKoQ369BNbAkiBiKDICVU=;
+        b=Bm16Jk10DzFwFM1c7L4fhwdbnVfS0QXzyMzWyFobsZ2zse54L5EUYVd/71MHkeSFHj
+         KO50Lstmu5WUaTKkOpNvDhN544ttzDQhhydyddDJJB3vI2q8CnNVUX0LvodCKgB2r/ON
+         WlIi271UjYatvD6h1k3itEZwUQUUsJxdOvwekCs1tgd8LZ7rVLPbargP99LeV7LtI9q2
+         w+7CnH/Un7Qa9TMiL/hb+t4YlX9LnzrYuIwvc5e61wC+rtzAy8nozGPD0HriOIhqfpLb
+         vDY094LXpJ432U4I3O2M6nbsCzPKbRKqfC/xXGmdm2OXVsrOSL6cDSS9LAK/BYlbHv7r
+         XRCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782924901; x=1783529701;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbVYdv7/FNdOOvrw/bcfsmdKoQ369BNbAkiBiKDICVU=;
+        b=BhXlRwVllQMbrOBu8W5+rOcpoEmFS7S71cjWqMcnFWIwlpg2VKEbrmEaBMiK7bPiqS
+         sqIwEU2vBlOBsWV2w85bvjBFQDLArgjobA5GGEbwJUtH1nK3WIFQ1/rXkvf91+1Sj1+m
+         YFOjSyUPkQMfiT2hffl8HZLB2+PKCbBzDFJ7/ZrHhwvccc8CEEcxVWEFN3xwzDON1Ye1
+         cBDaQI8Y0d7dvRdnG8gL3GlwbtHOWY6DCu9NbKtK2LJp3OEEbMRzxi2bUf4I0Z2N8Tkx
+         PTAEjU2wemLS3Od4eflEfQKvPqsakN3bzMB2SxYx7tEdOI33stmgDK5CiK5LAasjL4Pr
+         ncNg==
+X-Forwarded-Encrypted: i=1; AFNElJ9PWP0WEDDhYIEDf8H0nlK58hIRA2fRj0wLwAUzDcQGQ2XYDljvKxRgv0hE1MP1tNVRMDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu/7aBf7aX15wxjXFlKA5es6ceW81cdDQTNg+9l5rWHy4T57++
+	l4gcTcocvv+jwZzQQ3/S3hIi7ooYXtEpXqUGb2gP94twAz1RGuVbjngOT1BbR7M7VNTMoZIEWxK
+	03Xr5Nw==
+X-Received: from pgja21.prod.google.com ([2002:a63:cd55:0:b0:c82:7761:9936])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a49:b0:3b3:bf95:f7e3
+ with SMTP id adf61e73a8af0-3bfed477967mr2785820637.43.1782924900819; Wed, 01
+ Jul 2026 09:55:00 -0700 (PDT)
+Date: Wed, 1 Jul 2026 09:55:00 -0700
+In-Reply-To: <739e6834-40b3-405b-ada4-d31c38d8416a@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 3/6] x86/sev: Disable CPU hotplug while SNP is active
-To: Jethro Beekman <jethro@fortanix.com>, Ashish Kalra <Ashish.Kalra@amd.com>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
- <80f3f279-d70e-44d7-a179-c52068115e46@fortanix.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <80f3f279-d70e-44d7-a179-c52068115e46@fortanix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|IA1PR12MB6387:EE_
-X-MS-Office365-Filtering-Correlation-Id: befb62dd-f114-427e-2abe-08ded78f591a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|376014|7416014|4143699003|11063799006|56012099006|6133799003|22082099003|921020|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	p1IR1kwbCwjJ8H5UaRlfSXVrNfPJiuViZxpdm786t726gbg6d8u8PxSl7BEIfKp6P4Ov24vfwp33Zkox22ix27BibUC8J7tLPr/gzynIQeCTwrS2Z8xo1qVrbz/VPXGnNiwyfIvt1ouZm6ESMu6SKetwsCH73SUSGT4S/Z51QSkmo8LqF81S1Bb083n4syBJuYhucXMcUSxU9nbBKkuEcAxV7ymRJM6XL23vltonYOqGcqY5ZOOt4Ufh17g/TqA/z7m1jmyIaTHmLxb+aEF9jNpWwAWhnlhtmZuximQARHcmXaOIp8Sz3FsFP8nb/N4WigOS9IdAtY5j05gfs9fdOQ8AWx6DgkNVeEJOyFHTTH7cRM8YOYLlpG1JhYSjV0bblQGS2LTCryR8pTXbwCF4USehefRdGKshzNXyNk+5DkccroRpaibhmq+rTMa5FJnCr5a2krgkeYfkfAxjD9Rc5qXSH6VleWCUKq2aYJxYvNrXZdwPkVGkK57KaFFeIyJtS7urTObd1BMHpXwKgkUzMXzVgN3Y3oW395/BGvPLcd6Bc7gYFYrpcFq6sjw04jaAWAYkl8hybEwLtdbwI+j7RxD+Hy25VDc7Y3eEExy0IzvzKDdLdZqkiE2HnaP4QFVDlwrlDzDUy3xQMU/2tczD/7r7mNJmY7OMbXSawMBzkrysKdRhN7k6C9h79FHZZvbqVuNc24adURkMKm2EBtPB3QBvSIVJpbJ9NWEGYi/lAel4eMgTnxw8uIhKnkyeIwW+
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(376014)(7416014)(4143699003)(11063799006)(56012099006)(6133799003)(22082099003)(921020)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uD9BHyKly7gaZ4fFClXwFgLBsEcUPLMvK65o5akj8p+wMyTDhMDLs7cXJrup+yt/dC1XCC2YgzK9w2pMqAy67CoCLh3khFV1v3woFE2S8LlF/gN+xbmELP3WKhj1tv3hXuhHOw/QmC8Bf2Wcakz8bugXQySrC7R2/F0OXl2IMLtICzefz1RmaAF/9A/xeyQKL0xuACitQx7rkwgA6boeC/uiwZpENrJVfjO58h31wvghORwTEk4wSaDhGrY7bmIRMUOY8g5+yfVQfJlDqKcX4vCNzSMsQrcFwGVdnm21QJhAUtgB5zx0JV+f+75yJ911UeKVYVxLhNwVOVRVaX/DHgL29D5JWdWk65fYbzPqzCJLcI4YwavzjhgL3t1g5H0VdEsOzp+XzdItxe5akzFSjRb87xXMgfSBYswOuZLbF4rEs3hYnHQ7Fnt+3l7QofxI
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 16:39:40.8085
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: befb62dd-f114-427e-2abe-08ded78f591a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B074.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6387
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-6-9d2959357853@google.com> <739e6834-40b3-405b-ada4-d31c38d8416a@intel.com>
+Message-ID: <akVGZOeR1ytfkamK@google.com>
+Subject: Re: [PATCH v8 06/46] KVM: Enumerate support for PRIVATE memory iff
+ kvm_arch_has_private_mem is defined
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Hello Jethro,
-
-On 7/1/2026 3:10 PM, Jethro Beekman wrote:
-> I don't believe my concern has been addressed
+On Wed, Jul 01, 2026, Xiaoyao Li wrote:
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> > From: Ackerley Tng <ackerleytng@google.com>
+> > 
+> > Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
+> > on kvm_arch_has_private_mem being #defined in anticipation of decoupling
+> > kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 > 
-> https://lore.kernel.org/lkml/0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com/
+> Well, after this series, kvm_supported_mem_attributes() is renamed to
+> kvm_supported_vm_mem_attributes(), and it's still under
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+> 
+> > guest_memfd support for memory attributes will be unconditional to avoid
+> > yet more macros (all architectures that support guest_memfd are expected to
+> > use per-gmem attributes at some point), at which point enumerating support
+> > KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
+> > supported _somewhere_ would result in KVM over-reporting support on arm64.
+> 
+> I don't understand it. This patch only changes the behavior of
+> kvm_supported_mem_attributes(), the usage of which is guarded by
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTESq. This is config is only visible to x86 due
+> to patch 03. How does it affect arm64?
 
-Quoting your question:
+Hrm, yeah, this is messed up.  Ahh, I think Ackerley shuffled things around and
+"broke" stuff in the process.  In v7[1] and earlier, the diff was this:
 
-> I think this is too broad. If I have a hypervisor that supports SNP
-> virtualization, a (non-confidential) L1 guest running Linux should
-> still support CPU hotplug while also running confidential L2 guests.
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 091f201251159..68142bc962953 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+ }
+ #endif
+ 
+-#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
++#ifndef kvm_arch_has_private_mem
+ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+ {
+ 	return false;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 306153abbafa5..abb9cfa3eb04d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2421,8 +2421,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+ {
++#ifdef kvm_arch_has_private_mem
+ 	if (!kvm || kvm_arch_has_private_mem(kvm))
+ 		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
++#endif
+ 
+ 	return 0;
+ }
 
-Ashish, Tom, correct me if I'm wrong, but I don't think KVM exposes SNP
-support to L1, at least as per
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kvm/cpuid.c?h=v7.2-rc1#n1221
-and only SNP initialization disables hotplug - not the other variants.
+which makes a *lot* more sense given the changelog (and IMO for the ordering in
+general).  In v8 here, Ackerley combined part of a change[2] (that I provided
+off-list) with part of this commit, to create patch 4, "KVM: Decouple
+kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTESthe".
 
-L1, running a confidential guest (SEV/SEV-ES) should still be able to
-support hotplug since it doesn't go through SNP init. Only the base
-hypervisor can setup the RMP tables and go through snp_prepare().
+Ackerley, the cover letter says:
 
-Also bsp_determine_snp() should clear CC_ATTR_HOST_SEV_SNP if it
-detects X86_FEATURE_HYPERVISOR so I don't see how this can be a
-problem for hotplug in L1.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kernel/cpu/amd.c?h=v7.2-rc1#n368
+  + Reshuffled the earlier commits that deal with preparing KVM to stop
+    seeing VM memory attributes as the only source of attributes.
 
--- 
-Thanks and Regards,
-Prateek
+but there's no explanation for *why* the reshuffling was done.  Reorganizing
+code like this at v8 of a series this size is a big "no-no" unless there's a
+*really* good reason to do so.  In addition to the resulting confusion, changes
+like this invalidate Fuad's Reviewed-by.  And since it's obviously quite difficult
+to tease out exactly what changed, it's not realistic to re-review things without
+doing a deep audit of the series, which no one wants to do for a series that is/was
+so close to being fully ready.  And without such an audit, I can't accept the
+patches, because I can't trust that what I am accepting is what I and others have
+reviewed.
 
+So, except where there is/was a *need* to shuffle things around relative to v7,
+I think we should revert back to the v7 ordering for v9.  And where there is a
+need to rework things, each and every one of those needs to be explicitly
+documented, because "Reshuffled the earlier commits" is grossly insufficient.
+
+[1] https://lore.kernel.org/all/20260522-gmem-inplace-conversion-v7-3-2f0fae496530@google.com
+[2] https://github.com/sean-jc/linux/commit/8a475b1bcf89f1cf776ed9ce7d6bb587aab0d421
