@@ -1,159 +1,100 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871A8431E4C
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1EC431E78
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 20:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782936944; cv=none; b=mBJ4/px7OkKtA95lvVcV9vBj0+LebZYF6N4X7tapjRqFManFfzGMf9D7UZqobsIO0wdRuuu6wS4i0qIIvkfbne8z6C/xbdokTHvT1fCBAk8H23IwC1nFbhaS+nMh2rmI6Mfn4DC0ppdjSQI/zvheH2FqJGbU0sz6MQrmnuoMDWI=
+	t=1782938007; cv=none; b=dJJUH4hsVpXvzaOupvakmqtPK28Rzld/aCL9Ow9mvKzUEm45QcYe5kNvN7pGslrXUtmxrY929m+GCu24j/lyD/WQ3Stb4JKD1bvDL+ywR6xUO2h0oKrLkRZJovmm2gfuAznA37CIekNH0mUjgioFiHrOQGNUvlK1PUCH4W3cyMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782936944; c=relaxed/simple;
-	bh=0zuPEuau0/m31uD+prrFAtbeimkjKSJSogt79zMuhI4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LC4B0bLvVQEXlNpYM0s1pA1E/89LOl+CpNQ0+BS+kUWM6HIMHHPIDFlIIT6ziadbjFGvrFQnD8SC/dfAWLgzQBGvv4BOO99eb7fw79Ag/9alvxufDzKghue89xSUy7DxZbPhXyG6UByN/aSUV4kvZSj4o6OSYXvefTidoKxxJlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rFIwT9vc; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1782938007; c=relaxed/simple;
+	bh=mERkGN8vgcxy2dpZZdXoK1jJj16i6XYVDaaWmBjoDro=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aH1GiFlgNDXcEk1JNMD2b8ofdL2X+JjPQmOUQEQv2t+iaT272be2mUK7JyFPHkq25hEJ/eRvNxvmKzXcFrnN2wk5FbtTlfEG1H0/hFO5IlnjVCUpnlP9mRo/JVo175/rBc3hV6cA51ZAHlos6lHfUdJNehotZWm0H0Xml2AmEEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vTJAPS63; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rFIwT9vc"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847b8d76e3dso1560088b3a.1
-        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:15:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vTJAPS63"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37e17ec1940so1160536a91.0
+        for <kvm@vger.kernel.org>; Wed, 01 Jul 2026 13:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782936943; x=1783541743; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iEUQtaiHLkrkoXMicqMZB2glwhn+Bg+vbzwIL4tgeA4=;
-        b=rFIwT9vc4LLvaM5nhqwotJX06pkefh7kQ55Rb8XL2y5jJSNIboEX3xvUlUOs2EUqAz
-         CCCFYusNpnmT8xiDRjX4iWwFgrpXX6VKm0ZDFouL04YNNGYAkqUnh1CDIr8i54nt5V+G
-         VQSp/nxggEEGtC74it4WLfFCgOBbvYCh1OYOGK7MLntfLD1dLzbuo2qG+josMs4Lffc0
-         EAvB3ilg7bzlIgIc6XQ2OTJdduzqsLvLQq7sW99UXpLb3FD/zXRKSEtW5LZlQL/xGt4K
-         nCx1ZCV9D2zO87Bcox11CnRoFxJ/jNyIryU6xhHwVxm9NIOQ3NIYCr8XZJSegPDpD4UR
-         18IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782936943; x=1783541743;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+        d=google.com; s=20251104; t=1782938005; x=1783542805; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=iEUQtaiHLkrkoXMicqMZB2glwhn+Bg+vbzwIL4tgeA4=;
-        b=rKKfJ2VPMygKk2rAjNiawhbx6/zbGz2UOcYL3sTDhohmOoEuf295Njjgi7Mo0TGzBP
-         Mvp6BgvR45U9/bN4qGaueKUtiny9ARXj3LuGR+IE2zDUoSs8Jawdzr54v6Mv4vfInSPa
-         er5srdN8UBkD494oCi/u5hytpIHRJfHarvUjNYZ2qvn4JoVKPm18Qlufiq0Zg3jUcJU8
-         oKKGz2g/vfEf8YXvbftxDHnZ/mfpj32CdwWortLroL8OdRNnz+9WeqHCjthfwPuglInB
-         NPrXpYGfQwU1/0PxJuL5HFxoGUraXBgg1HRzkSsd8e+a0IJlA3lHwWj3kkX6eYNZk9KD
-         dOlg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp9HMj53c56XsC79Nkaa5UDBQSFunpy1egat/gtOwWYbFuJIKfLjCjE5/ASGms0FNOZgFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKydSbhe93+bMn3S0yn8qo6TNDZh3oQiwNMwbbx7dHOuWQiW/j
-	RLhRuGer4IBbd/rr8THseXxzC29Xh1I+IeL5mjhEiGnOYrfmr/aDoBVfsDuVj+903SENwDpnuVE
-	8TEhdTw==
-X-Received: from pgwa5.prod.google.com ([2002:a65:6545:0:b0:c99:3b68:c9c6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1812:b0:847:7f65:7674
- with SMTP id d2e1a72fcca58-847c0a392b1mr2818478b3a.44.1782936942465; Wed, 01
- Jul 2026 13:15:42 -0700 (PDT)
-Date: Wed, 1 Jul 2026 13:15:41 -0700
-In-Reply-To: <5ts6z45hsrkia3gh34cjlfglbp2fwcnwutvzdi236pcmubbk5o@jbmv5ej4gqmm>
+        bh=xfsGPaSbOB42xE6v5VUZd7C7R5nORoppmgO+UJ73LEM=;
+        b=vTJAPS63GRhUEE3d8bxQS1cKCnZHqNR3yHDXrieJzf84fo/3lVjbZLeZ4Nquwuyhg6
+         71f0Uu3p90JLuZaSk1w5K+XNls7sKLxX+78eTdvKy0UxlDx9wcvlXQnPLHl2Mi6/yL6h
+         QN0cdPb6apiy56Uu0utLWNjxeA9LZm4znQlzMQBhMZQJYmUcFFob0ONkNxFcnJYxjBzz
+         /7uul6GjK6Mr4ZZRYwPgalFLsFkzye4SdV8CfAAqtJSKZqX9zEO4bDjyK4l70HCq87wq
+         wWi0RCE/fIWq6BI216DLoP7S7+rCHgYHHfqpWzPy1tJJgHkVIDwW9CT9SPiWKsWBnjah
+         gi4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782938005; x=1783542805;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xfsGPaSbOB42xE6v5VUZd7C7R5nORoppmgO+UJ73LEM=;
+        b=ZHgp0lrkS1uV2EfpH6MVNOgmtK6L5WULitocJ6wBOOtM3WXcZ/5H+NsAfJn5RKYU9f
+         qSfI9uDlZTraYRxfQvx0PmS3fbYBOHK1OcS9yYTr/yG+DKanaG3H1M0c9Jis30JaaS6V
+         dWxB35goBaSpwLit7YaQgXvCCwY91/vQuQGbNxNUtIQgBe+H8gCdUzkb9Rqulnjki34Q
+         qFUzlVhybbVsQJNVeQLI8mypcfvXq7yDSYnRpZ0RtQUnA/PADgRG2NdmwyDcnbM4fRUb
+         Qi1/3YvqYqxhUj6rzNPIDmN7WAAlALdbxNw+oCj6KbzhWU+KfHvewtVRjHjjT7f6kXlZ
+         U6hA==
+X-Gm-Message-State: AOJu0Yz8WYIEWQaR5ApivQ7Ny+bJ9u0HKWpaVgWf8ATH8HocnxzO9fAw
+	0DqQMlE/8kTmtsHCROntP0tCX65DmygoONeGtkGCfjqy7h/0aLXTmt9EZHV0+VCRzQvby4pMz9c
+	/gbAGUjxmranWkL2scBqCVV2TLjTjQw+1wq8JJWVYk3pLVgNPa6nFE3GOX29o5c00lQcoELXv2H
+	NAradyGUMrzRDSy1i6nJOtzEc8B39DDekie5mjMNaIT3sNJTI8H+/ALg==
+X-Received: from dycmg24.prod.google.com ([2002:a05:693c:2518:b0:30e:953c:b43f])
+ (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90a:d40b:b0:36b:7c2a:263e with SMTP id 98e67ed59e1d1-380aa1a5ab5mr3055582a91.20.1782938004768;
+ Wed, 01 Jul 2026 13:33:24 -0700 (PDT)
+Date: Wed,  1 Jul 2026 20:33:07 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260622164109.26350-1-andrew.jones@linux.dev>
- <CABgObfYzDQN-2OpM7JjoPe32Y=y=FokJEq2oePYbyASUuxy2yw@mail.gmail.com>
- <ev32z6yxkujq3ctb66f6l3e2l5cx2b33ye76mlqvo6jdsydxsk@hwmgkv5rmqym>
- <92a4d803-c545-48e8-ab5c-647bb04f3560@oss.qualcomm.com> <b3agpqbu47bnsfcfzskdfgymyag6y6be5danltshzwiimybvnh@r4773lfg6vfj>
- <21cd2f80-64a2-48ca-9821-7a233470af77@redhat.com> <5ts6z45hsrkia3gh34cjlfglbp2fwcnwutvzdi236pcmubbk5o@jbmv5ej4gqmm>
-Message-ID: <akV1bbcTttyS-FxU@google.com>
-Subject: Re: [kvm-unit-tests PATCH] checkpatch: add support for Assisted-by tag
-From: Sean Christopherson <seanjc@google.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: Thomas Huth <thuth@redhat.com>, 
-	"Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=" <philmd@oss.qualcomm.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260701203311.326798-1-aaronlewis@google.com>
+Subject: [PATCH 0/4] Introduce vfio_dma_mapping_perf_test
+From: Aaron Lewis <aaronlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
+	Aaron Lewis <aaronlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 26, 2026, Andrew Jones wrote:
-> On Tue, Jun 23, 2026 at 09:57:22PM +0200, Thomas Huth wrote:
-> > On 23/06/2026 18.04, Andrew Jones wrote:
-> > > On Tue, Jun 23, 2026 at 05:08:07PM +0200, Philippe Mathieu-Daud=C3=A9=
- wrote:
-> > > > On 22/6/26 21:00, Andrew Jones wrote:
-> > > > > On Mon, Jun 22, 2026 at 06:43:45PM +0200, Paolo Bonzini wrote:
-> > > > > > On Mon, Jun 22, 2026 at 6:41=E2=80=AFPM Andrew Jones <andrew.jo=
-nes@linux.dev> wrote:
-> > > > > > >=20
-> > > > > > > Import Linux commit d1db4118489f ("checkpatch: add support fo=
-r
-> > > > > > > Assisted-by tag").
-> > > > > > >=20
-> > > > > > > (I should have used AI for this, since it'd be fun to include=
- that
-> > > > > > > tag on this tag-enabling patch, but sometimes I still do my o=
-wn
-> > > > > > > homework!)
-> > > > > >=20
-> > > > > > Personally, I don't see the point in providing free advertising=
- to AI
-> > > > > > companies, so if I had to choose I would do "WARN(...) if ($sig=
-n_off
-> > > > > > =3D~ /^Assisted-by:/i)". It's more important to know what AI wa=
-s used
-> > > > > > *for*, than what AI was used period.
-> > > > > >=20
-> > > > > > But I won't complain if people want this patch.
-> > > > >=20
-> > > > > The process is now well established over in Linux kernel land and=
- we
-> > > > > encourage kvm-unit-tests contributors to follow Linux processes. =
-The
-> > > > > motivation for this patch is because I just queued an ARM patch w=
-hich
-> > > > > used the Linux process and it failed checkpatch. I'd rather check=
-patch
-> > > > > succeed than to have to tell people to remove/modify the tags the=
-y're
-> > > > > used to using with the kernel.
-> > > > >=20
-> > > > > We can encourage contributors to also add sentences stating how A=
-I
-> > > > > assisted when an AI assistance tag is provided in order to captur=
-e
-> > > > > the "AI used for what" part.
-> > > >=20
-> > > > I tend to agree with Paolo in that I don't see the value added by
-> > > > these tags -- except the free advertising --. Besides what provides
-> > > > $AGENT_NAME:$MODEL_VERSION is likely irrelevant without the prompt
-> > > > used. And even if we try to reproduce we would get a slightly
-> > > > different result :) Then by the time the patch is committed the
-> > > > information is almost obsolete.
+Add a new VFIO selftest, vfio_dma_mapping_perf_test, to provide a
+configurable tool for measuring DMA mapping and unmapping latencies.
 
-+1
+This selftest introduces command-line parameters to provide a convenient
+way to tune the test for specific situations. For example, it can be used
+to observe the lengthy unmap times of the Type 1 IOMMU on large memory
+regions, or to compare DMA mapping performance between the Type 1 IOMMU
+and IOMMUFD. These scenarios can now be easily configured and run via the
+command line.
 
-> > > kvm-unit-tests does sit on the boundary of being Linux-like and
-> > > QEMU-adjacent. So I can see why the QEMU position[1] might be
-> > > considered over the Linux position here. OTOH, I'd rather not
-> > > complicate kvm-unit-tests development. I'm also personally not
-> > > that against the tags providing free advertising. The tags also
-> > > provide stats in the long run which may be used to compute risk
-> > > factors and/or evaluate quality of particular LLM designs which
-> > > can lead to LLM improvements.
-> > FWIW, I think we should follow the kernel here. k-u-t has always used t=
-he
-> > coding style, header files, scripts, etc. from the kernel, so IMHO we s=
-hould
-> > not diverge here.
-> > And I agree with Andrew that the tags could be useful in the long run, =
-e.g.
-> > if there is ever a problem with a certain AI model, it's easier for us =
-to
-> > find out which commits we might want to have another closer look at.
-> >
->=20
-> I pushed the commit.
+During development, I abandoned an approach where I initialized memfd
+globally in main() for all tests. While that allowed memfd to be
+initialized once for all test variants, it proved awkward because a
+different memfd would be needed for each supported page size (e.g., 4K,
+2M, 1G). Also, If a user is only running a single test variant,
+pre-allocating all sizes is unnecessary overhead. Therefore, I dropped
+that approach in favor of test-local allocation. However, I'm open to
+ideas on a better way to handle this.
 
-Heh, maybe jumped the gun a bit?  FWIW, I agree with Paolo and others, spec=
-ifying
-the exact name+model is little more than advertising.
+Aaron Lewis (4):
+  vfio: selftests: Introduce vfio_dma_mapping_perf_test
+  vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+  vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
+  vfio: selftests: Allow the flag MAP_POPULATE to be set on the cmdline
 
-https://lore.kernel.org/all/20260701-work-coding-assistants-v1-1-a20a94d1d6=
-06@kernel.org
+ tools/testing/selftests/vfio/Makefile         |   1 +
+ .../vfio/lib/include/libvfio/iommu.h          |   7 +
+ tools/testing/selftests/vfio/lib/iommu.c      |  24 ++
+ .../vfio/vfio_dma_mapping_perf_test.c         | 380 ++++++++++++++++++
+ 4 files changed, 412 insertions(+)
+ create mode 100644 tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
