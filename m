@@ -1,144 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F25A1FD4
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 02:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA383655E5
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 02:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782873203; cv=none; b=r+4yP1YeLlNLf1qXnwaQrolRY+D4bSr76UyqxOFX0ijIHwDOKm46xhTC49oj6rlGgeD7G/q9tLCscBSV1YXTrNw/4RcCTtzuY84N/oIlVXrx50MXyzstH99bg7JwoTwZ/TStOrMsglgH4As5ebEJCm53CI3B2zlIKoLgVsY072c=
+	t=1782874676; cv=none; b=PNVxbKcB6BDZ+Y4Sj6hqAPAHqTnDk7zuh5PtkJnSIw7TOLoaqoJibv9Wkt0GHIy4nGxHZoyASFdVO6N45shLSPCxVsuMMl/k0BAgkzLsEuytZs0VmZ5KbZC2BCECpCifGVBnJOMYcBT9GbOHX35oJkZRtfL8/8wtdgIPHBVmD5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782873203; c=relaxed/simple;
-	bh=auwSA7ZKxfIlyPEkggWlHPW1E+fuoiM7JeAhACgEDQ8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FcA6RUOuyydE/RaAnB/NHpxHmkZkKE8CQm8yBDQpHXPzF75mPUlq0qbzzHcGqMinl29Dt1yaLXUdTPvrTzNG3OiZsyphTfO8y/tspIYwU/a0NC/bSw1THak/aNVDQS1Ig30h+LA/bI4ENIOUx1lUwTh2Vun0UG2b4NRFCwRco/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3Ohx9Ii; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3Ohx9Ii"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAB11F000E9;
-	Wed,  1 Jul 2026 02:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782873201;
-	bh=QeLOAQJzI0H+gg/XMytSvZAjGWpkB/TBebnimyd2YzY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=o3Ohx9IilbfKYsAPe/mSZdRfReXzNnWKvA9kW+acMuPvYcQ0idqtt2o0sLT0Ldvz6
-	 YN5gHwOaeVycQdbwaGM0z4HBzUirzsOX5BCkROydeYdWIJMGVm128tl4a2NpVgJX4T
-	 8+GOAp4fnBwQjYPisRHRuZbylKesQOQOoB+HQxoLUwdM/TKaquA/XHVcuPiWVhy7IW
-	 it9jhJt0aNILaXnazNBASUF5SDizr/xd3tVedDr3O6t5thry79TI6alJZG1MMt5NFr
-	 dI14b6HoVGHcEtb2EJIYpNgKkh5ArA0HjCPbKK43CJxveqo/lK/gjPEwkQElXBKntO
-	 fDTKD/h5SUy2g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 7/8] RISC-V: KVM: Add support for control-flow
- integrity FWFT features
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Inochi Amaoto" <inochiama@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260701020746.170157-8-inochiama@gmail.com>
-References: <20260701020746.170157-1-inochiama@gmail.com>
- <20260701020746.170157-8-inochiama@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 01 Jul 2026 02:33:21 +0000
-Message-Id: <20260701023321.9AAB11F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1782874676; c=relaxed/simple;
+	bh=u6xYlR+Hhvlk9ZM5nyz0/Twv6M51c9owqHLvPwDlIa8=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biUsEX5eHONGtFdD4Xlfl3fEsx/BhfFWWOL1b/PrFBZg8tC9MMcSZixtu0Yn+/FXMsBeyiKAu9G3119yNup77zxlr5PbcvOcySIvH0n039nRc1VJL7SKc0jM1IvY+rQaqHTlESk2lVYAe3tTDH4lMuBL6spn1pB3PxfVtVKVo2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1782873924-1eb14e680b115280001-HEqcsx
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id 83kFOPtPC3ldsdrT; Wed, 01 Jul 2026 10:45:24 +0800 (CST)
+X-Barracuda-Envelope-From: ewanhai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+Received: from ewan-server (ewan-server [10.28.24.2])
+	by zhaoxin.com (8.30) with ESMTP7c3f438aba28a6c06fb55fab721b509b
+	Wed, 01 Jul 2026 10:45:23 +0800
+X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.24.2
+X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
+X-Eyou-From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+From: "=?UTF-8?B?RXdhbiBIYWktb2M=?=" <ewanhai-oc@zhaoxin.com>
+Date: Wed, 1 Jul 2026 10:45:21 +0800
+To: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, cobechen@zhaoxin.com, tonywwang@zhaoxin.com
+Subject: Re: [PATCH v3 0/5] KVM: x86: Expose Zhaoxin CPUID 0xC0000001 EDX
+ cryptographic features
+Message-ID: <20260701024521.kffehv7bxcjc5f3y@ewan-server>
+X-ASG-Orig-Subj: Re: [PATCH v3 0/5] KVM: x86: Expose Zhaoxin CPUID 0xC0000001 EDX
+ cryptographic features
+References: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
+X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1782873924
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 59
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -0.96
+X-Barracuda-Spam-Status: No, SCORE=-0.96 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=FROM_EXCESS_BASE64, FROM_EXCESS_BASE64_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.160840
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 FROM_EXCESS_BASE64     From: base64 encoded unnecessarily
+	1.05 FROM_EXCESS_BASE64_2   From: base64 encoded unnecessarily
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Incorrect usage of EXC_SOFTWARE_CHECK as a direct integer instead =
-of a bitmask when configuring hedeleg, causing unintended exception delegat=
-ion and un-delegation.
---
+Gentle ping. Any further comments on this series?
 
-commit 061583fda9a0d491f0c4c0df10fbb4b0f97c7b4e
-Author: Inochi Amaoto <inochiama@gmail.com>
-
-RISC-V: KVM: Add support for control-flow integrity FWFT features
-
-This commit exposes control-flow integrity features to the guest if
-supported by the host, and allows the VMM to configure them via the SBI
-FWFT interface.
-
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 7192c229a19e2..cb9b9721ec882 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-
-[ ... ]
-
-> @@ -176,6 +176,95 @@ static long kvm_sbi_fwft_get_misaligned_delegation(s=
-truct kvm_vcpu *vcpu,
->  	return SBI_SUCCESS;
->  }
-> =20
-> +static long kvm_sbi_fwft_set_cfi(struct kvm_vcpu *vcpu,
-> +				 struct kvm_sbi_fwft_config *conf,
-> +				 bool one_reg_access, unsigned long value,
-> +				 u64 flag)
-> +{
-> +	struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
-> +
-> +	if (value =3D=3D 0)
-> +		cfg->henvcfg &=3D ~flag;
-> +	else if (value =3D=3D 1)
-> +		cfg->henvcfg |=3D flag;
-> +	else
-> +		return SBI_ERR_INVALID_PARAM;
-> +
-> +	if (cfg->henvcfg & (ENVCFG_LPE | ENVCFG_SSE))
-> +		cfg->hedeleg |=3D EXC_SOFTWARE_CHECK;
-> +	else
-> +		cfg->hedeleg &=3D ~EXC_SOFTWARE_CHECK;
-
-[Severity: High]
-Does this code modify the correct bits in hedeleg?
-
-EXC_SOFTWARE_CHECK is an exception cause (value 18, or 0x12). When used
-directly in bitwise operations like this, it seems to modify bit 1
-(instruction access fault) and bit 4 (load address misaligned) rather than
-bit 18.
-
-Should this use BIT(EXC_SOFTWARE_CHECK) or (1UL << EXC_SOFTWARE_CHECK)
-instead to ensure the software check exception is delegated properly without
-corrupting the other delegation states?
-
-> +
-> +	if (!one_reg_access) {
-> +		csr_write(CSR_HEDELEG, cfg->hedeleg);
-
-[ ... ]
-
-> +static void kvm_sbi_fwft_reset_landing_pad(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
-> +
-> +	kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_LPE);
-> +	if ((cfg->henvcfg & (ENVCFG_LPE | ENVCFG_SSE)) =3D=3D 0)
-> +		cfg->hedeleg &=3D ~EXC_SOFTWARE_CHECK;
-> +}
-
-[Severity: High]
-Similar to the question above in kvm_sbi_fwft_set_cfi(), could this
-undelegate the wrong exceptions because EXC_SOFTWARE_CHECK is used without
-being converted to a bitmask first?
-
-[ ... ]
-
-> +static void kvm_sbi_fwft_reset_shadow_stack(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
-> +
-> +	kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_SSE);
-> +	if ((cfg->henvcfg & (ENVCFG_LPE | ENVCFG_SSE)) =3D=3D 0)
-> +		cfg->hedeleg &=3D ~EXC_SOFTWARE_CHECK;
-> +}
-
-[Severity: High]
-Would it be necessary to update this location to use a bitmask as well?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260701020746.1701=
-57-1-inochiama@gmail.com?part=3D7
+Ewan
