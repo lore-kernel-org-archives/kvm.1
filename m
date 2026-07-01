@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC66D346E74
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 14:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDD2C21DD
+	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 14:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782916090; cv=none; b=o4SoHeqS/ESs7IIuLxl9XARYTN1V0nt+gF3Yy98PSsHbb7ka8YKT8S6y3i/8DG47Ze63jQTTVdcpNXZVTxFxBySWMhV4nH8D8gASaW56OgB+1UmT064VbSpsB2YD2ZaE0A2+SFqeAYHtYokwR1HsPDh4R3FENy+MUhsHJw8lyD8=
+	t=1782916094; cv=none; b=XUvKTaSQa+f+pWbeZ1KD1qeIX1aCoFfg78rSnNlveo48j2td5F6tvr3lIAc2bWBIgoGq1z3cdL6r1347axoelvNMNtj/og+TL78dpqFIIK3oohiPLH10kQN9Mkq8auz6NFML8gKuJaMy8es7fOlshKDZuktuvUgUbWAgXDHdzUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782916090; c=relaxed/simple;
-	bh=GatkKJLZAJt27Q+lgMfcNTLKEpEGoBrfnv5Afp8XcRQ=;
+	s=arc-20240116; t=1782916094; c=relaxed/simple;
+	bh=6UuDi0tvkrNdsc4Xh+iSb+fgtUunkX5K0AwEW5htxUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqBne/dNT6odkbMPsBVLbBev7NiYgyN0ne6nrFJOD28Yx6ceK55hcp9ehOY6K5vw64pCb1tVLX8Vgl7CQvcsKUZy1mjkKG5iUK8UToNHS+qOntomYylgQf9w3XxQEFgyAmNoJKtJe7yU3O+PWNnlT6M0j8yzxhycVoArODEV0tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QtcjBz+q; arc=none smtp.client-ip=220.197.31.5
+	 MIME-Version; b=F0wjRy2ew4FSCuVfmOBP35H1doa999w4jyFuTU2w7FKyIuysrNdcnOPp+C6jlu2+aefOcpiI+bukNR9KeNkofT2eictEzpB6jJYFxr0GCBd4P/6vwnA3UCyPvsrAqNzX7p1Gy9nCT1o/ri0OOr2e9imUMHXkziDu8/kJoJQMFYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=e9Y6UnzX; arc=none smtp.client-ip=117.135.210.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QtcjBz+q"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="e9Y6UnzX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=CB
-	6dFu9e6b6ULYg065Bjn6P0urEN69tvXZMFRuRaD0I=; b=QtcjBz+qJW6ITH3/y0
-	FoeV0/KMec++cm8KQUaI/8OFOFlVJK6VZJU0XTR9Ji1CpyVZ7asrm/dJu/j9uG9O
-	eFpmF5yWWqKMRGNVatLFHY+LZ4Q4AsPY9jzuthKOYMqxgQjkFZXYMJGZDV+Qz/7F
-	T7E8LPi6EQ+YyngsFmJGyvtoM=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Wg
+	QaR1ey6OC1h8dpLk2btx/T3PX3QNLV1FVs1PK8GH8=; b=e9Y6UnzXZgRzKFqh9c
+	xZj9TA+sUB9A9JBwq5zCvdyf5+PK/VSDHsUvla3VAHexRqNDQHDZoW0iOUag8Dsg
+	Je5NLcfr9ci26IO3npZ7ySckRvK4arVPA8fW3489LA+nM+67cKne5kzvAsd8iSIA
+	iyQxWuS6ByIMN2Rs6R3GClwXw=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD35mzeI0VqYpWYGg--.10116S4;
-	Wed, 01 Jul 2026 22:27:50 +0800 (CST)
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD35mzeI0VqYpWYGg--.10116S3;
+	Wed, 01 Jul 2026 22:27:48 +0800 (CST)
 From: Jinyu Tang <tjytimi@163.com>
 To: kvm@vger.kernel.org
 Cc: Will Deacon <will@kernel.org>,
@@ -32,9 +32,9 @@ Cc: Will Deacon <will@kernel.org>,
 	Anup Patel <apatel@ventanamicro.com>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Jinyu Tang <tjytimi@163.com>
-Subject: [RFC PATCH 2/2] riscv: allow a non-identity PCI MMIO CPU base
-Date: Wed,  1 Jul 2026 22:26:54 +0800
-Message-ID: <20260701142654.483659-3-tjytimi@163.com>
+Subject: [RFC PATCH 1/2] pci: translate BAR addresses for MMIO users
+Date: Wed,  1 Jul 2026 22:26:53 +0800
+Message-ID: <20260701142654.483659-2-tjytimi@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260701142654.483659-1-tjytimi@163.com>
 References: <20260701142654.483659-1-tjytimi@163.com>
@@ -45,160 +45,381 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD35mzeI0VqYpWYGg--.10116S4
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtF1UWFy7ZFWDtF43Cr4fGrg_yoW7Xr1DpF
-	s8u3yY9rWFqr17Wrs3Jr1kA3WaqanYkrW5G34j9rZ0gr1Yvr1UKrn5t342krWfWa1vvry7
-	AFyxKFW3Cw1UZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_6wZDUUUUU=
-X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbCzwbtZmpFI+bICgAA3q
+X-CM-TRANSID:_____wD35mzeI0VqYpWYGg--.10116S3
+X-Coremail-Antispam: 1Uf129KBjvAXoWfJr1kKr4kJryfuw4ktw15XFb_yoW8GF43Wo
+	Z7ZFsIg345uw1jkFWv9r17tFy3X3WYgw15Can3Ja4UWa10k34UGw1xG3Z3AanxJ3yrK3Wx
+	JryUKw4fAr97JF4xn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRdl1DUUUUU
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC8gTtZmpFI+Q+kQAA36
 
-RISC-V currently exposes an identity PCI MMIO window to the guest. Keep
-that default, but add a pci-mmio-cpu-base option so the CPU physical base
-in the generated FDT ranges can differ from the PCI bus base used for BAR
-allocation.
+Add default identity PCI bus/CPU address translation helpers and use them
+when registering or handling PCI MMIO regions for virtio-pci and VFIO.
 
-Implement the PCI bus/CPU address translation hooks using the configured
-window. This makes it possible to run a RISC-V guest with a non-identity
-PCI MMIO range and exercises the generic PCI MMIO translation paths.
+Architectures with identity mappings keep the existing behaviour, while
+architectures with a non-identity PCI MMIO window can override the helpers.
 
 Signed-off-by: Jinyu Tang <tjytimi@163.com>
 ---
- riscv/fdt.c                         |  2 +-
- riscv/include/kvm/kvm-arch.h        |  5 ++-
- riscv/include/kvm/kvm-config-arch.h |  4 +++
- riscv/pci.c                         | 49 ++++++++++++++++++++++++++---
- 4 files changed, 53 insertions(+), 7 deletions(-)
+ include/kvm/pci.h   | 17 +++++++++++++++++
+ vfio/core.c         | 25 ++++++++++++++++++-------
+ vfio/pci.c          | 31 +++++++++++++++++++++----------
+ virtio/pci-legacy.c |  6 ++++--
+ virtio/pci-modern.c |  2 ++
+ virtio/pci.c        | 25 ++++++++++++++++++-------
+ 6 files changed, 80 insertions(+), 26 deletions(-)
 
-diff --git a/riscv/fdt.c b/riscv/fdt.c
-index 2368c19..635c29d 100644
---- a/riscv/fdt.c
-+++ b/riscv/fdt.c
-@@ -431,7 +431,7 @@ static int setup_fdt(struct kvm *kvm)
+diff --git a/include/kvm/pci.h b/include/kvm/pci.h
+index 25113f6..1c60535 100644
+--- a/include/kvm/pci.h
++++ b/include/kvm/pci.h
+@@ -258,6 +258,23 @@ int pci__assign_irq(struct pci_device_header *pci_hdr);
+ void pci__config_wr(struct kvm *kvm, union pci_config_address addr, void *data, int size);
+ void pci__config_rd(struct kvm *kvm, union pci_config_address addr, void *data, int size);
+ 
++/*
++ * PCI BARs contain bus addresses, whereas KVM MMIO exits and ioctls such as
++ * KVM_IOEVENTFD and KVM_SET_USER_MEMORY_REGION operate on CPU physical
++ * addresses.
++ */
++#ifndef ARCH_HAS_PCI_ADDR_TRANSLATION
++static inline u64 pci__bus_to_cpu_addr(struct kvm *kvm, u64 addr)
++{
++	return addr;
++}
++
++static inline u64 pci__cpu_to_bus_addr(struct kvm *kvm, u64 addr)
++{
++	return addr;
++}
++#endif
++
+ void *pci_find_cap(struct pci_device_header *hdr, u8 cap_type);
+ 
+ int pci__register_bar_regions(struct kvm *kvm, struct pci_device_header *pci_hdr,
+diff --git a/vfio/core.c b/vfio/core.c
+index fbe0098..e3d8f5b 100644
+--- a/vfio/core.c
++++ b/vfio/core.c
+@@ -165,11 +165,13 @@ static void vfio_mmio_access(struct kvm_cpu *vcpu, u64 addr, u8 *data, u32 len,
+ 			     u8 is_write, void *ptr)
+ {
+ 	u64 val;
++	u32 offset;
+ 	ssize_t nr;
+ 	struct vfio_region *region = ptr;
+ 	struct vfio_device *vdev = region->vdev;
+ 
+-	u32 offset = addr - region->guest_phys_addr;
++	addr = pci__cpu_to_bus_addr(vcpu->kvm, addr);
++	offset = addr - region->guest_phys_addr;
+ 
+ 	if (len < 1 || len > 8)
+ 		goto err_report;
+@@ -204,6 +206,8 @@ err_report:
+ static int vfio_setup_trap_region(struct kvm *kvm, struct vfio_device *vdev,
+ 				  struct vfio_region *region)
+ {
++	u64 pci_region_cpu_addr;
++
+ 	if (region->is_ioport) {
+ 		int port;
+ 
+@@ -215,7 +219,8 @@ static int vfio_setup_trap_region(struct kvm *kvm, struct vfio_device *vdev,
+ 		return 0;
  	}
  
- 	/* PCI host controller */
--	pci__generate_fdt_nodes(fdt);
-+	pci__generate_fdt_nodes(fdt, kvm);
+-	return kvm__register_mmio(kvm, region->guest_phys_addr,
++	pci_region_cpu_addr = pci__bus_to_cpu_addr(kvm, region->guest_phys_addr);
++	return kvm__register_mmio(kvm, pci_region_cpu_addr,
+ 				  region->info.size, false, vfio_mmio_access,
+ 				  region);
+ }
+@@ -227,16 +232,19 @@ int vfio_map_region(struct kvm *kvm, struct vfio_device *vdev,
+ 	int ret, prot = 0;
+ 	/* KVM needs page-aligned regions */
+ 	u64 map_size = ALIGN(region->info.size, PAGE_SIZE);
++	u64 pci_region_cpu_addr;
  
- 	_FDT(fdt_end_node(fdt));
+ 	if (!(region->info.flags & VFIO_REGION_INFO_FLAG_MMAP))
+ 		return vfio_setup_trap_region(kvm, vdev, region);
  
-diff --git a/riscv/include/kvm/kvm-arch.h b/riscv/include/kvm/kvm-arch.h
-index 1bb2d32..7d20200 100644
---- a/riscv/include/kvm/kvm-arch.h
-+++ b/riscv/include/kvm/kvm-arch.h
-@@ -55,6 +55,7 @@
- #define VIRTIO_RING_ENDIAN	VIRTIO_ENDIAN_LE
++	pci_region_cpu_addr = pci__bus_to_cpu_addr(kvm, region->guest_phys_addr);
++
+ 	/*
+ 	 * KVM_SET_USER_MEMORY_REGION will fail because the guest physical
+ 	 * address isn't page aligned, let's emulate the region ourselves.
+ 	 */
+-	if (region->guest_phys_addr & (PAGE_SIZE - 1))
+-		return kvm__register_mmio(kvm, region->guest_phys_addr,
++	if (pci_region_cpu_addr & (PAGE_SIZE - 1))
++		return kvm__register_mmio(kvm, pci_region_cpu_addr,
+ 					  region->info.size, false,
+ 					  vfio_mmio_access, region);
  
- #define ARCH_HAS_PCI_EXP	1
-+#define ARCH_HAS_PCI_ADDR_TRANSLATION	1
+@@ -255,7 +263,7 @@ int vfio_map_region(struct kvm *kvm, struct vfio_device *vdev,
+ 	}
+ 	region->host_addr = base;
  
- struct kvm;
- 
-@@ -105,7 +106,9 @@ extern bool riscv_irqchip_irqfd_ready;
- void aia__create(struct kvm *kvm);
- void plic__create(struct kvm *kvm);
- 
--void pci__generate_fdt_nodes(void *fdt);
-+u64 pci__bus_to_cpu_addr(struct kvm *kvm, u64 addr);
-+u64 pci__cpu_to_bus_addr(struct kvm *kvm, u64 addr);
-+void pci__generate_fdt_nodes(void *fdt, struct kvm *kvm);
- 
- int riscv__add_irqfd(struct kvm *kvm, unsigned int gsi, int trigger_fd,
- 		     int resample_fd);
-diff --git a/riscv/include/kvm/kvm-config-arch.h b/riscv/include/kvm/kvm-config-arch.h
-index d56f9ba..974521a 100644
---- a/riscv/include/kvm/kvm-config-arch.h
-+++ b/riscv/include/kvm/kvm-config-arch.h
-@@ -11,6 +11,7 @@ enum riscv__cpu_type {
- struct kvm_config_arch {
- 	enum riscv__cpu_type cpu_type;
- 	const char	*dump_dtb_filename;
-+	u64		pci_mmio_cpu_base;
- 	u64		suspend_seconds;
- 	u64		custom_mvendorid;
- 	u64		custom_marchid;
-@@ -27,6 +28,9 @@ int riscv__cpu_type_parser(const struct option *opt, const char *arg, int unset)
- 		     "Choose the cpu type (default is max).", riscv__cpu_type_parser, kvm),\
- 	OPT_STRING('\0', "dump-dtb", &(cfg)->dump_dtb_filename,		\
- 		   ".dtb file", "Dump generated .dtb to specified file"),\
-+	OPT_U64('\0', "pci-mmio-cpu-base",				\
-+		&(cfg)->pci_mmio_cpu_base,				\
-+		"Set the CPU base address of the PCI MMIO window"),	\
- 	OPT_U64('\0', "suspend-seconds",				\
- 		&(cfg)->suspend_seconds,				\
- 		"Number of seconds to suspend for system suspend (default is 5)"), \
-diff --git a/riscv/pci.c b/riscv/pci.c
-index fb05880..09cd09f 100644
---- a/riscv/pci.c
-+++ b/riscv/pci.c
-@@ -17,11 +17,50 @@ struct of_interrupt_map_entry {
- 	u32				irqchip_sense;
- } __attribute__((packed));
- 
--void pci__generate_fdt_nodes(void *fdt)
-+struct riscv_pci_mmio_window {
-+	u64				pci_mmio_bus_base;
-+	u64				pci_mmio_cpu_base;
-+	u64				size;
-+};
-+
-+static struct riscv_pci_mmio_window riscv__pci_mmio_window(struct kvm *kvm)
-+{
-+	struct riscv_pci_mmio_window window = {
-+		.pci_mmio_bus_base	= KVM_PCI_MMIO_AREA,
-+		.pci_mmio_cpu_base	= KVM_PCI_MMIO_AREA,
-+		.size			= RISCV_PCI_MMIO_SIZE,
-+	};
-+
-+	if (kvm->cfg.arch.pci_mmio_cpu_base)
-+		window.pci_mmio_cpu_base = kvm->cfg.arch.pci_mmio_cpu_base;
-+
-+	return window;
-+}
-+
-+u64 pci__bus_to_cpu_addr(struct kvm *kvm, u64 addr)
-+{
-+	struct riscv_pci_mmio_window window = riscv__pci_mmio_window(kvm);
-+	u64 offset;
-+
-+	offset = addr - window.pci_mmio_bus_base;
-+	return window.pci_mmio_cpu_base + offset;
-+}
-+
-+u64 pci__cpu_to_bus_addr(struct kvm *kvm, u64 addr)
-+{
-+	struct riscv_pci_mmio_window window = riscv__pci_mmio_window(kvm);
-+	u64 offset;
-+
-+	offset = addr - window.pci_mmio_cpu_base;
-+	return window.pci_mmio_bus_base + offset;
-+}
-+
-+void pci__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+-	ret = kvm__register_dev_mem(kvm, region->guest_phys_addr, map_size,
++	ret = kvm__register_dev_mem(kvm, pci_region_cpu_addr, map_size,
+ 				    region->host_addr);
+ 	if (ret) {
+ 		vfio_dev_err(vdev, "failed to register region with KVM");
+@@ -268,17 +276,20 @@ int vfio_map_region(struct kvm *kvm, struct vfio_device *vdev,
+ void vfio_unmap_region(struct kvm *kvm, struct vfio_region *region)
  {
- 	struct device_header *dev_hdr;
- 	struct of_interrupt_map_entry irq_map[OF_PCI_IRQ_MAP_MAX];
- 	unsigned nentries = 0, nsize;
-+	struct riscv_pci_mmio_window mmio_window = riscv__pci_mmio_window(kvm);
- 	/* Bus range */
- 	u32 bus_range[] = { cpu_to_fdt32(0), cpu_to_fdt32(1), };
- 	/* Configuration Space */
-@@ -41,11 +80,11 @@ void pci__generate_fdt_nodes(void *fdt)
- 		{
- 			.pci_addr = {
- 				.hi	= cpu_to_fdt32(of_pci_b_ss(OF_PCI_SS_M32)),
--				.mid	= cpu_to_fdt32(KVM_PCI_MMIO_AREA >> 32),
--				.lo	= cpu_to_fdt32(KVM_PCI_MMIO_AREA),
-+				.mid	= cpu_to_fdt32(mmio_window.pci_mmio_bus_base >> 32),
-+				.lo	= cpu_to_fdt32(mmio_window.pci_mmio_bus_base),
- 			},
--			.cpu_addr	= cpu_to_fdt64(KVM_PCI_MMIO_AREA),
--			.length		= cpu_to_fdt64(RISCV_PCI_MMIO_SIZE),
-+			.cpu_addr	= cpu_to_fdt64(mmio_window.pci_mmio_cpu_base),
-+			.length		= cpu_to_fdt64(mmio_window.size),
- 		},
- 	};
+ 	u64 map_size;
++	u64 pci_region_cpu_addr;
  
+ 	if (region->host_addr) {
++		pci_region_cpu_addr = pci__bus_to_cpu_addr(kvm, region->guest_phys_addr);
+ 		map_size = ALIGN(region->info.size, PAGE_SIZE);
+-		kvm__destroy_mem(kvm, region->guest_phys_addr, map_size,
++		kvm__destroy_mem(kvm, pci_region_cpu_addr, map_size,
+ 				 region->host_addr);
+ 		munmap(region->host_addr, region->info.size);
+ 		region->host_addr = NULL;
+ 	} else if (region->is_ioport) {
+ 		kvm__deregister_pio(kvm, region->port_base);
+ 	} else {
+-		kvm__deregister_mmio(kvm, region->guest_phys_addr);
++		pci_region_cpu_addr = pci__bus_to_cpu_addr(kvm, region->guest_phys_addr);
++		kvm__deregister_mmio(kvm, pci_region_cpu_addr);
+ 	}
+ }
+ 
+diff --git a/vfio/pci.c b/vfio/pci.c
+index 0bcd60e..93bbbd9 100644
+--- a/vfio/pci.c
++++ b/vfio/pci.c
+@@ -268,8 +268,11 @@ static void vfio_pci_msix_pba_access(struct kvm_cpu *vcpu, u64 addr, u8 *data,
+ {
+ 	struct vfio_pci_device *pdev = ptr;
+ 	struct vfio_pci_msix_pba *pba = &pdev->msix_pba;
+-	u64 offset = addr - pba->guest_phys_addr;
+ 	struct vfio_device *vdev = container_of(pdev, struct vfio_device, pci);
++	u64 offset;
++
++	addr = pci__cpu_to_bus_addr(vcpu->kvm, addr);
++	offset = addr - pba->guest_phys_addr;
+ 
+ 	if (offset >= pba->size) {
+ 		vfio_dev_err(vdev, "access outside of the MSIX PBA");
+@@ -294,15 +297,19 @@ static void vfio_pci_msix_table_access(struct kvm_cpu *vcpu, u64 addr, u8 *data,
+ 	struct vfio_pci_msi_entry *entry;
+ 	struct vfio_pci_device *pdev = ptr;
+ 	struct vfio_device *vdev = container_of(pdev, struct vfio_device, pci);
++	u64 offset;
++	size_t vector;
++	off_t field;
+ 
+-	u64 offset = addr - pdev->msix_table.guest_phys_addr;
++	addr = pci__cpu_to_bus_addr(kvm, addr);
++	offset = addr - pdev->msix_table.guest_phys_addr;
+ 	if (offset >= pdev->msix_table.size) {
+ 		vfio_dev_err(vdev, "access outside of the MSI-X table");
+ 		return;
+ 	}
+ 
+-	size_t vector = offset / PCI_MSIX_ENTRY_SIZE;
+-	off_t field = offset % PCI_MSIX_ENTRY_SIZE;
++	vector = offset / PCI_MSIX_ENTRY_SIZE;
++	field = offset % PCI_MSIX_ENTRY_SIZE;
+ 
+ 	/*
+ 	 * PCI spec says that software must use aligned 4 or 8 bytes accesses
+@@ -502,6 +509,7 @@ static int vfio_pci_bar_activate(struct kvm *kvm,
+ 	struct vfio_pci_msix_table *table = &pdev->msix_table;
+ 	struct vfio_region *region;
+ 	u32 bar_addr;
++	u64 msix_region_cpu_addr;
+ 	bool has_msix;
+ 	int ret;
+ 
+@@ -518,8 +526,8 @@ static int vfio_pci_bar_activate(struct kvm *kvm,
+ 
+ 	if (has_msix && (u32)bar_num == table->bar) {
+ 		table->guest_phys_addr = region->guest_phys_addr;
+-		ret = kvm__register_mmio(kvm, table->guest_phys_addr,
+-					 table->size, false,
++		msix_region_cpu_addr = pci__bus_to_cpu_addr(kvm, table->guest_phys_addr);
++		ret = kvm__register_mmio(kvm, msix_region_cpu_addr, table->size, false,
+ 					 vfio_pci_msix_table_access, pdev);
+ 		/*
+ 		 * The MSIX table and the PBA structure can share the same BAR,
+@@ -536,8 +544,8 @@ static int vfio_pci_bar_activate(struct kvm *kvm,
+ 			pba->guest_phys_addr = table->guest_phys_addr + pba->bar_offset;
+ 		else
+ 			pba->guest_phys_addr = region->guest_phys_addr;
+-		ret = kvm__register_mmio(kvm, pba->guest_phys_addr,
+-					 pba->size, false,
++		msix_region_cpu_addr = pci__bus_to_cpu_addr(kvm, pba->guest_phys_addr);
++		ret = kvm__register_mmio(kvm, msix_region_cpu_addr, pba->size, false,
+ 					 vfio_pci_msix_pba_access, pdev);
+ 		goto out;
+ 	}
+@@ -556,6 +564,7 @@ static int vfio_pci_bar_deactivate(struct kvm *kvm,
+ 	struct vfio_pci_msix_pba *pba = &pdev->msix_pba;
+ 	struct vfio_pci_msix_table *table = &pdev->msix_table;
+ 	struct vfio_region *region;
++	u64 msix_region_cpu_addr;
+ 	bool has_msix, success;
+ 	int ret;
+ 
+@@ -565,7 +574,8 @@ static int vfio_pci_bar_deactivate(struct kvm *kvm,
+ 	has_msix = pdev->irq_modes & VFIO_PCI_IRQ_MODE_MSIX;
+ 
+ 	if (has_msix && (u32)bar_num == table->bar) {
+-		success = kvm__deregister_mmio(kvm, table->guest_phys_addr);
++		msix_region_cpu_addr = pci__bus_to_cpu_addr(kvm, table->guest_phys_addr);
++		success = kvm__deregister_mmio(kvm, msix_region_cpu_addr);
+ 		/* kvm__deregister_mmio fails when the region is not found. */
+ 		ret = (success ? 0 : -ENOENT);
+ 		/* See vfio_pci_bar_activate(). */
+@@ -574,7 +584,8 @@ static int vfio_pci_bar_deactivate(struct kvm *kvm,
+ 	}
+ 
+ 	if (has_msix && (u32)bar_num == pba->bar) {
+-		success = kvm__deregister_mmio(kvm, pba->guest_phys_addr);
++		msix_region_cpu_addr = pci__bus_to_cpu_addr(kvm, pba->guest_phys_addr);
++		success = kvm__deregister_mmio(kvm, msix_region_cpu_addr);
+ 		ret = (success ? 0 : -ENOENT);
+ 		goto out;
+ 	}
+diff --git a/virtio/pci-legacy.c b/virtio/pci-legacy.c
+index 02a8f8c..670b097 100644
+--- a/virtio/pci-legacy.c
++++ b/virtio/pci-legacy.c
+@@ -192,10 +192,12 @@ void virtio_pci_legacy__io_mmio_callback(struct kvm_cpu *vcpu, u64 addr,
+ 	u32 base_addr;
+ 
+ 	if (addr >= ioport_addr &&
+-	    addr < ioport_addr + pci__bar_size(&vpci->pci_hdr, 0))
++	    addr < ioport_addr + pci__bar_size(&vpci->pci_hdr, 0)) {
+ 		base_addr = ioport_addr;
+-	else
++	} else {
++		addr = pci__cpu_to_bus_addr(vcpu->kvm, addr);
+ 		base_addr = virtio_pci__mmio_addr(vpci);
++	}
+ 
+ 	if (!is_write)
+ 		virtio_pci__data_in(vcpu, vdev, addr - base_addr, data, len);
+diff --git a/virtio/pci-modern.c b/virtio/pci-modern.c
+index 888afa5..3a3e63f 100644
+--- a/virtio/pci-modern.c
++++ b/virtio/pci-modern.c
+@@ -306,6 +306,8 @@ void virtio_pci_modern__io_mmio_callback(struct kvm_cpu *vcpu, u64 addr,
+ 	struct virtio_pci *vpci = vdev->virtio;
+ 	u32 mmio_addr = virtio_pci__mmio_addr(vpci);
+ 
++	addr = pci__cpu_to_bus_addr(vcpu->kvm, addr);
++
+ 	virtio_pci_access(vcpu, vdev, addr - mmio_addr, data, len, is_write);
+ }
+ 
+diff --git a/virtio/pci.c b/virtio/pci.c
+index 8a34cec..17c6ee3 100644
+--- a/virtio/pci.c
++++ b/virtio/pci.c
+@@ -62,6 +62,7 @@ int virtio_pci__init_ioeventfd(struct kvm *kvm, struct virtio_device *vdev,
+ 	struct virtio_pci *vpci = vdev->virtio;
+ 	u32 mmio_addr = virtio_pci__mmio_addr(vpci);
+ 	u16 port_addr = virtio_pci__port_addr(vpci);
++	u64 pci_mmio_cpu_addr = pci__bus_to_cpu_addr(kvm, mmio_addr);
+ 	off_t offset = vpci->doorbell_offset;
+ 	int r, flags = 0;
+ 	int pio_fd, mmio_fd;
+@@ -94,7 +95,7 @@ int virtio_pci__init_ioeventfd(struct kvm *kvm, struct virtio_device *vdev,
+ 		return r;
+ 
+ 	/* mmio */
+-	ioevent.io_addr	= mmio_addr + offset;
++	ioevent.io_addr	= pci_mmio_cpu_addr + offset;
+ 	ioevent.io_len	= sizeof(u16);
+ 	ioevent.fd	= mmio_fd = eventfd(0, 0);
+ 	r = ioeventfd__add_event(&ioevent, flags);
+@@ -129,12 +130,13 @@ void virtio_pci_exit_vq(struct kvm *kvm, struct virtio_device *vdev, int vq)
+ 	struct virtio_pci *vpci = vdev->virtio;
+ 	u32 mmio_addr = virtio_pci__mmio_addr(vpci);
+ 	u16 port_addr = virtio_pci__port_addr(vpci);
++	u64 pci_mmio_cpu_addr = pci__bus_to_cpu_addr(kvm, mmio_addr);
+ 	off_t offset = vpci->doorbell_offset;
+ 
+ 	virtio_pci__del_msix_route(vpci, vpci->gsis[vq]);
+ 	vpci->gsis[vq] = 0;
+ 	vpci->vq_vector[vq] = VIRTIO_MSI_NO_VECTOR;
+-	ioeventfd__del_event(mmio_addr + offset, vq);
++	ioeventfd__del_event(pci_mmio_cpu_addr + offset, vq);
+ 	ioeventfd__del_event(port_addr + offset, vq);
+ 	virtio_exit_vq(kvm, vdev, vpci->dev, vq);
+ }
+@@ -175,6 +177,8 @@ static void virtio_pci__msix_mmio_callback(struct kvm_cpu *vcpu,
+ 	int vecnum;
+ 	size_t offset;
+ 
++	addr = pci__cpu_to_bus_addr(vcpu->kvm, addr);
++
+ 	BUILD_BUG_ON(VIRTIO_NR_MSIX > (sizeof(vpci->msix_pba) * 8));
+ 
+ 	pba_offset = vpci->pci_hdr.msix.pba_offset & ~PCI_MSIX_TABLE_BIR;
+@@ -280,6 +284,7 @@ static int virtio_pci__bar_activate(struct kvm *kvm,
+ 	struct virtio_device *vdev = data;
+ 	mmio_handler_fn mmio_fn;
+ 	u32 bar_addr, bar_size;
++	u64 pci_bar_cpu_addr;
+ 	int r = -EINVAL;
+ 
+ 	if (vdev->legacy)
+@@ -297,11 +302,13 @@ static int virtio_pci__bar_activate(struct kvm *kvm,
+ 		r = kvm__register_pio(kvm, bar_addr, bar_size, mmio_fn, vdev);
+ 		break;
+ 	case 1:
+-		r =  kvm__register_mmio(kvm, bar_addr, bar_size, false, mmio_fn,
++		pci_bar_cpu_addr = pci__bus_to_cpu_addr(kvm, bar_addr);
++		r =  kvm__register_mmio(kvm, pci_bar_cpu_addr, bar_size, false, mmio_fn,
+ 					vdev);
+ 		break;
+ 	case 2:
+-		r =  kvm__register_mmio(kvm, bar_addr, bar_size, false,
++		pci_bar_cpu_addr = pci__bus_to_cpu_addr(kvm, bar_addr);
++		r =  kvm__register_mmio(kvm, pci_bar_cpu_addr, bar_size, false,
+ 					virtio_pci__msix_mmio_callback, vdev);
+ 		break;
+ 	}
+@@ -314,6 +321,7 @@ static int virtio_pci__bar_deactivate(struct kvm *kvm,
+ 				      int bar_num, void *data)
+ {
+ 	u32 bar_addr;
++	u64 pci_bar_cpu_addr;
+ 	bool success;
+ 	int r = -EINVAL;
+ 
+@@ -327,7 +335,8 @@ static int virtio_pci__bar_deactivate(struct kvm *kvm,
+ 		break;
+ 	case 1:
+ 	case 2:
+-		success = kvm__deregister_mmio(kvm, bar_addr);
++		pci_bar_cpu_addr = pci__bus_to_cpu_addr(kvm, bar_addr);
++		success = kvm__deregister_mmio(kvm, pci_bar_cpu_addr);
+ 		/* kvm__deregister_mmio fails when the region is not found. */
+ 		r = (success ? 0 : -ENOENT);
+ 		break;
+@@ -446,10 +455,12 @@ int virtio_pci__reset(struct kvm *kvm, struct virtio_device *vdev)
+ int virtio_pci__exit(struct kvm *kvm, struct virtio_device *vdev)
+ {
+ 	struct virtio_pci *vpci = vdev->virtio;
++	u64 pci_mmio_cpu_addr = pci__bus_to_cpu_addr(kvm, virtio_pci__mmio_addr(vpci));
++	u64 pci_msix_cpu_addr = pci__bus_to_cpu_addr(kvm, virtio_pci__msix_io_addr(vpci));
+ 
+ 	virtio_pci__reset(kvm, vdev);
+-	kvm__deregister_mmio(kvm, virtio_pci__mmio_addr(vpci));
+-	kvm__deregister_mmio(kvm, virtio_pci__msix_io_addr(vpci));
++	kvm__deregister_mmio(kvm, pci_mmio_cpu_addr);
++	kvm__deregister_mmio(kvm, pci_msix_cpu_addr);
+ 	kvm__deregister_pio(kvm, virtio_pci__port_addr(vpci));
+ 
+ 	return 0;
 -- 
 2.43.0
 
