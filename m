@@ -1,33 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011004.outbound.protection.outlook.com [40.107.208.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EBC3750DB;
-	Wed,  1 Jul 2026 16:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782923951; cv=none; b=Ka4/NkhUSdEwREgGAHVPWUsp31LcBcMggR1E0pqRVljcUXPq3zoCLoMZPrK6f8FF9lp4vN2PxZqInJZI0aVAMv2HNXaX5RzzLGZ+1NX4H6NrJZeQ46rZqpZTYQ+RiX+cgGRtQnfYge/ol3KONjj3b/JS2G4T2gvmW32KSK27AEk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782923951; c=relaxed/simple;
-	bh=mTLpAMVMzHCWtZWJCRnhXqV2f49vXr3MZyHU/ofR0vU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OnhxjsnKAcT7u3RwlWeHlLpdEyzEEwDzgrvG7tAfnhxFyplzOrLSY2Vv8YJkPsxFhSbb0CpMvMGoB2J8t5mmifo0InA54Fil0C2SwKr+ImnO7/IlOjYpHjEIWcqTK4LcL8x88NBMHnbz7Gbrdfty1WnO4qyH6wF3IZjYSx4a224=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WZlT1uM3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1EA224FA;
+	Wed,  1 Jul 2026 16:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782923991; cv=fail; b=CUXJom9aA9C9oH6+cMgpc8OD4HZcNG+ohyBlEMNduX424xjb8gmZFPF+WnNeEgyOqOm1aTtV98RvYpDpsPFkAMQ75XikeZtXkuwBUzqYfbbcoNQgnb2N5/7HJ6YyshfSM5KyEd3m9QPJI0oCYnncELb/AJZUTKAbiHy5rZ5Hddk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782923991; c=relaxed/simple;
+	bh=tgdNAoVZg7mplGsWra5QTHD8JRendvbnojlpPuxPFcE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uhbNbUSJKka35p0GAeNWuLAZmnT0iRFoDctg16JX1Qps56VH5QT1rGyZXZmqEx3RI4b2zrX0DBfCQs8oFF1T0xmNDVjO7IRU6+76NZGgTcXUCacCAVB0vU6+B36zHULFZkFwF0riS8eGV2rV1KBjvnKr1CGMDJOyEY4l2skou9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HykhPurz; arc=fail smtp.client-ip=40.107.208.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WZlT1uM3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189D21F000E9;
-	Wed,  1 Jul 2026 16:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782923949;
-	bh=rFi7za6TMIBXh1ci1ZaV/CadCFF1+ZDP7ntbr0l7lLY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WZlT1uM3Cq+PDML6CkOmUj7mo97tNFxZP6HbxcHpAqhes7scZkbIPp0D4tbK5mEGv
-	 BGs6DmxNwmtpzjc+Db9fe9RA7xcpaPec+dqMhRmst7RG97GcBbE93y3iQdBlcuxnqC
-	 h2JT/WvFiF141jwwC5wpI4g1LpFKBTYtoVxGX2lyCgQAyjku/e96afZ7fyc07iEWJd
-	 vXSESozov16GQVICdGUOxfTmcAYhvOkqD/IUR4VCEOvmrLY+x0oRRoI9H/1WSmcBZB
-	 H6sb2CcAVFi+PPgrIdGfWyyY6w+SboHdsMcE2Sjd/OCGVPbTPxnc1NsYJ3CFl62tK6
-	 CaPldLmm+HrMQ==
-Message-ID: <d9f98e2f-d2c6-447a-b3b1-17f07d1fac3f@kernel.org>
-Date: Wed, 1 Jul 2026 18:39:04 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HykhPurz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WeWuAfcnUh5EW5tNRPIKTtvg7kqk9WXozrCdzF/K3KM802hIMzQKolupZWvZ3NMQs7MVlIM3MNQaVNGuFHC294oXxoFEZ9KPYuYnHKOY2K22qYt6QclT2plcymRj+kenVD/Y8NdxAEeN2jkQeF+PL/fD4n7KF4p4uMG4En1P7MQNrNqv0i8qiFPJZmAYULYRaKBQsvklz8jeMHniMdS33w47/fxtjYRSw0hWwc45sTwNeCarwmA+Ak1oQ2RiEwy/TQbcqb2NToGPeU2r4woFKytFod2b9DKvCk2aJyMRKBCzHtRS3ILO3daNo6OF+fIr1FdL5+WK9RMtuYInrxz/zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8YP7lBkCMNTZySMbtLV6SGEVf0BZgXUulJBWXg0Bh9w=;
+ b=oCcBzPwrzQv63YAw0a1XY9Ou1eaA5gN3jnMvz+QvlYOMNxRwn1Rmdxb/oJf7PfKcC+Tp0TfOXT4rzXNhmb4K/YgOMbBDMdwBGoPtz89h7QalM34tniE5qyBfyHKvYXO0F9myiKISQn2TBi40twxT3mBRCPzd3CGq3xLyxgUagWmaVqnkJbXY/ICDtzQjMv99XrpBk3UAkLWRogMfzQS8PBA114DlY24AdmjQxzEIWSZVMcOcJtCvNmlZcltlnkY2aCQ0JwMcZjYgzxkUYT6PUerJZSn4JKz0eHoq+nLWQf3JWdF6HAem4dpZsv7mF1Ra9icxJ48EMk8pChNLqg4UMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=fortanix.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8YP7lBkCMNTZySMbtLV6SGEVf0BZgXUulJBWXg0Bh9w=;
+ b=HykhPurzecS+njchQvFD1L6G17Sa5N1GYZ6WkCV/rKxJ8LA7lz6djWnmlo8plFTv/MseeVhSiMKbA6gS7NaEZlAHNXsP65A9R5dZvDBTTWNgpxjkIfmKpfPJXlV1Iq35loVTJcZYoHHPjqs9jd471WXvjdXVgLnMtTY6bIot2cE=
+Received: from BN9PR03CA0430.namprd03.prod.outlook.com (2603:10b6:408:113::15)
+ by IA1PR12MB6387.namprd12.prod.outlook.com (2603:10b6:208:389::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
+ 16:39:41 +0000
+Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
+ (2603:10b6:408:113:cafe::8a) by BN9PR03CA0430.outlook.office365.com
+ (2603:10b6:408:113::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Wed, 1
+ Jul 2026 16:39:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 1 Jul 2026 16:39:40 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 1 Jul
+ 2026 11:39:40 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 1 Jul
+ 2026 11:39:40 -0500
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Wed, 1 Jul 2026 11:39:29 -0500
+Message-ID: <8477525d-55ad-4fc4-b7c6-05bab3d7a861@amd.com>
+Date: Wed, 1 Jul 2026 22:09:28 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,108 +71,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
- registration
-To: Sean Christopherson <seanjc@google.com>
-Cc: Pankaj Gupta <pankaj.gupta@amd.com>, pbonzini@redhat.com,
- tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
- yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260701144543.39582-1-pankaj.gupta@amd.com>
- <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
- <akVAnGuiuJttE5-6@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v10 3/6] x86/sev: Disable CPU hotplug while SNP is active
+To: Jethro Beekman <jethro@fortanix.com>, Ashish Kalra <Ashish.Kalra@amd.com>,
+	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
+CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
+	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
+	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
+	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
+ <80f3f279-d70e-44d7-a179-c52068115e46@fortanix.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <akVAnGuiuJttE5-6@google.com>
-Content-Type: text/plain; charset=UTF-8
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <80f3f279-d70e-44d7-a179-c52068115e46@fortanix.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|IA1PR12MB6387:EE_
+X-MS-Office365-Filtering-Correlation-Id: befb62dd-f114-427e-2abe-08ded78f591a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|376014|7416014|4143699003|11063799006|56012099006|6133799003|22082099003|921020|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	p1IR1kwbCwjJ8H5UaRlfSXVrNfPJiuViZxpdm786t726gbg6d8u8PxSl7BEIfKp6P4Ov24vfwp33Zkox22ix27BibUC8J7tLPr/gzynIQeCTwrS2Z8xo1qVrbz/VPXGnNiwyfIvt1ouZm6ESMu6SKetwsCH73SUSGT4S/Z51QSkmo8LqF81S1Bb083n4syBJuYhucXMcUSxU9nbBKkuEcAxV7ymRJM6XL23vltonYOqGcqY5ZOOt4Ufh17g/TqA/z7m1jmyIaTHmLxb+aEF9jNpWwAWhnlhtmZuximQARHcmXaOIp8Sz3FsFP8nb/N4WigOS9IdAtY5j05gfs9fdOQ8AWx6DgkNVeEJOyFHTTH7cRM8YOYLlpG1JhYSjV0bblQGS2LTCryR8pTXbwCF4USehefRdGKshzNXyNk+5DkccroRpaibhmq+rTMa5FJnCr5a2krgkeYfkfAxjD9Rc5qXSH6VleWCUKq2aYJxYvNrXZdwPkVGkK57KaFFeIyJtS7urTObd1BMHpXwKgkUzMXzVgN3Y3oW395/BGvPLcd6Bc7gYFYrpcFq6sjw04jaAWAYkl8hybEwLtdbwI+j7RxD+Hy25VDc7Y3eEExy0IzvzKDdLdZqkiE2HnaP4QFVDlwrlDzDUy3xQMU/2tczD/7r7mNJmY7OMbXSawMBzkrysKdRhN7k6C9h79FHZZvbqVuNc24adURkMKm2EBtPB3QBvSIVJpbJ9NWEGYi/lAel4eMgTnxw8uIhKnkyeIwW+
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(376014)(7416014)(4143699003)(11063799006)(56012099006)(6133799003)(22082099003)(921020)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	uD9BHyKly7gaZ4fFClXwFgLBsEcUPLMvK65o5akj8p+wMyTDhMDLs7cXJrup+yt/dC1XCC2YgzK9w2pMqAy67CoCLh3khFV1v3woFE2S8LlF/gN+xbmELP3WKhj1tv3hXuhHOw/QmC8Bf2Wcakz8bugXQySrC7R2/F0OXl2IMLtICzefz1RmaAF/9A/xeyQKL0xuACitQx7rkwgA6boeC/uiwZpENrJVfjO58h31wvghORwTEk4wSaDhGrY7bmIRMUOY8g5+yfVQfJlDqKcX4vCNzSMsQrcFwGVdnm21QJhAUtgB5zx0JV+f+75yJ911UeKVYVxLhNwVOVRVaX/DHgL29D5JWdWk65fYbzPqzCJLcI4YwavzjhgL3t1g5H0VdEsOzp+XzdItxe5akzFSjRb87xXMgfSBYswOuZLbF4rEs3hYnHQ7Fnt+3l7QofxI
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 16:39:40.8085
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: befb62dd-f114-427e-2abe-08ded78f591a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B074.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6387
 
-On 7/1/26 18:30, Sean Christopherson wrote:
-> On Wed, Jul 01, 2026, David Hildenbrand (Arm) wrote:
->> On 7/1/26 16:45, Pankaj Gupta wrote:
->>> commit 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering encrypted memory regions")
->>> added FOLL_LONGTERM to sev_mem_enc_register_region() so anonymous guest RAM is
->>> migrated out of MIGRATE_CMA/ZONE_MOVABLE before a long term pin. This breaks
->>> virtio-pmem which has file backed (MAP_SHARED) host mapping where GUP rejects
->>> FOLL_WRITE | FOLL_LONGTERM since:
->>>
->>> commit 8ac268436e6d ("mm/gup: disallow FOLL_LONGTERM GUP-nonfast writing to file-backed mappings")
->>> commit a6e79df92e4a ("mm/gup: disallow FOLL_LONGTERM GUP-fast writing to file-backed mappings").
->>>
->>> Drop FOLL_LONGTERM when registering encrypted memory regions and restore
->>> the previous behavior.
->>
->> But that breaks the original issue of breaking ZONE_MOVABLE/CMA?
+Hello Jethro,
+
+On 7/1/2026 3:10 PM, Jethro Beekman wrote:
+> I don't believe my concern has been addressed
 > 
-> Ya.
-> 
->> If it is a longterm pin, it must use FOLL_LONGTERM. :/
-> 
-> Heh, well, KVM showed that that's not entirely true for many years :-)
+> https://lore.kernel.org/lkml/0df3b665-3a9c-4c46-a7aa-14388e8e1577@fortanix.com/
 
-What exactly do you mean? KVM MMUs sync through memory notifiers and doesn't
-need this.
+Quoting your question:
 
-It's only our "interesting" CoCo code :)
+> I think this is too broad. If I have a hypervisor that supports SNP
+> virtualization, a (non-confidential) L1 guest running Linux should
+> still support CPU hotplug while also running confidential L2 guests.
 
-> 
-> Assuming we can't solve this some other way, and that there are "real" use cases
-> that were broken by adding FOLL_LONGTERM, maybe this as a hack-a-fix?
+Ashish, Tom, correct me if I'm wrong, but I don't think KVM exposes SNP
+support to L1, at least as per
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kvm/cpuid.c?h=v7.2-rc1#n1221
+and only SNP initialization disables hotplug - not the other variants.
 
-Well, it's not a driver's decision to make. :P
+L1, running a confidential guest (SEV/SEV-ES) should still be able to
+support hotplug since it doesn't go through SNP init. Only the base
+hypervisor can setup the RMP tables and go through snp_prepare().
 
-But, can we actually whitelist virtio-pmem in GUP code somehow?
-
-I mean, it does not suffer from the documented writeback issue, that we wanted
-to protect from. We similarly allow shmem and hugetlb there.
-
+Also bsp_determine_snp() should clear CC_ATTR_HOST_SEV_SNP if it
+detects X86_FEATURE_HYPERVISOR so I don't see how this can be a
+problem for hotplug in L1.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/x86/kernel/cpu/amd.c?h=v7.2-rc1#n368
 
 -- 
-Cheers,
+Thanks and Regards,
+Prateek
 
-David
