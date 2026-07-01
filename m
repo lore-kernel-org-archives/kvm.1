@@ -1,93 +1,73 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFE2379C3C
-	for <kvm@vger.kernel.org>; Wed,  1 Jul 2026 04:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A36363082;
+	Wed,  1 Jul 2026 05:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782878489; cv=none; b=GBtKEjFfpFh6y3spskQ3ZJvZ6uf3H8q5+a6l0KmVLVfzLXK9rzhCwOsjNFcffYiJh3MhVC3NNK0fKIfTdHRAL0GZdkS6vxPKny/0rZPbY8L9aYLN2+PaPHvsIeQ3+ET4HD8D+Wv70ceiF54drUAe/Lf7x2vwgxwA6ZQ8Em+k1co=
+	t=1782882884; cv=none; b=svwcQllXEveG4XshsJGY31Jg3jp/XEYAs9/rFoyig4rA4+N0/pLA0ll27ttdfL36cDSy4a4Ndb7DBS1/eUiTz8LcfcCDS1C46rrSIPozVZwRjevez1OUi3+D/dYURH2h3NMOqmDCdYO2rsyxZ8aFKpJkBbeZlkxJQPtvaDKzrWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782878489; c=relaxed/simple;
-	bh=PRI0mFWu7c0lbMzkBlN8wfFM98sHT+hJCWxDK6jTPyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbZKY4ePbeCmcDzu0WwsFlAjqJD/KJUtb8Z7CRi63GnAYXVpnLZCjOWuvCcdEjKIEb091PwY2ju2iB1knHhTqf7JZ4zzxpFHfTbIUKTCTKM2XPXp3mXtR3rWH4kINpEpErmlbNVOpdMmVVuH4dqveQtQoS8Dp0MSAU9qPo44NO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=emXxSYfu; arc=none smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1782882884; c=relaxed/simple;
+	bh=yJ3Ih7RvUg+mjAsTVt0Ifhd+tbvKP5WRer+BzT0z8+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pJ8oFqwI7ZwZWp/mmcE6NWXujoiJC2G/haF89nsQEd0LHljcUAKYHiQEo2UaJzJNmjnuuC1B5JxFJ/0Ac8eRb3zlseZhjv35DFbR1L36uDDb7Xmf4q7EIpvUPxpxiYyAvr9vsFUWIEsroE+yL60IZGDxWOf8pKR1O2pzIUSGOvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RWQlsccL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="emXxSYfu"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-30c944aacbaso378976eec.1
-        for <kvm@vger.kernel.org>; Tue, 30 Jun 2026 21:01:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1782878480; x=1783483280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zwx/vaLTjb7GROGFhRcYHmobCEksaNrQHxJqVkC3GAI=;
-        b=emXxSYfu5/N0J+GMlcwfX9tSxfapGlFd7cyjrh34qQ7mEKTd2EDKOxH93IBaz0KJSC
-         n8Wk4i+/qDpX1uyAuJgonNOiICHAPfPloioXGymV+6+a/rUxLXIurEzcrfA121VGZUTA
-         RdQYmlm8wq6yknoC3rHwTmZ2qR9jqGG3EbRyy2bsw7qGvXrGRzE2GD7OpKSgVZOj02Io
-         QS7XGwX6cLyDhF+KUzawS+vQF8Jw/ZDntGkBdQwrdL8awKbbQrb5KZwLQQYWC0mQyvtv
-         FfoW6D65PFZ91/y3RHN2Umtz9v2xq/JzQ+KW1XpnaG8QINFlaIWFS7s9ECBaG7m3Rc5/
-         bQOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782878480; x=1783483280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zwx/vaLTjb7GROGFhRcYHmobCEksaNrQHxJqVkC3GAI=;
-        b=CdAGrN2qEFtMzzQsgrm51hKuMHbLjriFJzEH0dGFtpR8FcQGEvQc1Z3jahoVqltUJG
-         jNdxVBk6mX/Rp/ZsMEfDI1HTWSySdaXToNO7IIAd86PPpOUnUYGjerPE9jXAr0rXbd2O
-         2h/XbljQFFLJ9dp4/LJYb0NOhHVUoJPeHkn3CeUpotnj/LXZYNY3PRMCkOYlYjBCTGIu
-         zRIzXAV2D8T1Y8/KukWG4KQpBTHDL5EDYdIOHiCMYXv1nOrpXxJkpiVjHLRWfnwog44A
-         To0yj7wjXlD8Hj7uH6GL0oQn51LFQ5h+ANM0HrBFfVTJG3KV7UJL0mY4atxo/4TNI/Tp
-         H++A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpg9R8cjTKJI/ES0zV5OPfzdjvE7y/9cJsa/yg0Ww+CFmC4/R4WivKdVJJ8Hs5Ad7UcdO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIkG10x4sYOEqzkHIwGQFB+rT6Djp+HnOqkC/YplaUX59UVxYL
-	tWa4W9y7/I2EhKca6PSdfPqO+twqyQnIrUDbsi3so0NHjdxGmZsPBT3Xw6YY46QLHJI=
-X-Gm-Gg: AfdE7clItXcEKriBAU6JAr9XGGgmttHdLWavBlxIJH6hFv0ZpIHojIZBdCzolCtoCqR
-	Q5+Hr4YFwUGCqMlOCmF49Av5RXmTxXlBosQoOvaQxAe842JhZ3A3IqSsqJw35FShfn6JN0mlau7
-	nt4BuqkMiUFQsr7jYfezMl7PVOetTeRbCl2zLTGNiAFf5kxmK8BTGSmUJ9NtIWpreTHfZzWE3HA
-	1ELmc3yHVN1LttqzlOK7U5mkaw3HYcxbpHhajRoct4JngLhQyR4MPtH5/hTU6pJ78T/9AIAJi4M
-	5M820VAH2oVGKTSebAqNAWA28bbQrReN0PWIICphWx+k/bOUYyWxaJcKABz65EqsK71ozVfVliU
-	XIcXjScF4djx445GHN+jWRU/DCmOU49BAFKqDRjtl30/Ljk8ufBbLPsJ1PBiN0hO0mw7tJX9x5B
-	hr0kw6KHfGUPiDeHnKonBxOJ2kUh9hFiWLLcif12fshdnWAYv9b6WNHW9pLdKYYWPKfDgCfZxZp
-	SA=
-X-Received: by 2002:a05:7300:2325:b0:30c:ab4d:3835 with SMTP id 5a478bee46e88-30ee150c708mr5808915eec.44.1782878480101;
-        Tue, 30 Jun 2026 21:01:20 -0700 (PDT)
-Received: from FJ7FR2JRQ3.bytedance.net ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ee32519aesm14024287eec.27.2026.06.30.21.01.12
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 30 Jun 2026 21:01:18 -0700 (PDT)
-From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-To: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Tomasz Jeznach <tjeznach@rivosinc.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	cuiyunhui@bytedance.com,
-	yuanzhu@bytedance.com,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-Subject: [RFC PATCH 3/3] RISC-V: KVM: Identify MRIF notices from irqfd snapshots
-Date: Wed,  1 Jul 2026 12:00:16 +0800
-Message-ID: <20260701040017.42707-4-zhangzhanpeng.jasper@bytedance.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RWQlsccL"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6613ICZj4061354;
+	Wed, 1 Jul 2026 05:14:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=S5e8R5eD8N7+GbmnMHJFifr7jA0SVD038k9b5/0AZ
+	Fo=; b=RWQlsccLw+tW2X18Vnp0f5fVho3wiXaxWM6RAuyCZ3fgOJm6AtEYTEoZ9
+	iffIDXslF08GAgF3UXMWFEusxz1XU8cniX2lQQ93q+f/IuVpOawMJ3wUI9vvthdX
+	q6IxRDryczbrvEduH/euEGwBSafbMi6UhDBqTXP0D4wHa+afb/oyTalHPYV10Jhu
+	MbE4IOX8FypWTJHuve8CeVFdt7XnOo1dwDd+8nSzm/MXzvJ8BezXXnQHbtLAOYbK
+	RfftU+akwDkTCu/opxWsYujMkYCpccRcskkKUNvr3xbI+jecb244Yky6Iy+Ftf4P
+	mMk9B0Js2F2gwINoCzVjXYX30SpRg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26qg2ke0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jul 2026 05:14:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66154cNa004868;
+	Wed, 1 Jul 2026 05:14:26 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhdnxs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jul 2026 05:14:26 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6615EMAV30474786
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Jul 2026 05:14:22 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F53720049;
+	Wed,  1 Jul 2026 05:14:22 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A3ED20040;
+	Wed,  1 Jul 2026 05:14:18 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.211.190])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Jul 2026 05:14:18 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v5 0/4] KVM: PPC: Expose CPU compatibility modes for nested guests
+Date: Wed,  1 Jul 2026 10:44:05 +0530
+Message-ID: <20260701051409.51820-1-amachhiw@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260701040017.42707-1-zhangzhanpeng.jasper@bytedance.com>
-References: <20250811061104.10326-1-fangyu.yu@linux.alibaba.com>
- <20260701040017.42707-1-zhangzhanpeng.jasper@bytedance.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -95,404 +75,267 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RYqgzVtv c=1 sm=1 tr=0 ts=6a44a234 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=s5-7cpnY7qlMe_O-y8EA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAxMDA0NiBTYWx0ZWRfX61wf++2t63ms
+ RVACXXR5VWmXDYV3+3I3Ot8i8P92IlaPxsyEK45XQUeUFWqDYbUMJUgkXBeFpKa9T1D8NTvfRiM
+ ovPyq/qZ6IqkhJGhOmrqshvkR7963kU=
+X-Proofpoint-GUID: 5PSovUEPhJhFQOmx0ipuWAt7OuW-dg0q
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAxMDA0NiBTYWx0ZWRfX1Op9FaEOBraY
+ f4dfobZkZrFi16F2rfR41FMraGSf+XMIr6EE/m7ocKlu4abhmNDuTpOGq7jovebmS4KHdSwEWZF
+ B1vv9qgs7xVVZ8oAN6SAWLLub1WNWwsyI4nbkmxo89+kiNluH6nI4tJENsCP+74zXmqzqoKTGJg
+ 8CFxpJAXYFsNscif4AdtYINRR/AfzvcNYAqjhwro7sEohb3JZeN4krbkcyQq4pZ/XQjOEzoHKw1
+ 3nUS51mjleVN9YMF4zp1aU5M1ujN4DvbXMM74Q5K9QtJXDE2Pcqac5jvpN5OqQlldU96U89g5cm
+ TBMsrroJ8uoFFg1/x1w0bpre6AIqXHrvHL+ixmv5IxxFvY2mEQoZKHSI76rceFyvpfBVjnYpi4m
+ 6UJeZgkcFsn5yPfcq+jD7pVl/6FSdbq0BrfOZ8CU+UxgiZrmx5QES0MeK6ojhS9RfKkKm99+7y7
+ ZhhOXdxqlTlfvE5HtNg==
+X-Proofpoint-ORIG-GUID: hUJFSkNsPuCnxgqGumWyJ_lhY_ZAIIJ7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-01_01,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607010046
 
-MRIF notice handling must skip the normal software IMSIC EIP update only
-for the physical IRQ that was retargeted as a MRIF notice MSI. The
-existing code infers that case by comparing the injected guest IID with
-cached host MSI data values.
+On POWER systems, newer processor generations can operate in compatibility
+modes corresponding to earlier generations (e.g., a Power11 system running
+in Power10 compatibility mode). In such cases, the effective CPU level
+exposed to guests differs from the physical processor generation.
 
-That value comparison is not a reliable source discriminator. Normal
-guest MSI injection also reaches kvm_riscv_vcpu_aia_imsic_inject(), and
-its guest IID can collide with a cached host MSI data value. When that
-happens, KVM treats a normal guest interrupt as a MRIF notice and drops
-the software IMSIC update before the guest observes the interrupt.
+This creates a problem for nested virtualization. When booting a nested KVM
+guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+and attempt to configure the nested guest accordingly. However, the L1
+partition is constrained by the compatibility level negotiated with the
+hypervisor (L0), and requests exceeding that level are rejected, leading to
+guest boot failures such as:
 
-Identify MRIF notices from the irqfd route snapshot instead.
-irqfd_wakeup() copies irqfd->irq_entry under irq_entry_sc before
-injecting the MSI, so keep the RISC-V MRIF notice target in that same
-snapshot. Userspace MSI injection passes no irqfd snapshot and therefore
-always follows the normal software IMSIC path.
+  KVM-NESTEDv2: couldn't set guest wide elements
 
-Update the snapshot only while holding kvm->irqfds.lock, including
-irq-bypass producer attach and detach callbacks, because irq_entry_sc is
-associated with that lock. Record MRIF metadata only after a successful
-MRIF retarget; VS-file retargets and unsupported/error paths clear the
-metadata so later ordinary irqfd injections cannot be misclassified as
-MRIF notices.
+This series provides a mechanism for userspace to query the effective CPU
+compatibility modes supported by the host, so it can select an appropriate
+CPU model for nested guests.
 
-Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
----
- arch/riscv/include/asm/kvm_aia.h |   7 +-
- arch/riscv/kvm/aia_device.c      |   9 +-
- arch/riscv/kvm/aia_imsic.c       | 154 +++++++++++++++++++++++--------
- arch/riscv/kvm/vm.c              |   9 +-
- 4 files changed, 139 insertions(+), 40 deletions(-)
+To achieve this, the series introduces a new KVM capability and ioctl
+(KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+compatibility modes supported by the host.
 
-diff --git a/arch/riscv/include/asm/kvm_aia.h b/arch/riscv/include/asm/kvm_aia.h
-index b04ecdd1a860..ab3613b96b7c 100644
---- a/arch/riscv/include/asm/kvm_aia.h
-+++ b/arch/riscv/include/asm/kvm_aia.h
-@@ -14,6 +14,8 @@
- #include <linux/kvm_types.h>
- #include <asm/csr.h>
- 
-+struct kvm_kernel_irq_routing_entry;
-+
- struct kvm_aia {
- 	/* In-kernel irqchip created */
- 	bool		in_kernel;
-@@ -103,6 +105,8 @@ int kvm_riscv_aia_imsic_has_attr(struct kvm *kvm, unsigned long type);
- void kvm_riscv_vcpu_aia_imsic_reset(struct kvm_vcpu *vcpu);
- int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 				    u32 guest_index, u32 offset, u32 iid);
-+bool kvm_riscv_vcpu_aia_imsic_mrif_notice(struct kvm_vcpu *vcpu,
-+					  struct kvm_kernel_irq_routing_entry *irq);
- int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu);
- void kvm_riscv_vcpu_aia_imsic_cleanup(struct kvm_vcpu *vcpu);
- 
-@@ -155,7 +159,8 @@ void kvm_riscv_vcpu_aia_deinit(struct kvm_vcpu *vcpu);
- 
- int kvm_riscv_aia_inject_msi_by_id(struct kvm *kvm, u32 hart_index,
- 				   u32 guest_index, u32 iid);
--int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi);
-+int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi,
-+			     struct kvm_kernel_irq_routing_entry *irq);
- int kvm_riscv_aia_inject_irq(struct kvm *kvm, unsigned int irq, bool level);
- 
- void kvm_riscv_aia_init_vm(struct kvm *kvm);
-diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-index b195a93add1c..644376abaa34 100644
---- a/arch/riscv/kvm/aia_device.c
-+++ b/arch/riscv/kvm/aia_device.c
-@@ -559,7 +559,8 @@ int kvm_riscv_aia_inject_msi_by_id(struct kvm *kvm, u32 hart_index,
- 	return 0;
- }
- 
--int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
-+int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi,
-+			     struct kvm_kernel_irq_routing_entry *irq)
- {
- 	gpa_t tppn, ippn;
- 	unsigned long idx;
-@@ -585,6 +586,12 @@ int kvm_riscv_aia_inject_msi(struct kvm *kvm, struct kvm_msi *msi)
- 					IMSIC_MMIO_PAGE_SHIFT;
- 		if (ippn == tppn) {
- 			toff = target & (IMSIC_MMIO_PAGE_SZ - 1);
-+			/*
-+			 * MRIF notices are identified by irqfd routing state,
-+			 * not MSI value.
-+			 */
-+			if (kvm_riscv_vcpu_aia_imsic_mrif_notice(vcpu, irq))
-+				return 0;
- 			return kvm_riscv_vcpu_aia_imsic_inject(vcpu, g,
- 							       toff, iid);
- 		}
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index b496953e0c4d..6cb5fc832efb 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -817,6 +817,28 @@ static int kvm_arch_update_irqfd_unset(struct kvm *kvm, unsigned int host_irq)
- 	return irq_set_vcpu_affinity(host_irq, NULL);
- }
- 
-+static void kvm_arch_update_irqfd_mrif_target(struct kvm_kernel_irqfd *irqfd,
-+					      struct kvm_vcpu *vcpu,
-+					      struct imsic *imsic)
-+{
-+	lockdep_assert_held(&irqfd->kvm->irqfds.lock);
-+
-+	write_seqcount_begin(&irqfd->irq_entry_sc);
-+	irqfd->irq_entry.irqfd_arch_vcpu = vcpu;
-+	irqfd->irq_entry.irqfd_arch_data = imsic;
-+	write_seqcount_end(&irqfd->irq_entry_sc);
-+}
-+
-+static void kvm_arch_clear_irqfd_mrif_target(struct kvm_kernel_irqfd *irqfd)
-+{
-+	lockdep_assert_held(&irqfd->kvm->irqfds.lock);
-+
-+	write_seqcount_begin(&irqfd->irq_entry_sc);
-+	irqfd->irq_entry.irqfd_arch_vcpu = NULL;
-+	irqfd->irq_entry.irqfd_arch_data = NULL;
-+	write_seqcount_end(&irqfd->irq_entry_sc);
-+}
-+
- static struct msi_msg *kvm_arch_update_irqfd_hostirq(struct imsic *imsic,
- 						     unsigned int host_irq, int *ret,
- 						     struct kvm_kernel_irq_routing_entry *e)
-@@ -824,7 +846,7 @@ static struct msi_msg *kvm_arch_update_irqfd_hostirq(struct imsic *imsic,
- 	struct msi_msg *priv_msg = xa_load(&imsic->hostirq_array, host_irq);
- 
- 	if (!priv_msg) {
--		priv_msg = kzalloc(sizeof(*priv_msg), GFP_KERNEL);
-+		priv_msg = kzalloc(sizeof(*priv_msg), GFP_ATOMIC);
- 		if (!priv_msg) {
- 			*ret = -ENOMEM;
- 			goto out;
-@@ -855,22 +877,44 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- 	struct riscv_iommu_ir_vcpu_info vcpu_info;
- 	struct kvm *kvm = irqfd->kvm;
- 	struct kvm_aia *aia = &kvm->arch.aia;
--	int host_irq = irqfd->producer->irq;
--	struct irq_data *irqdata = irq_get_irq_data(host_irq);
-+	struct irq_data *irqdata;
- 	unsigned long tmp, flags;
--	struct kvm_vcpu *vcpu;
-+	struct irq_chip *chip;
-+	struct kvm_vcpu *vcpu = NULL;
- 	struct imsic *imsic;
- 	struct msi_msg msg;
- 	u64 msi_addr_mask;
- 	gpa_t target;
--	int ret;
-+	int host_irq, ret;
- 
-+	lockdep_assert_held(&kvm->irqfds.lock);
-+
-+	if (!irqfd->producer) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
-+		return;
-+	}
-+
-+	/*
-+	 * Keep the MRIF notice target in the irqfd route snapshot. Successful
-+	 * retargeting updates this snapshot, same-MSI updates reuse the
-+	 * previous snapshot, and unroute clears it.
-+	 */
- 	if (old && old->type == KVM_IRQ_ROUTING_MSI &&
- 	    new && new->type == KVM_IRQ_ROUTING_MSI &&
--	    !memcmp(&old->msi, &new->msi, sizeof(new->msi)))
-+	    !memcmp(&old->msi, &new->msi, sizeof(new->msi))) {
-+		write_seqcount_begin(&irqfd->irq_entry_sc);
-+		irqfd->irq_entry.irqfd_arch_vcpu = old->irqfd_arch_vcpu;
-+		irqfd->irq_entry.irqfd_arch_data = old->irqfd_arch_data;
-+		write_seqcount_end(&irqfd->irq_entry_sc);
- 		return;
-+	}
-+
-+	host_irq = irqfd->producer->irq;
-+	irqdata = irq_get_irq_data(host_irq);
-+	chip = irqdata ? irq_data_get_irq_chip(irqdata) : NULL;
- 
- 	if (!new) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 		if (!WARN_ON_ONCE(!old) && old->type == KVM_IRQ_ROUTING_MSI) {
- 			ret = kvm_arch_update_irqfd_unset(kvm, host_irq);
- 			WARN_ON_ONCE(ret && ret != -EOPNOTSUPP);
-@@ -878,12 +922,21 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- 		return;
- 	}
- 
--	if (new->type != KVM_IRQ_ROUTING_MSI)
-+	if (new->type != KVM_IRQ_ROUTING_MSI) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
-+		return;
-+	}
-+
-+	if (!chip || !chip->irq_write_msi_msg) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 		return;
-+	}
- 
- 	target = ((gpa_t)new->msi.address_hi << 32) | new->msi.address_lo;
--	if (WARN_ON_ONCE(target & (IMSIC_MMIO_PAGE_SZ - 1)))
-+	if (WARN_ON_ONCE(target & (IMSIC_MMIO_PAGE_SZ - 1))) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 		return;
-+	}
- 
- 	msg = (struct msi_msg){
- 		.address_hi = new->msi.address_hi,
-@@ -895,8 +948,10 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- 		if (target == vcpu->arch.aia_context.imsic_addr)
- 			break;
- 	}
--	if (!vcpu)
-+	if (!vcpu) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 		return;
-+	}
- 
- 	imsic = vcpu->arch.aia_context.imsic_state;
- 
-@@ -910,8 +965,10 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- 		.host_irq = host_irq,
- 		.host_msg = kvm_arch_update_irqfd_hostirq(imsic, host_irq, &ret, new),
- 	};
--	if (ret)
-+	if (ret) {
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 		return;
-+	}
- 
- 	read_lock_irqsave(&imsic->vsfile_lock, flags);
- 
-@@ -924,19 +981,27 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- 	}
- 
- 	ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
--	WARN_ON_ONCE(ret && ret != -EOPNOTSUPP);
--	if (ret) {
--		if (ret == -ENODEV) {
--			imsic->mrif_support = false;
--			ret = 0;
--		}
-+	if (ret == -ENODEV) {
-+		imsic->mrif_support = false;
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
-+		ret = 0;
- 		goto out;
- 	}
-+	WARN_ON_ONCE(ret && ret != -EOPNOTSUPP);
-+	if (ret)
-+		goto out;
-+
- 	if (imsic->mrif_support)
--		irq_data_get_irq_chip(irqdata)->irq_write_msi_msg(irqdata, &msg);
-+		chip->irq_write_msi_msg(irqdata, &msg);
-+	if (vcpu_info.mrif)
-+		kvm_arch_update_irqfd_mrif_target(irqfd, vcpu, imsic);
-+	else
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- 
- out:
- 	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	if (ret)
-+		kvm_arch_clear_irqfd_mrif_target(irqfd);
- }
- 
- static void kvm_riscv_vcpu_irq_update(struct kvm_vcpu *vcpu)
-@@ -988,13 +1053,21 @@ static void kvm_riscv_vcpu_irq_update(struct kvm_vcpu *vcpu)
- 			vcpu_info.mrif = false;
- 		}
- 		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
--		WARN_ON_ONCE(ret && ret != -EOPNOTSUPP);
- 		if (ret == -ENODEV) {
- 			imsic->mrif_support = false;
--			ret = 0;
-+			kvm_arch_clear_irqfd_mrif_target(irqfd);
-+			continue;
- 		} else if (ret == -EOPNOTSUPP) {
--			break;
-+			kvm_arch_clear_irqfd_mrif_target(irqfd);
-+			continue;
- 		}
-+		if (ret)
-+			kvm_arch_clear_irqfd_mrif_target(irqfd);
-+		else if (vcpu_info.mrif)
-+			kvm_arch_update_irqfd_mrif_target(irqfd, vcpu, imsic);
-+		else
-+			kvm_arch_clear_irqfd_mrif_target(irqfd);
-+		WARN_ON_ONCE(ret);
- 	}
- 
- 	spin_unlock_irq(&kvm->irqfds.lock);
-@@ -1254,24 +1327,9 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	if (imsic->vsfile_cpu >= 0) {
- 		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
- 	} else {
--		if (imsic->mrif_support) {
--			struct msi_msg *msg;
--			unsigned long idx;
--
--			/* In MRIF mode, the noticed MSI irq handler will call here to
--			 * determine whether the MRIF has been updated.Since the IOMMU
--			 * hardware has updated the MRIF,the software does not need to
--			 * update the MRIF file again.
--			 */
--			xa_for_each(&imsic->hostirq_array, idx, msg) {
--				if (msg->data == iid)
--					goto skip_update_swfile;
--			}
--		}
- 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
- 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
- 
--skip_update_swfile:
- 		imsic_swfile_extirq_update(vcpu);
- 	}
- 
-@@ -1280,6 +1338,30 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	return 0;
- }
- 
-+bool kvm_riscv_vcpu_aia_imsic_mrif_notice(struct kvm_vcpu *vcpu,
-+					  struct kvm_kernel_irq_routing_entry *irq)
-+{
-+	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
-+	unsigned long flags;
-+	bool handled = false;
-+
-+	if (!imsic || !irq ||
-+	    irq->irqfd_arch_vcpu != vcpu ||
-+	    irq->irqfd_arch_data != imsic)
-+		return false;
-+
-+	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+
-+	if (imsic->mrif_support && imsic->vsfile_cpu < 0) {
-+		imsic_swfile_extirq_update(vcpu);
-+		handled = true;
-+	}
-+
-+	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+
-+	return handled;
-+}
-+
- static int imsic_mmio_read(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
- 			   gpa_t addr, int len, void *val)
- {
-@@ -1302,7 +1384,7 @@ static int imsic_mmio_write(struct kvm_vcpu *vcpu, struct kvm_io_device *dev,
- 	msi.address_hi = addr >> 32;
- 	msi.address_lo = (u32)addr;
- 	msi.data = *((const u32 *)val);
--	kvm_riscv_aia_inject_msi(vcpu->kvm, &msi);
-+	kvm_riscv_aia_inject_msi(vcpu->kvm, &msi, NULL);
- 
- 	return 0;
- };
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index 1d33cff73e00..354036434b5e 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -68,9 +68,12 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&irqfd->kvm->irqfds.lock, flags);
- 	irqfd->producer = prod;
- 	kvm_arch_update_irqfd_routing(irqfd, NULL, &irqfd->irq_entry);
-+	spin_unlock_irqrestore(&irqfd->kvm->irqfds.lock, flags);
- 
- 	return 0;
- }
-@@ -80,11 +83,13 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&irqfd->kvm->irqfds.lock, flags);
- 	WARN_ON(irqfd->producer != prod);
--
- 	kvm_arch_update_irqfd_routing(irqfd, &irqfd->irq_entry, NULL);
- 	irqfd->producer = NULL;
-+	spin_unlock_irqrestore(&irqfd->kvm->irqfds.lock, flags);
- }
- 
- int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irql,
-@@ -111,7 +116,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
- 	msi.flags = e->msi.flags;
- 	msi.devid = e->msi.devid;
- 
--	return kvm_riscv_aia_inject_msi(kvm, &msi);
-+	return kvm_riscv_aia_inject_msi(kvm, &msi, e);
- }
- 
- static int kvm_riscv_set_irq(struct kvm_kernel_irq_routing_entry *e,
+Why a new UAPI?
+===============
+While cpu-version is available in /proc/device-tree/cpus/<cpu#>/cpu-version
+on both L1 booted on PowerNV and PowerVM LPARs, the UAPI approach is
+preferable for several reasons:
+
+1. pHYP (L0) capabilities: On PowerVM, we need to rely on capabilities
+   negotiated with pHYP in KVM, not just device tree properties. The
+   cpu-version property depicts the current compat mode but doesn't point
+   to what all compat modes are supported for the nested guest.
+
+2. procfs dependency: Not all systems run with procfs enabled (CONFIG_PROC_FS
+   is optional). Minimal configurations like buildroot might disable it, but
+   KVM ioctl works regardless since it accesses kernel data structures
+   directly.
+
+3. Kernel validation: The kernel validates and normalizes the compatibility
+   information, ensuring userspace gets validated, consistent data.
+
+4. Abstraction & stability: /proc/device-tree is an implementation detail.
+   The UAPI provides a stable interface that won't break if the underlying
+   mechanism changes.
+
+5. Semantic clarity: KVM_PPC_GET_COMPAT_CAPS clearly expresses what
+   compatibility modes can be used for KVM guests, vs. parsing device tree
+   which requires understanding the semantic meaning of cpu-version.
+
+The implementation supports both:
+
+  - KVM on PowerVM (nested API v2), where compatibility information is
+    served from the cached nested_capabilities value, originally obtained
+    via the H_GUEST_GET_CAPABILITIES hypercall at module init.
+  - KVM on PowerNV (nested API v1), where compatibility is derived from the
+    device tree ("cpu-version") representing the effective processor
+    compatibility level.
+
+This allows userspace (e.g., QEMU) to select a CPU model consistent with
+the host compatibility mode, avoiding mismatches and enabling successful
+nested guest boot.
+
+Note: This series is built on top of patches [1] and [2] which must be
+applied first. Patch [1] ensures arch_compat is validated against the host
+compatibility mode before this series adds the capability query mechanism.
+Patch [2] sets CPU_FTR_P11_PVR for Power11 and later processors, which is
+needed for proper CPU feature detection in dt-cpu-ftrs environments.
+
+Changes in v5:
+  - Moved 'size' to be the first member of struct kvm_ppc_compat_caps;
+    replaced strict size equality with copy_struct_from_user/to_user for
+    proper forward and backward ABI compatibility; added
+    KVM_PPC_COMPAT_CAPS_SIZE_VER0 as a frozen version floor constant and
+    flags == 0 enforcement to prevent ABI ambiguity (patch 1) - [Vaibhav,
+    Amit]
+  - Updated PowerVM implementation to use cached nested_capabilities
+    instead of a live H_GUEST_GET_CAPABILITIES hcall; added a
+    WARN_ON_ONCE(!nested_capabilities) sanity check (patch 2) - [Vaibhav,
+    Amit]
+  - Converted switch in kvmppc_map_compat_capabilities() to use fallthrough
+    for cumulative compat mode reporting; added of_node_put() in
+    for_each_node_by_type() to fix OF node reference leak; check 'rc'
+    error before assigning capabilities (patch 3) - [Vaibhav, Harsh]
+  - Updated documentation to reflect extensibility model, added E2BIG
+    error (patch 4) - [Amit]
+
+Changes in v4:
+  - Added 'size' field to struct kvm_ppc_compat_caps for forward
+    compatibility and ABI extensibility
+  - Implemented size validation in ioctl handler to ensure correct structure
+    size from userspace
+  - Introduced KVM-specific capability constants (KVM_PPC_COMPAT_CAP_POWER9/
+    10/11) instead of exposing hypervisor-internal H_GUEST_CAP_* constants
+  - Added capability masking using KVM_PPC_COMPAT_BITMASK to ensure only
+    supported processor modes are exposed
+  - Enhanced error handling with comprehensive error codes (EINVAL, EFAULT,
+    ENOTTY) and detailed documentation
+  - Removed Tested-by tags pending re-testing with v4 changes
+  - Separated validation patch (patch 1 from v3) and sent independently [1]
+
+Changes in v3:
+  - Added "Why a new UAPI?" section to cover letter addressing questions
+    about the need for a new UAPI vs. using existing mechanisms like
+    /proc/device-tree
+  - Fixed initialization of 'r' in KVM_PPC_GET_COMPAT_CAPS ioctl handler
+    from 0 to -ENOTTY for proper error handling when the operation is not
+    supported
+  - Added Vaibhav's "Suggested-by" tags
+  - Have retained Anushree's "Tested-by" tags as no major code changes
+  - Fixed documentation build warning reported by kernel test robot and
+    added "Reported-by" and "Closes" tags to patch 5
+
+Changes in v2:
+  - Squashed patches 2 and 3 from v1 (capability introduction and ioctl
+    wiring) into a single patch for better logical grouping
+  - Changed kvm_ppc_compat_caps.flags from __u32 to __u64 for consistency
+    and future extensibility
+  - Addressed other review comments
+  - Improved commit messages with clearer explanations of the changes
+
+Patch summary:
+  [1/4] Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  [2/4] Implement capability retrieval for KVM on PowerVM (API v2)
+  [3/4] Add KVM on PowerNV support (API v1)
+  [4/4] Document the new ioctl
+
+Testing (with QEMU v4 patches and on top of patches [1] and [2]):
+
+KVM APIv1 Testing
+=================
+  On P10 PowerNV machine (L0)
+  ---------------------------
+    - P10 L1 KVM guest -> works
+      - P10 nested L2 KVM guest -> works
+      - P9 compat nested L2 KVM guest -> works
+    - P9 compat L1 KVM guest -> works
+      - P9 nested L2 KVM guest -> works
+
+  On Powernv11 TCG Guest (L0)
+  ---------------------------
+    - P11 PowerNV TCG L0 guest -> works
+    - P11 L1 KVM guest -> works
+      - P11 L2 KVM guest -> works
+    - P10 compat L1 KVM guest -> works
+      - P10 L2 KVM guest -> works
+    - P9  compat L1 KVM guest -> works
+      - P9 L2 KVM guest -> works
+
+KVM APIv2 Testing
+=================
+  On P11 PowerVM LPAR (L1)
+  ------------------------
+    - P11 L2 KVM guest -> works
+    - P10 compat L2 KVM guest -> works
+    - P9 compat L2 KVM guest fails to boot as expected
+    - Without QEMU patches but Linux patches
+      - P11 L2 KVM guest -> works
+      - P10 compat L2 KVM guest -> works
+      - P9 compat L2 KVM guest fails to boot as expected
+    - Without Linux patches but QEMU patches
+      - P11 L2 KVM guest -> works
+      - P10 compat L2 KVM guest -> works
+
+  On P11 LPAR in P10 compat (L1)
+  ------------------------------
+    - P10 (host compat) L2 KVM guest -> works
+    - Without QEMU patch but Linux patches
+      - P10 guest fails to boot as expected (error: kvm run failed Invalid argument)
+    - Without Linux patch but QEMU patches
+      - P10 guest fails to boot as expected (KVM: unknown exit, hardware reason ffffffffffffffea)
+
+  On P10 PowerVM LPAR (L1)
+  ------------------------
+    - P10 L2 KVM guest -> works
+    - P9 compat L2 KVM guest fails to boot as expected
+
+TCG pSeries Guest
+=================
+    - P11 (default) pSeries guest boots fine
+
+ABI Extensibility Testing (struct size 32, extra member)
+=========================================================
+    - Newer struct on QEMU, older kernel -> works (kernel returns -E2BIG,
+      QEMU retries with correct size)
+    - New struct on Linux kernel, older QEMU -> works (kernel zero-pads
+      trailing fields, QEMU gets correct data)
+
+With this series, nested guests boot successfully in configurations where
+they previously failed due to compatibility mismatches.
+
+Related QEMU series:
+====================
+A corresponding QEMU v4 series will be sent soon.
+
+Previous QEMU versions:
+v3: https://lore.kernel.org/all/20260616113915.25589-1-amachhiw@linux.ibm.com/
+v2: https://lore.kernel.org/all/20260502140021.69712-1-amachhiw@linux.ibm.com/
+v1: https://lore.kernel.org/all/20260430061333.37905-1-amachhiw@linux.ibm.com/
+
+Previous versions:
+==================
+v4: https://lore.kernel.org/linuxppc-dev/20260616123314.82721-1-amachhiw@linux.ibm.com/
+v3: https://lore.kernel.org/linuxppc-dev/20260522152744.55251-1-amachhiw@linux.ibm.com/
+v2: https://lore.kernel.org/linuxppc-dev/20260513100755.83195-1-amachhiw@linux.ibm.com/
+v1: https://lore.kernel.org/linuxppc-dev/20260430054906.94431-1-amachhiw@linux.ibm.com/
+
+References:
+===========
+[1] https://lore.kernel.org/all/20260609053327.61563-1-amachhiw@linux.ibm.com/
+[2] https://lore.kernel.org/all/20260614173437.26352-1-amachhiw@linux.ibm.com/
+
+Amit Machhiwal (4):
+  KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM
+    on PowerVM
+  KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM
+    on PowerNV
+  KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+
+ Documentation/virt/kvm/api.rst      | 79 +++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/kvm_ppc.h  |  1 +
+ arch/powerpc/include/uapi/asm/kvm.h | 18 +++++++
+ arch/powerpc/kvm/book3s_hv.c        | 58 +++++++++++++++++++++
+ arch/powerpc/kvm/powerpc.c          | 71 ++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h            |  4 ++
+ 6 files changed, 231 insertions(+)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+prerequisite-patch-id: e328a3183c9e9499436c666c30f3659c44e6f3a2
+prerequisite-patch-id: 4662f01d2101cfae8502f04290658deed60eec26
 -- 
 2.50.1 (Apple Git-155)
 
