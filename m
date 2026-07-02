@@ -1,121 +1,147 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8828386C08
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 20:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E399230BD5;
+	Thu,  2 Jul 2026 20:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783022967; cv=none; b=A85BhensWh64CTry8O0ihCyB98jV3FY2AVYvgrCZw6MGXf2EdhePMmrT5+fZCWfI7nZjqAfNdcIXgWJOTO+WXT3zrOOS5DLMob4Ovmg2DXGJcFyVYezwyaafLCRhWF1e6/xTu/Jt9yuN+riZfN0p/QcvrUXnjJLclQLLAfCSakc=
+	t=1783024031; cv=none; b=j7kPKmtyhAwwa4JN8BQD/a2+RwMgGmuxWmEirkHkYSLmtHQAkjbwR9zIeOXqwiGrnvV/6bLaDU48QTHOOsHTEMbrJmj6/J3vrxg2Dhiv8TNimpIo25/qvyKoDGhCbjGLPw5L9thhYWvNXll181sg46nWIefHh8HURUj50+blFTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783022967; c=relaxed/simple;
-	bh=13oD+YiL/3o0MEN6K6Y/bx7CKvJzT37nBrfnC/MzHFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rpvrl3Ga3uPsD9q/v37Ccbc/W9rG2VOas1EW+p3/ydrXc3UlnIqef5lbI1pw204YkU+F/DfJeDZgexbMvdL5IsN3m9tL+WB5CZpebtlp3wTunYpaZMzL4KR8CH84IHTomAJnnQPNFrEi09UmxF2pqFwz9R5pydCxXwtkzytHD7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYht2Prb; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783024031; c=relaxed/simple;
+	bh=V+2LAbZfPtxMZCg3dJHlMMXsKrPNqwdQenqRat3nZiE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mo7nOh60XsZtPdRyL92jXZyrlwMHtOlwvaXea47GB2b0UqB1mDQRXjeS51BsEjhfj+6/gAyY6QLdywrMfyl3hRgdCAsRY06me4wnqg/4jMe9qkmOsQyqTpn4PymAZbGHnL8PtE11e4jFd5q6TSE5dcJO7C1dZJvyuY0uumRKTZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InPqjOmj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qYht2Prb"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6a190528769so921018eaf.0
-        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 13:09:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783022965; x=1783627765; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WjQFRK3eyEfNEKRH/kJEfHrxEWDAZH2cdSABwq7lLiA=;
-        b=qYht2Prb/gnqRafc370x8QL0AVhwNbkWYD7Mb0oEnS6BBC1/7zqQk4okOm+qy8WkGQ
-         RxC4dqTCKz01d3diR6dB2/5uKwM8YFAPrXjCx646oRPimx2pQb0+QSMqzy5/ttykB3zo
-         tiInWqtjwp7x2BlEhBNZ9UvRPSorkfoZSFL1Ts+hgBxNBzh41kxabF+GJSxtH3TgtrIk
-         7bjozptJEY/oUZlHpoUIs2DKPTQ/Ar+ULai3UQ1k3whzj32T+2lzBGKODMkUxIp2ESkk
-         Qtocv5xq1OwB5kxkbsoWaRMzaYj74+ddVix6bjxov7mWczXJPVfYTRRDp4sNwrq/6I06
-         eXnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783022965; x=1783627765;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WjQFRK3eyEfNEKRH/kJEfHrxEWDAZH2cdSABwq7lLiA=;
-        b=IMY8L9yvVrPdL6Ualt5AGPaA0NF40sWpClUEJLmlaeiYzftSKHnXWU6Xyut1RPiUr4
-         04kt4tguaWJa4aK812hNS6VjLgB9RkPAHyp0EZQMHR7KSNfz/JjX2Ew5knhkuwdTCA3x
-         Bh212MvQy+Ws74TsqWiO9N/f+CIrozlbQqSj62QOOoF5fzQ3o2Ach8FRiFuGmlJfr51y
-         TK6DQkNtX4kMvoM+veejk/eOclcp27NmFC95SVliLRMXit+onx2t0MnNka8aIF2WGD4B
-         qj6cSkbY294TPZ8s1Kj7wHBUv9sWR0EfVsFrNi9+cOdFoCnc8Btj/U+Ug7YQwdH2l0dV
-         xykA==
-X-Forwarded-Encrypted: i=1; AFNElJ8P8PlDPWyk1CobN8z+gOnKGiKammBxPudm+9K8cN90E+6CxciJi0VyqkzJBQ9h50RsjwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznQcjnoF55OnvHUjPhkoMywxcR3PoqwNWIciVv6z0hy1+Gbu4c
-	V+NNZOUN49Oe5BOxjziGrPVwyAaq91PHQq9ynWsKS4sft7vC3v8WrN1h
-X-Gm-Gg: AfdE7ck4kbkzF2RIZT9B98TmnMOkjhtmwyCnBH4j2+9jk6IdsBXPjiX+U0nPIVTAy6m
-	RmZwP5xUpxrXHXL4LOiGwmdz19XNTHaTV0ziuQ16BiqDRlo/I3ae0YnWJv49GlqYgumuz/HfvlW
-	LqTLXAc3ZtL6tJUNZgtDGZr8BZR0dHlukpVyDzTGZmGpzQpuh2bOfR+yo/xlgvGQKHMH3E8KAYe
-	dBjwdzK9y+zySQ7dCSJ9yHP4a27IaSJnQHLnAGergSiQcucU6UPSxMn41VENuBb9GRdkH/+LPAC
-	jarCjGPy2LP4cvFhaM5KcuwE/Bx7hyNAl+Iz5JBev4CTEhjI9V3RKYfcszdjaLVxVCuEoJI7tP+
-	Guss74+6sxgZvFOzhXyMl2D8qN4SzBlbPUg3Gpw6FPsn8WpNLR8Lk9JgHvAh+HvEGVlQgIXLkZ2
-	gK3dibZyAlpkY7NuGCjvVmtxoM683SLkGG2g==
-X-Received: by 2002:a05:6820:4cc3:b0:6a2:739a:ce95 with SMTP id 006d021491bc7-6a309929b99mr4607337eaf.4.1783022964709;
-        Thu, 02 Jul 2026 13:09:24 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:43::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cbec93702sm3662142fac.12.2026.07.02.13.09.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 13:09:23 -0700 (PDT)
-Date: Thu, 2 Jul 2026 13:09:20 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
-Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under
- memory pressure
-Message-ID: <akbFcMHenseQW7mJ@devvm29614.prn0.facebook.com>
-References: <20260626134823.206676-1-sgarzare@redhat.com>
- <20260626134823.206676-2-sgarzare@redhat.com>
- <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
- <akYl38_9Y4ydXuqE@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InPqjOmj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2225B1F000E9;
+	Thu,  2 Jul 2026 20:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783024030;
+	bh=HoK9M+3vrnVkofbRcUnP+3r/PuAZFEUfLJGmPUPuqgo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=InPqjOmjEZlNMUG/+pR0RLGh5seuI5QIYQg12cnLi/HHF9FWia7BvR7BnP2ZO6NlR
+	 7tpuV7wWCmbhGgGM4lDikAj53GJTgkwozTQIhiSEGX7iqgnDWeLRGWMMULSe/11q85
+	 FwtGM3zYnGbOciO7j5o1GBBgvePVRXJvfyZAKole5jnLVmEYpbqYU7mka7q08qCxeI
+	 bDhj9PYoOxBiDoc1fPYyu5FS5sXH+rIU9xH/g3nLPgCasYC0JmGObFC4cy3Okhivbh
+	 ZYVm0eDadOMjJAf/40ELUsGfXpjV/IDbZ4605ipX6mDU6g9xHD2CXq4FcA4j+Gxgzl
+	 oRc9rL9aYvnOQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wfO03-00000000uD6-3U3d;
+	Thu, 02 Jul 2026 20:27:07 +0000
+Date: Thu, 02 Jul 2026 21:28:56 +0100
+Message-ID: <87o6gp6sqf.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev,
+	"Oliver Upton" <oupton@kernel.org>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 23/28] KVM: arm64: Add NVHCR_EL2 context switching
+In-Reply-To: <20260702164310.03AAC1F00A3A@smtp.kernel.org>
+References: <20260702160248.1377250-1-maz@kernel.org>
+	<20260702160248.1377250-24-maz@kernel.org>
+	<20260702164310.03AAC1F00A3A@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akYl38_9Y4ydXuqE@sgarzare-redhat>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Jul 02, 2026 at 10:56:04AM +0200, Stefano Garzarella wrote:
-> On Wed, Jul 01, 2026 at 09:34:35AM -0700, Bobby Eshleman wrote:
-> > On Fri, Jun 26, 2026 at 03:48:22PM +0200, Stefano Garzarella wrote:
+On Thu, 02 Jul 2026 17:43:09 +0100,
+sashiko-bot@kernel.org wrote:
 > 
-> [...]
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Cross-VM Information Leak via unswitched SYS_NVHCR_EL2 physical register
+> --
 > 
-> > > +out:
-> > > +	if (new_skb)
-> > > +		__skb_queue_tail(&new_queue, new_skb);
-> > > +
-> > > +	skb_queue_splice(&new_queue, &vvs->rx_queue);
-> > 
-> > I think the new skbs will also need skb_set_owner_sk_safe(skb, sk)
-> > when adding to rx_queue?
+> commit ce2ffdc8cef6935283480a976d01a70bb788a885
+> Author: Marc Zyngier <maz@kernel.org>
 > 
-> IIRC we added it in the rx path, mainily for loopback to pass the ownership
-> from the tx socket to the rx socket, but here we are already in the rx path,
-> so the skb will never leave this socket.
+> KVM: arm64: Add NVHCR_EL2 context switching
+>     
+> This commit adds context switching for the NVHCR_EL2 register to manage
+> the HCR_EL2 state of an EL1 guest. The switch is conditional on the guest
+> using NV3.
 > 
+> > diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > @@ -172,6 +172,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+> >  
+> >  	if (ctxt_has_sctlr2(ctxt))
+> >  		ctxt_sys_reg(ctxt, SCTLR2_EL1) = read_sysreg_el1(SYS_SCTLR2);
+> > +
+> > +	/* Retrieve L2's HCR_EL2, and save it for future use */
+> > +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
+> > +		ctxt_sys_reg(ctxt, NVHCR_EL2) = read_sysreg_s(SYS_NVHCR_EL2);
+> 
+> [Severity: High]
+> Could this leak information between VMs when the host hardware supports NV3
+> but the guest doesn't have it enabled?
+> 
+> If the host hardware implements FEAT_NV3 and runs an L2 guest with physical
+> HCR_EL2.NV=1, the hardware will redirect EL1 accesses of HCR_EL2 to the
+> physical SYS_NVHCR_EL2 register.
 
-Ah that's right, I stand corrected. There is no sender to leak in this
-case.
+No. If L1 doesn't have NV3 enabled (meaning that its view of
+HCRX_EL2.NVTGE == 0), then HCRX_EL2.NVTGE ==0 on the host as well, as
+per the propagation of HCRX_EL2 in __activate_traps_common().
 
-> Maybe it's necessary for the eBPF path?
+As per the architecture, an HCR_EL2 access from EL1 with NVTGE==0
+results in accessing the corresponding VNCR_EL2 slot. Not the
+NVHCR_EL2 register.
 
-Looking through sockmap, I don't think it depends on skb->sk being
-non-null either (it reassigns owner to the redirect socket anyway using
-skb_set_owner_r()).
+Stop making things up, specially when you don't even have access to
+the spec.
 
-Sorry for the false alarm. LGTM.
+> Since is_nested_nv3_ctxt() evaluates to false when the guest lacks the
+> virtual NV3 capability, __sysreg_save_el1_state() skips saving this register.
+> Does this allow an untrusted L2 guest to read the SYS_NVHCR_EL2 state left
+> behind by a previously running VM, bypassing software isolation?
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+No.
+
+>
+> >  }
+> >  
+> [ ... ]
+> > @@ -285,6 +289,13 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt,
+> >  
+> >  	if (ctxt_has_sctlr2(ctxt))
+> >  		write_sysreg_el1(ctxt_sys_reg(ctxt, SCTLR2_EL1), SYS_SCTLR2);
+> > +
+> > +	/*
+> > +	 * Publish the L2 view of HCR_EL2 to the HW if L1 is using NV3.
+> > +	 * Otherwise, the data is already in place in the L1's own VNCR.
+> > +	 */
+> > +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
+> > +		write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
+> 
+> [Severity: High]
+> Similar to the save path above in __sysreg_save_el1_state(), should this
+> context switch be based on the host's hardware capability rather than the
+> guest's software configuration?
+> 
+> If the physical register isn't explicitly overwritten in
+> __sysreg_restore_el1_state() because is_nested_nv3_ctxt() is false, the
+> L2 guest could potentially read the stale configuration state of a
+> completely different VM.
+
+No.
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
