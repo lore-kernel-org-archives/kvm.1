@@ -1,53 +1,53 @@
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6519F31E846;
-	Thu,  2 Jul 2026 19:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD2F3859EF;
+	Thu,  2 Jul 2026 19:04:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.13.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783019083; cv=none; b=sRCD2mQy9+aI0cZDlZen+EvVhdH7B9LCau6nVdFXqTp2egClBPEouSKa7NKa8f0BasXjb0bewfOL1gzspnMKv4Uq1IZ9ywEdV+fbp7Gq24Adnq0WHR6RuJ9WgFbAHTodOBqBejOd3gPb9BNNhsdmmSN4S9MaONq3pmaMGKaeCc0=
+	t=1783019088; cv=none; b=IHg9FfiD/JbfeG0xX4DQxObylaPWJWloDHYomVk1rHZRXoM9LuvusNO3FMS3JwM7NLFDZ/5vpXG/Fg9uNYRMZkw3QtUenOGkKUJ7wseFt58UGjm55Zs3Wd99njPzji/z+KbL+rorfTZbazOUYOPZT1nghdqGIWlB1pphuL+pCQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783019083; c=relaxed/simple;
-	bh=MvUxF2zsh8mW6QOHnT/WgmpNWzUEaDa5iKLRm2zSA5k=;
+	s=arc-20240116; t=1783019088; c=relaxed/simple;
+	bh=8tuJxCNBOWXuUagNrDc+bjsm5o3QNE9mkekLHhRL+ko=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dv+j3yT0ke/4ZXiX+dpgTFOTXgOzdzOEZ+4M/X6e9oT+kPeyOLTZx0WmEVSRT9qf3LtgsWJ7/N/Fc3Hvr7vT4lWH9atGr3O6kBB1Kg4GzQ3UCPteoZZtW1tECNdIOCCXs7zDKm3SCDX20NCmvHBL/a8ifvQ5sWa8BxMMwm+BJY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=YzXcd6r+; arc=none smtp.client-ip=52.34.181.151
+	 MIME-Version:Content-Type; b=naur8rH3e9JKj12R5sKP6DHImzouZtExOj2xOR+cCdKuLclzCHFssGRIBeQz6Age+sgsX1dRT+FIkTrPdhCi0CZzf9KBno5BpMc49Z54now62DAL79lpMe1+qLimxfm/8blYq0bBRo2ZiEDsX91NuyIMKvQqkdM+eVsvGpgPy1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=OcojYJ+Z; arc=none smtp.client-ip=52.13.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="YzXcd6r+"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="OcojYJ+Z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1783019081; x=1814555081;
+  t=1783019086; x=1814555086;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jN/WkzMFGUFt/RPp6TzvnHSdHbLQg7oor4+aGJgH13w=;
-  b=YzXcd6r+IOlHGNf8/SVhS5TXEukhn5Hxu0qGUKmqpfGwySGE5til0HGS
-   TOIfrw+/MUojDy6NRs832sJD+gFd2aB93i3a4Fh07LxUPeS/ulHh7WiiV
-   Sgayx6ig6D/39hM99AqwsXotsb7cEAf0BnB5gOuouuHfI2eSJC4kMAcR+
-   pcr4iRB+0M+EtD6fV9TeRyLvsugJk1ApX1pr1buvFhwKwaDKNrgTJEGTz
-   QNn0WFGCWKyTwgCdD1SY16EiMC9QuQRINAllRMzobgUsgF7JGD6um8vUG
-   wiUnz/DubCULKRGmx/VSt2OxmLoUXBLgIjwlncJSzIkiFdzzOLbcREd6A
+  bh=28PbrJsue24gxCxFzMj1TZNmDll7upM8xjPIwGE2HHc=;
+  b=OcojYJ+Zrz3hbG5Igv5SQqgb2YDwHiU7GMjzim+wovUgOrSwk8pdzRwW
+   MMjMQYdPXlG2dmsmj+bTHTRPdpP80yMEJVha/VuJuQShPcBPBtlC7q5dZ
+   cie6wiF3AqxAcgIuVOP07tUK+9x1xne6No6wWxi31hezg9wt7JDyj2POG
+   UMfOaBvwpUF9gN/lZRbzuAigLkKKQTBb9TQ2Z96qRVPTYIGXdG3LWq/x8
+   3+Qo9Kgj+6n0faYsfPiBg+UefYYtbEkWRS3EM9ZjwGFOPbcUsFHYab0Fy
+   Nf7/CagFUHfWqpKAtZ+pu8AiRozWng2ru/rJ5jOSYbwthLaEzxcWMoDbr
    g==;
-X-CSE-ConnectionGUID: Fgog3/IyQf+0jBlKaWo8Kw==
-X-CSE-MsgGUID: RbZsELl0RUabGM37BE/1aw==
+X-CSE-ConnectionGUID: Z1BcOmIYQYKK6k3LUBa7pQ==
+X-CSE-MsgGUID: 3IFZy54RQYaqxgK0r4k1gA==
 X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
-   d="scan'208";a="22937563"
+   d="scan'208";a="22933538"
 Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 19:04:41 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:17307]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.237:2525] with esmtp (Farcaster)
- id 330d23d9-ef2c-4a1b-a43e-161770cf5f29; Thu, 2 Jul 2026 19:04:40 +0000 (UTC)
-X-Farcaster-Flow-ID: 330d23d9-ef2c-4a1b-a43e-161770cf5f29
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 19:04:43 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:32053]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.112:2525] with esmtp (Farcaster)
+ id 8a338137-edab-4456-8313-f0c7488aa835; Thu, 2 Jul 2026 19:04:42 +0000 (UTC)
+X-Farcaster-Flow-ID: 8a338137-edab-4456-8313-f0c7488aa835
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 2 Jul 2026 19:04:40 +0000
+ Thu, 2 Jul 2026 19:04:42 +0000
 Received: from dev-dsk-congkai-2a-df9e8fab.us-west-2.amazon.com
  (172.23.251.204) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
- 19:04:40 +0000
+ 19:04:42 +0000
 From: Congkai Tan <congkai@amazon.com>
 To: Oliver Upton <oupton@kernel.org>, <kvmarm@lists.linux.dev>,
 	<linux-arm-kernel@lists.infradead.org>
@@ -59,9 +59,9 @@ CC: Congkai Tan <congkai@amazon.com>, Marc Zyngier <maz@kernel.org>, "Joey
 	<blakgeof@amazon.com>, Stanislav Spassov <stanspas@amazon.de>,
 	<kvm@vger.kernel.org>, <linux-doc@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/3] KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_STRICT vCPU feature
-Date: Thu, 2 Jul 2026 19:04:19 +0000
-Message-ID: <20260702190421.420992-2-congkai@amazon.com>
+Subject: [PATCH v2 3/3] KVM: arm64: Advertise STALL_SLOT* in PMCEID1 under strict PMUv3 UAPI
+Date: Thu, 2 Jul 2026 19:04:21 +0000
+Message-ID: <20260702190421.420992-4-congkai@amazon.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260702190421.420992-1-congkai@amazon.com>
 References: <20260702190421.420992-1-congkai@amazon.com>
@@ -76,194 +76,83 @@ Content-Type: text/plain
 X-ClientProxiedBy: EX19D045UWC004.ant.amazon.com (10.13.139.203) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Introduce a new vCPU feature KVM_ARM_VCPU_PMU_V3_STRICT. When set, KVM
-does not create a default PMU when initializing the vCPU, and userspace
-must select one explicitly via KVM_ARM_VCPU_PMU_V3_SET_PMU before the
-first KVM_RUN.
+Skip masking STALL_SLOT, STALL_SLOT_FRONTEND and STALL_SLOT_BACKEND out
+of PMCEID1 when KVM_ARM_VCPU_PMU_V3_STRICT is set, because this is when
+PMMIR_EL1.SLOTS is exposed to guests, making these events meaningful for
+collection.
 
-The flag forces the VMM to be aware of the PMU implementation of the
-guest to be created, so that certain information about the PMU becomes
-deterministic (if on a heterogeneous system) and becomes safe to be
-exposed to the guest. It can be used as an umbrella flag to gate future
-PMUv3 UAPI changes.
-
-When no default PMU is created, kvm->arch.arm_pmu stays NULL until SET_PMU
-runs, so kvm_arm_pmu_v3_enable() now refuses to run if kvm->arch.arm_pmu
-is NULL.
+Change the parameter of compute_pmceid1() from arm_pmu to kvm_vcpu, to
+check if KVM_ARM_VCPU_PMU_V3_STRICT is set. Also updated the signature of
+compute_pmceid0() for consistency.
 
 Signed-off-by: Congkai Tan <congkai@amazon.com>
 Reviewed-by: Geoff Blake <blakgeof@amazon.com>
 Reviewed-by: Haris Okanovic <harisokn@amazon.com>
 Reviewed-by: Stanislav Spassov <stanspas@amazon.de>
 ---
- Documentation/virt/kvm/api.rst          |  5 +++++
- arch/arm64/include/asm/kvm_host.h       |  2 +-
- arch/arm64/include/uapi/asm/kvm.h       |  1 +
- arch/arm64/kvm/arm.c                    | 18 ++++++++++++++----
- arch/arm64/kvm/pmu-emul.c               | 14 +++++++++++++-
- include/kvm/arm_pmu.h                   |  4 ++++
- tools/arch/arm64/include/uapi/asm/kvm.h |  1 +
- 7 files changed, 39 insertions(+), 6 deletions(-)
+ arch/arm64/kvm/pmu-emul.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 52bbbb553ce1..79b024a7ba16 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -3515,6 +3515,11 @@ Possible features:
- 	  Depends on KVM_CAP_ARM_PSCI_0_2.
- 	- KVM_ARM_VCPU_PMU_V3: Emulate PMUv3 for the CPU.
- 	  Depends on KVM_CAP_ARM_PMU_V3.
-+	- KVM_ARM_VCPU_PMU_V3_STRICT: Enable strict PMUv3 UAPI.
-+	  Requires KVM_ARM_VCPU_PMU_V3. If set, KVM does not create a default
-+	  PMU; userspace must select a PMU implementation with
-+	  KVM_ARM_VCPU_PMU_V3_SET_PMU before the first KVM_RUN. The selected
-+	  PMU exposes the SLOTS field of its PMMIR_EL1 register to the guest.
- 
- 	- KVM_ARM_VCPU_PTRAUTH_ADDRESS: Enables Address Pointer authentication
- 	  for arm64 only.
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index 65eead8362e0..a6e33aaf400d 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -39,7 +39,7 @@
- 
- #define KVM_MAX_VCPUS VGIC_V3_MAX_CPUS
- 
--#define KVM_VCPU_MAX_FEATURES 9
-+#define KVM_VCPU_MAX_FEATURES 10
- #define KVM_VCPU_VALID_FEATURES	(BIT(KVM_VCPU_MAX_FEATURES) - 1)
- 
- #define KVM_REQ_SLEEP \
-diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-index 1c13bfa2d38a..019e5e3d892e 100644
---- a/arch/arm64/include/uapi/asm/kvm.h
-+++ b/arch/arm64/include/uapi/asm/kvm.h
-@@ -106,6 +106,7 @@ struct kvm_regs {
- #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
- #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
- #define KVM_ARM_VCPU_HAS_EL2_E2H0	8 /* Limit NV support to E2H RES0 */
-+#define KVM_ARM_VCPU_PMU_V3_STRICT	9 /* No default PMU creation */
- 
- struct kvm_vcpu_init {
- 	__u32 target;
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 9453321ef8c6..d1914bee1e76 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1548,8 +1548,10 @@ static unsigned long system_supported_vcpu_features(void)
- 	if (!cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
- 		clear_bit(KVM_ARM_VCPU_EL1_32BIT, &features);
- 
--	if (!kvm_supports_guest_pmuv3())
-+	if (!kvm_supports_guest_pmuv3()) {
- 		clear_bit(KVM_ARM_VCPU_PMU_V3, &features);
-+		clear_bit(KVM_ARM_VCPU_PMU_V3_STRICT, &features);
-+	}
- 
- 	if (!system_supports_sve())
- 		clear_bit(KVM_ARM_VCPU_SVE, &features);
-@@ -1590,6 +1592,11 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
- 	    test_bit(KVM_ARM_VCPU_PTRAUTH_GENERIC, &features))
- 		return -EINVAL;
- 
-+	/* Strict PMUv3 UAPI requires PMUv3. */
-+	if (test_bit(KVM_ARM_VCPU_PMU_V3_STRICT, &features) &&
-+	    !test_bit(KVM_ARM_VCPU_PMU_V3, &features))
-+		return -EINVAL;
-+
- 	if (!test_bit(KVM_ARM_VCPU_EL1_32BIT, &features))
- 		return 0;
- 
-@@ -1619,10 +1626,13 @@ static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
- 	int ret = 0;
- 
- 	/*
--	 * When the vCPU has a PMU, but no PMU is set for the guest
--	 * yet, set the default one.
-+	 * When the vCPU has a PMU, but no PMU is set for the guest yet, set
-+	 * the default one. If KVM_ARM_VCPU_PMU_V3_STRICT is set, no default
-+	 * PMU is created, and userspace must select a PMU via
-+	 * KVM_ARM_VCPU_PMU_V3_SET_PMU.
- 	 */
--	if (kvm_vcpu_has_pmu(vcpu) && !kvm->arch.arm_pmu)
-+	if (kvm_vcpu_has_pmu(vcpu) && !kvm->arch.arm_pmu &&
-+	    !kvm_vcpu_has_pmuv3_strict(vcpu))
- 		ret = kvm_arm_set_default_pmu(kvm);
- 
- 	/* Prepare for nested if required */
 diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index e1860acae641..1f24169505a9 100644
+index 9595bce6519f..89eec5a1a499 100644
 --- a/arch/arm64/kvm/pmu-emul.c
 +++ b/arch/arm64/kvm/pmu-emul.c
-@@ -923,6 +923,9 @@ void kvm_vcpu_reload_pmu(struct kvm_vcpu *vcpu)
+@@ -851,9 +851,9 @@ static u64 __compute_pmceid(struct arm_pmu *pmu, bool pmceid1)
+ 	return ((u64)hi[pmceid1] << 32) | lo[pmceid1];
+ }
  
- int kvm_arm_pmu_v3_enable(struct kvm_vcpu *vcpu)
+-static u64 compute_pmceid0(struct arm_pmu *pmu)
++static u64 compute_pmceid0(struct kvm_vcpu *vcpu)
  {
-+	if (!vcpu->kvm->arch.arm_pmu)
-+		return -EINVAL;
-+
- 	if (!vcpu->arch.pmu.created)
- 		return -EINVAL;
+-	u64 val = __compute_pmceid(pmu, 0);
++	u64 val = __compute_pmceid(vcpu->kvm->arch.arm_pmu, 0);
  
-@@ -1021,6 +1024,14 @@ u8 kvm_arm_pmu_get_max_counters(struct kvm *kvm)
+ 	/* always support SW_INCR */
+ 	val |= BIT(ARMV8_PMUV3_PERFCTR_SW_INCR);
+@@ -862,32 +862,33 @@ static u64 compute_pmceid0(struct arm_pmu *pmu)
+ 	return val;
+ }
+ 
+-static u64 compute_pmceid1(struct arm_pmu *pmu)
++static u64 compute_pmceid1(struct kvm_vcpu *vcpu)
  {
- 	struct arm_pmu *arm_pmu = kvm->arch.arm_pmu;
+-	u64 val = __compute_pmceid(pmu, 1);
++	u64 val = __compute_pmceid(vcpu->kvm->arch.arm_pmu, 1);
  
-+	/*
-+	 * Under KVM_ARM_VCPU_PMU_V3_STRICT no PMU exists until userspace sets
-+	 * one, so this can be reached before arm_pmu is set. Report no
-+	 * counters in that case.
-+	 */
-+	if (!arm_pmu)
-+		return 0;
-+
  	/*
- 	 * PMUv3 requires that all event counters are capable of counting any
- 	 * event, though the same may not be true of non-PMUv3 hardware.
-@@ -1062,7 +1073,8 @@ static void kvm_arm_set_pmu(struct kvm *kvm, struct arm_pmu *arm_pmu)
- }
- 
- /**
-- * kvm_arm_set_default_pmu - No PMU set, get the default one.
-+ * kvm_arm_set_default_pmu - No PMU set and KVM_ARM_VCPU_PMU_V3_STRICT not
-+ * set, get the default one.
-  * @kvm: The kvm pointer
-  *
-  * The observant among you will notice that the supported_cpus
-diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
-index 0a36a3d5c894..13468bd5bbf2 100644
---- a/include/kvm/arm_pmu.h
-+++ b/include/kvm/arm_pmu.h
-@@ -76,6 +76,9 @@ void kvm_vcpu_pmu_resync_el0(void);
- #define kvm_vcpu_has_pmu(vcpu)					\
- 	(vcpu_has_feature(vcpu, KVM_ARM_VCPU_PMU_V3))
- 
-+#define kvm_vcpu_has_pmuv3_strict(vcpu)				\
-+	(vcpu_has_feature(vcpu, KVM_ARM_VCPU_PMU_V3_STRICT))
+-	 * Don't advertise STALL_SLOT*, as PMMIR_EL0 is handled
+-	 * as RAZ
++	 * If KVM_ARM_VCPU_PMU_V3_STRICT is not set, PMMIR_EL1 is
++	 * unconditionally RAZ, so don't advertise STALL_SLOT* events.
+ 	 */
+-	val &= ~(BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT - 32) |
+-		 BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT_FRONTEND - 32) |
+-		 BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT_BACKEND - 32));
++	if (!kvm_vcpu_has_pmuv3_strict(vcpu))
++		val &= ~(BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT - 32) |
++			 BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT_FRONTEND - 32) |
++			 BIT_ULL(ARMV8_PMUV3_PERFCTR_STALL_SLOT_BACKEND - 32));
 +
- /*
-  * Updates the vcpu's view of the pmu events for this cpu.
-  * Must be called before every vcpu run after disabling interrupts, to ensure
-@@ -161,6 +164,7 @@ static inline u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1)
+ 	return val;
  }
  
- #define kvm_vcpu_has_pmu(vcpu)		({ false; })
-+#define kvm_vcpu_has_pmuv3_strict(vcpu)	({ false; })
- static inline void kvm_pmu_update_vcpu_events(struct kvm_vcpu *vcpu) {}
- static inline void kvm_vcpu_pmu_restore_guest(struct kvm_vcpu *vcpu) {}
- static inline void kvm_vcpu_pmu_restore_host(struct kvm_vcpu *vcpu) {}
-diff --git a/tools/arch/arm64/include/uapi/asm/kvm.h b/tools/arch/arm64/include/uapi/asm/kvm.h
-index 1c13bfa2d38a..019e5e3d892e 100644
---- a/tools/arch/arm64/include/uapi/asm/kvm.h
-+++ b/tools/arch/arm64/include/uapi/asm/kvm.h
-@@ -106,6 +106,7 @@ struct kvm_regs {
- #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
- #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
- #define KVM_ARM_VCPU_HAS_EL2_E2H0	8 /* Limit NV support to E2H RES0 */
-+#define KVM_ARM_VCPU_PMU_V3_STRICT	9 /* No default PMU creation */
+ u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1)
+ {
+-	struct arm_pmu *cpu_pmu = vcpu->kvm->arch.arm_pmu;
+ 	unsigned long *bmap = vcpu->kvm->arch.pmu_filter;
+ 	u64 val, mask = 0;
+ 	int base, i, nr_events;
  
- struct kvm_vcpu_init {
- 	__u32 target;
+ 	if (!pmceid1) {
+-		val = compute_pmceid0(cpu_pmu);
++		val = compute_pmceid0(vcpu);
+ 		base = 0;
+ 	} else {
+-		val = compute_pmceid1(cpu_pmu);
++		val = compute_pmceid1(vcpu);
+ 		base = 32;
+ 	}
+ 
 -- 
 2.50.1
 
