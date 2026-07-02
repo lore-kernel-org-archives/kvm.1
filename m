@@ -1,54 +1,75 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C979242E8FF
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 13:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from esa10.hc1455-7.c3s2.iphmx.com (esa10.hc1455-7.c3s2.iphmx.com [139.138.36.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6E8360EDC;
+	Thu,  2 Jul 2026 13:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782997917; cv=none; b=d7liRQyCwwkgJM2Lw3ruscGa+1kX9vxLXE0GRqnE/Y3Lx0wILbVLqFNKxrBC9v+ZrXKjwIYp6e6Jauy6P4J20jMf75zw0cSUXxIaue6jx5cv5XOU8dPvFTZ/w9U05Wkf0mT9OG+pKIDT5vyN4ZiojYQfaqtLxV5+U8iY3uEtd84=
+	t=1783000256; cv=none; b=EJr+79EjgcFZcj+2J0kCiermq7u5bCStA4Z5iP909GfrKNMxk5NaLWz5gKjMZmOIaQg1/8dazWS6sDmwnREx2feh/1rqMZt8vcvbt6UVRgGAE0SmVWwNcYDDI3r3T+smJ3fmL4ZH5pTcmHnyhtFOmzTHWjz/mGnjiVr5FeRYiyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782997917; c=relaxed/simple;
-	bh=RfjQB9IEwKvpLy3g8A9YYqTZwmI6upu1Ov8jKrg4rn0=;
+	s=arc-20240116; t=1783000256; c=relaxed/simple;
+	bh=xnklOfOMgd3lTWP7dbDjW/8W/dMixSDLsT9X9yUD6WE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X4ycPUi6u2XOEpSkbkfVoZ7B08WnAbWcZjZX2Y+Zj7yJWv7aoHNBoIRLhRGglnAXCDG8TYw/hPlPl+mhR8SP4ORIQoJJMvt6Zw1KL8XRl+VGOnQebCSc+2g3aLJCdFJOh25QUI8nK0ofmji1WLVjn2qlOuH9WYtfR8FeDzRN/x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=XQpa7uBk; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=NfCAN5W2VUWGR2U2h9fe5AmzmYr8zB+stzY28/cMcZ2qjnelzIAqpEouAlzYt6MeJU3JdYS6ExTtueyDxy6uX4CLw7071oh4BckmDzwi0QHW1DIsGNBeejeljnMaGBJh3M4gnpz/qcBSCaCfznZIh6FLXEWjy+i6vHUHVmMXmp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=TO0p8yKQ; arc=none smtp.client-ip=139.138.36.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="XQpa7uBk"
-Received: from example.com (unknown [167.220.208.73])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 95F9220B7167;
-	Thu,  2 Jul 2026 06:11:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 95F9220B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1782997913;
-	bh=KjWxs47FrqE58lRtkZlQudRjJ8DeMoQhjDC1mCt8QmE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XQpa7uBkUFxCWuuq5e/QgHSyhHNv2e4U8bCh1dfhYWQyPFtEbcLV3Oc/Km0AOxGwq
-	 KdvgGeAf66YEscsKkUpzhqmkKWOeziMcMyxzpEl0FtFdQ0UPOp7aTEkIFWWLcUjWyO
-	 6XNIEtsX0fVX2aOnGWeZvRhQNlYdprs08VOKRJ3w=
-Date: Thu, 2 Jul 2026 15:11:49 +0200
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
-	kvm <kvm@vger.kernel.org>, Magnus Kulke <magnuskulke@microsoft.com>,
-	Wei Liu <liuwe@microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Wei Liu <wei.liu@kernel.org>, Alex Williamson <alex@shazbot.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH 16/34] target/i386/mshv: migrate LAPIC state
-Message-ID: <akZjldXYFQ7Fchoo@example.com>
-References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
- <20260417105618.3621-17-magnuskulke@linux.microsoft.com>
- <CABgObfbgqcSYekjGkuDCUibQc8j4iyGPbajU_-VdPsGkLZgiLQ@mail.gmail.com>
- <akUyiNahX3LnFPhn@example.com>
- <CABgObfbQTUOaiMYApABTettYa0D3WasGs1NjQrWvo4tmAZpazg@mail.gmail.com>
- <akY0Gpd/GHj3Pdun@example.com>
- <CABgObfZhNwXLG9ip=CnEiVb=p24etvxeodbjG5=Di4hOKvYF8Q@mail.gmail.com>
- <6CBE1CEC-F8F9-488F-95E4-5237F0F7A232@unpredictable.fr>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="TO0p8yKQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1783000255; x=1814536255;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xnklOfOMgd3lTWP7dbDjW/8W/dMixSDLsT9X9yUD6WE=;
+  b=TO0p8yKQg+meCnv5cmY6Kl+iI9ROqtLmKV5LLxkICN2KMxAKmv/5xkou
+   qa02oi1rBU+lvr/93/GkFwahPmo/IztEaaKi2IoEgjHGRG4d8qZTdOWMO
+   dWbeb6WLQi3joI3EPOGAM1tghsM3vnzen1XIze3NRUpb7PTo34QAJYUQ5
+   Kz6/BnnxvsDaIc0eO7iVC5p6+Mp9HhYpfHu3XX+MMKouTG39rr+Xja/NN
+   E5cX408dREg3PKnIxeKxP8KUIFO3QHIa7XAJy5emaS+kFwdQ/xhpYWfcS
+   ecX8OmvuobBoSQ8hclNBSU60Bv3oHGDtOcUSxCvnxtzxgVJeNfaTpVPlY
+   Q==;
+X-CSE-ConnectionGUID: nnjqoVA2RdqvIAwrG7hqyQ==
+X-CSE-MsgGUID: 8jU3g27YSk+TpVfbTxxVKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="232267522"
+X-IronPort-AV: E=Sophos;i="6.25,143,1779116400"; 
+   d="scan'208";a="232267522"
+Received: from gmgwnl01.global.fujitsu.com (HELO mgmgwnl01.global.fujitsu.com) ([52.143.17.124])
+  by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 22:49:44 +0900
+Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mgmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 7414121E7;
+	Thu,  2 Jul 2026 13:49:44 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 2009D1C28533;
+	Thu,  2 Jul 2026 13:49:44 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.40.135])
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id BDCF5402885;
+	Thu,  2 Jul 2026 13:49:35 +0000 (UTC)
+Date: Thu, 2 Jul 2026 22:49:27 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 00/44] arm64: Support for Arm CCA in KVM
+Message-ID: <akZnzMt145i7s-dY@FCCLS0092175.localdomain>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <akR0eX0nCumIgnlh@FCCLS0092175.localdomain>
+ <8c0e6a32-2de2-4b94-9fe2-e32f5e9bcc4a@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,56 +78,136 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6CBE1CEC-F8F9-488F-95E4-5237F0F7A232@unpredictable.fr>
+In-Reply-To: <8c0e6a32-2de2-4b94-9fe2-e32f5e9bcc4a@arm.com>
 
-On Thu, Jul 02, 2026 at 02:38:24PM +0200, Mohamed Mediouni wrote:
-> > On 2. Jul 2026, at 13:47, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> > What is the issue? The interrupt won't be triggered either if you use a separate field, or if you use the normal one.
+On 07/01 11:53, Steven Price wrote:
+> On 01/07/2026 03:15, Kohei Enju wrote:
+> > On 05/13 14:17, Steven Price wrote:
+> >> This series adds support for running protected VMs using KVM under the
+> >> Arm Confidential Compute Architecture (CCA).
+> >>
+> >> This is rebased on v7.1-rc1, but still targets RMM v2.0-bet1[1].
+> >>
+> >> The major updates from v13 remain but have been more fully implemented:
+> >> the RMM uses the host's page size, range based RMI APIs mean we don't
+> >> have to break everything down to base page sizes, the GIC state is
+> >> passed via system registers, and the uAPI has been simplified.
+> >>
+> >> The main changes since v13 are:
+> >>
+> >>  * The RMI definitions and wrappers have been fully updated for RMM
+> >>    v2.0-bet1. In particular the temporary RMM v1.0 SMC compatibility
+> >>    patch has been dropped.
+> >>
+> >>  * The PSCI completion ioctl has been removed. RMM v2.0-bet1 still
+> >>    requires the host to provide the target REC for PSCI calls which
+> >>    name another vCPU, but KVM now performs the RMI PSCI completion
+> >>    automatically before entering the REC again. Userspace no longer
+> >>    needs to issue KVM_ARM_VCPU_RMI_PSCI_COMPLETE. A future spec should
+> >>    remove the need for the host to provide the MPIDR mapping.
+> >>
+> >>  * The generic RMI init, RMM configuration, GPT setup,
+> >>    delegate/undelegate helpers and SRO infrastructure have moved out of
+> >>    KVM into arch/arm64/kernel/rmi.c. RMI is expected to be used by
+> >>    features outside KVM, so this code should be available even when KVM
+> >>    is not built.
+> >>
+> >>  * RMI_GRANULE_TRACKING_GET has been updated to work on a range, this
+> >>    allows it to work when the region is not aligned to the tracking
+> >>    size. Solves the problem reported by Mathieu[2].
+> >>
+> >>  * SRO support has been moved earlier in the series and improved. It
+> >>    provides a cleaner way for the host to provide the RMM with the extra
+> >>    memory it requires. However support is still incomplete where the
+> >>    TF-RMM code does not yet implement it. This is noted by FIXMEs in the
+> >>    code.
+> >>
+> >>  * The ARM VM type encoding has been reworked to coexist with the
+> >>    upstream pKVM KVM_VM_TYPE_ARM_PROTECTED bit.
+> >>
+> >>  * The private-memory documentation now notes that arm64 uses
+> >>    KVM_CAP_MEMORY_ATTRIBUTES.
+> >>
+> >>  * PMU support is dropped for now. It will be added later in a separate
+> >>    series. Similarly for selecting the hash algorithm and RPV.
+> > 
+> > Hi Steven,
 > 
 > Hi,
 > 
-> For injecting LINT0, it’s possible on modern WHPX when using the hw irqchip
->  - starting from Server 2022/Windows 11 only - not before that point.
+> > Is there any plan to add support for selecting the MEC policy (shared or
+> > private)? We have been working on adding support for this on top of your
+> > series. If this is not already in the works, we may upstream our
+> > implementation later.
 > 
-> How it’s done is though cancelling the vCPU execution, wait until the vm exits
-> as a result, set an interrupt window, run the vCPU again and then when it exits
-> Manually injecting an event…
+> I've been trying to focus on getting the minimum useful series
+> upstreamed before looking at additional features (such as hash
+> algorithm, MEC policy etc). If you've already got support then yes
+> please do upstream it later when we've got this series landed.
+
+Thank you for the clarification. That makes sense.
+
+I agree that the non-RFC patch should wait until your series has landed.
+Before that, however, I'd like to send an RFC patch to gather feedback
+on the design from the community while your series is still under
+review. I don't expect the RFC to interfere with the upstreaming of your
+series.
+
+Thanks,
+Kohei.
+
 > 
-> That’s unlike non-legacy interrupts where the request interrupts path actually
-> works on Hyper-V.
+> Thanks,
+> Steve
 > 
+> > Thanks,
+> > Kohei
 > > 
-> > For LINT1, can you not inject an NMI either?
+> >>
+> >> There are also the usual rebase updates and smaller fixes, including
+> >> changes to the RMM v2.0-bet1 range APIs, removal of REC auxiliary
+> >> granule handling, fixes to the address range descriptor encoding, and
+> >> cleanups around realm stage-2 teardown.
+> >>
+> >> Stateful RMI Operations
+> >> -----------------------
+> >>
+> >> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+> >> the RMM to complete an operation over several SMC calls while requesting
+> >> or returning memory to the host. This allows interrupts to be handled in
+> >> the middle of an operation and lets the RMM dynamically allocate memory
+> >> for internal tracking purposes. For example, RMI_REC_CREATE no longer
+> >> needs auxiliary granules to be provided up front, and can instead
+> >> request memory during the operation.
+> >>
+> >> This series includes the generic SRO infrastructure in
+> >> arch/arm64/kernel/rmi.c and uses it for REC create/destroy. The other
+> >> cases are not yet used by TF-RMM and a future revision will be needed to
+> >> finish those paths in Linux.
+> >>
+> >> This series is based on v7.1-rc1. It is also available as a git
+> >> repository:
+> >>
+> >> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v14
+> >>
+> >> Work in progress changes for kvmtool are available from the git
+> >> repository below:
+> >>
+> >> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v12
+> >>
+> >> The TF-RMM has not yet merged the RMM v2.0 support, so you will need to
+> >> use a branch with RMM v2.0-bet1 support. At the time of writing the
+> >> following branch is being used:
+> >>
+> >> https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_2
+> >> (tested on commit 3340667a291a)
+> >>
+> >> There is a kvm-unit-test branch which has been updated to support the
+> >> attestation used in RMMv2.0 available here:
+> >>
+> >> https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+> >>
+> >> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
+> >> [2] https://lore.kernel.org/all/acrj-cKphy4hJsEG@p14s/
 > 
-> The request interrupt path works at least to some extent on LINT1/NMIs unlike LINT0
-> but didn’t dig deeper to see if it has more issues…
 > 
-> I’m convinced that an Hyper-V specific structure is the wrong idea for this though...
-
-Thanks for chiming in Mohamed. Indeed, I think the culprit is that
-injecting legacy interrupts is currently not working as expected on
-MSHV either, so this behaviour is probably related to Microsoft
-Hypervisor itself.
-
-When you refer to "cancelling the vCPU exection", I suspect you mean
-manipulating the intercept/explicit suspend registers? I understand that
-the mshv driver maintainers would prefer not to expose that particular
-knob, since the kernel driver maintains some internal suspend state. Thus
-the hvcall is blocked from dom0 userspace currently. I'll have to further
-clarify that with the mshv team, though.
-
-Mirroring the LINT0/1 fields in a dedicated MsvhApic structure was
-motivated by the legacy interrupt injection path not working and thus
-breaking the destination on a migration. Assuming we don't have the option
-to make it work without a kernel change (in the short term), what
-would be your suggestion?
-
-I can image we can short-circuit this chain for mshv, is that
-preferable?
-
-pic_irq_request() => apic_accept_pic_intr() => apic_deliver_pic_intr()
-
-best,
-
-magnus
