@@ -1,210 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from outbound.st.icloud.com (p-east2-cluster4-host8-snip4-10.eps.apple.com [57.103.78.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754183563F0;
-	Thu,  2 Jul 2026 12:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622F82E8DEA
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 12:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.78.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782994621; cv=none; b=g4d5Szp9beIcBwuLfCCrsLMt1eqsKNgy6Og5esqhT4CGJoGgzb5yF03AzAkMjoLF+Qq/jBlaYHZ+dGebXaUpbKZUb/DAwAC61nxn2USpDxcOEDeuZ5YIhLdSSTsrXkEHw1zczwM7rhtUFLdEro8baufWUOlWBHa0gUL+vQmir4Y=
+	t=1782995928; cv=none; b=A2Ja6rZ8FItddN4H9CGrlQbulLjziaR5LGc9Owu5nio5iW1wHfzMEXB1BXdKD5HOhor1p2Y29ypTDBeopY75QOaqf5oog+2U2XnxJ10OzbuIHE5r5+tAQs8wxYoWXytABYJUlBygq7wRDd16qx0bwezoXJGrITT9IyhCcne4qIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782994621; c=relaxed/simple;
-	bh=4h/zoa0EO0oEjCowB1soFdJQhwwlc7WmH55lSMsp9ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SbRPk3fVgANmq8O61HVYKQoMM0+OX1sMfYbyl+f5ebfHx9tx5HrXyEQhkmZpfNDWRtMovdrN2KOAD9fLdlkaKneL+Gs0KlTvlCD9Pa5CCeHptV+kQxZOpdr9iI62R7sgsBaUxR6HTfTsH7zBdD9omNCweJRRJVi2ghYaIEhXMOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfjRFUXE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782995928; c=relaxed/simple;
+	bh=A++uywB8a9Lp9iFIsTMiY0E6a2bJ1FWU15PZ23B9ff4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ReHWiK6kFaG22hl46tgqeHPfBlQWblIz2w+yqFLfpJuBjbv7Xmgz5leUeUMadlVUrEnupnnKOmmmd5357pcsd9bAALbIICqd+WyH61SoO3Lh/n4WfhcwPPmtZhHR6Y42TUHeqm5n5z8ocMWKFTRIIUfAy5r16IAuqC9/mNa7cw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=Fuf2ND6I; arc=none smtp.client-ip=57.103.78.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfjRFUXE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE691F000E9;
-	Thu,  2 Jul 2026 12:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782994620;
-	bh=SmrhXKb/tICfou2fB2Dbzvn0JaPripZ9jvu2bmh8Jik=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YfjRFUXEBU2dRmuBpB4h+tQRBLbIKpZBr7Vf/wGNH8GIbYIoOZ2+iJacKSoCbpVtS
-	 nLyO5ja5AytCvhqwDq0QenPxKrMKslV49oH6XBSjalGtxG47SJjiMV7MT+tzXio6ce
-	 JdlM4siO5IwFaYVLcm4KaNHxCA6hmUqsbOTyo9nlQqZd4lEWBGt33GCh9LZqRUfBBn
-	 mcQd1A7BvVsZSb2TQuY2xdCzCh+UDajG+SL5GXiJNr7mmSLrWTVjj9rBrdT9z87G/T
-	 Vy7FJvYKgcFqj/cL9xNXF6QvQ5MobsDT2Zofpc5Qxh41lYF1oSGL+QhpzzXdyRSPWv
-	 bIXuhAyMKtIcQ==
-Date: Thu, 2 Jul 2026 13:16:38 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 20/30] mm/vma: introduce vma_assert_can_modify()
-Message-ID: <akZNWNuyBU4xDDyf@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <23c7602c58cacc23ef22618a27af9a2d54addf58.1782735110.git.ljs@kernel.org>
- <akZHWwVgJfqCwA2W@pedro-suse.lan>
+	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="Fuf2ND6I"
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-20-percent-2 (Postfix) with ESMTPS id 3688018014E1;
+	Thu, 02 Jul 2026 12:38:38 +0000 (UTC)
+X-ICL-RepId: 019f22d6-a0a1-70ac-ab80-24d6ef9e9cff
+X-ICL-Out-Info: HUtFAUMHWwJACUgATUQeDx5WFlZNRAJCTQ1OHVwPUhxEDlYCVRcOVk1UF1sMWg5WMEwWQx9SD1sTTRlRAVJFVAIZHldQQgVCAlwcWg5DClAcXFZVHxcZUU0ITRMFUgddTVYNRw9YHlwUFwtHQ14IXh9MHB0OWAYSAE0KDjYGWQVeCVYDQwU2EhRdRUYDRxlXFFAbRwxVB1deXwoTAF4PD0wPO3EoBih3MxQ+CysORgZIAT4eVAIuBl0MSgBacVt0R3hKAF93HlwASx1XBFQfUxJVHR0LRVUSBEAIVlBUHkEEVhVsCVgGUxlX
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; t=1782995923; x=1785587923; bh=Ut/JLvsd42eKREb5T24DtBg7CjVhiI3+3Gvlq6kEPkY=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=Fuf2ND6I/pVWxFWP3Gn92mCHGDcBOkfO4vZAQnre60RSFloWoYrimKxQ6PcCK0A5RZlFkmoPWMF2sr2lVkCcX7xEzZf7fNW8ARu6t4K6hgHmX2JApmaBCvpWiaWonNo6FfS6893/XyxDEhOdHMiHQSYSuDJYCMtjmu+apomzlJfdqk26GcBXZXmOLNtWowvWfZZmedPp5TauOU/PQvY+m9ZJUoiAcfFJNQNHhFGe1hbFHBgf3anM7WmcxYzYfxQjmWlrjLzE+z0ZtKjbtm976mooJTGszGPvpuI3yGF552Ig5sz8kYEmSFrUlwXm9D59m/B+N+NVTMM1tWrg4FAo+Q==
+mail-alias-created-date: 1752046281608
+Received: from smtpclient.apple (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-20-percent-2 (Postfix) with ESMTPSA id 5BC8418005B4;
+	Thu, 02 Jul 2026 12:38:36 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akZHWwVgJfqCwA2W@pedro-suse.lan>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3893.100.7.1.1\))
+Subject: Re: [PATCH 16/34] target/i386/mshv: migrate LAPIC state
+From: Mohamed Mediouni <mohamed@unpredictable.fr>
+In-Reply-To: <CABgObfZhNwXLG9ip=CnEiVb=p24etvxeodbjG5=Di4hOKvYF8Q@mail.gmail.com>
+Date: Thu, 2 Jul 2026 14:38:24 +0200
+Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ kvm <kvm@vger.kernel.org>,
+ Magnus Kulke <magnuskulke@microsoft.com>,
+ Wei Liu <liuwe@microsoft.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Wei Liu <wei.liu@kernel.org>,
+ Alex Williamson <alex@shazbot.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6CBE1CEC-F8F9-488F-95E4-5237F0F7A232@unpredictable.fr>
+References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+ <20260417105618.3621-17-magnuskulke@linux.microsoft.com>
+ <CABgObfbgqcSYekjGkuDCUibQc8j4iyGPbajU_-VdPsGkLZgiLQ@mail.gmail.com>
+ <akUyiNahX3LnFPhn@example.com>
+ <CABgObfbQTUOaiMYApABTettYa0D3WasGs1NjQrWvo4tmAZpazg@mail.gmail.com>
+ <akY0Gpd/GHj3Pdun@example.com>
+ <CABgObfZhNwXLG9ip=CnEiVb=p24etvxeodbjG5=Di4hOKvYF8Q@mail.gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+X-Mailer: Apple Mail (2.3893.100.7.1.1)
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDEzMiBTYWx0ZWRfX3BULtrD4gNcF
+ gZiT2r5JqCm1Vb2jPvWQK3+GMK1Z8SW87nIpOEg86R116KFF+SbQIyPCkM2ytU/yZr8C1gbn+TA
+ nekLkfW0n+04Ts8AnyzdTylxGIx4bDiASCUMFvW9QM2PodfOHynva4/1lFKeSPZFixGZiF8JwcD
+ NW8d+P9BZUOSfAArYYPpLHsAXIvlABJHGDiDt7AZ6/HyZ4+tztRZnunf+t+83AY0emdp17WTVJ3
+ jf6UQjftPjFX0lbTuzH9KbS7sSavtuTq15BIWpM7cJn1/J2u955PjQ2YkrMPi+GvKijg9Bgfs4Y
+ 9eJ/4pU2rN4q5rSdaxN
+X-Proofpoint-ORIG-GUID: QIVq9sUMfUUpgZbOb-uMYKalLzzRA4bY
+X-Proofpoint-GUID: QIVq9sUMfUUpgZbOb-uMYKalLzzRA4bY
 
-On Thu, Jul 02, 2026 at 12:16:32PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:31PM +0100, Lorenzo Stoakes wrote:
-> > vma_assert_write_locked() and vma_assert_attached() are useful for their
-> > own purposes, however VMA code absolutely does allow the modification of
-> > non-write locked VMAs if they are at that point detached (i.e. unreachable
-> > from anywhere).
+
+
+> On 2. Jul 2026, at 13:47, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>=20
+>=20
+>=20
+> Il gio 2 lug 2026, 11:49 Magnus Kulke =
+<magnuskulke@linux.microsoft.com> ha scritto:
+> On Thu, Jul 02, 2026 at 10:51:35AM +0200, Paolo Bonzini wrote:
+>=20
+> > What are the additional fields that aren't covered (i.e. cannot be =
+copied
+> > from hv_lapic_state to the struct and back) by the common APIC =
+state?
 > >
-> > It's therefore useful to be able to assert that a VMA is either
-> > detached (modification doesn't matter) or write locked (you're explicitly
-> > locked for modification).
->
-> Hmm, I was wondering why detached does not imply write_locked, and then
+>=20
+> that would be those:
+>=20
+>     uint32_t apic_version;
+>     uint32_t apic_lvt_lint0;
+>     uint32_t apic_lvt_lint1;
+>     uint32_t apic_lvt_cmci;
+>     uint32_t apic_error_status;
+>     uint32_t apic_counter_value;
+>     uint32_t apic_remote_read;
+>=20
+> Reference struct is this: hv_local_interrupt_controller_state
+>=20
+> =
+https://gitlab.com/qemu/qemu/-/blob/master/include/hw/hyperv/hvgdk_mini.h
+>=20
+> For anything that's new but part of the standard APIC you can place =
+them in common APIC state, just making migration state part of a =
+subsection.
+>=20
+> Notably we have to do this for lvt_lint0+1. We cannot use the =
+respective
+> fields in the common APIC state, because writing to those has a side =
+effect
+> in QEMU: If unmasked, it will trigger a chain of events,
+>=20
+> pic_irq_request() =3D> apic_accept_pic_intr() =3D> =
+apic_deliver_pic_intr()
+>=20
+> For MSHV (and WHPX afaiu) we're currently not able to trigger legacy
+> interrupts from userspace in this fashion.
+>=20
+> What is the issue? The interrupt won't be triggered either if you use =
+a separate field, or if you use the normal one.
 
-For one obviously when detaching they are also write locked (see
-vma_mark_detached()) but yeah the point of this is when you have a VMA allocated
-which doesn't hold the appropriate lock.
+Hi,
 
-> realized that new VMAs aren't write-locked. Could we do it by default?
-> Like a simple:
->
-> 	vma->vm_lock_seq = __vma_raw_mm_seqnum(vma);
->
-> might do the trick. I don't see why it wouldn't work? Is there some other
-> case I am not considering?
+For injecting LINT0, it=E2=80=99s possible on modern WHPX when using the =
+hw irqchip
+ - starting from Server 2022/Windows 11 only - not before that point.
 
-Firstly, I'd rather not rework the VMA lock logic as part of this series. It's
-subtle and such changes are tricky.
+How it=E2=80=99s done is though cancelling the vCPU execution, wait =
+until the vm exits
+as a result, set an interrupt window, run the vCPU again and then when =
+it exits
+Manually injecting an event=E2=80=A6
 
-I'm trying to achieve the minimum changes while adding extra validation as I can
-in preparation for the scalable CoW work.
+That=E2=80=99s unlike non-legacy interrupts where the request interrupts =
+path actually
+works on Hyper-V.
 
-And I'm not sure wanting to alter the fundamentals of VMA locks is a good reason
-not to ack a patch :)
+>=20
+> For LINT1, can you not inject an NMI either?
 
-But since you bring it up...
+The request interrupt path works at least to some extent on LINT1/NMIs =
+unlike LINT0
+but didn=E2=80=99t dig deeper to see if it has more issues=E2=80=A6
 
-There's subtleties here too.
+I=E2=80=99m convinced that an Hyper-V specific structure is the wrong =
+idea for this though...
 
-- At what point do you do this assignment? If it's the VMA allocation logic,
-  it's not obvious then that you even have the mmap write lock necessarily. Now
-  you're making assumptions that might be broken, or broken in future.
+>=20
+> Thanks,
+>=20
+> Paolo
+>=20
+> Hence we roundtrip
+> lint0/lint1 in a dedicated mshv struct.
+>=20
+> best,
+>=20
+> magnus
+>=20
 
-  Now everybody who allocates a VMA has to 'just know' that they need to assign
-  an mm and mark it write-locked (but in a special new VMA way) before setting
-  the pgoff.
-
-- Detached means it is not currently in any tree, nor belongs necessarily to any
-  mm. So the concept of it being write locked is meaningless.
-
-- It's broken to perform actions on a new VMA that is not yet linked into any
-  tree that would require the VMA write lock. Currently the code _explicitly_
-  asserts that a detached VMA is not attempted to be write locked.
-
-- So we have a good way of catching people doing stupid or broken stuff to VMAs
-  that are not in the correct state (we currently _don't_ do that for detached
-  VMAs that _were_ in the tree, probably we should change that...!)
-
-- You'd have to create a new function to do this since we explicitly disallow
-  doing this right now, and that's more complexity and then you're then
-  creating a whole new meaning as to what VMA write lock acquisition is,
-  which is even more added complexity.
-
-- create_init_stack_vma() would break, so would hugetlb (lol) and static gate
-  VMAs explicitly do not belong to an mm, so there's simply no concept of them
-  being VMA write locked anyway.
-
-- I'm not sure violating the invariant of seqnum = 0 = no write locked VMAs is
-  safe.
-
-- Things get quite horrendous on fork (prior to us taking tmp's VMA write lock)
-  - you'd have to assign this field after duplicating the VMA midway through
-  attaching it to the new mm, where that mm has a new seqnum. But the new mm has
-  a seqnum of 0... so now you're having to duplicate it but alter what
-  vma_lock_init() does to reset the seqnum to 0 but then what if the
-  'duplication' logic asserts VMA write locked?
-
-It's very chicken and egg - on VMA duplication you want to be able to write the
-very fields that you need to do anything with the VMA prior to it being linked
-in anywhere.
-
-And we probably don't want to bake in the assumption that to change fundamental
-fields requires that you always hold the write lock as a consequence.
-
->
-> >
-> > Therefore introduce vma_assert_can_modify() for this purpose.
-> >
-> > While we're here, make vma_is_attached() available generally - if
-> > !CONFIG_PER_VMA_LOCKS, then there's no sense in which a VMA is
-> > detached (vma_mark_detached() is a noop), so have this default to true in
-> > this case.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  include/linux/mmap_lock.h | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> > index 04b8f61ece5d..d513286d8160 100644
-> > --- a/include/linux/mmap_lock.h
-> > +++ b/include/linux/mmap_lock.h
-> > @@ -506,6 +506,8 @@ static inline __must_check
-> >  int vma_start_write_killable(struct vm_area_struct *vma) { return 0; }
-> >  static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-> >  		{ mmap_assert_write_locked(vma->vm_mm); }
-> > +static inline bool vma_is_attached(struct vm_area_struct *vma)
-> > +		{ return true; }
-> >  static inline void vma_assert_attached(struct vm_area_struct *vma) {}
-> >  static inline void vma_assert_detached(struct vm_area_struct *vma) {}
-> >  static inline void vma_mark_attached(struct vm_area_struct *vma) {}
-> > @@ -530,6 +532,12 @@ static inline void vma_assert_stabilised(struct vm_area_struct *vma)
-> >
-> >  #endif /* CONFIG_PER_VMA_LOCK */
-> >
-> > +static inline void vma_assert_can_modify(struct vm_area_struct *vma)
-> > +{
-> > +	if (vma_is_attached(vma))
-> > +		vma_assert_write_locked(vma);
-> > +}
-> > +
-> >  static inline void mmap_write_lock(struct mm_struct *mm)
-> >  {
-> >  	__mmap_lock_trace_start_locking(mm, true);
-> > --
-> > 2.54.0
-> >
->
-> --
-> Pedro
-
-Thanks, Lorenzo
