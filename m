@@ -1,137 +1,189 @@
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013030.outbound.protection.outlook.com [40.107.201.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E1B2D837C
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 07:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782975826; cv=none; b=A33Trq9BAyvfp8zDFcFRX7RlmtPhx3Rc6x7SZTou5lbx51fQ3IG30iVmlCfz7RQ4IjSt3ljfe4GtfvydCYH0PCZvt+ZqjNRJaYbfK4tEWgQMFu8O18RJa2HObognDJexer2nPB/UshbV7BuYARSiG4mR+oPtynJf2rrZgMX/rdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782975826; c=relaxed/simple;
-	bh=G31s4HpEd+BVQ6tovNlNHC2GFeqjS/+qowVXSsZOcL8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=pnZPXMtWFSeuxj/1ZJMXXJ1/7VHJvbjrioigdIEm/5BZTQFCVpgzCNpONtReoB5eOOZU3N5dZ54c0k68zaSCFMgjn5+0/4J9rgFGesoJE10ddim1uXb2w+uFo7G24W9SakYF+llcCYKDc4xhcuC0E/glEY3dadbeqISuWoAk2Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THwSshau; arc=none smtp.client-ip=74.125.227.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64EF38E10F;
+	Thu,  2 Jul 2026 07:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782975983; cv=fail; b=BUpx0O34qcNdDmcDRpkg5yXnJHKGGG0cycQqHb/HZ/ICcZfwA4nbTTnzGNrjXb4+DaexSDkSq2Uk5cfWj+gAM0yYxFTsLo+m/BEn9zYdGrUIsR/pB7/rKYfHRdfL1iJOKOjnU+6+8kJXkv4e6Kt+84LnudPczMgiDiqWe+jTjpw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782975983; c=relaxed/simple;
+	bh=dOxZHWkJRmgmItT/IQ2LxekZhrN2zFvc9/XBl79ew30=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=JmA1QFrbedIBUwRaxrC65ICWnNOeOzfhsyo93u5vQMIKf1vEuueC/PrKSp+pz5Ia5HsgDk9cNwWjZBgJUWCCi4C+wzZjOYvkYhPTy596FSwNED/6fc1liB9g5dZrgRHfX0zakhKNQbPR03kc4ecJ5e0gl4pX7OTF25hq0X6gxtM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kKafYXwM; arc=fail smtp.client-ip=40.107.201.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THwSshau"
-Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ca26c5dfcdso3080705ad.0
-        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 00:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782975824; x=1783580624; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SyvGLflMKxj5TJj0MbBJrl+6Uj8IG1b8yKVmm5bW71o=;
-        b=THwSshauwWjfaY18ZIs9PgnG8Rk32OAE5liA1IH9HMzl/5FVCUMRByV6ihzDhkqRVy
-         OnXwrPASGNYLIfgfEMlnwAtGyZJTocIU2O8uLS74MC0nh5pnmPId4GoS0dcCOtBEo9iS
-         dPYxs6ohQFPBgO/twnChrzjg3F5lIiZ75TUzkfdSUcjwlNQNQyAPQx0bIkNBsDBXB5wE
-         Pce8Rsfj7IBj3lrxJ4LPWD3nch1Y6Aens9vwU9AcvsHACQWs0aiPRLSBQcwghcQgz9nC
-         iuwMMLyStCTxk6fJA7QlyfLH57b+dpnbWq9yclkR7vT+pUA1wU8THA5QcwmEIrZdjTyj
-         Npng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782975824; x=1783580624;
-        h=content-transfer-encoding:subject:from:cc:to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SyvGLflMKxj5TJj0MbBJrl+6Uj8IG1b8yKVmm5bW71o=;
-        b=EXlBhli1zyTrRPl/swQN/HxDh2y8vew027CdddnNwHLXhcr8emHIH/VZCi1n7CMS2b
-         RtZDwn7MrmWKp2MUr0+EhhLEPLYD+Ko2Sh7cNan67KVFQrbD0ysNKyonznkI+blBGQ5R
-         vos4+ZTG+mJ01CEkpadVvtrwR9mMQU3X1ReJJmwbx3BojZhujq2/ZiTX0B7R9AqpN1u3
-         CLm2rn/mfH/ap7exFdAHEMq2P76Tl8w+VX2o6qUgC1SXKjDuvSIcRIFVOH54ALbrVtgS
-         /wcRfW6evsYWjLThlVIePyLgy3Q+epfFEKj9/U9jfzU7u2FMrFDROp7giCCtxhhIFLr+
-         5CSg==
-X-Gm-Message-State: AOJu0YwIfAlAigGb9sDbdCBRL78oRtsy2nf76NYUfyxMmz8bP7dXVbKm
-	S9xySV8Fvrp4/cZvhMX9+jEHkg2hQh3DR0/I4XHZOPIXdyvhIRR2P72nWKGC8SYp6SsUeQ==
-X-Gm-Gg: AfdE7cnIKdy64mOdZ5hGq+pmT090Jx6Ihrfb/4w4FTl68NXE9CTifmZ+hKAIA0cHDea
-	DjflSMFfDm+VRlRLuDIgG3GcAr3gGoe3Re0wgYFBetZwHY98OQQEMTL1jFVdRbqJ712MqKTNB+6
-	vN6/CMXCaWQ8hn4oBU/3bXGUQt624tjkF86oC7jUX6T1cdgddHAAq786lxf7XlFJD12JrbwYa98
-	sI0nBQbIzHJq5SGt6YOgOEXcP4CmAeAZ2rt77kQb6kwwlLluPh/BT3GvQHp/tFwOO8RFfROo6MV
-	HOD2+psDYP8qBEXl+urAFQrXgWFe46ipUy0FR25Tdd45XVuDdbVgryW1a+XOtQgclDZy/nwAjZw
-	y+/mZHyafNEM7N2AksK/PKZ8fK5sDrav5SGjI9zEv5cyii4O8LrXP2gutLMwyhgEGahF+tsiUvj
-	QH9ONwW8ZchjONk3+tYi8vRRNt1exPwtrTSeHCKYHj5tsd7SBHE2PznhQg2mOpeBtDCRTiEg/ii
-	hEIAP1me/iEr0WJCgofpBbIH+gX+oQ=
-X-Received: by 2002:a17:90b:4c92:b0:36a:8254:8eb1 with SMTP id 98e67ed59e1d1-380aa0bbbb8mr4181629a91.6.1782975824091;
-        Thu, 02 Jul 2026 00:03:44 -0700 (PDT)
-Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-380e17ce28dsm545933a91.14.2026.07.02.00.03.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 00:03:43 -0700 (PDT)
-Message-ID: <010b3966-8c8c-4f19-8135-a1041d5f97d6@gmail.com>
-Date: Thu, 2 Jul 2026 15:03:45 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kKafYXwM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j+OxBJvB7+2zb4YpqU9UPx0pQcakKZwgjHyK16z7sW/iLiniPYaitxz+Y/UVK3MilB9r1EMd+mbzjppW1jvfzdMd1lIkIxEVXngs2ECF7EnBlXofZ8tKZV/8k7mA2HN8E68fr/ujor69gkz+aIc9lGU75fXm5fRVId/j/kiafZOpc5BQDMi4hh/HlMMQTP7Il5GXiQ+pttOwqJ0uY22lxkfw9x7vKKclOgfHekOvokSKsry5il2GOScr8nsEKTIFFcrL0TRZ321r5ZbLUv2eC78VEUioAtNLdblRNkR4WR4KTRMN+NK/G9uhfXKJDAGvKuqpEsAYQyCV+brTqdWhSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Rie2QwxcnOrVMRJAm2WhJBliIsPtpEsle0F89Ea7ZII=;
+ b=ZavQrg+oqbWgHK2q06XL/nOG3uZkko9aRTRQuCz/jTxaipQ6mQrFQ7WjaGk48Kr9vHO2sPtOUW0AWjB7ZYKX51qZ3TCQXYp7YZuRrdOGOAASCDY+o2HyOeIBXNzu/a48PG4mjfTyJ4+OifHd5IzBOkHX0x6knjo7NlF2bLKbu+vh7PMrc6QMDurOK3kGG83p19czIJQg/YInjc8XhpE+2Ap3ncyNg3iAeQOg1rxbgpUKpNVqcCmNJBD4em7LXVbEY3EO5ym1b7VfFpTZxKkHOGot43FJTMWmO6RqoAqhXt87XJcqf7ow2smaTJGxHbrHJc5C1dQ+VASsbGJvtclYkA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Rie2QwxcnOrVMRJAm2WhJBliIsPtpEsle0F89Ea7ZII=;
+ b=kKafYXwMt/V84Vb/i4os4CwOGfx+2r5oQ34tn4UxGToHp5ZEN+FNez9/RnpdTWhXn9eBzcdJRLoMnOMc4UKmpNr0zDolbBYsmPRj5c2zQxA7BW+AGgKMRHbU77twfvIuzdnzAb3UNpgEyLpuEJEgW8yt8976FAAp0SxYfjj+tEc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DS7PR12MB8346.namprd12.prod.outlook.com (2603:10b6:8:e5::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 2 Jul
+ 2026 07:06:16 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0181.008; Thu, 2 Jul 2026
+ 07:06:15 +0000
+Message-ID: <f139ee1d-296e-4f3b-a960-88d992e7010e@amd.com>
+Date: Thu, 2 Jul 2026 09:06:09 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/4] dma-buf: add optional get_pci_tph() callback
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Michael Guralnik <michaelgur@nvidia.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+References: <20260630224328.3218796-1-zhipingz@meta.com>
+ <20260630224328.3218796-3-zhipingz@meta.com>
+ <e132eb91-554e-493f-9da2-aff5a538da6a@amd.com>
+ <CAH3zFs2tkxA9w-oCr0N4ixe2VupXXQF-cA2o8-fToj6uFyuMJQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <CAH3zFs2tkxA9w-oCr0N4ixe2VupXXQF-cA2o8-fToj6uFyuMJQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0161.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b3::8) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com
-From: sundayjiang <jianghaotian.sunday@gmail.com>
-Subject: [PATCH] KVM: TDX: Use check_shl_overflow() for nr_pages validation
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS7PR12MB8346:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46157854-8dd4-4f34-49cb-08ded808685b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|22082099003|18002099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	kNCAKRVrl4rg7st3x5/5X6C0GIziEuntXrqXLGTvPrOwx/fJ1Dq4QPNxu8Cghh03Q9ZshL9cENkSkqv256gwiqwHAcTbLIX9YLxuXWeCUql8Mn5BYz2oXh/810b9adUhlm/PpeHLI8GMMMyRgNK7SIc3Fo28fKhvsixPntJb7xCjCS1ePjX2S2s2jByQ2gzYbUn9EJwy3G7NTfdnJXuLYRi2kEmeQq3dALN7j7lpCWjK+AkYA3VvcNHEAhUgM4aoo7/q+ghVcrelTDjtLugEsPeJczWFCuuD5hbabm8LmORJL8qMZBUW8zlQ8ZAKr2UbM2Fk4rrLyLeVAXQpokw7mKONWDIhsRFV8D0kS9CueoHXS9n0vlHwwU3TllFI9VP14h9UQBD8uUNEN1TS3RNccBx/nHcg3FZgExmxGeWb6ph+91d3MRLV44OL3+NMpbdZFKTuJR0y4VOL0hC3jaSA+iKE6Qi0B23LLfMIDwyu85+Y3ddrtW/UKxLDLzCklsEtYJOVUDDwlMb45L57vQAd/Oh9CvGP9RCTkuPhGAc5LACI8pboBhlRTgAWC6PYLh8DSzVDPrPYv5IttDtVy0pYgo3fmls/fYQlXGqJGXyDgQk39jo6oO09f2lUXlMb1F21/osbP3hIGa2TRtkd37fikQBBDdWn8Qo9o6T2PAnQMqI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?akd0WHhQNnArVkZmNGFPRldFeThaRDVpUVV4eFRBbEx4ZWVIVnFXOHdMZFIw?=
+ =?utf-8?B?bFVCejRxRi8yVkJ1N3VDdU12WWlKaWVwQ3p6MFo2bUdUc0JwU2szOUdybEQv?=
+ =?utf-8?B?aFJjLzc0WUhMVDYrd0tldk8xc0RrTUNtdEYwTEFXQXFicXRuVk51ZmlFb2pr?=
+ =?utf-8?B?U1NvTEJUOTJPelNYK2RZMFRVSjNTSDhHckFVdzVRN0puYWRCUzNIeUxKRCtQ?=
+ =?utf-8?B?bTFXMXJYRkhvRm1NS3dVUmV0K3lWdGNNQXArVkxEcXZURG1na1dNQU9tVGRR?=
+ =?utf-8?B?UW1zYjI3N1hMSmdHcG5FUWZ6bGF3MkE5ckxlUDNxQ1A5Tk9zKzZGNjNIaXdU?=
+ =?utf-8?B?d2h3c3hkcTlEMERVNFk0NUZLeUpVWHdoc0cwQ0tUMXFIK28zamNTVkFFdkJ3?=
+ =?utf-8?B?ZVpiUEFZNjFFUW1yK0RQVk9jU3g5MlhvNVFDNHNnMEV6Zm4vd1h4dTk5LzFN?=
+ =?utf-8?B?MWhsMGxwcEllNGUyai9qOUIybWU2UHNPcXpDTkh1dTdxZGQwZE8xLzBNajdM?=
+ =?utf-8?B?U01SeE1lODF4c25LSGFEenN2WHQzL0ViWTVMTFJYTkN3MkZZTUErdDlORGVX?=
+ =?utf-8?B?NWVXV1F3U1YvbVJNRkhPOWdJU2dBUmJ6MG1KRWlCK1poWnAzRkdLNTNTM0M5?=
+ =?utf-8?B?WmdPOWR1dmhHaWxKd1FCdTZxeHR3bHRITSs2ZlhwYS9ZaU9xSEhMRGc5dHVT?=
+ =?utf-8?B?NmUwcTFEM0xLekNybkhUcU1qbzAvM2ViZHo3R1IvTzJ2d1phUHRrSkVzcFU4?=
+ =?utf-8?B?S0xyZk1maXFhUVVkWE5WUmRqSUpMaGxSZm1LcEZpQmt1am1nWXlOVXlaTVVi?=
+ =?utf-8?B?cHJFclBYYWg5eGFRWDFDdmtFdTRrNS9xVDNXZW13T3JLQ3hXdittWDhyUWdG?=
+ =?utf-8?B?SU4xcG1Nb05SSFRZT3JTdklLbG1kMUxvNTlLWlJpNmcxOTRydmV5SzB3LzBO?=
+ =?utf-8?B?L2l1UDZBUS96blBISDhNdkNWK2lhc2FRQWdmY3VDR2wrMElpK2NONEZoTE96?=
+ =?utf-8?B?YjhWazJ0dkNia2RGdUdrUUZoY2EzbzcyM0RXSnpqV3JmNDhVWjcrUjRGT2Vj?=
+ =?utf-8?B?MUdFeVd3T2tGNWVrRVE0T0hzQVIyNXBkWXY1RDR4dk91NnV6UVNxUk5IYUZH?=
+ =?utf-8?B?SHFsWE1Sa1dEZGpIZDBpdU5ORC9CRE95THZaeHNtQzRacVNaOHA0NlNQMy9Q?=
+ =?utf-8?B?aXJqTGFxSDZpem9uY2xWUEdhdXA2NG1QYUVSdkhIOThyZlEyWXRNUFdpLy9D?=
+ =?utf-8?B?VEwyTFhCdWs1RG5YODJjcUFIdThCWEdrT0ozU1FqTFpKcVNwRm5DcVJaWklH?=
+ =?utf-8?B?SFVkQUVRU1RYWFp3QjJMQXZmWkQ1UlVvMGd1dVRxaWFWUmR5RjN4NFAyRHQ4?=
+ =?utf-8?B?UHg4cHlhRXpiTVZWN2tVL0tuSU1lSUZKYlpKOTBjN1BWTk1tWHoyeFRyZFJO?=
+ =?utf-8?B?M2FXRmVRVThWVWdkK1N4UWxKaHNmdEs4bE1XaU1aQmZtaWRhZlEvTU55THd5?=
+ =?utf-8?B?emYvYkFVSWZ0QVJEKytHUmpLZ3QydXZRdUtpWGYxbWZ6UmRHWm9CVnVhZHNp?=
+ =?utf-8?B?OUlHdUtGaTdMZzl1bHBGMmF5U2VScDFTVzY0amRUUWlWek53Z2RNOFBpMUMx?=
+ =?utf-8?B?cHFGRVlwQkVqNjJhbXZrTEg3dlJuTlY4NUxzVkVHTE8rQ0gxZXZiclltWlVJ?=
+ =?utf-8?B?UUpubGpCZVRIZEpGdWJvMDd5MS9FQzVlOWxSd2VLQ2RqbWtaWEJoVVFRaEw1?=
+ =?utf-8?B?MlJwQndLTWdBQUUzZm1jREdxWHBEbnBpSXZnQWMyUE5kOUVCdmFMczhMTGRO?=
+ =?utf-8?B?UzZiT2NYcFZlVjYvNDR1OVVuQXhjRjAwQ2hCcFl2M0VtcERUR0NjZ0M4QmlT?=
+ =?utf-8?B?WnBUT1p5dmpJcXROc0VycFVEQm90RkFLeG9odko1OFZta09VU2FXQlpjbzlD?=
+ =?utf-8?B?cHZpSG9aM3o2Z3YwbXdHdS83Q2taNE4rZGdZenRYK0xnbGUzaXc3OUE3RFlR?=
+ =?utf-8?B?Y3A4RVFXdkVYc2QzdlZKbUdzMEtialNLeVVIZGUzS1E0TTRxS0dWcU9UNGc0?=
+ =?utf-8?B?anRDb2hZeXR4MUh6bVdsR3hVWW05ZDR5M1NhUkhqY2dPcFBlU3JtaG5FRzM4?=
+ =?utf-8?B?RXdicXh5TVJCWFFGTHo3R05rTG0vU1M0L1JaUXhQMExKdmJxdi8rMTZlSW84?=
+ =?utf-8?B?QXQyWXpYTk1UTE9taDJ0ajJNeG5IeUdkdUdWdlNhckNGR1lUTFYwNXpwaG5J?=
+ =?utf-8?B?c1RaY2dheU9aUE1hdzIwUFBhY0tDYmRNREtYK1Bud0J1TUlVMTdsaGFibmQz?=
+ =?utf-8?Q?o+GEGP6DMP2yQJ+XCx?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46157854-8dd4-4f34-49cb-08ded808685b
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 07:06:15.8399
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KRGfSlNQNpHISCoeOofXNZ73ESt5PnnPZLlRaPDE927O7S8w53cN9dgDOGOemIWp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8346
 
- From 4be3dcf1fca4acd2bf9c22bd604c913ba1774035 Mon Sep 17 00:00:00 2001
-From: Haotian Jiang <jianghaotian.sunday@gmail.com>
-Date: Thu, 2 Jul 2026 14:13:27 +0800
-Subject: [PATCH] KVM: TDX: Use check_shl_overflow() for nr_pages validation
+On 7/1/26 19:53, Zhiping Zhang wrote:
+>>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+>>> index d504c636dc29..7a4c9b0d5dab 100644
+>>> --- a/drivers/dma-buf/dma-buf.c
+>>> +++ b/drivers/dma-buf/dma-buf.c
+>>> @@ -1144,6 +1144,31 @@ void dma_buf_unpin(struct dma_buf_attachment *attach)
+>>>  }
+>>>  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+>>>
+>>> +/**
+>>> + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadata
+>>> + * @dmabuf: DMA buffer to query
+>>> + * @extended: false for 8-bit ST, true for 16-bit Extended ST
+>>> + * @steering_tag: returns the raw steering tag for the requested namespace
+>>> + * @ph: returns the TPH processing hint
+>>> + *
+>>> + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
+>>> + *
+>>> + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
+>>> + * exporter does not implement the callback or has no metadata for the
+>>> + * requested namespace.
+>>
+>> Please add something like this:
+>>
+>> * The returned information is only valid till the next invalidate_mappings() callback from the exporter and should be re-queried when a new mapping is created after invalidation.
+>>
+> 
+> Thanks, Will do in v11!
+> 
+>> Apart from that it looks good to me, but I still think we need some kind of example that this works for other DMA-buf users as well.
+>>
+>> Just demonstrating that this also works with some simple FPGA or similar PCIe endpoint should be sufficient.
+>>
+>> Regards,
+>> Christian.
+>>
+> 
+> On v10, I have validated a second importer: another vendor's NIC
+> (driver not upstream yet, so locally patched to
+> call dma_buf_get_pci_tph). A PCIe analyzer confirms the TLP steering
+> tag matches the exporter's for both mlx5/ConnectX-8
+> and this second NIC — two unrelated importer drivers exercising the
+> API end-to-end.
 
-The nr_pages field in struct kvm_tdx_init_mem_region is a u64 that comes
-directly from userspace via copy_from_user().  The current validation
-uses a manual overflow check:
+That sounds like it would be sufficient, yes.
 
-     region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa
+Thanks,
+Christian.
 
-When nr_pages >= 2^52, the shift (nr_pages << PAGE_SHIFT) wraps around
-to a small value, bypassing the wrap check.  While downstream protections
-(gfn_to_memslot() returning NULL for GFNs outside any memslot, and
-kvm_slot_has_gmem() checking for NULL) prevent any actual out-of-bounds
-access, the overflow itself is a real bug that should be caught at the
-validation layer.
-
-Replace the manual overflow check with check_shl_overflow() and
-check_add_overflow() to correctly detect the wrap-around, and use the
-computed end_gpa for the subsequent vt_is_tdx_private_gpa() check to
-avoid redundant and potentially overflowing arithmetic.
-
-Signed-off-by: Haotian Jiang <jianghaotian.sunday@gmail.com>
----
-  arch/x86/kvm/vmx/tdx.c | 10 ++++++++--
-  1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 989ab29b8c6f..9c6aa95ea1e1 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3234,14 +3234,20 @@ static int tdx_vcpu_init_mem_region(struct 
-kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
-      if (cmd->flags & ~KVM_TDX_MEASURE_MEMORY_REGION)
-          return -EINVAL;
-
-+    u64 nr_bytes, end_gpa;
-+
-      if (copy_from_user(&region, u64_to_user_ptr(cmd->data), 
-sizeof(region)))
-          return -EFAULT;
-
-+    if (check_shl_overflow(region.nr_pages, PAGE_SHIFT, &nr_bytes) ||
-+        check_add_overflow(region.gpa, nr_bytes, &end_gpa))
-+        return -EINVAL;
-+
-      if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
-          !region.nr_pages ||
--        region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
-+        end_gpa <= region.gpa ||
-          !vt_is_tdx_private_gpa(kvm, region.gpa) ||
--        !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << 
-PAGE_SHIFT) - 1))
-+        !vt_is_tdx_private_gpa(kvm, end_gpa - 1))
-          return -EINVAL;
-
-      ret = 0;
--- 
-2.34.1
-
+> 
+> Thanks,
+> Zhiping
 
