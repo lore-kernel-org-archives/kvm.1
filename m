@@ -1,149 +1,364 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BA737A852
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 15:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01152EC0B0;
+	Thu,  2 Jul 2026 15:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783005993; cv=none; b=FBNXtm8QxJ+uSXU293MsS9gHjtoeKHcTe99v+gy31iIM1oONI2edseMxUPKwNfSMTqGhnwadyef5hEdAhJ5NI1ZfopUnwdEWtAOkfzHAPBfuX+n4yiUpDPWEhHdsfRbp9X2Dr1nmu4ErNWfIZyp1E7tZpyCMcqW6Bk8bdtj3jQ4=
+	t=1783006218; cv=none; b=Pjpw5G5a8v35L6Han+ZZNOV49wyAV7vO8y5KDLI5D+QnpOe0PGbQzPt5W+gOWX5NoZcFK//guc5HIcTdBzf+dbmBxczauZQlv0iQc7VoE6JG9Jm+g3yA/vkh9+GH6kLzmpBdIcDCAIIOJXZz32fKsqnJBttG5dZOAMvqg+IPKwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783005993; c=relaxed/simple;
-	bh=tWHidKVtsdwKRB5jdKGXevt8I4wrmUq/pKRcb+d/2LM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+4Gb2mx7HpJLGuD7bxEvGpAQFY6UDPHC4OEoud8kFeQcynDbcXt/FYFM5+dlAI9WbibqCgChp1nXJS6C7JuO1hYaeqmQ6lz3+yoBRfB/rC1kczt5Dgtezp3lX7MnW2E+7H52EeCHXguukjFckjZGR6apUS47/votuTbzovqkgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NSt4Fn24; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1783006218; c=relaxed/simple;
+	bh=PO3RQadhhafzQjDUP1/w7jfossHgyjMRP8oUka2GElI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lD8KQkWyUXCgE10OFyAm17i7jAVLNSFIURflb2aO2JXYdwJGtOokBORA+/mCQvgIkx19oqKang3UdiwXpLs/fGuOiZKbGxJE7MpxPeInGUifgH8Ilo7oqy7HZeqUj1kalP31yH4HtyvIGRo8/mwHDmrdGEg67hVPlMtCBUKLpPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=1JMUcA/2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E6ANRLiT; arc=none smtp.client-ip=202.12.124.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NSt4Fn24"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493b691cb44so14112185e9.0
-        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 08:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783005990; x=1783610790; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUA8gzuE5tCdaOiMzaRo5jxXpGPGq0X6g3CKwAZM4NQ=;
-        b=NSt4Fn24npKatGgvjZrvX+2mdkJHq2GwSrmP8qDLn4K0Dybhw5JaVFlY17L8479mgO
-         ivKiXBF6yDKnSW32STmtNOwIuJodHOKzRzndReTThjuKeBLXSCeYGa6CFwZjJZHhILF3
-         ykKaqg6l3V+arHZ9WrWGoVti3UpFRxgwuvlZpojQ6hls4MQ/yzhwpjI9/Wd0VhgXgEBc
-         8fvoBgN0mgVvuBQIuXOMPB1KKV+crwxjtzMGdS+ZuQX+KrO6bV02L0rs6MMfOHRl/aEA
-         wrZUG80XEyhtvMDr61HMepWBxK9HHi3dyUqs+2mtDUcwpk6MrzM/XDPnlzbmLP6J60h4
-         hljg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783005990; x=1783610790;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GUA8gzuE5tCdaOiMzaRo5jxXpGPGq0X6g3CKwAZM4NQ=;
-        b=X+A33JblwvFVrLUajT4dBFQvb3uEFgEGTRxVhTC93LrV8vr6613WT+HBxxDBD2Ff8Z
-         WKKvL5WVyRAHXEuFZOzH2s8WFDFLTxmVLMFniJCY/3SuXmgmCNldccBNgqNnQPjlZE2x
-         NjFslPrKjAWfi9m1kVnZJQvxpa7gkrtHBRZ0OpYLnDA3VlQ0gNgb7zmVYj5fmcR1PeF3
-         w/xLMa81I+1KFsVtCTnpXgfSi8Dir+q03VMWe7xNDI5G3cv5yUzg635K6V1USvupY/A7
-         8G24OQwoE3YYff841PbQNuY3p4Afr3HfuWW8sxMHrXv5IgiCQ/ZWVh6/T84Fc53dT3Kf
-         OuIQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/WIAsvy4D+BPQ1paIX991kaTFcvmIwnshrduE4rLS32bI/J8X3R6TjsMH6tr8W3+OPNwc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9kURYvYUDyUirTRkafYGP9LjrQDq8exFE2UyUyjCnd+jmCBY5
-	AUtvukLUGSrffwKH9vHvlDKtKcXVV7/n4lilFoBNbU9GqHM3CS9tmiTvIQ+zfLj7TdQ=
-X-Gm-Gg: AfdE7clBxu/Oav/x2wY6WMrMkds+tz3lfPbZXK2EMH/8GqtjaMedEOmB3aur1+4TfDl
-	Pu1GFv3aCmGW7man92lkDCl48WYuY2fxSj1T+ZMNf6/+9g5hJYjrnt/Ze5oYimXJHAFDN+HQhZJ
-	haSQrRrpnTt0JnG3Va9fqRYDdbYzugnPB85ixbZxZlzw+/m8vJfbzhTeeTgbfwiW3BHYIPriL25
-	fXH8Uddqz6Ep1El3JtFHdFRz+G+mcuI5CAdPn31wFZPHaoYDF6w9U+MlCFkt/XscYBJbHX5Rfa5
-	eaRQwAeUCiiIDkkWx3SHJDPXDb87iN15pgfBspV7f0olletwEUYWZ1pezxlTq3hm8tCj2QQW/h5
-	nHtYsIQKmurahTFQXO1Y+uzT/tLzPS++MxKZggu1tK/sen6wdITOOKjB2bpEYM4yZV+kVPuxXAi
-	LcX0mcxqdkHbAEPvU=
-X-Received: by 2002:a05:600c:6a98:b0:493:b307:6777 with SMTP id 5b1f17b1804b1-493c2b85665mr69863775e9.22.1783005990368;
-        Thu, 02 Jul 2026 08:26:30 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.207.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c6354926sm67312345e9.1.2026.07.02.08.26.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 08:26:29 -0700 (PDT)
-Message-ID: <b5d0a554-4d2e-4338-918e-1251e697a309@suse.com>
-Date: Thu, 2 Jul 2026 18:26:27 +0300
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="1JMUcA/2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="E6ANRLiT"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 678EA13000EB;
+	Thu,  2 Jul 2026 11:30:13 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 02 Jul 2026 11:30:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783006213; x=
+	1783013413; bh=yVr7COG1V0mSeWOwqoS20oxbxIKulSuicEJR4P2Z54Y=; b=1
+	JMUcA/2JtYubBkqN2wkKeaCwXhoSAlfoMvBPOor4gL11nildSUBSNm7cA2t4vaJK
+	csb4tmpIAs/VN0rUIDcR+ArmU0Tnbi01FIZFHN/Z+C5fCdvk55NwwspRZClWIsuG
+	t9lJ2QBVTy2NY8lKRJcG1KXA0twU46wB+ElqBixKbF4rNeUvVHt+td1YoHoYFs1W
+	HhoMZAukx6yMFfsVlMVpXuluXBDn57joyYQ3usYKqImiPgDoHCbqdMh0Q8cyP5zD
+	Qlvt2oTFQvNVdY7S0IR1T978BL57NtDD77uTqXGFRCXTJUXPU7ebse3cMrykGqbP
+	rckEw2boHvcSkZfNGQUgA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783006213; x=1783013413; bh=yVr7COG1V0mSeWOwqoS20oxbxIKulSuicEJ
+	R4P2Z54Y=; b=E6ANRLiTvBCmM7lCTP9nWt6je2y0KCQL1a6pDqwutVGUB3ZXpe0
+	13r0JMAIsqC9bh7mQmm45h5IeiMqM3t+tHaktgbVur2/TNrF867phXfEv62E3JKF
+	7CbwcqwgVIfaI3PN90C8iipTYALKYSB+ST/5xGSg8EP9MGAPtXpPSgFmW+xu2Nml
+	OBEw8Umdg8nTW/blTMhd/XR1MSbxE3//LxPCv85/1WBa5TiyUMqGrW0swPCQEqje
+	xUYtMwtC1HcegRUZCBIVj9C1GxNBn7S6+Poa2idy6uCPC5M9+Q9VM7WVEc6pVvFl
+	QXOpzlv70zlOBeBHbw+w7MXkWwXTD/SQTSw==
+X-ME-Sender: <xms:BIRGaovJWiLcoGavXGqeynyFoLBFH26s0Ua2oKUeMrHB2FesNI_aeQ>
+    <xme:BIRGahpeg2o_4Djk3d7z7_7iyaU5GN72UH6ArYIdVHc8P7dtz60uLIitXGD6rNvEy
+    -r43iClw0KimjrxNKuzngmdMe7Tpd4qo8Ta4uKZKaQLTJz6CwzAfMd_>
+X-ME-Received: <xmr:BIRGaq7TQrGbtkt4QskhzvX9XE0lhXdEjjlrApQzK6gT11kS4vuXyK836EDgKg>
+X-ME-Proxy-Cause: dmFkZTEJI1jWeAlTfjpfguI2Nz3JmZgl4jiS/m+17fpbGL08e/GeY4s8hebc/2OY4X3ZEf
+    2CckfU2h84BM8nzpLoDDim4x8CtHU9xlMqmgsTwvzXauI+0W7Fh2LVl88IV/75qy6M/dsU
+    RkePHQogMLh7j5X/4EsDAU+e/JHCr8vNPaoWz8sQG7F/59PAOeAznazt5D1350F107DuXC
+    REeEUaslp8Pah0MsyB2YADsmfcwBBEs4DMYMHhzFE/eFuIXRzk7ldQGI70P5Gi/qXIOxzP
+    YPbq/Vx7mbRb/0yeDeTXqDzHSrBuG0TpO/ozpIsQwV7ak4Bwp1MKw9+46yhNQQTzGCHkhy
+    LBNWbFrE3u51nChYP6AO4TA7iG64knvNrcfGp3Aun7H7f6tYMeu/qaMrRdMpiQdY7SU1Ev
+    1wBucV5zz5DJIjblJm9DYd6cq4TC0Lmy6frss+kPzx0VQstes9mdDDgEBz/BBhW8Wurzwe
+    QsxZsTLQYC/lwSoeh9YsIRyrEBsTeXIj/Zte4sgIt0tSCmy5S01KJgvROaKm/x2ztHJGZI
+    lwM7YU9gv0HY3AmN+9v2kwdQkxcg9Iae4iLS+t5VhTTHTxkBZSBVnpv/2b25csA0b7TWYR
+    29jD3+LEvbYX56aCf+Ws3csBAI+9hdH12yOe52hruRz4AbfHH+2hwdKZ9IXg
+X-ME-Proxy: <xmx:BIRGamzXlXqXxlMNXNoeVeK0pVQR1dhGwaif7XCMMOkpW-6YpS4iaA>
+    <xmx:BIRGaqRgW_JDIYPCCCawd8MDFbu7_Lgl-mk6LsZ4hGd9zf29KED16A>
+    <xmx:BIRGao9TqMpbjzuyhhlS5Gtc-3QbEBRrlf55m9W7vmOGmjCJW55eQw>
+    <xmx:BIRGasFAfysbVEZ4zdMfG7bf6CcKN0q3jhLS9qZhkrine2uuD6lCrg>
+    <xmx:BYRGaiaZqxXpMyRJtAdDcMprDiqs4i192CvWrhnMXPwtH-gJoIIGkSXU>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 2 Jul 2026 11:30:07 -0400 (EDT)
+Date: Thu, 2 Jul 2026 16:30:04 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: David Laight <david.laight.linux@gmail.com>, 
+	Sean Christopherson <seanjc@google.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, Dan Williams <djbw@kernel.org>, 
+	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] x86/insn-eval: Add insn_assign_reg() helper
+Message-ID: <akaCzNRGVy5Xr-bG@thinkstation>
+References: <20260701110547.764083-1-kirill@shutemov.name>
+ <20260701110547.764083-3-kirill@shutemov.name>
+ <akUrORhAmRur-lHP@google.com>
+ <20260701180033.6e9c07aa@pumpkin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 12/15] KVM: TDX: Add in-kernel Quote generation
-To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
- rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-13-yilun.xu@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260522034128.3144354-13-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701180033.6e9c07aa@pumpkin>
 
-
-
-On 5/22/26 06:41, Xu Yilun wrote:
-> From: Peter Fang <peter.fang@intel.com>
+On Wed, Jul 01, 2026 at 06:00:33PM +0100, David Laight wrote:
+> On Wed, 1 Jul 2026 07:59:05 -0700
+> Sean Christopherson <seanjc@google.com> wrote:
 > 
-> Provide an in-kernel path for TDX Quote generation when handling
-> TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
-> 
-> Use the core TDX API when the TDX Quoting extension is available. For
-> simplicity, each KVM guest checks for availability only once during
-> initialization. KVM does not handle Quoting service disruptions.
+> > On Wed, Jul 01, 2026, Kiryl Shutsemau wrote:
+> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > > 
+> > > KVM's instruction emulator has a small helper, assign_register(), that
+> > > writes a value into a sub-register with x86 partial-register-write
+> > > semantics: 1- and 2-byte writes leave the upper bits of the destination
+> > > untouched, 4-byte writes zero-extend to 64 bits, 8-byte writes overwrite
+> > > the full register.
+> > > 
+> > > The TDX guest #VE handler needs the same logic for port I/O emulation
+> > > to get 32-bit zero-extension right.  Rather than copy-pasting the
+> > > helper, lift it to <asm/insn-eval.h> as insn_assign_reg() so both can
+> > > use it.
+> > > 
+> > > Add <asm/insn.h> to the header's includes so it builds standalone in
+> > > callers that have not pulled it in transitively.
+> > > 
+> > > No functional change.
+> > > 
+> > > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > > Cc: stable@vger.kernel.org # prerequisite for the following 32-bit port I/O zero-extension fix
+> > > ---
+> > >  arch/x86/include/asm/insn-eval.h | 30 ++++++++++++++++++++++++++++++
+> > >  arch/x86/kvm/emulate.c           | 26 ++++----------------------
+> > >  2 files changed, 34 insertions(+), 22 deletions(-)
+> > > 
+> > > diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
+> > > index 4733e9064ee5..0c87759816d3 100644
+> > > --- a/arch/x86/include/asm/insn-eval.h
+> > > +++ b/arch/x86/include/asm/insn-eval.h
+> > > @@ -9,6 +9,7 @@
+> > >  #include <linux/compiler.h>
+> > >  #include <linux/bug.h>
+> > >  #include <linux/err.h>
+> > > +#include <asm/insn.h>
+> > >  #include <asm/ptrace.h>
+> > >  
+> > >  #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
+> > > @@ -46,4 +47,33 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+> > >  
+> > >  bool insn_is_nop(struct insn *insn);
+> > >  
+> > > +/*
+> > > + * Write @val into *@reg with x86 partial-register-write semantics: a 1-
+> > > + * or 2-byte write leaves the upper bits of the destination untouched; a
+> > > + * 4-byte write zero-extends to 64 bits (matching IN[BWL], MOV[BWL]  
+> > 
+> > The placement of the "(matching IN[BWL], MOV[BWL] etc.)" blurb is confusing.  I
+> > *think* you're trying to say this behavior matches that of MOVB, MOVW, and MOVL
+> > instruction mnemonics, but the blurb is buried in the snippet that specifically
+> > describes the 4-byte write behavior.
+> > 
+> > FWIW, I think giving examples does more harm than good, because the behavior isn't
+> > instruction specific, it's architectural behavior that applies to all writes to
+> > GPRs, as defined in "3.4.1.1 General-Purpose Registers in 64-Bit Mode".  E.g. for
+> > a MOV instruction that sign-extends a 32-bit immediate to a 64-bit registers, it's
+> > not that the instruction is exempt from the normal GPR semenatics, it's that the
+> > instruction performs a 64-bit write to the destination even though the source is
+> > only 32 bits.
+> > 
+> > And the B/W/L terminology isn't architectural, it's AT&T syntax.
 
-I think calling this in-kernel quote generation vs user-spcae quote 
-generation is misleading. Rather the distinction is : quote via the vmm 
-or a quote generated by the tdx module/tdx extension. I think this 
-should be the level at which the distinction is made.
+Agreed.  Dropped the IN[BWL]/MOV[BWL] examples and reworded the comment
+to describe architectural GPR-write behaviour with a pointer to the SDM
+section instead.  I also spelled out that @bytes is the width of the
+write, not a property of the instruction, to cover the sign-extending
+MOV case you raised.
 
+> > E.g. trying
+> > to encode "movl" with NASM yields "error: instruction expected, found `movl dword'".
+> > Yes, the kernel uses AT&T syntax for assembly, but I think this helper should very
+> > explicitly document that it's emulating architectural behavior.
+> > 
+> > > + * etc.); an 8-byte write overwrites the full register.
+> > > + *
+> > > + * @reg need not be 8-byte aligned: KVM's instruction emulator points
+> > > + * into the middle of a register slot to address the high-byte
+>                  ^ it isn't really the 'middle'.
 
-i.e tdx_get_quote_vmm vs tdx_get_quote_ext or some along those lines.
+Reworded to "offsets the pointer by one byte".
 
+> > > + * registers (AH, CH, DH, BH).  Use narrow stores for the sub-word
+> > > + * cases so that the access width matches @bytes.
+> > > + */
+> > > +static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
+> > > +{
+> > > +	switch (bytes) {
+> > > +	case 1:
+> > > +		*(u8 *)reg = (u8)val;
+> > > +		break;
+> > > +	case 2:
+> > > +		*(u16 *)reg = (u16)val;
+> > > +		break;
+> > > +	case 4:
+> > > +		*reg = (u32)val;  
+> > 
+> > IMO, it's worth keeping a short comment here, because even with the explanation
+> > above, I suspect most people will think the code is buggy.  E.g.
+> > 
+> > 		/* As above, zero-extend 4-byte writes on 64-bit CPUs. */
+> > 		*reg = (u32)val;
 
-<snip>
+Added on the 4-byte case, slightly reworded.
+
+> Or be even more specific and use '& 0xffffffff' rather than a cast.
+> Particularly since the casts of the RHS in the byte/short cases aren't
+> needed at all.
+
+I'd rather keep the body exactly as KVM has it today.  This is now a
+straight move + rename with no functional change, and the v4 attempt to
+rewrite it with arithmetic is precisely what introduced the AH/CH/DH/BH
+clobber Sashiko flagged.  Tidying the casts turns it back into a rewrite
+and diverges from the form KVM has shipped for years.  Feel free to
+submit a separate cleanup on top if you feel strongly.
+
+Updated patch below; I'll fold it into v6.
+
+-- >8 --
+Subject: [PATCH] x86/insn-eval: Move assign_register() out of KVM as insn_assign_reg()
+
+KVM's instruction emulator has a small helper, assign_register(), that
+writes a value into a register following the x86 rules for writes to
+general-purpose registers: an 8- or 16-bit write leaves the rest of the
+register untouched, a 32-bit write zero-extends the result to 64 bits,
+and a 64-bit write replaces the whole register.
+
+The TDX guest #VE handler needs the same logic for port I/O emulation
+to get 32-bit zero-extension right.  Rather than add a third copy of
+the same switch, move the helper verbatim to <asm/insn-eval.h>, rename
+it to insn_assign_reg(), and route KVM's callers through it.
+
+Add <asm/insn.h> to the header's includes so it builds standalone in
+callers that have not pulled it in transitively.
+
+No functional change.
+
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Cc: stable@vger.kernel.org # prerequisite for the following 32-bit port I/O zero-extension fix
+---
+ arch/x86/include/asm/insn-eval.h | 36 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/emulate.c           | 26 ++++-------------------
+ 2 files changed, 40 insertions(+), 22 deletions(-)
+
+diff --git a/arch/x86/include/asm/insn-eval.h b/arch/x86/include/asm/insn-eval.h
+index 4733e9064ee5..ae05647a0afb 100644
+--- a/arch/x86/include/asm/insn-eval.h
++++ b/arch/x86/include/asm/insn-eval.h
+@@ -9,6 +9,7 @@
+ #include <linux/compiler.h>
+ #include <linux/bug.h>
+ #include <linux/err.h>
++#include <asm/insn.h>
+ #include <asm/ptrace.h>
+
+ #define INSN_CODE_SEG_ADDR_SZ(params) ((params >> 4) & 0xf)
+@@ -46,4 +47,39 @@ enum insn_mmio_type insn_decode_mmio(struct insn *insn, int *bytes);
+
+ bool insn_is_nop(struct insn *insn);
+
++/*
++ * Write @val into *@reg following the x86 rules for writes to
++ * general-purpose registers (Intel SDM Vol. 1, "General-Purpose
++ * Registers in 64-Bit Mode"): an 8- or 16-bit write leaves the rest of
++ * the register untouched, a 32-bit write zero-extends the result into
++ * the upper 32 bits, and a 64-bit write replaces the whole register.
++ *
++ * @bytes is the width of the write, not a property of the instruction:
++ * an instruction that, say, sign-extends a 32-bit immediate into a
++ * 64-bit register does a 64-bit write here.
++ *
++ * @reg need not be 8-byte aligned: KVM's instruction emulator offsets
++ * the pointer by one byte to address the high-byte registers (AH, CH,
++ * DH, BH).  Use narrow stores for the sub-word cases so the access
++ * width matches @bytes and the adjacent bytes are left alone.
++ */
++static inline void insn_assign_reg(unsigned long *reg, u64 val, int bytes)
++{
++	switch (bytes) {
++	case 1:
++		*(u8 *)reg = (u8)val;
++		break;
++	case 2:
++		*(u16 *)reg = (u16)val;
++		break;
++	case 4:
++		/* A 32-bit write zero-extends into the upper 32 bits. */
++		*reg = (u32)val;
++		break;
++	case 8:
++		*reg = val;
++		break;
++	}
++}
++
+ #endif /* _ASM_X86_INSN_EVAL_H */
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index b566ab5c7515..c6dcb5ac48af 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -24,6 +24,7 @@
+ #include "kvm_emulate.h"
+ #include <linux/stringify.h>
+ #include <asm/debugreg.h>
++#include <asm/insn-eval.h>
+ #include <asm/nospec-branch.h>
+ #include <asm/ibt.h>
+ #include <asm/text-patching.h>
+@@ -439,25 +440,6 @@ static void assign_masked(ulong *dest, ulong src, ulong mask)
+ 	*dest = (*dest & ~mask) | (src & mask);
+ }
+
+-static void assign_register(unsigned long *reg, u64 val, int bytes)
+-{
+-	/* The 4-byte case *is* correct: in 64-bit mode we zero-extend. */
+-	switch (bytes) {
+-	case 1:
+-		*(u8 *)reg = (u8)val;
+-		break;
+-	case 2:
+-		*(u16 *)reg = (u16)val;
+-		break;
+-	case 4:
+-		*reg = (u32)val;
+-		break;	/* 64b: zero-extend */
+-	case 8:
+-		*reg = val;
+-		break;
+-	}
+-}
+-
+ static inline unsigned long ad_mask(struct x86_emulate_ctxt *ctxt)
+ {
+ 	return (1UL << (ctxt->ad_bytes << 3)) - 1;
+@@ -505,7 +487,7 @@ register_address_increment(struct x86_emulate_ctxt *ctxt, int reg, int inc)
+ {
+ 	ulong *preg = reg_rmw(ctxt, reg);
+
+-	assign_register(preg, *preg + inc, ctxt->ad_bytes);
++	insn_assign_reg(preg, *preg + inc, ctxt->ad_bytes);
+ }
+
+ static void rsp_increment(struct x86_emulate_ctxt *ctxt, int inc)
+@@ -1767,7 +1749,7 @@ static int load_segment_descriptor(struct x86_emulate_ctxt *ctxt,
+
+ static void write_register_operand(struct operand *op)
+ {
+-	return assign_register(op->addr.reg, op->val, op->bytes);
++	return insn_assign_reg(op->addr.reg, op->val, op->bytes);
+ }
+
+ static int writeback(struct x86_emulate_ctxt *ctxt, struct operand *op)
+@@ -2008,7 +1990,7 @@ static int em_popa(struct x86_emulate_ctxt *ctxt)
+ 		rc = emulate_pop(ctxt, &val, ctxt->op_bytes);
+ 		if (rc != X86EMUL_CONTINUE)
+ 			break;
+-		assign_register(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
++		insn_assign_reg(reg_rmw(ctxt, reg), val, ctxt->op_bytes);
+ 		--reg;
+ 	}
+ 	return rc;
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
