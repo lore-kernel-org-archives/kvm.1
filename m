@@ -1,119 +1,148 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFACB4D2EF1
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 09:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C2144E021;
+	Thu,  2 Jul 2026 10:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782985802; cv=none; b=CL7Ee4CIM/hcMQoMt3AUUoiQd7iuXWcAJ1Ve8nQwo5htlcle35rZRtKUGcCJCzgq4JsNefoCuDo3awaE5dlHVNFrIuEfaTdVRUnttQ8d8YjD/ZNrKDHRGxSe/wQ4ahXW5oQiDWVfmNPMscPrGjLNYREyiUKPJPBXWMOOJ0vLewE=
+	t=1782986860; cv=none; b=daVpg8CL1XxXODi/4vMGftI8ify2qUM571jjSdXjsJj6ndLonLH2+iJpseZSMjdF85vnzqb7vznL+6UswhvKl0xALF/YSkedZHBWwbaiQrXg/Xch/BNEH6vp6XeY912XhLLSoa4RsSelp/1dQLZaJ07qnUXhFyCEJnNAFq6J26Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782985802; c=relaxed/simple;
-	bh=Q3JRniqkyMXg2dBXWW+1anuwJps6VyhynpsJv8q7DjQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Php0DD/c6Qu1/j5ux3IOL2gyKGN29bOvsG/WGinihW6dY1mNH6AshBYciXtIi5MMqDZ0BoeI9a6/XNyro+Luxl77DjYY1gv7Q9XBrcAKxI4/u4CUASdIJejhdnLgfQyDkRjercgHoASFx2i2/B2WoOVgW3yF88/rkJKVbWdl/MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ghb+4EaG; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+	s=arc-20240116; t=1782986860; c=relaxed/simple;
+	bh=/9b8XhRdxlUi0LGnAzYPhCpgKuVEuoSHdRJkABgQExM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=df6LXzJyfKFvKbWr7Ymf3QY1RMbco/cbQLybValhkhK/AxQx3BsiUtMHBtyER0khJAkC3Amm/9706r4+CKNxctCewBX7+TpXk9t+gCYwyreuflgMpnt8u70Hl6JY7/OqFn0s8dyIo7nKtp4U0FXn1+97RUNyOFAKN74kr7tTu10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUJ2SDXv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ghb+4EaG"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-47248bd8bc0so1441605f8f.1
-        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 02:49:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782985798; x=1783590598; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=84+Rn6wYUXeYiLyW3+xzYg/p7pJRku5hcVgAFmLjUag=;
-        b=Ghb+4EaGI3XH/NReZ0EPotZY9bNO6UOXHFjtqXyJykFX/ZUi/M5FghYdt5tgNVT/v1
-         hcVEdJHzmBbYqLGssfIE/R5/7K+2wyuwz22D4P/H3tOOAuCLHfdeDBDgNdI1PqCEOFvf
-         IM5ZgIYMJOC0PWOX6ghLagYpaB7iiC380u5s6mXftv+EyAdw6isOd47UairzwyJmBbPX
-         wFhKBbeA0/go9i8Ps3ymN81LrrPYevmzAYpQO3zadg6nvGqkc6djVxlBemnChovAQDHP
-         +ELi7EHSJU3TrpJOnRhum+WCiMzuX//xfH+4fwFrW8ynxfHa61N9v4mmhLwtWIoUiqZj
-         9kFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782985798; x=1783590598;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=84+Rn6wYUXeYiLyW3+xzYg/p7pJRku5hcVgAFmLjUag=;
-        b=OYEXKk9HbvPnwLx+onVzDrLUhYeCZYM7VeAYOpAtk3bzsJ3HjTZgBhvMgVN1AOwqog
-         StHuRbZkjHfFkjVO28UMT+hFlUzJZPq5TbccH6SA5IIRR7XA8Uz5DNDpuIZ977RE56Vt
-         gRHsTJeyC0soosMcPsdBzZyzjenjvuTMAsXn5Mth+YBHiTFXmTwQltuYJqwAaWg1Bnb6
-         UMmcDEqxOxA6t9pGTtz7ppFPj7/DZiY4A+0SisQhgEDsoI0xsuhCMCr4GbJKtEMm0N9J
-         rXe/Zk4pgdewDBSJtG35DiUtma4xP/wlTwv4QDKq9k25GykrKQqpUc4rh4eAaIt/DAIq
-         CxFA==
-X-Forwarded-Encrypted: i=1; AHgh+RrHPXYMZ5m55GS/tCrgEzypvjKcWS1Z3TMLnxLa8qZZra+yBm9KM0o/i8EJxzMqH6h5xys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhEQ2etomjSyJDbFQrhCLLwo3RTbeaMwgoh+FStWUVC8zRNcNw
-	1bYe3e1Gb8RgXtOJKHYX4DB+UNdZOE8K+lCCuYv1H2eP/y8U4yEO0nDT6ADRlXsjTGM61v+aw+t
-	ejsfGKYDPuUjIQA==
-X-Received: from wrbcg15.prod.google.com ([2002:a5d:5ccf:0:b0:46d:32b0:5fa4])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:420e:b0:473:c18:f2cb with SMTP id ffacd0b85a97d-477af4f8f3dmr6971262f8f.18.1782985797975;
- Thu, 02 Jul 2026 02:49:57 -0700 (PDT)
-Date: Thu, 02 Jul 2026 09:49:40 +0000
-In-Reply-To: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUJ2SDXv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4E71F000E9;
+	Thu,  2 Jul 2026 10:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782986859;
+	bh=rYlxsT3EfvvJVMSpiElkKSMRxs3TOqthCAywxBW0128=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AUJ2SDXvs0VEdi5h/Kivbi3brTHkQLZzOc+/NAV87+f7C+JbSJugMOeorpgT3tHNL
+	 p58+v4CbXSREtEJG3hLwTa5n8p6G+p8Uf6kuVPNIUtEb3lILgd1rLCgiUeDjzt2+mZ
+	 zGpUePOrV+YiczwnsZiA+nTEa+dq7dVC2Ri5VUVSthC4z19IRHYTorV302BUc8jnc8
+	 lzbpbbTR/gUCNSPcKQ4CL0UIE7YEz9VRE1nLkcyV3m++qYsnaX7iOq8PztYSNv6FrO
+	 w1VeEKbpH/fT7kvqY9QrCvgHPHHPFXTLBTuAr9eAkNY5WqMk3S9O4fQkBovR+Lq+yS
+	 W5zmwAV0MlSzg==
+Date: Thu, 2 Jul 2026 12:07:15 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Juergen Gross <jgross@suse.com>,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	x86@kernel.org, linux-acpi@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+	linux-hyperv@vger.kernel.org, linux-hwmon@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-mtd@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"lukasz.luba@arm.com" <lukasz.luba@arm.com>,
+	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>, Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Pu Wen <puwen@hygon.cn>, Bjorn Helgaas <bhelgaas@google.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, Dave Airlie <airlied@redhat.com>,
+	Helge Deller <deller@gmx.de>, linux-geode@lists.infradead.org,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Guenter Roeck <linux@roeck-us.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ashok Raj <ashok.raj.linux@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	David E Box <david.e.box@intel.com>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH 00/32] x86/msr: Drop 32-bit MSR interfaces
+Message-ID: <akY4U0jUZm4HOGZ_@gmail.com>
+References: <20260629060526.3638272-1-jgross@suse.com>
+ <d7c1db52-529a-43cc-ac7d-38b52627e8bc@app.fastmail.com>
+ <c1608c48-13c2-4290-826b-28b5ca51eaf7@suse.com>
+ <7332feff-2649-496c-8e49-b0a19eb54a32@app.fastmail.com>
+ <akJUz0kYkEBdLSZ3@gmail.com>
+ <akQR9YMtMHReJTfB@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
-X-Mailer: b4 0.15.2
-Message-ID: <20260702-alloc-trylock-v4-9-0af8ff387e80@google.com>
-Subject: [PATCH v4 09/18] KVM: VMX: Use higher-level allocator API
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	derkling@google.com, reijiw@google.com, Brendan Jackman <jackmanb@google.com>, 
-	Yosry Ahmed <yosry@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akQR9YMtMHReJTfB@google.com>
 
-The difference between __alloc_pages_node() and alloc_pages_node() is
-that the latter allows you to pass NUMA_NO_NODE.
 
-The former is going away and the latter works fine here so switch over.
+* Sean Christopherson <seanjc@google.com> wrote:
 
-No functional change intended.
+> > Note that the individual patches are IMO significantly easier to review
+> > through the actual 32-bit => 64-bit variable assignment changes done
+> > in isolation (which sometimes include minor cleanups), while
+> > the Coccinelle semantic patch:
+> > 
+> >    { a(b,c) => c = a(b) }
+> > 
+> > which changes both the function signature and the order of terms as
+> > well, is just a single add-on treewide patch.
+> 
+> Is the plan for subsystem maintainers to pick up the relevant patches,
+> and then do the treewide change one release cycle later?
 
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-Assisted-by: Gemini:unknown-version
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- arch/x86/kvm/vmx/vmx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'll try to keep the patches in a single tree (tip:x86/msr)
+in the hope of not prolonging the pain two cycles - but it's
+of course fine for maintainers to pick up the patches too
+(most of them are standalone), we'll sort it all out in the end.
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2325be57d3d75..ad6a7fc6a54da 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -3028,7 +3028,7 @@ struct vmcs *alloc_vmcs_cpu(bool shadow, int cpu, gfp_t flags)
- 	struct page *pages;
- 	struct vmcs *vmcs;
- 
--	pages = __alloc_pages_node(node, flags, 0);
-+	pages = alloc_pages_node(node, flags, 0);
- 	if (!pages)
- 		return NULL;
- 	vmcs = page_address(pages);
+Thanks,
 
--- 
-2.54.0
-
+	Ingo
