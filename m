@@ -1,343 +1,238 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7476F25B088;
-	Thu,  2 Jul 2026 07:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0613E173B;
+	Thu,  2 Jul 2026 08:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782978501; cv=none; b=lFmm7v0/R+i0KEuzG5f1gP4BTaNqaIgIvPFEnjJsiMPQwtjYbjsFFjBEWBYNyiehgFTeYExxXVhknMPut0Xm0syD+HhpzefWJgwJc97XmCYOgw2XtvJoBXfpomvg1A8qYMew5x1PLU2rYaDfSFELS9HjQHIQaISWOw6nfwvn0hY=
+	t=1782979787; cv=none; b=o9Nzus52EGjDgw/VFnqJWGKCYvMJHfUxL/2XXFh4gWeuekkoAD+mfuQs19qadjawk/qdYKyARgp9XYRMP6SpDa47QdToZtjrL12a8FXmsA5MwMDmb7VOu4eRsqQKTKtSS06z5uL448GcPfJYvl8icl372fAIwz46dYDwsM93Hxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782978501; c=relaxed/simple;
-	bh=/IbDVEOHtAgGwOOCgcrOyBV48o0Smrl8qwMPiDYUMw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d2yPXd/CYZjfQoQZtusWDJ3Sm4VvGFm1JGVRY4cK0sB/T299SNKja93b1cMGKkqcBN5Fuc8OKPEKMPBDYZIcLK42OpvPNywNcp4YH2H8NGlb/x9vAUehb5N+vf9RZjjBResNOoJX4LV0GsGQrT2CaXDbMaVfmFfrLVbbfpbNZyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Z6t5Gpro; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1782979787; c=relaxed/simple;
+	bh=WT74l7EPr1X0joAPymf7qjORp1SVmpLfqt7iKdGmt48=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=W0Zo9qvDM/Kl4cM+7ikY1xrU+Txm58XIbTOULFhz6nQ7LnnBAx9MbeaUNLHjq/uH99qDmMT5HbPm7k+KrtUau6LLz5sYg8PP7RwTPJgAEhVk3DfOzXb5GzuLyJ3oVuk+hW1oZR6GMES2uLA5Kj55MbmdZcXMBb8sOA7Yh+iyvcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q801JK05; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Z6t5Gpro"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6621L4q62510488;
-	Thu, 2 Jul 2026 07:47:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=I/zSbL
-	IoR7MbaWLql1wSkSpKivtB4xZ6nSWEwUqI4s8=; b=Z6t5GprowXc6Y2Hp0lJtEe
-	SSJ7SnMozIV1eZajwJs3YlURWYx3hqXHggBUm/VUF8atVfKkXwbZnOETttps+87d
-	Z+Cda8VwibwLxtUy7wJI11mFAwDFekvty27xJghGyyL0gkdHrMrwHUah5874MnEL
-	NjYULnzvgDos+U4nT5NeTlZxMEHjj6qs/AD4e0E69FOSWVCAMT8b5Ss5fthXdsSA
-	4HhqI0u3dSyHN/Ff+bg3Q+8fF+9LdJWlCyqCHtSnJUN94O+KTs/Syp136hThQ9Sk
-	vVYD72cL69/hEn6iyFd1DTmenPSJh92OG8yhRV0mQoyzErcQmeqVKWZFclnfHGDw
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26pe8tmj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 07:47:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6627Yamk003445;
-	Thu, 2 Jul 2026 07:47:38 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2sukb0m1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 07:47:37 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6627lYbE27984256
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Jul 2026 07:47:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7EB92004B;
-	Thu,  2 Jul 2026 07:47:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 078A020040;
-	Thu,  2 Jul 2026 07:47:31 +0000 (GMT)
-Received: from [9.123.5.233] (unknown [9.123.5.233])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Jul 2026 07:47:30 +0000 (GMT)
-Message-ID: <092d5f46-9809-41bb-b332-aa51ad1ed04d@linux.ibm.com>
-Date: Thu, 2 Jul 2026 13:17:30 +0530
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q801JK05"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=C1JE0E2yTpRWfUkz4axn6/Dw5IWHQaOp/p6g23YXFbE=; b=q801JK05dLlH+llycjxFQ//QeS
+	LEbRR45YFW2vz4zIwfiFSnaVtVZ0DZoh5+pxi1J3h9hQxsFNTB64UHBENmcNi8qQFtMuC0Q28yFQD
+	JQyyoYs0N6tVzustwYmBoUpezPS/6gR8KIeyWsR6HQUDHqAeOsTnuu/7Iz1oyO2U5Ouxwe6LuAq4V
+	wciJ79rBd0XV3JVl5jp8RQdrCwqCuwCqYINgqbBNojO9TfL+J+GHuUYDFhAPSnMGVrDF9/aMHhDM4
+	ggKo5lICjSzdRTDZWxcMl5jnjFBZL46js8x/g4MMDazDxcDmmSOC9ou/cua7ldgmol2aFfnQs2BZH
+	VA6j3lEg==;
+Received: from [2001:8b0:10b:5:5473:9ff4:cd52:8d75] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wfCTx-00000008ASp-1ISn;
+	Thu, 02 Jul 2026 08:09:13 +0000
+Message-ID: <45a534712b398d5d3b2343a67d9855ff6980a9ae.camel@infradead.org>
+Subject: Re: [PATCH v5 08/34] KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the
+ documentation on TSC migration
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Thu, 02 Jul 2026 09:09:11 +0100
+In-Reply-To: <akWK_duG7ZsIekt7@google.com>
+References: <20260608145455.89187-1-dwmw2@infradead.org>
+	 <20260608145455.89187-9-dwmw2@infradead.org> <akWK_duG7ZsIekt7@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-ha5BiPOGdolMhVL9f35m"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] KVM: powerpc: Use generic xfer to guest work
- function
-To: Vishal Chourasia <vishalc@linux.ibm.com>, maddy@linux.ibm.com,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
-        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260701183030.3610451-1-vishalc@linux.ibm.com>
- <20260701183030.3610451-2-vishalc@linux.ibm.com>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20260701183030.3610451-2-vishalc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: VysgVheLcDHz43FGtEnemMom3AAR9Ee4
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDA3MyBTYWx0ZWRfXz2LGW0w5rywB
- P/w1W+lLqo0mXY1Gm5jukg5O482b6Z6eduT76szH6yNWSZ2T5m41Tzx2z0zUhcIh0BtNP0/n6hn
- RXD3yH11ph7TAXge6GTwmSFCI9vGhyY=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a46179b cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=_k42mK2LSDdbbVhXwdsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDA3MyBTYWx0ZWRfXxbGXOpo4kRmT
- Kd4hocYD2tNjYzUJKRTrD2PDf2pi4ySIYP6hmjDW619AHZ43/wXPYNtQz9V7znLKX7KXbqOggA+
- Qd6WEDOuBzKZCtkSJVAQaQBThmCDCGbeENlUVz79aUrJnpu7bnP9RjPQCbpw36C6OdHcR1+B+om
- +V4IWineWOETZJvszwUUBsEZ0biM4La85y+yyuWnyTrPskGhtswPZ+kY9jLStJ2uKb+uYIPqDF5
- /gHsrmyy7RefiZ9DkQf7WQ6M/gSEjs5N9Z2X2WO+wcKagrTgRCkW8tucOt6zGqFA8y79AOl1AE2
- KUuh3l2bwdSs+o43YYLAwJED7dEeCG4Z90/GP3Gj5wXfQk4r4OyskvNWEvq5TBkleAE9rkfdJVn
- a0A7guB1vfLGXhSpSdo92A6A+kyuZpLYb+7i31mBkSnvHGJ67IiWBDdGrjpgmesRzWDy28CmPoe
- P5s/WNR2GPNOIDSQ3zg==
-X-Proofpoint-ORIG-GUID: 5_lN5bB_ifBSnqUqFO5dsbIewHxFrOg1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_01,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020073
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
+--=-ha5BiPOGdolMhVL9f35m
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/2/26 12:00 AM, Vishal Chourasia wrote:
-> Since commit 2cd571245b43 ("sched/fair: Add related data structure for
-> task based throttle") in v6.18, CFS bandwidth throttling no longer
-> dequeues a task directly; it queues task_work via TWA_RESUME and sets
-> TIF_NOTIFY_RESUME, relying on that work running before the task returns
-> to guest/user mode. The powerpc KVM run loops only checked for reschedule
-> and signals, never TIF_NOTIFY_RESUME, so the deferred throttle never ran
-> while a vCPU stayed in the run loop: a CPU-bound guest that rarely exits
-> to userspace ran far past its cpu.max quota and then appeared frozen for
-> minutes while the accrued throttle debt was repaid.
-> 
-> Use the generic infrastructure to check for and handle pending work
-> before transitioning into guest mode, replacing the open-coded
-> need_resched() and cond_resched() checks in the Book3S HV run loops and
-> in the common kvmppc_prepare_to_enter() used by the Book3S PR and BookE
-> run loops. The redundant signal_pending() recheck (and its sigpend label)
-> in kvmhv_run_single_vcpu() is also dropped, as
-> xfer_to_guest_mode_work_pending() is a superset of it.
-> 
-> This picks up handling for TIF_NOTIFY_RESUME, which was previously
-> ignored, meaning task work will now be correctly handled on every
-> guest re-entry.
-> 
-> In kvmppc_prepare_to_enter() the generic helper accounts the signal exit
-> (vcpu->stat.signal_exits and KVM_EXIT_INTR) but does not set the exit
-> type, so kvmppc_set_exit_type(SIGNAL_EXITS) is retained on the signal
-> path to preserve the E500 CONFIG_KVM_EXIT_TIMING histogram; it is a no-op
-> otherwise.
-> 
+On Wed, 2026-07-01 at 14:47 -0700, Sean Christopherson wrote:
+> On Mon, Jun 08, 2026, David Woodhouse wrote:
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index c1897d939da9..6337f9b9d7ac 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -5930,6 +5930,9 @@ static int kvm_arch_tsc_has_attr(struct
+> > kvm_vcpu *vcpu,
+> > =C2=A0	case KVM_VCPU_TSC_OFFSET:
+> > =C2=A0		r =3D 0;
+> > =C2=A0		break;
+> > +	case KVM_VCPU_TSC_SCALE:
+> > +		r =3D kvm_caps.has_tsc_control ? 0 : -ENXIO;
+> > +		break;
+> > =C2=A0	default:
+> > =C2=A0		r =3D -ENXIO;
+> > =C2=A0	}
+> > @@ -5950,6 +5953,22 @@ static int kvm_arch_tsc_get_attr(struct
+> > kvm_vcpu *vcpu,
+> > =C2=A0			break;
+> > =C2=A0		r =3D 0;
+> > =C2=A0		break;
+> > +	case KVM_VCPU_TSC_SCALE: {
+> > +		struct kvm_vcpu_tsc_scale scale;
+> > +
+> > +		if (!kvm_caps.has_tsc_control) {
+> > +			r =3D -ENXIO;
+> > +			break;
+> > +		}
+>=20
+> Uber nit.=C2=A0 For consistency with KVM's bizarre pattern here:
+>=20
+> 		r =3D -ENXIO;
+> 		if (!kvm_caps.has_tsc_control)
+> 			break;
 
-With VIRT_XFER_TO_GUEST_WORK support,
-you can take the HAVE_POSIX_CPU_TIMERS_TASK_WORK patch too?
-https://lore.kernel.org/all/20250421102837.78515-3-sshegde@linux.ibm.com/
+Ack.
 
-That would help in adding some of those remaining patches for PREEMPT_RT
-on powernv system. the remaining ones are straighforward or already
-merged in some form.
+> > +
+> > +		scale.tsc_ratio =3D vcpu->arch.l1_tsc_scaling_ratio;
+> > +		scale.tsc_frac_bits =3D
+> > kvm_caps.tsc_scaling_ratio_frac_bits;
+> > +		r =3D -EFAULT;
+> > +		if (copy_to_user(uaddr, &scale, sizeof(scale)))
+> > +			break;
+> > +		r =3D 0;
+> > +		break;
+> > +	}
+> > =C2=A0	default:
+> > =C2=A0		r =3D -ENXIO;
+> > =C2=A0	}
+> > @@ -5989,6 +6008,9 @@ static int kvm_arch_tsc_set_attr(struct
+> > kvm_vcpu *vcpu,
+> > =C2=A0		r =3D 0;
+> > =C2=A0		break;
+> > =C2=A0	}
+> > +	case KVM_VCPU_TSC_SCALE:
+>=20
+> Another stupid consistency nit.=C2=A0 Probably do this?
+>=20
+> 		/*
+> 		 * TSC scaling information is read-only (it's a
+> reflection of
+> 		 * the TSC frequency, which can be set by
+> userspace).
+> 		 */
+> 		r =3D kvm_caps.has_tsc_control ? -EINVAL : -ENXIO;
 
-+Sebastian.
+Hm, I'd already done that, but it ended up squashed into the final
+patch of the series. Putting it back in the right place for v6, along
+with the above.
 
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> ---
->   arch/powerpc/kvm/Kconfig     |  1 +
->   arch/powerpc/kvm/book3s_hv.c | 64 ++++++++++++++++++++++++++++--------
->   arch/powerpc/kvm/powerpc.c   | 34 ++++++++++++++-----
->   3 files changed, 77 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-> index 9a0d1c1aca6c..b6bc2fc86dca 100644
-> --- a/arch/powerpc/kvm/Kconfig
-> +++ b/arch/powerpc/kvm/Kconfig
-> @@ -22,6 +22,7 @@ config KVM
->   	select KVM_COMMON
->   	select KVM_VFIO
->   	select HAVE_KVM_IRQ_BYPASS
-> +	select VIRT_XFER_TO_GUEST_WORK
->   
->   config KVM_BOOK3S_HANDLER
->   	bool
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..a1b2077561bb 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3850,10 +3850,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
->   	 * and return without going into the guest(s).
->   	 * If the mmu_ready flag has been cleared, don't go into the
->   	 * guest because that means a HPT resize operation is in progress.
-> +	 *
-> +	 * xfer_to_guest_mode_work_pending() is the IRQs-disabled recheck for
-> +	 * pending guest-mode work (reschedule, signals, and TIF_NOTIFY_RESUME
-> +	 * task_work such as the deferred CFS throttle). It is the pre-POWER9
-> +	 * analog of the final gate in kvmhv_run_single_vcpu(), and a superset
-> +	 * of the old need_resched() check: it catches work that raced in after
-> +	 * the drain in kvmppc_run_vcpu(), so a CPU-bound vCPU is throttled here
-> +	 * instead of running one more guest dispatch past its quota. IRQs are
-> +	 * hard-disabled just above, so the non-__ variant (which asserts that)
-> +	 * is the correct one.
+--=-ha5BiPOGdolMhVL9f35m
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-IMO, These are good to go in a changelog. But not for comments.
-Could you trim the comments not to describe
-what xfer_to_guest_mode_work_pending does?
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDcwMjA4MDkx
+MVowLwYJKoZIhvcNAQkEMSIEIPwdk3oI52k79aKV9gIVapIy73RBxiwb4g4bB1YLBpXEMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA0c1d/Z60Nafu
+Hgfcy2RFoR+BGmEwrmgiK3gPndzXqrGSjemf0G5ZFLyOkkJVLwqtFrT5v4GsMNnBti+hAlcFAhe7
+KTY4PVcGZrfwT3D9rhg9vsEzMSa0k6YhC9bybj7jdR2R8U98vtvLuyY7YcmRbNNz8PAdoUNeNGeu
+Jm5oSuK7GJ7Vu9gvQaF+AZ+bsL5kx8TM/Xen5p3s7tqGSTZTs5Z84XmhL3UIv0sJ1Tn4/lvJQzjd
+caKQt+THhWaqjpUwPV+4HDNZmS500uNSxalqR0k/eORtOXAsT5GLBefy4/GYndKqi8Og7sTcWn7q
+QYBoTXYZx5vUoJXU/BQisCS12NGw3C+x3ddSlZieFe38NLr4U155Rv9qsFJnPfZzaeOaI/x2JPwZ
+PErpag2BSEAzjhnne5QXZZLIab3+kX7pEcWU/izuy8Nsc8VKTMC/Jh0tGZWdhS5gIv+QZCfFMDje
+GBQWu8uCuzf6gUMKC+kDDCJZoQ03k0HLW3cJ7gwH8/h3MT0UyAA8RobKuXht/pZ+oEQCqvDTFjmf
+ppGeaVSNpqfTRk7D0cmamUM53P+qwT2IQ9sDJY168fvlNlFVcfOZjJKNojmLSrP+a5HfxLs2LzBN
+Kx65YaUxa2LfNJ930DZLOiv5R0E9W2K6cOKBAbsreDpu0u+AwnQrZfw4qZyDY/wAAAAAAAA=
 
-Similar comment for other big fat comments.
 
->   	 */
->   	local_irq_disable();
->   	hard_irq_disable();
-> -	if (lazy_irq_pending() || need_resched() ||
-> +	if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
->   	    recheck_signals_and_mmu(&core_info)) {
->   		local_irq_enable();
->   		vc->vcore_state = VCORE_INACTIVE;
-> @@ -4824,10 +4834,24 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
->   		vc->runner = vcpu;
->   		if (n_ceded == vc->n_runnable) {
->   			kvmppc_vcore_blocked(vc);
-> -		} else if (need_resched()) {
-> +		} else if (__xfer_to_guest_mode_work_pending()) {
->   			kvmppc_vcore_preempt(vc);
-> -			/* Let something else run */
-> -			cond_resched_lock(&vc->lock);
-> +			/*
-> +			 * Let something else run, and run pending guest-mode
-> +			 * work (reschedule, and TIF_NOTIFY_RESUME task_work such
-> +			 * as the deferred CFS throttle) before we would re-enter
-> +			 * the guest, so a CPU-bound vCPU is actually throttled
-> +			 * here instead of running past its quota. This is a
-> +			 * superset of the old need_resched() check. Use the raw
-> +			 * helper, not the kvm_ wrapper: signals (KVM_EXIT_INTR
-> +			 * and the signal_exits stat) are accounted by this path's
-> +			 * existing handling below, so going through the wrapper
-> +			 * here would double-count them. The helper may schedule(),
-> +			 * so the vcore lock is dropped around it.
-> +			 */
-
-reduce this blob.
-
-> +			spin_unlock(&vc->lock);
-> +			xfer_to_guest_mode_handle_work();
-> +			spin_lock(&vc->lock);
->   			if (vc->vcore_state == VCORE_PREEMPT)
->   				kvmppc_vcore_end_preempt(vc);
->   		} else {
-> @@ -4899,8 +4923,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   		}
->   	}
->   
-> -	if (need_resched())
-> -		cond_resched();
-> +	/*
-> +	 * Run pending work before (re-)entering the guest, most importantly
-> +	 * task_work queued via TWA_RESUME (e.g. the deferred CFS bandwidth
-> +	 * throttle, which only sets TIF_NOTIFY_RESUME). Without this a CPU-bound
-> +	 * vCPU that keeps returning RESUME_GUEST never reaches an exit-to-user
-> +	 * point, so the throttle is never enforced and the task runs far beyond
-> +	 * its quota. The helper also handles reschedule and signals, replacing
-> +	 * the cond_resched() that was here. It may schedule(), so it runs before
-> +	 * preemption and IRQs are disabled, with no vcore/KVM locks held. This
-> +	 * is the per-reentry site shared by the bare-metal and pseries (nested)
-> +	 * paths, so both are covered.
-> +	 */
-
-reduce this blob.
-
-> +	r = kvm_xfer_to_guest_mode_handle_work(vcpu);
-> +	if (r)	/* -EINTR: signal pending, exit to userspace (KVM_EXIT_INTR) */
-> +		return r;
->   
->   	kvmppc_update_vpas(vcpu);
->   
-> @@ -4914,9 +4951,14 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	vcpu->arch.state = KVMPPC_VCPU_RUNNABLE;
->   
-> -	if (signal_pending(current))
-> -		goto sigpend;
-> -	if (need_resched() || !kvm->arch.mmu_ready)
-> +	/*
-> +	 * Final IRQs-disabled check for pending guest-mode work or an MMU that
-> +	 * is not ready. IRQs are disabled here, so bail to the outer loop,
-> +	 * which re-enters and handles the pending work via
-> +	 * kvm_xfer_to_guest_mode_handle_work() above (exiting with -EINTR on a
-> +	 * signal).
-> +	 */
-> +	if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
->   		goto out;
->   
->   	vcpu->cpu = pcpu;
-> @@ -5068,10 +5110,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	return vcpu->arch.ret;
->   
-> - sigpend:
-> -	vcpu->stat.signal_exits++;
-> -	run->exit_reason = KVM_EXIT_INTR;
-> -	vcpu->arch.ret = -EINTR;
->    out:
->   	vcpu->cpu = -1;
->   	vcpu->arch.thread_cpu = -1;
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37..ff1a9a8de5e0 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -84,20 +84,36 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
->   	hard_irq_disable();
->   
->   	while (true) {
-> -		if (need_resched()) {
-> +		if (__xfer_to_guest_mode_work_pending()) {
-> +			/*
-> +			 * Handle pending guest-mode work before entering the
-> +			 * guest: reschedule, signals, and TIF_NOTIFY_RESUME
-> +			 * task_work such as the deferred CFS bandwidth throttle.
-> +			 * The helper must run with interrupts enabled and may
-> +			 * schedule(). This is a superset of the open-coded
-> +			 * need_resched()/signal_pending() checks it replaces. On
-> +			 * a pending signal it returns -EINTR after
-> +			 * kvm_xfer_to_guest_mode_handle_work() has set
-> +			 * run->exit_reason (KVM_EXIT_INTR) and bumped
-> +			 * vcpu->stat.signal_exits, so just return to userspace.
-> +			 */
-
-Make this comment precise instead of describing __xfer_to_guest_mode_work_pending
-
->   			local_irq_enable();
-> -			cond_resched();
-> +			r = kvm_xfer_to_guest_mode_handle_work(vcpu);
->   			hard_irq_disable();
-> +			if (r) {
-> +				/*
-> +				 * -EINTR: the generic helper does not set the
-> +				 * exit type, so record it here for the E500
-> +				 * CONFIG_KVM_EXIT_TIMING histogram (a no-op
-> +				 * otherwise). Only the exit type is set;
-> +				 * signal_exits was already accounted above.
-> +				 */
-> +				kvmppc_set_exit_type(vcpu, SIGNAL_EXITS);
-> +				break;
-> +			}
->   			continue;
->   		}
->   
-> -		if (signal_pending(current)) {
-> -			kvmppc_account_exit(vcpu, SIGNAL_EXITS);
-> -			vcpu->run->exit_reason = KVM_EXIT_INTR;
-> -			r = -EINTR;
-> -			break;
-> -		}
-> -
->   		vcpu->mode = IN_GUEST_MODE;
->   
->   		/*
-
+--=-ha5BiPOGdolMhVL9f35m--
