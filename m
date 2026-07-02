@@ -1,136 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C29D3890E7;
-	Thu,  2 Jul 2026 20:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8828386C08
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 20:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783022529; cv=none; b=QV0cM/sEcy+MdsBYkBoRDncV8zZnqG0Cf6KqnA7quglVD8gVbesIXicp5RCLbmCt+AajTWcagrwG8eCspByU7xlaFhpuKzq+y40DfvFc1dGEtnkjmlRL5LFZAREOha6JNi/WfvUI3hPt4XKQoB6waiTlQVn6ewHHCDVgLwF2fR0=
+	t=1783022967; cv=none; b=A85BhensWh64CTry8O0ihCyB98jV3FY2AVYvgrCZw6MGXf2EdhePMmrT5+fZCWfI7nZjqAfNdcIXgWJOTO+WXT3zrOOS5DLMob4Ovmg2DXGJcFyVYezwyaafLCRhWF1e6/xTu/Jt9yuN+riZfN0p/QcvrUXnjJLclQLLAfCSakc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783022529; c=relaxed/simple;
-	bh=NMtx1JDe/uoQByEGku9I/NGARnxasGKXWW3OjvoVlRM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pu9RbSVUdDc2yKB08oGVOdDJew0SGJZxdqVd0UhMqQ7YNOkIF1s4nXntjgbOieOSWtwL0vUBiscM6h5kMF17Gc5DnfvV5KTWlepWme5GUVFFqpYNy2XjdoBaXwji/DkeDZsIdEoP+OUZrOLvuADzt7yRHbN099aS4VZY+9mL7PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBJtLa9l; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783022967; c=relaxed/simple;
+	bh=13oD+YiL/3o0MEN6K6Y/bx7CKvJzT37nBrfnC/MzHFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rpvrl3Ga3uPsD9q/v37Ccbc/W9rG2VOas1EW+p3/ydrXc3UlnIqef5lbI1pw204YkU+F/DfJeDZgexbMvdL5IsN3m9tL+WB5CZpebtlp3wTunYpaZMzL4KR8CH84IHTomAJnnQPNFrEi09UmxF2pqFwz9R5pydCxXwtkzytHD7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qYht2Prb; arc=none smtp.client-ip=209.85.161.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBJtLa9l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813431F000E9;
-	Thu,  2 Jul 2026 20:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783022526;
-	bh=wuNccrweE1OgyLfC5/hMVOIjVaxZ778ZW9vyVVpXunk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iBJtLa9lIbsHSMyghdQnl+Mslv4yGdvvxJyEUQZpZGPxFMGdYd87K2d5/6ZlQ55dU
-	 upWa8JqQr+7A5j3VdQI2x1oqrghV8Bzh2mQzAuDK8q+hY2fHuXg6NhX3PQXu5L5vCl
-	 bpSdaMcIP5taqQ2weOsE0YGf2MGpU4EW5Zmiv7DQjmFVQix+j8OD45G5d7JncKC7JK
-	 KOunvJVflAiiDXJyDikCtCXvPxQKPl9dfyZwbNX4URkssUdktDgw3pyoWHqj31BHTW
-	 zA6Ur8YXohKQL3jLuamfWlr240g3koF6pZs/EVmRvsHLyl5ncsezY7oqZRtgLeVBES
-	 cYXIV0hMG/bhA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wfNbo-00000000txy-3Nlp;
-	Thu, 02 Jul 2026 20:02:04 +0000
-Date: Thu, 02 Jul 2026 21:03:53 +0100
-Message-ID: <87pl156tw6.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: "Oliver Upton" <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 26/28] KVM: arm64: Add FEAT_NV3 detection
-In-Reply-To: <20260702163950.81D301F00A3A@smtp.kernel.org>
-References: <20260702160248.1377250-1-maz@kernel.org>
-	<20260702160248.1377250-27-maz@kernel.org>
-	<20260702163950.81D301F00A3A@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qYht2Prb"
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6a190528769so921018eaf.0
+        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 13:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783022965; x=1783627765; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjQFRK3eyEfNEKRH/kJEfHrxEWDAZH2cdSABwq7lLiA=;
+        b=qYht2Prb/gnqRafc370x8QL0AVhwNbkWYD7Mb0oEnS6BBC1/7zqQk4okOm+qy8WkGQ
+         RxC4dqTCKz01d3diR6dB2/5uKwM8YFAPrXjCx646oRPimx2pQb0+QSMqzy5/ttykB3zo
+         tiInWqtjwp7x2BlEhBNZ9UvRPSorkfoZSFL1Ts+hgBxNBzh41kxabF+GJSxtH3TgtrIk
+         7bjozptJEY/oUZlHpoUIs2DKPTQ/Ar+ULai3UQ1k3whzj32T+2lzBGKODMkUxIp2ESkk
+         Qtocv5xq1OwB5kxkbsoWaRMzaYj74+ddVix6bjxov7mWczXJPVfYTRRDp4sNwrq/6I06
+         eXnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783022965; x=1783627765;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WjQFRK3eyEfNEKRH/kJEfHrxEWDAZH2cdSABwq7lLiA=;
+        b=IMY8L9yvVrPdL6Ualt5AGPaA0NF40sWpClUEJLmlaeiYzftSKHnXWU6Xyut1RPiUr4
+         04kt4tguaWJa4aK812hNS6VjLgB9RkPAHyp0EZQMHR7KSNfz/JjX2Ew5knhkuwdTCA3x
+         Bh212MvQy+Ws74TsqWiO9N/f+CIrozlbQqSj62QOOoF5fzQ3o2Ach8FRiFuGmlJfr51y
+         TK6DQkNtX4kMvoM+veejk/eOclcp27NmFC95SVliLRMXit+onx2t0MnNka8aIF2WGD4B
+         qj6cSkbY294TPZ8s1Kj7wHBUv9sWR0EfVsFrNi9+cOdFoCnc8Btj/U+Ug7YQwdH2l0dV
+         xykA==
+X-Forwarded-Encrypted: i=1; AFNElJ8P8PlDPWyk1CobN8z+gOnKGiKammBxPudm+9K8cN90E+6CxciJi0VyqkzJBQ9h50RsjwM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznQcjnoF55OnvHUjPhkoMywxcR3PoqwNWIciVv6z0hy1+Gbu4c
+	V+NNZOUN49Oe5BOxjziGrPVwyAaq91PHQq9ynWsKS4sft7vC3v8WrN1h
+X-Gm-Gg: AfdE7ck4kbkzF2RIZT9B98TmnMOkjhtmwyCnBH4j2+9jk6IdsBXPjiX+U0nPIVTAy6m
+	RmZwP5xUpxrXHXL4LOiGwmdz19XNTHaTV0ziuQ16BiqDRlo/I3ae0YnWJv49GlqYgumuz/HfvlW
+	LqTLXAc3ZtL6tJUNZgtDGZr8BZR0dHlukpVyDzTGZmGpzQpuh2bOfR+yo/xlgvGQKHMH3E8KAYe
+	dBjwdzK9y+zySQ7dCSJ9yHP4a27IaSJnQHLnAGergSiQcucU6UPSxMn41VENuBb9GRdkH/+LPAC
+	jarCjGPy2LP4cvFhaM5KcuwE/Bx7hyNAl+Iz5JBev4CTEhjI9V3RKYfcszdjaLVxVCuEoJI7tP+
+	Guss74+6sxgZvFOzhXyMl2D8qN4SzBlbPUg3Gpw6FPsn8WpNLR8Lk9JgHvAh+HvEGVlQgIXLkZ2
+	gK3dibZyAlpkY7NuGCjvVmtxoM683SLkGG2g==
+X-Received: by 2002:a05:6820:4cc3:b0:6a2:739a:ce95 with SMTP id 006d021491bc7-6a309929b99mr4607337eaf.4.1783022964709;
+        Thu, 02 Jul 2026 13:09:24 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:43::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cbec93702sm3662142fac.12.2026.07.02.13.09.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 13:09:23 -0700 (PDT)
+Date: Thu, 2 Jul 2026 13:09:20 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
+Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under
+ memory pressure
+Message-ID: <akbFcMHenseQW7mJ@devvm29614.prn0.facebook.com>
+References: <20260626134823.206676-1-sgarzare@redhat.com>
+ <20260626134823.206676-2-sgarzare@redhat.com>
+ <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
+ <akYl38_9Y4ydXuqE@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, oupton@kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akYl38_9Y4ydXuqE@sgarzare-redhat>
 
-On Thu, 02 Jul 2026 17:39:50 +0100,
-sashiko-bot@kernel.org wrote:
+On Thu, Jul 02, 2026 at 10:56:04AM +0200, Stefano Garzarella wrote:
+> On Wed, Jul 01, 2026 at 09:34:35AM -0700, Bobby Eshleman wrote:
+> > On Fri, Jun 26, 2026 at 03:48:22PM +0200, Stefano Garzarella wrote:
 > 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] Writes to the SYS_NVHCR_EL2 control system register are not followed by an immediate isb().
-> - [High] Writes to CNTKCTL_EL1 and CNTHCTL_EL2 control registers using sysreg_clear_set() lack an immediate isb().
-> --
+> [...]
 > 
-> commit b72de4ae5666d0aaa35b94915af5eab1152df83b
-> Author: Marc Zyngier <maz@kernel.org>
-> KVM: arm64: Add FEAT_NV3 detection
+> > > +out:
+> > > +	if (new_skb)
+> > > +		__skb_queue_tail(&new_queue, new_skb);
+> > > +
+> > > +	skb_queue_splice(&new_queue, &vvs->rx_queue);
+> > 
+> > I think the new skbs will also need skb_set_owner_sk_safe(skb, sk)
+> > when adding to rx_queue?
 > 
-> This commit adds the detection code for FEAT_NV3 to the cpufeature
-> capabilities. This engages the FEAT_NV3 fast-path when the hardware
-> supports it.
+> IIRC we added it in the rx path, mainily for loopback to pass the ownership
+> from the tx socket to the rx socket, but here we are already in the rx path,
+> so the skb will never leave this socket.
 > 
-> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> > index c9c124b0ccc8e..6ae1c816e2010 100644
-> > --- a/arch/arm64/kernel/cpufeature.c
-> > +++ b/arch/arm64/kernel/cpufeature.c
-> > @@ -2627,6 +2627,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
-> >  		.matches = has_cpuid_feature,
-> >  		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2P1)
-> >  	},
-> 
-> [Severity: High]
-> Could the system operate under a stale configuration when updating timer
-> control registers based on the ARM64_HAS_NV2P1 capability?
-> 
-> In arch/arm64/kvm/arch_timer.c:timer_set_traps(), the control registers
-> are modified without an immediate isb() following the update:
-> 
-> arch/arm64/kvm/arch_timer.c:timer_set_traps()
-> 	if (!cpus_have_final_cap(ARM64_HAS_NV2P1))
-> 		sysreg_clear_set(cnthctl_el2, clr, set);
-> 	else
-> 		sysreg_clear_set(cntkctl_el1, clr, set);
-> 
-> The sysreg_clear_set() macro expands to a read-modify-write sequence that
-> does not include an isb() as the very next instruction. Is an explicit
-> barrier required here to prevent undefined pipeline state?
 
-No. And "undefined pipeline state" means fsck all.
+Ah that's right, I stand corrected. There is no sender to leak in this
+case.
 
-> 
-> > +	{
-> > +		.desc = "FEAT_NV3",
-> > +		.capability = ARM64_HAS_NV3,
-> > +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-> > +		.matches = has_cpuid_feature,
-> > +		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV3)
-> > +	},
-> 
-> [Severity: High]
-> Does enabling the ARM64_HAS_NV3 capability expose missing synchronization
-> when writing the SYS_NVHCR_EL2 control register?
-> 
-> Looking at __compute_hcr() in arch/arm64/kvm/hyp/vhe/switch.c, the guest
-> view is published to SYS_NVHCR_EL2 without an immediate isb():
-> 
-> arch/arm64/kvm/hyp/vhe/switch.c:__compute_hcr()
-> 		if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
-> 			write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
-> 		else
-> 			__vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
-> 
-> Similarly, the L2 view of HCR_EL2 is restored without an immediate isb()
-> before returning:
+> Maybe it's necessary for the eBPF path?
 
-ERET in the guest is a CSE. The end.
+Looking through sockmap, I don't think it depends on skb->sk being
+non-null either (it reassigns owner to the redirect socket anyway using
+skb_set_owner_r()).
 
-	M.
+Sorry for the false alarm. LGTM.
 
--- 
-Jazz isn't dead. It just smells funny.
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
