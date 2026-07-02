@@ -1,398 +1,121 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBAC3A7839
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 18:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E73A59B1;
+	Thu,  2 Jul 2026 18:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016534; cv=none; b=iLWSuypHx0X7UdkrIUNrsBHLBOWgNSwXzfz9ZFH6awCgdHn8hdYAXh13lZAidEsB8mZE4rHqpnTrKK3p3pdC7Q690ALKJmr2yM5muD0FI0HbyPhqTs99Rdx2fkKzcCXFeA7GSAaN7tW3kJDwYJ6VfG63fN8S6Zii74Usj8ix9Qw=
+	t=1783016845; cv=none; b=r5Igt+mxa84YmM+u56H5NVJAxJ0xFbTSV4MLpcMem/LsrnL4LmOfYY97BqeVmTlM0BCrmC2ZZvy5VLE1+Qx9X6TSCVovOkrUpigoGhE4kBBZlfS/Qj2mdGzuuBRW/QH6d1nTh/6jA5h7g9IGw3E5aupacYHXDqCQo97gad4McBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016534; c=relaxed/simple;
-	bh=tfP+zqtgMirzeI9nldwzGx3l3u2lrZ7XmnDk0GBvXPI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gl9+FagBJfGXpADEICMaKwCjjGqDzmr0J+A12Yc3JmotIlzdtDn2gAADbCx7g7BVWEYz/ed5z4r16vcEjz7GdgWcPJ/c03K/N86mygayL3bwx8wEnxhGrd0/LLH/FmuxBxROD8y4GppMkRmG5s4Gt29ibsl4kzHW4e3rbxuf6O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=hmj/X4M1; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1783016845; c=relaxed/simple;
+	bh=tUNl1L/Tvt9Lw9z28XQPOJw4gf0w7g1efNRYWEiEUQA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EtD8C3WijYewMlfvceTkXiYKhTzgj2TgqQRqa96SBSIug8F6F20Xcjvsj5np8oFUOnJb3iIOG8fj/+clOCrRuTki5HTXK6/lsK1z0ndBg2/3rLm4hgdA9NzzrxJ43WVxzl6iL90TB1JjOWw5eqsYNvsBExVPpllr/Gv7ZmLpBW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz8K5BhT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="hmj/X4M1"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 662Go5bD3309283
-	for <kvm@vger.kernel.org>; Thu, 2 Jul 2026 11:22:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=o6FFhPbwIawOuSi37VsnK8qaSNi6AEC+q+2bkFHQhdk=; b=hmj/X4M1FA+v
-	UiPRY4m+oLnRVqYtkF7xLBTjayw4u1JXljeFJ9NHi1N02KRIZQGRrqLYq5tOJZQl
-	g8RtosGnR7EdPg5lBT+EK/VDdHfInu9r112+j2Yzb55IvQFIpGxXZ6cG0lcHrLuv
-	O0/qzJIX2XClP/ssK+j96pEosOQvYc29Eat8BzPy3RgVuFj+vX8Vf9LBPmeBiz33
-	R8qmxyuLx+keLJbTYLkssWYqvPYI73U/FTpaVt8o/2v1ZZggj2atoJXdLfb/Uypt
-	+Gp8pGjybocP9CzK0WiR1kbY5bnRilmFPXvmVKpYhBbOLXsvDJYdTiVZcfVR+9Kf
-	yyYiYuZE8g==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4f5ga8w34a-8
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 11:22:11 -0700 (PDT)
-Received: from twshared20751.01.snb2.facebook.com (2620:10d:c085:208::f) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.41; Thu, 2 Jul 2026 18:22:06 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id C4CF040EEE7B5; Thu,  2 Jul 2026 11:10:30 -0700 (PDT)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Michael
- Guralnik <michaelgur@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Alex Williamson
-	<alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>
-CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Zhiping Zhang
-	<zhipingz@meta.com>
-Subject: [PATCH v11 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
-Date: Thu, 2 Jul 2026 11:10:16 -0700
-Message-ID: <20260702181025.2694961-4-zhipingz@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260702181025.2694961-1-zhipingz@meta.com>
-References: <20260702181025.2694961-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz8K5BhT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58B11F000E9;
+	Thu,  2 Jul 2026 18:27:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783016843;
+	bh=NymyTv3BRAYOKJnkWhgABGHjBidtkeFYqde854oTNgc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Sz8K5BhTbLLtJq2fXhiyYckyCZaFTciidyNQNfFpdazOQwzeftdfEPyZi+0uUxOnh
+	 gBW7F/XHIoAt/Op5pYmYYz0abrwxRrOhYeJmZTy5vpKVHmvR+qarwjGMg4X0URZ+vo
+	 DaxVkXN3e7w7uwFMZGF2Thj/Qt0MVCBRwJ4EA26wVfmBACaDkERbzeINlnh4wXx1HG
+	 a4/8xf2kmC5T3bQvMCWJDrRGWwvj5gHtmRq8TDHLpkeHK9cfl300oa8j/GSg8wQzXC
+	 joPwmY7Mmcf3WZsfcG+FC3Z2j7uA6yJgiCJ8/Tgr1jimT0EH090oFOURhIweNQHCv2
+	 M5G2ASLCmFmlw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wfM8A-00000000sFg-0YRL;
+	Thu, 02 Jul 2026 18:27:22 +0000
+Date: Thu, 02 Jul 2026 19:29:10 +0100
+Message-ID: <87se616ya1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	"Oliver Upton" <oupton@kernel.org>
+Subject: Re: [PATCH 03/28] KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
+In-Reply-To: <20260702163411.C2F861F00A3E@smtp.kernel.org>
+References: <20260702160248.1377250-1-maz@kernel.org>
+	<20260702160248.1377250-4-maz@kernel.org>
+	<20260702163411.C2F861F00A3E@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 4apgmTOa90XdI2Ze7Se8J8cZRLy37Alb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE5MyBTYWx0ZWRfX2ENhkiPhYoMj
- WqltVc49N7gw/sgQgWZpR6BKKV2ox/v1a9lx7J99LIZpRUzTExsJt3jV8j1z49+O+8Txg9TqUxW
- FKCMJWqPd74AnxGQQ4DQVzjXijGcVUErn3XEz9ZPHtT05ZcigSptWdAUJm81tSaDBc3rfl5JZVX
- a3AkYdIpAWw2vCj6wER1WqClizr/o54zVJlI5W4JMWOqEujuXkGbsB41007CA/2pe1Ff9d4O1pW
- 7kiCLxdcFRljzUluKzvDNkHmcj5sczcdhke2+AFx4tZg2fZy4aevQiMXOCIdj54quEWfsKOyXJ2
- NhVi+sRwqVIBQ0iIPhu7xFq4K8zvbcI6zyehxjtr5eyUaeuio/XBPyRyJag0ScaKez5aDWfVGZn
- tfPyIGYAo/CikFxCgaEGAuckesT2kYnbncdtdmqhD/ZfL8ggS1RLHFTl1eDXMRHZy9LEEF+a+kl
- 7dG1RphalLhX60q/xKg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE5MyBTYWx0ZWRfX9b8Ju4+3SyUk
- WA8Z0fGM7L91TF6gDoVuvDZKmWeER3mmXxdlOzZDnSJuvl5/Yg6lQyD4MUJuZGqelINguXUDSv8
- rD9euixVyDxZGU0rv0oPkc8dRYQNMx0=
-X-Proofpoint-GUID: 4apgmTOa90XdI2Ze7Se8J8cZRLy37Alb
-X-Authority-Analysis: v=2.4 cv=KZjidwYD c=1 sm=1 tr=0 ts=6a46ac53 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=_78whYxrdx1mplLwxq1U:22 a=VabnemYjAAAA:8 a=jp8Fuoutt1YJt9GT4a8A:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oupton@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Implement dma-buf get_pci_tph for vfio-pci exported dma-bufs and add
-VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
-for a VFIO-owned device.
+On Thu, 02 Jul 2026 17:34:11 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Missing RES0 Sanitization / Unsafe Register Merge for HCRX_EL2
+> --
+> 
+> commit a8dae7a323ff7e33355d5cb4c144294087a9bbfa
+> Author: Marc Zyngier <maz@kernel.org>
+> KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
+> 
+> This commit changes how the guest-provided HCRX_EL2 value is merged with
+> the host's value. It replaces positive masking with an exclusion list
+> of bits that the guest is not allowed to override.
+> 
+> > diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> > index 4bf624a49591d..8e5f492f39086 100644
+> > --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> > +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> 
+> [ ... ]
+> 
+> > @@ -350,8 +368,8 @@ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
+> >  		u64 hcrx = vcpu->arch.hcrx_el2;
+> >  		if (is_nested_ctxt(vcpu)) {
+> >  			u64 val = __vcpu_sys_reg(vcpu, HCRX_EL2);
+> > -			hcrx |= val & __HCRX_EL2_MASK;
+> > -			hcrx &= ~(~val & __HCRX_EL2_nMASK);
+> > +			hcrx |= (val & ~NV_HCRX_GUEST_EXCLUDE);
+> > +			hcrx &= ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
+> 
+> [Severity: High]
+> Does this allow an untrusted L1 guest to write garbage to the
+> architecturally RES0 bits of the physical HCRX_EL2 register?
 
-8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-uAPI carries both with explicit validity flags, and get_pci_tph()
-returns the value matching the importer's requested namespace or
--EOPNOTSUPP.
+A guest is by definition untrusted. Reading a VNCR-backed system
+register implies sanitisation to enforce RESx bits.
 
-Publish and read the TPH descriptor under dmabuf->resv, matching the
-locking used for other importer-visible dma-buf state. The SET ioctl
-takes dma_resv_lock_interruptible(), while the callback runs under
-DMA-buf's asserted resv lock.
+>
+> By switching from a positive mask to a negative exclusion mask, any bits
+> not explicitly excluded are now merged into the host value.
+> 
+> If the guest modifies its VNCR page at the VNCR_HCRX_EL2 offset and sets
+> RES0 bits, these bits would be passed through. Since hcrx_feat_map lacks
+> FORCE_RES0(HCRX_EL2_RES0), KVM's register mask application in
+> kvm_vcpu_apply_reg_masks() will fail to clear them before they reach this
+> merge point in __activate_traps_common().
 
-The attach path reads @revoked without holding memory_lock. Annotate it
-with READ_ONCE() to document this intentional lockless access: the read
-is a benign early-out, and a racing revocation is re-checked under
-dmabuf->resv in vfio_pci_dma_buf_map() before any mapping is handed out.
-The annotation only needs to keep the access well-formed against the
-memory_lock-protected writers.
+No, the RES0 bits are implicitly handled. FORCE_RESx() is exclusively
+sugar coating here. Case in point:
 
-Reject requests the device cannot consume as a completer:
-pcie_tph_completer_type() must report at least
-PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
-PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Make PROBE follow the same hardware
-gate so the feature only probes as supported when the device can really
-consume it.
+root@say-please:/home/maz# grep HCRX /sys/kernel/debug/kvm/976-14/resx
+        SYS_HCRX_EL2:	RES0:0000000005ffcfe7	RES1:0000000000000000
 
-Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
----
- drivers/vfio/pci/vfio_pci_core.c   |   3 +
- drivers/vfio/pci/vfio_pci_dmabuf.c | 102 ++++++++++++++++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h   |  12 ++++
- include/uapi/linux/vfio.h          |  43 ++++++++++++
- 4 files changed, 158 insertions(+), 2 deletions(-)
+Go away.
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-index a28f1e99362c..c7d6902bc61b 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1572,6 +1572,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device =
-*device, u32 flags,
- 		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_DMA_BUF:
- 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-+	case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-+		return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-+							 argsz);
- 	default:
- 		return -ENOTTY;
- 	}
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
-ci_dmabuf.c
-index c16f460c01d6..5351839c1338 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -3,6 +3,7 @@
-  */
- #include <linux/dma-buf-mapping.h>
- #include <linux/pci-p2pdma.h>
-+#include <linux/pci-tph.h>
- #include <linux/dma-resv.h>
-=20
- #include "vfio_pci_priv.h"
-@@ -19,7 +20,17 @@ struct vfio_pci_dma_buf {
- 	u32 nr_ranges;
- 	struct kref kref;
- 	struct completion comp;
--	u8 revoked : 1;
-+
-+	/*
-+	 * Updates protected by dmabuf->resv, @revoked additionally
-+	 * protected by memory_lock.
-+	 */
-+	u16 tph_st_ext;
-+	u8 tph_st;
-+	bool revoked;
-+	u8 tph_st_valid:1;
-+	u8 tph_st_ext_valid:1;
-+	u8 tph_ph:2;
- };
-=20
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-@@ -30,7 +41,7 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmab=
-uf,
- 	if (!attachment->peer2peer)
- 		return -EOPNOTSUPP;
-=20
--	if (priv->revoked)
-+	if (READ_ONCE(priv->revoked))
- 		return -ENODEV;
-=20
- 	if (!dma_buf_attach_revocable(attachment))
-@@ -69,6 +80,26 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attach=
-ment,
- 	return ret;
- }
-=20
-+static int vfio_pci_dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool ext=
-ended,
-+					u16 *steering_tag, u8 *ph)
-+{
-+	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
-+
-+	dma_resv_assert_held(dmabuf->resv);
-+
-+	if (extended) {
-+		if (!priv->tph_st_ext_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st_ext;
-+	} else {
-+		if (!priv->tph_st_valid)
-+			return -EOPNOTSUPP;
-+		*steering_tag =3D priv->tph_st;
-+	}
-+	*ph =3D priv->tph_ph;
-+	return 0;
-+}
-+
- static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment=
-,
- 				   struct sg_table *sgt,
- 				   enum dma_data_direction dir)
-@@ -101,6 +132,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *=
-dmabuf)
-=20
- static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
- 	.attach =3D vfio_pci_dma_buf_attach,
-+	.get_pci_tph =3D vfio_pci_dma_buf_get_pci_tph,
- 	.map_dma_buf =3D vfio_pci_dma_buf_map,
- 	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
- 	.release =3D vfio_pci_dma_buf_release,
-@@ -333,6 +365,72 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_co=
-re_device *vdev, u32 flags,
- 	return ret;
- }
-=20
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz)
-+{
-+	struct vfio_device_feature_dma_buf_tph set_tph;
-+	struct vfio_pci_dma_buf *priv;
-+	struct dma_buf *dmabuf;
-+	u8 comp;
-+	int ret;
-+
-+	comp =3D pcie_tph_completer_type(vdev->pdev);
-+	if (comp =3D=3D PCI_EXP_DEVCAP2_TPH_COMP_NONE)
-+		return -EOPNOTSUPP;
-+
-+	ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-+				 sizeof(set_tph));
-+	if (ret !=3D 1)
-+		return ret;
-+
-+	if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-+		return -EFAULT;
-+
-+	if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_EXT))
-+		return -EINVAL;
-+
-+	if (set_tph.ph & ~0x3)
-+		return -EINVAL;
-+
-+	if ((set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT) &&
-+	    comp !=3D PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
-+		return -EOPNOTSUPP;
-+
-+	dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
-+	if (IS_ERR(dmabuf))
-+		return PTR_ERR(dmabuf);
-+
-+	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	priv =3D dmabuf->priv;
-+	if (priv->vdev !=3D vdev) {
-+		ret =3D -EINVAL;
-+		goto out_put;
-+	}
-+
-+	ret =3D dma_resv_lock_interruptible(dmabuf->resv, NULL);
-+	if (ret)
-+		goto out_put;
-+
-+	priv->tph_st         =3D set_tph.steering_tag;
-+	priv->tph_st_ext     =3D set_tph.steering_tag_ext;
-+	priv->tph_ph         =3D set_tph.ph;
-+	priv->tph_st_valid   =3D !!(set_tph.flags & VFIO_DMA_BUF_TPH_ST);
-+	priv->tph_st_ext_valid =3D
-+		!!(set_tph.flags & VFIO_DMA_BUF_TPH_ST_EXT);
-+	dma_resv_unlock(dmabuf->resv);
-+	ret =3D 0;
-+
-+out_put:
-+	dma_buf_put(dmabuf);
-+	return ret;
-+}
-+
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed)
- {
- 	struct vfio_pci_dma_buf *priv;
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci=
-_priv.h
-index fca9d0dfac90..c58f369be4b3 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev *p=
-dev)
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32=
- flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
- 				  size_t argsz);
-+int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev,
-+				      u32 flags,
-+				      struct vfio_device_feature_dma_buf_tph __user *arg,
-+				      size_t argsz);
- void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revok=
-ed);
- #else
-@@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_d=
-evice *vdev, u32 flags,
- {
- 	return -ENOTTY;
- }
-+
-+static inline int
-+vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u32=
- flags,
-+				  struct vfio_device_feature_dma_buf_tph __user *arg,
-+				  size_t argsz)
-+{
-+	return -ENOTTY;
-+}
- static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device =
-*vdev)
- {
- }
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..4c1c70aac150 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1534,6 +1534,49 @@ struct vfio_device_feature_dma_buf {
-  */
- #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-=20
-+/**
-+ * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) met=
-adata
-+ * with a vfio-exported dma-buf. The dma-buf must have been created by
-+ * VFIO_DEVICE_FEATURE_DMA_BUF on this device, and the device must repor=
-t
-+ * TPH Completer support in Device Capabilities 2 (bits 13:12); requests
-+ * carrying VFIO_DMA_BUF_TPH_ST_EXT additionally require the device to
-+ * report the Extended TPH Completer encoding. Otherwise the ioctl
-+ * returns -EOPNOTSUPP.
-+ *
-+ * @dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DMA=
-_BUF.
-+ *
-+ * 8-bit ST (@steering_tag) and 16-bit Extended ST (@steering_tag_ext) a=
-re
-+ * distinct namespaces. @flags is the authoritative validity mask for th=
-e
-+ * two namespaces: VFIO_DMA_BUF_TPH_ST marks @steering_tag valid and
-+ * VFIO_DMA_BUF_TPH_ST_EXT marks @steering_tag_ext valid. An importer
-+ * requests one namespace and receives the matching value.
-+ *
-+ * Each SET fully replaces the dma-buf's TPH state for future queries
-+ * only. A namespace whose flag bit is clear is reported as unsupported
-+ * to future importers; an importer that has already retrieved a value
-+ * is unaffected. @flags =3D=3D 0 leaves both namespaces unsupported for
-+ * future importers.
-+ *
-+ * @ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-+ *
-+ * Undefined @flags and @ph bits must always be zero.
-+ *
-+ * Userspace must configure TPH before handing the dma-buf fd to an
-+ * importer.
-+ */
-+#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-+
-+#define VFIO_DMA_BUF_TPH_ST		(1 << 0)
-+#define VFIO_DMA_BUF_TPH_ST_EXT		(1 << 1)
-+
-+struct vfio_device_feature_dma_buf_tph {
-+	__s32	dmabuf_fd;
-+	__u32	flags;
-+	__u16	steering_tag_ext;
-+	__u8	steering_tag;
-+	__u8	ph;
-+};
-+
- /* -------- API for Type1 VFIO IOMMU -------- */
-=20
- /**
---=20
-2.53.0-Meta
+	M.
 
+-- 
+Jazz isn't dead. It just smells funny.
