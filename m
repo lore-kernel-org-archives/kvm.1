@@ -1,49 +1,61 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8163264D0
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 15:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91F230FF05;
+	Thu,  2 Jul 2026 15:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007564; cv=none; b=EWusesdlTNgkX/m+L69pltTYqEFNEysOF0rsHlkcgQ2PfE/8IXOX/9hfeHPje7WgVPqw5elz6SARdlPoBif+92W8gnqMGHkVEs58nFe5yhWRXQvrks+cAnj2hJANBhcBD/5JamCol2dKBqAk6ia9Dr9gNRoe/B+mue5sYi6YPf8=
+	t=1783007902; cv=none; b=k2QpzCyjUGAbH5S23Shs4DfyS+T+Bsmhbx0nwfkCnTzFuxHfDhSkeBSe8owvfRZeY63rkgDAPB46chiEmDhlc1yqFFy3r0ywuOiRSpu+m8G+ZsmK14xgC6ikZL9q/srhLW9GsPNTSgwPTGfbKUx0R6aJgChOj/BpT3W0NEuAGYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007564; c=relaxed/simple;
-	bh=Frd30LcVkMs1BH5UAHzuPsBYxLiGeiszbx4ehKsZq+g=;
+	s=arc-20240116; t=1783007902; c=relaxed/simple;
+	bh=xhq9w/9tnMCDOgwOyF9DS0BAzJjyfTEchCrr31Xjyck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkSg90zWZWtQqOUZre15jM/3mqUVgE3EffpgAIfvEOgkg1/601fm+LM/M5bh/ncwUaR4pa/HMoSxKpLncE14OZo4flop744EIj4/1/t84vco8Rrhu/aV29CPKl92h+vdStyEdRoErkrSD2Knmd81oRDjJ3pKcee13j+PMqES/Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OZgcpp4t; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kItvvwT7JjZ6k15AJphduD6JbOPQE6zbLqy1r/7J6gRYssVyM5NNZ+gz2zJ+HX85YDA+OFcoQF1UftX9aXg2djKEdnWvisDkb5pGUk8mY8/rmwytXuwlxgZZI+X3iAIUZEjkEgugH4LSPnqzbGlwvRbMLQ0vMjDoPoUtxcwrJWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gF6BhY6i; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OZgcpp4t"
-Received: from example.com (p50892d29.dip0.t-ipconnect.de [80.137.45.41])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 85F0B20B7167;
-	Thu,  2 Jul 2026 08:52:38 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 85F0B20B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1783007561;
-	bh=W1PIRma9VdMGV7CJDv/Z7U/HiT8rAw/JvBy6iodIcqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OZgcpp4tIZ2Gnzeflljl7XTC6DPD9qNU+2kslLT2zdmIcqEHqA7uGDUoIN2C8IlfK
-	 cKAg48W9CprbaZFzoN7FUZF4s3W90Lg41/fsGImEnOVQybJWTFxbHDxB6qxakJwe6Y
-	 +ojT7FfMiw8FMS4JrQ3HCbxzlz4OpLs17s1CC4g0=
-Date: Thu, 2 Jul 2026 17:52:36 +0200
-From: Magnus Kulke <magnuskulke@linux.microsoft.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
-	Magnus Kulke <magnuskulke@microsoft.com>,
-	Wei Liu <liuwe@microsoft.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Wei Liu <wei.liu@kernel.org>, Alex Williamson <alex@shazbot.org>,
-	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
-	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
-	Marcelo Tosatti <mtosatti@redhat.com>
-Subject: Re: [PATCH 26/34] accel/mshv: introduce SaveVMHandler
-Message-ID: <akaJRKS+JdFvgZAM@example.com>
-References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
- <20260417105618.3621-27-magnuskulke@linux.microsoft.com>
- <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gF6BhY6i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783007901; x=1814543901;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xhq9w/9tnMCDOgwOyF9DS0BAzJjyfTEchCrr31Xjyck=;
+  b=gF6BhY6ipZDLQzBkqgo294ccbppdlWx0dAr7+GZFLwuVyXZLH3ILzcyn
+   Wg1udc34kHjSg554jh/lVg42LM5iIGM2T7JqBvR/uE89sCKoOsvsh+YqO
+   BZvzwp/xnD76jJQD+GGDNwFyvP0INyPRAhLn4VRU0HcGYircvbWk2Nb70
+   rMdn0pl9lKfcYzU+mQp6ICh77IYFU0ch1OmbLAob4oWIPe/EbOKxYauxb
+   tOiRkfprtTIxvFCqXQ3Xdvb3PXZmiMI40w8sZdUcbgo58oAGzS7cqveE5
+   zYTX+KuZHZDEdTM34gjxZ5Pw3d9GMfYPsL3WICR4GlhSjEKb+NdjsnZNX
+   w==;
+X-CSE-ConnectionGUID: P/tGptYkSWOL6rc3Q/WY3w==
+X-CSE-MsgGUID: fiQom4IATZGRIxjYLH0ZCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="83633961"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="83633961"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 08:58:21 -0700
+X-CSE-ConnectionGUID: 0DPksBsXS0m3jAoYuzXj2Q==
+X-CSE-MsgGUID: rseT8zX9RNKYiUez3/JN9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="256483603"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 02 Jul 2026 08:58:17 -0700
+Date: Thu, 2 Jul 2026 23:58:16 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [RFC PATCH 09/15] x86/virt/tdx: Add interface to generate a Quote
+Message-ID: <akaKmEZnTY4FO2gY@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-10-yilun.xu@linux.intel.com>
+ <a8441214-1560-498d-ba01-0807502d0e28@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,43 +64,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
+In-Reply-To: <a8441214-1560-498d-ba01-0807502d0e28@suse.com>
 
-On Thu, Jul 02, 2026 at 10:50:17AM +0200, Paolo Bonzini wrote:
-> Il ven 17 apr 2026, 12:58 Magnus Kulke <magnuskulke@linux.microsoft.com> ha
-> scritto:
+> > +
+> > +	do {
+> > +		r = seamcall_ret(TDH_QUOTE_GET, &args);
+> > +	} while (r == TDX_INTERRUPTED_RESUMABLE);
 > 
-> > This mechanism is used to handle more imperative partition-wide steps
-> > that have to be taken as part of a migration routine.
-> >
-> > Currently it's a skeleton that will just pause/resume the partition as
-> > part of a migration. It will later be extended with more specific steps
-> > like reference time and hypercall pages.
-> >
 > 
-> Sorry, I forgot to reply about this one.
+> nit: This pattern seems to repeat a lot, might be worth it to consider
+> introducing a wrapper similar to existing sc_retry?
 
-> 
-> It is not clear why you need to pause, since this is handled by common
-> code. Are you not handling live migration yet? That should be handled at
-> levels above QEMU, because users expect migration to be performed while the
-> VM runs, and the SaveVMHandler should just fail migration of the VM is
-> running.
+We didn't make the wrapper because TDX_INTERRUPTED_RESUMABLE can't be
+handled in a unified way for all SEAMCALLs, I see 2 conventions:
 
-Oh, good catch, thanks. I misunderstood something about those hooks
-apparently. I think this was originally inspired by migration logic in
-Cloud-Hypervisor, which freezes/unfreezes a partition during migration
-- but only after the pre-copy phase is done.
+1. Host should set a resume=1 parameter on retry, such as
+   TDH_PHYMEM_CACHE_WB, and several migration SEAMCALLs,
+   TDH.EXPORT.MEM, TDH.EXPORT.STATE.XXX
 
-I assumed the hooks were also called only before the final delta is
-transmitted. In tests I was relying on the reported state of the source
-from QMP, which probably can not accurately reflect the state of the
-partition as the freeze/unfreeze happens out of band (i.e. is is not
-orchestrated by the migration framework).
+2. Host just refills the previous args (may have been modified by seamcall
+   output) on retry. such as TDH_EXT_INIT, TDH_EXT_MEM_ADD,
+   TDH_QUOTE_INIT, TDH_QUOTE_GET...
 
-I'll have to research a bit and see if there are more appropriate hooks,
-or if we don't need to freeze the source partition at all.
-
-best,
-
-magnus
+Making a helper that can't cover all interrupted resumable case may
+cause more confusing. BTW, there are already many seamcall wrappers, we
+need to carefully evaluate if it is worth adding new wrappers, for now I
+don't think so. 
