@@ -1,119 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5782036F8EA;
-	Thu,  2 Jul 2026 18:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A3D368D5A;
+	Thu,  2 Jul 2026 18:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783017291; cv=none; b=gkbNljRU4uKoJz0NOyUEZImFGfTWtgoWeZwaR923aUoJ90D9DUIpY7Kfawi0G+ZCdnQogvTP8pMOghPgC1TFxjy4ziXa/BrwddC3e9gzsG1pGtj5Q6k/BWqUOUwMQrg41zDj8aGVzncEnMmwJIMJf1EZP49DOlouO3nd0Uqnj0A=
+	t=1783017734; cv=none; b=oGrhdecHV5oMHY5rAL3Slc+2MM1LhLg3nJz/4VWphuDKpO5NuhkEUypW8N5/77rfC4BsrCEKcHMAjBm5AKc8/LV13abAPWBi+xe4qWQfOTJyxpSCHH7HTX9SuMrvRJAIrVUhcxB5+N9vNOLvWqhViGNavzqNcXc3Dd40n7jAUao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783017291; c=relaxed/simple;
-	bh=rfM2MaieXbLxE400yBYlbqYJ35JfI9bzY82lHqQGwTs=;
+	s=arc-20240116; t=1783017734; c=relaxed/simple;
+	bh=AnlbmVc7bp/EDu5i/7icvu+dEtDRGCrTIS/8BwF8+pY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=upLhfkQU63BUh5CEWoFpET/dhsQ3t/A+xfKRY7U2uqmNKOIAuE5GA7NTVUceiPDgUDifvMhtrtbgepWN5lQZjZcAiAuZZ6OL1IAucQ7knhfQsgk7quXSDXHqkJST410pEr9sQWSsn/mIxsi2yhi4jXe00qsd3MctD68NZGjfZAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sj3xW9c/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TB8lf3PW+OWJswp5jMhzOEJ7MudnrsAl1gBkRl46c1SzmE5qqeaDA29Gv6H99w6NuayNNBIXMtyIY+XIYv1Z1eXvBy0hNLLic96U/JIfuzPh3uxYfpA8VSU4dx46t/whJkVLSEEhkZ74Z3y3ngeETX+4wwqI5Uui9+L7GflxOa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oay3GZcq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sj3xW9c/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14E81F000E9;
-	Thu,  2 Jul 2026 18:34:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oay3GZcq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1161F00A3D;
+	Thu,  2 Jul 2026 18:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783017290;
-	bh=OOtLZyiO1yv6YfRJ7zDe+xzqYIZsaEXUbBqMX+24dns=;
+	s=k20260515; t=1783017732;
+	bh=mSNaagGrGaEd7SbyyZ4Ns3brb6JZz2ddeOYEpwPmzWc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Sj3xW9c/JNp9muAFkUpOM9KYcXmHI4C+XU3/eePH09dXLcu0pO18/PP1Z58kWXRTj
-	 cVoYSbkxdPYOLqk35R7hSPf1ofy6mSRu1bLb3aaOZBvUigfDJw9wCwa9Cl6OcWWguE
-	 MzTnAfc1c13KRIXAKZmf+4dPekyzamNKpII0xPuMqfS7wsc47OCknTrO3iv9rzCbva
-	 XFEeHZ0gXjMRYwRnWR6ZgkrZ3a5HJXEqquWXSHHrZ1T0saBA8fr2YiYv3fhfwGp+ox
-	 p11Dg8/ZY1SpifPfZw5QehgQDJWzQjkGPKD2zNebBnsKi/nJIc+7NtL9wAnuX93a7m
-	 ngHD3Fm+TJU1Q==
+	b=Oay3GZcqNn4Hv7Y+UbdXvC9TLgQHkXU1MI5/GIq6rHdjdLK6WHdhLhzu5xv99F2Wy
+	 yQa0u1n5rN2ZcoXnC/3iqvoAFvBcNN6bPbzQkUDEUeSCUkDjTzKGAy2sKKweuLNEOm
+	 XG/Ux3fxLGY9aiXj9Bs5adOOB/dJta7Je7U0j351CPpSilM99sBgXbcFAG2A0DoLlZ
+	 oEjiCvYbfLdT3GCEiRB/uUvZLwVR33An3+6ioc4scujTp1GnvyJ7hMldpbP+Zia1PZ
+	 39nMe9qmBJ2ZhoRhYtPDhsDV4DTlDLK4zdXTfe80OyzV4nORI0Y9KTR/8jACJMpXUZ
+	 nFeQwF+aL0Mew==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 04/28] KVM: arm64: Drop __HCRX_EL2_* masks
+Subject: Re: [PATCH v11 4/4] RDMA/mlx5: get tph for p2p access when
+ registering dma-buf mr
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marc Zyngier" <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>
-In-Reply-To: <20260702160248.1377250-5-maz@kernel.org>
-References: <20260702160248.1377250-1-maz@kernel.org>
- <20260702160248.1377250-5-maz@kernel.org>
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260702181025.2694961-5-zhipingz@meta.com>
+References: <20260702181025.2694961-1-zhipingz@meta.com>
+ <20260702181025.2694961-5-zhipingz@meta.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 18:34:49 +0000
-Message-Id: <20260702183449.B14E81F000E9@smtp.kernel.org>
+Date: Thu, 02 Jul 2026 18:42:12 +0000
+Message-Id: <20260702184212.AD1161F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] Failure to re-query PCIe TPH metadata upon DMA-buf invalidation
+
 Pre-existing issues:
-- [High] Unsanitized architectural RES0/RES1 bits in HCRX_EL2 allow nested =
-guests to enable hidden hardware features and trigger CONSTRAINED UNPREDICT=
-ABLE behavior.
+- [High] Memory leak of struct mlx5_st_idx_data in mlx5_st_dealloc_index()
 --
 
-commit c528765403e37bb993d380c50856d508033ad43a
-Author: Marc Zyngier <maz@kernel.org>
+commit e39795c3bd224c81bae70b87815075c4489e3f9e
+Author: Zhiping Zhang <zhipingz@meta.com>
+Subject: RDMA/mlx5: get tph for p2p access when registering dma-buf mr
 
-KVM: arm64: Drop __HCRX_EL2_* masks
+This commit allows the mlx5 importer to query a dma-buf exporter's chosen
+PCIe TLP Processing Hint (TPH) Steering Tag. It updates MR registration to
+use this metadata for p2p access and program requester-side TPH on the
+outbound mkey, falling back to no-TPH routing if unavailable.
 
-This patch removes the legacy __HCRX_EL2_* masks and the manual RES1
-sanitization in get_reg_fixed_bits(). It intends to rely on existing
-auto-generated masks and boot-time checks to prevent unhandled bits from
-being exploited.
-
-> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index 0622162b089e5..16d8148dc3f12 100644
-> --- a/arch/arm64/kvm/config.c
-> +++ b/arch/arm64/kvm/config.c
+> diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5=
+/mr.c
+> index e6b74955d95dc..55216ae637614 100644
+> --- a/drivers/infiniband/hw/mlx5/mr.c
+> +++ b/drivers/infiniband/hw/mlx5/mr.c
 [ ... ]
-> @@ -933,7 +933,7 @@ static const struct reg_bits_to_feat_map hcrx_feat_ma=
-p[] =3D {
+> @@ -903,6 +947,52 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_atta=
+ch_ops =3D {
+>  	.invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
 >  };
 > =20
-> =20
-> -static const DECLARE_FEAT_MAP(hcrx_desc, __HCRX_EL2,
-> +static const DECLARE_FEAT_MAP(hcrx_desc, HCRX_EL2,
->  			      hcrx_feat_map, FEAT_HCX);
+> +static void get_pci_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_bu=
+f *dmabuf,
+> +				  u16 *st_index, u8 *ph)
 
-[Severity: High]
-This is a pre-existing issue, but hcrx_feat_map lacks FORCE_RES0 and
-FORCE_RES1 declarations. Unlike other system register maps, this means
-compute_reg_resx_bits() will omit the architectural RES0/RES1 bits from
-the KVM masks.
+[Severity: Medium]
+When an unpinned DMA-buf MR is invalidated and then subsequently faulted ba=
+ck
+in via pagefault_dmabuf_mr() in drivers/infiniband/hw/mlx5/odp.c, the driver
+calls ib_umem_dmabuf_map_pages() to map the pages, but it doesn't seem to
+re-query the TPH metadata using get_pci_tph_mr_dmabuf() or
+dma_buf_get_pci_tph().
 
+Since the exporter might move the memory and change the preferred TPH steer=
+ing
+tag, does the driver need to re-evaluate the TPH metadata upon invalidation
+and re-mapping to ensure DMA traffic isn't sent to a stale or suboptimal
+NUMA node?
+
+> +{
+> +	u16 local_st_index;
+> +	u16 steering_tag;
 [ ... ]
-> @@ -1579,7 +1579,6 @@ struct resx get_reg_fixed_bits(struct kvm *kvm, enu=
-m vcpu_sysreg reg)
->  		break;
->  	case HCRX_EL2:
->  		resx =3D compute_reg_resx_bits(kvm, &hcrx_desc, 0, 0);
-> -		resx.res1 |=3D __HCRX_EL2_RES1;
->  		break;
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/n=
+et/ethernet/mellanox/mlx5/core/lib/st.c
+> index 997be91f0a135..bf14a7a6df15e 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
+[ ... ]
+> @@ -152,8 +147,46 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev, e=
+num tph_mem_type mem_type,
+>  	mutex_unlock(&st->lock);
+>  	return ret;
+>  }
+> +EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
+[ ... ]
+> +EXPORT_SYMBOL_GPL(mlx5_st_get_index);
+> +
+>  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
+>  {
+>  	struct mlx5_st_idx_data *idx_data;
 
 [Severity: High]
-Does removing this manual mask leave the RES1 bits completely unsanitized?
+This is a pre-existing issue, but I noticed it while reviewing this patch
+since this patch broadens its exposure.
 
-Since hcrx_feat_map doesn't supply the architectural bits to
-compute_reg_resx_bits(), a nested guest might be able to write arbitrary
-values to the HCRX_EL2 VNCR page.=20
+In mlx5_st_dealloc_index(), when the use count reaches zero:
 
-When KVM reads this in __activate_traps_common(), it only masks
-NV_HCRX_GUEST_EXCLUDE before writing directly to the physical SYS_HCRX_EL2:
+	if (refcount_dec_and_test(&idx_data->usecount)) {
+		xa_erase(&st->idx_xa, st_index);
+		/* We leave PCI config space as was before, no mkey will refer to it */
+	}
 
-arch/arm64/kvm/hyp/include/hyp/switch.h:__activate_traps_common() {
-        ...
-        u64 val =3D __vcpu_sys_reg(vcpu, HCRX_EL2);
-        hcrx |=3D (val & ~NV_HCRX_GUEST_EXCLUDE);
-        hcrx &=3D ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
-        ...
-        write_sysreg_s(hcrx, SYS_HCRX_EL2);
-}
+Is there a memory leak here? The dynamically allocated idx_data is erased f=
+rom
+the xarray but does not appear to be passed to kfree().
 
-Could this allow the guest to bypass hypervisor feature emulation or trigger
-CONSTRAINED UNPREDICTABLE hardware states?
+Since unprivileged users can repeatedly create and destroy MRs, could this
+lead to kernel memory exhaustion over time?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702160248.1377=
-250-1-maz@kernel.org?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702181025.2694=
+961-1-zhipingz@meta.com?part=3D4
