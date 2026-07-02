@@ -1,170 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7F537A852;
-	Thu,  2 Jul 2026 15:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727E731A549;
+	Thu,  2 Jul 2026 15:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783006987; cv=none; b=DazjYoYqLBxT1zexM2l4vSrIrQDr45DE1fAQPvuJ3Wp+ILjfu2Pd0sA32lpLC/XVXirbZnTCmzs78vNy7mOD4DiY59Vq8a2OeRjIjcTvKE/5C39CaI7PZiiegtSCoa0jiyyAsKDjTnnf8L++aWTdFCpDXuseBHiGdm6wKXJiJAY=
+	t=1783007207; cv=none; b=IzZ8E4zYMeL1Rt/V0BYOy62xbjl4pOM3OlHaCCjFVwXUBrvVGn7kaT6SRmc1qhPibDWQJGO049kzEqAtQgHUlOUsMnoBMqv1WDZUr/RvuinSqL5bIfHA2jtE9i4hcsswmCpf0ub5e+eADQDPcRrku2MazUBwxXU9NGegMc9aue4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783006987; c=relaxed/simple;
-	bh=MdomA+tab8Subwvcr7OzxtUfKkCH/gKq3tcuNqO3VOE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jGnpUp+MLWTWstQ5bNAUY1PjQYWpPXudljLUskww5k1033pL8yJxi1nhlFbxWQjucl3luIq5Xb3Xdm1uBr+OEU9e8LDfnfIgn2tyOTWqb+0v255RSInVh2YZJbe/DAqDtjk8yIkZb6DoJ8JEWALPfZHaOahoaE+gVXr2O10fKXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOmg4s/W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783007207; c=relaxed/simple;
+	bh=BpqZXQ7tSLN0BXpsRqxL1k64attfyEvZ0QKJFK8v+XM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Subject; b=hC/bQcj/Sax9EYAlN3dlx2Ma3YCD8B9+fVglM0S7JkN8wf9OWYw9KfU8XRfGgfPr8OgslX51SwVKyfQSdl6HinWIcj60Ua2/pSl3/ptGMb3p2A2Ai4Hoy/KM9esaj0xuSfpc+mxmTF69gjzvSV6qv7UM9LcQNJ9Og+R18EXCnhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=NMJlC0W9; arc=none smtp.client-ip=204.191.154.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOmg4s/W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF81F000E9;
-	Thu,  2 Jul 2026 15:43:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006986;
-	bh=53LbAyq+b/DK5/+9BCkLe/+647+sClpS7jluVjY5Y5k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MOmg4s/WpDkHso1DB65hDIZHtoRX0Jm9iUu3aMkQkF72Vrp/RYSJkG0/9Z7/yQltr
-	 YDDYDn6kKBPn1gWCJoIeLXA+2eJQeB+2dKUtiy1QjLshhcHmZaozQxE5YYFbM2rnXE
-	 61obfWbXeb3g8NU10HzscvsBilCo/DdRDWfCa07d1LWgzFk03c1PO976rLTrHDN4tK
-	 j3Ac+1TpsIYxnQRNRS7JJ12bgvuj+gpuzIlFd42cSdMtM9HZFZ5z+QbX7SEVFV+xEY
-	 bJOwfnpGoV46kM1BD7AUFZu468pcSXqx6I8gpXq8n35ROkby8bIexgNtlQL7wKDnu5
-	 HwJAsxeiolhaQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 2/8] KVM: s390: Fix unlikely NULL gmap dereference
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260702152406.204782-3-imbrenda@linux.ibm.com>
-References: <20260702152406.204782-1-imbrenda@linux.ibm.com>
- <20260702152406.204782-3-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 15:43:05 +0000
-Message-Id: <20260702154306.3ECF81F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="NMJlC0W9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
+	MIME-Version:Date:Message-ID:content-disposition;
+	bh=kyJzbfSqoUXaNBv1Ig4SDg9TeDVODqylZdwHs0c6zpw=; b=NMJlC0W9kihForMdCYYnlLUQ6m
+	Eo6IW7rO0b1c3osWSWCUUldacbvkYcIHJHIs657/dhe4oEXiTtpTQ/dWk3ifTTLUQaEbidde5h+Za
+	PcycMOPmLVTwDWHJQDPiDcGfQFjTrxGqlbaAn1kK1DM5rhbiznK9fasb+RfVbru6MJxXbEPCEc2BB
+	ISWRcrKmHu4YocW7NLlTKBCzF8RiOcqDAlrl1qmazF+AWcg8m31/uJD0FplDbG195cflmPyzGuwqL
+	1GZfpCJbvEWPB56K9HdzIMLEdCpT6Q5vbDcy9K/PQB2P0uo3+xF6t8DCMd8+dsioqd8R68fxzYcGo
+	8krZuUbA==;
+Received: from s0106ac1f6bb1ecac.cg.shawcable.net ([96.51.150.74] helo=[10.0.33.8])
+	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <logang@deltatee.com>)
+	id 1wfJcc-00000006yLj-3jeO;
+	Thu, 02 Jul 2026 09:46:39 -0600
+Message-ID: <26f74cf0-8892-4672-b0e1-1f1a385c42bb@deltatee.com>
+Date: Thu, 2 Jul 2026 09:45:38 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
+ Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>
+Cc: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260701171245.90111-1-matt@ozlabs.org>
+ <20260701171245.90111-3-matt@ozlabs.org>
+Content-Language: en-CA
+From: Logan Gunthorpe <logang@deltatee.com>
+In-Reply-To: <20260701171245.90111-3-matt@ozlabs.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 96.51.150.74
+X-SA-Exim-Rcpt-To: matt@ozlabs.org, alex@shazbot.org, leon@kernel.org, jgg@nvidia.com, amastro@fb.com, christian.koenig@amd.com, bhelgaas@google.com, kevin.tian@intel.com, praan@google.com, mngyadam@amazon.de, dmatlack@google.com, bjorn@kernel.org, sumit.semwal@linaro.org, ankita@nvidia.com, apopple@nvidia.com, vivek.kasireddy@intel.com, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: logang@deltatee.com
+X-Spam-Level: 
+Subject: Re: [PATCH v4 02/10] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [Critical] The patch incompletely fixes the race condition between vCPU c=
-reation and `KVM_RUN`. While it fixes the `gmap` NULL pointer dereference, =
-it leaves the initialization of other critical `sie_block` fields (`sca_add=
-_vcpu`, `epoch`, `epdx`, `ictl`) in `kvm_arch_vcpu_postcreate()`, which can=
- run concurrently with `KVM_RUN` and corrupt host memory.
-- [High] Calling `gmap_remove_child()` without holding `children_lock` in `=
-kvm_arch_vcpu_create()` error path.
-- [High] Concurrent creation of vCPUs with the same `vcpu_id` clears the va=
-lid vCPU's SCA entry.
---
 
-commit 8b61d8766d5d3ccd96fcdcaf7ad4379e712b4282
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On 2026-07-01 11:12 a.m., Matt Evans wrote:>
+>  PCI POWER CONTROL
+> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> index 33c88432b728..59d70bc84cc9 100644
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -206,11 +206,7 @@ config PCIE_TPH
+>  config PCI_P2PDMA
+>  	bool "PCI peer-to-peer transfer support"
+>  	depends on ZONE_DEVICE
+> -	#
+> -	# The need for the scatterlist DMA bus address flag means PCI P2PDMA
+> -	# requires 64bit
+> -	#
+> -	depends on 64BIT
+> +	select PCI_P2PDMA_CORE
 
-KVM: s390: Fix unlikely NULL gmap dereference
+Can we remove this dependency on 64BIT? Althogh it looks like
+af2880ec440 complicated the issue a bit.
 
-When creating a new vCPU, kvm_vm_ioctl_create_vcpu() will call
-kvm_arch_vcpu_postcreate() after the file descriptor for the new vCPU
-has been created. The new file descriptor has not been returned yet,
-but a malicious userspace program could try to guess it.
+If I remember correctly, the original reason for this is because on
+64bit systems dma_flags fit into unusued space in struct scatterlist and
+on 32bit systems this space didn't exist and thus adding the flag
+required increasing the size of the structure which wasn't desirable at
+the time.
 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 23c817595e28d..4a6d903e35231 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3604,10 +3604,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcp=
-u)
->  	vcpu->arch.sie_block->epdx =3D vcpu->kvm->arch.epdx;
->  	preempt_enable();
->  	mutex_unlock(&vcpu->kvm->lock);
-> -	if (!kvm_is_ucontrol(vcpu->kvm)) {
-> -		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
-> +	if (!kvm_is_ucontrol(vcpu->kvm))
->  		sca_add_vcpu(vcpu);
+But af2880ec440 introduced CONFIG_NEED_SG_DMA_FLAGS which doesn't depend
+on 64bit which means if CONFIG_IOMMU_DMA and CONFIG_SWIOTLB are now set
+on 32bit systems that structure will grow quite a bit.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does leaving sca_add_vcpu() =
-and
-other sie_block initialization in kvm_arch_vcpu_postcreate() leave a race
-condition open?
+So maybe at this point it's fine to enable this on 32bit systems and we
+can remove this requirement. However, I think we should do that
+explicitly in its own patch, not hide it in this refactoring patch.
 
-The commit message notes that malicious userspace can start the newly creat=
-ed
-vCPU before kvm_arch_vcpu_postcreate() finishes. If kvm_vm_ioctl_create_vcp=
-u()
-drops vcpu->mutex and kvm->lock before calling kvm_arch_vcpu_postcreate(),
-can KVM_RUN execute concurrently?
-
-If KVM_RUN enters the guest before sca_add_vcpu() completes:
-
-arch/s390/kvm/kvm-s390.c:sca_add_vcpu() {
-	...
-	vcpu->arch.sie_block->scaoh =3D sca_phys >> 32;
-	vcpu->arch.sie_block->scaol =3D sca_phys & ESCA_SCAOL_MASK;
-	vcpu->arch.sie_block->ecb2 |=3D ECB2_ESCA;
-	...
-}
-
-Will the hardware use physical address 0 as the System Control Area base and
-overwrite host absolute physical address 0 when updating inter-processor
-states?
-
->  	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
->  	    vcpu->kvm->arch.user_operexec)
->  		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
-
-[ ... ]
-
-> @@ -3850,6 +3848,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->  		vcpu->arch.gmap =3D gmap_new_child(vcpu->kvm->arch.gmap, -1UL);
->  		if (!vcpu->arch.gmap)
->  			goto out_free_sie_block;
-> +	} else {
-> +		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
->  	}
-> =20
->  	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
-
-[Severity: High]
-This is a pre-existing issue, but does the error handling path for ucontrol
-vCPUs in kvm_arch_vcpu_create() safely remove the gmap child?
-
-If kvm_s390_vcpu_setup() fails, the out_ucontrol_uninit path calls
-gmap_remove_child(vcpu->arch.gmap). Looking at gmap_remove_child() in
-arch/s390/kvm/gmap.c, it modifies child->list and has a lockdep assertion
-for child->parent->children_lock:
-
-arch/s390/kvm/gmap.c:gmap_remove_child() {
-	lockdep_assert_held(&child->parent->children_lock);
-
-	list_del(&child->list);
-	...
-}
-
-Since kvm_arch_vcpu_create() does not acquire children_lock before jumping =
-to
-out_ucontrol_uninit, could this cause list corruption if concurrent creation
-failures race?
-
-[Severity: High]
-This is also a pre-existing issue, but is there a risk of clearing a valid
-SCA entry if userspace concurrently creates two vCPUs with the same vcpu_id?
-
-Duplicate ID detection occurs in kvm_vm_ioctl_create_vcpu() after
-kvm_arch_vcpu_create() succeeds. If the ID check fails, it eventually calls
-kvm_arch_vcpu_destroy(), which unconditionally calls sca_del_vcpu():
-
-arch/s390/kvm/kvm-s390.c:sca_del_vcpu() {
-	...
-	sca->cpu[vcpu->vcpu_id].sda =3D 0;
-	...
-}
-
-If a valid vCPU already exists with this vcpu_id, does the failed creation
-thread wipe out the valid vCPU's SCA interrupt delivery structures?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702152406.2047=
-82-1-imbrenda@linux.ibm.com?part=3D2
+Logan
