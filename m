@@ -1,416 +1,137 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26A38AC65
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 06:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E1B2D837C
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 07:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782975057; cv=none; b=QKw5nKbHDod7hoe9Clg8wedi81hyyxgHHFVkz/8A+MSub7dY6yQa+fLLH9x+NpPlovED1sfKRPFibNxGJkuhzBqyxOBYzf4/IuOZysutIuC/8mF57nS8iNLD/aLhG2JBlvn2erXsOKh79sbjUarRLeZmF/BlTAbmVUL3vE9hiyo=
+	t=1782975826; cv=none; b=A33Trq9BAyvfp8zDFcFRX7RlmtPhx3Rc6x7SZTou5lbx51fQ3IG30iVmlCfz7RQ4IjSt3ljfe4GtfvydCYH0PCZvt+ZqjNRJaYbfK4tEWgQMFu8O18RJa2HObognDJexer2nPB/UshbV7BuYARSiG4mR+oPtynJf2rrZgMX/rdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782975057; c=relaxed/simple;
-	bh=VEQq8f1+yPg3UVCiwMi+stcFmUHJV9JPXAyDkWT2LDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3qh19hzznu9P/e594bbExllTbv+HLodoBk5kkOnY6wWP0PU4Xj4cB1dS/Jb8Cuy0w/o7Flu9KFBJCwnp9L+T6t65RUMaovOX79jGgabfbZHnwR0HD1QmTwwtbUGhMcestSo1ZypJkJtBjghmf0wLaqP1bXdTEotFRaAbtWPLxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=zhZ2UX7X; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1782975826; c=relaxed/simple;
+	bh=G31s4HpEd+BVQ6tovNlNHC2GFeqjS/+qowVXSsZOcL8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=pnZPXMtWFSeuxj/1ZJMXXJ1/7VHJvbjrioigdIEm/5BZTQFCVpgzCNpONtReoB5eOOZU3N5dZ54c0k68zaSCFMgjn5+0/4J9rgFGesoJE10ddim1uXb2w+uFo7G24W9SakYF+llcCYKDc4xhcuC0E/glEY3dadbeqISuWoAk2Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THwSshau; arc=none smtp.client-ip=74.125.227.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="zhZ2UX7X"
-Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6626odVk3434951
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Wed, 1 Jul 2026 23:50:50 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6626odVk3434951
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026062701; t=1782975051;
-	bh=A60ar5ntEf1fekF0kMG/0LpHQXgf4VEqsapt7/zO0cg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhZ2UX7XZROEVh4JS66/MMIr/+/fFcsmH/E1Gm7n3F8qnFJFejJhPdaN4KH/54E+h
-	 2GhWVDblaHDYSjMTI0O08q83MgOgqWxBwrXu6LAIwqlmVNkudBrVUpJ20Ih+2/FyV2
-	 v41voR92ISrAnDVJkd5Jzh9KDjb1/wip7WPn24oRXtQkxoQwYg1ZDe+8TlN96wGEOc
-	 5dxZhwMC1eSeL7jrcP5lgFRZIsDky2ZPqQ0JW9sEpgrotcAckch58E5PAxGe+kUg99
-	 TYsZamYO8p+tKVPay6K5DBJ7YlQwdMhZ3qI+ERMDMZHx9eds7UQt4Pk/hqLb1QmKrM
-	 K/bVcpUwWtQ0g==
-From: Xin Li <xin@zytor.com>
-To: pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
-        sohil.mehta@intel.com
-Subject: [kvm-unit-tests PATCH v1 11/11] x86/vmx: Validate #GP injection for EFER.LME clear with FRED enabled
-Date: Wed,  1 Jul 2026 23:50:39 -0700
-Message-ID: <20260702065039.3434909-12-xin@zytor.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260702065039.3434909-1-xin@zytor.com>
-References: <20260702065039.3434909-1-xin@zytor.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THwSshau"
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ca26c5dfcdso3080705ad.0
+        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 00:03:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782975824; x=1783580624; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SyvGLflMKxj5TJj0MbBJrl+6Uj8IG1b8yKVmm5bW71o=;
+        b=THwSshauwWjfaY18ZIs9PgnG8Rk32OAE5liA1IH9HMzl/5FVCUMRByV6ihzDhkqRVy
+         OnXwrPASGNYLIfgfEMlnwAtGyZJTocIU2O8uLS74MC0nh5pnmPId4GoS0dcCOtBEo9iS
+         dPYxs6ohQFPBgO/twnChrzjg3F5lIiZ75TUzkfdSUcjwlNQNQyAPQx0bIkNBsDBXB5wE
+         Pce8Rsfj7IBj3lrxJ4LPWD3nch1Y6Aens9vwU9AcvsHACQWs0aiPRLSBQcwghcQgz9nC
+         iuwMMLyStCTxk6fJA7QlyfLH57b+dpnbWq9yclkR7vT+pUA1wU8THA5QcwmEIrZdjTyj
+         Npng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782975824; x=1783580624;
+        h=content-transfer-encoding:subject:from:cc:to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SyvGLflMKxj5TJj0MbBJrl+6Uj8IG1b8yKVmm5bW71o=;
+        b=EXlBhli1zyTrRPl/swQN/HxDh2y8vew027CdddnNwHLXhcr8emHIH/VZCi1n7CMS2b
+         RtZDwn7MrmWKp2MUr0+EhhLEPLYD+Ko2Sh7cNan67KVFQrbD0ysNKyonznkI+blBGQ5R
+         vos4+ZTG+mJ01CEkpadVvtrwR9mMQU3X1ReJJmwbx3BojZhujq2/ZiTX0B7R9AqpN1u3
+         CLm2rn/mfH/ap7exFdAHEMq2P76Tl8w+VX2o6qUgC1SXKjDuvSIcRIFVOH54ALbrVtgS
+         /wcRfW6evsYWjLThlVIePyLgy3Q+epfFEKj9/U9jfzU7u2FMrFDROp7giCCtxhhIFLr+
+         5CSg==
+X-Gm-Message-State: AOJu0YwIfAlAigGb9sDbdCBRL78oRtsy2nf76NYUfyxMmz8bP7dXVbKm
+	S9xySV8Fvrp4/cZvhMX9+jEHkg2hQh3DR0/I4XHZOPIXdyvhIRR2P72nWKGC8SYp6SsUeQ==
+X-Gm-Gg: AfdE7cnIKdy64mOdZ5hGq+pmT090Jx6Ihrfb/4w4FTl68NXE9CTifmZ+hKAIA0cHDea
+	DjflSMFfDm+VRlRLuDIgG3GcAr3gGoe3Re0wgYFBetZwHY98OQQEMTL1jFVdRbqJ712MqKTNB+6
+	vN6/CMXCaWQ8hn4oBU/3bXGUQt624tjkF86oC7jUX6T1cdgddHAAq786lxf7XlFJD12JrbwYa98
+	sI0nBQbIzHJq5SGt6YOgOEXcP4CmAeAZ2rt77kQb6kwwlLluPh/BT3GvQHp/tFwOO8RFfROo6MV
+	HOD2+psDYP8qBEXl+urAFQrXgWFe46ipUy0FR25Tdd45XVuDdbVgryW1a+XOtQgclDZy/nwAjZw
+	y+/mZHyafNEM7N2AksK/PKZ8fK5sDrav5SGjI9zEv5cyii4O8LrXP2gutLMwyhgEGahF+tsiUvj
+	QH9ONwW8ZchjONk3+tYi8vRRNt1exPwtrTSeHCKYHj5tsd7SBHE2PznhQg2mOpeBtDCRTiEg/ii
+	hEIAP1me/iEr0WJCgofpBbIH+gX+oQ=
+X-Received: by 2002:a17:90b:4c92:b0:36a:8254:8eb1 with SMTP id 98e67ed59e1d1-380aa0bbbb8mr4181629a91.6.1782975824091;
+        Thu, 02 Jul 2026 00:03:44 -0700 (PDT)
+Received: from [127.0.0.1] ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-380e17ce28dsm545933a91.14.2026.07.02.00.03.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2026 00:03:43 -0700 (PDT)
+Message-ID: <010b3966-8c8c-4f19-8135-a1041d5f97d6@gmail.com>
+Date: Thu, 2 Jul 2026 15:03:45 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com
+From: sundayjiang <jianghaotian.sunday@gmail.com>
+Subject: [PATCH] KVM: TDX: Use check_shl_overflow() for nr_pages validation
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The FRED specification mandates that FRED be disabled prior to leaving long
-mode.  Add two test cases, one for L1 guest and the other for L2 guest, to
-validate if KVM correctly injects #GP when a vCPU attempts to disable long
-mode with FRED active.
+ From 4be3dcf1fca4acd2bf9c22bd604c913ba1774035 Mon Sep 17 00:00:00 2001
+From: Haotian Jiang <jianghaotian.sunday@gmail.com>
+Date: Thu, 2 Jul 2026 14:13:27 +0800
+Subject: [PATCH] KVM: TDX: Use check_shl_overflow() for nr_pages validation
 
-Signed-off-by: Xin Li <xin@zytor.com>
+The nr_pages field in struct kvm_tdx_init_mem_region is a u64 that comes
+directly from userspace via copy_from_user().  The current validation
+uses a manual overflow check:
+
+     region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa
+
+When nr_pages >= 2^52, the shift (nr_pages << PAGE_SHIFT) wraps around
+to a small value, bypassing the wrap check.  While downstream protections
+(gfn_to_memslot() returning NULL for GFNs outside any memslot, and
+kvm_slot_has_gmem() checking for NULL) prevent any actual out-of-bounds
+access, the overflow itself is a real bug that should be caught at the
+validation layer.
+
+Replace the manual overflow check with check_shl_overflow() and
+check_add_overflow() to correctly detect the wrap-around, and use the
+computed end_gpa for the subsequent vt_is_tdx_private_gpa() check to
+avoid redundant and potentially overflowing arithmetic.
+
+Signed-off-by: Haotian Jiang <jianghaotian.sunday@gmail.com>
 ---
- lib/x86/processor.h |   2 +
- x86/vmx.c           |  92 +++++++++++++++++++++++++++++++++++++
- x86/vmx.h           |  84 ++++++++++++++++++++++++++++++++++
- x86/vmx_tests.c     | 108 +++++++++++++++++++++++++++++++++++++++++++-
- 4 files changed, 285 insertions(+), 1 deletion(-)
+  arch/x86/kvm/vmx/tdx.c | 10 ++++++++--
+  1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/lib/x86/processor.h b/lib/x86/processor.h
-index b2726d93..5711c41f 100644
---- a/lib/x86/processor.h
-+++ b/lib/x86/processor.h
-@@ -139,6 +139,8 @@ static inline u64 get_non_canonical(u64 addr, u64 mask)
- #define X86_CR4_PKS		BIT(X86_CR4_PKS_BIT)
- #define X86_CR4_LAM_SUP_BIT	(28)
- #define X86_CR4_LAM_SUP		BIT(X86_CR4_LAM_SUP_BIT)
-+#define X86_CR4_FRED_BIT	(32)
-+#define X86_CR4_FRED		BIT(X86_CR4_FRED_BIT)
- 
- #define X86_EFLAGS_CF_BIT	(0)
- #define X86_EFLAGS_CF		BIT(X86_EFLAGS_CF_BIT)
-diff --git a/x86/vmx.c b/x86/vmx.c
-index df212e19..4c8ee9d4 100644
---- a/x86/vmx.c
-+++ b/x86/vmx.c
-@@ -1892,6 +1892,98 @@ out:
- 	return 0;
- }
- 
-+static fred_handler fred_user_handler;
-+static fred_handler fred_kernel_handler;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 989ab29b8c6f..9c6aa95ea1e1 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3234,14 +3234,20 @@ static int tdx_vcpu_init_mem_region(struct 
+kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+      if (cmd->flags & ~KVM_TDX_MEASURE_MEMORY_REGION)
+          return -EINVAL;
+
++    u64 nr_bytes, end_gpa;
 +
-+void fred_set_user_handler(fred_handler handler)
-+{
-+	fred_user_handler = handler;
-+}
+      if (copy_from_user(&region, u64_to_user_ptr(cmd->data), 
+sizeof(region)))
+          return -EFAULT;
+
++    if (check_shl_overflow(region.nr_pages, PAGE_SHIFT, &nr_bytes) ||
++        check_add_overflow(region.gpa, nr_bytes, &end_gpa))
++        return -EINVAL;
 +
-+void fred_set_kernel_handler(fred_handler handler)
-+{
-+	fred_kernel_handler = handler;
-+}
-+
-+static void __attribute__((__used__)) fred_entry_from_user(struct fred_stack_frame *fred_stack_frame)
-+{
-+	if (fred_user_handler)
-+		return fred_user_handler(fred_stack_frame);
-+}
-+
-+static void __attribute__((__used__)) fred_entry_from_kernel(struct fred_stack_frame *fred_stack_frame)
-+{
-+	if (fred_kernel_handler)
-+		return fred_kernel_handler(fred_stack_frame);
-+}
-+
-+#define FRED_PUSH_AND_CLEAR_REGS				\
-+	"	push   %rdi\n\t"				\
-+	"	push   %rsi\n\t"				\
-+	"	push   %rdx\n\t"				\
-+	"	push   %rcx\n\t"				\
-+	"	push   %rax\n\t"				\
-+	"	push   %r8\n\t"					\
-+	"	push   %r9\n\t"					\
-+	"	push   %r10\n\t"				\
-+	"	push   %r11\n\t"				\
-+	"	push   %rbx\n\t"				\
-+	"	push   %rbp\n\t"				\
-+	"	push   %r12\n\t"				\
-+	"	push   %r13\n\t"				\
-+	"	push   %r14\n\t"				\
-+	"	push   %r15\n\t"				\
-+	"	xor    %esi,%esi\n\t"				\
-+	"	xor    %edx,%edx\n\t"				\
-+	"	xor    %ecx,%ecx\n\t"				\
-+	"	xor    %r8d,%r8d\n\t"				\
-+	"	xor    %r9d,%r9d\n\t"				\
-+	"	xor    %r10d,%r10d\n\t"				\
-+	"	xor    %r11d,%r11d\n\t"				\
-+	"	xor    %ebx,%ebx\n\t"				\
-+	"	xor    %ebp,%ebp\n\t"				\
-+	"	xor    %r12d,%r12d\n\t"				\
-+	"	xor    %r13d,%r13d\n\t"				\
-+	"	xor    %r14d,%r14d\n\t"				\
-+	"	xor    %r15d,%r15d\n\t"
-+
-+#define FRED_POP_REGS						\
-+	"	pop    %r15\n\t"				\
-+	"	pop    %r14\n\t"				\
-+	"	pop    %r13\n\t"				\
-+	"	pop    %r12\n\t"				\
-+	"	pop    %rbp\n\t"				\
-+	"	pop    %rbx\n\t"				\
-+	"	pop    %r11\n\t"				\
-+	"	pop    %r10\n\t"				\
-+	"	pop    %r9\n\t"					\
-+	"	pop    %r8\n\t"					\
-+	"	pop    %rax\n\t"				\
-+	"	pop    %rcx\n\t"				\
-+	"	pop    %rdx\n\t"				\
-+	"	pop    %rsi\n\t"				\
-+	"	pop    %rdi\n\t"
-+
-+/* FRED entry points */
-+asm(
-+	".align 4096\n\t"
-+	".globl asm_fred_entrypoint_user\n\t"
-+	"asm_fred_entrypoint_user:\n\t"
-+	FRED_PUSH_AND_CLEAR_REGS
-+	"	mov    %rsp,%rdi\n\t"
-+	"	call   fred_entry_from_user\n\t"
-+	FRED_POP_REGS
-+	"	eretu\n\t"
-+	".org	asm_fred_entrypoint_user + 256, 0xcc\n\t"
-+	".globl asm_fred_entrypoint_kernel\n\t"
-+	"asm_fred_entrypoint_kernel:\n\t"
-+	FRED_PUSH_AND_CLEAR_REGS
-+	"	mov    %rsp,%rdi\n\t"
-+	"	call   fred_entry_from_kernel\n\t"
-+	FRED_POP_REGS
-+	"	erets\n\t"
-+);
-+
- /*
-  * Add a teardown step. Executed after the test's main function returns.
-  * Teardown steps executed in reverse order.
-diff --git a/x86/vmx.h b/x86/vmx.h
-index e2e6df9c..c9c1abb6 100644
---- a/x86/vmx.h
-+++ b/x86/vmx.h
-@@ -59,6 +59,85 @@ struct invvpid_operand {
- 	u64 gla;
- };
- 
-+struct regs {
-+	u64 rax;
-+	u64 rcx;
-+	u64 rdx;
-+	u64 rbx;
-+	u64 cr2;
-+	u64 rbp;
-+	u64 rsi;
-+	u64 rdi;
-+	u64 r8;
-+	u64 r9;
-+	u64 r10;
-+	u64 r11;
-+	u64 r12;
-+	u64 r13;
-+	u64 r14;
-+	u64 r15;
-+	u64 rflags;
-+};
-+
-+struct fred_cs {
-+        u64     cs      : 16,
-+                sl      :  2,
-+                wfe     :  1,
-+                        : 45;
-+};
-+
-+struct fred_ss {
-+        u64     ss      : 16,
-+                sti     :  1,
-+                swevent :  1,
-+                nmi     :  1,
-+                        : 13,
-+                vector  :  8,
-+                        :  8,
-+                type    :  4,
-+                        :  4,
-+                enclave :  1,
-+                l       :  1,
-+                nested  :  1,
-+                        :  1,
-+                insnlen :  4;
-+};
-+
-+struct fred_stack_frame {
-+	u64 r15;
-+	u64 r14;
-+	u64 r13;
-+	u64 r12;
-+	u64 bp;
-+	u64 bx;
-+	u64 r11;
-+	u64 r10;
-+	u64 r9;
-+	u64 r8;
-+	u64 ax;
-+	u64 cx;
-+	u64 dx;
-+	u64 si;
-+	u64 di;
-+
-+	u64 orig_ax;
-+	u64 ip;
-+	union {
-+		u16 cs;
-+		u64 csx;
-+		struct fred_cs fred_cs;
-+	};
-+	u64 flags;
-+	u64 sp;
-+	union {
-+		u16 ss;
-+		u64 ssx;
-+		struct fred_ss fred_ss;
-+	};
-+	u64 edata;
-+	u64 resv;
-+};
-+
- union exit_reason {
- 	struct {
- 		u32	basic			: 16;
-@@ -1031,4 +1110,9 @@ void test_add_teardown(test_teardown_func func, void *data);
- void test_skip(const char *msg);
- void test_set_guest_finished(void);
- 
-+extern void *asm_fred_entrypoint_user;
-+typedef void (*fred_handler)(struct fred_stack_frame *fred_stack_frame);
-+void fred_set_user_handler(fred_handler handler);
-+void fred_set_kernel_handler(fred_handler handler);
-+
- #endif
-diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
-index aafcb465..6e2f8c4c 100644
---- a/x86/vmx_tests.c
-+++ b/x86/vmx_tests.c
-@@ -547,7 +547,8 @@ static int test_ctrl_efer_exit_handler(union exit_reason exit_reason)
- 	return VMX_TEST_VMEXIT;
- }
- 
--u32 guest_cr0, guest_cr4;
-+u32 guest_cr0;
-+u64 guest_cr4;
- 
- static void cr_shadowing_main(void)
- {
-@@ -12573,6 +12574,109 @@ static void vmx_entry_fred_test(void)
- 	test_set_guest_finished();
- }
- 
-+static void vmx_fred_cr4_test_kernel_handler(struct fred_stack_frame *fred_stack_frame)
-+{
-+	report(((read_cr4() & X86_CR4_FRED) == X86_CR4_FRED) &&
-+	       fred_stack_frame->fred_ss.type == 3 &&
-+	       fred_stack_frame->fred_ss.vector == 13,
-+	       "#GP on clearing EFER.LME when FRED enabled");
-+	/* Skip the WRMSR instruction that caused the #GP */
-+	fred_stack_frame->ip += 2;
-+}
-+
-+static void vmx_fred_cr4_test(void)
-+{
-+	if (!(ctrl_enter_rev.clr & ENT_LOAD_FRED)) {
-+		report_skip("Load FRED state entry control is not available");
-+		return;
-+	}
-+
-+	ia32_efer = rdmsr(MSR_EFER);
-+	report((ia32_efer & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Guest in long mode");
-+
-+	report((read_cr4() & X86_CR4_FRED) != X86_CR4_FRED, "Guest FRED is disabled");
-+	write_cr4(read_cr4() | X86_CR4_FRED);
-+	report((read_cr4() & X86_CR4_FRED) == X86_CR4_FRED, "Guest FRED is enabled");
-+
-+	fred_set_kernel_handler(vmx_fred_cr4_test_kernel_handler);
-+
-+	wrmsr(MSR_IA32_FRED_CONFIG, (unsigned long)&asm_fred_entrypoint_user);
-+
-+	wrmsr(MSR_EFER, ia32_efer & ~EFER_LME);
-+
-+	report((read_cr4() & X86_CR4_FRED) == X86_CR4_FRED, "Guest FRED is enabled");
-+	report((rdmsr(MSR_EFER) & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Guest in long mode");
-+
-+	write_cr4(read_cr4() & ~X86_CR4_FRED);
-+
-+	test_set_guest_finished();
-+}
-+
-+static void vmx_nested_fred_cr4_test_guest(void)
-+{
-+	ia32_efer = rdmsr(MSR_EFER);
-+	report((ia32_efer & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Nested guest in long mode");
-+
-+	report((read_cr4() & X86_CR4_FRED) != X86_CR4_FRED, "Nested guest FRED is disabled");
-+	write_cr4(read_cr4() | X86_CR4_FRED);
-+	report((read_cr4() & X86_CR4_FRED) == X86_CR4_FRED, "Nested guest FRED is enabled");
-+
-+	fred_set_kernel_handler(vmx_fred_cr4_test_kernel_handler);
-+
-+	wrmsr(MSR_IA32_FRED_CONFIG, (unsigned long)&asm_fred_entrypoint_user);
-+
-+	wrmsr(MSR_EFER, ia32_efer & ~EFER_LME);
-+
-+	report((read_cr4() & X86_CR4_FRED) == X86_CR4_FRED, "Nested guest FRED is enabled");
-+	report((rdmsr(MSR_EFER) & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Nested guest in long mode");
-+
-+	write_cr4(read_cr4() & ~X86_CR4_FRED);
-+
-+	vmcall();
-+}
-+
-+static void vmx_nested_fred_cr4_test(void)
-+{
-+	unsigned long guest_fred_config;
-+
-+	if (!(ctrl_enter_rev.clr & ENT_LOAD_FRED)) {
-+		report_skip("Load FRED state entry control is not available");
-+		return;
-+	}
-+
-+	report((read_cr4() & X86_CR4_FRED) != X86_CR4_FRED, "Guest FRED is disabled");
-+	report((rdmsr(MSR_EFER) & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Guest in long mode");
-+
-+	/* Allow the guest to read FRED MSRs directly */
-+	msr_bmp_init();
-+
-+	vmcs_set_bits(ENT_CONTROLS, ENT_LOAD_FRED);
-+	vmcs_set_bits(EXI_CONTROLS, EXI_ACTIVATE_CTRL1);
-+	vmcs_set_bits(EXI_CTRL1, EXI_SAVE_FRED | EXI_LOAD_FRED);
-+
-+	vmcs_write(GUEST_FRED_CONFIG, 0);
-+
-+	test_set_guest(vmx_nested_fred_cr4_test_guest);
-+	enter_guest();
-+
-+	guest_fred_config = vmcs_read(GUEST_FRED_CONFIG);
-+	report(guest_fred_config == (unsigned long)&asm_fred_entrypoint_user,
-+	       "VMCS guest FRED config is %lx", guest_fred_config);
-+
-+	report((read_cr4() & X86_CR4_FRED) != X86_CR4_FRED, "Guest FRED is disabled");
-+	report((rdmsr(MSR_EFER) & (EFER_LME | EFER_LMA)) == (EFER_LME | EFER_LMA),
-+	       "Guest in long mode");
-+
-+	write_cr4(read_cr4() & ~X86_CR4_FRED);
-+
-+	test_set_guest_finished();
-+}
-+
- #define TEST(name) { #name, .v2 = name }
- 
- /* name/init/guest_main/exit_handler/vmfail_handler */
-@@ -12697,5 +12801,7 @@ struct vmx_test vmx_tests[] = {
- 	TEST(vmx_exit_control_rtit_test),
- 	TEST(vmx_exit_control_cet_test),
- 	TEST(vmx_entry_fred_test),
-+	TEST(vmx_fred_cr4_test),
-+	TEST(vmx_nested_fred_cr4_test),
- 	{ NULL, NULL, NULL, NULL },
- };
+      if (!PAGE_ALIGNED(region.source_addr) || !PAGE_ALIGNED(region.gpa) ||
+          !region.nr_pages ||
+-        region.gpa + (region.nr_pages << PAGE_SHIFT) <= region.gpa ||
++        end_gpa <= region.gpa ||
+          !vt_is_tdx_private_gpa(kvm, region.gpa) ||
+-        !vt_is_tdx_private_gpa(kvm, region.gpa + (region.nr_pages << 
+PAGE_SHIFT) - 1))
++        !vt_is_tdx_private_gpa(kvm, end_gpa - 1))
+          return -EINVAL;
+
+      ret = 0;
 -- 
-2.54.0
+2.34.1
+
 
