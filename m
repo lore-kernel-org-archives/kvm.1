@@ -1,134 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC6937A83A;
-	Thu,  2 Jul 2026 14:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EC8213E9C;
+	Thu,  2 Jul 2026 15:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783003682; cv=none; b=YQlVwU+Y45Y+fGH8hXF1MNDooRghrp1DXkRijJEh4yv5jD3pm2J+MfiINTJ9iNclRb6qXZ6+27SFIusygZJJlv/jzqMO5VJ5w6OcfmMMgfRdft76zJHMF/+72RxcF2amiDjNm3sPE1xH24JT5jGAtP7pCC3xgjQ9P4pjY0rNEL4=
+	t=1783005861; cv=none; b=JllwHtL/FdNDGSm9WicBtKOyHv80Wf1hYM7oiSM3bmPcQ+X5wmFjBaV0eZbPlV4usbi6WwcjInL4PlLMnxOAI2pjt+IaCTT+cao1T1tJ4f7WjTZ5nfTtOsFUH5xKFjcz7cWzZbenGzqp9QEV7FqiWSfz+iyeIZdK3tBC4E95cLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783003682; c=relaxed/simple;
-	bh=xX8rOaNNkPQaC5aTJHsIjlCUYARQVvi3p4TYyCvsG7k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kZec1PtkrYuYavSEna0IijypzBcBWj048Cq24XxsMm0iKJ3kIMaO2vebnPm1+gjRU3mvdUDG5Z/UyoP3ZXKuZ/NdmbNmjcjqwrfLHkjIcTm5+N9ZRDFc02rimPBKZ5I12VbE/5eDn0Z+oScbOKmwkWGC7AMpBJLlnAEyFMGCIP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqKYI1Wv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783005861; c=relaxed/simple;
+	bh=tUsMRhczOrq0LBIex1ZH1kPoCws0xjxxWYT3YCoKmeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CQ/Nzx61JnikgobnyCX8yol/VHOl2+08jFSrbuJzioWBtwPy6aZtU2oHLpSVDTp+U+0K71PQ/6JJ7Xz5x+Umn+9vrt6V35Ahd1pJ2ekOjAOHT+CK6BOuYWTjykPsKu4juTEQOw3FkqZ4oRVtXagtfLKZmIOF1NWUdpsjXtas3U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jbAnPmFW; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqKYI1Wv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5821F00ADF;
-	Thu,  2 Jul 2026 14:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783003679;
-	bh=it5yP2Vyx2kme8r83sKSfOusL/ik9sWCmpsffykBpVQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HqKYI1WvVL0H8+HqaySP1n6Iou6H8xdfq7kwP3PiqCA069op76g0OH1ZvuJdEJxav
-	 NHF6HN+0sukrU9GcVRXSo74R60HD7kUsxw7YgRkqh8PdbL0umXWEXPIYALFCXMyYNS
-	 LfheWz0/aPlBtTqer32HeVvrQxKGCThO7OgKo9RjYRv45nGISwYMOdLi+zUJPdhdua
-	 mI/75GX2FgfMI7Qm3SSfUo7Y8Ar3BqFckH08tWv7PBi7r+9r1GM7oS+33CZ2Cfwg+7
-	 lGnJOk3gCdllDvaZ8ze1Evo5WfHsQCUxUNejeNkyQ4SP18N8QziA9PzTz724pmrArB
-	 N3A/O3lj3eqtA==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 1/3] KVM: guest_memfd: Use memslot id to keep track
- of associated memslots
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexandru Elisei" <alexandru.elisei@arm.com>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260702142912.6395-2-alexandru.elisei@arm.com>
-References: <20260702142912.6395-1-alexandru.elisei@arm.com>
- <20260702142912.6395-2-alexandru.elisei@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 14:47:57 +0000
-Message-Id: <20260702144758.9D5821F00ADF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jbAnPmFW"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662EIJov4015614;
+	Thu, 2 Jul 2026 15:24:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=fB9vf873jATBry5et
+	YaO3rIGlV90uoSf0Bzwq4K2zZY=; b=jbAnPmFWA23Fh8RFh7SjW/9jBhOpOFnOF
+	0Nqf5eJdXskpy/MTq4ZubHpQxjiFxU4mbftFOtU6TzlLxWVbG+GtDi013V0dDuWa
+	DS0QFWqwC8Equr6qZlV3+tpDKjaBB/TQ9IGGqd2aVoRsrKPjIJ2fsl6+M6FHP4Al
+	tBeXczxX41VvhKORDSccqr252+1xo1mnW2xPkdMiq9yJd2GL7gOFM1NkkzoMQu6T
+	iubERLKDP6Pj74MTYL6Pso5xP3TVDtyE7kqpASuoDcysMF+R1qbOLiu0lwWmTM2k
+	n7pP3dLxOyctwb8/yzt1FuQZKzQlool9OJ57WpyyCBI5QRgOPepIQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26qaa9rf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jul 2026 15:24:16 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 662FJknS016352;
+	Thu, 2 Jul 2026 15:24:16 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhmgk7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jul 2026 15:24:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 662FOAQi39911830
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Jul 2026 15:24:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 002892004E;
+	Thu,  2 Jul 2026 15:24:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34CC32004D;
+	Thu,  2 Jul 2026 15:24:09 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.87.55])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Jul 2026 15:24:09 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v1 2/8] KVM: s390: Fix unlikely NULL gmap dereference
+Date: Thu,  2 Jul 2026 17:24:00 +0200
+Message-ID: <20260702152406.204782-3-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260702152406.204782-1-imbrenda@linux.ibm.com>
+References: <20260702152406.204782-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE2MCBTYWx0ZWRfX2zsYfYJKYL45
+ 8J0JsgCNiHuGVVD5brE6oSMe/tBCv8BpdQVc5nNXq9VUkwlGOrW0ZTVX7UQxSC1I7lmTFfDZ8hm
+ 6xnMdpg4gRcF6/YGcjhseajUOlKjrN2aaSpavdAky2n177pH3XSZTeXQplIPV9GqNHuhdfDmALa
+ lu/6cWOCoMua1fifB9EWSbIc3tz4xDp0ub+lZzV0TH7EEyS2Qgd+iAWXfgnwg5W84JBsLY33mNq
+ kvFUNAAH1JYaKETnHtE1Dft9e4ell13cTuePyluYh/iTxDi5FqfqHQh9XHNKPCmg+zyOYUJWaJi
+ 8+cleIqBcMfHyJ5CzbllOghisD1Bw6fZuO5SONCn1y+2ReFY5puv4dS3eCFjFbonyVPf7prufpf
+ RpS4Bhlu/nU1qXedjacWv71MouL13UyZs38DSW6shkn4BNzMJTAdwuvWLbRAANOmQijhNWOhfnj
+ 3lZtawl2S5ocTj+igwQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE2MCBTYWx0ZWRfX3Ta/nyuABKOh
+ U6OFkaNHp9P8AHw1jqiAC6gbRtIVWT7TjqUBDMABoWLGWXQXoyfUw05nXnKi4DeMf4eZ9ORyL9S
+ tfpAsrudnYgoy/KwAqwG8itIWDOxNWU=
+X-Proofpoint-GUID: 0zTI2uKWSvrchTUyhFuT8qmyaBEQ9EYD
+X-Proofpoint-ORIG-GUID: 0zTI2uKWSvrchTUyhFuT8qmyaBEQ9EYD
+X-Authority-Analysis: v=2.4 cv=WZ88rUhX c=1 sm=1 tr=0 ts=6a4682a0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=gM4Du8xaWekBHLCPAVwA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607020160
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Stale SPTEs are left mapped during concurrent memslot deletion=
-, causing a Use-After-Free when backing folios are freed.
-- [Low] Silent suppression of kernel warnings for memslot 0 mismatches.
---
+When creating a new vCPU, kvm_vm_ioctl_create_vcpu() will call
+kvm_arch_vcpu_postcreate() after the file descriptor for the new vCPU
+has been created. The new file descriptor has not been returned yet,
+but a malicious userspace program could try to guess it.
 
-commit ca8b0f095e48299dd0d910de62ee16780d361eec
-Author: Alexandru Elisei <alexandru.elisei@arm.com>
+If a malicious userspace program manages to start the newly created vCPU
+before kvm_arch_vcpu_postcreate() is called, __vcpu_run() will try to
+dereference vcpu->arch.gmap and trigger a NULL pointer dereference.
 
-KVM: guest_memfd: Use memslot id to keep track of associated memslots
-   =20
-To enable memslot operations, KVM maintains two arrays of memslots, and an
-RCU pointer to the active (in use) array. Changes are made first to the
-inactive array, and the RCU pointer is updated to point to the inactive
-array, which becomes active.
+Fix this by moving the initialization of vcpu->arch.gmap into
+kvm_arch_vcpu_create(), which is called before the file descriptor for
+the vCPU is created.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index db57c5766ab60..43ef8e908aaf6 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
+Fixes: dafd032a15f8 ("KVM: s390: move vcpu specific initalization to a later point")
+Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+---
+ arch/s390/kvm/kvm-s390.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-[ ... ]
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 23c817595e28..4a6d903e3523 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -3604,10 +3604,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.sie_block->epdx = vcpu->kvm->arch.epdx;
+ 	preempt_enable();
+ 	mutex_unlock(&vcpu->kvm->lock);
+-	if (!kvm_is_ucontrol(vcpu->kvm)) {
+-		vcpu->arch.gmap = vcpu->kvm->arch.gmap;
++	if (!kvm_is_ucontrol(vcpu->kvm))
+ 		sca_add_vcpu(vcpu);
+-	}
+ 	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
+ 	    vcpu->kvm->arch.user_operexec)
+ 		vcpu->arch.sie_block->ictl |= ICTL_OPEREXC;
+@@ -3850,6 +3848,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.gmap = gmap_new_child(vcpu->kvm->arch.gmap, -1UL);
+ 		if (!vcpu->arch.gmap)
+ 			goto out_free_sie_block;
++	} else {
++		vcpu->arch.gmap = vcpu->kvm->arch.gmap;
+ 	}
+ 
+ 	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
+-- 
+2.55.0
 
-> @@ -165,9 +189,15 @@ static void __kvm_gmem_invalidate_start(struct gmem_=
-file *f, pgoff_t start,
->  	struct kvm_memory_slot *slot;
->  	struct kvm *kvm =3D f->kvm;
->  	unsigned long index;
-> +	void *entry;
-> +
-> +	xa_for_each_range(&f->bindings, index, entry, start, end - 1) {
-> +		pgoff_t pgoff;
-> =20
-> -	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-> -		pgoff_t pgoff =3D slot->gmem.pgoff;
-> +		slot =3D xa_value_to_memslot(kvm, entry);
-> +		if (!slot)
-> +			continue;
-> +		pgoff =3D slot->gmem.pgoff;
-
-[Severity: Critical]
-Could this leave stale SPTEs mapped during concurrent memslot deletion,
-leading to a Use-After-Free?
-
-If a guest_memfd hole punch executes concurrently while a KVM_MR_DELETE
-operation is waiting in synchronize_srcu(), xa_value_to_memslot() will retu=
-rn
-the invalid_slot. Because kvm_copy_memslot() does not copy the conditionally
-compiled gmem struct, invalid_slot->gmem.pgoff is 0.
-
-When __kvm_gmem_invalidate_start() calculates the gfn_range using a 0 pgoff,
-it can result in start >=3D end, causing kvm_mmu_unmap_gfn_range() to skip
-zapping the SPTEs. When the backing folios are then freed by
-truncate_inode_pages_range(), the guest could access freed host memory.
-
-[ ... ]
-
-> @@ -765,8 +830,8 @@ static struct folio *__kvm_gmem_get_pfn(struct file *=
-file,
->  		return ERR_PTR(-EFAULT);
->  	}
-> =20
-> -	if (xa_load(&f->bindings, index) !=3D slot) {
-> -		WARN_ON_ONCE(xa_load(&f->bindings, index));
-> +	if (xa_load(&f->bindings, index) !=3D memslot_to_xa_value(slot)) {
-> +		WARN_ON_ONCE(xa_to_value(xa_load(&f->bindings, index)));
-
-[Severity: Low]
-Will this suppress the intended warning when the corruption involves memslo=
-t 0?
-
-If the xarray state erroneously points to memslot 0 (as_id=3D0, id=3D0),
-xa_load() returns xa_mk_value(0). xa_to_value() unwraps this to 0, causing
-WARN_ON_ONCE(0) to evaluate to false and fail to warn.
-
-(This logic would also similarly suppress the warning in kvm_gmem_change_fl=
-ags()
-when there is a structural state inconsistency involving memslot 0).
-
->  		return ERR_PTR(-EIO);
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702142912.6395=
--1-alexandru.elisei@arm.com?part=3D1
