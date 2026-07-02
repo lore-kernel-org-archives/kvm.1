@@ -1,139 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A3D368D5A;
-	Thu,  2 Jul 2026 18:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DFB21146C;
+	Thu,  2 Jul 2026 19:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783017734; cv=none; b=oGrhdecHV5oMHY5rAL3Slc+2MM1LhLg3nJz/4VWphuDKpO5NuhkEUypW8N5/77rfC4BsrCEKcHMAjBm5AKc8/LV13abAPWBi+xe4qWQfOTJyxpSCHH7HTX9SuMrvRJAIrVUhcxB5+N9vNOLvWqhViGNavzqNcXc3Dd40n7jAUao=
+	t=1783019082; cv=none; b=bQIngk3t4LM2dAJS6Pw1f9Yx6Lhgr1RhwC/Z6s3r1dkpTfygLbDShmsTPO0r9x1wbcfxo5NKTu8X9Xib3BU9KUoigreU1ytSeB7W/sYKcI4s0sLqycPeK4aQscFCb5AuG8glxv9SieumHtAthHb7pXxXlOtzPUUafKkHbcuCWvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783017734; c=relaxed/simple;
-	bh=AnlbmVc7bp/EDu5i/7icvu+dEtDRGCrTIS/8BwF8+pY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TB8lf3PW+OWJswp5jMhzOEJ7MudnrsAl1gBkRl46c1SzmE5qqeaDA29Gv6H99w6NuayNNBIXMtyIY+XIYv1Z1eXvBy0hNLLic96U/JIfuzPh3uxYfpA8VSU4dx46t/whJkVLSEEhkZ74Z3y3ngeETX+4wwqI5Uui9+L7GflxOa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oay3GZcq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783019082; c=relaxed/simple;
+	bh=mRvOjmQ3RQRqQdoIlv4cZUG4hR3GzBK+2cXmNalcs5M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EMs3XbLfN+PU5ZOdY6JvqtA+4oRSiEELA1GTlHWdRUFJK6ZT8OzuKbrP8c2lZzFtBA5OUq9iTsUs+8xeUKSs8cg7qvE9Txdmy0JeBfk++leW3rOx0XfeqJiN6dsUN2kMmgjrwUXwHkWTsVO81yFp1/ZgHZ2jkpzvVHcZwMHtVLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=M2CMAYer; arc=none smtp.client-ip=44.245.243.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oay3GZcq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1161F00A3D;
-	Thu,  2 Jul 2026 18:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783017732;
-	bh=mSNaagGrGaEd7SbyyZ4Ns3brb6JZz2ddeOYEpwPmzWc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Oay3GZcqNn4Hv7Y+UbdXvC9TLgQHkXU1MI5/GIq6rHdjdLK6WHdhLhzu5xv99F2Wy
-	 yQa0u1n5rN2ZcoXnC/3iqvoAFvBcNN6bPbzQkUDEUeSCUkDjTzKGAy2sKKweuLNEOm
-	 XG/Ux3fxLGY9aiXj9Bs5adOOB/dJta7Je7U0j351CPpSilM99sBgXbcFAG2A0DoLlZ
-	 oEjiCvYbfLdT3GCEiRB/uUvZLwVR33An3+6ioc4scujTp1GnvyJ7hMldpbP+Zia1PZ
-	 39nMe9qmBJ2ZhoRhYtPDhsDV4DTlDLK4zdXTfe80OyzV4nORI0Y9KTR/8jACJMpXUZ
-	 nFeQwF+aL0Mew==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 4/4] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zhiping Zhang" <zhipingz@meta.com>
-Cc: dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260702181025.2694961-5-zhipingz@meta.com>
-References: <20260702181025.2694961-1-zhipingz@meta.com>
- <20260702181025.2694961-5-zhipingz@meta.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 18:42:12 +0000
-Message-Id: <20260702184212.AD1161F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="M2CMAYer"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1783019079; x=1814555079;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2F0L/XUiTLM3A8G0VJGA94FT1+KmNQOQgpGnjoI3Xec=;
+  b=M2CMAYerud9xv9oPD0+0rYtUfvtHhdWjDoxxgNIJa4syR2uEPOYXc3gL
+   CJbCI8EmfWGa6DToP2giBIcQUbBuhYavuxfGc5EYOieSg8D/WNFRaSBl3
+   6Ui76QPpETExcGVl6Kuyit2YGH7c1vvYugodPN0S/m4YyNlydFLAiUgJt
+   K8VlSU3MVO8fB0J6jeXBKekq66YeVV1AaBGfLlZ1HUzg52B9oYHOTYq0U
+   nacytwfZb1G+mLmFg0gC/7VFdqmJhS23Avu0ee1YUHe+ySCWZtTlm7dLe
+   TIRY4HN3XXTMfj7dConHtxEnMk+EjFIQzVpcXIGA/N2rQcKMZ5zBQynvc
+   Q==;
+X-CSE-ConnectionGUID: RUCOIRJSTHavSfOQXFTPmg==
+X-CSE-MsgGUID: vAdo8kNJQSCmRTWkKIoTVw==
+X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
+   d="scan'208";a="22450114"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 19:04:39 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:3819]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.1.125:2525] with esmtp (Farcaster)
+ id 76b56ee0-2128-4c30-8bc9-732e61c13d37; Thu, 2 Jul 2026 19:04:39 +0000 (UTC)
+X-Farcaster-Flow-ID: 76b56ee0-2128-4c30-8bc9-732e61c13d37
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 2 Jul 2026 19:04:39 +0000
+Received: from dev-dsk-congkai-2a-df9e8fab.us-west-2.amazon.com
+ (172.23.251.204) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
+ 19:04:38 +0000
+From: Congkai Tan <congkai@amazon.com>
+To: Oliver Upton <oupton@kernel.org>, <kvmarm@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+CC: Congkai Tan <congkai@amazon.com>, Marc Zyngier <maz@kernel.org>, "Joey
+ Gouly" <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, Haris Okanovic <harisokn@amazon.com>, Geoff Blake
+	<blakgeof@amazon.com>, Stanislav Spassov <stanspas@amazon.de>,
+	<kvm@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/3] KVM: arm64: Expose PMMIR_EL1.SLOTS to guests
+Date: Thu, 2 Jul 2026 19:04:18 +0000
+Message-ID: <20260702190421.420992-1-congkai@amazon.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWC004.ant.amazon.com (10.13.139.203) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Today when the perf tool runs in a guest on cores with PMUv3p4, it fails
+to parse the default metrics with "Failure to read '#slots'", since perf
+can only read 0 from sysfs caps/slots, which is backed by PMMIR_EL1.SLOTS
+that KVM traps as RAZ/WI.
 
-New issues:
-- [Medium] Failure to re-query PCIe TPH metadata upon DMA-buf invalidation
+Taking into account backward compatibility and heterogeneous systems, the
+exposure of PMMIR_EL1.SLOTS is gated behind a new vCPU feature flag:
 
-Pre-existing issues:
-- [High] Memory leak of struct mlx5_st_idx_data in mlx5_st_dealloc_index()
+- Patch 1 adds the new flag KVM_ARM_VCPU_PMU_V3_STRICT. When set, KVM does
+  not create a default PMU during vCPU init, and the VMM must select one
+  explicitly via KVM_ARM_VCPU_PMU_V3_SET_PMU before the first KVM_RUN.
+- Patch 2 exposes PMMIR_EL1.SLOTS of the selected PMU under the flag, and
+  adds userspace get/set for PMMIR_EL1 so that SLOTS can be reset to 0
+  for backward compatibility.
+- Patch 3 stops masking STALL_SLOT* in PMCEID1 under the flag.
+
+When the flag is not set, behaviors are unchanged.
+
+v1: https://lore.kernel.org/r/20260601193954.2103455-1-congkai@amazon.com
+
+v1 -> v2 changes:
+ - Gate the whole feature behind a new KVM_ARM_VCPU_PMU_V3_STRICT vCPU
+   feature flag, instead of unconditionally exposing PMMIR_EL1.SLOTS.
+ - When the flag is set, skip creating a default PMU during vCPU init.
+ - Split the PMCEID1 unmask into its own patch, also gated by the flag.
+ - Snapshot SLOTS into a new field pmmir_slots in kvm_arch during the
+   handling of KVM_ARM_VCPU_PMU_V3_SET_PMU when the flag is set;
+   access_pmmir()/get_pmmir() return it and set_pmmir() only accepts the
+   SLOTS field (rejecting other bits with -EINVAL).
+ - Add get_user and set_user for PMMIR_EL1 to support setting the SLOTS
+   back to 0, and add PMMIR_EL1 to the get-reg-list selftest.
+
+Congkai Tan (3):
+  KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_STRICT vCPU feature
+  KVM: arm64: Expose PMMIR_EL1.SLOTS under strict PMUv3 UAPI
+  KVM: arm64: Advertise STALL_SLOT* in PMCEID1 under strict PMUv3 UAPI
+
+ Documentation/virt/kvm/api.rst                   |  5 ++
+ arch/arm64/include/asm/kvm_host.h                |  5 +-
+ arch/arm64/include/uapi/asm/kvm.h                |  1 +
+ arch/arm64/kvm/arm.c                             | 18 +++++--
+ arch/arm64/kvm/pmu-emul.c                        | 50 ++++++++++++++-----
+ arch/arm64/kvm/sys_regs.c                        | 63 +++++++++++++++++++++++-
+ include/kvm/arm_pmu.h                            |  4 ++
+ tools/arch/arm64/include/uapi/asm/kvm.h          |  1 +
+ tools/testing/selftests/kvm/arm64/get-reg-list.c |  1 +
+ 9 files changed, 128 insertions(+), 20 deletions(-)
+
+
+base-commit: 1702da76e017ae0fbe1a92b07bc332972c293e89
 --
-
-commit e39795c3bd224c81bae70b87815075c4489e3f9e
-Author: Zhiping Zhang <zhipingz@meta.com>
-Subject: RDMA/mlx5: get tph for p2p access when registering dma-buf mr
-
-This commit allows the mlx5 importer to query a dma-buf exporter's chosen
-PCIe TLP Processing Hint (TPH) Steering Tag. It updates MR registration to
-use this metadata for p2p access and program requester-side TPH on the
-outbound mkey, falling back to no-TPH routing if unavailable.
-
-> diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5=
-/mr.c
-> index e6b74955d95dc..55216ae637614 100644
-> --- a/drivers/infiniband/hw/mlx5/mr.c
-> +++ b/drivers/infiniband/hw/mlx5/mr.c
-[ ... ]
-> @@ -903,6 +947,52 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_atta=
-ch_ops =3D {
->  	.invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
->  };
-> =20
-> +static void get_pci_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_bu=
-f *dmabuf,
-> +				  u16 *st_index, u8 *ph)
-
-[Severity: Medium]
-When an unpinned DMA-buf MR is invalidated and then subsequently faulted ba=
-ck
-in via pagefault_dmabuf_mr() in drivers/infiniband/hw/mlx5/odp.c, the driver
-calls ib_umem_dmabuf_map_pages() to map the pages, but it doesn't seem to
-re-query the TPH metadata using get_pci_tph_mr_dmabuf() or
-dma_buf_get_pci_tph().
-
-Since the exporter might move the memory and change the preferred TPH steer=
-ing
-tag, does the driver need to re-evaluate the TPH metadata upon invalidation
-and re-mapping to ensure DMA traffic isn't sent to a stale or suboptimal
-NUMA node?
-
-> +{
-> +	u16 local_st_index;
-> +	u16 steering_tag;
-[ ... ]
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/n=
-et/ethernet/mellanox/mlx5/core/lib/st.c
-> index 997be91f0a135..bf14a7a6df15e 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-[ ... ]
-> @@ -152,8 +147,46 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev, e=
-num tph_mem_type mem_type,
->  	mutex_unlock(&st->lock);
->  	return ret;
->  }
-> +EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
-[ ... ]
-> +EXPORT_SYMBOL_GPL(mlx5_st_get_index);
-> +
->  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
->  {
->  	struct mlx5_st_idx_data *idx_data;
-
-[Severity: High]
-This is a pre-existing issue, but I noticed it while reviewing this patch
-since this patch broadens its exposure.
-
-In mlx5_st_dealloc_index(), when the use count reaches zero:
-
-	if (refcount_dec_and_test(&idx_data->usecount)) {
-		xa_erase(&st->idx_xa, st_index);
-		/* We leave PCI config space as was before, no mkey will refer to it */
-	}
-
-Is there a memory leak here? The dynamically allocated idx_data is erased f=
-rom
-the xarray but does not appear to be passed to kfree().
-
-Since unprivileged users can repeatedly create and destroy MRs, could this
-lead to kernel memory exhaustion over time?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702181025.2694=
-961-1-zhipingz@meta.com?part=3D4
+2.50.1
