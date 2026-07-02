@@ -1,113 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181D63D8132;
-	Thu,  2 Jul 2026 08:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5881741C302
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 08:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782982564; cv=none; b=M7P1FhQxU5oIvXljMWQeSHHXvNxoR0B7ojzTiNIyT0le3IN9o+Gj4JShlgb+g6WUsI91+9adR83GbMKNseB9/65ZzgeL5XBGUdzV2Ch8Owg7wxewBNeUfW3cME0mpXIknr9pRlR0lkCEHmlV9Wgrze6hnz/EJ+130WGx7F0SY6w=
+	t=1782982576; cv=none; b=iuZrynXTQmamr2/LOpp4JwBGLvU3JRRfuB/SkZsN+U+Qm7sU3DU7R8Hu9MDYPMqUhNU/XhFGJxi9W1+d0aDeHvTEFPp9vAMXoFkPNnpSm4uL8IPwYeGNs361delW31ytp4o5gl46t5xIchijEIXW+jXNz5dbrLZ3oajIUyilRwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782982564; c=relaxed/simple;
-	bh=9Ma5KFtkMeDbcnixBHck1T0uu5/NZ47Dlk4RsPkos1Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Durx+QvZvd+kNT5rUUekGKxRWZP7WtG04siBNvFfiYgOul54/gMkA6XYnk7VFC0yC/uJ5P6mF7wc4Wg7ojX31/mLiafAovwSguq0d0LV1yyfmeiShdinun9dY576n57uiCAtJWsQ8a3giVODaNoLThm/zcuOIRMEUO8vMXZSQ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bxl1Vgya; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1782982576; c=relaxed/simple;
+	bh=IqR1f/AEimWy9td6sTkb7Jq/+F4NeD8zy8Z1IlmH0fM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EH7FQ44cbYxyz2bRHxZTjEIkbXyzMneLFpsLArVohJv0uEsVaPqtRO13/Hu5HZGohZCz+GP/43ffF01ntbAvPff7fJ8oryvO1Tz/zGHOT2Ms/GF5N5jxWGBqXV8/F0hwVIbmskklT3AVTp35Vf67gbfAhBcqU1bkY1DXKALcNHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NIAkYwu7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=g+H1OBUj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bxl1Vgya"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782982564; x=1814518564;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9Ma5KFtkMeDbcnixBHck1T0uu5/NZ47Dlk4RsPkos1Y=;
-  b=Bxl1Vgyad2NHsB74tiZyrNKxyTJHfv15RS9FMWOCrsHus7VDpjO2ljdY
-   yJaZ364/VbOVetSvMNMZzHXf29LXQfJH1gnYyUYqRKNsRRj6du0zzr08Q
-   XwfSQY6FbObsTWBUykAkapu+e4uWxJm1KOgmUnhTvJOiSLfvWoR5FJjCa
-   s3D6BYWCW4na7bhI3H1Fh+wYyUk1A0etxmZBf73D3Oz9QWbhghqA2djL8
-   9EA5+HQoPBz9f6h7FV5yyO1yuvaM9wT93Vezz12E8LALRKQPT2HeZxTuH
-   fZ/7mIu/CMKvY+1LmcYcAkK/jd7iw3g90scLzvbsDzq3D2G0C9WJGl2aA
-   g==;
-X-CSE-ConnectionGUID: eqD1sYGgTGedQrE+2WQTZA==
-X-CSE-MsgGUID: 1cdXLP5wQjGV6trTafzHvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11834"; a="83509416"
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="83509416"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 01:56:03 -0700
-X-CSE-ConnectionGUID: yBaMW+b0RhKWOyLQ+0D8tQ==
-X-CSE-MsgGUID: tcei5PLLQ8SlEsiPcuCO/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,143,1779174000"; 
-   d="scan'208";a="277130102"
-Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 01:55:58 -0700
-Message-ID: <a6844562-e973-436f-970b-fa0b68ced1a0@linux.intel.com>
-Date: Thu, 2 Jul 2026 16:55:56 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NIAkYwu7";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="g+H1OBUj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782982573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jzu6+yi+0UPBChb/E9Oct0h9dnkvsRVovpFSB+irYu0=;
+	b=NIAkYwu7JBsTy1fzH/eXQQ6PmDA9VEozqbBtoL8sGuh5QQxT7BqKYp4nZEUXNwLkbZEIzS
+	yAFAvIxcqrjAZCAGxPsbe8zK0LZdnacQ3WKjwr64yMCwNP9QoiN05gySUJEPYuzTHcfWrE
+	9aT5a+V6UdHZSFXo004LgEFVJY4xyX0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-2FjCZxe0OZemX4YMvmewdQ-1; Thu, 02 Jul 2026 04:56:12 -0400
+X-MC-Unique: 2FjCZxe0OZemX4YMvmewdQ-1
+X-Mimecast-MFC-AGG-ID: 2FjCZxe0OZemX4YMvmewdQ_1782982571
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4926596eebcso13804855e9.3
+        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 01:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1782982571; x=1783587371; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jzu6+yi+0UPBChb/E9Oct0h9dnkvsRVovpFSB+irYu0=;
+        b=g+H1OBUjhsMBbbQW0qzr+CQZod/o5/IvBj2mdzDYzZ2Kd1COtqsUb4fLZHQiuCLDv1
+         FXTSkJTGHC03c5CIBDky5P385pJXxoUGYjzh9lGEig+OyrIiLNle7OdDiQ22ntFpaRzY
+         WoxmpdSBi6vikaaMbxC5b4tf6xpdQ6y2tf1WyegdSbHMj92t5Kz8Ma1yhyLLP27ji11Q
+         chnKeTNzoxWlQT+51J7v0Ln4pYCy/mNxbPnQtglPHzaI0FyPa0TiXjzOSywIQBW9FDJk
+         /6K73a9CVDAh2QyA8DW2XSyu0fOobhVW6dA6I0DU66IYEJT3lJ+sZUTIYdDgq21KTIGs
+         kLYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782982571; x=1783587371;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jzu6+yi+0UPBChb/E9Oct0h9dnkvsRVovpFSB+irYu0=;
+        b=HTNkt9ntCqqkw59gLsaWXRxS6EElJcmEw4dsaDCAcxpk03o48hTfjMg4vj/qfhODBP
+         4MlvH8yHQ3voILwHAAPdDFLLlcM9yTNcWrTObD01NDSoZ5o9m93vFaETheFMd1YcEhyb
+         wKx5SjLgY9XT70/+lx1TIn0nSwTnMfIo7ORfeGqx/9aP+9dxBbOoBOqdpY4jXqxv4Eaz
+         OQTrurN3UqLCgU6ML3A6wu+ptKBQbLKx45jttD6NtSq0KFYs+RBUmEJQX2gQWCzjxJ+i
+         Wd9Bn33cA75LdEZpFNvr1jgEbLvBRi/fFNadD1DeVV1UDiw1jrSmr3kGtF9b7X5SiyMp
+         w0tA==
+X-Forwarded-Encrypted: i=1; AFNElJ9z7dBhwlSwFKPMwCPjC4Eq7KvDYR/zA1Z8XG7uYchdpgKgxju8vZM4e9higddLZOd4wXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf5w7YO1PW9XcT+p4ZLDF0mF6AyDq+4kAmbXStc8H1ac6ZtkZC
+	DoCFHPvlg9j4dFFVQu0nfx1fP2EfYUn9qR5npkn1IJux0AfU/2nJUaHw9sXqcPmoWWCw4adexue
+	LWnoXi5ef6xfYdmN3Utywsf+skbcOQP4T3QKVaaVm4+UTsGFjanZ5sA==
+X-Gm-Gg: AfdE7ck4gNbnBuAphj5DLb4piRefVUgby2Rra7BTNWUcrBkTKMGB1PjaS5PkH2YyX+G
+	wxi0KFzpFS+96CJG/rP9/qEVyBVeOwy/Ur/sWngNKECAIKmsOFXVsvzIKMahvJZt8n5d6uP07JN
+	sHMv+9kD82uj16s9vWg+antbTIl2//CrPLErRLCl02xELiS5WF9rcSkSuYxHxa3dkRN16Xk1NL3
+	cQC6Ep+6HV9vrAO/wvIhcrBtNZzdAOOeKQtyqIHo20OVKcn4KNA5j6vn0J+dS/yUUrLuW2jyv9f
+	tMWijhy0kJuGqqTh2XBauvwasy3TG/9ZetXj004OUAgD+yTYZV1yE9YzzqKMdqLSCA/La59ySFi
+	PfU9HmDjTwOdRqL4p6xWwCT2qTIg9FqSuygtFwUDLQLRH/4BYvHCOjd9L2WlQ
+X-Received: by 2002:a05:600c:5391:b0:490:c032:ae92 with SMTP id 5b1f17b1804b1-493c3df2b42mr53317605e9.33.1782982570886;
+        Thu, 02 Jul 2026 01:56:10 -0700 (PDT)
+X-Received: by 2002:a05:600c:5391:b0:490:c032:ae92 with SMTP id 5b1f17b1804b1-493c3df2b42mr53317205e9.33.1782982570427;
+        Thu, 02 Jul 2026 01:56:10 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477ddf0f27bsm6829505f8f.30.2026.07.02.01.56.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 01:56:09 -0700 (PDT)
+Date: Thu, 2 Jul 2026 10:56:04 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
+Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under
+ memory pressure
+Message-ID: <akYl38_9Y4ydXuqE@sgarzare-redhat>
+References: <20260626134823.206676-1-sgarzare@redhat.com>
+ <20260626134823.206676-2-sgarzare@redhat.com>
+ <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
- control structures
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com,
- pbonzini@redhat.com, seanjc@google.com, tglx@kernel.org,
- vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
- yan.y.zhao@intel.com, kai.huang@intel.com,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-8-rick.p.edgecombe@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260526023515.288829-8-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
 
-On 5/26/2026 10:35 AM, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> 
-> Use control page helpers for allocating and freeing TD control structures,
-> such these operations can work for Dynamic PAMT.
-      ^
-Nit:
-It appears to be missing the word "that". 
+On Wed, Jul 01, 2026 at 09:34:35AM -0700, Bobby Eshleman wrote:
+>On Fri, Jun 26, 2026 at 03:48:22PM +0200, Stefano Garzarella wrote:
 
+[...]
 
-> 
-> The TDX module tracks some state for each page of physical memory that it
-> might use. It calls this state the PAMT. It includes separate state for
-> each page size a physical page could be utilized at within the TDX module
-> (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
-> allocated dynamically. So the kernel must install PAMT backing for each 4KB
-> page before gifting it to the TDX module, and tear it down after the page
-> is reclaimed.
-> 
-> TD-scoped control pages (TDR, TDCS) and vCPU-scoped control pages (TDVPR,
-> TDCX) are all handed to the TDX module at 4KB page size and are therefore
-> subject to this requirement. Replace the raw alloc_page()/__free_page()
-> calls for these pages with tdx_alloc/free_control_page().
-> 
-> Switching between special Dynamic PAMT operations or normal page
-> alloc/free operations is handled internally in
-> tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
-> calls. Just call them unconditionally. Similarly, drop the NULL checks
-> before freeing, as tdx_free_control_page() handles NULL internally.
-> 
-> No functional change intended when Dynamic PAMT is not in use.
-> 
-> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [sean: handle alloc+free+reclaim in one patch]
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [Rick: enhance log]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> +out:
+>> +	if (new_skb)
+>> +		__skb_queue_tail(&new_queue, new_skb);
+>> +
+>> +	skb_queue_splice(&new_queue, &vvs->rx_queue);
+>
+>I think the new skbs will also need skb_set_owner_sk_safe(skb, sk)
+>when adding to rx_queue?
+
+IIRC we added it in the rx path, mainily for loopback to pass the 
+ownership from the tx socket to the rx socket, but here we are already 
+in the rx path, so the skb will never leave this socket.
+
+Maybe it's necessary for the eBPF path?
+
+In any case, I can add it, but if you can help me better understand what 
+it prevents, that will also help me add a comment above it.
+
+Thanks,
+Stefano
 
