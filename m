@@ -1,137 +1,111 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F6233ADB0;
-	Thu,  2 Jul 2026 17:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFFA34107D;
+	Thu,  2 Jul 2026 17:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783012093; cv=none; b=WSkorQTeXA3oLWE0CrBMh95o8W+n6MI0aS1brHT6ieSMIr56ZgT9qXB/PLaJ+fewqPt9hV2AVLUyfc0xQjW92qOVh/pDh8okPo/CM9kwBHcTDeC6Mo7wwHwuzs90QnQ3IIqRX/50RnOrcoIbhAWK1cGfSQ7u7T/jAUBzTK5vvwY=
+	t=1783013982; cv=none; b=LX94h/gbZcf/SB6SoVBDslV71wQwCHxw8QHHF8k94zHd+5XieUWGYUBSkuvdCw251W9LTFjccUhweNsfjEoDiVPD3D/9LZdWloMeECN3MrtlKH1QFpJZ50ibq4HHMTB5uG9hNeK0gYthwrM6W88I6VQMP2txJ5irQvYbvajas0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783012093; c=relaxed/simple;
-	bh=1Bn6x8nNAEkYJho3nAo8diq1miet24ECuHaYMJGrr4U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mQ2nOZZgFRP/QsZ80vX7/Wik3eCcRnnF918uZERtrgnAh4V5Yx4bxn3q8PuTVmu2mDiWrzGJgZY3HhvSaDlc7+rCg1Jgj1cKqsujynGdJTP2jLP3Pu4WylZrIiG1+dOWbUHn1cMxLvz5XR+OobaT8Sdcs6iCcy4mog+SX7IwnUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bIXjFJ6P; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783013982; c=relaxed/simple;
+	bh=6N4Bg2b+t+GrNSxoSFhr4+LgUE7IVDBhDXPK5KLLMH8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KoNY8a9omM3lIbjFXMNRR17rytNKcmgdm1cpMR/RA3roSsBeP8dvus13hT68hFOeulLUWTtOsKCdSgTKbiOdSAezwb4hRGUZY0agVAUm2g4UWGGc+wvbB9skKEIu1nJ0U48Gnr/VGFzVCL9g2hPwh34fnF82shbdGdzZKHymNNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCbLnA/q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bIXjFJ6P"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662EIFsb4134394;
-	Thu, 2 Jul 2026 17:08:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BlZ2jn
-	RJ6bWnOj2JDQjEpzct0GrjVf+TKpDeeLBL5zs=; b=bIXjFJ6PxOIK0wKP4oETf5
-	NEVqj0lFmQpQ94szAEz0XDrNDjkz4ueH6PDoWM7CjsgcjODvNg/n5dOLzetXk0n7
-	BLVkkQy3QVqgTMQylDNZJ7A+hkZEayBaBW1yP745+MIN0y5bzPJe4sd4EIsO/X/v
-	BusMdkoyzYo+V4EA7GTcYLS2S1wyxBSJugscOW6LhRZmaAHww/+Qaja+jK3Ni9TQ
-	8NDqMghjPhrizCBa6IittLOfvhhUkgFtLD+ygXhj1h8QeBXT3hnuTrmSD1R2KevJ
-	a31B4wijd+SliXGWSDlNHSaiCDP5oIDmWBtThGsrX7B5yLIf5JXlo/HZWs14N43w
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26peb73k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 17:08:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 662H4gVd000676;
-	Thu, 2 Jul 2026 17:08:08 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhmwuq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 17:08:08 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 662H87uD10814172
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Jul 2026 17:08:07 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DCBB58043;
-	Thu,  2 Jul 2026 17:08:07 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83DDD58059;
-	Thu,  2 Jul 2026 17:08:06 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.136.69])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Jul 2026 17:08:06 +0000 (GMT)
-Message-ID: <6f251f37b0aa2b829769d59bb3e4f6d494484750.camel@linux.ibm.com>
-Subject: Re: [PATCH v1 3/8] KVM: s390: Fix unlikely race with
- KVM_CAP_S390_USER_OPEREXEC
-From: Eric Farman <farman@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Date: Thu, 02 Jul 2026 13:08:06 -0400
-In-Reply-To: <20260702152406.204782-4-imbrenda@linux.ibm.com>
-References: <20260702152406.204782-1-imbrenda@linux.ibm.com>
-	 <20260702152406.204782-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GCbLnA/q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533AD1F000E9;
+	Thu,  2 Jul 2026 17:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783013981;
+	bh=7p6mwMxIeKEOLzjG5YeSK0tG82ZYp+L69Hc1Bm6FBFA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GCbLnA/q1ritVqINJF+YEyPX/TKqQiACrIRjJfvGcVhIkKeOpqAS29vL946EByl/h
+	 I3+ie2VO8aYWJVJT5pzDVGjV3BxlkLJCawDszzQSL4xxWc5WGhXZ8JwLmwxy8lCJ/0
+	 PvkLdjy/atAXNb6BlLXBIPqe6yC0yv9g1SZGtBAYgsrsuVVDjKGJK/nGVAxuUMMcVo
+	 AO6FQyTsOTON8JTKhu14Xzq+Z0S3kX6cTykPiwUbFGY3+3heZLPLvPrNvn+xsYRX+j
+	 jOszkEUIrg6unrWXHDa+eQ74VkvGTCmaNfnVurO7ynwJyHcPcIb4ZsyK2477gpJQ07
+	 pOW3nK1+TAadQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wfLNz-00000000rEr-0DmQ;
+	Thu, 02 Jul 2026 17:39:39 +0000
+Date: Thu, 02 Jul 2026 18:41:27 +0100
+Message-ID: <8733y18f20.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	"Oliver Upton" <oupton@kernel.org>
+Subject: Re: [PATCH 01/28] arm64: sysreg: Emit RESx/UNKN values for Mapping definitions
+In-Reply-To: <20260702161927.B3C9F1F000E9@smtp.kernel.org>
+References: <20260702160248.1377250-1-maz@kernel.org>
+	<20260702160248.1377250-2-maz@kernel.org>
+	<20260702161927.B3C9F1F000E9@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Bu1nPldO9y19wGYeoTPqQ2JmXwS4OTnK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE3NyBTYWx0ZWRfXz8SQtCO2eUrP
- mDJVjA2wU5zX7U7LXYpjKMqCDWhXyEOYxJjrviiycDXtGGwKIeVUlfjf2Wj4gkvtdCSpfUvkYmI
- 905TOHsnLaKGX6aYy/U8NoNjFPBG6BM=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a469af9 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=UTdIPT0w00pXnvBMiBYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE3NyBTYWx0ZWRfX87HSXYfA2OQg
- d9V4cQ3YY0Dvg4W+k3vTPuvZzLYZGRypKDrAlQB9bUlDxkJngMK8IsJai+ZofKveDCvZYdWFkpG
- CvNIuydrSW335F6XiHTmJYotp7eFhAxekREosQD06jMvqmZlkgkA2fYBEi4fqtg860Zoj8bqU0l
- CFie7lwAyYJnvv0f1EUmXH8AcNh9ucxfBbny8vW9KWxh1xo+bjIxfY3LWmhHpwq5K+gWIIgbheo
- x9z5oiF/XCqbfeVCwqdocw18euwWxQtPRBMWZaTyXSZqUfBNRj9OJEeJKJaEczqLvFWOWISLJg9
- rKIgJRbG5pnRONf9O9KyR2X3wQGSlovCYOSutbNWQjjR1wXo2qMOlCUa/R3IoJ3VZwPGPhCg0gA
- H9G16eZE3LWT6W5ZbNLr65VzmvnkFM/9SZGW5JOT3SYiQnpFuVHBLIO0dlv5y07ZWAtVfT3VChb
- 721T7mqnR3DKLT85QwA==
-X-Proofpoint-ORIG-GUID: Bu1nPldO9y19wGYeoTPqQ2JmXwS4OTnK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020177
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, 2026-07-02 at 17:24 +0200, Claudio Imbrenda wrote:
-> Due to a missing barrier, it was theoretically possible that a vCPU
-> being created concurrently with enabling KVM_CAP_S390_USER_OPEREXEC
-> would end up with the capability not enabled.
->=20
-> Fix by using WRITE_ONCE(), which is enough on s390.
->=20
-> Fixes: 8e8678e740ec ("KVM: s390: Add capability that forwards operation e=
-xceptions")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->  arch/s390/kvm/kvm-s390.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, 02 Jul 2026 17:19:27 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] Invalid `_RESx` macros generated for `Mapping` aliases when the target uses `Fields`.
+> --
+> 
+> commit ba830a7cd4d5bdb5ba927754ed4d1c4e3a0b4f1c
+> Author: Marc Zyngier <maz@kernel.org>
+> 
+> arm64: sysreg: Emit RESx/UNKN values for Mapping definitions
+> 
+> The sysreg script uses the Mapping qualifier to indicate an encoding is a
+> mapping to a particular register, but macro generation for RESx classes was
+> previously skipped. This patch relaxes that rule to emit RESx and UNKN
+> values for Mapping qualifiers.
+> 
+> > diff --git a/arch/arm64/tools/gen-sysreg.awk b/arch/arm64/tools/gen-sysreg.awk
+> > index 86860ab672dc7..d7f7ceb768fe5 100755
+> > --- a/arch/arm64/tools/gen-sysreg.awk
+> > +++ b/arch/arm64/tools/gen-sysreg.awk
+> 
+> [ ... ]
+> 
+> > @@ -239,9 +239,15 @@ $1 == "EndSysreg" && block_current() == "Sysreg" {
+> >  	print ""
+> >  
+> >  	next_bit = -1
+> > -	res0 = null
+> > -	res1 = null
+> > -	unkn = null
+> > +	if ($1 == "Mapping") {
+> > +		res0 = $2 "_RES0"
+> > +		res1 = $2 "_RES1"
+> > +		unkn = $2 "_UNKN"
+> 
+> [Severity: Low]
+> Does this logic generate invalid macros if the target register uses the
+> "Fields" directive?
 
-Thanks, Claudio. FWIW,
+Interesting point. This indeed breaks for a Mapping->Fields
+indirection.
 
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
+We don't have anything of this shape just yet, but it shouldn't hurt
+to generate the RESx/UNKN symbols for those as well.
 
->=20
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 4a6d903e3523..784f7d9c79c7 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -955,7 +955,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct k=
-vm_enable_cap *cap)
->  		break;
->  	case KVM_CAP_S390_USER_OPEREXEC:
->  		VM_EVENT(kvm, 3, "%s", "ENABLE: CAP_S390_USER_OPEREXEC");
-> -		kvm->arch.user_operexec =3D 1;
-> +		WRITE_ONCE(kvm->arch.user_operexec, 1);
->  		icpt_operexc_on_all_vcpus(kvm);
->  		r =3D 0;
->  		break;
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
