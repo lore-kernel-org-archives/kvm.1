@@ -1,147 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E399230BD5;
-	Thu,  2 Jul 2026 20:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77052304BA3;
+	Thu,  2 Jul 2026 20:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783024031; cv=none; b=j7kPKmtyhAwwa4JN8BQD/a2+RwMgGmuxWmEirkHkYSLmtHQAkjbwR9zIeOXqwiGrnvV/6bLaDU48QTHOOsHTEMbrJmj6/J3vrxg2Dhiv8TNimpIo25/qvyKoDGhCbjGLPw5L9thhYWvNXll181sg46nWIefHh8HURUj50+blFTw=
+	t=1783024552; cv=none; b=q+rs02vNoncvh9l22HEGJ40QLkWJnhHoysZBzfZCgBQaWywdN4/1tZp1qL+Dck9VdUHTkbwz7Eny7Olqow+SJssss+cAe0s3702Ve7/Xjd4PHkNsoyPXY/jHsubsjuzSuyQ2C/LXBfdG2qGijbnA7+xgaXH6JuxejPMu1gW1oBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783024031; c=relaxed/simple;
-	bh=V+2LAbZfPtxMZCg3dJHlMMXsKrPNqwdQenqRat3nZiE=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mo7nOh60XsZtPdRyL92jXZyrlwMHtOlwvaXea47GB2b0UqB1mDQRXjeS51BsEjhfj+6/gAyY6QLdywrMfyl3hRgdCAsRY06me4wnqg/4jMe9qkmOsQyqTpn4PymAZbGHnL8PtE11e4jFd5q6TSE5dcJO7C1dZJvyuY0uumRKTZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InPqjOmj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783024552; c=relaxed/simple;
+	bh=Zm7m3tTldkvWq7EZaaaCIvCle11wRvS3oBxXy9ODNcc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Subject; b=JMB6JvltdJTWkj6uzTk+/dsRE7pYFISWmiaTM1fbR5gA6JuV1jYoeY/jodibTOJkn2nb1vuEB6Lz6SRYNOXlKsxwCVdwY1rH80rPvvsGJRQrEyrfPDr0WAprVmneC8fDSqdutiy4pkotH8bmhFAMuAUyEBBl9aasLM92YOGpiNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=cU4+yxkJ; arc=none smtp.client-ip=204.191.154.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InPqjOmj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2225B1F000E9;
-	Thu,  2 Jul 2026 20:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783024030;
-	bh=HoK9M+3vrnVkofbRcUnP+3r/PuAZFEUfLJGmPUPuqgo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=InPqjOmjEZlNMUG/+pR0RLGh5seuI5QIYQg12cnLi/HHF9FWia7BvR7BnP2ZO6NlR
-	 7tpuV7wWCmbhGgGM4lDikAj53GJTgkwozTQIhiSEGX7iqgnDWeLRGWMMULSe/11q85
-	 FwtGM3zYnGbOciO7j5o1GBBgvePVRXJvfyZAKole5jnLVmEYpbqYU7mka7q08qCxeI
-	 bDhj9PYoOxBiDoc1fPYyu5FS5sXH+rIU9xH/g3nLPgCasYC0JmGObFC4cy3Okhivbh
-	 ZYVm0eDadOMjJAf/40ELUsGfXpjV/IDbZ4605ipX6mDU6g9xHD2CXq4FcA4j+Gxgzl
-	 oRc9rL9aYvnOQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="cU4+yxkJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
+	MIME-Version:Date:Message-ID:content-disposition;
+	bh=JzUSZhPWqNWNKTHl/0jMtxGhpz8F8LscUgrhOQUpk4Y=; b=cU4+yxkJdxAeS4yui7R8BmYTUJ
+	DRYWdLNFmn4IzYyA8GI4JMvn5I+ao4YCJoKHqHlZBXELhVQOR7+rbnR5az5v/BkfQgJToWwrgHqdK
+	bkyzMrds8fKOwiAy9eQt43KyjnGykPEVoAe3We6O105RJ3FqGfgbPe2c3N//eYM+RF2KlpkmplnRX
+	ZyFUAT2Yl+gEox2QjrPI7AH2qNf8wELNWJcyEDHIcdGl009phubiaMKzFVqgmjyy33HlREsTWdv3X
+	6RaWLz4M8MAKVnPl1dKbctoJ3kYc+JvbGJAMeQtwUQhSvSUPSEtpYv4AZtpLxXiHnJMSl2eirkvTa
+	pSPZ8pZQ==;
+Received: from [104.157.31.28] (helo=[192.168.1.251])
+	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wfO03-00000000uD6-3U3d;
-	Thu, 02 Jul 2026 20:27:07 +0000
-Date: Thu, 02 Jul 2026 21:28:56 +0100
-Message-ID: <87o6gp6sqf.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev,
-	"Oliver Upton" <oupton@kernel.org>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH 23/28] KVM: arm64: Add NVHCR_EL2 context switching
-In-Reply-To: <20260702164310.03AAC1F00A3A@smtp.kernel.org>
-References: <20260702160248.1377250-1-maz@kernel.org>
-	<20260702160248.1377250-24-maz@kernel.org>
-	<20260702164310.03AAC1F00A3A@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	(envelope-from <logang@deltatee.com>)
+	id 1wfO8O-000000071tG-1qho;
+	Thu, 02 Jul 2026 14:35:45 -0600
+Message-ID: <1cd1b832-082c-4f9c-ab68-706110ddcb25@deltatee.com>
+Date: Thu, 2 Jul 2026 14:34:25 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
+ Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>
+Cc: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260701171245.90111-1-matt@ozlabs.org>
+ <20260701171245.90111-3-matt@ozlabs.org>
+ <26f74cf0-8892-4672-b0e1-1f1a385c42bb@deltatee.com>
+ <aecbbc66-c154-4439-a6ae-84dc012b0f8d@ozlabs.org>
+Content-Language: en-CA
+From: Logan Gunthorpe <logang@deltatee.com>
+In-Reply-To: <aecbbc66-c154-4439-a6ae-84dc012b0f8d@ozlabs.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 104.157.31.28
+X-SA-Exim-Rcpt-To: matt@ozlabs.org, alex@shazbot.org, leon@kernel.org, jgg@nvidia.com, amastro@fb.com, christian.koenig@amd.com, bhelgaas@google.com, kevin.tian@intel.com, praan@google.com, mngyadam@amazon.de, dmatlack@google.com, bjorn@kernel.org, sumit.semwal@linaro.org, ankita@nvidia.com, apopple@nvidia.com, vivek.kasireddy@intel.com, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: logang@deltatee.com
+X-Spam-Level: 
+Subject: Re: [PATCH v4 02/10] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 
-On Thu, 02 Jul 2026 17:43:09 +0100,
-sashiko-bot@kernel.org wrote:
+
+
+On 2026-07-02 10:44 a.m., Matt Evans wrote:
+>> So maybe at this point it's fine to enable this on 32bit systems and we
+>> can remove this requirement. However, I think we should do that
+>> explicitly in its own patch, not hide it in this refactoring patch.
 > 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Cross-VM Information Leak via unswitched SYS_NVHCR_EL2 physical register
-> --
-> 
-> commit ce2ffdc8cef6935283480a976d01a70bb788a885
-> Author: Marc Zyngier <maz@kernel.org>
-> 
-> KVM: arm64: Add NVHCR_EL2 context switching
->     
-> This commit adds context switching for the NVHCR_EL2 register to manage
-> the HCR_EL2 state of an EL1 guest. The switch is conditional on the guest
-> using NV3.
-> 
-> > diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > @@ -172,6 +172,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
-> >  
-> >  	if (ctxt_has_sctlr2(ctxt))
-> >  		ctxt_sys_reg(ctxt, SCTLR2_EL1) = read_sysreg_el1(SYS_SCTLR2);
-> > +
-> > +	/* Retrieve L2's HCR_EL2, and save it for future use */
-> > +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-> > +		ctxt_sys_reg(ctxt, NVHCR_EL2) = read_sysreg_s(SYS_NVHCR_EL2);
-> 
-> [Severity: High]
-> Could this leak information between VMs when the host hardware supports NV3
-> but the guest doesn't have it enabled?
-> 
-> If the host hardware implements FEAT_NV3 and runs an L2 guest with physical
-> HCR_EL2.NV=1, the hardware will redirect EL1 accesses of HCR_EL2 to the
-> physical SYS_NVHCR_EL2 register.
+> Your question does prove it's too stealthy as-is. :)  PCI_P2PDMA still
+> can't be enabled on 32-bit systems because of its ZONE_DEVICE -> 
+> MEMORY_HOTPLUG -> 64BIT dependency.  So we're not enabling 32-bit 
+> support for PCI_P2PDMA here, but it's not obvious and so I'll re-add the 
+> `depends on 64BIT`.  At least then it won't be enabled without intention 
+> if someone enables ZONE_DEVICE on 32-bit systems...
 
-No. If L1 doesn't have NV3 enabled (meaning that its view of
-HCRX_EL2.NVTGE == 0), then HCRX_EL2.NVTGE ==0 on the host as well, as
-per the propagation of HCRX_EL2 in __activate_traps_common().
+Ok, that all makes sense to me. I would be good with removing the 64BIT
+dependency (as it is is a bit confusing as is) but I think adding
+another patch would be appropriate with some of the commit message notes
+you mentioned in your emails.
 
-As per the architecture, an HCR_EL2 access from EL1 with NVTGE==0
-results in accessing the corresponding VNCR_EL2 slot. Not the
-NVHCR_EL2 register.
+Besides that, I think you can add to this patch:
 
-Stop making things up, specially when you don't even have access to
-the spec.
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 
-> Since is_nested_nv3_ctxt() evaluates to false when the guest lacks the
-> virtual NV3 capability, __sysreg_save_el1_state() skips saving this register.
-> Does this allow an untrusted L2 guest to read the SYS_NVHCR_EL2 state left
-> behind by a previously running VM, bypassing software isolation?
+Thanks,
 
-No.
-
->
-> >  }
-> >  
-> [ ... ]
-> > @@ -285,6 +289,13 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt,
-> >  
-> >  	if (ctxt_has_sctlr2(ctxt))
-> >  		write_sysreg_el1(ctxt_sys_reg(ctxt, SCTLR2_EL1), SYS_SCTLR2);
-> > +
-> > +	/*
-> > +	 * Publish the L2 view of HCR_EL2 to the HW if L1 is using NV3.
-> > +	 * Otherwise, the data is already in place in the L1's own VNCR.
-> > +	 */
-> > +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-> > +		write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
-> 
-> [Severity: High]
-> Similar to the save path above in __sysreg_save_el1_state(), should this
-> context switch be based on the host's hardware capability rather than the
-> guest's software configuration?
-> 
-> If the physical register isn't explicitly overwritten in
-> __sysreg_restore_el1_state() because is_nested_nv3_ctxt() is false, the
-> L2 guest could potentially read the stale configuration state of a
-> completely different VM.
-
-No.
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
+Logan
