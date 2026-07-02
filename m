@@ -1,69 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9D41D86E4;
-	Thu,  2 Jul 2026 14:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C8148AE3D
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 14:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783002195; cv=none; b=ip+lXsWmRuWvjANho70vOOWIEPo3ae50PHGqsOlA0xaQ8lPeYXs+b6GpwBqhjFj5u8EhH0LQpTLAYuJ7Zv42KKbziZvEEgos8qY/kIwwfcgJWHE1/Yv213k4aj1u20cluXp+PqcZJwB2upnohbfcZcD2KokqrkgCMxSmjLMFs3k=
+	t=1783002576; cv=none; b=vGZV7wdKwpLobSQcPHrTx/oJmvXx8SKKcTTA/QGCvsbTMdUQX4dsi/EisUpsZ1GL82L9ERw3Y5ezVaR23aFwAlXgynvL/SsEWAsGxuUCP8Mnvto3QGLKkLCTSltIbCsmfSoITl4pdsVnmtD3vCEDdHo7DfGuWLSHKRPDks99ydg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783002195; c=relaxed/simple;
-	bh=N9CiUzfveiKSfNKcnnofw5fkXZVWxTpVPfEpxdad3H4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sjhYWEHo3F6ITmKDRioQh1cuYoWX5foVG2chaUKvB1+HUxkh1RkZA0Gkm+VKNRa3AJpDtOhrksPZvRPPEYUosNLzeDRmR2AKd29NHh7wNABqsgHKsexxw2xwG8BCRqyAvlYBclLgtDXfqkoqKX3Mz6gtwX7jOoKvqU0WDFp/oMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLRG5QSx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783002576; c=relaxed/simple;
+	bh=hjgzRuRixsji8jEKTlp+FzYkQ4qNfZ44rOs1Pa2QDhE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=EelfKH2nWWu5mUEplr/IOlywKRWxXLdFpKKSWejw1fwQCUzN2+1D6yg24xdrQawmDqXPNpdHzKq8J9jluCQJOBH1vVyFcau3HHQ9xT0NyWNtLbb1jIm+wKAU9Dh2f6nI4Si9Fi28d5E9+IMakEwLzQ44TcfdU7BSDzQl03KoasU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hcPfanP9; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLRG5QSx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321C21F000E9;
-	Thu,  2 Jul 2026 14:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783002194;
-	bh=TvMG/L57vNYBQCE2dS+MQv8x6hlxZY8ENHAizbR5Un4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VLRG5QSxyrZqqwlmQEyMrrrXaEf20kAus7K/6Gl5G5kYtELjRvMNFn7bxdT7ENpY4
-	 mkdgoqiiIoXiDnljaxrhHHR57jUGjKhjHaxej/mQ1BxGugYYrc6w4uiqMDtCzgKJaz
-	 ybt5wBtdjRP+F/pm0laMnWc9OqodLwvpawtx2pQk=
-Date: Thu, 2 Jul 2026 16:23:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Clark Williams <clrkwllms@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org, x86@ekrnel.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] tools/lib/bpf: fix const-qualifier discard in
- resolve_full_path
-Message-ID: <2026070259-slider-mortality-f9ae@gregkh>
-References: <20260617011303.3969027-1-clrkwllms@kernel.org>
- <20260617011303.3969027-2-clrkwllms@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hcPfanP9"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 95752359D;
+	Thu,  2 Jul 2026 07:29:28 -0700 (PDT)
+Received: from e140010.cambridge.arm.com (e140010.arm.com [10.2.213.25])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB60E3F673;
+	Thu,  2 Jul 2026 07:29:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783002573; bh=hjgzRuRixsji8jEKTlp+FzYkQ4qNfZ44rOs1Pa2QDhE=;
+	h=From:To:Subject:Date:From;
+	b=hcPfanP9lfgG7RZ/Gbwj9CacIVyBHBgGEX04YYhJlhPyRK19zIgvpcN0502pkPTeJ
+	 A0RPfX+tHgtYvVV44MwVqxDuTpfR765q33yWAtMbaH0IzhU2qEOH15m7aoMHLCQakD
+	 vCtqfOOcHNQBN6TmE1QFz3TnvWCAeohrD0tirB6k=
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: pbonzini@redhat.com,
+	kvm@vger.kernel.org,
+	seanjc@google.com,
+	david.hildenbrand@arm.com,
+	maz@kernel.org,
+	oupton@kernel.org,
+	joey.gouly@arm.com,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com
+Subject: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
+Date: Thu,  2 Jul 2026 15:29:09 +0100
+Message-ID: <20260702142912.6395-1-alexandru.elisei@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617011303.3969027-2-clrkwllms@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 16, 2026 at 08:13:01PM -0500, Clark Williams wrote:
-> [ Upstream commit d70f79fef65810faf64dbae1f3a1b5623cdb2345 ]
-> 
-> strchr() now propagates const when passed a const char * argument in
-> newer GCC/glibc combinations, causing -Werror=discarded-qualifiers to
-> fire on the assignment to next_path. Declare next_path as const char *
-> since it is only used for pointer arithmetic, never written through.
-> 
-> [ clrkwllms: only the next_path change from the upstream commit applies
->   to 6.1.y ]
-> 
-> Assisted-by: Claude:claude-sonnet-4.6
-> Signed-off-by: Clark Williams <clrkwllms@kernel.org>
-> ---
->  tools/lib/bpf/libbpf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The memory represented by guest_memfd-only memslots
+(kvm_memslot_is_gmem_only() is true) is shared with userspace, which can
+freely mmap it and access it. The only thing that is preventing dirty page
+logging for such memslots is that KVM doesn't allow slots backed by
+guest_memfd to have their flags changed; they can only be created and
+deleted.
 
-Looks nothing like the original, including stripping off the tags :(
+When KVM changes the flags for a memslot, it is possible for one reader
+handling a guest fault to observe the old memslot, with the old flags, and
+another reader to observe the new memslot, with the new flags. With the way
+a guest_memfd file keeps track of the associated memslots, it is impossible
+to avoid the WARN_ON_ONCE in __kvm_gmem_get_pfn() when one of the two
+memslot pointers that the readers observe doesn't match the memslot pointer
+stored in the file bindings.
 
-Please be more careful when you resend a new series.
+To get around this, I decided to change the way guest_memfd keeps track of
+the associated memslots: instead of an xarray of memslot pointers, use an
+xarray which stores the memslot id (id and as_id, to be more precise),
+which can be used to search for the memslot in the active memslots array.
+Whenever guest_memfd wants to access a memslot, it deferences the
+kvm->memslots RCU pointer under the RCU read lock, similar to how guest
+faults are handled, or how the MMU notifiers work. All of this is
+implemented in patch #1, "KVM: guest_memfd: Use memslot id to keep track of
+associated memslots".
 
-thanks,
+Building on that, toggling the KVM_MEM_LOG_DIRTY_PAGES flag for
+guest_memfd-only memslots is implemented in patch #2, "KVM: Implement dirty
+page logging for guest_memfd-only memslots". This is gated by a KVM
+capability because it is a userspace visible change in behaviour.
 
-greg k-h
+The capability is also architecture specific, not because this is something
+tied to a specific architecture, but because when I was testing the series
+on arm64 I realized that the arm64 fault handling code required a minor
+change, and I don't know enough about the other architectures to tell if
+any changes are needed for them.
+
+Just FYI, this is an RFC so it goes without saying that I'm open to any
+suggestions, and I'll redo the whole thing if there's a better solution.
+
+Tested the series using kvmtool on an arm64 machine, with guest_memfd
+support added, as well as two command line arguments: --enable-dirty-log
+and --disable-dirty-log. The arguments toggle the KVM_MEM_LOG_DIRTY_PAGES
+memslot flag, they don't read or otherwise touch the list of dirty pages in
+any way. Pushed a branch at [1].
+
+[1] https://gitlab.arm.com/linux-arm/kvmtool-ae/-/tree/guest-memfd-v1-wip4-dirty-page-logging
+
+Alexandru Elisei (3):
+  KVM: guest_memfd: Use memslot id to keep track of associated memslots
+  KVM: Implement dirty page logging for guest_memfd-only memslots
+  KVM: arm64: Allow dirty page logging for guest_memfd-only memslots
+
+ Documentation/virt/kvm/api.rst |   9 ++
+ arch/arm64/kvm/arm.c           |  22 +++++
+ arch/arm64/kvm/mmu.c           |   3 +-
+ include/linux/kvm_host.h       |  15 +++
+ include/uapi/linux/kvm.h       |   1 +
+ virt/kvm/guest_memfd.c         | 165 ++++++++++++++++++++++++++++++---
+ virt/kvm/kvm_main.c            |  44 ++++-----
+ virt/kvm/kvm_mm.h              |  11 +++
+ 8 files changed, 232 insertions(+), 38 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.43.0
+
