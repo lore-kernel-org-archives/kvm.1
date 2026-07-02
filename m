@@ -1,86 +1,123 @@
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D06433E36A;
-	Thu,  2 Jul 2026 15:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A2B2C21C7;
+	Thu,  2 Jul 2026 16:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007977; cv=none; b=p5X3/ZTtSou8KJ37R3dNMPtaZkCV06fFP6MiQoO+66Lnq3Z7JUPjqj/qoK9tWPoNP7BLv6jaUMxCPqzJeGLiE/pHWXTpcFGVCHzsf/KpWZK1HQDhQTV2iqv/KymUAKoW0QClhXFw97FnWDYuK+pykdueyEiBL9LvxmPWqEGTh2g=
+	t=1783008181; cv=none; b=a9DtSt5J4davvl+q4oznOmzSmMANgvtgvzI/0dPxK5FcslgsWqD33i0e5zzMMzDPtbk7ZDWKpU25aopHSwxLgUeoiyJ3+Q7nfWxV0MxEbbNq0haWYeq4crd6d1d7lkRWwFrm6Jd4AGY2vd9BZnqg9kgs/nM+oJ2am7o93sFbxM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007977; c=relaxed/simple;
-	bh=owhvQVuJSMgo0cOWgI78J4TVOua7Gdx/oiTUQxVqhQU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Subject; b=pBMdblvnk7aLOrlY4uzgqnPYiKZhpyH1np+Ez45ejQx8c7+TggYjL89qTArueEvi7bENjDkSZDAtDKMWvHe6/ujPeC+DpycaL3DYbYpfazVjjvnWjkShq6L+n3u2uzG+3GktPDkXFJfr8wGQWdg35v6U++2l/Ssz6OhdMMrB/9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=DujUo9We; arc=none smtp.client-ip=204.191.154.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
+	s=arc-20240116; t=1783008181; c=relaxed/simple;
+	bh=kiLJ6Ye2ZU4RIqvOn/Er9MZG3Ljc/QKrIPthp2UnVrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yt0Kxrsxhtxw+nD2SZiGPfz8/GRuq+2ISTBRDNJgmG0JvpTdVE1DCYoi/7PB3h+peBMCXQe1xwFVLPAqI/t50uTDwJCNScdVEJgk76gToIaFuPKhWIzZI+72Rg0UK8hmZ6QhrCaluXbovu5penoIQqiMOJgQd34wi6FBGokfmIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnXqomTV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="DujUo9We"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=/hjDwdAgOedsNd0NqOzOzJU5th0d9lvFyladwqf85no=; b=DujUo9WeBTeCmnsWoBB6b3CIYG
-	P1Voct4LheNy1r1Z7lUYuY3xX+tBK0dfVj0pqqNmA2fQAR4avVJHBksfW0RRBQ9gRkKw/BiH7Ck2M
-	jq/5XDDbWPX6Zj7e1StnRXs00D8Vr28HU3QbnX9f3Lqlutan1f4Cz/rIZ6ymnjx4DJmnbq2KeJ6vc
-	wPtCmHSPpLcNXNGOzyZv+eJvZQZfo/6edPzq/qZ+JbfrZmH6HPwq5GYl/cUxOLotYJrJYSKCfKDfL
-	t2TFa3x449m2pRH6ZFRFeneSImtheUPu9MLEMYeuE4CjMYotwf7tqzvGAfImiytBhtnckzeb7gdY4
-	UAkXiFQA==;
-Received: from [104.157.31.28] (helo=[192.168.1.251])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnXqomTV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D4C1F00A3E;
+	Thu,  2 Jul 2026 16:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783008180;
+	bh=gvrrbJTL90HdKfSM8IpDXKokn+aRKB1T3PPohkJWp6Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fnXqomTVwOsPxDPWwwRWthqmZoBpsg81HyJRcBI4Oo0rcTG2El9BqM2CctBdqzBg8
+	 TN8bXDbshlLTRhPIU1eLTWDlALfCgZwW2EgMCYe/RoVpR4RTCi0t2/TUT3oKr6Xzy5
+	 uGujHgaOitcRFc6G0LLsx0k8aIdORIq+wnb0XgDux3L8vHIatRjLPwWQzfVuIaj/MA
+	 2LikL3AW5Q7+VPsBJLUBzXM6q/xmCxuVpGvHqskEYIEJfHRR9NZCeQKeqpjrNUgLm1
+	 +K2Wr4x36pkDtnoWRcndO7Z7yQ31RFPiiYPaGLxXyQD0RXpRRuNV10XZbfVGT4fQgj
+	 r+2tq/PDt5Pig==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1wfJ7q-00000006y6u-3ltf;
-	Thu, 02 Jul 2026 09:14:51 -0600
-Message-ID: <1b2cc341-5be4-4b24-940e-284c950fb730@deltatee.com>
-Date: Thu, 2 Jul 2026 09:13:26 -0600
+	(envelope-from <maz@kernel.org>)
+	id 1wfJsQ-00000000ojd-312O;
+	Thu, 02 Jul 2026 16:02:58 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 03/28] KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
+Date: Thu,  2 Jul 2026 17:02:23 +0100
+Message-ID: <20260702160248.1377250-4-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702160248.1377250-1-maz@kernel.org>
+References: <20260702160248.1377250-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>
-Cc: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260701171245.90111-1-matt@ozlabs.org>
- <20260701171245.90111-2-matt@ozlabs.org>
-Content-Language: en-CA
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20260701171245.90111-2-matt@ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 104.157.31.28
-X-SA-Exim-Rcpt-To: matt@ozlabs.org, alex@shazbot.org, leon@kernel.org, jgg@nvidia.com, amastro@fb.com, christian.koenig@amd.com, bhelgaas@google.com, kevin.tian@intel.com, praan@google.com, mngyadam@amazon.de, dmatlack@google.com, bjorn@kernel.org, sumit.semwal@linaro.org, ankita@nvidia.com, apopple@nvidia.com, vivek.kasireddy@intel.com, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Level: 
-Subject: Re: [PATCH v4 01/10] PCI/P2PDMA: Split pool-related cleanup out of
- pci_p2pdma_release()
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+The way we merge the guest-provided HCRX_EL2 value with the host's
+is bonkers. We try to make it look like the FGT registers by using
+positive and negative polarities for traps, but most of these bits
+are not strictly about trapping, as they actively change the way
+some architectural state is managed.
 
+It would be far better to deal with these bits like we do for
+HCR_EL2, by enumerating the list of bits we don't allow the guest
+to override. This is simplified by the fact that HCRX_EL2 only
+affects EL1, and not EL2.
 
-On 2026-07-01 11:12 a.m., Matt Evans wrote:
-> Preparing for a refactor in a subsequent patch, split the pool-related
-> release code into a new pci_p2pdma_release_pool() function.
-> 
-> This allows future compile-time selection of a null implementation for
-> pci_p2pdma_release_pool(), when p2pdma.c is refactored into core- and
-> P2P-related files.
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
+Re-jig the HCRX_EL2 handling with a macro that list the bits excluded
+from the merge (TMEA, PTTWI, EnIDCP128).
 
-Looks correct to me, thanks!
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+index 4bf624a49591d..8e5f492f39086 100644
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -325,6 +325,24 @@ static inline void __deactivate_traps_mpam(void)
+ 		write_sysreg_s(MPAMHCR_HOST_FLAGS, SYS_MPAMHCR_EL2);
+ }
+ 
++/*
++ * Just like for HCR_EL2, we can't let the guest mess with some of the
++ * basics we rely on in HCRX_EL2. However, the major difference is that
++ * HCRX_EL2 only affects EL1, and never EL2 (sudden outburst of sanity, I
++ * guess). So it is always the guest inflicting it on its own guestx.
++ *
++ * Things we don't want to let the guest control are:
++ *
++ * - TMEA: That's for us to decide how an SEA is routed, not the guest.
++ *
++ * - PTTWI: Similarly, it is for us to decide whether Reduced Coherency for
++ *   the PTW is a thing. It really isn't.
++ *
++ * - EnIDCP128: We don't allow IMPDEF sysregs -- full stop.
++ */
++#define NV_HCRX_GUEST_EXCLUDE	(HCRX_EL2_TMEA	    | HCRX_EL2_PTTWI | \
++				 HCRX_EL2_EnIDCP128)
++
+ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_cpu_context *hctxt = host_data_ptr(host_ctxt);
+@@ -350,8 +368,8 @@ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
+ 		u64 hcrx = vcpu->arch.hcrx_el2;
+ 		if (is_nested_ctxt(vcpu)) {
+ 			u64 val = __vcpu_sys_reg(vcpu, HCRX_EL2);
+-			hcrx |= val & __HCRX_EL2_MASK;
+-			hcrx &= ~(~val & __HCRX_EL2_nMASK);
++			hcrx |= (val & ~NV_HCRX_GUEST_EXCLUDE);
++			hcrx &= ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
+ 		}
+ 
+ 		ctxt_sys_reg(hctxt, HCRX_EL2) = read_sysreg_s(SYS_HCRX_EL2);
+-- 
+2.47.3
+
