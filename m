@@ -1,50 +1,47 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3802561A7;
-	Thu,  2 Jul 2026 04:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB00387566
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 06:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782966731; cv=none; b=Etq/fv9PF1yP5gC3rfN4128NWOVy5xAX5oTlLcIXFm1BK/XZ5w8rRUOkSMXmFvANA8AIUTWAcgu2gMpiLFmVGIjoX38WC6bOIEfeXXrWnbB0YD0ip6O+GBekun69S30KeT1EP9++TLK0zTOG3MmlHSTngZm+sW5V6UweY3zyuxE=
+	t=1782975056; cv=none; b=Hf/VMHKpnVnmo6KCiWwSBkwtihx+QhAySPUZBPUBqQhvjA8DI++JFQ2IFF9lmPbhJlT/9mogeRMrsCiMqH0kzkAgSh6ht/XRLG1wf1rqPJgG651MAUXkS4QmGxW54OKCgEQ1weL2O94uWyysJPaHNUHmxjNjq7wwq0l7XeIU9aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782966731; c=relaxed/simple;
-	bh=+6t54CnyWkrk3NC6Zr7M4fy9ez6xhOpejeAXbB965i8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o4cupszH/1WOebEf0RYGJeWUKrUbDrrrWV40wHzwa7MGZZmjRV/dAHe85LL2WMD7ZQ5+7GYmLTCqM9HhUHnzft0w5QtOT/Un8y44MTL5EiP6C5PfhnQPdkTyP7zREwIaY37IYchbZHmBwqayYmsj52c1siACxcHMH2I5ofkn7ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kar7o7Pa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782975056; c=relaxed/simple;
+	bh=WPb0f4pQKckopThfNKVv8RpSkktJaTRklXhlccSFwAo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eNav7iz17ytv7fbQrd4nDsqO4Z8yYPDJKr1pvjZ4ftnFBqAsSbm3N1M6VW2a6sZfVtMAlIPigipOOWUpbek8uXtJKCgQGMzStncu5+Za/YGHLHpfairHstUeB2sk/MFnfz2CgOqJ/LEzpaWcVyCx6AhNGKaFQwyXRZhNBVKVZyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=On/82eSp; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kar7o7Pa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811A11F000E9;
-	Thu,  2 Jul 2026 04:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782966729;
-	bh=nLUl/jbyoKwaqRwS9kndZwOcd3w22X0CRG0BnXEgle0=;
-	h=From:To:Cc:Subject:Date;
-	b=Kar7o7PaydN1XsUVbo8bTM0AgaNQ+GZMI2keT5IsQ1DnHSuh1kpXP4r+0/jm/p5uW
-	 ifUzZK/FvO4Ubn99CW8tOI2kfDB8o7zvQZLw0rdZ1KmoVqCseVI5evTe+YGZJQ9xvR
-	 s2ti0yTmOiplwIg28nVVdhsxhQwQBqfkRyJ0e1RFeCdx71hFKSsdvm5YGDFClynblQ
-	 W3d7ScdjG1hTXSU6tOhG9dDc9a20kX1H3HSfInkdkWmTpXNGJXf+/lqDyqQ6z6RUAe
-	 aQmvD9sXp2wOoIbwWl22hmInrIqq31vSYC1li92PYHaio0R8YYZBEdX1uTz/AnHSFz
-	 M/FhsD9t19KGA==
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-To: seanjc@google.com
-Cc: linux-kernel@vger.kernel.org,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [PATCH] KVM: x86/tdx: Do not print error message on non-present feature
-Date: Thu,  2 Jul 2026 06:32:04 +0200
-Message-ID: <20260702043204.81741-1-jirislaby@kernel.org>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="On/82eSp"
+Received: from terminus.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3:0:0:0:136])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6626odVj3434951
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Wed, 1 Jul 2026 23:50:50 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6626odVj3434951
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1782975050;
+	bh=4y7fjuRem9rT1YlT3CaRGckLC/o5GFl6MBfAEPYfhf4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=On/82eSpMxcz3m8DJcgRsCyB/bPtccM7olBd02GfHdxrSQ64gE8YX+AfQrB5dr2lk
+	 rIMqqCBb6ziBEYiKz5AHRkzgPPnjMHs7DCo1Q1y1JVo9sYHsKlwp29TUvr3p7kp+v7
+	 XiBi0hlBhU9SWy+rDwx8CmeqzYywUiIoWU33OxNStr1JC9ospc7PxIjBBdHxe+V4sd
+	 +LBAaRw9DpwTWslosb1hU8FIZVr9Cyx4JrF++h0XimTb+GDo/JXoImLUwh7MgtZu0b
+	 kSYZyAh9FXY5Z6K/hW0GiSarzLK0BgFIbWRQZefNjvMtRxywYDg/rVP+e0vxg3u7w/
+	 UHb1UpAzD0IIQ==
+From: Xin Li <xin@zytor.com>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, seanjc@google.com, chao.gao@intel.com, hpa@zytor.com,
+        sohil.mehta@intel.com
+Subject: [kvm-unit-tests PATCH v1 10/11] x86/vmx: Validate FRED state checking during VM-Entry
+Date: Wed,  1 Jul 2026 23:50:38 -0700
+Message-ID: <20260702065039.3434909-11-xin@zytor.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260702065039.3434909-1-xin@zytor.com>
+References: <20260702065039.3434909-1-xin@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,58 +50,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Before commit 165e77353831 below, the kernel did not print anything when
-X86_FEATURE_TDX_HOST_PLATFORM was not present in a cpu.
+Add a test to verify that attempting a VM entry with a reserved bit set
+in the host FRED_CONFIG MSR correctly triggers a VM-entry failure.
 
-After the commit, this is emitted to the log, with the error level:
-virt/tdx: TDX not supported by the host platform
+More similar tests can be added later.
 
-This is disturbing as it is not an error running CPUs without the
-feature.
-
-Drop the error message completely to revert to the state before
-165e77353831.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Chao Gao <chao.gao@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>
-
---
-
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org
+Signed-off-by: Xin Li <xin@zytor.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ x86/vmx_tests.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 42df8ea464c4..bdfc3bf12a9c 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1228,10 +1228,8 @@ static __init int tdx_enable(void)
- 	enum cpuhp_state state;
- 	int ret;
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index f50d1d21..aafcb465 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -12535,6 +12535,44 @@ static void vmx_exit_control_cet_test(void)
+ 	test_set_guest_finished();
+ }
  
--	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
--		pr_err("TDX not supported by the host platform\n");
-+	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM))
- 		return -ENODEV;
--	}
++static void vmx_entry_fred_test_guest(void)
++{
++	vmcall();
++}
++
++static void vmx_entry_fred_test(void)
++{
++	struct vmcs *curr;
++
++	if (!(ctrl_enter_rev.clr & ENT_LOAD_FRED)) {
++		report_skip("Load FRED state entry control is not available");
++		return;
++	}
++
++	/* Allow the guest to read FRED MSRs directly */
++	msr_bmp_init();
++
++	vmcs_set_bits(ENT_CONTROLS, ENT_LOAD_FRED);
++	vmcs_set_bits(EXI_CONTROLS, EXI_ACTIVATE_CTRL1);
++	vmcs_set_bits(EXI_CTRL1, EXI_SAVE_FRED | EXI_LOAD_FRED);
++
++	wrmsr(MSR_IA32_FRED_CONFIG, 0x4000);
++	vmcs_write(HOST_FRED_CONFIG, 0x4000);
++	vmcs_write(GUEST_FRED_CONFIG, 0x400000);
++	test_set_guest(vmx_entry_fred_test_guest);
++
++	/* Following test_vmx_vmlaunch() needs a "not launched" VMCS */
++	vmcs_save(&curr);
++	vmcs_clear(curr);
++	make_vmcs_current(curr);
++
++	/* Bit 2 of FRED_CONFIG is reserved; setting it will result in a VM entry failure */
++	vmcs_write(HOST_FRED_CONFIG, 0x1004);
++	test_vmx_vmlaunch(VMXERR_ENTRY_INVALID_HOST_STATE_FIELD);
++
++	test_set_guest_finished();
++}
++
+ #define TEST(name) { #name, .v2 = name }
  
- 	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
- 		pr_err("XSAVE is required for TDX\n");
+ /* name/init/guest_main/exit_handler/vmfail_handler */
+@@ -12658,5 +12696,6 @@ struct vmx_test vmx_tests[] = {
+ 	TEST(vmx_exit_control_pat_test),
+ 	TEST(vmx_exit_control_rtit_test),
+ 	TEST(vmx_exit_control_cet_test),
++	TEST(vmx_entry_fred_test),
+ 	{ NULL, NULL, NULL, NULL },
+ };
 -- 
 2.54.0
 
