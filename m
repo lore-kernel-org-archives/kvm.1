@@ -1,163 +1,165 @@
-Received: from outbound.st.icloud.com (p-east2-cluster4-host8-snip4-10.eps.apple.com [57.103.78.251])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622F82E8DEA
-	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 12:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.78.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8E648034E;
+	Thu,  2 Jul 2026 12:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782995928; cv=none; b=A2Ja6rZ8FItddN4H9CGrlQbulLjziaR5LGc9Owu5nio5iW1wHfzMEXB1BXdKD5HOhor1p2Y29ypTDBeopY75QOaqf5oog+2U2XnxJ10OzbuIHE5r5+tAQs8wxYoWXytABYJUlBygq7wRDd16qx0bwezoXJGrITT9IyhCcne4qIw=
+	t=1782996157; cv=none; b=G7D88SNJhe8+cTM3PxBx+XzIqUF1KSNzFdA2ZkEwctJxf2AMc9++lcNFIDy8S0rw0DNBBPYpHe2eD1ZzrlQvs/MLN6BvBuc23NrnakHQfFZBOZuTaa/HbvTiL/ZtF9s3RSiLF7MIgruS3kzkfNuRqIKV2tqfuZ9fjp9sKoq0rj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782995928; c=relaxed/simple;
-	bh=A++uywB8a9Lp9iFIsTMiY0E6a2bJ1FWU15PZ23B9ff4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ReHWiK6kFaG22hl46tgqeHPfBlQWblIz2w+yqFLfpJuBjbv7Xmgz5leUeUMadlVUrEnupnnKOmmmd5357pcsd9bAALbIICqd+WyH61SoO3Lh/n4WfhcwPPmtZhHR6Y42TUHeqm5n5z8ocMWKFTRIIUfAy5r16IAuqC9/mNa7cw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr; spf=pass smtp.mailfrom=unpredictable.fr; dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b=Fuf2ND6I; arc=none smtp.client-ip=57.103.78.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
+	s=arc-20240116; t=1782996157; c=relaxed/simple;
+	bh=lIA6OOvvnDwpWF9l4m51z7S4+oQxefUPkWZHVcFyHeA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NV+XzU10WM1mhQ+Rx/Wm3saN19BiNhrwShBS2K/VQTxdnESeQGWdVh2GlX/HmoQr2J+k5DSzBydON3084SOkE8tNl4Iv/+ekLMlv7Mf4MEpCDoLMOGSOonxEgxSWRlZteAKPrhcLkGScvBxWTsUJMb5eqaROO9Cb+8yR8DEnfHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=kRhwfPJ8; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unpredictable.fr header.i=@unpredictable.fr header.b="Fuf2ND6I"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-20-percent-2 (Postfix) with ESMTPS id 3688018014E1;
-	Thu, 02 Jul 2026 12:38:38 +0000 (UTC)
-X-ICL-RepId: 019f22d6-a0a1-70ac-ab80-24d6ef9e9cff
-X-ICL-Out-Info: HUtFAUMHWwJACUgATUQeDx5WFlZNRAJCTQ1OHVwPUhxEDlYCVRcOVk1UF1sMWg5WMEwWQx9SD1sTTRlRAVJFVAIZHldQQgVCAlwcWg5DClAcXFZVHxcZUU0ITRMFUgddTVYNRw9YHlwUFwtHQ14IXh9MHB0OWAYSAE0KDjYGWQVeCVYDQwU2EhRdRUYDRxlXFFAbRwxVB1deXwoTAF4PD0wPO3EoBih3MxQ+CysORgZIAT4eVAIuBl0MSgBacVt0R3hKAF93HlwASx1XBFQfUxJVHR0LRVUSBEAIVlBUHkEEVhVsCVgGUxlX
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; t=1782995923; x=1785587923; bh=Ut/JLvsd42eKREb5T24DtBg7CjVhiI3+3Gvlq6kEPkY=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=Fuf2ND6I/pVWxFWP3Gn92mCHGDcBOkfO4vZAQnre60RSFloWoYrimKxQ6PcCK0A5RZlFkmoPWMF2sr2lVkCcX7xEzZf7fNW8ARu6t4K6hgHmX2JApmaBCvpWiaWonNo6FfS6893/XyxDEhOdHMiHQSYSuDJYCMtjmu+apomzlJfdqk26GcBXZXmOLNtWowvWfZZmedPp5TauOU/PQvY+m9ZJUoiAcfFJNQNHhFGe1hbFHBgf3anM7WmcxYzYfxQjmWlrjLzE+z0ZtKjbtm976mooJTGszGPvpuI3yGF552Ig5sz8kYEmSFrUlwXm9D59m/B+N+NVTMM1tWrg4FAo+Q==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-20-percent-2 (Postfix) with ESMTPSA id 5BC8418005B4;
-	Thu, 02 Jul 2026 12:38:36 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="kRhwfPJ8"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yFmJbHUJ4OyGuP62z70V/6zcCmwORpBgvba64hhIAhw=;
+	b=kRhwfPJ86AHW4PiY3seBB3hyv9kIv0fOBCAo3D5as+HPB6FzstoV4XHKuFGF2hUTpB0InAu+e
+	8XTIRx22KH5GyilHaVyCEGWapTumTcwv3zFvkj5tOoD3FXIigcYeXEjcuA8iYkwpyMXJAc+5dUx
+	LSm3+u56AOM5TaFPi1EwSnE=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4grbsT68Mrz12LFL;
+	Thu,  2 Jul 2026 20:33:49 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 58BF440537;
+	Thu,  2 Jul 2026 20:42:32 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 2 Jul 2026 20:42:31 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>, <helgaas@kernel.org>
+CC: <wathsala.vithanage@arm.com>, <wei.huang2@amd.com>, <zhipingz@meta.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v19 03/18] PCI/TPH: Cache TPH requester capability at probe time
+Date: Thu, 2 Jul 2026 20:42:09 +0800
+Message-ID: <20260702124224.57168-4-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260702124224.57168-1-fengchengwen@huawei.com>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3893.100.7.1.1\))
-Subject: Re: [PATCH 16/34] target/i386/mshv: migrate LAPIC state
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <CABgObfZhNwXLG9ip=CnEiVb=p24etvxeodbjG5=Di4hOKvYF8Q@mail.gmail.com>
-Date: Thu, 2 Jul 2026 14:38:24 +0200
-Cc: Magnus Kulke <magnuskulke@linux.microsoft.com>,
- qemu-devel <qemu-devel@nongnu.org>,
- kvm <kvm@vger.kernel.org>,
- Magnus Kulke <magnuskulke@microsoft.com>,
- Wei Liu <liuwe@microsoft.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Wei Liu <wei.liu@kernel.org>,
- Alex Williamson <alex@shazbot.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6CBE1CEC-F8F9-488F-95E4-5237F0F7A232@unpredictable.fr>
-References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
- <20260417105618.3621-17-magnuskulke@linux.microsoft.com>
- <CABgObfbgqcSYekjGkuDCUibQc8j4iyGPbajU_-VdPsGkLZgiLQ@mail.gmail.com>
- <akUyiNahX3LnFPhn@example.com>
- <CABgObfbQTUOaiMYApABTettYa0D3WasGs1NjQrWvo4tmAZpazg@mail.gmail.com>
- <akY0Gpd/GHj3Pdun@example.com>
- <CABgObfZhNwXLG9ip=CnEiVb=p24etvxeodbjG5=Di4hOKvYF8Q@mail.gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-X-Mailer: Apple Mail (2.3893.100.7.1.1)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDEzMiBTYWx0ZWRfX3BULtrD4gNcF
- gZiT2r5JqCm1Vb2jPvWQK3+GMK1Z8SW87nIpOEg86R116KFF+SbQIyPCkM2ytU/yZr8C1gbn+TA
- nekLkfW0n+04Ts8AnyzdTylxGIx4bDiASCUMFvW9QM2PodfOHynva4/1lFKeSPZFixGZiF8JwcD
- NW8d+P9BZUOSfAArYYPpLHsAXIvlABJHGDiDt7AZ6/HyZ4+tztRZnunf+t+83AY0emdp17WTVJ3
- jf6UQjftPjFX0lbTuzH9KbS7sSavtuTq15BIWpM7cJn1/J2u955PjQ2YkrMPi+GvKijg9Bgfs4Y
- 9eJ/4pU2rN4q5rSdaxN
-X-Proofpoint-ORIG-GUID: QIVq9sUMfUUpgZbOb-uMYKalLzzRA4bY
-X-Proofpoint-GUID: QIVq9sUMfUUpgZbOb-uMYKalLzzRA4bY
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
+Calculate the negotiated TPH requester type from device and root port
+capabilities once in pci_tph_init().
 
+Add tph_ext_support flag to cache whether the device is allowed to
+issue Extended TPH requests after topology negotiation. If the final
+requester type is disabled, clear TPH capability to prevent usage.
 
-> On 2. Jul 2026, at 13:47, Paolo Bonzini <pbonzini@redhat.com> wrote:
->=20
->=20
->=20
-> Il gio 2 lug 2026, 11:49 Magnus Kulke =
-<magnuskulke@linux.microsoft.com> ha scritto:
-> On Thu, Jul 02, 2026 at 10:51:35AM +0200, Paolo Bonzini wrote:
->=20
-> > What are the additional fields that aren't covered (i.e. cannot be =
-copied
-> > from hv_lapic_state to the struct and back) by the common APIC =
-state?
-> >
->=20
-> that would be those:
->=20
->     uint32_t apic_version;
->     uint32_t apic_lvt_lint0;
->     uint32_t apic_lvt_lint1;
->     uint32_t apic_lvt_cmci;
->     uint32_t apic_error_status;
->     uint32_t apic_counter_value;
->     uint32_t apic_remote_read;
->=20
-> Reference struct is this: hv_local_interrupt_controller_state
->=20
-> =
-https://gitlab.com/qemu/qemu/-/blob/master/include/hw/hyperv/hvgdk_mini.h
->=20
-> For anything that's new but part of the standard APIC you can place =
-them in common APIC state, just making migration state part of a =
-subsection.
->=20
-> Notably we have to do this for lvt_lint0+1. We cannot use the =
-respective
-> fields in the common APIC state, because writing to those has a side =
-effect
-> in QEMU: If unmasked, it will trigger a chain of events,
->=20
-> pic_irq_request() =3D> apic_accept_pic_intr() =3D> =
-apic_deliver_pic_intr()
->=20
-> For MSHV (and WHPX afaiu) we're currently not able to trigger legacy
-> interrupts from userspace in this fashion.
->=20
-> What is the issue? The interrupt won't be triggered either if you use =
-a separate field, or if you use the normal one.
+Simplify pcie_enable_tph() by using the cached requester capability
+instead of recalculating every time.
 
-Hi,
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+---
+ drivers/pci/tph.c   | 43 +++++++++++++++++++++++++------------------
+ include/linux/pci.h |  4 +++-
+ 2 files changed, 28 insertions(+), 19 deletions(-)
 
-For injecting LINT0, it=E2=80=99s possible on modern WHPX when using the =
-hw irqchip
- - starting from Server 2022/Windows 11 only - not before that point.
-
-How it=E2=80=99s done is though cancelling the vCPU execution, wait =
-until the vm exits
-as a result, set an interrupt window, run the vCPU again and then when =
-it exits
-Manually injecting an event=E2=80=A6
-
-That=E2=80=99s unlike non-legacy interrupts where the request interrupts =
-path actually
-works on Hyper-V.
-
->=20
-> For LINT1, can you not inject an NMI either?
-
-The request interrupt path works at least to some extent on LINT1/NMIs =
-unlike LINT0
-but didn=E2=80=99t dig deeper to see if it has more issues=E2=80=A6
-
-I=E2=80=99m convinced that an Hyper-V specific structure is the wrong =
-idea for this though...
-
->=20
-> Thanks,
->=20
-> Paolo
->=20
-> Hence we roundtrip
-> lint0/lint1 in a dedicated mshv struct.
->=20
-> best,
->=20
-> magnus
->=20
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index 489487158b99..4097787ea98a 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -383,7 +383,6 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+ {
+ 	u32 reg;
+ 	u8 dev_modes;
+-	u8 rp_req_type;
+ 
+ 	/* Honor "notph" kernel parameter */
+ 	if (pci_tph_disabled)
+@@ -403,23 +402,8 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+ 
+ 	pdev->tph_mode = mode;
+ 
+-	/* Get req_type supported by device and its Root Port */
+-	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+-	if (FIELD_GET(PCI_TPH_CAP_EXT_TPH, reg))
+-		pdev->tph_req_type = PCI_TPH_REQ_EXT_TPH;
+-	else
+-		pdev->tph_req_type = PCI_TPH_REQ_TPH_ONLY;
+-
+-	/* Check if the device is behind a Root Port */
+-	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_RC_END) {
+-		rp_req_type = get_rp_completer_type(pdev);
+-
+-		/* Final req_type is the smallest value of two */
+-		pdev->tph_req_type = min(pdev->tph_req_type, rp_req_type);
+-	}
+-
+-	if (pdev->tph_req_type == PCI_TPH_REQ_DISABLE)
+-		return -EINVAL;
++	pdev->tph_req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
++						     PCI_TPH_REQ_TPH_ONLY;
+ 
+ 	/* Write them into TPH control register */
+ 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
+@@ -506,13 +490,36 @@ void pci_no_tph(void)
+ 
+ void pci_tph_init(struct pci_dev *pdev)
+ {
++	u8 tph_req_type, rp_req_type;
+ 	int num_entries;
+ 	u32 save_size;
++	u32 reg = 0;
+ 
+ 	pdev->tph_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_TPH);
+ 	if (!pdev->tph_cap)
+ 		return;
+ 
++	/* Get req_type supported by device and its Root Port */
++	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
++	if (FIELD_GET(PCI_TPH_CAP_EXT_TPH, reg))
++		tph_req_type = PCI_TPH_REQ_EXT_TPH;
++	else
++		tph_req_type = PCI_TPH_REQ_TPH_ONLY;
++
++	/* Check if the device is behind a Root Port */
++	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_RC_END) {
++		rp_req_type = get_rp_completer_type(pdev);
++		/* Final req_type is the smallest value of two */
++		tph_req_type = min(tph_req_type, rp_req_type);
++	}
++
++	if (tph_req_type == PCI_TPH_REQ_DISABLE) {
++		pdev->tph_cap = 0;
++		return;
++	}
++
++	pdev->tph_ext_support = !!(tph_req_type == PCI_TPH_REQ_EXT_TPH);
++
+ 	num_entries = pcie_tph_get_st_table_size(pdev);
+ 	save_size = sizeof(u32) + num_entries * sizeof(u16);
+ 	pci_add_ext_cap_save_buffer(pdev, PCI_EXT_CAP_ID_TPH, save_size);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index ce520523b152..a99eeea53c81 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -587,7 +587,9 @@ struct pci_dev {
+ 	u8 reset_methods[PCI_NUM_RESET_METHODS]; /* In priority order */
+ 
+ #ifdef CONFIG_PCIE_TPH
+-	u16		tph_cap:15;	/* TPH capability offset */
++	u16		tph_cap:14;	/* TPH capability offset */
++	u16		tph_ext_support:1; /* Indicate whether Extended TPH
++					    * requester is supported */
+ 	u16		tph_enabled:1;	/* Whether TPH is enabled */
+ 	u8		tph_mode;	/* TPH mode */
+ 	u8		tph_req_type;	/* TPH requester type */
+-- 
+2.17.1
 
