@@ -1,118 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43333D953C;
-	Thu,  2 Jul 2026 15:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8163264D0
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 15:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783007290; cv=none; b=d/F7eKE2prp5ojW6xYcEme/YCaRYBVrxbHOVsTmEqHIrG+X5ks1mfw9MaTrym28Jr6GRZPhEIKrA/CcS1WUxdjW3YkWTT3tsOmRrfgGuRqTIj5ZRgAODrSU4fji35e5T6uJeUxHNxdO+12NYBCOTO139ISU4FLqZkwf+wq4cz9Q=
+	t=1783007564; cv=none; b=EWusesdlTNgkX/m+L69pltTYqEFNEysOF0rsHlkcgQ2PfE/8IXOX/9hfeHPje7WgVPqw5elz6SARdlPoBif+92W8gnqMGHkVEs58nFe5yhWRXQvrks+cAnj2hJANBhcBD/5JamCol2dKBqAk6ia9Dr9gNRoe/B+mue5sYi6YPf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783007290; c=relaxed/simple;
-	bh=SnxFFSso9ZbH44As4c7gMI43enTUayoL66vMtlUa3Mg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rCiEjocQa8jo44zpLVYwNszwidLU0KbKlp2cRU34PsVfIo09j8jDeb8v2kYfSen0AsrlN7UIxZSh1rmmBiBCwHBN7n2s7IdC7Lr2HeBI0X0oF5fn7lw0WfheMgnlkidTEbJiE+ecDlt63HRD5pVi4rjb9sZ3YhxNNWRAuyuh67g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aA8kQsnV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783007564; c=relaxed/simple;
+	bh=Frd30LcVkMs1BH5UAHzuPsBYxLiGeiszbx4ehKsZq+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pkSg90zWZWtQqOUZre15jM/3mqUVgE3EffpgAIfvEOgkg1/601fm+LM/M5bh/ncwUaR4pa/HMoSxKpLncE14OZo4flop744EIj4/1/t84vco8Rrhu/aV29CPKl92h+vdStyEdRoErkrSD2Knmd81oRDjJ3pKcee13j+PMqES/Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OZgcpp4t; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aA8kQsnV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997981F000E9;
-	Thu,  2 Jul 2026 15:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783007288;
-	bh=7XvmqnyjGC0fw8sJHUkd8hQjVnuCxZJnNsfA5a2i/nk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aA8kQsnVanJHXwbNCcfMkI57ywhemN8cQZhp56MyZgp1JFacQHNSn6qZuVWtiQaSl
-	 +o5sXyXhcZxulDWkk6PFFwbr0aFTr55Jh6pCYPyXYP9ngHEA68btOUOW9xSIBpxRlA
-	 McwLgs/vFT4Da3RMdQu4irDbdpDfK75gAuTzUEZpf/cv+53m5z13gONY9SrB3p6TLk
-	 kW6sUi/AyVpQ6EcYBuXp3jRCo78Yt0CNfHypVQmUOspcdlzfclUnmb4mQW3yqehAef
-	 6+98BWU9WU6YmTZGo1AS9sakn0XKlfKlUe55H0mDG8deCNZCpWbp4pElT+2/xD9gLy
-	 VqvxNLTgRwsFA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 6/8] KVM: s390: cmma: Fix dirty tracking when
- removing memslot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260702152406.204782-7-imbrenda@linux.ibm.com>
-References: <20260702152406.204782-1-imbrenda@linux.ibm.com>
- <20260702152406.204782-7-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 02 Jul 2026 15:48:05 +0000
-Message-Id: <20260702154807.997981F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OZgcpp4t"
+Received: from example.com (p50892d29.dip0.t-ipconnect.de [80.137.45.41])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 85F0B20B7167;
+	Thu,  2 Jul 2026 08:52:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 85F0B20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1783007561;
+	bh=W1PIRma9VdMGV7CJDv/Z7U/HiT8rAw/JvBy6iodIcqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OZgcpp4tIZ2Gnzeflljl7XTC6DPD9qNU+2kslLT2zdmIcqEHqA7uGDUoIN2C8IlfK
+	 cKAg48W9CprbaZFzoN7FUZF4s3W90Lg41/fsGImEnOVQybJWTFxbHDxB6qxakJwe6Y
+	 +ojT7FfMiw8FMS4JrQ3HCbxzlz4OpLs17s1CC4g0=
+Date: Thu, 2 Jul 2026 17:52:36 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
+	Magnus Kulke <magnuskulke@microsoft.com>,
+	Wei Liu <liuwe@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Wei Liu <wei.liu@kernel.org>, Alex Williamson <alex@shazbot.org>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 26/34] accel/mshv: introduce SaveVMHandler
+Message-ID: <akaJRKS+JdFvgZAM@example.com>
+References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+ <20260417105618.3621-27-magnuskulke@linux.microsoft.com>
+ <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Double decrement and underflow of cmma_dirty_pages counter when re=
-creating unaligned memslots.
---
+On Thu, Jul 02, 2026 at 10:50:17AM +0200, Paolo Bonzini wrote:
+> Il ven 17 apr 2026, 12:58 Magnus Kulke <magnuskulke@linux.microsoft.com> ha
+> scritto:
+> 
+> > This mechanism is used to handle more imperative partition-wide steps
+> > that have to be taken as part of a migration routine.
+> >
+> > Currently it's a skeleton that will just pause/resume the partition as
+> > part of a migration. It will later be extended with more specific steps
+> > like reference time and hypercall pages.
+> >
+> 
+> Sorry, I forgot to reply about this one.
 
-commit cfdf82bf92088bc4e4a719ccbb0ad71b6708ed76
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> 
+> It is not clear why you need to pause, since this is handled by common
+> code. Are you not handling live migration yet? That should be handled at
+> levels above QEMU, because users expect migration to be performed while the
+> VM runs, and the SaveVMHandler should just fail migration of the VM is
+> running.
 
-KVM: s390: cmma: Fix dirty tracking when removing memslot
+Oh, good catch, thanks. I misunderstood something about those hooks
+apparently. I think this was originally inspired by migration logic in
+Cloud-Hypervisor, which freezes/unfreezes a partition during migration
+- but only after the pre-copy phase is done.
 
-This commit fixes the dirty tracking counter when a memslot is removed.
-It introduces a dat_walk_ops callback to appropriately decrement the
-cmma-dirty counter for any cmma-dirty pages being removed.
+I assumed the hooks were also called only before the final delta is
+transmitted. In tests I was relying on the reported state of the source
+from QMP, which probably can not accurately reflect the state of the
+partition as the freeze/unfreeze happens out of band (i.e. is is not
+orchestrated by the migration framework).
 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 512c81eee0684..2ac3a9ac46988 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
+I'll have to research a bit and see if there are more appropriate hooks,
+or if we don't need to freeze the source partition at all.
 
-[ ... ]
+best,
 
-> @@ -5792,11 +5792,19 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
-m,
->  	return 0;
->  }
-> =20
-> +static long cmma_d_count_pte(union pte *ptep, gfn_t gfn, gfn_t next, str=
-uct dat_walk *walk)
-> +{
-> +	if (pgste_of(ptep)->cmma_d)
-> +		atomic64_dec(walk->priv);
-
-[Severity: High]
-Does this leave the cmma_d bit set in the PGSTE, which could lead to a doub=
-le
-decrement later?
-
-If a memslot that isn't fully 1MB-aligned is removed or moved,
-dat_delete_slot() replaces the PTEs with hole tokens but preserves the PGST=
-Es.
-When userspace creates a new memslot over the same GFN range, dat_create_sl=
-ot()
-replaces the hole tokens with empty PTEs, leaving the stale cmma_d =3D=3D 1=
- bits
-intact.
-
-During migration, could dat_get_cmma() visit these newly recreated empty PT=
-Es,
-see cmma_d =3D=3D 1, clear the bit, and decrement the counter a second time?
-
-This would cause the cmma_dirty_pages counter to underflow. Since this valu=
-e is
-returned to userspace as an unsigned 64-bit integer, an underflow could cau=
-se
-QEMU's live migration loop to never converge.
-
-Should we clear the cmma_d bit here after decrementing the counter?
-
-> +	return 0;
-> +}
-> +
->  void kvm_arch_commit_memory_region(struct kvm *kvm,
->  				struct kvm_memory_slot *old,
->  				const struct kvm_memory_slot *new,
->  				enum kvm_mr_change change)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702152406.2047=
-82-1-imbrenda@linux.ibm.com?part=3D6
+magnus
