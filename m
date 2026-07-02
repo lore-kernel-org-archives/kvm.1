@@ -1,163 +1,119 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71592369D6E;
-	Thu,  2 Jul 2026 18:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5782036F8EA;
+	Thu,  2 Jul 2026 18:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783017250; cv=none; b=dmA9Rvp3ZoyTLPuyJsFyROl2GCk50x2gNAnuYBSYw3rvXQTsWI8y45F5Cm+8VqrqJNGGSKAtDL8Sldl+E07dAgbYK5gIml5PvssbITrMppumSqUC+zDbP6e9ic3Vjb/EqChEfJMshKKze2+QNgQsT4H1PyS+HqYjyOunXpFw3z4=
+	t=1783017291; cv=none; b=gkbNljRU4uKoJz0NOyUEZImFGfTWtgoWeZwaR923aUoJ90D9DUIpY7Kfawi0G+ZCdnQogvTP8pMOghPgC1TFxjy4ziXa/BrwddC3e9gzsG1pGtj5Q6k/BWqUOUwMQrg41zDj8aGVzncEnMmwJIMJf1EZP49DOlouO3nd0Uqnj0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783017250; c=relaxed/simple;
-	bh=lGFdy8BjEXTWwPlUhh+s21HGqxTBJpAvzj//nRAhBSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=hLGxMuaLs8Ilm1OeXIvIRw99x9WPTKXSf4LCKg1r00ThPZ0CfAtXKhJOtQN5xIPbpMykyv0Dp5S9ScLq/TO2VYynpaVIVX7JUET25lQY2OEBvFi+hrMSsZR3mf10TsLw48j78U58v/WASyGtzlcIyByPejH27QvAxDUCX9/6o7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GiGVrnEe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ijIARc7f; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1783017291; c=relaxed/simple;
+	bh=rfM2MaieXbLxE400yBYlbqYJ35JfI9bzY82lHqQGwTs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=upLhfkQU63BUh5CEWoFpET/dhsQ3t/A+xfKRY7U2uqmNKOIAuE5GA7NTVUceiPDgUDifvMhtrtbgepWN5lQZjZcAiAuZZ6OL1IAucQ7knhfQsgk7quXSDXHqkJST410pEr9sQWSsn/mIxsi2yhi4jXe00qsd3MctD68NZGjfZAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sj3xW9c/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GiGVrnEe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ijIARc7f"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 84A3A7A0081;
-	Thu,  2 Jul 2026 14:34:06 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 02 Jul 2026 14:34:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1783017246; x=1783103646; bh=u5
-	iIZBCqxUlgvySpNKdsPPfbBzPvioQpMRb5Ah7+Zuo=; b=GiGVrnEeQ+yCGiu13D
-	oMJWC/KnJoFeoRZqQ58bBzMit/wSUnDBdlQNrj3NV2KIZHU4gVTVwkNE41r4TlFE
-	AyCEllQD/1G7tsIoc5TasnPP+/Tj8nFvkKwHBKR0+M5wFJ+eRlEes8Io8DfFRlc3
-	k21HxAQ8Cvp1ZM+dKw+4a1QGiMWbgyVeop1lgHPSvh/vfc7nvbyzOajnK5gEbPv2
-	WJlEr6UpsDBdupqrcXmIdYFhFf1PJ8XmZAm2AOcyTMrQH9E60LaT62XTamTw7qbz
-	TnixpIfpN727RPeJ6fhAfoJ4vCQ5jgpWN5+FJ2Fys8DO4n70RdnArfbDy1Lhgtf9
-	kBZQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1783017246; x=1783103646; bh=u5iIZBCqxUlgvySpNKdsPPfbBzPv
-	ioQpMRb5Ah7+Zuo=; b=ijIARc7fYKxaz/xq5gniaL8LR1QPfq3uoHBC+D51XGZW
-	qxn+88RtqELWcM0pkx0d+PGVPJZYunVyKofGhDLfC7BJeTL80Es63Md3A+jlCStN
-	wrIkLNd5YYbw591XxzJufNtj8/VGPistt+F9TqJgiijidxpMATd0X5uLMvijmS32
-	Q6MflGkClENWaJcSgmtVKvSgNojcCLixtJEDgvzzhQA7ieU1n8lLrJMOX01zhsdW
-	Y1QTP/aT7t+EaeYHxikJEyNVMI+bU48AQD5NMo7OfBuM1bOYe/W6IATPZnMuGasO
-	EGdEbpe5tCA1PZu2gGHCMnn8EZNVRgZ8wWFIjTdBtQ==
-X-ME-Sender: <xms:Ha9Gaip_KsYOZGNcHg14pkdkQgu3JM63wcBQyrRR4qOfzb4hMOt3pQ>
-    <xme:Ha9GaufuLw6APLMffCBBwBBF5a-1kQ_blOHCoxc5oDn2JulrAfNkiXXrP7Y5nT5WS
-    nw1BPWfMzH90VN0qCAFyhS3e4KC5KCegvyfZRJazUsYX7746wlErQ>
-X-ME-Received: <xmr:Ha9Gahp4QVd0IKCZ6xuzYt9QIvwiwytcZF9KN7pzqrr94vvIb-fFeJMbl_Y>
-X-ME-Proxy-Cause: dmFkZTFiXHjOIZBXsoTNkT6/njTwZks0j705bDQ+aT00vJhT9yE0iJKgrOEiw+S7SVfAjj
-    59IxGQwFp3j3TxgwN7Kwl1yDrQIXSzD9xs/zkNxAtgCPtf/pmTRWO33XypR31LwNPgOhlJ
-    n/+1mEUiE01wWcQH9QZrl3hFVnLremY+uxHOkHz1IWH01vqImG/nuZwWS5PZz3wOB0equ8
-    cEuurd4VsicE2BJIFH3oUyysClBSQMedbd846gVP2UW3g0H3tHGBoZbKdZOgn8MnH1fnez
-    qs0bZL8+bJ+tKcoJESpNAvKPz8MS+TNCaA2xvZuS3MSUpMnfseZbPbo3Pd7SgOca5MnDBk
-    VzfV4NQ/ydVFIJaxiAAhuMDYE2s8v9olbKF6tmfCnlJXdc2Bf2tQFsvV4U2SFC4XfbtKo7
-    vfoNPYGNuVibWvbS86YffiArtlCaFMtYLr8AnI6WzCLeskJbEjhrxir0Nv1B0za5Rye+Cq
-    tUBveAItBbgOxuQOEpfMAVX+uGkEv4aLMGS0HyWR03DY1jvg+Gy+sgdi3XwMCvANKw5GfL
-    Z/rXuB6i89H7hP87tceVxybGVaxXhBWtOO29HVDO2Nt0dlEBNZE/51TAeVB7XTAb12/Hsy
-    9IcwivnB9mq9ySrCMwrLDbUI4EGCJyA5Yk0ot3rd6kw+Sc9iRPEr8dQgRAlQ
-X-ME-Proxy: <xmx:Ha9GavHMVYuhrroiZeKJRNmV7X4ZyGe6Z3oeP6dvBKrt_Tpt6CvLFw>
-    <xmx:Ha9Gahvcv90aMuLEpOQmbjbhY7T5kfNB9RhGRPomzH3ekGx8irolhA>
-    <xmx:Ha9GahXggTh2WdaG0nenwzFQ1MdNMdONXztXolP0BZInUGpbO2jArQ>
-    <xmx:Ha9GatHZDSuj_2XUH3dn91sg1SgbFrzdTQxCSgTljOtPPlegf_Nzmw>
-    <xmx:Hq9Gah3KBsOoIJaX-A0uTJTDIqYstlk8bait4WdO19a0dglsDREm94pB>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 2 Jul 2026 14:34:03 -0400 (EDT)
-Date: Thu, 2 Jul 2026 12:34:02 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: alex@shazbot.org, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] VFIO fixes for v7.2-rc2
-Message-ID: <20260702123402.7f173c7c@shazbot.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sj3xW9c/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14E81F000E9;
+	Thu,  2 Jul 2026 18:34:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783017290;
+	bh=OOtLZyiO1yv6YfRJ7zDe+xzqYIZsaEXUbBqMX+24dns=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Sj3xW9c/JNp9muAFkUpOM9KYcXmHI4C+XU3/eePH09dXLcu0pO18/PP1Z58kWXRTj
+	 cVoYSbkxdPYOLqk35R7hSPf1ofy6mSRu1bLb3aaOZBvUigfDJw9wCwa9Cl6OcWWguE
+	 MzTnAfc1c13KRIXAKZmf+4dPekyzamNKpII0xPuMqfS7wsc47OCknTrO3iv9rzCbva
+	 XFEeHZ0gXjMRYwRnWR6ZgkrZ3a5HJXEqquWXSHHrZ1T0saBA8fr2YiYv3fhfwGp+ox
+	 p11Dg8/ZY1SpifPfZw5QehgQDJWzQjkGPKD2zNebBnsKi/nJIc+7NtL9wAnuX93a7m
+	 ngHD3Fm+TJU1Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 04/28] KVM: arm64: Drop __HCRX_EL2_* masks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marc Zyngier" <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>
+In-Reply-To: <20260702160248.1377250-5-maz@kernel.org>
+References: <20260702160248.1377250-1-maz@kernel.org>
+ <20260702160248.1377250-5-maz@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 02 Jul 2026 18:34:49 +0000
+Message-Id: <20260702183449.B14E81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-Hi Linus,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Mostly straightforward fixes here, inconsistent runtime PM handling due
-to global device policies, bitfield races, unwind path gaps, teardown
-ordering, and a misplaced library flag.  The overall latching of module
-parameters per device could include Fixes: c61302aa48f7 ("vfio/pci:
-Move module parameters to vfio_pci.c") [v5.15].  However, since this is
-largely a module parameter mechanics issue, I chose not to flag it for
-automatic stable backports.  The per-device latching also leaves a gap
-in debug'ability, which is filled here with a debugfs surface.  Thanks,
+Pre-existing issues:
+- [High] Unsanitized architectural RES0/RES1 bits in HCRX_EL2 allow nested =
+guests to enable hidden hardware features and trigger CONSTRAINED UNPREDICT=
+ABLE behavior.
+--
 
-Alex
+commit c528765403e37bb993d380c50856d508033ad43a
+Author: Marc Zyngier <maz@kernel.org>
 
+KVM: arm64: Drop __HCRX_EL2_* masks
 
-The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e52491777482:
+This patch removes the legacy __HCRX_EL2_* masks and the manual RES1
+sanitization in get_reg_fixed_bits(). It intends to rely on existing
+auto-generated masks and boot-time checks to prevent unhandled bits from
+being exploited.
 
-  Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
+> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+> index 0622162b089e5..16d8148dc3f12 100644
+> --- a/arch/arm64/kvm/config.c
+> +++ b/arch/arm64/kvm/config.c
+[ ... ]
+> @@ -933,7 +933,7 @@ static const struct reg_bits_to_feat_map hcrx_feat_ma=
+p[] =3D {
+>  };
+> =20
+> =20
+> -static const DECLARE_FEAT_MAP(hcrx_desc, __HCRX_EL2,
+> +static const DECLARE_FEAT_MAP(hcrx_desc, HCRX_EL2,
+>  			      hcrx_feat_map, FEAT_HCX);
 
-are available in the Git repository at:
+[Severity: High]
+This is a pre-existing issue, but hcrx_feat_map lacks FORCE_RES0 and
+FORCE_RES1 declarations. Unlike other system register maps, this means
+compute_reg_resx_bits() will omit the architectural RES0/RES1 bits from
+the KVM masks.
 
-  https://github.com/awilliam/linux-vfio.git tags/vfio-v7.2-rc2
+[ ... ]
+> @@ -1579,7 +1579,6 @@ struct resx get_reg_fixed_bits(struct kvm *kvm, enu=
+m vcpu_sysreg reg)
+>  		break;
+>  	case HCRX_EL2:
+>  		resx =3D compute_reg_resx_bits(kvm, &hcrx_desc, 0, 0);
+> -		resx.res1 |=3D __HCRX_EL2_RES1;
+>  		break;
 
-for you to fetch changes up to e242e974e812e7a47e3088860c80d9492fac314f:
+[Severity: High]
+Does removing this manual mask leave the RES1 bits completely unsanitized?
 
-  vfio: selftests: Add luuid to libvfio.mk's list of libraries, not to the Makefile (2026-06-30 15:50:55 -0600)
+Since hcrx_feat_map doesn't supply the architectural bits to
+compute_reg_resx_bits(), a nested guest might be able to write arbitrary
+values to the HCRX_EL2 VNCR page.=20
 
-----------------------------------------------------------------
-VFIO fixes for v7.2-rc2
+When KVM reads this in __activate_traps_common(), it only masks
+NV_HCRX_GUEST_EXCLUDE before writing directly to the physical SYS_HCRX_EL2:
 
- - Fix racy bitfield updates in vfio-pci-core and the mlx5 vfio-pci
-   variant driver with a binary split between setup/release and
-   runtime modified flags.  These were noted across several Sashiko
-   reviews as pre-existing issues. (Alex Williamson)
+arch/arm64/kvm/hyp/include/hyp/switch.h:__activate_traps_common() {
+        ...
+        u64 val =3D __vcpu_sys_reg(vcpu, HCRX_EL2);
+        hcrx |=3D (val & ~NV_HCRX_GUEST_EXCLUDE);
+        hcrx &=3D ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
+        ...
+        write_sysreg_s(hcrx, SYS_HCRX_EL2);
+}
 
- - Fix runtime PM inconsistency where the vfio-pci driver module_init
-   could modify the idle PM policy of existing devices through globals
-   managed in vfio-pci-core, leading to unbalanced runtime PM
-   operations. (Alex Williamson)
+Could this allow the guest to bypass hypervisor feature emulation or trigger
+CONSTRAINED UNPREDICTABLE hardware states?
 
- - Restore mutability of writable vfio-pci module options by further
-   pulling policy globals out of vfio-pci-core, to instead be latched
-   per device at device init.  Provide visibility of the per device
-   latched values through debugfs. (Alex Williamson)
-
- - Fix missing VGA arbiter uninit callback in unwind path.
-   (Alex Williamson)
-
- - Reorder device debugfs removal before device_del() to avoid gap
-   where debugfs is available with stale devres pointers.
-   (Alex Williamson)
-
- - Move UUID library linking flag from vfio selftest Makefile into
-   libvfio.mk to avoid exposing such dependencies when linking with
-   KVM selftests. (Sean Christopherson)
-
-----------------------------------------------------------------
-Alex Williamson (7):
-      vfio/pci: Latch disable_idle_d3 per device
-      vfio/pci: Release the VGA arbiter client on register_device() failure
-      vfio/pci: Fix racy bitfields and tighten struct layout
-      vfio/mlx5: Fix racy bitfields and tighten struct layout
-      vfio/pci: Latch all module parameters per device
-      vfio: Remove device debugfs before releasing devres
-      vfio/pci: Expose latched module parameter policy in debugfs
-
-Sean Christopherson (1):
-      vfio: selftests: Add luuid to libvfio.mk's list of libraries, not to the Makefile
-
- Documentation/ABI/testing/debugfs-vfio      |  26 +++++++
- drivers/vfio/debugfs.c                      |   1 +
- drivers/vfio/pci/mlx5/cmd.h                 |  15 +++--
- drivers/vfio/pci/vfio_pci.c                 |  30 ++++++---
- drivers/vfio/pci/vfio_pci_core.c            | 101 ++++++++++++++++++++--------
- drivers/vfio/vfio_main.c                    |   8 ++-
- include/linux/vfio_pci_core.h               |  18 +++--
- tools/testing/selftests/vfio/Makefile       |   2 -
- tools/testing/selftests/vfio/lib/libvfio.mk |   2 +
- 9 files changed, 152 insertions(+), 51 deletions(-)
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702160248.1377=
+250-1-maz@kernel.org?part=3D4
