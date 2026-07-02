@@ -1,121 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E73A59B1;
-	Thu,  2 Jul 2026 18:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EC831F9B5;
+	Thu,  2 Jul 2026 18:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783016845; cv=none; b=r5Igt+mxa84YmM+u56H5NVJAxJ0xFbTSV4MLpcMem/LsrnL4LmOfYY97BqeVmTlM0BCrmC2ZZvy5VLE1+Qx9X6TSCVovOkrUpigoGhE4kBBZlfS/Qj2mdGzuuBRW/QH6d1nTh/6jA5h7g9IGw3E5aupacYHXDqCQo97gad4McBE=
+	t=1783016962; cv=none; b=trkqCB5dKgsKaIZC+hSQjq0TUiFuq69LblB+Md4IIDOVBBAXuQ9q4dk6/qCT1X5C4c/Sj1lxYocJk6E+ekcIrm8GgvxRp/0PUovxixjv44Z9A+5lhY5yImOe7dHQqI1yPonosalH48MiuRKTSVg/U5b2p1YFh/5NJNXEZ9Cu67s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783016845; c=relaxed/simple;
-	bh=tUNl1L/Tvt9Lw9z28XQPOJw4gf0w7g1efNRYWEiEUQA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EtD8C3WijYewMlfvceTkXiYKhTzgj2TgqQRqa96SBSIug8F6F20Xcjvsj5np8oFUOnJb3iIOG8fj/+clOCrRuTki5HTXK6/lsK1z0ndBg2/3rLm4hgdA9NzzrxJ43WVxzl6iL90TB1JjOWw5eqsYNvsBExVPpllr/Gv7ZmLpBW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz8K5BhT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783016962; c=relaxed/simple;
+	bh=Ae+/zeh8gCqjCiwqvv8ueORiT2MorjMihfjfDtWkSaw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=oAI6JozV8/TiSRBrNNgIEMWMKjacO4G1F7sXdNwLmNUDPzqcGUH+/cqug9yomQz59c8ZdZdhcT+BwUW44vSmTIzp3EjVaFBTV5ckpM+tOOsWcMRPtAn9UWmf68yk53fMXS1+p8C4UrvR5zbcSRLB/KPMhCNvUvV8O5qTm0gz8aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzbK/Op+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz8K5BhT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58B11F000E9;
-	Thu,  2 Jul 2026 18:27:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzbK/Op+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872431F000E9;
+	Thu,  2 Jul 2026 18:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783016843;
-	bh=NymyTv3BRAYOKJnkWhgABGHjBidtkeFYqde854oTNgc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Sz8K5BhTbLLtJq2fXhiyYckyCZaFTciidyNQNfFpdazOQwzeftdfEPyZi+0uUxOnh
-	 gBW7F/XHIoAt/Op5pYmYYz0abrwxRrOhYeJmZTy5vpKVHmvR+qarwjGMg4X0URZ+vo
-	 DaxVkXN3e7w7uwFMZGF2Thj/Qt0MVCBRwJ4EA26wVfmBACaDkERbzeINlnh4wXx1HG
-	 a4/8xf2kmC5T3bQvMCWJDrRGWwvj5gHtmRq8TDHLpkeHK9cfl300oa8j/GSg8wQzXC
-	 joPwmY7Mmcf3WZsfcG+FC3Z2j7uA6yJgiCJ8/Tgr1jimT0EH090oFOURhIweNQHCv2
-	 M5G2ASLCmFmlw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wfM8A-00000000sFg-0YRL;
-	Thu, 02 Jul 2026 18:27:22 +0000
-Date: Thu, 02 Jul 2026 19:29:10 +0100
-Message-ID: <87se616ya1.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	"Oliver Upton" <oupton@kernel.org>
-Subject: Re: [PATCH 03/28] KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
-In-Reply-To: <20260702163411.C2F861F00A3E@smtp.kernel.org>
-References: <20260702160248.1377250-1-maz@kernel.org>
-	<20260702160248.1377250-4-maz@kernel.org>
-	<20260702163411.C2F861F00A3E@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1783016960;
+	bh=Ae+/zeh8gCqjCiwqvv8ueORiT2MorjMihfjfDtWkSaw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JzbK/Op+SfICRExFrLAG+b/ClRChB4r2bCf+4ZlLhIWxnsEiEsS23S40ei8AhDTP8
+	 zuAST4DEH2edhEo0aIYZSgjMVIMq3X0iwLAamlJ3zMRpv8kz/J7rrmrZvnJGWvQesh
+	 ZipWPK0qUOMWGbPs1BRX7QDGzaXtVpBcWbuDDCdomwXCswyrd7LszucNO4/UI3aLIc
+	 xkXgIHgqObigMRmeu0gDsKCOAIvCSSfPJWzQjXSkgX0njiBGRrmfe2oG0yLr5vtr1w
+	 asMCGA6dmesukCrPxva+pmWkjVL77jcRLdTTZvrU3mYn2MgVeAb1OiznzokQzq0uDF
+	 qY4FE5rStRJbQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v11 3/4] vfio/pci: implement get_pci_tph and DMA_BUF_TPH
+ feature
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260702181025.2694961-4-zhipingz@meta.com>
+References: <20260702181025.2694961-1-zhipingz@meta.com>
+ <20260702181025.2694961-4-zhipingz@meta.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 02 Jul 2026 18:29:19 +0000
+Message-Id: <20260702182920.872431F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oupton@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, 02 Jul 2026 17:34:11 +0100,
-sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Missing RES0 Sanitization / Unsafe Register Merge for HCRX_EL2
-> --
-> 
-> commit a8dae7a323ff7e33355d5cb4c144294087a9bbfa
-> Author: Marc Zyngier <maz@kernel.org>
-> KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
-> 
-> This commit changes how the guest-provided HCRX_EL2 value is merged with
-> the host's value. It replaces positive masking with an exclusion list
-> of bits that the guest is not allowed to override.
-> 
-> > diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-> > index 4bf624a49591d..8e5f492f39086 100644
-> > --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-> > +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-> 
-> [ ... ]
-> 
-> > @@ -350,8 +368,8 @@ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
-> >  		u64 hcrx = vcpu->arch.hcrx_el2;
-> >  		if (is_nested_ctxt(vcpu)) {
-> >  			u64 val = __vcpu_sys_reg(vcpu, HCRX_EL2);
-> > -			hcrx |= val & __HCRX_EL2_MASK;
-> > -			hcrx &= ~(~val & __HCRX_EL2_nMASK);
-> > +			hcrx |= (val & ~NV_HCRX_GUEST_EXCLUDE);
-> > +			hcrx &= ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
-> 
-> [Severity: High]
-> Does this allow an untrusted L1 guest to write garbage to the
-> architecturally RES0 bits of the physical HCRX_EL2 register?
+> Implement dma-buf get_pci_tph for vfio-pci exported dma-bufs and add
+> VFIO_DEVICE_FEATURE_DMA_BUF_TPH so userspace can publish TPH metadata
+> for a VFIO-owned device.
+>=20
+> 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
+> uAPI carries both with explicit validity flags, and get_pci_tph()
+> returns the value matching the importer's requested namespace or
+> -EOPNOTSUPP.
+>=20
+> Publish and read the TPH descriptor under dmabuf->resv, matching the
+> locking used for other importer-visible dma-buf state. The SET ioctl
+> takes dma_resv_lock_interruptible(), while the callback runs under
+> DMA-buf's asserted resv lock.
+>=20
+> The attach path reads @revoked without holding memory_lock. Annotate it
+> with READ_ONCE() to document this intentional lockless access: the read
+> is a benign early-out, and a racing revocation is re-checked under
+> dmabuf->resv in vfio_pci_dma_buf_map() before any mapping is handed out.
+> The annotation only needs to keep the access well-formed against the
+> memory_lock-protected writers.
+>=20
+> Reject requests the device cannot consume as a completer:
+> pcie_tph_completer_type() must report at least
+> PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY, and Extended ST requires
+> PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH. Make PROBE follow the same hardware
+> gate so the feature only probes as supported when the device can really
+> consume it.
+>=20
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 
-A guest is by definition untrusted. Reading a VNCR-backed system
-register implies sanitisation to enforce RESx bits.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
->
-> By switching from a positive mask to a negative exclusion mask, any bits
-> not explicitly excluded are now merged into the host value.
-> 
-> If the guest modifies its VNCR page at the VNCR_HCRX_EL2 offset and sets
-> RES0 bits, these bits would be passed through. Since hcrx_feat_map lacks
-> FORCE_RES0(HCRX_EL2_RES0), KVM's register mask application in
-> kvm_vcpu_apply_reg_masks() will fail to clear them before they reach this
-> merge point in __activate_traps_common().
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260702181025.2694=
+961-1-zhipingz@meta.com?part=3D3
 
-No, the RES0 bits are implicitly handled. FORCE_RESx() is exclusively
-sugar coating here. Case in point:
-
-root@say-please:/home/maz# grep HCRX /sys/kernel/debug/kvm/976-14/resx
-        SYS_HCRX_EL2:	RES0:0000000005ffcfe7	RES1:0000000000000000
-
-Go away.
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
