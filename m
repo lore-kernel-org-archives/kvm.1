@@ -1,128 +1,149 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798973D955F;
-	Thu,  2 Jul 2026 15:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BA737A852
+	for <kvm@vger.kernel.org>; Thu,  2 Jul 2026 15:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783005868; cv=none; b=tAtClmpMEU2mSDi7HFp5HKY9pFWr/7EL4Ksmut6hb+dPpVlkCh+VytLqyVHY0ghpg2Z8+kBqDFrGiFpaSu2RcSTSzifzoNZzTdtmHEqAtG4qpBG84lgT8vGcppUUjNCjY/GUV7DDW9ewtVqq3oN/JC97Upq5aIB+9PGFRSeoIUk=
+	t=1783005993; cv=none; b=FBNXtm8QxJ+uSXU293MsS9gHjtoeKHcTe99v+gy31iIM1oONI2edseMxUPKwNfSMTqGhnwadyef5hEdAhJ5NI1ZfopUnwdEWtAOkfzHAPBfuX+n4yiUpDPWEhHdsfRbp9X2Dr1nmu4ErNWfIZyp1E7tZpyCMcqW6Bk8bdtj3jQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783005868; c=relaxed/simple;
-	bh=egely+LF2LssrjeFuNpcv6F/vAeTAmUF67060LlJkqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLuQufdvvhkv1rsY1BLzUs3DVl4FthhRFH0P1daGtoW+z9AxlkcF59lu1Bdkh9dTMx2BpOIBte8eF+mzc8l0bMAQPcKRNGkhQl3v/RJthhx0tfU1x2IGwYfVdJuyXml3C2plzbino7pPcsEvO9deLJjuyxRx1deqzR1b8JYI5Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=trJhEKxC; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783005993; c=relaxed/simple;
+	bh=tWHidKVtsdwKRB5jdKGXevt8I4wrmUq/pKRcb+d/2LM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G+4Gb2mx7HpJLGuD7bxEvGpAQFY6UDPHC4OEoud8kFeQcynDbcXt/FYFM5+dlAI9WbibqCgChp1nXJS6C7JuO1hYaeqmQ6lz3+yoBRfB/rC1kczt5Dgtezp3lX7MnW2E+7H52EeCHXguukjFckjZGR6apUS47/votuTbzovqkgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NSt4Fn24; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="trJhEKxC"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662EIkUl076279;
-	Thu, 2 Jul 2026 15:24:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=vP1Ktl3vjArw3f9LP
-	eeSx3/s8/BNatj5x7wbsqa0f2M=; b=trJhEKxC0k67tfhIOwjCKZ1JaN91lrQQU
-	USBVndJvETVEVW6EcM8sHlwE09DCLrgLkihIzSwF6a6AdflxoQSxROxn+Pvx/mvF
-	DIjtgnJXF5gLdYt06J/pClnelPOUvnFNYZ4XaXEzJMN0i1vo5SHis+E+5wubpE28
-	cLOFc1ypWsYJCiGUheBpBKVgsRqTpyJF83V47NS3HrLgznrAmtzYqXaL3MhZ06KJ
-	vznyl0qhNT99HR85cSex33SvZynbJ7aiv5E2XdTOm4JMhZvEFAd6lbqiRlPT7hOF
-	/ylADvdp9X96wB1F7XsajjxSV4+GpyETMYlKGL0ERAKTo0xP8A3zQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26qgamx2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 15:24:19 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 662FJggF011168;
-	Thu, 2 Jul 2026 15:24:18 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2s7wcnm6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 15:24:18 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 662FOCtu29360446
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Jul 2026 15:24:12 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56A0720043;
-	Thu,  2 Jul 2026 15:24:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 422C920040;
-	Thu,  2 Jul 2026 15:24:11 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.87.55])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Jul 2026 15:24:11 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v1 4/8] KVM: s390: Fix return value of kvm_s390_set_cmma_bits()
-Date: Thu,  2 Jul 2026 17:24:02 +0200
-Message-ID: <20260702152406.204782-5-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260702152406.204782-1-imbrenda@linux.ibm.com>
-References: <20260702152406.204782-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NSt4Fn24"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493b691cb44so14112185e9.0
+        for <kvm@vger.kernel.org>; Thu, 02 Jul 2026 08:26:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783005990; x=1783610790; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=GUA8gzuE5tCdaOiMzaRo5jxXpGPGq0X6g3CKwAZM4NQ=;
+        b=NSt4Fn24npKatGgvjZrvX+2mdkJHq2GwSrmP8qDLn4K0Dybhw5JaVFlY17L8479mgO
+         ivKiXBF6yDKnSW32STmtNOwIuJodHOKzRzndReTThjuKeBLXSCeYGa6CFwZjJZHhILF3
+         ykKaqg6l3V+arHZ9WrWGoVti3UpFRxgwuvlZpojQ6hls4MQ/yzhwpjI9/Wd0VhgXgEBc
+         8fvoBgN0mgVvuBQIuXOMPB1KKV+crwxjtzMGdS+ZuQX+KrO6bV02L0rs6MMfOHRl/aEA
+         wrZUG80XEyhtvMDr61HMepWBxK9HHi3dyUqs+2mtDUcwpk6MrzM/XDPnlzbmLP6J60h4
+         hljg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783005990; x=1783610790;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GUA8gzuE5tCdaOiMzaRo5jxXpGPGq0X6g3CKwAZM4NQ=;
+        b=X+A33JblwvFVrLUajT4dBFQvb3uEFgEGTRxVhTC93LrV8vr6613WT+HBxxDBD2Ff8Z
+         WKKvL5WVyRAHXEuFZOzH2s8WFDFLTxmVLMFniJCY/3SuXmgmCNldccBNgqNnQPjlZE2x
+         NjFslPrKjAWfi9m1kVnZJQvxpa7gkrtHBRZ0OpYLnDA3VlQ0gNgb7zmVYj5fmcR1PeF3
+         w/xLMa81I+1KFsVtCTnpXgfSi8Dir+q03VMWe7xNDI5G3cv5yUzg635K6V1USvupY/A7
+         8G24OQwoE3YYff841PbQNuY3p4Afr3HfuWW8sxMHrXv5IgiCQ/ZWVh6/T84Fc53dT3Kf
+         OuIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/WIAsvy4D+BPQ1paIX991kaTFcvmIwnshrduE4rLS32bI/J8X3R6TjsMH6tr8W3+OPNwc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9kURYvYUDyUirTRkafYGP9LjrQDq8exFE2UyUyjCnd+jmCBY5
+	AUtvukLUGSrffwKH9vHvlDKtKcXVV7/n4lilFoBNbU9GqHM3CS9tmiTvIQ+zfLj7TdQ=
+X-Gm-Gg: AfdE7clBxu/Oav/x2wY6WMrMkds+tz3lfPbZXK2EMH/8GqtjaMedEOmB3aur1+4TfDl
+	Pu1GFv3aCmGW7man92lkDCl48WYuY2fxSj1T+ZMNf6/+9g5hJYjrnt/Ze5oYimXJHAFDN+HQhZJ
+	haSQrRrpnTt0JnG3Va9fqRYDdbYzugnPB85ixbZxZlzw+/m8vJfbzhTeeTgbfwiW3BHYIPriL25
+	fXH8Uddqz6Ep1El3JtFHdFRz+G+mcuI5CAdPn31wFZPHaoYDF6w9U+MlCFkt/XscYBJbHX5Rfa5
+	eaRQwAeUCiiIDkkWx3SHJDPXDb87iN15pgfBspV7f0olletwEUYWZ1pezxlTq3hm8tCj2QQW/h5
+	nHtYsIQKmurahTFQXO1Y+uzT/tLzPS++MxKZggu1tK/sen6wdITOOKjB2bpEYM4yZV+kVPuxXAi
+	LcX0mcxqdkHbAEPvU=
+X-Received: by 2002:a05:600c:6a98:b0:493:b307:6777 with SMTP id 5b1f17b1804b1-493c2b85665mr69863775e9.22.1783005990368;
+        Thu, 02 Jul 2026 08:26:30 -0700 (PDT)
+Received: from [10.20.4.146] ([149.62.207.101])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c6354926sm67312345e9.1.2026.07.02.08.26.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jul 2026 08:26:29 -0700 (PDT)
+Message-ID: <b5d0a554-4d2e-4338-918e-1251e697a309@suse.com>
+Date: Thu, 2 Jul 2026 18:26:27 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=RYqgzVtv c=1 sm=1 tr=0 ts=6a4682a3 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=THNiei219oG1Dueoul0A:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE2MCBTYWx0ZWRfX/ZMPAPwS5ZlP
- p/wgkPGJpIF4hZkpTCQVHqQ7DUWMEoopJuQutomNZYf+v0sQc8jFPJwtiDGrrQd0/OXKJHJ74Pu
- LaWiZKo2uTLFEn7gna5Z+PHzpQmJ3fU=
-X-Proofpoint-GUID: gSPguGVDOT6R--OlgIETA3Yi4rHV2PJ6
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE2MCBTYWx0ZWRfX8ELDfWQDQ1We
- G0FiKYYBI0zX2HpcVz+Ti0nXXwDwm0q8KhPyc0zA0a9DPVENoDJILvP0OYO4YshmGMs8c5AhHMx
- +nkKJ1m13yjhBWjpCC2RDBrgzKOySvrW6CDF0DWd3mZwIVdxdw4cJC7m9sTY5xxm7pxcVJMLhn+
- qN+OyCX72/3/GuRgb2CK8j0wh1fq1SC36xopeSFU8bpyL7CATUziIu2MQ/6pcsYvZMCpfgIcIic
- oNPvxEoe2c0pdx4KRhQ4UKlkI2iCATTlL/eNKuKTLK4BN6myxstLfS4uVmotdmjwBuUF2EQXWT+
- Si9Huha1XTCKTPXM4baIuUSE4vKBq3k+HuSzqs5OH6x6pUzor/WImV5KFCeUDDNw5w6dD6U8SaM
- iC7Xg8gsdYCZ73aoxhR1lk+9rKvXIbxLCAtVVn4xLmY4YGsjSSF86zfBCcAsbNI+Zquy+wyZo5Y
- /52PGwIUbSIJwbYgqCQ==
-X-Proofpoint-ORIG-GUID: gSPguGVDOT6R--OlgIETA3Yi4rHV2PJ6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- adultscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020160
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 12/15] KVM: TDX: Add in-kernel Quote generation
+To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-13-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260522034128.3144354-13-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-If kvm_s390_set_cmma_bits() is asked to set CMMA values outside of a
-memslot, PGM_ADDRESSING (5) is returned, instead of a negative error
-value.
 
-Fix by returning -EFAULT whenever the return value would be > 0, which
-is consistent with the behaviour before the gmap rewrite.
 
-Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/kvm-s390.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/22/26 06:41, Xu Yilun wrote:
+> From: Peter Fang <peter.fang@intel.com>
+> 
+> Provide an in-kernel path for TDX Quote generation when handling
+> TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+> 
+> Use the core TDX API when the TDX Quoting extension is available. For
+> simplicity, each KVM guest checks for availability only once during
+> initialization. KVM does not handle Quoting service disruptions.
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 784f7d9c79c7..512c81eee068 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2384,7 +2384,7 @@ static int kvm_s390_set_cmma_bits(struct kvm *kvm,
- 
- 	set_bit(GMAP_FLAG_USES_CMM, &kvm->arch.gmap->flags);
- 
--	return r;
-+	return r <= 0 ? r : -EFAULT;
- }
- 
- /**
--- 
-2.55.0
+I think calling this in-kernel quote generation vs user-spcae quote 
+generation is misleading. Rather the distinction is : quote via the vmm 
+or a quote generated by the tdx module/tdx extension. I think this 
+should be the level at which the distinction is made.
 
+
+i.e tdx_get_quote_vmm vs tdx_get_quote_ext or some along those lines.
+
+
+<snip>
