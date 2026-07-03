@@ -1,60 +1,85 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FED63AE187
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 09:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8499B3B0AFA
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 09:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783070143; cv=none; b=smviAwCnVGvUyk3qmdNt/z0RjcYSJzbNOxHc8wz4iXqQVdG6lV6cYjRTYrQeD40zwr8u5OrbDhbw7ile+tjNpNTj0Ija7k4S5Of9gftVmaH+F25DUgqEr4BVdKOyTeNtkrGeG0BX4X4TmxQOSk38ZBJq/xDihnrroQLd7lWYb2Q=
+	t=1783070234; cv=none; b=p6gYbK1/ZBRJwqeapjlAAqUI078CAK2OF4bDmr5jkrM+BgDaufxzTLIRwxqoa4NEZNQDtM0kgD6jS0mKL8JV2rHaVBtIxCM0mVD7YCyuO/+HuE2ylsHvLLTS67up/HaidYIlVppLAMWmRFagt7VT4Vl6NcVrEg+JZzrY+2mgey0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783070143; c=relaxed/simple;
-	bh=ni2p+6hQxi9gj1jNTiWf7lwZKlMl0ChQh0YlhgjDN3s=;
+	s=arc-20240116; t=1783070234; c=relaxed/simple;
+	bh=OOU6UJYb9vyyWX0I4aUrF5gLrQcjXSSISqCS8XDKuBg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fr+A0Ux43ySQPMJToiGgnqX2a8tO4MTmHOrZ6vBt1YU9QuiD2VTJ6R+ooc/I4uJJ4U5HC5t8r97uH8WpUT4a/m9JZphvELuurIz0aLeB4XxKy3yNFhptmLaUUvoQYSMS4ww5sZPmnm+QnUmHJU9mQoVvcMLqiZph5G5avu9YsqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=D0lKoil5; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=NOYXuyFNXuI5iNPlTf1PCWIdWBpPpS3ywCe7Rq9WM6ifb0h9QQtw1jjWY+dW+k47YKBPcPySEYOsjmGbrshnZ1DKMC/lR3fF7LuHlRh9kENwi4Cw5N6rFLkHau6gyVnl8ouy0TmWsNvq4XG0SP4/FK8Qh4EJiVfa/TAJqqHtq3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PKTwmAdb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JSG6a+bn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="D0lKoil5"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6636IBgl1930444;
-	Fri, 3 Jul 2026 09:15:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3tbBQs
-	MYUv1mO4u/Dzz1Dbo3TxiGu2Fjia/ijhGetHI=; b=D0lKoil5kCoi7gz8VAJdLY
-	QV83mQVwEq4nn4jRqvO+ME/OIIKS2WpJXOhwBTqF8mjRbwdRb3mBYlAyCUnN41qi
-	bDsLInPmLWT3CBuPf059NMiAz+jxdzALEv1E5oj+ktneoqkTywxgPhVjRH4UZzjd
-	4WSoaxIkCu75SlwoafiWDzSJevaXn1iT+6UvEsbMMEwmouxIPziUXlmC4+MUaKUb
-	9IY8uMeM06zaOnNoQBB7T1hEi9rEyg+hKS6URBURH20b/AyEjz35oUQYNS+mqdJG
-	0DQwaj93VbucdHxjaQ1c2LrmZ7P4xgfqv0gzL5hIXeTabYMX8bI3CMGM94nn/yWQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26peegas-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jul 2026 09:15:26 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66394bWA014961;
-	Fri, 3 Jul 2026 09:15:25 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2u2gqy2w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jul 2026 09:15:25 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6639FOlT30540518
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 3 Jul 2026 09:15:25 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABBB45804E;
-	Fri,  3 Jul 2026 09:15:24 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DAE0958062;
-	Fri,  3 Jul 2026 09:15:14 +0000 (GMT)
-Received: from [9.39.22.184] (unknown [9.39.22.184])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  3 Jul 2026 09:15:14 +0000 (GMT)
-Message-ID: <0712c1d5-12bb-467e-80a7-dfb516cd0bc6@linux.ibm.com>
-Date: Fri, 3 Jul 2026 14:45:12 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PKTwmAdb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JSG6a+bn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783070231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mYhDmxK9okrCb0d1k9tDrXSHmkuQ/QBsjspnrCeC7iQ=;
+	b=PKTwmAdbzpxVZ3hBqR3lZaGxKYijaFF+S2C1S3p2lQGGI0Zl7fW/rdbz0ZetkOoHTBU0b7
+	olY5C6sLGZdfcg2JkKjXs0ImkTgpzJzHl801FNJeTs2f8CE37yOPDJ6B593SMPcegtS4qR
+	Xb59rmIMmqfCWsxkPLZ+WSLpmyvsSuc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-7-PqY4cjMAe-gu_cYR2jYg-1; Fri, 03 Jul 2026 05:17:10 -0400
+X-MC-Unique: 7-PqY4cjMAe-gu_cYR2jYg-1
+X-Mimecast-MFC-AGG-ID: 7-PqY4cjMAe-gu_cYR2jYg_1783070229
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47162f83c75so1059969f8f.1
+        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 02:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783070229; x=1783675029; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=mYhDmxK9okrCb0d1k9tDrXSHmkuQ/QBsjspnrCeC7iQ=;
+        b=JSG6a+bnXZ1MklcxFZR2hMPfO/XJNryDI2KQNU0zZmUz4Rd0z64gPKy5AwNtcCH79O
+         TXlBgfrrS9qsIVakdz3VVUX2wN+oztleYj+wpqbqgmGmlJAP8R6vKT0WhhpvyaW/DNM4
+         wG+dL1WCbiNFmPjB3oVCvBm8jNayxL8TknjNTLk2WDB2n0m6DpxaFnkRG83XV7iNkiZH
+         7AfGZKc2A3NDgZuYxoS+G9WiV3Lw6TYQebgL/x3Gf4zYDxYr/JdmP7du54N61BMjn9Q5
+         L+Mfav80bPkPcuqQTgC7oDrxv09uPrWcGcaqBqjaIA7AXgjqSGEtu9qYG9PCACWmp2xW
+         fXWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783070229; x=1783675029;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mYhDmxK9okrCb0d1k9tDrXSHmkuQ/QBsjspnrCeC7iQ=;
+        b=fJktPefTxLvg9CTL/1VGx7dTh/kWvE50uZ/KifbAB7LENpia2zs8GrR/mb+fNVLWes
+         sKA94b0qmcznkFlERfGGx4S5NKnibeKsHEfEDjFAQxDLZHq6ur7iFjOT6oh0x6GeN1dI
+         hzHA9RSerx3XTAP8hjpca1OG5HqPWDpqwth1vs0wUeDDs8bLkiFuEovEfo6vyxu0l3gm
+         WEFqXeYVSIWwPblAszDuo+THtD49gSn3XRqnkR20YkVPf2ZhNalePH63cyPFxDO5xHvm
+         XlO1XEgk3nfE4aH7hdHvto+oj2XjTRiPCS8d34ObdhGMTiAaqVomoXtnePwbLTCbaO9k
+         No9g==
+X-Forwarded-Encrypted: i=1; AFNElJ/pK3u+fs7V4pU57qXXudMm8RYIGLBleDj5ux0JO6HVjD/BO7T79taNCULbyHFTJqktNxk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHJ/uESCKK1rY+9ndDt/gEegLZHJqra5mziiCElQ3MjJI7T1iM
+	Tf/ZYU0udnHffKyJnotkIyl3Ivetxlt04nWKSBajh08XjGATt+NFFNp7ZMZ/zo88K0jUbg/f4z4
+	dqZKQHulZ5BgvSQdSSQ3oIYnfeA1BgafXHOoEqHD15qNlX8HCH0TO1g==
+X-Gm-Gg: AfdE7clC1OqmrbeYvaw5UsKS6tkL54l6FDJSO79yK7o5esyxGgOeZJnMsIUti4JU3uh
+	KB68gI+zpyh8RId6buykBcHpJTWlRzs4LWY9kxmY7ELEPDevvQDUmkiTk7HWhT20ryQnQ6x4qP3
+	sONV8fKodyw4Q+//VVCVVSsAzrs2as0y/EtgkySq9MuFOUtHVU0IqwNsd0VzRA2WCRVZSNQd9YC
+	LZJKyFXJEfdg+ST+SX9mmI2kb+915MjTb5Im4+ocFOp4U6a7aRh+8riQz4yp8ywR7AB06R9qNUz
+	4eMdiUV1KDhwiDvTpK9EFl0jFyUFswcwF1u3rMqS6iuIiIFxituVmdRybSuKMvVDdzYbJba9TVE
+	IqHLOgSrb3p/MwJViH1f9b/jPRy/TKIGCsRZnsCK2l6gP+fJ/GA==
+X-Received: by 2002:a05:600c:3e19:b0:493:c566:7bd6 with SMTP id 5b1f17b1804b1-493c9b6cdbdmr42330145e9.18.1783070229107;
+        Fri, 03 Jul 2026 02:17:09 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e19:b0:493:c566:7bd6 with SMTP id 5b1f17b1804b1-493c9b6cdbdmr42329885e9.18.1783070228585;
+        Fri, 03 Jul 2026 02:17:08 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccdab3a8sm37648415e9.6.2026.07.03.02.17.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 02:17:08 -0700 (PDT)
+Message-ID: <b1d16c72-3485-4cad-ae51-5db4a78e3a48@redhat.com>
+Date: Fri, 3 Jul 2026 11:17:06 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,98 +87,198 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 RESEND 8/8] MAINTAINERS: Add self as maintainer for
- PowerNV
-Content-Language: en-GB
+Subject: Re: [PATCH v4 RESEND 1/8] tests/functional: Add remote interrupts
+ test for PowerNV
 To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
-        qemu-ppc@nongnu.org
-Cc: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
-        =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-        Shivang Upadhyay <shivangu@linux.ibm.com>,
-        =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
-        Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>,
-        BALATON Zoltan <balaton@eik.bme.hu>,
-        Nikhil Kumar Singh <nikhilks@linux.ibm.com>
+ qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+ Shivang Upadhyay <shivangu@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ devel@lists.libvirt.org, Misbah Anjum N <misanjum@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.ibm.com>,
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, kvm@vger.kernel.org,
+ Gautam Menghani <gautam@linux.ibm.com>, Chinmay Rath <rathc@linux.ibm.com>,
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Nikhil Kumar Singh <nikhilks@linux.ibm.com>
 References: <20260703085955.2318600-1-adityag@linux.ibm.com>
- <20260703085955.2318600-9-adityag@linux.ibm.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20260703085955.2318600-9-adityag@linux.ibm.com>
+ <20260703085955.2318600-2-adityag@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Autocrypt: addr=clg@redhat.com; keydata=
+ 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
+ uVKe8BVz4atMOoktmt0GWTOC8P4=
+In-Reply-To: <20260703085955.2318600-2-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 7yK957c3BtcJN8HGpfKDET05hm62NInD
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDA4MyBTYWx0ZWRfX8oZKocDqatiM
- fggNpsAPjDZ8IEKwo0GdHrElHM52gROm/SprrDhKOedR9NN2JxkSFAfNNeadGn99ePBpO1XecfJ
- TbVJRUSpZQDfdJHNfc8q+FdzkrJE9uw=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a477daf cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
- a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=69wJf7TsAAAA:8 a=k8VJCrWnqjn4nz9fRZ0A:9
- a=QEXdDO2ut3YA:10 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDA4MyBTYWx0ZWRfX4VRab6r2FqOR
- OdZlCVAAoywhY5dousTB9VWFi9XSw0aerWU88q4aYgIoEvNf5RSNr5+mqwlpcBI6laymAjdBAic
- YCry5/Wo94GGHcAB/tc/yGwkaNTiVy3jSSta30s8IKlzTwDT4ePXIaGVHELb48cdtfDLk7NrAK2
- rQZEA5f+suNxCtBMU1NRC68zx5kd+xtDGLskC6OYnekrtufbqQEPCvS/EFsX+OylsmUvvGcJi75
- g07ncv+GkyDdnPlxmuR58BSreVUgF81PScIXGJrOp1Bw30WHH4P5PVC71rvjIudjRcv+TurFQZU
- b3s3neNrWgrcjTgQQtmhIwZoeYZfvKqJrWTNbiCUyi0CzlCsuucrFKGrwAOvvxw/3Kp0rWJ07eS
- MRpCzgvbIPALLPG8IQnbTQIvf0ciU/+i0OspIJTHDjHEFPjpPw/KolxRnOPjGOFb2kgyapsUelA
- GD6clAOoqBr3+w2G70g==
-X-Proofpoint-ORIG-GUID: Mi9rRut6CmiXDwluaUP-WceOSp8fPFnQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030083
+Content-Transfer-Encoding: 8bit
 
-Hi Aditya,
-
-On 03/07/26 2:29 pm, Aditya Gupta wrote:
-> Add myself as maintainer for PowerNV machine, and remove the
-> reviewer entry
+On 7/3/26 10:59, Aditya Gupta wrote:
+> In the past there have been hard to recreate issues where XIVE changes
+> cause qemu crashes due to multi-socket interrupts such as in [1].
 > 
+> Add a functional test explicitly to test whether remote interrupts work.
+> 
+> The test can also work as additional boot test for multi-socket boot,
+> initrd boot test, as well as a check for e1000e to be working in powernv,
+> though that's not a target goal, and are additional benefits.
+> 
+>  From docs/system/devices/net.rst:
+> 
+>    In order to check that the user mode network is working, you can ping
+>    the address 10.0.2.2 and verify that you got an address in the range
+>    10.0.2.x from the QEMU virtual DHCP server.
+> 
+> Hence use 10.0.2.2 with ping.
+> 
+> [1]: https://lore.kernel.org/qemu-devel/baf6c854-832b-4a2e-922f-d34e6dadf821@redhat.com/
+> 
+> Tested-by: Shivang Upadhyay <shivangu@linux.ibm.com>
+> Reviewed-by: Shivang Upadhyay <shivangu@linux.ibm.com>
+> Tested-by: Misbah Anjum N <misanjum@linux.ibm.com>
 > Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 > ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   tests/functional/ppc64/test_powernv.py | 95 ++++++++++++++++++++++++++
+>   1 file changed, 95 insertions(+)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 97dcc78ded61..537b5cd895a2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1663,7 +1663,7 @@ F: tests/functional/ppc64/test_tuxrun.py
+> diff --git a/tests/functional/ppc64/test_powernv.py b/tests/functional/ppc64/test_powernv.py
+> index b5b2f0d15857..bac2017e18df 100755
+> --- a/tests/functional/ppc64/test_powernv.py
+> +++ b/tests/functional/ppc64/test_powernv.py
+> @@ -9,6 +9,7 @@
 >   
->   PowerNV (Non-Virtualized)
->   M: Nicholas Piggin <npiggin@gmail.com>
-> -R: Aditya Gupta <adityag@linux.ibm.com>
-> +M: Aditya Gupta <adityag@linux.ibm.com>
+>   from qemu_test import LinuxKernelTest, Asset
+>   from qemu_test import wait_for_console_pattern
+> +from qemu_test import exec_command_and_wait_for_pattern
+>   
+>   class PowernvMachine(LinuxKernelTest):
+>   
+> @@ -32,6 +33,17 @@ class PowernvMachine(LinuxKernelTest):
+>           ('https://github.com/roz3x/qemu/raw/refs/heads/sample-dtb/qemu-powernv11.dtb'),
+>           'ea1271516264eea1eb58a067a99d0c2ca9528be8dc7d4e46bb2d5ae0d42fc568')
+>   
+> +    def shell_exec_command_check_fail(self, command):
+> +        fail_msg="Fail"
+> +        self.shell_exec_command(f"export __FAIL_MSG={fail_msg}")
+> +
+> +        # If the exit code for the command is non 0, print fail message
+> +        command = command + " || echo $__FAIL_MSG"
+> +        exec_command_and_wait_for_pattern(self, command, '#', fail_msg)
+> +
+> +    def shell_exec_command(self, command):
+> +        exec_command_and_wait_for_pattern(self, command, '#', self.panic_message)
+> +
+>       def do_test_linux_boot(self, command_line = KERNEL_COMMON_COMMAND_LINE):
+>           self.require_accelerator("tcg")
+>           kernel_path = self.ASSET_KERNEL.fetch()
+> @@ -76,6 +88,89 @@ def test_linux_smt_boot(self):
+>           wait_for_console_pattern(self, console_pattern, self.panic_message)
+>           wait_for_console_pattern(self, self.good_message, self.panic_message)
+>   
+> +    def test_linux_remote_interrupts(self):
+> +        self.require_accelerator("tcg")
+> +        self.set_machine('powernv')
+> +
+> +        # Have below setup in this test:
+> +        # 1. e1000e attached to pcie.6, which is from 7th PHB, belonging to 2nd
+> +        #    socket (chip 1), in a powernv boot with default 6 PHBs per socket
+> +        # 2. CPU on 2nd socket (chip 1) disabled
+> +        # 3. RX IRQ's affinity to chip 2, and TX IRQ's affinity to chip 3
+> +        #
+> +        # Then ping is done, to generate interrupts from e1000e which should go
+> +        # to IRQ server on the remote sockets
+> +        self.vm.add_args('-smp', '4,sockets=4,cores=1,threads=1')
+> +        self.vm.add_args('-netdev', 'user,id=net0')
+> +        self.vm.add_args('-device', 'e1000e,netdev=net0,bus=pcie.6')
 
-Thanks for helping co-maintain PowerNV!
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+2 sockets are enough.
 
-Hi Cedric,
-Any further review comments on the series or would be happy to provide 
-an ack?
+     # grep -E  "eth0|nvme" /proc/interrupts
+      76:         12          0  PNV-PCI-MSI 268959744 Edge      nvme0q0
+      77:         62          0  PNV-PCI-MSI 268959745 Edge      nvme0q1
+      78:          0         67  PNV-PCI-MSI 268959746 Edge      nvme0q2
+      79:          0         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+      80:          0         20  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+      81:          0          4  PNV-PCI-MSI 2416443394 Edge      eth0
+     # echo 0 > /sys/devices/system/cpu/cpu1/online
+     # grep -E  "eth0|nvme" /proc/interrupts
+      76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
+      77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
+      78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
+      79:         10  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+      80:          0  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+      81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
 
-regards,
-Harsh
+A non-zero count on eth0-rx is good enough.
 
->   R: Glenn Miles <milesg@linux.ibm.com>
->   R: Harsh Prateek Bora <harshpb@linux.ibm.com>
->   L: qemu-ppc@nongnu.org
+     # ping -W2 -c5 10.0.2.2
+     PING 10.0.2.2 (10.0.2.2): 56 data bytes
+     64 bytes from 10.0.2.2: seq=0 ttl=255 time=7.339 ms
+     64 bytes from 10.0.2.2: seq=1 ttl=255 time=0.673 ms
+     64 bytes from 10.0.2.2: seq=2 ttl=255 time=0.405 ms
+     64 bytes from 10.0.2.2: seq=3 ttl=255 time=0.369 ms
+     64 bytes from 10.0.2.2: seq=4 ttl=255 time=0.516 ms
+     
+     --- 10.0.2.2 ping statistics ---
+     5 packets transmitted, 5 packets received, 0% packet loss
+     # grep -E  "eth0|nvme" /proc/interrupts
+      76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
+      77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
+      78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
+      79:         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+      80:         10  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+      81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
+     
+That's even better I agree.
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
 
