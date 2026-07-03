@@ -1,129 +1,141 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B178377EC5;
-	Fri,  3 Jul 2026 07:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DDD36EA80
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 07:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783065195; cv=none; b=hSslieA3CRV6gxpOyxAgg4KaP6PbgFOtG+yn9BWawf/h4DKlus2W1S7womyrNr6wRjSksWgZ6/TTnLTDbkhp/6YaudHygzqoiNNctAXKuWHVO75JWDbAMebcz5+bg3w3KFtfwSSr5ezv8GHmis7DeRJQnF8Cg7R6R+DpuRitJ5g=
+	t=1783065428; cv=none; b=NP5aVKpSd4lgFkDzoZPj7fSZ6ELDX5P5qffhR6NzsNTTHt+6CfhSqTMeiuZha7mCzG1/oMklygVzdjBJGfS7QDVrLo+dxFmay9U3RlJ+fhfnhiY2t8yHKIHFb4gewIpgvH7FiZ30PS2OYyaGjVuldrLy2930nvQbU74pK/uMuFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783065195; c=relaxed/simple;
-	bh=6hcR6rxhfV8mR4d5RSSixF8VNTOqBgE3fiWOJbKLs5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fg0k1tekNVg42jNflEpYq6BlJYuCBpS7R+4dCmfKahZpzMWingGXnr7aXRQmEnsfibyMaR773Eerfq8NfW198nbNuiZNbvanK0wc1RgfamS5p+Y8EWP3StNwSPOp+J9hxgm1gjF3aal4rbUh+qwQeCp6nCv65c0pDcsTAN9CKuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WVgyeNM/; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783065428; c=relaxed/simple;
+	bh=HWG8Sz5OtbFuD11nfUVW578oC2IllQpqrCtgiKUiGkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iTTWKpERwTYVDclmUge5gfNGqpXSp+a/NgONNSD0KuY841ItaVmVmsjxh/EyuHUGwh8vdNcCH91UHd05rGDBO9aEp16ySBpQB2sUFRX+rCp9UCKgXCWBsX85THB9sfKoxDbnPc2JwUjkqNdrfB39jDyIs85Y0FVrwQy/lB2V8PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VRDnTHwn; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WVgyeNM/"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6636IP3G1930856;
-	Fri, 3 Jul 2026 07:53:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=I7Y3Woh3tKuoRQ5hL
-	hRkCn9dZf5pYuIqEePUpOFeMZQ=; b=WVgyeNM/zN/DPmxBBIhL0Ybb5GICj6hS/
-	aBdUTg2csPcnJq0GsZUEtgFUB8VjC/asPlPjSXgs6vpor0f6SVisV4nf+m0Wcz4Y
-	Tssk7BfliUwjHJcztwFj0H5ti6ZcOetaRoDsFERYXYPus8KCSe1e0bJhDIfji9UW
-	nyAyG8q/M7bdIo8d6sQoIlClK92g2zpQKg53Rdl5Nw6Q7DL9hPU977l8jKhU8TTb
-	LpMb+i3DEdvsrNuDSzdNA/EQ3Dk9J1fEuCHijJrQui6tadwZeTWUj1vPQS0y7bve
-	DVeRygXt/jSmTbw6ucSab/KcMpF9aJTKWuLQ2e6i6iKEoA//RLnvw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26pee5cw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jul 2026 07:53:08 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6637nhWx013476;
-	Fri, 3 Jul 2026 07:53:07 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f2tbhqr1y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jul 2026 07:53:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6637r3ju51380482
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 3 Jul 2026 07:53:03 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8CB9220043;
-	Fri,  3 Jul 2026 07:53:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2680920040;
-	Fri,  3 Jul 2026 07:53:01 +0000 (GMT)
-Received: from ltcd48-lp3.ltc.tadn.ibm.com (unknown [9.5.7.39])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  3 Jul 2026 07:53:00 +0000 (GMT)
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-To: alex@shazbot.org, dmatlack@google.com, shuah@kernel.org
-Cc: amastro@fb.com, rananta@google.com, nnmlinux@linux.ibm.com,
-        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com,
-        sbhat@linux.ibm.com, harshpb@linux.ibm.com
-Subject: [RFC PATCH 6/6] selftests/vfio: Enable VFIO selftests on ppc64 and ppc64le
-Date: Thu,  2 Jul 2026 23:28:06 -0400
-Message-ID: <20260703032806.40946-7-nnmlinux@linux.ibm.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260703032806.40946-1-nnmlinux@linux.ibm.com>
-References: <20260703032806.40946-1-nnmlinux@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VRDnTHwn"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-476d8e647e9so251684f8f.0
+        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 00:57:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783065425; x=1783670225; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=1yJhLwAuRQ39oUEKAohufcXKhiNT2bhqWZWs88GxXtU=;
+        b=VRDnTHwnbJDu1JKH+kuxv5mNQFJ+dFAeqIt4NM15mKvmWsAH6VECtvQSdZggYzCWnZ
+         m5IpKiCt4oID4/oRbTGNOnAy8pOUZ20vR8/eCIXrcvEcPVTXbHw7l1OCISP0VxI/PoY+
+         cHDPCNZ9ntv+MnJAEmYHowfLE28/rwECG+20BlRZd9bm4XDWqBoK9uTf/mu4BZP0m9kR
+         CviNqZ7VyLaqXe6BHWb/R25StfEwJcKVxoR26LldBmNSMuInXrdt0RXnxalKfEhES0KC
+         QNBdEDeimM5phqZXBfV/5urEl7GxmxVynuEhZSxSNu/stVD8DdHVZ0lSepRku+qKlQJS
+         O/1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783065425; x=1783670225;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1yJhLwAuRQ39oUEKAohufcXKhiNT2bhqWZWs88GxXtU=;
+        b=OgPtXPnLAErbGw8svnUzMuBMLErJjOTLbwf7o4B10MU6PE8o95dw0PplhEvLIPRgd7
+         3TrG0ReRs6cBc7Q1OxNZRCrt4CbwU+5k3TAhaqOErXzViQr//5h/9RnWQ2K4uJpKe7KA
+         T2DByAIfo9LyPJLDyOf3VVDDBC1X0UsVgeeG5XRl8yBZoEE4TrOII0Og1HJdFnHAFJb/
+         C+YzcFLbTmyy1RsM9jMzVR2ugB1lcW08Y3z1W7pZi5yzbN6nEVnVrqDzyPXujkxE0k7l
+         vpi0n2MRsCln/jaNJJbjYJ8MtdxLybDiknR4tZaIKRwXHWIM4ETTWF7rovHQzVr9K9EZ
+         YnKA==
+X-Forwarded-Encrypted: i=1; AHgh+RpZvSAZVNjavlHYHZR3u+FZjYZBJ1RnlZu5BacmeR2YnCghbylzbuVTrI7nKPc5V10A52w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBTclLo6A8tLIrzVDYk7zhNILe+rIBYNIBF6amJYpsdTBsnzGR
+	0eKo5/cfP9wsOKy8pA68Oqb4Ztrb6zKEZ6kQ++K6q/TKegjsmcKppf3vn5xynxr6SBA=
+X-Gm-Gg: AfdE7ckrvsgMenbgoOxvswP8msO6zo/sZxeviLVCu45EfDsvzXCzotgKqZWyheRgl4l
+	8F7kjTkwUHW/yTykyrvAqsCXngcsJ0XdKIVSHTcW5knFq/Cpk80TyzdZGv/94jh+mA98xgZj/6h
+	UqL1AGaJUW1LeetMyfakmPPMrbeo5dDhq609PWm9B5lkWpLm2AzwOasGBF086LPos1ah0STu9Vv
+	VFFYsE0ZHTBoK5C1ZI5lKOa3NI28lVYh15AhRHT66X01+bd/rSGcCJxh5Uy7ONpSxnLDK6pF5pI
+	vyOlr6+TZX8i1GNSRmmzf3sL46PLxaC2s1RKW+j8C/hiLjRgjgOomsrzSLjQcMLeIgDazTlw+vy
+	Ne97MtXWWM4wgNqNPFQl9cqayEAirhmGQRk05NIUt2KtkOuiXXovaVECdLQAaLQXRdzGOm+TcH6
+	bzerU6dForwdsdU+OYVUmK8DkYZA==
+X-Received: by 2002:adf:e5cd:0:b0:474:83d4:9916 with SMTP id ffacd0b85a97d-4775a2efc07mr11580909f8f.17.1783065425388;
+        Fri, 03 Jul 2026 00:57:05 -0700 (PDT)
+Received: from [10.20.4.146] ([149.62.207.101])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477d766e0b4sm15094509f8f.0.2026.07.03.00.57.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 00:57:05 -0700 (PDT)
+Message-ID: <15b253e2-1a2c-46b2-abe2-bf152d704523@suse.com>
+Date: Fri, 3 Jul 2026 10:57:01 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: lvcM85ve-xNv7vsAljHFZyB6zlGePq5C
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDA3MyBTYWx0ZWRfX+gLwxknHAeNf
- RM0cNFGA4X5WDNZcNS8zriXJTA6rFoq54f0RTZCbJA7WGev9K+6hImefvEv6weJB71zly9S92mu
- wUdKBU5faczzlJtI4LIIEvBeEZQSffM=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a476a65 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=BurfphQ9xWFPD4vpCWgA:9
- a=0lgtpPvCYYIA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDA3MyBTYWx0ZWRfX8UjyBIanIwwS
- 43mCyfKlMbMDVRI5lCFslpl2f+7ONluDy1yH1GFIRmJ6BhW7uwOvhf3y+JwvylCaACCnW4w9aXU
- wy9OVcOcXWK6XmRezARc6oVJB0vMEcQeonHxR8ckLuuttQoEtSmYK3v51Eu7Wiiy9vW35dk3PPj
- 5OA1NjEJLhfz6iUXLToOpfklEpwMlJr+xZ8HqYQdo48y4JigXDGGOBkeFtFEeKtjswGHfNbkFcJ
- 1LadQpToxGMdZS8k/wiTZKbhY0IvO8jnVyagVWS1jFUaueEewv5LQp7ltIc5PxZ6o52j3rsEkXb
- 0pbGYOtlMESLURlHGRqj4lEJsfAweO9nC4N0s68tKElMHSpbJ/9Who0nXZ1zFqkQaprFkDuPhTz
- vIW8FI17a8aZoZ806alk5MIMVb3As9muZEOeHAgGiZd6rV+D5hbARDzlwWqON3oYlqrhOjIBkz4
- AToG0uSuoYaQnMM9RGw==
-X-Proofpoint-ORIG-GUID: NI_L_SANqrAWzQ7luHyZiVThhI8OG7_L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030073
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Enable VFIO selftests to build on ppc64 and ppc64le made the changes to
-Makefile to include ppc64 and ppc64le.
 
-With sPAPR TCE v2 support added to the VFIO selftest library, PowerPC
-systems can run the DMA mapping tests against the legacy VFIO container
-backend.
 
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
----
- tools/testing/selftests/vfio/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/22/26 06:41, Xu Yilun wrote:
+> From: Peter Fang <peter.fang@intel.com>
+> 
+> Enable the TDX Quoting feature via TDH.SYS.CONFIG when supported by the
+> TDX module.
+> 
+> The TDX Quoting extension generates TDX attestation Quotes via a
+> SEAMCALL, without using a discrete Quoting engine.
+"Quoting engine" is a new term, introduced here, better say "without 
+involvement from the VMM"
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2c32c48db509..8fd6afd334e5 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -1,6 +1,6 @@
- ARCH ?= $(shell uname -m)
- 
--ifeq (,$(filter $(ARCH),aarch64 arm64 x86 x86_64))
-+ifeq (,$(filter $(ARCH),aarch64 arm64 x86 x86_64 ppc64 ppc64le))
- # Do nothing on unsupported architectures
- include ../lib.mk
- else
--- 
-2.51.1
-
+<snip>
