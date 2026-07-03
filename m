@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B258D3009D6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E1C3563E1
 	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 05:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783057621; cv=none; b=M1kDtggkwj0mcsl2lCXPMr3hsIir/rNCE5pw+MqcwSB2vlWadYh142ABUU/HeFMUb6f4NU6xCpgXI3uklzyEqEdGM5M9a+26dTBgVJ5g7s+BDHVSPz21yWWJ/IMxo/cw2c2hcWKOTqzKdK1E0dTmp+H6t9Mw95F+eKVojVY52Fo=
+	t=1783057621; cv=none; b=fI2CFSz+uD5yHviH+0CiblZKoB7XZfbs8t0QcEbvbLmD8DL8E+kJEvfpMNUO4PFB0HJQlGFjmSQPlVzOPoYpyTbYvykU8OenkMCXLn44ZAbRp13AP7zewb+Uk78JBkaz/SJVVAAP0+g+DIOCCf8EXUnSA5rEjRAFkpSFeSGjvPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783057621; c=relaxed/simple;
-	bh=4PXnR6ZdLkaqz4pRFi//hI5Zh2wnip4Hz54KkyfWdsk=;
+	bh=0QIwFy8bP77AKijAc2rWm/vQXhRd9FL/+60FhfkdcVY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To; b=kyTCkjFwD3xZs4Up6DkSFN6eQ2ACjht864/TD57MadD1u23tX6mXhKJaarwBq2QlWtLuiVCs2KF5TuVyxhQ86kaCmEMhXkivOlN2ODfQAkE8v4mPzRmCnlm6OZqwS6WRZk9k2qGkZx0P4Rw3IR3n8IbzL9IXAL0XPRxL7Mdm9O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=ENHPtltn reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To; b=p4dKvBziZ/Er7909RhtKn6pSRs4Us405yVO4JdiJ/2jufUhTMHzaUnJyBtnV8g12Kuuut553OCVWraxv+HkQ2+58IKvqbIhfKPuJyDwPioQAiHFr03Q6FSGtBD9oPt3yHkfFrd03C1UG7YZMjVY34CmvKZ857bNUdWmjY+D4Pj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=EaQ5rD4Q reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="ENHPtltn"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="EaQ5rD4Q"
 Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6635jovf036784
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6635jovc036784
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 3 Jul 2026 14:46:06 +0900 (JST)
+	Fri, 3 Jul 2026 14:46:05 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=8TGlRMXNgJkY6XRsWpl74qtD3NJg9sImsPCOCPuebGs=;
+DKIM-Signature: a=rsa-sha256; bh=AHPqD+tIyvCHf3qXm6SUnzMux+ljEiTqoyGn4fIigmE=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1783057566; v=1;
-        b=ENHPtltnRWQYbx7zoo3CzMmmOph0ygdocL8AZsLvd0IU6BW/+KxVQpF4qcjnWrVs
-         oR8/sZeb4rcXR3sXpTIHjuW9J45pNc46V8mbrDqPYXcz/s7CTqpadn41OBOoDAUS
-         yjo/StrN5DmYKJiQURcLupGbBqaNQrRVmxi1mfVHUJPhZGnP2vkAGQM8D1VpfdCg
-         8fp+ZpfoUoUapZ2sFS+MqeMn/ijX9m7RiUYgV5aV8lg+xRyOXpqNFmD0+fHLc2ja
-         bmowknJ398HSySysooyHB5UTO5jtfvpSEkEWKlsmM6aWFClLBmQc3Rr0j0CSUTA2
-         FK3lTezkfrW3IpB4qgY46Q==
+        s=rs20250326; t=1783057565; v=1;
+        b=EaQ5rD4QME4Y6T4PNn79HZe6/AMCFKkVexl82lrxW/xH2oIhzVEPuLDKsit3dfNA
+         8NjNuVJN0G1CQXByhQqECRsnq6HjqrQ9N34bs146NLtyC7Q416tujnB6zlN1vpxS
+         E6cZHoa1udTptlZyDTcDHHNbzkQWaHI+BXWXg/owslV4pWpLey43q202FCkwqn+6
+         5GOVCyrHXHvr+PxqsYUahPc81bC8/8YkqQlEU4xuyam/8JCh+u/JrYuu/Orz63gg
+         Oycn1yTbf1NwenkRjOcGNxHh715g/8/fKmyVDYRYalCQbBN6JClWnaxwa0VeYqOr
+         aNC5THDiD/aKG9NFfOQsMw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 03 Jul 2026 14:45:37 +0900
-Subject: [PATCH v5 6/8] module: Use qemu_get_runtime_dir()
+Date: Fri, 03 Jul 2026 14:45:34 +0900
+Subject: [PATCH v5 3/8] qga: Use qemu_get_runtime_dir()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-run-v5-6-4521ac5a149e@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260703-run-v5-3-4521ac5a149e@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260703-run-v5-0-4521ac5a149e@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260703-run-v5-0-4521ac5a149e@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org, qemu-block@nongnu.org,
@@ -64,51 +64,111 @@ To: qemu-devel@nongnu.org, qemu-block@nongnu.org,
         =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.16-dev-925f5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1463;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3665;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=4PXnR6ZdLkaqz4pRFi//hI5Zh2wnip4Hz54KkyfWdsk=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5a7zwzpir8bLjUYX5R8L/pYrzBw6+mFnALODF997DsSd
- Pq+3YnvKGVhEONikBVTZEkp2s2tEV37qTAhvgVmDisTyBAGLk4BmMjiDob/JUcN5I9KS2alVt7Y
- u+O768nMxk8mAZFXGWPmFDNKbw+sZGQ4Fz5h5nr9hP7V66+WCMZWrCzfuG3yn6xtwsLfFd+z+qj
- zAwA=
+ bh=0QIwFy8bP77AKijAc2rWm/vQXhRd9FL/+60FhfkdcVY=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5a7z5SraqZHZnpsvdvj9zrCZl+udcEWPQ/OjAO85SWyr
+ R6WW6d0lLIwiHExyIopsqQU7ebWiK79VJgQ3wIzh5UJZAgDF6cATIT5D8P/3F/sL01XPAoKtu5f
+ 8D/hkXJorOzf2L1JWz9OuydbsFZVkeGf6hlPj8yF6stvVITfX2Wc8IalI/2D1CXlU3d9TgR/Pfi
+ RDwA=
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-qemu_get_runtime_dir() is used to construct the path to module upgrades.
+qemu_get_runtime_dir() is used to construct the default state directory.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/qemu/module.h | 2 +-
- util/module.c         | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ docs/conf.py             | 2 ++
+ docs/interop/qemu-ga.rst | 5 +++--
+ docs/meson.build         | 6 +++++-
+ qga/main.c               | 8 ++++----
+ 4 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/include/qemu/module.h b/include/qemu/module.h
-index fccf017bf9e8..a22755c6f026 100644
---- a/include/qemu/module.h
-+++ b/include/qemu/module.h
-@@ -76,7 +76,7 @@ void module_call_init(module_init_type type);
-  * directories searched are:
-  * - getenv("QEMU_MODULE_DIR")
-  * - get_relocated_path(CONFIG_QEMU_MODDIR);
-- * - /var/run/qemu/${version_dir}
-+ * - ${qemu_get_runtime_dir()}/qemu/${version_dir}
-  *
-  * prefix:         a subsystem prefix, or the empty string ("ui-", ..., "")
-  * name:           name of the module
-diff --git a/util/module.c b/util/module.c
-index 09dc43f51eb3..eff64fa7ab0a 100644
---- a/util/module.c
-+++ b/util/module.c
-@@ -242,7 +242,8 @@ int module_load(const char *prefix, const char *name, Error **errp)
-     version_dir = g_strcanon(g_strdup(QEMU_PKGVERSION),
-                              G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "+-.~",
-                              '_');
--    dirs[n_dirs++] = g_strdup_printf("/var/run/qemu/%s", version_dir);
-+    g_autofree char *run = qemu_get_runtime_dir();
-+    dirs[n_dirs++] = g_build_filename(run, "qemu", version_dir, NULL);
- #endif
-     assert(n_dirs <= ARRAY_SIZE(dirs));
+diff --git a/docs/conf.py b/docs/conf.py
+index 7e35d2158d30..cafe8fd37b59 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -169,9 +169,11 @@
+ # environment variable is not set is for the benefit of readthedocs
+ # style document building; our Makefile always sets the variable.
+ confdir = os.getenv('CONFDIR', "/etc/qemu")
++localstatedir = os.getenv('LOCALSTATEDIR', "/var/local")
  
+ vars = {
+     "CONFDIR": confdir,
++    "LOCALSTATEDIR": localstatedir,
+     "VER_MACHINE_DEPRECATION_VERSION": ver_machine_deprecation_version,
+     "VER_MACHINE_DELETION_VERSION": ver_machine_deletion_version,
+ }
+diff --git a/docs/interop/qemu-ga.rst b/docs/interop/qemu-ga.rst
+index d16cc1b9f078..c9b0a7b387f2 100644
+--- a/docs/interop/qemu-ga.rst
++++ b/docs/interop/qemu-ga.rst
+@@ -72,7 +72,8 @@ Options
+ 
+ .. option:: -f, --pidfile=PATH
+ 
+-  Specify pid file (default is ``/var/run/qemu-ga.pid``).
++  Specify pid file (default is ``$XDG_RUNTIME_DIR/qemu-ga.pid`` or
++  |LOCALSTATEDIR|\ ``/run/qemu-ga.pid``).
+ 
+ .. option:: -F, --fsfreeze-hook=PATH
+ 
+@@ -86,7 +87,7 @@ Options
+ .. option:: -t, --statedir=PATH
+ 
+   Specify the directory to store state information (absolute paths only,
+-  default is ``/var/run``).
++  default is ``$XDG_RUNTIME_DIR`` or |LOCALSTATEDIR|\ ``/run``).
+ 
+ .. option:: -v, --verbose
+ 
+diff --git a/docs/meson.build b/docs/meson.build
+index a8d893681ecd..89a707a77b8a 100644
+--- a/docs/meson.build
++++ b/docs/meson.build
+@@ -4,7 +4,11 @@ sphinx_build = find_program(fs.parent(python.full_path()) / 'sphinx-build',
+ # Check if tools are available to build documentation.
+ build_docs = false
+ if sphinx_build.found()
+-  SPHINX_ARGS = ['env', 'CONFDIR=' + qemu_confdir, sphinx_build, '-q', '-j', 'auto']
++  SPHINX_ARGS = [
++    'env',
++    'CONFDIR=' + qemu_confdir, 'LOCALSTATEDIR=' + get_option('localstatedir'),
++    sphinx_build, '-q', '-j', 'auto'
++  ]
+   # If we're making warnings fatal, apply this to Sphinx runs as well
+   if get_option('werror')
+     SPHINX_ARGS += [ '-W', '-Dkerneldoc_werror=1' ]
+diff --git a/qga/main.c b/qga/main.c
+index fd19c7037db1..215541ee86c9 100644
+--- a/qga/main.c
++++ b/qga/main.c
+@@ -48,7 +48,7 @@
+ #define QGA_VIRTIO_PATH_DEFAULT "/dev/virtio-ports/org.qemu.guest_agent.0"
+ #endif /* CONFIG_BSD */
+ #define QGA_SERIAL_PATH_DEFAULT "/dev/ttyS0"
+-#define QGA_STATE_RELATIVE_DIR  "run"
++#define QGA_STATE_RELATIVE_DIR  ""
+ #else
+ #define QGA_VIRTIO_PATH_DEFAULT "\\\\.\\Global\\org.qemu.guest_agent.0"
+ #define QGA_STATE_RELATIVE_DIR  "qemu-ga"
+@@ -157,12 +157,12 @@ static void stop_agent(GAState *s, bool requested);
+ static void
+ init_dfl_pathnames(void)
+ {
+-    g_autofree char *state = qemu_get_local_state_dir();
++    g_autofree char *run = qemu_get_runtime_dir();
+ 
+     g_assert(dfl_pathnames.state_dir == NULL);
+     g_assert(dfl_pathnames.pidfile == NULL);
+-    dfl_pathnames.state_dir = g_build_filename(state, QGA_STATE_RELATIVE_DIR, NULL);
+-    dfl_pathnames.pidfile = g_build_filename(state, QGA_STATE_RELATIVE_DIR, "qemu-ga.pid", NULL);
++    dfl_pathnames.state_dir = g_build_filename(run, QGA_STATE_RELATIVE_DIR, NULL);
++    dfl_pathnames.pidfile = g_build_filename(run, QGA_STATE_RELATIVE_DIR, "qemu-ga.pid", NULL);
+ }
+ 
+ static void quit_handler(int sig)
 
 -- 
 2.54.0
