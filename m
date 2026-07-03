@@ -1,225 +1,152 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ACC3DD51A
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5943E0C4C
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783088374; cv=none; b=r3xuVz8BXCVRAiR9P2vaboP8mTAUkhvu7poTec2qmxqw6a0pdS6zxdAI25KiNKny3TEqWLlRRQqd0TD5LpTKKAd/D4rX6wU4nc9zYQfpy7yl7rnJr2ABMTdrc2a7Hyw4HINqcmeWwUhbEogvXup0ZJga3NrObT7cVPy0Jh5MhAg=
+	t=1783088821; cv=none; b=qKzRHB0dQgNH+UwVJ+ceykaPTver+a3OZQwCL6izrUIkZ03lZKhe8k1mz6p5OCIfxqeP8x0GCDJ2mey2yroqjXYXiXXfokPQy+GAWXJ8jq45wuho7CzfyeVhsC3NR5KbkMkwpgRWjokpwYPukE46SS9fY1K6IgQWIgt+QHcw4oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783088374; c=relaxed/simple;
-	bh=fwBNMGsGRW7LvE0wmMyeo41PuP5/RmLAB5AFTN8r+GQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+t+8L8jKjgTruO7ljYdZs3AV4t46M0G2dQIaIogjmOYXuTfiKd520U5q5INr2btnhPNiC4RUvjGCUUkzoSckPUz5ss8ZiyOkXkWBqIZTlJ6M9ZJ+7a23JoII1+MIYCI5+apYrnfq9ofP7KOFVGpziS0jRl/zR62T+yuUCkpFCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VXa2HykD; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1783088821; c=relaxed/simple;
+	bh=OtSwbxhYeXVvt44Is+Eqwg4eri1903TyhY2EAttyot4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OyG3A6ORSbHM0QeOxSeXKTi705j5BBxDhYuRlmm1R8JyLwexBHApU2eK4wl0FALhO66rjE4qV7IGcsD3z++Dr+3BH2nYAF3NICM4XIYMQ8YPr9HPaexdoLoL8bZrcsaoI4LSkT000scWF8UpJlTE8zEJjjgPEE88FzTdn8thSGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5B72iH6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VXa2HykD"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4706f016316so78519f8f.3
-        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 07:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783088371; x=1783693171; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7AtJfCkfnFMyzgye8dfK/HYrK6u/oQ9FNgRgisJiufQ=;
-        b=VXa2HykDu7tPrzRJFgLIlJuq6R9LgUv/0gSGCTICAf+Xvq4sNQ+JJwhgrB47bepXw1
-         TzI+Bhn3ERoBZllGBFTtB0XHQYVsVCqnsyoO0Ntdgux1y2LJlaxmuIsaj19Ty2ma2jvG
-         kMUqQBrPsH7FFUjr7p1j96S+dYep2FWx4hJ8RiviFBz4/xPH2uwCKhYmZc1PEUu9R2ax
-         RougdRAiZVmUoE78yW+N6U4LU3d4atY0z6U0/mD0gLGa30dQtSbbgBufn2wVvg0MiQL9
-         yTfk9YvWxPBu+ryhAS63jrmbWtStA4Q76QO26aaBtqf6BTNqBwAuj8EWRM58FSMzK23A
-         MgbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783088371; x=1783693171;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7AtJfCkfnFMyzgye8dfK/HYrK6u/oQ9FNgRgisJiufQ=;
-        b=RHwDRkXcGZbc9BuCnQztOLSbmMTNlQF7VhdHDGxS+vGRZmFjSHkHyKg21GLaT22gAR
-         2BBhHgMl7abb6WEVkQZzZAGyQggj+XfoDYv24uLfGXWTjo6HMgbvA3r/uaGyI22PF8QQ
-         CGW3NeHJJ/G2bLePa2mZMqGx4Zq0sKQYadRmCaV/Un1dDYRl6bw8Nx+8gT71oTf4txRQ
-         ZXddsu3e5namyk1al84VRi6FnwNbL6SKYPB7DDIzTK+diIOtR4n4J1rurJ5YrKTFIFEd
-         3KR/C7xIfjCh+Afx2Uqs/e1A0uqV5JwCntbeiM4SdDAucaEvL3aG6xQlFpzBYzcZaCZD
-         yUfA==
-X-Forwarded-Encrypted: i=1; AFNElJ8J9sGGaLuBNO2Vm4fd1JKThh05seJt6E6cKB89jbYxgZFoJ/E3tQa4ikOBe1SMO00FFqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMXTghKz5Zgv3jfn++uVCCvA9PqleBYEq4tGdS7kWwlJbsOFQo
-	GsMkhxil5c96d2nuyibHcdjO6+pooXSzG3xgFYDNyshRlx7XeHpWhF179u9modSKi6w=
-X-Gm-Gg: AfdE7cmu3JYK6IiqMsLEIAxe10bZj3xOwuAret5HuxpYctbsflpITQCbdTbyDP6ce24
-	3YPjKEIiqynzIJsQPukJkl2G2f0eDDNbxEGCffuQQVxpRGtylH7dszkDjp/X6SUyBiXndFZvT2y
-	A7lGwpIYPbhGl8kRWj8g0Qf+z1P2Lqy7w4UwZfonPdHyiP3+r2QtzRHWcRWk08Btv5zMR8BSk9n
-	MV8QAMChpRMMIt+v8MMr+aiUPYkUJFJWV7id2VMY7f7Lkjt/FqCYZHQEAe7DseaqKtMf81xulhf
-	EvhmlNfcxiUFAtg+vuNz3lZix5Fk8/ycAz92t5m+or02eHYMbP5vMm8lKh8ki3UETjotatMI+ym
-	F6CKoVErOjIAFBozMOOBde+Wj34zb3jYe1Gph/TdImw3ZTRsFFg8KDCcAe2RXtXEHM6d0gabbCv
-	H2PW8CTDA=
-X-Received: by 2002:a05:600c:3596:b0:493:bda2:8d92 with SMTP id 5b1f17b1804b1-493d0f3dfa7mr471185e9.5.1783088371071;
-        Fri, 03 Jul 2026 07:19:31 -0700 (PDT)
-Received: from ?IPV6:2001:1a48:8:903::e14? ([2001:1a48:8:903::e14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bef23feasm171149305e9.2.2026.07.03.07.19.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 07:19:30 -0700 (PDT)
-Message-ID: <458898c9-cfe6-4be5-ba83-f7961ed84329@suse.com>
-Date: Fri, 3 Jul 2026 16:19:28 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5B72iH6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59C21F00A3A;
+	Fri,  3 Jul 2026 14:26:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783088817;
+	bh=4xzvcE29UuB6YIW6C+WTDiBkpAN9rUuaQd4CIz4d9Ag=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=O5B72iH6r7OvS/OCpAyjUnPI+4TWovPFHG+Ro5B9lLQ1u6d2FDtms0mD9FHyDY8RY
+	 99wxl+hyCiibmRUyIkTVEHKZpCx619akt31ZvYXhsk8uutFOimzb7tDaKzZ2/lDbOd
+	 ZTf9Sv8ferjeK8ZH3wo69qoBCHn8urPHvUKRnuhN7NQBtDOoc2AYgKchB5+o41vsvj
+	 3FhvwVEtVCV80m2I4SZN4lGgdbrg1/k2/FKD79WNy31FfheVkcPcRmz1577FlXhflX
+	 A6Ukoim/P22TUkIjwzbEBb6gIsF83/T7Lg8gDYNHJx6a5rO3VcN37ZFM8U955YeoRD
+	 E9IcmoePN/rqw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 08/15] mm: handle VM_UFFD_RWP in khugepaged, rmap,
+ and GUP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260703133615.1039465-9-kirill@shutemov.name>
+References: <20260703133615.1039465-1-kirill@shutemov.name>
+ <20260703133615.1039465-9-kirill@shutemov.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 03 Jul 2026 14:26:56 +0000
+Message-Id: <20260703142656.C59C21F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/30] mm: add kdoc comments for vma_start/last_pgoff()
-Content-Language: en-US
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>,
- Matthew Wilcox <willy@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
- Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <cover.1782735110.git.ljs@kernel.org>
- <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-From: Vlastimil Babka <vbabka@suse.com>
-Autocrypt: addr=vbabka@suse.com; keydata=
- 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
- pYekxJujNeEDkUlky0Y=
-In-Reply-To: <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 6/29/26 14:23, Lorenzo Stoakes wrote:
-> Describe what vma_start_pgoff() and vma_last_pgoff() actually provide in
-> detail.
-> 
-> This is in order that we can differentiate this between functions that will
-> be added in a subsequent patch which provide a different page offset.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Per-PTE RWP tracking state is silently destroyed for file-backed m=
+emory during page eviction, page fault, and fork because the PTE marker inf=
+rastructure does not support VM_UFFD_RWP.
+- [High] FOLL_FORCE accesses (e.g., via /proc/pid/mem) silently bypass user=
+faultfd RWP monitors on inaccessible VMAs due to an incorrect assumption in=
+ gup_can_follow_protnone().
+--
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+commit a8febd9860609da477330a270aa0cc307fe15024
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-> ---
->  include/linux/mm.h | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
+mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+
+Three mm paths outside the fault handler gate on the uffd PTE bit
+today: khugepaged (skip collapse on ranges carrying markers), rmap
+(cap unmap batching), and GUP (force a fault through
+gup_can_follow_protnone). Extend each to treat VM_UFFD_RWP the same
+as VM_UFFD_WP; otherwise per-PTE RWP state is silently destroyed or
+bypassed.
+
+> Extend each to treat VM_UFFD_RWP the same
+> as VM_UFFD_WP; otherwise per-PTE RWP state is silently destroyed or
+> bypassed.
+
+[Severity: High]
+The commit message states the intention is to prevent per-PTE RWP state from
+being silently destroyed or bypassed. Does this patch miss the PTE marker
+infrastructure required for file-backed memory?
+
+For example, during page eviction, try_to_unmap_one() relies on
+pte_install_uffd_wp_if_needed(), but that function explicitly requires
+userfaultfd_wp(vma):
+
+include/linux/mm_inline.h:pte_install_uffd_wp_if_needed() {
+    ...
+    if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
+        return false;
+    ...
+}
+
+This causes RWP VMAs to lose their tracking state entirely upon eviction.
+
+Similarly, vmf_orig_pte_uffd_wp() in mm/memory.c ignores markers for RWP
+VMAs during page faults, copy_pte_marker() drops markers during fork(),
+and change_pte_range() in mm/mprotect.c skips unpopulated PTEs when
+UFFDIO_RWPROTECT is called.
+
+Are updates to the PTE marker infrastructure needed to fully support
+VM_UFFD_RWP?
+
 > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 059144435729..2f00c75e66bd 100644
+> index 3d4d5f9a6f1bf..da8a07cd49a14 100644
 > --- a/include/linux/mm.h
 > +++ b/include/linux/mm.h
-> @@ -4278,11 +4278,37 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
->  
-> +/**
-> + * vma_start_pgoff() - Get the page offset of the start of @vma
-> + * @vma: The VMA whose page offset is required.
-> + *
-> + * If the VMA is file-backed, this is the page offset into the file.
-> + *
-> + * If the VMA is anonymous, this is the virtual page offset of the start of the
-> + * VMA - if unfaulted, then vma->vm_start >> PAGE_SHIFT, if faulted then the
-> + * virtual page offset at the time of first fault.
-> + *
-> + * Note that if @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-> + * file offset.
-> + *
-> + * Returns: The page offset of the start of @vma.
-> + */
->  static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+> @@ -4644,11 +4644,25 @@ static inline int vm_fault_to_errno(vm_fault_t vm=
+_fault, int foll_flags)
+> =20
+>  /*
+>   * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
+> - * a (NUMA hinting) fault is required.
+> + * a (NUMA hinting or userfaultfd RWP) fault is required.
+>   */
+>  static inline bool gup_can_follow_protnone(const struct vm_area_struct *=
+vma,
+>  					   unsigned int flags)
 >  {
->  	return vma->vm_pgoff;
->  }
->  
-> +/**
-> + * vma_last_pgoff() - Get the page offset of the last page in @vma
-> + * @vma: The VMA whose last page offset is required.
-> + *
-> + * This returns the last page offset contained within @vma.
-> + *
-> + * See the description of vma_start_pgoff() for a description of VMA page
-> + * offsets.
-> + *
-> + * Returns: The last page offset of @vma.
-> + */
->  static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
->  {
->  	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
+> +	/*
+> +	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
+> +	 * NUMA hinting. GUP must always take a fault so the access is
+> +	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
+> +	 *
+> +	 * Only do so while the VMA is accessible. If it has been made
+> +	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
+> +	 * below: forcing a fault there would loop, as handle_mm_fault() makes
+> +	 * no progress on protnone in an inaccessible VMA, and the access is
+> +	 * denied regardless of RWP anyway.
+> +	 */
+> +	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
+> +		return false;
 
+[Severity: High]
+Does this logic allow FOLL_FORCE accesses to silently bypass the RWP
+monitor?
+
+The comment assumes access is denied regardless of RWP when the VMA is
+inaccessible, but FOLL_FORCE (e.g., from ptrace or /proc/pid/mem)
+explicitly bypasses VMA access permissions.
+
+If an RWP VMA is made PROT_NONE, and FOLL_FORCE is used, this check
+returns true because vma_is_accessible() is false. GUP will then follow
+the PROT_NONE PTE and extract the page, bypassing the userfaultfd fault
+path entirely.
+
+> +
+>  	/*
+>  	 * If callers don't want to honor NUMA hinting faults, no need to
+>  	 * determine if we would actually have to trigger a NUMA hinting fault.
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703133615.1039=
+465-1-kirill@shutemov.name?part=3D8
