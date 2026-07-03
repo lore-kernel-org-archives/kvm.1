@@ -1,120 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CE73D9680
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D905E3D3314
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783087712; cv=none; b=kj8wZrMl53YLmxEu1dtzidoub+KasULZkN1PKDvDkPkh2qO3z10AxJAa8A4VQMzJbU5JE8nv2toMLM6Z6PvpZwnVuuZbvHvH/jhsG9GHuWnujhsOk+M9Kz2k+U/gQ6hFI3j9stPkdDX1VdhqbzuwlljAMKgcXSJOT8sOu5hT5Kc=
+	t=1783087839; cv=none; b=bXORl0u2g6aYhzAAnnSwrpQhUTjuSqGpFavYzYORiZPNqs9GCARcvTK/pElmqCRbI8+P4bcvuwSEFjaxfeHXIWXwogQG5wRdoOmEdOfOXYms6JCI6WlA/oov0HYcYx2PxAXpj/E1wwnA+kIORVJOmS6LRUKCwjxy3Eg2eXSvykw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783087712; c=relaxed/simple;
-	bh=kurBb7c8egPJ3ZTdPXHdEuTgPJAOoy7LiZfVrGQ4zSs=;
+	s=arc-20240116; t=1783087839; c=relaxed/simple;
+	bh=ZYA8ZicpCajA6mR7OdArj+HpzWZV3DN4vSHE/w9GXTw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VBsStDfsc1uACXVle8T2Qj/BRcRA+NqDX2QtwChyJ5v7vE2pdtMpM7UQeW99lBkQ5W1e+72oSV5r9DLX0aPBEIQ06klNhtbww+XjhG11mD4ZaKztGaJWkkc6JU8YjYsauebNhy+gjc/m9peREO0zDD6C7WpP/U7I1NoI3H5QB74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJhBW5T8; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=RaGsmx3637mXujo32UDMuJa6Z7WtHOfBqBE8/2f6SNHNiL2TZ5K34W75yplfLMYeDZimZMw2a3PbGP+7w6+DE4b5agYV/tk0dNAuwYDQdnGEYUwx7pGt04P+tsi2T1E3GwLP7tT6pEfu1/H096C17FI+vZZtLiG7jHufn3E5NXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0TyLeRt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJhBW5T8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9B91F000E9;
-	Fri,  3 Jul 2026 14:08:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0TyLeRt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C741F000E9;
+	Fri,  3 Jul 2026 14:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783087711;
-	bh=OsJmokvtfskMQWKTZMQXrYDbzsarKKTkkdH0cFFxMkM=;
+	s=k20260515; t=1783087837;
+	bh=PqkmBOQmeVDhkDwRyogOVe1Ich3IX5tVuW03BRXuJN0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZJhBW5T8p0mZGKyUQZIhgd0OuWSl2Fo5aw8X+5al7GidF2Y547/GLwwuJ0L2q9VGQ
-	 NDlG59aPewzPlBhoHWXgGQRqF2voeGa1G/bGLrFHq+6zkqj3RJlT4M64Mm1cLoJwE2
-	 h06zE44K/xUIpAWxqgav4LIx9MIQ3/nZo18z0mkrkhHMpctzs0jYp4K85+HWf99Zfu
-	 q+a9PJkD/RMNvLtTmE8GXVlTZmzLRRIpf7nZAeovJmjMKXM84an+sZ5OCIZDUYzJdA
-	 MP/AdOlhejqMZ8jby97dl0eBS8eL0OBkHQl0SWIszBJj5tVBCQIqKHZ5l7LJiAQSyD
-	 oqYmVPH1cq2rg==
+	b=i0TyLeRtUT4oDDE9IYVd9XbCm/eQebglPZV4wDSCf03F/7ZvRXcQT8VRmQu9gHaAQ
+	 XToQpDozrW83sFEfp9b5XlpWrNjclj1nD0ZzFpRx51XM+SNwB4i7Q4KVo907pfRAwx
+	 Q+nfstvvBfpkx1wyzU21Y3RQIZbXt4AJbw05aH7bW10uUXxutVTNz9iDMEWMgi6kxq
+	 l8Ics86TCZN34hJ+zw6RbuaVOsrAa7wXulh1FGMzJrJ4lDcTPq2G15qHLLr9JY00hw
+	 xpVxBTCghow8RQEoYeoWD5DesDOJUcmfQJ5GjqCUazcvh8jYVYEJZrGAYQdyGku0kI
+	 FwrlDISOyeC6Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 05/15] mm: add VM_UFFD_RWP VMA flag
+Subject: Re: [PATCH v8 06/15] mm: add MM_CP_UFFD_RWP change_protection()
+ flag
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260703133615.1039465-6-kirill@shutemov.name>
+In-Reply-To: <20260703133615.1039465-7-kirill@shutemov.name>
 References: <20260703133615.1039465-1-kirill@shutemov.name>
- <20260703133615.1039465-6-kirill@shutemov.name>
+ <20260703133615.1039465-7-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 14:08:30 +0000
-Message-Id: <20260703140831.1C9B91F000E9@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 14:10:36 +0000
+Message-Id: <20260703141037.89C741F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] uffd_disable_fault_around() does not disable fault-around for VM_U=
-FFD_RWP, allowing silent bypass of read-write protection.
+- [High] Unnecessary splitting of file-backed THPs when applying userfaultf=
+d RWP.
+- [High] UFFD RWP protection is silently bypassed on reclaimed file-backed =
+pages because PTE markers are intentionally skipped.
+- [Medium] Missing safety check and unimplemented logic for UFFD RWP in PUD=
+-sized THPs.
 --
 
-commit ed61c5fa2ad8a9cc1e93f82dbad086bff3df2b4c
+commit 78f87ff63726a93ba1fde6b06abbe7f59d5ff035
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: add VM_UFFD_RWP VMA flag
+mm: add MM_CP_UFFD_RWP change_protection() flag
+   =20
+Preparatory patch. Add the change_protection() primitive that
+userfaultfd RWP will use.
 
-Preparatory patch for userfaultfd read-write protection (RWP). RWP
-extends userfaultfd protection from plain write-protection (WP) to
-full read-write protection: accesses to an RWP-protected range --
-reads as well as writes -- trap through userfaultfd.
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 5b60862684aa6..b352b0dfe1ba2 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
 
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index c4f2cc6dfcf01..61ea83dbd0268 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
+[Severity: Medium]
+Could this change miss updating change_huge_pud() to reject
+MM_CP_UFFD_RWP_ALL?
+
+Currently, change_huge_pud() explicitly rejects MM_CP_UFFD_WP_ALL since
+anonymous PUDs are not yet supported. By omitting a similar check for
+MM_CP_UFFD_RWP_ALL, an anonymous PUD could be modified to PAGE_NONE without
+the _PAGE_UFFD bit.=20
+
+Would this cause future faults to be misidentified as NUMA or mprotect faul=
+ts
+if anonymous PUDs are introduced?
 
 [ ... ]
 
-> @@ -179,7 +180,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(st=
-ruct vm_area_struct *vma,
->  static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vm=
-a)
->  {
->  	return vma_test_any_mask(vma,
-> -		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
-> +		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR,
-> +					VMA_UFFD_RWP));
->  }
-> =20
->  /*
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 8340c8b228c67..7dcc94e7bfd60 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+[ ... ]
+> @@ -325,6 +327,7 @@ static long change_pte_range(struct mmu_gather *tlb,
+>  	long pages =3D 0;
+>  	bool is_private_single_threaded;
+>  	bool prot_numa =3D cp_flags & MM_CP_PROT_NUMA;
+> +	bool uffd_rwp =3D cp_flags & MM_CP_UFFD_RWP;
+>  	bool uffd_wp =3D cp_flags & MM_CP_UFFD_WP;
+>  	int nr_ptes;
 
 [Severity: High]
-Should VMA_UFFD_RWP also be added to uffd_disable_fault_around() which is
-defined just below this function?
+Does skipping PTE markers for uffd_rwp on pte_none entries allow silent
+protection bypass under memory pressure?
 
-Looking at uffd_disable_fault_around() in include/linux/userfaultfd_k.h:
+When memory pressure reclaims a file-backed page protected with
+UFFDIO_RWPROTECT, try_to_unmap_one() in mm/rmap.c clears the PTE to pte_non=
+e()
+without preserving the UFFD state.
 
-static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
-{
-	return vma_test_any_mask(vma,
-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+Since change_pte_range() explicitly skips installing markers when uffd_rwp =
+is
+set and oldpte is pte_none():
+
+mm/mprotect.c:change_pte_range() {
+        ...
+        } else if (pte_none(oldpte)) {
+                if (likely(!uffd_wp))
+                        continue;
+        ...
 }
 
-If VMA_UFFD_RWP is missing from this check, will it allow filemap_map_pages=
-()
-to bypass the read-write protection?
+Would the page fault handler subsequently repopulate the PTE with normal
+RW permissions from the page cache? This appears to lose the read-write
+protection once a page is reclaimed.
 
-When a VMM registers a file-backed or shmem VMA with UFFDIO_REGISTER_MODE_R=
-WP
-and a guest accesses a missing page, do_read_fault() calls
-should_fault_around().
+[ ... ]
 
-Because VMA_UFFD_RWP is not checked in uffd_disable_fault_around(),
-it proceeds to do_fault_around().
+> @@ -428,7 +441,7 @@ pgtable_split_needed(struct vm_area_struct *vma, unsi=
+gned long cp_flags)
+>  	 * (e.g. 2M shmem) because file thp is handled differently when
+>  	 * split by erasing the pmd so far.
+>  	 */
+> -	return (cp_flags & MM_CP_UFFD_WP) && !vma_is_anonymous(vma);
+> +	return (cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP)) && !vma_is_anonymo=
+us(vma);
+>  }
 
-This allows filemap_map_pages() to preemptively install up to 15 neighboring
-PTEs with standard readable permissions and no _PAGE_UFFD marker.=20
+[Severity: High]
+Does this logic unnecessarily split file-backed THPs when applying
+MM_CP_UFFD_RWP?
 
-Subsequent accesses to the fault-around populated pages will succeed native=
-ly
-without delivering a message to the userfaultfd handler, which causes a
-regression in the RWP sync trap guarantee.
+When UFFDIO_RWPROTECT is applied to a file-backed THP, change_pmd_range()
+evaluates pgtable_split_needed(). Since this now returns true for
+MM_CP_UFFD_RWP on non-anonymous VMAs, it forces __split_huge_pmd().
 
-In async mode, PAGEMAP_SCAN will falsely report these unaccessed pages as
-PAGE_IS_ACCESSED.
+For file-backed THPs, splitting clears the PMD and creates unpopulated PTEs.
+Because RWP intentionally skips installing markers for unpopulated PTEs, the
+protection can be silently bypassed. Is it possible to avoid splitting here
+since RWP does not require PTE markers?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703133615.1039=
-465-1-kirill@shutemov.name?part=3D5
+465-1-kirill@shutemov.name?part=3D6
