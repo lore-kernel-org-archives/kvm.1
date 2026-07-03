@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758C433262A;
-	Fri,  3 Jul 2026 21:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727C13264EF;
+	Fri,  3 Jul 2026 21:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783113727; cv=none; b=ZrnVlzvYQ7IF1Jo6a2MEWMPzq5bOEVGZxQxjfTdG96IZrGUzGvrz8YcwaWFtKIGmiT26/G4JoHjd1SwYkUiz+aE0KRMXwAgeT34XfbcEbsJ/ZIhupFwfu79Os9PGb9lXyge2bjECR4dtbX69tlSmPv7ej+OT7trk4VyUy3V1IHg=
+	t=1783113727; cv=none; b=szozGkU+ugW7EHeWvA0biJZ/Bno6ChuO+JRyQPSJkGJmeEl5KM4BnwL1GxDLPGytKydi5N68R3cSQkwbWSFTdZ9xU/Gs7OWjg35U4/LBsqaWef5d2VIKj/Ram44Y/xQ7Je3F6K5auWJSXvG/d6B59kj7+sK3X2+zadee31D9PJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783113727; c=relaxed/simple;
-	bh=/PB52yGHdrD606n4KgU8xDjAmsk2GsExyy6zqIT2KKs=;
+	bh=vAPp2lVTYAhMhcmn20gifk0evS5pRYocrYbQuJwNGRI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eRCC6EDhx2JC94YIh998M4EU3Tx0P93CT4xSLlLxHgPWcu33RJ8Tuf6YyXXlY8462u/GCA5pI5QxjtAtENRxF7KzovlvqZ9+/tu4dE2PScjHGpRPJ7ixUwtWchHLuMab/khfE40mxZ76Vw1fhyTg0uioudRAsWQI+R+7b/PqIjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jIerjpGT; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=XHcJr7a52h+7HLPmrIL/dEs4VUjQR6829v2lv2RujAc7rSWIV8OqTDAOsWi+3NNgnQMRMwi0YMXc41AWyOVwTGO98tHHh0BlZnglCtPmG0M4zyKMIRExGxVhCjFnYgLiEM+cTXEsrizYy2UEpTDzyarsBzj6Njtb5kCRA/8n1l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UEnwhLQs; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jIerjpGT"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UEnwhLQs"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description;
-	bh=EpzXffKcCC8OCVBj38i2t8eVI2Er97bsxo1QNBYCK8E=; b=jIerjpGT+yTwXfADnzFS9Ehvw1
-	qj5/hvk/X0LarGRgEVv+dsiKFbGxRWGknJH57gqRXscS5FUYAhSqnvtRBTN2Z6vn9teqs3fY7T27K
-	jW8kTa1Wn2iOLEOqSbhIdiHt8Zmudzhq+tZg56Q8n6poP0Su9bZXGRUplcGieKFs0iNapavWjR6fc
-	hzkoY/l9qx1zH8w8EdFXPjFM5inA9cmW6nJSdRy1/qSf00oSXhQLvq8P2NHcd9wzCsCydXn58F6FC
-	AElEi2x7GlGagDUvtuQfZMQtQYs0miIjMnEqFVh2YzqPw/nArOHgfhgvtrehoSUcccIphTfkzHx4t
-	XG8AdZ9w==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description;
+	bh=V5hQ2fJb27QK5yOdBL7f7A818+T1JNBNilH2QwnYDyE=; b=UEnwhLQsS2wkPtr1Pd+i9zzOxH
+	sP8ejEvNPTu+HXmRA1IRK2tldo2/gJzqZvVFkblE3k6NJg2illNeTq4r1tIkNMYNlkdWFonJNHdMK
+	mhSmA+bD14VOI9+r+ngRb7JB7fqCDAalnTCht1e3MXaFddIt8qbgkhuau0zS6oAateAvgrEcabeSd
+	8ssD8QbBlyyz0HmKWi8dhUlItveVTjZXTUCDUvvZgduEIsDDko+7didrcRF7/U9ZjOHxshnYVg5m8
+	dzZupkJUGPLn1s+4YQMYQSdzXtYuOWrxtKD6MQ0XG4ZFW1ckoKyrimh4GbzgzAMJIyiUdwJSkSu0l
+	7JBF15DA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wflKX-0000000AsYQ-3NCh;
-	Fri, 03 Jul 2026 21:21:50 +0000
+	id 1wflKX-0000000AsYF-1TB1;
+	Fri, 03 Jul 2026 21:21:49 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wflKX-00000001RQ7-2xkg;
+	id 1wflKX-00000001RPX-0w0H;
 	Fri, 03 Jul 2026 22:21:49 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v6 34/36] KVM: x86: Cache host vclock_mode for masterclock eligibility checks
-Date: Fri,  3 Jul 2026 22:18:13 +0100
-Message-ID: <20260703212145.343527-35-dwmw2@infradead.org>
+Subject: [PATCH v6 26/36] KVM: x86/xen: Prevent runstate times from becoming negative
+Date: Fri,  3 Jul 2026 22:18:05 +0100
+Message-ID: <20260703212145.343527-27-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260703212145.343527-1-dwmw2@infradead.org>
 References: <20260703212145.343527-1-dwmw2@infradead.org>
@@ -73,120 +73,97 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The remaining users of pvclock_gtod_data only need to know whether
-the host clocksource is TSC-based. Cache the vclock_mode value in a
-simple kvm_host_vclock_mode variable, updated by the pvclock_gtod_notify
-callback, and use gtod_is_based_on_tsc() for eligibility checks.
+When kvm_xen_update_runstate() is invoked to set a vCPU's runstate, the
+time spent in the previous runstate is accounted. This is based on the
+delta between the current KVM clock time, and the previous value stored
+in vcpu->arch.xen.runstate_entry_time.
 
-This is inherently racy (as it always was — kvm_track_tsc_matching
-never held the gtod seqcount), relying on eventual consistency: the
-notifier fires on every timekeeping update and will correct any
-transient inconsistency within one tick.
+If the KVM clock goes backwards, that delta will be negative. Or, since
+it's an unsigned 64-bit integer, very *large*. Linux guests deal with
+that particularly badly, reporting 100% steal time for ever more (well,
+for *centuries* at least, until the delta has been consumed).
+
+So when a negative delta is detected, just refrain from updating the
+runstate times until the KVM clock catches up with runstate_entry_time
+again.
+
+Also clamp steal_ns to delta_ns to prevent steal time from exceeding
+the total elapsed time, and handle negative steal_ns (which can happen
+if run_delay goes backwards across a scheduler update).
+
+The userspace APIs for setting the runstate times do not allow them to
+be set past the current KVM clock, but userspace can still adjust the
+KVM clock *after* setting the runstate times, which would cause this
+situation to occur.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Assisted-by: Kiro (claude-opus-4.6-1m)
+Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/x86.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ arch/x86/kvm/xen.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8d520bfae089..c67655f8e078 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2647,6 +2647,8 @@ static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
- }
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 82e34edbfdbd..b1d67ece5db3 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -586,29 +586,45 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
+ {
+ 	struct kvm_vcpu_xen *vx = &v->arch.xen;
+ 	u64 now = get_kvmclock_ns(v->kvm);
+-	u64 delta_ns = now - vx->runstate_entry_time;
+ 	u64 run_delay = current->sched_info.run_delay;
++	s64 delta_ns = now - vx->runstate_entry_time;
++	s64 steal_ns = run_delay - vx->last_steal;
  
- #ifdef CONFIG_X86_64
-+static int kvm_host_vclock_mode;
++	/*
++	 * If the vCPU was never run before, its prior state should
++	 * be considered RUNSTATE_offline.
++	 */
+ 	if (unlikely(!vx->runstate_entry_time))
+ 		vx->current_runstate = RUNSTATE_offline;
+ 
++	/*
++	 * If KVM clock went backwards, just update the current runstate
++	 * but don't account any time. Leave entry_time unchanged so the
++	 * next positive delta covers the full period once the clock
++	 * catches up. Update last_steal every time so stolen time only
++	 * reflects the interval since the most recent call.
++	 */
++	if (delta_ns < 0)
++		goto update_guest;
 +
- static inline bool gtod_is_based_on_tsc(int mode)
- {
- 	return mode == VDSO_CLOCKMODE_TSC || mode == VDSO_CLOCKMODE_HVCLOCK;
-@@ -2676,7 +2678,6 @@ static bool kvm_use_master_clock(struct kvm *kvm)
- static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool update_mclock)
- {
- 	struct kvm_arch *ka = &vcpu->kvm->arch;
--	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
- 	bool prev_matched_tsc = ka->all_vcpus_matched_tsc;
- 
  	/*
-@@ -2713,7 +2714,7 @@ static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool update_mclock)
- 	 * accounts for its offset.
+ 	 * Time waiting for the scheduler isn't "stolen" if the
+ 	 * vCPU wasn't running anyway.
  	 */
- 	bool use_master_clock = kvm_use_master_clock(vcpu->kvm) &&
--				gtod_is_based_on_tsc(gtod->clock.vclock_mode);
-+				gtod_is_based_on_tsc(kvm_host_vclock_mode);
+-	if (vx->current_runstate == RUNSTATE_running) {
+-		u64 steal_ns = run_delay - vx->last_steal;
++	if (vx->current_runstate == RUNSTATE_running && steal_ns > 0) {
++		if (steal_ns > delta_ns)
++			steal_ns = delta_ns;
  
- 	/*
- 	 * Request a masterclock update if needed: toggling master clock,
-@@ -2726,11 +2727,11 @@ static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool update_mclock)
- 
- 	trace_kvm_track_tsc(vcpu->vcpu_id, ka->nr_vcpus_matched_tsc,
- 			    atomic_read(&vcpu->kvm->online_vcpus),
--		            ka->use_master_clock, gtod->clock.vclock_mode);
-+		            ka->use_master_clock, kvm_host_vclock_mode);
- }
- #else
- static inline void kvm_track_tsc_matching(struct kvm_vcpu *vcpu,
--					  bool new_generation) {}
-+					  bool update_mclock) {}
- #endif
- 
- /*
-@@ -2850,7 +2851,7 @@ static inline bool kvm_check_tsc_unstable(void)
- 	 * TSC is marked unstable when we're running on Hyper-V,
- 	 * 'TSC page' clocksource is good.
- 	 */
--	if (pvclock_gtod_data.clock.vclock_mode == VDSO_CLOCKMODE_HVCLOCK)
-+	if (kvm_host_vclock_mode == VDSO_CLOCKMODE_HVCLOCK)
- 		return false;
- #endif
- 	return check_tsc_unstable();
-@@ -3274,7 +3275,6 @@ static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
- {
- #ifdef CONFIG_X86_64
- 	struct kvm_arch *ka = &kvm->arch;
--	int vclock_mode;
- 	bool host_tsc_clocksource;
- 
- 	lockdep_assert_held(&kvm->arch.tsc_write_lock);
-@@ -3314,9 +3314,9 @@ static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
- 			ka->use_master_clock = false;
+ 		delta_ns -= steal_ns;
+-
+ 		vx->runstate_times[RUNSTATE_runnable] += steal_ns;
  	}
+-	vx->last_steal = run_delay;
  
--	vclock_mode = pvclock_gtod_data.clock.vclock_mode;
--	trace_kvm_update_master_clock(ka->use_master_clock, vclock_mode,
--					ka->all_vcpus_matched_freq);
-+	trace_kvm_update_master_clock(ka->use_master_clock,
-+				     kvm_host_vclock_mode,
-+				     ka->all_vcpus_matched_freq);
- #endif
+ 	vx->runstate_times[vx->current_runstate] += delta_ns;
+-	vx->current_runstate = state;
+ 	vx->runstate_entry_time = now;
+ 
++ update_guest:
++	vx->current_runstate = state;
++	vx->last_steal = run_delay;
+ 	if (vx->runstate_cache.active)
+ 		kvm_xen_update_runstate_guest(v, state == RUNSTATE_runnable);
  }
- 
-@@ -10399,12 +10399,15 @@ static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
- 	update_pvclock_gtod(tk);
- 
- #ifdef CONFIG_X86_64
-+	kvm_host_vclock_mode =
-+		tk->tkr_mono.clock->vdso_clock_mode;
-+
- 	/*
- 	 * Disable master clock if host does not trust, or does not use,
- 	 * TSC based clocksource. Delegate queue_work() to irq_work as
- 	 * this is invoked with tk_core.seq write held.
- 	 */
--	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode) &&
-+	if (!gtod_is_based_on_tsc(kvm_host_vclock_mode) &&
- 	    atomic_read(&kvm_guest_has_master_clock) != 0)
- 		irq_work_queue(&pvclock_irq_work);
- #endif
 -- 
 2.54.0
 
