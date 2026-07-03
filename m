@@ -1,73 +1,73 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FA43E0C47;
-	Fri,  3 Jul 2026 13:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB03E315E;
+	Fri,  3 Jul 2026 13:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783085802; cv=none; b=UXdCQnR6v7IoyAJUBqqlPqAhJLun1U4TYzieajsyGn1OpPNzdMMzjtXHKV3Mh/J4CVijhGHU8HIKIG4xWSQt5H5leQ7u1ovGpWJE8D3krxoli8ZnZIaT4dzl0ANAWFhE62nlgGVinsqAUsWql1D/QkIT3lNQjBMXEi1A4B73OH4=
+	t=1783085805; cv=none; b=ZNMpEddMwE07VBw+yflr9+0wlWZA6jVq02QZfwtbiMQSHL38iaEQhwikKvKS/E3xA4I1KXHzhXcl3GLHv2E5g4lpGybL2/5uH79MteorPhBHjX4QoSBixWbnKuJQGKTKKTq11zeiykl8qlsHskXF9bdjYYjj6XnXzvMT7dq3Sbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783085802; c=relaxed/simple;
-	bh=h+VZPlyl4DRO5Cw6pW4pHw73ZKYTQYgFGRCqxMpUTwI=;
+	s=arc-20240116; t=1783085805; c=relaxed/simple;
+	bh=izHNmzO2Th5haaF7ri4drzVafLvpgDKI+yOFwPPiPlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ig4hK3UG+oXrCHP6sNXauewD+9L60KkpeMOgyPLS/nNgQGBrn4HmGlohBVFXE2Ghvi5B7zu8Fghpbg7pFfR8z/hHM7jCVyEFbY/ArdZNfBMVi/puCL+RPBY1ifYJL8zkLyUIHdUoy6msGyAEN+RV1DW32Df9jiOrngYr8YvTSUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=UhKAGvyO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Jc+CPZx+; arc=none smtp.client-ip=202.12.124.154
+	 MIME-Version; b=BfsfhX2eRqGKHEujrRi90wWdwPP2/wrBegp3phre6bWh+1UokpPsYdjkOkVfas6U4n+wVTjQgq3Hmj+JSlTRvf2YENWp81KCtfh9wiYfrGwmk4HVEDcTxBVRa1nzzYW8R9i9XFWRcfnGSD8LF78+jDu+MQeAhDkTnlljMhF174c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=YSuOORpn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=piyqrpK8; arc=none smtp.client-ip=202.12.124.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="UhKAGvyO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Jc+CPZx+"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id A73A27A00B9;
-	Fri,  3 Jul 2026 09:36:39 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 03 Jul 2026 09:36:40 -0400
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="YSuOORpn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="piyqrpK8"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5659C1D0005A;
+	Fri,  3 Jul 2026 09:36:42 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 03 Jul 2026 09:36:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1783085799; x=1783172199; bh=R2HAsvV2aS50vy0Ddv5Z9TIljsyWizzt
-	KXk84xdH2Ws=; b=UhKAGvyOOkPZ5W0HKoyXO5Qc8ylUK+IQO2m/x2wlSFwOebDu
-	gE7chANdBTbG/Fj3EAUTfI+ekfh27ho4QjUFQXSFrWnf6v6y0Klc7tVzFn+3N1wh
-	sXRb63XgOyK2aVtx9PIs1iILAKIjPYBWqF0iqoF2EZposcf+HHZs/nqIEh3A4VTa
-	osb2Dln2STnEVvE4f2IMIb6pRC7acOlFadr6myGylDD2XoaZo24fS6bathueE8pr
-	2FOn/ADNL0E+npUV9bHmdImcfJ/kufM90vJRyxoiYFr5hW/KHvCPYHCmZ67Du3kt
-	xkfb+a54BprIT8gBhf+r9L0mllRtJXKfwZ31mA==
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783085802; x=
+	1783172202; bh=EnGPokI8NoPIw17S8aI7OUuveKncQuB0CodfcIUfH1I=; b=Y
+	SuOORpn+wWmFsv2/puv4HVEarrGTPKHXxLfbyMyRmlH1ATbV3af6jI5q0/Sy8a2R
+	87fBKd8MLz3queCeDf5zeAOrAoBuwalB/rE6r1MlvaCFUxVg9oQZRgiOOsMif6KW
+	KEPEQBERPvCyxT0RsZO4dDHTk59/G4y3Kk9aQ5qcD8OmMbiAuorZCL2x+kHQF/qc
+	nXobHoF8vLz9VavmAZPikZP0y+DtvW8QbL73Fm6QJUo6QOpDHYk/26vzthEpUC6f
+	dFqB5FtoxJ8aA974/eNLF+pYan58on7RsZeYdEvrlA8WnSz2BijrODoC7WcmihK/
+	6iaVOD2JkoKvnRE3mAIuQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783085799; x=
-	1783172199; bh=R2HAsvV2aS50vy0Ddv5Z9TIljsyWizztKXk84xdH2Ws=; b=J
-	c+CPZx+HDawsO8gGRaBOtVjwVE0zHjByOC24EKkv2p5JOuFaSQVFOOBA4gCGuX9g
-	SqgqsIVVjDwYO6mFUpz7FLVTZd0xhlL+TEgyMVjz9Q+CZQ5OcZ/OlXYhdFuaNey0
-	QThTemYzJt9FqRHUkgDucuy7Hlg5SDXOhXNP0eRLDAlWrssZQmZdPdumcQJRPbCp
-	Z9K/gyCfWCMGZiP/3iS7OZT6YLuYAKfVYt37VSXKNkNKlbLNjfD1O8YR9HNp3pyh
-	rDGv07BIM9SBYpeg4nsmiIKH8r8QkZ5jSj0s2XppM8KTabtKDUUnlTIb6/sB/b+l
-	Avlay5x5GGLNr8N2L4IDQ==
-X-ME-Sender: <xms:57pHatmzaSiN6tRsO1tWGQV_Q2_hnoFA3l5hP5adR9Wl56OK7816lw>
-    <xme:57pHaszQzPQmZ3_FD5pX48N6B5A-7dtbTr4p2bSNFwDwWfhmkUH3cwVEUsOvNHg9c
-    v78QbaFyUYLSPkvF5YXao8sA3sJN8R-0e5QFbW0J3o1r34IVt7l2w>
-X-ME-Received: <xmr:57pHasJumeuKcQaaxMHyZ8p8LZ5JMwJAoSQ_vsyXq25f7gPHQ-7jTtibGyxLWA>
-X-ME-Proxy-Cause: dmFkZTEvpT7VPI/TDUGEnnIrVlILKwXgeXt+foeC++RMQKPZsPpb69BYeN94A6l/J4m8GR
-    j7cxKNSW+PCS7l0cP9ewYlNjp3o4SRzo0q9x8boy+qMv6IPQeEYIg3N09NNUL1YwXh4Yrh
-    l/VK9KxOHmvITqsfYi7VnRs0zn+zCS3v2T7VSdeEEdSIb4snV1El6VtdknOa4IcxGosKQh
-    b50hZlM8u2LRvSc9TWKyrKm8vDP+A/+u7lOr+AQwZAIydhhZxADZY4tnbcibEwn1oxgg5G
-    tZcbEgM6HqFuHN1XrVgTaj9QN8QlhWjwEBL1Bk9WTH3MhpwrPTlQlB4jwdEhPAmIPHL5hj
-    pToV5MA0SP4lEY2TL+XiVXRAk9CCaAhuROWYoOeCzg4QiYxBNgVfG5ZSjTr2aOsjt1QLxf
-    F+YbfqDkJPvLu8RfLA8T+YSLl7yfWxKEfrsGCPiXuvGG+09tCiQlHLnd4zOcgNvybMB4f/
-    7ft7zU+LHo5stEazO3BJJBci9I4qJru2VP3nmt8s6C6veAaz4xjFvciS+8RiIT7r7FF88+
-    T54T4cE3U6uXEVAc3PM9vMTWTaj/0chXMfgjzGY0GyvAlhJYa+t9GHABNkJ30KCVjucyEC
-    F83SyWkBaLE/C8o/ZHKtC4jZJv2IfHZVXU8Te3L5UJ8LmHGSc00Ou1cU/0Ag
-X-ME-Proxy: <xmx:57pHanKFivK_CYKearS9wtnB_YlzOtXXbE1P6QJHD-Xuaa31RIFyHA>
-    <xmx:57pHajWQv2gwXfnMcz1FtcGbtKtWeb0zwhiyzNboWTLkH3DlD7MTSw>
-    <xmx:57pHanAWRZsQaec6mwEhiUjj0qq0Civp4JR_Db0tDM5UWhhSd6TnCg>
-    <xmx:57pHauFTxE0YMfyiFySXj_5Gp479PJ1oN_yOTMCslCzV6C8kHfgQVw>
-    <xmx:57pHajEyNchp3j2EBOTEvW_am3zqTb3mBhIV2SkVqX67ZismXEQ71vkm>
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm2; t=1783085802; x=1783172202; bh=E
+	nGPokI8NoPIw17S8aI7OUuveKncQuB0CodfcIUfH1I=; b=piyqrpK83sJydHy4U
+	+nRv+IQMme5nc1lnwk91IYk86dU9RsC8Y2oWnlNvLiSpjs/WVF7vBAF3pauNRmn7
+	NmiA7c7ziFH4sJEzr+2t/6fnxHceBMcJx4hp/cQLnIFFu06opX+jXWV5TcuJUAJB
+	d8RVYyb9Pn4KTZd1zjK7XtfSIVAO/wXSz++AI9rFAhExarrXsfPJ77tr/Y1E2kAl
+	wYKmZcElrbKTF9usJBK66fel1oGMUo6wcxSIX2an0VFcb/9A645Zu7SwwivDQPiL
+	M8TFcXBayZGdUUObMh7sWH8rdV9gKpPxZ5Nkc5PSCKCIhad21HJnbGJD32inKu/b
+	egb/w==
+X-ME-Sender: <xms:6bpHanYgzK3XZuOq803nAdOcHWC62Y55QAKjNX_xLM0EKK3uSZTbhg>
+    <xme:6bpHaiQWme6sr2nyVOn04_qWRwzFMDl-orezRPPtwG_bULY9Gzu1pqyzVbmP75lXu
+    mgoXrKEsRlyePACT4rL3xNfSPaxGLj2hoaY4_bNrcX8s2ONaTDkiXo>
+X-ME-Received: <xmr:6bpHaizWHjQb8fP0uh9ur4EZxQWhTklnda05xPlXk_KOXSqSFvEplN1GrLLV4g>
+X-ME-Proxy-Cause: dmFkZTFugVRxFdH0dMt22KIYT6S26SSG98N0sz+ys09Hlr+AnmeajYF1RN40hpGypUpqlJ
+    Zy5d5jLGARuczyZO1OdMXn8vTiUEU5e041N3yfZtKjqAJ2fvSnwYTcPKrlQ8VpRdJVBZzT
+    zWez++VZ8twwgwYUntmWOLuiz+JddIPneaaJpHaGxbGUweQl93yRdt1mLP1v11JzYxL0TR
+    PjwvC7VHBsh+pFBwV52NT5Wi2gI/nElrIms2Df5C0iyrzcKgELK3rpQpBE9FsReh7PU8JH
+    HSiQWhouKdXxBitqX30HTHdkATiOG+IvrpxSrzooOF/Wd6aJR6SYeTFYyzuXA81DmL1FZu
+    dbuHx3RPaS+fDUg5W5fHLoILK4x1qT65gUpbVNj4+LXvyGHu+dCdWS3sKod5EzXonDSyLr
+    xZz1SmC0MDdAZPlDwg0mlaZMKz00DD3nB1XSRLdAaU0OsSI3Kyk0fPbjgDUl1+ed1cVkGz
+    HAZ3tVWvIqJ1sECM8by58pBNHXQY8F8z0tFWRGshYzR0+86Y6cbRrk3rgCP4QL5nO1uO0o
+    EkXRSi00vMG51ZfeQmjVTQjbRte0YXVaXD5kGuFXspTgEJ06RHJJlTF2Vi3bE6OPFsWzl6
+    hjEw93+uGKKdCxGpDp4CZXkazXEZLLHffAK1uvVgqrv+Lwt3rBp4DLNEFdbA
+X-ME-Proxy: <xmx:6bpHamcL5UwqJ3PC0FzLboXEiOdjMY4BWN1SdFxbMKSzfLwZKu4llg>
+    <xmx:6bpHarp2AVos9szuQJ12JVJs5tszxOtWhoiq6o2MXftRliF-IP7bdA>
+    <xmx:6bpHamPPs7Lu6cRnWZQ75yz6X3tbEkydRtA7qHqivaE_oj4ACDuDtQ>
+    <xmx:6bpHahFuyAT13DSc7NTt0CCAUdyrUdt_89lH27LDm9g25C1Gk-5RFw>
+    <xmx:6rpHahpc1KKIvu1_WRMVo1Hm3ak6PUEb4UH8OjNNTsXOFCYBzcS35ukY>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Jul 2026 09:36:39 -0400 (EDT)
+ 3 Jul 2026 09:36:41 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -93,9 +93,9 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v8 09/15] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
-Date: Fri,  3 Jul 2026 14:36:08 +0100
-Message-ID: <20260703133615.1039465-10-kirill@shutemov.name>
+Subject: [PATCH v8 10/15] mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP
+Date: Fri,  3 Jul 2026 14:36:09 +0100
+Message-ID: <20260703133615.1039465-11-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260703133615.1039465-1-kirill@shutemov.name>
 References: <20260703133615.1039465-1-kirill@shutemov.name>
@@ -105,452 +105,334 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Add the userspace interface for read-write protection tracking:
+Wire the fault side of read-write protection tracking and turn the
+userspace interface on.
 
-  - UFFDIO_REGISTER_MODE_RWP      register a range for RWP tracking
-  - UFFD_FEATURE_RWP              capability bit
-  - UFFDIO_RWPROTECT              install / remove RWP on a range
+An RWP-protected PTE is PAGE_NONE with the uffd bit set. The
+PROT_NONE triggers a fault on any access; the uffd bit distinguishes
+it from plain mprotect(PROT_NONE) or NUMA hinting.
 
-Introduce CONFIG_USERFAULTFD_RWP, auto-selected on 64-bit kernels with
-ARCH_HAS_PTE_PROTNONE and HAVE_ARCH_USERFAULTFD_WP. The symbol gates
-VM_UFFD_RWP (previously aliased to VM_NONE) and the smaps/trace-flag
-hooks added in the preparatory patches; without it the UAPI bits added
-here have nothing to drive and would be unreachable.
+Fault dispatch, per level:
 
-Registration sets VM_UFFD_RWP on the VMA. Combining MODE_WP with
-MODE_RWP is rejected because both modes claim the uffd PTE bit.
+  PTE     handle_pte_fault()    -> do_uffd_rwp()
+  PMD     __handle_mm_fault()   -> do_huge_pmd_uffd_rwp()
+  hugetlb hugetlb_fault()       -> hugetlb_handle_userfault()
 
-UFFDIO_RWPROTECT is the bidirectional counterpart of
-UFFDIO_WRITEPROTECT:
+The RWP branches gate on userfaultfd_pte_rwp() / userfaultfd_huge_pmd_rwp()
+(VM_UFFD_RWP plus the uffd bit) and fall through to do_numa_page() /
+do_huge_pmd_numa_page() otherwise. Each delivers a
+UFFD_PAGEFAULT_FLAG_RWP message through handle_userfault(); the handler
+resolves it with UFFDIO_RWPROTECT clearing MODE_RWP.
 
-  - MODE_RWP              change_protection() with MM_CP_UFFD_RWP
-                          installs PAGE_NONE and sets the uffd bit on
-                          present PTEs
-  - !MODE_RWP             change_protection() with MM_CP_UFFD_RWP_RESOLVE
-                          restores vma->vm_page_prot and clears the bit
+userfaultfd_must_wait() and userfaultfd_huge_must_wait() add matching
+protnone+uffd waiters so sync-mode fault handlers block correctly.
 
-userfaultfd_clear_vma() runs the same resolve pass on unregister so
-RWP state cannot outlive the uffd.
+Expose the UAPI:
 
-Re-registering a range must not drop a mode that installs per-PTE
-markers (WP or RWP); doing so returns -EBUSY. This also closes a
-pre-existing window where re-registering without MODE_WP would strand
-uffd-wp markers: before, those caused extra write-faults but were
-otherwise benign; with RWP preservation in place, a subsequent
-mprotect() on a VM_UFFD_RWP VMA would silently promote the stale
-markers to RWP.
+  UFFDIO_REGISTER_MODE_RWP   -> UFFD_API_REGISTER_MODES
+  UFFD_FEATURE_RWP           -> UFFD_API_FEATURES
+  _UFFDIO_RWPROTECT          -> UFFD_API_RANGE_IOCTLS
+                                UFFD_API_RANGE_IOCTLS_BASIC
 
-The feature is not yet advertised. UFFDIO_REGISTER_MODE_RWP,
-UFFD_FEATURE_RWP, and _UFFDIO_RWPROTECT are intentionally absent from
-UFFD_API_REGISTER_MODES, UFFD_API_FEATURES, and UFFD_API_RANGE_IOCTLS,
-so UFFDIO_API masks them out and the register-mode validator rejects
-the bit. The follow-up patch adds fault dispatch and exposes the UAPI.
+UFFD_FEATURE_RWP is masked out at UFFDIO_API time when PROT_NONE is
+not available or VM_UFFD_RWP aliases VM_NONE (32-bit), so userspace
+never sees an advertised-but-broken feature.
+
+Works on anonymous, shmem, and hugetlb memory.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Assisted-by: Claude:claude-opus-4-6
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- Documentation/admin-guide/mm/userfaultfd.rst |  10 +
- include/linux/userfaultfd_k.h                |   2 +
- include/uapi/linux/userfaultfd.h             |  19 ++
- mm/Kconfig                                   |   9 +
- mm/userfaultfd.c                             | 189 ++++++++++++++++++-
- 5 files changed, 226 insertions(+), 3 deletions(-)
+ include/linux/huge_mm.h          |  7 +++++++
+ include/linux/userfaultfd_k.h    | 24 ++++++++++++++++++++++++
+ include/uapi/linux/userfaultfd.h | 12 ++++++++----
+ mm/huge_memory.c                 |  5 +++++
+ mm/hugetlb.c                     | 11 +++++++++++
+ mm/memory.c                      | 31 +++++++++++++++++++++++++++++--
+ mm/userfaultfd.c                 | 32 ++++++++++++++++++++++++++++++--
+ 7 files changed, 114 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
-index e5cc8848dcb3..1e533639fd50 100644
---- a/Documentation/admin-guide/mm/userfaultfd.rst
-+++ b/Documentation/admin-guide/mm/userfaultfd.rst
-@@ -131,6 +131,16 @@ userfaults on the range registered. Not all ioctls will necessarily be
- supported for all memory types (e.g. anonymous memory vs. shmem vs.
- hugetlbfs), or all types of intercepted faults.
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index ad20f7f8c179..9c4ebf0fc227 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -529,6 +529,8 @@ static inline bool folio_test_pmd_mappable(struct folio *folio)
  
-+.. note::
+ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
+ 
++vm_fault_t do_huge_pmd_uffd_rwp(struct vm_fault *vmf);
 +
-+   Re-registering an already-registered range must not drop any of the
-+   modes that install per-PTE markers — currently
-+   ``UFFDIO_REGISTER_MODE_WP`` and ``UFFDIO_REGISTER_MODE_RWP``. Doing
-+   so would strand markers with no flag to describe them, so the call
-+   is rejected with ``-EBUSY``; userspace must issue
-+   ``UFFDIO_UNREGISTER`` first. This differs from older kernels, which
-+   silently replaced the mode bits on re-registration.
-+
- Userland can use the ``uffdio_register.ioctls`` to manage the virtual
- address space in the background (to add or potentially also remove
- memory from the ``userfaultfd`` registered range). This means a userfault
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 92d27c54fe79..d65e1833f08d 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -150,6 +150,8 @@ static inline uffd_flags_t uffd_flags_set_mode(uffd_flags_t flags, enum mfill_at
+ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
  
- extern long uffd_wp_range(struct vm_area_struct *vma,
- 			  unsigned long start, unsigned long len, bool enable_wp);
-+extern int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
-+			    unsigned long len, bool enable_rwp);
- 
- /* move_pages */
- void double_pt_lock(spinlock_t *ptl1, spinlock_t *ptl2);
-diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
-index 2841e4ea8f2c..7b78aa3b5318 100644
---- a/include/uapi/linux/userfaultfd.h
-+++ b/include/uapi/linux/userfaultfd.h
-@@ -79,6 +79,7 @@
- #define _UFFDIO_WRITEPROTECT		(0x06)
- #define _UFFDIO_CONTINUE		(0x07)
- #define _UFFDIO_POISON			(0x08)
-+#define _UFFDIO_RWPROTECT		(0x09)
- #define _UFFDIO_API			(0x3F)
- 
- /* userfaultfd ioctl ids */
-@@ -103,6 +104,8 @@
- 				      struct uffdio_continue)
- #define UFFDIO_POISON		_IOWR(UFFDIO, _UFFDIO_POISON, \
- 				      struct uffdio_poison)
-+#define UFFDIO_RWPROTECT	_IOWR(UFFDIO, _UFFDIO_RWPROTECT,	\
-+				      struct uffdio_rwprotect)
- 
- /* read() structure */
- struct uffd_msg {
-@@ -158,6 +161,7 @@ struct uffd_msg {
- #define UFFD_PAGEFAULT_FLAG_WRITE	(1<<0)	/* If this was a write fault */
- #define UFFD_PAGEFAULT_FLAG_WP		(1<<1)	/* If reason is VM_UFFD_WP */
- #define UFFD_PAGEFAULT_FLAG_MINOR	(1<<2)	/* If reason is VM_UFFD_MINOR */
-+#define UFFD_PAGEFAULT_FLAG_RWP		(1<<3)	/* If reason is VM_UFFD_RWP */
- 
- struct uffdio_api {
- 	/* userland asks for an API number and the features to enable */
-@@ -230,6 +234,11 @@ struct uffdio_api {
- 	 *
- 	 * UFFD_FEATURE_MOVE indicates that the kernel supports moving an
- 	 * existing page contents from userspace.
-+	 *
-+	 * UFFD_FEATURE_RWP indicates that the kernel supports
-+	 * UFFDIO_REGISTER_MODE_RWP for read-write protection tracking.
-+	 * Pages are made inaccessible via UFFDIO_RWPROTECT and faults
-+	 * are delivered when the pages are re-accessed.
- 	 */
- #define UFFD_FEATURE_PAGEFAULT_FLAG_WP		(1<<0)
- #define UFFD_FEATURE_EVENT_FORK			(1<<1)
-@@ -248,6 +257,7 @@ struct uffdio_api {
- #define UFFD_FEATURE_POISON			(1<<14)
- #define UFFD_FEATURE_WP_ASYNC			(1<<15)
- #define UFFD_FEATURE_MOVE			(1<<16)
-+#define UFFD_FEATURE_RWP			(1<<17)
- 	__u64 features;
- 
- 	__u64 ioctls;
-@@ -263,6 +273,7 @@ struct uffdio_register {
- #define UFFDIO_REGISTER_MODE_MISSING	((__u64)1<<0)
- #define UFFDIO_REGISTER_MODE_WP		((__u64)1<<1)
- #define UFFDIO_REGISTER_MODE_MINOR	((__u64)1<<2)
-+#define UFFDIO_REGISTER_MODE_RWP	((__u64)1<<3)
- 	__u64 mode;
- 
- 	/*
-@@ -356,6 +367,14 @@ struct uffdio_poison {
- 	__s64 updated;
- };
- 
-+struct uffdio_rwprotect {
-+	struct uffdio_range range;
-+	/* !RWP means undo RWP-protection */
-+#define UFFDIO_RWPROTECT_MODE_RWP		((__u64)1<<0)
-+#define UFFDIO_RWPROTECT_MODE_DONTWAKE		((__u64)1<<1)
-+	__u64 mode;
-+};
-+
- struct uffdio_move {
- 	__u64 dst;
- 	__u64 src;
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 9e0ca4824905..ccb716535155 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1386,6 +1386,15 @@ config HAVE_ARCH_USERFAULTFD_MINOR
- 	help
- 	  Arch has userfaultfd minor fault support
- 
-+config USERFAULTFD_RWP
-+	def_bool y
-+	depends on 64BIT && ARCH_HAS_PTE_PROTNONE && HAVE_ARCH_USERFAULTFD_WP
-+	help
-+	  Userfaultfd read-write protection (UFFDIO_RWPROTECT) delivers a
-+	  userfaultfd notification on every access -- read or write -- to a
-+	  protected range, letting userspace observe the working set of a
-+	  process.
-+
- menuconfig USERFAULTFD
- 	bool "Enable userfaultfd() system call"
- 	depends on MMU
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 4fca0409b7d7..a58ebf68d7da 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1164,6 +1164,75 @@ static int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 	return err;
+ extern struct folio *huge_zero_folio;
+@@ -723,6 +725,11 @@ static inline spinlock_t *pud_trans_huge_lock(pud_t *pud,
+ 	return NULL;
  }
  
-+int mrwprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
-+		     unsigned long len, bool enable_rwp)
++static inline vm_fault_t do_huge_pmd_uffd_rwp(struct vm_fault *vmf)
 +{
-+	struct mm_struct *dst_mm = ctx->mm;
-+	unsigned long end = start + len;
-+	struct vm_area_struct *dst_vma;
-+	unsigned int mm_cp_flags;
-+	struct mmu_gather tlb;
-+	bool found = false;
-+	VMA_ITERATOR(vmi, dst_mm, start);
-+
-+	VM_WARN_ON_ONCE(start & ~PAGE_MASK);
-+	VM_WARN_ON_ONCE(len & ~PAGE_MASK);
-+	VM_WARN_ON_ONCE(start + len <= start);
-+
-+	guard(mmap_read_lock)(dst_mm);
-+	guard(rwsem_read)(&ctx->map_changing_lock);
-+
-+	if (atomic_read(&ctx->mmap_changing))
-+		return -EAGAIN;
-+
-+	if (enable_rwp)
-+		mm_cp_flags = MM_CP_UFFD_RWP;
-+	else
-+		mm_cp_flags = MM_CP_UFFD_RWP_RESOLVE;
-+
-+	/*
-+	 * Pre-scan the range: validate every spanned VMA before applying
-+	 * any change_protection() so a partial failure cannot leave the
-+	 * process with only a prefix of the range re-protected.
-+	 */
-+	for_each_vma_range(vmi, dst_vma, end) {
-+		if (!userfaultfd_rwp(dst_vma))
-+			return -ENOENT;
-+
-+		if (is_vm_hugetlb_page(dst_vma)) {
-+			unsigned long page_mask;
-+
-+			page_mask = vma_kernel_pagesize(dst_vma) - 1;
-+			if ((start & page_mask) || (len & page_mask))
-+				return -EINVAL;
-+		}
-+		found = true;
-+	}
-+	if (!found)
-+		return -ENOENT;
-+
-+	vma_iter_set(&vmi, start);
-+	tlb_gather_mmu(&tlb, dst_mm);
-+	for_each_vma_range(vmi, dst_vma, end) {
-+		unsigned long vma_start = max(dst_vma->vm_start, start);
-+		unsigned long vma_end = min(dst_vma->vm_end, end);
-+		unsigned int flags = mm_cp_flags;
-+
-+		/*
-+		 * On resolve, try to upgrade writability per-VMA --
-+		 * MM_CP_TRY_CHANGE_WRITABLE WARNs in
-+		 * maybe_change_pte_writable() if the VMA is not VM_WRITE,
-+		 * and RWP can be registered on PROT_READ-only mappings.
-+		 */
-+		if (!enable_rwp && vma_wants_manual_pte_write_upgrade(dst_vma))
-+			flags |= MM_CP_TRY_CHANGE_WRITABLE;
-+
-+		change_protection(&tlb, dst_vma, vma_start, vma_end, flags);
-+	}
-+	tlb_finish_mmu(&tlb);
-+
 +	return 0;
 +}
- 
- void double_pt_lock(spinlock_t *ptl1,
- 		    spinlock_t *ptl2)
-@@ -2152,6 +2221,15 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
- 	    !vma_is_anonymous(vma))
- 		return false;
- 
-+	/*
-+	 * RWP uses protnone as an access-tracking marker. PROT_NONE VMAs
-+	 * have vm_page_prot == PAGE_NONE, so RWP resolution can't make a
-+	 * page accessible -- the next access would fault again. Reject up
-+	 * front instead of letting FOLL_FORCE loop on protnone+uffd PTEs.
-+	 */
-+	if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
-+		return false;
 +
- 	return ops->can_userfault(vma, vm_flags);
+ static inline vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ {
+ 	return 0;
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index d65e1833f08d..8d5d6ca60b67 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -236,6 +236,18 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+ 	return userfaultfd_wp(vma) && pmd_uffd(pmd);
  }
  
-@@ -2204,9 +2282,22 @@ static struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
- 	if (start == vma->vm_start && end == vma->vm_end)
- 		give_up_on_oom = true;
- 
--	/* Reset ptes for the whole vma range if wr-protected */
--	if (userfaultfd_wp(vma))
--		uffd_wp_range(vma, start, end - start, false);
-+	/* Clear the uffd bit and/or restore protnone PTEs */
-+	if (userfaultfd_protected(vma)) {
-+		unsigned int mm_cp_flags = 0;
-+		struct mmu_gather tlb;
-+
-+		if (userfaultfd_wp(vma))
-+			mm_cp_flags |= MM_CP_UFFD_WP_RESOLVE;
-+		if (userfaultfd_rwp(vma))
-+			mm_cp_flags |= MM_CP_UFFD_RWP_RESOLVE;
-+		if (vma_wants_manual_pte_write_upgrade(vma))
-+			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-+
-+		tlb_gather_mmu(&tlb, vma->vm_mm);
-+		change_protection(&tlb, vma, start, end, mm_cp_flags);
-+		tlb_finish_mmu(&tlb);
-+	}
- 
- 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
- 				    &new_vma_flags, NULL_VM_UFFD_CTX,
-@@ -2255,6 +2346,14 @@ static int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		    vma_test_all_mask(vma, vma_flags))
- 			goto skip;
- 
-+		/*
-+		 * Pre-scan in userfaultfd_register() already rejected mode
-+		 * switches that would drop VM_UFFD_WP or VM_UFFD_RWP, so a
-+		 * stray bit here is a bug.
-+		 */
-+		VM_WARN_ON_ONCE(vma->vm_userfaultfd_ctx.ctx == ctx &&
-+				vma->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags);
-+
- 		if (vma->vm_start > start)
- 			start = vma->vm_start;
- 		vma_end = min(end, vma->vm_end);
-@@ -2521,6 +2620,8 @@ static inline struct uffd_msg userfault_msg(unsigned long address,
- 		msg.arg.pagefault.flags |= UFFD_PAGEFAULT_FLAG_WRITE;
- 	if (reason & VM_UFFD_WP)
- 		msg.arg.pagefault.flags |= UFFD_PAGEFAULT_FLAG_WP;
-+	if (reason & VM_UFFD_RWP)
-+		msg.arg.pagefault.flags |= UFFD_PAGEFAULT_FLAG_RWP;
- 	if (reason & VM_UFFD_MINOR)
- 		msg.arg.pagefault.flags |= UFFD_PAGEFAULT_FLAG_MINOR;
- 	if (features & UFFD_FEATURE_THREAD_ID)
-@@ -3620,6 +3721,22 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 
- 		vm_flags |= VM_UFFD_WP;
- 	}
-+	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_RWP) {
-+		if (!pgtable_supports_uffd() || VM_UFFD_RWP == VM_NONE)
-+			goto out;
-+		if (!(ctx->features & UFFD_FEATURE_RWP))
-+			goto out;
-+		vm_flags |= VM_UFFD_RWP;
-+	}
-+
-+	/*
-+	 * WP and RWP share the uffd PTE bit and
-+	 * cannot coexist in the same VMA — the bit would carry ambiguous
-+	 * semantics. Reject the combination up front.
-+	 */
-+	if ((vm_flags & VM_UFFD_WP) && (vm_flags & VM_UFFD_RWP))
-+		goto out;
-+
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR) {
- #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
- 		goto out;
-@@ -3713,6 +3830,16 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		    cur->vm_userfaultfd_ctx.ctx != ctx)
- 			goto out_unlock;
- 
-+		/*
-+		 * Mode switches that drop VM_UFFD_WP or VM_UFFD_RWP would
-+		 * leave PTE markers without the flag that describes them;
-+		 * subsequent mprotect() would then promote stale markers
-+		 * into the other mode. Require an unregister first.
-+		 */
-+		if (cur->vm_userfaultfd_ctx.ctx == ctx &&
-+		    cur->vm_flags & (VM_UFFD_WP | VM_UFFD_RWP) & ~vm_flags)
-+			goto out_unlock;
-+
- 		/*
- 		 * Note vmas containing huge pages
- 		 */
-@@ -3746,6 +3873,10 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 		if (!(uffdio_register.mode & UFFDIO_REGISTER_MODE_MINOR))
- 			ioctls_out &= ~((__u64)1 << _UFFDIO_CONTINUE);
- 
-+		/* RWPROTECT is only supported for RWP ranges */
-+		if (!(uffdio_register.mode & UFFDIO_REGISTER_MODE_RWP))
-+			ioctls_out &= ~((__u64)1 << _UFFDIO_RWPROTECT);
-+
- 		/*
- 		 * Now that we scanned all vmas we can already tell
- 		 * userland which ioctls methods are guaranteed to
-@@ -4093,6 +4224,55 @@ static int userfaultfd_writeprotect(struct userfaultfd_ctx *ctx,
- 	return ret;
- }
- 
-+static int userfaultfd_rwprotect(struct userfaultfd_ctx *ctx,
-+				 unsigned long arg)
++static inline bool userfaultfd_pte_rwp(struct vm_area_struct *vma,
++				       pte_t pte)
 +{
-+	int ret;
-+	struct uffdio_rwprotect uffdio_rwp;
-+	struct userfaultfd_wake_range range;
-+	bool mode_rwp, mode_dontwake;
-+
-+	if (atomic_read(&ctx->mmap_changing))
-+		return -EAGAIN;
-+
-+	if (copy_from_user(&uffdio_rwp, (void __user *)arg,
-+			   sizeof(uffdio_rwp)))
-+		return -EFAULT;
-+
-+	ret = validate_range(ctx->mm, uffdio_rwp.range.start,
-+			     uffdio_rwp.range.len);
-+	if (ret)
-+		return ret;
-+
-+	if (uffdio_rwp.mode & ~(UFFDIO_RWPROTECT_MODE_DONTWAKE |
-+				UFFDIO_RWPROTECT_MODE_RWP))
-+		return -EINVAL;
-+
-+	mode_rwp = uffdio_rwp.mode & UFFDIO_RWPROTECT_MODE_RWP;
-+	mode_dontwake = uffdio_rwp.mode & UFFDIO_RWPROTECT_MODE_DONTWAKE;
-+
-+	if (mode_rwp && mode_dontwake)
-+		return -EINVAL;
-+
-+	if (mmget_not_zero(ctx->mm)) {
-+		ret = mrwprotect_range(ctx, uffdio_rwp.range.start,
-+				       uffdio_rwp.range.len, mode_rwp);
-+		mmput(ctx->mm);
-+	} else {
-+		return -ESRCH;
-+	}
-+
-+	if (ret)
-+		return ret;
-+
-+	if (!mode_rwp && !mode_dontwake) {
-+		range.start = uffdio_rwp.range.start;
-+		range.len = uffdio_rwp.range.len;
-+		wake_userfault(ctx, &range);
-+	}
-+	return ret;
++	return userfaultfd_rwp(vma) && pte_uffd(pte);
 +}
 +
- static int userfaultfd_continue(struct userfaultfd_ctx *ctx, unsigned long arg)
++static inline bool userfaultfd_huge_pmd_rwp(struct vm_area_struct *vma,
++					    pmd_t pmd)
++{
++	return userfaultfd_rwp(vma) && pmd_uffd(pmd);
++}
++
+ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
  {
- 	__s64 ret;
-@@ -4399,6 +4579,9 @@ static long userfaultfd_ioctl(struct file *file, unsigned cmd,
- 	case UFFDIO_POISON:
- 		ret = userfaultfd_poison(ctx, arg);
- 		break;
-+	case UFFDIO_RWPROTECT:
-+		ret = userfaultfd_rwprotect(ctx, arg);
-+		break;
- 	}
- 	return ret;
+ 	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+@@ -366,6 +378,18 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+ 	return false;
  }
+ 
++static inline bool userfaultfd_pte_rwp(struct vm_area_struct *vma,
++				       pte_t pte)
++{
++	return false;
++}
++
++static inline bool userfaultfd_huge_pmd_rwp(struct vm_area_struct *vma,
++					    pmd_t pmd)
++{
++	return false;
++}
++
+ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ {
+ 	return false;
+diff --git a/include/uapi/linux/userfaultfd.h b/include/uapi/linux/userfaultfd.h
+index 7b78aa3b5318..d803e76d47ad 100644
+--- a/include/uapi/linux/userfaultfd.h
++++ b/include/uapi/linux/userfaultfd.h
+@@ -25,7 +25,8 @@
+ #define UFFD_API ((__u64)0xAA)
+ #define UFFD_API_REGISTER_MODES (UFFDIO_REGISTER_MODE_MISSING |	\
+ 				 UFFDIO_REGISTER_MODE_WP |	\
+-				 UFFDIO_REGISTER_MODE_MINOR)
++				 UFFDIO_REGISTER_MODE_MINOR |	\
++				 UFFDIO_REGISTER_MODE_RWP)
+ #define UFFD_API_FEATURES (UFFD_FEATURE_PAGEFAULT_FLAG_WP |	\
+ 			   UFFD_FEATURE_EVENT_FORK |		\
+ 			   UFFD_FEATURE_EVENT_REMAP |		\
+@@ -42,7 +43,8 @@
+ 			   UFFD_FEATURE_WP_UNPOPULATED |	\
+ 			   UFFD_FEATURE_POISON |		\
+ 			   UFFD_FEATURE_WP_ASYNC |		\
+-			   UFFD_FEATURE_MOVE)
++			   UFFD_FEATURE_MOVE |			\
++			   UFFD_FEATURE_RWP)
+ #define UFFD_API_IOCTLS				\
+ 	((__u64)1 << _UFFDIO_REGISTER |		\
+ 	 (__u64)1 << _UFFDIO_UNREGISTER |	\
+@@ -54,13 +56,15 @@
+ 	 (__u64)1 << _UFFDIO_MOVE |		\
+ 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
+ 	 (__u64)1 << _UFFDIO_CONTINUE |		\
+-	 (__u64)1 << _UFFDIO_POISON)
++	 (__u64)1 << _UFFDIO_POISON |		\
++	 (__u64)1 << _UFFDIO_RWPROTECT)
+ #define UFFD_API_RANGE_IOCTLS_BASIC		\
+ 	((__u64)1 << _UFFDIO_WAKE |		\
+ 	 (__u64)1 << _UFFDIO_COPY |		\
+ 	 (__u64)1 << _UFFDIO_WRITEPROTECT |	\
+ 	 (__u64)1 << _UFFDIO_CONTINUE |		\
+-	 (__u64)1 << _UFFDIO_POISON)
++	 (__u64)1 << _UFFDIO_POISON |		\
++	 (__u64)1 << _UFFDIO_RWPROTECT)
+ 
+ /*
+  * Valid ioctl command number range with this API is from 0x00 to
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index ddf8d2e49c12..8b8a5979ae12 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2202,6 +2202,11 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
+ 	return pmd_dirty(pmd);
+ }
+ 
++vm_fault_t do_huge_pmd_uffd_rwp(struct vm_fault *vmf)
++{
++	return handle_userfault(vmf, VM_UFFD_RWP);
++}
++
+ /* NUMA hinting page fault entry point for trans huge pmds */
+ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4d0b6d7d9842..f0ce2e9d4ba2 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6063,6 +6063,17 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		goto out_mutex;
+ 	}
+ 
++	/*
++	 * Protnone hugetlb PTEs with the uffd bit are used by
++	 * userfaultfd RWP for access tracking. Plain PROT_NONE (without the
++	 * marker) is not an RWP fault and is not expected on hugetlb (no
++	 * NUMA hinting), so let normal hugetlb fault handling proceed.
++	 */
++	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
++	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
++		return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
++	}
++
+ 	/*
+ 	 * If we are going to COW/unshare the mapping later, we examine the
+ 	 * pending reservations for this page now. This will ensure that any
+diff --git a/mm/memory.c b/mm/memory.c
+index c1f79a3dfd6a..fe1d605a4d66 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6139,6 +6139,16 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
+ 		if (!pte_present(ptent) || !pte_protnone(ptent))
+ 			continue;
+ 
++		/*
++		 * RWP-armed PTEs are also protnone but carry _PAGE_UFFD as a
++		 * marker. Leave them alone -- rewriting to vm_page_prot would
++		 * stop the RWP trap. Gate on userfaultfd_rwp(vma) too:
++		 * NUMA balancing preserves _PAGE_UFFD on UFFD_WP-marked PTEs
++		 * when applying PROT_NONE, and those still need rebuilding.
++		 */
++		if (userfaultfd_rwp(vma) && pte_uffd(ptent))
++			continue;
++
+ 		if (pfn_folio(pte_pfn(ptent)) != folio)
+ 			continue;
+ 
+@@ -6154,6 +6164,12 @@ static void numa_rebuild_large_mapping(struct vm_fault *vmf, struct vm_area_stru
+ 	}
+ }
+ 
++static vm_fault_t do_uffd_rwp(struct vm_fault *vmf)
++{
++	pte_unmap(vmf->pte);
++	return handle_userfault(vmf, VM_UFFD_RWP);
++}
++
+ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+@@ -6429,8 +6445,16 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+ 	if (!pte_present(vmf->orig_pte))
+ 		return do_swap_page(vmf);
+ 
+-	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
++	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
++		/*
++		 * RWP-protected PTEs are protnone plus the uffd bit. On a
++		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
++		 * NUMA hinting and must still fall through to do_numa_page().
++		 */
++		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
++			return do_uffd_rwp(vmf);
+ 		return do_numa_page(vmf);
++	}
+ 
+ 	spin_lock(vmf->ptl);
+ 	entry = vmf->orig_pte;
+@@ -6544,8 +6568,11 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
+ 		return 0;
+ 	}
+ 	if (pmd_trans_huge(vmf.orig_pmd)) {
+-		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma))
++		if (pmd_protnone(vmf.orig_pmd) && vma_is_accessible(vma)) {
++			if (userfaultfd_huge_pmd_rwp(vma, vmf.orig_pmd))
++				return do_huge_pmd_uffd_rwp(&vmf);
+ 			return do_huge_pmd_numa_page(&vmf);
++		}
+ 
+ 		if ((flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) &&
+ 		    !pmd_write(vmf.orig_pmd)) {
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index a58ebf68d7da..388a91435d35 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2675,6 +2675,12 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
+ 	 */
+ 	if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
+ 		return true;
++	/*
++	 * PTE is still RW-protected (protnone with uffd bit), wait for
++	 * resolution. Plain PROT_NONE without the marker is not an RWP fault.
++	 */
++	if (pte_protnone(pte) && huge_pte_uffd(pte) && (reason & VM_UFFD_RWP))
++		return true;
+ 
+ 	return false;
+ }
+@@ -2735,8 +2741,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+ 	if (!pmd_present(_pmd))
+ 		return false;
+ 
+-	if (pmd_trans_huge(_pmd))
+-		return !pmd_write(_pmd) && (reason & VM_UFFD_WP);
++	if (pmd_trans_huge(_pmd)) {
++		if (!pmd_write(_pmd) && (reason & VM_UFFD_WP))
++			return true;
++		if (pmd_protnone(_pmd) && pmd_uffd(_pmd) &&
++		    (reason & VM_UFFD_RWP))
++			return true;
++		return false;
++	}
+ 
+ 	pte = pte_offset_map(pmd, address);
+ 	if (!pte)
+@@ -2772,6 +2784,13 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
+ 	 */
+ 	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+ 		goto out;
++	/*
++	 * PTE is still RW-protected (protnone with uffd bit), wait for
++	 * userspace to resolve. Plain PROT_NONE without the marker is not
++	 * an RWP fault.
++	 */
++	if (pte_protnone(ptent) && pte_uffd(ptent) && (reason & VM_UFFD_RWP))
++		goto out;
+ 
+ 	ret = false;
+ out:
+@@ -4513,6 +4532,15 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
+ 		uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
+ 		uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
+ 	}
++	/*
++	 * RWP needs both PROT_NONE support and the uffd-wp PTE bit. The
++	 * VM_UFFD_RWP check covers compile-time unavailability; the
++	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
++	 * without the SVRSW60T59B extension) where the PTE bit is declared
++	 * but not actually usable.
++	 */
++	if (VM_UFFD_RWP == VM_NONE || !pgtable_supports_uffd())
++		uffdio_api.features &= ~UFFD_FEATURE_RWP;
+ 
+ 	ret = -EINVAL;
+ 	if (features & ~uffdio_api.features)
 -- 
 2.54.0
 
