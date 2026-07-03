@@ -1,38 +1,38 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16E4378823;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13DB3783D8;
 	Fri,  3 Jul 2026 21:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783113851; cv=none; b=WfZg2dhmWdHIrXqAUjY2CmmRk5AcB+pmPMvLZa/9u8bml2AySDKInIuX6iZ/YTt7Oq5p4EzGcTZxgx9oT9sgJeQ0nskFhLKW2FQr1wncigmx6o+8381L8Cf2ePcg+8WdAq2PInsWhXw/Hw7ttnHAUIkneRSk252cLruqXclRugc=
+	t=1783113852; cv=none; b=ru9AKwSjU7qfFhs7g9w2aBzK1a0QtNyzEx1Ek4r7CnvKIKIDYR7RNINrRphown1XYG0r7Q4PT1eFbrMotyx8UXyI4mzPkedglEWJCQhhCuavakrtYwWGY5WX+y06z4QPul/tveHGqKRjNzGkdjUjzI+efk4qgVJasBwSVJ6CW8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783113851; c=relaxed/simple;
-	bh=5XB+J5ywatugNxZFwR7i7v9emIB74TN16yRrCdND+WU=;
+	s=arc-20240116; t=1783113852; c=relaxed/simple;
+	bh=PhnPti+QwgkG6bX/EwaxYZt9M2HbWg851n4pk6u/LMI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6NdLbXKsswoZHg0i9r8auVaNmyjz8hreoYcb+eN1iDqPBaqDjQEyuqPQMN7BBIM2r3d0D1gBJZnUvdlBylhECXRI+tjww4FdFjcynRFyMcdkZ5y40Lq6tTc4KNg1gRYlMCx69Wbrr6oWd7ouU0hynPNoxeaY3PK1XFPa/rK18g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=L06h6XB7; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=jF/xVkR8eLwIYHHoEZlF4qxxjofxFpIecQH+4sdMD4OLFAwGyeJgrZhWuWFst41vnO62n1TdAJpvhwg/OnRz7U+/lOzFDyj/J/jBi3yOzTjiJamM12jFQYBFBE+ghT1UO3tWMdEuxxJBcx5ei190tFX256RvGUk3egFXmkOO9tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=SCbksCL3; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="L06h6XB7"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="SCbksCL3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=XAeJCQ+9v+mDSYHMRAWw2uzIOBs6a2aQ/+qu99zPeWk=; b=L06h6XB7ChTw5JFuRa1oGPYKJD
-	pa/C7Tzgjlg4/j8Xcz0xLWravurCFkrPEx8W3oxblz5pXyRuuOucw0AfVSQ49G8Z2gokwtlVqRpUZ
-	76hF5gEabMj2GhEiYzS+cxTluSHaQJf3VqmfsdAaBGUby6HcIzGDTJx1nTtkYwrlAiBOzKKn/OJLk
-	NsB+IqXwT26+U20Jo6IPUmvncGBzgomgyfc+lfqu+HJCe1B3oMqqyDWXnWGzjpdTw3Yw4pvvAdIDe
-	NWCOKCuauAg+5mLGmvv2MuV/AJ4pY0kVq9SZWRoaSGeGhhLb4lcny8uw6kw5j20BInWSG2/SHbvPx
-	3UEsgyoQ==;
+	bh=mAoCrW41i2oubtWoRcSbcZKOTJ7hLP/U/r8vkThOrIU=; b=SCbksCL3C6lCq63v2liwrhb2lA
+	xAbzjM0Ap/EFmihcazXJMLsPc0Gy/LZbYMpy3KNL9NaNPZ08PMTpDHyMT9z4L9DQzWXqndhnhJVT/
+	KaO3tzV57y2ygHn+F/s78qY2H4870En1P/JMMQzNiMI3AcHjVzKmP29ZJ27qVm3fVpi0kgOi3ocQC
+	Ldb5j68wLws0DZDKidaCijCDu71rnX34BxkzVhC35mPOUB55mdo0urZogZbzzyX9H1Btken59i/zq
+	quARfNTDShyil/B7FPKU929VA3Q43dAMg5lcGHrX+ePGE7kLAD/aHCLdFkn9CykhB+0xJ6rmrTdEl
+	TdTctQvw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wflKd-000000059Nx-0xnf;
-	Fri, 03 Jul 2026 21:23:38 +0000
+	id 1wflKd-000000059OB-3OKN;
+	Fri, 03 Jul 2026 21:23:31 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wflKW-00000001ROD-0TOT;
-	Fri, 03 Jul 2026 22:21:48 +0100
+	id 1wflKX-00000001RPf-1VR4;
+	Fri, 03 Jul 2026 22:21:49 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v6 07/36] KVM: x86: Explicitly disable TSC scaling without CONSTANT_TSC
-Date: Fri,  3 Jul 2026 22:17:46 +0100
-Message-ID: <20260703212145.343527-8-dwmw2@infradead.org>
+Subject: [PATCH v6 28/36] KVM: x86: Remove runtime Xen TSC frequency CPUID update
+Date: Fri,  3 Jul 2026 22:18:07 +0100
+Message-ID: <20260703212145.343527-29-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260703212145.343527-1-dwmw2@infradead.org>
 References: <20260703212145.343527-1-dwmw2@infradead.org>
@@ -79,61 +79,88 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM does make an attempt to cope with non-constant TSC, and has
-notifiers to handle host TSC frequency changes. However, it *only*
-adjusts the KVM clock, and doesn't adjust TSC frequency scaling when
-the host changes.
+Remove the code in kvm_cpuid() that dynamically updates the Xen TSC
+info CPUID leaf at runtime. This code was updating the wrong sub-leaf
+anyway (0x40000x03/2 EAX is the *host* TSC frequency per the Xen ABI,
+not the guest frequency which belongs in 0x40000x03/0 ECX).
 
-This is presumably because non-constant TSCs were fixed in hardware
-long before TSC scaling was implemented, so there should never be real
-CPUs which have TSC scaling but *not* CONSTANT_TSC.
+Userspace now has all the information it needs to populate the Xen TSC
+info leaves (and the generic 0x40000010 timing leaf) at vCPU setup time:
 
-Such a combination could potentially happen in some odd L1 nesting
-environment, but it isn't worth trying to support it. Just make the
-dependency explicit.
+  - KVM_GET_CLOCK_GUEST returns the pvclock_vcpu_time_info structure
+    containing tsc_to_system_mul and tsc_shift (Xen leaf index 1)
+  - KVM_VCPU_TSC_SCALE returns the effective TSC and bus
+    frequencies in kHz (Xen leaf index 2, and 0x40000010)
+  - KVM_VCPU_TSC_SCALE returns the raw hardware scaling ratio for
+    precise arithmetic (VMClock)
+
+This eliminates the last instance of KVM modifying guest CPUID entries
+at runtime for timing information.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/svm/svm.c |  3 ++-
- arch/x86/kvm/vmx/vmx.c | 10 ++++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/x86/kvm/cpuid.c | 16 ----------------
+ arch/x86/kvm/xen.h   | 13 -------------
+ 2 files changed, 29 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e02a38da5296..c46a34aeb3df 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5557,7 +5557,8 @@ static __init int svm_hardware_setup(void)
- 				     XFEATURE_MASK_BNDCSR);
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 621d950ec692..826637a0b72d 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -2117,22 +2117,6 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 		} else if (function == 0x80000007) {
+ 			if (kvm_hv_invtsc_suppressed(vcpu))
+ 				*edx &= ~feature_bit(CONSTANT_TSC);
+-		} else if (IS_ENABLED(CONFIG_KVM_XEN) &&
+-			   kvm_xen_is_tsc_leaf(vcpu, function)) {
+-			/*
+-			 * Update guest TSC frequency information if necessary.
+-			 * Ignore failures, there is no sane value that can be
+-			 * provided if KVM can't get the TSC frequency.
+-			 */
+-			if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, vcpu))
+-				kvm_guest_time_update(vcpu);
+-
+-			if (index == 1) {
+-				*ecx = vcpu->arch.pvclock_tsc_mul;
+-				*edx = vcpu->arch.pvclock_tsc_shift;
+-			} else if (index == 2) {
+-				*eax = div_u64(vcpu->arch.hw_tsc_hz, 1000);
+-			}
+ 		}
+ 	} else {
+ 		*eax = *ebx = *ecx = *edx = 0;
+diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
+index 59e6128a7bd3..f372855857a8 100644
+--- a/arch/x86/kvm/xen.h
++++ b/arch/x86/kvm/xen.h
+@@ -50,14 +50,6 @@ static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
+ 		kvm_xen_inject_vcpu_vector(vcpu);
+ }
  
- 	if (tsc_scaling) {
--		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
-+		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR) ||
-+		    !boot_cpu_has(X86_FEATURE_CONSTANT_TSC)) {
- 			tsc_scaling = false;
- 		} else {
- 			pr_info("TSC scaling supported\n");
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b9103de01428..54e92d94155e 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2792,6 +2792,16 @@ static int setup_vmcs_config(struct vmcs_config *vmcs_conf,
- 	if (!cpu_has_sgx())
- 		_cpu_based_2nd_exec_control &= ~SECONDARY_EXEC_ENCLS_EXITING;
+-static inline bool kvm_xen_is_tsc_leaf(struct kvm_vcpu *vcpu, u32 function)
+-{
+-	return static_branch_unlikely(&kvm_xen_enabled.key) &&
+-	       vcpu->arch.xen.cpuid.base &&
+-	       function <= vcpu->arch.xen.cpuid.limit &&
+-	       function == (vcpu->arch.xen.cpuid.base | XEN_CPUID_LEAF(3));
+-}
+-
+ static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
+ {
+ 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
+@@ -177,11 +169,6 @@ static inline bool kvm_xen_timer_enabled(struct kvm_vcpu *vcpu)
+ {
+ 	return false;
+ }
+-
+-static inline bool kvm_xen_is_tsc_leaf(struct kvm_vcpu *vcpu, u32 function)
+-{
+-	return false;
+-}
+ #endif
  
-+	/*
-+	 * KVM doesn't re-derive the TSC scaling ratio when the host TSC
-+	 * frequency changes, so TSC scaling is only usable with a constant
-+	 * TSC.  Clear the control here rather than in vmx_hardware_setup() so
-+	 * that the per-CPU configs recomputed by vmx_check_processor_compat()
-+	 * stay consistent with the golden vmcs_config.
-+	 */
-+	if (!boot_cpu_has(X86_FEATURE_CONSTANT_TSC))
-+		_cpu_based_2nd_exec_control &= ~SECONDARY_EXEC_TSC_SCALING;
-+
- 	if (_cpu_based_exec_control & CPU_BASED_ACTIVATE_TERTIARY_CONTROLS)
- 		_cpu_based_3rd_exec_control =
- 			adjust_vmx_controls64(KVM_OPTIONAL_VMX_TERTIARY_VM_EXEC_CONTROL,
+ int kvm_xen_hypercall(struct kvm_vcpu *vcpu);
 -- 
 2.54.0
 
