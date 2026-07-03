@@ -1,133 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE71372662
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 08:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7BD36F411
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 08:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783066091; cv=none; b=gmz1xYxooBKxnUBEY4K5qzLG0K1kVs8v9I/GHFmUEiEKqCnBBG2t/CgD2/DknuZC1JkScXKZkKVn+D464EeL5IxM2EYptiT0mM4HBrSbtXjY5wfxLkfds6J4w8eExzzRxYOAuyEWnvjz6Vs59r39hE2uWocq2RLYOYA/nBv8DQY=
+	t=1783066193; cv=none; b=Rv3nP5q5Q2F7QYnzTWo1F48t+RoVhD7dHmJjzPyNOosvRWGHvDsO7G4PtwK0WOX6yvewEiAv5LiUxO+s9upDQmDO3dSVzuc4gpmiHSjQx4QMBnVbNmUujpEo/hZa4+rF2vgpTx/uuS4sWAmYmIMcIglceDfyG6JrVqYZyK1CGR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783066091; c=relaxed/simple;
-	bh=vic5Yg5Fo9JM6EKxahhogmANU7zIHmA6bxHjnmTQZvE=;
+	s=arc-20240116; t=1783066193; c=relaxed/simple;
+	bh=hoEA+Nv+aBCIeIv7bkLs5Vuhh4dQdOB70C6gSj/CLzE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BjLpWME+2X2if7x/1cXtOflayoyo+40QZTWWYhqEs3Y7fMznm++ozP8vukCSanuFVCbM2/a5YROlWfgqb8fhY37hP+/bzQgPOcniQ670x3oRNyWNz0lLHRPforcn+8ZVyYZzPlwRNx04g0QYqZrrVAcP1DswLumtz5C+vzp67aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dUu+ojjf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qQVkNx7RRa3XPhzys4DdgtZahyepLHuYnBLQ9dkyRLhbeL962oz3FWwLaDCLHqXKLTeyvVy+u5wnncdauRG21aHvBrIK2cVPEpSK6spu5dYWs31/eC6rU2Y4E1H0CVN/PsPykTEzpEvHldVSVsPreuodtmKG/wLUGGlI7kkrnBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBHREWnU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dUu+ojjf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348071F000E9;
-	Fri,  3 Jul 2026 08:08:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBHREWnU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2721F000E9;
+	Fri,  3 Jul 2026 08:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783066090;
-	bh=3wm49ykTCKSLxTImC7xRHgcWIv2MqzZfP5/Xe3uZf68=;
+	s=k20260515; t=1783066191;
+	bh=2iiA3+q/WweSn6caPjSGiZIKmvo5hIuYT0zOxtA025Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dUu+ojjfDe9EnIYguOQ3iFC/QwzZugh+BHhXsEz5PJOyTdynceqzbsvw8C4qYfEIT
-	 IQ9w8nYOFGGbFzeN+t764erHOYLbWzB3VhA6PqxZOD1fLukse58r2okTd2PCfmB3FC
-	 IxE3k36k/mwCdUcWhzMn5bEY/4JfG8Ppf8A76Nw6yVQsRtg3DPI9mxRcvuEu+7t9ll
-	 1jwJbqqBwAaKeYsCbh3Ionu5NDXj9EOkv0etffES42Q5iIwGL+V0xlhATNPRqHUlAq
-	 GNkvng5qbKYhVjdKbX0a1WsUeVRUHzNtpm+txxLkp7z0ZVunQ19EPxpUHETkOOdmWa
-	 1Og2ZrrGKpAVg==
+	b=MBHREWnUipNWPNMMDuoSFaAxcUaNYS5z9Bra2sp47HBU49GRzUYw8sHh8uelWeLLb
+	 XSIYHB5xm7QZJVLtA3kMcExOvXq8BXrExIbpbyHVmzVDXBknrTVQDqp7nzJg7qjWBj
+	 B1K0mN2vDaoRIe9eJotWdGJM0b5Y4icU9eq9+hnQofYjZ8cvj0hTU+gIG8MoO7Z56z
+	 ATVi1YSd7rhLlyt54X7MgJR0UYDDQCYt+fqvwK+7T4/7kyVepcsajXV4YZ/cxV4MNU
+	 NfM98x4OuDmjl6c6DHoefI43Z7bL0H/c7MBC5OsyI2tgbm1ZNHiQ4yIowZGanWvr2+
+	 EPhxKg6zGgogQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 5/6] selftests/vfio: Accept sPAPR errno for DMA
- range overflow
+Subject: Re: [RFC PATCH 2/6] selftests/vfio: add sPAPR TCE v2 IOMMU mode
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Narayana Murty N" <nnmlinux@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260703032806.40946-6-nnmlinux@linux.ibm.com>
+In-Reply-To: <20260703032806.40946-3-nnmlinux@linux.ibm.com>
 References: <20260703032806.40946-1-nnmlinux@linux.ibm.com>
- <20260703032806.40946-6-nnmlinux@linux.ibm.com>
+ <20260703032806.40946-3-nnmlinux@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 08:08:09 +0000
-Message-Id: <20260703080810.348071F000E9@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 08:09:51 +0000
+Message-Id: <20260703080951.7F2721F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Architecture-specific macro breaks test execution with alternati=
-ve IOMMU backends on PowerPC.
-- [Medium] The test's expectation of `-ENXIO` codifies and relies upon an i=
-nteger overflow bug in the test library's user-space validation helper.
+- [Medium] The fallback default IOMMU mode remains hardcoded to MODE_IOMMUF=
+D, causing test suites to crash out-of-the-box on PowerPC where IOMMUFD is =
+not supported for VFIO.
 --
 
-commit 93dbee7bb3c363a49eb5141c94b3669c7520cd26
+commit 8dfc3e7df9b7153c07746fbc4679447d70174937
 Author: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-selftests/vfio: Accept sPAPR errno for DMA range overflow
+selftests/vfio: add sPAPR TCE v2 IOMMU mode
 
-The DMA map limit test expects an overflowing IOVA range to fail with
--EOVERFLOW. This commit modifies the test to expect -ENXIO when compiled
-for powerpc to account for sPAPR TCE v2 rejecting the range as outside
-the active TCE window.
+Add a PowerPC-specific VFIO selftest IOMMU mode for sPAPR TCE v2.
+The new mode uses the legacy VFIO container interface with
+VFIO_SPAPR_TCE_v2_IOMMU.
 
-> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c b/tools=
-/testing/selftests/vfio/vfio_dma_mapping_test.c
-> index 4411fdbd56da5..cd2d3276a46c4 100644
-> --- a/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_test.c
-> @@ -316,10 +316,18 @@ TEST_F(vfio_dma_map_limit_test, overflow)
->  	region->size =3D self->mmap_size;
-> =20
->  	rc =3D __iommu_map(self->iommu, region);
+[ ... ]
+
+> diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/sel=
+ftests/vfio/lib/iommu.c
+> index 035dac069d601..e86457a715bf7 100644
+> --- a/tools/testing/selftests/vfio/lib/iommu.c
+> +++ b/tools/testing/selftests/vfio/lib/iommu.c
+> @@ -47,6 +47,13 @@ static const struct iommu_mode iommu_modes[] =3D {
+>  	{
+>  		.name =3D MODE_IOMMUFD,
+>  	},
 > +#ifdef __powerpc__
-> +	ASSERT_EQ(rc, -ENXIO);
+> +	{
+> +		.name =3D MODE_VFIO_SPAPR_TCE_V2_IOMMU,
+> +		.container_path =3D "/dev/vfio/vfio",
+> +		.iommu_type =3D VFIO_SPAPR_TCE_v2_IOMMU,
+> +	},
+> +#endif
+>  };
 
 [Severity: Medium]
-Will this architecture-specific macro break test execution if an alternative
-IOMMU backend is used on PowerPC?
+Since default_iommu_mode remains hardcoded to MODE_IOMMUFD earlier in this
+file, does this cause test suites like vfio_pci_driver_test to crash
+out-of-the-box on PowerPC systems?
 
-Since earlier patches in this series allow selecting the IOMMU backend via
-the VFIO_SELFTESTS_IOMMU_MODE environment variable, running the test on
-PowerPC with iommufd would return the generic -EOVERFLOW error. Because of
-the #ifdef, the test would erroneously expect -ENXIO and fail.
+For instance, device_has_selftests_driver() uses this default mode directly
+before checking platform-specific fixtures:
 
-Would it be better to base this branch on the active backend type (e.g.,
-inspecting variant->iommu_mode) rather than the compilation target?
-
-[Severity: Medium]
-Does expecting -ENXIO here codify a bug in the user-space validation
-helper?
-
-In the overflow test, the region->iova is set to a large value so that
-region->iova + region->size wraps around to 0.
-
-Looking at spapr_tce_iova_inside_window() introduced earlier in the series,
-it evaluates:
-
-tools/testing/selftests/vfio/lib/iommu.c:spapr_tce_iova_inside_window() {
+tools/testing/selftests/vfio/vfio_pci_driver_test.c:device_has_selftests_dr=
+iver() {
     ...
-    if (region->iova + region->size > window->start + window->size)
-        return false;
+    iommu =3D iommu_init(default_iommu_mode);
     ...
 }
 
-Due to the wrap-around, 0 > 0 + window->size evaluates to false, causing
-the validation helper to return true. This bypasses user-space validation,
-allowing the invalid IOVA to be sent to the kernel via VFIO_IOMMU_MAP_DMA,
-which then rejects it with -ENXIO.
+If /dev/iommu cannot be opened or device bindings fail on PowerPC because
+IOMMUFD isn't supported, does this trigger a failed assertion
+(VFIO_ASSERT_GT(iommu->iommufd, 0)) and abort execution rather than
+skipping gracefully?
 
-If the user-space bounds check is fixed to catch wrap-arounds (for example,
-checking if region->iova + region->size < region->iova), the helper would
-correctly return false and the user-space map attempt would return -EINVAL.
-
-Would that fix cause this test to fail because it now explicitly expects
--ENXIO?
-
-> +#else
->  	ASSERT_EQ(rc, -EOVERFLOW);
-> +#endif
-> =20
->  	rc =3D __iommu_unmap(self->iommu, region, NULL);
-> +#ifdef __powerpc__
-> +	ASSERT_EQ(rc, -ENXIO);
-> +#else
->  	ASSERT_EQ(rc, -EOVERFLOW);
-> +#endif
->  }
+Should default_iommu_mode be conditionally defined for PowerPC to use
+MODE_VFIO_SPAPR_TCE_V2_IOMMU as the default fallback?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703032806.4094=
-6-1-nnmlinux@linux.ibm.com?part=3D5
+6-1-nnmlinux@linux.ibm.com?part=3D2
