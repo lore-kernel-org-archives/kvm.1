@@ -1,41 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB731FECBA;
-	Fri,  3 Jul 2026 17:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703C3272801
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 17:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783099028; cv=none; b=AhGLjQYt6Y5vm3zYLdQFpFRPAN8QKN0we/XseuUgtoE8jtnc4YRfc9LnkTBFcTjxq2+Hj5G8q+jTDmixwMA6T5xoW3tBfzkg1wMmwo4UG/GwpxATPC0ac6VtjtUsq2apeY9fMEx/IQI/mq3BxfeQHMzJga95q3zBSoJswcOfmHQ=
+	t=1783099327; cv=none; b=sH0d6hmTROeGbIZYfVdVPWppwMAyf16WQq+ari2biC6UzGxTwu3Svs+DgxBX9ZjvAIWdr9wh1Ut6anH4HTvu5EchgcgBFqAx7JD0sfiRNZ6/UHXfcoUXHkd4sZoBTdj9LaAcFQRi/T1uIxs0HZlYXvQf8dz90MnaDEm+FnmQT0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783099028; c=relaxed/simple;
-	bh=yS4NHdu0+z0xYffZ00SVcTXabRgGcakj+8pkrdQPbAE=;
+	s=arc-20240116; t=1783099327; c=relaxed/simple;
+	bh=XZXZ0VjyIGUcYyjcNCa/ia/32bPkwNy9b+oXCkoRi6g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K96I9V+LyMw9g2V97Zojfa90k26fMmBTJZi/9bYMH0zzw1uO+f528xqduQMdVWkhchy1P5gvMkwjphBpIco93H+2DyD7gFmTrwPCaMWyJoNNIf1Q/Ec4PusDVwSWrTpK0nbQxDWyUuosxls42gtbueqxHVeAPFx2nqzNZs5USiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKEDZiXc; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=NYFyXEa0uvnKUC/Vu2r65rjRqYtbTmTUYpePZMW3ACeR9cCs5QXU63qcKa6Zsh1sGJC01h/L1fW27tU6p6OxQizDwX+U/d6Iq+s325v/s8ndkeAPk018D0MZgdUgFPfVckwyKjg21FfAPE/lj4YmMfCDzcxU4vfNktGtaoKcHOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=k5KlEpql; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKEDZiXc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1411F1F000E9;
-	Fri,  3 Jul 2026 17:17:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783099027;
-	bh=pWKNjWKNN7AulpE+nN8XzlhA7/Uy5NwiHpEbL4wejqU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YKEDZiXcN7O2cy1LnHAZAYPNDzjVIoaruILO+g7aKw/4W2a97Bi3zvVgYpJdbf6gz
-	 QMClbtL4MdAKXVpLhBrlOn0TsHbR9raQkm4A8Hyz8Hi6tUbbfZsJejuvcqs+gO0Qae
-	 gFuDcKxMZ7QcZfiPAZfsuqpYzOSQYyxOyqHMGCj4hQ97Pqo8STFDYwno+uEroPO5Eo
-	 /Rio4v05n/9eYw0bzlwJoripoTvk16X9UIn3gj8UqoUwrG5BfxZzdWEDTtKb1aWopy
-	 Cz/+IQ04pxMoT5oPe+iMJ0uDQh79bEH+9IIhORhpdSKA+R+h4FVL8xOvXWLBXZ25m0
-	 vwyzTaf3utiWQ==
-Date: Fri, 3 Jul 2026 22:44:35 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiao Wu <xiaowu.417@qq.com>
-Subject: Re: [PATCH v2 2/3] KVM: SVM: Do all per-VM AVIC initialization
- during vCPU precreation phase
-Message-ID: <akftfnSy41TkeB4h@blrnaveerao1>
-References: <20260630210156.457151-1-seanjc@google.com>
- <20260630210156.457151-3-seanjc@google.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="k5KlEpql"
+Received: from example.com (unknown [167.220.208.73])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C722C20B7168;
+	Fri,  3 Jul 2026 10:22:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C722C20B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1783099323;
+	bh=5468h0Xyk6ddN2jsouLnEHhGWSRplnM5oFZ9ld71cOM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k5KlEpqlaNIJN1ta+sH7yK85jKJQOSZfT3xFtOyKtj6p2Lopqe55Fnw5SzIfXBEmI
+	 9dLWIwLPm4/xc5GvMRw1b+JgV1pJbv/nuEYuwgywp5dB5+LY5llPYbp0RlCdDuhNz7
+	 rOSuWkIOAT61MeoUFvjNAYdJf71K3OUxY8yoIl7M=
+Date: Fri, 3 Jul 2026 19:21:59 +0200
+From: Magnus Kulke <magnuskulke@linux.microsoft.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>,
+	Magnus Kulke <magnuskulke@microsoft.com>,
+	Wei Liu <liuwe@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Wei Liu <wei.liu@kernel.org>, Alex Williamson <alex@shazbot.org>,
+	Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+	Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 26/34] accel/mshv: introduce SaveVMHandler
+Message-ID: <akfvt0nTdVKZFOmJ@example.com>
+References: <20260417105618.3621-1-magnuskulke@linux.microsoft.com>
+ <20260417105618.3621-27-magnuskulke@linux.microsoft.com>
+ <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,37 +52,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260630210156.457151-3-seanjc@google.com>
+In-Reply-To: <CABgObfbS988oSPNOV4qLMcT1CPLAyu-NigwYPgZSgZq1ZY7fxA@mail.gmail.com>
 
-On Tue, Jun 30, 2026 at 02:01:55PM -0700, Sean Christopherson wrote:
-> Move all per-VM AVIC initialization from VM creation to vCPU pre-creation,
-> i.e. defer allocating the logical ID table and adding the VM to the GA Log
-> list until vCPUs are created.  This will allow removing the VM from the GA
-> Log list before vCPUs are destroyed without needing yet another kvm_x86_ops
-> hook (.vm_pre_destroy() is very intentionally called if and only if VM
-> creation fully succeeds).
+On Thu, Jul 02, 2026 at 10:50:17AM +0200, Paolo Bonzini wrote:
+> Sorry, I forgot to reply about this one.
 > 
-> As a bonus, this re-unites physical and logic table allocation, and avoids
-> allocating a logical table in the unlikely scenario that userspace creates
-> a VM without an in-kernel local APIC.
+> It is not clear why you need to pause, since this is handled by common
+> code. Are you not handling live migration yet? That should be handled at
+> levels above QEMU, because users expect migration to be performed while the
+> VM runs, and the SaveVMHandler should just fail migration of the VM is
+> running.
 > 
-> Another bonus to hooking .vcpu_precreate() is that there is no need to
-> unwind on failure, as the VM has already been created, i.e. KVM will run
-> through all phases of VM destruction.  In fact, unwinding is undesirable,
-> as KVM tries to keep VM-wide behavior idempotent/sticky across creaton of
-> multiple vCPUs.
+> Paolo
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/svm/avic.c | 94 +++++++++++++++++++++++++----------------
->  arch/x86/kvm/svm/svm.c  |  6 ---
->  2 files changed, 57 insertions(+), 43 deletions(-)
 
-This takes the cleanup one step ahead by removing avic_vm_init(). Good!
+Hey Paolo,
 
-With the prototype for avic_vm_init() removed:
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+I spent some time looking at this. it's a bit twisted. The un/pause()
+calls are unfortunately named, they are merely freezing the progress of
+the reference timer, which for any real-world workload is in fact
+pausing the guest b/c if the timer doesn't progress an os would mostly
+stall, waiting for ticks.
 
+We want to freeze the timer though during the last phase of the
+migration on the source and on the destination (can't set the reference
+time if the vcpu time is not frozen). But currently it's the wrong
+place. I'll find some more fitting place to perform this ceremony.
 
-- Naveen
+Curiously the time-frozen source was obscuring another potentially more
+serious bug. The mshv vcpu dispatch loop currently does not honor a
+cpu->exit_request, like it is currently set after precopy:
 
+migration_completion_precopy()
+  migration_stop_vm()
+    vm_stop_force_state()
+      vm_stop()
+        do_vm_stop()
+          pause_all_vcpus()
+            cpu_pause()
+              cpu_exit()
+                qatomic_store_release(&cpu->exit_request, true)
+
+The two bugs were sort of cancelling each other out. Since the source
+guest was not busy, migrations were still succeeding, even though the
+the vcpus were not actually "stopped" on the vcpu.
+
+I'll rework this a bit, and submit a revised version.
+
+best,
+
+magnus
