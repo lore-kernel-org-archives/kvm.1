@@ -1,275 +1,202 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639DA3B71AC
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 10:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763D438F945
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 10:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783073983; cv=none; b=ArJ9m5bEUZuH77JNhwyuLlbG4/MuvbpwdUXjW5Fr8veH3gtnAlcLpu3qqLMgZe6EcWkgW3d3bMPAyRokAoh2jYCSlj+5axMQFPAbIp8GlIHGDLdJIZDfaYflwpw7qZQlNrSfwnUNMgKKcRnbE4AZor2pBgcPIn2q35v8TaLtPcM=
+	t=1783074141; cv=none; b=cvGEViVSq+UO6U8srBouq4+RyQFft9v0xVrVpkGScyoVXKf0LYcxyVYUp5qIB+/uaA+okSFcZCgHF/BC3CGCxCbvjc9AhOXsnO15mzQg0UuUSLf7VyyqnjJ5F6ODf92MVAg0BX0L3IrGeVYn8QecfaR/igF7loXOpEy4t23pp1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783073983; c=relaxed/simple;
-	bh=tRqX3R6EiKC5w+Fjl8swgCaFgI3p6H6/SqU24pOE9sM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=FyPvM9hJTTepwdpJw1iT73+SHOVqiVsg1KdlACKw2z4jrJV3c+IvHhsEKm8e8pjNMtOZrf1g6JTFKjZ5M04pgCkpgPLLWH2nnNVWtfPRVRA2RisyBHEfdBu35psld1+I7TMQHhL7Gj72T+8skVe/zzIrtc1L+gkD5/TCzyJutEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=e0Cuc7Jv; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783074141; c=relaxed/simple;
+	bh=GZSGm4EwPyBpfQp8qSF2/Qq5mprCUxM5aRcB5VUWz80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WpC5YCMqcRgSgvEsp13g2QtGNth2+eP872Jc26TCP582gGafQ60yehPpoDpsCF53Z9xUSBdIF/nzNAfAVVR3dNEZnw+VL84RhOHCT2gJHPo4nGomWdf5w3xLdZHG9mPOromGggJhlA7yXgWEnt+0Xp+/dXOGo9lCPXuK8q4rjQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RTx0mKmH; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="e0Cuc7Jv"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RTx0mKmH"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6636IRMG1761050;
+	Fri, 3 Jul 2026 10:22:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KjDrD/
+	czSsEzRNfm0RZXxCRhGms/tHDsGBA7woofpMM=; b=RTx0mKmHGMGTh2AF9cdaWK
+	2kv75a30efMAbuMIJqk5yOioLGyCBrSX4mRBD34OxWh5mCH0a5NjSTMsiXmtioCb
+	0IYnguVWWsh5wONVR+utdQ77VfD1Nk6jFYMBhA6rnKU8rl9LvwHiQp/34xVkxgJw
+	NoXNudgnBmbdCMNZ7ks/gJqlEoDDBvWi16aiHNEktU/JZWsN2kzxtBI0OUQfWIlZ
+	KphrhjwVmGp7NNhFsIpbVZcy3eqSKY9Xnwzl0Xoo+taLaHQvlo87SbARcwk2GCC/
+	crC7VLzQtkuafg3eZGzmOs5rmOXg/N+Rxt4dBr9YFPA0hH1GrzFsMbv2rj3upWQA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26mk673x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Jul 2026 10:22:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 663AK0YC007235;
+	Fri, 3 Jul 2026 10:22:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2uhyr2wv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Jul 2026 10:22:06 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 663AM2hh45875644
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 3 Jul 2026 10:22:02 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 915C82004B;
+	Fri,  3 Jul 2026 10:22:02 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D14A2004D;
+	Fri,  3 Jul 2026 10:21:56 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.124.212.167])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  3 Jul 2026 10:21:55 +0000 (GMT)
+Date: Fri, 3 Jul 2026 15:51:53 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+        Shivang Upadhyay <shivangu@linux.ibm.com>,
+        Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+        kvm@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>,
+        BALATON Zoltan <balaton@eik.bme.hu>,
+        Nikhil Kumar Singh <nikhilks@linux.ibm.com>
+Subject: Re: [PATCH v4 RESEND 1/8] tests/functional: Add remote interrupts
+ test for PowerNV
+Message-ID: <akeMqNUv2UlN80cV@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+References: <20260703085955.2318600-1-adityag@linux.ibm.com>
+ <20260703085955.2318600-2-adityag@linux.ibm.com>
+ <b1d16c72-3485-4cad-ae51-5db4a78e3a48@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783073967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kh3FyxapX81U/ZPkDXPQ35eHo8l1a0EYTCkh/tPyQcQ=;
-	b=e0Cuc7JvJVHteKushc+UtNVkwNT9o1lVu5LvqWVmdqPsMSPQgu9A2kRfsnx0xQfRnUHPYp
-	E5DoGGsQTiJ/6LeWKpBLgQMBOdLAW9HcOCrzUybirGsEQP8UiAZrRmv4xietGvdTMPXY2X
-	gD/tE/T+aE5W3zMioXiLzp1kYJy+Cz0=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 10:19:10 +0000
-Message-Id: <DJOUYOKL6N3R.BFIO8HEL03OA@linux.dev>
-Subject: Re: [PATCH v12 02/16] set_memory: add
- folio_{zap,restore}_direct_map helpers
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
- <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
- <kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
- <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
- <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
- <linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
- <loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org"
- <linux-pm@vger.kernel.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
- <corbet@lwn.net>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>, "will@kernel.org"
- <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
- <willy@infradead.org>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
- <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
- "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
- <kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
- "haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
- <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
- <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jannh@google.com" <jannh@google.com>, "pfalcato@suse.de"
- <pfalcato@suse.de>, "skhan@linuxfoundation.org"
- <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
- <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
- <yosry@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "tabba@google.com" <tabba@google.com>, "prsampat@amd.com"
- <prsampat@amd.com>, "jthoughton@google.com" <jthoughton@google.com>,
- "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "aou@eecs.berkeley.edu"
- <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
- <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org"
- <chenhuacai@kernel.org>, "baolu.lu@linux.intel.com"
- <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
- "gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com"
- <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
- <shijie@os.amperecomputing.com>, "svens@linux.ibm.com"
- <svens@linux.ibm.com>, "thuth@redhat.com" <thuth@redhat.com>,
- "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
- <urezki@gmail.com>, "zhengqi.arch@bytedance.com"
- <zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
- <gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
- <jiayuan.chen@shopee.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
- "vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
- <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek"
- <derekmn@amazon.com>
-References: <20260410151746.61150-1-kalyazin@amazon.com>
- <20260410151746.61150-3-kalyazin@amazon.com>
-In-Reply-To: <20260410151746.61150-3-kalyazin@amazon.com>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b1d16c72-3485-4cad-ae51-5db4a78e3a48@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDA5OSBTYWx0ZWRfX2iBCLCDv8QGp
+ n25hol5NdKWyWyao5w8Fbh+rxtRy6t6dzgV3llg1KnJCEt7bUi87II1gfkCU3ZuBTsBtxlr8qGb
+ ULaJNegjVtvydyi2mT9X5+WLrSDFREVMgvT0t/vV7M7681qKm8KTPqEWHMGfn9hGkr7IVAlxAW3
+ rPTOsQNbyMy7rz34JfqRAgXsZoLT6J3oMJL4re/tC/Bc6sPApm5PIdP3oaoXMztAOzTvXsHzPYP
+ F7+jPlB4xBVFOtmhZ1TKYAs8Ag71N7ElNLyTFgaNSHLEVJOwD/TANzBd+WvZopa+vuLIkJ+YDCh
+ RVRPGsOx+1rrp9tOPBF7P9bmXe1HyeAWxJK+fJSg0d4TBuiyJPyF6zRjKUPHGqvVKifIms+186K
+ FJ/tPQOUvwJBQAQ37yynROWl7vMZXoPhrb9rItQ6Tv+FT4bgjL7K7OA62NR0ShoPWtDCf3cOm0+
+ o4M/CN3fK4fxCxPpTBQ==
+X-Proofpoint-GUID: s89IwM5JOrFd09srw7csS_aHwi5CdorS
+X-Authority-Analysis: v=2.4 cv=Z8bc2nRA c=1 sm=1 tr=0 ts=6a478d4f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=20KFwNOVAAAA:8
+ a=p9WhX8dcEDoL-X5kCSYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDA5OSBTYWx0ZWRfX0mKOYO3Jddxe
+ Qyry+rabw6v46DQ2616xR1RmpOAHIEG8WtQDwbH8aUL4+X5JljlpnyPwOZWcclvUjRB1ZiR8j+2
+ /PJxbv6bzTJbG4rp6p/e3C7jtFbIVpE=
+X-Proofpoint-ORIG-GUID: _UUc9XMieHuNR2ws1qvy2zVOuDnPGrBw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030099
 
-On Fri Apr 10, 2026 at 3:18 PM UTC, Nikita Kalyazin wrote:
-> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
->
-> Let's provide folio_{zap,restore}_direct_map helpers as preparation for
-> supporting removal of the direct map for guest_memfd folios.
-> In folio_zap_direct_map(), flush TLB to make sure the data is not
-> accessible.  On some architectures, there may be a double TLB flush
-> issued because set_direct_map_valid_noflush already performs a flush
-> internally.
->
-> The new helpers need to be accessible to KVM on architectures that
-> support guest_memfd (x86 and arm64).
->
-> Direct map removal gives guest_memfd the same protection that
-> memfd_secret does, such as hardening against Spectre-like attacks
-> through in-kernel gadgets.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-> ---
->  include/linux/set_memory.h | 13 +++++++++++
->  mm/memory.c                | 45 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 58 insertions(+)
->
-> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
-> index 1a2563f525fc..24caea2931f9 100644
-> --- a/include/linux/set_memory.h
-> +++ b/include/linux/set_memory.h
-> @@ -41,6 +41,15 @@ static inline int set_direct_map_valid_noflush(const v=
-oid *addr,
->  	return 0;
->  }
-> =20
-> +static inline int folio_zap_direct_map(struct folio *folio)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline void folio_restore_direct_map(struct folio *folio)
-> +{
-> +}
-> +
->  static inline bool kernel_page_present(struct page *page)
->  {
->  	return true;
-> @@ -57,6 +66,10 @@ static inline bool can_set_direct_map(void)
->  }
->  #define can_set_direct_map can_set_direct_map
->  #endif
-> +
-> +int folio_zap_direct_map(struct folio *folio);
-> +void folio_restore_direct_map(struct folio *folio);
-> +
->  #endif /* CONFIG_ARCH_HAS_SET_DIRECT_MAP */
-> =20
->  #ifdef CONFIG_X86_64
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 2f815a34d924..3b9ada2cc19c 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -78,6 +78,7 @@
->  #include <linux/sched/sysctl.h>
->  #include <linux/pgalloc.h>
->  #include <linux/uaccess.h>
-> +#include <linux/set_memory.h>
-> =20
->  #include <trace/events/kmem.h>
-> =20
-> @@ -7479,3 +7480,47 @@ void vma_pgtable_walk_end(struct vm_area_struct *v=
-ma)
->  	if (is_vm_hugetlb_page(vma))
->  		hugetlb_vma_unlock_read(vma);
->  }
-> +
-> +#ifdef CONFIG_ARCH_HAS_SET_DIRECT_MAP
-> +/**
-> + * folio_zap_direct_map - remove a folio from the kernel direct map
-> + * @folio: folio to remove from the direct map
-> + *
-> + * Removes the folio from the kernel direct map and flushes the TLB.  Th=
-is may
-> + * require splitting huge pages in the direct map, which can fail due to=
- memory
-> + * allocation.  So far, only order-0 folios are supported.
-> + *
-> + * Return: 0 on success, or a negative error code on failure.
-> + */
-> +int folio_zap_direct_map(struct folio *folio)
-> +{
-> +	const void *addr =3D folio_address(folio);
-> +	int ret;
-> +
-> +	if (folio_test_large(folio))
-> +		return -EINVAL;
-> +
-> +	ret =3D set_direct_map_valid_noflush(addr, folio_nr_pages(folio), false=
-);
-> +	flush_tlb_kernel_range((unsigned long)addr,
-> +			       (unsigned long)addr + folio_size(folio));
-> +
-> +	return ret;
-> +}
+Hello Cédric,
 
-My local Sashiko run pointed out that this is broken for highmem.
+On 26/07/03 11:17AM, Cédric Le Goater wrote:
+> On 7/3/26 10:59, Aditya Gupta wrote:
+> > <...snip...>
+> > +    def test_linux_remote_interrupts(self):
+> > +        self.require_accelerator("tcg")
+> > +        self.set_machine('powernv')
+> > +
+> > +        # Have below setup in this test:
+> > +        # 1. e1000e attached to pcie.6, which is from 7th PHB, belonging to 2nd
+> > +        #    socket (chip 1), in a powernv boot with default 6 PHBs per socket
+> > +        # 2. CPU on 2nd socket (chip 1) disabled
+> > +        # 3. RX IRQ's affinity to chip 2, and TX IRQ's affinity to chip 3
+> > +        #
+> > +        # Then ping is done, to generate interrupts from e1000e which should go
+> > +        # to IRQ server on the remote sockets
+> > +        self.vm.add_args('-smp', '4,sockets=4,cores=1,threads=1')
+> > +        self.vm.add_args('-netdev', 'user,id=net0')
+> > +        self.vm.add_args('-device', 'e1000e,netdev=net0,bus=pcie.6')
+> 
+> 
+> 2 sockets are enough.
+> 
+>     # grep -E  "eth0|nvme" /proc/interrupts
+>      76:         12          0  PNV-PCI-MSI 268959744 Edge      nvme0q0
+>      77:         62          0  PNV-PCI-MSI 268959745 Edge      nvme0q1
+>      78:          0         67  PNV-PCI-MSI 268959746 Edge      nvme0q2
+>      79:          0         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+>      80:          0         20  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+>      81:          0          4  PNV-PCI-MSI 2416443394 Edge      eth0
+>     # echo 0 > /sys/devices/system/cpu/cpu1/online
+>     # grep -E  "eth0|nvme" /proc/interrupts
+>      76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
+>      77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
+>      78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
+>      79:         10  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+>      80:          0  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+>      81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
+> 
+> A non-zero count on eth0-rx is good enough.
+> 
+>     # ping -W2 -c5 10.0.2.2
+>     PING 10.0.2.2 (10.0.2.2): 56 data bytes
+>     64 bytes from 10.0.2.2: seq=0 ttl=255 time=7.339 ms
+>     64 bytes from 10.0.2.2: seq=1 ttl=255 time=0.673 ms
+>     64 bytes from 10.0.2.2: seq=2 ttl=255 time=0.405 ms
+>     64 bytes from 10.0.2.2: seq=3 ttl=255 time=0.369 ms
+>     64 bytes from 10.0.2.2: seq=4 ttl=255 time=0.516 ms
+>     --- 10.0.2.2 ping statistics ---
+>     5 packets transmitted, 5 packets received, 0% packet loss
+>     # grep -E  "eth0|nvme" /proc/interrupts
+>      76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
+>      77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
+>      78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
+>      79:         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
+>      80:         10  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
+>      81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
+> That's even better I agree.
+> 
+> 
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-There's no highmem for guest_memfd but there is for secretmem.
+Thanks for the review and the suggestion.
 
-... but this isn't actually an issue with the patch, it's currently
-broken in Linus' master:
+About using 4 sockets, I used it so the receive and transmit interrupts both go
+to different sockets, so more sockets are involved, which I assumed may help
+catch some rare cases ? Also, with 4 sockets, affinity setting also gets tested,
+which won't happen in 2 sockets as we don't need to set affinity in that case.
 
-Su[   30.071284] ------------[ cut here ]------------
-ccessfully allocated and mapped 2097152000 bytes at 0x3a449000
-Populating memor[   30.074614] CPA: called for zero pte. vaddr =3D 0 cpa->v=
-addr =3D 0
-y...
-[   30.078636] WARNING: arch/x86/mm/pat/set_memory.c:1840 at __cpa_process_=
-fault+0x34d/0x360, CPU#5: allocate_secret/570
-[   30.084789] CPU: 5 UID: 0 PID: 570 Comm: allocate_secret Not tainted 7.1=
-.0-14063-g4edcdefd4083-dirty #10 PREEMPTLAZY
-[   30.090937] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[   30.097543] EIP: __cpa_process_fault+0x34d/0x360
-[   30.100514] Code: ff ff 85 c0 0f 89 7d fe ff ff e9 3d fe ff ff 8b 03 8b =
-00 c7 04 24 c8 ff 64 c1 89 44 24 08 8b 45 e8 89 44 24 04 e8 53 7a 00 00 <0f=
-> 0b c7 45 f0 f2 ff ff ff e9 fc fc ff ff 90 8d 74 26 00 55 25 00
-[   30.110829] EAX: 00000000 EBX: f64afe98 ECX: 00000000 EDX: 00000000
-[   30.114799] ESI: 00000000 EDI: f64afe98 EBP: f64afe04 ESP: f64afdcc
-[   30.118785] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 0001024=
-6
-[   30.123020] CR0: 80050033 CR2: 46c48ffc CR3: 038c8000 CR4: 00000690
-[   30.127010] Call Trace:
-[   30.129078]  __change_page_attr_set_clr+0x5e7/0x870
-[   30.132275]  ? console_unlock+0x99/0x130
-[   30.135069]  ? irq_work_queue+0x36/0x70
-[   30.137853]  ? page_address+0xd3/0xf0
-[   30.140421]  set_direct_map_invalid_noflush+0x52/0x60
-[   30.143782]  secretmem_fault+0x128/0x210
-[   30.146560]  __do_fault+0x25/0x90
-[   30.149053]  handle_mm_fault+0x6d1/0xcb0
-[   30.151759]  exc_page_fault+0x135/0x3b0
-[   30.154487]  ? doublefault_shim+0x150/0x150
-[   30.157416]  handle_exception+0x130/0x130
-[   30.160137] EIP: 0x804d29f
-[   30.162307] Code: 89 54 08 e1 89 54 08 e5 89 54 08 e9 89 54 08 ed c3 0f =
-b6 44 24 08 89 7c 24 0c 69 c0 01 01 01 01 8b 7c 24 04 f7 c7 0f 00 00 00 <89=
-> 44 0f fc 75 0e c1 e9 02 f3 ab 8b 44 24 04 8b 7c 24 0c c3 31 d2
-[   30.172936] EAX: 5a5a5a5a EBX: 00000000 ECX: 0c800000 EDX: 3a449000
-[   30.176927] ESI: 00000000 EDI: 3a449000 EBP: bfbbae18 ESP: bfbbadac
-[   30.180897] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 0001024=
-6
-[   30.185161]  ? doublefault_shim+0x150/0x150
-[   30.187979] ---[ end trace 0000000000000000 ]---
-Bus error                  (core dumped) ./allocate_secret_i686 2000M
+I will send a v5 with 2 sockets if you still think otherwise. What do you say ?
 
-Fixing this directly in secretmem.c is kinda yucky but if we can just
-make folio_zap_direct_map() a NOP for highmem folios it's nice and easy
-so I propose to just fix it as a followup to this series.
+Thanks,
+- Aditya G
 
-Alternatively, we maybe should disable secretmem for highmem systems
-since it evidently doesn't have any users.
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
