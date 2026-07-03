@@ -1,85 +1,85 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485083CEBBB
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 12:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FBD3CF21A
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 12:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783080492; cv=none; b=RpuBKljOojufuzWGGCdzoNheUNzg7oOBnZ9v5kn8beOjnFZ+wuPYAkflUwSJIRv9wzlYvh6k/N+Y+eqtFMV67y6jfhl+x3vuAraAB/lildpsEV7TFTu0LwlLet8WWE0djWV/dOxOdfzmOYez6nUCkqQyB9OdmOrPb9jBZZV/1Og=
+	t=1783080548; cv=none; b=DMRpw61oJvuwVERsdxFPzAZTs/TJXiEya640MqbtXTurm8YmDsZXCGjp5cAYCXaspmLokdnMEdS6rnBflRDlZaHjixSVJN3xUf/kr/qj+6rbW92LT6GT6BA6u/huus1lA9NlsSxOCB2sfs6ODBE8XbfLCbr22NN1NNI2fPat0Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783080492; c=relaxed/simple;
-	bh=FjxRkcJue2xcxNqyyNIsfUg9aGd+Teqdzz0oBkQ8P5w=;
+	s=arc-20240116; t=1783080548; c=relaxed/simple;
+	bh=IQlQ853O8PjNP2nglxYqFleUQ57sSIwybxTciQw5g10=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FDrwYI9qiP9/8VToSlv19vx3T8tnrSC8PLH8WOMtFNiJIlaMNx0+6XZW1l0hyryVoZzTm+WHG2iTYkao6Ph39TLkkcF7S7r3ujICVLnqZvQ81S7WUQ5UeoTxftfdAlLgAYkB2F+MzoQVvzVgNmvuxftHZSnReYpqBr2OqcgY8cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GOsUr6D9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dsOpazKd; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=KoUsoGA4G3QJv6z/IyuSmOZFDdU+RgePt+CNUiCCzLe6lakA7lvLsOjxS6BKfi5KDpybHtV/MYi9lWRsH8k2ccKtfNOb6ICsecSz6uo0LfXiwWQ0DNIraEZIVzsJUgGC95yr3zyE2B+Hm36uA6Jkc8DAv+uFnFbkR2dUe6VGebY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N/k9eWwP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=l2nvHqlw; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GOsUr6D9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dsOpazKd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N/k9eWwP";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="l2nvHqlw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783080490;
+	s=mimecast20190719; t=1783080546;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fmrfsvzbIDRaI6xa2GV6XP0StcNn3klH0jg0iaT217o=;
-	b=GOsUr6D9PDfF3rB2REmSTBVFyoHGMLo4hGSjtLtZ+9IL/WYC0GBPD3HtXFkOPDvz16zdV1
-	/6dlB2JsZm8ynDLKtJOySIzp2ewEs+E0BMyWspUlmh3JtqYfN/q7qRGuYVZYhSRVWduH/X
-	4ZhdIluvcdkVDOx2vJSPVkFM/2kXPwc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Q5IcB3IKIPWhgDhh6PrvtGDpcnohukrg0XTP7TxrRmg=;
+	b=N/k9eWwPzpn1OJu52M/Et5NSWcdpylidnlgvlmMu8XZFkBAIcHVFOAclxrO3PnB/meaYf2
+	JbSGmF9f7W+o0iSwmNVNRG57Y784koWEUWVTOVjwifEMga6xVP9Upoq8BwRkMCJO7W/3TB
+	kVZ8TF9K3dZh7xQz3wQouZcGk2d+zZw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-54-g4LC4VoqNyWgubNCXEkjxg-1; Fri, 03 Jul 2026 08:08:09 -0400
-X-MC-Unique: g4LC4VoqNyWgubNCXEkjxg-1
-X-Mimecast-MFC-AGG-ID: g4LC4VoqNyWgubNCXEkjxg_1783080488
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493bb6a4336so4541865e9.3
-        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 05:08:08 -0700 (PDT)
+ us-mta-496-dnc6mzXGNGCDhEMqmg4DQA-1; Fri, 03 Jul 2026 08:09:05 -0400
+X-MC-Unique: dnc6mzXGNGCDhEMqmg4DQA-1
+X-Mimecast-MFC-AGG-ID: dnc6mzXGNGCDhEMqmg4DQA_1783080544
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4926d371224so3533545e9.1
+        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 05:09:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783080488; x=1783685288; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1783080544; x=1783685344; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fmrfsvzbIDRaI6xa2GV6XP0StcNn3klH0jg0iaT217o=;
-        b=dsOpazKd9DbpdyyTD3/IbfQfsteL6Ns3jzngcQpwWdN0W2+n8Vn8LvOYE5gSaEV23q
-         609iRDhx29xU+817JRS6BCRo+QGGy/YVY1RW8XA4Xgo/P91bLyRhInGDfwKU7IAamdTx
-         7OXUlskhk7n57veFzpcBs8NZKokKbz+DOZ8HRCtL9OISXbyeJNh7C1r8WuBvql4TZlqE
-         Iv594Gl80Ut4nyH5ouX09iwYogazPTTzf8p5hSZaWvVhMqBsxQDxM1z3DidUxkLdtB4E
-         6JshUJrQoqcizBlaCHB69A6RHHtM2E0R0AnxmG+cTdRqeeD6WjrvxNCfjj6dYuegF8em
-         7gjA==
+        bh=Q5IcB3IKIPWhgDhh6PrvtGDpcnohukrg0XTP7TxrRmg=;
+        b=l2nvHqlw9WgMLmuRZkiNUKxO61njQZHCUdcXj9UuXqD79an+Li2+3ZoSk1wW3HcfjQ
+         S+5yECGybDHO+XThuE3NHQba/Jw/x2GlHN9QmSJDJY428iWo9ljcoFNrs83m1itbITti
+         6nRSMCwsfOSSeJjiewK3VdFKOF0YLlhnAbM2et/pyh6hFZosLCweHrMqPqUwR6iE4j5q
+         t007CG3K6haYGrd/ygA1VmKc2DvwPZn+WWX9D1ObfQejA5lhBceJjB6X14DUPmU+cPMh
+         TIeL/oLABGo9WQyJeWWLMdyWE3pRFTzFHnk4t3SyN/5m8COeLbf83rrBYmVx1gqOLxNo
+         vadg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783080488; x=1783685288;
+        d=1e100.net; s=20251104; t=1783080544; x=1783685344;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fmrfsvzbIDRaI6xa2GV6XP0StcNn3klH0jg0iaT217o=;
-        b=sbO7nqkOf7Pz8l1XcZdKLC+ytauJIBUa1HrfKsAuRq1HMay4+oeUEEGOpFtGE6IyjJ
-         vFSP6r4/r7ehBFiuHkQe2ON+rhKiZtK3SEH0W0rkzpVsYabf/QpXzy54JM66xiBTwMdW
-         suMu0Uiu2R/29VDJdpqQx9H/2OJVEeCmDiqa6UgRtCjZSHzrDb6MOdWefMdEQJ2EdRG8
-         KzRYSsvGRefNzEZa+5R4e4g2QMhGRjiUaqp8rWYghawGQf0Z44JvXYXM1ZU6vMrH+xlo
-         IONwHrHJ/zLMSrHoJFvnro+WfN4rOE4NZUOFncjkqMHshYb4NnhrjsGUG6h0HHVtNhfm
-         kMFQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+8VWWbkja9pJwI77v9XZowYR27rsD18vEsMw5rUDn5p8U8KNZoR121G72c5DwTXOXt/OA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPNqaA7FxUOMtgkSIKu6IV/vmQafns7I2dNPWnjUukkI4O1riO
-	6Xa6ODUyGMq3FI1x7aGpujr69i48lzrO6gD+LrZxeCrFmT7/ljxQZdqCJpHTdyMVVe5DF9zDSTT
-	Xbn6HhISIiHlFSj60Ufs52O2TkyVj1Bu+1M27o6KaqMn9ZOPt8XnJTw==
-X-Gm-Gg: AfdE7ck5aBaNUOOpHoA61B/235ZJrapk04rZmjDQfYZTAa17xWeF0q1XfEia+AWXTaw
-	q+UROdpY+FnKUXZmilabmhIVgld86ORfe3/gTXmUcJbbiH4mDuUW2X3qk3mOunEqWL7qtUUqQXA
-	7dRCgOqGai1pnVT6hg9x1rQmHWOsGmGrs8oSYWzg+jp5Pxv0JthG7chfPuiyYKa9bgUCIsuAiIu
-	khUTbCWSXkCqOiIKrCPCBhVGOTMPdD2UdPgZZc/+mt2v2DcsDxpTKnbZ6bgDzw4VTQei0BssRKx
-	wbF4I6GLwhagqVPnGJTXgPiEHAwcp7m4Hw2WqMLP0pcWLzF0aJ0RY7yh5T7Wx8uXB9ebn607wDl
-	Mur2sLqbQe4uvaHFk1tJhYpXP/G8iQ+1IHe0GVy5QayYTPVo1gQ==
-X-Received: by 2002:a05:600c:1550:b0:493:c389:d434 with SMTP id 5b1f17b1804b1-493c389d4c0mr129164415e9.15.1783080487612;
-        Fri, 03 Jul 2026 05:08:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:1550:b0:493:c389:d434 with SMTP id 5b1f17b1804b1-493c389d4c0mr129163985e9.15.1783080487126;
-        Fri, 03 Jul 2026 05:08:07 -0700 (PDT)
+        bh=Q5IcB3IKIPWhgDhh6PrvtGDpcnohukrg0XTP7TxrRmg=;
+        b=fUy+pJVw5iPlnH1JyNOEfw5nwr/LAnVaXB1y8/IiMyMWysPsVozejGk7hGM2ZiuVfi
+         bSQlo8ES79TBI5njRcQsw0J2/4J7zosUT3DsPZxpn4ANUEIhak4oD84GtUFJDU+m5Qss
+         FzPP7nokYuf20oymRwtKo7Wj3IffgT3e7brp1PaDEIa3PCB6cqAQP0KBfwv4B+iWDuWm
+         +jYXrGxoiP1d1l5DwP9KLBUeiOJ1fogZkkxeKEOO1g+WwHx1yFhMAoK7PdpyYtSYsROo
+         ErlX2yGlsdsGNIrPc07fl46BP0p1hnB/MktrZWpCfe92OfIpDT29W6KlcD+TkeJ7aD2Q
+         uKaw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Xpn6jELRqseqATu4oZqLPvoASPBMNmut2M3W/ZqcFmZfUn8QQ2No7uV4JsH3b3TAfifQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylEAkHFlEW4MUZ4wL6r1qkWUNz+5eHenQccJu/WLpWosi3DyKX
+	MVCzxcilVQ9YyUqxiC0HpNJfzzI2ef+Cq24BURKDgF5Gizc9e5cY0l4RYLYu//eaFJTH2V0Jyg9
+	ezvuf4PpFm+44LNr3Z5OYa2800ievW8m1RihixeWLCyNKsAfstQesGw==
+X-Gm-Gg: AfdE7ck5jLj8+SE6cM9AjpW1s33EJtpKpD7CAmyS5js/NEkBzZVNAxazXruQ+tWv22/
+	GhPI6LCUIMwJGps/Pn6yFYks13CB/oIWAxGM1YEpJ8DTKWJnoSEtvUhtDJ41Ph46ZrCg+3AQ0u7
+	/Nm4AFO03TIWl93FHfvpoiSTIquGIcoKOnwv/MXhDc1wGxHPBB7mYVh9D7GEGwhLhG6YexiUuOI
+	mGknEv4RXIzwGDnFQAs9Eoiiyy317e4qV/8eBSujS4vo4HcU+tsHZmDxt1n9cwWekTANXUETcgU
+	k0BnU2rcaRNMsreUXgGBRqrP0Znobk+N+ksP/zvCnfuw4Oy54eWfZ9M/WUlNqebX2gc/YryZAj7
+	zLDlNuQVrlKAaaf168W7r6/45tknVPEU4RhTPDtR8VAtPW06NUw==
+X-Received: by 2002:a05:600c:3484:b0:492:3237:ddf with SMTP id 5b1f17b1804b1-493c3cfafd0mr127404525e9.28.1783080543877;
+        Fri, 03 Jul 2026 05:09:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:3484:b0:492:3237:ddf with SMTP id 5b1f17b1804b1-493c3cfafd0mr127403855e9.28.1783080543437;
+        Fri, 03 Jul 2026 05:09:03 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a? ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c63172fesm221287235e9.0.2026.07.03.05.08.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c63b6f8csm115805355e9.11.2026.07.03.05.09.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 05:08:06 -0700 (PDT)
-Message-ID: <6622b05c-115b-4047-8865-c18cc99db959@redhat.com>
-Date: Fri, 3 Jul 2026 14:08:05 +0200
+        Fri, 03 Jul 2026 05:09:03 -0700 (PDT)
+Message-ID: <7d5bc446-9581-454c-a678-73c075af7fb1@redhat.com>
+Date: Fri, 3 Jul 2026 14:09:01 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,14 +87,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 RESEND 1/8] tests/functional: Add remote interrupts
- test for PowerNV
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+Subject: Re: [PATCH v4 RESEND 8/8] MAINTAINERS: Add self as maintainer for
+ PowerNV
+To: Aditya Gupta <adityag@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
  Shivang Upadhyay <shivangu@linux.ibm.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
  Sourabh Jain <sourabhjain@linux.ibm.com>,
  Hari Bathini <hbathini@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
  Miles Glenn <milesg@linux.ibm.com>, Fabiano Rosas <farosas@suse.de>,
@@ -106,9 +105,7 @@ Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>,
  Nikhil Kumar Singh <nikhilks@linux.ibm.com>
 References: <20260703085955.2318600-1-adityag@linux.ibm.com>
- <20260703085955.2318600-2-adityag@linux.ibm.com>
- <b1d16c72-3485-4cad-ae51-5db4a78e3a48@redhat.com>
- <akeMqNUv2UlN80cV@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+ <20260703085955.2318600-9-adityag@linux.ibm.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
 Autocrypt: addr=clg@redhat.com; keydata=
@@ -154,87 +151,36 @@ Autocrypt: addr=clg@redhat.com; keydata=
  HQoPn9qrDJgsgcbBVc1gkUT6hnxShKPp4PlsZVMNjvPAnr5TEBgHkk54HQRhhwcYv1T2QumQ
  izDiU6iOrUzBThaMhZO3i927SG2DwWDVzZltKrCMD1aMPvb3NU8FOYRhNmIFR3fcalYr+9gD
  uVKe8BVz4atMOoktmt0GWTOC8P4=
-In-Reply-To: <akeMqNUv2UlN80cV@li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com>
+In-Reply-To: <20260703085955.2318600-9-adityag@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 7/3/26 12:21, Aditya Gupta wrote:
-> Hello Cédric,
+On 7/3/26 10:59, Aditya Gupta wrote:
+> Add myself as maintainer for PowerNV machine, and remove the
+> reviewer entry
 > 
-> On 26/07/03 11:17AM, Cédric Le Goater wrote:
->> On 7/3/26 10:59, Aditya Gupta wrote:
->>> <...snip...>
->>> +    def test_linux_remote_interrupts(self):
->>> +        self.require_accelerator("tcg")
->>> +        self.set_machine('powernv')
->>> +
->>> +        # Have below setup in this test:
->>> +        # 1. e1000e attached to pcie.6, which is from 7th PHB, belonging to 2nd
->>> +        #    socket (chip 1), in a powernv boot with default 6 PHBs per socket
->>> +        # 2. CPU on 2nd socket (chip 1) disabled
->>> +        # 3. RX IRQ's affinity to chip 2, and TX IRQ's affinity to chip 3
->>> +        #
->>> +        # Then ping is done, to generate interrupts from e1000e which should go
->>> +        # to IRQ server on the remote sockets
->>> +        self.vm.add_args('-smp', '4,sockets=4,cores=1,threads=1')
->>> +        self.vm.add_args('-netdev', 'user,id=net0')
->>> +        self.vm.add_args('-device', 'e1000e,netdev=net0,bus=pcie.6')
->>
->>
->> 2 sockets are enough.
->>
->>      # grep -E  "eth0|nvme" /proc/interrupts
->>       76:         12          0  PNV-PCI-MSI 268959744 Edge      nvme0q0
->>       77:         62          0  PNV-PCI-MSI 268959745 Edge      nvme0q1
->>       78:          0         67  PNV-PCI-MSI 268959746 Edge      nvme0q2
->>       79:          0         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
->>       80:          0         20  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
->>       81:          0          4  PNV-PCI-MSI 2416443394 Edge      eth0
->>      # echo 0 > /sys/devices/system/cpu/cpu1/online
->>      # grep -E  "eth0|nvme" /proc/interrupts
->>       76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
->>       77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
->>       78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
->>       79:         10  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
->>       80:          0  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
->>       81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
->>
->> A non-zero count on eth0-rx is good enough.
->>
->>      # ping -W2 -c5 10.0.2.2
->>      PING 10.0.2.2 (10.0.2.2): 56 data bytes
->>      64 bytes from 10.0.2.2: seq=0 ttl=255 time=7.339 ms
->>      64 bytes from 10.0.2.2: seq=1 ttl=255 time=0.673 ms
->>      64 bytes from 10.0.2.2: seq=2 ttl=255 time=0.405 ms
->>      64 bytes from 10.0.2.2: seq=3 ttl=255 time=0.369 ms
->>      64 bytes from 10.0.2.2: seq=4 ttl=255 time=0.516 ms
->>      --- 10.0.2.2 ping statistics ---
->>      5 packets transmitted, 5 packets received, 0% packet loss
->>      # grep -E  "eth0|nvme" /proc/interrupts
->>       76:         12  PNV-PCI-MSI 268959744 Edge      nvme0q0
->>       77:         62  PNV-PCI-MSI 268959745 Edge      nvme0q1
->>       78:          0  PNV-PCI-MSI 268959746 Edge      nvme0q2
->>       79:         34  PNV-PCI-MSI 2416443392 Edge      eth0-rx-0
->>       80:         10  PNV-PCI-MSI 2416443393 Edge      eth0-tx-0
->>       81:          0  PNV-PCI-MSI 2416443394 Edge      eth0
->> That's even better I agree.
->>
->>
->> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Thanks for the review and the suggestion.
-> 
-> About using 4 sockets, I used it so the receive and transmit interrupts both go
-> to different sockets, so more sockets are involved, which I assumed may help
-> catch some rare cases ? Also, with 4 sockets, affinity setting also gets tested,
-> which won't happen in 2 sockets as we don't need to set affinity in that case.
-> 
-> I will send a v5 with 2 sockets if you still think otherwise. What do you say ?
-No need. that's fine.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 97dcc78ded61..537b5cd895a2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1663,7 +1663,7 @@ F: tests/functional/ppc64/test_tuxrun.py
+>   
+>   PowerNV (Non-Virtualized)
+>   M: Nicholas Piggin <npiggin@gmail.com>
+> -R: Aditya Gupta <adityag@linux.ibm.com>
+> +M: Aditya Gupta <adityag@linux.ibm.com>
+>   R: Glenn Miles <milesg@linux.ibm.com>
+>   R: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>   L: qemu-ppc@nongnu.org
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
 Thanks,
 
 C.
-
-
 
