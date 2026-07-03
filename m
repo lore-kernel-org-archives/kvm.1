@@ -1,152 +1,178 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5943E0C4C
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113183E5ED4
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783088821; cv=none; b=qKzRHB0dQgNH+UwVJ+ceykaPTver+a3OZQwCL6izrUIkZ03lZKhe8k1mz6p5OCIfxqeP8x0GCDJ2mey2yroqjXYXiXXfokPQy+GAWXJ8jq45wuho7CzfyeVhsC3NR5KbkMkwpgRWjokpwYPukE46SS9fY1K6IgQWIgt+QHcw4oE=
+	t=1783089194; cv=none; b=U4cKzwSE0SE8LC9aerXMuD8L/Z3lB270O3Yv007WZszvpgeA5EJ7gTdFJkK31uGRE0vnGwbgLEpa4SwmHLzL99RvUMHrtVlfUHSjLw8Z9otQnqeHlyGHdcweTdNc1hbGakFrUEng8wnLmBeS1d7sihKb2DLI48e+/T9cAV4z4Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783088821; c=relaxed/simple;
-	bh=OtSwbxhYeXVvt44Is+Eqwg4eri1903TyhY2EAttyot4=;
+	s=arc-20240116; t=1783089194; c=relaxed/simple;
+	bh=kfzu5/w0txewS+fkDODXWbbqJttEOtC614TdU4ZzB2k=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OyG3A6ORSbHM0QeOxSeXKTi705j5BBxDhYuRlmm1R8JyLwexBHApU2eK4wl0FALhO66rjE4qV7IGcsD3z++Dr+3BH2nYAF3NICM4XIYMQ8YPr9HPaexdoLoL8bZrcsaoI4LSkT000scWF8UpJlTE8zEJjjgPEE88FzTdn8thSGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5B72iH6; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=nJbZhTCtmoNNJgL1LOrbQWkjPn0/83ONS5GBLD+JNLPesjMWCGdsdErTt2O5HRE9E8vQEv7rYTPMgAHquk7MZ3P2OWfmxN1L9slZrcdqxvaTS4UYAAJbsFzCCcu21JWRmQZpxWHCPCqrxin/Rbe7TBX+C/rgGO02XSTWD6JVmm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUH21kMo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5B72iH6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59C21F00A3A;
-	Fri,  3 Jul 2026 14:26:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUH21kMo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389D61F000E9;
+	Fri,  3 Jul 2026 14:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783088817;
-	bh=4xzvcE29UuB6YIW6C+WTDiBkpAN9rUuaQd4CIz4d9Ag=;
+	s=k20260515; t=1783089191;
+	bh=x1SXw3OaYau9rxzcNPOvcsZSbsqPoQOtn6Grtc3VP5w=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O5B72iH6r7OvS/OCpAyjUnPI+4TWovPFHG+Ro5B9lLQ1u6d2FDtms0mD9FHyDY8RY
-	 99wxl+hyCiibmRUyIkTVEHKZpCx619akt31ZvYXhsk8uutFOimzb7tDaKzZ2/lDbOd
-	 ZTf9Sv8ferjeK8ZH3wo69qoBCHn8urPHvUKRnuhN7NQBtDOoc2AYgKchB5+o41vsvj
-	 3FhvwVEtVCV80m2I4SZN4lGgdbrg1/k2/FKD79WNy31FfheVkcPcRmz1577FlXhflX
-	 A6Ukoim/P22TUkIjwzbEBb6gIsF83/T7Lg8gDYNHJx6a5rO3VcN37ZFM8U955YeoRD
-	 E9IcmoePN/rqw==
+	b=lUH21kMoJzBHO3ZGf1jCfcJE6xmx6DXZ52LeUgFS1iQDOF7Urp8r0PMgSht6Toj2s
+	 QtcOm6oEz7F+gTNZx52w1CedVzNww+gvPO0xpqvoy9RdqdEFJoPLNZKmUMGzP/3aYZ
+	 fMyHWIHtRoaIjWeUQZJsCnmG+8CVr7hJB8MnjTgendd7gV28a6g6JJVJYsAaFENd2M
+	 8ynoZykU3Ljn1oT+RCaK6qzNaDL01uq+QLA/hiGWx/KSKypQt2jfqOpR6RhzpWsjJz
+	 Kdd4HUmqrDqk0u/jKFEM6eKTMh4tkjEWzbHxBmSyII79YaVtV/rYE22/ILpAL2c852
+	 v7UII8AeTXZ8A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 08/15] mm: handle VM_UFFD_RWP in khugepaged, rmap,
- and GUP
+Subject: Re: [PATCH v8 09/15] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and
+ UFFDIO_RWPROTECT plumbing
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260703133615.1039465-9-kirill@shutemov.name>
+In-Reply-To: <20260703133615.1039465-10-kirill@shutemov.name>
 References: <20260703133615.1039465-1-kirill@shutemov.name>
- <20260703133615.1039465-9-kirill@shutemov.name>
+ <20260703133615.1039465-10-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 14:26:56 +0000
-Message-Id: <20260703142656.C59C21F00A3A@smtp.kernel.org>
+Date: Fri, 03 Jul 2026 14:33:10 +0000
+Message-Id: <20260703143311.389D61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Per-PTE RWP tracking state is silently destroyed for file-backed m=
-emory during page eviction, page fault, and fork because the PTE marker inf=
-rastructure does not support VM_UFFD_RWP.
-- [High] FOLL_FORCE accesses (e.g., via /proc/pid/mem) silently bypass user=
-faultfd RWP monitors on inaccessible VMAs due to an incorrect assumption in=
- gup_can_follow_protnone().
+
+New issues:
+- [High] Unrestricted mprotect() on RWP-registered VMAs allows userspace to=
+ bypass accessibility constraints, leading to UFFDIO_UNREGISTER denial of s=
+ervice and FOLL_FORCE infinite loops.
+
+Pre-existing issues:
+- [Critical] userfaultfd_clear_vma() modifies page tables under mmap_write_=
+lock without first calling vma_start_write(), allowing races with concurren=
+t per-VMA read lock operations.
+- [High] Incomplete rollback on OOM during partial userfaultfd_unregister l=
+eaves VMA and PTE state inconsistent.
 --
 
-commit a8febd9860609da477330a270aa0cc307fe15024
+commit c5a9fac2c85eb7e6b0745bb04ca3c91f8a7a0f38
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
 
-Three mm paths outside the fault handler gate on the uffd PTE bit
-today: khugepaged (skip collapse on ranges carrying markers), rmap
-(cap unmap batching), and GUP (force a fault through
-gup_can_follow_protnone). Extend each to treat VM_UFFD_RWP the same
-as VM_UFFD_WP; otherwise per-PTE RWP state is silently destroyed or
-bypassed.
+Add the userspace interface for read-write protection tracking,
+including UFFDIO_REGISTER_MODE_RWP, UFFD_FEATURE_RWP, and
+UFFDIO_RWPROTECT. Introduces CONFIG_USERFAULTFD_RWP and integrates
+RWP handling into userfaultfd core.
 
-> Extend each to treat VM_UFFD_RWP the same
-> as VM_UFFD_WP; otherwise per-PTE RWP state is silently destroyed or
-> bypassed.
-
-[Severity: High]
-The commit message states the intention is to prevent per-PTE RWP state from
-being silently destroyed or bypassed. Does this patch miss the PTE marker
-infrastructure required for file-backed memory?
-
-For example, during page eviction, try_to_unmap_one() relies on
-pte_install_uffd_wp_if_needed(), but that function explicitly requires
-userfaultfd_wp(vma):
-
-include/linux/mm_inline.h:pte_install_uffd_wp_if_needed() {
-    ...
-    if (vma_is_anonymous(vma) || !userfaultfd_wp(vma))
-        return false;
-    ...
-}
-
-This causes RWP VMAs to lose their tracking state entirely upon eviction.
-
-Similarly, vmf_orig_pte_uffd_wp() in mm/memory.c ignores markers for RWP
-VMAs during page faults, copy_pte_marker() drops markers during fork(),
-and change_pte_range() in mm/mprotect.c skips unpopulated PTEs when
-UFFDIO_RWPROTECT is called.
-
-Are updates to the PTE marker infrastructure needed to fully support
-VM_UFFD_RWP?
-
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 3d4d5f9a6f1bf..da8a07cd49a14 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4644,11 +4644,25 @@ static inline int vm_fault_to_errno(vm_fault_t vm=
-_fault, int foll_flags)
-> =20
->  /*
->   * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-> - * a (NUMA hinting) fault is required.
-> + * a (NUMA hinting or userfaultfd RWP) fault is required.
->   */
->  static inline bool gup_can_follow_protnone(const struct vm_area_struct *=
-vma,
->  					   unsigned int flags)
->  {
-> +	/*
-> +	 * VM_UFFD_RWP uses protnone as an access-tracking marker, not for
-> +	 * NUMA hinting. GUP must always take a fault so the access is
-> +	 * delivered to userfaultfd, regardless of FOLL_HONOR_NUMA_FAULT.
-> +	 *
-> +	 * Only do so while the VMA is accessible. If it has been made
-> +	 * inaccessible (e.g. mprotect(PROT_NONE)), fall through to the guard
-> +	 * below: forcing a fault there would loop, as handle_mm_fault() makes
-> +	 * no progress on protnone in an inaccessible VMA, and the access is
-> +	 * denied regardless of RWP anyway.
-> +	 */
-> +	if (vma_test_single_mask(vma, VMA_UFFD_RWP) && vma_is_accessible(vma))
-> +		return false;
-
-[Severity: High]
-Does this logic allow FOLL_FORCE accesses to silently bypass the RWP
-monitor?
-
-The comment assumes access is denied regardless of RWP when the VMA is
-inaccessible, but FOLL_FORCE (e.g., from ptrace or /proc/pid/mem)
-explicitly bypasses VMA access permissions.
-
-If an RWP VMA is made PROT_NONE, and FOLL_FORCE is used, this check
-returns true because vma_is_accessible() is false. GUP will then follow
-the PROT_NONE PTE and extract the page, bypassing the userfaultfd fault
-path entirely.
-
-> +
->  	/*
->  	 * If callers don't want to honor NUMA hinting faults, no need to
->  	 * determine if we would actually have to trigger a NUMA hinting fault.
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
 
 [ ... ]
 
+> @@ -2152,6 +2221,15 @@ static bool vma_can_userfault(struct vm_area_struc=
+t *vma, vm_flags_t vm_flags,
+>  	    !vma_is_anonymous(vma))
+>  		return false;
+> =20
+> +	/*
+> +	 * RWP uses protnone as an access-tracking marker. PROT_NONE VMAs
+> +	 * have vm_page_prot =3D=3D PAGE_NONE, so RWP resolution can't make a
+> +	 * page accessible -- the next access would fault again. Reject up
+> +	 * front instead of letting FOLL_FORCE loop on protnone+uffd PTEs.
+> +	 */
+> +	if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
+> +		return false;
+> +
+
+[Severity: High]
+Could this accessibility constraint be bypassed by mprotect() after the
+VMA is already registered for RWP?
+
+vma_can_userfault() correctly prevents initial RWP registration on
+PROT_NONE VMAs. However, mprotect_fixup() preserves VM_UFFD_RWP when
+changing a VMA to PROT_NONE later.
+
+If userspace registers a readable VMA for RWP and then calls
+mprotect(PROT_NONE), the VMA enters the exact state this check intended
+to prevent.
+
+Would a subsequent FOLL_FORCE access (e.g. via /proc/self/mem) skip RWP
+resolution in handle_pte_fault(), fail to resolve the PROT_NONE state,
+and retry infinitely?=20
+
+If FOLL_WRITE is used, could it trigger do_wp_page() to copy and allocate
+new PROT_NONE pages infinitely?
+
+Also, wouldn't this prevent the VMA from being unregistered, since
+userfaultfd_unregister() calls vma_can_userfault() which would now reject
+the inaccessible VMA?
+
+[ ... ]
+
+> @@ -2204,9 +2282,22 @@ static struct vm_area_struct *userfaultfd_clear_vm=
+a(struct vma_iterator *vmi,
+>  	if (start =3D=3D vma->vm_start && end =3D=3D vma->vm_end)
+>  		give_up_on_oom =3D true;
+> =20
+> -	/* Reset ptes for the whole vma range if wr-protected */
+> -	if (userfaultfd_wp(vma))
+> -		uffd_wp_range(vma, start, end - start, false);
+> +	/* Clear the uffd bit and/or restore protnone PTEs */
+> +	if (userfaultfd_protected(vma)) {
+> +		unsigned int mm_cp_flags =3D 0;
+> +		struct mmu_gather tlb;
+> +
+> +		if (userfaultfd_wp(vma))
+> +			mm_cp_flags |=3D MM_CP_UFFD_WP_RESOLVE;
+> +		if (userfaultfd_rwp(vma))
+> +			mm_cp_flags |=3D MM_CP_UFFD_RWP_RESOLVE;
+> +		if (vma_wants_manual_pte_write_upgrade(vma))
+> +			mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+> +
+> +		tlb_gather_mmu(&tlb, vma->vm_mm);
+> +		change_protection(&tlb, vma, start, end, mm_cp_flags);
+
+[Severity: Critical]
+This is a pre-existing issue, but does userfaultfd_clear_vma() modify
+page tables before draining per-VMA readers?
+
+The kernel VMA locking guidelines require that mmap_write_lock() holders
+call vma_start_write(vma) before modifying page tables. This excludes
+per-VMA lock readers.
+
+Here, change_protection() modifies PTEs before vma_modify_flags_uffd()
+is called. Could this race with concurrent per-VMA operations like
+MADV_DONTNEED that might modify or free the page tables while
+change_protection() is walking them?
+
+> +		tlb_finish_mmu(&tlb);
+> +	}
+> =20
+>  	ret =3D vma_modify_flags_uffd(vmi, prev, vma, start, end,
+>  				    &new_vma_flags, NULL_VM_UFFD_CTX,
+>  				    give_up_on_oom);
+
+[Severity: High]
+This is a pre-existing issue, but what happens if the subsequent VMA split
+fails due to OOM?
+
+change_protection() unconditionally resolves the UFFD protection on all
+PTEs in the range before vma_modify_flags_uffd() executes.
+
+If vma_modify_flags_uffd() returns -ENOMEM during a partial unregister, it
+aborts and the error is returned to userspace.
+
+Does this leave the VMA retaining the VM_UFFD_WP or VM_UFFD_RWP flag,
+while the underlying PTEs have been permanently unprotected?
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703133615.1039=
-465-1-kirill@shutemov.name?part=3D8
+465-1-kirill@shutemov.name?part=3D9
