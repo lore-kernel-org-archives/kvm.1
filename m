@@ -1,105 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472032571A0;
-	Thu,  2 Jul 2026 21:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9041918DB2A;
+	Fri,  3 Jul 2026 00:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783026546; cv=none; b=lfPjgHhQ1M6UpMVDmxdIa/1nx5CEFh7Bm6zOjelkzqFz3JsIhOuNIAgcugZbt9niv5h1gpPUqJQJ8Bim5kFU/2plZ4dqm+LI8K74zMh+LX+QToZbivXdFJmX76jZZ0HnSZQBJiUV05PPE+2It6WNT6DBk/9eL+Kj2ahnSv3jHO4=
+	t=1783038981; cv=none; b=JOxM206/JA3pv3oSnzWFF+bAwKo0iVTrCOKgXr9JeuuGnH7NH6LUy6ht9Rmr70LfYwZ7thGE5Ig4QQnETfnuKMu5rdFtTMJctEzZ0UZmsJblOD1DiqmTXgK2ZS1iLGIuuUDs1cq5d0tR6CYLXmAwN71xbK9oTH1xlUR0PPLXom0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783026546; c=relaxed/simple;
-	bh=mzs6FRafv33MXO1zybO+JdaXsOEUI4d/26FJHEAPywM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o4NQ6jWKqVHH6XOQG5WO6r/zoiuQXrlilScMGyGmx/lD7ygpOLRtAQ0uQNn8lXCf9/klb3rmIg8WgXFfG/n92sakURX2jsA3dwZgsU9chX2ItgMkTaGBMUtK6nTIJKqyHJSXMig65MO2DGkz3mHY/9k28qeIDVb4KX0D0ywSHfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEkDBLRJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783038981; c=relaxed/simple;
+	bh=HQOl5f+3BFXxdbqHvPxam/utoMEvo8BUmmSaeT0HYNc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mI3W5DBOp/OKw8J8XfFFOaGjzBsn6151+CCtPcNDvYnd6vgn6UKHi4Ih9kmt+JVMx8qecxQ5hPsqws3MHq6UnUoswy9o8V2NUHTQIiY6WinPSQr1QkKAsU1aF2tdHqa3WEePzlBx8WiynD14RqonLSFQv8zu7UBRYzItOVqmGJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=w3GpvQQ5; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEkDBLRJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206101F000E9;
-	Thu,  2 Jul 2026 21:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783026545;
-	bh=sTV+0NATucxumtqWnyxNET7XN5P2JSkBWXP+lsg9RYM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dEkDBLRJvq59oQRoRRbxxS8HQ1v/cRLT3mr4EAQi+I6ON9LGFMaw0GnghHi5f4Ryq
-	 sYZGeFiLqtjEbwPyG+FeqJk2j0e6ZCBAUhsCmWvzqah/mo1nRDAUBIfUaSNhfBLr9j
-	 RTVTOwIG5fivyXKITO8h/s2pcOEm8OFnP/7xQtIujSvxMvLWxlUH2I0svYmXGaDq5S
-	 15KhdljNbT45H+SaXZ+8Ikc8WSKtTY8uOuJ260m812xyRFzTZAIIPf/5W/Jg8794mV
-	 Mllif1pLky85RB0xFI7dMjbz+Lxk6FGtMov782kwf6MnzNZ2k+lTVGyomnIeSHuXKZ
-	 qwBxPDmUiR5fw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wfOed-00000000upt-1eLF;
-	Thu, 02 Jul 2026 21:09:03 +0000
-Date: Thu, 02 Jul 2026 22:10:51 +0100
-Message-ID: <87ldbt6qsk.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	"Oliver Upton" <oupton@kernel.org>
-Subject: Re: [PATCH 04/28] KVM: arm64: Drop __HCRX_EL2_* masks
-In-Reply-To: <20260702183449.B14E81F000E9@smtp.kernel.org>
-References: <20260702160248.1377250-1-maz@kernel.org>
-	<20260702160248.1377250-5-maz@kernel.org>
-	<20260702183449.B14E81F000E9@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="w3GpvQQ5"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ks18hZZIQFp1HIdQaDajUBkbfQZ3RKQTkJwHEed0hmg=;
+	b=w3GpvQQ5ZdlgY/RW5aI8QLtdzoZMKkMbRA5STbEjActyvnoewk4v4RI0I2hDbX6oCNrKV/s+n
+	/R/w2/jHYUGL69wALiROuh5o4F1iIXDXvMu5uuMgb6lqnP/XhnssdQ2L6s7e2doMx3znU8p6X5j
+	/tA9ZTFcTTyRQzAVcWJy96w=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4grvhz3bLTz12LFj;
+	Fri,  3 Jul 2026 08:27:31 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id B567D40572;
+	Fri,  3 Jul 2026 08:36:13 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Fri, 3 Jul 2026 08:36:13 +0800
+Message-ID: <3c7bf42e-9ff7-4bf2-a0d1-71e93c3cfdd1@huawei.com>
+Date: Fri, 3 Jul 2026 08:36:12 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oupton@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 09/18] vfio/pci: Hide TPH capability when TPH is
+ unsupported
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+ <20260702124224.57168-10-fengchengwen@huawei.com>
+ <20260702130039.87A7B1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260702130039.87A7B1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-On Thu, 02 Jul 2026 19:34:49 +0100,
-sashiko-bot@kernel.org wrote:
-> 
+On 7/2/2026 9:00 PM, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [High] Unsanitized architectural RES0/RES1 bits in HCRX_EL2 allow nested guests to enable hidden hardware features and trigger CONSTRAINED UNPREDICTABLE behavior.
+> - [High] Hiding the TPH capability by returning a length of 0 unintentionally grants the guest raw read/write access to the physical TPH registers.
+
+After checking the full vfio_ecap_init logic, this is a false positive risk
+report.
+
+When vfio_ext_cap_len() returns 0 for unsupported TPH ecap, the !len branch
+takes over:
+1. It allocates minimal PCI_CAP_SIZEOF length and marks hidden=true;
+2. memset(map + epos, PCI_EXT_CAP_ID_TPH, len) populates pci_config_map,
+   so these offsets are never marked PCI_CAP_ID_INVALID;
+3. Accesses to TPH range hit the dedicated TPH ecap permission table
+   with vfio_tph_config_write handler which discards all writes,
+   never falling back to unassigned_perms raw physical write.
+
+The hidden flag erases the capability ID in virtual config space so guests
+cannot enumerate TPH, while full permission isolation is retained for all
+config offsets of this ecap. No raw hardware bypass vulnerability exists
+with current implementation.
+
+Thanks
+
 > --
 > 
-> commit c528765403e37bb993d380c50856d508033ad43a
-> Author: Marc Zyngier <maz@kernel.org>
+> commit 1d6f16c85a6a295f7dee447fc8d7ac56c232977a
+> Author: Chengwen Feng <fengchengwen@huawei.com>
 > 
-> KVM: arm64: Drop __HCRX_EL2_* masks
+> vfio/pci: Hide TPH capability when TPH is unsupported
 > 
-> This patch removes the legacy __HCRX_EL2_* masks and the manual RES1
-> sanitization in get_reg_fixed_bits(). It intends to rely on existing
-> auto-generated masks and boot-time checks to prevent unhandled bits from
-> being exploited.
+> Check the device negotiated TPH support status before parsing the TPH
+> extended capability. Return zero length to hide the capability from
+> userspace if TPH is disabled during topology negotiation.
 > 
-> > diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> > index 0622162b089e5..16d8148dc3f12 100644
-> > --- a/arch/arm64/kvm/config.c
-> > +++ b/arch/arm64/kvm/config.c
+>> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+>> index a10ed733f0e3a..5c6ab172df6c0 100644
+>> --- a/drivers/vfio/pci/vfio_pci_config.c
+>> +++ b/drivers/vfio/pci/vfio_pci_config.c
 > [ ... ]
-> > @@ -933,7 +933,7 @@ static const struct reg_bits_to_feat_map hcrx_feat_map[] = {
-> >  };
-> >  
-> >  
-> > -static const DECLARE_FEAT_MAP(hcrx_desc, __HCRX_EL2,
-> > +static const DECLARE_FEAT_MAP(hcrx_desc, HCRX_EL2,
-> >  			      hcrx_feat_map, FEAT_HCX);
+>> @@ -1450,6 +1451,8 @@ static int vfio_ext_cap_len(struct vfio_pci_core_device *vdev, u16 ecap, u16 epo
+>>  		byte &= PCI_DPA_CAP_SUBSTATE_MASK;
+>>  		return PCI_DPA_BASE_SIZEOF + byte + 1;
+>>  	case PCI_EXT_CAP_ID_TPH:
+>> +		if (!pcie_tph_supported(pdev, false))
+>> +			return 0;
 > 
 > [Severity: High]
-> This is a pre-existing issue, but hcrx_feat_map lacks FORCE_RES0 and
-> FORCE_RES1 declarations. Unlike other system register maps, this means
-> compute_reg_resx_bits() will omit the architectural RES0/RES1 bits from
-> the KVM masks.
+> Does hiding the capability by returning 0 here inadvertently grant the guest
+> raw read/write access to the physical TPH registers?
+> 
+> When a length of 0 is returned in vfio_ext_cap_len(), the VFIO capability
+> parsing loop skips mapping the capability. This leaves the physical offsets
+> marked as PCI_CAP_ID_INVALID in vdev->pci_config_map.
+> 
+> Guest accesses to unmapped offsets fall back to unassigned_perms:
+> 
+> static struct perm_bits unassigned_perms = {
+> 	.readfn = vfio_raw_config_read,
+> 	.writefn = vfio_raw_config_write
+> };
+> 
+> This allows a guest to perform raw writes directly to the physical device
+> using vfio_raw_config_write(), bypassing VFIO isolation.
+> 
+> Could a malicious guest use this raw access to manually enable TPH and
+> configure Steering Tags to steer DMA to arbitrary CPU caches?
+> 
+>>  		ret = pci_read_config_dword(pdev, epos + PCI_TPH_CAP, &dword);
+>>  		if (ret)
+>>  			return pcibios_err_to_errno(ret);
+> 
 
-No. Again.
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
