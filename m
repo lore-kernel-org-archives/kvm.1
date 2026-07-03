@@ -1,40 +1,40 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C433D4E8;
-	Fri,  3 Jul 2026 05:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E613546EA;
+	Fri,  3 Jul 2026 05:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783056211; cv=none; b=JuxH/SK6wbRExHPhggeZVBaccQqeQzrCojVkgEN2U6MNd5qj4nQgwGb9LWCbY+1EYl4kLhbQUVO+5U9owXRA0/zrG/cawSX0lNkZwRj5VlH2TmojpXkgeTUivP/G6fcx5pv9/XtJlRJjjzegQGEpxHkj7MAcRSTgUryb1FU7SII=
+	t=1783056212; cv=none; b=DZy5xIyUPkQDKZtQcJXVP2zo4t9QQB1jz2d2d8365rDgGZz5L5ZwzmYCetoduecVLnkNO3Ry9vCymJ+oBUQsf/0FArItTEu7zD2HHs0MeU9SxAYL99cj1L4A2jsuiOBJP2k4Hu7/pC23ipk8jP8NyMbsOTNPeajlDmogMlbmGAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783056211; c=relaxed/simple;
-	bh=rfWCLDHUcpahNgEC3SGqI/nzOlyqMecU43nGCyZYC8s=;
+	s=arc-20240116; t=1783056212; c=relaxed/simple;
+	bh=/MegIW1B5Ph/z9o6j3vpknjkTxLfDtRU9G3pSaGuRSs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UoJzXrygrb71lNgeWKZqU6WXcNxQM5AfQ65+fzb7v6L0FbusdfW1qk9M/x81IwmoJM+I73s/i4Ia8dJWHoNtwcrm61aBR29vHqHnil99INz6NnloOJuMtxJUNamyYziAzjxihLaeMbpRntoLXxStwCtGc5EYGd62rx0Iql80j+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=S20lgzeI reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=rIaOokew+Lr7EowGO8yKhVziiozlkh+UvkA5PDPwYcaQZ1hhrUquxxXwN3URv/O3vWWahfm3Z+33yQrj+/nER3XqwyWYZQiJJDQgKekZj1nzwcLfsGU+1661k+JLh+k7A67u4ecjiocZ2sQyk9a1yMh5XuR6TucjNEPIpk21wQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=QgYN2xsC reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="S20lgzeI"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="QgYN2xsC"
 Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6635LT8O018373
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6635LT8T018373
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 3 Jul 2026 14:21:42 +0900 (JST)
+	Fri, 3 Jul 2026 14:21:45 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=SuGsYbGlKlc6b1DT5vt3OpkvoEjMGNIgH0RWbpVGexY=;
+DKIM-Signature: a=rsa-sha256; bh=6SxS8nVg3xnGkGVZhxJ3G3DZU8jRBJGr+RtAwqpbPdU=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1783056103; v=1;
-        b=S20lgzeIrAK4H5mymbVMmwynLidXIEr8fLV0kex6TpzJb5R7oEizYlM/qZE1O+0g
-         uFjFcXYzOE14hzhJFWsTFYQdrmv0K6in73PtRufsQ8r/GM5NKIH1s+recQO8juh2
-         OaLEHIJBnUFgD+64n49UVucLVF9m+evAEg5zzgel4m7DkbrP1GMHAxna2ees1IG7
-         5bZ5m1XfKnCX5ZK+nZtBXgbqRIx9vn+a6hMl6pJd4EDLfwO1HrN2/08um2ZcPz8+
-         LyZlj6HTfbSxhxolTgpyMFL4zAzoXqOeexN24QPRCs+XynFBalZt3684DJiym37y
-         lwANSpgPCJHO5Vz6eFRBtg==
+        s=rs20250326; t=1783056106; v=1;
+        b=QgYN2xsCcD3xLna//lkUa8qytMBfIhKXr/m/42WJSe23dJFVmFc8yRSPhU5iHenl
+         OZo6Vl9ITdMn+SLCFkupO4MY+6oQg9Sc+S0X+8aLSXo7WIg1kHpXhlL2Yn2aOZfy
+         J2zWXQsg9T7VQmRg9umr+me0rHqZD634DFtCKEzEJC/Ay3/lp+gOBphyJ2UTlY8F
+         J/WMZcB5vh7ReK9I2StGrBSGxpXdNQRufr2y3gfv80If2ATSAD/9pC9f6QzyjXiD
+         g9wjXkQXuVaCnS4h3iqzXu843CfMCjL5FURg/d0yNvmc8z06Ey+Az1PSbDIt89b8
+         cOfEwrXXkc073eh77wa3Hw==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 03 Jul 2026 14:19:17 +0900
-Subject: [PATCH v2 1/7] hw/nvram/fw_cfg: Remove acpi-mr-restore
+Date: Fri, 03 Jul 2026 14:19:22 +0900
+Subject: [PATCH v2 6/7] migration/ram: Fix ram_save_complete() return value
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,7 +43,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-ram-v2-1-7f07fc06fba9@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260703-ram-v2-6-7f07fc06fba9@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260703-ram-v2-0-7f07fc06fba9@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260703-ram-v2-0-7f07fc06fba9@rsg.ci.i.u-tokyo.ac.jp>
 To: qemu-devel@nongnu.org
@@ -79,83 +79,39 @@ Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
         qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.16-dev-925f5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2570;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=813;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=rfWCLDHUcpahNgEC3SGqI/nzOlyqMecU43nGCyZYC8s=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5a7292uvb5fvrnm7tp9b5dvJte9v0uYEovO1uddvZ35h
- NFhQtvZjlIWBjEuBlkxRZaUot3cGtG1nwoT4ltg5rAygQxh4OIUgInUXWD4n3Q8Z7FJ9M3+/FlP
- yrWtlv46vnNK17JZ90Nzdlx6dcBGrpWRYeH/uf8fOdSpt8X3Xi7e9oZt790XTTtv/ZL4+X3x6UM
- KvHwA
+ bh=/MegIW1B5Ph/z9o6j3vpknjkTxLfDtRU9G3pSaGuRSs=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5a72+M7k1Jrb37eu8tUIZdTP/fDhrsTP61dfWWHw81ej
+ daUOadjOkpZGMS4GGTFFFlSinZza0TXfipMiG+BmcPKBDKEgYtTACbyWIGRYb35lvigt8rvKyvE
+ 9bymzzeZZbXGY4aDYdXFyOD70p3r2xn+6cSvM9obe2Pl/b7mtusfv7tx/UrJSzz61v/wL9mbbfb
+ WLAA=
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-The acpi-mr-restore property exists only for migration compatibility
-with QEMU 4.2, which is no longer a supported migration source.
+ram_save_complete() and qemu_file_get_error_obj() are documented to
+return negative values on error, but ram_save_complete() inverts the
+sign of qemu_file_get_error_obj()'s return value. Remove the sign
+inversion.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- include/hw/nvram/fw_cfg.h | 1 -
- hw/core/machine.c         | 1 -
- hw/nvram/fw_cfg.c         | 8 +-------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ migration/ram.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index 56f17a0bdcf7..6aad9aad7694 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -73,7 +73,6 @@ struct FWCfgState {
-     MemoryRegion dma_iomem;
+diff --git a/migration/ram.c b/migration/ram.c
+index 6bc7f705d31a..e1c191ec4383 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3431,7 +3431,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+             int err = qemu_file_get_error_obj(f, &local_err);
  
-     /* restore during migration */
--    bool acpi_mr_restore;
-     uint64_t table_mr_size;
-     uint64_t linker_mr_size;
-     uint64_t rsdp_mr_size;
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 9a10e45aabd5..44803e884140 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -214,7 +214,6 @@ GlobalProperty hw_compat_4_2[] = {
-     { "usb-redir", "suppress-remote-wake", "off" },
-     { "qxl", "revision", "4" },
-     { "qxl-vga", "revision", "4" },
--    { "fw_cfg", "acpi-mr-restore", "false" },
-     { "virtio-device", "use-disabled-flag", "false" },
- };
- const size_t hw_compat_4_2_len = G_N_ELEMENTS(hw_compat_4_2);
-diff --git a/hw/nvram/fw_cfg.c b/hw/nvram/fw_cfg.c
-index 1d7d83542137..f4e3e50224ca 100644
---- a/hw/nvram/fw_cfg.c
-+++ b/hw/nvram/fw_cfg.c
-@@ -612,7 +612,7 @@ static bool fw_cfg_acpi_mr_restore(void *opaque)
-     mr_aligned = QEMU_IS_ALIGNED(s->table_mr_size, qemu_real_host_page_size()) &&
-                  QEMU_IS_ALIGNED(s->linker_mr_size, qemu_real_host_page_size()) &&
-                  QEMU_IS_ALIGNED(s->rsdp_mr_size, qemu_real_host_page_size());
--    return s->acpi_mr_restore && !mr_aligned;
-+    return !mr_aligned;
- }
+             error_reportf_err(local_err, "Failed to write bitmap to file: ");
+-            return -err;
++            return err;
+         }
+     }
  
- static void fw_cfg_update_mr(FWCfgState *s, uint16_t key, size_t size)
-@@ -987,10 +987,6 @@ static void fw_cfg_machine_ready(struct Notifier *n, void *data)
-     qemu_register_reset(fw_cfg_machine_reset, s);
- }
- 
--static const Property fw_cfg_properties[] = {
--    DEFINE_PROP_BOOL("acpi-mr-restore", FWCfgState, acpi_mr_restore, true),
--};
--
- static void fw_cfg_common_realize(DeviceState *dev, Error **errp)
- {
-     FWCfgState *s = FW_CFG(dev);
-@@ -1149,8 +1145,6 @@ static void fw_cfg_class_init(ObjectClass *klass, const void *data)
- 
-     device_class_set_legacy_reset(dc, fw_cfg_reset);
-     dc->vmsd = &vmstate_fw_cfg;
--
--    device_class_set_props(dc, fw_cfg_properties);
- }
- 
- static const TypeInfo fw_cfg_info = {
 
 -- 
 2.54.0
