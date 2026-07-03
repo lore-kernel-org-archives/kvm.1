@@ -1,242 +1,243 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9422330AAA6;
-	Fri,  3 Jul 2026 16:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8823A2F1FDE;
+	Fri,  3 Jul 2026 16:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783096997; cv=none; b=JFfWDLwMP6vb1m6833JG+Eo6aFUGWwsxhT37Odh36e4LCrgkioIm7tPyEXpgiscHDh5gtYsH/R7LsfF/6Z5gi+Fdmx1cWCYsdfiXerrpqPQ9eG4LNlm5ozUwjRj/aDFPeY8JqiFvesKhMaOT48Uj5DO1dX5naPyxMPwFo44D/vg=
+	t=1783097000; cv=none; b=Aofgo8iZqVM5XiK6FQlU/7LpQSzCZo/Krf/rVeopVx6M0azFWzBWU+v9BaZgceUOlikcULZB6avdegQhv20ZC7A0L679wLfG10r+ev3VThvJgSnLPhsUm5YQ6Z9ynf63XZK/V8qSsGZntkfekPuJ/DIz4caa6b0MR8OJXFqDZC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783096997; c=relaxed/simple;
-	bh=kXXXJncf3EzfgeIfDHwNHs9n0kdixSi5OghbcoxpFT0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=b9kh2OVghix/oq0uIzimOHzlZbUW22Qe+CHc9hZe7sIwNc/LEneWMEpuNIQLam/+2gihGepvvSHas9ddyji3/9SwhdjbPNzmHWCxBAaVY/KEA/71nhnviYazy9n4tzldxKaS48H9oEJ+vJ473pzwZkwICRaxfyuA2Jspa5MMq+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRaBZF1o; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783097000; c=relaxed/simple;
+	bh=WBab9+njAD5aiCXcAouVi7TeyY4y7/wl56ZyGFZBq1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d4DkY8yx7qQeXHsYPJCBPjz0mOrGyVrqcG24V+qEp8q7SOQy4cHrL11EnHbDWFnLKSfD3v4NSHg+E9s3ELiP+9X1s1jmLYxnNgOO13BRl3ZVm2HkImOzznpIbZrH+ntSjDXVX2VvW7SUAe8O5VLhRKcM7vwYVVGisHn1NwZ8sC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQgODdQc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRaBZF1o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50471F000E9;
-	Fri,  3 Jul 2026 16:43:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQgODdQc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7901F00AC4;
+	Fri,  3 Jul 2026 16:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783096995;
-	bh=JqWTnfWBxYRnDPcPkXCp1RqD9i7JJdMx/tqwzDSH3dM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mRaBZF1oW+r4NjNjogyiJmBk+vu9Iqwm63np7ZYfEhCAwM5QlkKd0PA5w+XcrrNSY
-	 BglEDoD3qh8LWZnMvpNQCOW0rG7m3hvdamEDtdYfynnYK6gb4vfnJZVoJsm9Y8Wylg
-	 rR4+xgU3QjxrQ4NSaPbkF+s37FL2qXo1hjY9bKyj3xJ7M1nA9X2Hpgz2fQQjmuMz3F
-	 gi8FgKbpFqAxbd181yObu7MUYspsSqaKnSCWFzrE/+PgZT4ApNMjlb1H5TGNznBTkK
-	 4GTwKh7e6Nf/IqFJval6iyfimiKGWH2yJhLk/frAuAI+p7M7H01y4a1TGrw71ClMqT
-	 EmEj+YqcJZj3Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 36/40] KVM: arm64: gic-v5: Implement save/restore
- mechanisms for ISTs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-In-Reply-To: <20260703154811.3355680-37-sascha.bischoff@arm.com>
-References: <20260703154811.3355680-1-sascha.bischoff@arm.com>
- <20260703154811.3355680-37-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 16:43:14 +0000
-Message-Id: <20260703164314.C50471F000E9@smtp.kernel.org>
+	s=k20260515; t=1783096999;
+	bh=wmiike0RMf4GUZzG60cV6tKCpPnHn3sgz+92qG8ZSFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oQgODdQcQOZJ6UkIoTHpSPAR+xm0LbTzqhxtul4thXzJ1L4k1xRCB5Jfy9i79GdKy
+	 AqZzrmO9bPCWxh1+UKQeckEA8xfE1ALRrFgdtPWO8vjwNCunLuPHT3DQY412txfRXM
+	 IcPirEckZNvCksYf7oe2J9e7Gb5Koo01YZfFnIEDWVb2ZH6ACzGBQOnmSqTdpxJG/p
+	 jE9g1J1K8wCvGiZ6t6teTZjFTfq4KjVtxn3YEXBVakSfpQy5fogPPdyjHcKdGbkX9Y
+	 rkoOLSm0x9pfqRwQbmndrfkrHk4CW6WfefyPzMPDnrR/5D2l0WpKn8AHdQbcbcwD0f
+	 t+0ZKGm4Ihgmw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A9FACF4006C;
+	Fri,  3 Jul 2026 12:43:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 03 Jul 2026 12:43:17 -0400
+X-ME-Sender: <xms:peZHagMAZzcYl7CmGJIRQXcADJfppBSUDgNGnKdXW7-27IhwjKYNSA>
+    <xme:peZHav94GBW2fS7CSPjP7dXckGLtKDruvWFJgoRhS21FxCl5eSniepVxlnmADCm2k
+    ot3CcE2nTZxy-aoG3P9nlnbLnnddED08kNQfUr4Ghc-QSpAM3BUGVc>
+X-ME-Received: <xmr:peZHag-yEVwy1cFKNkUnw1mA7mzH_ik4hwH_tdr4YTNR-JuUxfNtBQ6LD3-XvA>
+X-ME-Proxy-Cause: dmFkZTEhXLrG7RRgWewl6PxPi2xh+8RsvhIU1msTLaJArxEAHB6uY996MYxuxeHg0YK91y
+    R0wyJcP7nTPMFDWO2Q8TpgpNyNZ42owgYwLWubaXjtExEZhofOlvlDvWLcia4Prx0zY45R
+    Fw38UnVt/frpIxZIsiAA6MUvzEARpnKuokCRNpn3gJzH0DP6jNc6FvmZdyr5G4Z2yyeA3e
+    A0pTNJ/xcW6DuOeNSIJ8JAKYtZNQGLKSOSu8G1RdEMTK0KDrunlklY8omtJiDqkZaS+9Im
+    xxzBCx16mviGsn1Gf931m+HMap5B6fYLxqAeP9gaObnEeRSCHAQmpkENZV8SepZp8HRAVS
+    D0mw8Lk+gVKD1CORE7bPyI2GJGmG4myt9165rJWgPoq8dT6ush6hA9t45mkxQ+OTjL+AIS
+    p+s9Ya+POW2qVpOGRTM3mU/duDR8ZK8HmdXoz87Dnj93jS1kPgVfUmo+5sGgF1rAvYNw17
+    jjw7+Tv7Y9MATgSPzv+Oq5FeWwGbeqjXX/0q+uGinBX/WSOsXB0IeMiSnOhwNfCGQJLE0k
+    Bld2Zc9VVIRr9ZuB3HegwP27DOKH9IzcWyGPzpgQVWOiR308qAcGNSuLpMCF4ffgkhfCf7
+    XsttxQzyy66CukTnb565g5n2L6u6r1LVYxt905mN7so2p6LQ4vyLwep8Ryiw
+X-ME-Proxy: <xmx:peZHavqZomUiomjVpT4A2daHUPpDZbqZLOGRjBjZpiGyVhDSfJNukg>
+    <xmx:peZHarJH0dyQxR4lrQGZ9IqAUJctIzzPAFEoPd5G-ISbH1gMNpzZSA>
+    <xmx:peZHak0BtjTmrFjtRwV9bkHngywyLii-Ma5udRkPh5Dbtkh4e9qQ0g>
+    <xmx:peZHak7O_jSu-q03beVgwlBiHYK8VGPqx_4AvW4Ujhd0wQ8X3DYjUw>
+    <xmx:peZHaiMlQJmsOlLT50fzJ4z4SqiiflrE1QXy9udNZWRfsTPEdZJWvGeB>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Jul 2026 12:43:17 -0400 (EDT)
+Date: Fri, 3 Jul 2026 17:43:15 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Addressing Sashiko AI review
+Message-ID: <akfmUXjqaBQnxqYX@thinkstation>
+References: <20260703133615.1039465-1-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703133615.1039465-1-kirill@shutemov.name>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
-s) to consider:
-- [High] Blindly freeing LPI IST pages and directly modifying active VMTE m=
-emory on a failed restore cleanup.
-- [High] No mechanism to un-quiesce the VM after a cancelled migration, per=
-manently bricking the guest.
-- [High] Restoring LPI IST processes INTIDs < 8192, injecting invalid inter=
-rupts into the hardware.
-- [High] Unprivileged userspace can trigger WARN_ON_ONCE kernel warnings by=
- calling IST save/restore ioctls at unexpected lifecycle states.
-- [Medium] Truncation of 64-bit VMTE bitwise AND result into 32-bit `int` i=
-ncorrectly flags valid ISTs as invalid.
---
+I looked through Sashiko review and queued changes for v9 (see incremental
+diff below). The v9 branch is available at:
 
-commit b7ddc5cb1b3a60a4389e44b1be34dab0a54a57d5
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/v9
 
-KVM: arm64: gic-v5: Implement save/restore mechanisms for ISTs
+- 05/15: uffd_disable_fault_around() did not cover RWP, so one
+  missing-page fault on shmem pre-installed up to 15 cached neighbours
+  as accessible ptes and PAGEMAP_SCAN reported them as
+  PAGE_IS_ACCESSED. Fault-around is now disabled for RWP.
 
-This patch implements save and restore mechanisms for the GICv5 Interrupt
-State Tables (ISTs). It allocates and synchronizes hypervisor memory for the
-SPI IST and guest memory for the LPI IST during migration. It also handles
-quiescing the VM and managing pending interrupts during the transition.
+- 06/15: change_huge_pud() rejects MM_CP_UFFD_RWP_ALL next to the
+  existing MM_CP_UFFD_WP_ALL check. Defensive only.
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
--irs-v5.c
-> --- a/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
-[ ... ]
-> @@ -1027,6 +1027,26 @@ int kvm_vgic_v5_irs_init(struct kvm *kvm, unsigned=
- int nr_spis)
->  	return 0;
->  }
-> =20
-> +int vgic_v5_irs_lpi_ist_id_bits(struct kvm *kvm, unsigned int *id_bits)
-> +{
-> +	struct vgic_v5_irs *irs =3D kvm->arch.vgic.vgic_v5_irs_data;
-> +
-> +	if (WARN_ON_ONCE(!irs))
-> +		return -ENXIO;
+- 09/15: the PROT_NONE accessibility check lived in
+  vma_can_userfault(), which unregister also calls, so RWP register ->
+  mprotect(PROT_NONE) -> UFFDIO_UNREGISTER failed with EINVAL. The
+  check is now register-time only.
 
-[Severity: High]
-Could unprivileged userspace intentionally trigger this warning?
+- 13/15: userfaultfd_register() read ctx->features with a plain load,
+  racing the WRITE_ONCE() in userfaultfd_set_mode(). Benign (the
+  tested bit is not toggleable), now uses userfaultfd_features().
 
-If a process calls the IST restore ioctl without properly configuring an IRS
-address first, the pointer will be missing. This might allow a malicious
-guest to trigger host kernel panics if panic_on_warn is enabled.
+- 15/15: the documentation wrongly claimed UFFDIO_API returns the
+  supported feature bitmask on EINVAL; the kernel returns the
+  structure zeroed. Corrected.
 
-[ ... ]
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/v=
-gic-v5-tables.c
-> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
-[ ... ]
-> +static int vgic_v5_read_vm_ist_desc(struct kvm *kvm, unsigned int sectio=
-n,
-> +				    struct vgic_v5_ist_desc *ist)
-> +{
-> +	u32 vm_id =3D vgic_v5_vm_id(kvm);
-> +	struct vmtl2_entry *vmte;
-> +	u64 vmte_ist_section;
-> +
-> +	vmte =3D vgic_v5_get_l2_vmte(vm_id);
-> +	if (IS_ERR(vmte))
-> +		return PTR_ERR(vmte);
-> +
-> +	vgic_v5_clean_inval(vmte, sizeof(*vmte));
-> +	vmte_ist_section =3D le64_to_cpu(READ_ONCE(vmte->val[section]));
-> +
-> +	ist->id_bits =3D FIELD_GET(GICV5_VMTEL2E_IST_ID_BITS, vmte_ist_section);
-> +	ist->istsz =3D FIELD_GET(GICV5_VMTEL2E_IST_ISTSZ, vmte_ist_section);
-> +	ist->l2sz =3D FIELD_GET(GICV5_VMTEL2E_IST_L2SZ, vmte_ist_section);
-> +	ist->iste_size =3D GICV5_ISTE_SIZE(ist->istsz);
-> +
-> +	return vmte_ist_section & GICV5_VMTEL2E_IST_VALID;
-> +}
+The finding against 03/15 is a pre-existing bug that the rename only
+made visible: copy_hugetlb_page_range() clears the uffd-wp bit of
+hwpoison/migration entries with the present-pte accessor, corrupting
+the swap offset. Fix posted separately:
 
-[Severity: Medium]
-Does the return type here truncate the result?
+  https://lore.kernel.org/all/20260703161833.57416-1-kirill@shutemov.name/
 
-The function returns an int, but evaluates a bitwise AND on a 64-bit value.
-If GICV5_VMTEL2E_IST_VALID is at bit 32 or higher, the cast to a 32-bit
-signed integer would truncate it to 0, incorrectly marking valid ISTs as
-invalid.
+I believe the remaining findings are either pre-existing or false
+positives. Ping me if you think something is worth discussing.
 
-> +static int vgic_v5_get_spi_ist_desc(struct kvm *kvm, bool userspace_buf,
-> +				    struct vgic_v5_ist_desc *ist)
-> +{
-> +	u32 vm_id =3D vgic_v5_vm_id(kvm);
-> +	int ret;
-> +
-> +	memset(ist, 0, sizeof(*ist));
-> +
-> +	ist->vmi =3D xa_load(&vm_info, vm_id);
-> +	if (WARN_ON_ONCE(!ist->vmi))
-> +		return -ENXIO;
-
-[Severity: High]
-Is there a similar risk of userspace triggering this warning as seen in
-vgic_v5_irs_lpi_ist_id_bits()?
-
-If the save/restore ioctls are called before the VM runs and vm_info is
-populated, ist->vmi will be unpopulated.
-
-[ ... ]
-> +static int vgic_v5_restore_linear_lpi_ist(struct kvm *kvm,
-> +					  const struct vgic_v5_ist_desc *ist,
-> +					  gpa_t g_entry_addr)
-> +{
-> +	size_t h_l2_index, h_l2_entries;
-> +	__le32 h_iste;
-> +	int ret;
-> +
-> +	h_l2_entries =3D BIT(ist->id_bits);
-> +
-> +	for (h_l2_index =3D 0; h_l2_index < h_l2_entries; h_l2_index++) {
-> +		void *h_iste_addr =3D ist->base + h_l2_index * ist->iste_size;
-> +
-> +		ret =3D kvm_read_guest(kvm, g_entry_addr, &h_iste,
-> +				     sizeof(h_iste));
-> +		if (ret)
-> +			return ret;
-> +
-> +		/*
-> +		 * Sanitise the IST, clearing HWU & pending fields. Pending
-> +		 * state is later replayed via GIC VDPEND.
-> +		 */
-> +		ret =3D vgic_v5_process_iste(&h_iste, &ist->vmi->pending_irqs,
-> +					   h_l2_index, GICV5_HWIRQ_TYPE_LPI);
-
-[Severity: High]
-Could this inject invalid interrupts into the hardware?
-
-The loop iterates from index 0 and processes all pending bits in the guest
-provided LPI IST. Since LPI IDs must be 8192 or greater, queuing indices
-0-8191 as pending LPIs and injecting them via VDPEND violates the
-architecture and could cause unpredictable hardware behavior.
-
-[ ... ]
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-[ ... ]
-> @@ -405,6 +417,27 @@ static int vgic_v5_irs_set_up_vpe(u16 vm_id, u16 vpe=
-_id,
->  	return 0;
->  }
-> =20
-> +static int vgic_v5_irs_save_vm_op(u16 vm_id, bool save, u32 *statusr)
-> +{
-> +	u64 save_vmr;
-> +	int ret;
-> +
-> +	save_vmr =3D FIELD_PREP(GICV5_IRS_SAVE_VMR_VM_ID, vm_id);
-> +	save_vmr |=3D GICV5_IRS_SAVE_VMR_Q;
-> +	save_vmr |=3D FIELD_PREP(GICV5_IRS_SAVE_VMR_S, save);
-
-[Severity: High]
-Is there a path to un-quiesce the VM after this operation completes?
-
-The save operation unconditionally sets GICV5_IRS_SAVE_VMR_Q, but there
-does not seem to be a corresponding mechanism anywhere to write the bit as
-0. If a save is performed to checkpoint state and the VM continues executio=
-n,
-will it be permanently prevented from receiving interrupts?
-
-[ ... ]
-> +static void vgic_v5_restore_cleanup(struct kvm *kvm,
-> +				    struct kvm_vcpu *vcpu,
-> +				    bool lpi_ist_allocated)
-> +{
-> +	/*
-> +	 * We are on the restore failure path, so we do a best-effort
-> +	 * cleanup. These commands might fail, but at this stage this is the
-> +	 * best we can realistically do.
-> +	 */
-> +	if (lpi_ist_allocated) {
-> +		vgic_v5_send_command(vcpu, VMTE_MAKE_INVALID);
-> +		vgic_v5_lpi_ist_free(kvm);
-> +	}
-
-[Severity: High]
-Are we risking memory corruption if VMTE_MAKE_INVALID fails here?
-
-If the invalidation command fails, the hardware might still consider the VM=
-TE
-valid. Calling vgic_v5_lpi_ist_free() immediately afterward frees the IST
-pages and zeroes the active VMTE in memory while the hardware is still
-using it.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703154811.3355=
-680-1-sascha.bischoff@arm.com?part=3D36
+diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
+index 69836e39aa0b..783d969f0e28 100644
+--- a/Documentation/admin-guide/mm/userfaultfd.rst
++++ b/Documentation/admin-guide/mm/userfaultfd.rst
+@@ -348,9 +348,9 @@ without ``CONFIG_USERFAULTFD_RWP``, and architectures whose ptes cannot
+ carry the uffd bit at runtime (e.g. riscv without the ``SVRSW60T59B``
+ extension). Requesting an unsupported feature in
+ ``uffdio_api.features`` makes ``UFFDIO_API`` fail with ``EINVAL`` and
+-leaves the userfaultfd context uninitialized; the bitmask returned in
+-``uffdio_api.features`` then advertises the features the kernel does
+-support. The recommended probe sequence is therefore to open a
++leaves the userfaultfd context uninitialized; the structure is returned
++zeroed, so the error path cannot be used to discover what the kernel
++supports. The recommended probe sequence is therefore to open a
+ throwaway userfaultfd, call ``UFFDIO_API`` once with ``features = 0``,
+ inspect the returned bitmask, close that fd, then open the real one
+ and call ``UFFDIO_API`` again with only the supported features set.
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index ca718e8590c5..bfbd6a59909f 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -171,7 +171,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+ /*
+  * Never enable huge pmd sharing on some uffd registered vmas:
+  *
+- * - VM_UFFD_WP VMAs, because write protect information is per pgtable entry.
++ * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
++ *   tracking information is per pgtable entry.
+  *
+  * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
+  *   VMAs which share huge pmds. (If you have two mappings to the same
+@@ -182,21 +183,25 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+ {
+ 	return vma_test_any_mask(vma,
+-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR,
+-					VMA_UFFD_RWP));
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
++					VMA_UFFD_MINOR));
+ }
+ 
+ /*
+- * Don't do fault around for either WP or MINOR registered uffd range.  For
++ * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
+  * MINOR registered range, fault around will be a total disaster and ptes can
+  * be installed without notifications; for WP it should mostly be fine as long
+  * as the fault around checks for pte_none() before the installation, however
+- * to be super safe we just forbid it.
++ * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
++ * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
++ * and pollute the tracked working set, so each page must be populated by its
++ * own fault.
+  */
+ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+ {
+ 	return vma_test_any_mask(vma,
+-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
++					VMA_UFFD_MINOR));
+ }
+ 
+ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c67261f04731..4150f1bdea0c 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2766,10 +2766,10 @@ int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		return 1;
+ 
+ 	/*
+-	 * Huge entries on userfault-wp only works with anonymous, while we
+-	 * don't have anonymous PUDs yet.
++	 * Huge entries on userfault-wp or userfault-rwp only work with
++	 * anonymous, while we don't have anonymous PUDs yet.
+ 	 */
+-	if (WARN_ON_ONCE(cp_flags & MM_CP_UFFD_WP_ALL))
++	if (WARN_ON_ONCE(cp_flags & (MM_CP_UFFD_WP_ALL | MM_CP_UFFD_RWP_ALL)))
+ 		return 1;
+ 
+ 	ptl = __pud_trans_huge_lock(pudp, vma);
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index a7659b0a1147..c96cfe0871dd 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2221,15 +2221,6 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+ 	    !vma_is_anonymous(vma))
+ 		return false;
+ 
+-	/*
+-	 * RWP uses protnone as an access-tracking marker. PROT_NONE VMAs
+-	 * have vm_page_prot == PAGE_NONE, so RWP resolution can't make a
+-	 * page accessible -- the next access would fault again. Reject up
+-	 * front instead of letting FOLL_FORCE loop on protnone+uffd PTEs.
+-	 */
+-	if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
+-		return false;
+-
+ 	return ops->can_userfault(vma, vm_flags);
+ }
+ 
+@@ -3758,7 +3749,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_RWP) {
+ 		if (!pgtable_supports_uffd() || VM_UFFD_RWP == VM_NONE)
+ 			goto out;
+-		if (!(ctx->features & UFFD_FEATURE_RWP))
++		if (!(userfaultfd_features(ctx) & UFFD_FEATURE_RWP))
+ 			goto out;
+ 		vm_flags |= VM_UFFD_RWP;
+ 	}
+@@ -3825,6 +3816,17 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		if (!vma_can_userfault(cur, vm_flags, wp_async))
+ 			goto out_unlock;
+ 
++		/*
++		 * RWP uses protnone as an access-tracking marker. PROT_NONE
++		 * VMAs have vm_page_prot == PAGE_NONE, so RWP resolution
++		 * cannot make a page accessible again. Reject at register
++		 * time only: a VMA that later becomes inaccessible via
++		 * mprotect() must still be unregisterable, so this is not
++		 * part of vma_can_userfault().
++		 */
++		if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(cur))
++			goto out_unlock;
++
+ 		/*
+ 		 * UFFDIO_COPY will fill file holes even without
+ 		 * PROT_WRITE. This check enforces that if this is a
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
