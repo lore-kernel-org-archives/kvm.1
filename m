@@ -1,153 +1,287 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885E73C454F;
-	Fri,  3 Jul 2026 12:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E550B317173;
+	Fri,  3 Jul 2026 12:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783082328; cv=none; b=IvzI1qCgNG3rGupArc+ph8EYc3Sde2GhjHtojlnCSzv6pJq5CIqD6q/9ZLzQY5iwOXFUBVlA5x0/aitGxv00PJ4bFSfKdhYlrE47i1DKM2RWNh4OTu6LkDjbRJl0FSoXjPaN283evvbUmSF1uBn0vtlPnWvHojnAD4sm4qxHGt8=
+	t=1783082870; cv=none; b=uOf1b6a8v+KImGwZRGfgF7Cc8XyWyTFQN0Wd84QJQ6k/r7X4J61dl62pJ0abk0bLUbYrp1UA4F1uIts/G8KnbElZd0lcP3WUw8y2hvOG5mTGrsb8cFo9WQ1/eVtfeWOHmXx3LmiBvogI1NidPY/pKhMOdDCV/T8BPR7U2xCZWDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783082328; c=relaxed/simple;
-	bh=7cqKQ9nuMZFC/0h39B8BTWb/IrgOChDNbyiwXPKmKNA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NpOzxC3oK2Sn2mNVLakVRWHk27ljiuEUv2Ki6XxKwGv/TZhit+AXJBNHVjdnzPcwl9RFO6q5Vizag9cpse9+1F4lTCpDn1KSJ5sq81rJ+i4Iv17xSEH63E2KkZ9sT9uF5k2GBPWm5OFvBK5DpmV0+BD2X2LJpwCjGpuEUjGd9Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lx/4tCcE; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1783082870; c=relaxed/simple;
+	bh=7iW+dYPTqpIT4kxV9kA9m2LZjmErTJWWocSxRdzPfng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tfp1x4rO2M48XkmpztqlJKyE+6QqfXP+nQ0VFRXSvuAkKgBejjmnGB9bjaKGT92ZYL4ECcAQnWma7diaZhIYRNmFuhaLiIY2+G3+Je9sCd2kZbCCYc5PCGtMm21cbcyO5wQ8eOWcNtkOzf9O2aNrw7DRt4iA9LohFBu6GeHnyHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apno0fpW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lx/4tCcE"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783082320; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=K8IESsN7IazgF4kkAKc3Bjn0YxF6z3ruog0n74pY0Hc=;
-	b=lx/4tCcE3j9pBL/EYarlFvM2Z334PsbGudNQlhwSTQ1MfOSOgqGfWY6BpuQQmPbUFLPG20i/wgNi8vzxcVRScr4PpXWFLsmgEweCSV8DbzR75GV/IPbyh4BRfjAD2LiZZjaAlVs2I8L6bfNeptvZWuW+Z4jf2ZQJY//8tEQXa3U=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0X6JE1Zq_1783082316;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X6JE1Zq_1783082316 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 03 Jul 2026 20:38:38 +0800
-From: fangyu.yu@linux.alibaba.com
-To: zhangzhanpeng.jasper@bytedance.com
-Cc: ajones@ventanamicro.com,
-	andrew.jones@oss.qualcomm.com,
-	alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	cuiyunhui@bytedance.com,
-	fangyu.yu@linux.alibaba.com,
-	guoren@kernel.org,
-	iommu@lists.linux.dev,
-	joro@8bytes.org,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	pbonzini@redhat.com,
-	pjw@kernel.org,
-	robin.murphy@arm.com,
-	tjeznach@rivosinc.com,
-	will@kernel.org,
-	yuanzhu@bytedance.com
-Subject: Re: [RFC PATCH 0/3] RISC-V: KVM/IOMMU: Fix MRIF irqfd notice handling 
-Date: Fri,  3 Jul 2026 20:38:35 +0800
-Message-Id: <20260703123835.41006-1-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260701040017.42707-1-zhangzhanpeng.jasper@bytedance.com>
-References: <20260701040017.42707-1-zhangzhanpeng.jasper@bytedance.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apno0fpW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E11F000E9;
+	Fri,  3 Jul 2026 12:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783082868;
+	bh=NPYOzd2RjFg1ddO/ZLQh27mhHcI8iJ031pBNVEV3ouY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=apno0fpWqD4HAfuc6YJmV2FSvla0WDZdWmjkMYLOExNvhMWLblylwUrBaWPl+Y5Lr
+	 vVPu9XkgOxIw0MTVsuw5+DVKZC0dSrPeeC6RuiA5dpyzCCwzsXjBCt7dvQPaP3upDF
+	 UoOQS7pIlBb/lzqdAGul1gwrToCtjFKmgxBz7SIClX0i1cAc11z7E0BdTwYPnCBl/L
+	 WsqiCuPbM+rXit3Wd9ri2eZps2cuhVzIcraC6ZmeRWB0YpVEo7r6NnXTZwc3P9bw5h
+	 w/SXZ2mFLUM0B6FeZybDNRlTX75MnL6BGPc28ROvk0jrqPfpOVBW6CHnxz4ZNq+eRI
+	 djOJZ+YWKunJA==
+Message-ID: <997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org>
+Date: Fri, 3 Jul 2026 14:47:32 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
+ Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>,
+ Steve Wahl <steve.wahl@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dimitris Michailidis <dmichail@fungible.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->Hi Fangyu,
->
->I put together a local test branch based on Andrew's RISC-V IOMMU
->irqbypass series [1] and your MRIF RFC series [2], then ran VFIO device
->assignment tests on hardware on top of that combined tree.
->
->One test case that exposed a problem was a VFIO guest started with QEMU's
->AIA emulation mode, e.g. `riscv-aia=emul`.  The guest could hang because
->a normal MSI injection was classified as a MRIF notice, so KVM skipped
->the software IMSIC EIP update and the interrupt was never made pending.
->
->The issue is that the current code identifies a MRIF notice by comparing
->the injected guest interrupt ID with cached host MSI data:
->
->    msg->data == iid
->
->That is a payload value comparison, not a source/provenance check.  A
->normal MSI injection can carry the same interrupt ID value as a cached
->host MSI message.  If the vCPU is currently using the software IMSIC file
->and this collision happens, KVM can misclassify the normal MSI as a MRIF
->notice, skip the software IMSIC EIP update, and leave the guest waiting
->for an interrupt that was never made pending.
+On 7/3/26 14:31, Brendan Jackman wrote:
+> Based on mm-new.
 
-Hi Zhanpeng,
+Seems ready for mm-new to me. I suspect most further non-trivial page
+allocator work will conflict, so better have it in mm to be based upon.
 
-Thanks for reviewing and testing my patches, and for pointing out
-the race condition issues. Your analysis is very helpful.
+I was worried about Johannes' defrag fixes [1] that were supposed to be
+stable bacported and thus would be better to add (the next revision) to
+mm-new first. But seems like if I apply this series on mm-new, and then [1]
+on top, nothing conflicts, so the ordering shouldn't matter.
 
-A few notes on the current status:
+[1] https://lore.kernel.org/all/20260626182215.1107966-1-hannes@cmpxchg.org/
 
-My original patches were based on Andrew Jones's tree [1]. Andrew
-has since published a v2 [2], and I have adapted my work on top of
-that version with some additional fixes. However, Andrew's v2 still
-needs further adjustments, so I plan to rebase onto his v3 once it
-is available.
+> This depends on moving alloc_tag to mm/:
+> https://lore.kernel.org/all/aj5QBtJcphPElczI@lucifer/
+> 
+> Some tweaks and cleanups for page allocator entrypoint and flags. This
+> is motivated by preparation for __GFP_UNMAPPED [1] (which will probably
+> become ALLOC_UNMAPPED in its next iteration), but all this is supposed
+> to be an improvement to the codebase in its own right: unifying code
+> paths, reducing API surface, and removing GFP flags.
+> 
+> [1] https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
+> 
+> This started with unifying  __alloc_frozen_pages[_nolock]_noprof() and
+> expanded from there.
+> 
+> Unifying the nolock allocator entrypoint with the normal allocator
+> entrypoint means adding an alloc_flags argument to the later (only
+> exposed within mm/). This presents an opportunity to take advantage of
+> that arg to remove some GFP flags, if we add that alloc_flags arg a bit
+> more broadly to allocator entrypoints.
+> 
+> To distinguish between mm-internal and "public" allocator entrypoints,
+> it makes sense to use the __ prefix. There are already some public APIs
+> with that prefix. For *alloc_pages*, just removing those variants seems
+> like a nice cleanup anyway, so do that. For get_free_pages, the "__"
+> variant is the _only_ variant and it's very widely used, so it doesn't
+> seem worthwhile to modify that. Therefore, scope this "__" change
+> specifically to the *alloc_pages* API, which means we leave the
+> *folio_alloc* API untouched too, even though that could probably be
+> cleaned up if so desired.
+> 
+> Tested:
+> 
+> - KVM, mm, and BPF selftests in a QEMU VM
+> 
+> - kunit.py on x86_64
+> 
+> - For the ALLOC_NO_CODETAG bits I just booted a VM and read
+>   /proc/allocinfo. I confirmed that if I remove ALLOC_NO_CODETAG, the
+>   kernel crashes in early boot, so I was at least booting code that
+>   depends on this logic.
+> 
+> I used Google's internal version of Antigravity (AI coding harness) to
+> do the repetitive bits, those commits are marked with Assisted-by, the
+> rest is manual.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+> Changes in v5:
+> - Just trivial non-functional fixes.
+> - Link to v4: https://patch.msgid.link/20260702-alloc-trylock-v4-0-0af8ff387e80@google.com
+> 
+> Changes in v4:
+> - Fixed some (harmless) missing applications of ac->alloc_flags (local
+>   Sashiko)
+> - Fixed various build issues.
+>    - Note that Sashiko pointed out a KMSAN build issue [0], I have
+>      fixed it but KMSAN builds are currently broken by objtool [1]. At least
+>      mm/kmsan/init.c compiles.
+>      [2] https://lore.kernel.org/all/20260629141642.628271F00A3D@smtp.kernel.org/
+>      [3] https://lore.kernel.org/all/20260630104434.GC751831@noisy.programming.kicks-ass.net/t/#u
+> - Avoided setting ALLOC_NOFRAGMENT under ALLOC_NOLOCK (Sashiko, Harry)
+> - Added patch to tweak alloc_flags_cma() interface (Vlastimil)
+> - More commit messages fixups (various)
+> - Added patch to create can_spin_trylock() (Harry)
+> - Link to v3: https://patch.msgid.link/20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com
+> 
+> Changes in v3:
+> - Created mm/page_alloc.h
+> - Fixed EXPORT_SYMBOL() issues
+> - Reworded commit messages per Sashiko's pointers
+> - Dropped rename of alloc_flags arg in prepare_alloc_pages() (Suren)
+> - Renamed gfp_to_alloc_flags_nonblocking() too after rebasing onto:
+>   https://lore.kernel.org/all/20260623004600.113347-1-jp.kobryn@linux.dev/
+> - Link to v2: https://patch.msgid.link/20260622-alloc-trylock-v2-0-31f31367d420@google.com
+> 
+> Changes in v2:
+> - Fixed up whitespace in nolock unification patch
+> - Introduced ALLOC_DEFAULT to replace literal 0 for alloc_flags
+> - All other patches are new
+> - Link to v1: https://patch.msgid.link/20260617-alloc-trylock-v1-1-83fd7858832e@google.com
+> 
+> ---
+> Brendan Jackman (17):
+>       mm/page_alloc: rename ALLOC_TRYLOCK -> ALLOC_NOLOCK
+>       mm/page_alloc: some renames to clarify alloc_flags scopes
+>       mm: name some args in a function declaration
+>       mm: Split out internal page_alloc.h
+>       mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
+>       mm/page_alloc: relax GFP WARN in nolock allocs
+>       mm: move some stuff to mm/page_alloc.h
+>       perf/x86/intel: Use higher-level allocator API
+>       KVM: VMX: Use higher-level allocator API
+>       x86/virt: Use higher-level allocator API
+>       sgi-xp: Use higher-level allocator API
+>       net/funeth: Switch to higher-level allocator API
+>       mm: Remove __alloc_pages_node()
+>       mm: Move __alloc_pages() to mm/page_alloc.h
+>       mm: replace __GFP_NO_CODETAG with ALLOC_NO_CODETAG
+>       mm/page_alloc: drop alloc_flags arg from alloc_flags_cma()
+>       mm: factor out can_spin_trylock()
+> 
+> Vlastimil Babka (SUSE) (1):
+>       mm: remove the __GFP_NO_OBJ_EXT flag
+> 
+>  Documentation/admin-guide/cgroup-v1/cpusets.rst  |   2 +-
+>  Documentation/admin-guide/mm/transhuge.rst       |   2 +-
+>  MAINTAINERS                                      |   1 +
+>  arch/x86/events/intel/ds.c                       |   6 +-
+>  arch/x86/kvm/vmx/vmx.c                           |   2 +-
+>  arch/x86/virt/hw.c                               |   2 +-
+>  drivers/misc/sgi-xp/xpc_uv.c                     |   5 +-
+>  drivers/net/ethernet/fungible/funeth/funeth_rx.c |   2 +-
+>  include/linux/alloc_tag.h                        |   4 +-
+>  include/linux/gfp.h                              |  54 +---
+>  include/linux/gfp_types.h                        |   7 -
+>  include/linux/skbuff.h                           |   2 +-
+>  include/trace/events/mmflags.h                   |  10 +-
+>  mm/alloc_tag.c                                   |  23 +-
+>  mm/compaction.c                                  |   5 +-
+>  mm/hugetlb.c                                     |   4 +-
+>  mm/internal.h                                    | 275 ++------------------
+>  mm/khugepaged.c                                  |   1 +
+>  mm/kmsan/init.c                                  |   2 +-
+>  mm/memory-failure.c                              |   1 +
+>  mm/memory_hotplug.c                              |   1 +
+>  mm/mempolicy.c                                   |  11 +-
+>  mm/migrate.c                                     |   1 +
+>  mm/mm_init.c                                     |   1 +
+>  mm/page_alloc.c                                  | 269 ++++++++++---------
+>  mm/page_alloc.h                                  | 312 +++++++++++++++++++++++
+>  mm/page_frag_cache.c                             |   6 +-
+>  mm/page_isolation.c                              |   1 +
+>  mm/page_owner.c                                  |   2 +-
+>  mm/page_reporting.c                              |   1 +
+>  mm/show_mem.c                                    |   1 +
+>  mm/shuffle.c                                     |   1 +
+>  mm/slub.c                                        |  17 +-
+>  mm/swap.c                                        |   1 +
+>  mm/vmscan.c                                      |   1 +
+>  mm/vmstat.c                                      |   1 +
+>  tools/include/linux/gfp_types.h                  |   7 -
+>  37 files changed, 536 insertions(+), 508 deletions(-)
+> ---
+> base-commit: 32af3ff0925368eff29b2fed62f154150eb5dc10
+> change-id: 20260617-alloc-trylock-14ad37dab337
+> 
+> Best regards,
+> --  
+> Brendan Jackman <jackmanb@google.com>
+> 
 
-When I send out my v2, I will take your patchset into consideration.
-
-Thanks again for your effort.
-
-[1] https://github.com/jones-drew/linux/tree/riscv/
-    iommu-irqbypass-rfc-v2-rc1
-[2] https://lore.kernel.org/linux-riscv/
-    20250920203851.2205115-20-ajones@ventanamicro.com/
-
-Fangyu
-
->This series identifies MRIF notices by irqfd route provenance instead.
->irqfd_wakeup() already injects from a seqcount-protected copy of
->irqfd->irq_entry, so patch 2 keeps the architecture's MRIF notice metadata
->in that route snapshot.  Userspace MSI injection and normal guest MSI
->injection do not carry irqfd MRIF provenance and therefore follow the
->normal software IMSIC path.
->
->The generic KVM change is needed because the decision must be made from
->the same copied route that irqfd_wakeup() injects from; keeping the
->provenance in RISC-V side state would not be tied to that route snapshot.
->
->Feel free to fold any of these patches into previous commits if you think
->that is a better shape for the next version. I also have a few other local
->adaptation and improvement patches on top, but kept them out of this series
->to focus on the MRIF notice issue. Please let me know if you already have a
->plan for the next revision, I am happy to support your next version in
->whichever form is useful.
->
->Zhanpeng Zhang (3):
->  iommu/riscv: Complete MRIF MSI PTE setup
->  KVM: Move irqfd arch data into route snapshots
->  RISC-V: KVM: Identify MRIF notices from irqfd snapshots
->
->These patches are based on a combined tree, not a plain upstream tree.
->The combined tree is made up of the following pieces:
->In your series, patch 4/6 is already covered by the irqbypass series [1].
->I ported patches 1/6, 2/6, 3/6, the relevant MRIF MSI PTE part of 5/6,
->and the notice handler part of 6/6, with a few integration changes.
->
->Fangyu Yu's MRIF RFC series [2] (selected patches):
->  [1/6] RISC-V: Add more elements to irqbypass vcpu_info
->  [2/6] RISC-V: KVM: Transfer the physical address of MRIF to iommu-ir
->  [3/6] RISC-V: KVM: Add a xarray to record host irq msg
->  [5/6, adapted] iommu/riscv: Add MRIF mode support
->  [6/6, adapted] RISC-V: KVM: Check the MRIF in notice MSI irq handler
->
->Andrew Jones et al. [1] (irqbypass series, omitted):
->  [RFC PATCH v2 00/18] iommu/riscv: Add irqbypass support
->
->[1] https://lists.infradead.org/pipermail/kvm-riscv/2025-September/010148.html
->[2] https://lwn.net/ml/all/20250811061104.10326-1-fangyu.yu@linux.alibaba.com/
