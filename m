@@ -1,178 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113183E5ED4
-	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B280B3DB31D
+	for <kvm@vger.kernel.org>; Fri,  3 Jul 2026 14:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783089194; cv=none; b=U4cKzwSE0SE8LC9aerXMuD8L/Z3lB270O3Yv007WZszvpgeA5EJ7gTdFJkK31uGRE0vnGwbgLEpa4SwmHLzL99RvUMHrtVlfUHSjLw8Z9otQnqeHlyGHdcweTdNc1hbGakFrUEng8wnLmBeS1d7sihKb2DLI48e+/T9cAV4z4Is=
+	t=1783089260; cv=none; b=kOc1F6B5Hg7osqPKKwLMxyvGz/pq4egI+BHHxQiBtj3S0tFFj0PuZlN36XYIz8l1WKiimxMV9P54MQjmJhA0FiHZc1OsRZ+FpHYHFsL4hXa61ywfqcT6we2gEIH5YwlZRZL5g2vDonDmvE3KuM6Lxqty40oK+nZj+/egeRpDEz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783089194; c=relaxed/simple;
-	bh=kfzu5/w0txewS+fkDODXWbbqJttEOtC614TdU4ZzB2k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nJbZhTCtmoNNJgL1LOrbQWkjPn0/83ONS5GBLD+JNLPesjMWCGdsdErTt2O5HRE9E8vQEv7rYTPMgAHquk7MZ3P2OWfmxN1L9slZrcdqxvaTS4UYAAJbsFzCCcu21JWRmQZpxWHCPCqrxin/Rbe7TBX+C/rgGO02XSTWD6JVmm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUH21kMo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783089260; c=relaxed/simple;
+	bh=6NkC5LcUPG2IVPwDtZ9fWDIP4tLJ3eRNHirn/GHrPIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kiOKVWvWp4P/QDin+eGADFP4FkTMWv+G8KNaZAkU+B+pWd2m7/7URM8Z5GZBZBh+h5yjlHkQG+cVOfjmCb/UzB6WZqXyyfBLuxDxE4TWTGQ+LT/IC/8MEaztmvnI2ZrwUJuXn2g7Ulhvhedeh+Y/Myzs/Uwb2Morj87uXpP22zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=f6eQZBMY; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUH21kMo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389D61F000E9;
-	Fri,  3 Jul 2026 14:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783089191;
-	bh=x1SXw3OaYau9rxzcNPOvcsZSbsqPoQOtn6Grtc3VP5w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lUH21kMoJzBHO3ZGf1jCfcJE6xmx6DXZ52LeUgFS1iQDOF7Urp8r0PMgSht6Toj2s
-	 QtcOm6oEz7F+gTNZx52w1CedVzNww+gvPO0xpqvoy9RdqdEFJoPLNZKmUMGzP/3aYZ
-	 fMyHWIHtRoaIjWeUQZJsCnmG+8CVr7hJB8MnjTgendd7gV28a6g6JJVJYsAaFENd2M
-	 8ynoZykU3Ljn1oT+RCaK6qzNaDL01uq+QLA/hiGWx/KSKypQt2jfqOpR6RhzpWsjJz
-	 Kdd4HUmqrDqk0u/jKFEM6eKTMh4tkjEWzbHxBmSyII79YaVtV/rYE22/ILpAL2c852
-	 v7UII8AeTXZ8A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 09/15] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and
- UFFDIO_RWPROTECT plumbing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260703133615.1039465-10-kirill@shutemov.name>
-References: <20260703133615.1039465-1-kirill@shutemov.name>
- <20260703133615.1039465-10-kirill@shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 03 Jul 2026 14:33:10 +0000
-Message-Id: <20260703143311.389D61F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="f6eQZBMY"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49253e951cdso148855e9.1
+        for <kvm@vger.kernel.org>; Fri, 03 Jul 2026 07:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783089257; x=1783694057; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ljMNR3U34F8WApvO4H/nMU/5WQkOXf/5EBBbyLdengA=;
+        b=f6eQZBMYVJSrhNfQiUAI6rQc3xzwrqvOwpVdDOSTjvWcG9esVRQ2vcNSqWAxz9cskA
+         DgkrjqggeH+Gc8SJSFem5hdxCoGOk4/AzoRpEpFWSEMsThbNKsd+9Yp92m++YgMy/dug
+         nSN26yi1mwpmbbQImTf69pm1daxFnY/3cMaJVoQWOwx9I9VkZ6cWKkYtDMIog9+jIeWT
+         eVIh5pxDM+fDbr+/H2dJcy8HR/eTvmcUaulozJNkgDeDyYujvYwnx4mtmNnnMbvYfZaI
+         lE6XA3/HhxWo807A7boSDb9SKy4wBllQiHRBh4isCDzhIvhIJIKBh7FogVzK/dZsnBUE
+         QsPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783089257; x=1783694057;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ljMNR3U34F8WApvO4H/nMU/5WQkOXf/5EBBbyLdengA=;
+        b=CexaZ4rnauL15WkCREbT9yMbPKgqwj9vGQLSqQ+wNjIvM7kqxcIp65D9XWEvcby5GV
+         Ygpg9SY0e5mTT/6pc+nbC5xl2WEqsdXFsxbgmGtMqgOrMcEkcr+LhB0LkjghkfsJd9tK
+         0DqH0HFWlJNjRVRs/TvpVdS1QzZdWfxQ5lSI6/iARDRrUtX3emKa3w/In/hHRWYE0fnN
+         kWh/Dvv2lb9D2aOTu9j0eX9h6WsNrsocuuuDdoZxXpHoIV5jaYSIwyy7x2cy+d5iQhc9
+         ABAYq4wWc4ZWWJs7vJBpfoRBrfS9+a+OXI6yHtBt7os02J4f78ftjt08DdaOZB0B5Z4N
+         JuVg==
+X-Forwarded-Encrypted: i=1; AFNElJ/OmiDvnPc3kKb8jrXtACYXWIz+JPxaeDGw13nUs0l+MhsI5z/6k0CzvQeUEI6K6Cj9GnU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXpnqQ4iEIEbOIoOnnmM08NtMXWqKy44wZFSL7MOkOznSsbRvh
+	r9zX3x2Qfvp8faZjqanz3FelrXeSmllBCemqlp4jivvmFzTCMfjzo2ykEcwxxuYex5s=
+X-Gm-Gg: AfdE7cmmPrOkru1u//eAsqngqlYjE3yj4nkrG4sFj58PyNmpbT6OIG2QHg/iuds6sd+
+	Tj+W3YrfycL6pX7dMLThEwAM1or6ppFMuycEQ3LZqqPnF7OcEhM/unMVlb0jxF61too1tof1hM7
+	l17L2Th0FDjaYBB6cejJK8JfimYkyw2FzJ3t4llQqWMlFEO3cng3+xbURbV4wxCQp4M/vNCichk
+	KZZ15JKgWHMzc6Pffj+6Kx4QTmFfvuB3D1tpVCgt69Bww/koUa5ARC5i9OwO6pvLhz8cOqCV+uI
+	5ESWiSEIEz+CdKRNvRPyEEPPzr5jW4YIyVZpixbBS+ZCwliDabxziUPf6Fn9zZNLsdQPPCv4psD
+	Y+80yxUxTIg4qhAk+OD8QkAD59/rfUbXxfqoYMgTXzIglIihJ8+Btj6ifXXKTLSdz8gBrDwPC23
+	qVK/thxJw=
+X-Received: by 2002:a05:600c:8217:b0:493:bab5:86ee with SMTP id 5b1f17b1804b1-493d0f343fdmr674415e9.4.1783089257091;
+        Fri, 03 Jul 2026 07:34:17 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903::e14? ([2001:1a48:8:903::e14])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c636e9e9sm131864315e9.2.2026.07.03.07.34.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jul 2026 07:34:16 -0700 (PDT)
+Message-ID: <3c945aa4-5429-4bf4-9c0b-c4745cf6024b@suse.com>
+Date: Fri, 3 Jul 2026 16:34:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/30] tools/testing/vma: use vma_start_pgoff() in merge
+ tests
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
+ Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+From: Vlastimil Babka <vbabka@suse.com>
+Autocrypt: addr=vbabka@suse.com; keydata=
+ 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
+ pYekxJujNeEDkUlky0Y=
+In-Reply-To: <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On 6/29/26 14:23, Lorenzo Stoakes wrote:
+> Now we have the vma_start_pgoff() helper, update the merge tests to make
+> use of it for consistency.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-New issues:
-- [High] Unrestricted mprotect() on RWP-registered VMAs allows userspace to=
- bypass accessibility constraints, leading to UFFDIO_UNREGISTER denial of s=
-ervice and FOLL_FORCE infinite loops.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Pre-existing issues:
-- [Critical] userfaultfd_clear_vma() modifies page tables under mmap_write_=
-lock without first calling vma_start_write(), allowing races with concurren=
-t per-VMA read lock operations.
-- [High] Incomplete rollback on OOM during partial userfaultfd_unregister l=
-eaves VMA and PTE state inconsistent.
---
-
-commit c5a9fac2c85eb7e6b0745bb04ca3c91f8a7a0f38
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
-
-Add the userspace interface for read-write protection tracking,
-including UFFDIO_REGISTER_MODE_RWP, UFFD_FEATURE_RWP, and
-UFFDIO_RWPROTECT. Introduces CONFIG_USERFAULTFD_RWP and integrates
-RWP handling into userfaultfd core.
-
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-
-[ ... ]
-
-> @@ -2152,6 +2221,15 @@ static bool vma_can_userfault(struct vm_area_struc=
-t *vma, vm_flags_t vm_flags,
->  	    !vma_is_anonymous(vma))
->  		return false;
-> =20
-> +	/*
-> +	 * RWP uses protnone as an access-tracking marker. PROT_NONE VMAs
-> +	 * have vm_page_prot =3D=3D PAGE_NONE, so RWP resolution can't make a
-> +	 * page accessible -- the next access would fault again. Reject up
-> +	 * front instead of letting FOLL_FORCE loop on protnone+uffd PTEs.
-> +	 */
-> +	if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
-> +		return false;
-> +
-
-[Severity: High]
-Could this accessibility constraint be bypassed by mprotect() after the
-VMA is already registered for RWP?
-
-vma_can_userfault() correctly prevents initial RWP registration on
-PROT_NONE VMAs. However, mprotect_fixup() preserves VM_UFFD_RWP when
-changing a VMA to PROT_NONE later.
-
-If userspace registers a readable VMA for RWP and then calls
-mprotect(PROT_NONE), the VMA enters the exact state this check intended
-to prevent.
-
-Would a subsequent FOLL_FORCE access (e.g. via /proc/self/mem) skip RWP
-resolution in handle_pte_fault(), fail to resolve the PROT_NONE state,
-and retry infinitely?=20
-
-If FOLL_WRITE is used, could it trigger do_wp_page() to copy and allocate
-new PROT_NONE pages infinitely?
-
-Also, wouldn't this prevent the VMA from being unregistered, since
-userfaultfd_unregister() calls vma_can_userfault() which would now reject
-the inaccessible VMA?
-
-[ ... ]
-
-> @@ -2204,9 +2282,22 @@ static struct vm_area_struct *userfaultfd_clear_vm=
-a(struct vma_iterator *vmi,
->  	if (start =3D=3D vma->vm_start && end =3D=3D vma->vm_end)
->  		give_up_on_oom =3D true;
-> =20
-> -	/* Reset ptes for the whole vma range if wr-protected */
-> -	if (userfaultfd_wp(vma))
-> -		uffd_wp_range(vma, start, end - start, false);
-> +	/* Clear the uffd bit and/or restore protnone PTEs */
-> +	if (userfaultfd_protected(vma)) {
-> +		unsigned int mm_cp_flags =3D 0;
-> +		struct mmu_gather tlb;
-> +
-> +		if (userfaultfd_wp(vma))
-> +			mm_cp_flags |=3D MM_CP_UFFD_WP_RESOLVE;
-> +		if (userfaultfd_rwp(vma))
-> +			mm_cp_flags |=3D MM_CP_UFFD_RWP_RESOLVE;
-> +		if (vma_wants_manual_pte_write_upgrade(vma))
-> +			mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
-> +
-> +		tlb_gather_mmu(&tlb, vma->vm_mm);
-> +		change_protection(&tlb, vma, start, end, mm_cp_flags);
-
-[Severity: Critical]
-This is a pre-existing issue, but does userfaultfd_clear_vma() modify
-page tables before draining per-VMA readers?
-
-The kernel VMA locking guidelines require that mmap_write_lock() holders
-call vma_start_write(vma) before modifying page tables. This excludes
-per-VMA lock readers.
-
-Here, change_protection() modifies PTEs before vma_modify_flags_uffd()
-is called. Could this race with concurrent per-VMA operations like
-MADV_DONTNEED that might modify or free the page tables while
-change_protection() is walking them?
-
-> +		tlb_finish_mmu(&tlb);
-> +	}
-> =20
->  	ret =3D vma_modify_flags_uffd(vmi, prev, vma, start, end,
->  				    &new_vma_flags, NULL_VM_UFFD_CTX,
->  				    give_up_on_oom);
-
-[Severity: High]
-This is a pre-existing issue, but what happens if the subsequent VMA split
-fails due to OOM?
-
-change_protection() unconditionally resolves the UFFD protection on all
-PTEs in the range before vma_modify_flags_uffd() executes.
-
-If vma_modify_flags_uffd() returns -ENOMEM during a partial unregister, it
-aborts and the error is returned to userspace.
-
-Does this leave the VMA retaining the VM_UFFD_WP or VM_UFFD_RWP flag,
-while the underlying PTEs have been permanently unprotected?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260703133615.1039=
-465-1-kirill@shutemov.name?part=3D9
