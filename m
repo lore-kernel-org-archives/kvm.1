@@ -1,38 +1,38 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D152337881E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1489378803;
 	Fri,  3 Jul 2026 21:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783113850; cv=none; b=asvb6DZ7lo0sPtvU1AiJNd3eQjc/u3TaiWcjT1kTlWxNs8LUgnNXPWWXUap4uv1vC9AXKnt7SajspSBm3UM+1Mg2I+QeG8eK1bu2fwT5EKU/Qcg+cDjCo1yF5v8zCmM9OIrEAX3w6p9XAUK6Whli4JLrVo2yY/YMQL/J3xoAozE=
+	t=1783113850; cv=none; b=Vvla9mCOpdWTOGfH70hBYGs2X68GEn7YEIaesfeNbqmUhqwtRf+ZMogpZwCstisgT5THPX6p7uJu7FozwWYZ28nD1OJmNopS8UU11dM0n7zjjnsd7Ly/VhFsrz+JbYvU6hwfB4JRuh7Rennr0h8fKpCrcJZq3r2nRkbK/Jvoqp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783113850; c=relaxed/simple;
-	bh=XGr1PtaeIhNzI+9qcm04k8q8b+leZWwCsY1929boQck=;
+	bh=EnZ6Qpl6P5nc/alG5pV5NVNkUPONyIkxolF+yuBoKxI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1OjV5/dhTXfuhdloMhL01S2NKDgKRLBzBZqgpFXHEVqZ8vLHpmvmAmBjJYbtT5GihPSguifFcdLnz9er8ajkodJFAUvY1Zq7gp3GVPLi7ZtJGdaMd+QK2gOVM1w4CenFLK5F7rAdTvFHO78p5cI/TZJFCVBnNOPVqq6zle9D78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Tbbp2+Tw; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=W08Iu6x6GbCe5CGUB+fScsAVPhOcRnIR4jsfYmz1W3lxX1cFjmBujvwgzDnJ5Bt7MBFR8Rwhf+nLysMEzHooJh58tIsA1OcubVHLd0Eh02c/f1oQVW4Sep4UUfx4rupo0PjbE2dfZ0XE7E9kw4eRvYikBUy266qnJ4SDVRxYkts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qTsfnPqY; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Tbbp2+Tw"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qTsfnPqY"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=flkC/OcSCGAXpnaP19vXBE2hMaRp11igqBu5RS6r3dg=; b=Tbbp2+TwxLpc+G6p3RBqRTKHVF
-	F4m+83xyTjWYceXJyh2USsFVoW6+F+mtSXFFxfE40w5kBpDY7LtCXofCcMc5DNYajLyDOqwL8awjr
-	D8NjUmK74H6WSJ4msHlpTTp23TRYPcLxDbu5yf3S4NBseUm1GXoEO6eGOWBjZbhbqtgNYV3EslBHl
-	sdjDwDOi/MgPFJ/us5LXXWA4S16xfC6rAOzt5Ui6F0K99DIcw/7CW4aX8nJ96jKVAAqZ7lQKV3S/e
-	wuu9Y93KEfLorCJOM0DRw0AlgEomw2lcT+tPvveFIhQ0M5LxwRmzGgsezMN8iEKUMRI6h7CJsDgke
-	xHD9FbXQ==;
+	bh=pFpNlCE+MJW0eKcLFgCCZwMvqjxRJ/tMcKVjrR0U73Q=; b=qTsfnPqYdMDx4eUygFXJFljz/J
+	HPP9ML6utEPbyFF37E1VztfM6jgMhMBh95PQ1lNByOYWgIaCp6JWwXn4CRiSdDQFDIubsZaIb1glB
+	Pu8lGpAoP1cmJkXCbNxwxUkWPL34CuBc3XRH6b6uwshPpJHdqsbbOUZ4TmvT2K+ejBCcOwlpZY1Jb
+	GjvaQoRWKExUh3UM+KhXoM+5PJv34XQ5X20qE921jQFhjoHQPWuJAMkL9/oLGBiIyvViWkFfekSOH
+	a1X/CfCJ/Z+HF+xC8jpSbTeTXXtYydVpu1qQp7aurcyiShWJWGhkMCvXINe0EysHUaf8mOrj5+V/i
+	2xt5dohQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wflKc-000000059Nv-34Xj;
+	id 1wflKd-000000059O3-3Oad;
 	Fri, 03 Jul 2026 21:23:38 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wflKV-00000001RNt-3e6d;
-	Fri, 03 Jul 2026 22:21:47 +0100
+	id 1wflKW-00000001ROl-2MEe;
+	Fri, 03 Jul 2026 22:21:48 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v6 02/36] KVM: x86: Improve accuracy of KVM clock when TSC scaling is in force
-Date: Fri,  3 Jul 2026 22:17:41 +0100
-Message-ID: <20260703212145.343527-3-dwmw2@infradead.org>
+Subject: [PATCH v6 15/36] KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
+Date: Fri,  3 Jul 2026 22:17:54 +0100
+Message-ID: <20260703212145.343527-16-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260703212145.343527-1-dwmw2@infradead.org>
 References: <20260703212145.343527-1-dwmw2@infradead.org>
@@ -79,110 +79,51 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The kvm_guest_time_update() function scales the host TSC frequency to
-the guest's using kvm_scale_tsc() and the v->arch.l1_tsc_scaling_ratio
-scaling ratio previously calculated for that vCPU. Then calculates the
-scaling factors for the KVM clock itself based on that guest TSC
-frequency.
+The compute_guest_tsc() function computes the guest TSC at a given
+kernel_ns timestamp. When the master clock reference point
+(master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
+is negative. Since pvclock_scale_delta() takes a u64, the negative
+value wraps to a huge positive number, producing a wildly wrong result.
 
-However, it uses kHz as the unit when scaling, and then multiplies by
-1000 only at the end.
+Handle negative deltas explicitly by negating the delta, scaling it,
+and subtracting from this_tsc_write.
 
-With a host TSC frequency of 3000MHz and a guest set to 2500MHz, the
-result of kvm_scale_tsc() will actually come out at 2,499,999kHz. So
-the KVM clock advertised to the guest is based on a frequency of
-2,499,999,000 Hz.
-
-By using Hz as the unit from the beginning, the KVM clock would be based
-on a more accurate frequency of 2,499,999,999 Hz in this example.
-
-Use u64 for the hw_tsc_hz field since an unsigned int would overflow for
-TSC frequencies above 4GHz. Use div_u64() for the Xen CPUID leaf to
-play nice with 32-bit kernels.
-
-Fixes: 78db6a503796 ("KVM: x86: rewrite handling of scaled TSC for kvmclock")
-Reviewed-by: Paul Durrant <paul@xen.org>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
 ---
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/cpuid.c            |  2 +-
- arch/x86/kvm/x86.c              | 17 +++++++++--------
- 3 files changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kvm/x86.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f14009f25a3b..b2446c04a076 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -950,7 +950,7 @@ struct kvm_vcpu_arch {
- 	gpa_t time;
- 	s8  pvclock_tsc_shift;
- 	u32 pvclock_tsc_mul;
--	unsigned int hw_tsc_khz;
-+	u64 hw_tsc_hz;
- 	struct gfn_to_pfn_cache pv_time;
- 	/* set guest stopped flag in pvclock flags field */
- 	bool pvclock_set_guest_stopped_request;
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index e69156b54cff..621d950ec692 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -2131,7 +2131,7 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
- 				*ecx = vcpu->arch.pvclock_tsc_mul;
- 				*edx = vcpu->arch.pvclock_tsc_shift;
- 			} else if (index == 2) {
--				*eax = vcpu->arch.hw_tsc_khz;
-+				*eax = div_u64(vcpu->arch.hw_tsc_hz, 1000);
- 			}
- 		}
- 	} else {
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0550359ed798..dbcff49cd561 100644
+index 376b8dc2ade9..55fb19fb7a88 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -3314,7 +3314,8 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
- int kvm_guest_time_update(struct kvm_vcpu *v)
+@@ -2588,11 +2588,21 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
+ 
+ static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
  {
- 	struct pvclock_vcpu_time_info hv_clock = {};
--	unsigned long flags, tgt_tsc_khz;
-+	unsigned long flags;
-+	u64 tgt_tsc_hz;
- 	unsigned seq;
- 	struct kvm_vcpu_arch *vcpu = &v->arch;
- 	struct kvm_arch *ka = &v->kvm->arch;
-@@ -3340,8 +3341,8 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+-	u64 tsc = pvclock_scale_delta(kernel_ns-vcpu->arch.this_tsc_nsec,
+-				      vcpu->arch.virtual_tsc_mult,
+-				      vcpu->arch.virtual_tsc_shift);
+-	tsc += vcpu->arch.this_tsc_write;
+-	return tsc;
++	s64 delta_ns = kernel_ns - vcpu->arch.this_tsc_nsec;
++	u64 tsc;
++
++	/* Handle negative deltas gracefully (master clock ref may be earlier) */
++	if (delta_ns < 0) {
++		tsc = pvclock_scale_delta(-delta_ns,
++					  vcpu->arch.virtual_tsc_mult,
++					  vcpu->arch.virtual_tsc_shift);
++		return vcpu->arch.this_tsc_write - tsc;
++	}
++
++	tsc = pvclock_scale_delta(delta_ns,
++				  vcpu->arch.virtual_tsc_mult,
++				  vcpu->arch.virtual_tsc_shift);
++	return vcpu->arch.this_tsc_write + tsc;
+ }
  
- 	/* Keep irq disabled to prevent changes to the clock */
- 	local_irq_save(flags);
--	tgt_tsc_khz = get_cpu_tsc_khz();
--	if (unlikely(tgt_tsc_khz == 0)) {
-+	tgt_tsc_hz = (u64)get_cpu_tsc_khz() * 1000;
-+	if (unlikely(tgt_tsc_hz == 0)) {
- 		local_irq_restore(flags);
- 		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
- 		return 1;
-@@ -3376,16 +3377,16 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
- 	/* With all the info we got, fill in the values */
- 
- 	if (kvm_caps.has_tsc_control) {
--		tgt_tsc_khz = kvm_scale_tsc(tgt_tsc_khz,
-+		tgt_tsc_hz = kvm_scale_tsc(tgt_tsc_hz,
- 					    v->arch.l1_tsc_scaling_ratio);
--		tgt_tsc_khz = tgt_tsc_khz ? : 1;
-+		tgt_tsc_hz = tgt_tsc_hz ? : 1;
- 	}
- 
--	if (unlikely(vcpu->hw_tsc_khz != tgt_tsc_khz)) {
--		kvm_get_time_scale(NSEC_PER_SEC, tgt_tsc_khz * 1000LL,
-+	if (unlikely(vcpu->hw_tsc_hz != tgt_tsc_hz)) {
-+		kvm_get_time_scale(NSEC_PER_SEC, tgt_tsc_hz,
- 				   &vcpu->pvclock_tsc_shift,
- 				   &vcpu->pvclock_tsc_mul);
--		vcpu->hw_tsc_khz = tgt_tsc_khz;
-+		vcpu->hw_tsc_hz = tgt_tsc_hz;
- 	}
- 
- 	hv_clock.tsc_shift = vcpu->pvclock_tsc_shift;
+ #ifdef CONFIG_X86_64
 -- 
 2.54.0
 
