@@ -1,338 +1,163 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96F318AE3;
-	Sat,  4 Jul 2026 23:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E817364AA4
+	for <kvm@vger.kernel.org>; Sun,  5 Jul 2026 01:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783208331; cv=none; b=KwkGit/dZ9nnOQlElHc6LF5fEELFI5IfNCkkxg8mVYfuBg3y1AJ0RaBO3Wu8FSjNJKoaP+PhKG1E3ZCHqeTYe87zp3DDacygmFtziMk7HO/7ujawgU3ZntOolGs+LmNe1Tk9DZp6jy9DLKf3LtqRPzFmAlBWgRyOdfY1C+i1Lcw=
+	t=1783215615; cv=none; b=QWDSpBH8VAM003SXy0ne2E9TdrguGhoZAUUd1XKKFbwcYLpcCqVfZXPIH8p3nuzM7IwRrAvGpEadsgovqIsb2Ox4Wrto3mi92VUvMM7Lsg/tfEvxc/RfWgB0NTci/76odjAaDnqFCRRvq0x0+w1/9dfSBvwvg062XMrkWEud+dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783208331; c=relaxed/simple;
-	bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SdbLNCgHHIS/xth6JOrJmzbBUAyhNGz0JvhyeaSX+ko+fpD/rL6lOiIsGYdNelWCKXgTNzHEgvoU4+meQoPqG2+58ezB+bB99wuFU2aWEvJMVcMKAJf78cHU12/OW/8g45ZU2QETLBXVV1OygWGxXifsUOEaRSWorv5D0/29jhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CQASIfnk; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783215615; c=relaxed/simple;
+	bh=EYJEPXytt4pmKnn/MD3hvuVjx/RNH42xxRrH4dUNC8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eLrmxNRApCVf3K/ga8pF2AHi6a/25QD9Tu46h/UdBIIvqM1MXVjL2rNHg7G2qMNNRqFZgfiuSJnUfO7fXz8DSXTxVorGO9roR1UeNjQhn2fk4s+bF3Bf19jzVYTk+BNLiFPxUgfmInxkTMKS6qGudnFrpLI1pytad6HfTigK47Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=McYgCY+3; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CQASIfnk"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 764091A9A;
-	Sat,  4 Jul 2026 16:38:35 -0700 (PDT)
-Received: from [10.57.39.250] (unknown [10.57.39.250])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B68F3F85F;
-	Sat,  4 Jul 2026 16:38:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783208319; bh=s8K7gocsWH9rX7pANzHxIK07Z+WF9Hm5c4sGgOuC5gs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CQASIfnktKJ+nJBsa+sb+UUp/whO7qPhCX8lvNLWNHjZbzL0OZNmp18ACbtwf78sq
-	 5BQyc2Gvo4iMWs88e7iwAVmUzNwMDDnMKDS5JXpoQMiHp1m54keQESKtrPapIShSsS
-	 Y/fCh+eY83Tx1TDwgjWsfX8tgU4pzalslz35LonA=
-Message-ID: <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
-Date: Sun, 5 Jul 2026 00:38:24 +0100
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="McYgCY+3"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-384930ca5e2so486636a91.3
+        for <kvm@vger.kernel.org>; Sat, 04 Jul 2026 18:40:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1783215613; x=1783820413; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPsFGUTTT7n/qqSsl80pkjMnwpBJfWNqBULhouzxndg=;
+        b=McYgCY+3/k+U6wbt+lxn04r7dXDKDw503iWORZxNYBlBU6maqbtvjiX1CtnDJUTg+Z
+         S5uwcx7xrJXy/pszhxXrHhgtZOBRe9OJm1lIEv3v8DwU0VT8ISccTM2T2AV1JJv70kym
+         GP5/ywejVCAY5yxKl0fTKbGXVsO5SNs82s4BJqesY0vHu50505xLPt0Ods+4ZJK2SX8P
+         71/9KDLtIJQKsYc8aLoFQMx+nLc3mfvFqP58z0FMFqirciXLFmLDN3taVIULRH8PJAGt
+         8Upo9mF1PT/AVtmVudwlZg9v0+1KOUmNxEkL9xThSKOxQyEUjQn/9hOYk0+TIcR+P9sa
+         CnyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783215613; x=1783820413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oPsFGUTTT7n/qqSsl80pkjMnwpBJfWNqBULhouzxndg=;
+        b=WQFzXLVlmyamevuD3A/MyuMRBSg/K8h9EFXpqb7VvNuxSlJhCO7cISsdKQhIuW8zYc
+         SFrdOY1JY/ZqjpsQ5RL3CmDeR8A0hezF7Dw1AZxRhgm3s6Yp1FJaoorpHkbjJP4qs+QK
+         gtELv2iPJbkhqWwnHm+ZZ9gfoXwyqq8DLbbPSc0R2QJ7J6IQ6AO9ZupJ4NmRfEG9G8nL
+         7NyNZOFuhFMgWx2HcMp1/aA7XVbK+DJplX6yEVhpLzTJQ1OkDw2G6Ut9qjdPCFPVhmg7
+         P3ubGdWDoSXJGlDWjPP4znjFtDhwGrcPJvyzwnj83IO9PkekX7vQd7E1MeebpQnSbODy
+         Vp3g==
+X-Gm-Message-State: AOJu0YwyAXFB7xA9JxXfOYPD7X2cLKTin3r4MeEAsCanNVgENZ6iAbQq
+	mGKTQF6RmBuh0ybU50r06RS4iry+AnP3OdQ0sC3spe93sA0LMrgG3LcIig7ejUhh7w==
+X-Gm-Gg: AfdE7cmv19ZpbgQHcQCSJbKIgTXTWnfb7FcChzTGJQwCM9BEJWVh65GXkxaqCvAhSAF
+	VzNZE3cfHNFLzB4Zc1YDyWkC3UjzcnAYrzAVc0uec/wnBKQHLTJp4ftZbMp5G3eFLja2a5iEOvD
+	nzyRLeZWhyGPh5FoYCUPl7QdqG59MVDzQfrz8G9wCsRb3Lrbdi+H3YQc04hNy5//YMmg1/SHL0K
+	s0ww4kIi05teW4bnXHT3YPrCDQro7uqMAcWdM5/qLRdcg1zZJKXuy/DJuEY1AvTQFciT+1OXt0d
+	rNVkY0CWCpbsTC/D5sNyF8h6dq/4QSqNX6Hz1S8iW1iZgv0cJOhNKXE0a/D81pX5mQodGzQmnta
+	5vB0vxcoB5PsrggRw6wvidk0e4rrPs5YQRNxlx9hqz+2EJi7jF1xgu4qjQCep0Q4oe2KmFuDkiL
+	rvr4kCZjWL
+X-Received: by 2002:a17:90a:e704:b0:367:bc89:546e with SMTP id 98e67ed59e1d1-38280e9457emr4626911a91.12.1783215613226;
+        Sat, 04 Jul 2026 18:40:13 -0700 (PDT)
+Received: from p1.. ([2607:fb90:ec0d:5e36:b9f2:b9e9:da03:a2c0])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38127ae6e2bsm2945320a91.2.2026.07.04.18.40.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2026 18:40:12 -0700 (PDT)
+From: Xiang Mei <xmei5@asu.edu>
+To: Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Auger <eric.auger@redhat.com>,
+	Li Qiang <liq3ea@gmail.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH] vfio/pci: clear vdev->msi_perm after freeing it on init failure
+Date: Sat,  4 Jul 2026 18:40:10 -0700
+Message-ID: <20260705014010.1297885-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
- KVM_SET_MEMORY_ATTRIBUTES2
-Content-Language: en-GB
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi
+vfio_msi_cap_len() lazily allocates the per-device MSI permission table:
 
-On 19/06/2026 01:31, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Introduce base support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd, which
-> just updates attributes tracked by guest_memfd.
-> 
-> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> by making sure requested attributes are supported for this instance of kvm.
-> 
-> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> details to userspace. This will be used in a later patch.
-> 
-> The two ioctls use their corresponding structs with no overlap, but
-> backward compatibility is baked in for future support of
-> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> ioctl.
-> 
-> The process of setting memory attributes is set up such that the later half
-> will not fail due to allocation. Any necessary checks are performed before
-> the point of no return.
-> 
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Sean Christoperson <seanjc@google.com>
-> Signed-off-by: Sean Christoperson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+	vdev->msi_perm = kmalloc_obj(struct perm_bits, GFP_KERNEL_ACCOUNT);
+	if (!vdev->msi_perm)
+		return -ENOMEM;
 
-...
+	ret = init_pci_cap_msi_perm(vdev->msi_perm, len, flags);
+	if (ret) {
+		kfree(vdev->msi_perm);
+		return ret;		/* vdev->msi_perm left dangling */
+	}
 
+When init_pci_cap_msi_perm() -> alloc_perm_bits() fails with -ENOMEM, the
+error path frees vdev->msi_perm but leaves the freed pointer stored in
+it. vdev->msi_perm is not re-zeroed later because struct
+vfio_pci_core_device is per-device and persists across open/close cycles,
+and the vfio_config_init() error path returns without calling
+vfio_config_free(). So the dangling pointer outlives the failed open.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 65ce795c090d9..0d14548c1ed22 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -541,11 +541,127 @@ bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+That leads to two use-after-frees on the same device:
 
-...
+1. Reuse. The next vfio_config_init() sees the stale pointer at
+   "if (vdev->msi_perm) return len;" and reuses the freed object. MSI
+   config accesses in vfio_pci_config_rw_single() then dereference and
+   call the freed perm->readfn / perm->writefn function pointers.
 
-> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> +				     size_t nr_pages, uint64_t attrs)
-> +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	pgoff_t end = start + nr_pages;
-> +	struct maple_tree *mt;
-> +	struct ma_state mas;
-> +	int r;
-> +
-> +	mt = &gi->attributes;
-> +
-> +	filemap_invalidate_lock(mapping);
-> +
-> +	mas_init(&mas, mt, start);
-> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
-> +	if (r)
-> +		goto out;
-> +
-> +	/*
-> +	 * From this point on guest_memfd has performed necessary
-> +	 * checks and can proceed to do guest-breaking changes.
-> +	 */
-> +
-> +	kvm_gmem_invalidate_start(inode, start, end);
+2. Double free. A later vfio_config_free() runs free_perm_bits() and
+   kfree() on the already-freed object.
 
-I added support for Arm CCA KVM patches with the inplace conversion and
-I am hitting the following issue.
+Fix it by NULLing vdev->msi_perm after the kfree(), matching the
+NULL-after-free discipline already used in free_perm_bits() and
+vfio_config_free().
 
-1. I am supporting INIT_SHARED + MMAP flags.
-2. VMM creates the Gmem_fd with both the flags above.
-3. Uses the shared gmem-mmap to load the initial payloads (kernel, dtb).
-4. At the VM finalization time, Populate the loaded regions one by one
-    by
-     a) copying the images to a temparory buffer - Since CCA can't really
-        load the contents in-place.
-     b) Set the "region" to Private in the gmem_fd (via 
-SET_MEMORY_ATTRIBUTES2)
-     c) Invoke CCA backend to populate the private memory via
-        ioctl(KVM_ARM_RMI_POPULATE,..) [0]
+  BUG: KASAN: slab-use-after-free in vfio_pci_config_rw_single (drivers/vfio/pci/vfio_pci_config.c:1961)
+  Read of size 8 at addr ffff88800fcc88d0 by task exploit/143
+  Call Trace:
+   ...
+   kasan_report (mm/kasan/report.c:595)
+   vfio_pci_config_rw_single (drivers/vfio/pci/vfio_pci_config.c:1961)
+   vfio_pci_config_rw (drivers/vfio/pci/vfio_pci_config.c:1986)
+   vfio_pci_rw (drivers/vfio/pci/vfio_pci_core.c:1599)
+   vfs_read (fs/read_write.c:572)
+   __x64_sys_pread64 (fs/read_write.c:764)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+   ...
 
-[0] 
-https://lore.kernel.org/all/20260513131757.116630-27-steven.price@arm.com/
+Followed on device close by a double free of the same object:
 
+  Oops: general protection fault, probably for non-canonical address
+    0x1f63e0e8000008: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:kfree (mm/slub.c:6711)
+  Call Trace:
+   vfio_config_free (drivers/vfio/pci/vfio_pci_config.c:1861)
+   vfio_pci_core_disable (drivers/vfio/pci/vfio_pci_core.c:685)
+   vfio_pci_core_close_device (drivers/vfio/pci/vfio_pci_core.c:777)
+   vfio_df_close (drivers/vfio/vfio_main.c:602)
+   vfio_device_fops_release (drivers/vfio/vfio_main.c:648)
+   __fput (fs/file_table.c:512)
+   __x64_sys_close (fs/open.c:1496)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+   ...
+  Kernel panic - not syncing: Fatal exception
 
-5. Additionally, VMM can mark the entire RAM to be private before the VM
-    starts running, again via SET_MEMORY_ATTRIBUTES2. On CCA, this 
-action is measured and doesn't require the Host to "commit" memory to 
-the VM.
-Instead the host can lazily donate memory on a fault.
+Fixes: 30ea32ab1951 ("vfio/pci: Fix potential memory leak in vfio_msi_cap_len")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+---
+ drivers/vfio/pci/vfio_pci_config.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-But step (5) triggers the invalidation of both private and shared
-mappings of the gmem area, from the kvm_gmem_invalidate_start()
-above.
-
-This is because, the entire DRAM now has, some portions PRIVATE (the 
-loaded regions) and the rest are SHARED (from the Gmem_fd creation).
-  Thus, kvm_gmem_get_invalidate_filter(Dram_start, Dram_end) causes the 
-invalidation of both "PRIVATE" and "SHARED" regions, which results
-in the destruction of the already loaded data and things go south.
-
-When we know that the kvm_gmem_invalidate_xx is triggered by a 
-conversion, we don't need to invalidate the existing pages that
-are in the requested state. i.e., the following patch on top of
-this series does the trick for me :
-
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index a97fcac34a0e..62e0427a49f4 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -250,16 +250,23 @@ static void __kvm_gmem_invalidate_start(struct 
-gmem_file *f, pgoff_t start,
-                 KVM_MMU_UNLOCK(kvm);
-  }
-
-+static void kvm_gmem_invalidate_start_filter(struct inode *inode, 
-pgoff_t start,
-+                                            pgoff_t end,
-+                                            enum kvm_gfn_range_filter 
-attr_filter)
-+{
-+       struct gmem_file *f;
-+
-+       kvm_gmem_for_each_file(f, inode)
-+               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
-+}
-+
-  static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
-                                       pgoff_t end)
-  {
-         enum kvm_gfn_range_filter attr_filter;
--       struct gmem_file *f;
--
-         attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
-
--       kvm_gmem_for_each_file(f, inode)
--               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
-+       kvm_gmem_invalidate_start_filter(inode, start, end, attr_filter);
-  }
-
-  static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
-@@ -724,9 +731,14 @@ static int __kvm_gmem_set_attributes(struct inode 
-*inode, pgoff_t start,
-         /*
-          * From this point on guest_memfd has performed necessary
-          * checks and can proceed to do guest-breaking changes.
-+        * Also, we don't have to invalidate the regions that
-+        * may already be in the requested state. Hence, we could
-+        * explicitly filter the invalidations to the opposite
-+        * state.
-          */
-
--       kvm_gmem_invalidate_start(inode, start, end);
-+       kvm_gmem_invalidate_start_filter(inode, start, end,
-+                                       to_private ? KVM_FILTER_SHARED : 
-KVM_FILTER_PRIVATE);
-
-         if (!to_private)
-                 kvm_gmem_invalidate(inode, start, end);
-
-
-Thoughts ?
-
-Suzuki
-
-
-> +	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +	kvm_gmem_invalidate_end(inode, start, end);
-> +out:
-> +	filemap_invalidate_unlock(mapping);
-> +	return r;
-> +}
-> +
-> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
-> +{
-> +	struct gmem_file *f = file->private_data;
-> +	struct inode *inode = file_inode(file);
-> +	struct kvm_memory_attributes2 attrs;
-> +	size_t nr_pages;
-> +	pgoff_t index;
-> +	int i;
-> +
-> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
-> +		return -EFAULT;
-> +
-> +	if (attrs.flags)
-> +		return -EINVAL;
-> +	for (i = 0; i < ARRAY_SIZE(attrs.reserved); i++) {
-> +		if (attrs.reserved[i])
-> +			return -EINVAL;
-> +	}
-> +	if (!kvm_arch_has_private_mem(f->kvm))
-> +		return -EINVAL;
-> +	if (attrs.attributes & ~KVM_MEMORY_ATTRIBUTE_PRIVATE)
-> +		return -EINVAL;
-> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
-> +		return -EINVAL;
-> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
-> +		return -EINVAL;
-> +
-> +	if (attrs.offset >= i_size_read(inode) ||
-> +	    attrs.offset + attrs.size > i_size_read(inode))
-> +		return -EINVAL;
-> +
-> +	nr_pages = attrs.size >> PAGE_SHIFT;
-> +	index = attrs.offset >> PAGE_SHIFT;
-> +	return __kvm_gmem_set_attributes(inode, index, nr_pages,
-> +					 attrs.attributes);
-> +}
-> +
-> +static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
-> +			   unsigned long arg)
-> +{
-> +	switch (ioctl) {
-> +	case KVM_SET_MEMORY_ATTRIBUTES2:
-> +		if (!gmem_in_place_conversion)
-> +			return -ENOTTY;
-> +
-> +		return kvm_gmem_set_attributes(file, (void __user *)arg);
-> +	default:
-> +		return -ENOTTY;
-> +	}
-> +}
-> +
->   static struct file_operations kvm_gmem_fops = {
->   	.mmap		= kvm_gmem_mmap,
->   	.open		= generic_file_open,
->   	.release	= kvm_gmem_release,
->   	.fallocate	= kvm_gmem_fallocate,
-> +	.unlocked_ioctl	= kvm_gmem_ioctl,
->   };
->   
->   static int kvm_gmem_migrate_folio(struct address_space *mapping,
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 01761f6e25d25..a08b518cdb175 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -105,6 +105,18 @@ module_param(allow_unsafe_mappings, bool, 0444);
->   bool __ro_after_init gmem_in_place_conversion = false;
->   #endif
->   
-> +#define MEMORY_ATTRIBUTES_MATCH(one, two)				\
-> +	static_assert(offsetof(struct kvm_memory_attributes, one) ==	\
-> +		      offsetof(struct kvm_memory_attributes2, two));	\
-> +	static_assert(sizeof_field(struct kvm_memory_attributes, one) ==\
-> +		      sizeof_field(struct kvm_memory_attributes2, two))
-> +
-> +/* Ensure the common parts of the two structs are identical. */
-> +MEMORY_ATTRIBUTES_MATCH(address, address);
-> +MEMORY_ATTRIBUTES_MATCH(size, size);
-> +MEMORY_ATTRIBUTES_MATCH(attributes, attributes);
-> +MEMORY_ATTRIBUTES_MATCH(flags, flags);
-> +
->   /*
->    * Ordering of locks:
->    *
-> 
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index a10ed733f0e3..9914f3ac69ae 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -1272,6 +1272,7 @@ static int vfio_msi_cap_len(struct vfio_pci_core_device *vdev, u8 pos)
+ 	ret = init_pci_cap_msi_perm(vdev->msi_perm, len, flags);
+ 	if (ret) {
+ 		kfree(vdev->msi_perm);
++		vdev->msi_perm = NULL;
+ 		return ret;
+ 	}
+ 
+-- 
+2.43.0
 
