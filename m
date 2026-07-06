@@ -1,242 +1,249 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010053.outbound.protection.outlook.com [52.101.201.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546853D6CD9
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 19:21:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B8C3D811C
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 19:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783365716; cv=pass; b=FSyLJTs3q7OyZX0Vx2sXNSc2qaFEgZA/BLo3lixlzyVLUkIJ6kXvmgEWWBVEYjU8lWaH7nUiXJk1aQKafjk+MQJQ6utKq8695oLjX1qLnh3RQYIMlyW4yDOOR02+O4IfR/or5Z2gHzFbulYBwfUgsYsOcxZV1chtOIgOVJfpULE=
+	t=1783365940; cv=fail; b=CGfPPUvIx4dZziJ2x33rxfKCUMzIj3HEuIHsp6WqV70UHKYQ2tYDgFqzFFYiBFVnDsWzL2Htyp9mvwPVphHa5pHuJkzl+3DkZvyCBYuFZ44uVvKz2N1beTYiwB7aXr77A8dBkjzUoPDIdzBrcpvojoNVHa1bEcVnCmZWJ0ouETo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783365716; c=relaxed/simple;
-	bh=OWqGJ2RXJX8lewCAqOdEDrfTZRegAiM0hVxCTzGD9RM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hbJVcm630Kh/JyKbvFD+ez9YTz87r8a3ueIDGTqb+rlq+zQg0wWIl2o9hzwi96lM3Y67nU+P2pK3W3qQsU7va9X1k4bhXWRzj5eFPtZESW0A1xryfjqJ1oKIS+KAA7k13s5OYhuNxMvEHCyaqK2lZiKRJQ9NkOsWPZOW0acidGI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cDtUgk5g; arc=pass smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1783365940; c=relaxed/simple;
+	bh=ZxJ8ytFcw2JfjBsymbkxwVW06jYGi4jfFkCIYJimKFk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Qh0R65WC6mOyLJihI0eNF+ajSgR0wXLKgWKx+inYmXx62HOkjfW9QISDeg1G4RyopIQ3LeXGjp+duv6Js30R8m9jyjhwJXjugTCTib6wot3xnxKBDy3EY/bbcYL9r/8XI0co/IdmuJzYaxx0oRAii4oyLVgJ62qY2xYrpsWDZsU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=I+KAIg99; arc=fail smtp.client-ip=52.101.201.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cDtUgk5g"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-847d1e9db22so3740734b3a.2
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 12:21:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783365715; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Sge7ERC2a6w82YNNQBbomMyXI77psukdvdjytCyywZyusNDdW3LUr/YNHq7dfo/3WD
-         vBKDNAdpXiYsft4jQp5BeyoCS8hnD1ZF0AFpdyByeWf96d1QpHsr+QQoW4lYWw8S5gk6
-         JyLJpoqUtaSYYRok6cndWSkPkk/RDiVXfc9puGDAKBVof1aloYwcmeA7/oHGAv4DQdNy
-         35Q6fTJMIlAXguOICT9K3aKp8MP/HRJ8bYsSnvh23q1+LkGocn+UV5WHFs0/v+6I2c6h
-         4RIElFVcCH4pXpkFiZU6f+gO0u2UimwkAw3pPSNrLh7/yOzSAgmHySJkQSO4GQpEcNA6
-         nzuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        fh=OPEMyfqj60DmtUL+HAzBSHXgQwcHEf08A1tLyujPLRg=;
-        b=ZfgemC58HPFduQUvj4BoLULLYQNvcfZqUuekNzVzVSVN7wASBR6VF5mks7LId9sHvd
-         OWJQj6FTNfEWtSFV9SW7pgtRATAMa2LzXJx9dBHN3ctuoQHTF5Z48EEd0CNceKSaxHI5
-         f1d1ufYXqFeqUXsZTclPQlQJbO0ug+r9s50o1qEizCnxYAHW4qQkw/s405M8PTA36UR1
-         rlto1Kp2VapofuyNZGJJBAJxy4SBhdoPI2JL9RGUlHI5L5qSkbazHznJEyw1IoAwA7jB
-         KlLR0++yfh4iioVbE0tzceSfUde2iHk+CYd6hRmv7xHmIqCy0iQlfnWM87AA3Ciyg7Fv
-         W8sw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783365715; x=1783970515; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        b=cDtUgk5grI4JivQMpngGR+G819QprS220QfFKY28LJilMW34JnPn6e82RXYUP1429S
-         6Z+pmhzu+BO1YVay5kodS80Dm8cOieI8vLeE6bYe7nDjX7wHeZNEEKJe3Bz26N+dwif6
-         75PJKFPv1KzOKCgB+eP1TyJeBdRanOnEmDD/do1OopRJALv5yChma/0gPcDaaqoUBE87
-         vS11S/ukwfIFXUNUORBoP0X0IVqCE8pDFdJBkJHR7NVHVWRNR2yIOBHxnuQOj2DyMiuS
-         kM3bkzJK70xC85wSsVeODBUW4P4gL072e/RmhAMLEuZWEdoQyeXV048kKehJlTh9FdP2
-         p4Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783365715; x=1783970515;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3V+CQWicM3KLCiA78W5fLi8JtVISekHIFvC89/oYT3Q=;
-        b=qTWwgWx+lbE6i4smUqwjkFwoRMX8hGK4SJcMFX3fnb8/qY59IEhk/VLzxpRcf4M/WA
-         1hI9+l1+RQbfhU05u9ta7xduGn1s2mLgaLHZQRrIxxeqgD9cQ8dUkG1qI2AqXx5mVt9s
-         hlL8QTL/OOySDE4kS4xmc8Gj+yQGwFM2qm0cLhmWwQZmgV5OnZlptSHCfbk8FBjs678B
-         UNtMeez+6qXOQAxR9Cispj8lc+GxZrTKVLjIjW4NMDw9eQxm3HOWOLwYpwaCW9Iu9vz0
-         KKZ8oLoArn7KQeDm/1w6uiFeRqnRAPcd/VihPXeC+bfHoNqypAFK6/zkqLFd5GtcDzFn
-         fz9Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqx8pRYMYlsHakq6/aIJSkQFax2kC1LEoH7mUOmn4dHg8WmuFdG0kbcpFlSQdTRj7rVh9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo5dYk66jVyFr8J1DIk4fCPQVHoE6De6en/Otp6S4ZU1E9ajGZ
-	ISwKgyVDIyltd2tDs6vvCWB7fv1ZnNo7f3mz6n2raHe53C5SSz50mtniesG43Zv/oQxj3naiW++
-	A5pI/MNpJMKS+hsSnWj0Nl9LeKjpaRSNT44hFOD6r
-X-Gm-Gg: AfdE7cluVKfFgLfsJkb4H9qqLP1CFboV4xzuW/lkSwHTbWzFOBdUmzWY6B5X2OxJIN+
-	vS3KN8t2RrbXp3EAlDAYEfewmKDQBUcoM1GZHCcExwAw473DP5aKBk8gSPl/ZQJVAui0fA4ZeXk
-	kjybTuAVAmkLx/c8NbLWl1+PIsCMAFsBh8jNy4Hpg744B3KmCCeP/7IyL1wC9016YR2ReM0/npY
-	cWRDcrrus5GEPGrm0OBB/5tjzHfzXJ4gKeC0U7PVyVeiRtjWjfTyi/KFZxIhyW+YA0qa3pftA6n
-	WEsdcXpVKN32Z6T9IwWY+7AMG5vZnxZ7luQUTejs6sIj16NY9FFVOEgB9nw=
-X-Received: by 2002:a05:6a20:d499:b0:3b2:a809:1000 with SMTP id
- adf61e73a8af0-3c08ed14337mr2309434637.3.1783365714229; Mon, 06 Jul 2026
- 12:21:54 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 6 Jul 2026 12:21:53 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 6 Jul 2026 12:21:53 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260327160132.2946114-24-yilun.xu@linux.intel.com>
-References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-24-yilun.xu@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="I+KAIg99"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nhVnTrKSK/TtZxNFsthrY/cCZ2u6pRVCMjAQA01h2unbfFVbyMogaYixOZyhu6/y3RGY9h14ArQzE+5N2f6+fV82LGhhqaXuqcmzPOoYTdQJ31BLG0mQJZ27txIK9PVBNa3npDzv+73kmE+fPD8glprZqAu/FLWbJ0qQv9u/ADuE+IyEWpSg42ion3qW/CimiGWHBku/8lv5PpOzFle1bP0a0sMfTMDpiKhfT/aB9g70EMPyPENfLTsvKAufxeVcAFy5QaesXArl2F40nyAG3Jk8A1D71+un187WBHzh3focpgVYtkqID7esYnK8WJuaP3duEEcSj4DRxwLSnmjg9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PuIIyPj46lsdj1aiI/USeFYlTbX/9yBHg18jZV7vhhk=;
+ b=lh/Pb05GVhjQunIZQA1Fz4snYDsV0Ny2p3bHHgcP3GXHxEYv8XyXJ3j4rlN+s9hOgpg6r5sApBJFCQnttpxNaCr9kw6tYCSmNqHHJ2kIRMQif44NtvAv6jYbC+KCXg5R+3Usr+Y9rUNtCnK+CQBNLsNsP2P9MgAMZasb/p+XHI9told1wvdotCR7Ziutu72NMytGf5VDuiSqB32Puc28vY68DXQ6vOo6aWRglgTKN0IPB1dxyHwipVXJfuTgS3EaYMQ9qDR1Bo/J/70wRWTZSK9ULm/y9gD02atfAk39J9HezHu0hK7dvZ/m9mdL2y8qbxGXaskGEFFuQWmNkuKfsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PuIIyPj46lsdj1aiI/USeFYlTbX/9yBHg18jZV7vhhk=;
+ b=I+KAIg995HqNxTYFmiTzBWts0SIIb+rlp/2tSuXAQg1f8DaWiLeSpt2wrrQhjameBsJF4YmkHfioMpM6T2nZPkGKtuMhyYcfmMUwf7RzL4RSvhTQuCevFVPTinf0dHL3eiof9TG0sN1pMRhLfhOMFpIQ9izf7H4GlNX/Qww7rZk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by PH7PR12MB8106.namprd12.prod.outlook.com (2603:10b6:510:2ba::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Mon, 6 Jul
+ 2026 19:25:34 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0181.012; Mon, 6 Jul 2026
+ 19:25:33 +0000
+Message-ID: <87850ace-589b-4f71-b33e-a099c86a5217@amd.com>
+Date: Mon, 6 Jul 2026 14:25:31 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 6/6] KVM: SEV: Perform RMP optimizations on SNP guest
+ shutdown
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <3a5df8dec32da5c31998bcfa775ca92c80cbc1eb.1782841284.git.ashish.kalra@amd.com>
+ <20260630182421.8C1481F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <20260630182421.8C1481F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR03CA0050.namprd03.prod.outlook.com
+ (2603:10b6:610:b3::25) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 6 Jul 2026 12:21:53 -0700
-X-Gm-Features: AVVi8Cd9CK0d5hkj-fvDpFPP8e629cstUI2GaeEwDwzmHyMfLj4nBn8EKPgaG0Y
-Message-ID: <CAEvNRgGg9YVnLzanueJrHyt9Ra3-q7CmRvP2Sg5dkdctaZpKqw@mail.gmail.com>
-Subject: Re: [PATCH v2 23/31] coco/tdx-host: Setup all trusted IOMMUs on TDX
- Connect init
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
-	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com, 
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org, 
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org, 
-	xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH7PR12MB8106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 573fc9e5-426d-467e-defe-08dedb945940
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|5023799004|56012099006|4143699003|6133799003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	5bqIAhhRhVSiuS1h00VLVe2ucyNqvJVsUZlaCvxcwQypINuHIovaJolIQwrWxhpS9rov+oNPpnKr/8PviaLQJqzTL3+og/K/gBbZG9MLqO6rpghlB198lsWbaWPiBztnYw2ZFGFeD6bjBTZQGkKoKeZG8eG6aDA92HsFAzm3b6nGlt6V/UgPGdV/RianEltUfxns+UbG0ydmbH2WCfXSa0MN4swH22KUQX6o74DmNnmdZiPtLUdoJt/H/bL+8YrAVqCjUCtLxQ7vLGqNYwo7/o+9x9P2Lu5b0dEToeSmNGLiuzrn0IEbRV6EX00qwfgA6YwJ4dy/Xpv8hKAnC4UnCtTU7jVsmbPAUqiwHcIcAi9FOhladpOsMWfGrImDHDth7sB+S4wITlojzKgtkrDSDnwNch2yap6t0KD9C4d0GurDxVUyDuPtEAZJdAsd8AiQM4TXZ95RksuJT7XchnP7ilLmfm+u4mhetpyjWAtNyRsEdFScuhjepmlpSYdX2wE+avRKfFuCn5dk4vaZjvumlMOARSyaotcTucPt6ZAbkNxIWuPUhuv0I78MjC9w8bAevb/9bMP3l5Y5iqoAnVe3dgXR1vYuw0TQ1eq4qaPuF8OetttgyTYBomlTG+ZMatfTLlaDgM7W2UyekVtDh/dz+Bf/8eMURw0r8eo0BdGmpi0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(5023799004)(56012099006)(4143699003)(6133799003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K29TTnF0ZVhuN3VRWVVkNitOTTkxdDQ3c3V3MzYxd0xNMGtCc2R3dm1VL0pK?=
+ =?utf-8?B?anowVU4rRSs2TlYyR3Y1OFBVa0xidTVmb1praC9QaWpsZ1M0RCt2NHpCQ3Er?=
+ =?utf-8?B?dzFMZ3djUjhua3lOOFIvaUt5Mk1DckRJa1FWVll2bVpqUzN6anlqR0oraFNU?=
+ =?utf-8?B?Tms0Zi9OajNNS2toZzErZDhIckFIclAydE51dzBxeGxsanZBN1kySTVuNUly?=
+ =?utf-8?B?OG02SW92cE84VHdYbkoyN2QxSU9ycit3UmdmcE5RdDJMcGpvQVpLL1hCb2Nq?=
+ =?utf-8?B?bGpWeGx4MmpBdk1HR09jV0VmdVlGRDRseS9UTCs0akQ1MGp4ZXRLSEEwbU0y?=
+ =?utf-8?B?WDI4bHNwRUJkVVA5N0pmMmErS0pNM3ZCdHVZSG42UnBMNG9CMk1Ucm9xS1FO?=
+ =?utf-8?B?Tm90SmNzNWpXT2dZUVczeXA4Y0FxUUF4TGQzbkVLVzlmRFpPeTNlN05tREgy?=
+ =?utf-8?B?S2FjTGNFR3YyQk1zV1FYU2NOaWQ2UFVPUnlLYW0xeUI2SUZJeG1pOFhMTkpZ?=
+ =?utf-8?B?VUlVcWpWUGJWalNDUzJaRnRTSVFRZXVUY3YrcnhNWTFwS3hQaGVjNkxIdzEx?=
+ =?utf-8?B?RHgwcUYyeWZtQ0FHVnNZSDFDVnZWTjZvYzBZVDVFcVZJOWRwcndNS0hWZk02?=
+ =?utf-8?B?M1hCYmpVQzdtaHZLMmVHQjhvdjlKaS9RSGtDclV2R0VCZCt5ZkNWQkFqZTBC?=
+ =?utf-8?B?R21MSzFUZWFXWEdSMmZXSE5TQ0N0bUNBU05JZWdqeXpSZEdaTFdoZGRoQXdZ?=
+ =?utf-8?B?a1I2dHQ1NTFLYWQ1bkxOODNYdEZvN2w3bzdYSkhKN2ZRUW1iSXhhZkpHcW9o?=
+ =?utf-8?B?ZXRRZnhHMGRPTGhyQUNFTGpsRjNMeHJad0NSamN5Wlk3Yis0cFVZd1d1V1V3?=
+ =?utf-8?B?VmduSitoNUJjMG9NWkhVQXVCamxRRzc2bTJQajN3SWh2blpjd2Q1L0xsWmEx?=
+ =?utf-8?B?ekdGL1FzUitkOEJuNVJYUXhYS3ZSNUF1YmxiOTlUdXlERUsyd1hkOE1kckRH?=
+ =?utf-8?B?NTZYSmtGdW1sTi80RTJkOHVkZ1Q5TE9nS0c5NjlCR0dSYXBTMmx1RytQVGNG?=
+ =?utf-8?B?RkIwdHJsVnp2RVFERTh6OVlHdzdnRW9TMEFJNlhLSExLejlnaGJZb01LUW9Y?=
+ =?utf-8?B?NXBCTzNaZDRyVExYZFZPNkZUOE83Vlpmd0I5WCsrMno1UjJCT1cxSUpYcXhW?=
+ =?utf-8?B?KytPM1ZDTUhWWWptYzl1WTFGL0NWYWM5bmtHYVlpalJpYUJ3cDl2dVlYYURF?=
+ =?utf-8?B?Sit3NEdwOFFKSGVMWUFrcnduQ2J1ZHNCbzhhQm5JbkhZdHVxcWUwTTVPaDRR?=
+ =?utf-8?B?TnQ2b08za2RORW5aRmcxczdjWW8rMkZYWG8vNEdCY3dZNmhXYVhINlhXblJs?=
+ =?utf-8?B?cFpCNTBmaTY0NFVock1wQXZqZzc5UlF2Y3VXYmN4NXd3OU1hN0tYOHJLbFJ5?=
+ =?utf-8?B?MmNnbm9hNjJzZTJZU2FMZTdqMUNyRDBDZmtqTnFZQmxzTW5vVXBuTldCa0JO?=
+ =?utf-8?B?VWh1dWlKSmdzL2pURjJQK3BaZnBVTXJ3QlpoYzZNeGtzQ3BCMnYwWWFGeUFN?=
+ =?utf-8?B?dmpOOHA3YnQ4bGlyZWlMdzdCSnJLV1orQ3J1RE9aYnZnL1k2TFE5QTNKTVpR?=
+ =?utf-8?B?a0ZKTklNa0ZYVUFVVzNnOXBETnZyblpFZDJTYkp5SjhIeUV5TXVaQVpGMzlJ?=
+ =?utf-8?B?N01jMGkvQnUxaWgrMVVIQTBxMHlyNTVRNm8vdEg4cFZYd0hDcE1rRFpXL1ZU?=
+ =?utf-8?B?dzdqdDhwblVjWnBxeDBQNld0V2ZBR1JWQVZKQ2NDSlB5QitnaDlQZ0IrV2VF?=
+ =?utf-8?B?UUxtUVFmL3FoY1FlMDBkNDZqUUNPY3RHelhNN2NtK3JPYkZkcjV1YkFwL3pL?=
+ =?utf-8?B?bDR2TndlTGJqUFJCTHNScmJZNlFpVVoyQkNaVnJoQkxhYkNmZU9HY3laYUJH?=
+ =?utf-8?B?aFdDM2dlbDdlYlpLREd3UzMrTkpNVVY4YURhL2VTTTJKWXk5b09LbGswYXE1?=
+ =?utf-8?B?eDV4c0VwdXNDR0kwWXJjZC9ua1J5VjhNOWNUM2swRXNLeTNFU0ZCQjVBTjZu?=
+ =?utf-8?B?cnYxeENEOXpKNzMrdGpTV1REQ1hDcnZuVndsaC9XSE5tUS9sdEcrYjd6Y3RM?=
+ =?utf-8?B?cGhDVWQxODNXK2F5bjJ1Y3hVYlN2V3ZhYjg5MGdEeXhQbU5mSUpNKzBPRWdI?=
+ =?utf-8?B?RWhOOCthZnVHbE1vazJHZ2k1bnFhaEJHbWRTc21hY0FoQmx2ditVUVZDeFhB?=
+ =?utf-8?B?cW43ajcxckZMR2RjdGFGQlIyYlVOOVplRnNoU2RmbVB5ZHNnNjRPbHdvL0hy?=
+ =?utf-8?Q?K2dAMBQADAI3XyQ9YQ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 573fc9e5-426d-467e-defe-08dedb945940
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 19:25:33.4748
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BXpi3rd2YiLK7arEOyHoM/eCdH1iZRvj1/afRDRN4GkFfEtXyJeIu+qGAk7cPkj2Wtq+dL+SsP+LwS1yA0na6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8106
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-> Setup all trusted IOMMUs on TDX Connect initialization and clear all on
-> TDX Connect removal.
->
-> Trusted IOMMU setup is the pre-condition for all following TDX Connect
-> operations such as SPDM/IDE setup. It is more of a platform
-> configuration than a standalone IOMMU configuration, so put the
-> implementation in tdx-host driver.
->
 
-I was wondering about hotplug. There's dmar_device_hotplug(). Does it
-make sense to do TDH.IOMMU.SETUP from there?
-
-For boot, is the platform-level configuration due to dependencies? Is it
-because TDX is set up after IOMMUs and hence TDH.IOMMU.SETUP is done
-from the creation of the faux device?
-
-> There is no dedicated way to enumerate which IOMMU devices support
-> trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
-> devices and tell their trusted capability by the return value.
->
->
-> [...snip...]
->
-> @@ -119,6 +120,82 @@ static void unregister_link_tsm(void *link)
->  	tsm_unregister(link);
->  }
->
-> +static DEFINE_XARRAY(tlink_iommu_xa);
-> +
-> +static void tdx_iommu_clear(u64 iommu_id, struct tdx_page_array *iommu_mt)
-> +{
-> +	u64 r;
-> +
-> +	r = tdh_iommu_clear(iommu_id, iommu_mt);
-> +	if (r) {
-> +		pr_err("fail to clear tdx iommu 0x%llx\n", r);
-> +		goto leak;
-> +	}
-> +
-> +	if (tdx_page_array_ctrl_release(iommu_mt, iommu_mt->nr_pages,
-> +					virt_to_phys(iommu_mt->root))) {
-> +		pr_err("fail to release iommu_mt pages\n");
-> +		goto leak;
-> +	}
-> +
-> +	return;
-> +
-> +leak:
-> +	tdx_page_array_ctrl_leak(iommu_mt);
-> +}
-> +
-> +static int tdx_iommu_enable_one(struct dmar_drhd_unit *drhd)
-> +{
-> +	unsigned int nr_pages = tdx_sysinfo->connect.iommu_mt_page_count;
-> +	u64 r, iommu_id;
-> +	int ret;
-> +
-> +	struct tdx_page_array *iommu_mt __free(tdx_page_array_free) =
-> +		tdx_page_array_create_iommu_mt(1, nr_pages);
-> +	if (!iommu_mt)
-> +		return -ENOMEM;
-> +
-> +	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt, &iommu_id);
-> +	/* This drhd doesn't support tdx mode, skip. */
-> +	if ((r & TDX_SEAMCALL_STATUS_MASK)  == TDX_OPERAND_INVALID)
-
-Extra space here before ==.
-
-Is there a chance that TDX_OPERAND_INVALID might be returned for some
-other reason other than that the drhd doesn't support TDX? I'm concerned
-that some drhd would be silently skipped for some other error.
-
-> +		return 0;
-> +
-> +	if (r) {
-> +		pr_err("fail to enable tdx mode for DRHD[0x%llx]\n",
-> +		       drhd->reg_base_addr);
-> +		return -EFAULT;
-> +	}
-> +
-> +	ret = xa_insert(&tlink_iommu_xa, (unsigned long)iommu_id,
-> +			no_free_ptr(iommu_mt), GFP_KERNEL);
-> +	if (ret) {
-> +		tdx_iommu_clear(iommu_id, iommu_mt);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void tdx_iommu_disable_all(void *data)
-> +{
-> +	struct tdx_page_array *iommu_mt;
-> +	unsigned long iommu_id;
-> +
-> +	xa_for_each(&tlink_iommu_xa, iommu_id, iommu_mt)
-> +		tdx_iommu_clear(iommu_id, iommu_mt);
-> +}
-> +
-
-Is there an equivalent teardown operation? Like on kexec, if TDX is torn
-down, would tdx_iommu_disable_all() need to be called to undo
-everything, so that after TDX is started again tdx_iommu_enable_all()
-would be set up again?
-
-For hot-unplug, would the TDX IOMMU config need to be disabled?
-
-> +static int tdx_iommu_enable_all(void)
-> +{
-> +	int ret;
-> +
-> +	ret = do_for_each_drhd_unit(tdx_iommu_enable_one);
-> +	if (ret)
-> +		tdx_iommu_disable_all(NULL);
-> +
-> +	return ret;
-> +}
-> +
->  static int __maybe_unused tdx_connect_init(struct device *dev)
->  {
->  	struct tsm_dev *link;
-> @@ -130,6 +207,14 @@ static int __maybe_unused tdx_connect_init(struct device *dev)
->  	if (!(tdx_sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
->  		return 0;
->
-> +	ret = tdx_iommu_enable_all();
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Enable tdx iommu failed\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, tdx_iommu_disable_all, NULL);
-> +	if (ret)
-> +		return ret;
-> +
->  	link = tsm_register(dev, &tdx_tsm_link_ops);
->  	if (IS_ERR(link))
->  		return dev_err_probe(dev, PTR_ERR(link),
+On 6/30/2026 1:24 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Indefinite deferral of RMP optimizations via mod_delayed_work timer reset.
 > --
-> 2.25.1
+> 
+> commit 5a78324bed688cb2c4b58d363233a323513bd9b4
+> Author: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> KVM: SEV: Perform RMP optimizations on SNP guest shutdown
+> 
+> This commit performs RMP optimizations on memory freed by terminating SNP
+> guests. The scan is deferred so that a single optimization pass can batch
+> memory from multiple guests terminating in a short period of time.
+> 
+>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+>> index 4272293478766..c574849b15878 100644
+>> --- a/arch/x86/kvm/svm/sev.c
+>> +++ b/arch/x86/kvm/svm/sev.c
+> [ ... ]
+>> @@ -2992,6 +2992,16 @@ void sev_vm_destroy(struct kvm *kvm)
+>>  		 */
+>>  		if (snp_decommission_context(kvm))
+>>  			return;
+>> +
+>> +		/*
+>> +		 * Perform RMP optimizations on memory freed by terminating
+>> +		 * guests.  The scan is deferred, so it normally runs after
+>> +		 * sev_gmem_invalidate() has converted this guest's pages back to
+>> +		 * shared, and picks them up then.  A very large guest whose
+>> +		 * conversion has not finished by then is picked up by a later
+>> +		 * teardown's scan.
+>> +		 */
+>> +		snp_rmpopt_all_physmem();
+> 
+> [Severity: High]
+> Can an unprivileged user indefinitely defer the RMP optimizations by
+> repeatedly creating and destroying minimal SNP VMs?
+> 
+> Looking at snp_rmpopt_all_physmem(), it uses mod_delayed_work(), which
+> cancels any pending timer and pushes the execution timeout back on every
+> call.
+> 
+> If VMs are destroyed at a frequency higher than the timeout,
+> the background optimization task might be starved and never execute,
+> leading to degraded memory access performance.
+> 
+> Would using queue_delayed_work() instead prevent this starvation by
+> ensuring the timer is not pushed back if the work is already queued?
+> 
+>>  	} else {
+>>  		sev_unbind_asid(kvm, sev->handle);
+>>  	}
+> 
+
+mod_delayed_work() is deliberate here. It runs the scan RMPOPT_WORK_TIMEOUT after the last teardown, which coalesces a burst into one scan and gives
+each guest's page conversion (sev_gmem_invalidate() -> shared) time to finish before the scan — so its freed pages actually get optimized.
+  
+The only difference from queue_delayed_work() is which state the work is in when a teardown happens:
+- Executing (a scan is running): the work isn't pending, so both calls arm a fresh timer and schedule a follow-up scan — no difference.
+- Pending (a scan is already scheduled but hasn't run yet): mod_delayed_work() restarts the timer on every teardown, so the scan always runs a full
+  RMPOPT_WORK_TIMEOUT after the most recent teardown — each teardown gets enough time for its pages to be freed before the scan looks at them.
+  queue_delayed_work() keeps the timer set by the first teardown and ignores later ones, so the scan can fire while a recent teardown's pages are still
+  being freed, those pages are missed, and since nothing reschedules, they stay unoptimized until some later teardown starts a new timer.
+  
+  - Example (10s timeout): VM-A ends at t=0 -> scan scheduled for t=10. VM-B ends at t=9. With mod, the scan moves to t=19, so VM-B's pages are freed in
+    time and get optimized. With queue, the scan still fires at t=10 — before VM-B's pages are freed — so VM-B is missed until the next teardown.
+
+    That's a regression in the common case.
+
+    So queue_delayed_work() might help a rare edge case but hurts the common one. So, keeping mod_delayed_work().
+
+Thanks,
+Ashish
