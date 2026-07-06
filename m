@@ -1,142 +1,126 @@
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42137385D96
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 15:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783351278; cv=none; b=eiwV869kuhowIXm6Vb6+Ansp6rkEBpLpAf61NjcufS/QiUMQkAgiaOODyCOiNeucmlERPopBEqWIruEnUBWaDyv4HrRvGaKmGJ6stN+1XEkIvfMbmRHu7Q5JAsOeOXG8pJJ4g4L8F6GFJT2VLAqlIy7fUuSZK6lrtpXf9XjldI0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783351278; c=relaxed/simple;
-	bh=HR55Q/6yr5mPGu9pVNCuycHEfgXOsLJKHuzG7udNXYE=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=PHxUJCkWgBKgATRf11Q7qku94VbM8cJU4aADNXlh9Bxa20eWotI03E8Qc1F5L0lZJNID082NXJ6HMqhNlOZ7+Y/Yhw8kQzvuzqOTbO0/t2URb7Ai1MhA7dH+ZaCH9f+IzwRbx9BbMOhUJNhkNjuUI4i4t83X4rSzKRHzQ4+S3AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6a17bd28f4bso4854021eaf.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 08:21:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651B9388361
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 15:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783351670; cv=pass; b=NWY7LBg6jeDvhGDo06tG8CsMkaqSGf4GK8LIzXTBFL+znHm9E58B7CK6s7Q2+pIYSGHu52pXMkRzFKRJkgST5nSPtk5amwbAxpki427HGuS0a4Z9ZzNjzgn+k6VFDDysmuihuZB0JYjN+YhfEIwf51lrRTG3bDQ8bUBPj4M/Z6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783351670; c=relaxed/simple;
+	bh=QTAc35LBPTpEtZFTnRHjoDshvh+YhheuGWUZ5W3IT+k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fdpfG5PvAsjLQK93nwLYVN4Nr4EoJj+jUrmD7e+b6l70xGjOeX/LESl1PBUwcZN/MPCL8oLaJ8JPxA5cDuxboxgDm6d0NJMMyYwUmkMddAM7RHpoMf1pcTt/TraQF2yT6WRcbvPQFE6aVbQE+qYzEt3H8C8w9hnF9uG3B+GtVKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dEPm2uRA; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dEPm2uRA"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c10ed63c0so1124331cf.1
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 08:27:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783351668; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DX5JJADvKBtucLRhZqfu7TRdMj8GRKqG3Tba5yoTC+cAfIGsSzrAjrf2rczB9tu4x2
+         NhpAFih9RwZqDxMX683Rkbodvu5sXq0NgzSvxWehuWpMXOLc+uwioKVKTjBir+VgFdu3
+         6YlaW2zjPP/m5HV+6m/BbKVKUJUqRqHGSneoOXkoeY77PIrBJM+WWKs/tIIz9JMwwAts
+         hzIACCy6uE4vn4AhkqDIZVMRB/raENhzfHcePpSqHFlSCNLbOH3DhdfdCWK1bxkppCHU
+         7gnK1uXFJWhB7wU7mxQ+3UgYWfrwfH1UWLwIMYQOuSa8n7VMqXfnV6LPRR8nH1qLWmmO
+         egiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/0HSoGBQhE1LvG2VZKuQpXEA5YTFklsV8HmlGjIdI5k=;
+        fh=H/QUIKjRZUDWX4joXz1cPL6QGd7/5/6+azMl7h/znCI=;
+        b=T/BoREeEl0ZTUkJe7mDK6MbRZ09VNJP5JihKO1iFwN2qNQyQC3JoDFckxSpuJeRw7p
+         dLYjD71tY64EEJVpv/QwSaZ8a093sA3ktEFyBTkT1Y+ECzVS+RjcAFqwpRQ2qVvfdJ29
+         DPUjGVGhgVW131rzQiSXZtXAhUm8DRaakyP2nmJKVlHgBqDx74CiCHHPzW6Z1HfCsLQg
+         jfquAHVFQG72tNU9+dWgzHX7FUvGQpQwNj09KYesYNcn2Pu1GwvxVTZ1dQoXS7R43Yet
+         4QEaR/Jd3Ct+urxgS9Gx6E/pvIaNddRmKifQAMG45XMa6OoCHH9fVTDraeNsz2xAdTz6
+         4bIA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783351668; x=1783956468; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/0HSoGBQhE1LvG2VZKuQpXEA5YTFklsV8HmlGjIdI5k=;
+        b=dEPm2uRAr7B814fPOXVD945XC8OGpIzRjomioRNvjI8HChEDOizAGUyK2uvSOhRZsv
+         z0C4m+9PApGVEMYNNrBX5JDov8WTEhT+0T9z70yZ7/x2Hi7x58V3UPjxF60OSovGIy8U
+         9Tavg//DTSiBcwRRqsLgM5sA334+V1MtluypMfLU8YMDnbtQZo6xJhoFh3aIziCAQ/dZ
+         l12Q1g5mlwM3kFsZ7jtqpDbBUeC4QEFwEbDqfEkc+XQuqYbNDxQoyT4aqx3OddT/cfM5
+         y1Lmb7VZyDpC1FrPpafuNhOB7ULF6fOI8mOHifxfX16ttmiwAFotj3gMBjUaGKkP12rv
+         d7uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783351276; x=1783956076;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5dwe3FtSSXb9oYBtB9Tjm7DKvidSGWsMC0MjKKokC7E=;
-        b=i3UPDsyz1cFF+h7zxZJ01x+c6RbzYFmta4DF+WNc24z3SBgFljLmbYV/l/ZVBhu5tV
-         stV5dbZDgVD61avd7SMMJvk+VEINCYZhQaG5XozYpmH8MTFtS3sE65F6ivXVW9s5ZJhI
-         aQrMpHHwppWdyz7oi3rR4G3EjkWuCF1+5Hv7NR6XhTFsQ5EyGlli9eqiMXjO8sSwWLp1
-         nRnSkgx+oAyr5s/20WkrLals1Rk22UdYa8mK8YQQynxIozAKD2egOWouv8wjJtFLuhsL
-         oJ+h8J0eHblYQUlZmK40ZOXPBSWDIinHeotgFsmaF2WRR1y4FwI2IQfLpqIPlE95K4oC
-         2lsg==
-X-Forwarded-Encrypted: i=1; AFNElJ9mwoHuqGSCCnbOKuam0ShO3c2PzhfWAlBBY3fvUS1rRmAdTl1TegvTaIaDpkiqnfqYoHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6kGfmk9B2tVkev4ytHXLZonlmrcUgUt98jN1HpMEdCAcHWB0e
-	pm6fD7EumlQ8aHY7v+OBC2LL6nURgAuYHH/3EMqdTVWtpv0rZdsbpm4DML6fIuuP4JJoFL43v16
-	H9N9jYFO4+xD/Fg7d1wV0jGCECyA4sEaV88SZJx5H0610b/qaFA3R7BIAg80=
+        d=1e100.net; s=20251104; t=1783351668; x=1783956468;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/0HSoGBQhE1LvG2VZKuQpXEA5YTFklsV8HmlGjIdI5k=;
+        b=mSZoWYgu7kQCLN+5IqTR/ehnL0iwMz45TgGAlbZc/R9vqoC4IRSXVxPapmQfHsRucE
+         hoOjpIdOF9tvak/2cHOv6rVS0pGNuwKNCoURF+63Lp2ekyo5Yqw0+6INeKn8MjZ7uCEu
+         w1eLMzRnBHO6Uerr7Ze9S7Xle38OnALj4/mt5EpxxCZFuHGty3rxqoaATr27zdLgpH4a
+         llWhKQlLNLUpn5vIcPMhKu1Iz59m+3gHkK0siFgn0TCVqIptg9XF499TJTUR4uwgEj8y
+         J0PNES8jo76CBqnrpCBC0owf/TY8d0IqGcUVN6FBKjUis2gSSA8KceKWraBvBUsV0i56
+         isxA==
+X-Forwarded-Encrypted: i=1; AHgh+RroYd93Wbkn/irIRDp2QDS6dQNE6B4Zch8tFx6YugWh6x580i4dfrFdOkvSzhhpUC6Jtvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWGhr5pk+iJZFNmJZNcEHPOSWh12VmysipjKhb/m7IWdIFdrKZ
+	BryA99lGhRsb1ShaPNxtV3DNoB5kICo/T44DCO5SF/YW0ghTcP+jKOtN9ocmR91re0V4XQaEyhi
+	Byqqb2E+v4/xEQvvP9ouCTjRJafOIvDUtDVWFGwfr
+X-Gm-Gg: AfdE7ckzuMoh03La9221Zy3E2cdxQg2LGBCh2aF8zMDuQ0ncy0yHBuGbPaBehDNmvlB
+	QT/od00LTmQpzgFuLdnIg5gfEgNB+90GIfoqNvf5617Wv0xilSDo0SOONlcRK7iehyc3v7zlujW
+	rye5PKBAZ0RfE1EftXgbk2wBdF8MtacpD/OcnemtgRMVQYEz0SKV6ocJlUE+UeAYhX/ZMgmyvVQ
+	ciVbia6fuxgj2d7vyX8vp1eF56/N63vpabVHCL37NvkZxxXOvxv0hQKcbu7DtPZcHQgbcVs
+X-Received: by 2002:a05:622a:12:b0:517:5e32:2d14 with SMTP id
+ d75a77b69052e-51c4c0b5e2bmr17981081cf.10.1783351667666; Mon, 06 Jul 2026
+ 08:27:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a4a:e84a:0:b0:6a1:42b7:1dfe with SMTP id
- 006d021491bc7-6a35536a32bmr615101eaf.16.1783351276346; Mon, 06 Jul 2026
- 08:21:16 -0700 (PDT)
-Date: Mon, 06 Jul 2026 08:21:16 -0700
-In-Reply-To: <20260706092021.3625908-2-twiederh@redhat.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4bc7ec.57639fcc.86d58.0001.GAE@google.com>
-Subject: [syzbot ci] Re: KVM: x86: Document and enforce APIC base memory hole
-From: syzbot ci <syzbot+cie24f8b96f7149963@syzkaller.appspotmail.com>
-To: bp@alien8.de, corbet@lwn.net, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mingo@redhat.com, pbonzini@redhat.com, seanjc@google.com, 
-	skhan@linuxfoundation.org, tglx@kernel.org, twiederh@redhat.com, 
-	x86@kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+References: <20260630141152.3757722-1-aaronlewis@google.com> <45022e92-7840-45c5-ba30-a276d736505f@redhat.com>
+In-Reply-To: <45022e92-7840-45c5-ba30-a276d736505f@redhat.com>
+From: Aaron Lewis <aaronlewis@google.com>
+Date: Mon, 6 Jul 2026 08:27:35 -0700
+X-Gm-Features: AVVi8CcigofLNQ1bpauMps2t4CVwYArmvr2bOPAAIS6Cf2m4U9AathUI5NcTHxI
+Message-ID: <CAAAPnDF4x0Ci56PGUdZ2-662Xs2mf6iA2AuWsc-iOe0mL57OwA@mail.gmail.com>
+Subject: Re: [PATCH 0/1] Introduce an instrumented profiler using BpfTrace
+To: Viktor Malik <vmalik@redhat.com>
+Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org, 
+	namhyung@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
+	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+	james.clark@linaro.org, seanjc@google.com, dmatlack@google.com, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot ci has tested the following series
+On Tue, Jun 30, 2026 at 11:57=E2=80=AFPM Viktor Malik <vmalik@redhat.com> w=
+rote:
+>
+> Agreed with Alexei, this doesn't belong to the kernel tree. For the very
+> least, the provided bpftrace scripts depend on a specific version of
+> bpftrace (e.g. they use macros, which are only available from 0.24). But
+> we could certainly consider it for the bpftrace main repo [1] or the
+> user-tools repo [2].
+>
+> Looking at the code, I'm just wondering what value does the Python
+> script provide. Wouldn't it be possible to do the same in bpftrace
+> directly? If so, then including such a tool into bpftrace could be
+> relatively simple.
+>
+> Thanks!
+> Viktor
+>
+> [1] https://github.com/bpftrace/bpftrace
+> [2] https://github.com/bpftrace/user-tools
+>
 
-[v1] KVM: x86: Document and enforce APIC base memory hole
-https://lore.kernel.org/all/20260706092021.3625908-2-twiederh@redhat.com
-* [PATCH 1/4] KVM: x86: Document that KVM_CREATE_IRQCHIP must precede vcpu creation
-* [PATCH 2/4] KVM: x86: Document APIC base address constraint for in-kernel irqchip
-* [PATCH 3/4] KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is already mapped
-* [PATCH 4/4] KVM: x86: Reject user memory regions covering the APIC base
+Thanks!  I'll look into those repos for a potential house for this.
 
-and found the following issue:
-WARNING: suspicious RCU usage in gfn_to_memslot
-
-Full report is available here:
-https://ci.syzbot.org/series/b02ae7eb-bae2-492f-88f2-fa1b511c93cf
-
-***
-
-WARNING: suspicious RCU usage in gfn_to_memslot
-
-tree:      kvm-next
-URL:       https://kernel.googlesource.com/pub/scm/virt/kvm/kvm/
-base:      8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/2e25da54-5ae8-4f08-889d-30a90ffbe688/config
-syz repro: https://ci.syzbot.org/findings/707c5fee-46af-42c3-9700-7fc53ef58eb2/syz_repro
-
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-./include/linux/kvm_host.h:1084 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.0.17/5871:
- #0: ffff888113334b40 (&kvm->lock){+.+.}-{4:4}, at: kvm_arch_vm_ioctl+0x8d1/0x1990 arch/x86/kvm/x86.c:7320
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5871 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- __kvm_memslots include/linux/kvm_host.h:1082 [inline]
- kvm_memslots include/linux/kvm_host.h:1089 [inline]
- gfn_to_memslot+0x3df/0x420 virt/kvm/kvm_main.c:2630
- kvm_arch_vm_ioctl+0x1590/0x1990 arch/x86/kvm/x86.c:7340
- kvm_vm_ioctl+0x8f7/0xd30 virt/kvm/kvm_main.c:5381
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd744b9ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fd7459b7028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fd744e15fa0 RCX: 00007fd744b9ce59
-RDX: 0000000000000000 RSI: 000000000000ae60 RDI: 0000000000000004
-RBP: 00007fd744c32e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fd744e16038 R14: 00007fd744e15fa0 R15: 00007ffe5f70a5a8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+I wrote the Python script because I thought the logic was too
+complicated for bpftrace to handle.  I thought it only handled simple
+scripts with simple logic, i.e. no recursion which this script uses.
+If that isn't the case, I can certainly try it.
