@@ -1,119 +1,173 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07142422549
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 18:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995B63B841D
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 18:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783360826; cv=none; b=CjZg8h+1eeuCCup8EW9mglN6QWIHX7G7iT6+Uj5j5pWnVoqxMe88/F5xX9CZkDFwvp8IWAs4MsuJl2lwbAY9tsBTGGjkGuK/DvFkMBniKgG374e8WgD7H18TRwkdOhf1t4ck2jj5MTCK8RYnAw4F3N96m50IC0yGqfDrmmVhXNk=
+	t=1783360900; cv=none; b=BSv9BUMx5JTfqbFxxUG8dbvJ6KZTu1iN/ub8pn+PcbVGVh2v4pBeXIrX4HbzC7qiIlRNSFxncfUqhCKGEjhQZnYhKaIHCNMj3vBNRlynlVWzXHLmp+Chw5kzhPteJFPhZ76VuZJO2/joN4lv+3wkNtDHIDjeGd06s4onGu35osU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783360826; c=relaxed/simple;
-	bh=6HvxXL/hPWnIS2ERxITvaZCHswmXyfcfLFJrYY619nA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gNhVT7yNOWaf8f6HyyvmNOIJdwUlak+vfV7a+MX27zrcY6rCC4V51x8Ig2GHVy1VY8oQC/p5+tzzp2ma5N5DzCZmVOfLfJzbaqHWJU+qV0m+t4jwjknWLhPaAvrTa6a6qQrY2K6GIOqDbA2RlrvZYzaNTQJZDSKK7sIlUYrHO/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RXQ0ghIO; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783360900; c=relaxed/simple;
+	bh=WHUn1VSLIQt19x9wfaGIPlgcu1ufRPBWZxbGc90HQRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UHKZORfDiLVhyecGkqvjIm5bQmbuxE4Q0+4Qn8VttOJzxnSdJfg21LNTjLrhmsPPwhRNWDatvE1qA/sq/Bkh4k4ucR+B8K5Kj2Aivacn9Lsk9CS8Kpexz/XLNgXuP4SsvMgN0QYHu31IpERJk57bUIbs7mnMmkp8KZMwlcbLVW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P54v3+5k; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RXQ0ghIO"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845bc2e658aso2905637b3a.3
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 11:00:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P54v3+5k"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9d1fc053e0so2812146a12.1
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 11:01:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783360824; x=1783965624; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eYcfhMi5NCPMduPSvGqKtbO87FaKSq3RfhmI47bcB1U=;
-        b=RXQ0ghIO8YjTkVaNc0tBgPzpzmIOayR9GycdMFFLTze2Fm/FZF5nP9PPdi9oioYA20
-         o/Ue6nVHngNvn7bMtJuQiEh4EVC8cmpgjJW1zcUsfw5Z0Sm4XfDur4pvSpDXhAILSXsZ
-         9pKE48vIO5t75P8WiCW2Il2LUSCnVsMHasvgGK/hdMaAJ3jXYSi1y4vKWv0eSpxK0J+A
-         kX3td/oBo2BaYc1vXyX2D/H9FSB/Np6E85nXG4dbwuuDLgTG5vpt2K2uuBy+ZrC+jt++
-         tilMgtyWw2t+HCzj4iFCXsmWnpkacl/BH1WhkMg+YGV4lvYKJoC4fccgDpsEreW+ezu0
-         Tysw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783360824; x=1783965624;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1783360899; x=1783965699; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eYcfhMi5NCPMduPSvGqKtbO87FaKSq3RfhmI47bcB1U=;
-        b=LXvZHvLjHrxg1evTpg2kThUc0miEBuH4ktRIq6/+YFId5tjkfY38SAjIt7j0DDOUDv
-         iFBGdPCjgNn9ie7wZX/RQ0uyVHKvRRJFClwFJYGa3+ob0AsvRurEwcIyj6rxDXIhQimJ
-         5qc1gXJteCoNfoYbHk9LtBHkUafIYyog5OSOUGiHImdXS76sLXkYhOviQ4O4Ll058l/G
-         vw3bfBr5wFN0xZ1wH62FkNKXQ26+93Lgw4+6EmYuBFd31tYyiQchjfOgPoFdm6g/eQ7e
-         a78VZ0AqnG2V5jJhSMwr0IjzZuwzVD3UNLS3g0XRJzpUUCuCej3lwil2sirmMoa05/mN
-         lfhg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3LlBN9zAKawa1OY8Bv0aWWuf4TMw895bIUMY0A20n3xOCldMIa2PVjtzX7v94erX746c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyqa0X+UcO5dIIG3kH0yOAzIzSFc0MVRa7FRk3ejthfK+elSk+H
-	3boeyOvjkRKscsb0soGniMav1J4+zYJWIiL6ScHoGxerl+jWHPOvrdpvhmh0bnIXq23tHr4Prt0
-	agXWxWA==
-X-Received: from pgam14.prod.google.com ([2002:a05:6a02:2b4e:b0:c92:460e:4f73])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4307:b0:847:8c6d:2f24
- with SMTP id d2e1a72fcca58-84826ec2591mr1691676b3a.56.1783360823962; Mon, 06
- Jul 2026 11:00:23 -0700 (PDT)
-Date: Mon, 6 Jul 2026 11:00:23 -0700
-In-Reply-To: <SN6PR02MB41578D3C34AB283B892C27A4D4F52@SN6PR02MB4157.namprd02.prod.outlook.com>
+        bh=27zxJAe8UyNVFytynclFCUJOGks8mhcIGva3KgGQG/Q=;
+        b=P54v3+5kR7MexB91T3HfvKdQ+sVlZ9KMrjJnFc9I8qlqDLblOT5+1MF+PfRL3rgrKr
+         PgEO9hqhu/OrsI6snMpspo3Hlfy+GgO3LQWy0LF12P7NqKhrjHRdZxWt7RP6o5eI44pw
+         zeNzT9O/H7mJcfaICH9iKPsQkSHyaVYPBL9Mfny71KSqPOSHVthEvKI3qpPt2ekRAbtQ
+         oH3yLCEBBCmJ6KiVEtDFkGoZcwwlJszdvR/Ft8xAG9LeOrM16AtIF8sqA+6NtZTJ54wb
+         WBM/OWtOsLkcnuXRD3HiWCqu3fo2UUZy/d3On+cgI++fj/yUWZZF05JEGftSBxh9rCrQ
+         5nng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783360899; x=1783965699;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=27zxJAe8UyNVFytynclFCUJOGks8mhcIGva3KgGQG/Q=;
+        b=J44OuVoGPFlfLKO3cH/iLEgweCb3U8KQEWYStTXPm6oBRnensg66viAGxpsuC+3X+I
+         QZkyQXWBn3+XZYBD5VnMucQpwo4T5e2LCth/sjuqS+20DYm/05v/wZidTzbvRHaH0Pa9
+         NEABt72+uw+Pdg2vSADl8KijM/F780IRvmrFhXWJUChA+ObHD5x+CtbZpPmCjoOh+jE2
+         S0n6j+IQQrnElHQ+8g9lUBSRVJ+u6bz4cYcrCd7Stbb0C9No1YGLsEBU9sZjYneTOX3H
+         EDLClxmxAuBHVIZAN11uuJQUKQSmM6YsBcNE/IzSMA83oT/I+mXwA7KdVHzHDkFOdVR5
+         8VrA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6MldJmQ4CwJ0BQY/R4742cIbD03XRr9rVKO9pd36RN0d1SAJ8eCrecy3gDvs/aOsPjYk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmgChDHrjVM24LcarpJqw1GdHJBQmWkxijzrEURgzOAnNVg6FY
+	4Ogye3bWYnxV6kVhQFWdN/SkdAF7ORVIasnPIA/0Psoqi0iRsPmGMCabDu4wKL/SAqU=
+X-Gm-Gg: AfdE7ckW07hRtzjHjwXVSYAKfu3QrLNqUKX4W0785NCw9dnsLKxe2BPZYg0RP/u4UIy
+	nVUpN3c45M8Mvd08o8NELNlNLLTxG2iyo2Lmrxyt0t28wLHWQXDKwrnWIdXatR8rXdJVh7ABYz2
+	0XAQtZNzaD+a4can670ZvZb4TRLPZbIu8cX9sQfQe98uYeGqlNiWB2HeKEzpP9x0TUBBwlXQ0OM
+	6baEOc4aEaROxi56TXVOVIanJzvPBpj6NPLb6uh7ZAnbt99rZMCBvLaQZhP+LPfvZW1ChcL2WVv
+	DJONiaIuXcaimGKBqVm67P0PCzEmaCFVJjOHQkmoilqRLUOHBCFqvqrSSWcxQ2qk8BsjZe/kmpm
+	V8rXc3wf3yhnSsBiWrEuB1JE8T6Ml2nlyZ5ThxRdTNrc5SssFYwvVuASM4hdGh0aL2XBq/l1+Ue
+	Js2XAOYv6mi3Xgs4rseegWZK1bbKr75vEQwJVMemjhdNWx+W9KupyKLX5jbP5fzw==
+X-Received: by 2002:a05:6a21:3294:b0:3bf:6c08:2849 with SMTP id adf61e73a8af0-3c08ef2d446mr2054961637.56.1783360898841;
+        Mon, 06 Jul 2026 11:01:38 -0700 (PDT)
+Received: from fedora.tail0ac356.ts.net ([152.69.221.40])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b446a766asm67399647c88.7.2026.07.06.11.01.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 11:01:38 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Kai Huang <kai.huang@intel.com>,
+	kvm@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zhang Haoyu <zhanghy@sangfor.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Zhong Wang <wangzhong.c0ss4ck@bytedance.com>,
+	Xuanqing Shi <shixuanqing.11@bytedance.com>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH v2] KVM: x86: Destroy the PIC and IOAPIC before destroying vCPUs
+Date: Tue,  7 Jul 2026 02:00:27 +0800
+Message-ID: <20260706180025.2735341-3-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260705045450.1325048-2-bestswngs@gmail.com>
+References: <20260705045450.1325048-2-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260701193212.749551-1-seanjc@google.com> <20260701193212.749551-2-seanjc@google.com>
- <SN6PR02MB41578D3C34AB283B892C27A4D4F52@SN6PR02MB4157.namprd02.prod.outlook.com>
-Message-ID: <akvtN7aIjZ7gOq4o@google.com>
-Subject: Re: [PATCH v5 01/51] x86/apic: Provide helpers to set local APIC
- timer period in hz and khz
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, John Stultz <jstultz@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, David Woodhouse <dwmw@amazon.co.uk>, 
-	David Woodhouse <dwmw2@infradead.org>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 02, 2026, Michael Kelley wrote:
-> > @@ -796,6 +796,16 @@ bool __init apic_needs_pit(void)
-> >  	return lapic_timer_period == 0;
-> >  }
-> > 
-> > +void apic_set_timer_period_khz(u64 period_khz, const char *source)
-> > +{
-> > +	lapic_timer_period = mul_u64_u32_div(period_khz, 1000, HZ);
-> > +}
-> > +
-> > +void apic_set_timer_period_hz(u64 period_hz, const char *source)
-> > +{
-> > +	lapic_timer_period = div_u64(period_hz, HZ);
-> > +}
-> 
-> A string "source" argument is passed in, but not used. Is there an
-> envisioned future use? Also, this function doesn't output a pr_info()
-> message like the existing Hyper-V and VMware code does. 
+kvm_ioapic_eoi_inject_work() re-delivers a throttled level-triggered
+interrupt via kvm_irq_delivery_to_apic(), which walks kvm->arch.apic_map
+and dereferences the destination vCPU's APIC.  The work is cancelled only
+in kvm_ioapic_destroy(), which runs after kvm_destroy_vcpus() has freed
+the vCPUs and their APICs.  kvm_free_lapic() does not rebuild apic_map, so
+the map is left with dangling pointers, and a work item that fires during
+that window reads freed memory:
 
-It was a complete goof on my part (Sashiko also pointed out the oddity[*]).  I
-fully intended to log a message and provide equivalent Hyper-V/VMware behavior,
-and totally spaced it.
+ BUG: KASAN: slab-use-after-free in __kvm_irq_delivery_to_apic_fast (arch/x86/kvm/lapic.c:1248)
+ Read of size 8 by task kworker/3:1
+ Workqueue: events kvm_ioapic_eoi_inject_work
+  __kvm_irq_delivery_to_apic_fast (arch/x86/kvm/lapic.c:1248)
+  __kvm_irq_delivery_to_apic (arch/x86/kvm/lapic.c:1343)
+  ioapic_service (arch/x86/kvm/ioapic.c:492)
+  kvm_ioapic_eoi_inject_work (arch/x86/kvm/ioapic.c:525)
+  process_one_work
 
-[*] https://lore.kernel.org/all/20260701194621.4BD691F000E9@smtp.kernel.org
+ Freed by task 153:
+  kvm_arch_vcpu_destroy (arch/x86/kvm/x86.c:12871)
+  kvm_destroy_vcpus (virt/kvm/kvm_main.c:489)
+  kvm_arch_destroy_vm (arch/x86/kvm/x86.c:13402)
+  kvm_destroy_vm (virt/kvm/kvm_main.c:1302)
+  kvm_vm_release (virt/kvm/kvm_main.c:1363)
 
-> I don't know that the message is all that useful, though I do remember one
-> case where I was debugging some clock/timer issue when I looked at it. 
+A guest arms the work by EOIing a level-triggered pin 10000 times in a
+row, so the window is reachable from guest ring 0 whenever its VM is torn
+down soon after.
+
+Destroy the in-kernel PIC and IOAPIC in kvm_arch_pre_destroy_vm(),
+before vCPUs are freed, so the eoi_inject work is cancelled while the
+target APICs are still valid.  This also unregisters the PIC/IOAPIC
+MMIO devices while the KVM buses still exist; kvm_destroy_vm() tears
+the buses down right after kvm_free_irq_routing() and before
+kvm_arch_destroy_vm(), so the previous kvm_io_bus_unregister_dev() in
+kvm_ioapic_destroy() was a no-op.
+
+Fixes: 184564efae4d ("kvm: ioapic: conditionally delay irq delivery duringeoi broadcast")
+Link: https://lore.kernel.org/all/88ba60ad32ba851426a3f6590b0e402210991b4a.e33b58ce.0008.4e1c.aa62.c1024b242cbf@bytedance.com/
+Suggested-by: Kai Huang <kai.huang@intel.com>
+Reported-by: Zhong Wang <wangzhong.c0ss4ck@bytedance.com>
+Reported-by: Xuanqing Shi <shixuanqing.11@bytedance.com>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+v1: https://lore.kernel.org/all/20260705045450.1325048-2-bestswngs@gmail.com/
+
+v2:
+ - Per Kai's suggestion, instead of adding a kvm_ioapic_pre_destroy()
+   helper that only cancels the eoi_inject work, move
+   kvm_pic_destroy()/kvm_ioapic_destroy() as a whole into
+   kvm_arch_pre_destroy_vm().  This also fixes the stale
+   kvm_io_bus_unregister_dev() Kai pointed out.
+ arch/x86/kvm/x86.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index fd1c4a36b593..5925da351a9a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13370,10 +13370,14 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+ 	 * Stop all background workers and kthreads before destroying vCPUs, as
+ 	 * iterating over vCPUs in a different task while vCPUs are being freed
+ 	 * is unsafe, i.e. will lead to use-after-free.  The PIT also needs to
+-	 * be stopped before IRQ routing is freed.
++	 * be stopped before IRQ routing is freed.  The PIC and IOAPIC need to
++	 * be destroyed here too, for the same reason, and because they must
++	 * be destroyed before the KVM buses are torn down.
+ 	 */
+ #ifdef CONFIG_KVM_IOAPIC
+ 	kvm_free_pit(kvm);
++	kvm_pic_destroy(kvm);
++	kvm_ioapic_destroy(kvm);
+ #endif
+ 
+ 	kvm_mmu_pre_destroy_vm(kvm);
+@@ -13400,10 +13404,6 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+ 		perf_release_mediated_pmu();
+ 	kvm_destroy_vcpus(kvm);
+ 	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+-#ifdef CONFIG_KVM_IOAPIC
+-	kvm_pic_destroy(kvm);
+-	kvm_ioapic_destroy(kvm);
+-#endif
+ 	kvfree(rcu_dereference_check(kvm->arch.apic_map, 1));
+ 	kfree(srcu_dereference_check(kvm->arch.pmu_event_filter, &kvm->srcu, 1));
+ 	kvm_mmu_uninit_vm(kvm);
+-- 
+2.54.0
 
