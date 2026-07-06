@@ -1,221 +1,386 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4583DE439;
-	Mon,  6 Jul 2026 20:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783369675; cv=fail; b=btc/Rwi0EXKiupUJ+qIEC+0b2ukI9K4dK5vhX6HfnRzUpk2rLDK57DWnRVY8hhuen8VmvJOifQ8w5IwGllXfPwUHEq+qPb+VBP2Cp90wIv7rOwMx2uprGmT1evsiDLBPsV48s8jNtWQxq5YeLhrSgLHGj9zvdMozvcYIVM6VSdY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783369675; c=relaxed/simple;
-	bh=JIYiUUl/qdQQ9MNlrcIEaqNBI+2TSsk7NGPh+WyKZ8A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jmfWqazdSKeIe6X1gzuohS1JMEoxwJAhIR6B7m5H8RJ4JEBy9mNdnwNtrDUer2O08YkgLFBdk0UNWYmMbP7REdt2DIyBlVF4coAIrUbdJWKFrSpaz9W6oPw32uPAtNIQYvDG5ZEHVF29SxxFkKTSrEfctVexu2mXRkZrME4TG78=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jR/gphHP; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F47C3E3D90
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 20:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783369819; cv=none; b=V3cUIR7grM/sSNqjsbMxZeOyELx9ncSez1nJsR4dSdTyVjO1saOYUwBRriJodj+/MCeg72VcLrftaNf0FvFHb3ww8fMk/xLot66Us8Qwud4ekGvfrzmhJlaaZzelCHtgPKDN+qQETp/7y8H6yY61S4h/gw8Ruv6gFTBeC37xzMs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783369819; c=relaxed/simple;
+	bh=PkGKVAUXBcrtS4vmy4F8Fp4420sU84x6gnlXH5iad/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HLUpwrVU/1/BunrLfJwsF5d5z0m8hhMsOcrnNoBcDaKXhvKWZnXZkvo7hhCVnBWsfeIAE3N44FualV2La8I4rDDKuhpYmhlWyMJCY8eNCAM7CKbIn3x/H6w02JeQA8zLm8OzvMhuPFtncfyEn/w9sFpA3opr/5hfD2duaIWExHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kaPg9g/T; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jR/gphHP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783369673; x=1814905673;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=JIYiUUl/qdQQ9MNlrcIEaqNBI+2TSsk7NGPh+WyKZ8A=;
-  b=jR/gphHPg6oh+uEVAgFma9i0VBC08+hqqB0D0PVAP2RL7hz7EgJAvcB1
-   ve8sQ5xFmUbhfThQyhn4k8ROVgv7zCSjGHVbwWwe4OieziTWDogHwlGwc
-   Q7bKjEDFe01uNPVHT9dBo6CqESt5gyGz8asb7vLk+xMFiXcg7BsyXuokG
-   O6iFN/99lEom/gOGK4XVl8U3jgXoz++hddrwvYXBVffCJu6Lh93LaQIS4
-   Y7/DJ1uAVy2NQEWtnVBJYTsoqizxOWpDaL34vZtXt8wkXud1ImcpLMhiL
-   ll2sK1zkSTSly2AlGHsEuRmYwaQH00d8uv68Ai1AfdOcj4ElKXjYsBZap
-   A==;
-X-CSE-ConnectionGUID: SC+VHj8WRXe5fwj+Mc8dbg==
-X-CSE-MsgGUID: qPeShtFLSN6XynGs/bq6KQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="83883810"
-X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
-   d="scan'208";a="83883810"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 13:27:52 -0700
-X-CSE-ConnectionGUID: 1dWG4FnfQf+dVkM+wDv2Yg==
-X-CSE-MsgGUID: ErsOUzRxS5C20Hj9F5d+lA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
-   d="scan'208";a="258125832"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 13:27:53 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 13:27:52 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 6 Jul 2026 13:27:52 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.5) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 13:27:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mTZzWoCYdr9r1X1KapSqfd3D97dV2LcIsrEbSnXFSOUGnoBJhowk2olKIOSuw5tcQWLeCyDzpFBUpYg+d5Y0a5BOUhOwR1hvP4GvINCG1ecqg2BVgrEJk7aXmrBzZQzVcGxDBZUhc7+tsw6g6wT06nVO1jBWW+9wIfNQFv9D6p3FqfjbdO6Zxu8yJrYYR5JFdr6ZFFVuXRMR8ym0v87TUjKPFPztIJoYG9KnBgxHJkYt30PcIJIUjZLcrWT5e3oIVg9YL0VD1PIgWrOWJeKsr0+k+JqY7unqDhS7BQ7YJepHg7hQs788Ip7EYV+JCkCuKKgNnO59DhpHs/bc58AFww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JIYiUUl/qdQQ9MNlrcIEaqNBI+2TSsk7NGPh+WyKZ8A=;
- b=TiwwOgDeYwTY9kCdWBoirNgMqC0QOGYnCTfwu94B0hfTnNqaJSxDPzycyxZsSSwWwSlmoX1AyaG37Lv/O1rdCFCwXiN2wAREkfcvDVAu+iRdAZM4TiNzbd3CkQrgxayz7ePeY1SiupD/p9VAbZjL6vZy5mGDiAJdo0qR+/BuiBkY2SWQsxD9Gz3c/IuVhwaB2al3xOYpoHhRojwabI84zI7T750W255n4hRPe/RWJRov7hwfOrT7KcEPkufkINgRsbmKN0p0cQAymiUpZ45uRAxTCsGWe2VzxQh/oR5X3tzvCMVA9zS+0K9gLJYqlxFS3Zd2Exz9Z+Kz2PiRbPUAXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by CY8PR11MB7947.namprd11.prod.outlook.com (2603:10b6:930:7a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
- 20:27:43 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 20:27:43 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, "Hansen,
- Dave" <dave.hansen@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, "Gao, Chao"
-	<chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
- tdx_pamt_get/put()
-Thread-Topic: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
- tdx_pamt_get/put()
-Thread-Index: AQHc7LhXfoCfkuUFmkqKqK55gbUxZLZaEl0AgAcf/AA=
-Date: Mon, 6 Jul 2026 20:27:43 +0000
-Message-ID: <078769dca47fccf0655531e3c339ed08caa1fe8b.camel@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
-	 <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-	 <1694d6c2-2aaa-4277-ba83-97c4a3007417@linux.intel.com>
-In-Reply-To: <1694d6c2-2aaa-4277-ba83-97c4a3007417@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|CY8PR11MB7947:EE_
-x-ms-office365-filtering-correlation-id: a092e165-ec6d-499e-6ce2-08dedb9d08ce
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|22082099003|18002099003|38070700021|11063799006|56012099006|4143699003;
-x-microsoft-antispam-message-info: pStJ/6MVaGyVQBGzMxyJaLOqxWcodZTR9agS4AE3/jxlDWsYpTsQ8MWOKMyvBwoaiR6G1lRgdIcP9GdEvmSMwLKI+jOo+gojMkH9JsjswpO/zAlqG21iCGSWFVbts41Olg39Tq6a+LIvwCtRgz7z4WEdWI0zrYpxyAJIbjjq5B79KOXXnLke1TRyPBQnaTCh841q1rbHBra6ZQWwEfJV2lX0QD2O0RgdlljxG+iT5g5Dy2AlYHMZ4pyvEQV+ZAVS8wZvYSI+0zZelAD6aBmmVQXwCBqQSgDSivK16H5pA4tNrILpS4JJaz/gq49ZGmBEk8XtY88vSJh+ry18A/XnbKO2efrj6O78EZHdm6QK9uE2lAWgfzh0Fgwgnn75+ZsfXeM3Cholsj/PuTS+0dzsX0Zo1Ocw+8teoTue+JkacnoFdFUZgg56grHCZSV9PDASSr/rEhK5EoIdMEP9ptzzA2Jsb8dRypAWUOYJFslxYBLHaFgAFlS+qPOYevpnLyUQOCpuzc2nP+H7aUcSpcCrVJwH4kmkE9OuuOMgqu+NryKBPDUr9LlNNsFnhr/d4eVE4qNmIif75sXNuuqiznew8czzQoyZUbDcrKXRjAJXuw8WK9d0jZUT13Sh9krT9NL5xnCNXU1z16dFzBv1doXTYhNhNC4Rt9bxx+7ZjMDtf14UTT9fhr5aZ5Hi6L0oY38P0FE8yLEJM4MR2W5iR7J9Ue5HVSYEPKjHNLQN9BrcWUI=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(22082099003)(18002099003)(38070700021)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SUNqMVlQQWVka043c0dqNC9pNWVIMk5ZL0gyREZ4UDR4cGU1TDY1ajdNQXhr?=
- =?utf-8?B?cmdkaHNYeGE5WktocVByeXM5bUc3OFd2Uzh0WjAvVTcvVVZTRUZOZkJiU0c4?=
- =?utf-8?B?M241bkMrdDdBaGVYT3dGTkZrc0RaMGdUZ3l6V1JRVXY5dWwzUTFId3hwMkFp?=
- =?utf-8?B?WmNRVlVUZHN1aTFlZ3RRVzVOSjJ0RXN6RjRFZURvR3JGWUtvTlVHUFIvV0li?=
- =?utf-8?B?N1o2bmR0bXUzbWhtVHQ5dzlQL2F3Nnk5bWVHck5UNmNyZ2ZQODZpdDFKakR2?=
- =?utf-8?B?ZWV4RnorTEJmNDJIWVNYQWRUWjNwcmRBN0REZ3Mxb1FOWFR4N2liV214UGpY?=
- =?utf-8?B?aHNIQ1F1UWVlc3poV1BuS25qZEFHdHVyTTBPL3NIOWQyNlhJUUp4bnA5Zjgr?=
- =?utf-8?B?SEZkRDJlL1p2aFJlR3RrVkt5WlovanFhYTYwVEYydm10RnFsaHIzMXhyNkJi?=
- =?utf-8?B?eWNpbENIRVJqUFpLaGl5OWp1STJvMHVsVHZ1OVRmQ2RkQ2hqOW5RTTIyeEk4?=
- =?utf-8?B?dE82cHhzaEhwWmdUWXo5RmwzemVHWm9ObTNPQjJSUFBVcjVZOGpBMFZzRW9i?=
- =?utf-8?B?VU9OUkxGbE9kMVRtdzZLRjJSOXNLS0YzR3JWbFZvcWQ1bVMwQU9ZZjJWZEVi?=
- =?utf-8?B?ZnEwcmw3VnRaZXdxTUVyM0Y1UGtUb3lMZGs3QWlTQXZDMkxZanBxWGhOaVlj?=
- =?utf-8?B?YnpGRFN4RDZkTXVWYjhwaWl5UHdaWVg4R2dXK1d3YjdITEM1ZXZCN1pnNjVx?=
- =?utf-8?B?dzRnZDNrbEQyNzRNM0RONDZxZW8xd2xFMGlBMXMxNVhNaGN2MGw2OEJNdjh5?=
- =?utf-8?B?OU16VjJhaG5jdXFhckV4bWtoQk05OWpVVHk0aHBMckI1Q04yeHZRVWc3anZH?=
- =?utf-8?B?c1lJTFhqL2JxOWdWSHBrV1ByRFlFdW5Kc0pjbURWOWk5Mm9XY2EyRDdMK3Ns?=
- =?utf-8?B?WGpvZlVoMDBKUnRDYUlZeERvZTRna3BmYVlzYXFCUHFFZ0p2bVdzblNoMVg4?=
- =?utf-8?B?K0NTMGZOOUY3NVRtajQ4RkorTU9KbXZob1Zyc1d4QUdzV0QyaFJvUS91UUQ2?=
- =?utf-8?B?MzduMTM2U3RFRTIwNkRJT1J2VDh4N1ZwMGhTY3VzV3h3TituZlhwN2pxSURw?=
- =?utf-8?B?aE5iQ3F5U0lEcjI3M0l1eHAwZTRUUm5kM2FBSzh5YzFWYnF5ZUZzdUZOZWJQ?=
- =?utf-8?B?OXNRTjBhbG1BRFJnQzVraVJwT3daUGNsQTRTS3p3MWtlUWhDMDNOdzBMNnZO?=
- =?utf-8?B?REswUk50LzB1TjhDN0ppckJvcm1iMkNlRUU3c0l1NGRaKzZuSzVRaHlwUVla?=
- =?utf-8?B?LzNTenRCaWIvRmZJa2l3NGVJdGFIM1N1ckhzL2pRSDI1NUthMkV6TDYrM3Jv?=
- =?utf-8?B?Q1VUUm5XeE5kYTNkcGRFYkdxelFNZEg1Z2FaRHc2VHhNNmxTVDVNRHhiYmU0?=
- =?utf-8?B?andScm5naUJoL3VFYmxRZWFQbUhRczhtc2E0NFgrenNaQTRzV2RZNTRVYUZG?=
- =?utf-8?B?L2dsUU82TVBzWndtU0ZCSUlqcUQ2QzAwbzF4cmVPb05IbW5VWWpSUGdyOGNn?=
- =?utf-8?B?Zjl6M3VyakRhMWtsOVo4VWdIS2FXRU5mNkxOQm1NRHhlZCt0V1UyRmwrN1A3?=
- =?utf-8?B?QUc5ci9hZDRDRVJob3JPL3pjbTV3YXFqa1FVS3ZuRzlac051ZFhFekE0V0k1?=
- =?utf-8?B?a2tPeWViZmdyODFBZHk0QUtBLzBIckdUeWZTSW1US2p4cExMNjJjKzllYUZh?=
- =?utf-8?B?WUV4NW1obTE1WnF5M1ZBSmhlK2N6aFhlV3BTTjZLbWFJYVh1YkZDR3BOWk9n?=
- =?utf-8?B?czZzZ0NvTGZRNnNEbm5XVDdmcjFlbU53bmFnMUM3ZFhGbVc2M0N3RmhTVkM5?=
- =?utf-8?B?N1k2cmZCWTNHRitWeEZCTWpvVk5LVDNoVjEvcnJuVEc1MG9ITGxIaFhWMXB2?=
- =?utf-8?B?bHA5TXJXSXBOSTZuTU5tak8vSll1bGVUMFcxTlFDNzVmb0N2dHNqNUVCMEdq?=
- =?utf-8?B?SDRMWTY1R29pMjM1aWFuS0hWbkNBN2NkWE1zQ1ZXSGgrUXd0bTNLem1iNWov?=
- =?utf-8?B?MnhlRks1T0hkSjJzQ1liK1RjODVZM3BaZmNQdFF2MVgzdmJlZXppVnRMWnpq?=
- =?utf-8?B?THFSbG1heUh4TmpRNHgrZ2QvS1I5VHpZc0lLQmZwY0NyRGErQkYzTk1PZmNJ?=
- =?utf-8?B?eTlZSE1MbkdpemFGMGkvWm1yWmJuWGttdmk5bnZybDU0dGh1cjJrd2tQVVBo?=
- =?utf-8?B?c0ZMUWRJeC9UUCsrQlFKeE81WmxnYkVZL0hQYnN4aSsrY295bkdWR2hrc081?=
- =?utf-8?B?MGdBUnlwbmUvMTVNZnhjeThPWWI0MDg0UTAvdkxGR3JhUC9jVzlPYkgvUUpy?=
- =?utf-8?Q?fB5pNq82azbc5dQ0=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B5740F6B33FB49479A78DFF733299B0A@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kaPg9g/T"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-847aebc56b6so2709086b3a.3
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 13:30:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783369817; x=1783974617; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xntCCT1TCea4fhJTx32PiqxGr8BPBKrcALKzZ790Js0=;
+        b=kaPg9g/T26fC5qgpxFTmMv3SPDxCP1DpPOZjDECS334GKANspqs+NdsWBG7hib6BBR
+         aI/lk9XYRZ25DO/4xG50LuyDMwq+iNwO8yt3Uik6z3R0HLUecNjiqsGt0bhHOd7l087W
+         2dy/r4LcMRMNLy58oCo5OpaD6xRkSsreCv6Eq0tpX27ibeVqbe5URPkVTMHWQyxmWH1d
+         c858NTch8k7iqDJ9yMFSpo5LQ3etBtUYkBUamEVPEFeL6VpKKlBNA+hzlrYJebOnuCo5
+         1W8Nt053aRHdMkasg/C3Igej5Lht4BwSTgehXOJOca7dgX0t/rmdqio4yIHu5gGAjFTG
+         WwXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783369817; x=1783974617;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xntCCT1TCea4fhJTx32PiqxGr8BPBKrcALKzZ790Js0=;
+        b=UkEIg4+BqXt4omFMyHSc4WJa/asru+VtvDLYOl0WyvHx2po0lRG/VBF4q9VXMTGzJZ
+         3VMy4xyORz5qJB6pu2qK7vM6NkpOJHBRBgVR7UuAN74NPi+Cz63csvVm+Oz0yDZjrgx1
+         6elEZApLlhIaWlhdGF0gF0KP1lRBsB81879n1XNpGS4dVUhhusoTcbXE4xXG8tD8EJNH
+         TJgSEm+tQYV2paJ4fdwIsm+9PpGjeqZ0hbVPH1l5SDq75jwZSBHSc0FiXlkSM7zxLM0o
+         kCy01Fm+7XKO/uYtSa3iQTaE09jQBFnIJf5PByMzL/ZeUpdT36iGUJHGzmo8br8Z38dr
+         gQ0A==
+X-Forwarded-Encrypted: i=1; AHgh+Rqr9+uhgJcZQPrSx+j4nQ0CjJhxMYD2teTCufdZzGdoxmyEGEa+0EN21kV6XoJJDKMT+7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8+Js5RWWv1Ac5y/R8LZimpL8tmvCtsx2XSaX5StDu8+BrRShC
+	B5my/drWJvoNC38ORNG2nYvI4Dl3VESvTHWP7GFQrJceUieAISEMMplDtuIqAbkACJzL54P7oTI
+	PpwqYGA==
+X-Gm-Gg: AfdE7cnvwhQVMoqIkGDo6HsPX0rXBeHQ7CLNM6U7u4cidRDuhqoz/8UYtNDXsywmv2M
+	JuDGOF1q0d2APiuwifXCu1i2NwdtHXDxLYapmP8b3VtZH8lOSApjKCPHXgt2IKEqQSWHKmgrs3H
+	irKEHWAbIsh27QOmyV8Ka+9DEduwn/cCgL/pOMye9KM4EbiWd4cbgXRVAVD6m9JF4Xnz55R7Hoj
+	ZvLurxxRxuLI8NNTnadgHRi3SxGjQ2WVt1+/HzhksMW1afuk9nzlRYx1Wq3VyV5zdMf/HbmxCQB
+	t7T5iceaX4fdGgwNk5a+jQ4j64K8n1dSPdqk+B0x4N98zEbnwVjLi2rUXKJ25KHdZU1oAp12iFY
+	QQTTg1GLOu00lPh6L52YFbWDND5+FkQdTv2Sk70xzN4bD3zbdnCMUU1ju/INjvSizZNthAIl/E/
+	cXvE398tc6SSjt3T6TBbQpGY0xKCcNUHlgj6OFjBNnyGoeQjqNJ40=
+X-Received: by 2002:a05:6a00:298a:b0:847:8449:2bb6 with SMTP id d2e1a72fcca58-84826c1dfa3mr2151292b3a.4.1783369816187;
+        Mon, 06 Jul 2026 13:30:16 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d85c04sm4513063b3a.50.2026.07.06.13.30.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 13:30:15 -0700 (PDT)
+Date: Mon, 6 Jul 2026 20:30:11 +0000
+From: David Matlack <dmatlack@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 01/10] selftests/vfio: igb: Add driver for IGB QEMU
+ device
+Message-ID: <akwQUzGJBJhzdAss@google.com>
+References: <20260526235417.2058313-2-jrhilke@google.com>
+ <20260527003237.8405E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: fJZ8dxO46jnsbfPVyQzfDH2clEFWp2rGjVhCQ5mCUIXv4e/ZAhPD0TmtKdNHYJdU3qcFzsIqyDtOKBHc9104Vz57V/nb3LJ1qC1ZY0pVrWp404wxw5KQ5o2kYf8eLNrcRNIxPawguVyi49dRaxquPSmS4s0dsB+rm782uE/g8m9B4CCP7+FqPgdKUMikYkkL0QPeXZm3oXSxfPnbNBFryVEy7W+p8uxem/jfpnZTaBwKZtkY8m3t6z9sxPJwq3HeV/RKPVMti3BaL7YttueSl5um1Zk343OKCxsQbp+CGLzp57ee0pjysjsDIS83kOmKO6mhNfuHFH9YGZqCQakqNw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a092e165-ec6d-499e-6ce2-08dedb9d08ce
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2026 20:27:43.6213
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: MInYmYD8AxTV9lvPA3I39u3NVolV5Qqz49d0x7GxPxLimldipg/p+2asfoOn1AbBA7V6qvkytQGBt7y3g1SxXY4JQNjmK+iXrAflctZZBvQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7947
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260527003237.8405E1F000E9@smtp.kernel.org>
 
-T24gVGh1LCAyMDI2LTA3LTAyIGF0IDE1OjM5ICswODAwLCBCaW5iaW4gV3Ugd3JvdGU6DQo+IE9u
-IDUvMjYvMjAyNiAxMDozNSBBTSwgUmljayBFZGdlY29tYmUgd3JvdGU6DQo+ID4gRnJvbTogIktp
-cmlsbCBBLiBTaHV0ZW1vdiIgPGtpcmlsbC5zaHV0ZW1vdkBsaW51eC5pbnRlbC5jb20+DQo+ID4g
-DQo+ID4gdGR4X3BhbXRfZ2V0KCkvdGR4X3BhbXRfcHV0KCkgdW5jb25kaXRpb25hbGx5IGFkZCBv
-ciByZW1vdmUgRHluYW1pYyBQQU1UDQo+ID4gYmFja2luZyBmb3IgdGhlIDJNQiByZWdpb24gY292
-ZXJpbmcgdGhlIHBhc3NlZCBwZm4uIEhvd2V2ZXIsIG11bHRpcGxlDQo+ID4gY2FsbGVycyBjYW4g
-Y29uY3VycmVudGx5IG9wZXJhdGUgb24gNEtCIHBhZ2VzIHRoYXQgZmFsbCB3aXRoaW4gdGhlIHNh
-bWUNCj4gPiAyTUIgcmVnaW9uLiBXaGVuIHRoaXMgaGFwcGVucyBvbmx5IG9uZSBEeW5hbWljIFBB
-TVQgcGFnZSBwYWlyIG5lZWRzIHRvIGJlDQo+ID4gaW5zdGFsbGVkIHRvIGNvdmVyIHRoZSAyTUIg
-cmFuZ2UuIEFuZCB3aGVuIG9uZSBwYWdlIGlzIGZyZWVkLCB0aGUgRHluYW1pYw0KPiA+IFBBTVQg
-YmFja2luZyBjYW5ub3QgYmUgZnJlZWQgdW50aWwgYWxsIHBhZ2VzIGluIHRoZSByYW5nZSBhcmUg
-bm8gbG9uZ2VyIGluDQo+ID4gdXNlLiBNYWtlIHRoZSBoZWxwZXJzIGhhbmRsZSB0aGVzZSByYWNl
-cyBpbnRlcm5hbGx5Lg0KPiA+IA0KPiA+IFVzZSB0aGUgcGVyLTJNQiByZWZjb3VudHMgZnJvbSBw
-cmV2aW91cyBjaGFuZ2VzIHRvIHRyYWNrIGhvdyBtYW55IDRLQg0KPiA+IHBhZ2VzIGFyZSBpbiB1
-c2Ugd2l0aGluIGVhY2ggcmVnaW9uLiBHYXRlIHRoZSBhY3R1YWwgRHluYW1pYyBQQU1UIGFkZCBh
-bmQNCj4gPiByZW1vdmUgb24gcmVmY291bnQgdHJhbnNpdGlvbnMgKDAtPjEgYW5kIDEtPjApLiBT
-ZXJpYWxpemUgdGhlIHJlZmNvdW50DQo+ID4gY2hlY2sgYW5kIFNFQU1DQUxMIHdpdGggYSBnbG9i
-YWwgc3BpbmxvY2sgc28gdGhlIHJlYWQtZGVjaWRlLWFjdCBzZXF1ZW5jZQ0KPiA+IGlzIGF0b21p
-Yy4gVGhpcyBhbHNvIGF2b2lkcyBURFggbW9kdWxlIEJVU1kgZXJyb3JzLCBhcyBEeW5hbWljIFBB
-TVQgYWRkDQo+ID4gYW5kIHJlbW92ZSBTRUFNQ0FMTHMgdGFrZSBhbiBpbnRlcm5hbCBURFggbW9k
-dWxlIGxvY2tzIGF0IDJNQiBncmFudWxhcml0eSwNCj4gPiBzbyBzaW11bHRhbmVvdXMgYXR0ZW1w
-dHMgb24gdGhlIHNhbWUgcmVnaW9uIHdvdWxkIGNvbmZsaWN0Lg0KPiA+IA0KPiA+IFRoZSBsb2Nr
-IGlzIGdsb2JhbCBhbmQgaGVhdnl3ZWlnaHQuIFVzZSBzaW1wbGUgY29uZGl0aW9uYWwgbG9naWMg
-dG8ga2VlcA0KPiA+IGNvcnJlY3RuZXNzIG9idmlvdXMuIFRoaXMgd2lsbCBiZSBvcHRpbWl6ZWQg
-aW4gYSBsYXRlciBjaGFuZ2UuDQo+ID4gDQo+ID4gQXNzaXN0ZWQtYnk6IEdpdEh1YiBDb3BpbG90
-OmNsYXVkZS1vcHVzLTQtNiBDbGF1ZGU6Y2xhdWRlLW9wdXMtNC03DQo+ID4gU2lnbmVkLW9mZi1i
-eTogS2lyaWxsIEEuIFNodXRlbW92IDxraXJpbGwuc2h1dGVtb3ZAbGludXguaW50ZWwuY29tPg0K
-PiA+IENvLWRldmVsb3BlZC1ieTogUmljayBFZGdlY29tYmUgPHJpY2sucC5lZGdlY29tYmVAaW50
-ZWwuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFJpY2sgRWRnZWNvbWJlIDxyaWNrLnAuZWRnZWNv
-bWJlQGludGVsLmNvbT4NCj4gDQo+IFJldmlld2VkLWJ5OiBCaW5iaW4gV3UgPGJpbmJpbi53dUBs
-aW51eC5pbnRlbC5jb20+DQo+IA0KPiBPbmUgbml0IGJlbG93Lg0KPiANCj4gWy4uLl0NCj4gDQo+
-ID4gwqAgDQo+ID4gQEAgLTIwNTcsMTAgKzIwNjEsMjYgQEAgc3RhdGljIGludCB0ZHhfcGFtdF9n
-ZXQoa3ZtX3Bmbl90IHBmbikNCj4gPiDCoMKgCWlmIChyZXQpDQo+ID4gwqDCoAkJcmV0dXJuIHJl
-dDsNCj4gPiDCoCANCj4gPiAtCXRkeF9zdGF0dXMgPSB0ZGhfcGh5bWVtX3BhbXRfYWRkKHBmbiwg
-cGFtdF9wYWdlcyk7DQo+ID4gLQlpZiAodGR4X3N0YXR1cyAhPSBURFhfU1VDQ0VTUykgew0KPiA+
-IC0JCXJldCA9IC1FSU87DQo+ID4gLQkJZ290byBvdXRfZnJlZTsNCj4gPiArCXBhbXRfcmVmY291
-bnQgPSB0ZHhfZmluZF9wYW10X3JlZmNvdW50KHBmbik7DQo+IA0KPiB0ZHhfZmluZF9wYW10X3Jl
-ZmNvdW50KCkgaXMgdGFnZ2VkIGFzIF9fbWF5YmVfdW51c2VkIGluIHRoZSBwcmV2aW91cyBwYXRj
-aC4NCj4gSSB0aGluayB0aGUgdGFnIHNob3VsZCBiZSByZW1vdmVkLg0KDQpPaCB5ZWEsIHRoYXQg
-d2FzIHRoZSBpbnRlbnRpb24uIFdpbGwgZml4Lg0K
+On 2026-05-27 12:32 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 12 potential issue(s) to consider:
+> - [High] Silent failures during device initialization leave the driver in an invalid state.
+> - [High] PCI_COMMAND_MEMORY enablement is skipped if PCI_COMMAND_MASTER is already set.
+> - [High] Device reset is asynchronous but not awaited, and MSI-X is disabled before the device is quiesced.
+> - [High] `igb_memcpy_start` fails to increment `src` and `dst` pointers for multiple chunks.
+> - [Medium] Missing SRRCTL configuration causes incorrect Rx descriptor write-back offset on real hardware.
+> - [Medium] Missing Transmit FCS (Frame Check Sequence) insertion causes payload truncation.
+> - [Medium] Lockless polling of DMA memory without READ_ONCE() or a volatile cast.
+> - [Medium] Incorrect MDI Error bit offset in MDIC register definition.
+> - [Medium] Missing read/write memory barriers around DMA descriptor and doorbell accesses.
+> - [Medium] Missing endianness conversion macros when populating hardware descriptors.
+> - [Medium] Unsafe hardware reset logic uses a sleep instead of polling the reset completion bit.
+> - [Medium] Incorrect bit definition for IGB_GPIE_EIAME silently disables auto-masking functionality.
+> --
+> 
+> commit f2aa2cf5b25f70be67a7ce0a012a1bdb1dba535c
+> Author: Josh Hilke <jrhilke@google.com>
+> 
+> selftests/vfio: igb: Add driver for IGB QEMU device
+>     
+> Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
+> (IGB). IGB is fully virtualized in QEMU [1] which makes it easy to run
+> VFIO selftests without needing any specific hardware.
+> 
+> [1] https://www.qemu.org/docs/master/system/devices/igb.html
+> [2] https://github.com/arighi/virtme-ng
+> 
+> > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> > new file mode 100644
+> > index 0000000000000..064ca7c05da02
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> [ ... ]
+> > +static void igb_init(struct vfio_pci_device *device)
+> > +{
+> [ ... ]
+> > +	/* Reset device and disable all interrupts */
+> > +	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
+> > +	usleep(20000);
+> 
+> [Severity: Medium]
+> Could this unsafe hardware reset logic cause issues by sleeping instead of
+> polling the reset completion bit? Accessing device registers while a reset is
+> propagating internally could trigger PCIe bus hangs.
+
+Please fix this. At minimum the sleep needs to be documented if that is
+relying on duration mandated by the hardware spec.
+
+> 
+> > +	igb_write32(igb, IGB_IMC, 0xFFFFFFFF);
+> > +
+> > +	/* Signal that the driver is loaded */
+> > +	ctrl = igb_read32(igb, IGB_CTRL_EXT);
+> > +	ctrl |= IGB_CTRL_EXT_DRV_LOAD;
+> > +	ctrl &= ~IGB_CTRL_EXT_LINK_MODE_MASK;
+> > +	igb_write32(igb, IGB_CTRL_EXT, ctrl);
+> > +
+> > +	/* Enable PCI Bus Master. */
+> > +	cmd_reg = vfio_pci_config_readw(device, PCI_COMMAND);
+> > +	if (!(cmd_reg & PCI_COMMAND_MASTER)) {
+> > +		cmd_reg |= (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
+> > +		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
+> > +	}
+> 
+> [Severity: High]
+> Does this logic inadvertently skip enabling PCI_COMMAND_MEMORY if
+> PCI_COMMAND_MASTER is already set? If the Bus Master bit is already enabled
+> by firmware or VFIO but Memory Space is disabled, the block is skipped, which
+> would leave Memory Space disabled and cause subsequent MMIO accesses to
+> trigger bus faults.
+
+Please fix this.
+
+> 
+> > +
+> > +	/* Trigger autonegotiation. This enables IGB to transmit data. */
+> > +	if (igb_phy_setup_autoneg(igb))
+> > +		return;
+> 
+> [Severity: High]
+> Does this early return result in a silent failure during device initialization?
+> If it fails, crucial setup steps are skipped, leaving variables like
+> max_memcpy_size uninitialized. The test framework will proceed to use the
+> partially configured device, leading to undefined behavior or crashes.
+> Could it explicitly assert failure via VFIO_ASSERT() instead?
+
+Please fix this. IMO igb_phy_setup_autoneg() should use VFIO_ASSERT()
+instead of returning an int.
+> 
+> > +
+> > +	/* Configure TX and RX descriptor rings */
+> > +	igb_write32(igb, IGB_TDBAL0, (u32)iova_tx);
+> > +	igb_write32(igb, IGB_TDBAH0, (u32)(iova_tx >> 32));
+> > +	igb_write32(igb, IGB_TDLEN0, RING_SIZE * sizeof(struct igb_tx_desc));
+> > +	igb_write32(igb, IGB_TDH0, 0);
+> > +	igb_write32(igb, IGB_TDT0, 0);
+> > +	igb_write32(igb, IGB_TXDCTL0, IGB_TXDCTL0_Q_EN);
+> > +
+> > +	igb_write32(igb, IGB_RDBAL0, (u32)iova_rx);
+> 
+> [Severity: Medium]
+> Is the SRRCTL configuration missing here? The driver expects the hardware to
+> use Advanced Receive Descriptors and polls for the DD bit at byte offset 8,
+> but fails to configure the SRRCTL register. Real hardware defaults to Legacy
+> Receive Descriptors (DD bit at offset 4), causing polling timeouts.
+> 
+> I noticed this is fixed in a later commit in the series: "selftests/vfio: igb:
+> Use advanced TX and RX descriptors".
+> 
+> [ ... ]
+> > +static void igb_remove(struct vfio_pci_device *device)
+> > +{
+> > +	struct igb *igb = to_igb_state(device);
+> > +
+> > +	vfio_pci_msix_disable(device);
+> > +	igb_write32(igb, IGB_RCTL, 0);
+> > +	igb_write32(igb, IGB_TCTL, 0);
+> > +	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
+> > +}
+> 
+> [Severity: High]
+> Is it safe to disable MSI-X before the device is quiesced, and trigger an
+> asynchronous device reset without awaiting its completion?
+> 
+> Calling vfio_pci_msix_disable() before masking interrupts and triggering a
+> hardware reset risks rogue interrupts during teardown. Returning immediately
+> after setting IGB_CTRL_RST might create a race condition where the VFIO
+> framework destroys IOMMU mappings while the device is still resetting,
+> potentially leading to a DMA use-after-free.
+
+I don't think this is a bug. The device should not be sending interrupts
+after they are disabled in the device itself.
+
+> 
+> [ ... ]
+> > +static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
+> > +			     iova_t dst, u64 size, u64 count)
+> > +{
+> > +	struct igb *igb = to_igb_state(device);
+> > +	struct igb_rx_desc *rx;
+> > +	struct igb_tx_desc *tx;
+> > +	u32 i;
+> > +
+> > +	igb_irq_disable(igb);
+> > +
+> > +	for (i = 0; i < count; i++) {
+> > +		tx = &igb->tx_ring[igb->tx_tail];
+> > +		rx = &igb->rx_ring[igb->rx_tail];
+> > +
+> > +		memset(tx, 0, sizeof(struct igb_tx_desc));
+> > +		memset(rx, 0, sizeof(struct igb_rx_desc));
+> > +
+> > +		rx->read.pkt_addr = dst;
+> > +		tx->read.buffer_addr = src;
+> > +		tx->read.cmd_type_len = (u32)size;
+> > +		tx->read.cmd_type_len |= (u32)(IGB_TXD_CMD_EOP) << IGB_TXD_CMD_SHIFT;
+> 
+> [Severity: High]
+> Does this loop fail to increment the src and dst pointers for multiple chunks?
+> When count > 1, the device repeatedly copies the first chunk of data to the
+> exact same destination address, leaving the remainder of the buffer uncopied
+> and causing data verification failures.
+
+This is not a bug, that's how memcpy_start() is defined to behave.
+
+> [Severity: Medium]
+> Are endianness conversion macros missing here? Populating 64-bit addresses
+> and 32-bit fields in hardware descriptors using native CPU byte order instead
+> of cpu_to_le32 and cpu_to_le64 will break on big-endian host architectures.
+
+Please fix this.
+
+> [Severity: Medium]
+> Should the Transmit FCS (Frame Check Sequence) insertion flag be present?
+> The driver sets IGB_RCTL_SECRC to strip Ethernet CRC on RX but omits the
+> IGB_TXD_CMD_IFCS flag on TX. On real hardware, no CRC is appended, causing
+> the RX MAC to strip the last 4 bytes of the actual payload.
+> 
+> I noticed this is fixed in a later commit in the series: "selftests/vfio: igb:
+> Use advanced TX and RX descriptors".
+> 
+> > +
+> > +		/* Set to 0 to disable offloads and avoid needing a context descriptor */
+> > +		tx->read.olinfo_status = 0;
+> > +
+> > +		igb->tx_tail = (igb->tx_tail + 1) % RING_SIZE;
+> > +		igb->rx_tail = (igb->rx_tail + 1) % RING_SIZE;
+> > +	}
+> > +
+> > +	igb_write32(igb, IGB_RDT0, igb->rx_tail);
+> > +	igb_write32(igb, IGB_TDT0, igb->tx_tail);
+> 
+> [Severity: Medium]
+> Are write memory barriers needed here around the DMA descriptor and doorbell
+> accesses? Without a write memory barrier between populating RAM descriptors
+> and ringing the TX doorbell, the hardware might fetch stale descriptors.
+
+Can you look into this one? I would have assumed writel() would provide
+the proper barriers.
+
+> 
+> > +}
+> > +
+> > +static int igb_memcpy_wait(struct vfio_pci_device *device)
+> > +{
+> > +	struct igb *igb = to_igb_state(device);
+> > +	struct igb_rx_desc *rx;
+> > +	u32 prev_tail;
+> > +	int retries;
+> > +
+> > +	prev_tail = (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
+> > +	rx = &igb->rx_ring[prev_tail];
+> > +
+> > +	retries = 100;
+> > +	while (retries-- > 0) {
+> > +		if (rx->wb.status_error & 1)
+> 
+> [Severity: Medium]
+> Could this lockless polling of DMA memory without READ_ONCE() or a volatile
+> cast cause problems? The loop polls rx->wb.status_error, which allows the
+> compiler to theoretically cache the value in a register. While the external
+> usleep() call typically acts as an implicit compiler barrier, relying on it
+> is brittle and constitutes a data race.
+
+Please fix this one.
+
+> 
+> > +			break;
+> > +		usleep(10);
+> > +	}
+> > +
+> > +	igb_irq_clear(igb);
+> > +
+> > +	igb_irq_enable(igb);
+> > +
+> > +	if (rx->wb.status_error & 1)
+> 
+> [Severity: Medium]
+> Is a read memory barrier missing here after polling the DMA completion status?
+> Without it, there could be speculative CPU reads of the destination buffer.
+
+Maybe just avoid this issue entirely and read rx->wb.status_error into a
+variable so you can check it again after the loop.
+
+> 
+> > +		return 0;
+> > +
+> > +	return -ETIMEDOUT;
+
+nit: return error ? -ETIMEDOUT : 0;
+
+> > +}
+> [ ... ]
+> > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+> > new file mode 100644
+> > index 0000000000000..e2756be2e9c0c
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+> [ ... ]
+> > +#define IGB_MDIC_PHY_SHIFT 21 /* PHY Address Shift */
+> > +#define IGB_MDIC_REG_SHIFT 16 /* Register Address Shift */
+> > +#define IGB_MDIC_READY (1 << 28) /* MDI Data Ready */
+> > +#define IGB_MDIC_ERROR (1 << 29) /* MDI Error */
+> 
+> [Severity: Medium]
+> Is this MDI Error bit offset correct in the MDIC register definition?
+> The macro is defined as (1 << 29), but according to the datasheet, bit 29 is
+> the Interrupt Enable bit, while the actual MDI Error bit is bit 30.
+> 
+> I noticed this is fixed in a later commit in the series: "selftests/vfio: igb:
+> Use offical IGB headers in selftest driver".
+
+Please fix this.
+
+> 
+> [ ... ]
+> > +#define IGB_CR_1000T_FD_CAPS 0x0200 /* Advertise 1000 Mbps Full Duplex */
+> > +
+> > +#define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
+> 
+> [Severity: Medium]
+> Does this incorrect bit definition for IGB_GPIE_EIAME silently disable
+> auto-masking functionality? It is defined as 0x10, which corresponds to
+> Multiple_MSIX. The actual Extended Interrupt Auto Mask Enable bit is bit 30.
+> Writing 0x10 fails to enable auto-masking.
+> 
+> I noticed this is fixed in a later commit in the series: "selftests/vfio: igb:
+> Program MSI-X interrupt routing".
+
+Lot of bugs that get fixed later in the series. I think you want to
+preserve Alex's author tag by keeping them separate, but let's not
+introduce any temporary bugs.
+
+Since we haven't merged anything yet, let's fix all the bugs in this
+patch directly, and use the follow up patches for any improvements.
+
+> 
+> > +#define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
+> > +
+> > +#define IGB_TXD_CMD_EOP 0x01 /* End of Packet */
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260526235417.2058313-1-jrhilke@google.com?part=1
+> 
