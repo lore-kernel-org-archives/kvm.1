@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB383D4117;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5813D7A0C;
 	Mon,  6 Jul 2026 19:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783367686; cv=none; b=bHjBvKnvWtwD/zkTlj4wVWXJg5P714m5+M8DW/FCyuftpoF81IC5FPak8BQd3Ngthb/mUDukPX/RcgKgzc9GfPnug6U/+eoS+fFPlK3n52EYMnjeu1YMVSeVkf3jipljXTifs95rwzEjf982z6qLG6HZc54iDahS/Ju5MqF5AZg=
+	t=1783367686; cv=none; b=Bu0m4LpbMT6Anetyz2kfFvg36+1rZWaxIWl5zNxv8PiXrtJ6Zxh0n2jbbU7z9pu8doQabMuXYeoxYacNZouCveIEhlEHNgdlsq5wBZnVWyHljcH/fR63wAycZl5jtNEgo3S4eAN4AQ+OjfR3XzzSPk1Bmkwnq3C2wRhAFzdsBLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783367686; c=relaxed/simple;
-	bh=DRRCQZ3YE6A2T1qoGUE0gO9O9EZnP5hzhhQy6nFttyw=;
+	bh=Q2cUopls6Qq0ErTdtEfD08s1N8WNuwE6YWNnLvVP8LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLyjghl9yG8gXSyDAlISL15RjEbOQuV2XBRVLLQz+xbYAwYsiIZYehztZmP5Ur22IErtQJr1uUwYZVZ/bw/xlegsmURsoDcY6F5oaaJaO1mMJizjLHv6EMWpyvcVpTxszwl0rCIHSIYXoThQzMMnyhPIRsczAMnF7hzm8bUPCc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+hphaWk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=FIFspLVaN1s66ROQa4F+ValTwPCGsGaMCC5r/NeMkML3pdccHwrsjkQlNRU0YN87GDbVwmb9Z4aBi7t0A7tn3rNflTn3cn/tUp6cVyxgrd3g6iok8wb8bbEith0fn7TUzBnnrIPOBTMt6F6qiCx67TKbNDYv+z9I5fufqi6voCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dimZ/nCd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+hphaWk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA78A1F00A3A;
-	Mon,  6 Jul 2026 19:54:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dimZ/nCd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5CC1F00A3D;
+	Mon,  6 Jul 2026 19:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783367684;
-	bh=G33BwdrNFRS3RzFtEtTmtKu06Do14OXWlIvsZAoGJW4=;
+	s=k20260515; t=1783367685;
+	bh=XcZvsjEpydF3FE+2e6VugYa54cdNPtxfO7v1WNyDQAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G+hphaWkznW0TmqpuZAxEmFTPRSDzViJ+4rJ8UwQZt7GdwyqUlZwpA8qZ+oLgOULX
-	 W58fSmPlfYIqIrMh0nAl6XYKoAldETR7NRwIR6rOPXfR1aodYV8vnP1CQ39P/Pj1II
-	 8X0LZIWikC5es1MCDXlucnkRbEkc73nvTUSBGib4kBcLbzc852BfHmg5Qp6BMK7hpz
-	 F6Fo3L5bvSHIjEJNH7TYvj1pd/EFyf0TZifai9wrRzmN39jEjoD+DZXK9KEn+bqd+I
-	 YZsrrewM1P3M8DwSf9rZe6RIA6y2vEP06Ern7VdoUHsmeCq5jI6uonO9jZk2sce/kY
-	 Is+aE9CoL3TYw==
+	b=dimZ/nCd6DkuxSQTL9cCCa6KNPzn5CPObHyHr196fuzshfiaoo04rfvFe66Q5sw+3
+	 MlbrbD5wrbf+0s+kwoZ9nCpLUCV/G1TUiHG+5btvvprs6CL/mXF7+95eH/LFEmsqr0
+	 YP77szerpe8PEl+w1Sxe0wsyBry2JnwBNR62+8p1S0DZNJIgNtES2JS4B8G9R4m8F1
+	 vq8FM+6JjNwjdP2EFYw2BNsCPi/BOgBTHhx2WDAxZEFTFxp7XOG6ZVjcNbiOY32hAx
+	 7tFeJFCGaQFNrAp8vTn8xjoXw2y68f50VJNhiH+s43GJ4h5fNagvfagPSd6LRbPOd3
+	 Y+56KT5JJCnCg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 6/7] KVM: x86: Move supported EFER bits to kvm_caps
-Date: Mon,  6 Jul 2026 19:54:12 +0000
-Message-ID: <20260706195413.1966458-7-yosry@kernel.org>
+Subject: [PATCH v2 7/7] KVM: selftests: Extend set_sregs test to cover EFER
+Date: Mon,  6 Jul 2026 19:54:13 +0000
+Message-ID: <20260706195413.1966458-8-yosry@kernel.org>
 X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
 In-Reply-To: <20260706195413.1966458-1-yosry@kernel.org>
 References: <20260706195413.1966458-1-yosry@kernel.org>
@@ -46,142 +46,180 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Supported EFER bits naturally fits into kvm_caps because it needs to be
-recomputed during vendor init (e.g. to account for EFER.SVME being
-allowed/disallowed based on nested being enabled/disabled).
+Extend the set_sregs test to cover various bits in EFER. Update
+TEST_INVALID_CR_BIT() to operate on EFER as well as CRx (and rename it
+accordingly). Add test cases to check that EFER bits are disallowed
+without the relevant CPUID enablement.
 
-Move efer_supported_bits into kvm_caps as supported_efer_bits (for
-naming consistency), and reinitialize it at the beginning of
-kvm_setup_efer_caps(), removing the need to clear unsupported bits in
-vendor code (e.g. EFER.SVME).
-
-As the bitmask is now globally visible as part of kvm_caps, there's
-little use for helpers to enable/disable specific bits, so drop them and
-open-code updates to kvm_caps.supported_efer_bits.
-
-No functional change intended.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Assisted-by: Gemini:unknown-version
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |  2 ++
- arch/x86/kvm/msrs.c             | 19 ++-----------------
- arch/x86/kvm/svm/svm.c          |  7 ++-----
- arch/x86/kvm/x86.c              | 11 +++++++----
- 4 files changed, 13 insertions(+), 26 deletions(-)
+ .../selftests/kvm/include/x86/processor.h     |  2 +
+ .../selftests/kvm/x86/set_sregs_test.c        | 83 ++++++++++++++-----
+ 2 files changed, 64 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0efd93f961df4..40be39fea39b9 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -329,6 +329,8 @@ struct kvm_caps {
- 	u64 supported_xss;
- 	u64 supported_perf_cap;
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 7d3a27bc0d842..b161174ece453 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -208,6 +208,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_PERFCTR_NB		KVM_X86_CPU_FEATURE(0x80000001, 0, ECX, 24)
+ #define	X86_FEATURE_PERFCTR_LLC		KVM_X86_CPU_FEATURE(0x80000001, 0, ECX, 28)
+ #define	X86_FEATURE_NX			KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 20)
++#define	X86_FEATURE_FXSR_OPT		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 25)
+ #define	X86_FEATURE_GBPAGES		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 26)
+ #define	X86_FEATURE_RDTSCP		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 27)
+ #define	X86_FEATURE_LM			KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 29)
+@@ -226,6 +227,7 @@ struct kvm_x86_cpu_feature {
+ #define X86_FEATURE_SEV			KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 1)
+ #define X86_FEATURE_SEV_ES		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 3)
+ #define X86_FEATURE_SEV_SNP		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 4)
++#define	X86_FEATURE_AUTOIBRS		KVM_X86_CPU_FEATURE(0x80000021, 0, EAX, 8)
+ #define	X86_FEATURE_GP_ON_USER_CPUID	KVM_X86_CPU_FEATURE(0x80000021, 0, EAX, 17)
+ #define	X86_FEATURE_PERFMON_V2		KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 0)
+ #define	X86_FEATURE_LBR_PMC_FREEZE	KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 2)
+diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+index 8e654cc9ab168..562afab378d11 100644
+--- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
++++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+@@ -21,20 +21,20 @@
+ #include "kvm_util.h"
+ #include "processor.h"
  
-+	u64 supported_efer_bits;
+-#define TEST_INVALID_CR_BIT(vcpu, cr, orig, bit)				\
++#define TEST_INVALID_SREG_BIT(vcpu, reg, orig, bit)				\
+ do {										\
+ 	struct kvm_sregs new;							\
+ 	int rc;									\
+ 										\
+ 	/* Skip the sub-test, the feature/bit is supported. */			\
+-	if (orig.cr & bit)							\
++	if (orig.reg & bit)							\
+ 		break;								\
+ 										\
+-	memcpy(&new, &orig, sizeof(sregs));					\
+-	new.cr |= bit;								\
++	memcpy(&new, &orig, sizeof(new));					\
++	new.reg |= bit;								\
+ 										\
+ 	rc = _vcpu_sregs_set(vcpu, &new);					\
+-	TEST_ASSERT(rc, "KVM allowed invalid " #cr " bit (0x%lx)", bit);	\
++	TEST_ASSERT(rc, "KVM allowed invalid " #reg " bit (0x%llx)", (unsigned long long)bit); \
+ 										\
+ 	/* Sanity check that KVM didn't change anything. */			\
+ 	vcpu_sregs_get(vcpu, &new);						\
+@@ -46,6 +46,8 @@ do {										\
+ 				X86_CR4_MCE | X86_CR4_PGE | X86_CR4_PCE |	\
+ 				X86_CR4_OSFXSR | X86_CR4_OSXMMEXCPT)
+ 
++#define KVM_ALWAYS_ALLOWED_EFER EFER_SCE
 +
- 	u64 supported_quirks;
- 	u64 inapplicable_quirks;
- };
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index 10669c5418da3..66fa7140d65d9 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -19,9 +19,6 @@ bool __read_mostly report_ignored_msrs = true;
- module_param(report_ignored_msrs, bool, 0644);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(report_ignored_msrs);
- 
--/* Enable syscall by default because its emulated by KVM */
--static u64 __read_mostly efer_supported_bits = ((u64)EFER_SCE);
--
- #define MAX_IO_MSRS 256
- 
- struct msr_bitmap_range {
-@@ -606,7 +603,7 @@ static bool __kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
- }
- bool kvm_valid_efer(struct kvm_vcpu *vcpu, u64 efer)
+ static u64 calc_supported_cr4_feature_bits(void)
  {
--	if (efer & ~efer_supported_bits)
-+	if (efer & ~kvm_caps.supported_efer_bits)
- 		return false;
- 
- 	return __kvm_valid_efer(vcpu, efer);
-@@ -619,7 +616,7 @@ static int set_efer(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	u64 efer = msr_info->data;
- 	int r;
- 
--	if (efer & ~efer_supported_bits)
-+	if (efer & ~kvm_caps.supported_efer_bits)
- 		return 1;
- 
- 	if (!msr_info->host_initiated) {
-@@ -650,18 +647,6 @@ static int set_efer(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	return 0;
+ 	u64 cr4 = KVM_ALWAYS_ALLOWED_CR4;
+@@ -74,6 +76,24 @@ static u64 calc_supported_cr4_feature_bits(void)
+ 	return cr4;
  }
  
--void kvm_enable_efer_bits(u64 mask)
--{
--	efer_supported_bits |= mask;
--}
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_efer_bits);
--
--void kvm_disable_efer_bits(u64 mask)
--{
--	efer_supported_bits &= ~mask;
--}
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_efer_bits);
--
- bool kvm_msr_allowed(struct kvm_vcpu *vcpu, u32 index, u32 type)
- {
- 	struct kvm_x86_msr_filter *msr_filter;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 747f1e31a3622..e755f43f4376e 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -277,12 +277,9 @@ int svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
- static void svm_setup_efer_caps(void)
- {
- 	if (nested) {
--		kvm_enable_efer_bits(EFER_SVME);
-+		kvm_caps.supported_efer_bits |= EFER_SVME;
- 		if (!boot_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ))
--			kvm_enable_efer_bits(EFER_LMSLE);
--	} else {
--		kvm_disable_efer_bits(EFER_SVME);
--		kvm_disable_efer_bits(EFER_LMSLE);
-+			kvm_caps.supported_efer_bits |= EFER_LMSLE;
- 	}
- }
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a297a77469b38..5cedaa8409f8d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6892,17 +6892,20 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_setup_xss_caps);
- 
- static void kvm_setup_efer_caps(void)
- {
-+	/* Enable syscall by default because its emulated by KVM */
-+	kvm_caps.supported_efer_bits = (u64)EFER_SCE;
++static u64 calc_supported_efer_feature_bits(void)
++{
++	u64 efer = KVM_ALWAYS_ALLOWED_EFER;
 +
- 	if (kvm_cpu_cap_has(X86_FEATURE_LM))
--		kvm_enable_efer_bits(EFER_LME | EFER_LMA);
-+		kvm_caps.supported_efer_bits |= (EFER_LME | EFER_LMA);
++	if (kvm_cpu_has(X86_FEATURE_LM))
++		efer |= (EFER_LME | EFER_LMA);
++	if (kvm_cpu_has(X86_FEATURE_NX))
++		efer |= EFER_NX;
++	if (kvm_cpu_has(X86_FEATURE_SVM))
++		efer |= EFER_SVME;
++	if (kvm_cpu_has(X86_FEATURE_FXSR_OPT))
++		efer |= EFER_FFXSR;
++	if (kvm_cpu_has(X86_FEATURE_AUTOIBRS))
++		efer |= EFER_AUTOIBRS;
++
++	return efer;
++}
++
+ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
+ {
+ 	struct kvm_sregs sregs;
+@@ -96,26 +116,45 @@ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
+ 		    (sregs.cr4 & X86_CR4_PKE) ? "set" : "clear");
  
- 	if (kvm_cpu_cap_has(X86_FEATURE_NX))
--		kvm_enable_efer_bits(EFER_NX);
-+		kvm_caps.supported_efer_bits |= EFER_NX;
+ 	vcpu_sregs_get(vcpu, &sregs);
+-	TEST_ASSERT(sregs.cr4 == cr4, "sregs.CR4 (0x%llx) != CR4 (0x%lx)",
+-		    sregs.cr4, cr4);
+-
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_UMIP);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_LA57);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_VMXE);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMXE);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_FSGSBASE);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_PCIDE);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_OSXSAVE);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
+-	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
++	TEST_ASSERT_EQ(sregs.cr4, cr4);
++
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_UMIP);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_LA57);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_VMXE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMXE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_FSGSBASE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PCIDE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_OSXSAVE);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
++	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
  
- 	if (kvm_cpu_cap_has(X86_FEATURE_FXSR_OPT))
--		kvm_enable_efer_bits(EFER_FFXSR);
-+		kvm_caps.supported_efer_bits |= EFER_FFXSR;
+ 	for (i = 32; i < 64; i++)
+-		TEST_INVALID_CR_BIT(vcpu, cr0, sregs, BIT(i));
++		TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, BIT(i));
  
- 	if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
--		kvm_enable_efer_bits(EFER_AUTOIBRS);
-+		kvm_caps.supported_efer_bits |= EFER_AUTOIBRS;
- 
- 	kvm_x86_call(setup_efer_caps)();
+ 	/* NW without CD is illegal, as is PG without PE. */
+-	TEST_INVALID_CR_BIT(vcpu, cr0, sregs, X86_CR0_NW);
+-	TEST_INVALID_CR_BIT(vcpu, cr0, sregs, X86_CR0_PG);
++	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_NW);
++	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_PG);
++}
++
++static void test_efer_bits(struct kvm_vcpu *vcpu, u64 efer)
++{
++	struct kvm_sregs sregs;
++	int rc;
++
++	vcpu_sregs_get(vcpu, &sregs);
++	sregs.efer |= efer;
++	rc = _vcpu_sregs_set(vcpu, &sregs);
++	TEST_ASSERT(!rc, "Failed to set supported EFER bits (0x%llx)", sregs.efer);
++
++	vcpu_sregs_get(vcpu, &sregs);
++	TEST_ASSERT_EQ(sregs.efer, efer);
++
++	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_LME);
++	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_NX);
++	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_SVME);
++	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_FFXSR);
++	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_AUTOIBRS);
  }
+ 
+ int main(int argc, char *argv[])
+@@ -132,6 +171,7 @@ int main(int argc, char *argv[])
+ 	 */
+ 	vm = vm_create_barebones();
+ 	vcpu = __vm_vcpu_add(vm, 0);
++	test_efer_bits(vcpu, KVM_ALWAYS_ALLOWED_EFER);
+ 	test_cr_bits(vcpu, KVM_ALWAYS_ALLOWED_CR4);
+ 	kvm_vm_free(vm);
+ 
+@@ -151,6 +191,7 @@ int main(int argc, char *argv[])
+ 		    sregs.apic_base);
+ 
+ 	test_cr_bits(vcpu, calc_supported_cr4_feature_bits());
++	test_efer_bits(vcpu, calc_supported_efer_feature_bits());
+ 
+ 	kvm_vm_free(vm);
+ 
 -- 
 2.55.0.rc2.803.g1fd1e6609c-goog
 
