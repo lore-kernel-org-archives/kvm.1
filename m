@@ -1,196 +1,123 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC85B436BF3
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 18:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56008436BCE
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 18:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783362033; cv=none; b=XUvseOJJowmB8X8Oq/Sx1L+1EYypGXH6e7HVRC1xm9qsNdhRreT0/K5zMV+aiW5WyPz9GGMT/jmnDQ/ZcFqGDXBrHDo0fn29VeTypoazDn7pijng0HFTfbfjzLDkz6cvIhgM/iuGEl5iA23ae3sFXQXtJ5RGvM43UiyVPKCLeUM=
+	t=1783362046; cv=none; b=Os9ZTwgghvmy3CrjOGzs8Ko2HtYKp0HAoXdxchJambvwCGYlCSfkaWknzDnOzPDzdZ0rY+/OiJ5GDSKJpolIX0Ha0YMoZfAoB7iXJ/LBAPQzqUEiaKfdWXVYR86IKYAq/APzJa+dMvQyXG9Cg6NLSyu+C0g8nRUQwxHcd1BIyWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783362033; c=relaxed/simple;
-	bh=LGXDADF7y6zslXEPxca2Lf7fKSs6PY32Wx9Q8YozdlQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EC85B7JjHHtYXHcb4Hk/01QYIN5RuGgLTZubN+tt3leyNM08wkJ4U9InbZREs/CmDWVFA0kH7FRitKPxbB+Pv9szGqnwaBoYNCdE5F0SY109RQfwEkUtnHMfJxX5YM9I52tkVkaaDcePBpY4uYFKxI5y2ZGde5mxStmzSA8BH80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YKPXrPXm; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783362046; c=relaxed/simple;
+	bh=LDxcEz8IwRYGz/FOdDNOCDq5/hYCpTWrOlpBGBPJa14=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=EZSx4sdblgMFFZAOd6zKxw5FKSwNaUzTHEjH9VcQesa+74dEL6ADgVqF4Pg4XlbZKwFzyWJ136cd+V86puZ3yQ9WrZuG8bml24Dd0YCiV4BcWfP60AsTedHL9IaicPkMDoAo6px8d8RnMjsd2Tn8YC5e1OV2TKu+oL6FZ/t16Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkNh50yU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YKPXrPXm"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c9e994869aso55022995ad.0
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 11:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783362031; x=1783966831; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a1qb4BtBFUoB+ObdTPArO14r4lRkCdK+WNM4PNncVOs=;
-        b=YKPXrPXm0td/m7TzAEarhHq3b+eWukZcCKP1Sjoy7OjsokNmdXqZAsf8S4+7kZ2AOt
-         gSDTgcjtwcE1kpRJ1yqeDgRoRmh0Fa68ABLkZJ6NZc1TWiQva7t8Htv90cZ/SdWulJdK
-         hHpGE9inV+5/bJBKuyImGrSNkb+Iize3E2z3iYl9PO4xxOSpkrLqeLA9afE5kVoMyHbb
-         3kecsJt1Tpe3r9R33mixJW5o6bw/1/TP70VJlhTmfOZxmN42KMHYHjk9IgzN1xKhYxPo
-         0LUaZCRxnV39TkmMQklzOiNXfEhlzzXwhD7GwpfqjtqTuBF8bHrmi8gQXepUdiLWpUdo
-         DF0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783362031; x=1783966831;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a1qb4BtBFUoB+ObdTPArO14r4lRkCdK+WNM4PNncVOs=;
-        b=aENKQzW50BxuMGEjvm1BdMRaYv4820oB3vJM4qj9Orke6BRVODCKHIoOB/l/D9cdTo
-         M0sBIjXdCCni/rz1fd+kcZcycgTRsoZ0rg4e+u7OGOh4afySezElXqqsjtOMqD8q7DNK
-         Y9KziXb05Mos0VEKyJgQ8NuVmBblzbgslj9hv6NSQDyBPJrdnkgEZ2rtk+1NuLBYNwb6
-         K6OB6sbv9q7Zk+Ps1phKayMEmJ1b0iz/duBanjyYokMt70rvT+4VWxmSbgQcfG0KHMMB
-         XgpwuOSC++vZzJhtY1j/sxwuJ9/SZiUpKlVZY1A8/eOVb3gKmyqLiZ1uyuTha+Gy7Zjk
-         Ul/g==
-X-Forwarded-Encrypted: i=1; AHgh+RqlG/Or7z8oUK8M9vpcNvlE7MUJ2ZdD6aq6H5Rcowoboyg6idAljX0iOZnDlo0oVwJGiX4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz++GFYsnwnsfvwJI4lnShbY9jybZG6DQLWn9Z3oK+9Zwchffo3
-	FfuyYQM/jxdtgaijdw0iwSKgVwR5x4/6CWBgrI32y8jDNMTrVi4/3RW1fp+be9hKT0nghWqrDYu
-	4wYjQSw==
-X-Received: from plge13.prod.google.com ([2002:a17:902:cf4d:b0:2ca:ed29:ea82])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b06:b0:2c6:d710:3e58
- with SMTP id d9443c01a7336-2ccbf192b3cmr15890835ad.36.1783362031022; Mon, 06
- Jul 2026 11:20:31 -0700 (PDT)
-Date: Mon, 6 Jul 2026 11:20:30 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkNh50yU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E30D1F000E9;
+	Mon,  6 Jul 2026 18:20:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783362045;
+	bh=uxAC+VYYuxWYnxPhLvsEDIHhf+fAfFjfAvJkCvAx1aQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XkNh50yUriMgi2iHlT0qvmbB64Ao3zdF4Dp5tOIbXvmzvGAQ3JeenSnlhjU3mr1Z9
+	 PZ+kt3xhPyYBvvKAK5+XVCUSW3SQX8b4q6cT12UbeY67npMGyfG04M1by6XlEG2oYP
+	 ykSEntHtbF21qIFexs4bQIuUtOL0FHCNkbICIyWkvnOvgg+LcU9OO73f1CECN1oqqE
+	 99c8KnYaJYJ9oLw1OiyYkZ+eVlomPFwHfCr1GmxuvjY1DhDM54gMqh3KGVj3CHoWFl
+	 WdrwwsHgDqJQhIIv2BZBAt2g5DvACuEyiLRe7ILxOVe3ir8n2ImjuTDk48aV7LHya8
+	 vS8/X6EZQbIYA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] KVM: x86: Destroy the PIC and IOAPIC before
+ destroying vCPUs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Weiming Shi" <bestswngs@gmail.com>
+Cc: kvm@vger.kernel.org
 In-Reply-To: <20260706180025.2735341-3-bestswngs@gmail.com>
+References: <20260705045450.1325048-2-bestswngs@gmail.com>
+ <20260706180025.2735341-3-bestswngs@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Jul 2026 18:20:44 +0000
+Message-Id: <20260706182045.1E30D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260705045450.1325048-2-bestswngs@gmail.com> <20260706180025.2735341-3-bestswngs@gmail.com>
-Message-ID: <akvx7que1BE5DY-O@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Destroy the PIC and IOAPIC before destroying vCPUs
-From: Sean Christopherson <seanjc@google.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, Zhang Haoyu <zhanghy@sangfor.com>, 
-	Jason Wang <jasowang@redhat.com>, Zhong Wang <wangzhong.c0ss4ck@bytedance.com>, 
-	Xuanqing Shi <shixuanqing.11@bytedance.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jul 07, 2026, Weiming Shi wrote:
-> kvm_ioapic_eoi_inject_work() re-delivers a throttled level-triggered
-> interrupt via kvm_irq_delivery_to_apic(), which walks kvm->arch.apic_map
-> and dereferences the destination vCPU's APIC.  The work is cancelled only
-> in kvm_ioapic_destroy(), which runs after kvm_destroy_vcpus() has freed
-> the vCPUs and their APICs.  kvm_free_lapic() does not rebuild apic_map, so
-> the map is left with dangling pointers, and a work item that fires during
-> that window reads freed memory:
-> 
->  BUG: KASAN: slab-use-after-free in __kvm_irq_delivery_to_apic_fast (arch/x86/kvm/lapic.c:1248)
->  Read of size 8 by task kworker/3:1
->  Workqueue: events kvm_ioapic_eoi_inject_work
->   __kvm_irq_delivery_to_apic_fast (arch/x86/kvm/lapic.c:1248)
->   __kvm_irq_delivery_to_apic (arch/x86/kvm/lapic.c:1343)
->   ioapic_service (arch/x86/kvm/ioapic.c:492)
->   kvm_ioapic_eoi_inject_work (arch/x86/kvm/ioapic.c:525)
->   process_one_work
-> 
->  Freed by task 153:
->   kvm_arch_vcpu_destroy (arch/x86/kvm/x86.c:12871)
->   kvm_destroy_vcpus (virt/kvm/kvm_main.c:489)
->   kvm_arch_destroy_vm (arch/x86/kvm/x86.c:13402)
->   kvm_destroy_vm (virt/kvm/kvm_main.c:1302)
->   kvm_vm_release (virt/kvm/kvm_main.c:1363)
-> 
-> A guest arms the work by EOIing a level-triggered pin 10000 times in a
-> row, so the window is reachable from guest ring 0 whenever its VM is torn
-> down soon after.
-> 
-> Destroy the in-kernel PIC and IOAPIC in kvm_arch_pre_destroy_vm(),
-> before vCPUs are freed, so the eoi_inject work is cancelled while the
-> target APICs are still valid.  This also unregisters the PIC/IOAPIC
-> MMIO devices while the KVM buses still exist; kvm_destroy_vm() tears
-> the buses down right after kvm_free_irq_routing() and before
-> kvm_arch_destroy_vm(), so the previous kvm_io_bus_unregister_dev() in
-> kvm_ioapic_destroy() was a no-op.
-> 
-> Fixes: 184564efae4d ("kvm: ioapic: conditionally delay irq delivery duringeoi broadcast")
-> Link: https://lore.kernel.org/all/88ba60ad32ba851426a3f6590b0e402210991b4a.e33b58ce.0008.4e1c.aa62.c1024b242cbf@bytedance.com/
-> Suggested-by: Kai Huang <kai.huang@intel.com>
-> Reported-by: Zhong Wang <wangzhong.c0ss4ck@bytedance.com>
-> Reported-by: Xuanqing Shi <shixuanqing.11@bytedance.com>
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> ---
-> v1: https://lore.kernel.org/all/20260705045450.1325048-2-bestswngs@gmail.com/
-> 
-> v2:
->  - Per Kai's suggestion, instead of adding a kvm_ioapic_pre_destroy()
->    helper that only cancels the eoi_inject work, move
->    kvm_pic_destroy()/kvm_ioapic_destroy() as a whole into
->    kvm_arch_pre_destroy_vm().  This also fixes the stale
->    kvm_io_bus_unregister_dev() Kai pointed out.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Sadly, it creates an even easier-to-exploit NULL pointer deref.  Your v1 is what
-I came up with idependently (the bug got reported off-list), though I eschewed a
-helper.
+Pre-existing issues:
+- [High] Use-after-free on device error path in kvm_create_pit().
+--
 
-Author:     Sean Christopherson <seanjc@google.com>
-AuthorDate: Tue Jun 30 08:13:42 2026 -0700
-Commit:     Sean Christopherson <seanjc@google.com>
-CommitDate: Tue Jun 30 08:28:19 2026 -0700
+commit 738d33431d0b6932537e95c21eed6b24c1201219
+Author: Weiming Shi <bestswngs@gmail.com>
 
-    KVM: x86: Cancel delayed I/O APIC EOI handling before destroying vCPUs
-    
-    Cancel (and flush) the I/O APIC's delayed EOI handling work during the
-    "pre VM destroy" phase, before vCPUs are destroyed, as processing the EOI
-    broadcast will inject another IRQ if the line is asserted, i.e. will try
-    to deliver an IRQ to the target vCPU(s).  Canceling the work after vCPUs
-    are destroyed leads to UAF if the delayed work is processed after vCPUs are
-    destroyed.
-    
-      BUG: KASAN: slab-use-after-free in __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 arch/x86/kvm/lapic.c:1250
-      Read of size 8 at addr ffff8880499abea0 by task kworker/1:2/1218
-    
-      CPU: 1 UID: 0 PID: 1218 Comm: kworker/1:2 Not tainted 7.1.0-rc7 #5 PREEMPT(lazy)
-      Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-      Workqueue: events kvm_ioapic_eoi_inject_work
-      Call Trace:
-       <TASK>
-       __dump_stack /root/linux/lib/dump_stack.c:94
-       dump_stack_lvl+0x100/0x190 /root/linux/lib/dump_stack.c:120
-       print_address_description /root/linux/mm/kasan/report.c:378
-       print_report+0x139/0x4ad /root/linux/mm/kasan/report.c:482
-       kasan_report+0xe4/0x1d0 /root/linux/mm/kasan/report.c:595
-       __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 /root/linux/arch/x86/kvm/lapic.c:1250
-       __kvm_irq_delivery_to_apic+0xd8/0xbf0 /root/linux/arch/x86/kvm/lapic.c:1345
-       kvm_irq_delivery_to_apic /root/linux/arch/x86/kvm/lapic.h:129
-       ioapic_service+0x308/0x590 /root/linux/arch/x86/kvm/ioapic.c:492
-       kvm_ioapic_eoi_inject_work+0x13c/0x190 /root/linux/arch/x86/kvm/ioapic.c:532
-       process_one_work+0xa59/0x19a0 /root/linux/kernel/workqueue.c:3314
-       process_scheduled_works /root/linux/kernel/workqueue.c:3397
-       worker_thread+0x5eb/0xe50 /root/linux/kernel/workqueue.c:3478
-       kthread+0x370/0x450 /root/linux/kernel/kthread.c:436
-       ret_from_fork+0x72b/0xd30 /root/linux/arch/x86/kernel/process.c:158
-       ret_from_fork_asm+0x1a/0x30 /root/linux/arch/x86/entry/entry_64.S:245
-       </TASK>
-    
-    Note, the VM is unreachable once kvm_destroy_vm() starts, and scheduling
-    new work via kvm_ioapic_send_eoi() can only be done via KVM_RUN, i.e.
-    requires a live vCPU.
-    
-    Alternatively, KVM could simply destroy the I/O APIC during the "pre" phase
-    of VM destruction, but that gets more than a bit sketchy as KVM expects the
-    I/O APIC to exist if ioapic_in_kernel() is true, and nested virtualization
-    in particular has a bad habit of touching VM-scope state during vCPU
-    destruction.  E.g. attempting to free the PIC during the pre phase would
-    lead to a NULL pointer dereference in kvm_cpu_has_extint(), and it's not
-    hard to imagine the I/O APIC having a similar flaw.
-    
-    Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
-    Reported-by: <zdi-disclosures@trendmicro.com>
-    Cc: stable@vger.kernel.org
-    Signed-off-by: Sean Christopherson <seanjc@google.com>
+KVM: x86: Destroy the PIC and IOAPIC before destroying vCPUs
 
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index 0626e835e9eb..a0cc74c8ded1 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -9942,6 +9942,8 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
-         */
- #ifdef CONFIG_KVM_IOAPIC
-        kvm_free_pit(kvm);
-+       if (kvm->arch.vioapic)
-+               cancel_delayed_work_sync(&kvm->arch.vioapic->eoi_inject);
- #endif
- 
-        kvm_mmu_pre_destroy_vm(kvm);
+This commit moves the destruction of the in-kernel PIC and IOAPIC to
+kvm_arch_pre_destroy_vm(), before vCPUs are freed. This ensures that the
+eoi_inject work is cancelled while target APICs remain valid. It prevents
+a use-after-free where a delayed work item could dereference a freed vCPU's
+APIC map.
+
+Link: https://lore.kernel.org/all/88ba60ad32ba851426a3f6590b0e402210991b4a.=
+e33b58ce.0008.4e1c.aa62.c1024b242cbf@bytedance.com/
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index afcac1042947a..38ac0e0a3f769 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -13428,10 +13428,14 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+>  	 * Stop all background workers and kthreads before destroying vCPUs, as
+>  	 * iterating over vCPUs in a different task while vCPUs are being freed
+>  	 * is unsafe, i.e. will lead to use-after-free.  The PIT also needs to
+> -	 * be stopped before IRQ routing is freed.
+> +	 * be stopped before IRQ routing is freed.  The PIC and IOAPIC need to
+> +	 * be destroyed here too, for the same reason, and because they must
+> +	 * be destroyed before the KVM buses are torn down.
+>  	 */
+>  #ifdef CONFIG_KVM_IOAPIC
+>  	kvm_free_pit(kvm);
+[Severity: High]
+This isn't a bug introduced by this patch, but since we are touching the PIT
+and IOAPIC destruction paths here, is there a potential use-after-free on t=
+he
+device error path in kvm_create_pit()?
+
+If host userspace creates a VM, initializes the IRQCHIP, creates a vCPU,
+and starts running it, the vCPU can perform PIO exits, calling
+kvm_io_bus_read() and acquiring srcu_read_lock(&kvm->srcu).
+
+If userspace concurrently calls KVM_CREATE_PIT2 with the
+KVM_PIT_SPEAKER_DUMMY flag, the kernel registers pit->dev on the PIO bus.
+The vCPU thread could pick this up.
+
+If the subsequent registration of pit->speaker_dev fails, the error path
+unregisters pit->dev but frees it without waiting for SRCU readers:
+
+arch/x86/kvm/i8254.c:kvm_create_pit() {
+    ...
+fail_register_speaker:
+	kvm_io_bus_unregister_dev(kvm, KVM_PIO_BUS, &pit->dev);
+fail_register_pit:
+	mutex_unlock(&kvm->slots_lock);
+	kvm_pit_set_reinject(pit, false);
+	kthread_destroy_worker(pit->worker);
+fail_kthread:
+	kfree(pit);
+	return NULL;
+}
+
+Could the vCPU thread, while iterating over the old bus, dereference
+pit->dev->ops and access the freed memory?
+
+> +	kvm_pic_destroy(kvm);
+> +	kvm_ioapic_destroy(kvm);
+>  #endif
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706180025.2735=
+341-3-bestswngs@gmail.com?part=3D1
