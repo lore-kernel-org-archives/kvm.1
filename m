@@ -1,214 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8503F8241;
-	Mon,  6 Jul 2026 21:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D0347ECDD
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 21:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783373212; cv=none; b=MM6V080Q2cW8L3jSjRI1O5O4BOzUctqLa8qvIRCoi6R42Z6D3NavWJMAe30kFFjo1sxcp3JPA2z6GjcHwgdlqkE6QgQBg6FLCWdviwd58IlCDbQpK8KqlNX3u+eWeHq1dmVAhLR36wei00RLfP9oO8572hRSDAvj0oElOSzv19o=
+	t=1783374205; cv=none; b=q+mAA91aIAz89xqQcgRKnD2SZksuZhwpM+f3s9/v+L8eUHluGBT/YxVjZLz5XzE/yybi2Y849ZjHu40TLOaBT5uq+WY4c8uOXI/FUaIMOqdI5XkdUikJGSo/sKSEvrv8iLMVM+xPa0ngXr40mR68KkH21P5PToAiZbydTX1QdpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783373212; c=relaxed/simple;
-	bh=VWv2LRjxHkQEh814EbSvCcJKLdk6GxMAU+fgME4WUW8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+YvCPbDpWfs6fAz6Io7RkqHsPPLl5ls6oIaXtmZlYBrlrwxCm3EMb32P/KyYzMY5aLP3VLVrnjDDqKz/SHftd4V3EYosEKHDlZ0ZJMrN8rzF62xsirGi2NbLQdRPNSUaw2Vlaq8ptuRFRGUFprQp3RaCLAznnGjo8ruQlANBzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=je6eqx5r; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783374205; c=relaxed/simple;
+	bh=OAQhr3waP5J5O1KHcN/lUO1tFTqTArndt3VJbZ8eN/8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EYgsR9dQxARC1hwL9yr7y2Hv9EcYCtYLXNA/N2xHK5bkTr3b9U1PIS7BCoxcSYpp2Xe6wIoFo4wADxCr+SVuDgGq03qfHgFWSIwPFrWVgJa0pqA6mUM++ytOomTee7noMKQ5UmUSPrF4mJVCv2kcC844Q6djHcdnZKkZv+8Ts7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PbHEx+2a; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="je6eqx5r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFFC1F000E9;
-	Mon,  6 Jul 2026 21:26:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783373210;
-	bh=T9lDsB/+NcYvsgur+jzOVo5SNmXQlABei/7lUjSJfZI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=je6eqx5rUBP2UGCChKvezCJTL51nWqAmpUjT9xlKJI+oSC+RKx6pgAaMNVkuB7qc9
-	 KTpP8JMIJZoG9DkSHlZoaP6bOwMx5AZTpAbT2P7pTpwZguH8e0NCUU2VQZo5lijMxi
-	 DpoCH1iCRve2Gy1ot1kYaOGm5xcOZkzfIhkIb+YVDCtIEutXhbOAbp+i/u/eZ2IX+0
-	 FnWSPCTwm8pwD6uTa1BCDwevfQJ79kJtt1UkqItVpJ4PjVil6D9JNAqExLbys1F6vs
-	 KW8NLTtKCppJNXy23XDymbrKnUR9k8QNvU3/DDvAj4jdzIULiZt5QBOUkLOuzPs9P8
-	 FPidM6Zafwerw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wgqq0-000000028nF-33rS;
-	Mon, 06 Jul 2026 21:26:48 +0000
-Date: Mon, 06 Jul 2026 22:28:37 +0100
-Message-ID: <877bn77qpm.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v4 08/27] KVM: arm64: Prepare sharing arm64 code with s390
-In-Reply-To: <20260706085229.979525-9-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
-	<20260706085229.979525-9-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PbHEx+2a"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847ac21582cso3712495b3a.2
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 14:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783374204; x=1783979004; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oafaChChcAwJSOuf1i0h67RyVsfw8NcuMZenVaI95Rk=;
+        b=PbHEx+2a9tWSvnyjo4BgSKe2rep6KRLdcrTRbcRLNOS7AKM1k3POmunjYXb3OOCkbO
+         89jYbPOJU1D34V1r2aqz4nqnhO7vXndpzkgJemPi/LmewZ5Qk7oJvJd9xy6bthoeF34X
+         bfpLA5ZrNotqafioZmieyU02js+pGwyDl6suy85pmtQsnRdf4mf/JrLbDlWj3hJvJAp/
+         Qw+1NwidQqqhXnz1ScjR5gsMUrFKIYN0H5UNubDFbuirSZuCFV5agf3Pl9MUKm/whVM7
+         4u4lvJmKMLnzlfQBGVpoelmonyurRQxRdlm1nJFVeGFMKzh4kXJwDCt4VzJqRzBCSXCW
+         VmBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783374204; x=1783979004;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oafaChChcAwJSOuf1i0h67RyVsfw8NcuMZenVaI95Rk=;
+        b=NRLM/yeuaMysr10iy7vxkqGZgiBMPXetBIXfn2hxw/N9JI9Sx1lT8MCErP1uCWyjfm
+         YhSD8PCcOKxFcPvPslvuOAP/hQaIH/yuo81+8qQJ8/3kvhvgzChxAS0Rl/O1zxiOI0jH
+         UURVjs+H+VkZuejbbCVg5kCgteI+nsrIRZnyNAc2+66nBt4VsSoaSIoulXeEJ0vepKxl
+         yeK3e6z/1HGYop+cIWs6wo2kGbQVNQBeu4iN5WkHAsfpn6oA+7VHvNhIOOdOL0XRlMTy
+         RHoGs+SDb+elHutC3HNrQF08zhV6/uu1k3wEtzXTO9XkiDciI4dU5MJwDPHOok3q1XQu
+         KDbA==
+X-Forwarded-Encrypted: i=1; AHgh+RoHUGBFiWDicLq+Nl2HM6ThjIuFbIzd6SzH5lYkmTILQwg5p7DjfHFxeQUbTlHXvL+y3ts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOFVRlkTQzmFqL7qgmsk8b+hMHDDuKSoGdk68SS0+qwM6uPxWO
+	sxqf+hC2mMGcY8LxHNfooiOrdkFSze9fYsASiHp5mXWbcgrZjbXbSQ19HcSrfrof/TvYgJceRTL
+	u9JqiGQ==
+X-Received: from pgwa11.prod.google.com ([2002:a65:654b:0:b0:c99:d21a:f6cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a383:b0:3bf:d1f9:b1d5
+ with SMTP id adf61e73a8af0-3c08efad6fcmr2613875637.60.1783374203865; Mon, 06
+ Jul 2026 14:43:23 -0700 (PDT)
+Date: Mon, 6 Jul 2026 14:43:23 -0700
+In-Reply-To: <20260702142912.6395-2-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260702142912.6395-1-alexandru.elisei@arm.com> <20260702142912.6395-2-alexandru.elisei@arm.com>
+Message-ID: <akwhexqW66RK5Gru@google.com>
+Subject: Re: [RFC PATCH 1/3] KVM: guest_memfd: Use memslot id to keep track of
+ associated memslots
+From: Sean Christopherson <seanjc@google.com>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, david.hildenbrand@arm.com, 
+	maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	fuad.tabba@linux.dev, mark.rutland@arm.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 06 Jul 2026 09:52:08 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
+On Thu, Jul 02, 2026, Alexandru Elisei wrote:
+> To enable memslot operations, KVM maintains two arrays of memslots, and an
+> RCU pointer to the active (in use) array. Changes are made first to the
+> inactive array, and the RCU pointer is updated to point to the inactive
+> array, which becomes active.
 > 
-> Mark functions that s390 can use to implement arm on s390 as shared
-> functions.
+> The guest_memfd file maintains an xarray of pointers to memslots that use
+> it as the memory provider. After the RCU pointer to the active memslots is
+> updated and until SRCU is synchronized, readers can observe the old or the
+> new value for the active array, and therefore the old or the new pointer
+> for a given memslot.  For memslot creation or deletion that is not an issue
+> for guest_memfd, as readers will either read the same memslot pointer saved
+> by the guest_memfd file, or a non-existing memslot.
 > 
-> No functional change.
-> 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> ---
->  arch/arm64/kvm/arm.c         |  3 +++
->  arch/arm64/kvm/guest.c       |  3 +++
->  arch/arm64/kvm/handle_exit.c |  6 ++++++
->  arch/arm64/kvm/mmio.c        | 14 ++++++++++++++
->  arch/arm64/kvm/reset.c       |  3 +++
->  5 files changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 50adfff75be8..c992308b2dce 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1580,6 +1580,7 @@ static unsigned long system_supported_vcpu_features(void)
->  	return features;
->  }
->  
-> +#ifdef ARM64_S390_COMMON
->  static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
->  					const struct kvm_vcpu_init *init)
->  {
-> @@ -1628,6 +1629,8 @@ static bool kvm_vcpu_init_changed(struct kvm_vcpu *vcpu,
->  			     KVM_VCPU_MAX_FEATURES);
->  }
->  
-> +#endif /* ARM64_S390_COMMON */
-> +
->  static int kvm_setup_vcpu(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm *kvm = vcpu->kvm;
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index b01d6622b872..5a202cfd27bc 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -543,6 +543,7 @@ int kvm_arch_vcpu_ioctl_set_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
->  	return -EINVAL;
->  }
->  
-> +#ifdef ARM64_S390_COMMON
->  static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
->  				 u64 __user *uindices)
->  {
-> @@ -591,6 +592,8 @@ static unsigned long num_core_regs(const struct kvm_vcpu *vcpu)
->  	return copy_core_reg_indices(vcpu, NULL);
->  }
->  
-> +#endif /* ARM64_S390_COMMON */
-> +
->  static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
->  {
->  	const unsigned int slices = vcpu_sve_slices(vcpu);
-> diff --git a/arch/arm64/kvm/handle_exit.c b/arch/arm64/kvm/handle_exit.c
-> index 54aedf93c78b..d511af145ee6 100644
-> --- a/arch/arm64/kvm/handle_exit.c
-> +++ b/arch/arm64/kvm/handle_exit.c
-> @@ -213,6 +213,7 @@ static int kvm_handle_guest_debug(struct kvm_vcpu *vcpu)
->  	return 0;
->  }
->  
-> +#ifdef ARM64_S390_COMMON
->  static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
->  {
->  	u64 esr = kvm_vcpu_get_esr(vcpu);
-> @@ -224,6 +225,8 @@ static int kvm_handle_unknown_ec(struct kvm_vcpu *vcpu)
->  	return 1;
->  }
->  
-> +#endif /* ARM64_S390_COMMON */
-> +
->  /*
->   * Guest access to SVE registers should be routed to this handler only
->   * when the system doesn't support SVE.
-> @@ -404,6 +407,7 @@ static exit_handle_fn arm_exit_handlers[] = {
->  	[ESR_ELx_EC_GCS]	= kvm_handle_gcs,
->  };
->  
-> +#ifdef ARM64_S390_COMMON
->  static exit_handle_fn kvm_get_exit_handler(struct kvm_vcpu *vcpu)
->  {
->  	u64 esr = kvm_vcpu_get_esr(vcpu);
-> @@ -439,6 +443,8 @@ static int handle_trap_exceptions(struct kvm_vcpu *vcpu)
->  	return handled;
->  }
->  
-> +#endif /* ARM64_S390_COMMON */
-> +
->  /*
->   * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason) on
->   * proper exit to userspace.
-> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-> index e2285ed8c91d..876d56dd5b64 100644
-> --- a/arch/arm64/kvm/mmio.c
-> +++ b/arch/arm64/kvm/mmio.c
-> @@ -10,6 +10,7 @@
->  
->  #include "trace.h"
->  
-> +#ifdef ARM64_S390_COMMON
->  void kvm_mmio_write_buf(void *buf, unsigned int len, unsigned long data)
->  {
->  	void *datap = NULL;
-> @@ -135,8 +136,11 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->  		if (!kvm_vcpu_dabt_issf(vcpu))
->  			data = data & 0xffffffff;
->  
-> +#endif /* ARM64_S390_COMMON */
->  		trace_kvm_mmio(KVM_TRACE_MMIO_READ, len, run->mmio.phys_addr,
->  			       &data);
-> +		//TODO  tracing
-> +#ifdef ARM64_S390_COMMON
+> But when changing the flags for a memslot, readers can read two different
+> and non-NULL memslot pointers. 
 
-Irk. The deal is that you lift full functions, not cherry-pick which
-lines you want. Just define empty stubs for the trace nonsense, and be
-done with it. But not this, please!
+And?  Why does that matter?  KVM memslot updates aren't atomic.  Practically
+speaking, they _can't_ be made atomic.  Userspace is required to quiesce all
+activity that must not observe inconsistent state, i.e. userspace must pause
+(stop running) vCPUs when performing a memslot update.
 
-	M.
+> Since there is no easy way to ensure that the memslot pointer that the
+> guest_memfd stores is consistent with both views at the same time, modify how
+> the guest_memfd file keeps track of the associated memslots: instead of
+> storing the pointer directly, store the memslot id and address space id
+> (as_id), and use that to reach the memslot in the active list of memslots.
 
--- 
-Jazz isn't dead. It just smells funny.
+I don't see how this changes anything.  Readers can still see the old or new
+memslot depending on when kvm->memslots[] is derefenced.
