@@ -1,225 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5813D7A0C;
-	Mon,  6 Jul 2026 19:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783367686; cv=none; b=Bu0m4LpbMT6Anetyz2kfFvg36+1rZWaxIWl5zNxv8PiXrtJ6Zxh0n2jbbU7z9pu8doQabMuXYeoxYacNZouCveIEhlEHNgdlsq5wBZnVWyHljcH/fR63wAycZl5jtNEgo3S4eAN4AQ+OjfR3XzzSPk1Bmkwnq3C2wRhAFzdsBLA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783367686; c=relaxed/simple;
-	bh=Q2cUopls6Qq0ErTdtEfD08s1N8WNuwE6YWNnLvVP8LI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIFspLVaN1s66ROQa4F+ValTwPCGsGaMCC5r/NeMkML3pdccHwrsjkQlNRU0YN87GDbVwmb9Z4aBi7t0A7tn3rNflTn3cn/tUp6cVyxgrd3g6iok8wb8bbEith0fn7TUzBnnrIPOBTMt6F6qiCx67TKbNDYv+z9I5fufqi6voCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dimZ/nCd; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F80A3CFF72
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 20:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783368327; cv=pass; b=MrAgm37w5M54o5ZBTEzhBknYbe4qP24ZjCWnuE/eb91HByMK5JeJYK2FTcQN1UzXEfkOr+yXLA2+Z67o1Pn8Hae2jHdcisSyEKcb64zrPlpLO240cF1i4J41izdZRdYkTpTQstCj9MrIwpLUtITR/c1XEEhoEcdRNIJ0QzM5Aps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783368327; c=relaxed/simple;
+	bh=cZzLDtUOUx2+M6TxkHymIb2lPpb+5tNDsr6avCKlGmI=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TgbqS7hn/Kx8S8I3OAGeV7/7zk5APHBARH7SIKwhJjFJ4um8iZ+VzgR6wFLMTCAv/y8NoIG5rifl70uKXPJAy6x3D5dGCU7zfb8ZxSn/mEnYTKh8WMphIjrQWxtKy2cslgF6LZ4Vo1R+7ijpxIWp8ZciltzpwMltjEL/5F27Lz8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=giEuSFaE; arc=pass smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dimZ/nCd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5CC1F00A3D;
-	Mon,  6 Jul 2026 19:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783367685;
-	bh=XcZvsjEpydF3FE+2e6VugYa54cdNPtxfO7v1WNyDQAE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dimZ/nCd6DkuxSQTL9cCCa6KNPzn5CPObHyHr196fuzshfiaoo04rfvFe66Q5sw+3
-	 MlbrbD5wrbf+0s+kwoZ9nCpLUCV/G1TUiHG+5btvvprs6CL/mXF7+95eH/LFEmsqr0
-	 YP77szerpe8PEl+w1Sxe0wsyBry2JnwBNR62+8p1S0DZNJIgNtES2JS4B8G9R4m8F1
-	 vq8FM+6JjNwjdP2EFYw2BNsCPi/BOgBTHhx2WDAxZEFTFxp7XOG6ZVjcNbiOY32hAx
-	 7tFeJFCGaQFNrAp8vTn8xjoXw2y68f50VJNhiH+s43GJ4h5fNagvfagPSd6LRbPOd3
-	 Y+56KT5JJCnCg==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v2 7/7] KVM: selftests: Extend set_sregs test to cover EFER
-Date: Mon,  6 Jul 2026 19:54:13 +0000
-Message-ID: <20260706195413.1966458-8-yosry@kernel.org>
-X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-In-Reply-To: <20260706195413.1966458-1-yosry@kernel.org>
-References: <20260706195413.1966458-1-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="giEuSFaE"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so24131655ad.1
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 13:05:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783368326; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DjxF0hw+Lx+bZGCx50wOTqlLbN3jIgtuvJAn57f+KD7059jLmJYxML561SvPPewG1/
+         6ZhyKIjrnyEpkSg2CrxrqEKafocUhD1WWOz1w24u+p8/Q/HrT3EjoEPeXMxfi5P0DDVL
+         gl9b83UrsnF5YWZ7q4qUsBCs/uGKeTZhhpmeLV5S6tp/Hub80M0GmTTndBNTZbQvuw1T
+         XRW+TE9hcdy+xNVH6RwHHm13L5y0rvBhJazQsA1hiEApABwWZs/mf4a85vTPSTx1Nvm+
+         6NOeVRc+TPsYnY+cMsErdxeBuVP4HQ7GkPTL9uJdCUv9d6lnluh+74iFyxLRfasFjSRI
+         Ds2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=y1sJvcjfFSzHCYkLQviAR+AOvGzP6D3rFksnjCW+sao=;
+        fh=uoEE7mjpJu9LH9f9rQ9WpqWXHvz7JYk16VAzo55/UPA=;
+        b=cASiLHpYD80ITuQs44ZrxYOwiErOKAfrXTGZwCVBWtXrujlNMfBkw/q0lxasrgTyEk
+         SAJvsNMsn/ZwrVvZQfLp56qjLowlMuIrmhpRAw9JRi6CF2hLm/kVAbowshVc+HVimHTr
+         loLmarFg4Uzf5Ul+c5qhTxDyES0qu+KbJAnK8A/Q+vpvULmaGs10yJHJAqh4415Set2F
+         ub9wRK2AFwURvbx3vrmiqg0Ez58ABbiDgM+dRy+ywwcMDFUmIxxXscMi2USfLgWDOspg
+         OBJclFSNRkhzwoFRtimFau2O/hjuSwi5wRBlyf0Xd37MjUt7+IcJAPQl07dnPocDLa6U
+         UGCA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783368326; x=1783973126; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y1sJvcjfFSzHCYkLQviAR+AOvGzP6D3rFksnjCW+sao=;
+        b=giEuSFaES94oPLNtxlzSLGWTrYdHjqulVc0bXKs2L3S5JEmNYfFUpA5YOTtIS6nqUg
+         2HbHOdAxImIcjWvWqvwRtG1L5ZXYO9FkdigxKnl8zoyTk+6zJ5AGxyLaYPU1q0JPdnLl
+         LG66fEZFEUs/0scj73t3I77WPgDrMLj/0weBGalDk1bMKbFldBvLa/62xBwlR4Ra6MsO
+         o1n/jjTZZkgyvrlcpqavJlPTFvvC7O0pwnmKLHFO+mVuIsBZACX6ZqwfuicN6venrej7
+         29Oxkc7hgn3mmFEcrp+pSqVcDU+0Gp/dJ+BCqAeRPyBcuqClK+/qKo6zhvlRusSoaAAi
+         hN5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783368326; x=1783973126;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y1sJvcjfFSzHCYkLQviAR+AOvGzP6D3rFksnjCW+sao=;
+        b=rPNEUWUQf5tt58KAVLA4z43QmYfyiCVd1fjQML3ZiZ9Ip8jLgnR7xlVyGBa4AqaBvp
+         XNZ3VZQi+Dp4H1JNjax+IuBlUP7n5h0yvXRlVb+3VWHglZtKqPjQhvGn4MQu14Ggba+L
+         r0nXAmLz/VNPbNZMA1uzDhhvhGVQpt1jiRSdffhn5GXNt5aIIW8+gDhv4SdX6jPMGRdP
+         31BmAUkQD5yd5Wd2sI5Q+AfLqPw9dyEzTI1PecQR5s6mNl6/c4RCUV+jO/LLbeIGbhRB
+         pRKhRoaaZDuJCJ8NBBNWv2oIaPZsUd7vFKDmNMPZJGn+hF0OtmvosO0uXzwzhpzGG7oa
+         N3AA==
+X-Forwarded-Encrypted: i=1; AHgh+RofnHQSvvqxccZBHNBkakXHdb87C3F+nmkkyExvleoHSEBQV+vdq04OdSScvFIAehxDU4o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8yiX6wU/KKgpz6BRu8Zj4j/QdiBuSav3swiXl9fAYMGh8E43M
+	OI8pFEXl4pWduDnnaqiPWazA7ec+ZOl4i/CvUZ+Gin+Rscui3000iCdsky87Mj9QItAIkU+IVJ/
+	1QDvoGcssKil25aa3GtkjfT0ixpXb30TVcBd9GLXp
+X-Gm-Gg: AfdE7ckAlVD5ni+ZQHdBC3We8T2wSeUuec5LlTU/R4v8DDkrwcitzfBh1zSu+eV023z
+	0Xck20t0R741NZeGCOYX7wP1JCR0mgBHBzmGV2OCrJE8O6iyUi6F9+fHEV5uv33zdS4R3QR01Wo
+	/oePUAGu3K6HqZNnBkSIfqzo5X7yx7YE28NbHNlYNiBQahuItCMssjbkocWk9S3Wd5Y4jYvRX3l
+	FRLyhuHsTB6twyZik1LD+1XbjsHJfndiUHd3iRKFri5R53An6GgkLm7cw3moBOah2bY4isBygM3
+	VeoBltJk/OWHt50tlphPe0KRzOKCYnUzkJh/bj9f8n0P8iZeHvsaN6BOADM=
+X-Received: by 2002:a17:902:fc8e:b0:2ca:e0ff:e696 with SMTP id
+ d9443c01a7336-2ccbe509767mr23472615ad.9.1783368325085; Mon, 06 Jul 2026
+ 13:05:25 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 13:05:24 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 13:05:24 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260327160132.2946114-31-yilun.xu@linux.intel.com>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com> <20260327160132.2946114-31-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Mon, 6 Jul 2026 13:05:24 -0700
+X-Gm-Features: AVVi8CfBjO2gULD3GETeRHh9h0KndZBQaojE74hhluZ7n9qbjhbk_11LUC5m6bk
+Message-ID: <CAEvNRgFpD3xOAPJPziVy0EvT61a0jjAf2VH0X3ZeHC2z3Om8nA@mail.gmail.com>
+Subject: Re: [PATCH v2 30/31] coco/tdx-host: Implement IDE stream setup/teardown
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
+	linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com, 
+	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org, 
+	xiaoyao.li@intel.com, vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Extend the set_sregs test to cover various bits in EFER. Update
-TEST_INVALID_CR_BIT() to operate on EFER as well as CRx (and rename it
-accordingly). Add test cases to check that EFER bits are disallowed
-without the relevant CPUID enablement.
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-Assisted-by: Gemini:unknown-version
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- .../selftests/kvm/include/x86/processor.h     |  2 +
- .../selftests/kvm/x86/set_sregs_test.c        | 83 ++++++++++++++-----
- 2 files changed, 64 insertions(+), 21 deletions(-)
+>
+> [...snip...]
+>
+>  static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>  {
+>  	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+> @@ -362,7 +579,15 @@ static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>  		return PTR_ERR(tlink_spdm);
+>  	}
+>
+> +	struct tdx_tsm_link *tlink_ide __free(tdx_ide_stream_teardown) =
+> +		tdx_ide_stream_setup(tlink);
+> +	if (IS_ERR(tlink_ide)) {
+> +		pci_err(pdev, "fail to setup ide stream\n");
+> +		return PTR_ERR(tlink_ide);
+> +	}
+> +
+>  	retain_and_null_ptr(tlink_spdm);
+> +	retain_and_null_ptr(tlink_ide);
+>
+>  	return 0;
+>  }
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 7d3a27bc0d842..b161174ece453 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -208,6 +208,7 @@ struct kvm_x86_cpu_feature {
- #define	X86_FEATURE_PERFCTR_NB		KVM_X86_CPU_FEATURE(0x80000001, 0, ECX, 24)
- #define	X86_FEATURE_PERFCTR_LLC		KVM_X86_CPU_FEATURE(0x80000001, 0, ECX, 28)
- #define	X86_FEATURE_NX			KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 20)
-+#define	X86_FEATURE_FXSR_OPT		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 25)
- #define	X86_FEATURE_GBPAGES		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 26)
- #define	X86_FEATURE_RDTSCP		KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 27)
- #define	X86_FEATURE_LM			KVM_X86_CPU_FEATURE(0x80000001, 0, EDX, 29)
-@@ -226,6 +227,7 @@ struct kvm_x86_cpu_feature {
- #define X86_FEATURE_SEV			KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 1)
- #define X86_FEATURE_SEV_ES		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 3)
- #define X86_FEATURE_SEV_SNP		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 4)
-+#define	X86_FEATURE_AUTOIBRS		KVM_X86_CPU_FEATURE(0x80000021, 0, EAX, 8)
- #define	X86_FEATURE_GP_ON_USER_CPUID	KVM_X86_CPU_FEATURE(0x80000021, 0, EAX, 17)
- #define	X86_FEATURE_PERFMON_V2		KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 0)
- #define	X86_FEATURE_LBR_PMC_FREEZE	KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 2)
-diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-index 8e654cc9ab168..562afab378d11 100644
---- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
-+++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-@@ -21,20 +21,20 @@
- #include "kvm_util.h"
- #include "processor.h"
- 
--#define TEST_INVALID_CR_BIT(vcpu, cr, orig, bit)				\
-+#define TEST_INVALID_SREG_BIT(vcpu, reg, orig, bit)				\
- do {										\
- 	struct kvm_sregs new;							\
- 	int rc;									\
- 										\
- 	/* Skip the sub-test, the feature/bit is supported. */			\
--	if (orig.cr & bit)							\
-+	if (orig.reg & bit)							\
- 		break;								\
- 										\
--	memcpy(&new, &orig, sizeof(sregs));					\
--	new.cr |= bit;								\
-+	memcpy(&new, &orig, sizeof(new));					\
-+	new.reg |= bit;								\
- 										\
- 	rc = _vcpu_sregs_set(vcpu, &new);					\
--	TEST_ASSERT(rc, "KVM allowed invalid " #cr " bit (0x%lx)", bit);	\
-+	TEST_ASSERT(rc, "KVM allowed invalid " #reg " bit (0x%llx)", (unsigned long long)bit); \
- 										\
- 	/* Sanity check that KVM didn't change anything. */			\
- 	vcpu_sregs_get(vcpu, &new);						\
-@@ -46,6 +46,8 @@ do {										\
- 				X86_CR4_MCE | X86_CR4_PGE | X86_CR4_PCE |	\
- 				X86_CR4_OSFXSR | X86_CR4_OSXMMEXCPT)
- 
-+#define KVM_ALWAYS_ALLOWED_EFER EFER_SCE
-+
- static u64 calc_supported_cr4_feature_bits(void)
- {
- 	u64 cr4 = KVM_ALWAYS_ALLOWED_CR4;
-@@ -74,6 +76,24 @@ static u64 calc_supported_cr4_feature_bits(void)
- 	return cr4;
- }
- 
-+static u64 calc_supported_efer_feature_bits(void)
-+{
-+	u64 efer = KVM_ALWAYS_ALLOWED_EFER;
-+
-+	if (kvm_cpu_has(X86_FEATURE_LM))
-+		efer |= (EFER_LME | EFER_LMA);
-+	if (kvm_cpu_has(X86_FEATURE_NX))
-+		efer |= EFER_NX;
-+	if (kvm_cpu_has(X86_FEATURE_SVM))
-+		efer |= EFER_SVME;
-+	if (kvm_cpu_has(X86_FEATURE_FXSR_OPT))
-+		efer |= EFER_FFXSR;
-+	if (kvm_cpu_has(X86_FEATURE_AUTOIBRS))
-+		efer |= EFER_AUTOIBRS;
-+
-+	return efer;
-+}
-+
- static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
- {
- 	struct kvm_sregs sregs;
-@@ -96,26 +116,45 @@ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
- 		    (sregs.cr4 & X86_CR4_PKE) ? "set" : "clear");
- 
- 	vcpu_sregs_get(vcpu, &sregs);
--	TEST_ASSERT(sregs.cr4 == cr4, "sregs.CR4 (0x%llx) != CR4 (0x%lx)",
--		    sregs.cr4, cr4);
--
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_UMIP);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_LA57);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_VMXE);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMXE);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_FSGSBASE);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_PCIDE);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_OSXSAVE);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
--	TEST_INVALID_CR_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
-+	TEST_ASSERT_EQ(sregs.cr4, cr4);
-+
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_UMIP);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_LA57);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_VMXE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMXE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_FSGSBASE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PCIDE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_OSXSAVE);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMEP);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_SMAP);
-+	TEST_INVALID_SREG_BIT(vcpu, cr4, sregs, X86_CR4_PKE);
- 
- 	for (i = 32; i < 64; i++)
--		TEST_INVALID_CR_BIT(vcpu, cr0, sregs, BIT(i));
-+		TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, BIT(i));
- 
- 	/* NW without CD is illegal, as is PG without PE. */
--	TEST_INVALID_CR_BIT(vcpu, cr0, sregs, X86_CR0_NW);
--	TEST_INVALID_CR_BIT(vcpu, cr0, sregs, X86_CR0_PG);
-+	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_NW);
-+	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_PG);
-+}
-+
-+static void test_efer_bits(struct kvm_vcpu *vcpu, u64 efer)
-+{
-+	struct kvm_sregs sregs;
-+	int rc;
-+
-+	vcpu_sregs_get(vcpu, &sregs);
-+	sregs.efer |= efer;
-+	rc = _vcpu_sregs_set(vcpu, &sregs);
-+	TEST_ASSERT(!rc, "Failed to set supported EFER bits (0x%llx)", sregs.efer);
-+
-+	vcpu_sregs_get(vcpu, &sregs);
-+	TEST_ASSERT_EQ(sregs.efer, efer);
-+
-+	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_LME);
-+	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_NX);
-+	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_SVME);
-+	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_FFXSR);
-+	TEST_INVALID_SREG_BIT(vcpu, efer, sregs, EFER_AUTOIBRS);
- }
- 
- int main(int argc, char *argv[])
-@@ -132,6 +171,7 @@ int main(int argc, char *argv[])
- 	 */
- 	vm = vm_create_barebones();
- 	vcpu = __vm_vcpu_add(vm, 0);
-+	test_efer_bits(vcpu, KVM_ALWAYS_ALLOWED_EFER);
- 	test_cr_bits(vcpu, KVM_ALWAYS_ALLOWED_CR4);
- 	kvm_vm_free(vm);
- 
-@@ -151,6 +191,7 @@ int main(int argc, char *argv[])
- 		    sregs.apic_base);
- 
- 	test_cr_bits(vcpu, calc_supported_cr4_feature_bits());
-+	test_efer_bits(vcpu, calc_supported_efer_feature_bits());
- 
- 	kvm_vm_free(vm);
- 
--- 
-2.55.0.rc2.803.g1fd1e6609c-goog
+Would it be possible to define .connect = tdx_tsm_link_connect in the
+patch that sets up spdm, and then update tdx_tsm_link_connect in this
+patch?
 
+I think it would help in showing how the spdm is associated with
+tdx_tsm_link_ops.
+
+Would it also be possible to bring the definition of .probe in
+tdx_tsm_link_ops till after this patch too?
+
+> @@ -371,6 +596,7 @@ static void tdx_tsm_link_disconnect(struct pci_dev *pdev)
+>  {
+>  	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+>
+> +	tdx_ide_stream_teardown(tlink);
+>  	tdx_spdm_session_teardown(tlink);
+>  }
+>
+> --
+> 2.25.1
