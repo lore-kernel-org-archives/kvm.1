@@ -1,95 +1,126 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0E9434E2D
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 22:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D6C353A64;
+	Mon,  6 Jul 2026 22:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783376815; cv=none; b=NdJw429bfZnwTtiAXYapwzUbgEp89mvd09F9gfFAoUkg15cWVx7+TeIPmvM2ik1bYQicbSSNTTQxOquQOBgsGItgC1IqpM1zXiZlc3CWct8UB11rQbWg2v9oFZZ8xYk8o+497qGM2me0umGTX9dG3FdIdeuEZV3/g+cvmaDjrs0=
+	t=1783377115; cv=none; b=Ta/B4/3W13xUuqlTy1gmz/t3dJbq82Bh9Wmr3yQWIMuYQ6usPsJsHt8NoY4FghB8IvtLzI6i6rQ2dqbJNR5JiqKvQtpzWuyOOMVtFwwK5eyh3k5qvat+jcy09+45R3aSVIuf1HRHdlSPrH+UZtXxCj+RqW9bVFGLOpy/zsI9ILQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783376815; c=relaxed/simple;
-	bh=uT4QDVdOjCcaU39WrLhXPDiRU4uMK9+UDDLgXkn2LQo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FfkNUxpQOhRssR4QGB6fbFijGai5nOdysfi3RvVHq+pfLJsFpLa+EezTBihBOnuZmuHBHMrdQDBBfw6ppvhNioa9VCxT2W/V4S2qXoeXH92SAZtiIzYsRz9agXrrhwe8SlNRuBi+T4hdtuUkvNNn1gPDtuMrnF+yJZR8ag0eUTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hJZhQ4+R; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783377115; c=relaxed/simple;
+	bh=Yn9SIWWX0+e1gsk743vCcUe1e49KQC+4Tqk+wLDv3As=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UEQ1rzt0rQ0Oy8ziJ95dTsnVi9nq3zOXL4EbIUTB8v+kRcMyW0jw6aq7gjoweDcJwcvY3w47dnz7lOskMnht1arwr2+Kse3Ngjwv9do5TQ6uDPX+I0Gc+hgt7BmzfDdA5zu0PbFg6kpDYij2h2zc22aYUFCsVoRpXxYGu7eeu9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mKMHFtES; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hJZhQ4+R"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cc6dd43737so51184565ad.2
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 15:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783376812; x=1783981612; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wJCpc8BzZr2s/adrZrnFsb3LPXSuLc1ySnbVabaHnns=;
-        b=hJZhQ4+RVVx5y7WlVGoKMXrAy0w4f+LKxVP7We4w+k8kKH57NJ1GHIOZ+wLYnCPPPk
-         pcua/DgqOKKgsCmclq2zCIdpTIuR2W3AnvRTA6Id+q5+h95fcK0+Qf4wmc182/8nGv9G
-         PbUwkJGPnd/24H6kujIkgKINGS+X6Okrs9S3jZ6SziYBj2OFtNfPPsSufulApJdlGd8U
-         DYtXvjpik9veoU4BNYBLp0M5YOgW1c3DE3thqyFVzV+IJiiMGpQmTSJbpeyjOhaceFpI
-         LzhcrDYydZMeB8I4niApEjGBiYgLcwF2jbD9lEpTjORc0zgxI1uxfKxzw8UOKJlfj5/v
-         mcXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783376812; x=1783981612;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wJCpc8BzZr2s/adrZrnFsb3LPXSuLc1ySnbVabaHnns=;
-        b=nfMJH1JIQfILin7dGsFURY5Jc21Ewu8YTDPGVYFuXSWKwt571yf82zqIEQ83AaiPcE
-         xcFSXwPobpZnbDK4DlWppWFjj+yPGMmN1Xb2T2o/DuyKsxEHBThRrGtZcshGgGYvt41I
-         8t2uc4k0IwU+glNuBiGYx66u4joeYdbcF6bh4Rtod9ASouGEdciSFdyR2Oq/dhv9U/V/
-         AMN3HHpHMf1yblIv+adqSNm69Y/7nfCOZqe4fHw3XocKuUDU1oxlSeuTNVB5eLNjlOyG
-         Xze/GIFsDYL/nT819CktBpAjmzrndGdCEntd1scx39Dd8kv9TvoICHKAEkpo/6nb+LBZ
-         8pJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrQVixi0cSJQr6ZD90JJcX4X8SoLwzTjnqvL71oiLPVlp76Ii+1V+szfa5sZIq5NRHJ1cw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhs0qEpKvE1gbksHe9cOojVqJBeOPzXZDDE0Mm30CW8cLn6v31
-	RZcIgERAKZZ9+ag3qL2HwTFhErFZnsVGguE262zEtoJZZiWUdsatjBUUaPHDBlobfc7wva1UCpU
-	YehinMA==
-X-Received: from plbiy8.prod.google.com ([2002:a17:903:1308:b0:2c1:220c:ccc1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:38cf:b0:2ca:6eca:492f
- with SMTP id d9443c01a7336-2ccbeb13b46mr26453985ad.14.1783376811535; Mon, 06
- Jul 2026 15:26:51 -0700 (PDT)
-Date: Mon, 6 Jul 2026 15:26:50 -0700
-In-Reply-To: <20260706094037.104AA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mKMHFtES"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783377114; x=1814913114;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Yn9SIWWX0+e1gsk743vCcUe1e49KQC+4Tqk+wLDv3As=;
+  b=mKMHFtESeFHgzkgJ0rnLKqTrz6pt9pp8QA7FvKeJMwzNN25hOUbZ/L7s
+   oP6qvx21mxzrrGZdpkIkckAFuG6AG7jbBvoWmutKwg9VFSN/808jgeVpo
+   nOg6RIOiQ2lVvkuRzAVP8I60xQ2KI9Ifm1f05FsnYQs6o/TOUL5fo1xRU
+   TVEcyMZFfpXBtxwCXl2X+MwbqKL/qO1ckcpId3PnSn2WRv9xQnXc4+IHG
+   3txh9I+q9FYLH+LEKmBKpp+sjN/x6rYdsAGMwVVUHmTOoGM9J04Uj4EwO
+   fuZCpiZhYUWepd29/lPurYhZRd1JYwhMyq03q1ZQSLiYOPse/EyGr+DL8
+   Q==;
+X-CSE-ConnectionGUID: WTS/3HKhQqi7UCPfpqAXpw==
+X-CSE-MsgGUID: t7XlSi/SSS2KJuc5jW8bcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="83882461"
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="83882461"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 15:31:53 -0700
+X-CSE-ConnectionGUID: pCP/NMBWTJ+F6UT6gP1fUw==
+X-CSE-MsgGUID: wOzDKSZpRta5ww1abeffyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,151,1779174000"; 
+   d="scan'208";a="277040733"
+Received: from guptapa-desk.jf.intel.com (HELO desk) ([10.165.239.46])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 15:31:53 -0700
+Date: Mon, 6 Jul 2026 15:31:45 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH v12 05/12] x86/vmscape: Move mitigation selection to a
+ switch()
+Message-ID: <qhjhd7k6p7x5ti2bi3wu7kyzphxqtnz3njy5g6tnq6gpcq6nsf@qrp2qfbh4je7>
+References: <20260622-vmscape-bhb-v12-0-76cbda0ae3e5@linux.intel.com>
+ <20260622-vmscape-bhb-v12-5-76cbda0ae3e5@linux.intel.com>
+ <20260623174336.CF3DD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706092021.3625908-2-twiederh@redhat.com> <20260706092021.3625908-5-twiederh@redhat.com>
- <20260706094037.104AA1F000E9@smtp.kernel.org>
-Message-ID: <akwrqg9Y5FPevRqU@google.com>
-Subject: Re: [PATCH 3/4] KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is
- already mapped
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Tim Wiederhake <twiederh@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623174336.CF3DD1F000E9@smtp.kernel.org>
 
-On Mon, Jul 06, 2026, sashiko-bot@kernel.org wrote:
+On Tue, Jun 23, 2026 at 05:43:36PM +0000, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Calling `gfn_to_memslot()` in `KVM_CREATE_IRQCHIP` without holding the SRCU read lock (`kvm->srcu`) or the memslots update lock (`kvm->slots_lock`) leads to a Use-After-Free and triggers a lockdep warning.
+> - [Medium] The use of a `default:` label in the `switch` statement defeats the compiler's ability to ensure all mitigation modes are explicitly handled.
 > --
 > 
-> commit 69e98e42c78858b7858a1956e233c569faf47ae1
-> Author: Tim Wiederhake <twiederh@redhat.com>
+> commit 5e3a6ba10ff7b033ea17daee7432bcf9168f3b13
+> Author: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 > 
-> KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is already mapped
+> x86/vmscape: Move mitigation selection to a switch()
 > 
-> User space must not map guest memory that covers the default APIC base
-> address when using an in-kernel irqchip. This commit adds an explicit
-> check to KVM_CREATE_IRQCHIP so the conflict is reported at the point
-> where the constraint takes effect.
+> This commit refactors the vmscape mitigation selection logic to use a switch
+> statement. The stated goal is to explicitly handle all mitigation modes and
+> group the logic for each mode together in preparation for future additions.
 > 
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
+> > diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+> > --- a/arch/x86/kernel/cpu/bugs.c
+> > +++ b/arch/x86/kernel/cpu/bugs.c
 > [ ... ]
-> > @@ -4413,6 +4413,10 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >  		if (kvm->created_vcpus)
-> >  			goto create_irqchip_unlock;
+> > @@ -3088,17 +3088,33 @@ early_param("vmscape", vmscape_parse_cmdline);
 > >  
-> > +		r = -EEXIST;
-> > +		if (gfn_to_memslot(kvm, gpa_to_gfn(APIC_DEFAULT_PHYS_BASE)))
+> >  static void __init vmscape_select_mitigation(void)
+> >  {
+> [ ... ]
+> > +	switch (vmscape_mitigation) {
+> > +	case VMSCAPE_MITIGATION_NONE:
+> > +		break;
+> > +
+> > +	case VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER:
+> > +		if (!boot_cpu_has(X86_FEATURE_IBPB))
+> > +			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+> > +		break;
+> > +
+> > +	case VMSCAPE_MITIGATION_AUTO:
+> > +		if (boot_cpu_has(X86_FEATURE_IBPB))
+> > +			vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
+> > +		else
+> > +			vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
+> > +		break;
+> > +
+> > +	default:
+> > +		break;
+> 
+> [Severity: Medium]
+> Does including a default case here defeat the stated goal of the patch?
 
-kvm_is_gpa_in_memslot() is what you want.
+Yes, it does. "default:" was added because of a preference to not add
+currently unreachable code:
+
+  https://lore.kernel.org/all/7d136f5b-437d-48ce-852d-cc793df4de15@suse.com/
+
+> The commit message notes this refactor "ensures that all mitigation modes are
+> explicitly handled". However, including a default block suppresses compiler
+> warnings about unhandled enum values.
+
+Updating the the commit message to reflect the intent of the patch:
+
+  x86/vmscape: Move mitigation selection to a switch()
+
+  Convert the mitigation selection to a switch() to keep the handling for
+  each mitigation mode together and make it easier to follow. This also
+  prepares for adding the BHB-clearing mitigation mode for VMSCAPE.
