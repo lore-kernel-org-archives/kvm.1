@@ -1,30 +1,32 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE93FA5D5
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 08:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D913F8891
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 08:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783326996; cv=none; b=H2KmiQMbAF+PBe+wd1YhrIbaTg1C3y1nIe9sh2k6G2dNqkomKDVEbVrFuc/vp+mxxRoOq7s+y73agVO0VEcodTc+RyFgeb3e6VoS/Y8Egyaa6j0LVXXxmr5mZmgYdwAB31osM1a+lxVOIHuld0aGn4updH6X4xPVWsgAATvL35w=
+	t=1783327000; cv=none; b=dy7XcjqW/+zLY5j2vYNwcC3hmZfqkADrJsC4MmV0s4OcGdZtYxHYZecmR98j1xF7KUZxhH/3pBDfqK5IldBT8/Dn7HmGE3c6ESrRYrKHcnIEhOwojZNhpq85jUP+qBciTsBw0/YUj4CxNpngvWtxVBNoaC+VhXMeCWcFFuq3Szs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783326996; c=relaxed/simple;
-	bh=OtxwYDiXIs45/R5qOgWfhIJ1pNdeZ/iTCiGIauTmmN0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ikRJxnNaRpR2RmPk5T1RT6ukjyU0QJrVo5oDLSJ4dyyygAeaef7dbbmmu5fnW5sFLnDt6Se6Ygzrkxxdqple1cS3SN3E+SinvxH0gmq1M7DBQTMu2SEPhAsR3LxxttZYkL80eyGgO2xbrj0qqZkmlq98Lx4survjhIi37pArABE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wMqcMQbf; arc=none smtp.client-ip=95.215.58.171
+	s=arc-20240116; t=1783327000; c=relaxed/simple;
+	bh=qLDY7WVH3+gTbsMQ9Ylt9zwWu/lYyQy0uCJ+Rs34fXI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FcbHuldKGEILN6r2V/i5ZlGJnPcUexDaozz8GpWpahqZZWiUQ//7FxCKeZuwuee5BWnLaL6t/4+aapQtuUXZrII0kUIUN9Jy6xIlAkswC4CHpOzjU1miTQdMOTF8yJAvsuN5FW8IMEjnXCe8+p+3ocio2Cne3Zh8U5ZAt5i89Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rZOkw50U; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wMqcMQbf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rZOkw50U"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783326966;
+	t=1783326970;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jZXscVUG63ZFrhHpOJR3V/mNooz4GyCGGWNSo7+GJVc=;
-	b=wMqcMQbfnogp23GG0ATQUVXIgs5wVw4+d91tG26/5vcv162UntnbsGt13VNtBk36k/hkee
-	eGQkVB83uLCaDhKzK1PHCaziStN5B+xuIKPyeZflrTMV7C41czTrJJKOXdhRcUT9L03RYv
-	ouIVxQ4TvO89+/pVJKBB1irJOGRwfO8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ctcb9e15jym4XmiABGToZoWZJ0i9DGdTPWmTVq+UbMM=;
+	b=rZOkw50Ub/zYmoW5VEeQ9/5kWCcfZfToQteJVglWUWweiiHDHJ9v9/uS1sYVGxmCYa05g3
+	qd7JfyMygKrE3mh4+m5USAXXXi/9YOkKbft6z++0kNT/KTDHfr2YkskcINGpepp1+Gws5O
+	VY29+gUEwWu2Lld4zOrgrDvD5Wzks4Y=
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: kvm@vger.kernel.org
 Cc: kvmarm@lists.linux.dev,
@@ -35,9 +37,11 @@ Cc: kvmarm@lists.linux.dev,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Marc Zyngier <maz@kernel.org>,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH kvmtool v1 0/5] Add guest_memfd support for arm64
-Date: Mon,  6 Jul 2026 09:35:50 +0100
-Message-Id: <20260706083555.302972-1-fuad.tabba@linux.dev>
+Subject: [PATCH kvmtool v1 4/5] Add guest_memfd support to kvm__register_mem()
+Date: Mon,  6 Jul 2026 09:35:54 +0100
+Message-Id: <20260706083555.302972-5-fuad.tabba@linux.dev>
+In-Reply-To: <20260706083555.302972-1-fuad.tabba@linux.dev>
+References: <20260706083555.302972-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,53 +51,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Hi folks,
+Add a guest_memfd file descriptor and offset to kvm__register_mem().
+When guest_memfd >= 0, set KVM_MEM_GUEST_MEMFD and populate the
+guest_memfd fields, binding the memslot to the file. This prepares
+for backing guest RAM with guest_memfd on arm64.
 
-Due to popular demand, i.e., Alexandru asking me about it, I repolished my
-guest_memfd support series. The one I sent years ago was stale and
-over-engineered, so this is a fresh start instead.
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+ hw/cfi_flash.c    |  2 +-
+ include/kvm/kvm.h | 15 +++++++++++++--
+ kvm.c             |  9 ++++++++-
+ 3 files changed, 22 insertions(+), 4 deletions(-)
 
-This series adds support for backing guest RAM with guest_memfd on
-arm64, for non-protected VMs under both regular KVM and pKVM.
-
-The first two patches are standalone fixes in the code this series
-builds on: an uninitialized return value in kvm__for_each_mem_bank(),
-and doubled newlines in die() messages. The next two switch memory
-registration to kvm_userspace_memory_region2 unconditionally and add
-guest_memfd plumbing to kvm__register_mem().
-
-A new --guest-memfd option creates guest RAM from a guest_memfd with
-mmap support (GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_INIT_SHARED,
-Linux 6.18+), maps it to provide the userspace mapping, and registers
-it with KVM_SET_USER_MEMORY_REGION2.
-
-Protected VMs need in-place shared/private conversion of guest_memfd,
-which is still in progress in the kernel [1], so --protected rejects
-the option.
-
-Based on kvmtool master (ca0ddafa941d).
-
-Cheers,
-/fuad
-
-[1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com/
-
-Fuad Tabba (5):
-  Initialize the return value in kvm__for_each_mem_bank()
-  Remove newline from end of die() aborts
-  Use kvm_userspace_memory_region2 for all memory registration
-  Add guest_memfd support to kvm__register_mem()
-  arm64: Add --guest-memfd option to back guest RAM with guest_memfd
-
- arm64/include/kvm/kvm-config-arch.h |  5 +++-
- arm64/kvm.c                         | 38 +++++++++++++++++++------
- hw/cfi_flash.c                      |  2 +-
- include/kvm/kvm.h                   | 16 +++++++++--
- include/kvm/util.h                  |  1 +
- kvm.c                               | 26 +++++++++++------
- util/util.c                         | 44 +++++++++++++++++++++++++----
- 7 files changed, 106 insertions(+), 26 deletions(-)
-
+diff --git a/hw/cfi_flash.c b/hw/cfi_flash.c
+index b68d9e0..4413955 100644
+--- a/hw/cfi_flash.c
++++ b/hw/cfi_flash.c
+@@ -451,7 +451,7 @@ static int map_flash_memory(struct kvm *kvm, struct cfi_flash_device *sfdev)
+ 	int ret;
+ 
+ 	ret = kvm__register_mem(kvm, sfdev->base_addr, sfdev->size,
+-				sfdev->flash_memory,
++				sfdev->flash_memory, -1, 0,
+ 				KVM_MEM_TYPE_RAM | KVM_MEM_TYPE_READONLY);
+ 	if (!ret)
+ 		sfdev->is_mapped = true;
+diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
+index eb23e2f..5e7b5eb 100644
+--- a/include/kvm/kvm.h
++++ b/include/kvm/kvm.h
+@@ -128,11 +128,22 @@ bool kvm__emulate_io(struct kvm_cpu *vcpu, u16 port, void *data, int direction,
+ bool kvm__emulate_mmio(struct kvm_cpu *vcpu, u64 phys_addr, u8 *data, u32 len, u8 is_write);
+ int kvm__destroy_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr);
+ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr,
++		      int guest_memfd, u64 guest_memfd_offset,
+ 		      enum kvm_mem_type type);
+ static inline int kvm__register_ram(struct kvm *kvm, u64 guest_phys, u64 size,
+ 				    void *userspace_addr)
+ {
+ 	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
++				 -1, 0, KVM_MEM_TYPE_RAM);
++}
++
++static inline int kvm__register_ram_guest_memfd(struct kvm *kvm, u64 guest_phys,
++						u64 size, void *userspace_addr,
++						int guest_memfd,
++						u64 guest_memfd_offset)
++{
++	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
++				 guest_memfd, guest_memfd_offset,
+ 				 KVM_MEM_TYPE_RAM);
+ }
+ 
+@@ -140,13 +151,13 @@ static inline int kvm__register_dev_mem(struct kvm *kvm, u64 guest_phys,
+ 					u64 size, void *userspace_addr)
+ {
+ 	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+-				 KVM_MEM_TYPE_DEVICE);
++				 -1, 0, KVM_MEM_TYPE_DEVICE);
+ }
+ 
+ static inline int kvm__reserve_mem(struct kvm *kvm, u64 guest_phys, u64 size)
+ {
+ 	return kvm__register_mem(kvm, guest_phys, size, NULL,
+-				 KVM_MEM_TYPE_RESERVED);
++				 -1, 0, KVM_MEM_TYPE_RESERVED);
+ }
+ 
+ int __must_check kvm__register_iotrap(struct kvm *kvm, u64 phys_addr, u64 len,
+diff --git a/kvm.c b/kvm.c
+index 8a7fd09..3d05756 100644
+--- a/kvm.c
++++ b/kvm.c
+@@ -237,7 +237,8 @@ out:
+ }
+ 
+ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+-		      void *userspace_addr, enum kvm_mem_type type)
++		      void *userspace_addr, int guest_memfd,
++		      u64 guest_memfd_offset, enum kvm_mem_type type)
+ {
+ 	struct kvm_mem_bank *merged = NULL;
+ 	struct kvm_mem_bank *bank;
+@@ -327,6 +328,12 @@ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+ 			.userspace_addr		= (unsigned long)userspace_addr,
+ 		};
+ 
++		if (guest_memfd >= 0) {
++			mem.flags	|= KVM_MEM_GUEST_MEMFD;
++			mem.guest_memfd		= guest_memfd;
++			mem.guest_memfd_offset	= guest_memfd_offset;
++		}
++
+ 		ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION2, &mem);
+ 		if (ret < 0) {
+ 			ret = -errno;
 -- 
 2.39.5
 
