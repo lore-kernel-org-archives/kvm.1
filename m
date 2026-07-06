@@ -1,127 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A833F3BE16F
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A653C9454;
+	Mon,  6 Jul 2026 09:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329356; cv=none; b=BMDDdRJF8ff4ieSUtJ4JgOVp1pqJvUPVBGdYQ0f4S4eHqOw+ztVYbi0EAdqYHJQwv/NdF5kebNz8bYXrhoRrPHepLmmsowLE4iH/HT2NOiApDdwvl0wk2n0VrRmNUzQDhqQVD9QeHcCi3r52MbMWPptK0B/IJzf6DZGy9wEysOw=
+	t=1783329425; cv=none; b=VZcVrk1MEwgPRfDs38eg/F/LaI4cd/eezc2nCrncLxyoXVQ2fCIz+UPVzKntrC5hWbDd39EemyYI7JS6ObDMWgcpazYN6qyABaTsaYHBwOGhQFMRn8y3YfBu8blY/yKd7Kq+jMzcyC2YD6MNHcbEcrEXQx4byymC7BfC0z4HIao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329356; c=relaxed/simple;
-	bh=AIW4Cloo4hV+SOi1ykE8Pn0YPf9Iu4eBe9WWoa34IVw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uOYnQmhOkdByYSsUX5G2d2fdVWqEJhAuJKMV3EQuSNDyhydRWwWJZL7BfManoz2LjRzMOtrHvEP/TcXk1KsT35EtTU46ZrB6T9d7vYPBkth7jW8u5R41DwI2jQtjz7k66NGXn0TkeA7v6a9m+6OC7YLtariRDmLcKBcfSLji/5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8lbIlLV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783329425; c=relaxed/simple;
+	bh=r8IHjgajWWCYQeCDyqlBFZQ+jiagfASXseQII/EtCXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ue0tHeX+TVdZcoxKFc01J8hexyQCjGSdpkGLZENI9bgu715JRbyAkwRkRKSAVm44CwrfGSz2EbWiw0xqiTOVtcXOmLfMv5ZE9G+2pxN+Q908nxEETTLIrh+kw5OF+cxUpN6phqJH+O60CfFV2OAThZwrnjX5/+CAG6X+Pdfd83o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i6RHYSv4; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8lbIlLV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435BA1F00A3F;
-	Mon,  6 Jul 2026 09:15:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329344;
-	bh=KX8xZjSRngHWJv33odlL0qJkFGFFOM88N/NjTUBy1PA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=a8lbIlLVAnmPuR7RaVgVxkyKMyUoorP6/eSSLSVlxPNRV6mLMFJtP1aCkdFsedzEp
-	 sM+/SS1YtBvUisu5a0m7OExMC+Pj45TYIJWcfBBUsldJn+vfG+t2OqPIcGC6x4iBUc
-	 adZfUvmdt34cIm1mfoZ5lnHmISmC49MU3wxUXmbWMSgyUBMgGj83RblU1N1HChHiLm
-	 70PeJ9c8qgMsxLduHO2d8fJDO4OhdP/kBFu6Dv+mQYto2ACTroKW/Ruy66V7M4jfi7
-	 5AXVDYZkPS0NsL34Ol93rl+7Ey0qLKqk6vdhUfqZxCPEIbXv7DQfXtIYes2u175EIF
-	 6ntTQxrPAC2yQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP
- tracking
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706084805.8400-12-kirill@shutemov.name>
-References: <20260706084805.8400-1-kirill@shutemov.name>
- <20260706084805.8400-12-kirill@shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:15:43 +0000
-Message-Id: <20260706091544.435BA1F00A3F@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i6RHYSv4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783329421; x=1814865421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r8IHjgajWWCYQeCDyqlBFZQ+jiagfASXseQII/EtCXs=;
+  b=i6RHYSv4EV725yzAjlTFRsp/BZvhoXSPHG1Bcv1AoEWUUCUg/KOhGyHW
+   pLEvtFxK/ffd2Ximp1YN8wGAGTk46sWAHT+QsG9XHozQFwMtczZi4WFPV
+   B1wrrh2LPt07IVQqYTx6Hg0wiPYpGC7GvfFFfLaQ583/zXW8cz2udp2Lt
+   v/UQYUfwzFsO6QA1rjrRoAO48sMZgwtDPYdGiKEXHsWhXIi4IJ03KDGJ7
+   YCDIloEZgqUXkqwkgm651zOOQXtBAQvlByMdt1UU/6NNPhp8GxnJozlDY
+   dbhiORksxFlty/2dnRlxck5O/rx/ZZp+YGBSV7r2KpG4dap8jJQjivN39
+   A==;
+X-CSE-ConnectionGUID: z2YkQrMGSECksD78A6ajKg==
+X-CSE-MsgGUID: AwOF1jPSSyuSsy3DefrXgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11838"; a="87874114"
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
+   d="scan'208";a="87874114"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 02:16:56 -0700
+X-CSE-ConnectionGUID: Rrj/AClhTViGonEcemZGMw==
+X-CSE-MsgGUID: fmG3KLkoSNS9rV8fv5x97w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,149,1779174000"; 
+   d="scan'208";a="283757779"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 06 Jul 2026 02:16:52 -0700
+Date: Mon, 6 Jul 2026 17:16:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, x86@kernel.org, chao.gao@intel.com,
+	dave.jiang@intel.com, baolu.lu@linux.intel.com, yilun.xu@intel.com,
+	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+	kas@kernel.org, xiaoyao.li@intel.com, vishal.l.verma@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 20/31] x86/virt/tdx: Add a helper to loop on
+ TDX_INTERRUPTED_RESUMABLE
+Message-ID: <aktyg51hj0SeSG50@yilunxu-OptiPlex-7050>
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-21-yilun.xu@linux.intel.com>
+ <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgGgTkOPWELeg5U3pjjw9NZOBQ5zswWy=MRxOXsUXXuFhQ@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+> > +static u64 __maybe_unused __seamcall_ir_resched(sc_func_t sc_func, u64 fn,
+> > +						struct tdx_module_args *args)
+> > +{
+> > +	struct tdx_module_args _args;
+> > +	u64 r;
+> > +
+> > +	while (1) {
+> > +		_args = *(args);
+> 
+> Is this copying meant to ensure that every retry has the same input
+> args? Perhaps a comment should be added so it's obvious that every retry
+> will have the same input, and outputs from each retry are dropped.
 
-Pre-existing issues:
-- [High] PAGEMAP_SCAN handles unpopulated pages (pte_none and pmd_none) inc=
-onsistently, violating UFFD-WP asynchronous tracking semantics and creating=
- diverging behavior between fast-path, slow-path, and PMD-hole execution fl=
-ows.
---
+Yes, that's the intent.
 
-commit 6140b14d4a73c9f85a7063bce04ca47dbbf1e064
-Author: Kiryl Shutsemau <kas@kernel.org>
+But now I've found this is not a good convention for INTERRUPTED_RESUMABLE.
+If outputs are necessary why we drop them, if outputs are not useful why
+we output them to overwrite inputs. The fact is that TDX module only
+outputs all 0's to zero out the inputs, that makes no sense.
 
-mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+So we now switch to another existing convention - if there is valid
+output, use the output to update the input for next loop, or keep the input
+unchanged. This way we only need to:
 
-This commit introduces PAGE_IS_ACCESSED for VM_UFFD_RWP VMAs, separating=20
-read-write protection tracking from the existing PAGE_IS_WRITTEN flag.=20
-PAGE_IS_WRITTEN is now properly scoped to only report within VM_UFFD_WP VMA=
-s.
+	do {
+		r = seamcall(TDH_XX_XX, &args);
+	} while (r == TDX_INTERRUPTED_RESUMABLE);
 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 5b55c59573a3c..2d724156763d2 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-[ ... ]
-> @@ -2863,7 +2888,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsig=
-ned long start,
->  		goto flush_and_return;
->  	}
-> =20
-> -	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
-> +	if (userfaultfd_wp(vma) && !p->arg.category_anyof_mask &&
-> +	    !p->arg.category_inverted &&
->  	    p->arg.category_mask =3D=3D PAGE_IS_WRITTEN &&
->  	    p->arg.return_mask =3D=3D PAGE_IS_WRITTEN) {
->  		for (addr =3D start; addr < end; pte++, addr +=3D PAGE_SIZE) {
+	if (r != TDX_SUCCESS)
+		return -EFAULT;
 
-[Severity: High]
-This is a pre-existing issue, but since this condition is being modified,
-does PAGEMAP_SCAN handle unpopulated pages inconsistently depending on
-the execution path?
+https://lore.kernel.org/kvm/20260618081355.3253581-6-yilun.xu@linux.intel.com/
+https://lore.kernel.org/kvm/20260618081355.3253581-5-yilun.xu@linux.intel.com/
 
-When a process uses UFFD-WP asynchronous tracking and calls the ioctl with
-category_mask =3D=3D PAGE_IS_WRITTEN and PM_SCAN_WP_MATCHING, the behavior
-seems to diverge.
-
-For a completely unpopulated 2MB range, pagemap_scan_pte_hole() evaluates
-against cur_vma_category (which lacks PAGE_IS_WRITTEN) and skips the hole:
-
-fs/proc/task_mmu.c:pagemap_scan_pte_hole() {
-	if (!vma || !pagemap_scan_is_interesting_page(p->cur_vma_category, p))
-		return 0;
-	...
-}
-
-However, in a partially populated PMD, this fast-path loop is taken. Since
-pte_present() and pte_swp_uffd_any() are false for pte_none, it appears to
-output the unpopulated PTE as PAGE_IS_WRITTEN and installs a WP marker.
-
-If the slow path is forced instead, pagemap_page_category() returns 0 for
-pte_none, silently skipping it:
-
-fs/proc/task_mmu.c:pagemap_scan_pmd_entry() {
-	...
-	for (addr =3D start; addr !=3D end; pte++, addr +=3D PAGE_SIZE) {
-		pte_t ptent =3D ptep_get(pte);
-		unsigned long categories =3D p->cur_vma_category |
-					   pagemap_page_category(p, vma, addr, ptent);
-	...
-}
-
-Could this inconsistency cause data loss during live migration? If an entire
-PMD is zapped, the PMD hole path skips it without reporting it as written
-or protecting it. Would this result in the migration process not sending
-zero pages for the zapped range, retaining stale data on the destination,
-and failing to trigger WP faults on future writes?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706084805.8400=
--1-kirill@shutemov.name?part=3D11
+> 
+> > +		r = sc_retry(sc_func, fn, &_args);
+> > +		if (r != TDX_INTERRUPTED_RESUMABLE)
+> > +			break;
+> > +
+> > +		cond_resched();
+> > +	}
+> > +
+> > +	*args = _args;
+> > +
+> > +	return r;
+> > +}
