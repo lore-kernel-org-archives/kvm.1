@@ -1,95 +1,84 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDA22F6188;
-	Mon,  6 Jul 2026 17:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5122E975E;
+	Mon,  6 Jul 2026 17:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783357275; cv=none; b=WvJ7nCcBvRO3EndYjZ7wgdOH8byIKlbb3JXki1d1t8SjiOa7h+gR1HQ/L9RHMyp5k7AO7YhIcMw9C2GduUdwRKB8A1U8cZtXzzW9Ce9TyaR9RdnKcmoyzt0vhPQ0Y/JNwDIfVjE5SKZ5O3cMZp0IMDvMtysBYNB8aoQicbiHiTk=
+	t=1783357476; cv=none; b=VWj4IBXUHrPgWPbXCCF7A+Q4qrbEa8hkA9Y9KBb7tn7LxB3reMH0EeXuxugRptPgNDIzGMOPOhw3pYwEQktxHRFSbZjj5stihoD5w+pgG9t8c7V9YJdwmVXRRjuk/riO2FKLLYVSyxTMgkAN+y3CR5rgZcaXvvXE+SOKoBBqPW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783357275; c=relaxed/simple;
-	bh=auQFFt9dAYTSaquzJRRDuhw9kxvvBvlZO71tJWRwQAQ=;
+	s=arc-20240116; t=1783357476; c=relaxed/simple;
+	bh=q2bf0hck/kteT/8BiENk5zi92hNnZDmATG4EbRm5dQY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KKi32/0f6RVz1gB9sYVnKiGSXwDwrWPp7I8QBGJQcXwh+mvh4GiQXISox0zae13VhirVeQ2Tq7wWSzHuIy8HNxhJ3LpVqTMFZ1RdfWU1TNKJ9N3g2x055oY09nkf30DCedKERJz80xe/uAAx8yW3cBOYmQM0b3Vm1kxlsbSUSs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ebyV4JYK; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=MNG6Wlnl/KXobjTggWRV5JUz3YGbP2nulao76WITmzSY3BJWSXxd9UJYonTEQfwuPS2YGN/GMjnIt+oWzED2Gq4316OckfLNjzsB8hvA/b9vYiVHpXcy7wiaC10OU4901D70RSRJ2TCabvcYjx3E4cqNGs4TZ3WoDsiwRZFgRV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyaaNu0D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ebyV4JYK"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8DA2940E016E;
-	Mon,  6 Jul 2026 17:01:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id fzUvSz7SGoop; Mon,  6 Jul 2026 17:01:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1783357260; bh=FvtnePO0Hri9+xidXlssbTh1jCzzHZxIywo0k9LABd0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ebyV4JYKi7AJPD7gBzAoyyFaCzHWEI5dlGixs5MbYcQURWgvQDftVXdC3b/HiOQzi
-	 Kqfhkf0z1cSGV/TFDqUuT57nRiWg9hgY1YYSrqBzHBTdYQhJFwYbmomhpDExVbdYJT
-	 ow4mxdcq+h4D+K1gnCJ2fIxhQHCsRx/zMoQMuINdJtWzKhHGl0KrCHR2pR4pKEB0Yu
-	 +zw1FuRyK/t+mbt2/3EV2uCzIKgBYPbiPmED5t5wUKN11jdAWeJiYzBDjpRK7u+LvJ
-	 CoKtGFOUNbmPsyQDI0RY4xGKavo7XGbt17bdUCBA6pHhCS/IdqCkxKfbbvrXnk2+lZ
-	 ljHf8FJRxi0kcrfliQkAI9G56o/bK6gPmcuawnqKIZdmbtHHc4Bsitd5vIHzhZDSBj
-	 /49a9ZZXHG7wYYvcAOTS/OchR5cs+vMF7GgCaWTRC6oP6nBwVbBHYRfCs3Hhg1slJI
-	 eYe+52QA5bXEUOkQbRQL+c8CT8nScy7R9eBb0DPwdGUsrQfoOtfsPg9ped4L/nW1nR
-	 +iU8iBG8sMkEUoueTAUxdsmXYIV+fUY8qydn8dOokhxjmvCe0qJZZvqvSz78JkyHxV
-	 kDyZdu0BWOpq1r0JQy2C1PkmkbgEm3u4rj+HnL4VAdFo58gWQTDp3Moh/GoEVpv3bp
-	 s5TnIpXv1NZVTlq38+KEOTGk=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EC17640E00DC;
-	Mon,  6 Jul 2026 17:00:46 +0000 (UTC)
-Date: Mon, 6 Jul 2026 10:00:43 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ewan Hai-oc <ewanhai-oc@zhaoxin.com>, pbonzini@redhat.com,
-	tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
-	cobechen@zhaoxin.com, tonywwang@zhaoxin.com
-Subject: Re: [PATCH v3 0/5] KVM: x86: Expose Zhaoxin CPUID 0xC0000001 EDX
- cryptographic features
-Message-ID: <20260706170043.GBakvfO6Ng0SVkhsGW@fat_crate.local>
-References: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
- <20260701024521.kffehv7bxcjc5f3y@ewan-server>
- <akUfrLPAAUuD8zRZ@google.com>
- <20260702014926.GHakXDpsIK5srVj0Mk@fat_crate.local>
- <aku9-O5K4a7vTDXS@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyaaNu0D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FE31F000E9;
+	Mon,  6 Jul 2026 17:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783357475;
+	bh=REmuzwIaNWYa8LGBVvGUzNpeujzoKq+eMU1Gq13kbjc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gyaaNu0DZ3lY+wpZZZxQ/iX7UMQqh0yyWYHoi78HU774kBB/02mxwoerTE+/DOWYp
+	 ftBdYzRQvBWyb/29euRzLW3wmTKXWID7tadSd+Nb97HQ7Lw24Q07dQc6tis00rC92/
+	 8xZPYUxbdNceoDK6j/iBacm63/gI7YctudjwjYi4ceHK5RpWkagVWH7umCwngTYW8+
+	 jtsPBAUVsgiN2pTUkDm/0+7BMFzZCznXpYKvpmV6GwD+WlIHud9o4aaWD5Cu3YNgOe
+	 hDWiQNhcSgbvwgEyZXnd/V4YDoYbh9ZojTux/OFUUB/09bWTQe07B9eRAbrcWc2BXO
+	 kT/8DfH8xtg5w==
+Date: Mon, 6 Jul 2026 10:04:33 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v8 1/7] KVM: arm64: Disallow vPMU when pPMUs do not cover
+ all CPUs
+Message-ID: <akvgIWqBjAp_VA_A@kernel.org>
+References: <20260706-hybrid-v8-0-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
+ <20260706-hybrid-v8-1-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aku9-O5K4a7vTDXS@google.com>
+In-Reply-To: <20260706-hybrid-v8-1-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 
-On Mon, Jul 06, 2026 at 07:38:48AM -0700, Sean Christopherson wrote:
-> On Wed, Jul 01, 2026, Borislav Petkov wrote:
-> > Btw, Sashiko rightfully mentions:
+Hi,
+
+On Mon, Jul 06, 2026 at 07:03:24PM +0900, Akihiko Odaki wrote:
+> Commit ec3eb9ed6081 ("KVM: arm64: PMU: Disallow vPMU on non-uniform
+> PMUVer") made KVM reject vPMU unless the system-wide PMUVer is usable.
+> That covers systems where PMUv3 is absent or non-uniform, as well as
+> systems where IMPDEF PMUv3 sysreg traps are unavailable.
 > 
-> Please no, let the perf folks deal with synchronizing the headers.  I explicitly
-> instruct people *not* to copy kernel header changes to tools/ when sumbmitting
-> KVM patches, because it creates the false impression that KVM selftests actually
-> consume those headers.
+> However, KVM can still accept vPMU when all CPUs uniformly trap PMUv3
+> sysregs, but the pPMUs registered with KVM only cover a subset of
+> possible CPUs.
+> 
+> Reject vPMU unless the registered pPMUs cover every possible CPU.
+> This avoids carrying support for partial pPMU coverage into the
+> fixed-counters-only UAPI introduced later in the series.
 
-Well, how?
+Doesn't CPU hotplug screw this up? I could online a CPU that doesn't
+have a PMU after creating the VM.
 
-Maybe other headers, sure, but cpufeatures.h is special and I'd be surprised
-if selftests consume it. And I think Arnaldo is happy when he doesn't have to
-sync that header for a change. 
+I'd rather just change ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS to become a
+system feature. That way any CPU which breaks the system-wide assumption
+cannot be onlined.
 
-I guess not a big deal...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Oliver
