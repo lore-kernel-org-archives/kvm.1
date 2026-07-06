@@ -1,138 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62107213254
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 05:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D853B8921
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 05:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783316887; cv=none; b=Qi9C172xMzunFsXUHeXUBmuuFPebjGnMhAvuzCbqckwW0lVPEPJFo4tOI63mrc1Qz2m3tzXOG0r0IVtgqln7DL9ZW/ZdbUJhRUspDt9HbRyzK/Mwu5h2n6XXcDD7OZqtVOpDMGnvDXyU/Sr94jKQXWZJ1rXawH4i+GCCqow3j9Y=
+	t=1783317375; cv=none; b=DDxils4WTtQ2hj1VPZuuNs1jrDOWNWD9KMefUaPF/mB/k1Pv0ybCOkef2UQEl7CVDcrFph3roUZ//nEyRvq0dfwT1MDOgmO6YTZ9MloDJ1/DWbUFJHnyONSRghsclCjIOa//QIQAax8hgZYDu/4/p+rHydwQXXAQY0/YgHsri5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783316887; c=relaxed/simple;
-	bh=bBD47grz2Y8DD5ul58x6Wp5sGcAMpIlZ7j2YeVjfzLo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sU7LxCVUds8aPv5M2Wz3/dIJ95Y3bbvJ8wvSRUVnPtnFEkvqBY7dyiz/HIs3IWh+GR2e0LYZ+bi2yD429caFFqvHdzJJZcd4NjPJkWmZ3/i4pF3CHwUsstVwFkziN03qfQYE4DQGjcdXY+IhWCP81QHJZrIqSY7mDFMadyPRuF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoZj3ktk; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoZj3ktk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDAB1F000E9;
-	Mon,  6 Jul 2026 05:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783316886;
-	bh=xdUoHCB2p6WHjeOECR/yDvqg7/7vRYV3IxTD7ZeVxPw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZoZj3ktkEj9bahjA0k8B5UMTYGUJXE3NlhosF0BD2TzD0mE04FFnpaVGQqQ3+yWgn
-	 vw5snHM0C3+LjiXl6mdyMZohNnjMcz2qMjbbfpRvwmukY5ddt+umWPrzMQa2Fdl7wo
-	 7XdA0QsQW6HjWd/78aJli+kP0BuXUB+K0E4sn6FvEdpjdDxe4tMop5JGrykHok+8rQ
-	 r2OE3Imh63/T4TiQzbOsiByC4uwFSFhB1alCBncNRKjzq2xIcUdZAZ9WIRFR91rFBq
-	 +XBildaTYDQo4KH/kMFz/J34OL4AawVP5I+qkFLeHvafcKVIz2VYG8UzKMkwBSihSX
-	 iGHyecuYsYQFg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Zicbo[m|z|p] block sizes should be always
- present in ONE_REG
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anup Patel" <anup.patel@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706054002.1089394-1-anup.patel@oss.qualcomm.com>
-References: <20260706054002.1089394-1-anup.patel@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 05:48:05 +0000
-Message-Id: <20260706054805.BEDAB1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783317375; c=relaxed/simple;
+	bh=tmbzqr8KKJVyD9vMzE86ykFX3QfxNHQ+ez8FsjXRCTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iWVoTqeI96pcRppgmiWNdG/AXxqQSSG6LbYBV8X6QmY2kChDo2kkl9/kVtXbOl07ZrlazvUMCLwcYFEvc2V/I0eE2zb1dYc0wFcSPelIzxiCA9FdPchNTbF2/oljBLwhDhjB90wLIKnoCj+gJVCCmP7AnhZZLPOXOyfvJM2L7g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07448388|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00202762-2.34808e-05-0.997949;FP=7181971576053058843|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.iEEStYR_1783317350;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEEStYR_1783317350 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 06 Jul 2026 13:56:03 +0800
+From: zhang_wei@open-hieco.net
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Tina Zhang <zhang_wei@hygon.cn>
+Subject: [PATCH v1 0/9] target/i386: Fix Hygon vendor-specific CPU behavior
+Date: Mon,  6 Jul 2026 13:55:21 +0800
+Message-ID: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Unconditionally exposing Zicbo[m|z|p] block size registers breaks =
-cross-host live migration from hosts without these extensions to hosts with=
- them.
---
+From: Tina Zhang <zhang_wei@hygon.cn>
 
-commit 1377d7b8ff798dd58124162657e04db537839784
-Author: Anup Patel <anup.patel@oss.qualcomm.com>
+Hygon Dhyana uses the HygonGenuine vendor string, but a number of
+guest-visible and KVM-facing interfaces follow AMD-compatible behavior.
+QEMU currently keys several of these paths only on AuthenticAMD, so Hygon
+guests can see vendor-inconsistent CPUID/MSR state or use the wrong KVM
+PMU/MCE handling paths.
 
-RISC-V: KVM: Zicbo[m|z|p] block sizes should be always present in ONE_REG
+This series makes those checks explicit for Hygon where appropriate.
 
-This commit drops the ISA extension checks for the Zicbo[m|z|p] block size
-config registers in the KVM RISC-V ONE_REG interface. This makes these
-registers unconditionally available to KVM user-space.
+Guest-visible CPU ABI changes are gated by the new
+x-hygon-vendor-abi-fixes property.  The property defaults to true for new
+machine types and is disabled for pc-11.0 and older, so existing machine
+types keep their previous Hygon ABI for migration compatibility.
 
-> diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
-> index bb920e8923c93..26d78987f2c23 100644
-> --- a/arch/riscv/kvm/vcpu_onereg.c
-> +++ b/arch/riscv/kvm/vcpu_onereg.c
+The KVM injected-MCE and PMU path changes are not CPUID model table
+changes.  They make QEMU use the AMD-compatible runtime handling that
+Linux/KVM already uses for Hygon.
 
-[ ... ]
+The series covers:
 
-> @@ -144,20 +138,14 @@ static int kvm_riscv_vcpu_set_reg_config(struct kvm=
-_vcpu *vcpu,
->  		}
->  		break;
->  	case KVM_REG_RISCV_CONFIG_REG(zicbom_block_size):
-> -		if (kvm_riscv_isa_check_host(ZICBOM))
-> -			return -ENOENT;
->  		if (reg_val !=3D riscv_cbom_block_size)
->  			return -EINVAL;
->  		break;
+  * AMD CPUID[0x80000001].EDX aliases for Hygon
+  * hiding Intel cache CPUID leaves 2 and 4 for Hygon
+  * hiding IA32_ARCH_CAPABILITIES for Hygon unless old ABI requires it
+  * AMD MCE status encoding for Hygon memory-failure injection
+  * AMD PMU MSR setup/save/restore paths for Hygon
+  * disabling Intel-style MCA broadcast for Hygon injected MCEs
+  * AMD IOMMU HT GPA hole layout for Hygon on new machine types
+  * AMD legacy cache fallback for Hygon when legacy-cache=on
+  * AMD-shaped default ucode-rev value for Hygon
 
-[Severity: High]
-Does removing this extension check break live migration from a host without
-the extension to a host with the extension?
+Tests were added for the Dhyana CPUID/ucode compatibility behavior and
+for the Hygon HT GPA hole memory-layout case.
 
-If a VM is migrated from a source host lacking the Zicbo* extensions, the
-block size saved by userspace will be 0. When restoring this VM on a
-destination host that has the extension (where riscv_cbom_block_size > 0),
-userspace will call KVM_SET_ONE_REG with 0.=20
+Tested with:
 
-Because the host extension check is now removed, KVM will unconditionally
-execute the equality check and return -EINVAL since 0 does not match the
-destination's block size, causing the migration to fatally fail.
+  ninja -C build
 
->  	case KVM_REG_RISCV_CONFIG_REG(zicboz_block_size):
-> -		if (kvm_riscv_isa_check_host(ZICBOZ))
-> -			return -ENOENT;
->  		if (reg_val !=3D riscv_cboz_block_size)
->  			return -EINVAL;
->  		break;
+  build/pyvenv/bin/meson test -C build --print-errorlogs \
+      qemu:qtest-i386/test-x86-cpuid-compat \
+      qemu:qtest-x86_64/test-x86-cpuid-compat \
+      qemu:func-x86_64-mem_addr_space
 
-[ ... ]
+Tina Zhang (9):
+  target/i386: Sync AMD CPUID aliases for Hygon
+  target/i386: Hide Intel cache CPUID leaves for Hygon
+  target/i386: Hide ARCH_CAPABILITIES for Hygon
+  target/i386/kvm: Use AMD MCE status encoding for Hygon
+  target/i386/kvm: Use AMD PMU MSR paths for Hygon
+  target/i386: Do not broadcast injected MCEs for Hygon
+  hw/i386: Apply AMD IOMMU HT GPA hole to Hygon
+  target/i386: Use AMD legacy cache fallback for Hygon
+  target/i386: Use AMD ucode-rev default for Hygon
 
-> @@ -614,20 +602,6 @@ static int copy_config_reg_indices(const struct kvm_=
-vcpu *vcpu,
->  		u64 size;
->  		u64 reg;
-> =20
-> -		/*
-> -		 * Avoid reporting config reg if the corresponding extension
-> -		 * was not available.
-> -		 */
-> -		if (i =3D=3D KVM_REG_RISCV_CONFIG_REG(zicbom_block_size) &&
-> -		    kvm_riscv_isa_check_host(ZICBOM))
-> -			continue;
-> -		else if (i =3D=3D KVM_REG_RISCV_CONFIG_REG(zicboz_block_size) &&
-> -			 kvm_riscv_isa_check_host(ZICBOZ))
-> -			continue;
-> -		else if (i =3D=3D KVM_REG_RISCV_CONFIG_REG(zicbop_block_size) &&
-> -			 kvm_riscv_isa_check_host(ZICBOP))
-> -			continue;
-> -
->  		size =3D IS_ENABLED(CONFIG_32BIT) ? KVM_REG_SIZE_U32 : KVM_REG_SIZE_U6=
-4;
->  		reg =3D KVM_REG_RISCV | size | KVM_REG_RISCV_CONFIG | i;
+ hw/i386/pc.c                                  | 22 +++--
+ target/i386/cpu.c                             | 86 +++++++++++++----
+ target/i386/cpu.h                             | 12 +++
+ target/i386/helper.c                          |  6 +-
+ target/i386/kvm/kvm.c                         | 36 +++++--
+ .../functional/x86_64/test_mem_addr_space.py  | 36 +++++++
+ tests/qtest/test-x86-cpuid-compat.c           | 95 +++++++++++++++++++
+ 7 files changed, 263 insertions(+), 30 deletions(-)
 
-[Severity: High]
-Does unconditionally including these registers here force userspace to alwa=
-ys
-read and migrate them?
-
-By always reporting these registers, userspace on a host without the
-extensions will now read their value as 0 and migrate that value to the new
-host, triggering the -EINVAL failure in kvm_riscv_vcpu_set_reg_config()
-mentioned above.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706054002.1089=
-394-1-anup.patel@oss.qualcomm.com?part=3D1
+-- 
+2.43.7
