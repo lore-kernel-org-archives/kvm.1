@@ -1,71 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692B93E5595;
-	Mon,  6 Jul 2026 10:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BEA3E1CFF
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 10:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783335423; cv=none; b=KcSpNIMfxUrsUT0Gl+2Y9jJJgu55opLcGue2toYhNMLOw8p7I27eJF/Ly6ImMbNRdD/yUhHAfGuYgNeCYjeTJjFuoIBnUYrmzKi9hIitAnHkEOYOaJfAhJWnooM0M676JYeA9nWqkDSd6yWlgACD8Za4/n57tT36bS+bNGOOGKQ=
+	t=1783335430; cv=none; b=m4PdIrbRUpQ4N0LG6J1Mq5pjXPt7OsS9tJkzhVM9hR9ALNf2pokRRavA/z6AYoeEX8j0LmI31zX3r5AtLzdZ6fCLVpqDHh7iYNEGWhvmTP6Wft3BVOUz4fLqAIgm5kZJfo3nOGDKEtJWfYui4ECddhFAcrafN2lOddTWa4XhxcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783335423; c=relaxed/simple;
-	bh=6tBHEmJXAzoJA1Iz9f5VO5wwZ++xTCYJmA5d/rIlLqI=;
+	s=arc-20240116; t=1783335430; c=relaxed/simple;
+	bh=Cmk/FfTcQJw2/eDIqbR3U6irRZEwpjmV67DcVX51wQM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4pbVP+I2D7UQfvN66ReB/jwKkujAkl6jYfIlU7yWkHSGhmpnb8dlUP0qmtF9DCTGjL3xlBTY7GR1bYRmu0JdKlWE4yc7QF7RHTX5p7062+S8K/K7zfdlk6D6+4kggOQ/3LViaRGFRAzyOk3T5ctTNfOWh6O+x993vGdQRrdz18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8agmxFZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nwgfGhJ+rssg9ux13ypX4mDjBqG83YyRRb4TOQk8OjrL1GI2BYySmPV+BSXUSH/5SKpo99EHkGXpUQUbeV7NseDlZYbP0RBxP3oU1zABwEWlA5mMucnwIynH8Fg546J/Oprcm1+1iHlQQSYi7MLG65kO/tGH2XV01VPwlXoYBn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NiQTKGKQ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8agmxFZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E061F000E9;
-	Mon,  6 Jul 2026 10:56:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783335420;
-	bh=9TtrHnv/qi4lGfcA8XXpkBAbAwnFcDJBMSEy+F8GNE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V8agmxFZj4+EhkprkJmhAyZXVvYWq4x2s9TtPvI+aPJ8hGRyPxKHBvIoSKehw29Da
-	 1ANy+GCrq2yTMvNHJ0c4MOFTIAChl8fN7PvEpo9iUlCNqtmwUvdSFRSwMB1ubc/nQj
-	 7Kl5KyOlqrk9FTmRVfFFJN1F29moAA+DqFyI0hUZHBtIE1Sqm7pIXa3aju8hzvzEzN
-	 yz3HU/aqF5kI22n3IWq4tF5c80AmHLNdEy4keV+b962CnuvzXWIYldJkYxyFdhkEZI
-	 SPNGHbDXhKh0KHIRsX8Q90irOU45Ew10VuKnzCwgDhU1gvkCqY79zdIrqvMz9lqWfG
-	 nl7hGW6N+VV5A==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B08FEF40068;
-	Mon,  6 Jul 2026 06:56:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 06 Jul 2026 06:56:58 -0400
-X-ME-Sender: <xms:-olLat-EzM_LJwbXNIQ8m56H0bVx9T6l27AEua0Yr2b4oHBccVmH5g>
-    <xme:-olLavV3vjXB-MrU1kPh94pWGUZC8oDxWnWecG0IDU6ewpN5OCz3lisE7yWX6X69I
-    B8gNQwswO-9iSguLvYfUnSD4wMqTuQ3gjH6G7-pzTVOj996tqTjpGQ0>
-X-ME-Received: <xmr:-olLagn3MWU5IvT919tfLF_S7hWKq6sYItMIdnVuDOnEgecUgbBYerrQTpAMLA>
-X-ME-Proxy-Cause: dmFkZTG3EYxLj0L6vaHvG/JQokkQgmlapkgHi3g9IW9kfpTZuouF9wXLqvehvlO32VWfHa
-    duqkk97Xe0HKhXsKxrdHqqNxki8kTptiLONgzXROpKLThcjWTWcvktV3WT6NtElSrQ5L7P
-    JC+8p1nEl3HCpzViXlrhmV7vSWrcMtCeweeEKVIc0uVTWaL3+3LvWgTvlFqEkSG644EqaC
-    oqD3l16HhA91FHOyL7u55F+RtRGyI/+KZDctCzRTvb3v0JOvk8HJd7JFhUMAqaGDdiiTjG
-    VJjpfx1J1Owby6wkIkTfqdvO8SvfXk1POhBv4co9Qvufd9gwLSR2FgcbkoO8MgsA+1wnBo
-    tz1w0KLGYpnTvNPu2XdlVEYx5zQx2A5k+0L9Vu5OB7grOD46Efooqb9DRDr5hGTPgX7rqR
-    9a/DHNcPYA9z16Dok0ztAUvgOMFTW1aqy4hiJ440P6na09coYDUsMlVHK58n8lwLiIrFms
-    03p/Vv56bjGS9mOT9oO5JqsJBQ1HDQqo7av2kSyyD+W52JyHMwVlTNRuzzaPHBRR4Izdfb
-    C1bOzI0y5MFPEfrRJO0l/gMpuuAAjgxbxNJcFyv/wUIaY/JXRGzw91DPBuh2Q+GlDKB45h
-    hznAG9RxPe5JbMCwi9l3NRVHBeAdUiLbY8Hxn33k9Z4QOJeGslOFTfzTA5wg
-X-ME-Proxy: <xmx:-olLalFYYTvofYxEUV4s9LShIBvRseh4RZY3l3XwbNim4X8QP7C_-g>
-    <xmx:-olLahSww4oFsZkGr0J7Efk-r06k42NJ3jQWsjf9L9DHyvqQtMfM2Q>
-    <xmx:-olLasQMu1HWGipJb8c6Gu-6oG-UxEDrU3Z9jjsolCTTatjkCCsuJA>
-    <xmx:-olLavcV5UuOm9YI0rEV1Yr6GswCbsa_IihLc5PiVHsX102z7qRLDA>
-    <xmx:-olLarBWU9ljjQU2yd1LTse5SOgGNCYTBY51sYKZ4RD3uRE-duKlpfv_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Jul 2026 06:56:58 -0400 (EDT)
-Date: Mon, 6 Jul 2026 11:56:57 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org
-Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com
-Subject: Addressing Sashiko AI review
-Message-ID: <akuJmbUgGRtjksPr@thinkstation>
-References: <20260706084805.8400-1-kirill@shutemov.name>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NiQTKGKQ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D559732AF;
+	Mon,  6 Jul 2026 03:57:00 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EDDE73F85F;
+	Mon,  6 Jul 2026 03:57:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783335425; bh=Cmk/FfTcQJw2/eDIqbR3U6irRZEwpjmV67DcVX51wQM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NiQTKGKQnEWjyAfP1WkLOJJ/6V9/Sz/YNAArkz22EyjF47y27b4NjRCQqX+HeS0Ov
+	 XQHKoPp+dVDz8oCynJ2l655i1k5oBxL9Ac0Hcgdvg1dmvfktWu8s2iDP1naRvq0MrG
+	 bT+fqCTQKOn/C1LLZlxI8dxKHIZzuysfI7Pimkvc=
+Date: Mon, 6 Jul 2026 11:57:01 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH kvmtool v1 3/5] Use kvm_userspace_memory_region2 for all
+ memory registration
+Message-ID: <akuJ_eFvDHLpiU-Y@raptor>
+References: <20260706083555.302972-1-fuad.tabba@linux.dev>
+ <20260706083555.302972-4-fuad.tabba@linux.dev>
+ <556ab72c-f440-434b-a24d-84200bd25842@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,52 +48,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260706084805.8400-1-kirill@shutemov.name>
+In-Reply-To: <556ab72c-f440-434b-a24d-84200bd25842@arm.com>
 
-Hi,
+Hi Fuad, Suzuki,
 
-I went through the Sashiko review of v9. Only one (test-only) patch
-needed changes; sent as v9.1 of 14/15 in this thread:
+On Mon, Jul 06, 2026 at 11:23:47AM +0100, Suzuki K Poulose wrote:
+> Hi Fuad
+> 
+> On 06/07/2026 09:35, Fuad Tabba wrote:
+> > Switch kvm__register_mem() and kvm__destroy_mem() from
+> > kvm_userspace_memory_region to kvm_userspace_memory_region2 and
+> > KVM_SET_USER_MEMORY_REGION2 unconditionally. The v2 struct is a
+> > superset; when the extra fields are zero, the ioctl behaves
+> > identically to v1.
+> 
+> Doesn't this break using this on older KVM implementations ? Not that I
+> care, but do others care ?
 
-  https://lore.kernel.org/all/20260706104906.36084-1-kirill@shutemov.name/
+I haven't had the time to review the series, but I do care about this
+change, I find myself from time to time testing old kernels.
 
-  - Tolerate EINVAL from madvise(MADV_NOHUGEPAGE) so the suite does not
-    abort on CONFIG_TRANSPARENT_HUGEPAGE=n.
-  - rwp-mprotect and rwp-fork-pin now assert the marker survived
-    (PM_UFFD_WP) before the access that auto-resolves it, so a kernel
-    that dropped the marker fails instead of passing vacuously.
+I think the two ioctls can coexist without much maintenance burden. For
+example, the usage of KVM_SET_USER_MEMORY_REGION can be kept as-is and
+KVM_SET_USER_MEMORY_REGION2 can be used only for guest_memfd in
+kvm__register_mem().
 
-The finding against 11/15 is a pre-existing PAGEMAP_SCAN inconsistency,
-unrelated to RWP: an unpopulated pte is reported written by the
-PAGE_IS_WRITTEN fast path but not by the generic path. Confirmed
-reproducible; fixed separately with Fixes:/stable:
+Thoughts?
 
-  https://lore.kernel.org/all/20260706104308.34741-1-kirill@shutemov.name/
+Thanks,
+Alex
 
-The rest I assessed as false positives:
-
-  - 07/15, move_pages_huge_pmd() corrupting a non-present PMD: a
-    non-present source bails (-EAGAIN/-ENOENT) before the RWP re-arm,
-    and the post-lock pmd_same() recheck rejects races -- the re-arm
-    only runs on a present PMD.
-  - 07/15, UFFDIO_MOVE re-arming RWP "destroys resolved state": this is
-    intended. A MOVE-installed page starts tracked; the next guest
-    access is the working-set event we want (async auto-resolves it).
-  - 10/15, hugetlb stale-marker livelock after UFFDIO_UNREGISTER:
-    markers are cleared on unregister and on release via
-    change_protection(MM_CP_UFFD_RWP_RESOLVE); the rwp-close tests
-    exercise this on hugetlb.
-  - 13/15, check_stable_address_space() before the VMA walk in
-    UFFDIO_SET_MODE: the ioctl holds mmget_not_zero() + mmap_write_lock
-    and only takes per-VMA locks, and a ctx on a failed-fork mm is
-    never published to userspace.
-
-The 09/15 findings (userfaultfd_clear_vma() touching ptes before
-vma_start_write(), the partial-unregister OOM rollback, and UFFDIO_MOVE
-dropping uffd-wp markers) are pre-existing and left as-is; pte-level
-access there is serialised by the pte lock.
-
-Ping me if any of these assessments seems off.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> 
+> Cheers
+> Suzuki
+> 
+> 	
+> > 
+> > This prepares for adding guest_memfd support.
+> > 
+> > Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> > ---
+> >   kvm.c | 11 +++++------
+> >   1 file changed, 5 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/kvm.c b/kvm.c
+> > index 95ccfcb..8a7fd09 100644
+> > --- a/kvm.c
+> > +++ b/kvm.c
+> > @@ -189,7 +189,7 @@ core_exit(kvm__exit);
+> >   int kvm__destroy_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >   		     void *userspace_addr)
+> >   {
+> > -	struct kvm_userspace_memory_region mem;
+> > +	struct kvm_userspace_memory_region2 mem;
+> >   	struct kvm_mem_bank *bank;
+> >   	int ret;
+> > @@ -213,14 +213,14 @@ int kvm__destroy_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >   		goto out;
+> >   	}
+> > -	mem = (struct kvm_userspace_memory_region) {
+> > +	mem = (struct kvm_userspace_memory_region2) {
+> >   		.slot			= bank->slot,
+> >   		.guest_phys_addr	= guest_phys,
+> >   		.memory_size		= 0,
+> >   		.userspace_addr		= (unsigned long)userspace_addr,
+> >   	};
+> > -	ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION, &mem);
+> > +	ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION2, &mem);
+> >   	if (ret < 0) {
+> >   		ret = -errno;
+> >   		goto out;
+> > @@ -239,7 +239,6 @@ out:
+> >   int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >   		      void *userspace_addr, enum kvm_mem_type type)
+> >   {
+> > -	struct kvm_userspace_memory_region mem;
+> >   	struct kvm_mem_bank *merged = NULL;
+> >   	struct kvm_mem_bank *bank;
+> >   	struct list_head *prev_entry;
+> > @@ -320,7 +319,7 @@ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >   		flags |= KVM_MEM_READONLY;
+> >   	if (type != KVM_MEM_TYPE_RESERVED) {
+> > -		mem = (struct kvm_userspace_memory_region) {
+> > +		struct kvm_userspace_memory_region2 mem = {
+> >   			.slot			= slot,
+> >   			.flags			= flags,
+> >   			.guest_phys_addr	= guest_phys,
+> > @@ -328,7 +327,7 @@ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >   			.userspace_addr		= (unsigned long)userspace_addr,
+> >   		};
+> > -		ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION, &mem);
+> > +		ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION2, &mem);
+> >   		if (ret < 0) {
+> >   			ret = -errno;
+> >   			goto out;
+> 
