@@ -1,63 +1,63 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BFF37CD3D
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 02:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54837CD2C
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 02:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783304501; cv=none; b=K773k0ODNp5W/B5FD5bFe5PoHaNNyB2ldiaH6Kdv21z/iJQvatcuCqWMT8wfwbppb48H9gd+wfdGQG3o+ZDxBY7xPaCOcUGwM+A//MRASPEP/YrGpxWPxfgwbBEkCcdyJCVT5fV47z5SEoFMjQgZ6561igYSg/5MhilmIXClSL0=
+	t=1783304506; cv=none; b=FIhTACcXZLoh9BPpaMwUAHGRWsXKUHppHHk1295U8ET/tsH2LZWfFCK/s+bFxFOiMUd6ZGglDt4Bccncke1Xz+DgzCFu618pYawCUJUnfUWr9lP+7tTpuLHXlU80tTOq7i4WRH/ERiDRJGRa6XnjOwY3uQjyv1hSJKgZ+xBKUeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783304501; c=relaxed/simple;
-	bh=jKX7yCJzLXTBm7/RoRGPTwNXXmYDIrIjrn7OXhM9jJQ=;
+	s=arc-20240116; t=1783304506; c=relaxed/simple;
+	bh=1TOAMox0R4f4M8h31Gdp1/PmYS8QarQWN5OMTFH1paU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oF3eIqFbEh5+Eees78PPkl5sAsE2LBuq5Cap8AB08j4LDuJdRcfIJfxozM0/SQ2JvA7fSdq9Ve5lWtJ+tiOOlhXazXUINL/o6j20m26/DnlMMHbRazNVWhmkMaVcWqILlWIHJJel0Rs6wE6Mz7921LxMVBFt8kvCAkITBzmJNbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/xHsHER; arc=none smtp.client-ip=209.85.215.180
+	 MIME-Version; b=Xh/OSglZ/UbESEAEWFl+TZWbjlJdNPzJuPGsXzSJWxodbHtTjFiuCo6KlRK6SwrTXmQrHLtIpN0f6dKpRssQWxbsqlYPvpzIE46ualKFlXlLUH6911xvEFFfphiLH1QVihsYahMPE1109+Y8DX/Axi+AvZoYUUz1kc909B+N6y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bTn4/9iL; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/xHsHER"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9c26a5fb98so1348081a12.0
-        for <kvm@vger.kernel.org>; Sun, 05 Jul 2026 19:21:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bTn4/9iL"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-842338c18e0so1986581b3a.1
+        for <kvm@vger.kernel.org>; Sun, 05 Jul 2026 19:21:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783304497; x=1783909297; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783304502; x=1783909302; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MI4l7nifRnfxUSWJkRHmALVeDUyVcPjbpLqiu+zme2g=;
-        b=l/xHsHERqhNkO5iImfJJ7KP/4NEPnEN1jSnpi7AXSDNJ/ilOMa369kF35n+VSEsFk0
-         Z5iVo5MLmalsfclaAj7Y541OnlTbvvdGLI5okLUCMF9b+1LRE0kvuz74/5NdoX0GGd5N
-         xTDV5tjzo/stA9sR3zusSRT/ptb307KNQFFJL+bqF+hzmM3MA/dgVoOJthHKuFaQHJt7
-         A8WqowMPa5SI5wUxPZEQQ+whgVtbfj7FtmWKH3pbqqQM3vGgKnAdI4oyu3xkw/YNZzky
-         cE8RAsE/lOI54IxTjeRK0KWVfkale6NFa+6ATVbwzH8O+VhWwKLWGWoebaVU3V18KHPz
-         nQQQ==
+        bh=9y30ERfh8jZXt371ovIH8Ihu+zosp/a2nmR6ZkJ+0tQ=;
+        b=bTn4/9iLhAwRaL2l3M7IlF9d2GnIYjwtHVAR9tWvtQoOp/iNITwVn0mjN6DFbB+FS3
+         C3FQ7rkMjqOlwxydBUUEQzA4qMfae1No5JDWkLm7HnF0il+ULyX3gMhaKEAifxNgz545
+         i7C3Bcc7ev0WrIbR+UUJor1zfdDsu4XIUZBvWFNkvh9iGgZU3+JNwh1ZQARtrU2fwdHB
+         ft5LqXoBgMppYw0914GPG5PEnCuMdAGuw9kGzPjaE3vwwEEFY/Ta/RuHBwU0hDx9EE6V
+         KHugHcYc9Oup2rvCeer8OGfezj8VJ7ankCF/AXGQDg+dZvo5pOeNU0mGRtxxvu3o2kjN
+         WPwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783304497; x=1783909297;
+        d=1e100.net; s=20251104; t=1783304502; x=1783909302;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MI4l7nifRnfxUSWJkRHmALVeDUyVcPjbpLqiu+zme2g=;
-        b=PvAybADAeQciAWbM7dJAL3rw3QM/rmsMxCmBaaMLlkOVOBjd3SbEHqQUsLPtvplfp8
-         FDNW5a1JDpIK3c5q3sNesEYX+caEyX/QTbdN4V3nFm85EFbBQTKapOWUR0t9h1FT6U29
-         dIkNXL5AuZNrNgeffOXEKtA0gFmK9tG7mtii60hcMbfeqVJXo6YTWm8TljZcgTlXatV+
-         UMOxf1xg7LxnikP4BpyeBHLikpO1exZirk3WXou+sbhEbAJbwroflsrCP8ufJUeAaGdx
-         qeZj36zbJCXQIHoL2Ov6Lv2mzZ0xxEgmA6NSiwOUK22MXdp8BqqcMh+z+R/Zcjf0MEyw
-         1YwA==
-X-Forwarded-Encrypted: i=1; AHgh+RrWkiac8zOZo3TTSJDngdTWzxlgp2d4ZqJxvqjLSB9iRTnoEA7G5Ps6jDdcXYnp1OqChF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOlQFdH/Ts0795afFpMS59iD1+j1Hj1SVYlP6Oykk6F+w4BuR4
-	xNWt7Sty7szhfc5pWtpYAcbIf3vSzPPG562NDMoi5c7VklfUvOQ9myr5
-X-Gm-Gg: AfdE7ckvcussjLQFaJ9sBqGwyi4ymiURP+KPTXH6vH+IilO0o7AamsfyoDBPwnfIOak
-	cHZRkn6RfG1uqUKhXjEYLyv03AQNhzXqHU3r/ngs8lbagV0RB+ROQc4gxLC0GACE0HlDXlkYLvE
-	ynUGYOSfDGJIaTsUAEfCgglJBn+e4+xZIPp//22lnLJfEjHm55aDtPrg5ACLRr9foveQpSqzGZo
-	fdbs+AgSb6zRpKDaahx6WD1fA8bI81YP4qm3OV6ItzxfA9Gylv8xJOf+t8un9gX8QC94DZ3H8++
-	QJniiQ+DssMvozBpBTUjtBXnm/PaUC+rB8UwUWfvYXfjr8qzpYjftDkMrstcatOqNJv3jS2ryjv
-	38f38jD2rcibZn+e5d3S5gArkHPqQ5fe4kGFBXmPYduutMrJhvMaKpqDbMIaghgFCyQ6qJ76ZXn
-	4=
-X-Received: by 2002:a05:6a20:e211:b0:3bf:990d:3fc7 with SMTP id adf61e73a8af0-3c01caacd28mr13139722637.20.1783304497212;
-        Sun, 05 Jul 2026 19:21:37 -0700 (PDT)
+        bh=9y30ERfh8jZXt371ovIH8Ihu+zosp/a2nmR6ZkJ+0tQ=;
+        b=iYA17W9DloKhjz5TTGM4dpfJH+rJaUuSLEkprBrmr0Ucx0R/ZfeSNu+/vH83h53U0k
+         HV/pGbgrt4doZAbK7sweIIjRPpPlNQC/m9/RST6ZfXHBfXhASsI62hbn5AMQC4Qslk7t
+         va4W5gTr5p8yiYQnhI44crd/ovl1Qzb8ZCVgJfXtRUbQl7T55iVHr6LOBSaqxuwMFe5u
+         fgT3Qx2f787aeYuGfl/Wjav+mQBYUKk4S9WJ7nq58M9zao680ES1TnTkA05aJR5kYJy6
+         Ts+nxzu7K+AubGmN+trbe6eTlB24NTGlpKiU+Bh9cnv+0XleE7NdkDq9ZvJZavVYr9JM
+         eLZA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8/QKvK/IPKp2xCZtna2wYeJqTFvS7uHL84UIoyM+iK2PKFrGfHnXePhWQDmUrFbWgf1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnIFKqNH3lqeNDKeggk1z5VQTw5ggu+rVgW3s5CSbvf1hB97r3
+	nAY6zSIlnAMvpqfNHtx774sYr3nokiSdkzttHQveoA+Ur1Ctols+0t7a
+X-Gm-Gg: AfdE7cnv3st5vFZfupKRS9droLbSOPUr1r+Ea41p2AfhsH+5+Oblr9f1m9ttCLX/DWX
+	ycoV+ho5ffkdwMj8wEeaUHJRzFDMTrd5U0eOMF29dt86wsMnf6mDxIFBiFSkAgl4bKtU4ujlVVi
+	hz42V+3qPlhQJnARe9PBm+ULAxQtJoARjv6/Uc39xVuZ9vL0jLNbbIoZejqnIE4QDAy7+tckJBy
+	QmvUV4KtA6kJY2wje0UaMp2C26NNVuT/jt5DlyVecOztQuylQd1Ws5dRJk3bqaKFz4EOEb6Fh0d
+	JEOHAkXJ2kW+Y6AgEKisRPTivfk4MiWiqGURoCk5F1zAZ8tgratrbvopQCp4MXnhvNSQKeS44x7
+	d9RXC/cnNpENr9FK+a/a/0qd9ybZWxhX1R+TSADLMgUHT8R5jLU35pu2G36f7PgqftuyQJvqzI+
+	0=
+X-Received: by 2002:a05:6a00:218b:b0:842:6004:3fcf with SMTP id d2e1a72fcca58-847f6efef03mr7388312b3a.29.1783304501843;
+        Sun, 05 Jul 2026 19:21:41 -0700 (PDT)
 Received: from localhost ([2001:da8:7001:11::cb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e91b0a2c4sm4953589a12.19.2026.07.05.19.21.36
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db0eaasm2851550b3a.52.2026.07.05.19.21.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 19:21:36 -0700 (PDT)
+        Sun, 05 Jul 2026 19:21:41 -0700 (PDT)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
@@ -78,11 +78,10 @@ Cc: linux-riscv@lists.infradead.org,
 	kvm-riscv@lists.infradead.org,
 	linux-kselftest@vger.kernel.org,
 	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>,
-	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: [PATCH v5 2/8] KVM: riscv: selftests: add Svadu FWFT extension to get-reg-list test
-Date: Mon,  6 Jul 2026 10:20:38 +0800
-Message-ID: <20260706022046.214956-3-inochiama@gmail.com>
+	Longbin Li <looong.bin@gmail.com>
+Subject: [PATCH v5 4/8] RISC-V: KVM: Add ssp context save/restore
+Date: Mon,  6 Jul 2026 10:20:40 +0800
+Message-ID: <20260706022046.214956-5-inochiama@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260706022046.214956-1-inochiama@gmail.com>
 References: <20260706022046.214956-1-inochiama@gmail.com>
@@ -94,70 +93,231 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The KVM RISC-V allows Svadu FWFT for Guest/VM so add this extension
-to get-reg-list test.
+Add ssp context save/restore for guest VCPUs and also add it to the
+ONE_REG interface to allow its access from user space.
 
-Assisted-by: YuanSheng:claude-4.7-opus
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 ---
- .../selftests/kvm/riscv/get-reg-list.c        | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/riscv/include/asm/kvm_host.h |  7 ++++
+ arch/riscv/include/uapi/asm/kvm.h |  8 ++++
+ arch/riscv/kvm/vcpu.c             |  7 ++++
+ arch/riscv/kvm/vcpu_onereg.c      | 68 ++++++++++++++++++++++++++++++-
+ 4 files changed, 88 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-index cb86cb6b3635..94e33b2ee796 100644
---- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-+++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-@@ -745,6 +745,9 @@ static const char *sbi_fwft_id_to_str(__u64 reg_off)
- 	case 3: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable)";
- 	case 4: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags)";
- 	case 5: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value)";
-+	case 6: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable)";
-+	case 7: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags)";
-+	case 8: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value)";
- 	}
- 	return strdup_printf("KVM_REG_RISCV_SBI_FWFT | %lld /* UNKNOWN */", reg_off);
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index 60017ceec9d2..e5ed3b0e5a55 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -163,6 +163,10 @@ struct kvm_vcpu_smstateen_csr {
+ 	unsigned long sstateen0;
+ };
+ 
++struct kvm_vcpu_zicfiss_csr {
++	unsigned long ssp;
++};
++
+ struct kvm_vcpu_reset_state {
+ 	spinlock_t lock;
+ 	unsigned long pc;
+@@ -203,6 +207,9 @@ struct kvm_vcpu_arch {
+ 	/* CPU Smstateen CSR context of Guest VCPU */
+ 	struct kvm_vcpu_smstateen_csr smstateen_csr;
+ 
++	/* CPU Zicfiss CSR context of Guest VCPU */
++	struct kvm_vcpu_zicfiss_csr zicfiss_csr;
++
+ 	/* CPU reset state of Guest VCPU */
+ 	struct kvm_vcpu_reset_state reset_state;
+ 
+diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+index a27de850fa4c..fd4c81697617 100644
+--- a/arch/riscv/include/uapi/asm/kvm.h
++++ b/arch/riscv/include/uapi/asm/kvm.h
+@@ -102,6 +102,11 @@ struct kvm_riscv_smstateen_csr {
+ 	unsigned long sstateen0;
+ };
+ 
++/* Zicfiss CSR for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
++struct kvm_riscv_zicfiss_csr {
++	unsigned long ssp;
++};
++
+ /* TIMER registers for KVM_GET_ONE_REG and KVM_SET_ONE_REG */
+ struct kvm_riscv_timer {
+ 	__u64 frequency;
+@@ -266,12 +271,15 @@ struct kvm_riscv_sbi_fwft {
+ #define KVM_REG_RISCV_CSR_GENERAL	(0x0 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+ #define KVM_REG_RISCV_CSR_AIA		(0x1 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+ #define KVM_REG_RISCV_CSR_SMSTATEEN	(0x2 << KVM_REG_RISCV_SUBTYPE_SHIFT)
++#define KVM_REG_RISCV_CSR_ZICFISS	(0x3 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+ #define KVM_REG_RISCV_CSR_REG(name)	\
+ 		(offsetof(struct kvm_riscv_csr, name) / sizeof(unsigned long))
+ #define KVM_REG_RISCV_CSR_AIA_REG(name)	\
+ 	(offsetof(struct kvm_riscv_aia_csr, name) / sizeof(unsigned long))
+ #define KVM_REG_RISCV_CSR_SMSTATEEN_REG(name)  \
+ 	(offsetof(struct kvm_riscv_smstateen_csr, name) / sizeof(unsigned long))
++#define KVM_REG_RISCV_CSR_ZICFISS_REG(name)  \
++	(offsetof(struct kvm_riscv_zicfiss_csr, name) / sizeof(unsigned long))
+ 
+ /* Timer registers are mapped as type 4 */
+ #define KVM_REG_RISCV_TIMER		(0x04 << KVM_REG_RISCV_TYPE_SHIFT)
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index cf6e231e76e2..acdb12fcdb69 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -63,6 +63,7 @@ static void kvm_riscv_vcpu_context_reset(struct kvm_vcpu *vcpu,
+ 	memset(cntx, 0, sizeof(*cntx));
+ 	memset(csr, 0, sizeof(*csr));
+ 	memset(&vcpu->arch.smstateen_csr, 0, sizeof(vcpu->arch.smstateen_csr));
++	memset(&vcpu->arch.zicfiss_csr, 0, sizeof(vcpu->arch.zicfiss_csr));
+ 
+ 	/* Restore datap as it's not a part of the guest context. */
+ 	cntx->vector.datap = vector_datap;
+@@ -720,6 +721,7 @@ static void kvm_riscv_update_hvip(struct kvm_vcpu *vcpu)
+ 
+ static __always_inline void kvm_riscv_vcpu_swap_in_guest_state(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_vcpu_zicfiss_csr *zicficsr = &vcpu->arch.zicfiss_csr;
+ 	struct kvm_vcpu_smstateen_csr *smcsr = &vcpu->arch.smstateen_csr;
+ 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
+ 
+@@ -727,10 +729,13 @@ static __always_inline void kvm_riscv_vcpu_swap_in_guest_state(struct kvm_vcpu *
+ 	vcpu->arch.host_senvcfg = csr_swap(CSR_SENVCFG, csr->senvcfg);
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
+ 		vcpu->arch.host_sstateen0 = csr_swap(CSR_SSTATEEN0, smcsr->sstateen0);
++	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZICFISS))
++		csr_write(CSR_SSP, zicficsr->ssp);
  }
-@@ -944,6 +947,13 @@ static __u64 sbi_fwft_pointer_masking_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value),
- };
  
-+static __u64 sbi_fwft_pte_ad_hw_updating_regs[] = {
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_EXT | KVM_REG_RISCV_SBI_SINGLE | KVM_RISCV_SBI_EXT_FWFT,
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags),
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value),
-+};
-+
- static __u64 zicbom_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_CONFIG | KVM_REG_RISCV_CONFIG_REG(zicbom_block_size),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOM,
-@@ -1259,6 +1269,16 @@ static struct vcpu_reg_list config_sbi_fwft_pointer_masking = {
- 	},
- };
+ static __always_inline void kvm_riscv_vcpu_swap_in_host_state(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_vcpu_zicfiss_csr *zicficsr = &vcpu->arch.zicfiss_csr;
+ 	struct kvm_vcpu_smstateen_csr *smcsr = &vcpu->arch.smstateen_csr;
+ 	struct kvm_vcpu_csr *csr = &vcpu->arch.guest_csr;
  
-+static struct vcpu_reg_list config_sbi_fwft_pte_ad_hw_updating = {
-+	.sublists = {
-+		SUBLIST_BASE,
-+		SUBLIST_ISA(svade, SVADE),
-+		SUBLIST_ISA(svadu, SVADU),
-+		SUBLIST_SBI(fwft_pte_ad_hw_updating, FWFT),
-+		{0},
-+	},
-+};
+@@ -738,6 +743,8 @@ static __always_inline void kvm_riscv_vcpu_swap_in_host_state(struct kvm_vcpu *v
+ 	csr->senvcfg = csr_swap(CSR_SENVCFG, vcpu->arch.host_senvcfg);
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
+ 		smcsr->sstateen0 = csr_swap(CSR_SSTATEEN0, vcpu->arch.host_sstateen0);
++	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZICFISS))
++		zicficsr->ssp = csr_swap(CSR_SSP, 0);
+ }
+ 
+ /*
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index bb920e8923c9..dd9519438546 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -355,6 +355,44 @@ static int kvm_riscv_vcpu_smstateen_get_csr(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
+ 
++static inline int kvm_riscv_vcpu_zicfiss_set_csr(struct kvm_vcpu *vcpu,
++						 unsigned long reg_num,
++						 unsigned long reg_val)
++{
++	struct kvm_vcpu_zicfiss_csr *csr = &vcpu->arch.zicfiss_csr;
++	unsigned long regs_max = sizeof(struct kvm_vcpu_zicfiss_csr) /
++		sizeof(unsigned long);
 +
- struct vcpu_reg_list *vcpu_configs[] = {
- 	&config_sbi_base,
- 	&config_sbi_sta,
-@@ -1268,6 +1288,7 @@ struct vcpu_reg_list *vcpu_configs[] = {
- 	&config_sbi_mpxy,
- 	&config_sbi_fwft_misaligned_deleg,
- 	&config_sbi_fwft_pointer_masking,
-+	&config_sbi_fwft_pte_ad_hw_updating,
- 	&config_aia,
- 	&config_fp_f,
- 	&config_fp_d,
++	if (!riscv_isa_extension_available(vcpu->arch.isa, ZICFISS))
++		return -ENOENT;
++	if (reg_num >= regs_max)
++		return -ENOENT;
++
++	reg_num = array_index_nospec(reg_num, regs_max);
++
++	((unsigned long *)csr)[reg_num] = reg_val;
++	return 0;
++}
++
++static int kvm_riscv_vcpu_zicfiss_get_csr(struct kvm_vcpu *vcpu,
++					  unsigned long reg_num,
++					  unsigned long *out_val)
++{
++	struct kvm_vcpu_zicfiss_csr *csr = &vcpu->arch.zicfiss_csr;
++	unsigned long regs_max = sizeof(struct kvm_vcpu_zicfiss_csr) /
++		sizeof(unsigned long);
++
++	if (!riscv_isa_extension_available(vcpu->arch.isa, ZICFISS))
++		return -ENOENT;
++	if (reg_num >= regs_max)
++		return -ENOENT;
++
++	reg_num = array_index_nospec(reg_num, regs_max);
++
++	*out_val = ((unsigned long *)csr)[reg_num];
++	return 0;
++}
++
+ static int kvm_riscv_vcpu_get_reg_csr(struct kvm_vcpu *vcpu,
+ 				      const struct kvm_one_reg *reg)
+ {
+@@ -381,6 +419,9 @@ static int kvm_riscv_vcpu_get_reg_csr(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_RISCV_CSR_SMSTATEEN:
+ 		rc = kvm_riscv_vcpu_smstateen_get_csr(vcpu, reg_num, &reg_val);
+ 		break;
++	case KVM_REG_RISCV_CSR_ZICFISS:
++		rc = kvm_riscv_vcpu_zicfiss_get_csr(vcpu, reg_num, &reg_val);
++		break;
+ 	default:
+ 		rc = -ENOENT;
+ 		break;
+@@ -423,6 +464,9 @@ static int kvm_riscv_vcpu_set_reg_csr(struct kvm_vcpu *vcpu,
+ 	case KVM_REG_RISCV_CSR_SMSTATEEN:
+ 		rc = kvm_riscv_vcpu_smstateen_set_csr(vcpu, reg_num, reg_val);
+ 		break;
++	case KVM_REG_RISCV_CSR_ZICFISS:
++		rc = kvm_riscv_vcpu_zicfiss_set_csr(vcpu, reg_num, reg_val);
++		break;
+ 	default:
+ 		rc = -ENOENT;
+ 		break;
+@@ -680,6 +724,8 @@ static inline unsigned long num_csr_regs(const struct kvm_vcpu *vcpu)
+ 		n += sizeof(struct kvm_riscv_aia_csr) / sizeof(unsigned long);
+ 	if (riscv_isa_extension_available(vcpu->arch.isa, SMSTATEEN))
+ 		n += sizeof(struct kvm_riscv_smstateen_csr) / sizeof(unsigned long);
++	if (riscv_isa_extension_available(vcpu->arch.isa, ZICFISS))
++		n += sizeof(struct kvm_riscv_zicfiss_csr) / sizeof(unsigned long);
+ 
+ 	return n;
+ }
+@@ -688,7 +734,7 @@ static int copy_csr_reg_indices(const struct kvm_vcpu *vcpu,
+ 				u64 __user *uindices)
+ {
+ 	int n1 = sizeof(struct kvm_riscv_csr) / sizeof(unsigned long);
+-	int n2 = 0, n3 = 0;
++	int n2 = 0, n3 = 0, n4 = 0;
+ 
+ 	/* copy general csr regs */
+ 	for (int i = 0; i < n1; i++) {
+@@ -740,7 +786,25 @@ static int copy_csr_reg_indices(const struct kvm_vcpu *vcpu,
+ 		}
+ 	}
+ 
+-	return n1 + n2 + n3;
++	/* copy Zicfiss csr regs */
++	if (riscv_isa_extension_available(vcpu->arch.isa, ZICFISS)) {
++		n4 = sizeof(struct kvm_riscv_zicfiss_csr) / sizeof(unsigned long);
++
++		for (int i = 0; i < n4; i++) {
++			u64 size = IS_ENABLED(CONFIG_32BIT) ?
++				   KVM_REG_SIZE_U32 : KVM_REG_SIZE_U64;
++			u64 reg = KVM_REG_RISCV | size | KVM_REG_RISCV_CSR |
++					  KVM_REG_RISCV_CSR_ZICFISS | i;
++
++			if (uindices) {
++				if (put_user(reg, uindices))
++					return -EFAULT;
++				uindices++;
++			}
++		}
++	}
++
++	return n1 + n2 + n3 + n4;
+ }
+ 
+ static inline unsigned long num_timer_regs(void)
 -- 
 2.55.0
 
