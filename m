@@ -1,152 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAFF414A2F;
-	Mon,  6 Jul 2026 09:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106D13AA4E7;
+	Mon,  6 Jul 2026 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783331743; cv=none; b=gTFbtou8hJ1L3becRvRsPA/t0e9gUGdUeuGcLc7kW7cEwjW9OqUw4YV0Tr/cl9R0nVPEADyRXi9YHUpy0dzDXaYUobGVmOimnw37MPExAP8v0rBtPRlqCDV7CeX+Z/c1WcgOxMONk4fXLOuN9qrVICW4EbkflxS6dWu8tyhA9kk=
+	t=1783331967; cv=none; b=L3BkrugsmeL4ae2JrHkDMFgYAPrRVLJ5OFXpDuPuAvEvKIeDYVytxkWfOK/rp66Ik1EXy3oCEoYvyy8fu1BKTzLIUc9i/Kk6mN5+a2pS3tlEMOuSQQjrsPP+2o562S+I24p6GzDF6N98BOvowrhxG9FrJ90ZnLXPKSugzIBMWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783331743; c=relaxed/simple;
-	bh=9ki5cF70D3Uh3ZOW6IDmpeK33szzbrypcA1bbqKDVb8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mZU2WlqBDurwYW0P0EO4s8MZTfXUSS94CwC2gcJIOfNSMOhyz6QWhF98Fy0zNSN2U5OR5SRsCq2W5fH6hT8hP8P35McbKqlxhtsXpTcGh3DIr+wcVAWuh82msbU9e45RZM8WMkiw9DfFtE4aLPpBL4XbzJ3LXHxUKBqQvO0EN2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxzW/x6T; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fxzW/x6T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45631F000E9;
-	Mon,  6 Jul 2026 09:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783331739;
-	bh=2Bd4ZNNAr16/hhJQLZA+glw+EwFamZs+63t8jbmQ9WI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fxzW/x6TMR4pu0UnBbrNXMug//fGY0wBBvH5h15LRc4oxr0nhErrTEwZBSauq674I
-	 tXIgP9MuAh1xlJmyKE1ozrPGLAHgkPJ/BzcXLBetd8kVnW/hyO36Et8G7lZOUXgZJh
-	 jZabBht1Y0PewRVe46QkjpSpc0fWblg9TuLic58B82pzG7fklOGN6zUwLjaNwvc3B5
-	 nLegJ3gg+kfsy3NuTGI+SclqcLIzX7iABhTmD0RRgTqghnuFM8gbivz18CXAURVDsh
-	 NBO6hduMa+bVLXokuHucX4IzpvcUGkLaLoXvaGt8xcmsrP2hQK5vSFTmWogXv8HKkp
-	 CXh3AGxUoByOg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 23/27] KVM: s390: arm64: Implement required functions
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260706085229.979525-24-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
- <20260706085229.979525-24-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:55:38 +0000
-Message-Id: <20260706095538.B45631F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1783331967; c=relaxed/simple;
+	bh=rtA/CXpSgjL5ydYxVqK1RcP+cHljTvb/4fDpyCZF2as=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A4yYZduJpcNwUlQmAiU3wdwIFTLvCH8W7h2shh35tGQHNrvofNfCcxrVfxvQppCr0/eSu9C/YE1eU2XkIM9ze7cEaVDnV1tNPVdzz40iudH/TV9Tw7XzHIM3S4dCrWsTcUyCbojKNsOXnoQb97jINN0bXs6i5USJDYv+hP3CXcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5839ffa4792111f1aa26b74ffac11d73-20260706
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:731d1704-01e6-4351-828d-a32dc87f4b34,IP:0,U
+	RL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:bcc43e2ce238dc8462b7c61ded204ce2,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|136|865|898,TC:nil,Content:0|15|50,E
+	DM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:
+	0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5839ffa4792111f1aa26b74ffac11d73-20260706
+X-User: leixiang@kylinos.cn
+Received: from ninol.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <leixiang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 935198767; Mon, 06 Jul 2026 17:59:14 +0800
+From: leixiang <leixiang@kylinos.cn>
+To: 
+Cc: leixiang <leixiang@kylinos.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: Remove kvm_debugfs_dir on kvm_init() error paths
+Date: Mon,  6 Jul 2026 17:59:06 +0800
+Message-ID: <20260706095910.39798-1-leixiang@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] PSCI SYSTEM_OFF handler fails to stop other vCPUs, leading to pote=
-ntial guest corruption during shutdown.
-- [Medium] Empty stubs for exception injection cause guest vCPUs to hang in=
- an infinite loop.
---
+kvm_init_debug() runs before several steps that can fail
+(kvm_vfio_ops_init(), kvm_gmem_init(), kvm_init_virtualization() and
+misc_register()), but none of the corresponding error labels remove the
+"kvm" debugfs directory.  Any failure after kvm_init_debug() therefore
+leaks the directory and its stat files for the lifetime of the boot.
 
-commit b5600b88451aab2daf96c3e367bc2f2db0abeb0c
-Author: Steffen Eiden <seiden@linux.ibm.com>
+kvm_exit() already calls debugfs_remove_recursive(kvm_debugfs_dir); add
+the same at the err_vfio label, whose fall-through covers every path
+taken after kvm_init_debug().
 
-KVM: s390: arm64: Implement required functions
+Fixes: 2b0128127373 ("KVM: Register /dev/kvm as the _very_ last thing during initialization")
+Signed-off-by: leixiang <leixiang@kylinos.cn>
+---
+ virt/kvm/kvm_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This commit implements the required functions for s390 to support shared
-arm64 KVM code. It also introduces a basic SMCCC handler to stop a vCPU.
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..d4420ebfd972 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6559,6 +6559,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+ err_gmem:
+ 	kvm_vfio_ops_exit();
+ err_vfio:
++	debugfs_remove_recursive(kvm_debugfs_dir);
+ 	kvm_async_pf_deinit();
+ err_async_pf:
+ 	kvm_irqfd_exit();
+-- 
+2.43.0
 
-> diff --git a/arch/s390/kvm/arm64/handle_exit.c b/arch/s390/kvm/arm64/hand=
-le_exit.c
-> new file mode 100644
-> index 0000000000000..a0ebe5ffa19a6
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/handle_exit.c
-
-[ ... ]
-
-> +static int kvm_smccc_call_handler(struct kvm_vcpu *vcpu)
-> +{
-> +	u32 func_id =3D vcpu_get_reg(vcpu, 0);
-> +	u64 val =3D PSCI_RET_NOT_SUPPORTED;
-> +	int ret =3D 1;
-> +
-> +	if (func_id =3D=3D PSCI_0_2_FN_SYSTEM_OFF) {
-> +		spin_lock(&vcpu->arch.mp_state_lock);
-> +		WRITE_ONCE(vcpu->arch.mp_state.mp_state, KVM_MP_STATE_STOPPED);
-> +		spin_unlock(&vcpu->arch.mp_state_lock);
-> +		kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_SLEEP);
-
-[Severity: High]
-Does this actually stop all other vCPUs in the system?
-
-Because the mp_state is only updated for the calling vCPU, broadcasting
-KVM_REQ_SLEEP will leave the other vCPUs in their current state. When they
-process the sleep request, won't they evaluate their own mp_state, see they
-aren't STOPPED, and continue executing guest code while the VM is supposed
-to be shutting down?
-
-> +		memset(&vcpu->run->system_event, 0,
-> +		       sizeof(vcpu->run->system_event));
-> +		vcpu->run->system_event.type =3D KVM_SYSTEM_EVENT_SHUTDOWN;
-> +		vcpu->run->system_event.ndata =3D 1;
-> +		vcpu->run->system_event.data[0] =3D 0;
-> +		vcpu->run->exit_reason =3D KVM_EXIT_SYSTEM_EVENT;
-> +		val =3D PSCI_RET_INTERNAL_FAILURE;
-> +		ret =3D 0;
-> +	}
-> +	vcpu_set_reg(vcpu, 0, val);
-> +
-> +	return ret;
-> +}
-
-[ ... ]
-
-> diff --git a/arch/s390/kvm/arm64/inject_fault.c b/arch/s390/kvm/arm64/inj=
-ect_fault.c
-> new file mode 100644
-> index 0000000000000..425dbeaa421c6
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/inject_fault.c
-> @@ -0,0 +1,21 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <arm64/kvm_emulate.h>
-> +
-> +/**
-> + * kvm_inject_undefined - inject an undefined instruction into the guest
-> + * @vcpu: The vCPU in which to inject the exception
-> + *
-> + * It is assumed that this code is called from the VCPU thread and that =
-the
-> + * VCPU therefore is not currently executing guest code.
-> + */
-> +void kvm_inject_undefined(struct kvm_vcpu *vcpu)
-> +{
-> +	/* Stub until s390 supports arm64 sysregs TODO sysregs*/
-> +}
-
-[Severity: Medium]
-Will this empty stub cause the guest to get stuck in an infinite exit loop?
-
-Since the function does nothing, it doesn't advance the guest's Program
-Counter or update exception state. When handle_exit() resumes the guest,
-won't it immediately re-execute the same trapping instruction over and over,
-hanging the vCPU and burning host CPU cycles?
-
-> +
-> +int kvm_inject_sea(struct kvm_vcpu *vcpu, bool iabt, u64 addr)
-> +{
-> +	/* Stub until s390 supports arm64 sysregs TODO sysregs*/
-> +	return 1;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706085229.9795=
-25-1-seiden@linux.ibm.com?part=3D23
