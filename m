@@ -1,97 +1,103 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B67B8003D
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 23:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB233DD874
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 23:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783379803; cv=none; b=FiFqf+guwZYj2VoGn3Aouzt3RMExd0Zq+4/gXriNQub9SUGgZ570P+50hTvsagg4ArzSTV1C4bSqY6Knpa3iyeOi7Uzlto78z+lWOyXT/H2WJsOU5+wk9DevsE7kalGhzn+0/He081ZDCtClXOuuaNnSK7gIRq+8TPy7WMnurEU=
+	t=1783380124; cv=none; b=FungRqyf5Exw/h8SCiXsyXky21tbuNytJ2/hOLmV4YCMNe4u4tTgaFxqoGOidumKE/EPOfFAaHQXPyRV5/S2XyTNZabsqpgKBYib18tDCKPJsMXv8IaapbALh9VkeaRA4ht8cIjyamNujoCkkJ2/1oMCHGvY6tCT8afynqHfhbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783379803; c=relaxed/simple;
-	bh=LBsERILn1RsTbzBee8hFdg40stF7dMkbmTLRcDQN3ro=;
+	s=arc-20240116; t=1783380124; c=relaxed/simple;
+	bh=5tTJzFCz090WEshickhyWZBU+H17ZnKRtGBALiNloLs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aQR3n3qlekjXKgmd4HMoXLTnL7WWH/4ssdvvi8u93LQCpZN9tQpO6WMLDr4AHwXwdDwVGjXZ9ilU+tDE/u3PAEmwdYC1hH3mfclhfFevLN665SZRNfJUJYOIEHfwG61I055mD9t6St9RWhGxiof1b6/fCzsFKUkRI4oZpJGyKb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iC3Rs8fh; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=fJzK6mAtxPEYnpZaiUPOWZu9xekAl9uFo7FN+Q/upqMBshw4q4Tu4fCNJjyDVPfBEEiZPihddaSwzZ1Z2OQ9FuTKLWOOajJHpFDSOxUEOhhCxCIT2LUl57ch/h7tYZoYsVz8yT4cLnm1BaPHwKs1kkyiGcgG0n2PyEsNXcOUt8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q3ji1pM3; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iC3Rs8fh"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88ab059052so81214a12.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 16:16:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q3ji1pM3"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-845ea8fd3easo8320898b3a.0
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 16:22:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783379801; x=1783984601; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aPu1yjO3YE9jowlTRoZpRIUWlo/hc/PNoecgFLgtNRA=;
-        b=iC3Rs8fhk78n+8fRyQkLCxy99wvZCxRLh/QdRu6PuzpFnGs7SzqJrMjTM2Bl5ZhWQn
-         s+J5lrjDg4ADHKlMs3CxOSsT6I6oAX/5eF3ay5j2Uatc/aBmhcxS+fdoBP6Drd51YRvK
-         n+deHji1zOXjlddWKYFx7CFlGgjT+GsFyEyHTA7aPyzvxqQBXe831p4KCQRy/L+iQK0X
-         zB63/Buql1OQ09shl1w5B9sFfMKk1KmYuuEA8CD2M13iAde3pZpNfIT1OxPGMGrr+4+J
-         3Toad61vg8a2YYiMpXXXe2rCNqxi7gaYz+34j0uiKeYTtauN/0lRqB/x7y2yuM/6D3vW
-         qmfg==
+        d=google.com; s=20251104; t=1783380121; x=1783984921; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MkGzf5Ltjdp17l7lz9dFJNCiKSFQqbXrN82DhhAxuS4=;
+        b=Q3ji1pM3TEx9qTs8lyrmnbPXJ5AuzBP1mkFHj1juU45RaVB6um1ykpX5nJ5DpI5bjf
+         7wA83gh1nHeEme4R27MlyAmAfV2M+rhJhgKZVQvqGuOeXaxjOKsNkM8vULO0LClZ8lTE
+         jw+EIY1VlIRca4U89BC9R6Nem7nvEwJ161GD69bwGebls3csshtJXaCl9nSwCum8jlIn
+         nbOtVfqk1en9AbcZAxuSzJZS7Dsef/m5WPvrryhHYS/0wmiegjF2Y4gn+XCzDwX3mYAV
+         Xor8fh2vakqcLoR4l4yrhan/3Fet165oK4WOuu4Ip5aWWPxmSWlvzCBjsxHXhp9Ibv/M
+         qRow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783379802; x=1783984602;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aPu1yjO3YE9jowlTRoZpRIUWlo/hc/PNoecgFLgtNRA=;
-        b=hZAorlYYEh9esIL4nbTKTsoTffLHkqhgtpuJIcofOeC5tg2n6s8x56m3mSq6BZNGDV
-         +cXqf3WJJW5Izq1RCdSPWHN94RiEzk2CvZYKU+HdA9+yoiPHI5w08LKmf6MGONv6cxMk
-         +B1QnOYz9BoDjodGam0bC/MD5rfBe0vk5zO5KKI9PoPJC2xCeaG/8AOcd3BaS8ArSKUc
-         fakOZv5EuImHPkgCnWsj0QYlRYRTh/JWDoAmXjUdbCvCoXV9CVnS7s9hCFBtXmxO63hD
-         /DKRH+CuymffUtSOH3ujcdjXJCxq4pHW9495GCbWt6HOI2tpG05u8HkC1IvlADYI2SGQ
-         o0JQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqDtU7pkbwZ7z83tlKs9cVNWFikN5lOQkpUbtUHYXxtRONVb/wLAZRQb/FxbxONHlL6xOk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjXUTG4xElOoJU5nsGtSqHLOYTV/k8snJS8+HKI6AMuHOGQjK7
-	YKjFx8yl8BcfgT3ndxILNl7rMjhPFcwNFF6wfhje06ZXnLaqzER94vr7kNDpkM+cAGaXlk73iKx
-	QOHa4og==
-X-Received: from pgg3.prod.google.com ([2002:a05:6a02:4d83:b0:c96:47b4:65c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3020:b0:845:cad1:d691
- with SMTP id d2e1a72fcca58-8482f17c7c8mr298869b3a.5.1783379801393; Mon, 06
- Jul 2026 16:16:41 -0700 (PDT)
-Date: Mon, 6 Jul 2026 16:16:40 -0700
-In-Reply-To: <mxhv67srfonr2nh7eoecujibf2umlbhyrhutdiizmm7qimrwyq@c357mnkz7lvi>
+        d=1e100.net; s=20251104; t=1783380121; x=1783984921;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MkGzf5Ltjdp17l7lz9dFJNCiKSFQqbXrN82DhhAxuS4=;
+        b=r90XuUfafFXvyCO/QOWdfJSj22Za9iwG3NGrUhv9alwAKiLnsWmEcF/ICeX2n9R3P5
+         SFr4yETY6GhFgj064IMsP99GqBiyYEJzvX2bPDTgyNoCRoJ5EEW/lSSTV+OQAu5HQUxc
+         Z6IR88EyPsx7HRCG+nl4LnmstKw1wCEi2MtP+7UxZL9cyDCU5HmkDLkouzeHlxd9oiHN
+         Zyz4+WXKq1HcmWoZhxFk7cULQeW77l+RaWUTNa4T5CRl3hK6l41IuItIZS2laRRd/Q4e
+         wmhQjymCfH1ErhYoii+HAsLjH9E0LE7h5Lw9wBEp1rNfUMetIjdVUO1w7qiK760u1TFQ
+         bq0w==
+X-Forwarded-Encrypted: i=1; AHgh+Rql3hLbzwBfAUPeQTnKL63W2w8DQrNhjQ7rqlgekru9I6l8Zji+bSMq9ekP6HrMhXUY448=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZSF/t3xOPN0bL/JLcsK2UMZ0OAlFKYo/f9byCxgapnLmJo5eD
+	/fyV8XJ38neOLVxLmIDtw9BMvezN7vVfJOEjGgl1TH5ZwIaiudXuSIpXaFU8cLPNLP24tHFc/X3
+	zDZg/YQ==
+X-Received: from pfx50.prod.google.com ([2002:a05:6a00:a472:b0:846:f544:63be])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94f3:b0:845:d284:9e11
+ with SMTP id d2e1a72fcca58-84826e38a3bmr2549381b3a.56.1783380120822; Mon, 06
+ Jul 2026 16:22:00 -0700 (PDT)
+Date: Mon, 6 Jul 2026 16:22:00 -0700
+In-Reply-To: <20260706092021.3625908-3-twiederh@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260630222607.497895-1-seanjc@google.com> <20260630222607.497895-12-seanjc@google.com>
- <mxhv67srfonr2nh7eoecujibf2umlbhyrhutdiizmm7qimrwyq@c357mnkz7lvi>
-Message-ID: <akw3WA9IduOkTK0C@google.com>
-Subject: Re: [PATCH v3 11/12] KVM: x86: Guard .gmem_prepare() declarations
- with HAVE_KVM_GMEM_PREPARE=y
+References: <20260706092021.3625908-2-twiederh@redhat.com> <20260706092021.3625908-3-twiederh@redhat.com>
+Message-ID: <akw4mH99FGquorxC@google.com>
+Subject: Re: [PATCH 1/4] KVM: x86: Document that KVM_CREATE_IRQCHIP must
+ precede vcpu creation
 From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+To: Tim Wiederhake <twiederh@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 01, 2026, Michael Roth wrote:
-> On Tue, Jun 30, 2026 at 03:26:06PM -0700, Sean Christopherson wrote:
-> > Wrap the .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE so that
-> > non-SEV code doesn't try to wire up a callback without doing the necessary
-> > enabling.
-> > 
-> > No functional change intended.
-> > 
-> > Fixes: 3bb2531e20bf ("KVM: guest_memfd: Add hook for initializing memory")
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Mon, Jul 06, 2026, Tim Wiederhake wrote:
+> The kernel rejects KVM_CREATE_IRQCHIP with -EINVAL if any vcpus have
+> already been created, but the API documentation does not mention this
+> requirement.  Add a note.
 > 
-> Reviewed-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
+> ---
+>  Documentation/virt/kvm/api.rst | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> Not sure about the need for the Fixes tag, but it certainly guards against
-> some future problems.
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 52bbbb553ce1..ec5bf99ff8b8 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -856,7 +856,8 @@ Writes the floating point state to the vcpu.
+>  Creates an interrupt controller model in the kernel.
+>  On x86, creates a virtual ioapic, a virtual PIC (two PICs, nested), and sets up
+>  future vcpus to have a local APIC.  IRQ routing for GSIs 0-15 is set to both
+> -PIC and IOAPIC; GSI 16-23 only go to the IOAPIC.
+> +PIC and IOAPIC; GSI 16-23 only go to the IOAPIC.  This ioctl must be called
+> +before creating any vcpus.
 
-Copy+pasting my response[*] from a similar comment about a liberal Fixes tag:
+I would say instead "This ioctl can only be called before creating any vCPUs",
+because a reasonable reading of "must be called before" is that userpace must
+*always* call KVM_CREATE_IRQCHIP before creating vCPUs.
 
- : > This LGTM, though I'm not sure this deserves a fixes tag.
- : 
- : Yeah, it's borderline.  Because KVM (x86) doesn't do AUTOSEL, i.e. requires an
- : explicit "Cc: stable@vger.kernel.org" for the vast majority of cases, we can be
- : very liberal with Fixes.  And so I like to use Fixes to create a paper trail for
- : anything where a commit did something that would have necessitate a new version
- : of the patch, had it been caught in code review.
-
-[*] https://lore.kernel.org/all/akMLDayXmzhmvJBG@google.com
+>  On arm64, a GICv2 is created. Any other GIC versions require the usage of
+>  KVM_CREATE_DEVICE, which also supports creating a GICv2.  Using
+>  KVM_CREATE_DEVICE is preferred over KVM_CREATE_IRQCHIP for GICv2.
+> -- 
+> 2.52.0
+> 
