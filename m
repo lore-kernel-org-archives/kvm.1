@@ -1,173 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72E138BF97
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F62740D56F
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329571; cv=none; b=HqKljEaW9gbPws/3HeEXA7qqAJVpcZ2/iu1EvyLlpv2tkD4d7dWf465Xb8rStYSeR3tsdLdTWr7cGP/dv8QM0HYXd1Pa4Lqs4lIvfd9fWhQql/K0A/+6c3cP24XRY/Nlx7OzVgXY2sOcPz9fTIRQg5kwYenxpMrxbnZh8tP5v54=
+	t=1783329653; cv=none; b=MRbaLgjw2QZXu6zpC3FeU+4VR2PWdOshLzg3yFPTPVFoHEXMhM6lBi3m+CpEmNvGpNBu0H/yEwWtk5XCvZwDk3ZsWNWz7u6BISLL4DIibkafHWdeErEBQfYL2I4BMzTl303WSp9WskzGdNPko4r2UZ5SRMs6n1J+SRd+UGR4haU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329571; c=relaxed/simple;
-	bh=ukaF6KdPmzLGdXYqlruErHomAaJCHzkw5DcyqJ88I2A=;
+	s=arc-20240116; t=1783329653; c=relaxed/simple;
+	bh=Fj5zX0TvFAUcnITEjkJifq1T5acN6r9QeGeFT42FQoc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZUpGKA18pukiyXXk5FSU6BKSDzND2zzCxlCF//KE/hK0W2flz1tLUh5LIvwAPyYFNciu6aJqHcHKtba3rLrjf76fV5qBvya4P7vS1dtFdjlr+hcJj1i+rrRCmbjDXuSE5cQpgjkyFanyGfSjUx73N73xERicit1HLZYiDaEJgw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUIvRYnB; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=jBhwCn+vUtCNlA+3IyJ3YynZCNIM3qgCQydO5d6MPhfHDQAVCOyfd3k4HZljlJ9C7PJHCi0QCq3IqhUUpcOCbSLhuMJQjy7hgqhAfcTALpCW/c8MTdxBsK9nHKiZ5IhbgJsX2/7Sa3ClRx1nnyIyAbeDyVFLnkTfKuNH3ItiMtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2YzAz0B; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUIvRYnB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A2E1F000E9;
-	Mon,  6 Jul 2026 09:19:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2YzAz0B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F521F000E9;
+	Mon,  6 Jul 2026 09:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329566;
-	bh=9dkqEAItKX36rx4dmtAtsrSJf/M5a+2pA6ELmXuN16s=;
+	s=k20260515; t=1783329649;
+	bh=8vmwigdfZTM7GuYLrdl6QPvwyGhz2tpLQUnXU0ZgpnA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NUIvRYnBdbjDliqF70diqaLiwZYlC5WPfDbIlQ2eMOYhBiWEfDaDl9/gH5d6fjrj1
-	 c6jaKAfbPp4LJyIg0aqRXmYX2SsX6sFv3b7dVdJFo6sM3aS+74pqtoQuol9lVuhSx6
-	 JCHk68oV9RKDN/rCr3xsHojsNpjp/+g8V4yT+biHp8ej3fSe5o6UHkp9SD9C0se0pt
-	 0Zpjcnc14bKidTlcC6I3/F6REnfk1ZHXmaEB7RiMGXuWOm7Lv0PbpUx5L7+v0+DIxp
-	 rAt+k6j/OjCLQnOEa7SGrO3azD0DIBTUhssC5cNAUpXA89b6RKr9/jAkN9xSmne6rB
-	 12jfiD/xoQOXA==
+	b=V2YzAz0B7Rp1cQ4tOD9VJ5pNKb2s3FSHiCmRzWqY3yXHUAXF93FByZdKdzElT511l
+	 wvpGqhcZfhKEzxiqF7EiDIB8gQHPPiL79wg17Zym5NNArGS+F+RAWreTKUcdyeGoDW
+	 8iLLXI/0oMq7GN25VXA/zIyAjmCccKqnZ4fdG9LL+Q20IX3lNiCVKvv/2LaPrEcoQ8
+	 TBUwsEbkJtmgqxcyEXkPyxfM4cndphNH2RkUE0cTlx4b0hMfDnuoceS1c8YsII7SKq
+	 +XlXyUy0kLwCi8gTVtY3Zr7TlAnEMH99DPkWbwKY2rJB90o6zBQkCpLH2bI9G6X5dU
+	 WLzDAEd/Q1+aQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 14/15] selftests/mm: add userfaultfd RWP tests
+Subject: Re: [PATCH v9 07/15] mm: preserve RWP marker across PTE rewrites
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706084805.8400-15-kirill@shutemov.name>
+In-Reply-To: <20260706084805.8400-8-kirill@shutemov.name>
 References: <20260706084805.8400-1-kirill@shutemov.name>
- <20260706084805.8400-15-kirill@shutemov.name>
+ <20260706084805.8400-8-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:19:26 +0000
-Message-Id: <20260706091926.91A2E1F000E9@smtp.kernel.org>
+Date: Mon, 06 Jul 2026 09:20:48 +0000
+Message-Id: <20260706092049.08F521F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The uffd selftests unconditionally call `err()` if `madvise(MADV=
-_NOHUGEPAGE)` fails for RWP tests, which will abort the entire test suite o=
-n kernels compiled with `CONFIG_TRANSPARENT_HUGEPAGE=3Dn`.
-- [Medium] The `rwp-fork-pin` and `rwp-mprotect` tests will silently pass i=
-f a kernel bug causes the `uffd-wp` marker to be completely dropped instead=
- of preserved.
+- [Critical] Unconditional arming of the RWP marker on moved pages during U=
+FFDIO_MOVE destroys resolved page states and corrupts non-present huge PMDs.
 --
 
-commit c7d4aef17412fdd00834c4bcc5b4fbabc6db2f28
+commit e8dc073d377e5c18e627781dbdae660ee5f20a44
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Date:   Mon Jul 6 08:48:03 2026 +0000
 
-    selftests/mm: add userfaultfd RWP tests
-   =20
-    Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT. All tests
-    run against anon, shmem, shmem-private, hugetlb, and hugetlb-private
-    memory, except rwp-fork-pin which is anon-only.
+mm: preserve RWP marker across PTE rewrites
 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing=
-/selftests/mm/uffd-unit-tests.c
-> index a6c14109e8188..bd3b9f41ee354 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+This commit wires the preservation of the uffd PTE bit and PAGE_NONE
+marker through various paths that rewrite PTEs on VM_UFFD_RWP VMAs,
+including swap, device-exclusive, migration, fork, and mprotect.
+
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index aca2f10fc1f1b..7ee7651202e2a 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
 
 [ ... ]
 
-> +static void uffd_rwp_mprotect_test(uffd_global_test_opts_t *gopts,
-> +				   uffd_test_args_t *args)
-> +{
-
-[ ... ]
-
-> +	/* Round-trip mprotect(): PROT_NONE -> PROT_READ|PROT_WRITE */
-> +	if (mprotect(gopts->area_dst, nr_pages * page_size, PROT_NONE))
-> +		err("mprotect() PROT_NONE");
-> +	if (mprotect(gopts->area_dst, nr_pages * page_size,
-> +		     PROT_READ | PROT_WRITE))
-> +		err("mprotect() PROT_READ|PROT_WRITE");
+> @@ -2846,6 +2867,13 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_=
+t *dst_pmd, pmd_t *src_pmd, pm
+>  		_dst_pmd =3D move_soft_dirty_pmd(src_pmdval);
+>  		_dst_pmd =3D clear_uffd_wp_pmd(_dst_pmd);
+>  	}
 > +
-> +	/* Touch every page. Async RWP must auto-resolve each fault. */
-> +	for (p =3D 0; p < nr_pages; p++) {
-> +		volatile char *page =3D gopts->area_dst + p * page_size;
-> +		(void)*page;
+> +	/* Re-arm RWP on the moved PMD if dst_vma is RWP-registered. */
+> +	if (userfaultfd_rwp(dst_vma)) {
+> +		_dst_pmd =3D pmd_modify(_dst_pmd, PAGE_NONE);
+> +		_dst_pmd =3D pmd_mkuffd(_dst_pmd);
 > +	}
-
-[Severity: Medium]
-Will this test falsely pass if mprotect() completely drops the uffd-wp
-marker? Since the test accesses the pages expecting async faults to clear t=
-he
-markers, but doesn't assert that the markers survived the mprotect()
-round-trip first, a kernel bug dropping the protection might let the access
-silently succeed and leave the marker clear.
-
-[ ... ]
-
-> +static void uffd_rwp_fork_pin_test(uffd_global_test_opts_t *gopts,
-> +				   uffd_test_args_t *args)
-> +{
-
-[ ... ]
-
-> +	child =3D fork();
-> +	if (child < 0)
-> +		err("fork");
-> +	if (child =3D=3D 0) {
-> +		volatile char c;
-> +		int cfd;
 > +
-> +		/*
-> +		 * Read the pinned page. Only reaches the fault path if the
-> +		 * child PTE is protnone + uffd; async mode auto-resolves and
-> +		 * clears the uffd bit. If copy_present_page() dropped
-> +		 * PAGE_NONE, the read would silently succeed and the bit
-> +		 * would still be set.
-> +		 */
-> +		c =3D *(volatile char *)gopts->area_dst;
-> +		(void)c;
+>  	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
+> =20
+>  	src_pgtable =3D pgtable_trans_huge_withdraw(mm, src_pmd);
+
+[Severity: Critical]
+Does this corrupt non-present PMDs like migration entries?
+
+In move_pages_huge_pmd(), if the source is a non-present huge PMD
+(such as a migration entry), the code takes the !src_folio path.
+Applying pmd_modify() with PAGE_NONE to this entry will set the present
+bit, because PAGE_NONE contains the present bit.
+
+If a user thread accesses this corrupted migration entry, won't the page
+fault handler treat it as a present PMD, call pmd_folio(), and dereference
+the swap offset/type data as a physical PFN, causing a panic?
+
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index ec1880d181711..4fca0409b7d7c 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1292,6 +1292,13 @@ static long move_present_ptes(struct mm_struct *mm,
+>  		if (pte_dirty(orig_src_pte))
+>  			orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
+>  		orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
 > +
-> +		cfd =3D pagemap_open();
-> +		value =3D pagemap_get_entry(cfd, gopts->area_dst);
-> +		close(cfd);
-> +		_exit((value & PM_UFFD_WP) ? 1 : 0);
+> +		/* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
+> +		if (userfaultfd_rwp(dst_vma)) {
+> +			orig_dst_pte =3D pte_modify(orig_dst_pte, PAGE_NONE);
+> +			orig_dst_pte =3D pte_mkuffd(orig_dst_pte);
+> +		}
+> +
+>  		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+> =20
+>  		src_addr +=3D PAGE_SIZE;
+
+[Severity: Critical]
+Can this unconditional modification destroy the resolved state of the PTE?
+
+In move_present_ptes(), the source PTE might have already been resolved
+and have valid access state. By unconditionally applying PAGE_NONE to the
+destination PTE regardless of the source PTE's state, won't this force a
+spurious RWP fault on the next access?
+
+> @@ -1373,6 +1380,9 @@ static int move_swap_pte(struct mm_struct *mm, stru=
+ct vm_area_struct *dst_vma,
+>  	orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte);
+>  	if (pgtable_supports_soft_dirty())
+>  		orig_src_pte =3D pte_swp_mksoft_dirty(orig_src_pte);
+> +	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+> +	if (userfaultfd_rwp(dst_vma))
+> +		orig_src_pte =3D pte_swp_mkuffd(orig_src_pte);
+>  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+>  	double_pt_unlock(dst_ptl, src_ptl);
+> =20
+> @@ -1399,6 +1409,13 @@ static int move_zeropage_pte(struct mm_struct *mm,
+> =20
+>  	zero_pte =3D pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
+>  					 dst_vma->vm_page_prot));
+> +
+> +	/* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
+> +	if (userfaultfd_rwp(dst_vma)) {
+> +		zero_pte =3D pte_modify(zero_pte, PAGE_NONE);
+> +		zero_pte =3D pte_mkuffd(zero_pte);
 > +	}
-
-[Severity: Medium]
-Could this test also falsely pass if copy_present_page() drops the uffd-wp
-marker completely? The child touches the page and verifies the marker is
-clear, but it doesn't verify the marker was correctly preserved prior to the
-access.
-
-[ ... ]
-
-> @@ -1814,6 +2684,20 @@ int main(int argc, char *argv[])
->  				uffd_test_skip(errmsg);
->  				continue;
->  			}
-> +			/*
-> +			 * RWP tracks protection on ptes; a THP-backed shmem/anon
-> +			 * range (e.g. shmem_enabled=3Dalways) would split on
-> +			 * rwprotect and change behaviour under the test. Keep
-> +			 * such ranges off THP. hugetlb is huge by definition and
-> +			 * rejects MADV_NOHUGEPAGE, so skip it.
-> +			 */
-> +			if ((test->uffd_feature_required & UFFD_FEATURE_RWP) &&
-> +			    !(mem_type->mem_flag & (MEM_HUGETLB | MEM_HUGETLB_PRIVATE))) {
-> +				unsigned long len =3D gopts.nr_pages * gopts.page_size;
 > +
-> +				if (madvise(gopts.area_dst, len, MADV_NOHUGEPAGE))
-> +					err("madvise(MADV_NOHUGEPAGE)");
+>  	ptep_clear_flush(src_vma, src_addr, src_pte);
+>  	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
+>  	double_pt_unlock(dst_ptl, src_ptl);
 
-[Severity: Medium]
-Will this unconditional error check on madvise() abort the entire test suite
-on kernels lacking THP support? On a kernel compiled with
-CONFIG_TRANSPARENT_HUGEPAGE=3Dn, madvise(MADV_NOHUGEPAGE) returns -EINVAL,
-which would cause err() to exit the process instead of gracefully continuing
-or skipping the test.
-
-> +			}
->  			test->uffd_fn(&gopts, &args);
->  			uffd_test_ctx_clear(&gopts);
->  		}
+[Severity: Critical]
+Does unconditionally arming the RWP marker here in move_swap_pte() and=20
+move_zeropage_pte() cause similar issues with state loss or spurious faults=
+=20
+when the pages are moved via UFFDIO_MOVE?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706084805.8400=
--1-kirill@shutemov.name?part=3D14
+-1-kirill@shutemov.name?part=3D7
