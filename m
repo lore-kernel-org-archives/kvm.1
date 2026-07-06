@@ -1,110 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EBC41613F
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 12:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAF381B1C;
+	Mon,  6 Jul 2026 12:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783342477; cv=none; b=ElpNYR9d912IYltOkoELvIinoXMn7f/6lQZ9HQ/PaJ+C8fZAl4gosQMldM1du1IbBeY/mhErwDolzNpUTUsNkyFHhuxGKzL14SfPXyTdE4DNPvLDj7/dRZqSszXFLUFaP1EiRFKPZpNF0Y5DCzwwCjDpNI67SvXxmybisbSNIHg=
+	t=1783342630; cv=none; b=Gv+ZX7oRry32jTozi1td7kzTopq0HPa4VkV39+Sazp/LPPBJDhoovIcIduAYrAIIYThb/1jQIJaIY034TOx61EoG0CFfsSUwk0wDjRdnimvG8zQ+1xPb2wbsqX2hXb/p2ishRSBDr03jR+ns4gNimTSyGln4lC+8dpxFAddcJDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783342477; c=relaxed/simple;
-	bh=EjMMSMFPquxQrS+GcZzjNBPDu5vs8Wn1NWzHRFE/Sbw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MI2bPkjWucsODLTUoCp2hSG2p5AFHPxfZZNIamwFCrPAVufX3Zj2ExrWKdt35887Pf0MR5PMqB9rBHyehGyT8g3SHuUgsRHxTIfeBXQS21As9/LiVtgqDkW0Aplk33/MdfL0IzCHQGMVwICTMdvs60tuU5lNWBIyuGtwl6N/LWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ioxPt6KC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783342630; c=relaxed/simple;
+	bh=VUZIkXufgwBW/JMrzaWRzp9hNDKyQfFV0tnX6ij9HlE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JfOK28rkaWNN+mNjp2umjOYrEtRqIrz1tXqGr1UQFKj9R8fPB49m4tb5M7w+JkWpy0cg962Jmdm/pUYTz+uav7QVut0rqaZqrysX0I4WJYHZ1KBKYztWFs8sghnHWCr+mKfPG2IeCa5d+Bja9s1aSAN4RKj0y8OFmgzAr6+bnKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkBcHryg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ioxPt6KC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783342475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d+6znSRZg+Ltzq923NDQMZPCBTPsFuburG+TydhPNpk=;
-	b=ioxPt6KCOCI9QjJmM1OzBnn9FeVLiEdFVnZq713j9t3+FPWX22TmfhlFg1LsRuVvme3rNu
-	9Ba5Fi4cWgZ+tM0pRI2C2Sgx9R5HltZkXaL+0GTVtnQups0t5il0IKNmyX5ge3TiBXqJDm
-	z04UzElZFidqq3TJDNiuGgV3GJGao44=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-VIYyhgoENPyy-hDNTOofWA-1; Mon,
- 06 Jul 2026 08:54:32 -0400
-X-MC-Unique: VIYyhgoENPyy-hDNTOofWA-1
-X-Mimecast-MFC-AGG-ID: VIYyhgoENPyy-hDNTOofWA_1783342471
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54FF818007EA;
-	Mon,  6 Jul 2026 12:54:31 +0000 (UTC)
-Received: from localhost (unknown [10.44.22.3])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6A7403000715;
-	Mon,  6 Jul 2026 12:54:29 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Mon, 06 Jul 2026 16:53:52 +0400
-Subject: [PATCH 5/5] ui/input-barrier: fix off-by-one in keycode bounds
- check
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkBcHryg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9581F000E9;
+	Mon,  6 Jul 2026 12:57:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783342628;
+	bh=GCyaRI2v+Msir348xm9C8l5PWA+QlX0OzfCc70e43Ik=;
+	h=Date:From:To:Subject;
+	b=QkBcHrygH5Ere2gGZ4IyKeQAgDzFCP4pMLmbC0I83R0o1GjlJpPUMR+jerIqInvf7
+	 7X0TiE/VD50oxAlFigliU+PgUxb81uTzPO9uvaxv3JXsOEV3qsy9u1lA5EI9qafcqU
+	 3pw36XTN6XIZ7UinHMVqp31cmfLQjQxoU63HdjksOhilnPFgda6VmTqafvtpB0cfUp
+	 fAVe437fW9nOmEqL35sDZ3DM2BukTie3OJG+njNbtHwoeP6oAkyFI57AsiHuKoWfsj
+	 zps9YuvZ9SGDFXJMMh3P+OJ10C8qX7+nR1nfPR8h5TX0696OcqXg9O4K/KYynZ2fSv
+	 IXF1Ji/Ip+wIg==
+Date: Mon, 6 Jul 2026 21:57:06 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+To: Linux PCI <linux-pci@vger.kernel.org>, 
+	Linux IOMMU <iommu@lists.linux.dev>, Linux KVM <kvm@vger.kernel.org>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Bjorn Helgaas <helgaas@kernel.org>, =?utf-8?B?SsO2cmc=?= Roedel <joro@8bytes.org>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: The VFIO/IOMMU/PCI MC at LPC 2026
+Message-ID: <20260706123705.GB3821042@rocinante>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260706-fix-v1-5-4b83a70e9f3b@redhat.com>
-References: <20260706-fix-v1-0-4b83a70e9f3b@redhat.com>
-In-Reply-To: <20260706-fix-v1-0-4b83a70e9f3b@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=908;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=EjMMSMFPquxQrS+GcZzjNBPDu5vs8Wn1NWzHRFE/Sbw=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqS6Vn6YI/duKo1sMaBQtRkjBpfCvDpcEW7n4D1
- Pl4ngwcOS+JAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCakulZwAKCRDa6OEJdZac
- 5S5IEACfDbZl29bgFSqQqEIOQaBDr5n6Be3OBrP9rY5d4MiuDGKUJ0nAlqgvGGEAcngEdbZVstd
- UyOhDzZMrgnsLEw+SFybYm9UoLsczIs047XLRkNd5xr5hNdCNsgEqpgNcuFq74GHh+AxfrJB0l8
- oOx7YtP6mAsm5lLK2ShWn/FwO2WGCbv8uV4kV1nXb39dVQoR85uWhkj8Jmvg+2Kje0Gh9VAVt5t
- KcKNhbJuRiGQwXdlbQoVVRX7wVW3cggvBoEkfStBtpbCX65flr2Jh2AzYFFFyTe9DxzDrAZZZq0
- vnq2D4z6dyLU3xN56/OTFJ1ABsIT11ZkFr50uggmIzGwMHtHLGbuGW5ljGda8IbcWBFll5GoQMM
- f8qKwoB99tV+Bhz0vSjPZldvKcBenGECy5Tr/AIvpVQsFNi20a5U/pjbxg+yf2f8blf5SiBgBgh
- 1T0D6flXu3GwdLreYAAPcRzEenBiGNY7ZcjWswXLj69+GJ1tK2Ut6D2qYwrPK8u26YMTDqls3/V
- v+bLTIGSB5LylLXM+b+MC/ndUVXrKZAFAdqmXiapd/IEVsiLmYcIqW/KD1n10KikdX9s6h3JSwT
- ojnlAUQD7wjMWbPb4IzqyTVXZr11i4iR4YWCt7xbiR+0oXENn/1iQ/qCurJejPOSBytctyWlGza
- zeJe0RIcCkG8aqg==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Use strict "<" to fix the off-by-one.
+Hello everyone!
 
-Fixes: 6105683da35b ("ui: add an embedded Barrier client")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/3951
-Reported-by: huntr bubble
-Signed-off-by: Marc-Andre Lureau <marcandre.lureau@redhat.com>
----
- ui/input-barrier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+A quick reminder that our VFIO/IOMMU/PCI micro-conference (MC) has been
+accepted for this year's Linux Plumbers Conference, and it is now open for
+topic submissions.  More at:
 
-diff --git a/ui/input-barrier.c b/ui/input-barrier.c
-index d07027114af..0a238d4010b 100644
---- a/ui/input-barrier.c
-+++ b/ui/input-barrier.c
-@@ -87,7 +87,7 @@ static kbd_layout_t *kbd_layout;
- static unsigned int input_barrier_to_linux(uint16_t keyid, uint16_t keycode)
- {
-     /* keycode is optional, if it is not provided use keyid */
--    if (keycode && keycode <= qemu_input_map_xorgkbd_to_linux_len) {
-+    if (keycode && keycode < qemu_input_map_xorgkbd_to_linux_len) {
-         return qemu_input_map_xorgkbd_to_linux[keycode];
-     }
- 
+  https://lpc.events/event/20/contributions/2326/
 
--- 
-2.55.0
+LPC 2026 will be held in Prague, Czechia, from the 5th to the 7th of October.
+Please note that this year presenters and micro-conference topic leads are
+expected to attend in person; remote presentations will be considered only on
+an emergency basis.  See https://lpc.events for more details and the latest
+updates.
 
+If you have a topic you would like to bring to the MC, please submit it through
+the official Call for Proposals (CfP) process at:
+
+  https://lpc.events/event/20/abstracts/
+
+Choose "Submit new abstract" and make sure to select the "VFIO/IOMMU/PCI MC"
+entry from the Track drop-down menu, so that your proposal is submitted against
+the correct track.
+
+Two dates are worth keeping in mind:
+
+  - 10th of July: submit a topic by this date to become eligible to
+    pre-register for the conference.
+
+  - 7th of August, 23:59 UTC: the Call for Proposals closes.  This is the
+    final deadline, shared by all micro-conferences.
+
+The sooner the better, as it gives us more time to review the submissions and
+plan the schedule ahead.  And do remember: you can submit early and refine the
+proposal later; there will be time.  Even a rough draft is fine, so please
+don't hesitate.
+
+If you are new to Linux Plumbers Conference, or you are not quite sure what
+a micro-conference topic should look like, Steven Rostedt's write-up on the
+ideal micro-conference topic session is well worth a read before you submit:
+
+  > Hello Microconference runners and topic presenters,
+  >
+  >
+  > This is a reminder that microconeference topics are not presentations.
+  > Think of the "Problem Statement" you would like to present. Any
+  > presentation should be short and direct to the point. The goal of the
+  > presentation is to bring the audience up to speed, so that they can offer
+  > useful contributions to the issue you want to address.
+  >
+  > Ideal presentations should be no more than a third of the allotted time for
+  > the topic. If your topic time slot is 15 minutes, present for no more than
+  > 5 minutes. If your topic is 30 minutes, present for no more than 10
+  > minutes. At a maximum, do not present for any more than half the allotted
+  > time. Maximum for 15 minute time slots is a 7 minute presentation. Maximum
+  > for 30 minutes is a 15 minute presentation.
+  >
+  > The best slides are those that can be referenced during the discussion. If
+  > you propose an API, have a slide with that API. If you propose a work flow,
+  > have a work flow diagram. Something you can go back to and point to if the
+  > discussion needs more clarification.
+  >
+  > And please have some slides that explain what you want to discuss. If only
+  > three people in the session understand the problem, you will only have
+  > three people in that discussion and you will lose out on the potential of
+  > diversity in ideas, that a wider group can bring.
+  >
+  > Remember, you are not giving a talk. You are leading a discussion to a
+  > problem you would like to solve. Bring as much to the table that can assist
+  > you in that goal.
+  >
+  > And I would like to sincerely thank all of you in your participation in
+  > this year's Linux Plumbers microconferences. Without your work, Linux
+  > Plumbers would not be as successful as it is today.
+  >
+  > Steven Rostedt
+  > Linux Plumbers Microconference Chair
+
+In short, a micro-conference topic is a problem statement rather than a
+finished talk.  The idea is to explain a problem you are currently working on,
+show what you have tried so far, and then use the time in the room to discuss
+how best to solve it.  More at:
+
+  https://lpc.events/blog/current/index.php/2023/06/26/the-ideal-microconference-topic-session/
+
+As always, please get in touch with me directly, or with any of the other
+organisers, if you need any assistance or have any questions.
+
+Looking forward to seeing you all in Prague!
+
+Thank you!
+
+	Alex, Bjorn, Jörg, Lorenzo and Krzysztof
