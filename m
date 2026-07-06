@@ -1,261 +1,681 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012035.outbound.protection.outlook.com [40.107.200.35])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDD137FF40
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 07:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783322885; cv=fail; b=BnHpTqvYV3UmsJEP1sYr0ZhnMBjaIs325yXSZJ7WfXTUPsb4cmuN5sb1S0RgeGg7HqX68l5wxbmvwvgFon3VZZcmo0Y93O2cp2rwhQred+/G1C6Y+gPGmJmE61zlBGZaLDvhZW4/Omqf+kFnlbX75yj9dZgTYf7lC68Yq9ZxzLk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783322885; c=relaxed/simple;
-	bh=e0Gb59gCobWwGIb89hWlxE+aUGaGA8Ocy3lFIRwmFxw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GJXwurGeTF9fPz2qm0p5ZjNNZS2LnXo/NIThAuT6XhS1ABrMSNRUrx8Arl7giztv0QKBeJECn/4ccnxrNacIjL73qiSTixUmscytUtyWuE6rnbX0OUUlquV7EFXCYbxcGHVMAut8FByUMbnoXINovCUOpMAbuUmePXGogPai3hI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=h1Wj6Sx3; arc=fail smtp.client-ip=40.107.200.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8813E8330
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 07:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783324515; cv=none; b=heWBEJS9n5J10YARYgg7rZk0QHPODbmn8g3Igwzs1WuEu12WiBj+FtNu3Df9zIagCuEA12gEF2vgT2A8yJ3c0g5hcifKl9PYJEdrvqAoWc06d0NvCmVKRxSxEW2BbNEtXH9Sf/olNLSa9GTqetvU+noUMrUb6MKfzWGfXI5WFN4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783324515; c=relaxed/simple;
+	bh=L4kx67Ov7ljuBE5Cf4rSGduSuka/ZELYybeN3oynli4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mtNgtI/Nu/EdsQgkMdM+szNksPz+b1ctBOICfEpNkR4jbYB6XWJXqE8TICMykxrwwtJIJPPQw8tF/E8ePyC0hrK3z0bSwb95jCp0URoqOVj6F8BlWheH6jnl/BdgfSU5+4ZgyjQgjmBQXuCLZBkhOCzCLNa75xko0ECn7FvQ9Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=uYy7PWFm reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="h1Wj6Sx3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UjZJUFNzBRJrKUdbrWJtlsQEopH2oYNYC+dq6r7WqDGxY2Hsf6xKT0e4bGoh/QJ5y+/n+ko08kZRPANM9xihwk5rV/4945SSkfOhp/1bMmJol5zMnrIbqdwnYI/CJkrXVGXqLmZyczcTu7rDzXahWusDWbkpeedBQgoppuZk0NEzmyqbHE8+68GLuJVB5Tovrlyn4csevXBAxekNrStmlGRc3wMs2JKQ6eocpoZ02IKy/5LMAhZ8sOyudLXdqXtr5bNiWgpzpu8aR8Xa27vDnaaFdZd7OQOYxZzopzmoa0C2wqapU2XXTvb2zvC3gzt9pFJ8NZn7VFtIop6z7MrxGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IcpV95vxvhfIyYBWIp7j4ArWMZOOuH2/JT9MVCgZ/P0=;
- b=NPNzP3bYdQ39C6l9MCH8x755xnlevXra4ZYgfEhU5mV+F2eZXrCW2xNYs1pSQBedgr+puvbyloaPTI/4hxOd9LIUaDDzFq7Ksm0nIpw3I87LC/qBf30tjZcr4Lkm7m4fpiByIu7+5hFDD12mHFd48rD483c8OkNMTYs02/TMaO+YHK7SX3Q5q1sfBDPyXm1yP4CKzf6eT2xtEIJhAL6wEJee0Xvyp6FoAQrGHDkNeo+nH58XFPvFpQZ/yaLiX9/nK5q2nC6ZM8tfcI2f1h7IKpwRzdU/cwKzBv3452KrG52qhEKE1W9Fp/d2f/nVNZqmtEjaY7f/wbSmPiOm8Ru5XQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IcpV95vxvhfIyYBWIp7j4ArWMZOOuH2/JT9MVCgZ/P0=;
- b=h1Wj6Sx3iTCyvSvZ6G5+KMajqkg1ma3U49G1uRw8BjSpUlNV2SkLSFp9iomJkJXq5QVE/nRWVAG3+obN+w4h5kFMFbCnHvEnNraKM0kdkSHYoyJF2miuNQOBy2kag6aQfRpjbPKFgY5bwGwxyBlPB9I5z0J6xAe+zD8AiIlsLgc=
-Received: from BN9PR03CA0297.namprd03.prod.outlook.com (2603:10b6:408:f5::32)
- by CH2PR12MB4120.namprd12.prod.outlook.com (2603:10b6:610:7b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Mon, 6 Jul
- 2026 07:27:53 +0000
-Received: from BN3PEPF0000B071.namprd04.prod.outlook.com
- (2603:10b6:408:f5:cafe::68) by BN9PR03CA0297.outlook.office365.com
- (2603:10b6:408:f5::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.11 via Frontend Transport; Mon, 6
- Jul 2026 07:27:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B071.mail.protection.outlook.com (10.167.243.116) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 07:27:53 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 02:27:52 -0500
-Received: from [10.136.45.190] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 6 Jul 2026 02:27:48 -0500
-Message-ID: <264ee78b-de9c-4529-ac75-e93e68bb9b8d@amd.com>
-Date: Mon, 6 Jul 2026 12:57:47 +0530
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="uYy7PWFm"
+Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6667sqj0060533
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 6 Jul 2026 16:54:55 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=xEhK/luX4gYDnC9ZM4svoPCmiJXV2JlmjJ+NpXUby20=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-Id:To:Subject:Date;
+        s=rs20250326; t=1783324495; v=1;
+        b=uYy7PWFmu9Mi/n/TroE7RlVCFoSaIM+ODnGRh7RES8jQ6uiEfs+ekhvhwdtYaS8z
+         ALHM06FW+oSmAcQyxAyDMJtehDv8rkI3MagtL9qSb4gIgQVIyR956tSG1u8Zzyjr
+         9iUUXPg45b42kkf9gmCoV0cm/3SxbxLQ1tmTPbwRjD1Cu/zyrII6bVbZdxD6+SHI
+         3wAuonuY9mp2SBXN1gM98XWy4i/OTtVx1Hf/qq8q/hIofoYdza+u/AnN1ZCMQkYW
+         FksDKmbVW0TML9WL0kQcctF1c2QrHdwLG5F5TZ7TUZDmtsKXQHNHjVDGdTDu+1Za
+         wKgQ6MKmPJmV9SvZgEjdqA==
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Date: Mon, 06 Jul 2026 16:53:27 +0900
+Subject: [PATCH RFC v4] target/arm/kvm: Choose PMU backend
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2] KVM: SVM: Add Bus Lock Detect support
-To: Yosry Ahmed <yosry@kernel.org>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <kvm@vger.kernel.org>, <x86@kernel.org>,
-	<yosry.ahmed@linux.dev>, <jmattson@google.com>, <thomas.lendacky@amd.com>,
-	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <santosh.shukla@amd.com>,
-	Shivansh Dhiman <shivansh.dhiman@amd.com>
-References: <20260629081018.60618-1-shivansh.dhiman@amd.com>
- <akL5VmXwhdvVrVfD@google.com>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <akL5VmXwhdvVrVfD@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B071:EE_|CH2PR12MB4120:EE_
-X-MS-Office365-Filtering-Correlation-Id: 42f4a103-9f57-4e60-8609-08dedb30178e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|376014|1800799024|36860700016|13003099007|22082099003|56012099006|18002099003|11063799006|4143699003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Tmo/Wug3/GXbiBCVHN4IeBdadkMT3Y6quSADLiDkf0cBDFhMl5SZOg395SYKSvyhQVhBX7HUrnZo/37+XSH7fhFZzztjodigA+wpmRg+2HOpi00aglfSJVa6gvPyKQBnYs3qnO1yUhCpk4VlneHXdj1YlL4BjcvYQ6Uv0TnJ2Ahd6sJkJtfvHZcQwxwf/v0GQuL/8A5j1Kd3mfygi/yPdPApvgTOAGtUQkBODTUKx5r9+4nEJ4HdyYlBfsL9na1HZS6/nzOHfYaHrdGhtzskM1dh+i0vUHSJaFm++NnKgcRZxbgQFBFVQ0Fr/daYMi4y+nQtdd6BIhvK7JuyJxDMbW6yMQrr6/1stVqQ5DUl3n9YVMrV+W289x5Q8+JXZLPN7L0GaxuY2baMn2IcU7Q8FM6WH0a8YlJLGrJ+sCnil3Jyrem9SZ0KP+ODvo6O4HgZ3SLG+Kthc0TydrN4V9t4LssqYkBP3ytb1VMU8LUmlUvkZZxXyP/eeg8GW4i55Z/+r/X5z7m4bymcXnO2f4KXmwfpbdeC4FFO5Xc1sSsOymeverQGZiIYpNqessWn15bQblSB4eumtqTxbMotSt8iqLUaSHxmhkQNtvAXj7KE7/7Rz/fR8BGDHZVHuOp8Qy1la9VWN2I/0iwir69RgqS/EgxAL/tD5W4J3rU7H9bV6w5p7TR8Dyvj89R/dQDY45qprTuRUocvDb9Qox8s/45eEQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(376014)(1800799024)(36860700016)(13003099007)(22082099003)(56012099006)(18002099003)(11063799006)(4143699003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	mDpVdU62BfyTKhsPQmMiizbqLAUduS4ktmlnC4IMJAWkQvAR2hx1W9xgA7N1vMBEESfhqSGfySS5bEpyO4T6ZiRANQsvKwffrIj1lVRA+Pd3D6hgbz5MRARnr1eaTJO1+2YWUQp7Y+EkoIwx/bGq41AhY5HG0CN26wbmUwjWHRqTYq1kfrxru7N5Qz+N6Y7qzl486wVCwXHJOBSrnXnR2V8OEluMG0aFHxOsHPpfmP1O9Vio4TAaAzqXh7xf1N3yx5msa/OlFd3BOsKjkuvOOdBY73ikIoQPWtkwK4iL7vjmdiRyzspTkprc7GNkJ/aSZdTdil5Tzi495udzvLJ9EewM0oIQN1GU+a2+jxGWlQHYdadQXH1ogcCIDBnwb+oAu1aLzdB7Xg1C35JDKLTOOkK016iOFVMamBJPwU37SOUgXc7eIAWV61i3fPcs0fOX
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 07:27:53.2896
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 42f4a103-9f57-4e60-8609-08dedb30178e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B071.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4120
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260706-kvm-v4-1-089cac8c25c3@rsg.ci.i.u-tokyo.ac.jp>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33QwU4DIRAG4FfZcJYNDMvC9mRi4gN4NR5ggBabL
+ RW2G5um7y5hNZ70+M9MvuSfGyk+R1/IrruR7NdYYjrVMDx0BA/mtPc0upoJMJBMCUaP60x1QDa
+ iDgrAkHp5zj7Ez6a8kpfnJ/JWh4dYlpSvTV55WzVEs7EhK6ecOu4ks4pJje4xl32PsY/9hS7pe
+ E29wf793LAVfoCRAcgNgApY7dQgnGVBiX8B8QsMIDZAVMALhKDVpAaDfwL3rWT2H5f6oeW7qTX
+ FU0zzHJddZ7UQio+j5hOYWshqpf3EJpTGT8hBCLROBlux+xfo0ASmdgEAAA==
+X-Change-ID: 20250730-kvm-8fc06c8f722a
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+        Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+        Yanan Wang <wangyanan55@huawei.com>, Zhao Liu <zhao1.liu@intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Peter Maydell <peter.maydell@linaro.org>, kvm@vger.kernel.org,
+        qemu-arm@nongnu.org,
+        =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+        =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>,
+        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+X-Mailer: b4 0.16-dev-925f5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=21275;
+ i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
+ bh=L4kx67Ov7ljuBE5Cf4rSGduSuka/ZELYybeN3oynli4=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ5Z3vO8qkTWOsZqv3txV8Nq2J9Vx70FdfdaS/t2vfM0WL
+ m0xeHGgo5SFQYyLQVZMkSWlaDe3RnTtp8KE+BaYOaxMIEMYuDgFYCL76hn+WVl17P/7QXgh11MH
+ ETuv55EMy7deXGg+fw7bys5OzRXsMgz/dKU5nqWtufZk04NGBp8vibLXle6UKr0S4pEN/hL2zkO
+ fFwA=
+X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
+ fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
+Commit 6ee7fca2a4a0 ("KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_SET_PMU
+attribute") of Linux describes the KVM_ARM_VCPU_PMU_V3_SET_PMU
+attribute, which allows choosing a PMU backend, and its motivation:
+> KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_SET_PMU attribute
+>
+> When KVM creates an event and there are more than one PMUs present on
+> the system, perf_init_event() will go through the list of available
+> PMUs and will choose the first one that can create the event. The
+> order of the PMUs in this list depends on the probe order, which can
+> change under various circumstances, for example if the order of the
+> PMU nodes change in the DTB or if asynchronous driver probing is
+> enabled on the kernel command line (with the
+> driver_async_probe=armv8-pmu option).
+>
+> Another consequence of this approach is that on heteregeneous systems
+> all virtual machines that KVM creates will use the same PMU. This
+> might cause unexpected behaviour for userspace: when a VCPU is
+> executing on the physical CPU that uses this default PMU, PMU events
+> in the guest work correctly; but when the same VCPU executes on
+> another CPU, PMU events in the guest will suddenly stop counting.
+>
+> Fortunately, perf core allows user to specify on which PMU to create
+> an event by using the perf_event_attr->type field, which is used by
+> perf_init_event() as an index in the radix tree of available PMUs.
+>
+> Add the KVM_ARM_VCPU_PMU_V3_CTRL(KVM_ARM_VCPU_PMU_V3_SET_PMU) VCPU
+> attribute to allow userspace to specify the arm_pmu that KVM will use
+> when creating events for that VCPU. KVM will make no attempt to run
+> the VCPU on the physical CPUs that share the PMU, leaving it up to
+> userspace to manage the VCPU threads' affinity accordingly.
+>
+> To ensure that KVM doesn't expose an asymmetric system to the guest,
+> the PMU set for one VCPU will be used by all other VCPUs. Once a VCPU
+> has run, the PMU cannot be changed in order to avoid changing the
+> list of available events for a VCPU, or to change the semantics of
+> existing events.
 
-On 30-06-26 04:38, Yosry Ahmed wrote:
-> On Mon, Jun 29, 2026 at 08:10:18AM +0000, Shivansh Dhiman wrote:
->> From: Ravi Bangoria <ravi.bangoria@amd.com>
->>
->> Add Bus Lock Detect support in AMD SVM. Bus Lock Detect is enabled through
->> MSR_IA32_DEBUGCTLMSR and MSR_IA32_DEBUGCTLMSR is virtualized only if LBR
->> Virtualization is enabled. Add this dependency in the SVM.
->>
->> While adding Bus Lock Detect support, also fix DR6 handling in nested
->> virtualization. Using DR6_FIXED_1 to prevent reset of BLD bit (bit 11)
->> between VMRUNs. However, it preserves DR6_RTM, which is a reserved bit
->> on AMD processors. So, DR6_RTM bit must always be set to 1.
->>
->> Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
->> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
->> Co-developed-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
->> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
->> ---
->> Changelog:
->> v2 --> v2 Resend
->>  * No functional changes.
->>  * Rebased on top of tag: kvm-x86-next-2026.06.24.
->>
->> v1 --> v2
->>  * Rebased and used guest_cpu_cap_has() instead of guest_cpuid_has().
->>
->>  v2: https://lore.kernel.org/kvm/20251121081228.426974-1-shivansh.dhiman@amd.com/
->>  v1: https://lore.kernel.org/all/20240808062937.1149-5-ravi.bangoria@amd.com
->> ---
->>  arch/x86/kvm/svm/nested.c |  3 ++-
->>  arch/x86/kvm/svm/svm.c    | 17 ++++++++++++++++-
->>  arch/x86/kvm/svm/svm.h    |  2 +-
->>  3 files changed, 19 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
->> index c1485c3e691c..4fdc58d38afe 100644
->> --- a/arch/x86/kvm/svm/nested.c
->> +++ b/arch/x86/kvm/svm/nested.c
->> @@ -808,7 +808,8 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
->>  
->>  	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
->>  		vmcb02->save.dr7 = svm->nested.save.dr7 | DR7_FIXED_1;
->> -		svm->vcpu.arch.dr6  = svm->nested.save.dr6 | DR6_ACTIVE_LOW;
->> +		/* DR6_RTM is a reserved bit on AMD and as such must be set to 1 */
->> +		svm->vcpu.arch.dr6  = svm->nested.save.dr6 | DR6_FIXED_1 | DR6_RTM;
->>  		vmcb_mark_dirty(vmcb02, VMCB_DR);
->>  	}
->>  
->> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->> index ef69a51ab27f..b4b0fa730916 100644
->> --- a/arch/x86/kvm/svm/svm.c
->> +++ b/arch/x86/kvm/svm/svm.c
->> @@ -884,6 +884,9 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
->>  			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
->>  			    (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR));
->>  
->> +	/* Bus Lock Detect depends on LBR Virtualization */
->> +	enable_lbrv |= (svm->vmcb->save.dbgctl & DEBUGCTLMSR_BUS_LOCK_DETECT);
->> +
-> 
-> A few lines above we have:
-> 
->         bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
->                             (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
->                             (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR));
-> 
-> We probably want to combine "svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR"
-> with the new added check, and use nested_vmcb12_has_lbrv(). Maybe
-> end up with something like this (you'll probably want to refactor in a
-> separate patch):
-> 
-> 	bool enable_lbrv = false;
-> 
-> 	if (svm->vmcb->save.dbgctl & (DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DETECT))
-> 		enable_lbrv = true;
-> 
-> 	if (is_guest_mode(vcpu) && nested_vmcb12_has_lbrv(vcpu))
-> 		enable_lbrv = true;
-> 
-> 
+Choose a PMU backend with the following priority order:
 
-Agreed. I'll split this into a separate refactoring patch before the
-Bus Lock Detect change in v3.
+1. The event source specified with the pmu property. It is a user's
+   responsibility to ensure that the VCPUs runs on PCPUs associated with
+   the event source.
 
-> ---
-> 
-> Completely unrelated to this patch, but we should probably just clear
-> SVM_MISC2_ENABLE_V_LBR in __nested_copy_vmcb_control_to_cache() if the
-> guest vCPU doesn't have X86_FEATURE_LBRV instead of checking
-> X86_FEATURE_LBRV every time, similar to SVM_MISC_ENABLE_NP
-> and SVM_MISC_ENABLE_GMET.
+2. The default backend if the machine version is old. This ensures
+   backward compatibility but the resulting PMU may or may not work.
 
-Makes sense, I'll add that as a separate patch too.
+3. An event source that covers all PCPUs. This exposes its full feature
+   set to the guest. If multiple such physical PMUs exist, selection is
+   deterministic, based on the device hierarchy.
 
-Thanks for the review!
+4. The fixed-counters-only PMU, which is emulated with all compatible
+   event sources, if available.
 
-> 
->>  	if (enable_lbrv && !current_enable_lbrv)
->>  		__svm_enable_lbrv(vcpu);
->>  	else if (!enable_lbrv && current_enable_lbrv)
->> @@ -3160,6 +3163,10 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->>  			data &= ~DEBUGCTLMSR_BTF;
->>  		}
->>  
->> +		if ((data & DEBUGCTLMSR_BUS_LOCK_DETECT) &&
->> +		    !guest_cpu_cap_has(vcpu, X86_FEATURE_BUS_LOCK_DETECT))
->> +			return 1;
->> +
->>  		if (data & DEBUGCTL_RESERVED_BITS)
->>  			return 1;
->>  
->> @@ -5591,9 +5598,17 @@ static __init void svm_set_cpu_caps(void)
->>  	 * Clear capabilities that are automatically configured by common code,
->>  	 * but that require explicit SVM support (that isn't yet implemented).
->>  	 */
->> -	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
->>  	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
->>  
->> +	/*
->> +	 * LBR Virtualization must be enabled to support BusLockTrap inside the
->> +	 * guest, since BusLockTrap is enabled through MSR_IA32_DEBUGCTLMSR and
->> +	 * MSR_IA32_DEBUGCTLMSR is virtualized only if LBR Virtualization is
->> +	 * enabled.
->> +	 */
->> +	if (!lbrv)
->> +		kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
->> +
->>  	kvm_setup_xss_caps();
->>  	kvm_finalize_cpu_caps();
->>  }
->> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
->> index 716be21fba33..c65dc3acb5d1 100644
->> --- a/arch/x86/kvm/svm/svm.h
->> +++ b/arch/x86/kvm/svm/svm.h
->> @@ -783,7 +783,7 @@ BUILD_SVM_MSR_BITMAP_HELPERS(bool, test, test)
->>  BUILD_SVM_MSR_BITMAP_HELPERS(void, clear, __clear)
->>  BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
->>  
->> -#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
->> +#define DEBUGCTL_RESERVED_BITS (~(DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DETECT))
->>  
->>  /* svm.c */
->>  extern bool dump_invalid_vmcb;
->>
->> base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
->> -- 
->> 2.43.0
->>
->>
+Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+---
+Based-on: <20260422-arm-v1-1-106a9a9e22dd@rsg.ci.i.u-tokyo.ac.jp>
+("[PATCH] target/arm/kvm: Mark host feature cache valid last")
+
+This is an RFC patch to demonstrate the usage of a new device attribute
+which is added with the following series:
+https://lore.kernel.org/r/20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp
+("[PATCH v7 0/4] KVM: arm64: PMU: Use multiple host PMUs")
+---
+Changes in v4:
+- Fixed PMU CPU list parsing to keep PMU and possible CPU bitmap
+  sizes separate.
+- Avoided clearing CPU bitmaps before allocating them.
+- Link to v3: https://lore.kernel.org/qemu-devel/20260423-kvm-v3-1-e3c2f87974ac@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v3:
+- Simplified PMU probing by following what kvmtool does.
+- Added missing kvm_arm_destroy_scratch_host_vcpu().
+- Changed the KVM compatibility property optional for non-Arm.
+- Ensured to avoid setting a PMU when pmu=false.
+- Fixed register probing.
+- Added a check to prevent changing properties after initialization.
+- Link to v2: https://lore.kernel.org/qemu-devel/20260225-kvm-v2-1-b8d743db0f73@rsg.ci.i.u-tokyo.ac.jp
+
+Changes in v2:
+- Updated the backcompat-pmu compatibility property.
+- Renamed the KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY attribute.
+- Link to v1: https://lore.kernel.org/qemu-devel/20250806-kvm-v1-1-d1d50b7058cd@rsg.ci.i.u-tokyo.ac.jp
+
+To: qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Yanan Wang <wangyanan55@huawei.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Cc: kvm@vger.kernel.org
+Cc: qemu-arm@nongnu.org
+---
+ hw/core/machine.c       |   2 +
+ target/arm/kvm.c        | 341 +++++++++++++++++++++++++++++++++++++++++++++++-
+ qemu-options.hx         |  20 +++
+ target/arm/trace-events |   2 +
+ 4 files changed, 361 insertions(+), 4 deletions(-)
+
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 9a10e45aabd5..c80134c70f1b 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -24,6 +24,7 @@
+ #include "qom/compat-properties.h"
+ #include "qom/object_interfaces.h"
+ #include "system/cpus.h"
++#include "system/kvm.h"
+ #include "system/system.h"
+ #include "system/reset.h"
+ #include "system/runstate.h"
+@@ -54,6 +55,7 @@ const size_t hw_compat_11_0_len = G_N_ELEMENTS(hw_compat_11_0);
+ GlobalProperty hw_compat_10_2[] = {
+     { "scsi-block", "migrate-pr", "off" },
+     { "isa-cirrus-vga", "global-vmstate", "true" },
++    { TYPE_KVM_ACCEL, "backcompat-pmu", "true", .optional = true },
+ };
+ const size_t hw_compat_10_2_len = G_N_ELEMENTS(hw_compat_10_2);
+ 
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index a54ef51ec2af..40848d7e83a5 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -15,6 +15,7 @@
+ 
+ #include <linux/kvm.h>
+ 
++#include "qemu/cutils.h"
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+@@ -43,6 +44,8 @@
+ #include "target/arm/gtimer.h"
+ #include "migration/blocker.h"
+ 
++#define KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY 5
++
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_INFO(DEVICE_CTRL),
+     KVM_CAP_LAST_INFO
+@@ -52,6 +55,19 @@ static bool cap_has_mp_state;
+ static bool cap_has_inject_serror_esr;
+ static bool cap_has_inject_ext_dabt;
+ 
++typedef enum PMU {
++    PMU_UNSET,
++    PMU_NONE,
++    PMU_DEFAULT,
++    PMU_EVENT_SOURCE,
++    PMU_FIXED_COUNTERS_ONLY
++} PMU;
++
++static PMU pmu;
++static uint64_t pmu_user_event_source;
++static uint32_t pmu_effective_event_source;
++static bool pmu_backcompat;
++
+ /**
+  * ARMHostCPUFeatures: information about the host CPU (identified
+  * by asking the host kernel)
+@@ -221,6 +237,261 @@ static bool kvm_arm_pauth_supported(void)
+             kvm_check_extension(kvm_state, KVM_CAP_ARM_PTRAUTH_GENERIC));
+ }
+ 
++static bool read_pmu_attr(int fd, const struct dirent *ent, const char *name,
++                          char **buf, size_t *n)
++{
++    FILE *attr_file;
++    g_autofree char *rel_name = g_build_filename(ent->d_name, name, NULL);
++    int attr_fd = openat(fd, rel_name, O_RDONLY);
++    bool ret;
++
++    if (attr_fd < 0) {
++        return false;
++    }
++
++    attr_file = fdopen(attr_fd, "r");
++    assert(attr_file);
++    ret = getline(buf, n, attr_file) >= 0;
++    assert(!fclose(attr_file));
++
++    return ret;
++}
++
++static bool parse_cpus(const char *list, unsigned long **bitmap,
++                       unsigned long *nr)
++{
++    unsigned long start, end;
++
++    if (*nr) {
++        bitmap_clear(*bitmap, 0, *nr);
++    }
++
++    while (*list && *list != '\n') {
++        if (qemu_strtoul(list, &list, 0, &start) == -EINVAL) {
++            return false;
++        }
++
++        if (*list == '-') {
++            if (qemu_strtoul(list + 1, &list, 0, &end) == -EINVAL) {
++                return false;
++            }
++
++            if (end < start) {
++                return false;
++            }
++        } else {
++            end = start;
++        }
++
++        end++;
++
++        if (end > *nr) {
++            unsigned long new_nr = ROUND_UP(end, BITS_PER_LONG);
++            *bitmap = g_realloc(*bitmap, new_nr / BITS_PER_BYTE);
++            bitmap_clear(*bitmap, *nr, new_nr - *nr);
++            *nr = new_nr;
++        }
++
++        bitmap_set(*bitmap, start, end - start);
++
++        if (*list == ',') {
++            list++;
++        }
++    }
++
++    return true;
++}
++
++static PMU choose_pmu(uint32_t *type, uint64_t explicit_type, bool backcompat)
++{
++    DIR *devices = NULL;
++    FILE *file;
++    PMU pmu = PMU_NONE;
++    size_t n = 64;
++    g_autofree char *buf = g_malloc(n);
++    g_autofree unsigned long *possible_cpus = NULL;
++    g_autofree unsigned long *pmu_cpus = NULL;
++    int devices_fd;
++    int fdarray[3];
++    struct dirent *ent;
++    unsigned long npossible_cpus = 0;
++    unsigned long npmu_cpus;
++    ssize_t ret;
++
++    struct kvm_vcpu_init init = {
++        .target = -1,
++        .features[0] = BIT(KVM_ARM_VCPU_PMU_V3),
++    };
++
++    if (explicit_type <= UINT32_MAX) {
++        *type = explicit_type;
++        return PMU_EVENT_SOURCE;
++    }
++
++    if (!kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
++        return PMU_NONE;
++    }
++
++    if (backcompat) {
++        return PMU_DEFAULT;
++    }
++
++    file = fopen("/sys/devices/system/cpu/possible", "r");
++    if (!file) {
++        return PMU_NONE;
++    }
++
++    ret = getline(&buf, &n, file);
++    assert(!fclose(file));
++    if (ret < 0) {
++        return PMU_NONE;
++    }
++
++    if (!parse_cpus(buf, &possible_cpus, &npossible_cpus)) {
++        return PMU_NONE;
++    }
++
++    npmu_cpus = npossible_cpus;
++    pmu_cpus = bitmap_new(npmu_cpus);
++
++    if (!kvm_arm_create_scratch_host_vcpu(fdarray, &init)) {
++        return PMU_NONE;
++    }
++
++    devices = opendir("/sys/bus/event_source/devices");
++    if (!devices) {
++        goto out;
++    }
++
++    devices_fd = dirfd(devices);
++    if (devices_fd < 0) {
++        goto out;
++    }
++
++    if (kvm_device_check_attr(fdarray[2], KVM_ARM_VCPU_PMU_V3_CTRL,
++                              KVM_ARM_VCPU_PMU_V3_SET_PMU)) {
++        g_autofree char *link = NULL;
++
++        while ((ent = readdir(devices))) {
++            unsigned long new_type = ULONG_MAX;
++            const char *endptr;
++
++            /* Check if this event source exposes type and cpus. */
++            if (!read_pmu_attr(devices_fd, ent, "type", &buf, &n) ||
++                qemu_strtoul(buf, &endptr, 0, &new_type) == -EINVAL ||
++                (*endptr && *endptr != '\n') ||
++                !read_pmu_attr(devices_fd, ent, "cpus", &buf, &n) ||
++                !parse_cpus(buf, &pmu_cpus, &npmu_cpus)) {
++                continue;
++            }
++
++            if (bitmap_andnot(pmu_cpus, possible_cpus, pmu_cpus,
++                              npossible_cpus)) {
++                continue;
++            }
++
++            /* Order by the device location to ensure stable selection. */
++            while (true) {
++                ret = readlinkat(devices_fd, ent->d_name, buf, n);
++                if (ret < n) {
++                    break;
++                }
++
++                n *= 2;
++                buf = g_realloc(buf, n);
++            }
++
++            if (ret < 0) {
++                continue;
++            }
++
++            buf[ret] = 0;
++
++            if (link && strcmp(link, buf) <= 0) {
++                continue;
++            }
++
++            *type = new_type;
++            link = g_realloc(link, ret + 1);
++            strcpy(link, buf);
++        }
++
++        /* Choose an event source covers all PCPUs if available. */
++        if (link) {
++            pmu = PMU_EVENT_SOURCE;
++            goto out;
++        }
++    } else {
++        while ((ent = readdir(devices))) {
++            if (!read_pmu_attr(devices_fd, ent, "cpus", &buf, &n) ||
++                !parse_cpus(buf, &pmu_cpus, &npmu_cpus)) {
++                continue;
++            }
++
++            /*
++             * If the kernel does not support KVM_ARM_VCPU_PMU_V3_SET_PMU and
++             * there is an event source that covers all PCPUs, it will be the
++             * default one because:
++             * - such a kernel only supports armv8-pmu as a
++             *   compatible event source
++             * - there is no other armv8-pmu as it occupies fixed system
++             *   registers.
++             */
++            if (!bitmap_andnot(pmu_cpus, possible_cpus, pmu_cpus,
++                               npossible_cpus)) {
++                pmu = PMU_DEFAULT;
++                goto out;
++            }
++        }
++    }
++
++    /* Choose the fixed-counters-only PMU if available. */
++    if (kvm_device_check_attr(fdarray[2], KVM_ARM_VCPU_PMU_V3_CTRL,
++                                KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY)) {
++        pmu = PMU_FIXED_COUNTERS_ONLY;
++        goto out;
++    }
++
++out:
++    if (devices) {
++        assert(!closedir(devices));
++    }
++
++    kvm_arm_destroy_scratch_host_vcpu(fdarray);
++
++    return pmu;
++}
++
++static int set_pmu(int fd, PMU pmu, uint32_t pmu_event_source)
++{
++    int ret;
++
++    switch (pmu) {
++    case PMU_NONE:
++        ret = -ENOTSUP;
++        break;
++
++    case PMU_EVENT_SOURCE:
++        ret = kvm_device_access(fd, KVM_ARM_VCPU_PMU_V3_CTRL,
++                                KVM_ARM_VCPU_PMU_V3_SET_PMU, &pmu_event_source,
++                                true, NULL);
++        trace_kvm_arm_set_pmu(pmu_event_source, ret);
++        break;
++
++    case PMU_FIXED_COUNTERS_ONLY:
++        ret = kvm_device_access(fd, KVM_ARM_VCPU_PMU_V3_CTRL,
++                                KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY,
++                                NULL, true, NULL);
++        trace_kvm_arm_set_pmu_fixed_counters_only(ret);
++        break;
++
++    default:
++        ret = 0;
++    }
++
++    return ret;
++}
++
+ 
+ static uint64_t idregs_sysreg_to_kvm_reg(ARMSysRegs sysreg)
+ {
+@@ -283,7 +554,6 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+     int fdarray[3];
+     bool sve_supported;
+     bool el2_supported;
+-    bool pmu_supported = false;
+     uint64_t features = 0;
+     int err;
+ 
+@@ -326,9 +596,8 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+                              1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
+     }
+ 
+-    if (kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
++    if (pmu != PMU_NONE) {
+         init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
+-        pmu_supported = true;
+         features |= 1ULL << ARM_FEATURE_PMU;
+     }
+ 
+@@ -338,6 +607,11 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+ 
+     int fd = fdarray[2];
+ 
++    if (pmu != PMU_NONE && set_pmu(fd, pmu, pmu_effective_event_source)) {
++        kvm_arm_destroy_scratch_host_vcpu(fdarray);
++        return;
++    }
++
+     err = get_host_cpu_reg(fd, ahcf, ID_AA64PFR0_EL1_IDX);
+     if (unlikely(err < 0)) {
+         /*
+@@ -435,7 +709,7 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+             ahcf->isar.dbgdidr = dbgdidr;
+         }
+ 
+-        if (pmu_supported) {
++        if (pmu != PMU_NONE) {
+             /* PMCR_EL0 is only accessible if the vCPU has feature PMU_V3 */
+             err |= read_sys_reg64(fd, &ahcf->isar.reset_pmcr_el0,
+                                   ARM64_SYS_REG(3, 3, 9, 12, 0));
+@@ -631,6 +905,9 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
+ 
++    pmu = choose_pmu(&pmu_effective_event_source,
++                     pmu_user_event_source, pmu_backcompat);
++
+     if (s->kvm_eager_split_size) {
+         uint32_t sizes;
+ 
+@@ -1740,6 +2017,44 @@ int kvm_arch_msi_data_to_gsi(uint32_t data)
+     return (data - 32) & 0xffff;
+ }
+ 
++static bool kvm_arch_get_backcompat_pmu(Object *obj, Error **errp)
++{
++    return pmu_backcompat;
++}
++
++static void kvm_arch_set_backcompat_pmu(Object *obj, bool value, Error **errp)
++{
++    if (pmu != PMU_UNSET) {
++        error_setg(errp, "Unable to set backcompat-pmu after KVM has been initialized");
++        return;
++    }
++
++    pmu_backcompat = value;
++}
++
++static void kvm_arch_get_pmu(Object *obj, Visitor *v, const char *name,
++                             void *opaque, Error **errp)
++{
++    visit_type_uint64(v, name, &pmu_user_event_source, errp);
++}
++
++static void kvm_arch_set_pmu(Object *obj, Visitor *v, const char *name,
++                             void *opaque, Error **errp)
++{
++    uint64_t value;
++
++    if (pmu != PMU_UNSET) {
++        error_setg(errp, "Unable to set pmu after KVM has been initialized");
++        return;
++    }
++
++    if (!visit_type_uint64(v, name, &value, errp)) {
++        return;
++    }
++
++    pmu_user_event_source = value;
++}
++
+ static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
+                                           const char *name, void *opaque,
+                                           Error **errp)
+@@ -1776,6 +2091,17 @@ static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
+ 
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
++    ObjectProperty *property;
++
++    object_class_property_add_bool(oc, "backcompat-pmu",
++                                   kvm_arch_get_backcompat_pmu,
++                                   kvm_arch_set_backcompat_pmu);
++
++    property = object_class_property_add(oc, "pmu", "uint64", kvm_arch_get_pmu,
++                                         kvm_arch_set_pmu, NULL, NULL);
++    object_property_set_default_uint(property, UINT64_MAX);
++    object_class_property_set_description(oc, "pmu", "KVM PMU event type");
++
+     object_class_property_add(oc, "eager-split-size", "size",
+                               kvm_arch_get_eager_split_size,
+                               kvm_arch_set_eager_split_size, NULL, NULL);
+@@ -2007,6 +2333,13 @@ int kvm_arch_init_vcpu(CPUState *cs)
+         return ret;
+     }
+ 
++    if (cpu->has_pmu) {
++        ret = set_pmu(cs->kvm_fd, pmu, pmu_effective_event_source);
++        if (ret) {
++            return ret;
++        }
++    }
++
+     if (cpu_isar_feature(aa64_sve, cpu)) {
+         ret = kvm_arm_sve_set_vls(cpu);
+         if (ret) {
+diff --git a/qemu-options.hx b/qemu-options.hx
+index c799286153ff..2609dd15f08f 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -237,6 +237,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+     "                tb-size=n (TCG translation block cache size)\n"
+     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
+     "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
++    "                pmu=n (KVM PMU event type. ARM only)\n"
+     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+     "                thread=single|multi (enable multi-threaded TCG)\n"
+     "                device=path (KVM device path, default /dev/kvm)\n", QEMU_ARCH_ALL)
+@@ -310,6 +311,25 @@ SRST
+         have an impact on the memory. By default, this feature is disabled
+         (eager-split-size=0).
+ 
++    ``pmu=n``
++        Specifies the event source to be used for Arm PMUv3 emulation. The value
++        specified here is identical to the one used in perf_event_open(2), but
++        not all event sources are compatible.
++
++        Since QEMU 11.0, the default behavior is to select a backend that
++        supports all host CPUs. The emulation cannot be enabled if there is no
++        such backend exists. Use this property to choose a specific event source
++        when there are several such event sources or to choose one that only
++        supports a subset of the host CPUs. If you specify an event source that
++        only supports a subset of host CPUs, you must ensure that guest CPUs run
++        exclusively on those supported host CPUs.
++
++        Prior to 11.0, KVM chose an arbitrary host PMU that supports at least
++        one CPU in the process's affinity.
++
++        Ensure that the CPU's ``pmu`` property is also set to ``on`` to enable
++        the emulation when setting this property.
++
+     ``notify-vmexit=run|internal-error|disable,notify-window=n``
+         Enables or disables notify VM exit support on x86 host and specify
+         the corresponding notify window to trigger the VM exit if enabled.
+diff --git a/target/arm/trace-events b/target/arm/trace-events
+index 8502fb3265ca..9a6072f50192 100644
+--- a/target/arm/trace-events
++++ b/target/arm/trace-events
+@@ -13,6 +13,8 @@ arm_gt_update_irq(int timer, int irqstate) "gt_update_irq: timer %d irqstate %d"
+ 
+ # kvm.c
+ kvm_arm_fixup_msi_route(uint64_t iova, uint64_t gpa) "MSI iova = 0x%"PRIx64" is translated into 0x%"PRIx64
++kvm_arm_set_pmu(uint32_t type, int ret) "type %" PRIu32 " ret %d"
++kvm_arm_set_pmu_fixed_counters_only(int ret) "ret %d"
+ 
+ # cpu.c
+ arm_cpu_reset(uint64_t mp_aff) "cpu %" PRIu64
+
+---
+base-commit: b83371668192a705b878e909c5ae9c1233cbd5fb
+change-id: 20250730-kvm-8fc06c8f722a
+
+Best regards,
+--  
+Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
