@@ -1,23 +1,23 @@
-Received: from out28-3.mail.aliyun.com (out28-3.mail.aliyun.com [115.124.28.3])
+Received: from out28-75.mail.aliyun.com (out28-75.mail.aliyun.com [115.124.28.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2523B0AED
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 06:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E133AFB13
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 06:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783317694; cv=none; b=IQvhw/IbCw51oQegyj1KujNtT4c6xKGkHbPAGeLEespNoCXUgUSU3E3VLcNGcaEGvF3LSrCr+nOS4R4uV2evT08KDz3+PtyvtCXDLxZByEHzFUf+k44nktGgEa8kY4l4X1xqB1NMkzBMGbrEZkefHlOJiFAg+zh/lkBI0XmoyA4=
+	t=1783317694; cv=none; b=T1F9wOT/E9KXR5EWyv/hTSIpQvsGgHgUQqu1dbGEwc6xKsa0jHEwYAamWjezC+OTre09D20XU56OeLinrkuN+JVm88CKCgn/fQp8LrDuYBhOiLAarVp2vVTOGtt2h3r7IQ/OaxE/XC2KFXKKCcrtVgtGWjVQB/7yjj11cWON+fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783317694; c=relaxed/simple;
-	bh=TygZOO+VtCDv+hjq3MmIE+vJ3oErW5502VVwJiYWXaE=;
+	bh=U7k0dEsnEbDnBsgHMJeDCeIbDA+x8Synf2B4dHiI2q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9CuJX8Tsw4gWAYwSqH02+f4/+WcsaMiZx+3p7uHeT1au1vSB+GFm50wF1HUpcZzh6dhIeyQAi8ekq4om+YvdEAOxPhuiCvQ9K1C6Du56EH2h+vwS7L6viThURI7Kg9FA9GjNxtRFfRbPh2d71HCWvWoOjhqhY/NHS4b3EP5gDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.3
+	 MIME-Version; b=r13BeCdjP5UmlqjRqvzMPZZZzscqkl4Cvn+lK3DxtgBnTywEYSJy0w/x1z0y4VJv3PQdcKApZlc6RVKuovyQnfpRvFPFJyxmJbAzaXxNe0unid/CHK3NkRwKYxqfT+lEXyILumoStGnOGnTTTGq4L21wXyOQCVI9tORYzMF8aPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436261|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.228352-0.00012945-0.771519;FP=7097510869165867103|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.iEEStrb_1783317365;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEEStrb_1783317365 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07472231|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00900542-0.00101272-0.989982;FP=2852828158138205695|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.iEEStqt_1783317365;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEEStqt_1783317365 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Mon, 06 Jul 2026 13:56:06 +0800
+          Mon, 06 Jul 2026 13:56:05 +0800
 From: zhang_wei@open-hieco.net
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org,
@@ -25,9 +25,9 @@ Cc: kvm@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	Tina Zhang <zhang_wei@open-hieco.net>
-Subject: [PATCH v1 5/9] target/i386/kvm: Use AMD PMU MSR paths for Hygon
-Date: Mon,  6 Jul 2026 13:55:26 +0800
-Message-ID: <20260706055530.1752094-6-zhang_wei@open-hieco.net>
+Subject: [PATCH v1 4/9] target/i386/kvm: Use AMD MCE status encoding for Hygon
+Date: Mon,  6 Jul 2026 13:55:25 +0800
+Message-ID: <20260706055530.1752094-5-zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
 References: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
@@ -41,98 +41,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Tina Zhang <zhang_wei@open-hieco.net>
 
-On SVM, KVM uses the AMD PMU implementation and AMD PMU CPUID/MSR
-layout.  Hygon guests that enable PMU and request AMD PMU CPUID
-features such as perfctr-core need QEMU's KVM PMU setup and MSR state
-paths to use that layout too.
+QEMU's KVM memory-failure injection path builds synthetic MCI_STATUS
+records for the guest CPU.  The status encoding is vendor-specific:
+Intel-style records use bits such as MCI_STATUS_S and MCI_STATUS_AR for
+action-required events, while the AMD path uses the AMD memory-failure
+encoding.
 
-The relevant QEMU KVM PMU paths are currently restricted to
-AuthenticAMD guests: host/guest PMU compatibility checks, AMD PMU
-information initialization, and AMD PMU MSR save/restore.  As a result,
-a Hygon Dhyana guest can be rejected as unsupported because the guest
-vendor is HygonGenuine rather than AuthenticAMD.  If the VM continues,
-QEMU still skips AMD PMU setup and the AMD PMU MSR get/put paths.
+Today QEMU selects the AMD status encoding only for AuthenticAMD guests.
+Hygon guests therefore get Intel-style injected status bits, including
+MCI_STATUS_S and MCI_STATUS_AR for action-required events, and a
+non-deferred action-optional record.
 
-Treat Hygon as using the AMD PMU CPUID/MSR layout for these KVM PMU
-paths.  Because the PMU MSR layout is shared, accept both AMD and Hygon
-hosts for guests using that layout.  This intentionally allows the PMU
-compatibility check to pass for AMD-host/Hygon-guest and
-Hygon-host/AMD-guest combinations.
-
-This does not enable PMU, perfctr-core, or perfmon-v2 by default for the
-Dhyana CPU model.  On backward migration to older QEMU, Hygon PMU MSR
-state may still be dropped because older QEMU did not write that state
-back through the AMD PMU MSR KVM paths for Hygon guests.
+Use the AMD injected-memory-failure MCE status encoding for Hygon guests
+as well.  This does not depend on Hygon exposing CPUID 0x80000007.EBX
+recovery features such as SUCCOR, and it does not advertise any new
+recovery capability.  The change is limited to QEMU's synthetic KVM
+memory-failure MCE status; it does not change CPUID, MCE bank state, or
+migrated CPU state.
 
 Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
 ---
- target/i386/kvm/kvm.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ target/i386/kvm/kvm.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 8e2bfbbe1d..215e0c8f03 100644
+index 64cc421abe..8e2bfbbe1d 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -2175,6 +2175,21 @@ static void kvm_init_pmu_info_amd(struct kvm_cpuid2 *cpuid, X86CPU *cpu)
-     }
+@@ -698,6 +698,15 @@ static int kvm_get_mce_cap_supported(KVMState *s, uint64_t *mce_cap,
+     return kvm_ioctl(s, KVM_X86_GET_MCE_CAP_SUPPORTED, mce_cap);
  }
  
 +/*
-+ * KVM exposes the AMD PMU CPUID/MSR layout for Hygon guests, so QEMU must
-+ * use the AMD PMU setup and MSR state paths for Hygon too.
++ * Use AMD-style MCE status records for QEMU-injected memory failures on
++ * AMD and Hygon CPUs.
 + */
-+static bool kvm_pmu_uses_amd_msrs(const CPUX86State *env)
++static bool kvm_mce_inject_uses_amd_status(const CPUX86State *env)
 +{
 +    return IS_AMD_CPU(env) || IS_HYGON_CPU(env);
 +}
 +
-+static bool host_cpu_uses_amd_pmu_msrs(const char *host_vendor)
-+{
-+    return g_str_equal(host_vendor, CPUID_VENDOR_AMD) ||
-+           g_str_equal(host_vendor, CPUID_VENDOR_HYGON);
-+}
-+
- static bool is_host_compat_vendor(CPUX86State *env)
+ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
  {
-     char host_vendor[CPUID_VENDOR_SZ + 1];
-@@ -2191,8 +2206,8 @@ static bool is_host_compat_vendor(CPUX86State *env)
-         return true;
-     }
+     CPUState *cs = CPU(cpu);
+@@ -707,7 +716,7 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
+     uint64_t mcg_status = MCG_STATUS_MCIP | MCG_STATUS_RIPV;
+     int flags = 0;
  
--    return g_str_equal(host_vendor, CPUID_VENDOR_AMD) &&
--           IS_AMD_CPU(env);
-+    return host_cpu_uses_amd_pmu_msrs(host_vendor) &&
-+           kvm_pmu_uses_amd_msrs(env);
- }
- 
- static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid, X86CPU *cpu)
-@@ -2222,7 +2237,7 @@ static void kvm_init_pmu_info(struct kvm_cpuid2 *cpuid, X86CPU *cpu)
- 
-     if (IS_INTEL_CPU(env) || IS_ZHAOXIN_CPU(env)) {
-         kvm_init_pmu_info_intel(cpuid);
--    } else if (IS_AMD_CPU(env)) {
-+    } else if (kvm_pmu_uses_amd_msrs(env)) {
-         kvm_init_pmu_info_amd(cpuid, cpu);
-     }
- }
-@@ -4309,7 +4324,7 @@ static int kvm_put_msrs(X86CPU *cpu, KvmPutState level)
-             }
-         }
- 
--        if (IS_AMD_CPU(env) && pmu_version > 0) {
-+        if (kvm_pmu_uses_amd_msrs(env) && pmu_version > 0) {
-             uint32_t sel_base = MSR_K7_EVNTSEL0;
-             uint32_t ctr_base = MSR_K7_PERFCTR0;
-             /*
-@@ -4871,7 +4886,7 @@ static int kvm_get_msrs(X86CPU *cpu)
-         }
-     }
- 
--    if (IS_AMD_CPU(env) && pmu_version > 0) {
-+    if (kvm_pmu_uses_amd_msrs(env) && pmu_version > 0) {
-         uint32_t sel_base = MSR_K7_EVNTSEL0;
-         uint32_t ctr_base = MSR_K7_PERFCTR0;
-         /*
+-    if (!IS_AMD_CPU(env)) {
++    if (!kvm_mce_inject_uses_amd_status(env)) {
+         status |= MCI_STATUS_S | MCI_STATUS_UC;
+         if (code == BUS_MCEERR_AR) {
+             status |= MCI_STATUS_AR | 0x134;
 -- 
 2.43.7
 
