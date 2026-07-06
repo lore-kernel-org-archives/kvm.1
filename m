@@ -1,139 +1,338 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAF381B1C;
-	Mon,  6 Jul 2026 12:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D13EFFC6
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 12:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783342630; cv=none; b=Gv+ZX7oRry32jTozi1td7kzTopq0HPa4VkV39+Sazp/LPPBJDhoovIcIduAYrAIIYThb/1jQIJaIY034TOx61EoG0CFfsSUwk0wDjRdnimvG8zQ+1xPb2wbsqX2hXb/p2ishRSBDr03jR+ns4gNimTSyGln4lC+8dpxFAddcJDw=
+	t=1783342667; cv=none; b=MVt4BC8TDc161PLZ4IarQwbSoLOSPjoWa8Jz4l7XaUiB9MpkjoPBT//aZ7ei+WaoIRwAl092pcfdUFtiqSMpSyikybKPzNu2JU+MMUNabIIZafgU8hpuXsCdol0YYadkPlVJXNRZRY9ydKZlwQc+tJQy9iKz0Tjb8StKxinLyR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783342630; c=relaxed/simple;
-	bh=VUZIkXufgwBW/JMrzaWRzp9hNDKyQfFV0tnX6ij9HlE=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JfOK28rkaWNN+mNjp2umjOYrEtRqIrz1tXqGr1UQFKj9R8fPB49m4tb5M7w+JkWpy0cg962Jmdm/pUYTz+uav7QVut0rqaZqrysX0I4WJYHZ1KBKYztWFs8sghnHWCr+mKfPG2IeCa5d+Bja9s1aSAN4RKj0y8OFmgzAr6+bnKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkBcHryg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783342667; c=relaxed/simple;
+	bh=a+V0yTh3/zuuqk1Mf2Znwj6q9kXJUDka+8oYzLAfYA4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y06m9phy/nCvTRHzdm2zqsTmwucO+d/K0hHR32oW8WFJ/9K31wWMoKszJ2PSOOlZpFjHRD6Nnl+X6JdI1SWa3HYaBreM6EMn7Q5v25TwwVbpp1ZzYDv/VG1/B7al6DR82f9oFid4X1QeNHSC1Vq3QgV4E360YQlBWexH9qcS+SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H88q5VQK; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkBcHryg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9581F000E9;
-	Mon,  6 Jul 2026 12:57:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783342628;
-	bh=GCyaRI2v+Msir348xm9C8l5PWA+QlX0OzfCc70e43Ik=;
-	h=Date:From:To:Subject;
-	b=QkBcHrygH5Ere2gGZ4IyKeQAgDzFCP4pMLmbC0I83R0o1GjlJpPUMR+jerIqInvf7
-	 7X0TiE/VD50oxAlFigliU+PgUxb81uTzPO9uvaxv3JXsOEV3qsy9u1lA5EI9qafcqU
-	 3pw36XTN6XIZ7UinHMVqp31cmfLQjQxoU63HdjksOhilnPFgda6VmTqafvtpB0cfUp
-	 fAVe437fW9nOmEqL35sDZ3DM2BukTie3OJG+njNbtHwoeP6oAkyFI57AsiHuKoWfsj
-	 zps9YuvZ9SGDFXJMMh3P+OJ10C8qX7+nR1nfPR8h5TX0696OcqXg9O4K/KYynZ2fSv
-	 IXF1Ji/Ip+wIg==
-Date: Mon, 6 Jul 2026 21:57:06 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-To: Linux PCI <linux-pci@vger.kernel.org>, 
-	Linux IOMMU <iommu@lists.linux.dev>, Linux KVM <kvm@vger.kernel.org>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Bjorn Helgaas <helgaas@kernel.org>, =?utf-8?B?SsO2cmc=?= Roedel <joro@8bytes.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: The VFIO/IOMMU/PCI MC at LPC 2026
-Message-ID: <20260706123705.GB3821042@rocinante>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H88q5VQK"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783342653;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OjFikUNuPI2n8ZZt1QEzOtihOqsefSty5HS8pTICopI=;
+	b=H88q5VQK6NqQgGY3kEsq1eEr14cqrv/6DD2eN3V5JsHcJspPjquBfXAw5Apj1brCu0T6wy
+	ggVGuWusnd40U5BETbluOBlNVEtJVnFGQ4ZemBxgd/CrNi0jDnqYDbL5WF7vDrIcRH2SjL
+	GLoQoj2mjEjKEJdcGAEY+2srcf+xoXs=
+From: Usama Arif <usama.arif@linux.dev>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	kas@kernel.org
+Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+Date: Mon,  6 Jul 2026 05:57:24 -0700
+Message-ID: <20260706125726.729431-1-usama.arif@linux.dev>
+In-Reply-To: <20260706084805.8400-12-kirill@shutemov.name>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello everyone!
+On Mon,  6 Jul 2026 09:48:00 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-A quick reminder that our VFIO/IOMMU/PCI micro-conference (MC) has been
-accepted for this year's Linux Plumbers Conference, and it is now open for
-topic submissions.  More at:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> PAGEMAP_SCAN already reports PAGE_IS_WRITTEN from the inverted uffd
+> PTE bit, targeting the UFFDIO_WRITEPROTECT workflow. UFFDIO_RWPROTECT
+> reuses the same PTE bit as a marker for read-write protection, but
+> "has been written" and "has been accessed" are distinct semantic
+> signals — they happen to share one PTE bit today only because the two
+> implementations share infrastructure.
+> 
+> Give RWP its own pagemap category so the UAPI does not conflate them:
+> 
+>   PAGE_IS_WRITTEN   reported on VM_UFFD_WP VMAs,  !pte_uffd(pte)
+>   PAGE_IS_ACCESSED  reported on VM_UFFD_RWP VMAs, !pte_uffd(pte)
+> 
+> Both still read the same PTE bit today, but each is scoped to the VMA
+> whose registered mode makes the bit meaningful. If a future
+> implementation moves RWP to a separate PTE bit, only PAGE_IS_ACCESSED
+> switches over.
+> 
+> This is a UAPI narrowing. Outside VM_UFFD_WP VMAs the uffd bit is
+> always clear, so PAGEMAP_SCAN used to flag PAGE_IS_WRITTEN on every
+> present PTE there — a meaningless duplicate of PAGE_IS_PRESENT. Now
+> PAGE_IS_WRITTEN fires only inside VM_UFFD_WP VMAs.
+> 
+> pagemap_hugetlb_category() now takes the vma like its PTE/PMD peers.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  Documentation/admin-guide/mm/pagemap.rst | 13 +++--
+>  fs/proc/task_mmu.c                       | 63 +++++++++++++++++-------
+>  include/uapi/linux/fs.h                  |  1 +
+>  tools/include/uapi/linux/fs.h            |  1 +
+>  4 files changed, 57 insertions(+), 21 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
+> index c57e61b5d8aa..ffa690a171c8 100644
+> --- a/Documentation/admin-guide/mm/pagemap.rst
+> +++ b/Documentation/admin-guide/mm/pagemap.rst
+> @@ -19,8 +19,11 @@ There are four components to pagemap:
+>      * Bit  55    pte is soft-dirty (see
+>        Documentation/admin-guide/mm/soft-dirty.rst)
+>      * Bit  56    page exclusively mapped (since 4.2)
+> -    * Bit  57    pte is uffd-wp write-protected (since 5.13) (see
+> -      Documentation/admin-guide/mm/userfaultfd.rst)
+> +    * Bit  57    pte is tracked by userfaultfd (since 5.13) — in a
+> +      ``VM_UFFD_WP`` VMA this indicates a write-protected PTE; in a
+> +      ``VM_UFFD_RWP`` VMA it indicates an RWP-protected PTE. WP and
+> +      RWP are mutually exclusive per VMA, so the meaning is
+> +      unambiguous. See Documentation/admin-guide/mm/userfaultfd.rst.
+>      * Bit  58    pte is a guard region (since 6.15) (see madvise (2) man page)
+>      * Bits 59-60 zero
+>      * Bit  61    page is file-page or shared-anon (since 3.5)
+> @@ -244,7 +247,8 @@ in this IOCTL:
+>  Following flags about pages are currently supported:
+>  
+>  - ``PAGE_IS_WPALLOWED`` - Page has async-write-protection enabled
+> -- ``PAGE_IS_WRITTEN`` - Page has been written to from the time it was write protected
+> +- ``PAGE_IS_WRITTEN`` - Page in a ``UFFDIO_REGISTER_MODE_WP`` VMA has been
+> +  written to since it was write-protected. Only reported inside such VMAs.
+>  - ``PAGE_IS_FILE`` - Page is file backed
+>  - ``PAGE_IS_PRESENT`` - Page is present in the memory
+>  - ``PAGE_IS_SWAPPED`` - Page is in swapped
+> @@ -252,6 +256,9 @@ Following flags about pages are currently supported:
+>  - ``PAGE_IS_HUGE`` - Page is PMD-mapped THP or Hugetlb backed
+>  - ``PAGE_IS_SOFT_DIRTY`` - Page is soft-dirty
+>  - ``PAGE_IS_GUARD`` - Page is a part of a guard region
+> +- ``PAGE_IS_ACCESSED`` - Page in a ``UFFDIO_REGISTER_MODE_RWP`` VMA has been
+> +  accessed since RWP was applied. Only reported inside such VMAs. See
+> +  Documentation/admin-guide/mm/userfaultfd.rst for the RWP workflow.
+>  
+>  The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
+>  
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 5b55c59573a3..2d724156763d 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2283,7 +2283,7 @@ static const struct mm_walk_ops pagemap_ops = {
+>   * Bits 5-54  swap offset if swapped
+>   * Bit  55    pte is soft-dirty (see Documentation/admin-guide/mm/soft-dirty.rst)
+>   * Bit  56    page exclusively mapped
+> - * Bit  57    pte is uffd-wp write-protected
+> + * Bit  57    pte is tracked by userfaultfd (uffd-wp or RWP)
+>   * Bit  58    pte is a guard region
+>   * Bits 59-60 zero
+>   * Bit  61    page is file-page or shared-anon
+> @@ -2418,7 +2418,7 @@ static int pagemap_release(struct inode *inode, struct file *file)
+>  				 PAGE_IS_FILE |	PAGE_IS_PRESENT |	\
+>  				 PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |	\
+>  				 PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY |	\
+> -				 PAGE_IS_GUARD)
+> +				 PAGE_IS_GUARD | PAGE_IS_ACCESSED)
+>  #define PM_SCAN_FLAGS		(PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC)
+>  
+>  struct pagemap_scan_private {
+> @@ -2443,8 +2443,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+>  
+>  		categories = PAGE_IS_PRESENT;
+>  
+> -		if (!pte_uffd(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_uffd(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
 
-  https://lpc.events/event/20/contributions/2326/
+The above is an ABI change for existing PAGEMAP_SCAN users although not
+sure if there is someone that cares. Would below be a better alternative
+to limit the ABI change?
 
-LPC 2026 will be held in Prague, Czechia, from the 5th to the 7th of October.
-Please note that this year presenters and micro-conference topic leads are
-expected to attend in person; remote presentations will be considered only on
-an emergency basis.  See https://lpc.events for more details and the latest
-updates.
+if (!pte_uffd(pte)) {
+	if (userfaultfd_rwp(vma))
+		categories |= PAGE_IS_ACCESSED;
+	else
+		categories |= PAGE_IS_WRITTEN;
+}
 
-If you have a topic you would like to bring to the MC, please submit it through
-the official Call for Proposals (CfP) process at:
 
-  https://lpc.events/event/20/abstracts/
-
-Choose "Submit new abstract" and make sure to select the "VFIO/IOMMU/PCI MC"
-entry from the Track drop-down menu, so that your proposal is submitted against
-the correct track.
-
-Two dates are worth keeping in mind:
-
-  - 10th of July: submit a topic by this date to become eligible to
-    pre-register for the conference.
-
-  - 7th of August, 23:59 UTC: the Call for Proposals closes.  This is the
-    final deadline, shared by all micro-conferences.
-
-The sooner the better, as it gives us more time to review the submissions and
-plan the schedule ahead.  And do remember: you can submit early and refine the
-proposal later; there will be time.  Even a rough draft is fine, so please
-don't hesitate.
-
-If you are new to Linux Plumbers Conference, or you are not quite sure what
-a micro-conference topic should look like, Steven Rostedt's write-up on the
-ideal micro-conference topic session is well worth a read before you submit:
-
-  > Hello Microconference runners and topic presenters,
-  >
-  >
-  > This is a reminder that microconeference topics are not presentations.
-  > Think of the "Problem Statement" you would like to present. Any
-  > presentation should be short and direct to the point. The goal of the
-  > presentation is to bring the audience up to speed, so that they can offer
-  > useful contributions to the issue you want to address.
-  >
-  > Ideal presentations should be no more than a third of the allotted time for
-  > the topic. If your topic time slot is 15 minutes, present for no more than
-  > 5 minutes. If your topic is 30 minutes, present for no more than 10
-  > minutes. At a maximum, do not present for any more than half the allotted
-  > time. Maximum for 15 minute time slots is a 7 minute presentation. Maximum
-  > for 30 minutes is a 15 minute presentation.
-  >
-  > The best slides are those that can be referenced during the discussion. If
-  > you propose an API, have a slide with that API. If you propose a work flow,
-  > have a work flow diagram. Something you can go back to and point to if the
-  > discussion needs more clarification.
-  >
-  > And please have some slides that explain what you want to discuss. If only
-  > three people in the session understand the problem, you will only have
-  > three people in that discussion and you will lose out on the potential of
-  > diversity in ideas, that a wider group can bring.
-  >
-  > Remember, you are not giving a talk. You are leading a discussion to a
-  > problem you would like to solve. Bring as much to the table that can assist
-  > you in that goal.
-  >
-  > And I would like to sincerely thank all of you in your participation in
-  > this year's Linux Plumbers microconferences. Without your work, Linux
-  > Plumbers would not be as successful as it is today.
-  >
-  > Steven Rostedt
-  > Linux Plumbers Microconference Chair
-
-In short, a micro-conference topic is a problem statement rather than a
-finished talk.  The idea is to explain a problem you are currently working on,
-show what you have tried so far, and then use the time in the room to discuss
-how best to solve it.  More at:
-
-  https://lpc.events/blog/current/index.php/2023/06/26/the-ideal-microconference-topic-session/
-
-As always, please get in touch with me directly, or with any of the other
-organisers, if you need any assistance or have any questions.
-
-Looking forward to seeing you all in Prague!
-
-Thank you!
-
-	Alex, Bjorn, Jörg, Lorenzo and Krzysztof
+>  
+>  		if (p->masks_of_interest & PAGE_IS_FILE) {
+>  			page = vm_normal_page(vma, addr, pte);
+> @@ -2461,8 +2465,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+>  
+>  		categories = PAGE_IS_SWAPPED;
+>  
+> -		if (!pte_swp_uffd_any(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_swp_uffd_any(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  
+>  		entry = softleaf_from_pte(pte);
+>  		if (softleaf_is_guard_marker(entry))
+> @@ -2511,8 +2519,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+>  		struct page *page;
+>  
+>  		categories |= PAGE_IS_PRESENT;
+> -		if (!pmd_uffd(pmd))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pmd_uffd(pmd)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  
+>  		if (p->masks_of_interest & PAGE_IS_FILE) {
+>  			page = vm_normal_page_pmd(vma, addr, pmd);
+> @@ -2526,8 +2538,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  	} else {
+>  		categories |= PAGE_IS_SWAPPED;
+> -		if (!pmd_swp_uffd(pmd))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pmd_swp_uffd(pmd)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (pmd_swp_soft_dirty(pmd))
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  
+> @@ -2560,7 +2576,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+>  #ifdef CONFIG_HUGETLB_PAGE
+> -static unsigned long pagemap_hugetlb_category(pte_t pte)
+> +static unsigned long pagemap_hugetlb_category(struct vm_area_struct *vma,
+> +					      pte_t pte)
+>  {
+>  	unsigned long categories = PAGE_IS_HUGE;
+>  
+> @@ -2575,8 +2592,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
+>  	if (pte_present(pte)) {
+>  		categories |= PAGE_IS_PRESENT;
+>  
+> -		if (!huge_pte_uffd(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!huge_pte_uffd(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (!PageAnon(pte_page(pte)))
+>  			categories |= PAGE_IS_FILE;
+>  		if (is_zero_pfn(pte_pfn(pte)))
+> @@ -2586,8 +2607,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
+>  	} else {
+>  		categories |= PAGE_IS_SWAPPED;
+>  
+> -		if (!pte_swp_uffd_any(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_swp_uffd_any(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (pte_swp_soft_dirty(pte))
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  	}
+> @@ -2863,7 +2888,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
+>  		goto flush_and_return;
+>  	}
+>  
+> -	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
+> +	if (userfaultfd_wp(vma) && !p->arg.category_anyof_mask &&
+> +	    !p->arg.category_inverted &&
+>  	    p->arg.category_mask == PAGE_IS_WRITTEN &&
+>  	    p->arg.return_mask == PAGE_IS_WRITTEN) {
+>  		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
+> @@ -2938,7 +2964,8 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
+>  		/* Go the short route when not write-protecting pages. */
+>  
+>  		pte = huge_ptep_get(walk->mm, start, ptep);
+> -		categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
+> +		categories = p->cur_vma_category |
+> +			     pagemap_hugetlb_category(vma, pte);
+>  
+>  		if (!pagemap_scan_is_interesting_page(categories, p))
+>  			return 0;
+> @@ -2950,7 +2977,7 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
+>  	ptl = huge_pte_lock(hstate_vma(vma), vma->vm_mm, ptep);
+>  
+>  	pte = huge_ptep_get(walk->mm, start, ptep);
+> -	categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
+> +	categories = p->cur_vma_category | pagemap_hugetlb_category(vma, pte);
+>  
+>  	if (!pagemap_scan_is_interesting_page(categories, p))
+>  		goto out_unlock;
+> diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
+> index bd87262f2e34..34c6f219462a 100644
+> --- a/include/uapi/linux/fs.h
+> +++ b/include/uapi/linux/fs.h
+> @@ -471,6 +471,7 @@ typedef int __bitwise __kernel_rwf_t;
+>  #define PAGE_IS_HUGE		(1 << 6)
+>  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
+>  #define PAGE_IS_GUARD		(1 << 8)
+> +#define PAGE_IS_ACCESSED	(1 << 9)
+>  
+>  /*
+>   * struct page_region - Page region with flags
+> diff --git a/tools/include/uapi/linux/fs.h b/tools/include/uapi/linux/fs.h
+> index 24ddf7bc4f25..f0a26309b6d5 100644
+> --- a/tools/include/uapi/linux/fs.h
+> +++ b/tools/include/uapi/linux/fs.h
+> @@ -364,6 +364,7 @@ typedef int __bitwise __kernel_rwf_t;
+>  #define PAGE_IS_HUGE		(1 << 6)
+>  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
+>  #define PAGE_IS_GUARD		(1 << 8)
+> +#define PAGE_IS_ACCESSED	(1 << 9)
+>  
+>  /*
+>   * struct page_region - Page region with flags
+> -- 
+> 2.54.0
+> 
+> 
