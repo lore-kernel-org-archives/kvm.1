@@ -1,158 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F62740D56F
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E622C3BB672
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329653; cv=none; b=MRbaLgjw2QZXu6zpC3FeU+4VR2PWdOshLzg3yFPTPVFoHEXMhM6lBi3m+CpEmNvGpNBu0H/yEwWtk5XCvZwDk3ZsWNWz7u6BISLL4DIibkafHWdeErEBQfYL2I4BMzTl303WSp9WskzGdNPko4r2UZ5SRMs6n1J+SRd+UGR4haU=
+	t=1783329660; cv=none; b=WpwPx5vJPO6tYvrLOiKTPxizoOv4yJKCoQM8mL4+xjSjY0BTHFzBwTXHFuPzHDn9QGVD0Pybea3AblqbqD48sVxrxhHxRiDY4YTCcestw0OjilGtGHJYIYRggJZ57Mb9VZfXggx6ti26aA/Ok75w6+bj9kgV17FaEsSgcoUSFBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329653; c=relaxed/simple;
-	bh=Fj5zX0TvFAUcnITEjkJifq1T5acN6r9QeGeFT42FQoc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jBhwCn+vUtCNlA+3IyJ3YynZCNIM3qgCQydO5d6MPhfHDQAVCOyfd3k4HZljlJ9C7PJHCi0QCq3IqhUUpcOCbSLhuMJQjy7hgqhAfcTALpCW/c8MTdxBsK9nHKiZ5IhbgJsX2/7Sa3ClRx1nnyIyAbeDyVFLnkTfKuNH3ItiMtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2YzAz0B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783329660; c=relaxed/simple;
+	bh=aXFcvMPJglyyPN/cp/+2729sZbTrCA3QYDjLxsa/gl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oR/S0MPNAZvj0Rusv+LcpeGdVBSckBvUpjRz0De9EptohRiy53dHkGpxs/75tGImpRmBf2w8To53sVaAbVVZfVBjJZ6ro1WgZ9kPw+atlTTm3UPsyKxG/rhdUZP7qoguSJYmTOUfoP+aSLaiWmf01fE0ZzFI/n536YbPxVB48Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hQPFFaRO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2YzAz0B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F521F000E9;
-	Mon,  6 Jul 2026 09:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329649;
-	bh=8vmwigdfZTM7GuYLrdl6QPvwyGhz2tpLQUnXU0ZgpnA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=V2YzAz0B7Rp1cQ4tOD9VJ5pNKb2s3FSHiCmRzWqY3yXHUAXF93FByZdKdzElT511l
-	 wvpGqhcZfhKEzxiqF7EiDIB8gQHPPiL79wg17Zym5NNArGS+F+RAWreTKUcdyeGoDW
-	 8iLLXI/0oMq7GN25VXA/zIyAjmCccKqnZ4fdG9LL+Q20IX3lNiCVKvv/2LaPrEcoQ8
-	 TBUwsEbkJtmgqxcyEXkPyxfM4cndphNH2RkUE0cTlx4b0hMfDnuoceS1c8YsII7SKq
-	 +XlXyUy0kLwCi8gTVtY3Zr7TlAnEMH99DPkWbwKY2rJB90o6zBQkCpLH2bI9G6X5dU
-	 WLzDAEd/Q1+aQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 07/15] mm: preserve RWP marker across PTE rewrites
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706084805.8400-8-kirill@shutemov.name>
-References: <20260706084805.8400-1-kirill@shutemov.name>
- <20260706084805.8400-8-kirill@shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:20:48 +0000
-Message-Id: <20260706092049.08F521F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hQPFFaRO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783329656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+Ffk881gDyUgg9mQ+JlQ4lLzZ/nMxQSbsnUYykxYCb0=;
+	b=hQPFFaROD3DOk+G2ij/0vkW07vJSz3wAa021fnZjYRyoI7OuT0rODIwSYjUPQrAiE6J6vU
+	7k3sLD2863lTewto/dK1qy1GMRhQI8wgItU65GIUnkArSH6OHp796dmmKbcbiOQk20Q1t2
+	zNMmHkEsV5UTPDMSncdBWXE4yYnZ/a4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-vpE8Ft9LOJqF2Uv59DgHgA-1; Mon,
+ 06 Jul 2026 05:20:52 -0400
+X-MC-Unique: vpE8Ft9LOJqF2Uv59DgHgA-1
+X-Mimecast-MFC-AGG-ID: vpE8Ft9LOJqF2Uv59DgHgA_1783329650
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9DD31955F1F;
+	Mon,  6 Jul 2026 09:20:49 +0000 (UTC)
+Received: from work.fritz.box (unknown [10.44.49.159])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ABED53000B4D;
+	Mon,  6 Jul 2026 09:20:44 +0000 (UTC)
+From: Tim Wiederhake <twiederh@redhat.com>
+To: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	x86@kernel.org
+Cc: Tim Wiederhake <twiederh@redhat.com>
+Subject: [PATCH 0/4] KVM: x86: Document and enforce APIC base memory hole
+Date: Mon,  6 Jul 2026 11:20:15 +0200
+Message-ID: <20260706092021.3625908-2-twiederh@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] Unconditional arming of the RWP marker on moved pages during U=
-FFDIO_MOVE destroys resolved page states and corrupts non-present huge PMDs.
---
+When an in-kernel irqchip is enabled on x86, KVM installs a private
+memory slot at the default APIC base address (0xfee00000) during vcpu
+creation.  If user space has already mapped a memory region covering
+that address, vcpu creation fails with -EEXIST.  The same happens in
+reverse: mapping memory over the APIC base after vcpu creation also
+fails with -EEXIST.
 
-commit e8dc073d377e5c18e627781dbdae660ee5f20a44
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+None of this is documented, and the error is reported far from where
+the actual conflict is introduced.  A VMM developer hitting this has
+to trace through KVM internals to understand what went wrong.
 
-mm: preserve RWP marker across PTE rewrites
+This series documents the two undocumented constraints (irqchip before
+vcpu, APIC base memory hole) and adds early checks so the error is
+reported at the ioctl that actually violates the constraint.
 
-This commit wires the preservation of the uffd PTE bit and PAGE_NONE
-marker through various paths that rewrite PTEs on VM_UFFD_RWP VMAs,
-including swap, device-exclusive, migration, fork, and mprotect.
+Patches 1-2 are documentation only.  Patches 3-4 add early validation
+that turns a confusing -EEXIST at vcpu creation into an explicit error
+at the point where the conflict is introduced.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index aca2f10fc1f1b..7ee7651202e2a 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
+Tested with a reproducer that exercises all six orderings of
+{irqchip, memory, vcpu} creation against both overlapping and
+non-overlapping memory regions.
 
-[ ... ]
+Tim Wiederhake (4):
+  KVM: x86: Document that KVM_CREATE_IRQCHIP must precede vcpu creation
+  KVM: x86: Document APIC base address constraint for in-kernel irqchip
+  KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is already mapped
+  KVM: x86: Reject user memory regions covering the APIC base
 
-> @@ -2846,6 +2867,13 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_=
-t *dst_pmd, pmd_t *src_pmd, pm
->  		_dst_pmd =3D move_soft_dirty_pmd(src_pmdval);
->  		_dst_pmd =3D clear_uffd_wp_pmd(_dst_pmd);
->  	}
-> +
-> +	/* Re-arm RWP on the moved PMD if dst_vma is RWP-registered. */
-> +	if (userfaultfd_rwp(dst_vma)) {
-> +		_dst_pmd =3D pmd_modify(_dst_pmd, PAGE_NONE);
-> +		_dst_pmd =3D pmd_mkuffd(_dst_pmd);
-> +	}
-> +
->  	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
-> =20
->  	src_pgtable =3D pgtable_trans_huge_withdraw(mm, src_pmd);
+ Documentation/virt/kvm/api.rst |  8 +++++++-
+ arch/x86/kvm/x86.c             | 11 +++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-[Severity: Critical]
-Does this corrupt non-present PMDs like migration entries?
+-- 
+2.52.0
 
-In move_pages_huge_pmd(), if the source is a non-present huge PMD
-(such as a migration entry), the code takes the !src_folio path.
-Applying pmd_modify() with PAGE_NONE to this entry will set the present
-bit, because PAGE_NONE contains the present bit.
-
-If a user thread accesses this corrupted migration entry, won't the page
-fault handler treat it as a present PMD, call pmd_folio(), and dereference
-the swap offset/type data as a physical PFN, causing a panic?
-
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index ec1880d181711..4fca0409b7d7c 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1292,6 +1292,13 @@ static long move_present_ptes(struct mm_struct *mm,
->  		if (pte_dirty(orig_src_pte))
->  			orig_dst_pte =3D pte_mkdirty(orig_dst_pte);
->  		orig_dst_pte =3D pte_mkwrite(orig_dst_pte, dst_vma);
-> +
-> +		/* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
-> +		if (userfaultfd_rwp(dst_vma)) {
-> +			orig_dst_pte =3D pte_modify(orig_dst_pte, PAGE_NONE);
-> +			orig_dst_pte =3D pte_mkuffd(orig_dst_pte);
-> +		}
-> +
->  		set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
-> =20
->  		src_addr +=3D PAGE_SIZE;
-
-[Severity: Critical]
-Can this unconditional modification destroy the resolved state of the PTE?
-
-In move_present_ptes(), the source PTE might have already been resolved
-and have valid access state. By unconditionally applying PAGE_NONE to the
-destination PTE regardless of the source PTE's state, won't this force a
-spurious RWP fault on the next access?
-
-> @@ -1373,6 +1380,9 @@ static int move_swap_pte(struct mm_struct *mm, stru=
-ct vm_area_struct *dst_vma,
->  	orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte);
->  	if (pgtable_supports_soft_dirty())
->  		orig_src_pte =3D pte_swp_mksoft_dirty(orig_src_pte);
-> +	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
-> +	if (userfaultfd_rwp(dst_vma))
-> +		orig_src_pte =3D pte_swp_mkuffd(orig_src_pte);
->  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
->  	double_pt_unlock(dst_ptl, src_ptl);
-> =20
-> @@ -1399,6 +1409,13 @@ static int move_zeropage_pte(struct mm_struct *mm,
-> =20
->  	zero_pte =3D pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
->  					 dst_vma->vm_page_prot));
-> +
-> +	/* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
-> +	if (userfaultfd_rwp(dst_vma)) {
-> +		zero_pte =3D pte_modify(zero_pte, PAGE_NONE);
-> +		zero_pte =3D pte_mkuffd(zero_pte);
-> +	}
-> +
->  	ptep_clear_flush(src_vma, src_addr, src_pte);
->  	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
->  	double_pt_unlock(dst_ptl, src_ptl);
-
-[Severity: Critical]
-Does unconditionally arming the RWP marker here in move_swap_pte() and=20
-move_zeropage_pte() cause similar issues with state loss or spurious faults=
-=20
-when the pages are moved via UFFDIO_MOVE?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706084805.8400=
--1-kirill@shutemov.name?part=3D7
