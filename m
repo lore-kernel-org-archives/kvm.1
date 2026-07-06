@@ -1,45 +1,46 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010053.outbound.protection.outlook.com [52.101.46.53])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011015.outbound.protection.outlook.com [40.107.208.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C463E9C0E;
-	Mon,  6 Jul 2026 06:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770A82DB7A3;
+	Mon,  6 Jul 2026 06:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783319540; cv=fail; b=bpB3yhC/rmfOYYMKZv+TILzpJFAee6bdBTMR4vxythcYVu41LDQfsa/lJxS6OmYjmF0+Fzc0Rd+RRaHRzdkagjprn7IKX8lbFchLhwUiIP9LYqnvai8caMJ81gPrSb3Ih7EA+ChJUgpgV8pM2EPTWwz5HMoWu13WMZrd0TqrZi8=
+	t=1783319584; cv=fail; b=QW5/g0k5a0yHge/KtpYVlY9ET20l9YQluG6ZEhuTyRvEgNcVbS9N6I7F7SVSVZ7S07W2F144+ByknTIiAfsIwDW96HdkFv7/YtJKpxuNo59BHARCez4cqaaa6nmwxS2uAscl8K+b/5mMCRWC5F0SkF2/uZY+7uvrb6OhaLAy1qE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783319540; c=relaxed/simple;
-	bh=fA/9wwc9qkAGcW/HIrFd57tudO93OaALCUIhUTuzML4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ScAmwtpX3H0dHW4NOhbR0z+sjjIQIPu3sNbKf8ba7wOTZ8e+7efFXpiYNuPczpwJpAOcEkOUdw/kiLsUTPaGXU3O+0wtZj1yS4dRPGc5qhapR8eDb+FdsGOasoBJBRZtkX7z9S0S1R7u/foe1TaMf8Q5VJlws9OHUyjhlLvNkBQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BQ6Ssqqq; arc=fail smtp.client-ip=52.101.46.53
+	s=arc-20240116; t=1783319584; c=relaxed/simple;
+	bh=wOBiGV98nxWbXO9RiVlA8bEwaILXEQu8MtREo9JPgKc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kont9Ue7Y8HTAAyw8OD80Z1i13GEmU+WTd1EEGi6U812CrOpmhnfggQl/Pm1QaVdXWt8NoxhAlhTXX8Sl64T3aVSAvEx5ubqdOVi5qRv+LL0XtYxHn9Ta1LCRVhk2bDljQjHZrCbp+qaT2wY5JQY/aNSsNhAw+jHA+iURs9Zhqw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZCz/WxvF; arc=fail smtp.client-ip=40.107.208.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BQ6Ssqqq"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZCz/WxvF"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WypEyadi8NLkvGjlKjKDvTyhjRLCw15ZVDg7IcgF6n5XU9MFrOTCnUeO0MJ8/oj5UXHTj5uq5mwn8bNf44miPFrrJBQ6SdnkjYw4+d0i4ixAAblKf5kIWMieOGK9d/YbCzSPKYQ6E90xHBkfHgGAgHc1PPlGvmzq18dBC49FOwc5De6WTsOOkTUxFMVrXwxwdDyZ3iApzn8NX/J7ao8MKCSv0KIjZJ/2PkvvEI/12Ro+w8Y9lRnyVQh/ONwdyPq76CBGBmDW647SCEM01+kMlfYdqhg+csnEA0TL6fpppJHL/OgZBVn0eGV2yr27x1fOO0uL9a8Y1PKXuUYhIqN/Fw==
+ b=e6AfbIe40QEZogT79gw1jm0bFgLC7bHvfuaSTbWu15YyHNd2L/gkbOgW1deCw59pRMy/apyYBFpspLVRLSB5iDQrv+GMWtJmXPyaX3RwGs3PmfT6AsCjigB+SvylwtnGXgspdf3Kh7LQIxfHwoTPExlEyaEBnQU18dvFzg0OcWWBTeUAnSy04xOuaJ+uT2qzIVJ+kV4q8rKHYmP8/00H7W59x0B3vW7PIbtIkpiDFUB7F/XqO/LYOyJHr8Eo4X0cDf080Rhi1bnRqQ/EQD3GIcjjKbplqVzNZdYPTuVqQMsNS8sAHI4nsvV4MywE/1+EUcAqcReX/mXZxY5Apu9atw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5IxOArd+ItkhI8lpO4dfJOdpPPwFHQmBpEe/lhS3OUA=;
- b=ouevrHkJSto3qHD3EElibHCSK/0GmhU01D6ntDsnlG1bbslkpA48d5aKV+5a+oncVzfkZrqqTwILUDesZgyF5kibC8Lzoj9vx1YeigsNEcnDO/V7rsQkuuLEVJVEUqZ4v1M1sjYeZGzfRan4/r6UxsXsWhbbz1FV3oMGGShsmGO7V5qajB1w1HNhHh0mh7ehsC7VIDxnhRG5SuWoYpvI+zCZYOef11T/i+O1kCgzWE42WEHG2NiSgS/IP55jm6VHBV32AIgT9uX/MbksVs1/qRLQEIxM+WzpzKHbR3zYzitxfLb2o+K0iT9QGOt5sNwjK13nmHNDtlF6hcEDUvKNhw==
+ bh=cA3I//XJ/uwVENIWI/A5w/yeJmAFHbH7kFVl32OPez0=;
+ b=vNJBfGoI346xGLJqCw2cTpBLwXPvtRGeW7O+oyYYJcVhgPyF5sJ2CgTRrUg18qTqoqDrGPAI6V0owD+Uco+IMBw1qcRYM0C6nJqLkqrXlBHbJAsyWHZJQaN2f15vurNehqPTZ4zli5psMdx5+UiNXQqitr8NyIWDG/C4av8xSw0JpRX6XUTb7EqUueeULKAD+M1gryEguJg5xAyl283ZFbQVzNTr2HJwHyq/QrhR3+xJsIThXvjAMjB4Zs1Tkny6YyF0XZ25Pj75fIT/n57BHc7LJ95kfHLMdzWsm1xI94Lmo338Kluq8BzFp47zpnFh1G1xZLlZ/eoXtx/j4JhUeQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5IxOArd+ItkhI8lpO4dfJOdpPPwFHQmBpEe/lhS3OUA=;
- b=BQ6SsqqqcQyGo6Usb+y0ug+qyCkmdw6oWKrbpGzxDCczWsVpM1TEuBoOX6DUf7X3uScWkYiwg0IaxRGw6Jt7FCRYFfrHsaAMtT1iNglkhAbofqJerDNKtrRwcQqO+SxnKz8AkSor1YtttJUpyy51dtLt609f33anONBrvjBRfuM=
-Received: from SJ0PR03CA0250.namprd03.prod.outlook.com (2603:10b6:a03:3a0::15)
- by CYXPR12MB9441.namprd12.prod.outlook.com (2603:10b6:930:dc::6) with
+ bh=cA3I//XJ/uwVENIWI/A5w/yeJmAFHbH7kFVl32OPez0=;
+ b=ZCz/WxvFH8rzW7RQtRDY6/whR2M2hVO3HwcyubpKiLcPdgq+ucNARHiO1v0c5oLslY2G5xeK5rHDR0zl6r84BAXiIC4A0OQB9eRk8rqICt4fL1wWy55Nqx2ZSx1g+twHGQLUF0wetd3LYskEnMs6hZR+51aughzZ+iD1GSiw8pk=
+Received: from SJ0PR03CA0160.namprd03.prod.outlook.com (2603:10b6:a03:338::15)
+ by IA0PPFA19DE7612.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bdd) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Mon, 6 Jul
- 2026 06:31:58 +0000
-Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
- (2603:10b6:a03:3a0:cafe::95) by SJ0PR03CA0250.outlook.office365.com
- (2603:10b6:a03:3a0::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.13 via Frontend Transport; Mon, 6
- Jul 2026 06:31:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Mon, 6 Jul
+ 2026 06:32:38 +0000
+Received: from SJ1PEPF00001CDD.namprd05.prod.outlook.com
+ (2603:10b6:a03:338:cafe::a5) by SJ0PR03CA0160.outlook.office365.com
+ (2603:10b6:a03:338::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Mon, 6
+ Jul 2026 06:32:37 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SJ1PEPF00001CDD.mail.protection.outlook.com (10.167.242.5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 06:31:57 +0000
+ 15.21.181.6 via Frontend Transport; Mon, 6 Jul 2026 06:32:37 +0000
 Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 6 Jul
- 2026 01:31:05 -0500
+ 2026 01:32:07 -0500
 From: Sairaj Kodilkar <sarunkod@amd.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
 	<peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
@@ -64,10 +65,12 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
  Bizjak" <ubizjak@gmail.com>, <kvm@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
 CC: <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>
-Subject: [PATCH v2 0/2] Add support for cmpxchg16b emulation
-Date: Mon, 6 Jul 2026 12:00:33 +0530
-Message-ID: <20260706063035.1139-1-sarunkod@amd.com>
+Subject: [PATCH v2 1/2] x86/uaccess: Extend CMPXCHG user helpers to 128-bit operands
+Date: Mon, 6 Jul 2026 12:00:34 +0530
+Message-ID: <20260706063035.1139-2-sarunkod@amd.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260706063035.1139-1-sarunkod@amd.com>
+References: <20260706063035.1139-1-sarunkod@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,69 +83,140 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|CYXPR12MB9441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21a0514e-9f38-4293-5ffb-08dedb284769
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDD:EE_|IA0PPFA19DE7612:EE_
+X-MS-Office365-Filtering-Correlation-Id: df5ef11c-ca2e-4067-1bb0-08dedb285f0f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|1800799024|82310400026|376014|36860700016|921020|3023799007|13003099007|18002099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|23010399003|82310400026|1800799024|7416014|376014|36860700016|921020|18002099003|3023799007|22082099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	bytCAuxPqakPfQafZkfTb0F68AF9L0wt4GMhBMivydDMn7LXbtVex265KISj3dZgLM888WLYyDN4Py2zqNlm9MlYcPq0ZIpsFQwYoTE1v4GGZYNXBVQvxdLNc9MnlDagNdECrPzner4IkrdT+9GwDLpRuvOB/0wzcINr3Y+QiZlIM4jBuv6TGj34fArl/eeTTtEPjIzKbkN1aW6Jaf4yGpZD35XVPUXjW2dG73H7ln5K7tR0claVPDnHT4OCC/h7EbM2behZrxOGUmHn6vLS0IC5jxCX9lzXK5VpVoSC0L5mgubAzA9ek+vGxoZtmpds/7m+2Wljj0A9bMCzogGu1L9vAoSvMG8KFVQqm/VcN99U+cqGNy3iCMDkGQnDhxh/OQuytl1WpNL5qasHpEPsBIlHZ7wPwbF/3mvejAYNbwqtDYsy/sdbr/4YCnVHOrkfsgliCTTf1sip3sc6l+We9C7HNVG/d5huLCTQSqKoAL4DcfAsUiIYOpFxYME1I1HTPMLbFcsnFQzwPGsRJXEFx+7rjERh7o6/QXMRQwvmVfheI/xIZ8eioaGUEn7pwtrdd8yz9XM1D8lyHEReOyO8M/ejkvdRQ0qoeJnpNskENzHf49PW5yn4vjLNXAmYcuMMVLPU0tLQ2snB4h1T2f1ik0o1DvggAxISySQqW8EaEHH8k3R7hxRpaXD51U5M9bT57tflgKVR5Kwf1y1D5v2riC1Q37OqdP0kAzIIgn0u3AIsyMVf7CzEk9Pv4HcnRM5D
+	6W7pm3yNFE/J/7oXHCQcVbTgWHiYqn8zuvmfP+YfS0LM9jdMAcPJl8c5gbpmH30Cb9P5sCw6iidBZUsWH+FaRjHQLMcDk/aJw+/ZAZ9qtM0UXvoHWc1AWPpsPd8FcUuzJ6f83Skqk7Pqbwy4B2r4uo4cv1tQ6BOewRhi98UKJA+XWW3bfEu2QonklMTcLsq7VgzovzcFbZFtZoL7EDGx/M/mDpKlIpBwBEXTkd19MTvpE/C6L8JFL0SZK5egVRoTsEe2fF8xviRVxeXW0hVs+hwvYm0vD+z7yzq6Zd8x+OT/txT0izJv4Wud1Y0a5PnuYNNx/xA8DBuDP/obUqVuendogI/Kt+N3AHr3tdWieN4x+QnKKUtVZac//yDPvbR9gV0gPUY01i0Uy2rbKI+SXDDg9WSzyWWgsBkfUpMWt+OgPMLpj8GqA/VeAlpUesma+OVrppW1izz3hv2f2+Mz17k2N5HuVLhxM6+YC2qDOxz2ZseR+GuLonIxrCphspWwGFcEm7xnJPlhaCnVwd4yj1gsUMR1qS8G+hWlgFpVQwuvmPR4EEjEESiFEbjlWgJgpSPTyB/d9IUNGf8O1vP0moTtgjwHFqYJFr92kXuQKt01xWovq2hrz8HZ4QjZBRFBp/vs5rirfD2ntPvoFDF/Hwp5BEOWJWGjssAT82iPGIsy7ieVfMrLEI9OhkBJRTEPpj65NEWPnBZweHPI6vT6w67ED55F+B+2DYSp04zEqIwVKhWIN3fbBnlhWEKOLTOs
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(1800799024)(82310400026)(376014)(36860700016)(921020)(3023799007)(13003099007)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(1800799024)(7416014)(376014)(36860700016)(921020)(18002099003)(3023799007)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	0pLO+tmCEZLCG0fOCAYA9v8JWo46Ceql0hrrCKbVQBClryF42DkiP8BhEg6MBn6yjZHDaNF/OxLRCPh9ID0ACeypFeOC3Xc5Z+GqOMxoz2iy+ymi+YYxR3HUKIdSh33D12p2HtLnJnUlmBn7tv/FdpUJZlzczs3N5JCiMmYLbTZkv/8ps/9SG9tFlCnncu8dB+Ygwz/rFgcAOOHEwp/NNULEkyxpIfNm+ueGnZ4EEGeabZtMleFz51B1gjN4hErJzG+uDmzZQ/d7BCHaQse2sTePkb/TkMJpT9vd+aKYOpODI7h105DtgvZv/08V1zCn4eTcSAeBnRaMrjeZlb8fjjuCKHTQmUpcmb2jskyWL94d8444gjXb1tSnHjxC8139jQlgm434FsRbtpCCkAdBBUwpnEBfMP8r3ABsJEOkF4Iyece9EdT38WEjo/wN/wO5
+	jmgVuxm/GDlhYGJBgGMIlNDmaHXbF1Y2Lgp+D9iCfalhhf8JLGlmFp9M3Um7nat8/JRTsMC8jhgFVDDeDw3Blk5KhpRMX6H2iX9SeWjyKgXpcfQkgZqTod8ZqOND/ulDDSfC1WsDKCL3KIh42RM3WxDfOKasQEwgtpPC2Avz7iivnR3JOTS8omn7HX68+1YxDMWCH9g0UAl3jW6oPxD8dyVqRRk/fph8LkAnlCpcTiXPwAs7RNWwO4YHeAICAazq2zcLVjqEJERUIl/pQcknsYXe37hshJiOEhzZi4dtzfoYuPDOkZRcQRWtLSD7cJPSjJwGUobFaR7izLNzU3TxRwjVejx8+qom1d2X+wrHJIrWwhax5+WqzzjSdOlHA+E/uOKfv86GrA6DpA1GDuipDsonNRmyu3jh3l+oiydSosWwjH8Ke79Ji38yc4C0Ya3k
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 06:31:57.5093
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 06:32:37.2079
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21a0514e-9f38-4293-5ffb-08dedb284769
+X-MS-Exchange-CrossTenant-Network-Message-Id: df5ef11c-ca2e-4067-1bb0-08dedb285f0f
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE2.namprd05.prod.outlook.com
+	SJ1PEPF00001CDD.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9441
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFA19DE7612
 
-This series adds 128-bit compare-exchange support needed for KVM to
-emulate guest cmpxchg16b instructions.
+Extend the existing user CMPXCHG helpers to support 16-byte operands on
+x86-64, using LOCK_PREFIX "cmpxchg16b".  This mirrors the existing
+__try_cmpxchg64_user_asm() / cmpxchg8b path provided for 32-bit kernels,
+where KVM needs an atomic compare-exchange wider than the generic
+cmpxchg helper can provide.
 
-The AMD IOMMU driver updates 256-bit device table entries with two
-128-bit cmpxchg operations.  For hardware-accelerated vIOMMU, QEMU traps
-those DTE accesses to install nested page tables [1].  KVM must emulate
-guest cmpxchg16b on the trapped MMIO regions; without that, DTE access
-emulation fails.
+On 32-bit kernels, stub the helper to always return failure because cmpxchg16b
+requires 64-bit GPRs and is not available.
 
-Patch 1: extends the x86 user CMPXCHG helpers with
-__try_cmpxchg128_user_asm() (cmpxchg16b on x86-64), wired into
-unsafe_try_cmpxchg_user().
+KVM uses this to atomically emulate guest cmpxchg16b on guest RAM mapped
+via userspace addresses.
 
-Patch 2: extends KVM CMPXCHG8B emulation to 16-byte operands (REX.W=1) and
-uses the new helper for atomic 16-byte compare-exchange on guest RAM via
-emulator_cmpxchg_emulated().
-
-You can find the KUT to test this series at [2].
-
-[1] https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
-[2] https://lore.kernel.org/kvm/20260706062153.346-1-sarunkod@amd.com/T/#u
-
+Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
 ---
-
-Base: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-
----
-
-Sairaj Kodilkar (2):
-  x86/uaccess: Extend CMPXCHG user helpers to 128-bit operands
-  KVM: x86: Add support for cmpxchg16b emulation
-
  arch/x86/include/asm/uaccess.h | 56 +++++++++++++++++++++++++++++++++-
- arch/x86/kvm/emulate.c         | 50 ++++++++++++++++++++----------
- arch/x86/kvm/kvm_emulate.h     |  6 ++++
- arch/x86/kvm/x86.c             |  7 ++++-
- 4 files changed, 101 insertions(+), 18 deletions(-)
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 367297b188c3..123755d47109 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -407,6 +407,25 @@ do {									\
+ 	if (unlikely(!success))						\
+ 		*_old = __old;						\
+ 	likely(success);					})
++#else // !CONFIG_X86_32
++#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label)	({	\
++	bool success;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm_goto_output("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg16b %[ptr]\n"		\
++		     _ASM_EXTABLE_UA(1b, %l[label])			\
++		     : "=@ccz" (success),				\
++		       "+A" (__old),					\
++		       [ptr] "+m" (*_ptr)				\
++		     : "b" ((u64)__new),				\
++		       "c" ((u64)((u128)__new >> 64))			\
++		     : "memory"						\
++		     : label);						\
++	if (unlikely(!success))						\
++		*_old = __old;						\
++	likely(success);					})
+ #endif // CONFIG_X86_32
+ #else  // !CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
+ #define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
+@@ -463,6 +482,30 @@ do {									\
+ 	if (unlikely(!__result))					\
+ 		*_old = __old;						\
+ 	likely(__result);					})
++#else //!CONFIG_X86_32
++#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label)	({	\
++	int __result;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm volatile("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg16b %[ptr]\n"		\
++		     "mov $0, %[result]\n\t"				\
++		     "setz %b[result]\n"				\
++		     "2:\n"						\
++		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
++					   %[result])			\
++		     : [result] "=q" (__result),			\
++		       "+A" (__old),					\
++		       [ptr] "+m" (*_ptr)				\
++		     : "b" ((u64)__new),				\
++		       "c" ((u64)((u128)__new >> 64))			\
++		     : "memory", "cc");					\
++	if (unlikely(__result < 0))					\
++		goto label;						\
++	if (unlikely(!__result))					\
++		*_old = __old;						\
++	likely(__result);					})
+ #endif // CONFIG_X86_32
+ #endif // CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
+ 
+@@ -551,11 +594,18 @@ do {										\
+ 
+ extern void __try_cmpxchg_user_wrong_size(void);
+ 
+-#ifndef CONFIG_X86_32
++#ifdef CONFIG_X86_32
++/* Always fail on 32 bit arch as it do not support 128 cmpxchg (i.e. cmpxchg16b
++ * instruction).
++ */
++#define __try_cmpxchg128_user_asm(_ptr, _pold, _new, label) (1)
++#else
+ #define __try_cmpxchg64_user_asm(_ptr, _oldp, _nval, _label)		\
+ 	__try_cmpxchg_user_asm("q", "r", (_ptr), (_oldp), (_nval), _label)
++
+ #endif
+ 
++
+ /*
+  * Force the pointer to u<size> to match the size expected by the asm helper.
+  * clang/LLVM compiles all cases and only discards the unused paths after
+@@ -580,6 +630,10 @@ extern void __try_cmpxchg_user_wrong_size(void);
+ 	case 8:	__ret = __try_cmpxchg64_user_asm((__force u64 *)(_ptr), (_oldp),\
+ 						 (_nval), _label);		\
+ 		break;								\
++	case 16:								\
++		__ret = __try_cmpxchg128_user_asm((__force u128 *)(_ptr),	\
++						  (_oldp), (_nval), _label);	\
++		break;								\
+ 	default: __try_cmpxchg_user_wrong_size();				\
+ 	}									\
+ 	__ret;						})
 -- 
 2.34.1
 
