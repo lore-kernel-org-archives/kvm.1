@@ -1,125 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4662414DC9
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783329770; cv=none; b=lEdyXTl9fkCMRruvjck6md8+g7akkbWfqJdE73/Q1/OeHa1CalPYMHYdlpAurGV8w9rNgqt1I+vw3NcU3jkevHTSLb2/FIJB1U9if6bwRdL73ouz6FyiSG8uWExrK4FS5dZhwH8GA4HhUhQCJ6eBEwJaUUmUR1ORWM+i3Ah/1sA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783329770; c=relaxed/simple;
-	bh=IQ7XOzWDJEYXuo72dKFOcCwKx3Z3lPqd2Dcr6RBptGI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l8HhYgAvHeV77qL3bsBa9w/ZigdOMawHcIHyZPs+1/eMP4AgyI+keur6/iyxLgnUELgNMtcWfsL10vePR0VGSg7m8HV0fIaMMAu1zCujgGmhbx/FmVBzHfJn4ty1lVOS37Xqj8/PzyR9Xq+WW1xbsI7vv/axWl+MduXgP+6AmaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6T9AwMF; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CB2414A2B
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783329882; cv=pass; b=hqE7eZnBLfiOycKSmQvyEsPDv30o1q02qcMpZHM5sTvxhxR7DpLrqJediJ8K1Bsb+j11qAiJzemCD2HCis3O0dQnxuQmjDlo9z2WEgwzqxa1ad4xwbuBlV4l7++wZeYNDIE4WfRkkd5PIWO8wxTT/UNh0TCLpWcsr9OSjAN1xcY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783329882; c=relaxed/simple;
+	bh=bjF0BZXpIAjW/Uu1wH2j5e53ZR+HCAlpR+B3xXBi2vY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbxDUTvo2u01yjgtJiuQ/B+XsbG1SEUhfaE4B4AJATPaZePCym9uV6WP+04Wh6CLyWnr9WluEcNYXxbmQCr42HmBzcuC+OX71CM8inIXgSjH7eK+WqP70YKoiPGCA3bNGbfSPvNzg6dkjEA93pXbh/u26RSUN49YLOW7xn9FEoI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qu0sfzs3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JYT3ZlxP; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6T9AwMF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044C21F000E9;
-	Mon,  6 Jul 2026 09:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329766;
-	bh=JydAGFfZTn41KL+mVKfc9IteaVSXeBfqSkK6fNhObxE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=C6T9AwMFu9g2t9y7jP+OyXjDdVVTPML9YjrOjRsDhByUpKYAcfvtwbefnjBqeTSLT
-	 nTuixg0vTUXK0SQxlxL5uN67W1V9LdPKhO0D99q/bZ4/jTeu2x9/LGyygw6JC+idMn
-	 bYTh+Ou2W+uWZvJDCIMyOVj/KSsQCFEcrTTC1Hs37ezhxQ1iMv2t6E+MPEaSDmVn0A
-	 CDcLeb4t4/Zx/rfk4iAFfSymUPhvTz36ag3wEgHFTyWxXP/ePH+KRKcH5R3sTjIZ85
-	 emjVtrbsAT0DKzdqG5Z+3bzltVtAvBa0zLkBy54b+jlmIN2O/mLKgofcJ5my/KbOi0
-	 JM1dvprPPMCsQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 10/15] mm/userfaultfd: add RWP fault delivery and
- expose UFFDIO_REGISTER_MODE_RWP
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706084805.8400-11-kirill@shutemov.name>
-References: <20260706084805.8400-1-kirill@shutemov.name>
- <20260706084805.8400-11-kirill@shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:22:45 +0000
-Message-Id: <20260706092246.044C21F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qu0sfzs3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JYT3ZlxP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783329870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Yn0KzcK21NnwKHwgbzUJWvl8KnNJxuskf2Di9W9STHQ=;
+	b=Qu0sfzs35LqlFGeInch5gaxB4uuOKILwNlKyHKosOPx1l0sRCaR6H+dN/JLKxcayuYyRLz
+	vxIa3Rq6ka/m3bHSfMzSfew/tBN5Ob4YwyBM+CEEVxOIdLzWkKbiMG4RmG5ZtUe1nR7J4i
+	dNd5IiOzI4vhZqCYV3CbLF6pwqE5pYQ=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-364-j_Uhbr95Odyq62zYgVaHDw-1; Mon, 06 Jul 2026 05:24:29 -0400
+X-MC-Unique: j_Uhbr95Odyq62zYgVaHDw-1
+X-Mimecast-MFC-AGG-ID: j_Uhbr95Odyq62zYgVaHDw_1783329868
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ca5d2474c7so66499175ad.2
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 02:24:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783329868; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YsC2KPs6WzK2NiG/P6+6P39PEsXjLWjrTU9XKx3ZBUvszWmPoKw3g/CCMQEgj776Vh
+         esaOqN3VL/SaB/yJU/UPD25fYXjiw1Y990m8queLpApNRNbUr6dgSGH9qLAYE6J7iAPe
+         3icBwmBYpYpO+90dkuGKDyblRnw7ssuruwfg0IzA3pcMGDDizrNWoRpxpCaBnZnQxx4q
+         3gAlZi1kjImAs1eUTKTFf2tkdz2oP3iOdxdMAp2QnTyvSXGhfB17aoRaaBczDziSaTZR
+         CTkutvUNEgkPWjDPrOnT/+3VD+YZmOcgcgmmkVuZVaf072CNFmntMT3EcGCs8bxJaX4b
+         bU4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Yn0KzcK21NnwKHwgbzUJWvl8KnNJxuskf2Di9W9STHQ=;
+        fh=mviFPyJijdtv1mLpuTFiIo/Bqvea8N5c7tkWYTfbx6Y=;
+        b=gKPkefNxR+KR+pyN0YocF4bwu8kUpDKLyoIPiXW5t8TZ/3aENiGYcjoqPOSRP1I7MS
+         kP5RmYICMYa5SnNIMzBxdOPKE5nED/T+TsavV2g716RixxyKL0RhcNMjBUYoYXqtNQAK
+         CnR3piy7z/5VvdhG+b80GMfcxNZqi9rctJNd2Ky/982ZUaZy7Ff5/XK1MNHc9AQrAjTz
+         HZV2FQUPcSqndpk8E75h/Oofpds8ysU0NXt7zsTo8JIbIbods3/1skimUBC1Eh0Fh87w
+         wXjiEkR66zGdaLyyNlXGbxuZJE2hP+o6lhGae8FXvlfk2aAwQFfcC6K4d9Fp/mKlKieT
+         mFLg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783329868; x=1783934668; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yn0KzcK21NnwKHwgbzUJWvl8KnNJxuskf2Di9W9STHQ=;
+        b=JYT3ZlxPYv/7ppjF0mUZQXaCOFGeMH1Mv9PSZd+vQJw7oLXueMVLqUjnJW+0feVzNm
+         pjWzq5pdK/6lTgju6h9lTopCCeGCrzTH1DUC80L2CQ7iT0HX87AhVGuLU3hOnRBFK0yT
+         y1afpLHR/Uc4NYThpJ6OuPVRSfPFKRlLVxpIZUi+YYCmWSdcjcuGDU9OWTTdgtnX/lJy
+         rtQJG9lWU2Y0h5itAx7WvbhE/YwVVP+zWiS76ASKISJfmXX2Ap7TuyM+ZYUdJEZFzC3G
+         mfSZmPLo7PcupR+13wD9nK2+3OMld9UKSU65+mEnaA6Og5d6xLV7bsobPMaz/kqJbKvQ
+         Wm7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783329868; x=1783934668;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Yn0KzcK21NnwKHwgbzUJWvl8KnNJxuskf2Di9W9STHQ=;
+        b=NIV3T0tIK1o4/HlUj/7d9P8fvNh1j1/GVqIa/vjQwjfDb7tX3bGr42Ez8clzcKawiV
+         gIBioQ2NrGCDlwp0Ou4JWvqkz74feWL96RweH3NjvFX8HqKEvEsLCYUZrYrxkdbI8kPt
+         rQCyLMOe+qLf4xx3NwCBpaANzvjrBq7uW7ib7X6KLVP98mABQZW9rUhb17lcJ+kPTa28
+         ZONKsM/rIw/EZ80dPB6bh3qLCiriQ0YQtjh7KYt8DPbg6U5KzU6XFTVwzAMqTcFiKU9Q
+         fW8ZxsHO9wOi4M0OcwMf8XOu0PGrE3I6bj3Ufpc8MDRYFCKEriOODHDXEuDezOd/H2eO
+         JGwg==
+X-Forwarded-Encrypted: i=1; AHgh+RoGfM/tAQqLG+cvgoFd7DnEDgQ+JsB4rmXGBh5H//9wnZMyaMsnyDCVobZ4REex+uAotGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZg+ZLMaeWpSnZpT/AcbR4bLCjrSceBkefVQ90tFkjz8Pf7EaQ
+	v26j/5Ao7FVrdvzGfCyyOXhAHyar0wyk8rdv0lXWRJFkGTK6kwFob+KIBWJxYUhELHzTIBYHeco
+	BmAo97JSlGuBE2b0yD3O1PF+j44B1gOv2wSdtnY5aC5FzfUApZVNTtiMhzJfrEZ0e8d59ND/MMl
+	DC/qOo7YLjUE3VLXOAWjiSd8RZmDbm
+X-Gm-Gg: AfdE7cklfj+XredMD457zFEIPro/e35C26kIARXEbq4NnBskp2DY0InR1nmsAL5uK9b
+	qEGjNQRXKtIi8pGEOyQEV19/P4cTQmEwJLOZJbrNBopOX7gqDGxuXl9KGhj2tVarFWMzC1xt7hl
+	8h4gRchEZjptJ477N2Ibwa6s1fH4GnotEqWImA1T5/TTCSc2knRQoWPWeq0gZ7GniR
+X-Received: by 2002:a17:902:d4c8:b0:2c7:1200:bd7e with SMTP id d9443c01a7336-2cbb7511a14mr91874735ad.18.1783329866771;
+        Mon, 06 Jul 2026 02:24:26 -0700 (PDT)
+X-Received: by 2002:a17:902:d4c8:b0:2c7:1200:bd7e with SMTP id
+ d9443c01a7336-2cbb7511a14mr91874005ad.18.1783329865282; Mon, 06 Jul 2026
+ 02:24:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <6a3c3ed6.80e5668d.5d0ef.0001.GAE@google.com> <d1e9d389-affa-4d12-aaf7-3fcf3218966c@huawei.com>
+In-Reply-To: <d1e9d389-affa-4d12-aaf7-3fcf3218966c@huawei.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 6 Jul 2026 11:24:14 +0200
+X-Gm-Features: AVVi8CdUM8gLEd1esj3vEBaF7KM2cPEVYji_lbVGfB2Yvj6K1tMDr3_xJ0gDydo
+Message-ID: <CAGxU2F582RpWGOUxTU783zZuxWj7e4eZtiDcNdUmWobLSFSq2g@mail.gmail.com>
+Subject: Re: [syzbot] Monthly virt report (Jun 2026)
+To: mawupeng <mawupeng1@huawei.com>
+Cc: syzbot+listbf7b8eeeb8dda31d6de1@syzkaller.appspotmail.com, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
+	virtualization@lists.linux.dev, mst@redhat.com, jasowang@redhat.com, 
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, stefanha@redhat.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, kvm@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Infinite page fault loop (livelock) on hugetlb VMAs containing sta=
-le RWP or WP markers after UFFDIO_UNREGISTER.
---
+On Thu, 2 Jul 2026 at 04:55, mawupeng <mawupeng1@huawei.com> wrote:
+> On =E5=91=A8=E5=9B=9B 2026-6-25 04:32, syzbot wrote:
+> > Hello virt maintainers/developers,
+> >
+> > This is a 31-day syzbot report for the virt subsystem.
+> > All related reports/information can be found at:
+> > https://syzkaller.appspot.com/upstream/s/virt
+> >
+> > During the period, 0 new issues were detected and 0 were fixed.
+> > In total, 5 issues are still open and 61 have already been fixed.
+> > There are also 2 low-priority issues.
+> >
+> > Some of the still happening issues:
+> >
+> > Ref Crashes Repro Title
+> > <1> 24      No    WARNING: refcount bug in call_timer_fn (4)
+> >                   https://syzkaller.appspot.com/bug?extid=3D07dcf509f4c=
+013e25dc5
+> > <2> 3       Yes   memory leak in __vsock_create (2)
+> >                   https://syzkaller.appspot.com/bug?extid=3D1b2c9c4a0f8=
+708082678
+>
+> Hi,
+>
+> This is regarding the still-open "memory leak in __vsock_create (2)"
+> bug (#2 in the monthly virt report, extid 1b2c9c4a0f8708082678):
+>   https://syzkaller.appspot.com/bug?extid=3D1b2c9c4a0f8708082678
+>
+> I spent some time analyzing the root cause and the previous fix
+> attempt; below is a summary and a direction that tested out.
 
-commit 53f1ffbd6e1b1ae6560601d75e0a8a5ad93e1aa3
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+[...]
 
-mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP
+>
+> I'm not subscribed to follow the list at full volume; happy to send a
+> formal patch (with the af_vsock.h / pending_work changes folded in)
+> if the direction looks right to the maintainers.
 
-This commit adds read-write protection (RWP) fault tracking to userfaultfd.
-It introduces the UFFDIO_REGISTER_MODE_RWP flag and handles RWP faults at t=
-he
-PTE, PMD, and hugetlb levels by delivering UFFD_PAGEFAULT_FLAG_RWP messages.
+Yes, please, a formal patch with a great commit message is much better
+than a long text to read IMO.
 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 4d0b6d7d9842f..f0ce2e9d4ba2d 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6063,6 +6063,17 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, str=
-uct vm_area_struct *vma,
->  		goto out_mutex;
->  	}
-> =20
-> +	/*
-> +	 * Protnone hugetlb PTEs with the uffd bit are used by
-> +	 * userfaultfd RWP for access tracking. Plain PROT_NONE (without the
-> +	 * marker) is not an RWP fault and is not expected on hugetlb (no
-> +	 * NUMA hinting), so let normal hugetlb fault handling proceed.
-> +	 */
-> +	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
-> +	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
+Thanks,
+Stefano
 
-[Severity: High]
-Can this code cause an infinite page fault loop if the VMA is unregistered?
-
-If an unprivileged user registers a hugetlb VMA with UFFDIO_REGISTER_MODE_R=
-WP,
-allows PTE markers to be placed, and then unregisters it via UFFDIO_UNREGIS=
-TER,
-the PTE markers are not cleared. Subsequent memory accesses will trigger a =
-page
-fault, but since userfaultfd_rwp(vma) evaluates to false, this check is
-bypassed.
-
-For read faults, hugetlb_fault() falls through, marks the PROT_NONE PTE as
-young, and returns 0 without restoring accessibility. Because the fault han=
-dler
-continuously returns 0 without making the PTE accessible, the CPU retries t=
-he
-instruction endlessly, resulting in a local denial of service.
-
-This is a pre-existing issue for write faults via WP, but does this patch
-introduce the same livelock for read faults via RWP? For WP, write faults s=
-kip
-the UFFD_WP check and hugetlb_wp() catches the stale marker:
-
-mm/hugetlb.c:hugetlb_wp() {
-...
-	if (!unshare && huge_pte_uffd(pte))
-		return 0;
-...
-}
-
-Because it returns 0 without upgrading the PTE to writable, the CPU retries
-the instruction endlessly. Can a similar infinite loop occur here for RWP?
-
-> +		return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
-> +	}
-> +
->  	/*
->  	 * If we are going to COW/unshare the mapping later, we examine the
->  	 * pending reservations for this page now. This will ensure that any
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706084805.8400=
--1-kirill@shutemov.name?part=3D10
