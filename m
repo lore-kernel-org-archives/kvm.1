@@ -1,41 +1,41 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8274424676
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A95B36A367
 	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 10:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783332228; cv=none; b=heuF2WazMMbcoCilHm9a6h2Iq9hJAnspwvN7Ul4PkEgd9LiMWOnS3WfZogXxscIFLKu/QZHQ98c6IZwDvnTm6yh/djQQaPYLNoB3ZmgzRh7JIYdWnB/Mn874dOQghWj/+N2giG5OYNHA7g45q8heTRLqlsUV/2NFW5GDzeNDHJc=
+	t=1783332228; cv=none; b=SIfRWYZOwLhg48BTfqoMpT+fEkjzQ3tPtUyqrGfK3f45unMlMshU8MmynEB/JhYqcKVMgFyEl5uGzZ8V/Ond9ttU9OQMIhhWKJDqvVAEpsXyf/2PFNmlPhviq9+M89OMHUPBYY5qDCeS5zGApBYsnxcriIrQlszqcGlXToexQxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783332228; c=relaxed/simple;
-	bh=I76KG5JfU2KUfP42R4BWjosTI4aI0h1i4V5fCeXdgAE=;
+	bh=r6e98YlV4OLCCvE9+/j+v6Rli9RH4Iy/ZRmHUETXBw0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C7TRvh4EsPkpMnz4NpuOy47KeoK3v5fHEHoNORwuyhSYO9jxaD9sGKS4SWOb5pVQ4f5fSfsd3zQqrOZ712E9wvKXnRM8xlYTpTcXKEKa+IvjNpznyKFBiAisYhsremWZ7JIKdTtdk0JFJwczZ5Vu5/TWcq4KM44kg8wC3XVtLz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=U65FBOYr reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=Uf6WDEASqfMjSQUNI7K2MUyV3RSgahOsSOIVDTagy1eaMTtk6BCC1LwPl1wYQ9cQHlnNpzvQNTbxh4DxxHuB6w132R/hWYviHeLLONzepj+vPBetMEyOQpfsCn8+3RNLxJYPCtbkNMPE0lnYqB7zLPJ31O/CA4d5KnSU2hW4y70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=DU1X6V89 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="U65FBOYr"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="DU1X6V89"
 Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 666A3TQ6013128
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 666A3TQ4013128
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 6 Jul 2026 19:03:44 +0900 (JST)
+	Mon, 6 Jul 2026 19:03:43 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=YDWkCAd4wd1O5a+AJqC/Cbz+oKO4i4/1IVYuaDmE9UQ=;
+DKIM-Signature: a=rsa-sha256; bh=nCwZNeDZlJVGlaWCLeWYvbGvxte1zenM4jubK+YhaG0=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1783332224; v=1;
-        b=U65FBOYr0bjrwIJ4HDtQmTovBKJTbkY/zUGcirN2zujm+k7V3mKx9tJWrmBni1Ew
-         Z4rzRcOs9YhC1qUnqP/owy+umCMic/Pg/Ba7piCZ3d1N5Hq7KlIDnu8+SPcHOpzC
-         WLeL/1YmIitydRnH4gkorjvgyQa3oJtATYM32Au9z8/JiHf80mQjenUrMMNy38n8
-         aOhH9dTVLmQDbm+VB2tHFx5rQiv+4pHVUqgr6E/rPm8qLLdXW0+SLGvw+cvxMBHQ
-         Pe28oCvLSS7OL9u7QS9OXGh09Cp8mS5KoDQ4ljUpXjI+MdBDP9PmfaeTjg9sv234
-         eG39I2az2kwboqJmcu/n1g==
+        s=rs20250326; t=1783332223; v=1;
+        b=DU1X6V895JVkXdpTIAHNPQNWV5xjYrmYk8nt6k0TwVv2ESbhpC7q09iWxmCFBnSM
+         LjlIq0647f8DMew/wQ0GlTAwmY+reFS9YOSeIUPzsVQz5wTxfpuIQmim3mGYqOJ8
+         1INSgWTuy2fUXrfv1+YN9KCwKDaBYeGH3szy2HijVP4BJwNBlqd1RrkufE/DmfRG
+         o3Q88L81VzlPKx4sdBFXTtZwWvsRFVuWNPqIbRA3eoy4rGDA5BvZwCPg7s7Zzbgg
+         OeptxjvHbFbfkXxPccrcR1BvsKXMwrqPP24wl7HFYMrxPnGTTI9V5BUY8Hnji/py
+         zuI1kyA7vN5/z7NMNtqtLg==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 06 Jul 2026 19:03:26 +0900
-Subject: [PATCH v8 3/7] KVM: arm64: PMU: Pass the pPMU to
- kvm_map_pmu_event()
+Date: Mon, 06 Jul 2026 19:03:24 +0900
+Subject: [PATCH v8 1/7] KVM: arm64: Disallow vPMU when pPMUs do not cover
+ all CPUs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260706-hybrid-v8-3-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260706-hybrid-v8-1-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260706-hybrid-v8-0-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260706-hybrid-v8-0-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
@@ -63,41 +63,131 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.16-dev-925f5
 
-Replace the VM argument with the pPMU used for event creation. The
-current caller still passes the VM's default pPMU, but this removes the
-implicit lookup from kvm_map_pmu_event() so later changes can map events
-against the pPMU selected for an individual vCPU.
+Commit ec3eb9ed6081 ("KVM: arm64: PMU: Disallow vPMU on non-uniform
+PMUVer") made KVM reject vPMU unless the system-wide PMUVer is usable.
+That covers systems where PMUv3 is absent or non-uniform, as well as
+systems where IMPDEF PMUv3 sysreg traps are unavailable.
+
+However, KVM can still accept vPMU when all CPUs uniformly trap PMUv3
+sysregs, but the pPMUs registered with KVM only cover a subset of
+possible CPUs.
+
+Reject vPMU unless the registered pPMUs cover every possible CPU.
+This avoids carrying support for partial pPMU coverage into the
+fixed-counters-only UAPI introduced later in the series.
 
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- arch/arm64/kvm/pmu-emul.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/arm.c      | 16 +++++++++++++---
+ arch/arm64/kvm/pmu-emul.c | 20 ++++++++++++++++++--
+ include/kvm/arm_pmu.h     |  6 +++---
+ 3 files changed, 34 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index 4e8c872b3e20..185ea3631eee 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -678,10 +678,8 @@ static bool kvm_pmc_counts_at_el2(struct kvm_pmc *pmc)
- 	return kvm_pmc_read_evtreg(pmc) & ARMV8_PMU_INCLUDE_EL2;
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 29f48f2c63ec..68767bb08285 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1527,14 +1527,19 @@ int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_level,
+ 	return -EINVAL;
  }
  
--static int kvm_map_pmu_event(struct kvm *kvm, unsigned int eventsel)
-+static int kvm_map_pmu_event(struct arm_pmu *pmu, unsigned int eventsel)
+-static unsigned long system_supported_vcpu_features(void)
++static long system_supported_vcpu_features(void)
  {
--	struct arm_pmu *pmu = kvm->arch.arm_pmu;
--
- 	/*
- 	 * The CPU PMU likely isn't PMUv3; let the driver provide a mapping
- 	 * for the guest's PMUv3 event ID.
-@@ -733,7 +731,7 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
- 	 * Don't create an event if we're running on hardware that requires
- 	 * PMUv3 event translation and we couldn't find a valid mapping.
- 	 */
--	eventsel = kvm_map_pmu_event(vcpu->kvm, eventsel);
-+	eventsel = kvm_map_pmu_event(vcpu->kvm->arch.arm_pmu, eventsel);
- 	if (eventsel < 0)
- 		return;
+ 	unsigned long features = KVM_VCPU_VALID_FEATURES;
++	int r;
  
+ 	if (!cpus_have_final_cap(ARM64_HAS_32BIT_EL1))
+ 		clear_bit(KVM_ARM_VCPU_EL1_32BIT, &features);
+ 
+-	if (!kvm_supports_guest_pmuv3())
++	r = kvm_supports_guest_pmuv3();
++	if (r < 0)
++		return r;
++
++	if (!r)
+ 		clear_bit(KVM_ARM_VCPU_PMU_V3, &features);
+ 
+ 	if (!system_supports_sve())
+@@ -1555,6 +1560,7 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+ 					const struct kvm_vcpu_init *init)
+ {
+ 	unsigned long features = init->features[0];
++	long r;
+ 	int i;
+ 
+ 	if (features & ~KVM_VCPU_VALID_FEATURES)
+@@ -1565,7 +1571,11 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
+ 			return -ENOENT;
+ 	}
+ 
+-	if (features & ~system_supported_vcpu_features())
++	r = system_supported_vcpu_features();
++	if (r < 0)
++		return r;
++
++	if (features & ~r)
+ 		return -EINVAL;
+ 
+ 	/*
+diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+index c816db5d6761..f50bb9d9a1e7 100644
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -24,10 +24,26 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc);
+ static void kvm_pmu_release_perf_event(struct kvm_pmc *pmc);
+ static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc);
+ 
+-bool kvm_supports_guest_pmuv3(void)
++int kvm_supports_guest_pmuv3(void)
+ {
++	cpumask_var_t cpus __free(free_cpumask_var) = CPUMASK_VAR_NULL;
++	struct arm_pmu_entry *entry;
++
++	if (!alloc_cpumask_var(&cpus, GFP_KERNEL))
++		return -ENOMEM;
++
++	cpumask_copy(cpus, cpu_possible_mask);
++
+ 	guard(mutex)(&arm_pmus_lock);
+-	return !list_empty(&arm_pmus);
++
++	list_for_each_entry(entry, &arm_pmus, entry) {
++		struct arm_pmu *pmu = entry->arm_pmu;
++
++		if (!cpumask_andnot(cpus, cpus, &pmu->supported_cpus))
++			return 1;
++	}
++
++	return 0;
+ }
+ 
+ static struct kvm_vcpu *kvm_pmc_to_vcpu(const struct kvm_pmc *pmc)
+diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+index 0a36a3d5c894..354f06edfdee 100644
+--- a/include/kvm/arm_pmu.h
++++ b/include/kvm/arm_pmu.h
+@@ -40,7 +40,7 @@ struct arm_pmu_entry {
+ 	struct arm_pmu *arm_pmu;
+ };
+ 
+-bool kvm_supports_guest_pmuv3(void);
++int kvm_supports_guest_pmuv3(void);
+ #define kvm_arm_pmu_irq_initialized(v)	((v)->arch.pmu.irq_num != 0)
+ u64 kvm_pmu_get_counter_value(struct kvm_vcpu *vcpu, u64 select_idx);
+ void kvm_pmu_set_counter_value(struct kvm_vcpu *vcpu, u64 select_idx, u64 val);
+@@ -99,9 +99,9 @@ void kvm_pmu_nested_transition(struct kvm_vcpu *vcpu);
+ struct kvm_pmu {
+ };
+ 
+-static inline bool kvm_supports_guest_pmuv3(void)
++static inline int kvm_supports_guest_pmuv3(void)
+ {
+-	return false;
++	return 0;
+ }
+ 
+ #define kvm_arm_pmu_irq_initialized(v)	(false)
 
 -- 
 2.55.0
