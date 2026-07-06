@@ -1,87 +1,45 @@
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2F526059D;
-	Mon,  6 Jul 2026 13:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B912B2D7
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 14:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345968; cv=none; b=iJ/BT1Stgdx+amTdF34UdDxI0NNvzPTf6II5TjMmFFrOvQkSLrLKG4sckI0g4XOwQ0mfYREKOPZlNMti3iQtj0VuOZ1do5IVYGKT3Y0Ss2yQH+FDRua3QIA0DkNOKeh/5fp9lgSEoVhNO24uUM6H8ADG/4Vm5KZWmElHsIg8eOg=
+	t=1783346412; cv=none; b=NTwyt8V1xvxF2bMm5YCrDD887IaEFUq4pf14CSBYke56/ZIFWSXaR7cvCMsYyzfTt2VITjI1gGiFIarQ7N4htXQAqDDVbHWlt941KcUeCLwY2NUym4Pcrix6Y+EUzYiK/TrTo8fwXLjQT3tr6dPiFfqH9nUGqSViGAxLXAVETHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345968; c=relaxed/simple;
-	bh=LKXhWXt9sUO6TLuEba9phppj/eKqFtLPdIALoV4CA+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JUIXqDS1puPB+Xiw4VytJpaF1Flnwr+1ZxqJrQs5DqyFA++vXEi24+MNiZI9BoQdLrJ6qrUYYAw00gkB32oxVVhL2y3pnnDY4iykHfuwD28Pw88izB7PIdKxJyOy7Ec01mKCX5PWU2A3ayGrTj86nLGE0nYQHxjPycqEdjKsjDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ORGHdGOD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QUPbPPQq; arc=none smtp.client-ip=202.12.124.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1783346412; c=relaxed/simple;
+	bh=0IHjigNQVuWH8FJItunSiwUT7hqvFU6sp0qDNhFrMMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=mjc6ZprZkS8cYrJPIPgiBAynJ/KUgcqgn0KD4H5/u41PgbQQM3wAsP5855HA6L2rvZYWaNS7i1IKlR+tj0YyFMdLhMXQwGbT2j4AOxBgwuHLaezUnbNIvoQRD+s//VmZVIWAN1dJwsiGcUw2e7EZlQaUsjx+Db2+GwVWIS5WQ+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KXNZZZH/; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ORGHdGOD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QUPbPPQq"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id E02861300141;
-	Mon,  6 Jul 2026 09:52:44 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 06 Jul 2026 09:52:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783345964; x=
-	1783353164; bh=4xSpkCs0mkVTU4ldegsUj6ukw+q9jYjeMqfDzWKa/Xs=; b=O
-	RGHdGODYRzGGOQtsJDjFD/GHjYhFLrnwmhJ4nj8SQmbfwwqdnFLxvAhIIr2qmvYp
-	OIgRR91nabhXx/M1Keia/pwrRMj4ezHDF1pPDv/TPJ0iJN1zmbCUTtZ7Fj14cbrr
-	GrxddPQyqgMk4Z3UhbceLX5TFPJeZ4LzEzsRc744K14D9Oat0JWhaCdj9l4WPoK6
-	LULyYorRKcoIQQZG8btIK8yDfvFkNPMNTmIDk2X+m8rop6JvvxlmudT1OVbcS21S
-	p4c0S9TARY7ig36mYp6laIOveg6zBhWMD6wo2fQ5DFMasDBNGxnmU11Srj2S4y47
-	WUsKMsLuSpJmHxeixAiKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783345964; x=1783353164; bh=4xSpkCs0mkVTU4ldegsUj6ukw+q9jYjeMqf
-	DzWKa/Xs=; b=QUPbPPQqfSQuGc49n1E+EybiKQ0AjhWnTZMkKKrGMICkDTpo0tR
-	5WFz4zimhqh01LY5oX8JF3dMQ+gxYjo01lD63mmV0TXQBPiaHD9FUybHVRzQdU6n
-	rgmnU0mrORY6N2JknY9kOwW9ZwOTcsJhwDIDUJKfW5pkL4dDFE4vPXtrVKAX+GJ2
-	9JPKFwB729Rt11z7ZWVnLfwlA4zicjPcR2hADg0AEvibY8ABCyBE7HGb1SMh24iA
-	4mmrJjZ+/7mjWj1miTm5M29347jKnz/xMVzaC4w8TxX6BBkOwblSRkPmF9TLsVbW
-	++X0uRlj9lSoe/9SBythXU7NSxnBUjj9zzw==
-X-ME-Sender: <xms:LLNLanE6LlyrXVmKP3xTrqQNWWWCtGiC3IWD8qgp5wQoHwI0QCJamQ>
-    <xme:LLNLapl7OV15UFWVChlyt3TySoYcuctjzYfJfzPueR5QcET2_Jnl4WVi4d3Ue42LZ
-    Vz_tdKNIm7EIPRDLnKLvM4l7dCTr1I83fMy_wDcpnFyNLU9cyCmHUw>
-X-ME-Received: <xmr:LLNLarxl3RmMbO80ftN88T98zlBaxjMIehNW5r49XbEXI7SE_Omrq0onUbJnVA>
-X-ME-Proxy-Cause: dmFkZTFPCg2xwzQp7+TI1AOZhFkobdSqGL70wE3j5fYy6KqFBfnJe9khnAl2AW8p19ybla
-    nOxVA4zszBab8zr8DAan3yxr5qDfbWaQ7hJ0NV7b2cJcr9Ntio7u6fMe/SZ1Ow14Pkh5HQ
-    ptUJ0KggNDTKeDH4n/Q8AE5HDb09nHZevYvSsPVBfKaw3cVqEkr2CrDDSCUq1GTSqMO/aG
-    6e/ngxiV+iKUWwq5+HTbtOtYYZzjntsgrIYdWQZizB+zForZNk1430IEoIqJTPzK7rMTXz
-    j9+5K1gVmvaC34Ge54Wnv2ClsmAUX1jFs0jgre4VbvtAv67OuKOpOjIvce9g2h1Au+a7uE
-    buz2uli7Do9QfqtwyDqctNlSu9PPCnpQXstgQalTDZQX97AGfYP7wxZCaGRmbH2gwAVA2X
-    p14HERtrYr/w2iXgq6STldHNMj83l/I+f1XqVLD7zSDNK2GZhog1REBHU39JN//wV78I6Z
-    12DjItb9i0hZohCsrTwCrTUhdt921TbetY78X4V+jjYkgRDselLlRCtF11IufQgniTyYjl
-    RvUSAMyyOdKT1ZxL/5SaRZa94bHBD5DaXWbrmqbgb+T2/EJVJLSoGm+BEapk5py0GMhghP
-    UgKUHY+7LrgPaDz+WRbfe6L3bZDgiwRKevb+1m3aDsdTKYdJ2+lTMcMJOS4w
-X-ME-Proxy: <xmx:LLNLakxVwn-knlQW7wbVuPMHDMIKU8yy926Qd4EYpTMqG4dbHlXgrQ>
-    <xmx:LLNLat8niT3RPiXgA6o2nvGAsuZaeIBLErg4ISpzTl6HCeMn7MGVzg>
-    <xmx:LLNLanhmJdZS9kmbpZMRmxOmmPmpaCvJ0dxl1KoWKiJsSZEzoBRR3A>
-    <xmx:LLNLagWrHJbS0-XoWcWwwboXd5ZUmXB2neZykJLtexUwM92w1WYwqg>
-    <xmx:LLNLas3c-rN8K7N5YGo-PdiyItlVc3GSGJMIQzly137JJ3QVI0UjPaF_>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Jul 2026 09:52:43 -0400 (EDT)
-Date: Mon, 6 Jul 2026 14:52:42 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP
- tracking
-Message-ID: <akuy09U-g0AKSEfy@thinkstation>
-References: <20260706084805.8400-12-kirill@shutemov.name>
- <20260706125726.729431-1-usama.arif@linux.dev>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KXNZZZH/"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30B082BCB;
+	Mon,  6 Jul 2026 07:00:06 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F4783F7B4;
+	Mon,  6 Jul 2026 07:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783346410; bh=0IHjigNQVuWH8FJItunSiwUT7hqvFU6sp0qDNhFrMMc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KXNZZZH/ijAkS5T+1ucBprA8Ax42iKrV0F3y/YbtiYI4SxeDpGDyTvZy8GyMokYy6
+	 d/MAYS4WTruCHJBSA4TmsCHqsbWv/n1I3ywVAV0rcJAw3PtX00432h+bde7Nm28kgS
+	 XskbjS2TEEUh+nT/ybneP66UWgRRduKgIAmeqvXY=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	sashiko-reviews@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+Date: Mon,  6 Jul 2026 15:00:07 +0100
+Message-ID: <aku05wJ9WQcpIh4n@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <akTv39bQdbxFbzhk@LeoBrasDK>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-3-leo.bras@arm.com> <20260629113645.BE6801F000E9@smtp.kernel.org> <akKFlzAdB43lRpi1@LeoBrasDK> <akKmHqRaZEUjN3zY@kernel.org> <akO9iHJmKN7MzTjM@LeoBrasDK> <akPkVASjWWYQpkx1@kernel.org> <akP4ZDjZIu2_CfVF@LeoBrasDK> <akQONWoRRZXu1-56@kernel.org> <akTv39bQdbxFbzhk@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,52 +48,126 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260706125726.729431-1-usama.arif@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 06, 2026 at 05:57:24AM -0700, Usama Arif wrote:
-> > @@ -2443,8 +2443,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
-> >  
-> >  		categories = PAGE_IS_PRESENT;
-> >  
-> > -		if (!pte_uffd(pte))
-> > -			categories |= PAGE_IS_WRITTEN;
-> > +		if (!pte_uffd(pte)) {
-> > +			if (userfaultfd_wp(vma))
-> > +				categories |= PAGE_IS_WRITTEN;
-> > +			if (userfaultfd_rwp(vma))
-> > +				categories |= PAGE_IS_ACCESSED;
-> > +		}
+On Wed, Jul 01, 2026 at 11:45:52AM +0100, Leonardo Bras wrote:
+> On Tue, Jun 30, 2026 at 11:43:01AM -0700, Oliver Upton wrote:
+> > On Tue, Jun 30, 2026 at 06:09:56PM +0100, Leonardo Bras wrote:
+> > > On Tue, Jun 30, 2026 at 08:44:20AM -0700, Oliver Upton wrote:
+> > > > On Tue, Jun 30, 2026 at 01:58:48PM +0100, Leonardo Bras wrote:
+> > > > > On Mon, Jun 29, 2026 at 10:06:38AM -0700, Oliver Upton wrote:
+> > > > > > > But this raises a topic I would like to understand:
+> > > > > > > - Do we actually need this to be a block_size to assure correctness? or is 
+> > > > > > >   it just about efficiency?
+> > > > > > 
+> > > > > > What value is there in having a chunk size larger than the largest
+> > > > > > possible block mapping? The whole UAPI is deliberately tied up with page
+> > > > > > table geometry.
+> > > > > 
+> > > > > Not larger, possibly smallerv My concern was the difference in pages to 
+> > > > > split between 4k, 16k and 64k.
+> > > > 
+> > > > Ok, well in any case the upper bound is going to be the largest possible
+> > > > block mapping for a given page granule.
+> > > >
+> > > 
+> > > Sure, we can do this.
+> > 
+> > I'm describing the UAPI behavior of what we already have. Please do not
+> > change anything and continue to leave userspace in charge of eager
+> > splitting / chunk size.
+> > 
+> > > > > > 
+> > > > > > Overall, I'm not buying the argument for changing the behavior of
+> > > > > > KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE. There are very good reasons for
+> > > > > > *not* eagerly splitting the entire address space, especially if you know
+> > > > > > the working set of the VM is small.
+> > > > > > 
+> > > > > > You can still use HDBSS without eagerly splitting, so long as block
+> > > > > > mappings are {DBM, S2AP_W} = {0, 0} and leaf mappings (which have
+> > > > > > a writable PFN) are {1, 0}.
+> > > > > > 
+> > > > > 
+> > > > > Block mappings being read-only, and leaf mappings being writable-clean, 
+> > > > > then? Could you please ellaborate on why does not it need eager-split?
+> > > > 
+> > > > Read-only translations will continue to generate permission faults
+> > > > whereas writable-clean descriptors can be updated by hardware. You get
+> > > > the opportunity to split a block mapping lazily while preserving
+> > > > hardware dirty tracking for page mappings.
+> > > > 
+> > > 
+> > > So you suggest we only enable DBM bit after we split the block, that will 
+> > > happen only after a block is dirtied for the first time after dirty-log 
+> > > starts? 
+> > 
+> > If the VMM wants to do lazy splitting, yes. Otherwise this would happen
+> > as part of eager page splitting for block mappings that are known to be
+> > writable.
+> > 
+> > > > The approach I think we may need is:
+> > > > 
+> > > >  - Use a software bit in the PTE to stash whether or not a PFN is
+> > > >    'software-writable' when constructing the stage-2. By this I mean
+> > > >    we've already faulted it in for write from the primary MMU.
+> > > > 
+> > > >  - At the time of write protection, reap the hardware-writable state
+> > > >    from all PTEs but preserve the software-writable bit.
+> > > > 
+> > > >  - Whenever splitting a block mapping, set the DBM bit in the page-level
+> > > >    PTEs if the block was software-writable and HDBSS is present.
+> > > > 
+> > > > That way you'd have sufficient metadata in the PTE to safely set DBM.
+> > > 
+> > > I remember that, for some reason I can't recall, it would not be great to 
+> > > set DBM during dirty-log start, and instead we should have it since VM 
+> > > creation. Maybe it had to do with part of the pagetable using the old 
+> > > encoding (no DBM), and the other part using the new one.
+> > > 
+> > > IIRC, only blocks that are backed by writable memory (S1) were supposed to 
+> > > receive the DBM bit. We could use that info for deciding what to split, 
+> > > then.
+> > 
+> > That's why I'm saying to use a software bit. We can't leave DBM=1 on
+> > block mappings and set VTCR_EL2.HD=1 for obvious reasons.
+> >
 > 
-> The above is an ABI change for existing PAGEMAP_SCAN users although not
-> sure if there is someone that cares. Would below be a better alternative
-> to limit the ABI change?
+> I am failing to see the reason for above.
 > 
-> if (!pte_uffd(pte)) {
-> 	if (userfaultfd_rwp(vma))
-> 		categories |= PAGE_IS_ACCESSED;
-> 	else
-> 		categories |= PAGE_IS_WRITTEN;
-> }
+> IIUC, one option would be to:
+> - When constructing S2
+>   - Set DBM on every writable block, put them in writable-clean
+>   - Enable VTCR_EL2.HD=1 (HAFDBS will update dirty-state in HW)
+> - When dirty-logging starts
+>   - Set VTCR_EL2.HDBSS=1 (any new dirtying gets logged to HDBSS)
+>     - On every vcpu
+>   - Write-protect everything (with HACDBS possibly)
+>   - Split everything
 
-You're right that it changes what PAGEMAP_SCAN returns outside a
-VM_UFFD_WP VMA. I think that is the intent rather than a side effect --
-the commit message calls it out explicitly as a UAPI narrowing.
+(everything -> every block that have DBM=1) 
 
-PAGE_IS_WRITTEN is documented as "Page has been written to from the time
-it was write protected". Outside a write-protected VMA there is no such
-point in time, so the flag has no defined meaning there -- and the
-current code sets it unconditionally on every present, non-uffd PTE,
-which makes it a constant duplicate of PAGE_IS_PRESENT. A caller cannot
-use it to tell written pages from merely-present ones.
+> 
+> What am I missing?
+> (above case is considering manual protect = off, but the same idea goes 
+> for the manual_protect_and_init_set, but cleaning is on-demand)
+>  
 
-Scoping it to VM_UFFD_WP makes the bit mean what it is documented to
-mean. A consumer that read PAGE_IS_WRITTEN on a non-WP range was reading
-a value that never carried write information, so I don't think there is a
-meaningful user to regress.
+IIUC, what we get from your software write bit suggestion is to 
+avoid doing the splitting if we know the page will not be written to, which 
+makes sense.
+Using the DBM bit as suggested above should have the same effect.
 
-And in the unlikely event an actual user turns up that depends on the
-current behaviour, we can always switch to your else-form -- it is a
-small change and keeps the old value.
+> > > Another option would be to split when we are collecting a dirty-entry from 
+> > > HDBSS, but for live migration that would mean we have to transfer the whole 
+> > > block (possibly a large LEVEL1 block), because we have no idea which part 
+> > > of it got dirty.
+> > 
+> > We need to do dirty tracking at page granularity. The only scenario
+> > where we have writable block mappings while dirty logging is enabled on
+> > a memslot is if the VMM enabled KVM_DIRTY_LOG_INITIALLY_SET.
+> 
+> Agree
+> 
+> Thanks!
+> Leo
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
