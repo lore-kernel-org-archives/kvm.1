@@ -1,97 +1,110 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770B13F4849
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 21:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5571F3EFD0E
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 21:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783372378; cv=none; b=uNpbguEBWuobp6KA2nSv18aSJ5GOgTEGL0rNeE1H8aZ2wgXB6H5tWeCYZ3RIfF7znGfXeiLFCpxctgGBHQFGJPc9+x4vKgSRIsOQLaDYhbgowyqWW/kHscZ+okSO9eozzuLDr959PWDoWHT6Wfaz3fbCYe7OeBGguyW5Ix420E0=
+	t=1783372581; cv=none; b=Q49ZXeoxKNF9IQ5BHMMBAefVjnDrDpDFGn0tE7O72YPHnWSYVcam9j5k6dr7BL6f92LyHB7zMmw6I5FpTN+IrFT98CCYhHvrBbNr7qilZJWABZrb/sWDGlW+25YWE4ExnWJ+P5KX+RGNHL3a71fx7UMMHk/CBqIADhoFV4FyAOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783372378; c=relaxed/simple;
-	bh=pmu2Ns+u7j3MrvpRzE4vBrZuDK2pA+O79byFKdV4S24=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a9kWnp5mvmRYgPY2fjKs3h6GXIaVcK9Glfl+6Z3gyjyoO0t2GRJeuNxqChpIBW98eJjYZHXgTWT3aaFrSCGx7XRouDEkMjxORUl9QBxkvbw8oB5VNKThqo9kmrjwFTS/kLB0Gz1ESXkEe3zgnzGfKv0bMjnmKrag2jpuYJzQ8y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bw+WRFlM; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1783372581; c=relaxed/simple;
+	bh=WICdANMRcBggP+LFV7A4kdek+PDiJFQmRUwULQJaBlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r0uGwn4mPGLeiFtdYXhWMG+PelNy2ZtPpSgcQo6FCANSIFUmdwPm99KcZp6PpMIJ8uHkKL/TsBlugdILnlmATnp6YGlnhQGDzfcY7/2LlKXc0bNt8uEmxcxD6QmZhKU4sYPnIpUtverXQmTbCMrVZvIyLtYH+CcJEgNUQ7bwfPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kXH/uVWC; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bw+WRFlM"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so2556237a12.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 14:12:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kXH/uVWC"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8482074a000so880432b3a.0
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 14:16:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783372376; x=1783977176; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7eGtWkkyAP+CX1fJ/+ZRWJr9u4Vfu7xwsEfOdR5rCGU=;
-        b=bw+WRFlML1p3conawCJBm4Dl2JMJnF6Z9vLRy3QgwBv5ufs/IDLb+GH/cCnutkiSb0
-         RFknGWJMl/lzn83Xw5yYHre1009HlOPgurdZsE1QADiuGoy+IvldLGtjR5iIr2PIH3c/
-         h6rv2LyaqAu497ELhogixb2VSKBosMLAtkvswOyBYWVr7bG1LaCAUIWB0Z6MKhJNIo18
-         OZ86fh9TvsA57LWng1eeT6pxlViETs0rkXZfwEMx1RmbTjJVfd7EvJLoRHaR9uq9GRU0
-         gcUmrAHdZxtH/NSxjPQjkOB4dWkAOiPMW9xzF+sag/gJWfqVe+Twaw2xLQw4UcfLyfNy
-         Zzmw==
+        d=google.com; s=20251104; t=1783372580; x=1783977380; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LUYJXxyTVrF/Xf3zdbSU1O7JfO1KsmE4iaB7Xr6SKQY=;
+        b=kXH/uVWCoKpYJs8N2TUgVffcqwyzPblElSnGrGttmPuheCvLd1k+PI/VnjjY99s0nO
+         KK8S+wFqBpyhoLp3ur4R0IPyPNi9Z9/GIvMa7rEzNBqcsSgSC0xx9ChVFxQDnSu2YQ7L
+         f9xdJRHtQ9sO/cUCFmonLUCUWYNzZ8zGcFdG43UE0IbXz8nzqp+mfBbSK8iMoI9/qDUu
+         MorNk/pYSTru4hoilNEcpKxgHwXCvAVejyeFfziNKu1jEsXvvKOr7XF8G0Rvd2z6xW06
+         q0wIc9zOCsyi+1OYxrtR0gEr2vCFR49dyAFcxgBNo+TQcSk13ttAkQv2yqsL+nqRdci4
+         XBOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783372376; x=1783977176;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7eGtWkkyAP+CX1fJ/+ZRWJr9u4Vfu7xwsEfOdR5rCGU=;
-        b=n6nIsDnf6vMUHrhWXm7hyYKODU58Yfc7VO1RlgpBEEbya44GlDnCnkVj5KjpoL4w62
-         z4zl40C49xTtOjhutCIPBxq+ZmQI/2Quz1bpBLkzCJBXZwL8TbKzpkEcp8sRp4HOc2FV
-         3/sMhYKlx2M9DoW0xCpmzKc9u3DkQbV8jfQ9yQ4Zxcrh8OOrMp9ovQWTqd5Ik42tbqEk
-         9E7YtM/4HRtk8KkzGznDf21HCt/Bc+wQfvDvWcsGoG9hcQLz3D5RS1afqPyCe9vnbCT8
-         MTrDGKW/2RUMVmgyX4wZVBfXkNFK9wsjssRGImPVhOjXnkeNDAHBnbtNktrDcQvV/Md8
-         abPA==
-X-Forwarded-Encrypted: i=1; AHgh+RpCCJNIeRjeNZkD9e9qeRlszTzj6w7dbw1gj6ZhMY6a/FPz17tXH74enraH7iSL6ste7QY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsP1o2q2x+FtJ5Fw6GPXLo2/3gRg8BtUPBM7ld+N8ZnVi+UHKb
-	p2fhj71wLQZjnhCIJZCJ9qBPFiCrAzkc6hQ7hnpvX/BI8IZdadYGDAcTcXnA5gBNBcDNbDWIWjp
-	FiptKPg==
-X-Received: from plth5.prod.google.com ([2002:a17:902:7045:b0:2c8:903:9ae7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19cf:b0:2ca:bf8e:35fe
- with SMTP id d9443c01a7336-2ccbe611af8mr26055545ad.16.1783372375629; Mon, 06
- Jul 2026 14:12:55 -0700 (PDT)
-Date: Mon, 6 Jul 2026 14:12:55 -0700
-In-Reply-To: <20260706195313.GE118978@ziepe.ca>
+        d=1e100.net; s=20251104; t=1783372580; x=1783977380;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LUYJXxyTVrF/Xf3zdbSU1O7JfO1KsmE4iaB7Xr6SKQY=;
+        b=eJvbfuHoP30+R/tLDc00evyj0LAlGha+t//Up2bQUmsrUjnrwezu8KAsGuRGgJIuLX
+         kOnLV1ob2t6f0Ztb14ACVDXU9mXc2SrQioazPZp9bcf2Q5UeebVoyW8i5GGySTYoDBeM
+         7irYpu9X4Qi/4V/JGGkxUu95XC2UfdRI6Xo+k9lKTR6T6z5JbtY8wxTdwwJdSisls9d1
+         npuH4kqKhjfwaEU9ciw3bDkntjgaQjDEkotMb36/HTDz3exVhMIocxqBM2zr8oTIQniH
+         /p80LQm54c6qRPyNVgofoY1J8I6hbuDR/5YUYQOWk06/8U5n6eu4LIgrsZ2EwphgGIOP
+         eLsQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpP0vxKUHZru6wQsywRumUZ2wkIzYH9MPiqySUSdNhlDrJT8DkxhDJJYkVuj69gE6DQ6jY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUCSfZgj8/d/wCKYfhUl7Jsm8nat5CA/mJVsmb7TrduMpVqwhe
+	uhmHcdtiAkQYwCK8E7idcQiF5yEjsiydHcJ29/lElkyCJkFrm/CwoVA43PJ7GypjBA==
+X-Gm-Gg: AfdE7cnwQRgXvJoun4x+yqZAhRu2fKPjpwB5DRdo7T0GGn20afLOf1kUbqOEEJu8XZH
+	1gjeW3Nf5kWRXXfjXkQhzNwRxQcAa9MP+JymWC4oGNUBitVRNCIuhp2E8jXVgtpBNOyhwTZHzeq
+	+NGKazpkmGGyehxZnIxjfR3EJ/hcv9AoyARO1iErYPZg05XZq0DtgiZ+749fYjfXxYlu3sArJib
+	x48s/8RtiC4d2ej08RtROtFz4qi6V50TuaWgiiO65VWSiuhRm7T1hGvTQOtWUMP8qHC4nFNwd1W
+	malehryrEYjaQS7gkqBsOp+hzYOECBSxMAg+tip1SGh7Dzj3At7ajfsfxZtDGb+O3EXBPtNvQ+R
+	Yahw0aMEZYOcHUNZR2Xoy6azhIoU25UMGvoksc5OYrmbqhB/EpDlsnHWXuPzY6PLQGMccJg65Xx
+	uNqtFba/BQP7Fp57zOCWqxXxvgGFmnhuB6eNgXdJELGvnAXwlA02g=
+X-Received: by 2002:a05:6a00:4514:b0:842:5bf3:c53c with SMTP id d2e1a72fcca58-84826c8fb8fmr2436174b3a.2.1783372578727;
+        Mon, 06 Jul 2026 14:16:18 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d4edb4sm4354758b3a.33.2026.07.06.14.16.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 14:16:18 -0700 (PDT)
+Date: Mon, 6 Jul 2026 21:16:14 +0000
+From: David Matlack <dmatlack@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Vipin Sharma <vipinsh@google.com>,
+	Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Alex Williamson <alex.williamson@nvidia.com>
+Subject: Re: [PATCH v2 08/10] selftests/vfio: igb: Factor hardware
+ programming into igb_hw_init()
+Message-ID: <akwbHgu5iOBlBR8k@google.com>
+References: <20260526235417.2058313-1-jrhilke@google.com>
+ <20260526235417.2058313-9-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706085229.979525-1-seiden@linux.ibm.com> <20260706085229.979525-2-seiden@linux.ibm.com>
- <20260706195313.GE118978@ziepe.ca>
-Message-ID: <akwaVzghHzi8o8fK@google.com>
-Subject: Re: [PATCH v4 01/27] VFIO: take reference to the KVM module
-From: Sean Christopherson <seanjc@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
-	Friedrich Welter <fritz@linux.ibm.com>, Gautam Gala <ggala@linux.ibm.com>, 
-	Hariharan Mari <hari55@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Hendrik Brueckner <brueckner@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>, 
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, Oliver Upton <oupton@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526235417.2058313-9-jrhilke@google.com>
 
-On Mon, Jul 06, 2026, Jason Gunthorpe wrote:
-> On Mon, Jul 06, 2026 at 10:52:01AM +0200, Steffen Eiden wrote:
-> > From: Paolo Bonzini <pbonzini@redhat.com>
-> > 
-> > VFIO is implicitly taking a reference to the KVM module between
-> > vfio_device_get_kvm_safe and vfio_device_put_kvm, thanks to
-> > symbol_get and symbol_put.
+On 2026-05-26 11:54 PM, Josh Hilke wrote:
+> From: Alex Williamson <alex.williamson@nvidia.com>
 > 
-> I thought we weren't doing this approach? Use the struct file as the
-> kvm handle. I thought I saw patches doing that already?
+> Split the device register programming out of igb_init() into a new
+> igb_hw_init() helper so that the same sequence can be re-run after a
+> VFIO_DEVICE_RESET to restore the registers that CTRL.RST clears.  No
+> functional change for the initial path.
+> 
+> igb_init() now performs the one-shot setup: region size assertion, BAR
+> mapping, CTRL.RST + IMC mask-all to put the device into a known state,
+> and vfio_pci_msix_enable() to set up the kernel-side IRQ trigger.
+> igb_hw_init() does the rest: ring pointer setup and IOVA calc,
+> CTRL_EXT, PCI bus master, GCR, PHY loopback, descriptor rings, RCTL,
+> TCTL, GPIE/EIAC/EIAM/EIMS/IVAR, and driver-state initialization.
+> 
+> vfio_pci_msix_enable() moves from after RCTL/TCTL to before all
+> device-side programming.  Its only side effects are the VFIO kernel
+> IRQ trigger setup and the PCI MSI-X capability bits in config space;
+> neither has any ordering dependency on the 82576 device register
+> writes performed in igb_hw_init().  Performing it once in igb_init()
+> keeps igb_hw_init() reusable from the reset recovery path (which uses
+> vfio_pci_irq_reenable() to re-arm the existing trigger).
+> 
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 
-+1, my joking-but-serious NAK stands.
-
-https://lore.kernel.org/all/adf29Rn7q9Db0hxc@google.com
+Reviewed-by: David Matlack <dmatlack@google.com>
