@@ -1,194 +1,170 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F23B7744
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 17:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1989727A107;
+	Mon,  6 Jul 2026 17:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783360644; cv=none; b=M8KDEfLQvPl/1nXo1at7RVrDPgKHCsURw64H4S8KljEs/bxcw6IiUWTh9h2DLNIAxyprbARX3VOAb/lesbpxvH9g5fd0z0zKXnlFXqOTRm0/PTFNEkzuDkakhSB3huwz/T9K+4tdxhDbvBZxBawTWHnlPBAMuP9nlGJcwZvd7JE=
+	t=1783360699; cv=none; b=krS2M0SGlNUmhImO+LLd2BnA2VmgxRLV+a2vPf7jTkk7pCCyXoChh+62t5j4HbV7HHKfAnbmoRLGPlLJJvqtWNggzdZHTHnNJk5j4JFgBSdTEUSA59Z9CBeEsXbAS5aqQ4c08oK8k9wu8KS2GoAlIbfAk3JnIkVGFssBNABfLKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783360644; c=relaxed/simple;
-	bh=jXDxXZ6gH2575d3O+6kJFNEy1oA0rlO/F+OwnbftaWo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZWylH+m5lueV8tT2Sejc1Va77XSFvyHTfrvprdhDZ4YIhXgXSPkr+hcRECgmCgWk7zXPNwapWYM2tP0dge6Z39saPhUp6n/dmPO5Oj4v0DYrtHP1PgG5AGCKGFY9gM2IMF2DS6V75qkTFWiCkc4JuNRa7XTaTBS479awgu/F1Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VzKXtGQB; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783360699; c=relaxed/simple;
+	bh=h980sEF6MU4UaII9Q4INlvAIxaxOl7RRKHFGjT/8d/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W22BNX206mRsgB0w0rJOVe8211Z2Ta8KRtUCoIK2iZMlTXZD0MYu49HykUQqBVkikS7aHZv+QZ1Q/sVxK+KI+2bXf7ow6JKYiulgvqCJwfPoGFbZTdlu4SM/9UWglQvLcsCOb2yLT0VDUkVBx40lpLE4utKd+yH7X2/XwS9Oqt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/EoXkqE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VzKXtGQB"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cca5e0a0c9so24613625ad.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 10:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783360642; x=1783965442; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uGyUQ6xGWDS7+9iSL97V29abhH29LTMSGW4wRSqfrOI=;
-        b=VzKXtGQBkrooCiCJlGCkl47m2A9mt91SX7KZEXZZn3n8rJKQycMJBcCCjbzhq1lsEB
-         YElSZe5PKHF4mNcu6ZlZPGe+8wqg9chAdBTGzrRwrpy8utbw85JC5kZzigHbsMbT/OO8
-         E79w+MfBM3nqMYbCXlvZo4rlG+reCLvjYsVng8qKPJ3d4PnoQ9SZLygeSKuu/fA7lA/A
-         j9OzTq8du+GjbeBY4k7tQnUcSohFzCzMH6VCgEN21QqC+AO3Pv5j/wakhSbVF4VlCqPF
-         2Jag2lPyQZd+ePXW/1F1sdOdpzR9c0+L5H5RgKbmSV2TTxNWI0y/r3Ct7WM5rNHurZLS
-         XrNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783360642; x=1783965442;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uGyUQ6xGWDS7+9iSL97V29abhH29LTMSGW4wRSqfrOI=;
-        b=oGJZoUEwC9P7LtcCMVSobzcXF2/Dtb3ywjkSoqWzQ9JuVnyQ9K19md+hllG0gY+umo
-         ooH4SdEk32033+tOxCI1Ei3DKJhc6Dnwrh5V1lNrDUsBJQoxZJHNDoiXN1t+myG0TdvV
-         5BZn3O4f3YF2qIjEbAsl3z1QyTB3hcBScLPCRXhzien6f+rvaXwR3NcAOZHuO1bOOHIs
-         qN7OS3UAnanR6getflkis5z4tKPEQ16+8f5XU7ABwpqhd5ty72Etkmd8gtXDPZpHJJSk
-         JcUzGWl5ak19ZlUGpxwrAC6Ofw6UX0R8L9RhbbW7aBw8kvxYrWcwAH6uFAHm2uXdhQgG
-         TUDQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roa2z110vi8rdo6zEoG8EmSwBwkPuxVoAlS/Ugf1ycTYrmUpl2M/fB8BiCg+642r1LUESE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIKb/bE08Y9ZVQNXgM+iGzpm87IKhBo/VHiBQuRfg0i90e6ceZ
-	R2AfGqVSijxHD/hQw1o1+Eg+cpYZzj+LmbLbDJv99+j1jwHC+PSfxIth4PydZd3IRnVPljoeMkB
-	Y2xs7ng==
-X-Received: from pldy3.prod.google.com ([2002:a17:902:cac3:b0:2ca:e02e:5b86])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e78f:b0:2cc:b480:28ba
- with SMTP id d9443c01a7336-2ccbf1a8c31mr16143665ad.44.1783360642396; Mon, 06
- Jul 2026 10:57:22 -0700 (PDT)
-Date: Mon, 6 Jul 2026 10:57:21 -0700
-In-Reply-To: <20260704054342.GB2169894@pedri>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/EoXkqE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83771F000E9;
+	Mon,  6 Jul 2026 17:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783360697;
+	bh=Xfa02w+2R7v85UsHbfc8c8fBDDDTcGtnNT9og3+/x+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l/EoXkqEqLzf/RmDFKoleUlyWGN8jKQKxq88TU+k7AINCMlouqbeFvDNtMG1ujBD0
+	 daO+DPr9pYbKdvKxoQu38X0ZYp1smDFej9Nm24s6FwslOX+7mIbZnPFTFajOX3N+Lx
+	 uHvR+9g0G8rKkVBPNnzYKihpTCv8aP4sg0oR4ct0Xw7Oy7bpgmGTdHo24nyLjp+uTQ
+	 SxzKfmEUvtM8MGXPQbAL4s27RmkpJ9I3v9p3/nrB1Ubo+h+TUiFVG27qZJcqGAvCI1
+	 aKXOvLUS0HrAjs7XNVArgFq+aXnLaJEkr0mQZzY11Yfvlti/0vf1GKWx7Rh2OgdSmU
+	 ui4UATs+PWTKA==
+Date: Mon, 6 Jul 2026 10:58:16 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v8 6/7] KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
+Message-ID: <akvsuBcqCCzlrBLk@kernel.org>
+References: <20260706-hybrid-v8-0-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
+ <20260706-hybrid-v8-6-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-17-yilun.xu@linux.intel.com> <aj1tFuwZWdPGfUoG@google.com>
- <20260629100301.GA1743876@pedri> <akMQ3J6fK3DUBsPH@google.com>
- <23a9173f6e278ca7dfedce3374626c6ea3e1b47a.camel@intel.com>
- <6a445e4be6b12_3a3568100db@djbw-dev.notmuch> <akVNdxCzk-n4bgMv@google.com>
- <9df36c49e6be69dd9eece71f70a404a84b1563ab.camel@intel.com> <20260704054342.GB2169894@pedri>
-Message-ID: <akvsgVjwb00P1EuA@google.com>
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "djbw@kernel.org" <djbw@kernel.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Yilun Xu <yilun.xu@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sohil Mehta <sohil.mehta@intel.com>, 
-	Zhenzhong Duan <zhenzhong.duan@intel.com>, Kishen Maloor <kishen.maloor@intel.com>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706-hybrid-v8-6-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
 
-On Fri, Jul 03, 2026, Peter Fang wrote:
-> On Wed, Jul 01, 2026 at 11:45:53AM -0700, Edgecombe, Rick P wrote:
-> > On Wed, 2026-07-01 at 10:25 -0700, Sean Christopherson wrote:
-> > > > > That is a good question. The answer is partly historical reasons,=
- but I
-> > > > > think the pros/cons don=E2=80=99t really move the needle too much=
-.
-> > > > >=20
-> > > > > The main benefit of doing it with the host in the loop is that th=
-e guest
-> > > > > side TDVMCALL quoting interface can stay the same. There is also =
-a wrinkle
-> > > > > in that there is a limited HW resource involved in the quoting,
-> > >=20
-> > > What is this magical resource?
-> >=20
-> > It's a HW crypto thing. I'll let Peter explain more.
->=20
-> It's called S3M (Secured Startup Services). There was once a public
-> document about it, but it was removed for some reason. It basically
-> provides a number of boot and security services through dedicated HW.
-> Attestation is one of them. This is part of our plan to develop new
-> attestation schemes without using SGX.
->=20
-> There was a lot of internal debate about how this HW should be managed.
-> We decided to let the TDX module handle it and sort of hide it from the
-> host kernel and only expose it as SEAMCALLs. It however impacted how the
-> quoting SEAMCALLs look, so apologies for not calling out these factors.
->=20
-> >=20
-> > >=20
-> > > > > so we want to do these operations one at a time. Having a mutex o=
-n the
-> > > > > host is the KISS way of accomplishing some level of fairness for =
-DOS
-> > > > > prevention.
-> > >=20
-> > > At the risk of unintentionally causing effecitvely DoS by introducing=
- a
-> > > system-wide lock.
-> >=20
-> > The DoS that people are interested in trying to prevent is a TD getting=
- starved
-> > of quotes forever. So the lock is supposed to give some eventual fairne=
-ss.
-> > Eventually the guest gets its quote even if it has to wait.
-> >=20
-> > If instead contention throws a BUSY code to the guest, the guest spins =
-trying.
-> > That wouldn't have the guarantees.
-> >=20
-> > So I think the two options are: have some lock in the TDX module, or ha=
-ve a lock
-> > of some sort in the host. I think actually a waiting lock in the TDX mo=
-dule is
-> > possible. But I think there are tradeoffs besides where the extra code =
-is. If
-> > it's in Linux we get a lot more control, lockdep, etc.
-> >=20
-> > BTW the "historical reasons" part I mentioned involves a past effort to=
- create
-> > configurable host controlled policies around managing these resources. =
-So part
-> > of the simplification is doing a simple eventually fair global lock ins=
-tead of
-> > something more complicated.
->=20
-> Yeah my bad for not including a lot more background. There were several
-> design aspects that influenced this implementation. I'll do a better job
-> of explaining them in the next version, but basically:
->=20
->   1. Performance requirements: For this first implementation, the
->      priority is to not starve a legit guest from getting a quote, even
->      when there's a malicious guest DoSing the host. A mutex is sort of
->      a "fair enough queue" for this problem. A guest's authenticity can
->      only be verified after the quote is generated.
->=20
->   2. HW limitation: The TDX module implements different attestation
->      schemes, some of which use the S3M during TDH.QUOTE.GET. This
+On Mon, Jul 06, 2026 at 07:03:29PM +0900, Akihiko Odaki wrote:
+> +1.6 ATTRIBUTE: KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY
+> +------------------------------------------------------
+> +
+> +:Parameters: no additional parameter in kvm_device_attr.addr
+> +
+> +:Returns:
+> +
+> +	 =======  ==================================================
+> +	 -EBUSY   PMUv3 already initialized, a VCPU has already run,
+> +		  an event filter has already been set or
+> +		  a hardware PMU has already been specified
+> +	 -ENXIO   Attempted to get before setting
+> +	 -ENODEV  Attempted to set while PMUv3 not supported
+> +	 =======  ==================================================
+> +
+> +If set, KVM emulates PMUv3 without programmable event counters. Only fixed
+> +counters are exposed to the guest: the cycle counter today, and the instruction
+> +counter if support for FEAT_PMUv3_ICNTR is added.
 
-What is "the S3M" though?  Is it a separate chip a la AMD's PSP/ASP?  Is it=
- a
-per-package thing?  Per-core?  How is it accessed, and what are the "rules"=
- for
-for those accesses?  What types of latencies are we looking at?  What else =
-uses
-the S3M?  Do we have to worry about contending with non-TDX usage?
+Drop the mention of cycle counter and FEAT_PMUv3_ICNTR, I want to avoid
+the argument later down the line when ICNTR support is added to this
+mode.
 
->      limits the amount of concurrency this SEAMCALL supports and is also
->      part of why we chose a mutex for TDH.QUOTE.GET. (The shared buffer
->      in core TDX doesn't seem great, so I will improve it.)
->=20
->   3. Host policies: Preserving the GetQuote GHCI also allows the host to
->      participate in the quoting process, e.g. add host-controlled
->      policies or fetch host-side quote information. It's a bit similar
->      to SEV-SNP's KVM_EXIT_SNP_REQ_CERTS [1]. This series does not
->      implement host policies though.
->=20
->=20
-> Ultimately, there are ways to push more of this into the module, and the
-> current design is kind of a tradeoff between the complexities of the
-> work needed in the guest, the host, and the TDX module. Like Rick said,
-> there were past versions that required way more work in the host and the
-> guest, such as managing the S3M, new GHCI calls, etc.
->=20
-> [1] Commit fa9893fadbc2 ("KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP
-> certificate-fetching"
->=20
-> >=20
+The expectation is that the VMM discovers the feature set using the ID
+registers just like every other CPU feature. KVM documentation doesn't
+need to describe the architecture.
+
+> +With programmable counters disabled, the VCPU can run on any physical CPU.
+> +This is particularly useful on heterogeneous systems where different hardware
+> +PMUs cover different physical CPUs. All VCPUs in a VM share this attribute.
+
+  When this attribute is enabled, the vCPU can run on any physical CPU
+  that has a PMU, regardless of the underlying implementation. This
+  attribute is VM-scoped.
+
+The documentation is focused on unambiguously representing the UAPI, not
+providing application recommendations.
+
+>  2. GROUP: KVM_ARM_VCPU_TIMER_CTRL
+>  =================================
+>  
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
+> index 1c13bfa2d38a..39a1a1e412e6 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+> @@ -437,6 +437,7 @@ enum {
+>  #define   KVM_ARM_VCPU_PMU_V3_FILTER		2
+>  #define   KVM_ARM_VCPU_PMU_V3_SET_PMU		3
+>  #define   KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS	4
+> +#define   KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY	5
+>  #define KVM_ARM_VCPU_TIMER_CTRL		1
+>  #define   KVM_ARM_VCPU_TIMER_IRQ_VTIMER		0
+>  #define   KVM_ARM_VCPU_TIMER_IRQ_PTIMER		1
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index 40cad183376c..ad9ff4d0d89c 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+> @@ -1149,11 +1149,13 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
+>  		arm_pmu = entry->arm_pmu;
+>  		if (arm_pmu->pmu.type == pmu_id) {
+>  			if (kvm_vm_has_ran_once(kvm) ||
+> +			    kvm_pmu_fixed_counters_only(kvm) ||
+>  			    (kvm->arch.pmu_filter && kvm->arch.arm_pmu != arm_pmu)) {
+>  				ret = -EBUSY;
+>  				break;
+>  			}
+>  
+> +			set_bit(KVM_ARCH_FLAG_PMU_V3_EXPLICIT, &kvm->arch.flags);
+
+Why is this flag necessary? kvm->arch.arm_pmu is NULL if no PMU
+implementation was selected by userspace.
+
+>  			kvm_arm_set_pmu(kvm, arm_pmu);
+>  			cpumask_copy(kvm->arch.supported_cpus, &arm_pmu->supported_cpus);
+>  			ret = 0;
+> @@ -1164,6 +1166,22 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
+>  	return ret;
+>  }
+>  
+> +static int kvm_arm_pmu_v3_set_pmu_fixed_counters_only(struct kvm_vcpu *vcpu)
+> +{
+> +	struct kvm *kvm = vcpu->kvm;
+> +
+> +	lockdep_assert_held(&kvm->arch.config_lock);
+> +
+> +	if (kvm_vm_has_ran_once(kvm) || kvm->arch.pmu_filter ||
+> +	    test_bit(KVM_ARCH_FLAG_PMU_V3_EXPLICIT, &kvm->arch.flags))
+> +		return -EBUSY;
+> +
+> +	set_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, &kvm->arch.flags);
+> +	kvm_arm_set_nr_counters(kvm, 0);
+> +
+> +	return 0;
+> +}
+> +
+>  static int kvm_arm_pmu_v3_set_nr_counters(struct kvm_vcpu *vcpu, unsigned int n)
+>  {
+>  	struct kvm *kvm = vcpu->kvm;
+> @@ -1238,7 +1256,7 @@ int kvm_arm_pmu_v3_set_attr(struct kvm_vcpu *vcpu, struct kvm_device_attr *attr)
+>  		     filter.action != KVM_PMU_EVENT_DENY))
+>  			return -EINVAL;
+>  
+> -		if (kvm_vm_has_ran_once(kvm))
+> +		if (kvm_vm_has_ran_once(kvm) || kvm_pmu_fixed_counters_only(kvm))
+
+There's no reason for doing this, just let userspace create an event
+filter. Even with the current PMU implementation it's possible that the
+fixed cycle counter gets filtered.
+
+Thanks,
+Oliver
