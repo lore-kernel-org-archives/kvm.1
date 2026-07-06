@@ -1,108 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB437CD2A;
-	Mon,  6 Jul 2026 20:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670A53F8EAF
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 20:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783371098; cv=none; b=KiNNwnu6ijQ8SOWqivGD0f0+MBAJ9HAUhyzW7rhwr1H8J5fzMRLzV2FjdiLMw0zKgBQ2p6JFhgKBV4L70RhFCEU2FbvnUj6qBfI1IM1HN9a2CY98P9MFN7sdg6SpE/7ZViJGY5xJgpGjUvk7a9Xd4Kpjrwchi54KdfBAPzURDSE=
+	t=1783371343; cv=none; b=lBTwuCLpMEzKddEopwS3y7BByTddJsrebvOHJj3kp0jPhz8bvm1xdaLcPJNFur3Y+nOTc50KYx2lJlg2mAnE/+dmAdR7HPTABnIV3cLT9xkRhHKqKDk7F8ywyvpw4UqkAgUJo61mP8U3/JQeoGdnQaBtTqou41+CNX7sRikp3bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783371098; c=relaxed/simple;
-	bh=gWOgPY+EPN7SnMBbsb6P++/9bTNGvJYvz98yKpCTI/k=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SaekQ+xo+WDyW8pufWoCKV3J9SsT9gI/oAMIRjyJTsffWXuRZNFerSyXkEzcDaJNfAd3CbGlGnKEdJEu74DcKf6DxoN8MVPT9Wlc3qSrMwoaj+ZMflARZs1anZeSsyTHD8tRawc8CKZAVdvYCumMnsMRmustDHLmYTyR8argNVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4jOxE4M; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783371343; c=relaxed/simple;
+	bh=nruYDjYkbVoSbTlu8ww/YfnNlPxR3BwUDyr7YpbGo70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IdoVrCuTL458z/JbPUC9HIn35IZULVTZRldxb4vjW8mhDdzmzRz/2Dx05J9hzS2KSqHW2s+2/RYvjMgWY4B92h3ery/YcZDIGFBTt8Aua9+alaeU6NG+2WA8wV7WuVNQEhy1OWKPUjrq0H9svX9sS2LWRe+KkQRXLgam3QhQui4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=if1Z/eZT; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4jOxE4M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85651F000E9;
-	Mon,  6 Jul 2026 20:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783371096;
-	bh=+4UL9vNTIa66ZyJ+ogpqLMnNj6eSS/JYnaK/Pyh9xOo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=I4jOxE4M97kQhtPGFLTEcRbXYrZce923uXDq3KljR0V30M3Zn7lgZPBSsiR0fFDtH
-	 tK9iHn9cDkt2+1NqJgc1qsV0L+lE/nG4UeX/XRUHRopl2gIRqYUgpMOImN0+ciweZ2
-	 HbGe8QQSY5skI3ksz/9Rf6GQkZbn7PtZa7jfxtaXnwWV5ZVcNTaRJZDJP7BezDdu0G
-	 gDGTpsC7T0lNjqORQmJJLWnXAUzKzlzxKtIdmffOa9KmNzHyIJPLeN+gJtN1Zz5M6C
-	 qisn44UM/GTN7CyTCRHKdCi2YWt9LLmSgbU9KSZ7flHiTTs2InvzXm+OdvPeKniUqX
-	 fOo4gbAwjNU3w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wgqHu-000000028HA-2Wfq;
-	Mon, 06 Jul 2026 20:51:34 +0000
-Date: Mon, 06 Jul 2026 21:53:23 +0100
-Message-ID: <87a4s37scc.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v4 05/27] KVM: Remove KVM_MMIO as config option
-In-Reply-To: <20260706085229.979525-6-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
-	<20260706085229.979525-6-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="if1Z/eZT"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-847a483e344so263362b3a.0
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 13:55:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783371340; x=1783976140; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IAKNTA5FfU2S8dXtknGgkQ1uEtqxg5UVf4r8W8OhjYc=;
+        b=if1Z/eZTtu4Y6PqfiIVg78VuoGxKinIq+QC+pRNCjopx5djzGXSeQugVhIkcmfY0EA
+         UAi4QQJmKltz7cnXvRauCGE3aX/j4gquxi901xxOi+EGM3dlaAkginzXz+ZxSu9NSUF4
+         knYIC71WfR8z2plIx4r+RF5k7Bk7jZe5VqVuWW/+eSw6qoNeN/Bg/neoeLfX7++MiOgU
+         YLYcRan09ZWHbHpx1UJvFegbOLdrKVeGHZUrHN55A4R+o+0qrkvxggTNlj6SgY/ON1S5
+         IzQCAG1wzruLXpFSWJ3rVN56K6pCJhb5vOsdyovs69nGfMqRvmprM4j0chVepqM5yqxD
+         SDRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783371340; x=1783976140;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IAKNTA5FfU2S8dXtknGgkQ1uEtqxg5UVf4r8W8OhjYc=;
+        b=KY+04YmXkcyTIRG2i/wl8TAx8ByBn69D2kg5FxFm6dUytJSqNH2FuMX3/7+1rgcVf8
+         kttFr/ZFUZDd+wtjK2X7TS5yZyypEbYnzwoRM3fG6pilFVvi2UvgR/gvPwvVyfRvQqUG
+         19zNoMUDDSXnxWAgYvgs4bF1AQTYB+mXA7GkYmFWFN/ivXLGmiJm2t/+de7dkoMVBUap
+         ZoiGAmc0edgOutbqYtHLHmRu2mX6W1U6iUYbA0kGpuS0IQyz5gwFSN496F+gfHK+PLrT
+         u8TFYoFfETo/+lLz3l+xIlCmoAbQIysVVthR+ZSY8KQQ5Abm9mlOXaSKP3LT5p3byRrp
+         z/wQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rofl1atU/mKoGsq+ouxNt9QWcaBcaJ4EIH6meb4uexSUkniAsy+BhtPdzeudY8MqkcdSEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWJQNhot0YC/6GUqPNtWRmUQRh7Jkb+3xvwivvk1P/Ox/YNm8M
+	KS+jB54y5v2T8aljh58V8F7O/wdEBRWRbpYwOtbTnSn/h4api6hmIVm8ZM8T4OfAYw==
+X-Gm-Gg: AfdE7cn/xt1XCTKlC3XwisblLk6J44YMFmUrPVsV7KbE44WdMJ5Zj0IFA7ipgKQW2R/
+	mQq5A4sBfx1/JlxqKawg+d0MGsRLmwmr8EQrct73Sn1jQQUllIhlMAhBoqSwau0HLRFfmboZYld
+	oOjraFjRFIdGM7KT5OUXZ7X1qnFnxZqZ69FKYlZW0DzMQ+/w72Xd9xpcKFXzODEsuoR2tmhNDHw
+	CZ+s24ji42taseGVZ/HU+hx1yk4K1WTwaNdrsBqFIMfUlLZwUElEf0T7TYV24ZMx7TfMieyyBMJ
+	Ik7sHxkny7vlxGrCCb0w0ok+zzAsv8Ma+x1/IEv0SBJtInZhnbbLVgBW/N+bJ7QX1w/Ir3nXES6
+	Z5c2EkZnJOsMsaZNceJ+IZ4Q5V6Su5dZ4oL5NEkoJzYtXdpos19jLNKZQR7G17/8DqGLnv+TBa1
+	8RQLAMRD0D+YjqijFNl8KIZX2RFZ8yteMGIjb6HgrIquojnEac/mO5SmUrF8LLsA==
+X-Received: by 2002:a05:6a00:328c:b0:842:6259:5e2b with SMTP id d2e1a72fcca58-847e1928c3dmr13916968b3a.33.1783371339851;
+        Mon, 06 Jul 2026 13:55:39 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5afdb754asm32680a12.13.2026.07.06.13.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 13:55:39 -0700 (PDT)
+Date: Mon, 6 Jul 2026 20:55:36 +0000
+From: David Matlack <dmatlack@google.com>
+To: Josh Hilke <jrhilke@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Vipin Sharma <vipinsh@google.com>,
+	Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 00/10] selftests/vfio: igb: Add driver for Intel
+Message-ID: <akwWSNbHc2fprpcE@google.com>
+References: <20260526235417.2058313-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526235417.2058313-1-jrhilke@google.com>
 
-On Mon, 06 Jul 2026 09:52:05 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
+On 2026-05-26 11:54 PM, Josh Hilke wrote:
+
+> Alex Williamson (8):
+>   selftests/vfio: igb: Use PHY internal loopback on 82576
+>   selftests/vfio: igb: Use advanced TX and RX descriptors
+>   selftests/vfio: igb: Program MSI-X interrupt routing
+>   selftests/vfio: igb: Extend memcpy completion timeout for line-rate
+>     hardware
+>   selftests/vfio: igb: Disable PCIe completion timeout retries
+>   selftests/vfio: Add vfio_pci_irq_reenable() helper
+>   selftests/vfio: igb: Factor hardware programming into igb_hw_init()
+>   selftests/vfio: igb: Recover after DMA-read faults
 > 
-> Defining KVM_MMIO is not flexible enough for multi-KVM systems with
-> different Kconfig options regarding KVM_MMIO. Therefore, remove KVM_MMIO
-> from the config space and use the macro HAVE_KVM_MMIO instead.
->
+> Josh Hilke (2):
+>   selftests/vfio: igb: Add driver for IGB QEMU device
+>   selftests/vfio: igb: Use offical IGB headers in selftest driver
 
-Given that there is only one KVM architecture that doesn't use
-KVM_MMIO, it feels like the polarity of this symbol is the wrong way
-around.
-
-Something like KVM_NO_MMIO, only exposed by S390 for its native
-support, should significantly reduce the churn.
-
-Thanks,
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
+Please switch these to "vfio: selftests: ...".
