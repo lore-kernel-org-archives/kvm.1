@@ -1,45 +1,87 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978432F546D
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 13:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2F526059D;
+	Mon,  6 Jul 2026 13:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345558; cv=none; b=LqYcuI66gPwyABEAqrkC+EMQ/e8oReV2Za6ABDfMkWWavu3+oS0/TysTRPbubqstPbI5Zegod9wFzr6YJtEgOcQkcTMIyy4sYEGdJdlV2P//s30rc6y0t2Tjq5RYe/K9KIaXvBe/3uaub6BSVr2hvSwc6gyEZ/C+dQwJFw4lCB8=
+	t=1783345968; cv=none; b=iJ/BT1Stgdx+amTdF34UdDxI0NNvzPTf6II5TjMmFFrOvQkSLrLKG4sckI0g4XOwQ0mfYREKOPZlNMti3iQtj0VuOZ1do5IVYGKT3Y0Ss2yQH+FDRua3QIA0DkNOKeh/5fp9lgSEoVhNO24uUM6H8ADG/4Vm5KZWmElHsIg8eOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345558; c=relaxed/simple;
-	bh=th5EeEUXoKQ4TR+tt8Q4dRhijquxd6smyNGP3zo6QQ8=;
+	s=arc-20240116; t=1783345968; c=relaxed/simple;
+	bh=LKXhWXt9sUO6TLuEba9phppj/eKqFtLPdIALoV4CA+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ri74OG+LwydssJeXdYIjnUMi+AgkFmRJkks5LOpJWp9Tz+Gzn8PqWmIOtR7tQNqI/CYnQG2NOn2uXCeY2cZk/j1DgRimR6d1UFwZKEn9k29eu6caaOSleI17IBfuKbqochmmXm9fQTzsi2maVJcNTDgiqEE/xR4UIri1hE3VCn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=W2GppfMX; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=JUIXqDS1puPB+Xiw4VytJpaF1Flnwr+1ZxqJrQs5DqyFA++vXEi24+MNiZI9BoQdLrJ6qrUYYAw00gkB32oxVVhL2y3pnnDY4iykHfuwD28Pw88izB7PIdKxJyOy7Ec01mKCX5PWU2A3ayGrTj86nLGE0nYQHxjPycqEdjKsjDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ORGHdGOD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QUPbPPQq; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="W2GppfMX"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF27A2BCB;
-	Mon,  6 Jul 2026 06:45:50 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC5143F7B4;
-	Mon,  6 Jul 2026 06:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783345555; bh=th5EeEUXoKQ4TR+tt8Q4dRhijquxd6smyNGP3zo6QQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W2GppfMXasQ5lro8a8fcRVZt6AaeV3Kv1GyrpwouxSCIkurP5XyZ5uM1j5Mv4LcZ0
-	 uJyqjvtz6yhrlYwU06Ed30KbDASihPN65fQLvfrApSb6ShTvM3uJax/A0+nN+Ht/Lu
-	 mHi79WNThvdn+2afPlBMLscumLB8yTFp0FBYagGY=
-Date: Mon, 6 Jul 2026 14:45:49 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: David Hildenbrand <david.hildenbrand@arm.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, seanjc@google.com,
-	maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com,
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	fuad.tabba@linux.dev, mark.rutland@arm.com
-Subject: Re: [RFC PATCH 1/3] KVM: guest_memfd: Use memslot id to keep track
- of associated memslots
-Message-ID: <akuxjY-VRrmcybjZ@raptor>
-References: <20260702142912.6395-1-alexandru.elisei@arm.com>
- <20260702142912.6395-2-alexandru.elisei@arm.com>
- <8a24f016-6f0f-4322-b646-d843f6fa481e@arm.com>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ORGHdGOD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QUPbPPQq"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id E02861300141;
+	Mon,  6 Jul 2026 09:52:44 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 06 Jul 2026 09:52:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783345964; x=
+	1783353164; bh=4xSpkCs0mkVTU4ldegsUj6ukw+q9jYjeMqfDzWKa/Xs=; b=O
+	RGHdGODYRzGGOQtsJDjFD/GHjYhFLrnwmhJ4nj8SQmbfwwqdnFLxvAhIIr2qmvYp
+	OIgRR91nabhXx/M1Keia/pwrRMj4ezHDF1pPDv/TPJ0iJN1zmbCUTtZ7Fj14cbrr
+	GrxddPQyqgMk4Z3UhbceLX5TFPJeZ4LzEzsRc744K14D9Oat0JWhaCdj9l4WPoK6
+	LULyYorRKcoIQQZG8btIK8yDfvFkNPMNTmIDk2X+m8rop6JvvxlmudT1OVbcS21S
+	p4c0S9TARY7ig36mYp6laIOveg6zBhWMD6wo2fQ5DFMasDBNGxnmU11Srj2S4y47
+	WUsKMsLuSpJmHxeixAiKQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783345964; x=1783353164; bh=4xSpkCs0mkVTU4ldegsUj6ukw+q9jYjeMqf
+	DzWKa/Xs=; b=QUPbPPQqfSQuGc49n1E+EybiKQ0AjhWnTZMkKKrGMICkDTpo0tR
+	5WFz4zimhqh01LY5oX8JF3dMQ+gxYjo01lD63mmV0TXQBPiaHD9FUybHVRzQdU6n
+	rgmnU0mrORY6N2JknY9kOwW9ZwOTcsJhwDIDUJKfW5pkL4dDFE4vPXtrVKAX+GJ2
+	9JPKFwB729Rt11z7ZWVnLfwlA4zicjPcR2hADg0AEvibY8ABCyBE7HGb1SMh24iA
+	4mmrJjZ+/7mjWj1miTm5M29347jKnz/xMVzaC4w8TxX6BBkOwblSRkPmF9TLsVbW
+	++X0uRlj9lSoe/9SBythXU7NSxnBUjj9zzw==
+X-ME-Sender: <xms:LLNLanE6LlyrXVmKP3xTrqQNWWWCtGiC3IWD8qgp5wQoHwI0QCJamQ>
+    <xme:LLNLapl7OV15UFWVChlyt3TySoYcuctjzYfJfzPueR5QcET2_Jnl4WVi4d3Ue42LZ
+    Vz_tdKNIm7EIPRDLnKLvM4l7dCTr1I83fMy_wDcpnFyNLU9cyCmHUw>
+X-ME-Received: <xmr:LLNLarxl3RmMbO80ftN88T98zlBaxjMIehNW5r49XbEXI7SE_Omrq0onUbJnVA>
+X-ME-Proxy-Cause: dmFkZTFPCg2xwzQp7+TI1AOZhFkobdSqGL70wE3j5fYy6KqFBfnJe9khnAl2AW8p19ybla
+    nOxVA4zszBab8zr8DAan3yxr5qDfbWaQ7hJ0NV7b2cJcr9Ntio7u6fMe/SZ1Ow14Pkh5HQ
+    ptUJ0KggNDTKeDH4n/Q8AE5HDb09nHZevYvSsPVBfKaw3cVqEkr2CrDDSCUq1GTSqMO/aG
+    6e/ngxiV+iKUWwq5+HTbtOtYYZzjntsgrIYdWQZizB+zForZNk1430IEoIqJTPzK7rMTXz
+    j9+5K1gVmvaC34Ge54Wnv2ClsmAUX1jFs0jgre4VbvtAv67OuKOpOjIvce9g2h1Au+a7uE
+    buz2uli7Do9QfqtwyDqctNlSu9PPCnpQXstgQalTDZQX97AGfYP7wxZCaGRmbH2gwAVA2X
+    p14HERtrYr/w2iXgq6STldHNMj83l/I+f1XqVLD7zSDNK2GZhog1REBHU39JN//wV78I6Z
+    12DjItb9i0hZohCsrTwCrTUhdt921TbetY78X4V+jjYkgRDselLlRCtF11IufQgniTyYjl
+    RvUSAMyyOdKT1ZxL/5SaRZa94bHBD5DaXWbrmqbgb+T2/EJVJLSoGm+BEapk5py0GMhghP
+    UgKUHY+7LrgPaDz+WRbfe6L3bZDgiwRKevb+1m3aDsdTKYdJ2+lTMcMJOS4w
+X-ME-Proxy: <xmx:LLNLakxVwn-knlQW7wbVuPMHDMIKU8yy926Qd4EYpTMqG4dbHlXgrQ>
+    <xmx:LLNLat8niT3RPiXgA6o2nvGAsuZaeIBLErg4ISpzTl6HCeMn7MGVzg>
+    <xmx:LLNLanhmJdZS9kmbpZMRmxOmmPmpaCvJ0dxl1KoWKiJsSZEzoBRR3A>
+    <xmx:LLNLagWrHJbS0-XoWcWwwboXd5ZUmXB2neZykJLtexUwM92w1WYwqg>
+    <xmx:LLNLas3c-rN8K7N5YGo-PdiyItlVc3GSGJMIQzly137JJ3QVI0UjPaF_>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 09:52:43 -0400 (EDT)
+Date: Mon, 6 Jul 2026 14:52:42 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP
+ tracking
+Message-ID: <akuy09U-g0AKSEfy@thinkstation>
+References: <20260706084805.8400-12-kirill@shutemov.name>
+ <20260706125726.729431-1-usama.arif@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,213 +90,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8a24f016-6f0f-4322-b646-d843f6fa481e@arm.com>
+In-Reply-To: <20260706125726.729431-1-usama.arif@linux.dev>
 
-Hi David,
-
-Thanks for having a look.
-
-On Mon, Jul 06, 2026 at 09:14:59AM +0200, David Hildenbrand wrote:
-> On 7/2/26 16:29, Alexandru Elisei wrote:
-> > To enable memslot operations, KVM maintains two arrays of memslots, and an
-> > RCU pointer to the active (in use) array. Changes are made first to the
-> > inactive array, and the RCU pointer is updated to point to the inactive
-> > array, which becomes active.
-> > 
-> > The guest_memfd file maintains an xarray of pointers to memslots that use
-> > it as the memory provider. After the RCU pointer to the active memslots is
-> > updated and until SRCU is synchronized, readers can observe the old or the
-> > new value for the active array, and therefore the old or the new pointer
-> > for a given memslot.  For memslot creation or deletion that is not an issue
-> > for guest_memfd, as readers will either read the same memslot pointer saved
-> > by the guest_memfd file, or a non-existing memslot.
-> > 
-> > But when changing the flags for a memslot, readers can read two different
-> > and non-NULL memslot pointers. Since there is no easy way to ensure that
-> > the memslot pointer that the guest_memfd stores is consistent with both
-> > views at the same time, modify how the guest_memfd file keeps track of the
-> > associated memslots: instead of storing the pointer directly, store the
-> > memslot id and address space id (as_id), and use that to reach the memslot
-> > in the active list of memslots.
-> > 
-> > This only changes how guest_memfd keeps track of memslots, userspace is not
-> > allowed to make changes to a memslot yet.
-> > 
-> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> > ---
-> >  virt/kvm/guest_memfd.c | 95 +++++++++++++++++++++++++++++++++++-------
-> >  1 file changed, 80 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index db57c5766ab6..43ef8e908aaf 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -25,6 +25,7 @@ struct gmem_file {
-> >  	struct kvm *kvm;
-> >  	struct xarray bindings;
-> >  	struct list_head entry;
-> > +	bool found_memslot;	/* Used for balancing invalidations when punching a hole */
-> 
-> Probabably best to document what it means, not only what it is used for (and
-> maybe document above the member if you end up with more text).
-
-Sure, this is how I changed it:
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 210bdd76f0aa..3cee64047bce 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -25,7 +25,13 @@ struct gmem_file {
-        struct kvm *kvm;
-        struct xarray bindings;
-        struct list_head entry;
--       bool found_memslot;     /* Used for balancing invalidations when punching a hole */
-+       /*
-+        * Keeps track of whether memory has been unmapped during secondary MMU
-+        * invalidation, to keep the invalidate start and end calls balanced.
-+        *
-+        * Accessed while holding the inode->i_mapping lock in exclusive mode.
-+        */
-+       bool memslot_invalidated;
- };
-
-Hopefully the new name is better.
-
-> 
-> >  };
+On Mon, Jul 06, 2026 at 05:57:24AM -0700, Usama Arif wrote:
+> > @@ -2443,8 +2443,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
 > >  
-> >  struct gmem_inode {
-> > @@ -43,6 +44,29 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
-> >  #define kvm_gmem_for_each_file(f, inode) \
-> >  	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+> >  		categories = PAGE_IS_PRESENT;
 > >  
-> > +static void *memslot_to_xa_value(struct kvm_memory_slot *slot)
-> > +{
-> > +	WARN_ON_ONCE(sizeof(slot->as_id) > 16);
-> > +	WARN_ON_ONCE(sizeof(slot->id) > 16);
-> > +	WARN_ON_ONCE(sizeof(slot->as_id) + sizeof(slot->id) > sizeof(unsigned long));
+> > -		if (!pte_uffd(pte))
+> > -			categories |= PAGE_IS_WRITTEN;
+> > +		if (!pte_uffd(pte)) {
+> > +			if (userfaultfd_wp(vma))
+> > +				categories |= PAGE_IS_WRITTEN;
+> > +			if (userfaultfd_rwp(vma))
+> > +				categories |= PAGE_IS_ACCESSED;
+> > +		}
 > 
-> These can just be BUILD_BUG_ON() I suppose.
-
-That's a good idea, will do.
-
+> The above is an ABI change for existing PAGEMAP_SCAN users although not
+> sure if there is someone that cares. Would below be a better alternative
+> to limit the ABI change?
 > 
-> > +
-> > +	return xa_mk_value(((unsigned long)slot->as_id) << 16 | (unsigned long)slot->id);
-> 
-> The latter "(unsigned long)" should not be required.
+> if (!pte_uffd(pte)) {
+> 	if (userfaultfd_rwp(vma))
+> 		categories |= PAGE_IS_ACCESSED;
+> 	else
+> 		categories |= PAGE_IS_WRITTEN;
+> }
 
-Indeed.
+You're right that it changes what PAGEMAP_SCAN returns outside a
+VM_UFFD_WP VMA. I think that is the intent rather than a side effect --
+the commit message calls it out explicitly as a UAPI narrowing.
 
-> 
-> > +}
-> > +
-> > +static struct kvm_memory_slot *xa_value_to_memslot(struct kvm *kvm, const void *entry)
-> > +{
-> 
-> The following can all be const.
-> 
-> > +	unsigned long full_id = xa_to_value(entry);
-> > +	u16 as_id = (full_id >> 16) & U16_MAX;
-> 
-> Why the "& U16_MAX" here?
-> 
-> (1) It's an u16
-> 
-> (2) memslot_to_xa_value() never stores anything in there.
-> 
-> > +	short id = full_id & U16_MAX;
-> 
-> Same here. And I wonder why you are not also using an u16 here.
+PAGE_IS_WRITTEN is documented as "Page has been written to from the time
+it was write protected". Outside a write-protected VMA there is no such
+point in time, so the flag has no defined meaning there -- and the
+current code sets it unconditionally on every present, non-uffd PTE,
+which makes it a constant duplicate of PAGE_IS_PRESENT. A caller cannot
+use it to tell written pages from merely-present ones.
 
-I wanted to make it clear that everything should fit in a u16, I think I
-wrote this code before the WARN_ON_ONCE in memslot_to_xa_value() above and
-I forgot to change it.
+Scoping it to VM_UFFD_WP makes the bit mean what it is documented to
+mean. A consumer that read PAGE_IS_WRITTEN on a non-WP range was reading
+a value that never carried write information, so I don't think there is a
+meaningful user to regress.
 
-I will clean it up.
+And in the unlikely event an actual user turns up that depends on the
+current behaviour, we can always switch to your else-form -- it is a
+small change and keeps the old value.
 
-> 
-> > +
-> > +	/*
-> > +	 * Do not ignore KVM_MEMSLOT_INVALID memslots, as we want
-> > +	 * ->error_remove_folio(), when it races with memslot deletion, to have
-> > +	 *  unmapped the memory upon completion.
-> > +	 */
-> > +	return id_to_memslot(__kvm_memslots(kvm, as_id), id);
-> > +}
-> > +
-> >  /**
-> >   * folio_file_pfn - like folio_file_page, but return a pfn.
-> >   * @folio: The folio which contains this index.
-> > @@ -157,7 +181,7 @@ static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *in
-> >  	return KVM_FILTER_PRIVATE;
-> >  }
-> >  
-> > -static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
-> > +static bool __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
-> >  					pgoff_t end,
-> >  					enum kvm_gfn_range_filter attr_filter)
-> >  {
-> > @@ -165,9 +189,15 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
-> >  	struct kvm_memory_slot *slot;
-> >  	struct kvm *kvm = f->kvm;
-> >  	unsigned long index;
-> > +	void *entry;
-> > +
-> > +	xa_for_each_range(&f->bindings, index, entry, start, end - 1) {
-> > +		pgoff_t pgoff;
-> >  
-> > -	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-> > -		pgoff_t pgoff = slot->gmem.pgoff;
-> > +		slot = xa_value_to_memslot(kvm, entry);
-> 
-> That now gets more expensive. id_to_memslot() uses a hashtable, but there is
-> certainly more pointer chasing going on now.
-
-Yes, a hashtable search, plus a few more pointer dereferences and an
-srcu_read_lock()/unlock() pair is more expensive than accessing the memslot
-pointer directly from f->bindings.
-
-Depending on the range, kvm_mmu_unmap_gfn_range() can be quite expensive.
-gfn_range->may_block is set, this communicates to the arch code that they
-can resched periodically if the range is too big (at least, that's what it
-means on arm64, which sleeps every THP sized address range, chosen
-empirically as to stop RCU from complaining). Plus, there's also the TLB
-flush at the end. My gut feeling is that the extra overhead from how the
-memslot is found is insignificant in this case, but I don't have the
-numbers to back it up. I can try to get some numbers, if you think that
-would be useful?
-
-But that's when there's actually a range to unmap from the secondary MMU.
-Let's say there's no range. The invalidations are performed when:
-
-1. The file is closed.
-2. Userspace punches a hole in the file.
-3. Memory error.
-
-I'm going to assume that the memory error happens very rarely, so it's not
-worth to optimize for it.
-
-Userspace closes the file when the VM is being destroyed, does it matter if
-it's slightly slower, considering how many other things are usually
-unmapped and/or freed during VM teardown? I don't know the answer to that.
-
-As for userspace punching a hole. Two situations here:
-
-(a) No memslots are using the file. I think it's unlikely for userspace to
-punch a hole in a file when it's not being used by any VMs (am I wrong?)
-
-(b) There are memslots using the file, but the memory hasn't been mapped
-yet by a secondary MMU. In that case, the arch code will still walk the
-secondary MMU page tables. Considering that punching a hole also requires a
-transition from userspace to the kernel and back, I don't think that the
-overhead will be noticeable.
-
-What do you think? Do you think my analysis is correct or have I missed
-something?
-
-I'm very willing to consider another approach if you think we can do it
-better.
-
-Thanks,
-Alex
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
