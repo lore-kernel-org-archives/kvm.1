@@ -1,126 +1,124 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA163AFD19
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 23:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59221352036
+	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 23:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783380753; cv=none; b=q+3eUiAG298hitXR/ujmNXiDdbNuXjXZJNI5fmDU8kGCVgt4fKrxlg8owFdmIOsiWjL2p0wI7TKQ6Puia8mrjAytyb4qq14O+Zk7QdLNrsodaZqzCuG5ZZoxWuL/3o+BooMhyXnVwW3UntrWkTkcSTpQr/dBS9uWPfuoFG253fI=
+	t=1783381625; cv=none; b=uYyi14BbQxAH5rbAUwI+VReZrFmfqHwvQT8ubXOO1tHmY2DTd2nw5QRKXZWrGnSU1J6Wu3CScoo0xIHRXKmom18DT4S5EQtUQfT+cWiax42wD6USCSTx3nS2TzdBiuQeEtD4cuZ7p5ENIllJ9aMVxmHFXwixjXMOtk683yrqOr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783380753; c=relaxed/simple;
-	bh=/7t9Ugc/W34LK6a95xG4YkOqd/nN2ewf/ou8V7WUmdk=;
+	s=arc-20240116; t=1783381625; c=relaxed/simple;
+	bh=ZxoPu5hPF9Q2EClBSvzF/FJl98QidLmf5mhGdS5i5dM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j6R9NbU3yKm0hLXFrmiO3+rb2vADJsw9lW9apQ+5LMnA8p+Rw1xcfl2UW9D5q3PepC0RnYaRayfRhnEbttkKqSmLi3XtJQXPWX81Tez5WZUlQIGslayECdD7KoKpUZuZAHb/rV+OofWNetw2016iRFSd6b6JRkLPMb16Hcm6xOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fwoS/Owz; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=E6oRKKjawrER1eYh8USrPldZMGbPeGja2lKv4v/lyfDc6DvgR1SkMxo1iLPC89wfmOFXLdn6GR8zV6Jr56cC6ajhsPFKWPRJOv+iQzFuIZNLhTBdNI0qB2+hkb97A/fiF2wLObxDZy+SUAAXft5uUZ7SnOu61jpTlQckwdvBPZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TVpVlMa1; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fwoS/Owz"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2caf4173b1cso68675775ad.3
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 16:32:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TVpVlMa1"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so3075966a12.3
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 16:47:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783380750; x=1783985550; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8BNNmomhV9Nj74H+ib76PoUxNfB3q9OlvTlV4N1FLXo=;
-        b=fwoS/OwzXo9V75GTv/qCbwG6OLxdTvi9CK6CMXjYrLVhWIIdeGS6/aXIP4dfSRIyF1
-         xRuIsmBPA3lRMXEGE3FZlYpGP45M7Tb9OXdhvY5OCnZi4tSzutEWNByA3JofJGF68uN7
-         1adLPY2E6q1XMiC6rFjUIwo/KUCcS8F3m9tKNm2BxQRw97eiii30YAmetvBcqIpKH1om
-         f5KVXnOXWKcgZ32FXHendpZjRlbiIjZk7mBDv39OGWQUdFU4FqHT2X5kTMj1OW1KXJrW
-         ZVMzIjw//s+7SSFLHDdb7QYFVZfp7hO+cuNz4Y2y/jFUpXmOqJ9RgXkA4Madz0zR/dkm
-         fZpA==
+        d=google.com; s=20251104; t=1783381624; x=1783986424; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qWQdcsO2ad3MOocum1PCeCurOaAogfBMApPITrnBlDo=;
+        b=TVpVlMa1nSrczSaDPAXQ9TgC36jnOY6q28lSpVGLalb9IGY9DvKG1Y4WejfWzooXOG
+         5lQJEMM6YcXBSxWFrXKE4q+aW/lnA8uk2DjoER71X40px611Oq0dRRMdEtfAhnC6SPe4
+         cQLg4qaNZD2HbEEVF7Q6t0ElXlNVqY0AK94lJ1Ot52abG7/lEjqMbKbrKTvJCIqR8ixk
+         8XdZFciPSvwTkrSmqof9Ta4cr4Jx5eK++6I4izx5P4W/jfzGfzXBvqCWy6A4Awht/Uqu
+         7bYOY6RUWKN2e8pr+7/EvK3YGGWuLBduDFV7jMlF7yIwl/lfeZKuoPrFXephVVwm05pY
+         shAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783380750; x=1783985550;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8BNNmomhV9Nj74H+ib76PoUxNfB3q9OlvTlV4N1FLXo=;
-        b=noN4VA2XMJ2k6U5gMRm6Gt0uJzAlnvRRXUy8lMKnX5g7EjYm3YzBiBMIgODzFwozKn
-         V/4mZk02Cru2JrD8xRgBKMjqAihFPqmn/dtIcYEGHyOX+BCcX0eRm6AJMWqgmmMv00CH
-         SlXCPQnQdNBmdAHLR9EaZzkZGZKx+j265iD+XPDgEHn4dVIRwvD8hThHDm/44S2t+ATY
-         R9l+X5xvLXoBC1QFpu1rMXycOH7WLlp/FkJnRgx1Q4vJR7OTVYqg9TaAmyx7TLNZq7Go
-         hkNPb5Tp14jYJkoEo13SAuoAdYQBdz8vLOGTeug1lnk63O8jkQeMPLQRam/g687pBSYT
-         pBmQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1NJWqFm2PS4SEW6D1KV3Y0EL4QU3NMS1neS0GbT/BR+rvW0punS1LpbctFgpnn0Kd89Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5Y9NUVueEs4eBw4Cs5muoYRmglFR70zv5p72e/NGFFGmO1HD9
-	3OutGTzv8JIeY1p0XIBdwCd5AwYBpJV+GtLNvHFmTgRtGf5HmqjdApxEy5zXdje/ueYIFD/sXcQ
-	X7gpK/A==
-X-Received: from plgv5.prod.google.com ([2002:a17:902:e8c5:b0:2ca:d6d7:6943])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:41cd:b0:2c9:d55d:2d1
- with SMTP id d9443c01a7336-2ccbf07a42fmr29351655ad.33.1783380749761; Mon, 06
- Jul 2026 16:32:29 -0700 (PDT)
-Date: Mon, 6 Jul 2026 16:32:29 -0700
-In-Reply-To: <20260706092021.3625908-4-twiederh@redhat.com>
+        d=1e100.net; s=20251104; t=1783381624; x=1783986424;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qWQdcsO2ad3MOocum1PCeCurOaAogfBMApPITrnBlDo=;
+        b=LhJWWAifsgQofl3w2YTB5cECJy5xUXA1y5NWme1vOzxbjVcfJBtz98XH0qEcPION4H
+         Rl4n9NhDoS8mBZyFsAlYXKuE+H6NVZ/MvG5VAF0/DYitX+udeCMvP6XIBWJIJBf16Tk8
+         1d0GJik8Mb6PW9pgg9k9ncyW0BdfF0R8jDTdTqvQHOsz+6oJT2szRBiWXaaBQFnTBA36
+         U8F+vyFnnqlW0HWuIHY+mfkcQKkUsvyZYWTXfrvXJvVo8GGZS/s4bKqoYX5669QqDpTT
+         wAZXV5ydroR/EATytRPS9GEwD+/52yGG3w4CwfFCATF8g1FxdUm+djjo45ceZhiU6hF0
+         kjmg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+U0qt0rLciSHA7xr23HlBByxi9+byPHjYgPmd4q1QHrL4LA5z5uvLrZGJcKdwaJ7JyWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDT2ZGmI2eDYUZLqxzIc73FYDohlgGdh6Bhr5wixxwGWmjtBOQ
+	Bx2PgRJ96uA5CLkbgBYThi99b2ghiLeVMh8tvFmEBOecPlQaQ2+/xDFz7ULbFba0T8qWEL2N/N+
+	FIprj2g==
+X-Received: from pggh8.prod.google.com ([2002:a63:c008:0:b0:c99:aff5:7089])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:110:b0:3b3:65c4:c680
+ with SMTP id adf61e73a8af0-3c08ed78deamr3358350637.25.1783381623562; Mon, 06
+ Jul 2026 16:47:03 -0700 (PDT)
+Date: Mon, 6 Jul 2026 16:47:02 -0700
+In-Reply-To: <20260526023515.288829-8-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260706092021.3625908-2-twiederh@redhat.com> <20260706092021.3625908-4-twiederh@redhat.com>
-Message-ID: <akw7DcP4LM7l_FBh@google.com>
-Subject: Re: [PATCH 2/4] KVM: x86: Document APIC base address constraint for
- in-kernel irqchip
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com> <20260526023515.288829-8-rick.p.edgecombe@intel.com>
+Message-ID: <akw-dgBE_dycts0o@google.com>
+Subject: Re: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
+ control structures
 From: Sean Christopherson <seanjc@google.com>
-To: Tim Wiederhake <twiederh@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com, 
+	pbonzini@redhat.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org, 
+	chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jul 06, 2026, Tim Wiederhake wrote:
-> When an in-kernel irqchip is enabled, vcpu creation installs a private
-> 4 KiB memory slot at the default APIC base address (0xfee00000).  If a
-> user memory region overlaps this slot, vcpu creation fails with EEXIST.
-> The same error occurs when installing an overlapping user memory region
-> after vcpu creation.
+On Mon, May 25, 2026, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> This constraint is not documented anywhere.  Add a note to the
-> KVM_CREATE_IRQCHIP documentation.
+> Use control page helpers for allocating and freeing TD control structures,
+> such these operations can work for Dynamic PAMT.
 > 
-> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
-> ---
->  Documentation/virt/kvm/api.rst | 5 +++++
->  1 file changed, 5 insertions(+)
+> The TDX module tracks some state for each page of physical memory that it
+> might use. It calls this state the PAMT. It includes separate state for
+> each page size a physical page could be utilized at within the TDX module
+> (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
+> allocated dynamically. So the kernel must install PAMT backing for each 4KB
+> page before gifting it to the TDX module, and tear it down after the page
+> is reclaimed.
 > 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index ec5bf99ff8b8..da8beb80699a 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -863,6 +863,11 @@ KVM_CREATE_DEVICE, which also supports creating a GICv2.  Using
->  KVM_CREATE_DEVICE is preferred over KVM_CREATE_IRQCHIP for GICv2.
->  On s390, a dummy irq routing table is created.
->  
-> +On x86, when an in-kernel irqchip is enabled, KVM reserves a private memory
-> +slot for the local APIC at the default APIC base address (0xfee00000).  
-
-KVM doesn't actually do this, at least not until patches 3 and 4, as the APIC
-access page is allocated if and only if any form of virtual APIC acceleration
-is enabled (in practice, APICv or AVIC, but I'm being pedantic because KVM
-enables TPR access accleration even if APICv isn't fully supported).
-
-E.g. if you disable flexpriority_enabled (Intel only) and enable_apicv/avic, KVM
-should let userspace create a memslot at the APIC base (I haven't actually tried
-this).  The guest won't be able to access its APIC via MMIO, but vCPU creation
-shouldn't fail.
-
-Another wrinkle is that the local APIC behavior applies to KVM_CAP_SPLIT_IRQCHIP
-as well, i.e. ideally that "ioctl" would call out the local APIC base interaction
-too (maybe as a redirect?).
-
-And for KVM_CREATE_IRQCHIP specifically, creating a memslot that overlays the
-I/O APIC will also be problematic.  It won't lead to an explicit ioctl failure,
-but like the local APIC, creating such an overlay will effectively prevent the
-guest from accessing the I/O APIC (via MMIO).
-
-> +User
-> +space must not map guest memory that covers this address and must leave a 4 KiB
-> +hole in the guest physical memory map at this address.
-> +
->  Note that on s390 the KVM_CAP_S390_IRQCHIP vm capability needs to be enabled
->  before KVM_CREATE_IRQCHIP can be used.
->  
-> -- 
-> 2.52.0
+> TD-scoped control pages (TDR, TDCS) and vCPU-scoped control pages (TDVPR,
+> TDCX) are all handed to the TDX module at 4KB page size and are therefore
+> subject to this requirement. Replace the raw alloc_page()/__free_page()
+> calls for these pages with tdx_alloc/free_control_page().
 > 
+> Switching between special Dynamic PAMT operations or normal page
+> alloc/free operations is handled internally in
+> tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
+> calls. Just call them unconditionally. Similarly, drop the NULL checks
+> before freeing, as tdx_free_control_page() handles NULL internally.
+> 
+> No functional change intended when Dynamic PAMT is not in use.
+> 
+> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
+
+Exactly what assistance was given, and when?  I certainly didn't use any of these
+tools, and given that Claude Opus 4.6 was released after I posted the v5 RFC, I
+doubt Kirill did either.
+
+And in my strong opinion, even if AI tooling was used to rebase the patches, I
+don't think that level of "assistance" should be presented this way.  E.g. I would
+rather a more informal:
+
+  [ Rick: enhance log, rebase with help from AI tooling]
+
+Because unless I'm missing something, claiming that AI was used to write the patch
+is misleading and disingenuous.
+
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [sean: handle alloc+free+reclaim in one patch]
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+
+Where did this come from?  I don't think me squashing two patches together
+warrants a Co-developed-by.
+
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [Rick: enhance log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
