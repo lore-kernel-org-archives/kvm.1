@@ -1,102 +1,163 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1333BCD3C
-	for <kvm@vger.kernel.org>; Mon,  6 Jul 2026 09:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E3F3C2787;
+	Mon,  6 Jul 2026 09:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783330840; cv=none; b=qJZCFlv9/czqXAw3xdmn5MKKJo1tXfcup2R21zepZYFaZdGcBJ47Kd8maIR3cwYhWbEynT/4db5a1JGs2kPRlmkIR7qaB/oHPeyCtaUTmbLD3plv+Fc02eskPm8yf+fDikPoiFTQ8XNCn9/cx9kRrEraPGaRh2/v2usEyQF7ap4=
+	t=1783331501; cv=none; b=KJ2CDihEm1i+uQ/TTMFCLvEfj6+RHGgypjnNcRuAcBtjOTjIr6aKBocOvbjBrMB4rMoCEApYKKzu7JU/bh0Axw6yapZPXNKD/nPPN9DODsbQSqIQ/AdKCWBoNeB9jZSwMEQtWvqrg/411yFnHIMNkPiSbPN2L5w0sQXjb0f740U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783330840; c=relaxed/simple;
-	bh=fwE45Cz0lOLaLjCZHFSQkDCjLtBslmqbv44Ncf+LRKg=;
+	s=arc-20240116; t=1783331501; c=relaxed/simple;
+	bh=ywoaDCiitG6UUpbjXRz5XjrlLVumC9HZGxpFMZ3I8eU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CLir9wCqd2DLo09Q6PpUQs12crdED6qrfVyBSLP6YJeN1e1Dg8+lqK82K12EmvQ8nmcE/xxcOzerz0hs4cY+e6Yiu4z7uyfL0jhTtupO3Z7fP5ct9rnmX+v+FkXJFBfrYYTxmILycA6bxQMLAg6pgXz9i6IQOjybUvcOMxTeIWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtD+de/p; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=n/C5ISiesENl44r8mG8BhhcoFmqZRD3nfYL7G4Xsx3YGQQmkbfcfp976XL6Zj4KqedasujBYGh09P+66PNngV483kENqwqwsteVRqUszlQeVjnIbvKIlVt2VHZQW5ramDrJ0Bvs8w3mxdREUpuPoU6L1Tz39DnY238ZOD1cRjO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcBaW/E1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtD+de/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104AA1F000E9;
-	Mon,  6 Jul 2026 09:40:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcBaW/E1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB021F00A3A;
+	Mon,  6 Jul 2026 09:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783330837;
-	bh=cr9hpfKkpYn5/wljN6YbRjUSxjeuc0Gl0yYsnYy6KkI=;
+	s=k20260515; t=1783331491;
+	bh=zN2f75xRCPsJVmuL136Mb/updeydU4Ru6dHCSJnNi1s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NtD+de/pY7iCeV6BEKTDoXTTax3LZzwQRRGAs8hYdTOSc7vulc7FD+tSoW6bB7s/d
-	 5cUOx7jD8nJwtmhV19Ud431zzpEPAmm6pHTwSYbUMBroa/9AR9OFUc1gav5CC4T7RW
-	 t/p7nCTSL0xKDK1OD/5FUmG0fubxOnelVXAmog0uVU0t+IiXlULv3UNYYtPQ3QXplR
-	 YWt76I67KEcp6PuvSQaUrVGk0JcE/R8a1mmsMw2w7sPVamnVuoQYHTWe8vcWlp/dej
-	 WT8bQhBbVT9hFZ3XZO6Hroh4U4pPQWM6Xda3IKKEOZ0B8xS3sXC/nYYkyHWK9RhLv9
-	 sqq50hb/GhU3w==
+	b=kcBaW/E1zeMDTNokdLZAj+MaOAifKXjrq3xDU9jXuHvI30MI/9pGdmGKA6I/3X8Jd
+	 8+02sQMRnsdesYru1hqeBxQ6hHoJ2yA3E+lI8vGjafVsFGlBXu7pmPKewBb3RNOus3
+	 kZCXaCrn0sF2cxFwc695F/EUAcemj8H1jetepKOkKW4D+HizYQpk8mR0TvMaCu+C67
+	 ilz/3ug6AU4lqjSPuoU3+NG0/DWm+GSnzi7s456+rpXWLdeC13xFMn0oZqfbvBapuT
+	 0uyLMNNK+ZJ8ryrYUX1F1p5nHL9RC6N8np8H0a/MrjvujEToiGXb94eiz/R0d9OVij
+	 KkOILjVLzTm2Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/4] KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is
- already mapped
+Subject: Re: [PATCH v4 22/27] KVM: s390: Add basic arm64 kvm module
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tim Wiederhake" <twiederh@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260706092021.3625908-5-twiederh@redhat.com>
-References: <20260706092021.3625908-2-twiederh@redhat.com>
- <20260706092021.3625908-5-twiederh@redhat.com>
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, kvmarm@lists.linux.dev
+In-Reply-To: <20260706085229.979525-23-seiden@linux.ibm.com>
+References: <20260706085229.979525-1-seiden@linux.ibm.com>
+ <20260706085229.979525-23-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 06 Jul 2026 09:40:36 +0000
-Message-Id: <20260706094037.104AA1F000E9@smtp.kernel.org>
+Date: Mon, 06 Jul 2026 09:51:30 +0000
+Message-Id: <20260706095130.DEB021F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Calling `gfn_to_memslot()` in `KVM_CREATE_IRQCHIP` without holding=
- the SRCU read lock (`kvm->srcu`) or the memslots update lock (`kvm->slots_=
-lock`) leads to a Use-After-Free and triggers a lockdep warning.
+- [Medium] Integer underflow in `kvm_max_guest_address()` allows bypassing =
+IPA limit checks, leading to shift-out-of-bounds undefined behavior.
+- [Medium] Falsely advertises support for `KVM_CAP_ARM_USER_IRQ` while sile=
+ntly dropping interrupt injections.
 --
 
-commit 69e98e42c78858b7858a1956e233c569faf47ae1
-Author: Tim Wiederhake <twiederh@redhat.com>
+commit cf17b7229eed87d0fba2ede0e60b154b44cdfc5e
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-KVM: x86: Reject KVM_CREATE_IRQCHIP if APIC base is already mapped
+KVM: s390: Add basic arm64 kvm module
+   =20
+Add basic code for the new arm64 on s390 KVM implementation.
+Add kernel module boilerplate code and trivial functions.
 
-User space must not map guest memory that covers the default APIC base
-address when using an in-kernel irqchip. This commit adds an explicit
-check to KVM_CREATE_IRQCHIP so the conflict is reported at the point
-where the constraint takes effect.
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
+> diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
+> new file mode 100644
+> index 0000000000000..19249ec5c539f
+> --- /dev/null
+> +++ b/arch/s390/kvm/arm64/arm.c
 [ ... ]
-> @@ -4413,6 +4413,10 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
-int ioctl, unsigned long arg)
->  		if (kvm->created_vcpus)
->  			goto create_irqchip_unlock;
+> @@ -20,172 +20,192 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
+ong ext)
+>  {
+>  	int ret;
 > =20
-> +		r =3D -EEXIST;
-> +		if (gfn_to_memslot(kvm, gpa_to_gfn(APIC_DEFAULT_PHYS_BASE)))
-> +			goto create_irqchip_unlock;
-> +
+>  	switch (ext) {
+>  	case KVM_CAP_NR_VCPUS:
+>  	case KVM_CAP_MAX_VCPUS:
+>  	case KVM_CAP_MAX_VCPU_ID:
+>  		ret =3D KVM_MAX_VCPUS;
+>  		break;
+>  	case KVM_CAP_ARM_VM_IPA_SIZE:
+>  		ret =3D get_kvm_ipa_limit();
+>  		break;
+>  	case KVM_CAP_IOEVENTFD:
+>  	case KVM_CAP_ARM_USER_IRQ:
+>  		ret =3D 1;
 
-[Severity: High]
-Is it safe to call gfn_to_memslot() in this KVM_CREATE_IRQCHIP path without
-holding the kvm->srcu read lock?
+[Severity: Medium]
+Since kvm_vm_ioctl_irq_line() silently drops interrupts and returns success,
+does advertising support for KVM_CAP_ARM_USER_IRQ here cause userspace to
+believe the capability works, leading to lost interrupts and guest hangs?
 
-Looking at kvm_arch_vm_ioctl() in arch/x86/kvm/x86.c, only kvm->lock is
-held when KVM_CREATE_IRQCHIP is executed.
+>  		break;
+>  	default:
+>  		ret =3D 0;
+>  	}
+> =20
+>  	return ret;
+>  }
+> =20
+>  static u64 kvm_max_guest_address(void)
+>  {
+>  	u64 max_addr;
+> =20
+>  	if (sclp.hamax =3D=3D U64_MAX)
+>  		max_addr =3D TASK_SIZE_MAX;
+>  	else
+>  		max_addr =3D min_t(u64, TASK_SIZE_MAX, sclp.hamax);
+>  	return ALIGN_DOWN(max_addr + 1, 1 << 30) - 1;
 
-If another thread concurrently calls KVM_SET_USER_MEMORY_REGION, it replaces
-the memslots array under kvm->slots_lock and calls synchronize_srcu().
-Because KVM_CREATE_IRQCHIP does not take srcu_read_lock(),
-synchronize_srcu() won't wait for it.
+[Severity: Medium]
+Can this underflow if max_addr + 1 is less than 1GB?=20
 
-Could this traversal of the memslots array in gfn_to_memslot() encounter a
-freed array and result in a use-after-free, as well as a suspicious RCU usa=
-ge
-lockdep warning?
+If sclp.hamax restricts the maximum address to less than 1GB,=20
+ALIGN_DOWN(max_addr + 1, 1 << 30) will evaluate to 0. Subtracting 1 would
+then underflow to U64_MAX.
 
->  		r =3D kvm_pic_init(kvm);
->  		if (r)
->  			goto create_irqchip_unlock;
+>  }
+> =20
+>  vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *v=
+mf)
+>  {
+>  	return VM_FAULT_SIGBUS;
+>  }
+> =20
+>  long kvm_arch_dev_ioctl(struct file *filp,
+>  			unsigned int ioctl, unsigned long arg)
+>  {
+>  	return -EINVAL;
+>  }
+> =20
+>  u32 get_kvm_ipa_limit(void)
+>  {
+>  	return fls64(kvm_max_guest_address() + 1) - 1;
+
+[Severity: Medium]
+If kvm_max_guest_address() returns U64_MAX due to the underflow above, this
+will evaluate to U32_MAX.=20
+
+Could this large value cause the IPA limit validation checks to be bypassed,
+allowing untrusted userspace to provide a large shift value and trigger a
+shift-out-of-bounds undefined behavior?
+
+>  }
+[ ... ]
+>  int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irq_lev=
+el,
+>  			  bool line_status)
+>  {
+>  	return 0;
+
+[Severity: Medium]
+This isn't a bug in the implementation of the stub, but since
+KVM_CAP_ARM_USER_IRQ is advertised as supported, will returning success here
+without injecting the interrupt deceive userspace and silently drop the
+interrupts?
+
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706092021.3625=
-908-2-twiederh@redhat.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260706085229.9795=
+25-1-seiden@linux.ibm.com?part=3D22
