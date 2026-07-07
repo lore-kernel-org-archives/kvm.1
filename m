@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D43343F4B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E376C43F4CE;
 	Tue,  7 Jul 2026 18:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783449840; cv=none; b=p6zqF8+Xbvgw3XQwnB9ZM+k5LNq5IU75CIVBPdvEhDxsYoVtzy6GP60FXCZ23hKY07LLc5SEuwr56jWmNrP0UNAWrUhm4ZBCQox1Npw0wjXi2cjsGUuhL0/Q0HnvGfVz8kt7mpXTifbk8iWpYZIxdGMZTrAkfBPQBXWVP2qqWtY=
+	t=1783449840; cv=none; b=o/npVXJ+Ex5otCEzf1cYsyp4T+jhLnlTdP4pugklaD+xpjq/dP5nFZ+gQgpprLT6U5UIc8GzWSreZoBZaGP70pzouNsa8074w/niy0dpBjpUCBIS+hPKo+LHfLc1AtUmT7fbba+uLXXiaqbaXmhctXIdSg+djuePdQa/1D25F24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783449840; c=relaxed/simple;
-	bh=jBdhc40OyjaLfF3/kSVv/SsaJLPV07v1T1Kpkpiuf4A=;
+	bh=JGuPKA9fdrhRJmhkZv0m48mnr0yD+1ShfHNFQx1/2DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0U5lh2MlzsOUGRFBOdnk9+oPm/NlHihzVC5/Do+97TfQARKOiiulPj0p39SWi44Pgay5lDYeLjF94VQizzyZHxgUVNbZsReLBjoldBp5a9G94PZgAYvSibCFo3QnpjbLf2Wr8jm4Vcmmj6tvl0cwboPOgZTdK5VX0iaVes8Q6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MKeD1V6x; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=GcrbeyBRE7UZcJfdUbD1wGoXw6s4yh3hVlEVe3iPt5FxhNsUyBGKHJa45t/prTcMQ5KmdOMiYsvYAI19pmYvOmZtU3pGxC9IfvZzger4jjYsGz+kCGQjuf/HTQNZZBpyQs/1QLPOBOZQwKcFE5+i4C2RVJlADEumcI+2OH8BAuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tct3MP9X; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MKeD1V6x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tct3MP9X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783449838; x=1814985838;
+  t=1783449839; x=1814985839;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jBdhc40OyjaLfF3/kSVv/SsaJLPV07v1T1Kpkpiuf4A=;
-  b=MKeD1V6x1liIiKhVUPBcknB5kxiZEfAQDR++GbPmYQxG/XDKQn5MAm+P
-   UFEf6RVVHmMNOKVtFCqJ1dqOCtJwhzkZiCez/JeP1GEtqKIH+ZxBZE8Dk
-   HOQyRyerwe03AXgldxjUZbc4pe5zj/fwWcgMD/BgCi7GOgSdZ1b5LKY8E
-   JwV6omhCC3N4ipcHHthoBrFhwL3DQNYPYcSTq6dcfRSDKmpwsBnBzAH8l
-   F2Ixb6XDw6NHmgtiYiKd+IZYergFV+aejCZlHYLa7uk+iIznovaNFbVlF
-   x1E2tWDa8O/w2oqfcO9TYQjFbhhWem6b0nAQNIqHXlbF0v851xTcYQwWz
-   g==;
-X-CSE-ConnectionGUID: wVZSk9QnTKa8gfqsKIovEw==
-X-CSE-MsgGUID: SIZIyw8+Qliaus8FcaT/eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="94713851"
+  bh=JGuPKA9fdrhRJmhkZv0m48mnr0yD+1ShfHNFQx1/2DY=;
+  b=Tct3MP9Xu/LomWUQOOLi9WPdXlFvwlOq2lmL4MUlAekFijHpLeWc3h2P
+   3daTO9Zg/+qpMTfLTmsN87d3xC9Yi8anJpj7qT/jyGs+R4zAhgBsH581w
+   80oXSJIfk2re9OtKghaZkpKjjgP/2HVuSMGaTBxWFvGR3W4nEuqDQK2iB
+   NjIf3V8rPdiYfIY3W3Qind/M7Eskyx/RtPfvJ4lGKklzq7cyj/rGhOvau
+   4Jp9Yo2VOxSakxB4xLszTjSYpNO9ERuBeEaxcbN1btOBFA0lk3zwJrCBY
+   GT43fg/e+Ex2dhoZBsYmNwWxnszuuUpeNN1ndShvC1o6vgFu7lp2iHxg+
+   w==;
+X-CSE-ConnectionGUID: Ob+JrU8gTjG2f5JpBDIyHA==
+X-CSE-MsgGUID: +ETaVT/SQcme6xSBxnBBkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="94713856"
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="94713851"
+   d="scan'208";a="94713856"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 11:43:57 -0700
-X-CSE-ConnectionGUID: 3VO5v1ltREaIvEJAkDsa9g==
-X-CSE-MsgGUID: ISKJ9IMBR6K10x/TPL4+og==
+X-CSE-ConnectionGUID: e0LF+ucnROe7qH34lDBx3w==
+X-CSE-MsgGUID: rsFkrPkPQVKnOrYl+QQrHA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="277279283"
+   d="scan'208";a="277279286"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
   by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 11:43:56 -0700
 From: Zide Chen <zide.chen@intel.com>
@@ -57,9 +57,9 @@ Cc: kvm@vger.kernel.org,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Falcon Thomas <thomas.falcon@intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH 02/15] KVM: x86/pmu: Rename all_valid_pmc_idx to all_valid_pmc_mask
-Date: Tue,  7 Jul 2026 11:33:52 -0700
-Message-ID: <20260707183405.15571-3-zide.chen@intel.com>
+Subject: [PATCH 03/15] KVM: x86/pmu: Rename reserved_bits to eventsel_rsvd in kvm_pmu
+Date: Tue,  7 Jul 2026 11:33:53 -0700
+Message-ID: <20260707183405.15571-4-zide.chen@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260707183405.15571-1-zide.chen@intel.com>
 References: <20260707183405.15571-1-zide.chen@intel.com>
@@ -71,87 +71,122 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-all_valid_pmc_idx is a bitmap of valid PMC indices, not an index
-itself; rename it to all_valid_pmc_mask to better reflect what it
-holds.
+This field stores the bits that are reserved in guest IA32_PERFEVTSELx
+MSRs. Rename it to eventsel_rsvd to better reflect its purpose and to
+align with other field names in struct kvm_pmu.
+
+Opportunistically, replace the magic number 0xffffffff00200000ull with
+macros.
 
 No functional change intended.
 
+Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
  arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/kvm/pmu.c              | 10 +++++-----
- arch/x86/kvm/vmx/pmu_intel.c    |  2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/kvm/pmu.c              |  3 ++-
+ arch/x86/kvm/svm/pmu.c          |  6 +++---
+ arch/x86/kvm/vmx/pmu_intel.c    | 12 ++++++------
+ 4 files changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 96376d8a5199..4677773cfa30 100644
+index 4677773cfa30..395b6f20e9ac 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -643,7 +643,7 @@ struct kvm_pmu {
- 		DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
- 		atomic64_t __reprogram_pmi;
- 	};
--	DECLARE_BITMAP(all_valid_pmc_idx, X86_PMC_IDX_MAX);
-+	DECLARE_BITMAP(all_valid_pmc_mask, X86_PMC_IDX_MAX);
- 	DECLARE_BITMAP(pmc_in_use, X86_PMC_IDX_MAX);
- 
- 	DECLARE_BITMAP(pmc_counting_instructions, X86_PMC_IDX_MAX);
+@@ -628,7 +628,7 @@ struct kvm_pmu {
+ 	u64 counter_bitmask[2];
+ 	u64 global_ctrl_rsvd;
+ 	u64 global_status_rsvd;
+-	u64 reserved_bits;
++	u64 eventsel_rsvd;
+ 	u64 raw_event_mask;
+ 	u64 perf_metrics;
+ 	struct kvm_pmc gp_counters[KVM_MAX_NR_GP_COUNTERS];
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 04b9c840f218..9db12c54814d 100644
+index 9db12c54814d..cef22fed6c53 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -967,7 +967,7 @@ static void kvm_pmu_reset(struct kvm_vcpu *vcpu)
- 	bitmap_zero(pmu->reprogram_pmi, X86_PMC_IDX_MAX);
- 	bitmap_zero(pmu->pmc_has_mode_specific_enables, X86_PMC_IDX_MAX);
+@@ -1007,7 +1007,8 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	pmu->nr_arch_fixed_counters = 0;
+ 	pmu->counter_bitmask[KVM_PMC_GP] = 0;
+ 	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
+-	pmu->reserved_bits = 0xffffffff00200000ull;
++	/* KVM is not able to emulate the AnyThread bit */
++	pmu->eventsel_rsvd = GENMASK_ULL(63, 32) | ARCH_PERFMON_EVENTSEL_ANY;
+ 	pmu->raw_event_mask = X86_RAW_EVENT_MASK;
+ 	pmu->global_ctrl_rsvd = ~0ull;
+ 	pmu->global_status_rsvd = ~0ull;
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index 0517fd4bbcd7..90832160fa34 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -168,7 +168,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	/* MSR_EVNTSELn */
+ 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
+ 	if (pmc) {
+-		data &= ~pmu->reserved_bits;
++		data &= ~pmu->eventsel_rsvd;
+ 		if (data != pmc->eventsel) {
+ 			pmc->eventsel = data;
+ 			pmc->eventsel_hw = (data & ~AMD64_EVENTSEL_HOSTONLY) |
+@@ -219,9 +219,9 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
  
--	kvm_for_each_pmc(pmu, pmc, i, pmu->all_valid_pmc_idx) {
-+	kvm_for_each_pmc(pmu, pmc, i, pmu->all_valid_pmc_mask) {
- 		pmc_stop_counter(pmc);
- 		pmc->counter = 0;
- 		pmc->emulated_counter = 0;
-@@ -1014,7 +1014,7 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	pmu->fixed_ctr_ctrl_rsvd = ~0ull;
- 	pmu->pebs_enable_rsvd = ~0ull;
- 	pmu->pebs_data_cfg_rsvd = ~0ull;
--	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
-+	bitmap_zero(pmu->all_valid_pmc_mask, X86_PMC_IDX_MAX);
+ 	pmu->counter_bitmask[KVM_PMC_GP] = BIT_ULL(48) - 1;
  
- 	if (!vcpu->kvm->arch.enable_pmu)
- 		return;
-@@ -1035,8 +1035,8 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
- 	if (kvm_vcpu_has_mediated_pmu(vcpu))
- 		kvm_pmu_call(write_global_ctrl)(pmu->global_ctrl);
+-	pmu->reserved_bits = 0xfffffff000280000ull;
++	pmu->eventsel_rsvd = 0xfffffff000280000ull;
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) && kvm_vcpu_has_mediated_pmu(vcpu))
+-		pmu->reserved_bits &= ~AMD64_EVENTSEL_HOST_GUEST_MASK;
++		pmu->eventsel_rsvd &= ~AMD64_EVENTSEL_HOST_GUEST_MASK;
  
--	bitmap_set(pmu->all_valid_pmc_idx, 0, pmu->nr_arch_gp_counters);
--	bitmap_set(pmu->all_valid_pmc_idx, KVM_FIXED_PMC_BASE_IDX,
-+	bitmap_set(pmu->all_valid_pmc_mask, 0, pmu->nr_arch_gp_counters);
-+	bitmap_set(pmu->all_valid_pmc_mask, KVM_FIXED_PMC_BASE_IDX,
- 		   pmu->nr_arch_fixed_counters);
- }
- 
-@@ -1058,7 +1058,7 @@ void kvm_pmu_cleanup(struct kvm_vcpu *vcpu)
- 
- 	pmu->need_cleanup = false;
- 
--	bitmap_andnot(bitmask, pmu->all_valid_pmc_idx,
-+	bitmap_andnot(bitmask, pmu->all_valid_pmc_mask,
- 		      pmu->pmc_in_use, X86_PMC_IDX_MAX);
- 
- 	kvm_for_each_pmc(pmu, pmc, i, bitmask) {
+ 	pmu->raw_event_mask = AMD64_RAW_EVENT_MASK;
+ 	/* not applicable to AMD; but clean them to prevent any fall out */
 diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index d0e16a3211ca..5950445ebc69 100644
+index 5950445ebc69..f42b2972cb7b 100644
 --- a/arch/x86/kvm/vmx/pmu_intel.c
 +++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -585,7 +585,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
- 		lbr_desc->records.nr = 0;
+@@ -402,7 +402,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	struct kvm_pmc *pmc;
+ 	u32 msr = msr_info->index;
+ 	u64 data = msr_info->data;
+-	u64 reserved_bits, diff;
++	u64 eventsel_rsvd, diff;
  
- 	if (lbr_desc->records.nr)
--		bitmap_set(pmu->all_valid_pmc_idx, INTEL_PMC_IDX_FIXED_VLBR, 1);
-+		bitmap_set(pmu->all_valid_pmc_mask, INTEL_PMC_IDX_FIXED_VLBR, 1);
+ 	switch (msr) {
+ 	case MSR_CORE_PERF_FIXED_CTR_CTRL:
+@@ -459,11 +459,11 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			pmc_write_counter(pmc, data);
+ 			break;
+ 		} else if ((pmc = get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0))) {
+-			reserved_bits = pmu->reserved_bits;
++			eventsel_rsvd = pmu->eventsel_rsvd;
+ 			if ((pmc->idx == 2) &&
+ 			    (pmu->raw_event_mask & HSW_IN_TX_CHECKPOINTED))
+-				reserved_bits ^= HSW_IN_TX_CHECKPOINTED;
+-			if (data & reserved_bits)
++				eventsel_rsvd ^= HSW_IN_TX_CHECKPOINTED;
++			if (data & eventsel_rsvd)
+ 				return 1;
  
- 	if (pmu->version == 1)
- 		return;
+ 			if (data != pmc->eventsel) {
+@@ -573,7 +573,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	if (entry &&
+ 	    (boot_cpu_has(X86_FEATURE_HLE) || boot_cpu_has(X86_FEATURE_RTM)) &&
+ 	    (entry->ebx & (X86_FEATURE_HLE|X86_FEATURE_RTM))) {
+-		pmu->reserved_bits ^= HSW_IN_TX;
++		pmu->eventsel_rsvd ^= HSW_IN_TX;
+ 		pmu->raw_event_mask |= (HSW_IN_TX|HSW_IN_TX_CHECKPOINTED);
+ 	}
+ 
+@@ -617,7 +617,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	if (perf_capabilities & PERF_CAP_PEBS_FORMAT) {
+ 		if (perf_capabilities & PERF_CAP_PEBS_BASELINE) {
+ 			pmu->pebs_enable_rsvd = counter_rsvd;
+-			pmu->reserved_bits &= ~ICL_EVENTSEL_ADAPTIVE;
++			pmu->eventsel_rsvd &= ~ICL_EVENTSEL_ADAPTIVE;
+ 			pmu->pebs_data_cfg_rsvd = ~0xff00000full;
+ 			intel_pmu_enable_fixed_counter_bits(pmu, ICL_FIXED_0_ADAPTIVE);
+ 		} else {
 -- 
 2.54.0
 
