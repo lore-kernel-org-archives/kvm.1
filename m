@@ -1,77 +1,275 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16173416132;
-	Tue,  7 Jul 2026 13:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CC2175A77
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 13:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783430489; cv=none; b=q6FMXHPbJHFE6Cp4ixfwhAUbMm5/rJVaDX1Js3Ke4ElrMd9HiVg2bUZHpqQd8sFGbyYNoeiNnVK4KCT9C7YKwKfCpt5pHk8EXSav9tHiLI+ZzD/w0VmRVpbqZHYyLB3LmvVu0BK9r3cY8p18w3a3mu0nPr7QTViUlMU55Hk/rdY=
+	t=1783431540; cv=none; b=qnGblYX8qKuK6GXorwkHmK6Po4NX9ueFrcD+hGJIpky17ai8cK4DBcydxnuzqlLVGoj9Cl2T9alKvBKzx7vPTGaMV81e2H2Ur6B5FSClS+aC4CDtAuSvYOIzfKCm8isUQo7dl/VyX/fICRv5nV6hh1Vr/5vn10Bzt0b0qNG+y34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783430489; c=relaxed/simple;
-	bh=aTI150TJIrCiFSkMzkGJnHBZn+tFIQP7mzFfIPu4Tkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u0VPr0kMl/M9b40n/bcnRIkr0tJpAzTrXy9PrrameTgYJ3q4zwLWxCW27dBha0qGUoDV7VX5XYYmk+Jh+qrDDYI9SNASXgaDSc0PWBX1MMOgPsABTIk7DgAKlOJ9YNM+aTvQcT/IzJHMIMap4OBwLVmjrUs4FVt9tpEx3+l/5go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=T7mYdosi; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1783431540; c=relaxed/simple;
+	bh=v8I1swk9IKNKBonfJ0Xz3BFIVbstSWSgSYc+zYB2HZs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=aLb5e6IgN+nBPV3u/bdQz4Lx3tkAaf2nZ5VMcMwh+q4A8gv3DeU7hb+YXpSj/AwKH6+9ZobmdkCTMlHnyq/uA+tVlxndMJOCBPzn5KMLXohFMYBF3Afvh15RAT6f9hrLpP7HFe6iw/s+vlCkYpPNp12oNIYKaXXZ1rLrlAhj6WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=VzGMAFQh; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="T7mYdosi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=My+KPg/qXh2P4MUPP32y367LOETlt/nlmXRd1cw9Rcs=; 
-	b=T7mYdosiQhUuJZLvgw/3p2c6ZEQ0BrELzjDCGitCFs2FUo7cchdr1PaaCFpe4EFhB6sOUvKz8qd
-	eF45+AkKPwhP2lyiBWAtNbS9fNoMEACEk4tVP2SYkc1vsm941UvKFFx61rqkI1q/4a7i8DGesBmA2
-	EDyQnysDCIfKNg+Doj/yp9sI1gcKg+2jjxOcKM2joDTndMEOvrrx5dFlCjMROMRfasFHtelZGkJ7F
-	Pm5/0cSLY8SfbhPOsOhfa5EIcl3BdL8K2dHXlT1Z9y7mqkaOQLqt+Zp8o4s85bqwjBs//Rc9gwgfJ
-	0ht27yljz4+pkR4bkAL4pfYSZjHBcKwT3zkA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1wh5jH-0000000BPKS-1vDg;
-	Tue, 07 Jul 2026 21:20:52 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 07 Jul 2026 21:20:51 +0800
-Date: Tue, 7 Jul 2026 21:20:51 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Peter Gonda <pgonda@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Youngjae Lee <youngjaelee@meta.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	John Allen <john.allen@amd.com>, clm@meta.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	stable@vger.kernel.org, Atish Patra <atishp@meta.com>
-Subject: Re: [PATCH v3 3/4] crypto: ccp: Fix possible deadlock in SEV init
- failure path
-Message-ID: <akz9M0mBGwHW08aZ@gondor.apana.org.au>
-References: <20260602-sev_snp_fixes-v3-0-24bfd3ae047c@meta.com>
- <20260602-sev_snp_fixes-v3-3-24bfd3ae047c@meta.com>
- <akdUUggmSSS1a0IW@gondor.apana.org.au>
- <akvvTFUAI9tjOXRh@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="VzGMAFQh"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54D251A2D;
+	Tue,  7 Jul 2026 06:38:52 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A43AD3F85F;
+	Tue,  7 Jul 2026 06:38:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783431536; bh=v8I1swk9IKNKBonfJ0Xz3BFIVbstSWSgSYc+zYB2HZs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VzGMAFQhvjaBdc/55BtB3Frnu5suw7tdL9NlfpoTa07juHtECBqCGaJupeYdkrYfQ
+	 cvYq+pGn3jxTI1n+0K1DyC6+gaRUfpmexVB1JEW9hHHMKawxWVv4TuJymA7KJjJ7Sp
+	 0AyMEK0LtYtoxFiLcmNzmUwcLXoKp86FSNKKI5qM=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 12/13] KVM: arm64: Add hardware-accelerated dirty-ring cleaning routine
+Date: Tue,  7 Jul 2026 14:38:50 +0100
+Message-ID: <ak0Bam9uj25cCtKm@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <akKq2fvsUWPxuCHU@LeoBrasDK>
+References: <20260629111820.1873540-1-leo.bras@arm.com> <20260629111820.1873540-13-leo.bras@arm.com> <20260629114921.2E78C1F000E9@smtp.kernel.org> <akKq2fvsUWPxuCHU@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <akvvTFUAI9tjOXRh@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 06, 2026 at 11:09:16AM -0700, Sean Christopherson wrote:
+On Mon, Jun 29, 2026 at 06:26:49PM +0100, Leonardo Bras wrote:
+> On Mon, Jun 29, 2026 at 11:49:20AM +0000, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> > 
+> > New issues:
+> > - [Critical] Unvalidated userspace memory accesses in dirty ring clearing lead to host DoS and memory corruption.
+> > - [High] Missing TLB invalidation and DSB in dirty ring hardware path.
+> > - [High] Hardware buffer allocation lacks strict physical alignment guarantees.
+> > 
+> > Pre-existing issues:
+> > - [High] Missing architecturally required context synchronization (ISB) after control register writes.
+> > - [High] Unsafe wfi() polling loop causes lost wakeups and CPU lockups.
+> > - [Medium] Hardware dirty log clearing erroneously falls back to software due to incorrect return value processing.
+> > --
+> > 
+> > commit 9f463875fd0f7eddcaa7053b557d7a2cc21e83c1
+> > Author: Leonardo Bras <leo.bras@arm.com>
+> > 
+> > KVM: arm64: Add hardware-accelerated dirty-ring cleaning routine
+> > 
+> > This commit implements an arm64 version of kvm_arch_dirty_ring_clear using
+> > FEAT_HACDBS. It translates dirty-ring entries into HDBSS entries and uses
+> > the hardware mechanism to mark writable-dirty pages as clean. Invalid
+> > entries are then cleared, falling back to software cleaning on error.
+> > 
+> > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > > --- a/arch/arm64/kvm/dirty_bit.c
+> > > +++ b/arch/arm64/kvm/dirty_bit.c
+> > [ ... ]
+> > > static int dirty_bit_clear(struct kvm *kvm, u64 *hw_entries, int size)
+> > > {
+> > > 	u64 hcr_el2;
+> > > 	int ret;
+> > > 
+> > > 	preempt_disable();
+> > > 
+> > > 	hcr_el2 = read_sysreg(HCR_EL2);
+> > > 	write_sysreg(hcr_el2 | HCR_EL2_VM, HCR_EL2);
+> > > 	__load_stage2(&kvm->arch.mmu);
+> > 
+> > [Severity: High]
+> > This is a pre-existing issue, but does this missing ISB after control register
+> > writes expose the pipeline to undefined architectural states?
+> > 
+> > Writing to HCR_EL2 requires an immediate context synchronization event.
+> > Executing __load_stage2 immediately after without an isb means it might
+> > operate under a stale configuration.
+> 
+> See prev patches
+> 
+> 
+> > 
+> > > 
+> > > 	hacdbs_start(hw_entries, size);
+> > > 
+> > > 	do {
+> > > 		wfi();
+> > > 	} while (this_cpu_read(hacdbs_pcp.status) == HACDBS_RUNNING);
+> > 
+> > [Severity: High]
+> > This is a pre-existing issue, but can this unprotected wfi wait loop cause
+> > a lost wakeup and an indefinite CPU stall?
+> > 
+> > Because local interrupts are not masked around this check and wait, a timely
+> > interrupt could satisfy the condition prematurely before wfi executes.
+> > 
+> 
+> iden
+> 
+> > [ ... ]
+> > > 	if (idx != 0) {
+> > > 		ret = dirty_bit_clear(kvm, hw_entries, idx);
+> > > 		*flush = *flush || ret > 0;
+> > > 	}
+> > > out_err:
+> > > 	if (unlikely(ret != idx)) {
+> > 
+> > [Severity: Medium]
+> > This is a pre-existing issue, but does this logic incorrectly evaluate a
+> > successful batch outcome as an error?
+> > 
+> > If the loop finishes exactly on a batch boundary, idx is reset to 0, but ret
+> > holds the success count of the previous batch. This causes the mismatch check
+> > to evaluate to true, forcing a -EAGAIN return and triggering an unnecessary
+> > software fallback.
+> > 
+> 
+> iden
+> 
+> > [ ... ]
+> > > @@ -256,6 +256,72 @@ int __kvm_arch_dirty_log_clear(struct kvm *kvm,
+> > >  	return ret;
+> > >  }
+> > >  
+> > > +int __kvm_arch_dirty_ring_clear(struct kvm *kvm, struct kvm_dirty_ring *ring,
+> > > +				int *nr_entries_reset)
+> > > +{
+> > > +	u64 *hw_entries;
+> > > +	u64 slot_offset = 0;
+> > > +	u64 ttwl;
+> > > +	int i, ret;
+> > > +	u32 slot = -1;
+> > > +
+> > > +	if (signal_pending(current))
+> > > +		return -EINTR;
+> > > +
+> > > +	ttwl = HDBSS_ENTRY_TTWL(KVM_PGTABLE_LAST_LEVEL);
+> > > +
+> > > +	hw_entries = kmalloc(max(ring->size * sizeof(u64), PAGE_SIZE), GFP_KERNEL);
+> > 
+> > [Severity: High]
+> > Does this kmalloc call lack the strict physical alignment guarantees required
+> > by the hardware accelerator?
+> > 
+> > Since kmalloc does not guarantee natural physical alignment for large buffers,
+> > is it possible for physical address truncation to occur? This could cause the
+> > hardware accelerator to parse unaligned memory and corrupt arbitrary page DBM
+> > bits.
+> 
+> I recall it had size-alignmen guarantees. Largest buffer size should be 
+> 64k x 8B, so it should be ok.
+
+Dirty-ring size is required to be a power of 2, and sizeof(u64) is also a 
+power of 2. Kmalloc guarantees alignment for power of 2 allocations.
+
+> 
+> 
+> > 
+> > > +	if (!hw_entries)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	for (i = 0; i < ring->size; i++) {
+> > > +		struct kvm_dirty_gfn *entry;
+> > > +		gfn_t gfn;
+> > > +
+> > > +		entry = &ring->dirty_gfns[(ring->reset_index + i) &
+> > > +					  (ring->size - 1)];
+> > > +
+> > > +		if (!kvm_dirty_gfn_harvested(entry))
+> > > +			break;
+> > > +
+> > > +		if (entry->slot != slot) {
+> > > +			struct kvm_memory_slot *memslot;
+> > > +
+> > > +			memslot = kvm_dirty_ring_get_memslot(kvm, entry->slot);
+> > > +			slot = entry->slot;
+> > > +			slot_offset = memslot->base_gfn;
+> > 
+> > [Severity: Critical]
+> > Can an invalid, user-provided entry->slot lead to a NULL pointer dereference
+> > here?
+> > 
+> > The memslot pointer is dereferenced directly to read base_gfn without a NULL
+> > check.
+> > 
+> > > +		}
+> > > +
+> > > +		gfn = slot_offset + entry->offset;
+> > 
+> 
+> Correct. I have to verify the return value of get_memslot before using it.
+> Will do in v3
+> 
+> > [Severity: Critical]
+> > Is entry->offset validated against the memslot bounds?
+> > 
+> > Using an unvalidated user-provided offset here allows arbitrary Stage-2 GPA
+> > computation. This could enable Stage-2 memory corruption or privilege
+> > escalation.
+> 
+> Correct. Will verify the offset against memslot size before this.
+> Will be done in v3.
 >
-> Want to take patches 3 and 4 through your tree?  I'll grab 1 and 2; there's no
-> dependency between the KVM changes and the crypto changes.
 
-Alright, I'll add them to my tree.
+Reviewed this. Not quite correct, actually.
+If for any reason the calculated gfn is bigger than current slot size, 
+HACDBS will either:
+1- clean that (unrelated) page's dirty bit, if it already have DBM=1 or 
+2- fail because the hw page table walk returned that the entry is invalid, 
+   falling back to sw cleaning, which should be safe. 
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2 is safe, as long as sw cleaning still safe.
+As userspace could just request to clean the dirty-bit for _any_ page, 1 
+does not seem to unsafe as well. 
+
+I don't actually see privilege escalation as a possibility here.
+
+(let me know if I am missing something.
+
+ 
+> > 
+> > > +
+> > > +		hw_entries[i] = (gfn_to_gpa(gfn) & HDBSS_ENTRY_IPA) |
+> > > +				ttwl | HDBSS_ENTRY_VALID;
+> > > +	}
+> > > +
+> > > +	ret = dirty_bit_clear(kvm, hw_entries, i);
+> > 
+> > [Severity: High]
+> > Does this path miss an architecturally required TLB invalidation and DSB?
+> > 
+> > dirty_bit_clear relies on the caller to handle the TLBI (as noted in its
+> > internal comments for the log clearing path), but this ring clearing routine
+> > appears to jump directly to invalidating the entries and returning.
+> 
+> There is a dsb() and then a TLBI before returning to guest.
+> 
+
+kvm_flush_remote_tlbs() is called after the last kvm_dirty_ring_reset()
+and is able to do the requested dsb and tlbi.
+
+> > 
+> > This could leave stale writable TLB entries in the guest.
+> > 
+> > > +
+> > > +	/* Set as invalid all successfully cleaned entries */
+> > > +	for (int j = 0; j < ret; j++) {
+> > [ ... ]
+> > 
+> > -- 
+> > Sashiko AI review · https://sashiko.dev/#/patchset/20260629111820.1873540-1-leo.bras@arm.com?part=12
+> 
+> Thanks!
+> Leo
