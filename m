@@ -1,105 +1,119 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDA53FCB11;
-	Tue,  7 Jul 2026 11:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0339C3F9A1C
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 11:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783424322; cv=none; b=KAwWPawyxfym8W2Pc0CFeuJNqiDPsdcdz9Ktq1yjCGlDWoYRSQscZYi6NAVu2AVnMeeLGpJRYvQCRm74BFVIWkwdzhA+H35ticL3EyFPkUJb2bkALfy7cA/aH3M4L4C2YffErRi7eqLB7Ns5rpPiZSPS+jOv4YZMxXVDuTIRdtc=
+	t=1783424712; cv=none; b=OYPJmk+dXdZ2Ak9FzniIsboOIg3zuC8iFcEhYnbHpr5TbKmqxUj+Byp8hOQMXRNtTTx0vIAtXcz8fPgS2lfMBW1LOa23VGJM1Dm0Mw9bboTLMdKtDkNsRaVJr6bgIZkFVLYmmy1ldhLZ48vRPLNVUWvRdYKusos00Zv/B2v/3fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783424322; c=relaxed/simple;
-	bh=o/IhdAXODm7rPGXod1RAHaUrbrYMf+lqxSoPLUa0cUI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H278pFf8COZaxxpakCfMmvKAANIzdsA5aoAZ3yVcwRfOfE89WWeeNRlX7GHPKRyajliU5b89aa7ChnTyBggnG0bcSbE83q0pL+iuNY/zQzLFXUIsjA4vyoTDos+n5cQx8cgirZHfUOrhkIVN7cgZA27a6E2ldCe1mMzGwxDIuWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gvfPB5VnVz57KTp;
-	Tue, 07 Jul 2026 19:38:22 +0800 (CST)
-Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
-	by mse-fl2.zte.com.cn with SMTP id 667BcK5b063386;
-	Tue, 7 Jul 2026 19:38:20 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from localhost.localdomain (unknown [10.234.74.162])
-	by smtp (Zmail) with SMTP;
-	Tue, 7 Jul 2026 19:38:22 +0800
-X-Zmail-TransId: 3e816a4ce52e009-636fb
-X-Zmail-LocalSMTP: 1
-X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
-X-Zmail-RealSender: wang.yechao255@zte.com.cn
-From: Wang Yechao <wang.yechao255@zte.com.cn>
-To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
-        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
-        Alexandre Ghiti <alex@ghiti.fr>,
-        Wang Yechao <wang.yechao255@zte.com.cn>
-Subject: [PATCH 1/2] RISC-V: KVM: Move hfence type check out of loop
-Date: Tue,  7 Jul 2026 19:37:06 +0800
-Message-ID: <20260707113715.413265-2-wang.yechao255@zte.com.cn>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20260707113715.413265-1-wang.yechao255@zte.com.cn>
+	s=arc-20240116; t=1783424712; c=relaxed/simple;
+	bh=QHqWcNMuvzYA8fXLinvk1vQGPcfHWv5AL9HVV6AyN44=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=btxZOhXAOLxsCBRajvtaw8w9hhQRofvhn3t0NmEdvB/L0JzHs6PHg/jDEvuBzRyAOV+jxACVmmPcRwv0XJAZ5Qa1FBGi/VJ53NkH47aFsYwfpafm5jg/6DX1da8/FJhVdtZO2MiBymgqmvArBGCZJGeUzB4AbKniFLJo+LoNALg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=noYyVZPk; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="noYyVZPk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707C71F000E9;
+	Tue,  7 Jul 2026 11:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783424710;
+	bh=i93Gz2qGBKvooAicVngxj6J0meIETh/gkEaS2jSoCq0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=noYyVZPkbMKos2ri+w+Va/IlcdNxzO7NCvgQRXHiCgwnfw0CXyYqnJs+BZCp01V4F
+	 cYyhMAjXWvkUq5npijahNZwuindJ+LVwNjRHPDgdpDpvlJq71/ndtSHAMspMcQd0x9
+	 OV73yWRM4lH2iyJqiJjwVT7Q7QB3rlv0cz6ksiYjACFFt6SAC7BJ0Z5+vzTbllvXkH
+	 6CMjlCTA6PeXnqQ9gG+E5+zqk/ev1jGomjnIPvKizxYStm7P63dj69ByhZpyL44YYM
+	 PZpnEe/xvKXMo/vAuxk63e0xiYvN0qpqsZxOY8JFJUmLXdD/x2Qj8GkOOqZDnLtq7p
+	 KVJpLgnBoSS/Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] RISC-V: KVM: Move hfence type check out of loop
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Wang Yechao" <wang.yechao255@zte.com.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260707113715.413265-2-wang.yechao255@zte.com.cn>
 References: <20260707113715.413265-1-wang.yechao255@zte.com.cn>
+ <20260707113715.413265-2-wang.yechao255@zte.com.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 07 Jul 2026 11:45:10 +0000
+Message-Id: <20260707114510.707C71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 667BcK5b063386
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Tue, 07 Jul 2026 19:38:22 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A4CE52E.000/4gvfPB5VnVz57KTp
 
-Currently, the check for `data` and `data->type` is performed inside
-the loop iterating over each VCPU. Since these values are invariant
-during the loop, this check is redundant and adds unnecessary
-overhead.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The patch completely breaks KVM_REQ_FENCE_I requests by unconditio=
+nally returning early from `make_xfence_request` when `data` is NULL, silen=
+tly dropping guest instruction cache invalidations.
+--
 
-Move the validation to the beginning of the function, returning early
-if the hfence data or its type is invalid. This avoids repeated
-checks and reduces CPU cycles, which is particularly beneficial for
-SMP guests with a large number of VCPUs.
-
-Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+--- Patch [1]: [PATCH 1/2] RISC-V: KVM: Move hfence type check out of loop =
 ---
- arch/riscv/kvm/tlb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+commit 7dbdb7321dcb98c78f1282572934fc7ae89bab7e
+Author: Wang Yechao <wang.yechao255@zte.com.cn>
 
-diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-index 993b25ea94d67..a67b44a4d1d7a 100644
---- a/arch/riscv/kvm/tlb.c
-+++ b/arch/riscv/kvm/tlb.c
-@@ -335,6 +335,9 @@ static void make_xfence_request(struct kvm *kvm,
- 	unsigned int actual_req = req;
- 	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
- 
-+	if (!data || !data->type)
-+		return;
-+
- 	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		if (hbase != -1UL) {
-@@ -347,9 +350,6 @@ static void make_xfence_request(struct kvm *kvm,
- 
- 		bitmap_set(vcpu_mask, i, 1);
- 
--		if (!data || !data->type)
--			continue;
--
- 		/*
- 		 * Enqueue hfence data to VCPU hfence queue. If we don't
- 		 * have space in the VCPU hfence queue then fallback to
--- 
-2.43.5
+RISC-V: KVM: Move hfence type check out of loop
 
+This commit moves the validation of data and data->type outside the
+VCPU iteration loop in make_xfence_request() to reduce overhead. It
+adds an early return if the hfence data or its type is invalid.
+
+> diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
+> index 993b25ea94d67..a67b44a4d1d7a 100644
+> --- a/arch/riscv/kvm/tlb.c
+> +++ b/arch/riscv/kvm/tlb.c
+> @@ -335,6 +335,9 @@ static void make_xfence_request(struct kvm *kvm,
+>  	unsigned int actual_req =3D req;
+>  	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
+> =20
+> +	if (!data || !data->type)
+> +		return;
+> +
+
+[Severity: High]
+Does this early return break callers that intentionally pass NULL for data?
+
+For example, kvm_riscv_fence_i() calls make_xfence_request() with data=3DNU=
+LL
+to broadcast a KVM_REQ_FENCE_I request:
+
+arch/riscv/kvm/tlb.c:kvm_riscv_fence_i() {
+    ...
+    make_xfence_request(kvm, hbase, hmask, KVM_REQ_FENCE_I,
+                        KVM_REQ_FENCE_I, NULL);
+    ...
+}
+
+In the old code, passing NULL skipped enqueueing to the hfence queue but st=
+ill
+allowed the loop to populate vcpu_mask, so the request was properly broadca=
+st.
+
+With this change, the function returns immediately, dropping guest instruct=
+ion
+cache invalidations. Could this lead to guests executing stale instructions?
+
+>  	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
+>  	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		if (hbase !=3D -1UL) {
+
+[ ... ]
+
+> @@ -347,9 +350,6 @@ static void make_xfence_request(struct kvm *kvm,
+> =20
+>  		bitmap_set(vcpu_mask, i, 1);
+> =20
+> -		if (!data || !data->type)
+> -			continue;
+> -
+>  		/*
+>  		 * Enqueue hfence data to VCPU hfence queue. If we don't
+>  		 * have space in the VCPU hfence queue then fallback to
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707113715.4132=
+65-1-wang.yechao255@zte.com.cn?part=3D1
