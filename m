@@ -1,149 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7233090C1
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 09:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB0C397E9D;
+	Tue,  7 Jul 2026 09:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783416476; cv=none; b=eSc/o94fIvzl0ORSjQzxDtimST/XERRHwcdROrV5eea/DtR4SMVM5G2Ghr1xMSsaFZBWZLPJRm8MNMBxUx8z+QUEJt/xOuF0gLqJWhE5xM9fgB2iTGwp6Wfv3sXY5fU6R83i1+TUzOEnVV30d0b8uQSKPY9pCMLvuMTldVKKolw=
+	t=1783416748; cv=none; b=Mdd59VRMItaOj+Qs3TTzKNKg6W9rD4CWhgFjwvIgdGZqE+l2OhFSKxq6SiWFDhTYFrPigtsRclIyuBcxSOUSyeCULCIw1IXQXU6GRnyeUCcWIJ1BAtZkgKopF0nYN8evEr8yWVrpV8+TzCX+Gytd9z0ugTIUKTz6+2YAoJQvEQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783416476; c=relaxed/simple;
-	bh=3bYECwpBfkTcXe9Xf4qgJEYNbyztdqohJjIZZ7uI0/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOGLa4g6TsbDpx3R0ZP1kRJhdIf5Ln7Z8TGrbquqAJsdkxEj2mkiauSxlhsFgqzKNLRxyLLV5sGlPveaezVL5/EiGhiMXvVrgjBeMsHI24gn9rZVmmwQe8dk60OU8zT56FcUH7Dai6KBVKixWNMxGWbSrUwZvMWxSkHGsmIL/68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aU6xEIv5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EgRcJsUM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783416748; c=relaxed/simple;
+	bh=Ar7Wc8cv4gYk0aBdp5wDndwyQ0KPIb/wZDaPYg6MvR4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=dwF9jLytRGUdXhkqMSqG7YgFpwz1gMOd0BWlfTr8LcckM0RjZx2/77in4aN0VSdQ5NK/we0EnWSjX+L9SpQXvAvAv295XD+R/z2P82/XN2ZEdv2nGyKb4Oxw1m7Z5CMr/dRYwSIHE2N+bus8wN2NOXuJhwgCZTwqxUipQZ/N3WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMxUF64D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aU6xEIv5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EgRcJsUM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783416474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dWXC2U5pS/sHIFMNKjcnHZ2j56kpHPifAM+RlNplU0Q=;
-	b=aU6xEIv5GCjhsSKNRdzG9RpiStMs+glGmXSjsshuXZAi2pBsxP6nRFA3TXx6lVjgeC7kcM
-	lW0kbn5EJzfXk7i/edh3z6T7b8BEh15YZjYfbfxh3RKm/XmWu5sRs3ZYr+E7QevEElJWMq
-	UY8JwrWyaZYj8M8fyD4ksVvvmvdMT9I=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-340-lyh80X2EMLWkAHWGmFQD5Q-1; Tue, 07 Jul 2026 05:27:53 -0400
-X-MC-Unique: lyh80X2EMLWkAHWGmFQD5Q-1
-X-Mimecast-MFC-AGG-ID: lyh80X2EMLWkAHWGmFQD5Q_1783416472
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493b0a5e636so38195245e9.3
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 02:27:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783416472; x=1784021272; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dWXC2U5pS/sHIFMNKjcnHZ2j56kpHPifAM+RlNplU0Q=;
-        b=EgRcJsUMwNTfmjcjtTEh0B3qY8pZ2jTTl4RMibEsP2AC6oPkcA1m9ed8kO3wmfmciW
-         XgFCGvYzbmiVCC1ESidbypkqxh/Px2k4Wnl7ckZlV5uoXSdKREqljgNJ6Y4d5NcJCUAH
-         RPvwbPonvKQhsya0Xq+zx8i0HrVp5hTwxRMjr32/hqG0M7t/i1haIHHH+5YZJJFFUatC
-         SrO/2WMMwcbsu/2ei/zknM/dpS7cUqt9Z2njY8CgcAcUaD4audPIfGXOkNzdSc0O6EXA
-         VHS5VTYq2sqfyuSGP2Sgcclm0jabmKiMSEgjBJFbmvSusV5mgBmCtBHOTY2w7Aq0rt2g
-         K2yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783416472; x=1784021272;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dWXC2U5pS/sHIFMNKjcnHZ2j56kpHPifAM+RlNplU0Q=;
-        b=naklnwo7Ma3+/k5RaWtx9EiVbczvWKg6B2IYLk2NAOaUAKKQ3lgx3WK6QX/PZSYhMu
-         PH8KnH+HPs629Mx0Ay5I/pGgEzm8gnNnxO6ptnNmJUbiP8+szVrVD5/GGhRGywYk0pMP
-         cp6JQDPo8s1d1WN76vKM9CTUrPmLIwQ4m0sX44JJ546LH/BGbfYZ5SUMR9zl35xTX2Qu
-         Ri96POnLGUvaqhcOb54Ad6VJzIJJw4zEGOMkBhXCqb+fAbGd2ZZ7sNtyb03AFwGtUY5+
-         XPqnyjPURm8vI7sjlDJ+f5/sTo9fgMBtANscxN82/P37a/dnODTPDfmRIS742LLhuvP5
-         A6jQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7o8VBccYEu5l8WVhHiNYAda79Bct0tIEnZtey3QIiskJnckEuu7GznprdlweF0mZ6iyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEhRYH9uvWHmNMVCz0GoAL8R89TOb7be7zXOz08Ab3zd5iuo0V
-	eDQUmyBZ7jH07pL2JH7K29TH/qJxSAVFTuVxV3sgIr+9lY8FnhYsMf1woBUziuo36QIygzRoU4o
-	5Hyjh85VE+iysQUVVRNmBE9LL0RfiXAZ0NokboqsH54GcweskLCRx4A==
-X-Gm-Gg: AfdE7ckHFuTDUraEkBPHBwSyf3Wv4iIGoYJ7X5m/XGh2EYlp/XJiE3DHFrp66NZL1p+
-	a/toJAPjXqG5abgssyOMHhC1TpC6sGewawy4YLZdjRZaefV6kE/+03UITf4vmaU0MT7c/Pb3y70
-	uo6IKUfHCluqUFNgT/zAH1FzqEiPWym8RHErkjmGX4QkGzswTrjMcz5Ffln52KlasSisM8jD/r8
-	lY5K8+4vIrX394FOd0q9aOrd78966IuLGqwPIhoRZoFq9jfDpHvdIW4zfW7n6H3N/bFdBy1Jysc
-	Gz8+kABNEAtqpA9SIE5iZQTrz6IQjpUA94SsGPa4koG+h/bbawmydn6dNoHy6k4t5QJiFZBTXb3
-	mSHqRie7aVBrjCvnEOf42936QoC96snS0b+KeHoRk5VseKhuH2nBfCOM5h64T
-X-Received: by 2002:a05:600c:6ad0:b0:493:c2cc:aecb with SMTP id 5b1f17b1804b1-493df0a08ffmr34351485e9.38.1783416471685;
-        Tue, 07 Jul 2026 02:27:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:6ad0:b0:493:c2cc:aecb with SMTP id 5b1f17b1804b1-493df0a08ffmr34351085e9.38.1783416471154;
-        Tue, 07 Jul 2026 02:27:51 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f4e3afsm48240745e9.7.2026.07.07.02.27.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 02:27:50 -0700 (PDT)
-Date: Tue, 7 Jul 2026 11:27:36 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
-Subject: Re: [PATCH net 1/2] vsock/virtio: collapse receive queue under
- memory pressure
-Message-ID: <akzGUvB9g3smaXO6@sgarzare-redhat>
-References: <20260626134823.206676-1-sgarzare@redhat.com>
- <20260626134823.206676-2-sgarzare@redhat.com>
- <akVBmydgSd0Eb46/@devvm29614.prn0.facebook.com>
- <akYl38_9Y4ydXuqE@sgarzare-redhat>
- <akbFcMHenseQW7mJ@devvm29614.prn0.facebook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMxUF64D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3A81F000E9;
+	Tue,  7 Jul 2026 09:32:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783416746;
+	bh=aE4Vyr1iucpcDGTc27H9QnFGhm0W1ANEmFdU9uGr50E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CMxUF64DaiVFvz080cQbbSain2VzLoNKyq0zhOGG//APVpBmXgHvLxCua1bYZNaVL
+	 fGGQhhGMAzLOkQySGxxP+ZUHpM6wLlfzr/aq5wQmtzokAdeqKN9PAOsCHCGjWZv+jW
+	 7DuNnX9BMMDjQ3OEBtBIIIb3W+r5aICOltOZ8SY6rTgqq7ER7dAQQR/zgqfZuJ5PBQ
+	 wuW5Sfk2o/bHcXWUrPUf8b2vIe4WyxURigvM+eDV6l6UDAQbbx/czBRvpWVF1rGyx3
+	 P6+YazfuraMzSjaWLetgjovzQKomekp53qW3NWJjoVVzHHCG1sDCsA4IOmPMg7+PBA
+	 WV0s1ieJHQh/w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 13/15] s390/vfio-ap: Callback to get the size of data
+ to be migrated during guest migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260707090226.3206695-14-akrowiak@linux.ibm.com>
+References: <20260707090226.3206695-1-akrowiak@linux.ibm.com>
+ <20260707090226.3206695-14-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 07 Jul 2026 09:32:26 +0000
+Message-Id: <20260707093226.7A3A81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <akbFcMHenseQW7mJ@devvm29614.prn0.facebook.com>
 
-On Thu, Jul 02, 2026 at 01:09:20PM -0700, Bobby Eshleman wrote:
->On Thu, Jul 02, 2026 at 10:56:04AM +0200, Stefano Garzarella wrote:
->> On Wed, Jul 01, 2026 at 09:34:35AM -0700, Bobby Eshleman wrote:
->> > On Fri, Jun 26, 2026 at 03:48:22PM +0200, Stefano Garzarella wrote:
->>
->> [...]
->>
->> > > +out:
->> > > +	if (new_skb)
->> > > +		__skb_queue_tail(&new_queue, new_skb);
->> > > +
->> > > +	skb_queue_splice(&new_queue, &vvs->rx_queue);
->> >
->> > I think the new skbs will also need skb_set_owner_sk_safe(skb, sk)
->> > when adding to rx_queue?
->>
->> IIRC we added it in the rx path, mainily for loopback to pass the ownership
->> from the tx socket to the rx socket, but here we are already in the rx path,
->> so the skb will never leave this socket.
->>
->
->Ah that's right, I stand corrected. There is no sender to leak in this
->case.
->
->> Maybe it's necessary for the eBPF path?
->
->Looking through sockmap, I don't think it depends on skb->sk being
->non-null either (it reassigns owner to the redirect socket anyway using
->skb_set_owner_r()).
->
->Sorry for the false alarm. LGTM.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] vfio_ap_resuming_write leaks memory and fails subsequent writes if=
+ userspace performs a partial write during migration resuming.
+- [High] vfio_ap_get_config does not initialize the config_sz field of the =
+payload, sending 0 to the migration target.
+--
 
-Thanks for checking!
+--- Patch [13]: [PATCH v4 13/15] s390/vfio-ap: Callback to get the size of =
+data to be migrated during guest migration ---
+commit cf31fd21666e32de812c2582ed7358837c47d2bd
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
->
->Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
->
+s390/vfio-ap: Callback to get the size of data to be migrated during guest =
+migration
 
-I'm going to add a threashold as Paolo suggested. Do you prefer to look 
-at v2 or should I carry your R-b ?
+This commit adds a callback to get the estimated data length required
+to complete reading of the vfio device's internal state. This is mandatory
+for VFIO_DEVICE_FEATURE_MIGRATION support.
 
-Thanks,
-Stefano
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 572db04c4ac15..83e1ce2c40c0c 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -1283,7 +1283,18 @@ static int vfio_ap_get_state(struct vfio_device *v=
+dev,
+>  static int vfio_ap_get_data_size(struct vfio_device *vdev,
+>  				 unsigned long *stop_copy_length)
+>  {
+> -	return -EOPNOTSUPP;
+> +	struct ap_matrix_mdev *matrix_mdev;
+> +	size_t qinfo_sz;
+> +	int num_queues;
+> +
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	num_queues =3D vfio_ap_mdev_get_num_queues(&matrix_mdev->shadow_apcb);
+> +	qinfo_sz =3D num_queues * sizeof(struct vfio_ap_queue_info);
+> +	*stop_copy_length =3D qinfo_sz + sizeof(struct vfio_ap_config);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	return 0;
+>  }
+> =20
+>  static const struct vfio_migration_ops vfio_ap_migration_ops =3D {
 
+[Severity: High]
+Does vfio_ap_resuming_write() leak the newly allocated ap_config and fail
+subsequent writes if userspace performs a partial write during migration
+resuming?
+
+If a partial write occurs during vfio_ap_resuming_write() (i.e. *pos =3D=3D=
+ 0
+but len < cfg_sz), the newly allocated ap_config is not saved to
+mig_data->resuming_mig_state.ap_config because the check
+if (*pos + len =3D=3D cfg_sz) is false.
+
+The function then bypasses the cleanup label:
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_resuming_write() {
+...
+	ret =3D len;
+	*pos +=3D len;
+	goto done;
+
+cleanup:
+	kfree(ap_config);
+done:
+...
+}
+
+Because the pointer was never saved in the first partial write, the
+subsequent partial write fails this validation, returning -EFAULT,
+which permanently fails the migration:
+
+drivers/s390/crypto/vfio_ap_migration.c:validate_resuming_write_parms() {
+...
+	if ((!matrix_mdev->mig_data->resuming_mig_state.ap_config && *pos !=3D 0) =
+||
+	    (matrix_mdev->mig_data->resuming_mig_state.ap_config && *pos =3D=3D 0)=
+) {
+		ret =3D -EFAULT;
+...
+}
+
+[Severity: High]
+Can vfio_ap_get_config() send an uninitialized config_sz field to the
+migration target, causing the target to fail?
+
+In vfio_ap_get_config(), a new struct vfio_ap_config is allocated and
+populated, but its config_sz field is never initialized and remains 0.
+This structure is sent verbatim over the migration stream to the target hos=
+t:
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_get_config() {
+...
+	ap_configuration =3D kzalloc(*ap_config_size, GFP_KERNEL_ACCOUNT);
+	if (!ap_configuration)
+		return -ENOMEM;
+
+	ap_configuration->num_queues =3D num_queues;
+
+	ret =3D vfio_ap_store_queue_info(matrix_mdev, ap_configuration);
+...
+}
+
+If the target host receives a partial write and calls reallocate_ap_config(=
+),
+it reads cur_cfg_sz =3D ap_config->config_sz, which is 0.
+
+This causes the target to take the wrong reallocation path, shrinking the
+buffer incorrectly:
+
+drivers/s390/crypto/vfio_ap_migration.c:reallocate_ap_config() {
+...
+	cur_cfg_sz =3D ap_config->config_sz;
+	num_queues =3D ap_config->num_queues;
+
+	/* ... */
+	if (cur_cfg_sz >=3D sizeof(struct vfio_ap_config)) {
+		new_cfg_sz =3D calculate_ap_config_size(num_queues);
+		// ...
+	} else {
+		new_cfg_sz =3D cur_cfg_sz + len;
+	}
+...
+}
+
+The validation if (*pos + len > cfg_sz) then fails because cfg_sz evaluates
+to len and *pos > 0, causing the buffer to be freed and migration to
+fail with -EIO.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707090226.3206=
+695-1-akrowiak@linux.ibm.com?part=3D13
