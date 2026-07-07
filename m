@@ -1,102 +1,113 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D958346FD2
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF4031F983
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783459256; cv=none; b=U2ok9aFRlzvPiuu/zmAAsriVbuMI9vY6GPq/tVbwyyStjh9u4LLCX79cVFoWyCJIFPngk2HPAEEDUwLgTYFPRsG/oxgNU40ylRfR7q7FkN5Yj0oMf6goiONBtDqAVP5Llcu083I/7rE828QqHno4ueLf1FTST5JiURXfpOI+sN8=
+	t=1783459538; cv=none; b=csWkYdY7DT5GDVynwD8zROnPQkQTeKFncJDmoMdM3EHrzqn2HDyEqKtX8xCtVqOUrvO1lEYnGK6oiOE1BlvtEWUu0koSCIHHxtot8xR5hLPvph9FDccH73ODVb21OeRE6DRd1E9n/bjdRHMahdocPL9bNrW09xKC1yOyf6yPHSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783459256; c=relaxed/simple;
-	bh=FndKch3GTGLdrOHB6rKSa6u3R6HrF3DsPw6ggmU46L4=;
+	s=arc-20240116; t=1783459538; c=relaxed/simple;
+	bh=pOdXM2oymvr/smId1Omver3teKkaw9mprd4E/4+VOz0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cLPq/FHWYuy2AQfRgaZZiNmYRRPRoID3OWrpdJllGUxozh4qep38+SAjrB03kbmF0u2bY+8fo44Eal4ivD8ngEIzqvR7/b30nsti9TFQytK0BTBHNGtCy14wQrJt+69dq24RRtaSAu5dGAvZ7xYwO6RVKEBb+yV02hTKitb8ro0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mHWMxe8H; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=irslMH+289KeJSuYVLiHdXXd3D+m3LX9WJPzkefvVX4PTv/8nEzcGvEs4u0ze51+opc7rxe6kuz0dUl9G/5Z/bDikmbAIq8pzYyiNTSLR/fLjDIZIRDkTzSINV2KFXzfgo8+Hyr7I2GlYzGqvYqzNCSpK+kEs5r18mwZASg8HBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q8/Yg795; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mHWMxe8H"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ca0481106cso452495ad.0
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 14:20:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q8/Yg795"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cc77a6943eso1223935ad.0
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 14:25:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783459255; x=1784064055; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783459536; x=1784064336; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vX8Nu+AP3Cdd2yHmgHkvoGDwsjNpoGwkK+Tsrh06/Hc=;
-        b=mHWMxe8HsKLCAyOY2DcLazBfuF4j3yF0XKHLf+7O55eaaAK0MU4gF/iuskYKW76iOl
-         gWjyjOCmHN+DOxIr7KP4pND5lfWrc3nt7fyE6mhOPOWcSK7dAHEQ+snb7ToELssvQicd
-         easaJKE4B06wSVmYHzAlstWVUcYH7FIRgmKVGMphWkjEleIalF3hHxO1mUIADmrQqQzp
-         pSgKQTpp/+ozo4QkogXtgVIGEotvKomFeHjFVDCzzth4svpLeSoIWDy3r3aaFzmIpNHB
-         Ut9oZpPZle+eOsDGTDTrQkejNPiR+R/ny0he3vschArdAJ5tJXyTzwb5LmBmjBOFK5R1
-         yfOQ==
+        bh=ZUVoSE8UgGc/A9+Kf+89pNsJjY/CmRXkhT+zbp2ozz0=;
+        b=q8/Yg795TXs5wdjYUEwqXfN3toNwB9VEmE0qYLHzDKs0M9db/Mn3Ctl7l9+1Wpp4RU
+         BOgD+U2kJZjgW/tunnVRjEnDZ+URZ00OXFbuU8ICyZB/RHRzwRjFN+82d+cG/1uVtHT7
+         8go69zdiYREwQDo1eVZk1tCZeZZMl53bNjl02PD/KVfLCTqfhWUQLDGV9tAMXnVISaC3
+         Y2C7PC41KOPYtowH8jnEfZYlj4sYObjY+YvRtMHkf7q0kffF0+oSE+OdG67uHnsxrHGK
+         d5r50qO7nv0E3WWtCMsJwzS40XZ9cSOzIyTnQjB4xNlj7ijRR3WUaVYWN9eLi2VQJU0+
+         qJcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783459255; x=1784064055;
+        d=1e100.net; s=20251104; t=1783459536; x=1784064336;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vX8Nu+AP3Cdd2yHmgHkvoGDwsjNpoGwkK+Tsrh06/Hc=;
-        b=LSPIGcRuPFgAbHBCQlf7m+7GzyZ7cpyDZLJBH6QVbM0Af/rLpL4wfGVNOU+FDA5WHJ
-         uS8Nfu44U6BkYzkCNGjxk6rpZBkx7vZCDHwVwVLx1WnIkUouqNyrdvQ+kwH0ttruzOe3
-         go+M4pnng5LNOCU/eTcjuxwybyOvlbS132QUu5zuaOpuyXmMvERCYPMdOljkqATgdSfk
-         zn0qxIp/ZSqMZ7KTEESXvsfor9wpnVdytLPKUCZ7McY9YelkibxuEAiJpVbrHZm29V9l
-         +/d4SW0dN9pyphpINcx0C9vGMwrqtjrF2uxQTZphCzgmpyrEZdFDteWptAWEgVSqSTKi
-         ++jQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpkzsCNmVHFCJXQBP+405fMWJWFjDk80tqzzGyfTM3/VlgnZbLwxn+/7Q+11QxYqWePzqo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxr5rX0x0XnX3z8B4dWL+GnqJizA5Qvv32+QVoXlj/2UJ7NzJRO
-	cTJRmZsfICCL5t+Qkiv4hhBi0sGKlt9NxvmN2NBf88DCXOhP0HqYv/4zqaiDQU8OL8ScTIcyr1X
-	H/u6i6w==
-X-Received: from plbkb6.prod.google.com ([2002:a17:903:3386:b0:2ca:cbc9:76fd])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce01:b0:2ca:52ce:6f91
- with SMTP id d9443c01a7336-2ccbf056a99mr71748395ad.27.1783459254740; Tue, 07
- Jul 2026 14:20:54 -0700 (PDT)
-Date: Tue, 7 Jul 2026 14:20:54 -0700
-In-Reply-To: <ebce06ba-9d7f-43ef-9b3f-aa858348fd06@amd.com>
+        bh=ZUVoSE8UgGc/A9+Kf+89pNsJjY/CmRXkhT+zbp2ozz0=;
+        b=g9tnt1+shMwDlNIsRMzVXtg5e+T+3kVNB0kjxmTNjZgGm++b8im6JIzZ7heorV7ILs
+         8g+yIPiIsaw16M2krdAugNmBXpL+uh92SfYPJk5J2JpkzcgSx7L+U3pqJUchkWWBPNn9
+         S/MnXV6kaFlqMC6oFh4yR2ypCoup4HGTwPkZdQtjXEmDd/9ed5+acrwRkMSkrdXLkx27
+         Ql3BBHoqd5w0K77q1vEBTiS8Q+019cJLulDSJD9Un4V+HMavmZWf+hQ3I7lyZB7dJi5j
+         7KGeHAXFWUNwizRcsm7aqfNrPZDA8bp6Qd3XWKX+A2vwE88TZ3xLdWe3De2MRyW6O/q4
+         FwvA==
+X-Forwarded-Encrypted: i=1; AHgh+RrZIzkts0gK2CUmvD9izHdCjn4mCDnBfeQ665bICT78Zj1v8t5wFYtOOXjeqC0X85Df6kA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz71/q5PWHk6VEfaEtMMdc0kvaWYtHhMS0RP9WDnZurGpBZToXh
+	vJfadBCmp7OE9t4u1RFMKNco6ml+awU/2/lYB8k/VoYOE5B63Y4WEqC8yRJbdTGBZ2fD85n6fsv
+	rRRQEBg==
+X-Received: from plpn4.prod.google.com ([2002:a17:902:9684:b0:2cc:8aff:d1e5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:248c:b0:2ca:11af:5ee9
+ with SMTP id d9443c01a7336-2ccbf0515c7mr46279875ad.25.1783459536408; Tue, 07
+ Jul 2026 14:25:36 -0700 (PDT)
+Date: Tue, 7 Jul 2026 14:25:35 -0700
+In-Reply-To: <20260625212001.3B6561F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260630222607.497895-1-seanjc@google.com> <ebce06ba-9d7f-43ef-9b3f-aa858348fd06@amd.com>
-Message-ID: <ak1tthJaCZyQOvlG@google.com>
-Subject: Re: [PATCH v3 00/12] KVM: SEV: Fix RMP #PF due to freeing in-use VMSA
+References: <86078441-92eb-4461-b823-7d3539ac5859@mail.kernel.org> <20260625212001.3B6561F000E9@smtp.kernel.org>
+Message-ID: <ak1uzySYz-i1EImO@google.com>
+Subject: Re: [PATCH v2] KVM: x86: Exempt in-kernel PIC from "disappearing"
+ interrupt warning
 From: Sean Christopherson <seanjc@google.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
-	Michael Roth <michael.roth@amd.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: syzbot <syzbot@kernel.org>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jul 07, 2026, Tom Lendacky wrote:
-> On 6/30/26 17:25, Sean Christopherson wrote:
-> > Rework KVM's handling of guest-provided (and always guest_memfd-backed) VMSAs
-> > to forcefully reclaim VMSA pages when the pages are being freed from their
-> > backing gmem instance, e.g. in response to PUNCH_HOLE.  In the worst case
-> > scenario, marking the page SHARED in the RMP will fail due to the page being
-> > IN_USE, ultimately leading to RMP #PF violations due to guest_memfd freeing
-> > the memory back to the kernel while it's still assigned to a VM.
-> > 
-> > Note, the implementation nearly identical to that used by KVM for VMX's APIC
-> > access page (which isn't guest controlled, but is migratable and whose PA is
-> > shoved directly into a vCPU control structure).
+On Thu, Jun 25, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> [ ... ]
+> > @@ -10857,7 +10857,9 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
+> >  		if (r) {
+> >  			int irq = kvm_cpu_get_interrupt(vcpu);
+> >  
+> > -			if (!WARN_ON_ONCE(irq == -1)) {
+> > +			WARN_ON_ONCE(irq == -1 && !pic_in_kernel(vcpu->kvm));
 > 
-> Looks good. If you wanted, you could replace some of those quick
-> mutex_lock()/mutex_unlock() and write_lock()/write_unlock() calls with
-> scoped guards, e.g. in patch #8:
+> [Severity: Medium]
+> Does this inadvertently suppress the warning for APIC bugs in the default
+> full-irqchip mode?
 > 
-> 	scoped_guard(write_lock, &kvm->mmu_lock)
-> 		__kvm_mmu_zap_all_fast_front_half(kvm);
+> Since pic_in_kernel() evaluates to true when the in-kernel PIC is present,
+> checking !pic_in_kernel() disables the warning entirely for all interrupt
+> sources in that configuration. This appears to contradict the commit message
+> intent of preserving the warning for other sources like the APIC.
+> 
+> [Severity: High]
+> This is a pre-existing issue, but can a malicious guest still trigger this
+> warning when KVM is configured with a split irqchip and Xen emulation is
+> enabled?
 
-How do (KVM x86) people feel in general about scoped_guard()?  I love the "regular"
-guard(), but for the most part I dislike scoped_guard(), as I find it (slightly)
-harder to read than "raw" lock/unlock() calls.  I think because I mentally think
-of anything like this:
+Argh, yes.  
 
-	blah() {
-		foo();
-	}
+> If a guest concurrently toggles its evtchn_upcall_pending flag in memory
+> while the host executes the event injection loop, it seems this path is
+> directly reachable. 
 
-as being a control-flow statement of some kind, i.e. code that is conditionally
-executed.  So outside of flows where the benefits of the cleanup behavior are a
-clear win, I prefer doing manual lock/unlock.
+Even more coarsely, userspace could disable Xen event stuff entirely via
+KVM_XEN_HVM_CONFIG.  The easiest fix would be to condition the WARN on
+!IS_ENABLED(CONFIG_KVM_XEN).  We could track if the VM has ever used Xen
+emulation, but I don't think that's worth doing given that many deployments can
+and should disable Xen emulation.
+
+The other annoying issue is that vmx_check_nested_events() has the same flaw.
+And I definitely don't want to toss that WARN either, because it recently found
+a real bug that actually matters.
+
+I'll send a v2 in the near-ish future to weed out CONFIG_KVM_XEN, and fix the
+nVMX case as well, hopefully without having to duplicate too much code.
