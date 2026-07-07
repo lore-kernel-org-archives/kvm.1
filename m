@@ -1,87 +1,132 @@
-Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4183710F0;
-	Tue,  7 Jul 2026 00:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CE01684BE
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 00:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783382522; cv=none; b=A5zuE7DoDRYr4j6gKN9jpm5EKt2LMjsudqNUUqGvEA3XD4FTJF54K1TChv6RojQOgQnpCJa8ryox2rIBzu5Lqcir/l5bbE9pl9VDEs3yR8J2nMY8oNqXRO+ZYwA52A/dvMe5hJ7/RDSWUPF16fB8JeKtaNwfBShoVY7c0pS/AYc=
+	t=1783383919; cv=none; b=mgERfa6HcNbgM1nMff7kfI1+v8Kd4e08J0FJ/4/1CW25S9Hl/huTEqrTxizjLhQA/XXw8E4x1hNTSAymNwyeaRNQwGcBCqInpDiN9IC0ENX5UaCW67DxCF6DtFvNcknmMGQpGBmhklK6VNT6n/y4iUuPqhxYZFX/Fmtd+MUzodo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783382522; c=relaxed/simple;
-	bh=AUjwQNUAEke7+mDDESKcFQnVghtxt8J15YiaN83WwRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nWvwAW92HG783K8ayL4uWwE8pJ9zbxWJzUsNeTbNryrUThoSsnab5zXimo3Xfv8uLtji49L3elJPzTe8TdHicBPfs7hmAXwl1vQ4IIa0EEuGCq5sPg7O8eZbYWM8LlNY2Of7X5TifAKg2T9EFBXR8/UHZ0ljS5s3ipAFaAHdV8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09217609|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.0907494-0.00638481-0.902866;FP=7830629193968006575|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037021217;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iEsDrXC_1783382515;
-Received: from 172.18.22.107(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEsDrXC_1783382515 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Jul 2026 08:01:56 +0800
-Message-ID: <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net>
-Date: Tue, 7 Jul 2026 08:01:53 +0800
+	s=arc-20240116; t=1783383919; c=relaxed/simple;
+	bh=7x/R57qudJvKK/D5Vz7Hi1BoiQPVT6Eb3LFhPmwn7/k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BIPt4Zu7/87xI7jNdMgYZ4gd7IvTkALYMrWtZE9MQ2hTYHoAQyIRFtXvnhuoplkS0GbWSQAm0T5K5EnbZJ49NPdCfeH+1gX5fcpknKMbd1N2Dtia4Mu6yPzu7n9zLaBScEktLpGU3qWxSxY7Y1LOh5X4me0/GMppUn0oXnSqSIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UevzTKaL; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UevzTKaL"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c8018f11fbso45881425ad.3
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 17:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783383918; x=1783988718; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y2tUu5e71+Sget3gJMSknqgMwie3pm4NkHG0E3M9coA=;
+        b=UevzTKaLqFeXEg8KXz9f4gfJ2fi/x6L1C5AIWHVRJy7xeYePfp95tchpb1Z5LnmWP9
+         ptfVoKSviSRTRq0bSktMaertVyi/rergZQR1vW0M6NfF0iLdPn7x4VzxutD6DBdNMQno
+         wL8bBkxDA4Hf4i8YlN+5FmvGf7dsysHKhXglM/JiXcpLPgKrqQ+dr2AGGQfon6cKoj1t
+         i7wRYBWxFqumr2gPvtvMlBflMWLCJDVAqbypHr2LfLJdN09oLwYVDHQUhpWmBotR+knh
+         jpIerBf+sQoaggQAvdGCNbZ57LT5HJE3GjG0czflvwUujWfxNIpVXBPinj0xLtAwG59R
+         aqtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783383918; x=1783988718;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y2tUu5e71+Sget3gJMSknqgMwie3pm4NkHG0E3M9coA=;
+        b=nigt5RYDPHLSODI9jroRZeQ6q+KxkmQvCZCNjnmDsgbE0XTZnuvzal1IrvgnkBSNMh
+         hV1bctylQYjfWu+mlIx2i6fq2/bUGzsZqgpvmBWwZCko6faFt/JfD7zIpqJylmsoq+st
+         Y5MIy12ObRdLG4kXk1syoFoJrB84mb/YMw9RchqhoBunE9Ea7Jb4m7JKLyODA2gscpuW
+         TGToPGk96Fjb+s4Prd2DKNQ7oUKlIEynYbqdVq8IdSlaj3ZsmkDEzTnUgDCg2H/QJxjW
+         9m280PuxrgFaBp4CqZw3vnZ/Y4iS6Vw3M6YPPj5oll3NDx02iy6jXIsd/YLdEpGxqnoq
+         TvTg==
+X-Gm-Message-State: AOJu0Yw8s5WCvjkmnTgle7XSv4xH3XbOYlxQ3nx5aV0/ZC4bhXurZwbu
+	/HSPSQW79lXkbN9ZNBHkGYPO5iB6ItOhnMjer4X5uvK/rvKp9cN01RPlhhhfIHnMVOcXCi7MiUs
+	3PN2rGQ==
+X-Received: from plq4.prod.google.com ([2002:a17:903:2f84:b0:2cc:73ae:7d4c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce01:b0:2ca:52ce:6f91
+ with SMTP id d9443c01a7336-2ccbf056a99mr33058945ad.27.1783383917478; Mon, 06
+ Jul 2026 17:25:17 -0700 (PDT)
+Date: Mon, 6 Jul 2026 17:25:16 -0700
+In-Reply-To: <b9e2c377a21a53329cd70ac48309981957814686.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
-To: mlevitsk@redhat.com, Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
- <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
- <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-8-rick.p.edgecombe@intel.com> <akw-dgBE_dycts0o@google.com>
+ <b9e2c377a21a53329cd70ac48309981957814686.camel@intel.com>
+Message-ID: <akxHbKbMyF7PZ0Av@google.com>
+Subject: Re: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
+ control structures
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
+	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 7/7/2026 6:10 AM, mlevitsk@redhat.com wrote:
-> On Tue, 2026-06-30 at 08:52 -0700, Jim Mattson wrote:
->> On Mon, Jun 29, 2026 at 5:57 AM Tina Zhang <zhang_wei@open-hieco.net> wrote:
->>>
->>> The SVM DecodeAssists feature is reported in CPUID
->>> Fn8000_000A_EDX[7].  When available, hardware provides the length and bytes
->>> of the intercepted instruction in the VMCB, allowing a hypervisor to consume
->>> the decode information directly instead of re-decoding the instruction in
->>> software on relevant VM-Exit paths.
->>
->> DecodeAssists actually comprises four components:
->> * GPR number in EXITINFO1 for MOV-CR and MOV-DR VM-exits
->> * Software interrupt number in EXITINFO1 for INTn VM-exits
->> * Linear address in EXITINFO1 for INVLPG[A] VM-exits
->> * Guest instruction bytes and length in the VMCB for #NPF and #PF VM-exits
->>
->> You only partially address the last component.
->>
-> Yes, and I also remember when I implemented some of the optional SVM features,
-> I decided not to implement this, also because of the same reason - pass-through
-> is easy but for all the emulated VM exits, it can be tricky to get that right.
-Thanks Jim and Maxim for the comments.
-
-Yes, that makes sense. This version only covers part of DecodeAssists. I 
-didn't think enough about the other DecodeAssists pieces or the 
-software-emulated/synthetic exit paths.
-
-Since this patch advertises DecodeAssists to L1, L1 should get a 
-reasonably complete and architecturally consistent view of the feature.
-
-I will take another look for the next version and try to handle the 
-remaining pieces properly, while also making sure we don't expose stale 
-or incorrectly synthesized decode-assist state for emulated exits.
-
-Thanks,
-Tina
-
+On Mon, Jul 06, 2026, Rick P Edgecombe wrote:
+> On Mon, 2026-07-06 at 16:47 -0700, Sean Christopherson wrote:
+> > On Mon, May 25, 2026, Rick Edgecombe wrote:
+> > > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> > > 
+> > > Use control page helpers for allocating and freeing TD control structures,
+> > > such these operations can work for Dynamic PAMT.
+> > > 
+> > > The TDX module tracks some state for each page of physical memory that it
+> > > might use. It calls this state the PAMT. It includes separate state for
+> > > each page size a physical page could be utilized at within the TDX module
+> > > (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
+> > > allocated dynamically. So the kernel must install PAMT backing for each 4KB
+> > > page before gifting it to the TDX module, and tear it down after the page
+> > > is reclaimed.
+> > > 
+> > > TD-scoped control pages (TDR, TDCS) and vCPU-scoped control pages (TDVPR,
+> > > TDCX) are all handed to the TDX module at 4KB page size and are therefore
+> > > subject to this requirement. Replace the raw alloc_page()/__free_page()
+> > > calls for these pages with tdx_alloc/free_control_page().
+> > > 
+> > > Switching between special Dynamic PAMT operations or normal page
+> > > alloc/free operations is handled internally in
+> > > tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
+> > > calls. Just call them unconditionally. Similarly, drop the NULL checks
+> > > before freeing, as tdx_free_control_page() handles NULL internally.
+> > > 
+> > > No functional change intended when Dynamic PAMT is not in use.
+> > > 
+> > > Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
+> > 
+> > Exactly what assistance was given, and when?  I certainly didn't use any of these
+> > tools, and given that Claude Opus 4.6 was released after I posted the v5 RFC, I
+> > doubt Kirill did either.
 > 
-> Best regards,
-> 	Maxim Levitsky
+> On this patch specifically, lots of "review this patch" type experiments IIRC.
+> Probably mostly around the log.
+> 
+> > 
+> > And in my strong opinion, even if AI tooling was used to rebase the patches, I
+> > don't think that level of "assistance" should be presented this way.  E.g. I would
+> > rather a more informal:
+> > 
+> >   [ Rick: enhance log, rebase with help from AI tooling]
+> > 
+> > Because unless I'm missing something, claiming that AI was used to write the patch
+> > is misleading and disingenuous.
+> 
+> Yea, I was just trying to follow the policy. It seems things are swinging the
+> other way now. This works.
 
+FWIW, my read of the official policy, even before any change in direction, is that
+it only applies to using AI to write code.  It's not like we given any credit in
+the patch itself when changes are made in response to code review from human.
