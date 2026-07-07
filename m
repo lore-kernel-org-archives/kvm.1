@@ -1,63 +1,63 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B593D75A4
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE234CFC7
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783464193; cv=none; b=QlhL5/9hrDxwICwrTSdLoJ7pCsE6m2YgtyWSA9G+4Q3tFq8+JOierLgay3LMQtBiS4EhfnIpiGzVFy2uKgfL47QjMAHPhtUhXgT4/UVgcP3a9qQz2RsRz7NtvtrRBYpM/rgxGF7Xkj6tWQbNuYwOrpXfTKoYExE/fAeelwOa/3c=
+	t=1783464196; cv=none; b=e3xNQDZoBHf+bWbfqR337zgfNvkyhF3oYLrXBZn+BG0rFNad8N39Q/4+SIlP3JtGT/jRicHGTGfmwyeI39yjKjjmrrSozeE/hXH8xwujsXoB9UgWmkZZIwT0KWyOTFv3ILCW4XvLhq5QBBcxn69BVtGSlnPAfJKwFirwROvhhYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783464193; c=relaxed/simple;
-	bh=zdo2FSNaa6GkSlArryovoyDKM7Qh9SnEPuHj9pTH8Jc=;
+	s=arc-20240116; t=1783464196; c=relaxed/simple;
+	bh=YzvWm8B9TGMeWW1VahTVcmUsbugo63tSUlDz+c90MFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NounRN7+mY2uJa1sR2X7YHbol+tFs5VsV2Rcyy6XRF1z5gPaGgW6vFwjNqdnQI8fwPkPyxWjqQ9ywgmvyCEY18aS1ejlzC0ZrF7IfWTSoOwZFiBjh7McO7FzXeX4OyYx8sTyqtF4VxQ9I6+9BYOZoZEgi3pb1wO4fiksXiHRlps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a5LxBuwH; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=BQsGqXnl2hd4kH5fKsNSo1DRYWzh1f5WTOmd7hvmz3VeWxXxU1JBOc2/7xt3r1SzFSnurzzY7by8wYsmv1GRIAOaCFaxBlDvCYkSU6sK/x0HJvnZKZHGQJxKd0XsqqnpAlH9aeGKbg8wSRI3GVFnSZjoKpWBFCsveA/ZfrIhBrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GPYoInU6; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a5LxBuwH"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cac59f8b64so1078295ad.0
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GPYoInU6"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cad8076b01so949665ad.2
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783464191; x=1784068991; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1783464194; x=1784068994; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=F62mc8Tl1Cc4gPDKV45QBXhrquRdA4ftBDpPYYJztPY=;
-        b=a5LxBuwHfM2W726rGCKrcDUAb+4L6DJnt/fiqo+xr2+ToL1KgmcErtrBagaYCTuIu8
-         Tgdk8NxCFdBup9Z0zBv65eu59osbuYtPSAQ7i+l5R//NdElCYdLnFiJpaSh+buH9JGj4
-         a2typMqgqaC/N0fj55WhKEpT/E3wpfRvhfY9hau+gR5Ea5qzvuF2NMKJ4PAoprZNwtQ6
-         CDosAa7Y+jfBSOXoar9ivOnEY6vYng1P3puYlBcF+f9OMyJsUAGGG+UDw5XyvbMuMTjn
-         pMcefL6vuIpVcpfXS1BtKsHn/mA+B3Z455qVqGx7rUGeLgTSI0a56wDUGzsPOVfJHCeh
-         zyFg==
+         :message-id:reply-to;
+        bh=R71DJ1s0zDCfKOKIafJMIMtfyKJnrf0v9yatLVZyeqA=;
+        b=GPYoInU65pxEpRsGtXDSYNVozOqxNHfGrObb4Jxev/0OCK/eibO6FVYqgVqIazve0n
+         VzHC6Pv3j4WUcEZBW0YxUR7dZdMdkzgTF9BkCofLfLRK6RCxh2D8LKN2MOdZ5BYYHZ+J
+         WJwrmUlebXHEv4Ep0qD5ekKyAcX8biPJ7wrsnQB2D4g5BzwlepjvqUUYlQwImN6/KhlZ
+         OGT81jhlv6/bOn70wgC8n86WivWxBUjAvbD7Oo2tIXV1xfZUmC4NWoM7vjyMVTqjFHWt
+         UNSQ3ZLWPYBHDaJdR+96fDSsDXFZvj+rt+KM8sAxQ6aX29XMyWGxeRCzZ5LCUaiSdz9l
+         cpog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783464191; x=1784068991;
+        d=1e100.net; s=20251104; t=1783464194; x=1784068994;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=F62mc8Tl1Cc4gPDKV45QBXhrquRdA4ftBDpPYYJztPY=;
-        b=W/cC52bJj18oNnc2vl9JSz3NNcl+hzg0O2cKvRpZdk/DjT2EmB3xM+pSwHIFkSYOly
-         pwXX4eMl0cbZ2NlcB138wKsHOQvkk8nA96Tll2nGa7IX/baowMmIbgyGOCHVS9y2xyiR
-         fRT0NG1mF893z9B82E/ZaERr9K3UABIJls05uu20VxVq5iZ3yknZGRVOIItunKo8NS54
-         bnPa5mNUGAvNDpe6zdd9Rrkd/B3R/o6Jsu+O9maE5MaOznkvthQ+wdY5DyzmNLEy3uf0
-         uZHn9fSji+zwNo9AAptV93Z0e/Sxv6GDkYJZ9clFrmQ9D1QI3nD8pEUjMDcQDkJCG4Ad
-         bhSQ==
-X-Forwarded-Encrypted: i=1; AHgh+Roy9HS0rVdeBRgWBK3frhQPphisbgywMJpYq8Dc+J5QakY+ORd3+yOa+KXis2Q2u2dAeYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2eMduNZ3rVA4kKg0tna5/q96HcYQ4wS8GPDyq37lt7DhzobVh
-	5PihLlHsq1y2DKf5AyD4/uy01/L270aVMZQ2bkOKHh71IXAWEaMfTXtSmCUlmBBJ63g=
-X-Gm-Gg: AfdE7cnuWvij9NSDbCsXeCsjTnKCDA5/ySiS1Oif47J1iAXHPo5LgeX4AJlZxXv27cX
-	b5w5JUldXJXgyP6zSrYlAEV3wTsmw5dZfTO3242dCdz/ZmUogeCBIw6rqWFc/ScKc6I+SKPlzJD
-	UUGLGR86zGjB64qh5ypOs0RRnyoY5CtCsjCcSSwRN17fMCmbianhYsZ58FmaVrI7qMigt6xSF0M
-	QzmnIVVEyFRCa14MUPXt5a/JhgcbZVdlLaS+J9cTeLvGi1h4NnSL5x/4wR/WFeTfYoKNsN9dNsF
-	TotObsJJi1swr/+LNvJAH18+BBzVz75wy4u2I6DwPcXYL7V5fH9lUC26lwgkrtLL92r8JL439uP
-	n42TeEnCg01yqZG0qkWO2t6kUA4RHTme8qRu6+gJBK7NrcZ6qTxyD//uJ8f/yC1ENqbhwP/8pt6
-	jUpmUgqisGzJN7dPadohAiXCWQ2D972MU8lVt8gOM=
-X-Received: by 2002:a17:903:3c2e:b0:2c9:97a8:afe8 with SMTP id d9443c01a7336-2ccbf087de6mr67975145ad.43.1783464191172;
-        Tue, 07 Jul 2026 15:43:11 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to;
+        bh=R71DJ1s0zDCfKOKIafJMIMtfyKJnrf0v9yatLVZyeqA=;
+        b=OE+BK+eQtZskhnneCKVX5aS3/GKkx9XdLJFyi9ZVUGvn4Zx5ucaB++EPWK4cS3ZzNH
+         xul8SVx94BeaKNe38cet1g+LFY5EQYvcbpE5IJnQB5aDc9yo1Exc2R/k8PY1QQJEKSaQ
+         ijzZydGewU9otTSzHcCLyZFa2n7xBqPYZk7yM/vMT0m7TRlq6m5wmhWXjsSZxikZ//Ac
+         +659D5PVmIYwpz079EADOzPum+lhL5UT25yDt4KRsjAI7SgVTWGaALEypdKNpgonnNm7
+         atTm9Rz+O5k9k6SwBz3NYzCJmDC5OrZ9k+FKxNcWcDfMQyq4DZnXVPNEvt67mNIsBeGu
+         dkLQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrIg1HRjMynswhtfyBIaVQTjOaNxB4wy9tGJogtHr7D2VWAwlIt3nNBD0jW0aYvS7ani1s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsEA7yK3S5sb9oPXJW+WVP2ltv1rWUZAdc2H8wGFMmQ7YITecj
+	brvBywc0EpCne6bqv/DTqqefW9RurcIKJgaNSDmvKXNXpgtJ0Aes1n0LyNzM/lW9VSo=
+X-Gm-Gg: AfdE7cnJjGy4KbHHDahtMRwZWI0K3aBi0yXfl4HqeDlgqwiOaVBZY86AHqfZblHIvGk
+	pGKMJqnVz3G7R8ueKPv6qEI+CJ0uqeT2ve3pNIN2z7vc/K8pc+ly7ERbeqPjgCXO6F+Ysc8iX63
+	bSNrLyijpcY+wfEDEbF2agOoBAsm3rtkcjfivrNuW2oZ+8hKL3jWK71Cs4zh747i0bEjrqySBcW
+	sFZWsL5u3ptAofMAj4wvXpSiF8HsrwxIPtyjUeLdcE4ASDGHZ6jEzrPSL08J6Nvz7bQ9gj1UIhH
+	RBqGsjQ1ng8tyubNRX3lcQedKYi8rtlPAivVHfdk3YJ9T82GyzQzB1jLztNYSnmjB5YNYTPETpI
+	DHB8AjVpOJl9YZZ0DedtBV/TGZHn5g7r9jdkkIjSmEdWz3n7QGaeagf37RaciPG4Kp3d3ElfzWP
+	MKrXmgbPgPEndw2Vt8k4lKzGG1txrEqIM6P/kRZR8=
+X-Received: by 2002:a17:902:d4d1:b0:2cc:d192:50b5 with SMTP id d9443c01a7336-2ccd19251e8mr33153885ad.34.1783464194073;
+        Tue, 07 Jul 2026 15:43:14 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:46c8:dda7:40fa:8958])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.09
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 15:43:10 -0700 (PDT)
+        Tue, 07 Jul 2026 15:43:12 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v1 01/25] linux-headers: Add RME related definitions
-Date: Tue,  7 Jul 2026 16:42:42 -0600
-Message-ID: <20260707224306.1202330-2-mathieu.poirier@linaro.org>
+Subject: [RFC v1 02/25] target/arm/kvm: Return immediately on error in kvm_arch_init()
+Date: Tue,  7 Jul 2026 16:42:43 -0600
+Message-ID: <20260707224306.1202330-3-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
@@ -89,83 +89,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-This is a temporary patch intended for testing purposes only. It provides
-definitions related to supporting Realms by the QEMU-VMM.
+Returning an error to kvm_init() is fatal anyway, no need to continue
+the initialization.
+
+Leave the `ret` variable in the function scope because it will be reused
+when adding RME support.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- linux-headers/asm-arm64/kvm.h |  9 +++++++++
- linux-headers/linux/kvm.h     | 21 +++++++++++++++++----
- 2 files changed, 26 insertions(+), 4 deletions(-)
+ target/arm/kvm.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
-index 6aefe7973814..4c08631ec7d2 100644
---- a/linux-headers/asm-arm64/kvm.h
-+++ b/linux-headers/asm-arm64/kvm.h
-@@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
- 	__u64 reserved;
- };
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index d40a6a985914..ed99be7fd80c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -596,7 +596,7 @@ int kvm_arch_get_default_type(MachineState *ms)
  
-+#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
-+struct kvm_arm_rmi_populate {
-+	__u64 base;
-+	__u64 size;
-+	__u64 source_uaddr;
-+	__u32 flags;
-+	__u32 reserved;
-+};
-+
- #define KVM_ARM_TAGS_TO_GUEST		0
- #define KVM_ARM_TAGS_FROM_GUEST		1
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+-    int ret = 0;
++    int ret;
+     /* For ARM interrupt delivery is always asynchronous,
+      * whether we are using an in-kernel VGIC or not.
+      */
+@@ -618,7 +618,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
+         error_report("Using more than 256 vcpus requires a host kernel "
+                      "with KVM_CAP_ARM_IRQ_LINE_LAYOUT_2");
+-        ret = -EINVAL;
++        return -EINVAL;
+     }
  
-diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-index 50e87ed72c20..dae6e5ba8457 100644
---- a/linux-headers/linux/kvm.h
-+++ b/linux-headers/linux/kvm.h
-@@ -685,11 +685,21 @@ struct kvm_enable_cap {
- #define KVM_S390_SIE_PAGE_OFFSET 1
+     if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
+@@ -640,13 +640,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+             warn_report("Eager Page Split support not available");
+         } else if (!(s->kvm_eager_split_size & sizes)) {
+             error_report("Eager Page Split requested chunk size not valid");
+-            ret = -EINVAL;
++            return -EINVAL;
+         } else {
+             ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
+                                     s->kvm_eager_split_size);
+             if (ret < 0) {
+                 error_report("Enabling of Eager Page Split failed: %s",
+                              strerror(-ret));
++                return ret;
+             }
+         }
+     }
+@@ -659,7 +660,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+     hw_breakpoints = g_array_sized_new(true, true,
+                                        sizeof(HWBreakpoint), max_hw_bps);
  
- /*
-- * On arm64, machine type can be used to request the physical
-- * address size for the VM. Bits[7-0] are reserved for the guest
-- * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
-- * value 0 implies the default IPA size, 40bits.
-+ * On arm64, machine type can be used to request both the machine type and
-+ * the physical address size for the VM.
-+ *
-+ * Bits[31-30] are reserved for the ARM specific machine type.
-+ *
-+ * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
-+ * For backward compatibility, value 0 implies the default IPA size, 40bits.
-  */
-+#define KVM_VM_TYPE_ARM_SHIFT		30
-+#define KVM_VM_TYPE_ARM_MASK		(0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
-+#define KVM_VM_TYPE_ARM(_type)		\
-+	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
-+#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
-+#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
-+
- #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
- #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
- 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
-@@ -719,6 +729,8 @@ struct kvm_enable_cap {
- #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
- #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
+-    return ret;
++    return 0;
+ }
  
-+#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
-+
- /*
-  * Extension capability list.
-  */
-@@ -985,6 +997,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_S390_USER_OPEREXEC 246
- #define KVM_CAP_S390_KEYOP 247
- #define KVM_CAP_S390_VSIE_ESAMODE 248
-+#define KVM_CAP_ARM_RMI 249
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
+ unsigned long kvm_arch_vcpu_id(CPUState *cpu)
 -- 
 2.43.0
 
