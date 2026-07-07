@@ -1,260 +1,355 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F50A3D8121;
-	Tue,  7 Jul 2026 10:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2D13DFC92
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 10:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783418847; cv=none; b=H8ZdeqagEY4r2xgRainG7UCz4Tm35FZ6iAzs6EmR5GynXCAk2elbRtWZlamF6YX3SIhQsBzOsbfHj9SaSBmSIdnlv1EGj8xLwc9G/96myRm/+ICuikGu7S7Wg2WOOpo03Gvg0dm2vkpC2HqJ5wuMs7vQdiIKSDQA2WoPtEMQWSg=
+	t=1783419643; cv=none; b=n72GI0FMdYSCHP0X5CJePX7uk2OsvzE68mJhp+N2wfrjY2Kddy5rzErNs7n6p/AXcoyTMQ3LU0jUCcoKPmzEmYLY6N7+JTcFl1BkKQvBHARafBVvMCoKzCdqSKd9LWahSYbvs6LZ6xr+vHV3yVQcMBiFYKxekdQOjGeEInm1N8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783418847; c=relaxed/simple;
-	bh=efPPuJBmHOVIcmAa1CJwiO+3EKUgUA53PYhTK93MGSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=o24S6G9JACXCJXlVl+FUZcRc7r4KpnO6KWb3EDmaZhZNnBMHmklrzVMgD7FMm5qcFZnCRTked8gvt7s3/3uh/PfT6n8K/V1f5+lHho45XbmeH2t6kU4GBybFv+uy3yljbL21XWH44N5cEw7zs4Ep7YSAWJIMkAHCLuV1ymTesnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rbe3MZI+; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783419643; c=relaxed/simple;
+	bh=VCE9WS4zG0XYGDT6yveV9PjHBy3Cmcgk0yB8h8VkIU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=MkAj/mXYS54L3bc6HerZxdoZD9KwpPb8HGKKHPCfDI7aQ6VpSf8L8BS+DSm4Qn5Q1wiloY6ya39CnSOEqprdDFMK6P9FO1kbCKP54dADlHv8QgdJUgPZ2TkV1PXz9R5SOHoElkvHQFZrgPQWn/fhEkcpILwR3gj1qxmmJy06P9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=vJW3jw9F; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rbe3MZI+"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 31D5C1691;
-	Tue,  7 Jul 2026 03:07:19 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F65D3F85F;
-	Tue,  7 Jul 2026 03:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783418843; bh=efPPuJBmHOVIcmAa1CJwiO+3EKUgUA53PYhTK93MGSI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbe3MZI++urCP1OCSOL/NfQrdslSkTwiCgeA9Q9anpf+Ns2m6p4JqP36x4i8l1pF5
-	 fb29/Ly4R6dJr8KGLT6MsmCN2M8+HWcEEVpszo+08LPmaT06d5iDmLPqkaq/zbRL69
-	 uVvTAbUBciXqLYBrviuDehD4/e50rUuQUuj3aL1o=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Marc Zyngier <maz@kernel.org>,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	corbet@lwn.net,
-	pbonzini@redhat.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	liuyonglong@huawei.com,
-	Jonathan.Cameron@huawei.com,
-	yezhenyu2@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
-Date: Tue,  7 Jul 2026 11:07:14 +0100
-Message-ID: <akzP0T_Qd9yuZsPI@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <34447d66-8d53-4dc7-82fe-58057f2a5b57@huawei.com>
-References: <20260225040421.2683931-1-zhengtian10@huawei.com> <20260225040421.2683931-4-zhengtian10@huawei.com> <ahzUUDAMoHtDFJD3@inochi.infowork> <864ijmvdpy.wl-maz@kernel.org> <ah1KLrpYBXSMM91H@inochi.infowork> <22abfaf8-8636-4ed3-9a5c-fb4fdef1bc19@huawei.com> <aku1N23Szkta9uA6@LeoBrasDK> <34447d66-8d53-4dc7-82fe-58057f2a5b57@huawei.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="vJW3jw9F"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260707102035euoutp013d6f54c80e9bb9119f758ace6d0da63d~-_rWsYC3I0388203882euoutp01S
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 10:20:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260707102035euoutp013d6f54c80e9bb9119f758ace6d0da63d~-_rWsYC3I0388203882euoutp01S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1783419635;
+	bh=lmb/5Y9eqdFEyGZnoKkjY5KUURxdOJiW/7gAlorWsrg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=vJW3jw9FiZcG7/UHGkwH5JaAnf6ymNATTIxiifa8jlb3yOBOH89Uxh08+r7oDerxK
+	 EsZlhcXiTTGBxrPKV9jqlCOxkEOVuGH7hnN2EzBNjFuPApcWvDHEmCGtwJRVBF100F
+	 URSllvY91M4pWP+UFs1gKAqGZkVKvNvgkBMmLRYg=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707102035eucas1p1c2fe59754f05ce2ac4d33a261d491e9f~-_rWYpPrG2875828758eucas1p16;
+	Tue,  7 Jul 2026 10:20:35 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707102034eusmtip12c241a5a2db256b2323ea93fdaf0bc36~-_rVbfelg1926719267eusmtip14;
+	Tue,  7 Jul 2026 10:20:34 +0000 (GMT)
+Message-ID: <54596eee-191d-4370-a0e1-44b5b7387c3a@samsung.com>
+Date: Tue, 7 Jul 2026 12:20:33 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 17/30] mm: prefer vma_[start,end]_pgoff() to
+ vma->vm_pgoff in kernel/
+To: Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260707102035eucas1p1c2fe59754f05ce2ac4d33a261d491e9f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260629122451eucas1p29aab6e559201e31a45e7051d4a700347
+X-EPHeader: CA
+X-CMS-RootMailID: 20260629122451eucas1p29aab6e559201e31a45e7051d4a700347
+References: <cover.1782735110.git.ljs@kernel.org>
+	<CGME20260629122451eucas1p29aab6e559201e31a45e7051d4a700347@eucas1p2.samsung.com>
+	<ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
 
-On Tue, Jul 07, 2026 at 02:11:23PM +0800, Tian Zheng wrote:
-> 
-> On 7/6/2026 10:01 PM, Leonardo Bras wrote:
-> > On Fri, Jun 05, 2026 at 04:29:49PM +0800, Tian Zheng wrote:
-> > > On 6/1/2026 5:05 PM, Inochi Amaoto wrote:
-> > > > On Mon, Jun 01, 2026 at 09:58:49AM +0100, Marc Zyngier wrote:
-> > > > > On Mon, 01 Jun 2026 01:50:22 +0100,
-> > > > > Inochi Amaoto <inochiama@gmail.com> wrote:
-> > > > > > On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
-> > > > > > > From: eillon <yezhenyu2@huawei.com>
-> > > > > > > 
-> > > > > > > Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
-> > > > > > > indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
-> > > > > > > to notify the user of the feature.
-> > > > > > > 
-> > > > > > > Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
-> > > > > > > ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
-> > > > > > > cannot be determined at KVM initialization, an IOCTL interface is
-> > > > > > > required.
-> > > > > > > 
-> > > > > > > Actually exposing the new capability to user space happens in a later
-> > > > > > > patch.
-> > > > > > > 
-> > > > > > > Signed-off-by: eillon <yezhenyu2@huawei.com>
-> > > > > > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > > > > > > ---
-> > > > > > >    arch/arm64/include/asm/cpufeature.h |  5 +++++
-> > > > > > >    arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
-> > > > > > >    arch/arm64/tools/cpucaps            |  1 +
-> > > > > > >    include/uapi/linux/kvm.h            |  1 +
-> > > > > > >    tools/include/uapi/linux/kvm.h      |  1 +
-> > > > > > >    5 files changed, 20 insertions(+)
-> > > > > > > 
-> > > > > > > diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-> > > > > > > index 4de51f8d92cb..dcc2e2cad5ad 100644
-> > > > > > > --- a/arch/arm64/include/asm/cpufeature.h
-> > > > > > > +++ b/arch/arm64/include/asm/cpufeature.h
-> > > > > > > @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
-> > > > > > >    	return cpus_have_final_cap(ARM64_HAFT);
-> > > > > > >    }
-> > > > > > > 
-> > > > > > > +static inline bool system_supports_hdbss(void)
-> > > > > > > +{
-> > > > > > > +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
-> > > > > > > +}
-> > > > > > > +
-> > > > > > >    static __always_inline bool system_supports_mpam(void)
-> > > > > > >    {
-> > > > > > >    	return alternative_has_cap_unlikely(ARM64_MPAM);
-> > > > > > > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> > > > > > > index c31f8e17732a..348b0afffc3e 100644
-> > > > > > > --- a/arch/arm64/kernel/cpufeature.c
-> > > > > > > +++ b/arch/arm64/kernel/cpufeature.c
-> > > > > > > @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
-> > > > > > >    	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
-> > > > > > >    }
-> > > > > > > 
-> > > > > > > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
-> > > > > > > +{
-> > > > > > > +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
-> > > > > > > +}
-> > > > > > > +
-> > > > > > >    bool cpu_supports_bbml2_noabort(void)
-> > > > > > >    {
-> > > > > > >    	/*
-> > > > > > > @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
-> > > > > > >    		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
-> > > > > > >    	},
-> > > > > > >    #endif
-> > > > > > > +	{
-> > > > > > > +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
-> > > > > > > +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-> > > > > > > +		.capability = ARM64_HAS_HDBSS,
-> > > > > > > +		.matches = has_vhe_hdbss,
-> > > > > > > +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
-> > > > > > > +	},
-> > > > > > >    	{
-> > > > > > >    		.desc = "CRC32 instructions",
-> > > > > > >    		.capability = ARM64_HAS_CRC32,
-> > > > > > > diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-> > > > > > > index 7261553b644b..f6ece5b85532 100644
-> > > > > > > --- a/arch/arm64/tools/cpucaps
-> > > > > > > +++ b/arch/arm64/tools/cpucaps
-> > > > > > > @@ -68,6 +68,7 @@ HAS_VA52
-> > > > > > >    HAS_VIRT_HOST_EXTN
-> > > > > > >    HAS_WFXT
-> > > > > > >    HAS_XNX
-> > > > > > > +HAS_HDBSS
-> > > > > > >    HAFT
-> > > > > > >    HW_DBM
-> > > > > > >    KVM_HVHE
-> > > > > > > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > > > > > > index 65500f5db379..15ee42cdbd51 100644
-> > > > > > > --- a/include/uapi/linux/kvm.h
-> > > > > > > +++ b/include/uapi/linux/kvm.h
-> > > > > > > @@ -985,6 +985,7 @@ struct kvm_enable_cap {
-> > > > > > >    #define KVM_CAP_ARM_SEA_TO_USER 245
-> > > > > > >    #define KVM_CAP_S390_USER_OPEREXEC 246
-> > > > > > >    #define KVM_CAP_S390_KEYOP 247
-> > > > > > > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
-> > > > > > > 
-> > > > > > >    struct kvm_irq_routing_irqchip {
-> > > > > > >    	__u32 irqchip;
-> > > > > > > diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-> > > > > > > index dddb781b0507..93e0a1e14dc7 100644
-> > > > > > > --- a/tools/include/uapi/linux/kvm.h
-> > > > > > > +++ b/tools/include/uapi/linux/kvm.h
-> > > > > > > @@ -974,6 +974,7 @@ struct kvm_enable_cap {
-> > > > > > >    #define KVM_CAP_GUEST_MEMFD_FLAGS 244
-> > > > > > >    #define KVM_CAP_ARM_SEA_TO_USER 245
-> > > > > > >    #define KVM_CAP_S390_USER_OPEREXEC 246
-> > > > > > > +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
-> > > > > > > 
-> > > > > > >    struct kvm_irq_routing_irqchip {
-> > > > > > >    	__u32 irqchip;
-> > > > > > > --
-> > > > > > > 2.33.0
-> > > > > > > 
-> > > > > > Instead of having these architecture specific capability, I wonder if
-> > > > > > we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
-> > > > > > other architecture supports similar things can reuse this capability,
-> > > > > What of the existing stuff doing the same thing? x86's PML, to start
-> > > > > with?
-> > > > > 
-> > > > In fact I think the HDBSS is the first one with non-fixed size.
-> > > > Although there is a in process RISC-V extension for it, there will
-> > > > be a long story to make it ratified.
-> > > > 
-> > > > > > For this generic thing I suggest, the getter returns the max support
-> > > > > > entry count (or the buffer size) it supports like the dirty ring
-> > > > > > capability. And the setter just let the architecture set the parameters
-> > > > > > based on the user request.
-> > > > > This looks wrong on a number of levels.
-> > > > > 
-> > > > > - If you want something generic, there is the existing dirty
-> > > > >     log/bitmap. How this stuff is populated is none of the user's
-> > > > >     business (trapping write accesses, dirty bit collection from the
-> > > > >     PTs, or HW-generated log), and we don't need an extra feature for
-> > > > >     it. Performance will obviously suck, but that's what you pay for
-> > > > >     something abstracted and cross-architecture.
-> > > > > 
-> > > > > - If you want something architecture specific, then it can't be
-> > > > >     generic, by definition. You get the raw speed and compatibility with
-> > > > >     other arch-specific extensions.
-> > > > > 
-> > > > OK, I agree, it is better to keep this thing arch-specific. Doing a
-> > > > generic thing does not benefit too much, I have made a mistake on
-> > > > it. Thanks for your kindly explanation.
-> > > 
-> > > Awesome. Thanks for the review.
-> > > 
-> > > I agree with Marc—keeping this ARM-specific is the right approach.
-> > > Also, in v4 we're removing the ioctl interface entirely. HDBSS will be
-> > > auto-enabled during migration setup and auto-disabled when migration
-> > > completes, so the capability naming issue becomes moot.
-> > > 
-> > > I plan to post v4 with the updated approach soon.
-> > Hi Tian,
-> > 
-> > Any updates in the v4?
-> > Please let me know if you want help in any kind, in regards to this
-> > patchset.
-> > 
-> > Thanks!
-> > Leo
-> Hi Leo,
-> 
-> Thanks for the follow-up. I've finished polishing v4 and am doing one last
-> internal review.
-> 
-> In this version, I've also aligned with the latest HACDBS v2 implementation
-> you shared—e.g.,
-> auto-inserting KVM_PGTABLE_S2_DBM into pgt->flags during
-> kvm_init_stage2_mmu.
-> 
-> One note: dirty ring mode is not yet supported in v4—the series currently
-> focuses on the
-> dirty bitmap mode. I'll explicitly call this out in the commit messages
-> (including that
-> KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE and related dirty ring components are
-> omitted) to avoid
-> any confusion during review.
-> 
-> I plan to send v4 out later this week.
-> 
-> Thanks,
-> Tian
+On 29.06.2026 14:23, Lorenzo Stoakes wrote:
+> Be consistent in using vma_start_pgoff() and vma_end_pgoff(), which clearly
+> indicates which part of the VMA the page offset refers to and aids
+> greppability.
+>
+> This is part of a broader series laying the ground to provide a virtual
+> page offset for MAP_PRIVATE-file backed anon folios.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  kernel/dma/coherent.c      |  7 ++++---
+>  kernel/dma/direct.c        |  6 ++++--
+>  kernel/dma/mapping.c       |  8 +++++---
+>  kernel/dma/ops_helpers.c   |  4 ++--
 
-Hi Tian,
 
-Awesome! Thanks for letting me know!
-Leo
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com> # for kernel/dma
+
+
+>  kernel/events/core.c       | 20 +++++++++++---------
+>  kernel/events/uprobes.c    | 11 +++++++----
+>  kernel/kcov.c              |  2 +-
+>  kernel/trace/ring_buffer.c |  3 ++-
+>  8 files changed, 36 insertions(+), 25 deletions(-)
+>
+> diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+> index bcdc0f76d2e8..2d3195eb7e83 100644
+> --- a/kernel/dma/coherent.c
+> +++ b/kernel/dma/coherent.c
+> @@ -236,14 +236,15 @@ static int __dma_mmap_from_coherent(struct dma_coherent_mem *mem,
+>  {
+>  	if (mem && vaddr >= mem->virt_base && vaddr + size <=
+>  		   (mem->virt_base + ((dma_addr_t)mem->size << PAGE_SHIFT))) {
+> -		unsigned long off = vma->vm_pgoff;
+> +		const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +		const pgoff_t pgoff_end = vma_end_pgoff(vma);
+>  		int start = (vaddr - mem->virt_base) >> PAGE_SHIFT;
+>  		unsigned long user_count = vma_pages(vma);
+>  		int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  
+>  		*ret = -ENXIO;
+> -		if (off < count && user_count <= count - off) {
+> -			unsigned long pfn = mem->pfn_base + start + off;
+> +		if (pgoff_start < count && pgoff_end <= count) {
+> +			unsigned long pfn = mem->pfn_base + start + pgoff_start;
+>  			*ret = remap_pfn_range(vma, vma->vm_start, pfn,
+>  					       user_count << PAGE_SHIFT,
+>  					       vma->vm_page_prot);
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 4391b797d4db..436310d6e4a2 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -534,6 +534,8 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+>  	unsigned long user_count = vma_pages(vma);
+>  	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  	unsigned long pfn = PHYS_PFN(dma_to_phys(dev, dma_addr));
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
+>  	int ret = -ENXIO;
+>  
+>  	vma->vm_page_prot = dma_pgprot(dev, vma->vm_page_prot, attrs);
+> @@ -545,9 +547,9 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+>  	if (dma_mmap_from_global_coherent(vma, cpu_addr, size, &ret))
+>  		return ret;
+>  
+> -	if (vma->vm_pgoff >= count || user_count > count - vma->vm_pgoff)
+> +	if (pgoff_start >= count || pgoff_end > count)
+>  		return -ENXIO;
+> -	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
+> +	return remap_pfn_range(vma, vma->vm_start, pfn + pgoff_start,
+>  			user_count << PAGE_SHIFT, vma->vm_page_prot);
+>  }
+>  
+> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+> index 4fe04669e5e6..c986639044e9 100644
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -761,12 +761,14 @@ EXPORT_SYMBOL_GPL(dma_free_pages);
+>  int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
+>  		size_t size, struct page *page)
+>  {
+> -	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
+> +	const unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  
+> -	if (vma->vm_pgoff >= count || vma_pages(vma) > count - vma->vm_pgoff)
+> +	if (pgoff_start >= count || pgoff_end > count)
+>  		return -ENXIO;
+>  	return remap_pfn_range(vma, vma->vm_start,
+> -			       page_to_pfn(page) + vma->vm_pgoff,
+> +			       page_to_pfn(page) + pgoff_start,
+>  			       vma_pages(vma) << PAGE_SHIFT, vma->vm_page_prot);
+>  }
+>  EXPORT_SYMBOL_GPL(dma_mmap_pages);
+> diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
+> index 20caf9cabf69..6b5f9208d31c 100644
+> --- a/kernel/dma/ops_helpers.c
+> +++ b/kernel/dma/ops_helpers.c
+> @@ -39,7 +39,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+>  #ifdef CONFIG_MMU
+>  	unsigned long user_count = vma_pages(vma);
+>  	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> -	unsigned long off = vma->vm_pgoff;
+> +	unsigned long off = vma_start_pgoff(vma);
+>  	struct page *page = dma_common_vaddr_to_page(cpu_addr);
+>  	int ret = -ENXIO;
+>  
+> @@ -52,7 +52,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+>  		return -ENXIO;
+>  
+>  	return remap_pfn_range(vma, vma->vm_start,
+> -			page_to_pfn(page) + vma->vm_pgoff,
+> +			page_to_pfn(page) + vma_start_pgoff(vma),
+>  			user_count << PAGE_SHIFT, vma->vm_page_prot);
+>  #else
+>  	return -ENXIO;
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 954c36e28101..d6d2d557ccb8 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -6998,7 +6998,7 @@ static void perf_mmap_open(struct vm_area_struct *vma)
+>  	refcount_inc(&event->mmap_count);
+>  	refcount_inc(&event->rb->mmap_count);
+>  
+> -	if (vma->vm_pgoff)
+> +	if (vma_start_pgoff(vma))
+>  		refcount_inc(&event->rb->aux_mmap_count);
+>  
+>  	if (mapped)
+> @@ -7032,7 +7032,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
+>  	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
+>  	 * to avoid complications.
+>  	 */
+> -	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
+> +	if (rb_has_aux(rb) && vma_start_pgoff(vma) == rb->aux_pgoff &&
+>  	    refcount_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
+>  		/*
+>  		 * Stop all AUX events that are writing to this buffer,
+> @@ -7190,7 +7190,8 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+>  	 */
+>  	for (pagenum = 0; pagenum < nr_pages; pagenum++) {
+>  		unsigned long va = vma->vm_start + PAGE_SIZE * pagenum;
+> -		struct page *page = perf_mmap_to_page(rb, vma->vm_pgoff + pagenum);
+> +		struct page *page = perf_mmap_to_page(rb,
+> +				vma_start_pgoff(vma) + pagenum);
+>  
+>  		if (page == NULL) {
+>  			err = -EINVAL;
+> @@ -7348,6 +7349,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  	u64 aux_offset, aux_size;
+>  	struct perf_buffer *rb;
+>  	int ret, rb_flags = 0;
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+>  
+>  	rb = event->rb;
+>  	if (!rb)
+> @@ -7366,11 +7368,11 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  	if (aux_offset < perf_data_size(rb) + PAGE_SIZE)
+>  		return -EINVAL;
+>  
+> -	if (aux_offset != vma->vm_pgoff << PAGE_SHIFT)
+> +	if (aux_offset != pgoff_start << PAGE_SHIFT)
+>  		return -EINVAL;
+>  
+>  	/* already mapped with a different offset */
+> -	if (rb_has_aux(rb) && rb->aux_pgoff != vma->vm_pgoff)
+> +	if (rb_has_aux(rb) && rb->aux_pgoff != pgoff_start)
+>  		return -EINVAL;
+>  
+>  	if (aux_size != nr_pages * PAGE_SIZE)
+> @@ -7400,7 +7402,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  		if (vma->vm_flags & VM_WRITE)
+>  			rb_flags |= RING_BUFFER_WRITABLE;
+>  
+> -		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
+> +		ret = rb_alloc_aux(rb, event, pgoff_start, nr_pages,
+>  				   event->attr.aux_watermark, rb_flags);
+>  		if (ret) {
+>  			refcount_dec(&rb->mmap_count);
+> @@ -7457,7 +7459,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+>  		if (event->state <= PERF_EVENT_STATE_REVOKED)
+>  			return -ENODEV;
+>  
+> -		if (vma->vm_pgoff == 0)
+> +		if (!vma_start_pgoff(vma))
+>  			ret = perf_mmap_rb(vma, event, nr_pages);
+>  		else
+>  			ret = perf_mmap_aux(vma, event, nr_pages);
+> @@ -9884,7 +9886,7 @@ static bool perf_addr_filter_vma_adjust(struct perf_addr_filter *filter,
+>  					struct perf_addr_filter_range *fr)
+>  {
+>  	unsigned long vma_size = vma->vm_end - vma->vm_start;
+> -	unsigned long off = vma->vm_pgoff << PAGE_SHIFT;
+> +	unsigned long off = vma_start_pgoff(vma) << PAGE_SHIFT;
+>  	struct file *file = vma->vm_file;
+>  
+>  	if (!perf_addr_filter_match(filter, file, off, vma_size))
+> @@ -9974,7 +9976,7 @@ void perf_event_mmap(struct vm_area_struct *vma)
+>  			/* .tid */
+>  			.start  = vma->vm_start,
+>  			.len    = vma->vm_end - vma->vm_start,
+> -			.pgoff  = (u64)vma->vm_pgoff << PAGE_SHIFT,
+> +			.pgoff  = (u64)vma_start_pgoff(vma) << PAGE_SHIFT,
+>  		},
+>  		/* .maj (attr_mmap2 only) */
+>  		/* .min (attr_mmap2 only) */
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index f23cebacbc6d..244651380ca1 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -144,12 +144,14 @@ static bool valid_vma(struct vm_area_struct *vma, bool is_register)
+>  
+>  static unsigned long offset_to_vaddr(struct vm_area_struct *vma, loff_t offset)
+>  {
+> -	return vma->vm_start + offset - ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
+> +	return vma->vm_start + offset -
+> +		((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
+>  }
+>  
+>  static loff_t vaddr_to_offset(struct vm_area_struct *vma, unsigned long vaddr)
+>  {
+> -	return ((loff_t)vma->vm_pgoff << PAGE_SHIFT) + (vaddr - vma->vm_start);
+> +	return ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT) +
+> +		(vaddr - vma->vm_start);
+>  }
+>  
+>  /**
+> @@ -1482,7 +1484,7 @@ static int unapply_uprobe(struct uprobe *uprobe, struct mm_struct *mm)
+>  		    file_inode(vma->vm_file) != uprobe->inode)
+>  			continue;
+>  
+> -		offset = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
+> +		offset = (loff_t)vma_start_pgoff(vma) << PAGE_SHIFT;
+>  		if (uprobe->offset <  offset ||
+>  		    uprobe->offset >= offset + vma->vm_end - vma->vm_start)
+>  			continue;
+> @@ -2453,7 +2455,8 @@ static struct uprobe *find_active_uprobe_speculative(unsigned long bp_vaddr)
+>  	if (!vm_file)
+>  		return NULL;
+>  
+> -	offset = (loff_t)(vma->vm_pgoff << PAGE_SHIFT) + (bp_vaddr - vma->vm_start);
+> +	offset = (loff_t)(vma_start_pgoff(vma) << PAGE_SHIFT) +
+> +		(bp_vaddr - vma->vm_start);
+>  	uprobe = find_uprobe_rcu(vm_file->f_inode, offset);
+>  	if (!uprobe)
+>  		return NULL;
+> diff --git a/kernel/kcov.c b/kernel/kcov.c
+> index 1df373fb562b..b19b473c366a 100644
+> --- a/kernel/kcov.c
+> +++ b/kernel/kcov.c
+> @@ -512,7 +512,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
+>  
+>  	spin_lock_irqsave(&kcov->lock, flags);
+>  	size = kcov->size * sizeof(unsigned long);
+> -	if (kcov->area == NULL || vma->vm_pgoff != 0 ||
+> +	if (kcov->area == NULL || vma_start_pgoff(vma) ||
+>  	    vma->vm_end - vma->vm_start != size) {
+>  		res = -EINVAL;
+>  		goto exit;
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 56a328e94395..dfa493d54ef9 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -7613,7 +7613,8 @@ static int __rb_inc_dec_mapped(struct ring_buffer_per_cpu *cpu_buffer,
+>  static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+>  			struct vm_area_struct *vma)
+>  {
+> -	unsigned long nr_subbufs, nr_pages, nr_vma_pages, pgoff = vma->vm_pgoff;
+> +	unsigned long nr_subbufs, nr_pages, nr_vma_pages;
+> +	pgoff_t pgoff = vma_start_pgoff(vma);
+>  	unsigned int subbuf_pages, subbuf_order;
+>  	struct page **pages __free(kfree) = NULL;
+>  	int p = 0, s = 0;
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
