@@ -1,346 +1,113 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A730569F
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 01:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783387755; cv=none; b=Dtc2BnTdX3mGMG7UiO/3z0Mgt2SiO250geBkKMF4z/gnNZ+AWWYMws2s0p8IjxyrHTb2fIxIVLrBCS/4qCIZh8jik151/l8+qr/fwvR/blfNQUQGO4flFmvwohbqztric4y6ik/196/lDHlXOl+7LSGfAAhpO1xiBSpBYTRAjDU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783387755; c=relaxed/simple;
-	bh=t3u0djZufF1SsLgKNoCNQk8yVLK9F2tNnlZ9arQlsIg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nk9l1jO20vL/LE9jUSCsEklG0+WlcTQA1ciJSMU76x8ygAkG+kNhmcmmZE1EeLZF/Z46pah8NJSHxP+ujMrjmAkgLeyehUsI2YrxKajo0AZdPwMwbZbG6Oh+o2IGZUsvahnrbKnTinJLqoN2JpJ4eotCcjsmEB54tgfkN+SWjoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l0D+yFNi; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AAA23909F
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 01:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783387941; cv=pass; b=JNoysohom+ELqLLlqS+UL3BbiUnsvnfSk8iMhxblZUbA65dAE6CwV6s7Ufx07X2i7AsC7DIXIl2iWVX2yGK+lru85KjsMRMBXcSPPiIItzpfnlDWo+jujFo5IroyQq8JeiQh63tI6h13Rc7vZusNBN1n91iuCHXeDKU3pLVk8gU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783387941; c=relaxed/simple;
+	bh=uQqDOtvVYIonrHAJ01jdgHIjaXEF7Vcr3bCyQxuhti8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KtaH5iBMfwbuR1TgGAdCxlpVEzzsp3aI+4fC8G8WDijRIkilA3lc2lhQzDGw/Z4MLL57Olaeh8lX9719cO4iMm8cbzlJmnPSSOmeiQFetesb3XifqzHMw45lYboM07mVrgXY8iYJtjjsy7q9TD//wtOHtg6oXPD1PiHCxMA4nDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o0rUw4Tw; arc=pass smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l0D+yFNi"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-847b8d76e3dso6033313b3a.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 18:29:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o0rUw4Tw"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so1043a12.1
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 18:32:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783387938; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TK36aWs1r3wAcSQ+0p9OWP+wr0xKCbNSSf2yoypxDIMeTI0kyXiMEL+Na0I45H9u8v
+         S2aRZ0AsSMoFzNFL5X7rqJfEm26obFT6SEaY46lkMSwq/Rleh40BpBuYeM87QTXy1Eh1
+         jgVpHMPC23q8htn1WSok913sf/VbeGT3F3TbAJUueZKAT+/UqKJXUIfW9hDQnH4Fl10p
+         IoPryU9QgqrVsabzF3ykJOYPN/Gmzj25Z9oInCYlf6Z6x/IFsqB//REycLlwO8UDE4TH
+         Q6B12hHJGmelpEV+WOkYaNQ4mYSgE0VUaqwYdgcslpC+RCYyNL8EMsYCANJUqiCERdV4
+         YI+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uQqDOtvVYIonrHAJ01jdgHIjaXEF7Vcr3bCyQxuhti8=;
+        fh=6BnNtoikN3Io4aR/rpMEJV/FipDGaJ/F67USlUgDa8o=;
+        b=Gx2attGnSUUZ1RrKnNGVVCwl75jyaSHU47ZhaaEFZyjBKzteafOYH+eP06pgpqEyff
+         D90DQkbwtWuJkjCXmsU1HtOtyf+/TvvRA3nbobFBZBPEhBXRTcy5odekwUUmt9MN7XKI
+         1P7U4GPo5twPRiyTFaFUS5dyhBSogrTvZKpH4h6khf4en7XkVI3uK/Cm6jMLLDcE3qbz
+         IlYlJM2UFZSYOaCEYWoY9uoFSH9cqAYpDTnV9ke8YQXe9npns3HtN9zIOvGIt/gkLDo4
+         ORXcr+xNo0xqc36ocxdkGKulketarTVz7DAD6W44ZFBZEZbnnh6XgWjYOQcUH6mMeriZ
+         eBJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783387752; x=1783992552; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1SuuC485gSBLkrfrkGL1+hrWpooElzJwMrZMY1F1ZXI=;
-        b=l0D+yFNitcjZnP2+I1N7E7hjJL07wgjk/J3DVETkq9+ULePHN7Mci+A2Gch6zTYmjG
-         2roCJe4FAhA1MrW39/GShKwlT2vQ8qAjVAcHdKePNVddXgrpRN3BL9khunqyuUKTtuXU
-         q21ZsYpT7RIN4gC35oRM+4uzToM0/Ti1/ZfYsrrEQKGELCeheqah7GXuVfchsqnE7d2r
-         6SEc7wh038zwgOJ7D9sSytGTpOoEsWoZkE2QjaZWDbgjZ/mSA68XwpPPjUA2Cw85ivgq
-         AqqQ6TUx5LmPkNBB4rClZ22Cd5mL6L0jS3upycenZdw74lx5NxR40+Gcw3DgMZNhxXf/
-         /vCQ==
+        d=google.com; s=20251104; t=1783387938; x=1783992738; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uQqDOtvVYIonrHAJ01jdgHIjaXEF7Vcr3bCyQxuhti8=;
+        b=o0rUw4TwgTcpFHtaoFPkXtfhtJVMXun3usf1GG0d11yfN8yzVaJkYAhpAeU9vsqwgt
+         /rJpyQVNIooANJ5VHgqPV8qxaOx0G6J9HqbZB8d8AxJ4Um45WfWHsvuk83tRItSyxmIz
+         A/2XJWq7ruqFbahsO43Aa7wYOnNcKrnrwMIjDflfz/TevK2/msGkFlaZ0JjL3sQk4KMD
+         I3lrSPnr5+mQ4xBKpdU5v5KOa7GWYhe1sYSZ6Axxs1XSHxXDGRUn8NnEa+H6Ff4XKFUQ
+         b1w9ReASh0KgACwr4Ujm+dpT+YlFPqo+t7igN0sPqYsnBjEi6ZzNdscTPgLAMaEMkKmK
+         NrGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783387752; x=1783992552;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1SuuC485gSBLkrfrkGL1+hrWpooElzJwMrZMY1F1ZXI=;
-        b=EIbKJWIonKUY0guDbE/MuM7E/SXYuciyNp4iaDcf0ifOhqDCvAZEfxDdankY0p9fce
-         KRoA8m2wjor27r36GxmNlYaf5iOWqwfa4bPV9rN+doBmxctqoi+pvak28hOx01eRfk/o
-         5tY1g3JGVX2ByegrPDkgpShz7KXkyLmDAz9qsfStKR293W2moSDPRU3ESzp3Dmcdxm7q
-         KUSWpXoA5fLevanPH4kFd9FqBygB61MrkX6Wucpzf0O7IAu3KbaNf5WM9H7qTzVF660Q
-         2mVJ/R1teXe86a4W6IdzSEB9m6k69tObbgFy3S3sRQo4MZgAXUU5CCg2F51/CBEsJCkH
-         dezg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp4TExNQ7b2QJkz9TE8navOYLh3/57pS4B2btKMnSeUWbvV8P67ts9N1V78Yp7hEdXtW6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcjoIDs2RSzzxGNWbXqhUIAt2gffF0pjMRLi1BtrGMOzzPgpaN
-	jjmppeFM2yeToxARoOlxrjbdzoimkTpjf36A+1tW6/k6GpU5iaL4sapBAb0Hed8C02hlmfkRGIi
-	C1fsL9A==
-X-Received: from pfst41.prod.google.com ([2002:aa7:8fa9:0:b0:842:3ec1:2810])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4298:b0:845:e7f7:9ce7
- with SMTP id d2e1a72fcca58-84826e86506mr2694680b3a.32.1783387751990; Mon, 06
- Jul 2026 18:29:11 -0700 (PDT)
-Date: Mon, 6 Jul 2026 18:29:11 -0700
-In-Reply-To: <20260702142912.6395-3-alexandru.elisei@arm.com>
+        d=1e100.net; s=20251104; t=1783387938; x=1783992738;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uQqDOtvVYIonrHAJ01jdgHIjaXEF7Vcr3bCyQxuhti8=;
+        b=SfoU5+z0Zsc8W8PmK7sPt0Mm7/p4qhr64crXhg4IlLgWiqq/32f4xrnclP8V59roEE
+         0VRuuGd3We3+TGiWr0qNg6qf1FUq2m8bIWICzHSs0JTlcHmd82PhDBFVpuF4WbrnQ6QA
+         t66MOHGYjkmDn+FXaXbzup8Sai6z1Sh4LL7BwbRMmgZRqw/6vShnmxSVpV/oZAuF/NsY
+         DKDekdkw7rX86SpPHwmcDAJ4+MkyhcXCMrNvWLD7yftYyfPE8xqLh+SRw/t5yJMecf7W
+         TAau4O0Kywoq8jb6OZvpXk6IAGYSukAZ0S6WCqznXI6vaGA3rzazP4w+XWIdTZo1UNBn
+         q1fw==
+X-Forwarded-Encrypted: i=1; AHgh+RqKPaZKHRc4W/tshlTzLGaqegKXRVbFObXIoNbPpEQ1JdtV8cVrBMpO0bnlx8+XPR+KTic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsgNEPmp+fh5WS3SzSjGxOyyWpKGDN8fNqpzaYxmJ74EBRhZQP
+	FdPP7qqAeHOsFOuRBa7wMTgTDZ/zlr/mbozPATw4MM1ehC6tnTPdzd2uetBQXG1l/IPpocB8tqz
+	mPiDFdT5d0ooH4tkw/UVUbKqqaBXtlTKzPO27ZjkT
+X-Gm-Gg: AfdE7ckoSWsYZVv+pzjheynRg1nsh/KjY1oqv2yz0I8XuJyihX/452MKauZtTaxQd0I
+	bw5sBV+/8Ip1AnwyOsI0S8ldZuVXyLuUWeo+P7VrTLHu8+hjD0jSHT8OnU4ExaGxR9zU/XBkgkZ
+	HtTCqFRUwFrUnj5K/O/mcU0GoOiciykWDTe3nEL+I3hw4XomvG/JBELTj9QfUS1A2j02Vktmzij
+	KjTBzmW1JgUTqRKC5lJWsbDcf4tF1aRP/TBSqgc8AsoFXvY64Lh7TwE5SeXT+Yx/hNLqqFp
+X-Received: by 2002:aa7:d1cd:0:b0:672:117e:55d4 with SMTP id
+ 4fb4d7f45d1cf-69a9112774bmr11837a12.0.1783387938042; Mon, 06 Jul 2026
+ 18:32:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260702142912.6395-1-alexandru.elisei@arm.com> <20260702142912.6395-3-alexandru.elisei@arm.com>
-Message-ID: <akxWZ1NTX4DHnUzf@google.com>
-Subject: Re: [RFC PATCH 2/3] KVM: Implement dirty page logging for
- guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, david.hildenbrand@arm.com, 
-	maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	fuad.tabba@linux.dev, mark.rutland@arm.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
+ <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
+ <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com> <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net>
+In-Reply-To: <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 6 Jul 2026 18:32:05 -0700
+X-Gm-Features: AVVi8CeuEpjvE-boJQD0P9f7ZnKmLcJ-2nHsRb1kw5gzvJYtKgcEOVRhKUMk5Z0
+Message-ID: <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: mlevitsk@redhat.com, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 02, 2026, Alexandru Elisei wrote:
-> The entire memory represented by guest_memfd-only memslot is shared and
-> accessible by userspace.
+On Mon, Jul 6, 2026 at 5:02=E2=80=AFPM Tina Zhang <zhang_wei@open-hieco.net=
+> wrote:
 
-...
+> I will take another look for the next version and try to handle the
+> remaining pieces properly, while also making sure we don't expose stale
+> or incorrectly synthesized decode-assist state for emulated exits.
 
-> +8.48 KVM_CAP_GUEST_MEMFD_MMAP_LOG_DIRTY_PAGES
-> +---------------------------------------------
-> +
-> +:Architectures: all
-> +
-> +The presence of this capability indicates that memslots backed by a guest_memfd
-> +file descriptor created with the GUEST_MEMFD_FLAG_MMAP flag can have dirty
-> +page logging enabled.
-
-What does mmap() have to do with anything?  Supporting mmap() doesn't guarantee
-the memory is shared, and I can't think of any dependency on memory actually
-being mapped into userspace.
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 43ef8e908aaf..210bdd76f0aa 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -622,6 +622,11 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
->  	return true;
->  }
->  
-> +bool __weak kvm_arch_supports_gmem_mmap_dirty_logging(struct kvm *kvm)
-> +{
-> +	return false;
-> +}
-> +
->  static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  {
->  	static const char *name = "[kvm-gmem]";
-> @@ -705,6 +710,66 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
->  	return __kvm_gmem_create(kvm, size, flags);
->  }
->  
-> +static int __kvm_gmem_check_no_change(struct kvm *kvm, struct kvm_memory_slot *old,
-> +				      struct file *old_file, unsigned int fd,
-> +				      loff_t offset)
-> +{
-> +	struct file *new_file;
-> +
-> +	new_file = fget(fd);
-> +	if (!new_file)
-> +		return -EBADF;
-> +	if (new_file != old_file) {
-
-There's a TOCTOU issue here, no?  Nothing prevents userspace from deleting and
-replacing the old guest_memfd instance between now and when the re-binding
-happens.  Ah, no, because the check in kvm_set_memory_region() is only to check
-for a "nop" update.  I think we should continue to disallow such "updates", I
-can't think of any reasonable use case, and then we can fold this helper into
-its sole remaining caller. 
-
-> +		fput(new_file);
-> +		return -EBADF;
-> +	}
-> +	fput(new_file);
-> +
-> +	if (old->gmem.pgoff != offset >> PAGE_SHIFT)
-
-This can and should be handled in common KVM, not in guest_memfd.  It's a
-property of the memslot, not of the gmem instance.
-
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +int kvm_gmem_change_flags(struct kvm *kvm, struct kvm_memory_slot *old,
-
-Hmm, if we use a separate helper, I think this should be phrased in terms of
-commands to guest_memfd, not in terms of why common KVM is making changes.
-guest_memfd shouldn't have to care *why* it's being asked to re-bind to a
-different memslot.
-
-Alternatively, provide kvm_gmem_commit_memory_region() and pass in a
-kvm_mr_change param, but that gets weird since the unbind() case needs to be
-handled even without an explicit DELETE.
-
-> @@ -734,6 +799,11 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	if (!PAGE_ALIGNED(offset) || offset + size > i_size_read(inode))
->  		goto err;
->  
-> +	if (slot->flags & KVM_MEM_LOG_DIRTY_PAGES &&
-> +	    (!kvm_gmem_supports_mmap(inode) ||
-> +	     !kvm_arch_supports_gmem_mmap_dirty_logging(kvm)))
-
-I think I would rather handle this in kvm_arch_prepare_memory_region().  AFAIK,
-arm64 and x86 are the only architectures that support using gmem for private
-memory, and so are the only architectures that would need to restrict dirty
-logging (TDX needs additional plumbiong).  It'd mean updating x86 at the same
-time, but that should be relatively straighforward.
-
-That would mean we couldn't handle the check in check_memory_region_flags(), but
-that should be a non-issue, e.g. arm64 and RISC-V already put additional
-restrictions on what can regions be dirty-logged.
-
-> @@ -1739,16 +1739,6 @@ static void kvm_commit_memory_region(struct kvm *kvm,
->  		 */
->  		if (old->dirty_bitmap && !new->dirty_bitmap)
->  			kvm_destroy_dirty_bitmap(old);
-> -
-> -		/*
-> -		 * Unbind the guest_memfd instance as needed; the @new slot has
-> -		 * already created its own binding.  TODO: Drop the WARN when
-> -		 * dirty logging guest_memfd memslots is supported.  Until then,
-> -		 * flags-only changes on guest_memfd slots should be impossible.
-> -		 */
-> -		if (WARN_ON_ONCE(old->flags & KVM_MEM_GUEST_MEMFD))
-> -			kvm_gmem_unbind(old);
-> -
->  		/*
->  		 * The final quirk.  Free the detached, old slot, but only its
->  		 * memory, not any metadata.  Metadata, including arch specific
-> @@ -2073,22 +2063,27 @@ static int kvm_set_memory_region(struct kvm *kvm,
->  		if ((kvm->nr_memslot_pages + npages) < kvm->nr_memslot_pages)
->  			return -EINVAL;
->  	} else { /* Modify an existing slot. */
-> -		/* Private memslots are immutable, they can only be deleted. */
-> -		if (mem->flags & KVM_MEM_GUEST_MEMFD)
-> -			return -EINVAL;
->  		if ((mem->userspace_addr != old->userspace_addr) ||
->  		    (npages != old->npages) ||
->  		    ((mem->flags ^ old->flags) & (KVM_MEM_READONLY | KVM_MEM_GUEST_MEMFD)))
->  			return -EINVAL;
->  
-> -		if (base_gfn != old->base_gfn)
-> +		if (base_gfn != old->base_gfn) {
->  			change = KVM_MR_MOVE;
-> -		else if (mem->flags != old->flags)
-> +		} else if (mem->flags != (old->flags & MEMSLOT_USER_FLAGS_MASK)) {
->  			change = KVM_MR_FLAGS_ONLY;
-> -		else /* Nothing to change. */
-> +		} else if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-> +			return kvm_gmem_check_no_change(kvm, old, mem->guest_memfd,
-> +							mem->guest_memfd_offset);
-
-As above, just return -EINVAL.
-
-> +		} else {
->  			return 0;
-> +		}
->  	}
->  
-> +	if (mem->flags & KVM_MEM_GUEST_MEMFD &&
-> +	    change != KVM_MR_CREATE && change != KVM_MR_FLAGS_ONLY)
-
-This is a *very* convoluted way of disallowing MOVE.  Handle this above.  E.g.o
-
-		if (base_gfn != old->base_gfn) {
-			/* KVM doesn't support moving guest_memfd bindings. */
-			if (mem->flags & KVM_MEM_GUEST_MEMFD)
-				return -EINVAL;
-
-			change = KVM_MR_MOVE;
-		} else if (mem->flags != (old->flags & MEMSLOT_USER_FLAGS_MASK)) {
-			if (mem->flags & KVM_MEM_GUEST_MEMFD &&
-			    old->gmem.pgoff != mem->guest_memfd_offset)
-			change = KVM_MR_FLAGS_ONLY;
-		} else if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-			return -EINVAL;
-		} else {
-			return 0;
-		}
-
-> +		return -EINVAL;
-> +
->  	if ((change == KVM_MR_CREATE || change == KVM_MR_MOVE) &&
->  	    kvm_check_memslot_overlap(slots, id, base_gfn, base_gfn + npages))
->  		return -EEXIST;
-> @@ -2105,7 +2100,12 @@ static int kvm_set_memory_region(struct kvm *kvm,
->  	new->flags = mem->flags;
->  	new->userspace_addr = mem->userspace_addr;
->  	if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-> -		r = kvm_gmem_bind(kvm, new, mem->guest_memfd, mem->guest_memfd_offset);
-> +		if (change == KVM_MR_CREATE) {
-
-Curly braces aren't needed.
-
-> +			r = kvm_gmem_bind(kvm, new, mem->guest_memfd, mem->guest_memfd_offset);
-> +		} else if (change == KVM_MR_FLAGS_ONLY) {
-> +			r = kvm_gmem_change_flags(kvm, old, new, mem->guest_memfd,
-> +						  mem->guest_memfd_offset);
-> +		}
->  		if (r)
->  			goto out;
->  	}
-> @@ -2117,7 +2117,7 @@ static int kvm_set_memory_region(struct kvm *kvm,
->  	return 0;
->  
->  out_unbind:
-> -	if (mem->flags & KVM_MEM_GUEST_MEMFD)
-> +	if ((mem->flags & KVM_MEM_GUEST_MEMFD) && change == KVM_MR_CREATE)
->  		kvm_gmem_unbind(new);
-
-This is wrong.  If kvm_set_memslot() failed, the old memslot needs to be bound
-back to the guest_memfd instance.  Hmm, but KVM can't guarantee success.  So
-unless there's reason why the bind() can't happen under slots_arch_lock, I think
-the way to handle this is to only bind once success is guaranteed.  It'll require
-plumbing the fd+offset into kvm_set_memslot().
-
-Or I guess add the "fd" to kvm_memory_slot.gmem?  I kinda like that, because then
-we can require that userspace really is just updating flags, and not switching
-the fd (to a the same file).
-
-
-E.g. something like this?
-
-diff --git include/linux/kvm_host.h include/linux/kvm_host.h
-index ab8cfaec82d3..82385eb9a82e 100644
---- include/linux/kvm_host.h
-+++ include/linux/kvm_host.h
-@@ -610,6 +610,7 @@ struct kvm_memory_slot {
-                 * reference via kvm_gmem_get_file() is protected by
-                 * either kvm->slots_lock or kvm->srcu.
-                 */
-+               int fd;
-                struct file *file;
-                pgoff_t pgoff;
-        } gmem;
-diff --git virt/kvm/kvm_main.c virt/kvm/kvm_main.c
-index e44c20c04961..0729e7c94816 100644
---- virt/kvm/kvm_main.c
-+++ virt/kvm/kvm_main.c
-@@ -1946,6 +1946,20 @@ static int kvm_set_memslot(struct kvm *kvm,
-                return r;
-        }
- 
-+       if (new->flags & KVM_MEM_GUEST_MEMFD) {
-+               if (change == KVM_MR_CREATE)
-+                       r = kvm_gmem_bind(...);
-+               else if (WARN_ON_ONCE(change == KVM_MR_MOVE))
-+                       r = -EINVAL;
-+               else if (change == KVM_MR_FLAGS_ONLY)
-+                       r = kvm_gmem_rebind(...);
-+
-+               if (r) {
-+                       mutex_unlock(&kvm->slots_arch_lock);
-+                       return r;
-+               }
-+       }
-+
-        /*
-         * For DELETE and MOVE, the working slot is now active as the INVALID
-         * version of the old slot.  MOVE is particularly special as it reuses
-@@ -2104,21 +2118,14 @@ static int kvm_set_memory_region(struct kvm *kvm,
-        new->npages = npages;
-        new->flags = mem->flags;
-        new->userspace_addr = mem->userspace_addr;
--       if (mem->flags & KVM_MEM_GUEST_MEMFD) {
--               r = kvm_gmem_bind(kvm, new, mem->guest_memfd, mem->guest_memfd_offset);
--               if (r)
--                       goto out;
--       }
-+       new->gmem.fd = mem->guest_memfd;
-+       new->gmem.pgoff = mem->guest_memfd_offset >> PAGE_SHIFT;
- 
-        r = kvm_set_memslot(kvm, old, new, change);
-        if (r)
--               goto out_unbind;
-+               goto out;
- 
-        return 0;
--
--out_unbind:
--       if (mem->flags & KVM_MEM_GUEST_MEMFD)
--               kvm_gmem_unbind(new);
- out:
-        kfree(new);
-        return r;
+Naples erratum 1096 seems to imply that the instruction bytes stored
+in the VMCB are not necessarily the same instruction bytes that were
+fetched and decoded to lead to the #PF/#NPF. Hence, in the case of
+emulation, it might be sufficient to read the instruction bytes quite
+late in nested_svm_vmexit(). That would certainly simplify the
+plumbing.
