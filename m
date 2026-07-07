@@ -1,119 +1,212 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124343A1C9
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 14:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823A73E8688;
+	Tue,  7 Jul 2026 14:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783435620; cv=none; b=jKxhvAv4To9a7NYzMxFShjdeqIkap4wWlprd53OKMxsAZWv3J5euq1rN/+kjdBxsHT4Cg0G22VcB013plEB6jJPwww5q5C8s9A7K5lW9BBNg9T56r9fbyNhPpS6cgKfTkrfL1fAowdAP5D/LP63N7ySVgyujc1Pc+TCiNlDRsoI=
+	t=1783436326; cv=none; b=a61cDLOuCfH508pxsiDhzQgVwovIwmdk2GPmcphCArxCFt9USSPoCZrMfEBQufJI4SMr64fU3IjYkOSMhyQWmS5VMaCzYogRyps6qq9n1nwfaANq/fBotZtHSbDIvcL2yej2BlC0shcOblIhKb6bILrQhcFdMKqWC+sJAoDRBAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783435620; c=relaxed/simple;
-	bh=dbEhWFYQcuKtmA70mOptSUK8mT123phz+xATTayPUfk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FVd2tI4PaOf1wLsC5iqh25GZCR9+4Stmq00BeSidDIpNTT4FNUnQby3Y4+FxcKuFOLSwH9D2cmoEOpSNR2t7t/xwlG40Rp/PYGyTCmySMHmatpXhJQwcmsKMZsLvflhw5veReHamNEYXrV17/z6D9MRhTzzsIth6rMIo/xv+LwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qZFjjmUy; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783436326; c=relaxed/simple;
+	bh=PlMxsGARKkgfcMvVXTnKC8/T3l8zRC4VArlMr7lNFQw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OW6Hofc0i52a1wNgU0ZnUY360Jd7/XgC0MZUCS6q6+lf1ZerTdTl3STt+HOnXNzn/0snKxPjrkMz6r94w8tih/UWt3U/q4tSz3a9bYExlX5u1Spmn/5B/Q4VmIbeoAmCu7pDAnBHOjBshiSIj3qCteTBelkIWwsMOqA/BVgysbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfDIla2s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qZFjjmUy"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cca3673560so35820295ad.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 07:46:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783435618; x=1784040418; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HufNVYu34je8HZzz4w1ytu+7VhpoP+vTfH7cDlFEijc=;
-        b=qZFjjmUynfjxrsqgu/khQ3Q8LO1qM1jBb8s8Gj+7Zb7nNqPrEc3UjrKRzEYuKqqi/R
-         gjf5G+SobBeWYLbPGYZAEn4f0RleCZpzmxg8C6dSw0XQXZd87VoLxQiOaS+oZGctqzse
-         QHp3g1zpUF/VBBzOB4HMpz2TWTzsxf48WsyQf5qKJSTUuKYk/7ZYMw2VrICVP+ASsZrz
-         ii3VtxQPRDmJ+PdJnPOUt2Zp1EyY+IoyijYTMGIkQ8tCWsDcZL8eYei7hyFTW68x4pYv
-         waiFKqdpcbkHcoQImYElEhbWxzvw4+p9jYOcoRlLxqTY6wCAuvScBUp2hOFgAnx04OZC
-         g6XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783435618; x=1784040418;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HufNVYu34je8HZzz4w1ytu+7VhpoP+vTfH7cDlFEijc=;
-        b=sksgZJU46tIFBoRhxOuCaIlegond/QQw3LYDpY8i+7Jp+kJ+4ooD+8c2SIhB5cInB6
-         SlLCh+3DXUwE+oi59Or0FKUJiRx/7ERSUQc+i9prk7gQxVrmkZeatTbzj819rMws9pBU
-         Y3UJK42dNro/odpk/Oz59PKzDb6Z/oe0dnhG7Xz0Tb19p8IfQkgcZF8LgMSdkQS06XNo
-         BGOE0nGJohgNRo4W+/PMgR7BxfnyTIcYDaK1+lFJ8aXyqjL8j1/Evw6/vVvKZ4vlMT60
-         NyhSnNx6Fy8fNE735Emdii6TkVSHjGHzOIv9kHhIXbPX1BSILMrMe9O8/gVS2gtC/GLp
-         qHhA==
-X-Forwarded-Encrypted: i=1; AHgh+RrdYFDxZLbE/SM7GwMVwA8pTr1ZIiHHHcXw0RAoMDATUdFF1B5elLVvAwcjtLSCtGwG6w8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4Bvjx1wZIzI6L749TIkAc8AD+SoBDTpSsVAXSXVDpi7zSv82E
-	iBCW/uTQNI5kVPzJsjZ14KzImhUg06QgQ6yS5DvNO3l9dzBtJ3+QwgRpn1PamkMZfhLrOT5RmNQ
-	GB8v7fA==
-X-Received: from plse11.prod.google.com ([2002:a17:902:b78b:b0:2ca:d667:90e3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:eccb:b0:2c9:b396:1a55
- with SMTP id d9443c01a7336-2ccbe611f6amr53537385ad.12.1783435618181; Tue, 07
- Jul 2026 07:46:58 -0700 (PDT)
-Date: Tue, 7 Jul 2026 07:46:57 -0700
-In-Reply-To: <akaCzNRGVy5Xr-bG@thinkstation>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfDIla2s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4C71F00A3A;
+	Tue,  7 Jul 2026 14:58:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783436323;
+	bh=ygpMICMoTnkpL1/1oxwmS7t/GpkK91ripgRv9mbioew=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kfDIla2sbEsBl3KxEfELr0718lUqk8sYVGFqtQmOcUJdRMzBbBOAovYXorXdGZoFO
+	 g7NineCVlSviBjqaUlWQ0OfCKobp0+HEbPnZ0z9/f+d/xWFZugdwHunU4/0lIeRaY3
+	 sOyMTlWG1wwWFtHZj7kz7BhgrEHYHRYOXM0c85aMjDdD2ptPSgvD4HunFJ8k2D4L7l
+	 Yw9OIZ726jyBAATK0QzS/KoTfDfA4cJpVxXKrmb8sK2bTKtoH1wj/Q5De0WOeEWsll
+	 opt2e8PlkYvAzCPH2R1YNEpxY6qNj2GeOt5sfy+JcjJiOx4tQV0H/3+uu2lA5IkYG/
+	 +7EP7wFlVczLw==
+Message-ID: <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
+Date: Tue, 7 Jul 2026 16:58:39 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260701110547.764083-1-kirill@shutemov.name> <20260701110547.764083-3-kirill@shutemov.name>
- <akUrORhAmRur-lHP@google.com> <20260701180033.6e9c07aa@pumpkin> <akaCzNRGVy5Xr-bG@thinkstation>
-Message-ID: <ak0RYaft14ku6rEi@google.com>
-Subject: Re: [PATCH v5 2/3] x86/insn-eval: Add insn_assign_reg() helper
-From: Sean Christopherson <seanjc@google.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Laight <david.laight.linux@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Andi Kleen <ak@linux.intel.com>, Dan Williams <djbw@kernel.org>, 
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
+ registration
+To: "Gupta, Pankaj" <pankaj.gupta@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com,
+ dave.hansen@linux.intel.com
+Cc: bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
+ yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+References: <20260701144543.39582-1-pankaj.gupta@amd.com>
+ <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
+ <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
+ <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
+ <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 02, 2026, Kiryl Shutsemau wrote:
-> On Wed, Jul 01, 2026 at 06:00:33PM +0100, David Laight wrote:
-> > Or be even more specific and use '& 0xffffffff' rather than a cast.
-> > Particularly since the casts of the RHS in the byte/short cases aren't
-> > needed at all.
+On 7/7/26 15:45, Gupta, Pankaj wrote:
 > 
-> I'd rather keep the body exactly as KVM has it today.
+>>> Hi David,
+>>>
+>>> Yes, it fails in this path but for file backed mapping, vma_is_fsdax() returns
+>>> false because
+>>>
+>>> vma_is_dax() returns false:
+>> Ah, okay, so fsdax is not involved and we really only fail because of the
+>> writable_file_mapping_allowed() check.
+>>
+>> I was for a second thinking in terms of nested virt :)
+>>
+>>> Host side backend is regular file backed memory (no fsdax).
+>> Okay, so we'll end up mapping an ordinary file into VM memory, and expose that
+>> to the VM as part of virtio-pmem device.
+>>
+>> That also means that vfio etc. won't be able to longterm-pin such device memory.
+>> So this is not a problem isolated to SEV.
+>>
+>> Forbidding to longterm pin is actually the right thing to do if the filesystem
+>> relies on writenotify, as spelled out by Lorenzo's commit:
+>>
+>> "
+>>      Writing to file-backed mappings which require folio dirty tracking using
+>>      GUP is a fundamentally broken operation, as kernel write access to GUP
+>>      mappings do not adhere to the semantics expected by a file system.
+>>
+>>      A GUP caller uses the direct mapping to access the folio, which does not
+>>      cause write notify to trigger, nor does it enforce that the caller marks
+>>      the folio dirty.
+>>
+>>      The problem arises when, after an initial write to the folio, writeback
+>>      results in the folio being cleaned and then the caller, via the GUP
+>>      interface, writes to the folio again.
+>> "
+>>
+>> Hmmm
+> 
+> Yes. For file based mapping we don't allow long term pinning.
+> 
+> If we take into account the fragmentation concerns for MIGRATE_CMA and
+> ZONE_MOVABLE allocations
+> 
+> solvable with FOLL_LONGTERM, I can think of two options(tested) to allow file
+> based mappings as well:
+> 
+> 1. Fallback on FOLL_WRITE when FOLL_LONGTERM fails as suggested by Sean.
 
-+1.  My main argument for casting in the 1-byte and 2-byte cases is consistency
-above all else, using a mask for the 4-byte case defeats that goal.
+That is just not acceptable, as it breaks random other stuff (MIGRATE_CMA, as
+one example) besides the file-pinning problems that Lorenzo added.
 
-> This is now a straight move + rename with no functional change, and the v4
-> attempt to rewrite it with arithmetic is precisely what introduced the
-> AH/CH/DH/BH clobber Sashiko flagged.  Tidying the casts turns it back into a
-> rewrite and diverges from the form KVM has shipped for years.  Feel free to
-> submit a separate cleanup on top if you feel strongly.
-> 
-> Updated patch below; I'll fold it into v6.
-> 
-> -- >8 --
-> Subject: [PATCH] x86/insn-eval: Move assign_register() out of KVM as insn_assign_reg()
-> 
-> KVM's instruction emulator has a small helper, assign_register(), that
-> writes a value into a register following the x86 rules for writes to
-> general-purpose registers: an 8- or 16-bit write leaves the rest of the
-> register untouched, a 32-bit write zero-extends the result to 64 bits,
-> and a 64-bit write replaces the whole register.
-> 
-> The TDX guest #VE handler needs the same logic for port I/O emulation
-> to get 32-bit zero-extension right.  Rather than add a third copy of
-> the same switch, move the helper verbatim to <asm/insn-eval.h>, rename
-> it to insn_assign_reg(), and route KVM's callers through it.
-> 
-> Add <asm/insn.h> to the header's includes so it builds standalone in
-> callers that have not pulled it in transitively.
-> 
-> No functional change.
-> 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Cc: stable@vger.kernel.org # prerequisite for the following 32-bit port I/O zero-extension fix
-> ---
+If we're going to hack something in, then that we bypass the file writeback check.
+Not that we don't use FOLL_LONGTERM.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+I'd hate to use a GUP flag to indicate "this is a legacy hack", but it clearly isolates the
+issue (needs a better name obviously):
+
+
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index ae9bca4eda5ca..e2c531f914d44 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1912,6 +1912,9 @@ enum {
+         */
+        FOLL_HONOR_NUMA_FAULT = 1 << 12,
+ 
++       /* TODO */
++       FOLL_LONGTERM = 1 << 13,
++
+        /* See also internal only FOLL flags in mm/internal.h */
+ };
+ 
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b79043..1fa0aa0cdc99d 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1186,8 +1186,8 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
+         * If we aren't pinning then no problematic write can occur. A long term
+         * pin is the most egregious case so this is the case we disallow.
+         */
+-       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM)) !=
+-           (FOLL_PIN | FOLL_LONGTERM))
++       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK)) !=
++           (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK))
+                return true;
+ 
+        /*
+@@ -2746,7 +2746,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+         * If we aren't pinning then no problematic write can occur. A long term
+         * pin is the most egregious case so this is the one we disallow.
+         */
+-       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
++       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE | FOLL_LONGTERM_HACK)) ==
+            (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+                reject_file_backed = true;
+ 
+@@ -3180,7 +3180,7 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
+        int locked = 0;
+        int ret;
+ 
+-       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
++       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM | FOLL_LONGTERM_HACK |
+                                       FOLL_FORCE | FOLL_PIN | FOLL_GET |
+                                       FOLL_FAST_ONLY | FOLL_NOFAULT |
+                                       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
+
+
+-- 
+Cheers,
+
+David
