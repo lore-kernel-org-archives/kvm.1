@@ -1,63 +1,63 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BA3481A9A
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DDE481AB5
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783464238; cv=none; b=FccKFxb3ZBKYSwG9UoGtafz3lr/9FNTslbZyF3sgYbnKOwjkwC7UP46MiafoS1ep/1olwQ5Ef8X6Ki9vDtf+L0i0tU9sFexXLPIc8eTLWGlmbRQfXS6ssa/2vlAwIfG0jNYeug6Lrsp3sQgxcMWbOlRdXZ7RZu1iBJIrlk3VkCE=
+	t=1783464240; cv=none; b=ZUNN2r9BUVgWa/JZS8aclonYZuEVF6Eyx8icsFBMbnmAWtBM/hOv+QlEKxQsF1rhUPQgF9mXWdkMgofjK1GvyWXDN77+3iYMBd36cs88ob4H8Io5X0rxAjtM+rwUhiQjFb4V+HjYOf7soNQaOHa7dEMKnpciE94fWoeXVu/7VU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783464238; c=relaxed/simple;
-	bh=xan1p8gxZ/Xzpw4NJI82wKacTFlwttw2dpQ0l5u69D0=;
+	s=arc-20240116; t=1783464240; c=relaxed/simple;
+	bh=R7VVs3hMRoSf1/l/8b7RuG+9xX3DQ2/jGBdBMizbjdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShpIHooOc0330QbYVEuLjYWcryM41cnBNp3Bso7weRPJlw8EXK8uMETM8EmK32vGW1dTezZbkoSHXMiRT2r+3vSDbsJhhXYqTm+my1l9JHtayA5Ol7+5nyuuCCk9xDd8ZaEbrrDutqGo1Gy+9uN24WtA3VXEW0bvnj770loGhU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wLmeLFq3; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version; b=YB/ti1JEts4vEXicZ6PGM9bX44QE46QpGE0cVxwOtXQEBhRKsC7B2SHGvA5Om1D8UJhuTOhq8kJ7MBkfdJnMfyBHvbYNtZ3NsknLs8IHl61Ryo7efBjgNKBOs5K+d1qNGW1Q734DOkcLts4V1Uu/lcSB8FFcHPzHtdGGfLc4JPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BPF+DBvM; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wLmeLFq3"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so1336815ad.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BPF+DBvM"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cae1a3a744so581315ad.3
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783464236; x=1784069036; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1783464238; x=1784069038; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CEMAHfk6jaAbYfFhNuqQUXCY3WLt4ZsLh5ZzvB9z/oI=;
-        b=wLmeLFq3pJpVUirO4dhxxlSsDBaejNo7S1QnU8T2c2S/JQBRa5CzxPxR4LG2v6eHVj
-         JaFx1s54XHIOF2HcqMNfuWqLj32EvP5QVKe5poG80QsVxNv/Zk4P982GJG/85HxdNtvM
-         cM18fHTseuIiRCqwFAD7wgkhx6Iu6Nq29c0gnqgky15k7LMBtBZNaM6kWGrvjLFnytxx
-         XkWko5cGyyDoCfsE8LveGBJJf0fkX/o/LSrKh9QPsAGue1Liq2i8E97/54ZCOULy0LDW
-         NjtMT+m/u5E7CxLDY0V//xyfvmPYscMOKDm8LlgkxzAi2cQd5OTky5QEWqbywj6djE+Z
-         LNBw==
+        bh=mYNePrLJkuPtkx4mqIYMVJAY1RutCNE27kKxk1O9tJ0=;
+        b=BPF+DBvMfjgQ1F/uZvZux8CKTQzhPPZU81IdSUDW5YvJQb53txNqMWzlf2vnG6DvXT
+         I5W2oz82wZwCt/Bfp2vzTjmDkpbQUpz9rFVN8hn1s+se33/gWo7VIGP0LWqnFarhoKc4
+         3aTSrhfO2F82aFlFL0gGNGNgT7a+d2tpEsXG2t8LEecuy2IqYDAOZMpK9sjLOS7Nf4IF
+         YQC6GK1usO2exGiufWW7zjJNY6KMSAZX0Z+N7akX2/j+daczfzr5fBpzHxVn0syoTWwK
+         EMjcmwVffxNnlgwBubqtr1przWtW9d7quxxldXUeuWoueicgHoPQzJ5HeIkOTmQfluOW
+         X1Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783464236; x=1784069036;
+        d=1e100.net; s=20251104; t=1783464238; x=1784069038;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CEMAHfk6jaAbYfFhNuqQUXCY3WLt4ZsLh5ZzvB9z/oI=;
-        b=HJ47kEdCGiBPMShdO0zAQhmPSfZSO1RDyA6D7sV3SNzuGLTKg8+udO0mnnJmlwTloX
-         umtY3JBnGBGDZGcAnnOUXNuUCKUNsCnbbWylSfGnXu/oKAUZtTFmP4g3fQrmCkcXBavu
-         /uMaR3MWARPozIJyly9V/OYzoO9Ellr/FovbiszxTkxk+PbR8jqA06rvTD81yxuvWJ/V
-         r6k2cFnfVKIe6309SdKDpXjuClwk8XjBVJWCmUMiNNcY1V4Tw7CW3DHAmkTkGAuDczU+
-         zxxJs+P2tR5ZiuouXOg24+YS78I2EmS0tcaoPl8v9OPy9/YsG9ePCQ+ZNOYvp+ZmQ02q
-         4BIA==
-X-Forwarded-Encrypted: i=1; AHgh+RotXuLKNCicUPSVDim8Z+W6ojMSyD4jV8Ag64kH8KpA1ApegIgTg97qDqi7Opxewvcu6uc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yww1fiuaxj1ZXiMNyfO23hTIQed6iRlsIiv5YZMxyjZCvy/Tl6q
-	fjinbDVn1pFD2VBmzQ41RjCCS3YWc1gkyPGIDFMpGTGVqsGOqBzq76x62iOKyRv1LNQ=
-X-Gm-Gg: AfdE7cmEsJL80JMCRQHXjzT7IWtLTxSGhnd0eeA7zU7RAXpLrj/WpmSVi5mjFreIesh
-	MrUX1q/yw3F0bHAcQxClzKz9wvFWpwLINH2fZVwFjfRIsb+UtAW8XgZtT9viubq7WdbhsTXwzXU
-	QELLZyA8jhT3qrSh3c0CkniG+9uQWi3zTh59+yGlS8ysscn75z7NbNSwMHVEP17Su3qjb3U07zY
-	V6trlbHcn3ecJqaLaF7Syt3wgHLL1UwhE6ZMcq/0DGuWY9zOlP16EdyR3z/1tyyww38c6962FLE
-	zfcFPwWGLx+NhOCznDmI50jIzXkDAk/gr/X6HrjIUziahb6LL7s52KqfUkWcmDx3W5KP0SveLmA
-	0YfweNfgQYhgWLiNVVxW0P/npUwqdvEUH5eX5nzltzrFmYThsyWwNrTDDJqgMu/0MQvDTCz0jP0
-	7Nr/ymc7VjmnZFXmqPq/ipFM6i8/x8p0R1p/ZTpSQ=
-X-Received: by 2002:a17:902:ea03:b0:2cc:76fd:6537 with SMTP id d9443c01a7336-2ccbe50cf7dmr65254525ad.2.1783464236344;
-        Tue, 07 Jul 2026 15:43:56 -0700 (PDT)
+        bh=mYNePrLJkuPtkx4mqIYMVJAY1RutCNE27kKxk1O9tJ0=;
+        b=AxYF6Mw4VpQoLDqGL97r35vTjiLCiMC3quviTpnYatAA/2fUvhTCWaROHsAES6Jd/C
+         aHKiMdsvvlrt1CTM74jEaou6VobFMfQZGfvODvfxbmBR+rxzTE8RpBw8NXLzRPe/e7rm
+         /s++hq9sYBsIVRz147yR3tsgKFJfFtK3+w8QxjfOBotKtkdKHXLqVKVXgxOyfV87GgQ2
+         uIHg1m0D2FH16amscGebQ7t6TdovweqNo7cbHBNvN+P5NmXE8OYEyMrulEZnQnMeJSUM
+         FEbzrJHM8U9ftjElmYYL/qtAl2O+g/0RuP2VL7sUpWTT30+DoKROFSrQJC4Kz2ybzhgb
+         WH4A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp5Nm5vBOPtzezOV3gRWWrlejaQouYVSgTReoVz3DesDZzJZzFi2MTFRkKb6d4emOgqKDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKmFrBG+brLEXMsuxFttSrQiRasuny2FY8/mlCkxL2INTjpmYD
+	YUBbqwjhVciR5sHxi4sXJGxFw6UIATV1oDYEX44MaDomzB2SclmL6ujlcLU+DoKe0A0=
+X-Gm-Gg: AfdE7clTq7MDTtI3ay5ziQUHEVNT0OaQw0C78XVQ4a9SrK7LQ7qEdKOEqgqvFoBfB7b
+	ILQOLFL9mos65hQce+Z87AQlHOBMKhpQaqg9wWEsEJD7FcKraZSUdp/KpQwVsXCoA0ci2+4VCCt
+	mCu4GHYOkwnFn3F6875ajQceABdbtbJs1XHSzxX/yHqUtrDQnLvmyyrey8b2XjIb+QfH6nbYVGk
+	RMvLr0uOi06ws+EOhj+FkxT17NFi3CGeM/mO0IbJM9T62uBXjJv/wU2LAd38IgKOAumlI9uvIDx
+	98RpTkH7sVsnYzAGtH7mKkKxYg/6LKvQmHhpWXARNKeBLZTytRzvSDMJDPuf0RseR4bu+HTvc8r
+	5MONz2CYeyOFV2QbtrnqTE4RUh7jNYaIQnxrP8sLpIU5iVQsZk2NgDGADsoNJ5IJr6VWdBHz/3t
+	u5n5IZPiZLrxGeF5LzpEvxaftSh+dCMSl3XuebWqs=
+X-Received: by 2002:a17:903:144e:b0:2c7:f4bd:91b5 with SMTP id d9443c01a7336-2ccea26fb06mr183585ad.0.1783464237928;
+        Tue, 07 Jul 2026 15:43:57 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:46c8:dda7:40fa:8958])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 15:43:55 -0700 (PDT)
+        Tue, 07 Jul 2026 15:43:57 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v1 24/25] hw/arm/boot: Load DTB as is for confidential VMs
-Date: Tue,  7 Jul 2026 16:43:05 -0600
-Message-ID: <20260707224306.1202330-25-mathieu.poirier@linaro.org>
+Subject: [RFC v1 25/25] hw/arm/boot: Skip bootloader for confidential guests
+Date: Tue,  7 Jul 2026 16:43:06 -0600
+Message-ID: <20260707224306.1202330-26-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
@@ -89,35 +89,83 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-Load DTB without modifications when provided.  That way it is possible
-for a verification entity to reconstruct the Realm's initial measurement.
+An independent verifier needs to reconstruct the content of guest memory
+in order to attest that it is running trusted code. To avoid having to
+reconstruct the bootloader generated by QEMU, skip this step and jump
+directly to the kernel, with the DTB address in x0 as specified by the
+Linux boot protocol [1].
+
+[1] https://docs.kernel.org/arch/arm64/booting.html
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- hw/arm/boot.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ hw/arm/boot.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index aea044fbed9a..aae77870a5c4 100644
+index aae77870a5c4..a5918b50d278 100644
 --- a/hw/arm/boot.c
 +++ b/hw/arm/boot.c
-@@ -478,7 +478,14 @@ int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-     g_autoptr(MemoryDeviceInfoList) md_list = NULL;
-     Error *err = NULL;
+@@ -732,7 +732,13 @@ static void do_cpu_reset(void *opaque)
+             if (cpu == info->primary_cpu) {
+                 AddressSpace *as = arm_boot_address_space(cpu, info);
  
--    if (binfo->dtb_filename) {
-+    if (binfo->dtb_filename && binfo->confidential) {
-+        /*
-+         * If the user is providing a DTB for a confidential VM, it is already
-+         * tailored to this configuration and measured. Load it as is, without
-+         * any modification.
-+         */
-+        return rom_add_file_fixed_as(binfo->dtb_filename, addr, -1, as);
-+    } else if (binfo->dtb_filename) {
-         char *filename;
-         filename = qemu_find_file(QEMU_FILE_TYPE_DTB, binfo->dtb_filename);
-         if (!filename) {
+-                cpu_set_pc(cs, info->loader_start);
++                if (info->confidential)  {
++                    assert(is_a64(env));
++                    env->xregs[0] = info->dtb_start;
++                    cpu_set_pc(cs, info->entry);
++                } else {
++                    cpu_set_pc(cs, info->loader_start);
++                }
+ 
+                 if (!have_dtb(info)) {
+                     set_kernel_args(info, as);
+@@ -822,7 +828,8 @@ static ssize_t arm_load_elf(struct arm_boot_info *info, uint64_t *pentry,
+ }
+ 
+ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
+-                                   hwaddr *entry, AddressSpace *as)
++                                   hwaddr *entry, AddressSpace *as,
++                                   bool confidential)
+ {
+     const size_t max_bytes = LOAD_IMAGE_MAX_DECOMPRESSED_BYTES;
+     hwaddr kernel_load_offset = KERNEL64_LOAD_ADDR;
+@@ -874,7 +881,8 @@ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
+              * bootloader, we can just load it starting at 2MB+offset rather
+              * than 0MB + offset.
+              */
+-            if (kernel_load_offset < BOOTLOADER_MAX_SIZE) {
++            if (kernel_load_offset < BOOTLOADER_MAX_SIZE &&
++                !confidential) {
+                 kernel_load_offset += 2 * MiB;
+             }
+         }
+@@ -958,7 +966,8 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+     }
+     if (arm_feature(&cpu->env, ARM_FEATURE_AARCH64) && kernel_size < 0) {
+         kernel_size = load_aarch64_image(info->kernel_filename,
+-                                         info->loader_start, &entry, as);
++                                         info->loader_start, &entry, as,
++                                         info->confidential);
+         is_linux = 1;
+         if (kernel_size >= 0) {
+             image_low_addr = entry;
+@@ -1099,8 +1108,11 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
+         fixupcontext[FIXUP_ENTRYPOINT_LO] = entry;
+         fixupcontext[FIXUP_ENTRYPOINT_HI] = entry >> 32;
+ 
+-        arm_write_bootloader("bootloader", as, info->loader_start,
+-                             primary_loader, fixupcontext);
++        /* Immediately jump to the kernel when guest is a Realm */
++        if (!info->confidential) {
++            arm_write_bootloader("bootloader", as, info->loader_start,
++                                 primary_loader, fixupcontext);
++        }
+ 
+         if (info->write_board_setup) {
+             info->write_board_setup(cpu, info);
 -- 
 2.43.0
 
