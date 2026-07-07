@@ -1,202 +1,326 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7513328FA;
-	Tue,  7 Jul 2026 09:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FBB3955EC;
+	Tue,  7 Jul 2026 09:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783415885; cv=none; b=t3YMDA7axI5XGk2FXo0ZHOKtv46udXc6UjtN5+sQv24/GvoO9/NEsHFBgmzRJ6zmOWQmX33IVOCX7EqUjWzSv8JFNMdDcLM+J6z/eQPx/+x1DghKJ59nQvh+EjVj213+vIrYstbKIiIa47ywyfQQpjQF/Bk1oWyDrzybOFh1bAg=
+	t=1783416131; cv=none; b=kVnNPJoCn3dNA59VF5nUN7dORPmPYTKF0KNoErAiSU0F4hFLieKRZaZ1e72OJsQgxSrFNI8nIDR9NZ9wVPL+N7B77LvkLf5Gu1Q1xV+u6tz0MOHN44C9MpEqa7vH/4CjTCoO6QAoU3VcMDjVF/twSCLKHHVH6nauYS/BP8evb40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783415885; c=relaxed/simple;
-	bh=gc9+oFRu/VsEbVBQVMkQbhavqXKk+W9NNXndDtG0HW4=;
+	s=arc-20240116; t=1783416131; c=relaxed/simple;
+	bh=pgXUlI5Fb5TFfT4oh/MQ6ce9JUIKqI7O9ikz2rBtdPk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=exqi8l2u88L/JFP1/OP1IykHuYsKie7FE4ePbp4IUgcq++W0xJ63FuVJ9WX7DgNkCgTjhNZ5/5wPHBg+GgBuWtqPm2uxG0eVCHC9bJTz4Wpse2uA8p4uyWSNdzY0QvziM80FsTR1aVaniUMqWS11sHwU3Y5K1hS4yiyH/qcC7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GxrCMITv; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=amSqkkrjeXMoYSmMFgInuzr5Uq60Uou4N/TJ2BBLdTPtdmA3X5yEFbVbwWcV1AOYb5qWC1Aip70ITd9hF3uLx15PJ1I2aTWnIWDDtWckb724g9fDgSmpnZntUkviD6PSV5bz7TesLfkAobcSLdulZYDRHLzZJII5fgHQdN72OsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P2Vns6UX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GxrCMITv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C8E1F000E9;
-	Tue,  7 Jul 2026 09:18:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P2Vns6UX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D631F000E9;
+	Tue,  7 Jul 2026 09:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783415884;
-	bh=DKsr9/wCWuowkF1mpCLYEUgzaHI0+q7aOaSghoHvzpM=;
+	s=k20260515; t=1783416128;
+	bh=uLus07iwytJCbH68lFd/4rT5JnlXg1KBglZh40TAYxk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GxrCMITvHUllFhcpPdTetddrXEV8hmMiiLHkq506B4YtZQfHS3mc6qP3xOQoV/5t1
-	 AMHksDBbwUcrGjfECQ4/WNT7lzRjFJPzzePsDrLibkzOQhaGWdCK9SWgCxxXrzWkpa
-	 nTRYwzS6KbZIzjpGMyT5UwGwRvsJc0NEPZU7E73xSmE+NTrqnbYSP0QwHZ0g3n5ZCc
-	 KzEaRcaEhITAmSNSpPoc9B+ZP38eH0WfankhVTXNY7272wYdYvhA0K9yPMZ0Ten/4F
-	 GSq60UOoJwnUL39Ef3B5JIr2Gso5xU6HLX1H0KTDYo+eaL6KH9kAm7ZPe2HcxsL1iK
-	 ClUWTkwfZcFyA==
+	b=P2Vns6UXhFPNyaKvKhYtmB6BL8ln0zrtkXACdtWpX48qhRN7JCZpxhjMaSLhQc0C8
+	 wHuX8N5rXQN0SZ+3sxQ08itTeOgVRvpsap3E1d1fCYnUDcZsTUC3VV8LYj0Q6dVh5e
+	 mgwV+SBQcmPRLIOvGsBcoK0GYAmqgKwmTApfJipJN5AsyGrNvIPW6b8c5OoWb8P741
+	 YuYP/wNT/pH1pisZ78legPUuG/3IFjsKrnZKf8tqvKqgWH7Y/IIRoXVyJtLorn4Bh3
+	 Dd5mwgtJVLXKt7zD6sf5VWtFknE6uY1qHMfRb++M8+eCl7gBHGnwDLrDA7GBfXoCDB
+	 HKBuXsTkQBAJw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 05/15] s390-vfio-ap: Callback to get/set vfio device
- mig state during guest migration
+Subject: Re: [PATCH v4 07/15] s390/vfio-ap: File ops called to save the vfio
+ device migration state
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260707090226.3206695-6-akrowiak@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260707090226.3206695-8-akrowiak@linux.ibm.com>
 References: <20260707090226.3206695-1-akrowiak@linux.ibm.com>
- <20260707090226.3206695-6-akrowiak@linux.ibm.com>
+ <20260707090226.3206695-8-akrowiak@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 09:18:02 +0000
-Message-Id: <20260707091803.73C8E1F000E9@smtp.kernel.org>
+Date: Tue, 07 Jul 2026 09:22:08 +0000
+Message-Id: <20260707092208.80D631F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 9 potential issue(=
 s) to consider:
-- [High] The migration state machine is completely stubbed out, resulting i=
-n unconditional migration failures despite advertising migration capabiliti=
-es.
-- [High] A self-deadlock occurs in the error path of vfio_ap_mdev_probe() w=
-hen vfio_register_emulated_iommu_dev() fails.
-- [Medium] Migration capabilities are unconditionally advertised to userspa=
-ce, but runtime transitions are blocked for Secure Execution (SE) guests.
+- [Critical] The migration stream file does not hold a reference to the `ma=
+trix_mdev` device, allowing a trivial Use-After-Free if the file descriptor=
+ outlives the VFIO device.
+- [High] Migration state is dynamically regenerated from hardware on every =
+chunked `read()`, causing state tearing and massive performance overhead.
+- [High] The `config_sz` field in the UAPI `vfio_ap_config` structure is ne=
+ver initialized.
+- [High] Using `kzalloc` for potentially large variable-sized migration buf=
+fers can cause memory allocation failures.
+- [High] Inverted condition when handling pending async errors in `get_hard=
+ware_info_for_queue` leads to false migration failures and silent data corr=
+uption.
+- [Medium] Concurrent reads to the migration file race on `filp->f_pos`, co=
+rrupting the stream position.
+- [Low] A `size_t` variable is used to store negative error codes, creating=
+ brittle type conversions.
+- [Low] The error log in `get_hardware_info_for_queue` misleadingly states =
+it is executing on the target host.
+- [Low] Use of architecture-dependent `size_t` in a migration data structur=
+e.
 --
 
---- Patch [5]: [PATCH v4 05/15] s390-vfio-ap: Callback to get/set vfio devi=
-ce mig state during guest migration ---
-commit c722c4dee661c005442dd72e3de8888c3305b360
+--- Patch [7]: [PATCH v4 07/15] s390/vfio-ap: File ops called to save the v=
+fio device migration state ---
+commit eb8c5880a35e9533d3246f99a48030464bf1844e
 Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-
-s390-vfio-ap: Callback to get/set vfio device mig state during guest migrat=
-ion
-
-This commit implements two callbacks, migration_set_state and
-migration_get_state, for the vfio_migration_ops structure. These callbacks
-manage the migration state of a vfio-ap device during live migration of
-guests with pass-through access.
+Subject: s390/vfio-ap: File ops called to save the vfio device migration st=
+ate
+   =20
+This commit implements the read callback function for the vfio-ap device's=
+=20
+migration state file. It copies the guest's AP configuration and hardware=20
+information to userspace when the migration state transitions to STOP_COPY.=
+=20
+The state is then transferred to the destination host.
 
 > diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
 o/vfio_ap_migration.c
-> index c7c71980bdbb8..8274e7b65eea4 100644
+> index 76e06abe5a9e9..5ef7127b697a5 100644
 > --- a/drivers/s390/crypto/vfio_ap_migration.c
 > +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -87,6 +80,215 @@ static int vfio_ap_release_mig_file(struct inode *fil=
+e_inode, struct file *filp)
+>  	return 0;
+>  }
+> =20
 
 [ ... ]
 
-> @@ -56,16 +57,140 @@ struct vfio_ap_config {
->  	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
->  };
-> =20
-> +static struct file *
-> +vfio_ap_transition_to_state(struct ap_matrix_mdev *matrix_mdev,
-> +			    enum vfio_device_mig_state new_state)
+> +static int get_hardware_info_for_queue(struct ap_matrix_mdev *matrix_mde=
+v,
+> +				       struct ap_tapq_hwinfo *hwinfo,
+> +				       unsigned long apqn)
 > +{
-> +	struct vfio_ap_migration_data *mig_data;
-> +	enum vfio_device_mig_state cur_state;
+> +	struct ap_queue_status status;
 > +
-> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
-> +	mig_data =3D matrix_mdev->mig_data;
-> +	cur_state =3D mig_data->mig_state;
-> +	dev_dbg(matrix_mdev->vdev.dev, "%s: %d -> %d\n", __func__, cur_state,
-> +		new_state);
+> +	status =3D ap_tapq(apqn, hwinfo);
 > +
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if (cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
-> +	    new_state =3D=3D VFIO_DEVICE_STATE_RESUMING) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if ((cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
-> +	     new_state =3D=3D VFIO_DEVICE_STATE_STOP) ||
-> +	    (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
-> +	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	}
-> +
-> +	if ((cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
-> +	     new_state =3D=3D VFIO_DEVICE_STATE_RUNNING) ||
-> +	    (cur_state =3D=3D VFIO_DEVICE_STATE_RUNNING &&
-> +	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
-> +		/* TODO */
-> +		return ERR_PTR(-EOPNOTSUPP);
+> +	switch (status.response_code) {
+> +	case AP_RESPONSE_NORMAL:
+> +	case AP_RESPONSE_RESET_IN_PROGRESS:
+> +	case AP_RESPONSE_DECONFIGURED:
+> +	case AP_RESPONSE_CHECKSTOPPED:
+> +	case AP_RESPONSE_BUSY:
+> +		/* For all these RCs the tapq info should be available */
+> +		return 0;
+> +	case AP_RESPONSE_Q_NOT_AVAIL:
+> +		dev_err(matrix_mdev->vdev.dev,
+> +			"migration failed: Failed to get hwinfo for queue %02lx.%04lx on targ=
+et host: TAPQ rc=3D%d",
+
+[Severity: Low]
+Is the target host string in this error message misleading?
+
+Since this function is used to read the configuration during the STOP_COPY
+state, it executes on the source host rather than the target host.
+
+> +			AP_QID_CARD(apqn), AP_QID_QUEUE(apqn), status.response_code);
+> +		return -ENODEV;
+> +	default:
+> +		/* On a pending async error the tapq info should be available */
+> +		if (!status.async)
+> +			return 0;
 
 [Severity: High]
-Does this code cause a regression by unconditionally returning -EOPNOTSUPP?
+Does this logic invert the handling of pending async errors?
 
-Since all valid migration state transitions in vfio_ap_transition_to_state()
-are caught and unconditionally return -EOPNOTSUPP, could this cause
-orchestrators (like libvirt or QEMU) to fail at runtime? Orchestrators
-querying the device will see migration as supported, but might unconditiona=
-lly
-fail when they attempt to change the state.
+The comment indicates that on a pending async error the tapq info should be
+available (implying a return of 0). However, the code checks !status.async
+to return 0. If an async error is pending (status.async =3D=3D 1), this wil=
+l skip
+the return and incorrectly log an error and return -EIO. Conversely, if an
+unrecognized fatal error occurs (status.async =3D=3D 0), it will silently r=
+eturn 0,
+potentially corrupting the migration state.
 
+> +
+> +		dev_err(matrix_mdev->vdev.dev,
+> +			"Failed to get hwinfo for queue %02lx.%04lx: TAPQ rc=3D%d",
+> +			AP_QID_CARD(apqn), AP_QID_QUEUE(apqn), status.response_code);
+> +		return -EIO;
 > +	}
 > +
-> +	/* vfio_mig_get_next_state() does not use arcs other than the above */
-> +	WARN_ON(true);
+> +	return -EINVAL;
+> +}
+
+[ ... ]
+
+> +static int
+> +vfio_ap_get_config(struct ap_matrix_mdev *matrix_mdev,
+> +		   struct vfio_ap_config **ap_config, size_t *ap_config_size)
+> +{
+> +	struct vfio_ap_config *ap_configuration;
+> +	int num_queues, ret;
 > +
-> +	return ERR_PTR(-EINVAL);
+> +	*ap_config_size =3D vfio_ap_config_size(matrix_mdev, &num_queues);
+> +
+> +	ap_configuration =3D kzalloc(*ap_config_size, GFP_KERNEL_ACCOUNT);
+
+[Severity: High]
+Could this kzalloc() fail on long-running systems when scaling to a large
+number of queues?
+
+The total contiguous physical allocation size can exceed 1MB (up to 65,536
+queues). Requesting such a large memory block (e.g., order-8) via kzalloc()
+with GFP_KERNEL is highly susceptible to physical memory fragmentation, whi=
+ch
+could result in -ENOMEM and abort the migration. Would kvzalloc() be more
+appropriate here to allow fallback to vmalloc?
+
+[Severity: Low]
+Does the underlying struct vfio_ap_config use an architecture-dependent
+type for UAPI/migration?
+
+The struct uses a size_t config_sz field. Since this structure is
+serialized and sent to the destination host, using size_t (which is
+architecture-dependent) in an external ABI or migration stream could cause
+binary layout inconsistencies, even if s390x is exclusively 64-bit.
+
+> +	if (!ap_configuration)
+> +		return -ENOMEM;
+> +
+> +	ap_configuration->num_queues =3D num_queues;
+> +
+> +	ret =3D vfio_ap_store_queue_info(matrix_mdev, ap_configuration);
+
+[Severity: High]
+Is the config_sz field of ap_configuration intentionally left uninitialized?
+
+Since kzalloc() zeroes the memory, the config_sz field remains 0. When
+this state payload is received by the destination host, the stream might be
+rejected or misparsed if it attempts to validate the size of the incoming
+migration data against config_sz.
+
+> +	if (ret) {
+> +		kfree(ap_configuration);
+> +		return ret;
+> +	}
+> +
+> +	*ap_config =3D ap_configuration;
+> +
+> +	return 0;
 > +}
 > +
->  static struct file *vfio_ap_set_state(struct vfio_device *vdev,
->  				      enum vfio_device_mig_state  new_state)
->  {
-> -	return NULL;
-> +	int ret;
-> +	struct file *filp =3D NULL;
+> +static ssize_t vfio_ap_stop_copy_read(struct file *filp, char __user *bu=
+f,
+> +				      size_t len, loff_t *pos)
+> +{
 > +	struct ap_matrix_mdev *matrix_mdev;
-> +	enum vfio_device_mig_state next_state;
-> +	struct vfio_ap_migration_data *mig_data;
+> +	size_t ret =3D 0, ap_config_size;
+
+[Severity: Low]
+Is it safe to use size_t (an unsigned type) to store negative error codes?
+
+The ret variable receives the results of validate_stop_copy_read_parms()
+and vfio_ap_get_config(), which return negative integers like -ENODEV.
+While the implicit cast back to ssize_t masks this currently, it creates a
+brittle pattern that could introduce bugs if ret is ever checked in a
+conditional statement (e.g., if (ret < 0)).
+
+> +	struct vfio_ap_config *ap_config;
 > +
-> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	/*
+> +	 * When userspace calls read() with an explicit offset (pread), pos is
+> +	 * non-NULL and the function rejects it with -ESPIPE (illegal seek). For
+> +	 * normal read() calls, pos is NULL, so we'll use the file's internal
+> +	 * position filp->f_pos
+> +	 */
+> +	if (pos)
+> +		return -ESPIPE;
 > +
 > +	mutex_lock(&matrix_dev->mdevs_lock);
-> +	if (ap_is_se_guest()) {
-> +		dev_err(matrix_mdev->vdev.dev,
-> +			"Migration not allowed from or to a Secure Execution guest\n");
+> +
+> +	pos =3D &filp->f_pos;
+> +
+> +	ret =3D validate_stop_copy_read_parms(filp, pos, len);
+> +	if (ret) {
 > +		mutex_unlock(&matrix_dev->mdevs_lock);
-> +		return ERR_PTR(-EPERM);
-
-[Severity: Medium]
-Could this runtime check cause a regression with orchestration software?
-
-By advertising migration capabilities unconditionally to userspace, but
-blocking transitions for Secure Execution (SE) guests here at runtime,
-orchestrators might incorrectly believe migration is supported for SE guest=
-s.=20
-
-Could this be rejected earlier during capability checks rather than failing
-during the actual migration attempt?
-
+> +		return ret;
 > +	}
 > +
-> +	mig_data =3D matrix_mdev->mig_data;
+> +	matrix_mdev =3D filp->private_data;
 
-[ ... ]
+[Severity: Critical]
+Does the migration file descriptor hold a reference to matrix_mdev?
+
+When the migration file descriptor is created, filp->private_data points to
+matrix_mdev. If a user keeps this file descriptor open and unbinds the
+device from sysfs, matrix_mdev is freed. Subsequent VFS operations (like
+read() here or close() in vfio_ap_release_mig_file()) will dereference
+the freed pointer, leading to a Use-After-Free.
+
+> +
+> +	ret =3D vfio_ap_get_config(matrix_mdev, &ap_config, &ap_config_size);
 
 [Severity: High]
-Is there a regression involving a self-deadlock in the error path of
-vfio_ap_mdev_probe() when vfio_register_emulated_iommu_dev() fails?
+Does dynamically regenerating the migration state on every read() cause
+tearing and performance issues?
 
-The error path in drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_probe()
-holds the mdevs_lock while invoking vfio_put_device():
+If userspace reads the state in chunks (e.g., 4KB at a time), any hardware =
+or
+configuration changes between chunks will shift the data layout, causing the
+migration stream to contain a torn and inconsistent snapshot.
 
-err_put_vdev:
-	vfio_put_device(&matrix_mdev->vdev);
-	mutex_unlock(&matrix_dev->mdevs_lock);
+Additionally, for a large number of queues, repeatedly polling the hardware
+via ap_tapq() on every chunk introduces massive O(N^2) overhead, which could
+stall the CPU and time out the migration. Should the driver cache a snapshot
+upon entering the STOP_COPY state instead?
 
-This triggers the synchronous release callback vfio_ap_mdev_release_dev()
-which attempts to acquire the same lock:
+> +	if (ret) {
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * If the position exceeds the size of the AP configuration data,
+> +	 * then indicate EOF; otherwise calculate the length of the data to
+> +	 * read such that a buffer overrun is prevented.
+> +	 */
+> +	if (*pos >=3D ap_config_size)
+> +		len =3D 0;
+> +	else
+> +		len =3D min_t(size_t, ap_config_size - *pos, len);
+> +
+> +	/* If we've reached an EOF condition, let the caller know */
+> +	if (len =3D=3D 0) {
+> +		kfree(ap_config);
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +		return 0;
+> +	}
+> +
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	if (copy_to_user(buf, (char *)ap_config + *pos, len)) {
+> +		kfree(ap_config);
+> +		return -EFAULT;
+> +	}
+> +
+> +	kfree(ap_config);
+> +	*pos +=3D len;
 
-	mutex_lock(&matrix_dev->mdevs_lock);
-	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
-	vfio_ap_release_migration_data(matrix_mdev);
-	mutex_unlock(&matrix_dev->mdevs_lock);
+[Severity: Medium]
+Can concurrent reads corrupt the stream position here?
 
-Could this cause a kernel thread freeze when creating an mdev device fails?
+The migration file is opened with stream_open(), so the VFS f_pos_lock is
+not held during read(). Because mdevs_lock is dropped before copying to
+userspace, concurrent reads will race on evaluating and incrementing *pos
+(which points to filp->f_pos), leading to duplicated data and a corrupted
+stream offset.
+
+> +	return len;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707090226.3206=
-695-1-akrowiak@linux.ibm.com?part=3D5
+695-1-akrowiak@linux.ibm.com?part=3D7
