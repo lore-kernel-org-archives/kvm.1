@@ -1,107 +1,143 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6349A42DFEB
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 15:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A6B3264D5
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 15:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783438667; cv=none; b=A0wzWWVwBXAz6WhL2jDLZzYLQWmHllHoloJ7UV3e1qdZpWGWSV9TTmySnxE4MgXn6rad7C8S2LBOVrCQ34pXLx7O75Gzl6keqGKiwxvAg/KObcx601LAmerK6/WCVQbHKXrfXpm8qCqMuYwzlHWncqFbJ/TP0643nfYIZX/OnD4=
+	t=1783438728; cv=none; b=jHNYUcFNrgBbhQzBUzCLbJmSGfElHYV4vA0YL+tMy7wllHZLR0RusxShfkVHOA4uRPw7Z/bsnavwXlFxTwVT0mGj/VuOmPDt392TZOOe+PAgr6oi39jampqSlQL6egmiXEn1TFnFvroAwT4viTlzOuVwu8Pp0o5dDLOBYuiqHSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783438667; c=relaxed/simple;
-	bh=nNEtWhsqH+EElpDPwy5F3Hy38N2bH/smUGCQo+NrEzk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OxKVpRBdEcUrlkbRSQYw2fTeBIpL7i46f3hZstA01aDcUqebTW6MzSw5lRI/O8hpEsByJ5oPLOukMpOQdAO6a5Jc+H6yACdmkusqp7PSFd6X6dkcEAzx7AFUowbKeSjPaD6NKlsmg9xeOR9+qCawZg4Aj+Gp5rqIfFkREVEbcL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p8Rr1UUB; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783438728; c=relaxed/simple;
+	bh=iDSVx05XJpQ187yLL+vngdmnzjWQdJOINiVqfnmbIYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m+9bRTZSFd1iKAf3SX3q9pOw+Ir5PVZnNZsYVWp8T9EHT9gZP5VYQD3QY4tmxPUOoynAnfNAZRMEixlSJTryjJOsnCVRq0XNsQtSuv7WoM++w7G/TGVNW+Lq1+HDlCn1sM5Crm1XvpPXgZA880NfWSrlILq/a8+KsyOZQYSRCdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OQRAcW6u; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p8Rr1UUB"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ccafc5e82cso25527585ad.3
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 08:37:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OQRAcW6u"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so32246335e9.1
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 08:38:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783438665; x=1784043465; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=KcPF5J/bz/mF1ksfoKKLrOzuL/Bt6L6jlasgMUKGJgQ=;
-        b=p8Rr1UUBK3xJJ4/l/4rrRWRs+tWJH4pESaGetFWWAd+qJyHr04ZB3H6JkBdREyH9pM
-         8GeQG2aOWiZ/dS5mJ0uZR52crDo/cfcsXxtEb06LuIucN8HihRTHAcl5xPejUBaxFIUX
-         xQoZdDOPGl8CJ0achK9O9TJugCXj83DXGa37g8yuLTGY0VHXDMKiugdsSl7aPkAU72Im
-         W7TjabAuTF0cbTXglJAqQQNWxKESS8VB18rQGZ2ned2urbYvf//zxKekWRA3+0QE0ix7
-         v5IcZtms57uD2zmstbYkYpksOZnekNshnEkFgYhouGJA2l+tFnWcP50JGQdolzmtj8oc
-         KzYA==
+        d=suse.com; s=google; t=1783438725; x=1784043525; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UEQ8hvtSLcTmZmrsjKtJkrVXdZFggd5Aezo0pgyYhCk=;
+        b=OQRAcW6u4w3eHo1rKEUxi9C900X9L2rF9xzjyZszsY7iad0v5BNxcOALCOu9RG60YK
+         zIpoMbUOUpcuo2unP4EU1ljS1cteHo5NmgIa/Lxodlw8sbK94HXm5KnBocHprHa3reTh
+         wKyEs8iOUIkEITzDgeBCQI5VOfW6hct1UHDtkI6KjfdyZZ9KhzdykJBRtruYd7LVHHFr
+         yu3vwcn0crbkn7lGVO1D45mbgQVvuVr1IqHHOhenvDjPXHEKtIi+V2DGg3Sg8RNUl8+x
+         X7a61e2K5QIbcn7Z7XO8QDe7AkdYKuvCrPt/9koT7Vcv73MloNCs8eLuP/0k2rD0fBvy
+         CBSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783438665; x=1784043465;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KcPF5J/bz/mF1ksfoKKLrOzuL/Bt6L6jlasgMUKGJgQ=;
-        b=P9WGr2x60B14Tg4O5ozZuXX0N3S8ZZ4GiMP7dpmoUUtEw29YprquE5t+ue05hunNUP
-         LZkHnMf/Md2COm+qXn0BXpFhxlFTLkuAZq/zWgVOFPTkRYudP8JNRhZJH4qYOXoxwDKD
-         Cf13BR7w+/J3wGJCpL7WrKs/UgjuZ8hg8KiBr4ODx7pmixBjqFipPxIvv3XJOLpIGHB0
-         idGTR2Uo+ntbidmpHx6+ikRShh8kVv668IYA32oAIXpf1mDxeO1dCdcqlWARPiqDGuGN
-         2TTCXCnuI6mMjitFvYyHT5AMiokf5CeXuJZdo/5N43+qAv9x1vj56OpFei0m/TfG55B5
-         uOBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqqo9WLxHEcgVSAsyRyP+A3ENG7f0TeaIGjlhQhGBMsHoaAJ1tefT6AQZfhwgY2Cb6LxmQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1nGgurPA+loSMBNDAPLauWGVxgG0hOz3kiSrKtJ9IaWNL2bs1
-	O0VsQMf+auAHqajOAfmVvLWi7D9jIaCVS9nzX0GVPfFo3N0wzToZmpFEoyi9qwfOfaxtSxzmDZh
-	En60zWQ==
-X-Received: from plbjx4.prod.google.com ([2002:a17:903:1384:b0:2c6:a078:41f8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc6:b0:2ca:106c:7122
- with SMTP id d9443c01a7336-2ccbe3ee417mr56406945ad.9.1783438664543; Tue, 07
- Jul 2026 08:37:44 -0700 (PDT)
-Date: Tue, 7 Jul 2026 08:37:43 -0700
-In-Reply-To: <CALMp9eTycB8Z94V8j-xyfDeah5KaJypRrPfFNHfQSUzgrr7FkQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1783438725; x=1784043525;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UEQ8hvtSLcTmZmrsjKtJkrVXdZFggd5Aezo0pgyYhCk=;
+        b=ojcrVMX8DUSWmq0DU1wF5gRZtOCqB7ucUod79q4RMXYab+9hPWvsr60NBk0M7vsdTA
+         R486PQn2fHiDVB8D+408kEoh9CxvKX8lpRhRbl/eCq+K1pG2ClAk57U0nUpg0KsY5xAg
+         0LlDiGxCOZwbSGXyQtZp79vHlRXKW1AFfVxd8DuiO19uCJBdt1Vz2U6HfmjcKfRxUc1d
+         jpB1sakMGXqqSGAKMmlC8m/hEnwTSRZsrPm6Uk8i/MeiVjISzkR5DT7eIY0KFRr3UQNT
+         V/z5wTgHwon1e+PuCSAGT9Ic0kNdjl11Js515Ui8MhvhLPtdvg4r9KI7qTGnGKBLHOAt
+         Q32Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoHlG0WMFsHkWRtTuHSAhvfdBe6C/LXWW8ETzoIjcHJySWA+NG7F1qE2g5a31XskHHr6Xo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQXlcHr5WpX0DGPHgSesmrp1kAZT4ujnt45HoaWPOYL8RdO47Q
+	ycuCZ1sa//mA9NtNuilIgyawDVzsRK/KVB562hKBRH+5PCzXPee4cnP6FZMOKbWyQLA=
+X-Gm-Gg: AfdE7cmSOUXqmd1YWHdU6/y4ydm6HzOmRX6q7cu/i1T0U0+f5h+Dr/SPzwLtAK1LomV
+	jvslQs0yxr+/PWKIZs43dX1LPYPLU73dhVZfXm7zQETloAxQUvt72TIEqvkE/Zr6j4tWgQrdcAt
+	kXtqbwM094B/4ktcfEa7P1tY6SSFA4VCA4woeQvv+NWOjYqUJV+3+0BUtTwUdsBqhXhnBOmN2ru
+	sdcatOjgf/f1XFjuMBKnV4MsbcPbN2JRzFAKNHsqvD5ckzfcFjxZjoUWDGBIHMVZ0zllBmLX83e
+	8GRISL0siVEkLwkhiuwAPssqr7Rb1ZpEEDxBC3pRMqqZWX3e3vNFE136y8nMSrIpOklSAlpKiNR
+	iXe0zpniOWy1n1RqTJ47KdLXiMjejnzgMCFXH9SfcI/C9waSL+52qSxANTy76mx1P6ASp5Be6aC
+	l1QSExSCbxCfK4l9TQnKHdoUymMUzh0oHcEIytChsZ0xbCE2S4kns9tKciQj59uvX+bo7/peCo/
+	+FdBfR5XjfhtWRjhuzXQAg0
+X-Received: by 2002:a05:600c:3b08:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-493df0410d7mr67190395e9.14.1783438725537;
+        Tue, 07 Jul 2026 08:38:45 -0700 (PDT)
+Received: from zovi.suse.cz (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f5b811sm101111785e9.13.2026.07.07.08.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 08:38:45 -0700 (PDT)
+From: Petr Pavlu <petr.pavlu@suse.com>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: Xin Li <xin@zytor.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
+Date: Tue,  7 Jul 2026 17:37:03 +0200
+Message-ID: <20260707153819.4172541-1-petr.pavlu@suse.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
- <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
- <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
- <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net> <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
- <d5645a47-c346-4e63-a5c6-c88bb39a3ee1@open-hieco.net> <akxwt1mX6blSnkxI@google.com>
- <CALMp9eTr0iJ5QgbZJ0YtOZg89XVFSesbyoGGdtkz+f8c60DcDA@mail.gmail.com>
- <ak0QE7mP_TeZmzeS@google.com> <CALMp9eTycB8Z94V8j-xyfDeah5KaJypRrPfFNHfQSUzgrr7FkQ@mail.gmail.com>
-Message-ID: <ak0dRzS4Ap-JREvg@google.com>
-Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Tina Zhang <zhang_wei@open-hieco.net>, mlevitsk@redhat.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 07, 2026, Jim Mattson wrote:
-> On Tue, Jul 7, 2026 at 7:41=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> >         insn =3D ctxt->fetch.data;
-> >         if (ctxt->eip =3D=3D kvm_rip_read(vcpu))
-> >                 insn_len =3D ctxt->fetch.end - ctxt->fetch.ptr;
-> >
-> >         for (len =3D X86_MAX_INSTRUCTION_LENGTH - insn_len; len >=3D 0;=
- len--) {
-> >                 if (!kvm_fetch_guest_virt(vcpu, kvm_rip_read(vcpu) + in=
-sn_len,
-> >                                           &insn[insn_len], len, NULL))
-> >                         break;
-> >         }
->=20
-> This split doesn't bother you?
+The linux/module.h header is included by every *.mod.c file to provide
+`struct module` and other related definitions. This makes it a "hot"
+header, so it should avoid pulling in unnecessary definitions.
 
-What split?  Do you mean reading some bytes from the emulator, and some at =
-the
-time of #VMEXIT?  If so: no.  IMO, the most important thing in practice is =
-to
-capture the actual bytes used to decode the instruction that led to the #NP=
-F.
+The header currently includes linux/elf.h but this is largely unnecessary
+because it requires only the base ELF structures, such as Elf_Ehdr and
+Elf_Sym, which are declared in uapi/linux/elf.h.
 
-Exactly how and when the "CPU" reads the bytes is a micro-architectural det=
-ail,
-so I don't have any qualms from an architectural-correctness perspective.
+Replace the linux/elf.h include with uapi/linux/elf.h. On x86_64_defconfig,
+including linux/module.h alone results in 2.2 MB of preprocessed data. This
+change reduces that to 1.5 MB.
+
+The first three patches are cleanups to avoid relying on declarations being
+indirectly provided through linux/module.h -> linux/elf.h. These patches
+are all independent and can go through their respective trees. The final
+patch depends on these changes.
+
+It is hard to identify all files that indirectly reference something only
+through linux/module.h -> linux/elf.h. The changes were build-tested with
+allmodconfig on arm, arm64, m68k, mips, powerpc64, riscv, s390, x86_64.
+
+Petr Pavlu (4):
+  x86: Avoid indirect includes through linux/module.h -> linux/elf.h
+  s390: Avoid indirect includes through linux/module.h -> linux/elf.h
+  tpm_crb_ffa: Include linux/slab.h for kzalloc_obj() and kfree()
+  module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
+
+ arch/s390/kernel/nospec-branch.c | 1 +
+ arch/x86/entry/entry_fred.c      | 1 +
+ arch/x86/entry/syscall_32.c      | 1 +
+ arch/x86/kernel/cpu/intel.c      | 1 +
+ arch/x86/kernel/fpu/xstate.c     | 2 +-
+ arch/x86/kernel/process.c        | 1 +
+ arch/x86/kernel/signal.c         | 1 +
+ drivers/char/tpm/tpm_crb_ffa.c   | 1 +
+ drivers/s390/char/uvdevice.c     | 2 ++
+ include/linux/module.h           | 4 ++--
+ 10 files changed, 12 insertions(+), 3 deletions(-)
+
+-- 
+2.54.0
+
