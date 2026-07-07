@@ -1,160 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D512874F5;
-	Tue,  7 Jul 2026 09:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078A41D63E4;
+	Tue,  7 Jul 2026 09:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783415741; cv=none; b=SMAi9035ldZBd7jX8wuOaI0vxkDHZBIEDNlKh9e0UmvJoxn3Oklh02VpKZW3+ZnYpOuHTc2ybSyQwj7JC4fw5K6NjJCWrtGmGICTl6SL65W603WFIYb4Gjwg3FFfj35ad4OaBDdm9Agh/gofW2AJ00HCv4wAseYMeVcW/f40niQ=
+	t=1783415786; cv=none; b=Gw0mSAZocimlQZmM8pHt/DJvRGa8hqhHBfScfQJ/MHAxBVtUrmmdTfeA+Y8SyTBg1x/xFCyefilyOisku44nJp0HwHlfHG3VySzBqmmLLA+HkLqkY4MmmyDGMkLfapWujSKrSvUJZ8r4UsV6TuV4R2TlgQyMFE2grdq9Z9Nu4QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783415741; c=relaxed/simple;
-	bh=Af4U8eoV5qNBEFig4GwKhz/ApJyJyoJP+jBO1yxA0yM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FMrU8wc63dJ5zTNaEwop7JpLSbka3PgWhXnv8G/zwIIoZWIf5rWVrBnLfCV+YwRtvZYZ1o/eQQlgfSP3/GLSu7rsQDiUDUNvFPG+BZK7kHY1rdK5rznGDX23kbXzT1TxuKyaad5p8xUb6xVg4B/36OoUxawrl5R3BM1ajoYiz9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0ldHxNS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783415786; c=relaxed/simple;
+	bh=6CxTm5CQJRWizY+bQkG2GRtEXkPbb35miOQMP1VcvQs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qPcYULZ+SlnM439Cp1H64z4m3tXZljtKKYwNtIONCxtG24nlw0w9yUnBoAPk1sXPPRJ/6K3gk2dO74xYsyWow9dfYBW/+osZzOnu+eUSCRuMhHbCmdPqhUw3HajHBMss8ZfdvcAKk8Q9er1H2dzp8Mb+8xsiZIUI/IL3D3ONF+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WWb1rALi; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0ldHxNS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013561F00A3A;
-	Tue,  7 Jul 2026 09:15:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783415740;
-	bh=jkH4e3snEfctqMuwZ1ikqwpz1mjL//7T4y0BEmqhCbs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U0ldHxNS2UG3kTSUwYS75PQmgnB70Ca3wgusA9ULD9CdRgXzkSQQPL5X/zf/M55Ng
-	 +bdKXzfpQnTdOKeuoHa6kMGU6GnG5PF/vwB0jUrplLWNDunsyFvnAF6RQD/hd+8Dt6
-	 JEaJBRHn6hjYqjMXWRE7FbVBmadXfX5IFVjaZSYZRKNDCDlN6n+iiJ423FqEwOKOfn
-	 3zJpqcQ3TQAfLqHtY1mHv0HZNpz//tui3BkYN2OjTAAG/q00aqhOkAUBYCJSHFMJzl
-	 FHZpO4S2bYJZB/D9XuliSZ2A5SMTOwMQpfdi3ZNphGUrcF2BN32IKMPuziDq8ub1U9
-	 V3iWG4vkm6x7g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 04/15] s390/vfio-ap: Reset migration state in
- VFIO_DEVICE_RESET ioctl handler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260707090226.3206695-5-akrowiak@linux.ibm.com>
-References: <20260707090226.3206695-1-akrowiak@linux.ibm.com>
- <20260707090226.3206695-5-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 07 Jul 2026 09:15:39 +0000
-Message-Id: <20260707091540.013561F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WWb1rALi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6CxTm5CQJRWizY+bQkG2GRtEXkPbb35miOQMP1VcvQs=; b=WWb1rALipcTiTmbq8tewQHy/MU
+	K+Xxc0gqOnOA1RXaJm5i5vhTCRz0mi0orbT2FufyGyMxmuzxJYIjo7mLMxn6W7ZyBuPQ8jpnl9wk8
+	O04tpficvR4ryiwPh9pmTMA6wI7jvHUsK1mqKqq6dMFj+NKCo3XPwKQAV62JGj9u883xvYYAPIY3h
+	E/UegiOd37SC9+seMKgZio3JYk9w938oUpY7FWHbLF3dTJjKYP0BHm6XbBVHE3e/8bMnx3z2qXBHC
+	GUsBGyXueEzD6qteyKzg8jXMviOK3CVAFdKT5qYTjAmuc7vfYFnuOAJGYHF3c0dVsPTK1eOxhNuVN
+	4TcqP9xQ==;
+Received: from [2001:8b0:10b:5:7a2d:be49:1d8:dcc1] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wh1ud-0000000HVY8-1DUn;
+	Tue, 07 Jul 2026 09:16:19 +0000
+Message-ID: <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
+From: David Woodhouse <dwmw2@infradead.org>
+To: Furkan Caliskan <frn1furkan10@gmail.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, x86@kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, 	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, 	hpa@zytor.com, paul@xen.org,
+ xen-devel@lists.xenproject.org
+Date: Tue, 07 Jul 2026 10:16:18 +0100
+In-Reply-To: <20260706081311.13633-1-frn1furkan10@gmail.com>
+References: <20260706081311.13633-1-frn1furkan10@gmail.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-WWrbmVq6ZZZ3yNAFmU9T"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
 
-New issues:
-- [Critical] Build Failure / Undefined Function / Potential NULL Pointer De=
-reference in `vfio_ap_reset_migration_state`.
-- [Low] Typo in comment: 'stte' instead of 'state'.
+--=-WWrbmVq6ZZZ3yNAFmU9T
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pre-existing issues:
-- [High] System-wide Denial of Service via unbounded wait holding the globa=
-l `matrix_dev->mdevs_lock`.
---
+On Mon, 2026-07-06 at 11:13 +0300, Furkan Caliskan wrote:
+> IDR is deprecated in favor of XArray: see
+> Documentation/core-api/idr.rst. Convert evtchn_ports accordingly.
+>=20
+> kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
+> xa_insert(), since it was really an insert-at-index, not an
+> allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST.
+>=20
+> kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
+> since xa_load() takes its own RCU read-side section internally.
+> evtchnfd's lifetime is still guaranteed by kvm->srcu.
+>=20
+> xen_lock is left in place: it protects state beyond the map itself.
+>=20
+> Signed-off-by: Furkan Caliskan <frn1furkan10@gmail.com>
 
---- Patch [4]: [PATCH v4 04/15] s390/vfio-ap: Reset migration state in VFIO=
-_DEVICE_RESET ioctl handler ---
-commit 35f281972b36c8fc12cff370107f5d4f61c3aa01
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
 
-s390/vfio-ap: Reset migration state in VFIO_DEVICE_RESET ioctl handler
+Thanks.
 
-This patch adds a function called during VFIO_DEVICE_RESET to release
-migration files and free allocated storage for migration state. It resets
-the device migration state to RUNNING as required by the specification.
+--=-WWrbmVq6ZZZ3yNAFmU9T
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> index 5b6d48ccf332c..c7c71980bdbb8 100644
-> --- a/drivers/s390/crypto/vfio_ap_migration.c
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-[ ... ]
-> @@ -129,3 +129,23 @@ void vfio_ap_release_migration_data(struct ap_matrix=
-_mdev *matrix_mdev)
->  	kfree(matrix_mdev->mig_data);
->  	matrix_mdev->mig_data =3D NULL;
->  }
-> +
-> +/**
-> + * vfio_ap_reset_migration_state - Reset the vfio-ap migration state
-> + *
-> + * @matrix_mdev: pointer to the object maintaining the vfio-ap device st=
-ate
-> + *
-> + * Called during VFIO_DEVICE_RESET to clean up any active migration
-> + * stte and reset the device to RUNNING state as required by the VFIO
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDcwNzA5MTYx
+OFowLwYJKoZIhvcNAQkEMSIEICgW928EO0BtePcUBd542U2snwfj5LaQC5gujw42v4zIMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAJbLAJBU3sSHM
+qMiL073Baw++MrHg/xoC274PxXcuPSaoIuhY1EbwhnPnzWYpRM5M05sOa8MbKMHWnH5UiYU9t8or
+wy+evr9CvImlELKwwPooWzm5pyKWovsaA5aioP31kD6BUx+VDU1gWdcalKdaXPCl7rPueuF6q6Wm
+e5Siqt0Zc3VVMCMWdFAtrN2Zorcav22huqDbsxnNXoI8RtwwU4vBnbpWk6vXjPEs6wtnqTyMbTLO
+RuWuj8tnjld1rpx2SGBQ0+L1K3++zduo0MTrfzeWcKsIFQAwW6RqWQhkehQSEEFtfsda2X7U7PfC
+plofS8skqLsSnFAHuNP2xInQWn4dT1HXgSPzR6FLAvpIc+MeMjZkgdcSN+neBT3CFMwv52XMrPKJ
+hv/E2iy4Hjws7th3C+oeQX1Lu5OJbCXelJpOlNP6Is7VqMaVOH8+ji89h1UQi6u0tDTMo9Qf83QK
+lGtwacfglwf66WdrwaenlcNb+/QTOM/+oK7LTU+A1T9Fenkne2VTUCln6ic25kNsFcL74bautx61
+HUvUs4SywdqDcCdvGAr/NFgTmWaUUUbQUkHd8OF4SvW85F2/H/Ufw7mRqqon6OyVYtCaQWqMOUhd
+oO+FkwLDlG2lo2rGZTe70ackBHYOkzIRntuEuhaKucF0TQKhjeMVnguSH+9t2m0AAAAAAAA=
 
-[Severity: Low]
-This isn't a bug, but there is a typo here. Did you mean "state" instead of
-"stte"?
 
-> + * migration specification.
-> + */
-> +void vfio_ap_reset_migration_state(struct ap_matrix_mdev *matrix_mdev)
-> +{
-> +	lockdep_assert_held(&matrix_dev->mdevs_lock);
-> +
-> +	if (!matrix_mdev->mig_data)
-> +		return;
-> +
-> +	vfio_ap_release_mig_files(matrix_mdev);
-
-[Severity: Critical]
-Does vfio_ap_release_mig_files() exist in the kernel? I could not find a
-definition or declaration for it.
-
-If the intention was to call vfio_ap_release_migration_data() to free the
-storage as mentioned in the commit message, wouldn't that set
-matrix_mdev->mig_data to NULL?
-
-> +	matrix_mdev->mig_data->mig_state =3D VFIO_DEVICE_STATE_RUNNING;
-
-If matrix_mdev->mig_data is freed and set to NULL just prior to this, won't
-this line unconditionally dereference the newly NULL pointer and cause a
-crash?
-
-> +}
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index 8132902148669..8a9e83921f74e 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -2332,6 +2332,10 @@ static ssize_t vfio_ap_mdev_ioctl(struct vfio_devi=
-ce *vdev,
->  		break;
->  	case VFIO_DEVICE_RESET:
->  		ret =3D vfio_ap_mdev_reset_queues(matrix_mdev);
-
-[Severity: High]
-This is a pre-existing issue, but can this lead to a system-wide deadlock?
-
-In vfio_ap_mdev_ioctl(), the global matrix_dev->mdevs_lock is acquired
-before calling vfio_ap_mdev_reset_queues().=20
-
-Inside vfio_ap_mdev_reset_queues(), flush_work() is called, which
-synchronously waits for apq_reset_check() to complete:
-
-vfio_ap_mdev_reset_queues()
-    flush_work(&q->reset_work);
-
-If the hardware faults, apq_reset_check() polls indefinitely in its
-infinite while (true) loop. Because the global mdevs_lock is held during
-this time, would this permanently block all other operations across all
-vfio-ap mediated devices?
-
-> +		if (ret =3D=3D 0) {
-> +			/* Reset migration state per VFIO migration spec */
-> +			vfio_ap_reset_migration_state(matrix_mdev);
-> +		}
->  		break;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707090226.3206=
-695-1-akrowiak@linux.ibm.com?part=3D4
+--=-WWrbmVq6ZZZ3yNAFmU9T--
