@@ -1,175 +1,254 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E2A27B32C;
-	Tue,  7 Jul 2026 05:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783403678; cv=fail; b=oUUet2e7V6kasZVMkbtcBobqrUvPitTVsMVNhnYc52ulmDj0aDgaTi64Q/A+7nhVOrkmGPtya8gsM7nx4l6o/WyxcB8PsUQQpEDFGqClIH99mgQV92fblZYzckF83DvS117uGIfV6VqzibG11mz6I8U0DRy8gAmQT8oJjSDG0zk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783403678; c=relaxed/simple;
-	bh=RfHEcY0BkjKVFaUcIX+UckXRxbIsLay+pnfQbPPPUSk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ik2hbkKOtWZEsiA/cR+5HLAxAr+HA7rwXtPjK/Mst6tRJxgdbVWtEiOG5xTcA0gzSCZT9b+45TnWcWwCPqne/9YK24ZJu3+9wxDlmnqBHAUcGrUUGjYDtMRUen7XpLn9zyZYypuSiAB/+G2pDAuPX2Z0Ycfh+prysY+h19UM97o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JWnuePMF; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6B3385D8B;
+	Tue,  7 Jul 2026 06:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783404690; cv=none; b=BEEo50LwiHq0I9l9KMb3xTMAD0rwyFW+fub323YUjA49bhLQM5vcvyH/wOFmuAXw848G6i5is8rbX7XwPUY4Vj1OSfqgLlL0S0lYTV89ejQiYWNxu6V+16Qjsh7g8RYo1dTJcmIpAIJrOgU172nJwn1kRYcj/iYuLXELuki/CUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783404690; c=relaxed/simple;
+	bh=HvKROzRN/MmyW+Iduf8yLOxjL5M1hd6nBbz9xNooYxU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Vly5Ih4qYvZhnRZNGhUqnujSPfv0qoeFMCxt8oqz6ZmmLxF615/8DHg3QXokQc5RMn+H9rPWpQcLpzwQhHwo7wnNhFGOBEHr3VKaWXtgMZrtKhj6F8m/O3KCjeBAl8Z5yyMuTavWxgXVA9CsnusZGYO7vRNgK2qJ+LVyvJgwaIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FfcxKaHv; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JWnuePMF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783403677; x=1814939677;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=RfHEcY0BkjKVFaUcIX+UckXRxbIsLay+pnfQbPPPUSk=;
-  b=JWnuePMFP06FC7YHAasguPq4FZMmcVn6GYpjfH9AogES2Ozl2H7Awul2
-   azpH4C/pQLVWQhhXxygEwUZENc7j+ntMtrHLKi92T7CH/DX4S500sGLgj
-   D89th1QW64h5evyxQVZ/zdMFXZbm4ZFHtzmD9dwytQeap4DdQbzXMweb0
-   u0PngGJ/sOknHPE3uCS24bCx/lo3hoC/f9xYVlO+8XiZw0u5cxeV5RuYy
-   nPSTg/Q1QeG1dxOFzFz1KyoDnkHp605EJZQMJlZ8ypsbSeiqwVMSPucr/
-   cxcdGChD3R7X3PA30nzFEP7jhEeqJ76OMyqdoXow3nyoMG8XASVW1jAcU
-   Q==;
-X-CSE-ConnectionGUID: gZVZMg5NTq6O8qoy8/PFjg==
-X-CSE-MsgGUID: YWteo1+2TCqfOAIG16d2Tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="83151703"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="83151703"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 22:54:36 -0700
-X-CSE-ConnectionGUID: OZ4jwaH3QPub/ByJ9CxEyQ==
-X-CSE-MsgGUID: axjisy8zRYqUcCoo+HR+6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="251234920"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 22:54:36 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FfcxKaHv"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=s+k4YLB2aPZHJzgI+LGSMyb/EUFeyoNW7T6bVJeLgOM=;
+	b=FfcxKaHvWGpE+OeszGHja+ic7QDEU3LpDfI8ikmg81TzbLTp/Ge9Kto+SmX2wLWNOTVw5vhVk
+	xj0Gr7KTy1IWHVW8YTdBteMO/0D5pkTSi7AphDH7FeODvlY97lpG7evc2eD9LrUv3yrxhqCy50d
+	gpdkute1U/cEGKIYO34DQKY=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gvVxx0cTJzpT0K;
+	Tue,  7 Jul 2026 14:02:45 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4588F4056E;
+	Tue,  7 Jul 2026 14:11:23 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 22:54:35 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 6 Jul 2026 22:54:35 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.62) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 22:54:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iRmdtbn3vl84aenNreP8NYOyfP57uVWfkuELCoGOYejSzqvEvrRAPIMUdEas3RpTOrboX0KzJw4xG9czdqOVEOL/nxp5D7Xx93emorkv7kEkAheQbyp+N/azo0x6SlSXF3iUVcqC8VYgDtkvyhHs8OQpCHNSvVwpKgALtWxKtkAef9WXV2r9IjC3WiPmes5Ztvs4RZMbnCLEPNeHGKaJ+2IgUwnDK+SOrfFYKPZ0XaMbLFuzcmoui1FM7Q4yIoYKQyxmpqvVLTIWEbX4EDzby0ICg/iyNIXd6AhgYdag2LUXKw2vVgZ/6zMmF9NMAUhirOrDaQjCSAMRrTmQA9boug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g6PHtZZbxCtNqHidhq/hHsWED/RW/2lducHUIfIAqcw=;
- b=wr7FnLs4zC2FB06PzUfds96oeJBsQ0syOq+fbnvyrckCNzxOUB6B8WQlHAlEE1hQhVMsoudWINVOIIN4t5LfLVhxPLbTtCJkuXci0st9zi57BL3UP+la4GsCDViAu/UKn2RHWho3/bjvC8r/rx1cOWkBaWJxArvWuQJDwPjKV22tEGNHKGSzg/DinvRk3KRWoAYfpJTma1TDHvb+CeD1zzGWZn1BVfmsuI+7tr9aUqDJgDOdtC6fZsnhDpYjXcQrP1OSuvVgDZv6jSqvhlndimDh2ScvZCGnnZwfkIIerV2JCmfNe72rHQabNF27ADuebXn0XHi8tFrTCXav0UvlcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by CY5PR11MB6281.namprd11.prod.outlook.com (2603:10b6:930:23::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 7 Jul 2026
- 05:54:32 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
- 05:54:32 +0000
-Date: Tue, 7 Jul 2026 13:54:14 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
-	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <yan.y.zhao@intel.com>, <kai.huang@intel.com>, "Kirill A.
- Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
- tdx_pamt_get/put()
-Message-ID: <akyUhlnQR5payN7R@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-X-ClientProxiedBy: SI2PR06CA0004.apcprd06.prod.outlook.com
- (2603:1096:4:186::20) To BN7PR11MB2836.namprd11.prod.outlook.com
- (2603:10b6:406:ad::26)
+ 15.2.1544.36; Tue, 7 Jul 2026 14:11:22 +0800
+Message-ID: <34447d66-8d53-4dc7-82fe-58057f2a5b57@huawei.com>
+Date: Tue, 7 Jul 2026 14:11:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|CY5PR11MB6281:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3b0753f-ee28-445a-563c-08dedbec370a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: Gia3HbgC8kB7x+FriSYGlpTR4Q5unG2150Vft8FeIzaZrPV2p1Tzai64yYFcTosnkVfMH70/p7BCO4L7gNEy0m1KwH5nITEqBGUpbL4HULCOz6Bvm8b93Fo8bKXw0PJc/faF+/gka4nHC4Of85UuhwqNsmynovQKVnOBXVBf3wxuvcrBTXfmPjCgwow0sOBPSEZ71pDloVic6oZLqTr8TWVIaWwb222Z4RT6Oq5dfdwmYvNezr5teSUWyh4i63G9se0w7zbNP08kty/OyU7YdSMeABWCCZcA0OfD0sp2SJ7a4Dvt2Sa4vSu+L4iLjgnLN15tmUz69Syfq94dCVFgfYNSOw+4WxBShQbIHXsMb4V2DcSkItYowjJbq3MdqxJpVuoVyAxkQxeYl9/1IiNttQ7rQbFfmSuEZHhW8e/AJ8f0Nx+TD2zyqsG6Bt8X5zt9u5vRga1RJ0CtMXXOve3wspN6e+ak4ap0Hsj6kLrt0sKcBQZFG+wDhvAeoqRlG4XTRbbhc+T1TTUPtXvaAz+u3yDK1a58TTymIm77P9Kx1vPKTDZGGmpG/aFrU7kqr3PXhBDn9Afjhjk2KdeEeoC8HfyRYVsSilcoc5p12IbHLf0FFcJk+/bKr8ILlK1xopX2nuQXs8poXKzRGXybzYXVwOdECADBZr7QiIJTjpyOrKo=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SEUOSJoAvKt3qBlRb1DZmDITQDeIlnY9D0Lav+IqngXcNDS49A6p3a4inFs0?=
- =?us-ascii?Q?ra++odQ02e/JDqOniM/UXku/veh9chBp/C99m4UhM+cb0dV8P2OyDF1DXuwz?=
- =?us-ascii?Q?gWwWgssBMlKOqbbA/3dh9V02ZfoM/QvhhinWnXUm0gIZ2/yPu3dAZpIyiFbn?=
- =?us-ascii?Q?4aLysenH0jCEulXV1D1oZxmZcGWUdMf2INHILfyUu6y3vFH3ohkfUaa+N+E8?=
- =?us-ascii?Q?lIvkucbe9FfqgcvaOpRxX2NM0pGWXMhyf2tIN1+92thTyqu/XOM3kw+ZiSg1?=
- =?us-ascii?Q?Lh3diDoaKfoZkVSE8hFIafAD2yzPVUeKLHASEwVLD17ooavsRf7Z9fVuAqkk?=
- =?us-ascii?Q?+zdgIpNts3WnHoCctgVwQ6HKoDlXFeSnlGLS1yPKzv9c0DqiunH/mkD8w55D?=
- =?us-ascii?Q?doX9xm8zw7jgZn1NfvnTAFYjvaWEyhwy+/s5GMxilVRr89x9dFoGPCLKekEd?=
- =?us-ascii?Q?vfQ3eZm70DDdyEsjQ3QU/PPJxZcpiVGeCTSyMMzykmGZVClAHbPviat9Ad3z?=
- =?us-ascii?Q?cdrID29b5EmNAyKGxuHmGC4JixutzsUHB2P5JZTNkpYnspFEU26TipzgZfwr?=
- =?us-ascii?Q?nFd4DlJsVx2NdVO7+AxPZBkU3meUPjOVUwYFi4N2dtZ6S4+yt68PsqPgszNf?=
- =?us-ascii?Q?3960W6NWXchpd1PInhN8eXxssoZPiimai+COf1ajbsCAPBSzqRHzeUPLqN6o?=
- =?us-ascii?Q?ZK71MnYoS7O0pG3Z2Td1SnxguQGwjneapx2VqSgXD50w5Fbb9VPX6cHTQAfF?=
- =?us-ascii?Q?fW9RAMGkmoR8YJyf9Vimujan4JsLmjjbndOmRP+BdMgssTkiE6DPjfDM8qGV?=
- =?us-ascii?Q?Shn8KBytHytyYOffmR+/JoHpO3q3N9Py2Ts2z3Vt/mO/Ah400w88q1gp1X7q?=
- =?us-ascii?Q?j5YLUxpFigUMp9H0duFpFmocUta/bAhO7my6QWkyYIxqiDhnDo4IU74NAogb?=
- =?us-ascii?Q?SN+X3rjYKFhFxWpgWFf8P/XrnRxCtcMwN8uPNl9Ck7y+reTVKbOSlnlmYX8R?=
- =?us-ascii?Q?I0oto1k5mgCjQajVFmJKBYdU3kvH6biBY0us9ovPG8WIqPcihK1PhQZqBems?=
- =?us-ascii?Q?qIiwA37X9bgfP2xz3iivER0L4hSTuYzGJAWPdyToeK+1Tmw3Guevn63P9H9q?=
- =?us-ascii?Q?8kWnk8JTYh0kEUuc5uAEoznhS+YgDIohYD9K9laMVqIcZ+C4KvNC2HPaFgXA?=
- =?us-ascii?Q?eQtC9ElK+o11757aOd8jrUXyF5LYjZ6Ensz5qpi+/iZgmUiZW+apQp5dD9iw?=
- =?us-ascii?Q?q3El9k867Nr98tqC43KdLKCaH92/bsJKk1SC/aJui9QDl48OekP7C1mEN+He?=
- =?us-ascii?Q?C7shOhB2oQefomobWUYUH+z5udcvK0R8oZHz7NthXDC00j7CwVOr/EPeusrI?=
- =?us-ascii?Q?j/ypAnd795McrcnoRc2c3GNLsOnK+eEX/abBL+vcpcBHJ62u6I7FzNUl8Zdq?=
- =?us-ascii?Q?UHAhWmVNn6rd2Rln0dySY4Hv0sIHNI/Vy6Nv5CQZa/vCaPOHG1aqjCIW+ojm?=
- =?us-ascii?Q?ScR5DBKFAJt8tVlo/QLw1Fuvbg07TxXqgDzXDCb/jVwdK/yXBH8QDMGxfP8E?=
- =?us-ascii?Q?i1RcbA3nvN8YXLQnEQi8M3QI4Wzx1B4lul2/eP4nnaTdXIKWUChjylxIkdT0?=
- =?us-ascii?Q?okXF/4nQI/SmtVHk/PRmWRY4bOMlYn1z2C0HV9Tw/f2sSHZSrtEy1EfsXURX?=
- =?us-ascii?Q?nmu0cPYOVyo9bx2pYf9TxCrihjaTU63l8E8kzBXYPDc/Tw5c6Z4e9hRidGD2?=
- =?us-ascii?Q?qtVLwAbjAA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: kiLUuIfuV7KJiKm4bAqZLFXq2rhsWZhEg+wvqzFIXk+3HuRPgB5jNpJBI+K2oGF67LI4qB5HJsrVP3qo4C0r0GgBm+KZu/7mXNfZ03CLOPcmcvNINfEUAIPGhyjCLa14R2sLVXKGX+BW+ragm873TqLfBBgsaPsEus5+Ap2OSiT6aLIkOiO56WIJdLKfbXNeGPDqVrtpF1iAfq3516yE1UxPvAKsweua2ottBt9+LsRZt/gpxlQ1QmWuVDjb68WIlxFAIpYMKkUBYFjJfdFdVGis4SIRD+uUf9uWJ0M3M2phzxesMpWlLLZcNK9QUtbK1MgYcY0ulqocXvZQIWK2dw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3b0753f-ee28-445a-563c-08dedbec370a
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 05:54:31.9906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A4op8CS7FWJRzssp25Y3Dtl4kvlZdP2q0WSlyhImUDEVhb8HChTaZSBY9E113Uw23q5LFZ4f8p9pSZQQRMmKWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6281
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] KVM: arm64: Add support for FEAT_HDBSS
+To: Leonardo Bras <leo.bras@arm.com>
+CC: Inochi Amaoto <inochiama@gmail.com>, Marc Zyngier <maz@kernel.org>,
+	<oupton@kernel.org>, <catalin.marinas@arm.com>, <corbet@lwn.net>,
+	<pbonzini@redhat.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <liuyonglong@huawei.com>,
+	<Jonathan.Cameron@huawei.com>, <yezhenyu2@huawei.com>, <linuxarm@huawei.com>,
+	<joey.gouly@arm.com>, <kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <skhan@linuxfoundation.org>,
+	<suzuki.poulose@arm.com>
+References: <20260225040421.2683931-1-zhengtian10@huawei.com>
+ <20260225040421.2683931-4-zhengtian10@huawei.com>
+ <ahzUUDAMoHtDFJD3@inochi.infowork> <864ijmvdpy.wl-maz@kernel.org>
+ <ah1KLrpYBXSMM91H@inochi.infowork>
+ <22abfaf8-8636-4ed3-9a5c-fb4fdef1bc19@huawei.com>
+ <aku1N23Szkta9uA6@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <aku1N23Szkta9uA6@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
->@@ -2057,10 +2061,26 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
-> 	if (ret)
-> 		return ret;
-> 
->-	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
->-	if (tdx_status != TDX_SUCCESS) {
->-		ret = -EIO;
->-		goto out_free;
->+	pamt_refcount = tdx_find_pamt_refcount(pfn);
->+
->+	scoped_guard(spinlock, &pamt_lock) {
 
-I am assuming you will convert this to plain lock/unlock as discussed.
+On 7/6/2026 10:01 PM, Leonardo Bras wrote:
+> On Fri, Jun 05, 2026 at 04:29:49PM +0800, Tian Zheng wrote:
+>> On 6/1/2026 5:05 PM, Inochi Amaoto wrote:
+>>> On Mon, Jun 01, 2026 at 09:58:49AM +0100, Marc Zyngier wrote:
+>>>> On Mon, 01 Jun 2026 01:50:22 +0100,
+>>>> Inochi Amaoto <inochiama@gmail.com> wrote:
+>>>>> On Wed, Feb 25, 2026 at 12:04:19PM +0800, Tian Zheng wrote:
+>>>>>> From: eillon <yezhenyu2@huawei.com>
+>>>>>>
+>>>>>> Armv9.5 introduces the Hardware Dirty Bit State Structure (HDBSS) feature,
+>>>>>> indicated by ID_AA64MMFR1_EL1.HAFDBS == 0b0100. A CPU capability is added
+>>>>>> to notify the user of the feature.
+>>>>>>
+>>>>>> Add KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl and basic framework for
+>>>>>> ARM64 HDBSS support. Since the HDBSS buffer size is configurable and
+>>>>>> cannot be determined at KVM initialization, an IOCTL interface is
+>>>>>> required.
+>>>>>>
+>>>>>> Actually exposing the new capability to user space happens in a later
+>>>>>> patch.
+>>>>>>
+>>>>>> Signed-off-by: eillon <yezhenyu2@huawei.com>
+>>>>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>>>>>> ---
+>>>>>>    arch/arm64/include/asm/cpufeature.h |  5 +++++
+>>>>>>    arch/arm64/kernel/cpufeature.c      | 12 ++++++++++++
+>>>>>>    arch/arm64/tools/cpucaps            |  1 +
+>>>>>>    include/uapi/linux/kvm.h            |  1 +
+>>>>>>    tools/include/uapi/linux/kvm.h      |  1 +
+>>>>>>    5 files changed, 20 insertions(+)
+>>>>>>
+>>>>>> diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+>>>>>> index 4de51f8d92cb..dcc2e2cad5ad 100644
+>>>>>> --- a/arch/arm64/include/asm/cpufeature.h
+>>>>>> +++ b/arch/arm64/include/asm/cpufeature.h
+>>>>>> @@ -856,6 +856,11 @@ static inline bool system_supports_haft(void)
+>>>>>>    	return cpus_have_final_cap(ARM64_HAFT);
+>>>>>>    }
+>>>>>>
+>>>>>> +static inline bool system_supports_hdbss(void)
+>>>>>> +{
+>>>>>> +	return cpus_have_final_cap(ARM64_HAS_HDBSS);
+>>>>>> +}
+>>>>>> +
+>>>>>>    static __always_inline bool system_supports_mpam(void)
+>>>>>>    {
+>>>>>>    	return alternative_has_cap_unlikely(ARM64_MPAM);
+>>>>>> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+>>>>>> index c31f8e17732a..348b0afffc3e 100644
+>>>>>> --- a/arch/arm64/kernel/cpufeature.c
+>>>>>> +++ b/arch/arm64/kernel/cpufeature.c
+>>>>>> @@ -2124,6 +2124,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+>>>>>>    	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+>>>>>>    }
+>>>>>>
+>>>>>> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
+>>>>>> +{
+>>>>>> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, cope);
+>>>>>> +}
+>>>>>> +
+>>>>>>    bool cpu_supports_bbml2_noabort(void)
+>>>>>>    {
+>>>>>>    	/*
+>>>>>> @@ -2759,6 +2764,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+>>>>>>    		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HAFT)
+>>>>>>    	},
+>>>>>>    #endif
+>>>>>> +	{
+>>>>>> +		.desc = "Hardware Dirty state tracking structure (HDBSS)",
+>>>>>> +		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+>>>>>> +		.capability = ARM64_HAS_HDBSS,
+>>>>>> +		.matches = has_vhe_hdbss,
+>>>>>> +		ARM64_CPUID_FIELDS(ID_AA64MMFR1_EL1, HAFDBS, HDBSS)
+>>>>>> +	},
+>>>>>>    	{
+>>>>>>    		.desc = "CRC32 instructions",
+>>>>>>    		.capability = ARM64_HAS_CRC32,
+>>>>>> diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
+>>>>>> index 7261553b644b..f6ece5b85532 100644
+>>>>>> --- a/arch/arm64/tools/cpucaps
+>>>>>> +++ b/arch/arm64/tools/cpucaps
+>>>>>> @@ -68,6 +68,7 @@ HAS_VA52
+>>>>>>    HAS_VIRT_HOST_EXTN
+>>>>>>    HAS_WFXT
+>>>>>>    HAS_XNX
+>>>>>> +HAS_HDBSS
+>>>>>>    HAFT
+>>>>>>    HW_DBM
+>>>>>>    KVM_HVHE
+>>>>>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+>>>>>> index 65500f5db379..15ee42cdbd51 100644
+>>>>>> --- a/include/uapi/linux/kvm.h
+>>>>>> +++ b/include/uapi/linux/kvm.h
+>>>>>> @@ -985,6 +985,7 @@ struct kvm_enable_cap {
+>>>>>>    #define KVM_CAP_ARM_SEA_TO_USER 245
+>>>>>>    #define KVM_CAP_S390_USER_OPEREXEC 246
+>>>>>>    #define KVM_CAP_S390_KEYOP 247
+>>>>>> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+>>>>>>
+>>>>>>    struct kvm_irq_routing_irqchip {
+>>>>>>    	__u32 irqchip;
+>>>>>> diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
+>>>>>> index dddb781b0507..93e0a1e14dc7 100644
+>>>>>> --- a/tools/include/uapi/linux/kvm.h
+>>>>>> +++ b/tools/include/uapi/linux/kvm.h
+>>>>>> @@ -974,6 +974,7 @@ struct kvm_enable_cap {
+>>>>>>    #define KVM_CAP_GUEST_MEMFD_FLAGS 244
+>>>>>>    #define KVM_CAP_ARM_SEA_TO_USER 245
+>>>>>>    #define KVM_CAP_S390_USER_OPEREXEC 246
+>>>>>> +#define KVM_CAP_ARM_HW_DIRTY_STATE_TRACK 248
+>>>>>>
+>>>>>>    struct kvm_irq_routing_irqchip {
+>>>>>>    	__u32 irqchip;
+>>>>>> --
+>>>>>> 2.33.0
+>>>>>>
+>>>>> Instead of having these architecture specific capability, I wonder if
+>>>>> we can add a generic capability like "KVM_CAP_HW_DIRTY_STATE", so
+>>>>> other architecture supports similar things can reuse this capability,
+>>>> What of the existing stuff doing the same thing? x86's PML, to start
+>>>> with?
+>>>>
+>>> In fact I think the HDBSS is the first one with non-fixed size.
+>>> Although there is a in process RISC-V extension for it, there will
+>>> be a long story to make it ratified.
+>>>
+>>>>> For this generic thing I suggest, the getter returns the max support
+>>>>> entry count (or the buffer size) it supports like the dirty ring
+>>>>> capability. And the setter just let the architecture set the parameters
+>>>>> based on the user request.
+>>>> This looks wrong on a number of levels.
+>>>>
+>>>> - If you want something generic, there is the existing dirty
+>>>>     log/bitmap. How this stuff is populated is none of the user's
+>>>>     business (trapping write accesses, dirty bit collection from the
+>>>>     PTs, or HW-generated log), and we don't need an extra feature for
+>>>>     it. Performance will obviously suck, but that's what you pay for
+>>>>     something abstracted and cross-architecture.
+>>>>
+>>>> - If you want something architecture specific, then it can't be
+>>>>     generic, by definition. You get the raw speed and compatibility with
+>>>>     other arch-specific extensions.
+>>>>
+>>> OK, I agree, it is better to keep this thing arch-specific. Doing a
+>>> generic thing does not benefit too much, I have made a mistake on
+>>> it. Thanks for your kindly explanation.
+>>
+>> Awesome. Thanks for the review.
+>>
+>> I agree with Marc—keeping this ARM-specific is the right approach.
+>> Also, in v4 we're removing the ioctl interface entirely. HDBSS will be
+>> auto-enabled during migration setup and auto-disabled when migration
+>> completes, so the capability naming issue becomes moot.
+>>
+>> I plan to post v4 with the updated approach soon.
+> Hi Tian,
+>
+> Any updates in the v4?
+> Please let me know if you want help in any kind, in regards to this
+> patchset.
+>
+> Thanks!
+> Leo
+Hi Leo,
 
-With this fixed,
+Thanks for the follow-up. I've finished polishing v4 and am doing one 
+last internal review.
 
-Reviewed-by: Chao Gao <chao.gao@intel.com>
+In this version, I've also aligned with the latest HACDBS v2 
+implementation you shared—e.g.,
+auto-inserting KVM_PGTABLE_S2_DBM into pgt->flags during 
+kvm_init_stage2_mmu.
+
+One note: dirty ring mode is not yet supported in v4—the series 
+currently focuses on the
+dirty bitmap mode. I'll explicitly call this out in the commit messages 
+(including that
+KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE and related dirty ring components 
+are omitted) to avoid
+any confusion during review.
+
+I plan to send v4 out later this week.
+
+Thanks,
+Tian
