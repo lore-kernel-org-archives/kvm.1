@@ -1,176 +1,249 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078A41D63E4;
-	Tue,  7 Jul 2026 09:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0451D63E4;
+	Tue,  7 Jul 2026 09:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783415786; cv=none; b=Gw0mSAZocimlQZmM8pHt/DJvRGa8hqhHBfScfQJ/MHAxBVtUrmmdTfeA+Y8SyTBg1x/xFCyefilyOisku44nJp0HwHlfHG3VySzBqmmLLA+HkLqkY4MmmyDGMkLfapWujSKrSvUJZ8r4UsV6TuV4R2TlgQyMFE2grdq9Z9Nu4QU=
+	t=1783415883; cv=none; b=bzvaWgVrtYuOJeqFYzdbJcEL9GH/wNEQ/vYd7nmp4+obvLBvlYncE10WHpRsJs88N5jFPg1u8jwZGDUK6jLBSMQiUoCEx2MurD2GbJHt/XL5aCXFkHLWy2ycYzLaUKbKRXWo6PxB26+rjzlv/EMoCY366dy5mPv7TAKdLjOM5AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783415786; c=relaxed/simple;
-	bh=6CxTm5CQJRWizY+bQkG2GRtEXkPbb35miOQMP1VcvQs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qPcYULZ+SlnM439Cp1H64z4m3tXZljtKKYwNtIONCxtG24nlw0w9yUnBoAPk1sXPPRJ/6K3gk2dO74xYsyWow9dfYBW/+osZzOnu+eUSCRuMhHbCmdPqhUw3HajHBMss8ZfdvcAKk8Q9er1H2dzp8Mb+8xsiZIUI/IL3D3ONF+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WWb1rALi; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1783415883; c=relaxed/simple;
+	bh=lCJLZlMPLT9IFiD/Q3kLH3BFZe8c5wF1kIVNaVogL0s=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=T8iuG6fYz75y0b4sszrjmXNgGVk39E9Z3Z8nnpPNtQ3QziZeNWZMja+NdZFmJURg+guqVVz+dlZhSJ2b+3X7t3eEaY6QnKqeNYmOpqukjlK8AU6+hspeZxY78Njvg6lgi6c7LOjqA/S14pJYqDrjsM+GqxvrfCWL6X24Ztszl8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=da+5HOfM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WWb1rALi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6CxTm5CQJRWizY+bQkG2GRtEXkPbb35miOQMP1VcvQs=; b=WWb1rALipcTiTmbq8tewQHy/MU
-	K+Xxc0gqOnOA1RXaJm5i5vhTCRz0mi0orbT2FufyGyMxmuzxJYIjo7mLMxn6W7ZyBuPQ8jpnl9wk8
-	O04tpficvR4ryiwPh9pmTMA6wI7jvHUsK1mqKqq6dMFj+NKCo3XPwKQAV62JGj9u883xvYYAPIY3h
-	E/UegiOd37SC9+seMKgZio3JYk9w938oUpY7FWHbLF3dTJjKYP0BHm6XbBVHE3e/8bMnx3z2qXBHC
-	GUsBGyXueEzD6qteyKzg8jXMviOK3CVAFdKT5qYTjAmuc7vfYFnuOAJGYHF3c0dVsPTK1eOxhNuVN
-	4TcqP9xQ==;
-Received: from [2001:8b0:10b:5:7a2d:be49:1d8:dcc1] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wh1ud-0000000HVY8-1DUn;
-	Tue, 07 Jul 2026 09:16:19 +0000
-Message-ID: <efe39d24a2621ce23f9d53471b3b587feaaa8526.camel@infradead.org>
-Subject: Re: [PATCH] KVM: x86/xen: Convert evtchn_ports from IDR to XArray
-From: David Woodhouse <dwmw2@infradead.org>
-To: Furkan Caliskan <frn1furkan10@gmail.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, x86@kernel.org, seanjc@google.com,
- pbonzini@redhat.com, 	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, 	hpa@zytor.com, paul@xen.org,
- xen-devel@lists.xenproject.org
-Date: Tue, 07 Jul 2026 10:16:18 +0100
-In-Reply-To: <20260706081311.13633-1-frn1furkan10@gmail.com>
-References: <20260706081311.13633-1-frn1furkan10@gmail.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-WWrbmVq6ZZZ3yNAFmU9T"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="da+5HOfM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7F91F00A3A;
+	Tue,  7 Jul 2026 09:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783415882;
+	bh=GWvAyCtU0bq+Dwe8XWiitwjZuoNDBGr6aX8+eM329ts=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=da+5HOfMxerzjl2aOhd1s91PvEbCgGAUHak3xgdJky3gEh0WDR4D3ag+xW2GTdhT7
+	 ALw5/tBNjwzSv8QqywUQp1GZzAMgs5PAbJYy72iLmyeJ2Wmu6bZHNEAjMLT/ptapsQ
+	 +EzL2rL6VPlfQswiRjQs4UkyTwPRsY+Ek+58XG4/CEhP7+NqJR+lxhgcT9ukH76mCu
+	 DICNh9tfTq+652m20qmJWz8vWmjNlXRwI+gbydU6IpbhVxbNntfnUCW10rRcvBKSpS
+	 rKPrHcBex6l30ta04z7mcfAeVTbNFjI1W60BF8r5/QJuqXEMSwpbY0ewbMTmOmkKdS
+	 B3znXTiLfQRjQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 03/15] s390/vfio-ap: Functions to initialize/release
+ vfio device migration data
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260707090226.3206695-4-akrowiak@linux.ibm.com>
+References: <20260707090226.3206695-1-akrowiak@linux.ibm.com>
+ <20260707090226.3206695-4-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 07 Jul 2026 09:18:01 +0000
+Message-Id: <20260707091801.DC7F91F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
---=-WWrbmVq6ZZZ3yNAFmU9T
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+New issues:
+- [High] Self-deadlock in the error path of `vfio_ap_mdev_probe()` due to h=
+olding `matrix_dev->mdevs_lock` while calling `vfio_put_device()`.
+- [High] AB-BA lock inversion between `matrix_dev->mdevs_lock` and the VFIO=
+ core's `dev_set->lock`.
+- [Medium] Advertising `VFIO_MIGRATION_STOP_COPY` with stub callbacks that =
+return `-EOPNOTSUPP` breaks userspace expectations.
 
-On Mon, 2026-07-06 at 11:13 +0300, Furkan Caliskan wrote:
-> IDR is deprecated in favor of XArray: see
-> Documentation/core-api/idr.rst. Convert evtchn_ports accordingly.
->=20
-> kvm_xen_eventfd_assign()'s single-slot idr_alloc() becomes
-> xa_insert(), since it was really an insert-at-index, not an
-> allocation: -EBUSY replaces -ENOSPC, still mapped to -EEXIST.
->=20
-> kvm_xen_hcall_evtchn_send() drops its explicit rcu_read_lock(),
-> since xa_load() takes its own RCU read-side section internally.
-> evtchnfd's lifetime is still guaranteed by kvm->srcu.
->=20
-> xen_lock is left in place: it protects state beyond the map itself.
->=20
-> Signed-off-by: Furkan Caliskan <frn1furkan10@gmail.com>
+Pre-existing issues:
+- [Critical] If `vfio_ap_mdev_set_kvm` returns `-EPERM`, it leaves a dangli=
+ng pointer in `kvm->arch.crypto.pqap_hook`, leading to a Use-After-Free.
+--
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+--- Patch [3]: [PATCH v4 03/15] s390/vfio-ap: Functions to initialize/relea=
+se vfio device migration data ---
+commit fd0c4839e5d26823861a00cf7c060331ae1fd632
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Thanks.
+s390/vfio-ap: Functions to initialize/release vfio device migration data
 
---=-WWrbmVq6ZZZ3yNAFmU9T
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Provides the functions that initialize and release the data structures
+used during live guest migration.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDcwNzA5MTYx
-OFowLwYJKoZIhvcNAQkEMSIEICgW928EO0BtePcUBd542U2snwfj5LaQC5gujw42v4zIMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAJbLAJBU3sSHM
-qMiL073Baw++MrHg/xoC274PxXcuPSaoIuhY1EbwhnPnzWYpRM5M05sOa8MbKMHWnH5UiYU9t8or
-wy+evr9CvImlELKwwPooWzm5pyKWovsaA5aioP31kD6BUx+VDU1gWdcalKdaXPCl7rPueuF6q6Wm
-e5Siqt0Zc3VVMCMWdFAtrN2Zorcav22huqDbsxnNXoI8RtwwU4vBnbpWk6vXjPEs6wtnqTyMbTLO
-RuWuj8tnjld1rpx2SGBQ0+L1K3++zduo0MTrfzeWcKsIFQAwW6RqWQhkehQSEEFtfsda2X7U7PfC
-plofS8skqLsSnFAHuNP2xInQWn4dT1HXgSPzR6FLAvpIc+MeMjZkgdcSN+neBT3CFMwv52XMrPKJ
-hv/E2iy4Hjws7th3C+oeQX1Lu5OJbCXelJpOlNP6Is7VqMaVOH8+ji89h1UQi6u0tDTMo9Qf83QK
-lGtwacfglwf66WdrwaenlcNb+/QTOM/+oK7LTU+A1T9Fenkne2VTUCln6ic25kNsFcL74bautx61
-HUvUs4SywdqDcCdvGAr/NFgTmWaUUUbQUkHd8OF4SvW85F2/H/Ufw7mRqqon6OyVYtCaQWqMOUhd
-oO+FkwLDlG2lo2rGZTe70ackBHYOkzIRntuEuhaKucF0TQKhjeMVnguSH+9t2m0AAAAAAAA=
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 239168c4b7fff..5b6d48ccf332c 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+[ ... ]
+> @@ -54,3 +55,77 @@ struct vfio_ap_config {
+>  	size_t				config_sz;
+>  	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+>  };
+> +
+> +static struct file *vfio_ap_set_state(struct vfio_device *vdev,
+> +				      enum vfio_device_mig_state  new_state)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static int vfio_ap_get_state(struct vfio_device *vdev,
+> +			     enum vfio_device_mig_state  *current_state)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static int vfio_ap_get_data_size(struct vfio_device *vdev,
+> +				 unsigned long *stop_copy_length)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static const struct vfio_migration_ops vfio_ap_migration_ops =3D {
+> +	.migration_set_state =3D vfio_ap_set_state,
+> +	.migration_get_state =3D vfio_ap_get_state,
+> +	.migration_get_data_size =3D vfio_ap_get_data_size,
+> +};
+> +
+> +/**
+> + * vfio_ap_init_migrations_capabilities - initialize migration capabilit=
+ies
+> + *
+> + * @matrix_mdev: pointer to object containing the mdev state
+> + */
+> +void vfio_ap_init_migration_capabilities(struct ap_matrix_mdev *matrix_m=
+dev)
+> +{
+> +	matrix_mdev->vdev.migration_flags =3D VFIO_MIGRATION_STOP_COPY;
+> +	matrix_mdev->vdev.mig_ops =3D &vfio_ap_migration_ops;
+> +}
 
+[Severity: Medium]
+Does advertising VFIO_MIGRATION_STOP_COPY here break userspace expectations
+when the callbacks like vfio_ap_get_state() unconditionally return -EOPNOTS=
+UPP?
 
---=-WWrbmVq6ZZZ3yNAFmU9T--
+If userspace queries the device state via=20
+VFIO_DEVICE_FEATURE_MIG_DEVICE_STATE, wouldn't the -EOPNOTSUPP response
+cause the setup or migration to unexpectedly abort?
+
+[ ... ]
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 71d3e2c2e07c6..8132902148669 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+[ ... ]
+> @@ -797,19 +809,30 @@ static int vfio_ap_mdev_probe(struct mdev_device *m=
+dev)
+>  	if (IS_ERR(matrix_mdev))
+>  		return PTR_ERR(matrix_mdev);
+> =20
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +
+> +	/*
+> +	 * Migration capabilities must be initialized before calling
+> +	 * vfio_register_emulated_iommu_dev; otherwise, the VFIO core
+> +	 * will see mig_ops as NULL during the registration. This could
+> +	 * prevent the VFIO core from properly setting up migration
+> +	 * infrastructure like debugfs entries.
+> +	 */
+> +	vfio_ap_init_migration_capabilities(matrix_mdev);
+> +
+>  	ret =3D vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
+
+[Severity: High]
+Does acquiring matrix_dev->mdevs_lock before calling
+vfio_register_emulated_iommu_dev() create a lock inversion?
+
+Since vfio_register_emulated_iommu_dev() acquires dev_set->lock, this sets
+the lock order to mdevs_lock -> dev_set->lock.
+
+Later, when userspace opens the device, the core holds dev_set->lock before
+invoking the open_device callback (vfio_ap_mdev_open_device). The callback
+then attempts to acquire mdevs_lock, which reverses the order to
+dev_set->lock -> mdevs_lock, potentially leading to a deadlock.
+
+>  	if (ret)
+>  		goto err_put_vdev;
+>  	matrix_mdev->req_trigger =3D NULL;
+>  	matrix_mdev->cfg_chg_trigger =3D NULL;
+>  	dev_set_drvdata(&mdev->dev, matrix_mdev);
+> -	mutex_lock(&matrix_dev->mdevs_lock);
+>  	list_add(&matrix_mdev->node, &matrix_dev->mdev_list);
+>  	mutex_unlock(&matrix_dev->mdevs_lock);
+>  	return 0;
+> =20
+>  err_put_vdev:
+>  	vfio_put_device(&matrix_mdev->vdev);
+
+[Severity: High]
+Is there a self-deadlock risk here in the error path?
+
+If vfio_register_emulated_iommu_dev() fails, we jump to err_put_vdev while
+matrix_dev->mdevs_lock is still held. Calling vfio_put_device() here will
+synchronously trigger the release callback (vfio_ap_mdev_release_dev), which
+attempts to acquire the same non-recursive mdevs_lock again.
+
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+>  	return ret;
+>  }
+> =20
+> @@ -2052,19 +2075,39 @@ static int vfio_ap_mdev_reset_qlist(struct list_h=
+ead *qlist)
+> =20
+>  static int vfio_ap_mdev_open_device(struct vfio_device *vdev)
+>  {
+> -	struct ap_matrix_mdev *matrix_mdev =3D
+> -		container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	struct ap_matrix_mdev *matrix_mdev;
+> +	int ret;
+> =20
+>  	if (!vdev->kvm)
+>  		return -EINVAL;
+> =20
+> -	return vfio_ap_mdev_set_kvm(matrix_mdev, vdev->kvm);
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	ret =3D vfio_ap_init_migration_data(matrix_mdev);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D vfio_ap_mdev_set_kvm(matrix_mdev, vdev->kvm);
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does a failure in
+vfio_ap_mdev_set_kvm() leave a dangling pointer that leads to a
+use-after-free?
+
+In vfio_ap_mdev_set_kvm(), kvm->arch.crypto.pqap_hook is immediately
+overwritten with &matrix_mdev->pqap_hook:
+
+    down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+    kvm->arch.crypto.pqap_hook =3D &matrix_mdev->pqap_hook;
+    up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+
+If it then detects that another mdev is already assigned to this KVM,
+it returns -EPERM but skips resetting the hook. Since matrix_mdev->kvm
+remains NULL, vfio_ap_mdev_unset_kvm() won't clean this up on teardown.
+
+If the second mdev is freed, wouldn't the active KVM guest trigger a
+use-after-free if it executes a PQAP instruction using the stale hook?
+
+> +	if (ret) {
+> +		/* Clean up migration data on failure */
+> +		mutex_lock(&matrix_dev->mdevs_lock);
+> +		vfio_ap_release_migration_data(matrix_mdev);
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +	}
+> +
+> +	return ret;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707090226.3206=
+695-1-akrowiak@linux.ibm.com?part=3D3
