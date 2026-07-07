@@ -1,33 +1,33 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F403ECBEB;
-	Tue,  7 Jul 2026 12:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D43F99ED;
+	Tue,  7 Jul 2026 12:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783428784; cv=none; b=o+k7suT6ZpFzi/CvVX3pJfTg7p9g6hDyilBqM+daMyxrhfTGmdKjHYHANwiMMCbHXmkw8+QP41vaNPOE7y2syg0nMjexONPsa2cIbKv65Fe2s8mTXh2q8q4o4AsBxrVQBVCCgk028kpU+8018iXzKmVgG8qaHtFjZf6JGvTOR20=
+	t=1783428785; cv=none; b=IKQWHT/F4R7faAuh8t+VrwlhjO+AZQRbYwWKD7XcOc/woE0rGCTN+No+DvdHe3hi3Gc5d7irP+ucPZ2mstpZlVixLOLP4KJOyNdUfcNWrCgXN0vbwOJPsy+FOzFJkSFOoqXi3+ZYJ6lkVZAlSdh7GyiBDuHzayjOI5pTjks6lpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783428784; c=relaxed/simple;
-	bh=il6ImVVaBYy5IoEUK/OLM5mPs6DAKuQ/pfx8l2QTqIA=;
+	s=arc-20240116; t=1783428785; c=relaxed/simple;
+	bh=C1U+fJRiGJqJEZE/DSNKXuOAeV+cHiMB2+RmpoAMSUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XUIOIFrz38NKSU1ERkgx05gnAnvV6OPcOMi4MYtconJgtMq1o9sy01viagQfSypr8Ao4W+xIH9xg36RfA0dYlPl23d5xN0es+gojNb4CHX7GwUbda+rsNGVl48am4aNGowkGXgw3wKcJVILLloN6+6jcsJwW5s/JbCGcFp3eVfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+	 MIME-Version:Content-Type; b=lXlsZ7W7RttkfUfsEzanZzfilD4lqH/5AGWF+Af/nJpW+8WwUvKerLpSAjSkHIsgKujZI5iOfW6OEBJfyNJWyiyzNTC/IHqdbWmp4l/Lx5QHjhZTJpJoxupNF/Kd8y4hsrYqMsPk1em2NmgLHzll48scK/iVLUkWkMaEUuYF0wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gvh3J2Jllz8XrrM;
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gvh3J6mN6z4yjjH;
 	Tue, 07 Jul 2026 20:53:00 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
-	by mse-fl2.zte.com.cn with SMTP id 667Cqntc020728;
-	Tue, 7 Jul 2026 20:52:49 +0800 (+08)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl2.zte.com.cn with SMTP id 667CqpoG020731;
+	Tue, 7 Jul 2026 20:52:51 +0800 (+08)
 	(envelope-from wang.yechao255@zte.com.cn)
 Received: from localhost.localdomain (unknown [10.234.74.162])
 	by smtp (Zmail) with SMTP;
-	Tue, 7 Jul 2026 20:52:52 +0800
-X-Zmail-TransId: 3e816a4cf6a4009-66217
+	Tue, 7 Jul 2026 20:52:54 +0800
+X-Zmail-TransId: 3e816a4cf6a6009-66222
 X-Zmail-LocalSMTP: 1
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 X-Zmail-RealSender: wang.yechao255@zte.com.cn
@@ -39,9 +39,9 @@ Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
         Alexandre Ghiti <alex@ghiti.fr>,
         Wang Yechao <wang.yechao255@zte.com.cn>
-Subject: [PATCH v2 1/2] RISC-V: KVM: Introduce make_xfence_request_nodata for FENCE.I requests
-Date: Tue,  7 Jul 2026 20:50:20 +0800
-Message-ID: <20260707125034.416521-2-wang.yechao255@zte.com.cn>
+Subject: [PATCH v2 2/2] RISC-V: KVM: Separate req and fallback_req masks in make_xfence_request
+Date: Tue,  7 Jul 2026 20:50:21 +0800
+Message-ID: <20260707125034.416521-3-wang.yechao255@zte.com.cn>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20260707125034.416521-1-wang.yechao255@zte.com.cn>
 References: <20260707125034.416521-1-wang.yechao255@zte.com.cn>
@@ -53,91 +53,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 667Cqntc020728
+X-MAIL:mse-fl2.zte.com.cn 667CqpoG020731
 X-TLS: YES
 X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
 X-SOURCE-IP: 10.5.228.133 unknown Tue, 07 Jul 2026 20:53:00 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A4CF6AC.000/4gvh3J2Jllz8XrrM
+X-Fangmail-MID-QID: 6A4CF6AC.000/4gvh3J6mN6z4yjjH
 
-FENCE.I does not need hfence data, but it currently goes through the
-generic make_xfence_request() path with NULL data, incurring unnecessary
-per-VCPU checks.
+When handling hfence requests in make_xfence_request(), the current code
+uses a single 'actual_req' variable and a single vcpu_mask. If any VCPU
+fails to enqueue the hfence data (because its queue is full), the request
+falls back to 'fallback_req' for all VCPUs, even if other VCPUs still
+have available queue space.
 
-Split out a separate make_xfence_request_nodata() function to handle
-FENCE.I directly, and move the data validity check to the top of the
-generic function to avoid redundant checks.
+This can cause unnecessary fallback for healthy VCPUs, and more seriously,
+those healthy VCPUs will not process their already-enqueued hfence
+requests because no 'req' is set for them. As a result, their queues will
+quickly become full as well, degrading performance for SMP guests.
 
+Fix this by maintaining two separate bitmaps: one for VCPUs that
+successfully enqueued the hfence data (req_vcpu_mask) and another for
+those that failed (fallback_req_vcpu_mask). Then send the appropriate
+requests to each group. This ensures that fallback is only applied to
+VCPUs that actually need it, preserving the efficiency of the normal
+path for others.
+
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
 Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
 ---
- arch/riscv/kvm/tlb.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ arch/riscv/kvm/tlb.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-index 993b25ea94d67..5a9c75e458013 100644
+index 5a9c75e458013..fd445e9fa3f94 100644
 --- a/arch/riscv/kvm/tlb.c
 +++ b/arch/riscv/kvm/tlb.c
-@@ -325,6 +325,29 @@ void kvm_riscv_hfence_process(struct kvm_vcpu *vcpu)
- 	}
- }
+@@ -355,13 +355,14 @@ static void make_xfence_request(struct kvm *kvm,
+ {
+ 	unsigned long i;
+ 	struct kvm_vcpu *vcpu;
+-	unsigned int actual_req = req;
+-	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
++	DECLARE_BITMAP(req_vcpu_mask, KVM_MAX_VCPUS);
++	DECLARE_BITMAP(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
  
-+static void make_xfence_request_nodata(struct kvm *kvm, unsigned long hbase,
-+				       unsigned long hmask, unsigned int req)
-+{
-+	unsigned long i;
-+	struct kvm_vcpu *vcpu;
-+	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
-+
-+	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
-+	kvm_for_each_vcpu(i, vcpu, kvm) {
-+		if (hbase != -1UL) {
-+			if (vcpu->vcpu_id < hbase ||
-+				vcpu->vcpu_id >= hbase + BITS_PER_LONG)
-+				continue;
-+			if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
-+				continue;
-+		}
-+
-+		bitmap_set(vcpu_mask, i, 1);
-+	}
-+
-+	kvm_make_vcpus_request_mask(kvm, req, vcpu_mask);
-+}
-+
- static void make_xfence_request(struct kvm *kvm,
- 				unsigned long hbase, unsigned long hmask,
- 				unsigned int req, unsigned int fallback_req,
-@@ -335,6 +358,9 @@ static void make_xfence_request(struct kvm *kvm,
- 	unsigned int actual_req = req;
- 	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
+ 	if (!data || !data->type)
+ 		return;
  
-+	if (!data || !data->type)
-+		return;
-+
- 	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
+-	bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
++	bitmap_zero(req_vcpu_mask, KVM_MAX_VCPUS);
++	bitmap_zero(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
  	kvm_for_each_vcpu(i, vcpu, kvm) {
  		if (hbase != -1UL) {
-@@ -347,9 +373,6 @@ static void make_xfence_request(struct kvm *kvm,
+ 			if (vcpu->vcpu_id < hbase ||
+@@ -371,18 +372,19 @@ static void make_xfence_request(struct kvm *kvm,
+ 				continue;
+ 		}
  
- 		bitmap_set(vcpu_mask, i, 1);
- 
--		if (!data || !data->type)
--			continue;
+-		bitmap_set(vcpu_mask, i, 1);
 -
  		/*
  		 * Enqueue hfence data to VCPU hfence queue. If we don't
  		 * have space in the VCPU hfence queue then fallback to
-@@ -365,8 +388,7 @@ static void make_xfence_request(struct kvm *kvm,
- void kvm_riscv_fence_i(struct kvm *kvm,
- 		       unsigned long hbase, unsigned long hmask)
- {
--	make_xfence_request(kvm, hbase, hmask, KVM_REQ_FENCE_I,
--			    KVM_REQ_FENCE_I, NULL);
-+	make_xfence_request_nodata(kvm, hbase, hmask, KVM_REQ_FENCE_I);
+ 		 * a more conservative hfence request.
+ 		 */
+ 		if (!vcpu_hfence_enqueue(vcpu, data))
+-			actual_req = fallback_req;
++			bitmap_set(fallback_req_vcpu_mask, i, 1);
++		else
++			bitmap_set(req_vcpu_mask, i, 1);
+ 	}
+ 
+-	kvm_make_vcpus_request_mask(kvm, actual_req, vcpu_mask);
++	kvm_make_vcpus_request_mask(kvm, req, req_vcpu_mask);
++	kvm_make_vcpus_request_mask(kvm, fallback_req, fallback_req_vcpu_mask);
  }
  
- void kvm_riscv_hfence_gvma_vmid_gpa(struct kvm *kvm,
+ void kvm_riscv_fence_i(struct kvm *kvm,
 -- 
 2.43.5
 
