@@ -1,211 +1,122 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355444229D6
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 13:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206E131280D
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783432796; cv=none; b=O4tlVnXpLxJq/CKP9slNqt1gtecQiQ9eWlOTOy+v7+OrwDtQ4OvyBB9Nzl/BbiUdMTYmcK7l9E73Y20rV/hrOPr4UuHC8ecUNcpLxEGU7MCGVxHRFvE/jqEB6rVdOlieIt5gfe5Gg+U80fG6EDgtQLNDpZuPWLh8oYQL/tzcJOU=
+	t=1783433057; cv=none; b=VWAIloojC+nANRxjOhPXAtn4j2VNtJXJjIn5TTugdQSy4Boecr/v3eabaeHGjEiLjw7QIke5tkwd5PLWFZK0GU3RurwajJGtszkBsPmdeuVqmSKw5QsooBDdMM8e5U1F69ogV34GHUcejpqgjaJPxlsaGDnlxllpcdtlxTNvVqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783432796; c=relaxed/simple;
-	bh=r+U6GOBTclrk2GAfMDDK3Y2wUrSOEY1HSZQPVt89F+s=;
+	s=arc-20240116; t=1783433057; c=relaxed/simple;
+	bh=IJJeqWWOz8cYTacN6NYsMTZL3vplCvTu/9nq4A9sIOk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bl9LQXa3C7tsqTqifbW5BrnO89qbag5g7RyTWcyS6eBMo+muD3jlXju4mBB6X2Sb+yJTOl+e3lLqRAFlxgrswEWg0rVLzqGZbb4p4tAtYyke7n7rJuuChz/xq3GSvFi6H/ErSdr/2yS4XTJXr1n2Le2nOL0oxat0G9FlOreLvAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PKdp5nFF; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=YnlNfz/3DtrBFpXUxz1BLbtwMT3YG61RV1UeIJYZoI5CrGn04sZOGW+37DRCwJNQXKKOBOxoHNzcggYnipihAQ3rYZ2oEYjV7bCWrRxvt6ttQVeLN2G+pnRwB5dtKj9fh2D6I5d2ZAaB60sLvHlZ2BaMuOAi1g93iQ5G5BViEkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h2fIJ0Gy; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PKdp5nFF"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cca3673560so35010015ad.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 06:59:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h2fIJ0Gy"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ccd1958e8fso6733725ad.2
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 07:04:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783432794; x=1784037594; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+JjqhSCb2NqJ7vFBkKx2UXo9ZmgrCLkW3PMFAuA5hNM=;
-        b=PKdp5nFF1gEEjq+zm1aTP/EznVvNzNDf4NkDiklb1bxA/lYEqU3MpljHYhr87igzVq
-         DvGwjPSyeS65qq7RQnENHd81UcmLD/40CPynFPjVYfiIbq9GSE5FxfOBLBJOaA3frKQ8
-         Womrg8klQG968vAGemVS5NRH7QmzBcUbq1gmFv/AHFRfR0rTfMyDKzI3NFaTadsFx74N
-         tKxnVS+CpC8Y7EmOqO/E5Ci2JvR55uzUFhGmq+37V3IAwfRgkJYgstxDJzIW0DaXdH0a
-         IIS7//v/866jbtEiLJNSbU6skz36gF9iAhOeNICzOoEKqTwakHb0dNMx4x9pbFdG5qbj
-         fvRA==
+        d=google.com; s=20251104; t=1783433054; x=1784037854; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TaRRPm7rRenJCz4WhvXhn/Su3WW8BYkGJwkilHjufHw=;
+        b=h2fIJ0GySce2E0H0xWqTmytTVaFyLwbYQbfY8uTMPw2ep8QOgyEw1oZtkvtFB70NNi
+         zvTdte1pUIp6HkBijBdnqS7ykP7SRL5kLrwGNSPQg2biiDfhk4UugUe5DGzM24mXc167
+         x2R5mWCkpyzfAGc+8W8zbjqlidBXyKg+U+sQJpBsW4SKblIuU+bIvtvYqey/xZb0Zx+W
+         OONynNDHOu/DUHIpBbqKmr4uGY37ndDjvUY8ueceKDGWA1mJsW/CcZTlfw+Bv/YKjrJs
+         sT1CT+nd28Ozn1CkGc7dBiZSB81IcSp/zdB+lR9x4eNRON1prOx0w0mqzvnVPXGJZ6fh
+         pIDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783432794; x=1784037594;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+JjqhSCb2NqJ7vFBkKx2UXo9ZmgrCLkW3PMFAuA5hNM=;
-        b=TGr0hUNTTI57kyw+8IqeJ1GlO6j1nGWvk8/Vh6SSzrTLO2mBRpi/2fI5+K0uJRPUz5
-         G56t4BLJpth8Ml6xZP29rrYx1p++fvDyfnnR+KHEs6ZgwxfvuUjimTmDsgTdyZNREd/I
-         U5adGOUOpKTSkQRwTxoYnrA+JzOJEZSFpECtgEew+np8sUHb+G+uNkj332qBWp4/5GT1
-         ulU2tGwsmaO1VbtgrMF2bvXAppkE9d0MMOrR7KhXhSAdZkjoH3T8Vs2ppuKuuC+MrtEz
-         LU11VOvmMZPixFxm7GnSJ+wIJKN92ev/4BSaZLfKG75GEZP8xLdF+1X+ME6B4r4c6Qlx
-         cLpA==
-X-Forwarded-Encrypted: i=1; AHgh+RpXTfx8gFy/CM4W5Qf7kj+lObbPwAYxmLJViLpuKrtzdKpFSC3qIj2gMyKbQz+ZfvibwZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzae5Wy47Sj1SyRDD2AMkLIFodeJbnckWEy+gL6EhzuFelJ8EH9
-	bnbuqZacVRYr1GWv3P6uC+CAYHHjJJx8/8g252vN/t/9K13SJ84YIMBGtvF/02rYu/HAbzx+gyf
-	lNPzndg==
-X-Received: from plsh7.prod.google.com ([2002:a17:902:b947:b0:2c9:a5a0:a677])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e44:b0:387:e0cb:c8db
- with SMTP id 98e67ed59e1d1-387e0db2f85mr2951478a91.36.1783432794394; Tue, 07
- Jul 2026 06:59:54 -0700 (PDT)
-Date: Tue, 7 Jul 2026 06:59:53 -0700
-In-Reply-To: <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+        d=1e100.net; s=20251104; t=1783433054; x=1784037854;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TaRRPm7rRenJCz4WhvXhn/Su3WW8BYkGJwkilHjufHw=;
+        b=d+gC2J06U+Y+6Y7nI0Nl98hBj+tQJQrikXJGbWtPBmiSEbwLX0VbG78DoKgYoMQUWw
+         mROHrWvbHjbMeDP28MGfKPKYrrl6+M6oo+T0EYbdUyvmEwC0YqdparT8vM1LVzudtAYo
+         ou8nBlD2Q7eamrVnG+yTXn693Y40BMEgpTbvJXMSWkhQ8v/dDLvCHz6rI/4XafKCu9sW
+         5zELjark6FZ+Y2c9dPEeuAzQf2luCqmYUGRYh0mbcoG4v1gHziNuHmyoxEPYyHMs8pYD
+         yimZ2qE4UMhUrvXvKTpzfeqn+2+XMKqpjiXmVAIzh4iTSRVKlZCiY9wqaOEaBy+mAVpj
+         cE6g==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3MfiUXgcwKzO31Givyg0q0L3RH0gckYw7ALOeE76Lp/R06WoXTk0hob0eohAa2aFhtNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5wne0wq9a5eZYJ0ik9eeRI3xtpga3ej1RykcoEWYC1XD2ceP8
+	g2FfphCrPKeVdOMEJkRtUCUSXOmul2AEiBW5EKLhqbXymDDCgVklVCDsKBHwM3OlGr0KxPGC+7K
+	2mSu8gQ==
+X-Received: from plrf2.prod.google.com ([2002:a17:902:ab82:b0:2ca:bb5b:3c6b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec85:b0:2c6:a012:6241
+ with SMTP id d9443c01a7336-2ccbe3f7d69mr56668875ad.6.1783433054149; Tue, 07
+ Jul 2026 07:04:14 -0700 (PDT)
+Date: Tue, 7 Jul 2026 07:04:13 -0700
+In-Reply-To: <20260706164913.3A7A91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260701144543.39582-1-pankaj.gupta@amd.com> <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
- <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com> <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
- <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
-Message-ID: <ak0GWRue6-S-BQEu@google.com>
-Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region registration
+References: <20260706163649.155548-1-hisamshar@gmail.com> <20260706164913.3A7A91F000E9@smtp.kernel.org>
+Message-ID: <ak0HXd8HMyKDCU1U@google.com>
+Subject: Re: [PATCH] KVM: selftests: Use KVM's task pinning APIs in steal_time
 From: Sean Christopherson <seanjc@google.com>
-To: Pankaj Gupta <pankaj.gupta@amd.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, bp@alien8.de, x86@kernel.org, 
-	thomas.lendacky@amd.com, hpa@zytor.com, yangge1116@126.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: sashiko-reviews@lists.linux.dev
+Cc: Hisam Mehboob <hisamshar@gmail.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jul 07, 2026, Pankaj Gupta wrote:
-> > > > IIRC, fsdax cannot tolerate unbounded pins. Is that the case we are=
- running into?
-> > > Host side backend is regular file backed memory (no fsdax).
-> > Okay, so we'll end up mapping an ordinary file into VM memory, and expo=
-se that
-> > to the VM as part of virtio-pmem device.
-> >=20
-> > That also means that vfio etc. won't be able to longterm-pin such devic=
-e memory.
-> > So this is not a problem isolated to SEV.
+On Mon, Jul 06, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] Race condition causing intermittent test failure (ESRCH) due to late thread pinning
+> --
+> 
+> commit 27b6bbfae99d5564cda41cbc7b8c36c7b9a4ed64
+> Author: Sean Christopherson <seanjc@google.com>
+> 
+> KVM: selftests: Use KVM's task pinning APIs in steal_time
+> 
+> This commit updates the steal_time test to use KVM's task pinning APIs
+> (pin_self_to_cpu and pin_task_to_cpu) to pin the vCPU and stealer threads
+> to pCPU0. This removes the use of pthread_attr_setaffinity_np, allowing
+> the test to build against non-glibc C libraries.
+> 
+> Link: https://lore.kernel.org/all/aLIroyJSWQ26wnY4@google.com/
+> 
+> > diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+> > index 76fcdd1fd3cb4..19a97d6a36076 100644
+> > --- a/tools/testing/selftests/kvm/steal_time.c
+> > +++ b/tools/testing/selftests/kvm/steal_time.c
+> [ ... ]
+> > @@ -558,7 +552,9 @@ int main(int ac, char **av)
+> >  
+> >  		/* Steal time from the VCPU. The steal time thread has the same CPU affinity as the VCPUs. */
+> >  		run_delay = get_run_delay();
+> > -		pthread_create(&thread, &attr, do_steal_time, NULL);
+> > +		pthread_create(&thread, NULL, do_steal_time, NULL);
+> > +		pin_task_to_cpu(thread, 0);
+> 
+> [Severity: Medium]
+> Could this introduce a race condition that causes intermittent test failures?
+> 
+> Since pthread_create is called before pinning, there is a small window
+> where the child thread (do_steal_time) could execute and complete its very
+> brief 200us run before the parent thread executes pin_task_to_cpu.
+> 
+> If the child thread exits before pin_task_to_cpu attempts to set its
+> affinity, it will return ESRCH and trigger the TEST_ASSERT inside
+> pin_task_to_cpu, abruptly aborting the test.
+> 
+> Is the explicit pin_task_to_cpu call necessary here?
 
-The problem that _is_ "isolated" to SEV though, is that this used to work :=
--/
+Nope, which means we can simply drop the problematic pthread_attr_setaffinity_np(),
+though I think it makes sense to add a sanity check that the worker did indeed
+inherit the affinity, if only to document what's happening.
 
-> > Forbidding to longterm pin is actually the right thing to do if the fil=
-esystem
-> > relies on writenotify, as spelled out by Lorenzo's commit:
-> >=20
-> > "
-> >      Writing to file-backed mappings which require folio dirty tracking=
- using
-> >      GUP is a fundamentally broken operation, as kernel write access to=
- GUP
-> >      mappings do not adhere to the semantics expected by a file system.
-> >=20
-> >      A GUP caller uses the direct mapping to access the folio, which do=
-es not
-> >      cause write notify to trigger, nor does it enforce that the caller=
- marks
-> >      the folio dirty.
-> >=20
-> >      The problem arises when, after an initial write to the folio, writ=
-eback
-> >      results in the folio being cleaned and then the caller, via the GU=
-P
-> >      interface, writes to the folio again.
-> > "
-> >=20
-> > Hmmm
->=20
-> Yes. For file based mapping we don't allow long term pinning.
->=20
-> If we take into account the fragmentation concerns for MIGRATE_CMA and
-> ZONE_MOVABLE allocations
->=20
-> solvable with=C2=A0FOLL_LONGTERM, I can think of two options(tested) to a=
-llow
-> file based mappings as well:
->=20
-> 1. Fallback on FOLL_WRITE when FOLL_LONGTERM fails as suggested by Sean.
->=20
-> 2. Explicitly restrict long-term pinning for file-backed mappings=C2=A0wi=
-th a
-> change like the patch below [1].
->=20
-> David, Sean,
->=20
-> Do you have a preference between these two approaches? I am leaning towar=
-d
-> towards option 2.
+I'll send a v2.
 
-Option 1.  Option 2 has a TOCTOU bug (the VMA could be changed after droppi=
-ng
-mmap_lock), and I'd rather not bleed any more mm/ details into KVM than is
-required: falling back to a non-FOLL_LONGTERM acknowledges that there are m=
-apping
-types that don't support WRITE+LONGTERM, but checking vma_is_anonymous() ta=
-kes
-things a few steps further by forcing KVM to know what types of mappings ar=
-e
-problematic.
+Thanks for posting this Hisam!
 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 6c6a6d663e29..c4b53700f69e 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2743,6 +2743,29 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user
-> *argp)
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 return r;
-> =C2=A0}
->=20
-> +static unsigned int sev_region_gup_flags(unsigned long uaddr, unsigned l=
-ong
-> ulen)
-> +{
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0struct mm_struct *mm =3D current->mm;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long end =3D uaddr + ulen;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0struct vm_area_struct *vma;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned int flags =3D FOLL_WRITE | FOLL_LONG=
-TERM;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0VMA_ITERATOR(vmi, mm, uaddr);
-> +
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ulen =3D=3D 0 || end < uaddr)
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return FOLL_WRITE=
-;
-> +
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0mmap_read_lock(mm);
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_vma_range(vmi, vma, end) {
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (!vma_is_anony=
-mous(vma)) {
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0flags =3D FOLL_WRITE;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0break;
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0}
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0mmap_read_unlock(mm);
-> +
-> +=C2=A0 =C2=A0 =C2=A0 =C2=A0return flags;
-> +}
-> +
-> =C2=A0int sev_mem_enc_register_region(struct kvm *kvm,
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct kvm_enc_region *range)
-> =C2=A0{
-> @@ -2764,7 +2787,7 @@ int sev_mem_enc_register_region(struct kvm *kvm,
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENOMEM;
->=20
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 region->pages =3D sev_pin_memory(kvm, range->=
-addr, range->size,
-> &region->npages,
-> -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 FOLL_WRITE |=
- FOLL_LONGTERM);
-> + sev_region_gup_flags(range->addr, range->size));
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(region->pages)) {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D PTR_ERR(r=
-egion->pages);
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto e_free;
-> (END)
-> --=20
->=20
->=20
->=20
->=20
+> Since the main thread already called pin_self_to_cpu(0) earlier, the new
+> thread created by pthread_create should automatically inherit the parent's
+> CPU affinity mask.
