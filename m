@@ -1,129 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C77A2E4257
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB214480946
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783459850; cv=none; b=Y5I+n5UkvEtBYOr9rmGBbwKUYQlwkY2WElx8a/pITyjcQy57rtv/ne+1lWPHd1hWLry4n+7ImJY6rfqM/NOi13YTovcZmx9rCyJ4ZvHX5yCjU9PpBJYmVsirxINSOG6AwoNQd11LKxpURo7B9BW5ZTVuieBWrnyg0DNx22j6huU=
+	t=1783461367; cv=none; b=NVfoDsZ0Z+VBAaNfOO4DCWVlUx+4DiaKAorzhgt3rW/O8e35deKFGwsilV9biBfRaHD/JI8t7dfROzrglGBTUXLh2ofpOAJNp7Tn0H4CfOMZ9sSg45KLIYQu/s4rEBf4Y6PqNdffan9AWHmLg6IWhAmoh4yiT0giMkCj6Y+t1UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783459850; c=relaxed/simple;
-	bh=DXH0aRXnYaP7QETshPi4uyPfPTP48GB0M/DfH46M2rM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GcIRNdkPzEDahd4NCxiicAXAcw6r2Gl3T6lUnoAm/f8jFdwmicBHsIHvYVz4vUy49QdOiOD7POyN/xpxE5QIvt9DOBGu+SvWaloUvCcWmVFgx+xPMCf4jRCHwkDl3UxgPNGVim71assFKR3IKGwr79R2kN2y7n6z9GqLw6fc3Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSXuP6YY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783461367; c=relaxed/simple;
+	bh=lcSX7wCiKhMfn9Aj2tF8/IHgpw9MSCDR5lmvSzHU4ng=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=seyrzkANQRsLYCTCCHT8neltUk5ud08l8JXforz7mRZ+NfGnuClFa9YNGI4+gcCBSPMw9jGCTbr3IM1mK9STAE4UGZG0PlhPGBnFxgtAMHbt5/V3RFudehc+ZSY7oDcWdgoFzPJyNflsrSM2TpXlMt/4QCB0G4sx7QrzEf0nidQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NwkQML4X; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSXuP6YY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30A11F00A3D
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783459849;
-	bh=jUrtZOMOAslTH4TMg0dZsW+Mr33f9fVV9xKYRa4YG2I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VSXuP6YYSk0ZUqWd9QXrxru9kfEt/dZPdS6oZ01+X50VzZ4xHmnf7r3KhghhrORSf
-	 wJRsTrHhl4XHVDcb6jMRstTZHl5PpK/2p2PGn0ZFvedFjYY9ttOMMykPBADYPrHQsi
-	 LQnzuW/PzxwFHShHnSE8vfheR7qiCBmUuK8i3lKAOa8gVZ+8FGv5aRL0NH5zqaaABR
-	 7WxCHuubKwyjJnZzVTr/f6sKMnNa70/0wi3qAOn1Gtmi1zK6bkiM4lBXatDT34je0Y
-	 tc8gz/T9GmAn3JFv0J6MG1VqdjMeReMkUVI0Jrll8C87F7OahHYPESyfIg7Ho7tY8Z
-	 ISSUcMtUcvkHw==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-693c51a8a19so22913a12.3
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 14:30:48 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx73QQFmsqRn8sk+48KTFLooXeC0Zo5qn0glzFmcZhWbldt28CW
-	H4G+5L0GnhxLElT82KJNE+VTQio2LhIN4hf2w4nAA65JNPQvhbHbgOuJphYxRwsiv/UPDZdonzo
-	Z/bS+0GJDwWePchTZfUpphQfO+/WPXLM=
-X-Received: by 2002:a17:907:94d4:b0:c12:7ab4:637a with SMTP id
- a640c23a62f3a-c15a66e630dmr424140166b.16.1783459847898; Tue, 07 Jul 2026
- 14:30:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NwkQML4X"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so906765ad.3
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 14:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783461365; x=1784066165; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p0hWbsqrGNSQLEq0KyayeGwYCXe9bS5W8pXklldJ77o=;
+        b=NwkQML4XFFQcFoUNtS1sar97inP9HbbArSCwb/xJ7qsjln4Gch8hHLOOIgypXwJ2pK
+         pa6R7ZArwGEtUBEQ8o4qgMVnt/MeUzGoEQYZ7/on5hTv4p4vb8JSp+lenmUIDjSbXZPX
+         zL05eRJK23xNULdqq61mRdiaohPanzQfNpyuX2QA2Bb328X5OWsGDDDTME/X7Ec8aqFT
+         xizOw5ciG+FOk7Ft+wMTVUXNFYRLoOq0zP9EI++uJ10YqKfDvvwmHwxRHDe32SBIcpyX
+         7ynMWplJb1KpsHtE03ygniBdb2KdjRB6BlCpwnmMoQvmjRgjcU6TCIpaKHkrOr8GFzFU
+         ICjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783461365; x=1784066165;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=p0hWbsqrGNSQLEq0KyayeGwYCXe9bS5W8pXklldJ77o=;
+        b=hHDEhQD7DhukRoeydRGS4qwJW0Mg5iqjww7HBwdWJiZPqen6Mz/uPrBTqd474+C7Yn
+         RCOLXQOybXN8fHr+SsZWYnAVnvQ+r2I6YggBOk5CIr1w37lsSFsMghKx4i1rmgby6T4B
+         4x6SZSVjHC6GH64noG56vCmfubp7ChkRyY+uiZZUc3kfV0CREkc3G5PhQLwLvu4NRiCT
+         76gmHIlM0gF4FJAg2c6cOEx07EHKhn/eE12Lx189VMtvPc1yGBWcgVDOtCjMxAXHu9yL
+         H2moe91NutESz/u+/uV2H4qD7npMw/NRgKw54MN66AbG9sDMYem/aBTGpBivrNv3v5ct
+         ILVg==
+X-Forwarded-Encrypted: i=1; AHgh+RpOc02nfuLWitpifgstj51cm+z1ArAovsOeg5iSV3bTyqSAxnQx2qHMpMI4zdz3zHb+Qe4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5tnNwzhlaLFe913ZjGwfuTTjeK8XRwXaL9y9F8UPzi/rhg4RB
+	qgqAJcBn522b7Wg9nCwvP8SFM27z3iqHxXoBmehVQnbI81v5lZTvxTFSD6+/0GyNfD6qI2KwC1V
+	S5+8m6A==
+X-Received: from plck21.prod.google.com ([2002:a17:902:f295:b0:2cc:79e2:e717])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84f:b0:2ca:64d3:f0da
+ with SMTP id d9443c01a7336-2ccbf06b525mr64867165ad.32.1783461364987; Tue, 07
+ Jul 2026 14:56:04 -0700 (PDT)
+Date: Tue, 7 Jul 2026 14:56:04 -0700
+In-Reply-To: <20260706195413.1966458-5-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260616004155.1435766-9-yosry@kernel.org> <20260616010604.ACC021F000E9@smtp.kernel.org>
- <CAO9r8zNx4=dq=SBMcNwWzedVR4UGgarg=_pfmPT1DWb1MzC2CA@mail.gmail.com>
-In-Reply-To: <CAO9r8zNx4=dq=SBMcNwWzedVR4UGgarg=_pfmPT1DWb1MzC2CA@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 7 Jul 2026 14:30:35 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNE5F_895rmxuidfs_5Rf0Y5n+osr+bdiT3ju5=+za5sQ@mail.gmail.com>
-X-Gm-Features: AVVi8Ce3MYu7L632otiHXJ7Oxy-yHuj60mGeED4wvEYr3gOCcDnxymtvlFpGQ1k
-Message-ID: <CAO9r8zNE5F_895rmxuidfs_5Rf0Y5n+osr+bdiT3ju5=+za5sQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 08/25] KVM: SEV: Stop using per-vCPU ASID for SEV VMs
-To: sashiko-reviews@lists.linux.dev, Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260706195413.1966458-1-yosry@kernel.org> <20260706195413.1966458-5-yosry@kernel.org>
+Message-ID: <ak119GtNZOmBpGmW@google.com>
+Subject: Re: [PATCH v2 4/7] KVM: x86: Add a per-vendor callback to setup EFER caps
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jun 16, 2026 at 10:50=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
-te:
->
-> On Mon, Jun 15, 2026 at 6:06=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential is=
-sue(s) to consider:
-> > - [High] A malicious SEV guest or an unprivileged host-userspace proces=
-s can trigger a host WARN_ON_ONCE by executing VMRUN (entering nested virtu=
-alization) or via KVM_SET_NESTED_STATE.
-> > --
-> >
-> > commit c3ac1dbd3331e2991b6bd808b207ce3395a73130
-> > Author: Yosry Ahmed <yosry@kernel.org>
-> >
-> > KVM: SEV: Stop using per-vCPU ASID for SEV VMs
-> >
-> > This commit updates KVM to initialize the SEV VM ASID once in
-> > sev_init_vmcb() instead of checking and setting it on every vCPU run. I=
-t
-> > replaces the run-time assignment check in pre_sev_run() with a warning.
-> >
-> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > --- a/arch/x86/kvm/svm/sev.c
-> > > +++ b/arch/x86/kvm/svm/sev.c
-> > > @@ -3555,10 +3555,7 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
-> > >       if (!cpumask_test_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpus)=
-)
-> > >               cpumask_set_cpu(cpu, to_kvm_sev_info(kvm)->have_run_cpu=
-s);
-> > >
-> > > -     /* Assign the asid allocated with this SEV guest */
-> > > -     svm->asid =3D asid;
-> > > -
-> > > -     if (unlikely(svm->asid !=3D svm->vmcb->control.asid)) {
-> > > +     if (WARN_ON_ONCE(asid !=3D svm->vmcb->control.asid)) {
-> >
-> > [Severity: High]
-> > Can a malicious SEV guest or an unprivileged host-userspace process tri=
-gger
-> > this warning by entering nested virtualization or via KVM_SET_NESTED_ST=
-ATE?
-> >
-> > KVM does not strictly prohibit userspace from exposing CPUID.SVM to an =
-SEV
-> > guest. If an SEV guest sets EFER.SVME and executes VMRUN, KVM intercept=
-s it
-> > and handles the nested transition via nested_svm_vmrun(), which switche=
-s the
-> > active VMCB pointer to the nested vmcb02.
-> >
-> > The nested vmcb02 does not inherit the SEV ASID assignment from
-> > sev_init_vmcb(), and its control.asid is initialized separately. During=
- the
-> > subsequent svm_vcpu_run() -> pre_sev_run() call, the VM's valid SEV ASI=
-D will
-> > no longer match the nested vmcb02's ASID, causing this warning to trigg=
-er.
->
-> Hmm I looked around the code and I can't see what prevents SEV guests
-> from setting EFER_SVME or using KVM_SET_NESTED_STATE. However, I think
-> a VMRUN from an SEV VM will fail, at least due to not being able to
-> read the vmcb12 from guest memory?
->
-> That being said, I can drop this stopgap if preferred, I was going to
-> drop it before sending but I left it in just to be cautious.
+On Mon, Jul 06, 2026, Yosry Ahmed wrote:
+> Move handling EFER.SVME and EFER.LMSLE from hardware setup to a new
+> optional per-vendor callback invoked from kvm_setup_efer_caps(). This
+> centralizes allowed EFER bits handling to kvm_setup_efer_caps(),
+> facilitating following changes to move efer_reserved_bits into kvm_caps.
+> 
+> Move the call to kvm_setup_efer_caps() after per-vendor ops are
+> initialized.
 
-From an offline discussion with Sean, seems like it's technically
-possible to actually run nested in SEV. So I need to actually handle
-this in this series, by making sure L2 uses the same ASID as L1
-(required for SEV), and always flushing that ASID on nested
-transitions. I will also drop this stopgap, given that it's likely
-that using the wrong ASID will result in a loud failure anyway.
+Why?
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a0b2c40d93c21..a297a77469b38 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6903,6 +6903,8 @@ static void kvm_setup_efer_caps(void)
+>  
+>  	if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
+>  		kvm_enable_efer_bits(EFER_AUTOIBRS);
+> +
+> +	kvm_x86_call(setup_efer_caps)();
+
+I would rather move the togging to kvm_setup_efer_caps(), e.g.
+
+  static void kvm_setup_efer_caps(void)
+  {
+	/* Enable syscall by default because its emulated by KVM */
+	kvm_caps.supported_efer_bits = (u64)EFER_SCE;
+
+	if (kvm_cpu_cap_has(X86_FEATURE_LM))
+		kvm_caps.supported_efer_bits |= (EFER_LME | EFER_LMA);
+
+	if (kvm_cpu_cap_has(X86_FEATURE_NX))
+		kvm_caps.supported_efer_bits |= EFER_NX;
+
+	if (kvm_cpu_cap_has(X86_FEATURE_FXSR_OPT))
+		kvm_caps.supported_efer_bits |= EFER_FFXSR;
+
+	if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
+		kvm_caps.supported_efer_bits |= EFER_AUTOIBRS;
+
+	if (kvm_cpu_cap_has(X86_FEATURE_SVM)) {
+		kvm_caps.supported_efer_bits |= EFER_SVME;
+		if (!boot_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ))
+			kvm_caps.supported_efer_bits |= EFER_LMSLE;
+	}
+  }
