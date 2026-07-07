@@ -1,154 +1,132 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADFD2D876A
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 19:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577B53890F1
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 19:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783451810; cv=none; b=dsKqA/1UsjiHKalJrHfUbflvhCPASWbK6isRpDjIwOBPSUZ/1Sx8dhXncs6MPylBqU4WweyElRwnUdQY0eKH47l2baoqP+hJOdFfqvQdlQicKGroQJZpQRNudicE0qMY1L/L4ATo68r6HC0l0olSHfqjWToIGAJl0e2KtUDJpQw=
+	t=1783452460; cv=none; b=cVpFzefVT/Hfcsg+Q501KG6AlFo6C+hQRSihb/nlhpJVUJClyIRmEbNy2IypaHjaBov0V/JbZXIM6gC4EfHjnujmNQL6GrE7WA287g4ZDT5B+sTIbCARb+TD1CVtzaw3zjg4p+OxxQVuM9+4ovXcTpxlLabTkDQQn/dvpP/y81c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783451810; c=relaxed/simple;
-	bh=Rrr5x5ig8JyhfrhHMWQeKgUULcODUkkp8jUbPOWouu8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AUjueERvki74rAjwPKefNlCIH4VBX/qL1uxJlPf8XadRYUtnuuWDFpsh9Fa9x1APCmS+3ShWwmESxtSOBwsm/z4Hm1ox4BBLo8uYYdSh8Xx/ZO93rvmuIfs7y+0ahGbl8/LDNBtPwDtmgy8u0WWGDm8UFVRkjNSTTIIZYmW5tXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ETqJJpmd; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783452460; c=relaxed/simple;
+	bh=qYO89JPtgxwz3w3Lf500RTRaCVGqiC9XU19Hx897yVc=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=swKZBmGtdzN1oW7EVSmfY/n71xNKWWyax2x7cNYCCPzYUzvKj+7NBe7VSz/wO/zSdv6DHCJCRdp8PTjEK89IgG7sY3DbDlDh9yRWs2kMz43R17NADkg1ZzQg8Y6cvTrNL5CofK0zcqIu+n8tMvxI+FS+u28l6Q6bGNAuIeBhPsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digiscrypt.com; spf=pass smtp.mailfrom=digiscrypt.com; dkim=pass (2048-bit key) header.d=digiscrypt.com header.i=@digiscrypt.com header.b=jx8FM1Y4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digiscrypt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digiscrypt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ETqJJpmd"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6bbd0afffso95524395ad.0
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 12:16:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=digiscrypt.com header.i=@digiscrypt.com header.b="jx8FM1Y4"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-381b831d535so5252319a91.0
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 12:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783451809; x=1784056609; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=mwyS52Ee+fzpPLsIt5St9y7+nrmgCj0h4goGGRZrAxg=;
-        b=ETqJJpmdyeC0qYTGLXXDRdCkC+QbfAEHHDMXbrHzMNmyEwlfZUhE4rrePTNnA6pR46
-         +cv8VIVbYipsW+z/uio4pskwbJ5DCST/6QWg5eZHa396wUZ7gxZfBrvnSyCOH8A8SEdb
-         EKHbUC0bpeX/NnSTVVEueFzY/J9+AIwT2Hv6AAT7sq6tpzBtHITL2suMlRsqKpIaWJTv
-         gqvbrXi62AzRVlwZ7HpCqHoRSe4DcrV/yyQBobhvjJofxOiKgNP1JlDLST2DTKucj2QO
-         t4WT/+foyIhNLo0j7RFuNcGd4ZONoOgRgnBqbbh4FBGle/nBXZDu+fnGdYuNVv0k5UbS
-         kxJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783451809; x=1784056609;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=digiscrypt.com; s=google; t=1783452459; x=1784057259; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mwyS52Ee+fzpPLsIt5St9y7+nrmgCj0h4goGGRZrAxg=;
-        b=BSATV+ZpQSwPEzq4cVL0Ynh7u2/CDPeVnFey01C/AFU2NhoZNyR50p3Kw+WfGmpCtm
-         2h8FMB6lDDCgaWZsz8ETeClNIuKzyKL6zpcgr4u65iBPomwLtKLMRpfD68DsNlGIvMK0
-         fJ/2niDxzOpEVCU4Clq15qADqub3i646JrgxA23/FXIcJMqJBqz1J/maclJ/f28BMkIO
-         CztosQe2uZ3b3GPxRMk73kEVCHTr0E3znvLwvC6PMJkLCY5+0yQ0/wOwXrEdz8uVJnpq
-         Y7PQwTOvqQAf3eFlfmbrAPV2uPB4Az66NiH5lk7CSskvQ4yUEgDcdVBGWuejv+JXm9zC
-         CS3A==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2nomM48QWQmEEIgbNhQDx6+ABuke8R1LUsGq3GYRgAz1yv+m1ElDfIigpmb4vi8gsbUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7nFQhdXVZ4IW3FB/Evd9aVsnCOoKJrSCCcX8+2Liay+ylhMDS
-	EsZhVZEqHxVPbvQmOg3h6Z+WGQFUmcE3YLgpm3pG7dWK/fXsXpNAPrfL4eZvmN9pTLxwz0qLVZ7
-	aAjpxTg==
-X-Received: from plbkf8.prod.google.com ([2002:a17:903:5c8:b0:2bd:40d4:e407])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f60d:b0:2ba:6518:a6d4
- with SMTP id d9443c01a7336-2ccbe7232f3mr60167385ad.20.1783451808480; Tue, 07
- Jul 2026 12:16:48 -0700 (PDT)
-Date: Tue, 7 Jul 2026 12:16:47 -0700
-In-Reply-To: <CALMp9eQ4JZ8E5BTr7Cde5M=djBg1oMNLbfn_ZoVPL62ijna3AQ@mail.gmail.com>
+        bh=SWOrU0wzWskHBO1d6etEQEOvF1y8msjLLUX5KDQsIxI=;
+        b=jx8FM1Y46hL46Y1ePM/1DiaadmtBlsklBOGqHZNODTPDBniwyrTtAIIPiXnDGVCzdt
+         fi0VR/vFhT8WCBb6vI95LCDUg4CVqAXX2JnKQpZOjdKRBeCdABHBxXFF8UFgZJ/z8O90
+         EsbsOSO6vJHiAAYXqgJoDhS6/vmDOJm4HU2gfi4DpqRb/8L3N4MjUj6OW/U3FFRp4+g0
+         5zLNIgqNjJrLI5XUdBlbkxAF3raJdUG/W/jrPSRCTmZYXw0KEzLBg00nMIbreZLbZnpo
+         sEbzQqMEQtDX+1jxpKFYWjfAd8Rgiknm89Z5zHGPcJP2vlMCJUrgv45X7yHbKJldZ/FK
+         ujPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783452459; x=1784057259;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SWOrU0wzWskHBO1d6etEQEOvF1y8msjLLUX5KDQsIxI=;
+        b=C//JZrJ8HetdJeTODlUFTvmFkAV6+ji2vjDN0Xul+SgOcvG/oLMZjzXSuGnFZqi4AG
+         DK5/cd3K0spSr3lPbGVKAUvIhrhDLranQ94f0ojn1OaHPM94mBwQ6m55FtRktby6fXN6
+         XzVU54esf4iXRPuGRli5Dn88qJw/MWZkvn+19rdOIptLbKZEVl07qYJh9/cVeMEarh2N
+         UkZpixFwfLXZ6On9in+WzQrsFUdFfFLQjRXToWF4VfTN/I2tG5WkaLiAjFujijZ1+Lbn
+         LSUCawJJyIKIpR47Vguj6MXmiPCPEPCPEhchRm90vZkNZkgJcH33H5TB7GBMCNMZGgX8
+         kW4w==
+X-Gm-Message-State: AOJu0Yxc3jcgowafObznyAPo/EA6xXhDPA586XaePx9G6rfX3ze62+uO
+	1jTVzzI4dVjITLxWQK/bWIjX3bxGuwbUItlNiGm5JLcCaAlL0cXUFzlo6mpYoSS8Mqt8n4tIueh
+	5Xl+RVMHNh+Q=
+X-Gm-Gg: AfdE7ckLTH+eAMQbQi7R383Ll8YocXwbZ7AiAKesyPOodx1oo+7lcw/CVR4MFKM2tIG
+	Vtam18kTlGs2pTq/4ppPHVZNITj3O5e9yxPzI6U7N8AWiElFZPcA4isMI6ONpG4DBKLV3P2Qjk0
+	hc4ytfxbnu9dYZvhRhncU9VEcjk31Y7PfB2wxJJfc9BwOzQiv9HnYywmWF7E3anNKon/wWn9+6a
+	MMCAAVNFCoyXS/9mgw5VsxqZYXavEhi9rxDh5QRt5dTM3u8o1zq3IgXEQC9GJMt9lgILMvLVEBm
+	0H61FnUk6MUShKHsaZZWUW1L4H8Vj3UlW7flPKvDStnO0C+9GWbe0f58IAj6x+L7tSHASPQYKqb
+	ixMPpsnfn6w5eUPw5IqGSKDBQ0EnGGE8VWA2kYl2r6F3CiwGX6227xBMw57IkrRFXsfWO12j9TX
+	cgdo5lD1OITPWvLVFwfFumEBkHfLc5wmmFRyMPlXDDxlELaoULlROqmh1hnJ6VJPPqGpPDo59lc
+	606mjCIdikOHmdD3mkgausKHUvyzkooz3XhcLg/RulhhhTHtoe2yYCnSftl4JmCQYb62s3H3yne
+	JNv2qdywEm5YFBal+XDrjzmR9THabUf0lCokvEzS
+X-Received: by 2002:a17:90b:2805:b0:387:e0db:3fae with SMTP id 98e67ed59e1d1-387e0db490cmr3464534a91.39.1783452458555;
+        Tue, 07 Jul 2026 12:27:38 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2401:4900:62a5:8e1:38ee:5908:64f2:589])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117462f5c7sm13243170eec.0.2026.07.07.12.27.36
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 12:27:38 -0700 (PDT)
+From: Naveed Khan <naveed@digiscrypt.com>
+To: kvm@vger.kernel.org
+Subject: [PATCH] RISC-V: KVM: Fix heap overflow in SBI PMU event info handler
+Date: Wed, 08 Jul 2026 00:57:33 +0530
+Message-ID: <178345245327.72065.13249716450708539854@digiscrypt.com>
+X-CodeOps-Marker: ee1dda2afc24499fbe0a218e3ded3f59
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
- <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net> <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
- <d5645a47-c346-4e63-a5c6-c88bb39a3ee1@open-hieco.net> <akxwt1mX6blSnkxI@google.com>
- <CALMp9eTr0iJ5QgbZJ0YtOZg89XVFSesbyoGGdtkz+f8c60DcDA@mail.gmail.com>
- <ak0QE7mP_TeZmzeS@google.com> <CALMp9eTycB8Z94V8j-xyfDeah5KaJypRrPfFNHfQSUzgrr7FkQ@mail.gmail.com>
- <ak0dRzS4Ap-JREvg@google.com> <CALMp9eQ4JZ8E5BTr7Cde5M=djBg1oMNLbfn_ZoVPL62ijna3AQ@mail.gmail.com>
-Message-ID: <ak1Qn5miCXvvRnyF@google.com>
-Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Tina Zhang <zhang_wei@open-hieco.net>, mlevitsk@redhat.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Tue, Jul 07, 2026, Jim Mattson wrote:
-> On Tue, Jul 7, 2026 at 8:37=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > On Tue, Jul 07, 2026, Jim Mattson wrote:
-> > > On Tue, Jul 7, 2026 at 7:41=E2=80=AFAM Sean Christopherson <seanjc@go=
-ogle.com> wrote:
-> > > >
-> > > >         insn =3D ctxt->fetch.data;
-> > > >         if (ctxt->eip =3D=3D kvm_rip_read(vcpu))
-> > > >                 insn_len =3D ctxt->fetch.end - ctxt->fetch.ptr;
-> > > >
-> > > >         for (len =3D X86_MAX_INSTRUCTION_LENGTH - insn_len; len >=
-=3D 0; len--) {
-> > > >                 if (!kvm_fetch_guest_virt(vcpu, kvm_rip_read(vcpu) =
-+ insn_len,
-> > > >                                           &insn[insn_len], len, NUL=
-L))
-> > > >                         break;
-> > > >         }
-> > >
-> > > This split doesn't bother you?
-> >
-> > What split?  Do you mean reading some bytes from the emulator, and some=
- at the
-> > time of #VMEXIT?  If so: no.  IMO, the most important thing in practice=
- is to
-> > capture the actual bytes used to decode the instruction that led to the=
- #NPF.
->=20
-> Yes, that was the split I was referring to.
->=20
-> > Exactly how and when the "CPU" reads the bytes is a micro-architectural=
- detail,
-> > so I don't have any qualms from an architectural-correctness perspectiv=
-e.
->=20
-> When I requested this feature, I think I made it clear that I wanted
-> the actual instruction bytes used to decode the instruction, rather
-> than bytes asynchronously fetched through the data path.
+kvm_riscv_vcpu_pmu_event_info() implements the SBI PMU EVENT_GET_INFO
+call. It sizes the temporary shared-memory buffer that mirrors the
+guest's event-info array with:
 
-FWIW, what I'm suggesting gets us as close to that ideal as is possible, I =
-think.
-If KVM emulates an instruction in response to an #PF or #NPF exit, then the
-emulator will use the information from the VMCB, and so the above code will=
- also
-use the code stream that hardware provided.  If hardware provided fewer tha=
-n
-15 bytes for whatever, KVM will try to fill in the gaps, but KVM can't poss=
-ibly
-have decoded those bytes, so there's disconnect between what was emulated v=
-ersus
-what was read later on.
+	int shmem_size = num_events * sizeof(*einfo);
 
-If KVM emulates without information from the VMCB, then the emulator's code=
- fetch
-is the "source of truth", and everything else in the above again holds true=
-.
+num_events comes directly from the guest (SBI argument a2) and is only
+rejected when it is zero; there is no upper bound. sizeof(*einfo) is 16,
+so the multiplication is evaluated as size_t but the result is then
+truncated when it is stored into the 32-bit int shmem_size.
 
-> It wasn't until I encountered the Naples erratum that I realized AMD hadn=
-'t
-> implemented the feature as requested.
+A guest can pass, for example, num_events = 0x10000001. The real size is
+0x100000010 bytes, but shmem_size truncates to 16. kzalloc() then
+allocates room for a single entry while the following loop still runs the
+full 64-bit num_events times:
 
-Yeah.  I've poked AMD folks about this once or twice, the answer is (amusin=
-gly)
-that plumbing the bytes from fetch+decode all the way to the #VMEXIT is pai=
-nful,
-and so hardware just reads memory at the time of #VMEXIT.
+	for (int i = 0; i < num_events; i++) {
+		...
+		einfo[i].output = (ret > 0) ? 1 : 0;
+	}
 
-> Since there is no guarantee that the instruction bytes are actually
-> relevant, I concede that 'exactly how and when the "CPU" reads the
-> bytes is a micro-architectural detail.'
+This is a guest-triggerable heap out-of-bounds read and write that
+extends far past the allocation.
 
-KVM's emulator would actually be doing better than hardware, because at lea=
-st KVM
-wouldn't report different bytes than what it emulated :-)
+Compute the size with size_mul() into a size_t so the value used for the
+allocation always matches the loop bound. For an oversized num_events the
+multiplication saturates to SIZE_MAX, kzalloc() fails and the call
+returns SBI_ERR_FAILURE before the loop runs; well-formed requests behave
+exactly as before.
+
+Signed-off-by: Naveed Khan <naveed@digiscrypt.com>
+---
+diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+index bb46dcbfb2..ff940fa74b 100644
+--- a/arch/riscv/kvm/vcpu_pmu.c
++++ b/arch/riscv/kvm/vcpu_pmu.c
+@@ -12,6 +12,7 @@
+ #include <linux/err.h>
+ #include <linux/kvm_host.h>
+ #include <linux/nospec.h>
++#include <linux/overflow.h>
+ #include <linux/perf/riscv_pmu.h>
+ #include <asm/csr.h>
+ #include <asm/kvm_isa.h>
+@@ -479,7 +480,7 @@ int kvm_riscv_vcpu_pmu_event_info(struct kvm_vcpu *vcpu, unsigned long saddr_low
+ 				  unsigned long flags, struct kvm_vcpu_sbi_return *retdata)
+ {
+ 	struct riscv_pmu_event_info *einfo = NULL;
+-	int shmem_size = num_events * sizeof(*einfo);
++	size_t shmem_size = size_mul(num_events, sizeof(*einfo));
+ 	gpa_t shmem;
+ 	u32 eidx, etype;
+ 	u64 econfig;
+-- 
+2.50.1 (Apple Git-155)
