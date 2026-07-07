@@ -1,63 +1,63 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE234CFC7
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF403D567E
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783464196; cv=none; b=e3xNQDZoBHf+bWbfqR337zgfNvkyhF3oYLrXBZn+BG0rFNad8N39Q/4+SIlP3JtGT/jRicHGTGfmwyeI39yjKjjmrrSozeE/hXH8xwujsXoB9UgWmkZZIwT0KWyOTFv3ILCW4XvLhq5QBBcxn69BVtGSlnPAfJKwFirwROvhhYc=
+	t=1783464197; cv=none; b=S8XlExKaIiWctct/myGLWGh8Qu64UIxcKSDt2QHkxYtQkXu9xpPc0mWbMANCQaH5OZUIUZhh8Uok1d1u5H37tYGW4Lc4OCQn/BL6hGJGRh+037xcwl9PdNScJARiq8cAOTx8tDrWb6NMc2kFV4Of1NdH3gQA6ngNbIxPj1D++Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783464196; c=relaxed/simple;
-	bh=YzvWm8B9TGMeWW1VahTVcmUsbugo63tSUlDz+c90MFI=;
+	s=arc-20240116; t=1783464197; c=relaxed/simple;
+	bh=orGNoIfXNDc6htpChHMXe/alTEwc4Ok6XlE8l3qFEcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQsGqXnl2hd4kH5fKsNSo1DRYWzh1f5WTOmd7hvmz3VeWxXxU1JBOc2/7xt3r1SzFSnurzzY7by8wYsmv1GRIAOaCFaxBlDvCYkSU6sK/x0HJvnZKZHGQJxKd0XsqqnpAlH9aeGKbg8wSRI3GVFnSZjoKpWBFCsveA/ZfrIhBrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GPYoInU6; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=P5oZnz2TGT1FJAHPO99HL6wY6+sIrJ0eZWzhH+HfLmkMK7swt5O5egXyGSYRWTPW/kWahXdWZyGsBlM/qefKh4HEQnGQEKvTskNB671sv2dz25yf+jpacJzOj9Vjg8a6qZuOKfxvxLb1Sdhf5MlDWPlNsCdGdxK3Z9E+PSPOm9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ihYXFkH5; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GPYoInU6"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cad8076b01so949665ad.2
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ihYXFkH5"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c9b1edf2bdso1108215ad.1
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783464194; x=1784068994; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1783464196; x=1784068996; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R71DJ1s0zDCfKOKIafJMIMtfyKJnrf0v9yatLVZyeqA=;
-        b=GPYoInU65pxEpRsGtXDSYNVozOqxNHfGrObb4Jxev/0OCK/eibO6FVYqgVqIazve0n
-         VzHC6Pv3j4WUcEZBW0YxUR7dZdMdkzgTF9BkCofLfLRK6RCxh2D8LKN2MOdZ5BYYHZ+J
-         WJwrmUlebXHEv4Ep0qD5ekKyAcX8biPJ7wrsnQB2D4g5BzwlepjvqUUYlQwImN6/KhlZ
-         OGT81jhlv6/bOn70wgC8n86WivWxBUjAvbD7Oo2tIXV1xfZUmC4NWoM7vjyMVTqjFHWt
-         UNSQ3ZLWPYBHDaJdR+96fDSsDXFZvj+rt+KM8sAxQ6aX29XMyWGxeRCzZ5LCUaiSdz9l
-         cpog==
+         :message-id:reply-to:content-type;
+        bh=/EtuxP6qUgKAfe4TZdc89W+i3osoTftywciSv3aaq0s=;
+        b=ihYXFkH5fJilPaLVwrg7RGD78PNLpuUw9RKQwHFvolp8n/eyrDgvPERkEIFgPC8Eg+
+         uRDqRGOdnpWXaeJgZAzeUWRCEb76uzBhjX2a6zx9Wzp2QCB/pW1ZBdV01zK6dIfj+0tJ
+         Ra1fwrTfFcO3ImC4t4nywzVVgeMxojKd9Eb5zdnYJuFYfy1sO9/YSRU9OU1WbfH6bug1
+         aYwo6uip2M4w3qWayVYhyDl+2GEeRPA7HB02b6gCEy03KvVpLB0az9t6LY9SYRAgiymo
+         RusUF4fYemzGJ4tC5hKiaqaXUuDx+jvfEWM23/MeJXuk4E6TU+1z3UfeuUZhMmF3Ov/+
+         CWuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783464194; x=1784068994;
+        d=1e100.net; s=20251104; t=1783464196; x=1784068996;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R71DJ1s0zDCfKOKIafJMIMtfyKJnrf0v9yatLVZyeqA=;
-        b=OE+BK+eQtZskhnneCKVX5aS3/GKkx9XdLJFyi9ZVUGvn4Zx5ucaB++EPWK4cS3ZzNH
-         xul8SVx94BeaKNe38cet1g+LFY5EQYvcbpE5IJnQB5aDc9yo1Exc2R/k8PY1QQJEKSaQ
-         ijzZydGewU9otTSzHcCLyZFa2n7xBqPYZk7yM/vMT0m7TRlq6m5wmhWXjsSZxikZ//Ac
-         +659D5PVmIYwpz079EADOzPum+lhL5UT25yDt4KRsjAI7SgVTWGaALEypdKNpgonnNm7
-         atTm9Rz+O5k9k6SwBz3NYzCJmDC5OrZ9k+FKxNcWcDfMQyq4DZnXVPNEvt67mNIsBeGu
-         dkLQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrIg1HRjMynswhtfyBIaVQTjOaNxB4wy9tGJogtHr7D2VWAwlIt3nNBD0jW0aYvS7ani1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsEA7yK3S5sb9oPXJW+WVP2ltv1rWUZAdc2H8wGFMmQ7YITecj
-	brvBywc0EpCne6bqv/DTqqefW9RurcIKJgaNSDmvKXNXpgtJ0Aes1n0LyNzM/lW9VSo=
-X-Gm-Gg: AfdE7cnJjGy4KbHHDahtMRwZWI0K3aBi0yXfl4HqeDlgqwiOaVBZY86AHqfZblHIvGk
-	pGKMJqnVz3G7R8ueKPv6qEI+CJ0uqeT2ve3pNIN2z7vc/K8pc+ly7ERbeqPjgCXO6F+Ysc8iX63
-	bSNrLyijpcY+wfEDEbF2agOoBAsm3rtkcjfivrNuW2oZ+8hKL3jWK71Cs4zh747i0bEjrqySBcW
-	sFZWsL5u3ptAofMAj4wvXpSiF8HsrwxIPtyjUeLdcE4ASDGHZ6jEzrPSL08J6Nvz7bQ9gj1UIhH
-	RBqGsjQ1ng8tyubNRX3lcQedKYi8rtlPAivVHfdk3YJ9T82GyzQzB1jLztNYSnmjB5YNYTPETpI
-	DHB8AjVpOJl9YZZ0DedtBV/TGZHn5g7r9jdkkIjSmEdWz3n7QGaeagf37RaciPG4Kp3d3ElfzWP
-	MKrXmgbPgPEndw2Vt8k4lKzGG1txrEqIM6P/kRZR8=
-X-Received: by 2002:a17:902:d4d1:b0:2cc:d192:50b5 with SMTP id d9443c01a7336-2ccd19251e8mr33153885ad.34.1783464194073;
-        Tue, 07 Jul 2026 15:43:14 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/EtuxP6qUgKAfe4TZdc89W+i3osoTftywciSv3aaq0s=;
+        b=dS36xrgVl+1n8UzNyKVSv1mu1BF9PRRqtQsH8S6wmNXzeKVHWnhZCOSDe6GUrzoYFp
+         ksK3nO35gP9lDi06G43V5+txITKGt/QUvQIeDzUoauEHa35n+ijx0NvXiaia9mLvU4Uk
+         a/qTHrZqlQEj+epvfYa2aD3QjyyoP8jwMVJMSPo/81Z00DqQ9s6J10cOmyUNWhpQ9XTc
+         /Ge5QLxGHr53rfWR0LnvGCvwDy41vTtA90pRg+B44bIWbyuxpOyxIr+TvlGBmp905ALj
+         s3wyAfkWStXaVUHdm7YL2aE0Zn9gokxwRhFPq+Rc1lEJUeEeeMf8PJbvINpO16J455Ji
+         bGSg==
+X-Forwarded-Encrypted: i=1; AHgh+RrTs8dyzOtzTSAoGawahsEFrZhYat5OI49APtFw8DZht4bdDo7xsYpiGf27Yk7rY8val8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+/OnV3GUhXIA7TGZlU7XgAMmNYYGRVsvPFoIIpgPhFDvBuHQI
+	s9EvAXDZKHmKZBSNuXNoko9RjLIjcXHganYa813VjZshLoU36xM1Tp+hTT5hOpFAMwQ=
+X-Gm-Gg: AfdE7ckURIjNLHvfEwQcAxSfH2Wo6ZqgSr9sGx7KkwOru8dLoa/n7iDDVPml+NM7mLM
+	F2OWgETKDVgHQxED0YDNRwzFy00PnDHvXWkgRwJk6/4mLQPTI+6AwDA+ArOjZ5pSOd5PRIml8+a
+	/gezml6mjfBd9EkSX4OZh1b5NCx7fyPm/6euY3gmfri2DoUyTGgcLbDuzhn8+DDta1OEAxkyNAr
+	5QHfj3srTgMNpER4waZwvA7EzT78GvWFiVOfpmcXrmrOCjgXrTz96SD0aWLD7dVjjzuORbCvJxo
+	8UMr7js19JnATjS7oMGO5pSxo9gaQrT6ZTweZkoPDTT4T0+A5uTOVMlbkw4fo0QkbNetXVMv1L4
+	5piNY8GO3dptf/aPn6c8IVThMcwbH9/Aa5khAy6MnOdUzmVwWPxENN0m3zdKLcy3e1QEMirAjb/
+	haxuk3W7UHquJqXPXiHjd9gsE95XabvN3gA7lhDG4=
+X-Received: by 2002:a17:903:384c:b0:2cc:90aa:8787 with SMTP id d9443c01a7336-2ccbe724a21mr71744795ad.6.1783464195895;
+        Tue, 07 Jul 2026 15:43:15 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:46c8:dda7:40fa:8958])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.11
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 15:43:12 -0700 (PDT)
+        Tue, 07 Jul 2026 15:43:15 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v1 02/25] target/arm/kvm: Return immediately on error in kvm_arch_init()
-Date: Tue,  7 Jul 2026 16:42:43 -0600
-Message-ID: <20260707224306.1202330-3-mathieu.poirier@linaro.org>
+Subject: [RFC v1 03/25] target/arm: Add confidential guest support
+Date: Tue,  7 Jul 2026 16:42:44 -0600
+Message-ID: <20260707224306.1202330-4-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
@@ -89,65 +89,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-Returning an error to kvm_init() is fatal anyway, no need to continue
-the initialization.
+Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
+support the Arm Realm Management Extension (RME). It is instantiated by
+passing on the command-line:
 
-Leave the `ret` variable in the function scope because it will be reused
-when adding RME support.
+  -M virt,confidential-guest-support=<id>
+  -object rme-guest,id=<id>[,options...]
+
+This is only the skeleton. Support will be added in following patches.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ docs/system/confidential-guest-support.rst |  1 +
+ qapi/qom.json                              |  1 +
+ target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
+ target/arm/meson.build                     |  5 ++-
+ 4 files changed, 48 insertions(+), 1 deletion(-)
+ create mode 100644 target/arm/kvm-rme.c
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d40a6a985914..ed99be7fd80c 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -596,7 +596,7 @@ int kvm_arch_get_default_type(MachineState *ms)
+diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
+index 562a7c3c2852..abb56923ad13 100644
+--- a/docs/system/confidential-guest-support.rst
++++ b/docs/system/confidential-guest-support.rst
+@@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
+ * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
+ * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
+ * AWS Nitro Enclaves (see :doc:`nitro`)
++* Arm Realm Management Extension (RME)
  
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
--    int ret = 0;
-+    int ret;
-     /* For ARM interrupt delivery is always asynchronous,
-      * whether we are using an in-kernel VGIC or not.
-      */
-@@ -618,7 +618,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
-         error_report("Using more than 256 vcpus requires a host kernel "
-                      "with KVM_CAP_ARM_IRQ_LINE_LAYOUT_2");
--        ret = -EINVAL;
-+        return -EINVAL;
-     }
+ Other mechanisms may be supported in future.
+diff --git a/qapi/qom.json b/qapi/qom.json
+index dd45ac1087c3..285d32c2cce3 100644
+--- a/qapi/qom.json
++++ b/qapi/qom.json
+@@ -1241,6 +1241,7 @@
+     { 'name': 'pr-manager-helper',
+       'if': 'CONFIG_LINUX' },
+     'qtest',
++    'rme-guest',
+     'rng-builtin',
+     'rng-egd',
+     { 'name': 'rng-random',
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+new file mode 100644
+index 000000000000..42e1d1e7b859
+--- /dev/null
++++ b/target/arm/kvm-rme.c
+@@ -0,0 +1,42 @@
++/*
++ * QEMU Arm RME support
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright Linaro 2026
++ */
++
++#include "qemu/osdep.h"
++
++#include "hw/core/boards.h"
++#include "hw/core/cpu.h"
++#include "kvm_arm.h"
++#include "migration/blocker.h"
++#include "qapi/error.h"
++#include "qom/object_interfaces.h"
++#include "system/confidential-guest-support.h"
++#include "system/kvm.h"
++#include "system/runstate.h"
++
++#define TYPE_RME_GUEST "rme-guest"
++OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
++
++struct RmeGuest {
++    ConfidentialGuestSupport parent_obj;
++};
++
++OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
++                                          CONFIDENTIAL_GUEST_SUPPORT,
++                                          { TYPE_USER_CREATABLE }, { })
++
++static void rme_guest_class_init(ObjectClass *oc, const void *data)
++{
++}
++
++static void rme_guest_init(Object *obj)
++{
++}
++
++static void rme_guest_finalize(Object *obj)
++{
++}
+diff --git a/target/arm/meson.build b/target/arm/meson.build
+index 4412fde065f2..aff52a3f6eeb 100644
+--- a/target/arm/meson.build
++++ b/target/arm/meson.build
+@@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
+ arm_common_system_ss.add(files(
+   'arm-qmp-cmds.c',
+ ))
+-arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
++arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
++  'hyp_gdbstub.c',
++  'kvm.c',
++  'kvm-rme.c'))
+ arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
  
-     if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-@@ -640,13 +640,14 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-             warn_report("Eager Page Split support not available");
-         } else if (!(s->kvm_eager_split_size & sizes)) {
-             error_report("Eager Page Split requested chunk size not valid");
--            ret = -EINVAL;
-+            return -EINVAL;
-         } else {
-             ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
-                                     s->kvm_eager_split_size);
-             if (ret < 0) {
-                 error_report("Enabling of Eager Page Split failed: %s",
-                              strerror(-ret));
-+                return ret;
-             }
-         }
-     }
-@@ -659,7 +660,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     hw_breakpoints = g_array_sized_new(true, true,
-                                        sizeof(HWBreakpoint), max_hw_bps);
- 
--    return ret;
-+    return 0;
- }
- 
- unsigned long kvm_arch_vcpu_id(CPUState *cpu)
+ arm_user_ss.add(files('cpu.c'))
 -- 
 2.43.0
 
