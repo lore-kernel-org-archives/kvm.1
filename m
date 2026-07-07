@@ -1,180 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061061E5702;
-	Tue,  7 Jul 2026 14:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124343A1C9
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 14:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783435593; cv=none; b=OwxaYoyoGFy895BCA0feqCEiCzuUO/d125KgRecxPw1wlJ+8M0eqMfrtsHADN/kRnDTcIIGVkeVJYESMj8/uon7qJXeI/G3iRn+JQBG+RKlriXnacbO3r1fs7Mu6FsORs92S9KvAqL/hcvHWAv85IoQwc1n0EE/2UGBE2b9vXL4=
+	t=1783435620; cv=none; b=jKxhvAv4To9a7NYzMxFShjdeqIkap4wWlprd53OKMxsAZWv3J5euq1rN/+kjdBxsHT4Cg0G22VcB013plEB6jJPwww5q5C8s9A7K5lW9BBNg9T56r9fbyNhPpS6cgKfTkrfL1fAowdAP5D/LP63N7ySVgyujc1Pc+TCiNlDRsoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783435593; c=relaxed/simple;
-	bh=aoEs8Go9kfMil7L6Q1IcdXt9f90Lwr5rVOHmvPIt1LQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eUWgjaA0RI64BtJVhQ2ZWdn1Y0rbtITexL4L6niVIzUiTxtx9d6Fz1CMEP/EKetaQQ52bxt4VC5Az+hlLWv8xeH/0WlVVjKdjKlMK4l/eMuYtxDbwaZPghYUCleoydBgEYnVsA2uk4grnVFqsJUY94rY7L3jOAfgZrZNvDapHko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRGOucgc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783435620; c=relaxed/simple;
+	bh=dbEhWFYQcuKtmA70mOptSUK8mT123phz+xATTayPUfk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FVd2tI4PaOf1wLsC5iqh25GZCR9+4Stmq00BeSidDIpNTT4FNUnQby3Y4+FxcKuFOLSwH9D2cmoEOpSNR2t7t/xwlG40Rp/PYGyTCmySMHmatpXhJQwcmsKMZsLvflhw5veReHamNEYXrV17/z6D9MRhTzzsIth6rMIo/xv+LwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qZFjjmUy; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRGOucgc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390961F000E9;
-	Tue,  7 Jul 2026 14:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783435591;
-	bh=FyJTjmzLXvUvFLzrQN34wu7M/KTk4kD6uDDPgg62Ebo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oRGOucgcfN2Yes0Extb8h8W7tLIHXjvV+6zuJc++fMaVdFnf1IsJQx3tVT4bew1Ka
-	 34nw4k5PU+suyZGMV/UJ3kr4xAHK/n38Vd7ZBfh3O2WuL+1X5CJzr0C4g5t9SWPRBP
-	 GNLn6Bx1gtPzwOwf49qRGTS6B1blWyWH9GySpfW2+nWTFzf4gJjOpk1PJp75bjFNyo
-	 +H9vyxQjzKLBKM2jALz9WcbY8GshYzUeOj5qP+RsL57vyIQL0HzZVxpHG3jRVUugIs
-	 Sz8bz0HzW6G0Ho1SK0s3w0QOqUtuiDC4V8QsppZD6WMtrbDdXqLYlerFUEnEubiBD4
-	 OqLxGA/LgHBSg==
-Message-ID: <03762de9-c695-4cdd-8c25-4fc31335ea15@kernel.org>
-Date: Tue, 7 Jul 2026 16:46:13 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qZFjjmUy"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cca3673560so35820295ad.1
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 07:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783435618; x=1784040418; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HufNVYu34je8HZzz4w1ytu+7VhpoP+vTfH7cDlFEijc=;
+        b=qZFjjmUynfjxrsqgu/khQ3Q8LO1qM1jBb8s8Gj+7Zb7nNqPrEc3UjrKRzEYuKqqi/R
+         gjf5G+SobBeWYLbPGYZAEn4f0RleCZpzmxg8C6dSw0XQXZd87VoLxQiOaS+oZGctqzse
+         QHp3g1zpUF/VBBzOB4HMpz2TWTzsxf48WsyQf5qKJSTUuKYk/7ZYMw2VrICVP+ASsZrz
+         ii3VtxQPRDmJ+PdJnPOUt2Zp1EyY+IoyijYTMGIkQ8tCWsDcZL8eYei7hyFTW68x4pYv
+         waiFKqdpcbkHcoQImYElEhbWxzvw4+p9jYOcoRlLxqTY6wCAuvScBUp2hOFgAnx04OZC
+         g6XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783435618; x=1784040418;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HufNVYu34je8HZzz4w1ytu+7VhpoP+vTfH7cDlFEijc=;
+        b=sksgZJU46tIFBoRhxOuCaIlegond/QQw3LYDpY8i+7Jp+kJ+4ooD+8c2SIhB5cInB6
+         SlLCh+3DXUwE+oi59Or0FKUJiRx/7ERSUQc+i9prk7gQxVrmkZeatTbzj819rMws9pBU
+         Y3UJK42dNro/odpk/Oz59PKzDb6Z/oe0dnhG7Xz0Tb19p8IfQkgcZF8LgMSdkQS06XNo
+         BGOE0nGJohgNRo4W+/PMgR7BxfnyTIcYDaK1+lFJ8aXyqjL8j1/Evw6/vVvKZ4vlMT60
+         NyhSnNx6Fy8fNE735Emdii6TkVSHjGHzOIv9kHhIXbPX1BSILMrMe9O8/gVS2gtC/GLp
+         qHhA==
+X-Forwarded-Encrypted: i=1; AHgh+RrdYFDxZLbE/SM7GwMVwA8pTr1ZIiHHHcXw0RAoMDATUdFF1B5elLVvAwcjtLSCtGwG6w8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4Bvjx1wZIzI6L749TIkAc8AD+SoBDTpSsVAXSXVDpi7zSv82E
+	iBCW/uTQNI5kVPzJsjZ14KzImhUg06QgQ6yS5DvNO3l9dzBtJ3+QwgRpn1PamkMZfhLrOT5RmNQ
+	GB8v7fA==
+X-Received: from plse11.prod.google.com ([2002:a17:902:b78b:b0:2ca:d667:90e3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:eccb:b0:2c9:b396:1a55
+ with SMTP id d9443c01a7336-2ccbe611f6amr53537385ad.12.1783435618181; Tue, 07
+ Jul 2026 07:46:58 -0700 (PDT)
+Date: Tue, 7 Jul 2026 07:46:57 -0700
+In-Reply-To: <akaCzNRGVy5Xr-bG@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/30] mm: add kdoc comments for vma_start/last_pgoff()
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
- <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
- Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <cover.1782735110.git.ljs@kernel.org>
- <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260701110547.764083-1-kirill@shutemov.name> <20260701110547.764083-3-kirill@shutemov.name>
+ <akUrORhAmRur-lHP@google.com> <20260701180033.6e9c07aa@pumpkin> <akaCzNRGVy5Xr-bG@thinkstation>
+Message-ID: <ak0RYaft14ku6rEi@google.com>
+Subject: Re: [PATCH v5 2/3] x86/insn-eval: Add insn_assign_reg() helper
+From: Sean Christopherson <seanjc@google.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: David Laight <david.laight.linux@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Andi Kleen <ak@linux.intel.com>, Dan Williams <djbw@kernel.org>, 
+	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 6/29/26 14:23, Lorenzo Stoakes wrote:
-> Describe what vma_start_pgoff() and vma_last_pgoff() actually provide in
-> detail.
+On Thu, Jul 02, 2026, Kiryl Shutsemau wrote:
+> On Wed, Jul 01, 2026 at 06:00:33PM +0100, David Laight wrote:
+> > Or be even more specific and use '& 0xffffffff' rather than a cast.
+> > Particularly since the casts of the RHS in the byte/short cases aren't
+> > needed at all.
 > 
-> This is in order that we can differentiate this between functions that will
-> be added in a subsequent patch which provide a different page offset.
+> I'd rather keep the body exactly as KVM has it today.
+
++1.  My main argument for casting in the 1-byte and 2-byte cases is consistency
+above all else, using a mask for the 4-byte case defeats that goal.
+
+> This is now a straight move + rename with no functional change, and the v4
+> attempt to rewrite it with arithmetic is precisely what introduced the
+> AH/CH/DH/BH clobber Sashiko flagged.  Tidying the casts turns it back into a
+> rewrite and diverges from the form KVM has shipped for years.  Feel free to
+> submit a separate cleanup on top if you feel strongly.
 > 
-> No functional change intended.
+> Updated patch below; I'll fold it into v6.
 > 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> -- >8 --
+> Subject: [PATCH] x86/insn-eval: Move assign_register() out of KVM as insn_assign_reg()
+> 
+> KVM's instruction emulator has a small helper, assign_register(), that
+> writes a value into a register following the x86 rules for writes to
+> general-purpose registers: an 8- or 16-bit write leaves the rest of the
+> register untouched, a 32-bit write zero-extends the result to 64 bits,
+> and a 64-bit write replaces the whole register.
+> 
+> The TDX guest #VE handler needs the same logic for port I/O emulation
+> to get 32-bit zero-extension right.  Rather than add a third copy of
+> the same switch, move the helper verbatim to <asm/insn-eval.h>, rename
+> it to insn_assign_reg(), and route KVM's callers through it.
+> 
+> Add <asm/insn.h> to the header's includes so it builds standalone in
+> callers that have not pulled it in transitively.
+> 
+> No functional change.
+> 
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Cc: stable@vger.kernel.org # prerequisite for the following 32-bit port I/O zero-extension fix
 > ---
->  include/linux/mm.h | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 059144435729..2f00c75e66bd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4278,11 +4278,37 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
->  }
->  
-> +/**
-> + * vma_start_pgoff() - Get the page offset of the start of @vma
-> + * @vma: The VMA whose page offset is required.
-> + *
-> + * If the VMA is file-backed, this is the page offset into the file.
-> + *
-> + * If the VMA is anonymous, this is the virtual page offset of the start of the
-> + * VMA - if unfaulted, then vma->vm_start >> PAGE_SHIFT, if faulted then the
-> + * virtual page offset at the time of first fault.
-> + *
-> + * Note that if @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-> + * file offset.
 
-There is the ugly case of @vma being a MAP_PRIVATE PFNMAP mapping, where it
-returns something different.
-
-(remap_pfn_range_prepare_vma() -> vma->vm_pgoff set to PFN)
-
--- 
-Cheers,
-
-David
+Acked-by: Sean Christopherson <seanjc@google.com>
