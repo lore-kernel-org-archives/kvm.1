@@ -1,147 +1,310 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2F542089E;
-	Tue,  7 Jul 2026 07:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783410023; cv=none; b=NyQFWHNGyVH0atxmJp/RQuz7WaXsB4+RqNLCasDfM1hh+4XTbJt7tdl1bq76888S1ky+CImmKrwmHmSlggvVgmXHnStLoLnHA4X4a5ci3pTx+wz5OyOCBbtCkKCOPcbgk3UnJ8HuGN9JMY9smxy4+BD7nSF9egGrdVhQ9boPbk4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783410023; c=relaxed/simple;
-	bh=N2YBLQ2q+JlwFKcecWltDkVVJM0NmmZbDmKRyhij1Pc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Et9zIw5UG+ANO2iyYOB0HMaoKDApMm2Qbw1m5DJ/+qoM39i/S4mTzsZXE6FUKjAyFnL6m3tbQxRLTbFb0rNC+zoxQSf2KAdPnu2eWZct1ARv7NS37LY2lOVJfRlYWrgUnlOeJXwwkhXwW+Y1Q24PaG9DpKMcjXgBYFCtwG/aonk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lEtT2GXI; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539793750BD
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 07:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783410254; cv=pass; b=iGdGWkJiPKdgg/7ECfkIA3CNEQgsDgoLoCrIIRpg5eusTUzeot6UtTKY9yodn2hRS7mt4hFjdRm3MSQsnpWfmed8pjBqNgu7l0bXrEwAFh+JbCWERQL+/Aidm+RJah/1Bg/b52LEl2JKanXfNT4pbzC6879iW2uVAHAP1Y6KxJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783410254; c=relaxed/simple;
+	bh=RlysqtgXblZkBhQ9adOHLuUXIGVw3CfVa6vQlz7qP5E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N33RBR3dBIlF7Bq0H0JDum7D0WpZKN/Boa0xmEkojKUT9bgH7B1nNnaSh9dfqCUg6sDnN5TCnFKB/ld3rDLXhCZjitYsNrAidanDFtHewuE7BVgRw9qrq98eCSzfQIcjM8LmhrtJiHZ1S3O8I5LkiSQBErZSEX+HLfdXXQl9oys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=v8MNI8CI; arc=pass smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lEtT2GXI"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6674IDBi2725423;
-	Tue, 7 Jul 2026 07:40:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=1d2VBan8/XM9utBiTkiyVaE7rbR0Nx
-	uli4JKEtTFc8M=; b=lEtT2GXICudrfpNmeInB/4FfnpK7pKmaAxmWJVtsDV2jW8
-	Eh8wmRx6R+Gut8wPztuXxgw/vlh1aWc2qWYzXmllwEJ9b7eybg+TOTPiCrLfQSA1
-	mRejkv6x2MjiLf8FtkcKMdf9GA+SpZv4q9J8Ef9IwNOAwS/8XMudUTzPZ9530jj7
-	E2P30NheIfHRnCyp5u6UcWSnWeZ2v/RUtUHD0XtG09X+XR6xfqbqwnJGoLdDB/EH
-	I5JBZfwlP1tSNJxfz6unZNfnO4140rrAgpWGUhN7QMAb9tSH3q+yhWzFKQBq5G8c
-	idfVC7WVmYrm7qBoVQbc65heO+zAxR3zm3fuUmUw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6suqnkcq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jul 2026 07:40:04 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6677YaOB008650;
-	Tue, 7 Jul 2026 07:40:03 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgq1sg7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jul 2026 07:40:03 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6677dxBI51446060
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jul 2026 07:39:59 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 941A32004F;
-	Tue,  7 Jul 2026 07:39:59 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3504E2004B;
-	Tue,  7 Jul 2026 07:39:59 +0000 (GMT)
-Received: from osiris (unknown [9.224.76.185])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Jul 2026 07:39:59 +0000 (GMT)
-Date: Tue, 7 Jul 2026 09:39:58 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, kvm@vger.kernel.org,
-        kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v4 01/27] VFIO: take reference to the KVM module
-Message-ID: <20260707073958.583632-B-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
- <20260706085229.979525-2-seiden@linux.ibm.com>
- <20260706195313.GE118978@ziepe.ca>
- <akwaVzghHzi8o8fK@google.com>
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="v8MNI8CI"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493c55d5c7aso36698095e9.1
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 00:44:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783410251; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AfP1oq10aerGQxixw93RvS1j9xWpCY9yPxHZoiHhcfZEzPFBdVU5GV1zJ587gwmmCP
+         ooJyucKNdaCjzVa879+/zit/tIhyDy1rYmEJ9YmtJXs9VjrKGOdv7C1Q3M1nK/GHxq5s
+         wP0Z5iLlA8ZJRuyBsg3KHBfymYNW7tGlsUWVwDBnd1A4XtjHSjLVNSS1cq3Y3VE4A99p
+         iGnjsPKuEQi8SlDoXd9fm2YRLCqNENXr2J6pzzX46XZJLHISOTU25uffk0HgHWoffk8p
+         c3uPVUHXqZ9g4FHwzWiRoe6tfrUM+CZusZT41qC08hab5VCSZFN0okS2GN/gQSHOoMBP
+         UARQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vv2Den0YhG1W1a/jXh+Ffx3hTXGA8/cBXV3TkYxGd2s=;
+        fh=LIjEetOchuQQxUGNmuimkhrRGgI5SJ4ly4P7nfAll8g=;
+        b=dZWHfFjgwZBb0d85tTCuJ9qRMOjrkqE7mskZWPUbvqe+j1PQ5VZMX2ZoUh66Sz749p
+         gHyFj4xP4veatLdzNjrvLr8feGay8Bce7pTzzvABNLKhDIbW9WXUCifMTUDaJJ9dEMZP
+         Oac0IGtOxDGiTLckGQlTdb85O3kpO8UWPo8t+mGXizdCx4dbc0xNivlRMsaC8OZsb+ho
+         38LOmP8aZ21JaYLBKaFREhyVShE2rye88muGumfPmA6l7KA2z+UvGnVu/174D7rgqU2y
+         xLiRafpohbHM5xWI5ZQu0obim5g257RUtpvooBHTws3ZNAdeJmIAcEqTEN4t7Pmqf8iJ
+         l6yw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1783410251; x=1784015051; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vv2Den0YhG1W1a/jXh+Ffx3hTXGA8/cBXV3TkYxGd2s=;
+        b=v8MNI8CIQTl2VNSo/Fy1VgPVMhzx5ZtVqGRJIQR2WZh9S69nTbppdcgDS8SQhjxy0I
+         Gmky2L3n2wViRff/1iim4W7FdzzL1r0IsROVrIPKLPVsOCNm/q/uu5p2GUOGiBMmcMMS
+         fQHQUapIuXi3DFgNJAx0+1U1XRJ6QFFQ7DFrh2tCAcPRYXwimann1q5uPZiuNm51N7Ty
+         6E9g/WIpbjrLg2TF1dWB3QH8dWtI6OIQQsVrbfwNEfD6zEEl2V/73SpgwT/Yns7h8TGQ
+         XIhv7oPne6xzEPYS9N8dc4LNh9ibvDzThFJafZwea2mnleOT3/njUn/xJjCzjuJcUDNV
+         Ii4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783410251; x=1784015051;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vv2Den0YhG1W1a/jXh+Ffx3hTXGA8/cBXV3TkYxGd2s=;
+        b=O5f5G60qvsOk/g1P38OOHlyGi6qTz3b4ih0V7mMc7vgcLfG3iGvVWId394cayxYKv0
+         4mYx0Oa7VLPjMXO9mE+c2zkndq2U5hdbHWYFtM+52Ko0raQ6enhWVcoNl9LOmW+HcZ6r
+         Xl1B9ZQ5mq1o6QyMXOIcl/cBRk3RCDrLdKKIvuqHQAIAYSyDQFFlfiC+74tgtd8SaULB
+         pcQCfWgoboWpuf2hXP4AiBWo2Ivj0ow3igdSgkt/f+3UZlAlT6RzNnA3lkHgd59HbyNm
+         3ilCbgAJGqP28mW05ewdsQCuCtEZMbs9lhxv/ROdzS7V7ArY33w0n0vw/LGJ/oXDizED
+         s3RQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqXt7dVhvNBqt2uv5SGfCTXQjyOt2QwQU57izyXEL0HFI2subuImur47EZfDLXh8HchW7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcZKtyA+6W2hGgarTrHLNdok2Ajz7kwd2qckXODGha/7HQHLr6
+	7VCe/rpi7O5ULbLPmuFdguKQTuVih9rZF8CiITdBfrhc+pvlAgMZHzWn4jETLgbtnxEkpE4EuT/
+	/KCAVyp8S5rsO83h5jDYgxxOE08P51hrNNiB9c5c5dA==
+X-Gm-Gg: AfdE7cn59XrV84rvGPHjCBpIXpNNAC0dT5PCZAgVtF5Fcz93kyG82dNHrrcwCKBxLDx
+	CdPCcFx5xSg0hkKjt5bufMsl+s0uXDstuN/NG6ni1ub02sgUnHvgP6F9Pbf/cm1VrFguez/YoiK
+	4L4iSP2pueKnZyBcMOo+Sw2aTbmxTuzgdvPzI7UKUIO/0/CGxJN3CcWpP4wTApPfgg8Hkbgiwle
+	uFXfRzMUFPnNlqkIlQEHQtiWGxHjesy1CXjRBAImcurI+GpefVorv5GBJ+/TqOwWk/kGaYn3F1B
+	REQAu6try5oAANpwUfyHZlO1E37JSUvUQkPjDMZ9CpkQZXmLkUP6snNhDxSVb9i3irk3RoL9WuE
+	fY7wTS4yhG559aMUA3eBQZODNZw==
+X-Received: by 2002:a05:600c:3e19:b0:490:5057:f5f7 with SMTP id
+ 5b1f17b1804b1-493df08ba2dmr38413535e9.11.1783410250515; Tue, 07 Jul 2026
+ 00:44:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akwaVzghHzi8o8fK@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDA2OSBTYWx0ZWRfXysR8zSDAEOBH
- 4x5xHPncdCmEZG24O4GLzeODqCXEzIARoD+2bCONtp17c+bEVbxINx14SyxMjvPB0O3V6nSaw6B
- 9/a3WbPOJOja3fcoN0AJjkJnSchJKxk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDA2OSBTYWx0ZWRfXyP4Hzwh8Cw5z
- dY4Mx1OFCm4qeu9UxNKbSgqE6ke0fKSKIGXo7qLDzhILzFZIZB9otVhz/rtalbVrMHNVq2JBJ4m
- IaZjbrOHZJHZQcBvxL6T1D/oeIoqPUo/ftxc79rqeIBf+Edrmae3WM+skt3jeaNrHlyp3SscJIQ
- 6xZUfP7BpcWsltTRzoy/89bHHoUPZvETetwoUMzhdc+mpREEWHAAAINMxDpxCDRvAwfiHMt2yqO
- 1HFCuXfibiDfImQyb7E8TT1bFX1mHdsYYkp4/1cufmCtuwUAJn4CCUMtN1Jcr7oGdFzXCrryAoD
- kynir/mGuVDLfNxxb0dkAYBtmdx2qoafg4EGRwy1E6vBKvtbXqYVjKpTDf0WMa4eeMghAGs3Pzf
- gC7CJziQuysqBLV3fgpJdQxACoUm5oOXtlTjiW2cyfXxa8C4ZKc0dY/NpRzWTtQgK7j0rC1bHKY
- mBQy5dnIwfFHl4drcDg==
-X-Proofpoint-GUID: HSBOqlTnliJyzGOBDLWHxtevcP-AF-dI
-X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4cad55 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=20KFwNOVAAAA:8 a=Ubti9o167-X3AsrDlZIA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: bmiDYJpYbB5YE7vJNJudbxkVJtNQZl-h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-07_01,2026-07-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0 phishscore=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607070069
+References: <20260706022046.214956-1-inochiama@gmail.com> <20260706022046.214956-2-inochiama@gmail.com>
+ <akxm_sT7R9u4OIXo@inochi.infowork>
+In-Reply-To: <akxm_sT7R9u4OIXo@inochi.infowork>
+From: Anup Patel <anup@brainfault.org>
+Date: Tue, 7 Jul 2026 13:13:58 +0530
+X-Gm-Features: AVVi8CdAbCSVwzWnyKUTkhwaRsg0E1mft2P8fRkO5Uf7DAxOupq0MJNEfLWnnTo
+Message-ID: <CAAhSdy3uPsYQUm5S+XHmAHunxB3M999GxNyM0Yj=9wakAVW=KA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/8] RISC-V: KVM: Add support for Svadu FWFT features
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Sergey Matyukevich <geomatsi@gmail.com>, Thomas Huth <thuth@redhat.com>, Deepak Gupta <debug@rivosinc.com>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-kselftest@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, 
+	Longbin Li <looong.bin@gmail.com>, Quan Zhou <zhouquan@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 06, 2026 at 02:12:55PM -0700, Sean Christopherson wrote:
-> On Mon, Jul 06, 2026, Jason Gunthorpe wrote:
-> > On Mon, Jul 06, 2026 at 10:52:01AM +0200, Steffen Eiden wrote:
-> > > From: Paolo Bonzini <pbonzini@redhat.com>
-> > > 
-> > > VFIO is implicitly taking a reference to the KVM module between
-> > > vfio_device_get_kvm_safe and vfio_device_put_kvm, thanks to
-> > > symbol_get and symbol_put.
-> > 
-> > I thought we weren't doing this approach? Use the struct file as the
-> > kvm handle. I thought I saw patches doing that already?
-> 
-> +1, my joking-but-serious NAK stands.
-> 
-> https://lore.kernel.org/all/adf29Rn7q9Db0hxc@google.com
+On Tue, Jul 7, 2026 at 8:16=E2=80=AFAM Inochi Amaoto <inochiama@gmail.com> =
+wrote:
+>
+> On Mon, Jul 06, 2026 at 10:20:37AM +0800, Inochi Amaoto wrote:
+> > Hardware updating of PTE A/D bits is controlled through ADUE bit in
+> > henvcfg Expose the feature only if both Svadu and Svade are supported
+> > for VS-mode.
+> >
+> > Allow the VMM to enable/disable this feature by change the ISA
+> > extension state in the guest.
+> >
+> > Assisted-by: YuanSheng:claude-4.7-opus
+> > Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> > ---
+> >  arch/riscv/include/uapi/asm/kvm.h |  1 +
+> >  arch/riscv/kvm/vcpu_sbi_fwft.c    | 77 +++++++++++++++++++++++++++++++
+> >  2 files changed, 78 insertions(+)
+> >
+> > diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uap=
+i/asm/kvm.h
+> > index 504e73305343..7bbea8812d92 100644
+> > --- a/arch/riscv/include/uapi/asm/kvm.h
+> > +++ b/arch/riscv/include/uapi/asm/kvm.h
+> > @@ -240,6 +240,7 @@ struct kvm_riscv_sbi_fwft_feature {
+> >  struct kvm_riscv_sbi_fwft {
+> >       struct kvm_riscv_sbi_fwft_feature misaligned_deleg;
+> >       struct kvm_riscv_sbi_fwft_feature pointer_masking;
+> > +     struct kvm_riscv_sbi_fwft_feature pte_ad_hw_updating;
+> >  };
+> >
+> >  /* If you need to interpret the index values, here is the key: */
+> > diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_f=
+wft.c
+> > index ab39ac464ffd..01db40b53295 100644
+> > --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> > +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/kvm_host.h>
+> >  #include <asm/cpufeature.h>
+> >  #include <asm/sbi.h>
+> > +#include <asm/kvm_nacl.h>
+> >  #include <asm/kvm_vcpu_sbi.h>
+> >  #include <asm/kvm_vcpu_sbi_fwft.h>
+> >
+> > @@ -94,6 +95,45 @@ static bool kvm_fwft_is_defined_feature(enum sbi_fwf=
+t_feature_t feature)
+> >       return false;
+> >  }
+> >
+> > +static void kvm_sbi_fwft_env_flag_reset_helper(struct kvm_vcpu *vcpu,
+> > +                                            u64 flag)
+> > +{
+> > +     vcpu->arch.cfg.henvcfg &=3D ~flag;
+> > +}
+> > +
+> > +static long kvm_sbi_fwft_env_flag_set_helper(struct kvm_vcpu *vcpu,
+> > +                                          struct kvm_sbi_fwft_config *=
+conf,
+> > +                                          bool one_reg_access,
+> > +                                          unsigned long value, u64 fla=
+g)
+> > +{
+> > +     struct kvm_vcpu_config *cfg =3D &vcpu->arch.cfg;
+> > +
+> > +     if (value =3D=3D 0)
+> > +             cfg->henvcfg &=3D ~flag;
+> > +     else if (value =3D=3D 1)
+> > +             cfg->henvcfg |=3D flag;
+> > +     else
+> > +             return SBI_ERR_INVALID_PARAM;
+> > +
+> > +     if (!one_reg_access) {
+> > +             ncsr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
+> > +             if (IS_ENABLED(CONFIG_32BIT))
+> > +                     ncsr_write(CSR_HENVCFGH, vcpu->arch.cfg.henvcfg >=
+> 32);
+> > +     }
+> > +
+> > +     return SBI_SUCCESS;
+> > +}
+> > +
+>
+> Hi, Anup,
+>
+> The sashiko bot point out calling NACL helper is not safe here as
+> preemption is not allowed when calling this_cpu_ptr() and it is
+> used by the NACL helper. Since I have no idea about how to fix it,
+> is it acceptable to use csr read/write directly here as other FWFT
+> feature?
 
-My bad, I did not cover this topic in the cover letter: 
+I think its okay use regular csr_read/write() over here because FWFT
+calls are not in hotpath so it won't have much impact on nested
+virtualization performance.
 
-I included those tree patches so that the rest of the series links in all configurations.
-I know we will not use this approach to mitigate this issue.
+Regards,
+Anup
 
-	Steffen
+>
+> Regards,
+> Inochi
+>
+>
+> The original reply from the bot is
+>
+> Is it safe to call ncsr_write() here without preemption disabled?
+>
+> KVM handles SBI ecalls with preemption enabled. The ncsr_write() macro
+> evaluates nacl_shmem(), which relies on this_cpu_ptr(). Using this_cpu_pt=
+r()
+> with preemption enabled will trigger a CONFIG_DEBUG_PREEMPT warning.
+>
+> Could the thread be migrated to another CPU after computing the pointer b=
+ut
+> before writing to it, resulting in per-CPU memory corruption by writing t=
+o
+> the NACL shared memory of another physical CPU?
+>
+> Additionally, when NACL is disabled, it falls back to csr_write(), which
+> writes directly to the physical CPU's host CSRs (CSR_HENVCFG). Could this
+> leave the host with modified hardware state if the vCPU thread migrates?
+>
+>
+> > +static long kvm_sbi_fwft_env_flag_get_helper(struct kvm_vcpu *vcpu,
+> > +                                          struct kvm_sbi_fwft_config *=
+conf,
+> > +                                          bool one_reg_access,
+> > +                                          unsigned long *value, u64 fl=
+ag)
+> > +{
+> > +     *value =3D (vcpu->arch.cfg.henvcfg & flag) =3D=3D flag;
+> > +
+> > +     return SBI_SUCCESS;
+> > +}
+> > +
+> >  static bool kvm_sbi_fwft_misaligned_delegation_supported(struct kvm_vc=
+pu *vcpu)
+> >  {
+> >       return misaligned_traps_can_delegate();
+> > @@ -137,6 +177,34 @@ static long kvm_sbi_fwft_get_misaligned_delegation=
+(struct kvm_vcpu *vcpu,
+> >       return SBI_SUCCESS;
+> >  }
+> >
+> > +static bool kvm_sbi_fwft_pte_ad_hw_updating_supported(struct kvm_vcpu =
+*vcpu)
+> > +{
+> > +     return riscv_isa_extension_available(vcpu->arch.isa, SVADU) &&
+> > +             riscv_isa_extension_available(vcpu->arch.isa, SVADE);
+> > +}
+> > +
+> > +static void kvm_sbi_fwft_reset_pte_ad_hw_updating(struct kvm_vcpu *vcp=
+u)
+> > +{
+> > +     if (kvm_sbi_fwft_pte_ad_hw_updating_supported(vcpu))
+> > +             kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_ADUE);
+> > +}
+> > +
+> > +static long kvm_sbi_fwft_set_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> > +                                             struct kvm_sbi_fwft_confi=
+g *conf,
+> > +                                             bool one_reg_access, unsi=
+gned long value)
+> > +{
+> > +     return kvm_sbi_fwft_env_flag_set_helper(vcpu, conf, one_reg_acces=
+s,
+> > +                                             value, ENVCFG_ADUE);
+> > +}
+> > +
+> > +static long kvm_sbi_fwft_get_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> > +                                             struct kvm_sbi_fwft_confi=
+g *conf,
+> > +                                             bool one_reg_access, unsi=
+gned long *value)
+> > +{
+> > +     return kvm_sbi_fwft_env_flag_get_helper(vcpu, conf, one_reg_acces=
+s,
+> > +                                             value, ENVCFG_ADUE);
+> > +}
+> > +
+> >  #ifndef CONFIG_32BIT
+> >
+> >  static bool try_to_set_pmm(unsigned long value)
+> > @@ -246,6 +314,15 @@ static const struct kvm_sbi_fwft_feature features[=
+] =3D {
+> >               .set =3D kvm_sbi_fwft_set_misaligned_delegation,
+> >               .get =3D kvm_sbi_fwft_get_misaligned_delegation,
+> >       },
+> > +     {
+> > +             .id =3D SBI_FWFT_PTE_AD_HW_UPDATING,
+> > +             .first_reg_num =3D offsetof(struct kvm_riscv_sbi_fwft, pt=
+e_ad_hw_updating.enable) /
+> > +                              sizeof(unsigned long),
+> > +             .supported =3D kvm_sbi_fwft_pte_ad_hw_updating_supported,
+> > +             .reset =3D kvm_sbi_fwft_reset_pte_ad_hw_updating,
+> > +             .set =3D kvm_sbi_fwft_set_pte_ad_hw_updating,
+> > +             .get =3D kvm_sbi_fwft_get_pte_ad_hw_updating,
+> > +     },
+> >  #ifndef CONFIG_32BIT
+> >       {
+> >               .id =3D SBI_FWFT_POINTER_MASKING_PMLEN,
+> > --
+> > 2.55.0
+> >
