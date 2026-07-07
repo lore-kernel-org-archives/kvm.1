@@ -1,115 +1,105 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB214480946
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 21:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486E23D648A;
+	Tue,  7 Jul 2026 22:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783461367; cv=none; b=NVfoDsZ0Z+VBAaNfOO4DCWVlUx+4DiaKAorzhgt3rW/O8e35deKFGwsilV9biBfRaHD/JI8t7dfROzrglGBTUXLh2ofpOAJNp7Tn0H4CfOMZ9sSg45KLIYQu/s4rEBf4Y6PqNdffan9AWHmLg6IWhAmoh4yiT0giMkCj6Y+t1UE=
+	t=1783463323; cv=none; b=XHFMsXASaPVrw8lCE5kiGohMm0xEh76q774uHXTs+eldKkL5ToQgJT0k0AwZUJgBetM9RAmiUtElKfnk+FdZf8V6mQVeHzaJSChgTdwqkjvx/Mb6iEEtilTjdvn8N0THQIF9NsnPLq5NKXKxgVRXU3+5/RqFHiq0x5SNMXiGrDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783461367; c=relaxed/simple;
-	bh=lcSX7wCiKhMfn9Aj2tF8/IHgpw9MSCDR5lmvSzHU4ng=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=seyrzkANQRsLYCTCCHT8neltUk5ud08l8JXforz7mRZ+NfGnuClFa9YNGI4+gcCBSPMw9jGCTbr3IM1mK9STAE4UGZG0PlhPGBnFxgtAMHbt5/V3RFudehc+ZSY7oDcWdgoFzPJyNflsrSM2TpXlMt/4QCB0G4sx7QrzEf0nidQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NwkQML4X; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783463323; c=relaxed/simple;
+	bh=xGDYk6xDOKByKK05UQxie3eir73pAUq12CctMIuRkOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ffmOt6T9n58e7g+l84wMMzzhUZZfIYcNfQEA1xjxWSvy9haT2H9jw1FDpEDZS4EQJdrpEfZvdvH5EZta5zG/MdYiLVNYAiV8DqZP9Gm3ELKkR18NkNtIeb0VIsA/utzUjpuPvQFileCS6zi8L4TCE1Xrk2Fj6gonoNrfdxBoQ5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FOBVJ4rD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NwkQML4X"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so906765ad.3
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 14:56:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783461365; x=1784066165; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p0hWbsqrGNSQLEq0KyayeGwYCXe9bS5W8pXklldJ77o=;
-        b=NwkQML4XFFQcFoUNtS1sar97inP9HbbArSCwb/xJ7qsjln4Gch8hHLOOIgypXwJ2pK
-         pa6R7ZArwGEtUBEQ8o4qgMVnt/MeUzGoEQYZ7/on5hTv4p4vb8JSp+lenmUIDjSbXZPX
-         zL05eRJK23xNULdqq61mRdiaohPanzQfNpyuX2QA2Bb328X5OWsGDDDTME/X7Ec8aqFT
-         xizOw5ciG+FOk7Ft+wMTVUXNFYRLoOq0zP9EI++uJ10YqKfDvvwmHwxRHDe32SBIcpyX
-         7ynMWplJb1KpsHtE03ygniBdb2KdjRB6BlCpwnmMoQvmjRgjcU6TCIpaKHkrOr8GFzFU
-         ICjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783461365; x=1784066165;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p0hWbsqrGNSQLEq0KyayeGwYCXe9bS5W8pXklldJ77o=;
-        b=hHDEhQD7DhukRoeydRGS4qwJW0Mg5iqjww7HBwdWJiZPqen6Mz/uPrBTqd474+C7Yn
-         RCOLXQOybXN8fHr+SsZWYnAVnvQ+r2I6YggBOk5CIr1w37lsSFsMghKx4i1rmgby6T4B
-         4x6SZSVjHC6GH64noG56vCmfubp7ChkRyY+uiZZUc3kfV0CREkc3G5PhQLwLvu4NRiCT
-         76gmHIlM0gF4FJAg2c6cOEx07EHKhn/eE12Lx189VMtvPc1yGBWcgVDOtCjMxAXHu9yL
-         H2moe91NutESz/u+/uV2H4qD7npMw/NRgKw54MN66AbG9sDMYem/aBTGpBivrNv3v5ct
-         ILVg==
-X-Forwarded-Encrypted: i=1; AHgh+RpOc02nfuLWitpifgstj51cm+z1ArAovsOeg5iSV3bTyqSAxnQx2qHMpMI4zdz3zHb+Qe4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5tnNwzhlaLFe913ZjGwfuTTjeK8XRwXaL9y9F8UPzi/rhg4RB
-	qgqAJcBn522b7Wg9nCwvP8SFM27z3iqHxXoBmehVQnbI81v5lZTvxTFSD6+/0GyNfD6qI2KwC1V
-	S5+8m6A==
-X-Received: from plck21.prod.google.com ([2002:a17:902:f295:b0:2cc:79e2:e717])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84f:b0:2ca:64d3:f0da
- with SMTP id d9443c01a7336-2ccbf06b525mr64867165ad.32.1783461364987; Tue, 07
- Jul 2026 14:56:04 -0700 (PDT)
-Date: Tue, 7 Jul 2026 14:56:04 -0700
-In-Reply-To: <20260706195413.1966458-5-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FOBVJ4rD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC171F000E9;
+	Tue,  7 Jul 2026 22:28:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783463321;
+	bh=gRwsNtR9CmtI1lg+FRZhNFP3aUE1T9mC+krBoHEi9x4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FOBVJ4rD5rTTQo3ydEtA3gAO9+lIGI/CrNJ8ssAZ4DAYgwFZpMeoTFKCV+sJUEuae
+	 7VC5wJWuZ8EgPLQfZzDm3hsFwOzJ8GaZw2t+XEGov7LfPlSe+HL+8/iYeQtjJ3G5UF
+	 WDdG6dFwpxpBhr0i+IhPPtJRFSDOmz6C/LG+zOeA4im1A8BgNLOjeiYsK64Dv0QnHd
+	 cdeaWbicwd1r9Ua/g/c4bLWDvHNgWjKX2VB7e9xd4sM1fZBlXqUTlxLs67iJImtLZu
+	 zC/fXH/oT8idmoroS8l7xYg8cfuP+AtXx4KDFhWDOdm81Sg0CKjHW++PKrsa7xZhTp
+	 pjx7Fw2TwUmyQ==
+Date: Tue, 7 Jul 2026 15:28:40 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Congkai Tan <congkai@amazon.com>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Haris Okanovic <harisokn@amazon.com>,
+	Geoff Blake <blakgeof@amazon.com>,
+	Stanislav Spassov <stanspas@amazon.de>, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] KVM: arm64: Expose PMMIR_EL1.SLOTS to guests
+Message-ID: <ak19mPPWcupFwfuE@kernel.org>
+References: <20260702190421.420992-1-congkai@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706195413.1966458-1-yosry@kernel.org> <20260706195413.1966458-5-yosry@kernel.org>
-Message-ID: <ak119GtNZOmBpGmW@google.com>
-Subject: Re: [PATCH v2 4/7] KVM: x86: Add a per-vendor callback to setup EFER caps
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702190421.420992-1-congkai@amazon.com>
 
-On Mon, Jul 06, 2026, Yosry Ahmed wrote:
-> Move handling EFER.SVME and EFER.LMSLE from hardware setup to a new
-> optional per-vendor callback invoked from kvm_setup_efer_caps(). This
-> centralizes allowed EFER bits handling to kvm_setup_efer_caps(),
-> facilitating following changes to move efer_reserved_bits into kvm_caps.
+Hi Congkai,
+
+Thanks for respinning.
+
+On Thu, Jul 02, 2026 at 07:04:18PM +0000, Congkai Tan wrote:
+> Today when the perf tool runs in a guest on cores with PMUv3p4, it fails
+> to parse the default metrics with "Failure to read '#slots'", since perf
+> can only read 0 from sysfs caps/slots, which is backed by PMMIR_EL1.SLOTS
+> that KVM traps as RAZ/WI.
 > 
-> Move the call to kvm_setup_efer_caps() after per-vendor ops are
-> initialized.
+> Taking into account backward compatibility and heterogeneous systems, the
+> exposure of PMMIR_EL1.SLOTS is gated behind a new vCPU feature flag:
+> 
+> - Patch 1 adds the new flag KVM_ARM_VCPU_PMU_V3_STRICT. When set, KVM does
+>   not create a default PMU during vCPU init, and the VMM must select one
+>   explicitly via KVM_ARM_VCPU_PMU_V3_SET_PMU before the first KVM_RUN.
+> - Patch 2 exposes PMMIR_EL1.SLOTS of the selected PMU under the flag, and
+>   adds userspace get/set for PMMIR_EL1 so that SLOTS can be reset to 0
+>   for backward compatibility.
+> - Patch 3 stops masking STALL_SLOT* in PMCEID1 under the flag.
 
-Why?
+I think the series is starting to shape up. Few more things to address:
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a0b2c40d93c21..a297a77469b38 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -6903,6 +6903,8 @@ static void kvm_setup_efer_caps(void)
->  
->  	if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
->  		kvm_enable_efer_bits(EFER_AUTOIBRS);
-> +
-> +	kvm_x86_call(setup_efer_caps)();
+ - Didn't mention it in v1, but writes to PMCR_EL0.N should be ignored
+   when V3_STRICT is set. We now have a vCPU attribute for configuring
+   event counters and the register-based thing is just broken :)
 
-I would rather move the togging to kvm_setup_efer_caps(), e.g.
+ - The vCPU feature flag needs a corresponding KVM_CAP so userspace can
+   detect it
 
-  static void kvm_setup_efer_caps(void)
-  {
-	/* Enable syscall by default because its emulated by KVM */
-	kvm_caps.supported_efer_bits = (u64)EFER_SCE;
+ - In terms of patch ordering, the vCPU flag / KVM_CAP exposure should
+   come last after all the behavior changes are implemented (and
+   flag-guarded)
 
-	if (kvm_cpu_cap_has(X86_FEATURE_LM))
-		kvm_caps.supported_efer_bits |= (EFER_LME | EFER_LMA);
+ - Move enforcement of a non-NULL arm_pmu to kvm_arm_pmu_v3_init() since
+   userspace must call KVM_ARM_VCPU_PMU_V3_INIT before KVM_RUN
 
-	if (kvm_cpu_cap_has(X86_FEATURE_NX))
-		kvm_caps.supported_efer_bits |= EFER_NX;
+ - Prevent the PMU event filter from being configured until a hardware
+   PMU has been selected
 
-	if (kvm_cpu_cap_has(X86_FEATURE_FXSR_OPT))
-		kvm_caps.supported_efer_bits |= EFER_FFXSR;
+I've addressed all of this locally and pushed to my tree [*]. Untested,
+as always :) Would you be able to give it a spin?
 
-	if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
-		kvm_caps.supported_efer_bits |= EFER_AUTOIBRS;
+Also, do you have VMM patches for using the new feature flag?
 
-	if (kvm_cpu_cap_has(X86_FEATURE_SVM)) {
-		kvm_caps.supported_efer_bits |= EFER_SVME;
-		if (!boot_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ))
-			kvm_caps.supported_efer_bits |= EFER_LMSLE;
-	}
-  }
+[*]: https://git.kernel.org/pub/scm/linux/kernel/git/oupton/linux.git/log/?h=kvm-arm64/pmu-7.3
+
+Thanks,
+Oliver
