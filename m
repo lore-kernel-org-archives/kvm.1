@@ -1,86 +1,257 @@
-Received: from out28-53.mail.aliyun.com (out28-53.mail.aliyun.com [115.124.28.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756A3375ADF;
-	Tue,  7 Jul 2026 02:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1281C14A60F
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 02:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783392292; cv=none; b=ptfopZRQSV9SikE9k3LPzJSh4qVQV9ym0r6QcAu8U1rB21oqKHNOiDOdCfv4ge7bIkIEeJjIZ1dyB193ayi9O5n+rR+YFaBfnDitVuI15vkJq5EN22Yw0AQCBbCSU2brg2iQimU8yKuVkPQDhQ5LheabxQ7zhKvffsOyQ0TOI4A=
+	t=1783392412; cv=none; b=odXq6rsnIPTe7oa9cWYm0HGpdCcCAgTvCVEmZ04FWaOc93mgHJSBnNf9efBdK0Trafpf6Am1Qhn2z2jylfCy6VIxnmyXgUYU44SWraDtU6Si2pib01h4uyEqDSYnu01T8qKTRM7ldpWNDtSOX+2JIBaF5qU8LRGNLEyUnjDOwyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783392292; c=relaxed/simple;
-	bh=s8le8rz75dPMvH3KLAL0pyss5QP5CG9SRaMBPk1Lkrc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XCnjDn2FSRyPZbDQP8PflU8ezVIMugcXifVG+O4Cop8305tIjayZbGqdkIIL/fMZDTB0i7Uf9JSwZcmNOnBbt+If8P3ByZamNs/iKUU9g3kelqcXSw96qYrFZ9/iCJ9StP4oA7gqxNjNwOpp6s2u6G7afPngqjeqWy6NyWkwCCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1020282|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00380951-0.000328731-0.995862;FP=9179448279238174455|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iEvCEd._1783392276;
-Received: from 172.18.22.107(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEvCEd._1783392276 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 07 Jul 2026 10:44:39 +0800
-Message-ID: <d5645a47-c346-4e63-a5c6-c88bb39a3ee1@open-hieco.net>
-Date: Tue, 7 Jul 2026 10:44:34 +0800
+	s=arc-20240116; t=1783392412; c=relaxed/simple;
+	bh=lRiqjFf04MnEC+CrmqPUzkUqYQMTfmDEzEzuWOONfT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jpIf51dANKibrOSsr1PxvRkuzXHKH3LBipLAXx565TbQi7xAjJO4ZJAkuQ2gVUAVPYFmPw3+7D8zWxuzesyQa6tw/tCHaLq86vNY6JwlpeCeirJn6lPyNuBnrzbZTp79cyK0x6tMyrKVxZwh59fvdicnTLrVkmBD43TgnFjf4Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BDsAD6Kx; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BDsAD6Kx"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacd69a9c0so31182305ad.1
+        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 19:46:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783392410; x=1783997210; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2/fxWwb3oyYd4m0R5LKJRcZCrGk+3eTcmW2x4VDQgPg=;
+        b=BDsAD6KxirLL0qGoYEXFCqLKLNnSa5iMzZt7cuYXFejWM5k/kp69XRlpxCBAGDba/Y
+         QhIrc46poUQi44POpxWJRdvThb+P7z3IZoHcOypPMmRBD1F2NOlGQDrmlHv546bBFEnU
+         SzQ6XQS46WZqvoYGfgiKjBHQTl2MA5MSqERJF7y6dFYmZtoRp6PT+hlTZdktDkiHYJHt
+         1K3gv7xWYAlGN9AXA+5PcT3IeI62cLKI22idEeYWjAT6+648VO+kUOizNfb3rKNlNZ/p
+         m7BqAHfrl6l9S9Pylr6egk7Eb3nB0YcEQWdJg2J0nyFWotfuFcB6z5wbXGqT0V6ekVje
+         fuQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783392410; x=1783997210;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2/fxWwb3oyYd4m0R5LKJRcZCrGk+3eTcmW2x4VDQgPg=;
+        b=lyo/KSANqGmLsNLTyHuvZ1lXDX58c4B7+fJQEcfmf+ZWfVCBcWDBCiDHW15foe14KF
+         pvy+ptUCZPOwcIhJokVswxkv3tqzuuc0BMPIbVpBlOdTsH37dXZQaUcFvl57LlEcNMbz
+         tAwEsMkr4UZqw14dPQk3WiRDgP5YC4jfHm5CIqB58pRuYaQgktu8L+MCq/0/S082y7gn
+         8roFrNWnFOTxrDDUhh5cyayBvK75XDTiGpaRbSaSYy4neDQh5damKbCTqGnFOTbZJF8G
+         FgvoSoCVMyn7jXRLJXwj0b0zTB+weAuOygKBWB3JqFTo01kQPdWx85H9cK6JDGmHDygN
+         R0qg==
+X-Forwarded-Encrypted: i=1; AHgh+RpTts5lBM8T6V144rZxcMncbV/Gnq73Q+w2ph5NEFVZINfJ2RxJaIlKhbJiDKFyOqNe4EI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpjmUsb9DpwZ6jgf0SFpshmL0s8i9Me9EgByOF5MzgALbASqeH
+	OvQtPWOMVD1n8wCPfLrtQknJerWkGtKmHt5Snhzb0TyyePFWuAXIfTCg
+X-Gm-Gg: AfdE7cl/IZGIYfKRsDxE4dvC6B+GwTgg4Ansuz3lGZ/3aGLPn0Sm629FavGxsy5VzZ1
+	+jlK9jBZrrpqE/XgX3IWVZ5Aw0o0NMiySOLKXeS2btnBiQEKV/jtu5Ely6VZG+0JOVtt5gO7WaO
+	fDf6865D1GmdHcchQrQ14kwBCQ5wjM4pIDOiqOQT7k7jlnOuISov5pLMszSfsYhUDA3SRPnB//p
+	gG0oByqOkH0htV2YkT93FqQszGZvNYtyWAIXHc99GKmrFnufhA7JvdmntF4jZCHF9dZrvy5BUyX
+	8Qrp6Y+B0XbBni0zsNqyzesu/J2zeIeL30/btKrQn7g6ce78ddkfvSZtJFeLyLT3XTXppBAKE02
+	RI0oZHHyyW+R84d1I6qL+6T5phX2OO5Sry0mDiN0eeX1SviEoijf2AhD7fqHNg1Pa
+X-Received: by 2002:a17:903:1a0e:b0:2c1:ee75:56bb with SMTP id d9443c01a7336-2ccbe618242mr29826855ad.20.1783392410361;
+        Mon, 06 Jul 2026 19:46:50 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bfd443sm3388815ad.30.2026.07.06.19.46.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 19:46:49 -0700 (PDT)
+Date: Tue, 7 Jul 2026 10:46:14 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Charlie Jenkins <charlie@rivosinc.com>, 
+	Sergey Matyukevich <geomatsi@gmail.com>, Thomas Huth <thuth@redhat.com>, 
+	Inochi Amaoto <inochiama@gmail.com>, Deepak Gupta <debug@rivosinc.com>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, 
+	Longbin Li <looong.bin@gmail.com>, Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: Re: [PATCH v5 1/8] RISC-V: KVM: Add support for Svadu FWFT features
+Message-ID: <akxm_sT7R9u4OIXo@inochi.infowork>
+References: <20260706022046.214956-1-inochiama@gmail.com>
+ <20260706022046.214956-2-inochiama@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
-To: Jim Mattson <jmattson@google.com>
-Cc: mlevitsk@redhat.com, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
- <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
- <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
- <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net>
- <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706022046.214956-2-inochiama@gmail.com>
 
-
-
-On 7/7/2026 9:32 AM, Jim Mattson wrote:
-> On Mon, Jul 6, 2026 at 5:02 PM Tina Zhang <zhang_wei@open-hieco.net> wrote:
+On Mon, Jul 06, 2026 at 10:20:37AM +0800, Inochi Amaoto wrote:
+> Hardware updating of PTE A/D bits is controlled through ADUE bit in
+> henvcfg Expose the feature only if both Svadu and Svade are supported
+> for VS-mode.
 > 
->> I will take another look for the next version and try to handle the
->> remaining pieces properly, while also making sure we don't expose stale
->> or incorrectly synthesized decode-assist state for emulated exits.
+> Allow the VMM to enable/disable this feature by change the ISA
+> extension state in the guest.
 > 
-> Naples erratum 1096 seems to imply that the instruction bytes stored
-> in the VMCB are not necessarily the same instruction bytes that were
-> fetched and decoded to lead to the #PF/#NPF. Hence, in the case of
-> emulation, it might be sufficient to read the instruction bytes quite
-> late in nested_svm_vmexit(). That would certainly simplify the
-> plumbing.
+> Assisted-by: YuanSheng:claude-4.7-opus
+> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> ---
+>  arch/riscv/include/uapi/asm/kvm.h |  1 +
+>  arch/riscv/kvm/vcpu_sbi_fwft.c    | 77 +++++++++++++++++++++++++++++++
+>  2 files changed, 78 insertions(+)
+> 
+> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+> index 504e73305343..7bbea8812d92 100644
+> --- a/arch/riscv/include/uapi/asm/kvm.h
+> +++ b/arch/riscv/include/uapi/asm/kvm.h
+> @@ -240,6 +240,7 @@ struct kvm_riscv_sbi_fwft_feature {
+>  struct kvm_riscv_sbi_fwft {
+>  	struct kvm_riscv_sbi_fwft_feature misaligned_deleg;
+>  	struct kvm_riscv_sbi_fwft_feature pointer_masking;
+> +	struct kvm_riscv_sbi_fwft_feature pte_ad_hw_updating;
+>  };
+>  
+>  /* If you need to interpret the index values, here is the key: */
+> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwft.c
+> index ab39ac464ffd..01db40b53295 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/kvm_host.h>
+>  #include <asm/cpufeature.h>
+>  #include <asm/sbi.h>
+> +#include <asm/kvm_nacl.h>
+>  #include <asm/kvm_vcpu_sbi.h>
+>  #include <asm/kvm_vcpu_sbi_fwft.h>
+>  
+> @@ -94,6 +95,45 @@ static bool kvm_fwft_is_defined_feature(enum sbi_fwft_feature_t feature)
+>  	return false;
+>  }
+>  
+> +static void kvm_sbi_fwft_env_flag_reset_helper(struct kvm_vcpu *vcpu,
+> +					       u64 flag)
+> +{
+> +	vcpu->arch.cfg.henvcfg &= ~flag;
+> +}
+> +
+> +static long kvm_sbi_fwft_env_flag_set_helper(struct kvm_vcpu *vcpu,
+> +					     struct kvm_sbi_fwft_config *conf,
+> +					     bool one_reg_access,
+> +					     unsigned long value, u64 flag)
+> +{
+> +	struct kvm_vcpu_config *cfg = &vcpu->arch.cfg;
+> +
+> +	if (value == 0)
+> +		cfg->henvcfg &= ~flag;
+> +	else if (value == 1)
+> +		cfg->henvcfg |= flag;
+> +	else
+> +		return SBI_ERR_INVALID_PARAM;
+> +
+> +	if (!one_reg_access) {
+> +		ncsr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
+> +		if (IS_ENABLED(CONFIG_32BIT))
+> +			ncsr_write(CSR_HENVCFGH, vcpu->arch.cfg.henvcfg >> 32);
+> +	}
+> +
+> +	return SBI_SUCCESS;
+> +}
+> +
 
-Thanks for the suggestion, and for pointing me at Naples erratum 1096. 
-I wasn't aware of that erratum.
+Hi, Anup,
 
-My understanding is that late fetching/decoding from guest RIP is not 
-strictly equivalent to preserving the exact bytes observed by the 
-original decoder, as the code bytes or translations could theoretically 
-change in between. But the suggested workaround for erratum 1096 also 
-tells the hypervisor to decode the instruction at the instruction 
-pointer when GuestInstrBytes cannot be used, so it seems that this is an 
-acceptable model/fallback.
+The sashiko bot point out calling NACL helper is not safe here as
+preemption is not allowed when calling this_cpu_ptr() and it is 
+used by the NACL helper. Since I have no idea about how to fix it,
+is it acceptable to use csr read/write directly here as other FWFT
+feature?
 
-For KVM-synthesized/emulated #PF/#NPF nested VM-Exits there is no fresh 
-hardware GuestInstrBytes state to propagate to VMCB12. So I agree that 
-it should be simpler to avoid plumbing instruction bytes from the 
-emulator, and instead fetch the bytes late when constructing the nested 
-VM-Exit for L1.
-
-I'll try this direction first.
+Regards,
+Inochi
 
 
+The original reply from the bot is 
 
-Thanks,
-Tina
+Is it safe to call ncsr_write() here without preemption disabled?
 
+KVM handles SBI ecalls with preemption enabled. The ncsr_write() macro
+evaluates nacl_shmem(), which relies on this_cpu_ptr(). Using this_cpu_ptr()
+with preemption enabled will trigger a CONFIG_DEBUG_PREEMPT warning.
+
+Could the thread be migrated to another CPU after computing the pointer but
+before writing to it, resulting in per-CPU memory corruption by writing to
+the NACL shared memory of another physical CPU?
+
+Additionally, when NACL is disabled, it falls back to csr_write(), which
+writes directly to the physical CPU's host CSRs (CSR_HENVCFG). Could this
+leave the host with modified hardware state if the vCPU thread migrates?
+
+
+> +static long kvm_sbi_fwft_env_flag_get_helper(struct kvm_vcpu *vcpu,
+> +					     struct kvm_sbi_fwft_config *conf,
+> +					     bool one_reg_access,
+> +					     unsigned long *value, u64 flag)
+> +{
+> +	*value = (vcpu->arch.cfg.henvcfg & flag) == flag;
+> +
+> +	return SBI_SUCCESS;
+> +}
+> +
+>  static bool kvm_sbi_fwft_misaligned_delegation_supported(struct kvm_vcpu *vcpu)
+>  {
+>  	return misaligned_traps_can_delegate();
+> @@ -137,6 +177,34 @@ static long kvm_sbi_fwft_get_misaligned_delegation(struct kvm_vcpu *vcpu,
+>  	return SBI_SUCCESS;
+>  }
+>  
+> +static bool kvm_sbi_fwft_pte_ad_hw_updating_supported(struct kvm_vcpu *vcpu)
+> +{
+> +	return riscv_isa_extension_available(vcpu->arch.isa, SVADU) &&
+> +		riscv_isa_extension_available(vcpu->arch.isa, SVADE);
+> +}
+> +
+> +static void kvm_sbi_fwft_reset_pte_ad_hw_updating(struct kvm_vcpu *vcpu)
+> +{
+> +	if (kvm_sbi_fwft_pte_ad_hw_updating_supported(vcpu))
+> +		kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_ADUE);
+> +}
+> +
+> +static long kvm_sbi_fwft_set_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> +						struct kvm_sbi_fwft_config *conf,
+> +						bool one_reg_access, unsigned long value)
+> +{
+> +	return kvm_sbi_fwft_env_flag_set_helper(vcpu, conf, one_reg_access,
+> +						value, ENVCFG_ADUE);
+> +}
+> +
+> +static long kvm_sbi_fwft_get_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
+> +						struct kvm_sbi_fwft_config *conf,
+> +						bool one_reg_access, unsigned long *value)
+> +{
+> +	return kvm_sbi_fwft_env_flag_get_helper(vcpu, conf, one_reg_access,
+> +						value, ENVCFG_ADUE);
+> +}
+> +
+>  #ifndef CONFIG_32BIT
+>  
+>  static bool try_to_set_pmm(unsigned long value)
+> @@ -246,6 +314,15 @@ static const struct kvm_sbi_fwft_feature features[] = {
+>  		.set = kvm_sbi_fwft_set_misaligned_delegation,
+>  		.get = kvm_sbi_fwft_get_misaligned_delegation,
+>  	},
+> +	{
+> +		.id = SBI_FWFT_PTE_AD_HW_UPDATING,
+> +		.first_reg_num = offsetof(struct kvm_riscv_sbi_fwft, pte_ad_hw_updating.enable) /
+> +				 sizeof(unsigned long),
+> +		.supported = kvm_sbi_fwft_pte_ad_hw_updating_supported,
+> +		.reset = kvm_sbi_fwft_reset_pte_ad_hw_updating,
+> +		.set = kvm_sbi_fwft_set_pte_ad_hw_updating,
+> +		.get = kvm_sbi_fwft_get_pte_ad_hw_updating,
+> +	},
+>  #ifndef CONFIG_32BIT
+>  	{
+>  		.id = SBI_FWFT_POINTER_MASKING_PMLEN,
+> -- 
+> 2.55.0
+> 
