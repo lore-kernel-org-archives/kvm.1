@@ -1,63 +1,63 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504553DCD8D
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35455480951
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 22:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783464229; cv=none; b=pwJwrJdu8GXjrxgQQ2VTJca870xK8Iv6u1hR02dri2D+uXxoXEJxKGCxCAGWAH2z6gGik8wxqOOX6T5aNdkpeQmQqzmSi1AsflT9JQQJ2GqFUI1Sf9SWbOb4RLXuqqsGVWdNTTpJxWoU2PD0BnNdlmF+JoUyn0cSuvmbDQ3f6Fs=
+	t=1783464231; cv=none; b=Bng1T8nrC6Mgc1+fnvpJ0gRWBpzfGiau8tYINPJYFBxh0UxS8ru+6Hou+cEBChCxt8T1cEkc0ZMMQLuFxIS/PIrd4iDruO3ia7zqNplqJNLCbP9fIEElwe9XK1egMgxE3uszYAll2007vrRkilJ8NlY8DNdCxRqEGc0HTWnp1pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783464229; c=relaxed/simple;
-	bh=GPAyVKltFqCDMHr7HOeTdVrvnL9vkB3SQ0XOW0OnnY8=;
+	s=arc-20240116; t=1783464231; c=relaxed/simple;
+	bh=a/vZ797JI4rAyeEzkvpaEb48i/AfGb4XWZXngkqY2XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5S7qGGRJ7SbhdxREysOprZFt/TXstf9b99dU5yzJzYgvK/0XlzQAfVZp69uONNqOvVgnPbY/J+kNyfD1wmMMkxGYYkddDybh71h0qxWyq3JY7NfxXN/QNfmN8KF6CA14J4o9rVaLpwLzTBe8AGvoPsY/XoLrfWZ1Y/ZVfN+h9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wqQVsTuY; arc=none smtp.client-ip=209.85.216.47
+	 MIME-Version; b=LbBE232RW3L8CWN8hkaQWMiU8yi278U9/ZYnik4Wl3kPA/hM/m8whm5AppsRx5r1nQgbwcuuxzQqgxN59krYHWsSBmqlzvmrN5jwHs9qII1sW9pf89OTGj6aZjPzD72gwrMfzwCPCfj0LXKOBJ33E/ztUornp7TBOQXVMB9KQco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VMrhOc4N; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wqQVsTuY"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-37ff8e0ad0fso70480a91.2
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VMrhOc4N"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ca7aaa4b85so829875ad.3
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 15:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783464228; x=1784069028; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1783464229; x=1784069029; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LBlWGabD4GkOvznv4dVAU2c7SOIX7YRSJZ4YheOCNfg=;
-        b=wqQVsTuYz7KyOsIrG2iL8L62opYW4q3NSR0JgSBHoEcCCMZKFX4USSDm8bcwSmD8hY
-         ZgCmn54K6F41DoSPogVgJgOcdXRpLsZaQ+9Otn4O7vdJQlbRAoimHjK0mMZUVEkm3W8H
-         Xx1m9sw8VToOX8PwOYzm8sQfXc/5NVYDSeGDEO8rmft2z8c2r9AWhcHpSejZrj9n6CTg
-         LTJCP0Fx40XJTa2+vIdt8TnQ2v/9r6rZDmlGEftKqwu3poUJCndjiKMkzWM3nKDz8IsK
-         dIa24+uFO6FUlRaCQeoWd1ZRR3RjwS/IcoENLwPGMu5voW697lToDRagtnLFzsp/Te+E
-         ZaiQ==
+         :message-id:reply-to:content-type;
+        bh=O86QJm1XxClMyzD31RebPc3Pom31UHvgzzbgIM9gz34=;
+        b=VMrhOc4NUK3FQmz2Suzy7YSJLEg/47XFXKPt7Evz5YNQy4ahk6AzEj4FewokV2Q7xm
+         /35Ii/WbvufSSMvdkTMvZDT5dN9R+8g9p6RO1YDesBeaC5nt6/PSuV7h1usJZm4QQzCt
+         RnfUjdO01gm4+lUdNssNzcIXRQjP7a/g04dSKKYCqws8aDNnkhHDgvG7NjpJl2pYpy+P
+         b3+6fjSrVkhLS5EjQS1LAsqLB+xBLyAdkg+NrkKuh+BognU3qkTEe0HicWxUBxx7IdMl
+         I6RKpNl3nd+1btUFCEqsN7bMyml4TuOKmvg9/kckwaDYZ6YuSmGUpA4yM2SM5LZFgMZw
+         e8sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783464228; x=1784069028;
+        d=1e100.net; s=20251104; t=1783464229; x=1784069029;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LBlWGabD4GkOvznv4dVAU2c7SOIX7YRSJZ4YheOCNfg=;
-        b=Z1krb8NzMr9u9XCvQjzfj+2xTz23oGhQfmimX+ql53S9uuT5igZvjFpx4OXFq+mRNR
-         KbpJdVcBT/FwJm46QBzlubSfzTsLmAtLze/nmXfOK9FdIG8WSPpLp6psXFZFn6UdRD1Y
-         qw2EaPg0HlqbMxv6s/P77MgHmfH+kTcusTrINwdYoJEhP892u/RJBnwhLy2JDzBR55bZ
-         7cn5i4h/BnHSEPyKxLFbIOCJg6wGL0uJ0IrGhW8BluawvyG00flK4+t2Hk6v2R0e9KeF
-         +48eXAJuguPFOFNsHl5PNd8aWqIIoBhq4VnvZd34zULlgfsEe+dKgGsT4RJ4V/tM+6c/
-         3cxQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rofe24/Qh/Zdyvc/NAi8Hfk9LzeaoATjNv2jGdTj4j8eQr07w4pAib0jWvaac0xua9V4xI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo7KqPzebxBfENPNI2v/y5dl40JOHz5eCL6n37UQNo4Lu/Y4dW
-	kUsXyL86i2iFDsHGl9afGljE36Uf32ISMReWknbC7lA1BUq4v1W9JJqclEGJhIzwYDE=
-X-Gm-Gg: AfdE7ckpBtYAEgNzn61gR7ZHEgESZj7K2Q8pzgd6IDuLSb42mLhFzT9zTQsJ0KahLbg
-	siz5loR5qMaFq9wkzTZSuUBRgb0YCkz86hJZ/1+zudQAQnIpUTmVQ2ZfOMphkFDy+5c5hnT6PQK
-	PQK5nrgIl+YoTQxHqyvjajdbTWQUpeiSUMLuNwBL6qnv0vM6HoqgZEClvNsOEtfuN27dTcJSXko
-	vHMnnNEuP6KoxRPFCpifOGEymkuvF+G5GXhdxUQxK7EeQw30Tu8wiOwCGHXr93xh4Y/h9yb8a0r
-	KBFmBOT7XkZ2Hz/sRnZTVwui+K9Z3q8Ywo6L8MOKeHG++D+CB+BT+1BjZmORW8w2BY4iB0fNYQC
-	HicCRGMU8Mx09nhplYKZgo6tS4Z+m4036NrzfPBjlAzIpEPFxkAvxE/vgI3t0d3nlgYuHzyZOdB
-	vXjt1pkBH5x6JQPcGJW6RZKjjsV0YcroXnGYvIqXQ=
-X-Received: by 2002:a17:90b:17c5:b0:369:7f25:cec0 with SMTP id 98e67ed59e1d1-38752d63ac9mr6904172a91.0.1783464227551;
-        Tue, 07 Jul 2026 15:43:47 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=O86QJm1XxClMyzD31RebPc3Pom31UHvgzzbgIM9gz34=;
+        b=iDGx6/CCn1Fqyq59BLH7YozjMRVU68oX3qVfRNcdvi12O0+GEIOOGNOLVKQYZ9orC4
+         apPxM+NmXFdf/dP4VjQqRcBVL8XZ32yYiL34WdDD+rwJHFpp6pngiXtAa5hQL6tjdQOz
+         mO+9N8DCrCK2i5P1+YydarCRPe5oKscwJGJIBOJMzwfJ87Iz3zOB26S+imiKgRcEVXVM
+         lD5T/SjkFUbRo2UAvD/8Ohw7XUJaDM36wvwVgoC6PfaYvdSTECOza7/95fyzcvgRXPST
+         4V5Aryq3BEB8Rl/odkGnMeqC20RjMHqt6GDn5MK+hYrJiPjHux7NfClroK/rVqkNjlvV
+         VxbQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpSej2PjaJs+LaBR1vlH3i/BcgoqiXhP+NRF/8TgTrdahlECtCjCHWKW4akWErrM9wlqYw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5EdMBrsGCcDYcKxloP/DZdrTbZKTmgZQUPi7xjnSH4FnTeQOj
+	A/mXY+VRWC9TXzthT7qC72IfQPRZhIU4y9xe+WNojGyyoRc+FcV1C0SPqjrTwWlKwSQ=
+X-Gm-Gg: AfdE7cnbPFlSI9hrQ//VwH9KZ3g+BtvzyOYw6jvcJC8JBqqr6aEz3/RC179wp813uyi
+	wcVyTPr1lDJ+8jwNazVXiupfXc0JrYDUSn6uiWb8rl/5b/h+Kcn4wjoW0nHDLQPvxAdG0GFt0CA
+	xXDtej4CnoGkbOlBa4oTbfLnxupq5VEeFCTZ6VhJ/KyIdlMIz7HOVdAbc3IQKHdOp2AVxQW77Bm
+	QS0fido+i/AD7TLoxl9GvLqpuTI4UyFT5ZVGNrNGeMHtVyrNL7r/XCxODvnSWzuMdF7Du4E8uio
+	Dn87o3R9Kajja1XZHypfamViJf9cThQjRtjZvnIwzDU45MiXOs2BLO1wPDo4J98vfeDLjFB/YJd
+	0+ATnAJqcyLjsxKJYOepKsyLZ9cB3gKm/DGkBrCKG82XOsE/Q24uuOw0tSz1892bBvr/IXdO8j4
+	AI8oFIFEo8TrxqNVfLFbnHvrOr/e0pUh9Dr3BUq2E=
+X-Received: by 2002:a17:902:f789:b0:2ca:281:27f9 with SMTP id d9443c01a7336-2ccbed22936mr61406255ad.27.1783464229346;
+        Tue, 07 Jul 2026 15:43:49 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:46c8:dda7:40fa:8958])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bbaesm18183805ad.57.2026.07.07.15.43.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 15:43:47 -0700 (PDT)
+        Tue, 07 Jul 2026 15:43:48 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v1 19/25] hw/arm/virt: Disable DTB randomness for confidential VMs
-Date: Tue,  7 Jul 2026 16:43:00 -0600
-Message-ID: <20260707224306.1202330-20-mathieu.poirier@linaro.org>
+Subject: [RFC v1 20/25] hw/arm/virt: Move virt_flash_create() to machvirt_init()
+Date: Tue,  7 Jul 2026 16:43:01 -0600
+Message-ID: <20260707224306.1202330-21-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
@@ -89,161 +89,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-The dtb-randomness feature, which adds random seeds to the DTB, isn't
-really compatible with confidential VMs since it randomizes the Realm
-Initial Measurement. Enabling it is not an error, but it prevents
-attestation. It also isn't useful to a Realm, which doesn't trust host
-input.
-
-Currently the feature is automatically enabled, unless the user disables
-it on the command-line. Change it to OnOffAuto, and automatically
-disable it for confidential VMs, unless the user explicitly enables it.
+For confidential VMs we'll want to skip flash device creation.
+Unfortunately, in virt_instance_init() the machine->cgs member has not
+yet been initialized, so we cannot check whether confidential guest is
+enabled. Move virt_flash_create() to machvirt_init(), where we can
+access the machine->cgs member.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- docs/system/arm/virt.rst |  9 +++++----
- hw/arm/virt.c            | 41 +++++++++++++++++++++++++---------------
- include/hw/arm/virt.h    |  2 +-
- 3 files changed, 32 insertions(+), 20 deletions(-)
+ hw/arm/virt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 5f6dd1797862..9882b842ddd5 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -238,10 +238,11 @@ dtb-randomness
-   rng-seed and kaslr-seed nodes (in both "/chosen" and
-   "/secure-chosen") to use for features like the random number
-   generator and address space randomisation. The default is
--  ``on``. You will want to disable it if your trusted boot chain
--  will verify the DTB it is passed, since this option causes the
--  DTB to be non-deterministic. It would be the responsibility of
--  the firmware to come up with a seed and pass it on if it wants to.
-+  ``off`` for confidential VMs, and ``on`` otherwise. You will want
-+  to disable it if your trusted boot chain will verify the DTB it is
-+  passed, since this option causes the DTB to be non-deterministic.
-+  It would be the responsibility of the firmware to come up with a
-+  seed and pass it on if it wants to.
- 
- dtb-kaslr-seed
-   A deprecated synonym for dtb-randomness.
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index d98d8108c8d2..0f104447e008 100644
+index 0f104447e008..2e8e29244284 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -399,6 +399,7 @@ static int gic_fdt_irq_type_spi(const VirtMachineState *vms)
+@@ -2909,6 +2909,8 @@ static void machvirt_init(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     unsigned int max_cpus = machine->smp.max_cpus;
  
- static void create_fdt(VirtMachineState *vms)
- {
-+    bool dtb_randomness = true;
-     MachineState *ms = MACHINE(vms);
-     int nb_numa_nodes = ms->numa_state->num_nodes;
-     void *fdt = create_device_tree(&vms->fdt_size);
-@@ -408,6 +409,16 @@ static void create_fdt(VirtMachineState *vms)
-         exit(1);
-     }
- 
-+    /*
-+     * Including random data in the DTB causes random intial measurement on CCA,
-+     * so disable it for confidential VMs.
-+     */
-+    if (vms->dtb_randomness == ON_OFF_AUTO_OFF ||
-+        (vms->dtb_randomness == ON_OFF_AUTO_AUTO &&
-+         virt_machine_is_confidential(vms))) {
-+        dtb_randomness = false;
-+    }
++    virt_flash_create(vms);
 +
-     ms->fdt = fdt;
+     possible_cpus = mc->possible_cpu_arch_ids(machine);
  
-     /* Header */
-@@ -429,13 +440,13 @@ static void create_fdt(VirtMachineState *vms)
- 
-     /* /chosen must exist for load_dtb to fill in necessary properties later */
-     qemu_fdt_add_subnode(fdt, "/chosen");
--    if (vms->dtb_randomness) {
-+    if (dtb_randomness) {
-         create_randomness(ms, "/chosen");
-     }
- 
-     if (vms->secure) {
-         qemu_fdt_add_subnode(fdt, "/secure-chosen");
--        if (vms->dtb_randomness) {
-+        if (dtb_randomness) {
-             create_randomness(ms, "/secure-chosen");
-         }
-     }
-@@ -3510,18 +3521,21 @@ static void virt_set_virtio_transports(Object *obj, Visitor *v,
-     vms->virtio_transports = transports;
- }
- 
--static bool virt_get_dtb_randomness(Object *obj, Error **errp)
-+static void virt_get_dtb_randomness(Object *obj, Visitor *v, const char *name,
-+                                    void *opaque, Error **errp)
- {
-     VirtMachineState *vms = VIRT_MACHINE(obj);
-+    OnOffAuto dtb_randomness = vms->dtb_randomness;
- 
--    return vms->dtb_randomness;
-+    visit_type_OnOffAuto(v, name, &dtb_randomness, errp);
- }
- 
--static void virt_set_dtb_randomness(Object *obj, bool value, Error **errp)
-+static void virt_set_dtb_randomness(Object *obj, Visitor *v, const char *name,
-+                                    void *opaque, Error **errp)
- {
-     VirtMachineState *vms = VIRT_MACHINE(obj);
- 
--    vms->dtb_randomness = value;
-+    visit_type_OnOffAuto(v, name, &vms->dtb_randomness, errp);
- }
- 
- static char *virt_get_oem_id(Object *obj, Error **errp)
-@@ -4339,16 +4353,16 @@ static void virt_machine_class_init(ObjectClass *oc, const void *data)
-                                           "Set MSI settings. "
-                                           "Valid values are auto, gicv2m, its and off");
- 
--    object_class_property_add_bool(oc, "dtb-randomness",
--                                   virt_get_dtb_randomness,
--                                   virt_set_dtb_randomness);
-+    object_class_property_add(oc, "dtb-randomness", "OnOffAuto",
-+                              virt_get_dtb_randomness, virt_set_dtb_randomness,
-+                              NULL, NULL);
-     object_class_property_set_description(oc, "dtb-randomness",
-                                           "Set off to disable passing random or "
-                                           "non-deterministic dtb nodes to guest");
- 
--    object_class_property_add_bool(oc, "dtb-kaslr-seed",
--                                   virt_get_dtb_randomness,
--                                   virt_set_dtb_randomness);
-+    object_class_property_add(oc, "dtb-kaslr-seed", "OnOffAuto",
-+                              virt_get_dtb_randomness, virt_set_dtb_randomness,
-+                              NULL, NULL);
-     object_class_property_set_description(oc, "dtb-kaslr-seed",
-                                           "Deprecated synonym of dtb-randomness");
- 
-@@ -4411,9 +4425,6 @@ static void virt_instance_init(Object *obj)
-     /* MTE is disabled by default.  */
-     vms->mte = false;
- 
--    /* Supply kaslr-seed and rng-seed by default */
--    vms->dtb_randomness = true;
--
-     vms->irqmap = a15irqmap;
+     /*
+@@ -4429,8 +4431,6 @@ static void virt_instance_init(Object *obj)
  
      vms->virtio_transports = NUM_VIRTIO_TRANSPORTS;
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 22e66d1a113c..d4c1aa04f664 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -176,7 +176,7 @@ struct VirtMachineState {
-     bool virt;
-     bool ras;
-     bool mte;
--    bool dtb_randomness;
-+    OnOffAuto dtb_randomness;
-     bool second_ns_uart_present;
-     OnOffAuto acpi;
-     VirtGICType gic_version;
+ 
+-    virt_flash_create(vms);
+-
+     vms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+     vms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     cxl_machine_init(obj, &vms->cxl_devices_state);
 -- 
 2.43.0
 
