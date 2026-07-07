@@ -1,129 +1,92 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA103DC4DE
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 16:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082AA433BDD
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 16:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783440935; cv=none; b=JnshFIatBPiKqx8yj3yLiQp1tAEZTfKH86MNsIWd06CiT9voKBXf16hjbjcu3pNAhTLsBUpIZawBpiVl9AaL9SdQkzN/e4bKpuZs7SHT2bVNbLy/w5J/iMsOgw+d7jWztp20CIYBY1OVFHDiPXV8XZ/4FArzvOkidxS9Rcs93Tk=
+	t=1783441056; cv=none; b=PtKsXF/7OP2nsmtOLt+HdRDxoPoUkk03fOdVLT+ui/4nHB7p99gw6OAifBqaT0Iql6pz67KuGe+BJuHTlfLDCGZLuEgsaTSeYPJBVGLVsmzfCuAT9hmtiBoEplKcrYIQWKUkndTVMaKr+ZBwCZlpKx0C2jbymxUv/iXKFQr0VHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783440935; c=relaxed/simple;
-	bh=cmM43HRzZFn1Vf8OPcewPhgRLaHIb9gz7ULaRVt9WFg=;
+	s=arc-20240116; t=1783441056; c=relaxed/simple;
+	bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MGzqU5JgCt1Vy9zyaYrfVDC0xYE5VwWOTKV7ojKTYN1d+HCArViNZofdwkdipn7Cz68Y1Q8XWJ4goux5A+9xcboH3H6Y0Qp0BgiWT1WfeCpOOY55Vd6Fvshm2yGKLkMEldAum1/PGYVJlpwECs+YguNGClryciBYgalMo/vREYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3xJcXTV; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=Xg25rTRjRCLsEcxwNUTrA/d9t9d/zpKiocVx4eM8S1YYFZw8fSti3ChJja1dVS2Z+a0hNk66UhQvn1/GQjOySl/nb/GSEzkuGZULFoccrFYm8MsFZigXkmhsSdZ0mcxjGStwGT9zW0nTB3FQuwe4jzopNjgiqg0kmGTFI/UV27A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dqn5gt3A; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3xJcXTV"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84777e9b51bso10911128b3a.2
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 09:15:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dqn5gt3A"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c860544c077so11847050a12.3
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 09:17:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783440933; x=1784045733; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+yO5+0blD3DvIOx7PJW/Fsb9R24TIuMrYx2xzHN/rqA=;
-        b=c3xJcXTVbrPAehf9YZfxV6KYjyQo3DHNxFdA6LxyqQpP++rytxaMT/6XkhE6cjpz1R
-         VAt1yTqRP/g0azEWAJ2a04AHS8qxZam5XA1+YWU4RH6Ov3YEdvSCK65kzxIJIrDLA0PD
-         5X6GFkE1h9Kpm8GHqdsBACSB0e/T/ho6ksvFRs+rY7PCj2fcYaXWa+4+jhEkao70uwSg
-         8mpwoEjGc6qkKnX1ApbLoR0vq4iZuZRS/23rousP9r+w9m+X2n/7cXmlATuq6qL/v8GY
-         86sJn29lzV6xljtAhcIaN9sJipalwiopJciKDpWe2zbvBRygb18XCnT88XdmHWnxb9J9
-         qfZg==
+        d=google.com; s=20251104; t=1783441054; x=1784045854; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
+        b=dqn5gt3ALNtUxpyQsP4DBIgwh/sLTH5z74M7MjJQoV9JhhpmiMSa0GFGBEdf4EtXtj
+         jaHKMY1jxlU/uS9mnH/8RBAOLaIyXKwIATM9qO8WIvl438sgIQafXZR4gzGnGowCiZfH
+         mmgS63j8EYi0qkgtACh17NbloZmNEvJV/tYsMmP1qlC+wjK3JHlQbA1cEJvho5zQ2xbB
+         9jl9yUUMMDpxQpH1r8nQRbWE2Ywf7Lak4tQOGIYE8Ipu/nsL1ZIWq4E86S27g0StD1Ng
+         0g490i45h4KPleA8FNX5kkBmV9Yd+LwnqPPBblOvWCIUYxsDHLFB2hWy4s4jqyUYuNrr
+         jBJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783440933; x=1784045733;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+yO5+0blD3DvIOx7PJW/Fsb9R24TIuMrYx2xzHN/rqA=;
-        b=e+hv0wDbzhY/WKmo6FvXLfZRBwdG2JWwrX5QSo8tkMimRx3ddOiKkMxy7hEYwmAbHz
-         hgbKueuEfn8ottOkDzK4Iak7+ZTolA/RPuiBSuSW4oRbIreSDx6XSpr3JZ+83GjYD0u+
-         QOf/A1h1HWc/fQjwkQzfIvD7UKGdSB69RcAqufiV7hwrtt95sMLxkUANteJ2m6ky7627
-         y9hC+VHg6eNy92iGRjU80I5wTWCKDWmkgewq6MaElVDzx6Po8baCwCrDVb8y2Nf5xTaC
-         9DQ27UyDDwnv0NIMsfeLIJsycqV3h9bmKxxAkNBZiFhCOqoLpW0KrfRNQnHT15jN/kx6
-         EXig==
-X-Gm-Message-State: AOJu0YxIGfUzLE8va6UARo/UaGPqiVHy6ZupO5KW8WkMDoFM64MJzHgG
-	l0oaACOtxigF4tnUD+/Fc7PnIzH3yio73i8xOcp18Jwub3TGChZM2BGQbCKDoPxsJZvYRb0PCjF
-	Cc4Sx9w==
-X-Received: from pfus20.prod.google.com ([2002:a05:6a00:8d4:b0:848:2ec8:662f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:13aa:b0:845:4d71:8d15
- with SMTP id d2e1a72fcca58-84826db0b79mr5739899b3a.37.1783440933112; Tue, 07
- Jul 2026 09:15:33 -0700 (PDT)
-Date: Tue, 7 Jul 2026 09:15:32 -0700
-In-Reply-To: <20260707152943.290581F000E9@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1783441054; x=1784045854;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Al6q5hSzbakCy6OHe7OE0sutONb/Jedtd8RaoFJGZSw=;
+        b=XwyUhE8OSoCKAZN8ig3+Utd0cTDlbp7iaqftjMg+RHpOCU8ZIyXpdcdZIJHgJWPtx6
+         pn/FVskQJlPmqBbJkjOIYhBH8NVtG8WEEIB6K/Z0yBra2Vp+HCO8XBYkLflhAXFTYHwi
+         v4e+jfLhh1UAk/x8bpLAhaR83J/Otq9NuttdFaHYphHH+4ki+zvQEtY1KJ4DQGYcwi/s
+         TDuM+v7ng/4wfKbHucoNp77rg/qFQhwKvYxGkOT8jZLUvlkS4WaJu4YRyrlzyrXa96Gi
+         X2Q7C0vJSfTDnXuzzczKrHibPQ8302yeTy7k+mphrpM/wamYoF0EpWLzoQjJuNMk3u8x
+         VnHQ==
+X-Gm-Message-State: AOJu0YwAUKauJvyty6ZuF8cHrBWtT2/CIjSCh4d419tnFQoLot7bjZ0y
+	YZpG2Re7H4U5rhHxrmR++dIZp5+HnPLzPZJJUmg5ekiXJmjNchER4NwCaPQPOsUa19iVU7RXxLr
+	1xZ7fGw==
+X-Received: from pgam21.prod.google.com ([2002:a05:6a02:2b55:b0:c99:d21a:f6b1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c786:b0:3b3:be05:2b73
+ with SMTP id adf61e73a8af0-3c08ecd72famr6686068637.18.1783441054198; Tue, 07
+ Jul 2026 09:17:34 -0700 (PDT)
+Date: Tue, 7 Jul 2026 09:17:33 -0700
+In-Reply-To: <f2b2a3a048ad6429305e0e21319a8c27bedf39db.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260707150706.1198541-1-seanjc@google.com> <20260707150706.1198541-3-seanjc@google.com>
- <20260707152943.290581F000E9@smtp.kernel.org>
-Message-ID: <ak0mJLxaz2TBwM0p@google.com>
-Subject: Re: [PATCH v2 2/2] KVM: selftests: Randomize pCPU in steal time test
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com> <f2b2a3a048ad6429305e0e21319a8c27bedf39db.camel@intel.com>
+Message-ID: <ak0mnZKoxK5Y04Dw@google.com>
+Subject: Re: [PATCH v6 00/11] Dynamic PAMT
 From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
+	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 07, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
-> > --- a/tools/testing/selftests/kvm/steal_time.c
-> > +++ b/tools/testing/selftests/kvm/steal_time.c
-> [ ... ]
-> > @@ -514,14 +514,12 @@ int main(int ac, char **av)
-> >  	long stolen_time;
-> >  	long run_delay;
-> >  	bool verbose;
-> > -	int i;
-> > +	int i, cpu;
-> >  
-> >  	verbose = ac > 1 && (!strncmp(av[1], "-v", 3) || !strncmp(av[1], "--verbose", 10));
-> >  
-> >  	/* Set CPU affinity so we can force preemption of the VCPU */
-> > -	CPU_ZERO(&cpuset);
-> > -	CPU_SET(0, &cpuset);
-> > -	pthread_setaffinity_np(pthread_self(), sizeof(cpu_set_t), &cpuset);
-> > +	cpu = pin_self_to_any_cpu();
-> >  
-> >  	/* Create a VM and an identity mapped memslot for the steal time structure */
-> >  	vm = vm_create_with_vcpus(NR_VCPUS, guest_code, vcpus);
-> [ ... ]
-> > @@ -557,7 +555,7 @@ int main(int ac, char **av)
-> >  		run_delay = get_run_delay();
-> >  		pthread_create(&thread, NULL, do_steal_time, NULL);
-> >  		pthread_getaffinity_np(thread, sizeof(cpuset), &cpuset);
-> > -		TEST_ASSERT(CPU_COUNT(&cpuset) == 1 && CPU_ISSET(0, &cpuset),
-> > +		TEST_ASSERT(CPU_COUNT(&cpuset) == 1 && CPU_ISSET(cpu, &cpuset),
-> 
-> [Severity: Medium]
-> Is there a race condition here if the worker thread exits before the parent
-> reads its affinity?
-> 
-> When pthread_create() spawns the worker thread, the child runs for a short
-> duration and exits. If the parent thread is preempted right after creation,
-> the child might finish its work and exit before pthread_getaffinity_np()
-> executes in the parent.
-> 
-> If the kernel task is already gone, pthread_getaffinity_np() will fail with
+On Mon, Jul 06, 2026, Rick P Edgecombe wrote:
+> Sean,
+>=20
+> On Mon, 2026-05-25 at 19:35 -0700, Rick Edgecombe wrote:
+> > =C2=A0 KVM: TDX: Allocate PAMT memory for TD and vCPU control structure=
+s
+> > =C2=A0 KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+>=20
+> Would you be willing to take a look at these two patches that need ack's =
+from
+> the KVM side? I'm hoping to make the next version of this the last one. S=
+o it
+> would be great to get any remaining comments before then.
 
-No, because the kernel task is kept alive until pthread_join().  As per the
-pthread_create() manpage[*]:
-
-  Only when a terminated joinable thread has been joined are the last of its
-  resources released back to the system.
-
-And by empirical testing, that includes the kernel task.
-
-[*] https://man7.org/linux/man-pages/man3/pthread_create.3.html
-
-> ESRCH. Because the explicit initialization of cpuset was removed earlier in
-> main(), cpuset remains completely uninitialized.
-> 
-> Could this cause CPU_COUNT() and CPU_ISSET() to evaluate garbage stack memory
-> and trigger sporadic TEST_ASSERT failures? Should the return value of
-> pthread_getaffinity_np() be checked, or should cpuset be initialized before
-> the call?
-
-The return value should be checked, but I'd rather handle that in a separate
-cleanup by adding a wrapper in kvm_syscalls.h.
+LGTM beyond the to_tdx() and Assited-by nits.
