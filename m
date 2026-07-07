@@ -1,165 +1,112 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA62F3F5BE1
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 20:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783456408; cv=pass; b=rjDPsQZsxKXqV9vMP0nUEsfzN2W9VtvxKfLXxyALDGmhu+g5/lj3GaM6ckF7kIweR+kAk3Rcdz8p4XD5RlZ1H6DgiBR+JRyJf7UQKqXFef5KzuQf1lNXkDNxuTqpCCXcQcaZaV9cKCsEK0n9O5sR4fxWmMIyVHdLJdbVZMtwht4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783456408; c=relaxed/simple;
-	bh=FUPxX+FnPgniZBlm8hxuYZj/Yv6KejUVM0c2K8usLxU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fjy5omdQPysYY5tBHbaI9s7csTPbTNqStHSMit5eLUQ16P4qHntR4XBlBR8lkqxXcE/WuPxQr7kpq0NoLKmwLt1bVp4AR1Mv1nQ0ohyA5fT9mVQDWUh1PWesYHkNa2CCLQ7TzTFezc2UJ9MaIIlYSKVJI5IAdM3xHk/mlc+kDQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CLSlz244; arc=pass smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C022420861;
+	Tue,  7 Jul 2026 21:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783458990; cv=none; b=LODSOoUubVTorNpOgd3diKB3bmsu6TQkbzUefNp294hDrwUWOhRBOV4hcvPKzAF3S74zGWfIT5Ll13lBYIJzNh0HDiyXbViXFjr89GN86v+3TC/jPZ83nnCYUbayKRcEDvf4cc8yGlBnnNM4ejhtm4vNqys7CQGxxTAeDlUEDnM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783458990; c=relaxed/simple;
+	bh=+mU2V2lNFf7RD4UqN0PvbUf1cG2Eudz94fXgpP0KWwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n/vgI6NtQWBceG8Yd4F62wzOWvCLuMpBptRgIlo+eE0Q5Ywbl6PaGz8liZCd83DPhGygoayrdWtHNshkEjMNbE+vt1EaDbWIYs8yt3tvKVLLR8cE5dYglHXmQdbmhf5DCcmZyNCGCqxuEGkNR4qQb+XnGJw2VGTMwLC0edufMf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=XdwZYmB9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y3TIAVti; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CLSlz244"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c95d0a54ea5so84104a12.0
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 13:33:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783456406; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JnbfAkXtgmdoQ6j+Ogblh1B4+/tmvEmlNZJokZWydJS3m9VtGrHJBHPCBDdM3DFqWn
-         PK3EBVgDgdf8Zz59v5ecepNEHOVorW0jVpseXrDqY+BZUWjY4hMFcK08+Ydwi0dSiBjr
-         BRwcywnhqNjTZdWPAnZ+VWuk4v+s4em3ULX1qyd3ml87oa+oqyHJR2+6AKsKkjp8tn3W
-         fwYNdyUEDO1LLqJ7drz9aB6CXFTK6y9c03MILKlBWcIbkfxNcgsiLQ29+6K866pLUCfQ
-         C3sO+tAjfAAbZS4H46BRqaw+bMtZMm4+w1K2c8WECzPpo3wExg1cJ8BHa0f2q20xR5dC
-         2HcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jSweCpb6asuGCMbQKK1bSMgdQBG8UhSu6mrgIEhFEkM=;
-        fh=QGOSbqHXNfEsRJMiKxygMPdMi/b4ceHqXBD9WVzu7fQ=;
-        b=UikTd8AhdikATeyNGLCbnNcQH3Pt0JUJ67be+lfc5vtKuWO2PdDSj79xLFkFEV3qJ/
-         N2In8lbjWBr++40KueXbqYnehsqc3E2gLy8dv2uGlMUNrz+JAM+vDaFYmmvMc5hv7Z2k
-         AzCKsvoYTKwG7oSO2nzRqeDdhjXYfDEB82u9PxEcKJou50jlwdZZrjDR0dnDgPVCSoVb
-         KjZn8S2PU2/KeDD2CC8k06dtWEnA/182XNAyiDZU4kDujTN+sOraVGI7l961ieKRPgBB
-         HBKE58Po87edMwnWXmvOJesc1ZUCEfOTQgFKYVoKKH2MGi5Y1HmIpP40UQ9GgIYMcnq8
-         JgGQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783456406; x=1784061206; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jSweCpb6asuGCMbQKK1bSMgdQBG8UhSu6mrgIEhFEkM=;
-        b=CLSlz244q9rGcI42Vi6Hikiv4N/hQH9Lf+XhvhgSsWFU1cQ5Q3GETp2j4cixhQLfOo
-         Ie/JVTJ+QPf7NrlQW7Kj6alqcYG8dLzYZ0M0arWxqMVwPC+nfDxAV0qtnYD8aX1Ud+j5
-         gDXWlbc/IO2l5jehxH5BsDzaMYzp+iodRgl1i4tXqIhgXS7xn3Mx7VsKq4aZAivX0Ec1
-         ZCytH0TnTEi2HpaKaz7wtR+DdU4xtbNc5pOf/mYTU8ddvoA2aqnEhCF1UyhP2MRHQK9P
-         wctB8nJ57zs4+nPbEvIXVN4FbljQ/Bd5MY/ApLIKVfOZrv+5GPQNNJ8GdUz1EXgMJEB7
-         TIyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783456406; x=1784061206;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jSweCpb6asuGCMbQKK1bSMgdQBG8UhSu6mrgIEhFEkM=;
-        b=jI49wzg00JRkdOmELvIZvsOVUjevibR2xtUJXVYFf8A/D3aAJS6pLazoId2+v2dDaw
-         ecfyKLLcezUVvRU9OiEskeTpx7l4FYeHB9rlsQJbuJwAFWhn0MTNyjBCm4n6oXiBFwrk
-         4fmtnSXxPNgbV0f2qGjPrRMFbMlG61qpey2N81OMBcp5/UmzW0Nd0iGWB0W/E73BdQn7
-         wVFGCTQgP85gVYYBb2LJal4ieWfu6svN78h2PBvFFJAKQbwuz2r0kdbfrRqtQnuP1P9t
-         jWwXk1iWglpN8hpjwkP68u474UtDBGN3CSIUESyS+LWLnPwWn1ONSpzZJqqHOn7yH3Aw
-         KUjg==
-X-Gm-Message-State: AOJu0Yyh/8ZJjZOWLii4d5THtCU9vcL70FoIuiNO8zG6XKV1v7PVPeuC
-	bHFSLEPjKhuUyQouTBNprTInKWFuLQq2Tnh7d2DCnnMYHBkjnCds9B58F9efimjoUB2WVZ50QzI
-	Zaa/aG2S1Ln3o4V0xxaWaLleBawpO/lGZeLKY+x7x
-X-Gm-Gg: AfdE7cm8W9I3Q8I+ijiDl093fMzSBP9EgFztb4iabNR9baWAjfxxwVMJrhkFqCqLBD3
-	gEAgvKPwTo5q9Rsl52ubByLCttmALD5+UY6J81+/C4YGhzmYn6PrYZYZOZGmQZMSH82k+EvGxu0
-	iH26D51jrBoyKjS+kcpdF/9GKdRrn/FvqGs5hU3QpwIW+42NVerMUMa5gIgNehkrcn4g1VnVquY
-	+iFDUlfFcEXkrHvtskcZAtQhjwQ12U454TykpLjHDe8HkztX4rxi/7TDvEB2XhmRR2a49Qs
-X-Received: by 2002:a05:6a20:9188:b0:3bf:96c6:78a9 with SMTP id
- adf61e73a8af0-3c08ed40638mr6931857637.2.1783456405469; Tue, 07 Jul 2026
- 13:33:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="XdwZYmB9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y3TIAVti"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id DD2CA7A0109;
+	Tue,  7 Jul 2026 17:16:25 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 07 Jul 2026 17:16:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783458985;
+	 x=1783545385; bh=vkTzXFusKTTIzAQzapZbpKsgu5UXxCg9u56mTBnUn7E=; b=
+	XdwZYmB9Wj4oqWvOIK7bccnJslD6HR8FgaMBfQWZYWFlT8Z+vBsobTe42nYcWuNT
+	+zew7RpbwujCzxlPa/K+9CtdvsLHI0ctWZbEXCzCkMvjD7cEZTlY4DKEe2oJsBUq
+	ehU7OuLiOckXV+d4s7PX8BBMjP0w/KzYp+y16Eu+0L20qbFDE9O6AjZ9U5wxJAcG
+	SYf/qx8c8cXSd4ji5TAVU4kYWkld7UVzo8VrCvFTkMohgtd6SQiHabu4C5zJYzmj
+	C2acCPSiQ6W3TvfQTVnpq4v1nETBDUJ1HoTZoPKUbONgVMizM6ueeYoJbPwYkQaY
+	IMBGexgUoF09FW67PBZw+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783458985; x=
+	1783545385; bh=vkTzXFusKTTIzAQzapZbpKsgu5UXxCg9u56mTBnUn7E=; b=Y
+	3TIAVtivpTUnsA+Mi5eq5BacL2+3GBZIO595ClYpUhuD1u6wR90XAloOwCYGUmez
+	OskdUD2E5iUR/R/NTAuE7IbFYmTl2bgCOxQnTzQg5tJQ9zJEdHaRplFzDJie15TT
+	jcZ3eu4BsafddtPhge6Hui5x3yXu49noXegJza2H9IZwf6Nct/7f93lLTTsBWsy9
+	thJKxdx1709dmZfP2wYpG+Oh3kTQYCEIA1X0KHKaSMRfggD7L48qwehKpG/rGYSP
+	V36JWk1GmrFwdXj+sdlFJRItNyAxtH1Yqk82z4F4e8nzzIbjpSczsdGMrPvruzod
+	8mo67cTe+SZJZ21BNDLWA==
+X-ME-Sender: <xms:qGxNaiqsjFChoxPMCCyTFgtWVk59FW8Tj_bPLLiwwekTSBLycVJfLA>
+    <xme:qGxNasXZ7d3K94TrK5Hqd-3_KqmcGGHNUgBnDM6KS-Fh80B__4oSHpa-2NLhxHVWX
+    VlWyMIrNfd3S6GKpdikEZJeQCvdOoaklUaRye6B3Mg-0xLfQS2cnw>
+X-ME-Received: <xmr:qGxNah4Q0WO-OL2gA9k_5tAKz4mVcqOEQK0vMrpOq-SY9ibT9UZkQnU_rFI>
+X-ME-Proxy-Cause: dmFkZTGZWM0TZAYrez3OUUVryhpKd4yBz4AC3t1m3FkOUK7rQ5mGJ4wrt4utdwOVYPjpQp
+    vzQtgJbhl8rO/x/CT9lk4Zp3f4iiNmlVyK9JAdRnk+zJK0ETjdKCobP3R9NLjCnoEjfNAv
+    txL/7RwaZE/cmZiUsnkpcFbWnkixRDRAG9X+ot3yl5IutpYx6Jdahs0nXCnd4lBTXrjGX/
+    QN9h2Lvfl1ViCbBWWKbgcHme930j7OPe4HLWznK0DBqLyQX0WvphwSbm+uDQ8ztc5iBuTi
+    +FV3waBa2MmWtUt0rU/S1hteG77+Mx6/10h/wbTQKXc41WSIOLVnSrvU4tkxSuwq2S09ig
+    tWNR7X7iLIx00DcIlNZrohC8zkRj7NAdZtje+7b9qpULkOfaliC1QJilJB/V+S4w1GzLSN
+    ipP6jo5pnbodPKAvNK2guRF7NeGQ8dabSCInLGizMzmO74o37/mas7XpniWxhmnGjNEusz
+    +TMTFHHYYyCXNO/5ssMxGsxLoA+O/0gJB95eMgKsC8Gv+jOPFhAvxuvYbKuiXKlZ92SHut
+    /Ry0n610i7H7Ougj/OfoRPKK41qb7/q+1BIWFVhXOAXDzwcVDwP4Je/OOiS6PWW3J5Q9et
+    Tgb/hc3n8cF/fPpQLhwhj/AI+cojyxehy42/j85EzmTuV/uvMLHOERPoKljw
+X-ME-Proxy: <xmx:qGxNai0YUQKckzrnWgqMvctSdfFOW7SlApkhvhKvdILX6E9_yle2RA>
+    <xmx:qGxNag_5eHBCfXMhWqA9g-yhtlg2eDA3EQzPl-69iyFuq1zFTNulpQ>
+    <xmx:qGxNajuW9aDdn3mdSBIA-9HdtfcU1HNFoICIN5LlnG19xbX3HA4mMA>
+    <xmx:qGxNaspLtqRXcjTGjtK42yqtwdLxJgghDB44m-4kK_bj4Utvvv0saw>
+    <xmx:qWxNar8-nB_4JdGiKT5Nlb8zOgYid1ncsMBRLiw0IAUZUBYTLIkJGT0O>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Jul 2026 17:16:23 -0400 (EDT)
+Date: Tue, 7 Jul 2026 15:16:21 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
+ Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>, Pranjal
+ Shrivastava <praan@google.com>, Mahmoud Adam <mngyadam@amazon.de>, David
+ Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal
+ <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v4 00/10] vfio/pci: Add mmap() for DMABUFs
+Message-ID: <20260707151621.6bb023d0@shazbot.org>
+In-Reply-To: <20260701171245.90111-1-matt@ozlabs.org>
+References: <20260701171245.90111-1-matt@ozlabs.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260701203311.326798-1-aaronlewis@google.com>
- <20260701203311.326798-5-aaronlewis@google.com> <ak1h748NuhCzVlJ2@google.com>
-In-Reply-To: <ak1h748NuhCzVlJ2@google.com>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 7 Jul 2026 13:32:58 -0700
-X-Gm-Features: AVVi8CdzRZCWoT_FeAFeEaTzsMR8As1ehb5sS665IvywfC_02YOULvK4yEqjO5c
-Message-ID: <CALzav=fQvBSq9_uaHvP5JsXRWax5mzL0VPrZBvT-oP2W-Ufwpg@mail.gmail.com>
-Subject: Re: [PATCH 4/4] vfio: selftests: Allow the flag MAP_POPULATE to be
- set on the cmdline
-To: Aaron Lewis <aaronlewis@google.com>
-Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 7, 2026 at 1:30=E2=80=AFPM David Matlack <dmatlack@google.com> =
-wrote:
->
-> On 2026-07-01 08:33 PM, Aaron Lewis wrote:
-> > Add a command-line option to vfio_dma_mapping_perf_test to set the
-> > MAP_POPULATE flag during mmap(). This ensures consistent and accurate D=
-MA
-> > mapping latency measurements by forcing page prefaulting to occur durin=
-g
-> > the mmap() phase, rather than during the DMA mapping ioctl.
-> >
-> > For example, mapping a 32G region without the -p (MAP_POPULATE) flag
-> > results in:
-> >
-> >   $ ./vfio_dma_mapping_perf_test -b 32G -a "-v vfio_type1_iommu_memfd_h=
-ugetlb_1gb"
-> >   Completed mmap() for memfd in 0.00ms
-> >   Mapped HVA 0x7f1840000000 (size 32G) at IOVA 0x800000000 in 2887.56ms
-> >
-> > Here, the mmap() call completes instantly, but the ioctl to map the DMA
-> > region incurs the ~3s cost of prefaulting the pages.
-> >
-> > Running the same test with the -p flag results in:
-> >
-> >   $ ./vfio_dma_mapping_perf_test -p -b 32G -a "-v vfio_type1_iommu_memf=
-d_hugetlb_1gb"
-> >   Completed mmap() for memfd in 2887.41ms
-> >   Mapped HVA 0x7f8000000000 (size 32G) at IOVA 0x800000000 in 11.51ms
-> >
-> > By shifting the prefaulting overhead to mmap(), the actual DMA mapping
-> > latency is isolated and accurately reported as 11.51ms.
-> >
-> > With user-defined mapping sizes and prefaulting in place, this test now
-> > clearly demonstrates the difference in mapping speeds between VFIO's Ty=
-pe 1
-> > IOMMU and IOMMUFD (i.e., IOMMU_IOAS_MAP_FILE).
-> >
-> > Running the same configuration with the "iommufd_memfd_hugetlb_1gb" var=
-iant
-> > highlights this difference:
-> >
-> > $ ./vfio_dma_mapping_perf_test -p -b 32G -a "-v iommufd_memfd_hugetlb_1=
-gb"
-> > Mapped HVA 0x7f4fc0000000 (size 32G) at IOVA 0x800000000 in 0.11ms
-> >
-> > The DMA mapping time drops dramatically from 11.51ms to 0.11ms.
-> >
-> > Signed-off-by: Aaron Lewis <aaronlewis@google.com>
->
-> IMO we should either:
->
->  1. Only support the MAP_POPULATE variant since that isolates the VFIO
->     and IOMMUFD performance from allocating the backing memory and
->     aligns with how a proper userspace should be designed.
->
->  or
->
->  2. Make MAP_POPULATE toggle a test fixture variant so that we
->     automatically test both scenarios without needing a command line
->     flag. If the user wants to test just one scenario they can do so via
->     kselftest harness -t flag.
->
-> Either way, we shouldn't need a command line flag for this.
->
-> I don't have a strong opinion between the two but lean towards (2)
-> until we have a compelling reason to care about the performance of VFIO
-> and IOMMUFD triggering the backing memory allocations.
+On Wed,  1 Jul 2026 18:12:12 +0100
+Matt Evans <matt@ozlabs.org> wrote:
+> 
+> This is based on v7.1.
 
-Oops I meant "lean towards (1)" there.
+Hi Matt,
+
+This needs to be rebased.  Sashiko has failed to apply every version of
+this series since the v1 posting.  It's straightforward to rebase, but
+there are some subtle gotchas and running Sashiko against the result
+indicates this probably still has some bugs to work through.  Thanks,
+
+Alex
