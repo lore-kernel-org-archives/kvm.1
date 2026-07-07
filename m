@@ -1,203 +1,159 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18CE42A15E
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 14:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5638382388;
+	Tue,  7 Jul 2026 14:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783435286; cv=none; b=tNZ2T+2pxYphTIOFQ3U6TGrzIIYpQRP4WvUtKnaiYEE5yWLFWVkNlt0Av7+5ISpS8kRAhEN+GB7Wn4IAdRxt3gzPidYPzY1K7gtEcpcqlMQWP0/X9oMHSsukup/0Ab1EdvAbPNagNzD/TOFyJf1wnWcPVBgH3nYPk8bD69GWZ/c=
+	t=1783435292; cv=none; b=fnH5Aze3hqWUEJY1HxafQg1JQkH4l5wpMA/fH/H+sJ9wTQzep6cGoIJxi+Sn9SJP20UomCsGlJnk1pufO4VYbgpUL2NgrAP1HT5E0diFs8ao6Jpy0zloWU1HTfGH39bWizUW60n0ITu4n03XFVCGZtrEJraRRZGfcXFjgYSuU6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783435286; c=relaxed/simple;
-	bh=qQMEdtTXz171I2WTbhzn4FopszL/mXnqaNRzJolC+1k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ka/Iogq8oZbWcl8bdnprz6D2F3DplXtMooHg+9Bi9XD1DEqD/IW3vQ4rsun4NJeXlR2oVKu4NviYCQDyekSBXRPtSSL2HSVWYmJ8ah1BKGuhyktykO1m/BNKNWQxs9y8sBbZTBVkA76nXaheaB8dhqz0Rp2DiFCjIu2CBO59NOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pyYhN6zL; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783435292; c=relaxed/simple;
+	bh=df5keSZHQPRVxVEl8QKisq+bzMuhx10H/8wX3jX5pdI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e3sZsihtE1VB0G1ohBIuIc8QvS6RJwZMFprg0qK9X5PaOmvxFlUsgDZSpxrwqeYUZE6z9bA4EfpSnacjH+QfCcxcjvKpb6IXOx2HJC7avnndHPaTfJUUGhcLY2ILarWRMCRSv/2T4DqXpWp0njYcO90p48lxwg9dgoChyHT9uRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6S9GekB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pyYhN6zL"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c354050c34so52737985ad.3
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 07:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783435284; x=1784040084; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bNGkGjbaNilzZHQiJqPUU/gSkzxHznR2T+Wqp2o4/zI=;
-        b=pyYhN6zL2voML2m9uRhDUELW72AQjZaOIPSDMXfvooCSYh58leTrlG2Gbv7WMN/1jY
-         M9t+no7FA4/qNoai6D7wuWQCmSrf0ReQH3uXpbMnL5w13+tPEk6xu/NuUfgd15ZVEQ+b
-         oFiRjYxvt6lNUh5cEe6XCIeUmiyv5IcYTDokmthY9DBROkWubBdhpFNRQ1o3ZhqCyqig
-         cuugkqJIIsoqOoPX6rEQklrhhDH0Ik4kbcrKxzPOFXRtzHCTe7CYh37cSn5R3Y+ElqwS
-         ULV2xwnVcBBcnF9jlg7rrLS+CS5DXs6wzvvKQDyDGm0yh2rUroJ//sd7OoneTl7O2zjq
-         c+aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783435284; x=1784040084;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bNGkGjbaNilzZHQiJqPUU/gSkzxHznR2T+Wqp2o4/zI=;
-        b=m/TJDz6neqYcTCImdDeLybj4E81fMtQD1eOrs6kuPuQy0+D8ceMTBiReQ2oP7IonTy
-         fiunGt7xPc235I1FyW9rXGGQq3Ka73ZZs+JcxsyFCBp8HKlkczRnJuqwXQbn7FkZvorz
-         znuSWhAQ8S4lDuZBRdBgoeJArvhC9J7LKve8LI2UI6ixihm2eI36mqJmU5OCyoFcKT37
-         nBMkvUxbYnZxFAERiEuaGeO3ugz/FukcTUpupW+6e1zOX3XzzdWVjVCgizG0JIpdpW86
-         niEudsTyfo7C4954zJvKayEH9HxBDmZ1Bw4vT4MqHETS4egv8KG1qHCddP4srHHCiDvU
-         xcdA==
-X-Forwarded-Encrypted: i=1; AHgh+RoaMmr0E5Wwla6Zm74hywGRKzXH+jsFpvt67TXyOkkiOvU3QB/ZLoidl1mW+jSJ+06FmJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXY7wiDtIO/hIrAmZj6pG8DR0RkB7D2HNMM0whYFyUVSV9nnSv
-	Pa8Z9VCyG/n5lYtLVKfs9Njp4GSxtcAqPfq9Ag/0OBnrBcmfS+2XQo4lKVHDugMzZA5WvZRJm4P
-	sEvqCWw==
-X-Received: from plbkf14.prod.google.com ([2002:a17:903:5ce:b0:2ca:5dc9:51d3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3550:b0:2c9:d539:61e7
- with SMTP id d9443c01a7336-2ccbe6267f4mr52774855ad.19.1783435283848; Tue, 07
- Jul 2026 07:41:23 -0700 (PDT)
-Date: Tue, 7 Jul 2026 07:41:23 -0700
-In-Reply-To: <CALMp9eTr0iJ5QgbZJ0YtOZg89XVFSesbyoGGdtkz+f8c60DcDA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6S9GekB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62881F000E9;
+	Tue,  7 Jul 2026 14:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783435291;
+	bh=71V4Q+fhRuX9RNQVEGMko4OqAR8knd22tkZhvdbZbMI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H6S9GekB83Pwow3x4U+RGkMBW6FVgTqC0SvdFufnMoKWlCtG64eGWIdcoIifrbKPl
+	 youmdPGzUebakqVJ6nUDHINdl5i/eKAjQ8dRvXH6TADBdph93e7i30Zx1WuCMbWWay
+	 5OOeInR/PJgYjMji1bzTvQuqWqx9qg+JZfS8PyeGGMG4mSs0eCGSWBeDekl883Yk0R
+	 8mO19JNWyy9BB0as5ZmoOzQbOYyuSob2g2lkJu4u0r3yByO2EXyb6ZQHrcrVkhRjBu
+	 Av9G04braM0zU/FBB2N3aGVHAfKU8KZmjiL9q5mOPtmU8s/CH6MaUr94cwbUD2/HZf
+	 0883rVQ4waFyg==
+Message-ID: <69dfe4ac-3800-4e67-93f1-d21a8a39e23d@kernel.org>
+Date: Tue, 7 Jul 2026 16:41:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
- <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
- <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
- <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net> <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
- <d5645a47-c346-4e63-a5c6-c88bb39a3ee1@open-hieco.net> <akxwt1mX6blSnkxI@google.com>
- <CALMp9eTr0iJ5QgbZJ0YtOZg89XVFSesbyoGGdtkz+f8c60DcDA@mail.gmail.com>
-Message-ID: <ak0QE7mP_TeZmzeS@google.com>
-Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Tina Zhang <zhang_wei@open-hieco.net>, mlevitsk@redhat.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/30] mm: move vma_start_pgoff() into mm.h and clean up
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
+ <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
+ Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 06, 2026, Jim Mattson wrote:
-> On Mon, Jul 6, 2026 at 8:21=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
-> > > For KVM-synthesized/emulated #PF/#NPF nested VM-Exits there is no fre=
-sh
-> > > hardware GuestInstrBytes state to propagate to VMCB12. So I agree tha=
-t it
-> > > should be simpler to avoid plumbing instruction bytes from the emulat=
-or, and
-> > > instead fetch the bytes late when constructing the nested VM-Exit for=
- L1.
-> > >
-> > > I'll try this direction first.
-> >
-> > I'd rather not, at least not as the primary way.  It's going to raise a=
- different
-> > set of issues, e.g. how to behave if reading guest memory fails.  That'=
-s probably
-> > unavoidable, e.g. if reading the INVPCID descriptor fails, then KVM doe=
-sn't even
-> > have a pre-decoded instruction to work with, but it should ideally be a=
- last
-> > resort.
-> >
-> > E.g. where the NULL case triggers an on-demand read of guest memory.
-> >
-> > diff --git arch/x86/kvm/svm/nested.c arch/x86/kvm/svm/nested.c
-> > index ba985a02208a..812af3a8d8b9 100644
-> > --- arch/x86/kvm/svm/nested.c
-> > +++ arch/x86/kvm/svm/nested.c
-> > @@ -42,6 +42,7 @@ static void nested_svm_inject_npf_exit(struct kvm_vcp=
-u *vcpu,
-> >         struct vcpu_svm *svm =3D to_svm(vcpu);
-> >         struct vmcb *vmcb =3D svm->vmcb;
-> >         u64 fault_stage;
-> > +       u8 *insn_bytes;
-> >
-> >         /*
-> >          * For hardware NPF exits, the GUEST_FAULT_STAGE bits are only
-> > @@ -68,7 +69,14 @@ static void nested_svm_inject_npf_exit(struct kvm_vc=
-pu *vcpu,
-> >                                     (fault->error_code & ~PFERR_GUEST_F=
-AULT_STAGE_MASK);
-> >         vmcb->control.exit_info_2 =3D fault->address;
-> >
-> > -       nested_svm_vmexit(svm);
-> > +       if (from_hardware)
-> > +               insn_bytes =3D svm->nested.vmcb02.ptr->control.insn_byt=
-es;
-> > +       else if (vcpu->arch.emulate_ctxt->eip =3D=3D kvm_rip_read(vcpu)=
-)
-> > +               insn_bytes =3D vcpu->arch.emulate_ctxt->fetch.data
->=20
-> Won't this be shy of the architected 15 bytes if RIP is within 15
-> bytes of a page crossing and the instruction ends before the page
-> crossing?
+On 6/29/26 14:23, Lorenzo Stoakes wrote:
+> vma_last_pgoff() already lives there, so it's a bit odd to keep
+> vma_start_pgoff() in mm/interval_tree.c. Move them together.
+> 
+> These each return unsigned long, which pgoff_t is typedef'd to. Make this
+> consistent and have these functions return pgoff_t instead.
+> 
+> Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
+> we wrap the vma->vm_pgoff access, we may as well use it here.
+> 
+> Also while we're here, const-ify the VMA and cleanup a bit.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
 
-Ugh, x86 is so annoying.  Though we need to plumb the number of bytes even =
-when
-when pulling from vmcb02.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Expose kvm_fetch_guest_virt() and wire up a wrapper for the emulator, then =
-this?
+-- 
+Cheers,
 
-	int insn_len =3D 0, len;
-	u8 *insn =3D NULL;
-	u64 fault_stage;
-=09
-
-	/*
-	 * For hardware NPF exits, the GUEST_FAULT_STAGE bits are only
-	 * available in the hardware exit_info_1, since the guest_mmu
-	 * walker doesn't know whether the faulting GPA was a page table
-	 * page or final page from L2's perspective.
-	 */
-	if (from_hardware)
-		fault_stage =3D vmcb->control.exit_info_1 &
-			      PFERR_GUEST_FAULT_STAGE_MASK;
-	else
-		fault_stage =3D fault->error_code & PFERR_GUEST_FAULT_STAGE_MASK;
-
-	/*
-	 * All nested page faults should be annotated as occurring on the
-	 * final translation *or* the page walk. Arbitrarily choose "final"
-	 * if KVM is buggy and enumerated both or neither.
-	 */
-	if (WARN_ON_ONCE(hweight64(fault_stage) !=3D 1))
-		fault_stage =3D PFERR_GUEST_FINAL_MASK;
-
-	vmcb->control.exit_code =3D SVM_EXIT_NPF;
-	vmcb->control.exit_info_1 =3D fault_stage |
-				    (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
-	vmcb->control.exit_info_2 =3D fault->address;
-
-	if (fault->error_code & PFERR_FETCH_MASK)
-		goto synthesize_vmexit;
-
-	if (from_hardware) {
-		insn =3D svm->nested.vmcb02.ptr->control.insn_bytes;
-		insn_len =3D svm->nested.vmcb02.ptr->control.insn_len;
-		goto synthesize_vmexit;
-	}
-=09
-	if (WARN_ON_ONCE(!ctxt))
-		goto synthesize_vmexit;
-
-	insn =3D ctxt->fetch.data;
-	if (ctxt->eip =3D=3D kvm_rip_read(vcpu))
-		insn_len =3D ctxt->fetch.end - ctxt->fetch.ptr;
-
-	for (len =3D X86_MAX_INSTRUCTION_LENGTH - insn_len; len >=3D 0; len--) {
-		if (!kvm_fetch_guest_virt(vcpu, kvm_rip_read(vcpu) + insn_len,
-					  &insn[insn_len], len, NULL))
-			break;
-	}
-
-synthesize_vmexit:
-	nested_svm_vmexit(svm, insn, insn_len);
-
-> > +       else
-> > +               insn_bytes =3D NULL;
-> > +
-> > +       nested_svm_vmexit(svm, insn_bytes);
-> >  }
-> >
-> >  static u64 nested_svm_get_tdp_pdptr(struct kvm_vcpu *vcpu, int index)
+David
