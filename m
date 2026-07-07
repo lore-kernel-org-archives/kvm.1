@@ -1,212 +1,215 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F3B3AA4F1;
-	Tue,  7 Jul 2026 06:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783406728; cv=fail; b=JarknCzJ0dFIid769fjHNkl/cWVlr/I69ifXCnmVHDsqfge04/0Gfw83AyM/ev3PcTBsUHvfWfd4DZI2f3fJIaIgSrL6QdRmqAK5OphzY3yJDn8GyTjTNILz7T5plBoZlF/PtbNP8DEUc8tjGYsrlv/1dqwyQBk5gi15uNkCEuI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783406728; c=relaxed/simple;
-	bh=UfJAECGemRoO0igm3n0H4yTkdUNt1vXiAlqMbhOfYiY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=F8S+OgWxiGiVwoHNDH9za54imkZzCMI7eOfgcYA3MB/3SBIt1brsQ4jqHdWsjIyqSLydMkWL88juN6irdMhfCcXSZ7YXqrUAv6/5VzPMH11AVo8CxlXDEnjqxpAG1PsvrRHoOASfcLm1xlMensHg8lnludlRsyid2D35+13HHdU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AdkBHUv+; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66C8388E55
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 06:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783406855; cv=none; b=nC8csCI2mLgP3fQNnIAICgRy1K4luBzingHLJEzlZ9ITz/5kjkU9XQ4vjhfSh8Eb0rvxMk3Hy+WGwPWFw0FEAwBToj9jnXbDCyG+X9uCXUh8d4prbu2hTE3k8Pe+BmKmr5g67xmXNtzxUIVCreI56xJ+EywzCEJhD3Gu821RsUo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783406855; c=relaxed/simple;
+	bh=NsKKHSm/bRvU6xVVeAGZ33MPERYGxwSS8XF6bMs23vI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M4wPk5V9VkzdzDBIi+9T23Nk9rULcgcwMjijvrT7PYdkDdCfkYX7rCZlfB25XXYXwjXZXd7gEr88jgg3nlqFbj+Wy+mIn4DWvLEWiaVRQIMwoMEcbyaW9ieGLNMpPRXB5ENiQnbobVwFK+TNu10+eELIleMdiZ+UtbGRQabVcCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NxHa7d02; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AdkBHUv+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783406726; x=1814942726;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=UfJAECGemRoO0igm3n0H4yTkdUNt1vXiAlqMbhOfYiY=;
-  b=AdkBHUv+6cqTe8RGMQ4zAp1qqwxKpaX2uo44RTirkiEpHlS9bp1gimb4
-   rq1DE7x//+n+S+dlASnmprMgeGi2TqyHvSi6Srt9xzFlOf9+BD5UUMI6h
-   2YQZbV7sJMNHxFtXF2BcIvYDJQBq7SWfro0JL94FQ8qwM5vxM1qHPxqOg
-   038F4f8O0FXIzJu2aTwSYb/WOvt/63AsQXFGqDD0trvqnsraHMU9TVk/A
-   J/oWxrm1rGqC9y5NXI+gVMty4T2uQ4+hIsULmnue7IDnhloqzL7PZTnq7
-   F8DO3Tl0riUZzBKAzPEPjBQDxU3hdetTqjqOEWj2IBHeglQak5Fmt6+70
-   A==;
-X-CSE-ConnectionGUID: 4UTAgBtLQ0uR4u8Ii35cMw==
-X-CSE-MsgGUID: MFCT54d9SymMB3Q4nGzFFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="84166329"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="84166329"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 23:45:26 -0700
-X-CSE-ConnectionGUID: y1v+D8qGQt+PC5F3MqdBuQ==
-X-CSE-MsgGUID: Gt6RjgffTzyfRM89kMwHng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="277128075"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 23:45:25 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 23:45:25 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 6 Jul 2026 23:45:25 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.16) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 6 Jul 2026 23:45:24 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mxgDvRx23PtijqfeHP6nuPLjQeyECQN0g+9E452FzhoPG1FaGPrifMDj1nIRV1Pkyp+iqv31xeWYNM0BixaGSUlQeatyF/AKkVzgCxHmouq5dfI6R7QJpx3uqNb7Ecrx2Ym4uzTiLQv4tIDvskz3cFBUwh8gJrY4Fjry264P2arSQdaAZr+JjxbJ84Gpqu0739QViDMkIDB/TLcETa81IIuuvpZ9irVV4EGYWvUfAu7HPnA30yRlfD8SoxDQGEZ2modS+NZ12r0RpKMMP+7hLnt1AuCNd7vjYFvSBIxKtdR5KYYjNEnrSyTB2Q5ZwKEN4rCllkKQQtqkMgd17malHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SGJ6oslaMzCsJJZA+pZA/j4Ep/dYULpI5IIfTJk2SfA=;
- b=BiMan1lNMt+Jm56cJMUh8qLZXXKm8phNge5+NZgKczlhBGLtbKyOoPFPj+B0RO2xgDVIXvi5nAQBnrlCNxW2ESdqeJPU8qj2BNiJJUMNzGTxgBblUL5oOFYWzxsCbw0aa+D4YcwohZR90zwBZm5NCLTVcZ2UQnOnys/jOSpDwn8hGxcPuP7f34dboqlA8iql9py4aFs/616CUHP7X1RTq0Bi1pQqLT6TasobQy7dyx4MrzDXdJM6lKjHHuFFSnxqmUl3cigJ5SfoygiGEavrpeuGRKnpopUrCh1JDDpoplAAeG4Sf50LkGCmXA4I+FUq0QPAkCodwr/bVoeWwMuzrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
- by IA1PR11MB6490.namprd11.prod.outlook.com (2603:10b6:208:3a6::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 7 Jul 2026
- 06:45:22 +0000
-Received: from BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
- ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
- 06:45:21 +0000
-Date: Tue, 7 Jul 2026 14:45:06 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
-	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <yan.y.zhao@intel.com>, <kai.huang@intel.com>, "Kirill A.
- Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Message-ID: <akygcunMgpsK4mnE@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-X-ClientProxiedBy: KL1PR0401CA0002.apcprd04.prod.outlook.com
- (2603:1096:820:f::7) To BN7PR11MB2836.namprd11.prod.outlook.com
- (2603:10b6:406:ad::26)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NxHa7d02"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6674IK3X2286263;
+	Tue, 7 Jul 2026 06:47:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QfWl/d
+	0f8dPQpjfKqXxdLHZHiKJFU2JtiZPZuJYImRU=; b=NxHa7d0248RT/hkopc3IbJ
+	cxSTUYnDcf3lygyRBhU8lVwXCyRQvP9CLI5hjroFU3MbIi1RTSgn0QH2s5Qisks/
+	c6fw5sPuIF7AerCLWIX8cXH0BgE1SmBGIeqNJbFhnN/KPKmfyGdX9t+QwbcGBvWD
+	qm1ep6NxYr7GVVFDvPoZAov2Jfy5eipQojx2W9KVpo6QSXO0MO5M3HaF/W5Kj8la
+	n/Bq7Qjic/4UFmeocQzxKTYaBG+WYVFB4zC2ll41VV/dkAh+as7bpiJNRtSLCUvM
+	oLw21JlTZ6kRt/yzUcOi2llDGNef5s5h0QkBxDeMzfOURALaaQIWGS/ISEmr64vA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw4nhr1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jul 2026 06:47:22 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6676Yanf006911;
+	Tue, 7 Jul 2026 06:47:21 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgq1jf8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jul 2026 06:47:21 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6676lKKR25297540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Jul 2026 06:47:21 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E28C358056;
+	Tue,  7 Jul 2026 06:47:20 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CFCB758052;
+	Tue,  7 Jul 2026 06:47:17 +0000 (GMT)
+Received: from [9.39.26.222] (unknown [9.39.26.222])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Jul 2026 06:47:17 +0000 (GMT)
+Message-ID: <1fcb4ab1-5f5e-43a7-9c65-943c795ae98c@linux.ibm.com>
+Date: Tue, 7 Jul 2026 12:17:00 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|IA1PR11MB6490:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0233a779-ccb7-427a-3205-08dedbf350fb
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: j8trP0YwHScX0TJEqeo+99M7VcgCGFT/mNQl/EC6T4D8w6VskikulRRAbLfI/xT+HKD7es9qhTs/JcUyE84/EIfCHsKGmvoauUFxBTeR+52/9+Rf+iJDgQwysfEtS/wjOiRqmy5RvLo4k1tYXjbb6Ju3RKSyjoR5eLnDGauG4B2mMMN8+8wTbZuU9zoBX3gFnQrULncubr/XYzIZcW0KzusJDq3BVHroIT0If0jz7XjS3tHQrmrnMaMnvCB9rLqfdepc7v+WhOptataB6K+zHxvqRaH6Cpw1ZM4UF/5w+Crs9Qgdjn4MmfsY4urU/er/w4nZhiuuVjrdptPN9+UbczXLFbxdYYjbcK3TBAFsF+SZE6oH5NUxfn/BW7GZMxumsJykcND1JCe8pcrv7IvLURL6DEDDMKakxqPnl4spW229kHY6FafAbuieyY5KapvMcWbv1W5eUamji0EdsLfwSa9fqZApFS3mlkH4ScRtu0skQ6ewCdw2p5SNYKgO/LPcfGDBfoE0ARqzmSmlPC5Nq2gXgduhjGWrRF+CRn/dsr3fa47a4a7CiTtP4LgZwEWcxpnomlH7cOX01duVph86vd+hUrHXW58rCe1owqf94C+GpGH8s30AEjs4rqV/Rs2f7YAh5gK9VckSj4aD4o3SxaRAQtpSJHBtQoujmZaxQ7Q=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TzvngXuVDFVgDZ/+/qHDrpedOXDhMR5KbfgS2RHTgKb33Q73RGtCofGFYA0+?=
- =?us-ascii?Q?G2pTRGpulsa70YoNYvr2cO5ZHEoF8ORkMvXhqlC32VfHRZM7XCF6sXTGzxQi?=
- =?us-ascii?Q?CvBZKL6XGcCvBEbh/lqdneN218SlmpAABdSFZLWMbAhl/fd5eb6KiEMj33uD?=
- =?us-ascii?Q?1/Gfw5I1laGznRH12pmbU1DKNFGTmpol/MPitgdtKqdeE96RWT2MuSSFa2oW?=
- =?us-ascii?Q?yzw24nJk7rmv8QnCAgH5W2yQiRMCCYrpLEI4MfiN81qU6kl+gFqBZLVplORI?=
- =?us-ascii?Q?XO+ommSqg1RA8zgzUP7LCz7fx6++7+uLnc98gO3vEHuA52Y5t+3BOOkjjaBz?=
- =?us-ascii?Q?GLvAvFGoSfyv4qkclxqfz9l0Ad/UYNYZhufU8ELtNDYh0w+ILdKtHiHCifnd?=
- =?us-ascii?Q?DUNAlCmyyhgpwqUvndo+6oxUeOkat/SUxrex50OfvJO4nXVC9wpBbdbdtAQV?=
- =?us-ascii?Q?X7N3jx5nm46dSgmrXb/Oh6XusoDwONepS65zP1u5m8dsbUtVPZuWgN25MJRf?=
- =?us-ascii?Q?d8ILQGnOn3n8yQvwusx1lpWgCml8GaRCknVqaclIQb5W4dcqhxqotLbTBdpi?=
- =?us-ascii?Q?Soz8u6M6+F5ZkBxvgCaoyd3VCmEjx0mtNKchuPsHAoTmMByzNXSpdUsqoy4c?=
- =?us-ascii?Q?9hHRx2bftHypcRLcEFoGKfXXvjIoQBV7PnXOgnjYxs0qfrYoe3UWysmaqSpO?=
- =?us-ascii?Q?RDgwB2LIKysqtMwZRb9rUTX6yFiOCM5zn+Xh2UGK8GgLjcSvvsP3kDDo+phR?=
- =?us-ascii?Q?q8gv6qQ+NDUMqkYsJZZ4FWGcXySVmJuzyrJzEXOEfMAof938KeU8DbyN8/YQ?=
- =?us-ascii?Q?zJ+d0M//cQSF+7OxQN74sC4b/2tXSyLwdSq+QcnSw2d7w/apLyRiKIoLdOxI?=
- =?us-ascii?Q?ZBrWf1jwbjJFcX0NdY0mbKJGJ3Jr3Ds6g0KC+Cqov4mos02Kwic6OxXfZUtE?=
- =?us-ascii?Q?Ij+ou9JVzziAzK4EcTvDwZQiCONf6spCno/6BKjQgr/SkQ3GNgwaUFVmzwIe?=
- =?us-ascii?Q?EUbesB/xG3XaWc5+QDtE9QA1RWcQ+3FRkPoNHlBQfZ7RTWUyyJqKIFeZOBEd?=
- =?us-ascii?Q?77GGd1Io9vWGB/KHPhhaD/DpyFCYp+hlKTnwVYrrXUUCqXBnXdOz6Yh7ZOCH?=
- =?us-ascii?Q?V+twhPva6aNqQmyWBSfg7KUDR6JA3A82UB2Pe3xRb5GBctjbXxKIRg3ncNv8?=
- =?us-ascii?Q?vXvEAs1rkEhoaN64ca6Xgjb389zl8MrslDnVqNq63o1OU6X/MUvMwkHQZfCD?=
- =?us-ascii?Q?UovOJqivEIIVizgQvZySwbt5OE8RPynHptTUWhS34Zhc/7aZR50K36czMpOK?=
- =?us-ascii?Q?yzF+59+46t5smNMTLTxueHprZHGwuzE0u31d4rK0J/QKZpASHMv5c24WsPO8?=
- =?us-ascii?Q?FqwDyK+5rvB+dWEHi5ap7EbAcrdasuJ8ftVk1EnVp0kcAxW6OgevwqqlfVxB?=
- =?us-ascii?Q?f7pqBCaDL2Wx7zZM/3T7cqmSV2s597n3kK+xtT4Q0ZYIlnIM4kA1ywxamIxr?=
- =?us-ascii?Q?xxGnonxZcfudTlUeMJuxk8N0htouovlm3rcjuv1676VWrCsrcbaG7qFJaU/L?=
- =?us-ascii?Q?En70mkb0IoBjTMdV4lRtTw9OP8kAly3H5GER0zL4Z7NfpjsKPRg31n9JspIy?=
- =?us-ascii?Q?sagUpECEKVNDGnkulveY1myQPIDnvDcE9KkGpn+HvPk8Gy2RSh3Z+AhuXYGC?=
- =?us-ascii?Q?7iK3lvTCEMKsOStxotQAty31hOOguhDDBzyP+3tVhdeX3onQsir9t2Sdv/XV?=
- =?us-ascii?Q?L8+zGeJ/cQ=3D=3D?=
-X-Exchange-RoutingPolicyChecked: O/MlVrrowMVKkxhaMbLq46n492wGr8Xue5WDAcMcMAZxz5RPD0JQ1s8Mtqv6lXPadDXFlt/40e0GsTs6mmHZAphxcAgwzDue45tK0saOkTwWzMXNT6AEwfL2fk6Avpx1WTo1xIaQBkaTgL9mH6XphfxChOEZOdfSb3XMzoZcUGkm7ZNG+QNz2uLGUPRjeScwHx6Au8CWXbFpFoR53JY8iTTenXZKPGzuh7w9EteBCJoLo4GWUE3uMsgtoVYVnZJZjqJ8MtT/yIzubrIx3MiOzVojmxfkSJGUihgvukxf6wbdCWU2/Gqc4/p1R87J71GyY8ME85Sp8w4KgwwY6Ztvgw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0233a779-ccb7-427a-3205-08dedbf350fb
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 06:45:21.7665
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PeNoznpWix7EfElcKC6KUqhTEMadEA1T8j84LGh006npBxHJ4ZkgwIZTpPQCIXIPCrVmm976WNAvvEM3ZCgGKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6490
-X-OriginatorOrg: intel.com
-
-On Mon, May 25, 2026 at 07:35:10PM -0700, Rick Edgecombe wrote:
->@@ -2057,32 +2057,50 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
-
-[snip]
-
->+	/*
->+	 * Unlike tdx_pamt_put() which uses atomic_dec_and_lock() to
->+	 * atomically handle the 1->0 transition, the get side has no
->+	 * equivalent combined primitive for 0->1. Recheck under the
->+	 * lock since another get may have already done the 0->1
->+	 * transition after both saw atomic_inc_not_zero() fail.
->+	 */
->+	if (atomic_read(pamt_refcount)) {
->+		atomic_inc(pamt_refcount);
->+		spin_unlock(&pamt_lock);
->+		goto out_free;
-
-spin_unlock() can be moved to out_free to avoid repeating it before
-each 'goto out_free'.
-
-> 	}
-> 
->+	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
->+	if (tdx_status == TDX_SUCCESS) {
->+		/*
->+		 * The refcount is zero, and this locked path is the
->+		 * only way to increase it from 0->1.
->+		 */
->+		atomic_set(pamt_refcount, 1);
->+	} else {
->+		WARN_ON_ONCE(1);
->+		ret = -EIO;
->+		spin_unlock(&pamt_lock);
->+		goto out_free;
->+	}
-
-Reduce indentation for the normal path:
-
-	if (tdx_status != TDX_SUCCESS) {
-		WARN_ON_ONCE(1);
-		ret = -EIO;
-		spin_unlock(&pamt_lock);
-		goto out_free;
-	}
-
-	/*
-	 * The refcount is zero, and this locked path is the
-	 * only way to increase it from 0->1.
-	 */
-	atomic_set(pamt_refcount, 1);
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests RFC PATCH 2/6] configure: Make arch_libdir a
+ first-class entity
+To: Thomas Huth <thuth@redhat.com>
+Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        andrew.jones@linux.dev, sbhat@linux.ibm.com
+References: <20260602064806.3101025-1-rathc@linux.ibm.com>
+ <20260602064806.3101025-3-rathc@linux.ibm.com>
+ <7d9e6365-1b2d-4b18-8fb5-d8048fddb7f0@redhat.com>
+ <efbbe11b-9e02-4878-b61a-f804b491ab4c@linux.ibm.com>
+ <6e29ac41-383a-416c-bca4-c3d4349beda0@redhat.com>
+Content-Language: en-US
+From: Chinmay Rath <rathc@linux.ibm.com>
+In-Reply-To: <6e29ac41-383a-416c-bca4-c3d4349beda0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: _LgnrYqp8q8NaXhnyP0FVgU0swqOXjo2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDA1OCBTYWx0ZWRfX6qDtlfrjR8W7
+ l0X04lYcTuSUAP5F8pqhIlOARQbdNoGzQ2fqYDpqILF9d589Zq5ee3tA4aEdiqq7+co3e4fshg0
+ IP7kSNEhV2X+E6fwO1Uqbo46HPrnhyUUmzx4SDqyRi+qYIGkcJ4tySQHK5D0v3cOoIo5yMCNRaM
+ 8Gpn79SfT2E2KMoQlN1fF++CZ+SC9RkbH9iT0v474qZdNmMqEIpD69YNYeVf4c1ObtZvF0TMaoH
+ nIMd223Zj25X6JCV74fZxlYo7UcrVaadJ9TFLiXa++jfGlGCa3922K3dMrPM400CTBfrU2In3pN
+ XLwKqqR7gqSjKEWUudM2ZRklo8ir1DF9h+lAFs59vk2y1zvd3s0XLi4vKQU2vo/q6GD728GZfgT
+ yOCu9gWdpYhCPPC5SyJTZUtPZS910KJJ//EpspKZgHHbNtpqPKqkseP2/70rI3RUB1w7r5EkbQj
+ Q6d6nz4VM+pYkEZkWZw==
+X-Proofpoint-ORIG-GUID: T1DX8Yard4CYeDrBuqzzVFW4RCYVVNZB
+X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4ca0fb cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=uIRw34n5qooko5-z2rUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDA1OCBTYWx0ZWRfX4araACPv+3eS
+ yy4Fj9DpnWebzqZi+xllifX3SpXQdoy484DAM+eKEP7z/gW7aUvD87r3R84v71PO8P2e8i6P7Mn
+ babm9Y/DKQ5YLqtp9SvA7o4dgv7DRgk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_01,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607070058
 
 
-The rest looks good to me.
+On 7/6/26 16:06, Thomas Huth wrote:
+> On 03/07/2026 08.46, Chinmay Rath wrote:
+>>
+>> On 6/10/26 17:00, Thomas Huth wrote:
+>>> On 02/06/2026 08.48, Chinmay Rath wrote:
+>>>> From: Nicholas Piggin <npiggin@gmail.com>
+>>>>
+>>>> arch_libdir was brought in to improve the heuristic determination of
+>>>> the lib/ directory based on arch and testdir names, but it did not
+>>>> entirely clean that mess up.
+>>>>
+>>>> Remove the arch_libdir->arch->testdir heuristic and just require
+>>>> everybody sets arch_libdir correctly. Fail if the lib/arch or
+>>>> lib/arch/asm directories can not be found.
+>>>>
+>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+>>>> ---
+>>>>   Makefile  |  2 +-
+>>>>   configure | 20 ++++++++++++--------
+>>>>   2 files changed, 13 insertions(+), 9 deletions(-)
+>>>
+>>> FYI, this patch seems to trigger yet another issue with Clang (I 
+>>> used v21):
+>>>
+>>> clang -no-integrated-as -std=gnu99 -ffreestanding -O2 -msoft-float 
+>>> -mno- altivec  -I /root/kvm-unit-tests/lib -I 
+>>> /root/kvm-unit-tests/lib/libfdt -I lib -Wa,-mregnames -fverbose-asm 
+>>> -S -o lib/powerpc/asm-offsets.s lib/ powerpc/asm-offsets.c
+>>> lib/powerpc/asm-offsets.c:10:10: error: 'asm/smp.h' file not found 
+>>> with <angled> include; use
+>>>       "quotes" instead
+>>>    10 | #include <asm/smp.h>
+>>>       |          ^~~~~~~~~~~
+>>>       |          "asm/smp.h"
+>>> In file included from lib/powerpc/asm-offsets.c:10:
+>>> lib/powerpc/asm/smp.h:5:10: fatal error: 'asm/processor.h' file not 
+>>> found
+>>>     5 | #include <asm/processor.h>
+>>>       |          ^~~~~~~~~~~~~~~~~
+>>> 2 errors generated.
+>>>
+>>> Could you please have a look?
+>>
+>> Hi Thomas, back from traveling and looked into this.
+>> I am using Clang v21 as well :
+>> # clang --version
+>> clang version 21.1.8 (Fedora 21.1.8-4.fc43)
+>> Target: ppc64le-redhat-linux-gnu
+>> Thread model: posix
+>> InstalledDir: /usr/bin
+>> Configuration file: /etc/clang/ppc64le-redhat-linux-gnu-clang.cfg
+>>
+>> I see the above file, asm-offsets.s being generated properly without 
+>> any error during the make process (used the extra flags for make that 
+>> I have mentioned in my other reply).
+>> Snippet from make :
+>> cat powerpc/boot_rom.bin.tmp >> powerpc/boot_rom.bin
+>> rm -f powerpc/boot_rom.bin.tmp
+>> clang -no-integrated-as -Wa,-mpower10 -std=gnu99 -ffreestanding -O2 
+>> -msoft- float -mno-altivec  -I /root/chins/git/kvm-unit-tests/lib -I 
+>> /root/chins/ git/kvm-unit-tests/lib/libfdt -I lib -Wa,-mregnames 
+>> -fverbose-asm -S -o lib/ powerpc/asm-offsets.s 
+>> /root/chins/git/kvm-unit-tests/lib/powerpc/asm-offsets.c
+>> (set -e; echo "#ifndef __ASM_OFFSETS_H__"; echo "#define 
+>> __ASM_OFFSETS_H__"; echo "/*"; echo " * Generated file. DO NOT 
+>> MODIFY."; echo " *"; echo " */"; echo ""; sed -ne 
+>>  's:^[[:space:]]*\.ascii[[:space:]]*"\(.*\)".*:\1:; /^->/ 
+>> {s:->#\(.*\):/* \1 */:; s:^->\([^ ]*\) [\$#]*\([-0-9]*\) 
+>> \(.*\):#define \1 \2 /* \3 */:; s:^->\([^ ]*\) [\$#]*\([^ ]*\) 
+>> \(.*\):#define \1 \2 /* \3 */:; s:->::; p;}' 
+>> lib/powerpc/asm-offsets.s; echo ""; echo "#endif" ) > lib/ 
+>> powerpc/asm-offsets.h
+>> cp -f lib/powerpc/asm-offsets.h lib/generated/
+>> clang -no-integrated-as -Wa,-mpower10 -std=gnu99 -ffreestanding -O2 
+>> -msoft- float -mno-altivec  -I /root/chins/git/kvm-unit-tests/lib -I 
+>> /root/chins/ git/kvm-unit-tests/lib/libfdt -I lib -Wa,-mregnames -g 
+>> -MMD -MP -MF powerpc/.selftest.d -fno-strict-aliasing -fno-common 
+>> -Wall -Wwrite-strings - Wempty-body -Wuninitialized 
+>> -Wignored-qualifiers -Wno-missing-braces -Werror 
+>> -fomit-frame-pointer  -fno-stack-protector   -Wno-frame-address 
+>>  -fno-pic    -Wunused-but-set-parameter -Wno-override-init 
+>>  -Wmissing-prototypes - Wstrict-prototypes -mlittle-endian   -c -o 
+>> powerpc/selftest.o /root/chins/ git/kvm-unit-tests/powerpc/selftest.c
+>>
+>> Infact, if I just execute that single command independently to build 
+>> asm- offsets.s, it works as well.
+>
+> Ok, I finally got access to a POWER system again and tried to 
+> reproduce the issue, but I also cannot reproduce it anymore. No clue 
+> how I managed to get into that situation, but looks like it was rather 
+> due to a messed up build tree than due to your patch. So sorry for the 
+> trouble, and please go ahead and simply ignore my objection here.
 
-Reviewed-by: Chao Gao <chao.gao@intel.com>
+Not a problem Thomas. Thanks for taking the time to look this up again. 
+Will post the next iteration asap.
+
+Regards,
+Chinmay
+
+>
+>  Thanks,
+>   Thomas
+>
+>
