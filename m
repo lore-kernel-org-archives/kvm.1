@@ -1,62 +1,64 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A6B3264D5
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 15:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C3B42F70C
+	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 15:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783438728; cv=none; b=jHNYUcFNrgBbhQzBUzCLbJmSGfElHYV4vA0YL+tMy7wllHZLR0RusxShfkVHOA4uRPw7Z/bsnavwXlFxTwVT0mGj/VuOmPDt392TZOOe+PAgr6oi39jampqSlQL6egmiXEn1TFnFvroAwT4viTlzOuVwu8Pp0o5dDLOBYuiqHSo=
+	t=1783438733; cv=none; b=gkU1H6eDkrbOWS8mCcn8e1ngMAasa8eSt3l4Q2kuvRAXGblhyuLFNpI5XLXaWAsaNqUf7guOdMyG4KnOI7Wy4gXji784zJMiRioTQSastnifIVsiVruxFKVf2+Wedxt7KhTnBLFWINK50LexRmMHwPi/XQy1jKHPci/EeNEYbnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783438728; c=relaxed/simple;
-	bh=iDSVx05XJpQ187yLL+vngdmnzjWQdJOINiVqfnmbIYk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m+9bRTZSFd1iKAf3SX3q9pOw+Ir5PVZnNZsYVWp8T9EHT9gZP5VYQD3QY4tmxPUOoynAnfNAZRMEixlSJTryjJOsnCVRq0XNsQtSuv7WoM++w7G/TGVNW+Lq1+HDlCn1sM5Crm1XvpPXgZA880NfWSrlILq/a8+KsyOZQYSRCdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OQRAcW6u; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1783438733; c=relaxed/simple;
+	bh=Oe/4C5CNRzZ9YU+v00jSZhbg5LdWqb5vYdjw2GlJdww=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fnJJwewpHCPG7YEz5Ft72FTHugxOpx/WvfylQF8CwIpg2pV7ZBNxjXw0NQRZARZqmYQaKL1kCfdvIUvLTvET7knosifcFGvoAoKKSAErQVr9Yw/WICmSc51ZwueVOT5tJM2Xc2ov6yYxddp8njpf+fwWd83sk/egRWzTxY/+kG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=G1JrFb+o; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OQRAcW6u"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493bb510ce4so32246335e9.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 08:38:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="G1JrFb+o"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493b77b150aso39704635e9.2
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 08:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783438725; x=1784043525; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UEQ8hvtSLcTmZmrsjKtJkrVXdZFggd5Aezo0pgyYhCk=;
-        b=OQRAcW6u4w3eHo1rKEUxi9C900X9L2rF9xzjyZszsY7iad0v5BNxcOALCOu9RG60YK
-         zIpoMbUOUpcuo2unP4EU1ljS1cteHo5NmgIa/Lxodlw8sbK94HXm5KnBocHprHa3reTh
-         wKyEs8iOUIkEITzDgeBCQI5VOfW6hct1UHDtkI6KjfdyZZ9KhzdykJBRtruYd7LVHHFr
-         yu3vwcn0crbkn7lGVO1D45mbgQVvuVr1IqHHOhenvDjPXHEKtIi+V2DGg3Sg8RNUl8+x
-         X7a61e2K5QIbcn7Z7XO8QDe7AkdYKuvCrPt/9koT7Vcv73MloNCs8eLuP/0k2rD0fBvy
-         CBSg==
+        d=suse.com; s=google; t=1783438728; x=1784043528; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xdAECnz6XOdm9gtF7oage0nDpTFZQgV5yfQL0q5n2lk=;
+        b=G1JrFb+o6K3b2DQ4aApygcAtsuTlbZ//RZ8NQgCFFEcdCbT3ldUHbRDBV7BnPtt9uV
+         amIGFzJ1n8vaPDUHwrkKlGGk3WEStRjCPWHRTq6wfCvdZFSnw4xyGXQZQlwt4UCjkbYo
+         EG+3T8n8+zp/EfAutVDqG4s/AO2nYEo9NLn+YiLXvVYvIpBe2uLJ/26V2Pgyjo20CcTv
+         Mg9TJbQTw8ga8Zop/C2M29xCiS8IehfpVnqoLu9vg66W+EC21tcwqSwcj+hggHGkAytT
+         Kyr97wP0u8mno9kY4/+1zBtiDLFIRQ6u+ZlCLo13wedVnp3TpP0TQlpuK/OzEVxZZ+F/
+         TFag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783438725; x=1784043525;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UEQ8hvtSLcTmZmrsjKtJkrVXdZFggd5Aezo0pgyYhCk=;
-        b=ojcrVMX8DUSWmq0DU1wF5gRZtOCqB7ucUod79q4RMXYab+9hPWvsr60NBk0M7vsdTA
-         R486PQn2fHiDVB8D+408kEoh9CxvKX8lpRhRbl/eCq+K1pG2ClAk57U0nUpg0KsY5xAg
-         0LlDiGxCOZwbSGXyQtZp79vHlRXKW1AFfVxd8DuiO19uCJBdt1Vz2U6HfmjcKfRxUc1d
-         jpB1sakMGXqqSGAKMmlC8m/hEnwTSRZsrPm6Uk8i/MeiVjISzkR5DT7eIY0KFRr3UQNT
-         V/z5wTgHwon1e+PuCSAGT9Ic0kNdjl11Js515Ui8MhvhLPtdvg4r9KI7qTGnGKBLHOAt
-         Q32Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoHlG0WMFsHkWRtTuHSAhvfdBe6C/LXWW8ETzoIjcHJySWA+NG7F1qE2g5a31XskHHr6Xo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQXlcHr5WpX0DGPHgSesmrp1kAZT4ujnt45HoaWPOYL8RdO47Q
-	ycuCZ1sa//mA9NtNuilIgyawDVzsRK/KVB562hKBRH+5PCzXPee4cnP6FZMOKbWyQLA=
-X-Gm-Gg: AfdE7cmSOUXqmd1YWHdU6/y4ydm6HzOmRX6q7cu/i1T0U0+f5h+Dr/SPzwLtAK1LomV
-	jvslQs0yxr+/PWKIZs43dX1LPYPLU73dhVZfXm7zQETloAxQUvt72TIEqvkE/Zr6j4tWgQrdcAt
-	kXtqbwM094B/4ktcfEa7P1tY6SSFA4VCA4woeQvv+NWOjYqUJV+3+0BUtTwUdsBqhXhnBOmN2ru
-	sdcatOjgf/f1XFjuMBKnV4MsbcPbN2JRzFAKNHsqvD5ckzfcFjxZjoUWDGBIHMVZ0zllBmLX83e
-	8GRISL0siVEkLwkhiuwAPssqr7Rb1ZpEEDxBC3pRMqqZWX3e3vNFE136y8nMSrIpOklSAlpKiNR
-	iXe0zpniOWy1n1RqTJ47KdLXiMjejnzgMCFXH9SfcI/C9waSL+52qSxANTy76mx1P6ASp5Be6aC
-	l1QSExSCbxCfK4l9TQnKHdoUymMUzh0oHcEIytChsZ0xbCE2S4kns9tKciQj59uvX+bo7/peCo/
-	+FdBfR5XjfhtWRjhuzXQAg0
-X-Received: by 2002:a05:600c:3b08:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-493df0410d7mr67190395e9.14.1783438725537;
-        Tue, 07 Jul 2026 08:38:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783438728; x=1784043528;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xdAECnz6XOdm9gtF7oage0nDpTFZQgV5yfQL0q5n2lk=;
+        b=Evj+AZ9xdBVKLXdt0DZjTZI0CD+9ml3HCZND1Skn4BjEUktesYlkR8q34hE4WHVrga
+         XHziVMgYsZ3HP44Fez0z52gyNCoE9MnJHxHvnvm7pFIXXFl2r4ghDClJXHJmhDpaNiLE
+         ngRkbm/Nidk6R1mg0DD3QvHbDwm83yYK/ymnrArBMVUcWxn3kcPWFE9Cb3iGF5CrKWmo
+         BATo21OiBX5Vsj4clNdgIFsiBurMhzqiZdTEUwgPI7x6GD+Kr6NBrFDNzSiTKK95hlTV
+         Xtzl9M6mr/lq+/x1t6OiS2zuZBcL3uKlI8BQCZWUJl/fxOmntzQymS98SM8ctk40z4KL
+         1SoA==
+X-Forwarded-Encrypted: i=1; AHgh+RoProPFGeFhVCTZdKXrmIACLdOkTxoI+sLAG8csvoJGcUcnHZdRlxPlRMBdVk2dHE3Nr9g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz914e2qqHLfDEjZKcl9SniGB1maSt5Urxyzn+KYxG98n3kTQ+y
+	59KcdwruLRRSAgKSjaj+qUc6I1lV7dbS5td8rJjcAcp3YCDvuXKHlhnGhYG/8BjP+T0=
+X-Gm-Gg: AfdE7cmoIMvBYFCzW5oEmLeYQlLyVRgia8Fjrji1VyvF7yVK/8Ff+DCccpMwwclkCPl
+	mmFd7QMqMM/2EkRfltipy2CRrhEdGu7H4i8O0UOCU+c2eJQYZux3TwWPv0q7MbtLgNWMBKsVYkk
+	ZyPvpg9ETfoVYIT+1lD/wIhtfS2wXVNdWPll086YVX2oCEKVH0AYhXw5XCWVokezXIkH6sdE7fp
+	YHhrzQ4p2pmkLmaPRQBVs3oh2UljyQ3PYpg1pjZJVYzK+QagfpBPmTpi+Mpzh/sbN9GnunaDokV
+	hRpwLJkcV4KaQGvOjGfmFw9cV9NFkLzeqBddwHXB6P+AUB/ZOdPkjTTX3IX4Jpcp8DdGR8ikbN3
+	IH6UTCLwfYbzQZekBL6qhlgqgMVG+9x3M9S6W+MvSQWEEGDnXeIQ6bWRAcC5GKBKtWiyApjjOCG
+	tPLCIgqsOaoVJ/SDXLZzqBJT4ZV9CSANHjV+DcZ7qRYXPVipybYHE1vTyoNdbLPcVv5B5HIQuG0
+	abNrZUE0aOzOg==
+X-Received: by 2002:a05:600c:3514:b0:493:b7cb:c5f with SMTP id 5b1f17b1804b1-493df05f8d4mr59362085e9.11.1783438728542;
+        Tue, 07 Jul 2026 08:38:48 -0700 (PDT)
 Received: from zovi.suse.cz (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f5b811sm101111785e9.13.2026.07.07.08.38.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0f5b811sm101111785e9.13.2026.07.07.08.38.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 08:38:45 -0700 (PDT)
+        Tue, 07 Jul 2026 08:38:47 -0700 (PDT)
 From: Petr Pavlu <petr.pavlu@suse.com>
 To: Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -87,10 +89,12 @@ Cc: Xin Li <xin@zytor.com>,
 	linux-integrity@vger.kernel.org,
 	linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
-Date: Tue,  7 Jul 2026 17:37:03 +0200
-Message-ID: <20260707153819.4172541-1-petr.pavlu@suse.com>
+Subject: [PATCH 2/4] s390: Avoid indirect includes through linux/module.h -> linux/elf.h
+Date: Tue,  7 Jul 2026 17:37:05 +0200
+Message-ID: <20260707153819.4172541-3-petr.pavlu@suse.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260707153819.4172541-1-petr.pavlu@suse.com>
+References: <20260707153819.4172541-1-petr.pavlu@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -99,45 +103,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The linux/module.h header is included by every *.mod.c file to provide
-`struct module` and other related definitions. This makes it a "hot"
-header, so it should avoid pulling in unnecessary definitions.
+Several s390 files use declarations that are provided indirectly through
+linux/module.h -> linux/elf.h:
 
-The header currently includes linux/elf.h but this is largely unnecessary
-because it requires only the base ELF structures, such as Elf_Ehdr and
-Elf_Sym, which are declared in uapi/linux/elf.h.
+* arch/s390/kernel/nospec-branch.c: s390_kernel_write() -> linux/uaccess.h,
+* drivers/s390/char/uvdevice.c: copy_to_user(), copy_from_user(),
+  put_user(), get_user() -> linux/uaccess.h; file_operations -> linux/fs.h.
 
-Replace the linux/elf.h include with uapi/linux/elf.h. On x86_64_defconfig,
-including linux/module.h alone results in 2.2 MB of preprocessed data. This
-change reduces that to 1.5 MB.
+Add the missing includes to these files in preparation for removing the
+linux/elf.h include from linux/module.h.
 
-The first three patches are cleanups to avoid relying on declarations being
-indirectly provided through linux/module.h -> linux/elf.h. These patches
-are all independent and can go through their respective trees. The final
-patch depends on these changes.
-
-It is hard to identify all files that indirectly reference something only
-through linux/module.h -> linux/elf.h. The changes were build-tested with
-allmodconfig on arm, arm64, m68k, mips, powerpc64, riscv, s390, x86_64.
-
-Petr Pavlu (4):
-  x86: Avoid indirect includes through linux/module.h -> linux/elf.h
-  s390: Avoid indirect includes through linux/module.h -> linux/elf.h
-  tpm_crb_ffa: Include linux/slab.h for kzalloc_obj() and kfree()
-  module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
-
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+---
  arch/s390/kernel/nospec-branch.c | 1 +
- arch/x86/entry/entry_fred.c      | 1 +
- arch/x86/entry/syscall_32.c      | 1 +
- arch/x86/kernel/cpu/intel.c      | 1 +
- arch/x86/kernel/fpu/xstate.c     | 2 +-
- arch/x86/kernel/process.c        | 1 +
- arch/x86/kernel/signal.c         | 1 +
- drivers/char/tpm/tpm_crb_ffa.c   | 1 +
  drivers/s390/char/uvdevice.c     | 2 ++
- include/linux/module.h           | 4 ++--
- 10 files changed, 12 insertions(+), 3 deletions(-)
+ 2 files changed, 3 insertions(+)
 
+diff --git a/arch/s390/kernel/nospec-branch.c b/arch/s390/kernel/nospec-branch.c
+index e11ec15960a1..b62da9e81e79 100644
+--- a/arch/s390/kernel/nospec-branch.c
++++ b/arch/s390/kernel/nospec-branch.c
+@@ -2,6 +2,7 @@
+ #include <linux/module.h>
+ #include <linux/device.h>
+ #include <linux/cpu.h>
++#include <linux/uaccess.h>
+ #include <asm/nospec-branch.h>
+ 
+ int nobp = IS_ENABLED(CONFIG_KERNEL_NOBP);
+diff --git a/drivers/s390/char/uvdevice.c b/drivers/s390/char/uvdevice.c
+index e6a264c996ce..4fe3ead4a091 100644
+--- a/drivers/s390/char/uvdevice.c
++++ b/drivers/s390/char/uvdevice.c
+@@ -28,6 +28,8 @@
+ #include <linux/vmalloc.h>
+ #include <linux/slab.h>
+ #include <linux/cpufeature.h>
++#include <linux/fs.h>
++#include <linux/uaccess.h>
+ 
+ #include <asm/uvdevice.h>
+ #include <asm/uv.h>
 -- 
 2.54.0
 
