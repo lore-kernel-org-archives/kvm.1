@@ -1,181 +1,212 @@
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7353A1A5D
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 06:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783405976; cv=none; b=dqLd25fUQx/TMvQxTgNyCFJuDitP5qBYrSw4n7dTteb/L/VMQXNETtZeo9Qg/KlhKs6DljDYbb2aBZ6ESYJLlc2OkXjZel0tKOUH1nRaz2hHoaq+Qhhg0cunX0gphcvC5tM4NJgO04j9kM2uTyp2k23pA7xUD9ysGTX5Da2/0Dc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783405976; c=relaxed/simple;
-	bh=PCP9wyKT5koTLIkjIeei/P1WraBTk0KhHeG6UVa4P5c=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=FCnbXuU3ndFKgHbORdwObIeQ9HXt0UdmeCxkXxKibFgYM4zS1b/zNYEbyWV3zvASES1G0yDgMAhnbkVMnihrkGjZwWUZxuTpy9MoQjWkVCOJqQbQU2ezK7yFIwfpapR0ZACDyFHNDLelLzXG6HyEWntRPq8OclDDyolESwaTS/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-6a177de7766so2113099eaf.1
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 23:32:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783405974; x=1784010774;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=T6Li1k9zIvCaaJ+CIFvo/B8eY2h2BuLADS5o2OvokTo=;
-        b=l31graogogyNGgSuEZR7ggEgR3+6/FBGJ9YsWh+1W+82uWbyzZ7YZc7Uz8ZCXCAxjh
-         qbHULWjg5YL3zsyGjdonz4XMkF+0F5ukqlE9/w/cH2ChQfkTzMMqRYgw7re71BbTub4y
-         F3P86bdxpwhrfj62EZNN9qAAmb/aiFyx7LYqKS2elzbSRPZfRtRYnM/FrgpWpNG9qBnU
-         BdwdDHrp7dpR2NEQY1AXA9Sum948PgofP5JoaUTCFTWC69KWcoS1Fh7xjTyEL7petQHZ
-         vgQTL0ddyq9TrALmJqqZuNsAyL/2vChtAvtS+u4VAkNiBfiw4TQyP3L7t2wz2kKjET8M
-         LnEg==
-X-Forwarded-Encrypted: i=1; AFNElJ/KMEmitVT+TuVV2k5P+CHELjwQ43i7vHjcf9PN37GNPqhEvoiGN5fpGj3wEiTrHBaKj1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9qJ4H/MjHr8rgQZkVtczXm+lg68p0WHTQ9ntsKc06YcXf/WEZ
-	nHY9NYQw5PssIC5gAjwpVgRFqkFHffISVySfENHpEr7kiSJinBphO7pUgW6CHBcAketEiGfo76X
-	qJqjdN3Z45cQnhl8/7kYk6aWjJjikI/BnSuXPzmp3gVu2UWYQ1ZCFRqGWeJ4=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F3B3AA4F1;
+	Tue,  7 Jul 2026 06:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783406728; cv=fail; b=JarknCzJ0dFIid769fjHNkl/cWVlr/I69ifXCnmVHDsqfge04/0Gfw83AyM/ev3PcTBsUHvfWfd4DZI2f3fJIaIgSrL6QdRmqAK5OphzY3yJDn8GyTjTNILz7T5plBoZlF/PtbNP8DEUc8tjGYsrlv/1dqwyQBk5gi15uNkCEuI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783406728; c=relaxed/simple;
+	bh=UfJAECGemRoO0igm3n0H4yTkdUNt1vXiAlqMbhOfYiY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F8S+OgWxiGiVwoHNDH9za54imkZzCMI7eOfgcYA3MB/3SBIt1brsQ4jqHdWsjIyqSLydMkWL88juN6irdMhfCcXSZ7YXqrUAv6/5VzPMH11AVo8CxlXDEnjqxpAG1PsvrRHoOASfcLm1xlMensHg8lnludlRsyid2D35+13HHdU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AdkBHUv+; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AdkBHUv+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783406726; x=1814942726;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=UfJAECGemRoO0igm3n0H4yTkdUNt1vXiAlqMbhOfYiY=;
+  b=AdkBHUv+6cqTe8RGMQ4zAp1qqwxKpaX2uo44RTirkiEpHlS9bp1gimb4
+   rq1DE7x//+n+S+dlASnmprMgeGi2TqyHvSi6Srt9xzFlOf9+BD5UUMI6h
+   2YQZbV7sJMNHxFtXF2BcIvYDJQBq7SWfro0JL94FQ8qwM5vxM1qHPxqOg
+   038F4f8O0FXIzJu2aTwSYb/WOvt/63AsQXFGqDD0trvqnsraHMU9TVk/A
+   J/oWxrm1rGqC9y5NXI+gVMty4T2uQ4+hIsULmnue7IDnhloqzL7PZTnq7
+   F8DO3Tl0riUZzBKAzPEPjBQDxU3hdetTqjqOEWj2IBHeglQak5Fmt6+70
+   A==;
+X-CSE-ConnectionGUID: 4UTAgBtLQ0uR4u8Ii35cMw==
+X-CSE-MsgGUID: MFCT54d9SymMB3Q4nGzFFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11839"; a="84166329"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="84166329"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 23:45:26 -0700
+X-CSE-ConnectionGUID: y1v+D8qGQt+PC5F3MqdBuQ==
+X-CSE-MsgGUID: Gt6RjgffTzyfRM89kMwHng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="277128075"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2026 23:45:25 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 6 Jul 2026 23:45:25 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 6 Jul 2026 23:45:25 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.16) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 6 Jul 2026 23:45:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mxgDvRx23PtijqfeHP6nuPLjQeyECQN0g+9E452FzhoPG1FaGPrifMDj1nIRV1Pkyp+iqv31xeWYNM0BixaGSUlQeatyF/AKkVzgCxHmouq5dfI6R7QJpx3uqNb7Ecrx2Ym4uzTiLQv4tIDvskz3cFBUwh8gJrY4Fjry264P2arSQdaAZr+JjxbJ84Gpqu0739QViDMkIDB/TLcETa81IIuuvpZ9irVV4EGYWvUfAu7HPnA30yRlfD8SoxDQGEZ2modS+NZ12r0RpKMMP+7hLnt1AuCNd7vjYFvSBIxKtdR5KYYjNEnrSyTB2Q5ZwKEN4rCllkKQQtqkMgd17malHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SGJ6oslaMzCsJJZA+pZA/j4Ep/dYULpI5IIfTJk2SfA=;
+ b=BiMan1lNMt+Jm56cJMUh8qLZXXKm8phNge5+NZgKczlhBGLtbKyOoPFPj+B0RO2xgDVIXvi5nAQBnrlCNxW2ESdqeJPU8qj2BNiJJUMNzGTxgBblUL5oOFYWzxsCbw0aa+D4YcwohZR90zwBZm5NCLTVcZ2UQnOnys/jOSpDwn8hGxcPuP7f34dboqlA8iql9py4aFs/616CUHP7X1RTq0Bi1pQqLT6TasobQy7dyx4MrzDXdJM6lKjHHuFFSnxqmUl3cigJ5SfoygiGEavrpeuGRKnpopUrCh1JDDpoplAAeG4Sf50LkGCmXA4I+FUq0QPAkCodwr/bVoeWwMuzrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by IA1PR11MB6490.namprd11.prod.outlook.com (2603:10b6:208:3a6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 7 Jul 2026
+ 06:45:22 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 06:45:21 +0000
+Date: Tue, 7 Jul 2026 14:45:06 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
+	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
+	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
+	<x86@kernel.org>, <yan.y.zhao@intel.com>, <kai.huang@intel.com>, "Kirill A.
+ Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
+Message-ID: <akygcunMgpsK4mnE@intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-7-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260526023515.288829-7-rick.p.edgecombe@intel.com>
+X-ClientProxiedBy: KL1PR0401CA0002.apcprd04.prod.outlook.com
+ (2603:1096:820:f::7) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:8c7:b0:6a1:98cd:7484 with SMTP id
- 006d021491bc7-6a3554fb157mr2880812eaf.61.1783405974169; Mon, 06 Jul 2026
- 23:32:54 -0700 (PDT)
-Date: Mon, 06 Jul 2026 23:32:54 -0700
-In-Reply-To: <20260706180025.2735341-3-bestswngs@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4c9d96.a1ad617e.25832.0008.GAE@google.com>
-Subject: [syzbot ci] Re: KVM: x86: Destroy the PIC and IOAPIC before
- destroying vCPUs
-From: syzbot ci <syzbot+cib53d48a96bc1aea0@syzkaller.appspotmail.com>
-To: bestswngs@gmail.com, jasowang@redhat.com, kai.huang@intel.com, 
-	kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com, 
-	shixuanqing.11@bytedance.com, stable@vger.kernel.org, 
-	wangzhong.c0ss4ck@bytedance.com, zhanghy@sangfor.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|IA1PR11MB6490:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0233a779-ccb7-427a-3205-08dedbf350fb
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|4143699003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: j8trP0YwHScX0TJEqeo+99M7VcgCGFT/mNQl/EC6T4D8w6VskikulRRAbLfI/xT+HKD7es9qhTs/JcUyE84/EIfCHsKGmvoauUFxBTeR+52/9+Rf+iJDgQwysfEtS/wjOiRqmy5RvLo4k1tYXjbb6Ju3RKSyjoR5eLnDGauG4B2mMMN8+8wTbZuU9zoBX3gFnQrULncubr/XYzIZcW0KzusJDq3BVHroIT0If0jz7XjS3tHQrmrnMaMnvCB9rLqfdepc7v+WhOptataB6K+zHxvqRaH6Cpw1ZM4UF/5w+Crs9Qgdjn4MmfsY4urU/er/w4nZhiuuVjrdptPN9+UbczXLFbxdYYjbcK3TBAFsF+SZE6oH5NUxfn/BW7GZMxumsJykcND1JCe8pcrv7IvLURL6DEDDMKakxqPnl4spW229kHY6FafAbuieyY5KapvMcWbv1W5eUamji0EdsLfwSa9fqZApFS3mlkH4ScRtu0skQ6ewCdw2p5SNYKgO/LPcfGDBfoE0ARqzmSmlPC5Nq2gXgduhjGWrRF+CRn/dsr3fa47a4a7CiTtP4LgZwEWcxpnomlH7cOX01duVph86vd+hUrHXW58rCe1owqf94C+GpGH8s30AEjs4rqV/Rs2f7YAh5gK9VckSj4aD4o3SxaRAQtpSJHBtQoujmZaxQ7Q=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TzvngXuVDFVgDZ/+/qHDrpedOXDhMR5KbfgS2RHTgKb33Q73RGtCofGFYA0+?=
+ =?us-ascii?Q?G2pTRGpulsa70YoNYvr2cO5ZHEoF8ORkMvXhqlC32VfHRZM7XCF6sXTGzxQi?=
+ =?us-ascii?Q?CvBZKL6XGcCvBEbh/lqdneN218SlmpAABdSFZLWMbAhl/fd5eb6KiEMj33uD?=
+ =?us-ascii?Q?1/Gfw5I1laGznRH12pmbU1DKNFGTmpol/MPitgdtKqdeE96RWT2MuSSFa2oW?=
+ =?us-ascii?Q?yzw24nJk7rmv8QnCAgH5W2yQiRMCCYrpLEI4MfiN81qU6kl+gFqBZLVplORI?=
+ =?us-ascii?Q?XO+ommSqg1RA8zgzUP7LCz7fx6++7+uLnc98gO3vEHuA52Y5t+3BOOkjjaBz?=
+ =?us-ascii?Q?GLvAvFGoSfyv4qkclxqfz9l0Ad/UYNYZhufU8ELtNDYh0w+ILdKtHiHCifnd?=
+ =?us-ascii?Q?DUNAlCmyyhgpwqUvndo+6oxUeOkat/SUxrex50OfvJO4nXVC9wpBbdbdtAQV?=
+ =?us-ascii?Q?X7N3jx5nm46dSgmrXb/Oh6XusoDwONepS65zP1u5m8dsbUtVPZuWgN25MJRf?=
+ =?us-ascii?Q?d8ILQGnOn3n8yQvwusx1lpWgCml8GaRCknVqaclIQb5W4dcqhxqotLbTBdpi?=
+ =?us-ascii?Q?Soz8u6M6+F5ZkBxvgCaoyd3VCmEjx0mtNKchuPsHAoTmMByzNXSpdUsqoy4c?=
+ =?us-ascii?Q?9hHRx2bftHypcRLcEFoGKfXXvjIoQBV7PnXOgnjYxs0qfrYoe3UWysmaqSpO?=
+ =?us-ascii?Q?RDgwB2LIKysqtMwZRb9rUTX6yFiOCM5zn+Xh2UGK8GgLjcSvvsP3kDDo+phR?=
+ =?us-ascii?Q?q8gv6qQ+NDUMqkYsJZZ4FWGcXySVmJuzyrJzEXOEfMAof938KeU8DbyN8/YQ?=
+ =?us-ascii?Q?zJ+d0M//cQSF+7OxQN74sC4b/2tXSyLwdSq+QcnSw2d7w/apLyRiKIoLdOxI?=
+ =?us-ascii?Q?ZBrWf1jwbjJFcX0NdY0mbKJGJ3Jr3Ds6g0KC+Cqov4mos02Kwic6OxXfZUtE?=
+ =?us-ascii?Q?Ij+ou9JVzziAzK4EcTvDwZQiCONf6spCno/6BKjQgr/SkQ3GNgwaUFVmzwIe?=
+ =?us-ascii?Q?EUbesB/xG3XaWc5+QDtE9QA1RWcQ+3FRkPoNHlBQfZ7RTWUyyJqKIFeZOBEd?=
+ =?us-ascii?Q?77GGd1Io9vWGB/KHPhhaD/DpyFCYp+hlKTnwVYrrXUUCqXBnXdOz6Yh7ZOCH?=
+ =?us-ascii?Q?V+twhPva6aNqQmyWBSfg7KUDR6JA3A82UB2Pe3xRb5GBctjbXxKIRg3ncNv8?=
+ =?us-ascii?Q?vXvEAs1rkEhoaN64ca6Xgjb389zl8MrslDnVqNq63o1OU6X/MUvMwkHQZfCD?=
+ =?us-ascii?Q?UovOJqivEIIVizgQvZySwbt5OE8RPynHptTUWhS34Zhc/7aZR50K36czMpOK?=
+ =?us-ascii?Q?yzF+59+46t5smNMTLTxueHprZHGwuzE0u31d4rK0J/QKZpASHMv5c24WsPO8?=
+ =?us-ascii?Q?FqwDyK+5rvB+dWEHi5ap7EbAcrdasuJ8ftVk1EnVp0kcAxW6OgevwqqlfVxB?=
+ =?us-ascii?Q?f7pqBCaDL2Wx7zZM/3T7cqmSV2s597n3kK+xtT4Q0ZYIlnIM4kA1ywxamIxr?=
+ =?us-ascii?Q?xxGnonxZcfudTlUeMJuxk8N0htouovlm3rcjuv1676VWrCsrcbaG7qFJaU/L?=
+ =?us-ascii?Q?En70mkb0IoBjTMdV4lRtTw9OP8kAly3H5GER0zL4Z7NfpjsKPRg31n9JspIy?=
+ =?us-ascii?Q?sagUpECEKVNDGnkulveY1myQPIDnvDcE9KkGpn+HvPk8Gy2RSh3Z+AhuXYGC?=
+ =?us-ascii?Q?7iK3lvTCEMKsOStxotQAty31hOOguhDDBzyP+3tVhdeX3onQsir9t2Sdv/XV?=
+ =?us-ascii?Q?L8+zGeJ/cQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: O/MlVrrowMVKkxhaMbLq46n492wGr8Xue5WDAcMcMAZxz5RPD0JQ1s8Mtqv6lXPadDXFlt/40e0GsTs6mmHZAphxcAgwzDue45tK0saOkTwWzMXNT6AEwfL2fk6Avpx1WTo1xIaQBkaTgL9mH6XphfxChOEZOdfSb3XMzoZcUGkm7ZNG+QNz2uLGUPRjeScwHx6Au8CWXbFpFoR53JY8iTTenXZKPGzuh7w9EteBCJoLo4GWUE3uMsgtoVYVnZJZjqJ8MtT/yIzubrIx3MiOzVojmxfkSJGUihgvukxf6wbdCWU2/Gqc4/p1R87J71GyY8ME85Sp8w4KgwwY6Ztvgw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0233a779-ccb7-427a-3205-08dedbf350fb
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 06:45:21.7665
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PeNoznpWix7EfElcKC6KUqhTEMadEA1T8j84LGh006npBxHJ4ZkgwIZTpPQCIXIPCrVmm976WNAvvEM3ZCgGKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6490
+X-OriginatorOrg: intel.com
 
-syzbot ci has tested the following series
+On Mon, May 25, 2026 at 07:35:10PM -0700, Rick Edgecombe wrote:
+>@@ -2057,32 +2057,50 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
 
-[v2] KVM: x86: Destroy the PIC and IOAPIC before destroying vCPUs
-https://lore.kernel.org/all/20260706180025.2735341-3-bestswngs@gmail.com
-* [PATCH v2] KVM: x86: Destroy the PIC and IOAPIC before destroying vCPUs
+[snip]
 
-and found the following issue:
-general protection fault in kvm_cpu_has_extint
+>+	/*
+>+	 * Unlike tdx_pamt_put() which uses atomic_dec_and_lock() to
+>+	 * atomically handle the 1->0 transition, the get side has no
+>+	 * equivalent combined primitive for 0->1. Recheck under the
+>+	 * lock since another get may have already done the 0->1
+>+	 * transition after both saw atomic_inc_not_zero() fail.
+>+	 */
+>+	if (atomic_read(pamt_refcount)) {
+>+		atomic_inc(pamt_refcount);
+>+		spin_unlock(&pamt_lock);
+>+		goto out_free;
 
-Full report is available here:
-https://ci.syzbot.org/series/43a61d29-79d6-47db-ac80-4e948bd10c1a
+spin_unlock() can be moved to out_free to avoid repeating it before
+each 'goto out_free'.
 
-***
+> 	}
+> 
+>+	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
+>+	if (tdx_status == TDX_SUCCESS) {
+>+		/*
+>+		 * The refcount is zero, and this locked path is the
+>+		 * only way to increase it from 0->1.
+>+		 */
+>+		atomic_set(pamt_refcount, 1);
+>+	} else {
+>+		WARN_ON_ONCE(1);
+>+		ret = -EIO;
+>+		spin_unlock(&pamt_lock);
+>+		goto out_free;
+>+	}
 
-general protection fault in kvm_cpu_has_extint
+Reduce indentation for the normal path:
 
-tree:      kvm-next
-URL:       https://kernel.googlesource.com/pub/scm/virt/kvm/kvm/
-base:      fb402386af4cdce108ff991a796386de55439735
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/7f3721c2-14ce-4beb-aa97-08232f57e71a/config
-syz repro: https://ci.syzbot.org/findings/0522c527-432c-4524-9835-64ab75b899af/syz_repro
+	if (tdx_status != TDX_SUCCESS) {
+		WARN_ON_ONCE(1);
+		ret = -EIO;
+		spin_unlock(&pamt_lock);
+		goto out_free;
+	}
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000012: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000090-0x0000000000000097]
-CPU: 1 UID: 0 PID: 5786 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:kvm_cpu_has_extint+0xdb/0x340 arch/x86/kvm/irq.c:83
-Code: c6 e8 0d 00 00 4c 89 f0 48 c1 e8 03 42 80 3c 38 00 74 08 4c 89 f7 e8 44 54 e0 00 bb 90 00 00 00 49 03 1e 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 aa 00 00 00 8b 2b eb 6d e8 df 08 76 00
-RSP: 0018:ffffc900032f7740 EFLAGS: 00010206
-RAX: 0000000000000012 RBX: 0000000000000090 RCX: ffff88816b748000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
-RBP: 0000000000000001 R08: ffff88816b748000 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000000 R12: 1ffff1102e032000
-R13: dffffc0000000000 R14: ffff88811e33cde8 R15: dffffc0000000000
-FS:  00007f57357e76c0(0000) GS:ffff8882a9714000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fae800f0378 CR3: 0000000109ffc000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- kvm_cpu_has_injectable_intr+0x1c/0x170 arch/x86/kvm/irq.c:98
- __nested_vmx_vmexit+0x1911/0x2b40 arch/x86/kvm/vmx/nested.c:5181
- nested_vmx_vmexit arch/x86/kvm/vmx/nested.h:46 [inline]
- vmx_leave_nested arch/x86/kvm/vmx/nested.c:6854 [inline]
- nested_vmx_free_vcpu+0x8e/0xd0 arch/x86/kvm/vmx/nested.c:381
- vmx_vcpu_free+0x109/0x2c0 arch/x86/kvm/vmx/vmx.c:7765
- kvm_arch_vcpu_destroy+0x154/0x380 arch/x86/kvm/x86.c:12859
- kvm_vcpu_destroy virt/kvm/kvm_main.c:469 [inline]
- kvm_destroy_vcpus+0x123/0x380 virt/kvm/kvm_main.c:489
- kvm_arch_destroy_vm+0xf9/0x2c0 arch/x86/kvm/x86.c:13405
- kvm_destroy_vm virt/kvm/kvm_main.c:1301 [inline]
- kvm_put_kvm+0x772/0xb10 virt/kvm/kvm_main.c:1338
- kvm_vcpu_release+0x54/0x60 virt/kvm/kvm_main.c:4101
- __fput+0x41f/0xa40 fs/file_table.c:469
- task_work_run+0x1d9/0x270 kernel/task_work.c:233
- get_signal+0x1181/0x12c0 kernel/signal.c:2807
- arch_do_signal_or_restart+0xbb/0x810 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
- exit_to_user_mode_loop+0xa3/0x5e0 kernel/entry/common.c:98
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
- do_syscall_64+0x357/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f573499ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f57357e7028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: fffffffffffffffc RBX: 00007f5734c15fa0 RCX: 00007f573499ce59
-RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000006
-RBP: 00007f5734a32e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f5734c16038 R14: 00007f5734c15fa0 R15: 00007fffda4d80f8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:kvm_cpu_has_extint+0xdb/0x340 arch/x86/kvm/irq.c:83
-Code: c6 e8 0d 00 00 4c 89 f0 48 c1 e8 03 42 80 3c 38 00 74 08 4c 89 f7 e8 44 54 e0 00 bb 90 00 00 00 49 03 1e 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 aa 00 00 00 8b 2b eb 6d e8 df 08 76 00
-RSP: 0018:ffffc900032f7740 EFLAGS: 00010206
-RAX: 0000000000000012 RBX: 0000000000000090 RCX: ffff88816b748000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
-RBP: 0000000000000001 R08: ffff88816b748000 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000000 R12: 1ffff1102e032000
-R13: dffffc0000000000 R14: ffff88811e33cde8 R15: dffffc0000000000
-FS:  00007f57357e76c0(0000) GS:ffff8882a9714000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056532c5e2950 CR3: 0000000109ffc000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	e8 0d 00 00 4c       	call   0x4c000012
-   5:	89 f0                	mov    %esi,%eax
-   7:	48 c1 e8 03          	shr    $0x3,%rax
-   b:	42 80 3c 38 00       	cmpb   $0x0,(%rax,%r15,1)
-  10:	74 08                	je     0x1a
-  12:	4c 89 f7             	mov    %r14,%rdi
-  15:	e8 44 54 e0 00       	call   0xe0545e
-  1a:	bb 90 00 00 00       	mov    $0x90,%ebx
-  1f:	49 03 1e             	add    (%r14),%rbx
-  22:	48 89 d8             	mov    %rbx,%rax
-  25:	48 c1 e8 03          	shr    $0x3,%rax
-* 29:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax <-- trapping instruction
-  2e:	84 c0                	test   %al,%al
-  30:	0f 85 aa 00 00 00    	jne    0xe0
-  36:	8b 2b                	mov    (%rbx),%ebp
-  38:	eb 6d                	jmp    0xa7
-  3a:	e8 df 08 76 00       	call   0x76091e
+	/*
+	 * The refcount is zero, and this locked path is the
+	 * only way to increase it from 0->1.
+	 */
+	atomic_set(pamt_refcount, 1);
 
 
-***
+The rest looks good to me.
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
-
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
+Reviewed-by: Chao Gao <chao.gao@intel.com>
