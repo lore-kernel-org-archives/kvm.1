@@ -1,150 +1,87 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD56724DD17
-	for <kvm@vger.kernel.org>; Tue,  7 Jul 2026 00:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783382463; cv=pass; b=nQ/fMYorjF1pYiXuJCmz9Pam9BhzDfvdnoO3DK3BQ/i8pXdJ5tKTRJ942pBtZmilpcVddVlQC8UYbgmyFufQDsB4v+TPy40QAFc/26jIG7U4HFL6608Ywsj0SUItmdwQCuNzlENwy+6YNbEN6P6rK4ftbXo7GQyEoRCuBZHRbL4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783382463; c=relaxed/simple;
-	bh=fjwR/tDA2VxqyZIBirsgdoW6obdKD7AsH8tzTnZEgD0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O7yzEyxhxtmHmdvbZtpeEyQlRncP6oC+F0Pv81WZF3Jtk6FY2dqThGM3O1kvolS8wXExtHYuUaesKo8p5+m4vkEe8jzVXIwDo8yBrBhroQ6XQAEqeizOVl2fKAeS9X6SPUK2rNRrlTgUof3QFdUvHcaXxOxzepuJTBBfx1NJo9E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WSfFRHCP; arc=pass smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WSfFRHCP"
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-74019ed06aeso2823030137.3
-        for <kvm@vger.kernel.org>; Mon, 06 Jul 2026 17:01:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783382460; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PQZTtRz8fb1tMjO3QCFwG+M2VTPiRZuguGaelvhod3UoJEktUw04EZhDW5ziOfztRS
-         VsmWXNixa+K+j+Mu7PfJE8MW/9ZuRpY7AcpIf6NC4RkSbbfhuQX0FFtnMAOKNwKyEO7Z
-         ODGGyGrwFgytIqPRHys1Hn8Cef7dDsiP3mFei/1rKzNYP6Mk/HrnY0da4x+PspoqwXQ+
-         Zw8JqIFftGN0HJLMwQaszUdhzGy7gWycki9oO7s9yX38hcTERCqhteSYFn5f75qm7yBK
-         yR57bu3Vjd12nJXqT0Oyfxf4ghx4KgepalVTTZdwkXYhYJW0BHvVFKdt72OWIbuCvUw0
-         h9UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=EdG+ly0t16GH0L5fTMO5Kzv86XVLEyZM4B6Ik8ybBFY=;
-        fh=Lp8EwOrli9UfG54DZ/9jBS0J2UnW17cSROWBAvmyQMw=;
-        b=LXZ/BPdtvyMA6LvXcgOeh/pAkTk2eson1QmwGbKjU6bc4H/KvYsD5dJdcQA0oWZZ7I
-         60YRLaQ+S5L1vxGUfStABL41y7FzpqFTP6nS4f/4hr5kirpdnZIqc04bGSwgrBpAkJM+
-         ed7eEhj2b9rXNESkhan0Y9EMAU3DDzLquqszjAI915aCx5wky5hRJtOBG6CPXe72w3hU
-         cDpfseU+6UYPmpOHV/RBJ+4Q9tpP/0IiTBjdFjBC7FtMWaXHc2JJ5SQbiWWKgYl5oZOc
-         Fd4Zd7nv7YHo4DX5nUdByVEMbnduwnp9t+SuxYrJYd0r51GPHZFk6uhXBJfMOWn6EECR
-         XCUQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783382460; x=1783987260; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=EdG+ly0t16GH0L5fTMO5Kzv86XVLEyZM4B6Ik8ybBFY=;
-        b=WSfFRHCP+HWaZGBnmBcJLuIEWGm9QBOmdOnofczb86jIoEJapnd+P9tAPyOJPU8Gqw
-         jNdB7kvaX4uwvrCzvOzw3eh3kSJ1SwyYiv7D1xaOzWkjfn+mIBnD+2jWaubtIN1dL0hp
-         sCbs4Tg0SUScDmnV7ggMET3GI4wa2leK24ENqvh0FNxds3Ty68tVCtGih5RsZ18wFp9e
-         PSO7FHt+UVg7aL2mc7mxpEABOgXrigQQq+0mB7eSXqjGMwa9HvUhI3QDB8XUnoDTE+Db
-         dzlMXB6X5G5GMB24f8f7N3fuoonNbc1YQvqq0FvMg/i3IJrzAkxVC3TRYwAGLxtUFlWa
-         CUSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783382460; x=1783987260;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EdG+ly0t16GH0L5fTMO5Kzv86XVLEyZM4B6Ik8ybBFY=;
-        b=dI47iILEvCAfLF7oRGNkdwb4czvk6hm6uGHy1SP+BNYO1S7MJnUoquy/aeWHDMfXao
-         CNe7hESpFf6ZBU5MSLMNczXFTwOrcdfobG37TV+DBzT6OoGoPnhyO/04yEinzcgpHNua
-         ffctVj0B9y8pwF2O7Si0mnMKLjT1Q3eFEhJtXQeqQVf+1eF5chCjbPU4knmo3oV/wvE9
-         k/NMCYJFyxIiJXI9ngvz+feA2q99OQ8OG9sV4m2itiPOk9zcfhaHWFdU+CmKaXTucIhZ
-         vC/gt+yGN653SlnjLd/FldtT2oifm8CCwwy2XDxKj8O51tTt+6jE2SQiX3GGz2t3v1GF
-         zUNw==
-X-Forwarded-Encrypted: i=1; AHgh+Ronf2e6VK3sl0YS8PfYcWzLkpLNSUJFsYwmfaNYVJEJLARa/m3d1ZulOuqbRDZYCU/iiHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZgDo7FAr+4IaGEJELt8kgQACvaJ+Xl7jOKfy0ztuy9xBC2sSq
-	NH+yfy+ot8zdnaEYQDpPbB3mrvhUpddZH2Fwo16MRSNCwEtyH+oFn8J4NRzn64hozsOuppFmWQv
-	5KxFjNNF18wqbnnuVCsN3GdgpewK6U7SyyYiotRP9
-X-Gm-Gg: AfdE7ckYTKIrzp4dZf27AGBCn8d4T35LIms1oUJRnzv0YexqaA4CLKt9FQ5PKjgB7Q1
-	6vOWQeXF+utMvonlAoX8OEgrKYp4kZyKvJHCxvLc42JWdAj7jwtQEV7rytuiP9W7g/UO44dG7Dq
-	uDTZylRGDiQtF9cXnKmGDP9Huc2xiH7HnSPs/WGowtf/76o1hpDtIPdUwSzKjaJALJ5/ZvhBn7x
-	6/5H86cfJ+GWJTbE85kosQEF9DZfRxp6r2qQND5a2PpyXhCv0JxaLVjQkvcuVckbXc6hAIdwYeS
-	hpBzPQt6sdPDZjEIxQN/14z4K/3wv6I=
-X-Received: by 2002:a05:6102:41a7:b0:739:64ad:bf56 with SMTP id
- ada2fe7eead31-744b7e912f2mr1611396137.28.1783382458892; Mon, 06 Jul 2026
- 17:00:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4183710F0;
+	Tue,  7 Jul 2026 00:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783382522; cv=none; b=A5zuE7DoDRYr4j6gKN9jpm5EKt2LMjsudqNUUqGvEA3XD4FTJF54K1TChv6RojQOgQnpCJa8ryox2rIBzu5Lqcir/l5bbE9pl9VDEs3yR8J2nMY8oNqXRO+ZYwA52A/dvMe5hJ7/RDSWUPF16fB8JeKtaNwfBShoVY7c0pS/AYc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783382522; c=relaxed/simple;
+	bh=AUjwQNUAEke7+mDDESKcFQnVghtxt8J15YiaN83WwRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nWvwAW92HG783K8ayL4uWwE8pJ9zbxWJzUsNeTbNryrUThoSsnab5zXimo3Xfv8uLtji49L3elJPzTe8TdHicBPfs7hmAXwl1vQ4IIa0EEuGCq5sPg7O8eZbYWM8LlNY2Of7X5TifAKg2T9EFBXR8/UHZ0ljS5s3ipAFaAHdV8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09217609|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.0907494-0.00638481-0.902866;FP=7830629193968006575|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037021217;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iEsDrXC_1783382515;
+Received: from 172.18.22.107(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iEsDrXC_1783382515 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 07 Jul 2026 08:01:56 +0800
+Message-ID: <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net>
+Date: Tue, 7 Jul 2026 08:01:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-5-seanjc@google.com>
-In-Reply-To: <20260522232701.3671446-5-seanjc@google.com>
-From: Kevin Cheng <chengkev@google.com>
-Date: Mon, 6 Jul 2026 20:00:47 -0400
-X-Gm-Features: AVVi8CfLbO4Lr3SnbuEgi2z3GavgHmhD9PjOGmYCEyyxTENahBy0LvgfKJQlECY
-Message-ID: <CAE6NW_bdHPgRDfs149JtTyAGfHYwpSr8k8C-cg3J-s5dywNsnw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/5] KVM: VMX: Synthesize nested EPT violation
- GVA_IS_VALID/GVA_TRANSLATED bits
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
+To: mlevitsk@redhat.com, Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
+ <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
+ <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> @@ -516,6 +517,14 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
->                 else
->                         walker->fault.exit_qualification |= EPT_VIOLATION_ACC_READ;
->
-> +               /*
-> +                * KVM doesn't emulate features that access GPAs directly, e.g.
-> +                * Intel Processor Trace.  Assume the GVA is always valid; when
-> +                * propagating faults from hardware, KVM will discard this info
-> +                * and use the EXIT_QUALIFICATION bits from the VMCS.
-> +                */
-> +               walker->fault.exit_qualification |= EPT_VIOLATION_GVA_IS_VALID;
-> +
 
-Sashiko flagged this internally:
 
-"Since this code asserts to L1 that the GVA is valid by setting
-EPT_VIOLATION_GVA_IS_VALID, does it also need to populate the access
-rights bits (EPT_VIOLATION_GVA_USER, EPT_VIOLATION_GVA_WRITABLE, and
-EPT_VIOLATION_GVA_NX)?"
+On 7/7/2026 6:10 AM, mlevitsk@redhat.com wrote:
+> On Tue, 2026-06-30 at 08:52 -0700, Jim Mattson wrote:
+>> On Mon, Jun 29, 2026 at 5:57 AM Tina Zhang <zhang_wei@open-hieco.net> wrote:
+>>>
+>>> The SVM DecodeAssists feature is reported in CPUID
+>>> Fn8000_000A_EDX[7].  When available, hardware provides the length and bytes
+>>> of the intercepted instruction in the VMCB, allowing a hypervisor to consume
+>>> the decode information directly instead of re-decoding the instruction in
+>>> software on relevant VM-Exit paths.
+>>
+>> DecodeAssists actually comprises four components:
+>> * GPR number in EXITINFO1 for MOV-CR and MOV-DR VM-exits
+>> * Software interrupt number in EXITINFO1 for INTn VM-exits
+>> * Linear address in EXITINFO1 for INVLPG[A] VM-exits
+>> * Guest instruction bytes and length in the VMCB for #NPF and #PF VM-exits
+>>
+>> You only partially address the last component.
+>>
+> Yes, and I also remember when I implemented some of the optional SVM features,
+> I decided not to implement this, also because of the same reason - pass-through
+> is easy but for all the emulated VM exits, it can be tricky to get that right.
+Thanks Jim and Maxim for the comments.
 
-The Intel SDM states that if bit 8 is set, bits 9-11 support advanced
-VM Exit information. Would a change like the following be needed to
-populate bits 9-11 of the exit qualification?
+Yes, that makes sense. This version only covers part of DecodeAssists. I 
+didn't think enough about the other DecodeAssists pieces or the 
+software-emulated/synthetic exit paths.
 
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index cfc30695adf4..355150a21b0b 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -449,8 +449,24 @@ static int FNAME(walk_addr_generic)(struct
-guest_walker *walker,
-        real_gpa = kvm_translate_gpa(vcpu, mmu, gfn_to_gpa(gfn),
-                                     access | PFERR_GUEST_FINAL_MASK,
-                                     &walker->fault);
--       if (real_gpa == INVALID_GPA)
-+       if (real_gpa == INVALID_GPA) {
-+#if PTTYPE != PTTYPE_EPT
-+               /*
-+                * Architecturally, bits 11:9 are only valid if bit 8
-+                * (GVA_TRANSLATED) is set.  If bit 8 is 0, bits 11:9 are
-+                * undefined and must be 0.
-+                */
-+               if (walker->fault.exit_qualification &
-EPT_VIOLATION_GVA_TRANSLATED) {
-+                       if (walker->pte_access & ACC_USER_MASK)
-+                               walker->fault.exit_qualification |=
-EPT_VIOLATION_GVA_USER;
-+                       if (walker->pte_access & ACC_WRITE_MASK)
-+                               walker->fault.exit_qualification |=
-EPT_VIOLATION_GVA_WRITABLE;
-+                       if (!(walker->pte_access & ACC_EXEC_MASK))
-+                               walker->fault.exit_qualification |=
-EPT_VIOLATION_GVA_NX;
-+               }
-+#endif
-                return 0;
-+       }
+Since this patch advertises DecodeAssists to L1, L1 should get a 
+reasonably complete and architecturally consistent view of the feature.
+
+I will take another look for the next version and try to handle the 
+remaining pieces properly, while also making sure we don't expose stale 
+or incorrectly synthesized decode-assist state for emulated exits.
+
+Thanks,
+Tina
+
+> 
+> Best regards,
+> 	Maxim Levitsky
+
