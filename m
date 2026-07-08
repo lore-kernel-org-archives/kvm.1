@@ -1,187 +1,344 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7311403E83;
-	Wed,  8 Jul 2026 08:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783500385; cv=fail; b=QBMNnpv8SlF78sJQHZg9aI+3Tx/z/eYgd0DijIiTbfUyoki4VXfNfgMTm3tucpCaZx53bRrqwzcWWh6uB30Z2vkBm/TbSHGVpZpMZFsbbZh2XEvgmlYH0apKN53K2HcuDYtwbXYJQB4QzzJiTUa8OiE2yYDkb6giEWVZelGZJ9M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783500385; c=relaxed/simple;
-	bh=8SKCm8XKBlQmyHz3Y0uKMTsBhiwKXuHh+C0oVJ6t0pc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qhS1yE/LbgVGrw9FHkAddKdfcJbmRJcgBUO7CGITANizuWa2WnbFKK4mNwaCXfZvVyAf4+RdEjHKqBrdnbHrOhIgqdrogsi2RcwbZZve5AlegjY/dUEkBivMJUTsg1tG6NjSKc1ZZfBGDoXYhy8MIPlUUzp2znDUB6Jupdaelvw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mQ8eS9TG; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B1B405877
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 08:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783500636; cv=none; b=qfOdVf0EQNnj9RXK9T3w5agXtoG9pQuMr61CnfRIhDVYObc8FrRj2mZeVlfI9c7h4GS406h/0TDS/fLwjLdB3jssVAyorffxPbbif9NUntBx1L9QMnyRMuuT1wXuE1IL4b7NXme1MHyGvEBb/6s3gYXWMi8f0Z7Qcwakm5R4Apc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783500636; c=relaxed/simple;
+	bh=lvibewXknrwbofLgN64HOnOOXNNE/eLEoLegDWzMRzQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WNdbDjXFBfnuRPnovd8Tr7kN3U1EwA7wlrzjd6Rh9UZSrmtU22MsvCdR4bNdvvZuXf/hpSc5CnakOcLaPCPnENF11qmS/rREKdzh2W7fvyygGoKaOh07O9YYzpdQeCPwqg/zzzJEPBk5nkFPWxmtsPxJ90FUp0d12qc6fjmL0Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JffFOzJQ; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mQ8eS9TG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JffFOzJQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783500384; x=1815036384;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=8SKCm8XKBlQmyHz3Y0uKMTsBhiwKXuHh+C0oVJ6t0pc=;
-  b=mQ8eS9TG8ZxH/8+FgP9IcxzI1ouzyT/KNqyYoNeIGZPhKm0HGOqJzAc7
-   Wngkhm68b2Nj6HSD6XP6vtKIJQ7vevWRIO9ZC0rNBXI/D98c9xhjGXnR1
-   5Bt+Qjl2fLKSPHux+2b5vcEs7CiWO1HDczj5r1RbX+6HZl0vnOpswUXlg
-   bUyDbhH5+ELkxe+ErTYRdo/5FJfnA5uj+xj8MZaa4lsgQswxmjS1ro3/g
-   uRtX8+waXe3ZbScIRaZRRVRJ1kyduKJwMA1YW6Sc1GQJ12uIs5t78NGm7
-   KwvFPYPMUhlPFuvMoOUn6aYqX/GTl8ycNPcRGDGtuxOlON9bzvjLoWGj1
-   g==;
-X-CSE-ConnectionGUID: SPijRx2oS1KW9jwZN73pEg==
-X-CSE-MsgGUID: YDGmFVGCQyOUXHoSeQzmdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="94801404"
+  t=1783500634; x=1815036634;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lvibewXknrwbofLgN64HOnOOXNNE/eLEoLegDWzMRzQ=;
+  b=JffFOzJQeJdF+yCj1sCB9lNfT0EMGXHYNd3kj6V8gnKMdk0q3znNNwDl
+   DFIgnHW3QOB6GyyW5hVb9xwOdUzMlbyg4+UFhbqVcOX4Dnh/QHq+qRih+
+   KVjL4KjcwDjRlPQ7EUgr7gS3hXOV9VLZuAlD+Lg9XWLmR8U6nGfaea/LS
+   XiNmun0hNGzMMXL62Bsb3WgHAq4w5XsLY5bTyJq1hguqveW2ZM2A64JeP
+   uogzu+2ZNdVhpgWDEzBIjO3FAX7IA3X+2xKqC2sMRicXWeNCDAWrQYZJc
+   dzhIk7INChv/OfP7I11qmowCV/s8I1d/X5gb+URdHMj+4Sv7ZXaqH89NJ
+   A==;
+X-CSE-ConnectionGUID: afzQGqqYSdCSj2WMVYPz8g==
+X-CSE-MsgGUID: Y31UuOnnQDiSuEles8PO5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="94801873"
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="94801404"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:46:23 -0700
-X-CSE-ConnectionGUID: sQQZx7wORTGBKtC4Lxd4cw==
-X-CSE-MsgGUID: w5SIqp7mQNOZyTTL/DWQ0Q==
+   d="scan'208";a="94801873"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:50:33 -0700
+X-CSE-ConnectionGUID: pERsrTM7T1mEB1yHAx/0Lg==
+X-CSE-MsgGUID: BJVNEQM+S+eY7ZmwnC3Jpg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="250242405"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:46:23 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 8 Jul 2026 01:46:22 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 01:46:22 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.4) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 8 Jul 2026 01:46:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RLBm2jScJFM6fj9fdePqziw4ux+CwBRBoNCbarU5xmKb00RexNHbL1yDJFHtVl5aKdB+oncKqlvgVktSGAcAWkzlBV1SuHW4hc6EH3wYKWdLhau8WVOBk0AjtjsPAnm8aU21H0z1/27H1chdMOWV4nmAWGMPiG0ytrAcpbca/aIpB12fcLlRmxOvwV3u4DjFvlQvXqULnYD9llf/wz+2zf0404jt7OkZ4c2IrLjGPKcvEyqAWSjiTrXjkDRphscnD7dXaALKmheA4XCGJ+v7suFrCz13X1PnEZInwmk5/f8Qnc5cnVyj9TLNeMFfqQNw82Ck2T8LvpHmsDguYb5Xgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6PLNv+4S+JIr86QQwr/5PZW75LCA4F/QRDHoUAOzaVE=;
- b=EmCaLd5NoNsxMrLYNsZwxhCSEbcewvgsge2tjI8k7ycwaSSOEPUIBc0u1LoxrGfChZ13u/9WlmYqWWovjGpamFkSCer8MNTwwdUWczdyeZ+dzT3kRWpw8fTzia84HfS+tYJhzk/+rfbpHvhZyKJG70OJfQ+TYTBfQjbG4FNbxhaqkUuwm50NdMt3GcXXMhSzSnt3Pq/r1JywWeKXM5hTNtXqjrqtRY46CMcBWlyb/JUgwDY+vmeVaztJ07ibPmAtXW1j+W89DfheTIUOCCtFae4y9ef1vKzltT5M8waZxnA2Cu5VfZ9VJnInGG4I46toWACMjHnA6UStKWJ2lzV8Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by DS0PR11MB7959.namprd11.prod.outlook.com (2603:10b6:8:fd::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.10; Wed, 8 Jul 2026 08:46:13 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0181.008; Wed, 8 Jul 2026
- 08:46:13 +0000
-Date: Wed, 8 Jul 2026 16:46:08 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
-	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <chao.gao@intel.com>, <kai.huang@intel.com>, "Kirill A.
- Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Message-ID: <ak4OUC9fg6CJ/06Y@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-X-ClientProxiedBy: TP0P295CA0027.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:5::14) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+   d="scan'208";a="292418821"
+Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 01:50:32 -0700
+Message-ID: <a018bb95-cda5-4431-9bed-e60223087d97@linux.intel.com>
+Date: Wed, 8 Jul 2026 16:50:29 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DS0PR11MB7959:EE_
-X-MS-Office365-Filtering-Correlation-Id: 857011b5-bd72-4fee-a82e-08dedccd5deb
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: To5jtstrIr3sNgwHb0PRFlqhqgGw05Yi8z4s4XD9ok+fx2qZd4bZMOhol7DuYPE3w4VnYo3xSymlIS5hVTRyDUYhvUWIyo8+jBbghpGSDqx174YFD2hAs3oIsaj/hWgLiGgfZsgorv8z2aNaosGOi9QCkSV8CJz0JjKYGyuwQbenkqT0xywLKLEzl8NmJRIyMkIJj2ivhT7QC8RxBM4iTolJ37XQBECjlfh352yUnxM0OOFraQbmQNaBc/kjrsytLagKW42qoCBMMNHleNsbjDhULip+bCNHgyGaAb4qxZgw//HQZv+Lt0gwRpRAgGfVqGVnWvkW8/wqQDX8MLr60zqJW1imFT3rLcdGYWWJpFRIKh7KUxdYx7WkAHwhkF05rFtfUIO0FdjZ1UOumaC+FLVzVrSoTEdzusA4FHMjlhTaBlzm5yaq4hRJVZL8Y5nkaBiUUnNA+z67OXP4HnjjCkJihyHn2O/T3mch4f9h89ZZOU8PGiezV7kusAb4h2934IvyJqDRzrLBHEQjdNu/n/r2K5kBCR0/KiVh8P2Qd4vh4tatLwdedmKefQef7LzDQ7OUZBjq78fI/logKF0uvUE4BBT7nD4wegk02SWHMZfPBlUK/7EYMRtJ8EtYUTWqOIYxPwJ2O3u8ZbnOJwZUyeQLxek6DRDQLcNfAaN0xFM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VE7oLWpkDTKAFrf6YskGTFfF8MNgh+GjUGapWInNfIynlE0BQRYvPVeo7udI?=
- =?us-ascii?Q?RG+VSQrvWlO9jgY2Y+UIakr5NgacRy7efndlayootMHcAK/6iEI6DeJiWOic?=
- =?us-ascii?Q?R9BGEktLeB64VrFZ84/Lexfn4/vWqv22KzpRBzb8VbCrlYjHG0VcRYM8b3QZ?=
- =?us-ascii?Q?S2PlQXYmSGUMtzoEzx4V8doAiv5B4YTNvXkvXVVaVH8VZZJLW3CH+7NjacHv?=
- =?us-ascii?Q?M31OjD+o5LSzmJUdlwFlLDD0DqG7QwQ2rKwYRopZcUAo42E1Jc3sS+HXWHbc?=
- =?us-ascii?Q?lPPWHkSgdaHNqsVVvPuUsVZdkt8ak2B4Fy9ruJH8AxtMcqbcL25cAUz4qmBc?=
- =?us-ascii?Q?KZMHpBoTkZnBFZhwg7N/pCy5QZ5Rji/SlXUgT4ua/WqaIiv/2MAUteOG00ir?=
- =?us-ascii?Q?cpB8V1vznZsH8rODgs3E1xVKPomNemxcqVAC9c+wukN/FZ/00nXgkWDLsMc5?=
- =?us-ascii?Q?e/5XDODj5bwVvDUgRPxC5Kgv7z0gkqkLpN/+JblV/svJFnMoCnjp1lHu/Z97?=
- =?us-ascii?Q?FZ7VNTqHhisfUMJEM2wD1RE6MFyWBhqiSbJf3GUwFzIZJEGcKIr3ya4T/Fee?=
- =?us-ascii?Q?fG50EeZisZG6OHbVqQica17rIwAGileklJFyV4fn4nTCZr7Q9ehPOGmARq7U?=
- =?us-ascii?Q?VlZx8Yot2GS+fSYUdBLQCQgNDV729BTZZ1KdUXodXo77MvK09aFg+0zCDCm8?=
- =?us-ascii?Q?fpdglsdPCaPw52Q98zttKU5kq+4RpV/GlFsRGYSuVq8JuTufPErs1pYZx1tq?=
- =?us-ascii?Q?Fcnb6vhwdsWOozZcS2QvyTILhqAbDM2PzrzUdAZ0ydDP70iFrX2pDXsIyzji?=
- =?us-ascii?Q?l2A9ZdbwynR1AsLnUQ6HjMbKifa9BcCfbsL77UtQwp2fV9IrlZqcSlnrGPft?=
- =?us-ascii?Q?Pn3K1D3JTa2vbyiicrhikit5K1PdtLpjOCLtphRcIvL/QqXKXQlWgvEIV75w?=
- =?us-ascii?Q?y5xBMXc7nE01DzuyyWpDET3vq0uM7sD/xSwxTJ+d4ZPDWPykTBac6LXiy4wu?=
- =?us-ascii?Q?0Qt+bz8ek5lg++XCqFUeyfF+Z26ii1XG/6OLWH3RhYK+wsgmhTA7zAxir4YC?=
- =?us-ascii?Q?1hHWbajhCAX7BmRIbfI0mL3cyVhEZDKB6ROvBTVSsQTcfKffCoho3DUnNFoi?=
- =?us-ascii?Q?8YnRX62OmP59iXarOYDTL5Tvrb431ltjME0yq4cNeSC4E4T5X8DqK4ea5DrF?=
- =?us-ascii?Q?cYsbKC/idIXkFePhE/T+ak3X3T8hbepGWLgjH7vAKhncibO5qcxfR/YCQBzy?=
- =?us-ascii?Q?3F0f5ja215vZdDBifD6YmX1Nfu9a7FeUV3yi5w62RAIGBfR8QJdntr53Jdcp?=
- =?us-ascii?Q?uw7xqP/n/MzMtR5AByCrSEE6ccRRoKsbG9FWMVl72D0KgQSJDz3UqrEiLPnQ?=
- =?us-ascii?Q?422Ke83MUYcJXIx0ALM1aXyGChPinvXiJoyidRv+ZPNAelCyj/QNZCjytAuh?=
- =?us-ascii?Q?dBTwixR6I/FA+lusaEmZGgOjAf+oOwfIq44OutTcFj9na076Xqsn6mn10su4?=
- =?us-ascii?Q?iGKQGatZD/ctlanxCqc/Ga+TDsE5CTXUWizvwMNHh/cbGviaEbfjQLYs4znS?=
- =?us-ascii?Q?KghClCFD10yT6nObdUdq4V6ii/x9dNjWK8wry3wHgXcEoVqKD8s0m7LA4/G/?=
- =?us-ascii?Q?RzyXMWdN8EtohHFVL6tD7cfwElRN4xXwVuKDVkzkNTDbqkCgBCaZRAd6KuPB?=
- =?us-ascii?Q?iyAEH35YxxoCPZBHIFaorAI2p1RMnMwZMZUQ+cU99zkifnzKxzOXEfS7lHs7?=
- =?us-ascii?Q?Q59sk1bqZA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: I7oGNkagJ+X1oWzxj4IGkn4+lkqipFeZ1rFaHDpjCOVrlJdmJbjUPS12vrlIeWoIZF+y1HpafNjPO3rEWa48TBsgkflzXxHLMAe8zgcZxmgaGxifDCT6rGw7E5AUbP55IOEfTHPUzAwHTKK40fL67jgPdnRsC62uzEB33sjoaZUwWCwNpWL/KfPW+XSin+Y4zHq8/YvUrEeRm0BosK2UPbuno2hGaROQzJ56+ATblCDMjJVJm+9CCHDMb9yMgvi1W+L5nHP2Lp+DFMIxeLB+kaBI10aMtUQ6JOgVK6aiaaEcj93ItNglN7kcqWLzrwuTBEVsb91ohywu0+cRxczURA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 857011b5-bd72-4fee-a82e-08dedccd5deb
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 08:46:13.7057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: svz+gAKsv8vx/wdWP6j2gkxa2Spa1xJAyAp6r99j1j6gUeeyfxhl4T3+DdTLS0ezNwUyjWFCB1rA3E0cFeAYfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7959
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD
+ init
+To: sashiko-reviews@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
+ <20260708023531.825361F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260708023531.825361F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 25, 2026 at 07:35:10PM -0700, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+
+
+On 7/8/2026 10:35 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
 > 
-> The Dynamic PAMT get/put helpers use a global spinlock to serialize all
-> refcount updates and SEAMCALL invocations. This gives correct behavior for
-> concurrent callers, but leads to contention. It is especially bad from the
-> KVM side, which is designed to allow faulting in EPT under a shared lock.
-> With the global spinlock, not only is the lock an exclusive one, but it is
-> for all TDs instead of just a single one.
+> Pre-existing issues:
+> - [High] Lock inversion and deadlock risk: `cpus_read_lock()` is acquired while holding `kvm->lock`, `vcpu->mutex`, and `kvm->slots_lock`, violating the KVM lock ordering hierarchy.
+> --
 > 
-> But taking the global lock each time is actually unnecessary. Only the 0->1
-> and 1->0 refcount transitions actually need the lock (to pair with
-> SEAMCALLs that actually add and remove with the Dynamic PAMT pages). The
-> common case of incrementing or decrementing a non-zero refcount can be
-> done locklessly.
+> --- Patch [1]: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD init ---
+> commit 60173e3dd2d8767ff9b1708338f63d8f3d6d8481
+> Author: Binbin Wu <binbin.wu@linux.intel.com>
 > 
-> So create a fast and slow path. Check the refcount outside the lock and
-> only take it for the slowpath (0->1 and 1->0 transitions).
+> KVM: x86: TDX: Use validated CPUID entry count for TD init
 > 
-> On the put side make the refcount adjustment and lock taking atomic so if
-> a 'get' happens between them, it doesn't cause the Dynamic PAMT to be
-> freed incorrectly. On the get side there is no technique for doing the
-> refcount adjustment and lock atomically, so check the refcount again
-> inside the lock.
+> This commit ensures KVM_TDX_INIT_VM uses the validated CPUID entry count 
+> when parsing CPUID data. This prevents issues if userspace modifies the 
+> input count concurrently during setup.
 > 
-> Assisted-by: GitHub Copilot:claude-opus-4-6
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-The optimization LGTM.
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index ffe9d0db58c59..b658b03e77508 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+>> @@ -2802,6 +2802,12 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+>>  	if (IS_ERR(init_vm))
+>>  		return PTR_ERR(init_vm);
+>>  
+>> +	/*
+>> +	 * Use the validated entry count, as user_data->cpuid.nent may have
+>> +	 * changed.
+>> +	 */
+>> +	init_vm->cpuid.nent = nr_user_entries;
+>> +
+>>  	if (memchr_inv(init_vm->reserved, 0, sizeof(init_vm->reserved))) {
+>>  		ret = -EINVAL;
+>>  		goto out;
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does the KVM_TDX_INIT_VM
+> initialization path have a lock inversion?
+> 
+> Looking at the call chain triggered by the KVM_TDX_INIT_VM ioctl, 
+> tdx_vm_ioctl() first acquires the inner KVM locks via 
+> tdx_acquire_vm_state_locks():
+> 
+> arch/x86/kvm/vmx/tdx.c:tdx_vm_ioctl() {
+>     ...
+>     CLASS(tdx_vm_state_guard, guard)(kvm);
+>     ...
+>     r = tdx_td_init(kvm, &tdx_cmd);
+>     ...
+> }
+> 
+> The tdx_vm_state_guard acquires kvm->lock, all vcpu->mutex locks, and 
+> kvm->slots_lock. 
+> 
+> Then tdx_td_init() continues and calls __tdx_td_init(), where 
+> cpus_read_lock() is acquired directly:
+> 
+> arch/x86/kvm/vmx/tdx.c:__tdx_td_init() {
+>     ...
+>     cpus_read_lock();
+>     ...
+> }
+> 
+> Since KVM locking rules require cpus_read_lock() to be the outermost lock,
+> does acquiring it while holding kvm->lock and the other inner locks create
+> a deadlock risk against CPU hotplug or other paths that acquire these locks
+> in the correct order?
+> 
+
+The virt/kvm/locking.rst doesn't explicitly say cpus_read_lock() needs to be the
+outermost lock, but
+documentation:        cpus_read_lock() is taken outside kvm_lock
+                      kvm->lock is taken outside kvm->slots_lock
+​set_nx_huge_pages():  takes kvm_lock outside of kvm->slots_lock
+
+So it's transitive that cpus_read_lock() should be taken outside of
+kvm->slots_lock while KVM_TDX_INIT_VM takes cpus_read_lock() inside
+kvm->slots_lock.
+
+So there could be a deadlock case:
+tdx_td_init()               set_nx_huge_pages()        __kvmclock_cpufreq_notifier
+  lock(&kvm->slots_lock)                             
+                              lock(kvm_lock)
+                                                         lock(cpu_hotplug_lock)
+                              lock(&kvm->slots_lock)
+                                                         lock(kvm_lock)
+  lock(cpu_hotplug_lock)
+
+There was a discussion that is related to this issue:
+https://lore.kernel.org/kvm/20250124191109.205955-2-pbonzini@redhat.com/
+It seems the discussion is still open?
+
+Back to this issue, does it make sense to take cpus_read_lock() before 
+kvm->lock during KVM_TDX_INIT_VM as following:
+
+---
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b658b03e7750..90fe7beadc06 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -484,7 +484,7 @@ static void smp_func_do_phymem_cache_wb(void *unused)
+ 	TDX_BUG_ON(err, TDH_PHYMEM_CACHE_WB, NULL);
+ }
+ 
+-void tdx_mmu_release_hkid(struct kvm *kvm)
++static void __tdx_mmu_release_hkid(struct kvm *kvm)
+ {
+ 	bool packages_allocated, targets_allocated;
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+@@ -494,12 +494,13 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
+ 	int i;
+ 	u64 err;
+ 
++	lockdep_assert_cpus_held();
++
+ 	if (!is_hkid_assigned(kvm_tdx))
+ 		return;
+ 
+ 	packages_allocated = zalloc_cpumask_var(&packages, GFP_KERNEL);
+ 	targets_allocated = zalloc_cpumask_var(&targets, GFP_KERNEL);
+-	cpus_read_lock();
+ 
+ 	kvm_for_each_vcpu(j, vcpu, kvm)
+ 		tdx_flush_vp_on_cpu(vcpu);
+@@ -552,11 +553,16 @@ void tdx_mmu_release_hkid(struct kvm *kvm)
+ 
+ out:
+ 	mutex_unlock(&tdx_lock);
+-	cpus_read_unlock();
+ 	free_cpumask_var(targets);
+ 	free_cpumask_var(packages);
+ }
+ 
++void tdx_mmu_release_hkid(struct kvm *kvm)
++{
++	guard(cpus_read_lock)();
++	__tdx_mmu_release_hkid(kvm);
++}
++
+ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+@@ -2490,7 +2496,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	if (!zalloc_cpumask_var(&packages, GFP_KERNEL))
+ 		goto free_tdcs;
+ 
+-	cpus_read_lock();
++	lockdep_assert_cpus_held();
+ 
+ 	/*
+ 	 * Need at least one CPU of the package to be online in order to
+@@ -2552,7 +2558,6 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 		if (ret)
+ 			break;
+ 	}
+-	cpus_read_unlock();
+ 	free_cpumask_var(packages);
+ 	if (ret) {
+ 		i = 0;
+@@ -2608,13 +2613,12 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 	if (!kvm_tdx->td.tdcs_pages)
+ 		kfree(tdcs_pages);
+ 
+-	tdx_mmu_release_hkid(kvm);
++	__tdx_mmu_release_hkid(kvm);
+ 	tdx_reclaim_td_control_pages(kvm);
+ 
+ 	return ret;
+ 
+ free_packages:
+-	cpus_read_unlock();
+ 	free_cpumask_var(packages);
+ 
+ free_tdcs:
+@@ -2733,12 +2737,24 @@ static int tdx_read_cpuid(struct kvm_vcpu *vcpu, u32 leaf, u32 sub_leaf,
+ 	return -EIO;
+ }
+ 
+-typedef void *tdx_vm_state_guard_t;
++struct tdx_vm_state_guard {
++	struct kvm *kvm;
++	bool acquire_cpus_read_lock;
++};
+ 
+-static tdx_vm_state_guard_t tdx_acquire_vm_state_locks(struct kvm *kvm)
++static struct tdx_vm_state_guard tdx_acquire_vm_state_locks(struct kvm *kvm,
++							    bool acquire_cpus_read_lock)
+ {
++	struct tdx_vm_state_guard g = { .acquire_cpus_read_lock = acquire_cpus_read_lock };
+ 	int r;
+ 
++	/*
++	 * When needed, take cpu_hotplug_lock as the outermost lock, to avoid
++	 * lock inversion against the CPU hotplug path.
++	 */
++	if (acquire_cpus_read_lock)
++		cpus_read_lock();
++
+ 	mutex_lock(&kvm->lock);
+ 
+ 	if (kvm->created_vcpus != atomic_read(&kvm->online_vcpus)) {
+@@ -2755,23 +2771,33 @@ static tdx_vm_state_guard_t tdx_acquire_vm_state_locks(struct kvm *kvm)
+ 	 * kvm->slots_lock!
+ 	 */
+ 	mutex_lock(&kvm->slots_lock);
+-	return kvm;
++	g.kvm = kvm;
++	return g;
+ 
+ out_err:
+ 	mutex_unlock(&kvm->lock);
+-	return ERR_PTR(r);
++	if (acquire_cpus_read_lock)
++		cpus_read_unlock();
++	g.kvm = ERR_PTR(r);
++	return g;
+ }
+ 
+-static void tdx_release_vm_state_locks(struct kvm *kvm)
++static void tdx_release_vm_state_locks(struct tdx_vm_state_guard g)
+ {
+-	mutex_unlock(&kvm->slots_lock);
+-	kvm_unlock_all_vcpus(kvm);
+-	mutex_unlock(&kvm->lock);
++	if (IS_ERR(g.kvm))
++		return;
++
++	mutex_unlock(&g.kvm->slots_lock);
++	kvm_unlock_all_vcpus(g.kvm);
++	mutex_unlock(&g.kvm->lock);
++	if (g.acquire_cpus_read_lock)
++		cpus_read_unlock();
+ }
+ 
+-DEFINE_CLASS(tdx_vm_state_guard, tdx_vm_state_guard_t,
+-	     if (!IS_ERR(_T)) tdx_release_vm_state_locks(_T),
+-	     tdx_acquire_vm_state_locks(kvm), struct kvm *kvm);
++DEFINE_CLASS(tdx_vm_state_guard, struct tdx_vm_state_guard,
++	     tdx_release_vm_state_locks(_T),
++	     tdx_acquire_vm_state_locks(kvm, acquire_cpus_read_lock),
++	     struct kvm *kvm, bool acquire_cpus_read_lock);
+ 
+ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ {
+@@ -2933,9 +2959,13 @@ int tdx_vm_ioctl(struct kvm *kvm, void __user *argp)
+ 	if (tdx_cmd.id == KVM_TDX_CAPABILITIES)
+ 		return tdx_get_capabilities(&tdx_cmd);
+ 
+-	CLASS(tdx_vm_state_guard, guard)(kvm);
+-	if (IS_ERR(guard))
+-		return PTR_ERR(guard);
++	/*
++	 * KVM_TDX_INIT_VM programs the per-package encryption keys, which must
++	 * be done under cpus_read_lock().
++	 */
++	CLASS(tdx_vm_state_guard, guard)(kvm, tdx_cmd.id == KVM_TDX_INIT_VM);
++	if (IS_ERR(guard.kvm))
++		return PTR_ERR(guard.kvm);
+ 
+ 	switch (tdx_cmd.id) {
+ 	case KVM_TDX_INIT_VM:
+@@ -3307,9 +3337,9 @@ int tdx_vcpu_unlocked_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
+ 	if (r)
+ 		return r;
+ 
+-	CLASS(tdx_vm_state_guard, guard)(kvm);
+-	if (IS_ERR(guard))
+-		return PTR_ERR(guard);
++	CLASS(tdx_vm_state_guard, guard)(kvm, false);
++	if (IS_ERR(guard.kvm))
++		return PTR_ERR(guard.kvm);
+ 
+ 	if (!is_hkid_assigned(kvm_tdx) || kvm_tdx->state == TD_STATE_RUNNABLE)
+ 		return -EINVAL;
+
