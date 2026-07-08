@@ -1,44 +1,46 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6907B1C84BC
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 06:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11473CBE6D;
+	Wed,  8 Jul 2026 06:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783491183; cv=none; b=rHLUIbkl1EEFInC8S8hClP5mU0tzhcFhP86ih/265FwglNnZLoJpxLnWeW406Lh36/H4ASZ+33rwtbnUJFgDYARJEWjRPBzG2JbbH4RfjAirOKNO6mcYHToSuRhwxfXhdjkBEfHddk9ngJ3ftv/4BOqlxM4He0tXaRyivihKU2c=
+	t=1783492439; cv=none; b=CRyUrfPcB/B1yx2rHd93JH0j5/9w+7oQhk4mzHp4nu8xcDCC260VFOSTVogbbytTSmZMiVFoG3QxUtkNcBI4QLaAap3R1jfvL92Zu3Iuoer3l+vTdwUsXeW4u/6OVpiZfX+zFtIDGg5fIjjWLQ6tgqWOe1SkBnKJEUjsphSbN04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783491183; c=relaxed/simple;
-	bh=lPGsvclOAgh0V32F20ZSyGCdcW75sOUIIViF4fpQO2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GK3kZGMuPZ3HX2vup9xdL3BmLEUk2HD6RNdlKyF70sG3lhHkAphWxmghb9kZjsMLVBzMRia59bsQ13sZst+FN3DAHyKFqbGM7bkNeevR/G2an7ZsHJ5p9kDJ2XPICnQjkiGCusOpZVXkm+30O5FqK5GynIAxPlfRr8qt7ic8A4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PvBoRSaP; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783492439; c=relaxed/simple;
+	bh=JEnwHDdr2GBqgVScnWjfxq86SvGuGF3N+hwawbnrTOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUSXFABVL/tBU1+Nh3pd9bDhP1b5BHDP1R0V8NkV4GyguMdxMQEctLqdVOcozjfOzcTgqThxAPtwc7RLTQfJwYiAIU3Ch38SHySR+Jdv5mi29bhQr7worVIEcdBzXwfNqRu4ScLbxoQd5W277K9bLvr8Zgkfdh/DLOWPIBMNF1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otnFCNu/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PvBoRSaP"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783491180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nbhZAdbxxI1/a4pn8N1gZliVnKCnUpBEdqiligF4ubY=;
-	b=PvBoRSaPlwNC1Irbwu+t3S/2h21PyxY1OqwMISIaIr1BLYNNCyFTyePO+mnWRnFBwkylbA
-	2Xw5rg1ywvVnBingBeib0YyN1YPAXW9J6zjEN9sclrHN1JjAfYbYnCeZF74gBoWMLV8ymR
-	VihuFyV92MesDiw2KLTZpOlj299N3uY=
-From: Tao Cui <cui.tao@linux.dev>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com,
-	armbru@redhat.com,
-	eblake@redhat.com,
-	kvm@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>
-Subject: [PATCH v1 2/2] accel/kvm: emit KVM_VCPU_ERROR on unrecoverable vCPU exits
-Date: Wed,  8 Jul 2026 14:12:20 +0800
-Message-ID: <20260708061220.53507-3-cui.tao@linux.dev>
-In-Reply-To: <20260708061220.53507-1-cui.tao@linux.dev>
-References: <20260708061220.53507-1-cui.tao@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otnFCNu/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33B51F000E9;
+	Wed,  8 Jul 2026 06:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783492437;
+	bh=KBV7Fo5eSCy8KcVruYEtnD3WFJOtcXfQTAl3avf7zxo=;
+	h=From:To:Cc:Subject:Date;
+	b=otnFCNu/AKGnfogyiBoPEfCc22Cm16zBTnKA9vTwPBauAI0tbVNelCw2pcqnVUm/k
+	 uqmpHP3YLzEfiNpGIHGNY328Ilj0yuetqttHWHikv32p1qznCSDP9isVxc4l4rUY+z
+	 xYoIAbceBIaI6+OOaTRvVHgWRYBth9UXl1uJHsxOGbwH+zNUU14er4WGesankAMQwN
+	 6IMdIC5VXpk+8NNAz6/gGyVOS8Ix6/TzHe9OnvmdcA+tm0Op/OEySwifGtqyaUzsEz
+	 8v/9ssf/6OtczLazb8iq9OldOFusk+s4E6uHn7EQBRXiQ5BzcZBC47CPSfnQj76zxO
+	 Fz6xD0GgNGepw==
+From: "Naveen N Rao (AMD)" <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Borislav Petkov <bp@alien8.de>
+Cc: <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@amd.com>,
+	Tianyu Lan <tiala@microsoft.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [RFC PATCH v3 00/27] KVM: SVM: Add support for SEV-SNP Secure AVIC
+Date: Wed,  8 Jul 2026 12:01:58 +0530
+Message-ID: <cover.1783490022.git.naveen@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,121 +48,106 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Tao Cui <cuitao@kylinos.cn>
+This is RFC v3 of the patches adding KVM support for Secure AVIC. RFC v2:
+http://lore.kernel.org/r/20250923050317.205482-1-Neeraj.Upadhyay@amd.com
 
-Emit the KVM_VCPU_ERROR event at the three points where a vCPU run
-becomes unrecoverable:
+There are significant changes throughout the series since the last RFC, 
+with some of the highlights being:
+- Integrate with AVIC code since Secure AVIC is APICv, but for protected 
+  APIC guests. This aligns with TDX which also requires APICv and 
+  enables reuse of APICv code paths in KVM. Patches #8 to #14.
+- Mandate use of split irqchip, and drop changes related to the KVM 
+  IOAPIC. KVM PIC/PIT can't be supported (described more fully in the 
+  commit log of the relevant patches). Patch #24.
+- Enable use of SVM_AVIC_INCOMPLETE_IPI VMGEXIT for vCPU notification 
+  request from the guest. Patch #22.
+- Utilize vNMI injection path for NMI handling. Patch #23.
+- Introduce a new kvm_x86_op to distinguish need for injectable 
+  interrupts vs. IPI notifications. Patches #18 and #19.
+- Retain KVM PV ops, and instead require guests to opt-in/disable.  
+  Patch #3.
 
-  - KVM_RUN ioctl failure           (reason "ioctl-failed")
-  - KVM_EXIT_UNKNOWN                (reason "unknown")
-  - KVM_EXIT_INTERNAL_ERROR         (reason "internal-error",
-                                     with suberror and exit-data)
+Patches #1 to #4 are changes to the guest x2APIC Secure AVIC driver.
 
-The KVM_RUN loop in kvm_cpu_exec() runs without the BQL, but QMP event
-emission goes through the monitor and requires it; take and release the
-lock around the send, mirroring the KVM_SYSTEM_EVENT_CRASH path.
+These patches apply on top of Sean's recent fixes changing AVIC init 
+code (since I was carrying a similar patch):
+http://lore.kernel.org/r/20260630210156.457151-1-seanjc@google.com
 
-This resolves the long-standing FIXME in kvm_handle_internal_error().
+There are still some rough edges to iron out, but I wanted to get some 
+feedback on the overall direction. Please let me know if you see any 
+major red flags.
 
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
- accel/kvm/kvm-all.c | 46 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 5d55cb45cf..4f68e3b82b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -46,6 +46,7 @@
- #include "qapi/visitor.h"
- #include "qapi/qapi-types-common.h"
- #include "qapi/qapi-visit-common.h"
-+#include "qapi/qapi-events-run-state.h"
- #include "system/reset.h"
- #include "qemu/guest-random.h"
- #include "system/hw_accel.h"
-@@ -3140,6 +3141,38 @@ static void kvm_handle_io(uint16_t port, MemTxAttrs attrs, void *data, int direc
-     }
- }
- 
-+/*
-+ * Notify the management layer that a vCPU hit an unrecoverable KVM run
-+ * error.  The KVM_RUN loop in kvm_cpu_exec() runs without the BQL, but
-+ * emitting a QMP event goes through the monitor and therefore requires
-+ * it; take/release the lock around the send.
-+ */
-+static void kvm_emit_vcpu_error(CPUState *cpu, KvmVcpuErrorReason reason,
-+                                bool has_suberror, int64_t suberror,
-+                                uint32_t ndata, const uint64_t *data)
-+{
-+    g_autofree char *qom_path = object_get_canonical_path(OBJECT(cpu));
-+    uint64List *exit_data = NULL;
-+    uint64List **tail = &exit_data;
-+    uint32_t i;
-+
-+    for (i = 0; i < ndata; i++) {
-+        uint64List *node = g_new(uint64List, 1);
-+        node->value = data[i];
-+        node->next = NULL;
-+        *tail = node;
-+        tail = &node->next;
-+    }
-+
-+    bql_lock();
-+    qapi_event_send_kvm_vcpu_error(cpu->cpu_index, qom_path, reason,
-+                                   has_suberror, suberror,
-+                                   !!ndata, exit_data);
-+    bql_unlock();
-+
-+    qapi_free_uint64List(exit_data);
-+}
-+
- static int kvm_handle_internal_error(CPUState *cpu, struct kvm_run *run)
- {
-     int i;
-@@ -3151,6 +3184,12 @@ static int kvm_handle_internal_error(CPUState *cpu, struct kvm_run *run)
-         fprintf(stderr, "extra data[%d]: 0x%016"PRIx64"\n",
-                 i, (uint64_t)run->internal.data[i]);
-     }
-+
-+    kvm_emit_vcpu_error(cpu, KVM_VCPU_ERROR_REASON_INTERNAL_ERROR,
-+                        true, run->internal.suberror,
-+                        run->internal.ndata,
-+                        (const uint64_t *)run->internal.data);
-+
-     if (run->internal.suberror == KVM_INTERNAL_ERROR_EMULATION) {
-         fprintf(stderr, "emulation failure\n");
-         if (!kvm_arch_stop_on_emulation_error(cpu)) {
-@@ -3158,9 +3197,6 @@ static int kvm_handle_internal_error(CPUState *cpu, struct kvm_run *run)
-             return EXCP_INTERRUPT;
-         }
-     }
--    /* FIXME: Should trigger a qmp message to let management know
--     * something went wrong.
--     */
-     return -1;
- }
- 
-@@ -3508,6 +3544,8 @@ int kvm_cpu_exec(CPUState *cpu)
-                             "secondary threads offline.\n");
-                 }
- #endif
-+                kvm_emit_vcpu_error(cpu, KVM_VCPU_ERROR_REASON_IOCTL_FAILED,
-+                                    false, 0, 0, NULL);
-                 ret = -1;
-                 break;
-             }
-@@ -3543,6 +3581,8 @@ int kvm_cpu_exec(CPUState *cpu)
-         case KVM_EXIT_UNKNOWN:
-             fprintf(stderr, "KVM: unknown exit, hardware reason %" PRIx64 "\n",
-                     (uint64_t)run->hw.hardware_exit_reason);
-+            kvm_emit_vcpu_error(cpu, KVM_VCPU_ERROR_REASON_UNKNOWN,
-+                                false, 0, 0, NULL);
-             ret = -1;
-             break;
-         case KVM_EXIT_INTERNAL_ERROR:
+Thanks,
+- Naveen
+
+
+Kishon Vijay Abraham I (2):
+  KVM: SVM: Set VGIF in VMSA area for Secure AVIC guests
+  KVM: SVM: Do not inject exceptions for Secure AVIC
+
+Naveen N Rao (AMD) (20):
+  x86/apic: Drop savic_eoi() in favor of native_apic_msr_eoi() for
+    Secure AVIC
+  x86/kvm: Disable PV_SEND_IPI if Secure AVIC is enabled
+  x86/apic: Use AVIC_INCOMPLETE_IPI VMGEXIT for Secure AVIC IPI handling
+  KVM: SVM: Add helper to check if Secure AVIC is enabled for a guest
+  KVM: SVM: Set guest_apic_protected if Secure AVIC is enabled
+  kvm: irqfd: Have kvm_arch_has_irq_bypass() take struct kvm pointer
+  KVM: SVM: Disable IRQ bypass for Secure AVIC
+  KVM: SVM: Add avic_ipiv_is_soft_disabled() as a wrapper around
+    enable_ipiv
+  KVM: SVM: Disable IPIv for Secure AVIC
+  KVM: SVM: Short-circuit a few AVIC flows for Secure AVIC
+  KVM: SVM: Warn if we ever receive AVIC_UNACCELERATED_ACCESS #VMEXIT
+  KVM: SVM: Do not inhibit AVIC for SEV-SNP guests if Secure AVIC is
+    enabled
+  KVM: x86: Add a new kvm_x86_op protected_apic_has_injectable_intr()
+  KVM: SVM: Implement kvm_x86_ops->protected_apic_has_injectable_intr()
+    for Secure AVIC
+  KVM: SVM: Implement kvm_x86_ops->protected_apic_has_interrupt() for
+    Secure AVIC
+  KVM: SVM: Add interrupt delivery support for Secure AVIC guests
+  KVM: SVM: Add support for incomplete IPI handling for Secure AVIC
+  KVM: SVM: Add support for injecting NMIs for Secure AVIC guests
+  KVM: SVM: Mandate use of split irqchip for Secure AVIC
+  KVM: SVM: Advertise Secure AVIC support for SEV-SNP guests
+
+Neeraj Upadhyay (5):
+  x86/apic: Propagate APIC_SPIV writes to hv for Secure AVIC
+  x86/cpufeatures: Add Secure AVIC CPU feature
+  KVM: SVM: Add handler for VMGEXIT Secure AVIC NAE event
+  KVM: SVM: Do not intercept SECURE_AVIC_CONTROL MSR for Secure AVIC
+    guests
+  KVM: SVM: Do not intercept exceptions for Secure AVIC guests
+
+ arch/arm64/include/asm/kvm_host.h   |   2 +-
+ arch/x86/include/asm/cpufeatures.h  |   1 +
+ arch/x86/include/asm/kvm-x86-ops.h  |   1 +
+ arch/x86/include/asm/kvm_host.h     |   9 +-
+ arch/x86/include/asm/svm.h          |   9 +-
+ arch/x86/include/uapi/asm/svm.h     |   1 +
+ arch/x86/kvm/svm/svm.h              |  12 ++
+ include/linux/kvm_host.h            |   2 +-
+ arch/powerpc/kvm/powerpc.c          |   2 +-
+ arch/x86/coco/sev/core.c            |  18 ++-
+ arch/x86/kernel/apic/x2apic_savic.c |  36 +-----
+ arch/x86/kernel/kvm.c               |   3 +-
+ arch/x86/kvm/irq.c                  |   5 +-
+ arch/x86/kvm/svm/avic.c             | 105 ++++++++++++++++--
+ arch/x86/kvm/svm/sev.c              | 164 +++++++++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.c              |  59 ++++++++--
+ arch/x86/kvm/vmx/posted_intr.c      |   2 +-
+ arch/x86/kvm/x86.c                  |  21 +++-
+ virt/kvm/eventfd.c                  |   2 +-
+ 19 files changed, 382 insertions(+), 72 deletions(-)
+
+
+base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
+prerequisite-patch-id: 1428b4903537b426ee3822a74adf29fbbbeb8e02
+prerequisite-patch-id: c88b0c2cb26fb85fc7ef07409aeaf643565b8600
+prerequisite-patch-id: a3f8fc507b7809645b001e9394a51f8b299aae47
 -- 
-2.43.0
+2.54.0
 
