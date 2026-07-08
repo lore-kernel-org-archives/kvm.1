@@ -1,129 +1,121 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA113C4176
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 22:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783549727; cv=none; b=phpDaIsQeMqzM2uDzTn2CZ+xSThwdJUiTVkdUw+1NDtKlVuJvN3HL51gc08TEtBzJewYL8uyLD0w9IFtGPWwjrf/ToQPbzF333XoZYOPJmsWUj77XXXICM9Y69sXeE+/58g5PSsxR4uDJKAEa074v9ZvNKT8FMsZ2s+abDjh0n8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783549727; c=relaxed/simple;
-	bh=qCA37wA3EA6gLbZcSOYMhW0pz2I6zUDqTzOTNLMrEfg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pVYYCW6JDGPvAkoRGsnvhaB9u7zbPZkTP9UO2LFLThUsVxMHcz8PnRa9b8I/MWxrckmNEpAFnEJ7UKaaeWkHO1hpB3fME2i8UQcMnnXJ6OGGtKoQ5z2XPqLzDMquFG+a93kCfkyUJN3weJyB/mtcb2k7EIb7hwNc+DS/jZzj5S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XcshHMp7; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989EF31F99D
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 22:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783550457; cv=pass; b=mEktCTlgWBov96S3arCILGDHZ9lFNSOiA1fcyO43Vj0nj0GXKb+HBiRltbMusDueiaSpAmyphoPOKPOHvY0HW3A+IJl771lmhGBM1DvKEX5ELXJ+tirl6g2i/fVqzG7Nzpnruub1Xx0nsbzCpLar7b7sL8Du+I7vAoGhfQgJ23s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783550457; c=relaxed/simple;
+	bh=rPldlDDv33O/lSfMUjwv2Bi9kjt+AmcV3PaA++c0lv0=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WDROmD206sfjxuo3hP3i+6RSHAoLAhgQ+7SkKsqETrqoKoHHSE7MFw+WAWi/j3+zuQ1wR4EqLoXXdeldN/1IehFi5/ST6bJtYKOvQQuS1xdEtAUdl03yUm5Aa0bF2blL4On0FW8jfVmIsej5JxQ0EvkewCBkVO7ofDMdjHilANo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iyrqjywP; arc=pass smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XcshHMp7"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8478d2bea7cso201473b3a.1
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 15:28:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iyrqjywP"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cc6dd436c6so12744015ad.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 15:40:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783550456; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bzzo4ues17xt18Sf0HBHMnw03OtaPbyySV+3bcDUFRtofiYqFrlApnbTDxpJZgGFHx
+         URmWi4sMHvW4B2Lkns21VR73jC2xpi1QKulpgOG3acThl5GEMblkIcawvlck9w4qCmFl
+         ljm2syiFi3/HAY5HN/K9k5Z1xIfznAdW+48E4sNZSC4ONUrJTcz9p9IyeqMl5YsEjiM3
+         CB5nkEigIP4UNAnaMgLAygCnsyWUidDL1nEmQtTQKvxm0tjSTToWAA1VbGzzctTYcoN7
+         PT30z2Iod1Mk/AEizkHag7jFlYd6XU3Rrdj79ekJ/IeGnhA0ojxBPNZKBQgOwyYjyBuK
+         CcVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=rPldlDDv33O/lSfMUjwv2Bi9kjt+AmcV3PaA++c0lv0=;
+        fh=SH9t9TFPeQ8bPdsk3rquMb8Ls+3hlsbagh6aBc008A0=;
+        b=sZ+khRHs531FCHc6CI4WaLOv0coQIM/hyaCJO0ZzM8m98kvJaCM5twvc8X+Ln10Naj
+         D4zpFk41xEtx3Lk/4eufsHit0AoBX8HOGKUIJtByis88CZt2rNtDmsbIyGDrzFWfEsUw
+         0Iy7guXSjyrZgKuBgZmaZ3L84FfxWesFJ9fHxFryL+EMfz/CfLvkgCcznHw2vtAb+GBJ
+         Cmc/anPOjgMdgqqYVgONs/4fIT1GbIIT8e7IvyKXQe9MDnbGYpzuL3bJhaEjo+Dszh2Y
+         MBg2ie/Pa8u6aXaJFTfohJYjp6Cl11L/kssq4acFeOPGIUxxdsKxUpCwftbFEe/nO6XQ
+         dOBQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783549726; x=1784154526; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783550456; x=1784155256; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=413Nqq7+aCGB4j6hzx7bP0Ff/HXDE9aVqFD21FJRzaM=;
-        b=XcshHMp72OOepmqyKk+uETJc2S21Zso0DOVgJE3kV3/cCR+fFCLm9LfGwRYV0fGkW/
-         BjHPHMv5Gi85s79Tiu4nnM8cjruR1+hzrvygIItnr/kh0Dnq+LLOyNYOq1Vz5/IUWeS7
-         aAPyjaVibaQCCFlRJ1oyFicpmacAl+DcStHF0A6lMun4BqCp4cKVnmfYVGSpZqXAuXB/
-         gfxvE8sD92wTi4iQUfMKOPYvHJeExjgbhh8aWOzZszoXqCCwhwQauwJGxxcqZJH+0tuF
-         0JtCbN5YirP6gwdeA3ulI0CvyZjj8210jGZQj4vM8oIJ3TiLUqsubh4v1yvuXKfH0tTg
-         /yYw==
+        bh=rPldlDDv33O/lSfMUjwv2Bi9kjt+AmcV3PaA++c0lv0=;
+        b=iyrqjywPI1nMVJHFRmdxDbaZomT4ToBsL93yGpnFnc1eOHgbrg2RCaggfG3S6OqOXo
+         olIEAJdVpsxzeOrbocEQPoBNiM6DHhRzSTpu2soiGrS40hPuAhdAmrTkwQwACI1ey96q
+         JjyYAfA2W5n/Z5rUQtOuZjgCRMBmLydMDUDkb0H9o40aiCA3BGJ1SfzVvTsby2/qvUQo
+         ELrtwxcUmCPZ/ZoAKumTaWoFpUQLvQbO1jQTVLCv8GuI+T0gyiUFIX4Bfm+IF5ICVJ0q
+         mAiyjKaMNiYCC0ohWcexVgs4cgs4KY2QKMgtz/jv4++1cah2VH6hPR/H1mh2xrusegOp
+         p+ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783549726; x=1784154526;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783550456; x=1784155256;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=413Nqq7+aCGB4j6hzx7bP0Ff/HXDE9aVqFD21FJRzaM=;
-        b=UQwml5T5DNkMB9Lb9yRacqK2qvJILjkMEhwEra3jRZZbet27DWlcFazgXb+fvyYkuF
-         OlA08a1jzg7RT4Px8s6XESweWaeqbXIsvUB3G6CceNbe2NXpMqBqNphNATh6wkJJK5Pf
-         +4rD7Se9T4nqw76tKlhzAvMRWtBuimf8I1jmJH3kHld4wB3QkjK93H+zeGuelFO5njDW
-         HDm436vvSIjiKpyeP0HyTHQWw8AnRm5uABOf6QpJ661MSlGeHpAuqFyVVEoSo11ix2b9
-         t/uLLCdgTfCvN3BWnGoKROG5C1srXapzAzWVRi8Ch59GwpJRcXPmhc6UI7tT+a8p4FNo
-         bqIg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7dqGQomAeGAdW6qCHkog9dqhtd/sBGDBdaKxd4J9DbEXePh+YPKTmR+F6pbSlVCg4vXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeO+u18VK34HdWSaEjGFggi6lmqeWRat1yf3MbqHHc0VBu2RDh
-	I/O0c6Cm63ktSiiZN/BMqw+OKJLAPjdhYUmgv/A3WAsWGTwnVSCjoE5us6JeEqyTBvzfJEwHO06
-	IZmnZ7w==
-X-Received: from pfbbe12.prod.google.com ([2002:a05:6a00:1f0c:b0:847:8449:eef1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1a87:b0:845:df5c:2567
- with SMTP id d2e1a72fcca58-8485ab611b4mr183492b3a.25.1783549725769; Wed, 08
- Jul 2026 15:28:45 -0700 (PDT)
-Date: Wed, 8 Jul 2026 15:28:45 -0700
-In-Reply-To: <20260708220915.GI2169894@pedri>
+        bh=rPldlDDv33O/lSfMUjwv2Bi9kjt+AmcV3PaA++c0lv0=;
+        b=pI0J2cAbwSl+oImn0WZcAdAoyXh6xaCi7ygJ6Ji5rDXrpX7G6nswA/jf4WJU8NU+sI
+         wcIw4unlIs78++4h1UaGQfAAdbukpa0I25TkjtrKKH2pkBuN6/pLl1iu3gSdcW/9wFfd
+         SPtipuqQo6SeqTHxlfpYMJk9fV1H+LdfTmm4xUf7D0FrFmX0Sc6UEiDaOPshRa40ZgEK
+         59ed5dwooh0JJvp8lF18XFc8QEJ9011g268SYfGocCsgseJZ/jS6DIsOWvqGt+B9EeAH
+         cN3xk7k4s6iV99z2uXjeH5PIF6ntPlExdgbT3jTTpFsOVi6xpoo6Sc2yl1LVWWMthhDn
+         A1iA==
+X-Gm-Message-State: AOJu0Yxv1dVPNO5Ts4j0gQQuqs0Upm9xQNq2Y88QW0L7Nc0zysREJuZh
+	cp+nsrQfFCo6jYyZNMqiYzRKF2EWLAlLim5hDJF7qfvuqztcdfx+RwChe2UdMPmMfxsYKqk2f0T
+	uDHM9/E9pJ24BFoB1b0FwVEN72tRO2WDshRHMcIpI
+X-Gm-Gg: AfdE7cmnEkixVOgiOnaO532GbwszhxMtHnq2VRdYRqM81HNqznhK8IyjoV8CMobMKxJ
+	QwZXXVPqwhO42jkLozSBKMwK5uo/8F0x8jPWwEuuewBWbS09hotsbZWBvcygRGRnaYkyYtpfdSl
+	YUtmJZlT5EhrhJZox4lz59d2yAYv4L0Rz1xn7QJe0k8k3eA5mj2l3rRUv41y/W3Kci8cAJjjfSq
+	zXUI0gG0d3ooMFX629LO99fm3/2hynHzPywF7gZQukwgLX/LDN7PHAcElUQ/t0KoaMMigrGPHzX
+	fFxQpHBJhy9qEnHskULY68TEFrGqF9zc9V/ncVKM3LffcJ0BOd6T2Qjrbx8=
+X-Received: by 2002:a05:6a20:1581:b0:3b4:71c1:ab29 with SMTP id
+ adf61e73a8af0-3c0bcf5d7e7mr5058514637.16.1783550455409; Wed, 08 Jul 2026
+ 15:40:55 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 8 Jul 2026 15:40:54 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 8 Jul 2026 15:40:54 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260630222607.497895-5-seanjc@google.com>
+References: <20260630222607.497895-1-seanjc@google.com> <20260630222607.497895-5-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629100301.GA1743876@pedri> <akMQ3J6fK3DUBsPH@google.com>
- <23a9173f6e278ca7dfedce3374626c6ea3e1b47a.camel@intel.com>
- <6a445e4be6b12_3a3568100db@djbw-dev.notmuch> <akVNdxCzk-n4bgMv@google.com>
- <9df36c49e6be69dd9eece71f70a404a84b1563ab.camel@intel.com>
- <20260704054342.GB2169894@pedri> <akvsgVjwb00P1EuA@google.com>
- <08c9bf2f-75be-4244-b99c-153ec1f604ca@intel.com> <20260708220915.GI2169894@pedri>
-Message-ID: <ak7PHTGEuxAZCvXw@google.com>
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"djbw@kernel.org" <djbw@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, 
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Yilun Xu <yilun.xu@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Sohil Mehta <sohil.mehta@intel.com>, 
-	Zhenzhong Duan <zhenzhong.duan@intel.com>, Kishen Maloor <kishen.maloor@intel.com>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Date: Wed, 8 Jul 2026 15:40:54 -0700
+X-Gm-Features: AVVi8CdM7hMxBo7Sfpocmu0dZ7I0zxs1RszJRY-7TomLOnZ6z46E6Uj88Dzzjh0
+Message-ID: <CAEvNRgG-Q_aci8rU7bBXoYyo73RsNDEAYT5vnr2oFF-nWizQGA@mail.gmail.com>
+Subject: Re: [PATCH v3 04/12] KVM: Rename .gmem_invalidate() to .gmem_reclaim_memory()
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jul 08, 2026, Peter Fang wrote:
-> On Wed, Jul 08, 2026 at 01:47:29PM -0700, Dave Hansen wrote:
-> > On 7/6/26 10:57, Sean Christopherson wrote:
-> > > What is "the S3M" though?  Is it a separate chip a la AMD's PSP/ASP?  Is it a
-> > > per-package thing? Per-core?
-> > I'll give you my rough software guy mental model of what it is: Each
-> > package has its own S3M. They are microcontrollers which are discrete
-> > from the CPU cores. Each S3M gets some CPU physical address space routed
-> > over to it.
-> > 
-> > > How is it accessed, and what are the "rules" for for those
-> > > accesses?  What types of latencies are we looking at?
-> > 
-> > As far as I know, the latency for one round trip to/from S3M is on the
-> > order of a "real" device. It has a physical address and when the OS
-> > wants to talk to it, those addresses are mapped with ioremap(). It's
-> > similar to any modern I/O device control plane. Note, though, that for
-> > TDX, there's no ioremap() because the I/O is hidden in the TDX module.
-> > 
-> > The real overhead comes because the I/O window is essentially 4 bytes
-> > wide (IIRC) and all the data that comes in and out of it has to be
-> > squeezed through that window. It reminds me of a UART, but with a
-> > slightly more arcane interface.
-> > 
-> > For TDX, though, the craziness is mostly hidden in the TDX module.
-> 
-> I'll just add that this design decision comes from the fact that we're
-> looking at different kinds of future attestation stuff. Some of it is
-> quite complex (like post-quantum crypto). Some of it may even require
-> more complicated interactions with the S3M. Hiding these details allows
-> all this crypto stuff to look like just another TDX module release.
+Sean Christopherson <seanjc@google.com> writes:
 
-IMO, that's not a good thing.  Burying more code and more complexity in what is
-supposed to be a minimal TCB doesn't seem like a "win".  I can certainly
-appreciate that interacting with the S3M microcontroller isn't something we want
-in KVM, but that's why drivers/ exists.
+> Rename .gmem_invalidate() to .gmem_reclaim_memory() as the hook is called
+> when a folio is freed, which is far too late and lacks sufficient
+> information for KVM to actually invalidate its usage of the memory.
+>
+> Keep guest_memfd's trampoline, even though it would be trivial to wire up
+> .free_folio() directly to an arch callback, to avoid bleeding guest_memfd
+> internals into arch code (specifically, avoid referencing folios in arch
+> code).
+>
+> Opportunistically guard kvm_x86_ops.gmem_reclaim_memory() with an ifdef to
+> ensure the callback will actually be called, e.g. so that non-SEV code
+> doesn't try to wire up a callback without enabling
+> CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE.
 
-> The host kernel shouldn't be burdened with attestation intricacies, 
+Shall we also rename this CONFIG to CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM_MEMORY?
 
-Oh, but the kernel has to be, at least to the point where the kernel has enough
-information to guarantee backwards compatibility, enumerate choices, etc.  If
-you're saying that the TDX module will always generate reports that are compatible
-across TDX Module updates, then we probably don't have anything to worry about,
-but it seems unlikely everything can Just Work while also updating the core crypto
-algorithms and whatnot.
-
-> and the TDX module should just make sure the new module "works".
+>
+> [...snip...]
+>
