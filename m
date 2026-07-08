@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2440B3CBE69;
-	Wed,  8 Jul 2026 06:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26BA3DDB0E;
+	Wed,  8 Jul 2026 06:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783492457; cv=none; b=NHoJmqp9cBo038njE6czV0fCMlp+eXI+sz37JRDIpEMIqwliUTfDYR15sqAC9nrLHIuBVeE0s2oO82kIwtyxCEOcKhiRQUhbGAEFsyD0IM1ZA4+bndy22tIfgMlfzomQbIw8Ip7NFxy0npkN9Rxx85CZBeQoItnZVCRW7/01BxQ=
+	t=1783492462; cv=none; b=hSw19tmCo0sxj1vBbTXvjYFnHArhXio8zr4rnoV1Qz0hVbsI7dCuEdafwGQiDModCtlTNWUEP1JlUEBUpOkgAJCGtHL+qgc+XBLGj6yG1GSgUZyZpow9HjpB9TZGyV64c1BLHyPRv3jGlkqJk4FOcyO1DJn5t2CXoid4PO3XsSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783492457; c=relaxed/simple;
-	bh=7rbRvX6RI/mRGJRSWQuVTCUb/gJk9s6NTSiMb1pRQFw=;
+	s=arc-20240116; t=1783492462; c=relaxed/simple;
+	bh=pQ2+0O1/vUX7u8TDVGYLpnrk9m56Mj01Yedq74kQyEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttFEJ+xJFvyjP+swgTJpYVIR5kQib9K4CfcJlThAZZGia0CfxMKfyVpWtZkvK8k7eXPfIFdTSLNNEx+qq/RNnJFqcywuaGaZP+JJXIOet0uNjZp5qdfL0Kr1PUKo9pbObXSw8+aHqk50HdNN5fWHVU1k6TIE0zo470Y4SumWnIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wu0PjE7M; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=OznQe0TB4VW0iXQU/0sCXU3TF5dDW8MLJRPHtcbUbPiGcxhQ0Y5ThcxaHRGMCCS73QahnA6LORKBykmsA9gVbRjVVltoqWnI18pEn5beEdPXNTU6OMLNIBQ41UpC50824UtqRObYVnWZWacWgWdc0TqAGrn2EVOH1Wy1aF+Xlls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbtgbG/T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wu0PjE7M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3901F00A3A;
-	Wed,  8 Jul 2026 06:34:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbtgbG/T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778271F00A3A;
+	Wed,  8 Jul 2026 06:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783492455;
-	bh=+rcRrsUhgQHACObSty4HYdCuO8eo6w0Zzp8xCLa4wP4=;
+	s=k20260515; t=1783492460;
+	bh=b3XVUn1BcohMxobMftKt1cHsXJU174KVxE8Yhs2OnyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wu0PjE7MyU6Au/w9TEguGFLjFaofcW3aTBTc7dbS6r/0aU1bJf93ZnkTpDJb7QziL
-	 OfQO+V44dksPzanw8YtEPZpC76E6rNhWVscAGXtO2FBp+SwXlOVHrac3hckXshbPty
-	 CJM9V6i5n0Z6dTw+mp5SLvMQgGqSgHSoDItKfdMZPHNo3at2cFp8D8cqIS1NPXqY0z
-	 cGOUllVWxwTBQlbT/FSidDA04kVhVswbjTl7/nySHDGDxmJMIcPY8z2yOT6269vUzm
-	 NR7DZ6V0B7xgQVvNs9me8uw3Vk9CDhaFKcOFxWnHll34NFA5LT73RqPTXzNMAY+wI6
-	 JFxVMGILggYYg==
+	b=BbtgbG/TnA7qhDRiKRNez+B+MnX6gmhigRy2sbVrh4uzwLA5crWQ5ry2QBbkhdm9A
+	 criZcg9MgPj3t2e5nVF05UA/feYHBf3EGaaWFTSsmmEIzsX99SQ6YeDQ0uyDHAtHHI
+	 mAAcAI+HOdhZ6pqgHILR2aYzIDtPRwOpwy01i3u2Bdown6N670prTSXUw5kzT/NNhG
+	 DHtJQuATO+NbVU73yKtJ0Baa/vA9nUTAIi3KjFDYiJ94s4Jf6Teep/hv/ni/1MOGyO
+	 XBqG7qEqvNuBeOr3fFsDE/0NHxvUr8hCMxZLDbfOXaCBh7gxVU/UFcMMd0PgWh7U3k
+	 oNlNt5knhIOZA==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Borislav Petkov <bp@alien8.de>
@@ -38,9 +38,9 @@ Cc: <kvm@vger.kernel.org>,
 	Tianyu Lan <tiala@microsoft.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>
-Subject: [RFC PATCH v3 14/27] KVM: SVM: Do not inhibit AVIC for SEV-SNP guests if Secure AVIC is enabled
-Date: Wed,  8 Jul 2026 12:02:12 +0530
-Message-ID: <fb72d91bc17d6d1389e6a6bb2216d24db6f4a01c.1783490022.git.naveen@kernel.org>
+Subject: [RFC PATCH v3 15/27] KVM: SVM: Set VGIF in VMSA area for Secure AVIC guests
+Date: Wed,  8 Jul 2026 12:02:13 +0530
+Message-ID: <3f1bcfa9416bc819dd42884af73a8b2f0265ebf8.1783490022.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1783490022.git.naveen@kernel.org>
 References: <cover.1783490022.git.naveen@kernel.org>
@@ -52,31 +52,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that Secure AVIC mode is appropriately handled by the AVIC code, do
-not inhibit APICv for SEV-SNP guests that have Secure AVIC enabled.
+From: Kishon Vijay Abraham I <kvijayab@amd.com>
 
+In Secure AVIC mode, VGIF is read from the VMSA (vintr_ctrl field), and
+the corresponding bit in VMCB control area (int_ctl field) is ignored.
+Set this bit in the BSP's VMSA so that interrupts are not masked. It is
+up to the guest to set this bit in AP's VMSA that it prepares.
+
+Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
+Co-developed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Co-developed-by: Naveen N Rao (AMD) <naveen@kernel.org>
 Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a12e7e9f9fa1..00cb45ce145f 100644
+index 00cb45ce145f..f5b9ff69dbc1 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -569,10 +569,10 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
- 	if (snp_is_secure_avic_enabled(kvm)) {
- 		kvm->arch.apicv_has_irq_bypass = false;
- 		to_kvm_svm(kvm)->avic_ipiv_is_not_supported = true;
-+	} else {
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_SEV);
- 	}
+@@ -1031,6 +1031,10 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
  
--	kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_SEV);
--
- 	return 0;
+ 	save->sev_features = sev->vmsa_features;
  
- e_free:
++	/* Secure AVIC loads the below from the VMSA, rather than the VMCB */
++	if (snp_is_secure_avic_enabled(vcpu->kvm))
++		save->vintr_ctrl |= V_GIF_MASK;
++
+ 	/*
+ 	 * Skip FPU and AVX setup with KVM_SEV_ES_INIT to avoid
+ 	 * breaking older measurements.
 -- 
 2.54.0
 
