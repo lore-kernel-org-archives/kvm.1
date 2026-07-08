@@ -1,209 +1,215 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65873115AF
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B241C84A6
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 04:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783483151; cv=none; b=lavVZjvD3A3alf4nHuKTo90fgl55qipdprjk+kR5Xe+2dMac+ETDQB+YFi+Nxs7FMj+XSeGQlcJH4Xbeud1cnZ68rius8k/DKQ5si7Bi2tpyGEwz5RM8Y/TvCtmh/+DTnj00bS7GyuiUENv3PEv6G8Mdclqv6iK+eyXvR8aKVK0=
+	t=1783483244; cv=none; b=Qdu6Gdgu91kX7cNmvs/WId0BHkIDeyF0Plj8WIXzN6GvNrkxjIaGIGDtN9o/Q1IklaAypb5cUF637NOiDuSHUObVkh2r7fC1V1vbspVRUZVOoDv1f16E0gnkKgaAyz8n7kIbXzlyIXQYsm6aOS1EQPYzutwF+aHyr+2P7nGonNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783483151; c=relaxed/simple;
-	bh=sKOmlNO8YhusLqNkM7e85NDAv+uxTh+5tck4kIQmDsY=;
+	s=arc-20240116; t=1783483244; c=relaxed/simple;
+	bh=jMoOTFpGk6cMNAPQJ1fanXFLNAk96Ks5W4fSC9hFFD4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FBiQMVK6dhz8XZ8pudVbSfO7S9uiFL3PlkQ1tkpFBONtvn4PR9Lv8+zqWON3BvNRzX0I0+vOpKMklX7ljG3Tlb4N7AZdnEtlpgk9h+2zhbf8beaaDIqFd+iVwLWpXyysBEsRH8Pud8s5acA15SevCiTh1I9A44/DOk2sl3b9KaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1XruMx2; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Its92agh0OPwlRD2hlUHcMMR2rDaw1/qsYgqRm+Yh0GcOSyzbOHvZhCf+nP1k0Hj0CBeuRwiGu52XBSrh2c+VBe2jIVP7K5/v4vNdoEH3XwoXUy2CEBLlp1l8KCMkoj7OuxoasqC8n3pMBJstUpxqinLYHllU+Mf05Tk9te6HFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAuZVWrU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1XruMx2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0664E1F000E9;
-	Wed,  8 Jul 2026 03:59:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAuZVWrU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A081F000E9;
+	Wed,  8 Jul 2026 04:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783483150;
-	bh=UrUIgxE+1YFTAqzT3AWPp3Gh1UujxG4lHgWq/oIlQ4Y=;
+	s=k20260515; t=1783483243;
+	bh=GylafC4g7Oj8AT5N+l1T6Py7clGSHlGgSFawMlJfizs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f1XruMx2FiS0i209NXyHBQM4i5VGsV9VUrpzln10lAHicxwY0cQpHEEErTAZnIkWl
-	 N/8mPHtUxyDi4N87lbCWNZSKYmGXvHFm2/38HNLBYxNFt/2/UJlhgQGzxt7hEj/qmL
-	 flcKP7rYTdWOrVSclTC6VHFZhx2pcB3MOjG9CB+W2B0JM72L2loEURxoSuACKmiyjL
-	 rS4GLQXRrpkouyS1Nuldn0DpDc46+pLIYVmaeUF+V4uyPePMY9DL02iQ5UKkM+Jh/k
-	 S+D58BwoSV/Zu0rgcL4YDG47N6P6s3+umxDR9mJlocE7FMz+qQgLJGuiXJ6L0XTOP4
-	 vcKRYmXSAvEWw==
+	b=JAuZVWrU5h1yWlll7n8ovjR0d2DXSHCKfiMdMUAtdMOs6qWpLFw3jOH6yHw2vHI5S
+	 c5eij16y/i/Fbp+og27ps2K88dVOhuaYoEvFZDsnCB38UBzMR6xhFEcitOAcxqv5DX
+	 a92HpkqrwrTZUX9MFdp094mtEwWQjrE1p6GCZOjeFJqMiguoaXkiEq9464adzVzGmg
+	 Dx0OSgA1a/qslKiAHKvCr3SMLXnPAbL2CgdZLIvh2Wq7/b3k05TEWqW09I6JmhhOpG
+	 UV2CuP4v9Cy3Wi8KMRS9jdCeL0qrHvCMdB5hyKtALc91UubUbrLHnCcRjoHl8mScrx
+	 fSDb6uLWMR3uA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 11/17] KVM: riscv: selftests: Add mmio test
+Subject: Re: [PATCH v3 13/17] riscv: kvm: Add emulated test csr
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-11-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-13-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-11-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-13-3f8e5f75ba97@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 03:59:09 +0000
-Message-Id: <20260708035910.0664E1F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 04:00:42 +0000
+Message-Id: <20260708040043.03A081F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-
-New issues:
-- [Medium] The selftest unconditionally creates a KVM_DEV_TYPE_TEST device =
-without checking for host support, causing hard failures on standard kernel=
-s.
-- [Medium] Missing "memory" clobber in inline assembly allows compiler to r=
-eorder or eliminate MMIO stores and local variable initializations.
-- [Low] Overly broad inline assembly constraints for RISC-V compressed inst=
-ructions will cause intermittent assembler errors.
-
-Pre-existing issues:
-- [High] The KVM MMIO test device fails to unregister its MMIO bus device o=
-n teardown, leading to a Use-After-Free when the memory is subsequently fre=
-ed.
+- [High] Hijacking the architectural `CSR_VSSCRATCH` for test emulation cre=
+ates dual disjoint states, violating architecture invariants and breaking n=
+ested virtualization.
+- [Medium] The KVM CSR emulation test for `vsscratch` is non-functional and=
+ unreachable. Accessing an HS-mode CSR (0x240) from a guest (VS-mode) gener=
+ates an Illegal Instruction exception (Cause 2), not a Virtual Instruction =
+fault, completely bypassing KVM's emulation logic.
+- [Medium] The emulated vsscratch CSR is a silently-on guest-visible featur=
+e that lacks state serialization, violating KVM live migration invariants.
 --
 
---- Patch [11]: [PATCH v3 11/17] KVM: riscv: selftests: Add mmio test ---
-commit 39a55e4a273642e2ad8e96502e3f7d6eb84c69ad
+--- Patch [13]: [PATCH v3 13/17] riscv: kvm: Add emulated test csr ---
+commit c90a2625de316ca2ae3dfca0aa91c4a00b0acfef
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-KVM: riscv: selftests: Add mmio test
+riscv: kvm: Add emulated test csr
 
-This commit adds a test to validate that KVM properly emulates reads
-and writes to a KVM test device. It checks all load and store
-instructions emulated by KVM for RISC-V.
+This commit introduces an emulated test CSR (vsscratch) for KVM on RISC-V.
+It adds a new kernel config option CONFIG_RISCV_KVM_TEST_CSR to enable
+interception and emulation of the vsscratch register for testing purposes.
 
-> diff --git a/tools/testing/selftests/kvm/riscv/mmio_test.c b/tools/testin=
-g/selftests/kvm/riscv/mmio_test.c
+> diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/k=
+vm_host.h
+> index 75b0a951c1bc6..4d30d30ebefc7 100644
+> --- a/arch/riscv/include/asm/kvm_host.h
+> +++ b/arch/riscv/include/asm/kvm_host.h
+[ ... ]
+> @@ -265,6 +271,10 @@ struct kvm_vcpu_arch {
+>  		gpa_t shmem;
+>  		u64 last_steal;
+>  	} sta;
+> +
+> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
+> +	struct kvm_test_csr test_csr;
+> +#endif
+>  };
+
+[Severity: Medium]
+Since this newly added guest state is not exposed to userspace via the
+KVM_GET_ONE_REG or KVM_SET_ONE_REG ioctls, will it be silently lost during
+live migration?
+
+> diff --git a/arch/riscv/include/asm/kvm_vcpu_test_csr.h b/arch/riscv/incl=
+ude/asm/kvm_vcpu_test_csr.h
 > new file mode 100644
-> index 0000000000000..ea3837771a333
+> index 0000000000000..a844fccaafc34
 > --- /dev/null
-> +++ b/tools/testing/selftests/kvm/riscv/mmio_test.c
-> @@ -0,0 +1,189 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-[ ... ]
-> +#define test_standard_read(len, instruction, name, options)					\
-> +static void test_##name(void)									\
-> +{												\
-> +	unsigned long mmio_result, reference_result;						\
-> +	/* Configure the MMIO to return 0xff for each byte to check sign extens=
-ion */		\
-> +	unsigned long reference =3D ((unsigned long)-1 >> ((sizeof(long) - len)=
- * 8));		\
-> +	*((unsigned long *)MMIO_TEST_REGION) =3D reference;					\
-> +	/* Check that reads through MMIO are equivalent to standard reads. */		=
-	\
-> +	asm volatile (										\
-> +		".option push\n"								\
-> +		options										\
-> +		#instruction "	%[mmio_res], 0(%[region])\n"					\
-> +		#instruction "	%[ref_res], 0(%[ref])\n"					\
-> +		".option pop\n"									\
-> +		: [mmio_res] "=3D&cr" (mmio_result), [ref_res] "=3D&cr" (reference_res=
-ult)		\
-> +		: [region] "cr" (MMIO_TEST_REGION), [ref] "cr" (&reference)			\
-> +	);											\
-
-[Severity: Medium]
-Since the pointer to MMIO_TEST_REGION lacks a volatile qualifier and the
-asm volatile block lacks a "memory" clobber, can the compiler optimize away
-or reorder the store to MMIO_TEST_REGION?
-
-GCC's dead store elimination might eliminate the initialization store since
-it does not see any memory inputs to the assembly block, which could cause
-the guest to execute with uninitialized memory and fail intermittently.
-
-[Severity: Low]
-Will using the "cr" constraint cause intermittent assembler errors for
-compressed instructions?
-
-For instructions like c.lw and c.sw, the assembler strictly requires
-registers in the x8-x15 range. If GCC allocates a general register outside
-this range, will the GNU Assembler fail with illegal operands?
-
-> +	GUEST_ASSERT_EQ(mmio_result, reference_result);						\
-> +	GUEST_DONE();										\
-> +}
+> +++ b/arch/riscv/include/asm/kvm_vcpu_test_csr.h
+> @@ -0,0 +1,15 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 > +
-> +#define test_sp_read(len, instruction, name)							\
-> +static void test_##name(void)									\
-> +{												\
-> +	unsigned long mmio_result, reference_result;						\
-> +	unsigned long tmp;									\
-> +	/* Configure the MMIO to return 0xff for each byte to check sign extens=
-ion */		\
-> +	unsigned long reference =3D ((unsigned long)-1 >> ((sizeof(long) - len)=
- * 8));		\
-> +	*(((unsigned long *)MMIO_TEST_REGION)) =3D reference;					\
-
-[Severity: Medium]
-Similarly to test_standard_read(), could the missing "memory" clobber or
-volatile qualifier here allow the compiler to eliminate the reference store?
-
-[ ... ]
-> +#define test_standard_write(len, write, read, name, options)					\
-> +static void test_##name(void)									\
-> +{												\
-> +	unsigned long result;									\
-> +	unsigned long reference =3D (0x5555555555555555ULL >> ((sizeof(long) - =
-len) * 8));	\
-> +	/* Check that we can write and then read the same value. */				\
-> +	asm volatile (										\
-> +		".option push\n"								\
-> +		options										\
-> +		#write "	%[ref], 0(%[region])\n"						\
-> +		#read "		%[res], 0(%[region])\n"						\
-> +		".option pop\n"									\
-> +		: [res] "=3D&cr" (result)								\
-> +		: [region] "cr" (MMIO_TEST_REGION), [ref] "cr" (reference)			\
-> +	);											\
-
-[Severity: Low]
-Could the "cr" constraint also cause assembler errors here when the macro
-is expanded for compressed instructions like c.sw and c.lw?
-
-[ ... ]
-> +static void run(void *guest_code, char *instruction)
-> +{
-> +	int fd;
-> +	struct ucall uc;
-> +	struct kvm_vm *vm;
-> +	struct kvm_vcpu *vcpu;
+> +#ifndef __KVM_VCPU_RISCV_TEST_CSR_H
+> +#define __KVM_VCPU_RISCV_TEST_CSR_H
 > +
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +	fd =3D kvm_create_device(vm, KVM_DEV_TYPE_TEST);
+> +#include <asm/kvm_vcpu_insn.h>
+> +
+> +#define KVM_RISCV_VCPU_TEST_CSR_FUNCS \
+> +	{.base =3D CSR_VSSCRATCH,	.count =3D 1,	.func =3D kvm_riscv_vcpu_test_c=
+sr },
 
 [Severity: Medium]
-If the host kernel does not have CONFIG_KVM_MMIO_TEST enabled, will
-kvm_create_device() fail with -ENODEV and cause the test to abort?
+Will this emulation callback ever be reached?
 
-Would it be better to dynamically check for capabilities and skip
-gracefully (for example, by using TEST_REQUIRE() or similar test helpers)
-instead of failing?
+CSR_VSSCRATCH (0x240) is an HS-mode CSR. When a guest in VS-mode attempts
+to access it, the hardware generates an Illegal Instruction exception
+(Cause 2) rather than a Virtual Instruction fault (Cause 22).
 
+In kvm_riscv_vcpu_exit(), KVM directly injects EXC_INST_ILLEGAL back to the
+guest:
 
-[Severity: High]
-This is a pre-existing issue, but there appears to be a use-after-free
-during teardown in virt/kvm/mmio_test.c.
-
-In mmio_test_destroy():
-
-virt/kvm/mmio_test.c:mmio_test_destroy() {
-        ...
-        struct mmio_test *mmio_test =3D kvm_to_mmio_test_dev(dev);
-        ...
-        kvm_io_bus_unregister_dev(dev->kvm, KVM_MMIO_BUS, &mmio_test->dev);
-        kfree(dev->private);
+arch/riscv/kvm/vcpu_exit.c:kvm_riscv_vcpu_exit() {
+    ...
+    case EXC_INST_ILLEGAL:
+        kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_ILLEGAL_INSN);
+        vcpu->stat.instr_illegal_exits++;
+        ret =3D vcpu_redirect(vcpu, trap);
+        break;
+    ...
 }
 
-Does kvm_to_mmio_test_dev() expect a struct kvm_io_device pointer rather
-than a struct kvm_device pointer?
+Because this bypasses the instruction decoder entirely, it seems the test
+CSR emulation logic won't be executed.
 
-If so, container_of() might compute an invalid pointer, causing
-kvm_io_bus_unregister_dev() to fail to unregister the actual mmio_test->dev.
-When the structure is later freed, will this leave a dangling pointer in
-the KVM MMIO bus that triggers a use-after-free on subsequent MMIO
-accesses?
+> +
+> +int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
+> +			    unsigned long *val, unsigned long new_val,
+> +			    unsigned long wr_mask);
+> +
+> +#endif /* !__KVM_VCPU_RISCV_TEST_CSR_H */
+> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+> index 78adc28308193..c3e4cf2cd44b7 100644
+> --- a/arch/riscv/kvm/vcpu_insn.c
+> +++ b/arch/riscv/kvm/vcpu_insn.c
+[ ... ]
+> @@ -112,6 +114,9 @@ static int seed_csr_rmw(struct kvm_vcpu *vcpu, unsign=
+ed int csr_num,
+>  static const struct csr_func csr_funcs[] =3D {
+>  	KVM_RISCV_VCPU_AIA_CSR_FUNCS
+>  	KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS
+> +#ifdef CONFIG_RISCV_KVM_TEST_CSR
+> +	KVM_RISCV_VCPU_TEST_CSR_FUNCS
+> +#endif
+
+[Severity: Medium]
+Does unconditionally enabling this guest-visible feature for all VMs when t=
+he
+kernel config is set bypass KVM capability negotiation?
+
+KVM features should generally be discoverable and opt-in by userspace to
+ensure predictable migration behavior and compatibility.
+
+>  	{ .base =3D CSR_SEED, .count =3D 1, .func =3D seed_csr_rmw },
+>  };
+> =20
+> diff --git a/arch/riscv/kvm/vcpu_test_csr.c b/arch/riscv/kvm/vcpu_test_cs=
+r.c
+> new file mode 100644
+> index 0000000000000..b8aa503cdaba7
+> --- /dev/null
+> +++ b/arch/riscv/kvm/vcpu_test_csr.c
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/kvm_host.h>
+> +#include <asm/kvm_vcpu_insn.h>
+> +#include <asm/kvm_vcpu_test_csr.h>
+> +
+> +#define vcpu_to_test_csr(vcpu) (&(vcpu)->arch.test_csr)
+> +
+> +int kvm_riscv_vcpu_test_csr(struct kvm_vcpu *vcpu, unsigned int csr_num,
+> +			    unsigned long *val, unsigned long new_val,
+> +			    unsigned long wr_mask)
+> +{
+> +	struct kvm_test_csr *test_csr =3D vcpu_to_test_csr(vcpu);
+> +
+> +	*val =3D test_csr->val;
+> +
+> +	if (wr_mask)
+> +		test_csr->val =3D (test_csr->val & ~wr_mask) | (new_val & wr_mask);
+
+[Severity: High]
+Does hijacking the architectural CSR_VSSCRATCH create disjoint states that
+could corrupt nested virtualization?
+
+Even if the emulation were reachable, it reads and writes to a dummy field
+rather than the actual hardware state in vcpu->arch.guest_csr.vsscratch.
+
+KVM natively context-switches the architectural CSR to hardware:
+
+arch/riscv/kvm/vcpu.c:kvm_arch_vcpu_load() {
+    ...
+    csr_write(CSR_VSSCRATCH, csr->vsscratch);
+    ...
+}
+
+Redirecting explicit accesses to this separate test variable decouples the
+software-emulated state from the hardware state, which might break nested
+hypervisors that rely on the architectural vsscratch holding the L2 guest's
+sscratch.
+
+> +
+> +	return KVM_INSN_CONTINUE_NEXT_SEPC;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D11
+_table-v3-0-3f8e5f75ba97@gmail.com?part=3D13
