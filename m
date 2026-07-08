@@ -1,131 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D87A4315F
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31826B0A9
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783482733; cv=none; b=o4UvMHxFUf+4Ngdc/AKVjtB/5DEG1hlSWewBH9XF+mekJKiQk9/qQaFXFGrCTbJxg+YJidmJtiuGBQi+Gxb9HH8xgHBT68jpV4vMxuuah0nrqHlnszCCMb8cDi8pykopHGpMiYtwrb8ldTRKAFv6dJVRZD6PG0vMZqcQnBV2w9A=
+	t=1783482915; cv=none; b=MrqxjYYOYxGyea7mHm3hFguSy001iqeyLPfYrc5WgpWOGwpC6EWacDhxfZBKVV3yglftsH6lMLSqa8Vm59hZuoQieLSRzGQvc+Rl7JkvH06A7EK3KwyvPTl3ZTqqYsZNi5eELBlTyFt77NyVylO8m2S0DPZApBXREaKUxm1d8Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783482733; c=relaxed/simple;
-	bh=CeAtY3yjkmmgRTJhl8T/3eilxu9881Oa361z9xv/wOQ=;
+	s=arc-20240116; t=1783482915; c=relaxed/simple;
+	bh=SChAgm2U+mDWPzzYoOrd1CGwOy2+Z/Rnckg8Z9oKUwk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q55nCTqenyqbG7SWfSBte8driS+yXVZMoFqagIREsDyDoMMT+RO8kxlyK8A+A4DqtMzWUkFcrN3y1VYzKQdiW4YDVpFLb36qW/lyNICc++dpQ96s167aw2+gV7ANXu4mAnf/1vQ244XRBFlhaeyznX1IBVStFzLPHSyoAXdrMxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erxEJa9r; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=QvbWnozkuYcK6j5xlmKFXRElPl5HFCD2mIBzCMvWJNO0F04+ghKyS5KIS90AHJ8GozaY7iq+6ev+fsKZt1C2LtcydRuz0y5hWZCzpDgJbvn7ET+q+HDWPoryo4DMeFAqb+BtCyP8uxjcJj7j3eNqEUWEyhtJ+cQM83vKiruV2ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDj7l0Rp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erxEJa9r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFF41F000E9;
-	Wed,  8 Jul 2026 03:52:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDj7l0Rp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B7B1F000E9;
+	Wed,  8 Jul 2026 03:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783482731;
-	bh=bKom2Y25QLPGiVXX/hmFZX62S/kXKwiLenHSNFcQvkA=;
+	s=k20260515; t=1783482914;
+	bh=MY+wsUi5k2SKQRCjUcbR/owSB8DYp4uKklAiIKtQEdo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=erxEJa9rUIYef7gnApfyLzuzyiMkXcyK0WhB6qo/XSPSk8CTnygEGsH8FhaKCrDS5
-	 JGsOAPiBeEo31SPfPo3PSowci9S66940pR58ZrhxRVWiW9A2gtlk3DfcN0oiM8zykL
-	 WycN8AJI/ZBaBeh8yT+ydS3ObeAyef9Qihj7Z2V+0wpUR4XqPOM0pkb3Zt0LpzMipU
-	 82Hc3IU5mzIB0P5pxncPXJPHkSMYQutBLc9cykVzLzsNJa/Yqb4Ax7FHJCpr39xU2t
-	 sJvVZ/TD2WYE00UIG3SPLx66Jz1ikCAnKyAYhFnJ6jgvk/b8qyEMC66TEhWqrItnFp
-	 B3LCquQuvlBzg==
+	b=fDj7l0RpbusHlEwa9mt8mDqu52DO/D/pnxgunAkMC/qWjhNxzHaumuNV+GtXmKhPU
+	 QsQkONIDRIgJOyWH5Z2LI6R7LHiCvfdY2Q2tgAooyZYK/6pQ4QAfRsarLnZbzDiG0O
+	 LoSLtSXVap4HEOihKi5sQOG2YKREPRlA40Mxks7myokSLOmSPszTZqQRyMOpyOTfX/
+	 CZrNNakhRL565YgVl11aNl3VHXo3ikYcIiK3nJJP5KchyU+XfVY5O7kaFpck6t8Buz
+	 YUm/KfD81YBD2vrD5SUSQz+ahSkpyVjWLPsOC6FCAZQ13Hk5vQQ+9wcsrU6XxEhgaE
+	 YxsZwuU1MUCtA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 05/17] riscv: kprobes: Use generated instruction
- headers
+Subject: Re: [PATCH v3 07/17] riscv: Maintain epc on misaligned emulation
+ error
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-5-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-7-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-5-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-7-3f8e5f75ba97@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 03:52:10 +0000
-Message-Id: <20260708035211.3FFF41F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 03:55:13 +0000
+Message-Id: <20260708035514.57B7B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [High] Removing `regs->epc =3D 0` breaks the emulation of misaligned stor=
+es that use the `zero` register (`x0`), causing them to leak and write the =
+instruction pointer (EPC) to memory instead of zero.
+
 Pre-existing issues:
-- [High] Simulation of C.JR and C.JALR instructions fails to clear the leas=
-t-significant bit (LSB) of the target address.
+- [High] Emulating kernel-mode misaligned memory accesses uses `memcpy()` w=
+ithout exception tables, leading to kernel panics when accessing unmapped m=
+emory (e.g., via `bpf_probe_read()` or `get_user()`).
 --
 
---- Patch [5]: [PATCH v3 05/17] riscv: kprobes: Use generated instruction h=
-eaders ---
-commit afd6227eeae883036e027b0893e434a89b21ebab
+--- Patch [7]: [PATCH v3 07/17] riscv: Maintain epc on misaligned emulation=
+ error ---
+commit 4be6480bf402b9e8440e0f9f14c2dfd93692b4cd
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: kprobes: Use generated instruction headers
+riscv: Maintain epc on misaligned emulation error
 
-Migrate the code that is decoding instruction for the use of kprobes to
-use the generated instruction headers instead of the hand-written
-instruction functions. With the more granular instruction support, split
-the decoding of branches into their own functions.
+Currently the epc is set to zero when there is a misaligned emulation
+error. This will print a misleading error message with the current epc
+value of zero instead of the epc value that triggered the emulation.
+Avoid setting epc to zero to maintain the state of epc.
 
-> diff --git a/arch/riscv/kernel/probes/simulate-insn.c b/arch/riscv/kernel=
-/probes/simulate-insn.c
-> index fa581590c1f8b..a443883c32370 100644
-> --- a/arch/riscv/kernel/probes/simulate-insn.c
-> +++ b/arch/riscv/kernel/probes/simulate-insn.c
-> @@ -4,222 +4,152 @@
-[ ... ]
->  bool __kprobes simulate_c_jr(u32 opcode, unsigned long addr, struct pt_r=
-egs *regs)
->  {
-> -	return simulate_c_jr_jalr(opcode, addr, regs, false);
-> +	unsigned long next_addr;
-> +	unsigned long *regs_ptr =3D (unsigned long *)regs;
-> +
-> +	/* xs1 =3D=3D 0 is invalid so riscv_insn_reg_get_val() isn't needed */
-> +	next_addr =3D regs_ptr[riscv_insn_c_jr_extract_xs1(opcode)];
-> +	instruction_pointer_set(regs, next_addr);
-
-[Severity: High]
-This is a pre-existing issue, but does this code need to clear the least
-significant bit (LSB) of next_addr before updating the instruction pointer?
-
-If a C.JR instruction executes where the source register contains an odd
-address, applying it directly without masking (e.g., using & ~1) can trigger
-a misaligned instruction pointer exception (a kernel Oops or userspace SIGB=
-US)
-upon returning from the probe.
-
-This could allow unprivileged userspace to trigger a process crash via upro=
-bes,
-breaking ABI functional correctness.
-
-It also appears the KUnit test suite explicitly asserts this behavior in
-test_kprobe_simulate_riscv(), where it expects the unmasked address rather =
-than
-the properly aligned address.
-
-> +
-> +	return true;
->  }
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
+ps_misaligned.c
+> index 81b7682e6c6db..524215a186e03 100644
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -238,8 +238,6 @@ static int handle_scalar_misaligned_load(struct pt_re=
+gs *regs)
+>  	if (get_insn(regs, epc, &insn))
+>  		return -1;
 > =20
->  bool __kprobes simulate_c_jalr(u32 opcode, unsigned long addr, struct pt=
-_regs *regs)
->  {
-> -	return simulate_c_jr_jalr(opcode, addr, regs, true);
-> +	unsigned long next_addr;
-> +	unsigned long *regs_ptr =3D (unsigned long *)regs;
-> +
-> +	/* xs1 =3D=3D 0 is invalid so riscv_insn_reg_get_val() isn't needed */
-> +	next_addr =3D regs_ptr[riscv_insn_c_jalr_extract_xs1(opcode)];
-> +	instruction_pointer_set(regs, next_addr);
+> -	regs->epc =3D 0;
+> -
+>  	if ((insn & INSN_MASK_LW) =3D=3D INSN_MATCH_LW) {
+>  		len =3D 4;
+>  		shift =3D 8 * (sizeof(unsigned long) - len);
 
 [Severity: High]
-This is a pre-existing issue, but similar to C.JR, does this target address
-also need to be masked before updating the instruction pointer?
+This is a pre-existing issue, but does emulating kernel-mode misaligned
+loads and stores in these handlers risk a kernel panic?
 
-> +
-> +	regs->ra =3D addr + 2;
-> +	return true;
->  }
+Further down in handle_scalar_misaligned_load() and
+handle_scalar_misaligned_store(), the code falls back to memcpy() when
+user_mode(regs) is false:
+
+	} else {
+		memcpy(&val, (u8 *)addr, len);
+	}
+
+If a routine like get_user() or bpf_probe_read() is passed an unmapped,
+misaligned pointer, the hardware traps here. Since memcpy() lacks exception
+table entries, won't the resulting page fault be unhandled and bypass the
+intended safety mechanisms?
+
+[ ... ]
+
+> @@ -349,8 +346,6 @@ static int handle_scalar_misaligned_store(struct pt_r=
+egs *regs)
+>  	if (get_insn(regs, epc, &insn))
+>  		return -1;
+> =20
+> -	regs->epc =3D 0;
+> -
+>  	val.data_ulong =3D GET_RS2(insn, regs);
+
+[Severity: High]
+Does removing this assignment cause an information leak when emulating
+stores from the zero register (x0)?
+
+The GET_RS2() and GET_RS2C() macros calculate the register value by taking
+the byte offset into struct pt_regs. For the zero register (index 0), this
+maps to offset 0, which corresponds to regs->epc.
+
+Previously, clearing regs->epc =3D 0 neutralized this aliasing, allowing
+misaligned stores using x0 (e.g., sw x0, 1(a0)) to correctly write zero.
+Without this, will the code now read the actual EPC value and write the
+faulting instruction pointer to memory instead of zero?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D5
+_table-v3-0-3f8e5f75ba97@gmail.com?part=3D7
