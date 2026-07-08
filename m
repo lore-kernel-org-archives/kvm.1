@@ -1,66 +1,68 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE001377EB9
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C2637998B
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783481783; cv=none; b=U2+hI3QY1ZnhdyBH35lHS6rSYshaLKTMWs41m1czLbLr5v4PCeadPzQfrKsG2SyWKmjfldGsQOrme12DZLbvSyDclCHFRIjP2/MWo+Xo842NufN7H/scntlrm8/Av98KxY1OLnuA4pVtq7hCS1cfnLDGsKJ0dN8E7Bx5J2xSpRM=
+	t=1783481786; cv=none; b=tC2INIpFFTp2lJAHxVbxH27+05+sNsDNvQN4zXnCf9qVIFbSYwSUtJt8Sm76low6zdEE3F7P9SXnacwdKMTnpAtk4za3le14O1qnKEH76VEoRUvvADWS/jtbQ0QNr1FqqgSD0fBlnKth+f8ZE53oVFOnRkcM7X067ebhgO5nt7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783481783; c=relaxed/simple;
-	bh=j+4xd4UFPYMx31RI3oZhzKH55RnIh5Q4blgoRCeJwgw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I4AleWxe8i9fz46sv3UGPWBH3ScL/uEsWrXanXMX9m1TzOOo/s2dxLiDbz7iwvUX2GSaxhxmfCqHWPKo3q5Acp71No3CU2nN28HiL0vCFD01BvBHbJvvwYlrSh+ws+DrCzhDEMNJEm0hzJplffNN/M2nEgzdZVw6ackYgATplsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rGsXCwUa; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1783481786; c=relaxed/simple;
+	bh=/mGMT1v7H7ryJQYOPUJnYKV/ZslC9IYBB4cPOktM6Oo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XUFL2Fuu/7Dquuh/j58x3AKgjdynh23iGYQrtd6Snk1rCu9r5lOEngkTmMQECmiH6ReX1W5Ivbfmudcex/Ob0xY4CE2TBC0pJXk3A3WAytVyg/spY0Pk7oEKpHo0PiYuOZh08pDBtDkx8uBOdQ/xBNV0HIVRe6cyrzP3q9EHGX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DmOZMveQ; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rGsXCwUa"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9d1fc053e0so140029a12.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 20:36:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DmOZMveQ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c7c61b5292so4961665ad.0
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 20:36:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783481779; x=1784086579; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=CvczDvHK6doetNfCiPotMmHZg7w7Gu6Nh6hG9FaOUNw=;
-        b=rGsXCwUaFc3GQ/AO89+VIaUcdNRBjvi+xzfgPE1mPga8Gm4pUnonzo6AtCcSensqdu
-         cSqZ7Nizc6G73BtGDDgXFLVn3k0Z9QbiyqstDlKBRBaLL/S3u3G1mkuqsq+Mgk10bI9Q
-         URy+2w5Z/wtqO2hY7YOjI3vZIzihSR8oNCjR2vx5yeemOW6HLeW251I/ieDRPfLqSiFQ
-         AcDfH9Oc6SP3pK0wcjq9h/LBYJR9bPXmYr/aNzOQb79MKQb9r00qFC7M0f1+VyvCXHJe
-         I43aJ/tHJyAKZKEHbsuhXn/BieQjQGyzrm7Palqyh2FNgrldSxTN5tSA6kzIqD9XdlE+
-         cynw==
+        d=gmail.com; s=20251104; t=1783481783; x=1784086583; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rhDw/6L+TZLtvHPPBhD5FTnHIpFKKZXbKXqoSYpJYxA=;
+        b=DmOZMveQDMf1R8UMcwcEQu+q+f2ZWOwrv+o0YLcwEmepaRiqq603ObhYH6mWerVf8U
+         Upcno0zAj2gA5lrfErJDATDSpxIGviWjT9AGEdqCCD6F4H3pclrhWBK4x+y4YlKBjgPC
+         IO1JaT0GP2n71uIE0cOMeqUsPtaxNHHGRpGUml56uDS+lO6kcJ3EXLpyU4XTx8fPboFO
+         kG23X2PwzcymKds3JgZGD4YlsdmJLGVLqi4IvUAHN2CZUnRbVlQ8vgcKHpOTqC3EFq4v
+         K3jrePLn9EdRofx/BXWKdkRC0JdBL0FPRAC6ksK7xE6VjXMw/ewJvWzf93WOYwQ7cby2
+         PaTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783481779; x=1784086579;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=CvczDvHK6doetNfCiPotMmHZg7w7Gu6Nh6hG9FaOUNw=;
-        b=YZuAhhWcyWGxbbbK/gwzLE6/TqX7WskW2FDa8ziNLsaR4ciQ9ti9Fjrb74hYQkxpTT
-         Q0j8p3liGYebhEJFdRvv1zx9oCCndTs6wHsCpy2NZbQCydlY3INgSm0MjpU8oy2ZwqSM
-         ERq0BxjMPhMD85dwj8VckV8RZHZVImbum5Oe/rc5eJGB4D/0GUme9z3IS+eQrU8mGt6g
-         WZTOnyrYyuv4c/o6Rag8onuU/dTPx8iG3DQ0qFY3A1CceXuWb6jAdSW25ICU04vgxE3B
-         olpCISl2IC2fIUoaIrMkPSSTEzJ+vpj4JDWF62vKXxSMtawxYsi9E3TfeFzw9KzLBj0y
-         AsoA==
-X-Forwarded-Encrypted: i=1; AHgh+RpbfDsR8TK9zDcmnHXG0y+EQvt/9M10YKiQobrQeE7z9Fb/VgI5LopE17P84vK6KS05tIo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/fxs/ETQXWTnExZ/yKXtZ2vLYSss+lxGTI1A5se6b32Vmysfh
-	ed2gGrYil8XUsQtqO70heU6kYR5gNHvh2OGIT6PdjjjnJ6q1KqtfanYY
-X-Gm-Gg: AfdE7clh84LY4rmYgV4PwrH7ihym4HsxTp7qRLyUOesqb//dJvB/aku9dC2XHLOTrZf
-	LBokc+SCB8HAU7g9ZFiIvZklEJ3x2EHRJ79myeaBPFg+EZNbvyv8JB+d4KteQzO66+mEFbyb6f6
-	MV13c/gi3lyEujY0eiYbs7GVZ2tREsxCj5hYIaI3vFHQ9zk70u5iuhjgsMjobfecUkE9Wk/JdUg
-	7WNIFXVwtZdHeyloTjKjej2LIAhrmzUL4QC0PzmIW4aTCQYweE6FOluSdL0nL5mY4Zp+eIwhZDF
-	G7cXX6HMR47LX37D/x4ksWpNtQjWQq/L1WCJ8n3kV3A8WJFB/Dcy522Op4LPIgpev2dgPFCcwWS
-	lbTrJIcMS6GJ47itzXjaBmBQWdPKFXJUVZEY3lrmXJPrPWqXYqz2Sa6ps7ItNxufQieVS0ywU4/
-	tw4NM1xzrwjLUjrGKj8kR+l30XaUSEdILKsQBXRVA=
-X-Received: by 2002:a05:6a21:400d:b0:3c0:9c1b:d0b5 with SMTP id adf61e73a8af0-3c0bd2ab6e9mr593638637.64.1783481779487;
-        Tue, 07 Jul 2026 20:36:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783481783; x=1784086583;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rhDw/6L+TZLtvHPPBhD5FTnHIpFKKZXbKXqoSYpJYxA=;
+        b=UD3JpDfl8GetMgq8XVN7yikdQVmZUIhfxfaIm629jiNtiGOcdgh35nFIlyDOq0tp7b
+         xyAe/Dkqi6QC5L/zHNrc5cT+VNckkhEaEVRlrW5u4Z0tE1W6byFbc2h4WUlE0yFrP11r
+         ZOi71J5aGSbSEHP2qC9X4blqd1soCs2D9lPFrpnlM1371t9z/64hjtQ9epoWqKu9nDid
+         H1mK587hJSs0Sibu8BR4LtmVOVes3bEL/ssbses5Kr5JeoSRRHlKVC0Sx9IdkkKNNrgn
+         TMr4S2anFVMcRxseL1HzXDVI2b8eNgvNsMn06y8+XuyOSGb+D+tu+Pck+ewRXQiwhzvX
+         mIvw==
+X-Forwarded-Encrypted: i=1; AHgh+RrOttbBqnbc4/e4NyGP3k9YAqDlbd/pyYHh1jhzZwGqrE6WE7PKABMUqSmUtKguKuVJDtU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk/lfH624yPoKdi1nyLAhNWvbkweWI+Y2Bw73sZalT4Uv1W/S7
+	r08zyz24CyCIQWLUJX/1MdK6pigGERmXMBNMQnYwQ8ug1XbuSCafEOat
+X-Gm-Gg: AfdE7cl8OVwHnj01TtP1qyC93RlyuTuaB+JWxnhKRy11o6/O2Iae82UxUcxY1NRuKwo
+	E4qx9fFl0fKkf/GlZ+B9p/zU9SNO6qWMOe+S7c+sQz9fT3UIU4zvfbcZyEevPfQ6HfXMig1N0Eu
+	RMLim/hGUNYStT+0QDksEI/F6WKFZY5OWePMiOmMGbr+pwJkltDdHfgwPPSJeR5ltwg+975MmCW
+	jAZJGbzHkWIbdUzygZw85aVUB6RlZS28wNXpXhBS59TqUQKqWJbj0qgj+N8QsHvau7CPsB5mBNx
+	ptEKIakFkI1lBMTcRluPX0pZgEBumQAdSoGAgtUDAgt3s2lOfxNgJSSWOGiLT9sVLzPlhJT7bnC
+	z28P2Rucct2reUFaGDfuI5Vbyl/ZCvHLuXrH9dsd4GvAQga0Gvq3OqfDjD1tuLqVkWv/y8Q/G4i
+	EaIBVKXnnp5RNqQVydcO3mFrltpVQ8R4jVfR6eX6o=
+X-Received: by 2002:a05:6a20:3d0c:b0:3b4:93b9:2b91 with SMTP id adf61e73a8af0-3c0bcf16364mr637734637.12.1783481782784;
+        Tue, 07 Jul 2026 20:36:22 -0700 (PDT)
 Received: from [10.0.0.65] ([2601:647:6700:64d0::94ac])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174accae5sm21092850eec.29.2026.07.07.20.36.18
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174accae5sm21092850eec.29.2026.07.07.20.36.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 20:36:18 -0700 (PDT)
+        Tue, 07 Jul 2026 20:36:22 -0700 (PDT)
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Subject: [PATCH v3 00/17] riscv: Generate riscv instruction functions
-Date: Tue, 07 Jul 2026 20:34:23 -0700
-Message-Id: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
+Date: Tue, 07 Jul 2026 20:34:25 -0700
+Subject: [PATCH v3 02/17] riscv: alternatives: Use generated instruction
+ headers for patching code
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,11 +71,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NSwqDMBCA4atI1k3JS2O76j1KkaijDmhSEgkt4
- t0b7aKFFmbzD8w3CwngEQI5ZwvxEDGgsynkISPNYGwPFNvURDBRMM4V9RiaWKENtppNPQKVpTr
- ladqulSSd3T10+NjJ6y31gGF2/rl/iHzbvjHF9C8WOWU0V7XSsjActL70k8Hx2LiJbFgUH6AQ/
- A8gEqA7VnIGIIRW38C6ri/RvYl08QAAAA==
-X-Change-ID: 20260114-riscv_insn_table-38495495dfd3
+Message-Id: <20260707-riscv_insn_table-v3-2-3f8e5f75ba97@gmail.com>
+References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
  Nam Cao <namcao@linutronix.de>, Alexandre Ghiti <alex@ghiti.fr>, 
  Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
@@ -86,128 +86,218 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783481777; l=5854;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783481777; l=7624;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=j+4xd4UFPYMx31RI3oZhzKH55RnIh5Q4blgoRCeJwgw=;
- b=74eWphOVMu50WOZqGrtcoyw4AkgM3MK/BcaxvTUNxBiKAeL2V+Dwf1fwKvxtcqNIRQUDzq+pX
- UPNo3RbM/isDYKuYo8hYptrVM53U/y987iMR9BJFZ9OW4w9uDqv1I4a
+ bh=/mGMT1v7H7ryJQYOPUJnYKV/ZslC9IYBB4cPOktM6Oo=;
+ b=e8bI9wklaU/9ul8UJWwZF5PYDwtXiPtCzuAV+L08M3Fv25bkjIl7li3QDgxaI6e2+O7fJNUMy
+ yum6AxIuRxJBWVmIFA1eRmXPQaB1gU8b1e2MPbL6fWUFncPwZkWvAdl
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 
-There is a lot of code that is manually manipulating riscv instructions.
-Constructing these headers for new instructions is time consuming and
-error prone.
+Migrate the alternatives patching code to use the generated instruction
+headers instead of the hand-written instruction composition functions.
 
-The first patch in this series introduces the instruction definition
-table along with a script that runs at compile time to create all of the
-associated instruction manipulation functions. The remaining patches
-migrate all of the manual instruction code to use these generated
-functions.
-
-The instruction definition table is generated from the
-riscv-unified-db[1], an open source RVI project for instruction
-specifications. I got this table generation merged into
-riscv-unified-db, that PR can be accessed on github [2].
-
-After a format update PR is merged [3], I will link the commit hash of
-the generated instructions.
-
-A lot of the validation for these changes is from running all possible
-32-bit or 16-bit integers through these functions to see that any given
-instruction will produce to expected result. I give more detail on the
-test cases in the notes of the first couple of patches.
-
-For the KVM patches, I also introduce two test cases to ensure that the
-instruction manipulation is working as expected.
-
-[1] https://github.com/riscv/riscv-unified-db
-[2] https://github.com/riscv/riscv-unified-db/pull/1780
-[3] https://github.com/riscv/riscv-unified-db/pull/1869
-
+Reviewed-by: Jesse Taube <jtaubepe@redhat.com>
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
----
-Changes in v3:
-- A lot of Sashiko suggestions
-- Introduced new patch "riscv: Maintain epc on misaligned emulation
-  error" that will help with error handling
-- Use CONFIG_32BIT/CONFIG_64BIT instaed of __riscv_xlen for generated
-  instructions
-- Link to v2: https://patch.msgid.link/20260621-riscv_insn_table-v2-0-7f0810ee2274@gmail.com
-
-Changes in v2:
-- rebased on v7.1
-- I dropped the patch fixing the mmio bug in kvm because in the
-  meantime that bug has been fixed in a different patch
-- Calls to panic() for instructions not support on current hardware have
-  been changed into BUG_ON()
-- Fixed incorrect handling of branches in simulate_*()
-- Added CONFIG_RISCV_KPROBES_SIMULATE_KUNIT for more detailed
-  simulate_*() testing
-- Updated insn.tbl based on new merged in changes to riscv-unified-db
-- Link to v1: https://lore.kernel.org/r/20260407-riscv_insn_table-v1-0-54b4736a1e77@gmail.com
 
 ---
-Charlie Jenkins (17):
-      riscv: Introduce instruction table generation
-      riscv: alternatives: Use generated instruction headers for patching code
-      riscv: kgdb: Use generated instruction headers
-      riscv: Add kprobes instruction simulation KUnit
-      riscv: kprobes: Use generated instruction headers
-      riscv: cfi: Use generated instruction headers
-      riscv: Maintain epc on misaligned emulation error
-      riscv: Use generated instruction headers for misaligned loads/stores
-      riscv: kvm: Use generated instruction headers for csr code
-      KVM: device: Add test device
-      KVM: riscv: selftests: Add mmio test
-      riscv: kvm: Use generated instruction headers for mmio emulation
-      riscv: kvm: Add emulated test csr
-      KVM: riscv: selftests: Add csr emulation test
-      riscv: kvm: Use generated instruction headers for csr emulation
-      riscv: kexec: Use generated instruction headers for kexec relocations
-      riscv: Remove unused instruction headers
 
- arch/riscv/Kconfig.debug                           |    1 +
- arch/riscv/Makefile                                |    3 +
- arch/riscv/include/asm/Kbuild                      |    1 +
- arch/riscv/include/asm/insn.h                      |  563 +-------
- arch/riscv/include/asm/kvm_host.h                  |   10 +
- arch/riscv/include/asm/kvm_vcpu_insn.h             |    5 +-
- arch/riscv/include/asm/kvm_vcpu_test_csr.h         |   15 +
- arch/riscv/kernel/alternative.c                    |   23 +-
- arch/riscv/kernel/cfi.c                            |    6 +-
- arch/riscv/kernel/kgdb.c                           |  102 +-
- arch/riscv/kernel/machine_kexec_file.c             |   55 +-
- arch/riscv/kernel/probes/decode-insn.c             |    7 +-
- arch/riscv/kernel/probes/simulate-insn.c           |  253 ++--
- arch/riscv/kernel/probes/simulate-insn.h           |    7 +-
- arch/riscv/kernel/tests/Kconfig.debug              |   13 +
- arch/riscv/kernel/tests/kprobes/Makefile           |    2 +
- .../kernel/tests/kprobes/test-kprobes-simulate.c   |  250 ++++
- arch/riscv/kernel/tests/kprobes/test-kprobes.h     |    6 +
- arch/riscv/kernel/traps_misaligned.c               |  209 ++-
- arch/riscv/kvm/Kconfig.debug                       |   16 +
- arch/riscv/kvm/Makefile                            |    1 +
- arch/riscv/kvm/vcpu_insn.c                         |  264 ++--
- arch/riscv/kvm/vcpu_test_csr.c                     |   21 +
- arch/riscv/tools/Makefile                          |   22 +
- arch/riscv/tools/insn.tbl                          | 1392 ++++++++++++++++++++
- arch/riscv/tools/insn_tbl.sh                       |  258 ++++
- include/uapi/linux/kvm.h                           |    2 +
- lib/Kconfig.debug                                  |    6 +
- tools/testing/selftests/kvm/Makefile.kvm           |    2 +
- tools/testing/selftests/kvm/riscv/csr_test.c       |  133 ++
- tools/testing/selftests/kvm/riscv/mmio_test.c      |  189 +++
- virt/kvm/Kconfig.debug                             |   16 +
- virt/kvm/Makefile.kvm                              |    1 +
- virt/kvm/kvm_main.c                                |    8 +
- virt/kvm/mmio_test.c                               |  103 ++
- virt/kvm/mmio_test.h                               |   18 +
- 36 files changed, 2951 insertions(+), 1032 deletions(-)
+These function expansions are very simple and almost expand to the same
+thing in the new and old version. The main difference is
+riscv_insn_auipc_extract_imm() in the new version expands to:
+
+((_insn >> 12 & GENMASK(19, 0)) << 12)
+
+while it expands to the following in the old version:
+
+((_insn >> 0) & GENMASK(31, 12))
+
+These are the same thing, but GCC is unable to properly optimize the
+second one so the first one ends up using almost half as many
+instructions. With this finding and other similar examples, I made
+the generated headers construct in the first way to help GCC optimize
+all of these functions.
+
+Brute force can also be checked with this code:
+
+void check_auipc_jalr() {
+	for (unsigned int auipc = 0; auipc < ((1ULL << 12) - 1); auipc++) {
+		for (unsigned int jalr = 0; jalr < ((1ULL << 20) - 1); jalr++) {
+			unsigned int auipc_t=riscv_insn_auipc(auipc, 0), jalr_t=riscv_insn_jalr(jalr, 0, 0), auipc_t2=riscv_insn_auipc(auipc, 0), jalr_t2=riscv_insn_jalr(jalr, 0, 0);
+			riscv_alternative_fix_auipc_jalr(&auipc_t, &jalr_t, 0);
+			riscv_alternative_fix_auipc_jalr2(&auipc_t2, &jalr_t2, 0);
+
+			if (auipc_t != auipc_t2) {
+				printf("auipcs don't match %u, %u: %u != %u\n", auipc, jalr, auipc_t, auipc_t2);
+				return;
+			}
+
+			if (jalr_t != jalr_t2) {
+				printf("jalrs don't match %u: %u != %u\n", i, jalr_t, jalr_t2);
+			}
+		}
+	}
+}
 ---
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-change-id: 20260114-riscv_insn_table-38495495dfd3
+ arch/riscv/include/asm/insn.h   | 74 -----------------------------------------
+ arch/riscv/kernel/alternative.c | 23 +++++++++----
+ 2 files changed, 17 insertions(+), 80 deletions(-)
 
-Best regards,
---  
-- Charlie
+diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+index d562b2b40ba1..d0e137f9bcd7 100644
+--- a/arch/riscv/include/asm/insn.h
++++ b/arch/riscv/include/asm/insn.h
+@@ -514,78 +514,4 @@ static __always_inline bool riscv_insn_is_branch(u32 code)
+ 
+ #define RVV_EXTRACT_VL_VS_WIDTH(x) RVFDQ_EXTRACT_FL_FS_WIDTH(x)
+ 
+-/*
+- * Get the immediate from a J-type instruction.
+- *
+- * @insn: instruction to process
+- * Return: immediate
+- */
+-static inline s32 riscv_insn_extract_jtype_imm(u32 insn)
+-{
+-	return RV_EXTRACT_JTYPE_IMM(insn);
+-}
+-
+-/*
+- * Update a J-type instruction with an immediate value.
+- *
+- * @insn: pointer to the jtype instruction
+- * @imm: the immediate to insert into the instruction
+- */
+-static inline void riscv_insn_insert_jtype_imm(u32 *insn, s32 imm)
+-{
+-	/* drop the old IMMs, all jal IMM bits sit at 31:12 */
+-	*insn &= ~GENMASK(31, 12);
+-	*insn |= (RV_X_MASK(imm, RV_J_IMM_10_1_OFF, RV_J_IMM_10_1_MASK) << RV_J_IMM_10_1_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_11_OFF, RV_J_IMM_11_MASK) << RV_J_IMM_11_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_19_12_OFF, RV_J_IMM_19_12_MASK) << RV_J_IMM_19_12_OPOFF) |
+-		 (RV_X_MASK(imm, RV_J_IMM_SIGN_OFF, 1) << RV_J_IMM_SIGN_OPOFF);
+-}
+-
+-/*
+- * Put together one immediate from a U-type and I-type instruction pair.
+- *
+- * The U-type contains an upper immediate, meaning bits[31:12] with [11:0]
+- * being zero, while the I-type contains a 12bit immediate.
+- * Combined these can encode larger 32bit values and are used for example
+- * in auipc + jalr pairs to allow larger jumps.
+- *
+- * @utype_insn: instruction containing the upper immediate
+- * @itype_insn: instruction
+- * Return: combined immediate
+- */
+-static inline s32 riscv_insn_extract_utype_itype_imm(u32 utype_insn, u32 itype_insn)
+-{
+-	s32 imm;
+-
+-	imm = RV_EXTRACT_UTYPE_IMM(utype_insn);
+-	imm += RV_EXTRACT_ITYPE_IMM(itype_insn);
+-
+-	return imm;
+-}
+-
+-/*
+- * Update a set of two instructions (U-type + I-type) with an immediate value.
+- *
+- * Used for example in auipc+jalrs pairs the U-type instructions contains
+- * a 20bit upper immediate representing bits[31:12], while the I-type
+- * instruction contains a 12bit immediate representing bits[11:0].
+- *
+- * This also takes into account that both separate immediates are
+- * considered as signed values, so if the I-type immediate becomes
+- * negative (BIT(11) set) the U-type part gets adjusted.
+- *
+- * @utype_insn: pointer to the utype instruction of the pair
+- * @itype_insn: pointer to the itype instruction of the pair
+- * @imm: the immediate to insert into the two instructions
+- */
+-static inline void riscv_insn_insert_utype_itype_imm(u32 *utype_insn, u32 *itype_insn, s32 imm)
+-{
+-	/* drop possible old IMM values */
+-	*utype_insn &= ~(RV_U_IMM_31_12_MASK);
+-	*itype_insn &= ~(RV_I_IMM_11_0_MASK << RV_I_IMM_11_0_OPOFF);
+-
+-	/* add the adapted IMMs */
+-	*utype_insn |= (imm & RV_U_IMM_31_12_MASK) + ((imm & BIT(11)) << 1);
+-	*itype_insn |= ((imm & RV_I_IMM_11_0_MASK) << RV_I_IMM_11_0_OPOFF);
+-}
+ #endif /* _ASM_RISCV_INSN_H */
+diff --git a/arch/riscv/kernel/alternative.c b/arch/riscv/kernel/alternative.c
+index 7642704c7f18..5e9a74ed97e9 100644
+--- a/arch/riscv/kernel/alternative.c
++++ b/arch/riscv/kernel/alternative.c
+@@ -11,6 +11,7 @@
+ #include <linux/cpu.h>
+ #include <linux/uaccess.h>
+ #include <asm/alternative.h>
++#include <asm/insn.h>
+ #include <asm/module.h>
+ #include <asm/sections.h>
+ #include <asm/vdso.h>
+@@ -78,14 +79,24 @@ static void riscv_alternative_fix_auipc_jalr(void *ptr, u32 auipc_insn,
+ 					     u32 jalr_insn, int patch_offset)
+ {
+ 	u32 call[2] = { auipc_insn, jalr_insn };
++	u32 auipc_imm;
+ 	s32 imm;
+ 
+ 	/* get and adjust new target address */
+-	imm = riscv_insn_extract_utype_itype_imm(auipc_insn, jalr_insn);
++	imm = riscv_insn_auipc_extract_imm(auipc_insn) + riscv_insn_jalr_extract_imm(jalr_insn);
+ 	imm -= patch_offset;
+ 
++	/*
++	 * When the 32-bit immediate is split across auipc and jalr, the
++	 * constructed immediates need to be treated as individually sign
++	 * extended numbers. Add the sign bit of the lower 12 bits to the upper
++	 * 20 bits to undo the bleeding of the sign.
++	 */
++	auipc_imm = (imm & BIT(11)) << 1;
++
+ 	/* update instructions */
+-	riscv_insn_insert_utype_itype_imm(&call[0], &call[1], imm);
++	riscv_insn_auipc_insert_imm(&call[0], auipc_imm);
++	riscv_insn_jalr_insert_imm(&call[1], imm);
+ 
+ 	/* patch the call place again */
+ 	patch_text_nosync(ptr, call, sizeof(u32) * 2);
+@@ -96,11 +107,11 @@ static void riscv_alternative_fix_jal(void *ptr, u32 jal_insn, int patch_offset)
+ 	s32 imm;
+ 
+ 	/* get and adjust new target address */
+-	imm = riscv_insn_extract_jtype_imm(jal_insn);
++	imm = riscv_insn_jal_extract_imm(jal_insn);
+ 	imm -= patch_offset;
+ 
+ 	/* update instruction */
+-	riscv_insn_insert_jtype_imm(&jal_insn, imm);
++	riscv_insn_jal_insert_imm(&jal_insn, imm);
+ 
+ 	/* patch the call place again */
+ 	patch_text_nosync(ptr, &jal_insn, sizeof(u32));
+@@ -127,7 +138,7 @@ void riscv_alternative_fix_offsets(void *alt_ptr, unsigned int len,
+ 				continue;
+ 
+ 			/* if instruction pair is a call, it will use the ra register */
+-			if (RV_EXTRACT_RD_REG(insn) != 1)
++			if (riscv_insn_jalr_extract_xd(insn) != 1)
+ 				continue;
+ 
+ 			riscv_alternative_fix_auipc_jalr(alt_ptr + i * sizeof(u32),
+@@ -136,7 +147,7 @@ void riscv_alternative_fix_offsets(void *alt_ptr, unsigned int len,
+ 		}
+ 
+ 		if (riscv_insn_is_jal(insn)) {
+-			s32 imm = riscv_insn_extract_jtype_imm(insn);
++			s32 imm = riscv_insn_jal_extract_imm(insn);
+ 
+ 			/* Don't modify jumps inside the alternative block */
+ 			if ((alt_ptr + i * sizeof(u32) + imm) >= alt_ptr &&
+
+-- 
+2.54.0
 
