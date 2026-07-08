@@ -1,66 +1,69 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439E9340260
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 10:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36246430303
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783507922; cv=none; b=fWWnTtHBdYjv55qvD69JzxQHBPkn3UPadyFk2WXohI3kbtjgzYnqrcujF5jzpi4tmxlSToxeo8okDUxAhUtl95o7z5vIHSvB6kW8Y+RE1cAjkAVVs7Z2+8RI5PpwmszIsVuAAJ1cf4+B5faw2O7Lhl4INdnwdL49hPH+fBDPjqk=
+	t=1783507930; cv=none; b=koPUtStxW7b5I84tKayFd6Vkzton+jXRdrZnd9+tl0FEwh1VPFxAcm5wJOGSRYebU23Ys/kIH3bTMmwL6e8pmoWjhYFORnT/6Ibux4A/BE2fKuM+DIao9RHu45BeRZOlQk2CzDRnenkKHlKhGasoCKuwjtgrDyWe/j+dKA+4Y+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783507922; c=relaxed/simple;
-	bh=HIK7Sfb7KJrkhBoUysnqiR/CTzqJKR3V7dUHJZLJh9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BMTHCJi5vnCD3JzYl/FWijKrOxHXXM84xPhibe0cVTzqWTWnj6Fmmc4TvoR95xSpZSD60m+JB5KIJvZyZdmdA/UdTbC33U80m3pMQFtwQtRxXbSnh1r9SAVgSW8PwoVQx84F+2O7TpsiYXFw4LRXou+lmbzJMuufTt/0gTzzaAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oRsz2gwW; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1783507930; c=relaxed/simple;
+	bh=7wqA7DrcsMr+6AhR13qePbNMGdHsHucOD3wBg3pie7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qvl6olVLoW5h3DAWZynJ8DDPvlCU+MuuehZcVmBmaSMS4KuehJZTEVpr7bFJ4No2M7Kc++33KF13pec0hDJrdZtQvEK7JDrSJ10dclCU/XcPbcl3ow/RwVbRB3pz0uob6ShhHestOD9oa0SpHJ9aQTMSttxkNlfBfU5jG/AfYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AgQjKPuD; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oRsz2gwW"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AgQjKPuD"
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6688IDoX2501467;
-	Wed, 8 Jul 2026 10:51:46 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6688IKBK2501587;
+	Wed, 8 Jul 2026 10:51:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=u9sYlIvETNxWVuQUv9U2arMtkAyz2YI2oezQ8hfpJ
-	3o=; b=oRsz2gwWYZ3+ZsqK/sw74WniQziP/ECrxt6ujiqvCFN4JAqDrxVcj/CBQ
-	DVgkKr2OY40pihEj8UfWb/behxT0NY97gLusXYYe7JO1dvcbPPyO+zKzGmVz/2fX
-	wuTLyrU1GJ85Hp1ExvcdCRgG9Dsme6a8e7faDfhdVsGwu0LGElRnLVUFvhty2yaW
-	bQhyRiQBaUgZZE+Uno8bAGrBD/CLx3dZiRWeyt3FF02DeIUThjNfxOhJjTSgstPg
-	kmU8j3bH+Qm6lyf19jkuHnhJLepbe/Xju7oLI2JAMqmedMbjWCZtPQzXHQx+FtAp
-	64Aa7+GRwa3qfBUD0idyNdY0K+H4A==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw4v05m-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=dFy2K/Ylk9EZq5dXQ
+	ZUGrgqCeqMdkBJhgs8qqL1CvgE=; b=AgQjKPuDwoxtKbTBphr50kjhpHv/KWvMP
+	ziUH6AmpTK371eWP7uqO91AiAvzb5A7JJ5+mbvxHuAGSZqGGuzLMOxcCSPKyMpbk
+	Waog2G1evq/rLjDW/6cNPOe1xCYxjppeYMl3vr4oOAkQT/vaxduJeYwbLxWr937I
+	wZqPnYXkyuw4lxkvCJepN2GczwWj8GmzW+pj8OyEXaU7MiSKUSlEq3/UoBzOJWbi
+	6s0PuNXBCLvTcT7VslXGuOJRDowje0SmDwgeXAxUzms/V2QdsB8tD8QEr0qA+H8m
+	BOgOJdNhUmLPI1PvzMlaeU5y9nZEeyjGi6gnkVmTPVjrCiukmaBQA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw4v060-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jul 2026 10:51:46 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 668Anf7d023502;
-	Wed, 8 Jul 2026 10:51:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7eqg7dyu-1
+	Wed, 08 Jul 2026 10:51:56 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 668AndlK011258;
+	Wed, 8 Jul 2026 10:51:55 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7cvw7t8x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jul 2026 10:51:45 +0000 (GMT)
+	Wed, 08 Jul 2026 10:51:55 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 668Apf8V61538582
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 668AppYH51052880
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Jul 2026 10:51:41 GMT
+	Wed, 8 Jul 2026 10:51:51 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A48ED2004D;
-	Wed,  8 Jul 2026 10:51:41 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2036D2004B;
+	Wed,  8 Jul 2026 10:51:51 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7BD9B20040;
-	Wed,  8 Jul 2026 10:51:38 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 010D620043;
+	Wed,  8 Jul 2026 10:51:48 +0000 (GMT)
 Received: from li-18a0a34c-33fc-11b2-a85c-d9f1631c5692.ibm.com (unknown [9.39.26.49])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Jul 2026 10:51:38 +0000 (GMT)
+	Wed,  8 Jul 2026 10:51:47 +0000 (GMT)
 From: Chinmay Rath <rathc@linux.ibm.com>
 To: thuth@redhat.com
 Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
         linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
         andrew.jones@linux.dev, sbhat@linux.ibm.com,
         Chinmay Rath <rathc@linux.ibm.com>
-Subject: [kvm-unit-tests PATCH 0/6] powerpc improvements
-Date: Wed,  8 Jul 2026 16:21:16 +0530
-Message-ID: <20260708105122.1177210-1-rathc@linux.ibm.com>
+Subject: [kvm-unit-tests PATCH 2/6] configure: Make arch_libdir a first-class entity
+Date: Wed,  8 Jul 2026 16:21:18 +0530
+Message-ID: <20260708105122.1177210-3-rathc@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260708105122.1177210-1-rathc@linux.ibm.com>
+References: <20260708105122.1177210-1-rathc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,24 +73,24 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: v9vLOWwA-r0fFO7U2TRC-ZOzEhhSFmKl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX9uOIighe0I5Q
- yZ/qBU83qw1ncvpc4k3zZTmFpc0N79zATL0JPgkNYoCrn6gP1Jzs63aDKLUEeE0+RXX881dt9w6
- dkrzekVB3gMt6PQhgRoWE55Mc1R7v9Kx1HRpbIm8UQWT5lRmnfjEaHKvS1Eq0q/ETGhMDQozhYY
- nZddgsKrAwJ7bKX4LOaosqnfftc0EzpMDR1DXV6a+S5U3p/z38l21yQe7oAvwu3O+FQjEP5ENNp
- aQ3rEbgW4VhM0IrIsy5pzHT8hnRIkQD8calR9GtSvVgltTj4SHonW21ii27+H3G/sO2w+KXpTp3
- q4+DBUe+BkbKljL2lE0mHPej2xTwxz+Vq9nARWe3eSg6i9H5hJD67FnspMkElP55cj/vs/+ggJ2
- NaSdoTQL8sTjN8ht+dIqHg+nkNxKhvv7iw+FrHA/NKYJj38nz5LVOG/uILJ1TLgiqdGl3ew8KE0
- vm6NuLShZFBftelyIUg==
-X-Proofpoint-ORIG-GUID: j8QmQ9qetwYtgVkanB61CEyb2ZiU2QSB
-X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4e2bc2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-GUID: ocbAyFv0NfBIyjuVGm7dmvNT2bgZYCCW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX3Oi4J89+1XnI
+ +Mdt0K2lVT5r0wRJdUOWB1Y92ohmyZItdXwD/HzILuZutfYPlMg+J28BeqjR7dY1Yf2aetq5Rid
+ Sc0HJ/pSDhQvo/KWjI7e3W4a8TDYjIPXervf65VTwETeXvxIfVBuqS9k4hohygZs4PMgrqiw9cI
+ c8V1ZDw5yxwMbb1t5uyDytXPCuZ9+DFAP8V8FbI6dDLPOE0E1FUUtkALnFe4x4hZnO1q72DPJ/T
+ P5kSeZLatU4e9ffYtPV1c3mlubqyKSYXyqit8zVIK8MHHDp/gdoSPX4xxQ5ZaKGsapYAu5VagzP
+ oGkosl8pr91KKSme9HBNoHcc6vGexW41TCBYg0+66cGPIf+GSLdRy01M5BlsKxrI7f3Oq+CpzwS
+ Tgjo5y+uqeq86ptLALi9dQ32CSc3RcVgsHNoDC8CltRKYhh/2EKDuMAK9uGFJNYgim1GvrksLe4
+ HQdIwtY+uUtN8pHpYyA==
+X-Proofpoint-ORIG-GUID: cleThC47aVcKO8lkbS5hJiMfGzsknu6c
+X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4e2bcc cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
- a=p0WdMEafAAAA:8 a=qbmh3WIrUlWDy8wL8UgA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX5aO0wHYZeoHI
- ZP3RiwRFfR6vVcvWj1MR749jCnmy+4SuH1gUfZ1x64+T3q1M2Uv3Qpa10RkvOhWaj+e5flmYSmz
- o8UycDz5dTbBu/k1E02AUdbGCs/RAWc=
+ a=U7nrCbtTmkRpXpFmAIza:22 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
+ a=TgLM54nR-fRGc_TkKysA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX2qnhtqn7pXkG
+ b2hKH/l5kR39ft5to38p/V/VYD6P9EN57CudrgVamIbkID/+GJLuqDD6V7hZHK7ddcPnVIFFCul
+ GdtMLjq6r7m3z6uu9vBYbRdGivtAsrs=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-08_01,2026-07-06_02,2025-10-01_01
@@ -97,135 +100,107 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080105
 
-This series aims to add a couple of new powerpc tests and improve the
-powerpc build structure.
+From: Nicholas Piggin <npiggin@gmail.com>
 
-This is originally Nick's work. The last version (v10) of which can be seen here :
-https://lore.kernel.org/linuxppc-dev/20240612052322.218726-1-npiggin@gmail.com/
-Couple of patches from the series are already merged.
+arch_libdir was brought in to improve the heuristic determination of
+the lib/ directory based on arch and testdir names, but it did not
+entirely clean that mess up.
 
-Since it has been 2 years since this series was posted, I originally
-posted this as a RFC. This v1 series has changes accomodating the review comments
-received in the RFC :
-https://lore.kernel.org/kvm/20260602064806.3101025-1-rathc@linux.ibm.com/
+Remove the arch_libdir->arch->testdir heuristic and just require
+everybody sets arch_libdir correctly. Fail if the lib/arch or
+lib/arch/asm directories can not be found.
 
-I have rebased the patches to the upstream state.
-For the patches which did not require any changes in the existing upstream code,
-I have retained the "Reviewed-by"s and "Acked-by" (patch 3,5 & 6) from
-Nick's series. I have also added Andrew's "Reviewed-by" received on
-patch 2 in the RFC. Nick had originally introduced powernv tests as well.
-Removed it for now since it was causing CI failure in the current upstream.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+---
+ Makefile  |  2 +-
+ configure | 20 ++++++++++++--------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-Link to Gitlab tree with patches :
-https://gitlab.com/rathc/kvm-unit-tests/-/tree/ppc64
-Link to Gitlab pipeline :
-https://gitlab.com/rathc/kvm-unit-tests/-/pipelines/2661271889
-
-Change log from RFC :
-1. Patch 2: Added Andrew's "Reviewed-by".
-2. Patch 4: Removed usage of gitlab-ci group to run test - Thomas
-   It would be nice to make use of the gitlab-ci group, but doing the
-   change of all archs would make sense in a separate series. I look
-   forward to doing that.
-3. Patch 6: Removed addition of panic test in gitlab-ci group - Thomas
-
-There was a discussion on the build failing in Travis CI with Clang, in the
-RFC, which I have addressed there.
-
-Nicholas Piggin (6):
-  powerpc: add pmu tests
-  configure: Make arch_libdir a first-class entity
-  powerpc: Remove remnants of ppc64 directory and build structure
-  powerpc: gitlab CI update
-  scripts/arch-run.bash: Fix run_panic() success exit status
-  powerpc: Add a panic test
-
- .gitlab-ci.yml                             |  21 +-
- MAINTAINERS                                |   1 -
- Makefile                                   |   2 +-
- configure                                  |  21 +-
- lib/{ppc64 => powerpc}/asm-offsets.c       |   0
- lib/{ppc64 => powerpc}/asm/asm-offsets.h   |   0
- lib/{ppc64 => powerpc}/asm/atomic.h        |   0
- lib/{ppc64 => powerpc}/asm/barrier.h       |   4 +-
- lib/{ppc64 => powerpc}/asm/bitops.h        |   4 +-
- lib/{ppc64 => powerpc}/asm/io.h            |   4 +-
- lib/{ppc64 => powerpc}/asm/mmu.h           |   0
- lib/{ppc64 => powerpc}/asm/opal.h          |   4 +-
- lib/{ppc64 => powerpc}/asm/page.h          |   6 +-
- lib/{ppc64 => powerpc}/asm/pgtable-hwdef.h |   6 +-
- lib/{ppc64 => powerpc}/asm/pgtable.h       |   2 +-
- lib/powerpc/asm/processor.h                |   2 +
- lib/{ppc64 => powerpc}/asm/ptrace.h        |   6 +-
- lib/powerpc/asm/reg.h                      |   9 +
- lib/powerpc/asm/rtas.h                     |   1 +
- lib/powerpc/asm/setup.h                    |   1 +
- lib/powerpc/asm/spinlock.h                 |   6 +
- lib/powerpc/asm/stack.h                    |   3 +
- lib/{ppc64 => powerpc}/asm/vpa.h           |   0
- lib/{ppc64 => powerpc}/mmu.c               |   0
- lib/{ppc64 => powerpc}/opal-calls.S        |   0
- lib/{ppc64 => powerpc}/opal.c              |   0
- lib/powerpc/rtas.c                         |  16 +
- lib/powerpc/setup.c                        |  20 +
- lib/{ppc64 => powerpc}/stack.c             |   0
- lib/ppc64/.gitignore                       |   1 -
- lib/ppc64/asm/handlers.h                   |   1 -
- lib/ppc64/asm/hcall.h                      |   1 -
- lib/ppc64/asm/memory_areas.h               |   6 -
- lib/ppc64/asm/ppc_asm.h                    |   1 -
- lib/ppc64/asm/processor.h                  |   1 -
- lib/ppc64/asm/reg.h                        |   1 -
- lib/ppc64/asm/rtas.h                       |   1 -
- lib/ppc64/asm/setup.h                      |   1 -
- lib/ppc64/asm/smp.h                        |   1 -
- lib/ppc64/asm/spinlock.h                   |   6 -
- lib/ppc64/asm/stack.h                      |  11 -
- lib/ppc64/asm/time.h                       |   1 -
- powerpc/Makefile                           | 111 +++-
- powerpc/Makefile.common                    |  94 ----
- powerpc/Makefile.ppc64                     |  31 --
- powerpc/pmu.c                              | 567 +++++++++++++++++++++
- powerpc/run                                |   2 +-
- powerpc/selftest.c                         |  17 +-
- powerpc/unittests.cfg                      |  17 +-
- scripts/arch-run.bash                      |   1 +
- 50 files changed, 817 insertions(+), 195 deletions(-)
- rename lib/{ppc64 => powerpc}/asm-offsets.c (100%)
- rename lib/{ppc64 => powerpc}/asm/asm-offsets.h (100%)
- rename lib/{ppc64 => powerpc}/asm/atomic.h (100%)
- rename lib/{ppc64 => powerpc}/asm/barrier.h (83%)
- rename lib/{ppc64 => powerpc}/asm/bitops.h (69%)
- rename lib/{ppc64 => powerpc}/asm/io.h (50%)
- rename lib/{ppc64 => powerpc}/asm/mmu.h (100%)
- rename lib/{ppc64 => powerpc}/asm/opal.h (90%)
- rename lib/{ppc64 => powerpc}/asm/page.h (94%)
- rename lib/{ppc64 => powerpc}/asm/pgtable-hwdef.h (93%)
- rename lib/{ppc64 => powerpc}/asm/pgtable.h (99%)
- rename lib/{ppc64 => powerpc}/asm/ptrace.h (89%)
- create mode 100644 lib/powerpc/asm/spinlock.h
- rename lib/{ppc64 => powerpc}/asm/vpa.h (100%)
- rename lib/{ppc64 => powerpc}/mmu.c (100%)
- rename lib/{ppc64 => powerpc}/opal-calls.S (100%)
- rename lib/{ppc64 => powerpc}/opal.c (100%)
- rename lib/{ppc64 => powerpc}/stack.c (100%)
- delete mode 100644 lib/ppc64/.gitignore
- delete mode 100644 lib/ppc64/asm/handlers.h
- delete mode 100644 lib/ppc64/asm/hcall.h
- delete mode 100644 lib/ppc64/asm/memory_areas.h
- delete mode 100644 lib/ppc64/asm/ppc_asm.h
- delete mode 100644 lib/ppc64/asm/processor.h
- delete mode 100644 lib/ppc64/asm/reg.h
- delete mode 100644 lib/ppc64/asm/rtas.h
- delete mode 100644 lib/ppc64/asm/setup.h
- delete mode 100644 lib/ppc64/asm/smp.h
- delete mode 100644 lib/ppc64/asm/spinlock.h
- delete mode 100644 lib/ppc64/asm/stack.h
- delete mode 100644 lib/ppc64/asm/time.h
- delete mode 100644 powerpc/Makefile.common
- delete mode 100644 powerpc/Makefile.ppc64
- create mode 100644 powerpc/pmu.c
-
+diff --git a/Makefile b/Makefile
+index 42ef5826..8e002043 100644
+--- a/Makefile
++++ b/Makefile
+@@ -12,7 +12,7 @@ vpath %.s $(SRCDIR)
+ vpath %.S $(SRCDIR)
+ 
+ libdirs-get = $(shell [ -d "lib/$(1)" ] && echo "lib/$(1) lib/$(1)/asm")
+-ARCH_LIBDIRS := $(call libdirs-get,$(ARCH_LIBDIR)) $(call libdirs-get,$(TEST_DIR))
++ARCH_LIBDIRS := $(call libdirs-get,$(ARCH_LIBDIR))
+ OBJDIRS := $(ARCH_LIBDIRS)
+ 
+ DESTDIR := $(PREFIX)/share/kvm-unit-tests/
+diff --git a/configure b/configure
+index 6d549d1e..aeb5570c 100755
+--- a/configure
++++ b/configure
+@@ -274,7 +274,6 @@ fi
+ arch_name=$arch
+ [ "$arch" = "aarch64" ] && arch="arm64"
+ [ "$arch_name" = "arm64" ] && arch_name="aarch64"
+-arch_libdir=$arch
+ 
+ if [ "$arch" = "riscv" ]; then
+     echo "riscv32 or riscv64 must be specified"
+@@ -373,8 +372,10 @@ fi
+ 
+ if [ "$arch" = "i386" ] || [ "$arch" = "x86_64" ]; then
+     testdir=x86
++    arch_libdir=x86
+ elif [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
+     testdir=arm
++    arch_libdir=$arch
+     if [ "$target" = "qemu" ]; then
+         : "${uart_early_addr:=0x9000000}"
+     elif [ "$target" = "kvmtool" ]; then
+@@ -385,6 +386,7 @@ elif [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
+     fi
+ elif [ "$arch" = "ppc64" ]; then
+     testdir=powerpc
++    arch_libdir=ppc64
+     firmware="$testdir/boot_rom.bin"
+     if [ "$endian" != "little" ] && [ "$endian" != "big" ]; then
+         echo "You must provide endianness (big or little)!"
+@@ -400,6 +402,7 @@ elif [ "$arch" = "riscv32" ] || [ "$arch" = "riscv64" ]; then
+     fi
+ elif [ "$arch" = "s390x" ]; then
+     testdir=s390x
++    arch_libdir=s390x
+ else
+     echo "arch $arch is not supported!"
+     arch=
+@@ -409,6 +412,10 @@ if [ ! -d "$srcdir/$testdir" ]; then
+     echo "$srcdir/$testdir does not exist!"
+     exit 1
+ fi
++if [ ! -d "$srcdir/lib/$arch_libdir" ]; then
++    echo "$srcdir/lib/$arch_libdir does not exist!"
++    exit 1
++fi
+ 
+ if [ "$efi" = "y" ] && [ -f "$srcdir/$testdir/efi/run" ]; then
+     ln -fs "$srcdir/$testdir/efi/run" $testdir-run
+@@ -471,15 +478,12 @@ fi
+ # link lib/asm for the architecture
+ rm -f lib/asm
+ asm="asm-generic"
+-if [ -d "$srcdir/lib/$arch/asm" ]; then
+-	asm="$srcdir/lib/$arch/asm"
+-	mkdir -p "lib/$arch"
+-elif [ -d "$srcdir/lib/$arch_libdir/asm" ]; then
++if [ -d "$srcdir/lib/$arch_libdir/asm" ]; then
+ 	asm="$srcdir/lib/$arch_libdir/asm"
+ 	mkdir -p "lib/$arch_libdir"
+-elif [ -d "$srcdir/lib/$testdir/asm" ]; then
+-	asm="$srcdir/lib/$testdir/asm"
+-	mkdir -p "lib/$testdir"
++else
++	echo "$srcdir/lib/$arch_libdir/asm does not exist"
++	exit 1
+ fi
+ ln -sf "$asm" lib/asm
+ mkdir -p lib/generated lib/libfdt
 -- 
 2.53.0
 
