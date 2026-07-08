@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D8837C11C;
-	Wed,  8 Jul 2026 18:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3BD3D0C07;
+	Wed,  8 Jul 2026 19:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783535457; cv=none; b=XGWIhnYlL/e0VUrhZ+0qRquJI5F+hi3muLTfdQ6UT2G6racN0SLlk8RzQjL2egjZuEyNfF9359OYWLDDepOrljdfBnV1HL0rP8t3/N9xVTIUVGwnO8RQNaeFwX98Z4vIwe/WlKiT9Osj1uxrGgGPhDRnXMdBksUJ7zSz+gjr118=
+	t=1783537268; cv=none; b=AnMp+B0HM/9rtwlfIt1m4NTXvmdI78gCsbUF1LdYjxp/M1HlP+2r6B3NkXOKSZ8IsZQIuJNqMFHb3jBr/NHNVcd+92MKEEomP10Yv44QhFNGiZydQ6/eLFRMyb/jV/Ul1g9GknWBCuJdenbduWLUVAN9aUj1PEnuasYBg3g/YN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783535457; c=relaxed/simple;
-	bh=PeEpSEZq1+VMqDqAHelt/AmWF/XCE8R8BLld6KCqkC0=;
+	s=arc-20240116; t=1783537268; c=relaxed/simple;
+	bh=JmvmXqvoJhxel/XCqY2ga/B/piNjvTPEr8lOPuxpubA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bArtUv1mqXYz9u4lGTZXTEQXWMQAVqNCfV9Jbbs+4me0GDKGsVB7skwfhGTehcZHeH4H10NmqOvR8cboRFGNuMhgT2puS8WkJPcvRixjHcJPDTm6tsIDBXR+oJXDgFXNUL7AUkQ2HmFATrZ/qsGp+rgOm1AV/OLkwVXbAnSooDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eF97BtCU; arc=none smtp.client-ip=198.175.65.13
+	 In-Reply-To:Content-Type; b=aXwPGJGb2zvuU3NOrM95sclFhylRtBAe2OIwQinjut+I8XAU1j+skRnGbgC4UzC2ciiVolNZbiy65MjmV8O2WCmaKMlZyQP7UfSrx1VFqFKdaoL3jAKagV37r1SjJThv9/n+lYvNYO2OhtBBxPlNqSvrn0RxoZ5nDTXyh1wNnAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ox/qzpCj; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eF97BtCU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ox/qzpCj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783535456; x=1815071456;
+  t=1783537266; x=1815073266;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=PeEpSEZq1+VMqDqAHelt/AmWF/XCE8R8BLld6KCqkC0=;
-  b=eF97BtCUkzh5zFfaNbLJ0283TFbT+vGX4KlGqj9jC2AaaYI/wJ4zs/tW
-   1UYz/dGvBZwh5VFI27BMkAvqcxsn0rTRk0arkrVtcneBTwQNSmhKAQtf8
-   UKz2VSlTPrC+GCsFwlFtuhkDxgbsOnKPNtmGtILpOOgS2Gv3/ujivLvHe
-   GTpVjFpdNJt1Zii2/gwNssTCyseTChiIPEPi7QDVx5ec8men9wg0nJ9fL
-   HRo+VAKEBOkVR9iTKSO3RNubbeDswol6AJrwHepo85atPVMXqOERYD+ye
-   iXVlCI/cAL3UwQ5+qQCof9+gVwW/wHNHsHiUT9OGDuJ50TVY/fE5bJsVR
-   Q==;
-X-CSE-ConnectionGUID: g4Dk7s9YS3ekRktw3YyxPw==
-X-CSE-MsgGUID: pcCldno5TvyefzcoM7TuWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95367632"
+  bh=JmvmXqvoJhxel/XCqY2ga/B/piNjvTPEr8lOPuxpubA=;
+  b=Ox/qzpCjVd4vPGM6qroNVc30olmwg8ENwV9KqmGs9r473Ct7i0nWdVC2
+   974ePQiU9yTSMZad3NFxDN9NQ6GDu9CIFbzIHRgcz71Xd/P+qMnjsw0af
+   rvyIjtjdaJB/hSHQtX6DVNyruj/H/u07dMXULslDQq2nYPHhb5WX/eNrC
+   4K+ARjDk5rjGSUVUNhH+/+qFJzgcm7kYvyWY1wXDHIWFUA07mkgfdZt19
+   a7/kux3FL16dMZEciOrg4iqNw5cv/JYZY4FVUOiV2FliBUoN5O86aO92+
+   6OMuz3D8iVkK5wVWiIvZlz5Kb5OZoSPI4tplgX7hMaCreve8LYkDXHwfG
+   g==;
+X-CSE-ConnectionGUID: TG1A1FebR5S4E0wed8ScfA==
+X-CSE-MsgGUID: ESx5ZoUMTYKzUKWcPOdrTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="94567117"
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="95367632"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 11:30:55 -0700
-X-CSE-ConnectionGUID: wDfqHoS3T9OFsDlcr0el2A==
-X-CSE-MsgGUID: WAw7ajAbSuCqb6nB/coM7w==
+   d="scan'208";a="94567117"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 12:01:05 -0700
+X-CSE-ConnectionGUID: 3obKFQgzQqS3quORMBg99Q==
+X-CSE-MsgGUID: punpz2zRRdqR7+3AYOReyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="278751101"
+   d="scan'208";a="251717242"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.66]) ([10.125.111.66])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 11:30:54 -0700
-Message-ID: <a16ebde9-e275-4f32-9759-a9378b0e36bc@intel.com>
-Date: Wed, 8 Jul 2026 11:30:51 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 12:01:04 -0700
+Message-ID: <1d60cebf-4764-4785-bf01-8ca59ab2cc7d@intel.com>
+Date: Wed, 8 Jul 2026 12:01:01 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,19 +52,17 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
- control structures
-To: Sean Christopherson <seanjc@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, hpa@zytor.com, kas@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com,
- pbonzini@redhat.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org,
- chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
+ tdx_pamt_get/put()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
+ kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
+ tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
+ yan.y.zhao@intel.com, kai.huang@intel.com
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-8-rick.p.edgecombe@intel.com>
- <akw-dgBE_dycts0o@google.com>
+ <20260526023515.288829-6-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -110,20 +108,38 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <akw-dgBE_dycts0o@google.com>
+In-Reply-To: <20260526023515.288829-6-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/6/26 16:47, Sean Christopherson wrote:
->> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> [sean: handle alloc+free+reclaim in one patch]
->> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Where did this come from?  I don't think me squashing two patches together
-> warrants a Co-developed-by.
+On 5/25/26 19:35, Rick Edgecombe wrote:
+> +	scoped_guard(spinlock, &pamt_lock) {
+> +		/*
+> +		 * If the pamt page is already added (i.e. refcount >= 1),
+> +		 * then just increment the refcount.
+> +		 */
+> +		if (atomic_read(pamt_refcount)) {
+> +			atomic_inc(pamt_refcount);
+> +			goto out_free;
+> +		}
 
-FWIW, I think the pendulum has swung way too far in terms of people
-trying to tell the whole tortured story of their patches via tags. I
-prefer some prose which is less formal *and* more descriptive than tags.
+I think this pattern is a good fit for atomic_inc_not_zero().
 
-Sounds like Sean and I are mostly on the same page here too, which is a
-bonus.
+I think it's also fair to say that using an atomic_t here is unnecessary
+because of the spinlock protecting all accesses. But I also understand
+that it's here because you want to optimize this path to avoid the
+spinlock in the future.
+
+This is not a hot enough path to care about an atomic_t vs. int. In
+practice, the performance is going to be bottlenecked on the big
+spinlock, *not* the atomic_t overhead.
+
+I'd just add a changelog blurb to handwave it away for the moment:
+
+	The pamt_refcount[]s are atomic_t's. They do not strictly need
+	to be because all access is protected by pamt_lock. The overhead
+	of an atomic_t in this situation is minuscule compared to the
+	global lock. Leave the (unnecessary) atomic_t in place to enable
+	future optimization with minimal churn.
+
+Does that work for everybody?
