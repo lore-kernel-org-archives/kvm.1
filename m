@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3DB3F12EE;
-	Wed,  8 Jul 2026 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F88F40927C;
+	Wed,  8 Jul 2026 15:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524166; cv=none; b=eXgX3pk4TADtSdBinaGBsCSdB+i8OEAtTm0AXJfWiP0cOWmAySMjHAJd7HVcY73nDpxuWvGT/sZwhUQzUvHwmOaX9vJXYDhSw2XpAvuP6BWjyXg2OHeriLc92jHHhJC3Kv3ZFvNVE3MoGihefVoI9sfji2ovSj0E231RWR9rxCk=
+	t=1783524170; cv=none; b=hYBaFWrzmTyGRC27pXCdc/kNXp3uf63czxhWGOIlF/tc2MxcqnvoVJSncqQFWArkITvpmZzxEit/bJKuDYnwQ3S7Rj8Ny2gpC/04ud/gAwiefhKJ56IlZNqcf6BB0AQtvIOf6Hf9taq6oDRmkPO4gV8E9hEXnZrkD+2J1gJC53o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524166; c=relaxed/simple;
-	bh=apzV4oh9O1P2YQMbrmGXEcX+PtvV3tL6P8GVOtdu8z8=;
+	s=arc-20240116; t=1783524170; c=relaxed/simple;
+	bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgWj9UX2+2tFR0sIwVF4lFCqMvqTWtA9bvliKKhWVm2XYGbYwKSfT3UzBjDs28Q+I42qLw2rJQ7xqBgLnAhFXuZPQxmV0VoDf2+x1yDUXIHf/ITYduAyXsRTLv765K0cwXT4G11l7swkDOkozTVpoKEnlCdg985cMIk8gNBvPoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IyvYvGxN; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=Aa6Vd3BwsO37jMgcvtGsFC0OW/I2ZhRPicaSNyOscxK2Cc9Yiq6kqVoVBmyou7PRm2OVgt6cGDAFrbaexsJIJl9i5Gz+R2ThhQIBJxYPcInk0QhudD13UJAOibzSNsVY6YtwIRXT6HjBvY+oKVXVyxvHbixLUrYFu7TspsrSm5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GsfMciL0; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IyvYvGxN"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GsfMciL0"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 60F781E2F;
-	Wed,  8 Jul 2026 08:22:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39F101CDD;
+	Wed,  8 Jul 2026 08:22:43 -0700 (PDT)
 Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D54F3F66F;
-	Wed,  8 Jul 2026 08:22:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 139593F66F;
+	Wed,  8 Jul 2026 08:22:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783524164; bh=apzV4oh9O1P2YQMbrmGXEcX+PtvV3tL6P8GVOtdu8z8=;
+	t=1783524167; bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyvYvGxNwcS151RrtXbzKfeaWjMCXoY0gD2nfEQcsrmOlrSFdl3L2UAvz0M6SuZl8
-	 58cBb9rMEyxvcXgkGXD9Jb2UUJtkiv59F4v2eILqk0xmUky3zd0Nzjq35lSy2hvQPK
-	 3TJmSQMjfPYxq26YeVlZ+IVGmt1nwL+HBMmquHak=
+	b=GsfMciL0pvMWsMjYvoQ7mx3J9RGFf1CjdhIopt5M/X+JS9uSWBav9lJN5kSJLWHhi
+	 JeTszs6zVskMLMKWATzpxsBYCMz5S1BvBYd1dU57TZAKf/5IjXv5WniAXQ07FOPUlY
+	 3FbB1wbM1duaijNmBztoOrTTO5s2u0n482BfzmQw=
 From: Leonardo Bras <leo.bras@arm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Shuah Khan <shuah@kernel.org>,
@@ -41,9 +41,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v3 2/3] KVM: selftests: Check dirty-ring size before enabling
-Date: Wed,  8 Jul 2026 16:22:27 +0100
-Message-ID: <20260708152232.2568907-3-leo.bras@arm.com>
+Subject: [RFC PATCH v3 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+Date: Wed,  8 Jul 2026 16:22:28 +0100
+Message-ID: <20260708152232.2568907-4-leo.bras@arm.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260708152232.2568907-1-leo.bras@arm.com>
 References: <20260708152232.2568907-1-leo.bras@arm.com>
@@ -53,66 +53,328 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2030; i=leo.bras@arm.com; h=from:subject; bh=apzV4oh9O1P2YQMbrmGXEcX+PtvV3tL6P8GVOtdu8z8=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLL8spUunj7kcfogr9fZqwuOCB/yszf20uAUdCjaelV4w u4YifiYjlIWBjEuBlkxRRbZR/NX8XyfknHkyo8FMHNYmUCGMHBxCsBEnk5k+Ct499RVxb7iLfvr nV//eGcv1VZ6dM+qJ3pOIn8Dmd8pOtxmZOjrk9zwbY46T9wPF85El1cp295XRh/acqaW533cJin 9RFYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11164; i=leo.bras@arm.com; h=from:subject; bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLL8spU+v/B+1LVH0qlmtcQE2WWTDG4W7LdbPG1GVvdeo WsCXokHO0pZGMS4GGTFFFlkH81fxfN9SsaRKz8WwMxhZQIZwsDFKQAT+RXNyLBht9qtX/b7Td/L Wyw503M5ziYjNXNJBltgXK7TnPPXGysZGZ7Ot/hSuukpzyG3CBXO3v/MrG8KjtwXOfHv4v5nRz3 N+rkB
 X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
 Content-Transfer-Encoding: 8bit
 
-As of today, trying to enable dirty-ring with a size bigger than the
-maximum will return an "argument list too long" error.
+dirty_log_test supports both dirty-bitmap and dirty-ring as dirty-page
+tracking mechanisms, while dirty_log_perf_test only supports dirty-bitmap.
 
-Change vm_enable_dirty_ring() to get the maximum size, then compare it to
-the desired size before enabling. If the value is invalid, print a more
-precise error message.
+Add support to dirty-ring on dirty_log_perf_test so it can be used to
+compare performance between changes in the mechanism.
 
 Signed-off-by: Leonardo Bras <leo.bras@arm.com>
 ---
- tools/testing/selftests/kvm/lib/kvm_util.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ .../selftests/kvm/dirty_log_perf_test.c       | 107 ++++++++++++++++--
+ 1 file changed, 98 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 195f3fdae1e3..4ae27ad9f947 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -160,24 +160,35 @@ unsigned int kvm_check_cap(long cap)
- 	ret = __kvm_ioctl(kvm_fd, KVM_CHECK_EXTENSION, (void *)cap);
- 	TEST_ASSERT(ret >= 0, KVM_IOCTL_ERROR(KVM_CHECK_EXTENSION, ret));
+diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+index 69b38791440e..181f521c9be9 100644
+--- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
++++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+@@ -6,61 +6,122 @@
+  *
+  * Copyright (C) 2018, Red Hat, Inc.
+  * Copyright (C) 2020, Google, Inc.
+  */
  
- 	kvm_free_fd(kvm_fd);
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
+ #include <pthread.h>
+ #include <linux/bitmap.h>
++#include <asm/barrier.h>
  
- 	return (unsigned int)ret;
- }
+ #include "kvm_util.h"
+ #include "test_util.h"
+ #include "memstress.h"
+ #include "guest_modes.h"
+ #include "ucall_common.h"
  
- void vm_enable_dirty_ring(struct kvm_vm *vm, u32 ring_size)
- {
--	if (vm_check_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL))
--		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING_ACQ_REL, ring_size);
--	else
--		vm_enable_cap(vm, KVM_CAP_DIRTY_LOG_RING, ring_size);
-+	long cap = KVM_CAP_DIRTY_LOG_RING_ACQ_REL;
-+	int max_size = vm_check_cap(vm, cap);
+ /* How many host loops to run by default (one KVM_GET_DIRTY_LOG for each loop)*/
+ #define TEST_HOST_LOOP_N		2UL
+ 
+ static int nr_vcpus = 1;
+ static u64 guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
+ static bool run_vcpus_while_disabling_dirty_logging;
+ 
+ /* Host variables */
+ static u64 dirty_log_manual_caps;
++static u32 dirty_ring_size;
+ static bool host_quit;
+ static int iteration;
+ static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
++static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
 +
-+	if (!max_size) {
-+		cap = KVM_CAP_DIRTY_LOG_RING;
-+		max_size = vm_check_cap(vm, cap);
++static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
++				struct timespec *ts)
++{
++	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
++	struct timespec start;
++	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
++	u32 idx = *ring_idx;
++	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
++	int cleared, count;
++
++	pthread_mutex_lock(&collect);
++
++	clock_gettime(CLOCK_MONOTONIC, &start);
++
++	while (true) {
++		struct kvm_dirty_gfn *cur;
++
++		cur = &dirty_gfns[idx % ring_size];
++		if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
++			break;
++
++		smp_store_release(&cur->flags, KVM_DIRTY_GFN_F_RESET);
++		idx++;
 +	}
 +
-+	TEST_ASSERT(max_size > 0, "Dirty-ring not supported in this kernel\n");
-+	TEST_ASSERT(ring_size <= max_size && is_power_of_2(ring_size),
-+		    "Invalid dirty-ring size: Should be a power of two "
-+		    "<= %lu entries\n",
-+		    max_size / sizeof(struct kvm_dirty_gfn));
++	count = idx - *ring_idx;
++	*ring_idx = idx;
 +
-+	vm_enable_cap(vm, cap, ring_size);
- 	vm->dirty_ring_size = ring_size;
++	cleared = kvm_vm_reset_dirty_ring(vcpu->vm);
++
++	/* Cleared pages should be the same as collected, as KVM is supposed to
++	 * clear only the entries that have been harvested, and a single vcpu will
++	 * harvest at time.
++	 */
++	TEST_ASSERT(cleared == count, "Reset dirty pages (%u) mismatch "
++		    "with collected (%u)", cleared, count);
++
++	*ts = timespec_add(*ts, timespec_elapsed(start));
++
++	pthread_mutex_unlock(&collect);
++}
+ 
+ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
+ {
+ 	struct kvm_vcpu *vcpu = vcpu_args->vcpu;
+ 	int vcpu_idx = vcpu_args->vcpu_idx;
+ 	u64 pages_count = 0;
+ 	struct kvm_run *run;
+ 	struct timespec start;
+ 	struct timespec ts_diff;
+ 	struct timespec total = (struct timespec){0};
+ 	struct timespec avg;
++	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
++	u32 ring_idx = 0;
+ 	int ret;
+ 
+ 	run = vcpu->run;
+ 
+ 	while (!READ_ONCE(host_quit)) {
+ 		int current_iteration = READ_ONCE(iteration);
++		struct timespec collect = (struct timespec){0};
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+-		ret = _vcpu_run(vcpu);
++
++		do {
++			ret = _vcpu_run(vcpu);
++			if (!use_dirty_ring)
++				break;
++
++			dirty_ring_collect(vcpu, &ring_idx, &collect);
++		} while (run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
++
+ 		ts_diff = timespec_elapsed(start);
+ 
++		if (use_dirty_ring) {
++			ts_diff = timespec_sub(ts_diff, collect);
++			vcpu_dirty_ring_collect[vcpu_idx] = collect;
++		}
++
+ 		TEST_ASSERT(ret == 0, "vcpu_run failed: %d", ret);
+ 		TEST_ASSERT(get_ucall(vcpu, NULL) == UCALL_SYNC,
+ 			    "Invalid guest sync status: exit_reason=%s",
+ 			    exit_reason_str(run->exit_reason));
+ 
+ 		pr_debug("Got sync event from vCPU %d\n", vcpu_idx);
+ 		vcpu_last_completed_iteration[vcpu_idx] = current_iteration;
+ 		pr_debug("vCPU %d updated last completed iteration to %d\n",
+ 			 vcpu_idx, vcpu_last_completed_iteration[vcpu_idx]);
+ 
+@@ -112,42 +173,45 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+ 	struct timespec start;
+ 	struct timespec ts_diff;
+ 	struct timespec get_dirty_log_total = (struct timespec){0};
+ 	struct timespec vcpu_dirty_total = (struct timespec){0};
+ 	struct timespec avg;
+ 	struct timespec clear_dirty_log_total = (struct timespec){0};
+ 	int i;
+ 
+ 	vm = memstress_create_vm(mode, nr_vcpus, guest_percpu_mem_size,
+ 				 p->slots, p->backing_src,
+-				 p->partition_vcpu_memory_access, 0);
++				 p->partition_vcpu_memory_access,
++				 dirty_ring_size);
+ 
+ 	memstress_set_write_percent(vm, p->write_percent);
+ 
+ 	guest_num_pages = (nr_vcpus * guest_percpu_mem_size) >> vm->page_shift;
+ 	guest_num_pages = vm_adjust_num_guest_pages(mode, guest_num_pages);
+ 	host_num_pages = vm_num_host_pages(mode, guest_num_pages);
+ 	pages_per_slot = host_num_pages / p->slots;
+ 
+ 	bitmaps = memstress_alloc_bitmaps(p->slots, pages_per_slot);
+ 
+ 	if (dirty_log_manual_caps)
+ 		vm_enable_cap(vm, KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2,
+ 			      dirty_log_manual_caps);
+ 
+ 	/* Start the iterations */
+ 	iteration = 0;
+ 	host_quit = false;
+ 
+ 	clock_gettime(CLOCK_MONOTONIC, &start);
+-	for (i = 0; i < nr_vcpus; i++)
++	for (i = 0; i < nr_vcpus; i++) {
+ 		vcpu_last_completed_iteration[i] = -1;
++		vcpu_dirty_ring_collect[i] = (struct timespec){0};
++	}
+ 
+ 	/*
+ 	 * Use 100% writes during the population phase to ensure all
+ 	 * memory is actually populated and not just mapped to the zero
+ 	 * page. The prevents expensive copy-on-write faults from
+ 	 * occurring during the dirty memory iterations below, which
+ 	 * would pollute the performance results.
+ 	 */
+ 	memstress_set_write_percent(vm, 100);
+ 	memstress_set_random_access(vm, false);
+@@ -188,20 +252,35 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+ 			while (READ_ONCE(vcpu_last_completed_iteration[i])
+ 			       != iteration)
+ 				;
+ 		}
+ 
+ 		ts_diff = timespec_elapsed(start);
+ 		vcpu_dirty_total = timespec_add(vcpu_dirty_total, ts_diff);
+ 		pr_info("Iteration %d dirty memory time: %ld.%.9lds\n",
+ 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
+ 
++		if (dirty_ring_size) {
++			struct timespec iteration_sum = (struct timespec){0};
++
++			for (i = 0; i < nr_vcpus; i++)
++				iteration_sum = timespec_add(iteration_sum,
++							     vcpu_dirty_ring_collect[i]);
++
++			pr_info("Iteration %d clear dirty ring time: %ld.%.9lds\n",
++				iteration, iteration_sum.tv_sec, iteration_sum.tv_nsec);
++
++			clear_dirty_log_total = timespec_add(clear_dirty_log_total,
++							     iteration_sum);
++			continue;
++		}
++
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		memstress_get_dirty_log(vm, bitmaps, p->slots);
+ 		ts_diff = timespec_elapsed(start);
+ 		get_dirty_log_total = timespec_add(get_dirty_log_total,
+ 						   ts_diff);
+ 		pr_info("Iteration %d get dirty log time: %ld.%.9lds\n",
+ 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
+ 
+ 		if (dirty_log_manual_caps) {
+ 			clock_gettime(CLOCK_MONOTONIC, &start);
+@@ -231,46 +310,51 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+ 		ts_diff.tv_sec, ts_diff.tv_nsec);
+ 
+ 	/*
+ 	 * Tell the vCPU threads to quit.  No need to manually check that vCPUs
+ 	 * have stopped running after disabling dirty logging, the join will
+ 	 * wait for them to exit.
+ 	 */
+ 	host_quit = true;
+ 	memstress_join_vcpu_threads(nr_vcpus);
+ 
+-	avg = timespec_div(get_dirty_log_total, p->iterations);
+-	pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
+-		p->iterations, get_dirty_log_total.tv_sec,
+-		get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
++	if (!dirty_ring_size) {
++		avg = timespec_div(get_dirty_log_total, p->iterations);
++		pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
++			p->iterations, get_dirty_log_total.tv_sec,
++			get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
++	}
+ 
+-	if (dirty_log_manual_caps) {
++	if (dirty_log_manual_caps || dirty_ring_size) {
+ 		avg = timespec_div(clear_dirty_log_total, p->iterations);
+ 		pr_info("Clear dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
+ 			p->iterations, clear_dirty_log_total.tv_sec,
+ 			clear_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
+ 	}
+ 
+ 	memstress_free_bitmaps(bitmaps, p->slots);
+ 	memstress_destroy_vm(vm);
  }
  
- static void vm_open(struct kvm_vm *vm)
+ static void help(char *name)
  {
- 	vm->kvm_fd = _open_kvm_dev_path_or_exit(O_RDWR);
+ 	puts("");
+ 	printf("usage: %s [-h] [-a] [-i iterations] [-p offset] [-g] "
+ 	       "[-m mode] [-n] [-b vcpu bytes] [-v vcpus] [-o] [-r random seed ] [-s mem type]"
+ 	       "[-x memslots] [-w percentage] [-c physical cpus to run test on]\n", name);
+ 	puts("");
+ 	printf(" -a: access memory randomly rather than in order.\n");
+ 	printf(" -i: specify iteration counts (default: %"PRIu64")\n",
+ 	       TEST_HOST_LOOP_N);
++	printf(" -d: specify the size of dirty-ring for tracking dirty pages.\n"
++	       "     If non-zero, will cause dirty-ring to be used instead of\n"
++	       "     dirty-bitmap. Must be a power of two.\n");
+ 	printf(" -g: Do not enable KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2. This\n"
+ 	       "     makes KVM_GET_DIRTY_LOG clear the dirty log (i.e.\n"
+ 	       "     KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE is not enabled)\n"
+ 	       "     and writes will be tracked as soon as dirty logging is\n"
+ 	       "     enabled on the memslot (i.e. KVM_DIRTY_LOG_INITIALLY_SET\n"
+ 	       "     is not enabled).\n");
+ 	printf(" -p: specify guest physical test memory offset\n"
+ 	       "     Warning: a low offset can conflict with the loaded test code.\n");
+ 	guest_modes_help();
+ 	printf(" -n: Run the vCPUs in nested mode (L2)\n");
+@@ -313,31 +397,36 @@ int main(int argc, char *argv[])
+ 	/* Override the seed to be deterministic by default. */
+ 	guest_random_seed = 1;
  
- 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_IMMEDIATE_EXIT));
+ 	dirty_log_manual_caps =
+ 		kvm_check_cap(KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2);
+ 	dirty_log_manual_caps &= (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE |
+ 				  KVM_DIRTY_LOG_INITIALLY_SET);
  
- 	vm->fd = __kvm_ioctl(vm->kvm_fd, KVM_CREATE_VM, (void *)vm->type);
+ 	guest_modes_append_default();
+ 
+-	while ((opt = getopt(argc, argv, "ab:c:eghi:m:nop:r:s:v:x:w:")) != -1) {
++	while ((opt = getopt(argc, argv, "ab:c:d:eghi:m:nop:r:s:v:x:w:")) != -1) {
+ 		switch (opt) {
+ 		case 'a':
+ 			p.random_access = true;
+ 			break;
+ 		case 'b':
+ 			guest_percpu_mem_size = parse_size(optarg);
+ 			break;
+ 		case 'c':
+ 			pcpu_list = optarg;
+ 			break;
++		case 'd':
++			dirty_ring_size = parse_size(optarg);
++			dirty_ring_size *= sizeof(struct kvm_dirty_gfn);
++			dirty_log_manual_caps = 0;
++			break;
+ 		case 'e':
+ 			/* 'e' is for evil. */
+ 			run_vcpus_while_disabling_dirty_logging = true;
+ 			break;
+ 		case 'g':
+ 			dirty_log_manual_caps = 0;
+ 			break;
+ 		case 'h':
+ 			help(argv[0]);
+ 			break;
 -- 
 2.55.0
 
