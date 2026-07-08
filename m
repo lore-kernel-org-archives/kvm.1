@@ -1,145 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3BD3D0C07;
-	Wed,  8 Jul 2026 19:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA1A3BB106
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 19:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783537268; cv=none; b=AnMp+B0HM/9rtwlfIt1m4NTXvmdI78gCsbUF1LdYjxp/M1HlP+2r6B3NkXOKSZ8IsZQIuJNqMFHb3jBr/NHNVcd+92MKEEomP10Yv44QhFNGiZydQ6/eLFRMyb/jV/Ul1g9GknWBCuJdenbduWLUVAN9aUj1PEnuasYBg3g/YN4=
+	t=1783537941; cv=none; b=QboH+sL9jgHEa8scECZAc4GR2dc6t3ovRFQHpmQ2YGLqprxGxEOKGKP+bMPYk1UhkRTRflXbV1sAB81eFDBKXNcaML5W4b7m1yhcRzlUs752jDN2ysBglytjIA69LROOZDmCrwfarWQnOyttBMajoNWy2TAIJugX0ljpkj+1XzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783537268; c=relaxed/simple;
-	bh=JmvmXqvoJhxel/XCqY2ga/B/piNjvTPEr8lOPuxpubA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aXwPGJGb2zvuU3NOrM95sclFhylRtBAe2OIwQinjut+I8XAU1j+skRnGbgC4UzC2ciiVolNZbiy65MjmV8O2WCmaKMlZyQP7UfSrx1VFqFKdaoL3jAKagV37r1SjJThv9/n+lYvNYO2OhtBBxPlNqSvrn0RxoZ5nDTXyh1wNnAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ox/qzpCj; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783537941; c=relaxed/simple;
+	bh=ozuarTA5yDAJKG9+W1Sq1V2z5le0AugHHuKwbejukos=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n33D1gvcd7VIwSgzhJfQyvgWtCNNwbQW7PkOv4fgtWo4t8fmfEDbB7L1j8WwymcXdLfYj5uDxIX4kAAhN9kszlhyFeeGA9qlnRrNzx4jViv1VNizDA9JBbezTJ0051J0nGUk84400jpNNQk+dMwcFCaa9NMHjsg6kgzJ2OauWwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/L1DV48; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ox/qzpCj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783537266; x=1815073266;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JmvmXqvoJhxel/XCqY2ga/B/piNjvTPEr8lOPuxpubA=;
-  b=Ox/qzpCjVd4vPGM6qroNVc30olmwg8ENwV9KqmGs9r473Ct7i0nWdVC2
-   974ePQiU9yTSMZad3NFxDN9NQ6GDu9CIFbzIHRgcz71Xd/P+qMnjsw0af
-   rvyIjtjdaJB/hSHQtX6DVNyruj/H/u07dMXULslDQq2nYPHhb5WX/eNrC
-   4K+ARjDk5rjGSUVUNhH+/+qFJzgcm7kYvyWY1wXDHIWFUA07mkgfdZt19
-   a7/kux3FL16dMZEciOrg4iqNw5cv/JYZY4FVUOiV2FliBUoN5O86aO92+
-   6OMuz3D8iVkK5wVWiIvZlz5Kb5OZoSPI4tplgX7hMaCreve8LYkDXHwfG
-   g==;
-X-CSE-ConnectionGUID: TG1A1FebR5S4E0wed8ScfA==
-X-CSE-MsgGUID: ESx5ZoUMTYKzUKWcPOdrTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="94567117"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="94567117"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 12:01:05 -0700
-X-CSE-ConnectionGUID: 3obKFQgzQqS3quORMBg99Q==
-X-CSE-MsgGUID: punpz2zRRdqR7+3AYOReyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="251717242"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.66]) ([10.125.111.66])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 12:01:04 -0700
-Message-ID: <1d60cebf-4764-4785-bf01-8ca59ab2cc7d@intel.com>
-Date: Wed, 8 Jul 2026 12:01:01 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/L1DV48"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AA01F00A3A
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 19:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783537940;
+	bh=XCV8ihNwNJqTxSxIZjEYQcsxb6sPh74znVQ8xR64ajI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Q/L1DV48uvBfOatm2pe8mQybUYIIAu0bXM63GL+bmMYVE5ln/mEUiyjcIxp20PyBM
+	 3cq6pP2rrH8NRSeR4pJaZ+a0+OaqRzGh05Yg4uHbjCoCmI2MMzlFTpRh0qrYaCHVC8
+	 iUb87UpztlK2LqEQuFHQCPoekU+uTxIsKdvrISFDHT+g8rZlQrLE91M0g8TKdhtd0I
+	 A0D47rsBr+LACX7GzpoEF5OmGl8pKPZJPYRDRCSYh+mGPlQayqTfQkBsvxs8wItOuO
+	 azKDJ+u8aiQp9FMh3+9ePuvwM8+64SDZz3FW7ou2NHzqrarWXTUyF2Qct0qx201rs+
+	 5bE2m4jtiHHwQ==
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c125fbfbae0so14571266b.1
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 12:12:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro3I+luzO4ScaAEkpO92WbAUq21AM3ID5a6yGsYR/1fhSeHhDKVG1bQjEY/DZka0XTiZew=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu5kiZ3tr4rCRVpXScgmQTgqkhlPYOBS0di3PiELPGigwCDIL7
+	8PIfD3ZgFEqDV20K4vhU91XIgd9UNivfMuftmgmVAXbnh96P28y2DRNsdsjm4brbB1HS9lOZubT
+	z6PYJGIvWvQMJzC8nANeSMPtNd/cufD4=
+X-Received: by 2002:a17:906:6a1e:b0:c12:8ade:dce1 with SMTP id
+ a640c23a62f3a-c15ce0ea864mr198012866b.48.1783537939232; Wed, 08 Jul 2026
+ 12:12:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
- tdx_pamt_get/put()
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de, hpa@zytor.com,
- kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com,
- nik.borisov@suse.com, pbonzini@redhat.com, seanjc@google.com,
- tglx@kernel.org, vannapurve@google.com, x86@kernel.org, chao.gao@intel.com,
- yan.y.zhao@intel.com, kai.huang@intel.com
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260706195413.1966458-1-yosry@kernel.org> <20260706195413.1966458-5-yosry@kernel.org>
+ <ak119GtNZOmBpGmW@google.com> <CAO9r8zPdJHE=ztF8enA58EbR3iy4_Urhc93RkHiS2HkEsDkS_A@mail.gmail.com>
+ <ak5YUdHyA36ogsvD@google.com>
+In-Reply-To: <ak5YUdHyA36ogsvD@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 8 Jul 2026 12:12:06 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNyAfFFPxNYeht+FK-BHHxcUh1DTb6aOpffm_9ebEVUSA@mail.gmail.com>
+X-Gm-Features: AVVi8Cf03eILhdXnJSjnJp76nCP6Wf_3YaHsGVnTAaGYGpRNYHFlFuN8e75yDwk
+Message-ID: <CAO9r8zNyAfFFPxNYeht+FK-BHHxcUh1DTb6aOpffm_9ebEVUSA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/7] KVM: x86: Add a per-vendor callback to setup EFER caps
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/25/26 19:35, Rick Edgecombe wrote:
-> +	scoped_guard(spinlock, &pamt_lock) {
-> +		/*
-> +		 * If the pamt page is already added (i.e. refcount >= 1),
-> +		 * then just increment the refcount.
-> +		 */
-> +		if (atomic_read(pamt_refcount)) {
-> +			atomic_inc(pamt_refcount);
-> +			goto out_free;
-> +		}
+On Wed, Jul 8, 2026 at 7:01=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Tue, Jul 07, 2026, Yosry Ahmed wrote:
+> > On Tue, Jul 7, 2026 at 2:56=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> > >
+> > > On Mon, Jul 06, 2026, Yosry Ahmed wrote:
+> > > > Move handling EFER.SVME and EFER.LMSLE from hardware setup to a new
+> > > > optional per-vendor callback invoked from kvm_setup_efer_caps(). Th=
+is
+> > > > centralizes allowed EFER bits handling to kvm_setup_efer_caps(),
+> > > > facilitating following changes to move efer_reserved_bits into kvm_=
+caps.
+> > > >
+> > > > Move the call to kvm_setup_efer_caps() after per-vendor ops are
+> > > > initialized.
+> > >
+> > > Why?
+> > >
+> > > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > > > index a0b2c40d93c21..a297a77469b38 100644
+> > > > --- a/arch/x86/kvm/x86.c
+> > > > +++ b/arch/x86/kvm/x86.c
+> > > > @@ -6903,6 +6903,8 @@ static void kvm_setup_efer_caps(void)
+> > > >
+> > > >       if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
+> > > >               kvm_enable_efer_bits(EFER_AUTOIBRS);
+> > > > +
+> > > > +     kvm_x86_call(setup_efer_caps)();
+> > >
+> > > I would rather move the togging to kvm_setup_efer_caps(), e.g.
+> >
+> > I didn't do it this way because it creates a dependency on SVM setting
+> > the X86_FEATURE_SVM cap before kvm_setup_efer_caps() is called.
+>
+> For all intents and purposes, that dependency already exists due to the
+> X86_FEATURE_{NX,FXSR_OPT,AUTOIBRS} checks.  And thanks to kvm_is_configur=
+ing_cpu_caps,
+> it's "impossible" for those caps to be toggled outside of svm_set_cpu_cap=
+s().
 
-I think this pattern is a good fit for atomic_inc_not_zero().
+Right, I missed this. kvm_is_configuring_cpu_caps is neat. I wonder if
+we can make that an enum with values {UNINIT, CONFIGURING,
+INITIALIZED}, then we can be more paranoid and WARN if the the state
+isn't INITIALIZED in kvm_setup_efer_caps(). That might be too paranoid
+though.
 
-I think it's also fair to say that using an atomic_t here is unnecessary
-because of the spinlock protecting all accesses. But I also understand
-that it's here because you want to optimize this path to avoid the
-spinlock in the future.
+>
+> > e.g. it would break if the call to kvm_setup_efer_caps() is moved
+> > before the vendor-specific hardware_setup().
+>
+> As above, that would break for other reasons.
+>
+> > Maybe that's fine, but it just seemed like the dependency can be easily
+> > avoided here by adding a new vendor-specific callback.
+>
+> No, all it does is change what can go wrong.   E.g. if KVM cleared "neste=
+d" in
+> svm_hardware_setup(), which is *very* realistic given that we carry an in=
+ternal
+> patch to disable nested if TDP is disabled, then hoisting kvm_setup_efer_=
+caps()
+> above ops->hardware_setup() would still break (even ignoring the above is=
+sues).
 
-This is not a hot enough path to care about an atomic_t vs. int. In
-practice, the performance is going to be bottlenecked on the big
-spinlock, *not* the atomic_t overhead.
-
-I'd just add a changelog blurb to handwave it away for the moment:
-
-	The pamt_refcount[]s are atomic_t's. They do not strictly need
-	to be because all access is protected by pamt_lock. The overhead
-	of an atomic_t in this situation is minuscule compared to the
-	global lock. Leave the (unnecessary) atomic_t in place to enable
-	future optimization with minimal churn.
-
-Does that work for everybody?
+Yeah, thanks for explaining that. I will drop the per-vendor callback
+and just do it directly in kvm_setup_efer_caps().
