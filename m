@@ -1,121 +1,197 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9C6225775
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505CC3115AF
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783482529; cv=none; b=jmfD5zPgDXe5+7KAPpRM33oVbHCK9QmvTeDtw/SY7fSeSGRUST4+onDy4j8uNrDsYcXrHDVcdyjMYF2lg1NDAFmBEHOI6ykwMCooHDUFvL9ot8t5cHO/8s9pIXr2pX6YWhNvesS66Nt8ImdlCNU+AsOx7Amf055RHVjNq6US9eA=
+	t=1783482556; cv=none; b=Gv+mOUWVp2qRNbzKFBRq/583p2bm07SKgzbndTfbcxxNIy0SdhLf6+JKkk3gqMmqFWcXZDWezFHAHNxn1W0kfCF1IEBuuD+L7ezGezY+sECpKgtU8uQv5Idw9I6ss6SNSmkn8UTY+dRkMQQR91gHvoIj0eG2ouiMAbZuxAU2XqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783482529; c=relaxed/simple;
-	bh=opkA5bfQtK447IUzjxGpt1frAkQ+1tqSgi55xYgdZnc=;
+	s=arc-20240116; t=1783482556; c=relaxed/simple;
+	bh=iA3/+X11bk/bXG65ddXtVmwpQcnCYqo/0UondIv7EnE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hRSe/zvCtWcaa7PcvDl3z+QeNnR1Yyh//zcXx0C5EKN6ndjt7go5Xtyb03pxVUTytgQ+M03TliS+oWWcX/rWqoH8sDp4smnrAxg3w7fjThx+cWTQKzfDnv+ATIakPkfTp+T7x8NtLbPxcnv1lfm9NlgY/C6MkO5EGl/1+o1P3G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFE83Mla; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Tl8vyyWcFmxlxWtlvK6JT1xQw/M/HcNLyVmxjKsnhq8jMIjUSvsAgiOd4U7HIzvnco+8HrBaCe4jW765yb+u0nHFC9aWWi8zpJKASq1hYnbxL5URSfgg4FKI45MI4gkYCCJ+XENIT4Ht8zMzl8zp8RsR1VZ40+YZcziePUtwmmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9VpBICn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFE83Mla"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37D71F00A3A;
-	Wed,  8 Jul 2026 03:48:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9VpBICn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DAB1F000E9;
+	Wed,  8 Jul 2026 03:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783482528;
-	bh=QiiZxDGkMhiILY4fYTmNv1ionpxCpzSqCh9OvUWBS4Y=;
+	s=k20260515; t=1783482554;
+	bh=1h0Qtsll+erOEPisfMCFdx+QayVKIUMHR8C+V9C/lGs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LFE83Mlat/0m8LTbVYcAOJb2ItcAcLLhOAgR6wT/0/AQsuksEwEPsTgrqOH5Cl6+j
-	 NfBvqC3E/lWxGrvhSrxeQOgkOjAf0wXm1He0XEUCp4Y7MrQy3FWbN29vX8MwCphQQE
-	 Q/5cFQ6NqWPoHawfgNWAK8AuXWtEeK66DgoKQduGfYou4tbQnoQKapHGWITXiHIQ7J
-	 L0gusD+wNmg/gkjC4ff7clVYed9NkjR3h5XSyPr9AZYdE0h04U8fvn3eFOIVDJGkcW
-	 Qcda8Ib3RU2fQ4To/irGVp6sf2wCiIcNsvKPdpVC0cp7BiR7g3mmyqKBja7+5Lp3wO
-	 P7jas7560H12w==
+	b=S9VpBICnV8S9lySG+l2g0i3EryoJUgTorJ0Ov6v72R34HPmCbcry/uWovAuhKYbtT
+	 yOtsCGpzrmBqxvNjqyGJSuXgMFpofmaGZgLZUP91qApUWy4/67Did7vdfgv0fncePr
+	 MjhjWfTJVrO+iBCwK4oL2AI32jEdQULMMrqEAx03Nuyp7t0OxMockqDylWZFeKHf0m
+	 dMn4NRWXk43KnxRYqyrHoy940FqV34Kq5UGHyZA3fLah9R3oaBEtfY3QsL0TfwokP0
+	 08MMP+gn7NoQ3SwSFA8nATuecnozhbQSjc+6j9wBIxeD3Van4JPRxwVRssp1EwqtOB
+	 XDD3XjZ+JSikg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 09/17] riscv: kvm: Use generated instruction headers
- for csr code
+Subject: Re: [PATCH v3 08/17] riscv: Use generated instruction headers for
+ misaligned loads/stores
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-9-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-8-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-9-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-8-3f8e5f75ba97@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 03:48:47 +0000
-Message-Id: <20260708034847.C37D71F00A3A@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 03:49:14 +0000
+Message-Id: <20260708034914.C0DAB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Undefined macro `GET_REG` causes a build failure, and intended `ge=
-t_reg()` usage masks a logic error where an immediate is treated as a regis=
-ter index.
+- [Critical] Infinite trap loop (DoS) and lost updates on misaligned loads =
+to `zero` or `f0` due to skipped `epc` advancement.
+- [Critical] Uninitialized kernel stack leak and Undefined Behavior on 32-b=
+it systems via instruction TOCTOU.
+- [High] Silent data corruption on misaligned stores from `zero` or `f0` re=
+gisters.
+- [High] Loss of sign extension on signed misaligned loads causes data corr=
+uption.
 --
 
---- Patch [9]: [PATCH v3 09/17] riscv: kvm: Use generated instruction heade=
-rs for csr code ---
-commit d70b1983c271eb6387c8473892b04f021becb8ff
+--- Patch [8]: [PATCH v3 08/17] riscv: Use generated instruction headers fo=
+r misaligned loads/stores ---
+commit 9243cf56f2dcd4d2a9e3d43d550df4f5779ccbf5
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: kvm: Use generated instruction headers for csr code
+riscv: Use generated instruction headers for misaligned loads/stores
 
-This commit migrates the CSR parsing code in RISC-V KVM to use the generated
-instruction headers instead of hand-written instruction composition functio=
-ns.
+This patch migrates the misaligned loads/store code to use the generated
+instruction headers. It replaces the hand-written instruction composition
+functions with the new generated helpers.
 
-> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-> index f09f9251d1f0a..a1898ab8bbe85 100644
-> --- a/arch/riscv/kvm/vcpu_insn.c
-> +++ b/arch/riscv/kvm/vcpu_insn.c
-
-[ ... ]
-
-> @@ -144,45 +144,49 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct k=
-vm_run *run, ulong insn)
->  	const struct csr_func *tcfn, *cfn =3D NULL;
->  	ulong val =3D 0, wr_mask =3D 0, new_val =3D 0;
+> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
+ps_misaligned.c
+> --- a/arch/riscv/kernel/traps_misaligned.c
+> +++ b/arch/riscv/kernel/traps_misaligned.c
+> @@ -238,68 +217,71 @@ static int handle_scalar_misaligned_load(struct pt_=
+regs *regs)
+>  	if (get_insn(regs, epc, &insn))
+>  		return -1;
 > =20
->  	/* Decode the CSR instruction */
+> -	if ((insn & INSN_MASK_LW) =3D=3D INSN_MATCH_LW) {
+> +	if (riscv_insn_is_lw(insn)) {
+>  		len =3D 4;
+>  		shift =3D 8 * (sizeof(unsigned long) - len);
+> -#if defined(CONFIG_64BIT)
+> -	} else if ((insn & INSN_MASK_LD) =3D=3D INSN_MATCH_LD) {
+> +		rd =3D riscv_insn_lw_extract_xd(insn);
+> +	} else if (riscv_insn_is_ld(insn)) {
+>  		len =3D 8;
+>  		shift =3D 8 * (sizeof(unsigned long) - len);
+
+[Severity: Critical]
+Since the CONFIG_64BIT guard has been removed, what happens on 32-bit
+systems if a userspace thread replaces the instruction with a 64-bit ld
+before the kernel reads it? Does this result in a negative shift value
+(-32) since sizeof(unsigned long) is 4 and len is 8, leading to undefined
+behavior?
 
 [ ... ]
 
-> +	} else if (riscv_insn_is_csrrwi(insn)) {
->  		wr_mask =3D -1UL;
-> +		new_val =3D riscv_insn_csrrwi_extract_imm(insn);
-> +		csr_num =3D riscv_insn_csrrwi_extract_csr(insn);
-> +	} else if (riscv_insn_is_csrrsi(insn)) {
-> +		wr_mask =3D riscv_insn_csrrwi_extract_imm(insn);
-
-[Severity: High]
-Should this use a csrrsi specific extraction function? It looks like it is
-currently reusing riscv_insn_csrrwi_extract_imm() due to a copy-paste error.
-
->  		new_val =3D -1UL;
-> +		csr_num =3D riscv_insn_csrrsi_extract_csr(insn);
-> +	} else if (riscv_insn_is_csrrci(insn)) {
-> +		wr_mask =3D GET_REG(riscv_insn_csrrwi_extract_imm(insn));
-
-[Severity: High]
-This introduces an undefined macro GET_REG, which will break the build.
-
-If the intention was to use the newly added get_reg() helper, does that
-introduce a logic error? The csrrci instruction uses a 5-bit zero-extended
-immediate directly as the write mask, rather than using the immediate as a
-register index.
-
-Also, similar to the csrrsi branch above, should this use the csrrci
-extraction functions instead of riscv_insn_csrrwi_extract_imm() and
-riscv_insn_csrrwi_extract_csr()?
-
->  		new_val =3D 0;
-> +		csr_num =3D riscv_insn_csrrwi_extract_csr(insn);
-> +	} else {
->  		return rc;
+> @@ -315,14 +297,16 @@ static int handle_scalar_misaligned_load(struct pt_=
+regs *regs)
+>  		memcpy(&val, (u8 *)addr, len);
 >  	}
 > =20
-> +	#undef GET_REG
+> -	if (!fp)
+> -		SET_RD(insn, regs, (long)(val.data_ulong << shift) >> shift);
+> -	else if (len =3D=3D 8)
+> -		set_f64_rd(insn, regs, val.data_u64);
+> -	else
+> -		set_f32_rd(insn, regs, val.data_ulong);
+> +	if (rd) {
+> +		if (!fp)
+> +			*(unsigned long *)((unsigned long *)regs + rd) =3D (val.data_ulong <<=
+ shift) >> shift;
+
+[Severity: High]
+Does this lose sign extension for signed misaligned loads? The previous code
+used a (long) cast to ensure an arithmetic right shift. Without the cast,
+doesn't this perform a logical right shift and incorrectly zero-extend
+negative values?
+
+> +		else if (len =3D=3D 8)
+> +			set_f64_rd(rd, regs, val.data_u64);
+> +		else
+> +			set_f32_rd(rd, regs, val.data_ulong);
+> =20
+> -	regs->epc =3D epc + INSN_LEN(insn);
+> +		regs->epc =3D epc + INSN_LEN(insn);
+> +	}
+> =20
+>  	return 0;
+>  }
+
+[Severity: Critical]
+If the target register is x0 (zero) or f0, rd will be 0 and this entire
+block is skipped. Does this mean regs->epc is never advanced for loads to
+these zero registers, resulting in an infinite trap loop and kernel lockup?
+
+[ ... ]
+
+> @@ -346,71 +330,76 @@ static int handle_scalar_misaligned_store(struct pt=
+_regs *regs)
+>  	if (get_insn(regs, epc, &insn))
+>  		return -1;
+> =20
+> -	val.data_ulong =3D GET_RS2(insn, regs);
+> -
+> -	if ((insn & INSN_MASK_SW) =3D=3D INSN_MATCH_SW) {
+> +	if (riscv_insn_is_sw(insn)) {
+>  		len =3D 4;
+> -#if defined(CONFIG_64BIT)
+> -	} else if ((insn & INSN_MASK_SD) =3D=3D INSN_MATCH_SD) {
+> +		rd =3D riscv_insn_sw_extract_xs2(insn);
+> +	} else if (riscv_insn_is_sd(insn)) {
+>  		len =3D 8;
+> -#endif
+
+[Severity: Critical]
+Similar to the load case, on a 32-bit kernel, parsing sd sets len to 8
+because the CONFIG_64BIT guard was removed. Later in this function,
+val.data_ulong is populated (which is 4 bytes on 32-bit), but 8 bytes are
+subsequently copied. Could this leak 4 bytes of uninitialized kernel stack
+memory to userspace?
+
+[ ... ]
+
+> -	if (user_mode(regs)) {
+> -		if (copy_to_user((u8 __user *)addr, &val, len))
+> -			return -1;
+> -	} else {
+> -		memcpy((u8 *)addr, &val, len);
+> +	if (rd) {
+> +		if (!fp)
+> +			val.data_ulong =3D *(unsigned long *)((unsigned long *)regs + rd);
+> +		else if (len =3D=3D 8)
+> +			val.data_u64 =3D get_f64_rs(rd, regs);
+> +		else
+> +			val.data_ulong =3D get_f32_rs(rd, regs);
 > +
+> +		if (user_mode(regs)) {
+> +			if (copy_to_user((u8 __user *)addr, &val, len))
+> +				return -1;
+> +		} else {
+> +			memcpy((u8 *)addr, &val, len);
+> +		}
+>  	}
+> =20
+>  	regs->epc =3D epc + INSN_LEN(insn);
+
+[Severity: High]
+By gating the memory copy operations inside the if (rd) check, doesn't this
+silently drop stores where the source register is x0 or f0 instead of
+actually writing to the misaligned address?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D9
+_table-v3-0-3f8e5f75ba97@gmail.com?part=3D8
