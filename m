@@ -1,178 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A072A1A9F82
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D87A4315F
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783482685; cv=none; b=NO/IRpJhtge/OzgvHE7aqq4eH6+hDTL2CCXBMSxH2NKRrWBDg8UACTsgU5VchLb7ZUFnncmWZJCds3QpqY68VUDWPh+q1h40Aw6nhwNBvqave8FPc8IRJ8DSQ6RUlKQdf4XIPdhabYwCxfwORQrqZTU6v5YzPdU961vma/c4BWg=
+	t=1783482733; cv=none; b=o4UvMHxFUf+4Ngdc/AKVjtB/5DEG1hlSWewBH9XF+mekJKiQk9/qQaFXFGrCTbJxg+YJidmJtiuGBQi+Gxb9HH8xgHBT68jpV4vMxuuah0nrqHlnszCCMb8cDi8pykopHGpMiYtwrb8ldTRKAFv6dJVRZD6PG0vMZqcQnBV2w9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783482685; c=relaxed/simple;
-	bh=chaZfJRwAKwdCAnNFtBorv2xozj1sPF/5I7xEdif0mw=;
+	s=arc-20240116; t=1783482733; c=relaxed/simple;
+	bh=CeAtY3yjkmmgRTJhl8T/3eilxu9881Oa361z9xv/wOQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GPQPdG+ptYAoE5e3KqWOom5HmuC0E2LdS0Jm42CT7KVDFEeag5B7dwTMmx1zpMyZXy34Ir5IXpMR14Lr+ygVS8TWhwvUY+hmP+TBD8ikZb9ezdM3pU18OT/QXXSnWz7UNYNX9qaQotrn+vGmNYziod7bhMyr/4x+RIHN+ksxwcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9LOnOWb; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Q55nCTqenyqbG7SWfSBte8driS+yXVZMoFqagIREsDyDoMMT+RO8kxlyK8A+A4DqtMzWUkFcrN3y1VYzKQdiW4YDVpFLb36qW/lyNICc++dpQ96s167aw2+gV7ANXu4mAnf/1vQ244XRBFlhaeyznX1IBVStFzLPHSyoAXdrMxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erxEJa9r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9LOnOWb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA011F000E9;
-	Wed,  8 Jul 2026 03:51:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erxEJa9r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFF41F000E9;
+	Wed,  8 Jul 2026 03:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783482684;
-	bh=uewLCbYSWSgaqXIBspmd5Y8c3Ks+yPGuQTrQW4wAwCo=;
+	s=k20260515; t=1783482731;
+	bh=bKom2Y25QLPGiVXX/hmFZX62S/kXKwiLenHSNFcQvkA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T9LOnOWbwCVB9dVUOAxm6CFe2Q7tuRkUI/hD3Zk+eY12Xuk2354rbw6MUPk7PcFW7
-	 tITsBS8m89Hyl8NelaC2tNGiL30/bxFzgtTluHFP9klFaH19h4z02xC5sj/+GppfLN
-	 6cq7QuqW7wrAv9sLOgT2pKyJlLuUaRHZ412++JpJOzGriS3cP3X2WS0jpCECTYMZVY
-	 XlsLb0eihx5GSVymN5dU8Vt66k8GJnoj6Gi3RCaWF7aEpeXvN6sEJGd2+yrJ8iCRkH
-	 EhB1L24dcn7PkpiTKE/EGDLK5quppFAwkH6+VrQbo7QW+PQxuTt0/cNnh8KdfGdADX
-	 6Fzc06ktPOJFA==
+	b=erxEJa9rUIYef7gnApfyLzuzyiMkXcyK0WhB6qo/XSPSk8CTnygEGsH8FhaKCrDS5
+	 JGsOAPiBeEo31SPfPo3PSowci9S66940pR58ZrhxRVWiW9A2gtlk3DfcN0oiM8zykL
+	 WycN8AJI/ZBaBeh8yT+ydS3ObeAyef9Qihj7Z2V+0wpUR4XqPOM0pkb3Zt0LpzMipU
+	 82Hc3IU5mzIB0P5pxncPXJPHkSMYQutBLc9cykVzLzsNJa/Yqb4Ax7FHJCpr39xU2t
+	 sJvVZ/TD2WYE00UIG3SPLx66Jz1ikCAnKyAYhFnJ6jgvk/b8qyEMC66TEhWqrItnFp
+	 B3LCquQuvlBzg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 04/17] riscv: Add kprobes instruction simulation
- KUnit
+Subject: Re: [PATCH v3 05/17] riscv: kprobes: Use generated instruction
+ headers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-4-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-5-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-4-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-5-3f8e5f75ba97@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 03:51:23 +0000
-Message-Id: <20260708035124.1AA011F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 03:52:10 +0000
+Message-Id: <20260708035211.3FFF41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The test performs 4.29 billion iterations without yielding and is =
-forcefully enabled by `KUNIT_ALL_TESTS`, causing CI hangs and softlockup pa=
-nics.
-- [Medium] The test zeroes the simulated register state before every instru=
-ction, heavily limiting conditional branch simulation coverage.
-- [Low] The test calls multiple undefined functions for instruction simulat=
-ion and register manipulation, causing a build failure.
-- [Low] The `CONFIG_RISCV_KPROBES_SIMULATE_KUNIT` option is a tristate, but=
- the KUnit test calls unexported core kernel symbols, causing a module buil=
-d failure.
+
+Pre-existing issues:
+- [High] Simulation of C.JR and C.JALR instructions fails to clear the leas=
+t-significant bit (LSB) of the target address.
 --
 
---- Patch [4]: [PATCH v3 04/17] riscv: Add kprobes instruction simulation K=
-Unit ---
-commit fd54e10f3ed9775912526763a87c12f6ae0730fd
+--- Patch [5]: [PATCH v3 05/17] riscv: kprobes: Use generated instruction h=
+eaders ---
+commit afd6227eeae883036e027b0893e434a89b21ebab
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: Add kprobes instruction simulation KUnit
+riscv: kprobes: Use generated instruction headers
 
-This commit adds a KUnit test for RISC-V kprobes instruction simulation.
-It iterates through all 32-bit integers to validate simulation behavior.
-The test is gated behind a new configuration option.
+Migrate the code that is decoding instruction for the use of kprobes to
+use the generated instruction headers instead of the hand-written
+instruction functions. With the more granular instruction support, split
+the decoding of branches into their own functions.
 
-> diff --git a/arch/riscv/kernel/tests/Kconfig.debug b/arch/riscv/kernel/te=
-sts/Kconfig.debug
-> index 40f8dafffa0ab..9eda8938ec15b 100644
-> --- a/arch/riscv/kernel/tests/Kconfig.debug
-> +++ b/arch/riscv/kernel/tests/Kconfig.debug
-> @@ -42,6 +42,19 @@ config RISCV_KPROBES_KUNIT
-> =20
->           If unsure, say N.
-> =20
-> +config RISCV_KPROBES_SIMULATE_KUNIT
-> +       tristate "KUnit test for riscv kprobes instruction simulation" if=
- !KUNIT_ALL_TESTS
-
-[Severity: Low]
-Should this be a bool rather than a tristate? Building this as a module
-results in a regression because the test calls unexported kernel symbols
-like simulate_jal and simulate_jalr, causing linker errors.
-
-> +       depends on KUNIT
-> +       depends on KPROBES
-> +       default KUNIT_ALL_TESTS
+> diff --git a/arch/riscv/kernel/probes/simulate-insn.c b/arch/riscv/kernel=
+/probes/simulate-insn.c
+> index fa581590c1f8b..a443883c32370 100644
+> --- a/arch/riscv/kernel/probes/simulate-insn.c
+> +++ b/arch/riscv/kernel/probes/simulate-insn.c
+> @@ -4,222 +4,152 @@
+[ ... ]
+>  bool __kprobes simulate_c_jr(u32 opcode, unsigned long addr, struct pt_r=
+egs *regs)
+>  {
+> -	return simulate_c_jr_jalr(opcode, addr, regs, false);
+> +	unsigned long next_addr;
+> +	unsigned long *regs_ptr =3D (unsigned long *)regs;
+> +
+> +	/* xs1 =3D=3D 0 is invalid so riscv_insn_reg_get_val() isn't needed */
+> +	next_addr =3D regs_ptr[riscv_insn_c_jr_extract_xs1(opcode)];
+> +	instruction_pointer_set(regs, next_addr);
 
 [Severity: High]
-Does hiding the prompt and defaulting to KUNIT_ALL_TESTS force CI pipelines
-to run this test? Because the test is exceptionally slow, this setup
-leaves automated testing systems no way to disable it when all tests are
-requested.
+This is a pre-existing issue, but does this code need to clear the least
+significant bit (LSB) of next_addr before updating the instruction pointer?
 
-> +       help
-> +         Enable testing for riscv kprobes instruction simulation. Useful=
- for
+If a C.JR instruction executes where the source register contains an odd
+address, applying it directly without masking (e.g., using & ~1) can trigger
+a misaligned instruction pointer exception (a kernel Oops or userspace SIGB=
+US)
+upon returning from the probe.
 
-[ ... ]
+This could allow unprivileged userspace to trigger a process crash via upro=
+bes,
+breaking ABI functional correctness.
 
-> diff --git a/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c b/ar=
-ch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
-> new file mode 100644
-> index 0000000000000..d82706685823d
-> --- /dev/null
-> +++ b/arch/riscv/kernel/tests/kprobes/test-kprobes-simulate.c
-> @@ -0,0 +1,250 @@
+It also appears the KUnit test suite explicitly asserts this behavior in
+test_kprobe_simulate_riscv(), where it expects the unmasked address rather =
+than
+the properly aligned address.
 
-[ ... ]
-
-> +static void test_kprobe_simulate_riscv(struct kunit *test)
-> +{
-> +	unsigned int addr =3D 0xdeadbeef;
-> +	unsigned int i =3D 0;
 > +
-> +	do {
-> +		struct pt_regs regs =3D { 0 };
+> +	return true;
+>  }
+> =20
+>  bool __kprobes simulate_c_jalr(u32 opcode, unsigned long addr, struct pt=
+_regs *regs)
+>  {
+> -	return simulate_c_jr_jalr(opcode, addr, regs, true);
+> +	unsigned long next_addr;
+> +	unsigned long *regs_ptr =3D (unsigned long *)regs;
+> +
+> +	/* xs1 =3D=3D 0 is invalid so riscv_insn_reg_get_val() isn't needed */
+> +	next_addr =3D regs_ptr[riscv_insn_c_jalr_extract_xs1(opcode)];
+> +	instruction_pointer_set(regs, next_addr);
 
 [Severity: High]
-Will this loop execute 4.29 billion times without yielding the CPU?=20
-Without a call to cond_resched(), iterating through all 32-bit integers
-causes a regression by triggering softlockup watchdogs and RCU stall panics.
-
-[Severity: Medium]
-Because regs is zero-initialized on every iteration, are the source
-registers evaluated by branch instructions restricted to zero? This
-regression limits the conditional branch simulation to static outcomes
-like 0 =3D=3D 0 and 0 < 0, entirely missing alternate execution paths.
+This is a pre-existing issue, but similar to C.JR, does this target address
+also need to be masked before updating the instruction pointer?
 
 > +
-> +		if (riscv_insn_is_jal(i)) {
-
-[ ... ]
-
-> +		if (riscv_insn_is_jalr(i)) {
-> +			unsigned long reg_addr =3D 0xffff;
-> +			s32 offset =3D riscv_insn_jalr_extract_imm(i);
-> +			u32 rd_index =3D riscv_insn_jalr_extract_xd(i);
-> +			u32 rs1_index =3D riscv_insn_jalr_extract_xs1(i);
-> +
-> +			if (rs1_index)
-> +				riscv_insn_reg_set_val((unsigned long *)&regs, rs1_index, reg_addr);
-
-[Severity: Low]
-Can this compile successfully? It appears riscv_insn_reg_set_val is an
-undefined function, whereas the kernel actually uses rv_insn_reg_set_val.
-
-> +			else
-> +				reg_addr =3D 0;
-
-[ ... ]
-
-> +		} else if (riscv_insn_is_beq(i)) {
-> +			s32 offset =3D riscv_insn_beq_extract_imm(i);
-> +			u32 rs1_index =3D riscv_insn_beq_extract_xs1(i);
-> +			u32 rs2_index =3D riscv_insn_beq_extract_xs2(i);
-> +
-> +			simulate_beq(i, addr, &regs);
-
-[Severity: Low]
-Are these individual branch simulation functions like simulate_beq defined
-anywhere? Calling these undefined functions causes a build regression, as
-the kernel uses a unified simulate_branch instead.
-
-> +
-> +			if (riscv_insn_reg_get_val((unsigned long *)&regs, rs1_index) =3D=3D
-
-[ ... ]
+> +	regs->ra =3D addr + 2;
+> +	return true;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D4
+_table-v3-0-3f8e5f75ba97@gmail.com?part=3D5
