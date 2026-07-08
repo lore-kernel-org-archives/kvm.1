@@ -1,144 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E748F3AB29E
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 21:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4DA3E16A9
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 21:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783546510; cv=none; b=gNIxdmshPFnrAMGsITpBGz4j+r0kUZD0x/zf9FxqOGqo5q3BxmfktKbUyhS4PVSTc/5nPpi3TVikHIbZnEcS7L76ahvt0IcD/KTQhjBFqQ2QBQn5WsKkBxTcwECRvB+x4iSXHh3MGmPY/R6Ufylk9D1xjS/4r8tDif1r1L13YAM=
+	t=1783546679; cv=none; b=gZP+SyEzsEi3rYqsm0VJMxlf3bxpXJ0kvt1Lh0F92Yqik3wFC+kY6sf3wm/Nz2aj7fmGUDgOMoSPITBzgMpJAZEOnh9W8tFPfsEPJtBdMD4VumNpzl7lzcAR4/MTXRYftQHoHKDixW20OX9clNLW8QJlBrz2N2ST+vph6ZY4CLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783546510; c=relaxed/simple;
-	bh=M79PJC71DpxMMl2xsWWfEnYngaePrr5tx3A7lSygMq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P6aqiSq1l0SvVyfoZau7aa7JytsQoSJN5po21bAZYX6auxJIK4bx9bVZJQDuTkzuMKo6OY2CeLe/i5RwZ6A2vdWLapMlfVhEUem6D0VjWSltbJi2EyR9VQXBb9nZq5oFjlQd1/3uV5Dp+eLsaAAorXCyjd5iomzoNKmWvq9sGY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVunKCsZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783546679; c=relaxed/simple;
+	bh=oNlrIZHtI+fOCrtjA7kzhADNoKX+kegB62oKlMlJ36c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uV9jxdH1CYTHYne0m4QaoCGGmmWgybmgzBb3OrGX8mp6z4cQO6NxvIx/oFurxPMV8Oo4/kiJbFoMLqIkjEhVIozsFhuY/u6eg7fJ6nNO6NtBf2NiRH7FSJ2xS3mfSfltctrRlamZHRXxb6VNcGkpyP6L1SnNDWGfi4Dc+lilMpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XFgIqf60; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVunKCsZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BF11F00A3D
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 21:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783546508;
-	bh=KJlIbgXYHmd4abUJY6AqeJ/PVCnqwu/yQPQwFM+AXcQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BVunKCsZzSwtKp1M9hTaBbk0lX6NRM91hKVKhWkJi+NdFUYiVITY931XlkP1dI4Wh
-	 i+RDlv7J2Kx2AP8xXgFGFAEv8KC0HDUVvd2lhHrb+tuZQVe8dtvTr84WM/2ojrDpB0
-	 2sLbs+9d6FvvPcdREhkjr1TSpvBxcuaqVJtk6j6Ym5ZQzXbzAPH8hnAa8ecdDe7syq
-	 XfgZGtUGLlteVitISnDuHCuJNnUM/i04rojOj9y2DrrGDWVkvIUEXQUPix++KunA0B
-	 qWh/DNgcEw3cfBtfjRRYZDnIv6+q64xj2FjLIKabLbERPZtul0UERzd9gTDQGlrPLB
-	 PKNoF6tgc0ycA==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c029505b389so44391066b.1
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 14:35:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RojPJar1NuCVnnTN2+cTKctwhl6DNxpO1wLeA/OuGC2bJmNHMFxzQJtCotz9YORee2/P5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjEM9TZRLht1ybpBQ1htCyrkFPdn/7OYx5qbkfZk88PMx38Bgg
-	3LYRCio7kL2qLjvdYVFGShB77Tj9P5455L19DDSdQEdqHpveP4gaNGbDP3PVWPYBDpCTKoGj4iq
-	fv8xspmJ2NmPpjpcFRykhuH+y7dbLFG0=
-X-Received: by 2002:a17:907:97c5:b0:c15:ce1f:e3ef with SMTP id
- a640c23a62f3a-c15e776d9b5mr2350566b.16.1783546507437; Wed, 08 Jul 2026
- 14:35:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XFgIqf60"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8484ba00601so747143b3a.1
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 14:37:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783546676; x=1784151476; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R+ih+gkmNfMBYrEi1/0uawSdekgkxwJZiIjENB0lVHA=;
+        b=XFgIqf60Ubv/mtXvyvMLab3kS3KwQxzOfR/vQuL0Tv8eQ2eJJuzTsCUPP/F3EoPZt+
+         VH25Vs3y5Kx17phBBl2HInC9leWi3rg8LSj8xQ+5quKK9gx6yVHBugt+eh4hHwR5+iWP
+         9OSVk7eAsu4ZPyimE4wRkWC0DiYMF5EAl5LFHNBox+HUHc/5bI/J7xMZaZHHl/2Q7hzP
+         siMebSXs7nOjA0KtQDnxwtyaDcDT9zlMht5AklDLOePQSL0ZS1uVhUQATtXEW8QID2L2
+         Ltvu3m1jToqSnSEjntv0dQVGBXO0fmMvt3I8DdYYs873TrpcOrQGjJsyPudC7AF3K1mm
+         LQKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783546676; x=1784151476;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R+ih+gkmNfMBYrEi1/0uawSdekgkxwJZiIjENB0lVHA=;
+        b=F0FTrroYn4tR3jY3FJRe5ZjVF/Ir9e1l1Xao5wniCr7eGE3qjzvPKv7huWtDKwJ55J
+         YY1OvcAEj/aiZaU1sC1vVuKJhsufYC7aYrqHw8aIzH2roRISURCsa8lXFee2s9JMw/9H
+         aeKgBxDTCycXheJcxwzp3yIEEwYKeWDWCGw6JY4Oqyshowb5NCFd9m+9du3a/HvmSDBK
+         I789wG37f23xsk47NvUYzP3JcgSehlDfkKzv2RFYZr3mu6H7QDX7pqCs1ci8kxesPBJT
+         vtNn6nE4gJDNBUSF6DEBEWSsqz2ycuI7Sn0SjTrhs6hc0h2YzWNoo2gNqfEOc9XTpgdP
+         MQGw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr25Wk2Yx3R6IAf7FIskUoG/8swmKSTjLlI1BKgTJxDWhjLeam8N55ic8Yn32lb1hTxvFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzbg3UMmhv03GXOWxuvmlvyFnxRvUxWcGFx7K94rHPWDIr4nmx
+	jif+Cpvtl/oBMFQAKID/qTmhu0al5AJ/kTcB2ji4MhBqrcoIhlsOzpT09vZMrYjllfzNHmDsLev
+	YJqjEoQ==
+X-Received: from pfcf12.prod.google.com ([2002:a05:6a00:238c:b0:845:f28c:430e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:39a8:b0:845:d285:3b6e
+ with SMTP id d2e1a72fcca58-84842fce41amr3639665b3a.58.1783546675996; Wed, 08
+ Jul 2026 14:37:55 -0700 (PDT)
+Date: Wed, 8 Jul 2026 14:37:55 -0700
+In-Reply-To: <20260618081355.3253581-17-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260706195413.1966458-1-yosry@kernel.org> <20260706195413.1966458-5-yosry@kernel.org>
- <ak119GtNZOmBpGmW@google.com> <CAO9r8zPdJHE=ztF8enA58EbR3iy4_Urhc93RkHiS2HkEsDkS_A@mail.gmail.com>
- <ak5YUdHyA36ogsvD@google.com> <CAO9r8zNyAfFFPxNYeht+FK-BHHxcUh1DTb6aOpffm_9ebEVUSA@mail.gmail.com>
- <ak65cOXmxoznMCNo@google.com>
-In-Reply-To: <ak65cOXmxoznMCNo@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 8 Jul 2026 14:34:55 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPA5Q2HtxPztDU4pPnkDJMXKbnO5RKEzFRHOJtQoAO5Pg@mail.gmail.com>
-X-Gm-Features: AVVi8CcW4BdyqzYKkXKdSKLUIFSKG7tsM8YM0NkFnyGRKHz1ommSRpoxA51nHn8
-Message-ID: <CAO9r8zPA5Q2HtxPztDU4pPnkDJMXKbnO5RKEzFRHOJtQoAO5Pg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/7] KVM: x86: Add a per-vendor callback to setup EFER caps
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com> <20260618081355.3253581-17-yilun.xu@linux.intel.com>
+Message-ID: <ak7DMwbF4viiVoO5@google.com>
+Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
+From: Sean Christopherson <seanjc@google.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org, 
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com, xiaoyao.li@intel.com, 
+	sohil.mehta@intel.com, adrian.hunter@intel.com, kishen.maloor@intel.com, 
+	tony.lindgren@linux.intel.com, peter.fang@intel.com, baolu.lu@linux.intel.com, 
+	zhenzhong.duan@intel.com, dave.hansen@intel.com, dave.hansen@linux.intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 8, 2026 at 1:56=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Wed, Jul 08, 2026, Yosry Ahmed wrote:
-> > On Wed, Jul 8, 2026 at 7:01=E2=80=AFAM Sean Christopherson <seanjc@goog=
-le.com> wrote:
-> > >
-> > > On Tue, Jul 07, 2026, Yosry Ahmed wrote:
-> > > > On Tue, Jul 7, 2026 at 2:56=E2=80=AFPM Sean Christopherson <seanjc@=
-google.com> wrote:
-> > > > >
-> > > > > On Mon, Jul 06, 2026, Yosry Ahmed wrote:
-> > > > > > Move handling EFER.SVME and EFER.LMSLE from hardware setup to a=
- new
-> > > > > > optional per-vendor callback invoked from kvm_setup_efer_caps()=
-. This
-> > > > > > centralizes allowed EFER bits handling to kvm_setup_efer_caps()=
-,
-> > > > > > facilitating following changes to move efer_reserved_bits into =
-kvm_caps.
-> > > > > >
-> > > > > > Move the call to kvm_setup_efer_caps() after per-vendor ops are
-> > > > > > initialized.
-> > > > >
-> > > > > Why?
-> > > > >
-> > > > > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > > > > > index a0b2c40d93c21..a297a77469b38 100644
-> > > > > > --- a/arch/x86/kvm/x86.c
-> > > > > > +++ b/arch/x86/kvm/x86.c
-> > > > > > @@ -6903,6 +6903,8 @@ static void kvm_setup_efer_caps(void)
-> > > > > >
-> > > > > >       if (kvm_cpu_cap_has(X86_FEATURE_AUTOIBRS))
-> > > > > >               kvm_enable_efer_bits(EFER_AUTOIBRS);
-> > > > > > +
-> > > > > > +     kvm_x86_call(setup_efer_caps)();
-> > > > >
-> > > > > I would rather move the togging to kvm_setup_efer_caps(), e.g.
-> > > >
-> > > > I didn't do it this way because it creates a dependency on SVM sett=
-ing
-> > > > the X86_FEATURE_SVM cap before kvm_setup_efer_caps() is called.
-> > >
-> > > For all intents and purposes, that dependency already exists due to t=
-he
-> > > X86_FEATURE_{NX,FXSR_OPT,AUTOIBRS} checks.  And thanks to kvm_is_conf=
-iguring_cpu_caps,
-> > > it's "impossible" for those caps to be toggled outside of svm_set_cpu=
-_caps().
-> >
-> > Right, I missed this. kvm_is_configuring_cpu_caps is neat. I wonder if
-> > we can make that an enum with values {UNINIT, CONFIGURING,
-> > INITIALIZED}, then we can be more paranoid and WARN if the the state
-> > isn't INITIALIZED in kvm_setup_efer_caps(). That might be too paranoid
-> > though.
->
-> I thought about trying to do something like that too, and mostly landed o=
-n "too
-> paranoid".  Or rather, landed on "mostly just shifts where the bugs will =
-be".
-> E.g. kvm_setup_efer_caps() needs to run after kvm_cpu_caps are configured=
-, or
-> more specificaly, before ops->hardware_setup().  But supported_{xcr0,xss}=
- need
-> to be initialized before ops->hardware_setup(), so that KVM can manipulat=
-e the
-> support bits at the same time kvm_cpu_caps are updated.  And so adding on=
-e-off
-> WARNs still requires on having a priori knowledge of exactly where in the
-> bootstrapping process the code needs to run, i.e. we still have to "manua=
-lly"
-> select the right stage of kvm_is_configuring_cpu_caps.
+On Thu, Jun 18, 2026, Xu Yilun wrote:
+>  void __init tdx_early_init(void);
+> diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+> index ac8323a68b16..5e4b3aee0577 100644
+> --- a/arch/x86/kvm/vmx/tdx.h
+> +++ b/arch/x86/kvm/vmx/tdx.h
+> @@ -47,6 +47,12 @@ struct kvm_tdx {
+>  	 * Set/unset is protected with kvm->mmu_lock.
+>  	 */
+>  	bool wait_for_sept_zap;
+> +
+> +	/*
+> +	 * Whether to get the quote directly in kernel, without exiting to
+> +	 * userspace.
+> +	 */
+> +	bool get_quote_in_kernel;
 
-I think that's fine, but I get your point that the bugs this protects
-against will probably be caught otherwise anyway.
+Why is this cached per-VM?  IIUC, tdx_quote_enabled() is constant after initial
+TDX bringup.
 
-> What _would_ scale a little better would be to have kvm_cpu_cap_get() WAR=
-N if
-> kvm_is_configuring_cpu_caps isn't INITIALIZED, but I'm hesitant to do tha=
-t because
-> it'll pollute KVM with WARNs just to detect rare bugs that really should =
-be caught
-> during initial development anyways.
+And is keying off tdx_quote_enabled() and only tdx_quote_enabled() backwards
+compatible?  How do we know that cutting userspace out of the loop wont' break
+anything?
 
-Yeah, I will resist the need to be paranoid and drop this :)
+
+>  };
+>  
+>  /* TDX module vCPU states */
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 9f7c39e0d4b5..20558b0185b6 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1538,11 +1538,133 @@ static int tdx_get_quote_user(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
+>  	return 0;
+>  }
+>  
+> +static bool write_quote_status_to_guest(struct kvm_vcpu *vcpu, u64 status,
+> +					gpa_t gpa)
+> +{
+> +	if (kvm_vcpu_write_guest(vcpu,
+> +				 gpa + offsetof(struct tdx_quote_req, status),
+> +				 &status, sizeof(status)))
+> +		return false;
+> +
+> +	return true;
+> +}
+
+This is a completely useless wrapper.  Actually, it's worse than useless, as it
+inverts the return value from the widely used kvm_vcpu_write_guest() API.
+
+> +
+> +static bool write_quote_to_guest(struct kvm_vcpu *vcpu, void *quote_data,
+> +				 u32 quote_len, gpa_t gpa)
+> +{
+> +	if (kvm_vcpu_write_guest(vcpu,
+> +				 gpa + TDX_QUOTE_REQ_HDR_SIZE,
+
+This is unnecessarily confusing.  I had to look at the definition of
+TDX_QUOTE_REQ_HDR_SIZE to understand that this just writing to tdx_quote_req.data.
+I might not care if this was the only write, but then the very next statement
+writes to a field that isn't obviously in the header.
+
+> +				 quote_data, quote_len))
+> +		return false;
+> +
+> +	if (kvm_vcpu_write_guest(vcpu,
+> +				 gpa + offsetof(struct tdx_quote_req, out_len),
+> +				 &quote_len, sizeof(quote_len)))
+> +		return false;
+> +
+> +	return true;
+> +}
+
+So is this.  There's literally one caller.
+
+> +
+> +static u64 get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req *req,
+> +			    gpa_t req_gpa, size_t total_len)
+> +{
+> +	struct tdx_td *td = &to_kvm_tdx(vcpu->kvm)->td;
+> +
+> +	/* Only support version 1 as defined in the GHCI spec */
+> +	if (req->version != 1)
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	/* Header + input data must fit in the page read from guest memory */
+> +	if ((size_t)req->in_len + TDX_QUOTE_REQ_HDR_SIZE > PAGE_SIZE)
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	/* Caller owns the requested quote */
+> +	void *quote_data __free(kvfree) =
+> +		tdx_quote_generate(td, req->data, req->in_len, &req->out_len);
+
+Am I the only person that finds the __free() stuff to be difficult to follow?
+I'm sure there are flows where it's a big net positive, but IMO this isn't one.
+If the *unnecesary* layers of single-use helpers are stripped away, I suspect
+we'll naturally end up with a goto sequence that is more obvious that using __free().
+
+> +
+> +	if (!quote_data)
+> +		return TDX_QUOTE_STATUS_UNAVAILABLE;
+> +
+> +	if ((size_t)req->out_len + TDX_QUOTE_REQ_HDR_SIZE > total_len)
+
+Can we really not pre-check the size?
+
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	if (!write_quote_to_guest(vcpu, quote_data, req->out_len, req_gpa))
+> +		return TDX_QUOTE_STATUS_ERROR;
+> +
+> +	return TDX_QUOTE_STATUS_SUCCESS;
+> +}
+> +
+> +static u64 tdx_get_quote_check_args(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
+
+Adding single use helpers does not make the code easier to read.
+
+> +{
+> +	gfn_t gfn_start, gfn_end;
+> +	u64 end;
+> +
+> +	if (!size)
+> +		return TDVMCALL_STATUS_INVALID_OPERAND;
+> +
+> +	if (!PAGE_ALIGNED(gpa) || !PAGE_ALIGNED(size))
+> +		return TDVMCALL_STATUS_ALIGN_ERROR;
+> +
+> +	if (check_add_overflow(gpa, size, &end))
+> +		return TDVMCALL_STATUS_INVALID_OPERAND;
+> +
+> +	gfn_start = gpa_to_gfn(gpa);
+> +	gfn_end = gpa_to_gfn(end);
+> +
+> +	/*
+> +	 * Reject if the guest didn't explicitly convert its quote pages to
+> +	 * shared.
+> +	 */
+> +	if (!kvm_range_has_memory_attributes(vcpu->kvm, gfn_start, gfn_end,
+> +					     KVM_MEMORY_ATTRIBUTE_PRIVATE, 0))
+
+TOCTOU?
+
+> +		return TDVMCALL_STATUS_INVALID_OPERAND;
+> +
+> +	return TDVMCALL_STATUS_SUCCESS;
+> +}
