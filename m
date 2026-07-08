@@ -1,93 +1,96 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2B5379C2A
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5237DE8C
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783517924; cv=none; b=dKx0PVXDBgda/uHgra5bXLYRo72XCNho5DZieY7ASEOkU66rK1BVCVXUzQCInisGVJCE+mdgFqgASK81uHNkj4O4vs5D+1TFNzYQzyjfQcyzkZjgmalHPR54qI+zZ1gozZCEaJuQvttkmj3PZXrXMSSZhufMh11bDflcbxaqiXE=
+	t=1783517959; cv=none; b=uCxykiR9JnMyI/J3ZaN7yTIzH8SVhtSITOxO5zGK0n3bXpWshhsEQFnD5r2r+PBvoC6GYWC7EQNl68QOThIL2oBwNc0F/5Sos3DgjFwhJBU+8gZ+3VNAsV01UDO66mTDnpHI7L04ZuXzp2+P6RioWEZV1WQj9eVmvFyTFIzFrT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783517924; c=relaxed/simple;
-	bh=XMqR7Vt7Zu1rEVb/wo+OI6Zz2nFEcyiLoyMkLEqY1cA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FTpIN+jUuaSJMKh8e5QlqltVSliBt/ciokp9+fVubLgRzO/kYZOmjcDOXisHfnIdU8rWdKXzcIgw8KfBbNb209fqhY2EmkCjwL1WHcpOWHWF2ZCX1qZ91oIGjh3wXe0VbSLB/UtPeWhvLEG0Xg5IrH3gOdHgNsvlJe50Q+snYHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PUnqEhkz; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783517959; c=relaxed/simple;
+	bh=/0g+Y4wPFerm9mXGe154aQarap2+uauds1ZHfE+SLQc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UxC/BpdBiVCqEG3vQ+2/RjRFAOietFrvetr2VjE4jMK6F1wSPeKo+iymjmGNXWfDc/pUPtf+4eYiFh6/Xt8XNO4FBeFnQLcfjO4RQqS+cOWrxg/apfIwcSfPk9aJN8NZFcwUuMCury3zRpsb91FW1QauwmzxicEuSGGzFVJPbjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H8w2Wv3j; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PUnqEhkz"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88da04b719so692441a12.2
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:38:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783517923; x=1784122723; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U+G9o1zSTCJcxxAOl2khdNwOmpU0MLiiAaN/I8VPs28=;
-        b=PUnqEhkzGN+zT+RoVF4bYlbA0WH3Z1eC4hkwIN/LjatGD97NLnjuzRWmeZTNyc633n
-         wRVPJMnhmu4GckwIys8YMBLfVQOqoG8oKmD4spKeBXFolEe6byteKfRpSdfxBxK+V2E4
-         ywtr4TqLy/rsG6t1I9LeI+lpF2jxNv2Ud5kYOcdhPkhdfRG8iX4ZKl4GV9ZhQvymMqoX
-         e78ZgGutk2p4jH2/Gc/196k4zk1ZZwIRKrWo9Fo6AXL6Iqv54cg+jMpOiMh3aIGRvfB6
-         kn71n8qXrSwtGFJa7CL0dp9jhH+CCf5W2r2tU+eS6TVIZpYEKQmuCjRVxmU3YFdoFTEr
-         44sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783517923; x=1784122723;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=U+G9o1zSTCJcxxAOl2khdNwOmpU0MLiiAaN/I8VPs28=;
-        b=dYZKS9OCd1WFSv/U3e9TTgBFG3UjFp2KDKM/0YtssmNmibhJExAXKyhztoqxxpTtMU
-         rkmTn2HC3+KdtIRQEo8+eUGu+F0ykU1Xcw2JPBaT4NbUU9QIvt7OCNVm/oDdkiogLT78
-         8XvXU+yJ3+ktfuQNC1syG6j0Yc35RDndozFGEkb/lhMezvz7pVQ6zxWn6zDHm4oD8DP+
-         U+wZOZ5Ic0lhO/FXmpTAiU0N3Uy26J2Yeabj8EULu+9SQ/76dvmPD3Wk56eBBN02Ly5O
-         F/Oxp0IHb9cTcSDCIlXqxMdUmcIa0xcbk376nNO1OsB8oI/ZlJ2slH8jZdBnCORSX7Ww
-         vA1w==
-X-Forwarded-Encrypted: i=1; AHgh+RrwD+0CjPD5EpHAXydzsULLFKiDU1QHkFr1dV/Bm3mKM+RZLSYA3phH41TlASWJaap5V20=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAPIAGZ7QTFj9PmcyshSqbfs1rtjiYgb4dDlzuL28LOZr8aboJ
-	hlod0lLZxYVEngimed863F9Of9dhIDP7SfGdsU13DPh+NU3tNtWa6XoldJgyQzF1649300/2Kso
-	UyAkEGQ==
-X-Received: from pgbe18.prod.google.com ([2002:a63:5012:0:b0:c8b:2f5f:81a4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4591:b0:3bf:6f9f:3381
- with SMTP id adf61e73a8af0-3c0bc9c00b3mr3154704637.33.1783517922783; Wed, 08
- Jul 2026 06:38:42 -0700 (PDT)
-Date: Wed, 8 Jul 2026 06:38:42 -0700
-In-Reply-To: <20260708091408.12106-5-sarunkod@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H8w2Wv3j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783517956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ECVWxNUMUUQjHTObpd3YI7AQD/uZ8AjllXMw0PpKKdE=;
+	b=H8w2Wv3jgzVvf6oG1iZ2uwA9Z0JwJ2IPFTDo/jcgrwSvKPjId+t1WndwteUH5EZ1C6t7tL
+	hDcSbUGC610PBY67LLB3MCz+mJJACd6DiHua8hbvpJefFfmfp1YRYzGiDans+tRUKan5RZ
+	EEeu5MgSBPR5zV2a0fXa2XQGAyzadU4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-VvKfb93-PWWDpygkYNfy2Q-1; Wed,
+ 08 Jul 2026 09:39:13 -0400
+X-MC-Unique: VvKfb93-PWWDpygkYNfy2Q-1
+X-Mimecast-MFC-AGG-ID: VvKfb93-PWWDpygkYNfy2Q_1783517951
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED33018005B1;
+	Wed,  8 Jul 2026 13:39:10 +0000 (UTC)
+Received: from work.fritz.box (unknown [10.44.49.159])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 71BA03000C13;
+	Wed,  8 Jul 2026 13:39:08 +0000 (UTC)
+From: Tim Wiederhake <twiederh@redhat.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Tim Wiederhake <twiederh@redhat.com>
+Subject: [PATCH v2 0/2] KVM: x86: Document APIC base memory hole constraint
+Date: Wed,  8 Jul 2026 15:38:53 +0200
+Message-ID: <20260708133856.302151-1-twiederh@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260708091408.12106-1-sarunkod@amd.com> <20260708091408.12106-5-sarunkod@amd.com>
-Message-ID: <ak5S4hKoGxEb-4fP@google.com>
-Subject: Re: [RFC PATCH v2 4/5] kvm/svm: Update the per-CPU wakeup-list during
- vCPU load and unload
-From: Sean Christopherson <seanjc@google.com>
-To: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-KVM: SVM:
+When virtual APIC access acceleration is enabled on x86 (APICv on
+Intel, AVIC on AMD), vcpu creation installs a private memory slot at
+the default APIC base address (0xfee00000).  If user space maps a
+memory region covering that address, vcpu creation fails with -EEXIST.
+This is not documented and very puzzling when it happens.
 
-And this shortlog+changelog is woefully inadequate.  For all intents and purposes
-this patch adds KVM support for GAPPI.  So, state that in the shortlog, explain
-what GAPPI is (and spell out the acronym), how it works, what KVM's scheme is,
-and so on and so forth.  I'm not even going to try to review the code without that.
+This series documents two undocumented constraints:
 
-On Wed, Jul 08, 2026, Sairaj Kodilkar wrote:
-> When a vCPU is unloaded from a physical CPU enqueue it on that CPU's
-> GAPPI wakeup list. Remove the vCPU from the wakeup list when it is loaded
-> on to a CPU again.
-> 
-> Also enqueue from avic_pi_update_irte() when vCPU is not running and
-> ir_list is still empty.  This handles the condition where vCPU load skips
-> the per-CPU wakeup-list update when ir_list is empty.
-> 
-> The GAPPI wakeup handler walks this CPU's list and wakes vCPUs that still
-> have a pending IRR.  Install it with kvm_set_posted_intr_wakeup_handler()
-> so deliveries on POSTED_INTR_WAKEUP_VECTOR invoke it.
+  1/2  KVM_CREATE_IRQCHIP must precede vcpu creation
+  2/2  APIC base address memory hole when APIC acceleration is enabled
+
+Thanks to Sean Christopherson for the thorough review of v1.
+
+Changes since v1:
+  - Dropped enforcement patches (3/4, 4/4) per review feedback.
+  - Patch 1/2: Reworded to avoid implying that KVM_CREATE_IRQCHIP is
+    mandatory.
+  - Patch 2/2: Reworded to reflect that the APIC access page is not
+    installed in every case. Added note about KVM_CAP_SPLIT_IRQCHIP
+    having the same constraint.
+
+v1: https://lore.kernel.org/kvm/20260706092021.3625908-2-twiederh@redhat.com/
+
+Tim Wiederhake (2):
+  KVM: x86: Document that KVM_CREATE_IRQCHIP must precede vcpu creation
+  KVM: x86: Document APIC base address constraint for in-kernel irqchip
+
+ Documentation/virt/kvm/api.rst | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+-- 
+2.52.0
+
