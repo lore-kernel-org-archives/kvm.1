@@ -1,250 +1,238 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C473B6C11
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 10:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866C442CAFC
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 10:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783507947; cv=none; b=Pd7qOnl39hQ0Vus1Qaf0CdlKUI4CP4WolrPhkmSPjSKO6nWanpxn0Mq9nIYLxzo6D41eNiAwCG+HtkN2AsH73lYxub40grEj0Kfwy6eNvW6Gpxy6vTjwX1aqWhxhsDUm1W9gcOgP6/R6RxsZwGCgOK9MolfQ84xK9RgaY9EwnCc=
+	t=1783508396; cv=none; b=tmIJHQsfBp0YXpLBtnnv+KD3doPqcSGKyV5FWmyrNra56z82fRbRr9Li6krq2s36f7MvcByLH+Nh7f4FJv89oo+GQHrBTwklHLh2bh9B8EEhjnAM2KnwCZkQGeguTy85nANYnxQDJlZpanVTr+z4jPOhQIVe1rkLj+PolZ7cT20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783507947; c=relaxed/simple;
-	bh=/y9Yn+JM87bC/G5LdXlMkeekmXLzxmYOJMEmVMe6UYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHxYeGPFlLVJpcao5Q77XKPU7fqA2SHI/osdSKzrZKuZWC2KUGwOT5EjlHB3C+sKhYlfsbQn1Vou3S4UH6cSM5bG6otNhjLTK7QkW9stj7qwGO5fUYL+oR7ZavctpPawPI3mILC0gCNX+V44GKQ8yWZ6P+DwakEzvl03hKGYR38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=G/qdIN7e; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783508396; c=relaxed/simple;
+	bh=Wxh1h5TWAdT1dv/JQYXllO6752pAMRojLLF30bzxwcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EDHWcDoznf0L4Xt4a2oCHeK7cB3HlR6g+sByAbmn0l6cq60VIzilP8kn8eBateJokGK8gL7FvaWUL8+jgXQ6mHTuMs1Vb9YjhOtIMmC4u0Ni9yHSepWeCSt9AbOoi0h9OZXMZZNO8Ml6dCggaVLMHqf5gCti1ws/ABkwb+NeRyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bBsSwO1A; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U43iV86f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="G/qdIN7e"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6688IEMV2501492;
-	Wed, 8 Jul 2026 10:52:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BEl3FDk4W6OE85fGK
-	iliuMQSrlersvU+xXv9zJ8pq1k=; b=G/qdIN7elr2XmYEehWk5T8lw5pO6Rd0jx
-	MdoOMocoUOCEgYJbcB/PqmMNSkCm8b5PrP6BtFrLjuGXGL5i+381/1QgiN7JSmt7
-	wF7g4PYWdPEzXgqnx1LRmnoMUZ7Z58G3H05AoNAHqHZ2wvENlZXomSk7t2U1Erhw
-	W8Zw9Q3pr2mj3W2yE1mV5b5sTX3MirOIwTdi9LsQOkWMQSgyRj4L3L2Vp0f1FVmQ
-	y33Si9rUB7vqinXelKu033y5GGL5yNbkR9mYWF0Rk0AG74mOR0eqGOxVR+wAk/G5
-	p8qCfk6OBOIeBjpSvp0etM1GJGoemwAhtoSSP30/uViyIJOkZCLxA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw4v06r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jul 2026 10:52:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 668AncDI023487;
-	Wed, 8 Jul 2026 10:52:10 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7eqg7e17-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jul 2026 10:52:10 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 668Aq6qo53543278
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Jul 2026 10:52:07 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE8A42004D;
-	Wed,  8 Jul 2026 10:52:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D403B20040;
-	Wed,  8 Jul 2026 10:52:03 +0000 (GMT)
-Received: from li-18a0a34c-33fc-11b2-a85c-d9f1631c5692.ibm.com (unknown [9.39.26.49])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  8 Jul 2026 10:52:03 +0000 (GMT)
-From: Chinmay Rath <rathc@linux.ibm.com>
-To: thuth@redhat.com
-Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        andrew.jones@linux.dev, sbhat@linux.ibm.com,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: [kvm-unit-tests PATCH 6/6] powerpc: Add a panic test
-Date: Wed,  8 Jul 2026 16:21:22 +0530
-Message-ID: <20260708105122.1177210-7-rathc@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260708105122.1177210-1-rathc@linux.ibm.com>
-References: <20260708105122.1177210-1-rathc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bBsSwO1A";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U43iV86f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783508387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6E0ixpEMrHT9a5crJiV6RHWP5trgVnT1h9yDneEUY78=;
+	b=bBsSwO1AOLszaTUZrtKNIwihONR2zm2W0Zd3orA2EHnNV3/GHsbn9F6yKoTH03wp3BBrJ7
+	cw5Rl0imIKngYldlDy8FcCJ1Sq2obR6iY9olcrKz96y2FtFsA4fKHtWJFmFKxx/ub61To7
+	v2ct7AI37QINxyP35U6In1MPn+rhstA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-LfclywfzPemSdr8uxhKDiw-1; Wed, 08 Jul 2026 06:59:46 -0400
+X-MC-Unique: LfclywfzPemSdr8uxhKDiw-1
+X-Mimecast-MFC-AGG-ID: LfclywfzPemSdr8uxhKDiw_1783508385
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47dee73fdc7so882776f8f.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 03:59:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783508385; x=1784113185; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6E0ixpEMrHT9a5crJiV6RHWP5trgVnT1h9yDneEUY78=;
+        b=U43iV86fQCWGaoUI/WbpgRWUHK8p0DDASayl+U6HMl3tGqxvancJNoM0c599lEZw9L
+         20rXFVd7Le8jtiCtOTnNoF2ec0xRqSep8iJM5MBAfHPsSVuD/vxEY291bip7esSQ80U3
+         MRO/J9rVE8PwfMgvW1wvC0GIQ1Eucn+57cmgJ9wxkTO5aJ6eUcRm0TBZVNaaBtZi+hP2
+         f50H7ZEqCXlnufZgQUeK67RWMPp1f8Q8zFJjdRu4Fumh88QjBpFzlWeLzbU16TL2r31N
+         1VhKcCdBca0ciN0ndeoB+BoJTR1er/q7Oo3VPGfPOxEdDg7eiMZz7dqFU8YXlilHRLbQ
+         HYlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783508385; x=1784113185;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6E0ixpEMrHT9a5crJiV6RHWP5trgVnT1h9yDneEUY78=;
+        b=tYj5dVMWOohIEU4ev7QCFDLaBipHiKKINlx1qTIy/4KkzrwhhXC4QfYTZJA9ahILlR
+         R8vgB9OELc2y8FhE3IfBtGPnG/b/q7nJeFMv4AR+POSvp6DNd09H2IRnqUdDoMYLe+y1
+         e1dfPayDo/13p+BmqAC5hd18sVxqn8+lBO/zw4FPX/CL6Yh9g7SvUiFXFwtecAi3MvjC
+         ve3iZsdHDDFbmFMnFHp/EzOqnR/F1HdGVcdDftU55oSclVgSOkgkY8edfDY0VJLaUxeg
+         bLhiZcdtqaQgWl64AgnN0uBO6SBnnMyB242jpDPO+kfmV7zrgyR8gPa3X5nQ20XkmUtb
+         o3AQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrImOakZY/EUbliYf3vQ8UmoiZBgeSdzddMMDzOfrtzTh5WV4Su+hjmDOUnFFq6gtIhPZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhA7/u1zt7ZnO0RQC4JFylCF4CNFbnL0m3lZH0x8hzIwR4fpXT
+	8c6JWWky8AX0DP51eZa2z/EdGomr7bZECd3D4W8HvXHCxsSA5OMl6eCQ1q+Aq/GrFjeBVvMWChZ
+	0Oh3okZfhXG2aJSMVpCyqQhd0Qro2Vc/LH/EJCCyqGprjENKT2SlvGw==
+X-Gm-Gg: AfdE7ck2bq4c8SmsZqLuyM0xEkqtl4gWxhlNpG+2PZohMbdQcOjXMuciDJLqPg/+oE5
+	0tVc+/HTLTOsBMttLXgPIj2rQZTXF6UM5wpq4Y6G3oXO1l9ruTgrtGdJwN+E7YXAS8I9sgUEKRC
+	MNpZ40m8HA5oW3aB5TP+ZOZzFY126jtZgFkkOVysDauOWwtL+00uUIoV0em3JEtCgjmMz3S6i5v
+	G3xoy9WSONHTx0SlBQUU4rIYTLbGHLf7uSl6R2YMeMdTu2r68UHws3k4v77SvMuqo5oBOnKWQD0
+	/jPe4g7abZhBUD6INYWdiq3ol80BXuaxjsnghxYAyErnUzru/DeT3k6u2VSuCmMwMoKZPQKE7wK
+	tl1HrHpM3CE5s8H5EbzQm/SLyGvwe0wwB
+X-Received: by 2002:a5d:5f42:0:b0:475:5e4b:588f with SMTP id ffacd0b85a97d-47df075a119mr2128511f8f.16.1783508385275;
+        Wed, 08 Jul 2026 03:59:45 -0700 (PDT)
+X-Received: by 2002:a5d:5f42:0:b0:475:5e4b:588f with SMTP id ffacd0b85a97d-47df075a119mr2128475f8f.16.1783508384801;
+        Wed, 08 Jul 2026 03:59:44 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d905sm43295235f8f.2.2026.07.08.03.59.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 03:59:44 -0700 (PDT)
+Date: Wed, 8 Jul 2026 06:59:41 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, virtualization@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH net v2 2/2] vsock/test: add test for small packets under
+ pressure
+Message-ID: <20260708065853-mutt-send-email-mst@kernel.org>
+References: <20260708102904.50732-1-sgarzare@redhat.com>
+ <20260708102904.50732-3-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: v-DDk_osieqSnLCExvUN8ugctUkFHcaY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX0YZ8TpDVJpei
- KQu5lFk7DofRufMPWIN/n5H8hL6iWOxW533cUHWZytiUbDxUNAzmvyt07ueSf4qpRYuGk5uQpkH
- UKwgh2KwAHKCN3W5Lm8Bl/PiE1tOg01V7qVKzQnElR+z080DE0iLPCK6/QvfUBII97neJ2Q5n+1
- TXGX6GnR7hD5MU8ujNxt+yhhxIuuwHhqffC8QqAVlf/GQtU46XpB2MUkoX5E2GcXbiXT2NqeImK
- EUjJBuqd/7vZMhRDPzFFWRdsDsuXK7zieyZtrLGdhWQVLyH3BF7WZcxDb18ZO/wbXkjvhqtxyy8
- 2ZJ5TZAQWcsfQrVT0yNNq1DtOOeqPvCGr6lZ9MxPZoi2ytclR9VjSo3EFnnzGvzETr1GQnlYJF8
- 8QPwAke4orbtzWy2CWltKVjejoSe11Mcd/2stsQ4DXKjQcqIq09xbqgkqBBbbvU3rFX+HOuDmHN
- vSPlEbTvQ7JA0+Bvajg==
-X-Proofpoint-ORIG-GUID: lCaK8spx5VMHCxhiDy81Lmoi6aoGLHIQ
-X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4e2bdc cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=dqXfYlxAYPwuIwgSaMQA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDEwNSBTYWx0ZWRfX/d35rhMGcvgv
- lMGSTDqshEHIaIRUogyUz3hgeWPeWNc3gYYGlvei3AbgNHvFjZ0nX/hG+BMkPeB/GMx+E4uzPi8
- 94+yiWWwRWb0T7/IbdP4e3uoOWTeags=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-08_01,2026-07-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080105
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708102904.50732-3-sgarzare@redhat.com>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On Wed, Jul 08, 2026 at 12:29:04PM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> Add a test that sends 2 MB of data using randomly sized small packets
+> (129-512 bytes) over a SOCK_STREAM connection. Packets above
+> GOOD_COPY_LEN (128) bypass the in-place coalescing in recv_enqueue(),
+> forcing each one into its own skb.
+> 
+> Without receive queue collapsing, the per-skb overhead eventually
+> exceeds buf_alloc and the connection is reset. The test verifies
+> that all data arrives and that content integrity is preserved.
+> 
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-This adds a simple panic test for pseries that works with
-TCG (unlike the s390x panic tests), making it easier to test
-this part of the harness code.
+maybe cut down SO_VM_SOCKETS_BUFFER_SIZE? will make it easier to
+trigger?
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
----
- .gitlab-ci.yml         |  2 ++
- lib/powerpc/asm/rtas.h |  1 +
- lib/powerpc/rtas.c     | 16 ++++++++++++++++
- powerpc/run            |  2 +-
- powerpc/selftest.c     | 17 ++++++++++++++++-
- powerpc/unittests.cfg  |  5 +++++
- 6 files changed, 41 insertions(+), 2 deletions(-)
+anyway
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index b28d1eb5..5b5d6036 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -205,6 +205,7 @@ build-ppc64be:
-       selftest-migration
-       selftest-migration-skip
-       selftest-migration-ci
-+      selftest-panic
-       selftest-setup
-       sieve
-       smp
-@@ -238,6 +239,7 @@ build-ppc64le:
-       selftest-migration
-       selftest-migration-skip
-       selftest-migration-ci
-+      selftest-panic
-       selftest-setup
-       sieve
-       smp
-diff --git a/lib/powerpc/asm/rtas.h b/lib/powerpc/asm/rtas.h
-index 989b21bd..fdb3c544 100644
---- a/lib/powerpc/asm/rtas.h
-+++ b/lib/powerpc/asm/rtas.h
-@@ -26,6 +26,7 @@ extern int rtas_call(int token, int nargs, int nret, int *outputs, ...);
- extern int rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, int *outputs, ...);
- 
- extern void rtas_power_off(void);
-+extern void rtas_os_panic(void);
- extern void rtas_stop_self(void);
- #endif /* __ASSEMBLER__ */
- 
-diff --git a/lib/powerpc/rtas.c b/lib/powerpc/rtas.c
-index 9c1e0aff..98eee24f 100644
---- a/lib/powerpc/rtas.c
-+++ b/lib/powerpc/rtas.c
-@@ -182,3 +182,19 @@ void rtas_power_off(void)
- 	ret = rtas_call_unlocked(&args, token, 2, 1, NULL, -1, -1);
- 	printf("RTAS power-off returned %d\n", ret);
- }
-+
-+void rtas_os_panic(void)
-+{
-+	struct rtas_args args;
-+	uint32_t token;
-+	int ret;
-+
-+	ret = rtas_token("ibm,os-term", &token);
-+	if (ret) {
-+		puts("RTAS ibm,os-term not available\n");
-+		return;
-+	}
-+
-+	ret = rtas_call_unlocked(&args, token, 1, 1, NULL, "rtas_os_panic");
-+	printf("RTAS ibm,os-term returned %d\n", ret);
-+}
-diff --git a/powerpc/run b/powerpc/run
-index 06657764..718f08cb 100755
---- a/powerpc/run
-+++ b/powerpc/run
-@@ -57,7 +57,7 @@ fi
- 
- command="$qemu -nodefaults $A $M $B $D"
- command+=" -display none -serial stdio -kernel"
--command="$(migration_cmd) $(timeout_cmd) $command"
-+command="$(panic_cmd) $(migration_cmd) $(timeout_cmd) $command"
- 
- # powerpc tests currently exit with rtas-poweroff, which exits with 0.
- # run_test treats that as a failure exit and returns 1, so we need
-diff --git a/powerpc/selftest.c b/powerpc/selftest.c
-index 8d1a2c76..f6f24d6a 100644
---- a/powerpc/selftest.c
-+++ b/powerpc/selftest.c
-@@ -7,6 +7,7 @@
-  */
- #include <libcflat.h>
- #include <util.h>
-+#include <asm/rtas.h>
- #include <asm/setup.h>
- #include <asm/smp.h>
- 
-@@ -47,6 +48,17 @@ static void check_setup(int argc, char **argv)
- 		report_abort("missing input");
- }
- 
-+static void do_panic(void)
-+{
-+	if (machine_is_pseries()) {
-+		rtas_os_panic();
-+	} else {
-+		/* Cause a checkstop with MSR[ME] disabled */
-+		*((char *)0x10000000000) = 0;
-+	}
-+	report_fail("survived panic");
-+}
-+
- int main(int argc, char **argv)
- {
- 	report_prefix_push("selftest");
-@@ -60,7 +72,10 @@ int main(int argc, char **argv)
- 
- 		check_setup(argc-2, &argv[2]);
- 
-+	} else if (strcmp(argv[1], "panic") == 0) {
-+		do_panic();
-+	} else {
-+		report_abort("unknown test %s", argv[1]);
- 	}
--
- 	return report_summary();
- }
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index 62630ead..afabb46c 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -19,6 +19,11 @@ test_args = 'setup smp=2 mem=1024'
- qemu_params = -m 1g
- groups = selftest
- 
-+[selftest-panic]
-+file = selftest.elf
-+extra_params = -append 'panic'
-+groups = selftest panic
-+
- [selftest-migration]
- file = selftest-migration.elf
- machine = pseries
--- 
-2.53.0
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+> ---
+>  tools/testing/vsock/vsock_test.c | 87 ++++++++++++++++++++++++++++++++
+>  1 file changed, 87 insertions(+)
+> 
+> diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+> index 76be0e4a7f0e..b4ff9f946565 100644
+> --- a/tools/testing/vsock/vsock_test.c
+> +++ b/tools/testing/vsock/vsock_test.c
+> @@ -2347,6 +2347,88 @@ static void test_stream_tx_credit_bounds_server(const struct test_opts *opts)
+>  	close(fd);
+>  }
+>  
+> +/* Test that many small packets don't cause a connection reset under pressure
+> + * and that data integrity is preserved.  Packet sizes vary randomly between
+> + * 129 and 512 bytes, above GOOD_COPY_LEN (128) to bypass in-place coalescing
+> + * in recv_enqueue, forcing each one into its own skb.  Without receive queue
+> + * collapsing, the per-skb overhead eventually exceeds buf_alloc and the
+> + * connection is reset.
+> + */
+> +#define COLLAPSE_PKT_MIN 129
+> +#define COLLAPSE_PKT_MAX 512
+> +#define COLLAPSE_TOTAL (2 * 1024 * 1024)
+> +
+> +static void test_stream_collapse_client(const struct test_opts *opts)
+> +{
+> +	unsigned char *data;
+> +	unsigned long hash;
+> +	size_t offset = 0;
+> +	int i, fd;
+> +
+> +	data = malloc(COLLAPSE_TOTAL);
+> +	if (!data) {
+> +		perror("malloc");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	for (i = 0; i < COLLAPSE_TOTAL; i++)
+> +		data[i] = rand() & 0xff;
+> +
+> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
+> +	if (fd < 0) {
+> +		perror("connect");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	while (offset < COLLAPSE_TOTAL) {
+> +		size_t pkt_size = COLLAPSE_PKT_MIN +
+> +			rand() % (COLLAPSE_PKT_MAX - COLLAPSE_PKT_MIN + 1);
+> +
+> +		pkt_size = min(pkt_size, COLLAPSE_TOTAL - offset);
+> +
+> +		send_buf(fd, data + offset, pkt_size, 0, pkt_size);
+> +		offset += pkt_size;
+> +	}
+> +
+> +	hash = hash_djb2(data, COLLAPSE_TOTAL);
+> +	control_writeulong(hash);
+> +
+> +	free(data);
+> +	close(fd);
+> +}
+> +
+> +static void test_stream_collapse_server(const struct test_opts *opts)
+> +{
+> +	unsigned long hash, remote_hash;
+> +	unsigned char *data;
+> +	int fd;
+> +
+> +	data = malloc(COLLAPSE_TOTAL);
+> +	if (!data) {
+> +		perror("malloc");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
+> +	if (fd < 0) {
+> +		perror("accept");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	recv_buf(fd, data, COLLAPSE_TOTAL, 0, COLLAPSE_TOTAL);
+> +
+> +	hash = hash_djb2(data, COLLAPSE_TOTAL);
+> +	remote_hash = control_readulong();
+> +	if (hash != remote_hash) {
+> +		fprintf(stderr, "hash mismatch: local %lu remote %lu\n",
+> +			hash, remote_hash);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +
+> +	free(data);
+> +	close(fd);
+> +}
+> +
+>  static struct test_case test_cases[] = {
+>  	{
+>  		.name = "SOCK_STREAM connection reset",
+> @@ -2546,6 +2628,11 @@ static struct test_case test_cases[] = {
+>  		.run_client = test_stream_msg_peek_client,
+>  		.run_server = test_stream_peek_after_recv_server,
+>  	},
+> +	{
+> +		.name = "SOCK_STREAM small packets backpressure",
+> +		.run_client = test_stream_collapse_client,
+> +		.run_server = test_stream_collapse_server,
+> +	},
+>  	{},
+>  };
+>  
+> -- 
+> 2.55.0
 
