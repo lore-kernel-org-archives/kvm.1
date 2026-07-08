@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAF53CDBC4;
-	Wed,  8 Jul 2026 06:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E053E1233;
+	Wed,  8 Jul 2026 06:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783492536; cv=none; b=gRznpxKpzp5yN0796IRsdknfOqpDS4znZwZ8tu9uDLlhRZc4soSt1LNcN/W7wKWcge2+7VWpOEOVOtMwMoErsVCaAg4r9pdgWlgwL0/pi/LEJXiGFZYoS7Mf/zBGwL8HS7uDkaUAaGnaufVkSl2VPxFPgsMTRRvp0bbOFFp44Aw=
+	t=1783492542; cv=none; b=M8daA4Uh76iLBoV1UgeMLc4odG36iJVcmd+TWRizmuVwV73ZCEfUZXSGIAfnV9PEMY+TxsYudhFqAC12tLBDOx3+qhdbHxJqD+M3rbw3imVXiji0Rpa7Nbb0+pj0NUKbBvHf7Up/b57pUAaXqJTbtY8PSSimYlWhYYL55uqU88E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783492536; c=relaxed/simple;
-	bh=OVNN7iH74D7zXArKiHiZsI/YkPEXxLp7NSxnSlB7aNY=;
+	s=arc-20240116; t=1783492542; c=relaxed/simple;
+	bh=iR31i42jPvWxEBrDXkLYBzjaFhH50J+zeXzmWErTtUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrI1weTBPteEoa+5cJxvyFgBPV26wpDU4Mg7Jib/jvmdSDuMbb7SD1Nl8wiZp425oAfmqg8Tf/l/fzkP0F1plURLLKIdtxNL1Fl4a2UKbdHdR7DncmM4hFEuxZIg5zHIlSRt27uC2EL0trhQYYh2pqp4BuEzKErY/aRT2JinJlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrZk82Uh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=o+MSWr82ZgLpYNX2NBDFbqqC91Qxqr64AcB3gbFHd20wLg0AqpHM2CYrAaswIv/aNMAdVA3NcK/q7TWa+9mKCPLACV6tCtts8Cw6jkRuJRkOHk8DatZ4YPdb5NgdpFTCzEcOsaQHayTevTlt45HgIlwHQoqq8juSiqOHcsFaxSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5XHQF0n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrZk82Uh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24821F000E9;
-	Wed,  8 Jul 2026 06:35:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5XHQF0n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358F01F000E9;
+	Wed,  8 Jul 2026 06:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783492532;
-	bh=EyC4gURczQRoGKjn6B1m3F1pMENmql3UjOldI/ArK9I=;
+	s=k20260515; t=1783492538;
+	bh=PA8F1W7llGaOJi7r9r5rWMqSe3373z1as7VGI4CJ2vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BrZk82UhcPzujG5ErZtc5jZvuby8+R84Ww2yoSONaBdD3eXUAtH/203Ke/hhNzjuo
-	 B55HnxvB9w/Ud2aJWX0O73C7etufItAKGH9mJ9XsvgerxMHCWu90RlLUo9aD09UcZj
-	 dtr5f59vvkXpJ1MK8UlXlssX0+Z6/CK7auCgakCwQilw6WJ0p9MdTdb24qS52TiIuB
-	 b7sK6R5lv0quLDTAB5/pxzQQvCj3wf0cAuojRg6C9h4oDFPogMx7plgk9PMSMGkiOm
-	 vgkDUBYJvpiOu69YX/YrnMaOkdt0MPHttavIL5+SueNv7rIpjb++rpOd9co9qMdA0n
-	 j+mb90rBbc6nQ==
+	b=G5XHQF0ndIGTP3p8EJURObIxpJDUiOP0V/KlazC93DxE79dC6+H9HmXA+g1FmGLfL
+	 JyWLdcUAnmEqVVCyU6aE3daBsW90iOzXF0dZvifcCgBFG6nI/nhCgWGoIek0ZonCfF
+	 WPm0eDaaP4MvsD3MIpBGY5Mrd+YJMrTVsXb1s1EaIgyjHnyUEe13yncCN4sBOGlnXM
+	 O9DfYfJoGDOmQZ8+x4YNBVlmac1jIBPkhmrLYnZXte05dQyA+4yiRy5dND6oQGpWdZ
+	 WLo51dMEOeh8IawQM9alCYcM6GHk69KXoNWwUALvvxj7DBjoZ+/ixLveqHuUkFN9bf
+	 8FwoYbK/ouCAQ==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Borislav Petkov <bp@alien8.de>
@@ -38,9 +38,9 @@ Cc: <kvm@vger.kernel.org>,
 	Tianyu Lan <tiala@microsoft.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>
-Subject: [RFC PATCH v3 10/27] KVM: SVM: Add avic_ipiv_is_soft_disabled() as a wrapper around enable_ipiv
-Date: Wed,  8 Jul 2026 12:02:08 +0530
-Message-ID: <cb1d2b9a3fb82984e04fe57d882500afa2ad9c40.1783490022.git.naveen@kernel.org>
+Subject: [RFC PATCH v3 01/27] x86/apic: Propagate APIC_SPIV writes to hv for Secure AVIC
+Date: Wed,  8 Jul 2026 12:01:59 +0530
+Message-ID: <891e7c5b74a9c027bc417a2dd32e23c0d4d0c336.1783490022.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1783490022.git.naveen@kernel.org>
 References: <cover.1783490022.git.naveen@kernel.org>
@@ -52,57 +52,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-enable_ipiv is used to disable AVIC IPI virtualization in software to
-address hardware errata related to IPI acceleration, or because the user
-chose to disable it manually through a module parameter. In either case,
-AVIC IPIv itself is available in hardware and AVIC requires setup of
-related data structures. To distinguish this from Secure AVIC mode which
-completely lacks support for IPIv, add a helper to clarify the true
-nature of this knob, which is to soft-disable IPIv.
+From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Hypervisor needs to be aware of the VAPIC's APIC_SPIV state for
+LVT masking/unmasking. So, propagate the guest's APIC_SPIV
+writes to the hypervisor.
+
+Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
+Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 ---
- arch/x86/kvm/svm/avic.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/x2apic_savic.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 9b4d3a10198b..c9e375c5a9c1 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -67,6 +67,15 @@ static_assert(__AVIC_GATAG(AVIC_VM_ID_MASK, AVIC_VCPU_IDX_MASK) == -1u);
- 
- #define AVIC_AUTO_MODE -1
- 
-+/*
-+ * IPIv is supported, but software disabled due to erratum, or because
-+ * the user turned it off through the module parameter.
-+ */
-+static bool avic_ipiv_is_soft_disabled(void)
-+{
-+	return !enable_ipiv;
-+}
-+
- static int avic_param_set(const char *val, const struct kernel_param *kp)
- {
- 	if (val && sysfs_streq(val, "auto")) {
-@@ -1092,7 +1101,7 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu,
- 	 * Keep the APIC ID up-to-date in the entry to minimize the chances of
- 	 * things going sideways if hardware peeks at the ID.
- 	 */
--	if (!enable_ipiv)
-+	if (avic_ipiv_is_soft_disabled())
- 		entry &= ~AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK;
- 
- 	WRITE_ONCE(kvm_svm->avic_physical_id_table[vcpu->vcpu_id], entry);
-@@ -1150,7 +1159,7 @@ static void __avic_vcpu_put(struct kvm_vcpu *vcpu, enum avic_vcpu_action action)
- 	 */
- 	entry &= ~AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK;
- 
--	if (enable_ipiv)
-+	if (!avic_ipiv_is_soft_disabled())
- 		WRITE_ONCE(kvm_svm->avic_physical_id_table[vcpu->vcpu_id], entry);
- 
- 	/*
+diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
+index dbc5678bc3b6..cb3b55225ab6 100644
+--- a/arch/x86/kernel/apic/x2apic_savic.c
++++ b/arch/x86/kernel/apic/x2apic_savic.c
+@@ -214,7 +214,6 @@ static void savic_write(u32 reg, u32 data)
+ 		break;
+ 	case APIC_TASKPRI:
+ 	case APIC_EOI:
+-	case APIC_SPIV:
+ 	case SAVIC_NMI_REQ:
+ 	case APIC_ESR:
+ 	case APIC_ECTRL:
+@@ -223,6 +222,10 @@ static void savic_write(u32 reg, u32 data)
+ 	case APIC_EILVTn(0) ... APIC_EILVTn(3):
+ 		apic_set_reg(ap, reg, data);
+ 		break;
++	case APIC_SPIV:
++		apic_set_reg(ap, reg, data);
++		savic_ghcb_msr_write(reg, data);
++		break;
+ 	case APIC_ICR:
+ 		savic_icr_write(data, 0);
+ 		break;
 -- 
 2.54.0
 
