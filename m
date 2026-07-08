@@ -1,67 +1,66 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4C23BB138
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1B83A963C
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783481811; cv=none; b=rhBn0Ef5pWGJ136jXP/tOYip7BzrvtwobO6Cq/UcEuSqA2c1uF0iCG6iTlZhoU9cgZITnq1v62ITnj3y5O8u08kigchzTsC8w2JKTgGqIEfK25X3N3JmfBIH2GytSpZ3MlrZK+xsjYcs+wO60dg9eo6ryeLAeGqqAbr4Qyu0Sro=
+	t=1783481813; cv=none; b=hV7zuvVfM3L6KGK/8WWaiBp8iu01/mWn3T+gd1IV2iV6HyO1/IcDDgrFhdQu+ZJT0SRaaiGWZyYn68coiNzmE099fw1dBnmSrkfU+IfNIeZ7wpn/y80pGPmLO6mR+OwPBbM/pckwCqHnh0rv6n+sjH+hSBIdEPd9nb0lUzKT4kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783481811; c=relaxed/simple;
-	bh=qi/WyV6rxMYApvKgE9MTfWvRwuKF3Auj3h2yBnFI9Mg=;
+	s=arc-20240116; t=1783481813; c=relaxed/simple;
+	bh=K0LuSdwhSvVXMF9AV1nnY5iDQumiPoBelDjVoeYkwYA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IqB4RBn0DP+pQJXPFZ0I5QEIdOh+9sylo+0Rpx4nfoRGa8jH4XPb66wgUVS1zRmIwK12cCdbWGQY1m1ai8xDHFrNXobhxpPMvOijJDcaUdNrjWDa2IxSz0Mkkk6Hh33GaEOtFxEle+z+laPwgqscP6PVEsC3yRNnxxh4AqXNlVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+PJSOkY; arc=none smtp.client-ip=209.85.210.181
+	 In-Reply-To:To:Cc; b=jM8Vpc69b/qaat/0tjvECmmZyB3p23aNcUUyPiAHUDpZ1tYZi4fCwtXDazP3Atmos74FDzWI9Z4TOa25v3DVdW7j10zSV8ClejZR2RAvj3XJ5DORrox9ItjS9/BtEHddQ0Zs+KEjtUvpUEo0f1JFI4KxLgx/LfSYX/tVFWG2NsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=isUe2SD0; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+PJSOkY"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84347ad88edso301651b3a.1
-        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 20:36:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="isUe2SD0"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c96d2bebca3so92849a12.3
+        for <kvm@vger.kernel.org>; Tue, 07 Jul 2026 20:36:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783481803; x=1784086603; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783481807; x=1784086607; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/bprvjfkZ0oqVTmlvbtRw94STPHY60J1TjXPxacGDgk=;
-        b=e+PJSOkYL1quemdbWB8KV7ELRvmStqo9igrTZRmFpup1yPtUoQ6a7Ja/gqz5CdPRdp
-         sGHxRxdh52RjzouAlEvnd/Gj7Ph2LIJfTJApO+GhLgqnHqCFUlST4ZfkBJEay5aks/9N
-         2l9pXY1rieuoexMR0xYWOZjJ5OQjGG3X2H/hdTKlE5KFpMtlWrcxkAqdZoBrl0iWF0Nb
-         NVuGdjrkr3hS+FkSW+IgOVB3S1queS6u5KoHD/tfalC18H7ayRPWoydFr28hJ7l7ZMXO
-         V5ugTGv8nh0YryyyMN4WwR6ytGUmXi27hYsTDj2jKzmUF+OuMT3CRH9ePuPLCPAl8H/B
-         WHJg==
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SapdKhDDjstqtlZUxA166AcqG1VohysSxTDPc9ANn8c=;
+        b=isUe2SD0yhLF3ttrrx7cx2N9vq9bYIOXTfGeuKRlvNLE+wkJrMqqqgPcGN/YDi28sJ
+         6J9aHamrJKtqOweHwAqFfRNfid9t6ZRKRQZXzeVLbUo2G6RqmlgWxVv7rQAAnJHXtMEc
+         CoXifM7LPQ7CP8YFeh2TkOZBF5aBgMH185v9VeMI/mtJ70jAAVfth7zo3Hcatp086ebS
+         mivQgLpr3pF6a2+mqkIG72d4mo0ylm87vdqUxyOTHD3EwS0dYze7Nvmz1Mjuloj8sHVE
+         lZfFBgCp9tELGrTbdsbF47ikdQJVsmrVQaoubpCEOJ2NfG2PfHkSAu9iH1NVtlKFflQM
+         phMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783481803; x=1784086603;
+        d=1e100.net; s=20251104; t=1783481807; x=1784086607;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/bprvjfkZ0oqVTmlvbtRw94STPHY60J1TjXPxacGDgk=;
-        b=SFv1A4idt5w7fcqD+8v4Oevl/0wsB5Sg7MMOPok2SGIuGvDFedZq0g8rgvK62euitj
-         +/qpUo2UBykd8CGodHc7n7JM4Z4AlaX1ANBF1I/URrHXqZtop+T3Cy2JAcxDpWicghxr
-         h+mvdE1z6gW00sfQAZv+4YY9mL3wuuBvZ1P/UUTh7ABJ48OX6sTOXoqNJIF65nycGB4p
-         1iokYNNFLxELMsdpAyKNfsM/vSZ3HVjOOudYbztAN/iuR6iU9JKZvRalD/tq+/Px3hRf
-         RvnQoNljKOysVZ7kqgWWSW7HQ/oHk3VCbLWZDrrORQBrRTep9O7vY7jzx5Qvt46NAI3+
-         buXA==
-X-Forwarded-Encrypted: i=1; AHgh+RoBMsONPwL6zmOScyFfNX1fxny5xaUa8xYb38JgTK0KoRGTqSUAD/d88/UNJlzkbs7MCMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyZBDWeL1lGfc2Ru6mAz0ZTNBlGCdazPTUPy1FJRcgo7aiPcY6
-	xYbNezrWaR3DjijmnKaqHZ1nDwVgAFyIw5isr81LUe4GSWj/IkXlP5LA
-X-Gm-Gg: AfdE7cm8q6eGIGf/v/2AOnSKUTi/eG9I1nMgNclb3Tf+61wljqHjGH0hoWQRFQm65i7
-	qiMFQYp6GQvMZxzZHgf1qU2RPSTpznnlcZXkUj7cic8RDdXrhgK80GbGORlgYZNXUYmQcE+58Av
-	nqUzdXTefgcZlQ7QNMmYbjsgD813hvSGLr9J2TbGbPTJYavEsQSDTXwrqbPigo/wo66nAblj4m1
-	7iZ9oM0FX1Jkhmc3GlCQuVfvj3s7uxv7DPxIsETHHAZZbdDx0NUgbNaL864aXZlYRB9BpRmKzhm
-	oMLtfUlVEw8E/7mqaw5RlY5D3EZ4S6J3OAb1Gwcv1flMMqNMZmg+TJcankSUNNanO0DTLe3id6r
-	J+sKJ1jnzBeDD4xMRJFKM8hTUN9BiiZ3sOB55ZWJltlRC3LzzHfsaSHRtvsHWTntmdKMqqOsVcS
-	P83iRTcXANpzezhIXwv30ZkClhzCXKYAxZFKJv3EM=
-X-Received: by 2002:a05:6300:220d:b0:3bf:6c08:2843 with SMTP id adf61e73a8af0-3c0bd23ef9dmr601090637.50.1783481802761;
-        Tue, 07 Jul 2026 20:36:42 -0700 (PDT)
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SapdKhDDjstqtlZUxA166AcqG1VohysSxTDPc9ANn8c=;
+        b=EiGaJcUQiHifTbvHbPJmFPVmYNSRK7i/garE/ghZy9ZckjVKmG6HTl9n55I2gs4Eax
+         +oaZH9WngPlLcZGzO3SQTihAZrFXJdyj0Upa1AgEuaMXcyR7H+pcYJiixKa2WlhSxIeN
+         E2gO9tPZhCbBHJHrozkhIYxnBDrThGz3Y0+oIFIuWbQ0WKKg/ZG4oqhc8cNg4diuNeez
+         MlCgNkKbwQJ8NAsq2JHASHf57aH6yx4zGiPP9J5dXCEtx8LDyx2tzY7GKgjNPf+j81Te
+         axXxrlQdZk6VLt0gcwJrdlC78FwCnf7pcIfITmgjv3PSOsGnbj9QIaazpZAhyH6VaaLF
+         AXhA==
+X-Forwarded-Encrypted: i=1; AHgh+RqqDffrl+Yi0hDnTrXxEHaBZKrZ5LnM3+HfB9PB/wl027oFJtSYXDpfrfV3gF8fXBKILSs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywuq05+NVcoy8Apzvq5Tva6sSGKwnEWcw/GT0bxMTgMKWVlXq6O
+	PrECUfbIgfUN+b8A7Ka/rGvHlpIk7My5TPhrYhNLzGoTFdymuJDiXlOD
+X-Gm-Gg: AfdE7ckFX0avWt4d7mR1xue0f6cCkUaKIZy6mYxAspkQyiXDMT3UHyzfn1+33KGskZa
+	vaJ+Qz1ZuhaOsX6P6gFJ2cqH9LmFjVtsiS2DzJHaVHqAxvU8BNrO19hKl0UcMuSBlD5cxwzQImY
+	CFc43qGvG7KiwdUdes14yxzrhp3UWWgA+f+Zv7xgpgd6gNIcV/M0k0em+2EJhDoZGLUKePFFEgA
+	RBVddvcCBz7fVIck97hPY5OMIKAoJ8BDzJRgXS16P0I7TU/We4M10wsphnBT/WFsNhrkUxY3JwZ
+	U+9VYKy7XAM8E3O30HZpiXq9IDBWTbN7fTU8ZBsz6Mb/VXVjnfcV/TReUy2E1nSz8sbKQ22vtQ+
+	Y0kGyC+MpvncUHPO48ELPc1Nh4Mi3oXMxSRdXRO6wiSn7TRJplRVEApI5iRSBUBBv3BKd2+g7Pm
+	dh+HzjLpVukUD1pwatM05PxE+DIVyLjj6YcHUhOKc=
+X-Received: by 2002:a05:6a20:939a:b0:3bf:9aa9:b2a4 with SMTP id adf61e73a8af0-3c0bcc5b894mr618782637.20.1783481807125;
+        Tue, 07 Jul 2026 20:36:47 -0700 (PDT)
 Received: from [10.0.0.65] ([2601:647:6700:64d0::94ac])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174accae5sm21092850eec.29.2026.07.07.20.36.41
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174accae5sm21092850eec.29.2026.07.07.20.36.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 20:36:42 -0700 (PDT)
+        Tue, 07 Jul 2026 20:36:46 -0700 (PDT)
 From: Charlie Jenkins <thecharlesjenkins@gmail.com>
-Date: Tue, 07 Jul 2026 20:34:37 -0700
-Subject: [PATCH v3 14/17] KVM: riscv: selftests: Add csr emulation test
+Date: Tue, 07 Jul 2026 20:34:40 -0700
+Subject: [PATCH v3 17/17] riscv: Remove unused instruction headers
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,7 +69,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260707-riscv_insn_table-v3-14-3f8e5f75ba97@gmail.com>
+Message-Id: <20260707-riscv_insn_table-v3-17-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
 In-Reply-To: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
@@ -85,174 +84,492 @@ Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  Charlie Jenkins <thecharlesjenkins@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783481778; l=4678;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783481778; l=17862;
  i=thecharlesjenkins@gmail.com; s=20260605; h=from:subject:message-id;
- bh=qi/WyV6rxMYApvKgE9MTfWvRwuKF3Auj3h2yBnFI9Mg=;
- b=QczF1j024KNg8/dB49Lgm4Ao2CfVqUU6ddLzHSDUYeMCWduTnE82y0t5vR2FFGF8EVkyU4Mi0
- eWDQJmNv8UjAE94S/3gzb4BUmUKXenPsYliWICDyA0ktInJOh35mlXn
+ bh=K0LuSdwhSvVXMF9AV1nnY5iDQumiPoBelDjVoeYkwYA=;
+ b=3svj/2jGsY5hkw5RnNQYlQm0xUfsp814T02YlcY/q5NOazYnWp9Pbjgbk9cf7+mi6bGS9koAa
+ NcZ0FD06ROtCAUZUMlkKeiAI6KWkpJUT96W9U9jX5dq+bC6Tn9OBwYu
 X-Developer-Key: i=thecharlesjenkins@gmail.com; a=ed25519;
  pk=ajnnRQ98PIdwKp4HeMkq9U32okYbnh6Zb4G3o5XXvkg=
 
-Introduce a kvm test that uses the emulated test csr to validate that
-all emulated reads/writes to csrs function as expected.
+All usages of hard-coded riscv instruction have been migrated over to
+the generated instruction headers so the old macros can be deleted.
 
 Signed-off-by: Charlie Jenkins <thecharlesjenkins@gmail.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm     |   1 +
- tools/testing/selftests/kvm/riscv/csr_test.c | 133 +++++++++++++++++++++++++++
- 2 files changed, 134 insertions(+)
+ arch/riscv/include/asm/insn.h | 413 +-----------------------------------------
+ 1 file changed, 4 insertions(+), 409 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 07a5fc2bf67c..88ccd15e8f94 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -212,6 +212,7 @@ TEST_GEN_PROGS_s390 += s390/irq_routing
- TEST_GEN_PROGS_s390 += mmu_stress_test
+diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+index bf6f5d530491..ea1f139d6d90 100644
+--- a/arch/riscv/include/asm/insn.h
++++ b/arch/riscv/include/asm/insn.h
+@@ -38,151 +38,22 @@ static __always_inline bool riscv_insn_is_##name(u32 _insn)		\
  
- TEST_GEN_PROGS_riscv = $(TEST_GEN_PROGS_COMMON)
-+TEST_GEN_PROGS_riscv += riscv/csr_test
- TEST_GEN_PROGS_riscv += riscv/sbi_pmu_test
- TEST_GEN_PROGS_riscv += riscv/ebreak_test
- TEST_GEN_PROGS_riscv += riscv/mmio_test
-diff --git a/tools/testing/selftests/kvm/riscv/csr_test.c b/tools/testing/selftests/kvm/riscv/csr_test.c
-new file mode 100644
-index 000000000000..bdedf7c84001
---- /dev/null
-+++ b/tools/testing/selftests/kvm/riscv/csr_test.c
-@@ -0,0 +1,133 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * csr_test.c - Tests the csr functionality. CONFIG_RISCV_KVM_TEST_CSR needs to be enabled.
-+ */
-+#include "kvm_util.h"
-+#include "ucall_common.h"
-+
-+#define CSR_TEST 0x240
-+#define MASK 0x15
-+#define FP 0x00006000
-+
-+/*
-+ * Use the fcsr as a U-mode accesible csr and compare against the custom 'test'
-+ * hypervisor csr (currently using vsscratch)
-+ */
-+#define test_csr(write, initial, mode)								\
-+static void test_##write(void)									\
-+{												\
-+	unsigned long hypervisor_result, reference_result, old_hypervisor;			\
-+	asm volatile (										\
-+		"csrs	sstatus, %[enable_fp]\n"						\
-+		"csrw	fcsr, %[init]\n"							\
-+		#write"	zero, fcsr, %[mask]\n"							\
-+		"csrr	%[ref_res], fcsr\n"							\
-+		: [ref_res] "=&r" (reference_result)						\
-+		: [enable_fp] "r" (FP), [mask] #mode(MASK), [init] "r" (initial)		\
-+		: "memory"									\
-+	);											\
-+	asm volatile (										\
-+		"csrw	%[test_csr], %[init]\n"							\
-+		#write"	%[old], %[test_csr], %[mask]\n"						\
-+		"csrr	%[hyp_res], %[test_csr]\n"						\
-+		: [hyp_res] "=&r" (hypervisor_result), [old] "=&r" (old_hypervisor)		\
-+		: [test_csr] "i"(CSR_TEST), [mask] #mode(MASK), [init] "r" (initial)		\
-+		: "memory"									\
-+	);											\
-+	/* Check that writing works */								\
-+	GUEST_ASSERT_EQ(reference_result, hypervisor_result);					\
-+	/* Check that reading works */								\
-+	GUEST_ASSERT_EQ(old_hypervisor, initial);						\
-+	GUEST_DONE();										\
-+}
-+
-+test_csr(csrrw, 0x0, r)
-+test_csr(csrrs, 0x0, r)
-+test_csr(csrrc, 0x15, r)
-+test_csr(csrrwi, 0x0, i)
-+test_csr(csrrsi, 0x0, i)
-+test_csr(csrrci, 0x15, i)
-+
-+static void run(void *guest_code, char *instruction)
-+{
-+	int fd;
-+	struct ucall uc;
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	fd = kvm_create_device(vm, KVM_DEV_TYPE_TEST);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT(get_ucall(vcpu, &uc) == UCALL_DONE,
-+		    "CSR instruction '%s' failed: '%s'", instruction,
-+		    uc.buffer);
-+
-+	close(fd);
-+	kvm_vm_free(vm);
-+}
-+
-+static void check_test_csr_guest(void)
-+{
-+	unsigned long scause, stvec;
-+
-+	asm volatile(
-+		".option push\n"
-+		".option norvc\n"
-+		"la	%[stvec], 1f\n"
-+		"csrw	stvec, %[stvec]\n"
-+		"csrwi	%[test_csr], 0x0\n"
-+		"1:\n"
-+		"csrr	%[scause], scause\n"
-+		".option pop\n"
-+		: [scause] "=&r" (scause), [stvec] "=&r" (stvec)
-+		: [test_csr] "i" (CSR_TEST)
-+	);
-+
-+	/* An illegal instruction will be generated if CONFIG_RISCV_KVM_TEST_CSR is not enabled. */
-+	if (scause == 2)
-+		GUEST_FAIL("CONFIG_RISCV_KVM_TEST_CSR not enabled.\n");
-+	GUEST_DONE();
-+}
-+
-+static int check_test_csr(void)
-+{
-+	struct ucall uc;
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *vcpu;
-+	int success;
-+	int fd;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, check_test_csr_guest);
-+
-+	fd = __kvm_create_device(vm, KVM_DEV_TYPE_TEST);
-+	if (fd < 0)
-+		return 0;
-+
-+	vcpu_run(vcpu);
-+
-+	success = get_ucall(vcpu, &uc) == UCALL_DONE;
-+
-+	close(fd);
-+	kvm_vm_free(vm);
-+
-+	return success;
-+}
-+
-+int main(void)
-+{
-+	/* Skip if CONFIG_RISCV_KVM_TEST_CSR not enabled */
-+	if (!check_test_csr())
-+		exit(KSFT_SKIP);
-+
-+	run(test_csrrw, "csrrw");
-+	run(test_csrrs, "csrrs");
-+	run(test_csrrc, "csrrc");
-+	run(test_csrrwi, "csrrwi");
-+	run(test_csrrsi, "csrrsi");
-+	run(test_csrrci, "csrrci");
-+
-+	return 0;
-+}
+ #include <asm/insn_gen.h>
+ 
+-#define RV_INSN_FUNCT3_MASK	GENMASK(14, 12)
+-#define RV_INSN_FUNCT3_OPOFF	12
+ #define RV_INSN_OPCODE_MASK	GENMASK(6, 0)
+-#define RV_INSN_OPCODE_OPOFF	0
+-#define RV_INSN_FUNCT12_OPOFF	20
+-
+-#define RV_ENCODE_FUNCT3(f_)	(RVG_FUNCT3_##f_ << RV_INSN_FUNCT3_OPOFF)
+-#define RV_ENCODE_FUNCT12(f_)	(RVG_FUNCT12_##f_ << RV_INSN_FUNCT12_OPOFF)
+-
+-/* The bit field of immediate value in I-type instruction */
+-#define RV_I_IMM_SIGN_OPOFF	31
+-#define RV_I_IMM_11_0_OPOFF	20
+-#define RV_I_IMM_SIGN_OFF	12
+-#define RV_I_IMM_11_0_OFF	0
+-#define RV_I_IMM_11_0_MASK	GENMASK(11, 0)
+-
+-/* The bit field of immediate value in J-type instruction */
+-#define RV_J_IMM_SIGN_OPOFF	31
+-#define RV_J_IMM_10_1_OPOFF	21
+-#define RV_J_IMM_11_OPOFF	20
+-#define RV_J_IMM_19_12_OPOFF	12
+-#define RV_J_IMM_SIGN_OFF	20
+-#define RV_J_IMM_10_1_OFF	1
+-#define RV_J_IMM_11_OFF		11
+-#define RV_J_IMM_19_12_OFF	12
+-#define RV_J_IMM_10_1_MASK	GENMASK(9, 0)
+-#define RV_J_IMM_11_MASK	GENMASK(0, 0)
+-#define RV_J_IMM_19_12_MASK	GENMASK(7, 0)
+-
+-/*
+- * U-type IMMs contain the upper 20bits [31:20] of an immediate with
+- * the rest filled in by zeros, so no shifting required. Similarly,
+- * bit31 contains the signed state, so no sign extension necessary.
+- */
+-#define RV_U_IMM_SIGN_OPOFF	31
+-#define RV_U_IMM_31_12_OPOFF	0
+-#define RV_U_IMM_31_12_MASK	GENMASK(31, 12)
+-
+-/* The bit field of immediate value in B-type instruction */
+-#define RV_B_IMM_SIGN_OPOFF	31
+-#define RV_B_IMM_10_5_OPOFF	25
+-#define RV_B_IMM_4_1_OPOFF	8
+-#define RV_B_IMM_11_OPOFF	7
+-#define RV_B_IMM_SIGN_OFF	12
+-#define RV_B_IMM_10_5_OFF	5
+-#define RV_B_IMM_4_1_OFF	1
+-#define RV_B_IMM_11_OFF		11
+-#define RV_B_IMM_10_5_MASK	GENMASK(5, 0)
+-#define RV_B_IMM_4_1_MASK	GENMASK(3, 0)
+-#define RV_B_IMM_11_MASK	GENMASK(0, 0)
+-
+-/* The register offset in RVG instruction */
+-#define RVG_RS1_OPOFF		15
+-#define RVG_RS2_OPOFF		20
+-#define RVG_RD_OPOFF		7
+-#define RVG_RS1_MASK		GENMASK(4, 0)
+-#define RVG_RS2_MASK		GENMASK(4, 0)
+-#define RVG_RD_MASK		GENMASK(4, 0)
+-
+-/* The bit field of immediate value in RVC J instruction */
+-#define RVC_J_IMM_SIGN_OPOFF	12
+-#define RVC_J_IMM_4_OPOFF	11
+-#define RVC_J_IMM_9_8_OPOFF	9
+-#define RVC_J_IMM_10_OPOFF	8
+-#define RVC_J_IMM_6_OPOFF	7
+-#define RVC_J_IMM_7_OPOFF	6
+-#define RVC_J_IMM_3_1_OPOFF	3
+-#define RVC_J_IMM_5_OPOFF	2
+-#define RVC_J_IMM_SIGN_OFF	11
+-#define RVC_J_IMM_4_OFF		4
+-#define RVC_J_IMM_9_8_OFF	8
+-#define RVC_J_IMM_10_OFF	10
+-#define RVC_J_IMM_6_OFF		6
+-#define RVC_J_IMM_7_OFF		7
+-#define RVC_J_IMM_3_1_OFF	1
+-#define RVC_J_IMM_5_OFF		5
+-#define RVC_J_IMM_4_MASK	GENMASK(0, 0)
+-#define RVC_J_IMM_9_8_MASK	GENMASK(1, 0)
+-#define RVC_J_IMM_10_MASK	GENMASK(0, 0)
+-#define RVC_J_IMM_6_MASK	GENMASK(0, 0)
+-#define RVC_J_IMM_7_MASK	GENMASK(0, 0)
+-#define RVC_J_IMM_3_1_MASK	GENMASK(2, 0)
+-#define RVC_J_IMM_5_MASK	GENMASK(0, 0)
+-
+-/* The bit field of immediate value in RVC B instruction */
+-#define RVC_B_IMM_SIGN_OPOFF	12
+-#define RVC_B_IMM_4_3_OPOFF	10
+-#define RVC_B_IMM_7_6_OPOFF	5
+-#define RVC_B_IMM_2_1_OPOFF	3
+-#define RVC_B_IMM_5_OPOFF	2
+-#define RVC_B_IMM_SIGN_OFF	8
+-#define RVC_B_IMM_4_3_OFF	3
+-#define RVC_B_IMM_7_6_OFF	6
+-#define RVC_B_IMM_2_1_OFF	1
+-#define RVC_B_IMM_5_OFF		5
+-#define RVC_B_IMM_4_3_MASK	GENMASK(1, 0)
+-#define RVC_B_IMM_7_6_MASK	GENMASK(1, 0)
+-#define RVC_B_IMM_2_1_MASK	GENMASK(1, 0)
+-#define RVC_B_IMM_5_MASK	GENMASK(0, 0)
+-
+-#define RVC_INSN_FUNCT4_MASK	GENMASK(15, 12)
+-#define RVC_INSN_FUNCT4_OPOFF	12
+-#define RVC_INSN_FUNCT3_MASK	GENMASK(15, 13)
+-#define RVC_INSN_FUNCT3_OPOFF	13
+-#define RVC_INSN_J_RS1_MASK	GENMASK(11, 7)
+-#define RVC_INSN_J_RS2_MASK	GENMASK(6, 2)
+-#define RVC_INSN_OPCODE_MASK	GENMASK(1, 0)
+-#define RVC_ENCODE_FUNCT3(f_)	(RVC_FUNCT3_##f_ << RVC_INSN_FUNCT3_OPOFF)
+-#define RVC_ENCODE_FUNCT4(f_)	(RVC_FUNCT4_##f_ << RVC_INSN_FUNCT4_OPOFF)
+-
+-/* The register offset in RVC op=C0 instruction */
+-#define RVC_C0_RS1_OPOFF	7
+-#define RVC_C0_RS2_OPOFF	2
+-#define RVC_C0_RD_OPOFF		2
+-
+-/* The register offset in RVC op=C1 instruction */
+-#define RVC_C1_RS1_OPOFF	7
+-#define RVC_C1_RS2_OPOFF	2
+-#define RVC_C1_RD_OPOFF		7
+-
+-/* The register offset in RVC op=C2 instruction */
+-#define RVC_C2_RS1_OPOFF	7
+-#define RVC_C2_RS2_OPOFF	2
+-#define RVC_C2_RD_OPOFF		7
+-#define RVC_C2_RS1_MASK		GENMASK(4, 0)
+ 
+ /* parts of opcode for RVG*/
+-#define RVG_OPCODE_FENCE	0x0f
+-#define RVG_OPCODE_AUIPC	0x17
+ #define RVG_OPCODE_BRANCH	0x63
+-#define RVG_OPCODE_JALR		0x67
+-#define RVG_OPCODE_JAL		0x6f
+ #define RVG_OPCODE_SYSTEM	0x73
+ #define RVG_SYSTEM_CSR_OFF	20
+ #define RVG_SYSTEM_CSR_MASK	GENMASK(12, 0)
+ 
++// THESE ARE ALL ACTUALLY USED
+ /* parts of opcode for RVF, RVD and RVQ */
+ #define RVFDQ_FL_FS_WIDTH_OFF	12
+ #define RVFDQ_FL_FS_WIDTH_MASK	GENMASK(2, 0)
+-#define RVFDQ_FL_FS_WIDTH_W	2
+-#define RVFDQ_FL_FS_WIDTH_D	3
+-#define RVFDQ_LS_FS_WIDTH_Q	4
+ #define RVFDQ_OPCODE_FL		0x07
+ #define RVFDQ_OPCODE_FS		0x27
+ 
++// THESE ARE ALL ACTUALLY USED
+ /* parts of opcode for RVV */
+ #define RVV_OPCODE_VECTOR	0x57
+ #define RVV_VL_VS_WIDTH_8	0
+@@ -192,72 +63,6 @@ static __always_inline bool riscv_insn_is_##name(u32 _insn)		\
+ #define RVV_OPCODE_VL		RVFDQ_OPCODE_FL
+ #define RVV_OPCODE_VS		RVFDQ_OPCODE_FS
+ 
+-/* parts of opcode for RVC*/
+-#define RVC_OPCODE_C0		0x0
+-#define RVC_OPCODE_C1		0x1
+-#define RVC_OPCODE_C2		0x2
+-
+-/* parts of funct3 code for I, M, A extension*/
+-#define RVG_FUNCT3_JALR		0x0
+-#define RVG_FUNCT3_BEQ		0x0
+-#define RVG_FUNCT3_BNE		0x1
+-#define RVG_FUNCT3_BLT		0x4
+-#define RVG_FUNCT3_BGE		0x5
+-#define RVG_FUNCT3_BLTU		0x6
+-#define RVG_FUNCT3_BGEU		0x7
+-
+-/* parts of funct3 code for C extension*/
+-#define RVC_FUNCT3_C_BEQZ	0x6
+-#define RVC_FUNCT3_C_BNEZ	0x7
+-#define RVC_FUNCT3_C_J		0x5
+-#define RVC_FUNCT3_C_JAL	0x1
+-#define RVC_FUNCT4_C_JR		0x8
+-#define RVC_FUNCT4_C_JALR	0x9
+-#define RVC_FUNCT4_C_EBREAK	0x9
+-
+-#define RVG_FUNCT12_EBREAK	0x1
+-#define RVG_FUNCT12_SRET	0x102
+-
+-#define RVG_MATCH_AUIPC		(RVG_OPCODE_AUIPC)
+-#define RVG_MATCH_JALR		(RV_ENCODE_FUNCT3(JALR) | RVG_OPCODE_JALR)
+-#define RVG_MATCH_JAL		(RVG_OPCODE_JAL)
+-#define RVG_MATCH_FENCE		(RVG_OPCODE_FENCE)
+-#define RVG_MATCH_BEQ		(RV_ENCODE_FUNCT3(BEQ) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_BNE		(RV_ENCODE_FUNCT3(BNE) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_BLT		(RV_ENCODE_FUNCT3(BLT) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_BGE		(RV_ENCODE_FUNCT3(BGE) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_BLTU		(RV_ENCODE_FUNCT3(BLTU) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_BGEU		(RV_ENCODE_FUNCT3(BGEU) | RVG_OPCODE_BRANCH)
+-#define RVG_MATCH_EBREAK	(RV_ENCODE_FUNCT12(EBREAK) | RVG_OPCODE_SYSTEM)
+-#define RVG_MATCH_SRET		(RV_ENCODE_FUNCT12(SRET) | RVG_OPCODE_SYSTEM)
+-#define RVC_MATCH_C_BEQZ	(RVC_ENCODE_FUNCT3(C_BEQZ) | RVC_OPCODE_C1)
+-#define RVC_MATCH_C_BNEZ	(RVC_ENCODE_FUNCT3(C_BNEZ) | RVC_OPCODE_C1)
+-#define RVC_MATCH_C_J		(RVC_ENCODE_FUNCT3(C_J) | RVC_OPCODE_C1)
+-#define RVC_MATCH_C_JAL		(RVC_ENCODE_FUNCT3(C_JAL) | RVC_OPCODE_C1)
+-#define RVC_MATCH_C_JR		(RVC_ENCODE_FUNCT4(C_JR) | RVC_OPCODE_C2)
+-#define RVC_MATCH_C_JALR	(RVC_ENCODE_FUNCT4(C_JALR) | RVC_OPCODE_C2)
+-#define RVC_MATCH_C_EBREAK	(RVC_ENCODE_FUNCT4(C_EBREAK) | RVC_OPCODE_C2)
+-
+-#define RVG_MASK_AUIPC		(RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_JALR		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_JAL		(RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_FENCE		(RV_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_JALR		(RVC_INSN_FUNCT4_MASK | RVC_INSN_J_RS2_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_JR		(RVC_INSN_FUNCT4_MASK | RVC_INSN_J_RS2_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_JAL		(RVC_INSN_FUNCT3_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_J		(RVC_INSN_FUNCT3_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVG_MASK_BEQ		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_BNE		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_BLT		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_BGE		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_BLTU		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVG_MASK_BGEU		(RV_INSN_FUNCT3_MASK | RV_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_BEQZ		(RVC_INSN_FUNCT3_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_BNEZ		(RVC_INSN_FUNCT3_MASK | RVC_INSN_OPCODE_MASK)
+-#define RVC_MASK_C_EBREAK	0xffff
+-#define RVG_MASK_EBREAK		0xffffffff
+-#define RVG_MASK_SRET		0xffffffff
+-
+ #define __INSN_LENGTH_MASK	_UL(0x3)
+ #define __INSN_LENGTH_GE_32	_UL(0x3)
+ #define __INSN_OPCODE_MASK	_UL(0x7F)
+@@ -275,236 +80,26 @@ static __always_inline bool riscv_insn_is_branch(u32 code)
+ 	return (code & RV_INSN_OPCODE_MASK) == RVG_OPCODE_BRANCH;
+ }
+ 
+-#define INSN_MATCH_LB		0x3
+-#define INSN_MASK_LB		0x707f
+-#define INSN_MATCH_LH		0x1003
+-#define INSN_MASK_LH		0x707f
+-#define INSN_MATCH_LW		0x2003
+-#define INSN_MASK_LW		0x707f
+-#define INSN_MATCH_LD		0x3003
+-#define INSN_MASK_LD		0x707f
+-#define INSN_MATCH_LBU		0x4003
+-#define INSN_MASK_LBU		0x707f
+-#define INSN_MATCH_LHU		0x5003
+-#define INSN_MASK_LHU		0x707f
+-#define INSN_MATCH_LWU		0x6003
+-#define INSN_MASK_LWU		0x707f
+-#define INSN_MATCH_SB		0x23
+-#define INSN_MASK_SB		0x707f
+-#define INSN_MATCH_SH		0x1023
+-#define INSN_MASK_SH		0x707f
+-#define INSN_MATCH_SW		0x2023
+-#define INSN_MASK_SW		0x707f
+-#define INSN_MATCH_SD		0x3023
+-#define INSN_MASK_SD		0x707f
+-
+-#define INSN_MATCH_C_LD		0x6000
+-#define INSN_MASK_C_LD		0xe003
+-#define INSN_MATCH_C_SD		0xe000
+-#define INSN_MASK_C_SD		0xe003
+-#define INSN_MATCH_C_LW		0x4000
+-#define INSN_MASK_C_LW		0xe003
+-#define INSN_MATCH_C_SW		0xc000
+-#define INSN_MASK_C_SW		0xe003
+-#define INSN_MATCH_C_LDSP	0x6002
+-#define INSN_MASK_C_LDSP	0xe003
+-#define INSN_MATCH_C_SDSP	0xe002
+-#define INSN_MASK_C_SDSP	0xe003
+-#define INSN_MATCH_C_LWSP	0x4002
+-#define INSN_MASK_C_LWSP	0xe003
+-#define INSN_MATCH_C_SWSP	0xc002
+-#define INSN_MASK_C_SWSP	0xe003
+-
+ #define INSN_OPCODE_MASK	0x007c
+ #define INSN_OPCODE_SHIFT	2
+ #define INSN_OPCODE_SYSTEM	28
+ 
+-#define INSN_MASK_WFI		0xffffffff
+-#define INSN_MATCH_WFI		0x10500073
+-
+-#define INSN_MASK_WRS		0xffffffff
+-#define INSN_MATCH_WRS		0x00d00073
+-
+-#define INSN_MATCH_CSRRW	0x1073
+-#define INSN_MASK_CSRRW		0x707f
+-#define INSN_MATCH_CSRRS	0x2073
+-#define INSN_MASK_CSRRS		0x707f
+-#define INSN_MATCH_CSRRC	0x3073
+-#define INSN_MASK_CSRRC		0x707f
+-#define INSN_MATCH_CSRRWI	0x5073
+-#define INSN_MASK_CSRRWI	0x707f
+-#define INSN_MATCH_CSRRSI	0x6073
+-#define INSN_MASK_CSRRSI	0x707f
+-#define INSN_MATCH_CSRRCI	0x7073
+-#define INSN_MASK_CSRRCI	0x707f
+-
+-#define INSN_MATCH_FLW		0x2007
+-#define INSN_MASK_FLW		0x707f
+-#define INSN_MATCH_FLD		0x3007
+-#define INSN_MASK_FLD		0x707f
+-#define INSN_MATCH_FLQ		0x4007
+-#define INSN_MASK_FLQ		0x707f
+-#define INSN_MATCH_FSW		0x2027
+-#define INSN_MASK_FSW		0x707f
+-#define INSN_MATCH_FSD		0x3027
+-#define INSN_MASK_FSD		0x707f
+-#define INSN_MATCH_FSQ		0x4027
+-#define INSN_MASK_FSQ		0x707f
+-
+-#define INSN_MATCH_C_FLD	0x2000
+-#define INSN_MASK_C_FLD		0xe003
+-#define INSN_MATCH_C_FLW	0x6000
+-#define INSN_MASK_C_FLW		0xe003
+-#define INSN_MATCH_C_FSD	0xa000
+-#define INSN_MASK_C_FSD		0xe003
+-#define INSN_MATCH_C_FSW	0xe000
+-#define INSN_MASK_C_FSW		0xe003
+-#define INSN_MATCH_C_FLDSP	0x2002
+-#define INSN_MASK_C_FLDSP	0xe003
+-#define INSN_MATCH_C_FSDSP	0xa002
+-#define INSN_MASK_C_FSDSP	0xe003
+-#define INSN_MATCH_C_FLWSP	0x6002
+-#define INSN_MASK_C_FLWSP	0xe003
+-#define INSN_MATCH_C_FSWSP	0xe002
+-#define INSN_MASK_C_FSWSP	0xe003
+-
+-#define INSN_MATCH_C_LHU		0x8400
+-#define INSN_MASK_C_LHU			0xfc43
+-#define INSN_MATCH_C_LH			0x8440
+-#define INSN_MASK_C_LH			0xfc43
+-#define INSN_MATCH_C_SH			0x8c00
+-#define INSN_MASK_C_SH			0xfc43
+-
+ #define INSN_16BIT_MASK		0x3
+ #define INSN_IS_16BIT(insn)	(((insn) & INSN_16BIT_MASK) != INSN_16BIT_MASK)
+ #define INSN_LEN(insn)		(INSN_IS_16BIT(insn) ? 2 : 4)
+ 
+-#define SHIFT_RIGHT(x, y)		\
+-	((y) < 0 ? ((x) << -(y)) : ((x) >> (y)))
+-
+ #define REG_MASK			\
+ 	((1 << (5 + LOG_REGBYTES)) - (1 << LOG_REGBYTES))
+ 
+-#define REG_OFFSET(insn, pos)		\
+-	(SHIFT_RIGHT((insn), (pos) - LOG_REGBYTES) & REG_MASK)
+-
+-#define REG_PTR(insn, pos, regs)	\
+-	((ulong *)((ulong)(regs) + REG_OFFSET(insn, pos)))
+-
+-#define GET_RS1(insn, regs)	(*REG_PTR(insn, SH_RS1, regs))
+-#define GET_RS2(insn, regs)	(*REG_PTR(insn, SH_RS2, regs))
+-#define GET_RS1S(insn, regs)	(*REG_PTR(RVC_RS1S(insn), 0, regs))
+-#define GET_RS2S(insn, regs)	(*REG_PTR(RVC_RS2S(insn), 0, regs))
+-#define GET_RS2C(insn, regs)	(*REG_PTR(insn, SH_RS2C, regs))
+-#define GET_SP(regs)		(*REG_PTR(2, 0, regs))
+-#define SET_RD(insn, regs, val)	(*REG_PTR(insn, SH_RD, regs) = (val))
+-#define IMM_I(insn)		((s32)(insn) >> 20)
+-#define IMM_S(insn)		(((s32)(insn) >> 25 << 5) | \
+-				 (s32)(((insn) >> 7) & 0x1f))
+-
+-#define SH_RD			7
+-#define SH_RS1			15
+-#define SH_RS2			20
+-#define SH_RS2C			2
+-#define MASK_RX			0x1f
+-
+ #if defined(CONFIG_64BIT)
+ #define LOG_REGBYTES		3
+ #else
+ #define LOG_REGBYTES		2
+ #endif
+ 
+-#define MASK_FUNCT3		0x7000
+-
+-#define GET_FUNCT3(insn)	(((insn) >> 12) & 7)
+-
+-#define RV_IMM_SIGN(x)		(-(((x) >> 31) & 1))
+-#define RVC_IMM_SIGN(x)		(-(((x) >> 12) & 1))
+-#define RV_X_MASK(X, s, mask)	(((X) >> (s)) & (mask))
+-#define RV_X(X, s, n)		RV_X_MASK(X, s, ((1 << (n)) - 1))
+-#define RVC_LW_IMM(x)		((RV_X(x, 6, 1) << 2) | \
+-				 (RV_X(x, 10, 3) << 3) | \
+-				 (RV_X(x, 5, 1) << 6))
+-#define RVC_LD_IMM(x)		((RV_X(x, 10, 3) << 3) | \
+-				 (RV_X(x, 5, 2) << 6))
+-#define RVC_LWSP_IMM(x)		((RV_X(x, 4, 3) << 2) | \
+-				 (RV_X(x, 12, 1) << 5) | \
+-				 (RV_X(x, 2, 2) << 6))
+-#define RVC_LDSP_IMM(x)		((RV_X(x, 5, 2) << 3) | \
+-				 (RV_X(x, 12, 1) << 5) | \
+-				 (RV_X(x, 2, 3) << 6))
+-#define RVC_SWSP_IMM(x)		((RV_X(x, 9, 4) << 2) | \
+-				 (RV_X(x, 7, 2) << 6))
+-#define RVC_SDSP_IMM(x)		((RV_X(x, 10, 3) << 3) | \
+-				 (RV_X(x, 7, 3) << 6))
+-#define RVC_RS1S(insn)		(8 + RV_X(insn, SH_RD, 3))
+-#define RVC_RS2S(insn)		(8 + RV_X(insn, SH_RS2C, 3))
+-#define RVC_RS2(insn)		RV_X(insn, SH_RS2C, 5)
+-#define RVC_X(X, s, mask)	RV_X_MASK(X, s, mask)
+-
+-#define RV_EXTRACT_FUNCT3(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RV_INSN_FUNCT3_OPOFF, \
+-		   RV_INSN_FUNCT3_MASK >> RV_INSN_FUNCT3_OPOFF)); })
+-
+-#define RV_EXTRACT_RS1_REG(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RVG_RS1_OPOFF, RVG_RS1_MASK)); })
+-
+-#define RV_EXTRACT_RS2_REG(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RVG_RS2_OPOFF, RVG_RS2_MASK)); })
+-
+-#define RV_EXTRACT_RD_REG(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RVG_RD_OPOFF, RVG_RD_MASK)); })
+-
+-#define RV_EXTRACT_UTYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RV_U_IMM_31_12_OPOFF, RV_U_IMM_31_12_MASK)); })
+-
+-#define RV_EXTRACT_JTYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RV_J_IMM_10_1_OPOFF, RV_J_IMM_10_1_MASK) << RV_J_IMM_10_1_OFF) | \
+-	(RV_X_MASK(x_, RV_J_IMM_11_OPOFF, RV_J_IMM_11_MASK) << RV_J_IMM_11_OFF) | \
+-	(RV_X_MASK(x_, RV_J_IMM_19_12_OPOFF, RV_J_IMM_19_12_MASK) << RV_J_IMM_19_12_OFF) | \
+-	(RV_IMM_SIGN(x_) << RV_J_IMM_SIGN_OFF); })
+-
+-#define RV_EXTRACT_ITYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RV_I_IMM_11_0_OPOFF, RV_I_IMM_11_0_MASK)) | \
+-	(RV_IMM_SIGN(x_) << RV_I_IMM_SIGN_OFF); })
+-
+-#define RV_EXTRACT_BTYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RV_B_IMM_4_1_OPOFF, RV_B_IMM_4_1_MASK) << RV_B_IMM_4_1_OFF) | \
+-	(RV_X_MASK(x_, RV_B_IMM_10_5_OPOFF, RV_B_IMM_10_5_MASK) << RV_B_IMM_10_5_OFF) | \
+-	(RV_X_MASK(x_, RV_B_IMM_11_OPOFF, RV_B_IMM_11_MASK) << RV_B_IMM_11_OFF) | \
+-	(RV_IMM_SIGN(x_) << RV_B_IMM_SIGN_OFF); })
+-
+-#define RVC_EXTRACT_C2_RS1_REG(x) \
+-	({typeof(x) x_ = (x); \
+-	(RV_X_MASK(x_, RVC_C2_RS1_OPOFF, RVC_C2_RS1_MASK)); })
+-
+-#define RVC_EXTRACT_JTYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RVC_X(x_, RVC_J_IMM_3_1_OPOFF, RVC_J_IMM_3_1_MASK) << RVC_J_IMM_3_1_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_4_OPOFF, RVC_J_IMM_4_MASK) << RVC_J_IMM_4_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_5_OPOFF, RVC_J_IMM_5_MASK) << RVC_J_IMM_5_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_6_OPOFF, RVC_J_IMM_6_MASK) << RVC_J_IMM_6_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_7_OPOFF, RVC_J_IMM_7_MASK) << RVC_J_IMM_7_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_9_8_OPOFF, RVC_J_IMM_9_8_MASK) << RVC_J_IMM_9_8_OFF) | \
+-	(RVC_X(x_, RVC_J_IMM_10_OPOFF, RVC_J_IMM_10_MASK) << RVC_J_IMM_10_OFF) | \
+-	(RVC_IMM_SIGN(x_) << RVC_J_IMM_SIGN_OFF); })
+-
+-#define RVC_EXTRACT_BTYPE_IMM(x) \
+-	({typeof(x) x_ = (x); \
+-	(RVC_X(x_, RVC_B_IMM_2_1_OPOFF, RVC_B_IMM_2_1_MASK) << RVC_B_IMM_2_1_OFF) | \
+-	(RVC_X(x_, RVC_B_IMM_4_3_OPOFF, RVC_B_IMM_4_3_MASK) << RVC_B_IMM_4_3_OFF) | \
+-	(RVC_X(x_, RVC_B_IMM_5_OPOFF, RVC_B_IMM_5_MASK) << RVC_B_IMM_5_OFF) | \
+-	(RVC_X(x_, RVC_B_IMM_7_6_OPOFF, RVC_B_IMM_7_6_MASK) << RVC_B_IMM_7_6_OFF) | \
+-	(RVC_IMM_SIGN(x_) << RVC_B_IMM_SIGN_OFF); })
++#define RV_X_MASK(X, s, mask)  (((X) >> (s)) & (mask))
+ 
++// These three are used by vector stuff
+ #define RVG_EXTRACT_SYSTEM_CSR(x) \
+ 	({typeof(x) x_ = (x); RV_X_MASK(x_, RVG_SYSTEM_CSR_OFF, RVG_SYSTEM_CSR_MASK); })
+ 
 
 -- 
 2.54.0
