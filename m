@@ -1,145 +1,157 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C798E2609C5
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CB237AA64
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783516175; cv=none; b=k/oyRJJ0uo/jJQplqhY2Xw839vU6TEhMi+XuccGXYKp0fVh2Pcz4/GjiWcBSjb/5h36+gHeshUO6peUHTwQNPqwTxc+sg7GXG7ZMhKe5bxrGqK7/mk0lA+zmr4pyVjp31YBi1KxEqzXrRHF4kmAgGWF1XnqlgxwkpRwmrrrnwRE=
+	t=1783517666; cv=none; b=FVRUiNZ19SfGX//TptZQf8hzgOYEp8hm7WCdBMByBK7hAwK51imuS9DpW/gm5J1S4PMvbXWKlmyDrU6vk4s6sU9j7QTChvjrg66UFhYdb8OfwAEVRdZHCbBZl1FB+bQ8+l8TdVCo09znlQnescgi+/DvYyBnVKKI9quji4heZWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783516175; c=relaxed/simple;
-	bh=LRFd983JSWEXtCkfU4WpsiRZSq3G9KA4O/kVLqjiMCw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e8QLd/vQEI5fZyrX6xgg8AhbzG2KMgnztwj0tqdV+7ZFCjiy95hB0jzTVJKYWemJ0Vdd0Ch4GKyy2gqzEUlSY2PnkbG4SD/GYeqJNgBDxsQJXk0byHX3qXA+RlVKNDntDegAJIJvTe4XpEz5HW5hmo3o2DPK5MH0Yq44rC7nOQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gRFpvUhi; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783517666; c=relaxed/simple;
+	bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I5EbO7rJyHi4c0zPWlfKitA/ol4JlG65HqgedoCkYnYA3uxBvrL7eC7z7nTa86512kRsQyBIlgrLPBmM3S+TkmGKJRUdT26ikssqSQNjUni3ldFFqf2+S+RV71ogCbg8NBlGWg0ZJA296J0YFOlHEtKIl74OGCfKWpKPYOjniZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bt/u+WAd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nJBNMuhi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gRFpvUhi"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ccf43f7a99so5169395ad.2
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:09:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bt/u+WAd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nJBNMuhi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783517663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
+	b=Bt/u+WAdyD2rIzulZ1WUb7wRVa40SVQD8bZii/XtrFtWWhF1Fv2YGkFbIYltotrunINgR5
+	EwYKFtEha9MI3F4wXeCLXg8GE365oPfRzYRQ98t4KXyLzQXUzmVd9sGjFitUZn42HnxCXP
+	pmvPcyWJYPCdRjWNgdMhykliujj/VD0=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-359-VIjfaeL5MiyXyrN2qxKA9A-1; Wed, 08 Jul 2026 09:34:21 -0400
+X-MC-Unique: VIjfaeL5MiyXyrN2qxKA9A-1
+X-Mimecast-MFC-AGG-ID: VIjfaeL5MiyXyrN2qxKA9A_1783517659
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c15d4224f9dso44917266b.3
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783516173; x=1784120973; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BMcW42PsHtPKTv9ereSadAffvq3qYaAQIfYGI6YZnqQ=;
-        b=gRFpvUhi3haLQ0WLBFIlYi/w0Ny0epLe3VRwS5h5Jzypf1hSgYL/fYWMxzsKrVS2xD
-         iVaRKCI8wFYS7ot8xLLpPDwZkcd1yZqygMbfwh/zpBqX8Lm7GDaTg92ndKGB5yAugGKs
-         oMj0IauuyX5QjjQl8Hs+1ewG1zUTIXboALaEBsEDNudYnuvVz4GpZmEMs2x75/yfLATc
-         ij5LRfj9r4ugjU4fgLhJW0BFgKJwjv4mccermQp8ip0TJGq2X0hJKtlHqPd7r2jsWtlt
-         4+jXSGDcEHqNyxixSqRwq3QlgV2kDzb91AKsDdjsRoYpowy0stNYJBcDY0v0/8UBxlv8
-         IivA==
+        d=redhat.com; s=google; t=1783517659; x=1784122459; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
+        b=nJBNMuhi8ApwLQW1V3HfDCyZT1EXfuhrdgynf67y8vGIENvnIr72HurDPqVLVLfrEA
+         5SRjrjZYN8fGAwGKkFZxccEIknMVehg29vq+gJLcTqyXAcNvJlpenfCCIGd/Jw0qXnBf
+         xBbWNAPa4E5VhzPlc/E6ox6uHfEISlw2abMfCtPYooWu6GConhA27nlLf2/UQaIX9KHk
+         ahe8HQ2zGiklhT2a4BvCkKjI9Q9wnFFuXT1bD8Sr8hlpoJfJISA/c3YGWirVnJKBuIaw
+         3YsLDuIOD7xqeZz3jb4jc4POIayv3a8W6YN3ciF5SrQXE9V20Q6qLl/kNlBYiHUKhItJ
+         g/SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783516173; x=1784120973;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BMcW42PsHtPKTv9ereSadAffvq3qYaAQIfYGI6YZnqQ=;
-        b=V8fTi9rlEqLQ6XckWW+iRJhoXcLY1maoX7c22MIhoEZLMWvJVr0bKNSzl9QDN32225
-         PXlbKJpzpHHNX9An8O3TMQDwN8xwOn3i/bI6QOWYgg5p4Wb1vNE+7/hR+dW95YV5rW5X
-         h1YJ3r6tiuoHR9DzfSpjV8OfQitgzNysOD4nRW8WCeunk7HC5EbgnuqW0E6Q3x+x2LnO
-         m5NsyLBFOJ8cy9SQ/QDY6BHgEtZG2GdvYYjuYu8+Qmznjd9oTLR2V9WLBejWkdE8RYbH
-         QI/xJbkZ4m+UV/UE0QS2LAv4fWW3Q13/DGLK466IpFZ7lnoC9/SbqDDBritZaSZya9oN
-         MZcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqiuUign2B0om3ZLXYI8Nxrt/CFv4U8wFyOqMVcwj5LicyWUPs0XVe5zGYp+2jFXshJ9yo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyU2SMC+w6kxIcq+74Q3cepDM2YJgNiV0cHw/n5oYZnon6aK2/R
-	09cbhybIDTf7jWQrhNaqVCidE3vqtLNZkZl5RMtrFNqIb32VKW7VfqdwmClzrFEvqc8p2j5TGXo
-	EGcjZHw==
-X-Received: from plme1.prod.google.com ([2002:a17:903:4901:b0:2ca:c3fb:c096])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b83:b0:2c6:9f66:d573
- with SMTP id d9443c01a7336-2ccea373102mr29869925ad.2.1783516173077; Wed, 08
- Jul 2026 06:09:33 -0700 (PDT)
-Date: Wed, 8 Jul 2026 06:09:32 -0700
-In-Reply-To: <a018bb95-cda5-4431-9bed-e60223087d97@linux.intel.com>
+        d=1e100.net; s=20251104; t=1783517659; x=1784122459;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
+        b=YZolazRQctm2obGNsmUtgTgxBVyOjRCbgsQuv5ULLyAi2AKK9jMwvfRpTlZ6XtY5yx
+         ya+Cd0C8MufA3rN5OO7P+/4bS+bLUg7LN9GxvBFmmsMf2WLIEpu+zR+jTgVfWi87XVAi
+         TOAV4cgIaKARUtCudqv6FWsNmwZvKiFXUvMGlhObW7zl74oi4qXj2QXrUfupG1C42TUU
+         eazUyRK1Gh7gLPg9ugrwfnmsT9t3BEdS3ACq5ta3zrPQAPCGocERRZKcXJVQc6xlwHHY
+         WIQFbniswh/xFgI3DM3E+xmq4y5bg9zNhmQTYXuadnSJNoHm5zs4lv/x2l0to+ow6OQa
+         u6zQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqCwJ9Vz+4hD6wi+PeXeaKoe+GOEwuHTsU4EqAhLmXcYHPCNKnn8onx7VXcjxeLF5CHfx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnR2igY5Zv4inymFUvASRpUXp9fSCA/HiuU2SRpSYcMyPatpRw
+	S+an/APEJq1dCJyuYIhSXGoVfxQEAzorhbFMd62+muErqE38fY8UIwcw6KBxJnozwtvqx2W3MaI
+	b+UwBlV42uSfceYxh/65pBtMbOgBxfeAJBYacz3teZ7lHhbdprbvPTg==
+X-Gm-Gg: AfdE7cndutH55f7rqMnx1iVZYmawfAlRlHoeE99rEHbK9Dxy0PF4ArTtjJT1/+QQoRb
+	9luS2Zsi81K1tkm5R2vSRAkKnWE5WNaDueXieu5CzMnYT+dwpyStZuDnk0onrrli1iqaM+3arXw
+	XiFHknZMBLn/kgM8j+vXLxZ5STZs0IKZIeL5Oj6u1twR4T5u8TSXFZHYeB2vw4dKRVHV3AakgHa
+	zHXXOnMcIlHJzPg1yPsI69DAI+lfg+eOG9hLprCk9DJ3y83RzOUHZTPzhaYlLE7CmM+Z60SrZ4n
+	TUYxH7wB2Zx/R3X60TOw9ZPpx6jZh+ooC3J7/R9mDQtDU3Wpnf34qpWSr1OoiK0qUrBP6TuyXYr
+	ZV0UdVsjPLwuEnjz/Vf0AJJNMQygIf8AV3AHxO09+4uRG/cqYArPzz7hfXAoTd+A=
+X-Received: by 2002:a17:907:a286:b0:c12:2acc:fce2 with SMTP id a640c23a62f3a-c15ce128c8dmr130689366b.53.1783517659331;
+        Wed, 08 Jul 2026 06:34:19 -0700 (PDT)
+X-Received: by 2002:a17:907:a286:b0:c12:2acc:fce2 with SMTP id a640c23a62f3a-c15ce128c8dmr130687466b.53.1783517658811;
+        Wed, 08 Jul 2026 06:34:18 -0700 (PDT)
+Received: from ?IPv6:2a01:41e1:62a8:c300:7322:3fab:8db6:d28c? ([2a01:41e1:62a8:c300:7322:3fab:8db6:d28c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ad84483csm333878666b.17.2026.07.08.06.34.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 06:34:18 -0700 (PDT)
+Message-ID: <bceedaf195adf713db70a1dba743055fe4f20bc0.camel@redhat.com>
+Subject: Re: [PATCH 0/4] KVM: x86: Document and enforce APIC base memory hole
+From: Tim Wiederhake <twiederh@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>,  "H. Peter Anvin"	 <hpa@zytor.com>, Ingo
+ Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  Paolo Bonzini <pbonzini@redhat.com>, Shuah
+ Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	x86@kernel.org
+Date: Wed, 08 Jul 2026 15:34:17 +0200
+In-Reply-To: <akwrncCjosItvAeO@google.com>
+References: <20260706092021.3625908-2-twiederh@redhat.com>
+	 <akwrncCjosItvAeO@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
- <20260708023531.825361F000E9@smtp.kernel.org> <a018bb95-cda5-4431-9bed-e60223087d97@linux.intel.com>
-Message-ID: <ak5L2csITyi1tGp0@google.com>
-Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD init
-From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: sashiko-reviews@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Wed, Jul 08, 2026, Binbin Wu wrote:
-> On 7/8/2026 10:35 AM, sashiko-bot@kernel.org wrote:
-> > This isn't a bug introduced by this patch, but does the KVM_TDX_INIT_VM
-> > initialization path have a lock inversion?
+On Mon, 2026-07-06 at 15:26 -0700, Sean Christopherson wrote:
+> On Mon, Jul 06, 2026, Tim Wiederhake wrote:
+> > When an in-kernel irqchip is enabled on x86, KVM installs a private
+> > memory slot at the default APIC base address (0xfee00000) during
+> > vcpu
+> > creation.=C2=A0 If user space has already mapped a memory region
+> > covering
+> > that address, vcpu creation fails with -EEXIST.=C2=A0 The same happens
+> > in
+> > reverse: mapping memory over the APIC base after vcpu creation also
+> > fails with -EEXIST.
 > >=20
-> > Looking at the call chain triggered by the KVM_TDX_INIT_VM ioctl,=20
-> > tdx_vm_ioctl() first acquires the inner KVM locks via=20
-> > tdx_acquire_vm_state_locks():
+> > None of this is documented, and the error is reported far from
+> > where
+> > the actual conflict is introduced.=C2=A0 A VMM developer hitting this
+> > has
+> > to trace through KVM internals to understand what went wrong.
 > >=20
-> > arch/x86/kvm/vmx/tdx.c:tdx_vm_ioctl() {
-> >     ...
-> >     CLASS(tdx_vm_state_guard, guard)(kvm);
-> >     ...
-> >     r =3D tdx_td_init(kvm, &tdx_cmd);
-> >     ...
-> > }
+> > This series documents the two undocumented constraints (irqchip
+> > before
+> > vcpu, APIC base memory hole) and adds early checks so the error is
+> > reported at the ioctl that actually violates the constraint.
 > >=20
-> > The tdx_vm_state_guard acquires kvm->lock, all vcpu->mutex locks, and=
-=20
-> > kvm->slots_lock.=20
-> >=20
-> > Then tdx_td_init() continues and calls __tdx_td_init(), where=20
-> > cpus_read_lock() is acquired directly:
-> >=20
-> > arch/x86/kvm/vmx/tdx.c:__tdx_td_init() {
-> >     ...
-> >     cpus_read_lock();
-> >     ...
-> > }
-> >=20
-> > Since KVM locking rules require cpus_read_lock() to be the outermost lo=
-ck,
-> > does acquiring it while holding kvm->lock and the other inner locks cre=
-ate
-> > a deadlock risk against CPU hotplug or other paths that acquire these l=
-ocks
-> > in the correct order?
-> >=20
+> > Patches 1-2 are documentation only.=C2=A0 Patches 3-4 add early
+> > validation
+> > that turns a confusing -EEXIST at vcpu creation into an explicit
+> > error
+> > at the point where the conflict is introduced.
 >=20
-> The virt/kvm/locking.rst doesn't explicitly say cpus_read_lock() needs to=
- be the
-> outermost lock, but
-> documentation:        cpus_read_lock() is taken outside kvm_lock
->                       kvm->lock is taken outside kvm->slots_lock
-> =E2=80=8Bset_nx_huge_pages():  takes kvm_lock outside of kvm->slots_lock
->=20
-> So it's transitive that cpus_read_lock() should be taken outside of
-> kvm->slots_lock while KVM_TDX_INIT_VM takes cpus_read_lock() inside
-> kvm->slots_lock.
->=20
-> So there could be a deadlock case:
-> tdx_td_init()               set_nx_huge_pages()        __kvmclock_cpufreq=
-_notifier
->   lock(&kvm->slots_lock)                            =20
->                               lock(kvm_lock)
->                                                          lock(cpu_hotplug=
-_lock)
->                               lock(&kvm->slots_lock)
->                                                          lock(kvm_lock)
->   lock(cpu_hotplug_lock)
->=20
-> There was a discussion that is related to this issue:
-> https://lore.kernel.org/kvm/20250124191109.205955-2-pbonzini@redhat.com/
-> It seems the discussion is still open?
+> I'm 100% in favor of documenting the behavior, but I'm not exactly
+> excited about
+> the enforcement.=C2=A0 It's not needed for KVM's safety, and while I
+> appreciate that
+> such a goof would be somewhat annoying to debug, I have a hard time
+> believing it's
+> a common failure.=C2=A0 I.e. I'm not convinced carrying the code is worth
+> the marginal
+> benefits it provides.
 
-Yeah, mostly because the deadlock is so extremely unlikely.
+FWIW, I did run into this exact issue myself and debugging it was
+indeed quite a ride. The EEXIST from vcpu creation led me completely
+astray and I was very close to just giving up. If I had, I wouldn't
+have written this patch, and the failure would be perceived as even
+less common.
 
-> Back to this issue, does it make sense to take cpus_read_lock() before=20
-> kvm->lock during KVM_TDX_INIT_VM as following:
+I don't mind dropping patches 3 and 4 (the actual "enforcement"
+patches) for v2, the documentation is more important in my opinion.
+Still, if there is interest, I'd be more than happy to rework these
+patches for eventual inclusion.
 
-I would say "not yet".  I consider this a set_nx_huge_pages() problem, not =
-a TDX
-problem.
+Thanks for the review,
+Tim
+
