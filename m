@@ -1,167 +1,263 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3281B3E4C87;
-	Wed,  8 Jul 2026 20:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783543654; cv=none; b=hkqRVArsCbPz0x69rUXo8J4SWp7Vx9h0E2fHb0c0m43MllVwtzItXr92YFBnObhbiNkY9myXtwRCW7XWVgc8uvRd6yPSyXXHnaS+umRHAn19DM1EpdF77Kzq9tHa2JNaI5kqmSWTYUHAVPxHgsn3hAF9dmZzj/b5hklnWxqX23E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783543654; c=relaxed/simple;
-	bh=cR1HiUm7pVgCihmLA1IsI6MdrD1/WBYTeEy1VGa+t2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o7sN0Wea8HTGXBDnLlJy850yFgt4bJMkpYKglNeXFzRz7C8/wzUQJxFr+tep3j4FHefoEkke2aJMW/EEuVfkD/Dtg4eFh9DIjLH7+0MToBvP6g9kp1v32Vu3/EPVvVs3+ej3dM948T+jq4qimE+E+2FH0pcqEfqlk2WhplyyHYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WddHFLI5; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789933E4C87;
+	Wed,  8 Jul 2026 20:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783543780; cv=fail; b=PyZat1gvkzeZyZVWM2nSgYwTjwS4j2AgMWwU/CmllKYlDB/0LWAhgqHSWrZuMen+eJ6afhnlu0tPA1u9VFucuYjyhBf6itplWFqhtKPunkgmSmGdg2XvSL4BE+jWOVOAJ2L1SEPE4/JI5NM8mC26BPoPc3v/C8RlLJ4RYeolMUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783543780; c=relaxed/simple;
+	bh=zv1mbIYuNTAiaj2e4Kl9pL8S88z0UV3L1lWqN6/Zupc=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rCrnXcKxs18EtecsJ8YoWgpXZ5VjwdB/BdPQvmDE9TiYRxIuHHPYu6zAubn3Z6hovxfnw0EGLqrfQlpKG0i5IUkqN5eIOQZpdE7egqW85groquA4ZcbhrntLsB+WEhtYyWdWTSsARQbexW2vAMi4Cdr/wS1av5MwGA2BSyxRCpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=apxdFLxo; arc=fail smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WddHFLI5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="apxdFLxo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783543653; x=1815079653;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cR1HiUm7pVgCihmLA1IsI6MdrD1/WBYTeEy1VGa+t2E=;
-  b=WddHFLI5wEehrLw1QO4zs3LY5av7K6asxa+LYUX6euo35Citr4gZvlAn
-   n35mQCGFECTaZ8DhoZD+bLjUcFZLO23IOM69jDbmTkSzB3Y5SJx4d8Xzx
-   qzAQSu2e2LnwkjuD2jRBA7myFOZ6P08BKZadHDsrsg4/ZtB6jk+UK6lDI
-   HW+WQVCp708ubuLhDU7/hiRRHLLGTicJnCmRWBGuCcEJV7zbNHjDj1wmV
-   VaHYFXOQZtWZdlcky+kB7Z2w8aIJWmdAXrbrbXcW5c5aF4XPxf4k3Ufhd
-   HAzDaUBlGnojR6++MOce2AL6oW0+HwIILo4t4cX+EeiQNT8TnYU8EzlYG
+  t=1783543780; x=1815079780;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=zv1mbIYuNTAiaj2e4Kl9pL8S88z0UV3L1lWqN6/Zupc=;
+  b=apxdFLxoisfKb8JOwtdLDSHh2y/ckAAMHrzgkYu9DPuRX7/l6cyBxbWr
+   i8tk8XtAY4RXKlh9n5DRtVS6ynFr3jmcKwE6at2Y8lA4eQQA+uEfWyn5M
+   mIYOcbe1GhUtohAtxW/FcOFriRKfXS9nwtr1ZHh7zzN/lIuUtA5ET0CWM
+   QXMFD4xjkaRpX7QTlpLC+XvTP6OEoL2hkxalB+pB5xtmqMQBq+qm59bnj
+   +p1chCTAJ+aLwsZ8AsjO5XBeYmFRAKFvBjiP2jStf33fFVn3Y57+RujOA
+   l+NhXmKN4bT3CVWTTkfdACFKc/hkvAg+Tnll3azzHHGUk//9vP0ZDFLok
    Q==;
-X-CSE-ConnectionGUID: GQoidYbWToGqiY0BJ4lpRw==
-X-CSE-MsgGUID: iyyGbfHMToyuP3De0pnNmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84316031"
+X-CSE-ConnectionGUID: jLGjmHlWQ3eYuXxsC2MySg==
+X-CSE-MsgGUID: FttJCXNgQgK34tN0oR6sMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95594763"
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="84316031"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 13:47:33 -0700
-X-CSE-ConnectionGUID: W4S9+43UQ0SsgOsyVy4BJA==
-X-CSE-MsgGUID: 4mAzlO8KRd6FX6clzJ59AA==
+   d="scan'208";a="95594763"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 13:49:23 -0700
+X-CSE-ConnectionGUID: KpHwmi/CQI+dppjnlQGF/w==
+X-CSE-MsgGUID: fseodDtqR96bmeMUxBXeqQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="256308413"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.66]) ([10.125.111.66])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 13:47:32 -0700
-Message-ID: <08c9bf2f-75be-4244-b99c-153ec1f604ca@intel.com>
-Date: Wed, 8 Jul 2026 13:47:29 -0700
+   d="scan'208";a="249971653"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 13:49:23 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 13:49:22 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 13:49:22 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.18) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 13:49:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=avtQa6MnxXApr5J5Ae9L/sasbsK/+/KqoUg+rQONaO0HbhAJMKlxgLsJA7lcdxyQ+PBiAef19qHLhiiK2fu+Y76NxdIsfYwil57IWgdM37QU67Qz9X5TGBU8Sj9Sx00jV9I/+6oPCFVFX0H/kl+XxOnQFX2nFWlpbMuLhglxzeBxsfSLZowUlgwEaH19T7VTCXnfLVntj/ksdntqaV25k341d+4Hf/8pNjd0XwHYAOR6p5XiKZsUWBhG4RDy9AkUVvR7lZwbFnOR3qmPeYFTdNWOqif9rt53XkmLZ7ZLOnPmmoKzb9hHBn/HRwTgdV3Pz+I/e7dWqXCO1QktEkNJag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=miBZNke0gw+52OO3k+zi1nDao+G1JOs6auZq9W9fnko=;
+ b=eOQlFymOF1dSvtdly/T0zu6DTYeNK6rb3r/SCGhkFd5ruvRIwtjDwOi6DyregPjXBvcSQIsv/VOeR6Nqxj5s8mXPWQMAvdrqMDBD3dBgN+WdoFF7RfAXuEZFajFO4A2OxQewn/ciJFpOG/bOOTjAWtAhQOsRXAG9mjWiA3yzKxUcHH6iR1YfvXSzNsjBDWZiJ/RD7pKOxB9NlhjioWd/fguCOHCsvhpwCBimgS/p+bmhf9b2OTtmli144C3vtGzYe3oHl8+XopkkAr8ptUC+lKTwjs5MfF67MIEMJwOFFN/pghMvouvdx7q9Ys1nWmtwa6sPNUg366Z3YftiSSd4xQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
+ by SJ2PR11MB7672.namprd11.prod.outlook.com (2603:10b6:a03:4cd::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 20:49:15 +0000
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
+ 20:49:15 +0000
+Message-ID: <6ab50a8c-d502-4d51-b037-3af6c4b4083e@intel.com>
+Date: Wed, 8 Jul 2026 13:49:12 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 04/11] x86/virt/tdx: Allocate ref counts for Dynamic
+ PAMT memory
+Content-Language: en-US
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, <bp@alien8.de>,
+	<dave.hansen@intel.com>, <hpa@zytor.com>, <kas@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
+	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
+	<x86@kernel.org>, <chao.gao@intel.com>, <yan.y.zhao@intel.com>,
+	<kai.huang@intel.com>
+CC: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-5-rick.p.edgecombe@intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <20260526023515.288829-5-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0011.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::16) To DS0PR11MB7997.namprd11.prod.outlook.com
+ (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
-To: Sean Christopherson <seanjc@google.com>, Peter Fang <peter.fang@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- "djbw@kernel.org" <djbw@kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
- Adrian Hunter <adrian.hunter@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- Yilun Xu <yilun.xu@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Sohil Mehta <sohil.mehta@intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Kishen Maloor <kishen.maloor@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-17-yilun.xu@linux.intel.com>
- <aj1tFuwZWdPGfUoG@google.com> <20260629100301.GA1743876@pedri>
- <akMQ3J6fK3DUBsPH@google.com>
- <23a9173f6e278ca7dfedce3374626c6ea3e1b47a.camel@intel.com>
- <6a445e4be6b12_3a3568100db@djbw-dev.notmuch> <akVNdxCzk-n4bgMv@google.com>
- <9df36c49e6be69dd9eece71f70a404a84b1563ab.camel@intel.com>
- <20260704054342.GB2169894@pedri> <akvsgVjwb00P1EuA@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <akvsgVjwb00P1EuA@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|SJ2PR11MB7672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 300576e8-758c-40bb-531d-08dedd325f22
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|7416014|366016|376014|1800799024|18002099003|22082099003|56012099006|4143699003|11063799006|921020|6133799003;
+X-Microsoft-Antispam-Message-Info: zZRpjacjlLnaMNOcf4MIuh+lmkiQNOXgei1e7ZU4UeD7DVr7APXeXBHuhTPbfkUnpZldZNiTKYbHmrXShUAjSR8b0HH1ezK8DrJFHoCY+H65+PVCIbgjOAsP/WL7l4R1qibXKPmDDHWPVKh3q1ZZU0o+us3Ke89MUpLo/7n0JaTg+Eul/0Q6hfwvbFqhCSw+oO4tGQtPm2wdGZEhXDvTRd7XSJ4mobpr8cq5KUmW0g7iSMrDFOEZ6ttylFoRmLzy18jOJ1XNNRqlsE5FZ5Ju08Eo5NWMy2va1HypI3EBW8fM7RbWbSH5TNhMnDNyxfcuhcqXl4NX/KwpETTs4b8svzmkA2ZK+cbS7p3NibYUPaQCCLvMnxfbEyqBTG3aofG+DwyeVarsaIOJA4mTyGzOt86eAx632D+zGm+pKpOlcdnUS0Bn68GQnvdA358KrtagmAtsNOt2BB9BT4XU3RXAb4yaSX6jP2eNsRh4aM21q3rUUBxyftpdjiGRy/H8ZX46rReYUOESuLRlmqt9Af5WvQhQfALxgZfoJOiH25IMnZ0YQUl1m2ycM8rRZbVkuY4cQLF5i43BIsU+2tGZkzw3aJyMi5PcIt+gnavTUbVoXfPEJs+T6G7H5AIvhkKb1dPDk5ivJLMGCcF/freuiSNVHO+tRKiZgUcHy3Ts1lbIkdMBzjakYgRs31hxd9RmhMC36ZreepVkgMLMtMwm33s9cw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(921020)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MTE2Y25rRlNuY2hZQVVNUkNHYnlXQm5OYm1ldllRWmdGRnByZmJ3VDJLa3dJ?=
+ =?utf-8?B?MlhSdi9mWkJZeWNRZ3pyTkVUVm0rNVRhL0Vsd291MnFueWk1N1ZmYUc1TU5i?=
+ =?utf-8?B?NHFwME5tL3oyQXYxdDB2Mk16MmNXU2RWT0lPWVh2UHZxLzVVK2VQNGJxdXlu?=
+ =?utf-8?B?N2YvdDJpTVk1QkJwc1lwZFhxMXZVR01WQnBwUWh5QmNFa3IyOFQ5R0Q3dlA3?=
+ =?utf-8?B?OUVyOXNHemwwR2lLcisxM2diMlhJeWhtcWwzQnA4VUpqWGw3TlZuQ21mcnlx?=
+ =?utf-8?B?RisyMTUzVmtmVWtMTzBCMUhWTWNMTEhxeWZGOVBDcmNoT3dWL21oKzgvbEtI?=
+ =?utf-8?B?STlEQ3dYaHFTTy9Wbnh0em9vNWNxY2lpQmxaMDdXT1RzcUZpS3A5T3B2TFVU?=
+ =?utf-8?B?Z3ZrUTNObWdhdHpoTEgzYksxTUFUV1gzQXFKL3g0VTdSdTBrallsaVFVUSsv?=
+ =?utf-8?B?bWk5c2ZPbkpLN2UwZGVzaXY2WXhRbm9aTjRVdWF4M2ErU3pPWkljS0ZaWWs0?=
+ =?utf-8?B?U3lWRHc5d3ZNQVYvYTRDejlBU2xvUGNVYUE3SlF2aEFMYUtEaDdpaDVWNTdr?=
+ =?utf-8?B?cWpUVEh2dnJtcFg2WW9JVXl4RWtLbkZzY24rNk1DcWxvdzVVeEdNSmxYQlNq?=
+ =?utf-8?B?V2ZpNE1tMmM5Tmpab3RrTHJnOHlwck9kNkVOMVBsTHEweER5ZjAvbkdpVW9l?=
+ =?utf-8?B?dzlBRmljSUt5MlV0SG5YNGdWdWxtcjc4Z0xkZnVuNm9reDNEdTluNk9SVnNL?=
+ =?utf-8?B?cEkxc2I4Uy9rd2lGdVhER05tTWlicm1vVmFQREhMa0ZldzZQMDRuTVcxdk95?=
+ =?utf-8?B?aURSYWdYL3JQY1h0K1k3ZUtrTnQwcWdFZlJTZHpYNkF4b0d4aWMweGwwamNF?=
+ =?utf-8?B?Tk5zdDgzbHRndm1URlkvR1NXSUFIM1dEeUhPTXNyMVIvak1MZ2tieVdkSGYw?=
+ =?utf-8?B?R1hkRVJ1VHlWcTNFaDQwaUs1cnVyditZbEtQbzVzQ0R0R21kdnNlTVM5NUtl?=
+ =?utf-8?B?bXkyUnJNd2JHWnFkZHphd1A3NXJFRmVVUnRNYjMyaGJETCtQcDFXaGNvV3Vq?=
+ =?utf-8?B?ME16YjdMVmxxSEI4WHBycmZ6OXBBbXAvNHE4UktrM0RqRjNINzllZXlQaE5O?=
+ =?utf-8?B?ZXRqcXp5YktsUEtlRkdYWkVhc2NYSFFjTFJkWmc0L1dxRW5qVStpQ216Y0ZS?=
+ =?utf-8?B?ZEs4SndkYVNUdG1SRFZOaGJNQzBMOFRuc0VkbmxCaVdKUFpNZWdqRFI2czNo?=
+ =?utf-8?B?SVpzR3h0bmE3VXJuTnA3TnlGSDJYbXdZQXlxdmRLLytmL2FPRFZCNTMwa1Bu?=
+ =?utf-8?B?VjJITmNScklIaW9jTjh5WkxTbFJ3b0RLVEV4QU5obkFOak1Zbi9EemhmcWZy?=
+ =?utf-8?B?T0VoanJhTEVwOWpVT3d1VjVCb3FwcnhhcmJha1VSREFOd0hCUFVZNVU0eFlO?=
+ =?utf-8?B?bDRhL2R3VHdZaU9GcGhialhONHJLMzAzZVpUM2JvZk9YYkg1MVZjZ3J1blRQ?=
+ =?utf-8?B?dDlLRTd1MEs4dE5FTDFUR05Cc2hkZmdqSjFDcEVEcGRSZHRBOFRWUU42UUpT?=
+ =?utf-8?B?QXZJNGU3VHVVTC9Lb3l5K0dBbjdJQzBFYm5GNFYzd1dzRElBWjRiWnMxblVm?=
+ =?utf-8?B?RmNNZlhNUGhnRU9hOWdZVEpFVHRhS3R5dG5sSGwrY2lydXRTSTVJd3dReVRZ?=
+ =?utf-8?B?Ym4wcmxwQzJIUUVFdm5qczIya2dQK0NvcWdydy9YRlkxaTdkcGNHNHIxY2g0?=
+ =?utf-8?B?U205WEpCMTRwN01OM2tMeGNaT0pVQ3RXVXl4eXlwTndWakdCYVJGeHRrU2pU?=
+ =?utf-8?B?Z2twQnRNaHp2Ri9CQXkrNHMvbUhWZzJSVi9DOWd1bVZ3aHpldXZoVUZES25v?=
+ =?utf-8?B?a0pubUNjc2Z1aGw5WWdseEZ2RjlVVEluVjliVnVMTEZ0cVozYjBTdkZLaW1v?=
+ =?utf-8?B?N1laMHRXZDVCUGRPVkVHa0hhbFhldDlPeDJmY1hEMTdYcGc1SlJPamx3WUl1?=
+ =?utf-8?B?NGZnNlJvanNVRXVIQjErczBzTTI5YjdHQmtyenFUSXpwQ3gwVitjeDEwMWsw?=
+ =?utf-8?B?ZmdsTWpIZk1XbW83QVNmL3BGZ21tRmlQdVlpVXg2V0dpN2R3OTNaWUw2eU9k?=
+ =?utf-8?B?SU1aRVV4Vk5CZTNmL2xzTkIxdW5xejEzOHcxSGZGYk5GM1ZQbXFWVDN1NFZo?=
+ =?utf-8?B?WU9ZWWhoUi9zWExXNkw0WkxXb0RWTFdtMW1WZnNSKzNiQ3FGM2V5bU5PRGsy?=
+ =?utf-8?B?SWlRNzhBY3JXVE1LY09nd2VxUnZpenBNMDdaMWlmSGdVYVY0a3JLcmF5Wk5y?=
+ =?utf-8?B?enFGUEpiZUJWcGpWdXQ2TmF5Ly92MUhBL3FUVUlUTzJWRjBiOUZuZz09?=
+X-Exchange-RoutingPolicyChecked: a2MwV8zATAUrZVI3oSHljzxGXYirTnQ8Bj72J/r/9W61VLg0C8ldVGhkF6iuD95hZdrEkc+0RsoJ/vp+pVJyFrkk2gUCpoxw62MY7LBTN3i3z+zRa4mFf+jaS2vqaUsPk+FXZacyKDnUGb+NHaPbQkD2FzKnXu5XxCQLL1hk0uoX5bk/B8AhoxyAUHq+5Qfn1p3eD8fRHK7b+/e2RNdwZ9GJMQzWAZedgSVp5rwNZw3sI0RxmaabTE5BXWrmlA5hSYIePVvcEd2i/DMnlYYTtiIpsB1tyN5nXegyl+CACzttJbDlY5jDBCrLZNcPovAmutdlSptaOw5t8Hscm7Z4TA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 300576e8-758c-40bb-531d-08dedd325f22
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 20:49:14.9692
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /A0gMjv46/7K6w7YYxSOFVSntCYZAg7YAzRluw0sTQQ8bBFEM8qPXPB2p9t/vEUbDzn/v/64xB18g2TjlP8JlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7672
+X-OriginatorOrg: intel.com
 
-On 7/6/26 10:57, Sean Christopherson wrote:
-> What is "the S3M" though?  Is it a separate chip a la AMD's PSP/ASP?  Is it a
-> per-package thing? Per-core?
-I'll give you my rough software guy mental model of what it is: Each
-package has its own S3M. They are microcontrollers which are discrete
-from the CPU cores. Each S3M gets some CPU physical address space routed
-over to it.
+On 5/25/2026 7:35 PM, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> 
+> The PAMT memory holds metadata for all possible TDX protected memory. Each
+> physical address range is covered by PAMT entries at three levels (1GB,
+> 2MB, 4KB). With Dynamic PAMT, the 4KB range of PAMT is allocated on
+> demand. The kernel supplies the TDX module with page pairs to store the
+> 4KB entries, which cover 2MB of host physical memory. The kernel must
+> provide this page pair before using pages from the range for TDX. If this
+> is not done, SEAMCALLs that give the pages to be protected by the TDX module
+> will fail.
+> 
+> Allocate reference counters for every 2MB range to track TDX memory usage.
+> This can be used to handle concurrent get/put callers, in order to
+> accurately determine when the dynamic 4KB level of Dynamic PAMT needs to
+> be allocated and when it can be freed.
+> 
+> This allocation will currently consume 2 MB for every 1 TB of address
+> space from 0 to max_pfn. The allocation size will depend on how the RAM is
+> physically laid out. In a worst case scenario where the entire 52-bit
+> address space is covered this would be 8GB. Then the DPAMT refcount
+> allocations could hypothetically cause the savings from Dynamic PAMT to go
+> negative on exotic platforms with sparse, small amounts of memory.
+> 
 
-> How is it accessed, and what are the "rules" for for those
-> accesses?  What types of latencies are we looking at?
+...
 
-As far as I know, the latency for one round trip to/from S3M is on the
-order of a "real" device. It has a physical address and when the OS
-wants to talk to it, those addresses are mapped with ioremap(). It's
-similar to any modern I/O device control plane. Note, though, that for
-TDX, there's no ioremap() because the I/O is hidden in the TDX module.
+> +/*
+> + * On a machine with Dynamic PAMT, the kernel maintains a reference counter
+> + * for every 2M range. 
 
-The real overhead comes because the I/O window is essentially 4 bytes
-wide (IIRC) and all the data that comes in and out of it has to be
-squeezed through that window. It reminds me of a UART, but with a
-slightly more arcane interface.
+Commit log says every 2MB range.
 
-For TDX, though, the craziness is mostly hidden in the TDX module.
+The counter indicates how many users there are for
+> + * the PAMT memory of the 2M range. The kernel allocates PAMT refcounts at
+> + * initialization.
+> + */
+> +static atomic_t *pamt_refcounts;
+> +
+>  /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
+>  static LIST_HEAD(tdx_memlist);
+>  
+> @@ -254,6 +263,43 @@ static struct syscore tdx_syscore = {
+>  	.ops = &tdx_syscore_ops,
+>  };
+>  
+> +/*
+> + * Allocate PAMT reference counters for all physical memory.
+> + *
+> + * It consumes 2MiB for every 1TiB of physical memory.
 
-> What else uses the S3M?  Do we have to worry about contending with
-> non-TDX usage?
-There _are_ different users of S3M. But each of them should get their
-own I/O address and S3M firmware has to handle talking to those
-different users at the same time. The TDX I/O window is owned
-exclusively by the TDX module.
+Commit log says 2MB and 1TB. I would make both consistent.
 
-So, while S3M has and long and growing list of jobs, the random software
-(like the host kernel) poking at one I/O window doesn't have to know
-about the other piece of software (the TDX module) poking at another.
+> + */
+> +static int init_pamt_refcounts(void)
+> +{
+> +	size_t size = DIV_ROUND_UP(max_pfn, PTRS_PER_PTE) * sizeof(*pamt_refcounts);
+> +
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
+> +
+> +	pamt_refcounts = __vmalloc(size, GFP_KERNEL | __GFP_ZERO);
 
-I'm sure I got a detail or two wrong in there, so folks that know this
-better: please correct me. But I think that's a halfway-decent 10,000ft
-view.
+vzalloc()?
+
+> +	if (!pamt_refcounts)
+> +		return -ENOMEM;
+> +
+> +	return 0;
+> +}
+> +
+> +static void free_pamt_refcounts(void)
+> +{
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return;
+> +
+> +	vfree(pamt_refcounts);
+> +	pamt_refcounts = NULL;
+> +}
+> +
+> +/* Find PAMT refcount for a given physical address */
+
+This comment is probably not that useful. The function name is
+descriptive by itself.
+
+> +static atomic_t * __maybe_unused tdx_find_pamt_refcount(unsigned long pfn)
+> +{
+> +	/* Find which PMD a PFN is in. */
+> +	unsigned long index = pfn >> (PMD_SHIFT - PAGE_SHIFT);
+> +
+> +	return &pamt_refcounts[index];
+> +}
+> +
