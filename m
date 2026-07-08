@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11473CBE6D;
-	Wed,  8 Jul 2026 06:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9C63CA4A0;
+	Wed,  8 Jul 2026 06:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783492439; cv=none; b=CRyUrfPcB/B1yx2rHd93JH0j5/9w+7oQhk4mzHp4nu8xcDCC260VFOSTVogbbytTSmZMiVFoG3QxUtkNcBI4QLaAap3R1jfvL92Zu3Iuoer3l+vTdwUsXeW4u/6OVpiZfX+zFtIDGg5fIjjWLQ6tgqWOe1SkBnKJEUjsphSbN04=
+	t=1783492443; cv=none; b=blIwwV55GziO+vnBt32jrEbgPjLDOLnZ/UOQbyNT6H347uXV/R0QmQv4OcZ+6DD39MOufCZpJgAWKPnUoA+bnEJPNn8+DKDi/gHoHeZZRfrxvle2IMOHJLkzxicorfgkvuQmVW2SNhYMgeXlQ6r3VhfYtRkJO5VnGXK3+Ydv6Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783492439; c=relaxed/simple;
-	bh=JEnwHDdr2GBqgVScnWjfxq86SvGuGF3N+hwawbnrTOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUSXFABVL/tBU1+Nh3pd9bDhP1b5BHDP1R0V8NkV4GyguMdxMQEctLqdVOcozjfOzcTgqThxAPtwc7RLTQfJwYiAIU3Ch38SHySR+Jdv5mi29bhQr7worVIEcdBzXwfNqRu4ScLbxoQd5W277K9bLvr8Zgkfdh/DLOWPIBMNF1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otnFCNu/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783492443; c=relaxed/simple;
+	bh=kkl2j1ifC5EwIzph/XAZEspARp/aZtXExVMSbZCGhXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AZ3lMnDJ6OVOIhgOQVlALj6QPpHH79ZF3UweuY0hAam/BTCc0oQI3mZBHRbNFnFvfchi/y7xXO0w7Y6x14nolT/rrRPHDLeMPIZ4BQN2Th3au6/kkMg5qypcHgm6UcX1hOvS7mH1PnRPrMDc5Rbd1WUjzT9xptSqC0ZagsMyhGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfdH6RQi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otnFCNu/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33B51F000E9;
-	Wed,  8 Jul 2026 06:33:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfdH6RQi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591231F000E9;
+	Wed,  8 Jul 2026 06:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783492437;
-	bh=KBV7Fo5eSCy8KcVruYEtnD3WFJOtcXfQTAl3avf7zxo=;
-	h=From:To:Cc:Subject:Date;
-	b=otnFCNu/AKGnfogyiBoPEfCc22Cm16zBTnKA9vTwPBauAI0tbVNelCw2pcqnVUm/k
-	 uqmpHP3YLzEfiNpGIHGNY328Ilj0yuetqttHWHikv32p1qznCSDP9isVxc4l4rUY+z
-	 xYoIAbceBIaI6+OOaTRvVHgWRYBth9UXl1uJHsxOGbwH+zNUU14er4WGesankAMQwN
-	 6IMdIC5VXpk+8NNAz6/gGyVOS8Ix6/TzHe9OnvmdcA+tm0Op/OEySwifGtqyaUzsEz
-	 8v/9ssf/6OtczLazb8iq9OldOFusk+s4E6uHn7EQBRXiQ5BzcZBC47CPSfnQj76zxO
-	 Fz6xD0GgNGepw==
+	s=k20260515; t=1783492442;
+	bh=SZO46gkvzvid8cKdahMtEhu9Hg2pL7KH50D9Hy+W7MI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gfdH6RQi6vqk0qfsksQ5Xvhak/yeE+MYmB1HY0093+vz1Uq7eou0sZ+jSRz67OyMe
+	 H2OqCmGbw/SnwGI6PdRGGvJNsV4gv/7zaje5QuGjrlgb4X/3oyyqgeuQEEp+Ebje9w
+	 N5E50P5vHrTNaiFbnw46uF+JB7S5tgbeDViuLzGj6UBlur7HKLZ9Kp36nwkPQg0hYh
+	 UCEYHuaetseEa2r4dtUAkuSOmFzlXxpgxR/nTCaE/uwwz8OJp9+295z1MfXlwwlfwg
+	 9COdMRXEl9cXvkTh0xZPqTTaTwUpODxs7O9VGJB0+QxvCQF5c9dEWAcvyAzgbfLwol
+	 BMzL3sM0QgALQ==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Borislav Petkov <bp@alien8.de>
@@ -37,10 +38,12 @@ Cc: <kvm@vger.kernel.org>,
 	Tianyu Lan <tiala@microsoft.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>
-Subject: [RFC PATCH v3 00/27] KVM: SVM: Add support for SEV-SNP Secure AVIC
-Date: Wed,  8 Jul 2026 12:01:58 +0530
-Message-ID: <cover.1783490022.git.naveen@kernel.org>
+Subject: [RFC PATCH v3 11/27] KVM: SVM: Disable IPIv for Secure AVIC
+Date: Wed,  8 Jul 2026 12:02:09 +0530
+Message-ID: <1f1ce337c90819fe97b8108ac4c078dc8fd176d2.1783490022.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1783490022.git.naveen@kernel.org>
+References: <cover.1783490022.git.naveen@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,105 +52,127 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is RFC v3 of the patches adding KVM support for Secure AVIC. RFC v2:
-http://lore.kernel.org/r/20250923050317.205482-1-Neeraj.Upadhyay@amd.com
+Secure AVIC does not have IPI virtualization (except for Self-IPIs which
+is not relevant for KVM), i.e., guest ICR writes are not accelerated by
+the hardware but results in a #VC that the guest is expected to handle
+with the help of the hypervisor. This also means there are no AVIC
+Physical/Logical ID tables to be setup.
 
-There are significant changes throughout the series since the last RFC, 
-with some of the highlights being:
-- Integrate with AVIC code since Secure AVIC is APICv, but for protected 
-  APIC guests. This aligns with TDX which also requires APICv and 
-  enables reuse of APICv code paths in KVM. Patches #8 to #14.
-- Mandate use of split irqchip, and drop changes related to the KVM 
-  IOAPIC. KVM PIC/PIT can't be supported (described more fully in the 
-  commit log of the relevant patches). Patch #24.
-- Enable use of SVM_AVIC_INCOMPLETE_IPI VMGEXIT for vCPU notification 
-  request from the guest. Patch #22.
-- Utilize vNMI injection path for NMI handling. Patch #23.
-- Introduce a new kvm_x86_op to distinguish need for injectable 
-  interrupts vs. IPI notifications. Patches #18 and #19.
-- Retain KVM PV ops, and instead require guests to opt-in/disable.  
-  Patch #3.
+Add a helper avic_ipiv_is_supported() to query support for IPIv and use
+the same to short-circuit various AVIC flows related to AVIC data
+structures such as the Physical and Logical ID tables for Secure AVIC.
 
-Patches #1 to #4 are changes to the guest x2APIC Secure AVIC driver.
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+---
+ arch/x86/kvm/svm/svm.h  |  1 +
+ arch/x86/kvm/svm/avic.c | 23 ++++++++++++++++++++++-
+ arch/x86/kvm/svm/sev.c  |  4 +++-
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
-These patches apply on top of Sean's recent fixes changing AVIC init 
-code (since I was carrying a similar patch):
-http://lore.kernel.org/r/20260630210156.457151-1-seanjc@google.com
-
-There are still some rough edges to iron out, but I wanted to get some 
-feedback on the overall direction. Please let me know if you see any 
-major red flags.
-
-
-Thanks,
-- Naveen
-
-
-Kishon Vijay Abraham I (2):
-  KVM: SVM: Set VGIF in VMSA area for Secure AVIC guests
-  KVM: SVM: Do not inject exceptions for Secure AVIC
-
-Naveen N Rao (AMD) (20):
-  x86/apic: Drop savic_eoi() in favor of native_apic_msr_eoi() for
-    Secure AVIC
-  x86/kvm: Disable PV_SEND_IPI if Secure AVIC is enabled
-  x86/apic: Use AVIC_INCOMPLETE_IPI VMGEXIT for Secure AVIC IPI handling
-  KVM: SVM: Add helper to check if Secure AVIC is enabled for a guest
-  KVM: SVM: Set guest_apic_protected if Secure AVIC is enabled
-  kvm: irqfd: Have kvm_arch_has_irq_bypass() take struct kvm pointer
-  KVM: SVM: Disable IRQ bypass for Secure AVIC
-  KVM: SVM: Add avic_ipiv_is_soft_disabled() as a wrapper around
-    enable_ipiv
-  KVM: SVM: Disable IPIv for Secure AVIC
-  KVM: SVM: Short-circuit a few AVIC flows for Secure AVIC
-  KVM: SVM: Warn if we ever receive AVIC_UNACCELERATED_ACCESS #VMEXIT
-  KVM: SVM: Do not inhibit AVIC for SEV-SNP guests if Secure AVIC is
-    enabled
-  KVM: x86: Add a new kvm_x86_op protected_apic_has_injectable_intr()
-  KVM: SVM: Implement kvm_x86_ops->protected_apic_has_injectable_intr()
-    for Secure AVIC
-  KVM: SVM: Implement kvm_x86_ops->protected_apic_has_interrupt() for
-    Secure AVIC
-  KVM: SVM: Add interrupt delivery support for Secure AVIC guests
-  KVM: SVM: Add support for incomplete IPI handling for Secure AVIC
-  KVM: SVM: Add support for injecting NMIs for Secure AVIC guests
-  KVM: SVM: Mandate use of split irqchip for Secure AVIC
-  KVM: SVM: Advertise Secure AVIC support for SEV-SNP guests
-
-Neeraj Upadhyay (5):
-  x86/apic: Propagate APIC_SPIV writes to hv for Secure AVIC
-  x86/cpufeatures: Add Secure AVIC CPU feature
-  KVM: SVM: Add handler for VMGEXIT Secure AVIC NAE event
-  KVM: SVM: Do not intercept SECURE_AVIC_CONTROL MSR for Secure AVIC
-    guests
-  KVM: SVM: Do not intercept exceptions for Secure AVIC guests
-
- arch/arm64/include/asm/kvm_host.h   |   2 +-
- arch/x86/include/asm/cpufeatures.h  |   1 +
- arch/x86/include/asm/kvm-x86-ops.h  |   1 +
- arch/x86/include/asm/kvm_host.h     |   9 +-
- arch/x86/include/asm/svm.h          |   9 +-
- arch/x86/include/uapi/asm/svm.h     |   1 +
- arch/x86/kvm/svm/svm.h              |  12 ++
- include/linux/kvm_host.h            |   2 +-
- arch/powerpc/kvm/powerpc.c          |   2 +-
- arch/x86/coco/sev/core.c            |  18 ++-
- arch/x86/kernel/apic/x2apic_savic.c |  36 +-----
- arch/x86/kernel/kvm.c               |   3 +-
- arch/x86/kvm/irq.c                  |   5 +-
- arch/x86/kvm/svm/avic.c             | 105 ++++++++++++++++--
- arch/x86/kvm/svm/sev.c              | 164 +++++++++++++++++++++++++++-
- arch/x86/kvm/svm/svm.c              |  59 ++++++++--
- arch/x86/kvm/vmx/posted_intr.c      |   2 +-
- arch/x86/kvm/x86.c                  |  21 +++-
- virt/kvm/eventfd.c                  |   2 +-
- 19 files changed, 382 insertions(+), 72 deletions(-)
-
-
-base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
-prerequisite-patch-id: 1428b4903537b426ee3822a74adf29fbbbeb8e02
-prerequisite-patch-id: c88b0c2cb26fb85fc7ef07409aeaf643565b8600
-prerequisite-patch-id: a3f8fc507b7809645b001e9394a51f8b299aae47
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 1157d022bac1..e48744f6d756 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -131,6 +131,7 @@ struct kvm_svm {
+ 	u32 *avic_logical_id_table;
+ 	u64 *avic_physical_id_table;
+ 	struct hlist_node hnode;
++	bool avic_ipiv_is_not_supported;
+ 
+ #ifdef CONFIG_KVM_AMD_SEV
+ 	struct kvm_sev_info sev_info;
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index c9e375c5a9c1..0a4e91e15e74 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -76,6 +76,12 @@ static bool avic_ipiv_is_soft_disabled(void)
+ 	return !enable_ipiv;
+ }
+ 
++/* IPIv is not supported in Secure AVIC mode, no AVIC tables necessary */
++static bool avic_ipiv_is_supported(struct kvm *kvm)
++{
++	return !to_kvm_svm(kvm)->avic_ipiv_is_not_supported;
++}
++
+ static int avic_param_set(const char *val, const struct kernel_param *kp)
+ {
+ 	if (val && sysfs_streq(val, "auto")) {
+@@ -364,7 +370,7 @@ int avic_vcpu_precreate(struct kvm *kvm)
+ {
+ 	int r;
+ 
+-	if (!irqchip_in_kernel(kvm) || WARN_ON_ONCE(!enable_apicv))
++	if (!irqchip_in_kernel(kvm) || WARN_ON_ONCE(!enable_apicv) || !avic_ipiv_is_supported(kvm))
+ 		return 0;
+ 
+ 	/*
+@@ -435,6 +441,9 @@ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
+ 	u32 id = vcpu->vcpu_id;
+ 	u64 new_entry;
+ 
++	if (!avic_ipiv_is_supported(vcpu->kvm))
++		return 0;
++
+ 	/*
+ 	 * Inhibit AVIC if the vCPU ID is bigger than what is supported by AVIC
+ 	 * hardware.  Immediately clear apicv_active, i.e. don't wait until the
+@@ -1069,6 +1078,9 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu,
+ 
+ 	lockdep_assert_preemption_disabled();
+ 
++	if (!avic_ipiv_is_supported(vcpu->kvm))
++		return;
++
+ 	if (WARN_ON(h_physical_id & ~AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK))
+ 		return;
+ 
+@@ -1113,6 +1125,9 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu,
+ 
+ void avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ {
++	if (!avic_ipiv_is_supported(vcpu->kvm))
++		return;
++
+ 	/*
+ 	 * No need to update anything if the vCPU is blocking, i.e. if the vCPU
+ 	 * is being scheduled in after being preempted.  The CPU entries in the
+@@ -1135,6 +1150,9 @@ static void __avic_vcpu_put(struct kvm_vcpu *vcpu, enum avic_vcpu_action action)
+ 
+ 	lockdep_assert_preemption_disabled();
+ 
++	if (!avic_ipiv_is_supported(vcpu->kvm))
++		return;
++
+ 	if (WARN_ON_ONCE(vcpu->vcpu_id * sizeof(entry) >=
+ 			 PAGE_SIZE << avic_get_physical_id_table_order(vcpu->kvm)))
+ 		return;
+@@ -1185,6 +1203,9 @@ void avic_vcpu_put(struct kvm_vcpu *vcpu)
+ 	 */
+ 	u64 entry = to_svm(vcpu)->avic_physical_id_entry;
+ 
++	if (!avic_ipiv_is_supported(vcpu->kvm))
++		return;
++
+ 	/*
+ 	 * Nothing to do if IsRunning == '0' due to vCPU blocking, i.e. if the
+ 	 * vCPU is preempted while its in the process of blocking.  WARN if the
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index a47bb417bd98..a12e7e9f9fa1 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -566,8 +566,10 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
+ 	INIT_LIST_HEAD(&sev->mirror_vms);
+ 	sev->need_init = false;
+ 
+-	if (snp_is_secure_avic_enabled(kvm))
++	if (snp_is_secure_avic_enabled(kvm)) {
+ 		kvm->arch.apicv_has_irq_bypass = false;
++		to_kvm_svm(kvm)->avic_ipiv_is_not_supported = true;
++	}
+ 
+ 	kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_SEV);
+ 
 -- 
 2.54.0
 
