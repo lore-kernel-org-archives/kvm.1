@@ -1,212 +1,229 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011043.outbound.protection.outlook.com [52.101.57.43])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3836C40680C;
-	Wed,  8 Jul 2026 09:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42413373BE6;
+	Wed,  8 Jul 2026 09:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783502194; cv=fail; b=MZd+WVY4Vw5J0ndPhzR41DhaNttCyB0UD//fzSDkTFW9RijUMrfwNdR/S/lZbEa/puGk6Re6yifVoQ5/WrxPRgbC6a2y/LGhev15NCcBVazvdGBMmITvUUnU5hswJO5rnHjZU8ms1diJ3mPJbPRFzriXgSTuwbnN749B1z6klsc=
+	t=1783502737; cv=fail; b=U6nStqAZ6jKkWfrBztOoU8BgesZgfbOjZ01V1e1Kehzil0v7nOzvWd4bMvvtw7LzlAsTjpKTci1JvjYZGGpXO1WLYuEAuh0Wp9xjy/gVEDAdw2UXpOEn1GFFGstvq/l4fa7D4l5G1ggPwRXRVycjHEP7YW3WFTGRlPLkNfRAzSQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783502194; c=relaxed/simple;
-	bh=8lVHf9PrP51/4+Z9u0Ii74LZxrQLq3BmhMzl4dTtq84=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SRwDkYAPKErpwr6MLw1EHu3xuDl+R/wDAtIT+sF2kNCGBYoL0er8vC1VtaBKvTsFlQWfy4VRnGX4rZZfjh0jE4g8yvYb/XHYmf1z8/STwgBK7yNPmUGdXdi/JgV5YvMxXg2RMXxcuQ/Tq5nbT/w/tZJBa0FbiPx1ONmekRiLp2c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KHJtjIxM; arc=fail smtp.client-ip=52.101.57.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1783502737; c=relaxed/simple;
+	bh=ahtDkrB32uZe13+Pf2RA8Iv2w4Mqp3Xa2we6vgFJh4E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UKJONOw1Vnq6TMEUz0IrJRuAaTQwozy24y2KEC9MVTd6IEsSjHFQE+EhpdSUCfo2DLlYMFIyF3xY3KgRcMLkTSGnwNcyATjF7UFBAKFZiT6mVrotVR4N121QYf4xcsHkLcLQbgA4XPb1phrE+a9Jv/795hGmIhB0YbcQggVTkCQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jgzuCL8o; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KHJtjIxM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jgzuCL8o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783502735; x=1815038735;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=ahtDkrB32uZe13+Pf2RA8Iv2w4Mqp3Xa2we6vgFJh4E=;
+  b=jgzuCL8omJ8s3+F75mQcgIztKgyzf8J4uaH3tLiFaoEQ285erMeAr4rl
+   L/MEIJ0TyCDCCizL3AdsAnw4iNReAMdxap99Ud76Ic61S7vx5nJe/gmMJ
+   gXaq3rf2uXlIg7YbKpPuMIUqRc6evkqKjORyKsbDIKDcaqKBiY5d9wTXN
+   gblzjFb357KcQqtysSyuzb6vAHStfACMNwgbjgQy1zrIy1RO+YGw+XBDe
+   fPAHqDz3MQJSCTJSoPGRH7i1xUNTtgtNpQXd1BXfJgseR9hUuRheKk/Sg
+   YU0FBj//NQpnO2rMlIc5Q2sfxOJ/X+2nCppTMRo9tyj26E+0ZPE/D8Iun
+   g==;
+X-CSE-ConnectionGUID: XYo90zNPQJSMiAThODjhFw==
+X-CSE-MsgGUID: OZYXgH19SIe6QWZD5owlcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="84134068"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="84134068"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 02:25:34 -0700
+X-CSE-ConnectionGUID: c1iDb+N1SsOba2aJRLX/+Q==
+X-CSE-MsgGUID: wzkYKflRRU2FW7RAodk9Jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="250885879"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 02:25:34 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 02:25:34 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 02:25:34 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.21) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 02:25:33 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XBYnbAbJNYk9teyYO7C7/cloXK+cIf7+5jPOWU/viTgCY2D84Q83n+gJ75ZvShhZLjEY/bx1Ee909hthnFF9Hfj6b4nUCDJ+NXMk1dwo27meerf3PuWPHh5xJ/1ccSMs1HZVYffmJsWMKVI5XiX+R/FldaUBbkkzcSGQ/DZvoGV4HBm9AAtJjIcFdazCqOg6H8+3p/dlclqV22pmNWhVfyNTQ+XOpoBZsNKxBAv4cckcvpTg8o/G3Q45L/hkB/X5pAqJDw32U9Xi9MT3izWbQ28O2NMwXM9a2JYj1O/9W0aMa+M2WV3WAEF+xS4vlYeDoTiJ2GaZ9UAfyesbqLPwCQ==
+ b=W9+6m7u3f3ozFK7pJX5IboPha7r4aMdK+JxQXLAvVifxAT93wGrfQtpAfM8fP7026a7+vUPc/wWn8rOPGsiq83KKaVFav7q4ttC5+ZKjfUXwl0eKz6Qpdnrj+38rtNVveJjWoNV2q/7qZzmCSj62kwP2dD97A12yFLD5q8/moHGwGCa06Pg6jljLir8D+Fe7hScvPAKb/vGsS6z6YvGHmQTznJHsoPs1N3cUV4a0fMJB3zK/rpoSLK2v59wW+AyY6fgq/21Ds2RapaYBUGKVeoNXczy2cxFiiHFmlsaGH6YoUrUYaDbAzdoh4ipiE8kHfRgPo+iJgOYvyAv+Wpqhsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZO35+c3saBXZkwqA7qqdrM9vT/xtMF9uZFOaMluoUYE=;
- b=wsGAHbAE6Gva4CVVThtLsZ3/M08Tv2doKpX28OtazoKR6xv/x3tox6qbT+zXrnsxNJcJ274bzpgk4LgSDV5DQxci9joJ4Tdr8UDodHIXnl4N7H+DhCaZRdSeRjWnNbvnfA0X5az51W3dXUkAw3eSCDSXGfeQU6rk9qCewssz6OWk5ASfQHUrc+65gD18qrjTwzqp/LZgdqR9mE01BWjla+P7Ez8363Z34+1eQkiJsVYZV4Rg3V3KYFUW/YbS2Ond84JtXL/5P1x4xENbIKlp0sSxJFQZay9YzNL1ZkIXE4ZvKkNBZvjrROE0MI7YcH/ybijhh32z4ajIwEjOoPceZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZO35+c3saBXZkwqA7qqdrM9vT/xtMF9uZFOaMluoUYE=;
- b=KHJtjIxM4cngdh9z7W4QNK1+aUA4fO0YMV52tztlIu0+uwVtODJz5V79167xY36tBnJDfGpQiDl+2NqSiijlbsuN0jmhOyA4MKTwES5fn93xArJWpe/hxPDhOssX+jIV4nI1jXsOz9pTydK/xFdfmrlwbAS4qEXp0nqPpPd7tq8=
-Received: from BY3PR10CA0005.namprd10.prod.outlook.com (2603:10b6:a03:255::10)
- by CH2PR12MB4167.namprd12.prod.outlook.com (2603:10b6:610:7a::7) with
+ bh=XgIw4ftArl646mY9qvhGkbf/f14nJFM98RuB9BSG18M=;
+ b=BJSadL0NUEKBOxQ4o50tVD5CxciRMBrOfrC05EgniMcmsfWNDCrR6N/vJucplufVoNTLK9kwEuYmtW6180a+KFKBE8KbTnKHw9pucNHpjNcPAdq2YMyNhGatriGUyQnRHCBQCz8Dv42n7KHGeDbJsX8gWzafpFGFVX4K4nQnHlCLdDhD3irlp5FTzUMinX/sRpAL4yuLMzFoDMsleDMuv1fEuquZmIWMR0QKSBqFbfcRPScJWzOvNCsuz2nEksI6iDerye+zrdP2Z9FP98gjqOb+oeCHcD/82kpGNjVa7q/+0xeKZ/NA7q5i/6BUrmBCqwC8vesY2jk6ldSMnPitCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
+ by DM4PR11MB6309.namprd11.prod.outlook.com (2603:10b6:8:a8::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.12; Wed, 8 Jul
- 2026 09:16:22 +0000
-Received: from CO1PEPF00012E64.namprd05.prod.outlook.com
- (2603:10b6:a03:255:cafe::1b) by BY3PR10CA0005.outlook.office365.com
- (2603:10b6:a03:255::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Wed, 8
- Jul 2026 09:16:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF00012E64.mail.protection.outlook.com (10.167.249.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 09:16:22 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 8 Jul
- 2026 04:16:16 -0500
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Robin
- Murphy" <robin.murphy@arm.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
- Christopherson" <seanjc@google.com>, Suravee Suthikulpanit
-	<suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, "Vasant
- Hegde" <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	<iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [RFC PATCH v2 5/5] iommu/amd: Provide kernel command line option to enable GAPPI
-Date: Wed, 8 Jul 2026 14:44:08 +0530
-Message-ID: <20260708091408.12106-6-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260708091408.12106-1-sarunkod@amd.com>
-References: <20260708091408.12106-1-sarunkod@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
+ 09:25:30 +0000
+Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
+ ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0181.014; Wed, 8 Jul 2026
+ 09:25:30 +0000
+Date: Wed, 8 Jul 2026 02:25:28 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: Xu Yilun <yilun.xu@linux.intel.com>, <x86@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <djbw@kernel.org>, <kas@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <yilun.xu@intel.com>, <xiaoyao.li@intel.com>,
+	<sohil.mehta@intel.com>, <adrian.hunter@intel.com>,
+	<kishen.maloor@intel.com>, <tony.lindgren@linux.intel.com>,
+	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
+	<dave.hansen@linux.intel.com>, <seanjc@google.com>
+Subject: Re: [PATCH v2 08/17] x86/virt/tdx: Prepare Quote buffer during
+ extension bringup
+Message-ID: <20260708092528.GH2169894@pedri>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-9-yilun.xu@linux.intel.com>
+ <e06806e8-7334-4533-b1a3-e1efbe3fab8a@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <e06806e8-7334-4533-b1a3-e1efbe3fab8a@intel.com>
+X-ClientProxiedBy: BY3PR03CA0021.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::26) To SJ0PR11MB5645.namprd11.prod.outlook.com
+ (2603:10b6:a03:3b9::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E64:EE_|CH2PR12MB4167:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b4e8b2d-d9f3-4f91-c3bc-08dedcd19409
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|DM4PR11MB6309:EE_
+X-MS-Office365-Filtering-Correlation-Id: acff8a7a-f80d-473f-1ca3-08dedcd2da2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|7416014|1800799024|23010399003|56012099006|18002099003|11063799006|22082099003|6133799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	0Dpk/9KFKUmHzmbcIcebfimBy6vu8JKEjWlyV8dIV1O/NRUm9NWdbbVBMekCZ/T7p9HP64swVlGg2fywGlKkjVQ1vow++r5yXgm57FCzU47fXVXNaGIGc0lhsttMaFRoUk2ZAmRgr4wxHy9vOU42s3jxLAV6BRQHzsmSsoUUejPl6DnHQedImWVfgf7FTHJoLsdByWCeWbLBFcBVIp6t/efNyHfoZlyr6P0jcaZvLuCH7RkuQ/KPnZHs7BGDmm4DA7AicxGdx24oKfIP3t+zOybxRslRPQY0tBzgRIbnc7ru3EGBR5MiG49ITjJIrenJRZncxkJ0BXK2morAv0ESUhJfdptF8Zvp47OPgJu7R6+jxq+lEMSXZSLGClrEk33lA+wrhobu6A/voxeFNng7qFT2YXMOjLQSFoYvm9BnRdFtY6ZJ47NUkh+UwslJO7q38CMnkGXfj1PqYqoI/L/IAm1Op/jDZX2ngz2uwHbJ48mEEsokhaiCtFdWIVDakYuz9NWZC+Vk50yXAffk0e/Z8PBbh/j88pNvK+J9lD9ytQyEH5pyQ/Fy15d+zUeRsaDuPDDg8gxGZPPY9aMGfHWq05dcQXUYjgFNEs58jjWz/G88Uly9PCt2JsNk/rvko5tjHe2NMNy5ycM2tHxBe+qXlVHp+lKxTNf0oInzqEzOH7dVJJGfchXbv7mx5hb1IvTNUEsCchQNr15q7xcB22kHF0wA6Jj14igAvvfyFHOFFXCZvMLYjAHcPEHKtl344DVK
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(7416014)(1800799024)(23010399003)(56012099006)(18002099003)(11063799006)(22082099003)(6133799003)(921020);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|18002099003|22082099003|11063799006|4143699003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info: uB5rvhn+NE/iypRy8SuVI9FM9amnDa14hy157PPu16jRAnGdI4YCsVLaC27PvGsF5bFfE+hJtYMciEkCbD2hHg3BiDAYEx2jIkYHX7F7rCPFPpDKPHcSGJi/SO5G0tOPDKudXVJL1HS3rJ9UgTDOhLhFQUNz7FxYs+iZ4ibg6LtkvuPeBnbO43xDV3VxB6D1KMM3ld6yIX0IaWbwP+7TmsKdHDNMcZgn0+95u9fP13p3+aINq3vSb/FU3XH/lgq9Cfs7NCqnkvuvIr/lHeSkN1ekuQm+bk29OyuAoEQoa0VCpsy94WJjpUfv458UQADB1zI+aMyIARnXxS4kVV3DN7cwwImSXZITMN7tdFyIO9qLYcl55ABGJhpAxUu0sbk3yqBhgPKQxUdTNg5Epd7gAE6ndjGDoJaKTQCGBeq0aDRJnbDquV9/MLCT2yVOebK51OOFJ9qxunoKBnKTWB1Fs35i+voe+lNmmRPqkbJqQLeSNImwiMD6BkXj+tPY2FaYtURln7SlfO/TO2eI4IiUhMLR5PrhjQGQ9r1zesT0xPJFeuixnxzVxDnxohoHj/rUWSca5tElAyWue2kTfx4UBo3vXmGLt5kr8O6eyJXx4ser2uM96HKZyXAJg5iDO2mQEOGtaZsRAL297/cmxmVFPJSZWhaWLCfw4AHztPUcwnY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	alKULkDFfFBecoZYBQDqrccjJYG7CfKyhFCctjvj9oGsi5UABBIieYh387X55L0G+ZoOI8KDIEYyCKdrQnnspi0onz9eh1IjCGcbTDaZrRVg44ddJs6Xzh/fKfj3pv9zhI/VYLnbdvxPw0xDUIzDw6uHlykeD/kWy1yl60dnUrsG6xNZ7+3Ss3R6bGzux+PB7MgoAJxEHnSdxzRyLjbf6qLCQGBQCdhtXSnn6rTrZ/nhetByd7fWe1Gdrwy9ZHF3qW4u6xpUp2h3SFy655vV5ka1EtiSfpCEA7yi7R1g16UQ3DfNxmYHJNkTiZKvxleikQtd6nczW/HsZOMnL1LeC58T053FxsLJKSY+uO5PQkv+RLGUbfKU6FyruLhAH2e5HmtDH3Y1YNOi/nEKRj5sgpiPb9XnddRqP3xSJfqi0b/24GEDIsPTtoHxwOrY2zme
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 09:16:22.2374
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?X27GhkDDWrFgImaUpRKn9qxw9EcwkKU7j1yWMVKNaMCoPxHZi2pq8M5sXzqf?=
+ =?us-ascii?Q?TidytbYWnhB8HCrhXrWPTPQ3FpPXSp4yrdkL20jE3n4JeNYzVCihOtSeoHWB?=
+ =?us-ascii?Q?Gc4ScIcmI9gY+r2LRuzX2DmL0+zvIw0aRRqjIHhyuDO7K85DyXz6fXN/F3rd?=
+ =?us-ascii?Q?2cZz+j/NTgbk5da1Lz5GAscBjOLFoc9L5qKAwFJAXcJRODsjRHx7xv5Pq7gP?=
+ =?us-ascii?Q?pSUS7vHr97LnDtPInsW2bLSjhcH2tWkCNbKmf0EMdSletaszLtsnbBz6UAsj?=
+ =?us-ascii?Q?eleaIuRPiF81NGfs88epmonemyfUngKHuoF7SG1+eNnQOlO4YqPO+RiYWNoJ?=
+ =?us-ascii?Q?8pTavl6oo5DoR+OwOGNve6cCfPj6pyx01GlGWBmzNfsNUFNtwqXoGaTtoxUl?=
+ =?us-ascii?Q?58JJ8EIf414suzd4U25Ytj5q2fvc55T0NW1SAJjplWAgtmp8U0XvQ+/ZfK0J?=
+ =?us-ascii?Q?7OunSGe20PleWwqRIeRG0o5Z14x5p3e3EqIM/Zedm5PITJxhqcv1TgfzdKgK?=
+ =?us-ascii?Q?vmxW6NOnxFDPJJKLH0rNlHT6flQ7KT1ZHiVliCU7L6VBjU204n+ISZkRy2m1?=
+ =?us-ascii?Q?aN1gJ3ZoZlzKEGruh2P6JmstJhOFKcFrx2FUUe9JO9wmzk734O1rC6RSH1jq?=
+ =?us-ascii?Q?f2pNQ2pPSvQQrY+/x7mOL2yBrb4Nk84mUFB++fJzUXdW1uDtR2hP/egZzf4k?=
+ =?us-ascii?Q?rxFUOqb07mfnwRk76mMEc1p2VaYGim2G6EeNWI25kEoNaZypSVayEs7/5WPW?=
+ =?us-ascii?Q?zDd1mUHZdGUiZZBgEmIADu1iVvDkgUGM1Wc1P1vI4BKvlZV/vFNePdcVf17M?=
+ =?us-ascii?Q?Q3MHxldiE5a0SxS7MOwBjhcv4519bYkRNMwLSsDnVKFPjcP3YB4V/ZeY7BnZ?=
+ =?us-ascii?Q?vWu7pl/zAa4bkQjISN4Az3mc/SVRQXAGgtrsptCZoOdtRRJmSSpfRVKWM33O?=
+ =?us-ascii?Q?2YgXJoZolz9VCOdTFjK5iKdBEN7ECBnQ7jnWEhlXJGFhD82RhPeotY8N9yc0?=
+ =?us-ascii?Q?xELE5fMNuoBpUBWNnETxLVfsfoFDbatOHC/LBxZVMJ4nuynDgCYLhuSWtn3j?=
+ =?us-ascii?Q?LQB3JjMPCSdmqCViDAPdczZziYD78fa3gTsn2OtiplXXCfH3+xbT1qrhz87A?=
+ =?us-ascii?Q?zstGWikrxV+GLSwu27kNvU2xYwhkqsOgSSSpFMuVXtoOdB23SlMui7p98y/M?=
+ =?us-ascii?Q?9Yg97HhHMmQIlV5OCs5jzEtuJVLPSX/B2MT+JvqvcHp+PJJwX21ycvXEvR7S?=
+ =?us-ascii?Q?/8x7i4QK8Vybh7urxjx+m7r7AHQY9hhrr5RdnduSrIHSb4awaUBr/MyxBNXM?=
+ =?us-ascii?Q?+btux9rDVin1caHwFWm87X9Lfm7HrdFrnC0HuYCAsTnG33R+JQWYI9LWgCvG?=
+ =?us-ascii?Q?aCf/6/xFiorlQn0Js+pmWz2uNVb53dOxV6uCfm7IjRI/YmnrDJ5J9UCyj/og?=
+ =?us-ascii?Q?2HlaFfenkMlB+14wsiWFo91RZcKU0qZznhg7IP4wZ2VLKuOOwE8REWZZmMYa?=
+ =?us-ascii?Q?dPgVAl2DXsz7gg9ACuCw/q4kJJ0Jd6ymUjbBFBE6qrO376SeRrWarhdHwgsT?=
+ =?us-ascii?Q?e0/8xRVKM/BaIG1YuWgUxORk9yhT1NJunfsBjIp1aHoXtuIAHiqa1dVgPfTz?=
+ =?us-ascii?Q?l9ixn1q0nKJlPZjBqd7kgMaSKSfmrrmO7M0ArIUFBMoYP6QzdCEG4wNevuBb?=
+ =?us-ascii?Q?dlDZsZKfE5sB65QmL+gGTzMc0WaePbU7QyYMdeDwRVmeAfZCpvvLyJmhK4LF?=
+ =?us-ascii?Q?sV9PRDWWPA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: TScof4NMl+WnnSOxQlgv6KuoONm7/OJqoYsSFNCr+npLlKtaBaT/8DNapF/Ap7aW7LtrB9JtVukeeaHZ+e3OVYQoOKRHj7z0F4/eN/3NvVDs4DwywrnXuHNvbl5zDgcXCEanzNQJ6hCCN4X/9dZF9alie27FlVPAWO5FPUSDb+YK00h7r0RmiHt3s5w3zaeXNGxVhkb+sSuBGxrxK/o6MN/EePtBK2AngOdaJiyJ3EcFOJBjW7+EuL9Bgds1U0SHltQ2rKM41fBYf/zben0THFBIqLN/drV9yE07WW+OWAGuobN//ip8NBZYqf71rt2xJfm2I0fWT7tenfIcNKHe1w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: acff8a7a-f80d-473f-1ca3-08dedcd2da2e
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 09:25:30.0142
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b4e8b2d-d9f3-4f91-c3bc-08dedcd19409
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E64.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4167
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K2uPVJ6V229E3k8Bg0g3HL9Hv3N7cwgHyhMHWHYBforPvnrUstADmTDvCdT4VPdBzk8RbI0GEe/9Q8kSHpIqGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6309
+X-OriginatorOrg: intel.com
 
-Enable GAPPI when IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with "amd_iommu=gappi" command line parameter.
+On Wed, Jul 01, 2026 at 12:56:19PM -0700, Dave Hansen wrote:
+> On 6/18/26 01:13, Xu Yilun wrote:
+> > For simplicity, let all guests share a global buffer. Build the buffer's
+> > HPA_LINKED_LIST at Quoting extension bringup. This saves a bunch of
+> > va-to-pa conversions at runtime.
+> 
+> va-to-pa conversions are not expensive. Even for vmalloc() memory.If
+> 
+> I don't like the global buffer. It just generally seems like a bad idea.
+> It needs locking, it wastes memory when nobody is doing quotes, etc..
+> 
+> Is there a way to do this without vmalloc()?
+> 
+> Could userspace provide the memory and then the kernel just does a gup
+> to keep it in place while the TDX module is writing to it? Or, could it
+> just be allocated:
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
----
- drivers/iommu/amd/amd_iommu_types.h |  2 ++
- drivers/iommu/amd/init.c            | 27 ++++++++++++++++++++++++---
- 2 files changed, 26 insertions(+), 3 deletions(-)
+Hi Dave,
 
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 26d7a9796e64..de0b23306944 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -94,6 +94,7 @@
- #define FEATURE_X2APIC		BIT_ULL(2)
- #define FEATURE_NX		BIT_ULL(3)
- #define FEATURE_GT		BIT_ULL(4)
-+#define FEATURE_GAPPI		BIT_ULL(5)
- #define FEATURE_IA		BIT_ULL(6)
- #define FEATURE_GA		BIT_ULL(7)
- #define FEATURE_HE		BIT_ULL(8)
-@@ -191,6 +192,7 @@
- #define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_GAPPI_EN	55
- #define CONTROL_GCR3TRPMODE	58
- #define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 2e1889f8a9e4..27ffb2184bf2 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -465,6 +465,9 @@ static void iommu_disable(struct amd_iommu *iommu)
- 	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
- 
-+	/* Disable IOMMU GAPPI */
-+	iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 	/* Disable IOMMU PPR logging */
- 	iommu_feature_disable(iommu, CONTROL_PPRLOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_PPRINT_EN);
-@@ -2999,6 +3002,12 @@ static void enable_iommus_vapic(void)
- 	struct amd_iommu *iommu;
- 
- 	for_each_iommu(iommu) {
-+		/* Disable GAPPI, do not check amd_iommu_gappi as it may be
-+		 * false in new kexec kernel even though previous kernel has
-+		 * enabled it.
-+		 */
-+		iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 		/*
- 		 * Disable GALog if already running. It could have been enabled
- 		 * in the previous boot before kdump.
-@@ -3038,10 +3047,19 @@ static void enable_iommus_vapic(void)
- 		return;
- 	}
- 
-+	if (amd_iommu_gappi &&
-+	    !(check_feature(FEATURE_GAPPI) &&
-+	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-+		pr_warn("GAPPI is not supported.\n");
-+		amd_iommu_gappi = false;
-+	}
-+
- 	/* Enabling GAM and SNPAVIC support */
- 	for_each_iommu(iommu) {
--		if (iommu_init_ga_log(iommu) ||
--		    iommu_ga_log_enable(iommu))
-+		if (amd_iommu_gappi)
-+			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-+		else if (iommu_init_ga_log(iommu) ||
-+			 iommu_ga_log_enable(iommu))
- 			return;
- 
- 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
-@@ -3050,7 +3068,8 @@ static void enable_iommus_vapic(void)
- 	}
- 
- 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
--	pr_info("Virtual APIC enabled\n");
-+	pr_info("Virtual APIC enabled with %s\n",
-+		amd_iommu_gappi ? "GAPPI" : "GALOG");
- #endif
- }
- 
-@@ -3741,6 +3760,8 @@ static int __init parse_amd_iommu_options(char *str)
- 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
- 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
- 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+		} else if (strncmp(str, "gappi", 5) == 0) {
-+			amd_iommu_gappi = true;
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
--- 
-2.34.1
+The GUP idea makes a lot of sense at a high level I think. However, the
+shared buffer used by the GHCI call is not 4K-aligned because it has a
+header in front of it, while the SEAMCALL expects 4K-aligned HPAs
+(lesson learned...). This memory does come from userspace though:
 
+        struct tdx_quote_req {  <-- 4K-aligned
+                u64 version;
+                u64 status;
+                u32 in_len;
+                u32 out_len;
+                u8 data[];      <-- shared buffer
+        };
+
+
+So perhaps the simplest thing here is to just allocate a kernel buffer
+before the SEAMCALL. There's also another subtle wrinkle here: KVM is
+shifting from a FOLL_PIN-based API to an MMU-notifier-based API for
+guest page accesses [1], so I think that means more complex code to talk
+to the TDX module.
+
+> 
+> 	void *buffer = vmalloc(size);
+> 	mutex_lock();
+> 	// talk to TDX module
+> 	mutex_unlock();
+> 	vfree(buffer);
+> 
+> 	return ret;
+> 
+> That actually has some nice properties. It doesn't require locking for
+> the buffer. It also penalizes folks doing lots of quotes. If you hammer
+> on quoting, you hammer on the memory allocator and TLB flushing code and
+> slow yourself down more. If you hammer on it from multiple threads, it
+> gets even worse.
+> 
+> That seems like a feature not a bug.
+
+This is a really good point... I'm a bit worried about the global impact
+of vfree() though. IIUC it eventually triggers an all-CPU TLB shootdown,
+so a guest abusing this path would not only throttle itself, but could
+also hurt everyone else. This might be more useful if the buffer was
+allocated in userspace? A free() in userspace usually triggers a more
+limited TLB shootdown.
+
+I think I can use alloc_pages_bulk() instead to avoid the TLB shootdown
+cost altogether. It's a bit more work in KVM, but maybe worth it...
+
+Thanks,
+Peter
+
+[1] https://lore.kernel.org/kvm/20211115165030.7422-8-dwmw2@infradead.org/
