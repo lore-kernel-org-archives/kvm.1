@@ -1,157 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CB237AA64
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F4D37269B
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783517666; cv=none; b=FVRUiNZ19SfGX//TptZQf8hzgOYEp8hm7WCdBMByBK7hAwK51imuS9DpW/gm5J1S4PMvbXWKlmyDrU6vk4s6sU9j7QTChvjrg66UFhYdb8OfwAEVRdZHCbBZl1FB+bQ8+l8TdVCo09znlQnescgi+/DvYyBnVKKI9quji4heZWo=
+	t=1783517792; cv=none; b=MZrZ2SMoRrKq2O6qyjMv9cgHBzXKvn40xDXgbEct+HfM43hif12fH/JdQ35j9vHIJs9mT2fmrQhOHn5X68EqfImYJH2yWabeHNehbMDyEILY62LWuUPn0DAEnlX1txf3G/TSKgyL9e3oPWJtNIgQV8FidqhmGtyPv+j/twMSyRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783517666; c=relaxed/simple;
-	bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I5EbO7rJyHi4c0zPWlfKitA/ol4JlG65HqgedoCkYnYA3uxBvrL7eC7z7nTa86512kRsQyBIlgrLPBmM3S+TkmGKJRUdT26ikssqSQNjUni3ldFFqf2+S+RV71ogCbg8NBlGWg0ZJA296J0YFOlHEtKIl74OGCfKWpKPYOjniZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bt/u+WAd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=nJBNMuhi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783517792; c=relaxed/simple;
+	bh=SC3W3f8odNqmLPQ5jk9l0PDzMsaA9uPQMtpPxXIHo10=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=h8TREYqwJo3hDZA++CNvysGNcnOzcv7mD2SSYcFbVeP9qVYX16bG127FoyQlcQIMWSH+ugU/oXQ6X+yoRPrnfhFLu7Ek5HNyz8pfse0iodw0mMXtHk+Zja7kNiJW4ORQaGblu9AsrRIZTI8QhsSL3A9CHAlb8VgDphgXjJx0xC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SEqIyxfY; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bt/u+WAd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="nJBNMuhi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783517663;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
-	b=Bt/u+WAdyD2rIzulZ1WUb7wRVa40SVQD8bZii/XtrFtWWhF1Fv2YGkFbIYltotrunINgR5
-	EwYKFtEha9MI3F4wXeCLXg8GE365oPfRzYRQ98t4KXyLzQXUzmVd9sGjFitUZn42HnxCXP
-	pmvPcyWJYPCdRjWNgdMhykliujj/VD0=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-359-VIjfaeL5MiyXyrN2qxKA9A-1; Wed, 08 Jul 2026 09:34:21 -0400
-X-MC-Unique: VIjfaeL5MiyXyrN2qxKA9A-1
-X-Mimecast-MFC-AGG-ID: VIjfaeL5MiyXyrN2qxKA9A_1783517659
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c15d4224f9dso44917266b.3
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:34:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SEqIyxfY"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-848452dd146so1803367b3a.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783517659; x=1784122459; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
-        b=nJBNMuhi8ApwLQW1V3HfDCyZT1EXfuhrdgynf67y8vGIENvnIr72HurDPqVLVLfrEA
-         5SRjrjZYN8fGAwGKkFZxccEIknMVehg29vq+gJLcTqyXAcNvJlpenfCCIGd/Jw0qXnBf
-         xBbWNAPa4E5VhzPlc/E6ox6uHfEISlw2abMfCtPYooWu6GConhA27nlLf2/UQaIX9KHk
-         ahe8HQ2zGiklhT2a4BvCkKjI9Q9wnFFuXT1bD8Sr8hlpoJfJISA/c3YGWirVnJKBuIaw
-         3YsLDuIOD7xqeZz3jb4jc4POIayv3a8W6YN3ciF5SrQXE9V20Q6qLl/kNlBYiHUKhItJ
-         g/SQ==
+        d=google.com; s=20251104; t=1783517790; x=1784122590; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BsuMXMKCfagFyuFxdoKczu47VXQMXKuH3Dpr7pHjR+w=;
+        b=SEqIyxfYDx44zaMEheELIsRfB7Ck+g3lROg0RtzqAZCDAkZXdl2Azs8TMldfBRNQ+z
+         3fOEs6nQGoIMiUm/zgctLXwpPx64Kzp2RZwJ/5InDvmFa4Dz3ZnAdZ/ed11oEMrug44v
+         WTv8X6b38NBU58r46QpzDDHI/z53vboNx6HXFwhtVsCoZ+YK4gdRLys3e2eVp1NzM51a
+         hs4G3WSX9jEZjhUNyQQzuKseAAT26jgd55sXL5V53j/Wjntx5Tn1d4efnCN4Rgio9gK+
+         1J1ZCtNyvlhiJyBsdQPxkxHCtfFL5Dszgn5ltp/BoqsBJraLNV//RJZGHwo8+Jhyw/nU
+         soqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783517659; x=1784122459;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=agvT6dldUAVHGkvdHJr9GDkFukAf7X5C//m3Sv3mbM0=;
-        b=YZolazRQctm2obGNsmUtgTgxBVyOjRCbgsQuv5ULLyAi2AKK9jMwvfRpTlZ6XtY5yx
-         ya+Cd0C8MufA3rN5OO7P+/4bS+bLUg7LN9GxvBFmmsMf2WLIEpu+zR+jTgVfWi87XVAi
-         TOAV4cgIaKARUtCudqv6FWsNmwZvKiFXUvMGlhObW7zl74oi4qXj2QXrUfupG1C42TUU
-         eazUyRK1Gh7gLPg9ugrwfnmsT9t3BEdS3ACq5ta3zrPQAPCGocERRZKcXJVQc6xlwHHY
-         WIQFbniswh/xFgI3DM3E+xmq4y5bg9zNhmQTYXuadnSJNoHm5zs4lv/x2l0to+ow6OQa
-         u6zQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqCwJ9Vz+4hD6wi+PeXeaKoe+GOEwuHTsU4EqAhLmXcYHPCNKnn8onx7VXcjxeLF5CHfx0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnR2igY5Zv4inymFUvASRpUXp9fSCA/HiuU2SRpSYcMyPatpRw
-	S+an/APEJq1dCJyuYIhSXGoVfxQEAzorhbFMd62+muErqE38fY8UIwcw6KBxJnozwtvqx2W3MaI
-	b+UwBlV42uSfceYxh/65pBtMbOgBxfeAJBYacz3teZ7lHhbdprbvPTg==
-X-Gm-Gg: AfdE7cndutH55f7rqMnx1iVZYmawfAlRlHoeE99rEHbK9Dxy0PF4ArTtjJT1/+QQoRb
-	9luS2Zsi81K1tkm5R2vSRAkKnWE5WNaDueXieu5CzMnYT+dwpyStZuDnk0onrrli1iqaM+3arXw
-	XiFHknZMBLn/kgM8j+vXLxZ5STZs0IKZIeL5Oj6u1twR4T5u8TSXFZHYeB2vw4dKRVHV3AakgHa
-	zHXXOnMcIlHJzPg1yPsI69DAI+lfg+eOG9hLprCk9DJ3y83RzOUHZTPzhaYlLE7CmM+Z60SrZ4n
-	TUYxH7wB2Zx/R3X60TOw9ZPpx6jZh+ooC3J7/R9mDQtDU3Wpnf34qpWSr1OoiK0qUrBP6TuyXYr
-	ZV0UdVsjPLwuEnjz/Vf0AJJNMQygIf8AV3AHxO09+4uRG/cqYArPzz7hfXAoTd+A=
-X-Received: by 2002:a17:907:a286:b0:c12:2acc:fce2 with SMTP id a640c23a62f3a-c15ce128c8dmr130689366b.53.1783517659331;
-        Wed, 08 Jul 2026 06:34:19 -0700 (PDT)
-X-Received: by 2002:a17:907:a286:b0:c12:2acc:fce2 with SMTP id a640c23a62f3a-c15ce128c8dmr130687466b.53.1783517658811;
-        Wed, 08 Jul 2026 06:34:18 -0700 (PDT)
-Received: from ?IPv6:2a01:41e1:62a8:c300:7322:3fab:8db6:d28c? ([2a01:41e1:62a8:c300:7322:3fab:8db6:d28c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ad84483csm333878666b.17.2026.07.08.06.34.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 06:34:18 -0700 (PDT)
-Message-ID: <bceedaf195adf713db70a1dba743055fe4f20bc0.camel@redhat.com>
-Subject: Re: [PATCH 0/4] KVM: x86: Document and enforce APIC base memory hole
-From: Tim Wiederhake <twiederh@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>,  "H. Peter Anvin"	 <hpa@zytor.com>, Ingo
- Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org,  Paolo Bonzini <pbonzini@redhat.com>, Shuah
- Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	x86@kernel.org
-Date: Wed, 08 Jul 2026 15:34:17 +0200
-In-Reply-To: <akwrncCjosItvAeO@google.com>
-References: <20260706092021.3625908-2-twiederh@redhat.com>
-	 <akwrncCjosItvAeO@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+        d=1e100.net; s=20251104; t=1783517790; x=1784122590;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BsuMXMKCfagFyuFxdoKczu47VXQMXKuH3Dpr7pHjR+w=;
+        b=s7UxidrMkp4S170nrnRPmDTQTMRwKoTBnddBXcChn9wTHVPSoWJHXxHqvWFDouyLSF
+         9OypBFYFC1xRoX/SESLcuQdV+H6Ez23NwpYR2w8/xTQfGn+WuKnNrKsbJ1/99b6xVTVw
+         ACUaFUgjBL+Kk/Oy+9zpxzFV0W1uiQCew4hGaJsNfoLx3umo722df8fvm+SYp7o3jP1p
+         zvvPryMRvNKWrB87khUyzW2m4flXGrN9Gr0jIaYiNN1BeWIABdvg0RnZVPabwVVYbfMo
+         6YKS89rNf7do9xHi5VufB94Nry95DOHmOnSGfbETROYV5FduxZ/PtDjGBcOY/LpdwuBo
+         N6mQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrVu9g5JU4gtZNMzbXIk4vOVQrdaNV49JiKVClrXdZWzzBs8wTgzzUY5dn5libC0loP+Wk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN7AYScXkg9Ps4HgXKccxann4hWkHrmnYsI1JZimT+FHVfNUVi
+	fcq2IEtFEtjmTsqFsrS/PpWIjcam1UG0zl7aUHm88Ic49PqaXmivZ1hoVOzQjYZMlcuz+0sq3vE
+	XoWN9KA==
+X-Received: from pfuw2.prod.google.com ([2002:a05:6a00:14c2:b0:847:7ffd:ce5e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:12d8:b0:845:cf86:9469
+ with SMTP id d2e1a72fcca58-8484327c8a2mr2415200b3a.29.1783517790268; Wed, 08
+ Jul 2026 06:36:30 -0700 (PDT)
+Date: Wed, 8 Jul 2026 06:36:29 -0700
+In-Reply-To: <20260708091408.12106-2-sarunkod@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260708091408.12106-1-sarunkod@amd.com> <20260708091408.12106-2-sarunkod@amd.com>
+Message-ID: <ak5SXWcvtVLL0eKs@google.com>
+Subject: Re: [RFC PATCH v2 1/5] iommu/amd: kvm/svm: Improve API between SVM
+ and AMD IOMMU
+From: Sean Christopherson <seanjc@google.com>
+To: Sairaj Kodilkar <sarunkod@amd.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 2026-07-06 at 15:26 -0700, Sean Christopherson wrote:
-> On Mon, Jul 06, 2026, Tim Wiederhake wrote:
-> > When an in-kernel irqchip is enabled on x86, KVM installs a private
-> > memory slot at the default APIC base address (0xfee00000) during
-> > vcpu
-> > creation.=C2=A0 If user space has already mapped a memory region
-> > covering
-> > that address, vcpu creation fails with -EEXIST.=C2=A0 The same happens
-> > in
-> > reverse: mapping memory over the APIC base after vcpu creation also
-> > fails with -EEXIST.
-> >=20
-> > None of this is documented, and the error is reported far from
-> > where
-> > the actual conflict is introduced.=C2=A0 A VMM developer hitting this
-> > has
-> > to trace through KVM internals to understand what went wrong.
-> >=20
-> > This series documents the two undocumented constraints (irqchip
-> > before
-> > vcpu, APIC base memory hole) and adds early checks so the error is
-> > reported at the ioctl that actually violates the constraint.
-> >=20
-> > Patches 1-2 are documentation only.=C2=A0 Patches 3-4 add early
-> > validation
-> > that turns a confusing -EEXIST at vcpu creation into an explicit
-> > error
-> > at the point where the conflict is introduced.
->=20
-> I'm 100% in favor of documenting the behavior, but I'm not exactly
-> excited about
-> the enforcement.=C2=A0 It's not needed for KVM's safety, and while I
-> appreciate that
-> such a goof would be somewhat annoying to debug, I have a hard time
-> believing it's
-> a common failure.=C2=A0 I.e. I'm not convinced carrying the code is worth
-> the marginal
-> benefits it provides.
+This should be two separate patches, one to rename the @cpu param/field, one to
+replace @ga_log_intr with flags.  "Improve XYZ" is the equilavent of a do_work()
+function.  And I'm having a hell of a time trying to review this because of the
+overlapping churn.
 
-FWIW, I did run into this exact issue myself and debugging it was
-indeed quite a ride. The EEXIST from vcpu creation led me completely
-astray and I was very close to just giving up. If I had, I wouldn't
-have written this patch, and the failure would be perceived as even
-less common.
+Actually, if you insist on a "flags" field, three patches: rename, convert to
+flags, add the dedicated RUNNING flag.
 
-I don't mind dropping patches 3 and 4 (the actual "enforcement"
-patches) for v2, the documentation is more important in my opinion.
-Still, if there is interest, I'd be more than happy to rework these
-patches for eventual inclusion.
+On Wed, Jul 08, 2026, Sairaj Kodilkar wrote:
+> The name "cpu" in the parameter is misleading as it represents the
+> physical apicid of the cpu. Hence rename it.
 
-Thanks for the review,
-Tim
+Hrm, I was going to suggest having KVM pass in the actual CPU instead of the APIC
+ID, because the fact that the IRTE takes an APIC ID is an implementation detail
+that would ideally not bleed into the API.  But unfortunately KVM uses the entry
+in the physical ID table when filling amd_iommu_pi_data.cpu, so taking the APIC ID
+probably is the least awful approach.  :-/
 
+> Introduce flags to determine the state of the vCPU (running or not) and
+> posted interrupts.
+
+> This is useful as following patch overloads the apicid (formerly cpu) field
+> to determine GAPPI destination when vCPU is not running and it can no longer
+> be used to determine if vCPU is running or not.
+
+Rewrite the GAPPI behavior with --verbose to explain *why*.  The only reason I
+could suss out the why is because I already know how Intel posted interrupts work
+and so could intuit why GAPPI would want to keep the APIC ID valid.  Without that
+knowledge, this is unreviewable.
+
+> Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
+> ---
+>  arch/x86/include/asm/irq_remapping.h |  4 ++--
+>  arch/x86/kvm/svm/avic.c              | 22 ++++++++++++++--------
+>  drivers/iommu/amd/iommu.c            | 24 ++++++++++++------------
+>  include/linux/amd-iommu.h            | 14 ++++++++++----
+>  4 files changed, 38 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/irq_remapping.h b/arch/x86/include/asm/irq_remapping.h
+> index 37b94f484ef3..40a2206a33c0 100644
+> --- a/arch/x86/include/asm/irq_remapping.h
+> +++ b/arch/x86/include/asm/irq_remapping.h
+> @@ -35,8 +35,8 @@ struct amd_iommu_pi_data {
+>  	u64 vapic_addr;		/* Physical address of the vCPU's vAPIC. */
+>  	u32 ga_tag;
+>  	u32 vector;		/* Guest vector of the interrupt */
+> -	int cpu;
+> -	bool ga_log_intr;
+> +	int apicid;
+> +	int flags;
+
+Why use flags?  This is on-stack data, packing booleans into flags adds no value
+IMO, and makes the code way harder to read.
+
+>  	bool is_guest_mode;
+>  	void *ir_data;
+>  };
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index cdd5a6dc646f..7862b13c5409 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -932,6 +932,7 @@ int avic_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
+>  		struct vcpu_svm *svm = to_svm(vcpu);
+>  		u64 entry;
+>  		int ret;
+> +		int posted_intr;
+>  
+>  		/*
+>  		 * Prevent the vCPU from being scheduled out or migrated until
+> @@ -949,10 +950,11 @@ int avic_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
+>  		 */
+>  		entry = svm->avic_physical_id_entry;
+>  		if (entry & AVIC_PHYSICAL_ID_ENTRY_IS_RUNNING_MASK) {
+> -			pi_data.cpu = entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
+> +			pi_data.apicid = entry & AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK;
+> +			pi_data.flags = AMD_IOMMU_FLAG_VCPU_RUNNING;
+>  		} else {
+> -			pi_data.cpu = -1;
+> -			pi_data.ga_log_intr = entry & AVIC_PHYSICAL_ID_ENTRY_GA_LOG_INTR;
+> +			posted_intr = !!(entry & AVIC_PHYSICAL_ID_ENTRY_GA_LOG_INTR);
+
+"posted_intr" is misleading, and IMO flat out wrong.  Even when a GA Log Intr
+and notification is logged/sent, the virtual interrupt is still posted to the
+vCPU's virtual APIC.  I have no idea what you're trying to capture with this
+code.  And that is yet another reason why this patch needs to be split up: so
+that you can explain the reasoning and logic behind this refactoring.
+
+> +			pi_data.flags = posted_intr << AMD_IOMMU_FLAG_POSTED_INTR_SHIFT;
