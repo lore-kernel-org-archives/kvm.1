@@ -1,266 +1,129 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42FA431E51
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 18:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D8837C11C;
+	Wed,  8 Jul 2026 18:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783535135; cv=none; b=t7vWKw+qBd9Y7q+rsapynmjXuOtRt2zMHt3Z/nV6oWRd8z9wCUrfAhi1LZqAijkC40mbxqGy090CaytLTbPzUfotzEjzXW6EwxqkhcE4ondtzr07KFXwn4TMDDw5sYTVn/HWVEwAclm6IgK0i4FE7P95jOvb4qcENgO8GJ51MrA=
+	t=1783535457; cv=none; b=XGWIhnYlL/e0VUrhZ+0qRquJI5F+hi3muLTfdQ6UT2G6racN0SLlk8RzQjL2egjZuEyNfF9359OYWLDDepOrljdfBnV1HL0rP8t3/N9xVTIUVGwnO8RQNaeFwX98Z4vIwe/WlKiT9Osj1uxrGgGPhDRnXMdBksUJ7zSz+gjr118=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783535135; c=relaxed/simple;
-	bh=3d3Zd+xChyERpzKVt+cq9rL3dmxeRqzA6+d4vPP7x+U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tCP//UfncgP9gLVwQMe0XsmjIt9Cv+AowIS0ueAnxPxNRWqSSHuKdIqab6nbQ0W8wqTmrf9nV1WAg851XdToF4OSvhB8vW9mZ9TeZPzuQlJB57wZOgKEDaxveDkoMl2ceAN/05NoP5Dq2DQOc68GTz8fp2ag1iLBdJ+wsWK/JkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bu96X+J3; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783535457; c=relaxed/simple;
+	bh=PeEpSEZq1+VMqDqAHelt/AmWF/XCE8R8BLld6KCqkC0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bArtUv1mqXYz9u4lGTZXTEQXWMQAVqNCfV9Jbbs+4me0GDKGsVB7skwfhGTehcZHeH4H10NmqOvR8cboRFGNuMhgT2puS8WkJPcvRixjHcJPDTm6tsIDBXR+oJXDgFXNUL7AUkQ2HmFATrZ/qsGp+rgOm1AV/OLkwVXbAnSooDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eF97BtCU; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bu96X+J3"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783535129;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pa810erP6f+LRFi6NsLQBhULcf9bpGf+lj64SXSWBBQ=;
-	b=Bu96X+J36v7vD1HN02p9/C5ztRubT92ADd2h1FqEZd41e5qCXxR7VkHnjlwsg6fCFbVm7/
-	WCxk9QJmj5czI6gOgLbA1rGH3zH2rqRhUNjXktVyUrHAuB04qyKBM4k10l624nZPZLQMy5
-	e2Jz2+goeG8DjvaHua497zMdXWLbqtM=
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: kvm@vger.kernel.org
-Cc: kvmarm@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: [PATCH kvmtool v2 4/4] arm64: Add --guest-memfd option to back guest RAM with guest_memfd
-Date: Wed,  8 Jul 2026 19:25:10 +0100
-Message-Id: <20260708182510.2181857-5-fuad.tabba@linux.dev>
-In-Reply-To: <20260708182510.2181857-1-fuad.tabba@linux.dev>
-References: <20260708182510.2181857-1-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eF97BtCU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783535456; x=1815071456;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PeEpSEZq1+VMqDqAHelt/AmWF/XCE8R8BLld6KCqkC0=;
+  b=eF97BtCUkzh5zFfaNbLJ0283TFbT+vGX4KlGqj9jC2AaaYI/wJ4zs/tW
+   1UYz/dGvBZwh5VFI27BMkAvqcxsn0rTRk0arkrVtcneBTwQNSmhKAQtf8
+   UKz2VSlTPrC+GCsFwlFtuhkDxgbsOnKPNtmGtILpOOgS2Gv3/ujivLvHe
+   GTpVjFpdNJt1Zii2/gwNssTCyseTChiIPEPi7QDVx5ec8men9wg0nJ9fL
+   HRo+VAKEBOkVR9iTKSO3RNubbeDswol6AJrwHepo85atPVMXqOERYD+ye
+   iXVlCI/cAL3UwQ5+qQCof9+gVwW/wHNHsHiUT9OGDuJ50TVY/fE5bJsVR
+   Q==;
+X-CSE-ConnectionGUID: g4Dk7s9YS3ekRktw3YyxPw==
+X-CSE-MsgGUID: pcCldno5TvyefzcoM7TuWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95367632"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="95367632"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 11:30:55 -0700
+X-CSE-ConnectionGUID: wDfqHoS3T9OFsDlcr0el2A==
+X-CSE-MsgGUID: WAw7ajAbSuCqb6nB/coM7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="278751101"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.111.66]) ([10.125.111.66])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 11:30:54 -0700
+Message-ID: <a16ebde9-e275-4f32-9759-a9378b0e36bc@intel.com>
+Date: Wed, 8 Jul 2026 11:30:51 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 07/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
+ control structures
+To: Sean Christopherson <seanjc@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, hpa@zytor.com, kas@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, nik.borisov@suse.com,
+ pbonzini@redhat.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org,
+ chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+ <20260526023515.288829-8-rick.p.edgecombe@intel.com>
+ <akw-dgBE_dycts0o@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <akw-dgBE_dycts0o@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Back guest RAM with a guest_memfd created with GUEST_MEMFD_FLAG_MMAP
-and GUEST_MEMFD_FLAG_INIT_SHARED, mmapped MAP_SHARED to provide the
-userspace mapping. The guest_memfd file descriptor is closed at
-teardown, after the mapping is removed.
+On 7/6/26 16:47, Sean Christopherson wrote:
+>> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+>> [sean: handle alloc+free+reclaim in one patch]
+>> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Where did this come from?  I don't think me squashing two patches together
+> warrants a Co-developed-by.
 
-Protected VMs need in-place shared/private conversion of guest_memfd,
-which the kernel does not support yet, so reject the combination of
---protected and --guest-memfd.
+FWIW, I think the pendulum has swung way too far in terms of people
+trying to tell the whole tortured story of their patches via tags. I
+prefer some prose which is less formal *and* more descriptive than tags.
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arm64/include/kvm/kvm-config-arch.h |  5 +++-
- arm64/kvm.c                         | 43 +++++++++++++++++++++++------
- include/kvm/kvm.h                   |  1 +
- include/kvm/util.h                  |  1 +
- kvm.c                               |  1 +
- util/util.c                         | 37 +++++++++++++++++++++++++
- 6 files changed, 79 insertions(+), 9 deletions(-)
-
-diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
-index c2702d5..d8a8ef7 100644
---- a/arm64/include/kvm/kvm-config-arch.h
-+++ b/arm64/include/kvm/kvm-config-arch.h
-@@ -20,6 +20,7 @@ struct kvm_config_arch {
- 	bool		no_pvtime;
- 	bool		psci;
- 	bool		protected;
-+	bool		guest_memfd;
- };
- 
- int irqchip_parser(const struct option *opt, const char *arg, int unset);
-@@ -73,6 +74,8 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
- 	OPT_BOOLEAN('\0', "e2h0", &(cfg)->e2h0,					\
- 		    "Create guest without VHE support"),			\
- 	OPT_BOOLEAN('\0', "protected", &(cfg)->protected,			\
--			"Create a protected VM when pKVM is enabled"),
-+			"Create a protected VM when pKVM is enabled"),		\
-+	OPT_BOOLEAN('\0', "guest-memfd", &(cfg)->guest_memfd,			\
-+			"Use guest_memfd to back guest RAM"),
- 
- #endif /* ARM_COMMON__KVM_CONFIG_ARCH_H */
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index fb0b98d..bf4e34e 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -49,9 +49,14 @@ void kvm__init_ram(struct kvm *kvm)
- 	kvm->arch.ram_alloc_size = kvm->ram_size;
- 	if (!kvm->cfg.hugetlbfs_path)
- 		kvm->arch.ram_alloc_size += SZ_2M;
--	kvm->arch.ram_alloc_start = mmap_anon_or_hugetlbfs(kvm,
--						kvm->cfg.hugetlbfs_path,
--						kvm->arch.ram_alloc_size);
-+
-+	if (kvm->cfg.arch.guest_memfd)
-+		kvm->arch.ram_alloc_start =
-+			mmap_guest_memfd(kvm, kvm->arch.ram_alloc_size);
-+	else
-+		kvm->arch.ram_alloc_start =
-+			mmap_anon_or_hugetlbfs(kvm, kvm->cfg.hugetlbfs_path,
-+					       kvm->arch.ram_alloc_size);
- 
- 	if (kvm->arch.ram_alloc_start == MAP_FAILED)
- 		die("Failed to map %lld bytes for guest memory (%d)",
-@@ -60,17 +65,25 @@ void kvm__init_ram(struct kvm *kvm)
- 	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
- 					SZ_2M);
- 
--	madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
--		MADV_MERGEABLE);
-+	if (!kvm->cfg.arch.guest_memfd) {
-+		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-+			MADV_MERGEABLE);
- 
--	madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
--		MADV_HUGEPAGE);
-+		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-+			MADV_HUGEPAGE);
-+	}
- 
- 	phys_start	= kvm->cfg.ram_addr;
- 	phys_size	= kvm->ram_size;
- 	host_mem	= kvm->ram_start;
- 
--	err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
-+	if (kvm->cfg.arch.guest_memfd)
-+		err = kvm__register_ram_guest_memfd(kvm, phys_start,
-+						    phys_size, host_mem,
-+						    kvm->ram_guest_memfd,
-+						    host_mem - kvm->arch.ram_alloc_start);
-+	else
-+		err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
- 	if (err)
- 		die("Failed to register %lld bytes of memory at physical "
- 		    "address 0x%llx [err %d]", phys_size, phys_start, err);
-@@ -84,6 +97,11 @@ void kvm__init_ram(struct kvm *kvm)
- void kvm__arch_delete_ram(struct kvm *kvm)
- {
- 	munmap(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size);
-+
-+	if (kvm->ram_guest_memfd >= 0) {
-+		close(kvm->ram_guest_memfd);
-+		kvm->ram_guest_memfd = -1;
-+	}
- }
- 
- void kvm__arch_read_term(struct kvm *kvm)
-@@ -468,6 +486,15 @@ void kvm__arch_validate_cfg(struct kvm *kvm)
- 	if (kvm->cfg.arch.e2h0 && !kvm->cfg.arch.nested_virt)
- 		pr_warning("--e2h0 requires --nested, ignoring");
- 
-+	if (kvm->cfg.arch.guest_memfd) {
-+		/* Requires in-place shared/private conversion of guest_memfd. */
-+		if (kvm->cfg.arch.protected)
-+			die("Protected VMs do not yet support guest_memfd");
-+
-+		if (kvm->cfg.hugetlbfs_path)
-+			die("guest_memfd cannot be backed by hugetlbfs");
-+	}
-+
- 	if (kvm->cfg.arch.protected) {
- 		if (kvm->cfg.ram_size &&
- 		    kvm->cfg.ram_size < DMA_MEM_REGION_SIZE) {
-diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
-index 5e7b5eb..95dc52f 100644
---- a/include/kvm/kvm.h
-+++ b/include/kvm/kvm.h
-@@ -90,6 +90,7 @@ struct kvm {
- 	u64			ram_size;	/* Guest memory size, in bytes */
- 	void			*ram_start;
- 	u64			ram_pagesize;
-+	int			ram_guest_memfd; /* guest_memfd backing RAM, -1 if none */
- 	struct mutex		mem_banks_lock;
- 	struct list_head	mem_banks;
- 
-diff --git a/include/kvm/util.h b/include/kvm/util.h
-index a6dba11..9e23431 100644
---- a/include/kvm/util.h
-+++ b/include/kvm/util.h
-@@ -148,5 +148,6 @@ static inline int pow2_size(unsigned long x)
- struct kvm;
- void *mmap_hugetlbfs(struct kvm *kvm, const char *htlbfs_path, u64 size);
- void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 size);
-+void *mmap_guest_memfd(struct kvm *kvm, u64 size);
- 
- #endif /* KVM__UTIL_H */
-diff --git a/kvm.c b/kvm.c
-index 947721b..96583f9 100644
---- a/kvm.c
-+++ b/kvm.c
-@@ -162,6 +162,7 @@ struct kvm *kvm__new(void)
- 	mutex_init(&kvm->mem_banks_lock);
- 	kvm->sys_fd = -1;
- 	kvm->vm_fd = -1;
-+	kvm->ram_guest_memfd = -1;
- 
- #ifdef KVM_BRLOCK_DEBUG
- 	kvm->brlock_sem = (pthread_rwlock_t) PTHREAD_RWLOCK_INITIALIZER;
-diff --git a/util/util.c b/util/util.c
-index 05d49c4..51a4591 100644
---- a/util/util.c
-+++ b/util/util.c
-@@ -6,7 +6,9 @@
- #include "kvm/util.h"
- 
- #include <kvm/kvm.h>
-+#include <linux/kvm.h>
- #include <linux/magic.h>	/* For HUGETLBFS_MAGIC */
-+#include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
- #include <sys/statfs.h>
-@@ -169,3 +171,38 @@ void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 si
- 		return mmap(NULL, size, PROT_RW, MAP_ANON_NORESERVE, -1, 0);
- 	}
- }
-+
-+/*
-+ * Map guest RAM backed by a guest_memfd. The file descriptor is kept open
-+ * until teardown (kvm__arch_delete_ram), after the mapping is removed.
-+ */
-+void *mmap_guest_memfd(struct kvm *kvm, u64 size)
-+{
-+	u64 flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	struct kvm_create_guest_memfd gmem = {
-+		.size	= size,
-+		.flags	= flags,
-+	};
-+	void *addr;
-+	int ret;
-+
-+	if (!kvm__supports_extension(kvm, KVM_CAP_GUEST_MEMFD))
-+		die("kernel does not support guest_memfd");
-+
-+	ret = ioctl(kvm->vm_fd, KVM_CHECK_EXTENSION, KVM_CAP_GUEST_MEMFD_FLAGS);
-+	if (ret < 0 || ((u64)ret & flags) != flags)
-+		die("VM type does not support guest_memfd with mmap");
-+
-+	ret = ioctl(kvm->vm_fd, KVM_CREATE_GUEST_MEMFD, &gmem);
-+	if (ret < 0)
-+		die_perror("KVM_CREATE_GUEST_MEMFD");
-+
-+	addr = mmap(NULL, size, PROT_RW, MAP_SHARED, ret, 0);
-+	if (addr == MAP_FAILED)
-+		die_perror("guest_memfd mmap");
-+
-+	kvm->ram_guest_memfd = ret;
-+	kvm->ram_pagesize = getpagesize();
-+
-+	return addr;
-+}
--- 
-2.39.5
-
+Sounds like Sean and I are mostly on the same page here too, which is a
+bonus.
