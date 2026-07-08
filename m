@@ -1,92 +1,41 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C677F43079C
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 16:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EFF3F12E3
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 16:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783529418; cv=none; b=ZI+KVqj7fj/PgZ8+t/+60zFpGuZyCDysc73Oq3R0aBA18pI343Apiav/RBuD5kZpJnWeZapXdBwiSlonEn5ilJdxiohSG/ytzo18yL+5Ccj0+iC+HQI1qH0BPFB3si5pZ55PaXHxmqLHfMmmJ48jshMt97zNYOmXwW6FYuPg+KY=
+	t=1783529863; cv=none; b=AYeYvu9dT3nklVjhjh240Z0l7s0JINopug/UfE9oEipA9NxpOgqlXoZcY1+wXeU94Odhah5TSvnm6BbUjnjzQm2K5liPImGkKicbl3NjEtCdQFkxd+Lg5AgW5rlpxl81/p9IxIm4AtJFTmSsweoKhTE/T3Tc4OG16j6+jmpBfBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783529418; c=relaxed/simple;
-	bh=HEXCS7+2myohc1YZaELPgANH9OaRCUzaJ5f7a6XuwhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzzbapgau3LfkE1DYmS686oVEjsw9CO6Y+OrkxeebhKip+rEGQCso1iUTVI8K1UY9qbwkqD+DZv8TSYnbYn0hHrBqWZNT/qjQyme+BXbLwEljaSQokMDtrw77hYR0emVv9E+jUcCI8PXS1bqe8F22E4/u3EgZuQA1SlB4Y3SOEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CR4kgh28; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S2ZogioL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783529863; c=relaxed/simple;
+	bh=cRH++9O1Ay2nLjpSJWEr2bbXp3Rt2/8JjlV7JrV0hCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=lnOTlLQP0wkjWToJvXj/TVg3MAe2WBee4naUE+CQZDuLz4hGwYWZRitNq4R5AMlvmK7+rgSZifY57p1lP40zkcfW+fjBcKOTINOw4JM5vuuQ9c68lQ002YzpVlmdB5AxUxLUcRbSJkqf1yyJr6JK4Bt1fU01w+Zudz0q3rPCi24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qfBdT/w2; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CR4kgh28";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S2ZogioL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783529413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-	b=CR4kgh28GW2JJuQiQCOVOVDhBPPPsmGORpuY/MW4mG3wuiv0heukWHxKbFlw/xkVJDtt/T
-	bKGnoa385Lg3sZvqbdRCx1HcmMSoZk08nIhLhBns/2aGWhjzszl4dNOuJtzVFHrd6h3jFc
-	cHnaDydv4JPObgpL4tlCbJZmCHtI9as=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-385-nwEn4ZMLO-662YoSthhKWg-1; Wed, 08 Jul 2026 12:50:11 -0400
-X-MC-Unique: nwEn4ZMLO-662YoSthhKWg-1
-X-Mimecast-MFC-AGG-ID: nwEn4ZMLO-662YoSthhKWg_1783529410
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-473f4a48e9aso685025f8f.2
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 09:50:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783529410; x=1784134210; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-        b=S2ZogioLkYQS9nC40/heiOWtv2tt+PBKqW9cyk5srBHMFR10DN1Wy7LiBG7QzZbs8r
-         gRu6UiipzrgCGYvAjKgjTYNUTCZ3aZ0xPI8Dy7IRG6Wk/BprPcppjt5gGOHNkkcR/jLa
-         gn3mCTT1OVtzNhfCyCQfRZvL5kl7BSl2qynNuD6lQ5Nn5PGiswMJsuDQcISTk1Q7B7MT
-         nBCWwMo7VbhNVa7LyHJRsTd+G5Zp3MvEwMNttoJ36SHF0X9yXla9dcGYMPhXn37DHKzr
-         qhL29zi80lzWVygg6Y9voFBqPAJ5Fa+pAZYVbAxa9WFJOfybPji9fqXEFQYThMihVoS7
-         8pxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783529410; x=1784134210;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iOZxF9JBJJ0HTV1hxdJ54Cs/JFpZYK6OhfeE5DF280s=;
-        b=skdmYIGyiQj4+bYQJAfj4tshe5a/XmyeSV8lahazgTkkh62oDtuUjAcN+w+D4fYXvs
-         MCMJevCJp1s90ILEpYyCf47B8ESokto+/ehoa8Wcfceg4XO477j+wLWp6PjnEFvYoBHX
-         aWEpZv4MME04zmTfAcHLFtkIHcLrnLugdpIJA7txHecvk9ke0NUlbNKT+JAMDH7EdWJO
-         dj89Vd2uGIjC0wSJqvb0zTA/2VzAFkELqY1uT2QtyGaLFwyfccyrJrQWJ9l5P1SnGvNB
-         ims2VU/tR7xVadrkjQ2wQvxRIxHkfguCjwx1bP7wH90yghT1DVJrKMDLW62m8Leup7lz
-         EkNQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrNzSH7S+fBIvckkzFLrG4Bsft1wgVnAzmA4/eamU+txAVE5y61qREsmi9fG33ZkmHYEeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yye79GYjq/wUrXZBLEkaTX17ByLPy58koBSNmDcLdhbhFtudP2X
-	SQqO5hHsNwQnE73adIkEx/t62be5cScAJ29jRUSlK8Mpr3PjonbeaiznM0U3burCcXEgLFvnONT
-	Tlxp0xBVhRsY2atT/wKt8NiS3IHT2cPmZxA/1fbMCx5yZwA+EG2mQng==
-X-Gm-Gg: AfdE7cmVMh8jwwLXzKiUIzC1TpQJYJLprXgPPldOa39Zt8P6ib9ViJl6INOHOz5K4T9
-	I7pZJmjy4k70REmvyG7UqTokMUJdfj/t8ZeYWUE4IqTuL8Sc/JBWlfIVLgOccYHIdRIM3IGm/b9
-	NbVw4YsP871dPSMMN6LGw/duM9IqC/hwRcQkZEzNUNIDD/bBcFOu3VsTKOCA8KgDo3H44OqMg/B
-	8NPUfnU88lpOfSQ1bpgIWBef9Z+DVeI0uvJ+r7DK9BpwxDAcVB62PS9/hQeW6HzfmrTrqj+GMBO
-	O0lEMTEaLYNyfTEn2RJpwyicyJI40mZYMetFbsPmEFpNubV2bpN/PTSkvlsv1/BxwTRlgkf159Y
-	HChS7DqbHhGoLYBDTZivqRq4IsKw2aCKj
-X-Received: by 2002:a05:600c:19d0:b0:493:cce0:3724 with SMTP id 5b1f17b1804b1-493e68aed4dmr30880605e9.4.1783529410072;
-        Wed, 08 Jul 2026 09:50:10 -0700 (PDT)
-X-Received: by 2002:a05:600c:19d0:b0:493:cce0:3724 with SMTP id 5b1f17b1804b1-493e68aed4dmr30880225e9.4.1783529409552;
-        Wed, 08 Jul 2026 09:50:09 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039b0cesm44408115f8f.22.2026.07.08.09.50.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 09:50:08 -0700 (PDT)
-Date: Wed, 8 Jul 2026 12:50:06 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: enrico.zanda@arm.com
-Cc: jasowangio@gmail.com, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, kuba@kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, eperezma@redhat.com, nd@arm.com
-Subject: Re: [PATCH net] vhost-net: fix TX stall when vhost owns virtio-net
- header
-Message-ID: <20260708124901-mutt-send-email-mst@kernel.org>
-References: <20260708152242.2268848-1-enrico.zanda@arm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qfBdT/w2"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 725531D14;
+	Wed,  8 Jul 2026 09:57:36 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4528F3F7B4;
+	Wed,  8 Jul 2026 09:57:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783529860; bh=cRH++9O1Ay2nLjpSJWEr2bbXp3Rt2/8JjlV7JrV0hCc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qfBdT/w2M2Z4iUuxuIuiZiLVxQEA2g/Me9cjHtFyP+7lpCkpth6s8Q4rlVZN+QMS4
+	 oWLveh78UbZluKy+2h0aT3q6fjHGn+ySZmHGQ8PkXQ+u+rTEGiJ+NlkMIq6TWwBlKc
+	 fpI0zMt5deoSU8da9dAV+toD2Q1V02oPGLXhom5Q=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v3 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+Date: Wed,  8 Jul 2026 17:57:38 +0100
+Message-ID: <ak6BgqS_YS3UOqdU@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260708153613.8F7AF1F000E9@smtp.kernel.org>
+References: <20260708152232.2568907-1-leo.bras@arm.com> <20260708152232.2568907-4-leo.bras@arm.com> <20260708153613.8F7AF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -95,62 +44,159 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708152242.2268848-1-enrico.zanda@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026 at 04:22:42PM +0100, enrico.zanda@arm.com wrote:
-> From: Enrico Zanda <enrico.zanda@arm.com>
+On Wed, Jul 08, 2026 at 03:36:13PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Medium] The 'dirty memory time' metric incorrectly includes the time vCPU threads spend waiting for the global `collect` mutex, misattributing it to guest execution time and underreporting dirty ring management overhead.
+> - [Medium] Lockless synchronization between the vCPU threads and the main thread lacks memory barriers, creating a data race on the `vcpu_dirty_ring_collect` timespec payload.
+> --
 > 
-> When vhost owns the virtio-net header, i.e. when
-> VHOST_NET_F_VIRTIO_NET_HDR is negotiated, sock_hlen is 0,
-> meaning that no header will be forwarded to the TAP device.
+> --- Patch [3]: [RFC PATCH v3 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support ---
+> commit d30bfe94110209591fe009dbe43668ba5266de12
+> Author: Leonardo Bras <leo.bras@arm.com>
 > 
-> In the current vhost_net_build_xdp() implementation,
-> when sock_hlen == 0, the gso pointer can point at the start of the
-> Ethernet frame instead of a virtio-net header.
-> This results in a wrong interpretation of the destination MAC address
-> bytes as struct virtio_net_hdr fields.
+> KVM: selftests: dirty_log_perf_test: Add dirty-ring support
 > 
-> This can, for some MAC addresses, trigger -EINVAL and return early
-> before the TX descriptor is completed, which can stall vhost-net TX.
+> dirty_log_test supports both dirty-bitmap and dirty-ring as dirty-page
+> tracking mechanisms, while dirty_log_perf_test only supports dirty-bitmap.
+>     
+> Add support to dirty-ring on dirty_log_perf_test so it can be used to
+> compare performance between changes in the mechanism.
 > 
-> Before 97b2409f28e0, the gso pointer was set to the zeroed padding area,
-> using it as a synthetic virtio-net header. Restore that behavior.
+> > diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> > index 69b38791440e7..181f521c9be96 100644
+> > --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> > +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> > @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
+> >  
+> >  /* Host variables */
+> >  static u64 dirty_log_manual_caps;
+> > +static u32 dirty_ring_size;
+> >  static bool host_quit;
+> >  static int iteration;
+> >  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
+> > +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
+> > +
+> > +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
+> > +				struct timespec *ts)
+> > +{
+> > +	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
+> > +	struct timespec start;
+> > +	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
+> > +	u32 idx = *ring_idx;
+> > +	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
+> > +	int cleared, count;
+> > +
+> > +	pthread_mutex_lock(&collect);
+> > +
+> > +	clock_gettime(CLOCK_MONOTONIC, &start);
 > 
-> Fixes: 97b2409f28e0 ("vhost-net: reduce one userspace copy when building XDP buff")
-> Signed-off-by: Enrico Zanda <enrico.zanda@arm.com>
+> [Severity: Medium]
+> Will this timer placement incorrectly measure performance metrics?
+> 
+> Because clock_gettime() is called after acquiring the collect mutex, the
+> returned ts will not include any time the vCPU thread spends waiting for the
+> lock.
+> 
+> Later in vcpu_worker():
+> 
+> 	ts_diff = timespec_elapsed(start);
+> 
+> 	if (use_dirty_ring) {
+> 		ts_diff = timespec_sub(ts_diff, collect);
+> 	}
+> 
+> Since collect excludes lock contention time, subtracting it leaves that
+> contention overhead in ts_diff. Does this result in misattributing lock
+> contention to guest execution time?
+
+Yes, but that's expected, if we want to isolate the dirty-ring cleaning 
+time from the waiting on lock time. Another option would be to add a 
+different variable to account for that time, and just remove it before 
+returning.
+
+Question is: are people worried about dirtying time accounting enough so we 
+have to subtract the waiting on lock time?
+
+> 
+> > +
+> > +	while (true) {
+> > +		struct kvm_dirty_gfn *cur;
+> 
+> [ ... ]
+> 
+> > @@ -43,17 +88,33 @@ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
+> >  	struct timespec ts_diff;
+> >  	struct timespec total = (struct timespec){0};
+> >  	struct timespec avg;
+> > +	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
+> > +	u32 ring_idx = 0;
+> >  	int ret;
+> >  
+> >  	run = vcpu->run;
+> >  
+> >  	while (!READ_ONCE(host_quit)) {
+> >  		int current_iteration = READ_ONCE(iteration);
+> > +		struct timespec collect = (struct timespec){0};
+> >  
+> >  		clock_gettime(CLOCK_MONOTONIC, &start);
+> > -		ret = _vcpu_run(vcpu);
+> > +
+> > +		do {
+> > +			ret = _vcpu_run(vcpu);
+> > +			if (!use_dirty_ring)
+> > +				break;
+> > +
+> > +			dirty_ring_collect(vcpu, &ring_idx, &collect);
+> > +		} while (run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
+> > +
+> >  		ts_diff = timespec_elapsed(start);
+> >  
+> > +		if (use_dirty_ring) {
+> > +			ts_diff = timespec_sub(ts_diff, collect);
+> > +			vcpu_dirty_ring_collect[vcpu_idx] = collect;
+> > +		}
+> > +
+> >  		TEST_ASSERT(ret == 0, "vcpu_run failed: %d", ret);
+> >  		TEST_ASSERT(get_ucall(vcpu, NULL) == UCALL_SYNC,
+> >  			    "Invalid guest sync status: exit_reason=%s",
+> >  			    exit_reason_str(run->exit_reason));
+> >  
+> >  		pr_debug("Got sync event from vCPU %d\n", vcpu_idx);
+> >  		vcpu_last_completed_iteration[vcpu_idx] = current_iteration;
+> 
+> [Severity: Medium]
+> Are memory barriers needed for this lockless synchronization?
+> 
+> The worker thread updates vcpu_dirty_ring_collect and then sets
+> vcpu_last_completed_iteration to signal completion. However, this is done
+> without store-release semantics.
+> 
+> Meanwhile, the main thread in run_test() spins on the completion flag and
+> then reads the array:
+> 
+> 	for (i = 0; i < nr_vcpus; i++) {
+> 		while (READ_ONCE(vcpu_last_completed_iteration[i]) != iteration)
+> 			;
+> 	}
+> 	
+> 	/* ... */
+> 	
+> 	if (dirty_ring_size) {
+> 		for (i = 0; i < nr_vcpus; i++)
+> 			iteration_sum = timespec_add(iteration_sum,
+> 						     vcpu_dirty_ring_collect[i]);
+> 	}
+> 
+> Could weakly-ordered architectures like ARM64 reorder the worker thread's
+> stores (or the main thread's loads), causing the main thread to read torn or
+> stale struct timespec data?
+> 
+
+I see the point. We have to make sure the order is kept. Easiest way would 
+be to use an acquire/release pair here. Will do for next version.
 
 
-The fix looks good:
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-Sashiko thinks there's something something security here, but I think
-it is misguided. It's just guest hurting itself. driver breaks the
-device it gets to keep both pieces.
-
-> ---
->  drivers/vhost/net.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> index 77b59f49bddb..3e72b9c6af0c 100644
-> --- a/drivers/vhost/net.c
-> +++ b/drivers/vhost/net.c
-> @@ -731,10 +731,12 @@ static int vhost_net_build_xdp(struct vhost_net_virtqueue *nvq,
->  		goto err;
->  	}
->  
-> -	gso = buf + pad - sock_hlen;
-> -
-> -	if (!sock_hlen)
-> +	if (!sock_hlen) {
->  		memset(buf, 0, pad);
-> +		gso = buf;
-> +	} else {
-> +		gso = buf + pad - sock_hlen;
-> +	}
->  
->  	if ((gso->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
->  	    vhost16_to_cpu(vq, gso->csum_start) +
-> -- 
-> 2.43.0
-
+Thanks!
+Leo
