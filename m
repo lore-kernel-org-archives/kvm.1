@@ -1,122 +1,156 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D7A3E1203;
-	Wed,  8 Jul 2026 07:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BC23F888B;
+	Wed,  8 Jul 2026 07:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783495847; cv=none; b=GQusanU0HDUW8qVhByT+93qH1PsCb97z+A5kqiAMk88eN6umGEbeS1ZwRD8B8Xs9vcjUwqw2TJsiX6puSJqfM8sWHnPe5MfU3REZ/xXuCzJ1pTB3WNrq5uAqCxZOztxk4LmTB2uDx2q1AcPfXuVWULmYoZOsB0v5j+KC8EQ/24A=
+	t=1783496194; cv=none; b=JvN8oOxLReG0wen9aFBm4OzNmPe7dsBgy0FJ94tVEaykV36rvAR00xJ0WqklkgOkdxlHfYqS111DAZ7etGmhn1bBpZyTIFjmnOwYeYZ6s7UvCO3I2z6vguATgDAy0W77M19Nbyg1CDZUe05rNg5jKuIfKDxAFxSgoP6oIkluS20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783495847; c=relaxed/simple;
-	bh=N/ejXwA4KZO0DC2Z/HcSEn8yZfsKlTnk2ktXyvCQZtY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kW/MwQUGCd+9T2UGEgUWUCIz/NQKmbMutPSDhm+AwBxj62DsBdPqPP390AZE0ZvNHTvqUNYgUDjSAdM7bK5qJvg6+HnFrKCyqCBlMYh6sSxzRnGz9qbZfkY33KXL/DJLknYj+iWjCQtxk0IuwcUWTakvIX6UCXxL3p6C69JWh/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwqlhTDa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783496194; c=relaxed/simple;
+	bh=GkSu0T/j1EigHEvHkz4OfSe+5dY8ZtTvL5k3rcGsVg0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bh7Mi6kct4YIDw+Xej9iMp3DFn+oKGz1Ejl5eB1m6L8NGipKw397Q7s+MQkqSJvEMa+Sq4koQsS+EytmEVLXlVia69elZB9yzRa7zvZYpg+rmMJmWjsy7iY12Wk8Vc8GK3xWRZgsz2xQla5yUbcAetJSNOKpdsSGYenalaivuoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ip4NvB47; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwqlhTDa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3D21F00A3A;
-	Wed,  8 Jul 2026 07:30:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ip4NvB47"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24431F000E9;
+	Wed,  8 Jul 2026 07:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783495828;
-	bh=6XPCFtqPmjIBOfArNEHzU0v8CdudEoKzUfONk1mxyWs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=KwqlhTDaQqRylyKDCQc64J/xr0ZZUKLtdJ0u//WfIwq01nHTSJc9ZbSmfhk+5Csmv
-	 7PcMLRDYbGYCbJGFvsWGEIxgn6twSeIUnY/IVcHt/hqJFmsjV3B+Dw5xpxf1pjYB6P
-	 yePp4LiNzte683pBkGJZ8dKsnoAP4ycLLk+bsnQc4MAu4kr/u1AwhDpvfR73nebWGG
-	 Z5Gi6fYgoiDkKNDAMw/Bd3rXsHKZZXiP/m7kI03ynStt3Vw4jsOjwHGtDIMElfASLY
-	 crnEPX04QPhKnEwnlAUlTYQ5pNiF04+Rdlf7/uQfbRhSBxahJDfA3pSJqT7wEkyYFZ
-	 i0oLb+JsvykwQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AB53926257;
-	Wed,  8 Jul 2026 07:30:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1783496177;
+	bh=xls0ncCjyWcLCH10SsoXeKirDHltIOo0E/jR/8APp6g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Ip4NvB47gbOwipZa0QyaFhGhU4Vm+o/21PVfALYlAyU6X0qJyBv4zSdlp/zMVzpOM
+	 BTI3YYYMtX3GtDTOvAalB+L3bvT11rvpKtqt7d6LHlu+NX5opY4w+bJSIZW02QITLn
+	 /3dQC6ZjeWlTa+WoM5tyjJI2XGPyha02Vo21UBZUd6lZm4z1OJ976CmocY7Yi2FI1N
+	 QcS7aTomqtppnG+LbYRUdzOarl/452D7tERIU83hgc7aLI5g+fVUjCJuDBBzLJU0BS
+	 MJDitX2DWqgbP+PQ1j2dHuodEFH5RLddS2fFDwdb6wVCv8xD2uOuD56qeXgcW8g6UH
+	 ACxJKR8XzLxJg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1whMpL-00000002hwZ-1cyF;
+	Wed, 08 Jul 2026 07:36:15 +0000
+Date: Wed, 08 Jul 2026 08:36:14 +0100
+Message-ID: <861pdeorv5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v4 24/27] KVM: s390: arm64: Implement vm/vcpu create destroy.
+In-Reply-To: <20260708065150.583632-C-seiden@linux.ibm.com>
+References: <20260706085229.979525-1-seiden@linux.ibm.com>
+	<20260706085229.979525-25-seiden@linux.ibm.com>
+	<8633xuq1ic.wl-maz@kernel.org>
+	<20260708065150.583632-C-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5 00/17] riscv: hwprobe: Expose RVA23U64 base behavior
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <178349580738.2343578.10382638352162559486.git-patchwork-notify@kernel.org>
-Date: Wed, 08 Jul 2026 07:30:07 +0000
-References: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
-In-Reply-To: <20260701-rva23u64-hwprobe-v2-v5-0-2c61f94a695a@gmail.com>
-To: Guodong Xu <docular.xu@gmail.com>
-Cc: linux-riscv@lists.infradead.org, corbet@lwn.net,
- skhan@linuxfoundation.org, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, zong.li@sifive.com, debug@rivosinc.com,
- anup@brainfault.org, atish.patra@linux.dev, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, dlan@kernel.org,
- unicorn_wang@outlook.com, inochiama@gmail.com, chen.wang@linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, paul.walmsley@sifive.com, conor@kernel.org,
- jtaubepe@redhat.com, thecharlesjenkins@gmail.com,
- andrew.jones@oss.qualcomm.com, devicetree@vger.kernel.org,
- spacemit@lists.linux.dev, sophgo@lists.linux.dev,
- linux-kselftest@vger.kernel.org, conor.dooley@microchip.com,
- charlie@rivosinc.com, jesse@rivosinc.com, qingwei.hu@bytedance.com,
- andybnac@gmail.com
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hello:
-
-This series was applied to riscv/linux.git (fixes)
-by Paul Walmsley <pjw@kernel.org>:
-
-On Wed, 01 Jul 2026 08:52:13 -0400 you wrote:
-> This series builds on Andrew Jones's earlier RFC [1]. It lets userspace
-> check for RVA23U64 conformance in one call, instead of walking hwprobe +
-> prctl across every mandatory extension.
+On Wed, 08 Jul 2026 07:51:50 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
 > 
-> The series adds a small framework that resolves profile-class bases (IMA
-> and RVA23U64) from the kernel's ISA extension bitmap at init time, and
-> surfaces the result through both /proc/cpuinfo and hwprobe. Later patches
-> can add RVA23S64, and backward RVA22 / RVA20 detection, to
-> riscv_set_isa_bases() without changes to the surrounding code.
+> On Tue, Jul 07, 2026 at 04:10:19PM +0100, Marc Zyngier wrote:
+> > On Mon, 06 Jul 2026 09:52:24 +0100,
+> > Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > > 
+> > > Implement init and destroy IOCTLS for vcpu and vm.
+> > > Implement arch vm IOCTL. Use s390 gmap.
+> > > 
+> > > Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
+> > > Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> > > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
+> > > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> > > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> > > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> > > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > > ---
+> > >  arch/s390/kvm/arm64/arm.c       | 190 ++++++++++++++++++++++++++++++++
+> > >  arch/s390/kvm/arm64/arm.h       |  56 ++++++++++
+> > >  arch/s390/kvm/gmap/faultin.c    |   5 +
+> > >  arch/s390/kvm/gmap/gmap.c       |   4 +
+> > >  arch/s390/kvm/gmap/trace-gmap.h |  13 +++
+> > >  5 files changed, 268 insertions(+)
+> > > 
+> > > diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
+> > > index 19249ec5c539..3a4092698fae 100644
+> > > --- a/arch/s390/kvm/arm64/arm.c
+> > > +++ b/arch/s390/kvm/arm64/arm.c
+> > > @@ -8,6 +8,10 @@
+> > >  #include <linux/kvm_types.h>
+> > >  #include <linux/kvm_host.h>
+> > >  
+> > > +#include <arm64/kvm_mmu.h>
+> > > +
+> > > +#include <gmap.h>
+> > > +
+> > >  #include "arm.h"
+> > >  
+> > >  static unsigned long system_supported_vcpu_features(void);
+> > > @@ -31,6 +35,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> > >  		break;
+> > >  	case KVM_CAP_IOEVENTFD:
+> > >  	case KVM_CAP_ARM_USER_IRQ:
+> > > +	case KVM_CAP_PRE_FAULT_MEMORY:
+> > 
+> > arm64 *doesn't* support this yet. Please make sure you don't deviate
+> > from what arm64 currently supports.
+> >
 > 
-> [...]
+> I hoped the corresponding arm64 series is merged when we got this :) 
 
-Here is the summary with links:
-  - [v5,01/17] dt-bindings: riscv: sort multi-letter Z extensions alphanumerically
-    https://git.kernel.org/riscv/c/e0776dde101a
-  - [v5,02/17] riscv: hwprobe.rst: Make indentation consistent
-    https://git.kernel.org/riscv/c/dbff3646369c
-  - [v5,03/17] riscv: hwprobe.rst: Document EXT_ZICFISS and EXT_ZICFILP
-    https://git.kernel.org/riscv/c/a914034334c4
-  - [v5,04/17] riscv: Standardize extension capitalization
-    (no matching commit)
-  - [v5,05/17] riscv: Add Zicclsm to cpufeature and hwprobe
-    (no matching commit)
-  - [v5,06/17] riscv: Add Ziccamoa, Ziccif, Ziccrse, and Za64rs to cpufeature and hwprobe
-    (no matching commit)
-  - [v5,07/17] riscv: Add B to hwcap and hwprobe
-    (no matching commit)
-  - [v5,08/17] dt-bindings: riscv: Require block-size for Zicbom, Zicbop, and Zicboz
-    (no matching commit)
-  - [v5,09/17] dt-bindings: riscv: Add Zic64b extension description
-    (no matching commit)
-  - [v5,10/17] riscv: Add Zic64b to cpufeature and hwprobe
-    (no matching commit)
-  - [v5,11/17] riscv: dts: spacemit: k3: Add Zic64b ISA extension
-    (no matching commit)
-  - [v5,12/17] riscv: dts: spacemit: k1: Add Zic64b ISA extension
-    (no matching commit)
-  - [v5,13/17] riscv: dts: sophgo: sg2044: Add Zic64b ISA extension
-    (no matching commit)
-  - [v5,14/17] riscv: Add a getter for user PMLEN support
-    (no matching commit)
-  - [v5,15/17] riscv: cpufeature: Introduce ISA bases bitmap and rva23u64 detection
-    (no matching commit)
-  - [v5,16/17] riscv: cpu: Output isa bases lines in cpuinfo
-    (no matching commit)
-  - [v5,17/17] riscv: hwprobe: Introduce rva23u64 base behavior
-    (no matching commit)
+If the quality of the previous postings of that series is anything to
+go by, I doubt this will be merged on this side of the death of the
+universe.
 
-You are awesome, thank you!
+> I will remove this advertisement. I'll keep the implementation as the compiler
+> expect that function to be present anyways, as native s390 KVM now implements
+> this CAP. OK? 
+
+As long as the code isn't reachable from the arm64 side, that's fine
+by me.
+
+	M.
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Without deviation from the norm, progress is not possible.
