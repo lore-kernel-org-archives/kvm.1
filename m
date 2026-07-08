@@ -1,75 +1,81 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD6E43079F
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 16:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F0A43441A
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 16:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783528129; cv=none; b=ddUpAroN7RxIIEi9Z9KlgNLIg34/SJyp7+AO3SQJtseVQou59mfJNZzFocY0uYdmPJs8ELuSWL/EPOiPoo0Y5X1zCESMq2mETGWKzA7sDZtKGsjTCwEkAHGOirVu2o1/7Z8yM6k6LhGbIB+JLFyYlHqoiuELheLktV/45cHoLCQ=
+	t=1783528336; cv=none; b=bxc9/l1Gn5zvB4gTTz7U2qEK/tacaEoIV0uW+wt7IZM/EbvhNquCyRcl03bnBZmur+Zff/e3Lty5Rqg/Sz4HfMnYext8lM12j0yRu0EqNKKVGXHh7oxrqC5w7KXl0fWRm++JUkJnVsnfMZgmn/NJbnWeRqM1lKRDjoaoXV863oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783528129; c=relaxed/simple;
-	bh=N78qNTXYyAGe8Pvbr1sq5Ea+xcTA5EsxNNpKXw7f0gU=;
+	s=arc-20240116; t=1783528336; c=relaxed/simple;
+	bh=ELAaRNXmufDpWRyw5e4kRUaRH4ehwnkjlievr5haSnc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SX0Pvb3rBQjfK3C0GGHaJI+Q0gvIPAIOM8ejgTze+OicUnPKDvNn3LgJz44ABqB+Ztd7ebJWJYfJFCIWJPEnlFrIxpZBo0j8WPRmnDGYibBllOpE5M5kUUC0VYUO0W0RRBatou3uPbVi+d5vy4/vI5csYZOfRAR/s21+vQjjgxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aiN2/Qnh; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=C8uzwS4BRp/mHgV9+udFzhH9GzZ0zPHM4iiVNBwwMl1qVuYW+4PBsgVezMNKbV5zU+bYK3rxkwKMrw8kvVfOxNzecfq5uKjlNtTqYFTlBhZos4TtgQRPtMrxwv/1+6enPjfKMvXXikHK+ddIBrWqhUuCK3ruLR9Vj8dido2VPkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wn+6kdh6; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aiN2/Qnh"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84854c2f888so98304b3a.3
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 09:28:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wn+6kdh6"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cce406883eso9223235ad.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 09:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783528127; x=1784132927; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783528334; x=1784133134; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AfgZ9ul2SNF/nsD8LNwMVjZuGCGv+SD+QOqFw4fRLLk=;
-        b=aiN2/Qnhj7ZDzBTqsW4GhV1DgA0KP1Xt9kdHoOMHL0rYeI3CFyuXsfDfbg1VcWSGWH
-         BToe0RqP4i7T/zEsdRKwUeeAX5qVHYubBm/nK8Y8Z0qoVF0UIKDnszZ9G/y6bURkng+7
-         FwTQO7RZInDglu8MTGdzIyNlFWGHErkyUCzgcDrmhWQukN//7wkYapZEGHUCNKOdfG9I
-         ITGTpnQ3tb2VG0c09if+5OodkPbE716OtxtP4n42f+4x/Lby0mFZKJ0ZcGbA6J67OEgX
-         f2AGShWYvAiT/A3jqeh+1TU9ZHXw+GN1wP1tjYYz16N9Dwvngb6UI6Uzmvuq0M25+dnL
-         LUBA==
+        bh=CEy5HdZpd0Ibwja5HctRB78dr7i4KUZL8/ZL1JbJtxs=;
+        b=Wn+6kdh6UZxcCWDZOPpq1fQoSTBPEyWSJ+Xs4ObfeQdfWXF9NdbM1B88j2qc+7YQeN
+         iXrvEaWSkmOTQjNaD2t2oGgDbXUB1ex39Qe8il5U0BHLSOZpGhpucc4Kz/1/pmKDcl6w
+         8RcZvTwp7/6NHJdC8yKIPmneyvtJZB/BdTgdmx6OdAyy1t2Y8Dlqtft7I6FPtosuQn1C
+         czfOInDTsXhpEdsCy8EKsx61bUziwgXcvQJsACUK7+GhDuxEn8KIdd1K3Q8eAK4q3NXi
+         zWpzz8TfjB+s+5vTdLOy5i7AHYJ7n/TnU+3o6MF+x9sfiy5Biouwe8ADUEemLcCUj1W7
+         KW0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783528127; x=1784132927;
+        d=1e100.net; s=20251104; t=1783528334; x=1784133134;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AfgZ9ul2SNF/nsD8LNwMVjZuGCGv+SD+QOqFw4fRLLk=;
-        b=RJu+mMGvVA0M9rOgKyh/7vukVIeuxIbUJomqmTub+ftEDtQY2qyFZjY3jaeTm9zifR
-         10f1EdrSOiaUaHjx2pWIF3kuVrVU6R4B6aXwE5+byic07dQOvSqaiiWy9sLEtSJy3RQn
-         Irjz0eDG+UZyYDTHWoL2ukJ8fxrT+YWPbFJF6sL3iqm+zpQcLRXj9OT2Xi6C3/mneMcx
-         oHMl4zf1W7nNWfWbOK55scwCjVHFaLykioWVn81M83UNBshetr4gRrspd6XGiL2xWqbx
-         P0I2ZR9HBRnS/+LM/ghesMcj/8V+JtMV21EO+F7bC8NiEa1unDZjLfJ2f7zahNDSJowu
-         xnBA==
-X-Gm-Message-State: AOJu0Yxrtp7fjfJhGzXbBE6PLahRJZ1qTid7Ugna4WcXiFevxlORRBsZ
-	fhm456tz5V1toaLqbh3a23W1f8eYFMurxyYSC+grMtlTX7ePbzlbSRQ9rdCPkfW6x0sKmEItMZD
-	+OnD4Ew==
-X-Received: from pfwz2.prod.google.com ([2002:a05:6a00:1d82:b0:848:4642:f1d3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:399d:b0:842:2a81:4c63
- with SMTP id d2e1a72fcca58-8484302c9famr3305642b3a.25.1783528126270; Wed, 08
- Jul 2026 09:28:46 -0700 (PDT)
-Date: Wed, 8 Jul 2026 09:28:45 -0700
-In-Reply-To: <tencent_A78DC401911634111A3391650CB00FCD0409@qq.com>
+        bh=CEy5HdZpd0Ibwja5HctRB78dr7i4KUZL8/ZL1JbJtxs=;
+        b=hKRWoypBuxW6MRNJn41lMhDARokTnebKiJ8PDu30Zg14acXa7kM2xJDi8TzrJOM6Xh
+         ksVvSWpnxKqvFB1xRHyAnWJD8QnvC+4xeICQ5TlOylZs/SDSbfyRIS9fEVZn9wJNLaGf
+         uAyK9RIYELwBLqw2H3vWRijzrchz4oCr/5V8MoD0fr8eJ86cINe/Vl1RZLix63VtvmLE
+         86QDE6xW/Tg77FxUq2CUrsIqq9H7mWK9+xyIMgHpq4mAzNX54VEa+jQycSlmJpFV6PeD
+         YN261Tep+t6VU3/LkbRwKb5xYkartwZAxiltcePFmFjIWYDchNqz0HNUaHx6dtcs+8w3
+         QnBw==
+X-Forwarded-Encrypted: i=1; AHgh+RpqxSxJRpvKoHdiH+8lZHqhGV6RC26xyNumsRgolVNph+sTxXw1u6BaKHoS2ZR/lav9hPc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHwiLU4YekR8tcvRbS2Rhhwr6JG1pmdsxC9xZf3rQVAZKkQL59
+	RNTYtyGv9kQICLx2t93gcu75RazXN4npOIgoqdLyIgP1ZVTKe8RMJxnJBnlD3LWWsjEwaVY4nDj
+	l3Ps4hA==
+X-Received: from plld9.prod.google.com ([2002:a17:902:7289:b0:2cc:6816:b471])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e74e:b0:2ca:e106:8e69
+ with SMTP id d9443c01a7336-2ccea371b50mr34257105ad.10.1783528333681; Wed, 08
+ Jul 2026 09:32:13 -0700 (PDT)
+Date: Wed, 8 Jul 2026 09:32:13 -0700
+In-Reply-To: <20260625090057.4864-1-likexu@tencent.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <tencent_A78DC401911634111A3391650CB00FCD0409@qq.com>
-Message-ID: <ak56vdAt3CavMI1s@google.com>
-Subject: Re: [PATCH] KVM: VMX: Use cached vcpu_vmx pointer in MSR and segment helpers
+References: <20260625090057.4864-1-likexu@tencent.com>
+Message-ID: <ak57jSAPmWn4qR7x@google.com>
+Subject: Re: [PATCH] KVM: x86/pmu: Use wrmsrq() instead of the deprecated
+ wrmsrl() alias
 From: Sean Christopherson <seanjc@google.com>
-To: zhanghao <76824143@qq.com>
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+To: Like Xu <like.xu.linux@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jun 29, 2026, zhanghao wrote:
-> >From 3d30672f614d0472bf15ba9dd1efd085cddd5a93 Mon Sep 17 00:00:00 2001
-> From: Hao Zhang <zhanghao1@kylinos.cn>
-> Date: Mon, 29 Jun 2026 09:52:32 +0800
+On Thu, Jun 25, 2026, Like Xu wrote:
+> Replace the remaining wrmsrl() calls in the x86 vPMU code with the
+> canonical wrmsrq() helper, for consistency with the surrounding code
+> that already uses the q-suffixed form.
+> 
+> wrmsrl() is merely a compatibility wrapper that expands directly to
+> wrmsrq() as part of the ongoing treewide rename to the q-suffixed MSR
+> helpers, so the generated code is identical.
 
-This is mangled, the initial "From 3d30672f614d0472bf15ba9dd1efd085cddd5a93..."
-and "Date: ..." shouldn't exist.  I fixed it up manually, but please check your
-setup to make sure what you post can be applied by others.
+Just a hair late, already addressed in 7.2 via commit 2232959db26d ("x86/msr:
+Switch wrmsrl() users to wrmsrq()").
