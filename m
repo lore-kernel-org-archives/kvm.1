@@ -1,152 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F6C379C53
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 09:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BF23EB7FD;
+	Wed,  8 Jul 2026 09:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783503647; cv=none; b=ENE57tqknSdAz4Dx544dUYQd0KInAULWG1pWEGeq6vcq3NUzk7D8EQq/yMFZR18Zr7GL0V4DhTyuAbMhCTbH1QMI1EnY77Hp/zaCd67sMqGhaBTendsdf/yB8dAS21liO+hU5aqxKp0gB0sbZQjXDW7Mxv097Rk2KGhbKDOicTI=
+	t=1783503854; cv=none; b=PpwJ6PLtGdPujJRc3c+2fk4wk2vyY+s5ADywBEEdpQJemK77oEqueHAW6qAGXNyZ0xWVFbI7GHDHFTq3DciURVgHdlCocHsIOvu3+/rl1HU0EVo6JT0ilYwYrJm2P+IxCMmo4ubrjcYHYytIkwhiV3m+24tFAzNcLOuryc04oUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783503647; c=relaxed/simple;
-	bh=iv6TnW0oboqQhwxqBsHu9WrQx9HKHErRvTnVDvAL/qE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cVcNxkuu1lt7LmVY4gUjseKW5O9GfjlInWScj4bzMVwL9xEtBu7jS2M3cPmkK2F+Xsk5gA3AbEAjFfV4SzMTr+Zsi8BEm/q6OdCn+9WprMft+CoPAN5Anxr8s4LhzFjMx2TwiOF3iRJWCQd7Y3AqJ7VMsXQBxYelJB1N840SxQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5RfuNkw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783503854; c=relaxed/simple;
+	bh=iAp/2iIyG11ZG11l4saqEYvca5yGcgnsjr+HcDo3CNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c/LtMsvPazK76nmGy3d/QSkc/LYLtFLeZrSVYO2VYpdrlu9gx4fvNeYMZNZfpiiQVcmNajWhEWvFqiop6IRiLBBUyFwWxssfr5ypqsMpWbRRnaw8QgSZ3JLQwrxzECmoGFWQD4BeZ9WajVC4N8jEHUdUBgHXV+i1C9KB+f46vfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=i5/M71p/ reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5RfuNkw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D851F000E9;
-	Wed,  8 Jul 2026 09:40:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783503646;
-	bh=K1fbee/fdWtB/pqQh/quyoI5Tu+2RkAbKmWhWPaVkLo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=c5RfuNkwMjiOWL4AQz83E3OqQxK/Uv/fGDXR9HLIPXl6K+BNppUE9h16iUSzCK10N
-	 M26vPq7GeyuUHWuX9vbQtVcf1j6GX2cMTh14jSCnpZPlzPyLOkTX29jmREBOp3YSaV
-	 /nhpqV4o9MH/Rh19OxytAVdxRneNDmXc6Uj1RnIJnbSyg6/JNAdOMgyUX47+0yKmSv
-	 lqXGLWRhfl5S+jm07QHjS0kZevg7lfjnhNWuf0GpadgibbuqXupUDtPqWvdZNO9Der
-	 qtZhb4RLnI2BzGiuC+2GdGV325D8sSLoL9eqrVs/D/1cpfIQsQVAj+laNFycmQyo7C
-	 xQ9udhT+7g+nw==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 5/5] iommu/amd: Provide kernel command line
- option to enable GAPPI
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sairaj Kodilkar" <sarunkod@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260708091408.12106-6-sarunkod@amd.com>
-References: <20260708091408.12106-1-sarunkod@amd.com>
- <20260708091408.12106-6-sarunkod@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 09:40:45 +0000
-Message-Id: <20260708094045.E1D851F000E9@smtp.kernel.org>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="i5/M71p/"
+Received: from [133.11.54.183] (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6689hWTh023275
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 8 Jul 2026 18:43:33 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=5rGUgl8D8cEFi7JteuJI6fPSAC+UPbsjLAqZsYFvBLY=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20250326; t=1783503813; v=1;
+        b=i5/M71p/b8sSTK+HDV4OHUq/SgIc9wIyvsE8xdPImpdn4DlyASk6OCwfGZiB4AV7
+         QixiwPfKNM++x5DdafRW/wl24DGg0NFa9IXroeXxpS7Ln4z8cH+dgAgzI2mNJDsa
+         UV9SYpU2sL7Fj/lLqQ2OhnQvVNrtgUbruVG3CpWZtD6XWrqmqcyKKmBQhedrymw/
+         b7yXnKmuqBcMfeGZn753Chok+ZaLEfh/NCxlJHLRF1R24b5NQelMjxXXrRqf2tfc
+         j0RVP2JGVBe8gnVi4sSl4zm+FMOJgW7vQqeWrmMc7510oHCGR+oU4a8OvPvWYPt/
+         /diQ9dYSZcwlUnWPP3IqKg==
+Message-ID: <a2d7ed42-b82e-4c0c-8985-32c12d7c49b0@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 8 Jul 2026 18:43:32 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 5/7] KVM: arm64: PMU: Implement fixed-counters-only
+ emulation
+To: Oliver Upton <oupton@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu
+ <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+References: <20260706-hybrid-v8-0-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
+ <20260706-hybrid-v8-5-de459617b59d@rsg.ci.i.u-tokyo.ac.jp>
+ <akvyvclUQ2b2YHiU@kernel.org>
+ <cb5d5f13-a1a9-47dd-a717-5533a8b32b20@rsg.ci.i.u-tokyo.ac.jp>
+ <5e66748a-bfda-41a9-8614-88cbf2fe1f09@rsg.ci.i.u-tokyo.ac.jp>
+ <ak0_PSnxyAWm9_Fu@kernel.org>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <ak0_PSnxyAWm9_Fu@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On 2026/07/08 3:02, Oliver Upton wrote:
+> On Tue, Jul 07, 2026 at 09:52:49PM +0900, Akihiko Odaki wrote:
+>> On 2026/07/07 20:23, Akihiko Odaki wrote:
+>>> On 2026/07/07 3:23, Oliver Upton wrote:
+>>>> Just detect the changing PMU implementation here, KVM_REQ_RELOAD_PMU
+>>>> will need to detect the PMCs that require an update anyway. Stash the
+>>>> last cpu in kvm_arch_vcpu_load() and pass it to this:
+>>>>
+>>>> void kvm_vcpu_load_pmu(struct kvm_vcpu *vcpu, int last_cpu)
+>>>> {
+>>>>      if (!kvm_pmu_fixed_counters_only(vcpu->kvm) || vcpu->cpu == last_cpu)
+>>>>          return;
+>>>>
+>>>>      if (kvm_pmu_probe_armpmu(vcpu->cpu) !=
+>>>> kvm_pmu_probe_armpmu(last_cpu))
+>>>>          kvm_make_request(KVM_REQ_RELOAD_PMU);
+>>>> }
+>>>
+>>> It is a nice way to simplify the code and to avoid hardcoding
+>>> ARMV8_PMU_INSTR_IDX. I'll use the code for the next version.
+>>
+>> I tried this but unfortunately it doesn't seem to work. kvm_arch_vcpu_put()
+>> sets vcpu->cpu to -1 so we cannot simply read it to get the last cpu in
+>> kvm_arch_vcpu_load().
+> 
+> Urgh, there's no reason for doing that any more. Let's fix it, I want a
+> straightforward way to detect pCPU migrations. There may be other
+> reasons for using it in the future.
+> 
+> Untested, but could you give this a whirl?
 
-New issues:
-- [High] Global state `amd_iommu_gappi` remains incorrectly `true` when VAP=
-IC is unsupported or disabled by SNP, causing KVM state corruption.
+It looks good to me. I'll test it and include it in the next version.
 
-Pre-existing issues:
-- [High] Memory leak and sleeping in atomic context during system resume on=
- the GALog fallback path.
-- [High] Resource leak and inconsistent VAPIC state if GALog initialization=
- fails on a secondary IOMMU.
---
+Regards,
+Akihiko Odaki
 
---- Patch [5]: [RFC PATCH v2 5/5] iommu/amd: Provide kernel command line op=
-tion to enable GAPPI ---
-commit eb6466c0ce487095bfa19ee53f280dedc6c60d0f
-Author: Sairaj Kodilkar <sarunkod@amd.com>
-
-iommu/amd: Provide kernel command line option to enable GAPPI
-
-This commit adds a new kernel command line parameter amd_iommu=3Dgappi. It
-allows enabling the GAPPI feature if the corresponding extended feature bit
-is set in the hardware. It modifies the IOMMU initialization sequence to
-configure GAPPI when enabled.
-
-> diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-> index e2da6d5a63c78..a1dd2e8840d6c 100644
-> --- a/drivers/iommu/amd/init.c
-> +++ b/drivers/iommu/amd/init.c
-
-[ ... ]
-
-> @@ -3016,10 +3025,19 @@ static void enable_iommus_vapic(void)
->  		return;
->  	}
-> =20
-> +	if (amd_iommu_gappi &&
-> +	    !(check_feature(FEATURE_GAPPI) &&
-> +	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-> +		pr_warn("GAPPI is not supported.\n");
-> +		amd_iommu_gappi =3D false;
-> +	}
-
-[Severity: High]
-Does this leave amd_iommu_gappi erroneously set to true if an early return
-is taken?
-
-If the kernel is booted with amd_iommu=3Dgappi, the variable is initially
-true. In enable_iommus_vapic(), if an early return is taken before reaching
-this validation check (for instance, when check_feature(FEATURE_GAM_VAPIC)
-returns false, or if forced to disable due to SNP), the function exits
-without resetting amd_iommu_gappi to false.
-
-Because the variable remains true, exported subsystems like KVM AVIC might
-incorrectly assume hardware GAPPI is active and attempt to use it, which
-could lead to state corruption or missed interrupts.
-
+> 
+>  From bb5af058030aada66f5c9eafa54db604979acf55 Mon Sep 17 00:00:00 2001
+> From: Oliver Upton <oupton@kernel.org>
+> Date: Tue, 7 Jul 2026 09:50:00 -0700
+> Subject: [PATCH] KVM: arm64: Don't clear vcpu->cpu in kvm_arch_vcpu_put()
+> 
+> commit e9b152cb957c ("arm/arm64: kvm: Set vcpu->cpu to -1 on vcpu_put")
+> reset vcpu->cpu in order for the VGIC to determine if there was any vCPU
+> running at the time of access. The VGIC has gone through an entire
+> rewrite since then, and with commit 7d450e282171 ("KVM: arm/arm64:
+> vgic-new: Add userland access to VGIC dist registers") the user
+> accessors just grab all vCPU mutexes instead.
+> 
+> Drop this remaining vestige such that kvm_arch_vcpu_load() can properly
+> detect a CPU migration. While at it, rework kvm_reset_vcpu() to do a
+> much more pedantic check that the provided vCPU is actually what's
+> running on the present CPU.
+> 
+> Signed-off-by: Oliver Upton <oupton@kernel.org>
+> ---
+>   arch/arm64/kvm/arm.c   |  1 -
+>   arch/arm64/kvm/reset.c | 15 ++++++++++-----
+>   2 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 50adfff75be8..735acc42b50b 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -749,7 +749,6 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>   	kvm_arm_vmid_clear_active();
+>   
+>   	vcpu_clear_on_unsupported_cpu(vcpu);
+> -	vcpu->cpu = -1;
+>   }
+>   
+>   static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index b963fd975aac..6aba085c0673 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -190,7 +190,8 @@ static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
+>   void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>   {
+>   	struct vcpu_reset_state reset_state;
+> -	bool loaded;
+> +	struct kvm_vcpu *running;
+> +	bool loaded = false;
+>   	u32 pstate;
+>   
+>   	spin_lock(&vcpu->arch.mp_state_lock);
+> @@ -198,10 +199,15 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>   	vcpu->arch.reset_state.reset = false;
+>   	spin_unlock(&vcpu->arch.mp_state_lock);
+>   
+> -	preempt_disable();
+> -	loaded = (vcpu->cpu != -1);
+> -	if (loaded)
+> +	guard(preempt)();
 > +
->  	/* Enabling GAM and SNPAVIC support */
->  	for_each_iommu(iommu) {
-> -		if (iommu_init_ga_log(iommu) ||
-> -		    iommu_ga_log_enable(iommu))
-> +		if (amd_iommu_gappi)
-> +			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-> +		else if (iommu_init_ga_log(iommu) ||
-> +			 iommu_ga_log_enable(iommu))
->  			return;
+> +	if ((running = kvm_get_running_vcpu())) {
+> +		if (KVM_BUG_ON(running != vcpu, vcpu->kvm))
+> +			return;
+> +
+> +		loaded = true;
+>   		kvm_arch_vcpu_put(vcpu);
+> +	}
+>   
+>   	if (!kvm_arm_vcpu_sve_finalized(vcpu)) {
+>   		if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_SVE))
+> @@ -269,7 +275,6 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>   
+>   	if (loaded)
+>   		kvm_arch_vcpu_load(vcpu, smp_processor_id());
+> -	preempt_enable();
+>   }
+>   
+>   u32 kvm_get_pa_bits(struct kvm *kvm)
 
-[Severity: High]
-This is a pre-existing issue, but does this early return leave the VAPIC
-configuration in an inconsistent state if it fails on a secondary IOMMU?
-
-In enable_iommus_vapic(), if iommu_init_ga_log() or iommu_ga_log_enable()
-fails for any IOMMU after the first one, the function returns immediately.
-This leaves the global kernel state assuming VAPIC is active, but some
-IOMMUs are left unconfigured. It also skips reverting amd_iommu_guest_ir
-or cleaning up resources for the previously configured IOMMUs.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can calling
-iommu_init_ga_log() here cause a memory leak and a sleeping in atomic
-context issue during system resume?
-
-During system resume, syscore_ops.resume runs with local interrupts
-disabled. amd_iommu_resume() calls amd_iommu_enable_interrupts(), which
-invokes enable_iommus_vapic().
-
-On the GALog fallback path, it unconditionally calls iommu_init_ga_log().
-This function then allocates memory using GFP_KERNEL:
-
-drivers/iommu/amd/init.c:iommu_init_ga_log() {
-    ...
-    iommu->ga_log =3D iommu_alloc_pages_node_sz(nid, GFP_KERNEL, GA_LOG_SIZ=
-E);
-    ...
-}
-
-Using GFP_KERNEL in atomic context triggers a sleeping in atomic context
-bug. In addition, the existing ga_log pointers are overwritten without
-being freed, which leaks the previous allocations on every resume cycle.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260708091408.1210=
-6-1-sarunkod@amd.com?part=3D5
