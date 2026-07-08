@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E053E1233;
-	Wed,  8 Jul 2026 06:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5517D3E5EF5;
+	Wed,  8 Jul 2026 06:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783492542; cv=none; b=M8daA4Uh76iLBoV1UgeMLc4odG36iJVcmd+TWRizmuVwV73ZCEfUZXSGIAfnV9PEMY+TxsYudhFqAC12tLBDOx3+qhdbHxJqD+M3rbw3imVXiji0Rpa7Nbb0+pj0NUKbBvHf7Up/b57pUAaXqJTbtY8PSSimYlWhYYL55uqU88E=
+	t=1783492545; cv=none; b=fAXuv/njMIgKYAEut0tD51Td25O+lJWdi+pgQb7zy184SVtWViakblMQpuE3EG2xzDkBafnVfvbvzAQxOQYwl7HNYITdra6CG7IC4g6JFXoZlPAxWxuy1WqECcX+yoH2wWAzx2YCKHPRRyU5WxWDo+WA8NPq0tzBWL/FBFqTyAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783492542; c=relaxed/simple;
-	bh=iR31i42jPvWxEBrDXkLYBzjaFhH50J+zeXzmWErTtUY=;
+	s=arc-20240116; t=1783492545; c=relaxed/simple;
+	bh=5DB7fm4qpVWvQuwPb2C/UTVsfRWy7o6pW4bY/w0JMvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+MSWr82ZgLpYNX2NBDFbqqC91Qxqr64AcB3gbFHd20wLg0AqpHM2CYrAaswIv/aNMAdVA3NcK/q7TWa+9mKCPLACV6tCtts8Cw6jkRuJRkOHk8DatZ4YPdb5NgdpFTCzEcOsaQHayTevTlt45HgIlwHQoqq8juSiqOHcsFaxSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G5XHQF0n; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=U0BfFkbmjhOSzxTPnHiea59blV8EFjo2BUeZx18poC/DLs5sfCqoJRFZ3CovfcspVQFPOqELIDneUWprAM2Ap3LLMzEDzl9J+XZb7dKaU/Hy0cMYpdbAXYLl5/gRw47CjYHOgCVFA3kOsjPGpaxj7pvSdbXb6o/1eKbIKmO2Yjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5Mr6iYk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G5XHQF0n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358F01F000E9;
-	Wed,  8 Jul 2026 06:35:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5Mr6iYk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7911F00A3A;
+	Wed,  8 Jul 2026 06:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783492538;
-	bh=PA8F1W7llGaOJi7r9r5rWMqSe3373z1as7VGI4CJ2vc=;
+	s=k20260515; t=1783492542;
+	bh=Ytwr97rYs3nDuZ+tcDcZzArQgkLlVk+H6Mb1Asb+WbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G5XHQF0ndIGTP3p8EJURObIxpJDUiOP0V/KlazC93DxE79dC6+H9HmXA+g1FmGLfL
-	 JyWLdcUAnmEqVVCyU6aE3daBsW90iOzXF0dZvifcCgBFG6nI/nhCgWGoIek0ZonCfF
-	 WPm0eDaaP4MvsD3MIpBGY5Mrd+YJMrTVsXb1s1EaIgyjHnyUEe13yncCN4sBOGlnXM
-	 O9DfYfJoGDOmQZ8+x4YNBVlmac1jIBPkhmrLYnZXte05dQyA+4yiRy5dND6oQGpWdZ
-	 WLo51dMEOeh8IawQM9alCYcM6GHk69KXoNWwUALvvxj7DBjoZ+/ixLveqHuUkFN9bf
-	 8FwoYbK/ouCAQ==
+	b=h5Mr6iYkEDh35jh79NtGqrj+Xxt+IRs8VIuer+eE3QoTmTXzYCisct+ksJEWdUmD5
+	 gZI+N40jOw9SgCuFn48yWy84a/pJhupcsVwTbR8TNbq3yqH3XfMmer7yjDEXlP8t/e
+	 rg2qkA07rTwu0AyUYzFaof9W5tTRgxLWxtTgWKwZK3VhEigEmQ8PrefvyWuG79ho5A
+	 zXLT5e4P70v4wUJH8INiDxmkDhoa9nHn0hC+gVl3VTih0oBX/YzTWsM1hHYNmrJgQ7
+	 pNXs3sraIq+LEFSCeOpAndQ45DpJ898Ko/rDaJGoC+udWQPm5lrZQNQbBsrrsBN/nC
+	 Isa2elmzVJuBQ==
 From: "Naveen N Rao (AMD)" <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Borislav Petkov <bp@alien8.de>
@@ -38,9 +38,9 @@ Cc: <kvm@vger.kernel.org>,
 	Tianyu Lan <tiala@microsoft.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>
-Subject: [RFC PATCH v3 01/27] x86/apic: Propagate APIC_SPIV writes to hv for Secure AVIC
-Date: Wed,  8 Jul 2026 12:01:59 +0530
-Message-ID: <891e7c5b74a9c027bc417a2dd32e23c0d4d0c336.1783490022.git.naveen@kernel.org>
+Subject: [RFC PATCH v3 23/27] KVM: SVM: Add support for injecting NMIs for Secure AVIC guests
+Date: Wed,  8 Jul 2026 12:02:21 +0530
+Message-ID: <5b5b40831e8d823e08dfe73b3e07eef3d82ed76f.1783490022.git.naveen@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1783490022.git.naveen@kernel.org>
 References: <cover.1783490022.git.naveen@kernel.org>
@@ -52,41 +52,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Secure AVIC relies on NMI virtualization for injecting NMIs into the
+guest. Similar to V_GIF, set V_NMI_ENABLE_MASK in the BSP's VMSA as this
+is consulted by hardware instead of the corresponding VMCB field.
 
-Hypervisor needs to be aware of the VAPIC's APIC_SPIV state for
-LVT masking/unmasking. So, propagate the guest's APIC_SPIV
-writes to the hypervisor.
+Since EVENTINJ is not supported for Secure AVIC enabled guests, KVM can
+accept/pend at most 1 NMI at any point. Use this as the limit in
+process_nmi(). Add a WARN_ON() in svm_inject_nmi() since we should never
+hit this path. Always return 1 for nmi_allowed() since KVM can pend an
+NMI at any point and does not have visibility into the guest NMI
+blocking status.
 
-Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
-Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 ---
- arch/x86/kernel/apic/x2apic_savic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c | 2 +-
+ arch/x86/kvm/svm/svm.c | 8 ++++++++
+ arch/x86/kvm/x86.c     | 8 +++++++-
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
-index dbc5678bc3b6..cb3b55225ab6 100644
---- a/arch/x86/kernel/apic/x2apic_savic.c
-+++ b/arch/x86/kernel/apic/x2apic_savic.c
-@@ -214,7 +214,6 @@ static void savic_write(u32 reg, u32 data)
- 		break;
- 	case APIC_TASKPRI:
- 	case APIC_EOI:
--	case APIC_SPIV:
- 	case SAVIC_NMI_REQ:
- 	case APIC_ESR:
- 	case APIC_ECTRL:
-@@ -223,6 +222,10 @@ static void savic_write(u32 reg, u32 data)
- 	case APIC_EILVTn(0) ... APIC_EILVTn(3):
- 		apic_set_reg(ap, reg, data);
- 		break;
-+	case APIC_SPIV:
-+		apic_set_reg(ap, reg, data);
-+		savic_ghcb_msr_write(reg, data);
-+		break;
- 	case APIC_ICR:
- 		savic_icr_write(data, 0);
- 		break;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 06555dbec45b..707537ad7271 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1034,7 +1034,7 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+ 
+ 	/* Secure AVIC loads the below from the VMSA, rather than the VMCB */
+ 	if (snp_is_secure_avic_enabled(vcpu->kvm))
+-		save->vintr_ctrl |= V_GIF_MASK;
++		save->vintr_ctrl |= V_GIF_MASK | V_NMI_ENABLE_MASK;
+ 
+ 	/*
+ 	 * Skip FPU and AVX setup with KVM_SEV_ES_INIT to avoid
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 63ee36501383..2cb38953c0cf 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3768,6 +3768,10 @@ static void svm_inject_nmi(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
++	/* We should never reach here for Secure AVIC - see svm_set_vnmi_pending() */
++	if (WARN_ON_ONCE(snp_is_secure_avic_enabled(vcpu->kvm)))
++		return;
++
+ 	svm->vmcb->control.event_inj = SVM_EVTINJ_VALID | SVM_EVTINJ_TYPE_NMI;
+ 
+ 	if (svm->nmi_l1_to_l2)
+@@ -4018,6 +4022,10 @@ static int svm_nmi_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+ 	if (vcpu->arch.nested_run_pending)
+ 		return -EBUSY;
+ 
++	/* Assume it is always allowed for Secure AVIC (hardware gates delivery) */
++	if (snp_is_secure_avic_enabled(vcpu->kvm))
++		return 1;
++
+ 	if (svm_nmi_blocked(vcpu))
+ 		return 0;
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 2609a2972526..7f5978cac5f5 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7742,8 +7742,14 @@ static void process_nmi(struct kvm_vcpu *vcpu)
+ 	 * waiting for a previous NMI injection to complete (which effectively
+ 	 * blocks NMIs).  KVM will immediately inject one of the two NMIs, and
+ 	 * will request an NMI window to handle the second NMI.
++	 *
++	 * For protected APIC guests, NMI window isn't visible to KVM, so the
++	 * only thing KVM can do is to collapse all pending NMIs and inject a
++	 * single NMI. The guest is expected to scan all NMI sources as part
++	 * of handling the NMI.
+ 	 */
+-	if (kvm_x86_call(get_nmi_mask)(vcpu) || vcpu->arch.nmi_injected)
++	if (kvm_x86_call(get_nmi_mask)(vcpu) || vcpu->arch.nmi_injected ||
++	    (lapic_in_kernel(vcpu) && vcpu->arch.apic->guest_apic_protected))
+ 		limit = 1;
+ 	else
+ 		limit = 2;
 -- 
 2.54.0
 
