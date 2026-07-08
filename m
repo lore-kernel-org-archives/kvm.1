@@ -1,335 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D84A3E44E6;
-	Wed,  8 Jul 2026 06:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783493212; cv=fail; b=U/XqdGjWGVyQERlGSS9QgvNh0lJXlFtN3GNAILcUxQsmrfTSuyXKcvFfpBR0h6U2mXFv31JP+Mzob+s4j+3aGsSZ3ZVZUJUXilcp38zI31IvjPyNa8Ab45Yk4m4CPbgMSljRY2Yt8Ykmm+SXXT4XRjQ5HyoBlgmacNxfbBgAWwE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783493212; c=relaxed/simple;
-	bh=bIkwyTjkBBUapqFuPdKdsGcfV2URxMEv6xKPVK7KXvM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qiR4Q4ujXnQDGGCavwcBzvUXXcFs/OUa/6uscFSrUjawpjKe5ZN1d3LPLjClMpYoDIqpZpMJJusSgKX0ihyYNRxzG3/SJc4fulOkVMj2rE0shW0gA3F/GiEKRNkSZD2C+FfP0b93l9w6JwucBkO1YLU75fg2aOeukGwgygWuWN8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DeAXD6WV; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF233E1D0B;
+	Wed,  8 Jul 2026 06:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783493560; cv=none; b=Vbi5lBB/1xpLDE5cXfV+m77lIKzYXbAx7Bys9z3wrG+TFWftHw+LIDT1viWJ6jNiuOB1GZ2zJYCqTQMDpMXBAWVqEaec42GxE9JHYlu3zyp78NaW/C3Lc6xHfP8XHUqB81JJl5dt0wqFmyFi2DTGhwjznbhWySlFWuhZWhl5X2s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783493560; c=relaxed/simple;
+	bh=NC+UAucr4BtA+L8Redg3pcqhHOiGH6Z6REGfg4019bM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GDxDDVAzCZBU83Jv3b7TCC8rz8ezo/PVQ/xmlOVqCsBzmEL17blTaRtaEsCWZXWI4pNDI0MYtZUTHBfYH2AhLRi4eysBSTEFP8dbQmnZsx/GyM/SecYFLF40t2WrABZdrnXjYTMlVmIUI+9ptys4NuLOHoxIUsbbnGkK8J8tToc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HbE2LrI0; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DeAXD6WV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783493211; x=1815029211;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=bIkwyTjkBBUapqFuPdKdsGcfV2URxMEv6xKPVK7KXvM=;
-  b=DeAXD6WVCDL7/8pUXGY7sOVm2IxC14oRnQIHQ8T8+DBWl9NmpTL9kRHH
-   rxqPHYLIRLY6Qqaws+ESGLqWgTBY58wmmYtMlWBf7V5JhnTyrSJKqyM4W
-   cXu7r8b/1VeEx0cVQ/lZU0siZgTat5Zococykr0aF9KOVAh3n9gzAudLY
-   uczPkG8OV8T2Iky09O/AY3r4V45MEsEWmbPUdayUH554x7vtc5MHey+mW
-   znIIVXo6xHCUgSe+7uCfPbG5tSDZ8/m4HbaGm/eCKEWUjdhZq68z3jjNH
-   EsRc1AeJTJPUCTQ8kAOwadKDUQlTW1NxhGEwvZFobq9wW9OeBGyGbj+q3
-   Q==;
-X-CSE-ConnectionGUID: zK9tCLBNRA6zzCNbqtgx6w==
-X-CSE-MsgGUID: xF520OwESQyIdkgC7wDFXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="84120902"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="84120902"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 23:46:50 -0700
-X-CSE-ConnectionGUID: c6QPcHDlTOitYxD7Q0FR+Q==
-X-CSE-MsgGUID: cxsBvFESTOSgjx3sNhaTcA==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2026 23:46:49 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 7 Jul 2026 23:46:48 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 7 Jul 2026 23:46:48 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.9) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 7 Jul 2026 23:46:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=grSL4sVKBxmb9P+/CfLOOcIHsUWa8KwkfM602UeVg7fvvf2X2ddeCmJQnaDm+WxL+VFdsPoTuecTwUQDay/t83+3SWXTaADQf6lo/WHedCGcudiXsUKBuuKEiem67+XdM19pIpA1JM6jZOWsKL5I7vAfwl8YF6N0u/GcyJ5fbz4lFfPCBzX7f5MDkyUTe21NaGYM46ZIY/RZ39puZQaXHbEtx4WFt6wzo090UZXhv9cxoa/KaTrpjkImVNUsjKdUKaQRJ4bkFa3R+T43sbtlCqxfVDNSpJubmAWzuJI4lWpnncwC92jupuP8cZiRq3LEiWS8iLEV/zNEXvOxF9lSNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WfVhvjY0MNVVLbJjyItuZDhYjjAlzGcl96IJIzZlC/c=;
- b=Y+Rwq8vbXQlB/HtUPDFzFXXHtMowY+1u0Dat4Agsa1F8eORfwRWrdCr3HX9f1/wFCIlq2YGSLbswKKu6JHKGjzNFpPW4cBDdJR+DicQkMEKMRqQ1BZXQWD6vsy3B0/TZsru6ib+usZ/b+4Sh7SADM6+jmwozrn+KKXUxiuPpYMLYfLJBx66MesvnV0Bb9R4zT08/ehnFefsDqGrnIwHm/hA5dBQAj4J3kQH3JOfdlGxv/E/b0bbSR5uqjq6n2VDPWPM6RlG6eHWdbnsdOKC83W6CqNtwxrkuHqa6ejXDzR5JL0XYNMGVA9cFnuyHDkUAnPgh7fcwjaui+87vLw1ILg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
- by PH7PR11MB6554.namprd11.prod.outlook.com (2603:10b6:510:1a8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Wed, 8 Jul
- 2026 06:46:40 +0000
-Received: from PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
- ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0181.008; Wed, 8 Jul 2026
- 06:46:40 +0000
-Date: Wed, 8 Jul 2026 14:46:32 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-CC: <bp@alien8.de>, <dave.hansen@intel.com>, <hpa@zytor.com>,
-	<kas@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nik.borisov@suse.com>, <pbonzini@redhat.com>,
-	<seanjc@google.com>, <tglx@kernel.org>, <vannapurve@google.com>,
-	<x86@kernel.org>, <chao.gao@intel.com>, <kai.huang@intel.com>, "Kirill A.
- Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH v6 05/11] x86/virt/tdx: Handle concurrent callers in
- tdx_pamt_get/put()
-Message-ID: <ak3ySL89u5+1oCZB@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
- <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260526023515.288829-6-rick.p.edgecombe@intel.com>
-X-ClientProxiedBy: KL1PR0401CA0008.apcprd04.prod.outlook.com
- (2603:1096:820:f::13) To PH0PR11MB7472.namprd11.prod.outlook.com
- (2603:10b6:510:28c::12)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HbE2LrI0"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 667MmSYt1572023;
+	Wed, 8 Jul 2026 06:52:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Aw9iRK6Rsso52PQ5ppgSnxDvjHojjy
+	gfPfvoXQltGk8=; b=HbE2LrI0lh37yava6HgliQ/Jpfurywmzv52RcCx1jhQl87
+	/RWFsm2Gqu/QSi6qNQ0hwBI6MRY/1oTizT78DM0i94K2G9/VLgJCdR/ZMJ+2nZy4
+	bRbgadCXS25L8D6yzxAQFz22kwroAk9z73r8jkOqz+WzbrgJcJ3dtwxThcmL5b2v
+	Zgc7WDDfrittalR3RYiXXjjLjXCFoGSnLzZaZiK6R/FxRlULGv+gLUnw//MPZzyq
+	8Lze1CDxjVHweVFMzjOeLcv/UZvzsJCiqSAygLOnEB8eNUUvwFSR/ndE/rJL7DHn
+	tHsrFbZYiAdlszd6YrGutD/5P3o8MH2s+6UbP/eA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6qknjm0c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2026 06:51:59 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6686neQG005665;
+	Wed, 8 Jul 2026 06:51:59 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7dgk6dyu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2026 06:51:59 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6686ppiS50069990
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jul 2026 06:51:52 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D29C820043;
+	Wed,  8 Jul 2026 06:51:51 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 728A420040;
+	Wed,  8 Jul 2026 06:51:51 +0000 (GMT)
+Received: from osiris (unknown [9.224.76.185])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  8 Jul 2026 06:51:51 +0000 (GMT)
+Date: Wed, 8 Jul 2026 08:51:50 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v4 24/27] KVM: s390: arm64: Implement vm/vcpu create
+ destroy.
+Message-ID: <20260708065150.583632-C-seiden@linux.ibm.com>
+References: <20260706085229.979525-1-seiden@linux.ibm.com>
+ <20260706085229.979525-25-seiden@linux.ibm.com>
+ <8633xuq1ic.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|PH7PR11MB6554:EE_
-X-MS-Office365-Filtering-Correlation-Id: c228ff6a-f9fb-4b15-592f-08dedcbcaa21
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024|23010399003|22082099003|18002099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: U+x5cETria+4GFRF8USVsY6Ijpop9sVrDe8Qe7L1kmPgEIhdv7MJYsyKpS22lu4RTTUjE45nh1HTSkDRDLSV7MumiUmj+/HVrIWnyHrLkF33nrBvbmr3kAKzx+QDLbvQfJ2jSMcDsTUChv9gUG4S1CNuce8H01vnZ9rdiMHml71n9PeARUOmp/Qteytq59tsAP+nEbIEBxgoqJf6yAuZsOq4pvpD4abOzdbda0qv8xvYJc3q7MsrIIU4kGUFM4NxiIhymSR2jgwR5T691WpXyOmI5+gMPnc5fj9i8xzHn32RcZzLG8IpNIP9pxfFuLQQ1CCR6Fux05vUvFC4wwVCDLAyPuSPvxIiCw+ydqqh58S79ehvxaX3Do9KmlJWag9GXAWcMb7AQWawvpXngAFqJNTxFRsetbEYhTFRp2d6bb7ysNsw8/Fc6eIfcDC4Kjb+kMstN/kz/lMtpgSkNft1Ma6rP/S5BENRipZF8yT4ux+EPws00mOe35wIsUPUnZZCxw1LCMGhj/hYGcazCZCkDgaotvvh9eUGXonqL/GvWAXTxFisqzmGUX43MWhbRqMtpwgtmigysKuHl5cjBXnBa1EtWyL3Cv8uHgKUYmvCtoB5fkpjQNM/uIjLB4/loMiTloK7EcMzjE9W9p3azCdLQmoLOasH1krbgMJX4PFNKzY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(23010399003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?O1e241TIJyQP8IT8KyekFxwEZxpl3Zoe11widi9DEKhoUvusCBJlUKGQhytK?=
- =?us-ascii?Q?VcglMH497QAITPdORYbTY7EpnBaoHZ8CxIHHpD4Pb3CBwc7T448N8qE7Cis0?=
- =?us-ascii?Q?OL2mnyIbzu1u7ZFaaecHwnfq8l/B7LI/DDmNs4SdEeyyH0LsvPPbrfst0NID?=
- =?us-ascii?Q?sIyM47bT5ES3MiqK6vT3XZRC2/2o1w+9wDFDw7kE7Mi2LeI3ZtBsvxQdBUnn?=
- =?us-ascii?Q?XBLFai8ybGsoR2usBSey29EPjn9bmdMTuQvuXIqDVm96PR2pbfjHNvjCN1Xx?=
- =?us-ascii?Q?GIEesljJzl/hD9xAYQWE4Kl8KcnD5SMUI8On+juJewLhWtSzAxpc6gJcCVFA?=
- =?us-ascii?Q?8EKYV5jUwRpCq0BnruiXRuVbqvHkAvGtIy2YFTRXAftIIfwUGB8Bw5Q1mLkn?=
- =?us-ascii?Q?qxwkIuqwPBQZd5R67+stRYN9zlG7pflEy8clS5ENe4L8bAc55G6s/cK77CRi?=
- =?us-ascii?Q?uOVHnmIfuAN802DdXn75/TJJHv//bic5gDWz/pPkSN1tJAm6GYkszBpgomNT?=
- =?us-ascii?Q?Gz2tLPcEdq+g5tLCAydKYnU+HUEs21mKS9dtW6n4vr5yyg8+HyExN7AN8Yik?=
- =?us-ascii?Q?VDqsq0XC0grwAoBFbtIKnismsWK7ojTYsBMJPSOPqeC3gNbC/+xEjpGgol73?=
- =?us-ascii?Q?zL/+iqaM57ezBpYjVdrPIbyUd6fvOGDb177LdyTHYgGzeB/R/2X+FEWUbZHU?=
- =?us-ascii?Q?Fi2UQjCsicRm9vmhS2k8C45Y/A6tJ9KTIqw9H2p63oGFjyNvfoqcoosC4LrE?=
- =?us-ascii?Q?VJiGRl5RoFl/ntqhouL0Gv7J11/D3OXYEEYOBZAZkImPkzvAsYhWKHjG8f90?=
- =?us-ascii?Q?Py/Xrr2sPSqIKSctJEQxsLsqWzJC25zdH6kCj35WCyBc30U0YyrwhSkKJ6+E?=
- =?us-ascii?Q?/P3ng8zw2zW+cwiVYJuleuj40h4caYRIDQ3kyAdeRygnvLUqSl31bwg3f+87?=
- =?us-ascii?Q?yYKH7JkTMH3zjVE8ZpQlX1Ea4lRNJ37qZMmSUGLqKNJlvROHVYa/Ax366n6w?=
- =?us-ascii?Q?jZ99k7awzz+So6FyuDPgBfvYnWRQTb1WUIQ605g9prJAsKmq/Ac+EZ1Vay21?=
- =?us-ascii?Q?PuT6fshXfK1nO89EomkC+aMOUi4rN0Gr28ATH1Jbc2YnwQEATTrRr3sfkHiE?=
- =?us-ascii?Q?sQbfUAvnV+RgitGhTKLtolZshSwVmY6sYkPAxiyhx6jqFKuTs94w7jtliPgO?=
- =?us-ascii?Q?SaOTY4DbhmmydbZeFzBT/n3+8pNPuPGApPNXVEY7NO4B1405Nw0yLpx9LZG9?=
- =?us-ascii?Q?AqS3415COne+ApEEYQlFrw+X1z/Z6kLto+LY/FXcbEbLHCiKRseLdKqd14yz?=
- =?us-ascii?Q?Krb2vJ4CSMq7UsrHfkl4N5Vo3I5/NZ6+YI66zNW4lhLlhKdsloYkZd02RpVr?=
- =?us-ascii?Q?fDjfpUyjIKpMnL5oGr1GViAJuyzWj0jpsqV/XHIQn9MDOAOB7vRpGfWp89Ab?=
- =?us-ascii?Q?GiAjpqd93mOu1TjacYOIRJJU/HXDjzUeac7Di0iXqu2XMEPue0Zl1pMFOQq9?=
- =?us-ascii?Q?qsDOCWZvx1Iweb7VdIxiLVAs6Cm7JKbpmn4PvasplNa5RF5nkH4ow6LmnphO?=
- =?us-ascii?Q?Mkcp4KioZoqjWBZsmQugbL8e9iWUT8dV1RTaZcIWVVMB336jWXUbWkA0AEYU?=
- =?us-ascii?Q?5bPVT5/t2rN0EWmn7sRXcTUwKGHySrhX6Tjff3PjdMUPv/Ds/i1+QQK4FPKY?=
- =?us-ascii?Q?yoNGgeIux+Sgr8v2JcVKcOlbM2ACQMEPAY5DuOrXCNQFwkzQE+FRBVJhhGyn?=
- =?us-ascii?Q?BVhBAYOfwA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: NfRc+nRIfZuVKkZllKTeJf2K6vvBfpsHtffZn+9720KQTESBJxmmj/bT8BoTCqe1izcbjoUqoGT35UhWnmjaz4xtJWV1EIncCX4x4tgZJZN9JEeViB1huqUeVFPHOwKmAY3Y3Hi4fFw307ma0RRlZLnIaNcLKMckwrgitQnlBtlzCmD1R7dOVki+eFcQHzJws0lYNaEc5K2P4hPOHFASvyPhP7pEIJTF3ESAdRNdRRniRmYqohlk1ejzmb8fG8WnhC6YoaP9PcWLBM2K1EF0e24Hv8HvoMLXVa9Jar/0vWG83GtzprYBuZpIxaVd16noDdfEUyOCJQIkIqcgQ+m5Mg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c228ff6a-f9fb-4b15-592f-08dedcbcaa21
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 06:46:40.2793
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aifXYGovSstmapZPT/9P6VXRca/5eih6oMXQfAjn2a3veaDOJRhGJxiMx/w8SuEDjMJGe+eIRSEIQlZVS8MOnA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6554
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8633xuq1ic.wl-maz@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Q/XiJY2a c=1 sm=1 tr=0 ts=6a4df38f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=Wq-2yyKVzZd0Sq0-aLcA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: hfPSuFXwe_2IBBAWx3l80NDomi6fZ2go
+X-Proofpoint-ORIG-GUID: hfPSuFXwe_2IBBAWx3l80NDomi6fZ2go
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA2MyBTYWx0ZWRfX+Du9LcSDl8Hv
+ lbcP82N6DL6RF0yGgTJv3h7PYfO2gvlZ8KEbx0mZ3iFC+s+yL5cliEUzhYg8reYP3ZyFEfQadoJ
+ gPpImWZsCqujLZsNzTse+DqZiz+Ue/w=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA2MyBTYWx0ZWRfX7ArL2wGBPYhr
+ HdsgGhFzUsQbEZ54eFFUU138oXqZmYbwhKNgS8xv8qQiTkH9UM1cZWRdcPhLLZ/kfJ0C6hg61o0
+ qex5KL0pBzgQKSiDdX/mwZ/OCVmRH/wNmwLQZLek6+kvi7UhBWC+uLw46IUoQ/3VwcAP6f0xJwc
+ NUk7T6WVkg/x6EFRJnSDk0jLsN+aixq7o/TKZfSbAlLo95SEQo5abxFoDAapUugK4KJR3MdBbj4
+ YC7WIcTe5YTlJOzJmGDT8YgBLgIyDGZG4/g051h/knNbyclwRUdk5/cFNQ7nfl5Yxp/o/Zo8Y5J
+ CLTxsNIRfwRIjpiBt6SvMdYkcyZmyNkdfQnp2hnw67k7aLDT2kPFYf0Hq8WIqkyx0auQs56YoUT
+ S9hahiLnW9IYxxp3ANGTYbpARafomJ3joZL1bG/HcPOjx+Fqw0AHXyg3cSowCkFt4NpVhx8b0tm
+ D3zlSoQdhcB6DDVbPSQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080063
 
-On Mon, May 25, 2026 at 07:35:09PM -0700, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+On Tue, Jul 07, 2026 at 04:10:19PM +0100, Marc Zyngier wrote:
+> On Mon, 06 Jul 2026 09:52:24 +0100,
+> Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > 
+> > Implement init and destroy IOCTLS for vcpu and vm.
+> > Implement arch vm IOCTL. Use s390 gmap.
+> > 
+> > Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
+> > Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+> > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
+> > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > ---
+> >  arch/s390/kvm/arm64/arm.c       | 190 ++++++++++++++++++++++++++++++++
+> >  arch/s390/kvm/arm64/arm.h       |  56 ++++++++++
+> >  arch/s390/kvm/gmap/faultin.c    |   5 +
+> >  arch/s390/kvm/gmap/gmap.c       |   4 +
+> >  arch/s390/kvm/gmap/trace-gmap.h |  13 +++
+> >  5 files changed, 268 insertions(+)
+> > 
+> > diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
+> > index 19249ec5c539..3a4092698fae 100644
+> > --- a/arch/s390/kvm/arm64/arm.c
+> > +++ b/arch/s390/kvm/arm64/arm.c
+> > @@ -8,6 +8,10 @@
+> >  #include <linux/kvm_types.h>
+> >  #include <linux/kvm_host.h>
+> >  
+> > +#include <arm64/kvm_mmu.h>
+> > +
+> > +#include <gmap.h>
+> > +
+> >  #include "arm.h"
+> >  
+> >  static unsigned long system_supported_vcpu_features(void);
+> > @@ -31,6 +35,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> >  		break;
+> >  	case KVM_CAP_IOEVENTFD:
+> >  	case KVM_CAP_ARM_USER_IRQ:
+> > +	case KVM_CAP_PRE_FAULT_MEMORY:
 > 
-> tdx_pamt_get()/tdx_pamt_put() unconditionally add or remove Dynamic PAMT
-> backing for the 2MB region covering the passed pfn. However, multiple
-> callers can concurrently operate on 4KB pages that fall within the same
-> 2MB region. When this happens only one Dynamic PAMT page pair needs to be
-What "this" stands for is not clear and a comma is missing after "happens".
+> arm64 *doesn't* support this yet. Please make sure you don't deviate
+> from what arm64 currently supports.
+>
 
-> installed to cover the 2MB range. And when one page is freed, the Dynamic
-> PAMT backing cannot be freed until all pages in the range are no longer in
-> use. Make the helpers handle these races internally.
+I hoped the corresponding arm64 series is merged when we got this :) 
+
+I will remove this advertisement. I'll keep the implementation as the compiler
+expect that function to be present anyways, as native s390 KVM now implements
+this CAP. OK? 
+
+
+> Thanks,
 > 
-> Use the per-2MB refcounts from previous changes to track how many 4KB
-> pages are in use within each region. Gate the actual Dynamic PAMT add and
-> remove on refcount transitions (0->1 and 1->0). Serialize the refcount
-> check and SEAMCALL with a global spinlock so the read-decide-act sequence
-> is atomic. This also avoids TDX module BUSY errors, as Dynamic PAMT add
-> and remove SEAMCALLs take an internal TDX module locks at 2MB granularity,
-"an internal TDX module locks" --> "internal TDX module locks"?
-
-> so simultaneous attempts on the same region would conflict.
-How about:
-"This also avoids TDX module BUSY errors, as Dynamic PAMT add
-and remove SEAMCALLs take internal TDX module locks for the 2MB ranges of
-the specified PFN and the PAMT page pair PFNs, so simultaneous attempts on
-the same 2MB ranges of the PFNs would conflict." ?
-
-
-> The lock is global and heavyweight. Use simple conditional logic to keep
-> correctness obvious. This will be optimized in a later change.
+> 	M.
 > 
-> Assisted-by: GitHub Copilot:claude-opus-4-6 Claude:claude-opus-4-7
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> ---
-> v6:
->  - Split from "x86/virt/tdx: Add tdx_alloc/free_control_page() helpers"
->  - Return 0 instead of ret to be clearer (Binbin)
->  - Clarify log (Nikolay)
->  - Justify why the patch is not optimized in response to comments by
->    (Nikolay)
->  - Move tdx_find_pamt_refcount() to faciliate patch re-order
->  - Adjustments from dropping error helper patches
->  - Log tweaks
-> ---
->  arch/x86/virt/vmx/tdx/tdx.c | 72 ++++++++++++++++++++++++++++---------
->  1 file changed, 56 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 6658a6be6697c..50333eb96efa6 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -2043,10 +2043,14 @@ static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
->  	return 0;
->  }
->  
-> -/* Allocate PAMT memory for the given page */
-> +/* Serializes adding/removing PAMT memory */
-> +static DEFINE_SPINLOCK(pamt_lock);
-> +
-> +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
-How about
-"Bump the refcount of the PAMT page pair for the given PFN and add the PAMT
-page pair on the first reference." ?
-
->  static int tdx_pamt_get(kvm_pfn_t pfn)
->  {
->  	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
-> +	atomic_t *pamt_refcount;
->  	u64 tdx_status;
->  	int ret;
->  
-> @@ -2057,10 +2061,26 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
->  	if (ret)
->  		return ret;
->  
-> -	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
-> -	if (tdx_status != TDX_SUCCESS) {
-> -		ret = -EIO;
-> -		goto out_free;
-> +	pamt_refcount = tdx_find_pamt_refcount(pfn);
-> +
-> +	scoped_guard(spinlock, &pamt_lock) {
-> +		/*
-> +		 * If the pamt page is already added (i.e. refcount >= 1),
-> +		 * then just increment the refcount.
-> +		 */
-> +		if (atomic_read(pamt_refcount)) {
-> +			atomic_inc(pamt_refcount);
-> +			goto out_free;
-> +		}
-> +
-> +		/* Try to add the pamt page and take the refcount 0->1. */
-> +		tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
-> +		if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
-> +			ret = -EIO;
-> +			goto out_free;
-> +		}
-> +
-> +		atomic_set(pamt_refcount, 1);
->  	}
->  
->  	return 0;
-> @@ -2069,26 +2089,46 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
->  	return ret;
->  }
->  
-> -/* Free PAMT memory for the given page */
-> +/*
-> + * Drop PAMT refcount for the given page and free PAMT memory if it is no
-> + * longer needed.
-How about:
-"Drop the refcount of the PAMT page pair for the given PFN, and remove the
-PAMT page pair if it is no longer needed." ?
-
-> + */
->  static void tdx_pamt_put(kvm_pfn_t pfn)
->  {
->  	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
-> +	atomic_t *pamt_refcount;
->  	u64 tdx_status;
->  
->  	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
->  		return;
->  
-> -	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
-> +	pamt_refcount = tdx_find_pamt_refcount(pfn);
->  
-> -	/*
-> -	 * Don't free pamt_pages as it could hold garbage when
-> -	 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-> -	 * there is no risk of data corruption, but do yell loudly as
-> -	 * failure indicates a kernel bug, memory is being leaked, and
-> -	 * the dangling PAMT entry may cause future operations to fail.
-> -	 */
-> -	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-> -		return;
-> +	scoped_guard(spinlock, &pamt_lock) {
-> +		/*
-> +		 * If the there are more than 1 references on the pamt page,
-s/If the/If
-s/references/reference
-
-> +		 * don't remove it yet. Just decrement the refcount.
-> +		 */
-> +		if (atomic_read(pamt_refcount) > 1) {
-> +			atomic_dec(pamt_refcount);
-> +			return;
-> +		}
-> +
-> +		/* Try to remove the pamt page and take the refcount 1->0. */
-> +		tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
-> +
-> +		/*
-> +		 * Don't free pamt_pages as it could hold garbage when
-> +		 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-> +		 * there is no risk of data corruption, but do yell loudly as
-> +		 * failure indicates a kernel bug, memory is being leaked, and
-> +		 * the dangling PAMT entry may cause future operations to fail.
-> +		 */
-> +		if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-> +			return;
-> +
-> +		atomic_set(pamt_refcount, 0);
-> +	}
->  
->  	free_pamt_array(pamt_pages);
->  }
-
-Another nit:
-How about renaming the title from
-"Handle concurrent callers in tdx_pamt_get/put()" to
-"Handle concurrent calls to tdx_pamt_get/put()" ?
-
-
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+> -- 
+> Without deviation from the norm, progress is not possible.
