@@ -1,380 +1,320 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F88F40927C;
-	Wed,  8 Jul 2026 15:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520933F12C3
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 15:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783524170; cv=none; b=hYBaFWrzmTyGRC27pXCdc/kNXp3uf63czxhWGOIlF/tc2MxcqnvoVJSncqQFWArkITvpmZzxEit/bJKuDYnwQ3S7Rj8Ny2gpC/04ud/gAwiefhKJ56IlZNqcf6BB0AQtvIOf6Hf9taq6oDRmkPO4gV8E9hEXnZrkD+2J1gJC53o=
+	t=1783524220; cv=none; b=CFxkDTRmHLySkryZvGqYeWEIqgwV8nhhtbg0jr8ZzCFDIwjkSCzRZj7A5HfKdH1VihQHTACgJJL6ZoPNL1uq9360DmTdOkqOPwLRPjzugTD7DJWVGAs7lL+z25W67NefcT4Spk7uliLx4CdUSDVkJKcLhj3Wr14uCHlLkIQ0EFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783524170; c=relaxed/simple;
-	bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aa6Vd3BwsO37jMgcvtGsFC0OW/I2ZhRPicaSNyOscxK2Cc9Yiq6kqVoVBmyou7PRm2OVgt6cGDAFrbaexsJIJl9i5Gz+R2ThhQIBJxYPcInk0QhudD13UJAOibzSNsVY6YtwIRXT6HjBvY+oKVXVyxvHbixLUrYFu7TspsrSm5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GsfMciL0; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783524220; c=relaxed/simple;
+	bh=5CF+6Q7urA9Z5MQWXr/as2hcEkFvUylNo6DPZfCqww0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qS16Vt+I/HPJJJq8jKwBaK8mao9HfgdgyVyLJIerpb3GDM+F/zmo6T10/+yX0tV03UXr01PPkKQgYmLcEZ5ZRxsFob0pAQIi+xLSXmnZT4jDLlJfPrGbKtqYsa00NQyBnZp8KjZzr1CrvxBRy4DLqglfsGj1JfgmIm738iXMkso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LvD5A+27; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GsfMciL0"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39F101CDD;
-	Wed,  8 Jul 2026 08:22:43 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 139593F66F;
-	Wed,  8 Jul 2026 08:22:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783524167; bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsfMciL0pvMWsMjYvoQ7mx3J9RGFf1CjdhIopt5M/X+JS9uSWBav9lJN5kSJLWHhi
-	 JeTszs6zVskMLMKWATzpxsBYCMz5S1BvBYd1dU57TZAKf/5IjXv5WniAXQ07FOPUlY
-	 3FbB1wbM1duaijNmBztoOrTTO5s2u0n482BfzmQw=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Leonardo Bras <leo.bras@arm.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Wu Fei <wu.fei9@sanechips.com.cn>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v3 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-Date: Wed,  8 Jul 2026 16:22:28 +0100
-Message-ID: <20260708152232.2568907-4-leo.bras@arm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260708152232.2568907-1-leo.bras@arm.com>
-References: <20260708152232.2568907-1-leo.bras@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LvD5A+27"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c6bbd0afffso15396235ad.0
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 08:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783524218; x=1784129018; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rRKgJkfMnsU7roGF3flBWPx+LAvOHI3FSDNy7Xjz8Wk=;
+        b=LvD5A+27Pif0yJ70M2bIIBoJD7dLw95mDK2n+4xAsiTNnMmXMDBo4W61QiI9kUk3OV
+         osak6+Bma52rrANVshhBywpvgJ/FO3sWSNTrHEWaCmhHxUNwRVQ3jZSnCPMBdsWlezH8
+         ilc0ZrSHguLsDDKiCzZPDVz2/X98Zx5ZAehc/PwLDnJW8TxZSVBXaqx8w3tcaUCnWPVi
+         zQUes9Pbl7lU8AG+nHYdhLaYk93C2VWI89GMg+X0rYNy3Gk8s7w2hxdVzsrwCI7A2yt6
+         l0x6lHDvDmpelOPEjv1BjwencXL7/j2BjKLEZhu1jjzxLq2oWfaGWuCOmHH3C4TsDP9g
+         a7pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783524218; x=1784129018;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rRKgJkfMnsU7roGF3flBWPx+LAvOHI3FSDNy7Xjz8Wk=;
+        b=cUi6iAUWSJUdEXqsZSgaJJLxzFpFrqNQJ1gjX+N/qgGaMT70g9URmvp5TEqXvkrPpA
+         9hKrkgHtmmw3hOMXXmmC16Wltoqisd+ElenLi7vBX1sKYTFJo7RrWKUpaHv/hv3OHJAK
+         3+lu56iyoLyt9+FA9a1tT5DSCE8iJBdBN+82NIz0GomwouD7C+JGSJ94BMI2GciuPAJ5
+         Bn8FRm7ffEz8frUkA+BnCOro4hAwliDyFucb5ZuxM7pQyZKVUxsjqcOifPBu0zJ1rSkO
+         mdikHp+T3MqgfUOqSW5MFR4Z4n5bnY0f5JAV5y20qmAP+dJgBDKFU1qgOQjPakIjnbmJ
+         Cp8g==
+X-Forwarded-Encrypted: i=1; AHgh+Rrfx1K4fe/QxPWCu4b7YF8//zb4eilwDpJSjQKfLk/ym3T2NZ8rZkD4K2p3JrmNz5S1I9g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq0k2NBPUKjM7vNolJpz6zCwW3tKnQazzbO5jQFctKP/HtVh/i
+	7iLe1UyV034PN+4Du7Gb59rlKp8gCbbl93R84zIQ3Il3KyxPzst5GqyftfcNO+C+yAznaw5G2Wc
+	ojpVjgg==
+X-Received: from plim18.prod.google.com ([2002:a17:903:3b52:b0:2ca:ceab:34a3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2447:b0:2ca:619f:9733
+ with SMTP id d9443c01a7336-2ccea3c0f1bmr31966755ad.17.1783524217234; Wed, 08
+ Jul 2026 08:23:37 -0700 (PDT)
+Date: Wed, 8 Jul 2026 08:23:36 -0700
+In-Reply-To: <20260605143034.3603-9-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11164; i=leo.bras@arm.com; h=from:subject; bh=0L5YaCv2QfsD5henuVNR5RUPbcyRWh6keGowsx1OoQ0=; b=owGbwMvMwCX2pizjszvTwvWMp9WSGLL8spU+v/B+1LVH0qlmtcQE2WWTDG4W7LdbPG1GVvdeo WsCXokHO0pZGMS4GGTFFFlkH81fxfN9SsaRKz8WwMxhZQIZwsDFKQAT+RXNyLBht9qtX/b7Td/L Wyw503M5ziYjNXNJBltgXK7TnPPXGysZGZ7Ot/hSuukpzyG3CBXO3v/MrG8KjtwXOfHv4v5nRz3 N+rkB
-X-Developer-Key: i=leo.bras@arm.com; a=openpgp; fpr=36E6C95AE0F111CC5B6F4D2E688C33F8A0C5B0C5
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260605143034.3603-1-dwmw2@infradead.org> <20260605143034.3603-9-dwmw2@infradead.org>
+Message-ID: <ak5reLzVpGuVJtEH@google.com>
+Subject: Re: [PATCH 8/8] KVM: x86/xen: Use 32-bit locked ops in kvm_xen_inject_pending_events()
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paul Durrant <paul@xen.org>, Hyunwoo Kim <imv4bel@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-dirty_log_test supports both dirty-bitmap and dirty-ring as dirty-page
-tracking mechanisms, while dirty_log_perf_test only supports dirty-bitmap.
+On Fri, Jun 05, 2026, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> The 64-bit path in kvm_xen_inject_pending_events() uses 'lock orq' and
+> 'lock andq' on vcpu_info->evtchn_pending_sel. If the vcpu_info was
+> registered with only 4-byte alignment (valid for a 32-bit guest that
+> later switches to 64-bit mode), this 8-byte locked operation can cause
+> split-lock #AC exceptions on hosts with split_lock_detect=fatal.
+> 
+> Use the original 64-bit atomics when the vcpu_info is 8-byte aligned
+> (the common case). Fall back to a 32-bit loop for the rare case where
+> vcpu_info was registered at only 4-byte alignment. For compat guests
+> (32-bit evtchn_pending_sel) the loop executes once. For native guests
+> it executes a second iteration only if the high half has bits to
+> deliver.
+> 
+> Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+> Reported-by: sashiko-bot@kernel.org
+> Assisted-by: Kiro:claude-opus-4.6-1m
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  arch/x86/kvm/xen.c | 63 ++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 44 insertions(+), 19 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index 24e939ef5d64..e7b0263d5143 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -638,11 +638,17 @@ void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
+>   */
+>  void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+>  {
+> -	unsigned long evtchn_pending_sel = READ_ONCE(v->arch.xen.evtchn_pending_sel);
+>  	struct gfn_to_pfn_cache *gpc = &v->arch.xen.vcpu_info_cache;
+> +	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(v->kvm);
+> +	union evtchn_pending_sel {
+> +		u64 sel64;
+> +		u32 sel32[2];
+> +	} pending, *sel_addr;
+> +	struct vcpu_info *vi;
+>  	unsigned long flags;
+>  
+> -	if (!evtchn_pending_sel)
+> +	pending.sel64 = READ_ONCE(v->arch.xen.evtchn_pending_sel);
+> +	if (!pending.sel64)
+>  		return;
+>  
+>  	/*
+> @@ -661,31 +667,50 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+>  	}
+>  
+>  	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+> -	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+> -		struct vcpu_info *vi = gpc->khva;
+> +	vi = gpc->khva;
+> +	sel_addr = gpc->khva + (has_64bit_shinfo ?
+> +				offsetof(struct vcpu_info, evtchn_pending_sel) :
+> +				offsetof(struct compat_vcpu_info, evtchn_pending_sel));
+>  
+> +	if (has_64bit_shinfo && IS_ALIGNED((unsigned long)sel_addr, sizeof(u64))) {
+> +		/*
+> +		 * 64-bit shinfo with 8-byte aligned vcpu_info (the common
+> +		 * case): use a single 64-bit atomic.
 
-Add support to dirty-ring on dirty_log_perf_test so it can be used to
-compare performance between changes in the mechanism.
+Nit, the "single 64-bit atomic" is confusing because there are obviously two
+atomic operations in the assembly below.
 
-Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+> +		 */
+>  		asm volatile(LOCK_PREFIX "orq %0, %1\n"
+>  			     "notq %0\n"
+>  			     LOCK_PREFIX "andq %0, %2\n"
+> -			     : "=r" (evtchn_pending_sel),
+> -			       "+m" (vi->evtchn_pending_sel),
+> +			     : "=r" (pending.sel64),
+> +			       "+m" (sel_addr->sel64),
+>  			       "+m" (v->arch.xen.evtchn_pending_sel)
+> -			     : "0" (evtchn_pending_sel));
+> -		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+> +			     : "0" (pending.sel64));
+>  	} else {
+> -		u32 evtchn_pending_sel32 = evtchn_pending_sel;
+> -		struct compat_vcpu_info *vi = gpc->khva;
+> -
+> -		asm volatile(LOCK_PREFIX "orl %0, %1\n"
+> -			     "notl %0\n"
+> -			     LOCK_PREFIX "andl %0, %2\n"
+> -			     : "=r" (evtchn_pending_sel32),
+> -			       "+m" (vi->evtchn_pending_sel),
+> -			       "+m" (v->arch.xen.evtchn_pending_sel)
+> -			     : "0" (evtchn_pending_sel32));
+> -		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+> +		/*
+> +		 * Use 32-bit operations to avoid splitlock on a vcpu_info
+> +		 * that is only 4-byte aligned (registered in 32-bit mode).
+> +		 * The loop copes with the extremely rare case that the
+> +		 * vcpu_info was registered in 32-bit mode and only enforced
+> +		 * 4-byte alignment, and then the VM was latched to 64-bit
+> +		 * mode afterwards. Which Xen tolerates, so so should KVM.
+> +		 */
+> +		int i = 0;
+> +		do {
+> +			asm volatile(LOCK_PREFIX "orl %0, %1\n"
+> +				     "notl %0\n"
+> +				     LOCK_PREFIX "andl %0, %2\n"
+> +				     : "=r" (pending.sel32[i]),
+> +				       "+m" (sel_addr->sel32[i]),
+> +				       "+m" (((u32 *)&v->arch.xen.evtchn_pending_sel)[i])
+> +				     : "0" (pending.sel32[i]));
+> +			i++;
+> +		} while (has_64bit_shinfo && i < 2 && pending.sel32[i]);
+
+This is... impressive?  Related to the above comment about there being two separate
+atomic operation, only the access to vi->evtchn_pending_sel needs to deal with
+potential split-lock issues.  And there's zero to handle the NOT in the asm blob.
+
+Rather than munge the 32-bit and 64-bit cases together, just manually handle the
+case where the bitwise-OR needs to be chunked in two.
+
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 8 Jul 2026 08:09:19 -0700
+Subject: [PATCH] KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel
+ isn't aligned
+
+When propagating pending Xen events from KVM's "cache" to the guest-visible
+structure, use two 32-bit atomic operations to do the bitwise-OR into the
+guest-controlled structure if the structure isn't 64-bit aligned, i.e. if
+the guest registered its vcpu_info in 32-bit mode and then switched to
+64-bit mode, in which case using a 64-bit atomic OR will generate a
+split-lock #AC (if enabled).
+
+Opportunistically isolate the clearing of the bits from KVM's cache, as
+that structure is KVM-controlled, i.e. is guaranteed to be 64-bit aligned.
+This will allow dropping the open-coded inline asm blobs in the future.
+
+Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/dirty_log_perf_test.c       | 107 ++++++++++++++++--
- 1 file changed, 98 insertions(+), 9 deletions(-)
+ arch/x86/kvm/xen.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-index 69b38791440e..181f521c9be9 100644
---- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-+++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-@@ -6,61 +6,122 @@
-  *
-  * Copyright (C) 2018, Red Hat, Inc.
-  * Copyright (C) 2020, Google, Inc.
-  */
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 24e939ef5d64..7a7f90710847 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -664,13 +664,21 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+ 		struct vcpu_info *vi = gpc->khva;
  
- #include <stdio.h>
- #include <stdlib.h>
- #include <time.h>
- #include <pthread.h>
- #include <linux/bitmap.h>
-+#include <asm/barrier.h>
+-		asm volatile(LOCK_PREFIX "orq %0, %1\n"
+-			     "notq %0\n"
+-			     LOCK_PREFIX "andq %0, %2\n"
+-			     : "=r" (evtchn_pending_sel),
+-			       "+m" (vi->evtchn_pending_sel),
+-			       "+m" (v->arch.xen.evtchn_pending_sel)
+-			     : "0" (evtchn_pending_sel));
++		if (IS_ALIGNED((unsigned long)&vi->evtchn_pending_sel, sizeof(u64)))
++			asm volatile(LOCK_PREFIX "orq %[src], %[dst]\n"
++				     : [dst] "+m" (vi->evtchn_pending_sel)
++				     : [src] "r" (evtchn_pending_sel));
++		else
++			asm volatile(LOCK_PREFIX "orl %[src_lo], %[dst_lo]\n"
++				     LOCK_PREFIX "orl %[src_hi], %[dst_hi]\n"
++				     : [dst_lo] "+m" (vi->evtchn_pending_sel),
++				       [dst_hi] "+m" (*(((u32 *)&vi->evtchn_pending_sel) + 1))
++				     : [src_lo] "r" ((u32)evtchn_pending_sel),
++				       [src_hi] "r" ((u32)(evtchn_pending_sel >> 32)));
++
++		asm volatile(LOCK_PREFIX "andq %1, %0\n"
++			     : "+m" (v->arch.xen.evtchn_pending_sel)
++			     : "r" (~evtchn_pending_sel));
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+ 	} else {
+ 		u32 evtchn_pending_sel32 = evtchn_pending_sel;
+
+base-commit: 0c393754b28263323bed3ac091744ff8456c97d0
+-- 
+
+And then as a follow-up, drop the inline asm:
+
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Wed, 8 Jul 2026 08:16:22 -0700
+Subject: [PATCH] KVM: x86/xen: Use atomic*() APIs instead of open coded
+ equivalents
+
+Replace the open coded atomic asm blobs in the Xen event injection code
+with equivalent atomic{,64}_xxx() operations.  Casting the event channel
+to atomic types is ugly, but not as ugly as asm blobs.
+
+No functional change intended.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/xen.c | 32 ++++++++++----------------------
+ 1 file changed, 10 insertions(+), 22 deletions(-)
+
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 7a7f90710847..94d1644ca6d1 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -663,34 +663,22 @@ void kvm_xen_inject_pending_events(struct kvm_vcpu *v)
+ 	/* Now gpc->khva is a valid kernel address for the vcpu_info */
+ 	if (kvm_xen_has_64bit_shinfo(v->kvm)) {
+ 		struct vcpu_info *vi = gpc->khva;
++		void *vi_pending_sel = &vi->evtchn_pending_sel;
  
- #include "kvm_util.h"
- #include "test_util.h"
- #include "memstress.h"
- #include "guest_modes.h"
- #include "ucall_common.h"
- 
- /* How many host loops to run by default (one KVM_GET_DIRTY_LOG for each loop)*/
- #define TEST_HOST_LOOP_N		2UL
- 
- static int nr_vcpus = 1;
- static u64 guest_percpu_mem_size = DEFAULT_PER_VCPU_MEM_SIZE;
- static bool run_vcpus_while_disabling_dirty_logging;
- 
- /* Host variables */
- static u64 dirty_log_manual_caps;
-+static u32 dirty_ring_size;
- static bool host_quit;
- static int iteration;
- static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-+static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-+
-+static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-+				struct timespec *ts)
-+{
-+	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
-+	struct timespec start;
-+	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-+	u32 idx = *ring_idx;
-+	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
-+	int cleared, count;
-+
-+	pthread_mutex_lock(&collect);
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	while (true) {
-+		struct kvm_dirty_gfn *cur;
-+
-+		cur = &dirty_gfns[idx % ring_size];
-+		if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
-+			break;
-+
-+		smp_store_release(&cur->flags, KVM_DIRTY_GFN_F_RESET);
-+		idx++;
-+	}
-+
-+	count = idx - *ring_idx;
-+	*ring_idx = idx;
-+
-+	cleared = kvm_vm_reset_dirty_ring(vcpu->vm);
-+
-+	/* Cleared pages should be the same as collected, as KVM is supposed to
-+	 * clear only the entries that have been harvested, and a single vcpu will
-+	 * harvest at time.
-+	 */
-+	TEST_ASSERT(cleared == count, "Reset dirty pages (%u) mismatch "
-+		    "with collected (%u)", cleared, count);
-+
-+	*ts = timespec_add(*ts, timespec_elapsed(start));
-+
-+	pthread_mutex_unlock(&collect);
-+}
- 
- static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
- {
- 	struct kvm_vcpu *vcpu = vcpu_args->vcpu;
- 	int vcpu_idx = vcpu_args->vcpu_idx;
- 	u64 pages_count = 0;
- 	struct kvm_run *run;
- 	struct timespec start;
- 	struct timespec ts_diff;
- 	struct timespec total = (struct timespec){0};
- 	struct timespec avg;
-+	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
-+	u32 ring_idx = 0;
- 	int ret;
- 
- 	run = vcpu->run;
- 
- 	while (!READ_ONCE(host_quit)) {
- 		int current_iteration = READ_ONCE(iteration);
-+		struct timespec collect = (struct timespec){0};
- 
- 		clock_gettime(CLOCK_MONOTONIC, &start);
--		ret = _vcpu_run(vcpu);
-+
-+		do {
-+			ret = _vcpu_run(vcpu);
-+			if (!use_dirty_ring)
-+				break;
-+
-+			dirty_ring_collect(vcpu, &ring_idx, &collect);
-+		} while (run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
-+
- 		ts_diff = timespec_elapsed(start);
- 
-+		if (use_dirty_ring) {
-+			ts_diff = timespec_sub(ts_diff, collect);
-+			vcpu_dirty_ring_collect[vcpu_idx] = collect;
+-		if (IS_ALIGNED((unsigned long)&vi->evtchn_pending_sel, sizeof(u64)))
+-			asm volatile(LOCK_PREFIX "orq %[src], %[dst]\n"
+-				     : [dst] "+m" (vi->evtchn_pending_sel)
+-				     : [src] "r" (evtchn_pending_sel));
+-		else
+-			asm volatile(LOCK_PREFIX "orl %[src_lo], %[dst_lo]\n"
+-				     LOCK_PREFIX "orl %[src_hi], %[dst_hi]\n"
+-				     : [dst_lo] "+m" (vi->evtchn_pending_sel),
+-				       [dst_hi] "+m" (*(((u32 *)&vi->evtchn_pending_sel) + 1))
+-				     : [src_lo] "r" ((u32)evtchn_pending_sel),
+-				       [src_hi] "r" ((u32)(evtchn_pending_sel >> 32)));
++		if (IS_ALIGNED((unsigned long)vi_pending_sel, sizeof(u64))) {
++			atomic64_or(evtchn_pending_sel, vi_pending_sel);
++		} else {
++			atomic_or(evtchn_pending_sel, vi_pending_sel);
++			atomic_or(evtchn_pending_sel >> 32, vi_pending_sel + 4);
 +		}
-+
- 		TEST_ASSERT(ret == 0, "vcpu_run failed: %d", ret);
- 		TEST_ASSERT(get_ucall(vcpu, NULL) == UCALL_SYNC,
- 			    "Invalid guest sync status: exit_reason=%s",
- 			    exit_reason_str(run->exit_reason));
  
- 		pr_debug("Got sync event from vCPU %d\n", vcpu_idx);
- 		vcpu_last_completed_iteration[vcpu_idx] = current_iteration;
- 		pr_debug("vCPU %d updated last completed iteration to %d\n",
- 			 vcpu_idx, vcpu_last_completed_iteration[vcpu_idx]);
+-		asm volatile(LOCK_PREFIX "andq %1, %0\n"
+-			     : "+m" (v->arch.xen.evtchn_pending_sel)
+-			     : "r" (~evtchn_pending_sel));
++		atomic64_andnot(evtchn_pending_sel, (void *)&v->arch.xen.evtchn_pending_sel);
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+ 	} else {
+-		u32 evtchn_pending_sel32 = evtchn_pending_sel;
+ 		struct compat_vcpu_info *vi = gpc->khva;
  
-@@ -112,42 +173,45 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 	struct timespec start;
- 	struct timespec ts_diff;
- 	struct timespec get_dirty_log_total = (struct timespec){0};
- 	struct timespec vcpu_dirty_total = (struct timespec){0};
- 	struct timespec avg;
- 	struct timespec clear_dirty_log_total = (struct timespec){0};
- 	int i;
- 
- 	vm = memstress_create_vm(mode, nr_vcpus, guest_percpu_mem_size,
- 				 p->slots, p->backing_src,
--				 p->partition_vcpu_memory_access, 0);
-+				 p->partition_vcpu_memory_access,
-+				 dirty_ring_size);
- 
- 	memstress_set_write_percent(vm, p->write_percent);
- 
- 	guest_num_pages = (nr_vcpus * guest_percpu_mem_size) >> vm->page_shift;
- 	guest_num_pages = vm_adjust_num_guest_pages(mode, guest_num_pages);
- 	host_num_pages = vm_num_host_pages(mode, guest_num_pages);
- 	pages_per_slot = host_num_pages / p->slots;
- 
- 	bitmaps = memstress_alloc_bitmaps(p->slots, pages_per_slot);
- 
- 	if (dirty_log_manual_caps)
- 		vm_enable_cap(vm, KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2,
- 			      dirty_log_manual_caps);
- 
- 	/* Start the iterations */
- 	iteration = 0;
- 	host_quit = false;
- 
- 	clock_gettime(CLOCK_MONOTONIC, &start);
--	for (i = 0; i < nr_vcpus; i++)
-+	for (i = 0; i < nr_vcpus; i++) {
- 		vcpu_last_completed_iteration[i] = -1;
-+		vcpu_dirty_ring_collect[i] = (struct timespec){0};
-+	}
- 
- 	/*
- 	 * Use 100% writes during the population phase to ensure all
- 	 * memory is actually populated and not just mapped to the zero
- 	 * page. The prevents expensive copy-on-write faults from
- 	 * occurring during the dirty memory iterations below, which
- 	 * would pollute the performance results.
- 	 */
- 	memstress_set_write_percent(vm, 100);
- 	memstress_set_random_access(vm, false);
-@@ -188,20 +252,35 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 			while (READ_ONCE(vcpu_last_completed_iteration[i])
- 			       != iteration)
- 				;
- 		}
- 
- 		ts_diff = timespec_elapsed(start);
- 		vcpu_dirty_total = timespec_add(vcpu_dirty_total, ts_diff);
- 		pr_info("Iteration %d dirty memory time: %ld.%.9lds\n",
- 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
- 
-+		if (dirty_ring_size) {
-+			struct timespec iteration_sum = (struct timespec){0};
-+
-+			for (i = 0; i < nr_vcpus; i++)
-+				iteration_sum = timespec_add(iteration_sum,
-+							     vcpu_dirty_ring_collect[i]);
-+
-+			pr_info("Iteration %d clear dirty ring time: %ld.%.9lds\n",
-+				iteration, iteration_sum.tv_sec, iteration_sum.tv_nsec);
-+
-+			clear_dirty_log_total = timespec_add(clear_dirty_log_total,
-+							     iteration_sum);
-+			continue;
-+		}
-+
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		memstress_get_dirty_log(vm, bitmaps, p->slots);
- 		ts_diff = timespec_elapsed(start);
- 		get_dirty_log_total = timespec_add(get_dirty_log_total,
- 						   ts_diff);
- 		pr_info("Iteration %d get dirty log time: %ld.%.9lds\n",
- 			iteration, ts_diff.tv_sec, ts_diff.tv_nsec);
- 
- 		if (dirty_log_manual_caps) {
- 			clock_gettime(CLOCK_MONOTONIC, &start);
-@@ -231,46 +310,51 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- 		ts_diff.tv_sec, ts_diff.tv_nsec);
- 
- 	/*
- 	 * Tell the vCPU threads to quit.  No need to manually check that vCPUs
- 	 * have stopped running after disabling dirty logging, the join will
- 	 * wait for them to exit.
- 	 */
- 	host_quit = true;
- 	memstress_join_vcpu_threads(nr_vcpus);
- 
--	avg = timespec_div(get_dirty_log_total, p->iterations);
--	pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
--		p->iterations, get_dirty_log_total.tv_sec,
--		get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
-+	if (!dirty_ring_size) {
-+		avg = timespec_div(get_dirty_log_total, p->iterations);
-+		pr_info("Get dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
-+			p->iterations, get_dirty_log_total.tv_sec,
-+			get_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
-+	}
- 
--	if (dirty_log_manual_caps) {
-+	if (dirty_log_manual_caps || dirty_ring_size) {
- 		avg = timespec_div(clear_dirty_log_total, p->iterations);
- 		pr_info("Clear dirty log over %lu iterations took %ld.%.9lds. (Avg %ld.%.9lds/iteration)\n",
- 			p->iterations, clear_dirty_log_total.tv_sec,
- 			clear_dirty_log_total.tv_nsec, avg.tv_sec, avg.tv_nsec);
+-		asm volatile(LOCK_PREFIX "orl %0, %1\n"
+-			     "notl %0\n"
+-			     LOCK_PREFIX "andl %0, %2\n"
+-			     : "=r" (evtchn_pending_sel32),
+-			       "+m" (vi->evtchn_pending_sel),
+-			       "+m" (v->arch.xen.evtchn_pending_sel)
+-			     : "0" (evtchn_pending_sel32));
++		atomic_or(evtchn_pending_sel, (void *)&vi->evtchn_pending_sel);
++		atomic_andnot(evtchn_pending_sel, (void *)&v->arch.xen.evtchn_pending_sel);
+ 		WRITE_ONCE(vi->evtchn_upcall_pending, 1);
  	}
  
- 	memstress_free_bitmaps(bitmaps, p->slots);
- 	memstress_destroy_vm(vm);
- }
- 
- static void help(char *name)
- {
- 	puts("");
- 	printf("usage: %s [-h] [-a] [-i iterations] [-p offset] [-g] "
- 	       "[-m mode] [-n] [-b vcpu bytes] [-v vcpus] [-o] [-r random seed ] [-s mem type]"
- 	       "[-x memslots] [-w percentage] [-c physical cpus to run test on]\n", name);
- 	puts("");
- 	printf(" -a: access memory randomly rather than in order.\n");
- 	printf(" -i: specify iteration counts (default: %"PRIu64")\n",
- 	       TEST_HOST_LOOP_N);
-+	printf(" -d: specify the size of dirty-ring for tracking dirty pages.\n"
-+	       "     If non-zero, will cause dirty-ring to be used instead of\n"
-+	       "     dirty-bitmap. Must be a power of two.\n");
- 	printf(" -g: Do not enable KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2. This\n"
- 	       "     makes KVM_GET_DIRTY_LOG clear the dirty log (i.e.\n"
- 	       "     KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE is not enabled)\n"
- 	       "     and writes will be tracked as soon as dirty logging is\n"
- 	       "     enabled on the memslot (i.e. KVM_DIRTY_LOG_INITIALLY_SET\n"
- 	       "     is not enabled).\n");
- 	printf(" -p: specify guest physical test memory offset\n"
- 	       "     Warning: a low offset can conflict with the loaded test code.\n");
- 	guest_modes_help();
- 	printf(" -n: Run the vCPUs in nested mode (L2)\n");
-@@ -313,31 +397,36 @@ int main(int argc, char *argv[])
- 	/* Override the seed to be deterministic by default. */
- 	guest_random_seed = 1;
- 
- 	dirty_log_manual_caps =
- 		kvm_check_cap(KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2);
- 	dirty_log_manual_caps &= (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE |
- 				  KVM_DIRTY_LOG_INITIALLY_SET);
- 
- 	guest_modes_append_default();
- 
--	while ((opt = getopt(argc, argv, "ab:c:eghi:m:nop:r:s:v:x:w:")) != -1) {
-+	while ((opt = getopt(argc, argv, "ab:c:d:eghi:m:nop:r:s:v:x:w:")) != -1) {
- 		switch (opt) {
- 		case 'a':
- 			p.random_access = true;
- 			break;
- 		case 'b':
- 			guest_percpu_mem_size = parse_size(optarg);
- 			break;
- 		case 'c':
- 			pcpu_list = optarg;
- 			break;
-+		case 'd':
-+			dirty_ring_size = parse_size(optarg);
-+			dirty_ring_size *= sizeof(struct kvm_dirty_gfn);
-+			dirty_log_manual_caps = 0;
-+			break;
- 		case 'e':
- 			/* 'e' is for evil. */
- 			run_vcpus_while_disabling_dirty_logging = true;
- 			break;
- 		case 'g':
- 			dirty_log_manual_caps = 0;
- 			break;
- 		case 'h':
- 			help(argv[0]);
- 			break;
--- 
-2.55.0
 
+base-commit: f7a8319462668aa415333f2853b70eb82ea17f34
+--
