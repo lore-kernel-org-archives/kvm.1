@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31826B0A9
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C7330328
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 03:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783482915; cv=none; b=MrqxjYYOYxGyea7mHm3hFguSy001iqeyLPfYrc5WgpWOGwpC6EWacDhxfZBKVV3yglftsH6lMLSqa8Vm59hZuoQieLSRzGQvc+Rl7JkvH06A7EK3KwyvPTl3ZTqqYsZNi5eELBlTyFt77NyVylO8m2S0DPZApBXREaKUxm1d8Xw=
+	t=1783482917; cv=none; b=JT5Jmj5+hEbwROZMT9sZjgJghm4m4Iu97VGfsHztLOX5MlsSyaLe08Vn+++z6WzPJdStH01rvLA2C4L13XsSEqoGTOGZnIQFaNYKCiBPWV5cuU2O543nplrbdqMg7DFurnQrDUpRwdGjzUF7zwozZjv/SoU2wnwxvQePX4xF0fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783482915; c=relaxed/simple;
-	bh=SChAgm2U+mDWPzzYoOrd1CGwOy2+Z/Rnckg8Z9oKUwk=;
+	s=arc-20240116; t=1783482917; c=relaxed/simple;
+	bh=TfN434rQMISx/l3rL+mHAP386uDccQufnScx7YDxrV0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QvbWnozkuYcK6j5xlmKFXRElPl5HFCD2mIBzCMvWJNO0F04+ghKyS5KIS90AHJ8GozaY7iq+6ev+fsKZt1C2LtcydRuz0y5hWZCzpDgJbvn7ET+q+HDWPoryo4DMeFAqb+BtCyP8uxjcJj7j3eNqEUWEyhtJ+cQM83vKiruV2ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDj7l0Rp; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ROmv/lZ5s3tGexqBR4FuiODwdAUUowfrvkr6sS/LoTn46umaYB/HmimIDjCgWF0kYvs/gSqGLhuwNganIULxQQmUtK78Z0RNIy+MXC5Q3iHx55acUw8Ufw37lepfAks24/QFrnQ6+HCIOoh8Pkcbh/mm8/4rM4dkSXoPoXqkRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuAr4mVB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDj7l0Rp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B7B1F000E9;
-	Wed,  8 Jul 2026 03:55:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuAr4mVB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A691F00A3A;
+	Wed,  8 Jul 2026 03:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783482914;
-	bh=MY+wsUi5k2SKQRCjUcbR/owSB8DYp4uKklAiIKtQEdo=;
+	s=k20260515; t=1783482915;
+	bh=9NmegbwRZFT8WPdlnJ+I/Qd6dxZTAzAd9HCsF1owvEc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fDj7l0RpbusHlEwa9mt8mDqu52DO/D/pnxgunAkMC/qWjhNxzHaumuNV+GtXmKhPU
-	 QsQkONIDRIgJOyWH5Z2LI6R7LHiCvfdY2Q2tgAooyZYK/6pQ4QAfRsarLnZbzDiG0O
-	 LoSLtSXVap4HEOihKi5sQOG2YKREPRlA40Mxks7myokSLOmSPszTZqQRyMOpyOTfX/
-	 CZrNNakhRL565YgVl11aNl3VHXo3ikYcIiK3nJJP5KchyU+XfVY5O7kaFpck6t8Buz
-	 YUm/KfD81YBD2vrD5SUSQz+ahSkpyVjWLPsOC6FCAZQ13Hk5vQQ+9wcsrU6XxEhgaE
-	 YxsZwuU1MUCtA==
+	b=iuAr4mVB+jvK9S5JyREWagrjpyCfCvJTfAKzTyAeDCSUsdiy7LTreQ+4srP+ChgC9
+	 Ls5fGxkTfPugn2P/YMTDs6uQ0S3KYUCIloEiABZU4WWqVYTHS5lm4uAZkIgpS3uj3y
+	 +AMhjz/0R5eTCyM4xLQHVJxizJCotdVGVuEegEAYXELXgRrpQnLcslDHqfnReiUVOl
+	 pbg3h/4a/okjnzK52lo8uxl5NBC9vjGjEInKxAOi1Uel9uu6vBQvwSIpj0LW5LTraz
+	 HFtPEtDOacCXvi4BtflTHKL6hT+WtB5FspZVh4wKTMEhoSQInaqGamg2Kx4ThLqXmG
+	 l0zWTckc9NI7g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 07/17] riscv: Maintain epc on misaligned emulation
- error
+Subject: Re: [PATCH v2 1/1] RISC-V: KVM: Serialize virtual interrupt pending
+ state updates
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
+To: "Xie Bo" <xb@ultrarisc.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-7-3f8e5f75ba97@gmail.com>
-References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-7-3f8e5f75ba97@gmail.com>
+In-Reply-To: <178348173646.64306.17766618687631928432@ultrarisc.com>
+References: <178348173646.64306.17443207006998871369@ultrarisc.com>
+ <178348173646.64306.17766618687631928432@ultrarisc.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 03:55:13 +0000
-Message-Id: <20260708035514.57B7B1F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 03:55:14 +0000
+Message-Id: <20260708035515.12A691F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,86 +48,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
-New issues:
-- [High] Removing `regs->epc =3D 0` breaks the emulation of misaligned stor=
-es that use the `zero` register (`x0`), causing them to leak and write the =
-instruction pointer (EPC) to memory instead of zero.
-
 Pre-existing issues:
-- [High] Emulating kernel-mode misaligned memory accesses uses `memcpy()` w=
-ithout exception tables, leading to kernel panics when accessing unmapped m=
-emory (e.g., via `bpf_probe_read()` or `get_user()`).
+- [High] Updating `sip` or `siph` via CSR ioctls fails to update the master=
+ `irqs_pending` bitmaps, which can lead to spurious wakeups or permanently =
+blocked vCPUs in WFI.
+- [High] Pre-existing bug: PMU overflow interrupt state (LCOFIP) is corrupt=
+ed during userspace save/restore of the `sip` register.
 --
 
---- Patch [7]: [PATCH v3 07/17] riscv: Maintain epc on misaligned emulation=
- error ---
-commit 4be6480bf402b9e8440e0f9f14c2dfd93692b4cd
-Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
+--- Patch [1]: [PATCH v2 1/1] RISC-V: KVM: Serialize virtual interrupt pend=
+ing state updates ---
+commit 22c10234ade3ab313ea2d3d68ed12cccae2ba34a
+Author: Xie Bo <xb@ultrarisc.com>
 
-riscv: Maintain epc on misaligned emulation error
+    RISC-V: KVM: Serialize virtual interrupt pending state updates
 
-Currently the epc is set to zero when there is a misaligned emulation
-error. This will print a misleading error message with the current epc
-value of zero instead of the epc value that triggered the emulation.
-Avoid setting epc to zero to maintain the state of epc.
+This patch introduces a per-vCPU raw spinlock to serialize updates to
+virtual interrupt pending states. It replaces the existing lockless protocol
+to prevent race conditions where newly injected interrupts could be lost
+during guest HVIP sync.
 
-> diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/tra=
-ps_misaligned.c
-> index 81b7682e6c6db..524215a186e03 100644
-> --- a/arch/riscv/kernel/traps_misaligned.c
-> +++ b/arch/riscv/kernel/traps_misaligned.c
-> @@ -238,8 +238,6 @@ static int handle_scalar_misaligned_load(struct pt_re=
-gs *regs)
->  	if (get_insn(regs, epc, &insn))
->  		return -1;
-> =20
-> -	regs->epc =3D 0;
-> -
->  	if ((insn & INSN_MASK_LW) =3D=3D INSN_MATCH_LW) {
->  		len =3D 4;
->  		shift =3D 8 * (sizeof(unsigned long) - len);
-
-[Severity: High]
-This is a pre-existing issue, but does emulating kernel-mode misaligned
-loads and stores in these handlers risk a kernel panic?
-
-Further down in handle_scalar_misaligned_load() and
-handle_scalar_misaligned_store(), the code falls back to memcpy() when
-user_mode(regs) is false:
-
-	} else {
-		memcpy(&val, (u8 *)addr, len);
-	}
-
-If a routine like get_user() or bpf_probe_read() is passed an unmapped,
-misaligned pointer, the hardware traps here. Since memcpy() lacks exception
-table entries, won't the resulting page fault be unhandled and bypass the
-intended safety mechanisms?
-
+> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+> index 5ec503288555d..821d2cb6d6a6d 100644
+> --- a/arch/riscv/kvm/aia.c
+> +++ b/arch/riscv/kvm/aia.c
 [ ... ]
-
-> @@ -349,8 +346,6 @@ static int handle_scalar_misaligned_store(struct pt_r=
-egs *regs)
->  	if (get_insn(regs, epc, &insn))
->  		return -1;
+> @@ -214,11 +221,18 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcp=
+u,
+>  	reg_num =3D array_index_nospec(reg_num, regs_max);
 > =20
-> -	regs->epc =3D 0;
+>  	if (kvm_riscv_aia_available()) {
+> -		((unsigned long *)csr)[reg_num] =3D val;
 > -
->  	val.data_ulong =3D GET_RS2(insn, regs);
+>  #ifdef CONFIG_32BIT
+> -		if (reg_num =3D=3D KVM_REG_RISCV_CSR_AIA_REG(siph))
+> -			WRITE_ONCE(vcpu->arch.irqs_pending_mask[1], 0);
+> +		if (reg_num =3D=3D KVM_REG_RISCV_CSR_AIA_REG(siph)) {
+> +			raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
+> +			((unsigned long *)csr)[reg_num] =3D val;
+> +			vcpu->arch.irqs_pending_mask[1] =3D 0;
+> +			raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock,
+> +						   flags);
 
 [Severity: High]
-Does removing this assignment cause an information leak when emulating
-stores from the zero register (x0)?
+This isn't a bug introduced by this patch, but when restoring siph via ioct=
+l,=20
+we clear irqs_pending_mask[1] without syncing irqs_pending[1] with the new =
+val.=20
 
-The GET_RS2() and GET_RS2C() macros calculate the register value by taking
-the byte offset into struct pt_regs. For the zero register (index 0), this
-maps to offset 0, which corresponds to regs->epc.
+Because kvm_arch_vcpu_runnable() relies exclusively on irqs_pending to
+determine if a vCPU has pending events, could restoring a vCPU with
+pending interrupts leave it permanently blocked in WFI since
+irqs_pending isn't updated here?
 
-Previously, clearing regs->epc =3D 0 neutralized this aliasing, allowing
-misaligned stores using x0 (e.g., sw x0, 1(a0)) to correctly write zero.
-Without this, will the code now read the actual EPC value and write the
-faulting instruction pointer to memory instead of zero?
+> +		} else {
+> +			((unsigned long *)csr)[reg_num] =3D val;
+> +		}
+> +#else
+> +		((unsigned long *)csr)[reg_num] =3D val;
+>  #endif
+>  	}
+> =20
+> diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+> index bb920e8923c93..cba3682944b69 100644
+> --- a/arch/riscv/kvm/vcpu_onereg.c
+> +++ b/arch/riscv/kvm/vcpu_onereg.c
+[ ... ]
+> @@ -309,10 +310,14 @@ static int kvm_riscv_vcpu_general_set_csr(struct kv=
+m_vcpu *vcpu,
+>  	if (reg_num =3D=3D KVM_REG_RISCV_CSR_REG(sip)) {
+>  		reg_val &=3D VSIP_VALID_MASK;
+>  		reg_val <<=3D VSIP_TO_HVIP_SHIFT;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue, but does left-shifting the entire register
+value here silently corrupt the PMU overflow interrupt state (LCOFIP)?
+
+When userspace saves and restores the sip register, the IRQ_PMU_OVF bit
+(bit 13) is shifted to bit 14 when saving to csr->hvip. Then on get_csr,
+it shifts it back to bit 12, where it is subsequently cleared because
+bit 12 is not included in VSIP_VALID_MASK. Will this break guest profiling
+across migrations?
+
+> -	((unsigned long *)csr)[reg_num] =3D reg_val;
+> -
+> -	if (reg_num =3D=3D KVM_REG_RISCV_CSR_REG(sip))
+> -		WRITE_ONCE(vcpu->arch.irqs_pending_mask[0], 0);
+> +	if (reg_num =3D=3D KVM_REG_RISCV_CSR_REG(sip)) {
+> +		raw_spin_lock_irqsave(&vcpu->arch.irqs_pending_lock, flags);
+> +		((unsigned long *)csr)[reg_num] =3D reg_val;
+> +		vcpu->arch.irqs_pending_mask[0] =3D 0;
+> +		raw_spin_unlock_irqrestore(&vcpu->arch.irqs_pending_lock, flags);
+
+[Severity: High]
+This is also a pre-existing issue, but similar to the siph restore above,
+we clear irqs_pending_mask[0] without updating irqs_pending[0] with the
+new reg_val.=20
+
+Can this leave the vCPU permanently blocked in WFI after live migration
+since the irqs_pending bitmap isn't populated with the restored interrupts?
+
+> +	} else {
+> +		((unsigned long *)csr)[reg_num] =3D reg_val;
+> +	}
+> =20
+>  	return 0;
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D7
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/178348173646.64306.=
+17766618687631928432@ultrarisc.com?part=3D1
