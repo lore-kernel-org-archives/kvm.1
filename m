@@ -1,138 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E1637E2E2
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 23:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41526346E7A;
+	Wed,  8 Jul 2026 23:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783553623; cv=none; b=bVzc/uyBLjhV9erBivVx5pkxHsCltVkXBnza/dwaH92xEzmaVnDXtymkflrqFtFZgmb7idJvnws7TfMqXJZDJlB7bp4bqLE8C5TLF+ypTXBYCghoDN8+N9qQa6J53NE1P3IuhljnCIhHpwQkys6YjjkjX2rp1C684r99DhA3F5w=
+	t=1783553633; cv=none; b=uYnynB4uORp2lp2G53Mku/6eyi2EHcD2DeMIIZeTBh5ejKntx7kUno1W9hK6pwN8um3RwXQe3xdnJ03mK44WPIHOg086s4kTmR+waIisxfhTC7j+q8M89+uL0XtO7syJvrSTZMg20OXcdczvtBlV71t0+zFAsWKTCfWchNnCJfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783553623; c=relaxed/simple;
-	bh=gwETLKlzcxxCJPxUpV8wQyRBlJfgMBGBoOF2JsIzNlo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=L3fnSxr2Dxq6Ap8d91/CmVO7Kgj90JNAwmTslJfhnxpYtYg4IYq1tRIb551X251XWcOb07rRyqKpk9yrjf7spP/Ia3xxOPTY2l8voj8pSXpyZ3V0U0J0dnSfZXax0NlPsj16k++oI43QMF4CmukZuLWqJSqy5Yhu8xUTfMxlTHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpTAjdKg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783553633; c=relaxed/simple;
+	bh=RfrT32G1hd20i1qcYY+mMJhrU2H9qCa1cMVaLgwu20k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ni9v1Z0cRa75BEU5mK8DL2DshcRxDP8GYnKGWHQawQmRqhmcftIOzAjc2VV+fbrfQqt3lRjaXfpJDcuo4kr4pFC+WATgLvsoGdm78u2qsAa+RSAebTXWQI6i1UVPvKR5cQu0ey4i4TagF0YCz40V7qMp2vNmvECqbPxdjUeKezE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=bAXZ813+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MuXIFVKm; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpTAjdKg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5238F1F000E9;
-	Wed,  8 Jul 2026 23:33:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783553621;
-	bh=yXyhHJnkrfU0BLu6otfTwXDW4/+8XjLsYbxaLe3NBT0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UpTAjdKgqsDC19SQrq29soVlneWWCQxodc4rl/qQqsgYFDNusxMnJ13ytmYU7pblU
-	 GCTl48jzXAbc2lw/q7KoFSDWduJIcdR5g3TRZT55s2QGDSJlKKK8WFt/6zp5c1izXn
-	 +2GgcBX7g4KuSXfjHtBGn0rpxXiIxje22KePjRyo771TLAm5b1yNCW4a2A0FN2WNDq
-	 KuTWZHpAImksjV1CCsJnpwF6PSOq5lX9ZWUpkwTifKzv2QWtIsMebm8xGX430LAIdi
-	 aghs4Ai3nh6N4YF+fXUA7WH024QsfKY+MIrgBJzFhsvhL30Oe4S53+RHg8XJOfRvDr
-	 rADfwidhgUhQw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/9] vfio: selftests: igb: Program MSI-X interrupt
- routing
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josh Hilke" <jrhilke@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260708-igb_v3_b4-v3-4-1272650ca614@google.com>
-References: <20260708-igb_v3_b4-v3-0-1272650ca614@google.com>
- <20260708-igb_v3_b4-v3-4-1272650ca614@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 23:33:40 +0000
-Message-Id: <20260708233341.5238F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="bAXZ813+";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MuXIFVKm"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 407CCEC007B;
+	Wed,  8 Jul 2026 19:33:49 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 08 Jul 2026 19:33:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783553629;
+	 x=1783640029; bh=jycFkUEU+EWsbNBTlcMiSw8oZ+CeyWMY6jFUi7NKCTY=; b=
+	bAXZ813+7RpNaw63wsUkM1YX28iQgvrDeZFKF1pUDgNL6HA026n766wvEhtNMlQd
+	vC0IharNNDtQNxLG3AcLj+Lby42R3bKYga+B1wS89I45kmSzXgewh2cWJ7MkSptp
+	dpBrE1SAS0jsFPKnwHei1+iEBUYHM/evpuwMuFHIx3JYnq7/wusIAiuHusFGg+na
+	s7NOR7Lw1UXF9MULRhSrGWeEukxgrcF5nqgl4Q9cvmhBf2ouSesszTDocDb2r2JQ
+	VoFcDzmU98LDgrmtdOqguSolTojKWURnq/2f2a2pMoEBoS/XS/JpqYGpErSL/QvC
+	BYGG/w35qB9aPOVE+UB1+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783553629; x=
+	1783640029; bh=jycFkUEU+EWsbNBTlcMiSw8oZ+CeyWMY6jFUi7NKCTY=; b=M
+	uXIFVKm6m2Y2oW8l4DEFUusrPb8+pe/fDft2yn88M6ZfQ0Dt480S8ybWshTzThPO
+	s0KlCFILB4pNSP7zPMnNydVIPlm4yrbwZr5jo+gxOw9fgr32nBFs0ij/5d6scO4i
+	PB/nrL8wlbnCIpz9FseOh5zTzr/ukf7b/QXqBWfpa9OwxVX38oLxVBHXLArb22JO
+	PRm5snV1AwoMj59Oh+a9V2bmzvL8effQLtYHOJCGPBmzZzkthf2GZV54iRF4/FyR
+	liNegcTAXAOKotu7AMWbeX8z79R5plKgObivBOSzPsf4JKepkRAqq7jeDbzKIQsG
+	NaADnWkb5JRTpqhWN2KTg==
+X-ME-Sender: <xms:W95OaqCCXGvRsI8kYQaNWTZpx5Juxb-31O9yVJNkUTjZlThj0xTl8w>
+    <xme:W95OamGb7TF_0V3qCoObmKRExXxoExqjDI_yPhgsgy4DLLyld1Ss3ynxjwoaKCGBq
+    aVMS4nW8AWa34aXudWHV48TqH51famb44IVtj1zQmVy-Tl88uU6n3A>
+X-ME-Received: <xmr:W95Oas3kul1tJe5K3JYQelwl4Qz3smFav89uL3FM80wptCgqAYkVAUjN4kQ>
+X-ME-Proxy-Cause: dmFkZTFk66Tr4PZ1RpoJ2yXE2BF2dN68DoODhH+NgpAxw/zva66bqnWHxfSCYuZR+JyEHm
+    flF4GbtFnt8bLxJgMnCN6nvmLvaELOEEjMTryq/TRPaGVQdVxjfdjdFdCfsRXGWtaOQPLj
+    vzEmEj9I22CJ/UbhUOEd0yW0tDBXwpjK6Sjvuhsts1Pkn254JZLVYCPz1f8XdQrd79LQIU
+    jMi262mhG4so7FIUMKsu10QFKFjSCejJBkuIBhOwSViFF1N3o2bNmiSB1Bnpugtb4NhQFP
+    ywoiS6dLdLko78Xju90QoFu5L4u4/khGmtDl8gm0o7afMlgiE6wqGIDcb9T/cN8hCOZMTP
+    Xag8AmYRJj85zgwGw8xfwkd5fkd7ZQxkLre2hhcQH1L2yPqy5fenT7Lnz8s0cQdAOvoHdd
+    lhxXNziWkqSv1YZQJzeQYnUkAh3nHfaO6lGTOmiHfziCk8GxEHtTUSzkgqOycLR/4GrhEL
+    y7wcO0NSFfQIPfD+0qmBkvvuQuaCdjGGiPBwOJD+3hkTYo71S3IyP4nlxztM7JxNKkBVKO
+    5FfyxguNGswqMe8/ezT2qgSXWRE+17VRXv/odFHO1gqAxobLVJtzTal/7mIKwedd0M2NKn
+    2yiOn7UVUmADdtmHNZ/gmgoaXVGOQ+ksbWunWt80C4yAT8SKXeoD/Mb+QTVg
+X-ME-Proxy: <xmx:W95OavNqHrDOCo7HHobdANC3ukaGc2bdTfi44f445AKq6_ymdSn6dw>
+    <xmx:W95OakbppmwmN_k3WcckO0PARJdHbjshjJYy3_A6GJ5tJNzJCpMwOA>
+    <xmx:W95Oaly1mEu8Sq6A9tGSdHMKJP1fNSRvI_EDYcue3Qe7oF3QW32kpQ>
+    <xmx:W95OarMBtti7Q7mUEL6CHPES2k_giwN-t8oTtsqqpNy2JdKJqT0xyQ>
+    <xmx:Xd5Oaj1iISQXJuRGje60a10IwejuEyViKbtTMFgD3ufvZ-N5B26Vx8Hp>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 8 Jul 2026 19:33:46 -0400 (EDT)
+Date: Wed, 8 Jul 2026 17:31:41 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v19 10/18] vfio/pci: Introduce tph policy parameter for
+ staged TPH feature enablement
+Message-ID: <20260708173141.31aae027@shazbot.org>
+In-Reply-To: <20260702124224.57168-11-fengchengwen@huawei.com>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+	<20260702124224.57168-11-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Commit message and implementation mismatch regarding macro defin=
-itions.
-- [Medium] Hardware Initialization Order: Unmasking interrupts before routi=
-ng is configured.
---
+On Thu, 2 Jul 2026 20:42:16 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
---- Patch [4]: [PATCH v3 4/9] vfio: selftests: igb: Program MSI-X interrupt=
- routing ---
-commit f99b27fd1b6bc3801803a7e5be3ec664facafb7a
-Author: Alex Williamson <alex.williamson@nvidia.com>
-Subject: vfio: selftests: igb: Program MSI-X interrupt routing
+> Add a module parameter 'tph' to implement staged TPH feature enabling
+> policy. The parameter accepts a value from 0 to 3 to progressively enable
+> TPH capabilities:
+> 
+> 0 = No-ST mode: RESOLVE only returns PH for DMABUF source;
+>                 ST programming unavailable
+> 1 = Add IV mode: RESOLVE only returns PH for DMABUF source;
+>                  ST program supports NONE/DMABUF/CPU sources
+> 2 = Add DS mode: RESOLVE returns PH+ST for DMABUF/CPU sources;
+>                  ST program supports NONE/DMABUF/CPU sources
+> 3 = Add LITERAL: RESOLVE returns PH+ST for DMABUF/CPU sources;
+>                  ST program supports NONE/DMABUF/CPU/LITERAL sources
+> 
+> This commit only adds parameter plumbing and state storage, no
+> functional TPH logic is introduced yet.
 
-This commit updates the IGB selftest driver to use the full MSI-X programmi=
-ng
-sequence required by the 82576 hardware instead of relying on synchronous
-QEMU workarounds. It configures auto-clear and auto-mask for vector 0 and
-changes the EICR clear mechanism from read-to-clear to write-to-clear.
+This adds module options for a feature that doesn't exist yet.  That's
+the wrong ordering.  The module option is the only introspection that
+the administrator has to the capabilities of the driver.
 
-> Replace the magic '1' values written to EIMS/EIMC with IGB_EICR_VEC0,
-> add the GPIE/EIAC/EIAM macros, and drop the wrong-valued IGB_GPIE_EIAME
-> macro (the new definition lives next to IGB_GPIE_MULTIPLE_MSIX).
+The intention of the proposal was also that support is added
+incrementally, ie. "an incremental support path".
 
-[Severity: Medium]
-This isn't a bug in the code, but the commit message mentions introducing
-custom macros like IGB_EICR_VEC0 and dropping IGB_GPIE_EIAME.
+We should start with adding No-ST support to the driver, concluding
+with the module parameter infrastructure that essentially advertises
+the driver support on the host, 0 (default) is the only accepted value.
 
-However, the implementation uses standard kernel definitions such as
-E1000_EICR_RX_QUEUE0 and E1000_GPIE_MSIX_MODE.
+The next step would be incrementally revising the driver support to
+include IV mode, concluding with exposing it and configuring it through
+the driver option. Repeat for DS mode.  Repeat for LITERAL mode.
 
-Could the commit message be updated to match the actual code?
+This is what allows us to decide where to stop in the implementation.
+For example, we've designed LITERAL mode, but if no VMM intends to
+support it, why implement it?
 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
-esting/selftests/vfio/lib/drivers/igb/igb.c
-> --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+Also, this module option is being defined on vfio_pci.  Are we
+intending that this is a feature that each variant driver would
+opt-in to via their own module options?  LITERAL mode is incompatible
+with migration, so it's possible each variant driver would define what
+level of support they expose.  Thanks,
 
-[ ... ]
+Alex
 
-> @@ -280,11 +280,32 @@ static void igb_init(struct vfio_pci_device *device)
->  	/* Enable MSI-X with 1 vector for the test */
->  	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
-> =20
-> -	/* Enable auto-masking of interrupts to avoid storms without a real ISR=
- */
-> -	igb_write32(igb, E1000_GPIE, E1000_GPIE_EIAME);
-> +	/*
-> +	 * Program MSI-X interrupt routing per 82576 datasheet:
-> +	 *
-> +	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
-> +	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
-> +	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
-> +	 * applies on EICR read/write).
-> +	 *
-> +	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
-> +	 * Without auto-clear the cause stays set after delivery and the
-> +	 * test can see spurious interrupts on the next memcpy batch.
-> +	 *
-> +	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
-> +	 * MSI-X assertion (effective because EIAME is set), so a single
-> +	 * interrupt is delivered per memcpy batch even if the cause
-> +	 * re-asserts before software re-enables the mask.
-> +	 *
-> +	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
-> +	 * cause 0 to MSI-X vector 0 and mark the entry valid.
-> +	 */
-> +	igb_write32(igb, E1000_GPIE, E1000_GPIE_MSIX_MODE | E1000_GPIE_EIAME);
-> +	igb_write32(igb, E1000_EIAC, E1000_EICR_RX_QUEUE0);
-> +	igb_write32(igb, E1000_EIAM, E1000_EICR_RX_QUEUE0);
-> =20
->  	/* Enable interrupts on vector 0 */
-> -	igb_write32(igb, E1000_EIMS, 1);
-> +	igb_write32(igb, E1000_EIMS, E1000_EICR_RX_QUEUE0);
-> =20
->  	/* Map vector 0 to interrupt cause 0 and mark it valid */
->  	igb_write32(igb, E1000_IVAR0, E1000_IVAR_VALID);
+ 
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> ---
+>  drivers/vfio/pci/vfio_pci.c      | 25 +++++++++++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_priv.h |  7 +++++++
+>  include/linux/vfio_pci_core.h    |  1 +
+>  3 files changed, 33 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 830369ff878d..7ef82b445722 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -60,6 +60,28 @@ static bool disable_denylist;
+>  module_param(disable_denylist, bool, 0444);
+>  MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
+>  
+> +static unsigned int tph_policy;
+> +static int tph_set(const char *val, const struct kernel_param *kp)
+> +{
+> +	return param_set_uint_minmax(val, kp, VFIO_PCI_TPH_POLICY_NO_ST,
+> +				     VFIO_PCI_TPH_POLICY_LITERAL);
+> +}
+> +static const struct kernel_param_ops tph_param_ops = {
+> +	.set = tph_set,
+> +	.get = param_get_uint,
+> +};
+> +module_param_cb(tph, &tph_param_ops, &tph_policy, 0644);
+> +MODULE_PARM_DESC(tph,
+> +	"Global TPH policy level (0=default No-ST):\n"
+> +	"0 = No-ST mode: RESOLVE only returns PH for DMABUF source;\n"
+> +	"                ST programming unavailable\n"
+> +	"1 = Add IV mode: RESOLVE only returns PH for DMABUF source;\n"
+> +	"                 ST program supports NONE/DMABUF/CPU sources\n"
+> +	"2 = Add DS mode: RESOLVE returns PH+ST for DMABUF/CPU sources;\n"
+> +	"                 ST program supports NONE/DMABUF/CPU sources\n"
+> +	"3 = Add LITERAL: RESOLVE returns PH+ST for DMABUF/CPU sources;\n"
+> +	"                 ST program supports NONE/DMABUF/CPU/LITERAL sources\n");
+> +
+>  static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)
+>  {
+>  	switch (pdev->vendor) {
+> @@ -142,6 +164,9 @@ static int vfio_pci_init_dev(struct vfio_device *core_vdev)
+>  #ifdef CONFIG_VFIO_PCI_VGA
+>  	vdev->disable_vga = disable_vga;
+>  #endif
+> +#ifdef CONFIG_PCIE_TPH
+> +	vdev->tph_policy = tph_policy;
+> +#endif
+>  
+>  	return vfio_pci_core_init_dev(core_vdev);
+>  }
+> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+> index fca9d0dfac90..c997cc9bf330 100644
+> --- a/drivers/vfio/pci/vfio_pci_priv.h
+> +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> @@ -11,6 +11,13 @@
+>  /* Cap maximum number of ioeventfds per device (arbitrary) */
+>  #define VFIO_PCI_IOEVENTFD_MAX		1000
+>  
+> +enum vfio_pci_tph_policy {
+> +	VFIO_PCI_TPH_POLICY_NO_ST = 0,
+> +	VFIO_PCI_TPH_POLICY_IV_ST = 1,
+> +	VFIO_PCI_TPH_POLICY_DS_ST = 2,
+> +	VFIO_PCI_TPH_POLICY_LITERAL = 3,
+> +};
+> +
+>  struct vfio_pci_ioeventfd {
+>  	struct list_head	next;
+>  	struct vfio_pci_core_device	*vdev;
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 9a1674c152aa..a0641286dd90 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -149,6 +149,7 @@ struct vfio_pci_core_device {
+>  	struct notifier_block	nb;
+>  	struct rw_semaphore	memory_lock;
+>  	struct list_head	dmabufs;
+> +	u8			tph_policy;
+>  };
+>  
+>  enum vfio_pci_io_width {
 
-[Severity: Medium]
-Does unmasking the interrupt via E1000_EIMS before programming the routing
-in E1000_IVAR0 risk unpredictable behavior?
-
-If an interrupt condition is met in the small window between these writes, =
-it
-seems an interrupt could be triggered before the IVAR mapping is valid.
-
-Should the mapping in IVAR0 be established before unmasking the interrupt?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260708-igb_v3_b4-=
-v3-0-1272650ca614@google.com?part=3D4
