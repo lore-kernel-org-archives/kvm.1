@@ -1,114 +1,123 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C523D3890EA
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6FF424640
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783518655; cv=none; b=laKQnxqtMs9kNxsuh+M96ISt+LDSHjnYRJkeN3gFwN54MSJ4OKWmeK2+KjnMbzy7FYfGRMJbOx/FieMpcGHtUM7IPlXuHgNMxtEQfd6Cs8rojTIX/D35SOwIjHejrwEbGoDhBr031uz6MarXV44dxGn61PbHdPg+SYC/Ke+jzi4=
+	t=1783518974; cv=none; b=fy2VGWJDoCL0Ak7qhyXG8EYhXAGqeLJqgwfaMU+tCRqZ8vLmgfOwnF0TWbBBzngVuRKoXz9PDWIyzA2oLyk9VXI1uW2HKuZRtfVJqNCEc/OpCIyTkEr8/nFm7byDPmNRiiuY0AsrIpuDq+HQqFenFlQv9Qw2G/Zpvqi7cYkVQKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783518655; c=relaxed/simple;
-	bh=L4uOmHG0PTeHUhBxML6aC54YVQjpmX+I1J6BRMZtbGM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UzJIttval70hMgn21u+TbI4NjEu2s2dHExYShjT1i497opDh9Zc1ogTI5nEZByklxF4fwo7bxCVcGtcLhfCbeK9Y1mJPnYQdozI42x2pM0izPAPxonSaV3Ir3Q+WUxwRoxUAiVpcmjAXjEOJQ7J9Zw5e6vslNjANgUbnXNIY8aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbKEx5Vb; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783518974; c=relaxed/simple;
+	bh=siKvIRDo0Y/Ydy26WcZsy+aK7Af8tKFw9dsj7ZyQA2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TFaN+o8rBQfs1qrthTKl0Gxu60PtQa3VZIVCusgru/p+HL4d1fkjM9qcC/kWlnhgp0xSZ018z0qMKL4Lo47NMs8D9HkvvMC8K1KQuljTId5WGp4+CQWAw7w1IBeDCvIexyiflawLqccIWmxwRinVL9NsyE2rwHrT33ukDjmdMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gqvk15hs; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbKEx5Vb"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c889d1eebafso1473800a12.0
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:50:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gqvk15hs"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37ff8e0ad0fso903486a91.2
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 06:56:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783518651; x=1784123451; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/P+BMIT7lvEWul4mibb3YDGqVJ+qpjKUy25TjmR56qM=;
-        b=nbKEx5VbtBt8u31XdApe1Yd2UA7q62wrsre4ao6ZfRGJtKsaidX6UZo9keibCUcl5o
-         7chcTbw4wuRpKPHU9HQIZPKdVWyOt/DDKl3hncP807bd0GylcyE80jVrQ1K7Nqmm/sv2
-         f354PRQ0BZ7f2ZIeNqwILjoLM0p6bXww1P7hrrveqgrGoQKrWHx22d1Svb5O2f2krX0t
-         u8D20wKVa+id9mUT3yYxlWLVZV+Yvlve5YCp79JhjxX0BNYjQTrSvIRD38Ra8GIbZ3WR
-         lMskYwNlHMuymmuhsCvhDMrTbSIpI4il37E2wyLU8azVDlZUZ8+OYQXxxOQovMxfs5hp
-         dX+w==
+        d=gmail.com; s=20251104; t=1783518965; x=1784123765; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B9GXuiVc8BU2jouaQOtlZOboIae/y18lrkf7oOk1X/0=;
+        b=Gqvk15hsG0Cht9er7K4MVpZM2UiL2/0H0dew8DLcL5zhdavoXVSWAdc6OgVMrRIu+B
+         C7/P8zJKy3PhAp9AeSQkywPQN7fyGKY3z1lVR31gqRMHRmlYJ6bhGX6gMONGFxwDQ2n0
+         ykkSg+RHXvuqnLKMdCpz4Z/XQYzx8wt1UHN7vHTjioDniEO94kTfyalUDCPNlpTcw/oj
+         FrsU+AgrVjO4XteKUnx2/CFmeXn7SYo/zbJvq+L6DfxI6C0tMCngy/XSHA2hxEvqA0fo
+         cLHURLhKErL/BCVBvMH9FseIM8s6w05niOn4xqib6zoCJvdRIN+1XKpUHzVov03Sx0Sv
+         oTmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783518651; x=1784123451;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783518965; x=1784123765;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/P+BMIT7lvEWul4mibb3YDGqVJ+qpjKUy25TjmR56qM=;
-        b=oV5wuubOs6/UQ+PSqIrKA2kIsriEjcMDLKg8M6WSQK3ixtjT+1Zm0UkW2gd3/cnFV8
-         4RcnNlt2BYLyNR63ZJlJkoIPrKwC8ZxwMELcFT++vV4vouxy7mnS19HTNDDYDFs/Wkd/
-         x/Oq3IOSAOUXscH3GsM1Zqi4c1pDYL0YbkjyiMOSBiUZYGp4TuWkDPMoEIcxkPFwqzcV
-         QDNIYvM+2ByAnJdSVNOaeVI28KYM5tUmunbehgbHBQTbe5gh6uPhxgnAlxdK7GOKjIQg
-         Md5xOLX5ETQqCrdwKmIDy5abGe6xz+lx8m4LDTB2003RKuhBUXfbXyJRc4qhDU8vKHDz
-         ECgw==
-X-Forwarded-Encrypted: i=1; AHgh+RrXT3bK80Yd+S9HuvmWuXFefOpYHWwxYPiALFNSL4lCmiRwWcbF7vHzAEJvlAfrtO9JpKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF87g9T77sjGYkCq+j5Td8gUZZcxa5jAZpuJxlueXWpzARY0or
-	t+Pm46mVw8AgkL3ydR0zK54bzZQ58zCLfKP68RPJSRZ7j9jz7gmt/NGpJnwT9dLh+w90IxHd+TD
-	wktlK/g==
-X-Received: from pgjz15.prod.google.com ([2002:a63:e54f:0:b0:c96:acc6:54d6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d0c:b0:3bf:e449:332a
- with SMTP id adf61e73a8af0-3c0bcf15ddcmr3221863637.3.1783518651284; Wed, 08
- Jul 2026 06:50:51 -0700 (PDT)
-Date: Wed, 8 Jul 2026 06:50:50 -0700
-In-Reply-To: <20260708134101.1073574-1-jerry.lyu@open-hieco.net>
+        bh=B9GXuiVc8BU2jouaQOtlZOboIae/y18lrkf7oOk1X/0=;
+        b=JSsGIsNcWNCVfPeICUww3d49vAqTDePTHglvTZ0HjiVxenBQX2nR6DTBSzNMZHW/qN
+         APQxLXswSzkYqxcqUduTEwClWWZ/q9Nf4sSkp+VM8cBapwOh/Dq+K0ETEAzb75OB7oP9
+         nmFa3LYhI19WyalzCe71Z24+VOM6zfQ4cb2KTv4mFFrGTL+b2mLsufxhQrczcQfNviqA
+         51tGWLzlXziphVu3yp52woNPinHm+dyxCvFJ/WUp0bEEMoOudaDZMfyJ0B2vSVdPeMJO
+         3lUGkhaJBO+sjNNNhRwMj5ZtzAbf27ctY1jcxy3qEBIHFkUF5j9Au59uWisTivENZAL6
+         4ITg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpg37sK1DYTPyOXk49yNag7ZBKlfsd0zi2FSNXmYO8vCS7g0CADkI3NqYJiFF9UiBQ68bk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNbNABcrNuoC4iGW66uet0OkM+wUH4r8XXF35xJfm302BUZ8NB
+	dPP/pZ8cQN4f0ugl0NesEtpaIZbXlWL1eU6NJQZMGGwfGdHvVQ8GiWeX
+X-Gm-Gg: AfdE7clWfTUGO/imqHkO4op2iu2mZbEAfwmk8tTac+qEc3lTKIMCqYzIYClE4H9I+Iw
+	Q+rYplXidqLpH9/8xUAgHidgfM9VP3Dq5ky9RAcwn2ebxVbIHRCdJqNssvcJFU9X5AORB0k2Lhf
+	LvcdUNSFykuVWbcS7qAKS+6i31eIIkL8OJfQGxKmmUd/nCOkS5dEH6OTbam6g/z4aOtQQbv4IkN
+	W38rspl5vG6iaUMGDCLXnH4vXaJ9WKfDiYVTc6yUft+BOOZCpdr8eXAoVJ0dwOactOYg/dOWydy
+	wTvFTbjMGhkxWXDf3scQkyRQVrCrFGdAXEEk266497GEta1mhdPND/1gDoD6W1CAqneNoenbhD/
+	RUtd0PfhH206jptHDy5qIHCUFhsAeR5rjrErnebKX2Qo29779owa8rason6HuTeFDudeYmm+ckk
+	QBcwva/PzbSb5gQbdZgm9BlMlgHAdB2LZzTQi9Bg==
+X-Received: by 2002:a17:90b:4b81:b0:387:e0db:3d8c with SMTP id 98e67ed59e1d1-38943954dc4mr2403328a91.39.1783518965168;
+        Wed, 08 Jul 2026 06:56:05 -0700 (PDT)
+Received: from honglab.tailc96cb.ts.net ([140.123.97.73])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d3c675b1sm2742891a91.15.2026.07.08.06.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 06:56:04 -0700 (PDT)
+From: "WEI-HONG, YE" <1234567weewee457@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: vkuznets@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	thuth@redhat.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hank20010209@gmail.com,
+	"WEI-HONG, YE" <1234567weewee457@gmail.com>
+Subject: [PATCH v2] x86/mtrr: Drop stale linux/kvm_para.h include
+Date: Wed,  8 Jul 2026 13:52:32 +0000
+Message-ID: <20260708135232.160302-1-1234567weewee457@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260708134101.1073574-1-jerry.lyu@open-hieco.net>
-Message-ID: <ak5VuvKjr8JqFOPf@google.com>
-Subject: Re: [PATCH] KVM: SVM: Do not warn on IGNNE MSR write
-From: Sean Christopherson <seanjc@google.com>
-To: Jerry Lyu <jerry.lyu@open-hieco.net>
-Cc: pbonzini@redhat.com, joerg.roedel@amd.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026, Jerry Lyu wrote:
-> Booting windows server 2025 on top of Linux KVM results in host kernel
-> warning logs of "Unhandled WRMSR(0xc0010115) = 0x0", which is due to
-> "IGNNE MSR" write in guest hyper-v. According to AMD APM volume 2,
-> section 15.30.2, the MSR is "only useful if IGNNE emulation has been
-> enabled in the HW_CR MSR", while currently KVM has prevented guests from
-> enabling it. So change the warning to a stronger check.
+arch/x86/kernel/cpu/mtrr/mtrr.c includes linux/kvm_para.h for
+historical reasons. The include was needed for kvm_para_available()
+check in mtrr_trim_uncached_memory(), but that usage was removed by
+commit bf3647c44bc7 ("x86: tone down mtrr_trim_uncached_memory()
+warning").
 
-Except the APM doesn't say anything about the ordering, and in typical APM
-fashion, nor does it actually say what happens if IGNNE emulation is disabled.
+Drop the stale linux/kvm_para.h include. This also removes the need for
+explicit linux/types.h workaround that existed only because kvm_para.h
+depended on it.
 
-> IGNNE is used in the legacy MS-DOS compatibility sub-mode of X87 FPU
-> exception handling. Intel SDM volume 1, section 8,7.2 describes the
-> details of this mode which applies to AMD CPU as well. The CPU selects
-> this mode when CR0.NE bit is 0, and will rely on two pins (FERR# and
-> IGNNE#) for exception handling. AMD later introduced IGNNE MSR to "set
-> the state of the processor-internal IGNNE signal directly" in order to
-> support the legacy mode without the dependency on IGNNE# pin.
-> 
-> The current KVM implementation does not emulate this feature, not sound
-> necessary as well. The commit 82494028dff648c29e3a ("KVM: SVM: Ignore
-> write of hwcr.ignne") clears the bit-8 value in the guest HWCR MSR
-> write, making such field always zero, then the write to guest IGNNE MSR
-> can always be safely ignored.
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: WEI-HONG, YE <1234567weewee457@gmail.com>
+---
+v1...v2: https://lore.kernel.org/all/20260505065849.81691-1-1234567weewee457@gmail.com
+ - Drop the stale linux/kvm_para.h include from mtrr.c instead of adding
+   linux/types to asm/kvm_para.h, as suggested by Sean.
+  
+ arch/x86/kernel/cpu/mtrr/mtrr.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Well, yeah, that's what KVM is doing, ignoring the write.  But KVM is also logging
-that the guest attempted to write an MSR that KVM doesn't support, i.e. this is
-more or less working as intended.
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
+index 4b3d492afe17..db5bf4adfd28 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.c
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
+@@ -18,10 +18,7 @@
+     System Programming Guide; Section 9.11. (1997 edition - PPro).
+ */
+ 
+-#include <linux/types.h> /* FIXME: kvm_para.h needs this */
+-
+ #include <linux/stop_machine.h>
+-#include <linux/kvm_para.h>
+ #include <linux/uaccess.h>
+ #include <linux/export.h>
+ #include <linux/mutex.h>
+-- 
+2.48.1
 
-That said, KVM does effectively support the case where #IGGNE is not asserted, so
-I think we can simply do this to avoid the useless logging?
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e755f43f4376..a7efac3241c2 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3205,7 +3205,8 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
-        case MSR_VM_CR:
-                return svm_set_vm_cr(vcpu, data);
-        case MSR_VM_IGNNE:
--               kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
-+               if (data)
-+                       kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
-                break;
-        case MSR_AMD64_DE_CFG: {
-                u64 supported_de_cfg;
