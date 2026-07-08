@@ -1,176 +1,212 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7A32DFF04;
-	Wed,  8 Jul 2026 15:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B00A372EDD
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 15:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783525326; cv=none; b=InhMx2p4YzLRv1NK74/3ARQQx+RogxH9FePQjMKAem3jujGKuCkqnKNNGJpdUb2NUftLB8KAamfnSCPYeiz2tZn5okGmb5Crerx1bMIoWND4g2MGrA/+/aO+V708WTNRsFYWPSyaLoo0ud9Rt64yvB9G1Azwg5MYpr+YYYWLteA=
+	t=1783525688; cv=none; b=q1kmlfZavxtPCPGVqw42m4O6dfrMJ1GP2ZQW1YRA3Vb9iYKF4AkKSneuVbvP0cisG2SAlsSCIXbCIRn6kEvcxCvRMI+/D5xd5qxOwkLeMpf/hcSLmYM/WQYxAA0S8AbTGapP+vG2mcrZ1I3aOxJoL8UK9SlhEP70OLOtdpm56GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783525326; c=relaxed/simple;
-	bh=h9IbvOGqce5jMK4IWXHEhleScCe4RkKQUnlmN1EOwrc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RnM+zI8Eut451+iFfU2GZcl0uW8R+U4hfK30TvB07XSV13g6ERr9nKx8wB0JsYG1OCJBMCdHNtgE6JuDmKmh5OxSYl5Q7mWcZYd1n7DlZFRJyS/lnmoYFnGUK/UF0rtjmTZcprdzvwuW9B4A0GgmElGtMXUnmJlGjBmUmXaPhFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=d59hYOZ5; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1783525688; c=relaxed/simple;
+	bh=wKbZlrdMXTskiRZn3Ml2E3DIg60TMBjRD+RrQBRLe0M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aEBWihjHHe9T/P8sNYHK0qZZE4lNm8pDnWaMV11/5ga07lHS5Hpyg2AI6oMR1qnoJOBWvjjK53gfB1vMEF7mOtcjBjwPr9tdXz9D9UxPbsM1bSyQn0amzT9nl/Y2zOgj39BM8GllKSn4ZvZxNjayxRYbsljm9n52OTNNhejrWlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OEqkgcyH; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="d59hYOZ5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=h9IbvOGqce5jMK4IWXHEhleScCe4RkKQUnlmN1EOwrc=; b=d59hYOZ5emvwyIode+FO8PQHCW
-	hOfcYL6Tvi5ZuY2q/7JB/LUzfXfFOnQJTiggW8iRjAYpkyxfODGNquMZusuhotjndqqN4FjlintH/
-	ARSPdUY2mn/Wq9kfQMy3491lUymKy5UzXk4i+6aDJ86YM1Kml6S6iEibGwY3FJ7agzJvZ+bCd0b8w
-	k0C7Kfjd0wscB4a0XG1AlT/iVM8nMt6YhVqO51D1G+xelZ6NiaKZ/TX271LHE3lh/Zq4arF2kJzZu
-	mTCzrA8Ip9M4JTT5etBUkeqQlOcm8QuydSwfGBaEmAZPMtdSYLk7DkU0b61sPSUGdrOngMOYranLX
-	dGhvnaEg==;
-Received: from [2001:8b0:10b:5:bad8:d14c:3672:7028] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whUPH-00000002y0P-2zeq;
-	Wed, 08 Jul 2026 15:41:51 +0000
-Message-ID: <c15965ea89c987bdd4cdc9ad5a0be3bdbb45e658.camel@infradead.org>
-Subject: Re: [PATCH 8/8] KVM: x86/xen: Use 32-bit locked ops in
- kvm_xen_inject_pending_events()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paul Durrant <paul@xen.org>, Hyunwoo Kim <imv4bel@gmail.com>, Paolo
- Bonzini	 <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar	 <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen	
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, 	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 08 Jul 2026 16:41:50 +0100
-In-Reply-To: <ak5reLzVpGuVJtEH@google.com>
-References: <20260605143034.3603-1-dwmw2@infradead.org>
-	 <20260605143034.3603-9-dwmw2@infradead.org> <ak5reLzVpGuVJtEH@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-E5A0bx0TSsENhkszGEZT"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OEqkgcyH"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cc88e22f92so20717465ad.1
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 08:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783525687; x=1784130487; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v+3D1OcYubcY+wxAzMdz1HXxsjNsoivr4HC9rMwUTA8=;
+        b=OEqkgcyHbFk0eMqwrdufzMJq5NaAV3M62c+CqPNdDhYBdNachhfks8vJQP+CBNYZs6
+         tVOwgRuotq4WFMlCCoICg/FEY8kEMntk63ptgbtiwds+79gfi6Fs+HWaAjk1rj1pD9fc
+         OHpG2x/9T2m4bM4vLyWAt2ebMMSfC2zg2upV3R3DAtXaE4NjDMERYHN11ha4L3dQnpNj
+         8k64tucfcZ1zfsuISKdL5gzitlRxCDu8l+lM14IOEQ1gNWPq/4rBFZd4aIuZV7OMNjTo
+         zd9I4wpsJ3qlijMxKuJDKItZ8z6Am7HtTVFguQS50vk1XxkTFDSSpKc9Mh+muoCaPvwA
+         3KJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783525687; x=1784130487;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v+3D1OcYubcY+wxAzMdz1HXxsjNsoivr4HC9rMwUTA8=;
+        b=l5AoHDiLbpFVYeNohiP34ySMbTSp7J6atu9hSYb8edHzacvIBgns7wXCWpfQKqMIua
+         tfVfq7oJgkGlyET+Z9zxZSCdqzI6oag28w9gDqApyUF2UE4duqQVVZBVNgPjkRdapVKm
+         sRdbjgXfuL+spPJ5vsXWZC/vBgF00/c7rFtox76s7bhnspGYTug6tyIj/NagSX0Sgxc0
+         ij7X2tREegpc8/e6B9KQbctZqIpOIUQ9zhYxwb1x0sAhHPBuayoh5sQ4DpHL/J5smNu7
+         aDchu8wBaclyNCTGab2B7I2wIMqRmagUV2zkC4xrlDFBtTJ91tLHrMqAf1TSErls+qwL
+         SbOw==
+X-Forwarded-Encrypted: i=1; AHgh+RrYDmoBUpP+Ejn/RQJdr3CPOFpUM8Kuywd0lLo4WbAdnIa/qimOSQtaT2CIxR7dBkV+Qnk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz989gIpLiEn0bQakE2kMdByBZr5g6B2X3Af2v81SwcVItjc27N
+	1teeJ/LWnP+HmSyoBAWcVfgUkG5f8DLP6lW0IX7zNlrfykjpNn+PlpexLTnw/UcWMiRxleX4BvJ
+	AqJ9bJw==
+X-Received: from plblf6.prod.google.com ([2002:a17:902:fb46:b0:2ca:bb31:40b9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2984:b0:2cc:7759:ffac
+ with SMTP id d9443c01a7336-2ccea37b8c8mr32092505ad.30.1783525686681; Wed, 08
+ Jul 2026 08:48:06 -0700 (PDT)
+Date: Wed, 8 Jul 2026 08:48:06 -0700
+In-Reply-To: <20260605143034.3603-8-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+References: <20260605143034.3603-1-dwmw2@infradead.org> <20260605143034.3603-8-dwmw2@infradead.org>
+Message-ID: <ak5xNubAIov1QT6T@google.com>
+Subject: Re: [PATCH 7/8] KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_sel
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paul Durrant <paul@xen.org>, Hyunwoo Kim <imv4bel@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Fri, Jun 05, 2026, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Replace test_and_set_bit() on vcpu_info->evtchn_pending_sel with an
+> explicit 'lock btsl' in kvm_xen_set_evtchn_fast(). The generic
+> test_and_set_bit() uses a 64-bit locked operation ('lock btsq') on
+> x86-64,
 
---=-E5A0bx0TSsENhkszGEZT
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  x86-64, and the address of the per-vCPU info is guest-controlled and
+  only required to be 32-bit aligned.
 
-On Wed, 2026-07-08 at 08:23 -0700, Sean Christopherson wrote:
-> This is... impressive?=C2=A0 Related to the above comment about there bei=
-ng two separate
-> atomic operation, only the access to vi->evtchn_pending_sel needs to deal=
- with
-> potential split-lock issues.=C2=A0 And there's zero to handle the NOT in =
-the asm blob.
->=20
-> Rather than munge the 32-bit and 64-bit cases together, just manually han=
-dle the
-> case where the bitwise-OR needs to be chunked in two.
+I would also add somewhere:
 
-Yeah... that seems a whole lot more sensible than the ... "impressive"
-version. I think I got a bit lost there... :)
+  Note, KVM reuses the local gpc.  The atomic accesses to pending_bits is
+  on the page-aligned per-VM shared_info structure, i.e. doesn't need the
+  same treatment as the access is guarantee to be 64-bit aligned.
 
-Thanks.
+Because without that knowledge it's very difficult to understand why the
+test_and_set_bit(xe->port, pending_bits) is fine but the one the event channel
+is not.
 
---=-E5A0bx0TSsENhkszGEZT
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+> which requires 8-byte alignment to avoid split-lock #AC
+> exceptions.
+> 
+> Since evtchn_pending_sel is at most 64 bits wide and port_word_bit
+> ranges 0-63, a 32-bit 'lock btsl' suffices for both native and compat
+> vcpu_info layouts, and only requires the 4-byte alignment that is
+> already guaranteed by the registration path.
+> 
+> This also eliminates the bogus cast of compat_vcpu_info's 32-bit
+> evtchn_pending_sel to 'unsigned long *' which was the original source
+> of the split-lock hazard.
+> 
+> Fixes: 14243b387137 ("KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery")
+> Reported-by: sashiko-bot@kernel.org
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDcwODE1NDE1
-MFowLwYJKoZIhvcNAQkEMSIEIH462Ft9nHEOT3t9Rf8cvf4XbjjiaRThMx3U2AKtgBW2MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAurcn6Re5BI1b
-OtexuqYzGwXhewUjV3eICXmGHSpGlNop3IfNSayAyA9uJkue2rgfMRnwSHpAnO/a4vGJBBdGm3XW
-SRMO4qNLFYIoB5Ge6m7qwGwKPfs2R2/zaKzv8Ge24I6YGMzHKKT/lepohPqTuyX5qQRewCIl/cKw
-RZ5WHrslGEbmrjxicf3Q3YvKzw+hWjfRbZqu3LzrQqnfACX8hV3vsFy4ZwhsYYnd4VVEO7etgo/r
-NbaJuZDHP9lftPVzBsVX/TKRJrr9Snd6Ob7HcZp8If4KL3rBKkgvhCjajsB4tcCP7TMSvE63T4fU
-evUzXrcrJff3V4qwdscMuWp2vEeOnhG486J9CUsQ2u3/407/zQ/29WJtCqMozsRcuePgjReFTPNz
-RWlbuE5UZCwt+17K+vVI33Vt+nOqN999DhbLDjahtXA5qTUfez8Z0qB4+t6Q2H+UiyAJQxJYhDN3
-2EdiwPMKqcU7zRhO7tiCGuf65J6F6kzxoENtaiwP4RLPWgGdp5BO0ZjkF03wRCQebEtxGDK3OQzA
-y4EuQKE/L7vh/75G+OvmOdPxww3J8fUd1FYXsLB9xdfjcZvuvDKhbkJ1y2vVrfdQKlO3/QCgqCRq
-+K4e0qMZ6c6nl1Tak94jE/XklouPuCzUipLsHg4jcaCzK9eMghfExkGw/WrUuNwAAAAAAAA=
+Please add the Closes: link for publicly reported issues, especially for flaws
+reported by review bots, as such "bugs" are generally unproven.
 
+Closes: https://lore.kernel.org/all/20260604193554.1BA311F00893@smtp.kernel.org
 
---=-E5A0bx0TSsENhkszGEZT--
+> Assisted-by: Kiro:claude-opus-4.6-1m
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  arch/x86/kvm/xen.c | 42 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index ae0713718367..24e939ef5d64 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -1811,7 +1811,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+>  {
+>  	struct gfn_to_pfn_cache *gpc = &kvm->arch.xen.shinfo_cache;
+>  	bool has_64bit_shinfo = kvm_xen_has_64bit_shinfo(kvm);
+> -	unsigned long *pending_bits, *mask_bits;
+> +	unsigned long *pending_bits, *mask_bits, vi_pending_sel_ofs;
+>  	struct kvm_vcpu *vcpu;
+>  	unsigned long flags;
+>  	int port_word_bit;
+> @@ -1844,11 +1844,18 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+>  		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+>  		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+>  		port_word_bit = xe->port / 64;
+> +
+> +		vi_pending_sel_ofs = offsetof(struct vcpu_info, evtchn_pending_sel);
+>  	} else {
+>  		struct compat_shared_info *shinfo = gpc->khva;
+>  		pending_bits = (unsigned long *)&shinfo->evtchn_pending;
+>  		mask_bits = (unsigned long *)&shinfo->evtchn_mask;
+>  		port_word_bit = xe->port / 32;
+> +
+> +		vi_pending_sel_ofs = offsetof(struct compat_vcpu_info, evtchn_pending_sel);
+> +
+> +		/* test_and_set_bit() needs 64-bit alignment, but that's OK */
+> +		BUILD_BUG_ON(offsetof(struct compat_shared_info, evtchn_pending) & 7);
+
+		BUILD_BUG_ON(!IS_ALIGNED(offsetof(struct compat_shared_info, evtchn_pending),
+					 sizeof(unsigned long)));
+
+>  	}
+>  
+>  	/*
+> @@ -1864,6 +1871,8 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+>  		rc = -ENOTCONN; /* Masked */
+>  		kvm_xen_check_poller(vcpu, xe->port);
+>  	} else {
+> +		bool old;
+> +
+>  		rc = 1; /* Delivered to the bitmap in shared_info. */
+>  		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
+>  		read_unlock_irqrestore(&gpc->lock, flags);
+> @@ -1880,19 +1889,24 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+>  			goto out_rcu;
+>  		}
+>  
+> -		if (has_64bit_shinfo) {
+> -			struct vcpu_info *vcpu_info = gpc->khva;
+> -			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
+> -				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+> -				kick_vcpu = true;
+> -			}
+> -		} else {
+> -			struct compat_vcpu_info *vcpu_info = gpc->khva;
+> -			if (!test_and_set_bit(port_word_bit,
+> -					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
+> -				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
+> -				kick_vcpu = true;
+> -			}
+> +		/*
+> +		 * Explicitly use btsl instead of test_and_set_bit() because
+> +		 * a 32-bit guest is not required to align to 64 bits, and
+> +		 * that might cause splitlock exceptions.
+> +		 */
+> +		asm volatile(LOCK_PREFIX "btsl %[bit], %[sel]"
+> +			     : [sel] "+m" (*(u32 *)(gpc->khva + vi_pending_sel_ofs)),
+> +			       "=@ccc" (old)
+> +			     : [bit] "Ir" (port_word_bit) : "memory");
+
+Use GEN_BINARY_RMWcc() to make this less ugly?  It'll still be ugly, but slightly
+less so.  Completely untested, but I think it's this?
+
+		old = GEN_BINARY_RMWcc(LOCK_PREFIX "btsl",
+				       *(u32 *)(gpc->khva + vi_pending_sel_ofs),
+				       c, "Ir", port_word_bit);
+
+> +		if (!old) {
+> +			struct vcpu_info *vi = gpc->khva;
+> +
+> +			/* No need for compat handling */
+> +			BUILD_BUG_ON(offsetof(struct vcpu_info, evtchn_upcall_pending) !=
+> +				     offsetof(struct compat_vcpu_info, evtchn_upcall_pending));
+> +
+> +			WRITE_ONCE(vi->evtchn_upcall_pending, 1);
+> +			kick_vcpu = true;
+>  		}
+>  
+>  		/* For the per-vCPU lapic vector, deliver it as MSI. */
+> -- 
+> 2.54.0
+> 
