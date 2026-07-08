@@ -1,61 +1,32 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out28-131.mail.aliyun.com (out28-131.mail.aliyun.com [115.124.28.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E933806CC
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EF437EFE6
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 13:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783517962; cv=none; b=cru8OMSnWIW59/r19coexrL0lQVtgF7FKedOvSrIQSwEPUbTYIrT5DxtZ7YawOKNHUsGTWCyjBWwZh1MNfrqVGT6fQwexHCTQuWddj4n6yildaVfm+16Pul1wV1QUuTpI6nTDB8Q0MXS33EQoNaiPim4cR89LuNv7WBCC8D0EoA=
+	t=1783518100; cv=none; b=JiQuIvLKSrf+4eDzw7WdX7h9o8wMzCILwdc2YWNakB++dke65KgY0rRrZoR7P9OigHjwtYjs5JAuV1lRey77WsSp3XsiMaG+/KOWKfNp5xGYQqS+Rr/8tmEmiW9fGILdA5p5CIWigiUqaxJ2Zt+H3z+PNUPPlXS6QpFZXVCJg38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783517962; c=relaxed/simple;
-	bh=m5c+ccLYXR5ymz8ROG8r7MEHITmLJNROuh0xkKUaH2E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icAxH54bxF9+2IC+P4kaTtinqXExRAPNT2KHBUc+Ee2I238sL2LOuCBxBgTmDVkXeQYNy6Dgh1mKYHmUFtiuQDiptawZnMjo7WX4IKCtk/Tq1QYfc1GDx9LB+Y6Ff63dRGr3a3EgwFIJIePX+tJZ3NqOhSzvuw2ESb/eljHoNgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G9OVWZuw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G9OVWZuw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783517960;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/k7wJHHf1drTOERq04oriQIq1stfFuLb0fCEeKENTU=;
-	b=G9OVWZuwiECzOM2P5pE/xKQLouLQDKJsvaENIRA82hP+iBghLIuqbjfOQ2jzvyxu+XiJFM
-	h1mZgvxEsvxe2Pa0paLqGgYyCpHyfPR1bdSwe77EAf/kOf5+0aQON5kA6soAz0XbTrkKRP
-	D/oILGYjlg7rlfGPOPE2CZA3gGEUZVE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-213-xXdVoeY7NySIpfzcz9kKXw-1; Wed,
- 08 Jul 2026 09:39:18 -0400
-X-MC-Unique: xXdVoeY7NySIpfzcz9kKXw-1
-X-Mimecast-MFC-AGG-ID: xXdVoeY7NySIpfzcz9kKXw_1783517957
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83D61195609D;
-	Wed,  8 Jul 2026 13:39:17 +0000 (UTC)
-Received: from work.fritz.box (unknown [10.44.49.159])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0CEED3000C13;
-	Wed,  8 Jul 2026 13:39:14 +0000 (UTC)
-From: Tim Wiederhake <twiederh@redhat.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Tim Wiederhake <twiederh@redhat.com>
-Subject: [PATCH 2/2] KVM: x86: Document APIC base address constraint for in-kernel irqchip
-Date: Wed,  8 Jul 2026 15:38:55 +0200
-Message-ID: <20260708133856.302151-3-twiederh@redhat.com>
-In-Reply-To: <20260708133856.302151-1-twiederh@redhat.com>
-References: <20260708133856.302151-1-twiederh@redhat.com>
+	s=arc-20240116; t=1783518100; c=relaxed/simple;
+	bh=aNyPmP++pQqtAuS55yBRnVe0KwBArFB0DS08rBZ0lVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p0PtulRxcjRSFI5+B2czJ4mkOxwlbEJBPt+czWoHHgNqNkmU+Ggs27CnGxL14vH+I1LraRx/3JBegmvYrGDFIfqXu2+1mJUEAFLxauNgT3kk6TGxkk3ZoCIhegj+D9Jl7+hLt3QTcdyDxbjf46HrFJ1DJtPegzW5mm3btiJDk5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1664336|-1;BR=01201311R211S68rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0143639-6.15022e-05-0.985575;FP=5475021831384483071|2|1|2|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=jerry.lyu@open-hieco.net;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.iGQHCg-_1783518092;
+Received: from localhost(mailfrom:jerry.lyu@open-hieco.net fp:SMTPD_---.iGQHCg-_1783518092 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 08 Jul 2026 21:41:33 +0800
+From: Jerry Lyu <jerry.lyu@open-hieco.net>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	joerg.roedel@amd.com
+Cc: kvm@vger.kernel.org,
+	Jerry Lyu <jerry.lyu@open-hieco.net>
+Subject: [PATCH] KVM: SVM: Do not warn on IGNNE MSR write
+Date: Wed,  8 Jul 2026 21:41:01 +0800
+Message-ID: <20260708134101.1073574-1-jerry.lyu@open-hieco.net>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -63,54 +34,48 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-When virtual APIC access acceleration is enabled (APICv on Intel, AVIC
-on AMD), vcpu creation installs a private memory slot at the default
-APIC base address (0xfee00000).  If a user memory region overlaps this
-address, vcpu creation fails with EEXIST.  The same error occurs when
-installing an overlapping user memory region after vcpu creation.
+Booting windows server 2025 on top of Linux KVM results in host kernel
+warning logs of "Unhandled WRMSR(0xc0010115) = 0x0", which is due to
+"IGNNE MSR" write in guest hyper-v. According to AMD APM volume 2,
+section 15.30.2, the MSR is "only useful if IGNNE emulation has been
+enabled in the HW_CR MSR", while currently KVM has prevented guests from
+enabling it. So change the warning to a stronger check.
 
-This also applies when using KVM_CAP_SPLIT_IRQCHIP.
+IGNNE is used in the legacy MS-DOS compatibility sub-mode of X87 FPU
+exception handling. Intel SDM volume 1, section 8,7.2 describes the
+details of this mode which applies to AMD CPU as well. The CPU selects
+this mode when CR0.NE bit is 0, and will rely on two pins (FERR# and
+IGNNE#) for exception handling. AMD later introduced IGNNE MSR to "set
+the state of the processor-internal IGNNE signal directly" in order to
+support the legacy mode without the dependency on IGNNE# pin.
 
-This constraint is not documented anywhere.  Add a note to the
-KVM_CREATE_IRQCHIP and KVM_CAP_SPLIT_IRQCHIP documentation.
+The current KVM implementation does not emulate this feature, not sound
+necessary as well. The commit 82494028dff648c29e3a ("KVM: SVM: Ignore
+write of hwcr.ignne") clears the bit-8 value in the guest HWCR MSR
+write, making such field always zero, then the write to guest IGNNE MSR
+can always be safely ignored.
 
-Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
+Signed-off-by: Jerry Lyu <jerry.lyu@open-hieco.net>
 ---
- Documentation/virt/kvm/api.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/kvm/svm/svm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 270c3f0d668f..8a6210b4cd56 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -863,6 +863,14 @@ KVM_CREATE_DEVICE, which also supports creating a GICv2.  Using
- KVM_CREATE_DEVICE is preferred over KVM_CREATE_IRQCHIP for GICv2.
- On s390, a dummy irq routing table is created.
- 
-+On x86, vcpu creation may install a private 4 KiB memory slot at the default
-+APIC base address (0xfee00000).  User memory regions must not overlap this
-+address; doing so will cause vcpu creation to fail with ``EEXIST``, or the
-+memory region to be rejected if created after the vcpu.  This occurs when
-+APIC access acceleration is enabled (APICv on Intel, AVIC on AMD), which is
-+the default on supported hardware.  The same constraint applies when using
-+``KVM_CAP_SPLIT_IRQCHIP``.
-+
- Note that on s390 the KVM_CAP_S390_IRQCHIP vm capability needs to be enabled
- before KVM_CREATE_IRQCHIP can be used.
- 
-@@ -7921,6 +7929,10 @@ used in the IRQ routing table.  The first args[0] MSI routes are reserved
- for the IOAPIC pins.  Whenever the LAPIC receives an EOI for these routes,
- a KVM_EXIT_IOAPIC_EOI vmexit will be reported to userspace.
- 
-+As with ``KVM_CREATE_IRQCHIP``, vcpu creation may install a private memory
-+slot at the APIC base address (0xfee00000) that must not overlap user memory
-+regions.  See ``KVM_CREATE_IRQCHIP`` for details.
-+
- Fails if VCPU has already been created, or if the irqchip is already in the
- kernel (i.e. KVM_CREATE_IRQCHIP has already been called).
- 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index ef69a51ab27f..1100d9a66c2c 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3196,7 +3196,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+ 	case MSR_VM_CR:
+ 		return svm_set_vm_cr(vcpu, data);
+ 	case MSR_VM_IGNNE:
+-		kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
++		KVM_BUG_ON(vcpu->arch.msr_hwcr & BIT_ULL(8), vcpu->kvm);
+ 		break;
+ 	case MSR_AMD64_DE_CFG: {
+ 		u64 supported_de_cfg;
+
+base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
 -- 
-2.52.0
+2.43.7
 
