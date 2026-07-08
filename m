@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5B6175A8F
-	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 04:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB733A9E9
+	for <kvm@vger.kernel.org>; Wed,  8 Jul 2026 04:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783483444; cv=none; b=fXkKTCFNzYJJtXwvMPAMERp8A605Byey3j8XgiC1cQ153J4urdzBUwC8JSK+3u0I5AitiTJCKRVx8jzSI5n9hRiKZbOYjmWFl7yGSgZn4Uc6cheRKwYdwPvuYpBpiTEGwBCD/CMRybATBm36/AIHQBl+CbHGN5mdic3YNH8UhJo=
+	t=1783483777; cv=none; b=htBC413N5DDKPyHbmwSdR156OWiI8He8LnW17VOUYXr0NsO9kQf96aUVgauguc1CtRo7N8xqcLswneTnopl6olsgW0dCKF7Dvd4GutiFwq6twfCyvitAhnHY+Btaf6H9Q8jdzoxPhH7IdDoUxR8/zHov2ex8+2UYDGP/P89xqwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783483444; c=relaxed/simple;
-	bh=k4Ab/kyGvVYMuU1MbP3V0CQURuIu0FU1AAKvFIlgZfw=;
+	s=arc-20240116; t=1783483777; c=relaxed/simple;
+	bh=ljW+cwA7R28FLxZi53mQdus4awcRzFkR8iTRyaEuAwk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uIetwv9CPk+ZdC5rj/LSliwHBDslRuouTOkxprMip+2tm8xR70U9Wt3TgKdq9oL1VkJjcrXuGh6WPecvmx2nzFRXpyhcp8NGGW5dfNFm7Qda4Zg1+lJXrED079vEpTNf8pJDcLWsJxPrMdCT19qQwL26MKAeaUyZkbHtTZxCPr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4E0ESQo; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ghLRl7F1qCa0+Da88vLUROO7502p9QwbTd/oYq6/EH74nzGfzg1Im95rfxpNSxtn8LNRwd5TtRV6AtaR+68dPFjvhA972GR8XGtMfEimeCBUo3LAWDS+DDqEhc5YXQnILAKNfijWUccj4h6W5qLTNJLCMnZlcdxMc9my6jng9UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8jQZUMu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4E0ESQo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EADE1F000E9;
-	Wed,  8 Jul 2026 04:04:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8jQZUMu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA8B1F000E9;
+	Wed,  8 Jul 2026 04:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783483442;
-	bh=LyyFM1VML3EzsF/K3DP6V6eCSt/9IaCvH/Dj/KuJvhI=;
+	s=k20260515; t=1783483775;
+	bh=WAJz+0bm1Dl6RVFrPUmxqssf89i3M3rsfVcnFYNT7MA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=G4E0ESQopfKVxP7dTKECeol4LPe+EGTSmsxG56HOWrT9nsvcKcQPJOmvyR1FleVPj
-	 NOQIIjogrOik3oP6/xxNWFKH+yyWaUtEegjdL2Zpv2z+ClZ5xNBLHeQGbCF9T5BtNW
-	 9gM36aiarUFRKiSZKurvXrV9kQ6TeX/DVRJY2PuKTpwWP6VsTTjT+l9J24Wrjv2W+m
-	 tRLY+Tkz2TJ+1Bad0BNhUa++Iw94WYJK3nGKzda2b9O4w4UO4Cvj/GTyGT+l5fuuhT
-	 o02P9t60uwU3+kw0eO8EiJZkt5TErfDf7dzNFd6eO7KX5V8IpUPhRFqKQOBWBgIthT
-	 QBU5X3Sd1bQJA==
+	b=R8jQZUMuhjye8UnlrBUEAEEbipPHs/Z/mmR35I/tsI0F9lkZ/At50+34N0zReHW44
+	 sI8F3eOAHVrIHC9vSivNsEIftdtv9s9bfRTnkqTc2e+tzBBtsnFmyXN+1sSD8+VZ/y
+	 nq+6hzINTAJm6351We8vJTBhsWq906682K4IR80xVVby3Kf/812BEtvCv1lXqF0M6b
+	 rdgJKPADUnZurUIHxFwB010djNPB5RwBt0fUAe7wE2ArV37+oGdjNzSSH+sN1JDPGP
+	 6Gr1bY8jK14Rkb02xlPf1ZSCwZRFGbySgidKJb1xhZwehXDPIHRlg8TKtEuejwjibi
+	 FTVHJTIqrg+jA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 15/17] riscv: kvm: Use generated instruction headers
- for csr emulation
+Subject: Re: [PATCH v3 17/17] riscv: Remove unused instruction headers
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Charlie Jenkins" <thecharlesjenkins@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260707-riscv_insn_table-v3-15-3f8e5f75ba97@gmail.com>
+In-Reply-To: <20260707-riscv_insn_table-v3-17-3f8e5f75ba97@gmail.com>
 References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-15-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-17-3f8e5f75ba97@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 08 Jul 2026 04:04:01 +0000
-Message-Id: <20260708040402.9EADE1F000E9@smtp.kernel.org>
+Date: Wed, 08 Jul 2026 04:09:35 +0000
+Message-Id: <20260708040935.9BA8B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,101 +46,100 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] RVC (compressed) MMIO loads and stores read from and write to the =
-wrong guest registers due to a missing architectural offset calculation.
-- [Low] The CSR emulation code uses the `csrrwi` immediate extractor macro =
-for a `csrrsi` instruction.
+- [High] The mmio_test_destroy() function calls kvm_io_bus_unregister_dev()=
+ without holding the required slots_lock.
+- [Medium] Missing sign-extension modifier for floating-point memory instru=
+ction offsets in insn.tbl.
 --
 
---- Patch [15]: [PATCH v3 15/17] riscv: kvm: Use generated instruction head=
-ers for csr emulation ---
-commit 1deda6264dba206b7c5ef34e0d344daa8c535ddc
+--- Patch [17]: [PATCH v3 17/17] riscv: Remove unused instruction headers -=
+--
+commit 4c51ea6677f4f9f14ba5d191936c510b5b961ed2
 Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
 
-riscv: kvm: Use generated instruction headers for csr emulation
+riscv: Remove unused instruction headers
 
-This commit migrates the CSR emulation code to use the generated instruction
-headers instead of the hand-written instruction composition functions.
+All usages of hard-coded riscv instruction have been migrated over to
+the generated instruction headers so the old macros can be deleted.
 
-> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-> index c3e4cf2cd44b7..51eb2c717bff3 100644
-> --- a/arch/riscv/kvm/vcpu_insn.c
-> +++ b/arch/riscv/kvm/vcpu_insn.c
+> diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
+> index bf6f5d530491b..ea1f139d6d904 100644
+> --- a/arch/riscv/include/asm/insn.h
+> +++ b/arch/riscv/include/asm/insn.h
 [ ... ]
-> @@ -166,26 +162,32 @@ static int csr_insn(struct kvm_vcpu *vcpu, struct k=
-vm_run *run, ulong insn)
+> -#define RV_EXTRACT_UTYPE_IMM(x) \
+> -	({typeof(x) x_ =3D (x); \
+> -	(RV_X_MASK(x_, RV_U_IMM_31_12_OPOFF, RV_U_IMM_31_12_MASK)); })
+> -
+> -#define RV_EXTRACT_JTYPE_IMM(x) \
+> -	({typeof(x) x_ =3D (x); \
+> -	(RV_X_MASK(x_, RV_J_IMM_10_1_OPOFF, RV_J_IMM_10_1_MASK) << RV_J_IMM_10_=
+1_OFF) | \
+> -	(RV_X_MASK(x_, RV_J_IMM_11_OPOFF, RV_J_IMM_11_MASK) << RV_J_IMM_11_OFF)=
+ | \
+> -	(RV_X_MASK(x_, RV_J_IMM_19_12_OPOFF, RV_J_IMM_19_12_MASK) << RV_J_IMM_1=
+9_12_OFF) | \
+> -	(RV_IMM_SIGN(x_) << RV_J_IMM_SIGN_OFF); })
+> -
+> -#define RV_EXTRACT_ITYPE_IMM(x) \
+> -	({typeof(x) x_ =3D (x); \
+> -	(RV_X_MASK(x_, RV_I_IMM_11_0_OPOFF, RV_I_IMM_11_0_MASK)) | \
+> -	(RV_IMM_SIGN(x_) << RV_I_IMM_SIGN_OFF); })
+> -
+
+[Severity: Medium]
+Since we are removing these macros and relying on the generated instruction
+headers, do the generated macros correctly handle sign extension?
+
+In arch/riscv/tools/insn.tbl, the floating-point loads and stores (which use
+standard I-type and S-type formats with 12-bit signed immediates) are decla=
+red
+with imm=3D instead of imm~=3D:
+
+arch/riscv/tools/insn.tbl:
+    ...
+    fld common 011<12|0000111<0 imm=3D31-20 xs1=3D19-15 fd=3D11-7
+    ...
+    fsw common 010<12|0100111<0 imm=3D31-25|11-7 fs2=3D24-20 xs1=3D19-15
+    ...
+
+Because the ~ sign-extension modifier is missing, will the generated C
+extraction macros (e.g., riscv_insn_fld_extract_imm) incorrectly zero-extend
+the immediate offset instead of sign-extending it?
+
+This could mathematically corrupt negative memory offsets (e.g., -8(sp)) in=
+to
+large unsigned positive numbers. Although no kernel code currently extracts
+the immediate for these specific floating-point instructions, this acts as a
+latent logical defect.
+
 [ ... ]
->  	} else if (riscv_insn_is_csrrsi(insn)) {
->  		wr_mask =3D riscv_insn_csrrwi_extract_imm(insn);
->  		new_val =3D -1UL;
->  		csr_num =3D riscv_insn_csrrsi_extract_csr(insn);
-> +		rd =3D riscv_insn_csrrsi_extract_xd(insn);
-
-[Severity: Low]
-This isn't a bug, but is riscv_insn_csrrwi_extract_imm() mistakenly used he=
-re
-for a csrrsi instruction instead of riscv_insn_csrrsi_extract_imm()?
-
->  	} else if (riscv_insn_is_csrrci(insn)) {
-[ ... ]
-
-
-commit 8d80090faef41d1000ad8ee985dcdaa3df7c12d3
-Author: Charlie Jenkins <thecharlesjenkins@gmail.com>
-
-riscv: kvm: Use generated instruction headers for mmio emulation
-
-This commit migrates the MMIO emulation code to use the generated instructi=
-on
-headers instead of the hand-written instruction composition functions.
-
-> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-> index a1898ab8bbe85..78adc28308193 100644
-> --- a/arch/riscv/kvm/vcpu_insn.c
-> +++ b/arch/riscv/kvm/vcpu_insn.c
-[ ... ]
-> @@ -411,44 +411,47 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu,=
- struct kvm_run *run,
-[ ... ]
-> -	} else if ((insn & INSN_MASK_C_LD) =3D=3D INSN_MATCH_C_LD) {
-> +	} else if (riscv_insn_is_c_ld(insn)) {
->  		len =3D 8;
->  		shift =3D 8 * (sizeof(ulong) - len);
-> -		insn =3D RVC_RS2S(insn) << SH_RD;
-> +		rd =3D riscv_insn_c_ld_extract_xd(insn);
 
 [Severity: High]
-Does this code miss the + 8 offset calculation when extracting the register?
+Does mmio_test_destroy() need to hold the slots_lock here?
 
-Previously, RVC_RS2S correctly added the 8 offset so compressed MMIO loads
-would write to x8-x15. With the raw 3-bit extractor macro
-riscv_insn_c_ld_extract_xd(insn), rd will be a raw 0-7 value, causing
-compressed MMIO loads like c.ld to overwrite x0-x7 (corrupting SP, GP, etc.)
-instead.
+When a KVM VM is destroyed, kvm_destroy_devices() invokes mmio_test_destroy=
+(),
+which calls kvm_io_bus_unregister_dev().
 
-> -	} else if ((insn & INSN_MASK_C_LDSP) =3D=3D INSN_MATCH_C_LDSP &&
-[ ... ]
-> @@ -537,35 +536,30 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu=
-, struct kvm_run *run,
-[ ... ]
-> -	} else if ((insn & INSN_MASK_C_SD) =3D=3D INSN_MATCH_C_SD) {
-> +	} else if (riscv_insn_is_c_sd(insn)) {
->  		len =3D 8;
-> -		data64 =3D GET_RS2S(insn, &vcpu->arch.guest_context);
-> +		rs2 =3D riscv_insn_c_sd_extract_xs2(insn);
+virt/kvm/mmio_test.c:mmio_test_destroy() {
+    ...
+    static void mmio_test_destroy(struct kvm_device *dev)
+    {
+        kvm_io_bus_unregister_dev(dev->kvm, KVM_MMIO_BUS,
+                                  &((struct mmio_test *)dev->private)->dev);
+    ...
+    }
 
-[Severity: High]
-Does this code leak the wrong register state to the emulated MMIO device?
+Because kvm_io_bus_unregister_dev() contains a mandatory
+lockdep_assert_held(&kvm->slots_lock), and slots_lock is not acquired by
+kvm_destroy_devices() or the device destructor, this can trigger a lockdep
+splat during VM teardown.
 
-Similar to the load case above, GET_RS2S correctly added the 8 offset, but
-riscv_insn_c_sd_extract_xs2(insn) extracts only the raw 3-bit value. This
-causes compressed MMIO stores like c.sd to read from x0-x7 instead of x8-x1=
-5,
-leaking unintended guest state.
-
-> -	} else if ((insn & INSN_MASK_C_SDSP) =3D=3D INSN_MATCH_C_SDSP &&
-[ ... ]
+Can this be triggered locally by unprivileged userspace executing KVM
+selftests or deliberately creating and closing a VM with the test device,
+leading to kernel log spam and lockdep warnings?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260707-riscv_insn=
-_table-v3-0-3f8e5f75ba97@gmail.com?part=3D15
+_table-v3-0-3f8e5f75ba97@gmail.com?part=3D17
