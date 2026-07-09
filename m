@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004C40960B
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040CF41737E
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783630208; cv=none; b=dJEeUCAcNdgV6fdCIelSLUUse23oNRVCjTEyB9BwU0V6/XQFnM7AlR1SpsW9I7Ayi5aVhXvagxKutf76lpqvCJ6j3eRGxkQV2qjP5+2Sq87XkKo3SObviz93pCu5RdtKDcGQCYTjamuheGiCe3jMOvHl4jG8rkACIo1IYOWS8B4=
+	t=1783630209; cv=none; b=A9XCKTQEWNkptb2OQkkWPI9YfjjC7cO5S7vHKZQKnjbU8P5ObesuLC3HCLOwq7Mvob0mzigOUAZb0mRuuusc9bgEkLYdugdRGmqdu7tsMO8dqVstdzAj9j29f7Ljt9ykAWyVhQxlVyXgZEu2Ay9htET2Km4AGqDCXiEZR4+96PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783630208; c=relaxed/simple;
-	bh=CLopC9ueBQIpZiMex7cJSz/lEEuWBgcn82yu9QM75fw=;
+	s=arc-20240116; t=1783630209; c=relaxed/simple;
+	bh=BeQiwlmT0Hq+uW/6Ie65Yitpu7XubvMvczTiS73fOns=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lgcE+lvoG1dvXi6DTio/r0a7HDjawcWBDmwPWbFsN9JCkUT7OMfI30eWHD6F+We5zSjg9DBSdBsMAD4XtxdjxMEeLmjWgQMzZt79ZE1h60eg+mzxIw8P2GQPhdf2LJ1QAEeCncf46U8h576IDLcHxe7fSBHlOUY1p4DzLzH9lSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rRt0nA6f; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=BnQgLfG+R+B6qNfEb1SyS3BCGrpvKV6XHiHXjzrEQIU+0lAdvYKlm6jQWWCfurf9HDbbQyQlU914zJmEl90dkb5d5SJAJLXbRWTV2tU8eW1Xu4nYaH7THy6Sg9j5QGFMJYItzhqRX+t7oIBe21ENFkE00cQnSYPHo12BAu0y+dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZJowJwoB; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rRt0nA6f"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37d4f23eb37so456728a91.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:50:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZJowJwoB"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ccb6823efcso1463145ad.0
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783630206; x=1784235006; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783630207; x=1784235007; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=y+YnjyILCJ/LQYr8IHTZJIswKUs28JqFys7E1ZCvu7I=;
-        b=rRt0nA6fd37bbDibrlKCDteErqiW+TltEUD0oPhpLi7ZtkL3tBg4WpxvzF6g5wg5hO
-         sCJiXCNbCf5n7Ip/gZI3vZzIrryKt06SILctpVNlIEFKObPS+H8sNhUZHNYrdX9Yhnkj
-         AlFHOU7mIDW5bj4JA4MjA1Ju10VwBhaqWCtZT0JsaZZN4kUgXCkQ28UqIERmjL/XCENh
-         7jHXCqJI7eLKLxWjN1iANMGb9tuXcXpU3m8xx/z1/uh/Ui14ADSNbhu2l1rv/lN3k3+3
-         X4XidI4pHYbZuM+7zT89RPu4h4qzjlLide51Tcqkfpju1tJWjhGDPAuqg8u1XvvEqDvN
-         ReTQ==
+        bh=D+bCb/eL1hAXexbivtEb3cGhBRIg4Kgd+Kil3n1b/1g=;
+        b=ZJowJwoBwH4C2r0m7s6wRVlaYu9Uq3e6Av/p+0djpDa9bsROHN9UMZuiO6fbFwVVoH
+         xMZs9CVEzCWBvvp36Y4Aqk8EUdvFHrpYesGVV0nJe4ocFc5NxtZi1OeYC8N45NAtB5jD
+         QVST4n8r8IXLDdxLeO0WGfAFJF9jMCzf6mXbMoA/23/MrkAKGP9R4ucg/G2UuJ3/T6Vx
+         ZJUe+f1AzgHq0zVv5I2qIkXOnpXg9KGSHDlsXzgqIwaTO9IqdDO4+dvP7hsbt+sH7z/v
+         3mIljaWyL88wCfbYawXhZP3mw1llp/k1UaUV3CXqvRx1IBADcgky6n8GBOAqo7bSQHLx
+         LTTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783630206; x=1784235006;
+        d=1e100.net; s=20251104; t=1783630207; x=1784235007;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=y+YnjyILCJ/LQYr8IHTZJIswKUs28JqFys7E1ZCvu7I=;
-        b=G8H6VKXV+GUatu6hBiVR7iXK7XJY0bSvajoUE7UxZBq0f+AUNr0M6Fdju5mqB1dpll
-         YiJu5mey31N+B4r//im0/bVYvp7Ry2fNNru+YoKxz5AUicp8RI6BoMe4+y0iLl0Ad864
-         X8JnFT7bO6+S06zWO139bWwtaS+nqY3RrFKyjA7n1S/aTw5Ke5+yKP+SE/YR/aDmq0nc
-         eVWnkHGnTyGwI5dj3iCklXgohB4JbABHsvmOSJ9bZdErPzLH+2rR8uji5FOcTkBtSiPV
-         T830DHN80PixrBMBnMlQI4daIs85y6Gt1VZR7VfImLzm65QUTs/XTZLShxsFzDm/3vgn
-         qSqA==
-X-Gm-Message-State: AOJu0YypJgZSTUPd8/lMa/twPerGYh60dxB2qdDTpYd48BK4gj9LoGyK
-	d9NperbzTS06BJiOLKEl34EagLWQj62mzXvqCMG0PHxz2EupZY2JNX6nTuTvD0vRKezKd+piOlm
-	WFYEPtQ==
-X-Received: from pjbqo5.prod.google.com ([2002:a17:90b:3dc5:b0:381:ef4:4373])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17d0:b0:382:1aaf:4bab
- with SMTP id 98e67ed59e1d1-389416e7dbdmr8322970a91.27.1783630206130; Thu, 09
- Jul 2026 13:50:06 -0700 (PDT)
+        bh=D+bCb/eL1hAXexbivtEb3cGhBRIg4Kgd+Kil3n1b/1g=;
+        b=VJDmbd/KLd2MDketHyb3QglQIc/g2GZtdjEa/5tNRAAcrejZV+PJm5XwN90P61TVch
+         AdzB0w/FZAy08x3ua61wRpUA8kfzPoWH/odQ7BgvgR2LLWu4cErQGYNDC+Knn980K3Qr
+         fXuKVnkD0b/xy/kOoJrUCrZxumSjd8CUeYUv33rOaGdfUkiY+8wUVj4qtCfFDYSKqhzX
+         n8uG7QhtIpmc/98HMctnA1zLzpu/BDrHGROylNQ8I96ULGglNDABntVrO4AaOUYWid4a
+         lvFFCNSvHxZbFnw6uc5qdgWal7YMrTaNPZRlO3OPpYZzKMpvC3Bc5Cc/BhejFnn6vuZS
+         BEPQ==
+X-Gm-Message-State: AOJu0Yw1bWMN33ZYQCyLmxaxRXDzwAtMNfaAgy7+6WJsefRs8CXqQo3s
+	6asYWWHbeD6FeyGiwas1mpKrdd2cd7+bcUDeEDaXYzsC2cDEwuefvDBkUoT9RMZ5a9xqSfqKNcg
+	D59zstA==
+X-Received: from plpl20.prod.google.com ([2002:a17:903:3dd4:b0:2b0:5538:b55b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:eccd:b0:2ca:c68:c554
+ with SMTP id d9443c01a7336-2ccea58f980mr81827205ad.38.1783630207275; Thu, 09
+ Jul 2026 13:50:07 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Jul 2026 13:49:44 -0700
+Date: Thu,  9 Jul 2026 13:49:45 -0700
 In-Reply-To: <20260709204948.1988414-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260709204948.1988414-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260709204948.1988414-15-seanjc@google.com>
-Subject: [PATCH v4 14/18] KVM: guest_memfd: Drop the redundant printk on arch
- gmem_prepare() failure
+Message-ID: <20260709204948.1988414-16-seanjc@google.com>
+Subject: [PATCH v4 15/18] KVM: guest_memfd: Fold __kvm_gmem_prepare_folio()
+ into its sole caller
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -72,35 +72,61 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop guest_memfd's ratelimited printk to log "preparation" failures, as KVM
-SNP alreads logs more precise messages in all error paths, and whether or
-not failure to convert the pfn to private is "unexpected", i.e. warrants
-logging, is firmly an architecture specific detail.
+Fold __kvm_gmem_prepare_folio() into kvm_gmem_prepare_folio() and extend
+the #ifdef guard to cover all of the kvm_gmem_prepare_folio().  Providing
+a single-use, ~2 line tail-call helper adds no value.  In fact, due to
+having to reconstitue the gfn, the separate helper is very arguably a net
+negative.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ virt/kvm/guest_memfd.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 7ad656e30f9f..f4f8635d1a10 100644
+index f4f8635d1a10..d5d3688eb1bd 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -66,15 +66,11 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
- 	kvm_pfn_t pfn = folio_file_pfn(folio, index);
- 	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
--	int rc = kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
--	if (rc) {
--		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
--				    index, gfn, pfn, rc);
--		return rc;
--	}
--#endif
+@@ -60,19 +60,6 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+ 	return gfn - slot->base_gfn + slot->gmem.pgoff;
+ }
  
-+	return kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
+-static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+-				    pgoff_t index, struct folio *folio)
+-{
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
+-	kvm_pfn_t pfn = folio_file_pfn(folio, index);
+-	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
+-
+-	return kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
+-#else
+-	return 0;
+-#endif
+-}
+-
+ /*
+  * Process @folio, which contains @gfn, so that the guest can use it.
+  * The folio must be locked and the gfn must be contained in @slot.
+@@ -82,6 +69,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 				  gfn_t gfn, struct folio *folio)
+ {
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
+ 	pgoff_t index;
+ 
+ 	/*
+@@ -101,7 +89,12 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	index = kvm_gmem_get_index(slot, gfn);
+ 	index = ALIGN_DOWN(index, folio_nr_pages(folio));
+ 
+-	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
++	return kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn),
++				     folio_file_pfn(folio, index),
++				     folio_order(folio));
 +#else
- 	return 0;
++	return 0;
 +#endif
  }
  
