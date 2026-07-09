@@ -1,151 +1,175 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E21C3EDE5D;
-	Thu,  9 Jul 2026 09:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336643E47B;
+	Thu,  9 Jul 2026 09:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783589799; cv=none; b=YsTDhwwBQ7vsc1uVPr1YJ+hp+kdkSxF+3Z9ORB5e2dChuiTxN6dFqWwxcwGBqTtGbtxYVAOC8ldZzjaZyi9ulEfQkWcsX05kr6QSzZQJ7Zs5Rt3Kp+pIc9Zh91ozudEI9kN68ukp4eX1KfVr/ElQoTkczt1h9bV1BQse7Jnp35E=
+	t=1783589983; cv=none; b=uFGKEYXI4PUd/YuuRggL3nLjbwk/+WOJORJ9l+OQx1GuwchhgziGRn7AMRQ/3QPPnxWNbt/sXsjLNx1x+stnpBPQRzTRRO/1FzTpY0o8Ytgase2+2Z+zxU0/wnG0dhIC7ffBqoT8FRGYUcdJdNjp9IY2VmYXe57LwHIzzeiT00o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783589799; c=relaxed/simple;
-	bh=KaS/W+6zZMkdTTiNZzt03UAxHiiAoTzkXn1iNySP7FM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=tHP12wBYZl2rfA0H+ZA/AWilfoJKPSBfCv47MBmnBoUqeWWypwvgxgyWYyYmqiuv82q15WfzUYjuJ70ks2FtpNaUyIChbOAm3e7/rKlgPtSdkPitL2bcqHf6SWPZLhX1V6PcqFAKnJqU0GAgynY0SfqrZ4km4al7JYWxkukXX0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=V0GukvUQ; arc=none smtp.client-ip=113.46.200.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1783589983; c=relaxed/simple;
+	bh=7GA2pZHLuihFzNC5suVPNdeb2rgyYNSlTVmoPdc1Jnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NV2fzTbzrkAri85ewPbLmOIkdrth7VdCYOLkPE4tdfyqi6xwJAfP26+eOClmP57brkVM8rZoih6g6yvCg9EMDt7PxhIcBzibmTDoyHIaa39Ai6V0kzJng3Tfbf6bxbPXuGmZDQ8mSRPEz+tY35NuCnHhfPK9gs2OvN9B6wNw7Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eIRongIA; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="V0GukvUQ"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=j4gFp8Li95DiBT89MuYH1UY1sgoGqBgNPMgJv+I7yRU=;
-	b=V0GukvUQ6KmIqDGbSvSd2YdgentC+i0MIibRYL4RjUYVYLOCiDTIZaG8MDVgX9jitA9LXBsAt
-	6oV3oiuWCB8uLVBl+G43DyLS4r37HpDYdmQtKntumctkyuJB5T1JEwIOxRtQxZRBQkQ5RdGNxbS
-	pNz5Qs71IVYLICqXyndeF3U=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gwqPl62D6znTbt;
-	Thu,  9 Jul 2026 17:27:55 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4A61140586;
-	Thu,  9 Jul 2026 17:36:31 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 9 Jul 2026 17:36:30 +0800
-Message-ID: <539abb42-9e04-4216-b2b0-d3ab9f3bbe3f@huawei.com>
-Date: Thu, 9 Jul 2026 17:36:30 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eIRongIA"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IWr21897392;
+	Thu, 9 Jul 2026 09:39:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=M05QQu
+	2AhxhlfwVGw0snPzMy6XvSIYRk6m4W88pP9io=; b=eIRongIAq53MmskZdIMHqN
+	VE37M89HblCDzG+p6Ccgmmmed6tnA8+VCmvn+X0nean+8csGmJcftc1tJzT29Yzq
+	6Z4y/I1aQnvWbIxaC2NHaixr+wKOaRrf1thIqBMg8Q69MRKKwYvVcT6Va9GjWId6
+	NmDqI24kOfkBKP8+BI9WHwhyUCeaN3whHV+6AJG6afkWTITqge4Q4mVE88UB1fO9
+	bUMnqbf9ZLPiLAEHZZL48xnoUz9jhknBEOP0pZiSiNGAUgrpyuT4DDGKC1RRK/KD
+	JcotwNWYjvyHfqHFPHcN6lFJEqEOij9EIhjaM+aHYgz7L6NRSV0vPPs9vPqlYHEw
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur0rfp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:39:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6699YfLV020115;
+	Thu, 9 Jul 2026 09:39:15 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7dgkch4j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:39:15 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6699dD3S52953366
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 09:39:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09E302004F;
+	Thu,  9 Jul 2026 09:39:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 817442004B;
+	Thu,  9 Jul 2026 09:39:10 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  9 Jul 2026 09:39:10 +0000 (GMT)
+Date: Thu, 9 Jul 2026 15:09:33 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: leixiang <leixiang@kylinos.cn>
+Cc: seanjc@google.com, pbonzini@redhat.com, stable@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Suresh Warrier <warrier@linux.vnet.ibm.com>,
+        Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Set irqfd->producer only on success
+Message-ID: <20260709150215.e5b5af63-43-amachhiw@linux.ibm.com>
+Mail-Followup-To: leixiang <leixiang@kylinos.cn>, seanjc@google.com, 
+	pbonzini@redhat.com, stable@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Suresh Warrier <warrier@linux.vnet.ibm.com>, Paul Mackerras <paulus@ozlabs.org>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ak59frQUBl9Gs3Qn@google.com>
+ <20260709055755.31297-1-leixiang@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 07/18] PCI/TPH: Add pcie_tph_supported() helper to
- check TPH capability attributes
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
- <20260702124224.57168-8-fengchengwen@huawei.com>
- <20260708173249.2078c2e2@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260708173249.2078c2e2@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260709055755.31297-1-leixiang@kylinos.cn>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX0J8Kx25YbE25
+ gEKF/7pooXdZT5w2Ana836uEphAVHc51zuQyuiCckgLkullwvVqhD27s5+O3jxr7yjsLJ1qEWto
+ M/TFd5KcrnU6ZCNi6yjlkXo/uY2KLdo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX/tF6QwN3C+Hu
+ ELnzvTFlZW8BmZAF6YGV1s97Nt8NYWU12kEb39Q9ZeR6FCKPMw2XJINZ14fht5Xkv1+9oiLe7zN
+ RXNuCfQ+1XidblYy5gwGTZVwGIydiMcPu/HW3uWcHiMdP0svvYUk9WmtCy82fRCJAliLMuNCS98
+ nxkk5ZNwf1/OpwollX5I3+eFdtYGKyUDzZtukCUpTZ7xxYU8G82Fpwq6j6aZIjkYpAbVxaA5zKT
+ u6L/CZ/1aourPoRhz8Qd5Jt4WOYJRhBdLIR/fGzFKuzv/n4fXMDedCznPte2bzqcX5YlYAQjBru
+ NOpqgLVbKMact4TdZaBOrq4ZyAOeLd2rjWz8qEI8MAh0iR+GUqjP0WDVzYYQIaCxagYHh75ZEu/
+ UXDi37wkNFQBEv6yKJIkm/ODzINhu63c7ICiZuBB9kuZ0pg6IxgMyYKqtIvoOM5myqRCf2iu7OC
+ NIklSjUVC1BR1Z1HvQA==
+X-Proofpoint-GUID: ZJlaxRQCVLZf1W0xgI-7SUYf5knbDxjI
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4f6c44 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=1XWaLZrsAAAA:8
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=aQTDHXOw4a3q5qQiMUEA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 3PrTwKRV1brcDspQTSDzvnlPTg6EvwHR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090089
 
-On 7/9/2026 7:32 AM, Alex Williamson wrote:
-> On Thu, 2 Jul 2026 20:42:13 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
+On 2026/07/09 01:57 PM, leixiang wrote:
+> Set irqfd->producer only after kvmppc_set_passthru_irq() succeeds to
+> avoid leaving a dangling pointer on failure. The bypass manager does
+> not register a failed producer, so the pointer is never cleared.
 > 
->> Add new helper pcie_tph_supported() with want_ext parameter:
->> - want_ext = false: Check if device has valid TPH capability;
->> - want_ext = true: Check hardware Extended TPH support.
+> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: leixiang <leixiang@kylinos.cn>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Ugh, more bool args.  Like 6, I'm not sure why we need to abstract
-> these structure fields.  Is this trying to create an ABI for external
-> modules or is it trying to simplify code paths based on whether TPH is
-> configured.  These could just be macros:
-> 
-> #define pcie_ext_tph_supported(pdev) \
-> 	((pdev)->tph_max_type == PCI_TPH_REQ_EXT_TPH)
-> 
-> #define pcie_std_tph_supported(pdev) \
-> 	((pdev)->tph_max_type >= PCI_TPH_REQ_TPH_ONLY)
-> 
-> With the corresponding (false) in the !CONFIG case, or the caller just
-> tests the field itself if it's already conditionally compiled.  Thanks,
-
-OK, I will change in v20
-
-Thanks
-
-> 
-> Alex
-> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..ff7b25629125 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>  	struct kvm_kernel_irqfd *irqfd =
+>  		container_of(cons, struct kvm_kernel_irqfd, consumer);
 >  
->> This helper is prepared for follow-up VFIO TPH virtualization patches to
->> uniformly query basic TPH existence and Extended TPH capability.
->>
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->> ---
->>  drivers/pci/tph.c       | 19 +++++++++++++++++++
->>  include/linux/pci-tph.h |  3 +++
->>  2 files changed, 22 insertions(+)
->>
->> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
->> index ea777cc33ae6..c080cf5401a3 100644
->> --- a/drivers/pci/tph.c
->> +++ b/drivers/pci/tph.c
->> @@ -596,3 +596,22 @@ void pci_tph_init(struct pci_dev *pdev)
->>  	save_size = sizeof(u32) + num_entries * sizeof(u16);
->>  	pci_add_ext_cap_save_buffer(pdev, PCI_EXT_CAP_ID_TPH, save_size);
->>  }
->> +
->> +/**
->> + * pcie_tph_supported - Check TPH capability attribute
->> + * @pdev: PCI device to query
->> + * @want_ext: false - check TPH cap exists; true - check EXT_TPH support
->> + *
->> + * Return: true on matched condition, false otherwise
->> + */
->> +bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext)
->> +{
->> +	if (!pdev->tph_cap)
->> +		return false;
->> +
->> +	if (!want_ext)
->> +		return true;
->> +
->> +	return pdev->tph_ext_support;
->> +}
->> +EXPORT_SYMBOL(pcie_tph_supported);
->> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
->> index e4f7045fc152..5917a0694c1d 100644
->> --- a/include/linux/pci-tph.h
->> +++ b/include/linux/pci-tph.h
->> @@ -36,6 +36,7 @@ int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
->>  u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
->>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
->> +bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext);
->>  #else
->>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
->>  					unsigned int index, u16 tag)
->> @@ -60,6 +61,8 @@ static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
->>  { return 0; }
->>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
->>  { return PCI_TPH_LOC_NONE; }
->> +static inline bool pcie_tph_supported(struct pci_dev *pdev, bool want_ext)
->> +{ return false; }
->>  #endif
->>  
->>  #endif /* LINUX_PCI_TPH_H */
-> 
+> -	irqfd->producer = prod;
+> -
+>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>  	if (ret)
+>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>  			prod->irq, irqfd->gsi, ret);
+> +	else
+> +		irqfd->producer = prod;
 
+cons->add_producer is invoked by __connect() in virt/lib/irqbypass.c,
+which itself is called from either irq_bypass_register_consumer() or
+irq_bypass_register_producer(). __connect() only records the pairing —
+setting cons->producer and prod->consumer — if add_producer returns 0.
+
+  static int __connect(struct irq_bypass_producer *prod,
+  		     struct irq_bypass_consumer *cons)
+  {
+  	[...]
+  
+  	if (!ret) {
+  		prod->consumer = cons;
+  		cons->producer = prod;
+  	}
+
+On failure, no pairing is recorded, so __disconnect() is never called,
+and del_producer is never invoked to clear irqfd->producer. The old
+unconditional assignment indeed left a dangling pointer on any
+kvmppc_set_passthru_irq() failure.
+
+Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+
+~Amit
+
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.45.0
