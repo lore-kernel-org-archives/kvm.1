@@ -1,62 +1,62 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FAD4DA53B
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 17:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C14DA53B
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 17:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783619407; cv=none; b=Pkb1t3JfEy4NnUpTjWbLiL/Jj6Twol4CSFixdaKug3o3AoISBdV/w3ZIxBSzOEP+45fI/HKeMj01qrfrDw+4tJT7h0rEgOxlRyI1xN+nA+vrHcgCokwjXW1OdLss7magVmjl8PdkUshl42c3OCH49NW/jFPY3oZbtQDkPACNH10=
+	t=1783619410; cv=none; b=VVvKyK9OLwWyTcvMLIE1xFtYKXWNdP9g+1+yIV/52yXuzCF5X2Ue2dKl8PTTAQ8bdFM3cBZOua78pcqX+HSif+Ly9uJsG5oYGz/KCNutXv2ylDoripEdRgDOwcuUqChNCxEk7o1+WEwi+ZMn+oQ8h9SkeIPWqrUdlCrLodwTRBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783619407; c=relaxed/simple;
-	bh=NINPbgfWAFZPM9X858x1O8rMfSvtYHuE/EpBXP/sbuQ=;
+	s=arc-20240116; t=1783619410; c=relaxed/simple;
+	bh=ZH9gUXanWZQyFamf65EPOVHin/vb7WyYMXAgD6w9ZNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWgBUyDLeRGYX7eozmxnP7CyftOxOaMeG32i/3gJVRa384vNtbmZ3BnUcxQz9L7mrF2TUanIL/3QQuJ3usDEGuEwNBVW+6kpoN7OOO3MZMLRmrJR5HOQpaeMBr1Ygw6TVNQGK5MLnXd31qa/0nW3+vFXRlhZCnecwkqeJaBave8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/8bLBTi; arc=none smtp.client-ip=209.85.216.49
+	 MIME-Version; b=r4MxfjaWfGPzdisPhdD84DhE55xZCL8abAI9jpt72nHa1A7IkEhBMFC6tHit1EUxtP9KK7p+fm99Wel/jfNbho0X6+i2E/UusaB6fA3crOyLqs63zHv95GBWbtn3KJYGUSx/A/DLwRLtPGviP+t+k1CSwfh8zpH09CIT+KiOUwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KGH30+y4; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/8bLBTi"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3817f800c8bso189394a91.1
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 10:50:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KGH30+y4"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso268846a91.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 10:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783619405; x=1784224205; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783619408; x=1784224208; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hLRdI6+J0mg7/olAsLtQydfnWeoptTveOjexzjiBEPo=;
-        b=O/8bLBTi1kcn4CjGBB0l/HCq9nRZ2/cN1ciem1G8hqIeGGehjn7clFQ29x58iUcmWG
-         I53TisiqUMaGJ3buJaFrhV3t+1dxuCZaHsdTQhT6wZVsg4oT6Kp8QSZuIQa9+gngR06F
-         98Nz8x4oMn7m9JeDwpRCGSD5LM3IAlaPrSpaZ+V5wOh66FX8/bzDSmItXPchDK03Lgqc
-         a5iGbVrTpUh4Din8DOMeVUlZ4tGTTVE7iIMK4YUA7CRb/Zc+4fvoCyi4G38vGHwCCp9C
-         s/Xxwm5txM0+eBp9/xvO1TGPf7x7cKWrotQ/zCrpfenCiLRr42+1fsKbRLvMOLp3xn10
-         wJVw==
+        bh=ZBMHzicJyGTjDx4Sp0E+AdJJQvA9nCK0HkWtJMojLZs=;
+        b=KGH30+y47/VGnqs0bVScnk/1d86q02HFQ8Su5nJuowxwlDgSV4KbjPrdS1fcY2xUXJ
+         SrlH7uy9jzOC858QpJw3ET5qnvMZKW7VQP4zqCl1NVbEZhrQ4qtbYp8RlEZSrAD1mnd7
+         ivMmZCe6QsJ8nLUNA4BSVSqQA/sbQ8e+0PUh8fSG2v6TCKJONt08rE81uPRrWzZCGvZE
+         wQAjPvRu8h2GusuN5UPn6MxHWzuuEu8YWEdYX885ID/zoCiCeQnivbnviKbhG6hmeyNM
+         gKl4hghuVDQlMfQFXbPk2YszoJg+5QCDxmLvtNBZ/wmJURl1a+IBhGzSLVpjQuGNTqfa
+         vBgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783619405; x=1784224205;
+        d=1e100.net; s=20251104; t=1783619408; x=1784224208;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hLRdI6+J0mg7/olAsLtQydfnWeoptTveOjexzjiBEPo=;
-        b=HiNdU1m/pCnMHsz87AmGXxqARsefPkmr79fzM4yyaOKmp85KQ7dnbqV+0YOf/hnpT3
-         JeLjN8FVuRBdzheB/Ndx2qehiVNXvYG0FdRP0gqEc93AAeBlJikwhlXV9cgN1/e1cDnQ
-         t41hsDHbMbwU8DwsjkO8BVng8YFsPvp/6zsavZq53s3m0V8Zn8EOupLW74tGK5zmlKtO
-         Pz/hvUasmyawu7nr2RzI68APc/PkE2iFSYebFdlCOgP/3/aIqsxpSG839VUJrU+Kvob4
-         qQKqwpm3C0G0Hs5m3Ejbha73VYplWvpHFj0/shoqHJdWp8Xs7VGFXHnPB4y5OqLhORpP
-         JOlg==
-X-Gm-Message-State: AOJu0YwKG+ZAAGpXNww1yldYZfRSMpg1ZB9Yyy283vE+gOD7tKASMZwy
-	U7z1SB4S1BNaDTf5XIyJ0or+7n9SlLcpgb/jg89Wn9WiW/4SUzBx5AiV
-X-Gm-Gg: AfdE7cltGxK3wyVppppU2MLIZnQLumIXUdCLba2e7bRsCd4eZAlMJbnSzSvAtwkIo14
-	YZAiGzdfHAvvX/ET+LEfo+/dMXq5GpC2adj5ts6NFgJHe1bq52gdJaxnJd80q3p9r2cZ2mslstc
-	aQnE6YoSJMTVX7Qs87wQfxBrY3zxaESGxW9t8gQ166VWgB27pApijZs7DtApmhl+1l2j25IhtqQ
-	hPU3FxwzoIqZ9PdiVNfcWL3QoMzGsNPXnmkOs4MCGFRskkAzfGg7tc/VOh21luNW7/yj1UiCdBS
-	/DvFiXfEZuJPNQ8E5Lc9EKeJLnZpuWiwHMZzkOtbdPAVxoKbh6geMJ3kvs/QXeC9A/AHwhBjMCg
-	sAe7p34hmLyE5Kf/wrcJGGcEJLVF/5UUUvX7b/GK5Z9lV/9nbNkP3/LgmNKIqPZy8LovA6gWzCq
-	zBWCvmV3qt4+sxmVv1txQITAJy1PXNYDoG5sQ=
-X-Received: by 2002:a17:90b:5845:b0:37d:f0dd:e715 with SMTP id 98e67ed59e1d1-3894024d8e6mr8531603a91.10.1783619405328;
-        Thu, 09 Jul 2026 10:50:05 -0700 (PDT)
+        bh=ZBMHzicJyGTjDx4Sp0E+AdJJQvA9nCK0HkWtJMojLZs=;
+        b=ePzRJvKj6Mq2OfkW8IT+9U8GUydvmOybI4S9oevK6/QOV/QaDWiK1sSIyRuZ7BGAnZ
+         Y6y1v4F8cUB30FE1jcA19u75lOK2MMb/tSvwHq/PaziFMevz2CK13OLjiw+gvXaPas0j
+         pxH9cDo7qtJeG+sUcMxzTWfinZXdwIGIIybl/dr4VGZ+yIGtAX3Os/Y3SZOv+ZAK/D06
+         KKsFJWayzWktjCLK6RUe8vmTS1aUZU8azio/BfhtiJ+w0SRQxmLaVdorSOGJmga484Nl
+         ozsxWPJl5HiZlDNcJT074aDwtvMhaX0pubYj2es0y4dfZIHmnG/2VlCTMvEOY30a6tmu
+         NM/w==
+X-Gm-Message-State: AOJu0YwFl4Bnmw0I7huWAJWUIGPxxr6kmqat2YFN8XPSvKVEp+yfZY/Y
+	2pUwL/Mub2jlGrBkh3pTglr6syIajnUI93CUg8PJViuSHgH/UfLGskrO2EQCvbBu
+X-Gm-Gg: AfdE7cnmUiBs8LR8nOuT3JJ6sRgzEueLIgs+GoovcBOJ10XqhSEkqQfuz2SDxtAEMvp
+	b4GzBb3FaoOf+kbh2q5vArFPNzh7NFvaB9c4dJcyuchUAamPZFnSNoTfELT2CCD63U3zCjhAesD
+	g3uZgtEYP8Wjr6aWPHQbgcMDc+HhBw4udIUL991kSyU8tPh2WkMwaDlIU2ZB1jbgPAWs8zi3Scb
+	Amph4KqyFy+yyR3IuBCSeZ1zTESlk7WbYq4oeC4Z60IxKSHM+yVsKS05L4HOW3b5oCmwja+QNj2
+	EHVDLUXOvk72IrZ6JgEFOXdbhQXAiFGm2fSfG5j+9QPeEDjjgI33CQ0PDoSecjfSx6aV5QPRgLE
+	psIV+rtX9a2MzvYNuGS8mhDM/f5l5kDrq4pMhEUPSJHHQLbZG3nly/0O2jWAnLeHbJJf6f0vrnQ
+	IzGJCCGh99lhgWhfue3cJg3ZPSddOLWNc8Cek=
+X-Received: by 2002:a17:90b:2803:b0:381:abcc:c8e9 with SMTP id 98e67ed59e1d1-3893fd5f5b7mr8066066a91.7.1783619408160;
+        Thu, 09 Jul 2026 10:50:08 -0700 (PDT)
 Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3120c8e41fcsm2206765eec.15.2026.07.09.10.50.02
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3120c8e41fcsm2206765eec.15.2026.07.09.10.50.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 10:50:05 -0700 (PDT)
+        Thu, 09 Jul 2026 10:50:07 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -65,9 +65,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Hemanth Selam <hemanth.selam@gmail.com>
-Subject: [PATCH v2 1/2] KVM: selftests: SEV: Verify unsupported VM types are rejected at creation
-Date: Thu,  9 Jul 2026 23:19:54 +0530
-Message-ID: <20260709174955.628913-2-hemanth.selam@gmail.com>
+Subject: [PATCH v2 2/2] KVM: selftests: SEV: Sanity check the launch measurement
+Date: Thu,  9 Jul 2026 23:19:55 +0530
+Message-ID: <20260709174955.628913-3-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260709174955.628913-1-hemanth.selam@gmail.com>
 References: <20260709164751.621326-1-hemanth.selam@gmail.com>
@@ -80,93 +80,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-test_vm_types() only exercised creation of the SEV/SEV-ES/SEV-SNP VM
-types that the platform actually supports, leaving the previously noted
-TODO ("check that unsupported types cannot be created") unaddressed.
+test_sev() launched the guest while discarding the launch measurement
+and left a TODO to validate it. A full attestation-style validation is
+not possible from the selftest because userspace does not possess the
+transport keys the PSP uses to derive the measurement, so recomputing
+the expected value cannot be done here.
 
-Add test_create_invalid_type() which issues a raw KVM_CREATE_VM for a
-given type and asserts it fails with -EINVAL, and invoke it for
-KVM_X86_SEV_ES_VM / KVM_X86_SNP_VM whenever the corresponding capability
-is not advertised. Because vm_create_barebones_type() asserts that
-KVM_CREATE_VM succeeds, the check is issued directly against the KVM fd
-so the negative path can be observed.
-
-TEST_ASSERT() aborts the program when its condition fails, so the helper
-releases the fd and latches errno before asserting: if KVM_CREATE_VM
-ever wrongly succeeds, the VM fd is closed rather than leaked, and errno
-is captured before close() can clobber it.
-
-While here, stop shadowing the file-scope kvm_fd with a local in main()
-so the new helper can use it.
+Capture the measurement returned by KVM_SEV_LAUNCH_MEASURE for SEV and
+SEV-ES guests and assert that it is not all zeros, which catches a PSP
+or plumbing failure that silently leaves the buffer untouched. SNP does
+not return a measurement through this path, so it is skipped.
 
 Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- .../selftests/kvm/x86/sev_init2_tests.c       | 27 +++++++++++++++----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ .../selftests/kvm/x86/sev_smoke_test.c        | 23 +++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-index 8db88c355f16..7663418b3fa8 100644
---- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-@@ -6,6 +6,7 @@
- #include <stdlib.h>
- #include <errno.h>
- #include <pthread.h>
-+#include <unistd.h>
- 
- #include "test_util.h"
- #include "kvm_util.h"
-@@ -73,19 +74,34 @@ static void test_init2_invalid(unsigned long vm_type, struct kvm_sev_init *init,
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 6b2cbe2a90b7..9ce465b4a770 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -150,16 +150,35 @@ static void test_sync_vmsa(u32 type, u64 policy)
  	kvm_vm_free(vm);
  }
  
-+static void test_create_invalid_type(unsigned long vm_type, const char *msg)
++static bool is_measurement_nonzero(const u8 *measurement, size_t len)
 +{
-+	int fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)vm_type);
-+	int err = errno;
++	size_t i;
 +
-+	/* Clean up before asserting; TEST_ASSERT() aborts on failure. */
-+	if (fd >= 0)
-+		close(fd);
++	for (i = 0; i < len; i++)
++		if (measurement[i])
++			return true;
 +
-+	TEST_ASSERT(fd < 0 && err == EINVAL,
-+		    "KVM_CREATE_VM should reject unsupported type (%s), got fd=%d errno=%d",
-+		    msg, fd, err);
++	return false;
 +}
 +
- void test_vm_types(void)
+ static void test_sev(void *guest_code, u32 type, u64 policy)
  {
- 	test_init2(KVM_X86_SEV_VM, &(struct kvm_sev_init){});
++	u8 measurement[256];
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct ucall uc;
  
--	/*
--	 * TODO: check that unsupported types cannot be created.  Probably
--	 * a separate selftest.
--	 */
-+	/* Unsupported types must be rejected by KVM_CREATE_VM itself. */
- 	if (have_sev_es)
- 		test_init2(KVM_X86_SEV_ES_VM, &(struct kvm_sev_init){});
-+	else
-+		test_create_invalid_type(KVM_X86_SEV_ES_VM, "SEV-ES is unsupported");
+ 	vm = vm_sev_create_with_one_vcpu(type, guest_code, &vcpu);
  
- 	if (have_snp)
- 		test_init2(KVM_X86_SNP_VM, &(struct kvm_sev_init){});
-+	else
-+		test_create_invalid_type(KVM_X86_SNP_VM, "SEV-SNP is unsupported");
+-	/* TODO: Validate the measurement is as expected. */
+-	vm_sev_launch(vm, policy, NULL);
++	/* Sanity check the measurement; SNP has no measurement here. */
++	if (is_sev_snp_vm(vm)) {
++		vm_sev_launch(vm, policy, NULL);
++	} else {
++		memset(measurement, 0, sizeof(measurement));
++		vm_sev_launch(vm, policy, measurement);
++		TEST_ASSERT(is_measurement_nonzero(measurement, sizeof(measurement)),
++			    "SEV launch measurement is unexpectedly all zeros");
++	}
  
- 	test_init2_invalid(0, &(struct kvm_sev_init){},
- 			   "VM type is KVM_X86_DEFAULT_VM");
-@@ -121,9 +137,10 @@ void test_features(u32 vm_type, u64 supported_features)
- 
- int main(int argc, char *argv[])
- {
--	int kvm_fd = open_kvm_dev_path_or_exit();
- 	bool have_sev;
- 
-+	kvm_fd = open_kvm_dev_path_or_exit();
-+
- 	TEST_REQUIRE(__kvm_has_device_attr(kvm_fd, KVM_X86_GRP_SEV,
- 					   KVM_X86_SEV_VMSA_FEATURES) == 0);
- 	kvm_device_attr_get(kvm_fd, KVM_X86_GRP_SEV,
+ 	for (;;) {
+ 		vcpu_run(vcpu);
 -- 
 2.43.7
 
