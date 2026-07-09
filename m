@@ -1,179 +1,352 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB2E4499BB
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14833449983
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783623694; cv=none; b=LnKwVduvOlt+vjolKOmOQrPgY/9HjNuSX7be5XkjlKV1eA46d+5iFzqN8uKqz+TqG8t9GxEI2CYbomd7QMegePKEjqJdCwp9k5I+jFFoXr+skcNKrNL4UXOXeaqY5FPZysLBhLsPcWJVBu7RUery4VGKWqySF4DEBDXzW51LZvY=
+	t=1783624046; cv=none; b=HKAxZCE5XVGofZyEFTkPsXmMM215Z92eaDQbNVtvyg3MSYPKRtlW2fbik98k8uolRSoeoPzcit/WTxc5ONgbAsgJtKGP3MXE8eWaN9xIWSfKVwvUdmUqiBJY/QtphcdqXvzKieq61ehRfEYhts9cG3eQgFdYULQxeMQ6IGqf4WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783623694; c=relaxed/simple;
-	bh=mbSLLFPX+/+wGifuU8rvXn+yjD80DQsccM2K7nprCAU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sQmHbpCVrPcOEIYXSqoAQb/QlV56eaa/Y68ReGb5XxQyaucs7X9ostYsF23ap6U/DJqFWhaAs4XM89oA1LhAlAIrihVFUD2IsAO+L/iV8ik3zPqiDiIrpce/6HVKsom9F0A00kPyiaYKM/90ZMdr6UH+WXWL5cJjiFl1YqTYgQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CMgybTWn; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783624046; c=relaxed/simple;
+	bh=VroJ2dbVb3R/itAA7+lxyItCUx+B4jc4xjtV+qTeyaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tpID/eHOihG1S8p3lx1CvtjSYLAlwtriwrmvfXqMAoxhVYklhTj4aainkuRtkFSXYG32tQjU7hi9Z0IEkbsnZHRc31o8HKvYmdI2bKsfmkNAnmwTICDHU3NxeXeCvHaSVsQpsIfxZ/2BId6jnyOcBtTwYgHRxrPI2t74bSlKMHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=svAt+f9T; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CMgybTWn"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8484ba00601so80077b3a.1
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:01:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="svAt+f9T"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7ebd88be784so154715a34.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783623692; x=1784228492; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7dhwp5vjqYszriZEVm0D/39l33x16cKgI34FbGJQXy0=;
-        b=CMgybTWnw0BbAcVKMA6JaHZ76RwU6F2hbP9gjxmk93coT/d/NIEYgQ/Ha1msVj854u
-         8hdDcU+vVECnggSbfeoiWZinWOjvG1hnklOTe7qMoBS8jEH59lrgzboIFPp8+hdCcGEp
-         RHKvbhebZWk0rsrbPrKJRw5fGengsrsfVhb7BA2F4p0jh1vqNZqc5uHUnM+ItLsVwSwt
-         gzCc5OQ0mEaFAhlJ1A26kS5+vmGLqLOShO0vppxGGOLrJ6UAfZrCF7dHF21EGQvto9Ux
-         MEz3AL++m/PliB+Ttle0Bg49HXspbCMztPDFWXBStEFPumg8yvwcmaflJCXBRSmB7n1O
-         ZxrA==
+        d=gmail.com; s=20251104; t=1783624042; x=1784228842; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zo12XTQ5Euo3ISLCQIk6AAgRt58NE8CSZ/ONmSgOX+c=;
+        b=svAt+f9TN0hAdjSfr+G3QYgr43IdBnvTWFaKuxkPBwJ3Nj52YI5PR2yWfH1VFO2tGD
+         1wkmnY2C8gI65wF4OLYKsxLkboR+H59NX64OduT6CuVSDKyldS/+mhtmIyxKTkdCrHEn
+         Y6RpRIMM1MiBt6G10V5fhW5rKbhaOkX2NAceh0OF8K0WKwmLdnT5fmJLFyl66FFho0XW
+         JPN/DUr2K4uQk5wQ/EUdOwGDDOYE7aleLEKGyk6Xgz7291QEUmCDANuztY4SSpD+ZX6M
+         +g5RGXLIvIDjj93Xxs9F0eYMAKiB08XBnaOmD3I8A1voNOHltT6j/7eaeecyaM/0mAFw
+         wWiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783623692; x=1784228492;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7dhwp5vjqYszriZEVm0D/39l33x16cKgI34FbGJQXy0=;
-        b=O5/Wi3jrjBwazJXdwkrzFGpTPwgtx+PvCE258NYH+QVpPiNktFgHY9xMQ8KaXUyvfT
-         VRB8sALpp4P/NTwR1ETcS9MqmPgYZbVZxSHfv+iZpfale1HvznDvNS9l2+BAHRCAQyGR
-         LmhXhTKI6D2NqDEom3KAQjN2env8CH3TSHijUrA++T1q5Wog6+DX++4djjgw7LYvdNau
-         VKj53dVJObKxnVKNT1prWyp8Ju7siXp3JFAq3sZOnLxtpfHnXxWH9Qo+oD32wFCC1/2H
-         rGNMIM8+jx1tVtGXkbhJDlgFj8PXf8l+HCwGpT7ZfGy/No35fJTE4Vip6sljPnhloN/Q
-         MVbg==
-X-Forwarded-Encrypted: i=1; AHgh+RpVClmWFLxpuNrYJ0L9A6ioH33Il9ZzvJ11dGYHteei1Qka6LBWLnmaoNdIyBN42p/6hjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjH/USk/BuC8X6Yw7WYoLBtjNmSbifLVR5J5hl0Tr2IBxU1nl4
-	hls5I5fi7Krk+yeRSKpqWscXaT0qygh3yM0ujyqVaCviQAbdS4prQHJ3QCtlrrzvXs4qJ9aU6+w
-	OBsc0xQ==
-X-Received: from pglx3.prod.google.com ([2002:a63:1703:0:b0:c85:dc1c:c8ea])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e18:b0:845:e9e8:6458
- with SMTP id d2e1a72fcca58-84842eda2bfmr8132247b3a.20.1783623692329; Thu, 09
- Jul 2026 12:01:32 -0700 (PDT)
-Date: Thu, 9 Jul 2026 12:01:31 -0700
-In-Reply-To: <ak-EKSslAz1uqEtv@J2N7QTR9R3>
+        d=1e100.net; s=20251104; t=1783624042; x=1784228842;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zo12XTQ5Euo3ISLCQIk6AAgRt58NE8CSZ/ONmSgOX+c=;
+        b=P6CxUws8mONr5UuEqZGSOLyKyd0eokuFJ3kD26n6F7wD2pYzsRCWrrrXHEcQtrWlLb
+         h0cqToMNBjNJpU2r2mh8gohrTgHqZsoiVDqiNfPgxVMNvh2DhQX35KkQZXz55wlt7L3R
+         J8Vapx0+aIrEGMwTCciWs8s+gXsWgRzdPXFyRfvIG+awjBGLzpp24uKQSvCkfk/L79CW
+         oJ7KFMPesu5UqBGlHJMSaC0/rye7xp2ZLCwZNmmWiLaKN+FytgwrvMS3fliBHT6Zen1u
+         F2mGNOOuN1VQ800VAbWKKaIBkUhiH+iNsrx2qbjRoNO7wN9+LXStYk85pLAqbjs3dMoz
+         zauQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/2EfuOpm/Nb0FXKmH+9K2QVKk+M/f+21kkRbyv3nskX6byMoD9RDTDZ/wXx41fmZq9SFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnpAEGHRj7L7U3+hzAQPoHdjvB8nVK1eTcV8GWOehBy2c0WLYZ
+	HeUWZ37JKBOGLd9H1LSecKjrE117YsDJVHohS4ggeC6wmNB2wWCsHvvH
+X-Gm-Gg: AfdE7cmF2+YRXkSs6h5VYcCHn934APHSoeJCVt/onZtXb4uZHBkLrWJMVz/wtzrNgNs
+	7XsswN5F2cHsm3rT5QW7UhWVTTTZ1UWsHQ4T/SisaqSvVkyCUCVL5fzS9N5S5iyjpexRAtfGqgu
+	aTSjsbT/ILak4NNmq/yPP38ICLIWOlJZQeTnsHWvEHnUJ5oI24QgLdSp0WrQgtEPRQ5FsG8g6LP
+	ShYqieTO0cOKdg5MtkYCVk9BEHXlK1lfYx+wLYMcXvtoR9Oyxy1QVoGK23kmsFQOdsO+7mbsuMz
+	EhHoul0i8kVlw4Af+QLBqfG2G72ePsblKwRY+Yvk5RbpcRnZG95C/l1s6sKzkHuwO+m1ovX4OXo
+	xvLptf4tlcqlJhwB4dLMgtlATvJUmCRBbl5i7Jxha4LzVN99AK7Rlwnf4Jv7e3PHklkI70T8jOc
+	+SQOZZtI9F/g24Y3+oMYy1BWVwn8ok0RmhWg==
+X-Received: by 2002:a05:6830:3486:b0:7ea:b8c:41a2 with SMTP id 46e09a7af769-7ebcfb9d02fmr6503635a34.0.1783624041937;
+        Thu, 09 Jul 2026 12:07:21 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcafda2ffsm4763568a34.12.2026.07.09.12.07.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 12:07:20 -0700 (PDT)
+Date: Thu, 9 Jul 2026 12:07:16 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-kernel@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	Jason Wang <jasowang@redhat.com>, stable@vger.kernel.org,
+	Brien Oberstein <brienpub@gmail.com>
+Subject: Re: [PATCH net v2 1/2] vsock/virtio: collapse receive queue under
+ memory pressure
+Message-ID: <ak/xZI08Ra1fVgm+@devvm29614.prn0.facebook.com>
+References: <20260708102904.50732-1-sgarzare@redhat.com>
+ <20260708102904.50732-2-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260702142912.6395-1-alexandru.elisei@arm.com>
- <akxOrMnlNga-vtQv@google.com> <ak0wSQ1133O7B96D@raptor> <ak0ziUcCXUlDdcla@google.com>
- <ak-EKSslAz1uqEtv@J2N7QTR9R3>
-Message-ID: <ak_wC4Q-mQe14DI8@google.com>
-Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
-	david.hildenbrand@arm.com, maz@kernel.org, oupton@kernel.org, 
-	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, 
-	yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, fuad.tabba@linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708102904.50732-2-sgarzare@redhat.com>
 
-On Thu, Jul 09, 2026, Mark Rutland wrote:
-> Hi Sean,
+On Wed, Jul 08, 2026 at 12:29:03PM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> Ignoring dirty page logging for the moment, I think you've raised a much
-> bigger concern.
+> When many small packets accumulate in the receive queue, the skb overhead
+> can exceed buf_alloc even while the payload is within bounds. This causes
+> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
+> resets during large transfers under backpressure.
 > 
-> I've dumped a bit more context below, with a couple of high-level
-> questions. The important thing for Alexandru and I is whether core folk
-> are willing to consider some mechanism to ensure that guest PAs are
-> pinned writeable and never fault (even transiently).
+> The issue was reported by Brien, who has a reproducer, but it is also
+> easily reproducible with iperf-vsock [1] using a small packet size:
 > 
-> On Tue, Jul 07, 2026 at 10:12:41AM -0700, Sean Christopherson wrote:
-> > On Tue, Jul 07, 2026, Alexandru Elisei wrote:
-> > > On Mon, Jul 06, 2026 at 05:56:12PM -0700, Sean Christopherson wrote:
-> > > > On Thu, Jul 02, 2026, Alexandru Elisei wrote:
+>   iperf3 --vsock -c $CID -l 129
 > 
-> > > > Please (publicly) document *why*  you want to add dirty-logging support.  It's
-> > > > all but impossible to review new uAPI without knowing the use case.
+> which fails immediately without this patch but with commit 059b7dbd20a6
+> ("vsock/virtio: fix potential unbounded skb queue").
 > 
-> > > As to why I'm working on it now, it's because of an arm64 feature that
-> > > requires that memory remains mapped at stage 2, called Statistical
-> > > Profiling Extension (SPE), similar to Intel's PEBS or AMD's IBS. Exposing
-> > > the feature to a guest requires that memory remains mapped at stage 2
-> > > outside of userspace explicitely unmapping it, and guest_memfd, with the
-> > > patch to ignore the MMU notifiers [1], has this property.  I wanted to
-> > > expand the functionality of guest_memfd to support migration of virtual
-> > > machines when that arm64 feature is exposed to guests.
-> > 
-> > I'm all for adding dirty logging support for guest_memfd, but for SPE I don't
-> > think relying on guest_memfd always being mapped is a good idea.  guest_memfd
-> > is "pinned" purely because adding support for page migration is (very) low
-> > priority for SNP, TDX, and pKVM.  guest_memfd page migration might play nice
-> > with SPE?  Probably depends on whether KVM is forced to do break-before-make?
+> Inspired by TCP's tcp_collapse() which solves a similar problem, add
+> virtio_transport_collapse_rx_queue() that walks the receive queue and
+> re-copies data into compact linear skbs to reduce the overhead.
 > 
-> The key thing for SPE is that any pages that the SPE HW is using must
-> have a valid writeable end-to-end (VA to real PA) mapping at all times
-> while the guest is running (and while the host drains buffers). If that
-> requirement is violated, even transiently, then data is lost and the
-> guest will see an unexpected fault reported by SPE.
+> The collapse is triggered proactively from when the number of skb queued
+> is close to exceeding the overhead budget.
+> 
+> A pre-scan counts the eligible bytes to size each allocation precisely,
+> avoiding waste for isolated small packets. Partially consumed skbs are
+> kept as-is to preserve buf_used/fwd_cnt accounting, EOM-marked skbs to
+> maintain SEQPACKET message boundaries, and skbs already larger than the
+> collapse target because they already have a good data-to-overhead ratio.
+> 
+> Walking a large queue may take a significant amount of time and cache
+> misses, causing traffic burstiness. To limit this, the collapse stops
+> once enough room is freed for this packet and the next one, but may
+> opportunistically free more to fill each collapsed skb to capacity.
+> 
+> [1] https://github.com/stefano-garzarella/iperf-vsock
+> 
+> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+> Cc: stable@vger.kernel.org
+> Reported-by: Brien Oberstein <brienpub@gmail.com>
+> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
+> Tested-by: Brien Oberstein <brienpub@gmail.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+> v2:
+> - defined MAX_COLLAPSE_LEN macro instead of using a variable [Paolo]
+> - added a threshold to avoid walking all the queue while collapsing
+>   [Paolo]
+> - collapsed the queue before calling virtio_transport_inc_rx_pkt().
+>   While working on the threshold, I figured out that the check I was
+>   introducing can also be used to proactively trigger the collapse, so I
+>   moved the call to virtio_transport_collapse_rx_queue() before acquiring
+>   the rx_lock to have also a better diff to simplify backports
+> - improved code readability (removed `out` label, `keep` initialization,
+>   etc.) [Paolo + other small stuff]
+> - Brien kindly retested this version as well (thank you so much)
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 165 +++++++++++++++++++++++-
+>  1 file changed, 164 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 09475007165b..8becad81279c 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -26,6 +26,13 @@
+>  /* Threshold for detecting small packets to copy */
+>  #define GOOD_COPY_LEN  128
+>  
+> +/* Max payload that can be collapsed into a single linear skb, using the same
+> + * allocation threshold as virtio_vsock_alloc_skb() to avoid adding pressure
+> + * on the page allocator.
+> + */
+> +#define MAX_COLLAPSE_LEN \
+> +	SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM, PAGE_ALLOC_COSTLY_ORDER)
+> +
+>  static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
+>  					       bool cancel_timeout);
+>  static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
+> @@ -420,6 +427,145 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	return ret;
+>  }
+>  
+> +static bool virtio_transport_can_collapse(struct sk_buff *skb)
+> +{
+> +	/* skbs that are partially consumed, mark a SEQPACKET message boundary,
+> +	 * or are already large enough should not be collapsed: they either
+> +	 * need special accounting, carry protocol state, or already have a
+> +	 * good data-to-overhead ratio.
+> +	 */
+> +	if (VIRTIO_VSOCK_SKB_CB(skb)->offset)
+> +		return false;
+> +	if (le32_to_cpu(virtio_vsock_hdr(skb)->flags) & VIRTIO_VSOCK_SEQ_EOM)
+> +		return false;
+> +	if (skb->len >= MAX_COLLAPSE_LEN)
+> +		return false;
+> +	return true;
+> +}
+> +
+> +/* Iterate through the packets in the queue starting from the current skb to
+> + * count the number of bytes we can collapse.
+> + */
+> +static unsigned int
+> +virtio_transport_collapse_size(struct sk_buff *skb, struct sk_buff_head *queue)
+> +{
+> +	unsigned int target = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
+> +
+> +	while ((skb = skb_peek_next(skb, queue)) &&
+> +	       virtio_transport_can_collapse(skb)) {
+> +		unsigned int len = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
+> +
+> +		if (len > MAX_COLLAPSE_LEN - target)
+> +			return target;
+> +
+> +		target += len;
+> +	}
+> +
+> +	return target;
+> +}
+> +
+> +/* Called under lock_sock to compact the receive queue by merging small skbs.
+> + * @min_to_free: minimum number of skbs to eliminate from the queue. May free
+> + *               more to fill each collapsed skb to capacity.
+> + */
+> +static void
+> +virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
+> +				   u32 min_to_free)
+> +{
+> +	struct sk_buff *skb, *next_skb, *new_skb = NULL;
+> +	struct sk_buff_head new_queue;
+> +	u32 saved = 0;
+> +
+> +	__skb_queue_head_init(&new_queue);
+> +
+> +	skb_queue_walk_safe(&vvs->rx_queue, skb, next_skb) {
+> +		struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> +		u32 src_off = VIRTIO_VSOCK_SKB_CB(skb)->offset;
+> +		u32 src_len = skb->len - src_off;
+> +		bool keep;
+> +
+> +		keep = !virtio_transport_can_collapse(skb);
+> +		if (keep) {
+> +			/* Finalize pending collapsed skb to preserve packet
+> +			 * ordering.
+> +			 */
+> +			if (new_skb) {
+> +				__skb_queue_tail(&new_queue, new_skb);
+> +				new_skb = NULL;
+> +				saved--;
+> +			}
+> +			goto next;
+> +		}
+> +
+> +		/* Finalize if this packet won't fit in the remaining tailroom,
+> +		 * so we can allocate a right-sized new_skb.
+> +		 */
+> +		if (new_skb && src_len > skb_tailroom(new_skb)) {
+> +			__skb_queue_tail(&new_queue, new_skb);
+> +			new_skb = NULL;
+> +			saved--;
+> +		}
+> +
+> +		if (!new_skb) {
+> +			unsigned int alloc_size;
+> +
+> +			/* Check after finalizing to opportunistically fill
+> +			 * each collapsed skb to capacity, merging more skbs
+> +			 * than strictly required.
+> +			 */
+> +			if (saved >= min_to_free)
+> +				break;
+> +
+> +			alloc_size = virtio_transport_collapse_size(skb, &vvs->rx_queue);
+> +
+> +			/* Only this skb's data is eligible, nothing to merge
+> +			 * with. Keep as-is.
+> +			 */
+> +			if (alloc_size <= src_len) {
+> +				keep = true;
+> +				goto next;
+> +			}
+> +
+> +			new_skb = virtio_vsock_alloc_linear_skb(alloc_size +
+> +					VIRTIO_VSOCK_SKB_HEADROOM, GFP_KERNEL);
+> +			if (!new_skb)
+> +				break;
+> +
+> +			memcpy(virtio_vsock_hdr(new_skb), hdr,
+> +			       sizeof(struct virtio_vsock_hdr));
+> +			virtio_vsock_hdr(new_skb)->len = 0;
+> +		}
+> +
+> +		/* Cannot fail since src_off/src_len are within bounds, but if
+> +		 * it does, discard new_skb to avoid queuing corrupted data.
+> +		 */
+> +		if (WARN_ON_ONCE(skb_copy_bits(skb, src_off,
+> +					       skb_put(new_skb, src_len),
+> +					       src_len))) {
+> +			kfree_skb(new_skb);
+> +			new_skb = NULL;
+> +			break;
+> +		}
+> +
+> +		le32_add_cpu(&virtio_vsock_hdr(new_skb)->len, src_len);
+> +		virtio_vsock_hdr(new_skb)->flags |= hdr->flags;
+> +
+> +next:
+> +		__skb_unlink(skb, &vvs->rx_queue);
+> +		if (keep) {
+> +			__skb_queue_tail(&new_queue, skb);
+> +		} else {
+> +			consume_skb(skb);
+> +			saved++;
+> +		}
+> +	}
+> +
+> +	if (new_skb)
+> +		__skb_queue_tail(&new_queue, new_skb);
+> +
+> +	skb_queue_splice(&new_queue, &vvs->rx_queue);
+> +}
+> +
+>  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>  					u32 len)
+>  {
+> @@ -1354,12 +1500,29 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+>  {
+>  	struct virtio_vsock_sock *vvs = vsk->trans;
+>  	bool can_enqueue, free_pkt = false;
+> +	u32 len, queue_max, queue_len;
+>  	struct virtio_vsock_hdr *hdr;
+> -	u32 len;
+>  
+>  	hdr = virtio_vsock_hdr(skb);
+>  	len = le32_to_cpu(hdr->len);
+>  
+> +	/* virtio_transport_inc_rx_pkt() rejects packets when the per-skb
+> +	 * overhead (skb_queue_len * SKB_TRUESIZE(0)) exceeds buf_alloc.
+> +	 * Proactively collapse the queue before that happens.
+> +	 * No rx_lock needed: lock_sock is held by caller, preventing
+> +	 * concurrent enqueue or dequeue.
+> +	 */
+> +	queue_max = vvs->buf_alloc / SKB_TRUESIZE(0);
+> +	queue_len = skb_queue_len(&vvs->rx_queue);
+> +	if (queue_len >= queue_max) {
+> +		/* Walking a large queue may take a significant amount of time
+> +		 * and cache misses, causing traffic burstiness. Limit the
+> +		 * collapse to freeing room for this packet and the next one.
+> +		 * It may free more to fill each collapsed skb to capacity.
+> +		 */
+> +		virtio_transport_collapse_rx_queue(vvs, queue_len + 2 - queue_max);
+> +	}
+> +
+>  	spin_lock_bh(&vvs->rx_lock);
+>  
+>  	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
 
-Well, at least it doesn't crash the host :-D
+The changes still look good to me.
 
-> If there's any reason we might (transiently) unmap a leaf entry (or
-> entire sub-tree) from the stage-2 tables, or might (transiently) remove
-> write permission, then we can't guarantee SPE will work correctly from
-> the guest's PoV.
-> 
-> Obviously we can't guarantee that for regular memslots backed by
-> userspace memory, hence we were hoping we could rely on guest_memfd.
-> 
-> Am I right to understand that we expect (in future) to do things with
-> guest_memfd that could violate that? If so (and if we're not happy to
-> have some options to say "always keep this pinned end-to-end no matter
-> what"), 
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Yes?  Page migration is the main one that I think will be problematic for arm64,
-*unless* CPUs that support SPE don't require break-before-make (no idea if there
-are even plans to ever drop the BBM rules).  Because with page migration, unless
-KVM temporarily jails all vCPUs in the host while swizzling stage-2 PTEs, there
-will be a small window of time where the memory isn't mapped.
-
-I mention page migration because I expect swap/reclaim to be fully userspace
-driven, i.e. if userspace crashes/corrupts the guest, the answer will be "well
-don't do that".  But (at least some forms of) page migration will likely be
-kernel-driven, e.g. to compact movable memory for THP.  And I really don't want
-to give arch code the ability to hard-pin specific ranges of memory.
-
-That said, odds are good that we'll end up with per-gmem flags to communicate to
-guest_memfd whether or not the gmem instance supports page migration (x86's TDX
-and SNP in particular require extra consideration).  So if the anticipated use
-cases are fine with all-or-nothing "pinning", or with juggling guest_memfd files
-in userspace if a more dynamic setup is desired, then you should be ok?
-
-E.g. if the anticipated use cases are all slice-of-hardware style setups where
-the VM will be statically assigned a chunk of memory, then for the most part this
-will all Just Work.
-
-> then I think that means that in practice we cannot virtualize
-> SPE correctly, and Alexandru and I need to go back to our architects.
-> 
-> > And at some point guest_memfd may support userspace-driven swap, but I
-> > suppose we can cross that bridge when we come to it.
-> 
-> Unfortunately, I think we need to figure out now whether it would be
-> acceptable to suppress that (or making it mutually exclusive with SPE),
-> if only to decide whether or not we continue trying to virtualize SPE.
-
-Eh, as above, if userspace pulls a stupid and kills the guest, that's their
-problem.  Just make sure the host isn't at risk :-)
-
-> We don't need to figure out all the details; just whether or not that
-> broad approach would be acceptable, or whether we have to give up on SPE
-> virtualization.
-> 
-> > From a uABI perspective, forcing userspace to use guest_memfd to get access to
-> > something like SPE isn't ideal.  While I have aspirations of using guest_memfd
-> > much more broadly, I don't know that banking on guest_memfd replacing "everything"
-> > is a winning strategy.
-> 
-> I agree this isn't ideal, and we're certainly not expecting that this is
-> suitable for all users. We're just trying to get as much functionality
-> as we practically can with today's SPE hardware.
-> 
-> Thanks,
-> Mark.
+Thanks,
+Bobby
