@@ -1,113 +1,107 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BB0347520
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B38449990
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783628467; cv=none; b=RW7ZQIv29jlvanMDVOjZObz+lQz7dilFGAfB7W4EiIM68/LqY5czkoU0NMtbdM0qiIu2lkquHl4E/hEMhuWzNsWm3R+WP6TbpmASOlY/CER+Zmem0/jm5ccJgoqalmCvyWV/N1M/DiepHoCtcnlYqgS7lkiv9qizjC/61+uAXds=
+	t=1783628573; cv=none; b=XlvGo5s+RGahdSfLLuns2sypCeWVH4UZHHiG9g/1xURjEqWtoELobaX/OwlK2vO0gpP803oW0fL1IqmWI1MGOyy/tOD2VFkDobWJ9LXF04EOs1pyWJ4No0fO/v8CKqUKxtQPmQ3sFMFy1O/D5goBa6KSdJt3YSGV1qyKOwG5DW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783628467; c=relaxed/simple;
-	bh=q2ZOUSVusqbM4msiHCHWzW5ZDBfus1hiVGMu5NriqoI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OJ0XcIey5iQTdGa0fM8iW7GrKTWp6QA4KNQ3Q8mXpNUZYhxkSt+uXr4C66J5dC7582ViJKBK3/rF/lsP3VUDU+67CjJlaKhy3InJhoQdGDiSJjgNmvxCgJXlrgAeelWvxJaPHzJsk8vhOMhjHxVQ7xjpPGPUa9HUtpDc5ITnUoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZR/QVdia; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783628573; c=relaxed/simple;
+	bh=z9z0CaIxEYdoizsKfbUG3oaleCnjEMZRsWcvsAMotp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tc6FrQq+CKa8QfkVh4TZdcZl5wKQhKkKZA4zDojsDs84P1Jl8QPmRJB/o4OiMDibtG4yG6wa59dgLXguGe9adxYZaFeH7unpgZ6J+mzRdS+P4HpbrTRMgDJBuFVz+8xN8olAjATWzedq66pAWrfLxe+5BdAy02vckfvN4kawoxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QjQPYIgc; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZR/QVdia"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8483e038efeso119367b3a.2
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:21:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QjQPYIgc"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84592b55832so166372b3a.3
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:22:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783628466; x=1784233266; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CxKcxzuNFCTiWIY9TtzP+QfZ+srbbSC9teFUzdNxgfk=;
-        b=ZR/QVdiaOBlQ0i+ETgfWfoIPL3QBVl3FoOx2sBoETol7+XeRTwzd/e6seEznhNESGM
-         24VT7q4r0tkJ9hNAJ1Hu3UIBMA3PAFEbkCiwZQt18O6mJtvYXNPPuwH51B6UHVPT7qJh
-         e2IPIWM2Q6T+WjFZclCUZg5tFXhtLhxRBSvyompWayqZO0UuRJFdrg8mPxreIESg464a
-         r1rODfxjceJAvL8qgwtmiMdvDzG3zPffF5MfnN8nQeXsy4TpssOemz71/E24Ugp0rbGT
-         BXsoQ9XCTN7pd7X2k+KqxUFBNP8wTRw7Ki/cmHSJbsGzDpStk2QOH+BmHEiu3dix9K0R
-         BpcQ==
+        d=linaro.org; s=google; t=1783628571; x=1784233371; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=er2nd01K52fzoSCDKuPe6L+4tKyOrTAJPVN5CW28/d4=;
+        b=QjQPYIgce3Ysq0P0cHy+6cP0pBoZOI44EBd7S8M3/3RxI2hUvI0dK1SMHMYJzya6vK
+         P8NqcoFGHqTxIgHwuL6iRUPZi/oX4AkGc1V6KQKRdowZeT2ojoajCgVstDGFBNi9nQsC
+         RddqZfASX5bB9/yV/jXdhb0XKqltjcwFyo5meMwYEdqZgNb5BKFH7eZs4ae0cT5AWlRk
+         kv2a8MDY0PpF+FjIKIwa9OLq+Y9HpKhmzAqjE5LFcaBWEesWIg8HrQHWyni8vKiPdC8x
+         1Vu65xVhOZqoqPnXZhdTzGVa2YH2oqmcws7mXaf5LVARYRRl42QFYb6/iJb8VpE/O6pD
+         f5kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783628466; x=1784233266;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CxKcxzuNFCTiWIY9TtzP+QfZ+srbbSC9teFUzdNxgfk=;
-        b=q30MO3Zy97Jx/PAHxnJw0aOcYkTHf6t7SDG4HHTFPE1wvjlH/1+Ots66cLtWz1HheC
-         sRelHoVRwGi0hWx2ppXrmdoHz+/Vdoj7Nn47ZgQZZcNgYPtczP6gALJLbZI8R04NOhPC
-         VE3nd7z6t871q6dzVRIw1Xhx1lM15XpyDCul7vAYpZG1rjtyQJ1MC/ntfnl4DrNlvI6C
-         V+7CH2xEAr3iQEPVyF9WtNa99xuSLynqkaYA8OztUGLHOAJTzzQ1CM0QjE/3xXYApDpY
-         yJfZC8WQtBw1iTvuQEmjbiIOLnZLOnKOCDJgpphVnbo0RZN+OlsxJ/oHym6vbVWd0/tx
-         ctdg==
-X-Forwarded-Encrypted: i=1; AHgh+Roxe4gXz3E+/h38TlyK4a16//fL2oEFLJ+R4XcImG6JckLwL199CqAEE3SjAtUpnQGBbg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlfaAPckNrRFnVvv43RHujcV128MaJzUTEEIvBconzXWPVFhdS
-	kNkupaUltJcEpIuqH7aByS1CCsOm5JkdFKeSicx6xJR/Lp7NLh+BicBuiCIPg2aI96nMTt8ukaa
-	Ckk54PA==
-X-Received: from pfbmc20.prod.google.com ([2002:a05:6a00:7694:b0:846:3c78:e2e8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:aa09:b0:845:62ce:d5ae
- with SMTP id d2e1a72fcca58-84843021d3amr8051184b3a.18.1783628465756; Thu, 09
- Jul 2026 13:21:05 -0700 (PDT)
-Date: Thu, 9 Jul 2026 13:21:05 -0700
-In-Reply-To: <20260709174955.628913-2-hemanth.selam@gmail.com>
+        d=1e100.net; s=20251104; t=1783628571; x=1784233371;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=er2nd01K52fzoSCDKuPe6L+4tKyOrTAJPVN5CW28/d4=;
+        b=VijwufXsq5dAReO0iekU82YpJLg02hABtidQctMUjgxFnkR7twDR0e5lswlYqKmvXc
+         ZqFYEnTdXLEwsZWl9jxYY3VknFy0B+1JOTeiHcYdWWGKReCkOew0Ytre3QHLb8PWITCh
+         FPa735WHIjMgCF7TT1yBvZYNShVNL7LUa9WfCebUilEBwDie7xiq3i/zlqfEmDsQHrJv
+         eMdNsnGasW1xyzOBJ8cQ0PqD+w17IoqhsJj8cxSenCwGo5zM+DtHnfyAK1qtATXvA00+
+         OlP6RGDIX6U7p2RUzuXnCnXVc1Vap4l3/0oOIqch1R8qNVNNADT9hnwugUqUew0d3JTz
+         eEZw==
+X-Forwarded-Encrypted: i=1; AHgh+RpiSD0VN4GHyKEcii2tZ8qBKySWy+l1R4TsyuE5UhxlMWk/i6eo4MiBF184Wd9PKtLR3EU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxiKP+A+tUFpWD62FVY9PpMnQSChBi9n+spFBYWsb18fO82dY7
+	zRrYZlIq9ZOYexLO4UXvdg5+5TSpzpzWvJqZSzgpxHR3sGKbUFbqxhKXQwoM3dOXXg0=
+X-Gm-Gg: AfdE7cnfBUhljCn65R0IfrLc0H0wZuh1LBuhc2A1FDLNvYnaY1XPjNW/tA56Wn+jnRK
+	Qdig4fFI2vln+vLdDxXVz/0WSENfpMRVMfRPIRr/AVXs4eJprDsU+vYDfxx8hZcuxdrX/3dQofY
+	YD7c67v/cbkguzd0Bi3S0wzgN/ZROjgsQ4Scms5h4aDHd0/MkaweVSrkW2vU9XFXKzJ8HMljnZq
+	ZEKFT20ymOl0VK4VP4kK3POp3qjRYveuspnafNGPEFEORzvzrsxiqnRosAxbIuDXrHSeLF/xYzn
+	vni2dKyHxI6sgFzf83I0XupZol3i4Bf8KRe1NuNZkDvUSezuQAFFPH9H96zyEd309DWBA5Xx55x
+	VPy84UJMFrsLqzWIxTRcokvfXRL/1tbb8Ll7LhB6mAa/kWzTSo7WrnvqnlY+T1zFdJv//lwU63/
+	cLQsoyQnD/GD2NwV1r
+X-Received: by 2002:a05:6a00:91d6:b0:848:44ae:47c1 with SMTP id d2e1a72fcca58-84844ae87b9mr7146613b3a.78.1783628571139;
+        Thu, 09 Jul 2026 13:22:51 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:2f15:8249:27c4:1b26])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d4dbdesm9126916b3a.31.2026.07.09.13.22.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 13:22:50 -0700 (PDT)
+Date: Thu, 9 Jul 2026 14:22:47 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, jpb@kernel.org, lorenzo.pieralisi@linaro.org,
+	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v1 03/25] target/arm: Add confidential guest support
+Message-ID: <alADF-nLnPH53uWO@p14s>
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-4-mathieu.poirier@linaro.org>
+ <87bjcim6x1.fsf@pond.sub.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709164751.621326-1-hemanth.selam@gmail.com>
- <20260709174955.628913-1-hemanth.selam@gmail.com> <20260709174955.628913-2-hemanth.selam@gmail.com>
-Message-ID: <alACsZ41RLIbBzfM@google.com>
-Subject: Re: [PATCH v2 1/2] KVM: selftests: SEV: Verify unsupported VM types
- are rejected at creation
-From: Sean Christopherson <seanjc@google.com>
-To: Hemanth Selam <hemanth.selam@gmail.com>
-Cc: pbonzini@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bjcim6x1.fsf@pond.sub.org>
 
-On Thu, Jul 09, 2026, Hemanth Selam wrote:
-> @@ -73,19 +74,34 @@ static void test_init2_invalid(unsigned long vm_type, struct kvm_sev_init *init,
->  	kvm_vm_free(vm);
->  }
->  
-> +static void test_create_invalid_type(unsigned long vm_type, const char *msg)
-> +{
-> +	int fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)vm_type);
-> +	int err = errno;
-> +
-> +	/* Clean up before asserting; TEST_ASSERT() aborts on failure. */
+On Wed, Jul 08, 2026 at 06:39:22AM +0200, Markus Armbruster wrote:
+> Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+> 
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> >
+> > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
+> > support the Arm Realm Management Extension (RME). It is instantiated by
+> > passing on the command-line:
+> >
+> >   -M virt,confidential-guest-support=<id>
+> >   -object rme-guest,id=<id>[,options...]
+> >
+> > This is only the skeleton. Support will be added in following patches.
+> 
+> Which of the patches add options?
 
-Literally every test relies on the kernel to clean up fds on an early exit.  I
-see no reason for this to behave differently.
+Good catch - options have been removed because they are not supported on the V14
+kernel.
 
-Also, Sashiko was wrong.  If KVM_CREATE_VM fails with something other than EINVAL,
-the assert will NOT fire, but fd will be < 0.
-
-> +	if (fd >= 0)
-> +		close(fd);
-> +
-> +	TEST_ASSERT(fd < 0 && err == EINVAL,
-> +		    "KVM_CREATE_VM should reject unsupported type (%s), got fd=%d errno=%d",
-> +		    msg, fd, err);
-
-test_assert logs the errno, no need to spit it out here as well.
-
-> +}
-> +
->  void test_vm_types(void)
->  {
->  	test_init2(KVM_X86_SEV_VM, &(struct kvm_sev_init){});
->  
-> -	/*
-> -	 * TODO: check that unsupported types cannot be created.  Probably
-> -	 * a separate selftest.
-
-Heh, I agree with the comment: put this in a separate selftest.  This doesn't
-have anything to do with KVM_SEV_INIT2, and in fact doesn't even have anyting to
-do with SEV+ or even x86.  E.g. add a kvm_vm_types_test that attempts to create
-all possible VM types, and asserts success/failure based on the output from
-kvm_check_cap(KVM_CAP_VM_TYPES).
+> 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> 
