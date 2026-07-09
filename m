@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2E7289367
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C613FF8B6
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587014; cv=none; b=SGSMvTOHJJ5XqMlebrVjsvhih4X39Rj7KY49ibGQXP+ruWsfpHkpWkMGbMliZ7CevF144FcvErullQimYFkufI3CXIbWKqC3U1+kYAsxD0wAPqYjcbhlAynt7wypYuk6t/S9F/TNbi2VidUL9UKDi4pxFBaWhOyBmJeODiQGktg=
+	t=1783587062; cv=none; b=VfITsSBVg1VzLH10jXhz1ml8aW0ppC3j6XSEIkRo3notblbfzR9MwW/jmz02OEcWTNNIF6lruyVvbTiMko3b0dXiRctgnTOnOqhV+A/9hdiyGSEmaSOMF+5FyuBfffMBBMNvhAE86JobotRYlcA39nWQ8LL92pUFYWbFcbIVAko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587014; c=relaxed/simple;
-	bh=P+SaB/6579hLolPLH2XaSi30oIwV7MP8SHAru/EfTi0=;
+	s=arc-20240116; t=1783587062; c=relaxed/simple;
+	bh=9mcmoAdxwzfyHrToIJ366XN37NDJA7hRpsdyD99TOnA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TFckDL8MP+/yPB0rL4Gcwj4Nw7JIGj4fup3CLaAVXKjex+vmNr4NDwus3gVnL6k44yJDSW9dJ6GR5vLMNuQoz/ytEoS6LKq3U3Jy2TPL1/8CCo8XEvdEWRtyCpH80o5XhMwCMDOe+Fn12201WIhGjkWVZSC8q88piP5y67TrelY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+HRusnf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=F6Sqhs05PCdbmhS6SXu1RD2pzorbNIgPfrFQO60L4J+VxKfihyRxx84UGaOLGFEGJaq0kdCh135wp0WYZv+2U6pedI3BtcYYGeqF3HOyb55q9PvEW3vyBLaEEgC7LfQ7MDmQWsSnu5wKXxtFXOS+lpaO4WeifBpFflc7IqbRHj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVV8pbx5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+HRusnf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802D1F000E9;
-	Thu,  9 Jul 2026 08:50:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVV8pbx5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04BC1F000E9;
+	Thu,  9 Jul 2026 08:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783587013;
-	bh=xdktgS//tLwwOak9+nRbDJemV0XyZc1wduk/kqfJak4=;
+	s=k20260515; t=1783587061;
+	bh=BYdXyTjsO+DbPrjyvacuLMY+cWxHTgtO58obMhwJqvM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=I+HRusnfDkbrV4VoEqXHSVhxw2VsdCZqC6tLitfZkBObTTj8VgkqMcplF88RH3FMv
-	 kh3HwjoFAtRwZA6FHmD1kXMDgpMVpQe0FJ3d11c5pWdiV2TdyeHzGYgrPWBw4WRcqH
-	 3yf84G1H/p/Qf+a+1iqglAQpYeEWtRfRAdBUFTfnHqX9NeB+cL9yE4f90Mc9mAiYJU
-	 a8KIs3hWci3AqxsEweZoFZdJuo+uI34akR8DXRgcXoMuJ72RqmIJW+TomlyhAtNe2N
-	 RlyqJkxhPT9QAt2EiqvizVFUhctbrLSepGt69IFZdGQCaxCyc1tAso+D2VWinvL4OO
-	 gHneVZLlmvNjw==
+	b=UVV8pbx5zUxyzfn890+Yd3JEyqfBtgiEASPzk5Ko/g/7Nlc3XH2FH0NXcqJboGjXQ
+	 aDvXvOlo8c/0yCAkvjs8tNlaNWrnEFqJWDTl+vtB3+ik5F43n1WNl2ua0g3wWaU04f
+	 vyLN1m1/XuMIkkHbphmqhQEKa43UX5yvioxVddPdqqe8J2AMqo4X93McZo5FemrrCH
+	 Ivp4ps+qygRPuuQk0rPPcq6JLbblBHfjeRfxwyKniseaHQ246AiDa/HqqyUpu1rdBG
+	 1nkhH41hEpv2qfep2RHDN7uKrwWyfU6LvqlWrMsP5647pb6NGHPTaXftF7xdqoXTeF
+	 2TvyUX6eF7Ofg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/5] KVM: nSVM: Disable LBRV in nested control cache
- when unsupported
+Subject: Re: [PATCH v3 3/5] KVM: nSVM: Sanitize nested DR6 using
+ kvm_dr6_fixed()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709082953.69434-3-shivansh.dhiman@amd.com>
+In-Reply-To: <20260709082953.69434-4-shivansh.dhiman@amd.com>
 References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
- <20260709082953.69434-3-shivansh.dhiman@amd.com>
+ <20260709082953.69434-4-shivansh.dhiman@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 08:50:12 +0000
-Message-Id: <20260709085012.C802D1F000E9@smtp.kernel.org>
+Date: Thu, 09 Jul 2026 08:51:00 +0000
+Message-Id: <20260709085100.C04BC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,72 +49,78 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] The `SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE` bit is never cleared in `vm=
-cb02->control.misc_ctl2` once set, allowing L2 to bypass L1 intercepts or c=
-ausing host log spam.
+- [High] The patch identifies that DR6_ACTIVE_LOW unconditionally sets DR6_=
+BUS_LOCK (bit 11) to 1, and replaces it with kvm_dr6_fixed() in nested VMCB=
+02 preparation. However, the patch fails to replace DR6_ACTIVE_LOW in L1 vC=
+PU initialization and #DB payload processing paths, completely breaking Bus=
+ Lock Detect for L1 guests.
 --
 
---- Patch [2]: [PATCH v3 2/5] KVM: nSVM: Disable LBRV in nested control cac=
-he when unsupported ---
-commit 54bf374923da671433d0174e1a9df561ac634275
+--- Patch [3]: [PATCH v3 3/5] KVM: nSVM: Sanitize nested DR6 using kvm_dr6_=
+fixed() ---
+commit 0ee3ae36939ed695ccbd636580058ad35113add9
 Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-KVM: nSVM: Disable LBRV in nested control cache when unsupported
+KVM: nSVM: Sanitize nested DR6 using kvm_dr6_fixed()
 
-Clear SVM_MISC2_ENABLE_V_LBR in __nested_copy_vmcb_control_to_cache() when
-the vCPU does not support LBR Virtualization. This lets the cached value be
-consumed directly instead of re-checking X86_FEATURE_LBRV on every access.
+When preparing vmcb02 for nested VMRUN, KVM ORs DR6_ACTIVE_LOW into the
+guest DR6 to force the fixed bits to 1. DR6_ACTIVE_LOW forces bit 11
+(DR6_BUS_LOCK) to 1 unconditionally.
 
 > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index d3df6b22bfefe..84248e6665cfe 100644
+> index 84248e6665cfe..0a9e28a02692e 100644
 > --- a/arch/x86/kvm/svm/nested.c
 > +++ b/arch/x86/kvm/svm/nested.c
-> @@ -534,6 +534,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_=
-vcpu *vcpu,
->  	if (!gmet_enabled || !guest_cpu_cap_has(vcpu, X86_FEATURE_GMET))
->  		to->misc_ctl &=3D ~SVM_MISC_ENABLE_GMET;
+> @@ -811,7 +811,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_sv=
+m *svm)
 > =20
-> +	/* Always clear misc_ctl2 bits that the guest cannot use */
-> +	to->misc_ctl2 =3D from->misc_ctl2;
-> +	if (!lbrv || !guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV))
-> +		to->misc_ctl2 &=3D ~SVM_MISC2_ENABLE_V_LBR;
-> +
->  	to->iopm_base_pa        =3D from->iopm_base_pa & PAGE_MASK;
->  	to->msrpm_base_pa       =3D from->msrpm_base_pa & PAGE_MASK;
->  	to->tsc_offset          =3D from->tsc_offset;
-
-While reviewing these updates to misc_ctl2, I noticed a related pre-existing
-behavior in nested_vmcb02_prepare_control():
-
-arch/x86/kvm/svm/nested.c:nested_vmcb02_prepare_control() {
-...
-	if (!nested_vmcb_needs_vls_intercept(svm))
-		vmcb02->control.misc_ctl2 |=3D SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE;
-...
-}
+>  	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
+>  		vmcb02->save.dr7 =3D svm->nested.save.dr7 | DR7_FIXED_1;
+> -		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | DR6_ACTIVE_LOW;
+> +		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | kvm_dr6_fixed(vcpu);
 
 [Severity: High]
-This is a pre-existing issue, but does this code leave the
-SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE bit set in vmcb02->control.misc_ctl2 once =
-it
-has been enabled?
+This is a pre-existing issue, but since this patch correctly identifies that
+DR6_ACTIVE_LOW unconditionally forces bit 11 (DR6_BUS_LOCK) to 1, should
+DR6_ACTIVE_LOW also be replaced in the L1 vCPU initialization and #DB paylo=
+ad
+processing paths?
 
-If L1 enables virtual VMLOAD/VMSAVE for L2, KVM sets this bit via bitwise O=
-R.
-On a subsequent nested VMRUN where L1 disables the feature or disables nest=
-ed
-paging, KVM correctly tries to set intercepts or clears NP_ENABLE. However,
-it appears to leave V_VMLOAD_VMSAVE set to 1 since there is no else branch
-to clear it, and the vmcb02 page is reused across runs.
+Currently, DR6_ACTIVE_LOW is still used to initialize L1's dr6:
 
-Could this allow a malicious L2 guest to bypass L1's intercepts for VMLOAD =
-and
-VMSAVE, or cause an L1 guest to spam the host kernel log with SVM_EXIT_ERR =
-by
-toggling NP_ENABLE while V_VMLOAD_VMSAVE remains stuck at 1?
+arch/x86/kvm/x86.c:kvm_vcpu_reset() {
+    ...
+    vcpu->arch.dr6 =3D DR6_ACTIVE_LOW;
+    ...
+}
 
-[ ... ]
+It is also used as a flip mask when KVM translates the exception payload to
+guest DR6. Because Bus Lock Detect is actually active-high, XORing it with
+DR6_ACTIVE_LOW incorrectly inverts the bus lock bit the guest sees:
+
+arch/x86/kvm/x86.c:kvm_deliver_exception_payload() {
+    ...
+    vcpu->arch.dr6 ^=3D ex->payload & DR6_ACTIVE_LOW;
+    ...
+}
+
+Similarly, SVM constructs the #DB payload by XORing the hardware exit DR6
+with DR6_ACTIVE_LOW:
+
+arch/x86/kvm/svm/svm.c:db_interception() {
+    ...
+    u32 payload =3D svm->vmcb->save.dr6 ^ DR6_ACTIVE_LOW;
+    ...
+}
+
+Could this leave Bus Lock Detect functionally broken for L1 guests by causi=
+ng
+them to observe corrupted hardware state (false positives or false negatives
+for bus locks)?
+
+>  		vmcb_mark_dirty(vmcb02, VMCB_DR);
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082953.6943=
-4-1-shivansh.dhiman@amd.com?part=3D2
+4-1-shivansh.dhiman@amd.com?part=3D3
