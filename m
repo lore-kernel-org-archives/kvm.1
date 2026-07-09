@@ -1,220 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B971F33067F;
-	Thu,  9 Jul 2026 14:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5071D33343B
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 14:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607345; cv=none; b=QMvvbsQdAw7yZwidcf4yaQxgzKJiQ7Xcy36VvPqbIoRTWn/NoR2m6HMljRZbnG3WRQ0hR6AfLr4Y3ZfymdxVcodiR+2pcxiOmvzSSA4gW26+YfEDPE53ETmIcumnn30wWJ9hFH2JhVrqGdl8RevpLmKYfbxlziwDYaKG0FLx+/4=
+	t=1783607558; cv=none; b=f52hKlzbRt7w3IB+7yjT05WFLbdG4nKEjl1DtJcK+u7gNCodti3k1IUg9nt1p1pN7HVmheZNiHFOjTvDR/rJ+1UVGtMnXZrfpU4pHB8wws/A7BP8QO/sAZxngm+VHMZ7Q6mJRZZ4O6pektmhZg4GVotzAPI4Qqnm2YWppa2r34s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607345; c=relaxed/simple;
-	bh=Qa6XvdJy4RYyLyva7is9k/EpxSz+QC7auucxvL6CKgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vr3HqVu7No/NZeBorcRJhWXBAaFLU2NN+qb6em/wUoTScV7VyLYGx/D8RcPjxtZujoSpciS19u+ZSaW6vZ9ZIFXHPm7Y8vxqGh4fPjIZmV7QTD0MXtS51FEKwirSoEkxe91i9zy4w1MdRRCde8Xc/2SU58x5/8lNnuWRHF32bcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbI2aYWl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783607558; c=relaxed/simple;
+	bh=iE/k7l7D9RCJUPlvcmP2nfxM3f/U4m5RLC+p4asxFiw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WmrW6q0I3ztycuAHjb3LEP8VLzg/z8TC4RxvNL88ubBeCdcLmPe9DrPH6RoaBmElDRo3cBEANykvixgmjO/mAPtpH9sMHAIESdvWkZTjUS3aNa8Vyl3SuVelRJUAzNl09MDJ3gOAHn9JDQdYes5NVvsJCl3bmW+ooSQYZJATG28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Yt0xeD6w; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbI2aYWl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E6B1F000E9;
-	Thu,  9 Jul 2026 14:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783607342;
-	bh=DZOt/KMB6Z3oOVzvvL5XZpd9gC6mwYec1Ed3vbdl3V4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bbI2aYWl3gmAuRWAgdimVVvKoYrMi42iZW1Erb5lB6o6hxukCboS62J5DWPvgLRFu
-	 4myWIHXBZkbD36W8D7ZYgHcnq909pF1cVEkf3hg9dEPDhmAF7xYCpNMQ+lktrls4Gp
-	 9P35hMTkzdgt1vFAxqhONHUr3Qkqpjq41kQFZE/UJX2a/qZeltFW8aoOCc8Rkcll7O
-	 OdDz3nmG0YQv2c+ah5uiIx3O+cgNAL1RVXwaR5pmj4twesQiQcX5Tyag8VUD9MM58p
-	 IYugtpMHpRDRqTv3Pg0C07S/yhjkipMEcBd3ako38o9bev1xsz7vrnJAC+KITVrDcz
-	 JnOfNLd/sjhPA==
-Date: Thu, 9 Jul 2026 15:28:50 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Gupta, Pankaj" <pankaj.gupta@amd.com>, seanjc@google.com, 
-	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com, 
-	bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com, 
-	yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
- registration
-Message-ID: <ak-uER-RndpksnhR@lucifer>
-References: <20260701144543.39582-1-pankaj.gupta@amd.com>
- <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
- <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
- <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
- <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
- <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Yt0xeD6w"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669EINkd1769906;
+	Thu, 9 Jul 2026 14:32:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QaGT4V
+	snd4lVWljMebmRG/rgoFMCDf37fAxRxmQOPRU=; b=Yt0xeD6w34cgPpnip371LK
+	eFwPQ6TYmdSJ6mKDgwxmWHUFyiV5uHlgvBjNkeutqednWptgrbCBqLZDeu565yAN
+	NxIiIxBImFQ3qx6dYmnoZGO9h+W7MPRbHZBG5MXcPAdL7Dg5cZuD4VH9AhWY49Rf
+	olx8kTRaAWDpDgVKjNxgau0bYqBGTOlZwmDxyFIKjCxhJAA/hfZmQj4HnMRN3pPC
+	f7VDq9tpOaI2GbluIqSL64eqGmycbNr2hbnkMM8LUlCRqfuHg3LtofUY5GukpO+3
+	+LXqfpkdyQw5bb6a3BoWgQGt6wq2u+OvorJ+X+xL3uxQPlIWhTktTfhhdSBXx93w
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6rke2grs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 14:32:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669Dnj1F030588;
+	Thu, 9 Jul 2026 14:32:27 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7dgkdh86-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 14:32:27 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669EWQGd4981662
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 14:32:26 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E7625805D;
+	Thu,  9 Jul 2026 14:32:26 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B6BB558054;
+	Thu,  9 Jul 2026 14:32:20 +0000 (GMT)
+Received: from [9.39.26.55] (unknown [9.39.26.55])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jul 2026 14:32:20 +0000 (GMT)
+Message-ID: <8c9b739c-8a9b-4e9a-8e43-7b1a6e1aa330@linux.ibm.com>
+Date: Thu, 9 Jul 2026 20:02:18 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH 4/6] powerpc: gitlab CI update
+Content-Language: en-GB
+To: Thomas Huth <thuth@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>
+Cc: npiggin@gmail.com, lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, andrew.jones@linux.dev, sbhat@linux.ibm.com,
+        Misbah Anjum N <misanjum@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20260708105122.1177210-1-rathc@linux.ibm.com>
+ <20260708105122.1177210-5-rathc@linux.ibm.com>
+ <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=M7J97Sws c=1 sm=1 tr=0 ts=6a4fb0fc cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22
+ a=dajVmKz5DrVhy7NBYq0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDE0MSBTYWx0ZWRfXy3fjAhyJzi9q
+ X/QpsgRUlDtJeOtML7DAvlpBbJOGKyjLaaKHqZhnmr+LaIhsHcnjlySArtXh+x8vJLJ0nVdn5zC
+ cejXQcLe2uWi7Z9ZuZy4W24GnNeFJw5uEmyQrALakVHMdPOgFuhJ2pYADBPuqsFXljtMEgmBl+A
+ xE0GDgtOk7wkDxCmkv2HNdk2+xSuJIyL1tbCWymEWh9wp55L3n5d3dOGvlodUykbqIU+nOXbe7z
+ gULes6BVqjXLXEFs5QcO82LzuUtzGbJ62cTgQ/Be3fa88U9R908f72tCsD1kdoR3pR1Sw2b+QEG
+ GQd64EjQ15EE1vym/kkz8E1t9ofNuqU+3i/PjStW1UEYBPQpKLjujwugCfLRTKdIWbpJksmskOL
+ hE43QXI38rIw8i2ztXR22ep1FBKaVnXjjSzXtmhzYcZPItRyP0bS01fzjBBhx6CtI/yNkzScOl8
+ 2yjL2WFhatkRN8tWc0Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDE0MSBTYWx0ZWRfX2EKkd4WRUXCv
+ HUyNqMNrgX7BJhODGNu2G4lSM2JId1jhbGJkdM3UrhBo4rLGsjW7gU/D5RDwC356GeVm511u7AD
+ OqlDY+16Fe+QHrqRMmMXXBh/bCmVdJs=
+X-Proofpoint-GUID: l7VhBmTT8Zckq51zWJ9EKlGUpatI2fbA
+X-Proofpoint-ORIG-GUID: 23odIHOL39iWxcbrWoa0v4ITVYe9hX00
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_03,2026-07-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1011 adultscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090141
 
-On Tue, Jul 07, 2026 at 04:58:39PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/7/26 15:45, Gupta, Pankaj wrote:
-> >
-> >>> Hi David,
-> >>>
-> >>> Yes, it fails in this path but for file backed mapping, vma_is_fsdax() returns
-> >>> false because
-> >>>
-> >>> vma_is_dax() returns false:
-> >> Ah, okay, so fsdax is not involved and we really only fail because of the
-> >> writable_file_mapping_allowed() check.
-> >>
-> >> I was for a second thinking in terms of nested virt :)
-> >>
-> >>> Host side backend is regular file backed memory (no fsdax).
-> >> Okay, so we'll end up mapping an ordinary file into VM memory, and expose that
-> >> to the VM as part of virtio-pmem device.
-> >>
-> >> That also means that vfio etc. won't be able to longterm-pin such device memory.
-> >> So this is not a problem isolated to SEV.
-> >>
-> >> Forbidding to longterm pin is actually the right thing to do if the filesystem
-> >> relies on writenotify, as spelled out by Lorenzo's commit:
-> >>
-> >> "
-> >>      Writing to file-backed mappings which require folio dirty tracking using
-> >>      GUP is a fundamentally broken operation, as kernel write access to GUP
-> >>      mappings do not adhere to the semantics expected by a file system.
-> >>
-> >>      A GUP caller uses the direct mapping to access the folio, which does not
-> >>      cause write notify to trigger, nor does it enforce that the caller marks
-> >>      the folio dirty.
-> >>
-> >>      The problem arises when, after an initial write to the folio, writeback
-> >>      results in the folio being cleaned and then the caller, via the GUP
-> >>      interface, writes to the folio again.
-> >> "
-> >>
-> >> Hmmm
-> >
-> > Yes. For file based mapping we don't allow long term pinning.
-> >
-> > If we take into account the fragmentation concerns for MIGRATE_CMA and
-> > ZONE_MOVABLE allocations
-> >
-> > solvable with FOLL_LONGTERM, I can think of two options(tested) to allow file
-> > based mappings as well:
-> >
-> > 1. Fallback on FOLL_WRITE when FOLL_LONGTERM fails as suggested by Sean.
->
-> That is just not acceptable, as it breaks random other stuff (MIGRATE_CMA, as
-> one example) besides the file-pinning problems that Lorenzo added.
->
-> If we're going to hack something in, then that we bypass the file writeback check.
-> Not that we don't use FOLL_LONGTERM.
->
-> I'd hate to use a GUP flag to indicate "this is a legacy hack", but it clearly isolates the
-> issue (needs a better name obviously):
++ folks who might be interested.
 
-So under what circumstances are we happy with totally breaking dirty tracking?
-:/ seems iffy, and exposing this to drivers generally is a bit worrysome.
+Hi Thomas,
 
->
->
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index ae9bca4eda5ca..e2c531f914d44 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1912,6 +1912,9 @@ enum {
->          */
->         FOLL_HONOR_NUMA_FAULT = 1 << 12,
->
-> +       /* TODO */
-> +       FOLL_LONGTERM = 1 << 13,
-> +
->         /* See also internal only FOLL flags in mm/internal.h */
->  };
->
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 0692119b79043..1fa0aa0cdc99d 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -1186,8 +1186,8 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
->          * If we aren't pinning then no problematic write can occur. A long term
->          * pin is the most egregious case so this is the case we disallow.
->          */
-> -       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM)) !=
-> -           (FOLL_PIN | FOLL_LONGTERM))
-> +       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK)) !=
-> +           (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK))
->                 return true;
+On 09/07/26 12:16 pm, Thomas Huth wrote:
+>> +++ b/powerpc/unittests.cfg
+>> @@ -24,6 +24,14 @@ file = selftest-migration.elf
+>> Â  machine = pseries
+>> Â  groups = selftest migration
+>> +# make a kvm-only version for CI for now
+>> +# TCG accel support with Qemu and distro release used in gitlab CI 
+>> needs to checked.
+>> +[selftest-migration-ci]
+>> +file = selftest-migration.elf
+>> +machine = pseries
+>> +groups = nodefault selftest migration
+>> +accel = kvm
+> 
+> This does not make sense (or I don't understand it) - gitlab-CI 
+> currently only runs with TCG for the ppc64 jobs, so adding a separate 
+> test for this with "accel = kvm" just adds a job there that will always 
+> be skipped. What should this be good for?
 
-Hmm I'm confused, you're then allowing FOLL_PIN | FOLL_LONGTERM, but disallowing
-FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK?
+I understand it may get skipped in gitlab CI for kvm-unit-tests,
+but it might be helpful to those who can run it on their Power HW.
+If the job can safely skip on non-ppc HW, I hope it's fine?
+We would like to get it integrated in IBM's internal CI with Power HW.
 
-By the way I think this should be expressed better if I criticise myself here :)
+Chinmay,
+Could you please share logs of running these tests with kvm accel on 
+Power HW? Thanks!
 
-So like:
-
-	if ((gup_flags & FOLL_PIN) && (gup_flags & FOLL_LONGTERM))
-
-Or even:
-
-	/* Only an issue if we pin... */
-	if (!(gup_flags & FOLL_PIN))
-		return false;
-	/* ...and that pin is longterm... */
-	if (!(gup_flags & FOLL_LONGTERM))
-		return false;
-
-But I'm confused as to why we are suddenly allowing something broken and what
-this hack flag is supposed to achieve?
-
-Shouldn't this rather be:
-
-	/* Only an issue if we pin... */
-	if (!(gup_flags & FOLL_PIN))
-		return true;
-	/* ...and that pin is longterm... */
-	if (!(gup_flags & FOLL_LONGTERM))
-		return true;
-	/* ...and not overridden... */
-	if (gup_flags & FOLL_LONGTERM_HACK)
-		return true;
-	/* ...and dirty tracking is required. */
-	return !vma_needs_dirty_tracking(vma);
-}
-
->
->         /*
-> @@ -2746,7 +2746,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->          * If we aren't pinning then no problematic write can occur. A long term
->          * pin is the most egregious case so this is the one we disallow.
->          */
-> -       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
-> +       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE | FOLL_LONGTERM_HACK)) ==
->             (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
-
-Yeah this is just a bit horrid having to stare at a this a while... So
-FOLL_LONGTERM_HACK would enable here.
-
-Be nice to avoid this form of it as it's difficult to understand, do something
-like above or a clearer version anyway (probably best abstracted to a small
-function).
-
->                 reject_file_backed = true;
->
-> @@ -3180,7 +3180,7 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
->         int locked = 0;
->         int ret;
->
-> -       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
-> +       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM | FOLL_LONGTERM_HACK |
->                                        FOLL_FORCE | FOLL_PIN | FOLL_GET |
->                                        FOLL_FAST_ONLY | FOLL_NOFAULT |
->                                        FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
->
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
+regards,
+Harsh
