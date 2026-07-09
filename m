@@ -1,98 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83238EEC0;
-	Thu,  9 Jul 2026 01:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FA322A1D4;
+	Thu,  9 Jul 2026 02:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783561853; cv=none; b=R00CghrTxSrRxmxAgQt35c2dbQG1FqdZJ1OA5FsjPAg4wo8MnBeF39jqkwrd1VOcWfEzcqDC5fnewgHAU6MD/4OztDzZXpRtikjFQ5zcJRsBd8TKyiqxtbo5y2KiS1rJOn0CEES7TFDVA2d15In/Pfwss51j1VDKNvKbMenIaA0=
+	t=1783562764; cv=none; b=NXGq0TZHzz/RH8s9Ybo82AzHWQt8bSxQA5dvNYfMhrDcblhKuEXXqBpsAmP7/Prow1vTIY3wdvyC47NqssJiYqKi+lpAJxVqCgFIlyKvRQonGCeLHjJ8Hfe4M1sztkhmEbt9S2bNVaJoa0adomtucnjyXVsgKE3lwDdkAa7m65M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783561853; c=relaxed/simple;
-	bh=CmOX7MaZZ9ifvd2zrDohkShz5toPMjJokDKEFZ947Fs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kw03T27VLyu5EC3P3e73+14gnnUV8xtp2FCMM0UVxNbGMcgU4JlOEakw00i+JtscuMsuplYVGzB5YQzETTamznG335b/VuBOswYEsSCgEFctlRDHlEeAlpwMQ42sCnENEillwzF0rE+BSdKqhE9vgCNsWwfmFdgT/A1NTSl75ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OX63E/no; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1783562764; c=relaxed/simple;
+	bh=4TBAMDs51nKjPI6X3lwgBRi/8vBA5L9Lw3sclcSgISA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tSf4sMsTKzoOAQzbxJazoW4/6FCKeRXSWZqnR0NeQYaqJy5deXw7D5ECLn7OOJOy8uZ1ODgyu2bav9XNp805da9zar5Npu9ZNdBl6nl2xa4uSk2KmdSfzMpML/xCbXPveIG1Srbfw54Rs3P84KDkaNOtxMnWfyim4Fmdo+9GGgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=a/aJCuzY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OX63E/no"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783561852; x=1815097852;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CmOX7MaZZ9ifvd2zrDohkShz5toPMjJokDKEFZ947Fs=;
-  b=OX63E/nodwC6P0hUx0yL2lX+2vzmItBqX6tX6ZNtAV6hJCgsFKdU2IMZ
-   LEH+igFzylL2X/BA1x/IrTN09VlwaXGZLR/SpFGJP4QNdh/nQSI3TwKyl
-   qwabw1U4t48OL8p81ffN1TBIAa/yb6cBLnbR7ZrrQSBB/413voY51Ip2U
-   Y5iWz2vqhYNGNq78qjR3qA3OKYXkM6ODM4XfVIZ3ywQXJAnIDPp/CYn3x
-   gB3gG5EvjTvyDdqMzZLRPMLrmeH6gA0PpRIO23uiOZjV4DmCZJR//NAWC
-   KWdtnf/Z5locuNAljFnLicYAUcRy5ma5sO6peNxSCokS7DLUQqBJ42SMF
-   A==;
-X-CSE-ConnectionGUID: JWX9YO7ESiimUeMrshCcOA==
-X-CSE-MsgGUID: iUn+DjdYRsOuaQJuH+DawA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95392457"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="95392457"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 18:50:51 -0700
-X-CSE-ConnectionGUID: zefSPwRmTXGLmvAlvdu2Hg==
-X-CSE-MsgGUID: bww8dSPPTdmw3BJ2JxO13g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="258310129"
-Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 18:50:48 -0700
-Message-ID: <9d376736-4879-42f2-b798-56fd2d1ab05a@linux.intel.com>
-Date: Thu, 9 Jul 2026 09:50:45 +0800
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="a/aJCuzY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154F61F000E9;
+	Thu,  9 Jul 2026 02:06:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783562762;
+	bh=fh+v6z4LaKdRJWSZzxsh8LHRO9V5c51gNjIrY3QRuEg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=a/aJCuzY0fXm/KWEGb0ilP5jrAq0B6hvKMSkgZF/S+3aNzXAlEM+zvP2EW1L3RgZE
+	 zgq824Y1pp9qiAXd+ySxZTv4GUka/BKpsKEfJxXJ/L0MKkruHAz4ya3hD1V92d4h0n
+	 HrqEsUuKptmUc5gKMWuOyZHy4qA9CrrMuMOgRqGM=
+Date: Wed, 8 Jul 2026 19:06:01 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: rppt@kernel.org, peterx@redhat.com, david@kernel.org, ljs@kernel.org,
+ surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com,
+ ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com,
+ aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, kernel-team@meta.com, kas@kernel.org
+Subject: Re: [PATCH v10 00/15] userfaultfd: working set tracking for VM
+ guest memory
+Message-Id: <20260708190601.4cebdebf9d1f6e9aeebcb853@linux-foundation.org>
+In-Reply-To: <20260708111417.173443-1-kirill@shutemov.name>
+References: <20260708111417.173443-1-kirill@shutemov.name>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD
- init
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "thorsten.blum@linux.dev" <thorsten.blum@linux.dev>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "seanjc@google.com" <seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>
-References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
- <ak4NdJSK60zKD8Uy@linux.dev>
- <315e969a-4ab1-433e-91c5-2308f1975281@linux.intel.com>
- <28ec0a5ac5c46448df5983cc7f9cbc71f6014e8a.camel@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <28ec0a5ac5c46448df5983cc7f9cbc71f6014e8a.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 7/9/2026 12:20 AM, Edgecombe, Rick P wrote:
-> On Wed, 2026-07-08 at 17:04 +0800, Binbin Wu wrote:
->>> Maybe it would be better to check for a mismatch and return -EINVAL?
->>>
->>>  	if (init_vm->cpuid.nent != nr_user_entries) {
->>>  		ret = -EINVAL;
->>>  		goto out;
->>>  	}
->>>
->>> That would make the mismatch explicit instead of silently accepting an
->>> inconsistent userspace snapshot.
->>
->> I chose to use the snapshot value to follow KVM_SET_CPUID2's style.
->> KVM_SET_CPUID2 kind of uses the snapshot value of entry count.
->>
->> But returning a error code is OK for me.
->> Let's wait and see what others prefer.
-> 
-> It does seem safer to reject input than have some implicit behavior.
+On Wed,  8 Jul 2026 12:14:01 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-Yea, had a second thought.
-If there is a mismatch, the userspace is probably malicious.
-It's safer to reject the request when the userspace is suspicious.
+> This series adds userfaultfd support for tracking the working set of
+> VM guest memory, so a VMM can identify hot pages and reclaim cold ones
+> to tiered or remote storage.
 
-Will send v2 to reject the request for the case.
+Thanks, I'll add this to mm-new.
+
+Sashiko failed to apply so let's find an excuse for v11!
