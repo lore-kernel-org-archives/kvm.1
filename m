@@ -1,57 +1,57 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB78C3D1CC6;
-	Thu,  9 Jul 2026 06:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CCB3D3310;
+	Thu,  9 Jul 2026 06:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783578775; cv=none; b=ZiKKugtFWlwq/HWt8PWTs+zRBvVW2LfO7qtL+AlNFrdNeljB4uDaLUraB/pK80wnB/og0RcoklnGEPve17CKM1rKsorvJm5AECu7NDyOK2WV3W/CuQaoIaDzW7ykpTHKXb9Q9Z3kpurW/B+7paCRxJh3jOcBU5uKoe7fdXr6JXk=
+	t=1783578801; cv=none; b=ZQQj0r2QeL3BsS38fHsX9ILSxe1dmCYu0Rbu7Vg7b0jwrUs0m6l7gN7bZziq8Z/RTXvDk79EVIoueh8O39GZS0dV1EliGUnaUGPAuTQQOC12HnkYwJExv+kzU9xoJbPKqD6rw0U6fy0oFBCRGWVNAVB+pX4V34ldP2YP6hZ6Qvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783578775; c=relaxed/simple;
-	bh=yTH7qFkkJnOEdFro8LTLoV81A2hrg8J2ukVzBtk584s=;
+	s=arc-20240116; t=1783578801; c=relaxed/simple;
+	bh=KfRs0zVnLsyF0lGYhzcOLfpMjZAYz1dDW7ZOOWp9bls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3f8+vvJoeUjHaHpaImzN5Jr2wcQY45v3Y8sq+BPAKof1jfWVAP8igBr7bH5zzQvXOOvw71vOVHhMVf/erPMfbXSdHejJ1ATpEuqvb2Rfs5kdrHwWaS4Tsx6Xf77IUSSYeLifI6H3o4D1a+aZENeT0CcupL/Wa+lc5XBYEcJ7/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OyAVekRO; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=PwDI3FpNYzjlIP6SeGlGgGBPi+fwkRsioVxGoGsvxdzhArdJmI+wwg3GjiOwatI1gT//o0WL1KuI2a6umnNQT0UBK6MHc/KfRXhEne5MjgjCDlEITeDnGuf1Q4DCvRfsPVDh5gX3qd04D61vvLbhXQ4mFyMQ/Co0HtETYQqSKWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZnzT25Re; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OyAVekRO"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IJwM1391148;
-	Thu, 9 Jul 2026 06:32:41 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZnzT25Re"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696ILfs1897187;
+	Thu, 9 Jul 2026 06:33:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9bIyUR11Eycrc6/0m
-	NEFw+74+55ukNW0rU8t3fxJfuA=; b=OyAVekRO+XWTkEkK6aLQ91wM0U9dIoYWX
-	aHhsbZJkI9YFPiSDHyiLVWW52E2RNIWFCa5j4WPwMHS+6b32QUhxLjgUhjC7rCYJ
-	FhecyBpVATglG2bxzRCp2MI5/RKUaajf8g3KSf/xd+tVjvG0GFy09RiisxcabDIN
-	UlPFqGZGbFXhbeE2Y7KnrNh0OlkKQhplyfEqWAqXgOYaKtBcgQHm6AkSffGiZTur
-	+6Y3JNvvf1O4/Bh9jT4rU/0fKCYlkrRCTnIfWelsOIdXmFLExKtM2UHQGFGWqKvI
-	Vo0oUJSCpItIqeIRRg+Q11PMXU3USj8A02woM91qUYOkpoyi+Wc6w==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sp40e4v-1
+	:mime-version:references:subject:to; s=pp1; bh=sqL3q7hIixuKVwjG7
+	GithS2vRWS1tvYVOKDRgb0HbuI=; b=ZnzT25Reys2P3Snj5i8wf/3r1XOUVKQDA
+	OO5vf4+JXBjY5BT5ecoXpRtY+2hd+CFud8YU7EyVlihUbXB6nidGYfXBqpGYmxRq
+	qsPU6iyt5Qfc2Bbg0LA3og52VR4S84Hh3upmDzE4m2tQGYmq7YeeOjKDQI2ejtPH
+	hUv5cP5AXfrEt+Wa0AJXT6EKWQFzAihwtvaPh5tUpzZVyFcrlS5q4ahlTkc00VDl
+	ykYagUpCHBXDxhUXKFomsNshovBfPJYfrkyVbR5DQjBc2zsUVjGEw4kJxSFLoIWQ
+	gLuxZnPjR+zJy1qVbgnvRpoPLlRk2RpCL2XTLJ+bh40zc4oSOiNpg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur0316-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 06:32:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6696Jm0m011593;
-	Thu, 9 Jul 2026 06:32:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7f6ybk56-1
+	Thu, 09 Jul 2026 06:33:07 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6696Jbhs007590;
+	Thu, 9 Jul 2026 06:33:06 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7eqgbpbv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 06:32:39 +0000 (GMT)
+	Thu, 09 Jul 2026 06:33:06 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6696WauD60490042
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6696X2hf13697376
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 06:32:36 GMT
+	Thu, 9 Jul 2026 06:33:02 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2F912004B;
-	Thu,  9 Jul 2026 06:32:35 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 662CE2004B;
+	Thu,  9 Jul 2026 06:33:02 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54F8E20040;
-	Thu,  9 Jul 2026 06:32:32 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id ED8F720043;
+	Thu,  9 Jul 2026 06:32:58 +0000 (GMT)
 Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 06:32:32 +0000 (GMT)
+	Thu,  9 Jul 2026 06:32:58 +0000 (GMT)
 From: Vishal Chourasia <vishalc@linux.ibm.com>
 To: maddy@linux.ibm.com
 Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
@@ -60,9 +60,9 @@ Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
         gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
         kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
         Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [PATCH v3 1/2] KVM: powerpc: Use generic xfer to guest work function
-Date: Thu,  9 Jul 2026 11:59:40 +0530
-Message-ID: <20260709062940.1679427-4-vishalc@linux.ibm.com>
+Subject: [PATCH v3 2/2] powerpc: enable to run posix cpu timers in task context
+Date: Thu,  9 Jul 2026 11:59:42 +0530
+Message-ID: <20260709062940.1679427-6-vishalc@linux.ibm.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260709062940.1679427-2-vishalc@linux.ibm.com>
 References: <20260709062940.1679427-2-vishalc@linux.ibm.com>
@@ -75,246 +75,60 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=KsJ9H2WN c=1 sm=1 tr=0 ts=6a4f4089 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX6/pcE0+XHUDp
+ RKbkdGKB4FHI4WW9mX+I9netXDaqlheSU5yLHM7aeXnlwgKunbEW5FS4O16r5YIx/vGL2TrZStY
+ TTetPjzP3xMO9ppr0PwEnWewEjOMQnQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX4JQMFtcNs+Hz
+ QzJ0l85vOqQj9/1608slUzf/r+/oWOv5eqjYpVqQqlTaI1XIV2dqSuYkgBi2sqCOWCDK6Eg99r1
+ XL6AIk3PLvfgiRGe1Y2xRwqQYZguJM6cKuEwoQ18aEK0z9xrUw2VXjvoeRy6rgsjTN1h3dFsKx7
+ ClBkPluK95B5wocuRLtTzTt7oVzkBIrMcRWZ9lechNGdzqX+9OyJPEYHXlnmd8T9RB41wb9Hdf+
+ zi7NQO35KjQtCwMe5sbft+jZ3aRintLusnNHBLpMxNQu1lzF8RJn5EpmTaFwH75QurnAFBfEYMa
+ xj1HqxUSfUM3ksE6OD8gR3LWxISqZM/A8EMlFqqlvD1nQVbfEaqZsoz8J+IYhE213iK14tKp7QL
+ C9eRuIHyKKayFTP3G/s+t+PRkuVkPte3e4JpN+JnyxXUxVIJ2QAtBN90vt/CKF1HJ+x7g+Hp7VN
+ ugtBs4Jke6O/YAaY/RQ==
+X-Proofpoint-GUID: yEIgEwfQtYazhRWS5Z5rWyY5OXhjMPHs
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4f40a3 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=PgQh_DqA1R2i0zMqUqAA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX3XY9NzII449C
- UhYBZ4gqLQ3XNo3x1GC3wwIY3tF+noRwaDIKrLDZXH56QiqwIevA6/3Xtqkvb3O3yByncrleC4H
- 4CJgL7hbdwcynWR+ep8lQvdKPg25wSk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX7/uDtKV4OLcK
- 6oT6t44MXT5iBoB+ZsoRZ2YSyarAPoO7qanBu2QR4McODMaef7ox1flOwqcbBd/48hisa/FUJKH
- sm34iyI/AycClS6d91ySmfskL4VeWTYRDByVZUHtXZaAugTh0c4k00mTKd2Ip9PII0UzWZ3iiX9
- 7UgkRnj7eVCgJ2z/ri8t2gQDPSQUraNmaT0g6XiEVo2FM9l5ofdEx/pexzcVI0Reo9pwp1OHh/m
- DKp/+cIE2YdIZnz0LcCsQngypOENRqBbdfxwsoWfNsbeCvKrT5EJAfnp5nYkfxuc0o7f3DNINrC
- HGql1mGeYSl+mppm1Hkcek/Tv8IMh52Dig7ZVYXOCPDdzFK90GaSJUJkk/Px5MTcAS4NFsvU542
- jx6mEM9hmFm3Rq3THxcq+iqKUXG/cag5SmWp9yxC++ou/xp7K1VFygTcG1gv95Yjms3mN8zXFTL
- rfKQSRbjfw1Nk+A0qxw==
-X-Proofpoint-ORIG-GUID: HtyxLAVgoVvj4BMK3bjRoyEP8gdkH0AG
-X-Proofpoint-GUID: kO3KAesDjfmyxY0pJomrkMES_yEAER1z
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=7mPU114Ar3IJ09b1OIsA:9
+X-Proofpoint-ORIG-GUID: DUoshtoKsdss-swwmIVeHa4UdgpkqwAZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 spamscore=0 adultscore=0 clxscore=1015
- suspectscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090057
 
-Since commit 2cd571245b43 ("sched/fair: Add related data structure for
-task based throttle") in v6.18, CFS bandwidth throttling no longer
-dequeues a task directly; it queues task_work via TWA_RESUME and sets
-TIF_NOTIFY_RESUME, relying on that work running before the task returns
-to guest/user mode. The powerpc KVM run loops only checked for reschedule
-and signals, never TIF_NOTIFY_RESUME, so the deferred throttle never ran
-while a vCPU stayed in the run loop: a CPU-bound guest that rarely exits
-to userspace ran far past its cpu.max quota and then appeared frozen for
-minutes while the accrued throttle debt was repaid.
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-Use the generic infrastructure to check for and handle pending work
-before transitioning into guest mode, replacing the open-coded
-need_resched() and cond_resched() checks in the Book3S HV run loops and
-in the common kvmppc_prepare_to_enter() used by the Book3S PR and BookE
-run loops. The redundant signal_pending() recheck (and its sigpend label)
-in kvmhv_run_single_vcpu() is also dropped, as
-xfer_to_guest_mode_work_pending() is a superset of it.
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-This picks up handling for TIF_NOTIFY_RESUME, which was previously
-ignored, meaning task work will now be correctly handled on every
-guest re-entry.
+Now that all kvm entry to guest paths handle the task work
+using the generic framework, enable HAVE_POSIX_CPU_TIMERS_TASK_WORK
+which allows running posix cpu timers in task context instead of running
+them in hardirq. This would is a necessary step towards enabling
+PREEMPT_RT on powerNV systems.
 
-Selecting VIRT_XFER_TO_GUEST_WORK disables RCU's last-resort self-IPI
-fallback for vCPU tasks (see rcu_irq_work_resched()), which on
-nohz_full CPUs was what forced a reschedule for deferred rcuog wakeups
-queued right before guest entry. Take over that obligation the same way
-x86 and s390 do: call xfer_to_guest_mode_prepare() with IRQs disabled
-immediately before the final xfer_to_guest_mode_work_pending() check at
-each guest-entry gate (kvmhv_run_single_vcpu(), kvmppc_run_core() and
-kvmppc_prepare_to_enter()).
-
-In kvmppc_prepare_to_enter(), IRQs are now disabled with
-local_irq_disable() before hard_irq_disable(): on 32-bit,
-hard_irq_disable() is a raw MSR[EE] clear that bypasses the
-lockdep/irq-tracing state, and the strict xfer_to_guest_mode helpers
-assert that IRQs are seen as disabled. This also allows upgrading the
-racy __xfer_to_guest_mode_work_pending() check to the asserting
-variant, as this loop is the terminal gate for the PR and BookE paths.
-
-In kvmhv_run_single_vcpu(), the -EINTR exit and the pre-existing
-kvmhv_setup_mmu() failure exit now leave via the done label instead of
-returning directly, keeping the run_vcpu enter/exit tracepoints
-balanced and vcpu->arch.ret consistent with the returned value.
-
-In kvmppc_prepare_to_enter() the generic helper accounts the signal exit
-(vcpu->stat.signal_exits and KVM_EXIT_INTR) but does not set the exit
-type, so kvmppc_set_exit_type(SIGNAL_EXITS) is retained on the signal
-path to preserve the E500 CONFIG_KVM_EXIT_TIMING histogram; it is a no-op
-otherwise.
-
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
 ---
- arch/powerpc/kvm/Kconfig     |  1 +
- arch/powerpc/kvm/book3s_hv.c | 39 +++++++++++++++++++++++-------------
- arch/powerpc/kvm/powerpc.c   | 37 +++++++++++++++++++++++++---------
- 3 files changed, 54 insertions(+), 23 deletions(-)
+ arch/powerpc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index 9a0d1c1aca6c..b6bc2fc86dca 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -22,6 +22,7 @@ config KVM
- 	select KVM_COMMON
- 	select KVM_VFIO
- 	select HAVE_KVM_IRQ_BYPASS
-+	select VIRT_XFER_TO_GUEST_WORK
- 
- config KVM_BOOK3S_HANDLER
- 	bool
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 61dbeea317f3..3cfe9a7be9c6 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3853,7 +3853,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 	 */
- 	local_irq_disable();
- 	hard_irq_disable();
--	if (lazy_irq_pending() || need_resched() ||
-+	xfer_to_guest_mode_prepare();
-+	if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
- 	    recheck_signals_and_mmu(&core_info)) {
- 		local_irq_enable();
- 		vc->vcore_state = VCORE_INACTIVE;
-@@ -4824,10 +4825,16 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
- 		vc->runner = vcpu;
- 		if (n_ceded == vc->n_runnable) {
- 			kvmppc_vcore_blocked(vc);
--		} else if (need_resched()) {
-+		} else if (__xfer_to_guest_mode_work_pending()) {
- 			kvmppc_vcore_preempt(vc);
--			/* Let something else run */
--			cond_resched_lock(&vc->lock);
-+			/*
-+			 * Let something else run. The raw helper is used as
-+			 * signal exits are accounted by this path already;
-+			 * it may schedule(), so drop the vcore lock.
-+			 */
-+			spin_unlock(&vc->lock);
-+			xfer_to_guest_mode_handle_work();
-+			spin_lock(&vc->lock);
- 			if (vc->vcore_state == VCORE_PREEMPT)
- 				kvmppc_vcore_end_preempt(vc);
- 		} else {
-@@ -4895,12 +4902,16 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 			run->exit_reason = KVM_EXIT_FAIL_ENTRY;
- 			run->fail_entry.hardware_entry_failure_reason = 0;
- 			vcpu->arch.ret = r;
--			return r;
-+			goto done;
- 		}
- 	}
- 
--	if (need_resched())
--		cond_resched();
-+	r = kvm_xfer_to_guest_mode_handle_work(vcpu);
-+	if (r) {
-+		/* -EINTR: signal pending, exit to userspace (KVM_EXIT_INTR) */
-+		vcpu->arch.ret = r;
-+		goto done;
-+	}
- 
- 	kvmppc_update_vpas(vcpu);
- 
-@@ -4914,9 +4925,13 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	vcpu->arch.state = KVMPPC_VCPU_RUNNABLE;
- 
--	if (signal_pending(current))
--		goto sigpend;
--	if (need_resched() || !kvm->arch.mmu_ready)
-+	xfer_to_guest_mode_prepare();
-+
-+	/*
-+	 * IRQs are disabled here, so on pending work bail to the outer loop,
-+	 * which handles it via kvm_xfer_to_guest_mode_handle_work() above.
-+	 */
-+	if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
- 		goto out;
- 
- 	vcpu->cpu = pcpu;
-@@ -5068,10 +5083,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	return vcpu->arch.ret;
- 
-- sigpend:
--	vcpu->stat.signal_exits++;
--	run->exit_reason = KVM_EXIT_INTR;
--	vcpu->arch.ret = -EINTR;
-  out:
- 	vcpu->cpu = -1;
- 	vcpu->arch.thread_cpu = -1;
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 00302399fc37..be5e48ae0c6c 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -81,23 +81,41 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
- 	int r;
- 
- 	WARN_ON(irqs_disabled());
-+	/*
-+	 * local_irq_disable() first: on 32-bit, hard_irq_disable() alone is a
-+	 * raw MSR[EE] clear that bypasses the lockdep/irq-tracing state, and
-+	 * the xfer_to_guest_mode helpers assert IRQs are seen as disabled.
-+	 */
-+	local_irq_disable();
- 	hard_irq_disable();
- 
- 	while (true) {
--		if (need_resched()) {
-+		xfer_to_guest_mode_prepare();
-+
-+		if (xfer_to_guest_mode_work_pending()) {
-+			/*
-+			 * The helper must run with IRQs enabled and may
-+			 * schedule(). On a pending signal it returns -EINTR
-+			 * with run->exit_reason and vcpu->stat.signal_exits
-+			 * already set, so just return to userspace.
-+			 */
- 			local_irq_enable();
--			cond_resched();
-+			r = kvm_xfer_to_guest_mode_handle_work(vcpu);
-+			local_irq_disable();
- 			hard_irq_disable();
-+			if (r) {
-+				/*
-+				 * The generic helper does not set the exit
-+				 * type; record it for the E500
-+				 * CONFIG_KVM_EXIT_TIMING histogram (a no-op
-+				 * otherwise).
-+				 */
-+				kvmppc_set_exit_type(vcpu, SIGNAL_EXITS);
-+				break;
-+			}
- 			continue;
- 		}
- 
--		if (signal_pending(current)) {
--			kvmppc_account_exit(vcpu, SIGNAL_EXITS);
--			vcpu->run->exit_reason = KVM_EXIT_INTR;
--			r = -EINTR;
--			break;
--		}
--
- 		vcpu->mode = IN_GUEST_MODE;
- 
- 		/*
-@@ -116,6 +134,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
- 			local_irq_enable();
- 			trace_kvm_check_requests(vcpu);
- 			r = kvmppc_core_check_requests(vcpu);
-+			local_irq_disable();
- 			hard_irq_disable();
- 			if (r > 0)
- 				continue;
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f7ce5fff81f0..51555a0b1a26 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -281,6 +281,7 @@ config PPC
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+ 	select HAVE_PREEMPT_DYNAMIC_KEY
++	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
+ 	select HAVE_RETHOOK			if KPROBES
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RELIABLE_STACKTRACE
 -- 
 2.54.0
 
