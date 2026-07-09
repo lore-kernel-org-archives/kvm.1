@@ -1,84 +1,93 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8084406804
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 10:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40827405C5F;
+	Thu,  9 Jul 2026 10:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783592848; cv=none; b=Us0ha6pEPCl1vIigHqT6tdOGzsapaEqd2mm+gRsSQVRfEz8t1vxiCQOZr+UJQD8+ItkZVPlyCihtwgWNuC6ydO+DhLuGd+B9b9kFd5pTV8AwT+oFP+aq/DxZFSsgQQy0fOb+aOV2vZTligvNXC0HCta0KdYDPIlPUDl4dH0tQtY=
+	t=1783593134; cv=none; b=HPXmHhJuFqCbVipwvqHJXkY1TkDz0qHBR2iUti5SSIIvw/OFdFHMQtCkJ2gxudLzafbeCa4b5Z4L+joZ7yhN6VfCsLfFbL5E74t9wBqIKh/WAgtPF08hp1VuXUJpVh5T0BETR9YWt55YqgJd9NkoWWeZmjRuHkI25GMrsc4zru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783592848; c=relaxed/simple;
-	bh=MxLey4kR4pPKpR8Eqs6jpbSuCMQEbnoM8JXbBb9w8kA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FVckXTYJNWY2/KmExci/u1ZK0IHJctgR8mEvyaTc6TRwun/hcIt3bkd8SGPw3C9Qyr156+WZhgtKeBtB3NUax6IOip9hh7ZanVZ9/Fq/YIyvtWa/np/yTsy4hfFH0KB2aLh9T3B6N9OThvAtO1asGBgTgbRUYtwR8AZVl2cKsAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pBZCalW+; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783593134; c=relaxed/simple;
+	bh=wa47m20KhvlwQv1JjdWNpfdD1a2wtEqJBBh1snWDgiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gjf4iUHs60C5oPPstTeipNcBfc+4lCpLQuv+34XoA7TpAGDK2YxvI9H0SBLO1i61BLhaONMX4b1qfY+pcd8PpcdWu28mMeaUkYnfXP+mPVNs9+cKlcEPf+y1NmSKoKGXEYTUlcuRW1+UK96O0NoLTwu8M0mOMG3xD4z+8NoXcS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OlAbl1S8; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pBZCalW+"
-X-Forwarded-Encrypted: i=1; AHgh+Rrx9dvaaSbEQwZ7r1I3pe0GBg16MgJka2Y/722H88W6dte8F5tI19SqCApHVBVgL6oQ0FM=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783592845;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MxLey4kR4pPKpR8Eqs6jpbSuCMQEbnoM8JXbBb9w8kA=;
-	b=pBZCalW+Q/xPc14nzvCFqnATcMI32EhUqw5CZE8g/zeSkhnH5JC73Ssjo9OVaKbFOUIlKD
-	eB4PcspK9gs6m5/Y66nnGCQ+pAgQuSTRsoryPhdWC5QSowIBd0po70WzG1QK5BG5iypgy9
-	ptcjrSIo+6cUpTAMmFxbNssZazeYhaM=
-X-Gm-Message-State: AOJu0YxsiMrmZaOnsQS6qdIP3mRvnOUSPTI5SR9t+Owfr03s98vM3B0G
-	dI5EyFGhO9WKj7XLgrLpsrNhiUQktYi4jgf8D9ZdqgU//4dyQR3AacYHT7OeIsWpCFry1do7Gwp
-	76/M0WKumHNLM/L4Wk1zs46RnNsGMJ2UhHGOPHRlP
-X-Received: by 2002:a05:622a:248b:b0:517:5ac7:332e with SMTP id
- d75a77b69052e-51c9a7990e9mr6344801cf.6.1783592838569; Thu, 09 Jul 2026
- 03:27:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OlAbl1S8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783593132; x=1815129132;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wa47m20KhvlwQv1JjdWNpfdD1a2wtEqJBBh1snWDgiY=;
+  b=OlAbl1S8g7nq24DGygQnztLrDF9XN6fE+Zl5d9WmZlXeeK4Ja3djlb2w
+   0FA1fYn9sOfHtEexqJEeUWqk+UHs92KyZ7SGJxZ4tsjkU4VXKHIF33E4d
+   CezXKWKNEn1gvSka3jgfT2Ws9jJBH12OvQn+Vqaa0n9O5WfUNS+Z2oemF
+   1R7iUwIG//clw/CCNFugMqJ/rlFuzYY/0OeyRJkf4EMawDn5pQZMLGer9
+   jETZ6yN13mLoaWD92rH+yRwOHRwqnAJoaFSWFiVcgKJWmcHrZLSDl4GMj
+   XnuDgf6O9RBMiiTAnIgl25/ryVF6HMU4RVPezPOFvOiZBH1/0teCSCWjQ
+   A==;
+X-CSE-ConnectionGUID: 5LM0sFzASZaloULm+UvBuA==
+X-CSE-MsgGUID: QUiSI97PRcakqezI6Kahcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84148774"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84148774"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:32:11 -0700
+X-CSE-ConnectionGUID: xsTtvBPvQMmmNCrC/5O9XQ==
+X-CSE-MsgGUID: stqpUXT2SVezy8urTKOdzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="256468875"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
+  by fmviesa004.fm.intel.com with ESMTP; 09 Jul 2026 03:32:10 -0700
+Date: Thu, 9 Jul 2026 19:00:44 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com,
+	seanjc@google.com, Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH] KVM: x86: Remove AMX-TF32 enumeration
+Message-ID: <ak9/XEGJhm+sViKH@intel.com>
+References: <20260708210118.402005-1-chang.seok.bae@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
-In-Reply-To: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 9 Jul 2026 11:26:41 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyAxBx4jhGq-Gme5hPi1ZyDAkL2CP_U22ykkQemD1dUhg@mail.gmail.com>
-X-Gm-Features: AUfX_mwpyfAsKpUMf2tNxcvppePr82pc_iCQFLAefIFcUoHnYHNmsUIYIv4f_m4
-Message-ID: <CA+EHjTyAxBx4jhGq-Gme5hPi1ZyDAkL2CP_U22ykkQemD1dUhg@mail.gmail.com>
-Subject: Re: [PATCH v11 00/29] KVM: arm64: Implement support for SME
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708210118.402005-1-chang.seok.bae@intel.com>
 
-Hi Mark,
+On Wed, Jul 08, 2026 at 09:01:18PM +0000, Chang S. Bae wrote:
+> Date: Wed, 8 Jul 2026 21:01:18 +0000
+> From: "Chang S. Bae" <chang.seok.bae@intel.com>
+> Subject: [PATCH] KVM: x86: Remove AMX-TF32 enumeration
+> X-Mailer: git-send-email 2.51.0
+> 
+> AMX-TF32 enumeration was added based on the Intel documentation [1]. The
+> recent update removed the feature, indicating that the feature is no
+> longer planned for hardware implementation.
+> 
+> [1] Intel Architecture Instruction Set Extensions and Future Features
+> 
+> Cc: Zhao Liu <zhao1.liu@intel.com>
+> Cc: Binbin Wu <binbin.wu@linux.intel.com>
+> Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+> ---
+> Note: The feature first appeared in the September 2025 revision of the
+> document and was removed in the June 2026 revision.
+> ---
+>  arch/x86/kvm/cpuid.c         | 1 -
+>  arch/x86/kvm/reverse_cpuid.h | 1 -
+>  2 files changed, 2 deletions(-)
 
-[snip]
+LGTM,
 
-> base-commit: 4c45e14df2f4e77982ad70d6d8e3fe750edd4c37
-
-I think this SHA is local to your tree. I can't locate it, and neither
-could Sashiko [1, 2]. For a series this big and complex, it would be
-good to get Sashiko to review it. Could you please fix that?
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 Thanks,
-/fuad
+Zhao
 
-[1] https://sashiko.dev/#/patchset/20260709-kvm-arm64-sme-v11-0-32799f66db9d%40kernel.org
-[2] https://sashiko.dev/#/log/baseline/42725/0
-
-> change-id: 20230301-kvm-arm64-sme-06a1246d3636
->
-> Best regards,
-> --
-> Mark Brown <broonie@kernel.org>
->
