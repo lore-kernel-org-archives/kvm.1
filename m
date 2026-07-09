@@ -1,217 +1,147 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16572399350
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B33793A6
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783626543; cv=none; b=hsMgrgX2gz1Bntnekz/OW+krQHuH/J8RibcSoy8TeECzeAvfr055f05WKWuiDe3W6lc5uE4UX98Dzq2+z2vkFwuuoHkjuI+4HOH6Vgby08pfKUvFho01PXBcx3bzcS5pkFlVZigpbwm/icl3Lf9EJkvaKu+WNdXmec0VBKDkWOI=
+	t=1783626849; cv=none; b=jUiu9VHxKRok5grSFMdliOa6Esxi0yDC/aW17MiGSlA7OAfmM+zN9/c9vtOtTbEHtiwfHx0V4fzyV89XduKk8FFO3aXujcLJHstlqX/LrDS1is6GaWb1pOcaB7yL+pBU+ouQWrDKYsoimQMkgvEZHX0WK0n5XF/TUbOU7I9SK5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783626543; c=relaxed/simple;
-	bh=UFc5NYkNHpWBb0ABwv4btzCtbc/6m2TSiIZHIWB4Gls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ldWU80XZCYiRvBOrTwxT/WIZCX62cQh5AIZLE8kjTh9wWHeSOErEK7RXQz1vDFO2CGtw6XkWITXmlr9Kvx5spQXOgbbSoolaWxZkpirmD062AmoFc96kCfLmuoomYu47BgPe08SH7Eyj6KdzzGzxQIYssAM9NF2GwHI/8Qh45+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FwNGK9BU; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783626849; c=relaxed/simple;
+	bh=WNGmcRTGHnY5GfCH6GDmX8QSq8pxw+ysKJc5TtSS95E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMQb9aNLNn7HMnjINxC4iYCzyfKhuKdTxFP71W9LyXeVAmNihC2Z0WQxMrF1EuK3JagrVfIuoII+jdRqZylRRdCuGuzKleMc6eBDR3tnOeNAIuENCt8pXxECxgqXDsi0rB6mUNScl8iZPeeVI4F3BGbWcQnJ76ofvDfdaZncP6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIMAttZx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FwNGK9BU"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7e6b554044fso222601a34.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:49:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783626541; x=1784231341; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f/r3c0ypjapIfRHS5El1n40WfDRGvPfw2APfHzflGpQ=;
-        b=FwNGK9BUpzpo/XE9+lBzpbBDrj7G4mJ/UZ9X3eT+vqXAqjRBDLs4WhwFUveDXBpmby
-         LZ6rK44oj+rNd7azZPzHZXZOyXQECtWUeisNPed9gPRthHn3xu8BeuQg7P4K1KIf03kc
-         89ZmF1MsEzjxbf+MxLqKvDi+Z9tUt4ZkSipGua5lsyFmMg30SRG4a8GAwgwD95gx4jgJ
-         Xo/e7hGc60qKo2Uq6/oR9PKzANXjmX4VWwQ5sCHBOK0KBcvzKLMdkESGmYqPGOS96lEg
-         BROe1/ozgOGx+M0t1XvfcXk2WEklbFjteFfDqsY2WaFKal54CRmbg7X1CvxK+sQ0k0iY
-         5V5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783626541; x=1784231341;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f/r3c0ypjapIfRHS5El1n40WfDRGvPfw2APfHzflGpQ=;
-        b=asujpAwOAh4W8Pv8aQgu09y5Ax2g9tcOXRtL+KnmRGkGhgoHdmwFR8RK0SRUEAgwPn
-         eOf1JDM+iNtasaIr8WwobZmb1/Rc/NoiZjUlv+LvaISWjRlET+2+8vW2E1XYRDFtnZto
-         vQqWHMB2zQRNu61HN7J6jGZU9Jg3MHjWVi/eCeGqwwQSxqQ9CV8oyDk3O17wWtXmLmEa
-         3cm+mFz8C8Hz+WwmAz+6YCSF8HiVcPunsMJ/qn7l/omnOOc1z7EdUf0WGsGHU72aEWBu
-         1XBYYgxIL0G/H9yL8bsJc8dBIp2UU+lBaAF00iR5HkzlZ8YZ2m9rA8sAli8DzvAyGFDE
-         Ai+g==
-X-Forwarded-Encrypted: i=1; AFNElJ/OPm7bllRuODDN+zTzAXt0dfii0foKzQWX3fxeOpUUWyGuyDV5B5VpJ0sAfEMScVacHyQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh6L5BcEW3cFFu56HIog6OU3mb/E6Vu7eRY1LnKFS5T2bgztEc
-	gne0VtzaJT+8RfKaZnB/NZAFbx1C1j2eooV0zQJn8tSa/RHxmahbp2tA
-X-Gm-Gg: AfdE7clmQImkgFIaK5Pmed4ILe//12YpegvVvo/KkVilGDfg4S/RpCLSEMtUoC3IKeR
-	2btW1c3G82HjIcGHbMleMvGDKHmlFq/p+ic2lSoxzUCYokgEaMfZMPMVSegsKooDEpQflUBRiZR
-	tKNpoywjF+k6y2YmPxldu8ruifPLZEoaJpZD/MpJvWQHPaaKLWV/KJ/dJWbF+fSujORFRYXx0L0
-	qk5+1OgfD49t0Bc94EcEOdR+CZnQ0XWzqeK+8k88ZOAx9vQSfSlyiyPihaSTeJiPMxXJNaOqaEL
-	SKbYo3CwFnjbYLbG1cf3Ix3+Mz2p/Sd16jk8yJuTJCYAmFTkNaeP8lxVK7fT3pSWIWyOQed9vAL
-	Mb5dYLivP+iHZNUBtTEiFPfw6/yBoNkQAwrNIqWvHCd81MDwnmvT2nPR9cc3aHiSfqovNWwRfiy
-	dTWzT+jMzZc1AysK9nzaBZatzrd9/kYyFx
-X-Received: by 2002:a05:6820:992:b0:69e:97da:285a with SMTP id 006d021491bc7-6a36d98dd7dmr6355429eaf.29.1783626540946;
-        Thu, 09 Jul 2026 12:49:00 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:6::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a36a66b668sm4932299eaf.8.2026.07.09.12.48.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 12:49:00 -0700 (PDT)
-Date: Thu, 9 Jul 2026 12:48:57 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-kernel@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
-	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH net v2 2/2] vsock/test: add test for small packets under
- pressure
-Message-ID: <ak/7KFNi7CJzgbX6@devvm29614.prn0.facebook.com>
-References: <20260708102904.50732-1-sgarzare@redhat.com>
- <20260708102904.50732-3-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIMAttZx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46B61F00A3E
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783626847;
+	bh=nOFy1uHV+NQl46guA9lx1UHXG/tr7s8gJ0WE+G2M0Rc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oIMAttZx6N8sGVsrdxK721UR0TUAo3evAfE9N6oz4HjGCc/hxlpATviqrSZrKR4LB
+	 y91Y3Az8dGXYgKJwyAmPHaXhLL67o4JvYicRqd7pqZFnNVGgABYDx79DPCntyCozPO
+	 Ts4yyIeq7LThGwN8Y8x1F3ppzSBl1cHsPDxwQBUaX2gikIUKlFLvT3YZsATOd1N8Ts
+	 V69p6/Xp6jLmkksBgpQ0an2iyhRWEuXMFBBlVBzH+UvOwStmQrE+RP/62qs4cmsane
+	 3Q7J7vCyiX6UvA8l72AvlV9gXcpD4ymDz0aXk0V90sefNwI0nAmf804vjEy+PY7SJC
+	 PEaZo8uofGzkg==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15e3141d02so29707766b.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:54:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpMFhUSWeRssoI/ShIFylXmSVY7iWE1bj25sBXnirmi9T70UQFused36B3XC/mWL2gqZXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLi6COrpJqeFt/rbtv1UtfdxA1nOgTGZ0T6CZSrA7wKzAuH7Vj
+	Clsj38SZClClSqQcY/5J+p3AJBxlECF6NEjohQ2Is0tX+C0l8p+uvwl9LqtquG4AiSGHBefgHyR
+	shNFcvzMuNufCorcw1Dg9Y5t3BLO4Ey8=
+X-Received: by 2002:a17:907:6ea6:b0:c15:f005:63fb with SMTP id
+ a640c23a62f3a-c15f005718fmr138274366b.3.1783626846658; Thu, 09 Jul 2026
+ 12:54:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708102904.50732-3-sgarzare@redhat.com>
+References: <20260709082953.69434-1-shivansh.dhiman@amd.com> <20260709082953.69434-2-shivansh.dhiman@amd.com>
+In-Reply-To: <20260709082953.69434-2-shivansh.dhiman@amd.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 9 Jul 2026 12:53:55 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
+X-Gm-Features: AVVi8CdNT4WFDLJcpYUCQoK_uqHWvoit2fGW9Lei8EVYq1OHk4LP5qp367fQ9mc
+Message-ID: <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] KVM: SVM: Refactor svm_update_lbrv()
+To: Shivansh Dhiman <shivansh.dhiman@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	mingo@redhat.com, kvm@vger.kernel.org, x86@kernel.org, yosry.ahmed@linux.dev, 
+	jmattson@google.com, thomas.lendacky@amd.com, nikunj.dadhania@amd.com, 
+	ravi.bangoria@amd.com, santosh.shukla@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 08, 2026 at 12:29:04PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> Add a test that sends 2 MB of data using randomly sized small packets
-> (129-512 bytes) over a SOCK_STREAM connection. Packets above
-> GOOD_COPY_LEN (128) bypass the in-place coalescing in recv_enqueue(),
-> forcing each one into its own skb.
-> 
-> Without receive queue collapsing, the per-skb overhead eventually
-> exceeds buf_alloc and the connection is reset. The test verifies
-> that all data arrives and that content integrity is preserved.
-> 
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+On Thu, Jul 9, 2026 at 1:31=E2=80=AFAM Shivansh Dhiman <shivansh.dhiman@amd=
+.com> wrote:
+>
+> Rewrite the enable_lbrv computation in svm_update_lbrv() as a series of
+> 'if' statements, and use nested_vmcb12_has_lbrv() instead of open-coding
+> the nested LBRV check.
+>
+> No functional change intended.
+>
+> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 > ---
->  tools/testing/vsock/vsock_test.c | 87 ++++++++++++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
-> 
-> diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-> index 76be0e4a7f0e..b4ff9f946565 100644
-> --- a/tools/testing/vsock/vsock_test.c
-> +++ b/tools/testing/vsock/vsock_test.c
-> @@ -2347,6 +2347,88 @@ static void test_stream_tx_credit_bounds_server(const struct test_opts *opts)
->  	close(fd);
+> Changelog:
+> v3:
+>  * New patch.
+>  * Refactor the enable_lbrv computation into 'if' statements (Yosry Ahmed=
+).
+>
+> ---
+>  arch/x86/kvm/svm/nested.c |  2 +-
+>  arch/x86/kvm/svm/svm.c    | 10 +++++++---
+>  arch/x86/kvm/svm/svm.h    |  1 +
+>  3 files changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index c1485c3e691c..d3df6b22bfef 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -736,7 +736,7 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu,=
+ unsigned long cr3,
+>         return 0;
 >  }
->  
-> +/* Test that many small packets don't cause a connection reset under pressure
-> + * and that data integrity is preserved.  Packet sizes vary randomly between
-> + * 129 and 512 bytes, above GOOD_COPY_LEN (128) to bypass in-place coalescing
-> + * in recv_enqueue, forcing each one into its own skb.  Without receive queue
-> + * collapsing, the per-skb overhead eventually exceeds buf_alloc and the
-> + * connection is reset.
-> + */
-> +#define COLLAPSE_PKT_MIN 129
-> +#define COLLAPSE_PKT_MAX 512
-> +#define COLLAPSE_TOTAL (2 * 1024 * 1024)
-> +
-> +static void test_stream_collapse_client(const struct test_opts *opts)
-> +{
-> +	unsigned char *data;
-> +	unsigned long hash;
-> +	size_t offset = 0;
-> +	int i, fd;
-> +
-> +	data = malloc(COLLAPSE_TOTAL);
-> +	if (!data) {
-> +		perror("malloc");
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	for (i = 0; i < COLLAPSE_TOTAL; i++)
-> +		data[i] = rand() & 0xff;
-> +
-> +	fd = vsock_stream_connect(opts->peer_cid, opts->peer_port);
-> +	if (fd < 0) {
-> +		perror("connect");
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	while (offset < COLLAPSE_TOTAL) {
-> +		size_t pkt_size = COLLAPSE_PKT_MIN +
-> +			rand() % (COLLAPSE_PKT_MAX - COLLAPSE_PKT_MIN + 1);
-> +
-> +		pkt_size = min(pkt_size, COLLAPSE_TOTAL - offset);
-> +
-> +		send_buf(fd, data + offset, pkt_size, 0, pkt_size);
-> +		offset += pkt_size;
-> +	}
-> +
-> +	hash = hash_djb2(data, COLLAPSE_TOTAL);
-> +	control_writeulong(hash);
-> +
-> +	free(data);
-> +	close(fd);
-> +}
-> +
-> +static void test_stream_collapse_server(const struct test_opts *opts)
-> +{
-> +	unsigned long hash, remote_hash;
-> +	unsigned char *data;
-> +	int fd;
-> +
-> +	data = malloc(COLLAPSE_TOTAL);
-> +	if (!data) {
-> +		perror("malloc");
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	fd = vsock_stream_accept(VMADDR_CID_ANY, opts->peer_port, NULL);
-> +	if (fd < 0) {
-> +		perror("accept");
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	recv_buf(fd, data, COLLAPSE_TOTAL, 0, COLLAPSE_TOTAL);
-> +
-> +	hash = hash_djb2(data, COLLAPSE_TOTAL);
-> +	remote_hash = control_readulong();
-> +	if (hash != remote_hash) {
-> +		fprintf(stderr, "hash mismatch: local %lu remote %lu\n",
-> +			hash, remote_hash);
-> +		exit(EXIT_FAILURE);
-> +	}
-> +
-> +	free(data);
-> +	close(fd);
-> +}
-> +
->  static struct test_case test_cases[] = {
->  	{
->  		.name = "SOCK_STREAM connection reset",
-> @@ -2546,6 +2628,11 @@ static struct test_case test_cases[] = {
->  		.run_client = test_stream_msg_peek_client,
->  		.run_server = test_stream_peek_after_recv_server,
->  	},
-> +	{
-> +		.name = "SOCK_STREAM small packets backpressure",
-> +		.run_client = test_stream_collapse_client,
-> +		.run_server = test_stream_collapse_server,
-> +	},
->  	{},
->  };
->  
-> -- 
-> 2.55.0
-> 
+>
+> -static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
+> +bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+We might wanna rename this function now that we are exposing it
+outside of nested.c, but otherwise this looks good to me:
+
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+>  {
+>         return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+>                 (to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_=
+LBR);
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ef69a51ab27f..cead8f99d856 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -880,9 +880,13 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
+>  {
+>         struct vcpu_svm *svm =3D to_svm(vcpu);
+>         bool current_enable_lbrv =3D svm->vmcb->control.misc_ctl2 & SVM_M=
+ISC2_ENABLE_V_LBR;
+> -       bool enable_lbrv =3D (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) |=
+|
+> -                           (is_guest_mode(vcpu) && guest_cpu_cap_has(vcp=
+u, X86_FEATURE_LBRV) &&
+> -                           (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE=
+_V_LBR));
+> +       bool enable_lbrv =3D false;
+> +
+> +       if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
+> +               enable_lbrv =3D true;
+> +
+> +       if (is_guest_mode(vcpu) && nested_vmcb12_has_lbrv(vcpu))
+> +               enable_lbrv =3D true;
+>
+>         if (enable_lbrv && !current_enable_lbrv)
+>                 __svm_enable_lbrv(vcpu);
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 716be21fba33..8d77c10cf4f6 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -899,6 +899,7 @@ void nested_copy_vmcb_control_to_cache(struct vcpu_sv=
+m *svm,
+>  void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
+>                                     struct vmcb_save_area *save);
+>  void nested_sync_control_from_vmcb02(struct vcpu_svm *svm);
+> +bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu);
+>  void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_=
+vmcb);
+>
+>
+> --
+> 2.43.0
+>
+>
