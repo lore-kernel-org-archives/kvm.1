@@ -1,93 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40827405C5F;
-	Thu,  9 Jul 2026 10:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B37A3F8252;
+	Thu,  9 Jul 2026 10:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783593134; cv=none; b=HPXmHhJuFqCbVipwvqHJXkY1TkDz0qHBR2iUti5SSIIvw/OFdFHMQtCkJ2gxudLzafbeCa4b5Z4L+joZ7yhN6VfCsLfFbL5E74t9wBqIKh/WAgtPF08hp1VuXUJpVh5T0BETR9YWt55YqgJd9NkoWWeZmjRuHkI25GMrsc4zru0=
+	t=1783593634; cv=none; b=ePQ37HDytoROFt3Pbb0LM/3DFnq1bMqkKoA0Cl3z3zLOTfUbbtENCCAb5Twpxn0eO8mV30dai9f8VIjSR31U0NxLUiigratpxFtImQ13bXrM2Y1fJb7FkGqSTt3eA/ObWsBtOo5++aWUvp5IWwaw6ZshtCOil+le8jlkcE22vfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783593134; c=relaxed/simple;
-	bh=wa47m20KhvlwQv1JjdWNpfdD1a2wtEqJBBh1snWDgiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gjf4iUHs60C5oPPstTeipNcBfc+4lCpLQuv+34XoA7TpAGDK2YxvI9H0SBLO1i61BLhaONMX4b1qfY+pcd8PpcdWu28mMeaUkYnfXP+mPVNs9+cKlcEPf+y1NmSKoKGXEYTUlcuRW1+UK96O0NoLTwu8M0mOMG3xD4z+8NoXcS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OlAbl1S8; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1783593634; c=relaxed/simple;
+	bh=aTdxvvMMNvK2yVTz3rWc4KZpBciSajhfSA7ggQpEV0o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MSqgV1MjjYsoFzKUl6HbNG06UeetMriYnT7ERz2y2hlwUtOwS1tIyWZc7aGS8e6VoTK57+fFaRbzL266INMmWBnvo3xun5mghUPmNRpmYjSuOTDUz5cMeD6whe6ph5KBzd0ZGpzq5FMcbPB8Em4ZVndOBye+fJN+Selauj3u95c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=JItTGwbY; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OlAbl1S8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783593132; x=1815129132;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wa47m20KhvlwQv1JjdWNpfdD1a2wtEqJBBh1snWDgiY=;
-  b=OlAbl1S8g7nq24DGygQnztLrDF9XN6fE+Zl5d9WmZlXeeK4Ja3djlb2w
-   0FA1fYn9sOfHtEexqJEeUWqk+UHs92KyZ7SGJxZ4tsjkU4VXKHIF33E4d
-   CezXKWKNEn1gvSka3jgfT2Ws9jJBH12OvQn+Vqaa0n9O5WfUNS+Z2oemF
-   1R7iUwIG//clw/CCNFugMqJ/rlFuzYY/0OeyRJkf4EMawDn5pQZMLGer9
-   jETZ6yN13mLoaWD92rH+yRwOHRwqnAJoaFSWFiVcgKJWmcHrZLSDl4GMj
-   XnuDgf6O9RBMiiTAnIgl25/ryVF6HMU4RVPezPOFvOiZBH1/0teCSCWjQ
-   A==;
-X-CSE-ConnectionGUID: 5LM0sFzASZaloULm+UvBuA==
-X-CSE-MsgGUID: QUiSI97PRcakqezI6Kahcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84148774"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84148774"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:32:11 -0700
-X-CSE-ConnectionGUID: xsTtvBPvQMmmNCrC/5O9XQ==
-X-CSE-MsgGUID: stqpUXT2SVezy8urTKOdzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="256468875"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa004.fm.intel.com with ESMTP; 09 Jul 2026 03:32:10 -0700
-Date: Thu, 9 Jul 2026 19:00:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com,
-	seanjc@google.com, Binbin Wu <binbin.wu@linux.intel.com>
-Subject: Re: [PATCH] KVM: x86: Remove AMX-TF32 enumeration
-Message-ID: <ak9/XEGJhm+sViKH@intel.com>
-References: <20260708210118.402005-1-chang.seok.bae@intel.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="JItTGwbY"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=TzxDX/ygReeQrlk1sYNRilh77KKsz9bv6yNc9K4h0lw=;
+	b=JItTGwbYHXyulRItA9RnQv+CqUdyX1fM8UlAGlM4b9F+aUA1pw54Uqbz1GTeiuFuA7eU7b8+k
+	kQSSZKH+AuhLmhcHpyQLEz5g/ChpAzLTU1nvTMWjg1KK3hGa6YnyI2HqCynAyHf2g06GQuH46XT
+	Cb1dNkFZA2dAUhDkglSI758=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gwrpp1CXBzRhQS;
+	Thu,  9 Jul 2026 18:31:14 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C2A740579;
+	Thu,  9 Jul 2026 18:40:27 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
+ (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 9 Jul
+ 2026 18:40:26 +0800
+From: Tian Zheng <zhengtian10@huawei.com>
+To: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <zhengtian10@huawei.com>
+CC: <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
+	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
+	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>, <leo.bras@arm.com>
+Subject: [PATCH v4 0/6] Support the FEAT_HDBSS introduced in Armv9.5
+Date: Thu, 9 Jul 2026 18:40:20 +0800
+Message-ID: <20260709104026.2612599-1-zhengtian10@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708210118.402005-1-chang.seok.bae@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Wed, Jul 08, 2026 at 09:01:18PM +0000, Chang S. Bae wrote:
-> Date: Wed, 8 Jul 2026 21:01:18 +0000
-> From: "Chang S. Bae" <chang.seok.bae@intel.com>
-> Subject: [PATCH] KVM: x86: Remove AMX-TF32 enumeration
-> X-Mailer: git-send-email 2.51.0
-> 
-> AMX-TF32 enumeration was added based on the Intel documentation [1]. The
-> recent update removed the feature, indicating that the feature is no
-> longer planned for hardware implementation.
-> 
-> [1] Intel Architecture Instruction Set Extensions and Future Features
-> 
-> Cc: Zhao Liu <zhao1.liu@intel.com>
-> Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-> ---
-> Note: The feature first appeared in the September 2025 revision of the
-> document and was removed in the June 2026 revision.
-> ---
->  arch/x86/kvm/cpuid.c         | 1 -
->  arch/x86/kvm/reverse_cpuid.h | 1 -
->  2 files changed, 2 deletions(-)
+This series of patches add support to the Hardware Dirty state tracking
+Structure (HDBSS) feature, which is introduced by the ARM architecture
+in the DDI0601 (ID121123) version.
 
-LGTM,
+The HDBSS feature is an extension to the architecture that enhances
+tracking translation table descriptors' dirty state, identified as
+FEAT_HDBSS. This feature utilizes hardware assistance to achieve dirty
+page tracking, aiming to significantly reduce the overhead of scanning
+for dirty pages.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+The purpose of this feature is to make the execution overhead of live
+migration lower to both the guest and the host, compared to existing
+approaches (write-protect or search stage-2 tables).
 
-Thanks,
-Zhao
+The required sysreg definitions for FEAT_HDBSS have been merged into
+arm64 /sysregs:
+  [1/5] arm64/sysreg: Add HDBSS related register information
+        https://git.kernel.org/arm64/c/72f7be0c2e30
+
+
+After these patches, the kernel automatically enables HDBSS when dirty
+logging is enabled on any memslot, and disables HDBSS when dirty logging
+is disabled on all memslots. This series does not support dirty ring
+mode.
+
+Depends-on: "KVM: arm64: Enable eager hugepage splitting if HDBSS is available"
+	https://lore.kernel.org/linux-arm-kernel/20260629111820.1873540-3-leo.bras@arm.com/
+
+This dependency is mandatory. Unlike v3, where DBM was added lazily on
+the first dirty access via a page fault, v4 injects DBM into pgt->flags
+at stage-2 MMU initialization time. Combined with HDBSS being auto-enabled
+during migration setup, the first dirty access no longer triggers a page
+fault. Consequently, if lazy hugepage splitting were relied upon (which
+requires a page fault to trigger splitting), hugepages would never be
+split, leading to guest hang after migration. Leonardo's patch above
+ensures eager hugepage splitting is enabled (chunk_size != 0) when HDBSS
+is available, guaranteeing that hugepages are properly split before
+migration starts.
+
+v3: https://lore.kernel.org/linux-arm-kernel/20260225040421.2683931-1-zhengtian10@huawei.com/
+
+v3->v4 changes:
+- Merge sysreg definitions into the FEAT_HDBSS detection patch (was a
+  separate patch in v3).
+- Add auto DBM (Dirty Bit Modifier) support as a new patch, suggested
+  by Leonardo Bras. DBM is now controlled as a page-table level flag
+  (KVM_PGTABLE_S2_DBM) rather than per-PTE. Note that DBM is injected
+  at stage-2 MMU creation time, not lazily on first dirty access. This
+  means the first write to a dirty-logged page does not generate a
+  page fault, which is a key reason for the mandatory dependency on
+  Leonardo's eager hugepage splitting patch (see Depends-on above).
+- Split the v3 "Enable HDBSS support and handle HDBSSF events" patch
+  into three patches: per-vCPU buffer management, fault handling and
+  buffer flush, and auto enable/disable on dirty logging change. This
+  implements kernel-managed automatic HDBSS enable/disable.
+- Remove the KVM_CAP_ARM_HW_DIRTY_STATE_TRACK ioctl for manual HDBSS
+  on/off. HDBSS is now automatically enabled/disabled based on dirty
+  logging state via kvm_arch_commit_memory_region().
+- Change HDBSS buffer flush triggers to vcpu_put, check_vcpu_requests,
+  and kvm_handle_guest_abort.
+- Store hdbss_order at VM level (kvm->arch.hdbss_order) instead of
+  per-vCPU, since all vCPUs share the same order.
+- Document patch is not included in this version; will be sent in a
+  follow-up series.
+
+Leonardo Bras (1):
+  KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+
+Tian Zheng (2):
+  KVM: arm64: Add support for FEAT_HDBSS
+  KVM: arm64: Add auto DBM support for hardware dirty tracking
+
+eillon (3):
+  KVM: arm64: Add HDBSS per-vCPU buffer management
+  KVM: arm64: Add HDBSS fault handling and buffer flush
+  KVM: arm64: Add auto HDBSS enable/disable on dirty logging change
+
+ arch/arm64/include/asm/cpufeature.h    |   5 +
+ arch/arm64/include/asm/esr.h           |   5 +
+ arch/arm64/include/asm/kvm_dirty_bit.h |  29 ++++
+ arch/arm64/include/asm/kvm_host.h      |  14 ++
+ arch/arm64/include/asm/kvm_pgtable.h   |   4 +
+ arch/arm64/include/asm/sysreg.h        |  11 ++
+ arch/arm64/kernel/cpufeature.c         |  12 ++
+ arch/arm64/kvm/Makefile                |   1 +
+ arch/arm64/kvm/arm.c                   |  29 ++++
+ arch/arm64/kvm/dirty_bit.c             | 219 +++++++++++++++++++++++++
+ arch/arm64/kvm/hyp/pgtable.c           |  35 +++-
+ arch/arm64/kvm/hyp/vhe/switch.c        |  15 ++
+ arch/arm64/kvm/mmu.c                   |  19 ++-
+ arch/arm64/kvm/reset.c                 |   4 +
+ arch/arm64/tools/cpucaps               |   1 +
+ 15 files changed, 399 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
+ create mode 100644 arch/arm64/kvm/dirty_bit.c
+
+--
+2.33.0
 
