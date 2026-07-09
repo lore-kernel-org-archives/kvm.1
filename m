@@ -1,140 +1,203 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E530D36EA99
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 16:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6634C2D73B5
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 16:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783614811; cv=none; b=ck+EcWOpSoPAPOZe6YBUn8JGQ/qP4Dp3hPTeAAOW0n6UBb+WHbJ07oYCMiO5h8nQ04MB9dUmsDpGCP8037YmwWo+Gp1Da9TMDM0LBSPGzIgOqkNxGNMyIH9P2fDKoZ1j2Q2GpbPBhjQqXb7PVq354vp2FxSa7suHWHN780S2+Lk=
+	t=1783614823; cv=none; b=Lx2bFMpR0HAkxQLX30eA/ruvpppS33f12z0dzieLoKIGB4EyLAhRx0OifLpZfcqZ6LBrefM/dhXW0MjRHzWUDG24rZBdefkCDjwJtR4/RAx/tuHDvyAF8xhVBx5rx5kvr5SOMeb9ayMPwAFRNkLfbv6CXiHp/qNs4ymtUsEVoI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783614811; c=relaxed/simple;
-	bh=JPUdxlyVjS4w94QCvkQoczCDqWYF4YJYEU63C5xcMa0=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lHPoWgSBSH3GyyzHnYh7+AYrFhIAvpsPIt0nztECFNVqyIHdfPWflefdP+KSBN8B9aladtehXgz4dFixBPLTQ3/vtba5hdNbAZB3nOk1kFK6zZbJEkPZOFOXcqhSH1zcF3KbCMQu31rvQgP3AvJtTKD3mDdhXo4eVClTAtReas8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-48976713b46so1781089b6e.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 09:33:29 -0700 (PDT)
+	s=arc-20240116; t=1783614823; c=relaxed/simple;
+	bh=ZgQGmYGqDCSuzAjXJgIGJFPGyMrB5gsJLrMSN1YnnXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ek7xgwdjkcTxQWzYWGdZDIYrqMokjH8FLzvdqOSVCc2NMk9tAMhWoxYftVMQRzccCjfuzvRlN3JHTaHgJ/Z1c7EiXzETqo/rveLzdqKuEzSAqVgwZSxs4rgUsu8U8hbOjRyIk42aGdBtcwmgadWxg44SSoeuBpu27rGDQj7IftE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dHqzKE9M; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=q2SWuWO4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dHqzKE9M";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="q2SWuWO4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783614821;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KMftOyLsg2hqgJ1UXh7XgE6vQFA27+YO4IPdcFXy4PA=;
+	b=dHqzKE9MPuXKrtRIQeGSFoWzQu/I9SQVei3OmZJC+VE4ENGgBQ+HqhdihHIoBQGBPmUzq/
+	BVPG8mF4bxrNNwJ1paYVlsIwbjqwqF1dtqIB1Pchjjee0IYJNYvqJWRRx0XbCVvNms3bcu
+	wkkJ93oBJkqe6kMNeQdxmtqjbguWSLk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-115-GcIXqouxMdCOvE3eupvYxA-1; Thu, 09 Jul 2026 12:33:40 -0400
+X-MC-Unique: GcIXqouxMdCOvE3eupvYxA-1
+X-Mimecast-MFC-AGG-ID: GcIXqouxMdCOvE3eupvYxA_1783614819
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-493bab443f7so298965e9.0
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 09:33:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783614819; x=1784219619; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KMftOyLsg2hqgJ1UXh7XgE6vQFA27+YO4IPdcFXy4PA=;
+        b=q2SWuWO48Pe57yEDnenYT1vSZwERJkcvLPj8TJl1dW4tti+KmV6+QszdwsZb2urN4M
+         Vij3J6XFJzyJvZMuCs1nshmHhGhc/Q2tBvV0JJjxPc/DZADDyghh4bEKqXbmVUCoKG4m
+         JPJg/t9ym1acItWKRToT86r3rXlkxpBKVd9u+b7qR7rOSZRbt9iMJRh03PzerptNWS6c
+         UKAtnPEUS62eILF4j1aXRD6TxzCQ24thYlT5WWzpG8HmAJr5VMfzA7Y9sIy6oIZ/yTKT
+         Gii9mz6sipqMbxFs5bfqt0IsngzZAdizJkHMOEWRnBKTNdnRDO4yGHHGa97N1IjFC0K0
+         umvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783614809; x=1784219609;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Nce31PG8w0SB9E6qXsFIeo2UWAHRGDx5cPnTtszk37g=;
-        b=VdlhvR7slIh3ejYWLH1pjsIk90s55vVORY9ADOGr+uO3Qt8umkwDcBWSzuadHAzCJj
-         oJfbblScN4ZW0l4/TDbNlLIXjbd6xolAR6VVYmyUSJ5yOgtrTd9p73Na7PJW6uaTgwI4
-         fsrUu4qXykkv8ubwj+H4oSsfoe3/ITKIt4mFccWVuL1SYjtOjzE49tJiWaPHcw5A+JwV
-         37FBDKA4LS82jkPdECaaKfIusJKkD4OCm0jJMSxQ8hot9JofkXd/JvsuGiSKnf5QIuNp
-         ryrglRTC/L0M/m2O1xwGud4ODFoymFHseWVo0nzKhMK9xdiCkUO/NDvHLez6TRBEmiis
-         sOFg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Vh9DbcmA5mvFRm9vrWjFByhIEjFThc7BjS2eX+9t7Mz9H204tI+Ge01rG3iZAHdnVf9M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeV1sKl4+FE3w0t883eF+7IkoTtuNGi6ZlR3ta3CBoxlSEdcM6
-	PUlMM44P+0yaBgOmfUlPa15B3RssOQPCZuDT47SdPrmcaAClPuy7Xi/v622t5ooMIxWjyQfCHBl
-	q3y+6/9jAdqGZ4RkxPy+GBAqDnwR5PCqPXk/9xoN8cwKhFiuFx34vbYOKo6s=
+        d=1e100.net; s=20251104; t=1783614819; x=1784219619;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KMftOyLsg2hqgJ1UXh7XgE6vQFA27+YO4IPdcFXy4PA=;
+        b=Ntepxr8+As0kEO6GRoJbCGpKK4LkYiUK1cK9p0aLpF3Mu/lsy+PGXvgqbzC1A4ins+
+         gSs1ZSpoNy2eAGzj1nhBu7lwsZk+U1HyGsQjY4bQ5knHm1fgAY5qghEOYhbYGsLYy8LH
+         BC4py/28IBl7Ae+SjUZu+9UUODMxOvhmkqk6N2DawnoTRi83lNGF6yvIoplwe1n3b9RM
+         pFeVGw7TNxqrYOHagILYPNE+NM5saBqAhUSKpPmIpXwn47hDLoaQAUdoETGOkL5spMFp
+         9UrjRZZVjlW9HrEWdkGXzeigsB5MFzYMTb4mC0GA2zE5vfhQ0OEo+LTXb4JEv2O7IQ2G
+         Zu6g==
+X-Forwarded-Encrypted: i=1; AHgh+RrcX0s6qGA1AYg6Jq+4PQ0BM2YQf7Xlz+uE9KFjxbzuqTGzY4JbNbAqFoeK7rkGK80YTUM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKOYf0fkz/m4mTXh7EEqPYPsqEumbkyXcoqXazOro+ri8REVpz
+	kJr5GI+npzu1Y++n3Zxs9kAndv4qrMOYvqVjFdOMezd+vOV1k6hrDez308Z2MsbIqOicSzl6efY
+	QC8+iP2+L6Ya8LxFLEnHxcijX2Z/EqDt5inPHl5/39Kb7qiMWH72HUA==
+X-Gm-Gg: AfdE7cnNYUIApDX+G3FRpbsbLKfEe3FeK29vQYqu4livuz29A1VV4k7uwHpJgKj74rp
+	t0a7CPnlaMBk6uXpTNuR9325a5QuPveSdIKldAv3R0l77GRN5EVziq8dyaJcttGEqTOV2SBHy66
+	/QKQ2L0yazDrQoCu5ClRZoaEgWqW4mn+SxDH4mbaBkxQhAcfPvkBJ8XE50YAXtcMAr/U1RiM8Bn
+	7afbT66BRj06Bada05H2nGjCLRaEFRdUSfCwY6ZtAb/AowqpHry9aZAHKt+YdCZnG2BiOoxGMkJ
+	/bZBG6x7zDs0fQG1EK1JqTU8GCU+cYnhpuEPOSpjqVlTF5GwZwjI/0UVkZwhm2fu6YWv9Uu37ob
+	G0AalbwhZ
+X-Received: by 2002:a05:600c:c0d2:10b0:493:c566:7bd6 with SMTP id 5b1f17b1804b1-493ec775ff9mr29063505e9.18.1783614818938;
+        Thu, 09 Jul 2026 09:33:38 -0700 (PDT)
+X-Received: by 2002:a05:600c:c0d2:10b0:493:c566:7bd6 with SMTP id 5b1f17b1804b1-493ec775ff9mr29063295e9.18.1783614818617;
+        Thu, 09 Jul 2026 09:33:38 -0700 (PDT)
+Received: from [192.168.0.9] ([47.64.114.244])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb74b3edsm81659555e9.15.2026.07.09.09.33.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jul 2026 09:33:38 -0700 (PDT)
+Message-ID: <dafb66eb-2dd7-46cc-8fe7-eb26a8715442@redhat.com>
+Date: Thu, 9 Jul 2026 18:33:35 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:3445:b0:495:e251:945d with SMTP id
- 5614622812f47-4a2053fee65mr6876828b6e.43.1783614808880; Thu, 09 Jul 2026
- 09:33:28 -0700 (PDT)
-Date: Thu, 09 Jul 2026 09:33:28 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4fcd58.a1ad617e.25832.000f.GAE@google.com>
-Subject: [syzbot] [kvm-x86?] WARNING in kvm_check_and_inject_events
-From: syzbot <syzbot+9dcd0a11dc9703a49511@syzkaller.appspotmail.com>
-To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
-	tglx@kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH 4/6] powerpc: gitlab CI update
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Chinmay Rath <rathc@linux.ibm.com>
+Cc: npiggin@gmail.com, lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, andrew.jones@linux.dev, sbhat@linux.ibm.com,
+ Misbah Anjum N <misanjum@linux.ibm.com>,
+ Anushree Mathur <anushree.mathur@linux.ibm.com>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20260708105122.1177210-1-rathc@linux.ibm.com>
+ <20260708105122.1177210-5-rathc@linux.ibm.com>
+ <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
+ <8c9b739c-8a9b-4e9a-8e43-7b1a6e1aa330@linux.ibm.com>
+ <73573868-2fb9-445d-b5c6-02166a0feb25@redhat.com>
+ <4dd23a35-8dcc-422c-8ffa-2387abf92558@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <4dd23a35-8dcc-422c-8ffa-2387abf92558@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On 09/07/2026 18.08, Harsh Prateek Bora wrote:
+> 
+> 
+> On 09/07/26 8:46 pm, Thomas Huth wrote:
+>> On 09/07/2026 16.32, Harsh Prateek Bora wrote:
+>>> + folks who might be interested.
+>>>
+>>> Hi Thomas,
+>>>
+>>> On 09/07/26 12:16 pm, Thomas Huth wrote:
+>>>>> +++ b/powerpc/unittests.cfg
+>>>>> @@ -24,6 +24,14 @@ file = selftest-migration.elf
+>>>>>   machine = pseries
+>>>>>   groups = selftest migration
+>>>>> +# make a kvm-only version for CI for now
+>>>>> +# TCG accel support with Qemu and distro release used in gitlab CI 
+>>>>> needs to checked.
+>>>>> +[selftest-migration-ci]
+>>>>> +file = selftest-migration.elf
+>>>>> +machine = pseries
+>>>>> +groups = nodefault selftest migration
+>>>>> +accel = kvm
+>>>>
+>>>> This does not make sense (or I don't understand it) - gitlab-CI 
+>>>> currently only runs with TCG for the ppc64 jobs, so adding a separate 
+>>>> test for this with "accel = kvm" just adds a job there that will always 
+>>>> be skipped. What should this be good for?
+>>>
+>>> I understand it may get skipped in gitlab CI for kvm-unit-tests,
+>>> but it might be helpful to those who can run it on their Power HW.
+>>> If the job can safely skip on non-ppc HW, I hope it's fine?
+>>> We would like to get it integrated in IBM's internal CI with Power HW.
+>> You mean you also use a gitlab instance internally within IBM? ... 
+>> otherwise it does not make sense to add this to the .gitlab-ci.yml file 
+>> (which you did earlier in this patch).
+> 
+> I do not think we currently use a gitlab runner as of now, but that's a 
+> future possibility.
 
-syzbot found the following issue on:
+Ok, then please remove the related entries from .gitlab-ci.yml again.
 
-HEAD commit:    0e35b9b6ec0f Merge tag 'mm-hotfixes-stable-2026-07-06-17-4..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1144b739580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=48ef5c5c0f192153
-dashboard link: https://syzkaller.appspot.com/bug?extid=9dcd0a11dc9703a49511
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=129d4389580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10de8432580000
+> Chinmay,
+> My understanding is that we wanted to use kvm accel also when executed
+> manually using scripts, as we wanted it to be integrated in IBM's
+> internal CI that runs on Power HW. Do we need additional changes for that?
+KVM unit tests run by default with KVM, so you don't need an extra entry for 
+this in the unittest.cfg file, I think.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-0e35b9b6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c14bac7bee17/vmlinux-0e35b9b6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/36bfa5293255/bzImage-0e35b9b6.xz
+  Thomas
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9dcd0a11dc9703a49511@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-irq == -1
-WARNING: arch/x86/kvm/x86.c:10800 at kvm_check_and_inject_events+0xf1e/0x1070 arch/x86/kvm/x86.c:10800, CPU#0: syz.2.478/7431
-Modules linked in:
-CPU: 0 UID: 0 PID: 7431 Comm: syz.2.478 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:kvm_check_and_inject_events+0xf1e/0x1070 arch/x86/kvm/x86.c:10800
-Code: 00 48 8b 44 24 20 48 0d 00 01 01 00 48 89 44 24 10 e9 35 fd ff ff e8 51 44 7e 00 90 0f 0b 90 e9 b7 fe ff ff e8 43 44 7e 00 90 <0f> 0b 90 e9 2e f8 ff ff e8 d5 bd ee 00 e9 ae f6 ff ff 48 8b 7c 24
-RSP: 0018:ffffc90003e77a20 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8880564729c0 RCX: ffffffff818b8adc
-RDX: ffff888027f40000 RSI: ffffffff818b8bfd RDI: ffff888027f40000
-RBP: 00000000ffffffff R08: 0000000000000005 R09: 00000000ffffffff
-R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8880564735ec
-R13: 0000000000000001 R14: ffff888056472ca8 R15: ffff8880564732f8
-FS:  000055558b257500(0000) GS:ffff8880d5dec000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb475a73780 CR3: 0000000034df7000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- vcpu_enter_guest arch/x86/kvm/x86.c:11296 [inline]
- vcpu_run+0xf1d/0x5d50 arch/x86/kvm/x86.c:11707
- kvm_arch_vcpu_ioctl_run+0x5b6/0x1890 arch/x86/kvm/x86.c:12062
- kvm_vcpu_ioctl+0x730/0x1700 virt/kvm/kvm_main.c:4470
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb475b9de59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc07cddbe8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fb475e25fa0 RCX: 00007fb475b9de59
-RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-RBP: 00007fb475c33e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fb475e25fac R14: 00007fb475e25fa0 R15: 00007fb475e25fa0
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
