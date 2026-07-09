@@ -1,140 +1,203 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B743F44CB
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 11:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF7041A76A
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 11:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783597804; cv=none; b=S/rDC5VBYLpbqq6BBO7olGHhNihP+NxGtfVjeA2yvMZWvQoi5kbvBCU1dmjZi0uhBRDm8y9lvlg5kh8EFRw+0+t3FXb/X8pmNwzy3ag9Ar2BG+0Xb0dtkzAC948LX/ZC2VfD628mIArHrexSpuE0N2gSIlNi6X8xOODe9vVGlMg=
+	t=1783598186; cv=none; b=by6JekTAurBtLBwt3S4NKNiLhlh1lilbzaEb3LIO6gTXj/Ug2wqmCfVwt44z0dmxDFBTuztmDitX2cekTakKBfMzdTtws1vx3z7u7mSIyxMggYPdG4eP0uRJyPV6xDZDkSksXGWaQoxKWrgOMDVEQMTPndmeg+eE934DFAm03Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783597804; c=relaxed/simple;
-	bh=ZWYDTPt2INsfrfjekJ9+Fr6OaUFIO4TQs4dluGhiECQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eorRg1rJe3umqjYU3bkvqfL3fXg+pYLCWgk8CNOcMbsqsWAk1We10ZrK2SGQwSpOdAB1Ck45zbDGIidxlGvtbVlm4nOfSSGLcSrBbtb3wKzrUeOW7PEQ/Rdo+U6kpjYvRtkETZafqV4AatK2s3Fzq/t5l1ayYSWEVunEvYcHA0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iiyaVoO3; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783598186; c=relaxed/simple;
+	bh=Oo3bx9uN5IkjwBoMlfjo4Vs2GEEjne0/akECfyp9msw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BrfA5BaIxD2D6GSEPW4jNbjGdzzpVkocsCXvpsG+RbrpnF9Q2nMjaBCYUp5MHuuF2kuQkyXzMnEpQ8Eh6K3dgMoUR1QST6m4k/FxxVuB5Plb5HJH+TcPy1f6O8xu09VUDwEVjdNlr67GxkhnsaczEWhHF6ElYICwoCpd8IeZhtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTmOTucp; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iiyaVoO3"
-X-Forwarded-Encrypted: i=1; AHgh+RpIeENlbpwje4Bn7/c7YeSVAMj9Vy/wHpYHyBCJQMipZKS70HCeRJtVwxoHvtl2mDxbRF0=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783597800;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L3SuTrK7ua1jSt5ecvosiLTOXicZe+1p9rD4HzyC/xI=;
-	b=iiyaVoO3U3XUUEQjmf+mTsF+E0GH/PteBZYxv4+ZRT7MTQvY88crXNz3xEA/eCCOQ/79ka
-	vAPzJboKb07Papod6Jir6p68nw4NnDjPk+i4RQwaWhKDCx58lL3jNhoMVtQP5/F99/smt8
-	UB1c1lOkbmmCtoAYbncJJShSr0RVwrY=
-X-Gm-Message-State: AOJu0YxoDL00MgiyYcAZtzTc0062rLZk5kbJHsMO/Ghu6uSTpaJu2jaj
-	TAYw8A7mNCGT8YeBQ/AMpv8upPetfUEGdQa7PFHFsHGKWgILyfPiDJLuXwsMZQkg2ARQKP00HzP
-	j6Kp7RjqZ8yxk3CVu7uaN+kiKu+EBdGwdWeQDoOpg
-X-Received: by 2002:ac8:7f0d:0:b0:51c:6b7:d3de with SMTP id
- d75a77b69052e-51c9c573e75mr5591691cf.5.1783597796410; Thu, 09 Jul 2026
- 04:49:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTmOTucp"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cc73e322dbso16283945ad.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 04:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783598181; x=1784202981; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CivCo3sxABn6gVyRhQlVLSU7JseOeDcuh4Y0SWmJVu4=;
+        b=dTmOTucpPLcfOqDTthUuecmoXf9OvsKRDIhe3nwEzoEy4EHPpa5a+e00Q4h0iwNcjC
+         mOt8ogZ+84e5kH1Q4TufOLuBcDotWJfkpNxQZfb5/+A+zlPLbdSM554e3pG3gcPMRIRg
+         khhEySXTxfZ8/vYyu++lfqKqVS1r2lIIYWxrVU2Z2h/4Pw009gc4+8LNaqAQGtzMAf2s
+         9cVQjTw8n5ENMbEguWeQdtl54Bwnb40cs8ZMj+CxvA2QUesvpIwir/Rs7iqxklh2/hvx
+         dHgolKXgUiLAJH1OSF+czR1YLNUN5fSCDpi1heyGCTHPnexPPgMbAPDq8QgZiB5S7VeQ
+         Tf6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783598181; x=1784202981;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CivCo3sxABn6gVyRhQlVLSU7JseOeDcuh4Y0SWmJVu4=;
+        b=QGtFi9Bt6R4oi2qHMRdSONvpo/x1yPx8I8CUTfWHEMmA9ij7V/tCgBgxFDIJEEqye9
+         KLIGR87WeoeG/0glvSCRHSiUaoDqZFbTuz19aYZjC2Rj1EfEGlCRslGyK2VoAiFz6gGB
+         2avaN+VJw//QlYRefhPfSCpA1KlVqCA+qCJNiVgqPA6di/CZSEinBniAXBQu11HbzJo+
+         HaXC1Y6H8B4a/CfxWnzg8UN3jq7WU78IUs9cpKB3vb3A74YGi6khhhrlqAHQhkp+9DFt
+         Sm2nsLf4wdfUrWFwy/cGpiW+BoOH+VwOVMY0n+CON5EFX+ONXmgkeh7aLRBmdABAEUAo
+         s7Ag==
+X-Forwarded-Encrypted: i=1; AHgh+RoZKvJ+tRT3ovp0g7OKc5WRJRB7fUtELrILtecvlTaMl8t0qEo1yjTtoWfSj6HyxZQoezA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmuhfMZ/5zWrQ6Bu7ts50JbyDsjhOyFyOrTcnWZk1bi8uaP3+D
+	6+g0P5vGLPLKSCmkEnH6H+gsanjKzMyJj6WowMtexnqrTgymYv7DW7qE
+X-Gm-Gg: AfdE7cmkTziFRvxdiDf6hAPl/Clf/4QgmyRdwsGjVfvKVhKfN0qQmLZ5+4j4DYMfIfw
+	22TiaolOMBjq7EJUZy+us7JfGEf1Ig+Urwwimv9bydykKV1s+O5sjSWZaXGks34Nr8Hyb30FQZI
+	KvBu4Ch8QeRQP+scRoBzhRWnds+emXl6pifN8h6/jcUs5Z/nOK+HFl8FnjnIsi3Af1fovQeNsmY
+	t7ApJVkmSkEf/wlVd2tT64A/jCX8KfznV7/QHIkE8ExxAfONmbNst93486bhrKeiahGP8nfccvs
+	vAeTY7n3koY7twuWROLlQT0jmgeL1XKymg5TqgbGWJvhK4htZjiiedz9R1hr/7DGu6yDTl7C5AC
+	/WG4NBvvuQUNt9msKWfbJ3IiUmq5wGNndMXO0djYwgDBoEQ6mATvgLjZM9iUF9ZGhms23mYX0ae
+	/EkyhyLibOcpN3zTZjNXJr2NP/8JGtIovaX/q+AR52ew==
+X-Received: by 2002:a17:903:4b4e:b0:2cc:98b4:e7e2 with SMTP id d9443c01a7336-2ccea5a815emr69832995ad.44.1783598180886;
+        Thu, 09 Jul 2026 04:56:20 -0700 (PDT)
+Received: from cyh-System-Product-Name.. ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3b906sm43917145ad.56.2026.07.09.04.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 04:56:20 -0700 (PDT)
+From: "Yuhang.chen" <yhchen312@gmail.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	linux-doc@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control VS-mode WFI trapping
+Date: Thu,  9 Jul 2026 19:56:10 +0800
+Message-Id: <20260709115610.287420-1-yhchen312@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
- <CA+EHjTyAxBx4jhGq-Gme5hPi1ZyDAkL2CP_U22ykkQemD1dUhg@mail.gmail.com> <4b2fb0ef-4d3e-4a1f-8d33-177bb4af2005@sirena.org.uk>
-In-Reply-To: <4b2fb0ef-4d3e-4a1f-8d33-177bb4af2005@sirena.org.uk>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 9 Jul 2026 12:49:19 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyhRFMa+diHpWyKcCuB8DrTH4p1bvraiaQnO0Fru74cHw@mail.gmail.com>
-X-Gm-Features: AUfX_myGvG9GzTq40K-onGYQvIqSeZZ7bcchUs-KHtoNqS1WCKCcF98we18uqCM
-Message-ID: <CA+EHjTyhRFMa+diHpWyKcCuB8DrTH4p1bvraiaQnO0Fru74cHw@mail.gmail.com>
-Subject: Re: [PATCH v11 00/29] KVM: arm64: Implement support for SME
-To: Mark Brown <broonie@kernel.org>
-Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Marc Zyngier <maz@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, tools@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Thu, 9 Jul 2026 at 12:36, Mark Brown <broonie@kernel.org> wrote:
->
-> On Thu, Jul 09, 2026 at 11:26:41AM +0100, Fuad Tabba wrote:
-> > > base-commit: 4c45e14df2f4e77982ad70d6d8e3fe750edd4c37
->
-> > I think this SHA is local to your tree. I can't locate it, and neither
-> > could Sashiko [1, 2]. For a series this big and complex, it would be
-> > good to get Sashiko to review it. Could you please fix that?
->
-> That is the v7.2-rc2 tag, copying in Konstantin since this probably
-> wants fixing in b4 and Roman for sashiko since this might bite others.
-> I told b4 the code was based on v7.2-rc2 (which it is) by specifiying it
-> as "v7.2-rc2" in --edit-deps and it's translated that into the git
-> object hash for the tag and dropped that in there rather than the hash
-> of the commit that was signed.
+Add a kernel command-line option, kvm-riscv.wfi_trap_policy=trap|notrap,
+that controls whether a WFI executed by a VS-mode guest traps into KVM
+(HS-mode) or executes natively.
 
-I figured out what the issue is in Sashiko and submitted a fix:
-https://github.com/sashiko-dev/sashiko/pull/317
+Measured results (wfi_exit_stat delta / guest wake count over 3 s):
 
-It wasn't advancing the local HEAD after fetching.
+  policy        WFI_EXITS   WAKE_CNT
+  ----------    ---------   --------
+  default       295         294      (== trap, no regression)
+  trap          295         294
+  notrap          0         298
 
-Cheers,
-/fuad
+Assisted-by: YuanSheng:deepseek-v4-pro
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
+---
+ .../admin-guide/kernel-parameters.txt         | 14 ++++++
+ arch/riscv/kvm/vcpu.c                         | 44 ++++++++++++++++++-
+ 2 files changed, 57 insertions(+), 1 deletion(-)
 
->
-> Probably if b4 is going to resolve deps into hashes it should make sure
-> to resolve them into a commit object in case users aren't pulling tags
-> (which I'm guessing is what's affected both Sashiko and you here).
-> Either that or just keep the text (which would make it more obvious
-> what's happened but doesn't actually fix anything if it's automation
-> that's impacted).
->
-> Unless someone objects I'll resend with the dependency specified as the
-> commit object for Sashiko's benefit :/
->
-> FWIW:
->
-> $ git show 4c45e14df2f4e77982ad70d6d8e3fe750edd4c37
-> tag v7.2-rc2
-> Tagger: Linus Torvalds <torvalds@linux-foundation.org>
-> Date:   Sun Jul 5 14:44:06 2026 -1000
->
-> Linux 7.2-rc2
-> -----BEGIN PGP SIGNATURE-----
->
-> iQFSBAABCgA8FiEEq68RxlopcLEwq+PEeb4+QwBBGIYFAmpK+lYeHHRvcnZhbGRz
-> QGxpbnV4LWZvdW5kYXRpb24ub3JnAAoJEHm+PkMAQRiGsv8H/Rn7Hr3Hp8t6au8B
-> xQueZThJWjqQ4v8pyLnXF6OomKiDR24OTXMCrFgDkcmZ7RK2ALqowI3tQVwLUTuI
-> yUN0qL2z2y+LyTcO0CYf3Lple8KlgLAXYMsv7pGLsOvhS7BW2jW97/bcbpUNxoHb
-> eghxqbIEnyRImUbbyg+nW7VVk65RKdPUNkBPXfQ2NMVwe+SDE5Rl+NXNVqDNjGad
-> soDTUBrD9yXkWX+4s0myleE62UzzH5nYgGPQeQgYmzWgq7LybH6WBlbQK9D7ODJR
-> Cw3LCq1hwZZ2w04Yx+XwMHquGJYHW8L2pj77h95uhzksz8buKnM0AGwBCTC6RMoi
-> AyUQvdc=
-> =JUWl
-> -----END PGP SIGNATURE-----
->
-> commit 8cdeaa50eae8dad34885515f62559ee83e7e8dda
-> Author: Linus Torvalds <torvalds@linux-foundation.org>
-> Date:   Sun Jul 5 14:44:06 2026 -1000
->
->     Linux 7.2-rc2
->
-> diff --git a/Makefile b/Makefile
-> index b9c5792c79e0..b4035d3cef26 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -2,7 +2,7 @@
->  VERSION = 7
->  PATCHLEVEL = 2
->  SUBLEVEL = 0
-> -EXTRAVERSION = -rc1
-> +EXTRAVERSION = -rc2
->  NAME = Baby Opossum Posse
->
->  # *DOCUMENTATION*
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index b5493a7f8f22..ee6603b30033 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3254,6 +3254,20 @@ Kernel parameters
+ 
+ 			notrap: clear WFI instruction trap
+ 
++	kvm-riscv.wfi_trap_policy=
++			[KVM,RISCV] Control when to set the WFI instruction
++			trap for KVM VMs. When set, a VS-mode WFI traps into
++			KVM and is emulated; when clear, the guest executes
++			WFI natively and blocks until a VS-mode interrupt
++			(e.g. the sstc timer) is pending.
++
++			trap: set WFI instruction trap (HSTATUS.VTW=1)
++
++			notrap: clear WFI instruction trap (HSTATUS.VTW=0)
++
++			Defaults to trap, preserving the previous
++			unconditional behavior.
++
+ 	kvm_cma_resv_ratio=n [PPC,EARLY]
+ 			Reserves given percentage from system memory area for
+ 			contiguous memory allocation for KVM hash pagetable
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index c3672513b4e9..d50b47ed280e 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -12,6 +12,7 @@
+ #include <linux/kdebug.h>
+ #include <linux/module.h>
+ #include <linux/percpu.h>
++#include <linux/string.h>
+ #include <linux/vmalloc.h>
+ #include <linux/sched/signal.h>
+ #include <linux/fs.h>
+@@ -26,6 +27,42 @@
+ 
+ static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
+ 
++/*
++ * WFI trap policy for VS-mode guests, controllable through the
++ * kvm-riscv.wfi_trap_policy= kernel command-line option.
++ */
++enum kvm_riscv_wfi_trap_policy {
++	KVM_RISCV_WFI_TRAP,	/* Default: trap VS-mode WFI into KVM */
++	KVM_RISCV_WFI_NOTRAP,	/* Let VS-mode WFI execute natively */
++};
++
++static enum kvm_riscv_wfi_trap_policy kvm_riscv_wfi_trap_policy __read_mostly =
++	KVM_RISCV_WFI_TRAP;
++
++static int __init early_kvm_riscv_wfi_trap_policy_cfg(char *arg)
++{
++	if (!arg)
++		return -EINVAL;
++
++	if (strcmp(arg, "trap") == 0) {
++		kvm_riscv_wfi_trap_policy = KVM_RISCV_WFI_TRAP;
++		return 0;
++	}
++
++	if (strcmp(arg, "notrap") == 0) {
++		kvm_riscv_wfi_trap_policy = KVM_RISCV_WFI_NOTRAP;
++		return 0;
++	}
++
++	return -EINVAL;
++}
++early_param("kvm-riscv.wfi_trap_policy", early_kvm_riscv_wfi_trap_policy_cfg);
++
++static bool kvm_riscv_vcpu_wfi_should_trap(struct kvm_vcpu *vcpu)
++{
++	return kvm_riscv_wfi_trap_policy == KVM_RISCV_WFI_TRAP;
++}
++
+ const struct kvm_stats_desc kvm_vcpu_stats_desc[] = {
+ 	KVM_GENERIC_VCPU_STATS(),
+ 	STATS_DESC_COUNTER(VCPU, ecall_exit_stat),
+@@ -73,7 +110,12 @@ static void kvm_riscv_vcpu_context_reset(struct kvm_vcpu *vcpu,
+ 	/* Setup reset state of shadow SSTATUS and HSTATUS CSRs */
+ 	cntx->sstatus = SR_SPP | SR_SPIE;
+ 
+-	cntx->hstatus |= HSTATUS_VTW;
++	/*
++	 * Trap VS-mode WFI into KVM unless the WFI trap policy lets the guest
++	 * execute it natively. See kvm_riscv_wfi_trap_policy.
++	 */
++	if (kvm_riscv_vcpu_wfi_should_trap(vcpu))
++		cntx->hstatus |= HSTATUS_VTW;
+ 	cntx->hstatus |= HSTATUS_SPVP;
+ 	cntx->hstatus |= HSTATUS_SPV;
+ }
+-- 
+2.34.1
+
