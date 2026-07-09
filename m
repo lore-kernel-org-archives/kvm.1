@@ -1,147 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B33793A6
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BB0347520
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783626849; cv=none; b=jUiu9VHxKRok5grSFMdliOa6Esxi0yDC/aW17MiGSlA7OAfmM+zN9/c9vtOtTbEHtiwfHx0V4fzyV89XduKk8FFO3aXujcLJHstlqX/LrDS1is6GaWb1pOcaB7yL+pBU+ouQWrDKYsoimQMkgvEZHX0WK0n5XF/TUbOU7I9SK5w=
+	t=1783628467; cv=none; b=RW7ZQIv29jlvanMDVOjZObz+lQz7dilFGAfB7W4EiIM68/LqY5czkoU0NMtbdM0qiIu2lkquHl4E/hEMhuWzNsWm3R+WP6TbpmASOlY/CER+Zmem0/jm5ccJgoqalmCvyWV/N1M/DiepHoCtcnlYqgS7lkiv9qizjC/61+uAXds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783626849; c=relaxed/simple;
-	bh=WNGmcRTGHnY5GfCH6GDmX8QSq8pxw+ysKJc5TtSS95E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uMQb9aNLNn7HMnjINxC4iYCzyfKhuKdTxFP71W9LyXeVAmNihC2Z0WQxMrF1EuK3JagrVfIuoII+jdRqZylRRdCuGuzKleMc6eBDR3tnOeNAIuENCt8pXxECxgqXDsi0rB6mUNScl8iZPeeVI4F3BGbWcQnJ76ofvDfdaZncP6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIMAttZx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783628467; c=relaxed/simple;
+	bh=q2ZOUSVusqbM4msiHCHWzW5ZDBfus1hiVGMu5NriqoI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OJ0XcIey5iQTdGa0fM8iW7GrKTWp6QA4KNQ3Q8mXpNUZYhxkSt+uXr4C66J5dC7582ViJKBK3/rF/lsP3VUDU+67CjJlaKhy3InJhoQdGDiSJjgNmvxCgJXlrgAeelWvxJaPHzJsk8vhOMhjHxVQ7xjpPGPUa9HUtpDc5ITnUoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZR/QVdia; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIMAttZx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46B61F00A3E
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:54:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783626847;
-	bh=nOFy1uHV+NQl46guA9lx1UHXG/tr7s8gJ0WE+G2M0Rc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=oIMAttZx6N8sGVsrdxK721UR0TUAo3evAfE9N6oz4HjGCc/hxlpATviqrSZrKR4LB
-	 y91Y3Az8dGXYgKJwyAmPHaXhLL67o4JvYicRqd7pqZFnNVGgABYDx79DPCntyCozPO
-	 Ts4yyIeq7LThGwN8Y8x1F3ppzSBl1cHsPDxwQBUaX2gikIUKlFLvT3YZsATOd1N8Ts
-	 V69p6/Xp6jLmkksBgpQ0an2iyhRWEuXMFBBlVBzH+UvOwStmQrE+RP/62qs4cmsane
-	 3Q7J7vCyiX6UvA8l72AvlV9gXcpD4ymDz0aXk0V90sefNwI0nAmf804vjEy+PY7SJC
-	 PEaZo8uofGzkg==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15e3141d02so29707766b.2
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:54:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpMFhUSWeRssoI/ShIFylXmSVY7iWE1bj25sBXnirmi9T70UQFused36B3XC/mWL2gqZXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLi6COrpJqeFt/rbtv1UtfdxA1nOgTGZ0T6CZSrA7wKzAuH7Vj
-	Clsj38SZClClSqQcY/5J+p3AJBxlECF6NEjohQ2Is0tX+C0l8p+uvwl9LqtquG4AiSGHBefgHyR
-	shNFcvzMuNufCorcw1Dg9Y5t3BLO4Ey8=
-X-Received: by 2002:a17:907:6ea6:b0:c15:f005:63fb with SMTP id
- a640c23a62f3a-c15f005718fmr138274366b.3.1783626846658; Thu, 09 Jul 2026
- 12:54:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZR/QVdia"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8483e038efeso119367b3a.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:21:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783628466; x=1784233266; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CxKcxzuNFCTiWIY9TtzP+QfZ+srbbSC9teFUzdNxgfk=;
+        b=ZR/QVdiaOBlQ0i+ETgfWfoIPL3QBVl3FoOx2sBoETol7+XeRTwzd/e6seEznhNESGM
+         24VT7q4r0tkJ9hNAJ1Hu3UIBMA3PAFEbkCiwZQt18O6mJtvYXNPPuwH51B6UHVPT7qJh
+         e2IPIWM2Q6T+WjFZclCUZg5tFXhtLhxRBSvyompWayqZO0UuRJFdrg8mPxreIESg464a
+         r1rODfxjceJAvL8qgwtmiMdvDzG3zPffF5MfnN8nQeXsy4TpssOemz71/E24Ugp0rbGT
+         BXsoQ9XCTN7pd7X2k+KqxUFBNP8wTRw7Ki/cmHSJbsGzDpStk2QOH+BmHEiu3dix9K0R
+         BpcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783628466; x=1784233266;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CxKcxzuNFCTiWIY9TtzP+QfZ+srbbSC9teFUzdNxgfk=;
+        b=q30MO3Zy97Jx/PAHxnJw0aOcYkTHf6t7SDG4HHTFPE1wvjlH/1+Ots66cLtWz1HheC
+         sRelHoVRwGi0hWx2ppXrmdoHz+/Vdoj7Nn47ZgQZZcNgYPtczP6gALJLbZI8R04NOhPC
+         VE3nd7z6t871q6dzVRIw1Xhx1lM15XpyDCul7vAYpZG1rjtyQJ1MC/ntfnl4DrNlvI6C
+         V+7CH2xEAr3iQEPVyF9WtNa99xuSLynqkaYA8OztUGLHOAJTzzQ1CM0QjE/3xXYApDpY
+         yJfZC8WQtBw1iTvuQEmjbiIOLnZLOnKOCDJgpphVnbo0RZN+OlsxJ/oHym6vbVWd0/tx
+         ctdg==
+X-Forwarded-Encrypted: i=1; AHgh+Roxe4gXz3E+/h38TlyK4a16//fL2oEFLJ+R4XcImG6JckLwL199CqAEE3SjAtUpnQGBbg8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlfaAPckNrRFnVvv43RHujcV128MaJzUTEEIvBconzXWPVFhdS
+	kNkupaUltJcEpIuqH7aByS1CCsOm5JkdFKeSicx6xJR/Lp7NLh+BicBuiCIPg2aI96nMTt8ukaa
+	Ckk54PA==
+X-Received: from pfbmc20.prod.google.com ([2002:a05:6a00:7694:b0:846:3c78:e2e8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:aa09:b0:845:62ce:d5ae
+ with SMTP id d2e1a72fcca58-84843021d3amr8051184b3a.18.1783628465756; Thu, 09
+ Jul 2026 13:21:05 -0700 (PDT)
+Date: Thu, 9 Jul 2026 13:21:05 -0700
+In-Reply-To: <20260709174955.628913-2-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260709082953.69434-1-shivansh.dhiman@amd.com> <20260709082953.69434-2-shivansh.dhiman@amd.com>
-In-Reply-To: <20260709082953.69434-2-shivansh.dhiman@amd.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 9 Jul 2026 12:53:55 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
-X-Gm-Features: AVVi8CdNT4WFDLJcpYUCQoK_uqHWvoit2fGW9Lei8EVYq1OHk4LP5qp367fQ9mc
-Message-ID: <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] KVM: SVM: Refactor svm_update_lbrv()
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, kvm@vger.kernel.org, x86@kernel.org, yosry.ahmed@linux.dev, 
-	jmattson@google.com, thomas.lendacky@amd.com, nikunj.dadhania@amd.com, 
-	ravi.bangoria@amd.com, santosh.shukla@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260709164751.621326-1-hemanth.selam@gmail.com>
+ <20260709174955.628913-1-hemanth.selam@gmail.com> <20260709174955.628913-2-hemanth.selam@gmail.com>
+Message-ID: <alACsZ41RLIbBzfM@google.com>
+Subject: Re: [PATCH v2 1/2] KVM: selftests: SEV: Verify unsupported VM types
+ are rejected at creation
+From: Sean Christopherson <seanjc@google.com>
+To: Hemanth Selam <hemanth.selam@gmail.com>
+Cc: pbonzini@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jul 9, 2026 at 1:31=E2=80=AFAM Shivansh Dhiman <shivansh.dhiman@amd=
-.com> wrote:
->
-> Rewrite the enable_lbrv computation in svm_update_lbrv() as a series of
-> 'if' statements, and use nested_vmcb12_has_lbrv() instead of open-coding
-> the nested LBRV check.
->
-> No functional change intended.
->
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> ---
-> Changelog:
-> v3:
->  * New patch.
->  * Refactor the enable_lbrv computation into 'if' statements (Yosry Ahmed=
-).
->
-> ---
->  arch/x86/kvm/svm/nested.c |  2 +-
->  arch/x86/kvm/svm/svm.c    | 10 +++++++---
->  arch/x86/kvm/svm/svm.h    |  1 +
->  3 files changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index c1485c3e691c..d3df6b22bfef 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -736,7 +736,7 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu,=
- unsigned long cr3,
->         return 0;
+On Thu, Jul 09, 2026, Hemanth Selam wrote:
+> @@ -73,19 +74,34 @@ static void test_init2_invalid(unsigned long vm_type, struct kvm_sev_init *init,
+>  	kvm_vm_free(vm);
 >  }
->
-> -static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
-> +bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
-
-We might wanna rename this function now that we are exposing it
-outside of nested.c, but otherwise this looks good to me:
-
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-
->  {
->         return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
->                 (to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_=
-LBR);
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index ef69a51ab27f..cead8f99d856 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -880,9 +880,13 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
->  {
->         struct vcpu_svm *svm =3D to_svm(vcpu);
->         bool current_enable_lbrv =3D svm->vmcb->control.misc_ctl2 & SVM_M=
-ISC2_ENABLE_V_LBR;
-> -       bool enable_lbrv =3D (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) |=
-|
-> -                           (is_guest_mode(vcpu) && guest_cpu_cap_has(vcp=
-u, X86_FEATURE_LBRV) &&
-> -                           (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE=
-_V_LBR));
-> +       bool enable_lbrv =3D false;
+>  
+> +static void test_create_invalid_type(unsigned long vm_type, const char *msg)
+> +{
+> +	int fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)vm_type);
+> +	int err = errno;
 > +
-> +       if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
-> +               enable_lbrv =3D true;
+> +	/* Clean up before asserting; TEST_ASSERT() aborts on failure. */
+
+Literally every test relies on the kernel to clean up fds on an early exit.  I
+see no reason for this to behave differently.
+
+Also, Sashiko was wrong.  If KVM_CREATE_VM fails with something other than EINVAL,
+the assert will NOT fire, but fd will be < 0.
+
+> +	if (fd >= 0)
+> +		close(fd);
 > +
-> +       if (is_guest_mode(vcpu) && nested_vmcb12_has_lbrv(vcpu))
-> +               enable_lbrv =3D true;
->
->         if (enable_lbrv && !current_enable_lbrv)
->                 __svm_enable_lbrv(vcpu);
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 716be21fba33..8d77c10cf4f6 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -899,6 +899,7 @@ void nested_copy_vmcb_control_to_cache(struct vcpu_sv=
-m *svm,
->  void nested_copy_vmcb_save_to_cache(struct vcpu_svm *svm,
->                                     struct vmcb_save_area *save);
->  void nested_sync_control_from_vmcb02(struct vcpu_svm *svm);
-> +bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu);
->  void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_=
-vmcb);
->
->
-> --
-> 2.43.0
->
->
+> +	TEST_ASSERT(fd < 0 && err == EINVAL,
+> +		    "KVM_CREATE_VM should reject unsupported type (%s), got fd=%d errno=%d",
+> +		    msg, fd, err);
+
+test_assert logs the errno, no need to spit it out here as well.
+
+> +}
+> +
+>  void test_vm_types(void)
+>  {
+>  	test_init2(KVM_X86_SEV_VM, &(struct kvm_sev_init){});
+>  
+> -	/*
+> -	 * TODO: check that unsupported types cannot be created.  Probably
+> -	 * a separate selftest.
+
+Heh, I agree with the comment: put this in a separate selftest.  This doesn't
+have anything to do with KVM_SEV_INIT2, and in fact doesn't even have anyting to
+do with SEV+ or even x86.  E.g. add a kvm_vm_types_test that attempts to create
+all possible VM types, and asserts success/failure based on the output from
+kvm_check_cap(KVM_CAP_VM_TYPES).
