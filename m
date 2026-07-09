@@ -1,161 +1,194 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12E73FCB3A
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BFB289367
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587287; cv=none; b=JhbEHGyMA+LIZvJAvrV5m7gp2rRE/Pk959CEXkjOyLSf9FkJn0hlg8lM+/AY+xTfklmKaGMHNmXIZSWcILzct6DqTHljHAoLTPfWaOPD19xOy5OTS4vDF4mwSCzptb0R3xCx5h3AS8YpIzLZMhi9HAxidZRjz0kbCZKeEgm/cPs=
+	t=1783587336; cv=none; b=RAejnYQSPU2z9bUwMeI1yeOVSmr4kP1rzK/p5CyV4uQhPJMWbRyYwiibxVTdX+Ez0c+jkb86FuYtW+25rI8jptiLjOD23C90WOrv4le6dMFAHJX2gDm6r6AdwNjfcydLWOR6E46IKERMZ0W5mkorvVZ4PdpHfwZFDjqlrIegXK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587287; c=relaxed/simple;
-	bh=wRRaBds4GutgazHTelDLWoEKQjUD+qekfGeab8oKIas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u/1k1A9UosB7iliCA1U9FlaBZFTQwZoQOeJZokgWhIu3guZrLqiE5LZXfKmNd8VfY2++jjOblre+Mwy5Jff4rSU/OPzojE/Zal7hxCykOP0OAVyqshsylDx4scVHn10vepc/bS0Eq0ryMUn+TXJI2Bq4Tu7oQ+VCmQRZMmuDafc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BlAyjAbL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VRfyHjBN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783587336; c=relaxed/simple;
+	bh=DjxYLvRAp8ti97QizA88QgS5r4h7iKjuoUs7ZKea07c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=jCi30TUF4RV3bRnrsSGEK/FkPtoWy/LEZYLP1iW5pZf+q0wb/yJNLFKdN+XfjYICK/zUv1s46dC8QuRIWtVx++SozMl1++Ln7xL38rQUBh4haYaM4iFAu8RvnEguBXMj4YSraW5HnpDrXeKKOF7mzTouvkKcDFg0DZ8lUOUbsvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adbiYm+z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BlAyjAbL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VRfyHjBN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783587284;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
-	b=BlAyjAbLykGVnxtSiIUcYYke3Ot7vTQth/cP4NWIv/m6yme76bTdo9jqpsi3IYY+qSWdvD
-	SKW+4Du4VQksNJlpdpoG0V2F1lHYKZGzb9QLREV/M3l1h9mJ0K4HFkiHgR3ii7CKsWXGyS
-	7EePKe9LQiCImxRy38vrkBO56kdltGw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-dtO0IAZwMHWzdzRfIWzBFg-1; Thu, 09 Jul 2026 04:54:43 -0400
-X-MC-Unique: dtO0IAZwMHWzdzRfIWzBFg-1
-X-Mimecast-MFC-AGG-ID: dtO0IAZwMHWzdzRfIWzBFg_1783587282
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493e9ea2c77so5890685e9.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 01:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783587282; x=1784192082; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
-        b=VRfyHjBNh75myXSj6eNN9uojHY/fPLF/k/3P9YZXppPcS7iBiRZqeTWfibSaIP70v6
-         XGR8dPfKKBQF9kBq9xpuF42VD6BcpktQA7kWflvLltjUTxAocimpGwiAX00jK6WNBwkl
-         vwKNXNuj8dCSYzNRfPjR9A99k7L1oUpHYF9utMTVxIEU7TatuRs5RNPNDDTJLxi8K0Gd
-         OxEEogW7gkOBtgHO4BZpFOD4z5IYpLXMm6WsdhziMWAs3Ua7lgVYlbPEurPN9YgR7QJF
-         PZ16ptZigP6FjrVoVuAZDd8hY/eODzEveoxkPZ7hnjG+aOgR9yT5IUJADM990A/bNhJK
-         3B8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783587282; x=1784192082;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jKBatJUUTBddrBcocZDnsS1t1LpIJaEaNIf3BrEu4hE=;
-        b=Mave34Xw7427x+7rYaLOrG1vFqRdKe8yjPxTas15VKrQJnKClXD3/7av/AFfrbt5Hw
-         2j3s4XKie6vcyQE7wH41Wk5gscSRCHMqrdRRqWJ/u+xfOvmYm4y2RwqB0oaTf2sCRtGz
-         SHgO2t6kTpXig3/QLcwCtTY5hEB8RxfGyNlED4zgkzoxT2eFCFSFeQGIzta3UlcE3k9W
-         YsSMv7aOsXKWP7BASKszudJQQ7ZMf9t2Nu12FZn35ZmjsGASk52lUrD14C/IYTrhr6rP
-         0+72r3GjTv8PpJSiyvyYei+v4JArmcRLYUzUTOiBAjyZmaUK8qZdBpjf2Al4NAQuazd5
-         NbGg==
-X-Forwarded-Encrypted: i=1; AHgh+RrtSe/rgPihuzYT4AsXL6CHXkZ6cwnC5jB+jC4lf+EL9fk6GESUoBi3RFNZNjRRcsJLtwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2Y+/QjRKj7Qr4xcD5MkYPshxb4S+sixfVQrYYG4DHo48J6dJN
-	a7+XJg71QTjECmaioCFCN6cqAnobHNJ8DD+nehOVGvi2w+Vp9kp7QxDrUNW0LN4dT1+K7W2U1EM
-	evGb990BkTB3cOHdrjvYkZ4igI/AI1ZLRVVyMih92CacNCRi3xJe05Q==
-X-Gm-Gg: AfdE7cnOeqK/ih02RsyuQNt8goY2cFOWLrdHwHdkaBu5V2dRKDeMbLcRaqvglvMbNUW
-	SivHdjUiv3yfkwWRtEatQ6YhZjQlZcaE0KGUtktz9/1aqut9YzhmQCwMRdyj2+lEbY5xL4s0djP
-	/GHFBICvJ6HIXKcLA1mXk+juh6a2QkSoPQvgpjri3p/G/TR8mlEEw83tqCoi0f5g9CbOdWvAnYA
-	2iaTx8A7VEiGgixoodfOf3YNimA9944ySQHrNokQVwzsUvnjNzEhwHI0dUs+UtuZ7ktrmwU5UUf
-	XeDli0l/IHTEDnPyP17U3KTj1fBX6NJYQ1DUbUo1Xk3Kv3M9AhJTvv61YynU8YjWfOKPz45AwWw
-	8yekt5Hc1oKjbcSzaitdp8UT4d3c8gkSNVE+AXqPzDwwidEjBqkwP26CFNqct
-X-Received: by 2002:a05:600c:1993:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-493e68c6c98mr55722875e9.20.1783587282408;
-        Thu, 09 Jul 2026 01:54:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:1993:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-493e68c6c98mr55722455e9.20.1783587281922;
-        Thu, 09 Jul 2026 01:54:41 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6df6d9sm54564705e9.7.2026.07.09.01.54.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 01:54:41 -0700 (PDT)
-Date: Thu, 9 Jul 2026 10:54:34 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, 
-	Jason Wang <jasowang@redhat.com>, stable@vger.kernel.org, Brien Oberstein <brienpub@gmail.com>
-Subject: Re: [PATCH net v2 1/2] vsock/virtio: collapse receive queue under
- memory pressure
-Message-ID: <ak9fGNnW7gdqVXie@sgarzare-redhat>
-References: <20260708102904.50732-1-sgarzare@redhat.com>
- <20260708102904.50732-2-sgarzare@redhat.com>
- <20260708065947-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adbiYm+z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8F81F000E9;
+	Thu,  9 Jul 2026 08:55:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783587335;
+	bh=mtVu+GNsdNYm8/+35SwrsCKddrAGrrj5dqsNSt42Mhg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=adbiYm+zRnYp/ZHcTtDwPCKWOdm/rq15qq6GfN8Cr17jXSOBrEbRREJL2HCN0nRkc
+	 K0YbNMNUUyvVjw7NKp6O6AazQqim0Eut3XaDp0R5Gp3GqkvkyHLm/bJKNakF5XVcgL
+	 NK1Mmyib/0PiITPwGHKG6jDKgnX+s4gAbrXwCmzyhlxaVxmdaFFHONpEntmE/d0jY0
+	 ODcaaiMBn2VTuTU35RsNzlmFPxAklLppRGU9QVZKBhj7jP+TD1hDEc8F0taYTEozfJ
+	 wWvVvGbTC3Rynz7CZVIenDtHNT6rhXD9E7o3Pd2Oq9njI7cceaORrfxg6Tt2gDFGJU
+	 1Hc1Or9wCmOuA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 5/5] KVM: SVM: Add Bus Lock Detect support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260709082953.69434-6-shivansh.dhiman@amd.com>
+References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
+ <20260709082953.69434-6-shivansh.dhiman@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Jul 2026 08:55:34 +0000
+Message-Id: <20260709085535.3D8F81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260708065947-mutt-send-email-mst@kernel.org>
 
-On Wed, Jul 08, 2026 at 07:00:00AM -0400, Michael S. Tsirkin wrote:
->On Wed, Jul 08, 2026 at 12:29:03PM +0200, Stefano Garzarella wrote:
->> From: Stefano Garzarella <sgarzare@redhat.com>
->>
->> When many small packets accumulate in the receive queue, the skb overhead
->> can exceed buf_alloc even while the payload is within bounds. This causes
->> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
->> resets during large transfers under backpressure.
->>
->> The issue was reported by Brien, who has a reproducer, but it is also
->> easily reproducible with iperf-vsock [1] using a small packet size:
->>
->>   iperf3 --vsock -c $CID -l 129
->>
->> which fails immediately without this patch but with commit 059b7dbd20a6
->> ("vsock/virtio: fix potential unbounded skb queue").
->>
->> Inspired by TCP's tcp_collapse() which solves a similar problem, add
->> virtio_transport_collapse_rx_queue() that walks the receive queue and
->> re-copies data into compact linear skbs to reduce the overhead.
->>
->> The collapse is triggered proactively from when the number of skb queued
->> is close to exceeding the overhead budget.
->>
->> A pre-scan counts the eligible bytes to size each allocation precisely,
->> avoiding waste for isolated small packets. Partially consumed skbs are
->> kept as-is to preserve buf_used/fwd_cnt accounting, EOM-marked skbs to
->> maintain SEQPACKET message boundaries, and skbs already larger than the
->> collapse target because they already have a good data-to-overhead ratio.
->>
->> Walking a large queue may take a significant amount of time and cache
->> misses, causing traffic burstiness. To limit this, the collapse stops
->> once enough room is freed for this packet and the next one, but may
->> opportunistically free more to fill each collapsed skb to capacity.
->>
->> [1] https://github.com/stefano-garzarella/iperf-vsock
->>
->> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
->> Cc: stable@vger.kernel.org
->> Reported-by: Brien Oberstein <brienpub@gmail.com>
->> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
->> Tested-by: Brien Oberstein <brienpub@gmail.com>
->> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->
->
->this is the right approach
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-Yeah, I have a follow up to start to use skb->truesize, etc. but I guess 
-more net-next material.
+New issues:
+- [High] Unprivileged host userspace can trigger a KVM_BUG_ON (resulting in=
+ a WARN_ON_ONCE and potential host panic) by dynamically toggling MSR_IA32_=
+DEBUGCTLMSR for a SEV-ES guest.
+- [High] Enabling Bus Lock Detect inadvertently un-intercepts LBR MSRs, gra=
+nting the guest unauthorized hardware access to LBRs.
 
->
->Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Pre-existing issues:
+- [High] L2 guest can bypass MSR intercepts and overwrite L1's MSR_IA32_DEB=
+UGCTLMSR and LBR state when L1 enables Bus Lock Detect or LBR.
+- [High] Bus Lock Trap #DB causes are lost during reinjection, rendering th=
+e feature non-functional in the guest.
+--
 
-Thanks,
-Stefano
+--- Patch [5]: [PATCH v3 5/5] KVM: SVM: Add Bus Lock Detect support ---
+commit d2f71feda9dbdbb51e59bc110b5518d4f10bcf93
+Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
+KVM: SVM: Add Bus Lock Detect support
+
+Add Bus Lock Detect support in AMD SVM. Bus Lock Detect is enabled through
+MSR_IA32_DEBUGCTLMSR and MSR_IA32_DEBUGCTLMSR is virtualized only if LBR
+Virtualization is enabled. Add this dependency in the SVM.
+
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index a59389c322da1..bd204aa33e47f 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -882,7 +882,8 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
+>  	bool current_enable_lbrv =3D svm->vmcb->control.misc_ctl2 & SVM_MISC2_E=
+NABLE_V_LBR;
+>  	bool enable_lbrv =3D false;
+> =20
+> -	if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
+> +	/* Bus Lock Detect in guest depends on LBR Virtualization */
+> +	if (svm->vmcb->save.dbgctl & (DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DE=
+TECT))
+>  		enable_lbrv =3D true;
+
+[Severity: High]
+Could this change allow unprivileged host userspace to trigger a kernel pan=
+ic
+on systems with panic_on_warn=3D1?
+
+If userspace calls KVM_SET_MSRS for a SEV-ES vCPU before the guest is
+finalized and sets MSR_IA32_DEBUGCTLMSR with DEBUGCTLMSR_LBR or
+DEBUGCTLMSR_BUS_LOCK_DETECT, svm_update_lbrv() will set enable_lbrv =3D tru=
+e.
+
+If userspace subsequently writes 0 to clear the bit, enable_lbrv becomes
+false, causing KVM to call __svm_disable_lbrv().
+
+This would then hit the following assertion:
+
+arch/x86/kvm/svm/svm.c:__svm_disable_lbrv() {
+    ...
+    KVM_BUG_ON(is_sev_es_guest(vcpu), vcpu->kvm);
+    ...
+}
+
+
+[Severity: High]
+Does enabling Bus Lock Detect inadvertently grant the guest unauthorized
+hardware access to LBRs?
+
+When a guest with Bus Lock Detect sets DEBUGCTLMSR_BUS_LOCK_DETECT,
+enable_lbrv becomes true. This leads to a call to
+svm_recalc_lbr_msr_intercepts():
+
+arch/x86/kvm/svm/svm.c:svm_recalc_lbr_msr_intercepts() {
+    ...
+    bool intercept =3D !(svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_=
+LBR);
+    ...
+}
+
+Because intercepts are disabled entirely based on SVM_MISC2_ENABLE_V_LBR,
+could this un-intercept all LBR MSRs (e.g., MSR_IA32_LASTBRANCHFROMIP) even
+if the guest does not possess the LBRV CPUID feature?
+
+
+[Severity: High]
+This is a pre-existing issue, but can an L2 guest bypass MSR intercepts and
+overwrite L1's state if L1 enables Bus Lock Detect or LBRs?
+
+If L1 enables these features but does not expose LBRV to L2, KVM populates
+vmcb02->save.dbgctl with L1's state. When svm_update_lbrv() sees these bits,
+it appears to activate hardware LBRV (SVM_MISC2_ENABLE_V_LBR) for L2.
+
+This would un-intercept MSRs for L2, allowing L2 to modify DEBUGCTLMSR
+natively. Upon nested VMEXIT, KVM copies this modified state back to L1:
+
+arch/x86/kvm/svm/nested.c:nested_svm_vmexit() {
+    ...
+    if (!nested_vmcb12_has_lbrv(vcpu)) {
+        svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
+        vmcb_mark_dirty(vmcb01, VMCB_LBR);
+    }
+    ...
+}
+
+Would this allow a malicious L2 guest to corrupt L1's state?
+
+[ ... ]
+
+> @@ -5595,9 +5596,17 @@ static __init void svm_set_cpu_caps(void)
+>  	 * Clear capabilities that are automatically configured by common code,
+>  	 * but that require explicit SVM support (that isn't yet implemented).
+>  	 */
+> -	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+>  	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
+> =20
+> +	/*
+> +	 * LBR Virtualization must be enabled to support BusLockTrap inside the
+> +	 * guest, since BusLockTrap is enabled through MSR_IA32_DEBUGCTLMSR and
+> +	 * MSR_IA32_DEBUGCTLMSR is virtualized only if LBR Virtualization is
+> +	 * enabled.
+> +	 */
+> +	if (!lbrv)
+> +		kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but are Bus Lock Trap exceptions
+actually reaching the guest?
+
+According to the AMD APM, when a #DB is intercepted, the CPU provides the
+new DR6 value (containing the DR6_BUS_LOCK bit) in EXITINFO1 and does not
+update the guest's DR6.
+
+However, when KVM reinjects the exception, it reads the stale save.dr6:
+
+arch/x86/kvm/svm/svm.c:db_interception() {
+    ...
+    u32 payload =3D svm->vmcb->save.dr6 ^ DR6_ACTIVE_LOW;
+    kvm_queue_exception_p(vcpu, DB_VECTOR, payload);
+    ...
+}
+
+Does this cause the DR6_BUS_LOCK bit to be lost during reinjection, renderi=
+ng
+the feature non-functional in the guest?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082953.6943=
+4-1-shivansh.dhiman@amd.com?part=3D5
