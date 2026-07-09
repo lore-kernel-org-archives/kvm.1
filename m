@@ -1,126 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C613FF8B6
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86533EB0FB
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587062; cv=none; b=VfITsSBVg1VzLH10jXhz1ml8aW0ppC3j6XSEIkRo3notblbfzR9MwW/jmz02OEcWTNNIF6lruyVvbTiMko3b0dXiRctgnTOnOqhV+A/9hdiyGSEmaSOMF+5FyuBfffMBBMNvhAE86JobotRYlcA39nWQ8LL92pUFYWbFcbIVAko=
+	t=1783587086; cv=none; b=UWlxwJlEH+OHSULHQpzZfF9BVgnw7s0mMAHlE77hO+kBqva7VEf4AIK5abGnV7dQjQRQjVuUQf7OQGN2Q20oHBb4ZT/4Lgi8rM9EAFwaWaMqOoAX9PMUxqCpiqUUhGbef+TpkOIsktrWKCGcbWTaKxZChngFlJMNtC0S3xCSO9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587062; c=relaxed/simple;
-	bh=9mcmoAdxwzfyHrToIJ366XN37NDJA7hRpsdyD99TOnA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=F6Sqhs05PCdbmhS6SXu1RD2pzorbNIgPfrFQO60L4J+VxKfihyRxx84UGaOLGFEGJaq0kdCh135wp0WYZv+2U6pedI3BtcYYGeqF3HOyb55q9PvEW3vyBLaEEgC7LfQ7MDmQWsSnu5wKXxtFXOS+lpaO4WeifBpFflc7IqbRHj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVV8pbx5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783587086; c=relaxed/simple;
+	bh=VjsHFBKy+x9J5i3Up358292Qp0m7f8AymQAqtW4mK18=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Rz6zOo0cWFYNt+ezclIqSTWABYx/CJlimVGuByRfm/FSv3w5xjU3F0nTkUCMev7MbeIuMUayFr+fV0bA9NuItzBsgfj4k2OmZd/E1nXq85AitIelGHbVDEbWH/82jjwvNQxZvpdSV+iIpUiz0Zmp7EqvhL92b4radVPHqowi8Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=STG09mU7; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVV8pbx5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04BC1F000E9;
-	Thu,  9 Jul 2026 08:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783587061;
-	bh=BYdXyTjsO+DbPrjyvacuLMY+cWxHTgtO58obMhwJqvM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UVV8pbx5zUxyzfn890+Yd3JEyqfBtgiEASPzk5Ko/g/7Nlc3XH2FH0NXcqJboGjXQ
-	 aDvXvOlo8c/0yCAkvjs8tNlaNWrnEFqJWDTl+vtB3+ik5F43n1WNl2ua0g3wWaU04f
-	 vyLN1m1/XuMIkkHbphmqhQEKa43UX5yvioxVddPdqqe8J2AMqo4X93McZo5FemrrCH
-	 Ivp4ps+qygRPuuQk0rPPcq6JLbblBHfjeRfxwyKniseaHQ246AiDa/HqqyUpu1rdBG
-	 1nkhH41hEpv2qfep2RHDN7uKrwWyfU6LvqlWrMsP5647pb6NGHPTaXftF7xdqoXTeF
-	 2TvyUX6eF7Ofg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/5] KVM: nSVM: Sanitize nested DR6 using
- kvm_dr6_fixed()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709082953.69434-4-shivansh.dhiman@amd.com>
-References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
- <20260709082953.69434-4-shivansh.dhiman@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 08:51:00 +0000
-Message-Id: <20260709085100.C04BC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="STG09mU7"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso952546a12.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 01:51:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783587085; x=1784191885; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=CNp1e35ro3cQgZeEMYQvoxd6PA+bCrB79PJw0+bppNk=;
+        b=STG09mU72e/56VKo9of+DgK2SDlIYMWIVQCtKXSl+v81GtkrMRmgAUp8o6WGOT7xa5
+         PhOVlcl5S8YN3Y7NsIeGmMwC8S0N3tt3xd/aCKnL5C0hZHaPqAg9ZVdMoExc2x0fub1U
+         sDaGKZXu9CKw/dZlGREXtq3D9V5k4IR7bqjHD2ixfinkRh0CDXr3YLXHG5QIjQprzE/h
+         aRAiJXKzCVDKUvDNG1rD02r04LhH5p3x+DiZUPKLrcssPm91zl1+dlB3hmPY6dK+4qCT
+         FQSp/OdD8aDucaxLXxVLMgGPY/djM852KMlvJqgquNyTH50TPSCW37IWgIUKJ+HPk/0p
+         sdDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783587085; x=1784191885;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CNp1e35ro3cQgZeEMYQvoxd6PA+bCrB79PJw0+bppNk=;
+        b=nyg7UY5oxk3JW5Ay2n0EqOvFOnzELQxP5TuV502frai1Xe2cgdm+tocHxzjGLEo9Ni
+         8nDxQnrAeGY25V9ge9YB5HdQnnD3lPjlPg0d1M46ISG5c6FRXRl3ZdmMXbjllZsW9wmd
+         1WhxPs6NGY4gJslWZ5oXI9xap9IWZ3NlsLRa/NCK0Ohmqwp/2wykslROcKguDwshQTs2
+         YdHB7U59pydCYceGeJdg+qcmDBX1uCyI7RUOMXyRaR9rhHWwbPyHKXrR8GnUugx1G8bR
+         599KdDf/nnasKYmhXaf3TzCmBdoJ3Is8m/o/zWB0qEvdJkMVj8Cy1bQHjP4YI0HXbfbG
+         vqKA==
+X-Gm-Message-State: AOJu0YxYuRE6W6ATHJ/3DiR8rE2xcIpLtmrHpvSYzeaJeLR1HgTf6Swr
+	1G4hpq/7MTkjCiPRxtCruhWncrYxWr6sgU7WNQo13+EyN9b9AkGaJpbY
+X-Gm-Gg: AfdE7cnpWyjGj4JloN8X4sFG0p+EbP5BEHns0gW7QY5po5WVz4X0Ixq8E6GSoRvYnG0
+	w882L69AEFoPAC3+NxLkwXvL0rm69rfbw12Emslzmu/tRc7vObDMlPgmNYomRtD/bfq+DNlGS3Q
+	dm+VOEt9Fy+pXMjnyFqt+mbIur+hHUk9AvossemPit8UNzLXLieSi1DD8vfwehb5m9ARs+RIJrS
+	E0Z959lh0XG4LomXod4Dui8tnn1vfetggqq9mukwpBSXGcAYHh8Sl14vtNfVRnsTVOUBQ4RIaQh
+	SZa3RicdyGgJjlgGwwNuXcLEwPes/xHAu7FzGEpLFX9QSm4YPpeLn3M14Itu0xQyP9yLILRkVzE
+	tctVVjdclajRnj/Dy6dAJXRE7U2fMibUhc+SAgd0x4fKeMWFu7JpuV0VftQuUMVc3Sn+Ssv1CJU
+	MT4pmqkavb8XU=
+X-Received: by 2002:a05:6a20:3d0b:b0:3bf:7ab7:98a4 with SMTP id adf61e73a8af0-3c0bc95bad7mr8044555637.27.1783587084985;
+        Thu, 09 Jul 2026 01:51:24 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311a6115e61sm5516616eec.22.2026.07.09.01.51.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 01:51:24 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] KVM: Use vma_lookup() in kvm_host_page_size()
+In-Reply-To: <71775f561c4b7fb23b7af0725c6ce232a4b27b20.camel@infradead.org>
+Date: Thu, 09 Jul 2026 14:16:36 +0530
+Message-ID: <7bn4wnwz.ritesh.list@gmail.com>
+References: <71775f561c4b7fb23b7af0725c6ce232a4b27b20.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+David Woodhouse <dwmw2@infradead.org> writes:
 
-Pre-existing issues:
-- [High] The patch identifies that DR6_ACTIVE_LOW unconditionally sets DR6_=
-BUS_LOCK (bit 11) to 1, and replaces it with kvm_dr6_fixed() in nested VMCB=
-02 preparation. However, the patch fails to replace DR6_ACTIVE_LOW in L1 vC=
-PU initialization and #DB payload processing paths, completely breaking Bus=
- Lock Detect for L1 guests.
---
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>
+> kvm_host_page_size() uses find_vma() to determine the host page size
+> backing a guest page. find_vma() returns the next VMA when the address
+> falls in an unmapped hole, which means an unmapped address inherits the
+> page size of a completely unrelated VMA at a higher address. This is
+> never a meaningful result.
+>
+> Replace find_vma() with vma_lookup() so that a hole address returns
+> NULL, causing the function to return PAGE_SIZE (the safe default)
+> rather than an unrelated VMA's page size.
+>
 
---- Patch [3]: [PATCH v3 3/5] KVM: nSVM: Sanitize nested DR6 using kvm_dr6_=
-fixed() ---
-commit 0ee3ae36939ed695ccbd636580058ad35113add9
-Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
+That's exactly right.
 
-KVM: nSVM: Sanitize nested DR6 using kvm_dr6_fixed()
+> This is currently only cosmetic, as the only caller is in PPC book3s
+> support (kvmppc_xive_native_set_queue_config()) and subsequently returns
+> failure if !gfn_to_page() anyway.
+>
 
-When preparing vmcb02 for nested VMRUN, KVM ORs DR6_ACTIVE_LOW into the
-guest DR6 to force the fixed bits to 1. DR6_ACTIVE_LOW forces bit 11
-(DR6_BUS_LOCK) to 1 unconditionally.
+Yup. The change make sense to me. Feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 84248e6665cfe..0a9e28a02692e 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -811,7 +811,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_sv=
-m *svm)
-> =20
->  	if (unlikely(new_vmcb12 || vmcb12_is_dirty(control, VMCB_DR))) {
->  		vmcb02->save.dr7 =3D svm->nested.save.dr7 | DR7_FIXED_1;
-> -		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | DR6_ACTIVE_LOW;
-> +		svm->vcpu.arch.dr6  =3D svm->nested.save.dr6 | kvm_dr6_fixed(vcpu);
 
-[Severity: High]
-This is a pre-existing issue, but since this patch correctly identifies that
-DR6_ACTIVE_LOW unconditionally forces bit 11 (DR6_BUS_LOCK) to 1, should
-DR6_ACTIVE_LOW also be replaced in the L1 vCPU initialization and #DB paylo=
-ad
-processing paths?
-
-Currently, DR6_ACTIVE_LOW is still used to initialize L1's dr6:
-
-arch/x86/kvm/x86.c:kvm_vcpu_reset() {
-    ...
-    vcpu->arch.dr6 =3D DR6_ACTIVE_LOW;
-    ...
-}
-
-It is also used as a flip mask when KVM translates the exception payload to
-guest DR6. Because Bus Lock Detect is actually active-high, XORing it with
-DR6_ACTIVE_LOW incorrectly inverts the bus lock bit the guest sees:
-
-arch/x86/kvm/x86.c:kvm_deliver_exception_payload() {
-    ...
-    vcpu->arch.dr6 ^=3D ex->payload & DR6_ACTIVE_LOW;
-    ...
-}
-
-Similarly, SVM constructs the #DB payload by XORing the hardware exit DR6
-with DR6_ACTIVE_LOW:
-
-arch/x86/kvm/svm/svm.c:db_interception() {
-    ...
-    u32 payload =3D svm->vmcb->save.dr6 ^ DR6_ACTIVE_LOW;
-    ...
-}
-
-Could this leave Bus Lock Detect functionally broken for L1 guests by causi=
-ng
-them to observe corrupted hardware state (false positives or false negatives
-for bus locks)?
-
->  		vmcb_mark_dirty(vmcb02, VMCB_DR);
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082953.6943=
-4-1-shivansh.dhiman@amd.com?part=3D3
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  virt/kvm/kvm_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 89489996fbc1..d33761123459 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2693,7 +2693,7 @@ unsigned long kvm_host_page_size(struct kvm_vcpu *vcpu, gfn_t gfn)
+>  		return PAGE_SIZE;
+>  
+>  	mmap_read_lock(current->mm);
+> -	vma = find_vma(current->mm, addr);
+> +	vma = vma_lookup(current->mm, addr);
+>  	if (!vma)
+>  		goto out;
+>  
+> -- 
+> 2.43.0
