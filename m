@@ -1,115 +1,124 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B3C3D5226;
-	Thu,  9 Jul 2026 11:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091E739903B;
+	Thu,  9 Jul 2026 11:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783594844; cv=none; b=jBNhgt1fDJsi5WVkO8pnjTYRub2OB3nQNvDHuRxMmWmnZTNj2NkmNewM3ENdYHI7VspBCuWLLjLADKznQzkbahTI7WtA1vlExUvpq5PNmiKzT768+YmEbCug0rvTd5Mh8MrJmz8ugU8CPkvWe/yNubtH+4WvaTNJfprb8MpGP0g=
+	t=1783595031; cv=none; b=cFwsv7yvQNYkGmsavlf3ZI5BUtr2McjPq0UbFVRTTE4Kz320rGKl9LBiJnOa54VAbd6Zh18hpsvAotuWQOM+QqWY0+BcpYwy5tlZ4BmqRcUkkDWuMFinGIK+Cd0UqJTPlOPW88n3xKQUbk/vYgyjO/9TV3ILTv+GLPq1AYFGzdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783594844; c=relaxed/simple;
-	bh=Ch98t3hk+nExhkCAEcqEvlZnOYinIAww9HQf8ffofzE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J/W5UC6HlmOEO+Y/oWg7iKHw/7A//jEhVuLht388SwFyxijhXjl2iLcTyGwRRkfyuf35XEYYm+kkWyuPDNgd2LaUI5TDQlE14W0PfLMbeCKoBDoatNa9SSJCqdRy6wLWOhkZ0FdPTjI6Byv9BhPU2b7oDEfFaI6tJhpPLLwvbgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Lp+9Hres; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1783595031; c=relaxed/simple;
+	bh=9lLEQQCHT9JiVKo0bVMYV1AdfA8TC1/xGWRG6R48IAY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=GuJeGusEiavhB5RHBNx6RVHif+pxt7SHmGF94Hgm3lUU09e0l8ZTwUZNgd7hTU4iQZd7Fnrth1fClqv6nR+m2BxAk5LayudaWPo7o3pD0KNWKOFe16HS76Sw5ed0vnSu4e64BVVUeob9abjNcabZh6d73cbSeM8doSZKpsgG2ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lp+9Cnsw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Lp+9Hres"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=VezVOVkaWKil784uHcfljB+3QlsVwOtJUBLd3pGpIVg=;
-	b=Lp+9HresC/SPwgvCPus+V3P5NVCKIPq71cDpu6fMUQ6L1NN1+LQ0INZdPrBqMLjl34eYKPw7s
-	jSdwnH1VyWSFTXcZbVXFoip1V8GoOiHoy8N8LyOg9t6JKpr64Qd3D8rOf+Z7XDr6iczWdkC4y1q
-	ml8AGNvPjAURmwQpGZWTk+g=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gwsG46JHMzRhVc;
-	Thu,  9 Jul 2026 18:51:24 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4B4494057F;
-	Thu,  9 Jul 2026 19:00:38 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 9 Jul 2026 19:00:37 +0800
-Message-ID: <e9682d40-bee2-4f91-8874-1a7340b4a9c4@huawei.com>
-Date: Thu, 9 Jul 2026 19:00:37 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lp+9Cnsw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4590F1F00A3A;
+	Thu,  9 Jul 2026 11:03:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783595029;
+	bh=p8O9SDEsL1nRzUv/xpfs+3EbRQc7MnIZV1aLu/u/OLc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lp+9CnswKWRVUgKywROkL1IIxFHMbuqFZDJNHnJ6Ls5X6q3iiNRv7YVAG9BByctlL
+	 EkvoK5Bv0ybKEcRtAY+1JmrvuCs74RTSD9+VK4IW/K6rPra1QYDEm7ZxxjMxHDF3uX
+	 ViYvlC+JfNBi+aFc7538pcwKoqpxHsTU86pQeVlAb1yfE4eDXBHqcHs/1cOPZX0vhn
+	 x4OpsqGBXnGxdv8X9z2zqV/D51wSVuhdJmvoRbsp4l7uJGhbsapmJuXvObej3VLvva
+	 ZyIEMLQVmbadSKLfoH4Bl3/t0y3EaFAAnZpn2zGgtsRIq6ab0wd6HNT5lwiDkCfe2k
+	 20XlC2Cu++Auw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 1/6] KVM: arm64: Enable eager hugepage splitting if
+ HDBSS is available
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tian Zheng" <zhengtian10@huawei.com>
+Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>
+In-Reply-To: <20260709104026.2612599-2-zhengtian10@huawei.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-2-zhengtian10@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Jul 2026 11:03:48 +0000
+Message-Id: <20260709110349.4590F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 09/18] vfio/pci: Hide TPH capability when TPH is
- unsupported
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
- <20260702124224.57168-10-fengchengwen@huawei.com>
- <20260708173213.1173162c@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260708173213.1173162c@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo500009.china.huawei.com (7.202.194.199)
 
-On 7/9/2026 7:32 AM, Alex Williamson wrote:
-> On Thu, 2 Jul 2026 20:42:15 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
-> 
->> Check the device negotiated TPH support status before parsing the TPH
->> extended capability. Return zero length to hide the capability from
->> userspace if TPH is disabled during topology negotiation.
-> 
-> This doesn't match the proposal and introduces an ABI incompatibility
-> to the user.  A device that includes a TPH capability and supports
-> migration would break if the source and target systems disagree about
-> whether the capability is present, even if read-only.
-> 
-> The proposal did not suggest hiding the TPH capability, instead it used
-> SET on the device feature ioctl as the opt-in mechanism to introduce
-> virtualization of the TPH capability and control registers.  Nak to
-> this change.  Thanks,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The default eager page splitting chunk size evaluates to an archit=
+ecturally invalid block size on 16KB and 64KB page systems and suffers from=
+ integer truncation in KVM_CHECK_EXTENSION.
+- [Medium] The global capability query for eager page splitting chunk size =
+incorrectly reports the default as 0 (disabled) when HDBSS is present.
+--
 
-Got it, will drop this commit in v20
+--- Patch [1]: [PATCH v4 1/6] KVM: arm64: Enable eager hugepage splitting i=
+f HDBSS is available ---
+commit 382048a591b4a06f749e61447083eb8630f1bad5
+Author: Leonardo Bras <leo.bras@arm.com>
+Subject: KVM: arm64: Enable eager hugepage splitting if HDBSS is available
 
-Thanks
+This commit enables eager hugepage splitting by default at stage2
+initialization when the system supports HDBSS. It sets the chunk size
+to 256K * PAGE_SIZE.
 
-> 
-> Alex
-> 
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->> ---
->>  drivers/vfio/pci/vfio_pci_config.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
->> index a10ed733f0e3..5c6ab172df6c 100644
->> --- a/drivers/vfio/pci/vfio_pci_config.c
->> +++ b/drivers/vfio/pci/vfio_pci_config.c
->> @@ -22,6 +22,7 @@
->>  
->>  #include <linux/fs.h>
->>  #include <linux/pci.h>
->> +#include <linux/pci-tph.h>
->>  #include <linux/uaccess.h>
->>  #include <linux/vfio.h>
->>  #include <linux/slab.h>
->> @@ -1450,6 +1451,8 @@ static int vfio_ext_cap_len(struct vfio_pci_core_device *vdev, u16 ecap, u16 epo
->>  		byte &= PCI_DPA_CAP_SUBSTATE_MASK;
->>  		return PCI_DPA_BASE_SIZEOF + byte + 1;
->>  	case PCI_EXT_CAP_ID_TPH:
->> +		if (!pcie_tph_supported(pdev, false))
->> +			return 0;
->>  		ret = pci_read_config_dword(pdev, epos + PCI_TPH_CAP, &dword);
->>  		if (ret)
->>  			return pcibios_err_to_errno(ret);
-> 
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 6c941aaa10c63..e086c01a9325e 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kv=
+m_s2_mmu *mmu, unsigned long t
+>  	for_each_possible_cpu(cpu)
+>  		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) =3D -1;
+> =20
+> -	 /* The eager page splitting is disabled by default */
+> -	mmu->split_page_chunk_size =3D KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> +	 /* The eager page splitting is disabled by default if system has no HD=
+BSS */
+> +	if (system_supports_hdbss())
+> +		mmu->split_page_chunk_size =3D 256 * 1024 * PAGE_SIZE;
 
+[Severity: High]
+Does this chunk size assignment create architecturally invalid block sizes
+on 16KB and 64KB page systems?
+
+On 16KB and 64KB systems, 256 * 1024 * PAGE_SIZE evaluates to 4GB and
+16GB respectively. Since level 1 blocks are not supported for these
+page sizes on ARM64, this exceeds the valid maximums (32MB and 512MB).
+If a VMM attempts to restore this configuration, kvm_vm_ioctl_enable_cap()
+in arch/arm64/kvm/arm.c will reject it via kvm_is_block_size_supported(),
+which breaks live migration.
+
+Additionally, can this cause integer truncation during capability queries?
+
+In arch/arm64/kvm/arm.c:kvm_vm_ioctl_check_extension(), the 64-bit chunk
+size is assigned to a 32-bit signed integer. The values 4GB (0x100000000)
+and 16GB (0x400000000) will truncate to 0. A VMM querying this capability
+would read 0 and restore 0 on the destination, silently disabling the
+feature.
+
+[Severity: Medium]
+Does this new dynamic default desync with the global capability query?
+
+When userspace queries /dev/kvm via KVM_CHECK_EXTENSION for
+KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE without a VM instance,
+arch/arm64/kvm/arm.c:kvm_vm_ioctl_check_extension() unconditionally returns
+KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT (0).
+
+Since this patch changes the default dynamically for new VMs based on
+system_supports_hdbss(), the global API query now misleads userspace about
+the default capability.
+
+> +	else
+> +		mmu->split_page_chunk_size =3D KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> +
+>  	mmu->split_page_cache.gfp_zero =3D __GFP_ZERO;
+> =20
+>  	mmu->pgd_phys =3D __pa(pgt->pgd);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709104026.2612=
+599-1-zhengtian10@huawei.com?part=3D1
