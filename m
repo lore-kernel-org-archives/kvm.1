@@ -1,129 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AC53CC7D8
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 06:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2CE3DB33D
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 07:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783579969; cv=none; b=qfcycCQR/lYqvqJIXEidzSg+BQvu4OmZ3/K8sO3JFrXTBd9UjlOf1ky/hOznU2xi85biaWT17pZLx2QDslhZlvFd6mTS/aii2XLhda70mlPGeMcS5TX21WC3dx5pqMhZNj2LJO+4y0r2qR6BPSrMnOUhF0MI9esHxPPeqwtW12A=
+	t=1783580689; cv=none; b=Yfskx11OaZBAmKH2g2Dq0RktCnL12kd5O5SIqPcrITKy1e12/xQ2vCF+3qHeiOFMdPz7zpS5p1p66pBqrTIFBhWPrsI84dE9codOn1wKPdCR74OAMar//lZx3Ehp3jKbqgS/ESXTWVDAQWFTK5wGthNjYkVe/LnQpsjJdLCyZhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783579969; c=relaxed/simple;
-	bh=TBsprsCgg0529z4YYuay7yGSSO0D8eAcuUxXOt/qXZY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BRCRzpQzGOvheIva2PzO+ll1W6q4Q99cskFZePljRO6232l9A6rL0GU++dVn1UVRoV4rqCemnLu/w3pZ/5foucpjklBgPhzm5S8pCXjIas9vwU31OgEh/Iq+frN0gfeFgfYc7tB63DGmJic9+HRENnNmIn873jju7hU5CQGIqEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2DDepnt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783580689; c=relaxed/simple;
+	bh=VzjWA9vNgOcPmEN2qFVtcG/1dm70z7M0Ms2JTek35eE=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=pBgFBnpc0KlQu9+nIIoEAymqdeqk62O8ujXqqxicsN520Bh7yEY6bxM5zgBPlHruhvNLW9eEQbZRRgbfOJiqFf0zQLKsJdUCEez1wkH9+wNuzVjvWof42Qo8ecyg2fLq85R9aFUpooBc0H8fmXwyyC4weT6HejhH6sjBkgQeNU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kPLCuU6b; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2DDepnt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955031F000E9;
-	Thu,  9 Jul 2026 06:52:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783579967;
-	bh=dxKTsgcHJLQzb8Q9iwBLlCE5urpBv/+K4TK2EBdCeGE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H2DDepnthft3FIx5+6qZFs5HuUE5jnjCunqrKTo3QFhlTYzhFslwIuRNkDd1r3Gtd
-	 C8QZYs2Fau45NHQign81Uv2rQMBmLq+vkaIvHnzNjB+gTFBLV5JEJEofrgXumDj+W3
-	 V2V83iQpquMUA88xbn7GZIGfgvltDuLUTMhZunPo/zTZWqa6+S1QpvpqEtdYVgZb50
-	 1Vt3i9VP8Q7QYIm5s/krPzSvYS/G5qKnmzHGet2ZPDUx2zNnsm32glNSPGIS9JwbFn
-	 2qyzYmS51QL+WSlL4Xoyh89aqHeb8zdFZQqfyUGCOM8Ajiw0x/DEDWWYxZONmPquFK
-	 3Xu+bsWJ7tamw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] KVM: powerpc: Use generic xfer to guest work
- function
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Vishal Chourasia" <vishalc@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709062940.1679427-4-vishalc@linux.ibm.com>
-References: <20260709062940.1679427-2-vishalc@linux.ibm.com>
- <20260709062940.1679427-4-vishalc@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 06:52:47 +0000
-Message-Id: <20260709065247.955031F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPLCuU6b"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so19958035ad.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 00:04:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783580687; x=1784185487; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=RojLPltz8DwvvSu0nWycaSfVOIfQRK6RQOm7qxh34pM=;
+        b=kPLCuU6bHiGV2/UDPW786unMNL2b7BU7gQRao3hlzyNdXkHM6nvOxl31tsTRh3NFxl
+         vvi1HA3BrAk4g2ywMeKFC9Soz5zoRbJw46IRaGwC2qpMNJOf3cDrOllnrTYgFpgr3Wa+
+         lYKpuhFrxlTdghdfOey4b87GIaZPF85QemiXe8UrV+3xM6/sUmw2+Q2WXlmYP2cLJNop
+         5RO9M6umpDzbf93cUKltUCD40BmcZXnL0zhlRa/qQZpQojT49mDBBezGwPMNIJlDEhlo
+         PMPczpWaYSUJkil+LivEwEX+cTuOLas1ETSt/L0loeu6S9pUPc9An2SWQ1J2jcjDtpDd
+         pnGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783580687; x=1784185487;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RojLPltz8DwvvSu0nWycaSfVOIfQRK6RQOm7qxh34pM=;
+        b=lMOAnc4lqJjvZtzoRX2DEjgMgPGL4EmagQoeZ/ocmyjycXZnR+0oyGoqHUjDQ3lOXY
+         BTbTl2EMk/bpXe/1Y5VpFDL/WmA4fYoYrP5Y9GoAUtZ8lvkZ2g71mpLtRWvz0mOpqeGC
+         bwPa1CDod/TjzYEtHGKX335a/F4c9dQeEsY1xhb0r0eBoxuu0gNK4u2DcCsmMPnMDdaM
+         UUyN1wMqXBPcZebcOXDKqO9SibKBxC3ZMyHDcnWQKMCkddGLPsrYmmuYpQWToKsfbQnK
+         btf41wVEUSDuhOkp/6J1anbSUzjnsAcHvylBg8PXRU6Qt1OOk/3QtZB/8Se+EzlkvpoV
+         0iqA==
+X-Forwarded-Encrypted: i=1; AHgh+RpZt5K0R38MXm799LoPGw/DigO3k97brKXTMT5qgn5snQmM9WPVJVhK5hhjLstzQFMd2N8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoQVgHFy5EvqgpgEbCOrrF7JA4fQrMHaKwI9d89/27lPijreQA
+	3rZTV4rP4oG7SfuZrtb+gWTZHEdcnp+oUESxP0wV3z01XYbcTqyl+qfp
+X-Gm-Gg: AfdE7cnZbdZ4BzKCahLwhvCOf0Cf+XAA+73blopyTmRn4f5KdPRbyVBGDMPFJJU5AK8
+	wN1uiEhIWuUhpS2ZAfW8t6lIoa2yyTw92JE8c2EztRYmNHcZNsD84TGRBsVUr+QOnWM8SbT7XNL
+	ada64OtstkiLZa2G1R2xavv/wxInc9ogNLoCGEI69iJk//XOOsWAQCqS/BTLV8p0H90NFtgbif3
+	sMbA80sDv8xPTPqcOk1UJ2wLVA+n5IpZQFmBAoIGhCSN7DEVZWN9sfCu6WcdvgDlWiypwxNTFLg
+	XzWKJ5AFf46J/WDp+dNhNg3nZ5cEQpnua+zapwm7nLM/fvNVK2PX4wFZKZulnh8ixoOWim72jEF
+	P58DKhtFG1lUCQ8lVgVWSqh/oymmqTPqDwLkPxZNpZsjJpEpdRZ0Rz1pLqYpLZ3VlXrje2CqdIi
+	TwEsMnPLfNSX4=
+X-Received: by 2002:a05:6a20:d529:b0:3b4:85db:1bed with SMTP id adf61e73a8af0-3c0bcbc5c42mr6970115637.45.1783580687320;
+        Thu, 09 Jul 2026 00:04:47 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b6596681fsm31951861c88.8.2026.07.09.00.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 00:04:46 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Salman Farooq <salman.farooq3310@gmail.com>, maddy@linux.ibm.com
+Cc: npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Salman Farooq <salman.farooq3310@gmail.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix comment typos
+In-Reply-To: <20260702030344.2211462-1-salman.farooq3310@gmail.com>
+Date: Thu, 09 Jul 2026 12:31:04 +0530
+Message-ID: <8q7kwssv.ritesh.list@gmail.com>
+References: <20260702030344.2211462-1-salman.farooq3310@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Lockdep assertion failure in xfer_to_guest_mode_prepare() due to m=
-ismatched IRQ state on BookE architecture after emulated MTMSRWE.
---
+Salman Farooq <salman.farooq3310@gmail.com> writes:
 
---- Patch [1]: [PATCH v3 1/2] KVM: powerpc: Use generic xfer to guest work =
-function ---
-commit ad7243cc79a6e34d4784ae75e8ea35ce946a8343
-Author: Vishal Chourasia <vishalc@linux.ibm.com>
+> Fix two instances of a misspelled word in comments.
+>
 
-KVM: powerpc: Use generic xfer to guest work function
+Not sure what this will really get us and what is our maintainer take on
+such spelling mistake fixes. I definitely hope we won't churn out a lot
+of patches just to fix simple spell mistakes.
+But FWIW, the change looks good to me, so:
 
-This commit updates powerpc KVM run loops to use generic infrastructure for
-checking and handling pending task_work before guest entry. It replaces
-open-coded need_resched() checks and adds xfer_to_guest_mode_prepare() to
-disable IRQs and handle TIF_NOTIFY_RESUME properly.
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37b..be5e48ae0c6c2 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -81,23 +81,41 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
->  	int r;
-> =20
->  	WARN_ON(irqs_disabled());
-> +	/*
-> +	 * local_irq_disable() first: on 32-bit, hard_irq_disable() alone is a
-> +	 * raw MSR[EE] clear that bypasses the lockdep/irq-tracing state, and
-> +	 * the xfer_to_guest_mode helpers assert IRQs are seen as disabled.
-> +	 */
-> +	local_irq_disable();
->  	hard_irq_disable();
-> =20
->  	while (true) {
-> -		if (need_resched()) {
-> +		xfer_to_guest_mode_prepare();
 
-[Severity: High]
-Can this trigger a lockdep assertion failure on BookE architecture?
-
-When a BookE guest executes mtmsr to set the MSR_WE bit, it enters an idle
-state and invokes kvmppc_core_prepare_to_enter(). This function enables
-lockdep IRQs but disables hardware IRQs using a macro that bypasses lockdep=
-=20
-on 32-bit:
-
-arch/powerpc/kvm/booke.c:kvmppc_core_prepare_to_enter() {
-    ...
-    if (vcpu->arch.shared->msr & MSR_WE) {
-        local_irq_enable();
-        kvm_vcpu_halt(vcpu);
-        hard_irq_disable();
-        ...
-        r =3D 1;
-    }
-}
-
-If kvmppc_core_prepare_to_enter() returns 1, the while loop later in=20
-kvmppc_prepare_to_enter() continues:
-
-arch/powerpc/kvm/powerpc.c:kvmppc_prepare_to_enter() {
-    ...
-    if (kvmppc_core_prepare_to_enter(vcpu)) {
-        /* interrupts got enabled in between, so we
-           are back at square 1 */
-        continue;
-    }
-}
-
-This continues back to the start of the loop and invokes the newly added=20
-xfer_to_guest_mode_prepare() check. Since hard_irq_disable() bypassed the=20
-lockdep state update, lockdep still believes IRQs are enabled. Will this=20
-cause xfer_to_guest_mode_prepare() to fail its lockdep_assert_irqs_disabled=
-()=20
-check and trigger a splat?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709062940.1679=
-427-2-vishalc@linux.ibm.com?part=3D1
+> Signed-off-by: Salman Farooq <salman.farooq3310@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 5fbb95d90e99..6ac8364a7639 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -163,7 +163,7 @@ static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
+>   *  All its GFNs are moved to Normal-GFNs.
+>   *
+>   *  UV_TERMINATE transitions the secure-VM back to normal-VM. All
+> - *  the secure-GFN and shared-GFNs are tranistioned to normal-GFN
+> + *  the secure-GFN and shared-GFNs are transitioned to normal-GFN
+>   *  Note: The contents of the normal-GFN is undefined at this point.
+>   *
+>   * GFN state implementation:
+> @@ -1010,7 +1010,7 @@ static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
+>  /*
+>   * Release the device PFN back to the pool
+>   *
+> - * Gets called when secure GFN tranistions from a secure-PFN
+> + * Gets called when secure GFN transitions from a secure-PFN
+>   * to a normal PFN during H_SVM_PAGE_OUT.
+>   * Gets called with kvm->arch.uvmem_lock held.
+>   */
+> -- 
+> 2.55.0
