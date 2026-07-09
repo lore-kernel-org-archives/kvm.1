@@ -1,86 +1,198 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671873B893A
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 14:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906F8314A83
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783608913; cv=none; b=OwfG4B/2e1SvVYGny3VVTFfc5VoqpODcmdQ+iXSQvd0sRxjO3eGy0xFbF7enxVyMcAiCtIwY/KGMiBthJEluuba/7VFwKOlH/tWNXGwT3Jb4nS8276VHOq5bD9/jLO4qb4o1MG8wBuvJeTOeWk16VqJmn1SbTVYdooHil5L2e10=
+	t=1783609671; cv=none; b=ttwj4R6B0UU0hTflpryjSchz3SoUg+IKKV5cAA5vM+nI+x6ewzrPCd/GOeZMLJJ41Mo1QSBtbC5X806nlB/Pcz2wojwg+VdtcgajyDk8vxmsgjKPj7CDP/T4//jeP+gNQKWFRwB6g+Kkq+Bi55PIfE0n7ThRFHK74SSpREmUBdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783608913; c=relaxed/simple;
-	bh=Z92wjpo4T3gw0Y2zNCG2Jd/Ba3+9EzNo1LTP87sUDGw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MS5Ony6SWy0gBEvwT9Tjmq9SGLbjz8Ot1V8iU9JW4TPVQCWu6jr+Z5f6ODWsNcXYuGLOJYvqc3cZgjjIkg3CD+iK/vejhucz6xnBILzbEd0wQvB+F3Lgcctet5iP+nvqTt4tKbVNbQ9dPBffqqtiSxg/EVNTnZ48IPPwVADW8Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rV2ozypf; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783609671; c=relaxed/simple;
+	bh=C3gpjr/ChKhj7UsyNFMgvrn9ykoP//PrM412d9uwPDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mpYK2OZ39KRc3jFaJwn3fWhzflbeVznqdOCJMJYM7Zv8bEdip4KarSdO3UG8jjIxBw4szxTjqhG8ITHnEp0Gy+zNUZCcLUfsEEEIjFcCuG/95oLpUYKokhE4HeBs7GY/bEPFFZ7mCkFhb2m+l6BXQaOa5rnqpT07OQeO2scHxNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KGPqvOeo; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rV2ozypf"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84842381150so1423926b3a.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 07:55:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783608912; x=1784213712; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fvTDmaZA4veBPk22tfgJT4gMaQFjXb/XSia/PA9AeFU=;
-        b=rV2ozypfHj2TGjGNnzUB71uX65+x8VyG9TDAJbVbPYBAdrwcGgUaocBlYfzgD5A41x
-         MIMKO3djb3MP0xx9JP0PYrCZ3mMu/p4sGaMVURBr9fx7kLZK5on/oUW3B0jB7PEMl3ei
-         wUh7XWMJ/Ju0hR06vZY+ncv2DNhdgS0Ha9LdFY5WV/laQ8a6ntijLABy3HZIpJKajAIS
-         xlbfu9COFxHkCEFB6GoEgpBsKS1INFLJdi9bOTyNEcDqzg+p+47J2G0m8YDL211M+skH
-         ta18t0kmK7QYJDNCF8oQ263z9yzInF4V0k0/CUnBiYHUyB0zZTgyIWgTw3mgk2uP+ab6
-         0qiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783608912; x=1784213712;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fvTDmaZA4veBPk22tfgJT4gMaQFjXb/XSia/PA9AeFU=;
-        b=kur22JZ2NTH9lF2kby/XDpNYR8S2DYHBxNeaKd54/XPp4wYFXTbA9iBGwHVzcdolOu
-         Qn0ZVQ4/u3sKaqTMkWP0AISmtgiZQGMjWlNrescyYeCpLXmsg9xyp9PeA6MAmlymCaOW
-         kBEyyWAXpQNdMULJxjaq4qdyzEKfkEkMEY8TY+K7j7KuonXpGwKyiXVfpLpzm3O02r+s
-         cl46yIXYMMegjqlAib9sRMShN6CTiVw4Spovtt/cQrwEaWhfFRNgavfaoZB3lHnfpr5R
-         9H8t1yz9LEX0znSqipoaUJVyLwWoHTvUmeP91P0rsINwISmgtMffy4W6XWzEyrG8bpZn
-         v0gA==
-X-Gm-Message-State: AOJu0Yz4kvxs7mtTi7Qk5A18gHD0uxr4VektLHJVswFhQn8KjegrpKAc
-	lREZkKp1a73JEWH+kqNJ7LbQVe5Ii3ijz2TISrjac3/20DbCvGP5ik/TI6zh0/hbufWSOxlBx/j
-	6tJ+MXQ==
-X-Received: from pfxx22.prod.google.com ([2002:a05:6a00:116:b0:848:5740:db83])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4191:b0:847:7f3c:b5f5
- with SMTP id d2e1a72fcca58-84842ed2020mr7288680b3a.11.1783608911583; Thu, 09
- Jul 2026 07:55:11 -0700 (PDT)
-Date: Thu, 9 Jul 2026 07:55:10 -0700
-In-Reply-To: <20260625070914.2175124-1-piotr.zarycki@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KGPqvOeo"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E3A13592;
+	Thu,  9 Jul 2026 08:07:43 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 758773F85F;
+	Thu,  9 Jul 2026 08:07:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783609667; bh=C3gpjr/ChKhj7UsyNFMgvrn9ykoP//PrM412d9uwPDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KGPqvOeonO6YUXZhO8LbUsPX1XFgnhM/vx5xENxPF5S9t6I2hUCB9hnO3i9cEdGt8
+	 9dD4d/oEFOySlVQVc+VIf6ifEDKgd+YCrMiPoC/SCEi/wDlt6l6mj2MTvkbdUJlXv0
+	 M6kh41Vb8ffnGqCUMLKm3Eu3TShGjxSWxnlAMIOY=
+Date: Thu, 9 Jul 2026 16:07:43 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Will Deacon <will@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH kvmtool v2 3/4] Add support for registering
+ guest_memfd-backed memory regions
+Message-ID: <ak-5P-bZkbO4UCce@raptor>
+References: <20260708182510.2181857-1-fuad.tabba@linux.dev>
+ <20260708182510.2181857-4-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260528154003.3594107-1-piotr.zarycki@gmail.com> <20260625070914.2175124-1-piotr.zarycki@gmail.com>
-Message-ID: <ak-2To4F5tNjyolt@google.com>
-Subject: Re: [PATCH v3] selftests: add swap() macro to kselftest.h
-From: Sean Christopherson <seanjc@google.com>
-To: Piotr Zarycki <piotr.zarycki@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vkuznets@redhat.com, 
-	shuah@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708182510.2181857-4-fuad.tabba@linux.dev>
 
-On Thu, Jun 25, 2026, Piotr Zarycki wrote:
-> Add swap() to tools/testing/selftests/kselftest.h with an #ifndef guard.
+Hi Fuad,
+
+On Wed, Jul 08, 2026 at 07:25:09PM +0100, Fuad Tabba wrote:
+> Extend kvm__register_mem() with a guest_memfd file descriptor and
+> offset. A bank with a guest_memfd is registered with
+> KVM_SET_USER_MEMORY_REGION2 and KVM_MEM_GUEST_MEMFD, binding the
+> memslot to the file. This prepares for backing guest RAM with
+> guest_memfd on arm64.
 > 
-> Guard the local swap() definition in mm/uffd-stress.c with #ifndef to
-> prevent a redefinition warning.
-> 
-> Use swap() in hyperv_tlb_flush.c to replace the open-coded PTE swap and
-> remove the TODO comment.
-> 
-> Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 > ---
-> Changes in v3:
-> - Add #ifndef guard to mm/uffd-stress.c to fix a redefinition warning;
->   uffd-stress.c defines its own swap() without a guard, which conflicts
->   when kselftest.h is included first via uffd-common.h.
+>  hw/cfi_flash.c    |  2 +-
+>  include/kvm/kvm.h | 15 +++++++++++++--
+>  kvm.c             | 36 ++++++++++++++++++++++++++----------
+>  3 files changed, 40 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/cfi_flash.c b/hw/cfi_flash.c
+> index b68d9e0..4413955 100644
+> --- a/hw/cfi_flash.c
+> +++ b/hw/cfi_flash.c
+> @@ -451,7 +451,7 @@ static int map_flash_memory(struct kvm *kvm, struct cfi_flash_device *sfdev)
+>  	int ret;
+>  
+>  	ret = kvm__register_mem(kvm, sfdev->base_addr, sfdev->size,
+> -				sfdev->flash_memory,
+> +				sfdev->flash_memory, -1, 0,
+>  				KVM_MEM_TYPE_RAM | KVM_MEM_TYPE_READONLY);
+>  	if (!ret)
+>  		sfdev->is_mapped = true;
+> diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
+> index eb23e2f..5e7b5eb 100644
+> --- a/include/kvm/kvm.h
+> +++ b/include/kvm/kvm.h
+> @@ -128,11 +128,22 @@ bool kvm__emulate_io(struct kvm_cpu *vcpu, u16 port, void *data, int direction,
+>  bool kvm__emulate_mmio(struct kvm_cpu *vcpu, u64 phys_addr, u8 *data, u32 len, u8 is_write);
+>  int kvm__destroy_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr);
+>  int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr,
+> +		      int guest_memfd, u64 guest_memfd_offset,
+>  		      enum kvm_mem_type type);
+>  static inline int kvm__register_ram(struct kvm *kvm, u64 guest_phys, u64 size,
+>  				    void *userspace_addr)
+>  {
+>  	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> +				 -1, 0, KVM_MEM_TYPE_RAM);
+> +}
+> +
+> +static inline int kvm__register_ram_guest_memfd(struct kvm *kvm, u64 guest_phys,
+> +						u64 size, void *userspace_addr,
+> +						int guest_memfd,
+> +						u64 guest_memfd_offset)
+> +{
+> +	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> +				 guest_memfd, guest_memfd_offset,
+>  				 KVM_MEM_TYPE_RAM);
 
-Why not explicitly include kselftest.h in mm/uffd-stress.c and drop uffd-stress.c's
-version of swap()?
+One small nitpick here, KVM_CREATE_GUEST_MEMFD returns -1 on error. If
+callers forget to check the result of KVM_CREATE_GUEST_MEMFD and pass the
+result to kvm__register_ram_guest_memfd(), the error won't be detected and
+kvmtool will end up creating a non-guest_memfd backed memslot. Definitely
+unexpected. It might be useful to someone, someday, to add a check here for
+guest_memfd >= 0, but it's not terribly important.
+
+Regardless:
+
+Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
+
+Thanks,
+Alex
+
+>  }
+>  
+> @@ -140,13 +151,13 @@ static inline int kvm__register_dev_mem(struct kvm *kvm, u64 guest_phys,
+>  					u64 size, void *userspace_addr)
+>  {
+>  	return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> -				 KVM_MEM_TYPE_DEVICE);
+> +				 -1, 0, KVM_MEM_TYPE_DEVICE);
+>  }
+>  
+>  static inline int kvm__reserve_mem(struct kvm *kvm, u64 guest_phys, u64 size)
+>  {
+>  	return kvm__register_mem(kvm, guest_phys, size, NULL,
+> -				 KVM_MEM_TYPE_RESERVED);
+> +				 -1, 0, KVM_MEM_TYPE_RESERVED);
+>  }
+>  
+>  int __must_check kvm__register_iotrap(struct kvm *kvm, u64 phys_addr, u64 len,
+> diff --git a/kvm.c b/kvm.c
+> index 95ccfcb..947721b 100644
+> --- a/kvm.c
+> +++ b/kvm.c
+> @@ -237,9 +237,9 @@ out:
+>  }
+>  
+>  int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> -		      void *userspace_addr, enum kvm_mem_type type)
+> +		      void *userspace_addr, int guest_memfd,
+> +		      u64 guest_memfd_offset, enum kvm_mem_type type)
+>  {
+> -	struct kvm_userspace_memory_region mem;
+>  	struct kvm_mem_bank *merged = NULL;
+>  	struct kvm_mem_bank *bank;
+>  	struct list_head *prev_entry;
+> @@ -320,15 +320,31 @@ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+>  		flags |= KVM_MEM_READONLY;
+>  
+>  	if (type != KVM_MEM_TYPE_RESERVED) {
+> -		mem = (struct kvm_userspace_memory_region) {
+> -			.slot			= slot,
+> -			.flags			= flags,
+> -			.guest_phys_addr	= guest_phys,
+> -			.memory_size		= size,
+> -			.userspace_addr		= (unsigned long)userspace_addr,
+> -		};
+> +		if (guest_memfd >= 0) {
+> +			struct kvm_userspace_memory_region2 mem2 = {
+> +				.slot			= slot,
+> +				.flags			= flags | KVM_MEM_GUEST_MEMFD,
+> +				.guest_phys_addr	= guest_phys,
+> +				.memory_size		= size,
+> +				.userspace_addr		= (unsigned long)userspace_addr,
+> +				.guest_memfd		= guest_memfd,
+> +				.guest_memfd_offset	= guest_memfd_offset,
+> +			};
+>  
+> -		ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION, &mem);
+> +			ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION2,
+> +				    &mem2);
+> +		} else {
+> +			struct kvm_userspace_memory_region mem = {
+> +				.slot			= slot,
+> +				.flags			= flags,
+> +				.guest_phys_addr	= guest_phys,
+> +				.memory_size		= size,
+> +				.userspace_addr		= (unsigned long)userspace_addr,
+> +			};
+> +
+> +			ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION,
+> +				    &mem);
+> +		}
+>  		if (ret < 0) {
+>  			ret = -errno;
+>  			goto out;
+> -- 
+> 2.39.5
+> 
