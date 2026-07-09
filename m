@@ -1,162 +1,130 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E483ACA57
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 05:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FCC38E12D
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 05:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575937; cv=none; b=OBVW3OGM2jS+6s/0N1b2lflux5eB1FQxvg03wJQyRLM0uATPfzXb0lPjjBbVNavvXkyTC9Lz4zy8ymmNZSzk04Scf42G7N2zT1Iq8SrtD5VlR+xj1w4P9ziuUnskxzhTWX5XdEiDPYLMjZxvE2v7sfVfLqsZvB2bVG9KGw8FO6U=
+	t=1783576403; cv=none; b=Sq7y97zSMvGGnm1z5vZ1bMAkJULSRKivdro/CEohoPnZWRhNUOUTwhfCO7oPidyUPN7H8/sKVbHV3bMt9l8yXQfXynm3RiO/EtK4AwH3X28cZ4N98HEeRAgNszJw46M6PDC4FJ/5hDdCWbCpj3FntJh+VdxbKHBzYo3ZKV2M4nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575937; c=relaxed/simple;
-	bh=mC3oLMXWAbMD/8ggRenIHpAwU32uiCLRqrKbrmFUo/M=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RtUsbfUfHPSHpkWN06Ij+tsToHP5KEMVkPM12/nSfWvApfZF8uK00jIVntry/XPgPYIG+RL+XoHJQQ76Ttp5R/h2ts+wJmrCLznefDG0gaclKpSaGqRHEDedS0FkcUEVDnGjJWZjfgQz97RmoDj1guX25OPpv0t/INUPmrXsDJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+/b1Msi; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783576403; c=relaxed/simple;
+	bh=+fgm7zQTLcQ+l73BG8XA5m3ziDkO7/tf7Zt3/4jHgtc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=TSZWvE9ZBdk4Jyo6Jc+VTSg5b8IdK7svJSNrubQ8KN6du5MWjxtrriG4B9Tq9TNdBkGjk49wfExYsMAMlmIpFA/A7Jaf+n2NFvORibHKzWxkhPOVf5t6uWvCE/ZgFarHLgRjxStTRj27l//kiVOXbATQ01Cc6aySJPV3XIqEes8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6HtlAm0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b+/b1Msi"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cca24023edso7703375ad.1
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 22:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783575934; x=1784180734; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
-        b=b+/b1MsiXghrnUV3jqlmzuR/k6mUQp0JeeNf+pMXneovULfK1MmbMw9Pav8g4QyA3s
-         SUk72b7KiLJjspcYlpJGiAFIUTNv8uSLFrpo38MNo7NFDioiBLVqBqTR3K1nUs55dQO6
-         x/aJ4qN3auxmyhY0KtTQjjLyDw5F9L4tfdcTUvQfNgFCIOJGQO1m8XZ86GHJBefMPa/1
-         rkRqpDf4CvA41z0NQA/+Mcrg1YpsYpehU7+WiA/GKmoltRuHVT9XQUs2wUoy+t0FX0Qi
-         QOs8yf0Bmr/+5ukmOGlwc5V3X8j6/VKVnHn1Ule6cQtX26m9KwiBwV+IiPQo7hOe/1cx
-         BIMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783575934; x=1784180734;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
-        b=sh2yNQ7B0kDiDPCrAzYvvbLSzAUGDQgty/hc1v+rORRU89Qxf3s8hnqCBQFxWphYLJ
-         n5bYABW2IIsXz9iSISXTdTQk/RHc/NaESnkBUvXP9ItxxlASaYjPDJb6ODhHS6gjQScN
-         7xcqSO3K7lBH+fXGd5PXvK1Tzjjs2OHTMg5FAoFYB+JXuJ0LTEnliswC4ZP9TLf4nBAN
-         OuTDnuWCAwNFs9WjO6Y9CZSIxZrZKM/DlMfq96/29OQUHmR2+wJha4Spfoy97Ftu88dr
-         CWYFWkyTbKGRmhjeGmdoDi3D/owzSq7bbsoyOWKi+ymEYOohjkJ4f0Xd21/hmJe4SaIh
-         J3Ew==
-X-Forwarded-Encrypted: i=1; AHgh+RpKnJAnCjauUot2C+3DK8XPHW8tOsvMWYVFAIVmJyTzpwRrBTdHPYrk5EBi1qV8YF/N1Xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQmYRi3KHChbPx8qiy5/Y2ugQsIkQR6Kx5kZtTa7FQAhgkJyrZ
-	eF9tr8beYTppCFZ/9SYat1pY36FU1Go4DL8hYEUS/6Hw1cXgidKX0T4K
-X-Gm-Gg: AfdE7clELtUylxfiYgJ9DJvtJC8zOj4J5N50LzYi6DYiditnpj5nQSeuDQChGuT2Acb
-	Wgwub14wE3dysu1jIV1KuKH1HznF12W4JFWGgn5PfsWR+tMjPXvtSC9ErzRSI30RGMTDuCxFy2i
-	/whIcoBOBaSmbVPsph44M9D1lS3YioZcs/TcLVjdsUwqrFRuTIJP3TJQFLa5RKMvYFgFXmc/q3S
-	MyyDRjQMw8anGkffs69ZjNA9fRsIbIhpxXHbmGecD5cpM5rrNr1RVSF2+nHkKAsPskVDlnzuM0u
-	keyqQ05+K2PRV+WXx+oxHpxQ9ENyywY8GryHsx53AAEI5SdxciUn85RRxkRNgh5tsLth58XKjfX
-	+xmZPoeGCdFmo/QWjVnTt6VnO85Z07mlqUdusWS9kjDm7IswewUJqA/ifLGEU891tc03gXu+hpe
-	Onu7LfNcLXFyfvxHzu
-X-Received: by 2002:a17:903:3903:b0:2cb:14b3:4cfe with SMTP id d9443c01a7336-2ccea582ae2mr60334915ad.45.1783575933576;
-        Wed, 08 Jul 2026 22:45:33 -0700 (PDT)
-Received: from [10.42.12.77] ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc99cc5aasm38156905ad.0.2026.07.08.22.45.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 22:45:32 -0700 (PDT)
-Message-ID: <c12700ab-7f0c-452d-b8de-8e23ca48f1bd@gmail.com>
-Date: Thu, 9 Jul 2026 13:45:23 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6HtlAm0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED4B1F000E9;
+	Thu,  9 Jul 2026 05:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783576402;
+	bh=7NQFjeQZEHqy+eTf+dkhUxBjfjpa5atInoa5mu7MNqA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=f6HtlAm04rnepXumVM+KDkMHUancakv0gU+jxuVgFEvAJRMPK2lW6lLsBP2Yw065X
+	 AJ2tniEra7m6F78DoIJdW1xRvf5fGN/Utvkf2vbnhUnaufr3GwAzWyXelqYfzNvR5S
+	 BFwwpIidv/7MiWz7wUR2Zxti0BhxVtie3OXD9H2GE6oKDNAGCEKuvf7iangcE+K4bE
+	 dgEJvuvcvZ9b/IcNFsjmBCC1AttVyzf39Xa0a9u9HIA6ERYkW7IXKxcKJN7A0lgw7T
+	 X7s157xqBrhsQhqOs/gTagbGeRQs0A65epvc68VZ0Hd/sMSBnvPMB8XkspK/w5+jvE
+	 S+WpVxD5h6rpw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86: Preserve KVM_EXIT_DEBUG on emulated HLT with
+ single-step
+Reply-To: sashiko-reviews@lists.linux.dev
+To: suryasaimadhu <SaiMadhu.KoyyalaHariVenkata@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260709053949.211165-1-SaiMadhu.KoyyalaHariVenkata@amd.com>
+References: <20260709053949.211165-1-SaiMadhu.KoyyalaHariVenkata@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Jul 2026 05:53:21 +0000
+Message-Id: <20260709055321.EED4B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: leixiang <leenollei@gmail.com>
-Subject: Re: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
-To: Sean Christopherson <seanjc@google.com>
-Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@ozlabs.org>,
- Suresh Warrier <warrier@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- leixiang <leixiang@kylinos.cn>
-References: <1782119051448443.14545.seg@mailgw.kylinos.cn>
- <ak59frQUBl9Gs3Qn@google.com>
-Content-Language: en-US
-In-Reply-To: <ak59frQUBl9Gs3Qn@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
+Pre-existing issues:
+- [High] The fix to preserve KVM_EXIT_DEBUG during instruction skipping was=
+ not applied to kvm_emulate_ap_reset_hold().
+- [High] kvm_emulate_halt() restricts early return exclusively to KVM_EXIT_=
+DEBUG, overwriting other critical exit reasons like KVM_EXIT_INTERNAL_ERROR.
+--
 
-On 7/9/26 00:40, Sean Christopherson wrote:
-> On Mon, Jun 22, 2026, leixiang wrote:
->> The x86 and powerpc add_producer() callbacks set irqfd->producer before the
->> fallible setup and never clear it on error.  The bypass manager doesn't
->> register a producer whose add_producer() failed -- producer->eventfd is
->> left NULL, so the later unregister early-returns and del_producer() is
->> never called -- so nothing ever drops the pointer.
->>
->> For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
->> when the vector is disabled, after which a routing update dereferences the
->> dangling pointer via kvm_arch_update_irqfd_routing().
->>
->> Nullify irqfd->producer on the error paths.
->>
->> Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
->> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: leixiang <leixiang@kylinos.cn>
-> 
-> Please post the PPC patch as a separate patch.  x86 and PPC are separate maintainer
-> domains and the backports will likely need to go to different LTS kernels.
-> 
-> I'll grab/extract the x86 change from here (and I'll massage the changelog as
-> appropriate).
+--- Patch [1]: [PATCH] KVM: x86: Preserve KVM_EXIT_DEBUG on emulated HLT wi=
+th single-step ---
+commit a928dfda27cebab2c60b683589e4cf4ae12635fb
+Author: sai madhu <suryasaimadhu369@gmail.com>
 
-Thank you for the review and guidance.  I will submit a separate PPC patch.
+KVM: x86: Preserve KVM_EXIT_DEBUG on emulated HLT with single-step
+   =20
+kvm_emulate_halt() calls kvm_skip_emulated_instruction() before
+kvm_emulate_halt_noskip(). When single-step debugging is active,
+the skip path can trigger a debug exception and set exit_reason to
+KVM_EXIT_DEBUG, but halt emulation then overwrites it with
+KVM_EXIT_HLT on the userspace LAPIC path. Return immediately when
+a debug exit is already pending so userspace debuggers receive the
+correct event.
 
->> ---
->>  arch/powerpc/kvm/book3s_hv.c | 4 +++-
->>  arch/x86/kvm/irq.c           | 4 +++-
->>  2 files changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index 61dbeea317f3..14919b76fb32 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
->>  	irqfd->producer = prod;
->>
->>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
->> -	if (ret)
->> +	if (ret) {
->>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
->>  			prod->irq, irqfd->gsi, ret);
->> +		irqfd->producer = NULL;
->> +	}
-> 
-> Unlike x86, AFAICT there's no need to set irqfd->producer before configuring
-> the passthru/bypass stuff.  So I think that fix could be this?
-> 
-> diff --git arch/powerpc/kvm/book3s_hv.c arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..ff7b25629125 100644
-> --- arch/powerpc/kvm/book3s_hv.c
-> +++ arch/powerpc/kvm/book3s_hv.c
-> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
->         struct kvm_kernel_irqfd *irqfd =
->                 container_of(cons, struct kvm_kernel_irqfd, consumer);
->  
-> -       irqfd->producer = prod;
-> -
->         ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
->         if (ret)
->                 pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
->                         prod->irq, irqfd->gsi, ret);
-> +       else
-> +               irqfd->producer = prod;
->  
->         return ret;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ff8812f3a1293..473a03f58e263 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -11701,10 +11701,16 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_halt=
+_noskip);
+>  int kvm_emulate_halt(struct kvm_vcpu *vcpu)
+>  {
+>  	int ret =3D kvm_skip_emulated_instruction(vcpu);
+> +
+>  	/*
+> -	 * TODO: we might be squashing a GUESTDBG_SINGLESTEP-triggered
+> -	 * KVM_EXIT_DEBUG here.
+> +	 * If kvm_skip_emulated_instruction() triggered a singlestep
+> +	 * debug exception, return to userspace immediately so the
+> +	 * debugger can process the event. Do not let halt emulation
+> +	 * overwrite the KVM_EXIT_DEBUG exit reason.
+>  	 */
+> +	if (vcpu->run->exit_reason =3D=3D KVM_EXIT_DEBUG)
+> +		return ret;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does restricting this early
+return exclusively to KVM_EXIT_DEBUG overwrite other critical exit reasons?
+
+If kvm_skip_emulated_instruction() fails (e.g., executing HLT inside an
+SGX enclave), it queues KVM_EXIT_INTERNAL_ERROR and returns 0.
+
+Because this check only handles KVM_EXIT_DEBUG, emulation failures fall
+through to kvm_emulate_halt_noskip(), which then overwrites the exit reason
+with KVM_EXIT_HLT for the userspace LAPIC path.
+
+> +
+>  	return kvm_emulate_halt_noskip(vcpu) && ret;
 >  }
-Agreed. Your approach is cleaner.
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_halt);
+
+[Severity: High]
+This is a pre-existing issue, but it looks like the same issue is present in
+kvm_emulate_ap_reset_hold().
+
+arch/x86/kvm/x86.c:kvm_emulate_ap_reset_hold() {
+	...
+	int ret =3D kvm_skip_emulated_instruction(vcpu);
+
+	return __kvm_emulate_halt(vcpu, KVM_MP_STATE_AP_RESET_HOLD,
+				  KVM_EXIT_AP_RESET_HOLD) && ret;
+}
+
+Because && evaluates left-to-right, __kvm_emulate_halt() executes
+unconditionally and overwrites the exit reason with KVM_EXIT_AP_RESET_HOLD,
+even if kvm_skip_emulated_instruction() already returned 0 to exit to
+userspace with a debug exception or emulation failure.
+
+Does kvm_emulate_ap_reset_hold() need a similar fix?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709053949.2111=
+65-1-SaiMadhu.KoyyalaHariVenkata@amd.com?part=3D1
