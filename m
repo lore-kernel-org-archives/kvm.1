@@ -1,160 +1,182 @@
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB003C10B7
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 06:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18BE3D1CC6;
+	Thu,  9 Jul 2026 06:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783578395; cv=none; b=SrVtNje+EneP5lmMUdy39bY0po974Z4IdWR6flTcfQxuHrISqSFBpLkn1qWmUseH0vBY0mqCzJ691PZ8gmuG0fespmJ0oMEbh5LJHi+BsSfB834UdHAo4V8XJTqFdcTAYbrTaSt8n9G+341AxMl53U8lsBm/1GCrYv1YgJ/5Fto=
+	t=1783578757; cv=none; b=WXiz+pL7ZMXo0ThxLT8YJhzOAVL4GyzxsCSrNREZzRFnAJovIJQ7+iB2Ru2P2rQJQ2LaUUVIGmH/bfQnoHjOPrhuX2MOziDvfuw+W09otq28TZDlVLoAsNZvtCFI8VrO6gskxzn9Gnl0cMOxt0D4/jy2VUgdLR23BpmwI4A/9SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783578395; c=relaxed/simple;
-	bh=bymmM7itjNf6NASDeVGA5S1tohPd/mGFdJxsI2iR/Ec=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=S590HuAXzNSwAO8VHYezNJYonNDI1ofwvhrM9VN1Dsy/7Kkbo8DiRwgejax/82mP6YJjvIQg93rImC8bh/koa4eeF6A4rjGQ6nj5rdABGnAEDl9Kzm3wmUVKbnlElXSJlbN+1qDuTktkjtL+GpVRwEQxAcK9+BfChQheloWMffI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7ebe970a21fso2686a34.2
-        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 23:26:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783578383; x=1784183183;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aGYb6cIYWCwKklV7e199C3toXW7ue1Oty8gsT7/cke4=;
-        b=YEpenwWSIfcWB7vXigE2STQgxzxRyOOWKa4HWkfV+9+XNC8gfDuuWg/midIoRonW69
-         BtEzI0cGrP/erVv11TLHrngVOUPJXnUHhzEN10/f/WXSt7FEWkTwq7hEkIIrCwoSW5/0
-         +I0fkunv9vvkV481AlY7GQP/NUozxitz8NFrp2Qz+G053B7Ei2XD0B2O/fDXw8DoqwWK
-         z9+RLvdyHp9L2iPR9w12w1yj67+Jd/qn1QUMeAw//kbaqYQHyzJPzb2DyAQFDeawpZNA
-         VXY1J/BuIu5uHJPJ4lbQ7tQK3wkBOnNfQPgTb4nGY1uz4G9B3AcOmreNzJ18fhwI91f4
-         uryA==
-X-Forwarded-Encrypted: i=1; AFNElJ/cT/oUEXRtfd71Uco8VjswWqm2U5M0nsT4LWz1lBP5naEf44Tgqm1xBSjKt+mb4Ulidl4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTSAHAVeoxD76eYAffoFnw5BbHJlJJGrzxrOtpWsx7xLubAtEY
-	w+y9eGMuZMzznnmEA3MTauRD0s/SzdG6M8h32IUc0QODMguUGjaq8Fvz+DIBx0ORNXKBjNwBsGD
-	Epfvbgoxd0sFxg5NHRnNKuI0fGMghrAVIiuy7T6HbYJGKXUgveAsuYHnLzrI=
+	s=arc-20240116; t=1783578757; c=relaxed/simple;
+	bh=gFj0lZxz0+KvL+hXk8k0/B1N9WpW2Xhf7px/BBriW70=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c2PiczAyERHElNp7PNvNFOsZKI5NiPEK+z6OTq9hOnf3yW49Y34Tlb/a3jGXRVdHjWB3QmasrVQ3xEGqX7ogBuQcxU9tiV09VrfJndLZf7RJAujlH0UCjKjCggqT8NCw6FeelvMBJV2PzbE04DngqUo2ldDyaT8aVH0FaHTeago=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ALcypx62; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ALcypx62"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IJKJ1391145;
+	Thu, 9 Jul 2026 06:32:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=/3KzE70mepYLO1ZdH/Nl4xg7M6YW
+	24rDh4sn1CRR60w=; b=ALcypx62GQXlayvuaYKrKCnAgnBch45Dm1GMMU/QlzIo
+	Macj9AzwqEj4WYefh0Hocmafo0BnIndJGCRKYddK0m/4sv6ie3srqeqkFcAY0NL9
+	Y2qfAWpY3HIaiu3xyMXfedBXkcXPj2Q9TsUxjI0gi7lCjPc4kl0/ewR+nFCNbo2X
+	PFqL4JmT7v+1ieFId47Q8BYIQ0ijjx5IqD6/gkGRiav9m/ZKQilui0+E9CAkGUBZ
+	8vlxB/VaUOtNI6SRmmpGX3HFRWVlm5oY74WD7upsY+x+bFE/2sw/dEQ7f49nK6wl
+	quwyHk/rsXGK2qmBY1hz2tpPkoNNDigPTIWpEcOmcg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sp40e3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 06:32:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6696JfF5023208;
+	Thu, 9 Jul 2026 06:32:17 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7cvwc2jf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 06:32:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6696WD6r31654554
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 06:32:13 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D2B020043;
+	Thu,  9 Jul 2026 06:32:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7339720040;
+	Thu,  9 Jul 2026 06:32:09 +0000 (GMT)
+Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jul 2026 06:32:09 +0000 (GMT)
+From: Vishal Chourasia <vishalc@linux.ibm.com>
+To: maddy@linux.ibm.com
+Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
+        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Vishal Chourasia <vishalc@linux.ibm.com>
+Subject: [PATCH v3 0/2] KVM: powerpc: Use generic xfer to guest work function
+Date: Thu,  9 Jul 2026 11:59:38 +0530
+Message-ID: <20260709062940.1679427-2-vishalc@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2d09:b0:6a3:66dd:c9fa with SMTP id
- 006d021491bc7-6a36da10ff8mr3986082eaf.55.1783578382884; Wed, 08 Jul 2026
- 23:26:22 -0700 (PDT)
-Date: Wed, 08 Jul 2026 23:26:22 -0700
-In-Reply-To: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4f3f0e.57639fcc.86d58.001b.GAE@google.com>
-Subject: [syzbot ci] Re: riscv: Generate riscv instruction functions
-From: syzbot ci <syzbot+ci19dac46105b003f7@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, alex@ghiti.fr, anup@brainfault.org, 
-	atish.patra@linux.dev, conor@kernel.org, jtaubepe@redhat.com, 
-	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, namcao@linutronix.de, palmer@dabbelt.com, 
-	pbonzini@redhat.com, pjw@kernel.org, radim.krcmar@oss.qualcomm.com, 
-	shuah@kernel.org, thecharlesjenkins@gmail.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KsJ9H2WN c=1 sm=1 tr=0 ts=6a4f4073 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=jw6u57ldlTClQ2ORz0QA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX+rSookY8iGix
+ 1k2gPkBqVo0rrfUqX6uN0qNoNThUYbLuobkDMbYL8XSZqM5HrnjzkA9SqsNxn29jYajFR57v2G6
+ Kf6d7mZqyrJzFBgiEzBSMYsAc98AspM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA1NyBTYWx0ZWRfX6ZwxHYmiEvNa
+ RAwNkYK694ikSLA6yupyXvCQfWoMa1BSOpa5YyUHEjck1bQfgLpKLu3j0WkIxfK09uK5t7uqjT9
+ c3qYHwnfXDJ9H+2w9SkvBIX4nPM6GYhGB8le1g5flY6jqBJHWJzplr94DgjiWcl073lUtwRS1lp
+ iKRq9GBM3dGXmhc10JQYI4Zpbxd5GRzWJ+6D+3lfA3y7wuaFh7ajmfoqPHXtSS2YIkghTp+/gR7
+ xTX7Xug+FEPfPKndEjQNPtfCADNKxft7UkZAiQCHaCWrocmx9sE1+EnZ7J6WmximePTakMhzf+s
+ zsnFSoabEqIZ2UjbRvZuYDNsxWMVDRv0B8RW6QfgJgifnkajzv0zfUNjsueMgz6bQk/9ARNZ2GF
+ D3EJCkCGiCkZvp4ubsTHdvIXZgf8ZCc98c4iyVRSw4Cq7iwB6gByKe8ZQcXgCuE9AAarhtrZ4LH
+ lH3o962gCwEy+PjkLdw==
+X-Proofpoint-ORIG-GUID: Ci8qxUh5SbIloHvk_KXReJtwF9V5u1V2
+X-Proofpoint-GUID: ZglRqUAIeQ92BdjX3vm9U0nYSUQZyp-r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 spamscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090057
 
-syzbot ci has tested the following series
+This series fixes a KVM scheduling bug on Book3S HV where a guest VM
+under a cpu.max bandwidth limit can run arbitrarily past its quota and
+then appear frozen for minutes afterwards. 
 
-[v3] riscv: Generate riscv instruction functions
-https://lore.kernel.org/all/20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com
-* [PATCH v3 01/17] riscv: Introduce instruction table generation
-* [PATCH v3 02/17] riscv: alternatives: Use generated instruction headers for patching code
-* [PATCH v3 03/17] riscv: kgdb: Use generated instruction headers
-* [PATCH v3 04/17] riscv: Add kprobes instruction simulation KUnit
-* [PATCH v3 05/17] riscv: kprobes: Use generated instruction headers
-* [PATCH v3 06/17] riscv: cfi: Use generated instruction headers
-* [PATCH v3 07/17] riscv: Maintain epc on misaligned emulation error
-* [PATCH v3 08/17] riscv: Use generated instruction headers for misaligned loads/stores
-* [PATCH v3 09/17] riscv: kvm: Use generated instruction headers for csr code
-* [PATCH v3 10/17] KVM: device: Add test device
-* [PATCH v3 11/17] KVM: riscv: selftests: Add mmio test
-* [PATCH v3 12/17] riscv: kvm: Use generated instruction headers for mmio emulation
-* [PATCH v3 13/17] riscv: kvm: Add emulated test csr
-* [PATCH v3 14/17] KVM: riscv: selftests: Add csr emulation test
-* [PATCH v3 15/17] riscv: kvm: Use generated instruction headers for csr emulation
-* [PATCH v3 16/17] riscv: kexec: Use generated instruction headers for kexec relocations
-* [PATCH v3 17/17] riscv: Remove unused instruction headers
+== Problem ==
 
-and found the following issue:
-WARNING in kvm_io_bus_unregister_dev
+Since commit 2cd571245b43 ("sched/fair: Add related data structure for
+task based throttle"), merged in v6.18, CFS bandwidth throttling no
+longer dequeues a task directly. Instead it queues a task_work item via
+task_work_add(..., TWA_RESUME), sets TIF_NOTIFY_RESUME, and relies on
+that work running on the return path to actually dequeue the task.
 
-Full report is available here:
-https://ci.syzbot.org/series/f3c61796-0ca0-4bfd-add1-23a20352fb7b
+The powerpc KVM run loops only test TIF_SIGPENDING and TIF_NEED_RESCHED
+before re-entering the guest; TIF_NOTIFY_RESUME is never checked. For a
+CPU-bound guest that generates few KVM exits back to userspace, the vCPU
+thread never returns to user mode, so the deferred throttle task_work
+never runs. The guest keeps running unchecked while its
+runtime_remaining goes increasingly negative, and once it finally does
+exit to userspace it is legitimately throttled for minutes while the
+accrued debt is repaid at the bandwidth-timer replenishment rate.
 
-***
+The generic xfer-to-guest-mode infrastructure (commit 935ace2fb5cc,
+"entry: Provide infrastructure for work before transitioning to guest
+mode") exists precisely to handle this kind of work before each guest
+entry. A full trace-backed root-cause analysis was posted with v1 [2].
 
-WARNING in kvm_io_bus_unregister_dev
+== Fix ==
 
-tree:      bpf-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
-base:      8cd9520d35a6c38db6567e97dd93b1f11f185dc6
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/65190eb6-0d65-4629-b225-e3b7089a0b10/config
-syz repro: https://ci.syzbot.org/findings/fa2c789e-ba9f-4d55-b3ba-0d5f22f78a4d/syz_repro
+Opt powerpc KVM into VIRT_XFER_TO_GUEST_WORK and use the generic
+xfer_to_guest_mode helpers to check for and handle pending guest-mode
+work (reschedule, signals, and TIF_NOTIFY_RESUME task_work such as the
+deferred CFS throttle) on every guest re-entry:
 
-------------[ cut here ]------------
-debug_locks && !(lock_is_held(&(&kvm->slots_lock)->dep_map) != 0)
-WARNING: arch/x86/kvm/../../../virt/kvm/kvm_main.c:6027 at kvm_io_bus_unregister_dev+0x4b0/0x580 virt/kvm/kvm_main.c:6027, CPU#1: syz.2.19/5828
-Modules linked in:
-CPU: 1 UID: 0 PID: 5828 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:kvm_io_bus_unregister_dev+0x4b0/0x580 virt/kvm/kvm_main.c:6027
-Code: 3f fc ff ff e8 a1 ce 86 00 48 c7 c7 40 f7 c1 8b e8 a5 29 e9 ff 48 89 ef e8 ed 00 00 00 b8 f4 ff ff ff eb a3 e8 81 ce 86 00 90 <0f> 0b 90 e9 cd fb ff ff 48 c7 c1 e0 bb 2f 90 80 e1 07 80 c1 03 38
-RSP: 0018:ffffc900032afc30 EFLAGS: 00010293
-RAX: ffffffff813e81af RBX: ffff88816b133688 RCX: ffff888160aba540
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffc900032afb7f R09: 0000000000000000
-R10: ffffc900032afb70 R11: ffffffff81404850 R12: dffffc0000000000
-R13: 0000000000000000 R14: dffffc0000000000 R15: ffff8881a5354000
-FS:  000055555b90c500(0000) GS:ffff8882a92b9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b33663fff CR3: 00000001bceb8000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- mmio_test_destroy+0x66/0x90 virt/kvm/mmio_test.c:83
- kvm_destroy_devices virt/kvm/kvm_main.c:1251 [inline]
- kvm_destroy_vm virt/kvm/kvm_main.c:1296 [inline]
- kvm_put_kvm+0x902/0xae0 virt/kvm/kvm_main.c:1332
- kvm_vm_release+0x43/0x50 virt/kvm/kvm_main.c:1355
- __fput+0x418/0xa50 fs/file_table.c:510
- task_work_run+0x1d9/0x270 kernel/task_work.c:233
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- __exit_to_user_mode_loop kernel/entry/common.c:67 [inline]
- exit_to_user_mode_loop+0x193/0x6b0 kernel/entry/common.c:98
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:318 [inline]
- do_syscall_64+0x353/0x580 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2f43d9ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffde9296e78 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 00007ffde9296f60 RCX: 00007f2f43d9ce59
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 0000000000011938 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000001b32a20000 R11: 0000000000000246 R12: 00007ffde9296fa0
-R13: 00007f2f44015fac R14: 0000000000011971 R15: 00007f2f44015fa0
- </TASK>
+- Book3S HV: both run loops — kvmhv_run_single_vcpu() for POWER9+ and
+  kvmppc_run_vcpu() for pre-POWER9.
+- Book3S PR and BookE: the common kvmppc_prepare_to_enter(), which
+  likewise only checked need_resched()/signal_pending().
+
+== Changes from v2 ==
+- Add xfer_to_guest_mode_prepare() check for pending rcuog wakeup before
+  entering guest
+- While at it patch all exit points for kvmhv_run_single_vcpu() via
+  done label matching the corresponding trace_kvmppc_run_vcpu_enter()
+  with trace_kvmppc_run_vcpu_exit() tracepoint.
+- Include posix cpu timer enablement patch by Shrikanth as part of this
+  series
+
+== Changes from v1 ==
+
+- Extend the fix beyond Book3S HV to the shared powerpc KVM entry path:
+  also convert the common kvmppc_prepare_to_enter() used by Book3S PR
+  and BookE. (Shrikanth Shegde)
+- Move "select VIRT_XFER_TO_GUEST_WORK" from KVM_BOOK3S_64_HV up to the
+  common "config KVM" so every powerpc KVM variant gets the
+  infrastructure.
+- Drop the redundant signal_pending() recheck and its sigpend label in
+  kvmhv_run_single_vcpu(); xfer_to_guest_mode_work_pending() is a
+  superset of it.
+- Preserve the E500 CONFIG_KVM_EXIT_TIMING histogram on the signal path
+  via an explicit kvmppc_set_exit_type(SIGNAL_EXITS).
+
+[1] https://lore.kernel.org/all/20250421102837.78515-2-sshegde@linux.ibm.com/
+[2] https://lore.kernel.org/all/20260626105449.2897924-2-vishalc@linux.ibm.com/
 
 
-***
+Shrikanth Hegde (1):
+  powerpc: enable to run posix cpu timers in task context
 
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+Vishal Chourasia (1):
+  KVM: powerpc: Use generic xfer to guest work function
 
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ arch/powerpc/Kconfig         |  1 +
+ arch/powerpc/kvm/Kconfig     |  1 +
+ arch/powerpc/kvm/book3s_hv.c | 39 +++++++++++++++++++++++-------------
+ arch/powerpc/kvm/powerpc.c   | 37 +++++++++++++++++++++++++---------
+ 4 files changed, 55 insertions(+), 23 deletions(-)
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+-- 
+2.54.0
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
