@@ -1,112 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF2B3A544C
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 21:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888A17BB21
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 21:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783631536; cv=none; b=oCx8u29+yepUpLGnh/uSXsS0PJfdgISGJaEVCVlT9ULWZGI1a8G5j4QkVvENNxC/m5QoPJw84UZvttwCxx8TBcQ0kp9cEp1NI02tsL8sT8cHIJY3cMC/5NGG6n3MPBhtjAoAc8t0yKPiyFqgY6I+XwiJXw70HiuQJ4CwpIHuje4=
+	t=1783631725; cv=none; b=eTyVhqMxQiPYmWp+sdzjulDZKFi/zSD+DrZOBjMwXXFzEDvO/HMMeDOJQX7JGbJ3doPsnWiQd1/qEc6tvcZHR22YpnLtRNN92Y9mHUDyJnW4Aasyw7W5IzvAbP74xGCJumcKa/d3x29oCmgw+bg7pa/ZhHQ5XopgZ4GSpFUJCHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783631536; c=relaxed/simple;
-	bh=sgjyELo8SMgNoFZ13Ur3QFk9n6kq2iX8narmvLn9mA0=;
+	s=arc-20240116; t=1783631725; c=relaxed/simple;
+	bh=STD9flTj2gMau+c84J+3j5+oOCwBwwQgn7qdCLrZQYI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XKZUxUWW2p1SbTMFm0IL5Org8As5ZiRmR1q6ohm/wMgKQoqBJ6Ewh5+w66VIMKMlMUbbCr24CWGn6UyIyA5Vw0exta9qB5UE/HsJD9Ei6posgZv4yf0HEPbEgUnPoS5GMdHgFCET8w0pAOy29J+SbdcbUAToxn4jhkOZgS838XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M36GMU6t; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=IPX+WNnBhu6nGXUw0RGgKxx2lpgxyG6J5J1YRFP7XPwB926sNWoQOn44jmOoPGa1cWV6jk1QqVz+FAql4yn0h2hkXMqdcXxs93Xh5dVf6rpIeimg/PZ96SZKOl5HuPwW8uR5/owiGBjbn3RvhYdTaoD5G12SRwoG0mbJ8OhVo90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7wlfqu7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M36GMU6t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E8A1F000E9;
-	Thu,  9 Jul 2026 21:12:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7wlfqu7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE3F1F000E9;
+	Thu,  9 Jul 2026 21:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783631535;
-	bh=B4pT20Tx2rNu1pORT7QY+aAStB0vFxzS5sldhYPV2h4=;
+	s=k20260515; t=1783631723;
+	bh=V7p5Kp+v6xT+2MLsJwRb80+bjSNcVAqT/1B15GGPPm0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M36GMU6t9c5ZS4n1rggB2O1YozZKbpqw/D9J7CvzEkyAvGD7xZDOGQ3e9+6LKmXpA
-	 3pYp931Pf+e7+b51u+UXtexqckENSZDsE91y3dYwRGvRGhqSUIY4mnaDkxz9wZV68X
-	 QgaCf0nZhizpnLaUas1CbzuswM4ARUiJj/l8eSOHDAMaSx8lddqt/FQKxOsXkb9xpH
-	 d6dBmJzkwZpyrP1HY6zZI2UUttp8dkv2DYENg0k9qXE/s2f8gNpIkM+kfOED5U3m0O
-	 MiH8722BRyCIfxKk4u+4cNcPL5G2vkbhSpE07r+A9TFEhGL4r94n1lXOq/1006PZD0
-	 izqPekDXexkCQ==
+	b=R7wlfqu70yfT3HppcKQ6/Q9JUBcy1DOnTRiqetIWLgbACb61FquFFOzAl04CBsUfL
+	 I7IALSu89Js7hklGmdv2j/kNUrij0zLIvcFxqa+cJrSk7he0uauUVB/koCCKT7ez+S
+	 CwJpp5lHuqgciysyYKFeZzTAvTaTs16R0qEYqf7+DySOAe8m4XPbn6FUR6YfDjL9fn
+	 po4xRKn/WjdlPGrJhCxtf/vLB+ImfMBfDxDD//21B9Fp4GFWtIIuXL8nsLLiynWdel
+	 hJv96Q45LMzGJkQzbuBfg5Q9tIKHjh40MAD8VPWVhpESxOXuj9+Kn0RV0A9LNyDARD
+	 WakTpqJL3F1Ng==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 16/18] KVM: guest_memfd: Explicitly pass number of
- pages to kvm_arch_gmem_prepare()
+Subject: Re: [PATCH v4 17/18] KVM: guest_memfd: Align the gfn as well as the
+ pfn when "preparing" a folio
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709204948.1988414-17-seanjc@google.com>
+In-Reply-To: <20260709204948.1988414-18-seanjc@google.com>
 References: <20260709204948.1988414-1-seanjc@google.com>
- <20260709204948.1988414-17-seanjc@google.com>
+ <20260709204948.1988414-18-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 21:12:13 +0000
-Message-Id: <20260709211214.95E8A1F000E9@smtp.kernel.org>
+Date: Thu, 09 Jul 2026 21:15:23 +0000
+Message-Id: <20260709211523.8BE3F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [Medium] Aligning GFN down without validating memslot boundaries introduc=
+es host out-of-bounds physical memory access when preparing huge folios.
+
 Pre-existing issues:
-- [Critical] Data race between guest memory population and fault-driven zer=
-oing leads to host kernel panic via RMP violation.
+- [Critical] Concurrent execution of KVM_GMEM_POPULATE and vCPU page faults=
+ allows unprivileged userspace to trigger host hardware crashes and guest d=
+ata corruption.
 --
 
---- Patch [16]: [PATCH v4 16/18] KVM: guest_memfd: Explicitly pass number o=
-f pages to kvm_arch_gmem_prepare() ---
-commit b12c982da03eae2bbf9f63075885746a3653b16b
+--- Patch [17]: [PATCH v4 17/18] KVM: guest_memfd: Align the gfn as well as=
+ the pfn when "preparing" a folio ---
+commit 5debe95f8712f79807df583e8d5e927a97b4c012
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: guest_memfd: Explicitly pass number of pages to kvm_arch_gmem_prepare()
+KVM: guest_memfd: Align the gfn as well as the pfn when "preparing" a folio
 
-This commit modifies the guest_memfd prepare() hook to explicitly pass the
-number of pages, allowing prepare() and invalidate() hooks to be combined
-into a single convert() hook. It also adds a WARN_ON_ONCE to the SNP code if
-more than a single 4KiB page is prepared.
+When preparing a guest_memfd folio, this patch aligns the gfn as well as
+the pfn to preserve the effective gfn+pfn pair. This prevents a mismatch
+set and unintentional guest crashes due to assigning the pfn at the wrong
+gfn for huge folios.
 
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index d5d3688eb1bdf..cd7a795834cb6 100644
+> index cd7a795834cb6..4082cde3f3fca 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
+> @@ -87,8 +87,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, stru=
+ct kvm_memory_slot *slot,
+>  	 * checked when creating memslots.
+>  	 */
+>  	WARN_ON_ONCE(!IS_ALIGNED(slot->gmem.pgoff, nr_pages));
+> +	gfn =3D ALIGN_DOWN(gfn, nr_pages);
+>  	index =3D kvm_gmem_get_index(slot, gfn);
+> -	index =3D ALIGN_DOWN(index, nr_pages);
 
-[ ... ]
+[Severity: Medium]
+If a userspace caller creates a guest_memfd memslot with a base_gfn that is
+not aligned to the huge folio size, will computing the index from the align=
+ed
+gfn result in a misaligned index?
+
+When passed to kvm_arch_gmem_prepare(), couldn't this cause the iteration
+to go past the end of the huge folio, resulting in an out-of-bounds host
+physical memory access?
 
 [Severity: Critical]
-This is a pre-existing issue, but could a data race between guest memory
-population and fault-driven zeroing lead to a host kernel panic?
+This is a pre-existing issue, but I noticed a potential race condition
+between KVM_GMEM_POPULATE and vCPU page faults in this same file.
 
-Looking at __kvm_gmem_populate() in virt/kvm/guest_memfd.c:
+Looking at __kvm_gmem_populate(), the folio lock is dropped before calling
+post_populate():
 
+virt/kvm/guest_memfd.c:__kvm_gmem_populate() {
+    ...
 	folio_unlock(folio);
-
-	if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-					     KVM_MEMORY_ATTRIBUTE_PRIVATE,
-					     KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-		ret =3D -EINVAL;
-		goto out_put_folio;
-	}
-
+    ...
 	ret =3D post_populate(kvm, gfn, pfn, src_page, opaque);
-	if (!ret)
-		folio_mark_uptodate(folio);
+    ...
+}
 
-The folio is unlocked before the memory is populated or marked up-to-date.
-If an unprivileged host userspace process concurrently triggers a page fault
-on the same private GFN, could kvm_gmem_get_pfn() fetch this unlocked folio?
+Could a concurrent vCPU page fault on the same GFN call kvm_gmem_get_pfn(),
+acquire the folio lock, see that it is not uptodate, and clear the page
+while the populate thread is executing post-populate updates like
+KVM_SEV_SNP_LAUNCH_UPDATE?
 
-kvm_gmem_get_pfn() would observe the !uptodate folio and zero it via the
-host direct map:
-
+virt/kvm/guest_memfd.c:kvm_gmem_get_pfn() {
+    ...
 	if (!folio_test_uptodate(folio)) {
 		clear_highpage(folio_page(folio, 0));
-		folio_mark_uptodate(folio);
-	}
+    ...
+}
 
-If this host zeroing overlaps with or occurs after rmp_make_private() in the
-population callback, wouldn't this host write cause an RMP violation and
-crash the host kernel?
+Would this allow unprivileged userspace to trigger host hardware crashes
+(Machine Check Exceptions) and guest data corruption simply by running a
+vCPU thread concurrently with the population ioctl?
+
+> =20
+>  	return kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn),
+>  				     folio_file_pfn(folio, index), nr_pages,
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709204948.1988=
-414-1-seanjc@google.com?part=3D16
+414-1-seanjc@google.com?part=3D17
