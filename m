@@ -1,140 +1,189 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D483E3EDE76
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 09:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A066B4014AA;
+	Thu,  9 Jul 2026 09:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588684; cv=none; b=mQAW1pK5yiKhmJu6lZImio8ZmlcIwvWlDhJe18jfpAYicYE3Je3vvfKG4iRtTVT6GEAKHwtZ4RvuOnJDVtH10wJvEmYauACdyFJk7YgJI+vIyzjQVj1rsUvqXMSgs0cvXa24yRIPZkuetDC4VfmizLi6O4UVsSQabyMC36Bg3/E=
+	t=1783588974; cv=none; b=NsHfFMs/fgUeRc0MGiyvjZ89EKG9EhC/jKhizAhPFeSXijuCeWfJ7h09YmnBh/fdgZ+vdVIxJX6UHhe1CHZJvic0J40CWn3GCPYXxH93WbDKTi6eTGcfPirsDedVsp/fSO6MsbfqQhSPYTLT2cUflqjrKMDsNRleR/fdMAxdLRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588684; c=relaxed/simple;
-	bh=FjpUXsvhXEAkUlVQP4tEH1Ee2iSdcpYkelan5p5vzPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BPVdX5ShDQrk7C7h3iIRf5fdjPV3dw4y3VKDQxw+NNO4a569Er8s/Z0iXROOWHjUPm6HZXGHGiJ90lcmklzut2BewJO7CGr5wISn4wRyqirhNcZZvh3ZcariDijnRAR9dtW6Zfh/jFINs0YMWO+k2ZNj+QuQOtyTqMF8DJHSb3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UcjPQO+q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=m3q6G+k2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1783588974; c=relaxed/simple;
+	bh=DovFRHnCJmlUIV1T+I8K3kVXDlc37zRWpHkHjkGBTgc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cn/2JgOOPY0p5OHUgYrrqj+tol3N8RRPaUaG8i6vZlP7iya5Ouny1JtyZ10T/jNjjN5jh0ZFYmx7phbWPLjgIVt1g3k4AYFUMYz5GighpdBuVAcgzFCHKFh1Vi0A0GA9k1NZEh5pDrpPCiOPdMXqeObCgPWXHIHdQPgO9vaeQXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tSqABjlT; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UcjPQO+q";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="m3q6G+k2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783588681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
-	b=UcjPQO+qoU6ZVHP6rwYFyANn87eqyTY43At/U71P+XkzDvPGkXD5bArq3NcdQVVjc8SIJO
-	euH/LHeMExy+qt2y85G9kucD/7O96e6KJ2Emt4D467fRBgF3/7Btco6jtzKd8ua6zXiAn/
-	FLZWCgYUDah6iFktQZYMSpPDBomxKX4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-vo1Yy-wgOgqaHUWkm013VQ-1; Thu, 09 Jul 2026 05:18:00 -0400
-X-MC-Unique: vo1Yy-wgOgqaHUWkm013VQ-1
-X-Mimecast-MFC-AGG-ID: vo1Yy-wgOgqaHUWkm013VQ_1783588679
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47485fde05aso1189597f8f.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 02:18:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783588679; x=1784193479; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
-        b=m3q6G+k2BxxHrRuy8NIc3HM7r5BkAQ5kBQ1fZ9ywGCU76Ww2QoD/Ei/V6NBLnwI8dP
-         49p94kw0oGoRgi10BqgLIvP3Fl7Fwk+kdgpsLR7Me3bzNDOqPzGkN/Owy8+dCZwIys5S
-         E/HTui+ygs+0ZK7c0wRh8RmbhlFIObPhFcEFbMDpxyv+QGLycE8U1jdpm5wWcmcXfhO2
-         KxQuY430In6dk8AbRp8TUiJ52D/d64S9jTnwkznspCX+hXqnuRKzGQU3vGuTB7NjcFtS
-         HEFq3Y+yLePpLqpZWWE84RKIjYCyY2s2Yy8bXB0IgAEEUt01zrrBzLbXZ6ksZeGPKNIv
-         UnVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783588679; x=1784193479;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lcgAW3wWwD+CDc95tyrJwQ6t0jD3GIhvTCB6YDG1NyM=;
-        b=IcflSfHT3Kne1iIh6dSaUwMzspLT4iFXa+bjByiiP7wOI63rHOVsv/WshkqAkw3Yil
-         DAUsiA06zhMagZkW3PKUU3ILURHomlq6sE6V1PYAu2aE0lF/+Rlum3dolgpMNyAbcb/Z
-         PIfTeDNx2bDxiIGtlV1S31IzeScua5vNW3G/LYVNJc6HWmk26A7gS1jTl35s1R/wqE7n
-         BUJaM/JObi66aK4NNwmtH1lsQNf540JevL3STuSvNHDwal0QFu1d9OSQ58uX7OflFPu3
-         SephXlJNJKezO6Hw2eE6KJfZFveIW0J8HfGrgH1nNYC+BjY19m118k+EKKInmnZtVs9n
-         9R4g==
-X-Forwarded-Encrypted: i=1; AHgh+RrY5S/bYf1k9X/D8YVbDOPE1lHi6DfnGAIAvng1OaJSdxGHkJW2PuRzMg6MkL1JrYEdQCE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyxiam6LpM4rGZhniXBa1bzMl4CFZCHAvXeeLhnoQVGN96eBzjL
-	Z+0Mok+HWlXg0HOaMWvoR0YdMaElEYRK1+4CukPBBd/oqii2N7xdoc/yrJbI3x6QVrbKe40MjGQ
-	WAEgVCny2eo6NqxImetZXbVOrdk7SgAwblNCg/jBcvyITAYSt/Tc6Kw==
-X-Gm-Gg: AfdE7clqHT92+7SanLOFZ+fl2Zz+y3SXWZs4HzL61BHlSrK/OdhbSFu63F2Cid7Vqn2
-	q+ShPAuqBklRGwHgnDz61YyJyS6/lW6rnR6SjPXJaM/x5bJJq3gMvN7wlwcPNzz6SlNn0xM0sPW
-	DU38JI2G+Atit90tqr3trM8G3lGZ5lB8M+NSiKz3l5l6XYtTS8Ye93WhRPZr2PJqOKvwUrezoIj
-	BA3VUo8/4ePFM+9NF6f5etxl0pmItyZ72ZKMfs3XtmxkFdCCZuFvsYuSg7q1L+C7Rki6B+gCJ3W
-	irT4iD43MiPhgJrx3O/qgweFhee7gm+riX49cWgkMrOehAQ/xnOdbSD4aQjMWUBm22WEAcwMS1H
-	7hg+4wBQUtvWm2SL60vjICTSwI/FvDOkeN75nVf7HLiUhm8qRiML/L3avpkt7
-X-Received: by 2002:a05:6000:1a85:b0:460:1223:a044 with SMTP id ffacd0b85a97d-47df06c10c9mr6983270f8f.0.1783588679361;
-        Thu, 09 Jul 2026 02:17:59 -0700 (PDT)
-X-Received: by 2002:a05:6000:1a85:b0:460:1223:a044 with SMTP id ffacd0b85a97d-47df06c10c9mr6983241f8f.0.1783588678905;
-        Thu, 09 Jul 2026 02:17:58 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-34-22-35.business.telecomitalia.it. [79.34.22.35])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9de1d910sm48486557f8f.6.2026.07.09.02.17.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 02:17:58 -0700 (PDT)
-Date: Thu, 9 Jul 2026 11:17:52 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>, 
-	Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH net v2 2/2] vsock/test: add test for small packets under
- pressure
-Message-ID: <ak9h1kWcLmpP74PI@sgarzare-redhat>
-References: <20260708102904.50732-1-sgarzare@redhat.com>
- <20260708102904.50732-3-sgarzare@redhat.com>
- <20260708065853-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tSqABjlT"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IJUM479889;
+	Thu, 9 Jul 2026 09:22:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=NeGSAqmHSFJGag8Wz2XVtFVnQa6V
+	cSKrL4Vi7h0zPaY=; b=tSqABjlTAXZBBFwukegP6Lnv/DdI72k8FW+HcN4QwJSZ
+	MMUYTP4HNU5tKn006a2YtwxrZshgw84PjXMQcCM9fcH5twqQeA94DTVz95XHasqd
+	v1+JGrjTxOLW+x4l2k/VfadINIwKDMLnALVX1QsQNI45Ob8dLqWCbbEH98PBT52R
+	hEMcOE4+kMNbZbDcvKFCT18mdnGzBovUWFJCfhkU6PLUs5iAd4iAugXAd3f9RXGw
+	1SX4urAx7QzC656phE3lKX4IKBkJKyFk+zrqGhgPY2t8dUaeWN77ylYI3yBtSpAh
+	vUWsjMii54A6lxJYlyEqyCzAnoZ2VfgU/kNVvL0uSg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6stt18qt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:22:31 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6699JcB9005126;
+	Thu, 9 Jul 2026 09:22:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgqcp63-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:22:30 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6699MQub56033772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 09:22:26 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C198E2004D;
+	Thu,  9 Jul 2026 09:22:26 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 002C820040;
+	Thu,  9 Jul 2026 09:22:22 +0000 (GMT)
+Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jul 2026 09:22:22 +0000 (GMT)
+From: Vishal Chourasia <vishalc@linux.ibm.com>
+To: maddy@linux.ibm.com
+Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
+        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Vishal Chourasia <vishalc@linux.ibm.com>
+Subject: [PATCH v4 0/2] KVM: powerpc: Use generic xfer to guest work function
+Date: Thu,  9 Jul 2026 14:51:38 +0530
+Message-ID: <20260709092140.1753715-2-vishalc@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260708065853-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: c5QV_cyQGKsdlNi-IjG1_4omYRWjXuKq
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX4UCUFG+KiNsw
+ nz8fglEGzjRu/1OiMufAkircPFLm3HkQXQirMgknzEhbB+cwwfrHLFyqKr2QNxkzIvO8mm59t1Q
+ cl+itvYMewr9SMwpVrhZk/qgAAQeYHw=
+X-Authority-Analysis: v=2.4 cv=DKW/JSNb c=1 sm=1 tr=0 ts=6a4f6857 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=mPUdJBykSDeI_Y7d1aUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: RNeLL5rzdFstpBDJ_3NNbXXOc5fgknlX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfXwI4gTRrwQrcf
+ IQqhav6Fhm8EwVyhexyM2izqjw07d07j4xK4pIdiRan/HgT+/r0cNUE43QS8iFlR3Z3T7IUbGrv
+ vgNrQUVQo2WNABC7gXH2z/sCxi/4ANKJfSaLQqA2HpYTz5m19soSs7PvZ+kcZ01u/gNK+5jnkq9
+ sDVv6YoNYxKncsll+nqHDt3sYf1dD1PraSWNu0umCOR/sfDzm22OGxWzliiXMtAXXlfkdn0clKT
+ UrZjngevaZ2909gA/J5uZTtrxwqxmhN/rfHBk6JkjxNZk1eIBou7+4SUvGABd5bznupieJZBGbr
+ rfm/CQVMJ+jzde8y/KIl+qCYnhmnHyB6d1hprwn16dnANhvBspP3QqydQvLblyugHy6iPJ2uO+B
+ a8jPhUXa282dgnmhSi8qXCIATxuLpMHgUj5iyZVRYkR4NIBaxtl+kfiY2j9wH7jwlCu8833xuCF
+ UUhsq+Vp27M6wdddISQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607090089
 
-On Wed, Jul 08, 2026 at 06:59:41AM -0400, Michael S. Tsirkin wrote:
->On Wed, Jul 08, 2026 at 12:29:04PM +0200, Stefano Garzarella wrote:
->> From: Stefano Garzarella <sgarzare@redhat.com>
->>
->> Add a test that sends 2 MB of data using randomly sized small packets
->> (129-512 bytes) over a SOCK_STREAM connection. Packets above
->> GOOD_COPY_LEN (128) bypass the in-place coalescing in recv_enqueue(),
->> forcing each one into its own skb.
->>
->> Without receive queue collapsing, the per-skb overhead eventually
->> exceeds buf_alloc and the connection is reset. The test verifies
->> that all data arrives and that content integrity is preserved.
->>
->> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->
->maybe cut down SO_VM_SOCKETS_BUFFER_SIZE? will make it easier to
->trigger?
+This series fixes a KVM scheduling bug on Book3S HV where a guest VM
+under a cpu.max bandwidth limit can run arbitrarily past its quota and
+then appear frozen for minutes afterwards. 
 
-Currently, with the default value, the trigger is practically immediate 
-for packets between 129 and 512 bytes, but yes, a smaller buffer size 
-certainly makes this effect even more pronounced.
+== Problem ==
 
->
->anyway
->
->Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Since commit 2cd571245b43 ("sched/fair: Add related data structure for
+task based throttle"), merged in v6.18, CFS bandwidth throttling no
+longer dequeues a task directly. Instead it queues a task_work item via
+task_work_add(..., TWA_RESUME), sets TIF_NOTIFY_RESUME, and relies on
+that work running on the return path to actually dequeue the task.
 
-Thanks!
+The powerpc KVM run loops only test TIF_SIGPENDING and TIF_NEED_RESCHED
+before re-entering the guest; TIF_NOTIFY_RESUME is never checked. For a
+CPU-bound guest that generates few KVM exits back to userspace, the vCPU
+thread never returns to user mode, so the deferred throttle task_work
+never runs. The guest keeps running unchecked while its
+runtime_remaining goes increasingly negative, and once it finally does
+exit to userspace it is legitimately throttled for minutes while the
+accrued debt is repaid at the bandwidth-timer replenishment rate.
 
-If I need to post a v3, I'll add it; otherwise, I guess we can leave it 
-as is or send a follow-up for net-next.
+The generic xfer-to-guest-mode infrastructure (commit 935ace2fb5cc,
+"entry: Provide infrastructure for work before transitioning to guest
+mode") exists precisely to handle this kind of work before each guest
+entry. A full trace-backed root-cause analysis was posted with v1 [2].
 
-Thanks,
-Stefano
+== Fix ==
+
+Opt powerpc KVM into VIRT_XFER_TO_GUEST_WORK and use the generic
+xfer_to_guest_mode helpers to check for and handle pending guest-mode
+work (reschedule, signals, and TIF_NOTIFY_RESUME task_work such as the
+deferred CFS throttle) on every guest re-entry:
+
+- Book3S HV: both run loops — kvmhv_run_single_vcpu() for POWER9+ and
+  kvmppc_run_vcpu() for pre-POWER9.
+- Book3S PR and BookE: the common kvmppc_prepare_to_enter(), which
+  likewise only checked need_resched()/signal_pending().
+
+== Changes from v3 ==
+- BookE: add local_irq_disable() before hard_irq_disable() on the emulated
+  MTMSR[WE] path so lockdep's irq-tracing state is resynced, fixing a
+  lockdep_assert_irqs_disabled() splat in the following
+  xfer_to_guest_mode_prepare(). (Reported by Sashiko AI review)
+
+== Changes from v2 ==
+- Add xfer_to_guest_mode_prepare() check for pending rcuog wakeup before
+  entering guest
+- While at it patch all exit points for kvmhv_run_single_vcpu() via
+  done label matching the corresponding trace_kvmppc_run_vcpu_enter()
+  with trace_kvmppc_run_vcpu_exit() tracepoint. (Reported by Sashiko AI
+  review)
+- Include posix cpu timer enablement patch by Shrikanth as part of this
+  series
+
+== Changes from v1 ==
+- Extend the fix beyond Book3S HV to the shared powerpc KVM entry path:
+  also convert the common kvmppc_prepare_to_enter() used by Book3S PR
+  and BookE. (Shrikanth Hegde)
+- Move "select VIRT_XFER_TO_GUEST_WORK" from KVM_BOOK3S_64_HV up to the
+  common "config KVM" so every powerpc KVM variant gets the
+  infrastructure.
+- Drop the redundant signal_pending() recheck and its sigpend label in
+  kvmhv_run_single_vcpu(); xfer_to_guest_mode_work_pending() is a
+  superset of it.
+- Preserve the E500 CONFIG_KVM_EXIT_TIMING histogram on the signal path
+  via an explicit kvmppc_set_exit_type(SIGNAL_EXITS).
+
+[1] https://lore.kernel.org/all/20250421102837.78515-2-sshegde@linux.ibm.com/
+[2] https://lore.kernel.org/all/20260626105449.2897924-2-vishalc@linux.ibm.com/
+
+Shrikanth Hegde (1):
+  powerpc: enable to run posix cpu timers in task context
+
+Vishal Chourasia (1):
+  KVM: powerpc: Use generic xfer to guest work function
+
+ arch/powerpc/Kconfig         |  1 +
+ arch/powerpc/kvm/Kconfig     |  1 +
+ arch/powerpc/kvm/book3s_hv.c | 39 +++++++++++++++++++++++-------------
+ arch/powerpc/kvm/booke.c     |  1 +
+ arch/powerpc/kvm/powerpc.c   | 37 +++++++++++++++++++++++++---------
+ 5 files changed, 56 insertions(+), 23 deletions(-)
+
+-- 
+2.54.0
 
