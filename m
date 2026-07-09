@@ -1,181 +1,313 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF18A29430;
-	Thu,  9 Jul 2026 00:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783557889; cv=fail; b=BJSwtDdSwDshT/3koDiZGXKVtW+bkesRzcSoJFxkzMy6FUBr7j4zMbInJkhmgWFtDR1MhxYSWT+dr2dh4Tl2hHveldadsMCIeJBWoF5R6qij1s9xoodOFZCBmMHAuhjP/r4/87HwWQFopdPfkCiSdwTPhFTho92JbWvao3BRQHM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783557889; c=relaxed/simple;
-	bh=2NCmLbdfKBYIW6q4GIkvW21xnNL/EKg5/I5eam/AM8A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NioWnG1fSvC9w/7K1CwRDjKA7fFSDhjxRnmrjXHpu4S6hJ3/nH64sLgtRoPOnyR0zkr0rru1YbamUHPqCLlhHzWG7/PhvLITMtQZVR1+XkowHTiJIYH50fXzPeWwOeUxniuP/XVx+h63kw4eQxh11oVpuOfuU7mxlxvh6+1Fg34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JRXy9v6F; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20522274FDC;
+	Thu,  9 Jul 2026 00:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783558359; cv=none; b=o5GTXa8XBf12ttBuHtwujAEBtuy6+ygsu3xvZUtFWF4aJD9HMnfxzZ8K7Ae/8XE2SrBQe83l5v0DmvAI1z20zUV8fkLTJnMIIGFG8e9fvc1CzNaZkYJTQHGNbAXtrP5PeO27NGHegh+aydmwV7YF2qqk0LSwq9+h/Hv4kArps5c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783558359; c=relaxed/simple;
+	bh=LHLJw48aKsJxtof2BI6dI8sSr+LkAmlQ2FH1YKQuAKs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XBiA0nkHUN96SKpucZoMEDkroAbtYaLGikoDHzS8LEMhTuELMWOW4R2nRBDcfmS3uKZobFxd2zUhBaqqw140dHWKnrfRFfddVcQ1u0ogdpESXHLj9C7wfkfTgn2kUr8p96X5TZtUzN1e2TRnLJhlS4/OQqkMvdJc9kLsSG5Y0hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrXd72Ff; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JRXy9v6F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783557889; x=1815093889;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=2NCmLbdfKBYIW6q4GIkvW21xnNL/EKg5/I5eam/AM8A=;
-  b=JRXy9v6F/6Lp4aJHeicACtuCu70y9PPjh9F8jfBspzUK4x2P8R/lot6L
-   GFTNZZMh+LlWGH2YMWyLUCNidwjsKv1ICDumw3GXN1oD/jJw0I5fQcGyZ
-   XAOrvkkaqe3r7NAlKf9F1F2HL1fZegKf/MKPZZxEL1OPSa8cRhcOkV8AV
-   S/lYkECFKp6NaSZDUsnzUstPWntUHpgxAVwyl6jBdTOpPu9tNfLVtjDML
-   sS+w+QMG9TBWgTxHC3clmO4omfjtMpitqJJsKSm5oCSnAfABHaGSLhAqJ
-   uEO8mb4XrDqWc3LbWZ9wQzMHBYJpqmtdN2tLpFH1rf2rzjLRv7oYMywe3
-   w==;
-X-CSE-ConnectionGUID: m9Tk2W73TDmrdMqCtmkzRA==
-X-CSE-MsgGUID: jkxC4OBHSCGT/bv5+mCnNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84287090"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84287090"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 17:44:48 -0700
-X-CSE-ConnectionGUID: gfcEB36cR/yHVBEbeWWqFg==
-X-CSE-MsgGUID: s+aS9yXkRf6zUjDN50bS/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="251783665"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 17:44:47 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 8 Jul 2026 17:44:47 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 17:44:47 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.22)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Wed, 8 Jul 2026 17:44:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mp5mPTnh0fUI3cf0GQmLhqq6UpyHN0/ZdFkCiR5NAtKLu4QY8ncU01Z3rKcFdvljNugJhj50Xpz4XPcioeIQgEUmOFVU4PgCqrWy5kp9rVWYyUClAMc89R8gTac45jRKgAMkyI6lxEuC3NyEPQp5sDTM7Bt81oFtgUE+5BgE+uy9Ld2yXOR+k7P1AQHhrbcxoLC9Ed8KOj+dZYHqGfERUMcAY0m1MREgpk9COWkIlwUINrvrzhyGd1ij2uAcgDB1CsjN/E72PbJz53RuSarKwYPVcbFQgd+tAeG+4QPCObOhcaHuAPdw0DKDUsjNr+/sg8mFgq3afgw9WW/BR6IVxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2NCmLbdfKBYIW6q4GIkvW21xnNL/EKg5/I5eam/AM8A=;
- b=ebAfsFDG24xGb6YphWVgwjVU1d11czuxQGJng+ZBMyoYlT2+KHTzjxhkKbrTwcZifgOs2m1m0G/tjDJaHpyYpRTH5WQiAWVN3AopiCDiJmcSbjWw2dVi8go/JoE6X+Jqn7ix8lhgKo1et3D3uYLZuzaAHec52wVgEe4kha/jaiDtu2aqLK6eaOe0D4EGNELFJE0eJvDzvLBh8Et/AQdW26s9kO1XyMaSdwtaUBgeVX7FvzwpfbouTHihhCFGq8D/Ez0lg4p1+63rQqwdeTjD8/SiqrOdJ+IwcRf/yPxGLwuxoIJZELKX53ri8qUVxevddp37j+dXwfQMgyZcOCVcfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by CH3PR11MB7793.namprd11.prod.outlook.com (2603:10b6:610:129::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 9 Jul
- 2026 00:44:38 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
- 00:44:38 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Zhao, Yan Y" <yan.y.zhao@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, "Hansen,
- Dave" <dave.hansen@intel.com>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, "Gao, Chao"
-	<chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Thread-Topic: [PATCH v6 06/11] x86/virt/tdx: Optimize tdx_pamt_get/put()
-Thread-Index: AQHc7LhTkBJCRmynDUGCQ1lB6jZxi7Zjkv8AgAELywA=
-Date: Thu, 9 Jul 2026 00:44:38 +0000
-Message-ID: <9e7ab58e30e86f823f0e73226793e09308c7b65c.camel@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
-	 <20260526023515.288829-7-rick.p.edgecombe@intel.com>
-	 <ak4OUC9fg6CJ/06Y@yzhao56-desk.sh.intel.com>
-In-Reply-To: <ak4OUC9fg6CJ/06Y@yzhao56-desk.sh.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|CH3PR11MB7793:EE_
-x-ms-office365-filtering-correlation-id: 9c3701b2-aaa1-4c28-77ef-08dedd5341ac
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|38070700021|56012099006|4143699003|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info: 16jGJKFq+d9pkWSlwycuQ26BGrs9IhcAFNFaSo84SYhdIPA1CDFxaqm/s9RH6fcAzC8zSh8pqQEKHsa77d5ghgkyCbXRsLWrNl60L+CmcJrSJysJPQaYik5PBszhWjDYR7Sw1uhQnDfT+rErm28KNf0MkG4T+t/FwkWpvual8MJm66YiMBPP+XpBRsJJzuoDyVO6UlN+rsxFxRPJwLwaydeqzicMD0pSq3LSmuZNTt9ehVzIdIPHDmOmC9f3jUzKZV38K2FUIVNvTmQB/G/SbiI+8iJx98X0MHv5ywsUJmw3jnHO3lc3TL2o4kS3Tzn225Cl9GyCReoBg66ZjYyfs1pSBmM4XQd/a9GqAXZXgbOnINNPjSICYglAQlN7U6blGJrWDb+FyMSB0xG4PBgJIN/3Iq5Esy56yOWZ3aSpPJXpd5ZNXjm3JbYaZbZ3tfVObc9TbB0SBL6iWtdsJHcKPNBlIkMG4iHggYVcsO6/4hGdqOCqIGktUrVEU2sWJDyPszAlBDxzZ8a8YQz9o3q7zBAwxNW0YxcBSjW2Pw2/sPTaIoqAane+YupHB9DBJiUl3VOEOdrHb4+njymHwsObL21BZlEKyaeZeY+xLx6EvXdTI5KFIqtrc3pq+DAq92T4hZadtsGDFCg55QP6kCbOKlwiW0lg2iSUgUGGqzeXk/3z47yWdlcszdHvXDJZYEtj9anjIfGzY1XqCmeOEMjvnFLP5Lfr61B5ZujeKKWTC4A=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(38070700021)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YUdCL1hUOXNqTDVleEhyQkp2dGFFcW8zek51NThyelhxVkZwbEwrN1ZPcHlT?=
- =?utf-8?B?WFhLdndFbXEvYlNtS3FMK2gwb3VpVDZ1Zm1qNEFtbVZZNG1YVjNHZ1pES2xu?=
- =?utf-8?B?ZDdLNXAyQTYzQUVNY1Bzc0FEK3B5UGpHUU15WkM5dGJUZk1UcjVaU1VuRzNM?=
- =?utf-8?B?RHJuajBGdXYrSVJnamVvWHlOeDdMSzdPV0lSNVhDQnZwS2tlaXNZWStwREl3?=
- =?utf-8?B?YkZMR1kzZDRVRlJiN3pRTG5KelhJN3ZYS2RRRUU3K1hPUzh3S1kvSFpGWFdE?=
- =?utf-8?B?UUpkVlFucUh1RXlMalQ3MXRjSkpUYlRORmRZZzkyMmNoQ0thQ1pOZzU0Z3Z2?=
- =?utf-8?B?MVJlK1U5bjNJbWtmV0tRSVB2TDZJaWRvSUJsQlVIMGxFR1MzRkdEZmtRZjVT?=
- =?utf-8?B?WXo2RkFLZjJ3SFNDb2pBMnBpWjJsc1RETm9IT0VEdThUSzBYcEY2Sktkak5a?=
- =?utf-8?B?cWYvWEd1SUI0cUxsaEp2cklTRW1aYmFhS2hLbnFhSDRUWWtZbWk0SkxwVlYx?=
- =?utf-8?B?RDRRaUk0UElibDJLc3BZNmdaVHFDQmhPdTFQT3oxbFpYRVBaQjcrcDhPRW54?=
- =?utf-8?B?QjhYcjNXeHFOenl3WmY1S3FNNVBVdG0yYzU4aCs1OUlPU0NFcEJnaTgvelZB?=
- =?utf-8?B?MEpZWXl0YXZPSGxPZVMrZnJPRHVrNnRMMTU1TXkxWE9lTVhJQ1EwOVh3elhj?=
- =?utf-8?B?NE5iZE54Z2gvTVlxK3RkaHMyb0M1ald0VGVrMnhzM1hWT0ZHajhzZUh2TFdx?=
- =?utf-8?B?M3BsRVlNNURnRmZENmg0Q3dBY2wrUEUxYUdKS244dHJ6RUV1S1hCc01URzln?=
- =?utf-8?B?cnJxUFlGMWF6eWdqc3VQV3I1Y3dCTUFUTG1wZnUvcy9MUTFBZ2dZVFhkaWNW?=
- =?utf-8?B?cFg0V3g0TlFiT0ZpbTBZZ3crR1Z3dlJ4RUEyUm9FK3VaY2l0MDZpNTFpeWts?=
- =?utf-8?B?NzFRTU05MjJ4V1pGMFd3b0hrS05ETG8xTWc3VVhuNXJyNzhzN0ZrM2VVWFhS?=
- =?utf-8?B?K1ArdXVKLzJET1lDd2hWVnFReFNjREU1a25udDFDUVluQXVtR0NKZEdkSjVq?=
- =?utf-8?B?ZmdoM2g1TUh2T21pNDNidmIzOTFuV0toUWNMY0E4L1QxTHIrOGdzdmxkVFky?=
- =?utf-8?B?Uk10QlNWclh6ZCtaSHhJOUVqUDhFVXZ6c3NYcGMwdUc0elFkbU44UzN4M0Mz?=
- =?utf-8?B?TkZnVTRBUStpZ2JRQ01LQkxqcjZqVktvVWhJNkN2NUhKbkdZY25CcTMwK3hE?=
- =?utf-8?B?YW9QYmV1WXFrZnl0RkYyczJOZ2tQSWlvbTRZRHErVWVFTXlDdm1MYzJhRWwr?=
- =?utf-8?B?RUI1OGhmR1l1clJFUHF1dmQvYmIvTFhCZWlKbGJLZEtJNWRKRlAxSXZpNTlj?=
- =?utf-8?B?K3Z5TjZZTzFibk1ObDJCRFA4SDcyaWxoTTZaMlBBTkpHWUxUZG1wSFBQVWVl?=
- =?utf-8?B?NGZNVUhuVklQUUJOMHIvUFhGZ3YyYjJQOU9Ha3M2UjM5T1N3SWJRUjBwQjd2?=
- =?utf-8?B?ZkpDWFZ0Z1NDeXVaWEFlZEJsTWlLckVNTXpSMFdmdnZ1aUh2c0JtQ1MxbXp1?=
- =?utf-8?B?bHFPaStuN1lOY0FxWHpyOGZlNEN4Z2hvamJXazB5MkRmR3UvN2FJanp3WnNJ?=
- =?utf-8?B?M0dtcG9VdTF0aWNyT21tbDlsRUJhdGZBbVd3WWZBU2swdWU0eFBEejJYWnVX?=
- =?utf-8?B?T1RKMUtOZnBXUU9FYVZoYTQ3ZjF0QzNINjNQaENmQXQ4dS9pbk1KZEQzUTBK?=
- =?utf-8?B?eGdOODJGOXkvQmN4M0RTUy9MSG45bnBmdXRTcVM1RjNNaThCdDJPTlRob3JL?=
- =?utf-8?B?RzF2TmVvU0NCMzdXSFFJNGFuVW51azZEME1EZlEwaFZoa0ZQZDBPMXJEWXd1?=
- =?utf-8?B?Vk4yS21HVW1lZng3SUc0OHhCdElPaitQcStTU09kQ0dVajl3OFBVZzBlTkQ5?=
- =?utf-8?B?RkVvQmdObDhFRDdOdWwyRjZYY04zWUxsaktKbXJEcGxUbDhKWXExN245Nm80?=
- =?utf-8?B?QzBrVVpUSWFabjhuZGVNZ1V2RU1RTU9JQkxnbW9uTEpMU3lxNkhvSVVLRU1P?=
- =?utf-8?B?Mng0cjNaVTdncG9iK2RrYlhhb00zQ1V0MUdyVFpjWVkyNUV5NmZxS05zQ1pw?=
- =?utf-8?B?VGh0N21UanZOUG9vRUIrSjUwYittbitESVIyQWloVjlYV09UcHRCdHJ5N2hW?=
- =?utf-8?B?RmNnMVJ3aWdhYnVTQU9hUVJ0d05DVEZqRXpXNXMvcmVwamtrZUhkTmloYTVx?=
- =?utf-8?B?c24vd2JUNFo3dWIyWDZpMXVwWXQxZEgvaFhnTFI5QlpicXF2WnAzL3ZQK25n?=
- =?utf-8?B?SXFaQXhtYkRzV0ZDZTV0SHNFcjVQQVA5anhtZGZoczZJWEdGRkxnWE5oejNn?=
- =?utf-8?Q?9mJNmgIKkCfFQVts=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5FCDCB5EDC7F4E4A966C658162E71AAD@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrXd72Ff"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F601F000E9;
+	Thu,  9 Jul 2026 00:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783558357;
+	bh=SUike172D6Qe/lcVjU7rsTELZii9Cy9VDwsOKZeStn0=;
+	h=From:Subject:Date:To:Cc;
+	b=KrXd72Ffh7Su9JJuIvvz0KMdbc1hzh+ctK7Z1xXbjrGqauKna22uOEgkfIJ4ryQRZ
+	 uUfpSz94FM3223S1x9QAxdMrwLKp0rgCAzySv7G56IZ1m2PIzA4Um+cYBlNMa6RqJL
+	 GRAhfZH8Zu5tO+655Tx+kdSQ7ZFL9m7rZfNG+wA4c/+egcfQJwfFhdIMShgS0Ptn7x
+	 Y0frAPcWAf+t1sMfBxaESDvCO+ZcOFnC8iz51igfCWScpBSzs2X3RsBy5WZMNiNCWe
+	 v/+lNwQ8V+/ioQIhzL3pSC2RqBFa0jJkIaRuZjtqDeQnuAAI6oG+QIg7+scGvgRK7e
+	 PohTF6I0NjaNQ==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v11 00/29] KVM: arm64: Implement support for SME
+Date: Thu, 09 Jul 2026 01:51:37 +0100
+Message-Id: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: nze2BQTZEek1JCr4XYwNecwz00Fy5fRp8F0RNn33as8qIiAWRx8IuI0/tZJAVAuCXmmGPiu7WiDMxocfbYQ4hlcDOTxNcSKu8lPDVm2Lgk3mlYNAbRe/e7R5Cd8D0Uzxiid1JHIhdaL6465fafBdaDkIz804UERTW8Myuc+rVqxDThATZYBMiGShA57y5abuPyAybt/jHzmfxae/ilwbO4aLUIK+dlIz4pWg+vj3lWki6fjYCEnsfrZKbGd5oUYvLDvxATfAjXDfXUm0jZdEfI3FGxZJOgu8XWPcVeLx+tlwxANzbw29At8/3874ijlFVvLwyylyJDoAPbubTbX26A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c3701b2-aaa1-4c28-77ef-08dedd5341ac
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2026 00:44:38.7002
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vvFXUmGOMrhHStVVMo0U5iTg2zhBuS9eJxue/uvUSejnnigFqw7lDyNmSMHqwUt+UURXndANHy2U3Sr45DRny9aDj+2zu/4hDEfuHcoSkqc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7793
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJrwTmoC/2XSzW7DIAwH8Fepch4VNmBIT3uPaQcg0EZb2o500
+ aaq7z6nVVstHLH42Xz8z82YSp/GZrM6NyVN/dgf9rwAeFk1cef32yT6jgsNSlRSSRAf0yB8GUi
+ LcUhCkgfU1ClS1LAJfkwiFL+Pu1mdhuNcPZaU+5/rmLd3Xu/68XQov9epE8zVW/8WcdF/AiFFz
+ uA6qwO2qXv9SGWfPteHsm3mVhM+OGDNkXnnESkGcDKEiqs718zlkivm0gQJLkLOqeb6zo1E0Eu
+ u5+mkPTnwXYxYcfPkGuySm/numlqPncnG6orTkxOaJSfmADrmrPnssub2yV39dJa59WQ6h8EFk
+ BV3T97KijvmGANC20YyFCvePji/vFrylrkLSTmyMTinKg7y7olzSVVu+OOEVtmSU17mYP81uNx
+ CWdLXN0f+dEvmLbzxMAz9abOa7BpFicibL3/EeACdJwMAAA==
+X-Change-ID: 20230301-kvm-arm64-sme-06a1246d3636
+To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
+Cc: Dave Martin <Dave.Martin@arm.com>, Fuad Tabba <tabba@google.com>, 
+ Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
+ Jean-Philippe Brucker <jpb@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Eric Auger <eric.auger@redhat.com>, Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11982; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=LHLJw48aKsJxtof2BI6dI8sSr+LkAmlQ2FH1YKQuAKs=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqTvC5/pMh8cyatVqV5w/emjLIK16ol/zwNwjdQ
+ bmZ2FFXikGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCak7wuQAKCRAk1otyXVSH
+ 0KrAB/sE0ET7wTKkoeteoWOTUrKyvkYUd6adE11KArb5zvN/avxNYDoeIF7KpasDvXU2SQwp18s
+ aPa2e8x/E8vi+zhah3tsntdW/vWlk9rAuP5gI2BDPETLNAe0OA9sb/xyPdMgJhuF8Lt+Ln6Iu+t
+ J7soiwPKi1aZ6ZAk59IwbWYhVzZ2pyo+hMKHgaXlSuydG83q1TRhPkvDheQC+9nV4+Mmrreg1Ke
+ xU0PFaaexNHH5t90HCs2MpXrePnDjopzIhp54PC/IIwQGHvNUd4rntSP9/QXR/IUZ30larS/Iya
+ lRi6XJJZoW3LMl5pPXfUH9GuEJl3AHsxCoLQj5cBE1Dftf8r
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-T24gV2VkLCAyMDI2LTA3LTA4IGF0IDE2OjQ2ICswODAwLCBZYW4gWmhhbyB3cm90ZToNCj4gVGhl
-IG9wdGltaXphdGlvbiBMR1RNLg0KDQpUaGFua3MgZm9yIGNoZWNraW5nIGl0Lg0K
+[ Note: I've spoken with both Mark Rutland and James Morse both of whom
+  might potentially have some overlapping changes, they've both agreed
+  that they'll deal with any rebasing if it's a question of this getting
+  in or something else. ]
+
+I've removed the RFC tag from this version of the series, but the items
+that I'm looking for feedback on remains the same:
+
+ - The userspace ABI, in particular:
+  - The vector length used for the SVE registers, access to the SVE
+    registers and access to ZA and (if available) ZT0 depending on
+    the current state of PSTATE.{SM,ZA}.
+  - The use of a single finalisation for both SVE and SME.
+  - There was some review from the qemu people who seemed OK with the
+    structure, and there's some initial patches from them at:
+       https://patchew.org/QEMU/20260216034432.23912-1-richard.henderson@linaro.org/
+
+This series implements support for SME use in non-protected KVM guests.
+Much of this is very similar to SVE, the main additional challenge that
+SME presents is that it introduces a new vector length similar to the
+SVE vector length and two new controls which change the registers seen
+by guests:
+
+ - PSTATE.ZA enables the ZA matrix register and, if SME2 is supported,
+   the ZT0 LUT register.
+ - PSTATE.SM enables streaming mode, a new floating point mode which
+   uses the SVE register set with the separately configured SME vector
+   length.  In streaming mode implementation of the FFR register is
+   optional.
+
+It is also permitted to build systems which support SME without SVE, in
+this case when not in streaming mode no SVE registers or instructions
+are available.  Further, there is no requirement that there be any
+overlap in the set of vector lengths supported by SVE and SME in a
+system, this is expected to be a common situation in practical systems.
+
+Since there is a new vector length to configure we introduce a new
+feature parallel to the existing SVE one with a new pseudo register for
+the streaming mode vector length.  Due to the overlap with SVE caused by
+streaming mode rather than finalising SME as a separate feature we use
+the existing SVE finalisation to also finalise SME, a new define
+KVM_ARM_VCPU_VEC is provided to help make user code clearer.  Finalising
+SVE and SME separately would introduce complication with register access
+since finalising SVE makes the SVE registers writeable by userspace and
+doing multiple finalisations results in an error being reported.
+Dealing with a state where the SVE registers are writeable due to one of
+SVE or SME being finalised but may have their VL changed by the other
+being finalised seems like needless complexity with minimal practical
+utility, it seems clearer to just express directly that only one
+finalisation can be done in the ABI.
+
+Access to the floating point registers follows the architecture:
+
+ - When both SVE and SME are present:
+   - If PSTATE.SM == 0 the vector length used for the Z and P registers
+     is the SVE vector length.
+   - If PSTATE.SM == 1 the vector length used for the Z and P registers
+     is the SME vector length.
+ - If only SME is present:
+   - If PSTATE.SM == 0 the Z and P registers are inaccessible and the
+     floating point state accessed via the encodings for the V registers.
+   - If PSTATE.SM == 1 the vector length used for the Z and P registers
+ - The SME specific ZA and ZT0 registers are only accessible if SVCR.ZA is 1.
+
+The VMM must understand this, in particular when loading state SVCR
+should be configured before other state.  It should be noted that while
+the architecture refers to PSTATE.SM and PSTATE.ZA these PSTATE bits are
+not preserved in SPSR_ELx, they are only accessible via SVCR.
+
+There are a large number of subfeatures for SME, most of which only
+offer additional instructions but some of which (SME2 and FA64) add
+architectural state. These are configured via the ID registers as per
+usual.
+
+Protected KVM is supported, with the implementation maintaining the
+existing restriction that the hypervisor will refuse to run if streaming
+mode or ZA is enabled.  This both simplfies the code and avoids the need
+to allocate storage for host ZA and ZT0 state, there seems to be little
+practical use case for supporting this and the memory usage would be
+non-trivial.  SME is not made available to protected guests, only normal
+guests.
+
+The new KVM_ARM_VCPU_VEC feature and ZA and ZT0 registers have not been
+added to the get-reg-list selftest, the idea of supporting additional
+features there without restructuring the program to generate all
+possible feature combinations has been rejected.  I will post a separate
+series which does that restructuring.
+
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+Changes in v11:
+- Rebase onto v7.2-rc2.
+- Rework VL enumeration.
+- Refactor ZCR and SMCR value generation for the host into helper
+  functions.
+- Add handling of FEAT_IDST for hidden system registers.
+- Ensure we manage traps correctly for emulated EL2.
+- Always allocate space for ZT0 if the hardware supports it.
+- Tighten the register enumeration ABI to reflect current VM state.
+- Sanitise SMIDR_EL1.
+- Fix generation of invalid values in set_id_regs.
+- Various smaller fixups, including from Jean-Phillipe's review.
+- Link to v10: https://patch.msgid.link/20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org
+
+Changes in v10:
+- Define and use a SME_VQ_INVALID for the case where there is no
+  virtuablisable SME VL.
+- Fix handling of SMCR_EL2 accesses.
+- Correct VNCR constant for SMPRI_EL2.
+- Correct trapping for SMPRI_EL1.
+- Reject userspace access to FFR when in streaming mode without FA64.
+- Constrain the VL set by sme_cond_update_smcr() to fit within LEN.
+- Reject userspace access to ZA and ZT0 when SVCR.SM is 0.
+- Use -EACCESS for inaccessible SME registers.
+- Remove some unused functions.
+- Further bugfixes from review.
+- Commit log typo fixes.
+
+- Link to v9: https://patch.msgid.link/20251223-kvm-arm64-sme-v9-0-8be3867cb883@kernel.org
+
+Changes in v9:
+- Rebase onto v6.19-rc1.
+- ABI document clarifications.
+- Add changes dropping asserts on single bit wide bitfields in set_id_regs.
+- Link to v8: https://lore.kernel.org/r/20250902-kvm-arm64-sme-v8-0-2cb2199c656c@kernel.org
+
+Changes in v8:
+- Small fixes in ABI documentation.
+- Link to v7: https://lore.kernel.org/r/20250822-kvm-arm64-sme-v7-0-7a65d82b8b10@kernel.org
+
+Changes in v7:
+- Rebase onto v6.17-rc1.
+- Handle SMIDR_EL1 as a VM wide ID register and use this in feat_sme_smps().
+- Expose affinity fields in SMIDR_EL1.
+- Remove SMPRI_EL1 from vcpu_sysreg, the value is always 0 currently.
+- Prevent userspace writes to SMPRIMAP_EL2.
+- Link to v6: https://lore.kernel.org/r/20250625-kvm-arm64-sme-v6-0-114cff4ffe04@kernel.org
+
+Changes in v6:
+- Rebase onto v6.16-rc3.
+- Link to v5: https://lore.kernel.org/r/20250417-kvm-arm64-sme-v5-0-f469a2d5f574@kernel.org
+
+Changes in v5:
+- Rebase onto v6.15-rc2.
+- Add pKVM guest support.
+- Always restore SVCR.
+- Link to v4: https://lore.kernel.org/r/20250214-kvm-arm64-sme-v4-0-d64a681adcc2@kernel.org
+
+Changes in v4:
+- Rebase onto v6.14-rc2 and Mark Rutland's fixes.
+- Expose SME to nested guests.
+- Additional cleanups and test fixes following on from the rebase.
+- Flush register state on VMM PSTATE.{SM,ZA}.
+- Link to v3: https://lore.kernel.org/r/20241220-kvm-arm64-sme-v3-0-05b018c1ffeb@kernel.org
+
+Changes in v3:
+- Rebase onto v6.12-rc2.
+- Link to v2: https://lore.kernel.org/r/20231222-kvm-arm64-sme-v2-0-da226cb180bb@kernel.org
+
+Changes in v2:
+- Rebase onto v6.7-rc3.
+- Configure subfeatures based on host system only.
+- Complete nVHE support.
+- There was some snafu with sending v1 out, it didn't make it to the
+  lists but in case it hit people's inboxes I'm sending as v2.
+
+---
+Mark Brown (29):
+      arm64/sysreg: Define full value read/modify/write helpers
+      arm64/fpsimd: Update FA64 and ZT0 enables when loading SME state
+      arm64/fpsimd: Decide to save ZT0 and streaming mode FFR at bind time
+      arm64/sve: Factor virtualizable VL discovery out of SVE specific code
+      arm64/fpsimd: Determine maximum virtualisable SME vector length
+      KVM: arm64: Handle FEAT_IDST for guest accesses to hidden registers
+      KVM: arm64: Pull ctxt_has_ helpers to start of sysreg-sr.h
+      KVM: arm64: Rename SVE finalization constants to be more general
+      KVM: arm64: Define internal features for SME
+      KVM: arm64: Rename sve_state_reg_region
+      KVM: arm64: Store vector lengths in an array
+      KVM: arm64: Factor SVE code out of fpsimd_lazy_switch_to_host()
+      KVM: arm64: Document the KVM ABI for SME
+      KVM: arm64: Implement SME vector length configuration
+      KVM: arm64: Support SME control registers
+      KVM: arm64: Support TPIDR2_EL0
+      KVM: arm64: Support SME identification registers for guests
+      KVM: arm64: Support SME priority registers
+      KVM: arm64: Support userspace access to streaming mode Z and P registers
+      KVM: arm64: Flush register state on writes to SVCR.SM and SVCR.ZA
+      KVM: arm64: Expose SME specific state to userspace
+      KVM: arm64: Context switch SME state for guests
+      KVM: arm64: Handle SME exceptions
+      KVM: arm64: Expose SME to nested guests
+      KVM: arm64: Provide interface for configuring and enabling SME for guests
+      KVM: arm64: selftests: Remove spurious check for single bit safe values
+      KVM: arm64: selftests: Skip impossible invalid value tests
+      KVM: arm64: selftests: Add SME system registers to get-reg-list
+      KVM: arm64: selftests: Add SME to set_id_regs test
+
+ Documentation/virt/kvm/api.rst                   | 124 +++++---
+ arch/arm64/include/asm/fpsimd.h                  |  17 +-
+ arch/arm64/include/asm/kvm_emulate.h             |  16 +
+ arch/arm64/include/asm/kvm_host.h                | 113 ++++++-
+ arch/arm64/include/asm/kvm_hyp.h                 |   2 +-
+ arch/arm64/include/asm/kvm_nested.h              |   2 +
+ arch/arm64/include/asm/kvm_pkvm.h                |   2 +-
+ arch/arm64/include/asm/sysreg.h                  |   8 +
+ arch/arm64/include/asm/vncr_mapping.h            |   2 +
+ arch/arm64/include/uapi/asm/kvm.h                |  34 +++
+ arch/arm64/kernel/cpufeature.c                   |   2 -
+ arch/arm64/kernel/fpsimd.c                       | 134 ++++----
+ arch/arm64/kvm/arm.c                             |  10 +
+ arch/arm64/kvm/config.c                          |  12 +-
+ arch/arm64/kvm/emulate-nested.c                  |   6 +-
+ arch/arm64/kvm/fpsimd.c                          |  27 +-
+ arch/arm64/kvm/guest.c                           | 369 ++++++++++++++++++++---
+ arch/arm64/kvm/handle_exit.c                     |  14 +
+ arch/arm64/kvm/hyp/include/hyp/switch.h          | 234 +++++++++++---
+ arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h       |  96 +++---
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c               | 129 ++++++--
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                   |  90 ++++--
+ arch/arm64/kvm/hyp/nvhe/switch.c                 |   2 +
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c               |   6 +
+ arch/arm64/kvm/hyp/vhe/switch.c                  |  17 +-
+ arch/arm64/kvm/hyp/vhe/sysreg-sr.c               |   7 +
+ arch/arm64/kvm/inject_fault.c                    |  15 +
+ arch/arm64/kvm/nested.c                          |   8 +-
+ arch/arm64/kvm/reset.c                           | 159 +++++++---
+ arch/arm64/kvm/sys_regs.c                        | 152 +++++++++-
+ include/uapi/linux/kvm.h                         |   1 +
+ tools/testing/selftests/kvm/arm64/get-reg-list.c |  15 +-
+ tools/testing/selftests/kvm/arm64/set_id_regs.c  |  96 +++++-
+ 33 files changed, 1554 insertions(+), 367 deletions(-)
+---
+base-commit: 4c45e14df2f4e77982ad70d6d8e3fe750edd4c37
+change-id: 20230301-kvm-arm64-sme-06a1246d3636
+
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
+
