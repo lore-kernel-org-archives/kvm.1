@@ -1,432 +1,257 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CC23839B8;
-	Thu,  9 Jul 2026 15:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7807735C19F;
+	Thu,  9 Jul 2026 15:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783611461; cv=none; b=uB2PQZlmVV4zeEYN32TQvuMESQNxT5nCLpwiyf6bMBEu59KI0u/7usnN5zbn0b21gR2ZL52APiNDeej42droWo9tNYX9sDrM9L9kNrBGXbNfp+j6M+kCkstjj9O2x63MKjuD1zoBDeTnyWB9CU/K7as8LKQN8oDtAEARqV+sS8g=
+	t=1783611854; cv=none; b=nldKc0MGuZDYOZ3TmWVGBznT7dxWQWzNywYH7xt8BT6Is24O/Hl/kfl8U0CXw01Ci3qmI1NgWL/SUzkJZ6pVRoziQE6PFhY/re/t9cdAknYVtcdz7j5tlPgZwwbOeegTMOwcktSgAAz5/WpN5vq6pt6PuHdjpWlPr3fdBFtJy4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783611461; c=relaxed/simple;
-	bh=NayHod9PkByFav7e69dVzaqh8u3XitxWDOeOd+0iK2U=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tJSsW329ObSd8b6IkbC/yNG2n3bBSGRGVBAb8X1tSbQ6AdfMmigpICx38xWoiksf0j4kInJ4fsco/CrfbYS4lpbpwfoEzVV0+za5oM58poDbbX5nn/CvvEojIc2JJxAikC0xyt9ZcwCnOtP68AdGRbhleU1vKQbGrN3hp/YzAXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jxH2j4VV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783611854; c=relaxed/simple;
+	bh=5ihj3jc7CuunbXVvjwb3Muc/bkt6kYgmHKeORiD7Vss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e1sKjmfu93Uy8qX7zXqlqSEoRvniOtgqEfvo+o6D6sk4znQp5EPM/2wa3gr45bBYMP5TfPC1errPjpB8+UmPkI9kDYy7gZqLdOcxyAeUQhmt/m1gZHXJI3rAoyMfkSpO8Gogi8ph3xNADCktjgdmtcMJL45LRTfGGRT65UY2tQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwliaWv9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jxH2j4VV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFF01F000E9;
-	Thu,  9 Jul 2026 15:37:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwliaWv9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A861F00A3A;
+	Thu,  9 Jul 2026 15:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783611457;
-	bh=D7OV3mmckUzPuP0MBi70y320z16VZK5UiH+ZY2Fh7rk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jxH2j4VV9G0qfkp5c9Uaj8FEiZ1hF74CPUhNvIGJXl9cxPjofmz/8qY5MbhhmP70n
-	 imbeYESeuCNmZ2AMpp6OkHBKTQ4V9EksVc6Gkzd0ufinveNv9db0MBJykNxRag9IQY
-	 mksPoSfkVLOXEruu/0c1dMdGHgx6EgId1S/BIMdjHCjwJSqL4LpO7X6UMhYGSVMymV
-	 z3VFOij9OFQzDDQPv/S2o/KtjwBrF0F+fKSjespmQNaD3CUUD1uvxyaLr0wzWfUQKx
-	 7wZKXnBZN1mhKdrtms4h6U09YkJ15RPPtp97CcqywjteBLUAKhIZA5g933OVLVXnQ8
-	 fXLlMm5HhNc+g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 16/21] KVM: s390: vsie: Shadow VSIE SCA in guest-1
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260709-vsie-sigpi-v1-16-ea9f12066408@linux.ibm.com>
-References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
- <20260709-vsie-sigpi-v1-16-ea9f12066408@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 15:37:36 +0000
-Message-Id: <20260709153736.EDFF01F000E9@smtp.kernel.org>
+	s=k20260515; t=1783611853;
+	bh=285LaEGh3A0QFIVOYPOsW/0/c98eMaQwDcpzh7ozqYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KwliaWv9bxV0Nv7YosIm0mo6z799KEvSo/GZ7t//Ow7EyigBPfVX1n90yTa8hhrbt
+	 Kc29sHuXjnIFYPBHPPaQ+RLeYsmx81DkS6cv4rY6WW1+jMdtMug7C+cyz5tvuCtW2v
+	 eD7W1nhMTYogk9MFDautO55WmQLHocTlSIZ/cWsZBf0t874xH2kHaB4ajls8U9bYzu
+	 lVpiE3fB+UrAlfB0ipJ8vXO+p5IIdwqJfBYdEgVfxTjJrtSag+MVIQhrcPg9Lz5n7s
+	 F0JCXQUGThw6Wuryol7BRZUk143S3jmt9JlSMPs6KxnRaFKT1xH/wQfNLFQQVzPwAX
+	 luIMAxhslJUQw==
+Date: Thu, 9 Jul 2026 16:44:01 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, seanjc@google.com, 
+	pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com, 
+	bp@alien8.de, x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com, 
+	yangge1116@126.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
+ registration
+Message-ID: <ak_A6Yc5mBXCrtXr@lucifer>
+References: <20260701144543.39582-1-pankaj.gupta@amd.com>
+ <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
+ <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
+ <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
+ <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+ <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org>
+ <ak-uER-RndpksnhR@lucifer>
+ <58c4326d-b10d-42dc-af5d-3a5ff16c7e3e@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <58c4326d-b10d-42dc-af5d-3a5ff16c7e3e@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 12 potential issue=
-(s) to consider:
-- [Critical] Incorrect pointer arithmetic in `get_sca_entry_addr()` compute=
-s wildly out-of-bounds host and guest physical addresses.
-- [Critical] Incomplete error rollback in `get_vsie_page_cpu_nr()` leads to=
- host NULL pointer dereference and XArray corruption.
-- [Critical] Guest-controlled `icpua` field from the SIE control block is u=
-sed directly as an array index without bounds checking, leading to arbitrar=
-y OOB reads and writes.
-- [Critical] Concurrent `memset` of a shared `vsie_page` during SCA reuse c=
-auses data corruption and potential Host DoS.
-- [Critical] Shadow SCBs are left unprotected during guest execution becaus=
-e `VSIE_PAGE_IN_USE` is prematurely cleared.
-- [High] Unvalidated guest-provided `sda` in the SCA allows out-of-bounds r=
-eads of host physical memory.
-- [High] Failure in `pin_sca()` permanently leaks the `vsie_sca` reference,=
- allowing a malicious guest to exhaust the VSIE SCA pool.
-- [High] Stale `vsie_sca` pointers in cached `vsie_page`s break SCB executi=
-on when a guest toggles SIGPIF off, and enable Use-After-Free.
-- [High] KVM caches the guest's SCA address in `vsie_page->sca_gpa` and ign=
-ores dynamic updates to the SCB's SCAO field.
-- [High] Mismatched locking causes a data race on the `vsie_sca->pages[]` a=
-rray.
-- [Medium] Multiple guest-triggerable `WARN_ON_ONCE` assertions enable host=
- syslog flooding and Denial of Service.
-- [Medium] XArray internal nodes and elements are permanently leaked on VM =
-destruction and SCA reuse due to missing `xa_destroy()` and incomplete `xa_=
-erase()` cleanup.
---
+On Thu, Jul 09, 2026 at 05:19:10PM +0200, Gupta, Pankaj wrote:
+> Hi Lorenzo,
+>
+> > > > > > Hi David,
+> > > > > >
+> > > > > > Yes, it fails in this path but for file backed mapping, vma_is_fsdax() returns
+> > > > > > false because
+> > > > > >
+> > > > > > vma_is_dax() returns false:
+> > > > > Ah, okay, so fsdax is not involved and we really only fail because of the
+> > > > > writable_file_mapping_allowed() check.
+> > > > >
+> > > > > I was for a second thinking in terms of nested virt :)
+> > > > >
+> > > > > > Host side backend is regular file backed memory (no fsdax).
+> > > > > Okay, so we'll end up mapping an ordinary file into VM memory, and expose that
+> > > > > to the VM as part of virtio-pmem device.
+> > > > >
+> > > > > That also means that vfio etc. won't be able to longterm-pin such device memory.
+> > > > > So this is not a problem isolated to SEV.
+> > > > >
+> > > > > Forbidding to longterm pin is actually the right thing to do if the filesystem
+> > > > > relies on writenotify, as spelled out by Lorenzo's commit:
+> > > > >
+> > > > > "
+> > > > >       Writing to file-backed mappings which require folio dirty tracking using
+> > > > >       GUP is a fundamentally broken operation, as kernel write access to GUP
+> > > > >       mappings do not adhere to the semantics expected by a file system.
+> > > > >
+> > > > >       A GUP caller uses the direct mapping to access the folio, which does not
+> > > > >       cause write notify to trigger, nor does it enforce that the caller marks
+> > > > >       the folio dirty.
+> > > > >
+> > > > >       The problem arises when, after an initial write to the folio, writeback
+> > > > >       results in the folio being cleaned and then the caller, via the GUP
+> > > > >       interface, writes to the folio again.
+> > > > > "
+> > > > >
+> > > > > Hmmm
+> > > > Yes. For file based mapping we don't allow long term pinning.
+> > > >
+> > > > If we take into account the fragmentation concerns for MIGRATE_CMA and
+> > > > ZONE_MOVABLE allocations
+> > > >
+> > > > solvable with FOLL_LONGTERM, I can think of two options(tested) to allow file
+> > > > based mappings as well:
+> > > >
+> > > > 1. Fallback on FOLL_WRITE when FOLL_LONGTERM fails as suggested by Sean.
+> > > That is just not acceptable, as it breaks random other stuff (MIGRATE_CMA, as
+> > > one example) besides the file-pinning problems that Lorenzo added.
+> > >
+> > > If we're going to hack something in, then that we bypass the file writeback check.
+> > > Not that we don't use FOLL_LONGTERM.
+> > >
+> > > I'd hate to use a GUP flag to indicate "this is a legacy hack", but it clearly isolates the
+> > > issue (needs a better name obviously):
+> > So under what circumstances are we happy with totally breaking dirty tracking?
+> > :/ seems iffy, and exposing this to drivers generally is a bit worrysome.
+>
+> The intention is to allow long-term pinning of file-backed mappings only for
+> migration avoidance,
+>
+> without kernel GUP writes, and therefore not impacting dirty tracking.
 
---- Patch [16]: [PATCH 16/21] KVM: s390: vsie: Shadow VSIE SCA in guest-1 -=
---
-commit 9e60c38b165cf3838037fe34e3e571d246e77218
-Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
+OK as long as that's made clear in the patch, commit message, comments etc. :)
 
-KVM: s390: vsie: Shadow VSIE SCA in guest-1
+>
+> > >
+> > > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > > index ae9bca4eda5ca..e2c531f914d44 100644
+> > > --- a/include/linux/mm_types.h
+> > > +++ b/include/linux/mm_types.h
+> > > @@ -1912,6 +1912,9 @@ enum {
+> > >           */
+> > >          FOLL_HONOR_NUMA_FAULT = 1 << 12,
+> > >
+> > > +       /* TODO */
+> > > +       FOLL_LONGTERM = 1 << 13,
+> > > +
+> > >          /* See also internal only FOLL flags in mm/internal.h */
+> > >   };
+> > >
+> > > diff --git a/mm/gup.c b/mm/gup.c
+> > > index 0692119b79043..1fa0aa0cdc99d 100644
+> > > --- a/mm/gup.c
+> > > +++ b/mm/gup.c
+> > > @@ -1186,8 +1186,8 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
+> > >           * If we aren't pinning then no problematic write can occur. A long term
+> > >           * pin is the most egregious case so this is the case we disallow.
+> > >           */
+> > > -       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM)) !=
+> > > -           (FOLL_PIN | FOLL_LONGTERM))
+> > > +       if ((gup_flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK)) !=
+> > > +           (FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK))
+> > >                  return true;
+> > Hmm I'm confused, you're then allowing FOLL_PIN | FOLL_LONGTERM, but disallowing
+> > FOLL_PIN | FOLL_LONGTERM | FOLL_LONGTERM_HACK?
+>
+> Yes, I addressed this in my reply, but it wasn't a clean inline response.
 
-This commit restructures the vsie handler to create a guest-1 shadow of the
-SCA if guest-2 attempts to enter SIE with an SCA. It adds the vsie_sca
-struct and manages its lifecycle and lookup via a map in the arch vsie
-struct.
+Ack yeah I assumed it was a quick proof of concept and just overlooked it :P
 
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index 4b492af155429..74455c689c51b 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-[ ... ]
-> @@ -694,6 +694,22 @@ static int shadow_scb_minimal(struct kvm_vcpu *vcpu,=
- struct vsie_page *vsie_page)
-[ ... ]
->  	scb_s->ecb2 |=3D scb_o->ecb2 & ECB2_ESCA;
-> =20
->  	if (vsie_page->vsie_sca) {
->  		scb_s->eca |=3D scb_o->eca & ECA_SIGPI;
->  		scb_s->ecb |=3D scb_o->ecb & ECB_SRSI;
->  		write_scao(scb_s, virt_to_phys(&vsie_page->vsie_sca->ssca));
->  		scb_s->osda =3D virt_to_phys(scb_o);
->  	}
+>
+> >
+> > By the way I think this should be expressed better if I criticise myself here :)
+> >
+> > So like:
+> >
+> > 	if ((gup_flags & FOLL_PIN) && (gup_flags & FOLL_LONGTERM))
+> >
+> > Or even:
+> >
+> > 	/* Only an issue if we pin... */
+> > 	if (!(gup_flags & FOLL_PIN))
+> > 		return false;
+> > 	/* ...and that pin is longterm... */
+> > 	if (!(gup_flags & FOLL_LONGTERM))
+> > 		return false;
+> >
+> > But I'm confused as to why we are suddenly allowing something broken and what
+> > this hack flag is supposed to achieve?
+> >
+> > Shouldn't this rather be:
+> >
+> > 	/* Only an issue if we pin... */
+> > 	if (!(gup_flags & FOLL_PIN))
+> > 		return true;
+> > 	/* ...and that pin is longterm... */
+> > 	if (!(gup_flags & FOLL_LONGTERM))
+> > 		return true;
+> > 	/* ...and not overridden... */
+> > 	if (gup_flags & FOLL_LONGTERM_HACK)
+> > 		return true;
+> > 	/* ...and dirty tracking is required. */
+> > 	return !vma_needs_dirty_tracking(vma);
+> > }
+>
+> Yes, this looks much better. Will incorporate this.
 
-[Severity: High]
-Does this code use a stale vsie_sca pointer if the guest executes the same
-SCB with SIGPIF disabled?
+Thanks!
 
-When get_vsie_page() retrieves a cached vsie_page, it does not clear
-vsie_page->vsie_sca. If the guest previously executed this SCB with SIGPIF
-enabled, but now executes it with SIGPIF disabled, will shadow_scb_minimal()
-forcefully inject SIGPIF configuration using a stale pointer? Since vsie_sca
-can be recycled, could this cause cross-guest isolation breaches?
+>
+> >
+> > >          /*
+> > > @@ -2746,7 +2746,7 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
+> > >           * If we aren't pinning then no problematic write can occur. A long term
+> > >           * pin is the most egregious case so this is the one we disallow.
+> > >           */
+> > > -       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
+> > > +       if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE | FOLL_LONGTERM_HACK)) ==
+> > >              (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
+> > Yeah this is just a bit horrid having to stare at a this a while... So
+> > FOLL_LONGTERM_HACK would enable here.
+> >
+> > Be nice to avoid this form of it as it's difficult to understand, do something
+> > like above or a clearer version anyway (probably best abstracted to a small
+> > function).
+>
+> Sure.
+>
+> Also, I am also planning to rename (FOLL_LONGTERM_HACK ->
+> FOLL_PIN_NO_GUP_WRITE) in v2.
 
-[ ... ]
-> @@ -927,6 +927,21 @@ static int pin_sca(struct kvm *kvm, struct vsie_sca =
-*vsie_sca)
-[ ... ]
->  	vsie_sca->sca_o_nr_pages =3D pin_guest_pages(kvm, vsie_sca->sca_gpa, nr=
-_pages,
->  						   vsie_sca->sca_o_pages);
->  	if (WARN_ON_ONCE(vsie_sca->sca_o_nr_pages !=3D nr_pages))
->  		return -EIO;
+hmm but we have FOLL_LONGTERM as an adjunct to FOLL_PIN (doesn't make sense
+without - any checks that exist for that btw should be extended to this noew
+flag).
 
-[Severity: Medium]
-Is this WARN_ON_ONCE triggerable by a malicious guest?
+Also don't we want to encode the legacy aspect here?
 
-If the guest provides an unmapped sca_gpa, pin_guest_pages() will return
--EFAULT. This causes an underflow when compared to nr_pages, triggering the
-warning. Should guest-driven errors return directly without asserting to
-prevent syslog flooding?
+Maybe FOLL_LONGTERM_LEGACY_READONLY? Naming is hard :)
 
-[ ... ]
-> +static int get_sca_entry_addr(struct kvm *kvm, struct vsie_sca *vsie_sca=
-, u16 cpu_nr, gpa_t *gpa,
-> +			      hpa_t *hpa)
-> +{
-> +	hpa_t offset;
-> +	int pn;
-> +
-> +	/*
-> +	 * We cannot simply access the hva since the esca_block has typically
-> +	 * 4 pages (arch max 5 pages) that might not be continuous in g1 memory.
-> +	 * The bsca_block may also be stretched over two pages. Only the header
-> +	 * is guaranteed to be on the same page.
-> +	 */
-> +	if (test_bit(VSIE_SCA_ESCA, &vsie_sca->flags))
-> +		offset =3D offsetof(struct esca_block, cpu[cpu_nr]);
-> +	else
-> +		offset =3D offsetof(struct bsca_block, cpu[cpu_nr]);
-> +	pn =3D ((vsie_sca->sca_gpa & ~PAGE_MASK) + offset) >> PAGE_SHIFT;
-> +	if (WARN_ON_ONCE(pn >=3D vsie_sca->sca_o_nr_pages))
-> +		return -EINVAL;
-> +
-> +	if (gpa)
-> +		*gpa =3D vsie_sca->sca_o_pages[pn].gpa + offset;
-> +	if (hpa)
-> +		*hpa =3D vsie_sca->sca_o_pages[pn].hpa + offset;
-> +	return 0;
-> +}
+>
+> Please let me know if you have a preference.
+>
+> Thanks,
+>
+> Pankaj
+>
+> >
+> > >                  reject_file_backed = true;
+> > >
+> > > @@ -3180,7 +3180,7 @@ static int gup_fast_fallback(unsigned long start, unsigned long nr_pages,
+> > >          int locked = 0;
+> > >          int ret;
+> > >
+> > > -       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
+> > > +       if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM | FOLL_LONGTERM_HACK |
+> > >                                         FOLL_FORCE | FOLL_PIN | FOLL_GET |
+> > >                                         FOLL_FAST_ONLY | FOLL_NOFAULT |
+> > >                                         FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
+> > >
+> > >
+> > > --
+> > > Cheers,
+> > >
+> > > David
+> > Thanks, Lorenzo
 
-[Severity: Critical]
-Does this address arithmetic overshoot the pinned page boundaries?
-
-The offset calculated here is the full structural offset from the start of
-the SCA (which can be up to 5 * PAGE_SIZE). When calculating the hpa, this
-full offset is added to the base physical address of the pn-th page, rather
-than just the offset within that specific page. Can this instruct the
-hardware to access unpinned, arbitrary host physical memory?
-
-[ ... ]
-> +static struct vsie_sca *get_vsie_sca(struct kvm_vcpu *vcpu, struct kvm_s=
-390_sie_block *scb_o,
-> +				     gpa_t sca_gpa)
-> +{
-[ ... ]
-> +	} else {
-> +		/* reuse previously created vsie_sca allocation for different osca */
-> +		vsie_sca =3D get_reuseable_vsie_sca(kvm);
-> +		/* with nr_vcpus scas one must be reusable */
-> +		if (IS_ERR(vsie_sca))
-> +			goto out;
-> +		WARN_ON_ONCE(atomic_read(&vsie_sca->ref_count) !=3D 1);
-> +
-> +		xa_erase(&kvm->arch.vsie.osca_to_sca, vsie_sca->sca_gpa >> 6);
-> +		for (cpu_nr =3D 0; cpu_nr < KVM_S390_MAX_VSIE_VCPUS; cpu_nr++) {
-> +			vsie_page_n =3D vsie_sca->pages[cpu_nr];
-> +			if (!vsie_page_n)
-> +				continue;
-> +
-> +			/* unpin but keep the vsie_page for reuse */
-> +			unpin_scb(kvm, vsie_page_n);
-> +			release_gmap_shadow_safe(kvm, vsie_page_n);
-> +			memset(vsie_page_n, 0, sizeof(struct vsie_page));
-
-[Severity: Critical]
-Is it safe to memset the vsie_page while it is still in the addr_to_page
-XArray?
-
-The vsie_page is zeroed out here, clearing its VSIE_PAGE_IN_USE flag, but it
-is never removed from the addr_to_page XArray. A concurrent VCPU executing
-get_vsie_page() can perform a lockless xa_load(), observe the in-use flag as
-0, and claim the page. Could this cause the first thread to clear scb_o
-while the second thread actively executes shadow_scb() using the now-NULL
-pointer?
-
-> +			vsie_page_n->scb_gpa =3D ULONG_MAX;
-
-[Severity: Medium]
-Does this code leak XArray entries?
-
-Because scb_gpa is set to ULONG_MAX without calling xa_erase(), does this
-leave dangling pointers and leak XArray internal nodes?
-
-> +		}
-> +		unpin_sca(kvm, vsie_sca);
-> +		clear_vsie_sca(vsie_sca);
-> +	}
-> +
-> +	if (sie_uses_esca(scb_o))
-> +		__set_bit(VSIE_SCA_ESCA, &vsie_sca->flags);
-> +	vsie_sca->sca_gpa =3D sca_gpa;
-> +
-> +	/*
-> +	 * The pinned original sca will only be unpinned lazily to limit the
-> +	 * required amount of pins/unpins on each vsie entry/exit.
-> +	 * The unpin is done in the reuse vsie_sca allocation path above and
-> +	 * kvm_s390_vsie_destroy().
-> +	 */
-> +	rc =3D pin_sca(kvm, vsie_sca);
-> +	if (rc) {
-> +		vsie_sca =3D ERR_PTR(rc);
-> +		goto out;
-> +	}
-
-[Severity: High]
-Does this error path leak the vsie_sca reference?
-
-The ref_count is initialized to 1 earlier. If pin_sca() fails (e.g., due to
-an unmapped guest sca_gpa), the function returns ERR_PTR(rc) and the caller
-bypasses put_vsie_sca(). Since get_reuseable_vsie_sca() expects a ref_count
-of 0 for reuse, will these stranded objects permanently exhaust the finite
-pool of vsie_sca structures?
-
-[ ... ]
-> @@ -1032,8 +1242,8 @@ static int pin_blocks(struct kvm_vcpu *vcpu, struct=
- vsie_page *vsie_page)
->  	gpa_t gpa;
->  	int rc =3D 0;
-> =20
-> -	gpa =3D read_scao(vcpu->kvm, scb_o);
-> -	if (gpa) {
-> +	gpa =3D vsie_page->sca_gpa;
-> +	if (gpa && !vsie_page->vsie_sca) {
->  		rc =3D validate_scao(vcpu, scb_o, gpa);
-
-[Severity: High]
-Will this ignore dynamic updates to the guest's SCAO field?
-
-By reading the cached vsie_page->sca_gpa instead of dynamically calling
-read_scao(), KVM seems to lock the SCA address permanently after it is first
-set in vsie_page_init(). If a guest updates the SCAO field for a reused SCB,
-will KVM silently continue pinning and shadowing the old address?
-
-[ ... ]
-> +static struct vsie_page *get_vsie_page_cpu_nr(struct kvm_vcpu *vcpu, str=
-uct vsie_sca *vsie_sca,
-> +					      gpa_t scb_gpa, u16 cpu_nr)
-> +{
-> +	struct vsie_page *vsie_page, *vsie_page_new =3D NULL;
-> +	int rc;
-> +
-> +	vsie_page =3D vsie_sca->pages[cpu_nr];
-
-[Severity: Critical]
-Is the cpu_nr index validated against the bounds of the pages array?
-
-The cpu_nr parameter comes directly from the guest-controlled icpua field.
-Since it is not bounds-checked against KVM_S390_MAX_VSIE_VCPUS, can a
-malicious guest provide an out-of-bounds or negative index, causing KVM to
-read from and later overwrite arbitrary host memory with a newly allocated
-page pointer?
-
-> +	if (!vsie_page) {
-> +		vsie_page_new =3D alloc_vsie_page(vcpu->kvm);
-> +		if (!vsie_page_new)
-> +			return ERR_PTR(-ENOMEM);
-> +		vsie_page_new->vsie_sca =3D vsie_sca;
-> +		__set_bit(VSIE_PAGE_IN_USE, &vsie_page_new->flags);
-> +
-> +		/* be careful to not loose a page here if we raced */
-> +		scoped_guard(mutex, &vsie_sca->mutex) {
-> +			vsie_page =3D vsie_sca->pages[cpu_nr];
-> +			if (!vsie_page) {
-> +				WRITE_ONCE(vsie_sca->pages[cpu_nr], vsie_page_new);
-
-[Severity: High]
-Does this create a data race on the vsie_sca->pages array?
-
-This code writes to the array while holding vsie_sca->mutex. However,
-vsie_sca_update() also writes to this array but holds vsie_sca_lock instead
-of vsie_sca->mutex. Could this lock mismatch corrupt array pointers?
-
-> +				vsie_page =3D vsie_page_new;
-> +			}
-> +		}
-> +	}
-[ ... ]
-> +	if (vsie_page->scb_gpa !=3D scb_gpa || vsie_page->sca_gpa !=3D vsie_sca=
-->sca_gpa) {
-> +		scoped_guard(mutex, &vcpu->kvm->arch.vsie.mutex) {
-> +			unpin_scb(vcpu->kvm, vsie_page);
-> +			rc =3D vsie_page_init(vcpu, vsie_page, scb_gpa);
-> +		}
-> +		if (WARN_ON_ONCE(rc)) {
-> +			put_vsie_page(vsie_page);
-> +			return ERR_PTR(rc);
-> +		}
-> +	}
-
-[Severity: Critical]
-Does this error path leave vsie_page->scb_gpa with a stale value?
-
-If vsie_page_init() fails to pin the SCB, it returns an error but leaves
-vsie_page->scb_gpa updated to the unpinnable address. By returning ERR_PTR
-here without rolling back scb_gpa to ULONG_MAX, if this page is encountered
-again, vsie_page_init() will see the stale value and mistakenly call
-xa_erase(). Can this arbitrarily delete a valid entry belonging to another
-VCPU's SCB?
-
-Also, since the error is driven by guest-controlled input (an unpinnable
-SCB address), does WARN_ON_ONCE(rc) allow a guest to spam the host syslog?
-
-[ ... ]
-> +static int _shadow_sca(struct kvm_vcpu *vcpu, struct vsie_page *vsie_pag=
-e,
-> +		       struct vsie_sca *vsie_sca)
-> +{
-[ ... ]
-> +	for_each_set_bit_inv(cpu_nr, mcn, cpu_slots) {
-> +		rc =3D get_sca_entry_addr(vcpu->kvm, vsie_sca, cpu_nr, NULL, &sca_o_en=
-try_hpa);
-> +		if (rc)
-> +			goto err;
-> +
-> +		if (vsie_page->scb_o->icpua =3D=3D cpu_nr) {
-> +			vsie_sca_update(vsie_sca, cpu_nr, vsie_page, sca_o_entry_hpa);
-> +		} else {
-> +			sca_o_entry_hva =3D (hva_t)phys_to_virt(sca_o_entry_hpa);
-> +			if (is_esca)
-> +				scb_o_gpa =3D ((struct esca_entry *)sca_o_entry_hva)->sda;
-> +			else
-> +				scb_o_gpa =3D ((struct bsca_entry *)sca_o_entry_hva)->sda;
-
-[Severity: High]
-Are alignment checks missing when reading the guest-provided sda?
-
-The guest-provided sda is read from the SCA and passed to
-get_vsie_page_cpu_nr(), which maps a single 4096-byte page. If KVM does not
-enforce 512-byte alignment on sda, could a malicious guest provide an addre=
-ss
-near the end of the page? This would cause the 512-byte shadow_scb() read to
-cross the boundary of the pinned page into adjacent, unpinned host physical
-memory.
-
-> +			vsie_page_n =3D get_vsie_page_cpu_nr(vcpu, vsie_sca, scb_o_gpa, cpu_n=
-r);
-> +			if (!vsie_page_n)
-> +				rc =3D -EAGAIN;
-> +			if (IS_ERR(vsie_page_n))
-> +				rc =3D PTR_ERR(vsie_page_n);
-> +			if (rc)
-> +				goto err;
-> +			rc =3D shadow_scb(vcpu, vsie_page_n);
-> +			vsie_sca_update(vsie_sca, cpu_nr, vsie_page_n, sca_o_entry_hpa);
-> +			put_vsie_page(vsie_page_n);
-> +			if (rc)
-> +				goto err;
-> +		}
-> +	}
-
-[Severity: Critical]
-Does calling put_vsie_page() prematurely expose the shadow SCB?
-
-put_vsie_page() clears the VSIE_PAGE_IN_USE flag. Because these pages reside
-in the global addr_to_page pool, another host VCPU looking for a free page
-can observe the in-use flag as 0 and claim it. Can this concurrent VCPU call
-vsie_page_init() and overwrite the memory of the shadow SCB while the
-hardware is actively using it for nested execution?
-
-[ ... ]
->  void kvm_s390_vsie_destroy(struct kvm *kvm)
->  {
->  	struct vsie_page *vsie_page;
-> -	int i;
-> +	struct vsie_sca *vsie_sca;
-> +	int i, cpu_nr;
-> +
-> +	guard(mutex)(&kvm->arch.vsie.mutex);
-[ ... ]
-> +	for (i =3D 0; i < kvm->arch.vsie.sca_count; i++) {
-> +		vsie_sca =3D kvm->arch.vsie.scas[i];
-> +		kvm->arch.vsie.scas[i] =3D NULL;
-> +
-> +		for (cpu_nr =3D 0; cpu_nr < KVM_S390_MAX_VSIE_VCPUS; cpu_nr++) {
-> +			vsie_page =3D vsie_sca->pages[cpu_nr];
-> +			vsie_sca->pages[cpu_nr] =3D NULL;
-> +			if (!vsie_page)
-> +				continue;
-> +			unpin_scb(kvm, vsie_page);
-> +			kvm_s390_vsie_destroy_page(kvm, vsie_page);
-> +		}
-> +
-> +		unpin_sca(kvm, vsie_sca);
-> +		free_vsie_sca(kvm, vsie_sca);
-> +	}
-> +	kvm->arch.vsie.sca_count =3D 0;
->  }
-
-[Severity: Medium]
-Does this teardown leak XArray entries?
-
-When freeing vsie_sca objects, there are no calls to xa_erase() to remove
-them from the osca_to_sca XArray. Furthermore, xa_destroy() is missing for
-both addr_to_page and osca_to_sca. Will this permanently leak dynamically
-allocated XArray internal nodes every time a VM is destroyed?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-vsie-sigpi=
--v1-0-ea9f12066408@linux.ibm.com?part=3D16
+Cheers, Lorenzo
