@@ -1,143 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-170.mail.aliyun.com (out28-170.mail.aliyun.com [115.124.28.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0BC3A0B36;
-	Thu,  9 Jul 2026 00:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B5B3612FE;
+	Thu,  9 Jul 2026 01:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783558485; cv=none; b=dPEMihVAlUCDB+5FrPkYDVVpMDrMXtBoF6gU4GDZGXwliuJsby8tsJK6qAi6B7Drc7hsADetw59qRE9RvzU50geWlL0QQmnwsHlV0+j2+kGxgwg2JhasX83ch0k9DQzP8J++lm8JBrUEYunVQNpFS/esUWSjKyq8hZn4M1EQNbc=
+	t=1783558843; cv=none; b=JGz3ycuxNUeXBByqL0FE0g1yiBPZzHcKRhnkxT9mn2rQhlZ2DNLG+vpD/qrGLsbpRwUc4xyB2dr63PPKSH9DNLgGxERGoU5GLCjndnyL6VCeLGym8forM+/vvcZmEHFbRZ4foGToxc49DoXXTlsPGds6UA/4HI6mDBi/SFDxXwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783558485; c=relaxed/simple;
-	bh=q7gRFDO7XUzOJdjKk7dinZEmMYgpMJThzBI3Uxs/+tg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oc38eVLczi+B0K9cE7OabqCwipWXPdzCN4Xwe6Gy9E/pzWW3gSH5FmZUIsx9lKchKR/ORFDWuFmDVE0iYYpJGN4+/ywy1DlZ5TvePxejT+VqrSHThdDnxpr6ALrK7SX9Yjk8MtxEfL84lH/WeQTj0NgxJNuBKAtgYJWoT8IL3/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H2/Je1KW; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H2/Je1KW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F951F000E9;
-	Thu,  9 Jul 2026 00:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783558483;
-	bh=XECF9ZZpHN11rgO/zTL5kqZIcvgfBhcTmPU6H51lc1c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=H2/Je1KWH6NFl8IrbYIKHMHpL1xfKfzdMueKlx2N4MnKBLuppXzktOEEdynP0KyOm
-	 MnwSk0SE5aHBVvfZBg9DhCmiUdap7/9R1Yam88/ReZcvz6hoXp/SxHwDlvium4J8fN
-	 4umY6DqWPxm7cnt/v7TB5559BnljnOMq9ePPqRTapJ8rTpFKqo4/NAQZBeNTq+NcWo
-	 qxrJAWEI/VqfZksBXRs+uTBa2oA3MP9UHiEg26JbNdM7c7gHPHF0jOC3wm5bUtoRf9
-	 y0dA5XetW5f78UZL2qHxQ5P6EseTlHf9WgP47lBJ9IUbigevilOH6G6hTrVGC7uwvN
-	 hBA2lc0VV9G4A==
-From: Mark Brown <broonie@kernel.org>
-Date: Thu, 09 Jul 2026 01:52:06 +0100
-Subject: [PATCH v11 29/29] KVM: arm64: selftests: Add SME to set_id_regs
- test
+	s=arc-20240116; t=1783558843; c=relaxed/simple;
+	bh=vHPdmw0HAav8K6TuUujJlaQNOWkb8YcV9GUr9kJyc2A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oZddq9Ptz1FcME53/xg7wx/d7ZOmR8PGL0TcycoD+e28mep494ZMzoBNELKoWcaAzQs7njvFc5G97cMy97c6wj/VBBYLLRkfBBQTEP8iaYm+ieIvpVlADYL7a5s45HbPsEtIcnCl+IlKG/2EoLRPr9MOwazrQdJZZ2lKkFGDllo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08769999|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.0356557-0.0132607-0.951084;FP=7486103341572408819|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040074035;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iGmP6Nc_1783558828;
+Received: from 172.18.22.107(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iGmP6Nc_1783558828 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 09 Jul 2026 09:00:30 +0800
+Message-ID: <f2e91014-2428-4364-a46e-950ad5c1abf4@open-hieco.net>
+Date: Thu, 9 Jul 2026 09:00:28 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-kvm-arm64-sme-v11-29-32799f66db9d@kernel.org>
-References: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
-In-Reply-To: <20260709-kvm-arm64-sme-v11-0-32799f66db9d@kernel.org>
-To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Dave Martin <Dave.Martin@arm.com>, Fuad Tabba <tabba@google.com>, 
- Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
- Jean-Philippe Brucker <jpb@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Eric Auger <eric.auger@redhat.com>, Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3538; i=broonie@kernel.org;
- h=from:subject:message-id; bh=q7gRFDO7XUzOJdjKk7dinZEmMYgpMJThzBI3Uxs/+tg=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqTvDQs16QCTXEauVtjrbWyV2Px6ZCvKuy08jAY
- y0+0LaGtNmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCak7w0AAKCRAk1otyXVSH
- 0Iz8CACEeEtQJhfDBslFDOSm9NPbgHZAijJh78xy+OIeIjKoQODf3fgNp/NifRzM9FbsRm3D2uQ
- k2SGHr3/7NcJJe1MMNhCG3GRGxZqLSZQ9e6cdix0LD/yI3Ioy5rvcFlHtTk8SzKMeExQDuEwDi8
- oAO2wz8+d3IfdJDkvrbjGZ5PXd3LNzScqTnLqeakiwYmNi2NR4uLkJ+P43+EbCaOYWCTI0xh5mn
- 9FzseIDkpxuedwCK4N5+Q+i+lJ2WsMSqfZpwTY3V6x9Rz9cWxkJKKTqNoK/r8k9qpT1E9fNgNDn
- pDGYSiDJuYfeCT6qOSl6FmZgx6PMTHFqV0K8S/dZvCFSnbf5
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Jim Mattson
+ <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
+ <ak1-vF3qUjeszzSC@google.com>
+ <56649d82-bce1-4fac-b639-345376d219be@open-hieco.net>
+ <CAO9r8zP6vh4dP9j3RDahvm=diwudyfYvUfGtW763ehXavtCi1g@mail.gmail.com>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <CAO9r8zP6vh4dP9j3RDahvm=diwudyfYvUfGtW763ehXavtCi1g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Add coverage of the SME ID registers to set_id_regs, ID_AA64PFR1_EL1.SME
-becomes writable and we add ID_AA64SMFR0_EL1 and it's subfields.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 30 +++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index da9349bf31ab..26db507f6e73 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -155,6 +155,7 @@ static const struct reg_ftr_bits ftr_id_aa64pfr0_el1[] = {
- static const struct reg_ftr_bits ftr_id_aa64pfr1_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, DF2, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, CSV2_frac, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SME, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SSBS, ID_AA64PFR1_EL1_SSBS_NI),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, BT, 0),
- 	REG_FTR_END,
-@@ -212,6 +213,33 @@ static const struct reg_ftr_bits ftr_id_aa64mmfr3_el1[] = {
- 	REG_FTR_END,
- };
- 
-+static const struct reg_ftr_bits ftr_id_aa64smfr0_el1[] = {
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, FA64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, LUTv2, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SMEver, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F64F64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16B16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I8I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, BI32I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F32F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8FMA, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP4, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP2, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SBitPerm, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, AES, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SFEXPA, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, STMOP, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SMOP4, 0),
-+	REG_FTR_END,
-+};
-+
- static const struct reg_ftr_bits ftr_id_aa64zfr0_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F64MM, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F32MM, 0),
-@@ -244,6 +272,7 @@ static struct test_feature_reg test_regs[] = {
- 	TEST_REG(SYS_ID_AA64MMFR1_EL1, ftr_id_aa64mmfr1_el1),
- 	TEST_REG(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2_el1),
- 	TEST_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3_el1),
-+	TEST_REG(SYS_ID_AA64SMFR0_EL1, ftr_id_aa64smfr0_el1),
- 	TEST_REG(SYS_ID_AA64ZFR0_EL1, ftr_id_aa64zfr0_el1),
- };
- 
-@@ -263,6 +292,7 @@ static void guest_code(void)
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR1_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR2_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR3_EL1);
-+	GUEST_REG_SYNC(SYS_ID_AA64SMFR0_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64ZFR0_EL1);
- 	GUEST_REG_SYNC(SYS_MPIDR_EL1);
- 	GUEST_REG_SYNC(SYS_CLIDR_EL1);
+On 7/9/2026 1:47 AM, Yosry Ahmed wrote:
+> On Tue, Jul 7, 2026 at 5:53 PM Tina Zhang <zhang_wei@open-hieco.net> wrote:
+>>
+>>
+>>
+>> On 7/8/2026 6:34 AM, Yosry Ahmed wrote:
+>>> On Mon, Jun 29, 2026 at 08:52:03PM +0800, Tina Zhang wrote:
+>>>> The SVM DecodeAssists feature is reported in CPUID
+>>>> Fn8000_000A_EDX[7].  When available, hardware provides the length and bytes
+>>>> of the intercepted instruction in the VMCB, allowing a hypervisor to consume
+>>>> the decode information directly instead of re-decoding the instruction in
+>>>> software on relevant VM-Exit paths.
+>>>>
+>>>> KVM currently does not expose DecodeAssists to nested SVM guests, even when
+>>>> the host supports it, and does not propagate the hardware-provided
+>>>> instruction length and bytes from VMCB02 to VMCB12 on nested VM-Exit.  This
+>>>> leaves L1 with an incomplete virtual SVM CPUID model and prevents L1 from
+>>>> using the same hardware-assisted decode information that KVM receives for
+>>>> L2 exits.
+>>>>
+>>>> The missing virtualization was observed in practice with Hyper-V as L1,
+>>>> where the absence of DecodeAssists prevented nested SVM from being made
+>>>> available to L2 guests.  The fix is not Hyper-V specific.  Complete nested
+>>>> SVM virtualization of DecodeAssists by advertising the feature to L1 when
+>>>> supported by hardware, and by copying the decode-assist fields into VMCB12
+>>>> on nested VM-Exit.
+>>>>
+>>>> Add a selftest that triggers a nested page fault from L2 and verifies that
+>>>> L1 sees a non-zero instruction length and instruction bytes matching the
+>>>> faulting instruction.
+>>>
+>>> Taking a large step back from all the discussions in the other replies:
+>>> Is there a measurable performance improvement? Not trying to say we
+>>> shouldn't do this, but we should at least see what we're trading this
+>>> complexity for, it's obviously not straigtforward to fully virtualize
+>>> decode assists.
+>>
+>> I don't have a meaningful performance number yet. My current
+>> understanding is that the main value of the series is more about
+>> architectural completeness and enabling the Hyper-V L1 use case than
+>> about a direct performance win.
+>>
+>> The practical issue that triggered this is Hyper-V as L1 in Hyper-V
+>> appears to require DecodeAssists before enabling nested SVM for L2, so
+>> the visible benefit is enabling that nested virtualization
+>> configuration. Without exposing DecodeAssists to L1 Hyper-V, the nested
+>> svm cases like this (L0 KVM + L1 Hyper-V + L2 KVM) would be broken,
+>> because the Hyper-V doesn't think the platform have the nested
+>> virtualization capability, although the hardware supports it.
+> 
+> Interesting, that's basically running QEMU in WSL, right? Probably
+> worth including the motivation going forward.
+Yes, QEMU in WSL is one possible example, but the motivation is simply 
+to play nicer with running Hyper-V on top of KVM.
 
--- 
-2.47.3
+Hyper-V appears to use DecodeAssists as one of the requirements before 
+enabling nested SVM for its guests.  Exposing it lets users turn on and 
+use Hyper-V virtualization features inside a Windows VM when they need 
+them, instead of KVM blocking that setup because the virtual SVM model 
+is missing this feature.
+
+I'll include that motivation in the next version.
+
+
+Thanks,
+Tina
+
+
+> 
+>>
+>> I agree that fully virtualizing DecodeAssists is not straightforward,
+>> and the complexity needs to be justified.  My intent is to keep the
+>> implementation biased toward propagating already-available decode state:
+>> hardware VMCB02 bytes for hardware exits, emulator-provided bytes for
+>> synthesized exits when available, and only using an on-demand fetch as a
+>> fallback where no decoded state is available.
+>>
+>> Thanks,
+>> Tina
+>>
 
