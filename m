@@ -1,189 +1,268 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A066B4014AA;
-	Thu,  9 Jul 2026 09:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF95402420;
+	Thu,  9 Jul 2026 09:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588974; cv=none; b=NsHfFMs/fgUeRc0MGiyvjZ89EKG9EhC/jKhizAhPFeSXijuCeWfJ7h09YmnBh/fdgZ+vdVIxJX6UHhe1CHZJvic0J40CWn3GCPYXxH93WbDKTi6eTGcfPirsDedVsp/fSO6MsbfqQhSPYTLT2cUflqjrKMDsNRleR/fdMAxdLRI=
+	t=1783588981; cv=none; b=HNCIj3Cy9ycwKOjUfQYidgNsKN4giXGPcmcTNq0479wFiivE6D3ADoB1si9H5p7HtI5VjPRNOkpksFhQIaT7VYYjeqTavt6z00kJtBdhr+0UXYD2F+dRc5Flcy8EvHlDzXv6KfQhVjeso+PGmMLdFOyPG53x2T7u9osn0kn6t0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588974; c=relaxed/simple;
-	bh=DovFRHnCJmlUIV1T+I8K3kVXDlc37zRWpHkHjkGBTgc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cn/2JgOOPY0p5OHUgYrrqj+tol3N8RRPaUaG8i6vZlP7iya5Ouny1JtyZ10T/jNjjN5jh0ZFYmx7phbWPLjgIVt1g3k4AYFUMYz5GighpdBuVAcgzFCHKFh1Vi0A0GA9k1NZEh5pDrpPCiOPdMXqeObCgPWXHIHdQPgO9vaeQXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tSqABjlT; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783588981; c=relaxed/simple;
+	bh=4BKrVlttkq1sYXzKjTk+n29ZBCRS3n+YZE8Vx2GbDUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Dp2SPIWL2TWr83IqbSMVQMDuuy8qg77FeclME1gu9mmHqRM8KNQn1aPrTvjaD9PkP47IYQ1fgOMy6r7gVNzb6zmXc3e5FnS1x/GXVu63ZOJ24HIEiCwKPglrOL10AUTE6GhMPJJNRV3XDnJj8rI0/OpUXNnggCqNu1DY6l3Z/HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=mmQ4Gsu2; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tSqABjlT"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696IJUM479889;
-	Thu, 9 Jul 2026 09:22:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=NeGSAqmHSFJGag8Wz2XVtFVnQa6V
-	cSKrL4Vi7h0zPaY=; b=tSqABjlTAXZBBFwukegP6Lnv/DdI72k8FW+HcN4QwJSZ
-	MMUYTP4HNU5tKn006a2YtwxrZshgw84PjXMQcCM9fcH5twqQeA94DTVz95XHasqd
-	v1+JGrjTxOLW+x4l2k/VfadINIwKDMLnALVX1QsQNI45Ob8dLqWCbbEH98PBT52R
-	hEMcOE4+kMNbZbDcvKFCT18mdnGzBovUWFJCfhkU6PLUs5iAd4iAugXAd3f9RXGw
-	1SX4urAx7QzC656phE3lKX4IKBkJKyFk+zrqGhgPY2t8dUaeWN77ylYI3yBtSpAh
-	vUWsjMii54A6lxJYlyEqyCzAnoZ2VfgU/kNVvL0uSg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6stt18qt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 09:22:31 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6699JcB9005126;
-	Thu, 9 Jul 2026 09:22:30 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgqcp63-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 09:22:30 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6699MQub56033772
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 09:22:26 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C198E2004D;
-	Thu,  9 Jul 2026 09:22:26 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 002C820040;
-	Thu,  9 Jul 2026 09:22:22 +0000 (GMT)
-Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 09:22:22 +0000 (GMT)
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: maddy@linux.ibm.com
-Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
-        mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com,
-        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
-        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vishal Chourasia <vishalc@linux.ibm.com>
-Subject: [PATCH v4 0/2] KVM: powerpc: Use generic xfer to guest work function
-Date: Thu,  9 Jul 2026 14:51:38 +0530
-Message-ID: <20260709092140.1753715-2-vishalc@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="mmQ4Gsu2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=hW76NcHfCAc863bHQPVN6YnN2F7Apy3l1MFHbVdl0bg=;
+	b=mmQ4Gsu28+zFLngOBndMOzb5XtGkHOp39lyyUUZA5B0DUmwI4DGSRiZheUgdokQMbnTLG2KzY
+	39OWkWbu+vqjpohBHcjscv6dbPYncugU/zLUSbbjiGWt+JCRB8ZtlwGjEoNL/uaT1DSzw+jX58B
+	z4dwNKgHU5IIf0fnLC7nsrg=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gwq571LDkz1prjr;
+	Thu,  9 Jul 2026 17:13:31 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id CC9364057D;
+	Thu,  9 Jul 2026 17:22:47 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Thu, 9 Jul 2026 17:22:47 +0800
+Message-ID: <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
+Date: Thu, 9 Jul 2026 17:22:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: c5QV_cyQGKsdlNi-IjG1_4omYRWjXuKq
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX4UCUFG+KiNsw
- nz8fglEGzjRu/1OiMufAkircPFLm3HkQXQirMgknzEhbB+cwwfrHLFyqKr2QNxkzIvO8mm59t1Q
- cl+itvYMewr9SMwpVrhZk/qgAAQeYHw=
-X-Authority-Analysis: v=2.4 cv=DKW/JSNb c=1 sm=1 tr=0 ts=6a4f6857 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=mPUdJBykSDeI_Y7d1aUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: RNeLL5rzdFstpBDJ_3NNbXXOc5fgknlX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfXwI4gTRrwQrcf
- IQqhav6Fhm8EwVyhexyM2izqjw07d07j4xK4pIdiRan/HgT+/r0cNUE43QS8iFlR3Z3T7IUbGrv
- vgNrQUVQo2WNABC7gXH2z/sCxi/4ANKJfSaLQqA2HpYTz5m19soSs7PvZ+kcZ01u/gNK+5jnkq9
- sDVv6YoNYxKncsll+nqHDt3sYf1dD1PraSWNu0umCOR/sfDzm22OGxWzliiXMtAXXlfkdn0clKT
- UrZjngevaZ2909gA/J5uZTtrxwqxmhN/rfHBk6JkjxNZk1eIBou7+4SUvGABd5bznupieJZBGbr
- rfm/CQVMJ+jzde8y/KIl+qCYnhmnHyB6d1hprwn16dnANhvBspP3QqydQvLblyugHy6iPJ2uO+B
- a8jPhUXa282dgnmhSi8qXCIATxuLpMHgUj5iyZVRYkR4NIBaxtl+kfiY2j9wH7jwlCu8833xuCF
- UUhsq+Vp27M6wdddISQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607090089
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 04/18] PCI/TPH: Refactor pcie_enable_tph & add
+ explicit requester variant
+To: Alex Williamson <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+ <20260702124224.57168-5-fengchengwen@huawei.com>
+ <20260708173325.599bc892@shazbot.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260708173325.599bc892@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-This series fixes a KVM scheduling bug on Book3S HV where a guest VM
-under a cpu.max bandwidth limit can run arbitrarily past its quota and
-then appear frozen for minutes afterwards. 
+Hi Alex,
 
-== Problem ==
+On 7/9/2026 7:33 AM, Alex Williamson wrote:
+> On Thu, 2 Jul 2026 20:42:10 +0800
+> Chengwen Feng <fengchengwen@huawei.com> wrote:
+> 
+>> Refactor pcie_enable_tph implementation: extract core logic into static
+>> internal enable_tph() helper accepting explicit requester type.
+>>
+>> - Preserve original pcie_enable_tph() unchanged as auto wrapper; it
+>>   auto-selects EXT/standard TPH requester per device capability, existing
+>>   bnxt/mlx5 callers require zero modification.
+>> - Add exported pcie_enable_tph_explicit() with bool 'extended' parameter
+>>   for explicit STD/EXT selection, used by upcoming VFIO TPH support.
+>>
+>> Input validation for EXT_TPH availability is retained inside helper to
+>> reject invalid explicit EXT request if hardware does not support extended
+>> requester.
+> 
+> I'll leave final judgment on the APi to Bjorn, but I'd tend towards
+> defining tph_mode and tph_req_type as enums, store the max available
+> tph_req_type on the pci_dev.tph_max_type, and have the base function
+> take exactly those enums as args, get rid of the bool wrapper.  Then the
+> existing function just becomes:
+> 
+> int pcie_enable_tph(struct pci_dev *pdev, int mode)
+> {
+> 	return pcie_enable_tph_type(pdev, (enum tph_mode)mode,
+> 				    pdev->tph_max_type);
+> }
+> 
+> (Given the 2 existing callers, this could also be easily changed to
+> take enum tph_mode as the arg as well)
+> 
+> This might also disambiguate how this series conflates tph_cap to mean
+> TPH capability is not present or not available to instead retain
+> tph_cap as simply the offset of the capability and (tph_max_type ==
+> PCI_TPH_REQ_DISABLE) means it's not available.
+> 
+> Validation in the base function is also simplified:
+> 
+> 	if (tph_req_type == PCI_TPH_REQ_DISABLE ||
+> 	    tph_req_type > pdev->tph_max_type)
+> 		return -EINVAL;
+> 
+> Same comment for patch 5, expose the base function as "_type" with the
+> enum tph_req_type (the precedent is already there for enum
+> tph_mem_type).  The wrapper for the existing interface is the same as
+> you have, the base function adds the same test as above, modulo
+> s/tph_max_type/tph_req_type/.  Thanks,
 
-Since commit 2cd571245b43 ("sched/fair: Add related data structure for
-task based throttle"), merged in v6.18, CFS bandwidth throttling no
-longer dequeues a task directly. Instead it queues a task_work item via
-task_work_add(..., TWA_RESUME), sets TIF_NOTIFY_RESUME, and relies on
-that work running on the return path to actually dequeue the task.
+Thanks for your suggestion on typed enum refactoring for the TPH enable API.
+After checking headers, two groups of symbols already exist in pci_regs.h:
+- PCI_TPH_ST_NS_MODE, PCI_TPH_ST_IV_MODE, PCI_TPH_ST_DS_MODE
+- PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY, PCI_TPH_REQ_EXT_TPH
 
-The powerpc KVM run loops only test TIF_SIGPENDING and TIF_NEED_RESCHED
-before re-entering the guest; TIF_NOTIFY_RESUME is never checked. For a
-CPU-bound guest that generates few KVM exits back to userspace, the vCPU
-thread never returns to user mode, so the deferred throttle task_work
-never runs. The guest keeps running unchecked while its
-runtime_remaining goes increasingly negative, and once it finally does
-exit to userspace it is legitimately throttled for minutes while the
-accrued debt is repaid at the bandwidth-timer replenishment rate.
+To avoid duplicate local enum definitions and align with PCI register headers,
+I will skip adding custom enums and use u8 for mode/req_type parameters.
+Comments will restrict valid inputs to the standard PCI macros.
 
-The generic xfer-to-guest-mode infrastructure (commit 935ace2fb5cc,
-"entry: Provide infrastructure for work before transitioning to guest
-mode") exists precisely to handle this kind of work before each guest
-entry. A full trace-backed root-cause analysis was posted with v1 [2].
+I will adjust the TPH enable APIs for v20 with these changes:
+1. Change original pcie_enable_tph() from int mode to u8 mode;
+2. Add unified base entry pcie_enable_tph_type(pdev, u8 mode, u8 req_type);
+3. Rework explicit entry to pass u8 req_type, drop ambiguous bool extended;
+4. Add tph_max_type to struct pci_dev for negotiated max requester type;
+5. Unify validation check as you proposed:
+   if (req_type == PCI_TPH_REQ_DISABLE || req_type > pdev->tph_max_type)
+       return -EINVAL;
+6. Retain original pcie_enable_tph() as thin compat wrapper filling tph_max_type,
+   so existing bnxt/mlx5 callers need zero source code modification.
 
-== Fix ==
+Capability tracking will also be disambiguated per your feedback:
+tph_cap stores only TPH config space offset, tph_max_type == DISABLE means
+TPH is unavailable after endpoint and root port topology negotiation.
 
-Opt powerpc KVM into VIRT_XFER_TO_GUEST_WORK and use the generic
-xfer_to_guest_mode helpers to check for and handle pending guest-mode
-work (reschedule, signals, and TIF_NOTIFY_RESUME task_work such as the
-deferred CFS throttle) on every guest re-entry:
+Thanks
 
-- Book3S HV: both run loops — kvmhv_run_single_vcpu() for POWER9+ and
-  kvmppc_run_vcpu() for pre-POWER9.
-- Book3S PR and BookE: the common kvmppc_prepare_to_enter(), which
-  likewise only checked need_resched()/signal_pending().
-
-== Changes from v3 ==
-- BookE: add local_irq_disable() before hard_irq_disable() on the emulated
-  MTMSR[WE] path so lockdep's irq-tracing state is resynced, fixing a
-  lockdep_assert_irqs_disabled() splat in the following
-  xfer_to_guest_mode_prepare(). (Reported by Sashiko AI review)
-
-== Changes from v2 ==
-- Add xfer_to_guest_mode_prepare() check for pending rcuog wakeup before
-  entering guest
-- While at it patch all exit points for kvmhv_run_single_vcpu() via
-  done label matching the corresponding trace_kvmppc_run_vcpu_enter()
-  with trace_kvmppc_run_vcpu_exit() tracepoint. (Reported by Sashiko AI
-  review)
-- Include posix cpu timer enablement patch by Shrikanth as part of this
-  series
-
-== Changes from v1 ==
-- Extend the fix beyond Book3S HV to the shared powerpc KVM entry path:
-  also convert the common kvmppc_prepare_to_enter() used by Book3S PR
-  and BookE. (Shrikanth Hegde)
-- Move "select VIRT_XFER_TO_GUEST_WORK" from KVM_BOOK3S_64_HV up to the
-  common "config KVM" so every powerpc KVM variant gets the
-  infrastructure.
-- Drop the redundant signal_pending() recheck and its sigpend label in
-  kvmhv_run_single_vcpu(); xfer_to_guest_mode_work_pending() is a
-  superset of it.
-- Preserve the E500 CONFIG_KVM_EXIT_TIMING histogram on the signal path
-  via an explicit kvmppc_set_exit_type(SIGNAL_EXITS).
-
-[1] https://lore.kernel.org/all/20250421102837.78515-2-sshegde@linux.ibm.com/
-[2] https://lore.kernel.org/all/20260626105449.2897924-2-vishalc@linux.ibm.com/
-
-Shrikanth Hegde (1):
-  powerpc: enable to run posix cpu timers in task context
-
-Vishal Chourasia (1):
-  KVM: powerpc: Use generic xfer to guest work function
-
- arch/powerpc/Kconfig         |  1 +
- arch/powerpc/kvm/Kconfig     |  1 +
- arch/powerpc/kvm/book3s_hv.c | 39 +++++++++++++++++++++++-------------
- arch/powerpc/kvm/booke.c     |  1 +
- arch/powerpc/kvm/powerpc.c   | 37 +++++++++++++++++++++++++---------
- 5 files changed, 56 insertions(+), 23 deletions(-)
-
--- 
-2.54.0
+> 
+> Alex
+>  
+>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>> ---
+>>  drivers/pci/tph.c       | 68 +++++++++++++++++++++++++++++------------
+>>  include/linux/pci-tph.h |  4 +++
+>>  2 files changed, 52 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+>> index 4097787ea98a..c22eb7f4b0bd 100644
+>> --- a/drivers/pci/tph.c
+>> +++ b/drivers/pci/tph.c
+>> @@ -363,23 +363,7 @@ void pcie_disable_tph(struct pci_dev *pdev)
+>>  }
+>>  EXPORT_SYMBOL(pcie_disable_tph);
+>>  
+>> -/**
+>> - * pcie_enable_tph - Enable TPH support for device using a specific ST mode
+>> - * @pdev: PCI device
+>> - * @mode: ST mode to enable. Current supported modes include:
+>> - *
+>> - *   - PCI_TPH_ST_NS_MODE: NO ST Mode
+>> - *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
+>> - *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
+>> - *
+>> - * Check whether the mode is actually supported by the device before enabling
+>> - * and return an error if not. Additionally determine what types of requests,
+>> - * TPH or extended TPH, can be issued by the device based on its TPH requester
+>> - * capability and the Root Port's completer capability.
+>> - *
+>> - * Return: 0 on success, otherwise negative value (-errno)
+>> - */
+>> -int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>> +static int enable_tph(struct pci_dev *pdev, int mode, u8 req_type)
+>>  {
+>>  	u32 reg;
+>>  	u8 dev_modes;
+>> @@ -400,10 +384,11 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>  	if (!((1 << mode) & dev_modes))
+>>  		return -EINVAL;
+>>  
+>> -	pdev->tph_mode = mode;
+>> +	if (req_type == PCI_TPH_REQ_EXT_TPH && !pdev->tph_ext_support)
+>> +		return -EINVAL;
+>>  
+>> -	pdev->tph_req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
+>> -						     PCI_TPH_REQ_TPH_ONLY;
+>> +	pdev->tph_mode = mode;
+>> +	pdev->tph_req_type = req_type;
+>>  
+>>  	/* Write them into TPH control register */
+>>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
+>> @@ -417,8 +402,51 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>  
+>>  	return 0;
+>>  }
+>> +
+>> +/**
+>> + * pcie_enable_tph - Enable TPH support for device using a specific ST mode
+>> + * @pdev: PCI device
+>> + * @mode: ST mode to enable. Current supported modes include:
+>> + *
+>> + *   - PCI_TPH_ST_NS_MODE: NO ST Mode
+>> + *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
+>> + *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
+>> + *
+>> + * Check whether the mode is actually supported by the device before enabling
+>> + * and return an error if not. Additionally determine what types of requests,
+>> + * TPH or extended TPH, can be issued by the device based on its TPH requester
+>> + * capability and the Root Port's completer capability.
+>> + *
+>> + * Return: 0 on success, otherwise negative value (-errno)
+>> + */
+>> +int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>> +{
+>> +	u8 req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
+>> +					      PCI_TPH_REQ_TPH_ONLY;
+>> +	return enable_tph(pdev, mode, req_type);
+>> +}
+>>  EXPORT_SYMBOL(pcie_enable_tph);
+>>  
+>> +/**
+>> + * pcie_enable_tph_explicit - Enable TPH with explicit requester selection
+>> + * @pdev: PCI device to operate
+>> + * @mode: ST table operating mode (NS/IV/DS)
+>> + * @extended: true = EXT_TPH, false = standard TPH only
+>> + *
+>> + * Unlike auto-detecting pcie_enable_tph(), caller selects requester type
+>> + * manually instead of hardware auto-selection. Rejects EXT_TPH request
+>> + * if device lacks extended requester capability.
+>> + *
+>> + * Return: 0 on success, negative errno on failure.
+>> + */
+>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended)
+>> +{
+>> +	u8 req_type = extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
+>> +
+>> +	return enable_tph(pdev, mode, req_type);
+>> +}
+>> +EXPORT_SYMBOL(pcie_enable_tph_explicit);
+>> +
+>>  void pci_restore_tph_state(struct pci_dev *pdev)
+>>  {
+>>  	struct pci_cap_saved_state *save_state;
+>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+>> index 6f02b020d7d7..ca0faa98afac 100644
+>> --- a/include/linux/pci-tph.h
+>> +++ b/include/linux/pci-tph.h
+>> @@ -29,6 +29,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>>  			unsigned int cpu, u16 *tag);
+>>  void pcie_disable_tph(struct pci_dev *pdev);
+>>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
+>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+>>  #else
+>> @@ -42,6 +43,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>  { return -EINVAL; }
+>> +static inline int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode,
+>> +					   bool extended)
+>> +{ return -EINVAL; }
+>>  static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+>>  { return 0; }
+>>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+> 
 
