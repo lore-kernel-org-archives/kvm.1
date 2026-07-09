@@ -1,161 +1,179 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643E8411668
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 16:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783613323; cv=none; b=InfzyTFFQGNrjvsSxK7k0TzrD9jzhb+XmUi/2rnfJonbvz5y8IaeyDWLQEWWZguo1vnBAxkL8NYYaSWwk/aKkGJqNvAQb59PzzauEsMEsTSUB+cod+dBf7p25Mg+DBkPE5fL31wyCAcIKAZck1yWERw8amf4C4BAoExf1obzliE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783613323; c=relaxed/simple;
-	bh=iLKsOBa+kqWdg9uz2A0Lq2s1xMh6kf/4nwlQJp4SKcU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ls/g5BHA32Hz1L1QffNdxNjNElwM9noBToZHr1zjd572rWZgXGC6luXEeYWXl7LPHWBaWTc2Be7kaPv6u/3e6IvMqolQ0AnqQz3vJZO7v7ebCNWLsTQnxsbyzDzHesjN3xv0cPiOoCqi8137Tfl5XQnr5J8hysTgbw09wO1FlDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ujro1y8F; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DC642E007
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 16:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783613455; cv=pass; b=XBWpbIUp61sOesRIbtLry+5pzZPd6ZoaI8zEAxOon+7TtwiRk/MPTnhMvbCRzc0Z4URmhbeNOlWbLwUfjG/XaqAwU2zFg40gGbR0wDgcOKZPG30DTqSyMgZygTnvzNYDRNbBc4Uqqta8NeOsedFnaBqggRddxhMrGq+I3eKLwrk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783613455; c=relaxed/simple;
+	bh=wv3vHTCWuihF/zgcXlJsLynv1NiR9V/s2dlAW+MVfR4=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F5vf6PdnKSBmAD3REUJb9QtP+Arv6V2jkLuaYpv1jFNXhPpCfGORv5oIZeWBaCq1nDJn+6LJRJuanB3rkhcCLsm/0PODAD0kzoYTaWcgA7z4QW3/Sbkc1PPQyhGbLDS9niOLJiP29PilQTxbLMdi4wAEPaHwwSKsUaqejsg9zYE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JP8QqHTs; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ujro1y8F"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669EITsc2171567;
-	Thu, 9 Jul 2026 16:08:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2USklm
-	ugU4nPeGq0rHesdoPn50kecPwdJ+WBZMJPFfk=; b=Ujro1y8FPrReVoV7AST3O7
-	Y3Zfp3rIO/tGXN5pahEWp/JnrEtpLowV14TA4ioQsmZ0aJbwC6dkSGOlPwfv/PlC
-	tcWFYE66pxY+TYQw8dWp1yVh9WkVhUUMovT5B3/ecRNfEl0HL3iSHke73a4h4AYh
-	A3urN6y2w2ZTgLJ9LQTdGKcJonnXHYi97PcLsqUMAXyM/InMMLIAN9wPmi/VFB6V
-	zU8NeXfbWBATOgJamdmwrkTkBTg4NMqILVqCJZAbWFMiFk6AVAE3nC146bxlWGk9
-	cOQ7dR4u9gk7gcZf7U3YXlRC7YB6XnM74/T5PIoOk1QMOV0T2sDw9HCNlRqCo4KA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sw52jfm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 16:08:32 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669G4cca026361;
-	Thu, 9 Jul 2026 16:08:31 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7cvwe2xh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 16:08:31 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669G8Te458393078
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 16:08:29 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB2A85805B;
-	Thu,  9 Jul 2026 16:08:29 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E6925805C;
-	Thu,  9 Jul 2026 16:08:24 +0000 (GMT)
-Received: from [9.39.26.55] (unknown [9.39.26.55])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 16:08:23 +0000 (GMT)
-Message-ID: <4dd23a35-8dcc-422c-8ffa-2387abf92558@linux.ibm.com>
-Date: Thu, 9 Jul 2026 21:38:21 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JP8QqHTs"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c96c92c0980so512a12.3
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 09:10:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783613452; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X0HTURDo8jHDagWrJ7S6uvy7YwGD3fiblWqlfhkt3D/cUvI+bZsRLfRbpFH9/lEL90
+         SeG0c2OQqMVqGpx2BwDNOkJgF5cOAaSx61RkBxoq/0JjKuxUnXYH5BUryNsZhDaV61Ke
+         tRRywfOS+xO9bLYLs5uWAC71R8m0MJZ2T0RK9vZTBNxwYbOXlJn6Iw/5Mz08p5JPhpNj
+         em4JNUyNRza8yYXsgAsIUL891/hxBTX3zFeqNsQqUqHN82pAPBUg2bohzIP7OIyZzXqi
+         QAEkAT5yvIz7GqkngBj863WaiumGy6zVHmJOKNjmPD7uYIRmXUbpd1F7tOF0b056IHOl
+         Ovog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=dRgPKkc6EWAkS4dcj/kLS195vv0DhLEmOtUeDj6PlGI=;
+        fh=AzyHLOCn/pJQNjl0QkZxqYRGK8d2WsiPkPxK5bKmCbY=;
+        b=RQQKS+pFfpC5BgDSkUgBwMItL4/oMGA7JmYw7fZ15sFNHBFl9GTzXMfQX3SpAc+q+i
+         svm6cBwXAUQgM8xGUKbG+LTp/uGhx3oENe37MbXEu2A1lcZ9clgv7lZ2j47Y2EtssLqR
+         cSM99GCrghlSjFOFoIrdd9rlsB17t1wOjIuBSogS+us4nGWpSeXNljhReMYpEjCW/x1C
+         ZIj+s2f4ug3rHYB4vkgDGlFvTvEDiJ0M7Bj7QDVaXwdrnyxnANCPDFrxFb7Hr5ulZX/X
+         HHwYNQL/mFk/BOqEIu3ZaGVkcgu2qD39yAPxLrgJ4SBcN/2fQCWrdk5arzgv4AfqYCn9
+         G40Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783613452; x=1784218252; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dRgPKkc6EWAkS4dcj/kLS195vv0DhLEmOtUeDj6PlGI=;
+        b=JP8QqHTs3VxKYHn9BwGAcPvvJGMBqcINtLiRaXjleE7QqXrPI2kP0So/ENNXBo9lEu
+         eC7FLqH7GfHWmPx+Nf/D1WPDKb4GeHOHRo9QgPtBxucbxIJthVvnUR7n1/W2zcafiPnz
+         T77GxNsAqjkFzmVmUevi8bX3gMIGfKTgGSqs4egw4m2CCbtvoTtw2AXTlb3Uy8mVAPrT
+         Nh3cb2bBQgrSMp0mQ5zfoWoyG+69CrwXavH+UowAZvrPiJJjCn4QVUPtkkswBZy1D+Qr
+         D1TR/bnlyrHhm2+R9LjXti/BYV8AEDqB5+UhyuQkSUGsB529q8edhlDnwYUD5P1blqf8
+         E8nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783613452; x=1784218252;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dRgPKkc6EWAkS4dcj/kLS195vv0DhLEmOtUeDj6PlGI=;
+        b=mGxEudyuRtJ4rQI3r9vJPnp/KwqHVHMpXzGF6dQtDZYwF+qM7Fkaikyd1URplSnQoF
+         4Wx66JjSJZIINphhW9zdbzd+yxxbi7hPJvqXGmca0DvlmVtRlmAWbChj32eNnEZRUVfF
+         Zm/AeuN4BlOJr5udf/uPkPDlU6pURT1bBFu909bhAXemBTcYvm+YW1jmeLPApLejek2c
+         9aGbwbaMDWppU0uEtdbPNEUKFCy8bWnTBMMeE8ZMYPZzNsk8o7OJXs8IfmeZjNPVaOMQ
+         ZYF68dFxBDtB8BiYoSvVSPdtwCuh91B9JkH+gxdpSE/w538XuRJMs3pTpOqT8R98af+C
+         XJhg==
+X-Forwarded-Encrypted: i=1; AHgh+RpMHJZbezEAb/8eORxTF9SOw9ZY0fgc59qtU038SwqIIUTTxbomT4ofwatrahB+S04unKg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwUZzFM03j6hWL1SP/8B6pxEWUETTreIm4p+un2mXZGDaz7bEo
+	sRY+GTEoSs5RCNeNVPY7z+4Xf2POMTCdk5fe31DIgOyf8XkhhCNAykpRlgBtjeFd0n4kticfQAV
+	Yphl/Q5KR9tUpevMhXlLQS+L181mAWT4k/iY3YjUT
+X-Gm-Gg: AfdE7cklKE+7q5axOsRlXrGTn6NPdkOGUr0dhmkxW+i6rUvKnEkAuzPjquiWjoYyy74
+	NGPJnKe7ohgDos72b/xFBIs7QUgDpCiROFNQkBjqpeV2ueJxjaDVZ2HqOwCfNejo3CHgckBcpkf
+	6ZKFzT/JruXHkoyRd9P069FsKgB3Hrf6+2qpIDl+ppsCOSpioVC4+nq+3TWUxk3RRNpsvTHP+WO
+	9pntT2QDBnFUbuyeNuu8xZoHaWon/k/juc4zrZfKznN3F+NDrMew4oHG64Dz6mI20hY5l3Kr5bB
+	AjsbMKkfRGyYZl2YJ6+N8Ru8XgXHlR7pUzU0Fu3skbntmVlzQmYjo1JXbSyUmWgiy+Njkg==
+X-Received: by 2002:a05:6a20:430e:b0:3b3:2703:110 with SMTP id
+ adf61e73a8af0-3c0bc8aa628mr10014470637.4.1783613451372; Thu, 09 Jul 2026
+ 09:10:51 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Jul 2026 09:10:50 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Jul 2026 09:10:50 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ak-mgRaezT7gSJ1P@google.com>
+References: <20260630222607.497895-1-seanjc@google.com> <20260630222607.497895-11-seanjc@google.com>
+ <CAEvNRgEFvh8T=v9jzxyYcc3NQzS2-uJctNuZix+mNQO8gwc-RQ@mail.gmail.com>
+ <ak7rOdtcYyZ4zpN7@google.com> <ak-mgRaezT7gSJ1P@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 4/6] powerpc: gitlab CI update
-Content-Language: en-GB
-To: Thomas Huth <thuth@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>
-Cc: npiggin@gmail.com, lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, andrew.jones@linux.dev, sbhat@linux.ibm.com,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20260708105122.1177210-1-rathc@linux.ibm.com>
- <20260708105122.1177210-5-rathc@linux.ibm.com>
- <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
- <8c9b739c-8a9b-4e9a-8e43-7b1a6e1aa330@linux.ibm.com>
- <73573868-2fb9-445d-b5c6-02166a0feb25@redhat.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <73573868-2fb9-445d-b5c6-02166a0feb25@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: O2yiXJWz5U9dnQ341k-1M2kyCu2vucWq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDE1NiBTYWx0ZWRfXzFad+uXX1GLp
- u17Muc2Wou+H4B7T5zEzWF4V83IQZ+Ibbcj3XQsImSaibYJI2eRYxnAQXgKCHrZwpmd2jR8wrOp
- J8lr3dB+pht1KtLp4soblPhmCGvKEmuH3YavcD5+BA+5RZ7XzO1BfSWpFB+Y5Z6SmKWOCaloKEi
- w4mNh7C8tUCq22AovO87i8tgXNYdQuQJa987SJC+nI0bMeN91e9ZFVe/kw5IKIyV4r2jpJnMR/2
- iq+sYNUpvOCjhVRqZVnru4L6nZpb9AsO1FmQf83aKOSbe0QwZF1QdftalalBvP43nPe37qzzv8v
- PEgg3K3PmzPzNo50bggCN3P68qGcQgbqPDKLSMVsHaPoFfG3rtSV9wHrLNF4BDOzfaM9p1Fgxea
- p2Ctlxx3Df7OKyTEeRQYkJ7n7ZLCjhpl7pgKU9oqtddZ3W+mYfKJEpPMwQe5Sv2vCdeEC1omgqE
- 0uDj6dc5CN7sXqBKRSw==
-X-Proofpoint-ORIG-GUID: YQ5i9Wu4PrujvY0hvAo_Kw3C4XGN2wIv
-X-Authority-Analysis: v=2.4 cv=FqQ1OWrq c=1 sm=1 tr=0 ts=6a4fc780 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
- a=dx41-kcvcX-jZ8cbK5AA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDE1NiBTYWx0ZWRfXyzRNW+oE94Q9
- mmzEI+aBD6NXbOAPUSCVUE3p/PyE+JgXeKt9QjmEs2mxDjUN6ymca4cpGzq6xY6B4veTg0+He5S
- cMjeNWBkuq6tkH1ADE/eAPWkhCbf2RM=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_03,2026-07-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090156
+Date: Thu, 9 Jul 2026 09:10:50 -0700
+X-Gm-Features: AVVi8Ce07ifYOUcVsvCnOAllnWsqT2wEUeMxIOOv5G6X8GlsmCwR68ZK9ajESXk
+Message-ID: <CAEvNRgGyPU+x75CR2eL5KqiujZoWSU3zf_NFSJa_2LdbUTTJ-w@mail.gmail.com>
+Subject: Re: [PATCH v3 10/12] KVM: SEV: Forcefully invalidate SNP VMSA if its
+ backing gmem page is zapped
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Sean Christopherson <seanjc@google.com> writes:
 
-
-On 09/07/26 8:46 pm, Thomas Huth wrote:
-> On 09/07/2026 16.32, Harsh Prateek Bora wrote:
->> + folks who might be interested.
+> On Wed, Jul 08, 2026, Sean Christopherson wrote:
+>> On Wed, Jul 08, 2026, Ackerley Tng wrote:
+>> > Sean Christopherson <seanjc@google.com> writes:
+>> >
+>> > >
+>> > > [...snip...]
+>> > >
+>> > > @@ -1902,6 +1905,7 @@ struct kvm_x86_ops {
+>> > >  	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>> > >  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+>> > >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>> > > +	void (*gmem_invalidate_range)(struct kvm *kvm, struct kvm_gfn_range *range);
+>> > >  	void (*gmem_reclaim_memory)(kvm_pfn_t start, kvm_pfn_t end);
+>> > >  #endif
+>> >
+>> > I suggested CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM_MEMORY before looking at
+>> > this patch.
+>> >
+>> > Considering this, it seems like gmem_invalidate_range is a true
+>> > invalidation request and .gmem_reclaim_memory is too late for
+>> > invalidation as you explained in the commit message of the renaming
+>> > patch.
+>> >
+>> > Perhaps the new .gmem_invalidate_range should take over
+>> > CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE, and .gmem_reclaim_memory should
+>> > use a new CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM_MEMORY?
+>> >
+>> > Are they both invalidations in your opinion?
 >>
->> Hi Thomas,
+>> No, definitely not, I just didn't want to add another Kconfig.  And I still don't,
+>> but I agree that lumping .gmem_reclaim_memory() into GMEM_INVALIDATE doesn't work,
+>> because the behavior of sev_gmem_reclaim_memory() and sev_gmem_invalidate_range()
+>> are completely unrelated.
 >>
->> On 09/07/26 12:16 pm, Thomas Huth wrote:
->>>> +++ b/powerpc/unittests.cfg
->>>> @@ -24,6 +24,14 @@ file = selftest-migration.elf
->>>>   machine = pseries
->>>>   groups = selftest migration
->>>> +# make a kvm-only version for CI for now
->>>> +# TCG accel support with Qemu and distro release used in gitlab CI 
->>>> needs to checked.
->>>> +[selftest-migration-ci]
->>>> +file = selftest-migration.elf
->>>> +machine = pseries
->>>> +groups = nodefault selftest migration
->>>> +accel = kvm
->>>
->>> This does not make sense (or I don't understand it) - gitlab-CI 
->>> currently only runs with TCG for the ppc64 jobs, so adding a separate 
->>> test for this with "accel = kvm" just adds a job there that will 
->>> always be skipped. What should this be good for?
+>> > If we're clumping SNP configs together,
+>> > CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE is also only enabled by SNP...
 >>
->> I understand it may get skipped in gitlab CI for kvm-unit-tests,
->> but it might be helpful to those who can run it on their Power HW.
->> If the job can safely skip on non-ppc HW, I hope it's fine?
->> We would like to get it integrated in IBM's internal CI with Power HW.
-> You mean you also use a gitlab instance internally within IBM? ... 
-> otherwise it does not make sense to add this to the .gitlab-ci.yml file 
-> (which you did earlier in this patch).
+>> Yeah, but while I don't like a Kconfig explosion, I don't really want to end up
+>> with CONFIG_HAVE_KVM_ARCH_GMEM_SNP_HOOKS either.
+>>
+>> Oh, wait, isn't CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE going away?  I was going to say
+>> we could bundle .prepare() and .reclaim() together, because conceptually they are
+>> two bookends for updating out-of-band metadata, but that doesn't make a whole lot
+>> of sense if .prepare() is going to disappear.
 
-I do not think we currently use a gitlab runner as of now, but that's a 
-future possibility.
+Notes from guest_memfd biweekly today:
 
-Chinmay,
-My understanding is that we wanted to use kvm accel also when executed
-manually using scripts, as we wanted it to be integrated in IBM's
-internal CI that runs on Power HW. Do we need additional changes for that?
+1. .gmem_prepare() is not going away! Preparation tracking within
+   guest_memfd already went away.
 
-regards,
-Harsh
+2. Prepare/reclaim can be combined into a single function, taking pfn,
+   size (or order, order is preferred since it also communicates the
+   order at which to prepare/reclaim) and whether guest_memfd needs the
+   pfn to become private or shared.
 
-> 
->   Thomas
-> 
+3. Having prepare/reclaim take private/shared also removes leaking some
+   arch-specific details into guest_memfd, like "why only
+   .gmem_prepare() on conversion to private?"
 
+>
+> For consistency with .gmem_prepare(), what about going with .gmem_reclaim() instead
+> of .gmem_reclaim_memory()?  E.g.
+>
+> #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+> static void kvm_gmem_free_folio(struct folio *folio)
+> {
+> 	struct page *page = folio_page(folio, 0);
+> 	kvm_pfn_t pfn = page_to_pfn(page);
+> 	int order = folio_order(folio);
+>
+> 	kvm_arch_gmem_reclaim(pfn, pfn + (1ul << order));
+> }
+> #endif
