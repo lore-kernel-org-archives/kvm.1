@@ -1,142 +1,163 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740703F39DE
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9EB3F1AA6
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783586338; cv=none; b=SSTX1U1cZxVN29Bx+w3IjJXQ8UCfpuW5yNjpiP17Oh6IlAOtq01Ah8k8WJGlfLVml707vsdpOJiVHtuz/YALrqguxD79QJ08V+dSOdH4z1EY/SnwcPPDJR89DVGxBih1mJWB8rMvpcc+jL7iVfZLe6HOQuZvMkf8NHU7qyEhmiM=
+	t=1783586519; cv=none; b=dHiJDp4qrOOrHht9mQp9b0WjxVMBgNnBd2dqEwPDXUN04NyjEnKh8VpsYuKISQ7EnKCyYk5A7jimfRJNC1xnt05p+eeZIYAgy9KHuyQchtJYRPB//r+4nM/EOibKNMusYzXnYCc7CbLDGN8P7AGiTGE969CPBacBrMt1xrDTjcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783586338; c=relaxed/simple;
-	bh=8kKCKzHBY4IDDlo4Je6ZK1CgzPcgGC1QFqKY1in6aRY=;
+	s=arc-20240116; t=1783586519; c=relaxed/simple;
+	bh=hfeHilJ0PMxR5GuafU6rVZ1C1T/vDUvqkRNp4JO86nk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uRJtVKE9iVbqbp7CtlJ/mMW6hSPiV92hfJT881qgMMgRZQGkC0gtgGbSckc5R2gxmYGc2AQ4fTH1mFjVP0xvuVPnJlNnBnbxUe2rXSopZHUDT8ba5aCdnsBUBKPHo6YQetEm2vfNkrSQ0kuuYBYR5iFojei/xPZOL0DdRBRRvPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GCCFk3MO; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WuoiIZvkWlRvWRa0ea0ccIOxz2UBYRoBCwZH90GTXiQV956+FfXAdiI8a7WDVSjTlNXwZ7V1kEQdztpAJxxpOIwsOJg2QWAcih9hCAetQmv2iBIIQBWXJDXWefINaYqhxKOHepAwsc6roFOWIUaiQBxN5DkZNE/bRGqR9TFu0XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bh9alUeK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GCCFk3MO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2162D1F00A3A;
-	Thu,  9 Jul 2026 08:38:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bh9alUeK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0101F000E9;
+	Thu,  9 Jul 2026 08:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783586332;
-	bh=0zaLnDbQc4X5BCx2LeQIMcCiyyaJgUiFyGJT/MdPtI8=;
+	s=k20260515; t=1783586515;
+	bh=I20wEs5u6KymtvGjeyM3KfD6umP7VtO5lOylY6j+Ask=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GCCFk3MOqkjjtucMFGM4pgk1hk1TZVEdG9VZDXxBYyWHI9UlkshQbdUV/WBV2djfs
-	 Db+vhjKXJbcfYsJwBAT8i/uQMjYzytDY6FbQMQ3iCQGvjTVJl/1tS8aQTlQtXLfRdY
-	 RQAnZeUcx4eHZCWWn+SuLW54v5Q3ij0QRbwhs3QBGX1JGhvRT8FeaS3RoYGnglzcjJ
-	 qLNv1jdPvb/nisdIAgHSe0Vv3yOfLoizETscj4Ztmp6AzVvvQxj2siXtQM8QEzGnIp
-	 SAdGSxUzrObNvTCq3RfnLvl+Ks40MXJQv6CMZ8XbB3heIQLIwGu5j0hdSAttPyxHrI
-	 HSCKOpitYAeNA==
+	b=bh9alUeKzVAWt8IFs59dp3l5XrUCL4b/4nVAgJXBabPPFaIx52uBvYjcFT7lxbh6t
+	 QtVpvutj+IN1qaMBhOeDeASH2B0G1RDEVlZrfHvTFft/M9KL5+mqwKir8jap9feZE4
+	 yrpeTh85+GLdHb3opt1Io/GGRAuTNI9vgaTiBjZ+ftOV0eUPIFsBPUDqFD6EtJitn5
+	 v8vWeaCm7ogoxjp7mF/ErsUYgNIKzOaJxv0E56SLEaqoA5kgEKnhiemV8RItigbaVR
+	 IIJNEbFlztvT4upmVAU8MtVWEGNiXWora6iGKqXZEdHSvW0Y+oKlo1aMF9jF63CuGS
+	 I0NOy74DUVvbQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/4] LoongArch: KVM: Use internal API to deliver
- interrupt in kernel mode
+Subject: Re: [PATCH v4 1/4] LoongArch: KVM: Set default MAILBOX access size
+ with 8
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Bibo Mao" <maobibo@loongson.cn>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709082109.1361767-5-maobibo@loongson.cn>
+In-Reply-To: <20260709082109.1361767-2-maobibo@loongson.cn>
 References: <20260709082109.1361767-1-maobibo@loongson.cn>
- <20260709082109.1361767-5-maobibo@loongson.cn>
+ <20260709082109.1361767-2-maobibo@loongson.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 08:38:51 +0000
-Message-Id: <20260709083852.2162D1F00A3A@smtp.kernel.org>
+Date: Thu, 09 Jul 2026 08:41:54 +0000
+Message-Id: <20260709084155.2E0101F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] Undocumented Security Fix / Out-of-Bounds Access
-- [Medium] Undocumented API Contract Change for KVM_INTERRUPT
+
+Pre-existing issues:
+- [High] Guest-triggerable `WARN_ON_ONCE` via unaligned IOCSR address can c=
+rash the host, violating KVM guidelines.
+- [High] `read_mailbox()` unconditionally performs an 8-byte read, leading =
+to structural out-of-bounds array access and undefined behavior.
+- [High] Read-modify-write cycles on IPI mailboxes are not protected by `ip=
+i_state.lock`, leading to lost mailbox updates.
 --
 
---- Patch [4]: [PATCH v4 4/4] LoongArch: KVM: Use internal API to deliver i=
-nterrupt in kernel mode ---
-commit b41f003908862410927912c7ede144c461f9fa1e
+--- Patch [1]: [PATCH v4 1/4] LoongArch: KVM: Set default MAILBOX access si=
+ze with 8 ---
+commit ddb469fb4110b13e360da0bda699a489c854b92b
 Author: Bibo Mao <maobibo@loongson.cn>
 
-LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+LoongArch: KVM: Set default MAILBOX access size with 8
 
-This commit updates the KVM LoongArch code to use internal APIs
-kvm_queue_irq() and kvm_dequeue_irq() for kernel-mode interrupt delivery,
-reserving kvm_vcpu_ioctl_interrupt() for user-mode. It also moves IPI
-injection and ack operations inside lock protection to avoid contention.
+This commit changes the default mailbox access size to 8 bytes in
+read_mailbox() and write_mailbox() to handle IOCSR instruction emulation,
+removing the previous error logging for unknown sizes.
 
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index fd089d54da103..e04aadbd68db9 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -17,7 +17,8 @@ static void eiointc_set_sw_coreisr(struct loongarch_eio=
-intc *s)
->  		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
->  			ipnum =3D count_trailing_zeros(ipnum);
->  			ipnum =3D ipnum < 4 ? ipnum : 0;
-> -		}
-> +		} else if (ipnum >=3D LOONGSON_IP_NUM)
-> +			ipnum =3D 0;
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+> @@ -67,11 +67,8 @@ static uint64_t read_mailbox(struct kvm_vcpu *vcpu, in=
+t offset, int len)
+>  		return data & 0xffff;
+>  	case 4:
+>  		return data & 0xffffffff;
+> -	case 8:
+> -		return data;
+>  	default:
+> -		kvm_err("%s: unknown data len: %d\n", __func__, len);
+> -		return 0;
+> +		return data;
+>  	}
+>  }
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the commit message doesn't
-mention adding these bounds checks.=20
+[Severity: High]
+This isn't a bug introduced by this patch, but does the unconditional 8-byte
+read in read_mailbox() risk an out-of-bounds array access?
 
-Since ipnum is used as an array index into the sw_coreisr array shortly aft=
-er
-this in eiointc_set_sw_coreisr(), does this fix a guest-triggerable
-out-of-bounds access?
+Looking at read_mailbox(), it computes a byte pointer into the 32-byte
+ipi_state.buf array based on the offset, and unconditionally casts it to an
+unsigned long pointer to read 8 bytes before evaluating the size cases:
 
-If so, should this security fix be documented in the commit message or perh=
-aps
-split into a separate patch?
+    data =3D *(ulong *)((void *)vcpu->arch.ipi_state.buf + (offset - 0x20));
 
-[ ... ]
-> @@ -36,13 +37,13 @@ static void eiointc_update_irq(struct loongarch_eioin=
-tc *s, int irq, int level)
->  {
->  	int ipnum, cpu, found;
->  	struct kvm_vcpu *vcpu;
-> -	struct kvm_interrupt vcpu_irq;
-> =20
->  	ipnum =3D (s->ipmap >> (irq / 32 * 8)) & 0xff;
->  	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
->  		ipnum =3D count_trailing_zeros(ipnum);
->  		ipnum =3D ipnum < 4 ? ipnum : 0;
-> -	}
-> +	} else if (ipnum >=3D LOONGSON_IP_NUM)
-> +		ipnum =3D 0;
-
-[Severity: Medium]
-Similarly, this bounds check in eiointc_update_irq() appears to prevent
-out-of-bounds accesses but is undocumented in the commit message.
+If a guest performs a valid 4-byte read at the maximum valid offset, the
+function still reads 8 bytes. This means the read extends beyond
+ipi_state.buf and bleeds into adjacent struct members. Additionally,
+unconditionally reading an 8-byte integer from a potentially unaligned
+pointer might result in undefined behavior.
 
 [ ... ]
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 1a0cf6c81df6a..f81dadc62c986 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1465,6 +1465,9 @@ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,=
- struct kvm_interrupt *irq)
->  	if (vector >=3D EXCCODE_INT_NUM)
->  		return -EINVAL;
-> =20
-> +	if (kvm_arch_irqchip_in_kernel(vcpu->kvm))
-> +		return -EINVAL;
-> +
 
-[Severity: Medium]
-Does this change break backwards compatibility for any userspace applicatio=
-ns
-that might be calling the KVM_INTERRUPT ioctl while the in-kernel irqchip
-is enabled?
+> @@ -92,11 +89,9 @@ static void write_mailbox(struct kvm_vcpu *vcpu, int o=
+ffset, uint64_t data, int
+>  	case 4:
+>  		*(unsigned int *)pbuf =3D (unsigned int)data;
+>  		break;
+> -	case 8:
+> +	default:
+>  		*(unsigned long *)pbuf =3D (unsigned long)data;
+>  		break;
+> -	default:
+> -		kvm_err("%s: unknown data len: %d\n", __func__, len);
+>  	}
+>  	spin_unlock(&vcpu->arch.ipi_state.lock);
+>  }
 
-While it makes architectural sense to prevent userspace from concurrently
-injecting raw interrupts in this state, the commit message does not explici=
-tly
-mention this change to the user-facing API contract. Could the commit messa=
-ge=20
-be updated to clearly document this new restriction?
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a risk of lost
+mailbox updates due to unprotected read-modify-write cycles in mail_send()
+and send_ipi_data()?
+
+In mail_send(), the code performs a read-modify-write cycle to update IPI
+mailboxes using byte bit-masks:
+
+    val =3D read_mailbox(vcpu, offset, 4);
+    for (i =3D 0; i < 4; i++)
+        if (data & (BIT(27 + i)))
+            mask |=3D (0xff << (i * 8));
+    val &=3D mask;
+    ...
+    val |=3D ((uint32_t)(data >> 32) & ~mask);
+    write_mailbox(vcpu, offset, val, 4);
+
+Since read_mailbox() and write_mailbox() acquire and release ipi_state.lock
+internally, the lock is not held across the entire modification cycle. If
+multiple vCPUs send IPIs with masks to the same target concurrently, could
+their operations interleave and overwrite each other's updates?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can a guest deliberately
+trigger a WARN_ON_ONCE by providing an unaligned IOCSR address?
+
+Looking at loongarch_ipi_readl() and loongarch_ipi_writel(), they
+unconditionally assert WARN_ON_ONCE for unaligned offsets:
+
+    WARN_ON_ONCE(offset & (len - 1));
+
+A guest can trigger this by executing an unaligned IOCSR read/write
+instruction within the IPI address range, or by writing an unaligned offset
+payload to IOCSR_ANY_SEND which reaches kvm_io_bus_read() or
+kvm_io_bus_write() in send_ipi_data().
+
+Since KVM io bus operations do not validate alignment before routing to
+these functions, an unprivileged guest could intentionally panic the host
+kernel on systems configured with panic_on_warn.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082109.1361=
-767-1-maobibo@loongson.cn?part=3D4
+767-1-maobibo@loongson.cn?part=3D1
