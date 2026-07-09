@@ -1,98 +1,84 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C7A3D9688
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 07:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17269386572;
+	Thu,  9 Jul 2026 07:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783583012; cv=none; b=uBAmOto4VoifJ0rtwGGeLP2AuBk64yy2WGqxu343GupUiWmIDWVoY9HntmfyBZ0HQZMOqDOG63kk7uD2/LG7W/+myIw75A5sgdF/R6QraeQexmE3XyUdUl7Vw/nresFB6gfY7judNS46jeUPXRVyH2a3Xw85Ct9uZ6Co+10codE=
+	t=1783583735; cv=none; b=YcNMINk9oLL0783e12vMtMKICxv+b4l5reljLskj7iI8HkqRVmpcTrovXLzrFPajQ80vMZUWkw9ECPHnXJD8jgW+3WrYrHgWz9poREcJtl1etYLBiigQJs7j+peaVV3VIfXgZAKqxLR5QsUSJtlic26aF7f8GZWGJGVNtwEyuIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783583012; c=relaxed/simple;
-	bh=OoAI2FdjtcDHZAxxbp0Bp0QijICGHh/0pwLxgYcKVEo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiVCWKApYsRNGWRHmwUyErMLxiJkxlOE2+7jrrwA7lu/E342poCLffLU3f2tfRI52BdEWO4JUAiuaw1kPFCUXadItBPl7A63PN/SPFCHYmSYlEUBffJtX7JckgYbLC8fcz3flvtMf8aEA9n/iuXPDozdDgGljjtWEnMK4Qz5G30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=szH3f1LY; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783583735; c=relaxed/simple;
+	bh=Ymj1+higkpwjb1VF/3tetoAt1l8TqP3cQCKLQsqnTnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhIEQNpY6boG9JiSW+jmZ8ifDbaoLmcW6rnkFUYuIHiveXpb39bV+vzJ3+2GGjJNjojBm2LnZkl8OruWDk9fFs3SHxRP/SArIV9YPmboOxxBP9aaMvw8sM/myRbdxRuvkgD3UJPCoQq4SVeXmO0gd29pp8L7NRy2Y2Sp6CpHMy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUpGjVAZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="szH3f1LY"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493d1e8aa46so11737425e9.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 00:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783583010; x=1784187810; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N7eUSdR0DyIiI153j39Qwy65OXz9wuC4shQvA/Svox8=;
-        b=szH3f1LYd2t/A7qANRe+GtsM+kr7cUnRNars8ffzuyeq28ua/5cagZEbrVBPAz4Y8y
-         /hBVONNq/mdsRmr8IIXAOtbKEGm0a+KiOjM6wquDxaBtD6mhZSylZDL89vQM36dRDqxS
-         1A5Zwm4J2WpgqC4/4j5q4/bYukanhtfRqF1uL0rQc35AA/VATdZ/5HZMviq5vod8PgcG
-         sBE2CgDWZ4do/Ffav086jWG4rFSiWIERMpV1wU90rlF9JbEZJSJxgF+fhYZZVcqQvXuA
-         IIkrqkd1BQrZ8PakqRHh/yromBMEHbkGd9nkiH+LasH6x0JfQjMw4SFka/uyi5Q59a8l
-         sHQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783583010; x=1784187810;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=N7eUSdR0DyIiI153j39Qwy65OXz9wuC4shQvA/Svox8=;
-        b=kYX+jmN5H7BaqMy7MrBUT38TN9OO7YDpllo7m6BQi2c9L8N8phWtpbytRrQIcO9djd
-         1lwtmh076ex2Pn/pbIm1R/hEtxdbmXkEtL1k7ieKGg2PKc8YyNucVo68gIe46iw2zFGa
-         iMaBj0DaZpdDoRxyxNAaCgapKeGK4q4+0xTNloKryuzOEJ5iXKxBZXh6sx32aeF2303t
-         smSzYow1Rso5L1rOa2xIrTkJcglv+1r0teST0F7Jl3aZfESL4ypxijz+8up6kv3vEEQ1
-         I/64WUbrTMMt8X3B60MWTOaJgh4yI9AIhLCETkFahvKuDz25cvwk1DXC+uvzbC2u6ZcL
-         oa2A==
-X-Forwarded-Encrypted: i=1; AHgh+RoS19nwIkQ4y94AVt6WH+nivSKyDdjb9iSxKzDr04LG//7YH8IiD5budyyZBG0aBla+/qo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpRDy62pvJBVaUVksLJADhiUoY2l77YOH0RRKzY+tCRI+1eKYb
-	fGfix7P0fdJdN2jk6CT86vsDPPIAGn/H2eawJyRTV2w+QI3eLEGrHbZGIW5U7XwYlNM=
-X-Gm-Gg: AfdE7ckDUcqI8GhwnBhc0paj5G0okWD8U+wF5y5txXZ7FabqfJjKzzfpop5OGmqft7C
-	zlYB3WxwkywF49QV2WWEVxZcef4mjwHraXL7M4Zn9U9MuYB3aZpc3NGKZK8tIJF8F4CubGnJcQJ
-	d7ptIbuYamAO4wFjFdF1Wfkz7ADBBjsIZKG8nVVhxdbQjL3fzd5I5UHysfvQ57tC1kA7hXNiBO9
-	VHE0d0vJoxPdNWlfYjdHXNP1hzpN883bHRkNapSTMKmgzNIvgs7Pzk2EkcHA3WlKuY2TalVvqf/
-	baJHuAEOlK4kVu4xu/RupgaswVor+oPi1Jp2jDiFG22k8cUZqelMHTjRAKtDGIcQs9NQofd11C+
-	jYRv809X45P1WqDljzenFvJWfOLDh5g10H9QYTLo2URaygQCqCRROPaJ7Z37ismOVvN72UMS7fE
-	Yq1y/MEiCJNcAWzfIPiX1tGxCO8FYJMVT+yIhsIpdM8gX9Fc5123T+FTj4oveKyEifzMeePUmzt
-	ooRfP5lgcOc18M/+gSE1dA7zpqI6nWZyZj69XtxC2mGzTa5kRxCwa0VLjs8sZKrCjr5qoQ42MSN
-	T3NbZRY0xGJdd4D1HxEHmQIfSdOr
-X-Received: by 2002:a05:600c:83c6:b0:493:c42e:5be0 with SMTP id 5b1f17b1804b1-493e6853dbfmr61124025e9.0.1783583009667;
-        Thu, 09 Jul 2026 00:43:29 -0700 (PDT)
-Received: from z16 ([2400:adc5:134:ba00:f774:65ea:79e2:617b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6ff6casm50109985e9.5.2026.07.09.00.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 00:43:29 -0700 (PDT)
-From: Salman Farooq <salman.farooq3310@gmail.com>
-To: amachhiw@linux.ibm.com
-Cc: chleroy@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	salman.farooq3310@gmail.com
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix comment typos
-Date: Thu,  9 Jul 2026 12:43:23 +0500
-Message-ID: <20260709074323.77322-1-salman.farooq3310@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709125357.49cafeb6-1b-amachhiw@linux.ibm.com>
-References: <20260709125357.49cafeb6-1b-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUpGjVAZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71671F000E9;
+	Thu,  9 Jul 2026 07:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783583733;
+	bh=tQr5EKbGqBU7SqYZBqewZ3ATW9dV1SlKrbwDR2ZWZwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LUpGjVAZo1MO8zeFG/Z6IYMu8YuW/ginCOWmKNGImLm8Th2LIGmXx6RrDftL6sNdu
+	 heJCOhuSXdsPtomgakgVce2LevH8ufk3xANbNhHpGuf1/ybU9ylp2NI+3asTfFxM6C
+	 H9H8AD8K8TEPLuvIMgq6zFHJeExBWdk8x8E+15P1WCf//qeh+zG5Lg98l8N72htt7t
+	 EKzpKupmZll1CQ06ykYOpbFtZBEf/WI28jojp0pZsFRsC9Fk8d9PyAJXlTLTVEbtAk
+	 42+7lyc/DoSwrbcMOHXW1A0VKmMXPaEi3t4d/qSvmkKMq81NeXdRrIAo1LtN/r/Pdx
+	 aMZUvqrnvCGKA==
+Date: Thu, 9 Jul 2026 10:55:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, peterx@redhat.com,
+	david@kernel.org, ljs@kernel.org, surenb@google.com,
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com,
+	corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com,
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com,
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+	kernel-team@meta.com, kas@kernel.org
+Subject: Re: [PATCH v10 14/15] selftests/mm: add userfaultfd RWP tests
+Message-ID: <ak9T7boe4-5YAsFX@kernel.org>
+References: <20260708111417.173443-1-kirill@shutemov.name>
+ <20260708111417.173443-15-kirill@shutemov.name>
+ <20260708225758.0c8bcf16598f82d84ea7f71f@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260708225758.0c8bcf16598f82d84ea7f71f@linux-foundation.org>
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+On Wed, Jul 08, 2026 at 10:57:58PM -0700, Andrew Morton wrote:
+> On Wed,  8 Jul 2026 12:14:15 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> 
+> > Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
+> 
+> I'm getting selftests build errors:
+> 
+> uffd-unit-tests.c: In function ‘uffd_register_rwp’:
+> uffd-unit-tests.c:624:25: error: ‘UFFDIO_REGISTER_MODE_RWP’ undeclared (first use in this function); did you mean ‘UFFDIO_REGISTER_MODE_WP’?
+>   624 |                 .mode = UFFDIO_REGISTER_MODE_RWP,
+>       |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+>       |                         UFFDIO_REGISTER_MODE_WP
+> uffd-unit-tests.c:624:25: note: each undeclared identifier is reported only once
+> 
+> <etc>
+> 
+> Seems that tools/include/uapi/linux/userfaultfd.h needs updates from
+> include/uapi/linux/userfaultfd.h?
 
-> Regardless, since this patch has no functional or code change, you may
-> want to add a 'trivial' suffix to the patch title, e.g.:
->
->   KVM: PPC: Book3S HV: trivial: Fix comment typos
+Hmm, I wonder if it should be there at all :/
 
-Thanks for pointing that out, and for the very useful references.
-I wasn't aware of this convention. I will follow it and read up on
-other conventions for future patches.
+I thought userfaultfd.h is brought into selftests by make install_headers
+  
+> I'll disable this patch for now.
 
-Salman
+-- 
+Sincerely yours,
+Mike.
