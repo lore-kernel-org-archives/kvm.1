@@ -1,77 +1,45 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B38449990
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C0B3D16FB;
+	Thu,  9 Jul 2026 20:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783628573; cv=none; b=XlvGo5s+RGahdSfLLuns2sypCeWVH4UZHHiG9g/1xURjEqWtoELobaX/OwlK2vO0gpP803oW0fL1IqmWI1MGOyy/tOD2VFkDobWJ9LXF04EOs1pyWJ4No0fO/v8CKqUKxtQPmQ3sFMFy1O/D5goBa6KSdJt3YSGV1qyKOwG5DW8=
+	t=1783629215; cv=none; b=cAjzx95S7g+Y7DjI2dQwFivGVCaMWn92mwmZ81MIEExU5uP/mfFPaCT3vbnl/xrZAf0tK4QlIWXFPjMRs/sj9G5+M4iDeiGzzwDcQA01K3m3J/rzIZqmWq3PJxvo6IhaSOGAovSmjoUSNZbnCNco5m+zaU5msKnN+bD18YKL5es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783628573; c=relaxed/simple;
-	bh=z9z0CaIxEYdoizsKfbUG3oaleCnjEMZRsWcvsAMotp0=;
+	s=arc-20240116; t=1783629215; c=relaxed/simple;
+	bh=5XLUSjo9f+m/g+adaAiK4fuzGZo41zT1cScw0AsmnqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tc6FrQq+CKa8QfkVh4TZdcZl5wKQhKkKZA4zDojsDs84P1Jl8QPmRJB/o4OiMDibtG4yG6wa59dgLXguGe9adxYZaFeH7unpgZ6J+mzRdS+P4HpbrTRMgDJBuFVz+8xN8olAjATWzedq66pAWrfLxe+5BdAy02vckfvN4kawoxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QjQPYIgc; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=rTXbX2d+AqU70zCN5P9rLxAkXu2AaMJzxaHN/ldrX9E3p7D9E++YNn3+g1SXP1lmkFmonRgIQDN3RbDAonnFZ2eMH6L0Zgl+f6qwaVJ9Rstto8CE7OrxqSVr/TcqSbdKBJi8TfohZXBdybd1nZ2ZPgCORSKQjr+ayVecryAFTts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/2GuPIy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QjQPYIgc"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84592b55832so166372b3a.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783628571; x=1784233371; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=er2nd01K52fzoSCDKuPe6L+4tKyOrTAJPVN5CW28/d4=;
-        b=QjQPYIgce3Ysq0P0cHy+6cP0pBoZOI44EBd7S8M3/3RxI2hUvI0dK1SMHMYJzya6vK
-         P8NqcoFGHqTxIgHwuL6iRUPZi/oX4AkGc1V6KQKRdowZeT2ojoajCgVstDGFBNi9nQsC
-         RddqZfASX5bB9/yV/jXdhb0XKqltjcwFyo5meMwYEdqZgNb5BKFH7eZs4ae0cT5AWlRk
-         kv2a8MDY0PpF+FjIKIwa9OLq+Y9HpKhmzAqjE5LFcaBWEesWIg8HrQHWyni8vKiPdC8x
-         1Vu65xVhOZqoqPnXZhdTzGVa2YH2oqmcws7mXaf5LVARYRRl42QFYb6/iJb8VpE/O6pD
-         f5kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783628571; x=1784233371;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=er2nd01K52fzoSCDKuPe6L+4tKyOrTAJPVN5CW28/d4=;
-        b=VijwufXsq5dAReO0iekU82YpJLg02hABtidQctMUjgxFnkR7twDR0e5lswlYqKmvXc
-         ZqFYEnTdXLEwsZWl9jxYY3VknFy0B+1JOTeiHcYdWWGKReCkOew0Ytre3QHLb8PWITCh
-         FPa735WHIjMgCF7TT1yBvZYNShVNL7LUa9WfCebUilEBwDie7xiq3i/zlqfEmDsQHrJv
-         eMdNsnGasW1xyzOBJ8cQ0PqD+w17IoqhsJj8cxSenCwGo5zM+DtHnfyAK1qtATXvA00+
-         OlP6RGDIX6U7p2RUzuXnCnXVc1Vap4l3/0oOIqch1R8qNVNNADT9hnwugUqUew0d3JTz
-         eEZw==
-X-Forwarded-Encrypted: i=1; AHgh+RpiSD0VN4GHyKEcii2tZ8qBKySWy+l1R4TsyuE5UhxlMWk/i6eo4MiBF184Wd9PKtLR3EU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxiKP+A+tUFpWD62FVY9PpMnQSChBi9n+spFBYWsb18fO82dY7
-	zRrYZlIq9ZOYexLO4UXvdg5+5TSpzpzWvJqZSzgpxHR3sGKbUFbqxhKXQwoM3dOXXg0=
-X-Gm-Gg: AfdE7cnfBUhljCn65R0IfrLc0H0wZuh1LBuhc2A1FDLNvYnaY1XPjNW/tA56Wn+jnRK
-	Qdig4fFI2vln+vLdDxXVz/0WSENfpMRVMfRPIRr/AVXs4eJprDsU+vYDfxx8hZcuxdrX/3dQofY
-	YD7c67v/cbkguzd0Bi3S0wzgN/ZROjgsQ4Scms5h4aDHd0/MkaweVSrkW2vU9XFXKzJ8HMljnZq
-	ZEKFT20ymOl0VK4VP4kK3POp3qjRYveuspnafNGPEFEORzvzrsxiqnRosAxbIuDXrHSeLF/xYzn
-	vni2dKyHxI6sgFzf83I0XupZol3i4Bf8KRe1NuNZkDvUSezuQAFFPH9H96zyEd309DWBA5Xx55x
-	VPy84UJMFrsLqzWIxTRcokvfXRL/1tbb8Ll7LhB6mAa/kWzTSo7WrnvqnlY+T1zFdJv//lwU63/
-	cLQsoyQnD/GD2NwV1r
-X-Received: by 2002:a05:6a00:91d6:b0:848:44ae:47c1 with SMTP id d2e1a72fcca58-84844ae87b9mr7146613b3a.78.1783628571139;
-        Thu, 09 Jul 2026 13:22:51 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:2f15:8249:27c4:1b26])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d4dbdesm9126916b3a.31.2026.07.09.13.22.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 13:22:50 -0700 (PDT)
-Date: Thu, 9 Jul 2026 14:22:47 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, jpb@kernel.org, lorenzo.pieralisi@linaro.org,
-	qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 03/25] target/arm: Add confidential guest support
-Message-ID: <alADF-nLnPH53uWO@p14s>
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-4-mathieu.poirier@linaro.org>
- <87bjcim6x1.fsf@pond.sub.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/2GuPIy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE471F000E9;
+	Thu,  9 Jul 2026 20:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783629212;
+	bh=b/KG7TIcBpiZiS4el0LE+iYccTuVv/lNii4KjbUfLL0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=n/2GuPIy58VJVIIU1zKh5qySaCHdgamXriRoUFBqoKkaRGjPaM3dGXmEGkwVF6UVn
+	 snC9P4KEKbCoetvivfNhSiKy7tzw0MNAEXzI4nn8aWyr0942zZ7I56qAyLsHdC91vB
+	 2GQSaaJA+U8w4zbSwaUuT50IO2PdLuVZST6PFbCzIWvthi77nuJC36mhFNS3cgnFzq
+	 2HFhcm3oKTidQO3FIT8xOEQkwH3v2iWXrtTl7TYSHQm5twnVUiDXEluK45ZWPjceCx
+	 zrhGDTX+JyY47GBo52d2ypfw420234eFXAzbfsX/dm75ZKHxCQBfDLgXU1aG5X/hDr
+	 QtEuFMFGVm/9Q==
+Date: Thu, 9 Jul 2026 13:33:30 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com,
+	kvm@vger.kernel.org, david.hildenbrand@arm.com, maz@kernel.org,
+	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
+	yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, fuad.tabba@linux.dev, mark.rutland@arm.com
+Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only
+ memslots
+Message-ID: <alAFmiAsNf6Xm49_@kernel.org>
+References: <20260702142912.6395-1-alexandru.elisei@arm.com>
+ <akxOrMnlNga-vtQv@google.com>
+ <ak0wSQ1133O7B96D@raptor>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,28 +48,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87bjcim6x1.fsf@pond.sub.org>
+In-Reply-To: <ak0wSQ1133O7B96D@raptor>
 
-On Wed, Jul 08, 2026 at 06:39:22AM +0200, Markus Armbruster wrote:
-> Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+On Tue, Jul 07, 2026 at 05:58:49PM +0100, Alexandru Elisei wrote:
+> Hi Sean,
 > 
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> >
-> > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
-> > support the Arm Realm Management Extension (RME). It is instantiated by
-> > passing on the command-line:
-> >
-> >   -M virt,confidential-guest-support=<id>
-> >   -object rme-guest,id=<id>[,options...]
-> >
-> > This is only the skeleton. Support will be added in following patches.
+> On Mon, Jul 06, 2026 at 05:56:12PM -0700, Sean Christopherson wrote:
+> > On Thu, Jul 02, 2026, Alexandru Elisei wrote:
+> > > The memory represented by guest_memfd-only memslots
+> > > (kvm_memslot_is_gmem_only() is true) is shared with userspace, which can
+> > > freely mmap it and access it. The only thing that is preventing dirty page
+> > > logging for such memslots is that KVM doesn't allow slots backed by
+> > > guest_memfd to have their flags changed; they can only be created and
+> > > deleted.
+> > 
+> > Please (publicly) document *why*  you want to add dirty-logging support.  It's
+> > all but impossible to review new uAPI without knowing the use case.
 > 
-> Which of the patches add options?
+> Of course, my mistake, I was so deep in this that I didn't realise that
+> there might be different perspectives.
+> 
+> My thinking was that since guest_memfd created with GUEST_MEMFD_FLAG_MMAP +
+> GUEST_MEMFD_FLAG_INIT_SHARED is extremely similar from a userspace point of
+> view to using an anonymous file (created with memfd_create()), that
+> supporting dirty page logging and migration would be a natural next step
+> and would expand the usefulness of guest_memfd. It has nothing to do with
+> confidential compute.
+> 
+> As to why I'm working on it now, it's because of an arm64 feature that
+> requires that memory remains mapped at stage 2, called Statistical
+> Profiling Extension (SPE), similar to Intel's PEBS or AMD's IBS. Exposing
+> the feature to a guest requires that memory remains mapped at stage 2
+> outside of userspace explicitely unmapping it, and guest_memfd, with the
+> patch to ignore the MMU notifiers [1], has this property.  I wanted to
+> expand the functionality of guest_memfd to support migration of virtual
+> machines when that arm64 feature is exposed to guests.
 
-Good catch - options have been removed because they are not supported on the V14
-kernel.
+Can you please expand a bit on how you actually expect dirty tracking to
+work with SPE? Taking write permission faults seem to be at odds with
+"thou shalt not fault".
 
-> 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> 
+Seems to me like you'd need hardware dirty state and the "noabort"
+flavor of BBML2 to actually get things down to page mappings. Oh, and an
+SPE implementation that actually respects write permissions... Is there
+even an implementation out there where the stars align?
+
+Fixing rotten architecture would be a more appropriate starting point :-/
+
+Thanks,
+Oliver
