@@ -1,229 +1,156 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392F73D0C03
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 07:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3416D3E00BB;
+	Thu,  9 Jul 2026 07:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783581916; cv=none; b=JC6w4c3edXaKAuUH9VgJls73SBZXm8OK4PNLZnkB8DOCvsaay+UtMTySI+wVxR2IlAweIDRy2xefbcszk2DTs+Rx+xMqsP76bh/D/LSZkZKSwXk/E1hsqcoGyl6XYqUyLvHndZ3OaWOrC5lMmecg3O/LaT5/NC+uf+6kaP+3q+c=
+	t=1783582189; cv=none; b=BuZFEm9aD4EJ4n7N93AhOmmDM6+wvp5p8mXBC37UC8l+tFqPuK+1/wxQq13FsZrjQKdV5GaLMzSQQYO8TcLFLvhi1fsOvDolSslD8+5TGRzrEKCcG0QGwZHeunbi1ditqlPwwLXvrhq+utNwc4c9OQBYMwUtaJio0kK5cS+nugo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783581916; c=relaxed/simple;
-	bh=KOD7UqK/Gsr1GMCwAWBoxxhsx3YxU1A3/+K+YYfTR78=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SDx4h8kBTm/JfWLoCdslaRNZRKPYOwT5So2Af0nufKByE9gfRq929ALOPZQmiROw30WLlT2mbrMUkW+6BDUFjEhLfY5jxB8TZBiv9figFcdqxpUNsaHF6vAKaFtOb08XJnaFvKWCpoXjWbK0YoZgeg8sJZ0DXEq/g5asekg0z24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AIu4eMbk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bblYPBg4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AIu4eMbk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bblYPBg4; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1783582189; c=relaxed/simple;
+	bh=5JyVFIN4ZADI0D5u+AFLntnkt4Jx2apqAJri66JIeYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZZuFSVQmg4nsQOIBrXXVQJyPunbcHNLB49Nm84PDR5rXIkdDdDt9R9Lri7DwKbHvz9jk8GNJTwMbTS/eT9CG6Yu9YZkM2rgLUeTrcTRnqct/HATnCtcv34api0Gh9AUCdmM6IiVxC3rLVcAgLjRiCPw5sUi8jVzLhoKUPVOnWew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PN/uzDZY; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AIu4eMbk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bblYPBg4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AIu4eMbk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bblYPBg4"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B4AF975EDB;
-	Thu,  9 Jul 2026 07:25:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783581900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fOZKDGk+S46/+SCiwB50GnE9K+E/ngWl9K/xtzn9FQ=;
-	b=AIu4eMbkyrgyrrMltON14KJyw345nscJVkUAdeQy3ZfltSoJsOIBdwYvzt1pELC/er+dDt
-	8Iks/bhE/5K/NRRQeGM8wc5JYNj5qy7NL4EMwMoPjUHUZbxyB20DSLACkCZbGcTuvpjYIE
-	wWZzaiVVEbljC9Lcsn9SHeABiu+Kxrw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783581900;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fOZKDGk+S46/+SCiwB50GnE9K+E/ngWl9K/xtzn9FQ=;
-	b=bblYPBg4fupOtI5orqLiRLRx9pm8VUahqpe13HzGPpJA+hW6nVuIZm+eyD1rG2AZF1FqMy
-	Qeyb4lBZ817vlaDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783581900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fOZKDGk+S46/+SCiwB50GnE9K+E/ngWl9K/xtzn9FQ=;
-	b=AIu4eMbkyrgyrrMltON14KJyw345nscJVkUAdeQy3ZfltSoJsOIBdwYvzt1pELC/er+dDt
-	8Iks/bhE/5K/NRRQeGM8wc5JYNj5qy7NL4EMwMoPjUHUZbxyB20DSLACkCZbGcTuvpjYIE
-	wWZzaiVVEbljC9Lcsn9SHeABiu+Kxrw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783581900;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9fOZKDGk+S46/+SCiwB50GnE9K+E/ngWl9K/xtzn9FQ=;
-	b=bblYPBg4fupOtI5orqLiRLRx9pm8VUahqpe13HzGPpJA+hW6nVuIZm+eyD1rG2AZF1FqMy
-	Qeyb4lBZ817vlaDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DDED1779AA;
-	Thu,  9 Jul 2026 07:24:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gLVGM8tMT2rTRQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Thu, 09 Jul 2026 07:24:59 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: stable@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Roman Kagan <rkagan@virtuozzo.com>
-Subject: [PATCH RESEND 6.18.y 3/3] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
-Date: Thu,  9 Jul 2026 09:22:47 +0200
-Message-ID: <20260709072247.3305784-5-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260709072247.3305784-2-clopez@suse.de>
-References: <20260709072247.3305784-2-clopez@suse.de>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PN/uzDZY"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696ITfC480079;
+	Thu, 9 Jul 2026 07:29:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=HoYSB070AE9GmBZBYCXfouvHrOouky
+	LXb8f3rE2iJ6c=; b=PN/uzDZY7qxh/JvA6k8BG4MYe8LnrtzFp/GzO2frLIQmGd
+	XD0PDBWDDr1BtM0jjhynJUW8+Uc6S6xWv++cqez5+ddA47VOXPAU9ztwtpDINOmU
+	IntKO//CmudyF8jt6sPfjb0Z47skRkhxxYwYvm1gY4ekDdnkX453KaDFNWTmmMqO
+	Plcb81Hkp4P/i36L67UsCfyiaNwu6LW016gKsJd6juTgkmB0Ed907gN/f67nDQrt
+	FaRBYptxAh2AH+eU4LPouzwKEjP6skw0iaVVk5L1d8HmBt1ntNW5KCMcnbQe9/XS
+	sHZbiGLHep+cBnpAL23NofLNzYV3qDc1E7pQFL4A==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6stt0udh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 07:29:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6697Janp022900;
+	Thu, 9 Jul 2026 07:29:34 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7cvwc8gt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 07:29:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6697TWTt37552474
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 07:29:32 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 41E8A2004B;
+	Thu,  9 Jul 2026 07:29:32 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 963A320043;
+	Thu,  9 Jul 2026 07:29:30 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  9 Jul 2026 07:29:30 +0000 (GMT)
+Date: Thu, 9 Jul 2026 12:59:53 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Salman Farooq <salman.farooq3310@gmail.com>
+Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix comment typos
+Message-ID: <20260709125357.49cafeb6-1b-amachhiw@linux.ibm.com>
+Mail-Followup-To: Salman Farooq <salman.farooq3310@gmail.com>, 
+	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260702030344.2211462-1-salman.farooq3310@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -7.30
-X-Spamd-Result: default: False [-7.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLtm3bmjtwwfkzb5ddzerbmdsq)];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702030344.2211462-1-salman.farooq3310@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: agTyseDtzM4VzIDF_xHjur58XB-rvhZ-
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA2OCBTYWx0ZWRfXzVTDsAv6+Wpz
+ 5U4esU6dYKjK43ZjPZ85VIGha06hrmd+IOpBQZC8OWBv122ctlFxtpDbqF1cFiS92lu6jxw90CC
+ FsPKy/DDDS26t1sTlBhDhG/kFmE2pz8=
+X-Authority-Analysis: v=2.4 cv=DKW/JSNb c=1 sm=1 tr=0 ts=6a4f4ddf cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=5qU1I9XWuyLpgvKMgcEA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: TVsYKKcaJihrubqFZQvtHdbeKVs5z7oK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA2OCBTYWx0ZWRfX+5yfAz0k32TM
+ J+zkqPXn8DXJMGc22XlrE8vrngG0GU2dO8cLBxqyfkJ9UDbwGrFzp37QARDLnbTj6punWaqqUBw
+ y57kYuK17D0CpsXWowG6f2QNOeJNM4Vw99cdPAXA0SB41UaL8nPg1LzZpp3DUhC7E9uL1G/mjIt
+ xc+CgN47DUNVSHfpMjk6VsM6haguTtGqhDcX1KRScrhy6wxIpNRp+ohYVXrqpxU2E7K5EFEotER
+ Ub8A06gso/8BTAZO2X238+J+552t/5bA2I0dENSRszcPj/7oJoTYF0Xgvro4wDPdERHlbUWpyU7
+ Vpr45GkoPb22lYps7trhfKjWIcR3mJ4rYc2X9rfNEEI/ichCgVTG8uE6YSHM9EzsEsucHC24Dad
+ zcEgRSzOq3jLNwLLK6BERwCw1YTen8PPFiaOhiiZLtoZ70hbiMjXqLD3hKCb920JPNFi71IBv08
+ oLoLjXVkoL87DGVCAwQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1015 phishscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607090068
 
-[ Upstream commit bb365a506b1e6fb050c0fceaad354fe395385ef0 ]
+On 2026/07/02 08:03 AM, Salman Farooq wrote:
+> Fix two instances of a misspelled word in comments.
+> 
+> Signed-off-by: Salman Farooq <salman.farooq3310@gmail.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-The TPR_THRESHOLD field in the VMCS is used by VMX to induce VM exits
-when the guest's virtual TPR falls under the specified threshold,
-allowing KVM to inject previously masked interrupts.
+I agree with Ritesh on the amount of churn such misspell fixes may
+cause.
 
-KVM handles these VM exits in handle_tpr_below_threshold().
-Commit eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-optimized this function by calling apic_update_ppr() instead of raising
-KVM_REQ_EVENT. apic_update_ppr() then raises KVM_REQ_EVENT if there is
-a pending, deliverable interrupt.
+Regardless, since this patch has no functional or code change, you may
+want to add a 'trivial' suffix to the patch title, e.g.:
 
-However, if there are no new interrupts pending, apic_update_ppr() does
-not issue the request. Thus, kvm_lapic_update_cr8_intercept() and
-vmx_update_cr8_intercept() are not called before VM entry, which results
-in a high, stale TPR_THRESHOLD. This is problematic due to the following
-sentence in 28.2.1.1 "VM-Execution Control Fields" in the SDM:
+  KVM: PPC: Book3S HV: trivial: Fix comment typos
 
-  The following check is performed if the “use TPR shadow” VM-execution
-  control is 1 and the “virtualize APIC accesses” and “virtual-interrupt
-  delivery” VM-execution controls are both 0: the value of bits 3:0 of
-  the TPR threshold VM-execution control field should not be greater
-  than the value of bits 7:4 of VTPR.
+This convention is used to indicate non-functional changes, making it
+easier for maintainers to apply without worrying about regressions. See
+[1] and [2] for precedent.
 
-This error condition is typically not observed when KVM runs on a bare
-metal system because modern processors support APICv, which enables
-virtual-interrupt delivery, and which KVM uses when possible. This
-causes the processor to no longer generate TPR-below-threshold exits
-and to no longer check TPR_THRESHOLD on entry. However, when running
-on older platforms, or under nested virtualization on a hypervisor that
-does not support virtual-interrupt delivery and enforces this check
-(like Hyper-V) this can cause a VM entry failure with hardware error
-0x7, as seen in [1].
+[1] https://git.kernel.org/powerpc/c/d2827e5e2e0f0941a651f4b1ca5e9b778c4b5293
+[2] https://lore.kernel.org/all/87fr3vvfvq.fsf@vajain21.in.ibm.com/
 
-Call kvm_lapic_update_cr8_intercept() if apic_update_ppr() does not
-find a deliverable interrupt (and thus does not raise KVM_REQ_EVENT).
-Remove calls to kvm_lapic_update_cr8_intercept() on paths that end up in
-apic_update_ppr(), as they now become redundant. This ensures that any
-path that updates the guest's PPR also figures out if KVM needs to wait
-for a TPR change (using TPR_THRESHOLD on VMX or CR8 intercepts on SVM).
+~Amit
 
-Link: https://github.com/coconut-svsm/svsm/issues/1081 [1]
-Tested-by: Stefano Garzarella <sgarzare@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
-Signed-off-by: Carlos López <clopez@suse.de>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260618174347.1981064-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/lapic.c | 2 ++
- arch/x86/kvm/x86.c   | 5 +----
- 2 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4a6a8d8c7626..fe2806348c94 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -1001,6 +1001,8 @@ static void apic_update_ppr(struct kvm_lapic *apic)
- 	if (__apic_update_ppr(apic, &ppr) &&
- 	    apic_has_interrupt_for_ppr(apic, ppr) != -1)
- 		kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
-+	else
-+		kvm_lapic_update_cr8_intercept(apic->vcpu);
- }
- 
- void kvm_apic_update_ppr(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 28771be285a1..7be3ed9e2c7d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5356,7 +5356,6 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
- 	r = kvm_apic_set_state(vcpu, s);
- 	if (r)
- 		return r;
--	kvm_lapic_update_cr8_intercept(vcpu);
- 
- 	return 0;
- }
-@@ -12366,8 +12365,6 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 	kvm_register_mark_dirty(vcpu, VCPU_EXREG_CR3);
- 	kvm_x86_call(post_set_cr3)(vcpu, sregs->cr3);
- 
--	kvm_set_cr8(vcpu, sregs->cr8);
--
- 	*mmu_reset_needed |= vcpu->arch.efer != sregs->efer;
- 	kvm_x86_call(set_efer)(vcpu, sregs->efer);
- 
-@@ -12396,7 +12393,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
- 	kvm_set_segment(vcpu, &sregs->tr, VCPU_SREG_TR);
- 	kvm_set_segment(vcpu, &sregs->ldt, VCPU_SREG_LDTR);
- 
--	kvm_lapic_update_cr8_intercept(vcpu);
-+	kvm_set_cr8(vcpu, sregs->cr8);
- 
- 	/* Older userspace won't unhalt the vcpu on reset. */
- 	if (kvm_vcpu_is_bsp(vcpu) && kvm_rip_read(vcpu) == 0xfff0 &&
--- 
-2.51.0
-
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 5fbb95d90e99..6ac8364a7639 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -163,7 +163,7 @@ static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
+>   *  All its GFNs are moved to Normal-GFNs.
+>   *
+>   *  UV_TERMINATE transitions the secure-VM back to normal-VM. All
+> - *  the secure-GFN and shared-GFNs are tranistioned to normal-GFN
+> + *  the secure-GFN and shared-GFNs are transitioned to normal-GFN
+>   *  Note: The contents of the normal-GFN is undefined at this point.
+>   *
+>   * GFN state implementation:
+> @@ -1010,7 +1010,7 @@ static vm_fault_t kvmppc_uvmem_migrate_to_ram(struct vm_fault *vmf)
+>  /*
+>   * Release the device PFN back to the pool
+>   *
+> - * Gets called when secure GFN tranistions from a secure-PFN
+> + * Gets called when secure GFN transitions from a secure-PFN
+>   * to a normal PFN during H_SVM_PAGE_OUT.
+>   * Gets called with kvm->arch.uvmem_lock held.
+>   */
+> -- 
+> 2.55.0
+> 
