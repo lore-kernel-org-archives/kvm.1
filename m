@@ -1,56 +1,56 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C291C3FADFD
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004C40960B
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783630207; cv=none; b=i2sZ4wyZbU7fA1XRhS2ikc2/2Qi3BC4vM1LeivBiu+BY+9EoYMXALMU5c7dC1nhat3ErCzU+2t+z6hoo0JyM+GwoeWdByEMHA5UtFLKxkb30NxQPcnT/4gRWEHEod40tMUUCi1u716iWMDjOWDt2OcQPUZ1MTzQ0ADgd1DEkMiQ=
+	t=1783630208; cv=none; b=dJEeUCAcNdgV6fdCIelSLUUse23oNRVCjTEyB9BwU0V6/XQFnM7AlR1SpsW9I7Ayi5aVhXvagxKutf76lpqvCJ6j3eRGxkQV2qjP5+2Sq87XkKo3SObviz93pCu5RdtKDcGQCYTjamuheGiCe3jMOvHl4jG8rkACIo1IYOWS8B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783630207; c=relaxed/simple;
-	bh=07QeSXO+hJvXB+GaPRlf5A1Dnc7GvIhSEjbPcCRxLcg=;
+	s=arc-20240116; t=1783630208; c=relaxed/simple;
+	bh=CLopC9ueBQIpZiMex7cJSz/lEEuWBgcn82yu9QM75fw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OSyp688nLFcpIqQjaW5zIQAI6+sKTRHdUqO3q2meomtOCf+6AwuDepkhhU7/2HdWEsRqEkX9sgs2kTdvquZz0hEjmhgNaEtNplBqqWenDdWGYu9MwEiilmhRpfpph5PwA2EZDES1KSFeCUq+n7Zsd3nZMRvV/zYLRR75HR/4IHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QyIp7NLo; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=lgcE+lvoG1dvXi6DTio/r0a7HDjawcWBDmwPWbFsN9JCkUT7OMfI30eWHD6F+We5zSjg9DBSdBsMAD4XtxdjxMEeLmjWgQMzZt79ZE1h60eg+mzxIw8P2GQPhdf2LJ1QAEeCncf46U8h576IDLcHxe7fSBHlOUY1p4DzLzH9lSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rRt0nA6f; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QyIp7NLo"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84870e7f498so177708b3a.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:50:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rRt0nA6f"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37d4f23eb37so456728a91.0
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:50:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783630205; x=1784235005; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783630206; x=1784235006; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=eWwGK1OVRhFcRszDO790DqRWd3xEPKc8ZiiormbS2ls=;
-        b=QyIp7NLopNHRFOGnRNuDlawVVkmQT6AksXDJOM0uDDMtMsw4fWfhuxVMHGpJEwJohK
-         k+wjfpIKcEWxb1iIE9wmisMGiOTtVsBaO8wJphG6sz3Y60sDmaDfB6YUnFwVJsI/04xr
-         de5+3R/s5b1NXLoVt9ypMJ/Uw2BPKN6gxMc+QBBoUCVu6hRv0AsOQ52XZ8r81p8+5iwE
-         Jccb4mrQ1ysk/NrGsBBYRJbRJ07Kvjbv13kjszKrGEyuxNZy1qFZjbjDkCqg1E7quPbM
-         YU6SMiho3L0uhfg41EFSuX/LsDltSIRrVBgXhk25TEq+CS4o0NZxFTRocAvXy4e/71nP
-         j6Tg==
+        bh=y+YnjyILCJ/LQYr8IHTZJIswKUs28JqFys7E1ZCvu7I=;
+        b=rRt0nA6fd37bbDibrlKCDteErqiW+TltEUD0oPhpLi7ZtkL3tBg4WpxvzF6g5wg5hO
+         sCJiXCNbCf5n7Ip/gZI3vZzIrryKt06SILctpVNlIEFKObPS+H8sNhUZHNYrdX9Yhnkj
+         AlFHOU7mIDW5bj4JA4MjA1Ju10VwBhaqWCtZT0JsaZZN4kUgXCkQ28UqIERmjL/XCENh
+         7jHXCqJI7eLKLxWjN1iANMGb9tuXcXpU3m8xx/z1/uh/Ui14ADSNbhu2l1rv/lN3k3+3
+         X4XidI4pHYbZuM+7zT89RPu4h4qzjlLide51Tcqkfpju1tJWjhGDPAuqg8u1XvvEqDvN
+         ReTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783630205; x=1784235005;
+        d=1e100.net; s=20251104; t=1783630206; x=1784235006;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=eWwGK1OVRhFcRszDO790DqRWd3xEPKc8ZiiormbS2ls=;
-        b=aJ5hKoET7hAV20TwN4kj0eFtxta7mhRuSyVpgFZ7WnacOiG9uAA/tI1gx0lq+wYobY
-         BjamUZhKVCyPv15FmsXoVH+EZlWsTOzlngQu7xFu0pncHl6Yd4H7aWTP5gyUL9T6SptB
-         UTZ+EZIraLmGVx4TsUnZGx0oDhnqe8riPB/SIIDoF6bLjiZeQj1EJFkc05v4BYmWARHw
-         h/pxQnbT3OCIksLE6rAGnzAihMcW8i3BxtO+FSpIw1mfBweXCn5I6AH5qH0uh5VbbQn0
-         NHIHGbMk8fDQ2floDaxXVcaFZ8H6QoOJru8jaQIDBrb3OWlMtGIZTyHpBUBdB1vFl14X
-         3qUw==
-X-Gm-Message-State: AOJu0Yz/hm95whoIC5YY5miKdy66kx2DY/LwKAHTUA2u/Zcp1EDO/Fl9
-	gdP34aa1Pw8g+/f0jzwFBOb3J1s7P8CSSr8zAptVcRBIhGromoNZ1S+8/Fw6QqJa6Q4M07zgkcJ
-	yPKg3+g==
-X-Received: from pfbna42.prod.google.com ([2002:a05:6a00:3e2a:b0:845:38af:5fa5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:85a2:b0:848:5b1e:aec2
- with SMTP id d2e1a72fcca58-8485b1eb01amr3653779b3a.54.1783630204920; Thu, 09
- Jul 2026 13:50:04 -0700 (PDT)
+        bh=y+YnjyILCJ/LQYr8IHTZJIswKUs28JqFys7E1ZCvu7I=;
+        b=G8H6VKXV+GUatu6hBiVR7iXK7XJY0bSvajoUE7UxZBq0f+AUNr0M6Fdju5mqB1dpll
+         YiJu5mey31N+B4r//im0/bVYvp7Ry2fNNru+YoKxz5AUicp8RI6BoMe4+y0iLl0Ad864
+         X8JnFT7bO6+S06zWO139bWwtaS+nqY3RrFKyjA7n1S/aTw5Ke5+yKP+SE/YR/aDmq0nc
+         eVWnkHGnTyGwI5dj3iCklXgohB4JbABHsvmOSJ9bZdErPzLH+2rR8uji5FOcTkBtSiPV
+         T830DHN80PixrBMBnMlQI4daIs85y6Gt1VZR7VfImLzm65QUTs/XTZLShxsFzDm/3vgn
+         qSqA==
+X-Gm-Message-State: AOJu0YypJgZSTUPd8/lMa/twPerGYh60dxB2qdDTpYd48BK4gj9LoGyK
+	d9NperbzTS06BJiOLKEl34EagLWQj62mzXvqCMG0PHxz2EupZY2JNX6nTuTvD0vRKezKd+piOlm
+	WFYEPtQ==
+X-Received: from pjbqo5.prod.google.com ([2002:a17:90b:3dc5:b0:381:ef4:4373])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17d0:b0:382:1aaf:4bab
+ with SMTP id 98e67ed59e1d1-389416e7dbdmr8322970a91.27.1783630206130; Thu, 09
+ Jul 2026 13:50:06 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Jul 2026 13:49:43 -0700
+Date: Thu,  9 Jul 2026 13:49:44 -0700
 In-Reply-To: <20260709204948.1988414-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260709204948.1988414-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260709204948.1988414-14-seanjc@google.com>
-Subject: [PATCH v4 13/18] KVM: guest_memfd: Pass GPA, not GFN, to prepare() hook
+Message-ID: <20260709204948.1988414-15-seanjc@google.com>
+Subject: [PATCH v4 14/18] KVM: guest_memfd: Drop the redundant printk on arch
+ gmem_prepare() failure
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,112 +72,39 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Pass a GPA instead of a GFN to kvm_arch_gmem_prepare() so that the GFN/GPA
-can be made optional in the future, i.e. so that guest_memfd can pass
-INVALID_GPA.  This will allow reworking the hook into a general .convert()
-hook, i.e. so that it can be used for both "make private" and "make shared"
-operations, at which point guest_memfd may not have a corresponding GFN,
-e.g. when converting memory back to a shared state when a folio is freed.
-
-Opportunistically swap the ordering of @pfn and @gpa params for
-kvm_x86_ops.gmem_prepare() to match that of kvm_arch_gmem_prepare().
-
-No functional change intended.
+Drop guest_memfd's ratelimited printk to log "preparation" failures, as KVM
+SNP alreads logs more precise messages in all error paths, and whether or
+not failure to convert the pfn to private is "unexpected", i.e. warrants
+logging, is firmly an architecture specific detail.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 2 +-
- arch/x86/kvm/svm/sev.c          | 3 ++-
- arch/x86/kvm/svm/svm.h          | 2 +-
- arch/x86/kvm/x86.c              | 4 ++--
- include/linux/kvm_host.h        | 2 +-
- virt/kvm/guest_memfd.c          | 2 +-
- 6 files changed, 8 insertions(+), 7 deletions(-)
+ virt/kvm/guest_memfd.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 1f8ef0e1566a..24a7a9e6910a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1904,7 +1904,7 @@ struct kvm_x86_ops {
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-+	int (*gmem_prepare)(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int max_order);
- #endif
- 	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index a7584b7ed6dc..dfe93679a832 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -5112,9 +5112,10 @@ static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
- 	return false;
- }
- 
--int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
-+int sev_gmem_prepare(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int max_order)
- {
- 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-+	gfn_t gfn = gpa_to_gfn(gpa);
- 	kvm_pfn_t pfn_aligned;
- 	gfn_t gfn_aligned;
- 	int level, rc;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 130205defffa..58390df36af0 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -1009,7 +1009,7 @@ int sev_cpu_init(struct svm_cpu_data *sd);
- int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
- extern unsigned int max_sev_asid;
- void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
--int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-+int sev_gmem_prepare(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int max_order);
- void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
- void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
- int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5a5fd6211d23..cc1404bef8cb 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10590,9 +10590,9 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- }
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
-+int kvm_arch_gmem_prepare(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int max_order)
- {
--	return kvm_x86_call(gmem_prepare)(kvm, pfn, gfn, max_order);
-+	return kvm_x86_call(gmem_prepare)(kvm, gpa, pfn, max_order);
- }
- #endif
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index c00fc1740ce5..542e5d50849e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2573,7 +2573,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- #endif /* CONFIG_KVM_GUEST_MEMFD */
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
-+int kvm_arch_gmem_prepare(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int max_order);
- #endif
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 659b8dbe0b30..7ad656e30f9f 100644
+index 7ad656e30f9f..f4f8635d1a10 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -66,7 +66,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+@@ -66,15 +66,11 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
  	kvm_pfn_t pfn = folio_file_pfn(folio, index);
  	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
--	int rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
-+	int rc = kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
- 	if (rc) {
- 		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
- 				    index, gfn, pfn, rc);
+-	int rc = kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
+-	if (rc) {
+-		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
+-				    index, gfn, pfn, rc);
+-		return rc;
+-	}
+-#endif
+ 
++	return kvm_arch_gmem_prepare(kvm, gfn_to_gpa(gfn), pfn, folio_order(folio));
++#else
+ 	return 0;
++#endif
+ }
+ 
+ /*
 -- 
 2.55.0.795.g602f6c329a-goog
 
