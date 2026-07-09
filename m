@@ -1,352 +1,353 @@
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14833449983
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783624046; cv=none; b=HKAxZCE5XVGofZyEFTkPsXmMM215Z92eaDQbNVtvyg3MSYPKRtlW2fbik98k8uolRSoeoPzcit/WTxc5ONgbAsgJtKGP3MXE8eWaN9xIWSfKVwvUdmUqiBJY/QtphcdqXvzKieq61ehRfEYhts9cG3eQgFdYULQxeMQ6IGqf4WU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783624046; c=relaxed/simple;
-	bh=VroJ2dbVb3R/itAA7+lxyItCUx+B4jc4xjtV+qTeyaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tpID/eHOihG1S8p3lx1CvtjSYLAlwtriwrmvfXqMAoxhVYklhTj4aainkuRtkFSXYG32tQjU7hi9Z0IEkbsnZHRc31o8HKvYmdI2bKsfmkNAnmwTICDHU3NxeXeCvHaSVsQpsIfxZ/2BId6jnyOcBtTwYgHRxrPI2t74bSlKMHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=svAt+f9T; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07203B2FFB
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783625054; cv=pass; b=r2Kyanev613UE2hMDtVR7h34RpeqDPViZScDL5P1gDwV1hgBR1MlHWmabrih6Vw72AgtzftJdFy3I47HEwN9k38qVEjGlJjb3rUCB8fA4h/UqfIQA+Z3mKSWMRGSyjMWYLOn62Ebpumq5HPVbrNBVz9ZSnxabQLObso54VnCb94=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783625054; c=relaxed/simple;
+	bh=a9Nyzp5h/11v0q9SYXSnb9FiDYrwRTPyoIvqHXqocGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S3xfwT9O2h2pevmf78T8JQNCfk+REiukpIkY6DSlrsp9bes2RzoOY5Reh2kB3Owvra9iRMbNddRBd2J0+vZWRXAH2hKXZhAOz2JTL/s8XsWNp2gaF/c8+hZFPRKX7fh/si23WWxn0FeYkwcrJHdUti6d0PO4BK/+yT3xlO8OKL0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2X0R8+m; arc=pass smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="svAt+f9T"
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7ebd88be784so154715a34.2
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:07:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2X0R8+m"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b0077d7053so1640e87.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:24:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783625050; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kiyN/nd2dd7kY9Q3DnoSNDZNdZZr4W1Z5aRH9qQyM/k56NBb0wLcGC5aNMoLRZTRg8
+         LgSf+a7NjIHMscXPNMUnCpPi8AiP0u5P+eKhE8U/feBmp/RWYHOQWsyk5ehkpuaMP4xa
+         4ajSq0LO58RJjIJRiajtaAmaS++q2ijHA1q4PPnC1qdOdhRS5HtjG/NfteEY59qe5oQ7
+         1TzJ7uDe/kNxcOOKjXaxHIgRHgMWO3Esel/8G9CLa6dwr8VLSC4LSkbGf6GXyjbaaIY9
+         IECak4ChSSPjti/IPcWn90GskVQwVfTAMUWFPPixwZH2fFgkiX3QuaxbDzvzsbhztEwy
+         Zhsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=I25j4NEeSKak63Qb+HSetEoQ8CJw2iYRk1TEpKrwxTw=;
+        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
+        b=WYEvnfmizHr4wi6hnmNGrxjh0TIeYg0R/KJf4FnwA/tNs2qnfWBnTQyl22NsyigAbP
+         2+GESfXMXY4XpRo17PBgwHS410gboT4ZNPmn/saqBWm/yqcHKfuGxU74a2Cs1aptdLgI
+         xpumewSsyPpSygjogdEf/D6bvrF3JSx4bDqkJzbRgnrXtWYTXX+wCwvz9nzHAlZR3xS5
+         kAyvPVT2evVNe2Ruhvf3YNFlk1Irp2xMDrdrP5MDFlRLwY83dUUlbnZUUL+68+02pHnj
+         TlxhUPM4Sb7XaA4ysQkmKTkEHI3IXe9MRUumeeg1wBFdvt0EjBBdPTkoec/1TPTlh1iZ
+         X2+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783624042; x=1784228842; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1783625050; x=1784229850; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Zo12XTQ5Euo3ISLCQIk6AAgRt58NE8CSZ/ONmSgOX+c=;
-        b=svAt+f9TN0hAdjSfr+G3QYgr43IdBnvTWFaKuxkPBwJ3Nj52YI5PR2yWfH1VFO2tGD
-         1wkmnY2C8gI65wF4OLYKsxLkboR+H59NX64OduT6CuVSDKyldS/+mhtmIyxKTkdCrHEn
-         Y6RpRIMM1MiBt6G10V5fhW5rKbhaOkX2NAceh0OF8K0WKwmLdnT5fmJLFyl66FFho0XW
-         JPN/DUr2K4uQk5wQ/EUdOwGDDOYE7aleLEKGyk6Xgz7291QEUmCDANuztY4SSpD+ZX6M
-         +g5RGXLIvIDjj93Xxs9F0eYMAKiB08XBnaOmD3I8A1voNOHltT6j/7eaeecyaM/0mAFw
-         wWiw==
+        bh=I25j4NEeSKak63Qb+HSetEoQ8CJw2iYRk1TEpKrwxTw=;
+        b=V2X0R8+mE8tSt86bo1vNpLK6vQGiPZpznHrxPpL//t9QpLc17lZszAdqs2kyGUjt31
+         xS61F9COAkh8tBymyuFh6pUTtM1UeZW+ydLRCBmeiEDMRqv5BVD0yK8AYWFgWs5V8R5Y
+         H3XdPULZNtKVuLxJ4pv+wu33IwNteXV9ey5b4ao9KnqTUHSatMyNGJn5bo8DPTLNOK7j
+         2oj/yd3Psl3cNzk1IOJQFgZfpv0aid1drWG4FhwrlRkd6WaeJvRfgV6984ZzAuC8pCAt
+         qSq2ZJPbZ8Nc2WNxmZclR/lym5o57W8EXrTUg+84CSuG0qjfY8JYxNkppcy9uuw4c/Sh
+         qLCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783624042; x=1784228842;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783625050; x=1784229850;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Zo12XTQ5Euo3ISLCQIk6AAgRt58NE8CSZ/ONmSgOX+c=;
-        b=P6CxUws8mONr5UuEqZGSOLyKyd0eokuFJ3kD26n6F7wD2pYzsRCWrrrXHEcQtrWlLb
-         h0cqToMNBjNJpU2r2mh8gohrTgHqZsoiVDqiNfPgxVMNvh2DhQX35KkQZXz55wlt7L3R
-         J8Vapx0+aIrEGMwTCciWs8s+gXsWgRzdPXFyRfvIG+awjBGLzpp24uKQSvCkfk/L79CW
-         oJ7KFMPesu5UqBGlHJMSaC0/rye7xp2ZLCwZNmmWiLaKN+FytgwrvMS3fliBHT6Zen1u
-         F2mGNOOuN1VQ800VAbWKKaIBkUhiH+iNsrx2qbjRoNO7wN9+LXStYk85pLAqbjs3dMoz
-         zauQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/2EfuOpm/Nb0FXKmH+9K2QVKk+M/f+21kkRbyv3nskX6byMoD9RDTDZ/wXx41fmZq9SFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnpAEGHRj7L7U3+hzAQPoHdjvB8nVK1eTcV8GWOehBy2c0WLYZ
-	HeUWZ37JKBOGLd9H1LSecKjrE117YsDJVHohS4ggeC6wmNB2wWCsHvvH
-X-Gm-Gg: AfdE7cmF2+YRXkSs6h5VYcCHn934APHSoeJCVt/onZtXb4uZHBkLrWJMVz/wtzrNgNs
-	7XsswN5F2cHsm3rT5QW7UhWVTTTZ1UWsHQ4T/SisaqSvVkyCUCVL5fzS9N5S5iyjpexRAtfGqgu
-	aTSjsbT/ILak4NNmq/yPP38ICLIWOlJZQeTnsHWvEHnUJ5oI24QgLdSp0WrQgtEPRQ5FsG8g6LP
-	ShYqieTO0cOKdg5MtkYCVk9BEHXlK1lfYx+wLYMcXvtoR9Oyxy1QVoGK23kmsFQOdsO+7mbsuMz
-	EhHoul0i8kVlw4Af+QLBqfG2G72ePsblKwRY+Yvk5RbpcRnZG95C/l1s6sKzkHuwO+m1ovX4OXo
-	xvLptf4tlcqlJhwB4dLMgtlATvJUmCRBbl5i7Jxha4LzVN99AK7Rlwnf4Jv7e3PHklkI70T8jOc
-	+SQOZZtI9F/g24Y3+oMYy1BWVwn8ok0RmhWg==
-X-Received: by 2002:a05:6830:3486:b0:7ea:b8c:41a2 with SMTP id 46e09a7af769-7ebcfb9d02fmr6503635a34.0.1783624041937;
-        Thu, 09 Jul 2026 12:07:21 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4f::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcafda2ffsm4763568a34.12.2026.07.09.12.07.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 12:07:20 -0700 (PDT)
-Date: Thu, 9 Jul 2026 12:07:16 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-kernel@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
-	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	virtualization@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jason Wang <jasowang@redhat.com>, stable@vger.kernel.org,
-	Brien Oberstein <brienpub@gmail.com>
-Subject: Re: [PATCH net v2 1/2] vsock/virtio: collapse receive queue under
- memory pressure
-Message-ID: <ak/xZI08Ra1fVgm+@devvm29614.prn0.facebook.com>
-References: <20260708102904.50732-1-sgarzare@redhat.com>
- <20260708102904.50732-2-sgarzare@redhat.com>
+        bh=I25j4NEeSKak63Qb+HSetEoQ8CJw2iYRk1TEpKrwxTw=;
+        b=TwgDvGtZ6njbf97JmFw7JPFRKPW9ajW8jwHU5exWHqtdfZV7fWgJeuvU1cS7+HKh9l
+         MlJDXgWFKTbA1nnRmPOCrvKsyagR+7yB203i/JZAhSmR5K4p6VMCZLFplee6jmnQCbsB
+         YSZ8tqz01hjHRe3wdR/4iCh5A5ZCgUkMhdodoUOEwTSYz2UlUj98A6/q3pElBUOCUIKd
+         uSRuFRjh+m/j59TXoin0rvgLwJfKEiu7JvBK3jODkqKJndd2kdcvAclYNgqAd064wxI1
+         ronYOXa7XWWAOtbXGILLScmP4ET7218jV0SFRoxADrTLNVd2cG0fwXaJ5XtZLGvcvQV2
+         HsQw==
+X-Gm-Message-State: AOJu0Yz6ivV8qemsvcuryTHRHenCsn6WTLthUNmpaAf6HuYfbwgEVzfV
+	l7noIQ2ZoopsMeaPveO7AhcmgVZhSa3ujDlDlT7ezUz0y+KVbDXKrOh+GQ5dyMhljgk3I+jSRjS
+	ueGVb3n1ftpD71ZeSOyrdo1VGBq1nqmpJfaLyrh/Z3CgPqlu/VpWbpTyc0Q==
+X-Gm-Gg: AfdE7cmWaj0Ig6zo+sNlp4R3tCVS7Py6EmfBZ2ydb7+koOS4cO7K4zgfQGyP3H37S/l
+	XvWjbHKMAVNxSgYaFUxm7FLI+Zp56vu2H7orAzorLYLqMo5Lfjqii5lrnk6O+59oGOVIb6jfufS
+	D3/F+3rblSNMFzwh9rbhPVaaDi7FUPh4dcjEmE+EfxAgaGe8cxPSAb3Oc+teX9qyzSXP1TgbCZK
+	TTfW0aOQQHC0A+XxltGryaFW4XPaydaCF2CyJC/Cs7Z1TFg3buNnZbU1tRC3zgvLsoo
+X-Received: by 2002:a05:6512:3b0c:b0:5ae:add8:f1ff with SMTP id
+ 2adb3069b0e04-5b01c83a829mr28215e87.5.1783625049189; Thu, 09 Jul 2026
+ 12:24:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708102904.50732-2-sgarzare@redhat.com>
+References: <20260708-igb_v3_b4-v3-0-1272650ca614@google.com>
+ <20260708-igb_v3_b4-v3-1-1272650ca614@google.com> <20260708233151.6EACE1F000E9@smtp.kernel.org>
+In-Reply-To: <20260708233151.6EACE1F000E9@smtp.kernel.org>
+From: Josh Hilke <jrhilke@google.com>
+Date: Thu, 9 Jul 2026 12:23:56 -0700
+X-Gm-Features: AVVi8CdhEPpBm7l9s0IjnXHy9W0ADejT_RWImIR_E5Q-RZbVyB4otcxU7sZDAnk
+Message-ID: <CAAdrzjsC607Ke_rpdeDq50n3BratY=vQnq0NLNt7=wSBPR_dvA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] vfio: selftests: igb: Add driver for IGB QEMU device
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 08, 2026 at 12:29:03PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> When many small packets accumulate in the receive queue, the skb overhead
-> can exceed buf_alloc even while the payload is within bounds. This causes
-> virtio_transport_inc_rx_pkt() to reject packets, leading to connection
-> resets during large transfers under backpressure.
-> 
-> The issue was reported by Brien, who has a reproducer, but it is also
-> easily reproducible with iperf-vsock [1] using a small packet size:
-> 
->   iperf3 --vsock -c $CID -l 129
-> 
-> which fails immediately without this patch but with commit 059b7dbd20a6
-> ("vsock/virtio: fix potential unbounded skb queue").
-> 
-> Inspired by TCP's tcp_collapse() which solves a similar problem, add
-> virtio_transport_collapse_rx_queue() that walks the receive queue and
-> re-copies data into compact linear skbs to reduce the overhead.
-> 
-> The collapse is triggered proactively from when the number of skb queued
-> is close to exceeding the overhead budget.
-> 
-> A pre-scan counts the eligible bytes to size each allocation precisely,
-> avoiding waste for isolated small packets. Partially consumed skbs are
-> kept as-is to preserve buf_used/fwd_cnt accounting, EOM-marked skbs to
-> maintain SEQPACKET message boundaries, and skbs already larger than the
-> collapse target because they already have a good data-to-overhead ratio.
-> 
-> Walking a large queue may take a significant amount of time and cache
-> misses, causing traffic burstiness. To limit this, the collapse stops
-> once enough room is freed for this packet and the next one, but may
-> opportunistically free more to fill each collapsed skb to capacity.
-> 
-> [1] https://github.com/stefano-garzarella/iperf-vsock
-> 
-> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> Cc: stable@vger.kernel.org
-> Reported-by: Brien Oberstein <brienpub@gmail.com>
-> Closes: https://lore.kernel.org/netdev/618701dd023e$063de350$12b9a9f0$@gmail.com/
-> Tested-by: Brien Oberstein <brienpub@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
-> v2:
-> - defined MAX_COLLAPSE_LEN macro instead of using a variable [Paolo]
-> - added a threshold to avoid walking all the queue while collapsing
->   [Paolo]
-> - collapsed the queue before calling virtio_transport_inc_rx_pkt().
->   While working on the threshold, I figured out that the check I was
->   introducing can also be used to proactively trigger the collapse, so I
->   moved the call to virtio_transport_collapse_rx_queue() before acquiring
->   the rx_lock to have also a better diff to simplify backports
-> - improved code readability (removed `out` label, `keep` initialization,
->   etc.) [Paolo + other small stuff]
-> - Brien kindly retested this version as well (thank you so much)
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 165 +++++++++++++++++++++++-
->  1 file changed, 164 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 09475007165b..8becad81279c 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -26,6 +26,13 @@
->  /* Threshold for detecting small packets to copy */
->  #define GOOD_COPY_LEN  128
->  
-> +/* Max payload that can be collapsed into a single linear skb, using the same
-> + * allocation threshold as virtio_vsock_alloc_skb() to avoid adding pressure
-> + * on the page allocator.
-> + */
-> +#define MAX_COLLAPSE_LEN \
-> +	SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM, PAGE_ALLOC_COSTLY_ORDER)
-> +
->  static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
->  					       bool cancel_timeout);
->  static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
-> @@ -420,6 +427,145 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	return ret;
->  }
->  
-> +static bool virtio_transport_can_collapse(struct sk_buff *skb)
-> +{
-> +	/* skbs that are partially consumed, mark a SEQPACKET message boundary,
-> +	 * or are already large enough should not be collapsed: they either
-> +	 * need special accounting, carry protocol state, or already have a
-> +	 * good data-to-overhead ratio.
-> +	 */
-> +	if (VIRTIO_VSOCK_SKB_CB(skb)->offset)
-> +		return false;
-> +	if (le32_to_cpu(virtio_vsock_hdr(skb)->flags) & VIRTIO_VSOCK_SEQ_EOM)
-> +		return false;
-> +	if (skb->len >= MAX_COLLAPSE_LEN)
-> +		return false;
-> +	return true;
-> +}
-> +
-> +/* Iterate through the packets in the queue starting from the current skb to
-> + * count the number of bytes we can collapse.
-> + */
-> +static unsigned int
-> +virtio_transport_collapse_size(struct sk_buff *skb, struct sk_buff_head *queue)
-> +{
-> +	unsigned int target = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +	while ((skb = skb_peek_next(skb, queue)) &&
-> +	       virtio_transport_can_collapse(skb)) {
-> +		unsigned int len = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +
-> +		if (len > MAX_COLLAPSE_LEN - target)
-> +			return target;
-> +
-> +		target += len;
-> +	}
-> +
-> +	return target;
-> +}
-> +
-> +/* Called under lock_sock to compact the receive queue by merging small skbs.
-> + * @min_to_free: minimum number of skbs to eliminate from the queue. May free
-> + *               more to fill each collapsed skb to capacity.
-> + */
-> +static void
-> +virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
-> +				   u32 min_to_free)
-> +{
-> +	struct sk_buff *skb, *next_skb, *new_skb = NULL;
-> +	struct sk_buff_head new_queue;
-> +	u32 saved = 0;
-> +
-> +	__skb_queue_head_init(&new_queue);
-> +
-> +	skb_queue_walk_safe(&vvs->rx_queue, skb, next_skb) {
-> +		struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +		u32 src_off = VIRTIO_VSOCK_SKB_CB(skb)->offset;
-> +		u32 src_len = skb->len - src_off;
-> +		bool keep;
-> +
-> +		keep = !virtio_transport_can_collapse(skb);
-> +		if (keep) {
-> +			/* Finalize pending collapsed skb to preserve packet
-> +			 * ordering.
-> +			 */
-> +			if (new_skb) {
-> +				__skb_queue_tail(&new_queue, new_skb);
-> +				new_skb = NULL;
-> +				saved--;
-> +			}
-> +			goto next;
-> +		}
-> +
-> +		/* Finalize if this packet won't fit in the remaining tailroom,
-> +		 * so we can allocate a right-sized new_skb.
-> +		 */
-> +		if (new_skb && src_len > skb_tailroom(new_skb)) {
-> +			__skb_queue_tail(&new_queue, new_skb);
-> +			new_skb = NULL;
-> +			saved--;
-> +		}
-> +
-> +		if (!new_skb) {
-> +			unsigned int alloc_size;
-> +
-> +			/* Check after finalizing to opportunistically fill
-> +			 * each collapsed skb to capacity, merging more skbs
-> +			 * than strictly required.
-> +			 */
-> +			if (saved >= min_to_free)
-> +				break;
-> +
-> +			alloc_size = virtio_transport_collapse_size(skb, &vvs->rx_queue);
-> +
-> +			/* Only this skb's data is eligible, nothing to merge
-> +			 * with. Keep as-is.
-> +			 */
-> +			if (alloc_size <= src_len) {
-> +				keep = true;
-> +				goto next;
-> +			}
-> +
-> +			new_skb = virtio_vsock_alloc_linear_skb(alloc_size +
-> +					VIRTIO_VSOCK_SKB_HEADROOM, GFP_KERNEL);
-> +			if (!new_skb)
-> +				break;
-> +
-> +			memcpy(virtio_vsock_hdr(new_skb), hdr,
-> +			       sizeof(struct virtio_vsock_hdr));
-> +			virtio_vsock_hdr(new_skb)->len = 0;
-> +		}
-> +
-> +		/* Cannot fail since src_off/src_len are within bounds, but if
-> +		 * it does, discard new_skb to avoid queuing corrupted data.
-> +		 */
-> +		if (WARN_ON_ONCE(skb_copy_bits(skb, src_off,
-> +					       skb_put(new_skb, src_len),
-> +					       src_len))) {
-> +			kfree_skb(new_skb);
-> +			new_skb = NULL;
-> +			break;
-> +		}
-> +
-> +		le32_add_cpu(&virtio_vsock_hdr(new_skb)->len, src_len);
-> +		virtio_vsock_hdr(new_skb)->flags |= hdr->flags;
-> +
-> +next:
-> +		__skb_unlink(skb, &vvs->rx_queue);
-> +		if (keep) {
-> +			__skb_queue_tail(&new_queue, skb);
-> +		} else {
-> +			consume_skb(skb);
-> +			saved++;
-> +		}
-> +	}
-> +
-> +	if (new_skb)
-> +		__skb_queue_tail(&new_queue, new_skb);
-> +
-> +	skb_queue_splice(&new_queue, &vvs->rx_queue);
-> +}
-> +
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> @@ -1354,12 +1500,29 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
->  {
->  	struct virtio_vsock_sock *vvs = vsk->trans;
->  	bool can_enqueue, free_pkt = false;
-> +	u32 len, queue_max, queue_len;
->  	struct virtio_vsock_hdr *hdr;
-> -	u32 len;
->  
->  	hdr = virtio_vsock_hdr(skb);
->  	len = le32_to_cpu(hdr->len);
->  
-> +	/* virtio_transport_inc_rx_pkt() rejects packets when the per-skb
-> +	 * overhead (skb_queue_len * SKB_TRUESIZE(0)) exceeds buf_alloc.
-> +	 * Proactively collapse the queue before that happens.
-> +	 * No rx_lock needed: lock_sock is held by caller, preventing
-> +	 * concurrent enqueue or dequeue.
-> +	 */
-> +	queue_max = vvs->buf_alloc / SKB_TRUESIZE(0);
-> +	queue_len = skb_queue_len(&vvs->rx_queue);
-> +	if (queue_len >= queue_max) {
-> +		/* Walking a large queue may take a significant amount of time
-> +		 * and cache misses, causing traffic burstiness. Limit the
-> +		 * collapse to freeing room for this packet and the next one.
-> +		 * It may free more to fill each collapsed skb to capacity.
-> +		 */
-> +		virtio_transport_collapse_rx_queue(vvs, queue_len + 2 - queue_max);
-> +	}
-> +
->  	spin_lock_bh(&vvs->rx_lock);
->  
->  	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+On Wed, Jul 8, 2026 at 4:31=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
+>
+> Thank you for your contribution! Sashiko AI review found 5 potential issu=
+e(s) to consider:
+> - [High] Advanced Receive Descriptor Misconfiguration (SRRCTL)
+> - [High] Unsupported MAC Loopback and Link State Deadlock
+> - [High] Interrupt Delivery Failure due to Incomplete MSI-X Configuration
+> - [High] Fault Recovery Failure due to PCIe Completion Timeout Resend
+> - [High] Inadequate Wait Timeout for Large Memcpy Batches
 
-The changes still look good to me.
+It's worth noting most of these issues are specific to the physical
+hardware. This first patch intends only to do the bare minimum to get
+the driver tests to pass on QEMU IGB. Alex's patches add the necessary
+support for the physical device. I think keeping those patches
+separate makes it easy to see the differences between the QEMU device
+and the physical device. I'll add comments for each issue below
+stating which patch addresses it.
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+I'll also update the commit message to clarify that this patch does
+not support the physical hardware.
 
-Thanks,
-Bobby
+>
+> --- Patch [1]: [PATCH v3 1/9] vfio: selftests: igb: Add driver for IGB QE=
+MU device ---
+> commit a7e0dd62086e602fc2886d15801884902daf6cba
+> Author: Josh Hilke <jrhilke@google.com>
+>
+> vfio: selftests: igb: Add driver for IGB QEMU device
+>
+> This patch adds a VFIO selftest driver for the Intel Gigabit Ethernet
+> controller (IGB) to allow running VFIO selftests in QEMU without requirin=
+g
+> specific hardware. It utilizes the IGB loopback mode to implement the
+> required memcpy operations.
+>
+> > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools=
+/testing/selftests/vfio/lib/drivers/igb/igb.c
+> > new file mode 100644
+> > index 0000000000000..339ca88b9c555
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+>
+> [ ... ]
+>
+> > +static void igb_phy_setup_autoneg(struct igb *igb)
+> > +{
+> > +     int timeout_ms =3D 1000;
+> > +     bool success =3D false;
+> > +     u16 phy_status;
+> > +     int ret;
+> > +     int i;
+> > +
+> > +     /* Trigger auto-negotiation */
+> > +     ret =3D igb_write_phy(igb, MII_BMCR,
+> > +                         BMCR_ANENABLE | BMCR_ANRESTART);
+>
+> [Severity: High]
+> Does this configuration work on unplugged physical hardware?
+>
+> Writing to the PHY without enabling BMCR_LOOPBACK and relying on
+> autonegotiation will block indefinitely and time out after 1 second if no
+> network cable is connected.
+
+Fixed in patch 2 which sets up loopback for physical hardware.
+
+>
+> > +     VFIO_ASSERT_EQ(ret, 0, "Failed to write PHY control register");
+> > +
+> > +     for (i =3D 0; i < timeout_ms; i++) {
+> > +             if (igb_read_phy(igb, MII_BMSR, &phy_status) =3D=3D 0) {
+> > +                     success =3D !!(phy_status & BMSR_ANEGCOMPLETE);
+>
+> [ ... ]
+>
+> > +static void igb_init(struct vfio_pci_device *device)
+> > +{
+> > +     struct igb *igb =3D to_igb_state(device);
+> > +     u64 iova_tx, iova_rx;
+> > +     u32 ctrl, rctl;
+> > +     u16 cmd_reg;
+> > +     int retries;
+> > +
+> > +     VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
+> > +
+> > +     /* Set up rings and calculate IOVAs */
+> > +     igb->bar0 =3D device->bars[0].vaddr;
+> > +
+> > +     iova_tx =3D to_iova(device, igb->tx_ring);
+> > +     iova_rx =3D to_iova(device, igb->rx_ring);
+>
+> [Severity: High]
+> Could an unmapped IOVA access permanently lock up the physical device her=
+e?
+>
+> VFIO selftests intentionally submit descriptors targeting unmapped IOVAs =
+to
+> test IOMMU fault handling. By default, 82576 hardware sets the
+> E1000_GCR_CMPL_TMOUT_RESEND bit, which instructs the DMA engine to
+> indefinitely retry upon PCIe Completion Timeout or Unsupported Request fr=
+om
+> the IOMMU, flooding the system with PCIe AER errors.
+>
+> Should the initialization sequence clear this bit in the E1000_GCR regist=
+er
+> before starting DMA operations so the device can gracefully recover?
+
+Fixed in patch 6, which clears the GCR retry bit, and patch 9 which
+implements FLR recovery.
+
+>
+> > +     igb_write32(igb, E1000_CTRL, igb_read32(igb, E1000_CTRL) | E1000_=
+CTRL_RST);
+> > +     /*
+> > +      * Must wait at least 1 millisecond after setting the reset bit b=
+efore
+> > +      * checking if this device is ready to be used (82576 datasheet s=
+ection
+> > +      * 4.2.1.6.1).
+> > +      */
+>
+> [ ... ]
+>
+> > +     /* Configure TX and RX descriptor rings */
+> > +     igb_write32(igb, E1000_TDBAL(0), (u32)iova_tx);
+> > +     igb_write32(igb, E1000_TDBAH(0), (u32)(iova_tx >> 32));
+> > +     igb_write32(igb, E1000_TDLEN(0), RING_SIZE * sizeof(struct igb_tx=
+_desc));
+> > +     igb_write32(igb, E1000_TDH(0), 0);
+> > +     igb_write32(igb, E1000_TDT(0), 0);
+> > +     igb_write32(igb, E1000_TXDCTL(0), E1000_TXDCTL_QUEUE_ENABLE);
+> > +
+> > +     igb_write32(igb, E1000_RDBAL(0), (u32)iova_rx);
+>
+> [Severity: High]
+> Will the hardware use the correct descriptor format without configuring
+> E1000_SRRCTL?
+>
+> The driver's struct igb_rx_desc expects the Advanced One-Buffer format, b=
+ut
+> without writing E1000_SRRCTL_DESCTYPE_ADV_ONEBUF to E1000_SRRCTL during
+> igb_init(), the 82576 hardware defaults to the legacy format.
+>
+> This causes the hardware to write the status byte to offset 4 instead of
+> offset 8, making igb_memcpy_wait() poll an unpopulated offset and causing
+> the test to fail with an indefinite timeout on physical hardware.
+
+Fixed in patch 3 which implements advanced TX and RX descriptors.
+
+> > +     igb_write32(igb, E1000_RDBAH(0), (u32)(iova_rx >> 32));
+> > +     igb_write32(igb, E1000_RDLEN(0), RING_SIZE * sizeof(struct igb_rx=
+_desc));
+> > +     igb_write32(igb, E1000_RDH(0), 0);
+> > +     igb_write32(igb, E1000_RDT(0), 0);
+> > +     igb_write32(igb, E1000_RXDCTL(0), E1000_RXDCTL_QUEUE_ENABLE);
+> > +
+> > +     /* Wait for TX and RX queues to be enabled */
+> > +     retries =3D 2000;
+> > +     while (retries-- > 0) {
+> > +             if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEU=
+E_ENABLE) &&
+> > +                 (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEU=
+E_ENABLE))
+> > +                     break;
+> > +             usleep(10);
+> > +     }
+> > +
+> > +     /* Enable Receiver and Transmitter */
+> > +     rctl =3D E1000_RCTL_EN |       /* Receiver Enable */
+> > +            E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MA=
+C) */
+> > +            E1000_RCTL_LBM_MAC |  /* MAC Loopback Mode */
+> > +            E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
+> > +     igb_write32(igb, E1000_RCTL, rctl);
+>
+> [Severity: High]
+> Is it expected that internal MAC loopback is not actually implemented on
+> real 82576 hardware?
+>
+> The datasheet (Section 3.5.6.2) indicates E1000_RCTL_LBM_MAC has no physi=
+cal
+> effect on the 82576. Additionally, the MAC link is never forced up via
+> E1000_CTRL_SLU here. This will stall the descriptor engine when running o=
+n
+> real hardware without a live network connection.
+
+Fixed in patch 2 which uses PHY loopback instead of MAC.
+
+>
+> > +     igb_write32(igb, E1000_TCTL, E1000_TCTL_EN);
+> > +
+> > +     /* Enable MSI-X with 1 vector for the test */
+> > +     vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
+> > +
+> > +     /* Enable auto-masking of interrupts to avoid storms without a re=
+al ISR */
+> > +     igb_write32(igb, E1000_GPIE, E1000_GPIE_EIAME);
+> > +
+> > +     /* Enable interrupts on vector 0 */
+> > +     igb_write32(igb, E1000_EIMS, 1);
+> > +
+> > +     /* Map vector 0 to interrupt cause 0 and mark it valid */
+> > +     igb_write32(igb, E1000_IVAR0, E1000_IVAR_VALID);
+>
+> [Severity: High]
+> Will the hardware successfully deliver MSI-X interrupts with this configu=
+ration?
+>
+> The RX queue is mapped to MSI-X vector 0 using E1000_IVAR0, but the
+> E1000_GPIE_MSIX_MODE bit isn't set in E1000_GPIE. This leaves the 82576
+> operating in legacy interrupt mode, causing it to ignore IVAR routing.
+>
+> Also, while E1000_GPIE_EIAME (Auto-Mask Enable) is set, the E1000_EIAM
+> and E1000_EIAC registers appear to be left unprogrammed.
+
+E1000_GPIE_MSIX_MODE does indeed need to be set in order for the
+driver tests to pass in QEMU (the mix_and_match test fails without
+it).  Patch 4 fixes the MSI-X configuration for the physical hardware.
+
+> > +
+> > +     /* Initialize driver state and capability limits */
+> > +     igb->tx_tail =3D 0;
+>
+> [ ... ]
+>
+> > +static int igb_memcpy_wait(struct vfio_pci_device *device)
+> > +{
+> > +     struct igb *igb =3D to_igb_state(device);
+> > +     struct igb_rx_desc *rx;
+> > +     u32 status =3D 0;
+> > +     u32 prev_tail;
+> > +     int retries;
+> > +
+> > +     prev_tail =3D (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
+> > +     rx =3D &igb->rx_ring[prev_tail];
+> > +
+> > +     retries =3D 100;
+> > +     while (retries-- > 0) {
+> > +             status =3D le32_to_cpu(READ_ONCE(rx->wb.status_error));
+> > +             if (status & 1)
+> > +                     break;
+> > +             usleep(10);
+> > +     }
+>
+> [Severity: High]
+> Is a 1 millisecond total wait timeout sufficient for full-size batch copi=
+es?
+>
+> This lockless polling loop executes 100 iterations of 10 microseconds eac=
+h,
+> yielding a strict 1ms timeout limit. However, the driver initializes
+> max_memcpy_count to 4095 and max_memcpy_size to 1024 bytes. Transmitting
+> ~4 MB of data across a 1 Gbps loopback interface physically requires at l=
+east
+> ~33.5 milliseconds, which will cause large memcpy batches to consistently
+> time out before completion.
+
+Fixed in patch 5 which extends the timeout for the physical hardware's
+line rate.
