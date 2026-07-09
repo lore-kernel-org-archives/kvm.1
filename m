@@ -1,184 +1,179 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E06449983;
-	Thu,  9 Jul 2026 18:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB2E4499BB
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 19:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783623023; cv=none; b=jETMV1hEXXqOnpgT4mrV0K+5GFAAb7uOO4QH7xSfz/0cE3Uf2AWd3n0rSlRdlMRLbAji0epjk7jmA8IktKwza9fT31a0pDk74gHv7JR7j9MoOLzFdzXf4i/01rom7h3HM/U1PJN6XmN2wOcWiMeAaQ1K5NuKWIAnOlF2UmsuSO0=
+	t=1783623694; cv=none; b=LnKwVduvOlt+vjolKOmOQrPgY/9HjNuSX7be5XkjlKV1eA46d+5iFzqN8uKqz+TqG8t9GxEI2CYbomd7QMegePKEjqJdCwp9k5I+jFFoXr+skcNKrNL4UXOXeaqY5FPZysLBhLsPcWJVBu7RUery4VGKWqySF4DEBDXzW51LZvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783623023; c=relaxed/simple;
-	bh=eMvLjavfrZJlD2lRmP5k01iYM1ODAb6U0vzOTDvTHkk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OuE66BgqqoTtddvs+WkW6f9QB6v0RR12Vt4FYVKngj1EEVNvucG126zEB8JeaNHdU427VkuQmzYCWMsiV9T7F/eILN7NVH23xpb/Nxj85gv/8jrLc88xv1O7pfXvAFzGrZPRVEFxsKqXpRBG/s7phQgGcvCQjMN/SF46jcv1KSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=M/t6VLUw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GeWhHHCm; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1783623694; c=relaxed/simple;
+	bh=mbSLLFPX+/+wGifuU8rvXn+yjD80DQsccM2K7nprCAU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sQmHbpCVrPcOEIYXSqoAQb/QlV56eaa/Y68ReGb5XxQyaucs7X9ostYsF23ap6U/DJqFWhaAs4XM89oA1LhAlAIrihVFUD2IsAO+L/iV8ik3zPqiDiIrpce/6HVKsom9F0A00kPyiaYKM/90ZMdr6UH+WXWL5cJjiFl1YqTYgQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CMgybTWn; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="M/t6VLUw";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GeWhHHCm"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.phl.internal (Postfix) with ESMTP id 7DA3AEC0197;
-	Thu,  9 Jul 2026 14:50:17 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 09 Jul 2026 14:50:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1783623017;
-	 x=1783709417; bh=7eq+s1ki9p+cx7h5OYu+Ag2KZEjIMZR2/rJcK6DAnx0=; b=
-	M/t6VLUwy3NLxuqfRPwA6WvREost/ZkTc2X9GZ1ouz3sJpbcbzftnuVjBpp2muPl
-	YnA86ewcgSv65yNBSyvQYL0cRN2vbPDbVq2/qo1beWuqKzy4XzE4w4VtoRn+djPs
-	N7GSlG3rpk4GilxzZZi/jo3TSbwpnyadeZxIJaXviJSSEqc2vVTvibJWJGMpGNpu
-	7TYvXadjbKzA8/LJjZ7x8USS+pZcekHY9MT6AZeGQQRDb5yb9Vh6ImP+Mr3pwXlv
-	ILj5W9/EOErGnP8EEA2E5CWLSqx0u94g+8yBw6+HEyI8JqUSogouteQH4gzOanfM
-	tRMLyua53qADya8oFHfLeg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783623017; x=
-	1783709417; bh=7eq+s1ki9p+cx7h5OYu+Ag2KZEjIMZR2/rJcK6DAnx0=; b=G
-	eWhHHCmmchaq7gNFCebO0hlPSkPSVOp0OAZmA+YLRfYKuYsINsPQQq1l7qxepwxO
-	8Wa/T+a7+U2BuJy48wSgIYV4//bShJwkbECPw4eUi41HO89fzo9RL3KwUWjxJy+M
-	Aq+YlK955ilkvyEmPPw1QD7iX02sgx0Y+R2ElejuflWZLI2J4/JrKy1SLGQN4Xcx
-	LxxVg5E8xc3zfX0pz0VEJQxqPQJRRjIkHVbhrYv+c4pxqTLTA0qEavQ7I1kZbBsI
-	m9NqmbTOSbHjglXBu/D+gMseSdzWxI4QAGn3KyC56hEK2iCOd2IU4R9tZffVhkAh
-	TEqFEHmEn/WdIEwk5okdA==
-X-ME-Sender: <xms:aO1Pai-paWvwQNKt4z_xknRSfCc-FvPPgFRCjtBz-MEUDS-4wuPMEQ>
-    <xme:aO1PakSA_5Vqs5P39oQLY5HEVP2JnTg6_Bw-7vH1nHAoD20Vf3bT6wrhSXyjc-1bM
-    l3LkN3A9AtqKJf7FpZTJJl8AeL65z4lrZVCEeRcz2dI4tU9eEveNzk>
-X-ME-Received: <xmr:aO1PanRLQegSbgCQfltGAAB2yi7AthdWyZX8Fzrs95BGd7hs9hxGOdV0pzQ>
-X-ME-Proxy-Cause: dmFkZTFEkJAMthfS71ADEk1iBTN4/4AMIax5uZ45lBRkBiTnkMmOke3v5MVcBKOzW4Fcv4
-    Wrt2jMEs1NyZY4b/aaTetRDUdyHCQPSNUht7HAMk+dduEVIs8ojvld2m6/jQhPEZuYFrF6
-    mpevGh0lMmZdy2axmup1Err3v6PUzHzVwsFTmbi2+eqGo6LE/UXfGTe9FWxA3o2xacLhk1
-    cYSKKPaFGTN2qsEGTm72g16A2/bBA/E8oSg7scRxHuN9eBe3IMiUzjM9I87NWLjVekiYn7
-    LR4JZJlLTp352tCtc/PVH9HTIsWXp70n5tASuSxwezBz+nEt+G2qlLN65LrnSCfxST8AUv
-    mP/ZNaC+JY1ZEX1DTfMK8p/c7lKiYo9IAKsinzjGd+KlSXzNSiDnsj2t8pWqHkLrOg9ewi
-    HBM/eVGfJwIVVOsB5S8FHXagB+gEqyTiNc2cR+dBbKN4fPSc1oW2VuauYskR9ZbZrwaRyq
-    PIAqZKu1GU7n+uV1WIPmbUergvNc1zKCK8+lRhaRa0a/AtZv1mAiVvNCQ/ZyzorhrwI0yv
-    ey79rJVYsCR7isbnOEdBn3NEdLTeGQkwU1zf4t0IdSZfCJ0Xo3gLuRGmfHo+U4nUbgqRJW
-    yzsMpRKDycSoZHPdGyXXPaUtTSjX2o0T4zSLFIbGtFIvcFlW/ffS3KnC44Hg
-X-ME-Proxy: <xmx:aO1Pag4qht9LSUiPYKcEgbKaTdEPisxgYQev1sfE4EiqVbZJQA3frw>
-    <xmx:aO1PasWJaWiX_g5bV9PRmUjk1DwzRYQOjgQsmVk5bObD5RAZN65GGw>
-    <xmx:aO1Pam8lvXA_r2YXG1OnGK9ys2_ytBixnTQMe3ZTyjjFowhrzOjLGQ>
-    <xmx:aO1PasrLbjHY6JzKP4De73WedriiXVZmklFRroigJxXHJUbRyD9crA>
-    <xmx:ae1PalAzBKUQ0sh4TEe1CY2UOWVGpUN9u2bP4nk1zMvSAwBinT339INI>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 9 Jul 2026 14:50:14 -0400 (EDT)
-Date: Thu, 9 Jul 2026 12:50:12 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v19 12/18] vfio/pci: Add dmabuf TPH metadata storage and
- fd query helper
-Message-ID: <20260709125012.21784d0a@shazbot.org>
-In-Reply-To: <bb0e583e-501f-4356-b554-784482b35331@huawei.com>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
-	<20260702124224.57168-13-fengchengwen@huawei.com>
-	<20260708173117.3e399c4b@shazbot.org>
-	<bb0e583e-501f-4356-b554-784482b35331@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CMgybTWn"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8484ba00601so80077b3a.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 12:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783623692; x=1784228492; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7dhwp5vjqYszriZEVm0D/39l33x16cKgI34FbGJQXy0=;
+        b=CMgybTWnw0BbAcVKMA6JaHZ76RwU6F2hbP9gjxmk93coT/d/NIEYgQ/Ha1msVj854u
+         8hdDcU+vVECnggSbfeoiWZinWOjvG1hnklOTe7qMoBS8jEH59lrgzboIFPp8+hdCcGEp
+         RHKvbhebZWk0rsrbPrKJRw5fGengsrsfVhb7BA2F4p0jh1vqNZqc5uHUnM+ItLsVwSwt
+         gzCc5OQ0mEaFAhlJ1A26kS5+vmGLqLOShO0vppxGGOLrJ6UAfZrCF7dHF21EGQvto9Ux
+         MEz3AL++m/PliB+Ttle0Bg49HXspbCMztPDFWXBStEFPumg8yvwcmaflJCXBRSmB7n1O
+         ZxrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783623692; x=1784228492;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7dhwp5vjqYszriZEVm0D/39l33x16cKgI34FbGJQXy0=;
+        b=O5/Wi3jrjBwazJXdwkrzFGpTPwgtx+PvCE258NYH+QVpPiNktFgHY9xMQ8KaXUyvfT
+         VRB8sALpp4P/NTwR1ETcS9MqmPgYZbVZxSHfv+iZpfale1HvznDvNS9l2+BAHRCAQyGR
+         LmhXhTKI6D2NqDEom3KAQjN2env8CH3TSHijUrA++T1q5Wog6+DX++4djjgw7LYvdNau
+         VKj53dVJObKxnVKNT1prWyp8Ju7siXp3JFAq3sZOnLxtpfHnXxWH9Qo+oD32wFCC1/2H
+         rGNMIM8+jx1tVtGXkbhJDlgFj8PXf8l+HCwGpT7ZfGy/No35fJTE4Vip6sljPnhloN/Q
+         MVbg==
+X-Forwarded-Encrypted: i=1; AHgh+RpVClmWFLxpuNrYJ0L9A6ioH33Il9ZzvJ11dGYHteei1Qka6LBWLnmaoNdIyBN42p/6hjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjH/USk/BuC8X6Yw7WYoLBtjNmSbifLVR5J5hl0Tr2IBxU1nl4
+	hls5I5fi7Krk+yeRSKpqWscXaT0qygh3yM0ujyqVaCviQAbdS4prQHJ3QCtlrrzvXs4qJ9aU6+w
+	OBsc0xQ==
+X-Received: from pglx3.prod.google.com ([2002:a63:1703:0:b0:c85:dc1c:c8ea])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e18:b0:845:e9e8:6458
+ with SMTP id d2e1a72fcca58-84842eda2bfmr8132247b3a.20.1783623692329; Thu, 09
+ Jul 2026 12:01:32 -0700 (PDT)
+Date: Thu, 9 Jul 2026 12:01:31 -0700
+In-Reply-To: <ak-EKSslAz1uqEtv@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260702142912.6395-1-alexandru.elisei@arm.com>
+ <akxOrMnlNga-vtQv@google.com> <ak0wSQ1133O7B96D@raptor> <ak0ziUcCXUlDdcla@google.com>
+ <ak-EKSslAz1uqEtv@J2N7QTR9R3>
+Message-ID: <ak_wC4Q-mQe14DI8@google.com>
+Subject: Re: [RFC PATCH 0/3] KVM: Dirty page logging for guest_memfd-only memslots
+From: Sean Christopherson <seanjc@google.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	david.hildenbrand@arm.com, maz@kernel.org, oupton@kernel.org, 
+	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, 
+	yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, fuad.tabba@linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 9 Jul 2026 19:49:24 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
+On Thu, Jul 09, 2026, Mark Rutland wrote:
+> Hi Sean,
+> 
+> Ignoring dirty page logging for the moment, I think you've raised a much
+> bigger concern.
+> 
+> I've dumped a bit more context below, with a couple of high-level
+> questions. The important thing for Alexandru and I is whether core folk
+> are willing to consider some mechanism to ensure that guest PAs are
+> pinned writeable and never fault (even transiently).
+> 
+> On Tue, Jul 07, 2026 at 10:12:41AM -0700, Sean Christopherson wrote:
+> > On Tue, Jul 07, 2026, Alexandru Elisei wrote:
+> > > On Mon, Jul 06, 2026 at 05:56:12PM -0700, Sean Christopherson wrote:
+> > > > On Thu, Jul 02, 2026, Alexandru Elisei wrote:
+> 
+> > > > Please (publicly) document *why*  you want to add dirty-logging support.  It's
+> > > > all but impossible to review new uAPI without knowing the use case.
+> 
+> > > As to why I'm working on it now, it's because of an arm64 feature that
+> > > requires that memory remains mapped at stage 2, called Statistical
+> > > Profiling Extension (SPE), similar to Intel's PEBS or AMD's IBS. Exposing
+> > > the feature to a guest requires that memory remains mapped at stage 2
+> > > outside of userspace explicitely unmapping it, and guest_memfd, with the
+> > > patch to ignore the MMU notifiers [1], has this property.  I wanted to
+> > > expand the functionality of guest_memfd to support migration of virtual
+> > > machines when that arm64 feature is exposed to guests.
+> > 
+> > I'm all for adding dirty logging support for guest_memfd, but for SPE I don't
+> > think relying on guest_memfd always being mapped is a good idea.  guest_memfd
+> > is "pinned" purely because adding support for page migration is (very) low
+> > priority for SNP, TDX, and pKVM.  guest_memfd page migration might play nice
+> > with SPE?  Probably depends on whether KVM is forced to do break-before-make?
+> 
+> The key thing for SPE is that any pages that the SPE HW is using must
+> have a valid writeable end-to-end (VA to real PA) mapping at all times
+> while the guest is running (and while the host drains buffers). If that
+> requirement is violated, even transiently, then data is lost and the
+> guest will see an unexpected fault reported by SPE.
 
-> Hi Alex,
->=20
-> On 7/9/2026 7:31 AM, Alex Williamson wrote:
-> > On Thu, 2 Jul 2026 20:42:18 +0800
-> > Chengwen Feng <fengchengwen@huawei.com> wrote:
-> >>
-> >> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> >> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-> >> ---
-> >>  drivers/vfio/pci/vfio_pci_dmabuf.c | 49 +++++++++++++++++++++++++++++-
-> >>  drivers/vfio/pci/vfio_pci_priv.h   |  6 ++++
-> >>  2 files changed, 54 insertions(+), 1 deletion(-) =20
-> >=20
-> > Please don't send competing patches, just indicate the series is based
-> > on Zhiping's series v#.  This makes all the naming changes that Zhiping
-> > declined yet you still included their sign-off.  Thanks, =20
->=20
-> Thanks for the feedback on overlapping dmabuf TPH patches with Zhiping=E2=
-=80=99s series.
-> There are code conflicts between the two series on PCI TPH and VFIO dmabu=
-f logic,
-> and I also have concerns that Sashiko may not properly parse and track cr=
-oss-series
-> Depends-on tags for reliable automated review.
->=20
-> My current design idea is to retain this foundational metadata patch in my
-> series. This patch only implements basic storage and query helpers for TP=
-H tags
-> on dma_buf objects, providing the underlying infrastructure. Zhiping can =
-then
-> build the corresponding VFIO device feature ioctl layer on top of these c=
-ommits
-> in his follow-up series. I will fully sync all his latest code revisions =
-into
-> this patch to align implementation details and minimize future merge conf=
-licts
+Well, at least it doesn't crash the host :-D
 
-If your concern is sashiko being able to apply and review your series
-on top of another, then I would suggest leading the series with the
-unmodified patches clearly noted in the cover letter and commit logs.
+> If there's any reason we might (transiently) unmap a leaf entry (or
+> entire sub-tree) from the stage-2 tables, or might (transiently) remove
+> write permission, then we can't guarantee SPE will work correctly from
+> the guest's PoV.
+> 
+> Obviously we can't guarantee that for regular memslots backed by
+> userspace memory, hence we were hoping we could rely on guest_memfd.
+> 
+> Am I right to understand that we expect (in future) to do things with
+> guest_memfd that could violate that? If so (and if we're not happy to
+> have some options to say "always keep this pinned end-to-end no matter
+> what"), 
 
-As provided here, this patch initially appears as excerpts of Zhiping
-series, again including sign-off without permission, but it introduces
-this massive gap that was previously overlooked as a result:
+Yes?  Page migration is the main one that I think will be problematic for arm64,
+*unless* CPUs that support SPE don't require break-before-make (no idea if there
+are even plans to ever drop the BBM rules).  Because with page migration, unless
+KVM temporarily jails all vCPUs in the host while swizzling stage-2 PTEs, there
+will be a small window of time where the memory isn't mapped.
 
-> >> =20
-> >> +int vfio_pci_dma_buf_get_tph_by_fd(int fd, bool extended, u16 *tag, u=
-8 *ph)
-> >> +{
-> >> +	struct dma_buf *dmabuf;
-> >> +	int ret =3D 0;
-> >> +
-> >> +	dmabuf =3D dma_buf_get(fd);
-> >> +	if (IS_ERR(dmabuf))
-> >> +		return PTR_ERR(dmabuf);
-> >> +
-> >> +	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-> >> +		ret =3D -EINVAL;
-> >> +		goto out;
-> >> +	}
-> >> +
-> >> +	ret =3D vfio_pci_dma_buf_get_pci_tph(dmabuf, extended, tag, ph);
-> >> +out:
-> >> +	dma_buf_put(dmabuf);
-> >> +	return ret;
-> >> +}
+I mention page migration because I expect swap/reclaim to be fully userspace
+driven, i.e. if userspace crashes/corrupts the guest, the answer will be "well
+don't do that".  But (at least some forms of) page migration will likely be
+kernel-driven, e.g. to compact movable memory for THP.  And I really don't want
+to give arch code the ability to hard-pin specific ranges of memory.
 
-.get_pci_tph() is proposed as a generic feature of dmabufs.  We cannot
-require that only vfio-pci provided dmabufs are supported, nor can we
-bypass the default interfaces and lifecycles.  This needs to use
-dma_buf_get_pci_tph(), rather than punch through to the vfio-pci
-implementation of .get_pci_tph(), and it needs to honor the calling
-conventions of that interface.  That's what makes this series dependent
-on Zhiping's implementation of TPH as a vfio-pci completer feature.
+That said, odds are good that we'll end up with per-gmem flags to communicate to
+guest_memfd whether or not the gmem instance supports page migration (x86's TDX
+and SNP in particular require extra consideration).  So if the anticipated use
+cases are fine with all-or-nothing "pinning", or with juggling guest_memfd files
+in userspace if a more dynamic setup is desired, then you should be ok?
 
-Already, within this patch, the caller violates the lockdep assertion
-that the dma reservation lock is held.
+E.g. if the anticipated use cases are all slice-of-hardware style setups where
+the VM will be statically assigned a chunk of memory, then for the most part this
+will all Just Work.
 
-Additionally, dma_buf_get_pci_tph() defines that the provided values
-are only valid until invalidate_mappings, but this series has no
-plumbing to honor that requirement.
+> then I think that means that in practice we cannot virtualize
+> SPE correctly, and Alexandru and I need to go back to our architects.
+> 
+> > And at some point guest_memfd may support userspace-driven swap, but I
+> > suppose we can cross that bridge when we come to it.
+> 
+> Unfortunately, I think we need to figure out now whether it would be
+> acceptable to suppress that (or making it mutually exclusive with SPE),
+> if only to decide whether or not we continue trying to virtualize SPE.
 
-This needs significant work if we need to track the lifecycle of every
-dmabuf related TPH value.  Thanks,
+Eh, as above, if userspace pulls a stupid and kills the guest, that's their
+problem.  Just make sure the host isn't at risk :-)
 
-Alex
+> We don't need to figure out all the details; just whether or not that
+> broad approach would be acceptable, or whether we have to give up on SPE
+> virtualization.
+> 
+> > From a uABI perspective, forcing userspace to use guest_memfd to get access to
+> > something like SPE isn't ideal.  While I have aspirations of using guest_memfd
+> > much more broadly, I don't know that banking on guest_memfd replacing "everything"
+> > is a winning strategy.
+> 
+> I agree this isn't ideal, and we're certainly not expecting that this is
+> suitable for all users. We're just trying to get as much functionality
+> as we practically can with today's SPE hardware.
+> 
+> Thanks,
+> Mark.
