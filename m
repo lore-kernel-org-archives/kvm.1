@@ -1,143 +1,86 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5071D33343B
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 14:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671873B893A
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 14:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783607558; cv=none; b=f52hKlzbRt7w3IB+7yjT05WFLbdG4nKEjl1DtJcK+u7gNCodti3k1IUg9nt1p1pN7HVmheZNiHFOjTvDR/rJ+1UVGtMnXZrfpU4pHB8wws/A7BP8QO/sAZxngm+VHMZ7Q6mJRZZ4O6pektmhZg4GVotzAPI4Qqnm2YWppa2r34s=
+	t=1783608913; cv=none; b=OwfG4B/2e1SvVYGny3VVTFfc5VoqpODcmdQ+iXSQvd0sRxjO3eGy0xFbF7enxVyMcAiCtIwY/KGMiBthJEluuba/7VFwKOlH/tWNXGwT3Jb4nS8276VHOq5bD9/jLO4qb4o1MG8wBuvJeTOeWk16VqJmn1SbTVYdooHil5L2e10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783607558; c=relaxed/simple;
-	bh=iE/k7l7D9RCJUPlvcmP2nfxM3f/U4m5RLC+p4asxFiw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WmrW6q0I3ztycuAHjb3LEP8VLzg/z8TC4RxvNL88ubBeCdcLmPe9DrPH6RoaBmElDRo3cBEANykvixgmjO/mAPtpH9sMHAIESdvWkZTjUS3aNa8Vyl3SuVelRJUAzNl09MDJ3gOAHn9JDQdYes5NVvsJCl3bmW+ooSQYZJATG28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Yt0xeD6w; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783608913; c=relaxed/simple;
+	bh=Z92wjpo4T3gw0Y2zNCG2Jd/Ba3+9EzNo1LTP87sUDGw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MS5Ony6SWy0gBEvwT9Tjmq9SGLbjz8Ot1V8iU9JW4TPVQCWu6jr+Z5f6ODWsNcXYuGLOJYvqc3cZgjjIkg3CD+iK/vejhucz6xnBILzbEd0wQvB+F3Lgcctet5iP+nvqTt4tKbVNbQ9dPBffqqtiSxg/EVNTnZ48IPPwVADW8Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rV2ozypf; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Yt0xeD6w"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669EINkd1769906;
-	Thu, 9 Jul 2026 14:32:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=QaGT4V
-	snd4lVWljMebmRG/rgoFMCDf37fAxRxmQOPRU=; b=Yt0xeD6w34cgPpnip371LK
-	eFwPQ6TYmdSJ6mKDgwxmWHUFyiV5uHlgvBjNkeutqednWptgrbCBqLZDeu565yAN
-	NxIiIxBImFQ3qx6dYmnoZGO9h+W7MPRbHZBG5MXcPAdL7Dg5cZuD4VH9AhWY49Rf
-	olx8kTRaAWDpDgVKjNxgau0bYqBGTOlZwmDxyFIKjCxhJAA/hfZmQj4HnMRN3pPC
-	f7VDq9tpOaI2GbluIqSL64eqGmycbNr2hbnkMM8LUlCRqfuHg3LtofUY5GukpO+3
-	+LXqfpkdyQw5bb6a3BoWgQGt6wq2u+OvorJ+X+xL3uxQPlIWhTktTfhhdSBXx93w
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6rke2grs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 14:32:27 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669Dnj1F030588;
-	Thu, 9 Jul 2026 14:32:27 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7dgkdh86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 14:32:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669EWQGd4981662
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 14:32:26 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E7625805D;
-	Thu,  9 Jul 2026 14:32:26 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B6BB558054;
-	Thu,  9 Jul 2026 14:32:20 +0000 (GMT)
-Received: from [9.39.26.55] (unknown [9.39.26.55])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 14:32:20 +0000 (GMT)
-Message-ID: <8c9b739c-8a9b-4e9a-8e43-7b1a6e1aa330@linux.ibm.com>
-Date: Thu, 9 Jul 2026 20:02:18 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rV2ozypf"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84842381150so1423926b3a.3
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 07:55:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783608912; x=1784213712; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fvTDmaZA4veBPk22tfgJT4gMaQFjXb/XSia/PA9AeFU=;
+        b=rV2ozypfHj2TGjGNnzUB71uX65+x8VyG9TDAJbVbPYBAdrwcGgUaocBlYfzgD5A41x
+         MIMKO3djb3MP0xx9JP0PYrCZ3mMu/p4sGaMVURBr9fx7kLZK5on/oUW3B0jB7PEMl3ei
+         wUh7XWMJ/Ju0hR06vZY+ncv2DNhdgS0Ha9LdFY5WV/laQ8a6ntijLABy3HZIpJKajAIS
+         xlbfu9COFxHkCEFB6GoEgpBsKS1INFLJdi9bOTyNEcDqzg+p+47J2G0m8YDL211M+skH
+         ta18t0kmK7QYJDNCF8oQ263z9yzInF4V0k0/CUnBiYHUyB0zZTgyIWgTw3mgk2uP+ab6
+         0qiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783608912; x=1784213712;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fvTDmaZA4veBPk22tfgJT4gMaQFjXb/XSia/PA9AeFU=;
+        b=kur22JZ2NTH9lF2kby/XDpNYR8S2DYHBxNeaKd54/XPp4wYFXTbA9iBGwHVzcdolOu
+         Qn0ZVQ4/u3sKaqTMkWP0AISmtgiZQGMjWlNrescyYeCpLXmsg9xyp9PeA6MAmlymCaOW
+         kBEyyWAXpQNdMULJxjaq4qdyzEKfkEkMEY8TY+K7j7KuonXpGwKyiXVfpLpzm3O02r+s
+         cl46yIXYMMegjqlAib9sRMShN6CTiVw4Spovtt/cQrwEaWhfFRNgavfaoZB3lHnfpr5R
+         9H8t1yz9LEX0znSqipoaUJVyLwWoHTvUmeP91P0rsINwISmgtMffy4W6XWzEyrG8bpZn
+         v0gA==
+X-Gm-Message-State: AOJu0Yz4kvxs7mtTi7Qk5A18gHD0uxr4VektLHJVswFhQn8KjegrpKAc
+	lREZkKp1a73JEWH+kqNJ7LbQVe5Ii3ijz2TISrjac3/20DbCvGP5ik/TI6zh0/hbufWSOxlBx/j
+	6tJ+MXQ==
+X-Received: from pfxx22.prod.google.com ([2002:a05:6a00:116:b0:848:5740:db83])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4191:b0:847:7f3c:b5f5
+ with SMTP id d2e1a72fcca58-84842ed2020mr7288680b3a.11.1783608911583; Thu, 09
+ Jul 2026 07:55:11 -0700 (PDT)
+Date: Thu, 9 Jul 2026 07:55:10 -0700
+In-Reply-To: <20260625070914.2175124-1-piotr.zarycki@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 4/6] powerpc: gitlab CI update
-Content-Language: en-GB
-To: Thomas Huth <thuth@redhat.com>, Chinmay Rath <rathc@linux.ibm.com>
-Cc: npiggin@gmail.com, lvivier@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, andrew.jones@linux.dev, sbhat@linux.ibm.com,
-        Misbah Anjum N <misanjum@linux.ibm.com>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20260708105122.1177210-1-rathc@linux.ibm.com>
- <20260708105122.1177210-5-rathc@linux.ibm.com>
- <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <bd10e435-de06-4b67-962c-b520a43a8280@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=M7J97Sws c=1 sm=1 tr=0 ts=6a4fb0fc cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22
- a=dajVmKz5DrVhy7NBYq0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDE0MSBTYWx0ZWRfXy3fjAhyJzi9q
- X/QpsgRUlDtJeOtML7DAvlpBbJOGKyjLaaKHqZhnmr+LaIhsHcnjlySArtXh+x8vJLJ0nVdn5zC
- cejXQcLe2uWi7Z9ZuZy4W24GnNeFJw5uEmyQrALakVHMdPOgFuhJ2pYADBPuqsFXljtMEgmBl+A
- xE0GDgtOk7wkDxCmkv2HNdk2+xSuJIyL1tbCWymEWh9wp55L3n5d3dOGvlodUykbqIU+nOXbe7z
- gULes6BVqjXLXEFs5QcO82LzuUtzGbJ62cTgQ/Be3fa88U9R908f72tCsD1kdoR3pR1Sw2b+QEG
- GQd64EjQ15EE1vym/kkz8E1t9ofNuqU+3i/PjStW1UEYBPQpKLjujwugCfLRTKdIWbpJksmskOL
- hE43QXI38rIw8i2ztXR22ep1FBKaVnXjjSzXtmhzYcZPItRyP0bS01fzjBBhx6CtI/yNkzScOl8
- 2yjL2WFhatkRN8tWc0Q==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDE0MSBTYWx0ZWRfX2EKkd4WRUXCv
- HUyNqMNrgX7BJhODGNu2G4lSM2JId1jhbGJkdM3UrhBo4rLGsjW7gU/D5RDwC356GeVm511u7AD
- OqlDY+16Fe+QHrqRMmMXXBh/bCmVdJs=
-X-Proofpoint-GUID: l7VhBmTT8Zckq51zWJ9EKlGUpatI2fbA
-X-Proofpoint-ORIG-GUID: 23odIHOL39iWxcbrWoa0v4ITVYe9hX00
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_03,2026-07-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1011 adultscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090141
+Mime-Version: 1.0
+References: <20260528154003.3594107-1-piotr.zarycki@gmail.com> <20260625070914.2175124-1-piotr.zarycki@gmail.com>
+Message-ID: <ak-2To4F5tNjyolt@google.com>
+Subject: Re: [PATCH v3] selftests: add swap() macro to kselftest.h
+From: Sean Christopherson <seanjc@google.com>
+To: Piotr Zarycki <piotr.zarycki@gmail.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, vkuznets@redhat.com, 
+	shuah@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-+ folks who might be interested.
-
-Hi Thomas,
-
-On 09/07/26 12:16 pm, Thomas Huth wrote:
->> +++ b/powerpc/unittests.cfg
->> @@ -24,6 +24,14 @@ file = selftest-migration.elf
->>   machine = pseries
->>   groups = selftest migration
->> +# make a kvm-only version for CI for now
->> +# TCG accel support with Qemu and distro release used in gitlab CI 
->> needs to checked.
->> +[selftest-migration-ci]
->> +file = selftest-migration.elf
->> +machine = pseries
->> +groups = nodefault selftest migration
->> +accel = kvm
+On Thu, Jun 25, 2026, Piotr Zarycki wrote:
+> Add swap() to tools/testing/selftests/kselftest.h with an #ifndef guard.
 > 
-> This does not make sense (or I don't understand it) - gitlab-CI 
-> currently only runs with TCG for the ppc64 jobs, so adding a separate 
-> test for this with "accel = kvm" just adds a job there that will always 
-> be skipped. What should this be good for?
+> Guard the local swap() definition in mm/uffd-stress.c with #ifndef to
+> prevent a redefinition warning.
+> 
+> Use swap() in hyperv_tlb_flush.c to replace the open-coded PTE swap and
+> remove the TODO comment.
+> 
+> Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+> ---
+> Changes in v3:
+> - Add #ifndef guard to mm/uffd-stress.c to fix a redefinition warning;
+>   uffd-stress.c defines its own swap() without a guard, which conflicts
+>   when kselftest.h is included first via uffd-common.h.
 
-I understand it may get skipped in gitlab CI for kvm-unit-tests,
-but it might be helpful to those who can run it on their Power HW.
-If the job can safely skip on non-ppc HW, I hope it's fine?
-We would like to get it integrated in IBM's internal CI with Power HW.
-
-Chinmay,
-Could you please share logs of running these tests with kvm accel on 
-Power HW? Thanks!
-
-regards,
-Harsh
+Why not explicitly include kselftest.h in mm/uffd-stress.c and drop uffd-stress.c's
+version of swap()?
