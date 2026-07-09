@@ -1,85 +1,85 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CFD3AEB2C
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 22:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324A81B7910
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 22:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783637951; cv=none; b=vFwVtIgfXPmqdA+fVuWCn8D8ORJmLbYMXB+n37fwUqynTo/xszU+k15iTvXvpwV902LEy60RaemXKmM3seXhmQVTsbQMLKsW1RU2aW5Quip1GntVKUisYKX7oLVmk/1mebUwSb573Re0Q+YS3u00TdJKVimvmVg6Of9L2mk/iUM=
+	t=1783637958; cv=none; b=Gfys5zaCyRTAJV+buuUtmoqE4hH8yzKZJhFlLWlTk6msHZ8Bi6QAnL7ZBy3mL4F22QN8duS+hNIUVExO2hEVYxwW7Oi5He2sHOjxuAzEwv9Ue6dB6RAIIAfk7WNt8XtHfN8T5bVJ6NxXNJrfcJrRqjJoo3Obn4z6KXZs2UOGW9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783637951; c=relaxed/simple;
-	bh=fMRTSlH+UgANPDJN9Lt3qr6qiGblq3hBcbGMMKAMZFw=;
+	s=arc-20240116; t=1783637958; c=relaxed/simple;
+	bh=63TwnTVP6l2jIkd9Wi3upGC5v0gLJqyNzNqWN6WuTEU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ELM8+gZoWF1PDGeQgRjbgh8YsAEmcN3OL0quYleItdx9p4pmG+HraC4ZHhXWOyL45lj0VYHV3DR+aqy4oZ59NlCZFF60USnr7jvNnTEGjiKdqJH9pxhtSzwKvvSdw/W8PF3J/SymmJORgckLAfTRRaAFzIIUDTI7f0CBiUu4huc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GjYT+PXh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PfMeieMr; arc=none smtp.client-ip=103.168.172.152
+	 MIME-Version:Content-Type; b=e35kvA2yK+oeZ4BgJy9Kw3Gq5L70MDkxhtabCmIqMrvxb1XYizB4siG/4Q13NSVPUUasyptQMjcVyoq9TSJbRaYSqB8fX3pbpK2Pz5PLAwtHom/shhrosB3PSNAoRDOpAZmxYxup4Daw0m7C/Gt3AU6H8rLMyhXQp49KuXUCwUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dGbFZ4lF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AC0xBbVM; arc=none smtp.client-ip=103.168.172.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GjYT+PXh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PfMeieMr"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CF5811400040;
-	Thu,  9 Jul 2026 18:59:07 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dGbFZ4lF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AC0xBbVM"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 80ACCEC0189;
+	Thu,  9 Jul 2026 18:59:15 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 09 Jul 2026 18:59:07 -0400
+  by phl-compute-06.internal (MEProxy); Thu, 09 Jul 2026 18:59:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1783637947;
-	 x=1783724347; bh=pGGYzMzfZEiguc0QFv3xW0kx8v1ac1W4MWRdTkfH24w=; b=
-	GjYT+PXhti31TCwEu4swXUtgtQzqL1tuMdwBvkjwG/J4f4sa8vM5zZ1q7twqaKxS
-	78v1YFfduM0wNIUQdCAHri3KVuU/Sq0OZZoJHOXocKxadKKQR29jhnJB8CivuFeY
-	bKRV2icNDITpMIIKL3JBKMHAyTdBd6P7XiK+q2A4bEr7m6RGSEH0poJpdbEfWfJa
-	Tese5BXQEGbcDP/9A83GT4Yc14FRGgnod3WO61HgjYs8lJ24Sf2hhw5TmWnFzzRT
-	RImTUlNP/rUmqEtZlYFX10qgMhaYOxGeoehNDPUMs/OF7i17zyF2695TRfcfitYd
-	ENRP94WGGOwm5VuKEFxZ7w==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783637955;
+	 x=1783724355; bh=FZCDsNIXPKrzfAxORBm5mfTxW9Xy1PMDTusoVd6BlCE=; b=
+	dGbFZ4lFHL6pXl+v24U9VCXpbnQEijTRqZqOFQeWmb9n4XAL2h+eXBgZ1aVFg0Af
+	uMEmlWKInHQwZcCv60I6QzR1LwhuUZY7hEqN5ed8RPPAyyB++ikw/PdQz0TONSG+
+	erjC8tgGwNw6eByEX15ColyJXqDQhRSdNYv+G6XKwUcNMWWrrtzPMZzs/t08Vydf
+	Idig3PvzxDX+p7ZluJU2NLS6H0evHRIHUYePsrTE/57gU8DnY2AQ1smOaX9EZcGb
+	Xpa3FFMWgjBjqs7SDgEyaDBUlvuUubUOtD6NS6/P//14mugLTkzZxjfB6bTnY50d
+	i2tFGamJNnoKRaIid0lVlw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783637947; x=
-	1783724347; bh=pGGYzMzfZEiguc0QFv3xW0kx8v1ac1W4MWRdTkfH24w=; b=P
-	fMeieMrngQEUu/P7t/uu+R2JdnO4xojpAPMcDjdxvAKguPkoIORanRMK0xJCSZwL
-	4mlm74nRRBCsrIZ/m6u+5g4aHC5njBEJl2ca5T7hklywfPpnpFIFPYmsk/h/rhNb
-	VAVFPkxYIczaBA5FA9FaRxKUHLwYk0sbOUM/nJB5TEZiDdKZzeegVLFb7xF7YYt9
-	1s7xilWUPELTOZGm4zoiRqpGgQORDhFU685ZsuH7UMWXF0+t3kzXMppmv9Kjf6ej
-	IOnCMOur8akEmhMAJhlJFMJxfCNlOSdtcFpSSobEgwxd/qaH8EIrbz9Sm4hQYWes
-	ltGukXTOkHMnPoGmz6uxQ==
-X-ME-Sender: <xms:uydQakVjbQQ0To46wmFn5Y5foP70bOjj1QnM2GW2r0xB4Ze6I1cWIw>
-    <xme:uydQaqFsAAloLeVsLT9aWXbdmTruCfCXG2auIlkiE60e2QkMo0VN-GSA4SGa5N3df
-    753lGs9J-0cte2D7sZZ6y2ytcwzozChFhFeMR1dD1ZAbfCPL6IPIw>
-X-ME-Received: <xmr:uydQaoejSC5QneNQzHxmjSLT1ZFLEAKdWoR11M9QPl1I4P41LDSucd_O5Rk>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783637955; x=
+	1783724355; bh=FZCDsNIXPKrzfAxORBm5mfTxW9Xy1PMDTusoVd6BlCE=; b=A
+	C0xBbVMef4sdaRZ2QU9bosA066vHCogbLAXQordra4njWNWPdES8A1ffcDJQ+CvN
+	m51G/DLIrdIbG3u93vTmkljU88RXH16dftjNQl/UffdOLqTloHawPTpHWRD7NlNc
+	nvUamTThJkxpAtNzeTY5ArVDKcHXpaa43atXmQ6BdTuj9vHdbeG2DdWsv43T50/R
+	UwFFKbL/Q4nBvhGipKv0J22l0kk2Vt2n2cMOmy/tnP6pFSsbPBkZGbcUYmFBPjX1
+	C6ALQZmHsT6CQ8Y2X2Wpq3Lf82tdnt5B272CNdZr8LYrh5WKKWzoxTfwZMturc2Q
+	10NNoIy2Cisvgctt5aCBA==
+X-ME-Sender: <xms:wydQavJi0dHLLkyVaR9ACiQFnQeT1qwUraeN-7t9OcACsIxtjaDjRw>
+    <xme:wydQakq3xQ1-NSFJO5f78C_s04LoH7Qi1jnBDBlkeGW-1si6JMeuyuvYHzRGti17m
+    TNGLzzyfnRkXZ30n7EEcjWGaMnqkq0YiJa3T2FxS403Rt2Q7ngsIw>
+X-ME-Received: <xmr:wydQanxDKdly5ELjXILMBqkei_ajlBPA6-wdU21qIOuYwUXOeNa8C24gtt4>
 X-ME-Proxy-Cause: dmFkZTGaFekSOOIdJUZP0c6+OVVyumAoamaV7n5ICD3plcDVzbFPMMbZLcQDN9JyPN+EoC
     dHBY/B0S+d6fPxiMovnnozConHaWks7rxyCjvm/vHZQOZwMOoNrWo2zgbISYSSQTk/TudC
     KJSz6Z0DmJ+0NjLAMcvjRBy6IEbHBaTiLrPdGXgHPGQiGl47prL56MYH0mEQzoPVtmebCy
     qs4cHiJehHLrzCdN1/EPHAUYDtIwXcyqNYf2l9CgghD6mpA4UQOUuik7Ondzyus+sLnBdL
-    n3gZ2EGxvw6gGRmNsXlEYTeQ41/dvFcoVcPyTZ9QWuGelbnwqKb9IrhilZQtEvrgF4ege8
-    da+jJ8WPNCnP3CR3Zy1FPDW1dHzrMA36jEVQA/AbX+lrARr1cREAdLFR/+lTD4s1QvWnGs
-    bq8GSBmf2EE6b89Fe49ciE1Tbs27iLdbLyZKNLN4iDdNM0wQrBHuNxOLprqP7BUS2vTGbi
-    ZHuhuxgIfWgMyqodYfl/kE0wBBIumtGBXKVixAKNNygXkp6OUPsc44IWFrcxchQUIGTJQp
-    Vfm5SaGmNynRp1G5lPu390tjRZxIVtypANdJ12NtJdy1x/uLYdVRtoBefkez12C1I1slux
-    6l+FR9mcXxmz/i53uDt5t9ToTHx3uUJLR/mu0rmHLU/dj39VK9+rk7hFRV2g
-X-ME-Proxy: <xmx:uydQajJESc4_HJRxYOZIyadwrQxyPUGgihQZikx0Q58JdSj0Q1iPNA>
-    <xmx:uydQalE9yDh4OaP-j491NpDkeu6zykt1vuFB6LSWvg3Iv4uy3wcR9A>
-    <xmx:uydQauAidtB71Nx9NzRFipAU6gb88g0Ag8PF2S-X0PtQ2GDjt6xNsw>
-    <xmx:uydQag905ZQzN_ESW3eXB62udTcaNXtnT6WpOLNDneCou0l0XCkWxg>
-    <xmx:uydQajiZi_Q0o2MTCsuUsS1WpiULh-tOH_smcWQ0Yf36WU43zjWgEhNs>
+    n3gZ2EGxvw6gGRmNsXlEYTeQ41/dvFcoVcPyTZ9QWuGelbnwqKb9IrhilZQtEvrgF4egsz
+    bo0mYsPZ+ZAyrgiPqdwKl3zp6hb6Srsa4tpDSCBETm9WWNNkT4cAEaP3DRNXVBm/HzFWvh
+    xJqXxVFr/lYA83InIRaqAOYG0qFzeSE7cJo2d+cfAcwl6LxeKSUfiNXZzBTjSRzgfFFzBY
+    t31RQ145Di/fYnbXWJ7TTfjqRdBG0ahz7g81m+GWdIa9ixltLYjj3Ymv5tJUs6Hj+BzHYZ
+    aL3v7BnczSev1ly+eGEPaQf/VgHJltkp0aFy6dHJuJmXyVagRuxd+R+S1PqL376dMzKpOR
+    fEU21qcKqYtE5BC4v5w5GmBJszdj73o1a/9xCNR5upkTTFDeJ2ZSeOXq1mVg
+X-ME-Proxy: <xmx:wydQaoN9f0v-BkBbVfo2by0HcBQtsNKy_YhRRcV4x4BqNnagaOVMqA>
+    <xmx:wydQas5qCVVD7jUAEcbgBYj6HsRSjZxkUqX16d_fYoBe84DYJsuIaQ>
+    <xmx:wydQahnPULyZejDL-bIX2RTVakd2Kt9U0bAmFu5VbuWVKtL5pwL48A>
+    <xmx:wydQalT-R6rfd7qCbxZXVvkug_1Z8wJZ9ADYc5VpF_KxoeS8qaYRfQ>
+    <xmx:wydQahVNHTmbTvyUjQkLMxmLPMMaN1MzWjAnMWX_9Cjz3H4RzfT1XwCd>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 9 Jul 2026 18:59:07 -0400 (EDT)
-Date: Thu, 9 Jul 2026 16:59:05 -0600
+ 9 Jul 2026 18:59:14 -0400 (EDT)
+Date: Thu, 9 Jul 2026 16:59:13 -0600
 From: Alex Williamson <alex@shazbot.org>
 To: sashiko-bot@kernel.org
 Cc: sashiko-reviews@lists.linux.dev, "Josh Hilke" <jrhilke@google.com>,
  kvm@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v3 4/9] vfio: selftests: igb: Program MSI-X interrupt
- routing
-Message-ID: <20260709165905.0c7a551c@shazbot.org>
-In-Reply-To: <20260708233341.5238F1F000E9@smtp.kernel.org>
+Subject: Re: [PATCH v3 6/9] vfio: selftests: igb: Disable PCIe completion
+ timeout retries
+Message-ID: <20260709165913.422fd951@shazbot.org>
+In-Reply-To: <20260708233123.F2EEC1F000E9@smtp.kernel.org>
 References: <20260708-igb_v3_b4-v3-0-1272650ca614@google.com>
-	<20260708-igb_v3_b4-v3-4-1272650ca614@google.com>
-	<20260708233341.5238F1F000E9@smtp.kernel.org>
+	<20260708-igb_v3_b4-v3-6-1272650ca614@google.com>
+	<20260708233123.F2EEC1F000E9@smtp.kernel.org>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -90,102 +90,114 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 08 Jul 2026 23:33:40 +0000
+On Wed, 08 Jul 2026 23:31:23 +0000
 sashiko-bot@kernel.org wrote:
 
 > Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] Commit message and implementation mismatch regarding macro definitions.
-> - [Medium] Hardware Initialization Order: Unmasking interrupts before routing is configured.
+> - [Medium] Missing SW/FW synchronization semaphore when accessing PHY registers via MDIO.
+> - [Medium] Missing DMA read memory barrier (dma_rmb) after descriptor completion polling.
 > --
 > 
-> --- Patch [4]: [PATCH v3 4/9] vfio: selftests: igb: Program MSI-X interrupt routing ---
-> commit f99b27fd1b6bc3801803a7e5be3ec664facafb7a
+> --- Patch [6]: [PATCH v3 6/9] vfio: selftests: igb: Disable PCIe completion timeout retries ---
+> commit b47012b45a463be841715f383fb27408df2c020e
 > Author: Alex Williamson <alex.williamson@nvidia.com>
-> Subject: vfio: selftests: igb: Program MSI-X interrupt routing
 > 
-> This commit updates the IGB selftest driver to use the full MSI-X programming
-> sequence required by the 82576 hardware instead of relying on synchronous
-> QEMU workarounds. It configures auto-clear and auto-mask for vector 0 and
-> changes the EICR clear mechanism from read-to-clear to write-to-clear.
+> vfio: selftests: igb: Disable PCIe completion timeout retries
 > 
-> > Replace the magic '1' values written to EIMS/EIMC with IGB_EICR_VEC0,
-> > add the GPIE/EIAC/EIAM macros, and drop the wrong-valued IGB_GPIE_EIAME
-> > macro (the new definition lives next to IGB_GPIE_MULTIPLE_MSIX).  
+> The mix_and_match test intentionally submits TX descriptors with an
+> unmapped source IOVA so that the DMA read fails.  By default the 82576
+> re-sends the request after a PCIe completion timeout (datasheet section
+> 8.6.1, GCR.Completion_Timeout_Resend, bit 16, initial value 1b).  On
+> real hardware this turns a single fault into a stream of retried reads,
+> keeping PCIe AER and IOMMU error handling busy and interfering with
+> reset recovery.
+>     
+> Clear GCR.Completion_Timeout_Resend during device initialization so a
+> failed read fails once and stays failed.
 > 
-> [Severity: Medium]
-> This isn't a bug in the code, but the commit message mentions introducing
-> custom macros like IGB_EICR_VEC0 and dropping IGB_GPIE_EIAME.
-> 
-> However, the implementation uses standard kernel definitions such as
-> E1000_EICR_RX_QUEUE0 and E1000_GPIE_MSIX_MODE.
-> 
-> Could the commit message be updated to match the actual code?
-
-Again the paragraph can mostly go away, the only thing left seems to be
-replacing 1 with E1000_EICR_RX_QUEUE0.
-
 > > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> > index 1848be6cd46c9..a7a30660b23ed 100644
 > > --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c  
-> 
-> [ ... ]
-> 
-> > @@ -280,11 +280,32 @@ static void igb_init(struct vfio_pci_device *device)
-> >  	/* Enable MSI-X with 1 vector for the test */
-> >  	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
+> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> > @@ -219,6 +219,18 @@ static void igb_init(struct vfio_pci_device *device)
+> >  		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
+> >  	}
 > >  
-> > -	/* Enable auto-masking of interrupts to avoid storms without a real ISR */
-> > -	igb_write32(igb, E1000_GPIE, E1000_GPIE_EIAME);
 > > +	/*
-> > +	 * Program MSI-X interrupt routing per 82576 datasheet:
-> > +	 *
-> > +	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
-> > +	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
-> > +	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
-> > +	 * applies on EICR read/write).
-> > +	 *
-> > +	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
-> > +	 * Without auto-clear the cause stays set after delivery and the
-> > +	 * test can see spurious interrupts on the next memcpy batch.
-> > +	 *
-> > +	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
-> > +	 * MSI-X assertion (effective because EIAME is set), so a single
-> > +	 * interrupt is delivered per memcpy batch even if the cause
-> > +	 * re-asserts before software re-enables the mask.
-> > +	 *
-> > +	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
-> > +	 * cause 0 to MSI-X vector 0 and mark the entry valid.
+> > +	 * Disable DMA re-send on PCIe completion timeout (82576 datasheet
+> > +	 * section 8.6.1, GCR.Completion_Timeout_Resend, bit 16).  The
+> > +	 * mix_and_match test intentionally submits descriptors targeting
+> > +	 * unmapped IOVAs; with the default (set) value, the device keeps
+> > +	 * retrying the failed read indefinitely, which keeps PCIe AER and
+> > +	 * IOMMU error handling busy and interferes with reset recovery.
 > > +	 */
-> > +	igb_write32(igb, E1000_GPIE, E1000_GPIE_MSIX_MODE | E1000_GPIE_EIAME);
-> > +	igb_write32(igb, E1000_EIAC, E1000_EICR_RX_QUEUE0);
-> > +	igb_write32(igb, E1000_EIAM, E1000_EICR_RX_QUEUE0);
-> >  
-> >  	/* Enable interrupts on vector 0 */
-> > -	igb_write32(igb, E1000_EIMS, 1);
-> > +	igb_write32(igb, E1000_EIMS, E1000_EICR_RX_QUEUE0);
-> >  
-> >  	/* Map vector 0 to interrupt cause 0 and mark it valid */
-> >  	igb_write32(igb, E1000_IVAR0, E1000_IVAR_VALID);  
+> > +	ctrl = igb_read32(igb, E1000_GCR);
+> > +	ctrl &= ~E1000_GCR_CMPL_TMOUT_RESEND;
+> > +	igb_write32(igb, E1000_GCR, ctrl);
+> > +
+> >  	/* Configure PHY internal loopback for testing. */
+> >  	igb_setup_loopback(igb);  
 > 
 > [Severity: Medium]
-> Does unmasking the interrupt via E1000_EIMS before programming the routing
-> in E1000_IVAR0 risk unpredictable behavior?
+> Does writing directly to the MDIC register on real 82576 hardware risk
+> colliding with the firmware or BMC management engine?
 > 
-> If an interrupt condition is met in the small window between these writes, it
-> seems an interrupt could be triggered before the IVAR mapping is valid.
+> When running tests on physical devices, accessing PHY registers without
+> acquiring the E1000_SW_FW_SYNC semaphore can cause corrupted MDIO
+> transactions or hardware hangs.  For example, in igb_write_phy():
 > 
-> Should the mapping in IVAR0 be established before unmasking the interrupt?
+> 	mdic = (((u32)data) |
+> 		(offset << E1000_MDIC_REG_SHIFT) |
+> 		(1 << E1000_MDIC_PHY_SHIFT) |
+> 		E1000_MDIC_OP_WRITE);
+> 
+> 	igb_write32(igb, E1000_MDIC, mdic);
 
-Yes, this can change to:
+Technically yes, but it's non-trivial and we assume an isolated
+environment.  I test on a plugin dual-port NIC, potentially an
+integrated NIC with manageability on the platform might encounter
+something like this, but it's a narrow window that's probably
+acceptable for a selftest driver.  We could add the following above
+igb_write_phy() to note the deferral:
 
-  -     /* Enable interrupts on vector 0 */
-  -     igb_write32(igb, E1000_EIMS, E1000_EICR_RX_QUEUE0);
-  -
-        /* Map vector 0 to interrupt cause 0 and mark it valid */
-        igb_write32(igb, E1000_IVAR0, E1000_IVAR_VALID);
-  +
-  +     /* Enable interrupts on vector 0 once routing is established */
-  +     igb_write32(igb, E1000_EIMS, E1000_EICR_RX_QUEUE0);
++/*
++ * Write a PHY register over MDIO.
++ *
++ * A production driver would hold the SW/FW semaphore (SWSM.SWESMBI + the
++ * SW_FW_SYNC PHY bit) across the MDIO transaction to serialize against the
++ * device's management firmware.  The selftest owns the assigned function
++ * exclusively on a dedicated test device with no active manageability
++ * contending for the PHY, so the sync is omitted; it should be added here
++ * if this ever needs to run on a manageability-enabled NIC.
++ */
 
+> [Severity: Medium]
+> Can the CPU speculatively read the destination DMA buffer before the hardware
+> descriptor writeback is architecturally complete?
+> 
+> In igb_memcpy_wait(), the code polls the status bit via READ_ONCE() but
+> returns without issuing a dma_rmb():
+> 
+> 		status = le32_to_cpu(READ_ONCE(rx->wb.status_error));
+> 		if (status & 1)
+> 			break;
+> 		usleep(1000);
+> 	}
+> 
+> 	igb_irq_clear(igb);
+> 
+> On weakly-ordered architectures like ARM64, the test runner's subsequent
+> memcmp() reads on the DMA destination buffer could be speculatively
+> reordered before the loop's status poll finishes, resulting in stale
+> data reads and sporadic test failures.
+
+igb_memcpy_wait() is implemented in patch 1, and could indeed make use
+of an rmb().  This function changes through the series, created in 1,
+touched in 5 and 9.  Before we get here we could include
+<asm/barrier.h> and call rmb() just before return 0;
+
+Re-tested all the suggested code changes, reorder in igb_hw_init() and
+rmb() in igb_memcpy_wait() against physical 82576 NIC, 35/35 pass.
 Thanks,
+
 Alex
