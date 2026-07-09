@@ -1,133 +1,98 @@
-Received: from out28-109.mail.aliyun.com (out28-109.mail.aliyun.com [115.124.28.109])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606E329430
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 01:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83238EEC0;
+	Thu,  9 Jul 2026 01:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783561589; cv=none; b=V9e4rEUV7UyF+vyin1eymK+TyCHBD0kmYXHrXbSKSJ3/uWyzmaz3/JD4JnxwhL8xXGUaFXki1yaKFUuL7yHResPKcVK2W5SOPnSsfRciR5LeIKCIAp+m6ZQTP62Tw18HlOS9pP3Z6OIa+CuCvR2cU9A4xcIZEnYksSjg9GuEJU4=
+	t=1783561853; cv=none; b=R00CghrTxSrRxmxAgQt35c2dbQG1FqdZJ1OA5FsjPAg4wo8MnBeF39jqkwrd1VOcWfEzcqDC5fnewgHAU6MD/4OztDzZXpRtikjFQ5zcJRsBd8TKyiqxtbo5y2KiS1rJOn0CEES7TFDVA2d15In/Pfwss51j1VDKNvKbMenIaA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783561589; c=relaxed/simple;
-	bh=XDx6hiRPlLRB1nt6RQ0T+WMR1rDClk5dqyNKqgw556Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dVQ0YBa0eVjUXvrN71ZpGZqRJH0jEDHtfJrmeBYnCcwO751dHHj/OPtioC7CdSYdwNZoVcvW1J7bcqY+DhmKXTUei4MH1Bs5f1L+5+Nj3RqA2rvykeI7nM9eXkbMFbSLVMXYR8xqd/lBg3c2/rLSYgk3KHt2GVPMYZdSdJ1xWO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07974804|-1;BR=01201311R181S42rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0207919-2.97758e-05-0.979178;FP=286593328519996490|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=jerry.lyu@open-hieco.net;NM=1;PH=DS;RN=4;RT=4;SR=0;TI=SMTPD_---.iGoAblQ_1783561266;
-Received: from zlvmac.local(mailfrom:jerry.lyu@open-hieco.net fp:SMTPD_---.iGoAblQ_1783561266 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 09 Jul 2026 09:41:07 +0800
-Date: Thu, 9 Jul 2026 09:41:06 +0800
-From: Jerry Lyu <jerry.lyu@open-hieco.net>
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, joerg.roedel@amd.com, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: SVM: Do not warn on IGNNE MSR write
-Message-ID: <ak78MvlryP8vSPVe@zlvmac.local>
-References: <20260708134101.1073574-1-jerry.lyu@open-hieco.net>
- <ak5VuvKjr8JqFOPf@google.com>
+	s=arc-20240116; t=1783561853; c=relaxed/simple;
+	bh=CmOX7MaZZ9ifvd2zrDohkShz5toPMjJokDKEFZ947Fs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kw03T27VLyu5EC3P3e73+14gnnUV8xtp2FCMM0UVxNbGMcgU4JlOEakw00i+JtscuMsuplYVGzB5YQzETTamznG335b/VuBOswYEsSCgEFctlRDHlEeAlpwMQ42sCnENEillwzF0rE+BSdKqhE9vgCNsWwfmFdgT/A1NTSl75ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OX63E/no; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OX63E/no"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783561852; x=1815097852;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CmOX7MaZZ9ifvd2zrDohkShz5toPMjJokDKEFZ947Fs=;
+  b=OX63E/nodwC6P0hUx0yL2lX+2vzmItBqX6tX6ZNtAV6hJCgsFKdU2IMZ
+   LEH+igFzylL2X/BA1x/IrTN09VlwaXGZLR/SpFGJP4QNdh/nQSI3TwKyl
+   qwabw1U4t48OL8p81ffN1TBIAa/yb6cBLnbR7ZrrQSBB/413voY51Ip2U
+   Y5iWz2vqhYNGNq78qjR3qA3OKYXkM6ODM4XfVIZ3ywQXJAnIDPp/CYn3x
+   gB3gG5EvjTvyDdqMzZLRPMLrmeH6gA0PpRIO23uiOZjV4DmCZJR//NAWC
+   KWdtnf/Z5locuNAljFnLicYAUcRy5ma5sO6peNxSCokS7DLUQqBJ42SMF
+   A==;
+X-CSE-ConnectionGUID: JWX9YO7ESiimUeMrshCcOA==
+X-CSE-MsgGUID: iUn+DjdYRsOuaQJuH+DawA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95392457"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="95392457"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 18:50:51 -0700
+X-CSE-ConnectionGUID: zefSPwRmTXGLmvAlvdu2Hg==
+X-CSE-MsgGUID: bww8dSPPTdmw3BJ2JxO13g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="258310129"
+Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 18:50:48 -0700
+Message-ID: <9d376736-4879-42f2-b798-56fd2d1ab05a@linux.intel.com>
+Date: Thu, 9 Jul 2026 09:50:45 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak5VuvKjr8JqFOPf@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD
+ init
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "thorsten.blum@linux.dev" <thorsten.blum@linux.dev>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "seanjc@google.com" <seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>
+References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
+ <ak4NdJSK60zKD8Uy@linux.dev>
+ <315e969a-4ab1-433e-91c5-2308f1975281@linux.intel.com>
+ <28ec0a5ac5c46448df5983cc7f9cbc71f6014e8a.camel@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <28ec0a5ac5c46448df5983cc7f9cbc71f6014e8a.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thanks Sean for the prompt feedback!
-
-On Wed, Jul 08, 2026 at 06:50:50AM -0700, Sean Christopherson wrote:
-> On Wed, Jul 08, 2026, Jerry Lyu wrote:
-> > Booting windows server 2025 on top of Linux KVM results in host kernel
-> > warning logs of "Unhandled WRMSR(0xc0010115) = 0x0", which is due to
-> > "IGNNE MSR" write in guest hyper-v. According to AMD APM volume 2,
-> > section 15.30.2, the MSR is "only useful if IGNNE emulation has been
-> > enabled in the HW_CR MSR", while currently KVM has prevented guests from
-> > enabling it. So change the warning to a stronger check.
+On 7/9/2026 12:20 AM, Edgecombe, Rick P wrote:
+> On Wed, 2026-07-08 at 17:04 +0800, Binbin Wu wrote:
+>>> Maybe it would be better to check for a mismatch and return -EINVAL?
+>>>
+>>>  	if (init_vm->cpuid.nent != nr_user_entries) {
+>>>  		ret = -EINVAL;
+>>>  		goto out;
+>>>  	}
+>>>
+>>> That would make the mismatch explicit instead of silently accepting an
+>>> inconsistent userspace snapshot.
+>>
+>> I chose to use the snapshot value to follow KVM_SET_CPUID2's style.
+>> KVM_SET_CPUID2 kind of uses the snapshot value of entry count.
+>>
+>> But returning a error code is OK for me.
+>> Let's wait and see what others prefer.
 > 
-> Except the APM doesn't say anything about the ordering, and in typical APM
+> It does seem safer to reject input than have some implicit behavior.
 
-Indeed. I did some experiment on bare metal system to write IGNNE MSR
-with it disabled and then write HW_CR to enable it, the written value is
-still there. It can be in any order.
+Yea, had a second thought.
+If there is a mismatch, the userspace is probably malicious.
+It's safer to reject the request when the userspace is suspicious.
 
-> fashion, nor does it actually say what happens if IGNNE emulation is disabled.
-
-Right. I did not find that as well. Since IGNNE MSR and IGNNE emulation
-is an incremental feature, it would be reasonable to guess that hardware
-will fall back to the IGNNE pin usage relying on external sources to
-assert/de-assert it. If the IGNNE pin is not available in hardware,
-CR0.NE must not be 0 to use the legacy mode.
-
-> 
-> > IGNNE is used in the legacy MS-DOS compatibility sub-mode of X87 FPU
-> > exception handling. Intel SDM volume 1, section 8,7.2 describes the
-> > details of this mode which applies to AMD CPU as well. The CPU selects
-> > this mode when CR0.NE bit is 0, and will rely on two pins (FERR# and
-> > IGNNE#) for exception handling. AMD later introduced IGNNE MSR to "set
-> > the state of the processor-internal IGNNE signal directly" in order to
-> > support the legacy mode without the dependency on IGNNE# pin.
-> > 
-> > The current KVM implementation does not emulate this feature, not sound
-> > necessary as well. The commit 82494028dff648c29e3a ("KVM: SVM: Ignore
-> > write of hwcr.ignne") clears the bit-8 value in the guest HWCR MSR
-> > write, making such field always zero, then the write to guest IGNNE MSR
-> > can always be safely ignored.
-> 
-> Well, yeah, that's what KVM is doing, ignoring the write.  But KVM is also logging
-> that the guest attempted to write an MSR that KVM doesn't support, i.e. this is
-> more or less working as intended.
-> 
-> That said, KVM does effectively support the case where #IGGNE is not asserted, so
-> I think we can simply do this to avoid the useless logging?
-
-Yeah, that can work for the current case. However, if another guest
-initializes the IGNNE MSR with different value meanwhile never enables
-the IGNNE emulation, kvm will again print uselsss logging. How about
-adding warning in HW_CR like below?
-
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index c230b18d87e3..cbb743c41276 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -1564,12 +1564,17 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-                u64 valid = BIT_ULL(18) | BIT_ULL(24);
- 
-                data &= ~(u64)0x40;     /* ignore flush filter disable */
--               data &= ~(u64)0x100;    /* ignore ignne emulation enable */
-                data &= ~(u64)0x8;      /* ignore TLB cache disable */
- 
-                if (guest_cpu_cap_has(vcpu, X86_FEATURE_GP_ON_USER_CPUID))
-                        valid |= MSR_K7_HWCR_CPUID_USER_DIS;
- 
-+               if (data & ~BIT_ULL(8)) {
-+                       /* ignore ignne emulation enable with a warning */
-+                       data &= ~(u64)0x100;
-+                       kvm_pr_unimpl_wrmsr(vcpu, msr, data);
-+               }
-+
-                if (data & ~valid) {
-                        kvm_pr_unimpl_wrmsr(vcpu, msr, data);
-                        return 1;
-
-Then the IGNNE write can be silently ignored no matter what value to
-write. The kvm selftest of hwcr_msr_test.c can keep unchanged. What's
-your opinion? Thanks again!
-
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index e755f43f4376..a7efac3241c2 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -3205,7 +3205,8 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
->         case MSR_VM_CR:
->                 return svm_set_vm_cr(vcpu, data);
->         case MSR_VM_IGNNE:
-> -               kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
-> +               if (data)
-> +                       kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
->                 break;
->         case MSR_AMD64_DE_CFG: {
->                 u64 supported_de_cfg;
+Will send v2 to reject the request for the case.
