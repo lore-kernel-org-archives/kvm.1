@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A63E1714
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F313E2AB7
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 20:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783630197; cv=none; b=q7vWAdtOEhbSqjZXVTK99nqgLyjM9VD2VZreZV1/4advN2YgV+Px6p6OTOHiGaQb/63d2uizxBJv16IGEYxvMFCRQXs8JNOE+g267FghmUcHF0Ou124qs4HCGDIc2SO616eLjylxkOJyL6USJQ8jTQA/9MFIXAzNjFbjbJOlCz8=
+	t=1783630198; cv=none; b=IMMoz/vqXK7q4jGil2STM19QrkaUlZO0FX5rYmOll/ERM0mkHO9CfRG6JgePUOK+wyd6WNuIT0w4bhNWPEwqTOOWEpM/xlE/csBCz8yIDhUZnQRIjINxSEkDTLAq4X835CJyKjybBtToXIc2uk7rAfgIV2QFH5oEmUOGw9n2kpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783630197; c=relaxed/simple;
-	bh=cZZUUb8P+jSuZ46TafiQ+IhaReR4B3L8OuHCXr6ZHxc=;
+	s=arc-20240116; t=1783630198; c=relaxed/simple;
+	bh=p2C2myNclAnCkdNxxGMPC/IAWyTxuYnNNaDW8Jc4LB4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XAE9nVPEiuQ31ktA58X5DjP2Q05aKjOIJ35vY0LtReyGZkybg+pq+8j8Q9DNCmgp/sByxmC5nsrtRpzVT0zxwpLpeoQFOygyO86AdVVcrAz0C+63ntlxW/HLV3FF0yRnPhCI8jF4f473cKgDzIp9ubZzpyl8BtG+PER9L36tiT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s85sOmMM; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=YUfjVHVDS3lQ6twSS0nvF+jcpOI0Mjz9cMDuLRnj73gccmrMO9zvL+zXsCXZ0YPiYkDW+BA1AWVA9Ya5fkfxiXDOqG9d8tA+66UFcuRiHbQiavCZMlsKWN3yCQCcJDAUVXMuGV4WOCFkOZvqGRUMXo0TUA+fJWps9xh31DUvk6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f5ZZlGFB; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s85sOmMM"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cc73f47bdcso2578325ad.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:49:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f5ZZlGFB"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c354050c34so2564725ad.3
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 13:49:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783630195; x=1784234995; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783630196; x=1784234996; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=GK0nZM/ctkS0Rl6X7OluF/i9ggLQDBMdL3eflObnNVI=;
-        b=s85sOmMMFfGWsS4lbtyV53A6o26g3sCWV8uvKWrpcHVC4qfd9I0vgVnButAOD18nSg
-         KkHsbZcUtu4+MpAP38jFEf4Jit1zfjt/L6TZ/sfs2ca5ut9lehEL/JMQ+JxWXQT124sV
-         2qgkWsE5xf3xJ/LqqffRHR6zJE6uKu4YtaaT3G8gGsNFF9+fMLrlW6SwvHNe87YICAA5
-         2u8JWP23VQ6QaIiQNUMzO0kpKWg7LrxehPDcq/PSc/J0gBVD2kpdgsSp76SLQXW10GqF
-         fumtYMta9UZCUQ1Z2KfTGgvp3lZhWlXo3mQhxCfnZSR27wEEU3RPKT+kbgyd1Ol7KkFB
-         VZEg==
+        bh=dg5PWIk+xBZVNHWepnr9z90JNF1w4XrYnESjPtGEmak=;
+        b=f5ZZlGFB5aqL2pMdOzh8up1tNLvGmv+mKbPr2ep99oIYvZa6a8RmjoGid5Bx0DNzmf
+         rR0wdxZ6jaQ6H/JI2dDCDoC+9Ixsb+0f94s4iOmgaguCkaDkx47Qy1CoIv0wPZtsmOds
+         YbZvalqZ0dzhjFZCT199jn5Hw2vN9WZMxyb/qQYUnSwaZd7nRNm75t/A66QUq8hijD1o
+         xajE+pQhDdiHefNgBgtF6V7315Aswk5DU0VEdJb4IdfIt80y0CBLrG4dgzoUtuuYmrc5
+         Pt6misTErfOZx05+UB6gsTsh/TCu2D0usEmNzX/br6xayrjotVBO35sSCotYVl6h28nu
+         j5fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783630195; x=1784234995;
+        d=1e100.net; s=20251104; t=1783630196; x=1784234996;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GK0nZM/ctkS0Rl6X7OluF/i9ggLQDBMdL3eflObnNVI=;
-        b=gu+/ClMJXV3pTxpYCv9EVuyRsNWL0MGJQjJ2mD0HjUZK634g39XhK/1+atkU+IwSu7
-         Mp3kvpvq46R0/H2XY3KU+FbUhW5pODi1/V0+Eatts/QTlelj0SKH8vLwdVk5g2BZSX5H
-         yQJh3Al1MH8TcfEADQbqLb5fT2HvZ31qJECQbWpl+7ElunNokyT8P1+Kutw5IqR+Al5G
-         dGGfpometThe7BusjddGhKxSw+honjdhBbNeN70LvymfqsdktxNIaC//WeaZ7UvQP9+5
-         pG7S5fAJaVc8kbQ38ynEds8/gLcGpmUDFLLPY+MJEZ3OPd5sHqQWsqbALOfc4ZJgb00U
-         gxcg==
-X-Gm-Message-State: AOJu0YwXQbzlfqLDHMoOpINubUaHs2Howv4Xcn5s6ucAtOkWTgw8L/W1
-	pA6okyIZEwzYCpR2TqRmjAbfKF/wWfHruvmwTqJ2adF46Na8cflPhr1siXa86/w2l6ABH7lASio
-	ipXoPUA==
-X-Received: from plrb5.prod.google.com ([2002:a17:902:a9c5:b0:2ca:cdc4:8da])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ef08:b0:2ca:d151:383a
- with SMTP id d9443c01a7336-2ccea3ca6bdmr92086165ad.20.1783630195204; Thu, 09
- Jul 2026 13:49:55 -0700 (PDT)
+        bh=dg5PWIk+xBZVNHWepnr9z90JNF1w4XrYnESjPtGEmak=;
+        b=q6xViKZctbxei7hpBGx4S1KT0YSTQCcukQRkR1HF3He30AdD0/DY+bvYaA2kc4oFpM
+         +6sL0BDHbKbpmU3QRrLnb1ZaESS221r8GTw3LeE9OEshs1QrTpZVLyszOYVFKmqX+DzP
+         Nn2V9aOf1qlt5FfvThg+87Gw151OgEfshMeQm4ou28H4TqCntz/8OC211uLeFTaq6DUY
+         BTSEI4bv10J99QHe2cCmINmuKyTQz7bJ8IOvQRaoP065YacnPAzMxFGwRKX2ZslsBrUu
+         GEKfFoD+qc6laMLVyX8FPAXhGUe3R32zmN6QTRn/cvAncQIP4ayBYMa4LR2nrlAeRRJU
+         Ax6A==
+X-Gm-Message-State: AOJu0YxoaD+vfqNmLRGuAo7czGuhg17yqPhnk6Qa7FuybVGQbp0rl7if
+	ZE12if7/1H7WvI4QbKSX2NsKmI/b3QE5FAQCy7w4xBxzqNaqIkUUPWYRSXpfea1mIUh5qLguyRH
+	8lOR2cA==
+X-Received: from plbjw12.prod.google.com ([2002:a17:903:278c:b0:2cc:77e3:3ef0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a2f:b0:2c9:d8c6:1dc3
+ with SMTP id d9443c01a7336-2ccea287d5amr82275195ad.0.1783630196281; Thu, 09
+ Jul 2026 13:49:56 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  9 Jul 2026 13:49:34 -0700
+Date: Thu,  9 Jul 2026 13:49:35 -0700
 In-Reply-To: <20260709204948.1988414-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260709204948.1988414-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260709204948.1988414-5-seanjc@google.com>
-Subject: [PATCH v4 04/18] KVM: SEV: Wire up kvm_x86_ops.gmem_xxx() if and only
- if CONFIG_KVM_AMD_SEV=y
+Message-ID: <20260709204948.1988414-6-seanjc@google.com>
+Subject: [PATCH v4 05/18] KVM: x86: Serialize writes to disabled_quirks using kvm->lock
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -72,69 +71,44 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Wire up the SEV-SNP guest_memfd kvm_x86_ops hooks if and only if SEV is
-actually enabled, and drop the now-unnecessary stubs.  Leaving the hooks
-NULL allows the static call infrastructure to elide the CALL+RET, and more
-importantly, referencing the hooks if and only if SEV support is enabled
-will allow conditionally definining the hooks using their corresponding
-HAVE_KVM_ARCH_GMEM_XXX Kconfig.
+Protect writes to disabled_quirks with kvm->lock to ensure KVM doesn't
+clobber state in the unlikely scenario that userspace disables disparate
+quirks from multiple tasks.  More importantly, this will allow wrapping
+accesses with {READ,WRITE}_ONCE without "needing" to also guard the writer
+with a useless and confusing READ_ONCE (since the RMW wouldn't be atomic
+anyways).
 
-No functional change intended.
+Ideally, KVM would disallow disabling quirks once quirks are "live", but
+that would be a potentially breaking userspace ABI change, and while all
+existing quirks are fully live only after vCPUs have been created, several
+MMU-related quirks, IGNORE_GUEST_PAT and SLOT_ZAP_ALL, are partially live
+at all times.  Because populating MMUs requires a vCPU, the guest-visible
+behavior of IGNORE_GUEST_PAT and SLOT_ZAP_ALL requires a vCPU, but for KVM
+itself, processing the quirk (or not) has functional impact, i.e. for all
+intents and purposes, KVM can't prevent those quirks from being disabled
+after they've been consumed.
 
 Cc: stable@vger.kernel.org # 6.12.x
+Reviewed-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/svm.c |  8 ++++----
- arch/x86/kvm/svm/svm.h | 10 ----------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ef69a51ab27f..79c818d91dda 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5448,6 +5448,10 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
- 
- 	.vm_copy_enc_context_from = sev_vm_copy_enc_context_from,
- 	.vm_move_enc_context_from = sev_vm_move_enc_context_from,
-+
-+	.gmem_prepare = sev_gmem_prepare,
-+	.gmem_invalidate = sev_gmem_invalidate,
-+	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
- #endif
- 	.check_emulate_instruction = svm_check_emulate_instruction,
- 
-@@ -5459,10 +5463,6 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
- 	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
- 	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
--
--	.gmem_prepare = sev_gmem_prepare,
--	.gmem_invalidate = sev_gmem_invalidate,
--	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
- };
- 
- /*
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index d077783c287e..effca6372e15 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -1035,16 +1035,6 @@ static inline int sev_cpu_init(struct svm_cpu_data *sd) { return 0; }
- static inline int sev_dev_get_attr(u32 group, u64 attr, u64 *val) { return -ENXIO; }
- #define max_sev_asid 0
- static inline void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code) {}
--static inline int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
--{
--	return 0;
--}
--static inline void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end) {}
--static inline int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
--{
--	return 0;
--}
--
- static inline struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu)
- {
- 	return NULL;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0626e835e9eb..226c6cfe8062 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3939,7 +3939,9 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 			break;
+ 		fallthrough;
+ 	case KVM_CAP_DISABLE_QUIRKS:
++		mutex_lock(&kvm->lock);
+ 		kvm->arch.disabled_quirks |= cap->args[0] & kvm_caps.supported_quirks;
++		mutex_unlock(&kvm->lock);
+ 		r = 0;
+ 		break;
+ 	case KVM_CAP_SPLIT_IRQCHIP: {
 -- 
 2.55.0.795.g602f6c329a-goog
 
