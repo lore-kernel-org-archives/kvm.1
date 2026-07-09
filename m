@@ -1,99 +1,135 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F9B329C60
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 07:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E7537D128
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 07:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783581790; cv=none; b=KSO2gMPQ162iDuLbQgaLgDJTVwzpdWk7WNMF7kWfCCPfE2KuhgcldTb3d4mPhQUhIt8QNhpjVMzHMuc2IbDXXCmPTTu795nTztrA/VTWKGr8ESJVWkf8QUQIAr+WZm+Mh/UnHu7AlXh4finMYO7HU8mGeHCsR4h7pmW7RtmtCTA=
+	t=1783581901; cv=none; b=gF5bjJG+/qi5hdcrtKhBOgPPcNHYyD0gfgsFfu3okiSG4BwrPJZQ0sfDjpWH6CqL8O6lUzmFHf/hyDkweSc7S5JvCK4FPAJNKxLxGs64KGZpQ76WfzjeuOHehqWMj+s1AUCJiEUN1tntttIyRdh8tlQbcP3gaPEfgM317Foihjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783581790; c=relaxed/simple;
-	bh=JbFs08RRpr7vxGgecJoKdqem1cuqw4Ey4UynMOerw0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7/dJq58HZ9EQZNMupShJT8lFyvbvl+Fx0h0FZv0fTjT8Qb2FV2R4q2dNFFWzTM2K4Q+EP6+54ALDGQ4Oc+KuEi4SvBllB8DYUEj5rNMFMd8fh/NnZxg2dMe6jbCkMz8uiqHMIynyWl0JYqGtJmMPDHtTPxsj0HGhHmWZW5l5A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wty68I4R; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783581901; c=relaxed/simple;
+	bh=wBPuf1t19yNaSNgxaMnPM8I4sf3kNA+ALxOofFb02Vk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kLt3sXcMm3AlBY35Fb0dpztfQiHNZRtTpF0kWDu8M224/1tiT4ixJKDmGu9xz+Sm9NcgVg68TtgKH9e4deNsy/qVdod4M9CI/ADSrd3qunY3ilkBOfxjNDCCC8KFH8wJ59iajP9Koh2KqWZRZ0EdEz9rlXcN6yPxgDfVCEaKcGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0SjrU8GT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=p+iDD+4V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0SjrU8GT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=p+iDD+4V; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wty68I4R"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47d70879764so1035902f8f.2
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 00:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783581787; x=1784186587; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JbFs08RRpr7vxGgecJoKdqem1cuqw4Ey4UynMOerw0M=;
-        b=Wty68I4RQYHZjlfimefxa7B//ooHgVsRIMqSECe6xGpKefQRK8QphCFtj09PIS4esH
-         oDeUgnH+vNWSD9eAvwT1HJrXiw8TyAdmowhkZr+RPxuuWlnRPMdoEgRWQU/oqHs6MOMU
-         H4Y/eG7GSXveKbmiJfcVhr1thYHkikwluWgK8EksiBV1cvY2MDhQSFpXUpy6Tyshy4KE
-         dP9zEbILcKhz3sRu2Y4M+fb5IyAIGC0Rkr+2t+z8BYLy5fGvNNpynj+Fl1oDnbNZq4ao
-         Zi0FlWfhgZk955/20kOtiTuXCXXX6XN4URmtaYRaR7lYqmkuGrW/aAHoDpcod/jPKcTc
-         pheA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783581787; x=1784186587;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JbFs08RRpr7vxGgecJoKdqem1cuqw4Ey4UynMOerw0M=;
-        b=faCHyMfSp6R5aGK09vvdk0yRRM3cRTPaOBmGzG5CldX3Onjp8NSupvcFhCo/pY5fNA
-         CDpUWXC8LHUH3zoWgYOO73w8qlZVEcO5l+stB/FgC+vlKHnoMzWog0dy6ApixXCaWbIW
-         a6lslllT6bgdHiYbzhLS/klwsu3ZXk7uGd8ogBQt18MWFAvw9hIvdvx3FVzBSmp6QWor
-         BedeA23Ya7/wrTeImVaTh7pdgXpyhINz+I/84npI2gHvBbWxyFCSFCq7KtIuVMIqgSFR
-         C7yZZiYhKH7iyOwZc1o9NAy+ZEmCTlBoCxJg12qayiUH/uoyLH30apjOV0HVkqqgqrq3
-         FdNQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqiurS/ZhFCLHZjzS9XlfP5eT0AM6cx68Z2Uz0T7XQzV0+uICJo3YDli7Hlm/jfiggh4l0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFNFHVUMBCdtnXyeWrcSPYNKGxrxoxZ5rsLLIRLzbwV8v8h66J
-	PB0diMvUNkOhq2QVQsO+91hitT+leglSBesGoZ7/bdrZFoCG5W1qfoqZ
-X-Gm-Gg: AfdE7clrs366XnIyZ6zdpeCVJoJQFgcsx1EAsovwd5BabFGdVK/HQvIAlyGaoBkp4RD
-	Ru5tgSrkjqkEiU1ErMjRLfJp5OfmgwEXtO8h2uPkyowCav+c+ZEH6mfLLg7eo3q+erqNk7BT/iU
-	IrSD7ymmwpOaEBEQr0BXLpkq/RUjferljh6xSEfH6pfAWSuk5c5DfeWxhVCzNcyKIVEa9qVWo8K
-	SiOjnJRVdUXxBE58kQlng1GtxxuM5LC9E2fz+YEa1ZMoVGXZQN6l/xZ9W+47wu6QvCCjVZeD30K
-	BekTrt0RunM6qZqBZYrPX7N7y25YJbQ74s62HriuvbsUVDqmMt6bXAXJUBr4dbrVandqU9pT8mv
-	1yBPPmAi/9Kj1j4TiKdGMwXP6PU3sbhht7J5065bS2oel1qepFy4ar4DkhK0gudQkFJWcFl833h
-	xHysM95d9KBPuuH8Xg87UfOXWvSgKSQVMvWJ52GcrP2ad8Zb52i6VW1fAvf9ukh08ibxgB+xrr6
-	U87b++VK5g1cFKpmXis8Yk9HeUyZEuIiNQfApIOCINVpVvBuib9UZpjXD7HDuOmBcU0pM14kB6j
-	4MskU/CU08/ipEeTxw==
-X-Received: by 2002:a5d:5f89:0:b0:475:94e1:29d2 with SMTP id ffacd0b85a97d-47df07a952cmr6389085f8f.2.1783581786635;
-        Thu, 09 Jul 2026 00:23:06 -0700 (PDT)
-Received: from z16 ([2400:adc5:134:ba00:f774:65ea:79e2:617b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960b06sm48213151f8f.28.2026.07.09.00.23.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 00:23:06 -0700 (PDT)
-From: Salman Farooq <salman.farooq3310@gmail.com>
-To: ritesh.list@gmail.com
-Cc: chleroy@kernel.org,
-	kvm@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0SjrU8GT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="p+iDD+4V";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0SjrU8GT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="p+iDD+4V"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D23E75D4F;
+	Thu,  9 Jul 2026 07:24:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783581897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WzGOb7tWbnjoVpSBBnx/JpfpjBqdBffhLBq4WBVADeA=;
+	b=0SjrU8GTsBnZi7TXBIPNgEsn73F1FwaXMUkKCIjIh+8fc/fZhH3TnTKnfpBtbZCIthMsA5
+	LwVKfnynmPZbrsF1oqIKcEbNL05n+aw2Vr/FfLYpzuyXWJ29UIhqasfg8L8E+Nx1djm4Io
+	EblT5Q/uyPDUfkaSflfDKU+PPmHP9rc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783581897;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WzGOb7tWbnjoVpSBBnx/JpfpjBqdBffhLBq4WBVADeA=;
+	b=p+iDD+4VtVbl+/EKCXQ90rjGwtzK4fFIdnY5fJ752h3pefnCNoU7+tSIByl9xvy7nCB+iG
+	FmbTerkS4XJzQXCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783581897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WzGOb7tWbnjoVpSBBnx/JpfpjBqdBffhLBq4WBVADeA=;
+	b=0SjrU8GTsBnZi7TXBIPNgEsn73F1FwaXMUkKCIjIh+8fc/fZhH3TnTKnfpBtbZCIthMsA5
+	LwVKfnynmPZbrsF1oqIKcEbNL05n+aw2Vr/FfLYpzuyXWJ29UIhqasfg8L8E+Nx1djm4Io
+	EblT5Q/uyPDUfkaSflfDKU+PPmHP9rc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783581897;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WzGOb7tWbnjoVpSBBnx/JpfpjBqdBffhLBq4WBVADeA=;
+	b=p+iDD+4VtVbl+/EKCXQ90rjGwtzK4fFIdnY5fJ752h3pefnCNoU7+tSIByl9xvy7nCB+iG
+	FmbTerkS4XJzQXCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1483D779AA;
+	Thu,  9 Jul 2026 07:24:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WI7+AclMT2rTRQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 09 Jul 2026 07:24:57 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: stable@vger.kernel.org
+Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	salman.farooq3310@gmail.com
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix comment typos
-Date: Thu,  9 Jul 2026 12:23:00 +0500
-Message-ID: <20260709072300.46466-1-salman.farooq3310@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <8q7kwssv.ritesh.list@gmail.com>
-References: <8q7kwssv.ritesh.list@gmail.com>
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+Subject: [PATCH RESEND 6.18.y 0/3] KVM: x86: Backports for VM entry failure due to stale CR8 intercept
+Date: Thu,  9 Jul 2026 09:22:44 +0200
+Message-ID: <20260709072247.3305784-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Level: 
+X-Spam-Score: -3.30
 
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+Backport for bb365a506b1e ("KVM: x86: Unconditionally recompute CR8
+intercept on PPR update") with two prerequisite patches.
 
-> Not sure what this will really get us and what is our maintainer take on
-> such spelling mistake fixes. I definitely hope we won't churn out a lot
-> of patches just to fix simple spell mistakes.
-> But FWIW, the change looks good to me, so:
->
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Resend: fix destination emails (did not properly send first version to
+stable@)
 
-Thank you for the review and for taking the time to look at it despite
-the reservations, I really appreciate it as a first-time kernel contributor.
+Carlos López (1):
+  KVM: x86: Unconditionally recompute CR8 intercept on PPR update
 
-Salman
+Sean Christopherson (2):
+  KVM: x86: Move update_cr8_intercept() to lapic.c
+  KVM: VMX: Grab vmcs12 on CR8 interception update iff vCPU is in guest
+    mode
+
+ arch/x86/kvm/lapic.c   | 28 ++++++++++++++++++++++++++++
+ arch/x86/kvm/lapic.h   |  1 +
+ arch/x86/kvm/vmx/vmx.c |  3 +--
+ arch/x86/kvm/x86.c     | 35 ++---------------------------------
+ 4 files changed, 32 insertions(+), 35 deletions(-)
+
+
+base-commit: e46dc0adfe39724bcf52cea47b8f9c9aed86a394
+-- 
+2.51.0
+
