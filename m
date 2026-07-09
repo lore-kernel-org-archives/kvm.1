@@ -1,70 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91143A9DAE;
-	Thu,  9 Jul 2026 05:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38A83ACA75;
+	Thu,  9 Jul 2026 05:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783576682; cv=none; b=YddUP8a2pr9rFKMOg/MyC2f99sDdR8C9wsWnbNb2E/qdB3+GhycOuey9AQ6+FZD613pUh3HVbg+LKCnxk3mxvYfHgSXF3R4Zsk0G4WORusZFweecaxK02CoZB4HReToaFD8yxTGnxHgbwaYPEObio8ziSRON5xhn2P6fjb6ji6U=
+	t=1783576699; cv=none; b=bQ6e5B32t1G7Qpi4LesK0v0DfSS1irUzbvlcIj9T/M5T/U5Fg6NzqbIeDLJIz4Hv3P1Cvji2MOJph6zrYXGRj7XkzvyO6QVMLya7LUDWrXpQuqc5Dc/VQyfEIhcJtnLJkiNVPh0PuFOU0F0vDNQdje4+DfMKALXe5LhXtbrTeEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783576682; c=relaxed/simple;
-	bh=gE/pHNbx547YCQoActu6Ay3E6ZtMNlssx50Pc9LWjuM=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=o3m3q8/CTmoGF0FASd/aS13FlID0fxvZqVMd/33rNPp0lj7aUcLFedofhQ5ipQNK/ZcUUm25RkpKirft2MP8IcvmgB890qqVsH62QadSGhoJ3nL7F/ul2NfpmOWCKFHOCjv1Fzm1jT11Y44/igxdX6ESwBeMs73r++AzP8xpvZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=V5Tn6BZJ; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="V5Tn6BZJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607271F000E9;
-	Thu,  9 Jul 2026 05:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783576680;
-	bh=xf5NQPRm+PlThVUYalodcm0x+VRuVBSqRkIVWGLY/XA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=V5Tn6BZJLkxVItaPfGtZTeio2YPQv0sF8JqMvvYBNPsA+qPaNDRenlKs/s836974k
-	 qsTr8puf4xA6xFW00rVJXpAh43IXBail89YZzVeuxVqk817zVGM84AHJD+nZfh+GYX
-	 5j81OJNXC8mbtvk/6gsvMKN/LQHLh/65mbf2rYmw=
-Date: Wed, 8 Jul 2026 22:57:58 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: rppt@kernel.org, peterx@redhat.com, david@kernel.org, ljs@kernel.org,
- surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com,
- ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org,
- seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com,
- aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, kernel-team@meta.com, kas@kernel.org
-Subject: Re: [PATCH v10 14/15] selftests/mm: add userfaultfd RWP tests
-Message-Id: <20260708225758.0c8bcf16598f82d84ea7f71f@linux-foundation.org>
-In-Reply-To: <20260708111417.173443-15-kirill@shutemov.name>
-References: <20260708111417.173443-1-kirill@shutemov.name>
-	<20260708111417.173443-15-kirill@shutemov.name>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1783576699; c=relaxed/simple;
+	bh=zh0Bv6rM/XYPx3DhhOlW62U/I8lk9/4PXgd4FGcNpA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pwwb0rKO74rv5bsFg5TRy+KDa8H29daU2+kI0QBC+Kh40t/t2GGYLrMRxCIID4R9LFSOJxeEH8NMyCfKT8cHGsjhZVzb2JiN84kE7p1qV3DfelLp/UC5xgI/sOPEzVS2ta+Tt5GlmNV3ghiKk+dgYhb0vkbqlDptwRbkT9UZIZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 29d2803c7b5b11f1aa26b74ffac11d73-20260709
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:9573cb13-f166-48ce-8f4f-344c4878f5ea,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:e7bac3a,CLOUDID:f269dd2c1502e98836ece2b94ff3c8e7,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|136|865|898,TC:nil,Content:0|1
+	5|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 29d2803c7b5b11f1aa26b74ffac11d73-20260709
+X-User: leixiang@kylinos.cn
+Received: from ninol.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <leixiang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 962530721; Thu, 09 Jul 2026 13:58:09 +0800
+From: leixiang <leixiang@kylinos.cn>
+To: 
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	stable@vger.kernel.org,
+	leixiang <leixiang@kylinos.cn>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Suresh Warrier <warrier@linux.vnet.ibm.com>,
+	Paul Mackerras <paulus@ozlabs.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Set irqfd->producer only on success
+Date: Thu,  9 Jul 2026 13:57:52 +0800
+Message-ID: <20260709055755.31297-1-leixiang@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ak59frQUBl9Gs3Qn@google.com>
+References: <ak59frQUBl9Gs3Qn@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed,  8 Jul 2026 12:14:15 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+Set irqfd->producer only after kvmppc_set_passthru_irq() succeeds to
+avoid leaving a dangling pointer on failure. The bypass manager does
+not register a failed producer, so the pointer is never cleared.
 
-> Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
+Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: leixiang <leixiang@kylinos.cn>
+---
+ arch/powerpc/kvm/book3s_hv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'm getting selftests build errors:
-
-uffd-unit-tests.c: In function ‘uffd_register_rwp’:
-uffd-unit-tests.c:624:25: error: ‘UFFDIO_REGISTER_MODE_RWP’ undeclared (first use in this function); did you mean ‘UFFDIO_REGISTER_MODE_WP’?
-  624 |                 .mode = UFFDIO_REGISTER_MODE_RWP,
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
-      |                         UFFDIO_REGISTER_MODE_WP
-uffd-unit-tests.c:624:25: note: each undeclared identifier is reported only once
-
-<etc>
-
-Seems that tools/include/uapi/linux/userfaultfd.h needs updates from
-include/uapi/linux/userfaultfd.h?
-
-I'll disable this patch for now.
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 61dbeea317f3..ff7b25629125 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
+ 
+-	irqfd->producer = prod;
+-
+ 	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+ 	if (ret)
+ 		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+ 			prod->irq, irqfd->gsi, ret);
++	else
++		irqfd->producer = prod;
+ 
+ 	return ret;
+ }
+-- 
+2.45.0
