@@ -1,150 +1,124 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5D636680C
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 15:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29F01A3164;
+	Thu,  9 Jul 2026 15:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783610458; cv=none; b=NzZB2S4rSMu/hCDK2G2Db4EYzVhHqLvcuBB6x8vxWRFceJIOaDFndsVpIXHkHKrL0oIOpfysaQ5RZJ5mkhKeGniTSLx1EvWXsIlJCEkIJqcPurqYcBGAIFp+8erwCIs6cqBJCOP0vWdh4YlzYB7oh3Kq4fMSnYmuDCWKC4y14q0=
+	t=1783610545; cv=none; b=I5FtNlBv0NEqjgbUmzOnSSAEacXQUGgzkz/24dXq2xrOvMGo1zmXdsCDpT7RYNQFfHZqUg8qmm0MqZd96Xzr6SdR5FvuGdiepkNTqwCCvmu38eLoMRFQCwEUj7WDp7JD2hgGxZgRvKhmUVxE3BriNqpTm0VHfdGlc3VyWXX+jyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783610458; c=relaxed/simple;
-	bh=bI1J+cBiMa2SCkpHmKrJG+azHdWZ7mPEOFo5aU/4c1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vD+P7pz4MGkY2lTNUeH+TzyeiSAMAr0fIpq/dOn/Hy0pMc0OQAHrD5iQRepC6UmOwT4/c/NsTITUMvKNsoDPx8PdgiMgPWGOkddn6qbZzHCbcsS1SIakfOKrp683uKzTH4r7f7STfabvob1kpSGvZqM/I2jZzLhCdRa2RuuG7+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=DJ05EcXM; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1783610545; c=relaxed/simple;
+	bh=N+YexlqGgoW9/mcXH3KWYHRK8cOP+ex3MxpRfuO+h+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GHDNDKzKT5RxoEg1vuN9gBrCplXHeOLswFCdwSf3pYicLIW6GH6JIUCMqv/nscTW8fA2FnVLvP6X/pcl9Wa4+seGZNFPFUAFexUUlxJFh1WPqXqnlWqrYXj1AjKlilxozO8rAFn8NmE7sDWDp/CayhUlp7KVYJGR8D2w3hFkRoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=D971dW88; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="DJ05EcXM"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e602d2c0fso64036985a.0
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 08:20:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783610456; x=1784215256; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3aG5hxu0JYH7EcM/cq6JX5Yef1RoVI9XARU/q8dKmL4=;
-        b=DJ05EcXMolyTSAVa+V4kq5SYypx6naDqSrLl6NMYOtWr8ygCDfSOr714dkKgFBLZKS
-         psD/6ooU1FF2IwAfjIa0gupD+ATYl1sovtJrP4h4mo3JPMb9+dUGqfooF4/OVBTUrN9l
-         WvsIpOTAAr+dzCuc50j51i0NF2tjP8CuF+4rtYUbpM1+8eJ2alHaLs/t1Wqtj7KuNg5J
-         Imiuvx1EYh8ZFA5EANPYX7PO0qD9iU8OlM4CC7pCYJm3Hv6nGZxdHKvvNvWuGvuUT86i
-         tIvvpTfSCeKeKWyP88voeqIift+g8rHnoK6YozW+Jv49sv3qWPN4eAOKrNpRhnDPP82c
-         W+Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783610456; x=1784215256;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3aG5hxu0JYH7EcM/cq6JX5Yef1RoVI9XARU/q8dKmL4=;
-        b=IwVSixx1Nsp0HSh7GBd+LMm8/rHSPAgHxD6Rz9bKOnSiLkFW4/Pe6jOa6JMHBZwnFu
-         MJLHz/b8kC4PH2SK+ta8E/HhQ6vkZN5fyzNtGCArD2yr023PbcmVxOSHKfndAkonS2oR
-         ubcIVtlyE0JlKp277utRTwBr5aL+QXKeVZ8MnhU1JFgEWaAK9eEsblB495CUTxzXeCiY
-         GDv/crbj93fAcssxYKBc4OKcuHof4FyqM6EadIOz9bt8VqIXZuzhhiuxk7NXiDXc1bx2
-         ej0pyA/90S74Kab5QXekQgUwScKEkI9GRZTvS+fBWr2QgDe7lWKVnkx4o7VFNqU8bXJD
-         C58g==
-X-Forwarded-Encrypted: i=1; AHgh+RpyuA0SUuFb8/yc3azLOb7/QLy0LkFwy02o56r9HbpE9Y5s/IWqopFWaVn9/OA4JSaEu4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK+3KPLYc27WzkR+a3j58zZdDC0kgyvvwKAMIopudVRxTPh0nw
-	NY4b8gn4J6KwTn+dwFiAPnYdeF0TGmNFQRP0ewN0pVrYep16O7uLoejXGUkJ4dh5yUY=
-X-Gm-Gg: AfdE7cn/Q+gr8yZUtaq2y37aMHPEtN5gWlLsEVB3JEjbmZuBz6SIEqWbjYmlcFeRmCC
-	8j4NkUEU0BGk2i0gL1vQt5hxnW2CJyenrdg+Xdriqjuxlxz1z9kLk+BlB1Wu4MZyqT5KjOKnUGD
-	AADta5kPk0/34C66Rie4UorhZ+OQdZARt0Mu23KJHkFalAsUN20tsQQSwaF+o3IHH5Je9u7ThkX
-	ypLuur3QeP0x/Y97TDUk7fkgqIgGeCcPr6ihpQm8rFx/3ahIvuaI12+CAto1qFlbM+0Zb4mOj/w
-	45TpQmZZ3Gjuj0RvO5H+unORNQmC+QuVJ6VXZR0/yOGFTKBOv7BSo59l0bvHxeMMet+iXeKTAQu
-	XTWd44rkQl/hW9pYY2dxMTxW17qpPo10ZnpweAysbbzVxCuxv6riGnaCBJXDHrleKV1rrgl+5rq
-	GDlmhMmIS6QjXBZFcFf1faeIA1e97hbb1RucfFINY8TT/X76Px3sFx6Tn8oAQieftaB6iR
-X-Received: by 2002:a05:620a:179e:b0:92a:f74f:904 with SMTP id af79cd13be357-92edab23ef2mr337298385a.1.1783610451142;
-        Thu, 09 Jul 2026 08:20:51 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90ca90a5sm1652288685a.32.2026.07.09.08.20.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 08:20:49 -0700 (PDT)
-Date: Thu, 9 Jul 2026 11:20:44 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 14/30] mm/vma: minor cleanup of expand_[upwards,
- downwards]()
-Message-ID: <ak-8TKDC1GBOeMOM@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <b24f70b72f0a9e2a37b904e5b59d80b88bd42e4a.1782735110.git.ljs@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="D971dW88"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669EID1X2913977;
+	Thu, 9 Jul 2026 15:22:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=kslr28k55SXaIwU8K6L6d6zkAtYiJ7vDiVuXj9sfQ
+	Ro=; b=D971dW88NR1/ASarewUYr0KDcg+s8y3WOaujuK0uJgTwFXSeeQEcpAAKJ
+	aORC0Fbj/FhIZwMqUjlhyQ7H6S5+o4nSPfHlB7BJ4juct1blXpdOxto3MA7ioHwa
+	9rs+E9vxwcrjVyJJRrTWR9C5DiofWP3l3ATmzyuNpUw0ZjdDRC2Hjylspp67bCqG
+	i1GaMjsHv6A8hV4aNMq9q2K4TyEM6+stLiKHqLxgV1YY71ur56NT4LfnizFBD0ob
+	0rluloafKyutu3nvO/FcZNZetL1Ct+5JJUlc6phc0ha8qAlVthCkdPPuTurIt8qW
+	3QDmmEZMaDd5CSx6THI28lDp0dpwg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur23p7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 15:22:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669FJnG1027544;
+	Thu, 9 Jul 2026 15:22:21 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7f6ydcps-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 15:22:20 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669FMJvu47972608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 15:22:19 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34F1D20043;
+	Thu,  9 Jul 2026 15:22:19 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B26520040;
+	Thu,  9 Jul 2026 15:22:19 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jul 2026 15:22:18 +0000 (GMT)
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Steffen Eiden <seiden@linux.ibm.com>
+Subject: [PATCH] KVM: Add missing debugfs cleanup in kvm_init error path
+Date: Thu,  9 Jul 2026 17:21:54 +0200
+Message-ID: <20260709152154.235233-1-seiden@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b24f70b72f0a9e2a37b904e5b59d80b88bd42e4a.1782735110.git.ljs@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDE1MSBTYWx0ZWRfX8kreJ8i0S4Y3
+ KlbJP4KtG/0GGldS5udlQ9NIgCPGLTlvknQyhHzZ4R6ntayJC3whvs1nxtXW9bv0ny6sv+u7LED
+ S7juZihMRF0CWESf5tyA8IjMhCTqpRE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDE1MSBTYWx0ZWRfX3AaAhoWbEwfs
+ /JD7AWTapnG0R/UJ1eRFKjqKlx7vomoagSbTfYEwKtHBJiEcJeqFfQj/OE1gypMQ+5QLO/z1p1J
+ WUtapFrtOFAEup50FS+zeOHESRF6iJsZNTXoeMFGXoOq9OCnCC9xIo/6tC0PGamjGRsVI439C2d
+ SvDg5E+sfQKjvhNU6WizryjrshdOvXcx0HtCKLO3UabA/a8TWD//4IcIL29IgL+K9BdyO3ijWUy
+ r2aQJgsmcQNhBr0eNi3fGf9NHR2XDc0EiTpR29HmSH54hUCopLNJ0KbtBi0lVMajGOeiGr1+9N+
+ sfll9ghFQK8addSBg1qz2laqRIwyKVrP26LQJEZF6tqORUu3WEvqsW7FPh6YX2ob+XblUyzBJwy
+ xweZTT041Ta7HxqjYghoBY2Z8fdt2wGrejgvcwG0WJdZyRoS8f4lAxA0H/eJ44jRJhRJvA/hTqg
+ Dn8xqTByUWnE53sgc0w==
+X-Proofpoint-GUID: LWTe9Xz8JsGmy0UhFbNn5XUCbx4oYSNl
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4fbcae cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=0BzG25YB0iGGIEhtD_AA:9
+X-Proofpoint-ORIG-GUID: tH0_KfhA6QZtEvmEIm_2LWQzhMWYj-0k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_03,2026-07-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090151
 
-On Mon, Jun 29, 2026 at 01:23:25PM +0100, Lorenzo Stoakes wrote:
-> Adjust the stack expansion functions expand_upwards() and
-> expand_downwards() such that they are expressed in terms of named constant
-> values, and make use of vma_start_pgoff().
-> 
-> This clearly documents that we are referencing the page offset of the start
-> of the VMA.
-> 
-> Additionally this cleans up the overflow check in expand_upwards().
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+If any initialization after kvm_init_debug() fails the cleanup code did
+not remove the debugfs entries. Therefore, the corresponding debugfs
+entries where still alive but the backing fops are already freed,
+creating a use-after-free scenario. Fix this by removing the debugfs
+entries if vfio init fails.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+Fixes: 2b0128127373 ("KVM: Register /dev/kvm as the _very_ last thing during initialization")
+Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+---
+ virt/kvm/kvm_main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..d4420ebfd972 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6559,6 +6559,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+ err_gmem:
+ 	kvm_vfio_ops_exit();
+ err_vfio:
++	debugfs_remove_recursive(kvm_debugfs_dir);
+ 	kvm_async_pf_deinit();
+ err_async_pf:
+ 	kvm_irqfd_exit();
+-- 
+2.53.0
 
