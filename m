@@ -1,143 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9061B43B4A9;
-	Thu,  9 Jul 2026 18:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E06449983;
+	Thu,  9 Jul 2026 18:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783622539; cv=none; b=p/lcFoYaJ/HIKbeihBRMHdJf1ht2DqTj6pTo413T1GxMtbqBNICYkbDt2g0lj088vncV27zJuW2jsRoG9e13K0+chnhgvmdzwqkOQiRraJN2eZd+AR0RxYrNO0asAahuitoxn0CH63yamzicNh5rOBgH527V3MJDeKLs4bfW+yg=
+	t=1783623023; cv=none; b=jETMV1hEXXqOnpgT4mrV0K+5GFAAb7uOO4QH7xSfz/0cE3Uf2AWd3n0rSlRdlMRLbAji0epjk7jmA8IktKwza9fT31a0pDk74gHv7JR7j9MoOLzFdzXf4i/01rom7h3HM/U1PJN6XmN2wOcWiMeAaQ1K5NuKWIAnOlF2UmsuSO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783622539; c=relaxed/simple;
-	bh=q7gRFDO7XUzOJdjKk7dinZEmMYgpMJThzBI3Uxs/+tg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pFLNJoiIaqnxL+mpzNpmkdRMdqwl3RCA7OOsoeZV3VKZLfbGmUvIFuieEa58HHTQQ+17tSaE+m48yxQC4P6uTtgMZVglTKr8KSxIpsPPjVWSS4GnjhNCPLCnZVKzIfQYTyZgQgyo6l7LwXm2pH9FUANx5MnsrvRQofZtaBslFIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=om4MN8j4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783623023; c=relaxed/simple;
+	bh=eMvLjavfrZJlD2lRmP5k01iYM1ODAb6U0vzOTDvTHkk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OuE66BgqqoTtddvs+WkW6f9QB6v0RR12Vt4FYVKngj1EEVNvucG126zEB8JeaNHdU427VkuQmzYCWMsiV9T7F/eILN7NVH23xpb/Nxj85gv/8jrLc88xv1O7pfXvAFzGrZPRVEFxsKqXpRBG/s7phQgGcvCQjMN/SF46jcv1KSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=M/t6VLUw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GeWhHHCm; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="om4MN8j4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB121F000E9;
-	Thu,  9 Jul 2026 18:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783622538;
-	bh=XECF9ZZpHN11rgO/zTL5kqZIcvgfBhcTmPU6H51lc1c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=om4MN8j4T9S1gJ6RcrNGwq31Rui8bwxb6u5K24PkOrExLur4vrArun7m/ayyKeybG
-	 DRlOMhyvmeLyWYQkLI5/B/VCaZUrFC58STn6nN+nTMg02ksEUH+tbTNG73dHEsbtDj
-	 mjByXFjQWoZ77wWc89xctPmMXs+HpIq6nrfHvihBquOzFzPr4TeZRhVNj3ARHFL8Jp
-	 De3V+DCU4Ws7I58/u9BL0Yixu8GGbR6Y56/LSAjqmYpnoA1WRo41LuCmcr6ydpfU/v
-	 sJgUX26c7s+yLglWdgBcO9aSr4MjWakdqqbrv7rydFDJoLWWHDrRrvdFOIn0gua5uY
-	 i5TxpzpHs6Uew==
-From: Mark Brown <broonie@kernel.org>
-Date: Thu, 09 Jul 2026 19:27:50 +0100
-Subject: [PATCH v12 29/29] KVM: arm64: selftests: Add SME to set_id_regs
- test
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="M/t6VLUw";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GeWhHHCm"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7DA3AEC0197;
+	Thu,  9 Jul 2026 14:50:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 09 Jul 2026 14:50:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783623017;
+	 x=1783709417; bh=7eq+s1ki9p+cx7h5OYu+Ag2KZEjIMZR2/rJcK6DAnx0=; b=
+	M/t6VLUwy3NLxuqfRPwA6WvREost/ZkTc2X9GZ1ouz3sJpbcbzftnuVjBpp2muPl
+	YnA86ewcgSv65yNBSyvQYL0cRN2vbPDbVq2/qo1beWuqKzy4XzE4w4VtoRn+djPs
+	N7GSlG3rpk4GilxzZZi/jo3TSbwpnyadeZxIJaXviJSSEqc2vVTvibJWJGMpGNpu
+	7TYvXadjbKzA8/LJjZ7x8USS+pZcekHY9MT6AZeGQQRDb5yb9Vh6ImP+Mr3pwXlv
+	ILj5W9/EOErGnP8EEA2E5CWLSqx0u94g+8yBw6+HEyI8JqUSogouteQH4gzOanfM
+	tRMLyua53qADya8oFHfLeg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783623017; x=
+	1783709417; bh=7eq+s1ki9p+cx7h5OYu+Ag2KZEjIMZR2/rJcK6DAnx0=; b=G
+	eWhHHCmmchaq7gNFCebO0hlPSkPSVOp0OAZmA+YLRfYKuYsINsPQQq1l7qxepwxO
+	8Wa/T+a7+U2BuJy48wSgIYV4//bShJwkbECPw4eUi41HO89fzo9RL3KwUWjxJy+M
+	Aq+YlK955ilkvyEmPPw1QD7iX02sgx0Y+R2ElejuflWZLI2J4/JrKy1SLGQN4Xcx
+	LxxVg5E8xc3zfX0pz0VEJQxqPQJRRjIkHVbhrYv+c4pxqTLTA0qEavQ7I1kZbBsI
+	m9NqmbTOSbHjglXBu/D+gMseSdzWxI4QAGn3KyC56hEK2iCOd2IU4R9tZffVhkAh
+	TEqFEHmEn/WdIEwk5okdA==
+X-ME-Sender: <xms:aO1Pai-paWvwQNKt4z_xknRSfCc-FvPPgFRCjtBz-MEUDS-4wuPMEQ>
+    <xme:aO1PakSA_5Vqs5P39oQLY5HEVP2JnTg6_Bw-7vH1nHAoD20Vf3bT6wrhSXyjc-1bM
+    l3LkN3A9AtqKJf7FpZTJJl8AeL65z4lrZVCEeRcz2dI4tU9eEveNzk>
+X-ME-Received: <xmr:aO1PanRLQegSbgCQfltGAAB2yi7AthdWyZX8Fzrs95BGd7hs9hxGOdV0pzQ>
+X-ME-Proxy-Cause: dmFkZTFEkJAMthfS71ADEk1iBTN4/4AMIax5uZ45lBRkBiTnkMmOke3v5MVcBKOzW4Fcv4
+    Wrt2jMEs1NyZY4b/aaTetRDUdyHCQPSNUht7HAMk+dduEVIs8ojvld2m6/jQhPEZuYFrF6
+    mpevGh0lMmZdy2axmup1Err3v6PUzHzVwsFTmbi2+eqGo6LE/UXfGTe9FWxA3o2xacLhk1
+    cYSKKPaFGTN2qsEGTm72g16A2/bBA/E8oSg7scRxHuN9eBe3IMiUzjM9I87NWLjVekiYn7
+    LR4JZJlLTp352tCtc/PVH9HTIsWXp70n5tASuSxwezBz+nEt+G2qlLN65LrnSCfxST8AUv
+    mP/ZNaC+JY1ZEX1DTfMK8p/c7lKiYo9IAKsinzjGd+KlSXzNSiDnsj2t8pWqHkLrOg9ewi
+    HBM/eVGfJwIVVOsB5S8FHXagB+gEqyTiNc2cR+dBbKN4fPSc1oW2VuauYskR9ZbZrwaRyq
+    PIAqZKu1GU7n+uV1WIPmbUergvNc1zKCK8+lRhaRa0a/AtZv1mAiVvNCQ/ZyzorhrwI0yv
+    ey79rJVYsCR7isbnOEdBn3NEdLTeGQkwU1zf4t0IdSZfCJ0Xo3gLuRGmfHo+U4nUbgqRJW
+    yzsMpRKDycSoZHPdGyXXPaUtTSjX2o0T4zSLFIbGtFIvcFlW/ffS3KnC44Hg
+X-ME-Proxy: <xmx:aO1Pag4qht9LSUiPYKcEgbKaTdEPisxgYQev1sfE4EiqVbZJQA3frw>
+    <xmx:aO1PasWJaWiX_g5bV9PRmUjk1DwzRYQOjgQsmVk5bObD5RAZN65GGw>
+    <xmx:aO1Pam8lvXA_r2YXG1OnGK9ys2_ytBixnTQMe3ZTyjjFowhrzOjLGQ>
+    <xmx:aO1PasrLbjHY6JzKP4De73WedriiXVZmklFRroigJxXHJUbRyD9crA>
+    <xmx:ae1PalAzBKUQ0sh4TEe1CY2UOWVGpUN9u2bP4nk1zMvSAwBinT339INI>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Jul 2026 14:50:14 -0400 (EDT)
+Date: Thu, 9 Jul 2026 12:50:12 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v19 12/18] vfio/pci: Add dmabuf TPH metadata storage and
+ fd query helper
+Message-ID: <20260709125012.21784d0a@shazbot.org>
+In-Reply-To: <bb0e583e-501f-4356-b554-784482b35331@huawei.com>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+	<20260702124224.57168-13-fengchengwen@huawei.com>
+	<20260708173117.3e399c4b@shazbot.org>
+	<bb0e583e-501f-4356-b554-784482b35331@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-kvm-arm64-sme-v12-29-d0301d79ef58@kernel.org>
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
-In-Reply-To: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
-To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Dave Martin <Dave.Martin@arm.com>, Fuad Tabba <tabba@google.com>, 
- Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
- Jean-Philippe Brucker <jpb@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Peter Maydell <peter.maydell@linaro.org>, 
- Eric Auger <eric.auger@redhat.com>, Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3538; i=broonie@kernel.org;
- h=from:subject:message-id; bh=q7gRFDO7XUzOJdjKk7dinZEmMYgpMJThzBI3Uxs/+tg=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqT+sAuw7myrbcgUVgJNZQ/jetM2DjXieP+8OEe
- UPSUnc0/tKJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCak/rAAAKCRAk1otyXVSH
- 0DLXB/9PWTecBw9vRlEMUmyTZnUDGsd+6k0m+yErwCEEBlLJYYI/+3QolnJWwgqe+cXdKbYe3mG
- vMk1TXUu6KCx2yJNhCnqnMbQp1PQwVo0PbCJEHLRSNTyZuKEZwZuiBBpFbT+z/nL90BKC0cS8Pn
- a/wZ+C8k3HwcpCQ50JLe2doxOLmwu1q+LseQoBxEmPk58cjN0fJitLPg0fARl/h8n+nQwKfDPn6
- LxIZz9hpYHSGysP985W5+rikM37TqfqEiBIqsaRxcfxiXJcRgV6E4iZG+O38R9pHPtZj3fdSQeR
- EkJy9cso+vX8Sd9RYbdSrbIID0rA1c5M+QTd8O7FaauC7hb1
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Add coverage of the SME ID registers to set_id_regs, ID_AA64PFR1_EL1.SME
-becomes writable and we add ID_AA64SMFR0_EL1 and it's subfields.
+On Thu, 9 Jul 2026 19:49:24 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 30 +++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+> Hi Alex,
+>=20
+> On 7/9/2026 7:31 AM, Alex Williamson wrote:
+> > On Thu, 2 Jul 2026 20:42:18 +0800
+> > Chengwen Feng <fengchengwen@huawei.com> wrote:
+> >>
+> >> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> >> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> >> ---
+> >>  drivers/vfio/pci/vfio_pci_dmabuf.c | 49 +++++++++++++++++++++++++++++-
+> >>  drivers/vfio/pci/vfio_pci_priv.h   |  6 ++++
+> >>  2 files changed, 54 insertions(+), 1 deletion(-) =20
+> >=20
+> > Please don't send competing patches, just indicate the series is based
+> > on Zhiping's series v#.  This makes all the naming changes that Zhiping
+> > declined yet you still included their sign-off.  Thanks, =20
+>=20
+> Thanks for the feedback on overlapping dmabuf TPH patches with Zhiping=E2=
+=80=99s series.
+> There are code conflicts between the two series on PCI TPH and VFIO dmabu=
+f logic,
+> and I also have concerns that Sashiko may not properly parse and track cr=
+oss-series
+> Depends-on tags for reliable automated review.
+>=20
+> My current design idea is to retain this foundational metadata patch in my
+> series. This patch only implements basic storage and query helpers for TP=
+H tags
+> on dma_buf objects, providing the underlying infrastructure. Zhiping can =
+then
+> build the corresponding VFIO device feature ioctl layer on top of these c=
+ommits
+> in his follow-up series. I will fully sync all his latest code revisions =
+into
+> this patch to align implementation details and minimize future merge conf=
+licts
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index da9349bf31ab..26db507f6e73 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -155,6 +155,7 @@ static const struct reg_ftr_bits ftr_id_aa64pfr0_el1[] = {
- static const struct reg_ftr_bits ftr_id_aa64pfr1_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, DF2, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, CSV2_frac, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SME, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, SSBS, ID_AA64PFR1_EL1_SSBS_NI),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64PFR1_EL1, BT, 0),
- 	REG_FTR_END,
-@@ -212,6 +213,33 @@ static const struct reg_ftr_bits ftr_id_aa64mmfr3_el1[] = {
- 	REG_FTR_END,
- };
- 
-+static const struct reg_ftr_bits ftr_id_aa64smfr0_el1[] = {
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, FA64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, LUTv2, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SMEver, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F64F64, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I16I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16B16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F16, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F8F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, I8I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, B16F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, BI32I32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, F32F32, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8FMA, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP4, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SF8DP2, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SBitPerm, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, AES, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SFEXPA, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, STMOP, 0),
-+	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64SMFR0_EL1, SMOP4, 0),
-+	REG_FTR_END,
-+};
-+
- static const struct reg_ftr_bits ftr_id_aa64zfr0_el1[] = {
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F64MM, 0),
- 	REG_FTR_BITS(FTR_LOWER_SAFE, ID_AA64ZFR0_EL1, F32MM, 0),
-@@ -244,6 +272,7 @@ static struct test_feature_reg test_regs[] = {
- 	TEST_REG(SYS_ID_AA64MMFR1_EL1, ftr_id_aa64mmfr1_el1),
- 	TEST_REG(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2_el1),
- 	TEST_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3_el1),
-+	TEST_REG(SYS_ID_AA64SMFR0_EL1, ftr_id_aa64smfr0_el1),
- 	TEST_REG(SYS_ID_AA64ZFR0_EL1, ftr_id_aa64zfr0_el1),
- };
- 
-@@ -263,6 +292,7 @@ static void guest_code(void)
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR1_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR2_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64MMFR3_EL1);
-+	GUEST_REG_SYNC(SYS_ID_AA64SMFR0_EL1);
- 	GUEST_REG_SYNC(SYS_ID_AA64ZFR0_EL1);
- 	GUEST_REG_SYNC(SYS_MPIDR_EL1);
- 	GUEST_REG_SYNC(SYS_CLIDR_EL1);
+If your concern is sashiko being able to apply and review your series
+on top of another, then I would suggest leading the series with the
+unmodified patches clearly noted in the cover letter and commit logs.
 
--- 
-2.47.3
+As provided here, this patch initially appears as excerpts of Zhiping
+series, again including sign-off without permission, but it introduces
+this massive gap that was previously overlooked as a result:
 
+> >> =20
+> >> +int vfio_pci_dma_buf_get_tph_by_fd(int fd, bool extended, u16 *tag, u=
+8 *ph)
+> >> +{
+> >> +	struct dma_buf *dmabuf;
+> >> +	int ret =3D 0;
+> >> +
+> >> +	dmabuf =3D dma_buf_get(fd);
+> >> +	if (IS_ERR(dmabuf))
+> >> +		return PTR_ERR(dmabuf);
+> >> +
+> >> +	if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
+> >> +		ret =3D -EINVAL;
+> >> +		goto out;
+> >> +	}
+> >> +
+> >> +	ret =3D vfio_pci_dma_buf_get_pci_tph(dmabuf, extended, tag, ph);
+> >> +out:
+> >> +	dma_buf_put(dmabuf);
+> >> +	return ret;
+> >> +}
+
+.get_pci_tph() is proposed as a generic feature of dmabufs.  We cannot
+require that only vfio-pci provided dmabufs are supported, nor can we
+bypass the default interfaces and lifecycles.  This needs to use
+dma_buf_get_pci_tph(), rather than punch through to the vfio-pci
+implementation of .get_pci_tph(), and it needs to honor the calling
+conventions of that interface.  That's what makes this series dependent
+on Zhiping's implementation of TPH as a vfio-pci completer feature.
+
+Already, within this patch, the caller violates the lockdep assertion
+that the dma reservation lock is held.
+
+Additionally, dma_buf_get_pci_tph() defines that the provided values
+are only valid until invalidate_mappings, but this series has no
+plumbing to honor that requirement.
+
+This needs significant work if we need to track the lifecycle of every
+dmabuf related TPH value.  Thanks,
+
+Alex
