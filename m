@@ -1,136 +1,116 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58D9331EDC;
-	Thu,  9 Jul 2026 13:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A3813A86C
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 14:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783605253; cv=none; b=n6Yk2jrj2rXLhDSx8p40yNivEWaXcXLu2AU87OahevkhvFtIV2j9Uj7Xddcc9uPOC3zSaSNUzrvEFwp0w9ksuguaEDQ4McEPVQzkKq+9U3Xu+cWUbTrcvUSRqcS5v6s4qe5z+6nTWK110YrAzb8e9Mfgw2YLlqx7X8pnqgE89DA=
+	t=1783606123; cv=none; b=ef5UWZ8sY9CG4AiHUy3BMJQXeRKKSn71GtIWn7zpF9pr3ovyJTXoUio38jQYFSIwU7gZU1hDnScuvWShlQIqLptuaKw78Am49elqRaIlu1tdTYyueiEaAiXe8myNloFqEta63t6RhqMkfFCMu8NH/bTeHSUj60Za/Gfa1DYMVpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783605253; c=relaxed/simple;
-	bh=N/FVJoLGchO37FNS19p+JzA0T8fcwmsQE/YKK1R72tU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dbp809YamQrtrI8ian/7u70VnU5HqA1VMh+nut+6XLp3adC8jC3PovnbSQqyxuTkoLPPRueLxlSVYjykoPDKGItRZ+QyQj8J78Vu/jfvpXe/hwP/kbH7DW7Au0wZJuwzyuSS+DYXUUqvulCWtHjdtwrWgUcVtIvsg6LMZdilFGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rmbmNdu3; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783606123; c=relaxed/simple;
+	bh=LJQ+Wy5qFlw23RxcEXk2UYe+R7vipLE6QRbmbH5p65M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fdVJeTVYgtV5Qw4k4U25oblp9W6WpyS+2bAt6Rg5YsB2kfyR/KCnQ7Rm0b9matN2db68buwWWRwudbMHT3ZXYEl8U33Ed4mLCtWtOwYslAyHSvF6DRBIMs0CEziuz/2+iudolpVpHSE37gUCxXFxDrqKfT9m/eCwrUzcDwpzCk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bfBg0JQs; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rmbmNdu3"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 669BmnhH2227120;
-	Thu, 9 Jul 2026 13:54:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=rGOOVeLA20x0QPPK3WXVNgBbJLjJxEmrpOrL3YTRh
-	zs=; b=rmbmNdu3zZjhOsUB1fci3+/jwEvdrPEjtgWpY0ZCnMlHgtymHEMczGQye
-	++ONjy6r0Eh3YsoyQNxhjo9YxgDNyKz+Nkexjqdbt7WonJm331ybFBPpyqIDnHFT
-	P5ASwMeFurEiCJ9jz5tOXRZQl9+jFcMnle7e6rqdkgi6sbkK+M30PjKrGbE++0Y4
-	gF0wGc+TdbP5oXWACpcyyT0NA7RGtfjyjS2/ew0466cXYljQFQFuFvfPz8qjVfqy
-	Sz9xUotQygBzc8U7cWgSAyEkyvEOfiJLpjuxCXYw6affEAgFzUbeM1maZuKnIap5
-	frdwjh199FL9jwSN3ZjsCHBwxJTXA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6qknsejg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 13:54:08 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 669DnbtR009769;
-	Thu, 9 Jul 2026 13:54:08 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7e0hn9f6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jul 2026 13:54:08 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 669Ds69l18547344
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jul 2026 13:54:06 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C454058045;
-	Thu,  9 Jul 2026 13:54:06 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A9925805F;
-	Thu,  9 Jul 2026 13:54:05 +0000 (GMT)
-Received: from li-2311da4c-2e09-11b2-a85c-c003041e9174.ibm.com.com (unknown [9.61.74.132])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jul 2026 13:54:05 +0000 (GMT)
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-To: linux-s390@vger.kernel.org
-Cc: alifm@linux.ibm.com, farman@linux.ibm.com, borntraeger@linux.ibm.com,
-        frankja@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, schnelle@linux.ibm.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] KVM: s390: pci: Fix handling of AIF enable without AISB
-Date: Thu,  9 Jul 2026 09:54:04 -0400
-Message-ID: <20260709135404.2255136-1-mjrosato@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bfBg0JQs"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c9d5a5b63c5so1738349a12.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 07:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783606121; x=1784210921; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KgH/ydIU7zEHefclnHmkpwsTp6JMOkXk2hxaj+W5rx0=;
+        b=bfBg0JQsn9Gxbuqkb/5sA9a0f3mMZtpc/n5XCztCZl4TxCNXpsZEnCcbEblwpJoGRo
+         V0GLXaaCNsKoBXuMC2CfURdt5wMD7va4EYxpcMzomf3LwHMJERAnMxQTc39Nl3EyO+kN
+         P4wnTcgiCjCHZFneK5yLqdrK18D+hNmTiEWTA/YQBGctcG2UMvyGpkK9z8CCNt/9p+MC
+         nxxNFWBPt1W7Q67ph8C4G2HFpm4XvFCPdoiE/qfJF5brrAJyNbaJWJZzYEEgeSljwcEx
+         qCbQUzuu1IgWiKKzMvWTM3wtbgJSdWXG6giCo7Z9FOfnD07IoUaw9vCaoGjS6UL411dD
+         hbrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783606121; x=1784210921;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KgH/ydIU7zEHefclnHmkpwsTp6JMOkXk2hxaj+W5rx0=;
+        b=s5qdDR0PKQy5sYmoFf59n+aldDn2l8Rwq/5WdvGlsjws2rpKg8cgctJsDXu0UPHaNd
+         f8nJrfsb7VEsBrGgGnu6EboMKwb94cQ3Sr7Xpm3UElFg2JAOxqtRLT9d/qLVTjCOpyqN
+         EZ/lAjAFyoOur4C8tURvdjL5bzghpxRkrvOfvBnS54EdehijEJU1LMM8p7vQh/SBYxU/
+         sX/rm5qQBGaMbXFFcBDGQv9i9BIOmvFrI86OVEASA/17vkZQGWetQNRziunorslXNe9e
+         HcmZ1iF65a+gkkSKfeTG9q2A6CRSRq9NpK38sStck66mkg0Qx5F8PmxKz6AP3TSENAkH
+         u2FA==
+X-Forwarded-Encrypted: i=1; AHgh+RrFnZHAiTWgI3Yw9p4x2g22Ewis1JcjFGETkfWCNKA85Azw73gcHf80i3M5Boo6p3wpDUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxzx5Be9KB6jo8xQXiJz3OnvNHP4Uvix4CfyVytxMyrfDN5jI6f
+	R9ZuS08t2xTO9htCWpgWQJLEOmmAiFLPsjxcv2K7584qPysFqnvRDBrOy5OtqanJMRugEYiQe4y
+	Zal3Ykg==
+X-Received: from pgbfm1.prod.google.com ([2002:a05:6a02:4981:b0:c96:4086:38b5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d0b:b0:3b3:f46:1efa
+ with SMTP id adf61e73a8af0-3c0bd0fa172mr9218633637.42.1783606121082; Thu, 09
+ Jul 2026 07:08:41 -0700 (PDT)
+Date: Thu, 9 Jul 2026 07:08:40 -0700
+In-Reply-To: <CAA0tLEpxE-YAigp-j6jC4pyQTv9vOPbs030Fs3kVFkczC9Etkg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Q/XiJY2a c=1 sm=1 tr=0 ts=6a4fa800 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=rbFSK_jk36QTBQMObJwA:9
-X-Proofpoint-GUID: NhFBMyCD1wyjfu55y7Ayc5Z7iAQwlMmM
-X-Proofpoint-ORIG-GUID: NhFBMyCD1wyjfu55y7Ayc5Z7iAQwlMmM
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDEzNiBTYWx0ZWRfX2ByoNDUUmO7J
- aBD8MdU+BxMWMuYdI6yLdhcjuWWwJXc7mDuhgqYGGe92XOQwXxeFX3+P1C+b7MPAbMbS223RKnT
- hi0r6TTqEesjuq7lAKEalDGdyEoJ3/Q=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDEzNiBTYWx0ZWRfX3i7GFpHGf/OM
- iDSng6t2vsr+obnfjamI0C2ANIwvbPfOWuA75DJ/fFPRaIDPSjrH7fREKpOgbrpsZReCLjCyrEF
- uxjJuRZWDvFMjhJZId2CMlAgRackoutVVSF6n6nYW226e2CVbehO/bEBpTmpRw3HYDqbzWaZ1Y7
- L3PvMBCzurLPN+sd0cA86QArH4Ju7mulNMqXNYM7ix9n3/HU8Y9ao+JSLmSR61EeFvi19n/eN8T
- T2tqtdz7j+DSc/9/AiTzg7MnCxYIHvgJqhxTcISUaudl64+ombI+0O/n//HrRNsjFZI+N5HAwJH
- Xbyrm0igzpEFD+r+cYnmnqdKwNc5zru0q9i7/frDER+ndT31yAbc2udhNDC91nVbeBQsh1WyO0/
- 4PYLV5/HH2JIJz4dpaC+rB/Fp+/XT5nFPZ8Ns1+cGBlMU9OC8kWrhqkL390FCrsYd9+8l5i+vhw
- RlgiBCHDY2hP2Y617dQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-09_02,2026-07-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090136
+Mime-Version: 1.0
+References: <20260629125205.52394-1-zhang_wei@open-hieco.net>
+ <CALMp9eSLH7pT7X22es+AotxhRMQ1VyziWWELQu6_ZRsyuQ=xzw@mail.gmail.com>
+ <0e576fd8d8cd2ed1739cee36eba393fea7745506.camel@redhat.com>
+ <f70b4a3b-1ac1-4269-ab7c-0ed1fb42c357@open-hieco.net> <CALMp9eR5jVLGeQck89kro1ocEX5aZcovdGMK+fuzXjqK1NR7kQ@mail.gmail.com>
+ <CAA0tLEpxE-YAigp-j6jC4pyQTv9vOPbs030Fs3kVFkczC9Etkg@mail.gmail.com>
+Message-ID: <ak-raI43liqnqGKb@google.com>
+Subject: Re: [PATCH 0/2] KVM: nSVM: Expose DecodeAssists to L1
+From: Sean Christopherson <seanjc@google.com>
+To: Venkatesh Srinivas <venkateshs@chromium.org>
+Cc: Jim Mattson <jmattson@google.com>, Tina Zhang <zhang_wei@open-hieco.net>, mlevitsk@redhat.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-When a guest seeks to register IRQs without a summary bit specified,
-ensure that the associated GAITE then stores 0 for the guest AISB
-location instead of virt_to_phys(page_address(NULL)).
+On Wed, Jul 08, 2026, Venkatesh Srinivas wrote:
+> On Mon, Jul 6, 2026 at 6:34=E2=80=AFPM Jim Mattson <jmattson@google.com> =
+wrote:
+> >
+> > On Mon, Jul 6, 2026 at 5:02=E2=80=AFPM Tina Zhang <zhang_wei@open-hieco=
+.net> wrote:
+> >
+> > > I will take another look for the next version and try to handle the
+> > > remaining pieces properly, while also making sure we don't expose sta=
+le
+> > > or incorrectly synthesized decode-assist state for emulated exits.
+> >
+> > Naples erratum 1096 seems to imply that the instruction bytes stored
+> > in the VMCB are not necessarily the same instruction bytes that were
+> > fetched and decoded to lead to the #PF/#NPF. Hence, in the case of
+> > emulation, it might be sufficient to read the instruction bytes quite
+> > late in nested_svm_vmexit(). That would certainly simplify the
+> > plumbing.
+>=20
+> Would not passing through this feature when erratum 1096 is present
+> simplify this?
 
-Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-Cc: stable@vger.kernel.org
-Reviewed-by: Farhan Ali <alifm@linux.ibm.com>
-Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
----
- arch/s390/kvm/pci.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+I don't think so?  I'd be fine with KVM propagating the erratum to the gues=
+t,
+i.e. not trying to fixup the decode-assist information if hardware failed t=
+o
+provide it.
 
-diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-index 5b075c38998e..dc748cde4703 100644
---- a/arch/s390/kvm/pci.c
-+++ b/arch/s390/kvm/pci.c
-@@ -300,9 +300,14 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
- 
- 	gaite->gisc = fib->fmt0.isc;
- 	gaite->count++;
--	gaite->aisbo = fib->fmt0.aisbo;
--	gaite->aisb = virt_to_phys(page_address(aisb_page) + (fib->fmt0.aisb &
--							      ~PAGE_MASK));
-+	if (fib->fmt0.sum == 1) {
-+		gaite->aisbo = fib->fmt0.aisbo;
-+		gaite->aisb = virt_to_phys(page_address(aisb_page) +
-+					   (fib->fmt0.aisb & ~PAGE_MASK));
-+	} else {
-+		gaite->aisbo = 0;
-+		gaite->aisb = 0;
-+	}
- 	aift->kzdev[zdev->aisb] = zdev->kzdev;
- 	spin_unlock_irq(&aift->gait_lock);
- 
--- 
-2.54.0
-
+Jim mentioned the erratum because the only way for the erratum to exist is =
+if
+hardware re-reads memory after the initial fetch, and so exactly how and wh=
+en
+hardware/KVM reads the bytes is a micro-architectural detail.  I.e. the mer=
+e
+existence of the erratum simplifies KVM's implementation, because we don't =
+have
+to strictly read and propagate the entire 15 bytes from KVM's equilavent of=
+ the
+fetch phase.
