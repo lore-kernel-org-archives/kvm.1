@@ -1,221 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF654723;
-	Thu,  9 Jul 2026 15:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C90B425CC1
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 15:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783612032; cv=none; b=pP2EeU3QLwk2bXdmSEN9ZVwURC5QZ5pA/rHK/DsJS4cNohn3ZISnXjh0FYyLc/aeekQoogIGKPqHfsRpn5gE2KsbQNUOFcSbz+WjAbRN93IawhucyV6SdA/EDQT4/cD8ZqwS0e39D6YzqSfd4p3LtaWzx2VYOJ1G1iEKQbF+ESk=
+	t=1783612170; cv=none; b=AmUCpqgCvDqYhbL/DYuSLf5Eyo4pxpNpGKXlW+5CAKOsMnUPS/TAlWfzSiQwienMSEvncqt/IMjdym/l1++xVMaARSYqV/YfC1/CpmU1Zi+8aRt2jxao4j+bRdEXFKvHx7RPryJhuvhAuspWpTj7SMsyCH9SPVwpCENoqUUFgN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783612032; c=relaxed/simple;
-	bh=vpjynq5BJlsG0KQv+rgFMfXKhfuPYUUINaiZNsFzPm0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=o6pIovC8qi18ZbimQ68fdr8JaMDgDuMWSJPBO+v81WCTiD1R3CfBYVfv8qqXifFoSTqxZO8GBsKhoTEVrRaHJkH9ouMgjiBeuQEHrEht2/bwuTAFsImzkOhrwLGEDXzlUbLpme9ae55YH4PogijA+8aT8mA8FvqUaCXMysfDTdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VlCvT1Tb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783612170; c=relaxed/simple;
+	bh=0qkqAHRaBHgpB2UR0C6dAMPOVUmsbtzeoEt8MNK67Xo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L8O4X58qGY+DfByCyRaE5Rcxh4PRhJBHPGQxLpHJieXs77N97rak6vywoRxUfg0MCwhfdSAfN1rsSLj4TJuRlOAjgM5SdF6lXjZs6of1fJ8mvIJMRA0PqmLEjsaZMo4I0Eyr25OxTysGCdZ6emO9NjgTSWDSDqakk48V8yyeAU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=MkQCpSd2; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VlCvT1Tb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7B01F000E9;
-	Thu,  9 Jul 2026 15:47:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783612030;
-	bh=4Iz3VetR0IW+5P+ybhmt0roE5XRS6ec9BjP0xTtEWuw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VlCvT1TbaNLF4xCQ5Agua3g5v6XT627m29C/lEJuR5Di6jdwOnBqF2wvIYmWQtb7T
-	 GRYIe9ZPsQNdioKS0u8J7G0cU/w5/Gk3FB5KK5dCaqLGx9jBzmJKbkk2xvsDAEZ+gL
-	 K92ThSPVm4zqyr27Fv5kPK1Z/LunadMQtxagIdtubcLtBVX2rQY4Fd3KARd7CwOH2E
-	 1RyTgjPiXrP8bWDmMrKr3zBma03GKYv+Fh90j1oNJYDcvpYgNbD+hsSvAOfOrimqKO
-	 iwHy99W/UUUaohCVAqg7mdVCa4dNdAV2R8mErhy7ofRQbI73a7pdgQNSfN6p2k5BFR
-	 da/JgJ9iy0Vug==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 20/21] KVM: s390: vsie: Create minimal scb shadows for
- not running g3 blocks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260709-vsie-sigpi-v1-20-ea9f12066408@linux.ibm.com>
-References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
- <20260709-vsie-sigpi-v1-20-ea9f12066408@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 15:47:09 +0000
-Message-Id: <20260709154710.4B7B01F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="MkQCpSd2"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8efef6533aaso436116d6.0
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 08:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1783612166; x=1784216966; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hryUWYzOZzjuIh9gJx+Hzg+n+E360+tJZh4R7BZGeLA=;
+        b=MkQCpSd2m04untsXU1nx9KbvtduhWS0cCQoIcza8A3pVIhVf9PRW/CsEN/DZAtCuls
+         p7RoVeKsjloxBKU2AfxnCCAN8lhXWQBNDMfPG7gVZRfQmXhyKackY8MGGcFAEPPVy0Fv
+         SDU2e8AQxkDk3sY44SjU+DAZTvcrqgnaYjF6Y4p8tOSybH+22dFesBK1qZJowyT//dMI
+         6ZToGGs97IuDvRPOGP/+9UTODYx8cfsPo8904OY1zAoe+0Q0w2DVPfcKw8nstjaGRKyi
+         ELgcN2ve0gKuNONy45AfjzXvUlPyOrsp6pJgUy/3Xnn2gf7Puzf5UJmIyCvxOjIpgVPr
+         CZNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783612166; x=1784216966;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hryUWYzOZzjuIh9gJx+Hzg+n+E360+tJZh4R7BZGeLA=;
+        b=L8piNOzMjDlfA7ksMkJLe2sxOO4QjC3KZBYwujNjHs+D24E81QyGsdlqLtgUHKkbo2
+         WBujQ8zKUjkT9OTrQUw2/kPy4OQaTZr/MksXQegh6NC1ecd2NeGFEmXhObgLsYnJy7YK
+         SghucjrzelumcS5Zs5972iSD/dKHbP/KAk0Tr5SJjvjg8eEFibweAN5lsOAH4QqPqCHh
+         G2rQDZDuz00w9dwueagVwsJrCZxif9h5D07yn6U5ZU6eldhUfYwRBwGZ2yq5q4jUzLLj
+         qc7kHKLleJ+gKDXQRKdUz/iNjoKmlpzE5NJ/b5Ws1DQGdqYZOrMsOrqHP0ibP+3i2NZ4
+         zBBQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6R5NUtqak31vtlxrj9suQ24IXuSz9MEjsTrpkYeXZYsR/4S7kfLuNIV1Z4YK4WIvzg+0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdxw69QnUsxKWUFuBJKM/AxrHB1hkCnFqE01KYypK4Y5/e9/Yi
+	UMDQfadrBb1C4RbeiqatafHnT4ranq0bHV932IyZ7/aGP44B6WWjY2BgQW4ogjPRdq0=
+X-Gm-Gg: AfdE7ckj6qrYB1M2MK6cQRbirXloBzrXOVvdxEauhuLH7NpsuWC7UVohnedN86yKKAK
+	XkHcw9bVgTwXUMpVfYfrq8MLkGO8V0/TW5E04pROgjV5FCOehCfkvqKmoSbtcUbsAy143e+loL4
+	0os18Vjoz/YyzPxEj+UEGfGG9Cs7C88HIms2bBxizbUIeM9dgH95REq8yeWfGlEWeBW5TANHpwP
+	1VYjMPkV+zy6fBash+Xw3FBp+VYCyQVmNe0FfBJD2ga/gXt8Yt6xx76ppYnaKA0Fk4A/pAsCiMd
+	IFQbgkg+70ImgLhAjNmSG6Dj4xOvTOcvknBPz4chO/v4kviRES/RCsGFov9O8jbfB/zxbuC0wlH
+	einjDxTzmaUK+LVjGS+wV+0+/AIpOvsnMkSbNhxq2kHKgZDYOENNUkoWuKv0tjeQEqPsHVSiih4
+	OWbI/BEJBzWKmQJp/ybL6UYfB4eKetnr7OLeHwnPduZkcEhNHubxs0INU1L4yZzNWrrtrg
+X-Received: by 2002:ad4:5c8a:0:b0:8cc:2a92:48e4 with SMTP id 6a1803df08f44-8fec217b8bfmr87997286d6.32.1783612165998;
+        Thu, 09 Jul 2026 08:49:25 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1d9f6sm20164456d6.23.2026.07.09.08.49.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 08:49:24 -0700 (PDT)
+Date: Thu, 9 Jul 2026 11:49:18 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
+	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 17/30] mm: prefer vma_[start,end]_pgoff() to
+ vma->vm_pgoff in kernel/
+Message-ID: <ak_C_o2ehS17Q5HV@gourry-fedora-PF4VCD3F>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
+ <akZCg73F-oGzDp1a@pedro-suse.lan>
+ <akZGqclqQ6gS12Vv@lucifer>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akZGqclqQ6gS12Vv@lucifer>
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
+On Thu, Jul 02, 2026 at 12:30:59PM +0100, Lorenzo Stoakes wrote:
+> 
+...
+> static inline unsigned long vma_offset(const struct vm_area_struct *vma,
+> 				       const unsigned long address)
+> {
+> 	/* Retains page offset and tags. */
+> 	return address - vma->vm_start;
+> }
+> 
+...
+> And I'm not sure it's really all that useful. Perhaps retaining vma_offset()
+> would be though.
+> 
 
-New issues:
-- [Critical] Out-of-bounds array access using guest-controlled `icpua`.
-- [Critical] Host WARN and VM crash via invalid SCA physical address (DoS).
-- [High] Lost validity intercept for side VCPUs causing silent execution di=
-vergence.
-- [High] SCA corruption and livelock on concurrent VSIE entry.
-- [High] Pinned SCB guest pages are leaked when the VM is destroyed.
+Silly question:
 
-Pre-existing issues:
-- [High] Guest 2 SCB memory corruption when prepare_cpuflags fails.
---
+   What's the purpose of retaining tags in a non-address value?
 
---- Patch [20]: [PATCH 20/21] KVM: s390: vsie: Create minimal scb shadows f=
-or not running g3 blocks ---
-commit 2f62e0dfe18aabd20de0781221d96146e1f85a9f
-Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
+That sounds like there's fragility just waiting to be broken.
 
-KVM: s390: vsie: Create minimal scb shadows for not running g3 blocks
+(I presume you are talking about things like ARM MTE and such, right?)
 
-Instead of creating a full shadow for vSIE control blocks, this creates a
-minimal shadow for SIGP purposes for currently not running guest-3 blocks.
-The full shadow is recreated when vSIE is entered with that SCB later.
+> This is one that I think makes more sense.
+> 
+> But in general, I'd rather hold off from yet more churn here.
+> 
+> I'm making these changes to establish a basis for virtual page offsets
+> introduced in [0], rather than just cleaning up in general.
+> 
 
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index 80050376eaab1..feac755d56cb5 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-[ ... ]
-> @@ -692,6 +691,39 @@ static void unshadow_scb(struct kvm_vcpu *vcpu, stru=
-ct vsie_page *vsie_page)
->  		scb_o->ihcpu =3D scb_s->ihcpu;
->  }
-> =20
-> +static int shadow_scb_minimal(struct kvm_vcpu *vcpu, struct vsie_page *v=
-sie_page)
-> +{
-[ ... ]
-> +	rc =3D prepare_cpuflags(vcpu, vsie_page);
-> +	if (rc)
-> +		return rc;
-> +
-> +	scb_s->icpua =3D scb_o->icpua;
+I agree with this.  If the refactors here suddenly have to think about
+corner cases on things like tags, that's better resolved separately.
 
-[Severity: Critical]
-Does this code allow an out-of-bounds array access if the guest provides an
-invalid icpua?
-
-If a malicious guest provides an SCB with an icpua value greater than 255,
-it appears kvm_s390_handle_vsie() passes this unvalidated scb_o->icpua to
-get_vsie_page_cpu_nr().
-
-Inside get_vsie_page_cpu_nr(), the cpu_nr is used to index directly into the
-fixed-size vsie_sca->pages array:
-
-vsie_page =3D vsie_sca->pages[cpu_nr];
-
-Could this result in an out-of-bounds read and a subsequent out-of-bounds
-write of a kernel heap pointer when vsie_page_new is evaluated?
-
-> +	scb_s->ecb2 |=3D scb_o->ecb2 & ECB2_ESCA;
-[ ... ]
-> @@ -711,17 +743,7 @@ static int shadow_scb(struct kvm_vcpu *vcpu, struct =
-vsie_page *vsie_page)
-[ ... ]
-> -	rc =3D prepare_cpuflags(vcpu, vsie_page);
-> +	rc =3D shadow_scb_minimal(vcpu, vsie_page);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the error path here
-corrupt guest memory when prepare_cpuflags() fails?
-
-If shadow_scb_minimal() returns an error, the code jumps to the out label
-and calls unshadow_scb().
-
-Because the failure occurs before shadow_scb() initializes scb_s with guest
-state from scb_o, scb_s might contain uninitialized zeros or stale data.
-
-Does unshadow_scb() then copy this uninitialized data back into the guest's
-scb_o, corrupting the guest's memory?
-
->  	if (rc)
->  		goto out;
-[ ... ]
-> @@ -2113,7 +2133,7 @@ static int _shadow_sca(struct kvm_vcpu *vcpu, struc=
-t vsie_page *vsie_page,
->  				rc =3D PTR_ERR(vsie_page_n);
->  			if (rc)
->  				goto err;
-> -			rc =3D shadow_scb(vcpu, vsie_page_n);
-> +			rc =3D shadow_scb_minimal(vcpu, vsie_page_n);
-
-[Severity: High]
-Does this error path lose the validity intercept for side VCPUs?
-
-If a side CPU's SCB is invalid, shadow_scb_minimal() sets a validity
-intercept in vsie_page_n->scb_s.icptcode and returns an error.
-
-When _shadow_sca() propagates this error and jumps to the err label, it
-doesn't seem to call unshadow_scb() on vsie_page_n. Later,
-kvm_s390_handle_vsie() jumps to out_unshadow, which only unshadows the main
-CPU's vsie_page.
-
-Does this cause the guest to silently skip the SIE instruction without
-notification, leading to execution divergence?
-
-[Severity: High]
-Can a concurrent VSIE entry cause SCA corruption and a livelock here?
-
-If VCPU 1 is running, its vsie_page has VSIE_PAGE_IN_USE set. If VCPU 2
-enters SIE and observes an MCN change, _shadow_sca() attempts to get
-VCPU 1's page via get_vsie_page_cpu_nr(), which fails and returns -EAGAIN.
-
-When _shadow_sca() jumps to the err label, it zeroes out
-vsie_sca->ssca.cpu[cpu_nr] for all CPUs:
-
-err:
-    for_each_set_bit_inv(cpu_nr, ...) {
-        vsie_sca->ssca.cpu[cpu_nr].ssda =3D 0;
-        vsie_sca->ssca.cpu[cpu_nr].ossea =3D 0;
-    }
-
-Does this corrupt the SCA actively used by VCPU 1's hardware, and cause
-VCPU 2 to continuously retry in a tight loop until VCPU 1 exits?
-
-[Severity: Critical]
-Does get_vsie_page_cpu_nr() trigger a host warning and VM crash if the guest
-provides an invalid SCA physical address?
-
-If a malicious guest provides an invalid physical address in its SCA for a
-side CPU, pin_scb() detects this, injects a PGM_ADDRESSING exception, and
-returns 1.
-
-It appears vsie_page_init() transforms this return code into -ENOMEM.
-
-When get_vsie_page_cpu_nr() sees this, it hits WARN_ON_ONCE(rc):
-
-get_vsie_page_cpu_nr() {
-    ...
-    if (WARN_ON_ONCE(rc)) {
-        put_vsie_page(vsie_page);
-        return ERR_PTR(rc);
-    }
-}
-
-Does this propagate the -ENOMEM up to the KVM_RUN ioctl, causing QEMU to
-terminate the VM instead of resuming the guest?
-
->  			vsie_sca_update(vsie_sca, cpu_nr, vsie_page_n, sca_o_entry_hpa);
->  			put_vsie_page(vsie_page_n);
->  			if (rc)
->  				goto err;
-
-[Severity: High]
-Do we leak pinned SCB guest pages when the VM is destroyed?
-
-The vsie_page_init() function pins the guest's SCB page, leaving the
-vsie_page in the global kvm->arch.vsie.pages cache with a pinned host
-physical page.
-
-When the VM is destroyed, kvm_s390_vsie_destroy() frees each vsie_page in
-the global cache via kvm_s390_vsie_destroy_page(). However, it appears to
-miss calling unpin_scb() for these main CPU pages.
-
-Could this permanently leak the pinned pages, potentially allowing an
-unprivileged user to trigger a host physical memory leak by repeatedly
-creating and destroying VMs?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-vsie-sigpi=
--v1-0-ea9f12066408@linux.ibm.com?part=3D20
+~Gregory
