@@ -1,268 +1,333 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF95402420;
-	Thu,  9 Jul 2026 09:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864243FBEA4;
+	Thu,  9 Jul 2026 09:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783588981; cv=none; b=HNCIj3Cy9ycwKOjUfQYidgNsKN4giXGPcmcTNq0479wFiivE6D3ADoB1si9H5p7HtI5VjPRNOkpksFhQIaT7VYYjeqTavt6z00kJtBdhr+0UXYD2F+dRc5Flcy8EvHlDzXv6KfQhVjeso+PGmMLdFOyPG53x2T7u9osn0kn6t0E=
+	t=1783589022; cv=none; b=DcRrOFF28wlH6+eOKxYZdovNP7XTrEVaTb5TS7oXGl3aYcSQ1HEYtrs8Xc08ZlNWAfmvDldque+yrF2/CRfNe9npvaBJfjDmXVwNuK4JqN6EQAI+L3c7PyQ8So+MXysr0+FelByDOb+liuPqtDexN/oSudrjaCk5ZqK6d4Wb8h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783588981; c=relaxed/simple;
-	bh=4BKrVlttkq1sYXzKjTk+n29ZBCRS3n+YZE8Vx2GbDUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Dp2SPIWL2TWr83IqbSMVQMDuuy8qg77FeclME1gu9mmHqRM8KNQn1aPrTvjaD9PkP47IYQ1fgOMy6r7gVNzb6zmXc3e5FnS1x/GXVu63ZOJ24HIEiCwKPglrOL10AUTE6GhMPJJNRV3XDnJj8rI0/OpUXNnggCqNu1DY6l3Z/HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=mmQ4Gsu2; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1783589022; c=relaxed/simple;
+	bh=xrNURiIij83h3N5U2RhGFSscVZX5R7u0ph7qVI97cVI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pqPjMbi7bxC+EyoDuJEdWpNXZsGSKi12ts/Vomx2l8W6WwL34pucgqyFp0of8TEjUt3312MNqJnRzRjKaT3bLZ47a/kamkyhfnTsnkTj8P7q1JEnVuC9RCwcBIAxhEXfbMBFcQ/cSQEy/+2De6o2oh9cT769Q06BETrOVyGcWfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OFEL9etB; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="mmQ4Gsu2"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=hW76NcHfCAc863bHQPVN6YnN2F7Apy3l1MFHbVdl0bg=;
-	b=mmQ4Gsu28+zFLngOBndMOzb5XtGkHOp39lyyUUZA5B0DUmwI4DGSRiZheUgdokQMbnTLG2KzY
-	39OWkWbu+vqjpohBHcjscv6dbPYncugU/zLUSbbjiGWt+JCRB8ZtlwGjEoNL/uaT1DSzw+jX58B
-	z4dwNKgHU5IIf0fnLC7nsrg=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gwq571LDkz1prjr;
-	Thu,  9 Jul 2026 17:13:31 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id CC9364057D;
-	Thu,  9 Jul 2026 17:22:47 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 9 Jul 2026 17:22:47 +0800
-Message-ID: <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
-Date: Thu, 9 Jul 2026 17:22:46 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OFEL9etB"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6696K0511900344;
+	Thu, 9 Jul 2026 09:23:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Y/gwPnB26hr5gbc9C
+	t90t57n9SJMGHuhyniotn6dcg8=; b=OFEL9etBK0UgRCASWNJ+RmSrWeGRS0pYq
+	yEx6psz4AdMEv8a/ELZ7yevRL2X17x4k1PQfJrezEQ563BnRPCUVsfR0lP3JkfcT
+	pPHyzeEg/Dp6ARuQoxbtSeEqtqGI6CXJpr1W9bNue7WKYqjzCHJ0t/5EGHoKqzMS
+	AZf5ysBJSwnNQw9YvukTDUHgpgrtHhlxwt5QDlnCV3YWAccSEhYQZCMDZTSC7Cys
+	raLQOjhxBnGgj3MKtu/Gbs1HLeh7uSJFoeOQpvDgf9HWNJnefSbzL78fVQAuElh2
+	8dEj/tmGM/WemkGyH4LvpSV4cM7Azq9b7WZTzCg0zX17sXn34RNPQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur0pmq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:23:25 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6699Jbai005114;
+	Thu, 9 Jul 2026 09:23:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgqcp8d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jul 2026 09:23:24 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6699NLui27459978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jul 2026 09:23:21 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE1572004B;
+	Thu,  9 Jul 2026 09:23:20 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D27B20043;
+	Thu,  9 Jul 2026 09:23:17 +0000 (GMT)
+Received: from vishalc-ibm.bl1-in.ibm.com (unknown [9.123.2.84])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jul 2026 09:23:17 +0000 (GMT)
+From: Vishal Chourasia <vishalc@linux.ibm.com>
+To: maddy@linux.ibm.com
+Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
+        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Vishal Chourasia <vishalc@linux.ibm.com>
+Subject: [PATCH v4 1/2] KVM: powerpc: Use generic xfer to guest work function
+Date: Thu,  9 Jul 2026 14:51:40 +0530
+Message-ID: <20260709092140.1753715-4-vishalc@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260709092140.1753715-2-vishalc@linux.ibm.com>
+References: <20260709092140.1753715-2-vishalc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 04/18] PCI/TPH: Refactor pcie_enable_tph & add
- explicit requester variant
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
- <20260702124224.57168-5-fengchengwen@huawei.com>
- <20260708173325.599bc892@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260708173325.599bc892@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfXxlcdhWGtgC2j
+ cy91f3TIocjdXJJlExyb9EwvoBOqhnTyy5Su5TsFWj49euq8xkcwYkg6aJiomT+xSL7nZ+N2Hcw
+ N0I0kbOF0nhl+4I2BSGUlyDkyIMdaGo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA5MDA4OSBTYWx0ZWRfX1qZFvGKZcGac
+ Sl//GvbOAAby70z5FMu8pUKIbiLtgRXgbXyBvkFtcQy7n/iCkUuEoDKTHB/8Jtz2ZxoVp0qQaQ6
+ MmasaKu5haXLW1vRVoeetXby2CybwmiOx5fYrHD7DKfPhVJZkNfZTci9LgyshIu4Wyjg+3f8w/r
+ 1sFz7Id7wDqWmGygMzWPtoAG5+XQ7Rl7hBD9CCtjitSul2CG+WpXToRzFVg77uP//Q/bPLgqpww
+ agAPQA+XY5hz+dqeCRVFve/LOYwhymAxlhLFfHvqJ/dr/AOfmOfgP0TO6cRxi9CjddBCrfBzJnX
+ eZGVh8z2hEGWp+xdrcctMWHTpp65ZVgx8Cc22mWeAqcU3dZRYgQzzzCdj3Y3NuslIl7EpzxxzQ8
+ sewQsOGHpHDYHg5u8ZjymtKn1VcDJz8HSPmJc9gJ/Aa4s1EoOTlmEhKI4UePZUsZHWAvbas4YU7
+ k62qUQbA52+hqowkkBw==
+X-Proofpoint-GUID: FuPyIvm2AqZWMfDKBJ1qaGwvVp5vYncD
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a4f688e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=BPghGADv5-0yqcIHFMsA:9
+X-Proofpoint-ORIG-GUID: UCGXwaMEvJ6VeHCpqqLoIJ3jgobix2HG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-09_01,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607090089
 
-Hi Alex,
+Since commit 2cd571245b43 ("sched/fair: Add related data structure for
+task based throttle") in v6.18, CFS bandwidth throttling no longer
+dequeues a task directly; it queues task_work via TWA_RESUME and sets
+TIF_NOTIFY_RESUME, relying on that work running before the task returns
+to guest/user mode. The powerpc KVM run loops only checked for reschedule
+and signals, never TIF_NOTIFY_RESUME, so the deferred throttle never ran
+while a vCPU stayed in the run loop: a CPU-bound guest that rarely exits
+to userspace ran far past its cpu.max quota and then appeared frozen for
+minutes while the accrued throttle debt was repaid.
 
-On 7/9/2026 7:33 AM, Alex Williamson wrote:
-> On Thu, 2 Jul 2026 20:42:10 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
-> 
->> Refactor pcie_enable_tph implementation: extract core logic into static
->> internal enable_tph() helper accepting explicit requester type.
->>
->> - Preserve original pcie_enable_tph() unchanged as auto wrapper; it
->>   auto-selects EXT/standard TPH requester per device capability, existing
->>   bnxt/mlx5 callers require zero modification.
->> - Add exported pcie_enable_tph_explicit() with bool 'extended' parameter
->>   for explicit STD/EXT selection, used by upcoming VFIO TPH support.
->>
->> Input validation for EXT_TPH availability is retained inside helper to
->> reject invalid explicit EXT request if hardware does not support extended
->> requester.
-> 
-> I'll leave final judgment on the APi to Bjorn, but I'd tend towards
-> defining tph_mode and tph_req_type as enums, store the max available
-> tph_req_type on the pci_dev.tph_max_type, and have the base function
-> take exactly those enums as args, get rid of the bool wrapper.  Then the
-> existing function just becomes:
-> 
-> int pcie_enable_tph(struct pci_dev *pdev, int mode)
-> {
-> 	return pcie_enable_tph_type(pdev, (enum tph_mode)mode,
-> 				    pdev->tph_max_type);
-> }
-> 
-> (Given the 2 existing callers, this could also be easily changed to
-> take enum tph_mode as the arg as well)
-> 
-> This might also disambiguate how this series conflates tph_cap to mean
-> TPH capability is not present or not available to instead retain
-> tph_cap as simply the offset of the capability and (tph_max_type ==
-> PCI_TPH_REQ_DISABLE) means it's not available.
-> 
-> Validation in the base function is also simplified:
-> 
-> 	if (tph_req_type == PCI_TPH_REQ_DISABLE ||
-> 	    tph_req_type > pdev->tph_max_type)
-> 		return -EINVAL;
-> 
-> Same comment for patch 5, expose the base function as "_type" with the
-> enum tph_req_type (the precedent is already there for enum
-> tph_mem_type).  The wrapper for the existing interface is the same as
-> you have, the base function adds the same test as above, modulo
-> s/tph_max_type/tph_req_type/.  Thanks,
+Use the generic infrastructure to check for and handle pending work
+before transitioning into guest mode, replacing the open-coded
+need_resched() and cond_resched() checks in the Book3S HV run loops and
+in the common kvmppc_prepare_to_enter() used by the Book3S PR and BookE
+run loops. The redundant signal_pending() recheck (and its sigpend label)
+in kvmhv_run_single_vcpu() is also dropped, as
+xfer_to_guest_mode_work_pending() is a superset of it.
 
-Thanks for your suggestion on typed enum refactoring for the TPH enable API.
-After checking headers, two groups of symbols already exist in pci_regs.h:
-- PCI_TPH_ST_NS_MODE, PCI_TPH_ST_IV_MODE, PCI_TPH_ST_DS_MODE
-- PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY, PCI_TPH_REQ_EXT_TPH
+This picks up handling for TIF_NOTIFY_RESUME, which was previously
+ignored, meaning task work will now be correctly handled on every
+guest re-entry.
 
-To avoid duplicate local enum definitions and align with PCI register headers,
-I will skip adding custom enums and use u8 for mode/req_type parameters.
-Comments will restrict valid inputs to the standard PCI macros.
+Selecting VIRT_XFER_TO_GUEST_WORK disables RCU's last-resort self-IPI
+fallback for vCPU tasks (see rcu_irq_work_resched()), which on
+nohz_full CPUs was what forced a reschedule for deferred rcuog wakeups
+queued right before guest entry. Take over that obligation the same way
+x86 and s390 do: call xfer_to_guest_mode_prepare() with IRQs disabled
+immediately before the final xfer_to_guest_mode_work_pending() check at
+each guest-entry gate (kvmhv_run_single_vcpu(), kvmppc_run_core() and
+kvmppc_prepare_to_enter()).
 
-I will adjust the TPH enable APIs for v20 with these changes:
-1. Change original pcie_enable_tph() from int mode to u8 mode;
-2. Add unified base entry pcie_enable_tph_type(pdev, u8 mode, u8 req_type);
-3. Rework explicit entry to pass u8 req_type, drop ambiguous bool extended;
-4. Add tph_max_type to struct pci_dev for negotiated max requester type;
-5. Unify validation check as you proposed:
-   if (req_type == PCI_TPH_REQ_DISABLE || req_type > pdev->tph_max_type)
-       return -EINVAL;
-6. Retain original pcie_enable_tph() as thin compat wrapper filling tph_max_type,
-   so existing bnxt/mlx5 callers need zero source code modification.
+In kvmppc_prepare_to_enter(), IRQs are now disabled with
+local_irq_disable() before hard_irq_disable(): on 32-bit,
+hard_irq_disable() is a raw MSR[EE] clear that bypasses the
+lockdep/irq-tracing state, and the strict xfer_to_guest_mode helpers
+assert that IRQs are seen as disabled. This also allows upgrading the
+racy __xfer_to_guest_mode_work_pending() check to the asserting
+variant, as this loop is the terminal gate for the PR and BookE paths.
 
-Capability tracking will also be disambiguated per your feedback:
-tph_cap stores only TPH config space offset, tph_max_type == DISABLE means
-TPH is unavailable after endpoint and root port topology negotiation.
+In kvmhv_run_single_vcpu(), the -EINTR exit and the pre-existing
+kvmhv_setup_mmu() failure exit now leave via the done label instead of
+returning directly, keeping the run_vcpu enter/exit tracepoints
+balanced and vcpu->arch.ret consistent with the returned value.
 
-Thanks
+In kvmppc_prepare_to_enter() the generic helper accounts the signal exit
+(vcpu->stat.signal_exits and KVM_EXIT_INTR) but does not set the exit
+type, so kvmppc_set_exit_type(SIGNAL_EXITS) is retained on the signal
+path to preserve the E500 CONFIG_KVM_EXIT_TIMING histogram; it is a no-op
+otherwise.
 
-> 
-> Alex
->  
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->> ---
->>  drivers/pci/tph.c       | 68 +++++++++++++++++++++++++++++------------
->>  include/linux/pci-tph.h |  4 +++
->>  2 files changed, 52 insertions(+), 20 deletions(-)
->>
->> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
->> index 4097787ea98a..c22eb7f4b0bd 100644
->> --- a/drivers/pci/tph.c
->> +++ b/drivers/pci/tph.c
->> @@ -363,23 +363,7 @@ void pcie_disable_tph(struct pci_dev *pdev)
->>  }
->>  EXPORT_SYMBOL(pcie_disable_tph);
->>  
->> -/**
->> - * pcie_enable_tph - Enable TPH support for device using a specific ST mode
->> - * @pdev: PCI device
->> - * @mode: ST mode to enable. Current supported modes include:
->> - *
->> - *   - PCI_TPH_ST_NS_MODE: NO ST Mode
->> - *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
->> - *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
->> - *
->> - * Check whether the mode is actually supported by the device before enabling
->> - * and return an error if not. Additionally determine what types of requests,
->> - * TPH or extended TPH, can be issued by the device based on its TPH requester
->> - * capability and the Root Port's completer capability.
->> - *
->> - * Return: 0 on success, otherwise negative value (-errno)
->> - */
->> -int pcie_enable_tph(struct pci_dev *pdev, int mode)
->> +static int enable_tph(struct pci_dev *pdev, int mode, u8 req_type)
->>  {
->>  	u32 reg;
->>  	u8 dev_modes;
->> @@ -400,10 +384,11 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>  	if (!((1 << mode) & dev_modes))
->>  		return -EINVAL;
->>  
->> -	pdev->tph_mode = mode;
->> +	if (req_type == PCI_TPH_REQ_EXT_TPH && !pdev->tph_ext_support)
->> +		return -EINVAL;
->>  
->> -	pdev->tph_req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
->> -						     PCI_TPH_REQ_TPH_ONLY;
->> +	pdev->tph_mode = mode;
->> +	pdev->tph_req_type = req_type;
->>  
->>  	/* Write them into TPH control register */
->>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
->> @@ -417,8 +402,51 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>  
->>  	return 0;
->>  }
->> +
->> +/**
->> + * pcie_enable_tph - Enable TPH support for device using a specific ST mode
->> + * @pdev: PCI device
->> + * @mode: ST mode to enable. Current supported modes include:
->> + *
->> + *   - PCI_TPH_ST_NS_MODE: NO ST Mode
->> + *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
->> + *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
->> + *
->> + * Check whether the mode is actually supported by the device before enabling
->> + * and return an error if not. Additionally determine what types of requests,
->> + * TPH or extended TPH, can be issued by the device based on its TPH requester
->> + * capability and the Root Port's completer capability.
->> + *
->> + * Return: 0 on success, otherwise negative value (-errno)
->> + */
->> +int pcie_enable_tph(struct pci_dev *pdev, int mode)
->> +{
->> +	u8 req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
->> +					      PCI_TPH_REQ_TPH_ONLY;
->> +	return enable_tph(pdev, mode, req_type);
->> +}
->>  EXPORT_SYMBOL(pcie_enable_tph);
->>  
->> +/**
->> + * pcie_enable_tph_explicit - Enable TPH with explicit requester selection
->> + * @pdev: PCI device to operate
->> + * @mode: ST table operating mode (NS/IV/DS)
->> + * @extended: true = EXT_TPH, false = standard TPH only
->> + *
->> + * Unlike auto-detecting pcie_enable_tph(), caller selects requester type
->> + * manually instead of hardware auto-selection. Rejects EXT_TPH request
->> + * if device lacks extended requester capability.
->> + *
->> + * Return: 0 on success, negative errno on failure.
->> + */
->> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended)
->> +{
->> +	u8 req_type = extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
->> +
->> +	return enable_tph(pdev, mode, req_type);
->> +}
->> +EXPORT_SYMBOL(pcie_enable_tph_explicit);
->> +
->>  void pci_restore_tph_state(struct pci_dev *pdev)
->>  {
->>  	struct pci_cap_saved_state *save_state;
->> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
->> index 6f02b020d7d7..ca0faa98afac 100644
->> --- a/include/linux/pci-tph.h
->> +++ b/include/linux/pci-tph.h
->> @@ -29,6 +29,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
->>  			unsigned int cpu, u16 *tag);
->>  void pcie_disable_tph(struct pci_dev *pdev);
->>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
->> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
->>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
->>  #else
->> @@ -42,6 +43,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
->>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
->>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>  { return -EINVAL; }
->> +static inline int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode,
->> +					   bool extended)
->> +{ return -EINVAL; }
->>  static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
->>  { return 0; }
->>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
-> 
+Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
+---
+ arch/powerpc/kvm/Kconfig     |  1 +
+ arch/powerpc/kvm/book3s_hv.c | 39 +++++++++++++++++++++++-------------
+ arch/powerpc/kvm/booke.c     |  1 +
+ arch/powerpc/kvm/powerpc.c   | 37 +++++++++++++++++++++++++---------
+ 4 files changed, 55 insertions(+), 23 deletions(-)
+
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index 9a0d1c1aca6c..b6bc2fc86dca 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -22,6 +22,7 @@ config KVM
+ 	select KVM_COMMON
+ 	select KVM_VFIO
+ 	select HAVE_KVM_IRQ_BYPASS
++	select VIRT_XFER_TO_GUEST_WORK
+ 
+ config KVM_BOOK3S_HANDLER
+ 	bool
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 61dbeea317f3..3cfe9a7be9c6 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3853,7 +3853,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+ 	 */
+ 	local_irq_disable();
+ 	hard_irq_disable();
+-	if (lazy_irq_pending() || need_resched() ||
++	xfer_to_guest_mode_prepare();
++	if (lazy_irq_pending() || xfer_to_guest_mode_work_pending() ||
+ 	    recheck_signals_and_mmu(&core_info)) {
+ 		local_irq_enable();
+ 		vc->vcore_state = VCORE_INACTIVE;
+@@ -4824,10 +4825,16 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
+ 		vc->runner = vcpu;
+ 		if (n_ceded == vc->n_runnable) {
+ 			kvmppc_vcore_blocked(vc);
+-		} else if (need_resched()) {
++		} else if (__xfer_to_guest_mode_work_pending()) {
+ 			kvmppc_vcore_preempt(vc);
+-			/* Let something else run */
+-			cond_resched_lock(&vc->lock);
++			/*
++			 * Let something else run. The raw helper is used as
++			 * signal exits are accounted by this path already;
++			 * it may schedule(), so drop the vcore lock.
++			 */
++			spin_unlock(&vc->lock);
++			xfer_to_guest_mode_handle_work();
++			spin_lock(&vc->lock);
+ 			if (vc->vcore_state == VCORE_PREEMPT)
+ 				kvmppc_vcore_end_preempt(vc);
+ 		} else {
+@@ -4895,12 +4902,16 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			run->exit_reason = KVM_EXIT_FAIL_ENTRY;
+ 			run->fail_entry.hardware_entry_failure_reason = 0;
+ 			vcpu->arch.ret = r;
+-			return r;
++			goto done;
+ 		}
+ 	}
+ 
+-	if (need_resched())
+-		cond_resched();
++	r = kvm_xfer_to_guest_mode_handle_work(vcpu);
++	if (r) {
++		/* -EINTR: signal pending, exit to userspace (KVM_EXIT_INTR) */
++		vcpu->arch.ret = r;
++		goto done;
++	}
+ 
+ 	kvmppc_update_vpas(vcpu);
+ 
+@@ -4914,9 +4925,13 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	vcpu->arch.state = KVMPPC_VCPU_RUNNABLE;
+ 
+-	if (signal_pending(current))
+-		goto sigpend;
+-	if (need_resched() || !kvm->arch.mmu_ready)
++	xfer_to_guest_mode_prepare();
++
++	/*
++	 * IRQs are disabled here, so on pending work bail to the outer loop,
++	 * which handles it via kvm_xfer_to_guest_mode_handle_work() above.
++	 */
++	if (xfer_to_guest_mode_work_pending() || !kvm->arch.mmu_ready)
+ 		goto out;
+ 
+ 	vcpu->cpu = pcpu;
+@@ -5068,10 +5083,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	return vcpu->arch.ret;
+ 
+- sigpend:
+-	vcpu->stat.signal_exits++;
+-	run->exit_reason = KVM_EXIT_INTR;
+-	vcpu->arch.ret = -EINTR;
+  out:
+ 	vcpu->cpu = -1;
+ 	vcpu->arch.thread_cpu = -1;
+diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+index f3ddb24ece74..5fba199dfdd6 100644
+--- a/arch/powerpc/kvm/booke.c
++++ b/arch/powerpc/kvm/booke.c
+@@ -722,6 +722,7 @@ int kvmppc_core_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 	if (vcpu->arch.shared->msr & MSR_WE) {
+ 		local_irq_enable();
+ 		kvm_vcpu_halt(vcpu);
++		local_irq_disable();
+ 		hard_irq_disable();
+ 
+ 		kvmppc_set_exit_type(vcpu, EMULATED_MTMSRWE_EXITS);
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 00302399fc37..be5e48ae0c6c 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -81,23 +81,41 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 	int r;
+ 
+ 	WARN_ON(irqs_disabled());
++	/*
++	 * local_irq_disable() first: on 32-bit, hard_irq_disable() alone is a
++	 * raw MSR[EE] clear that bypasses the lockdep/irq-tracing state, and
++	 * the xfer_to_guest_mode helpers assert IRQs are seen as disabled.
++	 */
++	local_irq_disable();
+ 	hard_irq_disable();
+ 
+ 	while (true) {
+-		if (need_resched()) {
++		xfer_to_guest_mode_prepare();
++
++		if (xfer_to_guest_mode_work_pending()) {
++			/*
++			 * The helper must run with IRQs enabled and may
++			 * schedule(). On a pending signal it returns -EINTR
++			 * with run->exit_reason and vcpu->stat.signal_exits
++			 * already set, so just return to userspace.
++			 */
+ 			local_irq_enable();
+-			cond_resched();
++			r = kvm_xfer_to_guest_mode_handle_work(vcpu);
++			local_irq_disable();
+ 			hard_irq_disable();
++			if (r) {
++				/*
++				 * The generic helper does not set the exit
++				 * type; record it for the E500
++				 * CONFIG_KVM_EXIT_TIMING histogram (a no-op
++				 * otherwise).
++				 */
++				kvmppc_set_exit_type(vcpu, SIGNAL_EXITS);
++				break;
++			}
+ 			continue;
+ 		}
+ 
+-		if (signal_pending(current)) {
+-			kvmppc_account_exit(vcpu, SIGNAL_EXITS);
+-			vcpu->run->exit_reason = KVM_EXIT_INTR;
+-			r = -EINTR;
+-			break;
+-		}
+-
+ 		vcpu->mode = IN_GUEST_MODE;
+ 
+ 		/*
+@@ -116,6 +134,7 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+ 			local_irq_enable();
+ 			trace_kvm_check_requests(vcpu);
+ 			r = kvmppc_core_check_requests(vcpu);
++			local_irq_disable();
+ 			hard_irq_disable();
+ 			if (r > 0)
+ 				continue;
+-- 
+2.54.0
 
