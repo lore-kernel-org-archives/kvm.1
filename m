@@ -1,118 +1,188 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF7F3CBE96
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F383F167C
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 08:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783586649; cv=none; b=UX7fqR2dnUYhY1US3sKtMdl6/sDAiX+ZtrJvusIrQUPUmQ/pbSwDXXbSApDZX9HRr9FdbtBz1I4KvZbdnWnykYjyksLxK8qt+gJE/o2n/OVCcM+wRtd1R5gCxxWFSrZ4A91EJqZOnUdA04N+gNiIHHROH5iPkFYuL/EFQRodCK8=
+	t=1783586701; cv=none; b=A8AmXhs5AjrEjbrd0KT9bj4y9mlGzFlWo/8lRXyxPGwC1cwe1542H9Z+OhnxUIxyO4XEAmJLGBS3gHqR5KVl3wU/h5XYFQ9YSm7G5z98A7FCct0TZopjp+qcrO7j23dxobNt9bte8uwl1ZBNUMEa8tsQfXST+dGWYWwF8m/tyog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783586649; c=relaxed/simple;
-	bh=om8G+H0n9OTgm4VtbslCXdPYTvR8ZyNo0qhWuoPVSLA=;
+	s=arc-20240116; t=1783586701; c=relaxed/simple;
+	bh=jG9V113rT7dB4uy6TMeLoVK9fHltAJcuikEkyew4LXY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WSNGxvnoppob6XpdjhLY8vxiv7bjzeyNxQ49D2bsriSmjWUtqFuQuct8+1cup77BnHRZpY9SlV7JHwRRq56VdhDZL2X4LZ1iHVEsxiRg4HULy1576AVclumg9/+uaP2p4bkuLMoO3zAZbn21BN6Oj/QvfCgWj7f0SE48p+kpd3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyo5oQWS; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=G6HsJk5CEJTutg0+eOFs2cS/2MehxjzWlH7V3ALnaNzs1Fm2crEUnBZum0B64m3T/Sa8PFpwxpTXHHpSHm91szWn9yNiuVAuCk/AzqYoBSa6jr6wevDetIRgERKmOxmbqJS7zZycltEJmSmPPvksayAQ1Mqu8BphcF5jF9GCzAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQFFUXMg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyo5oQWS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD00A1F000E9;
-	Thu,  9 Jul 2026 08:44:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQFFUXMg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F23B1F000E9;
+	Thu,  9 Jul 2026 08:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783586648;
-	bh=mRejYyuTDOMFs7rXYfPN4UVDiDio7Bcfv/PNj//F9O0=;
+	s=k20260515; t=1783586699;
+	bh=KqEvPl3Hk2y41PVbtB95ORib24+z0C20hDV5IzlO1xQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kyo5oQWS0/wKo1c808u7FrvfQ5OvNSN1Sk5+78j/Wm01yDvPakzyNsLf9iWIff7wK
-	 BSCEz7Qvi+4ri5kPwLZ0crDRCdZvb3Vv2JsITfq9ll3dxmMxfc0rjkVdHH2MCkgb7R
-	 elVhwuLyN0l8YOinaO+h510bnr6CK/U7LX0ibI3WXfPZOZi+gcOhm7K4Hee41XI6BJ
-	 qOZ7MtYGlbeKPSUcz5wFuqk2AxPfTHtTzS0u8HLSM0PlvIPDZRSLBWR0ifoAFh66b+
-	 +v8k5ShGMvKpNlY91nv5QiFoi1wdNolkfxqXGIPZ1UQHxIU5foECB7V5Qhckcg3Abz
-	 T/ub+rwWG3gGw==
+	b=RQFFUXMgSZuPOunvu+DXNBGVPdhk8+jR5iVz7dvEUZ9STkveQDDJxdotRWE+x6Wwk
+	 PSDQmlI4noT6lE5euu611mQh/JOqRLU/L7rRG4flxhGWO7NCwdh8qWzX6fWqIJMFOy
+	 7+Yr4f1V1f0wAMC6i5NGbGqpNA5ejZLhPXdnnWqLl2B1mWTabQ9SOEtthQDI+dpUKa
+	 WTVESwzpkh+5V3J9PeBMx1/g9lSF1ODOd/qkxUWUYvABWYHDwHHsiRuBBev7ZSLU2W
+	 R2BY3PnHtSmZsiuvtf1Zn/cNgyEE+JMBX/Au5hXWNa5lyG1JbXuskKg2UjQ3NSC+ca
+	 tO6VHTgkZQrjA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 3/4] LoongArch: KVM: Return directly when IPI address
- is not aligned
+Subject: Re: [PATCH v3 4/5] KVM: SVM: Compute DEBUGCTL reserved bits
+ dynamically
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bibo Mao" <maobibo@loongson.cn>
+To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260709082109.1361767-4-maobibo@loongson.cn>
-References: <20260709082109.1361767-1-maobibo@loongson.cn>
- <20260709082109.1361767-4-maobibo@loongson.cn>
+In-Reply-To: <20260709082953.69434-5-shivansh.dhiman@amd.com>
+References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
+ <20260709082953.69434-5-shivansh.dhiman@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 08:44:07 +0000
-Message-Id: <20260709084407.DD00A1F000E9@smtp.kernel.org>
+Date: Thu, 09 Jul 2026 08:44:59 +0000
+Message-Id: <20260709084459.6F23B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-
-New issues:
-- [High] The early return path for unaligned accesses in `loongarch_ipi_rea=
-dl` fails to populate the `val` output parameter, leaking stale data to the=
- guest.
-
-Pre-existing issues:
-- [Critical] A malicious guest can trigger a host kernel panic by performin=
-g an unaligned MMIO access to the MIPS KVM IPI region.
+- [High] The dynamic reserved bit check for DEBUGCTLMSR_BUS_LOCK_DETECT is =
+dead code because KVM explicitly clears the feature from SVM's supported CP=
+UID capabilities.
+- [High] Hardware silently ignores the guest's Bus Lock Detect configuratio=
+n on VMRUN unless the guest also enables LBRs, due to AMD SVM requirements =
+for loading DEBUGCTLMSR.
+- [High] Bus Lock Detect support is fundamentally broken because DEBUGCTLMS=
+R state management is strictly gated by unrelated LBR Virtualization parame=
+ters and host capabilities.
 --
 
---- Patch [3]: [PATCH v4 3/4] LoongArch: KVM: Return directly when IPI addr=
-ess is not aligned ---
-commit 8225fc6b95e2b4712a3ffe27c14012171a25b47b
-Author: Bibo Mao <maobibo@loongson.cn>
+--- Patch [4]: [PATCH v3 4/5] KVM: SVM: Compute DEBUGCTL reserved bits dyna=
+mically ---
+commit 8b16c8234c21a39b440d6a7688ffcc624702cdf8
+Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-LoongArch: KVM: Return directly when IPI address is not aligned
+KVM: SVM: Compute DEBUGCTL reserved bits dynamically
 
-This patch modifies KVM on LoongArch to return directly from IPI read and
-write operations when the address is unaligned, rather than just printing a
-warning.
+This patch replaces the static DEBUGCTL_RESERVED_BITS macro with a
+per-vCPU helper that derives reserved bits from the guest's CPUID. This
+allows DEBUGCTLMSR_BUS_LOCK_DETECT when the guest supports it.
 
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-> index bccdfd963e5b5..8ec40e09c5abb 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-> @@ -181,9 +181,12 @@ static int loongarch_ipi_readl(struct kvm_vcpu *vcpu=
-, gpa_t addr, int len, void
->  	uint32_t offset;
->  	uint64_t res =3D 0;
-> =20
-> -	offset =3D (uint32_t)(addr & 0x1ff);
-> -	WARN_ON_ONCE(offset & (len - 1));
-> +	if (addr & (len - 1)) {
-> +		kvm_pr_unimpl("%s: ipi not aligned addr %llx len %d\n", __func__, addr=
-, len);
-> +		return 0;
-> +	}
-
-[Severity: High]
-Does this early return path in loongarch_ipi_readl() need to populate the v=
-al
-output parameter before returning success (0)?
-
-If a guest performs an unaligned read, kvm_io_bus_read() will see a success=
-ful
-return, but val remains unmodified. Could this lead to stale data from
-previous VM exits being copied into the guest's registers?
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
 
 [ ... ]
 
-[Severity: Critical]
-This is a pre-existing issue and was not introduced by this patch, but while
-reviewing unaligned IPI access handling, a guest-triggerable BUG_ON() was
-noticed in the MIPS loongson_vipi_read() and loongson_vipi_write() paths:
+> @@ -1231,7 +1231,7 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to=
+_save,
+> =20
+>  	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
+>  		svm_copy_lbrs(to_save, from_save);
+> -		to_save->dbgctl &=3D ~DEBUGCTL_RESERVED_BITS;
+> +		to_save->dbgctl &=3D ~svm_get_debugctl_reserved_bits(vcpu);
 
-arch/mips/kvm/loongson_ipi.c:loongson_vipi_read() {
-    ...
-    BUG_ON(offset & (len - 1));
-    ...
+[Severity: High]
+Does Bus Lock Detect incorrectly depend on LBR Virtualization being support=
+ed
+and enabled?
+
+Here, the guest's dbgctl is only copied if the host supports X86_FEATURE_LB=
+RV.
+
+Similarly, in svm_set_msr(), writes to MSR_IA32_DEBUGCTLMSR are uncondition=
+ally
+rejected if the lbrv module parameter is disabled:
+
+svm_set_msr() {
+        ...
+        case MSR_IA32_DEBUGCTLMSR:
+                if (!lbrv) {
+                        kvm_pr_unimpl_wrmsr(vcpu, ecx, data);
+                        break;
+                }
+        ...
 }
 
-Could a malicious guest trigger a host kernel panic by performing an unalig=
-ned
-MMIO read or write targeting the loongson_ipi region?
+And earlier in nested_vmcb02_prepare_save(), L2's dbgctl is replaced with
+L1's dbgctl if L1 does not explicitly enable LBRV for L2:
+
+nested_vmcb02_prepare_save() {
+        ...
+        if (nested_vmcb12_has_lbrv(vcpu)) {
+                ...
+        } else {
+                svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
+        }
+        ...
+}
+
+Will this break Bus Lock Detect for guests when LBR features are unavailable
+or disabled?
+
+>  	}
+>  }
+
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+
+[ ... ]
+
+> @@ -783,7 +783,15 @@ BUILD_SVM_MSR_BITMAP_HELPERS(bool, test, test)
+>  BUILD_SVM_MSR_BITMAP_HELPERS(void, clear, __clear)
+>  BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
+> =20
+> -#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
+> +static inline u64 svm_get_debugctl_reserved_bits(struct kvm_vcpu *vcpu)
+> +{
+> +	u64 debugctl =3D DEBUGCTLMSR_LBR;
+> +
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_BUS_LOCK_DETECT))
+> +		debugctl |=3D DEBUGCTLMSR_BUS_LOCK_DETECT;
+
+[Severity: High]
+Is it possible for a guest to actually have this feature under SVM?
+
+In svm_set_cpu_caps(), KVM unconditionally clears the feature:
+
+svm_set_cpu_caps() {
+        ...
+        kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+        ...
+}
+
+Because of this, guest_cpu_cap_has() will always evaluate to false,
+rendering this new logic dead code. Guest writes to enable the feature
+will inject a #GP.
+
+[Severity: High]
+If the dead-code issue above is fixed and KVM accepts the write to
+DEBUGCTLMSR_BUS_LOCK_DETECT, will the hardware silently ignore the guest's
+configuration on VMRUN unless the guest also enables LBRs?
+
+AMD SVM only loads DEBUGCTLMSR from the VMCB save area during VMRUN if LBR
+Virtualization is enabled. In svm_update_lbrv(), KVM disables V_LBR if the
+LBR bit is not set:
+
+svm_update_lbrv() {
+        ...
+        if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
+                enable_lbrv =3D true;
+        ...
+        else if (!enable_lbrv && current_enable_lbrv)
+                __svm_disable_lbrv(vcpu);
+        ...
+}
+
+Could this create a state desynchronization where KVM accepts the feature
+but the CPU ignores it?
+
+> +
+> +	return ~debugctl;
+> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082109.1361=
-767-1-maobibo@loongson.cn?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709082953.6943=
+4-1-shivansh.dhiman@amd.com?part=3D4
