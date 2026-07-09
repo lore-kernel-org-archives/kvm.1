@@ -1,147 +1,162 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012049.outbound.protection.outlook.com [52.101.48.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4702F3A7858
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 05:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783575599; cv=fail; b=jQZ+HtqboL/QbIW4TV8HSGBquI6RY9s5CSn7kQUObCZD1Q9vYVSI3KdGOFSPvU613CsEV9TkhV4rsKpfHAXkgjk0E8hGnDu1640IMFBcys3bqV7JYfEX8bmN+i9ZrYoqOl8qrcopM1XV6z6j2dNm3UQROA+h3K5Uo9sSUhf6ffw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783575599; c=relaxed/simple;
-	bh=Rb8w8JhUsmlpCIUdCqV8Kuj27CjSb9Gzr5W/edHSiEQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AGk/3o5dVTTVFl1bBvVcJx7Nm4/Im56BdXvVnUNjkpQbZyud4M/zdg0U8rKtECmIv067TaRBR3532bW4fx3V5eWtjwmAoz7W0xZPrm2OFbf863PgZo1JZClMaWMplK7pNnLLzbttBg1mLJigRiMM20DKY6zk+8tHBoZ8rA1Cn/4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=afFIHXNR; arc=fail smtp.client-ip=52.101.48.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E483ACA57
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 05:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783575937; cv=none; b=OBVW3OGM2jS+6s/0N1b2lflux5eB1FQxvg03wJQyRLM0uATPfzXb0lPjjBbVNavvXkyTC9Lz4zy8ymmNZSzk04Scf42G7N2zT1Iq8SrtD5VlR+xj1w4P9ziuUnskxzhTWX5XdEiDPYLMjZxvE2v7sfVfLqsZvB2bVG9KGw8FO6U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783575937; c=relaxed/simple;
+	bh=mC3oLMXWAbMD/8ggRenIHpAwU32uiCLRqrKbrmFUo/M=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RtUsbfUfHPSHpkWN06Ij+tsToHP5KEMVkPM12/nSfWvApfZF8uK00jIVntry/XPgPYIG+RL+XoHJQQ76Ttp5R/h2ts+wJmrCLznefDG0gaclKpSaGqRHEDedS0FkcUEVDnGjJWZjfgQz97RmoDj1guX25OPpv0t/INUPmrXsDJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+/b1Msi; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="afFIHXNR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OAl+1c8EPPT4rrpnvriPtlJo1vMzZKveOQRDWnkYEz6kZJViFRuAehA6DurPTWb1I64Ebby/dIvDV/xzFmSVlnMKPrXfU+lNvjNzkgjEF37e3Yw+k96nEvnJo2dyTyFWWzmeLWsJTJPqSqUdArUnQRlFSPluD9IOx3RfS10kARpmlE31HqQ7TdqjcT/wLJ7TfryiWPD//xPYjzrJQTqjwVVvY6R+RIWcleJ+ZGX+wzz0YLQ+z2+fQwe+rojn/vKkIkvowYFgSUrGYlm9b5j4dvTiYGzHm29A4L+8NtGGnNOUfqZDF1KMnQRfMVCYZyXzmicZdl8L5OWk8d1MvB5mGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4r437EJproUofuzLQiPJNsr8mVGggmPqud5mvYcygOA=;
- b=QWDmP7mNf54sFkRNOBA2M4NuVFBvBVzBwPvLC7DUYnf7YDqyUAjkCmg3cHPIbCa+mhOH4xdZFPJfswQJgvqmVuESytqyP0BXhWKda5+T5p2t4Bx8NKw6mqkpcovGlP748h25B53HFCy7RfJydno2EI02pCWDeq0S4ygkY6r//1e8T1gzuGVY5svtgMynxyA1F3UtTa531co2GqMojZjIH1zBl+8IEvGqO6q2BmL9FmTsmEQsn6g7VjkHpd5pfGpd0/cPLkOMaehqcwZWgSFQ4jQe3s3gWsrayiG9WQwD0fk68JNVx+b8SNaBdo7Ccap68rmVZc/pwNrF6RNd7t6zIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4r437EJproUofuzLQiPJNsr8mVGggmPqud5mvYcygOA=;
- b=afFIHXNRUck0CYEEaoWv/wOJTTZiRwQ1CPoTIPgZJltF1gobCk2wISShILtDfu/o0BtIrvyCdX77s9sdNmiNcqMfJAcID3oKa0chir7DhMH7B7VyEOKKJ33M0V0cH9uet48nwaOWgQ4R1UrTkVvVsjr1YGzYzK+iBc5n1ECwkdw=
-Received: from SA0PR11CA0146.namprd11.prod.outlook.com (2603:10b6:806:131::31)
- by PH7PR12MB6443.namprd12.prod.outlook.com (2603:10b6:510:1f9::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 9 Jul
- 2026 05:39:54 +0000
-Received: from SN1PEPF000397AE.namprd05.prod.outlook.com
- (2603:10b6:806:131:cafe::27) by SA0PR11CA0146.outlook.office365.com
- (2603:10b6:806:131::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Thu, 9
- Jul 2026 05:39:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000397AE.mail.protection.outlook.com (10.167.248.52) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 05:39:54 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
- 2026 00:39:54 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 8 Jul
- 2026 22:39:53 -0700
-Received: from volcano9b0c-hostos.amd.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41
- via Frontend Transport; Thu, 9 Jul 2026 00:39:52 -0500
-From: suryasaimadhu <SaiMadhu.KoyyalaHariVenkata@amd.com>
-To: <kvm@vger.kernel.org>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, sai madhu
-	<suryasaimadhu369@gmail.com>
-Subject: [PATCH] KVM: x86: Preserve KVM_EXIT_DEBUG on emulated HLT with single-step
-Date: Thu, 9 Jul 2026 05:39:49 +0000
-Message-ID: <20260709053949.211165-1-SaiMadhu.KoyyalaHariVenkata@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b+/b1Msi"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cca24023edso7703375ad.1
+        for <kvm@vger.kernel.org>; Wed, 08 Jul 2026 22:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783575934; x=1784180734; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
+        b=b+/b1MsiXghrnUV3jqlmzuR/k6mUQp0JeeNf+pMXneovULfK1MmbMw9Pav8g4QyA3s
+         SUk72b7KiLJjspcYlpJGiAFIUTNv8uSLFrpo38MNo7NFDioiBLVqBqTR3K1nUs55dQO6
+         x/aJ4qN3auxmyhY0KtTQjjLyDw5F9L4tfdcTUvQfNgFCIOJGQO1m8XZ86GHJBefMPa/1
+         rkRqpDf4CvA41z0NQA/+Mcrg1YpsYpehU7+WiA/GKmoltRuHVT9XQUs2wUoy+t0FX0Qi
+         QOs8yf0Bmr/+5ukmOGlwc5V3X8j6/VKVnHn1Ule6cQtX26m9KwiBwV+IiPQo7hOe/1cx
+         BIMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783575934; x=1784180734;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yNOQxL4FXDmHyD0Kjq23REAu9LFdCtb3Pm7cOHC959s=;
+        b=sh2yNQ7B0kDiDPCrAzYvvbLSzAUGDQgty/hc1v+rORRU89Qxf3s8hnqCBQFxWphYLJ
+         n5bYABW2IIsXz9iSISXTdTQk/RHc/NaESnkBUvXP9ItxxlASaYjPDJb6ODhHS6gjQScN
+         7xcqSO3K7lBH+fXGd5PXvK1Tzjjs2OHTMg5FAoFYB+JXuJ0LTEnliswC4ZP9TLf4nBAN
+         OuTDnuWCAwNFs9WjO6Y9CZSIxZrZKM/DlMfq96/29OQUHmR2+wJha4Spfoy97Ftu88dr
+         CWYFWkyTbKGRmhjeGmdoDi3D/owzSq7bbsoyOWKi+ymEYOohjkJ4f0Xd21/hmJe4SaIh
+         J3Ew==
+X-Forwarded-Encrypted: i=1; AHgh+RpKnJAnCjauUot2C+3DK8XPHW8tOsvMWYVFAIVmJyTzpwRrBTdHPYrk5EBi1qV8YF/N1Xs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQmYRi3KHChbPx8qiy5/Y2ugQsIkQR6Kx5kZtTa7FQAhgkJyrZ
+	eF9tr8beYTppCFZ/9SYat1pY36FU1Go4DL8hYEUS/6Hw1cXgidKX0T4K
+X-Gm-Gg: AfdE7clELtUylxfiYgJ9DJvtJC8zOj4J5N50LzYi6DYiditnpj5nQSeuDQChGuT2Acb
+	Wgwub14wE3dysu1jIV1KuKH1HznF12W4JFWGgn5PfsWR+tMjPXvtSC9ErzRSI30RGMTDuCxFy2i
+	/whIcoBOBaSmbVPsph44M9D1lS3YioZcs/TcLVjdsUwqrFRuTIJP3TJQFLa5RKMvYFgFXmc/q3S
+	MyyDRjQMw8anGkffs69ZjNA9fRsIbIhpxXHbmGecD5cpM5rrNr1RVSF2+nHkKAsPskVDlnzuM0u
+	keyqQ05+K2PRV+WXx+oxHpxQ9ENyywY8GryHsx53AAEI5SdxciUn85RRxkRNgh5tsLth58XKjfX
+	+xmZPoeGCdFmo/QWjVnTt6VnO85Z07mlqUdusWS9kjDm7IswewUJqA/ifLGEU891tc03gXu+hpe
+	Onu7LfNcLXFyfvxHzu
+X-Received: by 2002:a17:903:3903:b0:2cb:14b3:4cfe with SMTP id d9443c01a7336-2ccea582ae2mr60334915ad.45.1783575933576;
+        Wed, 08 Jul 2026 22:45:33 -0700 (PDT)
+Received: from [10.42.12.77] ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc99cc5aasm38156905ad.0.2026.07.08.22.45.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 22:45:32 -0700 (PDT)
+Message-ID: <c12700ab-7f0c-452d-b8de-8e23ca48f1bd@gmail.com>
+Date: Thu, 9 Jul 2026 13:45:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397AE:EE_|PH7PR12MB6443:EE_
-X-MS-Office365-Filtering-Correlation-Id: 57da5b83-3a80-42b5-43be-08dedd7c8131
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|23010399003|376014|36860700016|1800799024|18002099003|11063799006|56012099006|6133799003|3023799007|43062017;
-X-Microsoft-Antispam-Message-Info:
-	Kad7G87vEZCGle9tzP7yueVwYJtfkgTab1JObRGC6oC5nVpn7pxl3cvfn5IpHMz00k70xzrreiIOesSqdG+dr0UIqtfwn+IbnbFkos1FpjJ/rC9TLddA5NMrjae17X9SOlXSUJKb5NWrX/XJcIPsJ4o4epTESLmqgsb8bIjDuA20t2B/RMpOm0aV2qmR7zhztwn42EmywR5hS8iGayE4tG+y0EYwMvoeReJqO5O65G1NZgiCkhjnddb116/YhCs3AmUGb0J6etaLGIHrA7smMXn5iRdUKlZwk+Z7ojvCBSr6yHoQ2V7p+mijmyUOSOA3UdO43J6Zof7hIF3JFePZR+Kc1xL3lzCECE3Bggc2ToIrxZ0o6R1TfVMc4nKgcwmVfbpKcDqFNGytG6QUsU80BmFVKcFQ3xF0jr2m4xiZxEd4UtVxcwN1WNmHZwGBiOoKHy+EHeY4hSw8hFrDkURj6WU25EO3tW1e54lIuMWB2rg77buljn4fL89i7veKyulCl5RjI0X2JN5B4YM96/YN/avnOK3v+ONAAoUVRlqgDAAFU16MkUvrQLYxgMtwtfPy8gwN9J0VQ3m6EY9uW4V6oVZv7k98CMoK1joMKBmoObjxJ64E1/tCIzGOdkTcYNeyf4LoNg7SOBPnBv6U/FAMZ58fuzftWMLUgUiKi/mlkwNKmNVq2XVeMUK6bl0d2NMqF7TMH3OdUNuHpVX8ii8b4X8w7t6IC2Oac/qZG4W/fbsS1dcbLhJ0r8ogKbYxtIs8
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(376014)(36860700016)(1800799024)(18002099003)(11063799006)(56012099006)(6133799003)(3023799007)(43062017);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	T6pby9p9uKSh8lbnliSa1rD60Bp+m/Qu+BXaoPGk40z2o3DGRj9oLAPbE3q942dF72sdMCCJjiZtXpOnq9U+9qHX5lFnkJBm3/B0cEmRO2C7lCt/V+YUEVZ3vTdWBuJf7JJvafOIM6eFuT8MytpvGcqY6ldYkjeLSTCvCGcUJdlFFzXwoKkqk56LVdDVkESlsSrmorglPccG0bAFYZ1mcDHrzfnR9YDpXEpN2/w4l7AattS4ka3t6IicV39nQNRF5gamIvZ7iCvAnKLzWZtACj+OzBDyzQ+CK/bOye0dF7z5oFFaozS+BZIewKEsKgFuWR8ptr38gliwT5upOcZmP0T9B5jfAsp6K5NpVBZhP6roYwAw7P9+7DmDfftcYhWvmqTJfDFQfZgDauIu7prXyNz95SZ5jVOf0jUGy71N3nTWVUVvSfEMe6b8s8nipg/t
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 05:39:54.5696
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 57da5b83-3a80-42b5-43be-08dedd7c8131
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397AE.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6443
+User-Agent: Mozilla Thunderbird
+From: leixiang <leenollei@gmail.com>
+Subject: Re: [PATCH] KVM: Nullify irqfd->producer when add_producer() fails
+To: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@ozlabs.org>,
+ Suresh Warrier <warrier@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ leixiang <leixiang@kylinos.cn>
+References: <1782119051448443.14545.seg@mailgw.kylinos.cn>
+ <ak59frQUBl9Gs3Qn@google.com>
+Content-Language: en-US
+In-Reply-To: <ak59frQUBl9Gs3Qn@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: sai madhu <suryasaimadhu369@gmail.com>
 
-kvm_emulate_halt() calls kvm_skip_emulated_instruction() before
-kvm_emulate_halt_noskip(). When single-step debugging is active,
-the skip path can trigger a debug exception and set exit_reason to
-KVM_EXIT_DEBUG, but halt emulation then overwrites it with
-KVM_EXIT_HLT on the userspace LAPIC path. Return immediately when
-a debug exit is already pending so userspace debuggers receive the
-correct event.
 
-Signed-off-by: sai madhu <suryasaimadhu369@gmail.com>
----
- arch/x86/kvm/x86.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+On 7/9/26 00:40, Sean Christopherson wrote:
+> On Mon, Jun 22, 2026, leixiang wrote:
+>> The x86 and powerpc add_producer() callbacks set irqfd->producer before the
+>> fallible setup and never clear it on error.  The bypass manager doesn't
+>> register a producer whose add_producer() failed -- producer->eventfd is
+>> left NULL, so the later unregister early-returns and del_producer() is
+>> never called -- so nothing ever drops the pointer.
+>>
+>> For VFIO PCI the producer is embedded in struct vfio_pci_irq_ctx and freed
+>> when the vector is disabled, after which a routing update dereferences the
+>> dangling pointer via kvm_arch_update_irqfd_routing().
+>>
+>> Nullify irqfd->producer on the error paths.
+>>
+>> Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+>> Fixes: c57875f5f9be ("KVM: PPC: Book3S HV: Enable IRQ bypass")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: leixiang <leixiang@kylinos.cn>
+> 
+> Please post the PPC patch as a separate patch.  x86 and PPC are separate maintainer
+> domains and the backports will likely need to go to different LTS kernels.
+> 
+> I'll grab/extract the x86 change from here (and I'll massage the changelog as
+> appropriate).
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0626e835e9eb..2fd6ad49050c 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8658,10 +8658,16 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_halt_noskip);
- int kvm_emulate_halt(struct kvm_vcpu *vcpu)
- {
- 	int ret = kvm_skip_emulated_instruction(vcpu);
-+
- 	/*
--	 * TODO: we might be squashing a GUESTDBG_SINGLESTEP-triggered
--	 * KVM_EXIT_DEBUG here.
-+	 * If kvm_skip_emulated_instruction() triggered a singlestep
-+	 * debug exception, return to userspace immediately so the
-+	 * debugger can process the event. Do not let halt emulation
-+	 * overwrite the KVM_EXIT_DEBUG exit reason.
- 	 */
-+	if (vcpu->run->exit_reason == KVM_EXIT_DEBUG)
-+		return ret;
-+
- 	return kvm_emulate_halt_noskip(vcpu) && ret;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_halt);
--- 
-2.43.0
+Thank you for the review and guidance.  I will submit a separate PPC patch.
 
+>> ---
+>>  arch/powerpc/kvm/book3s_hv.c | 4 +++-
+>>  arch/x86/kvm/irq.c           | 4 +++-
+>>  2 files changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 61dbeea317f3..14919b76fb32 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -6114,9 +6114,11 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>>  	irqfd->producer = prod;
+>>
+>>  	ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>> -	if (ret)
+>> +	if (ret) {
+>>  		pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>>  			prod->irq, irqfd->gsi, ret);
+>> +		irqfd->producer = NULL;
+>> +	}
+> 
+> Unlike x86, AFAICT there's no need to set irqfd->producer before configuring
+> the passthru/bypass stuff.  So I think that fix could be this?
+> 
+> diff --git arch/powerpc/kvm/book3s_hv.c arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..ff7b25629125 100644
+> --- arch/powerpc/kvm/book3s_hv.c
+> +++ arch/powerpc/kvm/book3s_hv.c
+> @@ -6111,12 +6111,12 @@ static int kvmppc_irq_bypass_add_producer_hv(struct irq_bypass_consumer *cons,
+>         struct kvm_kernel_irqfd *irqfd =
+>                 container_of(cons, struct kvm_kernel_irqfd, consumer);
+>  
+> -       irqfd->producer = prod;
+> -
+>         ret = kvmppc_set_passthru_irq(irqfd->kvm, prod->irq, irqfd->gsi);
+>         if (ret)
+>                 pr_info("kvmppc_set_passthru_irq (irq %d, gsi %d) fails: %d\n",
+>                         prod->irq, irqfd->gsi, ret);
+> +       else
+> +               irqfd->producer = prod;
+>  
+>         return ret;
+>  }
+Agreed. Your approach is cleaner.
