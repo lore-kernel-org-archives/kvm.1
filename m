@@ -1,182 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435B71A3172;
-	Thu,  9 Jul 2026 15:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6BE43933E
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 15:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783611168; cv=none; b=O4dD2UDPdeeiBGcfiXa/9QTaomtqY2rXUkgH8zRh58zd0r/3az8fh0m7kCy5OMs8SkGCxie0gvU4eSaxZsW/3JMYmCpr7sfTmzZM4I6twMolEkIrNgh6RxZYLgfHh9xEn1r7epQXbm4y8UQjSCEXaUIMm03oExlkY0ym/iXpXZc=
+	t=1783611180; cv=none; b=lM5NN5oHpDKUTPiuhc2sqyG03ao24WL3geFQDugD+dphpDCWWmBaYed2GgW3TeUSXJ0w89mYEuyX6iQ5SM1s1ClyhK1cNnPcfOkQemwFjB2ZA/XGBH4HeVWIgBL/yvVTu30LaAxfDGFNi67oUDoJrz1ZQMHS9MP6wtRDBCqOFR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783611168; c=relaxed/simple;
-	bh=rwSIc0Aw0nIRImN74d+g5NhbNIl0uwcH/lNLZ3CVRvA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RYzd/CnWZPz2AEMzsm6/Md0ed1WUwREFgFS/JrEbSemQLA7k8ZRgG8isS27ov+ELp4cFOhwooWw3mjgvN64GwiuiNzXXFsqA6VMEhRZmqxLoGiwJQkd1REB6Xf3L7auouopI660HNOI0VvT9Vbl+7UQijgaCOs+4a+Fz/hY4anM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fYMxmc3U; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783611180; c=relaxed/simple;
+	bh=FOuIs2FnelcStzjfytUlQj/XIh2mk+bBiRzy7TnhJj0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KD2i7266E91Ybj0kF34XzoTCR2MVwVkEYo3x8a4Kr2nhCezX4USNI27InnrRj9KVk0+ge4na9iw3ggM25AiOaMeDv0kBQg3MDN7+P3WjmnsGVKvy0R+wasfXeEUFy1zAju3oMQzKKHWZnE4H1hp/HcUngyyofDydr6HUfVzjFME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X/I5hT5U; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fYMxmc3U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901391F000E9;
-	Thu,  9 Jul 2026 15:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783611166;
-	bh=cZhJBEq2mkXxmx9ex+z8p/FOM5ls4WmAB4iNumSJpdk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fYMxmc3UT4YQ6BK1z1O75Mt7Ths+agw8hicbkcobXLoY3TjwlaSnRmBw6TpMeeOPP
-	 /lx/xdi7fgpbgHUIrHwgHRvkGIoFMNk0Cegxvw+KcBf37mwX/vc5Crqls3w58BDEI1
-	 KCVDLZkA6zveyguuU5NXvsVsKqCN5lJ5/NGXoUs25nAd1LFjIwu1r8E8ho389QR8PU
-	 CF1eAXAiuJmMwes9X9jclBBzAgAEeDMXLcCPiEh9GWJvuvHQaKjRIBSvYdQB94GWT6
-	 h0jynlswy5pEE8qqzpjth+V/mm4PTvfRsOhVWKBWnuGfDmyw4/91HemWAnQbSYlg6A
-	 gJ2W8KWf8yBZw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 06/21] KVM: s390: vsie: Add vsie_sigpif detection
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260709-vsie-sigpi-v1-6-ea9f12066408@linux.ibm.com>
-References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
- <20260709-vsie-sigpi-v1-6-ea9f12066408@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 09 Jul 2026 15:32:46 +0000
-Message-Id: <20260709153246.901391F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X/I5hT5U"
+X-Gm-Message-State: AOJu0YxfGbLShbYaO+Q8f06kV+KSpZOgKHYdTHaZCkhCYLkvaY1nwJ3Y
+	EVvQwiFBZ2wPMiDulesMrG1I/wlQ+GMvcK5y3DydsCdeXxWBOA5CRbGDG/xMe0eF3SBMQiD7Wrp
+	E2AvLpkWx75D4eo2nXiOKwak5odgRKfTuoZt5eO2y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783611176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QpeEm7ql8fQsW5ehwhWZnRCBt4W3+00jKdxsrJyt878=;
+	b=X/I5hT5U0NVnEXCDAUXeQYXCI+ZKLfeJkb6kLll0iN1QEf5uFieADVwfkUxr+1nvaSjvc8
+	EZt3aDGsN6ocPq9GWuumgJEz+iikjT9WpF6JtbJ1oH93Xg/D3P9kF3FmkPBbfrrR4KmSmw
+	MGR/qCMZzEyOio3cjqE8gtP3kuPfHrM=
+X-Received: by 2002:ac8:7d13:0:b0:517:38aa:c2b3 with SMTP id
+ d75a77b69052e-51c9a7db081mr9671891cf.14.1783611173225; Thu, 09 Jul 2026
+ 08:32:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260708182510.2181857-1-fuad.tabba@linux.dev>
+ <20260708182510.2181857-4-fuad.tabba@linux.dev> <ak-5P-bZkbO4UCce@raptor>
+In-Reply-To: <ak-5P-bZkbO4UCce@raptor>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 9 Jul 2026 16:32:15 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTwYFt1W6JA7G7VnOdXp8tKMxSGpwRtoeqV4sYf+FwZMEQ@mail.gmail.com>
+X-Gm-Features: AUfX_myyBpO-l-rxJGxLvxqJ6kl7SA4aMKfpn8Mmr6hqEebu9jdCxhiF2GymYAc
+Message-ID: <CA+EHjTwYFt1W6JA7G7VnOdXp8tKMxSGpwRtoeqV4sYf+FwZMEQ@mail.gmail.com>
+Subject: Re: [PATCH kvmtool v2 3/4] Add support for registering
+ guest_memfd-backed memory regions
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Andre Przywara <andre.przywara@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Truncation of host physical address in read_scao leads to use-=
-after-free and memory leak.
-- [High] Lost validity intercept during VSIE SCAO validation failure.
---
+On Thu, 9 Jul 2026 at 16:07, Alexandru Elisei <alexandru.elisei@arm.com> wrote:
+>
+> Hi Fuad,
+>
+> On Wed, Jul 08, 2026 at 07:25:09PM +0100, Fuad Tabba wrote:
+> > Extend kvm__register_mem() with a guest_memfd file descriptor and
+> > offset. A bank with a guest_memfd is registered with
+> > KVM_SET_USER_MEMORY_REGION2 and KVM_MEM_GUEST_MEMFD, binding the
+> > memslot to the file. This prepares for backing guest RAM with
+> > guest_memfd on arm64.
+> >
+> > Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> > ---
+> >  hw/cfi_flash.c    |  2 +-
+> >  include/kvm/kvm.h | 15 +++++++++++++--
+> >  kvm.c             | 36 ++++++++++++++++++++++++++----------
+> >  3 files changed, 40 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/hw/cfi_flash.c b/hw/cfi_flash.c
+> > index b68d9e0..4413955 100644
+> > --- a/hw/cfi_flash.c
+> > +++ b/hw/cfi_flash.c
+> > @@ -451,7 +451,7 @@ static int map_flash_memory(struct kvm *kvm, struct cfi_flash_device *sfdev)
+> >       int ret;
+> >
+> >       ret = kvm__register_mem(kvm, sfdev->base_addr, sfdev->size,
+> > -                             sfdev->flash_memory,
+> > +                             sfdev->flash_memory, -1, 0,
+> >                               KVM_MEM_TYPE_RAM | KVM_MEM_TYPE_READONLY);
+> >       if (!ret)
+> >               sfdev->is_mapped = true;
+> > diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
+> > index eb23e2f..5e7b5eb 100644
+> > --- a/include/kvm/kvm.h
+> > +++ b/include/kvm/kvm.h
+> > @@ -128,11 +128,22 @@ bool kvm__emulate_io(struct kvm_cpu *vcpu, u16 port, void *data, int direction,
+> >  bool kvm__emulate_mmio(struct kvm_cpu *vcpu, u64 phys_addr, u8 *data, u32 len, u8 is_write);
+> >  int kvm__destroy_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr);
+> >  int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size, void *userspace_addr,
+> > +                   int guest_memfd, u64 guest_memfd_offset,
+> >                     enum kvm_mem_type type);
+> >  static inline int kvm__register_ram(struct kvm *kvm, u64 guest_phys, u64 size,
+> >                                   void *userspace_addr)
+> >  {
+> >       return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> > +                              -1, 0, KVM_MEM_TYPE_RAM);
+> > +}
+> > +
+> > +static inline int kvm__register_ram_guest_memfd(struct kvm *kvm, u64 guest_phys,
+> > +                                             u64 size, void *userspace_addr,
+> > +                                             int guest_memfd,
+> > +                                             u64 guest_memfd_offset)
+> > +{
+> > +     return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> > +                              guest_memfd, guest_memfd_offset,
+> >                                KVM_MEM_TYPE_RAM);
+>
+> One small nitpick here, KVM_CREATE_GUEST_MEMFD returns -1 on error. If
+> callers forget to check the result of KVM_CREATE_GUEST_MEMFD and pass the
+> result to kvm__register_ram_guest_memfd(), the error won't be detected and
+> kvmtool will end up creating a non-guest_memfd backed memslot. Definitely
+> unexpected. It might be useful to someone, someday, to add a check here for
+> guest_memfd >= 0, but it's not terribly important.
 
---- Patch [6]: [PATCH 06/21] KVM: s390: vsie: Add vsie_sigpif detection ---
-commit 5159ce1359458442d26eeb7031f94445e04e2d6a
-Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Good point. The only caller today (mmap_guest_memfd) already dies on
+error, but a defensive check in kvm__register_mem makes the contract
+explicit. I'll add one in v3.
 
-KVM: s390: vsie: Add vsie_sigpif detection
+> Regardless:
+>
+> Reviewed-by: Alexandru Elisei <alexandru.elisei@arm.com>
 
-Add sensing of the VSIE Interpretation Extension Facility as vsie_sigpif
-from SCLP. This facility is introduced with IBM Z gen17.
+Thanks!
+/fuad
 
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index eea24562e7db2..97581b748a94d 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-> @@ -72,6 +72,27 @@ struct vsie_page {
-> =20
->  static_assert(sizeof(struct vsie_page) =3D=3D PAGE_SIZE);
-> =20
-> +static inline bool sie_uses_esca(struct kvm_s390_sie_block *scb)
-> +{
-> +	return (scb->ecb2 & ECB2_ESCA);
-> +}
-> +
-> +static unsigned long read_scao(struct kvm *kvm, struct kvm_s390_sie_bloc=
-k *scb)
-> +{
-> +	unsigned long vsie_sca =3D READ_ONCE(scb->scaol) & ~0xfUL;
-> +
-> +	if (test_kvm_cpu_feat(kvm, KVM_S390_VM_CPU_FEAT_64BSCAO))
-> +		vsie_sca |=3D (u64)READ_ONCE(scb->scaoh) << 32;
-
-[Severity: Critical]
-Does this code truncate the host physical address if the guest lacks the
-KVM_S390_VM_CPU_FEAT_64BSCAO feature?
-
-When read_scao() is called from unpin_blocks() on the shadow SCB (scb_s):
-
-arch/s390/kvm/vsie.c:unpin_blocks() {
-    ...
-    hpa =3D read_scao(vcpu->kvm, scb_s);
-    if (hpa) {
-        unpin_guest_page(vcpu->kvm, vsie_page->sca_gpa, hpa);
-    ...
-}
-
-The shadow SCB contains a 64-bit host physical address. If the L1 guest is
-configured without the 64BSCAO feature, read_scao() will silently drop the
-upper 32 bits of the HPA.
-
-Could this truncated address then be passed to unpin_guest_page(),
-causing it to unpin the wrong host physical page (use-after-free) while
-leaking the actually pinned page?
-
-> +
-> +	return vsie_sca;
-> +}
-> +
-> +static void write_scao(struct kvm_s390_sie_block *scb, unsigned long hpa)
-> +{
-> +	scb->scaoh =3D (u32)((u64)hpa >> 32);
-> +	scb->scaol =3D (u32)(u64)hpa;
-> +}
-> +
->  /* trigger a validity icpt for the given scb */
->  static int set_validity_icpt(struct kvm_s390_sie_block *scb,
->  			     __u16 reason_code)
-> @@ -82,6 +103,25 @@ static int set_validity_icpt(struct kvm_s390_sie_bloc=
-k *scb,
->  	return 1;
->  }
-> =20
-> +/* The sca header must not cross pages etc. */
-> +static int validate_scao(struct kvm_vcpu *vcpu, struct kvm_s390_sie_bloc=
-k *scb, gpa_t gpa)
-> +{
-> +	int offset;
-> +
-> +	if (gpa < 2 * PAGE_SIZE)
-> +		return set_validity_icpt(scb, 0x0038U);
-
-[Severity: High]
-Can this validity intercept be lost during VSIE SCAO validation failure?
-
-Looking at pin_blocks(), it calls validate_scao() and passes the guest
-SCB (scb_o):
-
-arch/s390/kvm/vsie.c:pin_blocks() {
-    ...
-    rc =3D validate_scao(vcpu, scb_o, gpa);
-    if (rc)
-        goto unpin;
-    ...
-}
-
-When validate_scao() fails, it injects the intercept code into scb_o.
-However, on the failure path, unshadow_scb() is called:
-
-arch/s390/kvm/vsie.c:unshadow_scb() {
-    ...
-    scb_o->icptcode =3D scb_s->icptcode;
-    scb_o->icptstatus =3D scb_s->icptstatus;
-    scb_o->ipa =3D scb_s->ipa;
-    scb_o->ipb =3D scb_s->ipb;
-    ...
-}
-
-Would unshadow_scb() unconditionally overwrite scb_o's intercept fields
-with those from the shadow SCB (scb_s), erasing the validity intercept
-that was just written to scb_o?
-
-Could this result in the L1 guest receiving an architecturally invalid
-exit without an intercept code?
-
-> +	if ((gpa & ~0x1fffUL) =3D=3D kvm_s390_get_prefix(vcpu))
-> +		return set_validity_icpt(scb, 0x0011U);
-> +
-> +	if (sie_uses_esca(scb))
-> +		offset =3D offsetof(struct esca_block, cpu[0]) - 1;
-> +	else
-> +		offset =3D offsetof(struct bsca_block, cpu[0]) - 1;
-> +	if ((gpa & PAGE_MASK) !=3D ((gpa + offset) & PAGE_MASK))
-> +		return set_validity_icpt(scb, 0x003bU);
-> +	return 0;
-> +}
-> +
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-vsie-sigpi=
--v1-0-ea9f12066408@linux.ibm.com?part=3D6
+>
+> Thanks,
+> Alex
+>
+> >  }
+> >
+> > @@ -140,13 +151,13 @@ static inline int kvm__register_dev_mem(struct kvm *kvm, u64 guest_phys,
+> >                                       u64 size, void *userspace_addr)
+> >  {
+> >       return kvm__register_mem(kvm, guest_phys, size, userspace_addr,
+> > -                              KVM_MEM_TYPE_DEVICE);
+> > +                              -1, 0, KVM_MEM_TYPE_DEVICE);
+> >  }
+> >
+> >  static inline int kvm__reserve_mem(struct kvm *kvm, u64 guest_phys, u64 size)
+> >  {
+> >       return kvm__register_mem(kvm, guest_phys, size, NULL,
+> > -                              KVM_MEM_TYPE_RESERVED);
+> > +                              -1, 0, KVM_MEM_TYPE_RESERVED);
+> >  }
+> >
+> >  int __must_check kvm__register_iotrap(struct kvm *kvm, u64 phys_addr, u64 len,
+> > diff --git a/kvm.c b/kvm.c
+> > index 95ccfcb..947721b 100644
+> > --- a/kvm.c
+> > +++ b/kvm.c
+> > @@ -237,9 +237,9 @@ out:
+> >  }
+> >
+> >  int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> > -                   void *userspace_addr, enum kvm_mem_type type)
+> > +                   void *userspace_addr, int guest_memfd,
+> > +                   u64 guest_memfd_offset, enum kvm_mem_type type)
+> >  {
+> > -     struct kvm_userspace_memory_region mem;
+> >       struct kvm_mem_bank *merged = NULL;
+> >       struct kvm_mem_bank *bank;
+> >       struct list_head *prev_entry;
+> > @@ -320,15 +320,31 @@ int kvm__register_mem(struct kvm *kvm, u64 guest_phys, u64 size,
+> >               flags |= KVM_MEM_READONLY;
+> >
+> >       if (type != KVM_MEM_TYPE_RESERVED) {
+> > -             mem = (struct kvm_userspace_memory_region) {
+> > -                     .slot                   = slot,
+> > -                     .flags                  = flags,
+> > -                     .guest_phys_addr        = guest_phys,
+> > -                     .memory_size            = size,
+> > -                     .userspace_addr         = (unsigned long)userspace_addr,
+> > -             };
+> > +             if (guest_memfd >= 0) {
+> > +                     struct kvm_userspace_memory_region2 mem2 = {
+> > +                             .slot                   = slot,
+> > +                             .flags                  = flags | KVM_MEM_GUEST_MEMFD,
+> > +                             .guest_phys_addr        = guest_phys,
+> > +                             .memory_size            = size,
+> > +                             .userspace_addr         = (unsigned long)userspace_addr,
+> > +                             .guest_memfd            = guest_memfd,
+> > +                             .guest_memfd_offset     = guest_memfd_offset,
+> > +                     };
+> >
+> > -             ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION, &mem);
+> > +                     ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION2,
+> > +                                 &mem2);
+> > +             } else {
+> > +                     struct kvm_userspace_memory_region mem = {
+> > +                             .slot                   = slot,
+> > +                             .flags                  = flags,
+> > +                             .guest_phys_addr        = guest_phys,
+> > +                             .memory_size            = size,
+> > +                             .userspace_addr         = (unsigned long)userspace_addr,
+> > +                     };
+> > +
+> > +                     ret = ioctl(kvm->vm_fd, KVM_SET_USER_MEMORY_REGION,
+> > +                                 &mem);
+> > +             }
+> >               if (ret < 0) {
+> >                       ret = -errno;
+> >                       goto out;
+> > --
+> > 2.39.5
+> >
