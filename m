@@ -1,305 +1,132 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366BF42E00F
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 15:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2992D37F01D;
+	Thu,  9 Jul 2026 15:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783611276; cv=none; b=ncKAzqzIdeC5XswG1GxP4EpjaBR4CWF0K/KuT4u12R59rEf9r2YKlb9pqLOkQxxGkkFJ3gTpilqVUyIOTHbMUHxVmZVuqwHnzp/2zOXTE5rFJ2sXjZZs/26FDXaDrgQ4E4cTbTSHkROt+yylelQyzkJvRhrHgaULJuWx+9Clb7w=
+	t=1783611331; cv=none; b=SVMl7nxEbIJi5FV69LwRlhUNVyPHayP87BwocR58Jme8krAeijt/du5FhR3bWA3eHhPkFwksECkGy+805EZiG/BXj8HRQ+58+7a8Dl1TdxvxwjkYUXzzvZRvEWFwpsOo4D2xFMjmmcxH86hH5ROQCvoXWB3oWt0X2pBen5IPFkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783611276; c=relaxed/simple;
-	bh=Po0ucGHQ9vjoHBhJxLrE90YM6Y2qru2SrJjFniEe8J4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lxXGMLXPy15isPYnZhPn4xvDFdfD5Yzt106HVxH7QuhPxHn9HRAN+hift1kLALejzu6V+m+iz3a0Egq5hARAtKjLfeuR2+ifn9OaNxDxyEYP0V77HAVnJ69r3YbgaHvInmH6sx6sReaWSqy81rjHOERbPaOIskXc8YmKzYtHGSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sp82CNQX; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1783611331; c=relaxed/simple;
+	bh=GL5+aXAG7lup7EQC6JAruqG9hFDr9rua6c9e0elwy8A=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Ww0J5hBs4xIdkGF0LDlSRiUppyGqPNzZqucLJzS0ZnJPc2Zl3MvFSs0ozDYuVxVDn+9W2LGOZrT2SMWCK3U1ND2YXrYfyvU4+LPOB9mAVz3GDACQZ2LMG+WtQ8w7D5Vnm0JuGbrAZGTKVyietUHoCD7ZW2iFI2CRHykZj/fUYFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErWfHbkL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sp82CNQX"
-X-Gm-Message-State: AOJu0Yw/OwNXzQ593rmnPHwwCRkja/09Q25FNqjSG4bwtgKluGvoNnKM
-	ebZK/y0rkMNKGw9mWQ9qGYDWErRRpAm9omb4WFjJvBEWJhTb1PZJUaiFc9Mrl3dP2N82499LbrW
-	3h0G3V++DilAugNV9qL6+ALfrn14yaCfbVcYE5dmz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783611271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XlT1yEbMLsOWcLBX/jcPsMdZHLl1lGie+MylW86S6Qs=;
-	b=Sp82CNQXVXsY5cIa4iMQXP6IJqk1B80g1kQ52t1SDwxYHLqKB/IEZYnWSN/h91V2Nh6DKA
-	DprT8xUhqzfKmB0jQO6ZNeSAy0+Z0q2dZS4aNFdEnquEZ68l6gRD09Vi5lTP7N7O0B2OrZ
-	z7m6pLu7u0akiaUKQzhtfwLQ8ofT7BI=
-X-Received: by 2002:a05:622a:90a:b0:50d:edb1:6bd1 with SMTP id
- d75a77b69052e-51c9c56d70dmr7964761cf.13.1783611268918; Thu, 09 Jul 2026
- 08:34:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErWfHbkL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F0A1F00A3A;
+	Thu,  9 Jul 2026 15:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783611329;
+	bh=md6ctp74PT6Huy+2hltZzOIsNFLP7FULS9+GvlfWrGY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ErWfHbkL5PdTa/yhD7f0rSJgJQoH+JSdyNTL36LXwk3pGVyWvoMGYJkzkHBlWxeav
+	 inQg6oP150aFf/L99GNkIH67jaQ2Rk86JSuuPRwylX0btA8irtErmO3Mtlir7gqBm8
+	 N0rx694REdY7R5TnWBzbfmtEvQfwGnwJM/PBExod9Xe9qoZCJObsf+Immak1fDDVy7
+	 mf3RSzcOMwKmrG79CEJb5rYuBVljK+n3C5Mep7coyf9XmIcM5aMhh2jZ+SUDNkFF9I
+	 0XIca9csKMZGxKb+VLlRGKL2ox42mxNzBbyF6L8yOqxa0frGr9yiRscPMofp6UebFn
+	 TW4lqQuH6Icew==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 18/21] KVM: s390: vsie: Add VSIE max shadow
+ configuration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260709-vsie-sigpi-v1-18-ea9f12066408@linux.ibm.com>
+References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+ <20260709-vsie-sigpi-v1-18-ea9f12066408@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 09 Jul 2026 15:35:28 +0000
+Message-Id: <20260709153528.A3F0A1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260708182510.2181857-1-fuad.tabba@linux.dev>
- <20260708182510.2181857-5-fuad.tabba@linux.dev> <ak-5dlgHGe0Ru0OU@raptor>
-In-Reply-To: <ak-5dlgHGe0Ru0OU@raptor>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 9 Jul 2026 16:33:52 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTxTLWR4yQAZaMwhWxtsYSaCPoKokxAHK19Gq=wrTKrUzQ@mail.gmail.com>
-X-Gm-Features: AUfX_mz6WX5uQPXZbDrAQuKVv3g_RBKnrnZyjhDqiarIXCrn0WHhZvQECs9xJPs
-Message-ID: <CA+EHjTxTLWR4yQAZaMwhWxtsYSaCPoKokxAHK19Gq=wrTKrUzQ@mail.gmail.com>
-Subject: Re: [PATCH kvmtool v2 4/4] arm64: Add --guest-memfd option to back
- guest RAM with guest_memfd
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Andre Przywara <andre.przywara@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
 
-On Thu, 9 Jul 2026 at 16:08, Alexandru Elisei <alexandru.elisei@arm.com> wrote:
->
-> Hi Fuad,
->
-> On Wed, Jul 08, 2026 at 07:25:10PM +0100, Fuad Tabba wrote:
-> > Back guest RAM with a guest_memfd created with GUEST_MEMFD_FLAG_MMAP
-> > and GUEST_MEMFD_FLAG_INIT_SHARED, mmapped MAP_SHARED to provide the
-> > userspace mapping. The guest_memfd file descriptor is closed at
-> > teardown, after the mapping is removed.
-> >
-> > Protected VMs need in-place shared/private conversion of guest_memfd,
-> > which the kernel does not support yet, so reject the combination of
-> > --protected and --guest-memfd.
-> >
-> > Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> > ---
-> >  arm64/include/kvm/kvm-config-arch.h |  5 +++-
-> >  arm64/kvm.c                         | 43 +++++++++++++++++++++++------
-> >  include/kvm/kvm.h                   |  1 +
-> >  include/kvm/util.h                  |  1 +
-> >  kvm.c                               |  1 +
-> >  util/util.c                         | 37 +++++++++++++++++++++++++
-> >  6 files changed, 79 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
-> > index c2702d5..d8a8ef7 100644
-> > --- a/arm64/include/kvm/kvm-config-arch.h
-> > +++ b/arm64/include/kvm/kvm-config-arch.h
-> > @@ -20,6 +20,7 @@ struct kvm_config_arch {
-> >       bool            no_pvtime;
-> >       bool            psci;
-> >       bool            protected;
-> > +     bool            guest_memfd;
-> >  };
-> >
-> >  int irqchip_parser(const struct option *opt, const char *arg, int unset);
-> > @@ -73,6 +74,8 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
-> >       OPT_BOOLEAN('\0', "e2h0", &(cfg)->e2h0,                                 \
-> >                   "Create guest without VHE support"),                        \
-> >       OPT_BOOLEAN('\0', "protected", &(cfg)->protected,                       \
-> > -                     "Create a protected VM when pKVM is enabled"),
-> > +                     "Create a protected VM when pKVM is enabled"),          \
-> > +     OPT_BOOLEAN('\0', "guest-memfd", &(cfg)->guest_memfd,                   \
-> > +                     "Use guest_memfd to back guest RAM"),
-> >
-> >  #endif /* ARM_COMMON__KVM_CONFIG_ARCH_H */
-> > diff --git a/arm64/kvm.c b/arm64/kvm.c
-> > index fb0b98d..bf4e34e 100644
-> > --- a/arm64/kvm.c
-> > +++ b/arm64/kvm.c
-> > @@ -49,9 +49,14 @@ void kvm__init_ram(struct kvm *kvm)
-> >       kvm->arch.ram_alloc_size = kvm->ram_size;
-> >       if (!kvm->cfg.hugetlbfs_path)
-> >               kvm->arch.ram_alloc_size += SZ_2M;
-> > -     kvm->arch.ram_alloc_start = mmap_anon_or_hugetlbfs(kvm,
-> > -                                             kvm->cfg.hugetlbfs_path,
-> > -                                             kvm->arch.ram_alloc_size);
-> > +
-> > +     if (kvm->cfg.arch.guest_memfd)
-> > +             kvm->arch.ram_alloc_start =
-> > +                     mmap_guest_memfd(kvm, kvm->arch.ram_alloc_size);
-> > +     else
-> > +             kvm->arch.ram_alloc_start =
-> > +                     mmap_anon_or_hugetlbfs(kvm, kvm->cfg.hugetlbfs_path,
-> > +                                            kvm->arch.ram_alloc_size);
->
-> Would you mind not splitting the line after the equal sign? It makes
-> parsing the code really hard (at least for me).
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Using the `MIN()` and `MAX()` macros on concurrently mutable modul=
+e parameters causes a TOCTOU vulnerability leading to out-of-bounds array w=
+rites.
+- [Medium] Setting `vsie_shadow_sca_max` to 0 fails to disable SCA shadowin=
+g, breaking the documented administrative feature.
+--
 
-Done.
+--- Patch [18]: [PATCH 18/21] KVM: s390: vsie: Add VSIE max shadow configur=
+ation ---
+commit 20f6b4acf8a001837c97129c0036793d506ee32c
+Author: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
+KVM: s390: vsie: Add VSIE max shadow configuration
 
->
-> >
-> >       if (kvm->arch.ram_alloc_start == MAP_FAILED)
-> >               die("Failed to map %lld bytes for guest memory (%d)",
-> > @@ -60,17 +65,25 @@ void kvm__init_ram(struct kvm *kvm)
-> >       kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
-> >                                       SZ_2M);
-> >
-> > -     madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-> > -             MADV_MERGEABLE);
-> > +     if (!kvm->cfg.arch.guest_memfd) {
-> > +             madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-> > +                     MADV_MERGEABLE);
-> >
-> > -     madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-> > -             MADV_HUGEPAGE);
-> > +             madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-> > +                     MADV_HUGEPAGE);
-> > +     }
-> >
-> >       phys_start      = kvm->cfg.ram_addr;
-> >       phys_size       = kvm->ram_size;
-> >       host_mem        = kvm->ram_start;
-> >
-> > -     err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
-> > +     if (kvm->cfg.arch.guest_memfd)
-> > +             err = kvm__register_ram_guest_memfd(kvm, phys_start,
-> > +                                                 phys_size, host_mem,
-> > +                                                 kvm->ram_guest_memfd,
-> > +                                                 host_mem - kvm->arch.ram_alloc_start);
-> > +     else
-> > +             err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
-> >       if (err)
-> >               die("Failed to register %lld bytes of memory at physical "
-> >                   "address 0x%llx [err %d]", phys_size, phys_start, err);
-> > @@ -84,6 +97,11 @@ void kvm__init_ram(struct kvm *kvm)
-> >  void kvm__arch_delete_ram(struct kvm *kvm)
-> >  {
-> >       munmap(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size);
-> > +
-> > +     if (kvm->ram_guest_memfd >= 0) {
-> > +             close(kvm->ram_guest_memfd);
-> > +             kvm->ram_guest_memfd = -1;
-> > +     }
-> >  }
-> >
-> >  void kvm__arch_read_term(struct kvm *kvm)
-> > @@ -468,6 +486,15 @@ void kvm__arch_validate_cfg(struct kvm *kvm)
-> >       if (kvm->cfg.arch.e2h0 && !kvm->cfg.arch.nested_virt)
-> >               pr_warning("--e2h0 requires --nested, ignoring");
-> >
-> > +     if (kvm->cfg.arch.guest_memfd) {
-> > +             /* Requires in-place shared/private conversion of guest_memfd. */
-> > +             if (kvm->cfg.arch.protected)
-> > +                     die("Protected VMs do not yet support guest_memfd");
-> > +
-> > +             if (kvm->cfg.hugetlbfs_path)
-> > +                     die("guest_memfd cannot be backed by hugetlbfs");
-> > +     }
->
-> I think MTE is incompatible with guest_memfd, KVM certainly returns an
-> error from kvm_arch_prepare_memory_region() when both are set. Since MTE is
-> enabled by default, it might be useful to let the user know that MTE has
-> been disabled because of guest_memfd.
+This commit introduces vsie_shadow_scb_max and vsie_shadow_sca_max
+module parameters to control the maximum number of shadow structures
+kept by KVM.
 
-You're right, VMAs don't get VM_MTE_ALLOWED, so
-kvm_arch_prepare_memory_region rejects the memslot when MTE is
-enabled.
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index de8931e714ca2..c392f7afe130c 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
 
-I'll disable MTE when --guest-memfd is used, with a message to let the
-user know.
+[ ... ]
 
-Cheers,
-/fuad
+> @@ -1038,7 +1048,8 @@ static struct vsie_sca *get_vsie_sca(struct kvm_vcp=
+u *vcpu, struct kvm_s390_sie_
+>  	 * We want at least #online_vcpus shadows, so every VCPU can execute the
+>  	 * VSIE in parallel. (Worst case all single core VMs.)
+>  	 */
+> -	max_vsie_sca =3D MIN(atomic_read(&kvm->online_vcpus), KVM_S390_MAX_VSIE=
+_VCPUS);
+> +	max_vsie_sca =3D MIN(MAX(atomic_read(&kvm->online_vcpus), vsie_shadow_s=
+ca_max),
+> +			   KVM_S390_MAX_VSIE_VCPUS);
 
->
-> Otherwise, everything looks good.
->
-> Thanks,
-> Alex
->
-> > +
-> >       if (kvm->cfg.arch.protected) {
-> >               if (kvm->cfg.ram_size &&
-> >                   kvm->cfg.ram_size < DMA_MEM_REGION_SIZE) {
-> > diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
-> > index 5e7b5eb..95dc52f 100644
-> > --- a/include/kvm/kvm.h
-> > +++ b/include/kvm/kvm.h
-> > @@ -90,6 +90,7 @@ struct kvm {
-> >       u64                     ram_size;       /* Guest memory size, in bytes */
-> >       void                    *ram_start;
-> >       u64                     ram_pagesize;
-> > +     int                     ram_guest_memfd; /* guest_memfd backing RAM, -1 if none */
-> >       struct mutex            mem_banks_lock;
-> >       struct list_head        mem_banks;
-> >
-> > diff --git a/include/kvm/util.h b/include/kvm/util.h
-> > index a6dba11..9e23431 100644
-> > --- a/include/kvm/util.h
-> > +++ b/include/kvm/util.h
-> > @@ -148,5 +148,6 @@ static inline int pow2_size(unsigned long x)
-> >  struct kvm;
-> >  void *mmap_hugetlbfs(struct kvm *kvm, const char *htlbfs_path, u64 size);
-> >  void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 size);
-> > +void *mmap_guest_memfd(struct kvm *kvm, u64 size);
-> >
-> >  #endif /* KVM__UTIL_H */
-> > diff --git a/kvm.c b/kvm.c
-> > index 947721b..96583f9 100644
-> > --- a/kvm.c
-> > +++ b/kvm.c
-> > @@ -162,6 +162,7 @@ struct kvm *kvm__new(void)
-> >       mutex_init(&kvm->mem_banks_lock);
-> >       kvm->sys_fd = -1;
-> >       kvm->vm_fd = -1;
-> > +     kvm->ram_guest_memfd = -1;
-> >
-> >  #ifdef KVM_BRLOCK_DEBUG
-> >       kvm->brlock_sem = (pthread_rwlock_t) PTHREAD_RWLOCK_INITIALIZER;
-> > diff --git a/util/util.c b/util/util.c
-> > index 05d49c4..51a4591 100644
-> > --- a/util/util.c
-> > +++ b/util/util.c
-> > @@ -6,7 +6,9 @@
-> >  #include "kvm/util.h"
-> >
-> >  #include <kvm/kvm.h>
-> > +#include <linux/kvm.h>
-> >  #include <linux/magic.h>     /* For HUGETLBFS_MAGIC */
-> > +#include <sys/ioctl.h>
-> >  #include <sys/mman.h>
-> >  #include <sys/stat.h>
-> >  #include <sys/statfs.h>
-> > @@ -169,3 +171,38 @@ void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 si
-> >               return mmap(NULL, size, PROT_RW, MAP_ANON_NORESERVE, -1, 0);
-> >       }
-> >  }
-> > +
-> > +/*
-> > + * Map guest RAM backed by a guest_memfd. The file descriptor is kept open
-> > + * until teardown (kvm__arch_delete_ram), after the mapping is removed.
-> > + */
-> > +void *mmap_guest_memfd(struct kvm *kvm, u64 size)
-> > +{
-> > +     u64 flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-> > +     struct kvm_create_guest_memfd gmem = {
-> > +             .size   = size,
-> > +             .flags  = flags,
-> > +     };
-> > +     void *addr;
-> > +     int ret;
-> > +
-> > +     if (!kvm__supports_extension(kvm, KVM_CAP_GUEST_MEMFD))
-> > +             die("kernel does not support guest_memfd");
-> > +
-> > +     ret = ioctl(kvm->vm_fd, KVM_CHECK_EXTENSION, KVM_CAP_GUEST_MEMFD_FLAGS);
-> > +     if (ret < 0 || ((u64)ret & flags) != flags)
-> > +             die("VM type does not support guest_memfd with mmap");
-> > +
-> > +     ret = ioctl(kvm->vm_fd, KVM_CREATE_GUEST_MEMFD, &gmem);
-> > +     if (ret < 0)
-> > +             die_perror("KVM_CREATE_GUEST_MEMFD");
-> > +
-> > +     addr = mmap(NULL, size, PROT_RW, MAP_SHARED, ret, 0);
-> > +     if (addr == MAP_FAILED)
-> > +             die_perror("guest_memfd mmap");
-> > +
-> > +     kvm->ram_guest_memfd = ret;
-> > +     kvm->ram_pagesize = getpagesize();
-> > +
-> > +     return addr;
-> > +}
-> > --
-> > 2.39.5
-> >
+[Severity: Medium]
+Does setting vsie_shadow_sca_max to 0 actually disable SCA shadowing
+as documented in the commit message?
+
+Since online_vcpus is at least 1 for an active VM, MAX(online_vcpus, 0)
+will always evaluate to online_vcpus. It appears max_vsie_sca silently
+defaults to the number of active VCPUs instead of 0, which would prevent
+the feature from being disabled.
+
+[Severity: High]
+Could the use of MIN() and MAX() macros on a mutable module parameter lead
+to a time-of-check to time-of-use out-of-bounds write?
+
+The MIN() and MAX() macros evaluate their arguments multiple times. If
+vsie_shadow_sca_max is concurrently modified via sysfs from a value < 256
+to a value > 256 during evaluation, could this macro return the new
+out-of-bounds value?
+
+If max_vsie_sca exceeds 256, it could allow kvm->arch.vsie.sca_count to
+exceed array capacities, leading to an out-of-bounds write here:
+
+kvm->arch.vsie.scas[kvm->arch.vsie.sca_count] =3D vsie_sca;
+
+[ ... ]
+
+> @@ -1902,7 +1913,8 @@ static struct vsie_page *get_vsie_page(struct kvm_v=
+cpu *vcpu, unsigned long addr
+>  		put_vsie_page(vsie_page);
+>  	}
+> =20
+> -	max_vsie_page =3D MIN(atomic_read(&kvm->online_vcpus), KVM_S390_MAX_VSI=
+E_VCPUS);
+> +	max_vsie_page =3D MIN(MAX(atomic_read(&kvm->online_vcpus), vsie_shadow_=
+scb_max),
+> +			    KVM_S390_MAX_VSIE_VCPUS);
+
+[Severity: High]
+Does this have the same double-evaluation vulnerability as max_vsie_sca?
+
+If vsie_shadow_scb_max is modified during macro evaluation, max_vsie_page
+could bypass the KVM_S390_MAX_VSIE_VCPUS limit, leading to out-of-bounds
+writes on the kvm->arch.vsie.pages array.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260709-vsie-sigpi=
+-v1-0-ea9f12066408@linux.ibm.com?part=3D18
