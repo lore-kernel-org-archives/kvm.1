@@ -1,122 +1,130 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBBA2E7387
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 13:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5756E329E6A
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 13:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783604513; cv=none; b=dV95906DIJA0UBvfXj0Teq5lkIApdW3keWmpElEpkh9grCcK4Q2jH9xjRqZ+YUVGQQqG21naFqZ01otoKWAda+UKJD9y1lmfOrTJRTwYd6eM94CDXNhd2Jpc5fz8nsBCE5RZ6oH10CMmTjsrCgGlpI9+Lg2sLNjdr9pRWHV0EmI=
+	t=1783604868; cv=none; b=SetLHiL/Bv/ZLpSF0Z0/hlhYPdrSBAkN0ZhnYsxHeVHIDQymrarls5YjyRA0iJRggsp4HaBK1svRD1r+qiAAk25Dy16TWPkcWTCFrsPfIp7rkuw18LThFQ3+cbSXGAxenrreRWMGvC5CPCeqRSyg92KKHIxHF7KR6KOU1zDupXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783604513; c=relaxed/simple;
-	bh=fXsjiN6eTN+wejpC+aES5Y9JD9oLQdMfLq0AYbS4o3A=;
+	s=arc-20240116; t=1783604868; c=relaxed/simple;
+	bh=XoH5mVpmWCbnjzT5WUIHUJi/Q5/RUTdcN3spkq+i7v4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tWTFqYa1XgHOzoRXIiERr3xDgXwJdPc4Rqb4DEBMYROi3uTy6eFZlKxnbV7EUtD9sfPBExJr876+RNB4PfWdbbNWu1vP4Y3G3Il01SxJ8pUj1IKrJDIztaL8i6Q0poU/mMoaT65ovdV5LgthyySzGd4aB9UdV5Zsr3+ObwEBJ88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZdaLUyP3; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=p5ocyG55Ua2PgcXcoaE7M4moLNlZf8+es9Orehzd4NiUKrpRfHvcjkC5a5qZCQ43/YmoF5AoK1ujJSJyPH6Ee3OzjEH4W+CyZt0U/ygLaPOVcFb5eN5LDD/bMcWxPIjLXTfX+1jiiWVi9+ocpSH25/yhiaEHMLkPx63DTJ4KKec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RgbPT9+J; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZdaLUyP3"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8482fd61e83so3291236b3a.1
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 06:41:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RgbPT9+J"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cae455cf6dso30550115ad.2
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 06:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783604510; x=1784209310; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TqZ6gSD5FKoEf+kRjMwloxjdQe2NH3vzfgHgIMmv9+Q=;
-        b=ZdaLUyP3F7jnnDJe7b5JCvFsgs83DVmWAG8S6Y84TGqNRkI8qFDSy3CQvn8wEoEQhO
-         naRwbC+2fZJ2UWrcsnUpfh0jTG22ZR4CwH4nU2DhRnTYLiiPNh2NURnxKW5sNGe2zPLB
-         lOvxU6/7hg8IHrOVorC26InJ17jVstdt5oqTKYUpaGr2jBI/KQU3UDwjdiF7VQ39Hcul
-         AXb58vUJ/eGKpRATbDelAgiD+qInek21/fps6lr1CIFl6DMMPaTAIxsBC/+tyeOGGQT5
-         bzm48xKCApPM48kCUEfcogOFylLXbnp4WJsaEPyUU6gyvRTA7qeJLLAoNX9cM81/GF41
-         /kCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783604510; x=1784209310;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783604867; x=1784209667; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TqZ6gSD5FKoEf+kRjMwloxjdQe2NH3vzfgHgIMmv9+Q=;
-        b=kmXzT7NqtqEsK3cSyWuVG95ZzehX6y4xuj1lQTHdHNDpcFEhcvyEPvdqYiUp7Vju5B
-         I0Nsfci+FuGHP/ffyAVc99DfkW4G0JRw5wg26YB8UL5eff5EakqYXIrD7kfjQH6+9MPL
-         chiTV9hk1wKePKhgDhEe/Mi2NuSx/SF8JejOWt7YBmZ4VX/cWDUfPXIgja18kBzFCGeI
-         LGMIIV9RwyB/1m6a+OYtyT3y3fuyix0i+8ZB1w4xt1LkYTCLVolTHIZWIgaG6G3cwt8d
-         bCu4FKVVpR49HOUU+6mW4S21DtE/arOW6InvOEetzcBNypqlsjk+/LgJwwDvymcDQ6Ec
-         SF0A==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/yAEID+90GwoGaRnku3XjJe/q/kznZmU6d2UVL38160PEldlOqSNM7qXLggzyTu5KUXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqtzY2/OBje+qyDdJuWfHlUezbu1PtZ39aYgfiHAHZQKMWKhQy
-	U7vSH/huMtS4oyYhXrsQzm8tDywbKIxb+w53RPsAArtbqz9TjHQmGjLnxBjuiTYJ9mord5laeHP
-	4jt6w4w==
-X-Received: from pfud15.prod.google.com ([2002:a05:6a00:10cf:b0:847:9be8:84d5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:148f:b0:847:1d73:f753
- with SMTP id d2e1a72fcca58-84843410e48mr7508657b3a.45.1783604510194; Thu, 09
- Jul 2026 06:41:50 -0700 (PDT)
-Date: Thu, 9 Jul 2026 06:41:49 -0700
-In-Reply-To: <9d376736-4879-42f2-b798-56fd2d1ab05a@linux.intel.com>
+        bh=DC960oAiUla/XOLJDmjhiObLoRrA64cIRimX+CJcXns=;
+        b=RgbPT9+JoHX5e6e96EoukjDPPDBPerjaF2oacYrcJpbVACrV1rYfNADnmFPcYCDzt5
+         sxBbIeNzItz4Q+W2TMRb4B8TznvXYBHaoHyLjSqE6zb/j7JEMPC8Sol6AUCUtduoRGu4
+         QlqosiduPzDorDT4NOtbuuM0V554wl6ADAb8O00DRtGF9jeeYZsOairxDfSEdIi5YICU
+         e64bJdtvjI6enhXxvysHyi0MDnY1nbEfGQiMBUtTzCvt6V1ynGOV/DW7+UZxrm46Lmy1
+         qNAM9a5APniFCNkGPRXYuf2b/qNv8WIveEOHhGZGOL0tAQvTORg0/egfE/GH9GB/GPuS
+         JBdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783604867; x=1784209667;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DC960oAiUla/XOLJDmjhiObLoRrA64cIRimX+CJcXns=;
+        b=ErOnqV79tzRYPkroZgIyXm1vaZCyP2RIH/pj2BTACxv3Iy9SMYptrd8NXRdOc25IDI
+         pOLnCAHH/D4pXC2QasH9a8axavMvp4mk7e7bOj0ZO4y4svIK2wKzwtFCxEmSlZLvU3nZ
+         Cdx8ceZYNiqPo2GvS9ikVC9ExX3Xj7zqIMrSlQ4dtncKgZg6cMTjbosPBYyYB+SszsYx
+         TlWbfdtf98TH1nt2lohXNiGEUdIJkCFi/TR5mkQs2PWIo8LWlyZEtBjo+IJ/mDg2IjeF
+         ZdFQfcQfVRuSJtlHuSfzsQSyghRF14o9MZPip+s5XW/tqW+THzOv4WfUSNXzMCctWOLW
+         IcrA==
+X-Forwarded-Encrypted: i=1; AHgh+RoBMiPL9x6KOybEhsKMPzgOQgaQylFrMfFkr9ud+l695qnkAUfXYH5C7sV0og19Hj6x9cs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK+Pcf1rSmyr4UmBeH11Sa5mkogq4asIAB7NS3ovCrcx3jhk3c
+	nR2cfLt+vxzK1vWfCQ7+2vQ2Kfs8zEZZxrmlH79JIFIDAPWLNBawu0WqxYl0YHpHcgrYtgLNbjs
+	WZAxjJg==
+X-Received: from plfp17.prod.google.com ([2002:a17:902:e751:b0:2bc:ac01:8af8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d487:b0:2cc:d807:369c
+ with SMTP id d9443c01a7336-2ccea3e6988mr80125385ad.45.1783604866442; Thu, 09
+ Jul 2026 06:47:46 -0700 (PDT)
+Date: Thu, 9 Jul 2026 06:47:45 -0700
+In-Reply-To: <ak7rOdtcYyZ4zpN7@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260708022937.2465796-1-binbin.wu@linux.intel.com>
- <ak4NdJSK60zKD8Uy@linux.dev> <315e969a-4ab1-433e-91c5-2308f1975281@linux.intel.com>
- <28ec0a5ac5c46448df5983cc7f9cbc71f6014e8a.camel@intel.com> <9d376736-4879-42f2-b798-56fd2d1ab05a@linux.intel.com>
-Message-ID: <ak-lHS2edzxcmT1j@google.com>
-Subject: Re: [PATCH] KVM: x86: TDX: Use validated CPUID entry count for TD init
+References: <20260630222607.497895-1-seanjc@google.com> <20260630222607.497895-11-seanjc@google.com>
+ <CAEvNRgEFvh8T=v9jzxyYcc3NQzS2-uJctNuZix+mNQO8gwc-RQ@mail.gmail.com> <ak7rOdtcYyZ4zpN7@google.com>
+Message-ID: <ak-mgRaezT7gSJ1P@google.com>
+Subject: Re: [PATCH v3 10/12] KVM: SEV: Forcefully invalidate SNP VMSA if its
+ backing gmem page is zapped
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"thorsten.blum@linux.dev" <thorsten.blum@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kas@kernel.org" <kas@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jul 09, 2026, Binbin Wu wrote:
-> On 7/9/2026 12:20 AM, Edgecombe, Rick P wrote:
-> > On Wed, 2026-07-08 at 17:04 +0800, Binbin Wu wrote:
-> >>> Maybe it would be better to check for a mismatch and return -EINVAL?
-> >>>
-> >>> =C2=A0	if (init_vm->cpuid.nent !=3D nr_user_entries) {
-> >>> =C2=A0		ret =3D -EINVAL;
-> >>> =C2=A0		goto out;
-> >>> =C2=A0	}
-> >>>
-> >>> That would make the mismatch explicit instead of silently accepting a=
-n
-> >>> inconsistent userspace snapshot.
-> >>
-> >> I chose to use the snapshot value to follow KVM_SET_CPUID2's style.
-> >> KVM_SET_CPUID2 kind of uses the snapshot value of entry count.
-> >>
-> >> But returning a error code is OK for me.
-> >> Let's wait and see what others prefer.
-> >=20
-> > It does seem safer to reject input than have some implicit behavior.
->=20
-> Yea, had a second thought.
-> If there is a mismatch, the userspace is probably malicious.
-> It's safer to reject the request when the userspace is suspicious.
->=20
-> Will send v2 to reject the request for the case.
+On Wed, Jul 08, 2026, Sean Christopherson wrote:
+> On Wed, Jul 08, 2026, Ackerley Tng wrote:
+> > Sean Christopherson <seanjc@google.com> writes:
+> > 
+> > >
+> > > [...snip...]
+> > >
+> > > @@ -1902,6 +1905,7 @@ struct kvm_x86_ops {
+> > >  	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+> > >  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> > >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> > > +	void (*gmem_invalidate_range)(struct kvm *kvm, struct kvm_gfn_range *range);
+> > >  	void (*gmem_reclaim_memory)(kvm_pfn_t start, kvm_pfn_t end);
+> > >  #endif
+> > 
+> > I suggested CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM_MEMORY before looking at
+> > this patch.
+> > 
+> > Considering this, it seems like gmem_invalidate_range is a true
+> > invalidation request and .gmem_reclaim_memory is too late for
+> > invalidation as you explained in the commit message of the renaming
+> > patch.
+> > 
+> > Perhaps the new .gmem_invalidate_range should take over
+> > CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE, and .gmem_reclaim_memory should
+> > use a new CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM_MEMORY?
+> > 
+> > Are they both invalidations in your opinion?
+> 
+> No, definitely not, I just didn't want to add another Kconfig.  And I still don't,
+> but I agree that lumping .gmem_reclaim_memory() into GMEM_INVALIDATE doesn't work,
+> because the behavior of sev_gmem_reclaim_memory() and sev_gmem_invalidate_range()
+> are completely unrelated.
+> 
+> > If we're clumping SNP configs together,
+> > CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE is also only enabled by SNP...
+> 
+> Yeah, but while I don't like a Kconfig explosion, I don't really want to end up
+> with CONFIG_HAVE_KVM_ARCH_GMEM_SNP_HOOKS either.
+> 
+> Oh, wait, isn't CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE going away?  I was going to say
+> we could bundle .prepare() and .reclaim() together, because conceptually they are
+> two bookends for updating out-of-band metadata, but that doesn't make a whole lot
+> of sense if .prepare() is going to disappear.
 
-Rather than add a separate if-statement, I saw lump it into the existing sa=
-nity
-check on the cpuid field:
+For consistency with .gmem_prepare(), what about going with .gmem_reclaim() instead
+of .gmem_reclaim_memory()?  E.g.
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 6ff1469e91cc..10b4db17fbd5 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2797,7 +2797,7 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_td=
-x_cmd *cmd)
-                goto out;
-        }
-=20
--       if (init_vm->cpuid.padding) {
-+       if (init_vm->cpuid.padding || init_vm->cpuid.nent !=3D nr_user_entr=
-ies) {
-                ret =3D -EINVAL;
-                goto out;
-        }
+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+static void kvm_gmem_free_folio(struct folio *folio)
+{
+	struct page *page = folio_page(folio, 0);
+	kvm_pfn_t pfn = page_to_pfn(page);
+	int order = folio_order(folio);
+
+	kvm_arch_gmem_reclaim(pfn, pfn + (1ul << order));
+}
+#endif
