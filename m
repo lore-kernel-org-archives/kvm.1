@@ -1,129 +1,131 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0FF4DBD67
-	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 17:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0618F4C77C1
+	for <kvm@vger.kernel.org>; Thu,  9 Jul 2026 17:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783618734; cv=none; b=eK3Sc4p81Ii+Inw63CmYBgZzZ55KUdt0V0mKBQb5mMws3pPAo28LxVK08a9gEMO6QXnUy4Zp9kb7LzESX4CmASeLxD42B3+abnrDb8EVEi1Kv/Edg5euk0RZ2rVl5bEjomBDwD2buLKeB9BuxZqNXVN/NGxzZTBbthr8SXwSINE=
+	t=1783619404; cv=none; b=iqugzHV3cJP5r6Ppt+rkOqUzg3621Zl2i8fasQWgviIjnGAkDJeR1H/y3camiIBQeaqwxxopow/QDrQqPvrBW/d3JyRLudUpW2J8K24Pe7+zzLkZtZv0aStJAq5wnym+qNz8VcS/W3Clo9PNjVnMt1lNhmYyBc4NXDXdGJJWnWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783618734; c=relaxed/simple;
-	bh=xOjySS4wVaTAcPIFVj16j3n8kYLe8VfIiQVILneXLe0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=A5y0hzWsTTN9fPYKI0EW6BT7y4InSJ5cQk/Sr+9j11HkC3NfeYr7UXlbYcRqCGa/P6033wW+lY3U0/LPM/x+qj3oYqolMwYNeWFHbYnFa0CoZO5qCQfnDExn5zUM/X9J1UHNXINAtIs2em7PUD6FUpdr1bu4xPmeLWZlNG1ATTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WJ5WpMRv; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783619404; c=relaxed/simple;
+	bh=RHIFkS5bIy/SpZfntsDxPdmrMtdDGggrbSjRzG9iFFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QcBwV7wf3hzaezXIQo0WlSeO5673zZeqUfwRthg98wvCA4p/HDcoJtZVfuCQLAMlwd2sdF830U6y+S/1jWp1ni4tiQTZ2Aeh2t5sYAlqygRSIJLKexeXJnZFivdCRWl8QBmVDxJQNNWA4iRM3KGvnx3wOR9/j+sw9mhW63+BlBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VCkRqPyk; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WJ5WpMRv"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3811ae55313so122248a91.3
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 10:38:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VCkRqPyk"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3811f512167so227931a91.3
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 10:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783618732; x=1784223532; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PlohkTa49TToddFsPHYAOCXC7VLxt2aDGXSLnxYr1LQ=;
-        b=WJ5WpMRvsTCbIPuCpSx3DUDTO0XWZ0LAp3tX57bvpGNt/k/XF++otTCPVM6pwqwsd4
-         +4QwAuzSGXjs9khE5QlWpcNev+RL0KeReja9sgI7kLE9tOHj+f+1pbgEGB1j/RDMqC9H
-         dqVmd9aD82kGEpS/SgTNPLG+BLNng/XcF/9nEP543IuhT2SMhsnh9/3ElmJGr2meUOJn
-         UbhNiEhRAReY2oOX+Wn+t3m1F7fzaJIPwzQ4axqI8kAg8Ob4aCmKrNpVurRzhuTlA0JA
-         qmc3qsrQ39dlBoY6dnflpz4vc4D8xatMzeww82gVJkaxbEwI0WLHVfA3lxS5EE2PoV/N
-         zYcg==
+        d=gmail.com; s=20251104; t=1783619402; x=1784224202; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vhCE1WQAfzh+0PXxIbWqFOicy2jfr4E0e1kNUeNK4VU=;
+        b=VCkRqPykrbI3X0Erw6W4UnHtXTXlVpes4BQMuUb5GH2Lq+J0FTLiK7BKicAVArcZos
+         gLGMvetk5ohhg/Pk+Ob8S8eS5ppGdrGu4RDDGKRILTkobbk3vkC0z+5hblzGgCRJ76Tg
+         uaOvnKGxIEX1EvpSfLGuRx5h2CWhd93+iqipCl2UpvUR3GKSwM4i7BjvJtTtr/7LAqaE
+         mXaNgoP0YlUHfJurg4F8h10IpnPcupVl3W6gRQ1gZ5JmLaC5oPKB1ZARVJtQVW9X4por
+         /ANlDHVahb+0wiEyrsGw4l+4aR3pobOj9DDbtpLHSsStU4nRPmHja4GFffpHn6zBSnSx
+         qsrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783618732; x=1784223532;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PlohkTa49TToddFsPHYAOCXC7VLxt2aDGXSLnxYr1LQ=;
-        b=DKGMj3Xz/MXCP+Yt/oCe+/o8VJDU69eEBDFFR35Povitq2vLm48Q9R6tKJ54aXJiBO
-         LW+/iDGEQqwLIqPlRbTGAjSDDzgFd6vF6qwvHCvb70tRqjhJMGKWRPPETPhb0+fahcN9
-         8YNxM+gS1U7Nj0fkDMZjXujkla2FoAk/GVXnzn+r/nwrgRAY6IRSNVD/kYAcsw73cHKb
-         HDIL5eHH09DO3iQlzJokBEHbSIXxPaSJ72wUuIZ68d4UvN2iL+wfxWaytEmdIlKT48WX
-         vxh5jo13A8hRGMS2EzK2cNLR2FVKB8MJRZceDmjTK/LVImPUY2CgNMnXln455+t/DTJB
-         YI6A==
-X-Forwarded-Encrypted: i=1; AHgh+RokLaIrCz65oCZOBRVAMzYgFiRXhKUFlxAsIDhk0Cpzyx6VBAAFuOzLgQ6orC1tM1bDZz0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsBeUww7M1Fb9AJYgZwHqzZq2QxvosvkUhyWD+bHHy177aFePP
-	hqMDeMm//XeOqeE4FfTBoa1CcsYu3WcnloVwWdWGt2gfrKCyV3rAXiV5DIH4bjudhrJrfDprJos
-	o5lB1og==
-X-Received: from pjbgb7.prod.google.com ([2002:a17:90b:607:b0:380:6618:e058])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58e5:b0:387:e0db:bc32
- with SMTP id 98e67ed59e1d1-38942692cffmr8395553a91.40.1783618731574; Thu, 09
- Jul 2026 10:38:51 -0700 (PDT)
-Date: Thu, 9 Jul 2026 10:38:50 -0700
-In-Reply-To: <8b35057f72cd281637cf9d4bcbe1d0d753a3710e.camel@redhat.com>
+        d=1e100.net; s=20251104; t=1783619402; x=1784224202;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vhCE1WQAfzh+0PXxIbWqFOicy2jfr4E0e1kNUeNK4VU=;
+        b=n7YyTvIdHRLB4E1AQrOSfua/EBu1FBT22j1ePlne2ASPp+i8urusDsc7zY4XEE0s6p
+         L19v7SPcy6Em3svCwJreh5ykN8syrGJtVtfpRB0PiQnihJidc4XxEP2p6KlcDBfPIt8N
+         xCAO4eGwJHVl/VBnFKLTV5UGtVlRSNtpLo43FqSk2VTs71uhlDboX1VrqOumEmAM7V0P
+         MBuV8JTQUZQdtsnB/28zanESE6Ny+9LrkUZ4mOby8fCy2PpovTEIpKPnF0NZ4KamJA1I
+         KRfa03tnJYE6jbPp0SGaoIVSh6YISeFUIwJV7BPX6f+J6loLiyTLzXFIMtb/4QdFT4GY
+         v4ng==
+X-Gm-Message-State: AOJu0YxSEwn/i8h+i6Sc6SPKS4GxHKuYmobavinwAIlHuUfhYvve+dtQ
+	2aW3CqEN/z8ULHKDwd3CV6p7Z9XYcN33Vclp1Am++6bVwknrKODiSSzi
+X-Gm-Gg: AfdE7cm8Br4xF4pb5UxNJSDXpCHSf8zbbtnQFbw+REEeUTQrV90q8ezRRrtxYsgCdQf
+	2FriycOA3VA6vuCyg2hCuO6LOoC6GD6g6Xq0EFBvOu2SMX5cJrTaPaqdLxQrDI2fVTYisEuBFHe
+	Pnq6ppJZB2JVy8MjCovP3kt/VwSxPt2qDDHwX3eYn7+lzUzwXAyDndbsuWlgjTNI7QrtqKImzO0
+	bbrn4q2M628+0G52tTrbwnWrby49jDJ/XIsw1yWEz5toUaTRQ0f6Eo/W4vMNoeYvDKtXmFNOY7A
+	azZ+1YJPzUOK7LJ4jRvpUO+eQAhclzbl3Laj3czBUnqiqTwVtkFjIqSMpOdrAGCpImmmM1AkG/r
+	NQ1oWC7BMi69zUMmhr6ub7SkdAK8AeHiKLLRn/FqBKpy3UJH5nvkUNI5jem7U/B7C+DZoD3epkD
+	F0DlcP3KX8/iys6aDdj1MC+Vzt2JM0Mc7zE64=
+X-Received: by 2002:a17:90b:58e4:b0:380:9157:d6c with SMTP id 98e67ed59e1d1-3893fd5f712mr9180284a91.10.1783619402465;
+        Thu, 09 Jul 2026 10:50:02 -0700 (PDT)
+Received: from volcano9f8e-host.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3120c8e41fcsm2206765eec.15.2026.07.09.10.49.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 10:50:02 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	shuah@kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hemanth Selam <hemanth.selam@gmail.com>
+Subject: [PATCH v2 0/2] KVM: selftests: SEV: address two TODOs in the SEV tests
+Date: Thu,  9 Jul 2026 23:19:53 +0530
+Message-ID: <20260709174955.628913-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260709164751.621326-1-hemanth.selam@gmail.com>
+References: <20260709164751.621326-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260706092021.3625908-2-twiederh@redhat.com> <akwrncCjosItvAeO@google.com>
- <bceedaf195adf713db70a1dba743055fe4f20bc0.camel@redhat.com>
- <ak5TojZfR04SWWd-@google.com> <8b35057f72cd281637cf9d4bcbe1d0d753a3710e.camel@redhat.com>
-Message-ID: <ak_cqiwZwNBEhRNj@google.com>
-Subject: Re: [PATCH 0/4] KVM: x86: Document and enforce APIC base memory hole
-From: Sean Christopherson <seanjc@google.com>
-To: Tim Wiederhake <twiederh@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026, Tim Wiederhake wrote:
-> On Wed, 2026-07-08 at 06:41 -0700, Sean Christopherson wrote:
-> > On Wed, Jul 08, 2026, Tim Wiederhake wrote:
-> > > On Mon, 2026-07-06 at 15:26 -0700, Sean Christopherson wrote:
-> > > > On Mon, Jul 06, 2026, Tim Wiederhake wrote:
-> > > > > When an in-kernel irqchip is enabled on x86, KVM installs a priva=
-te
-> > > > > memory slot at the default APIC base address (0xfee00000) during =
-vcpu
-> > > > > creation.=C2=A0 If user space has already mapped a memory region =
-covering
-> > > > > that address, vcpu creation fails with -EEXIST.=C2=A0 The same ha=
-ppens in
-> > > > > reverse: mapping memory over the APIC base after vcpu creation al=
-so
-> > > > > fails with -EEXIST.
-> > > > >=20
-> > > > > None of this is documented, and the error is reported far from wh=
-ere
-> > > > > the actual conflict is introduced.=C2=A0 A VMM developer hitting =
-this has
-> > > > > to trace through KVM internals to understand what went wrong.
-> > > > I'm 100% in favor of documenting the behavior, but I'm not exactly
-> > > > excited about the enforcement.
+This small series fills in two pre-existing TODOs in the x86 SEV
+selftests. Both are test-only changes; there is no functional change to
+the kernel.
 
-...
+Patch 1 adds negative coverage to sev_init2_tests: when the platform
+does not support a given SEV VM type (SEV-ES or SEV-SNP), it verifies
+that KVM_CREATE_VM rejects that type with -EINVAL. Previously the test
+only exercised the VM types that were supported, so a mismatch between
+KVM_CAP_VM_TYPES and the actual KVM_CREATE_VM enforcement would have
+gone unnoticed.
 
-> > > FWIW, I did run into this exact issue myself and debugging it was
-> >=20
-> > What were you doing (or trying to do?) when you ran afoul of this?=C2=
-=A0 I ask
-> > because maybe there's a way to help developers without impacting KVM's
-> > uABI.
->=20
-> Experimenting, mostly with pmode code.=20
+Patch 2 makes sev_smoke_test capture the launch measurement returned by
+KVM_SEV_LAUNCH_MEASURE for SEV and SEV-ES guests and asserts that it is
+not all zeros, instead of discarding it. A full attestation-style
+validation is not possible from the selftest (userspace does not hold
+the transport keys used to derive the measurement), but a non-zero
+check catches a PSP/plumbing failure that silently leaves the buffer
+untouched. SEV-SNP uses a different launch flow and is skipped.
 
-"pmode" being Protected Mode?  Or something else?
+Testing: built and run on an AMD EPYC 9755 (Turin) host running this
+tree (7.2.0-rc2), with sev/sev_es/sev_snp all enabled. Both tests pass.
+The new rejection path was additionally exercised by reloading kvm_amd
+with sev_snp=0 so the unsupported types are rejected: under strace,
+KVM_CREATE_VM for the SEV-ES and SNP types both return -EINVAL and the
+test passes. checkpatch --strict is clean on both patches.
 
-> For simplicity, I use a single memory slot at 0x0. Due to an off-by-one
-> error, I gave the VM only 2 GB instead of 4 GB as intended. When I fixed
-> that, suddenly vcpu creation failed.
+Changes in v2:
+ - Patch 1: fix unreachable fd cleanup in test_create_invalid_type().
+   TEST_ASSERT() aborts on failure, so the trailing "if (fd >= 0)
+   close(fd)" could never run; close the fd (and latch errno) before
+   the assert instead, so an unexpectedly-created VM is not leaked.
+   Reported-by: Sashiko AI review.
+ - Trimmed the added in-code comments to short high-level notes and
+   moved the detailed rationale into the commit messages.
+ - No functional change to patch 2.
 
-Heh, fun.  I don't think there's a good answer here.  Or rather, I don't th=
-ink
-there's an answer that you'll find satisfying.  "Unintentionally" creating =
-a
-memslot that overlaps the PCI hole and the RESET vector is always going to =
-end
-in tears unless VMM and the guest are doing very special things.  I.e. not
-covering up the local APIC base is so foundational that trying to guard aga=
-inst
-it in KVM isn't worthwhile, because such a goof is just the tip of the iceb=
-erg.
+v1: https://lore.kernel.org/all/20260709164751.621326-1-hemanth.selam@gmail.com/
+
+Hemanth Selam (2):
+  KVM: selftests: SEV: Verify unsupported VM types are rejected at
+    creation
+  KVM: selftests: SEV: Sanity check the launch measurement
+
+ .../selftests/kvm/x86/sev_init2_tests.c       | 27 +++++++++++++++++--
+ .../selftests/kvm/x86/sev_smoke_test.c        | 23 +++++++++++++++--
+ 2 files changed, 46 insertions(+), 4 deletions(-)
+
+-- 
+2.43.7
+
