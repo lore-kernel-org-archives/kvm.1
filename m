@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3023ADBAD
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 07:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DC9194AE6
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 07:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783669022; cv=none; b=DwVBGhzptxX4T70T4HgM7lrMiWomDTWIoJQ3lIB68c5Qq7QwmQS03NIEsL/aqj/Pmg1eBAXNxVV75ho/2O0nGpzB6WaGzayi9aYN0RnHIbryTTqHyWCSqzn1EteqtWowzW0LIWjDLHwgKg/FojHNQXTlaZQyxgDOUjMtYtfDx+4=
+	t=1783669077; cv=none; b=UHi67Gyy4LifsU574f7tKs4k/g/9kFW7iH3uRi9UDONHG6mmEKXZl6Lrp9wsgsh6FSv6DXRGsZbJO7DIf1HhiloAUo8lcfCxbrnasGvBYB/GQMoRsUSD7kcNw/ojJfgG5TwQAJFcSVX5xSQp2AYLM44iK1jCLpsuLHIj3kjr3HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783669022; c=relaxed/simple;
-	bh=MLChOdhr5aZKfu9rxZ1o9h2MpZ/MjJvqxbOPstGkJGU=;
+	s=arc-20240116; t=1783669077; c=relaxed/simple;
+	bh=g7tLc67vSjzuyA0nW59/5j+fy5flTlL++y8buLKJiKM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYFWEbmI+Dl1yFEGiU9JtVYOqsZFAlhp7I40sLzMtcN3T2ZXRTgvSdF9j2860caXwF5EUJn18wVyoucYKvFaBkD8tntxZMqEq8tacviHzJXNiRiQYhrY85KbC8sNcG85u8vXJ8oetgcxJP+LG9Uk75gUX/fuSixYW4mFtZbePZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkPuQLIj; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=a1dQAVAc8jDOVGG5lHtNKKsWy2/t0uYRA61hgMAprBRk+8bdAhN6h7eiT7COrKIeyIONWsfbhG+ecQ3uFpSPLT9pqMwIJpeXW5rXq6mpMxQm8qvnhwaXCb0Sjrudkn96GVKZDF1Qpob1+i8WZjbcO+NHfj9JqESnBTdZDNfcUkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiMRSLSB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkPuQLIj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6025B1F000E9;
-	Fri, 10 Jul 2026 07:36:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiMRSLSB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7191F000E9;
+	Fri, 10 Jul 2026 07:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783669021;
-	bh=b84j8BRb9WotFlaTbggvLYyWIKKk/t181LGP2ZV1jvA=;
+	s=k20260515; t=1783669076;
+	bh=sO4JbAuoMHHDfXYAV3OqvEzK+SH4DRXfZJ8SmtSpxWk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gkPuQLIjaexg36f+QvwVppKPu5AdXMJt06ZvxQqk/Xfw5H8PJDRCY/yTUpzSN7lc7
-	 8/WdF9UgQeUwMV8YJeKITpCZJ3Zc7AJ6qe5coYROm1C64C8mO3yeOSewADEKItg9gu
-	 WuNLMCAim32wOEBIzQ1smD+/E/mZWcHe1DbtI6RFaTFF5c/mNg7EJNQGBebIWf+KKJ
-	 RwF57n2VGiLpvCqtikH+b2zXMqw9AWtXBECWfZWoVkRrBx4R8NOnH7mkr/ljPyPFmp
-	 TPse0yg/2+8cKKAlY3BB+XUIH3C9bZaqz6Jrg0vngSuukfgEZtnvm7czkRyVbWEnmv
-	 eyB0GkZ4wJqsQ==
-Date: Fri, 10 Jul 2026 09:36:54 +0200
+	b=aiMRSLSBPAl+lNwonpGe4KXsFqweRJHWHmdxIRcnXNdkJsffH+IEnc952a3AeU26z
+	 m2vFKcJGDL4BP6kcaRMmE+eZ/jLxg76EQHwNGPzf4WeZA+eoNztY44+dUt806yRoL2
+	 Yq7gZYbC+hEylLR+1JT+iMUGJctnW8Cp4GH/HtLTuagjNW5Aw0cJjvu7jASCjCh9ZP
+	 e4XHsMwDs9gvj8Ged20Npian8mPzHBHqGVM87j1oTvnfa8K9CUmPM//71MdaikV3Iy
+	 /mu+FBRVFoi38QNEQ/YI6+6YOzE0yZhqPRCjb46WipG9iOCAiDAfXnj8lODJwHiFpN
+	 SyZU7QC00rbcA==
+Date: Fri, 10 Jul 2026 09:37:50 +0200
 From: Lorenzo Pieralisi <lpieralisi@kernel.org>
 To: Gavin Shan <gshan@redhat.com>
 Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
@@ -35,11 +35,12 @@ Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
 	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
 	jpb@kernel.org, lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 01/25] linux-headers: Add RME related definitions
-Message-ID: <alChFhS7HwGXcVh+@lpieralisi>
+Subject: Re: [RFC v1 09/25] target/arm/kvm-rme: Initialise Realm Initial
+ Address space
+Message-ID: <alChTvF5k4sOOqcJ@lpieralisi>
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-2-mathieu.poirier@linaro.org>
- <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
+ <20260707224306.1202330-10-mathieu.poirier@linaro.org>
+ <2a12f7ba-1c6c-460e-bbbe-07187548a719@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,92 +49,35 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
+In-Reply-To: <2a12f7ba-1c6c-460e-bbbe-07187548a719@redhat.com>
 
-On Fri, Jul 10, 2026 at 11:09:43AM +1000, Gavin Shan wrote:
+On Fri, Jul 10, 2026 at 09:44:11AM +1000, Gavin Shan wrote:
+> Hi Mathieu,
+> 
 > On 7/8/26 8:42 AM, Mathieu Poirier wrote:
 > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > > 
-> > This is a temporary patch intended for testing purposes only. It provides
-> > definitions related to supporting Realms by the QEMU-VMM.
+> > Initialise the Realm's initial physical address space based on
+> > the VM's configuration.
 > > 
 > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 > > ---
-> >   linux-headers/asm-arm64/kvm.h |  9 +++++++++
-> >   linux-headers/linux/kvm.h     | 21 +++++++++++++++++----
-> >   2 files changed, 26 insertions(+), 4 deletions(-)
+> >   hw/arm/boot.c         |  4 ++++
+> >   target/arm/kvm-rme.c  | 18 ++++++++++++++++++
+> >   target/arm/kvm-stub.c |  4 ++++
+> >   target/arm/kvm_arm.h  | 10 ++++++++++
+> >   4 files changed, 36 insertions(+)
 > > 
-> > diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
-> > index 6aefe7973814..4c08631ec7d2 100644
-> > --- a/linux-headers/asm-arm64/kvm.h
-> > +++ b/linux-headers/asm-arm64/kvm.h
-> > @@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
-> >   	__u64 reserved;
-> >   };
-> > +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
-> > +struct kvm_arm_rmi_populate {
-> > +	__u64 base;
-> > +	__u64 size;
-> > +	__u64 source_uaddr;
-> > +	__u32 flags;
-> > +	__u32 reserved;
-> > +};
-> > +
-> >   #define KVM_ARM_TAGS_TO_GUEST		0
-> >   #define KVM_ARM_TAGS_FROM_GUEST		1
-> > diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-> > index 50e87ed72c20..dae6e5ba8457 100644
-> > --- a/linux-headers/linux/kvm.h
-> > +++ b/linux-headers/linux/kvm.h
-> > @@ -685,11 +685,21 @@ struct kvm_enable_cap {
-> >   #define KVM_S390_SIE_PAGE_OFFSET 1
-> >   /*
-> > - * On arm64, machine type can be used to request the physical
-> > - * address size for the VM. Bits[7-0] are reserved for the guest
-> > - * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
-> > - * value 0 implies the default IPA size, 40bits.
-> > + * On arm64, machine type can be used to request both the machine type and
-> > + * the physical address size for the VM.
-> > + *
-> > + * Bits[31-30] are reserved for the ARM specific machine type.
-> > + *
-> > + * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
-> > + * For backward compatibility, value 0 implies the default IPA size, 40bits.
-> >    */
-> > +#define KVM_VM_TYPE_ARM_SHIFT		30
-> > +#define KVM_VM_TYPE_ARM_MASK		(0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
-> > +#define KVM_VM_TYPE_ARM(_type)		\
-> > +	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
-> > +#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
-> > +#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
-> > +
-> >   #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
-> >   #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
-> >   	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
 > 
-> The definitions in this section aren't exactly same to that in (v14) host series,
-> leading to KVM_VM_TYPE_ARM_REALM = 0 in my environment and the realm guest can't
-> be started with the following error message. At least, KVM_VM_TYPE_ARM_MASK has
-> been redefined with different values.
+> Thanks for the posting.
 > 
->   qemu-system-aarch64: KVM does not support guest_memfd
-> 
->   ----> linux-headers/linux/kvm.h
-> 
->   #define KVM_VM_TYPE_ARM_SHIFT          30
->   #define KVM_VM_TYPE_ARM_MASK           (0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
-> 
->   #define KVM_VM_TYPE_ARM_MASK           (KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
->                                           KVM_VM_TYPE_ARM_PROTECTED)
-> 
-> After syncing the definitions with those in (v14) host series, I'm able to boot
-> a simple realm guest (no virtio devices) with one warning.
-> 
->   qemu-system-aarch64: Failed to enable KVM_CAP_ARM_NISV_TO_USER cap
+> If RmeGuest::init_ram isn't needed in the future, this patch can be dropped.
+> There is no API exposed from (v14) host series to initialize RIPAS for the
+> specified IPA range, as we did in the earlier revisions. So this patch was
+> added for the earlier host serieses, not for (v14) host series any more?
 
-Yep, that's correct the VM type handling has to be updated and I am looking
-into the cap failure.
+Yes, as this series stands this patch looks like a leftover.
 
 Thanks,
 Lorenzo
@@ -141,19 +85,91 @@ Lorenzo
 > Thanks,
 > Gavin
 > 
-> > @@ -719,6 +729,8 @@ struct kvm_enable_cap {
-> >   #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
-> >   #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
-> > +#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
+> > diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+> > index 9b7553dde5e1..bcab21d349b4 100644
+> > --- a/hw/arm/boot.c
+> > +++ b/hw/arm/boot.c
+> > @@ -32,6 +32,7 @@
+> >   #include "qemu/option.h"
+> >   #include "qemu/units.h"
+> >   #include "qemu/bswap.h"
+> > +#include "kvm_arm.h"
+> >   /* Kernel boot protocol is specified in the kernel docs
+> >    * Documentation/arm/Booting and Documentation/arm64/booting.txt
+> > @@ -1210,6 +1211,9 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
+> >       /* We assume the CPU passed as argument is the primary CPU.  */
+> >       info->primary_cpu = cpu;
+> > +    /* Mark all Realm memory as RAM */
+> > +    kvm_arm_rme_init_guest_ram(info->loader_start, info->ram_size);
+> > +
+> >       /* Load the kernel.  */
+> >       if (!info->kernel_filename || info->firmware_loaded) {
+> >           arm_setup_firmware_boot(cpu, info);
+> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > index f763d5ed6199..697e7d507f0d 100644
+> > --- a/target/arm/kvm-rme.c
+> > +++ b/target/arm/kvm-rme.c
+> > @@ -22,8 +22,16 @@
+> >   #define TYPE_RME_GUEST "rme-guest"
+> >   OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+> > +#define RME_PAGE_SIZE qemu_real_host_page_size()
+> > +
+> > +typedef struct {
+> > +    hwaddr base;
+> > +    hwaddr size;
+> > +} RmeRamRegion;
+> > +
+> >   struct RmeGuest {
+> >       ConfidentialGuestSupport parent_obj;
+> > +    RmeRamRegion init_ram;
+> >   };
+> >   OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > @@ -91,6 +99,16 @@ int kvm_arm_rme_init(MachineState *ms, KVMState *s)
+> >       return 0;
+> >   }
+> > +void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
+> > +{
+> > +    if (!rme_guest) {
+> > +        return;
+> > +    }
+> > +
+> > +    rme_guest->init_ram.base = base;
+> > +    rme_guest->init_ram.size = size;
+> > +}
+> > +
+> >   void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
+> >   {
+> >       if (!rme_guest) {
+> > diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+> > index 6d52f172c5df..790e1940fd8a 100644
+> > --- a/target/arm/kvm-stub.c
+> > +++ b/target/arm/kvm-stub.c
+> > @@ -42,6 +42,10 @@ bool kvm_arm_el2_supported(void)
+> >       return false;
+> >   }
+> > +void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
+> > +{
+> > +}
 > > +
 > >   /*
-> >    * Extension capability list.
+> >    * These functions should never actually be called without KVM support.
 > >    */
-> > @@ -985,6 +997,7 @@ struct kvm_enable_cap {
-> >   #define KVM_CAP_S390_USER_OPEREXEC 246
-> >   #define KVM_CAP_S390_KEYOP 247
-> >   #define KVM_CAP_S390_VSIE_ESAMODE 248
-> > +#define KVM_CAP_ARM_RMI 249
-> >   struct kvm_irq_routing_irqchip {
-> >   	__u32 irqchip;
+> > diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+> > index 65ec1b970606..c7dc45595159 100644
+> > --- a/target/arm/kvm_arm.h
+> > +++ b/target/arm/kvm_arm.h
+> > @@ -267,4 +267,14 @@ void kvm_arm_rme_vcpu_init(ARMCPU *cpu);
+> >    */
+> >   int kvm_arm_rme_vm_type(void);
+> > +/*
+> > + * kvm_arm_rme_init_guest_ram
+> > + * @base: base address of RAM
+> > + * @size: size of RAM
+> > + *
+> > + * If the user requested a Realm, set the base and size of guest RAM, in order
+> > + * to initialize the Realm IPA space.
+> > + */
+> > +void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size);
+> > +
+> >   #endif
 > 
