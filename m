@@ -1,114 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26C638B14C
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 22:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814138B14C;
+	Fri, 10 Jul 2026 22:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783722825; cv=none; b=ECcgTbvKpK7/IXZpqITxn+qx3Mpvg3oNx7PAmRkv6OV5N6L2xUqZDL0sMVxzVmgpZgpQ/t1GbJm1lTU9BXK8zv/NuSwrxabeP6P/c3d0LhXQOGzeyoo7UdfMude+n52vTYXViTtcYso3YQy5FCUM3JYs9P3XpQagX3UaXiUqRkg=
+	t=1783722869; cv=none; b=kP0H1VF0+vyehVCcl4GzyljU6sOYYX9hVQmbxcN/jQW6kDRu+8agcOuDKdfPYUOeIFe+uJSqacU2juIdhjvJW9SCjyRqExJPr8N6aso7SOoYWsx2QKDmlmibA9VlZNh9fLLpS8BPW1O2Mw8n3adEeWhuz4OhNfpm86nDTRevdaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783722825; c=relaxed/simple;
-	bh=L82BID3n4OoGF6lFF+644GNv3DgbXjMK2z/7FRen4UA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VL2zBoAkp75QusQEyxvt0IRQBT5zFK48ntQ0YFG+qLf6MPUV+5CWhSY5IGLqWZzYvBsDNRZK95wuOX5HEuJyhAKopR8sV/g5Tiv+r1PKUNplrFXb8Sdz8lXXf+CmtZFGZQwKcIP/H9toMhoU7bV4qdwSNgHXyy0y2mkxJLv1SVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpJ2bzx9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783722869; c=relaxed/simple;
+	bh=UpbED6+qrQeMPVk+gAlO9b9C3AZpm3xQqIjhhHsi8H4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oq9CifAyJsn69ILlEBo1kx5Ut/dCihL6ADuTy2l3WgWH4z+YRPhRuwO2BjEMtD8UYcwOTny9CJW/g3dLLJR2mDJJHC5UK4/Ky2Q+yCjP4D/bf2uu3C5q9fcYxKIqfTD3SYawog8iQFU2l2HVakptg8LbPHO2cXRak9UEnfu7RBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldMowH7d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpJ2bzx9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65ADF1F00A3A;
-	Fri, 10 Jul 2026 22:33:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldMowH7d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D481F000E9;
+	Fri, 10 Jul 2026 22:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783722823;
-	bh=WVnLyHbnzrn/wv9wqDEsuMqTx+yf61okAKTxmPx6Gqw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JpJ2bzx92QiylaW1r1R6ArO+BuYqYuWjrhCpTTCRAM/ZVi0Bsx3XatVMtBbOGaEy7
-	 walIGxrQ6zVP1vqrwsbSK3M0PPeoX0/lJPES08/5n6TPf3nzSj7c2mkJrywzjARK+y
-	 qHhMVZkq6MxmKESSs3mIUIf+emAtCcCSPGuh8xzj08VYA7ibWls062g7iZgvY7FdNx
-	 IB3Pv8sU1vLU3ZhTZjyGNrWp620V1ru42zK1vZy/P5XICSvAaqZMiVLnG/HSFrA9nx
-	 My7TAu5WBwCDDQdUvsfiJOkJOnadKDvCcCXjLEPN8CHdY/i9ynNaHDXbJa9kzqs/ew
-	 Bzr0H1ZdnAlgw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 9/9] vfio: selftests: igb: Recover after DMA-read
- faults
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josh Hilke" <jrhilke@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260710-igb_v3_b4-v4-9-56e7e2576cc1@google.com>
-References: <20260710-igb_v3_b4-v4-0-56e7e2576cc1@google.com>
- <20260710-igb_v3_b4-v4-9-56e7e2576cc1@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 10 Jul 2026 22:33:42 +0000
-Message-Id: <20260710223343.65ADF1F00A3A@smtp.kernel.org>
+	s=k20260515; t=1783722867;
+	bh=nUz9HhdoqrTHsTCS29Z7m1e2TJuVsJLqCaqg2KWgFhs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ldMowH7dw+6DV4uL7fBEOoevsFZvKYQaQZ0NYOt6ItRnFeUywfKm5Cb6NvParqi+9
+	 VmDRAp5HRtgrrZS+H/xscZYf7mEkKRXvw/dTF9dqQII+z3qAzNZmH17FrT0MSl8Vco
+	 OL3JVIojHQe4yEY07qjeJ4ZzZnObffTiJNTGm9OFAkIQgP+fQ85UN4P795oFP9zChT
+	 qcSC0tFEaLX7RIrb3DEJVmmLWEqUzUHjOjmHPxiyLDukzvzrNWKxhSVLhALNDNKcb9
+	 hLEi0xGQRMIn5YD9rWje8GJg6tKzS6p43ZxvaehWPLgG7tgo3udLSbTa1EM9TFHFOC
+	 IQ7P4kLrL34eg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wiJnd-00000003seu-29RZ;
+	Fri, 10 Jul 2026 22:34:25 +0000
+Date: Fri, 10 Jul 2026 23:36:14 +0100
+Message-ID: <87pl0u5v6p.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH 18/28] KVM: arm64: Add kvm_has_nv{2,3}() predicates
+In-Reply-To: <20260710153016.GF12293@e124191.cambridge.arm.com>
+References: <20260702160248.1377250-1-maz@kernel.org>
+	<20260702160248.1377250-19-maz@kernel.org>
+	<20260710153016.GF12293@e124191.cambridge.arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: joey.gouly@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Using a fixed heuristic delay before `vfio_pci_device_reset()` c=
-auses test flakes due to `ioctl_assert` failing on `-EAGAIN`.
---
+On Fri, 10 Jul 2026 16:30:16 +0100,
+Joey Gouly <joey.gouly@arm.com> wrote:
+> 
+> Question,
+> 
+> On Thu, Jul 02, 2026 at 05:02:38PM +0100, Marc Zyngier wrote:
+> > Add a new set of predicates indicating whether VM is capable of
+> > NV2, NV3, and is in a nested NV3 context.
+> > 
+> > This is going to become useful as we start dealing with a mix of
+> > behaviours (NV2, NV3, NV2 on NV3...).
+> > 
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/include/asm/kvm_emulate.h | 20 ++++++++++++++++++++
+> >  1 file changed, 20 insertions(+)
+> > 
+> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> > index 9831166695186..c562d8171d5e1 100644
+> > --- a/arch/arm64/include/asm/kvm_emulate.h
+> > +++ b/arch/arm64/include/asm/kvm_emulate.h
+> > @@ -266,6 +266,26 @@ static inline bool vserror_state_is_nested(struct kvm_vcpu *vcpu)
+> >  	       (__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_TMEA);
+> >  }
+> >  
+> > +static inline bool kvm_has_nv2(struct kvm *kvm)
+> > +{
+> > +	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
+> > +		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY));
+> 
+> Should this also check ID_AA64MMFR2_EL1.NV=0b10? (aka NV2, not just NV2_ONLY)
 
---- Patch [9]: [PATCH v4 9/9] vfio: selftests: igb: Recover after DMA-read =
-faults ---
-commit 774200982f984c4b603b9d07688586c25dcf8c58
-Author: Alex Williamson <alex.williamson@nvidia.com>
+That'd be unnecessary, as KVM always exposes ID_AA64MMFR2_EL1.NV==0,
+owing to the absence of support for the original FEAT_NV (we only
+support FEAT_NV2, and treat FEAT_NV with the utmost contempt).
 
-vfio: selftests: igb: Recover after DMA-read faults
+For all intents and purposes, ID_AA64MMFR2_EL1.NV is a dead field, and
+KVM will forever expose it as 0 (unless someone at ARM is mad enough
+to repurpose it...).
 
-This commit adds a mechanism to recover from DMA-read faults in the igb
-selftest by issuing a VFIO_DEVICE_RESET. It introduces a 10ms heuristic
-delay before the reset to allow PCIe/IOMMU/AER error handling to complete
-and release the device lock.
+Thanks,
 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
-esting/selftests/vfio/lib/drivers/igb/igb.c
-> --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-[ ... ]
-> @@ -490,7 +512,28 @@ static int igb_memcpy_wait(struct vfio_pci_device *d=
-evice)
-[ ... ]
-> +	/*
-> +	 * The descriptor never completed.  On real 82576 hardware this
-> +	 * typically follows a DMA-read fault from one of the intentional
-> +	 * unmapped-IOVA tests; the fault leaves the descriptor engine
-> +	 * unable to service subsequent valid descriptors.  CTRL.RST alone
-> +	 * reinitializes the queue registers but leaves the engine wedged
-> +	 * for the current process, so a broader VFIO_DEVICE_RESET (FLR)
-> +	 * is required.
-> +	 *
-> +	 * Delay before requesting reset so PCIe/IOMMU/AER error handling
-> +	 * triggered by the just-observed DMA fault can release the device
-> +	 * lock VFIO_DEVICE_RESET contends for.  The 10 ms value is
-> +	 * heuristic.  The current memcpy still fails with -ETIMEDOUT;
-> +	 * recovery only ensures the next memcpy starts from a usable state.
-> +	 */
-> +	usleep(10000);
-> +	igb_error_reset_and_reinit(device);
+	M.
 
-[Severity: Medium]
-Since the 10ms delay is a heuristic, what happens if asynchronous PCIe AER
-recovery (which can involve link resets and training) takes longer than
-10ms?
-
-If the device lock is still held when igb_error_reset_and_reinit() calls
-vfio_pci_device_reset(), the underlying ioctl will return -EAGAIN.=20
-
-Because vfio_pci_device_reset() internally uses ioctl_assert() which expects
-a return value of 0, returning -EAGAIN will immediately abort the test
-program, resulting in a flaky test if the timing is missed.
-
-Would it be more robust to explicitly retry the VFIO_DEVICE_RESET ioctl on=
-=20
--EAGAIN instead of relying on a fixed sleep and an unconditional assert?
-
-> +
-> +	return -ETIMEDOUT;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260710-igb_v3_b4-=
-v4-0-56e7e2576cc1@google.com?part=3D9
+-- 
+Jazz isn't dead. It just smells funny.
