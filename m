@@ -1,114 +1,156 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD3F3D79F9;
-	Fri, 10 Jul 2026 08:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783672529; cv=none; b=sY1DDL2+fyr+WhZQgyYyfd1/Ug0gctPp9tAPSuBx8q+ui0U9QTzbvZugeuTnanw5C1JqicHagDE7yfFS/pVRe9EEWXebKpBGid8g5QppUlZ7ZE8dAeonoJRO9kpZsTZ/4wjJ+edhyX5rN/z9XGyan7KCyygZkbk4M/axBUEDwRY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783672529; c=relaxed/simple;
-	bh=W6C4eWmDHnFu4uUTc7uvvI6pNqQHJpzuWIiTpUF4fwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R8x+RsmAkwODKyuATOWO4lw+ZpHgV9l/eWy3ebPZHEBvBb9Ir9uxu/CHNUdZv0O0ZfkRD7piP49fdavWs3xN0O5IlzCQ+4Ih4rKZw8JbzqracFI9JveroR7ZMsOsDls9hAqKGJ4BHmwGtLyWYDVxG4BTNe6TN1JcImVdKD5ZRg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KcJNIuDH; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2973F1ADD
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 08:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783672609; cv=pass; b=gCeM2J/14fN/ze2mKOyyJlqT6B8viqXe0hX+Be5a73wTUs5kgLPeTdT7SG3tlVL//huNHR7yzOUJkuB0ELkrd65UPxptHBAWcRwoDh8ZQSKKQBEDdxpXOfTKK7CDHpLeqHZujpq2sbCQb0o1im6PRB8sRjWygWPPO4YCwatDRD8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783672609; c=relaxed/simple;
+	bh=x3VvZRtbcKKcnIyHp/en5u74HZRbH+z8+Yx2BR2/F/8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MUS9/uaUHCKzaDpKcMiluLJmWNVSGsEVTyv9KnpQO4gfd4+buwHJ76GZMi5bxe7HjLr8PJekQsBg8DjRz7xIWJKff/Bu0RwNLr00P79vPuJrg4xPLIEx6M6GHint55SwKYQWa4gQ/TBPQ3qceOLW1nyrtcyR7hZwtQed9dY13xg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YTuOyR5Q; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KcJNIuDH"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66A7molL4025692;
-	Fri, 10 Jul 2026 08:35:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=7z4qY3ITfxP8oa1sl18c+DK/G6FFTx
-	jZ6B0R9ZuOVKE=; b=KcJNIuDH0oj+mNcHWEFCF9W2NPHa4gkpaj+EjaIMfnULyJ
-	o9JMQVShfmrVXBPA2rWcluwJi3zlQh0tAmi4EOjpoSJWVr7czWyKMNT1FecjX7mN
-	WiFSiCzS1ynSqk503gtGOhV8ScUDH3BEqjUfftG0JCattr8MsxmVvk2C6054a7aj
-	FIie8r8UMWnnsAotdt+jmS/TZKWS2KXTjIJJxAe5fLVjsRsq9Oj14gu/mGEOcygG
-	bZY1F9wK1vMwH3dZDQ08fJovqv3EvkkhykFzOymL9i7rnQe7EgHSnUe4njTwYX2z
-	YJKWFvZEVhY7HByP8w3CIIOJvX0HsLXVIHARFubw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6rke61k4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 08:35:25 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66A8Z3w0010828;
-	Fri, 10 Jul 2026 08:35:24 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7f6ygtuv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 08:35:24 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66A8ZMX551904796
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jul 2026 08:35:22 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F0852004B;
-	Fri, 10 Jul 2026 08:35:22 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B94220043;
-	Fri, 10 Jul 2026 08:35:22 +0000 (GMT)
-Received: from osiris (unknown [9.87.147.219])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Jul 2026 08:35:22 +0000 (GMT)
-Date: Fri, 10 Jul 2026 10:35:21 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] KVM: Add missing debugfs cleanup in kvm_init error path
-Message-ID: <20260710083521.984749-D-seiden@linux.ibm.com>
-References: <20260709152154.235233-1-seiden@linux.ibm.com>
- <ak_R2YrPFRVVmX4P@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YTuOyR5Q"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso6893a12.1
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 01:36:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783672606; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iO9+kaE7HHZIbX/hhVC0QxTjC1IF9QKrqsuDMO4ZFj4tSA/FTXSszys7RRJLvYWFdv
+         yIhttaZaayXMhDbCi4gN/SnLu+kkKN0so3k62EHUpIcfUDCsvpOHaFAgAHjCPVKF/OMo
+         dj7GmHueOxJibQKz/ozMDU8vbQnC+jLwQXq9qGwofnVG4voiZ6I0tfkwD6dX7uZyU6IF
+         2PVaBp/I7rIX8DfbLadXBNQQHfRWl+1iP2/Z+VC3tB+4X2xhsWFoFJmDb4am82RntTxB
+         CZiU9CcwzKBwlQoyhf53OGV7Z5cy1mC/iih61+qPHQZrfGhfOQtMacK+L5TNTCMZWsNv
+         9sPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        fh=mCbXxTVN87Uh7DQol78sgW7wQchd/BOYaIZvYqBEouQ=;
+        b=LXlp2zTi6/eUAlscJU+e9IdL5gCtR6y0i8NbPGuIPhez8WygIS+ODT15LK2ZISRvMF
+         ojbA/q6Qtc8cEQjV9T3lOZPMa/6lfRaPdI59PVRqsuotFBcFXFlWL9yzTtfHAtxj5Ha9
+         +xLvJHEjS8sPxfoaQo+J9f9Gr3AqZIuFUH1SxvVmj0xr1MPNCdNv4Uzk6cR0osu8F9dd
+         mErn1F8JsshBBDsiJUUpNDj7NlB0xnWn8YN+pyNZm5Hx8jfS5Wlhh9YpoVKjCtDHhg/P
+         azNs3fvxWmKXvlQVmLBFgBr6mNkWvp6r//D5DpLVMzQ8rF1ugskg2IPU3ajJBAn8A2Cn
+         CuWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783672606; x=1784277406; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        b=YTuOyR5Q0/EB6uHDdH3T9oNDxDxkGZfVGszz7ng9JadWMe9Xs34gf6ZXHki+RRSf9M
+         yznkEtMx8nLDza9bLjUnztrPP0k5OpXvIj8TXAOLyGUuupkZMRGR9Jab0IqBxVlEuseM
+         fGWaU7wmeqoa4a40JcwRqGc/Jcnp4HbTRxDiCQOPPidpHMRvo93kvWtVH4hPAZIIa6c5
+         msStbhE3Eos4A0sRHw2Y0mf1wgHDu294QQJqcJPtahIR5nMLNBKyGMv0qD+bHFqRmHml
+         hrsB8HYFvCS1ynH7DjZDD0FjB1nLQmKfwQoUmfreGzJzyGY6tN1hUuAErj7NrOY6mUly
+         sfIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783672606; x=1784277406;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        b=YRKv47p0yhgZKPNTWg6G9XhvsLOUS2KSMBoAMHqytBeZz/AT2r4ytlTs+mbO4pGNIz
+         aYBzM9FsGbwRTvXzuyWTHBprdKZ1YZrehu5/9IkjGki5eBJnzWNBjFGnh3QoU6fsVdpQ
+         S/FgpVK4z+rjQDurZ0kvP46CwYlQMx4xZADPB+qONcuvKv60yOfdGe7sK4LopMeN/WH3
+         AX5u8ZW0BNO+wF1MErl6Awb0MRjYIp8GfjvJh9+caqTPTRlvwGBmA/8GbksxMbzzD6aM
+         gw5Ti+k9/24vwVHjVQxfWYMgFqahFHidOusVLu/gXE3RLt4hGY+q/DYlbxnyxQcqqQKZ
+         J7yA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqp+j0FeKX9tziJ4/n/p3ivlG4sciJUaJloPICG4y1hOZegHkKZCZnYR7cymzV3rxpe9vc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrNba4zoz8BAK8hks/hJxviXqwN7x30UvtPJk4mCExhhAJdr6r
+	1OCm7rnKRCKSJi1Ht2Pls6QjHdOP7/R4And3RWGHYXa40HuHRqcbSz906VuKIFaseZIhMiF8YCL
+	H8Qmms7Lc/aDXGOuHjUONneyteJeIzkud/4y0lFoB
+X-Gm-Gg: AfdE7clFf640gPlSJH/Y4VOetfVNdAqijkkTD2hXOCCOMaHpALrLjE4XOewb14ybzDr
+	kTAWo/XbUw/MgDLPDgt/GJ3Xfc8+ynO5lG80z6m+K53sP+Z5YbMHHsanUFbu94YulaBpYRLKwcl
+	Dp45TWSfghoces6tlahdAiblDIXRU19gGCvsTtpWQCFnCoIqP7WnMGErJGBcwbezuLgh7+FDNQM
+	x6K/FSh/yOL1t4WBeU1OuCcP8IpbS+INKqJQ5CnT67Hp49EinbPrSabwnoSQcxaNAzifNFM//nM
+	9BhyV2FU9EgSLH9Is5ygTqnbWA==
+X-Received: by 2002:a05:6402:a541:20b0:697:6b08:459a with SMTP id
+ 4fb4d7f45d1cf-69c29ed9df5mr35748a12.7.1783672605521; Fri, 10 Jul 2026
+ 01:36:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak_R2YrPFRVVmX4P@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=M7J97Sws c=1 sm=1 tr=0 ts=6a50aecd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=U2YhpocSpuPZoOkIZ0sA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDA4MCBTYWx0ZWRfXxp6BBu89GRkj
- oVMS27ivlCXqABdixEwEA6PTGZOnpCL2BpjAQcIPkCPjgoS8TTeM5gJCkguLmuVclYTOR1Gw6FZ
- CMUW5tmQ5NTa716VkghFYMY4OpSpj+c4ZDEnnZz/JtOVFx6+rHXUlR6skl5+usHZIknhfycL+z/
- TU1IisieKjWbK4u9wAE5aQ2XX48T6VSJo6kcmNlCx2JAWH7xCKlO7DB9XLgquTHhpBr3GxcTBAR
- e7M7tAo176Z0AbDMzHFyM2kS28071Neg80xjUPiERc1O6ESXvSL5mCbdewSfx2pRB5SAWIrZ1EQ
- u49TqIb7OvbN/x4uw5RljJlP8Og9lKAkG8ZbfPHYbuSmyuIqQyOmPaxCm3ldR0eOXXMB2N/un0o
- EDtvoVQ7C+6TRVHtQaJ78Aig5+/Ee+mnjwHFpKymOLCrMWpnORz5OJfktU9StErEL1WiGoyW9Nb
- bhPbq3afc2ttFLkMhBA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDA4MCBTYWx0ZWRfXwDU9osDuKb3f
- Wlx9O5OvYbNKgdMfsX7yhqIgHQx+1jX6Au2Fo4EURqW6VWvurfmnrS902B1yfjcnxOXX4Ub53e5
- DhlBWmisVQyGgJ2DKo5YaW6FioYOH2s=
-X-Proofpoint-GUID: PzezDuY4JkSM9qYLqFFPlFAoFmgllDaN
-X-Proofpoint-ORIG-GUID: d1IcSiBVDOE-mLK0xcTrdT4nu7x6C1Wi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-10_02,2026-07-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607100080
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org> <20260705003039.c9b4bd681c059f62b375051a@linux-foundation.org>
+In-Reply-To: <20260705003039.c9b4bd681c059f62b375051a@linux-foundation.org>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Fri, 10 Jul 2026 10:36:33 +0200
+X-Gm-Features: AVVi8Ce87UhCHbfmvKkRHtYsfZSbDlT7JQG_kxBAkz9MTI2Uf45nPVr5mC018JQ
+Message-ID: <CA+i-1C0exwnJnp-WXQa3r==d_TeRj2Ocrn9COMCdC93UiWvQoQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, "Harry Yoo (Oracle)" <harry@kernel.org>, 
+	Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com, 
+	Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dimitris Michailidis <dmichail@fungible.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jul 09, 2026 at 09:52:41AM -0700, Sean Christopherson wrote:
-> On Thu, Jul 09, 2026, Steffen Eiden wrote:
-> > If any initialization after kvm_init_debug() fails the cleanup code did
-> > not remove the debugfs entries. Therefore, the corresponding debugfs
-> > entries where still alive but the backing fops are already freed,
-> > creating a use-after-free scenario. Fix this by removing the debugfs
-> > entries if vfio init fails.
-> 
-> Already posted, and applied locally on my end.
-> 
-> https://lore.kernel.org/all/20260706095910.39798-1-leixiang%40kylinos.cn
+On Sun, 5 Jul 2026 at 09:30, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Fri, 3 Jul 2026 14:47:32 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+>
+> > On 7/3/26 14:31, Brendan Jackman wrote:
+> > > Based on mm-new.
+> >
+> > Seems ready for mm-new to me. I suspect most further non-trivial page
+> > allocator work will conflict, so better have it in mm to be based upon.
+>
+> OK, thanks, added.
+>
+> I also added some little notes to track Zi Yan's comments.
 
-Oh sorry, I missed that.
+Thank Andrew. In this instance, what's the best way to send updates, I
+guess now they're in mm-new it's best to just send them as fixups for
+you to squash? In reply to the thread?
+
+> Sashiko had things to say, mainly pre-existing things.
+>
+>         https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com
+>
+> the xpc_create_gru_mq_uv() issues look like facepalms.
+
+Oh actually I didn't see the point about the alloc_pages_nolock()
+comment before. Other than that, yeah all of those comments have been
+discussed during the reviews, or are brokenness in totally unrelated
+code.
+
+There is this where we should probably make a decision (also a
+pre-existing issue but this time in mm/page_alloc.c):
+
+https://lore.kernel.org/all/DJOTMGFAPDBF.261U5OD4NPU74@linux.dev/
