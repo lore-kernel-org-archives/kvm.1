@@ -1,157 +1,113 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6597811CA9
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 00:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783643383; cv=pass; b=c7knOir2H+xbTdtXXix9GHlI8s9VdptG6q5BZaACxNjGIklYMCBQEKfbvrux5uh7wyChVsjLi44XdHUkGcjuNi8/Pzby7ur5aRKEswHf98i01Iv1QmGMNyBmfCl+C0zU2wWjl9M8ltqQyVYO22shpCcN7BFpZodN/u+XtpMlU6I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783643383; c=relaxed/simple;
-	bh=BBOxaPmM/01vv+CsTj8a2UQ6N2oadeCRstpSSslF1gs=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a/CWGoNBGXMzkH+o9MESMYKS5l63Pp9oqHdZ7FtRowfWyLz0rDIYFxbIgndp1ABdT/RAi+x1/dWQR40qXynJxDwULI6aHbYq7PeoiI2AjEjBz+TdsWIL+6ocYXxkP8NJm6PhstivlAbd04aoEbnrPzWxyK6zYv15CyNvpzDP0X4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eLTWQZsk; arc=pass smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988C719CCF7
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 00:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783643413; cv=none; b=ILjwvsarmpvmlcVZUj+yjl2gyiJOSUwJdFsSUfQHH50RNvV7FbVviVwrmQdu+Hy4An0MG9nJ/RtLBOmLLidK5GHMRILm+0IIB63Y5u06SrC5DGoPY1tlHW0m+iSniMc7I+dNziNM0fgmB7UxlaDo/6yVz1RYnFqlJR69qJ4XqI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783643413; c=relaxed/simple;
+	bh=GB4xCP0jtX0S7pBhKQHmaRJbmrIJrMCUGDK/2C/wZKU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FveL5VfFe/jU8Kh0NHAv3sv+/+QXbc3LCG6gf7OboXB2wTMOJaYBjgafpyjsV25SXadFh/LU/X4gd2+YQkZK5CP1i9nO5mdZVVVAQz4AgdyIxU+FJIGBU026FbLA+yWg4PIGsEhjoQ6d+5biUNActILX32TGZpqG+i8QxMbpX68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d94dnkpb; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eLTWQZsk"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84861fc51f5so234623b3a.1
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 17:29:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783643382; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JuQwm3+lNAVpQ5lsF8UW0BD7z24GSKES7M5MZJ1CkWe6RTaWl+x8mNU7l6af1NM5hB
-         qnnfcsTapkBW1fShDTJORF8vaXk3TZqL3U2JJi0ks8E4VEk029yPXmDDqHgffbhUu/vv
-         ZLmBFEEL/9ssvyKvISujQKc/viPVGd5g+wXrzYv5qF9EhUmH1mitm3rlPJlAMK4M1Hdk
-         EjiXjL2KmfpU1HzJo82HUc4bJr5ssCKdY8MnPC2rdpOEKVauq9nblYlrY5n3ekqa0WaN
-         QSv8Ab75cXbvWh84CtKg+lhL+0meLeDmWHg+VZW8a/OMb4vL/G+furgA5YZhF3qW1g2a
-         AxHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=6eKQoPNuaY1tGYHzSoxY+PT5XlE0M22tyAx+QiEVcTE=;
-        fh=n/xVjRsPLSx48DK0mlLV8S98n4Bay9rv1xBpMnS6M6Y=;
-        b=VfZHuPAj/XAjuVZFcw/YkwVsa+EW65HhQO7c56JAOLwSZju7+K9b9ZVVzgSe9txDbQ
-         2xpEpmuX48Js3cbaP3KUFom/OC2lMOc0Pe0BO2x9HOJ0vwcXgkmmYq2pe0DyCyF1DPr0
-         ltU41yncjP48nQuwzMDX0d/Gqo8dY0oDehqtWX3F+ODdQ+8xeofmsXLBOxeSEN+m0d/K
-         AXIibDlySCV7tVF2eI6QF5L+Q4as6b/u1BTtyvxPgpNTrLgLKOb5Ja0ceWEu5S/Anq1u
-         yi9hP3tdFkRghEN+wZQqozBx+mtGNSpBSYHeqwU5DdnGpzz0DJxucU3+r/01XURUWlvF
-         +mpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d94dnkpb"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ca3b314193so6111155ad.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 17:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783643382; x=1784248182; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783643412; x=1784248212; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6eKQoPNuaY1tGYHzSoxY+PT5XlE0M22tyAx+QiEVcTE=;
-        b=eLTWQZskDaYXR55LnSO+gckyr+hYwlrMbcHB0CTxJxUkSuAzL1J+OEaYeuLlF+K4DV
-         FHZRuQdldpK5dbJqizfQVkcOIepGoGjUS/KdTj9rTFTgGJ9ix6V81imdbGYpx+ZbPQuf
-         6u+NNOEedTUw3uyLcW8bSms+TcrZHhxDdfJOlKrvA1rhLgaOlvFTa5+0qCYFvZGJgg/V
-         /yWQomfXBGvAdPk+p5nAPQArWEhube5VQKXCW3ybOjtODK0RlCb7THlElOY+4wx3Z6w+
-         VQGYqzCJBsRkWm7j395mmQxG209o7jHctFKmtp5AmOpxL22qZPGOhg+Ok5g2VKuZQv9G
-         JVXw==
+        bh=bo34D4yllTctFsYLgx2ysys5c0zKcYVwf90OudJRWeA=;
+        b=d94dnkpb7Y2MmlqXGvXcaw7spZsQ8g1PGLvkicXDXHgMbjbOW8iPUcKbCMBC+ghbF2
+         nYlTFZXllwdsjUCqJ+NuYqTRzYDaDLejo7VwxbnuXHLayq5knVGtZSkSrzQXsgag3+z/
+         uGii6FxnGxNjTjmwnBaSHvtjBoU/GOcNgqoQKo7bZQEuNL+9uqhgx1v51BuE3eDtWbdb
+         93yESJGwiwSOvMseut7OSCpstI5rgNG+d88CLard6uQ0+qmoBD+28g2reclp6JRf8MB/
+         +J4n/4TWdXtQXBz13qBP0Whfrhi3SBzQiZLtradfbivCifSbDQrDOltUf8Eze3jmDtCd
+         Iq0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783643382; x=1784248182;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783643412; x=1784248212;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6eKQoPNuaY1tGYHzSoxY+PT5XlE0M22tyAx+QiEVcTE=;
-        b=YojSvJvtlI+FFDnqMiDsHKysgWRbkYfyNJ7qOknoYezV0TfQWJt2anr8EnRShosSlL
-         nesj0D3dekj/85pzVHymdlunOYOWmqPYEEv9mW5dt4Ru9wJhGaD1ekJcYoxo4HX7jxnp
-         S3QMqm2Y4LOYwDj/CyyZOvugqmtD/y14QPVDKzRFAnwsP+dqMN7A+OBL0ZkJRRXhNGWj
-         383LkzRtIcCLt4TUVXuJBcHq7aN8emjev+74YhK+2iVoA7Lld59sXeTorK6/XNCy0/Gk
-         mWP5c8Hdn6HYxQd8Knt1HW8AVcn8lZ11ijv16qz3LIFgiRnnmT1Eixe1GHq2lY52byaN
-         oG4w==
-X-Gm-Message-State: AOJu0Ywc1VxB3u4EHgA6Kk10jHAeMaJa/CMWAVOIX6Caeuj+N7W+fbDC
-	dogr1JSgZaVp2U0sQ+TchcWqOdMRV2ePMT+QpzXlcGGUoRG5Do7+DW2KZaNP5gWGgSorI0WxD1A
-	fgnN2VN4NWz3NNiRrpTH4z7TjoJx4+kNw4zvQwZAE
-X-Gm-Gg: AfdE7cm2dVy+BHSGm963M1onYEqBX4CEkuPiuuJZpbUHcxP+Rn26lzX5TC8jUIaPmHl
-	G1knrqE9LK8CPrIi+9xndlxV1s83h3/C3oIeFck82uy3PutQirqV5xNwdwTKuXsADxmdXLCoeur
-	cEzC29pQqI7a3JYacYj2UdVwCewdouPTeGnj1WlucdGyB/6nSqsUS3eQUIA3ZEwOKBzGQHurnx3
-	GiU2FG17nazXIQ+mAk7JPtcHiCVv+/Xw+aZXRG4+URrse/v6JZt+F9cbdW5MllJdTCQH/BJrmBF
-	dhbJkIRrgqCwrVqFY4XzA8HusBtNJOKg/zIp8xRS3PPp86709n1cqXBmONzmN5QUwIOUFQ==
-X-Received: by 2002:a05:6a21:39a:b0:3bf:9abb:a8be with SMTP id
- adf61e73a8af0-3c0bd0f9e0cmr11588986637.41.1783643381236; Thu, 09 Jul 2026
- 17:29:41 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 9 Jul 2026 17:29:40 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 9 Jul 2026 17:29:40 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260709211523.8BE3F1F000E9@smtp.kernel.org>
-References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-18-seanjc@google.com>
- <20260709211523.8BE3F1F000E9@smtp.kernel.org>
+        bh=bo34D4yllTctFsYLgx2ysys5c0zKcYVwf90OudJRWeA=;
+        b=HVUqOJUTGyyEClqd8GixhWKrIS3iI5y3PUsfJkBQWqg/4rpqDFgZ04I195ZvnPiuTW
+         FhaJ2Z0ljpx96YlzoHhgmWjPwzka7jO3Kn9huQS0/67JzlOvnp/jdDaHB8M7yWPyF7//
+         pcVT74yagrqKsnwx9uyzgTNL/E1ncqY/5aEGIdJhUd8jkD5IJ0dg0uVg0Pu6rqe6iWZN
+         q8EmHvuoAW9gko3oK6TX1mTK3wBnF6kWILKJhpGffZkd8//jwrG9CqvobVoyOfnim6r0
+         LiodiiMY7/Vgf+3tFdn13Dc99UmUWdszQIJ8wPg2XtXt4H9bbySOMEKKdRd+O7YEk8L+
+         kL/Q==
+X-Gm-Message-State: AOJu0Yy9DPuiBItvveZXCcoods00v2FcU1qp7Pwc8X6QXIzUID2ZmpHN
+	FTKZy7akK2Eam1+BLu5ISKbahB3PQ0XurNWzZoKEI8mrPNXSGLBB0oUODmDf8Qoj3VbKP7WvUCk
+	FWg87qg==
+X-Received: from plbbh2.prod.google.com ([2002:a17:902:a982:b0:2c7:ec09:a994])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:37c6:b0:2c9:e86e:a9f5
+ with SMTP id d9443c01a7336-2ccea3c1330mr97089325ad.18.1783643411713; Thu, 09
+ Jul 2026 17:30:11 -0700 (PDT)
+Date: Thu, 9 Jul 2026 17:30:11 -0700
+In-Reply-To: <20260709210648.B98481F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 9 Jul 2026 17:29:40 -0700
-X-Gm-Features: AVVi8CeC7912GNUZ12uLBsKZMA9Jkkk0PAaOu948lFfSF_ZlWtbKRgZ3tNU-gS4
-Message-ID: <CAEvNRgEyefHztOrhpzZ9cPjr_Rc1XkfXE7ak_WX2P_=t_JZJSg@mail.gmail.com>
-Subject: Re: [PATCH v4 17/18] KVM: guest_memfd: Align the gfn as well as the
- pfn when "preparing" a folio
-To: sashiko-reviews@lists.linux.dev, Sean Christopherson <seanjc@google.com>
+Mime-Version: 1.0
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-11-seanjc@google.com>
+ <20260709210648.B98481F000E9@smtp.kernel.org>
+Message-ID: <alA9E9MIHYe-OpF3@google.com>
+Subject: Re: [PATCH v4 10/18] KVM: SEV: Forcefully invalidate SNP VMSA if its
+ backing gmem page is zapped
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 
-sashiko-bot@kernel.org writes:
-
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->
-> New issues:
-> - [Medium] Aligning GFN down without validating memslot boundaries introduces host out-of-bounds physical memory access when preparing huge folios.
->
-> Pre-existing issues:
-> - [Critical] Concurrent execution of KVM_GMEM_POPULATE and vCPU page faults allows unprivileged userspace to trigger host hardware crashes and guest data corruption.
-> --
->
-> --- Patch [17]: [PATCH v4 17/18] KVM: guest_memfd: Align the gfn as well as the pfn when "preparing" a folio ---
-> commit 5debe95f8712f79807df583e8d5e927a97b4c012
-> Author: Sean Christopherson <seanjc@google.com>
->
-> KVM: guest_memfd: Align the gfn as well as the pfn when "preparing" a folio
->
-> When preparing a guest_memfd folio, this patch aligns the gfn as well as
-> the pfn to preserve the effective gfn+pfn pair. This prevents a mismatch
-> set and unintentional guest crashes due to assigning the pfn at the wrong
-> gfn for huge folios.
->
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index cd7a795834cb6..4082cde3f3fca 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -87,8 +87,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->>  	 * checked when creating memslots.
->>  	 */
->>  	WARN_ON_ONCE(!IS_ALIGNED(slot->gmem.pgoff, nr_pages));
->> +	gfn = ALIGN_DOWN(gfn, nr_pages);
->>  	index = kvm_gmem_get_index(slot, gfn);
->> -	index = ALIGN_DOWN(index, nr_pages);
->
-> [Severity: Medium]
-> If a userspace caller creates a guest_memfd memslot with a base_gfn that is
-> not aligned to the huge folio size, will computing the index from the aligned
-> gfn result in a misaligned index?
->
-> When passed to kvm_arch_gmem_prepare(), couldn't this cause the iteration
-> to go past the end of the huge folio, resulting in an out-of-bounds host
-> physical memory access?
->
-
-This sounds like it would be a problem. We could perhaps leave this
-until huge pages are supported?
-
+On Thu, Jul 09, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> [ ... ]
+> > @@ -185,6 +185,10 @@ static void __kvm_gmem_invalidate_start(struct gmem_file *f, pgoff_t start,
+> >  		}
+> >  
+> >  		flush |= kvm_mmu_unmap_gfn_range(kvm, &gfn_range);
+> > +
+> > +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> > +		kvm_arch_gmem_invalidate_range(kvm, &gfn_range);
+> > +#endif
+> >  	}
+> >  
+> >  	if (flush)
+> 
 > [Severity: Critical]
-> This is a pre-existing issue, but I noticed a potential race condition
-> between KVM_GMEM_POPULATE and vCPU page faults in this same file.
->
+> Does this invalidation path need a way to guarantee a synchronous wait before
+> returning?
+> 
+> Since VMSA pages typically do not have TDP MMU SPTEs,
+> kvm_mmu_unmap_gfn_range() will return false, leaving flush as false.
+> 
+> Because flush remains false, the subsequent kvm_flush_remote_tlbs(kvm) call
+> is skipped.
+> 
+> Meanwhile, sev_gmem_invalidate_range() relies on KVM_REQ_VMSA_PAGE_RELOAD
+> and kvm_make_request_and_kick() to send an asynchronous IPI to the vCPU:
+> 
+> arch/x86/kvm/svm/sev.c:sev_gmem_invalidate_range() {
+>     ...
+>     kvm_make_request_and_kick(KVM_REQ_VMSA_PAGE_RELOAD, vcpu);
+>     ...
+> }
+> 
+> Because the IPI is asynchronous and the TLB flush (which would otherwise
+> provide a synchronous wait) is skipped, the host could proceed to free the
+> VMSA page before the vCPU actually drops it and exits guest mode.
 
-We're good, vCPU page faults can't happen until the VM is finalized,
-populate must be done before finalizing.
-
->
-> [...snip...]
->
+No, KVM_REQ_VMSA_PAGE_RELOAD is declared with KVM_REQUEST_WAIT, i.e. KVM will
+ensure the target CPUs have received the IPI before continuing on.  And the
+presence of the request will prevent them from re-entering the guest with the
+now-defunct VMSA.
