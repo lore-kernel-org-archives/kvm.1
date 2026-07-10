@@ -1,161 +1,198 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680633B2FED
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 21:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783717936; cv=none; b=WLqj7+7CGwIR7uDJofRxnOQE4tHKiGSHxK3n5U3KDKjRN1Q4yWRyOjqCFE3zfOjqLFhaMcvz+MRCDsWbUuSypaEhIdw2wuAOax0FzoO0xGBhZi2uVV4lBdp8dsRFf/CCbDCvkLqEuThP4HEGhp9f5OL3nlwUTNw5dyrS3TMKa+Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783717936; c=relaxed/simple;
-	bh=dQzz6EcSb1LSSq/sqBlPjvInRxBfU2sSme6h83vG2JE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZhmltqsPQkUbxlXno1aBDY2mVPBoT27WGuzbV28wLtWV9saPgDoRK91FxQdpvLq54vN8GKQMkN2K/adJkJJXiOP3ifIEYIkEcGQIrMhG+Ln1OJxY00M/nSSTYJX6DbyFkwZTC67pYeitdxySgml7BqQtrX3zZVmm393+yidgYcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=N6b3TpOC; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1843B3880
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 21:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783718026; cv=fail; b=AeHNYlkiamAc+aYNZa//bKDh6S1OnmR0+DcUmpPoqaYdb5+bdBsl24BvMWn1/RnuacChqqoQWkGUzU5YSN/p8cGifSpjyaGroFsp9Vjn2zJ2umtlGh+SzXL/9PzlDSGJYAa2rm12hE6Z1fxad6tqSZigVaP0/mzJ2jDXFW8c/I4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783718026; c=relaxed/simple;
+	bh=qTGJ1qCsNSroWoULGPtpQMjb5UjkQ/i1Jx9oQeZCKyU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RQqNi4g7ygAE8g17Oi43VDfsyklKz1lycObaRMXzBN3CPu6nCTJ0xVW8DB1LM5fy3MynWcJfjoTolkDWwim9zm67ghteKbo183G/MVnFFDHvbgCPJsNGvubWX5yCaL5KR/ulHc9aY+5Jt/vqQemtlICEExwy90gnNOjPpmRghZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=RYK35fQ/; arc=fail smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="N6b3TpOC"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92eafc94c9cso72490485a.0
-        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:12:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783717933; x=1784322733; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=pf2tO4nh1364RXnPDWacirAQrZ5x9Oo1qInEIWqsetg=;
-        b=N6b3TpOChbThE/0tnzlpa/NcQ77linH1Asj8qwSU78EqKBP12VBXntR0fMIMQZhHCE
-         HZsGMjq2u8g+tFr+cwRu+FocceXiNd3NXVLDbCG47ArWUfK5sMgnZM3WSRtijImszrzy
-         ix93JWAbrEvs3fLJMXDCQWb8tNF1ApzaiJIpTnhfn4OR1IOgw/BszN6U3xQcUymM+kjr
-         t5kTbQS1KsELCKqZveY/qWqnzxkK/PZpdR4SCuYayerSDb8YhGP8QfBxiEZiiI2omI/x
-         zyOQOL4QfuBf46cb4VBcagyWJxhD5mWeEB9N8gBL+pMOrdGSg5FOUePloLptjP3p+Rrh
-         Zo1w==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="RYK35fQ/"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66AK3adm2602474
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:13:44 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=RF8cFAwOnRSkhH9D0DDvmvcNKGy8nfBCbBtEkVfL0v4=; b=RYK35fQ/CwFt
+	9Y6liH/+T+e8GjLaxejo6rcLnWNoms5TDAneieLNEs3hl1aa2PsrH/U24euiowpl
+	9luuMEPbfvWzkjV6f+XoTtHYas77VVD5ZWtxfcDX+6WYOimoCorso3lVvOn7BFr8
+	jgFGWDg5+s368ZiJ1y+Idu0Hy9dtSy4mLqOl1ApPtN0Q4jAwmaMMJYd/7GaIeqHq
+	hRwsF7KvtNf+HLABfW3TP0f6XjwilIPxO1af7LFe+Aa3IMnPKCrPiujbH+hMKUIf
+	QrfNgj7RQdzrvELzpA8rSXxe86AHthCE8wer5/AyftFWjSgImjzNasXhC8aOsEav
+	+4nOGAwTFw==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fagek85td-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:13:43 -0700 (PDT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7e9fdc2870fso784295a34.2
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:13:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783718023; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CglviF25gHIthc/8tSPrhBqNh5qdHP7oCdQJEpmoSwzqmlP8yNfP1Vbthtikjyvdwo
+         B9vG4YRuYNceGa7EHoejslXKB30eyfScE1swbFZKPS+tNxTtCR7qRRkN6TawQacg8wa0
+         5u0FAkDPe7myIwrcIpbdzuTyUryMMcQE6c7DTziJ3hiNtKdPDH0hZ8EUSl6U9y/2ZUtd
+         TzrSOyVmWWjGRGh2QP/KtIUv4LQ5w0+oAmD5QdzkTCbsBMyZInFyxowspADy1og/CB7t
+         5mzVkh90cp/uAxnHknJIU1LvCRf5k7rrILvx8uSB+REa4o8GMG5J1exG37xPQom1BhmJ
+         t4Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=dzINuCyV1AjhEQXZagg0c3klT12KrUQB8e556Tlb738=;
+        fh=lItsPIsUWMm2jI/ZCrhAvW1/9MD/N8TbnY4SwW02tAo=;
+        b=jsuwodib5rWKmh1TI+Yxcdg7AP7k62d0CTlJitrOlkuz1hmGqM0+bkcfOinjaq/6sE
+         SxVhGnsRbcQTHtqOHDDQVhm6lsK89XXJUTSbJZLSciyBh3FXWNt4C8vDX6D8wOBjSX6S
+         IvflhEEv0Z76c6XC5QScAn2khqdlPMVwfS5ZdBHv0RbRwR3b4GaECAY4WmM3mz0RrAwo
+         lwrzIas5D57pLTkoayL2qbxz8C8qnwm7vT1vsC5cuzCdM/QJnAPDRRve1oZTyA789/F7
+         cEykq5lDZ8zBDQpywWAr9Ue/LQ3vqZjbmBqgmtxHTYobMKn+SnlRb5vb/mDqsCaa/tln
+         Yn6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783717933; x=1784322733;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783718023; x=1784322823;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pf2tO4nh1364RXnPDWacirAQrZ5x9Oo1qInEIWqsetg=;
-        b=jhX8yueH0m30/1i1oy7myMF3r8RwIE7JWSH8S6MOvN9S4zPrtmO/5pCAJag3rXXluE
-         42nA+H0guf5v4xqBYBduM7+GtBcdVJasTGH1M0YSlFB4hliwfeM6fEjQsgv7sBuoBLN9
-         xhWn4K+5fuc1RJTuoXBOAdhGczJ+rqNP8Ipc/Uc1dGJIYB5F04Um+QOq7dIO3Xhltf6b
-         zz6FjscmVc/UZFPHNOQoPyj2fD2wpT5kBgF6HKPZKiCi72+4wjG0waFvl8vl0WiT6GDk
-         O+5XKQviC4SKf8T1ahG1ef9JxLhMLbwFw11RXzQf2RGPfByOGSDEtcMu9wtC8413u5M5
-         VULA==
-X-Forwarded-Encrypted: i=1; AHgh+RrlbZTGCfn9fL18MAbFgn25srw7oU7tQrct4JZlVSHJ9PccjCCViVnvWFtaRw/bDfty4Fc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbO9BcmH9ImF4Vj6KG6zIC5GqRXb3yidK1Ygf3Y0Zx3NGdseOb
-	2LJsoImDnVYqt3Ww4bu1RccwGq7OZQWl17w0h2btZXFfSpgdvKwD3GtrfVCHgykKA4w=
-X-Gm-Gg: AfdE7ckDG1s0dNA+HXysRLKSd/bNuILfnCO8QEmECAziitRbxoCYTx/zFcAr1ENOWMh
-	IROlj+HKeNV02QxH1H23LUWX1j7WqQ58yu4TJZ6t8v0BC5SHD1woGIMOLKnJ6NlsyICR89TCgD1
-	OZ6CDtyl3jgoq9IzfrMFJnVSF9yJ9RgB6pisVIDeZcWgYdjXnwnDnbvlQsdveB1pGJYJ0eOgyAh
-	Nf62hpQBpVWB1HCAIRWlq99zSD5zJ3SlmQTqmR90niB5Ul9K46ctMZTT8TIrkarYjmcJTV4IaFE
-	RcuCUJY/CEWnUWTLm1+q0vzBPXYhq3V8CvL++/pDXdOugFvNhrB65DRYb61Nv6BqphKnnlSbxhN
-	cALbYqn0Q1mmk+RS9eu0gId0x/Qcmkc0m5aH8uhuMCb+XF3U+CISAqE78pa7NsAxosoiFK9HIr0
-	vYLD6j//omA5NK9TuH/wrszFyukOIjL/FPK/82B4fgptTlOx7SoC6cJ/qs+kTPsg0R/g/N
-X-Received: by 2002:a05:620a:1a24:b0:92e:7c7e:9c9a with SMTP id af79cd13be357-92ef2b32433mr108915185a.31.1783717933240;
-        Fri, 10 Jul 2026 14:12:13 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cfcb0dsm290194785a.25.2026.07.10.14.12.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 14:12:12 -0700 (PDT)
-Date: Fri, 10 Jul 2026 17:12:07 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
-	Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Dan Williams <djbw@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Hugh Dickins <hughd@google.com>, Peter Xu <peterx@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
-	iommu@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 09/33] mm/rmap: parameterise
- anon_vma_interval_tree_*() by anon_vma
-Message-ID: <alFgFakGEcg6hO6E@gourry-fedora-PF4VCD3F>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-9-2a5aa403d977@kernel.org>
+        bh=dzINuCyV1AjhEQXZagg0c3klT12KrUQB8e556Tlb738=;
+        b=YDCRAJF+nW579oUqUitis/WSKGG96mQTqKeCyBuSK7MDEQhgX7IIV/d0ckXI6IbXJm
+         YngS/D3vsW1RR3awUq+OuZ5Rk7TmkStTdKsR/uZ5W4PktEVte4sEF0+hikheLqKAQmm8
+         SREStnyRZHhO7PMf9eV9cjtgfvw8Qr+OC3s49nxNos/Pm/tV6P+vf0lOf5cQNM80bam0
+         yjC8X1+2KcxYwzgSXbRALKahtqZ7nFh12Ct6nqN9t8Q8HQx1IKmGuFRk7zAY2hcVqFU9
+         XC9YYM0Y2UVdTMY6dAiuM7X7TPIGM7tta2owypedUY/JOxSLexVQtwXqaqid7SnD3iHA
+         OqWg==
+X-Forwarded-Encrypted: i=1; AFNElJ/8X6rmLjJ3iomttC/iI55PhWJtYLwyCVs+rBifiiIe1NDpnoYWasDJn8qyd5ZLpaGSW5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkGqKkLcnmB0yNYcIFugLu0ukg/BrtC8+j2FuTFXX34Lv6v11l
+	z7fWdUS8tAen/b4lSsZjCazLKe7gDzyAKpT0FJn2x2Pa6FDnVtRcfaCDJZ1/FCnoLNdfomD/oS6
+	H8p1JQh53L4B/FPtTVhSb0IH/TRRP9eb2mraCsU0+xZvYmHb0wRIvVYC6c9iUiAnsSWXR/8KHZ0
+	6jmutUy3Gd2gbI1WntMZcVEZ5uyiQ=
+X-Gm-Gg: AfdE7cklEA9mnhKH+BP6wbFX8BDU7LXawjYRCLXjKpTwHY2Bvwqm/v2Obi6KRAG5Ol2
+	oV6X5p3SU19srGOAvo8DqadLVHeX/foVP3gAs554akCQ+gCWdYclcUN083v0fbgXCdG5wXeTyiQ
+	MM3I43JyaOM2WJJBcGd5qGALursceU+XaT2vIw60pKu0T8PLHg6pLzo/j33OtQiiE+hyGxDCtPq
+	WtD3z2xYzI=
+X-Received: by 2002:a05:6830:6c11:b0:7e9:b772:9aae with SMTP id 46e09a7af769-7ec0981c52amr316857a34.23.1783718022913;
+        Fri, 10 Jul 2026 14:13:42 -0700 (PDT)
+X-Received: by 2002:a05:6830:6c11:b0:7e9:b772:9aae with SMTP id
+ 46e09a7af769-7ec0981c52amr316843a34.23.1783718022507; Fri, 10 Jul 2026
+ 14:13:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-9-2a5aa403d977@kernel.org>
+References: <20260702181025.2694961-1-zhipingz@meta.com> <20260709132602.6a3fb084@shazbot.org>
+In-Reply-To: <20260709132602.6a3fb084@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Fri, 10 Jul 2026 14:13:31 -0700
+X-Gm-Features: AVVi8CfXe8KvJ5Z7sUtkIYqefn9JRiYpvw-OvxoKOz-vRkAAzCUP8YaHHQIwWXo
+Message-ID: <CAH3zFs3OwPyTrWk7oaMYETq7sBEQ7VRfDtzWWamhiE3AJzVShw@mail.gmail.com>
+Subject: Re: [PATCH v11 0/4] vfio/dma-buf: add TPH support for peer-to-peer access
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Michael Guralnik <michaelgur@nvidia.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: tJaFwjF7Cuha_2cj5vlaAH-beALbGguj
+X-Authority-Analysis: v=2.4 cv=W8UIkxWk c=1 sm=1 tr=0 ts=6a516087 cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22
+ a=c92rfblmAAAA:8 a=VabnemYjAAAA:8 a=VwQbUJbxAAAA:8 a=r1p2_3pzAAAA:8
+ a=FfEKJDObtavKmf3ECVgA:9 a=QEXdDO2ut3YA:10 a=EyFUmsFV_t8cxB2kMr4A:22
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=gKebqoRLp9LExxC7YDUY:22 a=r_pkcD-q9-ctt7trBg_g:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDIxMyBTYWx0ZWRfX1+oDzhwt/ZVe
+ ADTd7e1L3bFbxotqNiA/7BdVjbxytLdZMXID6Xq7XvMQB71vrFGRYQoOIQR2srMPEZuW5TggN7V
+ 39VdztbOWtKwKeF8k3fVdKn7VHj0PL/ljujxKYSh1Xp2TwrZTVvTIn9lSJpA07G9y2aJ4Tohm1+
+ VV8lbinF31QcHUe8RY9p93EfzkfUhFc9189ZbOtMv7Z+iufGs76wjtcPL5ooHDl5IZEVO4glpgC
+ gU0Vx8FsfppzBZ1P9Ngm2pdwLtSMQ/cwgijPiZ4WqAg96ka90aBTXCP3A2Ll41qsoOMRCDSGClv
+ xCrbu6OeIIlPa4A0JLTW8gKB0WUkFMeM3t9ALXO5/ye0u7pOxuJyd2cilMzwYwecDG8lIqZ2Cs5
+ 8s/hKJLu80t+lV6mrlKpQ8Y/0G4PcAMo8jHgljQaL0ulFRdScKznDLj21sxGMM/lziez2oUjXs9
+ XOUlFsmWrsncjPpY68A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDIxMyBTYWx0ZWRfX0iGibtFm3zj3
+ O5q+cm/WFg6OTuQcidjCbTUj0EX0bEKQZob1gqNYqTLUf/yAAxdoRld1R91A+YZZx5e9LY3BPQG
+ kMpH6KLTwmJX+/8WT3NXiHWmp7LTaEs=
+X-Proofpoint-ORIG-GUID: tJaFwjF7Cuha_2cj5vlaAH-beALbGguj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-10_06,2026-07-10_01,2025-10-01_01
 
-On Fri, Jul 10, 2026 at 09:16:50PM +0100, Lorenzo Stoakes wrote:
-> Similar to what we did with mapping_rmap_tree*(), let's declare
-> anon_vma_interval_tree*() in terms of anon_vma rather than rb_root_cached.
-> 
-> In each case the rb tree referenced is &anon_vma->rb_root, so just pass
-> anon_vma and the functions can figure this out themselves.
-> 
-> Also update the VMA userland tests to reflect the change.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Thu, Jul 9, 2026 at 12:26=E2=80=AFPM Alex Williamson <alex@shazbot.org> =
+wrote:
+>
+> >
+> On Thu, 2 Jul 2026 11:10:13 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Changes since v10:
+> >   Patch 2 (dma-buf): Per Christian K=C3=B6nig, document that the ST/PH
+> >   returned by dma_buf_get_pci_tph() is only valid until the exporter
+> >   invalidates the current mapping and must be re-queried afterwards;
+> >   note added to the wrapper kernel-doc and referenced from the callback
+> >   kernel-doc. Also add dma_buf_get_pci_tph() and dma_buf_ops.get_pci_tp=
+h()
+> >   to the central dma-buf locking convention.
+> >
+> >   Patch 3 (vfio/pci): Per Alex Williamson, update the vfio_pci_dma_buf
+> >   comment to note that @revoked is additionally protected by memory_loc=
+k,
+> >   and describe the READ_ONCE() rationale in the commit log. No behavior
+> >   change.
+>
+> Sashiko has valid comments[1] across most of the series.
+>
+>  - Passing through 0b10 seems mis-categorized as High in patch 1, but
+>    is valid hardening if tph_req_type can ever hold an invalid value.
+>
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+agreed, not High and pre-existing: get_rp_completer_type() is from the
+original TPH
+support and untouched here. I can send the hardening change in a separate p=
+atch.
 
+>  - The documentation error in patch 2 is real.
+>
+
+will fix!
+
+>  - Patch 4 ironically fails to re-validate according to the lifecycle
+>    requirements that patch 2 specifies.  This is a significant gap in
+>    the implementation proof for a real requester.
+>
+
+Got it, I'll re-query ma_buf_get_pci_tph() there and reprogram the
+mkey's steering tag,
+so the lifecycle is honored.
+
+>  - The broadened scope of the existing memory leak in patch 4 is
+>    already addressed in [2], ok.  Maybe should be folded into this
+>    series if mlx5 isn't going to pick it up separately.
+>
+
+ [2] is already accepted and landing through the mlx5/RDMA tree.
+
+I plan to keep it as a standalone dependency.
+
+> Thanks,
+> Alex
+>
+> [1]https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260702181=
+025.2694961-1-zhipingz@meta.com__;Iw!!Bt8RZUm9aw!5x8TPHfbpTXQJ872nmZaHsPIXH=
+7HsL9ICbZR3G37yKkHgB-RukCDOy3XiLIOhfhP-yTczTyWQmud$
+> [2]https://lore.kernel.org/linux-rdma/20260612170406.3339093-1-zhipingz@m=
+eta.com
+
+Thanks,
+Zhiping
