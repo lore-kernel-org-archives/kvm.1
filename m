@@ -1,323 +1,525 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C5F223DC6
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 06:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783664438; cv=pass; b=Gf1vKrp89rPYqHVdmmCTcS/GoAxoMOwUBCRkhpfKWtpb/0Lg+l4Al8D/k5duPcdumE+tgUncBx221aLEhjurya2ImRCzIN13AY5fAhsWjAlXEjKLQVQxTt+Jj3yg3vQBfmKPcvIn5wMjOvGmrRwrw0ybzrQldVZ9ajT23E2/gHY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783664438; c=relaxed/simple;
-	bh=oZk47QZw6+QfNm6Bg5lxiTu81BqC2j0+099W21nNZ4Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M3z1oGAlISUsYGBpzeTtHo+iAKaEHmi5cH5fOlrUu0HgwalEx31hg0LxT/Asao9y/7v0zru/KG7b8qxed1gUfAvFNtg8TTcqhW7bTAm5w9D+R9fPzZOBuMyqm62+F4gi42FlmW535h0O3JpBYxgfSTDFLHfcCyE1Pjeto8C+1qk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com; spf=pass smtp.mailfrom=bitdeer.com; dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b=HGKqIQa0; arc=pass smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bitdeer.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitdeer.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946BD35AC18;
+	Fri, 10 Jul 2026 06:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783665939; cv=none; b=TSTVtcfz+KulajSBO6QsVwukiscgtFeElGSdDclKJc+uCgQ8SgmANmupMETafY3fn6cxnBUcX23GB65Vc+5zM0fScNBPhzfqvk2Oqer/PZPBUSi6wODZpRTjkGKn5MKA0kE9f6lHh6RTuB1GRgjEPftIuFhUBbiWsFHJgfj3WPA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783665939; c=relaxed/simple;
+	bh=e5Bl/DtahM5m3oGNg6W1qTFY42KyEVFijhMuSsyeH9Y=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WdB90DPnsZmUGDMMHsw5lNr7gEN+d76Dt9kOwjlXsXv4cmQLpfNlhry23bXMrhLPY5/r86nLGXP9FzvA6AInHze5l8P3KVcsmAXvUagt+fN4eSVRlBucsdfe42ZTehvWvYqaH3TCm9K9SZaJb/YkR4SSVkHr7dCBZTqxH7B359g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=amKzr4xG; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitdeer.com header.i=@bitdeer.com header.b="HGKqIQa0"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-39c9bb9d2fbso819101fa.2
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 23:20:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783664435; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SXe66CcKoaFa69wTTcttlmQGVm5rnbi+2Y0PH+eGk3wPBtOFJCkolqZBrQk4VaFATM
-         ZRGwipBjeHuIpxtGMDtX0c9R41m1XoxKzkVluNCKv8z65919XcOBCd3EBM+1fqMtKKiG
-         b7mM2VgZZrvHc0q40v8TnDTPlTFABi6hxTUu7ZEoCvZVY8ZuLlir2724Zf+M8DmUpZte
-         TmZ8B5V0sBwj1/4/niPqlVczXL8R8o8ipoVsPcn4y++6EplbwrF1ir5PQExgiEPu8CeK
-         RlwhixLR/B8KRmXMeOIVRxCCQbPN7zBpyS70MMUNJBXlqR30dKbntdXXJ+7OiJIYO4TQ
-         yz+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3K2lJjNYbabdV2J8xkgif5q+aOVMgO7AsbYEYuCj8Tw=;
-        fh=SEcF4JvG5rq3+pEnzFOQnpUEqRZklJm7Iy/S+cWwpUI=;
-        b=Fc5YX47Zt12AYlxbQGntR2o/+9OqlbWEfI7Tp7+7ODFTf8+Q5bbaYbN+1/F8RRaq48
-         baR3Yi2VWijWsl92m282AEpOlEgjDUw6Ne45psIu0TM0aWQnp5XEBBTLq/3vuXwNCzeR
-         uHOYwup5D8mN54nPbhgGqLcqWzKlpD+4HGoVY2jzysmRAetEd1vinzuXyE7xAK0hRco9
-         i+I5fYgb3IPpTkWRq49TosbpdDTyakSPh11vkb/DO/A9F6UEX2e2uIG49OBNyGLvQ9gv
-         Q5+uMNUbSaOXdvXFG6gundYnUO+43/HTnElDJI7Dk8ZvNs3fuW9S9mDsIk1Uno/YoHPM
-         o6lw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="amKzr4xG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitdeer.com; s=google; t=1783664435; x=1784269235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3K2lJjNYbabdV2J8xkgif5q+aOVMgO7AsbYEYuCj8Tw=;
-        b=HGKqIQa0BfSMWlk0P5/79bjULpFD3dt6hgpDGyM3eSeawBat/5HkYzWBCsuHjO4GcP
-         RYVdC5jIxDGqaf/fzIrbevsj0OsvP90+1QXApERdv/VY1CN0wb8orFQipwha4tDdJ9NH
-         VGP7KHag2kTpowY1oi6aE7BOS2yx2dlS//zqGYSgguCSs7M6fSJK7XfQiUkxP4DZUK3d
-         eSyQ67IMzOzE78MZUdwm52nXfUNxAehxyNO7agEMauqwzg0HM0Eee/BOu85+Plik8Uxx
-         ZJ/Gq+2HoMQS/OqgXTSeMHenzOVWqHIiZbLPXSQJ2PCmy9H0fNHAP/JX1I/rCMsXBJdT
-         ACUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783664435; x=1784269235;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3K2lJjNYbabdV2J8xkgif5q+aOVMgO7AsbYEYuCj8Tw=;
-        b=JnSFuUWC7YDtprJpft1ZuKKH5KgLnIKkOX4kyezYBsK7fSfqnvE71d9/XGYKdKsYQy
-         tp0Aa/6w/oM0gyzP77+1a8K1pGVOjYgos2FnLUIL0hcdDWjuIGfqyGp6E1QLqP+RbgRL
-         zFDVcJbeGJ5FNOjLVTY3gjyZAbLj58FxFZFHn5scBOImkTjW8xNyBnD9q1PefIDGATrg
-         Fo5Re6g8vJNcZBZCqgPwHWyXe5NCzzZzlEqWcVqzUT6XaBT8E5L3QQGIS/DPU/goKitC
-         QQrVhzTHk9R1ooyUJwWXT8FHm/9hB3B0Eyig8zAsIZ3h07YSMxqqjkOu4WhabNxEcuTX
-         1uIQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzQOSfY4zrivVNpDzE/5kacCcRca5XzwFCx3f/wj/kJAZlJ3FUecfrvLkWSt9TMmCnX7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwfx7Ka+RXSgdmOWUU0Da1jMSgRD2gfbC3FeqRdAt/YlJpKuIz
-	+1CnN3NFxQFV7kNbTvDUAc6Fvb6ixUWj52bBgYJzomvxMtvWeOBxUY5nojFMBfgXKjMhoMvM/Va
-	3u39cmf/VgAb6UEX/2Tc5AMr/5+dKxpG/HV1Wu8t+yg2S+5cAcap6MSo=
-X-Gm-Gg: AfdE7ckEs72BGKUqJUfbk/lRUwl5x8Otn3RmMdlrB6nNQehPH3Xmtn4TWIDtiblpshT
-	PWRZqM708F8WdQIEyEXNF7e/5Q4mqZB3IUTed1SoUMn4t7ZIBkHnBztFb7w/jeVsc0lz88uSFzN
-	TNTXb/fVlOGLdHiHN3Pb8Gzg6uTGvn+pRtX6ecRUiQru9a0yqbA68W5aWifa1USWJ8TnzU+m9Zt
-	66GIuNZhTnH9D0jfzSeQ7SWAVykJMHU50BkIK7rBojHzBCEu4F3ADCf3ovJjAhrAlnatrjF
-X-Received: by 2002:a2e:ab06:0:b0:39c:94d4:fb51 with SMTP id
- 38308e7fff4ca-39c94d4ffb1mr4235191fa.34.1783664434683; Thu, 09 Jul 2026
- 23:20:34 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1783665937; x=1815201937;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=TM+nxZld2Hns5mSjiSG+hFIbK+AXxcbV4j0W5iXh5EA=;
+  b=amKzr4xGc/E9epvl2BkMyH6niTIkDvZj8n3240xltuK3DYrl7eLj0+lo
+   uLpnWn2nG6B4XxwlWtY5O5OXx1DJ4c/lj6TBpbtgYdG+m0arfO7pWi9Q8
+   DzD4RD1UTmhIZTgPyjM8xUXCd+Bouc/FiSuT3m5I5o5g9u9zBmniVVcne
+   4dIp8MsXGEw0U5+AdhKdHp8qcZa0p4gkYh1YkUvj7pIeaC65U5s6FUfm9
+   HsempWxXk6IcFHIEfFoQQ4rIAvk7dM+o5+auIFRUmA4pjSJp6k5chR0E4
+   Qx3JBOO2sLG1XIzLjNUrhnzM8BAgSr08T6FpPbrdP4bJrzFPz5V7vOcYC
+   A==;
+X-CSE-ConnectionGUID: WTV9SxdtQxWNd7Mz5WIYrw==
+X-CSE-MsgGUID: guInl4CxQD+7l2f3tVBPQQ==
+X-IronPort-AV: E=Sophos;i="6.25,154,1779148800"; 
+   d="scan'208";a="23439201"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 06:45:37 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:1470]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.135:2525] with esmtp (Farcaster)
+ id d8dcac52-0378-4be4-aa72-d99b8a0a3801; Fri, 10 Jul 2026 06:45:36 +0000 (UTC)
+X-Farcaster-Flow-ID: d8dcac52-0378-4be4-aa72-d99b8a0a3801
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Fri, 10 Jul 2026 06:45:36 +0000
+Received: from dev-dsk-congkai-2a-df9e8fab.us-west-2.amazon.com
+ (172.23.251.204) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Fri, 10 Jul 2026
+ 06:45:36 +0000
+From: Congkai Tan <congkai@amazon.com>
+To: <oupton@kernel.org>
+CC: <blakgeof@amazon.com>, <catalin.marinas@arm.com>, <congkai@amazon.com>,
+	<corbet@lwn.net>, <harisokn@amazon.com>, <joey.gouly@arm.com>,
+	<kvm@vger.kernel.org>, <kvmarm@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<maz@kernel.org>, <pbonzini@redhat.com>, <stanspas@amazon.de>,
+	<suzuki.poulose@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>
+Subject: Re: [PATCH v2 0/3] KVM: arm64: Expose PMMIR_EL1.SLOTS to guests
+Date: Fri, 10 Jul 2026 06:44:23 +0000
+Message-ID: <20260710064423.2667799-1-congkai@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <ak19mPPWcupFwfuE@kernel.org>
+References: <ak19mPPWcupFwfuE@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260604070029.34982-1-guobin@linux.alibaba.com>
- <CAFWXh4w==tF6VA1QyHWRqBX0hBE2R1Ko7u2Expwn+xv7=Fed2w@mail.gmail.com> <CAFWXh4x7sP-r6i9n-X7-gzkNNNqE5OegYkJZ=6TQvzhtgFLPdg@mail.gmail.com>
-In-Reply-To: <CAFWXh4x7sP-r6i9n-X7-gzkNNNqE5OegYkJZ=6TQvzhtgFLPdg@mail.gmail.com>
-From: Hy Man <infra.ai.cloud@bitdeer.com>
-Date: Fri, 10 Jul 2026 14:20:21 +0800
-X-Gm-Features: AUfX_mxYHxQzrHIxMXLyAf7SNCY_YI6Wsl4UBQr6JmzU6bogb79UW2SFlnaUTxs
-Message-ID: <CAFWXh4w4K9FabNoSECdrvce7cXZBcC=CYpgxR_3VvyK+hfny-Q@mail.gmail.com>
-Subject: Re: [PATCH v2] accel/kvm: event-driven wakeup for dirty ring reaper thread
-To: Bin Guo <guobin@linux.alibaba.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D038UWC004.ant.amazon.com (10.13.139.229) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Ping
+On Tue, Jul 07, 2026 at 03:28:40PM -0700, Oliver Upton wrote:
+> I've addressed all of this locally and pushed to my tree [*]. Untested,
+> as always :) Would you be able to give it a spin?
 
-In case this patch gets overlooked as time goes on.
+Thank you so much for the review and code suggestions! I integrated
+them and created v3 (with one extra change of wiring
+KVM_CAP_ARM_PMU_V3_STRICT into kvm_vm_ioctl_check_extension() so
+userspace can detect it). I tested the patches with kernel 7.2 and
+patched QEMU 9.2.3, and the behaviors were as expected.
 
-On Thu, Jun 18, 2026 at 8:58=E2=80=AFAM Hy Man <infra.ai.cloud@bitdeer.com>=
- wrote:
->
-> Ping=E3=80=82
->
-> Hi Paolo, could you please take a look at this patch, I=E2=80=99d appreci=
-ate
-> your feedback on this patch.
->
-> On Fri, Jun 5, 2026 at 4:22=E2=80=AFPM Hy Man <infra.ai.cloud@bitdeer.com=
-> wrote:
-> >
-> > Reviewed-by: Hyman Huang <infra.ai.cloud@bitdeer.com>
-> >
-> > On Thu, Jun 4, 2026 at 3:00=E2=80=AFPM Bin Guo <guobin@linux.alibaba.co=
-m> wrote:
-> > >
-> > > The reaper polls with sleep(1) (TODO in the code) and only notices
-> > > dirty-limit teardown at the next 1s tick.
-> > >
-> > > Replace the sleep with qemu_poll_ns() on an EventNotifier, kicked
-> > > from dirtylimit_state_finalize() after dirtylimit_state has been
-> > > cleared.  The kick must follow the NULL assignment: kicking earlier
-> > > wakes the reaper while dirtylimit_in_service() still returns true,
-> > > so it just loops back to wait.  A 1s fallback timeout remains as a
-> > > liveness backstop.
-> > >
-> > > 20 set-/cancel-vcpu-dirty-limit cycles via QMP, |reaper-wake -
-> > > cancel-ack| measured with strace on the reaper TID:
-> > >
-> > >     before: median 255 ms, max 502 ms
-> > >     after:  median 0.6 ms, max  27 ms
-> > >
-> > > kvm_dirty_ring_reaper_init() returns int again (was made void in
-> > > commit 43a5e377f4) to propagate event_notifier_init() failure.
-> > >
-> > > Signed-off-by: Bin Guo <guobin@linux.alibaba.com>
-> > > ---
-> > > Changes in v2:
-> > > - Fix compilation error: kvm_init() has no Error **errp parameter, so
-> > >   kvm_dirty_ring_reaper_init() now uses error_report() directly and
-> > >   no longer accepts an errp argument.
-> > > - Remove the kick from kvm_cpu_exec() KVM_EXIT_DIRTY_RING_FULL handle=
-r:
-> > >   it already reaps synchronously (all vCPUs or the ring-full one), so
-> > >   a background reaper kick would only be redundant or a no-op.
-> > > - Move kick site from dirtylimit_change(false) to
-> > >   dirtylimit_state_finalize() after dirtylimit_state =3D NULL, ensuri=
-ng
-> > >   the reaper actually proceeds past the dirtylimit_in_service() check=
-.
-> > >
-> > >  accel/kvm/kvm-all.c      | 42 ++++++++++++++++++++++++++++++++++----=
---
-> > >  accel/stubs/kvm-stub.c   |  4 ++++
-> > >  include/system/kvm.h     |  7 +++++++
-> > >  include/system/kvm_int.h |  3 +++
-> > >  system/dirtylimit.c      |  2 ++
-> > >  5 files changed, 52 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> > > index 96f90ebb24..be005832bc 100644
-> > > --- a/accel/kvm/kvm-all.c
-> > > +++ b/accel/kvm/kvm-all.c
-> > > @@ -1754,6 +1754,8 @@ static void kvm_set_phys_mem(KVMMemoryListener =
-*kml,
-> > >      } while (size);
-> > >  }
-> > >
-> > > +#define KVM_DIRTY_RING_REAPER_FALLBACK_NS  (1 * NANOSECONDS_PER_SECO=
-ND)
-> > > +
-> > >  static void *kvm_dirty_ring_reaper_thread(void *data)
-> > >  {
-> > >      KVMState *s =3D data;
-> > > @@ -1764,12 +1766,18 @@ static void *kvm_dirty_ring_reaper_thread(voi=
-d *data)
-> > >      trace_kvm_dirty_ring_reaper("init");
-> > >
-> > >      while (true) {
-> > > +        GPollFD pfd =3D {
-> > > +            .fd =3D event_notifier_get_fd(&r->reaper_notifier),
-> > > +            .events =3D G_IO_IN,
-> > > +        };
-> > > +
-> > >          r->reaper_state =3D KVM_DIRTY_RING_REAPER_WAIT;
-> > >          trace_kvm_dirty_ring_reaper("wait");
-> > > -        /*
-> > > -         * TODO: provide a smarter timeout rather than a constant?
-> > > -         */
-> > > -        sleep(1);
-> > > +
-> > > +        qemu_poll_ns(&pfd, 1, KVM_DIRTY_RING_REAPER_FALLBACK_NS);
-> > > +
-> > > +        /* Drain unconditionally so a stale event can't spin the nex=
-t loop. */
-> > > +        event_notifier_test_and_clear(&r->reaper_notifier);
-> > >
-> > >          /* keep sleeping so that dirtylimit not be interfered by rea=
-per */
-> > >          if (dirtylimit_in_service()) {
-> > > @@ -1789,13 +1797,32 @@ static void *kvm_dirty_ring_reaper_thread(voi=
-d *data)
-> > >      g_assert_not_reached();
-> > >  }
-> > >
-> > > -static void kvm_dirty_ring_reaper_init(KVMState *s)
-> > > +static int kvm_dirty_ring_reaper_init(KVMState *s)
-> > >  {
-> > >      struct KVMDirtyRingReaper *r =3D &s->reaper;
-> > > +    int ret;
-> > > +
-> > > +    ret =3D event_notifier_init(&r->reaper_notifier, 0);
-> > > +    if (ret < 0) {
-> > > +        error_report("Failed to initialize dirty ring reaper notifie=
-r: %s",
-> > > +                     strerror(-ret));
-> > > +        return ret;
-> > > +    }
-> > >
-> > >      qemu_thread_create(&r->reaper_thr, "kvm-reaper",
-> > >                         kvm_dirty_ring_reaper_thread,
-> > >                         s, QEMU_THREAD_JOINABLE);
-> > > +    return 0;
-> > > +}
-> > > +
-> > > +void kvm_dirty_ring_reaper_kick(void)
-> > > +{
-> > > +    KVMState *s =3D kvm_state;
-> > > +
-> > > +    if (!s || !s->kvm_dirty_ring_size) {
-> > > +        return;
-> > > +    }
-> > > +    event_notifier_set(&s->reaper.reaper_notifier);
-> > >  }
-> > >
-> > >  static int kvm_dirty_ring_init(KVMState *s)
-> > > @@ -3097,7 +3124,10 @@ static int kvm_init(AccelState *as, MachineSta=
-te *ms)
-> > >      }
-> > >
-> > >      if (s->kvm_dirty_ring_size) {
-> > > -        kvm_dirty_ring_reaper_init(s);
-> > > +        ret =3D kvm_dirty_ring_reaper_init(s);
-> > > +        if (ret < 0) {
-> > > +            goto err;
-> > > +        }
-> > >      }
-> > >
-> > >      if (kvm_check_extension(kvm_state, KVM_CAP_BINARY_STATS_FD)) {
-> > > diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-> > > index c4617caac6..b878598552 100644
-> > > --- a/accel/stubs/kvm-stub.c
-> > > +++ b/accel/stubs/kvm-stub.c
-> > > @@ -134,6 +134,10 @@ uint32_t kvm_dirty_ring_size(void)
-> > >      return 0;
-> > >  }
-> > >
-> > > +void kvm_dirty_ring_reaper_kick(void)
-> > > +{
-> > > +}
-> > > +
-> > >  bool kvm_hwpoisoned_mem(void)
-> > >  {
-> > >      return false;
-> > > diff --git a/include/system/kvm.h b/include/system/kvm.h
-> > > index 5fa33eddda..e127a5eb37 100644
-> > > --- a/include/system/kvm.h
-> > > +++ b/include/system/kvm.h
-> > > @@ -553,6 +553,13 @@ bool kvm_dirty_ring_enabled(void);
-> > >
-> > >  uint32_t kvm_dirty_ring_size(void);
-> > >
-> > > +/**
-> > > + * kvm_dirty_ring_reaper_kick - wake the background dirty ring reape=
-r.
-> > > + *
-> > > + * Safe from any thread; no-op when the dirty ring is not in use.
-> > > + */
-> > > +void kvm_dirty_ring_reaper_kick(void);
-> > > +
-> > >  void kvm_mark_guest_state_protected(void);
-> > >
-> > >  /**
-> > > diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
-> > > index 0876aac938..c14ebc927f 100644
-> > > --- a/include/system/kvm_int.h
-> > > +++ b/include/system/kvm_int.h
-> > > @@ -12,6 +12,7 @@
-> > >  #include "system/memory.h"
-> > >  #include "qapi/qapi-types-common.h"
-> > >  #include "qemu/accel.h"
-> > > +#include "qemu/event_notifier.h"
-> > >  #include "qemu/queue.h"
-> > >  #include "system/kvm.h"
-> > >  #include "accel/accel-ops.h"
-> > > @@ -100,6 +101,8 @@ struct KVMDirtyRingReaper {
-> > >      QemuThread reaper_thr;
-> > >      volatile uint64_t reaper_iteration; /* iteration number of reape=
-r thr */
-> > >      volatile enum KVMDirtyRingReaperState reaper_state; /* reap thr =
-state */
-> > > +    /* Wakeup channel: kicked when dirty-limit is torn down. */
-> > > +    EventNotifier reaper_notifier;
-> > >  };
-> > >  struct KVMState
-> > >  {
-> > > diff --git a/system/dirtylimit.c b/system/dirtylimit.c
-> > > index c934ceb0de..a33256ade7 100644
-> > > --- a/system/dirtylimit.c
-> > > +++ b/system/dirtylimit.c
-> > > @@ -239,6 +239,8 @@ void dirtylimit_state_finalize(void)
-> > >      g_free(dirtylimit_state);
-> > >      dirtylimit_state =3D NULL;
-> > >
-> > > +    kvm_dirty_ring_reaper_kick();
-> > > +
-> > >      trace_dirtylimit_state_finalize();
-> > >  }
-> > >
-> > > --
-> > > 2.50.1 (Apple Git-155)
-> > >
+I'll send out the v3 patches shortly.
+
+> Also, do you have VMM patches for using the new feature flag?
+
+Below is the patch against QEMU 9.2.3 that I used for testing. The tests
+were performed using different combinations of the four flags (host
+PMMIR_EL1.SLOTS = 0xa):
+
+- pmu-strict=on,pmu-set=on,pmmir-force=off,pmcr-n-force=off:
+    new happy path where guest read the correct SLOTS (0xa).
+
+- pmu-strict=off,pmu-set=off,pmmir-force=off,pmcr-n-force=off:
+    old happy path where guest read SLOTS as 0x0.
+
+- pmu-strict=off,pmu-set=on,pmmir-force=off,pmcr-n-force=off:
+    non-strict with a PMU set, guest read SLOTS as 0x0 (SLOTS stays
+    gated on the flag).
+
+- pmu-strict=on,pmu-set=off,pmmir-force=off,pmcr-n-force=off:
+    strict with no PMU, so KVM_ARM_VCPU_PMU_V3_INIT failed with -ENXIO
+    and the guest did not boot.
+
+- pmu-strict=on,pmu-set=on,pmmir-force=0,pmcr-n-force=off:
+    strict with PMMIR forced to 0 (backward compatibility), where the
+    KVM_SET_ONE_REG succeeded and guest read SLOTS as 0x0.
+
+- pmu-strict=on,pmu-set=on,pmmir-force=7,pmcr-n-force=off:
+    strict with PMMIR forced to a mismatching value, so KVM_SET_ONE_REG
+    rejected with -EINVAL and guest still read SLOTS as 0xa.
+
+- pmu-strict=off,pmu-set=on,pmmir-force=0,pmcr-n-force=off:
+    non-strict with PMMIR forced to 0, KVM_SET_ONE_REG returned no error
+    and guest read SLOTS as 0x0.
+
+- pmu-strict=off,pmu-set=off,pmmir-force=10,pmcr-n-force=off:
+    non-strict with PMMIR forced to a non-zero value, KVM_SET_ONE_REG
+    rejected with -EINVAL and guest read SLOTS as 0x0.
+
+- pmu-strict=off,pmu-set=off,pmmir-force=off,pmcr-n-force=3:
+    non-strict with a PMCR_EL0.N write (original behavior), so the write
+    was honored and N read back as 3.
+
+- pmu-strict=on,pmu-set=on,pmmir-force=off,pmcr-n-force=3:
+    strict with a PMCR_EL0.N write, so the write was ignored and N read
+    back 6 (the PMU maximum).
+
+---
+Local test patch for the kernel "strict PMUv3 UAPI / PMMIR_EL1.SLOTS"
+series.
+
+Adds four 'virt' machine properties (all default off):
+
+  pmu-strict=on   request KVM_ARM_VCPU_PMU_V3_STRICT at VCPU_INIT
+  pmu-set=off     skip KVM_ARM_VCPU_PMU_V3_SET_PMU (exercise the no-PMU path)
+  pmmir-force=N   write PMMIR_EL1=N via KVM_SET_ONE_REG (0 = set_pmmir reset)
+  pmcr-n-force=N  write then read PMCR_EL0.N; strict ignores the write
+
+SET_PMU is issued before PMU_V3_INIT (the kernel rejects it afterwards) and
+is followed by a cpreg-cache refresh so the stale PMMIR_EL1=0 cached at init
+is not written back.
+
+Signed-off-by: Congkai Tan <congkai@amazon.com>
+---
+--- a/target/arm/kvm.c	2025-03-26 19:37:01.000000000 +0000
++++ b/target/arm/kvm.c	2026-07-10 04:05:16.082093995 +0000
+@@ -18,11 +18,16 @@
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
++#include "qemu/cutils.h"
+ #include "qom/object.h"
+ #include "qapi/error.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
+ #include "sysemu/kvm.h"
++
++#ifndef KVM_ARM_VCPU_PMU_V3_STRICT
++#define KVM_ARM_VCPU_PMU_V3_STRICT 9
++#endif
+ #include "sysemu/kvm_int.h"
+ #include "kvm_arm.h"
+ #include "cpu.h"
+@@ -1728,6 +1733,82 @@
+     }
+ }
+ 
++/* Test knob: 'pmu-strict' machine property (request KVM_ARM_VCPU_PMU_V3_STRICT). */
++bool kvm_arm_pmu_strict_enabled(void)
++{
++    Object *m = qdev_get_machine();
++
++    if (m && object_property_find(m, "pmu-strict")) {
++        return object_property_get_bool(m, "pmu-strict", NULL);
++    }
++    return false;
++}
++
++/* Test knob: 'pmu-set' machine property (issue SET_PMU; off = no-PMU path). */
++static bool kvm_arm_pmu_set_enabled(void)
++{
++    Object *m = qdev_get_machine();
++
++    if (m && object_property_find(m, "pmu-set")) {
++        return object_property_get_bool(m, "pmu-set", NULL);
++    }
++    return false;
++}
++
++/* Read the host PMUv3 perf "type" id from sysfs; -1 on failure. */
++static int kvm_arm_pmu_read_host_pmu_type(void)
++{
++    const char *path = "/sys/bus/event_source/devices/armv8_pmuv3_0/type";
++    g_autofree char *contents = NULL;
++    const char *ep;
++    gsize len;
++    int type;
++
++    if (!g_file_get_contents(path, &contents, &len, NULL)) {
++        return -1;
++    }
++    if (qemu_strtoi(contents, &ep, 10, &type) < 0 || (*ep && *ep != '\n')) {
++        return -1;
++    }
++    return type;
++}
++
++/*
++ * Select the host PMU (SET_PMU). Under the strict UAPI this is mandatory and
++ * makes the kernel snapshot PMMIR_EL1.SLOTS. Call after INIT, before PMU_V3_INIT.
++ */
++void kvm_arm_pmu_set_pmu(ARMCPU *cpu)
++{
++    int pmu_type;
++    struct kvm_device_attr attr = {
++        .group = KVM_ARM_VCPU_PMU_V3_CTRL,
++        .attr = KVM_ARM_VCPU_PMU_V3_SET_PMU,
++    };
++
++    if (!cpu->has_pmu || !kvm_arm_pmu_set_enabled()) {
++        return;
++    }
++
++    pmu_type = kvm_arm_pmu_read_host_pmu_type();
++    if (pmu_type < 0) {
++        warn_report("PMU: could not read host PMU type; "
++                    "PMMIR_EL1.SLOTS will read 0 in the guest");
++        return;
++    }
++    attr.addr = (intptr_t)&pmu_type;
++
++    if (!kvm_arm_set_device_attr(cpu, &attr, "PMU SET_PMU")) {
++        warn_report("PMU: KVM_ARM_VCPU_PMU_V3_SET_PMU unsupported or failed; "
++                    "PMMIR_EL1.SLOTS will read 0 in the guest");
++        return;
++    }
++
++    /* Refresh the cpreg cache so the stale PMMIR_EL1=0 isn't written back. */
++    if (!write_kvmstate_to_list(cpu)) {
++        warn_report("PMU: failed to refresh cpreg cache after SET_PMU");
++    }
++}
++
+ void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq)
+ {
+     struct kvm_device_attr attr = {
+@@ -1904,6 +1985,10 @@
+     }
+     if (cpu->has_pmu) {
+         cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
++        /* Test knob: opt in to the strict PMUv3 UAPI. */
++        if (kvm_arm_pmu_strict_enabled()) {
++            cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_PMU_V3_STRICT;
++        }
+     }
+     if (cpu_isar_feature(aa64_sve, cpu)) {
+         assert(kvm_arm_sve_supported());
+--- a/target/arm/kvm_arm.h	2025-03-26 19:37:01.000000000 +0000
++++ b/target/arm/kvm_arm.h	2026-07-10 04:05:25.331964805 +0000
+@@ -207,6 +207,10 @@
+ 
+ void kvm_arm_pmu_init(ARMCPU *cpu);
+ void kvm_arm_pmu_set_irq(ARMCPU *cpu, int irq);
++/* Test knob: select the host PMU (SET_PMU). Call after INIT, before PMU_V3_INIT. */
++void kvm_arm_pmu_set_pmu(ARMCPU *cpu);
++/* Test knob: true if the 'pmu-strict' machine property is set. */
++bool kvm_arm_pmu_strict_enabled(void);
+ 
+ /**
+  * kvm_arm_pvtime_init:
+@@ -280,6 +284,16 @@
+     g_assert_not_reached();
+ }
+ 
++static inline void kvm_arm_pmu_set_pmu(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++static inline bool kvm_arm_pmu_strict_enabled(void)
++{
++    return false;
++}
++
+ static inline void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
+ {
+     g_assert_not_reached();
+--- a/hw/arm/virt.c	2025-03-26 19:37:00.000000000 +0000
++++ b/hw/arm/virt.c	2026-07-10 04:05:51.051606007 +0000
+@@ -53,6 +53,7 @@
+ #include "hw/loader.h"
+ #include "qapi/error.h"
+ #include "qemu/bitops.h"
++#include "qemu/cutils.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "hw/pci-host/gpex.h"
+@@ -2070,7 +2071,64 @@
+                 if (kvm_irqchip_in_kernel()) {
+                     kvm_arm_pmu_set_irq(ARM_CPU(cpu), VIRTUAL_PMU_IRQ);
+                 }
++                /* Test knob: SET_PMU before PMU_V3_INIT (see kvm_arm_pmu_set_pmu). */
++                kvm_arm_pmu_set_pmu(ARM_CPU(cpu));
+                 kvm_arm_pmu_init(ARM_CPU(cpu));
++                /* Test knob: force PMMIR_EL1 (0 = set_pmmir() back-compat reset). */
++                if (vms->pmmir_force >= 0) {
++                    uint64_t v = vms->pmmir_force;
++                    int r = kvm_set_one_reg(cpu, ARM64_SYS_REG(3, 0, 9, 14, 6),
++                                            &v);
++                    if (r) {
++                        warn_report("pmmir-force: KVM_SET_ONE_REG(PMMIR_EL1) "
++                                    "returned %d", r);
++                    }
++                    /* Refresh the cpreg cache so the forced value sticks. */
++                    if (!write_kvmstate_to_list(ARM_CPU(cpu))) {
++                        warn_report("pmmir-force: failed to refresh cpreg "
++                                    "cache after KVM_SET_ONE_REG");
++                    }
++                }
++                /*
++                 * Test knob: SET then GET PMCR_EL0.N. strict=on -> write ignored
++                 * (N stays at max); strict=off -> read-back matches the write.
++                 */
++                if (vms->pmcr_n_force >= 0) {
++                    uint64_t pmcr = 0;
++                    int r = kvm_get_one_reg(cpu, ARM64_SYS_REG(3, 3, 9, 12, 0),
++                                            &pmcr);
++                    if (r) {
++                        warn_report("pmcr-n-force: KVM_GET_ONE_REG(PMCR_EL0) "
++                                    "returned %d", r);
++                    } else {
++                        uint64_t n = vms->pmcr_n_force;
++
++                        pmcr &= ~(uint64_t)PMCRN_MASK;
++                        pmcr |= (n << PMCRN_SHIFT) & PMCRN_MASK;
++                        r = kvm_set_one_reg(cpu,
++                                            ARM64_SYS_REG(3, 3, 9, 12, 0),
++                                            &pmcr);
++                        if (r) {
++                            warn_report("pmcr-n-force: KVM_SET_ONE_REG("
++                                        "PMCR_EL0) returned %d", r);
++                        }
++                        if (!kvm_get_one_reg(cpu,
++                                             ARM64_SYS_REG(3, 3, 9, 12, 0),
++                                             &pmcr)) {
++                            uint64_t got = (pmcr & PMCRN_MASK)
++                                           >> PMCRN_SHIFT;
++                            info_report("pmcr-n-force: wrote N=%" PRIu64
++                                        ", read back N=%" PRIu64 " (strict=%s)",
++                                        n, got,
++                                        vms->pmu_strict ? "on" : "off");
++                        }
++                        /* Keep QEMU's cpreg cache consistent with the kernel. */
++                        if (!write_kvmstate_to_list(ARM_CPU(cpu))) {
++                            warn_report("pmcr-n-force: failed to refresh cpreg "
++                                        "cache after KVM_SET_ONE_REG");
++                        }
++                    }
++                }
+             }
+             if (steal_time) {
+                 kvm_arm_pvtime_init(ARM_CPU(cpu), pvtime_reg_base
+@@ -2676,6 +2734,88 @@
+     vms->mte = value;
+ }
+ 
++static bool virt_get_pmu_strict(Object *obj, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    return vms->pmu_strict;
++}
++
++static void virt_set_pmu_strict(Object *obj, bool value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    vms->pmu_strict = value;
++}
++
++static bool virt_get_pmu_set(Object *obj, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    return vms->pmu_set;
++}
++
++static void virt_set_pmu_set(Object *obj, bool value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    vms->pmu_set = value;
++}
++
++static char *virt_get_pmmir_force(Object *obj, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    if (vms->pmmir_force < 0) {
++        return g_strdup("off");
++    }
++    return g_strdup_printf("%" PRId64, vms->pmmir_force);
++}
++
++static void virt_set_pmmir_force(Object *obj, const char *value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++    uint64_t v;
++
++    if (!strcmp(value, "off")) {
++        vms->pmmir_force = -1;
++        return;
++    }
++    if (qemu_strtou64(value, NULL, 0, &v) < 0) {
++        error_setg(errp, "Invalid pmmir-force value '%s' "
++                   "(expected 'off' or an integer)", value);
++        return;
++    }
++    vms->pmmir_force = (int64_t)v;
++}
++
++static char *virt_get_pmcr_n_force(Object *obj, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++
++    if (vms->pmcr_n_force < 0) {
++        return g_strdup("off");
++    }
++    return g_strdup_printf("%" PRId64, vms->pmcr_n_force);
++}
++
++static void virt_set_pmcr_n_force(Object *obj, const char *value, Error **errp)
++{
++    VirtMachineState *vms = VIRT_MACHINE(obj);
++    uint64_t v;
++
++    if (!strcmp(value, "off")) {
++        vms->pmcr_n_force = -1;
++        return;
++    }
++    if (qemu_strtou64(value, NULL, 0, &v) < 0) {
++        error_setg(errp, "Invalid pmcr-n-force value '%s' "
++                   "(expected 'off' or an integer)", value);
++        return;
++    }
++    vms->pmcr_n_force = (int64_t)v;
++}
++
+ static char *virt_get_gic_version(Object *obj, Error **errp)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(obj);
+@@ -3233,6 +3373,41 @@
+                                           "to a KVM guest using ACPI and guest external abort exceptions");
+ 
+     object_class_property_add_bool(oc, "mte", virt_get_mte, virt_set_mte);
++
++    object_class_property_add_bool(oc, "pmu-strict", virt_get_pmu_strict,
++                                   virt_set_pmu_strict);
++    object_class_property_set_description(oc, "pmu-strict",
++                                          "Test knob: request the strict "
++                                          "PMUv3 UAPI (KVM_ARM_VCPU_PMU_V3_"
++                                          "STRICT) for each vCPU");
++
++    object_class_property_add_bool(oc, "pmu-set", virt_get_pmu_set,
++                                   virt_set_pmu_set);
++    object_class_property_set_description(oc, "pmu-set",
++                                          "Test knob: issue "
++                                          "KVM_ARM_VCPU_PMU_V3_SET_PMU "
++                                          "(default on); off exercises the "
++                                          "strict no-PMU path");
++
++    object_class_property_add_str(oc, "pmmir-force", virt_get_pmmir_force,
++                                  virt_set_pmmir_force);
++    object_class_property_set_description(oc, "pmmir-force",
++                                          "Test knob: force PMMIR_EL1 to this "
++                                          "value via KVM_SET_ONE_REG after the "
++                                          "PMU is selected. 'off' (default) "
++                                          "leaves the kernel snapshot intact; "
++                                          "0 exercises the set_pmmir() "
++                                          "back-compat reset");
++
++    object_class_property_add_str(oc, "pmcr-n-force", virt_get_pmcr_n_force,
++                                  virt_set_pmcr_n_force);
++    object_class_property_set_description(oc, "pmcr-n-force",
++                                          "Test knob: write PMCR_EL0.N with "
++                                          "this value via KVM_SET_ONE_REG, then "
++                                          "read it back and log the result. "
++                                          "Under pmu-strict=on the kernel "
++                                          "ignores the write (N stays at max); "
++                                          "off (default) disables the knob");
+     object_class_property_set_description(oc, "mte",
+                                           "Set on/off to enable/disable emulating a "
+                                           "guest CPU which implements the ARM "
+@@ -3290,6 +3465,12 @@
+     /* EL2 is also disabled by default, for similar reasons */
+     vms->virt = false;
+ 
++    /* Test knobs default: select a PMU, no strict flag, no pmmir override */
++    vms->pmu_strict = false;
++    vms->pmu_set = true;
++    vms->pmmir_force = -1;
++    vms->pmcr_n_force = -1;
++
+     /* High memory is enabled by default */
+     vms->highmem = true;
+     vms->highmem_compact = !vmc->no_highmem_compact;
+--- a/include/hw/arm/virt.h	2025-03-26 19:37:00.000000000 +0000
++++ b/include/hw/arm/virt.h	2026-07-10 04:06:12.091312904 +0000
+@@ -180,6 +180,11 @@
+     char *oem_id;
+     char *oem_table_id;
+     bool ns_el2_virt_timer_irq;
++    /* Test knobs for the strict PMUv3 series (-1 / false = off). */
++    bool pmu_strict;      /* request KVM_ARM_VCPU_PMU_V3_STRICT */
++    bool pmu_set;         /* issue SET_PMU (default on) */
++    int64_t pmmir_force;  /* force PMMIR_EL1 via KVM_SET_ONE_REG */
++    int64_t pmcr_n_force; /* write+read PMCR_EL0.N via KVM_SET_ONE_REG */
+ };
+ 
+ #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
