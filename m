@@ -1,115 +1,142 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433626A1C4
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 05:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441901F4634;
+	Fri, 10 Jul 2026 05:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783659996; cv=none; b=ljBpr6z8eNi5MwRymV6h1KrAKqB95QUTnBlshcMc7VmWpvMOoq0fRH5uabKzXG9wA/WtD6dtvKYG+gfH6Hr7umrz6ThavXvjlK7gvVaQayuG/JLE39lOIoyvdufxbuUDbD062wAo8cwHwN0DwSeHGuwLuii1cThDnIujpTmQANQ=
+	t=1783660302; cv=none; b=uyyHls/7iQyZhfg6Xf0M9SUuaqnP5hJXKsctBM5YWdlc/djRbNqA7uF2A+I/aueIwzfSItb1Upk4RVivXt8djA0xVwjHWb5KtdUjD9KF3NRoGTDJym9C8ivKOcTzE/QmOVcrUTsdQQteJQyIul290aTvUQG7JxGH73D4M145ddc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783659996; c=relaxed/simple;
-	bh=tqNjoAgnA9FBPaw/OgwTVGIEq2ZEoyk6fxq9pWfgyts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQZrnNv+1hVxm5QRJPNmegnTwPzUI4ltUShhLpnLHtDBCDNbhDQO/WGOIpaAhlcya535QTKyqSUUj+3tgcxORQhpJgDm3CinJA8D7E6XF6ZAj38eKPefPXp9ktiBn5fUjMJfGd0xeOtAXXd8+E9U6r5aGlpc5SyqflDMij5/7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oga1ocQg; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783660302; c=relaxed/simple;
+	bh=dME6OgFdwvQ3QIqLtKnDlKNLG71EI67e/Ymtvu9srxw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bVK5WN/Hi6IdsD1AQNEi6l2vfdgfas0IiOutZGhK+1t79lXljN8nST5pheuz9tt5LoaVS13Sb64JlPV2xxr8g3aj9FZwDrxr8c1eyrjzGfGr8CCzKW+/oQ2aa3slN+acLuRnz89Ve7u8EYHTAHf2z4HqBmO2aof3iBz/LxE/8yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ph4b7BZG; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oga1ocQg"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so4926615ad.1
-        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 22:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783659995; x=1784264795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ImNIiwacby35FVtPkvIxY12uGz7n2N70CkNy2HlFDRQ=;
-        b=oga1ocQgkwGiJFx//QKQF4V3Xud+5fOmk1Kj7EK7FYSsSrgHIo8Ax0fvnQNsZCZBS4
-         wJPcOv+DADcNg3+BwlzcYch0uYiDHvcKPMsi4eKAJPNEoFVKbBNkMJRBxMobm+qcoBQA
-         7N48XWLi/ds5wb6kU2q3dRXAYGqhL70ze1IXMamW2vkc7LhwQavIfUEo13F61OUsPFtO
-         +tk53z+eoGCSL70mPAJM62wHMH+ImkdGqr3B0G50A0A3osbKeiecg/+KIjfmHKCQBSiS
-         QyZm/WdGmLs/0J32Sce5hVy1lQacDti46o+gVr7PaT0lWh0OQaPTSH6rghlKbV/9MFic
-         +P7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783659995; x=1784264795;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ImNIiwacby35FVtPkvIxY12uGz7n2N70CkNy2HlFDRQ=;
-        b=I3pP7tb1mM1YuEDMaYL2NbVNzlnEUi5nMvOpB07aYj5A484ppHtD1crDH45X0KsD9g
-         BfPjQfuUvpJMUbnvbtRAb98/zYBCMhO2doABDD49s2uKHG76f/4Z3stlEDB9R4H+tmXa
-         6KcweYstbkuk00xR6G65WkP/48Ikloqr320mmsk+98Ed1Z9z/ivRHS/PnI8jArkY/Cz/
-         lIz/b/24RNQHsEuJZq7Ph+OQJ+q0tWr0p0F4k/gsSF1q5yd/RjZYID0o6wH1CWkXLH4I
-         VF/5agvbJtT1c4MHYtsJiqsfKP+XiDsU3dkqiOj4yCHIn09pt0RrAogfvoJhzCI8jkCh
-         g1Jw==
-X-Forwarded-Encrypted: i=1; AHgh+RqWBchNLZtoCjBjyUlsMGGXEU7Z+6SdrZCodMP9l9s1JKMz5KgtqqAxd/cVJvfIQ64N94E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzog63CSGCkH0GHljxsq1iQQnKkVQOVh1EN9UzSr/fRyEtP2zog
-	m9Sk73YS/LnoGqdPJsuzHXA3tV5SAJ9QTApK9EVLRKJWsCXGdtIKN+kE
-X-Gm-Gg: AfdE7cmwRfTK/PTaAFmFY8LBUD+gFYjUOJsphJI79zu3ySIJeCtkR5YAY2YpwVy8Y1M
-	qhCjjeOTs7GqNM6y0OCwmvSDCTfUsn476ted/irVZ+mE38Hucji+rdyYgioCSwqC8/tsVORWI+c
-	U0bGiUhN3Nw1ZO+5s2pPLyOQTkOiWMRnM7y4G7S9c18oXYbV4JbK2iBG12b4XixdFKkhTcrHtLs
-	+p4A86/0gq8ic6tPL9HzAj+0CUxVZHTTQc+YHzP/fGVLXIcOr6Qm98vVPywoFsNDuhUyqs+G4v+
-	Pl4LWkjLqZoiMDke6vL7/KtZK48WVz847nSpBDNL1WYKoiYGq98B5lbR+RBCOOiWIdlLvpY6omO
-	o1wpJDZ6siwuin9mim4tvXuPPC0ksDej5MiPKMnWCC7bkKupq+cbTNVlTCNor+bMv2govxmWiO2
-	gJkmEPd55IoNh4syAhpSKGgiCyNGRZv85+Pfo=
-X-Received: by 2002:a05:6a20:158e:b0:3bf:ee42:195 with SMTP id adf61e73a8af0-3c0bc90146amr11909587637.11.1783659994980;
-        Thu, 09 Jul 2026 22:06:34 -0700 (PDT)
-Received: from volcano9f8e-host.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659c865asm38752224c88.11.2026.07.09.22.06.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 22:06:34 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: seanjc@google.com
-Cc: pbonzini@redhat.com,
-	shuah@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hemanth Selam <hemanth.selam@gmail.com>
-Subject: Re: [PATCH v2 1/2] KVM: selftests: SEV: Verify unsupported VM types are rejected at creation
-Date: Fri, 10 Jul 2026 10:36:26 +0530
-Message-ID: <20260710050626.844624-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260709174955.628913-2-hemanth.selam@gmail.com>
-References: <20260709174955.628913-2-hemanth.selam@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ph4b7BZG"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66A3nZq3075636;
+	Fri, 10 Jul 2026 05:11:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=V70VbE
+	j1ScjUchlU553r0Xd4F46LqK16+8IJ3ntbpQM=; b=ph4b7BZGCLL6yb2U1Xwwcf
+	xa+rUaUVswqAXodKI9w9TNoYs/ySVTgRVV1fS6f4nkR9tq/NE3wz2T21syNHazIc
+	nLpTr2ncrtSfobNuf1flty6Yf8W+cCdO6EhWNYsn4lO9m8o42yL6XmO6hFmnq9O2
+	WRNNEIN0EEo9LfZfeHgmuYF9YbR053pvpZUPVnGT3WCl7OfHyCFztPlYlaMJvzNe
+	BgOWe6Wt05gIBOFHnSW8U4aSkjudNtu3ZBxqhT990FqyvHDpz1YYg2qwtDE16hDf
+	HFuW3pmBuXRgTcWBoJFyheWmf8/VOcmasL+QaaL1j6UWw6oI26tcOianXAl+bFcQ
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6qknvett-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 05:11:24 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66A54Z9L017949;
+	Fri, 10 Jul 2026 05:11:23 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7f6yg4x3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 05:11:23 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66A5BJ3246596604
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jul 2026 05:11:20 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE2A42004B;
+	Fri, 10 Jul 2026 05:11:19 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE01820040;
+	Fri, 10 Jul 2026 05:11:16 +0000 (GMT)
+Received: from [9.124.216.105] (unknown [9.124.216.105])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Jul 2026 05:11:16 +0000 (GMT)
+Message-ID: <4bea3407-38e1-4d26-8293-7700266a24cf@linux.ibm.com>
+Date: Fri, 10 Jul 2026 10:41:15 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/6] selftests/vfio: Add sPAPR TCE v2 coverage
+To: David Matlack <dmatlack@google.com>
+Cc: alex@shazbot.org, shuah@kernel.org, amastro@fb.com, rananta@google.com,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com,
+        sbhat@linux.ibm.com, harshpb@linux.ibm.com,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <20260703032806.40946-1-nnmlinux@linux.ibm.com>
+ <akwyZvbv7Fg8mfB2@google.com>
+ <afb9bf4d-2258-4731-a28e-7f4eaa01ee0b@linux.ibm.com>
+ <CALzav=eB5NwrHNq4bm2ooSFmTtGk3sfUk7_k+iE+Kwm+Jc9LFA@mail.gmail.com>
+Content-Language: en-US
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <CALzav=eB5NwrHNq4bm2ooSFmTtGk3sfUk7_k+iE+Kwm+Jc9LFA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=Q/XiJY2a c=1 sm=1 tr=0 ts=6a507efd cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=VLoToYxrrouXz2LH_DgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=ZXulRonScM0A:10 a=0lgtpPvCYYIA:10
+X-Proofpoint-GUID: tAg1fWFAaUvzJjsA7pe8fuK0DQwiFHBu
+X-Proofpoint-ORIG-GUID: EXTPp-LVbDKqDrGZm3KQsmZ38b284kHs
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDA0MSBTYWx0ZWRfX8izeTpmsTxGu
+ nWVnQNKBO1ZTeDwfFlNjh/cDemT4A9fOmhiQ8N5L6J2GA5RYCSzDY13MTjWaYn5mfwG5LGRLJJ3
+ Ma8al5MRjZ4kEnQDhT/POgwjEqK9L6Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDA0MSBTYWx0ZWRfX5OyXUVww4uyl
+ 61W4qVO7lzu/jl/O3Up+s4BKNnpmP0crFjUktkccodlVM1cv9RsS2K87kHxJdSAnRY52hyCKEWl
+ /iXdn+yuQII5f8lGieEjL2gUovHi8RFE4sMag570K2TUgiSCn5M9CkkCbVGlSXmWz4Y346agTNm
+ 6njuUR6rLe/8VkbU85/cIIu9Xem7IVzVYvb5WGuumNwr6y9cd9m8zESHnM+vaj3u3HLgMJ0WONf
+ hKH288NfPTN4Xd3m2VY3gnyJxtXI3EC2Rati1VkfYLdyBdVMmiF6ABDqAzIWVTQWF5wG7mtYEnU
+ PrZRMexy/iXL7GLNBOw7xuAO3PRNxbgr45oUvRjmnmdIipyihVhCkFcUfJ5ScnhVIsxU1NwokVW
+ suLbg1mknuUrvIlmabcf6+4xeWm9VIjzUTsolJYFKrqIEof5EAZnqCQydvxhO9fSml7Z2VRsm79
+ +/1GDXuTBi2bh/BmUbg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-10_01,2026-07-09_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607100041
 
-On Thu, Jul 09, 2026, Sean Christopherson wrote:
-> Literally every test relies on the kernel to clean up fds on an early
-> exit.  I see no reason for this to behave differently.
+
+
+On 09/07/26 9:21 PM, David Matlack wrote:
+> On Thu, Jul 9, 2026 at 1:49 AM Narayana Murty N <nnmlinux@linux.ibm.com> wrote:
 >
-> Also, Sashiko was wrong.  If KVM_CREATE_VM fails with something other
-> than EINVAL, the assert will NOT fire, but fd will be < 0.
+>>>> Feedback is requested from the VFIO and PowerPC communities on:
+>>>> 1. whether the sPAPR TCE v2 helpers should remain in the common VFIO
+>>>> selftest library or move into a sPAPR-specific test helper?
+>>> Responded in the patch. Let's move to their own file.
+>> Will do. v2 will have:
+>>
+>>     lib/iommu_spapr.c         — all sPAPR logic, compiled only on powerpc
+>>     lib/iommu_spapr_stub.c    — empty stubs returning -EOPNOTSUPP,
+>>                                 compiled on all other architectures
+>>     lib/include/libvfio/iommu_spapr.h — declarations
+> Just one small thing here: You can put all the stubs in iommu_spapr.h
+> as static inlines, then you don't need the extra C file. e.g.
+>
+> #ifdef __powerpc__
+>
+> ... prototypes ...
+>
+> #else
+>
+> ... static inline stubs ...
+>
+> #endif
+Sure, will follow the same.
 
-Agreed on both; dropped the manual close() and the errno latching.
+regards,
+Narayana
 
-> test_assert logs the errno, no need to spit it out here as well.
-
-Removed.
-
-> Heh, I agree with the comment: put this in a separate selftest.  This
-> doesn't have anything to do with KVM_SEV_INIT2, and in fact doesn't
-> even have anyting to do with SEV+ or even x86.  E.g. add a
-> kvm_vm_types_test that attempts to create all possible VM types, and
-> asserts success/failure based on the output from
-> kvm_check_cap(KVM_CAP_VM_TYPES).
-
-Done.  v3 drops the sev_init2_tests changes and adds a standalone,
-arch-generic test that walks all type values (including out-of-range
-ones) and asserts KVM_CREATE_VM success/failure against
-KVM_CAP_VM_TYPES:
-
-  https://lore.kernel.org/all/20260710050442.826777-1-hemanth.selam@gmail.com/
-
-I also dropped the "SEV: Sanity check the launch measurement" patch for
-now; v3 is just the VM-types test.
-
-Thanks for the review!
-
-Hemanth
