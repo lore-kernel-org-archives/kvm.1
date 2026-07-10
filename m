@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C0A322B7B
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 22:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26C638B14C
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 22:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783722283; cv=none; b=Eg1I8INYV24NzReh/+UjkiWEuPssfvgO8RvzoRhUuimZPXqi7RKn77aXmk7HTet5nd5WvsjcyjWfwHrz4cFzSanTdXcgTMSAew8bQMC+CyNAf5Zkkv/wwoUrN34Nlg3+lT10+vQmKQKOt8qNUZcFIBCzeb88vPNtz0JN55Z9hI8=
+	t=1783722825; cv=none; b=ECcgTbvKpK7/IXZpqITxn+qx3Mpvg3oNx7PAmRkv6OV5N6L2xUqZDL0sMVxzVmgpZgpQ/t1GbJm1lTU9BXK8zv/NuSwrxabeP6P/c3d0LhXQOGzeyoo7UdfMude+n52vTYXViTtcYso3YQy5FCUM3JYs9P3XpQagX3UaXiUqRkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783722283; c=relaxed/simple;
-	bh=+lLZWtWzbq4zpfFekUKWgvj92iC3qcyKYYgwevyaIfQ=;
+	s=arc-20240116; t=1783722825; c=relaxed/simple;
+	bh=L82BID3n4OoGF6lFF+644GNv3DgbXjMK2z/7FRen4UA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KhNkozf8/ljPPxg43GtxMyggBdcKvvV4/HwuLwFuaxx8Tv6FSij8kTrF6VYNQDuwgRdWxY4XmEHvxDwPYp/tOzFhm28kIEhE0jf4tTUzooPNEwdvFTISMr+tI2HKSGZ9gpVd+GMxYhdQXxc2rbiZWitQixbes6ZYzYY6E2IGJBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKrBEBVM; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=VL2zBoAkp75QusQEyxvt0IRQBT5zFK48ntQ0YFG+qLf6MPUV+5CWhSY5IGLqWZzYvBsDNRZK95wuOX5HEuJyhAKopR8sV/g5Tiv+r1PKUNplrFXb8Sdz8lXXf+CmtZFGZQwKcIP/H9toMhoU7bV4qdwSNgHXyy0y2mkxJLv1SVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpJ2bzx9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKrBEBVM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84191F000E9;
-	Fri, 10 Jul 2026 22:24:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpJ2bzx9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65ADF1F00A3A;
+	Fri, 10 Jul 2026 22:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783722281;
-	bh=zvE7s2XIMDATivfUv6Ks3GtUTRaGcG2A83utOid9S34=;
+	s=k20260515; t=1783722823;
+	bh=WVnLyHbnzrn/wv9wqDEsuMqTx+yf61okAKTxmPx6Gqw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WKrBEBVMbYa2XS0AP8wbSdGJfp3EgdYxzevHRfHnyhq4U/Wd0QGC9KMhoX+gbq3Ct
-	 3zh6AREHJ2JLcSwlHgQeqgbvpvpMuwv/HXTYtO+eseljxxfrOV6Ael+en/SgauJn5e
-	 LISn2Kr0J/dNu+PEOBNzQ/j2/3LsNNK/xv4vq1K0HR7AXIiv4Fdi/pbwt8wz008Wbh
-	 IE0pUu+17h2F5QzqKCRTAq3ifLuD0uUFNknlMBFr+o2z5kDvidfmaTmp5uQqclgWxK
-	 wX8ZdeMv1fzGcB+fvu0ekXkQ+rCAx5SKu+YYJ4JRmrz4kO9QgIwPzvNeZOpbGFpubb
-	 stPyyI+EcGCQQ==
+	b=JpJ2bzx92QiylaW1r1R6ArO+BuYqYuWjrhCpTTCRAM/ZVi0Bsx3XatVMtBbOGaEy7
+	 walIGxrQ6zVP1vqrwsbSK3M0PPeoX0/lJPES08/5n6TPf3nzSj7c2mkJrywzjARK+y
+	 qHhMVZkq6MxmKESSs3mIUIf+emAtCcCSPGuh8xzj08VYA7ibWls062g7iZgvY7FdNx
+	 IB3Pv8sU1vLU3ZhTZjyGNrWp620V1ru42zK1vZy/P5XICSvAaqZMiVLnG/HSFrA9nx
+	 My7TAu5WBwCDDQdUvsfiJOkJOnadKDvCcCXjLEPN8CHdY/i9ynNaHDXbJa9kzqs/ew
+	 Bzr0H1ZdnAlgw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/9] vfio: selftests: igb: Extend memcpy completion
- timeout for line-rate hardware
+Subject: Re: [PATCH v4 9/9] vfio: selftests: igb: Recover after DMA-read
+ faults
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Josh Hilke" <jrhilke@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260710-igb_v3_b4-v4-5-56e7e2576cc1@google.com>
+In-Reply-To: <20260710-igb_v3_b4-v4-9-56e7e2576cc1@google.com>
 References: <20260710-igb_v3_b4-v4-0-56e7e2576cc1@google.com>
- <20260710-igb_v3_b4-v4-5-56e7e2576cc1@google.com>
+ <20260710-igb_v3_b4-v4-9-56e7e2576cc1@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 10 Jul 2026 22:24:41 +0000
-Message-Id: <20260710222441.A84191F000E9@smtp.kernel.org>
+Date: Fri, 10 Jul 2026 22:33:42 +0000
+Message-Id: <20260710223343.65ADF1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,84 +47,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The selftest driver permanently desynchronizes its RX ring from =
-the hardware upon encountering a dropped TX packet, leading to cascading te=
-st failures.
+- [Medium] Using a fixed heuristic delay before `vfio_pci_device_reset()` c=
+auses test flakes due to `ioctl_assert` failing on `-EAGAIN`.
 --
 
---- Patch [5]: [PATCH v4 5/9] vfio: selftests: igb: Extend memcpy completio=
-n timeout for line-rate hardware ---
-commit 5b4ec7eb56b488ee6f3c3a7fb697c298ba1953f4
+--- Patch [9]: [PATCH v4 9/9] vfio: selftests: igb: Recover after DMA-read =
+faults ---
+commit 774200982f984c4b603b9d07688586c25dcf8c58
 Author: Alex Williamson <alex.williamson@nvidia.com>
 
-vfio: selftests: igb: Extend memcpy completion timeout for line-rate hardwa=
-re
-   =20
-This commit increases the timeout in the igb driver selftest to wait for RX
-descriptor writeback. It adjusts the wait time from 1 ms to up to 200 ms to
-account for line-rate processing on real 82576 hardware. This provides enou=
-gh
-headroom for legitimate transfers to complete while keeping invalid-DMA tes=
-ts
-bounded.
+vfio: selftests: igb: Recover after DMA-read faults
+
+This commit adds a mechanism to recover from DMA-read faults in the igb
+selftest by issuing a VFIO_DEVICE_RESET. It introduces a 10ms heuristic
+delay before the reset to allow PCIe/IOMMU/AER error handling to complete
+and release the device lock.
 
 > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
 esting/selftests/vfio/lib/drivers/igb/igb.c
-> index cd51a72b0e7fa..172c95cea3c8a 100644
 > --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
 > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> @@ -428,12 +428,23 @@ static int igb_memcpy_wait(struct vfio_pci_device *=
-device)
->  	prev_tail =3D (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
->  	rx =3D &igb->rx_ring[prev_tail];
-> =20
-> -	retries =3D 100;
+[ ... ]
+> @@ -490,7 +512,28 @@ static int igb_memcpy_wait(struct vfio_pci_device *d=
+evice)
+[ ... ]
 > +	/*
-> +	 * Real 82576 hardware processes the descriptor ring at line rate.
-> +	 * max_memcpy_size =3D (RING_SIZE - 1) * IGB_MAX_CHUNK_SIZE ~=3D 4 MB,
-> +	 * split into 4095 1 KB frames.  At 1 Gb/s (~125 MB/s) the worst
-> +	 * valid memcpy takes ~32 ms on the wire, plus per-frame preamble,
-> +	 * SFD, IFG and FCS overhead (~3%) and descriptor fetch/writeback
-> +	 * latency.  Wait up to ~200 ms before declaring the device hung;
-> +	 * ~6x the line-rate floor leaves comfortable headroom for host
-> +	 * scheduling jitter while keeping the intentional invalid-DMA
-> +	 * tests bounded.
+> +	 * The descriptor never completed.  On real 82576 hardware this
+> +	 * typically follows a DMA-read fault from one of the intentional
+> +	 * unmapped-IOVA tests; the fault leaves the descriptor engine
+> +	 * unable to service subsequent valid descriptors.  CTRL.RST alone
+> +	 * reinitializes the queue registers but leaves the engine wedged
+> +	 * for the current process, so a broader VFIO_DEVICE_RESET (FLR)
+> +	 * is required.
+> +	 *
+> +	 * Delay before requesting reset so PCIe/IOMMU/AER error handling
+> +	 * triggered by the just-observed DMA fault can release the device
+> +	 * lock VFIO_DEVICE_RESET contends for.  The 10 ms value is
+> +	 * heuristic.  The current memcpy still fails with -ETIMEDOUT;
+> +	 * recovery only ensures the next memcpy starts from a usable state.
 > +	 */
-> +	retries =3D 200;
->  	while (retries-- > 0) {
->  		status =3D le32_to_cpu(READ_ONCE(rx->wb.status_error));
->  		if (status & 1)
->  			break;
-> -		usleep(10);
-> +		usleep(1000);
->  	}
-> =20
->  	if (status & 1)
+> +	usleep(10000);
+> +	igb_error_reset_and_reinit(device);
 
 [Severity: Medium]
-When the intentional invalid-DMA tests timeout, does the software RX ring
-become permanently desynchronized from the hardware?
+Since the 10ms delay is a heuristic, what happens if asynchronous PCIe AER
+recovery (which can involve link resets and training) takes longer than
+10ms?
 
-In igb_memcpy_start(), the software rx_tail is unconditionally advanced:
+If the device lock is still held when igb_error_reset_and_reinit() calls
+vfio_pci_device_reset(), the underlying ioctl will return -EAGAIN.=20
 
-tools/testing/selftests/vfio/lib/drivers/igb/igb.c:igb_memcpy_start() {
-    ...
-		igb->tx_tail =3D (igb->tx_tail + 1) % RING_SIZE;
-		igb->rx_tail =3D (igb->rx_tail + 1) % RING_SIZE;
-    ...
-}
+Because vfio_pci_device_reset() internally uses ioctl_assert() which expects
+a return value of 0, returning -EAGAIN will immediately abort the test
+program, resulting in a flaky test if the timing is missed.
 
-During an intentional invalid DMA (like in the mix_and_match test), the IOM=
-MU
-blocks the TX fetch and the packet is dropped, so the hardware RX ring never
-advances.
+Would it be more robust to explicitly retry the VFIO_DEVICE_RESET ioctl on=
+=20
+-EAGAIN instead of relying on a fixed sleep and an unconditional assert?
 
-When igb_memcpy_wait() times out, it returns -ETIMEDOUT but leaves the
-software rx_tail out of sync with the hardware RDH.
-
-Could this cause all subsequent valid test loopbacks to fail because they
-wait on the wrong descriptor slot?
+> +
+> +	return -ETIMEDOUT;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260710-igb_v3_b4-=
-v4-0-56e7e2576cc1@google.com?part=3D5
+v4-0-56e7e2576cc1@google.com?part=3D9
