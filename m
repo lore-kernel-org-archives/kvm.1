@@ -1,150 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BCA432BE7;
-	Fri, 10 Jul 2026 15:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDFC3F7A8B
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 15:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783697835; cv=none; b=DsPSITtkj4ti+aOpO46bcsal+mE9Rq5YtWwvDyXzjQku4P4uooOyjqY0uSQHo92YpbjZzfU6mpWPpmWiPgWVEMgTmrnFeFPYtzb6NH5xoFXm2U9vToxZWhufWIMMjoMSnKIhQy1eabGqyFQc2IB6hs0UoiwOjcT9Ef5n0a40F+A=
+	t=1783698208; cv=none; b=VsgSG7TcP5AYzosIm6MFEX9z9aRwIsOiW3pLuf784Aogj1zG9PZqlC8yFy3o4JOLuQ8UuDQNQoqzfabD6BkubNeq4a68zaJw7n6BEr4Z6atJzyZD2NCA+RpTUl+nyBTDD8+5hc/E5ZSMQeXeJ2c4LeFptPX/964BnJXwpPcqBIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783697835; c=relaxed/simple;
-	bh=EmQ7+h+prGU3DRftvDRQKfPZOGXZR1nWcv4czpwxaQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KAEO5PTQsLYU0dDxxEmo7yc0K9M/WSTUYPnhHI9/zJproUHu7FBm1PyaHcjRqy+Ao/S1znqt564X85KwfWumxwC+5R1+INJsVBEX3p2FmTfPoXD2eGdb+TnMRr45eymlzO4sme34nHHmOrElwkiTPEmnyMzw2BSLWUvOny7hJkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivf4m5vv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783698208; c=relaxed/simple;
+	bh=JB/uziQBIArAyEqEXTG6g3vNnbcGWmUvTOuHDWIyEQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=j5C6eyyTqPkexcFCdqzIbQXZE1Yb6LEa8Eybfd6/guJ2+Aghy3SP7pkPol9XMKs2oYKvX7CWsvWc4Zo9oyo3+f0f0koI8oT8DmD3hZ/dqN69T0BkNBCJqjpkNoQy8iwl/OJbSpSc09KMk9ANkRjqVvWXMdVyGyJwzG0WtnvAHCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NAAd3/hq; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivf4m5vv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB691F000E9;
-	Fri, 10 Jul 2026 15:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783697826;
-	bh=uHMOBRio+zwcgdJ4h+lXgOEUz1Hkz0fl7vBNq5yda0Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ivf4m5vv7igvZZhV83qetmzKvie37bG2aC+7ICtpeZaZQHxZM6w+qKGFxJd4VTjVW
-	 Gh5IkcoRr8GUXHR5gZGUN0DyejNdEZ2Y9qQ3qJXaNgHi0hED6hVrDGW5cGiK2SEp7q
-	 xf8/7nbfjchfNWxVyoB/JhwRcvxw3m3N+kdq54zdF5eqJM4aOalwJJKPHcgYNNif5S
-	 0Vu/ZICwNB8F0qXM9dU1STcPfaZatvJQ8tx4DtpJ8BiKU9BhZpL0zpAhO/3jGi96pp
-	 mlIrgIPahHd8PDoWFhv9ABagje/WnwznFWvt1TeG33k5z+u/jUNZ95qnDJQ3nVc1sT
-	 AtwKqRgzpX0Qg==
-Message-ID: <62ccb0f7-a619-41b8-944e-11ae2d0ce70c@kernel.org>
-Date: Fri, 10 Jul 2026 17:37:01 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NAAd3/hq"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D992716F2;
+	Fri, 10 Jul 2026 08:43:21 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F3453F85F;
+	Fri, 10 Jul 2026 08:43:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783698206; bh=JB/uziQBIArAyEqEXTG6g3vNnbcGWmUvTOuHDWIyEQk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NAAd3/hq5VF7nkzRer+JVoklEyUQCipps4xDjbsyT8GogXVpG7D7dUGXQ9E/PzA8u
+	 6M8OP8IQO4DTNoJ20gUv6e2scz921JzCdrBzkhg9V6ll0Ckcvj50+jxfQiaBvl8q6F
+	 X5UJi3BOUQiFjETAGXQDB3lEala2d91vnDqDElD8=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	sashiko-reviews@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v2 02/13] KVM: arm64: Enable eager hugepage splitting if HDBSS is available
+Date: Fri, 10 Jul 2026 16:43:20 +0100
+Message-ID: <alETGFD2Ogx6N0HB@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <aku05wJ9WQcpIh4n@LeoBrasDK>
+References: <20260629111820.1873540-3-leo.bras@arm.com> <20260629113645.BE6801F000E9@smtp.kernel.org> <akKFlzAdB43lRpi1@LeoBrasDK> <akKmHqRaZEUjN3zY@kernel.org> <akO9iHJmKN7MzTjM@LeoBrasDK> <akPkVASjWWYQpkx1@kernel.org> <akP4ZDjZIu2_CfVF@LeoBrasDK> <akQONWoRRZXu1-56@kernel.org> <akTv39bQdbxFbzhk@LeoBrasDK> <aku05wJ9WQcpIh4n@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
- registration
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Gupta, Pankaj" <pankaj.gupta@amd.com>, seanjc@google.com,
- pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com,
- dave.hansen@linux.intel.com, bp@alien8.de, x86@kernel.org,
- thomas.lendacky@amd.com, hpa@zytor.com, yangge1116@126.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260701144543.39582-1-pankaj.gupta@amd.com>
- <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
- <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
- <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
- <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
- <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org> <ak-uER-RndpksnhR@lucifer>
- <58c4326d-b10d-42dc-af5d-3a5ff16c7e3e@amd.com> <ak_A6Yc5mBXCrtXr@lucifer>
- <adf66571-4ef4-4f8a-824f-fdd5ab5099ab@kernel.org> <alDtzM28CgZJn6FF@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <alDtzM28CgZJn6FF@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 7/10/26 15:05, Lorenzo Stoakes wrote:
-> On Fri, Jul 10, 2026 at 02:57:55PM +0200, David Hildenbrand (Arm) wrote:
->> On 7/9/26 17:44, Lorenzo Stoakes wrote:
->>>
->>> OK as long as that's made clear in the patch, commit message, comments etc. :)
->>>
->>>
->>> Ack yeah I assumed it was a quick proof of concept and just overlooked it :P
->>>
->>>
->>> Thanks!
->>>
->>>
->>> hmm but we have FOLL_LONGTERM as an adjunct to FOLL_PIN (doesn't make sense
->>> without - any checks that exist for that btw should be extended to this noew
->>> flag).
->>>
->>> Also don't we want to encode the legacy aspect here?
->>>
->>> Maybe FOLL_LONGTERM_LEGACY_READONLY? Naming is hard :)
->>
->> I'm confused about the _READONLY, well. and the FOLL_PIN_NO_GUP_WRITE.
->>
->> We want to longterm write-pin.
->>
->> @Pankaj, how come you would call this "FOLL_PIN_NO_GUP_WRITE" -- why "no GUP
->> write" ?
->>
->> I agree that someting like FOLL_LONGTERM_LEGACY_* is the right thing to do, but
->> I don't see where this is "no write" or "readonly" ?
+On Mon, Jul 06, 2026 at 03:00:07PM +0100, Leonardo Bras wrote:
+> On Wed, Jul 01, 2026 at 11:45:52AM +0100, Leonardo Bras wrote:
+> > On Tue, Jun 30, 2026 at 11:43:01AM -0700, Oliver Upton wrote:
+> > > On Tue, Jun 30, 2026 at 06:09:56PM +0100, Leonardo Bras wrote:
+> > > > On Tue, Jun 30, 2026 at 08:44:20AM -0700, Oliver Upton wrote:
+> > > > > On Tue, Jun 30, 2026 at 01:58:48PM +0100, Leonardo Bras wrote:
+> > > > > > On Mon, Jun 29, 2026 at 10:06:38AM -0700, Oliver Upton wrote:
+> > > > > > > > But this raises a topic I would like to understand:
+> > > > > > > > - Do we actually need this to be a block_size to assure correctness? or is 
+> > > > > > > >   it just about efficiency?
+> > > > > > > 
+> > > > > > > What value is there in having a chunk size larger than the largest
+> > > > > > > possible block mapping? The whole UAPI is deliberately tied up with page
+> > > > > > > table geometry.
+> > > > > > 
+> > > > > > Not larger, possibly smallerv My concern was the difference in pages to 
+> > > > > > split between 4k, 16k and 64k.
+> > > > > 
+> > > > > Ok, well in any case the upper bound is going to be the largest possible
+> > > > > block mapping for a given page granule.
+> > > > >
+> > > > 
+> > > > Sure, we can do this.
+> > > 
+> > > I'm describing the UAPI behavior of what we already have. Please do not
+> > > change anything and continue to leave userspace in charge of eager
+> > > splitting / chunk size.
+> > > 
+> > > > > > > 
+> > > > > > > Overall, I'm not buying the argument for changing the behavior of
+> > > > > > > KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE. There are very good reasons for
+> > > > > > > *not* eagerly splitting the entire address space, especially if you know
+> > > > > > > the working set of the VM is small.
+> > > > > > > 
+> > > > > > > You can still use HDBSS without eagerly splitting, so long as block
+> > > > > > > mappings are {DBM, S2AP_W} = {0, 0} and leaf mappings (which have
+> > > > > > > a writable PFN) are {1, 0}.
+> > > > > > > 
+> > > > > > 
+> > > > > > Block mappings being read-only, and leaf mappings being writable-clean, 
+> > > > > > then? Could you please ellaborate on why does not it need eager-split?
+> > > > > 
+> > > > > Read-only translations will continue to generate permission faults
+> > > > > whereas writable-clean descriptors can be updated by hardware. You get
+> > > > > the opportunity to split a block mapping lazily while preserving
+> > > > > hardware dirty tracking for page mappings.
+> > > > > 
+> > > > 
+> > > > So you suggest we only enable DBM bit after we split the block, that will 
+> > > > happen only after a block is dirtied for the first time after dirty-log 
+> > > > starts? 
+> > > 
+> > > If the VMM wants to do lazy splitting, yes. Otherwise this would happen
+> > > as part of eager page splitting for block mappings that are known to be
+> > > writable.
+> > > 
+> > > > > The approach I think we may need is:
+> > > > > 
+> > > > >  - Use a software bit in the PTE to stash whether or not a PFN is
+> > > > >    'software-writable' when constructing the stage-2. By this I mean
+> > > > >    we've already faulted it in for write from the primary MMU.
+> > > > > 
+> > > > >  - At the time of write protection, reap the hardware-writable state
+> > > > >    from all PTEs but preserve the software-writable bit.
+> > > > > 
+> > > > >  - Whenever splitting a block mapping, set the DBM bit in the page-level
+> > > > >    PTEs if the block was software-writable and HDBSS is present.
+> > > > > 
+> > > > > That way you'd have sufficient metadata in the PTE to safely set DBM.
+> > > > 
+> > > > I remember that, for some reason I can't recall, it would not be great to 
+> > > > set DBM during dirty-log start, and instead we should have it since VM 
+> > > > creation. Maybe it had to do with part of the pagetable using the old 
+> > > > encoding (no DBM), and the other part using the new one.
+> > > > 
+> > > > IIRC, only blocks that are backed by writable memory (S1) were supposed to 
+> > > > receive the DBM bit. We could use that info for deciding what to split, 
+> > > > then.
+> > > 
+> > > That's why I'm saying to use a software bit. We can't leave DBM=1 on
+> > > block mappings and set VTCR_EL2.HD=1 for obvious reasons.
+> > >
+> > 
+> > I am failing to see the reason for above.
+
+Ok, I think I got what I was missing, please let me know if I got it right:
+- You said that we should still have lazy splitting with HDBSS-enabled 
+  system, and for that
+- We can't enable DBM=1 + VTCR_EL2.HD=1 at build S2 time
+
+But for that lazy split scenario in which we only enable DBM=1 at first 
+dirty of a block after dirty-track enable, we would have to change the 
+encoding of the S2 pagetables from old format (ro/rw bit) to new format 
+(DBM + clean/dirty bit) while the VM is running, which I remember to have 
+some issues related to it. 
+
+Well, let's consider we can handle that issues above, IIUC with your 
+suggestion dirty-tracking with HDBSS would be something like:
+
+If Lazy-splitting:
+  - Constructing S2 : No change
+  - Dirty-log enable
+    - Enable HAFDBS + HDBSS (VTCR_EL2.{HD,HDBSS}={1,1})
+  - On first dirtying each page:
+    - Split block, if needed, into page granularity
+      - (Set the Level3 entries as writable-clean? would make sense)
+    - Set the dirty page as writable-dirty (DBM=1 + dirty_bit=1)
+  - On guest_exit, write all HDBSS entries to dirty bitmap/ring
+  - On dirty-clean/get request, use sw routine
+    - (HACDBS needs DBM=1 to work)
+  - Once the page has DBM=1, tracking happens by HDBSS
+
+If eager-splitting:
+  - Constructing S2
+    - Set DBM on every writable block, put them in writable-clean
+    - Enable VTCR_EL2.HD=1 (HAFDBS will update dirty-state in HW)
+  - Dirty-log enable
+    - Set VTCR_EL2.HDBSS=1 (any new dirtying gets logged to HDBSS)
+    - Split all writable blocks (DBM=1)
+  - On guest_exit, write all HDBSS entries to dirty bitmap/ring
+  - On page dirtying
+    - Tracking happens by hardware
+  - On dirty-clean/get request: use HACDBS cleaning
+    - (All writable entries have DBM=1 so we should be fine)
+
+
+Does it match what you suggested?
+If not, please help me understand what am I missing.
+
+Thank you for your guidance!
+Leo
+
+> > 
+> > IIUC, one option would be to:
 > 
-> I based it on Gupta saying 'without kernel GUP writes, and therefore not
-> impacting dirty tracking'
+> (everything -> every block that have DBM=1) 
 > 
-> I mean I think we definitely need some clarification here yes :)
+> > 
+> > What am I missing?
+> > (above case is considering manual protect = off, but the same idea goes 
+> > for the manual_protect_and_init_set, but cleaning is on-demand)
+> >  
 > 
-> Not really got the bandwidth to dig deep into GUP again :P
-
-I think the KVM gueest *will* write to these pages.
-
-By disallowing writable LONGTERM pins on FSes we broke one existing use case
-that was relying on that to work.
-
--- 
-Cheers,
-
-David
+> IIUC, what we get from your software write bit suggestion is to 
+> avoid doing the splitting if we know the page will not be written to, which 
+> makes sense.
+> Using the DBM bit as suggested above should have the same effect.
+> 
+> > > > Another option would be to split when we are collecting a dirty-entry from 
+> > > > HDBSS, but for live migration that would mean we have to transfer the whole 
+> > > > block (possibly a large LEVEL1 block), because we have no idea which part 
+> > > > of it got dirty.
+> > > 
+> > > We need to do dirty tracking at page granularity. The only scenario
+> > > where we have writable block mappings while dirty logging is enabled on
+> > > a memslot is if the VMM enabled KVM_DIRTY_LOG_INITIALLY_SET.
+> > 
+> > Agree
+> > 
+> > Thanks!
+> > Leo
+> 
