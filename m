@@ -1,41 +1,41 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72033A451E;
-	Fri, 10 Jul 2026 11:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665A2409635;
+	Fri, 10 Jul 2026 11:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783682179; cv=none; b=mYVJGFLNuq1MrTcakDhBPwOMIp41ifvlAPqf5O4m7XJnf/11TwmyFkn5LVxB0fMz00WcJF0+Msw4ghd/nSrX2ZxwsYQ4z/LbZAU6rPfPXeQMaRPpbhZD/ZlbKaD/l8jNx+rrWPSJUfR+0KY1CRCZ3gK6L4F4qdqcYyzakwvUzjw=
+	t=1783682179; cv=none; b=n3ZXbK9iCQF+4ChcARd85dY9fn5pn19IOPI80DdUCqQF2ed/vf/qKNEPWdVVk+OEjx/+F/K7DhBSLM3jotPJddkee+ce65BIsCkJC5m+2ixRZ112fQP39YmqG7cFC/IXE2USGAlsO/1GJeAPQM7RCNhoXH0Zhy1FKNAOHEcu30g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783682179; c=relaxed/simple;
-	bh=GcmCes6lQAiKzkcGE+JER7EEugEN/SgS0n7mt6P7COA=;
+	bh=hp0lEkOwUA4Gek6D7M1hRbpbu/V7WYaGYBv95FZV7oc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ic9yhJ9Y/7LNvL2j863+9lh4mpmbNEjOSN2EPO0o0PmIgpqwt0ETGRDzKJmkK6rFb1qWmIp5A67ya6spVQdHhPPRfhrzfiJeh7e6NlxHn6swkEwJqVr9Az51b7QHqTR01r/9uZUi+8Xv1d0VfmEGL/zpfiXYqFdNQzp6aV8VFWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=JLT8WZJt reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=kpGJRlg0FhU17wI/O81U9HkleroexA/J0rmBUFEplRh3uTaPY3AUpfqohjlUzUH0XiF793INihtEYDRk5Gr1IQFt8L3baHMWLa16vnIRzAaQYd+sOxE/9KCgdJlvCDFkA5jmAer6OuN5ejuW33UiKIfN+ssIgFw5rKBr/eSS/jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=cypq5tmg reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="JLT8WZJt"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="cypq5tmg"
 Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 66ABEvsL024946
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 66ABEvsI024946
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 10 Jul 2026 20:15:11 +0900 (JST)
+	Fri, 10 Jul 2026 20:15:10 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=HxASWJordbwbK0dfh3jueBnYsD6Vv4drYFkhabaJ2Rc=;
+DKIM-Signature: a=rsa-sha256; bh=pJjKbNakwtm0jMT04UBxbp6wN2PKOAbYt/K0ZhCrjUc=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1783682111; v=1;
-        b=JLT8WZJtnfeQSeysxTLOQv/IXLP7DcdbdUjW4OoAjvT4T9QU43XTaks92DVo4AH8
-         pVRBO1OUBCY9+7ldEgHCNEkz0D3UQxywyHV5JWmA4b3VUqwnNX7DaBhgTDDzB7A6
-         7z7lAd1QSP63gD4twKdcwt7lXNTCXCiJPAiKIma59MNehFLYZxGBBpHpYXIcWyq1
-         MYOOjnJ1hpmN0/Thgx/MPwK9RAYpjw5h7pdM4fd+3X/NbuzxipYq/tvzDALFYjPR
-         rfCt5IgbblbGYpT4EPCP7BTI7wsAKXBx5aUZyC3bHa4O/f/Q230Ha1RcE50cBysI
-         dWfH7/p6807zzdxFesKpRg==
+        s=rs20250326; t=1783682110; v=1;
+        b=cypq5tmgi8sW1J1vY+7FX5yhIamwUYgJ8fnr/uY3GitaU8yixH4poE4ECyVNednC
+         CpQJaOhbEVn4aCzaqk4zNVeEHkOmedKuH0fSuSDr184wCx92thrc4vMugRvyuFr/
+         w8Pk/BRGggqeeSD6cdoTNEIVR4xONf3EhlvO2hr0lZ4x3AbbdZ3AR9Gpp5dVOsZn
+         nx/HgECEJtwZ4tx3Y7tefssdGAB7Em5FNfC5H5YOeudZ0PnlWw8WZM2gW9dE1nx1
+         mAlH8CoRhbOuyt7CpOxC2wkjp/tpBX8nHzJlWUiS0FJzoOX+9w9/lkgEEDrwjo4U
+         U6Ky2Ar/ayLG5jEEZiGl4A==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Fri, 10 Jul 2026 20:15:01 +0900
-Subject: [PATCH v8 07/11] KVM: arm64: PMU: Pass the pPMU to
- kvm_map_pmu_event()
+Date: Fri, 10 Jul 2026 20:14:58 +0900
+Subject: [PATCH v8 04/11] arm64: errata: Require Apple IMPDEF PMUv3 traps
+ on all CPUs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-hybrid-v8-7-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260710-hybrid-v8-4-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
@@ -64,51 +64,45 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
         linux-kselftest@vger.kernel.org,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.16-dev-925f5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1455;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1261;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=GcmCes6lQAiKzkcGE+JER7EEugEN/SgS0n7mt6P7COA=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ1bAFYs6gwv31I7O9j67mbfs16Z5uUYnUvquVQUxn1p1v
- X3OiYv3O0pZGMS4GGTFFFlSinZza0TXfipMiG+BmcPKBDKEgYtTACbi9pfhn+lrkXeBwpfPpO25
- 3BBslG79XuhN+/dHnInJPiWnFRR5NzIy/Jt8fMvhiBT1oPuVdhsXbin7I6vw0+zTWq3P/5fXTTV
- 3ZQYA
+ bh=hp0lEkOwUA4Gek6D7M1hRbpbu/V7WYaGYBv95FZV7oc=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ1bAFbMHm2WVY578mzc1ruRV9qK3tZ7tuz6LBAXcKpZ5c
+ PX4uvJbHaUsDGJcDLJiiiwpRbu5NaJrPxUmxLfAzGFlAhnCwMUpABOJtmVk+DWtN10kdo3lwx0B
+ f+4c3f7++GrhIzwq9ez/du/89cbvGzMjQ8OutReeTvjbPzeOpbnvdNtddZ9Em+enI33lObbyFwY
+ bsgAA
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-Replace the VM argument with the pPMU used for event creation. The
-current caller still passes the VM's default pPMU, but this removes the
-implicit lookup from kvm_map_pmu_event() so later changes can map events
-against the pPMU selected for an individual vCPU.
+KVM relies on ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS as a system-wide
+precondition for PMUv3 emulation on affected Apple CPUs. A local CPU
+erratum is too weak for that: once the workaround is enabled, a late CPU
+that misses it may still be onlined.
 
+Make the workaround an all-early-CPU capability instead. The matcher is
+still local because it depends on MIDR_EL1, but the capability is only
+advertised if all early CPUs match, and late CPUs that miss it are
+rejected once the capability is enabled.
+
+Assisted-by: Codex:gpt-5.5
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- arch/arm64/kvm/pmu-emul.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/kernel/cpu_errata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index 68fce960ba69..1d03d0cb62f3 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -665,10 +665,8 @@ static bool kvm_pmc_counts_at_el2(struct kvm_pmc *pmc)
- 	return kvm_pmc_read_evtreg(pmc) & ARMV8_PMU_INCLUDE_EL2;
- }
- 
--static int kvm_map_pmu_event(struct kvm *kvm, unsigned int eventsel)
-+static int kvm_map_pmu_event(struct arm_pmu *pmu, unsigned int eventsel)
- {
--	struct arm_pmu *pmu = kvm->arch.arm_pmu;
--
- 	/*
- 	 * The CPU PMU likely isn't PMUv3; let the driver provide a mapping
- 	 * for the guest's PMUv3 event ID.
-@@ -720,7 +718,7 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
- 	 * Don't create an event if we're running on hardware that requires
- 	 * PMUv3 event translation and we couldn't find a valid mapping.
- 	 */
--	eventsel = kvm_map_pmu_event(vcpu->kvm, eventsel);
-+	eventsel = kvm_map_pmu_event(vcpu->kvm->arch.arm_pmu, eventsel);
- 	if (eventsel < 0)
- 		return;
- 
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 476a37c82108..14ce49d693c4 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -964,7 +964,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 	{
+ 		.desc = "Apple IMPDEF PMUv3 Traps",
+ 		.capability = ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS,
+-		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
++		.type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
+ 		.matches = has_impdef_pmuv3,
+ 		.cpu_enable = cpu_enable_impdef_pmuv3_traps,
+ 	},
 
 -- 
 2.55.0
