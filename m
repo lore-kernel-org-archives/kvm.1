@@ -1,111 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814138B14C;
-	Fri, 10 Jul 2026 22:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783722869; cv=none; b=kP0H1VF0+vyehVCcl4GzyljU6sOYYX9hVQmbxcN/jQW6kDRu+8agcOuDKdfPYUOeIFe+uJSqacU2juIdhjvJW9SCjyRqExJPr8N6aso7SOoYWsx2QKDmlmibA9VlZNh9fLLpS8BPW1O2Mw8n3adEeWhuz4OhNfpm86nDTRevdaI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783722869; c=relaxed/simple;
-	bh=UpbED6+qrQeMPVk+gAlO9b9C3AZpm3xQqIjhhHsi8H4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oq9CifAyJsn69ILlEBo1kx5Ut/dCihL6ADuTy2l3WgWH4z+YRPhRuwO2BjEMtD8UYcwOTny9CJW/g3dLLJR2mDJJHC5UK4/Ky2Q+yCjP4D/bf2uu3C5q9fcYxKIqfTD3SYawog8iQFU2l2HVakptg8LbPHO2cXRak9UEnfu7RBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldMowH7d; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9F82D23B9
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 22:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783723395; cv=pass; b=MKJLKE+46wNJTJc+ld4Nf2YZ0lVRqsXmIO9gZmOODgT4qUWKJpY1n1kqAGUZ/NN6YKr8NYST16+lNhAhCw3Aknmo8583x1RQ2uepE+CbWuYsVgp6M7J/0j8lqPKS3FHmBVvGCZejyr7tKi7rHkQtktjDdEoFjeJnsaiJIY+eD3c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783723395; c=relaxed/simple;
+	bh=+3zL+cYrXHzY+3lRZx8vaFWkqxQcOGz45cAd1JifZs4=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HVhHrTPQyXeUNGu/LyjNaMoSmsAW7PdcASYmsYrIju7Oe7fGD8ivqmE28eT9kXVJqwD52PAUI9blgIf2rR571lEJNBfGo8utQqjj9cyZUu9RqwB5j6Ig9b230qIX6bCBfCeqP9pdxIHUtYzlWXI/1/JoFZtC10FhnaFKMxEkt20=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HdtyJEto; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldMowH7d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D481F000E9;
-	Fri, 10 Jul 2026 22:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783722867;
-	bh=nUz9HhdoqrTHsTCS29Z7m1e2TJuVsJLqCaqg2KWgFhs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ldMowH7dw+6DV4uL7fBEOoevsFZvKYQaQZ0NYOt6ItRnFeUywfKm5Cb6NvParqi+9
-	 VmDRAp5HRtgrrZS+H/xscZYf7mEkKRXvw/dTF9dqQII+z3qAzNZmH17FrT0MSl8Vco
-	 OL3JVIojHQe4yEY07qjeJ4ZzZnObffTiJNTGm9OFAkIQgP+fQ85UN4P795oFP9zChT
-	 qcSC0tFEaLX7RIrb3DEJVmmLWEqUzUHjOjmHPxiyLDukzvzrNWKxhSVLhALNDNKcb9
-	 hLEi0xGQRMIn5YD9rWje8GJg6tKzS6p43ZxvaehWPLgG7tgo3udLSbTa1EM9TFHFOC
-	 IQ7P4kLrL34eg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wiJnd-00000003seu-29RZ;
-	Fri, 10 Jul 2026 22:34:25 +0000
-Date: Fri, 10 Jul 2026 23:36:14 +0100
-Message-ID: <87pl0u5v6p.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH 18/28] KVM: arm64: Add kvm_has_nv{2,3}() predicates
-In-Reply-To: <20260710153016.GF12293@e124191.cambridge.arm.com>
-References: <20260702160248.1377250-1-maz@kernel.org>
-	<20260702160248.1377250-19-maz@kernel.org>
-	<20260710153016.GF12293@e124191.cambridge.arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HdtyJEto"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38101f85591so1902551a91.1
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 15:43:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783723393; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bvXi6eX3cS10Y49mtDMiXpRWDK782UOHcaV+4mwgikDOf4QFbaqaItG6RWQflZ7sYj
+         SDjgvBmV8g2P4Loa6mAkrH16lP2jQqHhcRcuNaJUDtuC8rjzJYlb0Qg08wwJg7AZtpIl
+         mvaGn4wCtWF3qQUSNpvwLQSAlNAGaEiP2hPuTcHu15IrBxVE/3OQzlbITrlVAROv0/6R
+         tPsm/u2nyXUl6Kvf4W7gb1ubEZAqxYz7UQMySxXlGxcrone9IXhO0CJbBin+JALHmemX
+         gknKYWi+/yEIYojfaAN7VL/o3GBP9hLqU/wm0P4axRZ3DXnu+B9316tkmD8m0XofvTaw
+         8B4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=aO34G3U8EGBjgwKdRYraZU+8kdRFluFgh8R8einF2lk=;
+        fh=O9ysY6rmFaYhPTZp6usv6OmWbDwRDyizHsOfucKkN4o=;
+        b=DXHCR/m+ClAQAIVTonjMbF44G5Hgj9jDp2jhcpAsReKWaQvnagJhoi1+6RElqpxtib
+         YLUPoY+psOUy9uSdWM1l971uiK1tc84YuT9gKyhrH5Q2txl7AM3nIqtEO19LUQ/UIaOO
+         KbMKsLRPBnU8BunoLq6OdjhZBHyFllSGefFnLo2+OWQHf0ASe9GQqL5qUZ3bm85ItW8V
+         wEziG/QiZHCpBBpEU9pWmI6dWFmV4Nr05BcOPKQzjJ7teGtPNOswfwwNbrwDGdkz1jE7
+         D3FD+ICrRNplzbD/8d3LmZlv0+DqIulAOoBH9mRR9WCspufYZvHrZhMjRmM7HEb+Wcp1
+         LV7Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783723393; x=1784328193; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aO34G3U8EGBjgwKdRYraZU+8kdRFluFgh8R8einF2lk=;
+        b=HdtyJEtoutcDaT3CRXdKJaBySL1hWycWFIaLixOk3PV+LTrxtHaiv3sBEDByysDont
+         XKlTlRf1TQ62+3LcUArX7AYaIMqDjPRpzZxRvoToQJ7On4ESJq/Gz6hu45xhmSBDifbQ
+         j7tLjvH1l4eGzcH7gVH3Tju1xERPtPnW4OzdFCZAX4ufra5dGe7nKdmSJUI3zCXNueKK
+         KxkNQ7FABJ/Vr8yNB7OCoROVgn5Vk6MiwTBtpVhn/X+ULiiWY4BkItryoTlJI0Ed2qbk
+         SgETIncp2S0Dd7VqVDtL4Y5nXCeATa+WrT6+HGn7VN1+OYVZrBE47auShHEOGSTF3Pu8
+         F3Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783723393; x=1784328193;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aO34G3U8EGBjgwKdRYraZU+8kdRFluFgh8R8einF2lk=;
+        b=g1PAyMY4Q5iQx+bBvDtCahSBROJFCC4x8Xsdo4KPGgyDW6gK9zw4TR8RTUoO0i/fG9
+         FFievKuoDQTEDNt2BUpvvn3biaIOfYLurc207eMEt648oWmKmYaeuXCpi7Vet7ukdU0N
+         rq4sntUFK7FB877uqQTzZza10LliKIYMlloUPzFgp8v/X1IRL23oqaNok90T11MXqghB
+         VCQjx+1+fHgAn8DFTgV73Dfqrjaol/diZYKPRglVZ61w8Zg57IwIdJFk3pVX9Am5wyRT
+         yAmEc0EzLLC9jOi4fb6giubB7ciH3H+59ZErDjTI4fZ2CNcm26tIPG95uJi4hIhSeX/H
+         EJwQ==
+X-Forwarded-Encrypted: i=1; AHgh+Roz73TRQeR0Ovts0YzMH42KjaCkhrFM7YByORgkktmlTMaUJ9DqnCgenELKNTk4CsVl4OQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx33h7ftelD+h1eHLAv02CMKzTPMpZDm+AfAKWxtvvIBkFAhJaM
+	cqpKnthZXR6RBfivjf+2Mmw8p5E+20CUAQqzt5g63JQVX32sVSoTENQIuHKdfhpyZESbJ/GDi4H
+	cFf8l2HORmwdc0wJcKczaoXoDyk08fzloG2EcW92E
+X-Gm-Gg: AfdE7cmUrVZ0bEa5Xw+jsMKM9Wm9OuEGTdI+WDuUw2v2vSPqZfoWTkvOGZrc+gldLtz
+	vRr3rMd5iBYRFtXGrUCoAJfpNAm48I8MC0nUwCriPFwUNopiz+Zd3K2qCmnGa1odWmMRSU3Xb4q
+	yo0DOJKUaXu1ja5uqmEO3YqiG9ysF8T3NOuzMqRXRBPMfh+WOAC8tPO287EJC2mz5KJ+MYP1uy3
+	8PbIY5w94sphAB9sIx/embVG9mw55zuHPRmJ3ckgSl0aa9Uc581N9Hm1BHz97dD4sXpCoKHFIdm
+	Wj6/eivQ4JqEiFlzgVv9rbQNGuV7QuZUDX2dEP6uC7s3U5ycw/KIMIs2QHU=
+X-Received: by 2002:a05:6a21:68f:b0:3bf:990d:3fc7 with SMTP id
+ adf61e73a8af0-3c0f0ae8093mr6099617637.20.1783723392851; Fri, 10 Jul 2026
+ 15:43:12 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 10 Jul 2026 15:43:12 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 10 Jul 2026 15:43:11 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <alFtXYztr_Ic04bb@google.com>
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-14-seanjc@google.com>
+ <CAEvNRgGz4hWw+p90JPgmP29dMKjVcamfH57Hz=k15VYEypSfEQ@mail.gmail.com> <alFtXYztr_Ic04bb@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: joey.gouly@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Date: Fri, 10 Jul 2026 15:43:11 -0700
+X-Gm-Features: AVVi8Cc9H_tVMQO9VvjEko5gVBnZRFzdVEUvupTqGokAqnlWLevAmHvgg3OT5kM
+Message-ID: <CAEvNRgHF1wybj7tHWMgBtnfb0W5AzyjhL45PzF3e2BVxrBUe7A@mail.gmail.com>
+Subject: Re: [PATCH v4 13/18] KVM: guest_memfd: Pass GPA, not GFN, to
+ prepare() hook
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michael Roth <michael.roth@amd.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 10 Jul 2026 16:30:16 +0100,
-Joey Gouly <joey.gouly@arm.com> wrote:
-> 
-> Question,
-> 
-> On Thu, Jul 02, 2026 at 05:02:38PM +0100, Marc Zyngier wrote:
-> > Add a new set of predicates indicating whether VM is capable of
-> > NV2, NV3, and is in a nested NV3 context.
-> > 
-> > This is going to become useful as we start dealing with a mix of
-> > behaviours (NV2, NV3, NV2 on NV3...).
-> > 
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/kvm_emulate.h | 20 ++++++++++++++++++++
-> >  1 file changed, 20 insertions(+)
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> > index 9831166695186..c562d8171d5e1 100644
-> > --- a/arch/arm64/include/asm/kvm_emulate.h
-> > +++ b/arch/arm64/include/asm/kvm_emulate.h
-> > @@ -266,6 +266,26 @@ static inline bool vserror_state_is_nested(struct kvm_vcpu *vcpu)
-> >  	       (__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_TMEA);
-> >  }
-> >  
-> > +static inline bool kvm_has_nv2(struct kvm *kvm)
-> > +{
-> > +	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
-> > +		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY));
-> 
-> Should this also check ID_AA64MMFR2_EL1.NV=0b10? (aka NV2, not just NV2_ONLY)
+Sean Christopherson <seanjc@google.com> writes:
 
-That'd be unnecessary, as KVM always exposes ID_AA64MMFR2_EL1.NV==0,
-owing to the absence of support for the original FEAT_NV (we only
-support FEAT_NV2, and treat FEAT_NV with the utmost contempt).
+> On Thu, Jul 09, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>>
+>> > Pass a GPA instead of a GFN to kvm_arch_gmem_prepare() so that the GFN/GPA
+>> > can be made optional in the future, i.e. so that guest_memfd can pass
+>> > INVALID_GPA.  This will allow reworking the hook into a general .convert()
+>>
+>> How about defining a INVALID_GFN instead of using gpa just so
+>> INVALID_GPA can be passed? The SNP side takes a gfn, so it seems like
+>> the 2 PAGE_SHIFTs are extra work.
+>
+> They are, but I am very hesitant to define INVALID_GFN as I'm worried about the
+> potential for subtle bugs if both INVALID_GPA and INVALID_GFN exist.  E.g. I
+> almost made a goof in this exact series where I was going to do:
+>
+> 	gfn_t gfn = gpa_to_gfn(svm->sev_es.snp_guest_vmsa_gpa);
+>
+> 	...
+>
+> 	if (gfn == INVALID_GFN)
 
-For all intents and purposes, ID_AA64MMFR2_EL1.NV is a dead field, and
-KVM will forever expose it as 0 (unless someone at ARM is mad enough
-to repurpose it...).
+When you did this check INVALID_GFN was defined as (~0) too I suppose...
 
-Thanks,
+> 		return;
+>
+> Where snp_guest_vmsa_gpa is set to INVALID_GPA.
+>
+> I suppose we could define INVALID_GFN to gpa_to_gfn(INVALID_GPA), but that feels
+> weird, and I feel more comfortable having magic invalid values in only one domain.
 
-	M.
+Maybe INVALID_GPA and INVALID_GFN should be defined such that both
+gpa_to_gfn and gfn_to_gpa are correct for both. Isn't the relationship
+between gpa and gfn always supposed to be always a fixed shift apart?
 
--- 
-Jazz isn't dead. It just smells funny.
+When a GPA is passed to the arch function, it almost feels like now the
+arch should be validating PAGE_ALIGNED(gpa).
+
+Mentioned this off-list, another thing that seems incongruent is that
+one parameter is in the address domain (gpa) and the other is in the
+page frame domain (pfn).
