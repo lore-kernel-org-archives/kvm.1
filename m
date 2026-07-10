@@ -1,87 +1,134 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE00346798
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB36413D87
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 14:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783693481; cv=none; b=DRLb3lQtQ+1w/p2+Iy2NY0nhs4f8mr6M/tH7MpgxCLXxqELlJMHUmu2ci1qZSUFXT3kBF25T/VUPm6TXPa+8kJg8W9zoILs1GqnW2pmRnURkk7dxWPpKecDXymIpcd6NPyCGqE54JDdAULyxVgOAXHag16McFAEVXJxj1Frcu2s=
+	t=1783694885; cv=none; b=Mp5AJlIScmDFDsXD/i+8Hvuwbg8nVuEsbhUWTnGGkH4mFIryutZ9I9/URfe030t4+p9Purghl7Y9zEpu553+GKTW5e3wJ7C6aFYAe/+Nk/vc+2r2rlL+KXrxg6ebGV1zvpZyaDaDFyWGka/Cch2C7PB1H573mWnBH2LKTU4/r0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783693481; c=relaxed/simple;
-	bh=57yy5wTX9Ho7bi/LUfyKbKgFguqEUaBdyCNXSxpomDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WxaGJROJAoMYVXcWrqfWRwEgIGE/smy6Wec9Kgjml8GPpDB+zbQ5+y5jOmt0rLAc32Ouk+pjy5qPYAdUhn8QyLRGi2vAG2/3IqVG5I10F3RGsY092sem+0OgeazS4n6MXyfp1+RJ7F7lxaKddhR7YcEX5JStV69ShlKCLm+B2jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=KDnsVFPm; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783694885; c=relaxed/simple;
+	bh=9/BUljy6TNRY9n09ZmVql69eTpV3ZFcHR2xOX8xQaBc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GSrLB/Orv47mXG6i0ltuUngiUEf2HyiVeSXLTSBPLUvBtXHKp41I/jINS34xU6NoRcynLog7nu8s9ilww3Iwzvi1PwKndem9zdw6siSelKKqRWEN0yXRrcRvFxpOrXYv2+VdklFsAeGoL6/w0vd3szzYUtEAcoZsAijJCiyoo0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ovCh2KPn; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="KDnsVFPm"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6B967176A;
-	Fri, 10 Jul 2026 07:24:34 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.2.213.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 72CA23F7B4;
-	Fri, 10 Jul 2026 07:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783693478; bh=57yy5wTX9Ho7bi/LUfyKbKgFguqEUaBdyCNXSxpomDw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KDnsVFPm01cedCI0/W1Ov+nbDD+1CVJd5UTLnCY0bXSpzfghDgwZjWbC4VNF/nwbR
-	 Sw6NUD/64kRr4B57VVC9r61PBA4BnXdMfvEAXl7Vv2thWhBX1vyo6aIqWlg2EtNB6T
-	 yjCYS77HwzB9up7X1ro8yvb8QBGSGCEPVfpgKS8k=
-Date: Fri, 10 Jul 2026 15:24:34 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH 27/28] KVM: arm64: Expose FEAT_NV3 to guests
-Message-ID: <20260710142434.GC12293@e124191.cambridge.arm.com>
-References: <20260702160248.1377250-1-maz@kernel.org>
- <20260702160248.1377250-28-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ovCh2KPn"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c89704da8c7so1653956a12.0
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 07:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783694884; x=1784299684; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BMyY/scxQTo0tXtbyEdWPI4W0NbSwCug6oGYu+Luc9M=;
+        b=ovCh2KPndgoRd6q1k5thvXwHVVvWo9yGJR4Xt+guCSgYoC8Kz36fHaNl6V7Y0rTxm2
+         FGgLJcnRW482X/0owfXQJWGbP2SzBwUt9d/AQ9CaB2pTzMNVX89tz7Q8+1GOsYlN80uk
+         TPyFye+44xmNC/6Bn+eSPttnNWajp+tmEcKosH2GcCWmvUbfvUKU71MnSOYtuQkzDc/h
+         TBsOe7adZvif/p6L/xfFsGLU5P/FmOmhW80WmdGeKZ7hg3iPPp5ko6lYqM66dELfaZ6I
+         l2Wf1YYvig0c06lZhx8ld2o9c8IYj9B3/muwLTKk2Ygd/qMnZ1GAqw0WGXC96tc/+qM1
+         aQRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783694884; x=1784299684;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BMyY/scxQTo0tXtbyEdWPI4W0NbSwCug6oGYu+Luc9M=;
+        b=hNC7jwTTDs2mtJQSYGYJd6ftKXlfdKBLbaa+l97jwoYqZ/buhkhrlH/9yckGdBcBfK
+         RzlbDJfoL96pkZ6tGWPnwxZfTuU5YBgxdhJWtIk1INnm1Prb+V8CC6aWNB5z11+VSMvn
+         5/xcIZfxe8TnQDbu59wNzgVrsCen9PKQOMbcZ/b+k5gFXkmW04iAYcfVPb+xcYYWQvp3
+         m3JDDPFUMfvKhTyZS7OtBmBIw5PJ5kKpJ8VJdLphAm4GZ7gtxxeQqVrfX5fY+42+jWQb
+         qFS5vPChlBTXHLYNy1zh+9RmmRwjBx4SEw3DTq5F/5Xa0Ic5aTId7q3FH97Xompgj9AS
+         yeWA==
+X-Forwarded-Encrypted: i=1; AHgh+RpF77qx11WQbm6Nhfc9uC5wCPTnHZORRlyihRxFXC3/mWS/ynuy2Gz9amudbB5vjoAr5IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVmjmMMC8TxSqn96ObTCJNYdQ07mlQr6uWA8A+cIxQ91N35rvj
+	bbywIJqXHa10sUItejt0WEtZ1jakMlC43chGTsv2X6k58a6rBFRuj/RsgZthB6ke6QTcxEdZLL1
+	aryTPWw==
+X-Received: from pghi22.prod.google.com ([2002:a63:e916:0:b0:c99:7baf:126d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:32a2:b0:3bf:a0e5:99a5
+ with SMTP id adf61e73a8af0-3c0bcea2f0cmr16321169637.47.1783694883588; Fri, 10
+ Jul 2026 07:48:03 -0700 (PDT)
+Date: Fri, 10 Jul 2026 07:48:02 -0700
+In-Reply-To: <20260710125211.GB2816371@pedri>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702160248.1377250-28-maz@kernel.org>
+Mime-Version: 1.0
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-17-yilun.xu@linux.intel.com> <ak7DMwbF4viiVoO5@google.com>
+ <20260710125211.GB2816371@pedri>
+Message-ID: <alEGIrWhQvzf2wAV@google.com>
+Subject: Re: [PATCH v2 16/17] KVM: TDX: Add in-kernel Quote generation
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, djbw@kernel.org, 
+	kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com, 
+	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com, 
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, dave.hansen@intel.com, 
+	dave.hansen@linux.intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jul 02, 2026 at 05:02:47PM +0100, Marc Zyngier wrote:
-> Further enable FEAT_NV3 by making it visible to NV guests.
+On Fri, Jul 10, 2026, Peter Fang wrote:
+> On Wed, Jul 08, 2026 at 02:37:55PM -0700, Sean Christopherson wrote:
+> > On Thu, Jun 18, 2026, Xu Yilun wrote:
+> > And is keying off tdx_quote_enabled() and only tdx_quote_enabled() backwards
+> > compatible?  How do we know that cutting userspace out of the loop wont' break
+> > anything?
 > 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Yeah this needs explaining:
+> 
+> The guest-observable difference between the two paths is that it sees
+> quotes in different formats (the TDX module uses newer formats of
+> course). And an old guest must be able to continue using its
+> TDVMCALL<GetQuote> interface for quotes. The guest sends the quote to an
+> external verifier to authenticate itself. The verifier (part of the
+> cloud infrastructure) must know how to parse this format. So in other
+> words, it's the verifier that must maintain backward compatibility if it
+> wants to continue accepting old quotes. And it needs to be updated to
+> support newer formats as well.
 
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Uh, no, that's not how KVM's guest/host ABI works.  Updating the host kernel and
+breaking existing guest is not acceptable.
 
-> ---
->  arch/arm64/kvm/nested.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> > > +{
+> > > +	gfn_t gfn_start, gfn_end;
+> > > +	u64 end;
+> > > +
+> > > +	if (!size)
+> > > +		return TDVMCALL_STATUS_INVALID_OPERAND;
+> > > +
+> > > +	if (!PAGE_ALIGNED(gpa) || !PAGE_ALIGNED(size))
+> > > +		return TDVMCALL_STATUS_ALIGN_ERROR;
+> > > +
+> > > +	if (check_add_overflow(gpa, size, &end))
+> > > +		return TDVMCALL_STATUS_INVALID_OPERAND;
+> > > +
+> > > +	gfn_start = gpa_to_gfn(gpa);
+> > > +	gfn_end = gpa_to_gfn(end);
+> > > +
+> > > +	/*
+> > > +	 * Reject if the guest didn't explicitly convert its quote pages to
+> > > +	 * shared.
+> > > +	 */
+> > > +	if (!kvm_range_has_memory_attributes(vcpu->kvm, gfn_start, gfn_end,
+> > > +					     KVM_MEMORY_ATTRIBUTE_PRIVATE, 0))
+> > 
+> > TOCTOU?
 > 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index c9bf04944f9cb..64c8fb82fadf6 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -1728,7 +1728,7 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
->  		 * You get EITHER
->  		 *
->  		 * - FEAT_VHE without FEAT_E2H0
-> -		 * - FEAT_NV limited to FEAT_NV2(p1)
-> +		 * - FEAT_NV limited to FEAT_NV2(p1)/NV3
->  		 * - HCR_EL2.NV1 being RES0
->  		 *
->  		 * OR
-> @@ -1740,7 +1740,9 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
->  		if (test_bit(KVM_ARM_VCPU_HAS_EL2_E2H0, kvm->arch.vcpu_features)) {
->  			val = 0;
->  		} else {
-> -			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
-> +			if (cpus_have_final_cap(ARM64_HAS_NV3))
-> +				val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64MMFR4_EL1, NV_frac, NV3);
-> +			else if (cpus_have_final_cap(ARM64_HAS_NV2P1))
->  				val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64MMFR4_EL1, NV_frac, NV2P1);
->  			else
->  				val = SYS_FIELD_PREP_ENUM(ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY);
-> -- 
-> 2.47.3
-> 
+> I struggled a bit with this actually... I can't just grab
+> kvm->slots_lock here, and dropping kvm->srcu seems bad because the quote
+> will be written to guest memory later. I settled on the idea that the
+> guest should make sure these pages are converted to shared first. If it
+> tries to convert them back to private after this check, before this
+> TDVMCALL returns, then it's kind of a self-inflicted race and I don't
+> see KVM doing any self damage in this case. Not sure if this makes sense
+> to you? Or maybe I should just drop this check and go straight to
+> kvm_vcpu_read_guest()?
+
+Yes, drop it and rely on uaccess to do the right thing.
