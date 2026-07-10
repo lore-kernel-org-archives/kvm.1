@@ -1,318 +1,224 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E10A42A787
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 12:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEDF427A0F
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 12:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783688008; cv=none; b=VoJXbqYZCvHLsOExBUFqZIi8Iimxckpxa4NkkCGZHDyVnRWYSLBvJy9rog2bxCL0iOvU5jRWASrtG2FIduwLUfm2pWO9ecJb6bObNFmDgZpWus68aV2YGZ0D0kE2myqCAZt8TPkZUzIpgAVNHxSpVk/Pvchi6W2B47UeZ/TXt0M=
+	t=1783688174; cv=none; b=pKTWFCpmHL9TLCVIVTB/tzvOZpyxqV28lD/pkmP+4E5u03ILB/cDufqiIWRfenz1jl2S3UmTLyngq7u3XCh8za1xE7TQCf7AcqAmink3fGjWg0nH5/QFgk6+K/Qpy802QAa2iC69Ff6GDvNevQ3ieDWHzQPdJIukFkBfgNesvAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783688008; c=relaxed/simple;
-	bh=rDCXmiuS4OKEeEN/C5vghC+XVuZsf7eWZKIthL9flVA=;
+	s=arc-20240116; t=1783688174; c=relaxed/simple;
+	bh=dROs3mxilaizqzveJZHxZmPO1X0SiQhvPnc2NMYNWv0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JaffHZ8h7IBqV3KUjPmw08HFNVVCJVDytcGv0oc65xXQq7MtfJA3ljl6GluMBaQh39ICr0QXjowdAxSsrwzYB8FHqsqrXAVODvSgKRj99rm8kiOxyUfFomq2rcUvDFs3UrhXm7Rhai4UZLT7NdtwiCUy+ADUP6SAV3gIcQPs4Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DY1Jc3c5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=p4e6A66f; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=H+F9NxVaTZ+5G6Pl4j/Y+ZC4w2rblthHFtrMJcrhgj1a44uespsitFqyGfXXrOuQd6KSOX+tlC1qDP5CUWcuaJVQQzaUf8sneSTqH3+ztLtmQSsDQMEUp0XbOzpt6briLvh5tAaIOwO8oDq+srvcv6WpVMI38/mhZqO50sGy7/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VyariwAR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dDcEyu6C; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DY1Jc3c5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="p4e6A66f"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VyariwAR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dDcEyu6C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783688005;
+	s=mimecast20190719; t=1783688171;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=A796is8L3HyhHQ35rzweG5BKz7iNVXWLCRoCMdbZDUo=;
-	b=DY1Jc3c5W4/Wu3PpyeleItAuJntPa83UuP6TtvaJn+JiXhpWmD3V1E2nxfwwwvaJNAU5YU
-	7orEqVNOo2EE+OdvuuWLj0XjW0NkvipqStee2hwUzVO3vmQFn+8DaiwUBtefw1UQEIZ/G9
-	Z1Gze0A5STSmgzNTeh2ht+hVQomgdqw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Zgrul92LzXDHK43ZSxjoOOhS6v8EW9Phuwa0awVwF2Y=;
+	b=VyariwARa6pwY+krVQE3TjqrjGg3M6Cu7Tzb4AJjj/WfNtCD6Oj3LZ7xIo6KR8gi72BVFZ
+	TXk16qvLQO03RyceAwh+8S5oc7XVNqOZotI9Auh54C04IXeYWMMhwH6zZIRJYGP3ze2rW1
+	DWo8b/fPrlht+/UUSm6Yt2k6bGZD008=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-384-kxuuWBxtN6y38wHMf0CwXw-1; Fri, 10 Jul 2026 08:53:22 -0400
-X-MC-Unique: kxuuWBxtN6y38wHMf0CwXw-1
-X-Mimecast-MFC-AGG-ID: kxuuWBxtN6y38wHMf0CwXw_1783688001
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493a7fa8481so10437735e9.1
-        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 05:53:22 -0700 (PDT)
+ us-mta-180-w4ReKcaoOnaClWGoE3my8Q-1; Fri, 10 Jul 2026 08:56:09 -0400
+X-MC-Unique: w4ReKcaoOnaClWGoE3my8Q-1
+X-Mimecast-MFC-AGG-ID: w4ReKcaoOnaClWGoE3my8Q_1783688169
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f24a50f0cso635185f8f.3
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 05:56:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783688001; x=1784292801; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=A796is8L3HyhHQ35rzweG5BKz7iNVXWLCRoCMdbZDUo=;
-        b=p4e6A66fg8sy5VshukPDO0WCQuFTu/7thg3uBEA2dA+BuTcAfHye6AbIYXacxQd1Rt
-         xTyMfrE4DVdut7mmsjCbkUG4wkxO7MLFu9oMUIatl7r+NUNyz/Y/9A9INKvVfW2d9bwG
-         qTV4+RB2BsFNikeAL0ERuwjV+wHJSuwZ0Q55C7lse4UiMRjQxJ6PRFkM0P12P8ylHo2X
-         goYCQ2S+Ar4Ir0rP8XZ4oQRS2IcqM1FVO5aEm1YL9CN3yQtLlLe+u7wr1N8pGPlw76Ma
-         niaw0PtRqarZhdbPTXAkbUTGc6zkqt59wt+Tt3J1pDnT3QptOci4SyOQRLodsPhrl4jD
-         LpFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783688001; x=1784292801;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1783688168; x=1784292968; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=A796is8L3HyhHQ35rzweG5BKz7iNVXWLCRoCMdbZDUo=;
-        b=CR/SNeGH3B+SaydC3jzyt3RyTAvs4c5Ukfh0ZEATCELROZNli+sMhWHV5uljHbcHE9
-         v+GI+RQe75j3TOIdfKohNFP9VWwZFX4QbQ4lf8EyER6SpsSOouC37l+F+PmgcbAeBzMh
-         PutKS+blp1bElcqW0ty/tg0D7bnn1NHhLc2m7gdDGx2wV7UPhxcucVDh3XN40qC555dq
-         xIXnaszSTDLkRO6ja+lbzVwr9tFlz6aFQrDGuwZfdxDNBHcyODAWqRgGj+YsleZRt7BL
-         rTIP/4DYNd6OztmS65URhoTG1rnHb8/0sk1CnJPzYbxTpbkp9mX9r+tV0/TUmvyTRzw9
-         PVfg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2uA3Q6cFWjkOZuGk0xdLdyoDjwKuGZTU0PVV4p86j2Z6uuvab+rUWUOltmBtnmBsXvpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQPEnpxdS2UYXKxzr552hWIrTzvCBQ6zFPxaQBZLNqPSHMoWCf
-	9L+06bYtXimpAjBNfzpO9ia4+aqckQBPdwkdMriJiqcUkxcovzrQCz4AyT7VP2TPXXoDS/1TbKD
-	xpoXUKCf+qSkB7EYbmY/ILhepuYN3BZQKnABJngUduADQTCUPZRMUbA==
-X-Gm-Gg: AfdE7cn908MnD9hb+gpgp4qFnjpYmPLcoCFnwrwN7yt/ARyWkVgRO/2rjv/1yMWzNvz
-	zaAwN7mkPBn/ayW8NsiLh4vhCMQo0Q5jkr0t5WvGpZhTdrdY4Kt0Rxi/3glei+3icVKNLYzTqCI
-	H/VSdJsxBd4wDTxjKCBgO2rQ15mOpPDpZbUo74zNC0ZXKO6AZaVwx27XwC61Em3qHP5hugnPBIq
-	rXGnlFurdPB3xqB+sr0hqJlCRR0d48zTQbGnhBu+JT1kx80C5WYgTtEhmeljtq2tLZqgUtO4sXx
-	cHRTdabHgpvmUFPWel/3kVoj4fSSgz5aZdRiibfAPeqj0hYJcEzfzL8q+mEyWimXHkN3TR19GiC
-	OEz4=
-X-Received: by 2002:a05:600c:4858:b0:493:edde:54c8 with SMTP id 5b1f17b1804b1-493f2b2ece3mr19929965e9.8.1783688000884;
-        Fri, 10 Jul 2026 05:53:20 -0700 (PDT)
-X-Received: by 2002:a05:600c:4858:b0:493:edde:54c8 with SMTP id 5b1f17b1804b1-493f2b2ece3mr19929715e9.8.1783688000382;
-        Fri, 10 Jul 2026 05:53:20 -0700 (PDT)
+        bh=Zgrul92LzXDHK43ZSxjoOOhS6v8EW9Phuwa0awVwF2Y=;
+        b=dDcEyu6CyLSNxnjgcKUvT5STsN7iQblfm5Zn1hlLuAu8YdMto6Tlhk/VkLAmTFDJdp
+         67dnngISDZZXlE1g2vaZa/WATH+KvDOWiB4nHSalMTuKTjMHXf/s96CovA/i4okZUcQL
+         iMfDTlo5VCtGi9uX13SMym5m1pqLUn6ErgvkuedeH2w1UZfYK8s2IChXrhSv8f7JJ5Em
+         RiwDMati3eFE1kkJK/73udokKt1C6XHeBTPbjiA4ajI4uCj9JZffAIAZcZN+2zYeDf3r
+         0MNdbkTbTD+G2fKtvVhMih9gRgfBds7O1LBi9WiFo6xS0WPR0WZJj8xjJrN+8gwMhCKb
+         jLaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783688168; x=1784292968;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zgrul92LzXDHK43ZSxjoOOhS6v8EW9Phuwa0awVwF2Y=;
+        b=lvHDqSRpqyKFS6LWMALJ6VNW4Kf3EdH6LlFR7FjgjGFuWjgj/t7p96fOq8TMpSpjOP
+         yHleWfal16qoF5KXyiurCw2OHtcCgN30KvdyZ+yalHgnsSSPiAnOkCyf9ei0gqVxhH1U
+         K+TManQx7czFWxAk4bi9l7g0bPT4gwQHZV7PlhzZRSbP12O+2kaaBfj/OLoaz5sSRYMY
+         TPyj7H71pIekzrZnN1rxEJe9S0mmoxgfYgAAiB2M7NW1y1Reu/b+8AjhWnGop0sWJkrq
+         VYDsfKm2PeXhQHknnnXVC3DSbsgkdKzGJ7KBooGGN0wXA8Kx+4Q1Q1IjgsJeM9ykOpBS
+         Zvbw==
+X-Gm-Message-State: AOJu0YxGJYdcSyX8kP44vVX1lBuM/ObkYvL3YkFXHGCJr8An7ovp/vhB
+	TfDKr6QtFhvN60Y2+kf2dqVJ5zqob6cMagPDGyODz5/0onr4XM/xzIh7MrGLVdjcyhzT9pC6cGr
+	7cyMXNldmkiYhe6Dz5X/0MshcpaaXf6zYuIsYUVDFAYI89bh+U5Eh3g==
+X-Gm-Gg: AfdE7ckDr09aRlClAd1Y5RvBNrt+eiOuxg1tP/ePVdirYkitXUYXdc1Q63KQGiPBAmy
+	4NnSJM48hcKxnqZpF7duCAaKNaw4FaOjfQ5FxsHbMy1VMdVKGQxC34Z8z3plb8Y3ItpxpiWOuvS
+	J1LgpoZ2wQj9GQaiN3jCuKQENRzoTTYrPB4dJNWC5Y4SaN0NfZS0oycZLvcwVWOIuT8UIRH9dEK
+	na9BpDseIklC1/0kppgXnpQMlQXvNcek8oJE1snIkUc6q0rnHWJ9TfpJDw+4BNvS+i3Xgm94M+H
+	y62jz4S1mdhTKuGRdAsD8QV4zLGbrA0zbVw3mTKLszzmAiKCwcfi/lpIETlxqAEakuYNvBjp+xb
+	q2qY=
+X-Received: by 2002:a05:6000:29cd:b0:47e:96f6:6d99 with SMTP id ffacd0b85a97d-47e96f67108mr3686176f8f.18.1783688168597;
+        Fri, 10 Jul 2026 05:56:08 -0700 (PDT)
+X-Received: by 2002:a05:6000:29cd:b0:47e:96f6:6d99 with SMTP id ffacd0b85a97d-47e96f67108mr3686160f8f.18.1783688168218;
+        Fri, 10 Jul 2026 05:56:08 -0700 (PDT)
 Received: from fedora ([91.219.240.20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb70a372sm135247465e9.7.2026.07.10.05.53.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f213e8sm58123582f8f.34.2026.07.10.05.56.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 05:53:19 -0700 (PDT)
+        Fri, 10 Jul 2026 05:56:07 -0700 (PDT)
 From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Carlos =?utf-8?Q?L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com, Sean
- Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H.
- Peter Anvin" <hpa@zytor.com>, Roman Kagan <rkagan@virtuozzo.com>, Andrey
- Smetanin <asmetanin@virtuozzo.com>
-Subject: Re: [PATCH] KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
-In-Reply-To: <20260703205201.2667136-1-clopez@suse.de>
-References: <20260703205201.2667136-1-clopez@suse.de>
-Date: Fri, 10 Jul 2026 14:53:18 +0200
-Message-ID: <87tsq7f1kx.fsf@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] KVM: x86: Reject nested CAP enablement if nested
+ virtualization is disabled
+In-Reply-To: <20260630202828.440724-2-seanjc@google.com>
+References: <20260630202828.440724-1-seanjc@google.com>
+ <20260630202828.440724-2-seanjc@google.com>
+Date: Fri, 10 Jul 2026 14:56:07 +0200
+Message-ID: <87qzlbf1g8.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Carlos L=C3=B3pez <clopez@suse.de> writes:
+Sean Christopherson <seanjc@google.com> writes:
 
-> Fix an issue where userspace or the guest can program an Hyper-V
-> synthetic timer to have a deadline in the past via integer overflow,
-> preventing the CPU from making progress and triggering an RCU stall.
+> Add a flag to explicitly track if nested virtualization is enabled, and use
+> it enumerate that various nested CAPs are unsupported, and to reject
+> enablement of said CAPs.  When the nested ops hooks were moved to their
+> own structure, KVM's NULL-by-default behavior was deliberately dropped,
+> with the changelog asserting that all was well.  That wasn't quite true;
+> there is no danger to KVM, but now KVM is over-reporting support for
+> KVM_CAP_NESTED_STATE and KVM_CAP_HYPERV_ENLIGHTENED_VMCS.
 >
-> Hyper-V's SynIC exposes 4 per-vCPU synthetic timers to the
-> guest, which are emulated by KVM. Each is programmed through the
-> HV_X64_MSR_STIMERi_CONFIG and HV_X64_MSR_STIMERi_COUNT MSRs. Depending
-> on CONFIG, COUNT represents either the absolute expiration time or the
-> period of a periodic timer, both expressed in 100ns ticks. These timers
-> may be set both by the guest (WRMSR) and the host (KVM_SET_MSRS).
->
-> When the timer is enabled, stimer_start() translates COUNT to an
-> absolute monotonic deadline and arms an hrtimer. If COUNT is set to a
-> value close to U64_MAX, the deadline calculation can overflow.
->
->     ktime_add_ns(ktime_now, 100 * (stimer->exp_time - time_now))
->
-> This can result in a CPU livelock. stimer_start() arms the timer
-> via hrtimer_start() with a deadline in the past, which causes it to
-> immediately fire. The stimer callback then raises KVM_RQ_HV_STIMER, with
-> the intention of causing KVM to deliver a synthetic interrupt on the
-> next vCPU guest enter.
->
-> Then, once userspace issues KVM_RUN, vcpu_enter_guest() consumes the
-> request, calling kvm_hv_process_stimers(). This would normally disable
-> the timer via stimer_expiration() once the deadline is in the past.
-> However, the deadline comparison is done between the KVM reference
-> counter and stime->exp_time, which is a big value close to U64_MAX, so
-> this never happens for a few thousand years.
->
-> kvm_hv_process_timers() then re-arms the timer via stimer_start(), since
-> it was not disabled, which again fires immediately. Before entering
-> the guest, kvm_vcpu_exit_request() checks kvm_request_pending(),
-> which returns true due to the newly raised KVM_REQ_HV_STIMER. Then
-> vcpu_enter_guest() aborts the guest entry, returning early into
-> vcpu_run(), which loops back again into vcpu_enter_guest(), restarting
-> the cycle.
->
-> Since there are no manual yields in this loop, a task with SCHED_FIFO
-> may starve RCU grace-period kthreads, which exposes the stalls found
-> by syzcaller:
->
->     rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
->     rcu:    (detected by 1, t=3D10502 jiffies, g=3D14269, q=3D1142 ncpus=
-=3D2)
->     rcu: All QSes seen, last rcu_preempt kthread activity 10500 (42949652=
-39-4294954739), jiffies_till_next_fqs=3D1, root ->qsmask 0x0
->     rcu: rcu_preempt kthread starved for 10500 jiffies! g14269 f0x2 RCU_G=
-P_WAIT_FQS(5) ->state=3D0x0 ->cpu=3D0
->     rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is n=
-ow expected behavior.
->         ( ... )
->     Call Trace:
->      <IRQ>
->      __run_hrtimer kernel/time/hrtimer.c:1773 [inline]
->      __hrtimer_run_queues+0x408/0xc30 kernel/time/hrtimer.c:1841
->      hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
->      local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1045 [inline]
->      __sysvec_apic_timer_interrupt+0x102/0x3e0 arch/x86/kernel/apic/apic.=
-c:1062
->      instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1056 [=
-inline]
->      sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:10=
-56
->      </IRQ>
->      <TASK>
->      asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idten=
-try.h:697
->     RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp=
-.h:152 [inline]
->     RIP: 0010:_raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinl=
-ock.c:194
->     Code: 74 05 e8 0b f4 5f f6 48 c7 44 24 20 00 00 00 00 9c 8f 44 24 20 =
-f6 44 24 21 02 75 4f f7 c3 00 02 00 00 74 01 fb bf 01 00 00 00 <e8> 23 6b 2=
-7 f6 65 8b 05 7c 60 5a 07 85 c0 74 40 48 c7 04 24 0e 36
->     RSP: 0018:ffffc900040a7320 EFLAGS: 00000206
->     RAX: 5de15cb931505900 RBX: 0000000000000a06 RCX: 5de15cb931505900
->     RDX: 0000000000000007 RSI: ffffffff8daa9dc3 RDI: 0000000000000001
->     RBP: ffffc900040a73b0 R08: ffffffff8fc3d077 R09: 1ffffffff1f87a0e
->     R10: dffffc0000000000 R11: fffffbfff1f87a0f R12: dffffc0000000000
->     R13: 0000000000000000 R14: ffff8880b8628240 R15: 1ffff92000814e64
->      hrtimer_start include/linux/hrtimer.h:259 [inline]
->      stimer_start arch/x86/kvm/hyperv.c:682 [inline]
->      kvm_hv_process_stimers+0xd0a/0x16a0 arch/x86/kvm/hyperv.c:893
->      vcpu_enter_guest arch/x86/kvm/x86.c:11193 [inline]
->      vcpu_run+0x2240/0x76b0 arch/x86/kvm/x86.c:11639
->      kvm_arch_vcpu_ioctl_run+0x1148/0x1c90 arch/x86/kvm/x86.c:11984
->      kvm_vcpu_ioctl+0x99a/0xed0 virt/kvm/kvm_main.c:4492
->      vfs_ioctl fs/ioctl.c:51 [inline]
->      __do_sys_ioctl fs/ioctl.c:597 [inline]
->      __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
->      do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->      do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
->      entry_SYSCALL_64_after_hwframe+0x77/0x7f
->     RIP: 0033:0x7f635278f749
->     Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 =
-89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f=
-0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
->     RSP: 002b:00007f635365c038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
->     RAX: ffffffffffffffda RBX: 00007f63529e5fa0 RCX: 00007f635278f749
->     RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
->     RBP: 00007f6352813f91 R08: 0000000000000000 R09: 0000000000000000
->     R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
->     R13: 00007f63529e6038 R14: 00007f63529e5fa0 R15: 00007ffd5b219358
->      </TASK>
->
-> Fix this by clamping the deadline computation to KTIME_MAX, which
-> preserves the intent of arming a timer very far in the future.
-> ktime_add_safe() already does this type of clamping, so use it after
-> checking that that multiplying by the 100ns time tick also does not
-> overflow.
->
-> Reported-by: syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D3d5461510f8dc4adfe30
-> Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
+> Fixes: 33b22172452f ("KVM: x86: move nested-related kvm_x86_ops to a separate struct")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  arch/x86/kvm/hyperv.c | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
+>  arch/x86/include/asm/kvm_host.h |  2 ++
+>  arch/x86/kvm/hyperv.c           |  3 ++-
+>  arch/x86/kvm/svm/svm.c          |  1 +
+>  arch/x86/kvm/vmx/vmx.c          |  1 +
+>  arch/x86/kvm/x86.c              | 12 +++++++-----
+>  5 files changed, 13 insertions(+), 6 deletions(-)
 >
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index b517257a6315..36de689a579c 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1906,6 +1906,8 @@ struct kvm_x86_ops {
+>  };
+>  
+>  struct kvm_x86_nested_ops {
+> +	bool enabled;
+> +
+>  	void (*leave_nested)(struct kvm_vcpu *vcpu);
+>  	bool (*is_exception_vmexit)(struct kvm_vcpu *vcpu, u8 vector,
+>  				    u32 error_code);
 > diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-> index fd4eb1e561f7..315635d36606 100644
+> index 1ee0d23f8949..7184622992d0 100644
 > --- a/arch/x86/kvm/hyperv.c
 > +++ b/arch/x86/kvm/hyperv.c
-> @@ -626,6 +626,17 @@ static enum hrtimer_restart stimer_timer_callback(st=
-ruct hrtimer *timer)
->  	return HRTIMER_NORESTART;
->  }
->=20=20
-> +/*
-> + * Translate a stimer expiry given in 100ns reference ticks into an
-> + * an absolute deadline. Saturates on overflow.
-> + */
-> +static ktime_t stimer_add_delta(ktime_t now, u64 delta_100ns)
-> +{
-> +	if (delta_100ns > KTIME_MAX / 100)
-> +		return KTIME_MAX;
-> +	return ktime_add_safe(now, 100 * delta_100ns);
-
-My Claude believes '>=3D' check would be better and the explanations sounds
-somewhat plausible to me:
-
-"=20
-  The guard delta_100ns > KTIME_MAX / 100 uses strict >, so the
-  boundary value delta_100ns =3D=3D 92233720368547758 passes through. The
-  product 9223372036854775800 fits in s64, but adding any real ktime_now
-  (always >> 8ns) overflows.
-
-  ktime_add_safe then clamps to ktime_set(KTIME_SEC_MAX, 0) =3D
-  9223372036000000000 =E2=80=94 about 854ms less than KTIME_MAX. Two overfl=
-ow
-  paths, two different saturation values. Fix: change > to >=3D.
-"=20
-
-I don't know if someone programming a timer to fire many years from now
-would be really disappinted when it fires 854ms early though.
-
-> +}
-> +
->  /*
->   * stimer_start() assumptions:
->   * a) stimer->count is not equal to 0
-> @@ -635,6 +646,7 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *st=
-imer)
->  {
->  	u64 time_now;
->  	ktime_t ktime_now;
-> +	ktime_t deadline;
->=20=20
->  	time_now =3D get_time_ref_counter(hv_stimer_to_vcpu(stimer)->kvm);
->  	ktime_now =3D ktime_get();
-> @@ -657,10 +669,8 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *s=
-timer)
->  					stimer->index,
->  					time_now, stimer->exp_time);
->=20=20
-> -		hrtimer_start(&stimer->timer,
-> -			      ktime_add_ns(ktime_now,
-> -					   100 * (stimer->exp_time - time_now)),
-> -			      HRTIMER_MODE_ABS);
-> +		deadline =3D stimer_add_delta(ktime_now, stimer->exp_time - time_now);
-> +		hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
->  		return 0;
+> @@ -2787,7 +2787,8 @@ int kvm_get_hv_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid2 *cpuid,
+>  	};
+>  	int i, nent = ARRAY_SIZE(cpuid_entries);
+>  
+> -	if (kvm_x86_ops.nested_ops->get_evmcs_version)
+> +	if (kvm_x86_ops.nested_ops->enabled &&
+> +	    kvm_x86_ops.nested_ops->get_evmcs_version)
+>  		evmcs_ver = kvm_x86_ops.nested_ops->get_evmcs_version(vcpu);
+>  
+>  	if (cpuid->nent < nent)
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ef69a51ab27f..163440fca59f 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -5646,6 +5646,7 @@ static __init int svm_hardware_setup(void)
+>  		if (r)
+>  			return r;
 >  	}
->  	stimer->exp_time =3D stimer->count;
-> @@ -679,9 +689,9 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *st=
-imer)
->  					   stimer->index,
->  					   time_now, stimer->count);
->=20=20
-> -	hrtimer_start(&stimer->timer,
-> -		      ktime_add_ns(ktime_now, 100 * (stimer->count - time_now)),
-> -		      HRTIMER_MODE_ABS);
-> +	deadline =3D stimer_add_delta(ktime_now, stimer->count - time_now);
-> +	hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
-> +
->  	return 0;
->  }
->=20=20
->
-> base-commit: 50406d35f5635e1cc523e61409d57e851b5f5df8
-
-With or without '>=3D' fix above,
+> +	svm_nested_ops.enabled = nested;
+>  
+>  	/*
+>  	 * KVM's MMU doesn't support using 2-level paging for itself, and thus
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 3681d565f177..ef9e1bc39edb 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -8786,6 +8786,7 @@ __init int vmx_hardware_setup(void)
+>  		if (r)
+>  			return r;
+>  	}
+> +	vmx_nested_ops.enabled = nested;
+>  
+>  	kvm_set_posted_intr_wakeup_handler(pi_wakeup_handler);
+>  
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0626e835e9eb..cd9a5ff47f6f 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -2346,7 +2346,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  			r &= ~KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST;
+>  		break;
+>  	case KVM_CAP_NESTED_STATE:
+> -		r = kvm_x86_ops.nested_ops->get_state ?
+> +		r = kvm_x86_ops.nested_ops->enabled ?
+>  			kvm_x86_ops.nested_ops->get_state(NULL, NULL, 0) : 0;
+>  		break;
+>  #ifdef CONFIG_KVM_HYPERV
+> @@ -2354,7 +2354,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>  		r = kvm_x86_ops.enable_l2_tlb_flush != NULL;
+>  		break;
+>  	case KVM_CAP_HYPERV_ENLIGHTENED_VMCS:
+> -		r = kvm_x86_ops.nested_ops->enable_evmcs != NULL;
+> +		r = kvm_x86_ops.nested_ops->enabled &&
+> +		    kvm_x86_ops.nested_ops->enable_evmcs != NULL;
+>  		break;
+>  #endif
+>  	case KVM_CAP_SMALLER_MAXPHYADDR:
+> @@ -3366,7 +3367,8 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
+>  			uint16_t vmcs_version;
+>  			void __user *user_ptr;
+>  
+> -			if (!kvm_x86_ops.nested_ops->enable_evmcs)
+> +			if (!kvm_x86_ops.nested_ops->enabled ||
+> +			    !kvm_x86_ops.nested_ops->enable_evmcs)
+>  				return -ENOTTY;
+>  			r = kvm_x86_ops.nested_ops->enable_evmcs(vcpu, &vmcs_version);
+>  			if (!r) {
+> @@ -3732,7 +3734,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  		u32 user_data_size;
+>  
+>  		r = -EINVAL;
+> -		if (!kvm_x86_ops.nested_ops->get_state)
+> +		if (!kvm_x86_ops.nested_ops->enabled)
+>  			break;
+>  
+>  		BUILD_BUG_ON(sizeof(user_data_size) != sizeof(user_kvm_nested_state->size));
+> @@ -3762,7 +3764,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  		int idx;
+>  
+>  		r = -EINVAL;
+> -		if (!kvm_x86_ops.nested_ops->set_state)
+> +		if (!kvm_x86_ops.nested_ops->enabled)
+>  			break;
+>  
+>  		r = -EFAULT;
 
 Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-we don't have any stimer tests in KVM selftests but we do have some in
-KVM unit tests. It would be great to add something there for the issue.
-
---=20
+-- 
 Vitaly
 
