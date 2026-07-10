@@ -1,70 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E046B3C2777;
-	Fri, 10 Jul 2026 12:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384514252D6;
+	Fri, 10 Jul 2026 12:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783684934; cv=none; b=dGnBGjcXpLYWSfjldE2FmE98JfiWhcFLTjGZgrGVSkf7T4rzWGLs5H2l8tXY22MNmRgoBXRlGftvkorf5r6FHa3NxcaKcTEYmGIfDFndbmBg/Z+ngKuaGTpg1OdGXy+7uv6mR92FwuyTgh/wbX8RvCBqAw1Y5J6oTKuRz3f1YgI=
+	t=1783686623; cv=none; b=AmK4AQalrx3hPAg9PM+bL3VFSoI3zOWVjyj3JpJpWEppMaDlZKiP/j9np418n+wOdeD/btDQ02yOUL+2aCdT2RK9Pb0N7AH+erpPTFgO8AeCo2k1kmNepgVJTBZhpwi1zonaSbo80KSWvYrE0XPRdKC0/PDMNMuoX8buUJaCvaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783684934; c=relaxed/simple;
-	bh=VbD/U3mZLcFNprQtikPmaVhdVIAHp3rEpPdxQ8KyssQ=;
+	s=arc-20240116; t=1783686623; c=relaxed/simple;
+	bh=PhZSgwAPnlBoDop9grNwQcAY2o3W3MitfJlKv3etYC8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=el9F4NxIvEEsjw22E2odUU8LtzbZJIC+h5GkZtbe2QuRERkJm/rBInr/TAgCpz+NtOyxHMQLTner5bxZ6nkRpevdyOwK0032S7kw1Rkv8Q7wz30G+4W+dA1IJCGbEeltqR6w716tG5dLWnVNewqpIkJTVDFlJSjaWWd9Bnyy5tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guCeLf94; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=HG3AN/OjOE3UH793+5IRmzuWWBNMI5kgV2iZLSnG5XgRf43jTeafMvjqEJorK/4vHqkUf8mgEetPVpnpzemAnvL+Sl3aHpCb5u1dpQJVGebZCazQ8iIdoespDmwNK/qPqsbtAdy8zKb0ykrE4uWPK4ruHRC/iEEoqju1cpVLH4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hBVVi5ls; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guCeLf94"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E3C1F000E9;
-	Fri, 10 Jul 2026 12:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783684930;
-	bh=PP3VC/37RzTAGWL7k/+I+tmeLylhrGIoDnWfhyG+Q0c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=guCeLf94Bg9R/kH/GNwmitbcZ9pnDfuV2KrvtxKoIIzqP/+DoqIomIHeCNsbYF3ro
-	 qKp3wQ5pxTpNyQYt1whiGSQ+yjFoChrqoYDZObx4xLdK4ZH6Zwl7sUjBa8SAOvvB8o
-	 GkHN6O/EYamKycKyvIzCvz09r4rK1kRkytWrj9fPaoXO291aq3SAbD9htWsQC9qF8e
-	 ilfy9Xj+IlsOiuZVK0DPpJ8QkdGDUAgF/wBdnF4J6fAy8Z4xJ6RNSl3i0X8WCd31XK
-	 /Da0mhyQ43cK8N+cdPKBY2//YItjHgz/aN9i+KbDo2RNaPiJvpPn658lyyQFV8rUJq
-	 4wb+jt6MWPqQQ==
-Date: Fri, 10 Jul 2026 13:01:42 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Takahiro Itazuri <itazur@amazon.com>, fvdl@google.com, 
-	Liam.Howlett@oracle.com, agordeev@linux.ibm.com, ajones@ventanamicro.com, 
-	akpm@linux-foundation.org, alex@ghiti.fr, andrii@kernel.org, aou@eecs.berkeley.edu, 
-	ast@kernel.org, baolu.lu@linux.intel.com, bp@alien8.de, chenhuacai@kernel.org, 
-	corbet@lwn.net, coxu@redhat.com, daniel@iogearbox.net, 
-	dave.hansen@linux.intel.com, david@kernel.org, derekmn@amazon.com, dev.jain@arm.com, 
-	eddyz87@gmail.com, gerald.schaefer@linux.ibm.com, gor@linux.ibm.com, 
-	haoluo@google.com, hca@linux.ibm.com, hpa@zytor.com, itazur@amazon.co.uk, 
-	jackabt@amazon.co.uk, jackmanb@google.com, jannh@google.com, jgg@ziepe.ca, 
-	jgross@suse.com, jhubbard@nvidia.com, jiayuan.chen@shopee.com, 
-	jmattson@google.com, joey.gouly@arm.com, john.fastabend@gmail.com, jolsa@kernel.org, 
-	jthoughton@google.com, kpsingh@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	lenb@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, luto@kernel.org, maobibo@loongson.cn, martin.lau@linux.dev, 
-	maz@kernel.org, mhocko@suse.com, mingo@redhat.com, mlevitsk@redhat.com, 
-	nikita.kalyazin@linux.dev, oupton@kernel.org, palmer@dabbelt.com, patrick.roy@linux.dev, 
-	pavel@kernel.org, pbonzini@redhat.com, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, pjw@kernel.org, prsampat@amd.com, rafael@kernel.org, 
-	riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, sdf@fomichev.me, 
-	shijie@os.amperecomputing.com, skhan@linuxfoundation.org, song@kernel.org, surenb@google.com, 
-	suzuki.poulose@arm.com, svens@linux.ibm.com, tabba@google.com, tglx@kernel.org, 
-	thuth@redhat.com, urezki@gmail.com, vannapurve@google.com, vbabka@kernel.org, 
-	will@kernel.org, willy@infradead.org, wu.fei9@sanechips.com.cn, x86@kernel.org, 
-	yang@os.amperecomputing.com, yangyicong@hisilicon.com, yonghong.song@linux.dev, 
-	yosry@kernel.org, yu-cheng.yu@intel.com, yuzenghui@huawei.com, 
-	zhengqi.arch@bytedance.com, zulinx86@gmai.com
-Subject: Re: [PATCH v12 10/16] KVM: guest_memfd: Add flag to remove from
- direct map
-Message-ID: <alDe8fpxdafnfuqb@lucifer>
-References: <CAPTztWb67XZvfcMVnbegDNNW0LJa9UsaTGx3M898xJUJrekk0w@mail.gmail.com>
- <20260508081812.12345-1-itazur@amazon.com>
- <CAEvNRgG07EMrx-SpMaO3gHmdGVwOb75XNy7_RARBo0chidn7Yg@mail.gmail.com>
- <DJP40SEE38XA.3BXJN4U0VDIOS@linux.dev>
- <akw1lZDEv8_Ub1zQ@google.com>
- <DJURGJEHZHFY.3SINJIME8E9RB@linux.dev>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hBVVi5ls"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66AAmbw51390328;
+	Fri, 10 Jul 2026 12:29:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ZRq5FiKmtof79rOTnqeYURDNi5Ipfk
+	crSYA8lFnk7Co=; b=hBVVi5lspoV25JGFxf7RAN36P/ezaNfopHsvQ1Mmlj5q4x
+	WEdA0RH6BORMvK9KeFOCled90OqtgnhWUBv3atvndAPrI5D1gXjS7H4U8V35c/PZ
+	zWqNt8duWDxr9WtWMxzi+/FOhr7xxgLRLufHPIsxDrgtVkNqIDrDYvwLB1Lno2SS
+	JNq5AKs9L1oGph2s3dSAu+1ukmSe+n3zVsz2cZtInJLKdDDQyjUJPTjz1mA5zXfi
+	yesCPP6a9qlsbO70hTZ1lLzEnjiIglbnE/40l/fHEMMQwn4cmFgW0PtiDxAM4172
+	P8qzc+SJK6Btv+0aLcgNi51Z+ihNs6tBaF96Qf3g==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur6e7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 12:29:58 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ACJcNR032025;
+	Fri, 10 Jul 2026 12:29:57 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4f7e0hsv3q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 12:29:57 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ACToeK30999012
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jul 2026 12:29:50 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4307120040;
+	Fri, 10 Jul 2026 12:29:50 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 693C020043;
+	Fri, 10 Jul 2026 12:29:49 +0000 (GMT)
+Received: from osiris (unknown [9.87.147.219])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 10 Jul 2026 12:29:49 +0000 (GMT)
+Date: Fri, 10 Jul 2026 14:29:48 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
+        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v4 15/27] KVM: S390: Prepare gmap for a second KVM
+ implementation
+Message-ID: <20260710122948.984749-I-seiden@linux.ibm.com>
+References: <20260706085229.979525-1-seiden@linux.ibm.com>
+ <20260706085229.979525-16-seiden@linux.ibm.com>
+ <363e1fc0-e816-4fc3-8bdd-e42c7ba17c71@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,120 +91,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DJURGJEHZHFY.3SINJIME8E9RB@linux.dev>
+In-Reply-To: <363e1fc0-e816-4fc3-8bdd-e42c7ba17c71@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDEyMiBTYWx0ZWRfX7WS8eNGobFcg
+ p76ityUvWlUX/FP+onJKVqMwQL5PVdcbvEmQcz91+n6KaGuiyUj1MlZm1e9aUc+Ic+ZpsSWPhBF
+ +RTs17HRHutmXQllqpCpLv8tJGJL6a0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDEyMiBTYWx0ZWRfX498DWpDFLDkd
+ BNbezHuUL1Dhf/NN6+mZ+oaH2ZvPbJUSIYDlMWczbqGNvrBY5YaXNIhx8ZZfgNLLTzq0rayIECT
+ 0TZ+o0g4tWTomI1DXMm9EsH4sQIqi8/b/h3Mq2kRGnTp//BNU36hZ4HwZ36FbVdO2HlXy4B/JA+
+ Jr5TBYux9FIVeKcLYx+Hl1/hRGxkGVjzPKE3kQS0mMbi2GnQ5r0fy55jSuG5iF43Egwp6U3dsHv
+ 5jkkpjIFbIdsuWExTrGCBkzH/pzIjVV7q2PPlbs1RAakU16ES1F6ZrxKtM0bWHXxYUXlEUhpq6w
+ 8VAF3Cm2nr0pow66ze6zGiRCGxDty1Ab688Jlr7OQQu4bynluMHxfCJtVwjFP7Mngi4X1rpnmot
+ 1QE8i8nGH2y7pXKF5VS1bODL/J38u6GjWWUT6T/TKZwj/+bs5CCh//abQffPgxVEkctQJpmrXIv
+ F/53u1sTG7LG4Vueqjg==
+X-Proofpoint-GUID: f438JKkFMXBaTFK33hUMooQphFcuOKdz
+X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a50e5c6 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=Ly9xp4i0NRlZACsuZJYA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: f438JKkFMXBaTFK33hUMooQphFcuOKdz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-10_03,2026-07-09_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607100122
 
-On Fri, Jul 10, 2026 at 08:50:25AM +0000, Brendan Jackman wrote:
-> On Mon Jul 6, 2026 at 11:09 PM UTC, Sean Christopherson wrote:
-> > On Fri, Jul 03, 2026, Brendan Jackman wrote:
-> >> There are also the fault paths though; if the pages are nonpresent in
-> >> the direct map for the duration of their life in the page cache (and I
-> >> think they should be) then by the time we get to
-> >> kvm_mmu_faultin_pfn_gmem() or kvm_gmem_fault_user_mapping() we lost the
-> >> ability to zero them.
-> >>
-> >> My original answer for this was "that's fine, we'll use __GFP_ZERO
-> >> (which will probably use the mermap under the hood)", but now I've
-> >> realised there's a good reason we don't set __GFP_ZERO at the moment,
-> >> namely that it's wasted if we end up doing kvm_gmem_populate()
-> >
-> > Eh, don't worry about the wasted cycles for populate().  The overhead of zeroing
-> > a page is dwarfed by the overhead of adding (and in most cases, measuring) the
-> > page.
-> >
-> > We (KVM folks) discussed this in the context of in-place conversions, and long
-> > story short, the consensus is that shaving cycles by eliding the zeroing in the
-> > host isn't worth the complexity.
->
-> OK thanks, this is useful. Nonetheless because it leads to a less
-> confusing dishgn, I think it still makes sense to just disallow
-> __GFP_ZERO for the unmapped pages.
->
-> (At least, at the page allocator level. We might want to allow it in
-> address_space.gfp_mask or something and have filemap.c deal with it.
-> But, overloading a GFP flag like this is yucky, if we need a flag for
-> that I think it's likely neater to make it an AS_ flag or something).
->
-> >> (Continued below...)
-> >>
-> >> > I'm a little bit uncomfortable this statement since it seems to say TDX
-> >> > and SNP aren't taken care of. Would just like to discuss (for
-> >> > a line of sight to SNP and TDX support):
-> >>
-> >> Are you saying we need NO_DIRECT_MAP support for TDX/SNP? I think that
-> >> would be doable but what's the value?
-> >
-> > Hardening against consumption of shared memory?  Yes, the guest has explicitly
-> > shared the memory so there are (very) reduced expectations around confidentiality
-> > and integrity, but defense in depth and all that.
->
-> Ah yeah, it did not occur to me that there was memory being set up via
-> CoCo paths that is not encrypted. So yeah that makes perfect sense.
-> Eventually we'll want to be able to lean on this to protect that shared
-> memory against attacks by other VMs etc.
->
-> > For me, the main thing is that I don't want to completely punt on the interaction
-> > of the two things, and end up with an unworkable mess if there's ever a strong
-> > reason for CoCo VMs to support NO_DIRECT_MAP.
->
-> Yeah that makes sense.
->
-> >> So that we can get a #PF instead of #MCE if we screw up?
-> >
-> > Note, SNP gets a #PF either way.
-> >
-> >> NOW, the thing I'm stuck on (again lol) is the patchset-fu. Here's all
-> >> the parts we need, with dependencies indented:
-> >>
-> >> 0. efficient GUEST_MEMFD_FLAG_NO_DIRECT_MAP
-> >>   1. AS_NO_DIRECT_MAP
-> >>     2. ALLOC_UNMAPPED (formerly known as __GFP_UNMAPPED)
-> >>       3. alloc_flags arg to the page allocator (I'm sneakily introducing this
-> >>          in [1])
-> >>       4. freetype_t
-> >>   5. The mermap
-> >>     6. The mm-local region
-> >>
-> >> I originally posted all of those in [0], except part 3. Doing all of
-> >> that together in one series would be a bit too much though. Approaches I
-> >> can see to avoid that:
-> >>
-> >> Approach X:
-> >> - Do parts 1, 2 and 4 as a standalone series. The only beneficiary of
-> >>   AS_NO_DIRECT_MAP would be secretmem.
-> >> - Then another series that fills in 0, 5 and 6.
-> >>
-> >> Approach Y:
-> >> - One series that does parts 0, 1, 5, and 6. AS_NO_DIRECT_MAP is
-> >>   implemented by having filemap.c itself call folio_zap_direct_map(),
-> >>   then guest_memfd.c zeroes it via the mermap. It works but it's really
-> >>   slow.
-> >> - Then another series that fills in parts 2 and 4, switches filemap.c
-> >>   over from manual folio_zap_direct_map() to ALLOC_UNMAPPED, making
-> >>   things fast.
-> >>
-> >> Approach X seems natural from a code progression perspective but leaves
-> >> us with an interim phase where we have a bunch of complexity just to
-> >> "optimise secretmem" which nobody cares about.
-> >>
-> >> Approach Y seems natural from a feature progression perspective but
-> >> leaves us with an interim phase where we expensively zap a page, only to
-> >> then immediately do this complex mermap dance to access it right
-> >> afterwards.
-> >>
-> >> Any thoughts / other ideas? Personally I think I prefer X.
-> >
-> > I don't have preference between those options, mostly because I don't appreciate
-> > the difference.  My overarching preference is to separate the mm/ work from the
-> > guest_memfd as much as possible.  Beyond that, I probably don't care all that much?
->
-> Cool thanks, shrugs are fine here.
->
-> Main thing I'm trying to do here is generate some awareness that the
-> decision is being made, so that I don't forge ahead with X and then have
-> people going "ugh, why haven't you considered Y?" If nobody cares either
-> way then nothing to worry about.
+On Fri, Jul 10, 2026 at 11:29:39AM +0200, Christian Borntraeger wrote:
+> 
+> 
+> Am 06.07.26 um 10:52 schrieb Steffen Eiden:
+> [...]
+> 
+> > --- a/arch/s390/include/asm/kvm_host.h
+> > +++ b/arch/s390/include/asm/kvm_host.h
+> > @@ -5,4 +5,13 @@
+> >   #include <asm/kvm_host_s390.h>
+> > +#define PGM_PROTECTION			0x04
+> > +#define PGM_ADDRESSING			0x05
+> > +#define PGM_SEGMENT_TRANSLATION		0x10
+> > +#define PGM_PAGE_TRANSLATION		0x11
+> > +#define PGM_ASCE_TYPE			0x38
+> > +#define PGM_REGION_FIRST_TRANS		0x39
+> > +#define PGM_REGION_SECOND_TRANS		0x3a
+> > +#define PGM_REGION_THIRD_TRANS		0x3b
+> > +
+> >   #endif /* ASM_KVM_HOST_H */
+> > diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+> > index 5293b0067422..7b7aa166cff7 100644
+> > --- a/arch/s390/include/asm/kvm_host_s390.h
+> > +++ b/arch/s390/include/asm/kvm_host_s390.h
+> > @@ -153,8 +153,7 @@ struct kvm_vcpu_stat {
+> >   #define PGM_OPERATION			0x01
+> >   #define PGM_PRIVILEGED_OP		0x02
+> >   #define PGM_EXECUTE			0x03
+> > -#define PGM_PROTECTION			0x04
+> > -#define PGM_ADDRESSING			0x05
+> > +/* 0x04 & 0x05 defined in kvm_host.h */
+> 
+> I think I would move ALL PGM defines into kvm_host.h. Those are certainly valid from a host
+> point of view, even for the arm64 kvm module. Yes, its unused but it will be much cleaner
+> than having everything in one place and doing these cross-reference comments.
+> 
+> [...]
 
-X seems fine to me and that seems to be the consensus here. And it seems moot if
-Y relies upon mm stable branches which are not here yet :)
+Malkes sense. I'll move all.
 
-Cheers, Lorenzo
+	Steffen
