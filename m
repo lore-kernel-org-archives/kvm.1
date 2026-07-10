@@ -1,142 +1,278 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441901F4634;
-	Fri, 10 Jul 2026 05:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9465E1F4634
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 05:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783660302; cv=none; b=uyyHls/7iQyZhfg6Xf0M9SUuaqnP5hJXKsctBM5YWdlc/djRbNqA7uF2A+I/aueIwzfSItb1Upk4RVivXt8djA0xVwjHWb5KtdUjD9KF3NRoGTDJym9C8ivKOcTzE/QmOVcrUTsdQQteJQyIul290aTvUQG7JxGH73D4M145ddc=
+	t=1783660755; cv=none; b=ZGPWh4fbjlLCbBFyrQYhGQoOg56d5r4s9+BGVQUjqmRW5uMIAQxvg0Vs+HFQqejBYtr3Bby4Z7Yha/guvPzFCA9ZVM2Z6aW9ErUqKi8tm1cxheAUyzX0BHRUmE6APKR0pf4x3XH3BbTfPLEX5VR4Q1hzAv7SpiW6I5aScPshS/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783660302; c=relaxed/simple;
-	bh=dME6OgFdwvQ3QIqLtKnDlKNLG71EI67e/Ymtvu9srxw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bVK5WN/Hi6IdsD1AQNEi6l2vfdgfas0IiOutZGhK+1t79lXljN8nST5pheuz9tt5LoaVS13Sb64JlPV2xxr8g3aj9FZwDrxr8c1eyrjzGfGr8CCzKW+/oQ2aa3slN+acLuRnz89Ve7u8EYHTAHf2z4HqBmO2aof3iBz/LxE/8yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ph4b7BZG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783660755; c=relaxed/simple;
+	bh=0KSW3zDpc5xjdOZYLS2EKpZnHgDZG7q++I5iUZ66rQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c2QqdjRBxfk7ZFptP+RV6xjXZRDVtKFG7hwr3/0nSUbyCBpPWntv2y+3YQ8FRM575jB/cyRpO4PD2OWHv4CWITf6XIs9+KxJk2xPbRrrtWhzrTH9hIUWe+lSk7sfUQqGR6hG1UPWLHfirTFEt7nxQoS+jPAOjaqz5QX5dC1w1PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s4Q3mXkE; arc=none smtp.client-ip=74.125.228.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ph4b7BZG"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66A3nZq3075636;
-	Fri, 10 Jul 2026 05:11:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=V70VbE
-	j1ScjUchlU553r0Xd4F46LqK16+8IJ3ntbpQM=; b=ph4b7BZGCLL6yb2U1Xwwcf
-	xa+rUaUVswqAXodKI9w9TNoYs/ySVTgRVV1fS6f4nkR9tq/NE3wz2T21syNHazIc
-	nLpTr2ncrtSfobNuf1flty6Yf8W+cCdO6EhWNYsn4lO9m8o42yL6XmO6hFmnq9O2
-	WRNNEIN0EEo9LfZfeHgmuYF9YbR053pvpZUPVnGT3WCl7OfHyCFztPlYlaMJvzNe
-	BgOWe6Wt05gIBOFHnSW8U4aSkjudNtu3ZBxqhT990FqyvHDpz1YYg2qwtDE16hDf
-	HFuW3pmBuXRgTcWBoJFyheWmf8/VOcmasL+QaaL1j6UWw6oI26tcOianXAl+bFcQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6qknvett-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 05:11:24 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66A54Z9L017949;
-	Fri, 10 Jul 2026 05:11:23 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7f6yg4x3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 05:11:23 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66A5BJ3246596604
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jul 2026 05:11:20 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE2A42004B;
-	Fri, 10 Jul 2026 05:11:19 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE01820040;
-	Fri, 10 Jul 2026 05:11:16 +0000 (GMT)
-Received: from [9.124.216.105] (unknown [9.124.216.105])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Jul 2026 05:11:16 +0000 (GMT)
-Message-ID: <4bea3407-38e1-4d26-8293-7700266a24cf@linux.ibm.com>
-Date: Fri, 10 Jul 2026 10:41:15 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s4Q3mXkE"
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-c9fe62e0da3so190362a12.1
+        for <kvm@vger.kernel.org>; Thu, 09 Jul 2026 22:19:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783660753; x=1784265553; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eaT2VzoKRrCEsQJsGJsh7iwXPoQA/5ukSwz33vQMgQA=;
+        b=s4Q3mXkE+apWitPhjE6XeJUbXF8abS9z0PGyHBnOA16aPJIvXotXD7+T08PyH8ENYX
+         pf6KU3UCp4KgECZwrqUviYZvPQDyCrmjff2GVfm789S9zHfLGDDexjZ+vPYWWY9nh597
+         NoRs4SKA0pnVytxPqSo4OdG0GqKQe/px+7KH6RehwCgrFgjNmW632d98FwA0rG1x8LHQ
+         kxT6ObVeoOnNu5gGIT8EeANVWd5DEy6seHhALA9Gp1EkjLQ3Eb6dQDwtxc8HEinK5fpq
+         NkXh3Nrq1YR6EwiN52Ju5cfazI75514RHKFBXpP/dpON+5bX5vSZLlLUbMSxsJC2yn3l
+         FelQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783660753; x=1784265553;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eaT2VzoKRrCEsQJsGJsh7iwXPoQA/5ukSwz33vQMgQA=;
+        b=jFa4AvgKra64zpFUNWDsYIlQ2Z71N2GUj5dDT9gMimZSR7rVv/gfgFUU55kTIaRdRs
+         FlzRYqMX/kvo9gNyKA+sM9zZB6eLIAkx6g/hGnjy98PZthAqrTbZUQRpHcYtE7IxB3Qi
+         tdtbG0tKjXjG1naZ/3j3UPpBqyZ4H4mJjyVHHWNBYSRWJX+ed3YPvrwOYcbMWkCD40cf
+         +vt7Y4uqx56qSWSI1/01lAI5lSb4zNS1qmb6gAv3t1Nahh7kgZQn+6IfO8Cpj/+U2dzl
+         WGH/UKxcZvDqxtY4//PxdfCBFFXMYQoUcJNVX4DPtsjg26hCgv3voSdejj6e+hZIOgmF
+         EDkg==
+X-Forwarded-Encrypted: i=1; AHgh+RrO407nL9NnmzD+GFwKD0dvzdmkLm7wF94KwP5WB/G3gb3p70LAzamLDI7NtAAhBxzyksE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1W6F1FT3Bd2s+PfB/XDrQqD4wNrQoM9sBG4HWh//1w0cuYeas
+	gIHAPau680qVCCibiRfZrG+lIF9v02rPD8dxe0CJTugafjkI+yEVk79y
+X-Gm-Gg: AfdE7ckUpcGKHeYc/EiGhoz2EVTVcrvmTTpdaieJM94t8SA05oHc4Vb5H5VG9vc6gB6
+	XkA/srt4heyuIuT1yd7lkTmJisVDG3+2XG76BAlvNlufMN3LRVhX8Qle0s7udgzQKveu1JEbiVj
+	q1x5540u1aMvv9CunOejUynvB1lLlDwM+mdcM7i+yvBlnCsNyVrNO19QtqX3AcTbF9SXwrXj/d2
+	ALIQQ5vm/gbXMLVtX8wGH4f7+XKNhEmiBumOvPyXemkJ1NTmMDkvVn5Hkvkci7Oq09fYBlLQoLa
+	QXsud/X0rE3bOXaHBCjJDBNRRyGAYqT1G0kjAOpfDAHZ4bbeu3oK3AwrLEjk34DhlXFWptb9E/y
+	xoAc4n8s3dbi+zhhyNgqsoBBeapk2Sbv8PweHOPyuB+VR0BEtZPLpb1xbiDJqvPAcJG8W+5Vy4j
+	KETo13C17JbI4ImQ+IXFN0VWAktunuq168lbqZbQ==
+X-Received: by 2002:a05:6a00:451a:b0:842:6a3b:60d1 with SMTP id d2e1a72fcca58-84842f01e28mr10330536b3a.31.1783660752671;
+        Thu, 09 Jul 2026 22:19:12 -0700 (PDT)
+Received: from q-System-Product-Name ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8483dc66f2asm3970019b3a.24.2026.07.09.22.19.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 22:19:12 -0700 (PDT)
+From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	"Bingyu.Xian" <Shanbeeyoo@gmail.com>,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	"bingyu.xian" <shanbeenyoo@gmail.com>
+Subject: [PATCH RFC v2] KVM: riscv: Allow G-stage PMD block mappings for VM_PFNMAP
+Date: Fri, 10 Jul 2026 13:19:03 +0800
+Message-ID: <20260710051903.3454598-1-shanbeeyoo@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] selftests/vfio: Add sPAPR TCE v2 coverage
-To: David Matlack <dmatlack@google.com>
-Cc: alex@shazbot.org, shuah@kernel.org, amastro@fb.com, rananta@google.com,
-        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com,
-        sbhat@linux.ibm.com, harshpb@linux.ibm.com,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20260703032806.40946-1-nnmlinux@linux.ibm.com>
- <akwyZvbv7Fg8mfB2@google.com>
- <afb9bf4d-2258-4731-a28e-7f4eaa01ee0b@linux.ibm.com>
- <CALzav=eB5NwrHNq4bm2ooSFmTtGk3sfUk7_k+iE+Kwm+Jc9LFA@mail.gmail.com>
-Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <CALzav=eB5NwrHNq4bm2ooSFmTtGk3sfUk7_k+iE+Kwm+Jc9LFA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Q/XiJY2a c=1 sm=1 tr=0 ts=6a507efd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=VLoToYxrrouXz2LH_DgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=ZXulRonScM0A:10 a=0lgtpPvCYYIA:10
-X-Proofpoint-GUID: tAg1fWFAaUvzJjsA7pe8fuK0DQwiFHBu
-X-Proofpoint-ORIG-GUID: EXTPp-LVbDKqDrGZm3KQsmZ38b284kHs
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDA0MSBTYWx0ZWRfX8izeTpmsTxGu
- nWVnQNKBO1ZTeDwfFlNjh/cDemT4A9fOmhiQ8N5L6J2GA5RYCSzDY13MTjWaYn5mfwG5LGRLJJ3
- Ma8al5MRjZ4kEnQDhT/POgwjEqK9L6Y=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDA0MSBTYWx0ZWRfX5OyXUVww4uyl
- 61W4qVO7lzu/jl/O3Up+s4BKNnpmP0crFjUktkccodlVM1cv9RsS2K87kHxJdSAnRY52hyCKEWl
- /iXdn+yuQII5f8lGieEjL2gUovHi8RFE4sMag570K2TUgiSCn5M9CkkCbVGlSXmWz4Y346agTNm
- 6njuUR6rLe/8VkbU85/cIIu9Xem7IVzVYvb5WGuumNwr6y9cd9m8zESHnM+vaj3u3HLgMJ0WONf
- hKH288NfPTN4Xd3m2VY3gnyJxtXI3EC2Rati1VkfYLdyBdVMmiF6ABDqAzIWVTQWF5wG7mtYEnU
- PrZRMexy/iXL7GLNBOw7xuAO3PRNxbgr45oUvRjmnmdIipyihVhCkFcUfJ5ScnhVIsxU1NwokVW
- suLbg1mknuUrvIlmabcf6+4xeWm9VIjzUTsolJYFKrqIEof5EAZnqCQydvxhO9fSml7Z2VRsm79
- +/1GDXuTBi2bh/BmUbg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-10_01,2026-07-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607100041
 
+From: "Bingyu.Xian" <Shanbeeyoo@gmail.com>
 
+RISC-V KVM currently forces all VM_PFNMAP faults to PAGE_SIZE, so a
+256 MB VFIO BAR requires 65 536 G-stage PTEs instead of 128 PMD blocks.
+This becomes critical as RISC-V targets server workloads with GPU/NPU
+VFIO passthrough and the RISC-V IOMMU nears mainstream support.
 
-On 09/07/26 9:21 PM, David Matlack wrote:
-> On Thu, Jul 9, 2026 at 1:49 AM Narayana Murty N <nnmlinux@linux.ibm.com> wrote:
->
->>>> Feedback is requested from the VFIO and PowerPC communities on:
->>>> 1. whether the sPAPR TCE v2 helpers should remain in the common VFIO
->>>> selftest library or move into a sPAPR-specific test helper?
->>> Responded in the patch. Let's move to their own file.
->> Will do. v2 will have:
->>
->>     lib/iommu_spapr.c         — all sPAPR logic, compiled only on powerpc
->>     lib/iommu_spapr_stub.c    — empty stubs returning -EOPNOTSUPP,
->>                                 compiled on all other architectures
->>     lib/include/libvfio/iommu_spapr.h — declarations
-> Just one small thing here: You can put all the stubs in iommu_spapr.h
-> as static inlines, then you don't need the extra C file. e.g.
->
-> #ifdef __powerpc__
->
-> ... prototypes ...
->
-> #else
->
-> ... static inline stubs ...
->
-> #endif
-Sure, will follow the same.
+Adapt arm64's "stage-2 block mapping for host device MMIO" idea
+(commit 2aa53d68cee6) but with a safer approach: instead of deriving
+the host physical address from vma->vm_pgoff (unreliable since the
+VFIO unmap_mapping_range() changes), pfnmap_mapping_size() walks the
+host page tables via get_hva_mapping_size().  If the host mm installed
+a PMD leaf, physical contiguity is guaranteed and KVM uses a 2 MB
+G-stage block; otherwise it falls back to 4 KB as before.
 
-regards,
-Narayana
+RISC-V has an advantage here: memory type comes from the physical
+address PMA, not the G-stage PTE attributes, so 4 KB -> 2 MB promotion
+does not alter memory-type semantics.
+
+Also generalize fault_supports_gstage_huge_mapping() to accept a
+map_size parameter, fix gfn alignment to use vma_pagesize instead of
+huge_page_mask(hstate_vma(vma)) since PFNMAP VMAs are not hugetlb, and
+add a kvm_mmu_map tracepoint for debugging.
+
+Conservative for now: only PMD (2 MB), not PUD (1 GB); dirty logging
+still forces PAGE_SIZE; falls back whenever contiguity/alignment
+cannot be proven.
+
+Tested on QEMU (rv64) with a custom module that installs a PMD leaf
+for a VM_PFNMAP VMA: tracepoint confirms 4 KB fallback when host has
+no PMD leaf, and 2 MB block mapping when host does.
+
+Changed from v1:
+- https://lore.kernel.org/kvm/20260709153000.1-1-shanbeenyoo@gmail.com/
+1. Drop the cover letter, merge into a single patch
+2. Simplify the commit message to focus on functionality
+3. Add Co-developed-by and Assisted-by tags
+4. Fix the sign-off chain order
+
+Assisted-by: YuanSheng: deepseek-v4-pro
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: bingyu.xian <shanbeenyoo@gmail.com>
+---
+ arch/riscv/kvm/mmu.c   | 45 ++++++++++++++++++++++++++++++++++++------
+ arch/riscv/kvm/trace.h | 29 +++++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+), 6 deletions(-)
+
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 2d3def024270..53fb34d4b76d 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -16,6 +16,8 @@
+ #include <asm/kvm_mmu.h>
+ #include <asm/kvm_nacl.h>
+ 
++#include "trace.h"
++
+ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
+ {
+ 	struct kvm_memslots *slots = kvm_memslots(kvm);
+@@ -286,7 +288,7 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ }
+ 
+ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+-					       unsigned long hva)
++					       unsigned long hva, unsigned long map_size)
+ {
+ 	hva_t uaddr_start, uaddr_end;
+ 	gpa_t gpa_start;
+@@ -321,7 +323,7 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+ 	 *   e -> g
+ 	 *   f -> h
+ 	 */
+-	if ((gpa_start & (PMD_SIZE - 1)) != (uaddr_start & (PMD_SIZE - 1)))
++	if ((gpa_start & (map_size - 1)) != (uaddr_start & (map_size - 1)))
+ 		return false;
+ 
+ 	/*
+@@ -336,7 +338,7 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+ 	 * userspace_addr or the base_gfn, as both are equally aligned (per
+ 	 * the check above) and equally sized.
+ 	 */
+-	return (hva >= ALIGN(uaddr_start, PMD_SIZE)) && (hva < ALIGN_DOWN(uaddr_end, PMD_SIZE));
++	return (hva >= ALIGN(uaddr_start, map_size)) && (hva < ALIGN_DOWN(uaddr_end, map_size));
+ }
+ 
+ static int get_hva_mapping_size(struct kvm *kvm,
+@@ -404,7 +406,7 @@ static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
+ 	 * sure that the HVA and GPA are sufficiently aligned and that the
+ 	 * block map is contained within the memslot.
+ 	 */
+-	if (fault_supports_gstage_huge_mapping(memslot, hva)) {
++	if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE)) {
+ 		int sz;
+ 
+ 		sz = get_hva_mapping_size(kvm, hva);
+@@ -421,6 +423,31 @@ static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
+ 	return PAGE_SIZE;
+ }
+ 
++/*
++ * Determine the G-stage mapping size for a VM_PFNMAP (e.g. host device
++ * MMIO) fault.  Unlike arm64's original implementation, we never derive the
++ * host physical address from vma->vm_pgoff (which is unreliable since the
++ * VFIO unmap_mapping_range() changes).  Instead we walk the host page tables
++ * via get_hva_mapping_size(): if the host itself installed a leaf block for
++ * this address, physical contiguity within that block is already guaranteed
++ * by the host mm.  The memory type stays correct because RISC-V derives it
++ * from the physical address' PMA, independent of the G-stage PTE size.
++ *
++ * Be conservative for now and only promote to PMD-sized blocks; PUD-sized
++ * device blocks are left as future work.  Fall back to PAGE_SIZE whenever
++ * contiguity or HVA/GPA alignment cannot be proven.
++ */
++static unsigned long pfnmap_mapping_size(struct kvm *kvm,
++					 struct kvm_memory_slot *memslot,
++					 unsigned long hva)
++{
++	if (get_hva_mapping_size(kvm, hva) >= PMD_SIZE &&
++	    fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE))
++		return PMD_SIZE;
++
++	return PAGE_SIZE;
++}
++
+ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 		      gpa_t gpa, unsigned long hva, bool is_write,
+ 		      struct kvm_gstage_mapping *out_map)
+@@ -465,11 +492,14 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	else
+ 		vma_pageshift = PAGE_SHIFT;
+ 	vma_pagesize = 1ULL << vma_pageshift;
+-	if (logging || (vma->vm_flags & VM_PFNMAP))
++
++	if (logging)
+ 		vma_pagesize = PAGE_SIZE;
++	else if (vma->vm_flags & VM_PFNMAP)
++		vma_pagesize = pfnmap_mapping_size(kvm, memslot, hva);
+ 
+ 	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
+-		gfn = (gpa & huge_page_mask(hstate_vma(vma))) >> PAGE_SHIFT;
++		gfn = (gpa & ~(vma_pagesize - 1)) >> PAGE_SHIFT;
+ 
+ 	/*
+ 	 * Read mmu_invalidate_seq so that KVM can detect if the results of
+@@ -515,6 +545,9 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (!logging && (vma_pagesize == PAGE_SIZE))
+ 		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
+ 
++	trace_kvm_mmu_map(gpa, hva, hfn, vma_pagesize,
++			  !!(vma->vm_flags & VM_PFNMAP));
++
+ 	if (writable) {
+ 		mark_page_dirty_in_slot(kvm, memslot, gfn);
+ 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
+diff --git a/arch/riscv/kvm/trace.h b/arch/riscv/kvm/trace.h
+index 3d54175d805c..db2d28f1d714 100644
+--- a/arch/riscv/kvm/trace.h
++++ b/arch/riscv/kvm/trace.h
+@@ -56,6 +56,35 @@ TRACE_EVENT(kvm_exit,
+ 		__entry->htinst)
+ );
+ 
++TRACE_EVENT(kvm_mmu_map,
++	TP_PROTO(unsigned long gpa, unsigned long hva, unsigned long hfn,
++		 unsigned long map_size, bool is_pfnmap),
++	TP_ARGS(gpa, hva, hfn, map_size, is_pfnmap),
++
++	TP_STRUCT__entry(
++		__field(unsigned long, gpa)
++		__field(unsigned long, hva)
++		__field(unsigned long, hfn)
++		__field(unsigned long, map_size)
++		__field(bool, is_pfnmap)
++	),
++
++	TP_fast_assign(
++		__entry->gpa		= gpa;
++		__entry->hva		= hva;
++		__entry->hfn		= hfn;
++		__entry->map_size	= map_size;
++		__entry->is_pfnmap	= is_pfnmap;
++	),
++
++	TP_printk("GPA:0x%lx, HVA:0x%lx, HFN:0x%lx, size:%luKB, pfnmap:%d",
++		__entry->gpa,
++		__entry->hva,
++		__entry->hfn,
++		__entry->map_size >> 10,
++		__entry->is_pfnmap)
++);
++
+ #endif /* _TRACE_RSICV_KVM_H */
+ 
+ #undef TRACE_INCLUDE_PATH
+-- 
+2.54.0
 
