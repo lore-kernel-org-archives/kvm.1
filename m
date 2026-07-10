@@ -1,193 +1,112 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CD6374E5A;
-	Fri, 10 Jul 2026 13:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CCD1E0E14
+	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 13:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783690881; cv=none; b=ot3vOQ4oofk4ExFFDE8q8sUvhm53l5aYtVPVC53YmzZYtUP/+Na2Kltv4Ivi0n7TuPTXyqUxECY5PUUq18ycO79pFB4TeX1JFrD+dOgkjBFpOlcVbm76OQlxpG+j3cYCGDFnMkiswsR+CIS0jjh38KY3s86xsUdm1rpyQHHhE/8=
+	t=1783690909; cv=none; b=oe8ueZ3ZcepE22sSY/B0pnCMfjVSLFL/tK0ZxulwbNwjowDrKGhUX9iDJRNh+EKJC3j1G2IC5vuEiC01nU+xHSbFSBgHZaUHmorUcHbZTeKgVtc47nVwXvhExMVmEOI7ZTukGPBubuTyJBmkpBc0/iI4iVduuiXtQisYflGP6zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783690881; c=relaxed/simple;
-	bh=y7imvDBUf0TciTUd+NP7o0tXn/u7oKHLwDJ7ePlVId8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S0WRGv9XkLkDd507xbLVmWcrZw4XrO3wSIoGe3WSRDvkIqhiWS9okeJXGuJfThCSlA2r1iy4ZPSdlEJLYXuwgV75XU/LToEMWQKXDn00arNQawQqo92P2F0OJRC7RpYEPQei9ZpfFfoA0umfYk3bLsP/0mLOSZpUaqHakgEXoSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=i3rziSTp; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1783690909; c=relaxed/simple;
+	bh=R1tmYU4DXwUaYNRIS2ITaY7bEA0QNeDNVMefmnOlu7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=apbDqevTuQaWa8afuHn+dKf3MfexaJPoyPKw3vAhRL4fTU+ZkDxdKzWA+YJWbKb6hfAGv4wLO4+CYDqN0xhZpwb9G2RLawoaV/5DDxup/vxPmd+amLD+eopk8iRhBaptYbutEFOm3ET0QB+2nHRpnO+OIlWFZQVqunKV+676BgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pc+GgHyx; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="i3rziSTp"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66ADIDXJ1713075;
-	Fri, 10 Jul 2026 13:41:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=N9LSC889O68KIxMLOEUoke37oASt8N
-	T31vCJEcDdTOg=; b=i3rziSTpsz+IImWsw7MCjmADLQnmzEZtJSJSofxHoc8UlP
-	OcKkIh/S1Zi84nC9S+iOsUeEHitZyqqlNhtvvD6dx1l7Fbi4dOSFxji4F4YYXdl8
-	OlFLjnzqCt5xUuy3BuOfZ4cIjWc23VwAcNNB9bxgztxeDxq7iudAbz8hLL+TEHOz
-	qUBVCrec9UtPMWbFbEdp+G5HUkmPiW/sRGZ6oa/+NuidZ95sCC2XUEfw3XACVJFn
-	LeWl4ieDZXIKEXPkyt+PLJYhM+bk7dFEJgcRIQXXIyco06VOLo4LPGNnKve7CtHY
-	k+hf857iZGVgsqccjDg3PBqAXL+PFerQ5CiIzwKg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6sur6qy6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 13:41:00 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ADYjGu003964;
-	Fri, 10 Jul 2026 13:40:59 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgqjebj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jul 2026 13:40:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ADepJ029360624
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jul 2026 13:40:51 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 931192004D;
-	Fri, 10 Jul 2026 13:40:51 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5CEA20040;
-	Fri, 10 Jul 2026 13:40:50 +0000 (GMT)
-Received: from osiris (unknown [9.87.147.219])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Jul 2026 13:40:50 +0000 (GMT)
-Date: Fri, 10 Jul 2026 15:40:49 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v4 23/27] KVM: s390: arm64: Implement required functions
-Message-ID: <20260710134049.984749-J-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
- <20260706085229.979525-24-seiden@linux.ibm.com>
- <87bjcj7t5h.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pc+GgHyx"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493c2c7770bso574235e9.1
+        for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 06:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783690907; x=1784295707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8SAfw2XLSvgndVDo3hUQeQr3dLbpgg8qNv+9M2JCbKc=;
+        b=pc+GgHyxUIH8HQjnQY442iJt8dRQZ6v3B6NIJXGorYKR+7yeshA9vQ8pOwN5NPnkxB
+         jthUnMMGMOI8YMjzZZblJ8CAg0zhclmXQl7GtoWRPZv1Qc3f77Qgz6/MIO4A1eNbvO/8
+         yPTFswOCNIs8XbYgYKUgZL1BN+Er8NKCxlryG4Tmeo46V1VzpRBsrHyv99oSAcebQ7ix
+         TlIFiaJpsfQLdXAMGuFo7qRVGtOI5+aEarY7ayC5I8jxkLc71u/GH/0wEQxmmKoXjRX3
+         dKs2574NET+Ug/YKpMdUwP2eQxSJjbgPNifC5KBSWoiy/48gVANOg54jti06xk4Hmhgh
+         3zaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783690907; x=1784295707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8SAfw2XLSvgndVDo3hUQeQr3dLbpgg8qNv+9M2JCbKc=;
+        b=ZGQgrHd4wkIztWg+uf5Yh1ytsR2ovHAEfXFBqGrjKnpLP4NFAoOL9SibVTgbamjhGh
+         JdGdXB0jNNg/3KjWgj3UpHD765cnClFnuokqhRlUlWgM7gcgQRHTtaZ/wU8C/QtoumeD
+         4520iJr9JFA3An7xm2PVz9tdClko3U3uQYH1Fcr4Wcp+2YZr3gotK0EopND6JWKAu5TJ
+         Dw8//d8Y+ZO3187xw0Ih8X96oE0hsRATKljTnDxtkUv8x2RP8nHO5F1CwnxWU/I8Dfff
+         cjRtZo+WrJLqrND3nbUXEvKFn3/IaIe7Df0NLG/LVJuoQC9PxpbQA8dGUvWewc82sKLd
+         1KQA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr8Eed+44ETFzMXOQB4Pfo7i/LHCjK//GfaQnSPjEqBtvQ7aLhV5XuBgMvekLTeIYv9EwU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmXBsKlJ4hDAfwZ8pnoXudYT38kzkX6z29BojIW7pTpxjzjYdw
+	bM+rEkL0LrrhpMaqVfyI4pL47cV390GIqKPsFo1jCJXpcq/m5URIz7NM
+X-Gm-Gg: AfdE7ck+pUmoX40CNoIvLxZR6dIe2FHJL2jQDZ7zclCjpoHfpXMssdjhG5h+p0VLIr2
+	50Td1uebxHFsnOd4/qhUCSQPyO4DnRe1dOmLAZLesbFgtbwJx+Uv1bgIA0As4U6SONTVXvimQlD
+	wkDv0LNlJJ8BXASjp1CvpIGH62BD/enGSbulJuaO2vFHk3TqxV2espkCIAOx3L7yYRJuYNRVMV7
+	3yfyFybSse5S+F74c5FO+z1ViWUfnahEdy68cECpMu+3Bda+V+GST5E80Z+ssjU9Hn8i9BWBqJO
+	zUViIS65jpNe7140VQ6evkoPP8WKU/8P+/4ldVFGfqmdLHVrT9AbUltdjgXWLzTWGdPIUai3YOw
+	hj8CgokJTvji+ZwQXmxCuyv1FQXzlSLKu0srJ714SrJ9P72bBzaJ+sKW4C8/OW8q4pn/kqv0XKR
+	x1pEFbXmmYMw==
+X-Received: by 2002:a05:600c:548d:b0:492:506a:f48c with SMTP id 5b1f17b1804b1-493e684ea1bmr71597275e9.4.1783690906328;
+        Fri, 10 Jul 2026 06:41:46 -0700 (PDT)
+Received: from AtiePC ([79.117.54.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6f3b85sm228006715e9.2.2026.07.10.06.41.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 06:41:45 -0700 (PDT)
+From: Daniel Paziyski <danielpaziyski@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: Daniel Paziyski <danielpaziyski@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: x86: Fix null pointer dereference in trace_kvm_inj_exception
+Date: Fri, 10 Jul 2026 15:40:54 +0200
+Message-ID: <20260710134055.16432-1-danielpaziyski@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87bjcj7t5h.wl-maz@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEwMDEzMiBTYWx0ZWRfX3ROGKCS0YtfH
- QFpX266GmP1th1voyuu9ytstSczZDgwjBOmRrvn6c9sgbI0q8aeEo0cWUFMAGE3HKZY/ZrzDJFK
- KIkuuPqoSHNWtvcWI10i7kdjs863gPI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEwMDEzMiBTYWx0ZWRfX9sgiu26vVoXN
- gdez2/XVYkga5ITBLcWUbbTgmVuMFQ7cJWmwuRknWjQ6MDdwulbkITzSDOsMtEoX21jeYelo2he
- Bi9KI3h5SIKMPd13gqFG+Ox3gnoa9zT6r8QUkSa/oEdgvGGZ6PIDWdVKYxUPV9oJPk7Y85AVmuR
- vAWE4POrfzZTXoULkStEatexfPO1O/WY77rRD4gP6AS3cPPnpI0L7MrCPTSSPyRCRqkVzDIyqQM
- rIbMW8phIC1emakSE/CCF98Rju/vWGskunxZ+0tQ6qzHRFOfrBqjvynC5QBQqJTEsCCiVc8+5fD
- 5KeUKIdXCHwjof8NI4/kdH6cc4m6A+fhFpZ2Ftyth27v6yhLlGniWWrLdMToM/9f39jtImpd+6O
- +uZO33TequZ1ic2fvZ9QdGs7ekNtRr+h87ry1rZtPNtSo4hbGBqI2QX0h+Mgn0OA/hQtXiJcnLy
- B6Cyo/X6UGU4gtA03Qw==
-X-Proofpoint-GUID: 9G33u2V4ajpbDsBj3uLwc9D7zJAckEKf
-X-Authority-Analysis: v=2.4 cv=Oot/DS/t c=1 sm=1 tr=0 ts=6a50f66c cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=RsO_Ah-4iS8lBfzd37cA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: 9G33u2V4ajpbDsBj3uLwc9D7zJAckEKf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-10_03,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 phishscore=0
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607100132
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 06, 2026 at 09:35:54PM +0100, Marc Zyngier wrote:
-> On Mon, 06 Jul 2026 09:52:23 +0100,
-> Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > 
-> > Implement the mostly trivial functions that the shared arm64 (kvm)
-> > code & headers oblige s390 to implement.
-> > 
-> > Implement a very basic smccc handler that (non-compliantly) is just able
-> > to stop a vcpu.
-> > 
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >  arch/s390/include/arm64/kvm_emulate.h | 135 ++++++++++++++++++++++++++
-> >  arch/s390/include/arm64/kvm_nested.h  |  11 +++
-> >  arch/s390/kvm/arm64/handle_exit.c     | 110 +++++++++++++++++++++
-> >  arch/s390/kvm/arm64/inject_fault.c    |  21 ++++
-> >  4 files changed, 277 insertions(+)
-> >  create mode 100644 arch/s390/include/arm64/kvm_emulate.h
-> >  create mode 100644 arch/s390/include/arm64/kvm_nested.h
-> >  create mode 100644 arch/s390/kvm/arm64/handle_exit.c
-> >  create mode 100644 arch/s390/kvm/arm64/inject_fault.c
+The trace_kvm_inj_exception tracepoint takes as arguments the exception
+vector, whether the exception has an error code (and subsequently, the
+error code), and whether it is being reinjected. The error code is
+formatted to the trace log as a string using __print_symbolic,
+which takes an integer value and an array of structs containing a mask
+value and a string. An empty struct is being passed, which makes the
+kernel derefence a NULL pointer when the error code is 0. Remove this
+stray struct in the invocation of __print_symbolic.
 
-...
+Signed-off-by: Daniel Paziyski <danielpaziyski@gmail.com>
+---
+ arch/x86/kvm/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > +
-> > +#define SPSR_SS BIT(21)
-> 
-> We may be better off defining SPSR_ELx in the sysreg file and use that
-> all over the place.
-> 
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index 0db25bba1..93de876c3 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -490,7 +490,7 @@ TRACE_EVENT(kvm_inj_exception,
+ 	TP_printk("%s%s%s%s%s",
+ 		  __print_symbolic(__entry->exception, kvm_trace_sym_exc),
+ 		  !__entry->has_error ? "" : " (",
+-		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code, { }),
++		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code),
+ 		  !__entry->has_error ? "" : ")",
+ 		  __entry->reinjected ? " [reinjected]" : "")
+ );
+-- 
+2.55.0
 
-make sense. I'll create a patch for this.
-
-...
-
-> > +
-> > +#define __INCL_GEN_ARM_FILE
-> > +#include "generated/handle_exit.inc"
-> > +#undef __INCL_GEN_ARM_FILE
-> > +
-> > +#define PSCI_0_2_FN_SYSTEM_OFF		0x84000008
-> > +#define PSCI_RET_NOT_SUPPORTED		-1
-> > +#define PSCI_RET_INTERNAL_FAILURE	-6
-> 
-> All of this exists in include/uapi/linux/psci.h.
-
-Yes. We'll use them in a later series as well.
-this is just a placeholder implememtation so guests do not have to run
-idefenitely. 
-
-
-...
-
-> > +	[ESR_ELx_EC_SOFTSTP_CUR]	= "Software Step (current EL)",
-> > +	[ESR_ELx_EC_WATCHPT_LOW]	= "Watchpoint (lower EL)",
-> > +	[ESR_ELx_EC_WATCHPT_CUR]	= "Watchpoint (current EL)",
-> > +	[ESR_ELx_EC_BKPT32]		= "BKPT (AArch32)",
-> > +	[ESR_ELx_EC_VECTOR32]		= "Vector catch (AArch32)",
-> > +	[ESR_ELx_EC_BRK64]		= "BRK (AArch64)",
-> > +};
-> 
-> There are a lot of AArch32-specific ECs here that you may not need.
-
-you are absolutely right. This was just a blind 1to1 copy. IMO they do
-not hurt but I can reduce 32 specific ones.
-
-FYI
-The code is not shared as I would have to spin up a whole sharing
-infrastructure to share this one defenition from arm kernel code.
-
-	Steffen
