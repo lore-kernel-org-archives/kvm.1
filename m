@@ -1,100 +1,150 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3094D41227A
-	for <kvm@vger.kernel.org>; Fri, 10 Jul 2026 15:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BCA432BE7;
+	Fri, 10 Jul 2026 15:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783697422; cv=none; b=ZsqPiAhzTHaX5Wyo7aI82az6oavrqkCPAZCthrfr/GdUsGWjKhyxK7S+HBvU7nIgA1P8ATpcGk7XtPQpbFrNXnvdH6Xvkcr9jtuimUotHKdDoWDnvf7ZSjd1vcq5MbLMlgSYmFYiNF2M4mvMomtRJo8IXLZ45FV4CzQvObVmMFQ=
+	t=1783697835; cv=none; b=DsPSITtkj4ti+aOpO46bcsal+mE9Rq5YtWwvDyXzjQku4P4uooOyjqY0uSQHo92YpbjZzfU6mpWPpmWiPgWVEMgTmrnFeFPYtzb6NH5xoFXm2U9vToxZWhufWIMMjoMSnKIhQy1eabGqyFQc2IB6hs0UoiwOjcT9Ef5n0a40F+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783697422; c=relaxed/simple;
-	bh=Ag7+DBXl7OEnGjBxRTghPcWKH9PGPpNN3QZJrGROt90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxiSG1mIxuqKyqPOBIh3hrI6lUVLUaFeIMRu3Fi4B/Vd5EDjGtyskJIkf5eWMIzZ3E5Rt2oXkWZacjndAPiVuuieRCywbgEBlf60ylHWL1pPgmMKObURwM2GeV0rr2oXeLC9Wg9bxblV6q29SSRiGgsFIwsSiJgdJ6cMIk9NTkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tQsX+7zL; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1783697835; c=relaxed/simple;
+	bh=EmQ7+h+prGU3DRftvDRQKfPZOGXZR1nWcv4czpwxaQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KAEO5PTQsLYU0dDxxEmo7yc0K9M/WSTUYPnhHI9/zJproUHu7FBm1PyaHcjRqy+Ao/S1znqt564X85KwfWumxwC+5R1+INJsVBEX3p2FmTfPoXD2eGdb+TnMRr45eymlzO4sme34nHHmOrElwkiTPEmnyMzw2BSLWUvOny7hJkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivf4m5vv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tQsX+7zL"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D27C16F2;
-	Fri, 10 Jul 2026 08:30:16 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.2.213.26])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AAED3F85F;
-	Fri, 10 Jul 2026 08:30:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783697420; bh=Ag7+DBXl7OEnGjBxRTghPcWKH9PGPpNN3QZJrGROt90=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tQsX+7zLQ8kUuPEVd4ee263MXQndYnIn7/W/2CE8NyeLwYu0ht2C+h98fTNQsfWen
-	 dOjZO6gNQxpJj8k+J5tPKWK6DG9NPgyBUdyF8LBScwN1gy/IMR/w2k9DBWS2QmKVE0
-	 QSYWaM6vzFBQ1ItWhINHs5E8/AreAaWNkdfkGTms=
-Date: Fri, 10 Jul 2026 16:30:16 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH 18/28] KVM: arm64: Add kvm_has_nv{2,3}() predicates
-Message-ID: <20260710153016.GF12293@e124191.cambridge.arm.com>
-References: <20260702160248.1377250-1-maz@kernel.org>
- <20260702160248.1377250-19-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivf4m5vv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB691F000E9;
+	Fri, 10 Jul 2026 15:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783697826;
+	bh=uHMOBRio+zwcgdJ4h+lXgOEUz1Hkz0fl7vBNq5yda0Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ivf4m5vv7igvZZhV83qetmzKvie37bG2aC+7ICtpeZaZQHxZM6w+qKGFxJd4VTjVW
+	 Gh5IkcoRr8GUXHR5gZGUN0DyejNdEZ2Y9qQ3qJXaNgHi0hED6hVrDGW5cGiK2SEp7q
+	 xf8/7nbfjchfNWxVyoB/JhwRcvxw3m3N+kdq54zdF5eqJM4aOalwJJKPHcgYNNif5S
+	 0Vu/ZICwNB8F0qXM9dU1STcPfaZatvJQ8tx4DtpJ8BiKU9BhZpL0zpAhO/3jGi96pp
+	 mlIrgIPahHd8PDoWFhv9ABagje/WnwznFWvt1TeG33k5z+u/jUNZ95qnDJQ3nVc1sT
+	 AtwKqRgzpX0Qg==
+Message-ID: <62ccb0f7-a619-41b8-944e-11ae2d0ce70c@kernel.org>
+Date: Fri, 10 Jul 2026 17:37:01 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702160248.1377250-19-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SEV: drop FOLL_LONGTERM for encrypted region
+ registration
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "Gupta, Pankaj" <pankaj.gupta@amd.com>, seanjc@google.com,
+ pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com,
+ dave.hansen@linux.intel.com, bp@alien8.de, x86@kernel.org,
+ thomas.lendacky@amd.com, hpa@zytor.com, yangge1116@126.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260701144543.39582-1-pankaj.gupta@amd.com>
+ <1cc159b9-5f94-4524-8e03-efe91601ccfc@kernel.org>
+ <db303a0c-98e3-4967-9b61-ccb711b776c8@amd.com>
+ <46f19bd8-0d43-4b0e-a8ab-0ef9d3b8bd1a@kernel.org>
+ <2bd89e95-9c15-4a3a-916d-0d71a92d8b02@amd.com>
+ <27ebe8f0-78b6-402a-a2e7-4e807251d20a@kernel.org> <ak-uER-RndpksnhR@lucifer>
+ <58c4326d-b10d-42dc-af5d-3a5ff16c7e3e@amd.com> <ak_A6Yc5mBXCrtXr@lucifer>
+ <adf66571-4ef4-4f8a-824f-fdd5ab5099ab@kernel.org> <alDtzM28CgZJn6FF@lucifer>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <alDtzM28CgZJn6FF@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Question,
-
-On Thu, Jul 02, 2026 at 05:02:38PM +0100, Marc Zyngier wrote:
-> Add a new set of predicates indicating whether VM is capable of
-> NV2, NV3, and is in a nested NV3 context.
+On 7/10/26 15:05, Lorenzo Stoakes wrote:
+> On Fri, Jul 10, 2026 at 02:57:55PM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/9/26 17:44, Lorenzo Stoakes wrote:
+>>>
+>>> OK as long as that's made clear in the patch, commit message, comments etc. :)
+>>>
+>>>
+>>> Ack yeah I assumed it was a quick proof of concept and just overlooked it :P
+>>>
+>>>
+>>> Thanks!
+>>>
+>>>
+>>> hmm but we have FOLL_LONGTERM as an adjunct to FOLL_PIN (doesn't make sense
+>>> without - any checks that exist for that btw should be extended to this noew
+>>> flag).
+>>>
+>>> Also don't we want to encode the legacy aspect here?
+>>>
+>>> Maybe FOLL_LONGTERM_LEGACY_READONLY? Naming is hard :)
+>>
+>> I'm confused about the _READONLY, well. and the FOLL_PIN_NO_GUP_WRITE.
+>>
+>> We want to longterm write-pin.
+>>
+>> @Pankaj, how come you would call this "FOLL_PIN_NO_GUP_WRITE" -- why "no GUP
+>> write" ?
+>>
+>> I agree that someting like FOLL_LONGTERM_LEGACY_* is the right thing to do, but
+>> I don't see where this is "no write" or "readonly" ?
 > 
-> This is going to become useful as we start dealing with a mix of
-> behaviours (NV2, NV3, NV2 on NV3...).
+> I based it on Gupta saying 'without kernel GUP writes, and therefore not
+> impacting dirty tracking'
 > 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/include/asm/kvm_emulate.h | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> I mean I think we definitely need some clarification here yes :)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 9831166695186..c562d8171d5e1 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -266,6 +266,26 @@ static inline bool vserror_state_is_nested(struct kvm_vcpu *vcpu)
->  	       (__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_TMEA);
->  }
->  
-> +static inline bool kvm_has_nv2(struct kvm *kvm)
-> +{
-> +	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
-> +		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY));
+> Not really got the bandwidth to dig deep into GUP again :P
 
-Should this also check ID_AA64MMFR2_EL1.NV=0b10? (aka NV2, not just NV2_ONLY)
+I think the KVM gueest *will* write to these pages.
 
-> +}
-> +
-> +static inline bool kvm_has_nv3(struct kvm *kvm)
-> +{
-> +	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
-> +		cpus_have_final_cap(ARM64_HAS_NV3) &&
-> +		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV3));
-> +}
-> +
-> +static inline bool is_nested_nv3_ctxt(struct kvm_vcpu *vcpu)
-> +{
-> +	return (has_vhe() && kvm_has_nv3(vcpu->kvm) && is_nested_ctxt(vcpu) &&
-> +		(__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV) &&
-> +		(__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_NVTGE));
-> +}
-> +
->  /*
->   * The layout of SPSR for an AArch32 state is different when observed from an
->   * AArch64 SPSR_ELx or an AArch32 SPSR_*. This function generates the AArch32
+By disallowing writable LONGTERM pins on FSes we broke one existing use case
+that was relying on that to work.
 
-Thanks,
-Joey
+-- 
+Cheers,
+
+David
