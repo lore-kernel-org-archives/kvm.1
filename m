@@ -1,148 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE363191BA;
-	Fri, 10 Jul 2026 14:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6763DB651;
+	Fri, 10 Jul 2026 14:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783695073; cv=none; b=RMaVUAQHdBWKp8KL4IbEN6rl9kxd8jydu6p4ABIKgq0hn9j+aLW4FwhEkGJFSj2fin2hUTK8gdp6xeKuGmwgwwjFJ1R6cMVKT2PcoqsDicsf39y2HhYoKIcIjp+l0DAOkuPh1yJIS0yFVWxURvTPfbZoOBQpbUOkbDtH/MfOqEU=
+	t=1783695165; cv=none; b=mQAiJ0PG6Ed4wP8Qfj3hjfrJRnULD2sj2oOHmEg6vX32aIEMlclcYWPMt4m3/SC2HELyM0tMHTd7cxxlHINVJqsPyldodQBDyW5EMiqAXkaT2Xr0TOQmOPniPrXaPHiPAeWEYRZxihplb2pBxFQbk9fyOiMggeY4rFeGq9x+NlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783695073; c=relaxed/simple;
-	bh=HVCHZJFQAGlkuskJ7SayMhosIqfStBiyOTKFtFT5fdk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JdowGOYA6kcqCoWBOaON0YBx4rGBqhH6UgACOr9zrM43N9YtsQsTqBcgukxWI1OuPkZNj2rsL6I33CQG4qT8CxfgoxZv9bvsXmZ+p/VDk3HnNFlv+2182xYfwpFaEfKqNx9YqsYlwjJkidiqa9tySqhuNk7/6YuDFQaRVSoOk3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GV0G1PCd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783695165; c=relaxed/simple;
+	bh=ZSkyfDwgP4cABwa0taKafeJbCRSvNiogxsN4H3f1qoU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HXnsQ2r2H88dHivrtCxwMdaQ1kKNxzFUqjQygAuPNfovNm3MTmJoH/t8E4AVatqAJCbdOOg73uSyLeKJaYN8QJDEse1yiDmbNeTQqh1i1y97dI+Of3/hUtTZ59Ty4G/ZKBv4lQ8H4ZoDpokgM82ng6ZOvDxpwv0FxyHHIXIPlcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M6EXBQDW; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GV0G1PCd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13DE1F00A3A;
-	Fri, 10 Jul 2026 14:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783695069;
-	bh=/adl28F1RG11+xFCTzjhiMT3/quSA/55SrYHe5Xl+as=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GV0G1PCdVWL/17cPDVZfz86GmBO0VpAcpElRSgqzkFaZnFKsDK6rIw+lxzMvM7oyM
-	 gOb7BmlLZV+r7XfvVToV0An5vS3DWoiRNZEtakP1kgKdd/pwAzK/AhJrUnpZlFH/ma
-	 IDgVC6vlNuOfwFAEke1UlfCP3mMcmRNqv1rAQF1Ta5n8CDc7P/kP23VMlYUdFRkbMx
-	 btXD63gJA5fhI4bndbOxrinkAQhHaNvBor7RN1UECzz5h5BotHDkxdGHR0ZdFn1Wle
-	 sxRRlN3kLf8W7g8Lmmkim9s7ySe4W1NlivrC5VU8viOWzvoYYPKNt7/4lb6lTsMCz8
-	 i1PWPp9WBYC/w==
-Date: Fri, 10 Jul 2026 15:50:44 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 13/30] mm/vma: refactor vmg_adjust_set_range() for clarity
-Message-ID: <alEGqHY5GPhT30Ty@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <ada7972f49ea7f1ff1df6d11e4651f270444f8fd.1782735110.git.ljs@kernel.org>
- <ak-70CHGujkI5jJI@gourry-fedora-PF4VCD3F>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M6EXBQDW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783695164; x=1815231164;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ZSkyfDwgP4cABwa0taKafeJbCRSvNiogxsN4H3f1qoU=;
+  b=M6EXBQDWVYSuL2uyTT/veDMhGA/qSnx+l371AuRVxLqCnkwEOJPTo5KN
+   79OZXnSMQC6WsbtVxxWBmhoBwRD+bocrGFY5NXEVLaIR+iXoGuTQ2PotF
+   trjJiuFabcFD77vNMASqrsBfw6ltGg3YcZjmqXZcaWGkKcMrQEpXKeFse
+   8uGxNinOV5+HYieMDv76UGEvxAXoKqS5Sq19IWD5k6ORexHacFiHN6JiA
+   Mh33zmiy3AULtKAfbEa4bGHmm+QpcJ9dOHAbn19fUZVLL9svj+nSpokdw
+   D+6jGPiVsNnEPtNGGVsNhNEdCw5jhHM0KgngAPtIpZBS7YNwH5V18ytss
+   Q==;
+X-CSE-ConnectionGUID: gHSlBDQLT1afl4YEpZwwmA==
+X-CSE-MsgGUID: SPZR2F9xTNi1jD9OGOdEEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83513216"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="83513216"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 07:52:43 -0700
+X-CSE-ConnectionGUID: G4GIBUgiR8K5NcD4spfuaw==
+X-CSE-MsgGUID: GLItZtA5SimNlh/s/YqgGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="259221641"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 07:52:43 -0700
+Message-ID: <75a229a6-66b8-4127-b97a-b3861a6528de@intel.com>
+Date: Fri, 10 Jul 2026 09:52:41 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak-70CHGujkI5jJI@gourry-fedora-PF4VCD3F>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed counter
+ 3 tests
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260629231938.15129-1-zide.chen@intel.com>
+ <20260629231938.15129-9-zide.chen@intel.com>
+ <32a1e1d2-c437-4cd1-8455-43fa9082cb50@linux.intel.com>
+ <CALMp9eQR4rFTSDMrOSHsLXsKvTdm9BbhorMEK329RqRk5Rr7Og@mail.gmail.com>
+ <5760cb18-739c-4907-b582-60933d11a72d@linux.intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <5760cb18-739c-4907-b582-60933d11a72d@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 09, 2026 at 11:18:40AM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 01:23:24PM +0100, Lorenzo Stoakes wrote:
-> > Add comments with ASCII diagrams to describe what we're doing, avoid
-> > dubious use of PHYS_PFN(), and use vma_start_pgoff().
-> >
-> > The most complicated scenario represented here is vmg->__adjust_next_start
-> > - when this is set, vmg->[start, end] actually indicate the range to be
-> > retained, so take special care to describe this accurately.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Reviewed-by: Gregory Price <gourry@gourry.net>
->
-> > +		/*
-> > +		 * vmg->start    vmg->end
-> > +		 * |             |
-> > +		 * v    merge    v
-> > +		 * <------------->
-> > +		 *         delta
-> > +		 *        <------>
-> > +		 * |------|----------------|
-> > +		 * | prev |    middle      |
-> > +		 * |------|----------------|
-> > +		 *        ^
-> > +		 *        |
-> > +		 *        middle->vm_start
-> > +		 */
->
-> Even with these diagrams, it's a bit difficult to understand what the
-> actual intent/result of this chunk is (but that may be a limitation of
-> me not spending enough time reading the surrounding code, not a comment
-> of your work here).
 
-Yeah I know, I do hope to refactor all this at some point to make it simpler,
-but for the time being tried to make the confusing thing at least _slightly_
-less confusing :)
 
->
-> ~Gregory
+On 7/10/2026 3:08 AM, Mi, Dapeng wrote:
+> 
+> On 7/9/2026 8:35 PM, Jim Mattson wrote:
+>> On Mon, Jun 29, 2026 at 7:36 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
+>>>
+>>> On 6/30/2026 7:19 AM, Zide Chen wrote:
+>>>> Add a test case to exercise IA32_PERF_METRICS, i.e. architectural
+>>>> support for Topdown (TMA) Level 1 metrics, enumerated by
+>>>> IA32_PERF_CAPABILITIES[15].
+>>>>
+>>>> Only check for non-zero metrics, as they are derived and depend on
+>>>> the workload, CPU model, and host scheduling, making precise
+>>>> expectations fragile.
+>>>>
+>>>> Extend the PMU selftest to cover Intel fixed counter 3 by bumping
+>>>> MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
+>>>>
+>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>>> ---
+>>>> ...
+>>>> +static void __guest_test_perf_metrics(void)
+>>>> +{
+>>>> +     int retiring, bad_spec, fe_bound, be_bound, sum;
+>>>> +     u64 global_ctrl, metrics;
+>>>> +
+>>>> +     if ((guest_get_pmu_version() < 2) ||    /* Does guest have GLOBAL_CTRL? */
+>>>> +         !this_cpu_has(X86_FEATURE_PDCM) ||
+>>>> +         !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
+>>>> +             return;
+>>>> +
+>>>> +     wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
+>>>> +     wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
+>>>> +     wrmsr(MSR_PERF_METRICS, 0);
+>>>> +
+>>>> +     /* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
+>>>> +     wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
+>>>> +     global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
+>>>> +                   PERF_METRICS_GLOBAL_CTRL_ENABLE;
+>>>> +
+>>>> +     GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
+>>>> +
+>>>> +     /* Check test results. */
+>>>> +     metrics = rdmsr(MSR_PERF_METRICS);
+>>> Could we use rdpmc instead of rdmsr here? rdpmc is a preferred way to read
+>>> counter value.
+>> This is in-guest code, so the unintercepted RDMSR will be much faster
+>> than the emulated RDPMC.
+>>
+>> Should we rethink that preference, or add hardware support for
+>> selective RDPMC intercepts?
+> 
+> Hmm, in current most cases, rdpmc and rdmsr should share consistent
+> interception configuration for PERF_METRICS except host and guest have
+> different counters bitmap.
+> 
+> Considering this is a test case, the test coverage should be more important
+> than the performance, there should be at least a place to call rdpmc
+> against the PERF_METRICS, otherwise, that path won't be validated. 
 
-Cheers, Lorenzo
+How about keeping rdmsr() in __guest_test_perf_metrics(), and using
+RDPMC in the sanity test?
 
->
-> > +		/*
-> > +		 *                Originally:
-> > +		 *
-> > +		 *            vmg->start   vmg->end
-> > +		 *            |            |
-> > +		 *            v    merge   v
-> > +		 *            <------------>
-> > +		 *            .            .
-> > +		 * merge_existing_range() updates to:
-> > +		 *            .            .
-> > +		 * vmg->start vmg->end     .
-> > +		 * |          |            .
-> > +		 * v  retain  v            .
-> > +		 * <---------->            .
-> > +		 *             delta       .
-> > +		 *            <----->      .
-> > +		 * |----------------|------|
-> > +		 * |    middle      | next |
-> > +		 * |----------------|------|
-> > +		 *                  ^
-> > +		 *                  |
-> > +		 *                  next->vm_start
-> > +		 */
+@@ -369,7 +371,7 @@ static void __guest_test_perf_metrics(void)
+        GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
+        wrmsr(MSR_PERF_METRICS, 0xdeaddead);
+
+-       GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
++       guest_test_rdpmc(INTEL_RDPMC_METRICS, true, 0xdeaddead);
+ }
+
+> 
+
