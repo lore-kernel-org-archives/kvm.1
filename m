@@ -1,127 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFD82264C0;
-	Sat, 11 Jul 2026 06:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD661243367;
+	Sat, 11 Jul 2026 08:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783751700; cv=none; b=uSDqagBLneyuuMUSdBi6QtHTBHrD4PchsXKCEXxXNeEgrqi2hDeBRqQJHxMMbeDULtXcFs6SDdkdZSIEc5dz7ouPqV2PNXK97lNguL7zMj5s6t3t/DQenAHNeIE3bM3wh93sbc0sMHtskDLRIx9ADelhsOu9+iGGW7liQiurw0o=
+	t=1783759094; cv=none; b=N0/FggPgM0/zGpVfgeorqpNwujT/k/6XvHmSIasdEdPcxvF1KkzYxTFLU8jyTi1AR5XxiXAAF6CXYm2581moZSZq0rDcQsiAyucTLcFGXEHUT0dW3qVxTgDbYaXyZDu9A/YvpcA5pjrwht6d37R19Bh3rvoDQZt8b068fkeGiJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783751700; c=relaxed/simple;
-	bh=LcVpu5n9Px0aNntls5Ti5FkbgET7fFzrYzyLaRzMgKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OnpGrt3MJV3iBzgqAGgnrzZ3jQk817B14BLTSFfYSREBIEFszHba3vsdJ0zTXQJCiomTHN88Tz/Cdy4UsRX7CNt2ndbwaHKaVfLOVMLWu3JHfMWDVOyAtDX3+th5xL91dU/OaK72Xdy4Q30b/psyGIJ9Cbe6TRq7y6Qs+fSppEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OSFAG2xz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783759094; c=relaxed/simple;
+	bh=CyRaJPcTWVJNhdmwT9EN24t6ISjiq/A84da/xrY/4Vo=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=i7CCwY3+rSh4pAOA76A6hr/3FexAFmJBo+gsiDAGP7fCfhT/LKMePt9VGWHeKgJ1bIgmC0+tVYSBGnku+fdEYcl/vSUmnnSHjZ4TbBj8wzXXwMcSi2hC2fgfD/ByCI//MHkEmNvzK7nEluRlYoAujz30Zu+T2gzO2nmVFk3vZTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BY+Mmh8/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OSFAG2xz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E831F000E9;
-	Sat, 11 Jul 2026 06:34:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BY+Mmh8/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667921F000E9;
+	Sat, 11 Jul 2026 08:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783751699;
-	bh=GJJhsK9UGkbC0fJg0T/BshNksgm9QoTCT4bawaC+z7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OSFAG2xzhmr/8YQvg4NEImxF07jxqbUEEh7NwCiLHgeM7x3UggZev3LSdvaUAskdK
-	 yMdFPgyqXym8+YxpIqdArYXwrA1e31glpfB+vT/AGy+UyHYaEl3EbzmDMBMqm6oS9S
-	 rV8S1zftmc37pBGjvzyZ/9mf/PmAlQDTR2GR/5LsbXiF9Yys9XqwBQ/oO5Iu/PACIz
-	 T34DpydP7RCQVGW7fAb+/e81YQv/kgHEj2uwBZjxXoCQIImeX4HjT8vV8otTJkUR3J
-	 rJWAp3wgwbORSmHnmAU7zE5h3zYF3v1IbJdUxD0WIe4MXsxHGIBwL2tCYLpNTApr1C
-	 S5LVbRXET280g==
-Date: Sat, 11 Jul 2026 07:34:36 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	SJ Park <sj@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
-	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 32/33] tools/testing/vma: default VMA, mm flag bits to
- 64-bit
-Message-ID: <alHjzZxfXOTMOC4I@lucifer>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-32-2a5aa403d977@kernel.org>
- <alFewd7j_uiNP1Vw@gourry-fedora-PF4VCD3F>
+	s=k20260515; t=1783759093;
+	bh=BzbbZ75tk0Gn1LrlFpT1UxEwPwXypDF6thZXD0DNZlY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=BY+Mmh8/jRilUEL9EUyh64uk3XDuqoCgdDxAwxDMiucPAy+8WcCaH9Ro1jHnLGy01
+	 gCkb5GbNgGWXVZnZkM5gZlt/9X2jol+Gy40MZGt0bmxkNEDwYrXeUTPJdgVTtO5ZVt
+	 WK5gNNgBBUbW4ZOLGJCBWVON0cholPeLMi4pXA11dGIvzsTCH3D7jioxJIhvgVPsKH
+	 O/N5qUHiKNciqobi+VvsWkvXEfJXdwf9ExS/NaFZKsc7r/i6rmWFiGumfqyqM7Am4a
+	 H6kjsfC8N42inUSM811TIZoIVSSTFL2tj/aeVHSNAw7QeG91L8mozBqJGsWv7twIhc
+	 gIu7PK9tQco7A==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alFewd7j_uiNP1Vw@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+ Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>, 
+ Anthony Pighin <anthony.pighin@nokia.com>, linux-kernel@vger.kernel.org, 
+ Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org, 
+ linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
+ Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20260630124629.GE7525@ziepe.ca>
+References: <20260616163054.77fdb61a@shazbot.org>
+ <ajKtdCN0AlbmBnAj@x1.local> <ajLontmFa1oRXeoK@casper.infradead.org>
+ <20260617192928.GB231643@ziepe.ca> <ajQDVAu9b-LX8gUQ@lucifer>
+ <ajQI5jMJpxyNZCLN@casper.infradead.org> <20260618153049.GG231643@ziepe.ca>
+ <ajQRY7tHShCEz8vg@lucifer> <20260619131658.GA1068655@ziepe.ca>
+ <ajlnTdkbmEzy_uhe@lucifer> <20260630124629.GE7525@ziepe.ca>
+Date: Sat, 11 Jul 2026 09:37:59 +0100
+Message-Id: <178375907930.146648.4528264473005431141.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1766; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=CyRaJPcTWVJNhdmwT9EN24t6ISjiq/A84da/xrY/4Vo=;
+ b=kA0DAAoWz53NioHifxQByyZiAGpSAOiiJdkLwOBNYMQ01kLLPZdUye72/Ik5n7i90gLpnzNQ5
+ Ih1BAAWCgAdFiEE5/QXv1IUVp6J0E9Gz53NioHifxQFAmpSAOgACgkQz53NioHifxTT3gD/Zw3+
+ WKEGhLawmfopUhw+JxYey8s/tP1cc7qS8Hwo83YBAM2u9V8WmkkvOpEFTVv/K3q4Vb7NxE+pRuG
+ uZp1xjdwG
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-On Fri, Jul 10, 2026 at 05:08:30PM -0400, Gregory Price wrote:
-> On Fri, Jul 10, 2026 at 09:17:13PM +0100, Lorenzo Stoakes wrote:
-> > With all of the sanitisers turned on, setting the VMA and mm flag bits
-> > depth to 128 by default results in overly long build times.
+On 2026-06-30 09:46 -0300, Jason Gunthorpe wrote:
+> On Mon, Jun 22, 2026 at 05:54:10PM +0100, Lorenzo Stoakes wrote:
+> > On Fri, Jun 19, 2026 at 10:16:58AM -0300, Jason Gunthorpe wrote:
+> > > On Thu, Jun 18, 2026 at 04:56:06PM +0100, Lorenzo Stoakes wrote:
+> > > > > > What you're saying is that offset 0 of the opened file might correspond
+> > > > > > to a PFN that is not aligned in any way?  I had assumed that when trying
+> > > > > > to do the mapping of (2MB+4KiB to 64MB), that the offset specified to
+> > > > > > mmap was 2MB+4KiB.  But you seem to be saying that the offset in that
+> > > > > > case would be 0 and someone needs to know that it corresponds to a PFN
+> > > > > > that is misaligned?
+> > > > >
+> > > > > I do expect that the pgoff space is usually aligned to the pfn space,
+> > > > > most drivers do that or could be improved to do that. There will be
+> > > > > some off cases, but maybe we don't care, and VFIO should be fine.
+> > > >
+> > > > Some stuff has weird assumptions about pfn=0 at start of the range (DMA for
+> > > > instance).
+> > >
+> > > Do you have a pointer? I'm drawing a blank what "dma" is?
 > >
-> > Reduce this to 64 - we can always manipulate these later for testing of
-> > larger bitmaps as needed.
+> > (I am obliged to link https://xkcd.com/138/... :)
 > >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > dmabuf as in [0], where vma->vm_pgoff must be the page offset
+> > into the DMA buffer.
+> >
+> > [0]:https://elixir.bootlin.com/linux/v7.1/source/kernel/dma/direct.c#L550
 >
-> I've never had a "too main recipients" error with my email client
-> before.  Bravo.
+> That's not "dmabuf" that is the DMA API's dma_mmap() interface, very
+> different thing. This could probably be reworked if it is some issue..
 
-Yeah I kinda just let b4 add recipients unlike the 1st where I trimmed. Any v3
-will be trimmed again because even my usually super reliable mail client is
-err... slow on this thread :)
-
-(Apologies all for noise...!)
+Yeah right that's what I mean. And I plan to do some rework around that as part
+of mmap_prepare() I have some slightly bitrotting patches for this that I'll
+shake down at some point...
 
 >
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-
-Thanks!
-
+> Jason
 >
-> > ---
-> >  tools/testing/vma/Makefile | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
-> > index e72b45dedda5..ef6cc558afe1 100644
-> > --- a/tools/testing/vma/Makefile
-> > +++ b/tools/testing/vma/Makefile
-> > @@ -10,7 +10,7 @@ OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
-> >  TARGETS = vma
-> >
-> >  # These can be varied to test different sizes.
-> > -CFLAGS += -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128
-> > +CFLAGS += -DNUM_VMA_FLAG_BITS=64 -DNUM_MM_FLAG_BITS=64
-> >
-> >  main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h include/custom.h include/dup.h include/stubs.h
-> >
-> >
-> > --
-> > 2.55.0
-> >
 
 Cheers, Lorenzo
+
