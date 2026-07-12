@@ -1,32 +1,30 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DC1F4611
-	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 14:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3FF1AB6F1
+	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 14:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783866349; cv=none; b=McclSQBxHsQJRXgk1igi4lMe7jzObEeEDCRvCx74tsnZZq3HacZYe7PD1KC0XARAP6TKTaRm4tkSWekZXn6BYsTFVWGygtq6ASimLMKLIUC4V7hqmjDKfXdWWVlfMieiFBcZVA/EGuOp97ZtU37mF/lOgqWx3r79mHqS8DHkvuM=
+	t=1783866353; cv=none; b=k8u+sw9lOj8t6HrRMFxSQbKj7Vpdpbdx2LvKwZiGT7qaiOzbbFIDrBrbPVYm/jf1ByKNgxUAwznUvvsiaGlvH52AAnkJ5ReH/3gSqBxT5+EP1WhQVqrmI4rjNcVtTABfptVUQUxG63VrAjax8SX5a/wsqcwDhgHsnoM2rL2kZ1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783866349; c=relaxed/simple;
-	bh=zDee0O5bUccRL0ytn5PGHBNbXYzS/C5+Qfc/9gT652o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=stUxBnNnKQ8R8UjYUSIdAFbin1VWuF6xKQLoYPY3EUpG5cK2mZJHCdh0yXPz6KnZGOF4SXV8XeVJJQicu3VRviRujNJwhkv04FY7KbmhKE11uG/7o1YgG2fYitHjrwxIiTtf+WHj0BcXVV2z2J7JqrxTpOiwe1NTaRVYw63ipBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MBTLM7Zq; arc=none smtp.client-ip=91.218.175.188
+	s=arc-20240116; t=1783866353; c=relaxed/simple;
+	bh=Fs7bpaD2Xsz41zF9kTW6r8cevFPTVVpxDvtTnxDQOzo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SObMVKKF0m0fYb2Er2Xcgv7BbZAJdXG6sFmHbmUyOMKphea6M3rn+G/GgX9jwTPID1RJRyGvrzqRvCwTDU//lwGbmDeiDC5x07pUhBzmn0MvuzMqd8Dmgh4JmxP3fySVbjzaS1qTfhtEab54+8LjDYtfq/2y57LjapPTm4mDR5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pUPLmEYG; arc=none smtp.client-ip=91.218.175.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MBTLM7Zq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pUPLmEYG"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783866345;
+	t=1783866340;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IJTxnwkxV4oNUQwN7nAwkMtaydKsovFwm+AG4cw9+SA=;
-	b=MBTLM7ZqbfCctRrdeNiUjpwyv2Xr/dAM8+UPmht2niOw3zyaYcy6RCze7QVaSKcjcgkgLW
-	fHCiQwW4uJbkoDIpybaRKiYV7UGDv4gYkSyk6QSycEUP2vt+8eTDT+5NtVozjXRw2uLeKS
-	p0VCIDkpDyEoA/lrN8yhURRsCEx9pLY=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZvN91iS9stiov8fLhIwSd9j4bRiaFGaxl4YPZ3B5wD4=;
+	b=pUPLmEYGBj9NiXgNcTlJdQHnhb9SfSBqKbx87QdC9sE+626LU1TvDL2F4uHs5/ZHya1fUb
+	5I6guk7UdZwsp0l8XyTwnK2gePW6p53nydefvaDCBCh2xCU4NZqRWUIIFcHaMBelIQEZRD
+	SSLyDhqKLhOsiRxmABdsb06HKPHvtvw=
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: kvm@vger.kernel.org
 Cc: kvmarm@lists.linux.dev,
@@ -37,11 +35,9 @@ Cc: kvmarm@lists.linux.dev,
 	Oliver Upton <oliver.upton@linux.dev>,
 	Marc Zyngier <maz@kernel.org>,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH kvmtool v3 4/4] arm64: Add --guest-memfd option to back guest RAM with guest_memfd
-Date: Sun, 12 Jul 2026 15:25:36 +0100
-Message-Id: <20260712142536.1391557-5-fuad.tabba@linux.dev>
-In-Reply-To: <20260712142536.1391557-1-fuad.tabba@linux.dev>
-References: <20260712142536.1391557-1-fuad.tabba@linux.dev>
+Subject: [PATCH kvmtool v3 0/4] Add guest_memfd support for arm64
+Date: Sun, 12 Jul 2026 15:25:32 +0100
+Message-Id: <20260712142536.1391557-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,227 +47,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Back guest RAM with a guest_memfd created with GUEST_MEMFD_FLAG_MMAP
-and GUEST_MEMFD_FLAG_INIT_SHARED, mmapped MAP_SHARED to provide the
-userspace mapping. The guest_memfd file descriptor is closed at
-teardown, after the mapping is removed.
+Hi folks,
 
-MTE is disabled when --guest-memfd is used: guest_memfd VMAs do not
-have VM_MTE_ALLOWED, so KVM rejects the memslot if MTE is enabled.
+Changes since v2 [1]:
+- Assert guest_memfd >= 0 in kvm__register_ram_guest_memfd() (Alexandru)
+- Don't split line after = sign (Alexandru)
+- Disable MTE when --guest-memfd is used (Alexandru)
+- Carried Reviewed-bys
+
+Changes since v1 [2]:
+- Use kvm_userspace_memory_region2 only for guest_memfd slots (Suzuki)
+- Check KVM_CAP_GUEST_MEMFD before KVM_CAP_GUEST_MEMFD_FLAGS (Alexandru)
+- Close guest_memfd fd after unmapping at teardown (Alexandru)
+- Carried Reviewed-bys
+
+Due to popular demand, i.e., Alexandru asking me about it, I repolished my
+guest_memfd support series. The one I sent years ago was stale and
+over-engineered, so this is a fresh start instead.
+
+This series adds support for backing guest RAM with guest_memfd on
+arm64, for non-protected VMs under both regular KVM and pKVM.
+
+The first two patches are standalone fixes in the code this series
+builds on: an uninitialized return value in kvm__for_each_mem_bank(),
+and doubled newlines in die() messages. Patch 3 adds guest_memfd
+plumbing to kvm__register_mem(), using kvm_userspace_memory_region2
+only for guest_memfd-backed slots.
+
+A new --guest-memfd option creates guest RAM from a guest_memfd with
+mmap support (GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_INIT_SHARED,
+Linux 6.18+), maps it to provide the userspace mapping, and registers
+it with KVM_SET_USER_MEMORY_REGION2.
 
 Protected VMs need in-place shared/private conversion of guest_memfd,
-which the kernel does not support yet, so reject the combination of
---protected and --guest-memfd.
+which is still in progress in the kernel [3], so --protected rejects
+the option.
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arm64/include/kvm/kvm-config-arch.h |  5 +++-
- arm64/kvm.c                         | 44 +++++++++++++++++++++++++----
- include/kvm/kvm.h                   |  1 +
+Based on kvmtool master (ca0ddafa941d).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20260708182239.1489297-1-fuad.tabba@linux.dev/
+[2] https://lore.kernel.org/all/20260706083555.302972-1-fuad.tabba@linux.dev/
+[3] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com/
+
+Fuad Tabba (4):
+  Initialize the return value in kvm__for_each_mem_bank()
+  Remove newline from end of die() aborts
+  Add support for registering guest_memfd-backed memory regions
+  arm64: Add --guest-memfd option to back guest RAM with guest_memfd
+
+ arm64/include/kvm/kvm-config-arch.h |  5 ++-
+ arm64/kvm.c                         | 44 +++++++++++++++++++++++----
+ hw/cfi_flash.c                      |  2 +-
+ include/kvm/kvm.h                   | 17 +++++++++--
  include/kvm/util.h                  |  1 +
- kvm.c                               |  1 +
- util/util.c                         | 37 ++++++++++++++++++++++++
- 6 files changed, 82 insertions(+), 7 deletions(-)
+ kvm.c                               | 42 ++++++++++++++++++--------
+ util/util.c                         | 47 ++++++++++++++++++++++++++---
+ 7 files changed, 131 insertions(+), 27 deletions(-)
 
-diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
-index c2702d5..d8a8ef7 100644
---- a/arm64/include/kvm/kvm-config-arch.h
-+++ b/arm64/include/kvm/kvm-config-arch.h
-@@ -20,6 +20,7 @@ struct kvm_config_arch {
- 	bool		no_pvtime;
- 	bool		psci;
- 	bool		protected;
-+	bool		guest_memfd;
- };
- 
- int irqchip_parser(const struct option *opt, const char *arg, int unset);
-@@ -73,6 +74,8 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
- 	OPT_BOOLEAN('\0', "e2h0", &(cfg)->e2h0,					\
- 		    "Create guest without VHE support"),			\
- 	OPT_BOOLEAN('\0', "protected", &(cfg)->protected,			\
--			"Create a protected VM when pKVM is enabled"),
-+			"Create a protected VM when pKVM is enabled"),		\
-+	OPT_BOOLEAN('\0', "guest-memfd", &(cfg)->guest_memfd,			\
-+			"Use guest_memfd to back guest RAM"),
- 
- #endif /* ARM_COMMON__KVM_CONFIG_ARCH_H */
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index fb0b98d..36b3284 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -49,7 +49,12 @@ void kvm__init_ram(struct kvm *kvm)
- 	kvm->arch.ram_alloc_size = kvm->ram_size;
- 	if (!kvm->cfg.hugetlbfs_path)
- 		kvm->arch.ram_alloc_size += SZ_2M;
--	kvm->arch.ram_alloc_start = mmap_anon_or_hugetlbfs(kvm,
-+
-+	if (kvm->cfg.arch.guest_memfd)
-+		kvm->arch.ram_alloc_start = mmap_guest_memfd(kvm,
-+						kvm->arch.ram_alloc_size);
-+	else
-+		kvm->arch.ram_alloc_start = mmap_anon_or_hugetlbfs(kvm,
- 						kvm->cfg.hugetlbfs_path,
- 						kvm->arch.ram_alloc_size);
- 
-@@ -60,17 +65,25 @@ void kvm__init_ram(struct kvm *kvm)
- 	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
- 					SZ_2M);
- 
--	madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
--		MADV_MERGEABLE);
-+	if (!kvm->cfg.arch.guest_memfd) {
-+		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-+			MADV_MERGEABLE);
- 
--	madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
--		MADV_HUGEPAGE);
-+		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
-+			MADV_HUGEPAGE);
-+	}
- 
- 	phys_start	= kvm->cfg.ram_addr;
- 	phys_size	= kvm->ram_size;
- 	host_mem	= kvm->ram_start;
- 
--	err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
-+	if (kvm->cfg.arch.guest_memfd)
-+		err = kvm__register_ram_guest_memfd(kvm, phys_start,
-+						    phys_size, host_mem,
-+						    kvm->ram_guest_memfd,
-+						    host_mem - kvm->arch.ram_alloc_start);
-+	else
-+		err = kvm__register_ram(kvm, phys_start, phys_size, host_mem);
- 	if (err)
- 		die("Failed to register %lld bytes of memory at physical "
- 		    "address 0x%llx [err %d]", phys_size, phys_start, err);
-@@ -84,6 +97,11 @@ void kvm__init_ram(struct kvm *kvm)
- void kvm__arch_delete_ram(struct kvm *kvm)
- {
- 	munmap(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size);
-+
-+	if (kvm->ram_guest_memfd >= 0) {
-+		close(kvm->ram_guest_memfd);
-+		kvm->ram_guest_memfd = -1;
-+	}
- }
- 
- void kvm__arch_read_term(struct kvm *kvm)
-@@ -107,6 +125,11 @@ static void kvm__arch_enable_mte(struct kvm *kvm)
- 		return;
- 	}
- 
-+	if (kvm->cfg.arch.guest_memfd) {
-+		pr_debug("MTE is incompatible with guest_memfd");
-+		return;
-+	}
-+
- 	if (kvm->cfg.arch.mte_disabled) {
- 		pr_debug("MTE disabled by user");
- 		return;
-@@ -468,6 +491,15 @@ void kvm__arch_validate_cfg(struct kvm *kvm)
- 	if (kvm->cfg.arch.e2h0 && !kvm->cfg.arch.nested_virt)
- 		pr_warning("--e2h0 requires --nested, ignoring");
- 
-+	if (kvm->cfg.arch.guest_memfd) {
-+		/* Requires in-place shared/private conversion of guest_memfd. */
-+		if (kvm->cfg.arch.protected)
-+			die("Protected VMs do not yet support guest_memfd");
-+
-+		if (kvm->cfg.hugetlbfs_path)
-+			die("guest_memfd cannot be backed by hugetlbfs");
-+	}
-+
- 	if (kvm->cfg.arch.protected) {
- 		if (kvm->cfg.ram_size &&
- 		    kvm->cfg.ram_size < DMA_MEM_REGION_SIZE) {
-diff --git a/include/kvm/kvm.h b/include/kvm/kvm.h
-index 077aaee..a9376b6 100644
---- a/include/kvm/kvm.h
-+++ b/include/kvm/kvm.h
-@@ -90,6 +90,7 @@ struct kvm {
- 	u64			ram_size;	/* Guest memory size, in bytes */
- 	void			*ram_start;
- 	u64			ram_pagesize;
-+	int			ram_guest_memfd; /* guest_memfd backing RAM, -1 if none */
- 	struct mutex		mem_banks_lock;
- 	struct list_head	mem_banks;
- 
-diff --git a/include/kvm/util.h b/include/kvm/util.h
-index a6dba11..9e23431 100644
---- a/include/kvm/util.h
-+++ b/include/kvm/util.h
-@@ -148,5 +148,6 @@ static inline int pow2_size(unsigned long x)
- struct kvm;
- void *mmap_hugetlbfs(struct kvm *kvm, const char *htlbfs_path, u64 size);
- void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 size);
-+void *mmap_guest_memfd(struct kvm *kvm, u64 size);
- 
- #endif /* KVM__UTIL_H */
-diff --git a/kvm.c b/kvm.c
-index 947721b..96583f9 100644
---- a/kvm.c
-+++ b/kvm.c
-@@ -162,6 +162,7 @@ struct kvm *kvm__new(void)
- 	mutex_init(&kvm->mem_banks_lock);
- 	kvm->sys_fd = -1;
- 	kvm->vm_fd = -1;
-+	kvm->ram_guest_memfd = -1;
- 
- #ifdef KVM_BRLOCK_DEBUG
- 	kvm->brlock_sem = (pthread_rwlock_t) PTHREAD_RWLOCK_INITIALIZER;
-diff --git a/util/util.c b/util/util.c
-index 05d49c4..51a4591 100644
---- a/util/util.c
-+++ b/util/util.c
-@@ -6,7 +6,9 @@
- #include "kvm/util.h"
- 
- #include <kvm/kvm.h>
-+#include <linux/kvm.h>
- #include <linux/magic.h>	/* For HUGETLBFS_MAGIC */
-+#include <sys/ioctl.h>
- #include <sys/mman.h>
- #include <sys/stat.h>
- #include <sys/statfs.h>
-@@ -169,3 +171,38 @@ void *mmap_anon_or_hugetlbfs(struct kvm *kvm, const char *hugetlbfs_path, u64 si
- 		return mmap(NULL, size, PROT_RW, MAP_ANON_NORESERVE, -1, 0);
- 	}
- }
-+
-+/*
-+ * Map guest RAM backed by a guest_memfd. The file descriptor is kept open
-+ * until teardown (kvm__arch_delete_ram), after the mapping is removed.
-+ */
-+void *mmap_guest_memfd(struct kvm *kvm, u64 size)
-+{
-+	u64 flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
-+	struct kvm_create_guest_memfd gmem = {
-+		.size	= size,
-+		.flags	= flags,
-+	};
-+	void *addr;
-+	int ret;
-+
-+	if (!kvm__supports_extension(kvm, KVM_CAP_GUEST_MEMFD))
-+		die("kernel does not support guest_memfd");
-+
-+	ret = ioctl(kvm->vm_fd, KVM_CHECK_EXTENSION, KVM_CAP_GUEST_MEMFD_FLAGS);
-+	if (ret < 0 || ((u64)ret & flags) != flags)
-+		die("VM type does not support guest_memfd with mmap");
-+
-+	ret = ioctl(kvm->vm_fd, KVM_CREATE_GUEST_MEMFD, &gmem);
-+	if (ret < 0)
-+		die_perror("KVM_CREATE_GUEST_MEMFD");
-+
-+	addr = mmap(NULL, size, PROT_RW, MAP_SHARED, ret, 0);
-+	if (addr == MAP_FAILED)
-+		die_perror("guest_memfd mmap");
-+
-+	kvm->ram_guest_memfd = ret;
-+	kvm->ram_pagesize = getpagesize();
-+
-+	return addr;
-+}
 -- 
 2.39.5
 
