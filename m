@@ -1,161 +1,86 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC28235358
-	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 14:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866B023393F
+	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 14:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783865605; cv=none; b=C0V6Uz6BLBm5w/AJ0vJUhSzYu60+E/1PeuVr/+3Yb7XyW/JtRKd503Yfzh/69hVxr7AjXGvmDgKozmUrNsla8LkDgfaLQNAtaFVIwMrMudp6HzrJMd+Th2MVBXVqawsun63IA1T3CjBgTQA56SNcTVeLnd+5+jWtqdOE3j6HE6s=
+	t=1783866345; cv=none; b=kjogCIA4qFPaqo1hR8592TEOQQzmH9/nxppHE+mO8SD/niVpJ2nJhYtdvr39WaleVB26hWoZOCgp5SMAdD4MB4nT4YgpZFXkVWI/HuiDpkC+jp4Cc1fPUI53j5FIed38vKA0cQFl0i+pCstYTNPwYurv266JX9/Eo2yyno2mYpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783865605; c=relaxed/simple;
-	bh=ejdi7iYQA+ytgEIjZT9BxqaXX6cf7LcuuXiPTf16R4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WLHP6+RS3fMkXKFXzXaPAFvsJlfR/zjcLHsdQn4Hbs2NTrLKq9PCAXhhGIgdH6IVR09MOZjC8Hrssb9oI4MBzul4J44JNwUmG6umhgMpRQQKFhQrHNoKTzyJ/sNb1gY85SfL5LOljP1y5AAOdohTy1jI5aSJBcEDxUeKb1zSSX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=g94G/xTU; arc=none smtp.client-ip=91.218.175.174
+	s=arc-20240116; t=1783866345; c=relaxed/simple;
+	bh=6QNOkdhCbS1zSrynkcrf4iXWNtn7FlSJMHDEznG+FJs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YRQHECc1ulYxIRj1ChLhdpdtV5MucXWmVn5y5eSVMYfWOyUaDz7CFxXn0Sx309zRWq5tpkYAblVXdQY0Bht3h9KAqbj+W5W7iuse7zcWeMU+1JD5Y7jpaJBLviB64DeQCvyQz3HtqQh+ENuIdXXocXmdrGXGBZ0jo/R+qYy4Zso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ojFG6rlb; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="g94G/xTU"
-X-Forwarded-Encrypted: i=1; AHgh+RosCBX8tgCtuXyqimdKVEj5gewLjSlrP8Sf2Utc6c+n0yiJ5armNdPkJGtO44c92BUgKFE=@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ojFG6rlb"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783865601;
+	t=1783866341;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q1p8G1qx/myCB1d4LebeVFWlONzgCOT5j0oP6baG9ro=;
-	b=g94G/xTU10UF623jZqtSaQkMJBJZm65eAX9tlzY84fSFXi8Z6JoF3vN6sb0JuSWGEsMEDk
-	Brsb2LE9T2S58BbMjSViXdQC/jUeAnlDiEiStDLMSnFek2SBlUX4l8NebL04GZPHvyqutZ
-	593I9uboFGGiu2I0geyCJZHNwJOlvXo=
-X-Gm-Message-State: AOJu0YzVQYtu1wvPEyKtdak1f+mPDxthF7mdDAG3inN9ZakIOTJY/grb
-	MTpGOSgouaUjP9UR0h0aK2FUye3Rm8ylDbVOpB86l2woMeiFNkXli+hnAmeoBqn3ji23JTPH8VM
-	hAPqHR2zBL7Zt4GtilpW3ijNK15Id8QXBXhP5Jm4b
-X-Received: by 2002:a05:622a:2445:b0:51c:7a8b:c401 with SMTP id
- d75a77b69052e-51cbe52b8cdmr11059291cf.26.1783865588787; Sun, 12 Jul 2026
- 07:13:08 -0700 (PDT)
+	bh=GmUXCwO/YG7npJOqJHZit2JMx0cXqLbuiAg6odak188=;
+	b=ojFG6rlblrgsGAGjGw7OtitTORSccIOnviTuASTt5GfgMAzsyWtg77D05Upb1Bryb5mS0b
+	I8jiWtU5ApMt55aZd3u0k+CzD8gDZFzLejtPUswBoEpHngvhWz8cgremtw6uNG9is6zxe+
+	hpZz2BO3WQ+INuIq4t5Bx70PVvswOhA=
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: kvm@vger.kernel.org
+Cc: kvmarm@lists.linux.dev,
+	Will Deacon <will@kernel.org>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Fuad Tabba <tabba@google.com>
+Subject: [PATCH kvmtool v3 1/4] Initialize the return value in kvm__for_each_mem_bank()
+Date: Sun, 12 Jul 2026 15:25:33 +0100
+Message-Id: <20260712142536.1391557-2-fuad.tabba@linux.dev>
+In-Reply-To: <20260712142536.1391557-1-fuad.tabba@linux.dev>
+References: <20260712142536.1391557-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org> <20260709-kvm-arm64-sme-v12-4-d0301d79ef58@kernel.org>
-In-Reply-To: <20260709-kvm-arm64-sme-v12-4-d0301d79ef58@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Sun, 12 Jul 2026 15:12:31 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzVLnXu1E3guYVABoxLLE4foTM6j1fdew-phtFrBqJ2Fg@mail.gmail.com>
-X-Gm-Features: AUfX_mw_6gUrHc1w-6H1pc7a-cqHr6VwfuBC29l_JPEHSqk3sPWCHZfRDSEVflg
-Message-ID: <CA+EHjTzVLnXu1E3guYVABoxLLE4foTM6j1fdew-phtFrBqJ2Fg@mail.gmail.com>
-Subject: Re: [PATCH v12 04/29] arm64/sve: Factor virtualizable VL discovery
- out of SVE specific code
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Hi Mark,
+If none of the bank types match, the function would return an
+uninitialized value.
 
-On Thu, 9 Jul 2026 at 19:40, Mark Brown <broonie@kernel.org> wrote:
->
-> In preparation for reuising it for SME pull the code for discovering the
-> maximum virtualizable vector length out of sve_setup() into a separate
-> function.
->
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  arch/arm64/kernel/fpsimd.c | 41 ++++++++++++++++++++++++-----------------
->  1 file changed, 24 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-> index dc1ad10e39a2..5c156e2a47ea 100644
-> --- a/arch/arm64/kernel/fpsimd.c
-> +++ b/arch/arm64/kernel/fpsimd.c
-> @@ -1114,6 +1114,29 @@ int vec_verify_vq_map(enum vec_type type)
->         return 0;
->  }
->
-> +static int vec_virtualisable_vl(struct vl_info *info)
-> +{
-> +       DECLARE_BITMAP(partial_only_map, SVE_VQ_MAX);
-> +       unsigned long b_min_partial, b_max_virt;
-> +
-> +       bitmap_andnot(partial_only_map, info->vq_partial_map, info->vq_map,
-> +                     SVE_VQ_MAX);
-> +       b_min_partial = find_last_bit(partial_only_map, SVE_VQ_MAX);
-> +
-> +       /* All implemented VLs are virtualisable */
-> +       if (b_min_partial >= SVE_VQ_MAX)
-> +               return info->max_vl;
-> +
-> +       b_max_virt = find_next_bit(info->vq_map, SVE_VQ_MAX, b_min_partial);
-> +
-> +       /* No implemented VLs are virtualisable */
-> +       if (b_max_virt >= SVE_VQ_MAX)
-> +               return 0;
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+ kvm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-nit: this is a reimplementation rather than a straight move, the
-no-virtualisable case returns 0 (and drops the WARN_ON) where
-sve_setup() returned SVE_VQ_MIN. No change for SVE (that case isn't
-architecturally possible), and 0 is correct for the SME case this
-helper now also serves. Might be worth a word in the changelog, since
-"pull ... into a separate function" reads as pure code motion.
+diff --git a/kvm.c b/kvm.c
+index 7a52c6a..95ccfcb 100644
+--- a/kvm.c
++++ b/kvm.c
+@@ -383,14 +383,15 @@ u64 host_to_guest_flat(struct kvm *kvm, void *ptr)
+  * their type.
+  *
+  * If one call to @fun returns a non-zero value, stop iterating and return the
+- * value. Otherwise, return zero.
++ * value. If none of the bank types match, return -ENODEV. Otherwise, return
++ * zero.
+  */
+ int kvm__for_each_mem_bank(struct kvm *kvm, enum kvm_mem_type type,
+ 			   int (*fun)(struct kvm *kvm, struct kvm_mem_bank *bank, void *data),
+ 			   void *data)
+ {
+-	int ret;
+ 	struct kvm_mem_bank *bank;
++	int ret = -ENODEV;
+ 
+ 	list_for_each_entry(bank, &kvm->mem_banks, list) {
+ 		if (type != KVM_MEM_TYPE_ALL && !(bank->type & type))
+-- 
+2.39.5
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
-
-
-
-> +
-> +       /* At least one virtualisable VL exists */
-> +       return sve_vl_from_vq(__bit_to_vq(b_max_virt));
-> +}
-> +
->  void cpu_enable_sve(const struct arm64_cpu_capabilities *__always_unused p)
->  {
->         write_sysreg(read_sysreg(CPACR_EL1) | CPACR_EL1_ZEN_EL1EN, CPACR_EL1);
-> @@ -1125,8 +1148,6 @@ void cpu_enable_sve(const struct arm64_cpu_capabilities *__always_unused p)
->  void __init sve_setup(void)
->  {
->         struct vl_info *info = &vl_info[ARM64_VEC_SVE];
-> -       DECLARE_BITMAP(tmp_map, SVE_VQ_MAX);
-> -       unsigned long b;
->         int max_bit;
->
->         if (!system_supports_sve())
-> @@ -1149,21 +1170,7 @@ void __init sve_setup(void)
->          */
->         set_sve_default_vl(find_supported_vector_length(ARM64_VEC_SVE, 64));
->
-> -       bitmap_andnot(tmp_map, info->vq_partial_map, info->vq_map,
-> -                     SVE_VQ_MAX);
-> -
-> -       b = find_last_bit(tmp_map, SVE_VQ_MAX);
-> -       if (b >= SVE_VQ_MAX)
-> -               /* No non-virtualisable VLs found */
-> -               info->max_virtualisable_vl = SVE_VQ_MAX;
-> -       else if (WARN_ON(b == SVE_VQ_MAX - 1))
-> -               /* No virtualisable VLs?  This is architecturally forbidden. */
-> -               info->max_virtualisable_vl = SVE_VQ_MIN;
-> -       else /* b + 1 < SVE_VQ_MAX */
-> -               info->max_virtualisable_vl = sve_vl_from_vq(__bit_to_vq(b + 1));
-> -
-> -       if (info->max_virtualisable_vl > info->max_vl)
-> -               info->max_virtualisable_vl = info->max_vl;
-> +       info->max_virtualisable_vl = vec_virtualisable_vl(info);
->
->         pr_info("%s: maximum available vector length %u bytes per vector\n",
->                 info->name, info->max_vl);
->
-> --
-> 2.47.3
->
