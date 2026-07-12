@@ -1,133 +1,113 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA8236BCC3
-	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 09:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386222D739C
+	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 09:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783846854; cv=none; b=e+Jh/4HbpiRlOFlab3JF88hcVGN8WG0FlF3GZo3tfWx8+DzJ15JRquigsMmqwGjY9tmKwpaRxZWxqibKOWD9P7ygPOcoO//U1mVgHR0gHaUKij+zBEh+72Z59UuxkKVukLtdv/mU5dykCaRojOfOemijXEm7djSnBQ1xRBcQ6nw=
+	t=1783847470; cv=none; b=OAYHhd/OQG79bk3UxKHRB9IUwPmhxGHOM8GdmKD/9sEorIC6mDQB9424r4knJhAk3TVSxbq3BgTvCapGdh9nK9WZ5sWkyF02nY/2OK2sZpczCwr675NP3oriXVndz+/yM8xGcVlPz1goLHBpEnYQJd3/tx7PJmViOSn+8x9sQyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783846854; c=relaxed/simple;
-	bh=5WdJpF05mXgMFI3REZfS7otqxKxE5jvJ9kZHgW1xNjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FrsFVOGnZAE/8vQg9IGGEzbq8PFbJ/IfwcuRr1x4074aNng+YN3ek5CoC5ijbmC5Degpqad/raPAzTUHgEmJ6d4psR+BQ4hNaWJYhi+ljbANCmy4acvDi5CSNV29+6Jl5f1cke1H4RHFXnWmrwxDwLafMxAmHTiD45Vd+zasj0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YaA8wlSS; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783847470; c=relaxed/simple;
+	bh=6TfFb/q81hAqkT8S7x4FJDgB5v0KiygivnvQIn/Y4Zg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Il/ft40Jk8D6V5GhLYm8SA35ayO2HnlGE3VggKlFF/npGk4MmG8MPzpZpMFI234D7Fj2KDtzx1PaZ3Pkfw6I4Pfe80C+lmvjwy5qWuOocyzWHWkmv2Vv/oMsY6xhMc8HARaooXPp17fKaoNpH3xkd4qUfxd980J5YBdCDdKqRCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvPTlpVR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YaA8wlSS"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cc891373e0so22014565ad.2
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 02:00:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783846852; x=1784451652; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2z0NXTQ4WspU6NiaqWleR3H7oNVIjIlwseGetO8dygU=;
-        b=YaA8wlSSSXJQAvWRaDaavbMAaAZ1Sj10YrpBX9bkgxEc+FCdGKTF//7Ml2ZEQGSyzJ
-         /F9rdo/G2aKQhESM+964Gwq16+HmDt5Ds0v8r30fiIkdIVvmWGSewSkqlIndhkQqIL+h
-         Ot0RTjHXFCopWJGZ+EqL8YgkeBoDaKdwO0QGRB7e8FkFW+gGAbn5KICGV9boUEPISUks
-         7ZJ6ieKE1oVYYHrNH0s8AtXyWydN3sJU5oXe07+JQs+VeMYnVv64Xnx0yBgBjQpyE/v6
-         rQFFpfOn0hS4ZKOiZI/iShmFAhIsmiBKjXo2jt3k9xknSyl25dtZgbANVHZ7f/UUsIkg
-         Is4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783846852; x=1784451652;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2z0NXTQ4WspU6NiaqWleR3H7oNVIjIlwseGetO8dygU=;
-        b=YHCpTIp5MbnIqR9JPjXIf2oToxSHwT0HSceBg/LMEf+W8qZNl6UnUIP/WmYmE8RDaE
-         RYH9IIKf0B2mNHhOBhP+jLaBlCbxeZ1KGPUy5j0o9L+7iOc9/PsDA5sd1j2h5851nMfy
-         HsturGRkjizoN2TzUi7StUQSjbKj+ZN8NbzND44t6960aCsNOj57sz27uLTtArQ93mQ/
-         EPw4Fe5quEQadFya3+puGoUF3sBkkOS2tM7EhuSMcsRovQwIwZuNHfYaT+puJr2xMyoE
-         pFPYL+EpeEA9ufAP0VO89m+361tTmjhcy9eEBtzOyFqp35908hwbrjkUPz+KnydA3zMn
-         0V/A==
-X-Gm-Message-State: AOJu0YycWFTQ5+cYw8GGz9srpAVdp08vVOLXeZkqH9BYgyDy9ULZTadB
-	+hdYTQnQex+hg9RqyB2uaYdm+NOyyH6yO5cHrOOsfwtbzq3jgJA1+VbP
-X-Gm-Gg: AfdE7cn5rIJU1TibGLiWClGUmOFlx9ntak0OGKaK7C/lHf+TBBbS7dmaekUiMpzwcAj
-	RGKhkFcYa3v4vo0DRX6Dp3hZDKqWi1SojzUjtsijw0Plu9PpZNplR+NmupwCbxsarpT2K/cNM7m
-	7YmnOvWfuBlROYD9oZsZMjtgcnbaFUBzuJysLCM+BO7s63CXl5VUFpiXZ+aewEMhPOq+36M7kR3
-	XGMaJAlJOlsO0Vz+s8Ph5qdllyZ1McUdg1Pbru5DhsDiflnYZVzaEi7SZWJS994AY90ukoZlPRt
-	BnsX4aKR+hRu5Taxi/p66k6LzwqTeuSs3ARa8wJ1ZB1yyhdlbZ46rJKCS6JzUJmzvLAiiw3+xr6
-	GpGPL3J7cmk6Hba2ykI8ycJ5iutPo92xdkrA7sNf0z2hv3kBQNal+OB+jMe0iUVbXVVsQqqUYB8
-	8/QR9u7ARsoxRWLTHe0F3V1dgJNh+SG6UoYYzw3l/NBiknPUjObY9lImC1EeeYyh1HE7CBlw==
-X-Received: by 2002:a05:6a21:6e4c:b0:3b7:9c18:c681 with SMTP id adf61e73a8af0-3c11063219cmr5454526637.9.1783846852155;
-        Sun, 12 Jul 2026 02:00:52 -0700 (PDT)
-Received: from deepanshu-kernel-hacker.. ([2401:4900:a539:da8b:1aa5:412f:1c54:710a])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b9081d5c3sm11920181c88.9.2026.07.12.02.00.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 02:00:51 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+9dcd0a11dc9703a49511@syzkaller.appspotmail.com
-Subject: [PATCH] KVM: x86: Handle -1 return from kvm_cpu_get_interrupt
-Date: Sun, 12 Jul 2026 14:30:39 +0530
-Message-ID: <20260712090039.36038-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvPTlpVR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903141F000E9;
+	Sun, 12 Jul 2026 09:11:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783847468;
+	bh=iHqX4auErUgnaVJowfeIqTbTJvzjdn9tRdFwhga15gU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mvPTlpVR/n9N8HiQtA5TZ3pKR6FaUVIjJb96OybAai8cAVMUyXwC29N1LzH21110D
+	 4+fTMMGyxTXHg75sAw+CNeEms2zvn8ZdgZ9oY2r8Z6WNH1KubRxSszbt7ILMcFAdGu
+	 EdkIl73uBiaASK9692Kyd4FytbPrRXXVQIBeuyvoYizw1cRO43uHIt3EkENnwo01K5
+	 n/hkUkbJl9qpFKr8XXabqg5LYRv08+5ZDC3yF05LXnF5xiKx8pz/2wIIWpB+dHNgCf
+	 RYnkM1HejNGUdXvXsaljnC3dEX/lVE12adxhpAJ2zq0uPpW1CXcjyYUBWpEp8DOx/x
+	 dG5SDu8ZQ09Zw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86: Handle -1 return from kvm_cpu_get_interrupt
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Deepanshu Kartikey" <kartikey406@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260712090039.36038-1-kartikey406@gmail.com>
+References: <20260712090039.36038-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 12 Jul 2026 09:11:07 +0000
+Message-Id: <20260712091108.903141F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-kvm_check_and_inject_events() checks for a pending PIC
-interrupt using kvm_cpu_has_injectable_intr() and then
-fetches it using kvm_cpu_get_interrupt(). These two
-operations are not atomic with respect to vpic->output.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The patch introduces a control flow bypass regression. By replacin=
+g `WARN_ON_ONCE(irq =3D=3D -1)` with an early `goto out;`, the function `kv=
+m_check_and_inject_events()` prematurely aborts. This inadvertently skips t=
+he critical trailing check for nested events, potentially breaking nested v=
+irtualization.
+--
 
-Between the check and fetch, another thread running on
-a different CPU can call kvm_pic_read_irq() which sets
-output=0 before taking pic_lock(), making it immediately
-visible to all other threads:
+--- Patch [1]: [PATCH] KVM: x86: Handle -1 return from kvm_cpu_get_interrup=
+t ---
+commit 5f633807782c397266e8aeeaaf39fb310a7b09ee
+Author: Deepanshu Kartikey <kartikey406@gmail.com>
 
-  Thread A: kvm_cpu_has_injectable_intr() reads output=1
-  Thread B: kvm_pic_read_irq() sets output=0 before lock
-  Thread A: kvm_cpu_get_interrupt() reads output=0
-  Thread A: returns -1, WARN_ON_ONCE fires
+KVM: x86: Handle -1 return from kvm_cpu_get_interrupt
 
-The -1 return is a valid result indicating another thread
-already consumed the interrupt between the check and fetch.
-Replace WARN_ON_ONCE with a graceful goto out to handle
-this race condition correctly.
+This commit modifies kvm_check_and_inject_events() to gracefully handle a
+valid race condition where kvm_cpu_get_interrupt() returns -1. It replaces
+a WARN_ON_ONCE with an early goto out to handle situations where another
+thread has already consumed the interrupt.
 
-Reported-by: syzbot+9dcd0a11dc9703a49511@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=9dcd0a11dc9703a49511
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
----
- arch/x86/kvm/x86.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Link: https://syzkaller.appspot.com/bug?extid=3D9dcd0a11dc9703a49511
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index afcac1042947..36bf479a1164 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10797,11 +10797,11 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
- 		if (r) {
- 			int irq = kvm_cpu_get_interrupt(vcpu);
- 
--			if (!WARN_ON_ONCE(irq == -1)) {
--				kvm_queue_interrupt(vcpu, irq, false);
--				kvm_x86_call(inject_irq)(vcpu, false);
--				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
--			}
-+			if (irq == -1)
-+				goto out;
-+			kvm_queue_interrupt(vcpu, irq, false);
-+			kvm_x86_call(inject_irq)(vcpu, false);
-+			WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
- 		}
- 		if (kvm_cpu_has_injectable_intr(vcpu))
- 			kvm_x86_call(enable_irq_window)(vcpu);
--- 
-2.43.0
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ff8812f3a1293..ec449e9a3f954 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10765,11 +10765,11 @@ static int kvm_check_and_inject_events(struct k=
+vm_vcpu *vcpu,
+>  		if (r) {
+>  			int irq =3D kvm_cpu_get_interrupt(vcpu);
+> =20
+> -			if (!WARN_ON_ONCE(irq =3D=3D -1)) {
+> -				kvm_queue_interrupt(vcpu, irq, false);
+> -				kvm_x86_call(inject_irq)(vcpu, false);
+> -				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
+> -			}
+> +			if (irq =3D=3D -1)
+> +				goto out;
 
+[Severity: High]
+Does this early goto out prematurely skip the remaining checks in
+kvm_check_and_inject_events()?
+
+By jumping directly to out, the code skips the enable_irq_window() call and
+the trailing nested event evaluation block:
+
+	if (is_guest_mode(vcpu) &&
+	    kvm_x86_ops.nested_ops->has_events &&
+	    kvm_x86_ops.nested_ops->has_events(vcpu, true))
+		*req_immediate_exit =3D true;
+
+When a concurrently consumed PIC interrupt results in irq =3D=3D -1, wouldn=
+'t
+bypassing this logic prevent KVM from setting req_immediate_exit when
+required, potentially causing the vCPU to incorrectly continue executing L2
+guest code instead of exiting to L1?
+
+> +			kvm_queue_interrupt(vcpu, irq, false);
+> +			kvm_x86_call(inject_irq)(vcpu, false);
+> +			WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
+>  		}
+>  		if (kvm_cpu_has_injectable_intr(vcpu))
+>  			kvm_x86_call(enable_irq_window)(vcpu);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260712090039.3603=
+8-1-kartikey406@gmail.com?part=3D1
