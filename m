@@ -1,113 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386222D739C
-	for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 09:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776BB385D69;
+	Sun, 12 Jul 2026 10:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783847470; cv=none; b=OAYHhd/OQG79bk3UxKHRB9IUwPmhxGHOM8GdmKD/9sEorIC6mDQB9424r4knJhAk3TVSxbq3BgTvCapGdh9nK9WZ5sWkyF02nY/2OK2sZpczCwr675NP3oriXVndz+/yM8xGcVlPz1goLHBpEnYQJd3/tx7PJmViOSn+8x9sQyQ=
+	t=1783852056; cv=none; b=CQyzUrtcmocrt3OlzJLDJmD3TlZhJ96pd3YL9doWr/Ak5I+kdj0NkdQP0XVCfl8cY4m7W44ZbYNvGJWMuh1IYipEsA5Q79cOj7Yhe6KwlKo72NconsaMmm320LBKFpyGmA8p3khxlduDfz0L3Oe/fTt/KgNcm9bMf/ey2QvoXKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783847470; c=relaxed/simple;
-	bh=6TfFb/q81hAqkT8S7x4FJDgB5v0KiygivnvQIn/Y4Zg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Il/ft40Jk8D6V5GhLYm8SA35ayO2HnlGE3VggKlFF/npGk4MmG8MPzpZpMFI234D7Fj2KDtzx1PaZ3Pkfw6I4Pfe80C+lmvjwy5qWuOocyzWHWkmv2Vv/oMsY6xhMc8HARaooXPp17fKaoNpH3xkd4qUfxd980J5YBdCDdKqRCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mvPTlpVR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783852056; c=relaxed/simple;
+	bh=hjLD9OWiHVt6eGOSrKnlIgu1cKxUytBKV9yupDiE70o=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Q0aVn7sgTk9ryK++jVLhuBluq3F+DfgcIHLmOdNfBWTrymhSTPaRd1TXJdBfPmt3wQwG19ctjw3a0UPHmu76m/89H2OC/TuydNbOXCTR5d+Tu8V8T1ceaJTWZBln9hsy9C8u55HJKHZH4A8R4KPd+310tNNrA7FfX3xjrqpgH4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ib33k71U; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mvPTlpVR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903141F000E9;
-	Sun, 12 Jul 2026 09:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783847468;
-	bh=iHqX4auErUgnaVJowfeIqTbTJvzjdn9tRdFwhga15gU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mvPTlpVR/n9N8HiQtA5TZ3pKR6FaUVIjJb96OybAai8cAVMUyXwC29N1LzH21110D
-	 4+fTMMGyxTXHg75sAw+CNeEms2zvn8ZdgZ9oY2r8Z6WNH1KubRxSszbt7ILMcFAdGu
-	 EdkIl73uBiaASK9692Kyd4FytbPrRXXVQIBeuyvoYizw1cRO43uHIt3EkENnwo01K5
-	 n/hkUkbJl9qpFKr8XXabqg5LYRv08+5ZDC3yF05LXnF5xiKx8pz/2wIIWpB+dHNgCf
-	 RYnkM1HejNGUdXvXsaljnC3dEX/lVE12adxhpAJ2zq0uPpW1CXcjyYUBWpEp8DOx/x
-	 dG5SDu8ZQ09Zw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86: Handle -1 return from kvm_cpu_get_interrupt
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Deepanshu Kartikey" <kartikey406@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260712090039.36038-1-kartikey406@gmail.com>
-References: <20260712090039.36038-1-kartikey406@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 12 Jul 2026 09:11:07 +0000
-Message-Id: <20260712091108.903141F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ib33k71U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783852054; x=1815388054;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hjLD9OWiHVt6eGOSrKnlIgu1cKxUytBKV9yupDiE70o=;
+  b=ib33k71UXoHTN4uAqLj53qyrUMguPdHYvn50tMUTEg9xMbtGPC+OYMOG
+   DyxRCPkXIjznFlz0UBaN6UcVjwDz1I51xf653hrYyNkuih0m4o/9zVYE7
+   TKvfEs1Od+YPj9CKPx6KvTTPWUE8uGSO4k731KXub8fUAlyb5y2evxCA2
+   x+GKiRjqYwS+D6+OdPY0e0ExZsY0fEUYI5JTViHBNt7d57TAuft8WJW2X
+   wWw2qdWIbBbOEgp5IUlbLQ0S2saupQiRIfbKv5Pbtnxj9Y8g4AmoXaLQs
+   Xdxn7bD/ysHsw5bBTBUgYpwmAmKSWEVok1viWJMFKi1c3wRRWtek5vhIK
+   Q==;
+X-CSE-ConnectionGUID: Smc724rKSxSSknFa2Og13Q==
+X-CSE-MsgGUID: i2qZduzxR6Ss/8AARTsRxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88315372"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="88315372"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2026 03:27:33 -0700
+X-CSE-ConnectionGUID: mzaqQYd+TvOXjvXHZVS0JQ==
+X-CSE-MsgGUID: 2p17sXeqQsqN9hIySbNjww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="285377141"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.248.249]) ([10.124.248.249])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2026 03:27:30 -0700
+Message-ID: <a398dd84-8c2a-445f-869c-e1b18b6f4dfa@linux.intel.com>
+Date: Sun, 12 Jul 2026 18:27:26 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, David Woodhouse <dwmw2@infradead.org>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
+ Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v3 12/18] iommu/vt-d: Handle reattach of the restored
+ domain
+To: Samiullah Khawaja <skhawaja@google.com>
+References: <20260614233728.2212104-1-skhawaja@google.com>
+ <20260614233728.2212104-13-skhawaja@google.com>
+ <01f53c50-f585-49a0-b7a2-fdf002049aea@linux.intel.com>
+ <ajnGMjFxhNCbW0To@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <ajnGMjFxhNCbW0To@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The patch introduces a control flow bypass regression. By replacin=
-g `WARN_ON_ONCE(irq =3D=3D -1)` with an early `goto out;`, the function `kv=
-m_check_and_inject_events()` prematurely aborts. This inadvertently skips t=
-he critical trailing check for nested events, potentially breaking nested v=
-irtualization.
---
+On 6/23/2026 8:26 AM, Samiullah Khawaja wrote:
+> On Mon, Jun 22, 2026 at 01:44:06PM +0800, Baolu Lu wrote:
+>> On 6/15/26 07:37, Samiullah Khawaja wrote:
+>>> Reattach the restored domain to the preserved device using restored
+>>> domain ID. While reattaching do not setup the context and PASID entries
+>>> as those are preserved during liveupdate.
+>>>
+>>> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>>> ---
+>>>  drivers/iommu/intel/iommu.c      |  46 ++++++++++---
+>>>  drivers/iommu/intel/iommu.h      |  17 +++++
+>>>  drivers/iommu/intel/liveupdate.c | 111 +++++++++++++++++++++++++++++++
+>>>  3 files changed, 163 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>>> index cd40e274482b..91b67ccba011 100644
+>>> --- a/drivers/iommu/intel/iommu.c
+>>> +++ b/drivers/iommu/intel/iommu.c
+>>> @@ -1311,10 +1311,16 @@ static int dmar_domain_attach_device(struct 
+>>> dmar_domain *domain,
+>>>  {
+>>>      struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>>      struct intel_iommu *iommu = info->iommu;
+>>> +    struct iommu_device_ser *device_ser;
+>>>      unsigned long flags;
+>>>      int ret;
+>>> -    ret = domain_attach_iommu(domain, iommu);
+>>> +    device_ser = dev_iommu_restored_state(dev);
+>>> +    if (!device_ser)
+>>> +        ret = domain_attach_iommu(domain, iommu);
+>>> +    else
+>>> +        ret = intel_iommu_domain_reattach_iommu(domain,
+>>> +                            iommu, device_ser);
+>>>      if (ret)
+>>>          return ret;
+>>> @@ -1327,16 +1333,20 @@ static int dmar_domain_attach_device(struct 
+>>> dmar_domain *domain,
+>>>      if (dev_is_real_dma_subdevice(dev))
+>>>          return 0;
+>>> -    if (!sm_supported(iommu))
+>>> -        ret = domain_context_mapping(domain, dev);
+>>> -    else if (intel_domain_is_fs_paging(domain))
+>>> -        ret = domain_setup_first_level(iommu, domain, dev,
+>>> -                           IOMMU_NO_PASID, NULL);
+>>> -    else if (intel_domain_is_ss_paging(domain))
+>>> -        ret = domain_setup_second_level(iommu, domain, dev,
+>>> -                        IOMMU_NO_PASID, NULL);
+>>> -    else if (WARN_ON(true))
+>>> -        ret = -EINVAL;
+>>> +    if (!device_ser) {
+>>> +        if (!sm_supported(iommu))
+>>> +            ret = domain_context_mapping(domain, dev);
+>>> +        else if (intel_domain_is_fs_paging(domain))
+>>> +            ret = domain_setup_first_level(iommu, domain, dev,
+>>> +                               IOMMU_NO_PASID, NULL);
+>>> +        else if (intel_domain_is_ss_paging(domain))
+>>> +            ret = domain_setup_second_level(iommu, domain, dev,
+>>> +                            IOMMU_NO_PASID, NULL);
+>>> +        else if (WARN_ON(true))
+>>> +            ret = -EINVAL;
+>>> +    } else if (!sm_supported(iommu)) {
+>>> +        iommu_enable_pci_ats(info);
+>>> +    }
+>>
+>> Instead of merging domain restoration into the attach_dev path, how
+>> about adding a new callback to restore a preserved domain for a device?
+> 
+> Even with a new callback, the driver still just fetches the restored
+> state and takes a different path. I am guessing we can just do the
+> following inside the driver to keep it clean:
+> 
+> static int intel_iommu_attach_device(struct iommu_domain *domain,
+>                                      struct device *dev,
+>                                          struct iommu_domain *old)
+> {
+>      struct iommu_device_ser *device_ser = dev_iommu_restored_state(dev);
+> 
+>      if (device_ser)
+>          return _intel_iommu_restore_dev(domain, dev, device_ser);
+> 
+>      return _intel_iommu_attach_device(domain, dev, old);
+> }
+> 
+> This keeps the separation you want without touching the generic ops.
+> WDYT?
+> 
+> With the new callback, this check is just moved into the core inside
+> __iommu_attach_device(). I am concerned that later down the road when we
+> add PASID support, we will add restore_dev_pasid().
 
---- Patch [1]: [PATCH] KVM: x86: Handle -1 return from kvm_cpu_get_interrup=
-t ---
-commit 5f633807782c397266e8aeeaaf39fb310a7b09ee
-Author: Deepanshu Kartikey <kartikey406@gmail.com>
+Okay, that also works for me.
 
-KVM: x86: Handle -1 return from kvm_cpu_get_interrupt
-
-This commit modifies kvm_check_and_inject_events() to gracefully handle a
-valid race condition where kvm_cpu_get_interrupt() returns -1. It replaces
-a WARN_ON_ONCE with an early goto out to handle situations where another
-thread has already consumed the interrupt.
-
-Link: https://syzkaller.appspot.com/bug?extid=3D9dcd0a11dc9703a49511
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index ff8812f3a1293..ec449e9a3f954 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10765,11 +10765,11 @@ static int kvm_check_and_inject_events(struct k=
-vm_vcpu *vcpu,
->  		if (r) {
->  			int irq =3D kvm_cpu_get_interrupt(vcpu);
-> =20
-> -			if (!WARN_ON_ONCE(irq =3D=3D -1)) {
-> -				kvm_queue_interrupt(vcpu, irq, false);
-> -				kvm_x86_call(inject_irq)(vcpu, false);
-> -				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
-> -			}
-> +			if (irq =3D=3D -1)
-> +				goto out;
-
-[Severity: High]
-Does this early goto out prematurely skip the remaining checks in
-kvm_check_and_inject_events()?
-
-By jumping directly to out, the code skips the enable_irq_window() call and
-the trailing nested event evaluation block:
-
-	if (is_guest_mode(vcpu) &&
-	    kvm_x86_ops.nested_ops->has_events &&
-	    kvm_x86_ops.nested_ops->has_events(vcpu, true))
-		*req_immediate_exit =3D true;
-
-When a concurrently consumed PIC interrupt results in irq =3D=3D -1, wouldn=
-'t
-bypassing this logic prevent KVM from setting req_immediate_exit when
-required, potentially causing the vCPU to incorrectly continue executing L2
-guest code instead of exiting to L1?
-
-> +			kvm_queue_interrupt(vcpu, irq, false);
-> +			kvm_x86_call(inject_irq)(vcpu, false);
-> +			WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
->  		}
->  		if (kvm_cpu_has_injectable_intr(vcpu))
->  			kvm_x86_call(enable_irq_window)(vcpu);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260712090039.3603=
-8-1-kartikey406@gmail.com?part=3D1
+Thanks,
+baolu
