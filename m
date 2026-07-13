@@ -1,260 +1,169 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FCC35FF5B
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783919660; cv=none; b=IjidNwYprxEnCffeRobTveWGbKMpR4wnqkKpaJD5oYhxfmkZJ6R+CO/M/VF/fXJEz1vXVlgOgPLa4IzVsn5X6VZFOV4egdQl02999R0h8mPj1g365fIWFVW5PGYQ0GqVoBJ9setdJfGgJHQASzmWXZR3s22wOX6Gwvizfl7QP9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783919660; c=relaxed/simple;
-	bh=LeOG7yPNBRfkrdLxuU5wPH463seAq2elIdG4jjsZ4t0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ostTxEsF7dLSA8TphUo7XheWi65cYHMs5GpJaRB4j//anMb96zM1KxUEH/5OlwaQ3satGviL4ZTKd7dr640f0HwjWnzq7tJZXNjkxG+iBGHK55Kbbt/IpLgzr6cq/44hHum+l+UDOdmreqg1VkEmiWIyP0qK8VXHusUE2Okmwbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SOZqtyxM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=M47G1Bj0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8B123392F
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783920047; cv=pass; b=l5IuEEiR+RZsiQiMlFaRowyLGpRhktNLfcfc9KjGEB6io9ezc0ieoGBfc6mHwnZjY+Bs/vmPruFuKENjHSQ9cY3VKPzG08fBSYm957r9TCEgaB7gUpHD5prVIvXBoKOybJ4a0OuTpua+IWO0rfIx7mwzuDz+KbxDSr/Jh9uIu5U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783920047; c=relaxed/simple;
+	bh=3ixt09FeQ0GjinjMXgzWXUfCsr1DrjcHFj9M9APbUow=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CaCZZdckEm9nCPcEubGFXjCFOHlBI/mFqAgFm2zUaM6px+GQd3rGYp/jd19EmN3KTQO/aHoJD0OmdQxI/uGyX8510zZuCfjI0EaONOenNd2xXp5xVT7/h36Z4tXR9tGpkWGHX5/7U2qctTiuqn08Vq7Io8RpiEaN3kgiVEvxkZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=ad4MJmVY; arc=pass smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SOZqtyxM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="M47G1Bj0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783919657;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pd7YyxNvDAuEnjFNK+Ewr3cRxfagtzALbzN/XiFNig4=;
-	b=SOZqtyxMyyqbyC546TvoIIny3UcSZf4tmNLdDNsIm6H67dR3lwsUI8pHHCoWubNH23Uzix
-	DKH2r8rUBkReIpKrgDq42JZduKcXK/q2ljG98hsCqJMa5p5U/OyZtcUQRQvGZlIEjNarHZ
-	qaIRj7aprBUyej6a4AgVbKQRQ24vekY=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-T1vW04E9OOa2OPDMV5mgjA-1; Mon, 13 Jul 2026 01:14:16 -0400
-X-MC-Unique: T1vW04E9OOa2OPDMV5mgjA-1
-X-Mimecast-MFC-AGG-ID: T1vW04E9OOa2OPDMV5mgjA_1783919655
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso37377855ad.0
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:14:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="ad4MJmVY"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4720d22c94aso2216939f8f.1
+        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:20:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783920044; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aAnlOaQa5eY2tGb+ACf/MqTyueOXlgbklQU6HgEExIDQWuc3VTwaY6J2sIQFxwxTJm
+         JMDSqPM4OXmsxFF8KYZpqj1IckJ3yK8Xcf+IIORZWpzGqMKpOiRRHHAWiAED21auoGcq
+         lNlqFDOJ6fY/Ouc5TquGn9pEXdySKrPGjPuvDPMM/OT35fCm9ftTKXWdzDGkLknUehwj
+         C0aHAMxfbIPNTMYVZuNwn95bTNYByPKIrZNXU8h7CfCOvrH8VnVvddArxnk+h1GAp6if
+         T7rTkbrJ9/01tta1flwaCCEOelHaZolptiR54bMil51oJ7SRSNVQyLN2B8xcuFlurnyo
+         4sbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
+        fh=3XRDq6A83pdqoNMCRm+EICEBPk1Xfl3nPOjv75WRA/U=;
+        b=p3ht6xjs1JBiuf4kef4tCpJCEjHPTPf21b240oySIu3ohZfflevKnQSWdpk3+UaIVc
+         r0PBJKyCmxAlGeHheytf4654UivTT9HS2JeooPvVLABBibBr5JyAIGLBxi+znjpzeU0E
+         VgNksVwBdk2iR6aE0Ld1TxznlDdIGiKwflMOWKTsB7m4ab3tslJvEoi3lZgI5yVN+S6F
+         mLFOm0fGlKktA7KcDUVIhG+tUrAJvQ36NLa0tkQn0j1YidRHVrzwB1gw6eecteu5XNnr
+         uTWdc/2Ub/kX3SBB8XEabp4qPDBfuavekeXoZNt5GVu/15ntkQKd3r2SP8zz4KD4brzO
+         I+ew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783919655; x=1784524455; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pd7YyxNvDAuEnjFNK+Ewr3cRxfagtzALbzN/XiFNig4=;
-        b=M47G1Bj03OYpeQoLIAyJYNwsz1M1AVEE60h5dhK4ozDsmdXHIoAH5+pWcEjvn/nT65
-         o8ixUZZouit1Jvze9sXOCbdet9lULB/N6Uinofd7vb3nqGhOSUCkyMgh5WKb0ubsToTt
-         8zzWqQ38xPp42cOTL9qGVr28Eznru1R2XQS6C5AS6qhL/V4dF4ob6tfc94OvaLS0mjD4
-         +gVA8Ulp5prJMH921c0YcoilCnMF1NT8Bbb5p0UL/Ot9DmVaewlKScgTkHm1RkFwZE6d
-         CrmDx/H6mmIRIrH3Fw70cmh5put80p9vZpwk9eJs3rnCpRhpR+8t7mW5gB8WBhcq8thl
-         xIng==
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1783920044; x=1784524844; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
+        b=ad4MJmVY7KSxaabDOvG1+EaICGTh+XBkWDO99iSkN5P0WnYUByzY3nbp0uZxD2nVrz
+         KN3BHFY3lTzCD7UZtsgJODQKGrCHuYNF6VyRPeIjacj3BPtar7RP93qHUhUM+xUgghWs
+         TTNugWMstxwsgGfu+oDOJNcdjDgi5Hhp1RD39mqkUYaWDFWS7YcJRi6rPWOcm3iap/g0
+         JQi2FpyF3LIDtUp3T+TkOGqh5HgYFMdAwuuJt8kml00j5X/qgjRbdq5Z4Q/dx5k4IY8Z
+         CLKdMNXsKy4LljYf9aW7v9xDXnx3uuXzN3qHlsn7Sezqhhz+8aLrvsWnkWI3tKY5g/05
+         YGRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783919655; x=1784524455;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Pd7YyxNvDAuEnjFNK+Ewr3cRxfagtzALbzN/XiFNig4=;
-        b=mQi2MKeN/zsNiE03hvyhliWMVdwxbJ+d3lHtwzKIcO1hm4cHb/hQbhsZLYEwWvQaJw
-         ctsmcC1SsYUIlb5jmbp8gxnWSPdBPqAWmEGgZr6uC48Nj9Hpq9F+nlfMmQ6xoabfVHUg
-         XcS9paWd7u5KiNJJ0lE26oEbWNzODw4ELWr4RSirkcT/LvYgQ8yybz5C5vmuB1naIuk6
-         x0h0BVBUV0qR8TONYJ9nKQWj3SxOYA+BRV1gX8/J7Cm2yYA0Jvi0CxzzJkpldsWWxFNC
-         3+qpA56JTBfXvNxkwBNFTPOpqEJdZDxcAxbii/BCelQAwvov+IfpVq0mXbrTODfPLMv1
-         mxdg==
-X-Forwarded-Encrypted: i=1; AHgh+RodPiL3g1c5IQmBWHE5WQ1Yi33OnaM62aavWwKafMF043qOWU2RIoCAKrMJKaW4rL1zrgA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznhVR9lgl1MovBUxxln+2z75x/AE+9A5k/v2xXIQbAsoeUnKIM
-	aNQFWPw6MLO4UOvIAwRcxZaDG4P/K4gZ20D7aCateYuMn5Nm9N1/eQa8KdEmDaomApuFd/YytR9
-	W2NXMXAmPvz1OnDQlJqxmjamcdvEuKzIN+BqtrO2Ks3RcfrirW9Hv+g==
-X-Gm-Gg: AfdE7cmBVthXvRkeY8OJ9DoJbtW8hbW3p6enCNK23rEJhVIGmANc+aYSYZEadDZ66g0
-	uZ5bF6pmz/CfzKAUWPviUQFWRoBsn6ICPP3R9Qix+iuna2WH15NFhLbslFIYUxymDBSLHbSeWjd
-	1KtPj+KdGk4t6dOz58JGbaCcZwXuY5FbgdDS3RFFNO2UdP+2kKoFpDJgdaRT/RVNhpcp7go7GW6
-	kTlSUn8uMvTwP2uPzrsubesNKmuI0jMwvZqUKpH2UqPvmSPAhlXiU+FlrrWeadppYbkHuGai0Hl
-	hJp697xVDNmc7zz6fRXHYGtyafHo56Y1c9nK7eASPxiBtphyTN6cMMP4znl6gnzCYuV0wIi5yfL
-	Glg0MZT0veigj6LUd82FqQxAkkAqMRUTn+wMaL8RkoSRfurf4NuvQHA==
-X-Received: by 2002:a17:903:2a88:b0:2c0:b5c1:8e22 with SMTP id d9443c01a7336-2ce9e9b9691mr77163575ad.12.1783919654717;
-        Sun, 12 Jul 2026 22:14:14 -0700 (PDT)
-X-Received: by 2002:a17:903:2a88:b0:2c0:b5c1:8e22 with SMTP id d9443c01a7336-2ce9e9b9691mr77163245ad.12.1783919654157;
-        Sun, 12 Jul 2026 22:14:14 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc99cc5aasm93166495ad.0.2026.07.12.22.14.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jul 2026 22:14:13 -0700 (PDT)
-Message-ID: <618fa1ec-c986-4075-9b6f-c720b48d75ce@redhat.com>
-Date: Mon, 13 Jul 2026 15:14:05 +1000
+        d=1e100.net; s=20251104; t=1783920044; x=1784524844;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
+        b=Yf4FXYsHXXqrhnCfgfpZrrnhQi8Ds3cDZTjtEAI+J+Il1UxvIMRiYqSGUHbKMei2Qj
+         2rqKIVgzJQlKPo94jG6u3uBdTNVR77GS1Bz/LDhHV4+feNKkwtdSM+rjt6MeMKhTVrQe
+         NwxSMzGo0GXZU+PRW7CZSKF+LmP9qW+CmlPq0Q2tjqM4it00rkqIsbNu834ecBgzU8wp
+         0wdRPzg86FKUoxqxY6/jM9Cwb0AvECZKVGf8yMZaT1zAXvTDqBC/duajjNHGizuaNr24
+         ZMgqmwWLhyEhW9X0ERzJ3KVUgd8GbTP1UFA9ZP+jv8d32j7tLxPGgPL/xqFiEUWH5N6k
+         XtCw==
+X-Forwarded-Encrypted: i=1; AHgh+Rof7s2NmFWfgduc4vjWFar+0p5fwS5HQk5tHHqTZmhM4Vt7oHW6wqTO8bQ8ebTAfphl7M8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYenM4OHw8omlBLLdL84VXfVmZh0BfG/o5zHVAiKz66MCJ9Mos
+	sVRV4g0j0SMMoOsJ/7Z5n0J/hJr/nWubXNKF2k9JwhpzLF0PCFtGllWg5ZhLNoxCEQzH73Ek4PK
+	0rHIs4OQEB5+ZNDIYvnR1QXpCsX+MruZJcz3YeJdRWw==
+X-Gm-Gg: AfdE7ck2as/BQ5dml7t+z2jcQlVj2j+iOyzXqUIcQtMzvSxdD0UOK+1jLcsniI2485w
+	MfVqqq9czOMMkamkDOUSIGtvCkYoPgdsTImz3gEUfwV2DJZPzFauXleln07fulodPFB8fATGj3p
+	P3hiYUf31DH8jgpaiGGxgDXBZ9NL+VK49mX52A63gJ0aTN5NP5Z5DR+eqmjdezDOdrTquxLIymM
+	01gm3SYnK8qmMz8HiXBhMqhOZV6pz32O4ryFUIS0bJj3aSzz9i3E4+kmPHgfuWhn5CvqGU9Ags3
+	f2TRjC+kS9fR5B38pLLnQ8+o+e+Rz3sIHBhZ5EqsjTKa5gJ30F0wwcN/Ov+gCDukQ7Tm2yloH1e
+	wjAcoxKR/tgXFPc3J
+X-Received: by 2002:a05:6000:40cb:b0:47b:5f25:7c59 with SMTP id
+ ffacd0b85a97d-47f2dcf8d32mr8542206f8f.38.1783920044394; Sun, 12 Jul 2026
+ 22:20:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 04/25] target/arm/kvm-rme: Add mechanic to initialize
- realms
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
- kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
- peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
- pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
- lorenzo.pieralisi@linaro.org
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-5-mathieu.poirier@linaro.org>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260707224306.1202330-5-mathieu.poirier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260610093922.51617-1-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260610093922.51617-1-fangyu.yu@linux.alibaba.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 13 Jul 2026 10:50:32 +0530
+X-Gm-Features: AUfX_mzgLxpjt24Y_crhzgSd_jT-mGHCzGXn6QWlmdDMie4AJ5TBR2ZEqWhokTY
+Message-ID: <CAAhSdy220vPtK6a8WpRbmyfN2Aa2wQquJ+p3rLP-P4XOPZOzPQ@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Avoid redundant page-table allocations in
+ ioremap topup
+To: fangyu.yu@linux.alibaba.com
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, guoren@kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> 
-> Initialise an @rme_guest object and install a handler to get notified
-> when the Realm is ready to start.  That way we can finish reading the
-> Realm once we know everything is in place.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> ---
->   target/arm/kvm-rme.c  | 50 +++++++++++++++++++++++++++++++++++++++++++
->   target/arm/kvm-stub.c |  5 +++++
->   target/arm/kvm.c      |  7 +++++-
->   target/arm/kvm_arm.h  |  9 ++++++++
->   4 files changed, 70 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> index 42e1d1e7b859..b86b9d6a25cb 100644
-> --- a/target/arm/kvm-rme.c
-> +++ b/target/arm/kvm-rme.c
-> @@ -13,6 +13,7 @@
->   #include "kvm_arm.h"
->   #include "migration/blocker.h"
->   #include "qapi/error.h"
-> +#include "qemu/error-report.h"
->   #include "qom/object_interfaces.h"
->   #include "system/confidential-guest-support.h"
->   #include "system/kvm.h"
-> @@ -29,14 +30,63 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
->                                             CONFIDENTIAL_GUEST_SUPPORT,
->                                             { TYPE_USER_CREATABLE }, { })
->   
-> +static RmeGuest *rme_guest;
-> +
-> +static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> +{
-> +    if (!running) {
-> +        return;
-> +    }
-> +
-> +    kvm_mark_guest_state_protected();
-> +}
-> +
->   static void rme_guest_class_init(ObjectClass *oc, const void *data)
->   {
->   }
->   
->   static void rme_guest_init(Object *obj)
->   {
-> +    if (rme_guest) {
-> +        error_report("a single instance of RmeGuest is supported");
-> +        exit(1);
-> +    }
-> +    rme_guest = RME_GUEST(obj);
->   }
->   
->   static void rme_guest_finalize(Object *obj)
->   {
->   }
-> +
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> +{
-> +    static Error *rme_mig_blocker;
-> +    ConfidentialGuestSupport *cgs = ms->cgs;
-> +
-> +    if (!rme_guest) {
-> +        return 0;
-> +    }
-> +
-> +    if (!cgs) {
-> +        error_report("missing -machine confidential-guest-support parameter");
-> +        return -EINVAL;
-> +    }
-> +
-> +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
-> +        error_report("KVM doesn't support Realms");
-> +        return -ENODEV;
-> +    }
-> +
-> +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-> +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
-> +
-> +    /*
-> +     * The realm activation is done last, when the VM starts, after all images
-> +     * have been loaded and all vcpus finalized.
-> +     */
-> +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
-> +
-> +    cgs->require_guest_memfd = true;
-> +    cgs->ready = true;
-> +    return 0;
-> +}
+On Wed, Jun 10, 2026 at 3:09=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote=
+:
+>
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>
+> kvm_riscv_mmu_ioremap() currently tops up its on-stack page-table
+> cache via kvm_mmu_topup_memory_cache(), which allocates up to
+> KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE (32) objects per topup.
+>
+> ioremap only consumes non-leaf page-table pages, at most
+> pgd_levels - 1 (1 to 4) per call, and for contiguous mappings
+> within the same huge page the non-leaf pages are allocated once
+> and reused by subsequent pages. Topping up to 32 objects therefore
+> triggers many unnecessary GFP_KERNEL_ACCOUNT allocations on every
+> call, all of which are freed when the function returns. In hot
+> paths (such as vCPU migration), this creates avoidable allocator
+> churn and wastes CPU cycles.
+>
+> Use __kvm_mmu_topup_memory_cache() with a capacity of pgd_levels so
+> the on-stack cache is sized to the maximum demand of a single
+> mapping. This removes the redundant allocations and reduces per-call
+> overhead without changing behavior.
+>
+> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-I think it's more reasonable to set ConfidentialGuestSupportClass::kvm_init to
-kvm_arm_rme_init in rme_guest_class_init(). confidential_guest_kvm_init()
-gets called in target/arm/kvm.c::kvm_arch_init(). With this, the pattern matches
-with that for x86.
+LGTM.
 
-More details can be found from commit 631a2ac5a4be ("i386/tdx: Implement tdx_kvm_init()
-to initialize TDX VM context").
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this patch as a fix for Linux-7.2-rcX
 
 Thanks,
-Gavin
+Anup
 
-> diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-> index 88cbe8d85c41..eec1ca3dd2e5 100644
-> --- a/target/arm/kvm-stub.c
-> +++ b/target/arm/kvm-stub.c
-> @@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
->   {
->       g_assert_not_reached();
->   }
-> +
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> +{
-> +    g_assert_not_reached();
-> +}
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index ed99be7fd80c..28d5643d6779 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -660,7 +660,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->       hw_breakpoints = g_array_sized_new(true, true,
->                                          sizeof(HWBreakpoint), max_hw_bps);
->   
-> -    return 0;
-> +    ret = kvm_arm_rme_init(ms, s);
-> +    if (ret) {
-> +        error_report("Failed to enable RME: %s", strerror(-ret));
-> +    }
-> +
-> +    return ret;
->   }
->   
->   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-> diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-> index e7c40fb003e4..6d058b0e08a2 100644
-> --- a/target/arm/kvm_arm.h
-> +++ b/target/arm/kvm_arm.h
-> @@ -240,4 +240,13 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
->    */
->   char *kvm_print_register_name(uint64_t regidx);
->   
-> +/**
-> + * kvm_arm_rme_init
-> + * @ms: the machine state
-> + * @s: State of KVM
-> + *
-> + * Prepare the machine to be a Realm, if the user enabled it.
-> + */
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s);
-> +
->   #endif
-
+> ---
+>  arch/riscv/kvm/mmu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 2d3def024270..873a5dde4b92 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -39,6 +39,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, p=
+hys_addr_t hpa,
+>         pgprot_t prot;
+>         unsigned long pfn;
+>         phys_addr_t addr, end;
+> +       unsigned long pgd_levels =3D kvm->arch.pgd_levels;
+>         struct kvm_mmu_memory_cache pcache =3D {
+>                 .gfp_custom =3D (in_atomic) ? GFP_ATOMIC | __GFP_ACCOUNT =
+: 0,
+>                 .gfp_zero =3D __GFP_ZERO,
+> @@ -61,7 +62,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, p=
+hys_addr_t hpa,
+>                 if (!writable)
+>                         map.pte =3D pte_wrprotect(map.pte);
+>
+> -               ret =3D kvm_mmu_topup_memory_cache(&pcache, kvm->arch.pgd=
+_levels);
+> +               ret =3D __kvm_mmu_topup_memory_cache(&pcache, pgd_levels,=
+ pgd_levels);
+>                 if (ret)
+>                         goto out;
+>
+> --
+> 2.50.1
+>
