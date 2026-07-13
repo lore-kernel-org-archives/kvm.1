@@ -1,257 +1,220 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012004.outbound.protection.outlook.com [52.101.53.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C1E346A14;
-	Mon, 13 Jul 2026 17:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783964635; cv=fail; b=XJovNaw75PrXezz+JV8jRmmq3pVPjp1Z3qZJb7P2tqOfxpsJzyZl3rTha3nDrngKeMljxyyZ8BFfruqlzWMU0jR0BfOEbskCMIRgIOj9BPUq1xb2LbybTMG23sZaIVwTPhIhz2THsx4LaW2tKErz3iK2IufvvhUV8fLtmnbVAoA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783964635; c=relaxed/simple;
-	bh=Julo+NZnCWYlzZIFdAtKu/FGSmzz52BzWIjNQY4CHKQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=LEdkfBHTLYwPomM1oc6m1M5GVYQk3pPlKxLgZQZlWYjnQIYnZvD3Og9ruma5DBttV3CG8uyAUejei6jA/LNnlbSY1ne1YP7y+Ma4eXwGh+b47cVO/3yrJg2rtbWACYhS83JW/717+ekDs0bGHY8rlN5DhGLW7Pt8SkgVUruMbWw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IbMeikwV; arc=fail smtp.client-ip=52.101.53.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FE8233927;
+	Mon, 13 Jul 2026 17:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783964925; cv=none; b=fmBowfq6WMTlDLVwpD5R0l+Wr19+F3S8pJ4hNbx/c7MKUqGwzRbJ5rQRgFSXLKUKL6LOKscin63KyIDMBXG1t0rmIPsPRb0fmZpvH18qC3b/iCXp5kvPZQb+AFwGKJRJ1jbY2Fo3cYIV4MF4BDiGkoKmmEgc00crkYD+kdJKsu0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783964925; c=relaxed/simple;
+	bh=elswOXGENSE02bniFB//+4GpuTocS2Nq9a4KJ9VylI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HDpvgmUPvW3aOqfZC9+9mQ7KQA1eH2u4il4ayGkq/DectA+IY8EQnd1gmU/wkZb7Opq8IwgJ2f7Pke5kk71weXNsU0ADvbDX0vI5cUvjPqlSRgO7UqHpiP42inICvQ/5VMUjf3M5eLP6DDqqU2xd4oiKik8ZSN5/nyodJntNW6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onjxB++n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IbMeikwV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oQCWKC2/jgDeZBAWdxAwkHTvCFzCbVeJrnor9C7/VFQ3IqBJoBcFZJK3RG+A56aZ94KyjdkyISZ/z5puDZLgVzLd2TwOckzvkwYkA7XwMEg+xfXg3d1WGdGGmn6ChijetlJMbXyPoYJfQLVDyVY6epTSHC1YCuhP/vOvMNyOBGjfJXeiJJ/93UFeRqUaslHnHtMZTg02C2I93KxvysWi7dHEmfVcdQ07ibPDSkxzc3OM/BXVoSUU1TQyc+ISKs5YAa1qj0Bdh3LOSEqYpsK+a8/d6hcbN6F1NvejQ24pkS3RSSQCqnW/1Vj89e+3zaJjnXya58jgAf1aAssNz6Y9kQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M4DyoHIgALXUeJLN7HEMt3D6Whh9BeDPP7A0hK9CWoA=;
- b=w9FVDSAzRyycUjzW2uqH84bD+M1ZOC8v7IMzvPCWxb5ohLK7PF9Xw+QMxWu6Tn3Z3Yz19cQ3CJJoR2No0lYlzdZZ50ETf2SHTeTrwqh2WYLQ+jIUBK8+GjiBHTFP8BevTAn62UtTsH5uEdjwCMlb3WW5Iim6RrYDJoo99tAab8S1xgY2lmmO9bm32Sp0Yc1Vi50PXRT8zzxwi56FpMgLHxT6MB8XoBuojWZGpmnKaXDp/Rdd+FOss5DfWqcYMi94QxSqFlYu0lnJTyzwigipOVVKne5IFvwfKasZmzoL5lcdEkn4iQlwWNefDu031RCfcDNVTD8b29pVxzjyt213Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M4DyoHIgALXUeJLN7HEMt3D6Whh9BeDPP7A0hK9CWoA=;
- b=IbMeikwV9Jl1//pwk9KiFRfIiLODol8B/pAex8KKaVoz/FWcw7qcgTvQ+tJcVgbMPoYNtUjgNMrb9+deRiCfvuC6VFnWl4XhGikkplHyKQfFmz8VQBxnHu6uG2l83fHknEeWKVP9rb17rCD/YV7F9rbivq+k+sBmD84Pf9TFbUs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN7PR12MB8131.namprd12.prod.outlook.com (2603:10b6:806:32d::12)
- by DS7PR12MB8231.namprd12.prod.outlook.com (2603:10b6:8:db::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 17:43:48 +0000
-Received: from SN7PR12MB8131.namprd12.prod.outlook.com
- ([fe80::c2dd:62c5:67fe:aa46]) by SN7PR12MB8131.namprd12.prod.outlook.com
- ([fe80::c2dd:62c5:67fe:aa46%4]) with mapi id 15.21.0202.014; Mon, 13 Jul 2026
- 17:43:48 +0000
-Message-ID: <5f6bcceb-1c48-43e5-bafc-8f86676c4092@amd.com>
-Date: Mon, 13 Jul 2026 12:43:45 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 02/27] x86/apic: Drop savic_eoi() in favor of
- native_apic_msr_eoi() for Secure AVIC
-To: "Naveen N Rao (AMD)" <naveen@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Neeraj Upadhyay <neeraj.upadhyay@amd.com>, Tianyu Lan <tiala@microsoft.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>
-References: <cover.1783490022.git.naveen@kernel.org>
- <36c039713c4b03c87b636635cb4c1f8b98c15eff.1783490022.git.naveen@kernel.org>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Autocrypt: addr=thomas.lendacky@amd.com; keydata=
- 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
- WiyqywZI5g==
-In-Reply-To: <36c039713c4b03c87b636635cb4c1f8b98c15eff.1783490022.git.naveen@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0192.namprd03.prod.outlook.com
- (2603:10b6:610:e4::17) To SN7PR12MB8131.namprd12.prod.outlook.com
- (2603:10b6:806:32d::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onjxB++n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827251F000E9;
+	Mon, 13 Jul 2026 17:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783964923;
+	bh=eqsaQhz+Tm8HgoxeGaT5sBOLtHmA3ZLHG5CTvOWZ77w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=onjxB++nlQDm7gMhTfmaNQDGH/rqBSYbLzfVEPq1lS1OhWdb6CrePXw7aLeTLGo0M
+	 pB+hJukV545xwSzfacCs6+xpPSowS++yQcA3kxVja2GEZejGL+Hf0WxMqbxsDeOECk
+	 UdHMAgyb07hAwBRvraqJw/dg9AeSA04LDY2AQwPOWSaAv5NIULkVGuWTgoHQOKjcws
+	 4tB7saNVwm9kU+nEYLQQmup00N7S4iEjniDnAmshu1Fop9Y+D7SzuW9SN/bp2Dc/iR
+	 UQQknMV48nrRokvLe9ipKdqqYp8uAlzqLTw1pQ+E9E6C7IvEIujYOTr3MYFQkIyYDN
+	 RQbf9q/HFuDdg==
+Message-ID: <8f3c1451-1b49-473a-b060-a8b95b2d44b4@kernel.org>
+Date: Mon, 13 Jul 2026 19:48:18 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8131:EE_|DS7PR12MB8231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61a34148-b026-4bd5-75b7-08dee1064b31
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|3023799007|18002099003|22082099003|6133799003|56012099006|4143699003|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	jt0T+gZ7Eds90c6Tv9AnwM6pU7EcJ8UUJWotd9tNZapYHW92MHBVmqP2GjTSxDzaqBsgw4tRPeRB9oKx+SLiJ+vk71JJjnTylcbSz+CSr3ntrRcXaQD93MBx0KFXvg9xovq8qHblPtqI6oYG1TdLf15sG9eFs/phFvFeIT7i7qasecoK/cGe0/2GLa3IoTICrdfTEP8AR9cmTbcu68mPy9s364AKTfQM6sSpjnuAnr0Y0usO5R2CYarr5Gf6mnD1Y9V9hP+glZl8CxfmrhLF+1+24NmlH1ad/4bLcbKrzal3KHw5KJZsqkA+VvmnWUAddDu2alJNEaeDNmPoAxPhFCWRIpk9xpdutp/ET8i56D6w0v4fY7xfItnWRdKYR5E6kFumM1K1HJMRZQk9BbIu7zoPd8eKUt7d6mTlAUUwVj+ItoYk5WAc0eZH4GIYoyJiA0L3UjnNxe4gkmYPV93i9BQjcu9enDpFm/6BXK+A6Nt0iXyc0/qHi5VyumigDqvOcOEcU5yE9Yr7NKYa834ghUR79E9D3j8mrqpsBUZEuKU0Dlr95lm1J7alM1sivtfxnoVP1Fl1iikkYpm7ZVSaNtvg4GvyQ1Jrb/2kNBJIQJ/OA9lZe9itqp5odi3GIM0uZMC7PULV3miUqYm5wUrZ9sj4NKXqJjy6d+v2HZfCeu4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8131.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(3023799007)(18002099003)(22082099003)(6133799003)(56012099006)(4143699003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZnZXSnFUM0NlelVWZHlTUlE2N3pxejVWYW1GdjJUeDhaakJnTzYyb2U3eUQx?=
- =?utf-8?B?WHRnZFB1Mnp1Wjg4anBlR04vSmU1Z3p6YUtEcTlLTWxlQzBvRzV4ZXZJcURi?=
- =?utf-8?B?U01UUk5MWWwrYnpvTEFUdWFPYjc2Zms3T09USExrd1A1QUc2R3FRTStQdmJT?=
- =?utf-8?B?TzNFeDcwRUxWTElXaE9JbHhqTjduRGJ4ejZQbkpzWDhuNm9CTitqNE9KL2NO?=
- =?utf-8?B?RDVpZmVMNVBhZjZ0L0hxQUFxSG44bFZZYmlHeVRaL2g0dDNDN2c0em8zSVlN?=
- =?utf-8?B?NEYyWjBncnQ4bEM2dCtzVjZmdWptbVZSRXk3TGZaZjMxMytLc2dubzN6SHlt?=
- =?utf-8?B?RDIrQ3FIa3NkaGxGclJkaU1XeE5WcSs4OVp2a1RRdGw1VXNldGJMTUI4WjZp?=
- =?utf-8?B?elpQMHdNWEYxN2R2K3dwMFBzb1BUVUdOTHRBamlObE9OdDNGSGhCZDZPVWJq?=
- =?utf-8?B?bCt2WUpwbSt4RTA5cGtoVDFCeGM2eHkxT2RpMXhzaDRFQjh6d29aVzRwUkg2?=
- =?utf-8?B?cFIxK0RZVldBbENzSFNBSDZ4ME55dW5Ta0o5c3N4bWZmWUxyMTd0c25sVDhI?=
- =?utf-8?B?dEpIY3htUWo4OThTazA0MlhYOVhIMXF5UWRrQ3RhRnJpN214U2F6SVFJc3M1?=
- =?utf-8?B?WTlaRlprdk56TElrT2lMSWZXcGZ2ZUZlcnBRakZGdDZqejAyT1ppNi9TWVRi?=
- =?utf-8?B?NVRvaldGTWhPUUNkQ2ZRcDV4K0dpZ21LLzZxd2E0b0VXUGdYbE1mcDExWDhw?=
- =?utf-8?B?MDVIVjJERUF2dWF1RGJXZFBtY2ZGNDRnY3JPSXl3QzZQM1ZKUkx0cW53VFV5?=
- =?utf-8?B?dW4vL0NZUmc0WTBRdkd1RmlDbDd0M0lPellhTXhGejBYM3N5ZkUxQ1ZvalR5?=
- =?utf-8?B?SGVKYys4Vlluc3NqdVRmQ1ord2p6Q1BIdS8yMlVyR0VaVHpxRnNKRlEyWUxJ?=
- =?utf-8?B?S0NkZHlJZ0xTNFQzNVJ4TEVFaWJGbFk2dnY5aXBaOE5BWlpVUndwMDJWc2gy?=
- =?utf-8?B?VFZHWHFkb2hiUlRWbW5rRVR4bUZ5SzkvdHBXejBzdGxZem5OYXdTOEl2N1l4?=
- =?utf-8?B?OGx5c2pzb2d1NXFnKzArbkIyVGFxMkU4TVgxVWZpWGNoa0U2VEkrWnFUUm1h?=
- =?utf-8?B?bEg2ZkFQeU1vZXl1bDJ3N05ITkhURk9HN3MrNzhvajVQeE0rdEszY1llTWo4?=
- =?utf-8?B?YU5OVHF0UVE3cmNHa0JpWHJmWmNoNnY5dVNVYWxYOCs3cnFNNTRTRi9seWpt?=
- =?utf-8?B?MDJxa2w2aHNMRWhDamU3T2g1bjhkNC9jUGxqMGhWQVBpVllyZTY3UUQ5V0NN?=
- =?utf-8?B?VGNJWUsxbTJlOXhqTG1yT0laYk5ZdkQrQkJDU05uV0FPUzBoVEY5RXJ3Zkor?=
- =?utf-8?B?RU5KSk05VWtNWFRnbVgyZTY5SVRqR0tmY3o2eFNDK05IZnhxSmphekMzNDUw?=
- =?utf-8?B?Zjg2VC9oOE9kdXdzeVVRSVlzd1hZQmdHL2FTaDNwemxtNkVvWG9NK0ZnQnNZ?=
- =?utf-8?B?UkxwaDdrbGpNYXVtUmlCYm52NGtvQytOTmJWa0w0MHJxaXZRZG9PbVhNL3lT?=
- =?utf-8?B?eHlqRlNydlBLeW93T29CbUE0K3ZzL0o4djNsKzhUbkdleDlqTlYwcFk5bHpk?=
- =?utf-8?B?cUh0c1V0YnVUMm96K0JzU2xDTDZRa2dxcUpIREtvdDhITXRTTHorUDZQbW1l?=
- =?utf-8?B?YkNmc2JXNEVHVkVtOENuTzcvZ1hqNjRQalY2c29WTkwzUG50SkY2RkwzdXlL?=
- =?utf-8?B?NUtod2NtMWJYbXFmSTU4RUtuOVZsZCt0T1FZNlE3clBWelVlUDhhTUxoR1dr?=
- =?utf-8?B?LzRTWFRVRm05bjlwVGlIQitZTHNVZHlyL21qcVY1ZHhNTi9xOXc2QWt5ZVYz?=
- =?utf-8?B?anlTNlI0UWo2Q0VRRmVQQUtpU1J2QmVlSUZlM0Y2WDZpdFNVdWErbmZlOWtS?=
- =?utf-8?B?UGE0bmR2R1JEakp1ODl2b2xhSzNHYkV1QjhMNy9yMm1idTJndzhSdXpxbjVW?=
- =?utf-8?B?RDJpZ3U1RFoxZHdRTDh6TjBWMnh4MTQ0OEM1MnZyelZwZ2xSYnZ0Z0syYi9D?=
- =?utf-8?B?MjhCM0FqbExXL1IwdlBlNVNYMmRPZTRjUlZGSytKczl0bkt4T1N2bldTWjV1?=
- =?utf-8?B?ZHVGVXZFWk9rRWRlNFJWT1cvL3Vrc05JV2xLYnpIQXl3NEVIMmsvczN0L0lH?=
- =?utf-8?B?YS9ETjVDd1F4ZWVGclhLVHEvVWJzbnRDZ3lvODF2R0YrTmNuelZkc1NqcDhB?=
- =?utf-8?B?amFGQlBhK3E3a0s4bFA2alA0ZFBlaDMxMGlNYW9DRitRdnNhTzZKbk9rc1Nk?=
- =?utf-8?Q?gFLMxGBvbvWqD/EbBG?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61a34148-b026-4bd5-75b7-08dee1064b31
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8131.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 17:43:48.3747
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BakQMJWyYuHR9CWXrSGsLWggTJfU5DOSK/ayBDLFEU9DN6iboVP1cP3NIfAkFG5Gsz/G78qQznHtv2SRpW9KsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8231
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/33] mm/rmap: update mm/interval_tree.c comments
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
+ Peter Xu <peterx@redhat.com>, Kees Cook <kees@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov
+ <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
+ <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ damon@lists.linux.dev, iommu@lists.linux.dev, kasan-dev@googlegroups.com,
+ linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+ kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
+References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260710-b4-pre-scalable-cow-v2-5-2a5aa403d977@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 7/8/26 01:32, Naveen N Rao (AMD) wrote:
-> Drop savic_eoi() in favor of using the native helper that writes to the
-> APIC_EOI MSR. savic_eoi() was added mainly to be able to handle
-> level-triggered interrupts. However, it relies on APIC_TMR indicating a
-> vector to be level-triggered, but APIC_TMR can never have a bit set
-> since it is only updated when the LAPIC accepts a level-triggered
-> interrupt. In the case of a Secure AVIC SEV-SNP guest, all
-> level-triggered interrupt sources are in the VMM (emulated IOAPIC
-> primarily) and KVM accepts them on behalf of the guest resulting in the
-> APIC_TMR in KVM APIC backing page having a bit set. This is never seen
-> by the guest, which has its own private APIC backing page. As such, the
-> savic_eoi() handler is dead code. Remove it.
+On 7/10/26 22:16, Lorenzo Stoakes wrote:
+> Update the file comment to clarify that both file-backed and anonymous
+> interval trees are provided, referencing the relevant data types for
+> clarity.
 > 
-> Fixes: 43b6687ac877 ("x86/apic: Handle EOI writes for Secure AVIC guests")
-> Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> Also add comments to indicate which parts of the file apply to each.
+> 
+> While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> 
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Reviewed-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Another guest change which should be separate from this series.
-
-Is this causing issues with this hypervisor support or is just code that
-is never invoked? Do other hypervisors behave the same way and will
-removing this break them?
-
-Thanks,
-Tom
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  arch/x86/kernel/apic/x2apic_savic.c | 31 +----------------------------
->  1 file changed, 1 insertion(+), 30 deletions(-)
+>  mm/interval_tree.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
-> index cb3b55225ab6..f2af149c6005 100644
-> --- a/arch/x86/kernel/apic/x2apic_savic.c
-> +++ b/arch/x86/kernel/apic/x2apic_savic.c
-> @@ -304,35 +304,6 @@ static void savic_update_vector(unsigned int cpu, unsigned int vector, bool set)
->  	update_vector(cpu, SAVIC_ALLOWED_IRR, vector, set);
+> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+> index 344d1f5946c7..2d50bc6228c4 100644
+> --- a/mm/interval_tree.c
+> +++ b/mm/interval_tree.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - * mm/interval_tree.c - interval tree for mapping->i_mmap
+> + * mm/interval_tree.c - interval tree for address_space->i_mmap and
+> + * anon_vma->rb_root
+>   *
+>   * Copyright (C) 2012, Michel Lespinasse <walken@google.com>
+>   */
+> @@ -10,6 +11,8 @@
+>  #include <linux/rmap.h>
+>  #include <linux/interval_tree_generic.h>
+>  
+> +/* File-backed interval tree (address_space->i_mmap) */
+> +
+>  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
+>  		     unsigned long, shared.rb_subtree_last,
+>  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
+> @@ -23,7 +26,7 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
+>  	struct vm_area_struct *parent;
+>  	unsigned long last = vma_last_pgoff(node);
+>  
+> -	VM_BUG_ON_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+> +	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+>  
+>  	if (!prev->shared.rb.rb_right) {
+>  		parent = prev;
+> @@ -48,6 +51,8 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
+>  			    &vma_interval_tree_augment);
 >  }
 >  
-> -static void savic_eoi(void)
-> -{
-> -	unsigned int cpu;
-> -	int vec;
-> -
-> -	cpu = raw_smp_processor_id();
-> -	vec = apic_find_highest_vector(get_reg_bitmap(cpu, APIC_ISR));
-> -	if (WARN_ONCE(vec == -1, "EOI write while no active interrupt in APIC_ISR"))
-> -		return;
-> -
-> -	/* Is level-triggered interrupt? */
-> -	if (apic_test_vector(vec, get_reg_bitmap(cpu, APIC_TMR))) {
-> -		update_vector(cpu, APIC_ISR, vec, false);
-> -		/*
-> -		 * Propagate the EOI write to the hypervisor for level-triggered
-> -		 * interrupts. Return to the guest from GHCB protocol event takes
-> -		 * care of re-evaluating interrupt state.
-> -		 */
-> -		savic_ghcb_msr_write(APIC_EOI, 0);
-> -	} else {
-> -		/*
-> -		 * Hardware clears APIC_ISR and re-evaluates the interrupt state
-> -		 * to determine if there is any pending interrupt which can be
-> -		 * delivered to CPU.
-> -		 */
-> -		native_apic_msr_eoi();
-> -	}
-> -}
-> -
->  static void savic_teardown(void)
+> +/* Anonymous interval tree (anon_vma->rb_root) */
+> +
+>  static inline unsigned long avc_start_pgoff(struct anon_vma_chain *avc)
 >  {
->  	/* Disable Secure AVIC */
-> @@ -421,7 +392,7 @@ static struct apic apic_x2apic_savic __ro_after_init = {
->  
->  	.read				= savic_read,
->  	.write				= savic_write,
-> -	.eoi				= savic_eoi,
-> +	.eoi				= native_apic_msr_eoi,
->  	.icr_read			= native_x2apic_icr_read,
->  	.icr_write			= savic_icr_write,
->  
+>  	return vma_start_pgoff(avc->vma);
+> 
 
