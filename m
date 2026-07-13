@@ -1,134 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD662EBB8D
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE675286409;
+	Mon, 13 Jul 2026 15:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783957955; cv=none; b=hbEjjQmvEo62BQWfKsGOVMeSF/kQsnkC5NRkr8OvV3xv1BxMNN34zXL1iuUzSuo0ggWvyk4LaGbRD/bPphrGYM7H9VBxmpy/IL1pme7Tj/CqUoPFD20gPzurm8HGdNYyGlgOpMjE7n60ka/N+PbecY9Ht5XZLzREl4eYVBN7QxA=
+	t=1783958289; cv=none; b=ff+CUDJHbW8HBwI0MxIgRq8GWoq+ElvUTwZlRGMXVOqTGfilBi5NglJcbagOyJRQBD50EBL8bgxtOwwur/U2qSHeK4CrWsSJMcuOVG2V32Pc/tc2MfdcKRir/8el5IExQTQE4Cv+KQQu+6855yFotTpjqqhSGI/7xPxCvOMbtS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783957955; c=relaxed/simple;
-	bh=zn5T0ZVRaXIVFl4ttINw4zqUTc/cV8bPgYexu7wBY8g=;
+	s=arc-20240116; t=1783958289; c=relaxed/simple;
+	bh=C+9/YvzBqId/u+mMybJh1+egI7DPr1leuK6RgEH/uQc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IOfO6ggpzmEztHkfdPUwvDogcl8Tz/FRTnK32a61/hiJ1lV1Bz8zKezkK6ACEixIPAk83DosGwxXJh24ceX+NOp3ZVgpkaJbCiYcE5u0dfGR6GhLH9/8874htNmLuWQjy50IqNE36UNS1GFv4VLSRtzewD9J26zmC63YgHfSBAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMmQZr7A; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=LgOIzntGkDXGVeIN2V8sSh7nuQ/GIxeGq7HezjJYVifve5j/i8MOoeJCLI2stEwqpUf2bLm1EvO1WdlRhRGk2qmJMvxaPYr966Xm9Mvvc+h6Kqkq5NJHHLCWquiCw0/Ti8LCyv5qHxwZ9RnFLJh/lLXzyl3R9C/VbxjdiVy5260=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSWDLqVa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMmQZr7A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADD91F000E9;
-	Mon, 13 Jul 2026 15:52:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSWDLqVa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7740D1F00A3E;
+	Mon, 13 Jul 2026 15:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783957950;
-	bh=KisnLKS4qXJBhSKCfQ4JOsOHL15/sUDSaFEiPSIAKuk=;
+	s=k20260515; t=1783958286;
+	bh=7H+hSADgLrwagJlrMFBXJif9DHuRxYjYrWKpce0dBhk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HMmQZr7A5kpJMhEIq7skD5+6nsreqdFRRrghhgI8/YW7fxRMWxI2YugDYwmb4IWlr
-	 CAqgTOeS95QHyxNyQS+cAfHudYbftOhoBWZG2wFV/BgrIEZvLXxj4CmVXjD2VAR73L
-	 1cnFD6cghpgBk21PLhSlxSCKeM2uMwd9r9/jewrg0WJQfpVRq6VEOel7BC6Ewcj205
-	 o2AixxpCJJAro79hOwZD/N8h5sK/ZIZnLddHSrTxikTCmknvuOgRSLzVwfpyEareDv
-	 7+DVpKYpu+r0D8Awsq+2GKqOgLMnj2jE5SzdCiBYDnaAaIlRIAmUyKEpY0kUZQwRHg
-	 fWuPmzh1qT57g==
+	b=cSWDLqVaV8bwcRfqCfVvdSI4/cEy4zaGjymST+x+H/OMoO4lJhaXgNYs4LOnbNf4x
+	 zV0MdMlt3kqU6CtGhXlybMC8l8bd9vqP0Xp+1bpQZc9KJXJX7xd8OdP3XgiusVnJ9u
+	 DxoObDy+8t/BukMbRmqpmZAgvcMoMr5YFq0H9R5iad3Enyl31QCCml9pgb8JVviNkY
+	 +D1dN5GSY+R64mf70j9zsftfO5xCu5nEzm+oSDeD0pEOB5ryZ5iNLNOYijuASMRsyD
+	 SFu7CaKALnHc/8809j0iyCHxUDAbzMw/Z8rsJOohAzVt7VOCOVzBI9xMlyo4Q4hgTI
+	 Q/7+SPmvZICqw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: nVMX: store L2's TSC frame in the VM-exit IA32_TSC
- MSR-store list
+Subject: Re: [PATCH v2 4/7] KVM: s390: cmma: Fix dirty tracking when
+ removing memslot
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amirmohammad Eftekhar" <amirmohammad.eftekhar@cispa.de>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260713144605.2773845-1-amirmohammad.eftekhar@cispa.de>
-References: <20260713144605.2773845-1-amirmohammad.eftekhar@cispa.de>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260713150857.269954-5-imbrenda@linux.ibm.com>
+References: <20260713150857.269954-1-imbrenda@linux.ibm.com>
+ <20260713150857.269954-5-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 15:52:30 +0000
-Message-Id: <20260713155230.7ADD91F000E9@smtp.kernel.org>
+Date: Mon, 13 Jul 2026 15:58:05 +0000
+Message-Id: <20260713155806.7740D1F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The patch incorrectly returns L2's TSC frame instead of L1's TSC f=
-rame for IA32_TSC in the VM-exit MSR-store list, directly violating the Int=
-el SDM.
-- [Medium] The patch introduces an inconsistency between the MSR_IA32_TSC a=
-utostore path and the fallback read path.
+- [High] Data race and double-decrement of `cmma_dirty_pages` due to two-pa=
+ss CMMA cleanup
 --
 
---- Patch [1]: [PATCH] KVM: nVMX: store L2's TSC frame in the VM-exit IA32_=
-TSC MSR-store list ---
-commit 9a886b64a3ad54e2783daef1b8de78fa7019e1c2
-Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+--- Patch [4]: [PATCH v2 4/7] KVM: s390: cmma: Fix dirty tracking when remo=
+ving memslot ---
+commit 119121acc5129e77726627587bbb91e16dea4543
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: nVMX: store L2's TSC frame in the VM-exit IA32_TSC MSR-store list
+KVM: s390: cmma: Fix dirty tracking when removing memslot
 
-This commit updates KVM to store L2's TSC frame in the VM-exit IA32_TSC
-MSR-store list. It recomposes L2's frame using L1 state and vmcs12 TSC
-controls.
+This patch fixes inaccurate dirty tracking during migration by appropriately
+decrementing the cmma-dirty counter when a memslot is removed. It does this
+by walking the page tables and decrementing the counter prior to deleting
+the slot.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 6957bb6f5cf7e..610b58933d6b4 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -1111,8 +1111,26 @@ static bool nested_vmx_get_vmexit_msr_value(struct=
- kvm_vcpu *vcpu,
->  	if (msr_index =3D=3D MSR_IA32_TSC && vmx->nested.tsc_autostore_slot >=
-=3D 0) {
->  		int slot =3D vmx->nested.tsc_autostore_slot;
->  		u64 host_tsc =3D vmx->msr_autostore.val[slot].value;
-> +		u64 l2_multiplier =3D vmx_get_l2_tsc_multiplier(vcpu);
-> +		u64 l2_offset, l2_ratio;
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 9e3b8b5c6aa66..5c2408fc5a8cb 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+
+[ ... ]
+
+> @@ -5796,11 +5796,19 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
+m,
+>  	return 0;
+>  }
 > =20
-> -		*data =3D kvm_read_l1_tsc(vcpu, host_tsc);
-> +		/*
-> +		 * The guest that just exited is L2, so the value auto-stored on
-> +		 * its behalf must be L2's frame: RDMSR(IA32_TSC) in L2 reads
-> +		 * (host_tsc scaled by the composed ratio) + the composed offset
-> +		 * (SDM Vol 3C 27.4).  nested_vmx_vmexit() has already restored
-> +		 * the composed TSC state to L1's by the time the MSR-store list
-> +		 * is processed, so recompose L2's frame from L1 state and the
-> +		 * vmcs12 TSC controls.  kvm_read_l1_tsc() would instead record
-> +		 * L1's frame, dropping L2's offset (and scaling) entirely.
-> +		 */
-> +		l2_offset =3D kvm_calc_nested_tsc_offset(vcpu->arch.l1_tsc_offset,
-> +						       vmx_get_l2_tsc_offset(vcpu),
-> +						       l2_multiplier);
-> +		l2_ratio =3D kvm_calc_nested_tsc_multiplier(vcpu->arch.l1_tsc_scaling_=
-ratio,
-> +							  l2_multiplier);
+> +static long cmma_d_count_pte(union pte *ptep, gfn_t gfn, gfn_t next, str=
+uct dat_walk *walk)
+> +{
+> +	if (pgste_of(ptep)->cmma_d)
+> +		atomic64_dec(walk->priv);
+> +	return 0;
+> +}
 > +
-> +		*data =3D kvm_scale_tsc(host_tsc, l2_ratio) + l2_offset;
 
 [Severity: High]
-Does this calculation violate the architectural requirements for the VM-exit
-MSR-store list?
+Can this two-pass CMMA cleanup cause a double-decrement of the global count=
+er?
 
-According to the Intel SDM (Vol 3C, 27.4), reads of MSR_IA32_TSC for the
-VM-exit MSR-store list are not subject to TSC offsetting or TSC scaling,
-which requires the hardware to save the bare host TSC.
+The first pass in cmma_d_count_pte() locklessly reads cmma_d and decrements
+the counter, but leaves cmma_d =3D 1.
 
-From L1's perspective, the bare host TSC is L1's TSC frame. By applying L2's
-offset and multiplier here, this returns L2's TSC frame instead. A
-conforming L1 hypervisor that correctly applies its guest's offset and
-multiplier could inadvertently apply them a second time, which could
-corrupt the L2 guest's clock.
-
->  		return true;
+>  void kvm_arch_commit_memory_region(struct kvm *kvm,
+>  				struct kvm_memory_slot *old,
+>  				const struct kvm_memory_slot *new,
+>  				enum kvm_mr_change change)
+>  {
+> +	const struct dat_walk_ops ops =3D { .pte_entry =3D cmma_d_count_pte, };
+>  	struct kvm_s390_mmu_cache *mc =3D NULL;
+>  	int rc =3D 0;
+> =20
+> @@ -5814,6 +5822,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
 >  	}
 > =20
+>  	scoped_guard(write_lock, &kvm->mmu_lock) {
+> +		if (kvm->arch.migration_mode && kvm->arch.use_cmma) {
+> +			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
+> +					    kvm->arch.gmap->asce, &ops, DAT_WALK_IGN_HOLES,
+> +					    &kvm->arch.cmma_dirty_pages);
+> +		}
+> +
+>  		switch (change) {
+>  		case KVM_MR_DELETE:
+>  			rc =3D dat_delete_slot(mc, kvm->arch.gmap->asce, old->base_gfn, old->=
+npages);
 
-[Severity: Medium]
-Is there an inconsistency introduced between the autostore path and the
-fallback MSR read path?
+[Severity: High]
+The wide window between the first walk here (decrementing) and the second w=
+alk
+in dat_delete_slot() (which clears cmma_d) appears to allow a concurrent
+KVM_S390_GET_CMMA_BITS ioctl to intervene.
 
-If the autostore slot was not successfully allocated, the code falls back to
-calling kvm_emulate_msr_read() right below this block. Because the vcpu
-state is already reverted to L1's configuration before processing the
-MSR-store list, the fallback path continues to evaluate and return L1's TSC
-frame.
+Since the ioctl takes slots_arch_lock but not mmu_lock, could it acquire the
+PGSTE lock, observe cmma_d =3D=3D 1, clear it, and decrement the
+cmma_dirty_pages counter a second time for the same page?
 
-This divergence causes the returned value to unexpectedly toggle between L2=
-'s
-frame and L1's frame depending on whether the autostore array was full.
+If this happens, the counter would underflow and wrap to UINT64_MAX, causing
+KVM_S390_GET_CMMA_BITS to permanently report pending dirty pages and break =
+VM
+live migration.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713144605.2773=
-845-1-amirmohammad.eftekhar@cispa.de?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713150857.2699=
+54-1-imbrenda@linux.ibm.com?part=3D4
