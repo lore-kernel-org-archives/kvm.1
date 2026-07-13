@@ -1,195 +1,177 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC3530E85D
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 21:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE9A3382F4;
+	Mon, 13 Jul 2026 21:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783977088; cv=none; b=erVuBl7SPUU8mfOl65t7l3FWmKex23z8vbL3jRHsnjSQHqjB9I0hNDesZsJ5uaPX8WWlL1fGblFyXttVVJx38UOfKOi54dX6jhpdwBxkTWHbOWgcqF5dgvSmxEQ0QJISvh5FK/iXJzec2nxWFz0V1mwOSS2KxcXdUu3gapjqRrA=
+	t=1783977265; cv=none; b=Puk5RXe5PwXP3zYae8B2XYWsz4ookJwrXC3tvIGotVePZP+DvCopN9GZZgu9mHN43cGjVsrxdaL/3ASjxcqUCRE1LIMe8ZOuNlEpfdIlkcrU7jL3S5fouxdu/I0M6VB53/GhHPPhnlEb9yMzaZGqcbBUBtTdw3nfkjobUuXR/Dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783977088; c=relaxed/simple;
-	bh=RlBQ1BVc48mLS97mhVNas8rRRx2MGY9TB6RBuGhvhJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gN6KIg+X0mzLv3BsqJa0i5dZY3FUP0sXwWN7FKfmiChTzobuJfMYprtV9zZkjh/yHHmP5daA7PrHBH/hYBBGqeFIycXCLQ6CY3AVKP2I+Zyf0uO3Uh68tgObQHqnLtbN4Cwe6X9s92NlnTlE130x3qVlUB4O9d2AZmVeYpBMojk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wzq0HbeW; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1783977265; c=relaxed/simple;
+	bh=hFLJTEOtnPP+/owFXOrP6LuYyD2e+GGiXgitKVu3Klk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=NxDNCrlzg9okSEeQzwcmWyagBBLxlgm+V0QMthPD1clG/U6RG2cWtQiw5/mTfmSYF8SoWJ/xsLnwIZdJzdoQL3ZS2qXQhTRdmY22DXaPqh0RqS+yISihXEeHl2ith4nu+/Qf2wsID/ridYWJOmTh2ykiclTqytDiV9wq94Zzjlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRLvYS10; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wzq0HbeW"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca80d708489so220875a12.1
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 14:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783977086; x=1784581886; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GW/F3qWXwwX4AhwH+nP/rLsXsp8Fz7nEuN27rGBIfgo=;
-        b=wzq0HbeWCTXmY4oQq2+nwLRQhXNJJqmMVSXUaCWwWaw0yKYEDCdC9O7cBcyNQnGkq1
-         dvn+6Xt3YlaoxI4NGgZm+xAq35CFBSvcDG+GuXh9/8Rrx8++exzP8DSCAnVRiXqNvvej
-         l0cpRK5qN6pA8BxOoGLYHaY4AwM5SmbawD4YIkv4eVdaVLes2tqjyNzr1iOyoBESFu3R
-         xapnYw4luKeq9bBgVqoxDonY4cEeAVaAemsZTXiYI0LnSg89qHXbFHKcL+vj3nD4cx02
-         ftWum95hMbKehVTVDYD0BtgA3cU8t5ea4zuYiRiV0gU0xmpBCUvvsuwGy1rk0Mfm1CBP
-         kFZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783977086; x=1784581886;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GW/F3qWXwwX4AhwH+nP/rLsXsp8Fz7nEuN27rGBIfgo=;
-        b=Jtwu8hZ2m8lGlkK5Gbc9PZayoOhoTxOOrBBV8sQwM7FrNZBLmORCShBP0Odc01wP+B
-         zHmDkLAmNWXQayFOsO4jQ0nBBIPMpb85wN2sto3tjEukTejY7u+PKJ6WeqT9YlvS4mx1
-         MopDA6eBxYIRAoAKexSiKw8uUIlGB6TiSLT4xR2+8izCW//lGk4B+HF1YUsvQZ+Wc2EY
-         lXJmPNGAAlkJa8gxwPm993H3PZOmuJ/V+lAUgegxREROdphsYHIiVm7FlmL2UgQWjPB+
-         IH89ESX8nWrHTJW30vvTD6Sb+HG3AjL3U1tcvogGznYRbwseXpPuJBtU1hJ9E1ZI9x6E
-         Mdpw==
-X-Forwarded-Encrypted: i=1; AHgh+RrG7xbTRdmjBPGmHwcf9AdqEcJLV4FGhYqypvp55yPzUu+0HVnVKVzPkx2xe9D0NfLx0Qg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE9UbyVMQmVg/MQ9cTng/EqDa5l469q97AjoIg6U1l9jK8rPJg
-	YtI8/QFp/3fAPXLmpkSUGzNgbKr+er90+wRVic2wdaPF3U40vWutO7UhC3dAtIj2giE=
-X-Gm-Gg: AfdE7cnOfZ2Wg8iwJ6txqOakPrgvc+yZJjwn8g/qbVqiKjy2HNqyWavUR96KhkXEAnL
-	a4kQJ1cWoCD44gaCbBwUOtHxWiYdCB8fMu1ihe/jIpYfd+T8la6oa/XwpOndSe73pR+LqXiwqNm
-	NZkBHZLUcaqmFU0AgwLCuK9/yK/PazYIfFSUSFUHUxNTet76/M1wDIPG9jdr9tzenAXSgPo3ZWh
-	BJUDp0dRJ5tNvTLvjQutkwOJqrlCepj+V5eXjbVKhxHAQEz3OAqJCXw8GZbZo47u4BkjVyClYBv
-	Lv7AQLOnIb+imFhxURPrgjS7WyD3x870895crbi302F77eFQ2IFVMfvP8HsM0Zq234RMgOoBjHX
-	rRK+ao/BAgOgLg+uyCBP/7mvNmqn6pR2JMlrN9mFqSTCIhI3DY6QAaVwUoOs+R0b64VojtQvz7i
-	820+4uFrhdkOAFft+1
-X-Received: by 2002:a05:6a21:9210:b0:3bf:8de9:c64e with SMTP id adf61e73a8af0-3c112b9c1d2mr10234471637.2.1783977086349;
-        Mon, 13 Jul 2026 14:11:26 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:3ead:2a56:27bf:77cb])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3a2bf6bsm9108149a12.27.2026.07.13.14.11.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 14:11:25 -0700 (PDT)
-Date: Mon, 13 Jul 2026 15:11:23 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
-	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 01/25] linux-headers: Add RME related definitions
-Message-ID: <alVUewIPbsAClmau@p14s>
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-2-mathieu.poirier@linaro.org>
- <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRLvYS10"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4631F00A3D;
+	Mon, 13 Jul 2026 21:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783977264;
+	bh=sMBui836HM41KY8s3+Mm8qIHFtVsg0cuQwuzcHoGBGw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=bRLvYS10AMK0kvxXR59RYA9FSFouJAeQczmz5wHotdAOb74uqEkRikcm5pf+pfEJc
+	 N32c0SXNup4oYQS36yo4Lw2rFyX7svFRyU9E/Z9DxaF7RZM3kPz7f+Iz44z00wbLy6
+	 xBQBrI3T6p91Oy/j2zaSSSRBnQcJjp7E8AWp/IbyE500OfGUjHVLTp+ssakvW2mteY
+	 ga6dVNMXSJZ0hqpksKKkmmENN+wIwLcD8UTyBq9M1S9dbyaq9/wUxWJn6M9Ile2HMg
+	 vN+C6lw/1x6vhf/Hb5XZU41u12CrKTyykSOwdGOq4ujQmoj+zaj9xKc1RPJFsgnjiQ
+	 QsjgcIMVf9ojw==
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5B70AF40119;
+	Mon, 13 Jul 2026 17:14:22 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Mon, 13 Jul 2026 17:14:22 -0400
+X-ME-Sender: <xms:LlVVanX9epxdm6vE5XaKiNEEQE8RKCum1fePyhsn_ISXeIHTZMgGLA>
+    <xme:LlVVakf8QUACxIZ9ofCaRIvRzAE4f99-TaNSXzQNE0oDatgLYxvQ0VHz8z2sV9Keo
+    8I9j3WcFVjgh5iN3qEW2-JAYdbEL6AIGLOdyPxy52uN1QLDYg4Uic0>
+X-ME-Received: <xmr:LlVVag9FYCB5M6mjXULxej9uYDxuBEEl0WiGrWL_gmBJywMTsys5S7PVjWTfqxRETzZixnlc2zD6mbBT22skSFfdSTlgccsSgNI>
+X-ME-Proxy-Cause: dmFkZTFNij3gMh+X8Z9njSKkNHcXU0qZMJw/Gf1R/d3jzfKrxojwVNTxUV2e6GTfe7KByY
+    JijsFbEuiYnrxI0HagcW2l/RzWe8ge82nq9KT9GRAr3TDEmmqpMjDJNV6fEhBUsPJqJH9x
+    hioaW0XiA1PEFvoChOb0xHMAzsHUG1vslBm3qHrmUPMNxNGj55Br7P9rco5to57Ki8PYVN
+    iaTcBCQdQJxD3DftDB7VTuGVCIhM4yJL589c5sJhmWqP6VwwEpGINQtJvK06TFKk4fxN3y
+    88sk4YXX+DCCNUwIBOJwgt0dhTvbEWUISQho5kTNm5pVfdqWp1kocfsy1dWzX6GWcdQpf9
+    CVIycnV+YUFYiz34PXnhpZIOdzVSp7ca6F79kcbcLAJ6aea/zrPCAYyrzCbzMpGonQlCPQ
+    0WeEg2t+0qdX1lNeRjo9wAP/8IN1It6m5yY3lnpHY6NPa23cbE62uvKyGgU3l0+V39NNmc
+    8vYtkF5xdjOHYiED9NDvKTuJz1PRt8qIkJTFaROCBEwZCNxnr+5vUDKNc0y6nQjDIOZSwm
+    tAlrfS6+bUTtfnG8w9M9b1LRhQ3765pbUSEa6RTn+O0HBoIoSy0nUX7c0FokUGtNLPvTHI
+    gd62w4vF1ESfrI5ZbZHGgDvtwUIsaVr8tNPRvGBMcUbO/V2FnrmuI4imfsPw
+X-ME-Proxy: <xmx:LlVVakaxf__zGGvNap-G0VcZCHvGKTgpIknaKFPsN4SFO-CGy9GLfQ>
+    <xmx:LlVVagu4cz_fcZD7XFiW6WYtUDZIBVm6ZqVefKqvPUnAg9cGtZPg0w>
+    <xmx:LlVVahaG7f00MGJ4UGx3l9TQuFmS4wnLstbuR9VYMjrCkyMz2a_jiQ>
+    <xmx:LlVVakQbn33zqUbj-xtZv-5_1D6XSTeM6RfoQyscg_JzCJfnuqjnvQ>
+    <xmx:LlVVaszEyftclIAwPMVRESgjM2bmZBdJHybVxBjcC0cMjCJsDUO-tBMv>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 Jul 2026 17:14:21 -0400 (EDT)
+Date: Mon, 13 Jul 2026 14:14:20 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Manish Honap <mhonap@nvidia.com>, 
+ Alex Williamson <alex@shazbot.org>
+Cc: "djbw@kernel.org" <djbw@kernel.org>, 
+ "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+ "jic23@kernel.org" <jic23@kernel.org>, 
+ "dave.jiang@intel.com" <dave.jiang@intel.com>, 
+ Ankit Agrawal <ankita@nvidia.com>, 
+ "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>, 
+ "alison.schofield@intel.com" <alison.schofield@intel.com>, 
+ "dave@stgolabs.net" <dave@stgolabs.net>, 
+ "dmatlack@google.com" <dmatlack@google.com>, 
+ "gourry@gourry.net" <gourry@gourry.net>, 
+ "ira.weiny@intel.com" <ira.weiny@intel.com>, 
+ Neo Jia <cjia@nvidia.com>, 
+ Krishnakant Jaju <kjaju@nvidia.com>, 
+ Vikram Sethi <vsethi@nvidia.com>, 
+ Zhi Wang <zhiw@nvidia.com>, 
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, 
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+ Manish Honap <mhonap@nvidia.com>
+Message-ID: <6a55552c98a82_35cf3310082@djbw-dev.notmuch>
+In-Reply-To: <IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
+References: <20260625165407.1769572-1-mhonap@nvidia.com>
+ <20260625165407.1769572-6-mhonap@nvidia.com>
+ <20260710162322.012be635@shazbot.org>
+ <IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
+Subject: RE: [PATCH v3 05/11] vfio: UAPI for CXL Type-2 device passthrough
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 10, 2026 at 11:09:43AM +1000, Gavin Shan wrote:
-> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Manish Honap wrote:
+> > -----Original Message-----
+> > From: Alex Williamson <alex@shazbot.org>
+> > Sent: 11 July 2026 03:53
+> > To: Manish Honap <mhonap@nvidia.com>
+> > Cc: djbw@kernel.org; jgg@ziepe.ca; jic23@kernel.org;
+> > dave.jiang@intel.com; Ankit Agrawal <ankita@nvidia.com>;
+> > alejandro.lucero-palau@amd.com; alison.schofield@intel.com;
+> > dave@stgolabs.net; dmatlack@google.com; gourry@gourry.net;
+> > ira.weiny@intel.com; Neo Jia <cjia@nvidia.com>; Krishnakant Jaju
+> > <kjaju@nvidia.com>; Vikram Sethi <vsethi@nvidia.com>; Zhi Wang
+> > <zhiw@nvidia.com>; kvm@vger.kernel.org; linux-cxl@vger.kernel.org;
+> > linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> > kselftest@vger.kernel.org; alex@shazbot.org
+> > Subject: Re: [PATCH v3 05/11] vfio: UAPI for CXL Type-2 device
+> > passthrough
 > > 
-> > This is a temporary patch intended for testing purposes only. It provides
-> > definitions related to supporting Realms by the QEMU-VMM.
+[..]
 > > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > ---
-> >   linux-headers/asm-arm64/kvm.h |  9 +++++++++
-> >   linux-headers/linux/kvm.h     | 21 +++++++++++++++++----
-> >   2 files changed, 26 insertions(+), 4 deletions(-)
+> > On Thu, 25 Jun 2026 22:24:01 +0530
+> > <mhonap@nvidia.com> wrote:
+> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > > index 5de618a3a5ee..3707d53c4de5 100644
+> > > --- a/include/uapi/linux/vfio.h
+> > > +++ b/include/uapi/linux/vfio.h
+> > > @@ -215,6 +215,7 @@ struct vfio_device_info {
+> > >  #define VFIO_DEVICE_FLAGS_FSL_MC (1 << 6)    /* vfio-fsl-mc device */
+> > >  #define VFIO_DEVICE_FLAGS_CAPS       (1 << 7)        /* Info supports
+> > caps */
+> > >  #define VFIO_DEVICE_FLAGS_CDX        (1 << 8)        /* vfio-cdx
+> > device */
+> > > +#define VFIO_DEVICE_FLAGS_CXL        (1 << 9)        /* vfio-cxl
+> > Type-2 device */
 > > 
-> > diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
-> > index 6aefe7973814..4c08631ec7d2 100644
-> > --- a/linux-headers/asm-arm64/kvm.h
-> > +++ b/linux-headers/asm-arm64/kvm.h
-> > @@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
-> >   	__u64 reserved;
-> >   };
-> > +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
-> > +struct kvm_arm_rmi_populate {
-> > +	__u64 base;
-> > +	__u64 size;
-> > +	__u64 source_uaddr;
-> > +	__u32 flags;
-> > +	__u32 reserved;
-> > +};
-> > +
-> >   #define KVM_ARM_TAGS_TO_GUEST		0
-> >   #define KVM_ARM_TAGS_FROM_GUEST		1
-> > diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-> > index 50e87ed72c20..dae6e5ba8457 100644
-> > --- a/linux-headers/linux/kvm.h
-> > +++ b/linux-headers/linux/kvm.h
-> > @@ -685,11 +685,21 @@ struct kvm_enable_cap {
-> >   #define KVM_S390_SIE_PAGE_OFFSET 1
-> >   /*
-> > - * On arm64, machine type can be used to request the physical
-> > - * address size for the VM. Bits[7-0] are reserved for the guest
-> > - * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
-> > - * value 0 implies the default IPA size, 40bits.
-> > + * On arm64, machine type can be used to request both the machine type and
-> > + * the physical address size for the VM.
-> > + *
-> > + * Bits[31-30] are reserved for the ARM specific machine type.
-> > + *
-> > + * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
-> > + * For backward compatibility, value 0 implies the default IPA size, 40bits.
-> >    */
-> > +#define KVM_VM_TYPE_ARM_SHIFT		30
-> > +#define KVM_VM_TYPE_ARM_MASK		(0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
-> > +#define KVM_VM_TYPE_ARM(_type)		\
-> > +	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
-> > +#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
-> > +#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
-> > +
-> >   #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
-> >   #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
-> >   	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+> > Would we define a different flag for type-1/3 if we ever found a need to
+> > expose them through vfio?
 > 
-> The definitions in this section aren't exactly same to that in (v14) host series,
-> leading to KVM_VM_TYPE_ARM_REALM = 0 in my environment and the realm guest can't
-> be started with the following error message. At least, KVM_VM_TYPE_ARM_MASK has
-> been redefined with different values.
-> 
->   qemu-system-aarch64: KVM does not support guest_memfd
+> Yes. The current flag is named VFIO_DEVICE_FLAGS_CXL and refers to
+> Type-2 specifically. If Type-1 or Type-3 support is added later, a
+> separate flag (or a VFIO_DEVICE_INFO_CAP sub-type field) would
+> distinguish them. I can rename it VFIO_DEVICE_FLAGS_CXL_TYPE2 now if
+> that is preferable; please advise.
 
-I agree with you.  Although outdated the above should work - left shifting
-0x3ULL by 30 seems to be causing issues.  
+The CXL specification itself has deprecated the "Type" names because
+they are ambiguous. For example, you can have a "Type-3" device that
+supports "device memory (HDM-DB)", Type-2 is a superset of Type-1 in
+many cases, etc.
 
-> 
->   ----> linux-headers/linux/kvm.h
-> 
->   #define KVM_VM_TYPE_ARM_SHIFT          30
->   #define KVM_VM_TYPE_ARM_MASK           (0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
-> 
->   #define KVM_VM_TYPE_ARM_MASK           (KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
->                                           KVM_VM_TYPE_ARM_PROTECTED)
-> 
-> After syncing the definitions with those in (v14) host series, I'm able to boot
-> a simple realm guest (no virtio devices) with one warning.
-> 
->   qemu-system-aarch64: Failed to enable KVM_CAP_ARM_NISV_TO_USER cap
+This flag will never be able to capture a coherent / standard set of
+device capabilities. It can really only be a plain "CXL" flag with
+an implementation that is ready for the superset of capabilities:
+CXL.cache, HDM-H (host-only memory expansion), HDM-D (legacy device
+memory), HDM-DB (device memory via device cache management
+back-invalidate).
 
-Right, that one is useless.
+I think the HDM-{H,D,DB} difference are not relevant to VFIO, it is all
+just CXL HDM.
 
-Both issues reported here will be addressed in the next revision.
+The capabilities that may need a different VFIO implementation model are
+interleaved devices and maybe dynamic capacity devices, but that is not
+a type designation.
 
+[..]
+> > Does that leave this device level capability describing the device as
+> > type-2 (by existence), with only a flags field to declare HDM as
+> > firmware committed, for future compatibility should we support non-fw
+> > committed?  Thanks,
+> > 
+> > Alex
 > 
-> Thanks,
-> Gavin
-> 
-> > @@ -719,6 +729,8 @@ struct kvm_enable_cap {
-> >   #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
-> >   #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
-> > +#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
-> > +
-> >   /*
-> >    * Extension capability list.
-> >    */
-> > @@ -985,6 +997,7 @@ struct kvm_enable_cap {
-> >   #define KVM_CAP_S390_USER_OPEREXEC 246
-> >   #define KVM_CAP_S390_KEYOP 247
-> >   #define KVM_CAP_S390_VSIE_ESAMODE 248
-> > +#define KVM_CAP_ARM_RMI 249
-> >   struct kvm_irq_routing_irqchip {
-> >   	__u32 irqchip;
-> 
+> Yes, I will shape the v4 in this direction. The device-level CAP_CXL
+> shrinks to "this is a CXL device" (by existence) plus a flags field whose
+> only defined bit today is HOST_FIRMWARE_COMMITTED, leaving
+> room for a future non-fw-committed mode. Everything else moves to region
+> caps. Thanks for this suggestion.
+
+How can VFIO discern if the HDM is host firwmare committed? If
+devm_cxl_probe_mem() grows to auto-activate unmapped capacity rather
+than finds firmware committed decoders, can VFIO even tell the
+difference?
