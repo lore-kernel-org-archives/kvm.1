@@ -1,157 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68690EEC3
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 01:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D422621FF2A
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 02:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783905648; cv=none; b=N1XFwdugKPy+l8iSVbwABjJ0/fsJiYKod9XWEMX9Sr3ahSL+RJ5eWv/WCx6eSRO1Ek+IokjQPIx1eRX35mRqaztib5U42Zv0EzDuhgnpb54VOSBSLXfYlMeiM845ZIH5T3IWzb1ypXYZHQGQ3PS54MUydhXriuppuymQAMc2KuE=
+	t=1783908971; cv=none; b=e/O8u7HbAURKkJQk07aXNqq2AfvkcjsEyQltdSvSrP6m5AkMcpVKtSIO98CqYEy8qb3Mik/X5dZorBJGwnZPw7nnricLyemlIre+M0DMDTpuJSh8yj0QLDjYSIRFktu2NNV2U9QOv9XMDRNtjjGfN+F3ClYeFeIzg4soHU01JNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783905648; c=relaxed/simple;
-	bh=myd/PzPkOyYLfnK7oW07XCFRgaLvDRXtQ5SBXafS2Do=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BuusWxQ8ZoDBVmK7HC77aXtIO9bfsPRA+dooh9Uo7TxY6ikf5GfNJjnCyvyHW5YsTt+Nco11OD+OM2c0oFyLQJE4VcagNlfjcT8XEg2zXekrNYzMf8cArQCec8rp8rN9XOWk2tWCM1pwkTxSfCT7ccG9MDb3aMhhXmlJKN3H34U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTlEeaNS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783908971; c=relaxed/simple;
+	bh=MP2DwSscQNp+EjMOUBeD++W0kL9VU2yb8oot+GZQwCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pz53yaFnkRV18DeiZKh3R7B8bEL3ugV5lardhGUxeWO75zoKXAPl6PQP3qeXPwoMfJOLRmje1SB2QUO4BcXx6lDb4WRETIrvd4e8v4mZ7q/UtNPlewvMme2qHiU82U3hpPrPuIK3LUWdEUg1mqSnL78LgnI8zf2P7DPX/caqr+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kkyn0j2S; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTlEeaNS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286EE1F00ACF;
-	Mon, 13 Jul 2026 01:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783905647;
-	bh=zT7BEwI1+CtWbQQ1ugOL1Mc8pnVOsTjZx4oPkLudBio=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gTlEeaNS2dIeVeq1pS/97HrW86fPLRSzQpo5trFHvvKh5mMXNpAtgQMRLhKAif7W9
-	 d6BoA8VZ7Zc/SHbC3s/gLPln2QHWOw0nBv2za4+iVL/fFHrlmSa7E8wLK6Tu2Bf9sJ
-	 03/kqLPvyfHcqLDURwr/z1Rd36zD5eTzsn0yWSwcdPO7Gi+L6E3d9qJkViYBG5RqXL
-	 X1j5y0UF/YFDFjFv9FjdnwcXp9eXxrUrKZcLe/zojz1KDb/4rnQtRgFpqiEE839VQM
-	 3Y+Z4sHgSPnGGGfJGr4F5rwdsGRbuybPqQvafToOWOc+GWuvXJ/llZF2eteEXiCO7f
-	 TQOFrr1tZwP/w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 4/8] RISC-V: KVM: Add ssp context save/restore
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Inochi Amaoto" <inochiama@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260713010302.303278-5-inochiama@gmail.com>
-References: <20260713010302.303278-1-inochiama@gmail.com>
- <20260713010302.303278-5-inochiama@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 01:20:46 +0000
-Message-Id: <20260713012047.286EE1F00ACF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kkyn0j2S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783908969; x=1815444969;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=MP2DwSscQNp+EjMOUBeD++W0kL9VU2yb8oot+GZQwCU=;
+  b=Kkyn0j2S7usp9te1TfuXAgEvhmEx1y+8NYCh1A/EZMu5wYt1qosv7/fm
+   JmjhvKsMbRsF2PCG91gGGZMjwMNcPYUMNpQZFFtydNypNXFYWvqoCTG1q
+   uMWUAQ8uDS+GnG22pUac/DR54W91qmz640ZD4EaJjIFGomoJkkDvqiv2n
+   2EuKsqcsP7EWmNqVEF8rW2Rs5cRaJ5p1F9a+94JN5wiaLAUkwUmC/JBI4
+   vcwRWdvJq4eEw3vmUDP/3eHwMm81E/AWGqhro0QlphS1zTjZLcnJRgQKf
+   YQTpc/JLJRFEGfmJtaIjLIaYMN5HDLzNSsaMakwzIA549L+Y2VehOX/5u
+   Q==;
+X-CSE-ConnectionGUID: Vo8133sLQdeGvAcxMTqt/Q==
+X-CSE-MsgGUID: PaoLYrnkQ0uBkDZS2cUmYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84707702"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84707702"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2026 19:16:09 -0700
+X-CSE-ConnectionGUID: 4lmS4Xl8ToqhCf/9OIf+Vw==
+X-CSE-MsgGUID: LPY0J7d4S+W+ivZMm8/8sQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="279831043"
+Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2026 19:16:08 -0700
+Message-ID: <12c6add9-14c4-4fad-a6b7-7ef91730cb36@linux.intel.com>
+Date: Mon, 13 Jul 2026 10:16:06 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry
+ count
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+References: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
+ <20260710040153.D8EA71F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260710040153.D8EA71F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] KVM exposes the Zicfiss extension (shadow stack) to the guest but =
-fails to enable it in the hypervisor environment configuration, making it u=
-nusable.
-- [Medium] The patch adds a new register to the ONE_REG UAPI but fails to u=
-pdate the KVM RISC-V `get-reg-list` selftest.
---
+On 7/10/2026 12:01 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> 
+> Pre-existing issues:
+> - [High] Acquiring `cpus_read_lock()` while holding `kvm->lock` and `kvm->slots_lock` violates the KVM lock ordering hierarchy and creates an AB-BA deadlock risk with CPU hotplug.
+> - [High] Failing to charge the `misc_cg` in `__tdx_td_init()` jumps to a cleanup label that incorrectly uncharges and decrements a global counter.
+> - [High] Kernel heap buffer overflow when setting up TD params if the TDX module reports a large number of CPUID configurations.
+> --
+> 
+> --- Patch [1]: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry count ---
+> commit 43b81457d393443ba395e2515a2d545aac295cf0
+> Author: Binbin Wu <binbin.wu@linux.intel.com>
+> 
+> KVM: TDX: Reject concurrent change to CPUID entry count
+> 
+> Reject KVM_TDX_INIT_VM if userspace changes cpuid.nent between the
+> initial read and the subsequent copy of the initialization data.
+> 
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index 2d7a4d52ccfb4..c2349c54d45b5 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+>> @@ -2738,7 +2738,11 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+>>  		goto out;
+>>  	}
+>>  
+>> -	if (init_vm->cpuid.padding) {
+>> +	/*
+>> +	 * Reject the request if userspace changes cpuid.nent between the
+>> +	 * initial read and the subsequent copy.
+>> +	 */
+>> +	if (init_vm->cpuid.padding || init_vm->cpuid.nent != nr_user_entries) {
+>>  		ret = -EINVAL;
+>>  		goto out;
+>>  	}
+> 
+> [Severity: High]
+> This is a pre-existing issue, but I noticed a potential lock ordering problem
+> in the initialization path called shortly after this check.
+> 
+> In __tdx_td_init(), the code acquires the cpu read lock:
+> 
+> arch/x86/kvm/vmx/tdx.c:__tdx_td_init() {
+>     ...
+>     cpus_read_lock();
+>     ...
+> }
+> 
+> However, tdx_td_init() is called while the vm state locks are already held
+> higher in the stack:
+> 
+> arch/x86/kvm/vmx/tdx.c:tdx_acquire_vm_state_locks() {
+>     ...
+>     mutex_lock(&kvm->lock);
+>     ...
+> }
+> 
+> Taking cpus_read_lock() while holding kvm->lock creates a deadlock risk
+> against other subsystems, like cpu hotplug, that hold cpu_hotplug_lock
+> via cpus_write_lock() and subsequently attempt to acquire kvm->lock.
+> 
+> Can this lead to a system-wide deadlock during cpu hotplug operations?
 
---- Patch [4]: [PATCH v6 4/8] RISC-V: KVM: Add ssp context save/restore ---
-commit 1dccefe0c0e59cdb4b3a936e440649fc566ba10e
-Author: Inochi Amaoto <inochiama@gmail.com>
+This is considered as a set_nx_huge_pages() problem, not a TDX
+problem per the discussion.
+https://lore.kernel.org/kvm/ak5L2csITyi1tGp0@google.com/
 
-RISC-V: KVM: Add ssp context save/restore
-   =20
-Add ssp context save/restore for guest VCPUs and also add it to the
-ONE_REG interface to allow its access from user space.
+> 
+> [Severity: High]
+> This is another pre-existing issue in the same __tdx_td_init() path.
+> 
+> If misc_cg_try_charge() fails, it jumps to the free_hkid label:
+> 
+> arch/x86/kvm/vmx/tdx.c:__tdx_td_init() {
+>     ...
+>     ret = misc_cg_try_charge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
+>     if (ret)
+>         goto free_hkid;
+>     ...
+> }
+> 
+> The free_hkid cleanup path executes tdx_hkid_free(), which unconditionally
+> decrements the configured hkid counter and uncharges the cgroup:
+> 
+> arch/x86/kvm/vmx/tdx.c:tdx_hkid_free() {
+>     ...
+>     atomic_dec(&nr_configured_hkid);
+>     misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
+>     ...
+> }
+> 
+> Since the initial charge failed and the code jumped past the atomic_inc()
+> for nr_configured_hkid, does this error path underflow the global atomic
+> counter and corrupt the cgroup accounting?
 
-> diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/=
-asm/kvm.h
-> index a27de850fa4cc..fd4c816976177 100644
-> --- a/arch/riscv/include/uapi/asm/kvm.h
-> +++ b/arch/riscv/include/uapi/asm/kvm.h
-[ ... ]
-> @@ -266,12 +271,15 @@ struct kvm_riscv_sbi_fwft {
->  #define KVM_REG_RISCV_CSR_GENERAL	(0x0 << KVM_REG_RISCV_SUBTYPE_SHIFT)
->  #define KVM_REG_RISCV_CSR_AIA		(0x1 << KVM_REG_RISCV_SUBTYPE_SHIFT)
->  #define KVM_REG_RISCV_CSR_SMSTATEEN	(0x2 << KVM_REG_RISCV_SUBTYPE_SHIFT)
-> +#define KVM_REG_RISCV_CSR_ZICFISS	(0x3 << KVM_REG_RISCV_SUBTYPE_SHIFT)
+nr_configured_hkid has been removed on kvm-x86's next branch by Sean's patches
+https://lore.kernel.org/all/20260214012702.2368778-14-seanjc@google.com/
+https://lore.kernel.org/all/20260214012702.2368778-15-seanjc@google.com/
 
-[Severity: Medium]
-Will this new CSR subtype cause the KVM get-reg-list selftest to fail?
+But the issue raised for cgroup accounting is valid.
+Will cook a patch to fix it.
 
-The get-reg-list test uses a strict list of expected registers. It appears
-the new KVM_REG_RISCV_CSR_ZICFISS register subtype is missing from the CSR
-identification logic in tools/testing/selftests/kvm/riscv/get-reg-list.c:cs=
-r_id_to_str(),
-and the new ISA extensions (KVM_RISCV_ISA_EXT_ZICFISS and KVM_RISCV_ISA_EXT=
-_ZICFILP)
-are missing from the filter_reg() whitelist.
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but there is a potential out of
+> bounds write later in this function when setting up the td params.
+> 
+> In setup_tdparams_cpuids(), the loop is bounded by num_cpuid_config:
+> 
+> arch/x86/kvm/vmx/tdx.c:setup_tdparams_cpuids() {
+>     ...
+>     for (i = 0; i < td_conf->num_cpuid_config; i++) {
+>         ...
+>         value = &td_params->cpuid_values[i];
+>         value->eax = entry->eax;
+>         ...
+>     }
+> }
+> 
+> The td_params structure is strictly sized to 1024 bytes, which only leaves
+> room for 48 elements in the cpuid_values array.
+> 
+> Since tdx_global_metadata.c permits td_conf->num_cpuid_config to be up to 128,
+> will this loop write past the end of the td_params kernel heap allocation if 
+> the module reports a large number of cpuid configurations?
+> 
+The td_params structure is fixed to 1024byte, which is defined by the TDX spec
+and the value of  td_conf->num_cpuid_config is read from the TDX module.
 
-Could this lead to an "Unknown csr reg" failure when the tests are run on a
-Zicfiss-capable host?
+So, this should not happen unless there is a bug in the TDX module.
+Not sure if KVM should do a preventive check.
 
->  #define KVM_REG_RISCV_CSR_REG(name)	\
->  		(offsetof(struct kvm_riscv_csr, name) / sizeof(unsigned long))
->  #define KVM_REG_RISCV_CSR_AIA_REG(name)	\
->  	(offsetof(struct kvm_riscv_aia_csr, name) / sizeof(unsigned long))
->  #define KVM_REG_RISCV_CSR_SMSTATEEN_REG(name)  \
->  	(offsetof(struct kvm_riscv_smstateen_csr, name) / sizeof(unsigned long))
-> +#define KVM_REG_RISCV_CSR_ZICFISS_REG(name)  \
-> +	(offsetof(struct kvm_riscv_zicfiss_csr, name) / sizeof(unsigned long))
-> =20
->  /* Timer registers are mapped as type 4 */
->  #define KVM_REG_RISCV_TIMER		(0x04 << KVM_REG_RISCV_TYPE_SHIFT)
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index cf6e231e76e25..acdb12fcdb69a 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-[ ... ]
-> @@ -720,6 +721,7 @@ static void kvm_riscv_update_hvip(struct kvm_vcpu *vc=
-pu)
-> =20
->  static __always_inline void kvm_riscv_vcpu_swap_in_guest_state(struct kv=
-m_vcpu *vcpu)
->  {
-> +	struct kvm_vcpu_zicfiss_csr *zicficsr =3D &vcpu->arch.zicfiss_csr;
->  	struct kvm_vcpu_smstateen_csr *smcsr =3D &vcpu->arch.smstateen_csr;
->  	struct kvm_vcpu_csr *csr =3D &vcpu->arch.guest_csr;
-> =20
-> @@ -727,10 +729,13 @@ static __always_inline void kvm_riscv_vcpu_swap_in_=
-guest_state(struct kvm_vcpu *
->  	vcpu->arch.host_senvcfg =3D csr_swap(CSR_SENVCFG, csr->senvcfg);
->  	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SMSTATEEN))
->  		vcpu->arch.host_sstateen0 =3D csr_swap(CSR_SSTATEEN0, smcsr->sstateen0=
-);
-> +	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZICFISS))
-> +		csr_write(CSR_SSP, zicficsr->ssp);
-
-[Severity: High]
-Does KVM need to enable the shadow stack feature in henvcfg to allow the gu=
-est
-to use it?
-
-It looks like the henvcfg register must be updated to include ENVCFG_SSE wh=
-en
-the Zicfiss ISA extension is available, similar to the ZICBOZ/ZICBOM
-handling in arch/riscv/kvm/vcpu_config.c:kvm_riscv_vcpu_config_ran_once():
-
-	if (riscv_isa_extension_available(isa, ZICBOZ))
-		cfg->henvcfg |=3D ENVCFG_CBZE;
-
-Without ENVCFG_SSE set in the hypervisor environment configuration, when a
-guest attempts to use shadow stack instructions, won't the hardware inject =
-an
-illegal instruction exception and potentially crash the guest application or
-kernel?
-
-Additionally, it seems SBI_FWFT_SHADOW_STACK is missing from the features[]
-array in arch/riscv/kvm/vcpu_sbi_fwft.c. Would this prevent the guest from
-dynamically enabling it via the SBI FWFT interface, causing it to receive
-SBI_ERR_NOT_SUPPORTED instead?
-
->  }
-> =20
->  static __always_inline void kvm_riscv_vcpu_swap_in_host_state(struct kvm=
-_vcpu *vcpu)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713010302.3032=
-78-1-inochiama@gmail.com?part=3D4
