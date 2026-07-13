@@ -1,142 +1,117 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DE7421F07;
-	Mon, 13 Jul 2026 13:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0725240F8C3;
+	Mon, 13 Jul 2026 13:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948722; cv=none; b=k57+oBrTP/d9g8miB98pCdQ+KM30oTCOD9Kzgzn2p5Ee3mG9DOAN1fOjETl7TGMsO4HPRvgnAd4Fx5o0vsY3/yHfE4Z3JmD+SzNlXRSvAODHZFjicRXZkqTPXeGWWRVT4W6i6uAKoaXnq67ptOh6X9vxwqtXDwmlXfVzh1Xka+4=
+	t=1783949457; cv=none; b=VmiKKdBcdsx80BaFlhNeXsZwPCpTqPQwcypHz5iH57l4+q8AJ/0CTCAqzF7DfYEs5mXyh4dyd4IwVBlJFQp+biIc7Nql32NFuoqPwHn2T4f49wZXf2K5X1SDUMc7iKuaRyAfizEe942S36+ijzBONmeH387aYcxAVpzUQ6Mg2y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948722; c=relaxed/simple;
-	bh=X9JRMSq1AMWvjWaU/HGkgYRxUCf0PIuQXmQX73UbfF4=;
+	s=arc-20240116; t=1783949457; c=relaxed/simple;
+	bh=ErzqW2O0g/i8zFRKK9AZyKTYfMW8W9zx1lacXJE/7U0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jt7ru6jHJ2tS/V3unUyHBYBq1ZqCD/D+AVGFydAByVTzOR6o/HrtEBUjd/yOuOvXSSFF1eXb/5BnbNqHNIxIS8RnW4odDwCIdOSJvVwYi+2QrGEP6v9TJUtNVPayDegtxbFyj/pX0Tl8lqGg3NpwFQIU+l+SHEuv35Orbf2hJd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=pcHJtExY; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ku+huRiPaPVQHVakwtTgQymHAqCDHlgYp9sdsK+qOTe1alOxunTHkZ+AjrXbUCAmgaOIJoo7iAv3Aqz/9MIC1AOJLlkhazTabav/VQS8E4qEY8czlYGMbgClm/egC+WyYUJBd1uh1nG7jarfgVycf+3240k+SZHMDCEpkVx1AZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikTp/ZDJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="pcHJtExY"
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-	id 1738A20B716F; Mon, 13 Jul 2026 06:18:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1738A20B716F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1783948713;
-	bh=xzr7uwbpfq4Gc6YZ72X+EEXOl8FzzS0PqiMEC/4obio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pcHJtExYZf1Q4pdqSyvxTTGs8q5fNrCxH32ERLjsxcgUCidFKCmTVT3d1Mmo7JyUV
-	 GzGkKFje4QLUvII4Kvq2+hNmppSMEbGx98kKQPiegCYik9ScAl4NgjDifDgkkT32jG
-	 4+4tC8g4nF+VmekXQbYu3lTc394lMmuwURLhU/4Q=
-Date: Mon, 13 Jul 2026 06:18:33 -0700
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikTp/ZDJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812431F00A3F;
+	Mon, 13 Jul 2026 13:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783949455;
+	bh=2PE3gaGsNLQ/wJ/jx4xmXlbU0Ll5weYz4ZF4wxRh4WY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ikTp/ZDJbKzZqXWQdgJFs4mxUmOx5W44no98j831xxLyCdzKqQoLZo0aubu7A6s4I
+	 pHh+efGT9meohmhUvaKUh/9NhBL49M6U1IfTZLuCDURT9zO31YfLr2SBN3ScUD26+W
+	 VkCFEJFSu9obPyRdJSJ72kzy/VLeOvMf10vfXZpbaCI3wSnfxgcpW76ZRvh3kS/ZHD
+	 Yv06UQBSZoTyN/qEb0fEQmSroyWlJiM4/+bIXwhSR1jQarFKw3ksg2oLI+HqyPRfF2
+	 CvzHlCEH2mrN/QQRWwvlsrczJMPg7BKTRAWndik19UrgS416WGQAAxpSqCM1/v4tJg
+	 yEau/1bCMbsqg==
+Date: Mon, 13 Jul 2026 14:30:47 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	Jean-Philippe Brucker <jpb@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Jason Herne <jjherne@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Farhan Ali <alifm@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 3/5] iommufd/viommu: Keep a reference to the KVM file
-Message-ID: <alTlqRcSpzhW7rZv@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-4-aneesh.kumar@kernel.org>
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH v12 22/29] KVM: arm64: Context switch SME state for guests
+Message-ID: <8db1cdd1-5294-4166-99f4-340d124d72c0@sirena.org.uk>
+References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
+ <20260709-kvm-arm64-sme-v12-22-d0301d79ef58@kernel.org>
+ <CA+EHjTx6P_Wz8=+3fanry_Cs6sqyTD8Swz61WZah46u6-UXP5w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="v9CtVmyreETBkO2w"
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTx6P_Wz8=+3fanry_Cs6sqyTD8Swz61WZah46u6-UXP5w@mail.gmail.com>
+X-Cookie: Courage is grace under pressure.
+
+
+--v9CtVmyreETBkO2w
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260525154816.1029642-4-aneesh.kumar@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 25, 2026 at 09:18:14PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> From: Nicolin Chen <nicolinc@nvidia.com>
-> 
-> The TSM vDevice operations need access to the KVM associated with the
-> device's vIOMMU. Save the device's KVM file in the iommufd_viommu when the
-> vIOMMU is allocated, and take a file reference so it remains valid for the
-> lifetime of the vIOMMU.
-> 
-> Release the reference when the vIOMMU is destroyed.
-> 
-> Based on an original patch by Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-> 
-> [nicolinc: hold kvm's users_count]
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> [aneesh.kumar: Switch to use kvm_file]
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/iommu/iommufd/viommu.c | 5 +++++
->  include/linux/iommufd.h        | 1 +
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-> index 4081deda9b33..bf5d58d55939 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
->   */
-> +#include <linux/file.h>
->  #include "iommufd_private.h"
->  
->  void iommufd_viommu_destroy(struct iommufd_object *obj)
-> @@ -11,6 +12,8 @@ void iommufd_viommu_destroy(struct iommufd_object *obj)
->  	if (viommu->ops && viommu->ops->destroy)
->  		viommu->ops->destroy(viommu);
->  	refcount_dec(&viommu->hwpt->common.obj.users);
-> +	if (viommu->kvm_file)
-> +		fput(viommu->kvm_file);
->  	xa_destroy(&viommu->vdevs);
->  }
->  
-> @@ -76,6 +79,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->  	}
->  
->  	xa_init(&viommu->vdevs);
-> +	if (idev->kvm_file)
-> +		viommu->kvm_file = get_file(idev->kvm_file);
-There is now no uapi path at all for a non-KVM VMM to associate its VM
-with a viommu. Can we (re)introduce an explicit, neutral
-association, that accepts a KVM fd or another VMM's VM fd, in addition
-to the implicit VFIO path?
->  	viommu->type = cmd->type;
->  	viommu->ictx = ucmd->ictx;
->  	viommu->hwpt = hwpt_paging;
-> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-> index 0a0bb4abfbd2..3267717f676d 100644
-> --- a/include/linux/iommufd.h
-> +++ b/include/linux/iommufd.h
-> @@ -103,6 +103,7 @@ struct iommufd_viommu {
->  	struct iommufd_ctx *ictx;
->  	struct iommu_device *iommu_dev;
->  	struct iommufd_hwpt_paging *hwpt;
-> +	struct file *kvm_file;
->  
->  	const struct iommufd_viommu_ops *ops;
->  
-> -- 
-> 2.43.0
-> 
+On Sun, Jul 12, 2026 at 03:40:34PM +0100, Fuad Tabba wrote:
+
+> For a nested guest this folds in the LEN restriction from the guest
+> hypervisor's SMCR_EL2 just above, but not FA64/EZT0. vcpu_has_fa64()
+> and vcpu_has_sme2() are VM-level capabilities (kvm_has_fa64/sme2 on
+> vcpu->kvm), so an L1 that clears SMCR_EL2.FA64 or .EZT0 to deny them to
+> L2 is overridden here: the physical SMCR_EL2 gets the bits set from the
+> VM cap regardless.
+
+Doh, of course.  I've fixed this locally.
+
+> > @@ -128,7 +220,7 @@ static void flush_hyp_vcpu(struct pkvm_hyp_vcpu *hy=
+p_vcpu)
+> >  {
+> >         struct kvm_vcpu *host_vcpu =3D hyp_vcpu->host_vcpu;
+> >
+> > -       fpsimd_sve_flush();
+> > +       fpsimd_sve_flush(host_vcpu);
+>=20
+> sync_hyp_vcpu() runs fpsimd_sve_sync() on &hyp_vcpu->vcpu, but flush
+> passes host_vcpu, so the two sides operate on different vCPUs. That
+> asymmetry alone looks wrong: flush and sync should cover the same
+> state.
+>=20
+> Concretely it means kvm_sme_configure_traps() programs a protected
+> guest's SVCR/SMCR from host-owned values, so the host can e.g. set
+> SVCR.SM and fault the guest. Keying flush off &hyp_vcpu->vcpu like
+> sync fixes both.
+
+Thanks for spotting that, I've updated locally.
+
+BTW it'd be really helpful to delete unneeded context when replying
+
+--v9CtVmyreETBkO2w
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpU6IcACgkQJNaLcl1U
+h9AaOAf+KDIg9SieNgLHu8cIPChCdW1/JE5Q90xi5O9YT1F33j626OleMhM1VngO
+WHezCRNFf8cg4aTf93obOsz6F6jnWTTZaK82gt6bRu3udlizG+33O7jnsnLFd589
+SMe5MOi6iwIgvK0yl8Tf4GAxXgJxMNb/vzvY9hfmke/jCDLYT7BF31PeQMwfDTgq
+pKvDiG9o4dUBK4pNzzKuyqaOxHbKmRBlI2+oYON8XCsp7k6PvWSxwnQcPS2WqoyD
+h9pAC1jb/eUt/5pQtbQOv1a0O+9QPeVg2CywPMriMQhSZERveEm4vNP+n4EmfEfH
+aDQwImKDchI/GbVfMboiAWDd+dLhrw==
+=X8+a
+-----END PGP SIGNATURE-----
+
+--v9CtVmyreETBkO2w--
