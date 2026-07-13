@@ -1,236 +1,164 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011048.outbound.protection.outlook.com [40.93.194.48])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805FA3E5EF0;
-	Mon, 13 Jul 2026 10:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783940028; cv=fail; b=lnsAmBHJDUAj2dawli5mbphUniK69/bSYL18TiZb0TvQ1fsX/nLCNic8YD/CDY8Po4dOqc9uP5D6xS/fAyNzOwM9fozd3H9Ndy7VIIU4WQt50e9BkKpJpfou/Iz1ls07UlOu/FmYRNU7vfuuxOs4VE3XgGZoZTHk6Pcf3b2u0/8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783940028; c=relaxed/simple;
-	bh=uEi3ji5dluimcoNoQP9l8t1CfTc7qhRl/xWxTjln4nU=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sRu2EoLHSFDT7wEgwaw1fWqpEqPw80MZZIl7vpzRbNj5FqAz7k4KkwvSe/zIMryRxgkBMW23byyWmi/EODJjzn0Na5FCRNHLLqrlkF2/mSBjhI0c9SyPO7UryjpAS7TagqpcrxMEAq/iW/Of4X1/siqkma7TetTCan+wQYqZlWQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XlUhVIOO; arc=fail smtp.client-ip=40.93.194.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9554C1DDC35;
+	Mon, 13 Jul 2026 11:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783940554; cv=none; b=fuURqaDgr+PGeKnt8j1mABzEgR0gVc/6XN7icDMJQK/E2N4h/rwQBCT/NnTOzT2CzR3uBwd2XUJjsz6gkuHbUmHc32WitnyKB0Aw6bTBHIRYIzp+G3wu4hrOOkjbCLgSJAGDSr5hLZkkCUTjIZip3VUYyUJfCnF5AfTbk2zMluk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783940554; c=relaxed/simple;
+	bh=EZAazzo66x7ORudJtvxZhA5ioBOSUboJ9hOFqGI7uuE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=stIc0k+iU4vW4bCor/K2nUqZSKty1r9W9YfQEBkE8Mh7AGINkhuJrJiOlyf98rI8fCMNtLkf1h82M+95H822GZLGvdZLeY4g/9KWMFiYwGriEvEj+BiVsY4A2EHKZqG4wjdQPSlpWrNDLWOU2aZudSZY3r0iH8aGAVUQ4DnVSMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L2U/HwIb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIH8bW6x; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XlUhVIOO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X0X9otaB6AbIrOxuVDegIDaDyUcZT4Rdd0Fy8Hm6yUvhcQ4KoeBmNYNPKnApre+TgRxQ+is0oKYgTp5Ni4UJSxOpchOCy94o/TYo/yAsdwTcESjsSsweh4En8hA1FGTXx1vA4Ry/GVkhQnIs1bnqCYphVUTxWF3fWC8FBoRBV8QP9x2jDMGIM86Iae2QbcAGTFpyCV6rrlZQatztIAJ4ticIQiQKnwxd+JBHiRiwlQGcTbHAh0qVHzfq8MWSgUlx2Bdm21CdywlFUzZjcUnlfSwHNBbqTPMIgVQKJzQDeCFmw9fSIyixmXpotrAKkKksN9A89cE+SSQjdt6kRz166A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y90PFNwCxmnOAvATsCZRv4I8sXwVAU+UatV0P9JETno=;
- b=k2sfL4ywbBgOSyJphdoqPilRtvPJ5Z9LLPss/T9uxJ5QYCHRvWNIdRN63eylqz32IExvHhhfP3Pm0MzfLLV736qOCbO4v0hW6MQnXFBHVgWHxLWtSD67AoOhW0czWXrvwPNMjb9DRRJ4jZC2SAGCiPsxhxJiat2cZFl1yEzuuoBMa/pX27Rcf4XfKx90iTOWpuiRQPhDkSN+ax3wTEBeCU1cVopkticKjnXT2rPWw8BEiYL7fEuQDHpn3nDKFQSmTVePoBy/TaFFcFDY1ksxhxDDSreYWFufpCr/onbmceTZrvV4q2zfVLHwOjgwkHsBPTeqXZdUULn/Z4D4C1MSLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y90PFNwCxmnOAvATsCZRv4I8sXwVAU+UatV0P9JETno=;
- b=XlUhVIOOw/FWAvVglBP+6uN83F4PU5k6pFTG/9gYQvmxONKbz8xg7cgW5oQhi/6ucqtfv+Y9Xw8TVE8vkB74vmpL4dyWMeoN8yqNYtqeoSGbbFo9qaPAfczMwrBFkMMes1Sl6FuICaC64cXNkUDu3BVLW5iBY0wDdBX/QeLeq7o=
-Received: from CH2PR02CA0006.namprd02.prod.outlook.com (2603:10b6:610:4e::16)
- by SJ0PR12MB7067.namprd12.prod.outlook.com (2603:10b6:a03:4ae::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Mon, 13 Jul
- 2026 10:53:35 +0000
-Received: from CH1PEPF0000A34B.namprd04.prod.outlook.com
- (2603:10b6:610:4e:cafe::a8) by CH2PR02CA0006.outlook.office365.com
- (2603:10b6:610:4e::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19 via Frontend
- Transport; Mon, 13 Jul 2026 10:53:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH1PEPF0000A34B.mail.protection.outlook.com (10.167.244.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Mon, 13 Jul 2026 10:53:35 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 13 Jul
- 2026 05:53:27 -0500
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "Borislav Petkov (AMD)" <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, "Paul E. McKenney"
-	<paulmck@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Dapeng Mi
-	<dapeng1.mi@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	"Eric Biggers" <ebiggers@kernel.org>, Feng Tang
-	<feng.tang@linux.alibaba.com>, "Ingo Molnar" <mingo@redhat.com>, Jakub
- Kicinski <kuba@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Li RongQing
-	<lirongqing@baidu.com>, Marco Elver <elver@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Robin Murphy
-	<robin.murphy@arm.com>, Sairaj Kodilkar <sarunkod@amd.com>, Sean
- Christopherson <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Thomas Gleixner
-	<tglx@kernel.org>, "Vasant Hegde" <vasant.hegde@amd.com>, Will Deacon
-	<will@kernel.org>, <iommu@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
-Subject: [RFC PATCH v3 6/6] iommu/amd: Provide kernel command line option to enable GAPPI
-Date: Mon, 13 Jul 2026 16:20:33 +0530
-Message-ID: <20260713105033.15405-7-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260713105033.15405-1-sarunkod@amd.com>
-References: <20260713105033.15405-1-sarunkod@amd.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L2U/HwIb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIH8bW6x"
+Date: Mon, 13 Jul 2026 13:02:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783940550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R4cZpFs4H2e3pr/WEZQZbk3vQfEsgZgb/66i7BAIy4M=;
+	b=L2U/HwIbIWwdr5tuyX9T6BENGEwwxGsmfZLRb/C5EMS1v4Msjs0sUyXKTRkPu+vzCI7rQX
+	qqNRZHhjsseS5PLrOqXNF9P031VK5gPAe46k6uai01qkoowbAFWcl+/71t03prpGlTlKJv
+	FeV4tfmsmy1krEMuv97E/Zejy7MpUgDZi0BrqtwZ1Xfr/vBwMwp9LpoVTJIFv4K+B92lmP
+	qO88IqNBpLVEjEeIj5/ThFXsirAZ7srWHanIUEyPgq34VPR7UhIWuPHI+FuyICzAnGgP0z
+	xzerj4bK887yAr4fV83Iuh7i1DmFNjuaMnOiTq7LmyUDXIbbvixvp/yq7+DHUg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783940550;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R4cZpFs4H2e3pr/WEZQZbk3vQfEsgZgb/66i7BAIy4M=;
+	b=TIH8bW6xGYJsXu0khLzfi+wNlUO3u4xOm+t1InkFnNKVDFWs4wh1PcwcsP9U4dt6t3PUuw
+	9RwOBn+KZef0LXBg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Daniel Paziyski <danielpaziyski@gmail.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: x86: Fix null pointer dereference in
+ trace_kvm_inj_exception
+Message-ID: <20260713123938-0f35bcb6-241a-494c-81a9-d5e17022951f@linutronix.de>
+References: <20260710134055.16432-1-danielpaziyski@gmail.com>
+ <alE9J1SjQSNHaV16@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34B:EE_|SJ0PR12MB7067:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7abb90a5-b7b2-45d3-d082-08dee0ccfcda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|23010399003|921020|22082099003|18002099003|3023799007|6133799003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	wgBF7xlA6BfBI6PRaDY2/upLfJFaHuvqMqKvgRAV2yNyiCmL+8ihY9/50wLqyDzDW+9QZKykG5EcrET5D2NXbX8Z4HOwnbPF3InOLE/1AuZMLVqKC7+X3ifunJDYP+C6kij7pVCG5LTnAskfKHXqeQxEPZuJN+FvHewoSZ/VYo9BYu684u0jthmgrJSJaDtzwlp73UtPVSz+TkDcA3R8ivXdRMxuAw+NRX0rrNMEAlibbXNYHTfshfjvVNrZfuGXFpnRMZJxAjV1hR6TIc/q4TkEZ6o2dv7NnaDQakBuwgvKZ7I2pWra5URLvtcWQFI59ZwsxayuphjQjS5joziocw6THfLidOTiiqMTLAOZKnrlYPpq/ookkhnIkQjK1hg0MG5G7i22Bt6U3S97dH1pE0cnxaIWfQZba3qaCuJ1+lwNKKIbWjIxCP5yki7tFbxbZ+0+FBRwBdtUey0HIRP5J3pY0KyRkt+g08Pt1ZD/E9YSD0rUb7KNmuAwMxXlUYtQ1s0K6mUIcq642RCNgH1WJYBGJeEg3wMW2QX2Tel+sCljcvvFHvQjBkloSqDRspPLyUAu0N73Ru5scnicPDu5nyw47u66W04gVzhAgrZVqOQ2udvw02LY8j4opp224K9jiTH947ckUBcczfKFysdpOBLFiXHZgVpqY4HMl7jekJP7FvAVqQzfHDETyrd1aYWpqukBg39BtqGRtNwI301ZixnjQp/uPVQce4RZGSRXKtYzVVoyEo3iOcjFszQSVRht
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(23010399003)(921020)(22082099003)(18002099003)(3023799007)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5uF28teRZrOB6FCsSKbK9fPwiSCW/Bz4MhFHtGFgmI7mQ0s9h3a+F4KIaV1EUeUiHjIj6L9C1CWsKVkohc8qk+0e2zJt4g1bIv+jwEUlMvowjsIwMWgTGv6hXBrnGuN6JYZ/R5/C6J4PFMmiH1dJHLEwNBWT8/Xb5LPUqOKQg8j01MhAxBbSlhd4FouSXPEJJVSEk+DVLRvNQ49Z+purodbRNG3qN0vFAFpwzYHbs4CReVdM8FhRJj3E5NtscyDkUgHRo8pm8N2pyCcheREptkRFRo0YfjA+YlJaSli2h4Y0Ruf7nN/O/J2drl8hUcNoff+Cv2i8nNAOOIPfNN9xksJm+IkIEfi9b5WsnYkgYHXOlk4JTdH/BQMSNwQVVtkfp13B3SuK+M+s6L5LdwxqkIYSXRiftbuuu0gFQwprjzHDy22drzxgg78QCM0PkTse
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 10:53:35.2992
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7abb90a5-b7b2-45d3-d082-08dee0ccfcda
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A34B.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7067
+In-Reply-To: <alE9J1SjQSNHaV16@google.com>
 
-Enable GAPPI when the IOMMU GAPPISup extended feature bit is set and
-the kernel is booted with the amd_iommu=gappi kernel parameter.
+Hi Sean,
 
-Document the option in Documentation/admin-guide/kernel-parameters.txt.
+On Fri, Jul 10, 2026 at 11:42:47AM -0700, Sean Christopherson wrote:
+> +The Other Thomas
 
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
----
- .../admin-guide/kernel-parameters.txt         |  3 +-
- drivers/iommu/amd/amd_iommu_types.h           |  2 ++
- drivers/iommu/amd/init.c                      | 28 +++++++++++++++++--
- 3 files changed, 29 insertions(+), 4 deletions(-)
+Thanks for the forward.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 97007f4f69d4..d27f10cbb004 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -455,7 +455,8 @@ Kernel parameters
- 				          to 4 KiB.
- 			v2_pgsizes_only - Limit page-sizes used for v1 page-tables
- 				          to 4KiB/2Mib/1GiB.
--
-+			gappi		- Use GAPPI instead of GALOG for vCPU
-+					  wakeup notification.
- 
- 	amd_iommu_dump=	[HW,X86-64]
- 			Enable AMD IOMMU driver option to dump the ACPI table
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 26d7a9796e64..de0b23306944 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -94,6 +94,7 @@
- #define FEATURE_X2APIC		BIT_ULL(2)
- #define FEATURE_NX		BIT_ULL(3)
- #define FEATURE_GT		BIT_ULL(4)
-+#define FEATURE_GAPPI		BIT_ULL(5)
- #define FEATURE_IA		BIT_ULL(6)
- #define FEATURE_GA		BIT_ULL(7)
- #define FEATURE_HE		BIT_ULL(8)
-@@ -191,6 +192,7 @@
- #define CONTROL_EPH_EN		45
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_GAPPI_EN	55
- #define CONTROL_GCR3TRPMODE	58
- #define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 2e1889f8a9e4..7d2b1c24f6ec 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -465,6 +465,9 @@ static void iommu_disable(struct amd_iommu *iommu)
- 	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
- 
-+	/* Disable IOMMU GAPPI */
-+	iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 	/* Disable IOMMU PPR logging */
- 	iommu_feature_disable(iommu, CONTROL_PPRLOG_EN);
- 	iommu_feature_disable(iommu, CONTROL_PPRINT_EN);
-@@ -2999,6 +3002,13 @@ static void enable_iommus_vapic(void)
- 	struct amd_iommu *iommu;
- 
- 	for_each_iommu(iommu) {
-+		/*
-+		 * Disable GAPPI, do not check amd_iommu_gappi as it may be
-+		 * false in new kexec kernel even though previous kernel has
-+		 * enabled it.
-+		 */
-+		iommu_feature_disable(iommu, CONTROL_GAPPI_EN);
-+
- 		/*
- 		 * Disable GALog if already running. It could have been enabled
- 		 * in the previous boot before kdump.
-@@ -3038,10 +3048,19 @@ static void enable_iommus_vapic(void)
- 		return;
- 	}
- 
-+	if (amd_iommu_gappi &&
-+	    !(check_feature(FEATURE_GAPPI) &&
-+	      AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))) {
-+		pr_warn("GAPPI is not supported.\n");
-+		amd_iommu_gappi = false;
-+	}
-+
- 	/* Enabling GAM and SNPAVIC support */
- 	for_each_iommu(iommu) {
--		if (iommu_init_ga_log(iommu) ||
--		    iommu_ga_log_enable(iommu))
-+		if (amd_iommu_gappi)
-+			iommu_feature_enable(iommu, CONTROL_GAPPI_EN);
-+		else if (iommu_init_ga_log(iommu) ||
-+			 iommu_ga_log_enable(iommu))
- 			return;
- 
- 		iommu_feature_enable(iommu, CONTROL_GAM_EN);
-@@ -3050,7 +3069,8 @@ static void enable_iommus_vapic(void)
- 	}
- 
- 	amd_iommu_irq_ops.capability |= (1 << IRQ_POSTING_CAP);
--	pr_info("Virtual APIC enabled\n");
-+	pr_info("Virtual APIC enabled with %s\n",
-+		amd_iommu_gappi ? "GAPPI" : "GALOG");
- #endif
- }
- 
-@@ -3741,6 +3761,8 @@ static int __init parse_amd_iommu_options(char *str)
- 		} else if (strncmp(str, "v2_pgsizes_only", 15) == 0) {
- 			pr_info("Restricting V1 page-sizes to 4KiB/2MiB/1GiB");
- 			amd_iommu_pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
-+		} else if (strncmp(str, "gappi", 5) == 0) {
-+			amd_iommu_gappi = true;
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
--- 
-2.34.1
+> Just as an FYI, commit 754e38d2d1ae ("tracing: Use explicit array size instead of
+> sentinel elements in symbol printing") broke KVM abuse of __print_symbolic() where
+> KVM deliberately passed in an "null" array to avoid printing 0x0 when there is no
+> error code.
+> 
+> I did a half-assed search through the other usage of __print_symbolic() and didn't
+> see anything, but just in case someone else comes complaining...
+> 
+> On Fri, Jul 10, 2026, Daniel Paziyski wrote:
+> > The trace_kvm_inj_exception tracepoint takes as arguments the exception
+> > vector, whether the exception has an error code (and subsequently, the
+> > error code), and whether it is being reinjected. The error code is
+> > formatted to the trace log as a string using __print_symbolic,
+> > which takes an integer value and an array of structs containing a mask
+> > value and a string. An empty struct is being passed, which makes the
+> > kernel derefence a NULL pointer when the error code is 0. Remove this
+> > stray struct in the invocation of __print_symbolic.
+> 
+> Fixes: 754e38d2d1ae ("tracing: Use explicit array size instead of sentinel elements in symbol printing")
+> Cc: stable@vger.kernel.org
+> 
+> In the future please provide a splat in the changelog, especially in this age of
+> agentic bug hunters that are prone to making things up.  My initial reaction to
+> this was "no way".  Thankfully, I tried reproducing the bug before making an ass
+> out of myself :-)
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   PGD 0 P4D 0 
+>   Oops: Oops: 0000 [#1] SMP
+>   CPU: 20 UID: 0 PID: 791 Comm: less Not tainted 7.2.0-rc2-3ffd29d795c9-x86_trace_ex_null_ptr_deref-vm #401 PREEMPT 
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+>   RIP: 0010:strlen+0x0/0x20
+>   Call Trace:
+>    <TASK>
+>    trace_seq_puts+0x18/0x80
+>    trace_print_symbols_seq+0x68/0xa0
+>    trace_raw_output_kvm_inj_exception+0x64/0xf0 [kvm]
+>    s_show+0x47/0x110
+>    seq_read_iter+0x2a5/0x4c0
+>    seq_read+0xfd/0x130
+>    vfs_read+0xb6/0x330
+>    ? vfs_write+0x2f2/0x3f0
+>    ksys_read+0x61/0xd0
+>    do_syscall_64+0xb7/0x570
+>    entry_SYSCALL_64_after_hwframe+0x4b/0x53
+>   RIP: 0033:0x7ff283714862
+>    </TASK>
+> 
+> I'll also massage the changelog to explain why KVM is absuing __print_symbolic()
+> (see commit 21d4c575eb4a ("KVM: x86: Print error code in exception injection
+> tracepoint iff valid")).
+> 
+> No need for a v2, I'll fixup when applying.
+> 
+> Thanks!
+> 
+> > Signed-off-by: Daniel Paziyski <danielpaziyski@gmail.com>
 
+Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+
+> > ---
+> >  arch/x86/kvm/trace.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+> > index 0db25bba1..93de876c3 100644
+> > --- a/arch/x86/kvm/trace.h
+> > +++ b/arch/x86/kvm/trace.h
+> > @@ -490,7 +490,7 @@ TRACE_EVENT(kvm_inj_exception,
+> >  	TP_printk("%s%s%s%s%s",
+> >  		  __print_symbolic(__entry->exception, kvm_trace_sym_exc),
+> >  		  !__entry->has_error ? "" : " (",
+> > -		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code, { }),
+> > +		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code),
+
+You could use a printf precision to reduce the hackery and get the desired behavior:
+
+TP_printk("...%.*s...",
+          ...
+	  __entry->has_error && __entry->error_code != 0 ? 100 : 0,
+	  __print_symbolic(__entry->error_code),
+          ...
+
+(Unfortunately Linux printf does not handle negative precisions correctly.)
+
+> >  		  !__entry->has_error ? "" : ")",
+> >  		  __entry->reinjected ? " [reinjected]" : "")
+> >  );
+> > -- 
+> > 2.55.0
+> > 
