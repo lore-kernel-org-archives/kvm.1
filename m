@@ -1,150 +1,294 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010035.outbound.protection.outlook.com [52.101.201.35])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D47F30D3FF;
-	Sun, 12 Jul 2026 22:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783894781; cv=fail; b=J1ZjYuteRP8Zn6Lywdv2kqXT5+cicBQoE9gXpCyXercXwJwgBBy4/PfjY+JnUaVBfUGo4Jf0vqqZI+ebT1f3zH37cFG+MT4QZeYc9YCRcUxa1QSxDzERmJ1GpVi/pv7xIxmDTZIxmJHjs8W8HGpLWuYvkZN3OzY7lIjR5K6UXsc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783894781; c=relaxed/simple;
-	bh=0pBg2Zvhy3lLlv0pJ3JysI/SLTC+HlufjfVrN+eNtaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GzJu/1DyIdDbBDVeiahlBBOaxILfiMK8+InET+ckLhPe03aWpcPkq3QhooxNm8D8C3BnRO1j21riYeLmYQYBdr9h++apImhKeVgGlKgMlgtIs21p5fyuSHS1EZGjZlqzdPVULWP4ifBc+BA14xz9EyzPxMQIcQ0bMtBjpYcdBxc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CgzVsmcA; arc=fail smtp.client-ip=52.101.201.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A70A17736;
+	Mon, 13 Jul 2026 00:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783902108; cv=none; b=CCKmEEsPBv1T8JBa390BiKTsDr6tOnRJal0UAQDFHMwENFfUDFsM29wa7PEuAUxTwQ1q3zdIDSah1C1vyWUzWVNuyoCAkJSoC7cs5iiU7aMWWTIdVQJSXqqnewUF8jBqcVUWoOqLed7K4vPDfmsSakPnliWs+AeTE/O0qPOLoeA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783902108; c=relaxed/simple;
+	bh=ao6VbiAJJ8RjOHKCxDirH8Uz+l2iNvUhnRC3wo5sgJw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=j8ktkCm07KBczEOWIwoviPw3AnwbvE9JlwY5eEbQHEagt0/ltbz+M7dAKUsXyzIV4abm7ihLKtjirNGcYh0kq4BHANAon88skhQOa2xKxFjWaZS1txOI+euH1ItPcG6DxeR9u8yKGq3rQ/pTvTqU0SoipIbrCdGlrYWpL6yxTj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=59fK6eXm; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CgzVsmcA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vvLKxktm6CH3omDWqO0E6G7mUQ9+W7u4yPkroNsGFrdcIrid0xKQmUpNy9pG+iOYr+jiSlt/HtmWD0DLnL07Cw2/IUSl1FE0E4GqBZgP3U90Bx0IvwOHd8yF/TM/pWKVXxngP1JVMlfsoIJRzuzwJonhOaohvLl81aBgzg2OJto/UKrGw52hPSk+sZiN+sNtLKoP7JafoVH9VhtIFDzLT4a7Tdr3R0L67VLheWRGHjJ0iDZPoULuXaccAlHrJBzgURtpK8ASK5XCN2/pGjG2WCUDFaaOmT8WMBUIR28SvVL6K1xnf3BkED7LJJ0L1frc/AJBe8fmYAANIxBpg5dMSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0pBg2Zvhy3lLlv0pJ3JysI/SLTC+HlufjfVrN+eNtaY=;
- b=SdfgRqFG5Yc3yS6v78+rpizimGT9qlYgWh6C/7oRTFerpZru3qFoVS6wnL1rWxrrGMdyplnKuWL9UK8EwiHIgT1v2pMrToYuXMqUUXLnFOtrNC4AoK/vwBvxVhLvNulnqVb2R35R7fYUKmoJ35ENb8zE+y8GYBAjr1zH76ZJ81ScfJbAsWHFnxI7Vfgz4T6ad+BSRs40NzS3RpSQu5tJagPclFN3EDP6jyDNnrEpBLwOJHPA38uOlE+C58ntgGD3jbb7vKduQHjpKl0IsEPuTzCBzfw1fyPsVXjzOvs4WwmXvuufsrYqCnYgavg9Y9PL6JUXnxxVMx8DdStwK/VKAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0pBg2Zvhy3lLlv0pJ3JysI/SLTC+HlufjfVrN+eNtaY=;
- b=CgzVsmcAEZUT8jRY8JYgUkoxjK42axn/oRcFYYJ1ztQXr5ZNf/w45Pmyp2Um3/v7EQlHL8u1ejQ2QInfpzS2u53f4DwQFUCBc+WcTvCLa9d0gnP+3D3jrr7zPJ3W1bZxrDt+wvsef38Vb738+2D3H20gpZPf4QfOj5ytPjhqUZU45NB/HCaAJJZc8L/Ar9F/P9xx/vVca3drp4JNsUXSZpgx/c9DV3XMOsWq4f+kVWyrR2WSi4MiYs3kSLnPrp6SN1LRTRux+13vjqNIInxUsX8GaFAhmwvQ1+jHCZjisAEu/41dG1UpPPNpLdMx6v02JUSi9rzF9nN2GrNSMWYiYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SA0PR12MB7002.namprd12.prod.outlook.com (2603:10b6:806:2c0::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.19; Sun, 12 Jul
- 2026 22:19:36 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0202.014; Sun, 12 Jul 2026
- 22:19:36 +0000
-Date: Sun, 12 Jul 2026 19:19:34 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
-	yilun.xu@intel.com, linux-kernel@vger.kernel.org, lukas@wunner.de,
-	yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, leon@kernel.org,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com,
-	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com,
-	aneesh.kumar@kernel.org, iommu@lists.linux.dev,
-	kevin.tian@intel.com
-Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info
- for importers
-Message-ID: <20260712221934.GF674038@nvidia.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-11-yilun.xu@linux.intel.com>
- <20250602133009.GC233377@nvidia.com>
- <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
-X-ClientProxiedBy: YT4PR01CA0464.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d6::21) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="59fK6eXm"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=PTr4eVSvXf18EU5VY8v4xOGTIA4AYatlm+nbx4iYPZY=;
+	b=59fK6eXmJycjy0HSy8LJXh81OU4v/E/jp20CShN8drPNnuWQYzKedSOrg/WwqAFqdGo8CSoRb
+	Esvq+g8qOsh2eNbsQnwgJ6geDwep+YUOG7sca0wJKEE4nGgheaqYZ+q4jBEfhcj1HXwDAOSd1uE
+	UqoAk3V4I+xkfpOC83ov3vQ=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gz2tv5zhVzRhQP;
+	Mon, 13 Jul 2026 08:12:23 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7244540591;
+	Mon, 13 Jul 2026 08:21:39 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 13 Jul 2026 08:21:38 +0800
+Message-ID: <73a6d2c2-9938-4cbf-b48b-04c8b1712de3@huawei.com>
+Date: Mon, 13 Jul 2026 08:21:38 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA0PR12MB7002:EE_
-X-MS-Office365-Filtering-Correlation-Id: c652ef0a-4174-4e03-917c-08dee063a7c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|22082099003|18002099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	+0BoDsQdCifYoL5unJB6kmCzcnjPsx78Sh4VsfABrl8txWgnRZQfl2o0elPbodbP1Pyk3qZoQngUV6ivi2VsX1DHaPjFNXuouc+6rBqKf6gSLXhNCOwmSnwIwMAYfCK2LRv0HDI3D/hdsObPllthiqPT+EKoShiUA2x/RFS3QVZLjNXrZ7PHKSfThgEWdmmnmD6BV8qSFrXArYf8fIc5qb9dkHNahOo50P0Xf/kGuOGdRSQWVJ3I5ULZbFnNIBHGm1+/eD5MPejRQIzn1kHJ7iuEoAWBvCIzcU7rbY654J3YBtCWMZn4F9VgbhIYxISrEKBL/3AZmKvVYoakxeANw9na76lULQ7PIa8lIUySFVAOXnJyQm/0rQgbSKjYf88/efmtwc8aWRKHTqUBLwejb+/Tb76D9KTapJMWyTibVQP/MDwyghHPBIrIoUC0+/qjVtwYrG97m8q28/v3DFhgeQxn9J7doI6fX1uB+N7OHQUmluiwaNd1Y/7SSRDKj6h5tL/K+sscWmyRrgVT2uKqPpKwm5VSfAOtb55J/lAvDaOdIOEjpHtJWpVJnq2+b4fCnukPy4qj0Ki6wYAUmm6fCGeKQfrcWNlaSv1+BCd3A4H9ExlQEnh4pEUTZP5nkYOiKAA6b0QJ5ySLMYLzqm9S4g==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PP/6uM3A7aRgjy5635Ioe8Fy4Uk04JmBb1B7yp16xRVpSVSrca5isDQA0EZa?=
- =?us-ascii?Q?yP8odGKGEl4L0b+NbgH9/tXw7j4P3Pc7mSvNyXXWkm0dYuV4dHwlQ7ysksWy?=
- =?us-ascii?Q?mcC/B2O9VR4Cg/j8U86DlEucdd3hDX0+aKS89bGOsBJXnY43IMp1R7XtGtL/?=
- =?us-ascii?Q?D12m+FQ0kWQaA1n15OlYBJpCQRpQB1IW3ejW1T7hqQuuN4PnWCrmdtS1KRNh?=
- =?us-ascii?Q?4jY8Qox11ErJCDlIKjjRYxjYo6D5AssMbqGEfNsJt5yVZQCPP5p4dcLeRe+v?=
- =?us-ascii?Q?2UJSJFG6qy5VynthH0qZcu7wrdwj7dMRyMKtFLBhkYyNsXFhodVrcMTOYcGL?=
- =?us-ascii?Q?AJmwx5QG9foCZjztUrklb0YeQgHcqB+BSMcb9dY/r2pChCjyKs664hTMit1L?=
- =?us-ascii?Q?GTest/BuszkMip3DzRiq/QethmWK01RaCcGldQyzsbo169xaLgb7HB/LA2eS?=
- =?us-ascii?Q?xp1NMOZuWwD4iWpTvgV49ltKskhUl+sOnKZVMbLxZtYPWcuUGxki56JuYtrG?=
- =?us-ascii?Q?T+Oj8UcRb5sHO/AAlupDXRvZ2g7CrI72Pe7BoH45KOIZnKVYFzDa0g97w3pS?=
- =?us-ascii?Q?SoK1Of3JO6x5Vb+XuCw3SAu99WFNIO3MTTJ0b8lQqkRwWaQtXaW1Czorbr40?=
- =?us-ascii?Q?s0J1ZBLZjwA6nn7MadMzGL4iKIrqoTzfs7drET1fcCxWx2p6l6fRtdF3CO2l?=
- =?us-ascii?Q?MFJa0+QrtpBgtmsnu9Ms1Y4bOeNGY5BnD9AAXHBmvaXmabySm9yXtVkbR04n?=
- =?us-ascii?Q?jPH8AmF3B7pjgsQj02W4jWOKdVpv6ndKCLJkrDRg2NZ8knNwZjVJNR5B/wCi?=
- =?us-ascii?Q?ZGARIU3lNKqKTiJWBrmKmqrLEb2BJkQ4B7UQo3cwOh4405p9ADyoTP+Epco4?=
- =?us-ascii?Q?oXeB5OXD3n5MlkZ+DPe/1ZXTDneaIMkPClm4A63T0EAic/alaMcKub2WM5Te?=
- =?us-ascii?Q?T0WcMrPxgF1rE0G6l1e74ROFHiXQU0kXM3yBufQqCRQrYlvGmvg4WWdZt0eE?=
- =?us-ascii?Q?ELO+tObx775FtAMgYrvM2rDyGVM2HIVORPyziPN4kPZdVG0X8v83LseSlnzz?=
- =?us-ascii?Q?KM4G++qOc83QmiyYhli9UU7fMFoPr1uQomQsWFJMDYqkcrcXFQPzVUQoODz4?=
- =?us-ascii?Q?JONyfxNMLCKeY5Ls3jWYihn/snpIkxtaqBuNPIHfuG8t6SxKaeM21TcwKOps?=
- =?us-ascii?Q?I9a75hTn6gNHr5C41iEFcbtRc641FA1ctfft6cI2FXevbimotkuViGgx21YO?=
- =?us-ascii?Q?zJr8I62/iI99kGIBC7rxeW7U5poVyW22wLaXCd3ihHdzTBOyb+x+X6hESW0J?=
- =?us-ascii?Q?Ashe4IERR02ehIzeLgo7uS6u3vP7tWHNgwoaifihrY+F5AwDuNzIA1D86HqL?=
- =?us-ascii?Q?tr3/sc7zJX6JFsMqCODt5OingKVSsOPTxkuymGQeV3UxBlsXdAeQtm0eFSiq?=
- =?us-ascii?Q?knz4fosr8UdsLDxnkB8+CjqC7nAT/JgwfBGUXzFtatCe81JLLvP2zvlS8rdw?=
- =?us-ascii?Q?gbsfGhlgVC88GrfV5nuNWyEs4LDETur/O51gqmfQSY7vSnHW773yfwcyRDqB?=
- =?us-ascii?Q?Fb+Lok/5dmpprts22q+H2E7dbGDmx3E/iwoolCFVyiV7QQlrNB6ODZezLgut?=
- =?us-ascii?Q?gYLpq2f3dWDu5u435JGCarg0wlo6u6oa8hHonlqIMh2tPg9MuFEWcrqFFTDo?=
- =?us-ascii?Q?9QaAQz6p1cIpkCYBjfsURHM2GiAbUsXHQmhcmzuV7vxFO0+D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c652ef0a-4174-4e03-917c-08dee063a7c7
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2026 22:19:35.6936
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5vCmbWngIZj3sQddl8ImYB+v0kJNuT3fM9CizR2Yk0OoCtju6dYYgOiPy1yIfPd4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 04/18] PCI/TPH: Refactor pcie_enable_tph & add
+ explicit requester variant
+From: fengchengwen <fengchengwen@huawei.com>
+To: Alex Williamson <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+ <20260702124224.57168-5-fengchengwen@huawei.com>
+ <20260708173325.599bc892@shazbot.org>
+ <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
+Content-Language: en-US
+In-Reply-To: <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-On Sat, Jul 11, 2026 at 06:01:31PM -0700, Ackerley Tng wrote:
+Hi Alex,
 
-> In the course of a CoCo guest's operation, will the guest need to
-> convert between private/shared MMIO? Will the guest need some pages
-> shared and others private? If these are required operations, guest_memfd
-> already provides the tracking and is going to have a conversion ioctl
-> very soon. Instead of further extending dmabuf to track more things, how
-> about letting guest_memfd track it?
+While implementing the explicit requester variant API, I found the _type
+suffix naming ambiguous and unsuitable. I evaluated multiple options
+including _selected, _req, _reqtype, _ns and _requester, and
+finally settled on the _ext suffix following standard kernel extended
+variant conventions.
 
-Use another FD type was sort of my fallback if we couldn't get DMABUF
-into something workable. I'm kind of surprised to see guestmemfd
-proposed as the other FD, but I don't know much about its insides.
+The new APIs will be:
+  pcie_enable_tph_ext()
+  pcie_tph_get_cpu_st_ext()
 
-If VFIO can create one and fill it with MMIO physical addresses then
-maybe it is OK?
+I acknowledge pcie_tph_get_cpu_st_ext carries minor potential ambiguity,
+and will resolve this with clear function header comments to specify it adds
+an explicit requester type parameter for ST namespace selection, rather than
+modifying the raw steering tag value width directly.
 
-Jason
+The original functions remain intact as default wrappers using the cached
+tph_max_type value. These changes will be included in the v20 patch series.
+
+Thanks
+
+On 7/9/2026 5:22 PM, fengchengwen wrote:
+> Hi Alex,
+> 
+> On 7/9/2026 7:33 AM, Alex Williamson wrote:
+>> On Thu, 2 Jul 2026 20:42:10 +0800
+>> Chengwen Feng <fengchengwen@huawei.com> wrote:
+>>
+>>> Refactor pcie_enable_tph implementation: extract core logic into static
+>>> internal enable_tph() helper accepting explicit requester type.
+>>>
+>>> - Preserve original pcie_enable_tph() unchanged as auto wrapper; it
+>>>   auto-selects EXT/standard TPH requester per device capability, existing
+>>>   bnxt/mlx5 callers require zero modification.
+>>> - Add exported pcie_enable_tph_explicit() with bool 'extended' parameter
+>>>   for explicit STD/EXT selection, used by upcoming VFIO TPH support.
+>>>
+>>> Input validation for EXT_TPH availability is retained inside helper to
+>>> reject invalid explicit EXT request if hardware does not support extended
+>>> requester.
+>>
+>> I'll leave final judgment on the APi to Bjorn, but I'd tend towards
+>> defining tph_mode and tph_req_type as enums, store the max available
+>> tph_req_type on the pci_dev.tph_max_type, and have the base function
+>> take exactly those enums as args, get rid of the bool wrapper.  Then the
+>> existing function just becomes:
+>>
+>> int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>> {
+>> 	return pcie_enable_tph_type(pdev, (enum tph_mode)mode,
+>> 				    pdev->tph_max_type);
+>> }
+>>
+>> (Given the 2 existing callers, this could also be easily changed to
+>> take enum tph_mode as the arg as well)
+>>
+>> This might also disambiguate how this series conflates tph_cap to mean
+>> TPH capability is not present or not available to instead retain
+>> tph_cap as simply the offset of the capability and (tph_max_type ==
+>> PCI_TPH_REQ_DISABLE) means it's not available.
+>>
+>> Validation in the base function is also simplified:
+>>
+>> 	if (tph_req_type == PCI_TPH_REQ_DISABLE ||
+>> 	    tph_req_type > pdev->tph_max_type)
+>> 		return -EINVAL;
+>>
+>> Same comment for patch 5, expose the base function as "_type" with the
+>> enum tph_req_type (the precedent is already there for enum
+>> tph_mem_type).  The wrapper for the existing interface is the same as
+>> you have, the base function adds the same test as above, modulo
+>> s/tph_max_type/tph_req_type/.  Thanks,
+> 
+> Thanks for your suggestion on typed enum refactoring for the TPH enable API.
+> After checking headers, two groups of symbols already exist in pci_regs.h:
+> - PCI_TPH_ST_NS_MODE, PCI_TPH_ST_IV_MODE, PCI_TPH_ST_DS_MODE
+> - PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY, PCI_TPH_REQ_EXT_TPH
+> 
+> To avoid duplicate local enum definitions and align with PCI register headers,
+> I will skip adding custom enums and use u8 for mode/req_type parameters.
+> Comments will restrict valid inputs to the standard PCI macros.
+> 
+> I will adjust the TPH enable APIs for v20 with these changes:
+> 1. Change original pcie_enable_tph() from int mode to u8 mode;
+> 2. Add unified base entry pcie_enable_tph_type(pdev, u8 mode, u8 req_type);
+> 3. Rework explicit entry to pass u8 req_type, drop ambiguous bool extended;
+> 4. Add tph_max_type to struct pci_dev for negotiated max requester type;
+> 5. Unify validation check as you proposed:
+>    if (req_type == PCI_TPH_REQ_DISABLE || req_type > pdev->tph_max_type)
+>        return -EINVAL;
+> 6. Retain original pcie_enable_tph() as thin compat wrapper filling tph_max_type,
+>    so existing bnxt/mlx5 callers need zero source code modification.
+> 
+> Capability tracking will also be disambiguated per your feedback:
+> tph_cap stores only TPH config space offset, tph_max_type == DISABLE means
+> TPH is unavailable after endpoint and root port topology negotiation.
+> 
+> Thanks
+> 
+>>
+>> Alex
+>>  
+>>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>>> ---
+>>>  drivers/pci/tph.c       | 68 +++++++++++++++++++++++++++++------------
+>>>  include/linux/pci-tph.h |  4 +++
+>>>  2 files changed, 52 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+>>> index 4097787ea98a..c22eb7f4b0bd 100644
+>>> --- a/drivers/pci/tph.c
+>>> +++ b/drivers/pci/tph.c
+>>> @@ -363,23 +363,7 @@ void pcie_disable_tph(struct pci_dev *pdev)
+>>>  }
+>>>  EXPORT_SYMBOL(pcie_disable_tph);
+>>>  
+>>> -/**
+>>> - * pcie_enable_tph - Enable TPH support for device using a specific ST mode
+>>> - * @pdev: PCI device
+>>> - * @mode: ST mode to enable. Current supported modes include:
+>>> - *
+>>> - *   - PCI_TPH_ST_NS_MODE: NO ST Mode
+>>> - *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
+>>> - *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
+>>> - *
+>>> - * Check whether the mode is actually supported by the device before enabling
+>>> - * and return an error if not. Additionally determine what types of requests,
+>>> - * TPH or extended TPH, can be issued by the device based on its TPH requester
+>>> - * capability and the Root Port's completer capability.
+>>> - *
+>>> - * Return: 0 on success, otherwise negative value (-errno)
+>>> - */
+>>> -int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>> +static int enable_tph(struct pci_dev *pdev, int mode, u8 req_type)
+>>>  {
+>>>  	u32 reg;
+>>>  	u8 dev_modes;
+>>> @@ -400,10 +384,11 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>>  	if (!((1 << mode) & dev_modes))
+>>>  		return -EINVAL;
+>>>  
+>>> -	pdev->tph_mode = mode;
+>>> +	if (req_type == PCI_TPH_REQ_EXT_TPH && !pdev->tph_ext_support)
+>>> +		return -EINVAL;
+>>>  
+>>> -	pdev->tph_req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
+>>> -						     PCI_TPH_REQ_TPH_ONLY;
+>>> +	pdev->tph_mode = mode;
+>>> +	pdev->tph_req_type = req_type;
+>>>  
+>>>  	/* Write them into TPH control register */
+>>>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
+>>> @@ -417,8 +402,51 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>>  
+>>>  	return 0;
+>>>  }
+>>> +
+>>> +/**
+>>> + * pcie_enable_tph - Enable TPH support for device using a specific ST mode
+>>> + * @pdev: PCI device
+>>> + * @mode: ST mode to enable. Current supported modes include:
+>>> + *
+>>> + *   - PCI_TPH_ST_NS_MODE: NO ST Mode
+>>> + *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
+>>> + *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
+>>> + *
+>>> + * Check whether the mode is actually supported by the device before enabling
+>>> + * and return an error if not. Additionally determine what types of requests,
+>>> + * TPH or extended TPH, can be issued by the device based on its TPH requester
+>>> + * capability and the Root Port's completer capability.
+>>> + *
+>>> + * Return: 0 on success, otherwise negative value (-errno)
+>>> + */
+>>> +int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>> +{
+>>> +	u8 req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
+>>> +					      PCI_TPH_REQ_TPH_ONLY;
+>>> +	return enable_tph(pdev, mode, req_type);
+>>> +}
+>>>  EXPORT_SYMBOL(pcie_enable_tph);
+>>>  
+>>> +/**
+>>> + * pcie_enable_tph_explicit - Enable TPH with explicit requester selection
+>>> + * @pdev: PCI device to operate
+>>> + * @mode: ST table operating mode (NS/IV/DS)
+>>> + * @extended: true = EXT_TPH, false = standard TPH only
+>>> + *
+>>> + * Unlike auto-detecting pcie_enable_tph(), caller selects requester type
+>>> + * manually instead of hardware auto-selection. Rejects EXT_TPH request
+>>> + * if device lacks extended requester capability.
+>>> + *
+>>> + * Return: 0 on success, negative errno on failure.
+>>> + */
+>>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended)
+>>> +{
+>>> +	u8 req_type = extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
+>>> +
+>>> +	return enable_tph(pdev, mode, req_type);
+>>> +}
+>>> +EXPORT_SYMBOL(pcie_enable_tph_explicit);
+>>> +
+>>>  void pci_restore_tph_state(struct pci_dev *pdev)
+>>>  {
+>>>  	struct pci_cap_saved_state *save_state;
+>>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+>>> index 6f02b020d7d7..ca0faa98afac 100644
+>>> --- a/include/linux/pci-tph.h
+>>> +++ b/include/linux/pci-tph.h
+>>> @@ -29,6 +29,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>>>  			unsigned int cpu, u16 *tag);
+>>>  void pcie_disable_tph(struct pci_dev *pdev);
+>>>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+>>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
+>>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+>>>  #else
+>>> @@ -42,6 +43,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>>>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>>>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>>>  { return -EINVAL; }
+>>> +static inline int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode,
+>>> +					   bool extended)
+>>> +{ return -EINVAL; }
+>>>  static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+>>>  { return 0; }
+>>>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+>>
+> 
+> 
+
