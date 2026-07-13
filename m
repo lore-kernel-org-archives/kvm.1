@@ -1,134 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A41322B8C
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 18:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E02350D7D
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 18:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783968887; cv=none; b=VabbnsRpdQBM0vWGHunqoj+YJHY16zoFEWxx0HM8kbj1yvkGjzhXypozdA63W27zPFw6aW5DGySwEu5kFzhEuNYU6cUXibULnBVrkal/1vVjJO+xnX03pU7kFWqnp9//6YRE2pT0UWdx0RCggkzOwVZW07p3NPRlfDzcMLdH7W0=
+	t=1783969104; cv=none; b=ekdWQX2WCFPfUye5VBJNWScelrJsbCzgzJkny+4wtQSvsesSC39fuTvPCvbwWR+ZzAFezjtmrcE/Pc9vVjkW3GE2jYy4N1VXMz4lfaStDkg62FZyZoJxMT2IKnJeFxWrsw7+5f1vG7Rvs3I1pWPsVuGy1klL5MnLFeQFvdN8Fj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783968887; c=relaxed/simple;
-	bh=8Aqo43b5HcFmqCxaRsPpupxPWhwBoEmRb/JAjQdogco=;
+	s=arc-20240116; t=1783969104; c=relaxed/simple;
+	bh=saMKXQuQhui8m4G3DHxJnlVfPcGFaHNM5ahzTToGot4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i0go3HR1TIJEQYP+Z8tt8/SFVaSPjOHrjm4PkS0nQFuZu7LyaZB5JEwYrBOBdQVHepLatAN2Idhsp2VHTJ+szXplVUSnRvKshujPdI4PZPjrLulvBFdhdqWxmraJGZ6/5fSOsvNs/P4frxS40hfrb0qb7Y3T9bw1erxGOzw3qj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBd1ttIx; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=gZJ0RbiAkkvScXuWUHrnUi71pNHOAkEAaKKIxHm0+ybxDP1HCYbd8Ja5EbREy2I+Kb445h7Xkyz8YnVcMmiBrGhF6nE3gxzOnolvAiYj52tvnBjy0uSznBGy6BAo7/FfGU3joCtUnrVRjRVJ0j+re+6nONQQtnOeiGE0RSXnV0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BSKMnwJ5; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBd1ttIx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4A21F00A3A
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 18:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783968886;
-	bh=5SYoblZzCCT1HwzF+g6fWpTbc02Fi8F61v/SMPPoUkU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SBd1ttIxk6Hy+NVoo4O+QRrx64omaoxlWUTme77deVsgxV6zUeACWRitqCV65WFzb
-	 QWS5nfGcNK96g+Q1hyh0fMU/LVYg1kaItn4Ec76SLLDv45A8qeXbXOf94Z+gnm2Qab
-	 ycRRZ7x9UtvO+Sjh5zL7UKb22DQgtG/qkkmr1zecRbKimOvB9cN7pyaRoDFEySHLu0
-	 W/Zgou3nl5VVuXoLxun9MB2mwvS8q6oi0g5qkSbyYsoPvpdDa3n/s0zx2zUauid0BF
-	 jnX7PIAJjzffmcxVrj8+RQnCdTKS2RxXLOKGzhbUMzg6oPBm+k23ynty5yzhKwytMO
-	 YfcZYryIviH5w==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c160420289bso432402166b.0
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 11:54:46 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yz+ZV31v8bzl5f8DCpc4Fb3s3omEZEs3K0SWExdKRfRyWyzObw9
-	sHW76iETQx7PNEvYX3ICaaTOyA0cmXd6gHCEGCxlz8vk1YBt14VvM5vyPmzt3csjcSG54KFLeI5
-	FzP1MCMDjO1V45Cbq8tLCVQ5O2X4CHks=
-X-Received: by 2002:a17:906:ca8a:b0:c15:dd3d:c6e1 with SMTP id
- a640c23a62f3a-c161eb9ee25mr311855266b.37.1783968884970; Mon, 13 Jul 2026
- 11:54:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BSKMnwJ5"
+X-Forwarded-Encrypted: i=1; AHgh+RojBaUFflDq9h6yStXSKeVSE3F8L5sVJblJPTXz3zsyoYVPL2IsU2ESxglGiZIyOJ9GRPo=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783969099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=saMKXQuQhui8m4G3DHxJnlVfPcGFaHNM5ahzTToGot4=;
+	b=BSKMnwJ5tdluNGK9yukFLn6NCREFDAyFyE7k8g9T3YAqE030GB4vH5E8KjEfAxywInjeoA
+	VmtD3uD/jvCcB9VlEkhg4OP1STfX2rSUycZCB9g5rrwnr5lXJ5JnlyH88Sh4LATLpCA/gn
+	WUC3zRdLVA7mHDcup4vr6ngtrlS/7TQ=
+X-Gm-Message-State: AOJu0YzDmTm1CFcc2SqG9FuwgunQCm24TKTTBFWiKAKgbkYw7zrR5qoU
+	d8vx5tLOCaRx8qCuZacbCxuhJ8fpNGUZ09heaRugJymslAZEkdiYAvxkKJsph7V6sqhIwTGTR7S
+	goiwtugaRwZ/Wnt8P9Fc9JlbFlfu4prMO92vgFsNO
+X-Received: by 2002:a05:622a:a591:b0:51b:ff0a:2048 with SMTP id
+ d75a77b69052e-51d71543adamr5975311cf.3.1783969089452; Mon, 13 Jul 2026
+ 11:58:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
- <20260713181413.94A481F00A3D@smtp.kernel.org>
-In-Reply-To: <20260713181413.94A481F00A3D@smtp.kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 13 Jul 2026 11:54:33 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPfZVTYQwgGhJtowcmSETUb4NHPB45_jwA=oXggUBhVQw@mail.gmail.com>
-X-Gm-Features: AVVi8Ceo8HDlNN4kswAVe0YW6PXBuS2V3nJDmilOM24GeW41uQB1ya06ZVbRUDg
-Message-ID: <CAO9r8zPfZVTYQwgGhJtowcmSETUb4NHPB45_jwA=oXggUBhVQw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
+ <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com> <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com>
+In-Reply-To: <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 13 Jul 2026 19:57:32 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
+X-Gm-Features: AUfX_mz1ocQhaS1og1nw9rB4tAZldez9YqprwIodEpLz1KSQvk7XoHMlyFvWmz4
+Message-ID: <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
+Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael Roth <michael.roth@amd.com>, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	=?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Jul 13, 2026 at 11:14=E2=80=AFAM <sashiko-bot@kernel.org> wrote:
+On Mon, 13 Jul 2026 at 16:41, Ackerley Tng <ackerleytng@google.com> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
+> Fuad Tabba <fuad.tabba@linux.dev> writes:
 >
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but the return val=
-ue of `kvm_x86_call(set_efer)` is ignored in `__set_sregs_common()`, leadin=
-g to a silent failure when nested state allocation fails.
-> --
->
-> --- Patch [1]: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SR=
-EGS* ---
-> commit 6edd9e84461af3c58ac965b84f89b7c4985ddeb3
-> Author: Yosry Ahmed <yosry@kernel.org>
->
-> KVM: x86: Check EFER validity on KVM_SET_SREGS*
->
-> This commit adds checks to validate EFER against both KVM and guest caps
-> during KVM_SET_SREGS* writes, preventing userspace from writing bogus val=
-ues
-> through the per-vendor set_efer callbacks.
->
-> > diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-> > index bd8147798cc3e..8f66438989e47 100644
-> > --- a/arch/x86/kvm/regs.c
-> > +++ b/arch/x86/kvm/regs.c
->
-> [ ... ]
->
-> > @@ -564,7 +564,8 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcp=
-u, struct kvm_sregs *sregs)
-> >       }
 > >
-> >       return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
-> > -            kvm_is_valid_cr0(vcpu, sregs->cr0);
-> > +            kvm_is_valid_cr0(vcpu, sregs->cr0) &&
-> > +            kvm_valid_efer(vcpu, sregs->efer);
-> >  }
+> > [...snip...]
 > >
-> >  static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs =
-*sregs,
-> >                             int *mmu_reset_needed, bool update_pdptrs)
-> >  {
 >
-> [ ... ]
+> Thanks for bringing [1] up, I didn't make the link when this change was
+> being discussed.
 >
-> >       vcpu->arch.cr3 =3D sregs->cr3;
-> >       kvm_register_mark_dirty(vcpu, VCPU_REG_CR3);
-> >       kvm_x86_call(post_set_cr3)(vcpu, sregs->cr3);
+> pKVM definitely needs a callback when the folio is released from
+> guest_memfd's ownership.
+>
 > >
-> >       *mmu_reset_needed |=3D vcpu->arch.efer !=3D sregs->efer;
-> >       kvm_x86_call(set_efer)(vcpu, sregs->efer);
+> > free_folio is the only to_private=false caller today, but the cover
+> > letter sketches the other one, a private->shared conversion through
+> > kvm_gmem_make_shared(inode, start, end). Once that lands both reach
+> > the hook with to_private=false, and as far as I can tell, the only
+> > thing separating them is kvm == NULL / INVALID_GPA. That isn't
 >
-> [Severity: High]
-> This isn't a bug introduced by this patch, but should the return value
-> of kvm_x86_call() be checked here?
+> On the folio teardown path kvm has to be non-NULL so that SNP can find
+> out which VM to unassign from, so you're right that INVALID_GPA won't be
+> sufficient to separate conversion to private and teardown, for pKVM,
+> from the arch perspective.
 >
-> If a userspace process calls the KVM_SET_SREGS ioctl with EFER.SVME set,
-> kvm_x86_call(set_efer) could call into svm_set_efer(), which attempts to
-> allocate nested state via svm_allocate_nested().
+> > documented as a contract, and nothing in-tree reads it on that branch
+> > (the kvm/gpa check is under if (to_private), and
+> > sev_gmem_make_shared() doesn't take a kvm at all), so nothing would
+> > catch it regressing. The sketch is also inode-scoped, so I'm not sure
+> > the conversion path passes a non-NULL kvm at all; if it doesn't, the
+> > two aren't distinguishable.
+> >
+> >>
+> >> [...snip...]
+> >>
+> >
+> > The Kconfig now couples them too: an arch can't take teardown without also
+> > taking conversion. pKVM wants teardown and not conversion, so that's a problem
+> > for us today, not only once the second caller lands.
+> >
+> > This is the same ground as v8 15/46, which ended with the two split under
+> > separate Kconfigs. Suzuki confirmed CCA disables both; pKVM wants teardown only,
+> > since our conversions are guest-initiated and EL2 has already done the
+> > transition by the time the host runs the generic path [1].
+> >
+> > I'd rather keep the free path on its own callback. If you want a single hook,
+> > passing the caller explicitly instead of leaving it implied by kvm would work
+> > too. Merging the two conversion directions is a genuine cleanup, it's the free
+> > path I'd like to keep separate.
+> >
 >
-> If the system is under memory pressure, this allocation can fail and retu=
-rn
-> -ENOMEM. Because the return value is ignored in __set_sregs_common(),
-> doesn't this lead to a silent failure where KVM fails to set the guest's
-> EFER register but still returns success to userspace?
+> Is it okay if later, we add a .gmem_teardown callback with a new CONFIG
+> flag that pKVM can use?
 
-This seems like a real issue, and I think it's not very easy to fix
-because it seems like KVM_SET_SREGS is currently atomic, we either do
-all the updates or we fail. So we can't just fail in the middle of
-__set_sregs_common() if set_efer() fails, we have to either undo the
-previous changes or re-order the writes to do EFER first. Re-ordering
-seems like it should be fine, I don't immediately see svm_set_efer()
-or vmx_set_efer() depending on any of the previous updates, but I
-didn't look too closely.
+That works for me, and I agree it's nicer to introduce the callback along
+with its first user.
 
-Anyway, this is completely orthogonal to this patch AFAICT.
+Sean, is that the plan you have in mind as well? Two things that matter for
+pKVM when it lands: the new CONFIG needs to be independent of the conversion
+one, so that free_folio fires for an arch that selects only teardown (pKVM
+wants teardown and not conversion), and the teardown callback stays distinct
+from a private->shared conversion. Good point on teardown needing a non-NULL
+kvm for SNP, incidentally, that's another reason keying off the sentinel
+wouldn't have worked.
+
+If that's where this is heading, I'm happy.
+
+Cheers,
+/fuad
+
+>
+> If that's okay, this merge (of function names and of the patch series)
+> can proceed. It's also nicer that the new callback and CONFIG are
+> explicitly (re?)-introduced with pKVM support so the introduction is
+> chronologically linked with pKVM support too :)
+>
+> > Thanks,
+> > /fuad
+> >
+> > [1] https://lore.kernel.org/all/CA+EHjTwLRzrq0vY0-OosENJ2Gkknerux53aVBj0zGRQUkRQP=A@mail.gmail.com/
+> >
+> >>
+> >> [...snip...]
+> >>
