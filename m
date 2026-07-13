@@ -1,179 +1,141 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8493D1A99
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 23:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783984568; cv=pass; b=X2BC1YrRP3Ay7/kZoVHtDjO2Zdl1JrxLTg/eMN7OfkNoV3KNROaE7BdMbkzSJvIi494AypjVu7aWgpaoc+4S91TxVjHZZmWqaaWcqu4yXgMpGpNgFgW4FeTeNWo3qPRbC169eZH1J5x/o/dJO3kObfwRvm514rwr54S1zYDqAlw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783984568; c=relaxed/simple;
-	bh=jNitDBOyiAnqLYAVTV2WWuN1NaJEYQUlElQBlTgvBIA=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sK/b44Ej5PeVXmacDe//9EltNmlo1KfgX1KWvDI+mhtFWvSn7MD0FJlfQowKKhvUH1L9r7J/Jtir2oPNnT59w3Hq7whPGTvG5LwtsMdBFICXBxEnF91W8Boyu7715EmhelUNG7Yd98EeBenq/HZUDD4m1Hmbc5VLv6KVNUK3TFk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dtrAYmM5; arc=pass smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A8A35C193;
+	Mon, 13 Jul 2026 23:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783985864; cv=none; b=kuewJVHtB8zSLuGb/4sVNzX4U3VAKjHKhqKprQ5lqY9kXw1H/37GA/kxa3SRGqSIf3xdH9j7G9fgLtPpS5aaI6CNIKrBYNZ2U8T5p6nIO0FEJS8Uq/WVLuIedlhGIwGiEoPO3TYmim5dbKJoPjSE8wL3NTDwMjIZLlicoPqy1rY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783985864; c=relaxed/simple;
+	bh=nzmqcvHtzlfyNgIdbNSmfa7GD/3tkvZtSUeAK2xyOsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=goCtwoFB2JaTf8CKyp3VPVMEwsa8HqwJO0f2Zgd76vpSh4/yIqvc68Y0qYnwnklLB1IUDgnrNHSqPABKJiGYmr9oyqyPA5Oeqj++NF8p8xI8kEKi1tBqUioSm21X69lZYiSGOUfwin7kFovnjWTkir3BeQc8vFjSMxoJ3n9hFJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=SRay9pS1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XdA3khTG; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dtrAYmM5"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca88130e09aso2464911a12.3
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 16:16:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783984564; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cVRWQpLupVXS3/b1NAmsf8yYEjs9Cp98CpNMLceKTcZN1VNxnuEfV0hObr1ruWkdK/
-         tSf+LsuHQsm/Q7R7uV8XVDv+tu49DKLk0uoHjtknQ3yhuMkizu7OO0T65s7cXj/c25j3
-         9r/XYLb+B5IfWkXRnIvTffUXIX1OyYKv+07bAMyc1tC9geSsjTnylDxQJBrFg2/lFig6
-         Fy+fNlPHwtjfhyaZE7HTd9Tic3p6dl4vXnHmaUQTq6kvioQaN++r0v8ffKI/lsDzPqWx
-         xXFFCGj+IwXkiXe1JXNYzMwoCsNQ7Eb9SG4lP4X8Qr5/d1Z7Gt7vNTKBQg9aT2o4yju9
-         FCNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        fh=medT0Y8yb5CpPamot5j0vSB8aDoV/9CxINFWE1YKmhU=;
-        b=R8GXVgwDCIK38lDL+N2Wjq5fbLwAwf7YWp/ofjiEy2VkT42wBXnnl3Jgw5zRcYrwqJ
-         TckB/SwyUYcXntCap2pPjrPFMiNdIiZUhSvg78Y/NtdZ9Riz6o4F117iFfMp7f3y0J7R
-         TV4NOKVAdnIrknC+ddFy+CqZ6lrDg1kDz9CNNJ/XVy57riZjr4PQjJVrYTJ1cjG123Dr
-         ACPhUa1C3WqHdDF6hLLTVmsY014lehG2psRzw/+YWkIfD3DsSX/bqGNKa85jgY0NH6Fe
-         /ydsf5v3QwuuV/ZElnyC/cM1DefrpD70KCuCkqYBmeWEoE9gRdYUwha2TXbfRU7hdG+i
-         4cvQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783984564; x=1784589364; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        b=dtrAYmM5gcCKTMBJFLfIdvxLIN1TFGu7RAukrH3sgUGEoQIdT8jn7K/J0o1Ob92z8T
-         a0cprolYrryzquVOKVdD9Tso/apjFQx0S/TWnaNDzT+4XKP8+TZVK4AJYQG+obu3DXBq
-         oPXv+706nt3OtvYOng38qlKNuVbBw98VjmQZMMpw9xy4EDPIiaM3AFPrQrSI0vGXNKQd
-         efsZF/YHau9aw97qE71JeoAQlOSlS859bm0v+3++nIT4x6FAjIMt/wlG5frQ9FXlar25
-         BVqUYnbQe/TsL8Sr0LkuE8MunM54JmYxjhxr0hvppPg0JBL0pEzFq0FC6FlGAxqBiR8+
-         ALDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783984564; x=1784589364;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
-        b=Wx2moV845BogMVXdS8DDCUmKwUHywS3C0426091g65nKLp0Xqt8aB9T1yqt9Cv6wiA
-         A+b0DuY5Oc1g3Pu6jQA0rWi913aEW1ZNqYNyGLfXStG4sy+041yRdK3sZafkn9LkNONF
-         EZ4kzukzPcBmDJ+uzlNeNncg5SdJ3K4fAgIpnNVk1TFx6q6qUM9j/CDqPfVn11bvd73y
-         07eXzl00Jg5ainIcgKJn16Q7FQ1+SiGi7FnHH4zW64ninCJ2LewhfRFXqUW+b3nGycRR
-         NUvVc6syeUBPt+01f/fgDyiQqQDfSg4PG3AFUTp2d2LMqhRnTsn6LK4MftYNyouXqRcV
-         B43w==
-X-Forwarded-Encrypted: i=1; AHgh+RqoW3THZB2dUL842DA/QGB8uwUm3Mm8YyZI5P72i5woGChaJGYwsKByD6eZEdJw1YbRfJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxliNXg4iNKSeIQZ3vBj3GX+kBVn+l6roiwRN3wYxrcNGdeWKih
-	oGKXIJhb3NVOKRZBJY82B3d2yEQ33Xk0ECI/VyhmFGA3iVYVslSzC3fBp41emBgn0bFlruB+cHm
-	9Jj+gsgG4CeXP8rMLAVdUqxtceJrMs2lCODBvxWP0
-X-Gm-Gg: AfdE7cl3DwOdeOg04wOwM4nyppJoZikdt0PCgAcZi+jvfFmLrVwAWtAilvQhxpLLoPb
-	gyAE2drKU3V9/p2/V4R0+oCCmrDcIN/LVD0VIb/yk8ylgwnsgFuza9jgribHATF9GCmOyznXBrA
-	7IvU6grn93FxIEi4WMN1U7sTU/BxcCxdgf56Tfha/Bk88X2MaYLWzGFISu3FRk1hTqcg6eIjTW9
-	DFsy5m+4QilQriHlUu9HFAb/EPepcvBblD9VCJIcdEl3+yzcb0L8kOPu+8WD50QMbUa8k8pHMmL
-	moUEgo9ITvPFur07bd6YYs41p3Wr1T7jaNKQzxhHJAIjLnvk2kEwM57OPUM=
-X-Received: by 2002:a05:6a20:cd8f:b0:3bf:83f3:b810 with SMTP id
- adf61e73a8af0-3c110a7b287mr11689858637.29.1783984563364; Mon, 13 Jul 2026
- 16:16:03 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260712221934.GF674038@nvidia.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
- <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com> <20260712221934.GF674038@nvidia.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="SRay9pS1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XdA3khTG"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7F0117A0116;
+	Mon, 13 Jul 2026 19:37:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 13 Jul 2026 19:37:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783985859;
+	 x=1784072259; bh=hfaitaNnjEf6rqXv+1vAtt6Mfbk8w+tp59BoL8YIQZg=; b=
+	SRay9pS1t+MWuUKlrcj8xke1VSLP4EvKZ9vsZBtr8wQv+CWhwOsotbXUjR5ge4Ju
+	a65m5LTAWipR8cv0TRrlG46j62T8qz8H0qms0kRcAM/4l4XQDZJdUpPnPZGBe7f1
+	N9VjVmLhmT7SgCbh1Lf3jYq7UrTqBY3RjvFp76R6koRqxpooZlDY2zerPi/dm8IM
+	Rfer6dufhomrdZ2Y2j9Kvzym++I5h/VhFUQxeQ00tjIfsd9AhTQ4lCi6uYU+vXC0
+	DNZrd8RdBAM5B3+r6L8ZhLVmBexADjH5gax7IHy2vfSW0xWGcHlUFbA0MALT82XV
+	g1zP5s1v6OFUwSOl+hEtQw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783985859; x=
+	1784072259; bh=hfaitaNnjEf6rqXv+1vAtt6Mfbk8w+tp59BoL8YIQZg=; b=X
+	dA3khTGa1IE0Q5asqxHVIBc4mmX8iRqva4WvROY/uAmRsQ5POynIAJqm5NXUYkOZ
+	b+wDA+VK1fd6bCjAd0vXsxyiBjReHjyqYrttVi+GNSJwjbAeI8L5qUbfOme2KeZA
+	e4Z+djv1rVgh8Sw3rQ0swZWLLZz6+eBqMuvhFoTYSeAqFF/HrDAG7BWo8KBGqd3G
+	IFeK4KJ6ewZNAZP5N20F/VFaFHYzQMLSIoG+pZiDHSXJ9uBFvkcoRq4UVEwsJZih
+	iG86+JrR3H/EcnA+GSh4y7VgYRN7h2ftdaTBhcJABRCKguuGlgfIzyKGmjbMFq2A
+	icmrSapw30KzuPqtaxlMA==
+X-ME-Sender: <xms:wnZVap__XDov-SZJ86-0GWacm1LBJl9Gi8l8G4xuk5RIQaCEkj-Q5w>
+    <xme:wnZVaq4HDgYSTs9_kzrDhkyCmGxEHGNJfYrsudd7RiAt6GNG0EEnlyMN-8Tzc5YwC
+    lcWmJQRdkxjHMlKqhWelq4_5GwCzutZT8hfuGXxgvAPCB5BSviG>
+X-ME-Received: <xmr:wnZVargR_x7qFF8w60yD564XP0mXUirf337C9gcqz8hLqy7jsxOfeyrFMg0>
+X-ME-Proxy-Cause: dmFkZTGFOIUmX0QZz6a3YffLfc012wxaz6+SzFx8zgoMAEVEw426WACURyYV4j6lUaUfCj
+    6lXuZNlomwm6GJy9NLvq++SZgqlXuNbCB2o5G07uzK+pUY4Eg1NE6cpC9dCIxfO0z4ydkV
+    N0OWYSF0J2BRPOiIwa7ji1bnjeMDclHZVua0PCZzRC4tPvPRrtAFKges7mmvNYhS/otsjP
+    Yj5ZLDG6oH4hdKj7hSHQdfQKJLmUgCK9pY5m2MbloA0pqYyixNNw+Qsc8N3IC4q9uoFhQO
+    BoDWYHBr0BVdT1DSDaQe0da06aDPIsWoXuvutSyVJwY0x59hEtfYML7XeDaujCORNdY/Jx
+    QbScP9hzcIntUC/0bLb3/HT5tTLVdF7ZLvB220tqRRjlDibwMnayQ+uCbw4atxe2jrPczX
+    sHYun6h2RfA8ttJnuh3KhP1FppKkv/PCQlHuAN5NO9nE1k7VHEsQMjTlEg4j6Dv/1vClyM
+    2S18099asPYSNDZmTd20zXlWKz+5mj6f923tNbBK8N2Cn4AO/lCiG4LZSa/lGEQdSp8ju/
+    02d+CN9mBEIUzotdg9lanpqZMbqOJv8UB9Mn9gR3wUdrbrGEaRubuApgdtXVgwFXnj8Ieo
+    fautHEJubGwrXBKYIPIvibvtIrrGXIWKFw4MszdXTjMRt9WJnAqfWUodh14A
+X-ME-Proxy: <xmx:wnZVapri7lfez_yCCKAO11BDXkDNXCTs-IJhSwxrdD-WyoXNXfkvaw>
+    <xmx:wnZVavK8BuncSst8lSPKpxeHQRnjdxdeFXL11iPfMUPnEfBYF1AdxA>
+    <xmx:wnZVauuFyRb1pMLGBuIZImckHSGU1lL5JImPfXADUi_PNXV24pmHTQ>
+    <xmx:wnZVanvDvc4HuG_gENFAAEMbhgTJDyiJyttKte0gMHb_BEOP9CE3_A>
+    <xmx:w3ZVaheb7AY1p-2SOCKkhU1pFyRDOzXIfVvV4mj9DCDHP_Rc1nOh0y9f>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 13 Jul 2026 19:37:34 -0400 (EDT)
+Date: Mon, 13 Jul 2026 17:37:30 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Manish Honap <mhonap@nvidia.com>
+Cc: "djbw@kernel.org" <djbw@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+ "jic23@kernel.org" <jic23@kernel.org>, "dave.jiang@intel.com"
+ <dave.jiang@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+ "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>,
+ "alison.schofield@intel.com" <alison.schofield@intel.com>,
+ "dave@stgolabs.net" <dave@stgolabs.net>, "dmatlack@google.com"
+ <dmatlack@google.com>, "gourry@gourry.net" <gourry@gourry.net>,
+ "ira.weiny@intel.com" <ira.weiny@intel.com>, Neo Jia <cjia@nvidia.com>,
+ Krishnakant Jaju <kjaju@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Zhi
+ Wang <zhiw@nvidia.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v3 05/11] vfio: UAPI for CXL Type-2 device passthrough
+Message-ID: <20260713173730.2de01a77@shazbot.org>
+In-Reply-To: <IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
+References: <20260625165407.1769572-1-mhonap@nvidia.com>
+	<20260625165407.1769572-6-mhonap@nvidia.com>
+	<20260710162322.012be635@shazbot.org>
+	<IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 13 Jul 2026 16:16:02 -0700
-X-Gm-Features: AVVi8CczeGanVcGdhsy5HlDfD2XYPmjZautNceRH5dXiMXcxQCHaSODxjV4xdX8
-Message-ID: <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org, sumit.semwal@linaro.org, 
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com, 
-	alex.williamson@redhat.com, dan.j.williams@intel.com, aik@amd.com, 
-	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
-	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
-	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
-	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On Mon, 13 Jul 2026 16:44:53 +0000
+Manish Honap <mhonap@nvidia.com> wrote:
 
-> On Sat, Jul 11, 2026 at 06:01:31PM -0700, Ackerley Tng wrote:
->
->> In the course of a CoCo guest's operation, will the guest need to
->> convert between private/shared MMIO? Will the guest need some pages
->> shared and others private? If these are required operations, guest_memfd
->> already provides the tracking and is going to have a conversion ioctl
->> very soon. Instead of further extending dmabuf to track more things, how
->> about letting guest_memfd track it?
->
-> Use another FD type was sort of my fallback if we couldn't get DMABUF
-> into something workable. I'm kind of surprised to see guestmemfd
-> proposed as the other FD, but I don't know much about its insides.
->
+> > -----Original Message-----
+> > From: Alex Williamson <alex@shazbot.org>
+> > Sent: 11 July 2026 03:53
+> > On Thu, 25 Jun 2026 22:24:01 +0530
+> > <mhonap@nvidia.com> wrote:  
+> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > > index 5de618a3a5ee..3707d53c4de5 100644
+> > > --- a/include/uapi/linux/vfio.h
+> > > +++ b/include/uapi/linux/vfio.h
+> > > @@ -215,6 +215,7 @@ struct vfio_device_info {
+> > >  #define VFIO_DEVICE_FLAGS_FSL_MC (1 << 6)    /* vfio-fsl-mc device */
+> > >  #define VFIO_DEVICE_FLAGS_CAPS       (1 << 7)        /* Info supports  
+> > caps */  
+> > >  #define VFIO_DEVICE_FLAGS_CDX        (1 << 8)        /* vfio-cdx  
+> > device */  
+> > > +#define VFIO_DEVICE_FLAGS_CXL        (1 << 9)        /* vfio-cxl  
+> > Type-2 device */
+> > 
+> > Would we define a different flag for type-1/3 if we ever found a need to
+> > expose them through vfio?  
+> 
+> Yes. The current flag is named VFIO_DEVICE_FLAGS_CXL and refers to
+> Type-2 specifically. If Type-1 or Type-3 support is added later, a
+> separate flag (or a VFIO_DEVICE_INFO_CAP sub-type field) would
+> distinguish them. I can rename it VFIO_DEVICE_FLAGS_CXL_TYPE2 now if
+> that is preferable; please advise.
 
-For now guest_memfd only supports 4K pages, so the interfaces we're
-interested in are:
+I'd keep the broader flag, CXL, and use the device info capability to
+zero in on the specific features we're trying to expose that can't be
+readily obtained through DVSEC or needs a mechanism within the vfio
+uAPI.  Thanks,
 
-+ The .fault() handler, which core mm calls to service any page
-  faults. For this, guest_memfd first checks if the page is shared, and
-  if so, proceeds to return a struct page.
-    + For VFIO, guest_memfd could call vfio_pci_mmap_huge_fault() and do
-      vmf_insert_pfn().
-+ The kvm_gmem_get_pfn() function, which kvm calls to get a pfn and a
-  max_order to set up stage 2 page tables. Now guest_memfd returns
-  folio_pfn(folio) and max_order = 0 since guest_memfd only supports
-  PAGE_SIZE pages now.
-    + For VFIO, guest_memfd would need some way to get the PFN, so
-      probably something like dma_buf_get_pfn_unlocked() [1], but
-      probably from VFIO instead of dmabuf. Perhaps pci_resource_start()
-      is good enough to get a pfn.
-
-[1] https://lore.kernel.org/all/20250529053513.1592088-2-yilun.xu@linux.intel.com/
-
-> If VFIO can create one
-
-At guest_memfd creation time, guest_memfd is always created for a
-KVM. This is the first place where it is bound to a kvm instance. This
-is one place where it helps Yilun with Confidential VMs, so KVM can be
-sure that the memory was meant for a specific CoCo kvm and not any VM.
-
-I think it might be weird to have VFIO take a kvm fd to create a
-guest_memfd?
-
-I was thinking that the userspace VMM could do something like:
-
-  int vfio_fd = open("/dev/vfio/devices/vfio0");
-  int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
-
-and creating from a template fd would also disable/close the vfio_fd so
-that the following will fail:
-
-  addr = mmap(vfio_fd);  // Maybe this should fail too?
-  *addr = 1;             // But this should definitely fail so that
-                         // guest_memfd gets to block private writes.
-
-> and fill it with MMIO physical addresses then
-> maybe it is OK?
->
-> Jason
-
-What interface would be used fill a guest_memfd with MMIO physical
-addresses?
-
-When a vdev is associated with a vfio file, can some other vfio file be
-created that can also do MMIO to the vdev's PFNs? Would I be able to set
-something to block any future associations to those PFNs? This will help
-guest_memfd to prevent any other writes to private PFNs.
+Alex
