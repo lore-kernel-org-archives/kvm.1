@@ -1,86 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012027.outbound.protection.outlook.com [52.101.43.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6D9EACD
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783920874; cv=none; b=qkTXlfCDUrOK78hTJf8PSbVPqF5YA//0QPM0rN1oEvCWLTVNgNgp8Tdy02yeNu5eaH3+DlFY5ia7HWVWaxy25ElHEMEaJdswJ53lv+tAQsDwf50HgrZZJPKsnVzFdH8ATTWtMOSn2X2kFKiV2+SBMAUd18jy0m4KSS3Qe2sF4SU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783920874; c=relaxed/simple;
-	bh=JZHFCLOfahPIutk6bsYrkK0LkMAxgRjCHdkaEvufP80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fCRMs1CER1C8hlXofBgdswzJ7kDgVtRABxSJqiQ6CmT5HPbN2oTuxoULw4EAu6+PwWcRfBYq60EYsFMHLi9o8nIvVHTd8DUsViwMOauRXAG5CNBU3leElVMha6KQiGZuYCkBmPe6eyTzKuq6a1encb+2OVLsDCq4m1JJaADdVuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bw4+YTSu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F/i8zEsg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1BA361DDC
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 06:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783923183; cv=fail; b=jNnRWHMKujf0I89aS9d1OpYL9zmf8ec9UHQR3pPR0P1/3MjFgK0v3TQe112ZkRt1hCCByWeMJ+jEXVuMB+EcJqML3Tvnht7vDKXzWCw9e9UNL898bFpNuauidvU2eIzJjysfxY0l4VWgnG266cAiCKKDPE/w6YmbIrRMEgJpv8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783923183; c=relaxed/simple;
+	bh=KzyRKNc8EbGAAhI8q4TzyALHF4aSGIjfGaJNmIBUpzg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UjAatqCLul7aUMNyB4llo6bFLgRXBXfDZXX6RQC93ahlt704ZyM2CqsenUiKfr/PHa4y2WkX4KtwjLsqN/kX3T78hJL5S4iX087c6al2qelpuACdT1puXDv2S+L4f4s9pfRW+ICEbD5S6TfovyDALC6ZmxsilUXRFvPjALHiwnY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Yz4vWA/J; arc=fail smtp.client-ip=52.101.43.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bw4+YTSu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F/i8zEsg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783920871;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
-	b=Bw4+YTSuqpxUBjcScVu7+aw8wvSQwIRQ8PfHUjrplNfVlxNEhwFMRLkE8n0jQ8Rj3Bxn51
-	Beq1AkAeDPtPzHVZwvZ54qdXbXQB0jMhX35bWLWqKrIJrCEVrtTain7F9ZbBtlNGks863+
-	f/kTKeVe/y5JBFrKZ/dyc1Y++Jy9M4s=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-Leq-YeL8MwSBS0y97yzWIw-1; Mon, 13 Jul 2026 01:34:30 -0400
-X-MC-Unique: Leq-YeL8MwSBS0y97yzWIw-1
-X-Mimecast-MFC-AGG-ID: Leq-YeL8MwSBS0y97yzWIw_1783920869
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cacd6d37edso40360205ad.0
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783920869; x=1784525669; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
-        b=F/i8zEsg+W1xqf/Phh7MyH2S4trI/A9O/oRQjwQIG/bJPYdigKqhO1cxXlCw5A6KhT
-         7mFP98TXCo1gJuS4ye0Toc8L3craWf2blgqnOaTBEGmbOJNw7ZgLis33EmAogAPOH6Zw
-         Ci+uMW7PdGhfdU43Vcl1f8Xr2ElrKpKTNoeTDwbznr2SAoywKGtMcSy68w5+7dVU6n5y
-         s4Y/+JI8mK5V7n5Y4ydiAnq++BzrC+s92f4FJQX30oNprMcQbGAUfiZ6AHEDetTxWMrD
-         ZS61xNeO1NE8lMd13G6BfolSEIdshrPEUwj7NDhmojfr1Ug3ybSdgOJe9fgeQpyB2zpx
-         iQ3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783920869; x=1784525669;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
-        b=q6xlm/KgxmaJWlN4E5CKAi/JkaNxcnaPhqAOLZsV554bDSXdvOXCjse+JpzeeIyJYs
-         B7YLDIGkVTItSvq5P6sjVNk2KbZI3o6Sxg2JrEjtcU/Q6QoRQcNJTdy+H1cc4t9ziptm
-         jrYUxsxPRx6T/cKsza1mdAiha/qFadcepSsdfWkImc9Q0YDGrm6a2jGRmj1/L2ffef5H
-         BkaGU4Ho1k4ywLd7wY5wSmX3T0G5y7fCAmO4uGgDykDYP2B4rdg5a9V4Q1h5xkuVLPEa
-         zs70DF4/cshMjAfaX49x/t5XJq8KPhOuB7KG7SkrQn+DUe3o6DpAqs2MQS7gb4fcvU/X
-         8iRQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpnM/7m/t9U4I/OUJ6L82JDE9NnSBwowSVvVphrW0qznR0QmCIm9t7D9eFSAbxSO8fBMAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+H5eknioDo6hz+ekD97ANoKFMLWah3XVuEBNoRK0KfIIHvVUh
-	EhEcwUqZXI3bVw4LFaFlDfDMActHedCZq7fbVmayPD22GnjPDRlsr+6tmFdHtHj16AnxmEIXbX8
-	Vir5LG7VfmovYWaTD16MN9xeiTex+avSVLGxO0pG4YNHIM6qzNbOO5A==
-X-Gm-Gg: AfdE7cmJKqtOPXbMpRkAZr2mvcL+Er0CAZTd2CH0j1a1ds0FTj/nbZrEVqqbcA9rcGV
-	FMab/fSm5ryFGnUOJ/TjMAHVwY4nocdBzupoNdxyLwCM4+k9G1WI0jA+PbX9PgGlYlnZse+qTDn
-	eaKms3Ot+StgUc8+I/83D3jp1G03FXotFO8B+Z2hVYfj4XQdqcsxSqEM/vLi/QzwZp2TzdiVMPq
-	AwKghGWwYOZzI2RGLoqX+a4IuSzMy3abxOZYxPXHEGJO8UMTSaI9wRnJgtHPYJKs7FbY7wi/uWM
-	NaapUDKZqom8r3zAvu1bkcj+73ZmdrxuQhzOfC/XZOPbyTpYGsmWR7k2x1c/z7BOrdKzkO/RkBx
-	yITtLxvymvZUtbY1s7LRBqG5IfSOBU2o3qHpSN6tKJcaZJTTURchYZg==
-X-Received: by 2002:a17:903:2444:b0:2ca:c4a5:84bb with SMTP id d9443c01a7336-2ce9f27e6f1mr80488225ad.38.1783920868998;
-        Sun, 12 Jul 2026 22:34:28 -0700 (PDT)
-X-Received: by 2002:a17:903:2444:b0:2ca:c4a5:84bb with SMTP id d9443c01a7336-2ce9f27e6f1mr80487835ad.38.1783920868533;
-        Sun, 12 Jul 2026 22:34:28 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb746sm91888925ad.7.2026.07.12.22.34.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jul 2026 22:34:27 -0700 (PDT)
-Message-ID: <4ffc3787-a53e-4889-b245-458de4463cb9@redhat.com>
-Date: Mon, 13 Jul 2026 15:34:20 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Yz4vWA/J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lxG6/qOsWs5kt/qnl8vn7vZu0+issbkF37DZetMvM4/F3BQw1VlJ5qTMzXuMG2qtqCfeskgNzQuV9CKeXGGEaW1Frnc1E0/wRgG1LMmPV3eQdvjcU/Ru3BPGn4+TBo4zRwPjCcwaZ76ok9HCerrjiVcSJ4rJyC7l4oEiIJ21dl+nWeGvOt0aqKA2rE/fPe2DH7gfbVz5UTWMbT5VUH8otazywEWcXUPoovbGTPsqw1co2yqkLOXNj+1h/p1fgUH5odMBHf8AWcD0JYv+MqssL709lcPY6gwx4llo1FwqdnN5YLHZUmX0AWbIati0TmSzkaAn6BFMGxyTUH33Vl9cnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tXLTgl7NHTiYGgQeRSjZc+BEo/IMhdCNHv36V0Z+1kE=;
+ b=a/V2MV4ZJtXYJUyMjhrgEy/vfEY8vYXNqUgwOHw0Il0WYRTmqzk4Nfl91zEGvYCp53vBqaB4nhJVh/I0tgL+PLqz7sJ4EKVQd3o3i4a0X0YopZ0YSWcUCCr3BCqSjX8sGJzoufmmSEmag8+ElhcradoQ9Vb7PDxgkCs/O6P5L92/bZ9yBLj1Y7zeCVqMqVjpAb1UeY+RPOIIoahTrGyD2b9bbERVY+4q+XnAMvN5dRe2LgVofkeGaqLIJg3U0dQvrv+ltZcWDC1TH6RA86RFEqv4lZkNM/lq2aI3o7/KephPS2IRrjjSGexc1oHNRf7Lnuq14+b1Rn0am624sFUVAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tXLTgl7NHTiYGgQeRSjZc+BEo/IMhdCNHv36V0Z+1kE=;
+ b=Yz4vWA/JsW2s7F8GgE5RoTGblD8D0GM26p7bznLAcp4zZpGbert2K12jRtx14GdyoHpTiDoxSHuN1mxgQ5g23TkyZrYvfO+hySlAl3OITFqNap6/nC+ss5TY7By83mk5jbaPoa5lrXVpZYJjlnKG6qteP7JuqfEnulYjuOfC2vE=
+Received: from DS7PR05CA0034.namprd05.prod.outlook.com (2603:10b6:8:2f::35) by
+ SA1PR12MB7198.namprd12.prod.outlook.com (2603:10b6:806:2bf::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
+ 2026 06:12:50 +0000
+Received: from CY4PEPF0000FCBF.namprd03.prod.outlook.com
+ (2603:10b6:8:2f:cafe::a2) by DS7PR05CA0034.outlook.office365.com
+ (2603:10b6:8:2f::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.9 via Frontend Transport; Mon, 13
+ Jul 2026 06:12:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000FCBF.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.223.9 via Frontend Transport; Mon, 13 Jul 2026 06:12:50 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 13 Jul
+ 2026 01:12:49 -0500
+Received: from [10.85.44.160] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Mon, 13 Jul 2026 01:12:47 -0500
+Message-ID: <b5f2e0a4-09c1-43d7-b700-c8760d70b195@amd.com>
+Date: Mon, 13 Jul 2026 11:42:41 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -88,168 +67,93 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 04/25] target/arm/kvm-rme: Add mechanic to initialize
- realms
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
- kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
- peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
- pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
- lorenzo.pieralisi@linaro.org
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-5-mathieu.poirier@linaro.org>
+Subject: Re: [PATCH v7.1] KVM: SVM: Add Page modification logging support
+To: <pbonzini@redhat.com>, <seanjc@google.com>
+CC: <bp@alien8.de>, <joao.m.martins@oracle.com>, <kai.huang@intel.com>,
+	<kvm@vger.kernel.org>, <thomas.lendacky@amd.com>, <yosry@kernel.org>
+References: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
+ <20260529063833.1660791-1-nikunj@amd.com>
 Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260707224306.1202330-5-mathieu.poirier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <20260529063833.1660791-1-nikunj@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCBF:EE_|SA1PR12MB7198:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3beb8724-dd11-477a-6ff9-08dee0a5c452
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|1800799024|36860700016|4143699003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	a4zNK/SeeJOauJsnasUkurHioLiix4dW9lsnNFkug7d9UXN/ZV9A1S8wwyOMr1pl3lSDL17FbDM8G+WuRnMfdGN5RWH92LeRwgM5luQKa90djxv+Ko8VQUwNK9PQliaeBO0enqGpXcbwDvW5YcVmVLtKwXdxiBwmmfMFdavO6I8ASAosC16XTfh0UushRWL7hP3Yvl7aza31363VXfZsCnMsYYpFMztdb2ppxQloyG1EtViZ1sAd2oqVARb9dVDydZ/0a0YYaxKc0UWy4a3CgNHf726C5TfMB4mUXmuOto4qlF7DHn0O1JmXTvTZcMGYYQaKUzgUrW78F55VJZPNltvAxo7L0ruB2DiE64/NITbnqx3h3wzc/DDuUAX7nupsn1Bf7lKSPo6/oOqTXmEKMEQ/ot/FuuVeocuMu388Es+/6/RNSaLhQmqRcrmzgTBJBf11ElYPyQFpidzHAaQvXZhg6nMDvZVctUyhL/qEI0NLPrEe2x4uwd3WTiZQwuc2oFqMrmiqUu7EtCNFEVWGOl/ibTgp/RC7VRCKN4+XPd/yWoM4A+i8/D2XMYCiYQ1jp1/Yo2rxTfUOBbXZYfiTt1GFNVdEbyxfXnXz+soPr8F1lgE0vjhb5CRFfpeH01n4J62NMj1HZkUpKmwhJKEjyOQKXrEJ9RmPVVCsrmqZDCOtu3QtsLsrwq7p2S3y38mUblmpKioL+1bvTnmeVEV0LQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(1800799024)(36860700016)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	GcJtBOZuz1TGonaOAGH6x1jqenk4Y5dbY6U1M7sVEOrdhoXXPttbmzn2Mz0zwYa4hSzVufbOj6YJpK9mOORdzEXWsMHmTgCBUIszUl6zr9Vl9Pr82WHcBGvKatI1W0wkqz8cuRMAW7weHlf84MTyUtOWbzxFBMrZsL6svcq84aVVH35+ccuDtKAViI1emGsZ0WKc9P8YmGF9wUDcb+WkgXXEJoW7NLuTVSBtqnOz50WC04nFzJ61oDxg2jf1yqTUDg2gvTDjbrQrg9IMmvvmdEKKxYO/bdS8EOa9NSTMRG4V0HTkAz7kCTokTiKFkXRUI3ktB7QsAZNLS3MA1/snPIUxRrqhHjyW5PW53+tGPSlhDkVRo4pIYCd3HmJi1KPyCww5IQZc9/rW952xE0iv8iGZKDztOt3LIn1Qf3tYUOjer7gbqXShfuStMBisnuG3
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 06:12:50.0521
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3beb8724-dd11-477a-6ff9-08dee0a5c452
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000FCBF.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7198
 
-On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+
+
+On 5/29/2026 12:08 PM, Nikunj A Dadhania wrote:
+> Currently, dirty logging relies on write protecting guest memory and
+> marking dirty GFNs during subsequent write faults. This method works but
+> incurs overhead due to additional write faults for each dirty GFN.
 > 
-> Initialise an @rme_guest object and install a handler to get notified
-> when the Realm is ready to start.  That way we can finish reading the
-> Realm once we know everything is in place.
+> Implement support for the Page Modification Logging (PML) feature, a
+> hardware-assisted method for efficient dirty logging. PML automatically
+> logs dirty GPA[51:12] to a 4K buffer when the CPU sets NPT D-bits. Two new
+> VMCB fields are utilized: PML_ADDR and PML_INDEX. The PML_INDEX is
+> initialized to 511 (8 bytes per GPA entry), and the CPU decreases the
+> PML_INDEX after logging each GPA. When the PML buffer is full, a
+> VMEXIT(PML_FULL) with exit code 0x407 is generated.
 > 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Since PML_INDEX in the VMCB control area remains valid after an intercepted
+> SHUTDOWN, only initialize it on reset and leave it unchanged on INIT to
+> avoid discarding already-logged entries that haven't been flushed.
+> 
+> PML operates on guest physical addresses at the NPT level, tracking D-bit
+> updates in page tables rather than memory content. This allows it to work
+> identically for normal and confidential computing guests
+> (SEV/SEV-ES/SEV-SNP), enabling cpu_dirty_log_size to be set uniformly for
+> all AMD VMs without special-casing encrypted guests.
+> 
+> Use vmcb01 directly when updating PML controls to ensure L1's state
+> remains correct, as svm->vmcb points to vmcb02 when L2 is active.
+> 
+> PML is not enabled in hardware for nested guests; treat PML_FULL as
+> unexpected exits.
+> 
+> Add a new module parameter to enable/disable PML, and enable it by default
+> when supported.
+> 
+> Acked-by: Kai Huang <kai.huang@intel.com>
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 > ---
->   target/arm/kvm-rme.c  | 50 +++++++++++++++++++++++++++++++++++++++++++
->   target/arm/kvm-stub.c |  5 +++++
->   target/arm/kvm.c      |  7 +++++-
->   target/arm/kvm_arm.h  |  9 ++++++++
->   4 files changed, 70 insertions(+), 1 deletion(-)
 > 
-> diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> index 42e1d1e7b859..b86b9d6a25cb 100644
-> --- a/target/arm/kvm-rme.c
-> +++ b/target/arm/kvm-rme.c
-> @@ -13,6 +13,7 @@
->   #include "kvm_arm.h"
->   #include "migration/blocker.h"
->   #include "qapi/error.h"
-> +#include "qemu/error-report.h"
->   #include "qom/object_interfaces.h"
->   #include "system/confidential-guest-support.h"
->   #include "system/kvm.h"
-> @@ -29,14 +30,63 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
->                                             CONFIDENTIAL_GUEST_SUPPORT,
->                                             { TYPE_USER_CREATABLE }, { })
->   
-> +static RmeGuest *rme_guest;
-> +
-> +static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> +{
-> +    if (!running) {
-> +        return;
-> +    }
-> +
-> +    kvm_mark_guest_state_protected();
+> Sending updated 7/7 patch here, rather than reposting the full series.
+> 
+> Sean, any remaining comments? Happy to send v8 if needed.
 
-This would be called in kvm_arm_rme_init(), why we can't call this to mark the
-KVM state as protected in kvm_arm_rme_init() ?
+A gentle reminder
 
-> +}
-> +
->   static void rme_guest_class_init(ObjectClass *oc, const void *data)
->   {
->   }
->   
->   static void rme_guest_init(Object *obj)
->   {
-> +    if (rme_guest) {
-> +        error_report("a single instance of RmeGuest is supported");
-> +        exit(1);
-> +    }
-> +    rme_guest = RME_GUEST(obj);
->   }
->   
->   static void rme_guest_finalize(Object *obj)
->   {
->   }
-> +
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> +{
-> +    static Error *rme_mig_blocker;
-> +    ConfidentialGuestSupport *cgs = ms->cgs;
-> +
-> +    if (!rme_guest) {
-> +        return 0;
-> +    }
-> +
-> +    if (!cgs) {
-> +        error_report("missing -machine confidential-guest-support parameter");
-> +        return -EINVAL;
-> +    }
-> +
-> +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
-> +        error_report("KVM doesn't support Realms");
-> +        return -ENODEV;
-> +    }
-> +
-> +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-> +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
-> +
-> +    /*
-> +     * The realm activation is done last, when the VM starts, after all images
-> +     * have been loaded and all vcpus finalized.
-> +     */
-> +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
-> +
-> +    cgs->require_guest_memfd = true;
-> +    cgs->ready = true;
-> +    return 0;
-> +}
-> diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-> index 88cbe8d85c41..eec1ca3dd2e5 100644
-> --- a/target/arm/kvm-stub.c
-> +++ b/target/arm/kvm-stub.c
-> @@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
->   {
->       g_assert_not_reached();
->   }
-> +
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> +{
-> +    g_assert_not_reached();
-> +}
-> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index ed99be7fd80c..28d5643d6779 100644
-> --- a/target/arm/kvm.c
-> +++ b/target/arm/kvm.c
-> @@ -660,7 +660,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->       hw_breakpoints = g_array_sized_new(true, true,
->                                          sizeof(HWBreakpoint), max_hw_bps);
->   
-> -    return 0;
-> +    ret = kvm_arm_rme_init(ms, s);
-> +    if (ret) {
-> +        error_report("Failed to enable RME: %s", strerror(-ret));
-> +    }
-> +
-> +    return ret;
->   }
->   
->   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-> diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-> index e7c40fb003e4..6d058b0e08a2 100644
-> --- a/target/arm/kvm_arm.h
-> +++ b/target/arm/kvm_arm.h
-> @@ -240,4 +240,13 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
->    */
->   char *kvm_print_register_name(uint64_t regidx);
->   
-> +/**
-> + * kvm_arm_rme_init
-> + * @ms: the machine state
-> + * @s: State of KVM
-> + *
-> + * Prepare the machine to be a Realm, if the user enabled it.
-> + */
-> +int kvm_arm_rme_init(MachineState *ms, KVMState *s);
-> +
->   #endif
+> v7 -> v7.1:
+> * Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
+> * Fix misleading comment, pml_index=-1 is hardening not stale-data cleanup (Yosry, Sean)
+> * Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected exit (Sean)
 
-Thanks,
-Gavin
+Regards,
+Nikunj
 
