@@ -1,136 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE675286409;
-	Mon, 13 Jul 2026 15:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687F8282F3F;
+	Mon, 13 Jul 2026 16:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783958289; cv=none; b=ff+CUDJHbW8HBwI0MxIgRq8GWoq+ElvUTwZlRGMXVOqTGfilBi5NglJcbagOyJRQBD50EBL8bgxtOwwur/U2qSHeK4CrWsSJMcuOVG2V32Pc/tc2MfdcKRir/8el5IExQTQE4Cv+KQQu+6855yFotTpjqqhSGI/7xPxCvOMbtS4=
+	t=1783958509; cv=none; b=PlAE34IQK9rqC/F91ahDYPdDxHVZFN1xIE76UvE/pWAwWcVZFtTOzqUkIQ81lpnNz9eXs5cHfP4NJ10iTZLfvWgFPiuUJyoOedmS0Nl3NwlFCfwXA2jiQl3x4V3ifs1QRqD3tXMDEuVGtUBQBGH2UO1VNyTv6zPqArINCsfIWWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783958289; c=relaxed/simple;
-	bh=C+9/YvzBqId/u+mMybJh1+egI7DPr1leuK6RgEH/uQc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LgOIzntGkDXGVeIN2V8sSh7nuQ/GIxeGq7HezjJYVifve5j/i8MOoeJCLI2stEwqpUf2bLm1EvO1WdlRhRGk2qmJMvxaPYr966Xm9Mvvc+h6Kqkq5NJHHLCWquiCw0/Ti8LCyv5qHxwZ9RnFLJh/lLXzyl3R9C/VbxjdiVy5260=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSWDLqVa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783958509; c=relaxed/simple;
+	bh=CD954zLyW+H+N700cDO8caRM/+OWbiqnsi8A3hbhkKg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZXzYQdtGJnb3Zxqh8481smAeckj4kzzfBi8fRHwz6vlw4AFuFnWf6DunAeMkhkT0e0tC+nbYniji+y450ByuBUWT2p5diPLdLiBEC+feVh1pwx5G5Cl+e+RB087Q3taRInBYflQcODYBUMvHNIDzdJGbLBpNdC+atIz89dUGUaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NJsNTqsz; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSWDLqVa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7740D1F00A3E;
-	Mon, 13 Jul 2026 15:58:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783958286;
-	bh=7H+hSADgLrwagJlrMFBXJif9DHuRxYjYrWKpce0dBhk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cSWDLqVaV8bwcRfqCfVvdSI4/cEy4zaGjymST+x+H/OMoO4lJhaXgNYs4LOnbNf4x
-	 zV0MdMlt3kqU6CtGhXlybMC8l8bd9vqP0Xp+1bpQZc9KJXJX7xd8OdP3XgiusVnJ9u
-	 DxoObDy+8t/BukMbRmqpmZAgvcMoMr5YFq0H9R5iad3Enyl31QCCml9pgb8JVviNkY
-	 +D1dN5GSY+R64mf70j9zsftfO5xCu5nEzm+oSDeD0pEOB5ryZ5iNLNOYijuASMRsyD
-	 SFu7CaKALnHc/8809j0iyCHxUDAbzMw/Z8rsJOohAzVt7VOCOVzBI9xMlyo4Q4hgTI
-	 Q/7+SPmvZICqw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/7] KVM: s390: cmma: Fix dirty tracking when
- removing memslot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260713150857.269954-5-imbrenda@linux.ibm.com>
-References: <20260713150857.269954-1-imbrenda@linux.ibm.com>
- <20260713150857.269954-5-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 15:58:05 +0000
-Message-Id: <20260713155806.7740D1F00A3E@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NJsNTqsz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783958506; x=1815494506;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CD954zLyW+H+N700cDO8caRM/+OWbiqnsi8A3hbhkKg=;
+  b=NJsNTqszoFL2lIEnjT3uA220H6AoBiyyafyjqatbT03l7daIJAEzIK54
+   /CJtV0+zF0QOgLsNs6RQV1doaSRveH3TJbcYbOoh0xYh3BZ8kijLNyZD7
+   qQSbMXJJWtUlTF06vUasnLu7g033Cb+HZgPtA0k+hv/IsubWpjzC7cKYT
+   1vmMSPNUJs82wCnSyL7oBWGlRp+WtP8skm/xeJiM73Cwey+3F7Q6oadZ5
+   E1gmJpf6dD9ofSAJTtjxZsC4+05C7k7DugUBzTPQfMM/Suizxs7jTLYq7
+   ycDaEDCeCmAUzScI2rFAI6boRyaFNFLyrmQAh7oNftUhnyeQuILNESkfA
+   w==;
+X-CSE-ConnectionGUID: c3KGFVLqQYyXTTlnD6P8cg==
+X-CSE-MsgGUID: Yr0xRHp1TKmo281GeZELlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84348798"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84348798"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:01:45 -0700
+X-CSE-ConnectionGUID: CPAh3dhWSUGNs6dbqkEkbQ==
+X-CSE-MsgGUID: 21ZP3ox8SRypvlTcge7k1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="249238465"
+Received: from unknown (HELO [10.24.80.90]) ([10.24.80.90])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 09:01:45 -0700
+Message-ID: <680a2be7-5a10-448d-8552-cb9ef64b6be7@linux.intel.com>
+Date: Mon, 13 Jul 2026 09:01:38 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/tdx: Add helper to query maximum TD Quote size
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <20260612110853.3188196-1-peter.fang@intel.com>
+ <20260612110853.3188196-2-peter.fang@intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260612110853.3188196-2-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Data race and double-decrement of `cmma_dirty_pages` due to two-pa=
-ss CMMA cleanup
---
 
---- Patch [4]: [PATCH v2 4/7] KVM: s390: cmma: Fix dirty tracking when remo=
-ving memslot ---
-commit 119121acc5129e77726627587bbb91e16dea4543
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: s390: cmma: Fix dirty tracking when removing memslot
+On 6/12/2026 4:08 AM, Peter Fang wrote:
+> TDX attestation blob ("TD Quote") sizes can grow with newer
+> cryptographic schemes, so guests can no longer rely on a fixed-size
+> buffer for the Quote.
+> 
+> Newer TDX modules report the maximum TD Quote size via a TD-scope
+> metadata field. Add a helper to query it instead of exposing tdg_vm_rd()
+> directly, as it can read arbitrary metadata fields.
+> 
+> Thanks to Xu Yilun for suggesting this.
 
-This patch fixes inaccurate dirty tracking during migration by appropriately
-decrementing the cmma-dirty counter when a memslot is removed. It does this
-by walking the page tables and decrementing the counter prior to deleting
-the slot.
+I'm not sure what the original suggestion was. Perhaps a link to the discussion
+(or Xu Yilun's email) would be helpful for context.
 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 9e3b8b5c6aa66..5c2408fc5a8cb 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
+> 
+> Assisted-by: Claude:claude-opus-4-7
+> Assisted-by: GitHub Copilot:gpt-5.4
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> ---
 
-[ ... ]
+Looks good to me.
 
-> @@ -5796,11 +5796,19 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
-m,
->  	return 0;
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+
+
+>  arch/x86/coco/tdx/tdx.c           | 19 +++++++++++++++++++
+>  arch/x86/include/asm/shared/tdx.h |  1 +
+>  arch/x86/include/asm/tdx.h        |  2 ++
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 186915a17c50..88c66c46e70a 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -197,6 +197,25 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
 >  }
-> =20
-> +static long cmma_d_count_pte(union pte *ptep, gfn_t gfn, gfn_t next, str=
-uct dat_walk *walk)
+>  EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
+>  
+> +/**
+> + * tdx_get_max_quote_size() - Get the maximum TD Quote size
+> + *
+> + * Read the maximum size of a TD Quote from a 4-byte TD metadata field. The TDX
+> + * guest driver uses it to size the buffer for Quote retrieval. Older TDX
+> + * modules do not support this field and return an error.
+> + *
+> + * Return: Maximum Quote size in bytes on success, or 0 on failure.
+> + */
+> +u32 tdx_get_max_quote_size(void)
 > +{
-> +	if (pgste_of(ptep)->cmma_d)
-> +		atomic64_dec(walk->priv);
-> +	return 0;
+> +	u64 val, ret;
+> +
+> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
+> +
+> +	return ret ? 0 : (u32)val;
 > +}
+> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
 > +
-
-[Severity: High]
-Can this two-pass CMMA cleanup cause a double-decrement of the global count=
-er?
-
-The first pass in cmma_d_count_pte() locklessly reads cmma_d and decrements
-the counter, but leaves cmma_d =3D 1.
-
->  void kvm_arch_commit_memory_region(struct kvm *kvm,
->  				struct kvm_memory_slot *old,
->  				const struct kvm_memory_slot *new,
->  				enum kvm_mr_change change)
+>  static void __noreturn tdx_panic(const char *msg)
 >  {
-> +	const struct dat_walk_ops ops =3D { .pte_entry =3D cmma_d_count_pte, };
->  	struct kvm_s390_mmu_cache *mc =3D NULL;
->  	int rc =3D 0;
-> =20
-> @@ -5814,6 +5822,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->  	}
-> =20
->  	scoped_guard(write_lock, &kvm->mmu_lock) {
-> +		if (kvm->arch.migration_mode && kvm->arch.use_cmma) {
-> +			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
-> +					    kvm->arch.gmap->asce, &ops, DAT_WALK_IGN_HOLES,
-> +					    &kvm->arch.cmma_dirty_pages);
-> +		}
+>  	struct tdx_module_args args = {
+> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> index 049638e3da74..2880f493a8e5 100644
+> --- a/arch/x86/include/asm/shared/tdx.h
+> +++ b/arch/x86/include/asm/shared/tdx.h
+> @@ -49,6 +49,7 @@
+>  /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+>  #define TDCS_CONFIG_FLAGS		0x1110000300000016
+>  #define TDCS_TD_CTLS			0x1110000300000017
+> +#define TDCS_QUOTE_MAX_SIZE		0x9010000200000008
+>  #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+>  #define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
+>  
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index a149740b24e8..ac39674c9479 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -72,6 +72,8 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
+>  
+>  u64 tdx_hcall_get_quote(u8 *buf, size_t size);
+>  
+> +u32 tdx_get_max_quote_size(void);
 > +
->  		switch (change) {
->  		case KVM_MR_DELETE:
->  			rc =3D dat_delete_slot(mc, kvm->arch.gmap->asce, old->base_gfn, old->=
-npages);
+>  void __init tdx_dump_attributes(u64 td_attr);
+>  void __init tdx_dump_td_ctls(u64 td_ctls);
+>  
 
-[Severity: High]
-The wide window between the first walk here (decrementing) and the second w=
-alk
-in dat_delete_slot() (which clears cmma_d) appears to allow a concurrent
-KVM_S390_GET_CMMA_BITS ioctl to intervene.
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
-Since the ioctl takes slots_arch_lock but not mmu_lock, could it acquire the
-PGSTE lock, observe cmma_d =3D=3D 1, clear it, and decrement the
-cmma_dirty_pages counter a second time for the same page?
-
-If this happens, the counter would underflow and wrap to UINT64_MAX, causing
-KVM_S390_GET_CMMA_BITS to permanently report pending dirty pages and break =
-VM
-live migration.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713150857.2699=
-54-1-imbrenda@linux.ibm.com?part=3D4
