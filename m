@@ -1,169 +1,205 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8B123392F
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783920047; cv=pass; b=l5IuEEiR+RZsiQiMlFaRowyLGpRhktNLfcfc9KjGEB6io9ezc0ieoGBfc6mHwnZjY+Bs/vmPruFuKENjHSQ9cY3VKPzG08fBSYm957r9TCEgaB7gUpHD5prVIvXBoKOybJ4a0OuTpua+IWO0rfIx7mwzuDz+KbxDSr/Jh9uIu5U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783920047; c=relaxed/simple;
-	bh=3ixt09FeQ0GjinjMXgzWXUfCsr1DrjcHFj9M9APbUow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CaCZZdckEm9nCPcEubGFXjCFOHlBI/mFqAgFm2zUaM6px+GQd3rGYp/jd19EmN3KTQO/aHoJD0OmdQxI/uGyX8510zZuCfjI0EaONOenNd2xXp5xVT7/h36Z4tXR9tGpkWGHX5/7U2qctTiuqn08Vq7Io8RpiEaN3kgiVEvxkZE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=ad4MJmVY; arc=pass smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFCAEACD
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783920645; cv=none; b=QqJX2PMEJLz+ATBiw3AG5rgAQ98SNcfonREeINObOOf47N2aH7UFtXMroFW7U9DuYZjRTLjYBtajVI68qSlixCQthditstYhWcZ3UtGnKXWTP0fB8FEpvBm9iRSCo/8Z6u+AT+05myyR3Jur9SYAFQQJm1WE9nqqBJMYGhM+eGo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783920645; c=relaxed/simple;
+	bh=Fi7z1vH9bca0XOH/qOCTNLEzS7ZXsjGMcy0nMajKyfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a8TPUn1W1SgLcT8mJcbmFNqjW5WrdkfLgIgFTHsKI4bvIymhyMIZaMD9DsGpLl59tWR31J4uqVPj7uAyDZEv3PdBx5IAMHNvgfqXt+Nphjm4lRw8EF0FAyYvRiOLHZKWEY1rYtEbex3felP/zylEWbb2Ag0t5n81i/pQ960LK68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ap78OqRA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KXYePIe7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="ad4MJmVY"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4720d22c94aso2216939f8f.1
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:20:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783920044; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aAnlOaQa5eY2tGb+ACf/MqTyueOXlgbklQU6HgEExIDQWuc3VTwaY6J2sIQFxwxTJm
-         JMDSqPM4OXmsxFF8KYZpqj1IckJ3yK8Xcf+IIORZWpzGqMKpOiRRHHAWiAED21auoGcq
-         lNlqFDOJ6fY/Ouc5TquGn9pEXdySKrPGjPuvDPMM/OT35fCm9ftTKXWdzDGkLknUehwj
-         C0aHAMxfbIPNTMYVZuNwn95bTNYByPKIrZNXU8h7CfCOvrH8VnVvddArxnk+h1GAp6if
-         T7rTkbrJ9/01tta1flwaCCEOelHaZolptiR54bMil51oJ7SRSNVQyLN2B8xcuFlurnyo
-         4sbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
-        fh=3XRDq6A83pdqoNMCRm+EICEBPk1Xfl3nPOjv75WRA/U=;
-        b=p3ht6xjs1JBiuf4kef4tCpJCEjHPTPf21b240oySIu3ohZfflevKnQSWdpk3+UaIVc
-         r0PBJKyCmxAlGeHheytf4654UivTT9HS2JeooPvVLABBibBr5JyAIGLBxi+znjpzeU0E
-         VgNksVwBdk2iR6aE0Ld1TxznlDdIGiKwflMOWKTsB7m4ab3tslJvEoi3lZgI5yVN+S6F
-         mLFOm0fGlKktA7KcDUVIhG+tUrAJvQ36NLa0tkQn0j1YidRHVrzwB1gw6eecteu5XNnr
-         uTWdc/2Ub/kX3SBB8XEabp4qPDBfuavekeXoZNt5GVu/15ntkQKd3r2SP8zz4KD4brzO
-         I+ew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ap78OqRA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KXYePIe7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783920642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
+	b=ap78OqRA4hTtrOEBnZV+c7Zpw/kycxNoQP1oCiReKyUfm9AeLfF2SjZFvQaLrUBU0U8w1x
+	ff7lvUBEpHo8rC3TqIBb76W+JtUJ2h9UKr3nJQnqG4BVDZaPpmmMGKAeg+899Y24VJkbad
+	Gyvnwef+pNsE4p/8EnFI2+nuUK0D7X4=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-1Dj7_hdMO7uDMc1wSf1ZDQ-1; Mon, 13 Jul 2026 01:30:41 -0400
+X-MC-Unique: 1Dj7_hdMO7uDMc1wSf1ZDQ-1
+X-Mimecast-MFC-AGG-ID: 1Dj7_hdMO7uDMc1wSf1ZDQ_1783920640
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84865f326efso2911710b3a.0
+        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:30:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1783920044; x=1784524844; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
-        b=ad4MJmVY7KSxaabDOvG1+EaICGTh+XBkWDO99iSkN5P0WnYUByzY3nbp0uZxD2nVrz
-         KN3BHFY3lTzCD7UZtsgJODQKGrCHuYNF6VyRPeIjacj3BPtar7RP93qHUhUM+xUgghWs
-         TTNugWMstxwsgGfu+oDOJNcdjDgi5Hhp1RD39mqkUYaWDFWS7YcJRi6rPWOcm3iap/g0
-         JQi2FpyF3LIDtUp3T+TkOGqh5HgYFMdAwuuJt8kml00j5X/qgjRbdq5Z4Q/dx5k4IY8Z
-         CLKdMNXsKy4LljYf9aW7v9xDXnx3uuXzN3qHlsn7Sezqhhz+8aLrvsWnkWI3tKY5g/05
-         YGRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783920044; x=1784524844;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1783920640; x=1784525440; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vtAiO3GAOtWbZl83N5tUcn9I/FK/tuLB8pt/tT+Gqe4=;
-        b=Yf4FXYsHXXqrhnCfgfpZrrnhQi8Ds3cDZTjtEAI+J+Il1UxvIMRiYqSGUHbKMei2Qj
-         2rqKIVgzJQlKPo94jG6u3uBdTNVR77GS1Bz/LDhHV4+feNKkwtdSM+rjt6MeMKhTVrQe
-         NwxSMzGo0GXZU+PRW7CZSKF+LmP9qW+CmlPq0Q2tjqM4it00rkqIsbNu834ecBgzU8wp
-         0wdRPzg86FKUoxqxY6/jM9Cwb0AvECZKVGf8yMZaT1zAXvTDqBC/duajjNHGizuaNr24
-         ZMgqmwWLhyEhW9X0ERzJ3KVUgd8GbTP1UFA9ZP+jv8d32j7tLxPGgPL/xqFiEUWH5N6k
-         XtCw==
-X-Forwarded-Encrypted: i=1; AHgh+Rof7s2NmFWfgduc4vjWFar+0p5fwS5HQk5tHHqTZmhM4Vt7oHW6wqTO8bQ8ebTAfphl7M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYenM4OHw8omlBLLdL84VXfVmZh0BfG/o5zHVAiKz66MCJ9Mos
-	sVRV4g0j0SMMoOsJ/7Z5n0J/hJr/nWubXNKF2k9JwhpzLF0PCFtGllWg5ZhLNoxCEQzH73Ek4PK
-	0rHIs4OQEB5+ZNDIYvnR1QXpCsX+MruZJcz3YeJdRWw==
-X-Gm-Gg: AfdE7ck2as/BQ5dml7t+z2jcQlVj2j+iOyzXqUIcQtMzvSxdD0UOK+1jLcsniI2485w
-	MfVqqq9czOMMkamkDOUSIGtvCkYoPgdsTImz3gEUfwV2DJZPzFauXleln07fulodPFB8fATGj3p
-	P3hiYUf31DH8jgpaiGGxgDXBZ9NL+VK49mX52A63gJ0aTN5NP5Z5DR+eqmjdezDOdrTquxLIymM
-	01gm3SYnK8qmMz8HiXBhMqhOZV6pz32O4ryFUIS0bJj3aSzz9i3E4+kmPHgfuWhn5CvqGU9Ags3
-	f2TRjC+kS9fR5B38pLLnQ8+o+e+Rz3sIHBhZ5EqsjTKa5gJ30F0wwcN/Ov+gCDukQ7Tm2yloH1e
-	wjAcoxKR/tgXFPc3J
-X-Received: by 2002:a05:6000:40cb:b0:47b:5f25:7c59 with SMTP id
- ffacd0b85a97d-47f2dcf8d32mr8542206f8f.38.1783920044394; Sun, 12 Jul 2026
- 22:20:44 -0700 (PDT)
+        bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
+        b=KXYePIe7/qU6FVKLLWqS/DRZUhqjPO4quLjcsoDdHoXl+awsPIVqb5xGVP7dziqhq3
+         XaV3RuUPzrBh/FBj819vDhvvoQKpz8DY/IFUeT0TzmVAoRUDdgGWFueXlgrG1BDwiwNW
+         qow7D0PlDL4yX9HC9mNnqPE8dHyoh2gAZVwr06anez4KWG/BBCt5XQKa4CgdH9LxX8Nk
+         Fg/WYeBxO7zSinj5hi0eELl8wT6QiaulSExF9zVYfXyFDkn5rb91eZccwVclSy+gC5fH
+         A3IYHiwsuqQlvZjUSEpo5WCHt4TD8jlzGpWNHD3fwcD2K6m/mK3syWNz8SNQ+T5c+7pf
+         3KMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783920640; x=1784525440;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
+        b=IfXmeq8j4fbhvuKwRr4dUMnVw3gmo72G8BNgwhNvqmcnTcj7pwPGWvO0BSQCXpnbs7
+         BeuMOE1K3cTjpTBM9GaLWxvp4i3ZBMV47IXMmNuL78ry/NBBffpdD7o7rCupDA36/xXE
+         YUgqBAHInALjuhVa9nmk2cGqe2WU2NDCjotEcyulwmSqolZye8j0Z0zCSyFq7aQ60Mnv
+         Pgrk4PkVsssaCEhXy2OlbQ6SPrmZxFUByuCv9Csvjgc3LYAJ8pymlPB+NW0m2PFVTxl1
+         u445dymXoGcDO9DExEZEOiMAg4N1UvWiGr3Wf+MxKOVu3POjKgbRI+8JcSvWu9H8y7b5
+         jVQA==
+X-Forwarded-Encrypted: i=1; AHgh+RqTL/iW1rLiDRyOL5DXaCOjR8uQX/f9T59QblaMCMiPZhCCq9Wm7+o1FhWOLv9MF0vOFR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcFZvrWoYy12Kgd6OST8Q/ZqvAsXxepWL9QijDp6QZOmZSY0gb
+	xcHoScKOhQDHU9NbOqhUBxFjKBRkB527fehEvdIt4E0j8o9X8WTiMF8US3g11qQQIvUWkFDjA1d
+	uPaAE42Vk0VBn4kKGx/zu/zT4yjiIrasU0VnI7nqPKjWoVsKjPsCZEA==
+X-Gm-Gg: AfdE7cnGRdPk2FAAd1Jp8vW8Lr611ClqbFIP+9ndNOLh6LmvZdXplI1O1CJsE2zTzYk
+	9Z195xR4+pTsMmeT95ENE9mjf3Jm+yypEf+OYz/7sM+Oe//Orhq6B03hozGfslhocDpPrAeiCBy
+	KaSweV7+q5OvTDI/vXMv57fd/fFGaNZ5RI+dBxceroDT+X8Lh+v7vbTAjW5YXUWJkl/8lmlIp1O
+	RZJLQThVI/EmOkPn+zGD5BXIvgArmwG3NhbBMlhfBSLsQDCqebcVjU38HxQP3G+b8B8Q4cLDsWF
+	qTkh64FJzwfb8lFTySPPbgEcgS7n2AM87ZL88gq9qnmShaHAzqYRPCD80qGVfIXoHUqWMLjS3Yg
+	lzoZmMm53/k8pY34o8+g9pTkSDdzcrL4/G1JxdEkB4mURS7NYoZvxeQ==
+X-Received: by 2002:a05:6a00:1d90:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-8488975aab7mr6391954b3a.43.1783920640060;
+        Sun, 12 Jul 2026 22:30:40 -0700 (PDT)
+X-Received: by 2002:a05:6a00:1d90:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-8488975aab7mr6391920b3a.43.1783920639587;
+        Sun, 12 Jul 2026 22:30:39 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a30026410sm1590698b3a.19.2026.07.12.22.30.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Jul 2026 22:30:38 -0700 (PDT)
+Message-ID: <ac26ac91-6809-4429-9750-e7d671e952bc@redhat.com>
+Date: Mon, 13 Jul 2026 15:30:31 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610093922.51617-1-fangyu.yu@linux.alibaba.com>
-In-Reply-To: <20260610093922.51617-1-fangyu.yu@linux.alibaba.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 13 Jul 2026 10:50:32 +0530
-X-Gm-Features: AUfX_mzgLxpjt24Y_crhzgSd_jT-mGHCzGXn6QWlmdDMie4AJ5TBR2ZEqWhokTY
-Message-ID: <CAAhSdy220vPtK6a8WpRbmyfN2Aa2wQquJ+p3rLP-P4XOPZOzPQ@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Avoid redundant page-table allocations in
- ioremap topup
-To: fangyu.yu@linux.alibaba.com
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Atish Patra <atish.patra@linux.dev>, guoren@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v1 07/25] target/arm/kvm: Create scratch Realm VM when
+ requested
+To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+ kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+ peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+ pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
+ lorenzo.pieralisi@linaro.org
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-8-mathieu.poirier@linaro.org>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260707224306.1202330-8-mathieu.poirier@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 10, 2026 at 3:09=E2=80=AFPM <fangyu.yu@linux.alibaba.com> wrote=
-:
->
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->
-> kvm_riscv_mmu_ioremap() currently tops up its on-stack page-table
-> cache via kvm_mmu_topup_memory_cache(), which allocates up to
-> KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE (32) objects per topup.
->
-> ioremap only consumes non-leaf page-table pages, at most
-> pgd_levels - 1 (1 to 4) per call, and for contiguous mappings
-> within the same huge page the non-leaf pages are allocated once
-> and reused by subsequent pages. Topping up to 32 objects therefore
-> triggers many unnecessary GFP_KERNEL_ACCOUNT allocations on every
-> call, all of which are freed when the function returns. In hot
-> paths (such as vCPU migration), this creates avoidable allocator
-> churn and wastes CPU cycles.
->
-> Use __kvm_mmu_topup_memory_cache() with a capacity of pgd_levels so
-> the on-stack cache is sized to the maximum demand of a single
-> mapping. This removes the redundant allocations and reduces per-call
-> overhead without changing behavior.
->
-> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+On 7/8/26 8:42 AM, Mathieu Poirier wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> 
+> When a Realm is requested, create a scratch Realm VM by setting bit 8
+> of the argument given to the KVM_CREATE_VM ioctl().  Bit 7-0 are reserved
+> for the guest PA size.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> ---
+>   target/arm/kvm-rme.c  | 8 ++++++++
+>   target/arm/kvm-stub.c | 5 +++++
+>   target/arm/kvm.c      | 4 +++-
+>   target/arm/kvm_arm.h  | 8 ++++++++
+>   4 files changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> index 90c1d30ba24c..f763d5ed6199 100644
+> --- a/target/arm/kvm-rme.c
+> +++ b/target/arm/kvm-rme.c
+> @@ -99,3 +99,11 @@ void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
+>   
+>       cpu->kvm_rme = true;
+>   }
+> +
+> +int kvm_arm_rme_vm_type(void)
+> +{
+> +    if (rme_guest) {
+> +        return KVM_VM_TYPE_ARM_REALM;
+> +    }
+> +    return 0;
+> +}
 
-LGTM.
+We had official name for 0, which is KVM_VM_TYPE_ARM_NORMAL. Another question if
+it's worthwhile to have this helper since it's equivalent to something as below,
+which can be directly applied to the caller.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Queued this patch as a fix for Linux-7.2-rcX
+     int vm_type = (current_machine && current_machine->cgs) ? KVM_VM_TYPE_ARM_REALM :
+                                                               KVM_VM_TYPE_ARM_NORMAL;
+
+
+> diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+> index 4ab6f08637d1..6d52f172c5df 100644
+> --- a/target/arm/kvm-stub.c
+> +++ b/target/arm/kvm-stub.c
+> @@ -129,3 +129,8 @@ void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
+>   {
+>       g_assert_not_reached();
+>   }
+> +
+> +int kvm_arm_rme_vm_type(void)
+> +{
+> +    g_assert_not_reached();
+> +}
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 4c212ed0c337..6aa1cd04e484 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -108,6 +108,7 @@ bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
+>   {
+>       int ret = 0, kvmfd = -1, vmfd = -1, cpufd = -1;
+>       int max_vm_pa_size;
+> +    int vm_type;
+>   
+>       kvmfd = qemu_open_old("/dev/kvm", O_RDWR);
+>       if (kvmfd < 0) {
+> @@ -117,8 +118,9 @@ bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
+>       if (max_vm_pa_size < 0) {
+>           max_vm_pa_size = 0;
+>       }
+> +    vm_type = kvm_arm_rme_vm_type();
+>       do {
+> -        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size);
+> +        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size | vm_type);
+>       } while (vmfd == -1 && errno == EINTR);
+>       if (vmfd < 0) {
+>           goto err;
+> diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+> index 12ed1eee18b4..65ec1b970606 100644
+> --- a/target/arm/kvm_arm.h
+> +++ b/target/arm/kvm_arm.h
+> @@ -259,4 +259,12 @@ int kvm_arm_rme_init(MachineState *ms, KVMState *s);
+>    */
+>   void kvm_arm_rme_vcpu_init(ARMCPU *cpu);
+>   
+> +/**
+> + * kvm_arm_rme_vm_type
+> + * @ms: the machine state
+> + *
+> + * Returns the Realm KVM VM type if the user requested a Realm, 0 otherwise.
+> + */
+> +int kvm_arm_rme_vm_type(void);
+> +
+>   #endif
 
 Thanks,
-Anup
+Gavin
 
-> ---
->  arch/riscv/kvm/mmu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 2d3def024270..873a5dde4b92 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -39,6 +39,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, p=
-hys_addr_t hpa,
->         pgprot_t prot;
->         unsigned long pfn;
->         phys_addr_t addr, end;
-> +       unsigned long pgd_levels =3D kvm->arch.pgd_levels;
->         struct kvm_mmu_memory_cache pcache =3D {
->                 .gfp_custom =3D (in_atomic) ? GFP_ATOMIC | __GFP_ACCOUNT =
-: 0,
->                 .gfp_zero =3D __GFP_ZERO,
-> @@ -61,7 +62,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, p=
-hys_addr_t hpa,
->                 if (!writable)
->                         map.pte =3D pte_wrprotect(map.pte);
->
-> -               ret =3D kvm_mmu_topup_memory_cache(&pcache, kvm->arch.pgd=
-_levels);
-> +               ret =3D __kvm_mmu_topup_memory_cache(&pcache, pgd_levels,=
- pgd_levels);
->                 if (ret)
->                         goto out;
->
-> --
-> 2.50.1
->
