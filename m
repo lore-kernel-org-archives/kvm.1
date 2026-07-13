@@ -1,132 +1,160 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC6C432BE7
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 13:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D151433E87
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 13:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783950615; cv=none; b=EnmDo0PU2sCrpYXAEj4WSRmYiWP3/bbON+bQgU4k/uV6Nn1auxv7WRv+cj2SckigWKf2RjinR0RvkYUpJ8ocET1qIb5gR8KD3fnZotjUc9vipgfz/ECiWSgwNErFnRe+7x4caK74wSRGhxsgTXoSSojgQKtMjMeRDu5j3e674+c=
+	t=1783950670; cv=none; b=nOLggktFgz/YqukFBvrUVWlZBtDltnNkxZinDFtUVljeTU6jhZso9e5LTNkId/8I60f3fy27sjNJ5rIw4xS6Wvuh4sFvVG4mmBVaCdsNYu2YXjN0NLTHBUwxXhLqeIXel0lZhz+FZYA6VE7liStxg/66zXKYbPtNSIX0pM7Wyto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783950615; c=relaxed/simple;
-	bh=o6uNn8Jf9VR+7IPefK1cDl6ga04Y/451pLYTSkPvspI=;
+	s=arc-20240116; t=1783950670; c=relaxed/simple;
+	bh=X6mGqtie9TPM4oUFmUe6eZolVSw7vutqPLNRxqVuRw0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LZ1InANVdgqibS0Yxo7h6e23bK920kL4IH4iD9DuFXRn3fN5WUBXRiIdOmeppllYnWinGmu4a1TG/Ac2WU+QhCFsDFHdx0Ta3Axz1zoC/MINUBlOuhQF7U1gvMFZrShA4JxV39wvnZ8PNMCyDir7pGx/KFMr9d1F7IAb4UR/H5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPWlvi8G; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=eOYpljFw+sAwebX8tLwqDhAcTtFj1xmUSkEgh4Xh0fDl7jtODyOEZxEH/+6Whu2WqaKxGDoFGQYiWEetrcOPLvsPKL6oO+PDTafMhqznOlEKv9j9Zfj9eV2Eh0s5009dh/oPWBB168HFGA4gZH4r//D9K7spGmrjmK4k6Bv2J2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVsn547y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPWlvi8G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430931F00A3A;
-	Mon, 13 Jul 2026 13:50:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVsn547y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA951F00A3A;
+	Mon, 13 Jul 2026 13:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783950614;
-	bh=vwX/B34BSaTbrbk7dh49dFnwBqh/E+04RPnOcek7taU=;
+	s=k20260515; t=1783950669;
+	bh=zXw7nUR9UZfM/QsWcJTbJ3YojZHjJw9R2Mk1BGgIBWY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NPWlvi8Gc94Pw+uSUVCHr40y9LCoyA6udqGbZesNh6JS7+JUFNPLU3WEdoIA5IMtF
-	 l5Zx5MaBIqP4LIVO8aBpYNQ4kORasEw4UT+c9jbaSoCZPJDmx4sTOvrI7gkJGM5f53
-	 /sq+Qxsc8qk+N3qM91vuCIPe9eyNuyg0oMmQxAhRvXwmcpNo4NEH2CYgGkWsJfkJe0
-	 dfbh1LosKfkm5SoyDkwnLtrtV6iqmF/67pZBtK58tsrMF9UWBPKwHrGlJ2Q0NRx8RG
-	 9Mp/W+4phrlWJze0uRsfQCq5mcJmWvg3SJnCHP2Ty4JWoF8Pv2lSjigKB90yuD5IUg
-	 PnAPy3Rr2q5tg==
+	b=fVsn547yW5jvKYFZfiMWzzD5Ik7uEADWNxkHaANNrvP/GRosjgoPOonoQkysJQn1H
+	 QjOECqhtfYuWM4wuflxnvb+ZIO0t4eSnIT1KKr1wmtVzWapFB68s+UtD4+o6rj14nu
+	 APjw+c0DZUD+uq553dEADrydrKUnPkzu7JYCT28ecaECFEl2N1l4EknVpeMelFdH0a
+	 hOf386Yy/2hGNpz2BSuzQhNr5jC06tk87XKhvyAaevsH1rZt5Tf6ibDKwSjotL2D9D
+	 0nExvRBMlYCJJjJXSXTw3G6lg1oEKaUK3rbRHFRsRokIgjbzkJKQK7p/HuL3SICe+A
+	 zYQoHDBlv5KHQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/3] x86/tdx: Fix off-by-one in port I/O handling
+Subject: Re: [PATCH v6 3/3] x86/tdx: Fix zero-extension for 32-bit port I/O
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260713133753.223947-2-kirill@shutemov.name>
+In-Reply-To: <20260713133753.223947-4-kirill@shutemov.name>
 References: <20260713133753.223947-1-kirill@shutemov.name>
- <20260713133753.223947-2-kirill@shutemov.name>
+ <20260713133753.223947-4-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 Jul 2026 13:50:13 +0000
-Message-Id: <20260713135014.430931F00A3A@smtp.kernel.org>
+Date: Mon, 13 Jul 2026 13:51:08 +0000
+Message-Id: <20260713135109.1DA951F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Emulated 32-bit I/O reads (inl) fail to zero-extend the result int=
-o the 64-bit RAX register, violating x86-64 semantics.
-- [High] Guest register state is corrupted on the error/fault path of an I/=
-O read.
+- [High] The TDX #VE handler for the CPUID instruction fails to zero the up=
+per 32 bits of the destination registers, exposing the guest to potentially=
+ malicious or garbage data from the VMM.
+- [High] The TDX #VE handler for MMIO reads fails to zero the upper 32 bits=
+ of the destination register for 32-bit MOVZX and MOVSX instructions.
+- [High] The TDX #VE handler for MSR writes corrupts the MSR data sent to t=
+he VMM if the guest's RAX register contains non-zero upper 32 bits.
 --
 
---- Patch [1]: [PATCH v6 1/3] x86/tdx: Fix off-by-one in port I/O handling =
----
-commit 6a0c705281bac273b6793004a9d727acc5a4f92d
+--- Patch [3]: [PATCH v6 3/3] x86/tdx: Fix zero-extension for 32-bit port I=
+/O ---
+commit 54fa9007fcfc0403e17720722b833050a2d55438
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-x86/tdx: Fix off-by-one in port I/O handling
+x86/tdx: Fix zero-extension for 32-bit port I/O
 
-handle_in() and handle_out() in arch/x86/coco/tdx/tdx.c use a mask that
-is one bit too wide for all I/O sizes. For size=3D1 (INB), this produces
-GENMASK(8, 0) =3D 0x1FF (9 bits) instead of GENMASK(7, 0) =3D 0xFF (8 bits).
-This commit fixes the mask calculation.
+This commit updates handle_in() to use insn_assign_reg() for 32-bit port IN
+instructions. This ensures proper partial-register-write semantics where
+4-byte forms correctly zero-extend to the full 64-bit register.
 
 Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=3Dbxo=
 wfZwxrATCBRg@mail.gmail.com/
 
 > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 29b6f1ed59ec5..b8bbd715fb624 100644
+> index b8bbd715fb624..f904a636d449b 100644
 > --- a/arch/x86/coco/tdx/tdx.c
 > +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -694,7 +694,7 @@ static bool handle_in(struct pt_regs *regs, int size,=
- int port)
->  		.r13 =3D PORT_READ,
->  		.r14 =3D port,
->  	};
-> -	u64 mask =3D GENMASK(BITS_PER_BYTE * size, 0);
-> +	u64 mask =3D GENMASK(BITS_PER_BYTE * size - 1, 0);
+> @@ -703,11 +703,9 @@ static bool handle_in(struct pt_regs *regs, int size=
+, int port)
+>  	 * "TDG.VP.VMCALL<Instruction.IO>".
+>  	 */
+>  	success =3D !__tdx_hypercall(&args);
+> +	val =3D success ? args.r11 : 0;
+> =20
+> -	/* Update part of the register affected by the emulated instruction */
+> -	regs->ax &=3D ~mask;
+> -	if (success)
+> -		regs->ax |=3D args.r11 & mask;
+> +	insn_assign_reg(&regs->ax, val, size);
+> =20
+>  	return success;
+>  }
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does the bitwise operation in
-arch/x86/coco/tdx/tdx.c:handle_in() properly zero-extend a 32-bit read?
+This is a pre-existing issue, but since you are fixing zero-extension issues
+in this file, I noticed another zero-extension problem in handle_mmio() for
+32-bit destination registers.
 
-When a guest executes a 32-bit in instruction (inl) triggering handle_in()
-with size =3D=3D 4, mask is evaluated to 32 bits (0xFFFFFFFF).
+If a guest executes an instruction like MOVZX EAX, BYTE PTR [mem], the #VE
+handler calculates extend_size:
 
-arch/x86/coco/tdx/tdx.c:handle_in() {
-    ...
-	success =3D !__tdx_hypercall(&args);
-
-	/* Update part of the register affected by the emulated instruction */
-	regs->ax &=3D ~mask;
-	if (success)
-		regs->ax |=3D args.r11 & mask;
-    ...
+arch/x86/coco/tdx/tdx.c:handle_mmio() {
+	...
+	case INSN_MMIO_READ_ZERO_EXTEND:
+		/* Zero extend based on operand size */
+		extend_size =3D insn.opnd_bytes;
+		break;
+	...
 }
 
-The bitwise operation regs->ax &=3D ~mask will clear the lower 32 bits, but=
- it
-incorrectly preserves the upper 32 bits of the 64-bit register. x86-64
-architectural semantics require any 32-bit write to a general-purpose
-register to zero-extend to 64 bits.
+If insn.opnd_bytes is 4, doesn't this cause the subsequent memset to only
+clear the lower 4 bytes of regs->ax, leaving the upper 32 bits containing
+stale data and violating x86-64 architecture rules?
 
-Could this cause data corruption for guest software expecting RAX to be
-zero-extended?
 
 [Severity: High]
-This is another pre-existing issue, but is it safe to unconditionally clear
-the target bits in regs->ax on the error path?
+This isn't a bug introduced by this patch, but does handle_cpuid() have a
+similar problem with zero-extending registers?
 
-If the VMM rejects the hypercall (__tdx_hypercall() returns a non-zero
-error), handle_in() still performs regs->ax &=3D ~mask; and returns false.
-The kernel then injects a #GP fault into the guest.
+When a guest executes CPUID, it traps to the #VE handler. handle_cpuid()
+copies the VMM hypercall results directly into the registers:
 
-The guest exception handler will observe a partially modified RAX register
-instead of the unmodified state from before the faulting instruction.=20
+arch/x86/coco/tdx/tdx.c:handle_cpuid() {
+	...
+	regs->ax =3D args.r12;
+	regs->bx =3D args.r13;
+	regs->cx =3D args.r14;
+	regs->dx =3D args.r15;
+	...
+}
 
-Can this violate architectural guarantees for faults by exposing corrupted
-register state?
+Could an untrusted VMM inject non-zero data into the upper 32 bits of these
+registers and violate x86-64 CPUID semantics since they are not being
+zero-extended?
 
->  	bool success;
-> =20
->  	/*
-[ ... ]
+
+[Severity: High]
+This is also a pre-existing issue, but could write_msr() corrupt the MSR
+data sent to the VMM if the guest's RAX register contains non-zero upper
+32 bits?
+
+The payload for WRMSR is constructed like this:
+
+arch/x86/coco/tdx/tdx.c:write_msr() {
+	...
+	struct tdx_module_args args =3D {
+		...
+		.r13 =3D (u64)regs->dx << 32 | regs->ax,
+	};
+	...
+}
+
+Since WRMSR ignores the upper 32 bits of RAX, the architecture permits
+garbage in them. Because regs->ax is not cast to a 32-bit integer before
+the bitwise-OR, won't any set bits in its upper 32 bits bleed into the
+EDX portion of the payload?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713133753.2239=
-47-1-kirill@shutemov.name?part=3D1
+47-1-kirill@shutemov.name?part=3D3
