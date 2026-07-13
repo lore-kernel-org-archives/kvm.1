@@ -1,243 +1,179 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98DE26ED59
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 22:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783982661; cv=none; b=DO7G3Mq32+lwFp1iXj2t/HkzoRa5+BkBwpQV/mUN1EVFDo+DVsxSrzNlTp7gsh1uq0Y9Y1PtPsN/O8BKliW/nDuDgQfIq5eRa04DktW9Xt15Tzj/73bfZ/ih/WdKOiHOEpsDdS172lrl6JiwHMxVV4iaiN8AZ0dDcgAQQnK7S2Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783982661; c=relaxed/simple;
-	bh=Wsm61aa6wzZBuVPSnrhdLkXCNbriieWkIeHznl5KG5s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rlc7c3/BaCBqSfx2BolFYA3uPyJdUvYjNWlQ8WnEraDcrvz38tbiUYncUadOkCHWS7I/v7lNEdNxQWvHmHAj7uqI2YcgGBi+HTSdRXgGa8XUFy5db3ljUBAGMF2sI8pnR/nmEr4nn1bJCqEF68GJOu6QAb3N5QVirajK+45/YIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qkudrccL; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8493D1A99
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 23:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783984568; cv=pass; b=X2BC1YrRP3Ay7/kZoVHtDjO2Zdl1JrxLTg/eMN7OfkNoV3KNROaE7BdMbkzSJvIi494AypjVu7aWgpaoc+4S91TxVjHZZmWqaaWcqu4yXgMpGpNgFgW4FeTeNWo3qPRbC169eZH1J5x/o/dJO3kObfwRvm514rwr54S1zYDqAlw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783984568; c=relaxed/simple;
+	bh=jNitDBOyiAnqLYAVTV2WWuN1NaJEYQUlElQBlTgvBIA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sK/b44Ej5PeVXmacDe//9EltNmlo1KfgX1KWvDI+mhtFWvSn7MD0FJlfQowKKhvUH1L9r7J/Jtir2oPNnT59w3Hq7whPGTvG5LwtsMdBFICXBxEnF91W8Boyu7715EmhelUNG7Yd98EeBenq/HZUDD4m1Hmbc5VLv6KVNUK3TFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dtrAYmM5; arc=pass smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qkudrccL"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84a2c90e383so291607b3a.0
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 15:44:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dtrAYmM5"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ca88130e09aso2464911a12.3
+        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 16:16:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783984564; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cVRWQpLupVXS3/b1NAmsf8yYEjs9Cp98CpNMLceKTcZN1VNxnuEfV0hObr1ruWkdK/
+         tSf+LsuHQsm/Q7R7uV8XVDv+tu49DKLk0uoHjtknQ3yhuMkizu7OO0T65s7cXj/c25j3
+         9r/XYLb+B5IfWkXRnIvTffUXIX1OyYKv+07bAMyc1tC9geSsjTnylDxQJBrFg2/lFig6
+         Fy+fNlPHwtjfhyaZE7HTd9Tic3p6dl4vXnHmaUQTq6kvioQaN++r0v8ffKI/lsDzPqWx
+         xXFFCGj+IwXkiXe1JXNYzMwoCsNQ7Eb9SG4lP4X8Qr5/d1Z7Gt7vNTKBQg9aT2o4yju9
+         FCNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
+        fh=medT0Y8yb5CpPamot5j0vSB8aDoV/9CxINFWE1YKmhU=;
+        b=R8GXVgwDCIK38lDL+N2Wjq5fbLwAwf7YWp/ofjiEy2VkT42wBXnnl3Jgw5zRcYrwqJ
+         TckB/SwyUYcXntCap2pPjrPFMiNdIiZUhSvg78Y/NtdZ9Riz6o4F117iFfMp7f3y0J7R
+         TV4NOKVAdnIrknC+ddFy+CqZ6lrDg1kDz9CNNJ/XVy57riZjr4PQjJVrYTJ1cjG123Dr
+         ACPhUa1C3WqHdDF6hLLTVmsY014lehG2psRzw/+YWkIfD3DsSX/bqGNKa85jgY0NH6Fe
+         /ydsf5v3QwuuV/ZElnyC/cM1DefrpD70KCuCkqYBmeWEoE9gRdYUwha2TXbfRU7hdG+i
+         4cvQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1783982659; x=1784587459; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LgcBlPclbkMdbp/HtCXTu51Kc/xPI2S2dvfoAEfAMNM=;
-        b=qkudrccLLcWWQa4L+sDOw+Ey3i+7iNRCjOlCF2UIX3v1tTMSg05mrB+pjWdWXp8DFe
-         JHFpr3DerAB7wSr+Xfb18ZMfiG8m8wTdmDtgfuvwbhCzZrd56nDlxbMDl757G6u6G0P7
-         Y5HtJeg42wuO5ewIeAedjPgUxK4pwUFSkq8erjdXM1CS2W7HVjIFNQ/Mk8btU93p14s1
-         e+Cc5N1HrFosJkR0LA+rQGBXsleFwL6oLwxhzVBCAgVhd83CvB19XQt4/qejwW3CGspo
-         ZHO/3GRLqJCB48uaLbXrxZvUdnJ9qt9sWGE5HmhnpFMtenGnzDvsDizqJ2jKLs7q1+Xs
-         m7jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783982659; x=1784587459;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783984564; x=1784589364; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LgcBlPclbkMdbp/HtCXTu51Kc/xPI2S2dvfoAEfAMNM=;
-        b=Hz3j98axTNUR2r8S75HQ20B9kG4ouNl+AkFWYEelo7BLXxxf61D74ywOnanIrP7duA
-         2GaDhcnYx7Pk1W2+427n3svhX/pnR+exd/RfETBCqZrcv+gQm7Lm3ZiSxijTWKmhAIrk
-         cZv73pgE0hjaPxgBjSj45YDvmHNtKHizoFHdhB3P2ov1/yfpfi+BJdgUD1LwmM5K8ez9
-         cKP+QiRoEaftP03L/lW3ShO9vyHL06MKdVo5aT1SB6Np6nQSPJjePBuGjdCP1F9Z/4Oz
-         HqD0UdkxpODCacsgLvyMZmI2nGdpDab3cXuAi/mZYHFqdViaxJFe4agZQuzt47beFK3f
-         POYg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrx2KhcgKi1UquyMYpCXHvG4NRKeerWqhd2HaMj9IrODznEpGJdMN6nVdiI1YeyGFo6DMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuKl+DmCPhRpOrjBT8ACLDr38wQC+VyxrnURB9kmmpIT+ICAFy
-	X9C+dXPnB1xN896vZ+4BagFEQKvVRtygfWi9Fq5cON1JChOoS5fhQ2XptW87P7kRix0=
-X-Gm-Gg: AfdE7cl6I5SQAf/2LaJEUJS0VsxlsDDJOdIcIdBknqHa+c3FmJLgXhxsPDLtPDoqLWU
-	RPpqJTtf5vwKqBwHK3F5luZ7C5b0yy3OS00J7fzI1T6ojMAPN5UzNAvUDyG3snfsd3YPIpF3se6
-	QZaPCQa3Mrlpwq+Cm6s0ASfebSe1YIftHQaRhZMmE+S/EzoLEpm+GlOVjTSCnv9oMOX2H9ikdF3
-	v1NYEckQmZL0r4y2oDQ/Fa+jLdnOppoxnhMChLF/QDgtBxHxo4Hf95I5PSUQVDFeoodNkCj+qPp
-	VNCa/8Kr/K9GeslliVwpOXZYx2eR9BZf07jup9a+IGT9okVayj+u562eNizgFjZKNEaZy8yiFN5
-	1x0zea6vjyIls9gp12TfzSekvW/ArimGLQ1uyqS3wfN518j1HmF05wUSnmt+DjNvMmyxuNSd7Xb
-	A3tc58l0mvBp5y4qiL
-X-Received: by 2002:a05:6a00:2286:b0:845:d2e3:b9c8 with SMTP id d2e1a72fcca58-8488acd5302mr8622187b3a.28.1783982658927;
-        Mon, 13 Jul 2026 15:44:18 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:3ead:2a56:27bf:77cb])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f238f75sm464398b3a.9.2026.07.13.15.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 15:44:18 -0700 (PDT)
-Date: Mon, 13 Jul 2026 16:44:15 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
-	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 04/25] target/arm/kvm-rme: Add mechanic to initialize
- realms
-Message-ID: <alVqP3H9N5Hh5jyF@p14s>
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-5-mathieu.poirier@linaro.org>
- <618fa1ec-c986-4075-9b6f-c720b48d75ce@redhat.com>
+        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
+        b=dtrAYmM5gcCKTMBJFLfIdvxLIN1TFGu7RAukrH3sgUGEoQIdT8jn7K/J0o1Ob92z8T
+         a0cprolYrryzquVOKVdD9Tso/apjFQx0S/TWnaNDzT+4XKP8+TZVK4AJYQG+obu3DXBq
+         oPXv+706nt3OtvYOng38qlKNuVbBw98VjmQZMMpw9xy4EDPIiaM3AFPrQrSI0vGXNKQd
+         efsZF/YHau9aw97qE71JeoAQlOSlS859bm0v+3++nIT4x6FAjIMt/wlG5frQ9FXlar25
+         BVqUYnbQe/TsL8Sr0LkuE8MunM54JmYxjhxr0hvppPg0JBL0pEzFq0FC6FlGAxqBiR8+
+         ALDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783984564; x=1784589364;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mNe9rM8ZI02kYm64C7ciEQBT8YD2/cothZS9irUHQA8=;
+        b=Wx2moV845BogMVXdS8DDCUmKwUHywS3C0426091g65nKLp0Xqt8aB9T1yqt9Cv6wiA
+         A+b0DuY5Oc1g3Pu6jQA0rWi913aEW1ZNqYNyGLfXStG4sy+041yRdK3sZafkn9LkNONF
+         EZ4kzukzPcBmDJ+uzlNeNncg5SdJ3K4fAgIpnNVk1TFx6q6qUM9j/CDqPfVn11bvd73y
+         07eXzl00Jg5ainIcgKJn16Q7FQ1+SiGi7FnHH4zW64ninCJ2LewhfRFXqUW+b3nGycRR
+         NUvVc6syeUBPt+01f/fgDyiQqQDfSg4PG3AFUTp2d2LMqhRnTsn6LK4MftYNyouXqRcV
+         B43w==
+X-Forwarded-Encrypted: i=1; AHgh+RqoW3THZB2dUL842DA/QGB8uwUm3Mm8YyZI5P72i5woGChaJGYwsKByD6eZEdJw1YbRfJw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxliNXg4iNKSeIQZ3vBj3GX+kBVn+l6roiwRN3wYxrcNGdeWKih
+	oGKXIJhb3NVOKRZBJY82B3d2yEQ33Xk0ECI/VyhmFGA3iVYVslSzC3fBp41emBgn0bFlruB+cHm
+	9Jj+gsgG4CeXP8rMLAVdUqxtceJrMs2lCODBvxWP0
+X-Gm-Gg: AfdE7cl3DwOdeOg04wOwM4nyppJoZikdt0PCgAcZi+jvfFmLrVwAWtAilvQhxpLLoPb
+	gyAE2drKU3V9/p2/V4R0+oCCmrDcIN/LVD0VIb/yk8ylgwnsgFuza9jgribHATF9GCmOyznXBrA
+	7IvU6grn93FxIEi4WMN1U7sTU/BxcCxdgf56Tfha/Bk88X2MaYLWzGFISu3FRk1hTqcg6eIjTW9
+	DFsy5m+4QilQriHlUu9HFAb/EPepcvBblD9VCJIcdEl3+yzcb0L8kOPu+8WD50QMbUa8k8pHMmL
+	moUEgo9ITvPFur07bd6YYs41p3Wr1T7jaNKQzxhHJAIjLnvk2kEwM57OPUM=
+X-Received: by 2002:a05:6a20:cd8f:b0:3bf:83f3:b810 with SMTP id
+ adf61e73a8af0-3c110a7b287mr11689858637.29.1783984563364; Mon, 13 Jul 2026
+ 16:16:03 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 13 Jul 2026 16:16:02 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260712221934.GF674038@nvidia.com>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
+ <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com> <20260712221934.GF674038@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <618fa1ec-c986-4075-9b6f-c720b48d75ce@redhat.com>
+Date: Mon, 13 Jul 2026 16:16:02 -0700
+X-Gm-Features: AVVi8CczeGanVcGdhsy5HlDfD2XYPmjZautNceRH5dXiMXcxQCHaSODxjV4xdX8
+Message-ID: <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org, sumit.semwal@linaro.org, 
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com, 
+	alex.williamson@redhat.com, dan.j.williams@intel.com, aik@amd.com, 
+	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
+	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
+	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jul 13, 2026 at 03:14:05PM +1000, Gavin Shan wrote:
-> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > Initialise an @rme_guest object and install a handler to get notified
-> > when the Realm is ready to start.  That way we can finish reading the
-> > Realm once we know everything is in place.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > ---
-> >   target/arm/kvm-rme.c  | 50 +++++++++++++++++++++++++++++++++++++++++++
-> >   target/arm/kvm-stub.c |  5 +++++
-> >   target/arm/kvm.c      |  7 +++++-
-> >   target/arm/kvm_arm.h  |  9 ++++++++
-> >   4 files changed, 70 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > index 42e1d1e7b859..b86b9d6a25cb 100644
-> > --- a/target/arm/kvm-rme.c
-> > +++ b/target/arm/kvm-rme.c
-> > @@ -13,6 +13,7 @@
-> >   #include "kvm_arm.h"
-> >   #include "migration/blocker.h"
-> >   #include "qapi/error.h"
-> > +#include "qemu/error-report.h"
-> >   #include "qom/object_interfaces.h"
-> >   #include "system/confidential-guest-support.h"
-> >   #include "system/kvm.h"
-> > @@ -29,14 +30,63 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> >                                             CONFIDENTIAL_GUEST_SUPPORT,
-> >                                             { TYPE_USER_CREATABLE }, { })
-> > +static RmeGuest *rme_guest;
-> > +
-> > +static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> > +{
-> > +    if (!running) {
-> > +        return;
-> > +    }
-> > +
-> > +    kvm_mark_guest_state_protected();
-> > +}
-> > +
-> >   static void rme_guest_class_init(ObjectClass *oc, const void *data)
-> >   {
-> >   }
-> >   static void rme_guest_init(Object *obj)
-> >   {
-> > +    if (rme_guest) {
-> > +        error_report("a single instance of RmeGuest is supported");
-> > +        exit(1);
-> > +    }
-> > +    rme_guest = RME_GUEST(obj);
-> >   }
-> >   static void rme_guest_finalize(Object *obj)
-> >   {
-> >   }
-> > +
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> > +{
-> > +    static Error *rme_mig_blocker;
-> > +    ConfidentialGuestSupport *cgs = ms->cgs;
-> > +
-> > +    if (!rme_guest) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    if (!cgs) {
-> > +        error_report("missing -machine confidential-guest-support parameter");
-> > +        return -EINVAL;
-> > +    }
-> > +
-> > +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
-> > +        error_report("KVM doesn't support Realms");
-> > +        return -ENODEV;
-> > +    }
-> > +
-> > +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-> > +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
-> > +
-> > +    /*
-> > +     * The realm activation is done last, when the VM starts, after all images
-> > +     * have been loaded and all vcpus finalized.
-> > +     */
-> > +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
-> > +
-> > +    cgs->require_guest_memfd = true;
-> > +    cgs->ready = true;
-> > +    return 0;
-> > +}
-> 
-> I think it's more reasonable to set ConfidentialGuestSupportClass::kvm_init to
-> kvm_arm_rme_init in rme_guest_class_init(). confidential_guest_kvm_init()
-> gets called in target/arm/kvm.c::kvm_arch_init(). With this, the pattern matches
-> with that for x86.
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-I agree, it would be nice to align Arm with the other architectures that
-support confidential guests.  Let me see what I can do.
+> On Sat, Jul 11, 2026 at 06:01:31PM -0700, Ackerley Tng wrote:
+>
+>> In the course of a CoCo guest's operation, will the guest need to
+>> convert between private/shared MMIO? Will the guest need some pages
+>> shared and others private? If these are required operations, guest_memfd
+>> already provides the tracking and is going to have a conversion ioctl
+>> very soon. Instead of further extending dmabuf to track more things, how
+>> about letting guest_memfd track it?
+>
+> Use another FD type was sort of my fallback if we couldn't get DMABUF
+> into something workable. I'm kind of surprised to see guestmemfd
+> proposed as the other FD, but I don't know much about its insides.
+>
 
-Thanks for the review, I'll look at your other comment tomorrow.
+For now guest_memfd only supports 4K pages, so the interfaces we're
+interested in are:
 
-Mathieu
++ The .fault() handler, which core mm calls to service any page
+  faults. For this, guest_memfd first checks if the page is shared, and
+  if so, proceeds to return a struct page.
+    + For VFIO, guest_memfd could call vfio_pci_mmap_huge_fault() and do
+      vmf_insert_pfn().
++ The kvm_gmem_get_pfn() function, which kvm calls to get a pfn and a
+  max_order to set up stage 2 page tables. Now guest_memfd returns
+  folio_pfn(folio) and max_order = 0 since guest_memfd only supports
+  PAGE_SIZE pages now.
+    + For VFIO, guest_memfd would need some way to get the PFN, so
+      probably something like dma_buf_get_pfn_unlocked() [1], but
+      probably from VFIO instead of dmabuf. Perhaps pci_resource_start()
+      is good enough to get a pfn.
 
-> 
-> More details can be found from commit 631a2ac5a4be ("i386/tdx: Implement tdx_kvm_init()
-> to initialize TDX VM context").
-> 
-> Thanks,
-> Gavin
-> 
-> > diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-> > index 88cbe8d85c41..eec1ca3dd2e5 100644
-> > --- a/target/arm/kvm-stub.c
-> > +++ b/target/arm/kvm-stub.c
-> > @@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
-> >   {
-> >       g_assert_not_reached();
-> >   }
-> > +
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> > +{
-> > +    g_assert_not_reached();
-> > +}
-> > diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> > index ed99be7fd80c..28d5643d6779 100644
-> > --- a/target/arm/kvm.c
-> > +++ b/target/arm/kvm.c
-> > @@ -660,7 +660,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-> >       hw_breakpoints = g_array_sized_new(true, true,
-> >                                          sizeof(HWBreakpoint), max_hw_bps);
-> > -    return 0;
-> > +    ret = kvm_arm_rme_init(ms, s);
-> > +    if (ret) {
-> > +        error_report("Failed to enable RME: %s", strerror(-ret));
-> > +    }
-> > +
-> > +    return ret;
-> >   }
-> >   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-> > diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-> > index e7c40fb003e4..6d058b0e08a2 100644
-> > --- a/target/arm/kvm_arm.h
-> > +++ b/target/arm/kvm_arm.h
-> > @@ -240,4 +240,13 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
-> >    */
-> >   char *kvm_print_register_name(uint64_t regidx);
-> > +/**
-> > + * kvm_arm_rme_init
-> > + * @ms: the machine state
-> > + * @s: State of KVM
-> > + *
-> > + * Prepare the machine to be a Realm, if the user enabled it.
-> > + */
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s);
-> > +
-> >   #endif
-> 
+[1] https://lore.kernel.org/all/20250529053513.1592088-2-yilun.xu@linux.intel.com/
+
+> If VFIO can create one
+
+At guest_memfd creation time, guest_memfd is always created for a
+KVM. This is the first place where it is bound to a kvm instance. This
+is one place where it helps Yilun with Confidential VMs, so KVM can be
+sure that the memory was meant for a specific CoCo kvm and not any VM.
+
+I think it might be weird to have VFIO take a kvm fd to create a
+guest_memfd?
+
+I was thinking that the userspace VMM could do something like:
+
+  int vfio_fd = open("/dev/vfio/devices/vfio0");
+  int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
+
+and creating from a template fd would also disable/close the vfio_fd so
+that the following will fail:
+
+  addr = mmap(vfio_fd);  // Maybe this should fail too?
+  *addr = 1;             // But this should definitely fail so that
+                         // guest_memfd gets to block private writes.
+
+> and fill it with MMIO physical addresses then
+> maybe it is OK?
+>
+> Jason
+
+What interface would be used fill a guest_memfd with MMIO physical
+addresses?
+
+When a vdev is associated with a vfio file, can some other vfio file be
+created that can also do MMIO to the vdev's PFNs? Would I be able to set
+something to block any future associations to those PFNs? This will help
+guest_memfd to prevent any other writes to private PFNs.
