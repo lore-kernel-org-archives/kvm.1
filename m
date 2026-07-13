@@ -1,86 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFCAEACD
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6D9EACD
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 05:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783920645; cv=none; b=QqJX2PMEJLz+ATBiw3AG5rgAQ98SNcfonREeINObOOf47N2aH7UFtXMroFW7U9DuYZjRTLjYBtajVI68qSlixCQthditstYhWcZ3UtGnKXWTP0fB8FEpvBm9iRSCo/8Z6u+AT+05myyR3Jur9SYAFQQJm1WE9nqqBJMYGhM+eGo=
+	t=1783920874; cv=none; b=qkTXlfCDUrOK78hTJf8PSbVPqF5YA//0QPM0rN1oEvCWLTVNgNgp8Tdy02yeNu5eaH3+DlFY5ia7HWVWaxy25ElHEMEaJdswJ53lv+tAQsDwf50HgrZZJPKsnVzFdH8ATTWtMOSn2X2kFKiV2+SBMAUd18jy0m4KSS3Qe2sF4SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783920645; c=relaxed/simple;
-	bh=Fi7z1vH9bca0XOH/qOCTNLEzS7ZXsjGMcy0nMajKyfg=;
+	s=arc-20240116; t=1783920874; c=relaxed/simple;
+	bh=JZHFCLOfahPIutk6bsYrkK0LkMAxgRjCHdkaEvufP80=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a8TPUn1W1SgLcT8mJcbmFNqjW5WrdkfLgIgFTHsKI4bvIymhyMIZaMD9DsGpLl59tWR31J4uqVPj7uAyDZEv3PdBx5IAMHNvgfqXt+Nphjm4lRw8EF0FAyYvRiOLHZKWEY1rYtEbex3felP/zylEWbb2Ag0t5n81i/pQ960LK68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ap78OqRA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KXYePIe7; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=fCRMs1CER1C8hlXofBgdswzJ7kDgVtRABxSJqiQ6CmT5HPbN2oTuxoULw4EAu6+PwWcRfBYq60EYsFMHLi9o8nIvVHTd8DUsViwMOauRXAG5CNBU3leElVMha6KQiGZuYCkBmPe6eyTzKuq6a1encb+2OVLsDCq4m1JJaADdVuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bw4+YTSu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F/i8zEsg; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ap78OqRA";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KXYePIe7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bw4+YTSu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F/i8zEsg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783920642;
+	s=mimecast20190719; t=1783920871;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
-	b=ap78OqRA4hTtrOEBnZV+c7Zpw/kycxNoQP1oCiReKyUfm9AeLfF2SjZFvQaLrUBU0U8w1x
-	ff7lvUBEpHo8rC3TqIBb76W+JtUJ2h9UKr3nJQnqG4BVDZaPpmmMGKAeg+899Y24VJkbad
-	Gyvnwef+pNsE4p/8EnFI2+nuUK0D7X4=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
+	b=Bw4+YTSuqpxUBjcScVu7+aw8wvSQwIRQ8PfHUjrplNfVlxNEhwFMRLkE8n0jQ8Rj3Bxn51
+	Beq1AkAeDPtPzHVZwvZ54qdXbXQB0jMhX35bWLWqKrIJrCEVrtTain7F9ZbBtlNGks863+
+	f/kTKeVe/y5JBFrKZ/dyc1Y++Jy9M4s=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-1Dj7_hdMO7uDMc1wSf1ZDQ-1; Mon, 13 Jul 2026 01:30:41 -0400
-X-MC-Unique: 1Dj7_hdMO7uDMc1wSf1ZDQ-1
-X-Mimecast-MFC-AGG-ID: 1Dj7_hdMO7uDMc1wSf1ZDQ_1783920640
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84865f326efso2911710b3a.0
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:30:41 -0700 (PDT)
+ us-mta-576-Leq-YeL8MwSBS0y97yzWIw-1; Mon, 13 Jul 2026 01:34:30 -0400
+X-MC-Unique: Leq-YeL8MwSBS0y97yzWIw-1
+X-Mimecast-MFC-AGG-ID: Leq-YeL8MwSBS0y97yzWIw_1783920869
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cacd6d37edso40360205ad.0
+        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 22:34:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1783920640; x=1784525440; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1783920869; x=1784525669; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
-        b=KXYePIe7/qU6FVKLLWqS/DRZUhqjPO4quLjcsoDdHoXl+awsPIVqb5xGVP7dziqhq3
-         XaV3RuUPzrBh/FBj819vDhvvoQKpz8DY/IFUeT0TzmVAoRUDdgGWFueXlgrG1BDwiwNW
-         qow7D0PlDL4yX9HC9mNnqPE8dHyoh2gAZVwr06anez4KWG/BBCt5XQKa4CgdH9LxX8Nk
-         Fg/WYeBxO7zSinj5hi0eELl8wT6QiaulSExF9zVYfXyFDkn5rb91eZccwVclSy+gC5fH
-         A3IYHiwsuqQlvZjUSEpo5WCHt4TD8jlzGpWNHD3fwcD2K6m/mK3syWNz8SNQ+T5c+7pf
-         3KMA==
+        bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
+        b=F/i8zEsg+W1xqf/Phh7MyH2S4trI/A9O/oRQjwQIG/bJPYdigKqhO1cxXlCw5A6KhT
+         7mFP98TXCo1gJuS4ye0Toc8L3craWf2blgqnOaTBEGmbOJNw7ZgLis33EmAogAPOH6Zw
+         Ci+uMW7PdGhfdU43Vcl1f8Xr2ElrKpKTNoeTDwbznr2SAoywKGtMcSy68w5+7dVU6n5y
+         s4Y/+JI8mK5V7n5Y4ydiAnq++BzrC+s92f4FJQX30oNprMcQbGAUfiZ6AHEDetTxWMrD
+         ZS61xNeO1NE8lMd13G6BfolSEIdshrPEUwj7NDhmojfr1Ug3ybSdgOJe9fgeQpyB2zpx
+         iQ3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783920640; x=1784525440;
+        d=1e100.net; s=20251104; t=1783920869; x=1784525669;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=23/NITmBPzrv2YP7GXVDIa8jJVxWfBFqHFpVj1/RdOY=;
-        b=IfXmeq8j4fbhvuKwRr4dUMnVw3gmo72G8BNgwhNvqmcnTcj7pwPGWvO0BSQCXpnbs7
-         BeuMOE1K3cTjpTBM9GaLWxvp4i3ZBMV47IXMmNuL78ry/NBBffpdD7o7rCupDA36/xXE
-         YUgqBAHInALjuhVa9nmk2cGqe2WU2NDCjotEcyulwmSqolZye8j0Z0zCSyFq7aQ60Mnv
-         Pgrk4PkVsssaCEhXy2OlbQ6SPrmZxFUByuCv9Csvjgc3LYAJ8pymlPB+NW0m2PFVTxl1
-         u445dymXoGcDO9DExEZEOiMAg4N1UvWiGr3Wf+MxKOVu3POjKgbRI+8JcSvWu9H8y7b5
-         jVQA==
-X-Forwarded-Encrypted: i=1; AHgh+RqTL/iW1rLiDRyOL5DXaCOjR8uQX/f9T59QblaMCMiPZhCCq9Wm7+o1FhWOLv9MF0vOFR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcFZvrWoYy12Kgd6OST8Q/ZqvAsXxepWL9QijDp6QZOmZSY0gb
-	xcHoScKOhQDHU9NbOqhUBxFjKBRkB527fehEvdIt4E0j8o9X8WTiMF8US3g11qQQIvUWkFDjA1d
-	uPaAE42Vk0VBn4kKGx/zu/zT4yjiIrasU0VnI7nqPKjWoVsKjPsCZEA==
-X-Gm-Gg: AfdE7cnGRdPk2FAAd1Jp8vW8Lr611ClqbFIP+9ndNOLh6LmvZdXplI1O1CJsE2zTzYk
-	9Z195xR4+pTsMmeT95ENE9mjf3Jm+yypEf+OYz/7sM+Oe//Orhq6B03hozGfslhocDpPrAeiCBy
-	KaSweV7+q5OvTDI/vXMv57fd/fFGaNZ5RI+dBxceroDT+X8Lh+v7vbTAjW5YXUWJkl/8lmlIp1O
-	RZJLQThVI/EmOkPn+zGD5BXIvgArmwG3NhbBMlhfBSLsQDCqebcVjU38HxQP3G+b8B8Q4cLDsWF
-	qTkh64FJzwfb8lFTySPPbgEcgS7n2AM87ZL88gq9qnmShaHAzqYRPCD80qGVfIXoHUqWMLjS3Yg
-	lzoZmMm53/k8pY34o8+g9pTkSDdzcrL4/G1JxdEkB4mURS7NYoZvxeQ==
-X-Received: by 2002:a05:6a00:1d90:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-8488975aab7mr6391954b3a.43.1783920640060;
-        Sun, 12 Jul 2026 22:30:40 -0700 (PDT)
-X-Received: by 2002:a05:6a00:1d90:b0:842:2ddb:e305 with SMTP id d2e1a72fcca58-8488975aab7mr6391920b3a.43.1783920639587;
-        Sun, 12 Jul 2026 22:30:39 -0700 (PDT)
+        bh=xFoLwDT5tqPWB8FoQy7gl6/PC8pZZ1PnKfRKXRkT/2s=;
+        b=q6xlm/KgxmaJWlN4E5CKAi/JkaNxcnaPhqAOLZsV554bDSXdvOXCjse+JpzeeIyJYs
+         B7YLDIGkVTItSvq5P6sjVNk2KbZI3o6Sxg2JrEjtcU/Q6QoRQcNJTdy+H1cc4t9ziptm
+         jrYUxsxPRx6T/cKsza1mdAiha/qFadcepSsdfWkImc9Q0YDGrm6a2jGRmj1/L2ffef5H
+         BkaGU4Ho1k4ywLd7wY5wSmX3T0G5y7fCAmO4uGgDykDYP2B4rdg5a9V4Q1h5xkuVLPEa
+         zs70DF4/cshMjAfaX49x/t5XJq8KPhOuB7KG7SkrQn+DUe3o6DpAqs2MQS7gb4fcvU/X
+         8iRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpnM/7m/t9U4I/OUJ6L82JDE9NnSBwowSVvVphrW0qznR0QmCIm9t7D9eFSAbxSO8fBMAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+H5eknioDo6hz+ekD97ANoKFMLWah3XVuEBNoRK0KfIIHvVUh
+	EhEcwUqZXI3bVw4LFaFlDfDMActHedCZq7fbVmayPD22GnjPDRlsr+6tmFdHtHj16AnxmEIXbX8
+	Vir5LG7VfmovYWaTD16MN9xeiTex+avSVLGxO0pG4YNHIM6qzNbOO5A==
+X-Gm-Gg: AfdE7cmJKqtOPXbMpRkAZr2mvcL+Er0CAZTd2CH0j1a1ds0FTj/nbZrEVqqbcA9rcGV
+	FMab/fSm5ryFGnUOJ/TjMAHVwY4nocdBzupoNdxyLwCM4+k9G1WI0jA+PbX9PgGlYlnZse+qTDn
+	eaKms3Ot+StgUc8+I/83D3jp1G03FXotFO8B+Z2hVYfj4XQdqcsxSqEM/vLi/QzwZp2TzdiVMPq
+	AwKghGWwYOZzI2RGLoqX+a4IuSzMy3abxOZYxPXHEGJO8UMTSaI9wRnJgtHPYJKs7FbY7wi/uWM
+	NaapUDKZqom8r3zAvu1bkcj+73ZmdrxuQhzOfC/XZOPbyTpYGsmWR7k2x1c/z7BOrdKzkO/RkBx
+	yITtLxvymvZUtbY1s7LRBqG5IfSOBU2o3qHpSN6tKJcaZJTTURchYZg==
+X-Received: by 2002:a17:903:2444:b0:2ca:c4a5:84bb with SMTP id d9443c01a7336-2ce9f27e6f1mr80488225ad.38.1783920868998;
+        Sun, 12 Jul 2026 22:34:28 -0700 (PDT)
+X-Received: by 2002:a17:903:2444:b0:2ca:c4a5:84bb with SMTP id d9443c01a7336-2ce9f27e6f1mr80487835ad.38.1783920868533;
+        Sun, 12 Jul 2026 22:34:28 -0700 (PDT)
 Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a30026410sm1590698b3a.19.2026.07.12.22.30.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb746sm91888925ad.7.2026.07.12.22.34.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Jul 2026 22:30:38 -0700 (PDT)
-Message-ID: <ac26ac91-6809-4429-9750-e7d671e952bc@redhat.com>
-Date: Mon, 13 Jul 2026 15:30:31 +1000
+        Sun, 12 Jul 2026 22:34:27 -0700 (PDT)
+Message-ID: <4ffc3787-a53e-4889-b245-458de4463cb9@redhat.com>
+Date: Mon, 13 Jul 2026 15:34:20 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -88,8 +88,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 07/25] target/arm/kvm: Create scratch Realm VM when
- requested
+Subject: Re: [RFC v1 04/25] target/arm/kvm-rme: Add mechanic to initialize
+ realms
 To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
  kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
  peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
@@ -97,106 +97,156 @@ To: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
  lorenzo.pieralisi@linaro.org
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
 References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-8-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-5-mathieu.poirier@linaro.org>
 Content-Language: en-US
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260707224306.1202330-8-mathieu.poirier@linaro.org>
+In-Reply-To: <20260707224306.1202330-5-mathieu.poirier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 7/8/26 8:42 AM, Mathieu Poirier wrote:
 > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> When a Realm is requested, create a scratch Realm VM by setting bit 8
-> of the argument given to the KVM_CREATE_VM ioctl().  Bit 7-0 are reserved
-> for the guest PA size.
+> Initialise an @rme_guest object and install a handler to get notified
+> when the Realm is ready to start.  That way we can finish reading the
+> Realm once we know everything is in place.
 > 
 > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 > ---
->   target/arm/kvm-rme.c  | 8 ++++++++
->   target/arm/kvm-stub.c | 5 +++++
->   target/arm/kvm.c      | 4 +++-
->   target/arm/kvm_arm.h  | 8 ++++++++
->   4 files changed, 24 insertions(+), 1 deletion(-)
+>   target/arm/kvm-rme.c  | 50 +++++++++++++++++++++++++++++++++++++++++++
+>   target/arm/kvm-stub.c |  5 +++++
+>   target/arm/kvm.c      |  7 +++++-
+>   target/arm/kvm_arm.h  |  9 ++++++++
+>   4 files changed, 70 insertions(+), 1 deletion(-)
 > 
 > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> index 90c1d30ba24c..f763d5ed6199 100644
+> index 42e1d1e7b859..b86b9d6a25cb 100644
 > --- a/target/arm/kvm-rme.c
 > +++ b/target/arm/kvm-rme.c
-> @@ -99,3 +99,11 @@ void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
+> @@ -13,6 +13,7 @@
+>   #include "kvm_arm.h"
+>   #include "migration/blocker.h"
+>   #include "qapi/error.h"
+> +#include "qemu/error-report.h"
+>   #include "qom/object_interfaces.h"
+>   #include "system/confidential-guest-support.h"
+>   #include "system/kvm.h"
+> @@ -29,14 +30,63 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+>                                             CONFIDENTIAL_GUEST_SUPPORT,
+>                                             { TYPE_USER_CREATABLE }, { })
 >   
->       cpu->kvm_rme = true;
+> +static RmeGuest *rme_guest;
+> +
+> +static void rme_vm_state_change(void *opaque, bool running, RunState state)
+> +{
+> +    if (!running) {
+> +        return;
+> +    }
+> +
+> +    kvm_mark_guest_state_protected();
+
+This would be called in kvm_arm_rme_init(), why we can't call this to mark the
+KVM state as protected in kvm_arm_rme_init() ?
+
+> +}
+> +
+>   static void rme_guest_class_init(ObjectClass *oc, const void *data)
+>   {
+>   }
+>   
+>   static void rme_guest_init(Object *obj)
+>   {
+> +    if (rme_guest) {
+> +        error_report("a single instance of RmeGuest is supported");
+> +        exit(1);
+> +    }
+> +    rme_guest = RME_GUEST(obj);
+>   }
+>   
+>   static void rme_guest_finalize(Object *obj)
+>   {
 >   }
 > +
-> +int kvm_arm_rme_vm_type(void)
+> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
 > +{
-> +    if (rme_guest) {
-> +        return KVM_VM_TYPE_ARM_REALM;
+> +    static Error *rme_mig_blocker;
+> +    ConfidentialGuestSupport *cgs = ms->cgs;
+> +
+> +    if (!rme_guest) {
+> +        return 0;
 > +    }
+> +
+> +    if (!cgs) {
+> +        error_report("missing -machine confidential-guest-support parameter");
+> +        return -EINVAL;
+> +    }
+> +
+> +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
+> +        error_report("KVM doesn't support Realms");
+> +        return -ENODEV;
+> +    }
+> +
+> +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
+> +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
+> +
+> +    /*
+> +     * The realm activation is done last, when the VM starts, after all images
+> +     * have been loaded and all vcpus finalized.
+> +     */
+> +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
+> +
+> +    cgs->require_guest_memfd = true;
+> +    cgs->ready = true;
 > +    return 0;
 > +}
-
-We had official name for 0, which is KVM_VM_TYPE_ARM_NORMAL. Another question if
-it's worthwhile to have this helper since it's equivalent to something as below,
-which can be directly applied to the caller.
-
-
-     int vm_type = (current_machine && current_machine->cgs) ? KVM_VM_TYPE_ARM_REALM :
-                                                               KVM_VM_TYPE_ARM_NORMAL;
-
-
 > diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-> index 4ab6f08637d1..6d52f172c5df 100644
+> index 88cbe8d85c41..eec1ca3dd2e5 100644
 > --- a/target/arm/kvm-stub.c
 > +++ b/target/arm/kvm-stub.c
-> @@ -129,3 +129,8 @@ void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
+> @@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
 >   {
 >       g_assert_not_reached();
 >   }
 > +
-> +int kvm_arm_rme_vm_type(void)
+> +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
 > +{
 > +    g_assert_not_reached();
 > +}
 > diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> index 4c212ed0c337..6aa1cd04e484 100644
+> index ed99be7fd80c..28d5643d6779 100644
 > --- a/target/arm/kvm.c
 > +++ b/target/arm/kvm.c
-> @@ -108,6 +108,7 @@ bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
->   {
->       int ret = 0, kvmfd = -1, vmfd = -1, cpufd = -1;
->       int max_vm_pa_size;
-> +    int vm_type;
+> @@ -660,7 +660,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>       hw_breakpoints = g_array_sized_new(true, true,
+>                                          sizeof(HWBreakpoint), max_hw_bps);
 >   
->       kvmfd = qemu_open_old("/dev/kvm", O_RDWR);
->       if (kvmfd < 0) {
-> @@ -117,8 +118,9 @@ bool kvm_arm_create_scratch_host_vcpu(int *fdarray,
->       if (max_vm_pa_size < 0) {
->           max_vm_pa_size = 0;
->       }
-> +    vm_type = kvm_arm_rme_vm_type();
->       do {
-> -        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size);
-> +        vmfd = ioctl(kvmfd, KVM_CREATE_VM, max_vm_pa_size | vm_type);
->       } while (vmfd == -1 && errno == EINTR);
->       if (vmfd < 0) {
->           goto err;
+> -    return 0;
+> +    ret = kvm_arm_rme_init(ms, s);
+> +    if (ret) {
+> +        error_report("Failed to enable RME: %s", strerror(-ret));
+> +    }
+> +
+> +    return ret;
+>   }
+>   
+>   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
 > diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-> index 12ed1eee18b4..65ec1b970606 100644
+> index e7c40fb003e4..6d058b0e08a2 100644
 > --- a/target/arm/kvm_arm.h
 > +++ b/target/arm/kvm_arm.h
-> @@ -259,4 +259,12 @@ int kvm_arm_rme_init(MachineState *ms, KVMState *s);
+> @@ -240,4 +240,13 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
 >    */
->   void kvm_arm_rme_vcpu_init(ARMCPU *cpu);
+>   char *kvm_print_register_name(uint64_t regidx);
 >   
 > +/**
-> + * kvm_arm_rme_vm_type
+> + * kvm_arm_rme_init
 > + * @ms: the machine state
+> + * @s: State of KVM
 > + *
-> + * Returns the Realm KVM VM type if the user requested a Realm, 0 otherwise.
+> + * Prepare the machine to be a Realm, if the user enabled it.
 > + */
-> +int kvm_arm_rme_vm_type(void);
+> +int kvm_arm_rme_init(MachineState *ms, KVMState *s);
 > +
 >   #endif
 
