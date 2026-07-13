@@ -1,193 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A80942DA2E;
-	Mon, 13 Jul 2026 15:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783957220; cv=none; b=ctQJPIk1dB3qmeevGqN3eqC1cXOsaHmoOW4GwC7e2cwulDFioyFZeY8oiV4HuHZaU7Ze7ejkzLDjh4G0xnypucn0XcqiQE+UVUH4gn+qpBGTsX+fJA+FGwLYqRnB4ZPoTXPV0JM6ugswdzOYIYqoEPCA3/t1cGrnWWld/415yWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783957220; c=relaxed/simple;
-	bh=1RP7nIJvZuzFUVz7LbE/87Gze67ycwP4Zd0J1lCM4X4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GUYNWELN8z64OiKkvCYeDHP6NheYmCJD4lLkLcqW1CCVv2U2Zds3pEqdHsLsLu0ynbwtrOvx8PGdbXpKFiEveMIIqY6D2qTyH42rRrtCFPmbqMJVuzzgfcGOe2rq7fThl6+PCm1oUrVz50Q45WJLXwB5Q/YetgmpM7N7CjDG4Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cn2ZUCB+; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4033E022E
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 15:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783957313; cv=pass; b=nlQXibQoU5FZ4P+w+oCiHMtNiYJKhLDAxGx/EqGLlxqD34N7wAoraY1zr7vWCCnyR0v70/R9x5RLtZRrbEpwJrdYFxdiNqWTpgj6jkj/ksVV3mO7YC0hz/xyzgQMnmr93rLftzfhJCdTAdD+lPddZbHJwMbG7hwbhrIIgQkiJ6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783957313; c=relaxed/simple;
+	bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZRFb8/VgfowuSh40G8LX4R1c/2M7Li46zdudzwiXChoR6LePdWGBbKUXws2d9K98/yuKfHAYBuZTCUv1olO3lXqsdMgXIKlT9qsxXVnS0K0114bcfw+dYDIvhrAsr0snuo1nrD7r/TwO93SMr9UTRETyh5XNiNQPBggQ1cB7CKk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPiZPN13; arc=pass smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cn2ZUCB+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25771F000E9;
-	Mon, 13 Jul 2026 15:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783957219;
-	bh=bgGgHEFrLGkQhpGDdK+yppM68Mi1G34yHD+nEZ0cRvI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Cn2ZUCB+DP+A+yh8GoVyIuambcgu9zH+5DmmoJPwToYOYq2t2XeVgJO9coDBBFNjk
-	 81ZA7FFzrTucxbUJF7pwryMqEmNaBcfaKPuwAIwEZoiOZ5e4FB2MRdTTJqMSNoXIUj
-	 s5k7KVSP+1VHiZB1j1ulfEzWbLKtlwJqy1Ch0aJkHXnxnhEP0ML/V244TtoHApg79A
-	 69yy93M65/CibCsFPLu/xMTTe9vPbz2E7n7fnDAU4MfIH1rXSHSuagQgyXn7RXB3c6
-	 ySWxQhLOHBX6QHlFiWUnSnDEe+SPVCcpI58lu2N6i2KrU6+0PY5PAJuUF++T+tcdHm
-	 FrGMRexNuXUog==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wjIlV-00000004YRs-09Of;
-	Mon, 13 Jul 2026 15:40:17 +0000
-Date: Mon, 13 Jul 2026 16:42:06 +0100
-Message-ID: <87a4ru6gmp.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v4 09/27] KVM: arm64: Access elements of vcpu_gp_regs individually
-In-Reply-To: <20260710115637.984749-H-seiden@linux.ibm.com>
-References: <20260706085229.979525-1-seiden@linux.ibm.com>
-	<20260706085229.979525-10-seiden@linux.ibm.com>
-	<86cxx0ovx5.wl-maz@kernel.org>
-	<20260710115637.984749-H-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPiZPN13"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso2345440a12.0
+        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 08:41:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783957311; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nU0HacA26neRGG5yrqbRtZHHJUaTN6phcV2Bnp4iVLriA/3J4B1Sg6ba2AFWzZS+n3
+         on2BGR3XzVRw4XCXA2L3k+04nS9dmjUauq0TpXM+PKMf9am7Y5IGNHY8FPfoI1MErpu+
+         1w+5CeO859GeY/Tf+bS4Ujbxpxi0CRbtnilYFBe7S/UdvNhpBu0eztcTKouoP/O+WVyd
+         lda/FYFRNrmQfQ+z4SCivi2yTWURz0fchXxxtpIIO0WyY7TUPyEBmSFCEEfpSxBwW7bc
+         HEa2OyMWc9nxGNaJcH3gTTkEYbISo74MJR50MMgbKuF69bzo6TTpBnCb2qVSDOC725jr
+         og4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
+        fh=KpNrqsT7S5VV/057uQApcPPsbfLEBm+eEe9cT5VuofE=;
+        b=JH/HRpIdWuNdSHWXR9aI6H0KxWnVht5nGcZIEHEDSXkqfxgIw4Y+aLV3qnVmgmHviO
+         GSW5OH6B4ssdJnjCqj8s//tY/dQQfBXu2nNMl60AkUC5UDv61CGcbRXGU6J1jOC55eqk
+         ciTDK4ccR87a6pB3stkeOYuDZb3U0/+Ncan2ANS9pzJJSMGfnA/iay0Z5w7SFxmaBNRI
+         TMp29t5WAEnz6yXcT9U2sjcSOz3ZlGlkuF9eH678ByRTADVgG8dOFaumVck46DcMFvHS
+         GLkHNggh805woR1MjtYhJCk+EVTp0GZgafIrkeUxv6Icn3H8uQpdXHLe4l1IZsFPPNR4
+         PdTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783957311; x=1784562111; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
+        b=tPiZPN13/77+3dKCmRpGvEpZh+NfPB8OM9WG/fivPUw2EamGCWoOTvRprSXuBo/LtJ
+         x59WQ2kETIgIZWE9Q/dX82uiAKVMpwnhUbK3hZObZISB1rqlAPrwAFW7wWwzXpwwjiWl
+         0qi3HH69x0K/lMSCdea5E0LTOH358k1zalPOepA8m8nUJgCJ9Szask7v+n3wTcYmaHgB
+         lqbUe+H325kCcCA3EHEQKCQGR8W0sVXV3OMUe4+gFTLq2IszqWjILp5LTmaaNCCyxvmy
+         18YVpybQoR51XSFjf84tdQwmU7XXVhqKth3pDEk+2PPW3IQQDVADGxbtfuUUvNsoHFQ/
+         9buA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783957311; x=1784562111;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
+        b=q8tBJOJh11c0i0nXH7nQA1j3sQhnqYnT4jCNIGaaYfyewxBIJplrs5vb6KC2Ji5GlA
+         RqAE78cZt9RpOCrQvhAJL+AN5z7MapuFdYYfNUOXF0MMu07FAs4+46xAwpnaOgImuGuh
+         19K+iQ/hBm89XGegWNPgZ3V/Ui9dC0EV8rYs3ZNLr6KK1wqgDv+zL34DhxMi/f23ftcL
+         0FqNbm9zV+ctrSBbbCoO6OufL3avjeIj3/vJaxgxdzKl6AUfcsWmXSLXqSRiV9/Rqc/4
+         0oszP02suBSqlVHYOXKupmFKeGuUcKuPtA2efotcNAvUfFnMnCHgMGxCUe3r8Rt9MFax
+         3K8A==
+X-Forwarded-Encrypted: i=1; AHgh+Rpsesn7a0DfEsrcFgG5L7RUZueYrXShOsyxISZv7EMNdV5oDNLMwWwf4q6xjN3QlLPA1IU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz111R4//6YyfPSDpz0ApZEO/uFerCQlRQ9UcaWqmoQAmlp5OJc
+	zfftV3zFSYiK9sOqQkKfWWQOCr8cGGhrlazYMaJWfE0VRPIur7u0RutErPD1ha4utQGkcdOAn9D
+	ILXUBTXN/oxvi4uRQD1eTTI9Rjy+HNF4ZwIvGBe84
+X-Gm-Gg: AfdE7cmc9PsSPn5C3Am9rHT6rT7MnOoeCIsv2/GgiGa6WcIexrdCqDBx3+yXc5u24j3
+	U6A+uEgQi9iiSd9S2BVugOaPgpJiyo8w0u/R4KZ6IIxQp17kKM89NNIy2kWjddvHOVmY8saqc2N
+	832dr4IGfI4GzVpQl3jGe/QQMM3AWN16QlCTblSQfUmooRSZAWMndOpI5dEQt0YMxIpSPXxpPuf
+	q0PDSIEIVZQ7QKS0hNdTv3TPo0LvKKopsPvdmu8pBR9+C9l2+65bAJoUZUt2O3s1Hyt0eBzFy6x
+	IWbqBZqZSSb5yovoadGhKw+okcJn2NkUzDljn+wg0lOzu1ddB/jwPA4XuRCfnIet4lEN
+X-Received: by 2002:a05:6a21:113:b0:3aa:c93b:625b with SMTP id
+ adf61e73a8af0-3c110762fd4mr10225955637.3.1783957310978; Mon, 13 Jul 2026
+ 08:41:50 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 13 Jul 2026 08:41:49 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 13 Jul 2026 08:41:49 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
+ <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Date: Mon, 13 Jul 2026 08:41:49 -0700
+X-Gm-Features: AVVi8Cdlu73h_odPVr1xWZ78EcVtzZg0XBmzdD3qDpzU7-JRYgNm36lPCMQb_B4
+Message-ID: <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com>
+Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
+To: Fuad Tabba <fuad.tabba@linux.dev>, Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michael Roth <michael.roth@amd.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 10 Jul 2026 12:56:37 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
-> 
-> On Mon, Jul 06, 2026 at 06:44:06PM +0100, Marc Zyngier wrote:
-> > On Mon, 06 Jul 2026 09:52:09 +0100,
-> > Steffen Eiden <seiden@linux.ibm.com> wrote:
-> > > 
-> > > While for arm64 the members of vcpu_gp_regs are allocated continuous
-> > > this is not necessarily true for other architectures implementing ARM.
-> > > 
-> > > Let vcpu_gp_regs() no longer return the address of the user_pt_regs in
-> > > the vcpu context but the address of the gp-register array field in the
-> > > user_pt_reg struct.
-> > 
-> > That's an interesting change of semantics, because this excludes PC
-> > from the GPRs. This is valid on AArch64, but wrong for AArch32 (PC
-> > really is R15, and is just another GPR).
-> >
-> 
-> I never looked into AArch32 thanks for pointing this out.
-> 
-> > It isn't a huge deal, and nothing breaks, but that's something that
-> > you may want to capture.
-> > 
-> 
-> Shall I add a comment into the commit message that this splits pc from
-> the gprs for arm32?
+Fuad Tabba <fuad.tabba@linux.dev> writes:
 
-Yeah, I really want this stuff to be correctly documented, just in
-case we break something and have to go back in time to find out why.
-That's overall something that could be improved in this series.
+>
+> [...snip...]
+>
 
-[...]
+Thanks for bringing [1] up, I didn't make the link when this change was
+being discussed.
 
-> > > diff --git a/arch/arm64/kvm/hyp/exception.c b/arch/arm64/kvm/hyp/exception.c
-> > > index bef40ddb16db..82611442a2d1 100644
-> > > --- a/arch/arm64/kvm/hyp/exception.c
-> > > +++ b/arch/arm64/kvm/hyp/exception.c
-> > > @@ -277,6 +277,9 @@ static const u8 return_offsets[8][2] = {
-> > >  	[7] = { 4, 4 },		/* FIQ, unused */
-> > >  };
-> > >  
-> > > +#define OFFSETOF_PT_REG(__r) offsetof(struct user_pt_regs, __r)
-> > > +#define COMPAT_IDX(__c) ((OFFSETOF_PT_REG(__c) - OFFSETOF_PT_REG(regs[0])) / sizeof(u64))
-> > > +
-> > 
-> > Oh $gawd, this is... awful.
-> > 
-> > >  static void enter_exception32(struct kvm_vcpu *vcpu, u32 mode, u32 vect_offset)
-> > >  {
-> > >  	unsigned long spsr = *vcpu_cpsr(vcpu);
-> > > @@ -292,12 +295,12 @@ static void enter_exception32(struct kvm_vcpu *vcpu, u32 mode, u32 vect_offset)
-> > >  	switch(mode) {
-> > >  	case PSR_AA32_MODE_ABT:
-> > >  		__vcpu_write_spsr_abt(vcpu, host_spsr_to_spsr32(spsr));
-> > > -		vcpu_gp_regs(vcpu)->compat_lr_abt = return_address;
-> > > +		vcpu_gp_regs(vcpu)[COMPAT_IDX(compat_lr_abt)] = return_address;
-> > >  		break;
-> > 
-> > Stupid idea: why don't you simply have new #defines that make the
-> > register number standalone, and make ptrace.h use that? Something line
-> > this (which can obviously be extended to all the compat registers):
-> > 
-> > diff --git a/arch/arm64/include/asm/ptrace.h b/arch/arm64/include/asm/ptrace.h
-> > index 39582511ad72f..2d3d324d2598e 100644
-> > --- a/arch/arm64/include/asm/ptrace.h
-> > +++ b/arch/arm64/include/asm/ptrace.h
-> > @@ -104,6 +104,10 @@
-> >  #define COMPAT_USER_SZ	296
-> >  
-> >  /* Architecturally defined mapping between AArch32 and AArch64 registers */
-> > +enum aarch32_reg_mapping {
-> > +	__compat_lr_und = 22,
-> > +};
-> > +
-> >  #define compat_usr(x)	regs[(x)]
-> >  #define compat_fp	regs[11]
-> >  #define compat_sp	regs[13]
-> > @@ -115,7 +119,7 @@
-> >  #define compat_sp_svc	regs[19]
-> >  #define compat_lr_abt	regs[20]
-> >  #define compat_sp_abt	regs[21]
-> > -#define compat_lr_und	regs[22]
-> > +#define compat_lr_und	regs[__compat_lr_und]
-> >  #define compat_sp_und	regs[23]
-> >  #define compat_r8_fiq	regs[24]
-> >  #define compat_r9_fiq	regs[25]
-> > 
-> > and then your #defines from hell can go?
-> 
-> Great suggestion I do not like this macro hell myself. I'll implement it
-> that way. Should I convert all compat_* regs to this concept or just the
-> ones I need?
+pKVM definitely needs a callback when the folio is released from
+guest_memfd's ownership.
 
-All of them, please., I value consistency. As you are doing this,
-consider adding a reference to I_PYKVS, which describes the mapping in
-the ARM ARM.
+>
+> free_folio is the only to_private=false caller today, but the cover
+> letter sketches the other one, a private->shared conversion through
+> kvm_gmem_make_shared(inode, start, end). Once that lands both reach
+> the hook with to_private=false, and as far as I can tell, the only
+> thing separating them is kvm == NULL / INVALID_GPA. That isn't
 
-Thanks,
+On the folio teardown path kvm has to be non-NULL so that SNP can find
+out which VM to unassign from, so you're right that INVALID_GPA won't be
+sufficient to separate conversion to private and teardown, for pKVM,
+from the arch perspective.
 
-	M.
+> documented as a contract, and nothing in-tree reads it on that branch
+> (the kvm/gpa check is under if (to_private), and
+> sev_gmem_make_shared() doesn't take a kvm at all), so nothing would
+> catch it regressing. The sketch is also inode-scoped, so I'm not sure
+> the conversion path passes a non-NULL kvm at all; if it doesn't, the
+> two aren't distinguishable.
+>
+>>
+>> [...snip...]
+>>
+>
+> The Kconfig now couples them too: an arch can't take teardown without also
+> taking conversion. pKVM wants teardown and not conversion, so that's a problem
+> for us today, not only once the second caller lands.
+>
+> This is the same ground as v8 15/46, which ended with the two split under
+> separate Kconfigs. Suzuki confirmed CCA disables both; pKVM wants teardown only,
+> since our conversions are guest-initiated and EL2 has already done the
+> transition by the time the host runs the generic path [1].
+>
+> I'd rather keep the free path on its own callback. If you want a single hook,
+> passing the caller explicitly instead of leaving it implied by kvm would work
+> too. Merging the two conversion directions is a genuine cleanup, it's the free
+> path I'd like to keep separate.
+>
 
--- 
-Jazz isn't dead. It just smells funny.
+Is it okay if later, we add a .gmem_teardown callback with a new CONFIG
+flag that pKVM can use?
+
+If that's okay, this merge (of function names and of the patch series)
+can proceed. It's also nicer that the new callback and CONFIG are
+explicitly (re?)-introduced with pKVM support so the introduction is
+chronologically linked with pKVM support too :)
+
+> Thanks,
+> /fuad
+>
+> [1] https://lore.kernel.org/all/CA+EHjTwLRzrq0vY0-OosENJ2Gkknerux53aVBj0zGRQUkRQP=A@mail.gmail.com/
+>
+>>
+>> [...snip...]
+>>
