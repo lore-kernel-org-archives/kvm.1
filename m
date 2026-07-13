@@ -1,293 +1,276 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D503546DC
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 19:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783971974; cv=pass; b=GE7DeSmaCwGEyZFQ0tneBh8hNaEb42UPyng8nUd3D1BN31wMtVGDGrR+aLLbhxbkleNQiJ2TusrB+EJYYKZUbzHUmNc5g2jgPKwdMTQrcqQZxQHt7Vs6s0HVvl6mHOXRfOBIzTJz72/zNtjwPH8Il1EXNzeK3efxXFKCYfIebKY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783971974; c=relaxed/simple;
-	bh=B0cMKe8c+q6VZAtfPJvsEQR9bKElmEm2xbnsBmbyRrc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N34EUlYbFJf8FKHHo93m+vsAiUJUkugl7sLuql/GA64L3Z4ZW7PZEP+QpZTaHw3uQHkwNr2yXKsOHJnj1atconfAvPmaEGuimYhIVd6ccYzMuIEIYO3wmbQHej+lFPPFW3DzLmmCnmTCrwuIbHsnWuSasO0r2GJpMdXsmUY0SXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TG/Fqafo; arc=pass smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3C7357CF8
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 19:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783972616; cv=none; b=c0hyQRuKmzOB1/EMxFxjR6VKtpnXzXLD701IDGUPwwpVjjlPaSSFrD0dq+qQucMDwtdsmnvjOVZ4hmV2uiqH/RyehVm6rruvfkTgwumMjqS4/+8D6Pe5TZnBP3X1CUjGeMEST2q9H9Xnof6eSg0Zg446sxNX4V97Ivof5F3uB/o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783972616; c=relaxed/simple;
+	bh=s0Y4B1pnA9YteH+Zg5F0xsAI4/mtsGCoTOE3uyu5kXU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ix02KxL4yO/MNs9Mv+fahkIl49No8IQQ99KyRKbFlCfCGQXHexHNAcJU8lYVkYBS6rXDXbTDnmvai2m68/Tw0OlJyBRVYUwe/4/HqD204OmiX48U+eU42strrgoLnl3dAqpNw7W5/vdxRC6D3kyvPHuvSVqdUz2V+z7ZQKJ0xrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ov85PF1h; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TG/Fqafo"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aeb6bdeaeaso2674e87.0
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 12:46:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783971970; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hKrGSwPE86DCfd0DmrGZnLF8FBbrVgEwphtJBAFJBwivO+Ad0Ot0i4f1Jz/o7XQucq
-         0qVlmADmHE5JKac2hEgPwIu2XyxRoleGGhpYa3N3ieZuarRe7TuINTDAj8+c9wJ/26fX
-         swHU/sBE1tNIv+/uNVVDeh4Hq4IwF9PgELNjqOT7ReFuwAD5iUnMiGPgc1sJq+zl8pSL
-         j4dD6ot4sXMyjIUk13XiIzPb9RdyRHB0f+gaX3b2A6JOCq7WdRVDUJns9VQ9JHXOkSLm
-         hRpuXC1L0KV20HwAnTk9/LuxQVhDw9Fw+Bqhtl/ANZyABobOxYjw+R6SNgqy8E0kmV28
-         AKFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cSqOOQONB6JQasgqDGGvjiOYMHIueBNAeX2B65ZUhc0=;
-        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
-        b=H/MtM3cxf8s2blBSPhmp85GAqZhv1CPPWAyd7MNLwKDECjyQlAKuwiJ2l4XwaiovU1
-         uN2iwVh47L8gvpUfKOiZhuar/03A5cbXLpQYbrXmIv43z5TK/AQ+wHHqaHKGLljPBknc
-         FNBMQBDmOZTaFdB9NSzSpGKUS86zvbUO0a4sA+axElQqnusMP6YTuGul49kphJxYO+QJ
-         SuzlUblPq1L/gJa9R96j6LpK0f8XKezEOAhWLq3Sg2daU2+nF/11eqC1Wf+oo/UqZ01n
-         4uSOtuOVC4aYVoObOYm93wrRYQft9h38/uhxMgVvnqH5ZfE3wNTerihCQWAnKo7k9A8F
-         e0Uw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ov85PF1h"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ccd1958e8fso1901905ad.2
+        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 12:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783971970; x=1784576770; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cSqOOQONB6JQasgqDGGvjiOYMHIueBNAeX2B65ZUhc0=;
-        b=TG/FqafoHs8smPmqUkYdFjdV1eiY0p5jM64Nap6ENDWvXzD4j0qJOyw+GlBt/H9MiV
-         UrdAD4DgjiNTg594DpniBYuyxQSvYQTQ+7fDrtR/ye1iNWKh2Vtc0BoFTNH//ig4Jpi4
-         +Hj/FLsxi0y84JOcYlRctXhzwbilw9EDcXpnikM/sJelco6++Ppm/hQ0cNFrvb0Wrgh1
-         QtsIb1djisamzyk4nydeYCF973ZG8992xtV6n7ZtXaiuNYsR15DKws2CLLL/ZklF8g91
-         /8j7+qHlt005gA2VPF2a4vx7T+hNtlmcDmpnQV2teldFwC9BhmRGA7pdD//2QsjtSe71
-         TS4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783971970; x=1784576770;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783972614; x=1784577414; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cSqOOQONB6JQasgqDGGvjiOYMHIueBNAeX2B65ZUhc0=;
-        b=IZqJiLGoj0ZO5rJIsR57okdXactuIfty8H0nrSdw/rA3yeeElNtWVLXk736P+GxDeE
-         3oUJ1ac4z+6L8RV36kzsMZQPmFSmMYxHgiYwML0HkC4dA61GGF5u0tAuKOJu0JLbCvVo
-         1m28EqL4Edoi4hW6DtjtN92Gsrgb6gbPJ17gYk6KGw7AsTCPtZWiOIy+vTHN5Ipu87tC
-         EUaxf80RxqzaaTIANWEvFlPNABebMCcS2DMP3o5KV0/C7LEDHdTmQedkreyltfiuEt55
-         aUFLJYtSwGSWoVbS+Bek7sozCGB+6YpqP1IOuuycj00IPEXDu1JcgVDNpVKkggWCuDyB
-         M3Wg==
-X-Gm-Message-State: AOJu0Yy9TxLfGr+ZNQu01JBIDrWAjU6l0cO+0wslOTtWqU2RhJSNddES
-	8x0BJwiSTSWWczekozspSPB9CVpVr9nUQ9P6vJr0phFVEFhEY0NbC89Y6C239YiL210RIrT/T0+
-	f9Oy0R/DwnsVhKdlQMUxVDjMrgGBWptoH9ix6ZClLzyL4FgCqkQNxZv0zrQ==
-X-Gm-Gg: AfdE7cl9ecjv6aNCEuhgUSXB/LgNqsSKdHnglMO0Sr17yiqHe0+bhuSPPZriydaMK5D
-	gE/youid7+E9m9tyse6DZ69ptWsijVlzOGwVmhnnp7C28mB3s+xJHh83SwwBETUbuvMlG8JYtNz
-	Mp3ew0zesQIzpRqLQY65ZxQsCf7UcTmWWb8bQ5ZQS5oJRWpL4HE4/YFGD/cveQDEo24KgdCQZ20
-	SMyYJ0Q4OYHKKZEwzGXuauHam+EIoYmCxZ+jgydypBdImkga7vTt0XXlgtPAhcMk6l8
-X-Received: by 2002:a05:6512:3e1e:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b155441efdmr111663e87.9.1783971969847; Mon, 13 Jul 2026
- 12:46:09 -0700 (PDT)
+        bh=KbftFgU32sFJyzTTCK2ciqKa+kJhKYSaoYgRRfgYlz8=;
+        b=Ov85PF1hA43DT1kkeDnklOyIYJg6XtmaydzcuU3LvA6LM42gfbI919T+HHOUzJ1ml+
+         mrEOodXeqka5Im5OoAaJLx4vo0lGEzSxzdjJm/qoITdQwMO2/SGw/Jg7kokIC1ogx85+
+         0jCeDW1XyPEa5z20AkuO805XbMNifWwsF75FuvSWsV35sx5p1kL65CGh78D3MAZXmEDV
+         a/fjMgL/8Pgrj2J7L4nPcvnhhJ9rXA4Gz7ezzHll7HlZ3qN3mymZq1k3/v2G2fWDfJVD
+         xaeZnTqVX2knhMSPNVGRptkJu/LqfgCEhiFDaRxNiX7MyBoQwytucEqO6xw3Abj+7gNP
+         qqKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783972614; x=1784577414;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KbftFgU32sFJyzTTCK2ciqKa+kJhKYSaoYgRRfgYlz8=;
+        b=BVDq9+4Zs3NCiyos6wmwbWsUOJYe/fc0pS/LMKhwfKbtyAgtWojoJKMkFamSxMhaHF
+         UIHqqwtx7kukhrcpAXkb8j9WbhtHyNuqe7WgPHCYp6N9ZzTffQ3Pwgvow7wdWnTOB77D
+         sGHczsLB10mUKgQDrP01j0wMDQXMB9LIN8cG4azm0ct347AQgi09GAp+M4vstb0MTewB
+         3GEkLEZxKK6tZASYBnzuIFS2XXXh/Cy1gYvS6w6QPPvHO75/yoeRgAe3fsIR+CFXk1+a
+         AenzGDJZ1Pme2Mgbh5DC+MtoICpEdrggHJdO8hKgHbzWm0mVv5d9XveW8eRWkMR85O9d
+         9n8w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7iHsJd1UuIGruNIM381Z/leYA2sYF+Ahty4w0vODbZQY960AbN2xjDR+BZ+2YZl5jxNI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgNSRWBn/QO6z+cGSj4fT6fk5IQZB2mZSCdWI/dz5SSW/0AtrY
+	uMg9Al50uJPZnbVQV2PJLlNDIOHYzdmdDY/GLXhs/7h6daEbcQ9zmzB+cvsFLVu3fGuS4p8TjVe
+	/F7iGLA==
+X-Received: from plnm6.prod.google.com ([2002:a17:902:fda6:b0:2ca:b48c:5a92])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c405:b0:2c9:dbdc:c0e
+ with SMTP id d9443c01a7336-2ce9ee11445mr108519855ad.26.1783972614175; Mon, 13
+ Jul 2026 12:56:54 -0700 (PDT)
+Date: Mon, 13 Jul 2026 12:56:53 -0700
+In-Reply-To: <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260710-igb_v3_b4-v4-0-56e7e2576cc1@google.com>
- <20260710-igb_v3_b4-v4-1-56e7e2576cc1@google.com> <20260710221939.CFE741F000E9@smtp.kernel.org>
-In-Reply-To: <20260710221939.CFE741F000E9@smtp.kernel.org>
-From: Josh Hilke <jrhilke@google.com>
-Date: Mon, 13 Jul 2026 12:45:58 -0700
-X-Gm-Features: AVVi8CdJPqxj80VD1ep3bK07Co9Yt3d-AkRQfpD6HSOhcuJ7mAKiZoDAYwzJdnY
-Message-ID: <CAAdrzjt7ib1ek83vF0pgppuxLE8GK623ZFDQu3aOSU=mGAm1-g@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] vfio: selftests: igb: Add driver for IGB QEMU device
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
+ <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
+ <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com> <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
+Message-ID: <alVDBWOl5tGZb1Wm@google.com>
+Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Ackerley Tng <ackerleytng@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael Roth <michael.roth@amd.com>, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jul 10, 2026 at 3:19=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 6 potential issu=
-e(s) to consider:
-> - [Medium] Reading EICR does not clear the interrupt cause in MSI-X mode,=
- leading to spurious interrupts.
-> - [Medium] Failure to disable DMA completion timeout resend causes infini=
-te retries on intentional unmapped IOVA accesses.
-> - [Medium] Missing Multicast and Broadcast Promiscuous Modes will cause M=
-AC loopback to drop arbitrary test packets.
-> - [Medium] Unbounded hardware polling loop for device reset completion.
-> - [Medium] Disabling MSI-X before quiescing the device in `igb_remove` cr=
-eates a race condition causing PCIe faults.
-> - [Low] Driver ignores timeouts when polling for TX/RX queue enable.
-> --
->
-> --- Patch [1]: [PATCH v4 1/9] vfio: selftests: igb: Add driver for IGB QE=
-MU device ---
-> commit 163a68c618c35adde837d2be447ecb7a92e5fdf0
-> Author: Josh Hilke <jrhilke@google.com>
->
-> vfio: selftests: igb: Add driver for IGB QEMU device
->
-> Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
-> (IGB) to test VFIO features under QEMU. Uses IGB's loopback mode to
-> implement the required memcpy operations.
->
-> > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools=
-/testing/selftests/vfio/lib/drivers/igb/igb.c
-> > new file mode 100644
-> > index 0000000000000..923b2341abadd
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
->
-> [ ... ]
->
-> > +static void igb_init(struct vfio_pci_device *device)
-> > +{
-> > +     struct igb *igb =3D to_igb_state(device);
-> > +     u64 iova_tx, iova_rx;
-> > +     u32 ctrl, rctl;
-> > +     u16 cmd_reg;
-> > +     int retries;
-> > +
-> > +     VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
-> > +
-> > +     /* Set up rings and calculate IOVAs */
-> > +     igb->bar0 =3D device->bars[0].vaddr;
-> > +
-> > +     iova_tx =3D to_iova(device, igb->tx_ring);
-> > +     iova_rx =3D to_iova(device, igb->rx_ring);
-> > +
-> > +     igb_write32(igb, E1000_CTRL, igb_read32(igb, E1000_CTRL) | E1000_=
-CTRL_RST);
-> > +     /*
-> > +      * Must wait at least 1 millisecond after setting the reset bit b=
-efore
-> > +      * checking if this device is ready to be used (82576 datasheet s=
-ection
-> > +      * 4.2.1.6.1).
-> > +      */
-> > +     usleep(1000);
-> > +     while (igb_read32(igb, E1000_CTRL) & E1000_CTRL_RST)
-> > +             usleep(10);
->
-> [Severity: Medium]
-> If the hardware or emulator enters a faulty state and fails to complete t=
-he
-> reset, will this unbounded loop hang the test process indefinitely? Shoul=
-d
-> this have a timeout?
+On Mon, Jul 13, 2026, Fuad Tabba wrote:
+> On Mon, 13 Jul 2026 at 16:41, Ackerley Tng <ackerleytng@google.com> wrote:
+> >
+> > Fuad Tabba <fuad.tabba@linux.dev> writes:
+> >
+> > >
+> > > [...snip...]
+> > >
+> >
+> > Thanks for bringing [1] up, I didn't make the link when this change was
+> > being discussed.
+> >
+> > pKVM definitely needs a callback when the folio is released from
+> > guest_memfd's ownership.
+> >
+> > >
+> > > free_folio is the only to_private=false caller today, but the cover
+> > > letter sketches the other one, a private->shared conversion through
+> > > kvm_gmem_make_shared(inode, start, end). Once that lands both reach
+> > > the hook with to_private=false, and as far as I can tell, the only
+> > > thing separating them is kvm == NULL / INVALID_GPA. That isn't
+> >
+> > On the folio teardown path kvm has to be non-NULL so that SNP can find
+> > out which VM to unassign from, so you're right that INVALID_GPA won't be
+> > sufficient to separate conversion to private and teardown, for pKVM,
+> > from the arch perspective.
+> >
+> > > documented as a contract, and nothing in-tree reads it on that branch
+> > > (the kvm/gpa check is under if (to_private), and
+> > > sev_gmem_make_shared() doesn't take a kvm at all), so nothing would
+> > > catch it regressing. The sketch is also inode-scoped, so I'm not sure
+> > > the conversion path passes a non-NULL kvm at all; if it doesn't, the
+> > > two aren't distinguishable.
+> > >
+> > >>
+> > >> [...snip...]
+> > >>
+> > >
+> > > The Kconfig now couples them too: an arch can't take teardown without also
+> > > taking conversion. pKVM wants teardown and not conversion, so that's a problem
+> > > for us today, not only once the second caller lands.
+> > >
+> > > This is the same ground as v8 15/46, which ended with the two split under
+> > > separate Kconfigs. Suzuki confirmed CCA disables both; pKVM wants teardown only,
+> > > since our conversions are guest-initiated and EL2 has already done the
+> > > transition by the time the host runs the generic path [1].
+> > >
+> > > I'd rather keep the free path on its own callback. If you want a single hook,
+> > > passing the caller explicitly instead of leaving it implied by kvm would work
+> > > too. Merging the two conversion directions is a genuine cleanup, it's the free
+> > > path I'd like to keep separate.
+> > >
+> >
+> > Is it okay if later, we add a .gmem_teardown callback with a new CONFIG
+> > flag that pKVM can use?
+> 
+> That works for me, and I agree it's nicer to introduce the callback along
+> with its first user.
+> 
+> Sean, is that the plan you have in mind as well? Two things that matter for
+> pKVM when it lands: the new CONFIG needs to be independent of the conversion
+> one, so that free_folio fires for an arch that selects only teardown (pKVM
+> wants teardown and not conversion), and the teardown callback stays distinct
+> from a private->shared conversion. Good point on teardown needing a non-NULL
+> kvm for SNP,
 
-Sure, I can replace the while loop with a VFIO_ASSERT in v5.
+Converting back to SHARED doesn't require a non-NULL @kvm pointer.  SNP needs
+the ASID and thus the VM when assigning memory to a VM, but converting memory
+back to SHARED, i.e. returning to the host, doesn't need that information.
 
-> > +     igb_write32(igb, E1000_IMC, 0xFFFFFFFF);
-> > +
-> > +     /* Signal that the driver is loaded */
-> > +     ctrl =3D igb_read32(igb, E1000_CTRL_EXT);
-> > +     ctrl |=3D E1000_CTRL_EXT_DRV_LOAD;
-> > +     ctrl &=3D ~E1000_CTRL_EXT_LINK_MODE_MASK;
-> > +     igb_write32(igb, E1000_CTRL_EXT, ctrl);
-> > +
-> > +     /* Enable PCI Bus Master. */
-> > +     cmd_reg =3D vfio_pci_config_readw(device, PCI_COMMAND);
-> > +     if ((cmd_reg & (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) !=3D
-> > +         (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) {
-> > +             cmd_reg |=3D (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-> > +             vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
-> > +     }
->
-> [Severity: Medium]
-> Since the VFIO selftest framework contains negative tests that intentiona=
-lly
-> submit DMA descriptors targeting unmapped IOVAs, shouldn't we disable the
-> PCIe completion timeout resend behavior in the GCR register?
->
-> Without disabling the E1000_GCR_CMPL_TMOUT_RESEND bit, could the 82576
-> controller continuously retry failed PCIe reads indefinitely, flooding th=
-e
-> host with PCIe AER errors and IOMMU faults?
+> incidentally, that's another reason keying off the sentinel wouldn't have
+> worked.
 
-Fixed in patch 6 of this series.
+It can work, but it would be all kinds of gross, and arguably wrong.  To pass
+a non-NULL @kvm for the true convert-to-shared (not reclaim), guest_memfd would
+need to iterate over all bindings to get at the @kvm instances.  That's "fine",
+but wasteful and confusing because the SNP conversion is a platform-level thing
+(as above, unassigning from a VM doesn't require any information about the VM).
 
-> [ ... ]
->
-> > +     /* Wait for TX and RX queues to be enabled */
-> > +     retries =3D 2000;
-> > +     while (retries-- > 0) {
-> > +             if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEU=
-E_ENABLE) &&
-> > +                 (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEU=
-E_ENABLE))
-> > +                     break;
-> > +             usleep(10);
-> > +     }
->
-> [Severity: Low]
-> Does this code silently proceed if the retries hit zero?
->
-> If the hardware queues fail to enable within the allotted time, it seems =
-we
-> might continue with disabled queues, leading to confusing downstream
-> failures. Should there be an assertion or error handling here?
+> If that's where this is heading, I'm happy.
 
-I'll add an assertion here in v5.
+Yeah, this is roughly what the total diff will look like.
 
-> > +
-> > +     /* Enable Receiver and Transmitter */
-> > +     rctl =3D E1000_RCTL_EN |       /* Receiver Enable */
-> > +            E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MA=
-C) */
-> > +            E1000_RCTL_LBM_MAC |  /* MAC Loopback Mode */
-> > +            E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
-> > +     igb_write32(igb, E1000_RCTL, rctl);
->
-> [Severity: Medium]
-> Since the driver uses the memcpy test framework which sends arbitrary mem=
-ory
-> data as Ethernet frames, shouldn't Multicast Promiscuous (E1000_RCTL_MPE)
-> and Broadcast Accept Mode (E1000_RCTL_BAM) be enabled here?
->
-> Without these flags, any test data where the first byte's least significa=
-nt
-> bit is 1 will be treated as a multicast/broadcast frame and dropped by th=
-e
-> hardware's MAC filter, causing a timeout.
-
-I'll fix this in v5. I verified that the tests fail if I modify the
-test to memcpy all 1's.
-
-> [ ... ]
->
-> > +static void igb_remove(struct vfio_pci_device *device)
-> > +{
-> > +     struct igb *igb =3D to_igb_state(device);
-> > +
-> > +     vfio_pci_msix_disable(device);
-> > +     igb_write32(igb, E1000_RCTL, 0);
-> > +     igb_write32(igb, E1000_TCTL, 0);
-> > +     igb_write32(igb, E1000_CTRL, igb_read32(igb, E1000_CTRL) | E1000_=
-CTRL_RST);
-> > +}
->
-> [Severity: Medium]
-> Does disabling MSI-X before quiescing the device create a race condition?
->
-> If the device attempts to DMA an MSI-X interrupt during this window (e.g.=
-,
-> from a delayed loopback packet), it will perform an unmapped memory write
-> on the PCIe bus, which might trigger an AER or IOMMU fault.
->
-> Could we disable the receiver and transmitter before calling
-> vfio_pci_msix_disable()?
-
-I'll adjust the ordering in v5.
-
-> [ ... ]
->
-> > +static void igb_irq_clear(struct igb *igb)
-> > +{
-> > +     igb_read32(igb, E1000_EICR);
-> > +}
->
-> [Severity: Medium]
-> Will reading the EICR register clear the interrupt cause in MSI-X mode on
-> the 82576 controller without the EIAC (Extended Interrupt Auto Clear)
-> register being properly configured?
->
-> It appears the hardware might leave the interrupt cause active, which cou=
-ld
-> trigger immediate spurious interrupts once re-enabled. Should EIAC be
-> programmed during initialization?
-
-Fixed in patch 4 ("vfio: selftests: igb: Program MSI-X interrupt routing").
-
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260710-igb_v3_b=
-4-v4-0-56e7e2576cc1@google.com?part=3D1
+diff --git arch/x86/include/asm/kvm-x86-ops.h arch/x86/include/asm/kvm-x86-ops.h
+index 6091987860bd..1764bad03b17 100644
+--- arch/x86/include/asm/kvm-x86-ops.h
++++ arch/x86/include/asm/kvm-x86-ops.h
+@@ -146,7 +146,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
+ KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+ KVM_X86_OP_OPTIONAL(get_untagged_addr)
+ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
+ KVM_X86_OP_OPTIONAL_RET0(gmem_convert)
+ #endif
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+diff --git arch/x86/include/asm/kvm_host.h arch/x86/include/asm/kvm_host.h
+index a70e734af122..08c4af487fa1 100644
+--- arch/x86/include/asm/kvm_host.h
++++ arch/x86/include/asm/kvm_host.h
+@@ -1724,7 +1724,7 @@ struct kvm_x86_ops {
+ 
+ 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+ 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
+ 	int (*gmem_convert)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 			    kvm_pfn_t nr_pages, int max_order, bool to_private);
+ #endif
+diff --git arch/x86/kvm/Kconfig arch/x86/kvm/Kconfig
+index 52e75d83a4d2..538ed1e80332 100644
+--- arch/x86/kvm/Kconfig
++++ arch/x86/kvm/Kconfig
+@@ -161,6 +161,7 @@ config KVM_AMD_SEV
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_CONVERT
++	select HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+ 	help
+diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
+index f0c49a92d041..11017f49b94a 100644
+--- arch/x86/kvm/x86.c
++++ arch/x86/kvm/x86.c
+@@ -10625,6 +10625,16 @@ int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ {
+ 	return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, to_private);
+ }
++#endif
++
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
++void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
++{
++	WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
++}
++#endif
++
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+ void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+ 	kvm_x86_call(gmem_invalidate_range)(kvm, range);
+diff --git include/linux/kvm_host.h include/linux/kvm_host.h
+index 9391ffcc90ff..fdbd697d0337 100644
+--- include/linux/kvm_host.h
++++ include/linux/kvm_host.h
+@@ -2614,6 +2614,10 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+ 		       kvm_gmem_populate_cb post_populate, void *opaque);
+ #endif
+ 
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
++void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int order);
++#endif
++
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+ void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+ #endif
+diff --git virt/kvm/Kconfig virt/kvm/Kconfig
+index 53803c5777a4..c3c0ee253fc7 100644
+--- virt/kvm/Kconfig
++++ virt/kvm/Kconfig
+@@ -111,6 +111,10 @@ config HAVE_KVM_ARCH_GMEM_CONVERT
+        bool
+        depends on KVM_GUEST_MEMFD
+ 
++config HAVE_KVM_ARCH_GMEM_RECLAIM
++       bool
++       depends on KVM_GUEST_MEMFD
++
+ config HAVE_KVM_ARCH_GMEM_INVALIDATE
+        bool
+        depends on KVM_GUEST_MEMFD
+diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+index aeb765831c32..173a7ed008d1 100644
+--- virt/kvm/guest_memfd.c
++++ virt/kvm/guest_memfd.c
+@@ -516,13 +516,11 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+ 	return MF_DELAYED;
+ }
+ 
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+ static void kvm_gmem_free_folio(struct folio *folio)
+ {
+-	WARN_ON_ONCE(kvm_arch_gmem_convert(NULL, -1ull,
+-					   folio_file_pfn(folio, 0),
+-					   folio_nr_pages(folio),
+-					   folio_order(folio), false));
++	kvm_arch_gmem_reclaim(folio_file_pfn(folio, 0), folio_nr_pages(folio),
++			      folio_order(folio));
+ }
+ #endif
+ 
+@@ -530,7 +528,7 @@ static const struct address_space_operations kvm_gmem_aops = {
+ 	.dirty_folio = noop_dirty_folio,
+ 	.migrate_folio	= kvm_gmem_migrate_folio,
+ 	.error_remove_folio = kvm_gmem_error_folio,
+-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	.free_folio = kvm_gmem_free_folio,
+ #endif
+ };
