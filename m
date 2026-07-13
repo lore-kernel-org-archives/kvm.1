@@ -1,65 +1,65 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012027.outbound.protection.outlook.com [52.101.43.27])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013018.outbound.protection.outlook.com [40.93.196.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1BA361DDC
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 06:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B1E63B9
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 06:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783923183; cv=fail; b=jNnRWHMKujf0I89aS9d1OpYL9zmf8ec9UHQR3pPR0P1/3MjFgK0v3TQe112ZkRt1hCCByWeMJ+jEXVuMB+EcJqML3Tvnht7vDKXzWCw9e9UNL898bFpNuauidvU2eIzJjysfxY0l4VWgnG266cAiCKKDPE/w6YmbIrRMEgJpv8o=
+	t=1783923922; cv=fail; b=ifZUmFHuiNkMUBjlozFufqY3S2dAisNWMgIkQ14kdgpkXMFcl1PxQ3F4HMLZtac3m9/5ttvBDW05wx1ilaLhaW4VVcBRelaLE4JyCFgB95n5l6c4ZJji5ow650tiIS0Ll+P39VMeg265opuVOOQOtDD+4kN5hNYQEJ8VjRvDYDQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783923183; c=relaxed/simple;
-	bh=KzyRKNc8EbGAAhI8q4TzyALHF4aSGIjfGaJNmIBUpzg=;
+	s=arc-20240116; t=1783923922; c=relaxed/simple;
+	bh=ZwV1lFLyYSvvrryJdqusG3cfJ+7bUKwZ7WLrQlANMqU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UjAatqCLul7aUMNyB4llo6bFLgRXBXfDZXX6RQC93ahlt704ZyM2CqsenUiKfr/PHa4y2WkX4KtwjLsqN/kX3T78hJL5S4iX087c6al2qelpuACdT1puXDv2S+L4f4s9pfRW+ICEbD5S6TfovyDALC6ZmxsilUXRFvPjALHiwnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Yz4vWA/J; arc=fail smtp.client-ip=52.101.43.27
+	 In-Reply-To:Content-Type; b=N5jwPKuSGNsgDM/zJBHIvDs0//48N5ZqbIeI0Ow7Kfe+PnAvwSdPr86ZwS8fHkds6Tf3EzQCKRJtXi5q/enNEaj64eTe/zfTBt0v6MrCkYZVq3hT8/92GaZoigWBTvgA35eShJGuqagVu7v6db5VyCeDbpgUZmwSRbpqbwuHn10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=g6Y/WIKq; arc=fail smtp.client-ip=40.93.196.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Yz4vWA/J"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="g6Y/WIKq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lxG6/qOsWs5kt/qnl8vn7vZu0+issbkF37DZetMvM4/F3BQw1VlJ5qTMzXuMG2qtqCfeskgNzQuV9CKeXGGEaW1Frnc1E0/wRgG1LMmPV3eQdvjcU/Ru3BPGn4+TBo4zRwPjCcwaZ76ok9HCerrjiVcSJ4rJyC7l4oEiIJ21dl+nWeGvOt0aqKA2rE/fPe2DH7gfbVz5UTWMbT5VUH8otazywEWcXUPoovbGTPsqw1co2yqkLOXNj+1h/p1fgUH5odMBHf8AWcD0JYv+MqssL709lcPY6gwx4llo1FwqdnN5YLHZUmX0AWbIati0TmSzkaAn6BFMGxyTUH33Vl9cnA==
+ b=OJe4WswHbZi5s5OxdwwfRhw63JLIMG6/X7Tkj6T9Omi2mSdg2oOZDoyMMUTAG9PsTw0KXOYJ+21KF4kus0t3HfJioJhnic8N1ahExVG8LOgYzgfZPO+EPK9NVUNq4wes13akb3gqxl4eaVdeIT/WnOscfNl7wrKvQwZDRLmZFbdGmNafc/HRR0dK98I8YCJCX9I2ezC8jcEBcKlYq1S1X0XEdBiLhrIWBELDbZsruo4/w7CEEaFLyNKgQHRZ6Kq9jY+R+BSZBgh0ViVfWh+MdMEGRAoA8iSFM11HDuhRdgIYwLny77k5WIy2S9wQ03pk/TeqzVqvwnuBosmsYNWFZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tXLTgl7NHTiYGgQeRSjZc+BEo/IMhdCNHv36V0Z+1kE=;
- b=a/V2MV4ZJtXYJUyMjhrgEy/vfEY8vYXNqUgwOHw0Il0WYRTmqzk4Nfl91zEGvYCp53vBqaB4nhJVh/I0tgL+PLqz7sJ4EKVQd3o3i4a0X0YopZ0YSWcUCCr3BCqSjX8sGJzoufmmSEmag8+ElhcradoQ9Vb7PDxgkCs/O6P5L92/bZ9yBLj1Y7zeCVqMqVjpAb1UeY+RPOIIoahTrGyD2b9bbERVY+4q+XnAMvN5dRe2LgVofkeGaqLIJg3U0dQvrv+ltZcWDC1TH6RA86RFEqv4lZkNM/lq2aI3o7/KephPS2IRrjjSGexc1oHNRf7Lnuq14+b1Rn0am624sFUVAg==
+ bh=9M+XjQ+lb3UZBO/rT/pvXRZ+sv5bMOJX2QT5e730J3w=;
+ b=Qd31ZL9rrgSwyY8t+6Wot17RpS3eauucuFTDvDAVX+cMVrxFSvFhSE4WjO3mpQLXbyy1FXiOUwBf0nbgIUnr4Z5BH2rURsLeWQvnSezlcWu7cWBSG639SRmFVnnumjiwrSId9p3e1ynOL6P3qGTD8vtQe8toTDTzP3qTs0MBNHCwiOnraI3m6DkLaPhsDXfls3f6SdsOMi0T05PMf4FM2EyV923lVWoJFdmmtFH7AaUfqX1g097ns5TilTXluJSP+P2UlN3xQzTU1VzRvA3NKg4nuNLrvv/c+yCj338p4uj1hGXTOxLPxu6jB1FlUnBHlkQklMBTGmzMa85CoSpm0Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tXLTgl7NHTiYGgQeRSjZc+BEo/IMhdCNHv36V0Z+1kE=;
- b=Yz4vWA/JsW2s7F8GgE5RoTGblD8D0GM26p7bznLAcp4zZpGbert2K12jRtx14GdyoHpTiDoxSHuN1mxgQ5g23TkyZrYvfO+hySlAl3OITFqNap6/nC+ss5TY7By83mk5jbaPoa5lrXVpZYJjlnKG6qteP7JuqfEnulYjuOfC2vE=
-Received: from DS7PR05CA0034.namprd05.prod.outlook.com (2603:10b6:8:2f::35) by
- SA1PR12MB7198.namprd12.prod.outlook.com (2603:10b6:806:2bf::21) with
+ bh=9M+XjQ+lb3UZBO/rT/pvXRZ+sv5bMOJX2QT5e730J3w=;
+ b=g6Y/WIKqbDUXkSFG7A0FsTynl8Qi/FrVTMao/BRaVwa5A0g8kBMDYj4gBZaNhB0ARdY9hatQ/fZEMAfNkCb+bzHUqA2s3dSuOOy+lzgljzOW9K4j7Auak6No9nXWFV8Slvlwaqrk6zvXB9lpLdHvpF6RwbId8OyzHSepPQ4sI7c=
+Received: from BLAPR03CA0130.namprd03.prod.outlook.com (2603:10b6:208:32e::15)
+ by SN7PR12MB7810.namprd12.prod.outlook.com (2603:10b6:806:34c::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 06:12:50 +0000
-Received: from CY4PEPF0000FCBF.namprd03.prod.outlook.com
- (2603:10b6:8:2f:cafe::a2) by DS7PR05CA0034.outlook.office365.com
- (2603:10b6:8:2f::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.9 via Frontend Transport; Mon, 13
- Jul 2026 06:12:50 +0000
+ 2026 06:25:17 +0000
+Received: from BL6PEPF0001AB55.namprd02.prod.outlook.com
+ (2603:10b6:208:32e:cafe::9) by BLAPR03CA0130.outlook.office365.com
+ (2603:10b6:208:32e::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.19 via Frontend Transport; Mon,
+ 13 Jul 2026 06:25:17 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000FCBF.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL6PEPF0001AB55.mail.protection.outlook.com (10.167.241.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Mon, 13 Jul 2026 06:12:50 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.223.9 via Frontend Transport; Mon, 13 Jul 2026 06:25:17 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 13 Jul
- 2026 01:12:49 -0500
-Received: from [10.85.44.160] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Mon, 13 Jul 2026 01:12:47 -0500
-Message-ID: <b5f2e0a4-09c1-43d7-b700-c8760d70b195@amd.com>
-Date: Mon, 13 Jul 2026 11:42:41 +0530
+ 2026 01:25:17 -0500
+Received: from [10.136.45.190] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Mon, 13 Jul 2026 01:25:13 -0500
+Message-ID: <eb51c52e-5b58-46df-9b60-0054851a38cd@amd.com>
+Date: Mon, 13 Jul 2026 11:55:12 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,93 +67,95 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7.1] KVM: SVM: Add Page modification logging support
-To: <pbonzini@redhat.com>, <seanjc@google.com>
-CC: <bp@alien8.de>, <joao.m.martins@oracle.com>, <kai.huang@intel.com>,
-	<kvm@vger.kernel.org>, <thomas.lendacky@amd.com>, <yosry@kernel.org>
-References: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
- <20260529063833.1660791-1-nikunj@amd.com>
+Subject: Re: [PATCH v3 1/5] KVM: SVM: Refactor svm_update_lbrv()
+To: Yosry Ahmed <yosry@kernel.org>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <kvm@vger.kernel.org>, <x86@kernel.org>,
+	<yosry.ahmed@linux.dev>, <jmattson@google.com>, <thomas.lendacky@amd.com>,
+	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <santosh.shukla@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
+ <20260709082953.69434-2-shivansh.dhiman@amd.com>
+ <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
 Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <20260529063833.1660791-1-nikunj@amd.com>
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <CAO9r8zOE6m-G8fmNSTnCcvXpzYvR8Egx3PkM2uSaJcZj8PVLqA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCBF:EE_|SA1PR12MB7198:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3beb8724-dd11-477a-6ff9-08dee0a5c452
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB55:EE_|SN7PR12MB7810:EE_
+X-MS-Office365-Filtering-Correlation-Id: c5d24b9e-19f1-4c6b-480c-08dee0a781e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|82310400026|1800799024|36860700016|4143699003|11063799006|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|1800799024|36860700016|18002099003|22082099003|4143699003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	a4zNK/SeeJOauJsnasUkurHioLiix4dW9lsnNFkug7d9UXN/ZV9A1S8wwyOMr1pl3lSDL17FbDM8G+WuRnMfdGN5RWH92LeRwgM5luQKa90djxv+Ko8VQUwNK9PQliaeBO0enqGpXcbwDvW5YcVmVLtKwXdxiBwmmfMFdavO6I8ASAosC16XTfh0UushRWL7hP3Yvl7aza31363VXfZsCnMsYYpFMztdb2ppxQloyG1EtViZ1sAd2oqVARb9dVDydZ/0a0YYaxKc0UWy4a3CgNHf726C5TfMB4mUXmuOto4qlF7DHn0O1JmXTvTZcMGYYQaKUzgUrW78F55VJZPNltvAxo7L0ruB2DiE64/NITbnqx3h3wzc/DDuUAX7nupsn1Bf7lKSPo6/oOqTXmEKMEQ/ot/FuuVeocuMu388Es+/6/RNSaLhQmqRcrmzgTBJBf11ElYPyQFpidzHAaQvXZhg6nMDvZVctUyhL/qEI0NLPrEe2x4uwd3WTiZQwuc2oFqMrmiqUu7EtCNFEVWGOl/ibTgp/RC7VRCKN4+XPd/yWoM4A+i8/D2XMYCiYQ1jp1/Yo2rxTfUOBbXZYfiTt1GFNVdEbyxfXnXz+soPr8F1lgE0vjhb5CRFfpeH01n4J62NMj1HZkUpKmwhJKEjyOQKXrEJ9RmPVVCsrmqZDCOtu3QtsLsrwq7p2S3y38mUblmpKioL+1bvTnmeVEV0LQ==
+	xY4sSrTeibuPSTuSd3nVb1bQQoFquYDx860bxtvm2/8uhhF8S7pPXoVpol24RkypkJLU0D04eUYKU2Dnl470yXoIAYHx+6qxkRxfsx1tqADrQaYjv/GJ2QJ/9B5Cs+KJ42mnweYxuvml7IylGCwIwDWMb8sVf6lLBd7O5EKel0BIxJ5auRsStWLwebp/hE59lzHoBuZAo/GxYR6b+/Lzj9+uAStd82/v4kLroANgcYkRX01KrjbjemGo2tUDaAcFk0MDmjfDGgKF5bEWGe7UuC3bTSkf4wBuJEIUuznVJKR23OQElZGx2p7kSApl77iCMwQ4WD7fBpQNHIlb/XAXS2R0C+Uqaa3sig2B2KABvhUzUo9BzXPtb7COOt6vGJPoQLleSaMu5hRHP0scresx8wBLbfguO5xDk6XPv1kvKB55Wh8UXVd9PX506MoWohylmxLxiY7DheuIxqDjOJXDRy5C+Lm2mlquQetiJt1lgXNLXEqJsGkjodflX8ZSb53JnJQ1SWnakWzMfFrh9kp5/4Wc+FblY3TZBtpPHDwY/Zq0FM9xXygrxX3i7fRvPhTnHVF2Ce9tB2quH36WUdLS+JALRdPXYK01u7Pac2648umDLV8wswjPUhlx1eb+R2pnE2jtpn2ux2A4AzMhy4EsAVKpOXdfHLyzQ4IDoTcuhHq6GEsflchn+YKkeprfQZUVuxy0rVr1+7QK8ZYqLBcXGA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(1800799024)(36860700016)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(1800799024)(36860700016)(18002099003)(22082099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	GcJtBOZuz1TGonaOAGH6x1jqenk4Y5dbY6U1M7sVEOrdhoXXPttbmzn2Mz0zwYa4hSzVufbOj6YJpK9mOORdzEXWsMHmTgCBUIszUl6zr9Vl9Pr82WHcBGvKatI1W0wkqz8cuRMAW7weHlf84MTyUtOWbzxFBMrZsL6svcq84aVVH35+ccuDtKAViI1emGsZ0WKc9P8YmGF9wUDcb+WkgXXEJoW7NLuTVSBtqnOz50WC04nFzJ61oDxg2jf1yqTUDg2gvTDjbrQrg9IMmvvmdEKKxYO/bdS8EOa9NSTMRG4V0HTkAz7kCTokTiKFkXRUI3ktB7QsAZNLS3MA1/snPIUxRrqhHjyW5PW53+tGPSlhDkVRo4pIYCd3HmJi1KPyCww5IQZc9/rW952xE0iv8iGZKDztOt3LIn1Qf3tYUOjer7gbqXShfuStMBisnuG3
+	7YZgpMmpyJ4NMSVNwdz/oQpmH6TjCfXlbIEbex3+6fzVkf87Bun4oxGQyP3zlSIqCMy55ZLQBGjho1hR06NWXV6sEJ9n1KfICTK1b1/prv5y9KpEYEyPb271z3saeO9xi8SoaD83PmcxCCgkD26NDkychATtmhCE4ad9q6o5rm92JBHrE9/bHF5YboOaD1YDL9vWMd2cxymJd7jDmWzVRsUHhY7WYF4zZoIuQcd6iefZ0RJj2MzSTiIV2qkqgsfXYTfmB6gXgqPcebB8wsEbkYfQFuHcoj42arLUvZYBTsnnSYj1JT4oVzDThDuZvkmnJ4T9N6Za/i3h09nDi2EAeVVTee65CjZF9pQnQioCHP1BvLcDFC+zN5Cx5MXdsp8vkq3Ugvf9gm5iSsuPizH9TY4A9hhZhqS8tRBIGwVJsZXvoTTjOZOjy+1+u4yze9me
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 06:12:50.0521
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2026 06:25:17.6131
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3beb8724-dd11-477a-6ff9-08dee0a5c452
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5d24b9e-19f1-4c6b-480c-08dee0a781e4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCBF.namprd03.prod.outlook.com
+	BL6PEPF0001AB55.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7198
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7810
 
 
 
-On 5/29/2026 12:08 PM, Nikunj A Dadhania wrote:
-> Currently, dirty logging relies on write protecting guest memory and
-> marking dirty GFNs during subsequent write faults. This method works but
-> incurs overhead due to additional write faults for each dirty GFN.
+On 10-07-26 01:23, Yosry Ahmed wrote:
+> On Thu, Jul 9, 2026 at 1:31 AM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
+>>
+>> Rewrite the enable_lbrv computation in svm_update_lbrv() as a series of
+>> 'if' statements, and use nested_vmcb12_has_lbrv() instead of open-coding
+>> the nested LBRV check.
+>>
+>> No functional change intended.
+>>
+>> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> ---
+>> Changelog:
+>> v3:
+>>  * New patch.
+>>  * Refactor the enable_lbrv computation into 'if' statements (Yosry Ahmed).
+>>
+>> ---
+>>  arch/x86/kvm/svm/nested.c |  2 +-
+>>  arch/x86/kvm/svm/svm.c    | 10 +++++++---
+>>  arch/x86/kvm/svm/svm.h    |  1 +
+>>  3 files changed, 9 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index c1485c3e691c..d3df6b22bfef 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -736,7 +736,7 @@ static int nested_svm_load_cr3(struct kvm_vcpu *vcpu, unsigned long cr3,
+>>         return 0;
+>>  }
+>>
+>> -static bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
+>> +bool nested_vmcb12_has_lbrv(struct kvm_vcpu *vcpu)
 > 
-> Implement support for the Page Modification Logging (PML) feature, a
-> hardware-assisted method for efficient dirty logging. PML automatically
-> logs dirty GPA[51:12] to a 4K buffer when the CPU sets NPT D-bits. Two new
-> VMCB fields are utilized: PML_ADDR and PML_INDEX. The PML_INDEX is
-> initialized to 511 (8 bytes per GPA entry), and the CPU decreases the
-> PML_INDEX after logging each GPA. When the PML buffer is full, a
-> VMEXIT(PML_FULL) with exit code 0x407 is generated.
-> 
-> Since PML_INDEX in the VMCB control area remains valid after an intercepted
-> SHUTDOWN, only initialize it on reset and leave it unchanged on INIT to
-> avoid discarding already-logged entries that haven't been flushed.
-> 
-> PML operates on guest physical addresses at the NPT level, tracking D-bit
-> updates in page tables rather than memory content. This allows it to work
-> identically for normal and confidential computing guests
-> (SEV/SEV-ES/SEV-SNP), enabling cpu_dirty_log_size to be set uniformly for
-> all AMD VMs without special-casing encrypted guests.
-> 
-> Use vmcb01 directly when updating PML controls to ensure L1's state
-> remains correct, as svm->vmcb points to vmcb02 when L2 is active.
-> 
-> PML is not enabled in hardware for nested guests; treat PML_FULL as
-> unexpected exits.
-> 
-> Add a new module parameter to enable/disable PML, and enable it by default
-> when supported.
-> 
-> Acked-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-> ---
-> 
-> Sending updated 7/7 patch here, rather than reposting the full series.
-> 
-> Sean, any remaining comments? Happy to send v8 if needed.
+> We might wanna rename this function now that we are exposing it
+> outside of nested.c, but otherwise this looks good to me:
 
-A gentle reminder
+Agreed, will rename it to nested_lbrv_enabled() in v4.
 
-> v7 -> v7.1:
-> * Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
-> * Fix misleading comment, pml_index=-1 is hardening not stale-data cleanup (Yosry, Sean)
-> * Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected exit (Sean)
+> 
+> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
-Regards,
-Nikunj
+Thanks for the review!
 
+> 
+>>  {
+>>         return guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+>>                 (to_svm(vcpu)->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
