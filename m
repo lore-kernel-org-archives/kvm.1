@@ -1,276 +1,195 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3C7357CF8
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 19:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC3530E85D
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 21:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783972616; cv=none; b=c0hyQRuKmzOB1/EMxFxjR6VKtpnXzXLD701IDGUPwwpVjjlPaSSFrD0dq+qQucMDwtdsmnvjOVZ4hmV2uiqH/RyehVm6rruvfkTgwumMjqS4/+8D6Pe5TZnBP3X1CUjGeMEST2q9H9Xnof6eSg0Zg446sxNX4V97Ivof5F3uB/o=
+	t=1783977088; cv=none; b=erVuBl7SPUU8mfOl65t7l3FWmKex23z8vbL3jRHsnjSQHqjB9I0hNDesZsJ5uaPX8WWlL1fGblFyXttVVJx38UOfKOi54dX6jhpdwBxkTWHbOWgcqF5dgvSmxEQ0QJISvh5FK/iXJzec2nxWFz0V1mwOSS2KxcXdUu3gapjqRrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783972616; c=relaxed/simple;
-	bh=s0Y4B1pnA9YteH+Zg5F0xsAI4/mtsGCoTOE3uyu5kXU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ix02KxL4yO/MNs9Mv+fahkIl49No8IQQ99KyRKbFlCfCGQXHexHNAcJU8lYVkYBS6rXDXbTDnmvai2m68/Tw0OlJyBRVYUwe/4/HqD204OmiX48U+eU42strrgoLnl3dAqpNw7W5/vdxRC6D3kyvPHuvSVqdUz2V+z7ZQKJ0xrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ov85PF1h; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783977088; c=relaxed/simple;
+	bh=RlBQ1BVc48mLS97mhVNas8rRRx2MGY9TB6RBuGhvhJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gN6KIg+X0mzLv3BsqJa0i5dZY3FUP0sXwWN7FKfmiChTzobuJfMYprtV9zZkjh/yHHmP5daA7PrHBH/hYBBGqeFIycXCLQ6CY3AVKP2I+Zyf0uO3Uh68tgObQHqnLtbN4Cwe6X9s92NlnTlE130x3qVlUB4O9d2AZmVeYpBMojk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wzq0HbeW; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ov85PF1h"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ccd1958e8fso1901905ad.2
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 12:56:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wzq0HbeW"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-ca80d708489so220875a12.1
+        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 14:11:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783972614; x=1784577414; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KbftFgU32sFJyzTTCK2ciqKa+kJhKYSaoYgRRfgYlz8=;
-        b=Ov85PF1hA43DT1kkeDnklOyIYJg6XtmaydzcuU3LvA6LM42gfbI919T+HHOUzJ1ml+
-         mrEOodXeqka5Im5OoAaJLx4vo0lGEzSxzdjJm/qoITdQwMO2/SGw/Jg7kokIC1ogx85+
-         0jCeDW1XyPEa5z20AkuO805XbMNifWwsF75FuvSWsV35sx5p1kL65CGh78D3MAZXmEDV
-         a/fjMgL/8Pgrj2J7L4nPcvnhhJ9rXA4Gz7ezzHll7HlZ3qN3mymZq1k3/v2G2fWDfJVD
-         xaeZnTqVX2knhMSPNVGRptkJu/LqfgCEhiFDaRxNiX7MyBoQwytucEqO6xw3Abj+7gNP
-         qqKA==
+        d=linaro.org; s=google; t=1783977086; x=1784581886; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GW/F3qWXwwX4AhwH+nP/rLsXsp8Fz7nEuN27rGBIfgo=;
+        b=wzq0HbeWCTXmY4oQq2+nwLRQhXNJJqmMVSXUaCWwWaw0yKYEDCdC9O7cBcyNQnGkq1
+         dvn+6Xt3YlaoxI4NGgZm+xAq35CFBSvcDG+GuXh9/8Rrx8++exzP8DSCAnVRiXqNvvej
+         l0cpRK5qN6pA8BxOoGLYHaY4AwM5SmbawD4YIkv4eVdaVLes2tqjyNzr1iOyoBESFu3R
+         xapnYw4luKeq9bBgVqoxDonY4cEeAVaAemsZTXiYI0LnSg89qHXbFHKcL+vj3nD4cx02
+         ftWum95hMbKehVTVDYD0BtgA3cU8t5ea4zuYiRiV0gU0xmpBCUvvsuwGy1rk0Mfm1CBP
+         kFZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783972614; x=1784577414;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KbftFgU32sFJyzTTCK2ciqKa+kJhKYSaoYgRRfgYlz8=;
-        b=BVDq9+4Zs3NCiyos6wmwbWsUOJYe/fc0pS/LMKhwfKbtyAgtWojoJKMkFamSxMhaHF
-         UIHqqwtx7kukhrcpAXkb8j9WbhtHyNuqe7WgPHCYp6N9ZzTffQ3Pwgvow7wdWnTOB77D
-         sGHczsLB10mUKgQDrP01j0wMDQXMB9LIN8cG4azm0ct347AQgi09GAp+M4vstb0MTewB
-         3GEkLEZxKK6tZASYBnzuIFS2XXXh/Cy1gYvS6w6QPPvHO75/yoeRgAe3fsIR+CFXk1+a
-         AenzGDJZ1Pme2Mgbh5DC+MtoICpEdrggHJdO8hKgHbzWm0mVv5d9XveW8eRWkMR85O9d
-         9n8w==
-X-Forwarded-Encrypted: i=1; AHgh+Rp7iHsJd1UuIGruNIM381Z/leYA2sYF+Ahty4w0vODbZQY960AbN2xjDR+BZ+2YZl5jxNI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgNSRWBn/QO6z+cGSj4fT6fk5IQZB2mZSCdWI/dz5SSW/0AtrY
-	uMg9Al50uJPZnbVQV2PJLlNDIOHYzdmdDY/GLXhs/7h6daEbcQ9zmzB+cvsFLVu3fGuS4p8TjVe
-	/F7iGLA==
-X-Received: from plnm6.prod.google.com ([2002:a17:902:fda6:b0:2ca:b48c:5a92])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c405:b0:2c9:dbdc:c0e
- with SMTP id d9443c01a7336-2ce9ee11445mr108519855ad.26.1783972614175; Mon, 13
- Jul 2026 12:56:54 -0700 (PDT)
-Date: Mon, 13 Jul 2026 12:56:53 -0700
-In-Reply-To: <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1783977086; x=1784581886;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GW/F3qWXwwX4AhwH+nP/rLsXsp8Fz7nEuN27rGBIfgo=;
+        b=Jtwu8hZ2m8lGlkK5Gbc9PZayoOhoTxOOrBBV8sQwM7FrNZBLmORCShBP0Odc01wP+B
+         zHmDkLAmNWXQayFOsO4jQ0nBBIPMpb85wN2sto3tjEukTejY7u+PKJ6WeqT9YlvS4mx1
+         MopDA6eBxYIRAoAKexSiKw8uUIlGB6TiSLT4xR2+8izCW//lGk4B+HF1YUsvQZ+Wc2EY
+         lXJmPNGAAlkJa8gxwPm993H3PZOmuJ/V+lAUgegxREROdphsYHIiVm7FlmL2UgQWjPB+
+         IH89ESX8nWrHTJW30vvTD6Sb+HG3AjL3U1tcvogGznYRbwseXpPuJBtU1hJ9E1ZI9x6E
+         Mdpw==
+X-Forwarded-Encrypted: i=1; AHgh+RrG7xbTRdmjBPGmHwcf9AdqEcJLV4FGhYqypvp55yPzUu+0HVnVKVzPkx2xe9D0NfLx0Qg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxE9UbyVMQmVg/MQ9cTng/EqDa5l469q97AjoIg6U1l9jK8rPJg
+	YtI8/QFp/3fAPXLmpkSUGzNgbKr+er90+wRVic2wdaPF3U40vWutO7UhC3dAtIj2giE=
+X-Gm-Gg: AfdE7cnOfZ2Wg8iwJ6txqOakPrgvc+yZJjwn8g/qbVqiKjy2HNqyWavUR96KhkXEAnL
+	a4kQJ1cWoCD44gaCbBwUOtHxWiYdCB8fMu1ihe/jIpYfd+T8la6oa/XwpOndSe73pR+LqXiwqNm
+	NZkBHZLUcaqmFU0AgwLCuK9/yK/PazYIfFSUSFUHUxNTet76/M1wDIPG9jdr9tzenAXSgPo3ZWh
+	BJUDp0dRJ5tNvTLvjQutkwOJqrlCepj+V5eXjbVKhxHAQEz3OAqJCXw8GZbZo47u4BkjVyClYBv
+	Lv7AQLOnIb+imFhxURPrgjS7WyD3x870895crbi302F77eFQ2IFVMfvP8HsM0Zq234RMgOoBjHX
+	rRK+ao/BAgOgLg+uyCBP/7mvNmqn6pR2JMlrN9mFqSTCIhI3DY6QAaVwUoOs+R0b64VojtQvz7i
+	820+4uFrhdkOAFft+1
+X-Received: by 2002:a05:6a21:9210:b0:3bf:8de9:c64e with SMTP id adf61e73a8af0-3c112b9c1d2mr10234471637.2.1783977086349;
+        Mon, 13 Jul 2026 14:11:26 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:3ead:2a56:27bf:77cb])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3a2bf6bsm9108149a12.27.2026.07.13.14.11.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 14:11:25 -0700 (PDT)
+Date: Mon, 13 Jul 2026 15:11:23 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
+	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v1 01/25] linux-headers: Add RME related definitions
+Message-ID: <alVUewIPbsAClmau@p14s>
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-2-mathieu.poirier@linaro.org>
+ <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
- <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
- <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com> <CA+EHjTxLKvj-qOQFgZ66Pq+ULQ0D98QU65gGe_2wWnR5_fTa0A@mail.gmail.com>
-Message-ID: <alVDBWOl5tGZb1Wm@google.com>
-Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
- into .gmem_convert()
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Ackerley Tng <ackerleytng@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Michael Roth <michael.roth@amd.com>, 
-	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
 
-On Mon, Jul 13, 2026, Fuad Tabba wrote:
-> On Mon, 13 Jul 2026 at 16:41, Ackerley Tng <ackerleytng@google.com> wrote:
-> >
-> > Fuad Tabba <fuad.tabba@linux.dev> writes:
-> >
-> > >
-> > > [...snip...]
-> > >
-> >
-> > Thanks for bringing [1] up, I didn't make the link when this change was
-> > being discussed.
-> >
-> > pKVM definitely needs a callback when the folio is released from
-> > guest_memfd's ownership.
-> >
-> > >
-> > > free_folio is the only to_private=false caller today, but the cover
-> > > letter sketches the other one, a private->shared conversion through
-> > > kvm_gmem_make_shared(inode, start, end). Once that lands both reach
-> > > the hook with to_private=false, and as far as I can tell, the only
-> > > thing separating them is kvm == NULL / INVALID_GPA. That isn't
-> >
-> > On the folio teardown path kvm has to be non-NULL so that SNP can find
-> > out which VM to unassign from, so you're right that INVALID_GPA won't be
-> > sufficient to separate conversion to private and teardown, for pKVM,
-> > from the arch perspective.
-> >
-> > > documented as a contract, and nothing in-tree reads it on that branch
-> > > (the kvm/gpa check is under if (to_private), and
-> > > sev_gmem_make_shared() doesn't take a kvm at all), so nothing would
-> > > catch it regressing. The sketch is also inode-scoped, so I'm not sure
-> > > the conversion path passes a non-NULL kvm at all; if it doesn't, the
-> > > two aren't distinguishable.
-> > >
-> > >>
-> > >> [...snip...]
-> > >>
-> > >
-> > > The Kconfig now couples them too: an arch can't take teardown without also
-> > > taking conversion. pKVM wants teardown and not conversion, so that's a problem
-> > > for us today, not only once the second caller lands.
-> > >
-> > > This is the same ground as v8 15/46, which ended with the two split under
-> > > separate Kconfigs. Suzuki confirmed CCA disables both; pKVM wants teardown only,
-> > > since our conversions are guest-initiated and EL2 has already done the
-> > > transition by the time the host runs the generic path [1].
-> > >
-> > > I'd rather keep the free path on its own callback. If you want a single hook,
-> > > passing the caller explicitly instead of leaving it implied by kvm would work
-> > > too. Merging the two conversion directions is a genuine cleanup, it's the free
-> > > path I'd like to keep separate.
-> > >
-> >
-> > Is it okay if later, we add a .gmem_teardown callback with a new CONFIG
-> > flag that pKVM can use?
+On Fri, Jul 10, 2026 at 11:09:43AM +1000, Gavin Shan wrote:
+> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > This is a temporary patch intended for testing purposes only. It provides
+> > definitions related to supporting Realms by the QEMU-VMM.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >   linux-headers/asm-arm64/kvm.h |  9 +++++++++
+> >   linux-headers/linux/kvm.h     | 21 +++++++++++++++++----
+> >   2 files changed, 26 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
+> > index 6aefe7973814..4c08631ec7d2 100644
+> > --- a/linux-headers/asm-arm64/kvm.h
+> > +++ b/linux-headers/asm-arm64/kvm.h
+> > @@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
+> >   	__u64 reserved;
+> >   };
+> > +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
+> > +struct kvm_arm_rmi_populate {
+> > +	__u64 base;
+> > +	__u64 size;
+> > +	__u64 source_uaddr;
+> > +	__u32 flags;
+> > +	__u32 reserved;
+> > +};
+> > +
+> >   #define KVM_ARM_TAGS_TO_GUEST		0
+> >   #define KVM_ARM_TAGS_FROM_GUEST		1
+> > diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+> > index 50e87ed72c20..dae6e5ba8457 100644
+> > --- a/linux-headers/linux/kvm.h
+> > +++ b/linux-headers/linux/kvm.h
+> > @@ -685,11 +685,21 @@ struct kvm_enable_cap {
+> >   #define KVM_S390_SIE_PAGE_OFFSET 1
+> >   /*
+> > - * On arm64, machine type can be used to request the physical
+> > - * address size for the VM. Bits[7-0] are reserved for the guest
+> > - * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
+> > - * value 0 implies the default IPA size, 40bits.
+> > + * On arm64, machine type can be used to request both the machine type and
+> > + * the physical address size for the VM.
+> > + *
+> > + * Bits[31-30] are reserved for the ARM specific machine type.
+> > + *
+> > + * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
+> > + * For backward compatibility, value 0 implies the default IPA size, 40bits.
+> >    */
+> > +#define KVM_VM_TYPE_ARM_SHIFT		30
+> > +#define KVM_VM_TYPE_ARM_MASK		(0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
+> > +#define KVM_VM_TYPE_ARM(_type)		\
+> > +	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
+> > +#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
+> > +#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
+> > +
+> >   #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
+> >   #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
+> >   	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
 > 
-> That works for me, and I agree it's nicer to introduce the callback along
-> with its first user.
+> The definitions in this section aren't exactly same to that in (v14) host series,
+> leading to KVM_VM_TYPE_ARM_REALM = 0 in my environment and the realm guest can't
+> be started with the following error message. At least, KVM_VM_TYPE_ARM_MASK has
+> been redefined with different values.
 > 
-> Sean, is that the plan you have in mind as well? Two things that matter for
-> pKVM when it lands: the new CONFIG needs to be independent of the conversion
-> one, so that free_folio fires for an arch that selects only teardown (pKVM
-> wants teardown and not conversion), and the teardown callback stays distinct
-> from a private->shared conversion. Good point on teardown needing a non-NULL
-> kvm for SNP,
+>   qemu-system-aarch64: KVM does not support guest_memfd
 
-Converting back to SHARED doesn't require a non-NULL @kvm pointer.  SNP needs
-the ASID and thus the VM when assigning memory to a VM, but converting memory
-back to SHARED, i.e. returning to the host, doesn't need that information.
+I agree with you.  Although outdated the above should work - left shifting
+0x3ULL by 30 seems to be causing issues.  
 
-> incidentally, that's another reason keying off the sentinel wouldn't have
-> worked.
+> 
+>   ----> linux-headers/linux/kvm.h
+> 
+>   #define KVM_VM_TYPE_ARM_SHIFT          30
+>   #define KVM_VM_TYPE_ARM_MASK           (0x3ULL << KVM_VM_TYPE_ARM_SHIFT)
+> 
+>   #define KVM_VM_TYPE_ARM_MASK           (KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
+>                                           KVM_VM_TYPE_ARM_PROTECTED)
+> 
+> After syncing the definitions with those in (v14) host series, I'm able to boot
+> a simple realm guest (no virtio devices) with one warning.
+> 
+>   qemu-system-aarch64: Failed to enable KVM_CAP_ARM_NISV_TO_USER cap
 
-It can work, but it would be all kinds of gross, and arguably wrong.  To pass
-a non-NULL @kvm for the true convert-to-shared (not reclaim), guest_memfd would
-need to iterate over all bindings to get at the @kvm instances.  That's "fine",
-but wasteful and confusing because the SNP conversion is a platform-level thing
-(as above, unassigning from a VM doesn't require any information about the VM).
+Right, that one is useless.
 
-> If that's where this is heading, I'm happy.
+Both issues reported here will be addressed in the next revision.
 
-Yeah, this is roughly what the total diff will look like.
-
-diff --git arch/x86/include/asm/kvm-x86-ops.h arch/x86/include/asm/kvm-x86-ops.h
-index 6091987860bd..1764bad03b17 100644
---- arch/x86/include/asm/kvm-x86-ops.h
-+++ arch/x86/include/asm/kvm-x86-ops.h
-@@ -146,7 +146,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL(get_untagged_addr)
- KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- KVM_X86_OP_OPTIONAL_RET0(gmem_convert)
- #endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git arch/x86/include/asm/kvm_host.h arch/x86/include/asm/kvm_host.h
-index a70e734af122..08c4af487fa1 100644
---- arch/x86/include/asm/kvm_host.h
-+++ arch/x86/include/asm/kvm_host.h
-@@ -1724,7 +1724,7 @@ struct kvm_x86_ops {
- 
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- 	int (*gmem_convert)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 			    kvm_pfn_t nr_pages, int max_order, bool to_private);
- #endif
-diff --git arch/x86/kvm/Kconfig arch/x86/kvm/Kconfig
-index 52e75d83a4d2..538ed1e80332 100644
---- arch/x86/kvm/Kconfig
-+++ arch/x86/kvm/Kconfig
-@@ -161,6 +161,7 @@ config KVM_AMD_SEV
- 	select ARCH_HAS_CC_PLATFORM
- 	select KVM_GENERIC_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_CONVERT
-+	select HAVE_KVM_ARCH_GMEM_RECLAIM
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index f0c49a92d041..11017f49b94a 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -10625,6 +10625,16 @@ int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- {
- 	return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, to_private);
- }
-+#endif
-+
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-+void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
-+{
-+	WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
-+}
-+#endif
-+
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
- void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
- {
- 	kvm_x86_call(gmem_invalidate_range)(kvm, range);
-diff --git include/linux/kvm_host.h include/linux/kvm_host.h
-index 9391ffcc90ff..fdbd697d0337 100644
---- include/linux/kvm_host.h
-+++ include/linux/kvm_host.h
-@@ -2614,6 +2614,10 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
- #endif
- 
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-+void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int order);
-+#endif
-+
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
- void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
- #endif
-diff --git virt/kvm/Kconfig virt/kvm/Kconfig
-index 53803c5777a4..c3c0ee253fc7 100644
---- virt/kvm/Kconfig
-+++ virt/kvm/Kconfig
-@@ -111,6 +111,10 @@ config HAVE_KVM_ARCH_GMEM_CONVERT
-        bool
-        depends on KVM_GUEST_MEMFD
- 
-+config HAVE_KVM_ARCH_GMEM_RECLAIM
-+       bool
-+       depends on KVM_GUEST_MEMFD
-+
- config HAVE_KVM_ARCH_GMEM_INVALIDATE
-        bool
-        depends on KVM_GUEST_MEMFD
-diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
-index aeb765831c32..173a7ed008d1 100644
---- virt/kvm/guest_memfd.c
-+++ virt/kvm/guest_memfd.c
-@@ -516,13 +516,11 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
- 	return MF_DELAYED;
- }
- 
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
- static void kvm_gmem_free_folio(struct folio *folio)
- {
--	WARN_ON_ONCE(kvm_arch_gmem_convert(NULL, -1ull,
--					   folio_file_pfn(folio, 0),
--					   folio_nr_pages(folio),
--					   folio_order(folio), false));
-+	kvm_arch_gmem_reclaim(folio_file_pfn(folio, 0), folio_nr_pages(folio),
-+			      folio_order(folio));
- }
- #endif
- 
-@@ -530,7 +528,7 @@ static const struct address_space_operations kvm_gmem_aops = {
- 	.dirty_folio = noop_dirty_folio,
- 	.migrate_folio	= kvm_gmem_migrate_folio,
- 	.error_remove_folio = kvm_gmem_error_folio,
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
- 	.free_folio = kvm_gmem_free_folio,
- #endif
- };
+> 
+> Thanks,
+> Gavin
+> 
+> > @@ -719,6 +729,8 @@ struct kvm_enable_cap {
+> >   #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
+> >   #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
+> > +#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
+> > +
+> >   /*
+> >    * Extension capability list.
+> >    */
+> > @@ -985,6 +997,7 @@ struct kvm_enable_cap {
+> >   #define KVM_CAP_S390_USER_OPEREXEC 246
+> >   #define KVM_CAP_S390_KEYOP 247
+> >   #define KVM_CAP_S390_VSIE_ESAMODE 248
+> > +#define KVM_CAP_ARM_RMI 249
+> >   struct kvm_irq_routing_irqchip {
+> >   	__u32 irqchip;
+> 
