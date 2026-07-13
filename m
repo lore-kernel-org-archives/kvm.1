@@ -1,164 +1,139 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9554C1DDC35;
-	Mon, 13 Jul 2026 11:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243E93876B2
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 11:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783940554; cv=none; b=fuURqaDgr+PGeKnt8j1mABzEgR0gVc/6XN7icDMJQK/E2N4h/rwQBCT/NnTOzT2CzR3uBwd2XUJjsz6gkuHbUmHc32WitnyKB0Aw6bTBHIRYIzp+G3wu4hrOOkjbCLgSJAGDSr5hLZkkCUTjIZip3VUYyUJfCnF5AfTbk2zMluk=
+	t=1783940877; cv=none; b=m7ZKSFx3RXKgpJIHowoHCc5yV/Dc3RlC1xXNmlW90z/K5b5dwV7qur10+dYSEuf8xvc68AbiRL4g1J2vjOVcmO3IgcEpYy01JeayIFfPl6DGLNCz26y/7Txuxnbt9c/M1IAFB6HDEzKqEkNZA/dqCRRxaTLZzaCsUKPVfO4bBjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783940554; c=relaxed/simple;
-	bh=EZAazzo66x7ORudJtvxZhA5ioBOSUboJ9hOFqGI7uuE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=stIc0k+iU4vW4bCor/K2nUqZSKty1r9W9YfQEBkE8Mh7AGINkhuJrJiOlyf98rI8fCMNtLkf1h82M+95H822GZLGvdZLeY4g/9KWMFiYwGriEvEj+BiVsY4A2EHKZqG4wjdQPSlpWrNDLWOU2aZudSZY3r0iH8aGAVUQ4DnVSMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L2U/HwIb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIH8bW6x; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1783940877; c=relaxed/simple;
+	bh=d0ABzhXeHUBkFnNhjmI8xRulI0sp1gwLY39ccW0TbwE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=qjRy+Y2XKxpGSDehvKXFOuK2G7B3te2lqWF+KOgu9FCIpCbgoNrRIhwda0wQRaX9hIJYMZDPVfrfaxbYEztmbCpMqBaMxNSQYYkK8nDwT5Aj3Bz96Q5jhWFtv4n7qM+SooNaEJdL4s6tUVwVATGmQPiShxiWLfe5JLR9H6BUv84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JLpqzU3T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L2U/HwIb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIH8bW6x"
-Date: Mon, 13 Jul 2026 13:02:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783940550;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R4cZpFs4H2e3pr/WEZQZbk3vQfEsgZgb/66i7BAIy4M=;
-	b=L2U/HwIbIWwdr5tuyX9T6BENGEwwxGsmfZLRb/C5EMS1v4Msjs0sUyXKTRkPu+vzCI7rQX
-	qqNRZHhjsseS5PLrOqXNF9P031VK5gPAe46k6uai01qkoowbAFWcl+/71t03prpGlTlKJv
-	FeV4tfmsmy1krEMuv97E/Zejy7MpUgDZi0BrqtwZ1Xfr/vBwMwp9LpoVTJIFv4K+B92lmP
-	qO88IqNBpLVEjEeIj5/ThFXsirAZ7srWHanIUEyPgq34VPR7UhIWuPHI+FuyICzAnGgP0z
-	xzerj4bK887yAr4fV83Iuh7i1DmFNjuaMnOiTq7LmyUDXIbbvixvp/yq7+DHUg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783940550;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R4cZpFs4H2e3pr/WEZQZbk3vQfEsgZgb/66i7BAIy4M=;
-	b=TIH8bW6xGYJsXu0khLzfi+wNlUO3u4xOm+t1InkFnNKVDFWs4wh1PcwcsP9U4dt6t3PUuw
-	9RwOBn+KZef0LXBg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Daniel Paziyski <danielpaziyski@gmail.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86: Fix null pointer dereference in
- trace_kvm_inj_exception
-Message-ID: <20260713123938-0f35bcb6-241a-494c-81a9-d5e17022951f@linutronix.de>
-References: <20260710134055.16432-1-danielpaziyski@gmail.com>
- <alE9J1SjQSNHaV16@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLpqzU3T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8351F000E9;
+	Mon, 13 Jul 2026 11:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783940874;
+	bh=QDKQ6E4jAYqwKHNVcDk6l3pwLwKJoybIfG3fznrvj2k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JLpqzU3TvnMQnXyxfNh0kKXKnB8twJuM31VY1rOu0RCeloASUj/zDnSQSv+/6axVr
+	 HBl3l4hCDCH8S8kGFWHQcY6UgAA6bHZle8AMPhgWSkIZPQ/HX5Vwav4eZ1fTHdOvyb
+	 QuN2XxUg0xIZz4RwrqVSDlVZMeV7HjXY7uKr9jWbc53ZV+Z+88A99ad9O9+rXCyEKF
+	 lIR4CoYrT7EfuThxUDEOil2nppmJiBKjP8/m46neRPPl0DzZ0eUVJJhKryTfddJncd
+	 4Ck4tZdOCYj7xct8wRzN0/swyZbiW8bC3wf18BYBbx7i0tys8ktqU5JB1NFq0DwJYw
+	 D3i68QBjCWA1g==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 4/6] iommu/amd: Program guest-mode IRTEs for
+ GAPPI wakeup when IRTE[IsRun] = 0
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sairaj Kodilkar" <sarunkod@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260713105033.15405-5-sarunkod@amd.com>
+References: <20260713105033.15405-1-sarunkod@amd.com>
+ <20260713105033.15405-5-sarunkod@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 11:07:54 +0000
+Message-Id: <20260713110754.9B8351F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <alE9J1SjQSNHaV16@google.com>
 
-Hi Sean,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] GAPPI uses the lower 8 bits of the IRTE `ga_tag` as the host p=
+hysical APIC interrupt vector, but this tag holds the guest's unconstrained=
+ `vcpu_idx`, leading to host CPU exception injection.
+- [High] When GAPPI is enabled, putting a vCPU into a blocked state configu=
+res the IOMMU IRTE with a broadcast physical destination APIC ID (0xfffffff=
+f), causing an interrupt storm.
+--
 
-On Fri, Jul 10, 2026 at 11:42:47AM -0700, Sean Christopherson wrote:
-> +The Other Thomas
+--- Patch [4]: [RFC PATCH v3 4/6] iommu/amd: Program guest-mode IRTEs for G=
+APPI wakeup when IRTE[IsRun] =3D 0 ---
+commit aad2d4e0f82cbce4cf0a8e8b65994633202311a3
+Author: Sairaj Kodilkar <sarunkod@amd.com>
 
-Thanks for the forward.
+iommu/amd: Program guest-mode IRTEs for GAPPI wakeup when IRTE[IsRun] =3D 0
 
-> Just as an FYI, commit 754e38d2d1ae ("tracing: Use explicit array size instead of
-> sentinel elements in symbol printing") broke KVM abuse of __print_symbolic() where
-> KVM deliberately passed in an "null" array to avoid printing 0x0 when there is no
-> error code.
-> 
-> I did a half-assed search through the other usage of __print_symbolic() and didn't
-> see anything, but just in case someone else comes complaining...
-> 
-> On Fri, Jul 10, 2026, Daniel Paziyski wrote:
-> > The trace_kvm_inj_exception tracepoint takes as arguments the exception
-> > vector, whether the exception has an error code (and subsequently, the
-> > error code), and whether it is being reinjected. The error code is
-> > formatted to the trace log as a string using __print_symbolic,
-> > which takes an integer value and an array of structs containing a mask
-> > value and a string. An empty struct is being passed, which makes the
-> > kernel derefence a NULL pointer when the error code is 0. Remove this
-> > stray struct in the invocation of __print_symbolic.
-> 
-> Fixes: 754e38d2d1ae ("tracing: Use explicit array size instead of sentinel elements in symbol printing")
-> Cc: stable@vger.kernel.org
-> 
-> In the future please provide a splat in the changelog, especially in this age of
-> agentic bug hunters that are prone to making things up.  My initial reaction to
-> this was "no way".  Thankfully, I tried reproducing the bug before making an ass
-> out of myself :-)
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000000
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   PGD 0 P4D 0 
->   Oops: Oops: 0000 [#1] SMP
->   CPU: 20 UID: 0 PID: 791 Comm: less Not tainted 7.2.0-rc2-3ffd29d795c9-x86_trace_ex_null_ptr_deref-vm #401 PREEMPT 
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
->   RIP: 0010:strlen+0x0/0x20
->   Call Trace:
->    <TASK>
->    trace_seq_puts+0x18/0x80
->    trace_print_symbols_seq+0x68/0xa0
->    trace_raw_output_kvm_inj_exception+0x64/0xf0 [kvm]
->    s_show+0x47/0x110
->    seq_read_iter+0x2a5/0x4c0
->    seq_read+0xfd/0x130
->    vfs_read+0xb6/0x330
->    ? vfs_write+0x2f2/0x3f0
->    ksys_read+0x61/0xd0
->    do_syscall_64+0xb7/0x570
->    entry_SYSCALL_64_after_hwframe+0x4b/0x53
->   RIP: 0033:0x7ff283714862
->    </TASK>
-> 
-> I'll also massage the changelog to explain why KVM is absuing __print_symbolic()
-> (see commit 21d4c575eb4a ("KVM: x86: Print error code in exception injection
-> tracepoint iff valid")).
-> 
-> No need for a v2, I'll fixup when applying.
-> 
-> Thanks!
-> 
-> > Signed-off-by: Daniel Paziyski <danielpaziyski@gmail.com>
+This commit enables Guest APIC Physical Processor Interrupt (GAPPI) support
+for the AMD IOMMU. When a vCPU is scheduled out, it configures the IOMMU to
+deliver a physical APIC interrupt using the IRTE destination and GATag
+fields to wake up the blocked vCPU.
 
-Reviewed-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> Guest APIC Physical Processor Interrupt (GAPPI) is an alternative to the
+> GA log for notifying the host when a device interrupt targets a
+> non-running vCPU (IRTE[IsRun] =3D 0). Per the AMD IOMMU specification [1]
+> (section 2.2.5.4), with GAPPI enabled the IOMMU delivers a physical APIC
+> interrupt to the CPU described by IRTE[Destination], using
+> IRTE[GATag][7:0] as the vector, while still updating the guest vAPIC
+> backing page IRR as usual.
 
-> > ---
-> >  arch/x86/kvm/trace.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
-> > index 0db25bba1..93de876c3 100644
-> > --- a/arch/x86/kvm/trace.h
-> > +++ b/arch/x86/kvm/trace.h
-> > @@ -490,7 +490,7 @@ TRACE_EVENT(kvm_inj_exception,
-> >  	TP_printk("%s%s%s%s%s",
-> >  		  __print_symbolic(__entry->exception, kvm_trace_sym_exc),
-> >  		  !__entry->has_error ? "" : " (",
-> > -		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code, { }),
-> > +		  !__entry->has_error ? "" : __print_symbolic(__entry->error_code),
+[Severity: Critical]
+KVM constructs the ga_tag using AVIC_GATAG(vm_id, vcpu_idx), which embeds
+the guest vcpu_idx into the lowest 8 bits. This unmodified tag is
+programmed into the IRTE's ga_tag field when a guest mode is activated:
 
-You could use a printf precision to reduce the hackery and get the desired behavior:
+drivers/iommu/amd/iommu.c:amd_iommu_activate_guest_mode() {
+    ...
+    entry->lo.fields_vapic.ga_tag =3D ir_data->ga_tag;
+    ...
+}
 
-TP_printk("...%.*s...",
-          ...
-	  __entry->has_error && __entry->error_code != 0 ? 100 : 0,
-	  __print_symbolic(__entry->error_code),
-          ...
+If GAPPI uses IRTE[GATag][7:0] as the physical APIC interrupt vector, and a
+device interrupts vCPU 0, will the IOMMU deliver a physical interrupt with
+vector 0?
 
-(Unfortunately Linux printf does not handle negative precisions correctly.)
+Since vectors 0-31 on x86 are reserved for CPU exceptions, could this
+regression allow an untrusted guest VM to trigger a host kernel panic
+(e.g., #DE Divide-by-Zero) by firing an interrupt while a low-numbered vCPU
+is blocked?
 
-> >  		  !__entry->has_error ? "" : ")",
-> >  		  __entry->reinjected ? " [reinjected]" : "")
-> >  );
-> > -- 
-> > 2.55.0
-> > 
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 91405e71b3c3a..7eebf4745a678 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -3970,8 +3970,18 @@ static void __amd_iommu_update_ga(struct irte_ga *=
+entry, int apicid,
+>  		entry->lo.fields_vapic.is_run =3D true;
+>  		entry->lo.fields_vapic.ga_log_intr =3D false;
+>  	} else {
+> -		entry->lo.fields_vapic.is_run =3D false;
+> -		entry->lo.fields_vapic.ga_log_intr =3D wakeup_intr;
+> +		if (amd_iommu_gappi) {
+> +			entry->lo.fields_vapic.gappi_dis =3D !wakeup_intr &&
+> +						check_feature2(FEATURE_GAPPIDISSUP);
+> +			entry->lo.fields_vapic.is_run =3D false;
+> +			entry->lo.fields_vapic.destination =3D
+> +						APICID_TO_IRTE_DEST_LO(apicid);
+> +			entry->hi.fields.destination =3D
+> +						APICID_TO_IRTE_DEST_HI(apicid);
+
+[Severity: High]
+When KVM blocks a vCPU, it calls amd_iommu_update_ga() with apicid =3D -1 a=
+nd
+wakeup_intr =3D true.
+
+If apicid is -1, won't APICID_TO_IRTE_DEST_LO() and APICID_TO_IRTE_DEST_HI()
+convert this to 0xffffffff?
+
+Does this regression result in writing the x2APIC broadcast address to the
+IRTE destination field, potentially causing a host-wide interrupt storm when
+a passed-through device fires an interrupt?
+
+> +		} else {
+> +			entry->lo.fields_vapic.is_run =3D false;
+> +			entry->lo.fields_vapic.ga_log_intr =3D wakeup_intr;
+> +		}
+>  	}
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713105033.1540=
+5-1-sarunkod@amd.com?part=3D4
