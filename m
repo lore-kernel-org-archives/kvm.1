@@ -1,124 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44513FCC;
-	Mon, 13 Jul 2026 08:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24493A6EF0;
+	Mon, 13 Jul 2026 08:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783929887; cv=none; b=LMhN7/vflCP3Us4H2wFzti8BSQ//eZgJi1jdUMN4mEN5njoDgv7dq6xibquuZxb49Yrhe7vpD1sIgC7oE8fCBUIllfaEXtzpAq2ZdGpy+p+yiYpaUribUnXJ+pWnwlBawu3OY9b9wencKMy7iwpXmv05JFZCh/ZJTp8fZFSPzbw=
+	t=1783931419; cv=none; b=P7ypEHnGABUlV1a0Vk1OBdSP6XAK6AaaxiMyPhjcbkPmrTpE4Iijhc6bB9azlUd3uwbLjtdUjvavkK2xpocQUMy5DSS8yeRQK4tq+9uz3HSw7vV1JVFq2pyRKisMCdYQk1R4MrFOS6a6VMUXG3r76oZoN5uIw55NQmMzOreU1fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783929887; c=relaxed/simple;
-	bh=bXoyzfoSCt9kIATo7jm0kbbtpFCqQGChcRNGlqrS0YM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J17KTwzMi8o3TZ+D9/6c5ewuf0CHqJJAIv6VECFjZSLToMNGXjvAS0EfoKSy+EwQH2iSLS1IoZC417Bp2P0sDfyyOFvFjPa0at7MpBFMUcxVeQg4AKfiSC0BFhUlNoHolN5t3Ify5XMKf2fSdOlkQjALE9PRT3rMmuMDMbLQF+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QslwnYl2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783931419; c=relaxed/simple;
+	bh=70hka3mRMi1I3N1R+mXxU3jLbnTvik5yIwxZTt0gLLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YXkZz2aXm4feBC1GnLMdrmioMvhDNnTKef7PKMQAa3Izn+TIB1T9cFTjSCQLpuIIALvewsj0/uoo4BFlIOIw8zRB+FY8ZqM2kFbhcMdz8eSmltX1iVgxGKiJBzEaFS7W7/eW8W7qRsLVYW/ZjYX4uWfREIlLnR8TdZweCAhmDnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fnUmcm6/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QslwnYl2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D761F000E9;
-	Mon, 13 Jul 2026 08:04:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783929886;
-	bh=fI49FtD57qiHiCZVpYxggqFypFJ+NAs6da3bEfHEoDk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QslwnYl23mS0eqE3qOl8BJpWreOFc0wvAiBVbiHWL7pnyo40FO9pxuRpvgPgoX1+0
-	 SHUFfd6dUkwBZhET9D9KT/PFFq8aNUsD1xQyyIlofaez13WgwKg4vdKm+FuC3dE8M3
-	 UXSEZ4Aw4nxuNjzjuW2YUvuhFNkDGPNOIw2H8b4hDpa0jY72aYjFhLWt8OA+2dXf40
-	 UPGEwmMD/O25SWKf4W5JLCneaUHbsfTzlcey4iKZ79nqFjlem3UapvXuoAhr+clWtI
-	 LOTmZOm9bY4Ipi6gg7ha+iv15ZhJuni0a/QuwZ7lV7GzL07jRrdHHI4tJk9pBQh/7I
-	 qMkktBafHUTTw==
-Date: Mon, 13 Jul 2026 11:04:39 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian Konig <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v11 0/4] vfio/dma-buf: add TPH support for peer-to-peer
- access
-Message-ID: <20260713080439.GH33197@unreal>
-References: <20260702181025.2694961-1-zhipingz@meta.com>
- <20260709132602.6a3fb084@shazbot.org>
- <CAH3zFs3OwPyTrWk7oaMYETq7sBEQ7VRfDtzWWamhiE3AJzVShw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fnUmcm6/"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66D6fwrD1727468;
+	Mon, 13 Jul 2026 08:30:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=qcA4SBAVWL7eknTizSaMZVJT6B8G52Ntmj3Ny2lyj
+	MY=; b=fnUmcm6/UNpQNr6ItPPvpgFxPHmPt0F4CvgdM2G+nZ/crvjHRc6if5xp7
+	VGnuM9sAWchORs+PPOLbJ+YS3HBwoK0s8WDFwb8rCbQz4hXK6wcc5v3Wu5pO0GTH
+	zz2NDNbr9EdqxbpUPpBDm5aSfC3C1m8xKquApHnmcpKNsDMuX2hjrs0XejbrMt/z
+	tZpgueR0R/Ffc+erPjHVfZqss+CSRdP8fEQi1dZGePtZaUKtLW61Tmtbj7JEAB5J
+	vggp/93227eF6r8wUhMJ7WkZvlIr+jG1XCp/54HcO2DJvo7jZ3sxhgJPcNjO27mR
+	PQqSbhdf6RL8+aWQ6l0wDg8+pmwvg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbepx7kv2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 08:30:13 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66D8Jb2g015388;
+	Mon, 13 Jul 2026 08:30:12 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc05pvyvy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 Jul 2026 08:30:12 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66D8UBa222938242
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jul 2026 08:30:12 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 91E7858055;
+	Mon, 13 Jul 2026 08:30:11 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D17C58063;
+	Mon, 13 Jul 2026 08:30:08 +0000 (GMT)
+Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.ehn-de.ibm.com (unknown [9.224.77.173])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Jul 2026 08:30:08 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: KVM <kvm@vger.kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Subject: [GIT PULL 0/5] KVM: s390: Fixes for 7.2
+Date: Mon, 13 Jul 2026 10:30:02 +0200
+Message-ID: <20260713083007.65863-1-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH3zFs3OwPyTrWk7oaMYETq7sBEQ7VRfDtzWWamhiE3AJzVShw@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ePubta9obAzXh2W6wqBrw_9dQ0zeH5kq
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzEzMDA4NCBTYWx0ZWRfXxhH0iqYh4HjK
+ ZNMd5lLUanGn1hikPjF/oi5db04/tEamDiJXIjMNEQqHSS40ggflAE75f0puGEob5tgGCJBYxDu
+ NTtc9HU42vgDvXBmiZLLCWCJZlGdWJc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzEzMDA4NCBTYWx0ZWRfX9+Be4IBskAjc
+ kHGO2GP9BoOkUsJAlmg6MZM1B4s9FNhSbf+STWWHj8pjfvDtMXZGJYxhxD8qS0km9dZl1EonuhB
+ T2ppd9IYJF2XHpOcQXfGyEMq/9Wv2T1HeiDcBA4rdqQOIIaTOTPFj/JGjMWEcVUFMlS0X3cbRrY
+ R5G2rD0icb7aEl/xN7SkE6rAbF1ELt9qJx1oG6EDCzIDLdMz/jWgnfED+Z/sH27NRwBZaUHDBdI
+ ixH8u+62rQq1FOW/B64H3YN4HsJ+Z5QTqKkwFWesAEJnYPz6zuI8gbQlvRyRT73GJ7LOROBvuKU
+ WAjo0uVz/xVfKMKrhUJltlVS/PN6VeQf1cHHVmdrfEizIJ1ER+gvxcOWmX5yGd6xZd2E0MOL7ZP
+ KMRO/ez1uAhBIHlB1FVUXUq+PxO1CmMbFWcdEPuO80UwQi8HXcqM/wnieRGPlA3tUzvMI+JZI+x
+ ZhY4ED0/KGskMJIsE7g==
+X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=6a54a215 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=n2cOJxejGmWVGDEj5nwA:9
+X-Proofpoint-ORIG-GUID: ePubta9obAzXh2W6wqBrw_9dQ0zeH5kq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-13_02,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607130084
 
-On Fri, Jul 10, 2026 at 02:13:31PM -0700, Zhiping Zhang wrote:
-> On Thu, Jul 9, 2026 at 12:26 PM Alex Williamson <alex@shazbot.org> wrote:
-> >
-> > >
-> > On Thu, 2 Jul 2026 11:10:13 -0700
-> > Zhiping Zhang <zhipingz@meta.com> wrote:
-> >
-> > > Changes since v10:
-> > >   Patch 2 (dma-buf): Per Christian König, document that the ST/PH
-> > >   returned by dma_buf_get_pci_tph() is only valid until the exporter
-> > >   invalidates the current mapping and must be re-queried afterwards;
-> > >   note added to the wrapper kernel-doc and referenced from the callback
-> > >   kernel-doc. Also add dma_buf_get_pci_tph() and dma_buf_ops.get_pci_tph()
-> > >   to the central dma-buf locking convention.
-> > >
-> > >   Patch 3 (vfio/pci): Per Alex Williamson, update the vfio_pci_dma_buf
-> > >   comment to note that @revoked is additionally protected by memory_lock,
-> > >   and describe the READ_ONCE() rationale in the commit log. No behavior
-> > >   change.
-> >
-> > Sashiko has valid comments[1] across most of the series.
-> >
-> >  - Passing through 0b10 seems mis-categorized as High in patch 1, but
-> >    is valid hardening if tph_req_type can ever hold an invalid value.
-> >
-> 
-> agreed, not High and pre-existing: get_rp_completer_type() is from the
-> original TPH
-> support and untouched here. I can send the hardening change in a separate patch.
-> 
-> >  - The documentation error in patch 2 is real.
-> >
-> 
-> will fix!
-> 
-> >  - Patch 4 ironically fails to re-validate according to the lifecycle
-> >    requirements that patch 2 specifies.  This is a significant gap in
-> >    the implementation proof for a real requester.
-> >
-> 
-> Got it, I'll re-query ma_buf_get_pci_tph() there and reprogram the
-> mkey's steering tag,
-> so the lifecycle is honored.
-> 
-> >  - The broadened scope of the existing memory leak in patch 4 is
-> >    already addressed in [2], ok.  Maybe should be folded into this
-> >    series if mlx5 isn't going to pick it up separately.
-> >
-> 
->  [2] is already accepted and landing through the mlx5/RDMA tree.
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-It is not; the patch is intended for net and has still not been
-accepted.
+Paolo,
 
-https://lore.kernel.org/linux-rdma/20260702222507.1234467-1-zhipingz@meta.com/
+please pull the following changes since commit 8cdeaa50eae8dad34885515f62559ee83e7e8dda:
 
-Thanks
+  Linux 7.2-rc2 (2026-07-05 14:44:06 -1000)
 
-> 
-> I plan to keep it as a standalone dependency.
-> 
-> > Thanks,
-> > Alex
-> >
-> > [1]https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260702181025.2694961-1-zhipingz@meta.com__;Iw!!Bt8RZUm9aw!5x8TPHfbpTXQJ872nmZaHsPIXH7HsL9ICbZR3G37yKkHgB-RukCDOy3XiLIOhfhP-yTczTyWQmud$
-> > [2]https://lore.kernel.org/linux-rdma/20260612170406.3339093-1-zhipingz@meta.com
-> 
-> Thanks,
-> Zhiping
+from the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/kvm-s390-master-7.2-1
+
+for you to fetch changes up to 3e3aa6da87d30a0064a17b836685cd43c90a3572:
+
+  KVM: s390: pci: Fix handling of AIF enable without AISB (2026-07-09 16:23:10 +0200)
+
+----------------------------------------------------------------
+KVM: s390: Fixes for 7.2
+
+- more gmap KVM memory management fixes
+- PCI passthru fixes
+
+----------------------------------------------------------------
+Claudio Imbrenda (3):
+      KVM: s390: vsie: Avoid potential deadlock with real spaces
+      KVM: s390: Fix dat_crste_walk_range() early return
+      KVM: s390: Improve kvm_s390_vm_stop_migration()
+
+Haoxiang Li (1):
+      KVM: s390: pci: Fix GISC refcount leak on AIF enable failure
+
+Matthew Rosato (1):
+      KVM: s390: pci: Fix handling of AIF enable without AISB
+
+ arch/s390/kvm/dat.c      |  2 ++
+ arch/s390/kvm/gmap.c     |  7 ++++++-
+ arch/s390/kvm/kvm-s390.c |  6 ++++--
+ arch/s390/kvm/pci.c      | 12 +++++++++---
+ 4 files changed, 21 insertions(+), 6 deletions(-)
