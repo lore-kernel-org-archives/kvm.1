@@ -1,40 +1,86 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A70A17736;
-	Mon, 13 Jul 2026 00:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B237081A
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 00:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783902108; cv=none; b=CCKmEEsPBv1T8JBa390BiKTsDr6tOnRJal0UAQDFHMwENFfUDFsM29wa7PEuAUxTwQ1q3zdIDSah1C1vyWUzWVNuyoCAkJSoC7cs5iiU7aMWWTIdVQJSXqqnewUF8jBqcVUWoOqLed7K4vPDfmsSakPnliWs+AeTE/O0qPOLoeA=
+	t=1783903315; cv=none; b=ZtsinXlLNugJ8WLLlfbeMuyals5YnH4yOiv7Oudz9fMXiVj7ngFMNWZn/yL+RhaOmJwtpV3JyUQ4+MBfWOg5gsEwKevry3exLdFCF3s/GWQcp22kfoXZGqZaSY3uXr8CzE7nSGebU4W79qhxcIzuBz5G/MfmzoV9SQKrDenwEpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783902108; c=relaxed/simple;
-	bh=ao6VbiAJJ8RjOHKCxDirH8Uz+l2iNvUhnRC3wo5sgJw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=j8ktkCm07KBczEOWIwoviPw3AnwbvE9JlwY5eEbQHEagt0/ltbz+M7dAKUsXyzIV4abm7ihLKtjirNGcYh0kq4BHANAon88skhQOa2xKxFjWaZS1txOI+euH1ItPcG6DxeR9u8yKGq3rQ/pTvTqU0SoipIbrCdGlrYWpL6yxTj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=59fK6eXm; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1783903315; c=relaxed/simple;
+	bh=c333I0qsK5COfm+CZjvpTbNVfG/RAecfWzyldmFEXgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h6DQWCdOnEDXUm8iYrZUb88Zu93nkxFAtqI99JApphETSoxFDpYJaldyMHEfLTouxwsg9I9LEFp6LgXRXZPSe0FKhvs1Vz6QLlNQ/0wg7koldX9HGVj0/I7vVFyH2jyHAfexDAjQJ+3LA8kXIiDrUjT2UeCVmRytfOdntpXich0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WXXNu5Mz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ic//3naW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="59fK6eXm"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=PTr4eVSvXf18EU5VY8v4xOGTIA4AYatlm+nbx4iYPZY=;
-	b=59fK6eXmJycjy0HSy8LJXh81OU4v/E/jp20CShN8drPNnuWQYzKedSOrg/WwqAFqdGo8CSoRb
-	Esvq+g8qOsh2eNbsQnwgJ6geDwep+YUOG7sca0wJKEE4nGgheaqYZ+q4jBEfhcj1HXwDAOSd1uE
-	UqoAk3V4I+xkfpOC83ov3vQ=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gz2tv5zhVzRhQP;
-	Mon, 13 Jul 2026 08:12:23 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7244540591;
-	Mon, 13 Jul 2026 08:21:39 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 13 Jul 2026 08:21:38 +0800
-Message-ID: <73a6d2c2-9938-4cbf-b48b-04c8b1712de3@huawei.com>
-Date: Mon, 13 Jul 2026 08:21:38 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WXXNu5Mz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ic//3naW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783903313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zALpRgeuYhXdSugXMHp9pMhVnEo4bMgEkE82Q4hNxJU=;
+	b=WXXNu5MzaMbaXlMU1gbqBSQtQnbmRi3vCi5uphlnc7THx8gP+1gLUVjlmbUsSs08HNaAl0
+	lbJk9F877UUunkcPaVh+tt862Ph1Mcp+G3/nq/9fFChHqKP9emyEcA3dVvupdJaGdMBvTJ
+	3Nd7m3wCr1yHMzDeQqf5q1vVIMwAAtY=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-N4HV7k1FPv2Gw4G7qAN37A-1; Sun, 12 Jul 2026 20:41:52 -0400
+X-MC-Unique: N4HV7k1FPv2Gw4G7qAN37A-1
+X-Mimecast-MFC-AGG-ID: N4HV7k1FPv2Gw4G7qAN37A_1783903311
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8484739a9cbso3489474b3a.0
+        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 17:41:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1783903311; x=1784508111; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zALpRgeuYhXdSugXMHp9pMhVnEo4bMgEkE82Q4hNxJU=;
+        b=ic//3naWO64p5VUpfh1fMeQYyMGjT3x8WobkshTold2TDvtbID3vSwb/FVegKgW1J2
+         nWO+D6gwrZN96HVyAyRHrPUbSRrfQl4R2phu1enw9dPAn1mvq2xQl1VZcwGTWowZfJnV
+         z7ZAq5OdI5rxEW/8yKl25njtG8Cj17wABGkhm+gZ0jv6bSoDF0lvIDbxrEKYgnKSYcZI
+         599pvZ2eGt7a1FJN85VvLM4wrVuAQFvBqpX9xKOdh0qbYfj772nNqJxTIMZpdi7FmcnN
+         l4JdI84mmipxaWgre6LCyF6ZJje6RHaw3y3paCXFljt6jgVwdaHegXLt/hWgABg1yYeZ
+         Jx/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783903311; x=1784508111;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zALpRgeuYhXdSugXMHp9pMhVnEo4bMgEkE82Q4hNxJU=;
+        b=OpoUnlgsgwF/XHzOayqjQ03CnmXWk5UVq2rYFIwZFuetLH9DJFZ6afzk5yjsJHtkk9
+         XNbwS2ma/OyP6ZQpLsZoF10hfBWdhyLvOF212LXZGLgssd2H/BmuqShhAzhQe8LsG6pd
+         QBMX7aUq0adlq2wM+Oakg8jKezFmi7LYhCrHi5KNzhnhuOjWJvPulAeZCIpPqa5TJHzl
+         lke1M/2LjLdkL6aOZm9Qrzh/586Lch2HY5i7C3Tbfc8lMfrowX2KRyv/WYKkoBAYncn6
+         HUa59S5sVLsR5pldGlIgcbEPgm+0v+8WaCT/idEsLHIkxTvWZ2WpiF8LnTuZqadZkJ9E
+         vluw==
+X-Forwarded-Encrypted: i=1; AHgh+RoRa4ah3mwPM1umaDzaOjiiOnEMlE6sifl2Ay+NLYN3rm34rAl/hhF+atF1zSjCqWywIQM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrKV3AIu7//r24DcxEwjztZAHT1RCtLm1lLQazb+pLmDToF2UC
+	z2eThzbDAxx0nrZNP5nwaXA1QjOGHUcZKoe7YfnUlQoNgVWnXWw42UeC5cEEgNrG8RdhYuyo8M0
+	to5v+1ZGROfo1Ug2V2KlvbNl3rW1o71XujkUmRjbsqdSgTKOwR+jQFA==
+X-Gm-Gg: AfdE7ckcUhTrqrLNYS1IKlD7h6c2WCx8tUSmPxbCWQ6BDzbKSbOJCHIzt6G50V9CC6A
+	dkEhbuo+OmsJYUHuASj//dapzA1BHpZmOCmdCoTm8fqkL8ep1dCj0CXGXHV3+eMdD6IgkI5rZSX
+	a49aO8y/NwJOcqumE0IdO2eVvdTqpfWrWp/EgWtz11gT4BD3nClpTCNZEkzUdHPQlNe+uEMPKQT
+	LWwL4uuKUK+VvLUVz0rfVL4SobSOCupifTNRuojgLoZZWA8CtA1bkOO05oipgntis5TZP3uqYeh
+	5uErhJzQADq2p0yUGc7gZW4qNSBn5lJRptIZ/qpNALGRK2lhU/TMaDHyWL71h1WWSuNaFWYnRKu
+	ZOslJouj24ZszBZSykWKyOIVg5QZFi4v7cl8/ZfONDgOMfPPn3KF79Q==
+X-Received: by 2002:a05:6a00:a20f:b0:847:9aa8:d3c1 with SMTP id d2e1a72fcca58-8487078c197mr10333602b3a.34.1783903310892;
+        Sun, 12 Jul 2026 17:41:50 -0700 (PDT)
+X-Received: by 2002:a05:6a00:a20f:b0:847:9aa8:d3c1 with SMTP id d2e1a72fcca58-8487078c197mr10333587b3a.34.1783903310424;
+        Sun, 12 Jul 2026 17:41:50 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8483262a17dsm8553175b3a.4.2026.07.12.17.41.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Jul 2026 17:41:49 -0700 (PDT)
+Message-ID: <8ecc5bdb-7686-4627-a2d5-94c50d7921b4@redhat.com>
+Date: Mon, 13 Jul 2026 10:41:41 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,253 +88,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 04/18] PCI/TPH: Refactor pcie_enable_tph & add
- explicit requester variant
-From: fengchengwen <fengchengwen@huawei.com>
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
- <20260702124224.57168-5-fengchengwen@huawei.com>
- <20260708173325.599bc892@shazbot.org>
- <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
+Subject: Re: [RFC v1 01/25] linux-headers: Add RME related definitions
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+ kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+ peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+ pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
+ lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ kvm@vger.kernel.org
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-2-mathieu.poirier@linaro.org>
+ <03a39e32-3b15-49a3-a23a-782f8ba25466@redhat.com>
+ <alDNbZ4ZI34nPGKo@lpieralisi>
 Content-Language: en-US
-In-Reply-To: <7993c211-7af2-492d-adaf-cc6ec3afc67d@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <alDNbZ4ZI34nPGKo@lpieralisi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemo500009.china.huawei.com (7.202.194.199)
 
-Hi Alex,
+On 7/10/26 8:46 PM, Lorenzo Pieralisi wrote:
+> On Fri, Jul 10, 2026 at 11:09:43AM +1000, Gavin Shan wrote:
+> 
+> [...]
+> 
+>> After syncing the definitions with those in (v14) host series, I'm able to boot
+>> a simple realm guest (no virtio devices) with one warning.
+>>
+>>    qemu-system-aarch64: Failed to enable KVM_CAP_ARM_NISV_TO_USER cap
+> 
+> That's because we need to use the VM instance specific check extension
+> rather than the global one before trying to enable the cap.
+> 
+> It is harmless.
+> 
 
-While implementing the explicit requester variant API, I found the _type
-suffix naming ambiguous and unsuitable. I evaluated multiple options
-including _selected, _req, _reqtype, _ns and _requester, and
-finally settled on the _ext suffix following standard kernel extended
-variant conventions.
+Yes, the capability KVM_CAP_ARM_NISV_TO_USER has been hidden from realm guest
+in the (v14) host series. With the following changes applied on the top, the
+warning is avoided, I think the changes need to be integrated to [RFC v1 08/25]
+target/arm/kvm: Use kvm_vm_check_extension() where necessary.
 
-The new APIs will be:
-  pcie_enable_tph_ext()
-  pcie_tph_get_cpu_st_ext()
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 3d5e16a21c..4c52ee7e1b 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -623,7 +623,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+          return -EINVAL;
+      }
+  
+-    if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
++    if (kvm_vm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
+          if (kvm_vm_enable_cap(s, KVM_CAP_ARM_NISV_TO_USER, 0)) {
+              error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap");
+          } else {
 
-I acknowledge pcie_tph_get_cpu_st_ext carries minor potential ambiguity,
-and will resolve this with clear function header comments to specify it adds
-an explicit requester type parameter for ST namespace selection, rather than
-modifying the raw steering tag value width directly.
+Besides, I think it's known issue that 'reboot' doesn't work.
 
-The original functions remain intact as default wrappers using the cached
-tph_max_type value. These changes will be included in the v20 patch series.
+   Welcome to Buildroot
+   buildroot login: root
+   root@guest:~# reboot
+     :
+   qemu-system-aarch64: cpus are not resettable, terminating
 
-Thanks
+Thanks,
+Gavin
 
-On 7/9/2026 5:22 PM, fengchengwen wrote:
-> Hi Alex,
-> 
-> On 7/9/2026 7:33 AM, Alex Williamson wrote:
->> On Thu, 2 Jul 2026 20:42:10 +0800
->> Chengwen Feng <fengchengwen@huawei.com> wrote:
->>
->>> Refactor pcie_enable_tph implementation: extract core logic into static
->>> internal enable_tph() helper accepting explicit requester type.
->>>
->>> - Preserve original pcie_enable_tph() unchanged as auto wrapper; it
->>>   auto-selects EXT/standard TPH requester per device capability, existing
->>>   bnxt/mlx5 callers require zero modification.
->>> - Add exported pcie_enable_tph_explicit() with bool 'extended' parameter
->>>   for explicit STD/EXT selection, used by upcoming VFIO TPH support.
->>>
->>> Input validation for EXT_TPH availability is retained inside helper to
->>> reject invalid explicit EXT request if hardware does not support extended
->>> requester.
->>
->> I'll leave final judgment on the APi to Bjorn, but I'd tend towards
->> defining tph_mode and tph_req_type as enums, store the max available
->> tph_req_type on the pci_dev.tph_max_type, and have the base function
->> take exactly those enums as args, get rid of the bool wrapper.  Then the
->> existing function just becomes:
->>
->> int pcie_enable_tph(struct pci_dev *pdev, int mode)
->> {
->> 	return pcie_enable_tph_type(pdev, (enum tph_mode)mode,
->> 				    pdev->tph_max_type);
->> }
->>
->> (Given the 2 existing callers, this could also be easily changed to
->> take enum tph_mode as the arg as well)
->>
->> This might also disambiguate how this series conflates tph_cap to mean
->> TPH capability is not present or not available to instead retain
->> tph_cap as simply the offset of the capability and (tph_max_type ==
->> PCI_TPH_REQ_DISABLE) means it's not available.
->>
->> Validation in the base function is also simplified:
->>
->> 	if (tph_req_type == PCI_TPH_REQ_DISABLE ||
->> 	    tph_req_type > pdev->tph_max_type)
->> 		return -EINVAL;
->>
->> Same comment for patch 5, expose the base function as "_type" with the
->> enum tph_req_type (the precedent is already there for enum
->> tph_mem_type).  The wrapper for the existing interface is the same as
->> you have, the base function adds the same test as above, modulo
->> s/tph_max_type/tph_req_type/.  Thanks,
-> 
-> Thanks for your suggestion on typed enum refactoring for the TPH enable API.
-> After checking headers, two groups of symbols already exist in pci_regs.h:
-> - PCI_TPH_ST_NS_MODE, PCI_TPH_ST_IV_MODE, PCI_TPH_ST_DS_MODE
-> - PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY, PCI_TPH_REQ_EXT_TPH
-> 
-> To avoid duplicate local enum definitions and align with PCI register headers,
-> I will skip adding custom enums and use u8 for mode/req_type parameters.
-> Comments will restrict valid inputs to the standard PCI macros.
-> 
-> I will adjust the TPH enable APIs for v20 with these changes:
-> 1. Change original pcie_enable_tph() from int mode to u8 mode;
-> 2. Add unified base entry pcie_enable_tph_type(pdev, u8 mode, u8 req_type);
-> 3. Rework explicit entry to pass u8 req_type, drop ambiguous bool extended;
-> 4. Add tph_max_type to struct pci_dev for negotiated max requester type;
-> 5. Unify validation check as you proposed:
->    if (req_type == PCI_TPH_REQ_DISABLE || req_type > pdev->tph_max_type)
->        return -EINVAL;
-> 6. Retain original pcie_enable_tph() as thin compat wrapper filling tph_max_type,
->    so existing bnxt/mlx5 callers need zero source code modification.
-> 
-> Capability tracking will also be disambiguated per your feedback:
-> tph_cap stores only TPH config space offset, tph_max_type == DISABLE means
-> TPH is unavailable after endpoint and root port topology negotiation.
-> 
-> Thanks
-> 
->>
->> Alex
->>  
->>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->>> ---
->>>  drivers/pci/tph.c       | 68 +++++++++++++++++++++++++++++------------
->>>  include/linux/pci-tph.h |  4 +++
->>>  2 files changed, 52 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
->>> index 4097787ea98a..c22eb7f4b0bd 100644
->>> --- a/drivers/pci/tph.c
->>> +++ b/drivers/pci/tph.c
->>> @@ -363,23 +363,7 @@ void pcie_disable_tph(struct pci_dev *pdev)
->>>  }
->>>  EXPORT_SYMBOL(pcie_disable_tph);
->>>  
->>> -/**
->>> - * pcie_enable_tph - Enable TPH support for device using a specific ST mode
->>> - * @pdev: PCI device
->>> - * @mode: ST mode to enable. Current supported modes include:
->>> - *
->>> - *   - PCI_TPH_ST_NS_MODE: NO ST Mode
->>> - *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
->>> - *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
->>> - *
->>> - * Check whether the mode is actually supported by the device before enabling
->>> - * and return an error if not. Additionally determine what types of requests,
->>> - * TPH or extended TPH, can be issued by the device based on its TPH requester
->>> - * capability and the Root Port's completer capability.
->>> - *
->>> - * Return: 0 on success, otherwise negative value (-errno)
->>> - */
->>> -int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>> +static int enable_tph(struct pci_dev *pdev, int mode, u8 req_type)
->>>  {
->>>  	u32 reg;
->>>  	u8 dev_modes;
->>> @@ -400,10 +384,11 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>>  	if (!((1 << mode) & dev_modes))
->>>  		return -EINVAL;
->>>  
->>> -	pdev->tph_mode = mode;
->>> +	if (req_type == PCI_TPH_REQ_EXT_TPH && !pdev->tph_ext_support)
->>> +		return -EINVAL;
->>>  
->>> -	pdev->tph_req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
->>> -						     PCI_TPH_REQ_TPH_ONLY;
->>> +	pdev->tph_mode = mode;
->>> +	pdev->tph_req_type = req_type;
->>>  
->>>  	/* Write them into TPH control register */
->>>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, &reg);
->>> @@ -417,8 +402,51 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>>  
->>>  	return 0;
->>>  }
->>> +
->>> +/**
->>> + * pcie_enable_tph - Enable TPH support for device using a specific ST mode
->>> + * @pdev: PCI device
->>> + * @mode: ST mode to enable. Current supported modes include:
->>> + *
->>> + *   - PCI_TPH_ST_NS_MODE: NO ST Mode
->>> + *   - PCI_TPH_ST_IV_MODE: Interrupt Vector Mode
->>> + *   - PCI_TPH_ST_DS_MODE: Device Specific Mode
->>> + *
->>> + * Check whether the mode is actually supported by the device before enabling
->>> + * and return an error if not. Additionally determine what types of requests,
->>> + * TPH or extended TPH, can be issued by the device based on its TPH requester
->>> + * capability and the Root Port's completer capability.
->>> + *
->>> + * Return: 0 on success, otherwise negative value (-errno)
->>> + */
->>> +int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>> +{
->>> +	u8 req_type = pdev->tph_ext_support ? PCI_TPH_REQ_EXT_TPH :
->>> +					      PCI_TPH_REQ_TPH_ONLY;
->>> +	return enable_tph(pdev, mode, req_type);
->>> +}
->>>  EXPORT_SYMBOL(pcie_enable_tph);
->>>  
->>> +/**
->>> + * pcie_enable_tph_explicit - Enable TPH with explicit requester selection
->>> + * @pdev: PCI device to operate
->>> + * @mode: ST table operating mode (NS/IV/DS)
->>> + * @extended: true = EXT_TPH, false = standard TPH only
->>> + *
->>> + * Unlike auto-detecting pcie_enable_tph(), caller selects requester type
->>> + * manually instead of hardware auto-selection. Rejects EXT_TPH request
->>> + * if device lacks extended requester capability.
->>> + *
->>> + * Return: 0 on success, negative errno on failure.
->>> + */
->>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended)
->>> +{
->>> +	u8 req_type = extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
->>> +
->>> +	return enable_tph(pdev, mode, req_type);
->>> +}
->>> +EXPORT_SYMBOL(pcie_enable_tph_explicit);
->>> +
->>>  void pci_restore_tph_state(struct pci_dev *pdev)
->>>  {
->>>  	struct pci_cap_saved_state *save_state;
->>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
->>> index 6f02b020d7d7..ca0faa98afac 100644
->>> --- a/include/linux/pci-tph.h
->>> +++ b/include/linux/pci-tph.h
->>> @@ -29,6 +29,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
->>>  			unsigned int cpu, u16 *tag);
->>>  void pcie_disable_tph(struct pci_dev *pdev);
->>>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
->>> +int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode, bool extended);
->>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
->>>  #else
->>> @@ -42,6 +43,9 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
->>>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
->>>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
->>>  { return -EINVAL; }
->>> +static inline int pcie_enable_tph_explicit(struct pci_dev *pdev, int mode,
->>> +					   bool extended)
->>> +{ return -EINVAL; }
->>>  static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
->>>  { return 0; }
->>>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
->>
-> 
+> Lorenzo
 > 
 
