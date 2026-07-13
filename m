@@ -1,151 +1,234 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3C03B3BE5
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 08:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783931611; cv=pass; b=iHC9yvSOFRewbCqNBbeYV/qJNQsoi+iMYoOh2Wkfdl3TZ/m2GxFRo3DddBCGOzS5OvtWOvtCH+BfdUmiIwGKrgRAoFXjHOjCM3TUl77XIHcsh0T6kG5yTMuP9RBq86sJtRWIniZRNw93TxjFSKkW27hu1wSiTY4AFqrFf7+1Nz8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783931611; c=relaxed/simple;
-	bh=I8Ahcyx1157H3fyQeYshWuEx6yg3uTGMl/avrNEV+5Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q9XFeEyoRTF6aPZqYRMOwKCtSFb2e8v5KwFh3xMwuRQdykHenLqMdoUAhRqbXujD08ZWfjEqY4qL5LBOsgnlkwS+m5K8+jopAKgQ1xD3Ayn67eFhwr1ZELIADG0qyDDhP4epMy/E6EjM0/jS7DFGzsfJlEi6m8MQMbTec9lYYNI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=mtHF6ew9; arc=pass smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC3D3CF05E;
+	Mon, 13 Jul 2026 08:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783932456; cv=none; b=kyeJp40zfwXo15k6TwmkM2HWIQ8vn/UK3QjUNNeHWnmQc5Rz6Cipy2VMFFlETO0rHUTPx6o6tRBeKqN3Xj8ZJZyz8B3ZyEHj7jiCm+ExFtNyPPQ4+kauiluKiOuCx5OgZep4M3bN+VEfb/T/xPCFx1H2jlcsnBrHJd7Dm7XfRJc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783932456; c=relaxed/simple;
+	bh=HxpbuDBUCW0CPcuCj0jBPwJqeuKQ59rjkxl5o+sEmXY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HQOIvWZs/Zkik4sJxBTOou2NI+kYKG+weJZEnwYgQt1vjqX6UD11lLNOqd/GZAX+RDBqoIgLv5xbna6lfojP/BEH7YDHcJrRjMzJ6N4YTOHm852tq2hYF1H0ctfcPJXsphtpxE2NOWu9zkIJiNCAy2WeS6vgn9EgJ+uP4W6rEgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MHwGSzwp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="mtHF6ew9"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493ce08a75bso10454135e9.1
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 01:33:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783931604; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PKR4tJvBATWYnYssLOrsEQpkvTVPsi5vR6tLmIeMi3zZqO5b5Cm5qMC5rD/UFARyJJ
-         SPCL4gNle5zq/mShVj9zjq+X7p7zoncQtFWjSTyd1LlwyzC4Veg/giaQLwYsYeMoMI93
-         4WJW/nIU/wz+QyMG5zXMW642cg2aov0Wgp06fEWOiJHsPsez5aqsTNjHwSox4Ptf6piR
-         qt0gWTIYPSOUAfoSewg40l4MVCeNwNfpguUDbbRhZtpg3jlu4DqS4sRSPXDbpbRMCf6O
-         tnwoL9wexX3N2sRpZ3n+KXHeiBjNCqP+xA3m4yg2pwncqJrO9cvHhtjQAcKAVN60fAhC
-         kkPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X/TTX6pDKN8WM9gjZfXrDKvUiLlBJOTFwE6JKAQaNe8=;
-        fh=liEKoVanTMB+qwiPZvf/QSAA6YgqcnllmDo7BBrNiqQ=;
-        b=J7GFu832Ry+W3l81JavXnkfjRioxnHz/KoQOfechkYJuoYtoXB5jYr2jSpweL8ywU9
-         8MTlkDPwQKwrzdurL41WAL1zofMSotgktskhgdgx1ZCbruGQniWnB1/HOrPhPwp6MIc/
-         mdMs80YyEe675a6Bx+dHbXBgCd15H8Izbr/8+ld6RLr2CHa6P/oY1tngE9NLYFtXZBFo
-         KnFO74cGxyKCU+wAXIhI7MbOn9ejRoqu7p1HDssGOO+7iL+lHcwM47CEAgYPd3JOGUMn
-         tfOdQeWkhPcekhnEwryJx5k+47dcKOqqNV2tOWoUKUF2/jZ1jCdOTNeRUXR8f4xQTkIr
-         QEug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1783931604; x=1784536404; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=X/TTX6pDKN8WM9gjZfXrDKvUiLlBJOTFwE6JKAQaNe8=;
-        b=mtHF6ew9oislSeq+yGMy3oWCy71NGXCQeNk8VkUGsTuEVW1DSMJedc2K6Qq3dsoZZb
-         JUMu2/icdVcPUSNxbj/GwHCLPoBbBwelAOd4UxB9zzefLwV4acYT76HOkk3Bcu2VoGDO
-         /OFP7GnqMdO3O1BV6jlmXskk/3/FsYEWYYxWAMOI8pvsn8AqzH37ZgTArudRxMX50f6w
-         wttBrl2ckYr79qh+TQbXOjhqzDaOZ99oyS4O58bz8apzJTanARsGWIwL6v2D6J+u4RB3
-         8uj7QhHQtzrQhGJd83Xv0e8t6MAIlSKlpvD6nM8hPk6wEXJog0NLlpRg3fpnDC4LPrsL
-         igqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783931604; x=1784536404;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X/TTX6pDKN8WM9gjZfXrDKvUiLlBJOTFwE6JKAQaNe8=;
-        b=Dtc349K/baQ20pgiKsjv6ZQVNtSLrO4ND/aP0zDeiMSX7LLgMfgnfidEPwY+zbpaJr
-         0NGFve8KS00oV61BMjGM9uXX7Nw//obSJCbJHY9zWKUqrWgBaSlC9bCqa7RY8KbRzMDK
-         WH3PUd3udmdxjdCLl67zI+DYxq6+QrI5Rq4eZqsEENioBiTXFaX+qOfBzSpVBo7Pwsc/
-         nRqEFbcn/U2myz8Lc1PxK+E9gUuQIXPC/p518WNxuGrLJh30MVu9TLexVZPAPj1Y/3vU
-         1tuV3j14AwR1BMmFSVCgfiK7PWccRL+O4BQWxJpod8imOm34sT7QUy9fTgoUtb89ywu4
-         /2xA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5pUMOJDt5Em5/CfPZq1SJ6m+IdsUC6IVt9ucq6DNzngKd1pMxXJQH80FPd+vgu4CbGAM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq+ekGwVqDHh47ZJFNq6s91ZAi1xBW6zu+g6sJLFPOmAWKXeaG
-	omLENbIzlDSnGJzu3B4guXNxLBHMotFeNEgmpdrsXppnY/BBs6GIT78fW886sC5yIMlf5YbVmZR
-	oy6Wkt4krjXY+mqeYSdJLRJzsN1qrNOcjAL5KkzrP8w==
-X-Gm-Gg: AfdE7cniuC3waXS2RXVYn/OaxoG9ORFqinvRSohmCGNuUsXXv5u3STi9GpWWpAH7GZZ
-	rDRrExJkKyFsoGhlyYvXfTJR4TCN3Pwk9bDJD5vdmry9TVjt0jE7Q+Ao4c5K24fIoo2G6tIqhR0
-	CgsP7ps1ldOG6qPr8RfKiKVOGOE+GRpneCKDPQXH+R18d8HDOv2exgekI9lN9fvYZyqjFlwT4YJ
-	UPY6aoQ1Ax8XYTrBCB/Axee+9Q+EI5FoOJaEvkKPosqlhk08ZhwHcacJGBu9xPoujJ29RJeK0ZC
-	k31TVIIeUNQKGMGipa38+E1Zr8xAvfVRLG5eoFGKSi+X6HJJQxsf+udtE0UD5LaKj32Bjfjdj3g
-	DMOWuG0UMsMBFAhlY
-X-Received: by 2002:a05:600c:638f:b0:493:f762:45d4 with SMTP id
- 5b1f17b1804b1-493f87d9311mr77398405e9.2.1783931603573; Mon, 13 Jul 2026
- 01:33:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MHwGSzwp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65111F000E9;
+	Mon, 13 Jul 2026 08:47:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783932452;
+	bh=fEEMYKLgZySn/ysi4H2GfXtjcjLXq/b2ydjGJYWEnCE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MHwGSzwpruZWx0jpXfqHydfCpitlyFORAqX8VdQybCdvAhxjE1XJ6yYzVPtSANd4D
+	 nmnjkHtwGRxmwgxfoE6OeFea0buQplQD7wfbPUnMiYxEFqGHjJbNbyM0GK/IW8Ryrz
+	 y+4n1Rr6/w7P+tbyDCLVMebpuLn2YWowhPhMU/7anUsy7RWND5VdSmoOHNgqOr0Ubk
+	 JI3F78kwpoHFkM+C9zEb8Nkp8Y86QJFAKALwD6lYgrIDzQyvRDqPBC2fHmCBtJh8sm
+	 8u+UsL/pfYuOEKGDN4u82TI4691JDDsBMiXL6f5ZtY6W2yjOsUeUxs18XeSe1y8QMl
+	 ibkR8Gd1zgt8A==
+From: sashiko-bot@kernel.org
+Subject: Re: [GIT PULL 5/5] KVM: s390: pci: Fix handling of AIF enable
+ without AISB
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Borntraeger" <borntraeger@de.ibm.com>
+Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260713083007.65863-6-borntraeger@de.ibm.com>
+References: <20260713083007.65863-1-borntraeger@de.ibm.com>
+ <20260713083007.65863-6-borntraeger@de.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 08:47:31 +0000
+Message-Id: <20260713084731.A65111F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260624130238.524706-1-suunj1331@gmail.com>
-In-Reply-To: <20260624130238.524706-1-suunj1331@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 13 Jul 2026 14:03:10 +0530
-X-Gm-Features: AUfX_myLtlmicbiW4GefupawlEmm4GHGfSrV2gtz0C0tAQHCDS5effgNQRiwzOo
-Message-ID: <CAAhSdy2YUuC8BLVDp53VWGnUYLShGkuWeHr87mpe5RnZx3PLSQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: riscv: SBI FWFT: Apply LOCK flag only on successful set
-To: SeungJu Cheon <suunj1331@gmail.com>
-Cc: atish.patra@linux.dev, cleger@rivosinc.com, ajones@ventanamicro.com, 
-	skhan@linuxfoundation.org, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 24, 2026 at 6:33=E2=80=AFPM SeungJu Cheon <suunj1331@gmail.com>=
- wrote:
->
-> kvm_sbi_fwft_set() applies the caller's flags to conf->flags before
-> invoking the set() callback. If the callback returns an error, the LOCK
-> bit persists and the feature becomes permanently locked without its value
-> ever being changed.
->
-> Move the flags assignment after the callback so LOCK takes effect only
-> on success.
->
-> Fixes: 6b72fd170592 ("RISC-V: KVM: add support for FWFT SBI extension")
-> Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Thank you for your contribution! Sashiko AI review found 8 potential issue(=
+s) to consider:
 
-LGTM.
+Pre-existing issues:
+- [Critical] Unchecked return value from `airq_iv_create()` causes a host k=
+ernel panic in `kvm_zpci_set_airq()`.
+- [Critical] Insufficient page pinning for the Adapter Interrupt Bit Vector=
+ (AIBV) allows hardware DMA to write beyond the pinned page into arbitrary =
+host memory.
+- [Critical] The `set_bit_inv()` call in the interrupt forwarding path can =
+write outside the bounds of the single pinned AISB page due to an unvalidat=
+ed page offset and bit index.
+- [High] Repeated KVM_S390_ZPCIOP_REG_AEN ioctl calls unconditionally overw=
+rite existing AIF allocations, causing unbounded memory and resource exhaus=
+tion.
+- [High] Error paths in `kvm_s390_pci_aif_enable()` fail to update `rc`, er=
+roneously returning success to userspace when enabling fails.
+- [High] Early error paths in `kvm_s390_pci_aif_enable()` fail to rollback =
+successfully allocated resources like GISC registrations and memory quotas.
+- [High] `account_mem()` and `unaccount_mem()` perpetually leak `struct use=
+r_struct` reference counts.
+- [High] `unaccount_mem()` blindly uses `current_user()` and `current->mm`,=
+ risking quota corruption when invoked asynchronously or from a different c=
+ontext.
+--
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+--- Patch [1]: [GIT PULL 5/5] KVM: s390: pci: Fix handling of AIF enable wi=
+thout AISB ---
+commit e5fbf43dd647bd07ede442137b445e6821685004
+Author: Matthew Rosato <mjrosato@linux.ibm.com>
+KVM: s390: pci: Fix handling of AIF enable without AISB
 
-Queued this patch as a fix for Linux-7.2-rcX
+When a guest seeks to register IRQs without a summary bit specified, ensure
+that the associated GAITE stores 0 for the guest AISB location instead of an
+invalid physical address.
 
-Thanks,
-Anup
+> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+> index 5b075c38998e3..dc748cde4703b 100644
+> --- a/arch/s390/kvm/pci.c
+> +++ b/arch/s390/kvm/pci.c
+> @@ -300,9 +300,14 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *=
+zdev, struct zpci_fib *fib,
+> =20
+>  	gaite->gisc =3D fib->fmt0.isc;
+>  	gaite->count++;
+> -	gaite->aisbo =3D fib->fmt0.aisbo;
+> -	gaite->aisb =3D virt_to_phys(page_address(aisb_page) + (fib->fmt0.aisb &
+> -							      ~PAGE_MASK));
+> +	if (fib->fmt0.sum =3D=3D 1) {
+> +		gaite->aisbo =3D fib->fmt0.aisbo;
+> +		gaite->aisb =3D virt_to_phys(page_address(aisb_page) +
+> +					   (fib->fmt0.aisb & ~PAGE_MASK));
 
+[Severity: Critical]
+This is a pre-existing issue, but does this setup allow for an out-of-bounds
+write during interrupt forwarding?
 
-> ---
->  arch/riscv/kvm/vcpu_sbi_fwft.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index ab39ac464ffd..1342adb3180c 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -327,9 +327,11 @@ static int kvm_sbi_fwft_set(struct kvm_vcpu *vcpu, u=
-32 feature,
->         if (conf->flags & SBI_FWFT_SET_FLAG_LOCK)
->                 return SBI_ERR_DENIED_LOCKED;
->
-> -       conf->flags =3D flags;
-> +       ret =3D conf->feature->set(vcpu, conf, false, value);
-> +       if (ret =3D=3D SBI_SUCCESS)
-> +               conf->flags =3D flags;
->
-> -       return conf->feature->set(vcpu, conf, false, value);
-> +       return ret;
->  }
->
->  static int kvm_sbi_fwft_get(struct kvm_vcpu *vcpu, unsigned long feature=
-,
-> --
-> 2.52.0
->
+If a guest provides a summary bit address near a page boundary and a large
+summary bit offset (up to 255), we might exceed the bounds of the single
+pinned page. When a host interrupt arrives, aen_host_forward() executes:
+
+    set_bit_inv(gaite->aisbo, phys_to_virt(gaite->aisb));
+
+Since set_bit_inv() modifies a 64-bit word, could this read and write up to
+31 bytes into the adjacent, unpinned virtual page in the host linear mappin=
+g?
+
+> +	} else {
+> +		gaite->aisbo =3D 0;
+> +		gaite->aisb =3D 0;
+> +	}
+>  	aift->kzdev[zdev->aisb] =3D zdev->kzdev;
+>  	spin_unlock_irq(&aift->gait_lock);
+
+[Severity: High]
+This is a pre-existing issue, but does repeated invocation of the
+KVM_S390_ZPCIOP_REG_AEN ioctl leak AIF allocations?
+
+Looking at kvm_s390_pci_aif_enable(), we allocate and assign new resources
+to zdev without checking for or freeing prior state:
+
+    zdev->aisb =3D bit; /* store the summary bit number */
+    zdev->aibv =3D airq_iv_create(...);
+
+Could a guest or malicious userspace repeatedly invoke the ioctl to cause
+unbounded memory exhaustion of pinned pages and airq_iv structures?
+
+[Severity: High]
+This is a pre-existing issue, but do the error paths in
+kvm_s390_pci_aif_enable() accidentally return success?
+
+If account_mem() or airq_iv_alloc_bit() fail, the code jumps to cleanup lab=
+els:
+
+    if (account_mem(pcount))
+        goto unpin2;
+    ...
+    if (bit =3D=3D -1UL)
+        goto unlock;
+
+Since rc remains initialized to 0, does this erroneously return success to
+userspace when enabling actually failed?
+
+[Severity: High]
+This is a pre-existing issue, but do the early error paths in
+kvm_s390_pci_aif_enable() leak resources?
+
+If pin_user_pages_fast(), account_mem(), or airq_iv_alloc_bit() fail, we
+jump to the cleanup labels:
+
+    unlock:
+        mutex_unlock(&aift->aift_lock);
+    unpin2:
+        if (fib->fmt0.sum =3D=3D 1)
+            unpin_user_page(aisb_page);
+    unpin1:
+        unpin_user_page(aibv_page);
+    out:
+        return rc;
+
+Does this miss calling kvm_s390_gisc_unregister() and unaccount_mem(),
+leaving GISC registrations and locked_vm quotas permanently leaked?
+
+[Severity: High]
+This is a pre-existing issue, but do account_mem() and unaccount_mem() leak
+struct user_struct reference counts?
+
+Both functions increment the user refcount via get_uid():
+
+    struct user_struct *user =3D get_uid(current_user());
+
+However, free_uid() is never called in these functions. Could this lead to a
+persistent memory leak and potential refcount overflow?
+
+[Severity: High]
+This is a pre-existing issue, but does unaccount_mem() risk quota corruption
+by blindly using current_user() and current->mm?
+
+When unaccount_mem() is called:
+
+    struct user_struct *user =3D get_uid(current_user());
+    if (user)
+        atomic_long_sub(nr_pages, &user->locked_vm);
+
+If this is invoked asynchronously during VFIO device closure (e.g., via fput
+in a system workqueue), the current user will resolve to the worker thread.
+Does this mean the original user's quota is never restored, and an unrelated
+system worker's quota is incorrectly reduced?
+
+[Severity: Critical]
+This is a pre-existing issue, but does an unchecked return value from
+airq_iv_create() risk a host kernel panic?
+
+In kvm_s390_pci_aif_enable():
+
+    zdev->aibv =3D airq_iv_create(msi_vecs, ...);
+
+If airq_iv_create() returns NULL due to memory pressure, this is assigned to
+zdev->aibv. Immediately after, kvm_zpci_set_airq() is called, which execute=
+s:
+
+    fib.fmt0.noi =3D airq_iv_end(zdev->aibv);
+
+Does airq_iv_end() unconditionally dereference the potentially NULL pointer,
+allowing unprivileged userspace or a guest to trigger a panic?
+
+[Severity: Critical]
+This is a pre-existing issue, but is the page pinning for the Adapter
+Interrupt Bit Vector (AIBV) insufficient?
+
+In kvm_s390_pci_aif_enable(), only a single page is pinned:
+
+    npages =3D pin_user_pages_fast(hva, 1, FOLL_WRITE | FOLL_LONGTERM, page=
+s);
+
+The physical address passed to hardware contains the unvalidated offset:
+
+    gaddr =3D page_to_phys(aibv_page) + (fib->fmt0.aibv & ~PAGE_MASK);
+
+If a guest specifies an AIBV offset close to the end of the page, could the
+hardware DMA engine write beyond the pinned page boundary and corrupt
+adjacent host memory?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260713083007.6586=
+3-6-borntraeger@de.ibm.com?part=3D1
