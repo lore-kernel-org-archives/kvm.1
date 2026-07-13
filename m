@@ -1,177 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE9A3382F4;
-	Mon, 13 Jul 2026 21:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551BDAD24;
+	Mon, 13 Jul 2026 21:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783977265; cv=none; b=Puk5RXe5PwXP3zYae8B2XYWsz4ookJwrXC3tvIGotVePZP+DvCopN9GZZgu9mHN43cGjVsrxdaL/3ASjxcqUCRE1LIMe8ZOuNlEpfdIlkcrU7jL3S5fouxdu/I0M6VB53/GhHPPhnlEb9yMzaZGqcbBUBtTdw3nfkjobUuXR/Dw=
+	t=1783978359; cv=none; b=dC29zrjBWkFcd/0lnrRW5RNN5Nfj+gGhxQnWy7Xw5qB2DydPzyYU/pGJTWtv011HWGYiiCIOgnPhyrWolY4WxB+YzC6swi9aVZgY3/gm3LJlfjCOePcuYjB/WEgYu6S0VGxcUS1ak+t1pGFTGWi6Id4l9JMH8f2blxvAQ+xoTmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783977265; c=relaxed/simple;
-	bh=hFLJTEOtnPP+/owFXOrP6LuYyD2e+GGiXgitKVu3Klk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=NxDNCrlzg9okSEeQzwcmWyagBBLxlgm+V0QMthPD1clG/U6RG2cWtQiw5/mTfmSYF8SoWJ/xsLnwIZdJzdoQL3ZS2qXQhTRdmY22DXaPqh0RqS+yISihXEeHl2ith4nu+/Qf2wsID/ridYWJOmTh2ykiclTqytDiV9wq94Zzjlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRLvYS10; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783978359; c=relaxed/simple;
+	bh=Z0sMSCAgLgyNWSE7K/gg8WQciaf2vPqoggdSKX7+Z/4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mUk6FbS6JQ/NMRwtIxkGU/fWlE7Svaujl/Mzm74hbAjS7xWVQO0cK0RucupuAJtTy6U0g/ycMu+A2ERr5N39Nelh/UW+cBsElqEgjY+rIgZA4hUEcx19uxjgmHsCSmwbhhCJwSP7hK6bJlQEPM4xs3BxV0BTirBKggnWMWeRqk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=FMjG4TN5 reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRLvYS10"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4631F00A3D;
-	Mon, 13 Jul 2026 21:14:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783977264;
-	bh=sMBui836HM41KY8s3+Mm8qIHFtVsg0cuQwuzcHoGBGw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=bRLvYS10AMK0kvxXR59RYA9FSFouJAeQczmz5wHotdAOb74uqEkRikcm5pf+pfEJc
-	 N32c0SXNup4oYQS36yo4Lw2rFyX7svFRyU9E/Z9DxaF7RZM3kPz7f+Iz44z00wbLy6
-	 xBQBrI3T6p91Oy/j2zaSSSRBnQcJjp7E8AWp/IbyE500OfGUjHVLTp+ssakvW2mteY
-	 ga6dVNMXSJZ0hqpksKKkmmENN+wIwLcD8UTyBq9M1S9dbyaq9/wUxWJn6M9Ile2HMg
-	 vN+C6lw/1x6vhf/Hb5XZU41u12CrKTyykSOwdGOq4ujQmoj+zaj9xKc1RPJFsgnjiQ
-	 QsjgcIMVf9ojw==
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5B70AF40119;
-	Mon, 13 Jul 2026 17:14:22 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Mon, 13 Jul 2026 17:14:22 -0400
-X-ME-Sender: <xms:LlVVanX9epxdm6vE5XaKiNEEQE8RKCum1fePyhsn_ISXeIHTZMgGLA>
-    <xme:LlVVakf8QUACxIZ9ofCaRIvRzAE4f99-TaNSXzQNE0oDatgLYxvQ0VHz8z2sV9Keo
-    8I9j3WcFVjgh5iN3qEW2-JAYdbEL6AIGLOdyPxy52uN1QLDYg4Uic0>
-X-ME-Received: <xmr:LlVVag9FYCB5M6mjXULxej9uYDxuBEEl0WiGrWL_gmBJywMTsys5S7PVjWTfqxRETzZixnlc2zD6mbBT22skSFfdSTlgccsSgNI>
-X-ME-Proxy-Cause: dmFkZTFNij3gMh+X8Z9njSKkNHcXU0qZMJw/Gf1R/d3jzfKrxojwVNTxUV2e6GTfe7KByY
-    JijsFbEuiYnrxI0HagcW2l/RzWe8ge82nq9KT9GRAr3TDEmmqpMjDJNV6fEhBUsPJqJH9x
-    hioaW0XiA1PEFvoChOb0xHMAzsHUG1vslBm3qHrmUPMNxNGj55Br7P9rco5to57Ki8PYVN
-    iaTcBCQdQJxD3DftDB7VTuGVCIhM4yJL589c5sJhmWqP6VwwEpGINQtJvK06TFKk4fxN3y
-    88sk4YXX+DCCNUwIBOJwgt0dhTvbEWUISQho5kTNm5pVfdqWp1kocfsy1dWzX6GWcdQpf9
-    CVIycnV+YUFYiz34PXnhpZIOdzVSp7ca6F79kcbcLAJ6aea/zrPCAYyrzCbzMpGonQlCPQ
-    0WeEg2t+0qdX1lNeRjo9wAP/8IN1It6m5yY3lnpHY6NPa23cbE62uvKyGgU3l0+V39NNmc
-    8vYtkF5xdjOHYiED9NDvKTuJz1PRt8qIkJTFaROCBEwZCNxnr+5vUDKNc0y6nQjDIOZSwm
-    tAlrfS6+bUTtfnG8w9M9b1LRhQ3765pbUSEa6RTn+O0HBoIoSy0nUX7c0FokUGtNLPvTHI
-    gd62w4vF1ESfrI5ZbZHGgDvtwUIsaVr8tNPRvGBMcUbO/V2FnrmuI4imfsPw
-X-ME-Proxy: <xmx:LlVVakaxf__zGGvNap-G0VcZCHvGKTgpIknaKFPsN4SFO-CGy9GLfQ>
-    <xmx:LlVVagu4cz_fcZD7XFiW6WYtUDZIBVm6ZqVefKqvPUnAg9cGtZPg0w>
-    <xmx:LlVVahaG7f00MGJ4UGx3l9TQuFmS4wnLstbuR9VYMjrCkyMz2a_jiQ>
-    <xmx:LlVVakQbn33zqUbj-xtZv-5_1D6XSTeM6RfoQyscg_JzCJfnuqjnvQ>
-    <xmx:LlVVaszEyftclIAwPMVRESgjM2bmZBdJHybVxBjcC0cMjCJsDUO-tBMv>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 17:14:21 -0400 (EDT)
-Date: Mon, 13 Jul 2026 14:14:20 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Manish Honap <mhonap@nvidia.com>, 
- Alex Williamson <alex@shazbot.org>
-Cc: "djbw@kernel.org" <djbw@kernel.org>, 
- "jgg@ziepe.ca" <jgg@ziepe.ca>, 
- "jic23@kernel.org" <jic23@kernel.org>, 
- "dave.jiang@intel.com" <dave.jiang@intel.com>, 
- Ankit Agrawal <ankita@nvidia.com>, 
- "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>, 
- "alison.schofield@intel.com" <alison.schofield@intel.com>, 
- "dave@stgolabs.net" <dave@stgolabs.net>, 
- "dmatlack@google.com" <dmatlack@google.com>, 
- "gourry@gourry.net" <gourry@gourry.net>, 
- "ira.weiny@intel.com" <ira.weiny@intel.com>, 
- Neo Jia <cjia@nvidia.com>, 
- Krishnakant Jaju <kjaju@nvidia.com>, 
- Vikram Sethi <vsethi@nvidia.com>, 
- Zhi Wang <zhiw@nvidia.com>, 
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, 
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
- Manish Honap <mhonap@nvidia.com>
-Message-ID: <6a55552c98a82_35cf3310082@djbw-dev.notmuch>
-In-Reply-To: <IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
-References: <20260625165407.1769572-1-mhonap@nvidia.com>
- <20260625165407.1769572-6-mhonap@nvidia.com>
- <20260710162322.012be635@shazbot.org>
- <IA1PR12MB9030E175587B09CEA7A4D90FBDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
-Subject: RE: [PATCH v3 05/11] vfio: UAPI for CXL Type-2 device passthrough
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="FMjG4TN5"
+Received: from [192.168.10.145] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 66DLVGmU018090
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 14 Jul 2026 06:31:16 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=7vu1Cqv1kY9MENEn9rk5xVTv4OyzC50IlKtSKEl+6V4=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20250326; t=1783978277; v=1;
+        b=FMjG4TN5ZC4Lzu6aXdhRf2FxBZecWOyitGLFQbs5P8rBoBKp/nTv9LnXYVx8oAxD
+         HioMIzBQr+XCM+O6fR/Pvg6nKp/eg6Ob+S2qp3XmTrIy8hywhIiaoHUcPKYfv4L1
+         tnJOgYvDpM6/vO3n6m3GEtGPLislK5pioqa1KHKC6Q0HGtPyPrQQPbRtYqbyqL/X
+         Rk/vz4oWXClhNVmeJpbg4C1yARqOa+eOIntlSDqXm/NIVdc9unvml6NsgkKFMRVm
+         gCD0Q0c/NpMtRSfDmGd1egtNS9hNUbih+ffwx9egfb+j+Dm1fBhkUBrr5KtBQr9w
+         PiCYTiHTQ1815xOjwOQfSQ==
+Message-ID: <3389f9d7-15cb-4bf8-804b-7dcaee2d252e@rsg.ci.i.u-tokyo.ac.jp>
+Date: Tue, 14 Jul 2026 06:31:16 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Subject: Re: [PATCH v8 01/11] KVM: arm64: Serialize userspace MDCR_EL2 access
+To: Oliver Upton <oupton@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu
+ <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+References: <20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
+ <20260710-hybrid-v8-1-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
+ <alSU0ZoIQ3sMLo0p@kernel.org>
+Content-Language: en-US
+In-Reply-To: <alSU0ZoIQ3sMLo0p@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Manish Honap wrote:
-> > -----Original Message-----
-> > From: Alex Williamson <alex@shazbot.org>
-> > Sent: 11 July 2026 03:53
-> > To: Manish Honap <mhonap@nvidia.com>
-> > Cc: djbw@kernel.org; jgg@ziepe.ca; jic23@kernel.org;
-> > dave.jiang@intel.com; Ankit Agrawal <ankita@nvidia.com>;
-> > alejandro.lucero-palau@amd.com; alison.schofield@intel.com;
-> > dave@stgolabs.net; dmatlack@google.com; gourry@gourry.net;
-> > ira.weiny@intel.com; Neo Jia <cjia@nvidia.com>; Krishnakant Jaju
-> > <kjaju@nvidia.com>; Vikram Sethi <vsethi@nvidia.com>; Zhi Wang
-> > <zhiw@nvidia.com>; kvm@vger.kernel.org; linux-cxl@vger.kernel.org;
-> > linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> > kselftest@vger.kernel.org; alex@shazbot.org
-> > Subject: Re: [PATCH v3 05/11] vfio: UAPI for CXL Type-2 device
-> > passthrough
-> > 
-[..]
-> > 
-> > On Thu, 25 Jun 2026 22:24:01 +0530
-> > <mhonap@nvidia.com> wrote:
-> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> > > index 5de618a3a5ee..3707d53c4de5 100644
-> > > --- a/include/uapi/linux/vfio.h
-> > > +++ b/include/uapi/linux/vfio.h
-> > > @@ -215,6 +215,7 @@ struct vfio_device_info {
-> > >  #define VFIO_DEVICE_FLAGS_FSL_MC (1 << 6)    /* vfio-fsl-mc device */
-> > >  #define VFIO_DEVICE_FLAGS_CAPS       (1 << 7)        /* Info supports
-> > caps */
-> > >  #define VFIO_DEVICE_FLAGS_CDX        (1 << 8)        /* vfio-cdx
-> > device */
-> > > +#define VFIO_DEVICE_FLAGS_CXL        (1 << 9)        /* vfio-cxl
-> > Type-2 device */
-> > 
-> > Would we define a different flag for type-1/3 if we ever found a need to
-> > expose them through vfio?
+On 2026/07/13 16:33, Oliver Upton wrote:
+> Hi,
 > 
-> Yes. The current flag is named VFIO_DEVICE_FLAGS_CXL and refers to
-> Type-2 specifically. If Type-1 or Type-3 support is added later, a
-> separate flag (or a VFIO_DEVICE_INFO_CAP sub-type field) would
-> distinguish them. I can rename it VFIO_DEVICE_FLAGS_CXL_TYPE2 now if
-> that is preferable; please advise.
-
-The CXL specification itself has deprecated the "Type" names because
-they are ambiguous. For example, you can have a "Type-3" device that
-supports "device memory (HDM-DB)", Type-2 is a superset of Type-1 in
-many cases, etc.
-
-This flag will never be able to capture a coherent / standard set of
-device capabilities. It can really only be a plain "CXL" flag with
-an implementation that is ready for the superset of capabilities:
-CXL.cache, HDM-H (host-only memory expansion), HDM-D (legacy device
-memory), HDM-DB (device memory via device cache management
-back-invalidate).
-
-I think the HDM-{H,D,DB} difference are not relevant to VFIO, it is all
-just CXL HDM.
-
-The capabilities that may need a different VFIO implementation model are
-interleaved devices and maybe dynamic capacity devices, but that is not
-a type designation.
-
-[..]
-> > Does that leave this device level capability describing the device as
-> > type-2 (by existence), with only a flags field to declare HDM as
-> > firmware committed, for future compatibility should we support non-fw
-> > committed?  Thanks,
-> > 
-> > Alex
+> On Fri, Jul 10, 2026 at 08:14:55PM +0900, Akihiko Odaki wrote:
+>> kvm_arm_set_nr_counters() updates MDCR_EL2.HPMN for every vCPU while
+>> holding kvm->arch.config_lock. However, KVM_SET_ONE_REG currently writes
+>> MDCR_EL2 through the generic sysreg path without taking the same lock.
+>> Concurrent PMU configuration and register restore can therefore race and
+>> lose updates to unrelated MDCR_EL2 bits.
 > 
-> Yes, I will shape the v4 in this direction. The device-level CAP_CXL
-> shrinks to "this is a CXL device" (by existence) plus a flags field whose
-> only defined bit today is HOST_FIRMWARE_COMMITTED, leaving
-> room for a future non-fw-committed mode. Everything else moves to region
-> caps. Thanks for this suggestion.
+> Ugh, we should just stop updating MDCR_EL2.HPMN altogether. Since this
+> overwrites the previous value (rather than clamping it) we could discard
+> a legal value set by userspace.
+> 
+>  From the UAPI POV all we need to do is ensure the reset value is sane.
+> The documentation says that system registers are reset to their warm
+> reset values when KVM_ARM_VCPU_INIT is called. Which in this would mean
+> HPMN is reset to the number of implemented counters at the time of the
+> ioctl.
+> 
+> If userspace changes the number of counters afterwards, that's their
+> problem.
 
-How can VFIO discern if the HDM is host firwmare committed? If
-devm_cxl_probe_mem() grows to auto-activate unmapped capacity rather
-than finds firmware committed decoders, can VFIO even tell the
-difference?
+One wrinkle is that KVM_ARM_VCPU_PMU_V3_SET_PMU and 
+KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS can only be used after 
+KVM_ARM_VCPU_INIT. Thus, either change necessarily occurs after the
+initial MDCR_EL2.HPMN reset value has been established. Userspace can 
+issue KVM_ARM_VCPU_INIT again to reset HPMN from the new counter count.
+
+This is awkward, but reflects the ordering imposed by the current UAPI. 
+On real hardware, the counter count is fixed before the CPU is reset, 
+whereas the UAPI configures it after the initial vCPU reset. 
+Reinitializing the vCPU is at least consistent with the documented warm
+reset semantics.
+
+I'll update the next version to stop rewriting MDCR_EL2.HPMN after vCPU 
+initialization. This also removes the need to serialize userspace 
+MDCR_EL2 access or reject HPMN values.
+
+Regards,
+Akihiko Odaki
+
+> 
+>> Add explicit userspace accessors for MDCR_EL2. Serialize them with
+>> config_lock so whole-register userspace writes cannot race with HPMN
+>> rewrites, reject HPMN values above the configured PMU counter count, and
+>> request a PMU reload when HPME changes to match guest trap behavior.
+>>
+>> Fixes: c8823e51b534 ("KVM: arm64: Fix MDCR_EL2.HPMN reset value")
+>> Closes: https://sashiko.dev/#/patchset/20260706-hybrid-v8-0-de459617b59d%40rsg.ci.i.u-tokyo.ac.jp?part=6
+>> Assisted-by: Codex:gpt-5.5
+>> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>> ---
+>>   arch/arm64/kvm/sys_regs.c | 39 ++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 38 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+>> index d217530359ba..2b2ea33159e9 100644
+>> --- a/arch/arm64/kvm/sys_regs.c
+>> +++ b/arch/arm64/kvm/sys_regs.c
+>> @@ -2949,6 +2949,42 @@ static bool access_mdcr(struct kvm_vcpu *vcpu,
+>>   	return true;
+>>   }
+>>   
+>> +static int get_mdcr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *rd,
+>> +		    u64 *val)
+>> +{
+>> +	struct kvm *kvm = vcpu->kvm;
+>> +
+>> +	guard(mutex)(&kvm->arch.config_lock);
+> 
+> Hrm... I would strongly prefer that we *not* take the config_lock for
+> this register since there's no way for userspace to avoid lock
+> contention. ID registers are special and documented as VM-scoped, so an
+> aware VMM could potentially set these once (avoiding the lock).
+> 
+>> +	*val = __vcpu_sys_reg(vcpu, MDCR_EL2);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int set_mdcr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *rd,
+>> +		    u64 val)
+>> +{
+>> +	struct kvm *kvm = vcpu->kvm;
+>> +	u64 old, hpmn = FIELD_GET(MDCR_EL2_HPMN, val);
+>> +
+>> +	guard(mutex)(&kvm->arch.config_lock);
+>> +
+>> +	if (hpmn > vcpu->kvm->arch.nr_pmu_counters)
+>> +		return -EINVAL;
+> 
+> KVM allows userspace to write whatever it wants right now, we can't
+> start rejecting values that were previously valid. The architecture also
+> allows anything to be written to the field, just that unimplemented
+> values have UNKNOWN behavior.
+> 
+> Thanks,
+> Oliver
+
