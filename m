@@ -1,168 +1,156 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4033E022E
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 15:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783957313; cv=pass; b=nlQXibQoU5FZ4P+w+oCiHMtNiYJKhLDAxGx/EqGLlxqD34N7wAoraY1zr7vWCCnyR0v70/R9x5RLtZRrbEpwJrdYFxdiNqWTpgj6jkj/ksVV3mO7YC0hz/xyzgQMnmr93rLftzfhJCdTAdD+lPddZbHJwMbG7hwbhrIIgQkiJ6E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783957313; c=relaxed/simple;
-	bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZRFb8/VgfowuSh40G8LX4R1c/2M7Li46zdudzwiXChoR6LePdWGBbKUXws2d9K98/yuKfHAYBuZTCUv1olO3lXqsdMgXIKlT9qsxXVnS0K0114bcfw+dYDIvhrAsr0snuo1nrD7r/TwO93SMr9UTRETyh5XNiNQPBggQ1cB7CKk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPiZPN13; arc=pass smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1573E7179;
+	Mon, 13 Jul 2026 15:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783957471; cv=none; b=HBwdyudcPqoMh8HyyZJztV/mtaZ9+t8P73PrY8whPdEcKoTxR2Ji17zRbUtAA13cYytPQy4QR06DfhB/OP9kust5ZM8RoBe+6Fc1LgUd/RCyzGljtD/3yBT1sMRZoG938WJZ+c9LftB6OBjvQxkZls/dm9K3qToc3HwS6Og4a44=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783957471; c=relaxed/simple;
+	bh=WQy4yHPFrrhmfGfUGbOeZTrbvBCp38LrhCThPXmRmWw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oRX8GceOeNC0j2Za0vDKTQZWNsLKZqxnNzI6r2/cKPY6akIfA/XjOiotQyKPHKfZuGmQwXggirjAp3JKE0LNSjVFz6JUQfHQcMaaIbehtsxdimy3TwRx/1odXlPIeSKB4kTKmpVnCYQmEMT0V5YKm3TXxdUMyIP/QCqBu/hf2nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hqc6eerJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPiZPN13"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso2345440a12.0
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 08:41:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783957311; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nU0HacA26neRGG5yrqbRtZHHJUaTN6phcV2Bnp4iVLriA/3J4B1Sg6ba2AFWzZS+n3
-         on2BGR3XzVRw4XCXA2L3k+04nS9dmjUauq0TpXM+PKMf9am7Y5IGNHY8FPfoI1MErpu+
-         1w+5CeO859GeY/Tf+bS4Ujbxpxi0CRbtnilYFBe7S/UdvNhpBu0eztcTKouoP/O+WVyd
-         lda/FYFRNrmQfQ+z4SCivi2yTWURz0fchXxxtpIIO0WyY7TUPyEBmSFCEEfpSxBwW7bc
-         HEa2OyMWc9nxGNaJcH3gTTkEYbISo74MJR50MMgbKuF69bzo6TTpBnCb2qVSDOC725jr
-         og4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
-        fh=KpNrqsT7S5VV/057uQApcPPsbfLEBm+eEe9cT5VuofE=;
-        b=JH/HRpIdWuNdSHWXR9aI6H0KxWnVht5nGcZIEHEDSXkqfxgIw4Y+aLV3qnVmgmHviO
-         GSW5OH6B4ssdJnjCqj8s//tY/dQQfBXu2nNMl60AkUC5UDv61CGcbRXGU6J1jOC55eqk
-         ciTDK4ccR87a6pB3stkeOYuDZb3U0/+Ncan2ANS9pzJJSMGfnA/iay0Z5w7SFxmaBNRI
-         TMp29t5WAEnz6yXcT9U2sjcSOz3ZlGlkuF9eH678ByRTADVgG8dOFaumVck46DcMFvHS
-         GLkHNggh805woR1MjtYhJCk+EVTp0GZgafIrkeUxv6Icn3H8uQpdXHLe4l1IZsFPPNR4
-         PdTw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783957311; x=1784562111; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
-        b=tPiZPN13/77+3dKCmRpGvEpZh+NfPB8OM9WG/fivPUw2EamGCWoOTvRprSXuBo/LtJ
-         x59WQ2kETIgIZWE9Q/dX82uiAKVMpwnhUbK3hZObZISB1rqlAPrwAFW7wWwzXpwwjiWl
-         0qi3HH69x0K/lMSCdea5E0LTOH358k1zalPOepA8m8nUJgCJ9Szask7v+n3wTcYmaHgB
-         lqbUe+H325kCcCA3EHEQKCQGR8W0sVXV3OMUe4+gFTLq2IszqWjILp5LTmaaNCCyxvmy
-         18YVpybQoR51XSFjf84tdQwmU7XXVhqKth3pDEk+2PPW3IQQDVADGxbtfuUUvNsoHFQ/
-         9buA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783957311; x=1784562111;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=E00i/s09eU5gl2pPwex8CcCqyUvImg1zAVHPmKsPPzg=;
-        b=q8tBJOJh11c0i0nXH7nQA1j3sQhnqYnT4jCNIGaaYfyewxBIJplrs5vb6KC2Ji5GlA
-         RqAE78cZt9RpOCrQvhAJL+AN5z7MapuFdYYfNUOXF0MMu07FAs4+46xAwpnaOgImuGuh
-         19K+iQ/hBm89XGegWNPgZ3V/Ui9dC0EV8rYs3ZNLr6KK1wqgDv+zL34DhxMi/f23ftcL
-         0FqNbm9zV+ctrSBbbCoO6OufL3avjeIj3/vJaxgxdzKl6AUfcsWmXSLXqSRiV9/Rqc/4
-         0oszP02suBSqlVHYOXKupmFKeGuUcKuPtA2efotcNAvUfFnMnCHgMGxCUe3r8Rt9MFax
-         3K8A==
-X-Forwarded-Encrypted: i=1; AHgh+Rpsesn7a0DfEsrcFgG5L7RUZueYrXShOsyxISZv7EMNdV5oDNLMwWwf4q6xjN3QlLPA1IU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz111R4//6YyfPSDpz0ApZEO/uFerCQlRQ9UcaWqmoQAmlp5OJc
-	zfftV3zFSYiK9sOqQkKfWWQOCr8cGGhrlazYMaJWfE0VRPIur7u0RutErPD1ha4utQGkcdOAn9D
-	ILXUBTXN/oxvi4uRQD1eTTI9Rjy+HNF4ZwIvGBe84
-X-Gm-Gg: AfdE7cmc9PsSPn5C3Am9rHT6rT7MnOoeCIsv2/GgiGa6WcIexrdCqDBx3+yXc5u24j3
-	U6A+uEgQi9iiSd9S2BVugOaPgpJiyo8w0u/R4KZ6IIxQp17kKM89NNIy2kWjddvHOVmY8saqc2N
-	832dr4IGfI4GzVpQl3jGe/QQMM3AWN16QlCTblSQfUmooRSZAWMndOpI5dEQt0YMxIpSPXxpPuf
-	q0PDSIEIVZQ7QKS0hNdTv3TPo0LvKKopsPvdmu8pBR9+C9l2+65bAJoUZUt2O3s1Hyt0eBzFy6x
-	IWbqBZqZSSb5yovoadGhKw+okcJn2NkUzDljn+wg0lOzu1ddB/jwPA4XuRCfnIet4lEN
-X-Received: by 2002:a05:6a21:113:b0:3aa:c93b:625b with SMTP id
- adf61e73a8af0-3c110762fd4mr10225955637.3.1783957310978; Mon, 13 Jul 2026
- 08:41:50 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 08:41:49 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 13 Jul 2026 08:41:49 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
-References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
- <CA+EHjTxJMfiGoJGetvsOWXeHjFQexFh=sdQ_kvSQT86uztAaLQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hqc6eerJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2191F000E9;
+	Mon, 13 Jul 2026 15:44:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783957468;
+	bh=ktat63NoLnQpNFRxdcKM+BBqHKM1jhe2e2iY2Jj0yeo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Hqc6eerJdrbCEWaKt7jGPuoqeJJ0VQdLenlPIJJ5p/V8gM8LGIRmMCjMIL8y+Jksd
+	 9sfQs6jYk76e/GKObrQFXebIn5Ns55gVIT7QQGKAI9Xy2xBD7CWehQrAWOPY3WQEun
+	 pUK6cSuVzy7AGD58f3cjKzEtNWGXB0PjNnpMGAAtptKDfsckKW7xfuvlSHOsK5nsBv
+	 ius06YeOJFsTuDZAqDdi1jk/BSsbiundQ6r0J3a8dTVrrPDgB59uy5AAdASNEloasZ
+	 TuQ8wDDbDZhYZpNZaULPHs7E4twhO0K/LIO6JGuIdIjX4riO5fjGXTXRP8gjYfGqOh
+	 gG2wVqhdAVNiw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wjIpW-00000004YVN-0FTA;
+	Mon, 13 Jul 2026 15:44:26 +0000
+Date: Mon, 13 Jul 2026 16:46:15 +0100
+Message-ID: <878q7e6gfs.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v4 25/27] KVM: s390: arm64: Implement vCPU IOCTLs
+In-Reply-To: <20260710140752.984749-K-seiden@linux.ibm.com>
+References: <20260706085229.979525-1-seiden@linux.ibm.com>
+	<20260706085229.979525-26-seiden@linux.ibm.com>
+	<874ii97obu.wl-maz@kernel.org>
+	<20260710140752.984749-K-seiden@linux.ibm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Mon, 13 Jul 2026 08:41:49 -0700
-X-Gm-Features: AVVi8Cdlu73h_odPVr1xWZ78EcVtzZg0XBmzdD3qDpzU7-JRYgNm36lPCMQb_B4
-Message-ID: <CAEvNRgFgaDx9OivkKteksk36OvchMNmAk=i8CZj31huxqXB-Pg@mail.gmail.com>
-Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
- into .gmem_convert()
-To: Fuad Tabba <fuad.tabba@linux.dev>, Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael Roth <michael.roth@amd.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Fuad Tabba <fuad.tabba@linux.dev> writes:
+On Fri, 10 Jul 2026 15:07:52 +0100,
+Steffen Eiden <seiden@linux.ibm.com> wrote:
+> 
+> On Wed, Jul 08, 2026 at 11:44:37AM +0100, Marc Zyngier wrote:
+> > On Mon, 06 Jul 2026 09:52:25 +0100,
+> > Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > > 
+> > > +static void adjust_pc(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	if (vcpu_get_flag(vcpu, INCREMENT_PC)) {
+> > > +		kvm_skip_instr(vcpu);
+> > > +		vcpu_clear_flag(vcpu, INCREMENT_PC);
+> > > +	}
+> > > +}
+> > 
+> > Can you clarify the semantics of adjust_pc() here? arm64 also deals
+> > with exceptions in the same code, and I wonder how you deal with this.
+> >
+> 
+> We will do the same thing as native arm64 does. The KVM in this series
+> has no clue what an exception is. Thus I skipped the handling here. The
+> exception stuff is added in the second series anlongside with the sysreg
+> handling.
 
->
-> [...snip...]
->
+Hmm, OK. Maybe I tend to view these things as tied together:
 
-Thanks for bringing [1] up, I didn't make the link when this change was
-being discussed.
+- updating PC on the back of taking an exception
 
-pKVM definitely needs a callback when the folio is released from
-guest_memfd's ownership.
+- injecting an exception on the back of taking another exception
 
->
-> free_folio is the only to_private=false caller today, but the cover
-> letter sketches the other one, a private->shared conversion through
-> kvm_gmem_make_shared(inode, start, end). Once that lands both reach
-> the hook with to_private=false, and as far as I can tell, the only
-> thing separating them is kvm == NULL / INVALID_GPA. That isn't
+These two are the basic primitives to affect the guest's execution
+flow, and the sysreg stuff builds on top of that.
 
-On the folio teardown path kvm has to be non-NULL so that SNP can find
-out which VM to unassign from, so you're right that INVALID_GPA won't be
-sufficient to separate conversion to private and teardown, for pKVM,
-from the arch perspective.
+But if that's the other way around makes more sense to you, fair
+enough.
 
-> documented as a contract, and nothing in-tree reads it on that branch
-> (the kvm/gpa check is under if (to_private), and
-> sev_gmem_make_shared() doesn't take a kvm at all), so nothing would
-> catch it regressing. The sketch is also inode-scoped, so I'm not sure
-> the conversion path passes a non-NULL kvm at all; if it doesn't, the
-> two aren't distinguishable.
->
->>
->> [...snip...]
->>
->
-> The Kconfig now couples them too: an arch can't take teardown without also
-> taking conversion. pKVM wants teardown and not conversion, so that's a problem
-> for us today, not only once the second caller lands.
->
-> This is the same ground as v8 15/46, which ended with the two split under
-> separate Kconfigs. Suzuki confirmed CCA disables both; pKVM wants teardown only,
-> since our conversions are guest-initiated and EL2 has already done the
-> transition by the time the host runs the generic path [1].
->
-> I'd rather keep the free path on its own callback. If you want a single hook,
-> passing the caller explicitly instead of leaving it implied by kvm would work
-> too. Merging the two conversion directions is a genuine cleanup, it's the free
-> path I'd like to keep separate.
->
+> 
+> ...
+> 
+> > > +
+> > > +	kvm_sigset_deactivate(vcpu);
+> > > +out:
+> > > +	if (unlikely(vcpu_get_flag(vcpu, INCREMENT_PC)))
+> > > +		adjust_pc(vcpu);
+> > 
+> > arm64 has the following statements:
+> > 
+> > 	if (unlikely(vcpu_get_flag(vcpu, PENDING_EXCEPTION) ||
+> > 		     vcpu_get_flag(vcpu, INCREMENT_PC)))
+> > 		kvm_call_hyp(__kvm_adjust_pc, vcpu);
+> > 
+> > It isn't clear to me why you can afford not to deal with pending
+> > exceptions when returning to userspace.
+> > 
+> 
+> Same reasoning like above. We'll do the exact same thing as native arm64
+> with the next series.
+> 
+> Thanks for looking into s390 code :)
 
-Is it okay if later, we add a .gmem_teardown callback with a new CONFIG
-flag that pKVM can use?
+I have the ugly feeling that this is going to come with the
+territory... ;-)
 
-If that's okay, this merge (of function names and of the patch series)
-can proceed. It's also nicer that the new callback and CONFIG are
-explicitly (re?)-introduced with pKVM support so the introduction is
-chronologically linked with pKVM support too :)
+	M.
 
-> Thanks,
-> /fuad
->
-> [1] https://lore.kernel.org/all/CA+EHjTwLRzrq0vY0-OosENJ2Gkknerux53aVBj0zGRQUkRQP=A@mail.gmail.com/
->
->>
->> [...snip...]
->>
+-- 
+Jazz isn't dead. It just smells funny.
