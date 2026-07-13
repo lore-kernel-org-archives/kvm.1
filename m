@@ -1,63 +1,63 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A17233951
-	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 01:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183FC8CE
+	for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 01:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783904633; cv=none; b=GFlVgDeKdfN681p/c45+g2MAV5l//ACWAqkRdv4iHYzhQIF7rZaEqk2P+b5dqfIjkwvv1AVypo3q6aShLOtmOywJ4ksAgDXleqOVqbELN0PPMm/vwpmQ2ka1A7gv/kBqu7RArDVra28FI73SA5UEUyWyPwnMcoQqefxV4Y8z+F0=
+	t=1783904636; cv=none; b=JsOavE0nPqW5cE7q9inocrbIuP2HxzmCqWDwx+yFVgnKyLrcRPzRtoqtL9Lw+llVNs5i8R8s+MzZLE6LzP7vRGMm9QbjiZbskfZSi8e/27i/YCyQsAndQcf1YhJr91bZLNXxImNqM+spOaA0S4AWmtzHhg4WUjHP1Jh+gwzOpC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783904633; c=relaxed/simple;
-	bh=FH8Uhgh1pcvytIsiV9o2sHL0nTuhzb9K7bh5qTOi+jE=;
+	s=arc-20240116; t=1783904636; c=relaxed/simple;
+	bh=jKX7yCJzLXTBm7/RoRGPTwNXXmYDIrIjrn7OXhM9jJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyFIMbLuLk9L6MfQ1+peEiZ2B3K0gln1FPyhmqD+VLGoFXrezzXtAJ4MiVC8ve1Q5l90HvdMscwq2xStZ6bzuE0rANFJCda4odMSgqozXnr5kc4LkWcejPAvXgIiB2HY0b0iCqKUnvA2e7HD4aMA85jLCUu53gzfMgvLVT7Nyxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7nObPai; arc=none smtp.client-ip=209.85.216.44
+	 MIME-Version; b=Upl2DbAsiMTuONLk3J0bW1LZUaOvrqAmobUluyJCIDNH+59G4YBuyKbW7qzo0Gpfbm8TNBPyW26v+HXU8gVKcwdrOVtWXPtO639ZzTVrsxmB1e9feMBwqgiDG4ZYoy36aVIIQfueCUY2KadoT60gG82RhgtcMVnmQpz2vnmAB0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8xM5z2e; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7nObPai"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so2362003a91.0
-        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 18:03:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8xM5z2e"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cc73e322dbso27486515ad.1
+        for <kvm@vger.kernel.org>; Sun, 12 Jul 2026 18:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783904631; x=1784509431; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783904634; x=1784509434; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4wtNmoMKQodXeWiOSWDyChURk6Jt6lHeZLiT5bWjNnQ=;
-        b=I7nObPaio6bAQg/MOnpS+vXRwvcEzZK6eTCeJ7BQqIuZGbDevBtUOlixJJbHoFhPDV
-         bTTNdu/3cW2DB6bScE/gUcAAZQVGfrur5rkPDrrvauvXhRb0z0z28dj0ADji0laKQlu3
-         SxPqLXMuorGXDyhnmEptqrX0upJAOKtxcUQe3EzAORyH6FtyR620ntv8BH0CO7117Zsh
-         ybyfR0Uc/j2sIT16ZigB2Yz0unfzBKPEwaBZjFbxA98nrI/nz099aOwzEJMQr3ik2gbX
-         50kWp+i8cZf3QTLE8uzS+6PVj9rdq7ZM3Dp0CRZZqfAoJsJ+WngLarxQ/d5B6IZOQUnU
-         QQIg==
+        bh=MI4l7nifRnfxUSWJkRHmALVeDUyVcPjbpLqiu+zme2g=;
+        b=Z8xM5z2el85KExbg2nd2ZXUOuGVt9dtLL+uub/EEgQ3U/bge92iNKmKh/eMNmN3EO8
+         nV6E0bixZZUYhICn5DeJ65RHLwh2GlF2ZpbZgMsxnueCr8Wez4acScnjgbANWmS1TJyU
+         zwuRy95S42ufRymLRdiBJQy/idVt4xw5otYOWB+8yhb0n8+fW2bNi4XI76aFKd+zIIYV
+         c+TP9OzzwdFVEszAJJDB3cm45N2vDo34ycU3rmWjV3+lER/gDF6Pr+xSuaKNXD7onXA0
+         Pwlki9zXqrzRKX1Pg9Fwfxgwb24qRsLNxgACqzCHcU/YwycrA223TUxYDi67aIy2oZji
+         4KIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783904631; x=1784509431;
+        d=1e100.net; s=20251104; t=1783904634; x=1784509434;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4wtNmoMKQodXeWiOSWDyChURk6Jt6lHeZLiT5bWjNnQ=;
-        b=V/cg3OsgTpcsXOBMh2b6LtCRoPcshrmfK0Le/QbgTlcyE4WRPnyH5PCvqQkgoLoq0T
-         8VDAI2YqlH1lMJhIUbVApSh58ffJRjwZd/6an6W1jIL/Wt56XrkNrG4jkSDOZpCJQKB7
-         vWpvLhv7jW9TsAze736LU7ezMtXXltuOM1snY3tepHbdBeMw5mwMt5GYSGi2UYDDMa2A
-         E3qormZ9hjdlCOLItjzX+T0D5tdLYWjuj3KdteeibDZZd+7aNdEQNBNpZAfxg07nO40K
-         z1TV+WKKoagEuwoVFygCS32ewjgKPdqDgHVZgqg49TTfKJgVi5Jq+TvP3/6wOvruU0je
-         CxiQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp72maBoCCEf3+cWhAwoIi8PBl5BtEKVnRk7ZodYPlbk8G2O8vrPiktnc/OW2r51U8Wq6U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywemkHsbuTzzs3pw/LgjUBOo7LahOJG4dCjxaBPsDlgHwO1Q5g
-	Ncx1uilHlAlqMAxSoqK8hF/9wKbF1zM9E40sbiQV/6QQ0acvwSMp+qNu
-X-Gm-Gg: AfdE7clJbhXV8UazQzWTfV2oTOZzcQ2cHLLvU3SCudcfwEAvPskyLACamdRzuBJvLBn
-	kOslNcWkLhyOdkwoXcY8W3pUc684Z3SZZZaOr2TjwsohxXEtLt45N50kswi2H0P/EboBZkmLBxk
-	W2hnT19Op4TdnZ3D8bvNRHwbFzuwrzlpbDApuR2h7sJh1Hp4mKooQGZ8NM33RsWUELjDnhC5s1K
-	LUDwUG6ZipZ2l/ZyB9J8oJmBdD8Bkiln0dbeLABhQGPZR2t+opXgW3lZJwcAMKDH2S8Whmu6xkz
-	9XSU00QbNj2L2DW+dIt5EpVWHreMVJsavcpu/CSXk37OwhNE3EBuJxZB7EfqE5O1qcvFc2Zk/a9
-	45KfgjFN25V9qaL++uLJVaVIWTqKk6+ZMWKwcK6PdnaSJ7dmBibGNFgE7si3aK1B+3J+YmHPTUR
-	TQe6lTgut4gVo=
-X-Received: by 2002:a17:90b:47:b0:37e:b6a:6cdf with SMTP id 98e67ed59e1d1-38dc77ee830mr7343814a91.20.1783904631435;
-        Sun, 12 Jul 2026 18:03:51 -0700 (PDT)
+        bh=MI4l7nifRnfxUSWJkRHmALVeDUyVcPjbpLqiu+zme2g=;
+        b=kaKHd8pa7Hv/ZqbXkN6UWnECC/17ReuBh/A+rO9J4bFdmViTNP0IevlPpy0Rv+LLet
+         DPP4MsYD6c2PBSZlR6iKjkojBW+G6q7MziVPDr/ghNZKED+aPaORm2UuGFT+tHQ4VoWG
+         tSZB1QOQh96ngZH7+q7WTPJOrSMYfjQtxgVFUMFm6dVgEf4lyJY6laDgyFN9rjKWqQgu
+         rB+hRJRyKkes1u3m/Zb21fXNU/EbjOxPJGX5KPOxYiihaGAMZUyJMOgx7HgDF9mU+cZ6
+         jzuJ0Kh9oUbUhfuDTt8ZBBeMmtuv8XG6bSw1SXQob5NheIQ2+dsKsAF+9rJdGTyHM5Fj
+         OAxA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4K/B3tOhrZx5r8YZCuTpAJKKVM+0vK0gLx6Qi81OX5/LmT8juxOiuaoBrxXq63yvw3+c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX+YxzMoDFIT2Z1YymnO1ugs3dU9enIOjjiPXLcRpB/T91rYQU
+	M7nG7Hwx1uxfB+OzzwkYFcjK94YxUgPBgZ9R+lOHSCPfdfpcuEtYYTRi
+X-Gm-Gg: AfdE7cnnrAWpEksxw8gOoMYxLIygFAhj2OeywnvnkU+PGMpEoDiVdt138XGNyAx8WCs
+	SwJacoGnFDfH7tO2HviSoMmP1DTmEyHOyswkgp2ECP03RnZJVFZ0zOfyjK8jM1YeNwM3ns0wzvQ
+	hubDNpTEXbiqXqWpybYqSXVbdc49ydd29sZ4nQc+W0djBNMMWLuvIBh7g5TfH1pKCVIUhNifEvD
+	yQA7VEy4lEebJXlQIzLOdi9YhBZnwTFK0g8HU5k4CTLV/HBgZxy51z9wPOV3ilq2VRLhPng5NNb
+	661FQMvXEXlYHg8l/F4bvJ67HiWNey/XLgAk56ctQStmqayxHpKeAVIV5DSbnuvx9PRKPldVkmY
+	cy9WBgquL0j4puh3FsXFDl0dv4gjoJaUiYx+WYgjC6a3OzyJEGlR9NEdTZhK42vzkNDUQP37tqn
+	vCPkcsbIfTdzk=
+X-Received: by 2002:a17:902:d546:b0:2c9:cf62:6f61 with SMTP id d9443c01a7336-2ce9eac212bmr74630405ad.17.1783904634295;
+        Sun, 12 Jul 2026 18:03:54 -0700 (PDT)
 Received: from localhost ([121.250.214.124])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a55a47286sm5549380a91.10.2026.07.12.18.03.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf737bsm89409935ad.19.2026.07.12.18.03.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 18:03:51 -0700 (PDT)
+        Sun, 12 Jul 2026 18:03:54 -0700 (PDT)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Paul Walmsley <pjw@kernel.org>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
@@ -81,9 +81,9 @@ Cc: linux-riscv@lists.infradead.org,
 	Yixun Lan <dlan@gentoo.org>,
 	Longbin Li <looong.bin@gmail.com>,
 	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: [PATCH v6 1/8] RISC-V: KVM: Add support for Svadu FWFT features
-Date: Mon, 13 Jul 2026 09:02:54 +0800
-Message-ID: <20260713010302.303278-2-inochiama@gmail.com>
+Subject: [PATCH v6 2/8] KVM: riscv: selftests: add Svadu FWFT extension to get-reg-list test
+Date: Mon, 13 Jul 2026 09:02:55 +0800
+Message-ID: <20260713010302.303278-3-inochiama@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260713010302.303278-1-inochiama@gmail.com>
 References: <20260713010302.303278-1-inochiama@gmail.com>
@@ -95,135 +95,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hardware updating of PTE A/D bits is controlled through ADUE bit in
-henvcfg Expose the feature only if both Svadu and Svade are supported
-for VS-mode.
-
-Allow the VMM to enable/disable this feature by change the ISA
-extension state in the guest.
+The KVM RISC-V allows Svadu FWFT for Guest/VM so add this extension
+to get-reg-list test.
 
 Assisted-by: YuanSheng:claude-4.7-opus
 Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
 Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 ---
- arch/riscv/include/uapi/asm/kvm.h |  1 +
- arch/riscv/kvm/vcpu_sbi_fwft.c    | 76 +++++++++++++++++++++++++++++++
- 2 files changed, 77 insertions(+)
+ .../selftests/kvm/riscv/get-reg-list.c        | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
-index 504e73305343..7bbea8812d92 100644
---- a/arch/riscv/include/uapi/asm/kvm.h
-+++ b/arch/riscv/include/uapi/asm/kvm.h
-@@ -240,6 +240,7 @@ struct kvm_riscv_sbi_fwft_feature {
- struct kvm_riscv_sbi_fwft {
- 	struct kvm_riscv_sbi_fwft_feature misaligned_deleg;
- 	struct kvm_riscv_sbi_fwft_feature pointer_masking;
-+	struct kvm_riscv_sbi_fwft_feature pte_ad_hw_updating;
+diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+index cb86cb6b3635..94e33b2ee796 100644
+--- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
++++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+@@ -745,6 +745,9 @@ static const char *sbi_fwft_id_to_str(__u64 reg_off)
+ 	case 3: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable)";
+ 	case 4: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags)";
+ 	case 5: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value)";
++	case 6: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable)";
++	case 7: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags)";
++	case 8: return "KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value)";
+ 	}
+ 	return strdup_printf("KVM_REG_RISCV_SBI_FWFT | %lld /* UNKNOWN */", reg_off);
+ }
+@@ -944,6 +947,13 @@ static __u64 sbi_fwft_pointer_masking_regs[] = {
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value),
  };
  
- /* If you need to interpret the index values, here is the key: */
-diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwft.c
-index ab39ac464ffd..4d474a439b29 100644
---- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-+++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-@@ -94,6 +94,45 @@ static bool kvm_fwft_is_defined_feature(enum sbi_fwft_feature_t feature)
- 	return false;
- }
- 
-+static void kvm_sbi_fwft_env_flag_reset_helper(struct kvm_vcpu *vcpu,
-+					       u64 flag)
-+{
-+	vcpu->arch.cfg.henvcfg &= ~flag;
-+}
++static __u64 sbi_fwft_pte_ad_hw_updating_regs[] = {
++	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_EXT | KVM_REG_RISCV_SBI_SINGLE | KVM_RISCV_SBI_EXT_FWFT,
++	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.enable),
++	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.flags),
++	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pte_ad_hw_updating.value),
++};
 +
-+static long kvm_sbi_fwft_env_flag_set_helper(struct kvm_vcpu *vcpu,
-+					     struct kvm_sbi_fwft_config *conf,
-+					     bool one_reg_access,
-+					     unsigned long value, u64 flag)
-+{
-+	struct kvm_vcpu_config *cfg = &vcpu->arch.cfg;
-+
-+	if (value == 0)
-+		cfg->henvcfg &= ~flag;
-+	else if (value == 1)
-+		cfg->henvcfg |= flag;
-+	else
-+		return SBI_ERR_INVALID_PARAM;
-+
-+	if (!one_reg_access) {
-+		csr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
-+		if (IS_ENABLED(CONFIG_32BIT))
-+			csr_write(CSR_HENVCFGH, vcpu->arch.cfg.henvcfg >> 32);
-+	}
-+
-+	return SBI_SUCCESS;
-+}
-+
-+static long kvm_sbi_fwft_env_flag_get_helper(struct kvm_vcpu *vcpu,
-+					     struct kvm_sbi_fwft_config *conf,
-+					     bool one_reg_access,
-+					     unsigned long *value, u64 flag)
-+{
-+	*value = (vcpu->arch.cfg.henvcfg & flag) == flag;
-+
-+	return SBI_SUCCESS;
-+}
-+
- static bool kvm_sbi_fwft_misaligned_delegation_supported(struct kvm_vcpu *vcpu)
- {
- 	return misaligned_traps_can_delegate();
-@@ -137,6 +176,34 @@ static long kvm_sbi_fwft_get_misaligned_delegation(struct kvm_vcpu *vcpu,
- 	return SBI_SUCCESS;
- }
- 
-+static bool kvm_sbi_fwft_pte_ad_hw_updating_supported(struct kvm_vcpu *vcpu)
-+{
-+	return riscv_isa_extension_available(vcpu->arch.isa, SVADU) &&
-+		riscv_isa_extension_available(vcpu->arch.isa, SVADE);
-+}
-+
-+static void kvm_sbi_fwft_reset_pte_ad_hw_updating(struct kvm_vcpu *vcpu)
-+{
-+	if (kvm_sbi_fwft_pte_ad_hw_updating_supported(vcpu))
-+		kvm_sbi_fwft_env_flag_reset_helper(vcpu, ENVCFG_ADUE);
-+}
-+
-+static long kvm_sbi_fwft_set_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
-+						struct kvm_sbi_fwft_config *conf,
-+						bool one_reg_access, unsigned long value)
-+{
-+	return kvm_sbi_fwft_env_flag_set_helper(vcpu, conf, one_reg_access,
-+						value, ENVCFG_ADUE);
-+}
-+
-+static long kvm_sbi_fwft_get_pte_ad_hw_updating(struct kvm_vcpu *vcpu,
-+						struct kvm_sbi_fwft_config *conf,
-+						bool one_reg_access, unsigned long *value)
-+{
-+	return kvm_sbi_fwft_env_flag_get_helper(vcpu, conf, one_reg_access,
-+						value, ENVCFG_ADUE);
-+}
-+
- #ifndef CONFIG_32BIT
- 
- static bool try_to_set_pmm(unsigned long value)
-@@ -246,6 +313,15 @@ static const struct kvm_sbi_fwft_feature features[] = {
- 		.set = kvm_sbi_fwft_set_misaligned_delegation,
- 		.get = kvm_sbi_fwft_get_misaligned_delegation,
+ static __u64 zicbom_regs[] = {
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_CONFIG | KVM_REG_RISCV_CONFIG_REG(zicbom_block_size),
+ 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_ISA_EXT | KVM_REG_RISCV_ISA_SINGLE | KVM_RISCV_ISA_EXT_ZICBOM,
+@@ -1259,6 +1269,16 @@ static struct vcpu_reg_list config_sbi_fwft_pointer_masking = {
  	},
-+	{
-+		.id = SBI_FWFT_PTE_AD_HW_UPDATING,
-+		.first_reg_num = offsetof(struct kvm_riscv_sbi_fwft, pte_ad_hw_updating.enable) /
-+				 sizeof(unsigned long),
-+		.supported = kvm_sbi_fwft_pte_ad_hw_updating_supported,
-+		.reset = kvm_sbi_fwft_reset_pte_ad_hw_updating,
-+		.set = kvm_sbi_fwft_set_pte_ad_hw_updating,
-+		.get = kvm_sbi_fwft_get_pte_ad_hw_updating,
+ };
+ 
++static struct vcpu_reg_list config_sbi_fwft_pte_ad_hw_updating = {
++	.sublists = {
++		SUBLIST_BASE,
++		SUBLIST_ISA(svade, SVADE),
++		SUBLIST_ISA(svadu, SVADU),
++		SUBLIST_SBI(fwft_pte_ad_hw_updating, FWFT),
++		{0},
 +	},
- #ifndef CONFIG_32BIT
- 	{
- 		.id = SBI_FWFT_POINTER_MASKING_PMLEN,
++};
++
+ struct vcpu_reg_list *vcpu_configs[] = {
+ 	&config_sbi_base,
+ 	&config_sbi_sta,
+@@ -1268,6 +1288,7 @@ struct vcpu_reg_list *vcpu_configs[] = {
+ 	&config_sbi_mpxy,
+ 	&config_sbi_fwft_misaligned_deleg,
+ 	&config_sbi_fwft_pointer_masking,
++	&config_sbi_fwft_pte_ad_hw_updating,
+ 	&config_aia,
+ 	&config_fp_f,
+ 	&config_fp_d,
 -- 
 2.55.0
 
