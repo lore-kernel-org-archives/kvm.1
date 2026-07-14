@@ -1,114 +1,100 @@
 Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A9642BE90
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45BA42BEA9
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784057371; cv=none; b=AEBlHl+ZX56AWDoP7KMy5jaaxn6m/iCIrg/eMDLE2SE/OCXN5kLuOc3ZDoPXuBJ2rOA4ccJIxTY84u+6Q3VJgNor+/CoD4PTqVkuTIiIIJ5PmlVMPsexwp+a6gB7sv5vPxYxF7K0TRaGO5fKlvq2NTMXsEHfj+3+nu2iCnubQjs=
+	t=1784057375; cv=none; b=AeoWCZodDPAu1NzpRzuOdFiNjhv/xS3/+MVqlM9iIfuKhfDyIqzkDaTC+P69NH1XZyFhihlUmZXqL0LjyhW35Pa1c5ZgtgEn8eunX5KptMhw4sYYPUY3vpOyJjc9XQ/5iCk9ZrGtArYMYoUAfuZml0V4gF7EpBXdrUy5y1rykvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784057371; c=relaxed/simple;
-	bh=tDg4wl0W/Si3x5qXM8/VUYRL5A+d1JQuaPD8sj4bEHY=;
+	s=arc-20240116; t=1784057375; c=relaxed/simple;
+	bh=5v0pjtg16nOYoh0LqjejD+BH5n9SM/7iCdtqM2SxC9k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NU9EiSK+ASu6kJjfIUxE0YpXVFuOKB6RbiE4L45UV3FaMix7C7m779gabyItp/04DYmgguGPN5VKLz4VzNO69l8+8eTU5vazbqorI0i/O7VteDEazizjXFv5ZcNAZYuyh8Yp176w5prfuH84vHKnaxTgELhaejW6/SUpMWKtEgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fkU3xmfp; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=CIfg13zo2969Q8GlNQgzOzmhH89MlZLy/bpLZhhGzRITSgbDMGq88TZZQzPJrtd1hprE9gGh7v6Dv2YK49q8z23eGhQ8HF6BESrQbscjDAlJ/aaXqEzBfxRl8mcDXEjbAICFgAQUTBMfRurzNxglzRGsTIBSAPnsuf7/Qg4S5gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IlTDSMGe; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fkU3xmfp"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1584833b3a.0
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:29:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IlTDSMGe"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84865f326efso5128737b3a.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:29:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784057367; x=1784662167; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784057373; x=1784662173; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ss7g3eD7npKIlK1jpim9LIPl59c3dlvPKOBpcKadRME=;
-        b=fkU3xmfphMRMM94Vh0Jrv4oDnOF/EFoMnCMpxI7VSH2zCknNXPAJcRWfjowf14PbsE
-         erCOn/3MkWIFmqgzzOiUQi30uiAJFaPxWOhVLgGosAVg3esVHr8Sk081hOaNQooz5wgQ
-         gL5acRpdhwOj20yqSdIl/+amHu7LeVSMO88mcyihm/e0oD9EWY+Yr2jjhSIHy1P92mBf
-         1l5kQQZ4kwGuxQDrFCTcnD2UuT/kRITU+oxasGLWkybSnjhzahfkmrNmRt4xS7Ks1gN8
-         irpVapihUmdipN6h1R2p4mlYQ9yeHm4YabYXLpJdCZ+3AchBszzsW3JEBzC+5o05BAhj
-         b7ig==
+        bh=NaWAefms5g2sZE1zJRpUsheJBiizyXeD+J/SLEPa9K8=;
+        b=IlTDSMGe9vScsqElhWXO8w4mRHJ/2O5URvu2scmA8SCNn98pTofBe8KdnzVk2vYQ64
+         cfpXijlLwmLgszKZZzs1acdTZRo10cwxtkjlUouTnT7AooCZ2myGxjHNGVGfLUNrLt/q
+         MQL1vqJ5E3i8X8PqB++dtkNWX6yNo8pEfiHnG34AXkQ0bxobPxeNR4tiHS4xr4eb0uBp
+         fGZPDSYxZBsIRDJ7lgVQDFBL2VpPTq+rv2N9ltzmkYzHOp4jF3+Y7EZFgwamrSHx35F5
+         2Pm33BSTuD1nJA9MBoXaHwPDHo0xwZSlxHD2nebXC7Qk3xt2kTn4WHjXHhSIZR5OWhEs
+         Tjzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784057367; x=1784662167;
+        d=1e100.net; s=20251104; t=1784057373; x=1784662173;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ss7g3eD7npKIlK1jpim9LIPl59c3dlvPKOBpcKadRME=;
-        b=T+wqm0/1pGhJU/fkF0gIcjMDUGLAdAocEXnYZY9SHU6YmNe0gE12eX6SoJ21O/JFBa
-         EF7CsC3TvmI9wqaCIyFoFyHJQcAFXKQsHr/1FH3eXAA5t8lik3M41MJD5UbtgGiedbuu
-         joUNJKLaTUEqZlpp6rUE+SXJcrB+YcwjtUAffIA4Dl+TKKDrTRkhEscZTTyBIViGHA53
-         MnSHle2bF654ZPv6ep4Siubtzhf2sE93R3tqQZpm6mYM1dgoLGzwmgPdxdZli9rl3893
-         NMzvyomib72UdGzkymkJquCi47rnPAOe7lTQkp2z3SjFZ+qCpGDeLklFAD3IFLLtnBRD
-         vYjA==
-X-Gm-Message-State: AOJu0YxkBeazHnGiZgYd4Rl7mcSSo2P5BGl/BmOjGvXBeId42vEv/RP4
-	vnRrHnxAut/i8h1jxyf+VDjV01qZbCBT6hy+851n2rcWmsl4XtcOvHG3Dl2rdx8erHObfTPC8XW
-	U3PBXZg==
-X-Received: from pfbcu1.prod.google.com ([2002:a05:6a00:4481:b0:848:8827:5d12])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e24:b0:848:65fa:542
- with SMTP id d2e1a72fcca58-848898081aemr13875831b3a.53.1784057367070; Tue, 14
- Jul 2026 12:29:27 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:23 -0700
-In-Reply-To: <20260625220450.3354415-1-seanjc@google.com>
+        bh=NaWAefms5g2sZE1zJRpUsheJBiizyXeD+J/SLEPa9K8=;
+        b=idN9E8dQ7TuC79J6qQxAAg6gy0OejwphBlSKyWWQ6kRJD+6mrd9aWtt2fdXbeSlg5Z
+         FA4Qb22pcO1Lw+lCUmjc5UHpQn0/KRuogGEKfLFXWSdbxnmmPNrI8sR2SNQmg/GutcXj
+         OswcevdZ3LMadj+4Fw+TngHTn0L6vaP4RrW0i+Uh5P4plNYk2lwLlc9eaiNss45jV/jP
+         gVfh6f5SLi3TZdClwYj/z2DE8SGqWaQmmGYC+tP+YMuHi0gZhYHbZ47h92vqDpO6sySq
+         FiH3sRosQtY6d5KywLCwmqsvB3GnZkdS72OOwnD/ddqm+XQfIKl7QXZ/DhohzI3QUVAk
+         A/YA==
+X-Forwarded-Encrypted: i=1; AHgh+RpO9jjvga04DfcKLSZmtF4uea/4h7usa9rhm9vMfW4njy9AxM4PWMU0GqY0Xsk61QVtoHY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxcWIw47lLsZUwrrK1nXlfcoLBMQHu0rRKSWrxJfI2p8tZUAOj
+	QIHdxdlvFz2EwGCbesKOkYLxSCUHwC7yFsusdqkHdRflcwb6Xouf4rlCREsmje41m3Ry/plsepw
+	rLtOMvQ==
+X-Received: from pfee10.prod.google.com ([2002:a05:6a00:bc8a:b0:847:8fa5:76bc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14cd:b0:847:83bd:6671
+ with SMTP id d2e1a72fcca58-84889667647mr13185570b3a.19.1784057372703; Tue, 14
+ Jul 2026 12:29:32 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:25 -0700
+In-Reply-To: <20260630213711.479692-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260625220450.3354415-1-seanjc@google.com>
+References: <20260630213711.479692-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405361325.3123550.7477828012411654626.b4-ty@google.com>
-Subject: Re: [PATCH 0/9] KVM: x86: Spring cleaning, part 2
+Message-ID: <178405433333.3142919.4680610079893572404.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/2] KVM: x86: gmem populate fix and cleanups
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Kai Huang <kai.huang@intel.com>
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Sashiko Bot <sashiko-bot@kernel.org>, Joerg Roedel <joerg.roedel@amd.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 25 Jun 2026 15:04:41 -0700, Sean Christopherson wrote:
-> A few more cleanups that I wasn't able to get out in time to catch kvm/next
-> (almost all of these are the result of code review feedback).  The main theme
-> is again trimming down x86's kvm_host.h.
+On Tue, 30 Jun 2026 14:37:09 -0700, Sean Christopherson wrote:
+> Fix a user-triggerable WARN due to KVM not pre-checking that userspace
+> provided a source page for non-ZERO pages for SNP_LAUNCH_UPDATE, and then
+> clean up the equivalent TDX code to also explicitly check the incoming
+> source page *before* calling into guest_memfd, and to return -EINVAL, not
+> -EOPNOTSUPP.
 > 
-> Sean Christopherson (9):
->   KVM: x86: Move the "APIC attention" macros from kvm_host.h => lapic.c
->   KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
->   KVM: x86: Pluralize the macro guard name for msrs.h
->   KVM: x86: Move CR and DR macro definitions from kvm_host.h => regs.h
->   KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h => x86.c
->   KVM: x86: Add static asserts to document connection b/w TSS structs
->     and macros
->   KVM: x86: Move KVM's arbitrary task switch reason enums to x86.h
->   KVM: x86: Move "struct kvm_apic_map" definition from kvm_host.h =>
->     lapic.h
->   KVM: x86: Move "struct kvm_vcpu_hv" and all children from kvm_host.h
->     => hyperv.h
+> v2:
+>  - Rewrite the SNP patch changelog.
+>  - Tweak the code to avoid checking KVM_SEV_SNP_PAGE_TYPE_ZERO twice.
+>  - Drop what is now effectively a sanity check in sev_gmem_post_populate(),
+>    so that we don't have to duplicate the logic when in-place conversion comes
+>    along.
+>  - Tack on the TDX change.
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/9] KVM: x86: Move the "APIC attention" macros from kvm_host.h => lapic.c
-      https://github.com/kvm-x86/linux/commit/26c877c70b57
-[2/9] KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
-      https://github.com/kvm-x86/linux/commit/eb4b67c93472
-[3/9] KVM: x86: Pluralize the macro guard name for msrs.h
-      https://github.com/kvm-x86/linux/commit/8821646e292d
-[4/9] KVM: x86: Move CR and DR macro definitions from kvm_host.h => regs.h
-      https://github.com/kvm-x86/linux/commit/eb42c91b6546
-[5/9] KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h => x86.c
-      https://github.com/kvm-x86/linux/commit/eb7313b66c59
-[6/9] KVM: x86: Add static asserts to document connection b/w TSS structs and macros
-      https://github.com/kvm-x86/linux/commit/de28ef6548a2
-[7/9] KVM: x86: Move KVM's arbitrary task switch reason enums to x86.h
-      https://github.com/kvm-x86/linux/commit/0bc5f998e18d
-[8/9] KVM: x86: Move "struct kvm_apic_map" definition from kvm_host.h => lapic.h
-      https://github.com/kvm-x86/linux/commit/c3d35340a337
-[9/9] KVM: x86: Move "struct kvm_vcpu_hv" and all children from kvm_host.h => hyperv.h
-      https://github.com/kvm-x86/linux/commit/ed6ee602bceb
+[1/2] KVM: SEV: Explicitly disallow NULL user address for SNP_LAUNCH_UPDATE
+      https://github.com/kvm-x86/linux/commit/2abe1ff20151
+[2/2] KVM: TDX: Return EINVAL, not EOPNOTSUPP, for NULL INIT_MEM_REGION source
+      https://github.com/kvm-x86/linux/commit/eb606a243863
 
 --
 https://github.com/kvm-x86/linux/tree/next
