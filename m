@@ -1,295 +1,125 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6760F466B7B
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 13:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F6C24113D;
+	Tue, 14 Jul 2026 13:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784036094; cv=none; b=Yi4BVSH5YqA3wPPchPmUAnTZY6L/vzTZJqLy03pwMaldlpZexKWF/TcPdznOFevnaOdXOOvUaU6RNmC1koBLA6q7ziz7rTTINqfKjY2auUO3UP6ZIAjOCEsZHLcixt+T/FQSZxA9+fp/EcQA+jLHljrFRVU6WOpvwcZRvKcbuuQ=
+	t=1784037479; cv=none; b=Fxe5dOWOkCJ8YAftgfZOg5xkp9lEzjAKLHbaB7lDc3sksE/VNhfF+0zW+zQhUeAnlcXx7GItmCtiqgPV6HRpf6f1BDudwliMa4LKrXi/d4SzvvjNWM7QPr41e7H9B+iF0Tf5vi+yTM7ARHoNab8IBHaw1ZdIqb1PlfSomrK+fY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784036094; c=relaxed/simple;
-	bh=2pXtAqp5Qhcyd+FPkZ5jN2Jy1K73DjOFfD5vRqAp8hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pHA3WcrhumLG+Arf5dZ2efyReB1iP3TwyFAqI/S/fs9u04dBRw+xzSuRc3MzjRrcNaXyXxD2RkAic06ClLPuyQIxuGbLlSIRReXUYglbmRL3ShiAqzPrdoHE6Zf8pZ0IRVFqFfP9KOpZJxPE4l5cikIw5LDykbFnYDFUnviOj3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wfYOoOWS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QFWr1b4M; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=a8CO2cT7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Wne8P9Hc; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1784037479; c=relaxed/simple;
+	bh=k0x2ldVAWogUGC6AwisbdfeksKhgBBOVNUIxEzSrBRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aTKkyhdwYXKtrfi86m6gL4VzbFck5BGjNJhLAhxhZ45Xr8e6A8zaYRIkgA+oqtRi4GSyR+zXkuMQDZTHzoyOLr7XiGK7ZTJhs6q+tcJRbQd1p+fcJRRuZoIe07RLVLOechT6ozXWFE248dluOZpDMn7BeIUoz2DFk9siiES49tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RRqvVtn8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NlPmbpBg; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wfYOoOWS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QFWr1b4M";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="a8CO2cT7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Wne8P9Hc"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E2E73DF4;
-	Tue, 14 Jul 2026 13:34:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784036090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
-	b=wfYOoOWSIz2hqL0qalaRweFcfyeiIlMhGATZQskGWsXl/mixGW5123Pl9zROSNAnWIZDfQ
-	3DgNGyzagq2Gr0MHafQD7Y67LCFk26j8GCQCTlaxY5hfrOJBVrOXQfx7hc3pGqv+hUFCCl
-	ylcpJMD6R0dWHCH+K1qnJoNjT88WVz8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784036090;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
-	b=QFWr1b4MvnJVQn5By7x/28b21fc5JxlrOE0ENPeUV1zigBlGHkCa8c12hd4Ot4wSXMjtVW
-	l0Ospgk8HQXf5oDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1784036089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
-	b=a8CO2cT72ftc8/8q72YMvrO3F09Vw+gFrpt7kwy+yY/5ikg6ej2yCJJw/w9skhYF0VLOnt
-	tYm8tkScULqlwINWbo1j9QBO48zFtg5k+Bn+CKvFjfNoy1azoK9J2SyYxe12O4PO6NYDXs
-	mDIH7l3+NQgqfzIdZc6K4hcLNTXQues=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1784036089;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
-	b=Wne8P9HcMowDAacRfBWkhY2ABSnpbsqE4DKgcJp6X5zPpLZkjJBPW5HEvDPDIMCZiNi9K0
-	l6inS7fsQrTPrEBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DEE4779AE;
-	Tue, 14 Jul 2026 13:34:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BU9/I/g6VmqKZQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 14 Jul 2026 13:34:48 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Roman Kagan <rkagan@virtuozzo.com>,
-	Andrey Smetanin <asmetanin@virtuozzo.com>
-Subject: [PATCH v2] KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
-Date: Tue, 14 Jul 2026 15:32:13 +0200
-Message-ID: <20260714133212.3916611-3-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RRqvVtn8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NlPmbpBg"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 306581400133;
+	Tue, 14 Jul 2026 09:57:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Tue, 14 Jul 2026 09:57:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784037476;
+	 x=1784123876; bh=FXcyRMAnaBVkY3h3vTCMYcn9yVpLjNn6jR09gxzZf5E=; b=
+	RRqvVtn8T+3Htv65IdSSBrFLyvzW7Hbp1ewEg8ew04E/SsHfwhFIAn6h2ISUVqs8
+	EYh0xYRfo20w+IY1UBWHg2PpNqOj5Tq9gsbwY/iTjdqDiQ9Xl5w41eoK+oloSp9t
+	JWy/stfnm11mI0fZwnc5jeAtG+T+LZlDrX7mS32IuxWa/rmUPG3PWDvXEGZgg7YD
+	02w3Eu5gtIi8VYigL5Fb9RPxjNNwQuh/2vY00kNGyifV5e0H9+vHV+qDP021pxIY
+	BK5cIBQQXKC3YJSjXkMMLpXYOmQLkPxR2HB9ZhiPZLWTvKedZPlG5v9dLQEyplgy
+	lyOvk3GdXnPD5v+RFiwX2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784037476; x=
+	1784123876; bh=FXcyRMAnaBVkY3h3vTCMYcn9yVpLjNn6jR09gxzZf5E=; b=N
+	lPmbpBgkfq0hpXshOCwgtgMhfzVkcjuIWcA0gixInrF85ter3KqZvY8wiZhxTHyw
+	POCqvbIlkNMuu7SzHXmNabK+FhL5FilSDcyOVQXFFC0e5JIuokct+FLSrMdonu6h
+	KaccO7AJl1K+utNa0PJte7rfYKfQ8Dj+J3xUGQH8J4GxCdkSAQKERzkBPlr/aRYz
+	ioCdIzb4I6pQSZhGA7glbtx2KxrKb28Rf2bubqPz6cPRevLagri6WbtznH93eQnu
+	uu6Dl94wZ9YMx4MaciaG9mm7R9lG9ifPLPw3l7gW5GwrM9Eyk2ml0Vpmjc1JOKJq
+	OquoBuem4nvI/CeHc95kw==
+X-ME-Sender: <xms:Y0BWanpRE4ZRdT1PM7oWATf0ZDkJauZIXJF6e_dOorUIR6r6lAu_jg>
+    <xme:Y0BWajOKk4wNRQ-bmfNy-h-k93I52PH75T_N8PRtK_l2fjt8bBrS9SylA3A9Pk2eq
+    bPdH3y8eoykZ2CDAY_VnnRbr6zFOAeY_r1lRCLbdwdmORqKiI2YWg>
+X-ME-Received: <xmr:Y0BWajdAilAbagfSvI4FTvsora7fQUgKfDOtp-DyKqo9qxKFJhP7j7_NGsbjew>
+X-ME-Proxy-Cause: dmFkZTEsUshoaZt6MT3OwqLTgfDBAaGcMOajv/1i342AuXmNIS9/WjerbNODts8Q5KRdwC
+    /l23SZJ3OevmievZk+QEYxEn3T85GT7sxSA6xNKYahZoQ60BLN9dxsW02G33MEoyoGgN9c
+    6EiM9xPy0iOBfiVNIsslCFyW5/yq/O8S+F/3NJ6vmx02fwjoi1vgIfhgDceadJxCM9187G
+    11AboWCmXIAJ8wuxmvtjq8xo6C3wPoRR3MtXyv/7s2Dgblkoopzn/cVTGtcYXNt0BVLRmW
+    lO91ZreSgf0Sa2/LuyOYOOL2qci6jHouJmFFuLwAO6suOkCvqSkLqZr64JyPHKOfpZweoo
+    sYNI2dzIPKzkNx9UlLCsPVvkrb8I81KwOZbGKzOVEWoftdPhckSGBcfM0YJGLyV/h5Gms7
+    ZIi84Uy+16HQYiGSbfJkw2KfWGVmsoPQ+yDHCA/P+oMWSz5psUyXj9VqmB5s/CC4BuAbOK
+    TPoePl1+w3QdfrGtHWN20h1twz/3aA8iS1RoDB+iCt2RlqEgUFsYehe0NZsdurpB7nqMsT
+    jMBjodHcsdApoYrzCv1tpO7rIBEmgLUUZQiwpYVSyOXWgkt8RBqm4gspBCDp+o02worDeh
+    4tfgxXH+iN4IJeMkUnIo+pGJCjJlRpOBkHfduhKqEmQ0MrkJddBNGaGK8Vng
+X-ME-Proxy: <xmx:Y0BWahWTQZCFdztBkC9rho2sq5VwBKZza03jr-iB6xhD74LDvZ0ayw>
+    <xmx:Y0BWasCLBe3ld7Vh4tYWciuAQQt2pSkhNIJEeESXy1dB0kgbKPu61A>
+    <xmx:Y0BWak5_VY6kLOpXGgfJCcM5K0ijGlzIkKLYgSyIVYz-YCDmcQT8_g>
+    <xmx:Y0BWar1pn-dblKk9QOBXu9BWHFdox4zlkz4o6iiNTBaU0ovN0OEZeg>
+    <xmx:ZEBWap--NWoMSEX96b7aY--FJ4nYV0kr8PxKHpc0hX-DPan8TirM80t4>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 09:57:54 -0400 (EDT)
+Date: Tue, 14 Jul 2026 07:57:53 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v19 12/18] vfio/pci: Add dmabuf TPH metadata storage and
+ fd query helper
+Message-ID: <20260714075753.20052573@shazbot.org>
+In-Reply-To: <0768658f-de72-4ddb-a44b-e91a7e294b20@huawei.com>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+	<20260702124224.57168-13-fengchengwen@huawei.com>
+	<20260708173117.3e399c4b@shazbot.org>
+	<bb0e583e-501f-4356-b554-784482b35331@huawei.com>
+	<20260709125012.21784d0a@shazbot.org>
+	<0768658f-de72-4ddb-a44b-e91a7e294b20@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -1.80
-X-Spamd-Result: default: False [-1.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[3d5461510f8dc4adfe30];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Fix an issue where userspace or the guest can program an Hyper-V
-synthetic timer to have a deadline in the past via integer overflow,
-preventing the CPU from making progress and triggering an RCU stall.
+On Tue, 14 Jul 2026 18:46:51 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
+> On 7/10/2026 2:50 AM, Alex Williamson wrote:
+> > 
+> > Additionally, dma_buf_get_pci_tph() defines that the provided values
+> > are only valid until invalidate_mappings, but this series has no
+> > plumbing to honor that requirement.
+> > 
+> > This needs significant work if we need to track the lifecycle of every
+> > dmabuf related TPH value.  Thanks,  
+> 
+> Is it possible to use this as a risk warning? After all, even if the
+> invalid mapping is performed, the ST only causes performance loss to
+> the system, and there will be no function problems.
 
-Hyper-V's SynIC exposes 4 per-vCPU synthetic timers to the
-guest, which are emulated by KVM. Each is programmed through the
-HV_X64_MSR_STIMERi_CONFIG and HV_X64_MSR_STIMERi_COUNT MSRs. Depending
-on CONFIG, COUNT represents either the absolute expiration time or the
-period of a periodic timer, both expressed in 100ns ticks. These timers
-may be set both by the guest (WRMSR) and the host (KVM_SET_MSRS).
+Seems like the sort of thing that should have been resolved BEFORE
+sending out v20.  By the same argument, maybe it's sufficient to zero
+invalidated STs automatically, but we can only do that for IV mode
+in-kernel and rely on userspace to perform the same for DS mode, but
+regardless, no mechanism is proposed to perform such invalidation.
 
-When the timer is enabled, stimer_start() translates COUNT to an
-absolute monotonic deadline and arms an hrtimer. If COUNT is set to a
-value close to U64_MAX, the deadline calculation can overflow.
+IMO, this brings into question the supportability of STs provided
+through dmabufs.  It would seem vfio-pci needs to become an importer of
+the dmabuf, rather than simply scraping TPH data from it, but maybe it
+can only be supported in IV mode.  We don't have a means to represent
+that.
 
-    ktime_add_ns(ktime_now, 100 * (stimer->exp_time - time_now))
-
-This can result in a CPU livelock. stimer_start() arms the timer
-via hrtimer_start() with a deadline in the past, which causes it to
-immediately fire. The stimer callback then raises KVM_RQ_HV_STIMER, with
-the intention of causing KVM to deliver a synthetic interrupt on the
-next vCPU guest enter.
-
-Then, once userspace issues KVM_RUN, vcpu_enter_guest() consumes the
-request, calling kvm_hv_process_stimers(). This would normally disable
-the timer via stimer_expiration() once the deadline is in the past.
-However, the deadline comparison is done between the KVM reference
-counter and stime->exp_time, which is a big value close to U64_MAX, so
-this never happens for a few thousand years.
-
-kvm_hv_process_timers() then re-arms the timer via stimer_start(), since
-it was not disabled, which again fires immediately. Before entering
-the guest, kvm_vcpu_exit_request() checks kvm_request_pending(),
-which returns true due to the newly raised KVM_REQ_HV_STIMER. Then
-vcpu_enter_guest() aborts the guest entry, returning early into
-vcpu_run(), which loops back again into vcpu_enter_guest(), restarting
-the cycle.
-
-Since there are no manual yields in this loop, a task with SCHED_FIFO
-may starve RCU grace-period kthreads, which exposes the stalls found
-by syzcaller:
-
-    rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-    rcu:    (detected by 1, t=10502 jiffies, g=14269, q=1142 ncpus=2)
-    rcu: All QSes seen, last rcu_preempt kthread activity 10500 (4294965239-4294954739), jiffies_till_next_fqs=1, root ->qsmask 0x0
-    rcu: rcu_preempt kthread starved for 10500 jiffies! g14269 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
-    rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-        ( ... )
-    Call Trace:
-     <IRQ>
-     __run_hrtimer kernel/time/hrtimer.c:1773 [inline]
-     __hrtimer_run_queues+0x408/0xc30 kernel/time/hrtimer.c:1841
-     hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
-     local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1045 [inline]
-     __sysvec_apic_timer_interrupt+0x102/0x3e0 arch/x86/kernel/apic/apic.c:1062
-     instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1056 [inline]
-     sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1056
-     </IRQ>
-     <TASK>
-     asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-    RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
-    RIP: 0010:_raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
-    Code: 74 05 e8 0b f4 5f f6 48 c7 44 24 20 00 00 00 00 9c 8f 44 24 20 f6 44 24 21 02 75 4f f7 c3 00 02 00 00 74 01 fb bf 01 00 00 00 <e8> 23 6b 27 f6 65 8b 05 7c 60 5a 07 85 c0 74 40 48 c7 04 24 0e 36
-    RSP: 0018:ffffc900040a7320 EFLAGS: 00000206
-    RAX: 5de15cb931505900 RBX: 0000000000000a06 RCX: 5de15cb931505900
-    RDX: 0000000000000007 RSI: ffffffff8daa9dc3 RDI: 0000000000000001
-    RBP: ffffc900040a73b0 R08: ffffffff8fc3d077 R09: 1ffffffff1f87a0e
-    R10: dffffc0000000000 R11: fffffbfff1f87a0f R12: dffffc0000000000
-    R13: 0000000000000000 R14: ffff8880b8628240 R15: 1ffff92000814e64
-     hrtimer_start include/linux/hrtimer.h:259 [inline]
-     stimer_start arch/x86/kvm/hyperv.c:682 [inline]
-     kvm_hv_process_stimers+0xd0a/0x16a0 arch/x86/kvm/hyperv.c:893
-     vcpu_enter_guest arch/x86/kvm/x86.c:11193 [inline]
-     vcpu_run+0x2240/0x76b0 arch/x86/kvm/x86.c:11639
-     kvm_arch_vcpu_ioctl_run+0x1148/0x1c90 arch/x86/kvm/x86.c:11984
-     kvm_vcpu_ioctl+0x99a/0xed0 virt/kvm/kvm_main.c:4492
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:597 [inline]
-     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
-     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-     do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-    RIP: 0033:0x7f635278f749
-    Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-    RSP: 002b:00007f635365c038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-    RAX: ffffffffffffffda RBX: 00007f63529e5fa0 RCX: 00007f635278f749
-    RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-    RBP: 00007f6352813f91 R08: 0000000000000000 R09: 0000000000000000
-    R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-    R13: 00007f63529e6038 R14: 00007f63529e5fa0 R15: 00007ffd5b219358
-     </TASK>
-
-Fix this by clamping the deadline computation to KTIME_MAX, which
-preserves the intent of arming a timer very far in the future.
-ktime_add_safe() already does this type of clamping, so use it after
-checking that that multiplying by the 100ns time tick also does not
-overflow.
-
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Reported-by: syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3d5461510f8dc4adfe30
-Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-Signed-off-by: Carlos López <clopez@suse.de>
----
-v2:
-* Use >= when checking for overflow (Vitaly Kuznetsov)
-* Collect Vitaly's Reviewed-by
-
- arch/x86/kvm/hyperv.c | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 39b58f56308b..944cfce109e6 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -630,6 +630,17 @@ static enum hrtimer_restart stimer_timer_callback(struct hrtimer *timer)
- 	return HRTIMER_NORESTART;
- }
- 
-+/*
-+ * Translate a stimer expiry given in 100ns reference ticks into an
-+ * an absolute deadline. Saturates on overflow.
-+ */
-+static ktime_t stimer_add_delta(ktime_t now, u64 delta_100ns)
-+{
-+	if (delta_100ns >= KTIME_MAX / 100)
-+		return KTIME_MAX;
-+	return ktime_add_safe(now, 100 * delta_100ns);
-+}
-+
- /*
-  * stimer_start() assumptions:
-  * a) stimer->count is not equal to 0
-@@ -639,6 +650,7 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
- {
- 	u64 time_now;
- 	ktime_t ktime_now;
-+	ktime_t deadline;
- 
- 	time_now = get_time_ref_counter(hv_stimer_to_vcpu(stimer)->kvm);
- 	ktime_now = ktime_get();
-@@ -661,10 +673,8 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
- 					stimer->index,
- 					time_now, stimer->exp_time);
- 
--		hrtimer_start(&stimer->timer,
--			      ktime_add_ns(ktime_now,
--					   100 * (stimer->exp_time - time_now)),
--			      HRTIMER_MODE_ABS);
-+		deadline = stimer_add_delta(ktime_now, stimer->exp_time - time_now);
-+		hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
- 		return 0;
- 	}
- 	stimer->exp_time = stimer->count;
-@@ -683,9 +693,9 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
- 					   stimer->index,
- 					   time_now, stimer->count);
- 
--	hrtimer_start(&stimer->timer,
--		      ktime_add_ns(ktime_now, 100 * (stimer->count - time_now)),
--		      HRTIMER_MODE_ABS);
-+	deadline = stimer_add_delta(ktime_now, stimer->count - time_now);
-+	hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
-+
- 	return 0;
- }
- 
-
-base-commit: 3aec122bdcaf6f8c4ecfc7f6adf6773015ced676
--- 
-2.51.0
-
+Alex
