@@ -1,129 +1,131 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77B737A856
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F73936A02F;
+	Tue, 14 Jul 2026 11:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784027026; cv=none; b=P/26x/tpc8AbimKzOkQfkiETqLWjTVgVdmvzK7a2AetO52mhF4JZmXZOMb9jBvB7JlUkRSic/fyFf2CtRwAoNq7eMxyQZQsaWPsl8pxlbyHkRIKogwGjhZ80CmEG4Z7cMkMUE/ziNmh3xKu9MaVOhG+DJR2IdJfVfEzlIhLX+bI=
+	t=1784027242; cv=none; b=aEUXVm2UIdurvOQW+gmmnVhV7FXCeecGOKB26XCxpfIrfoGCExUvajX8w/6/e6fPySZA4Ww+jHxHJQVzvJMozuDQGDC6RgxapQ3ulCCZK2PTvxIrCItezfQf81DtLUbnnuCBhAiG1LgVhR1t5VHgV/IH/iOV2PtaXpij3pW2bAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784027026; c=relaxed/simple;
-	bh=1wVk/tQdaNhnArh4J0BQVcadplivbnaPbQao/4sAzu4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Z28+coAMXfc9nituoPbdOJgBLTYnLqcymGG/ATbj7+aLF4T8oEiZOA8crUyiG/+JZT8Qio8XCETdxHT7T6/pa9i5Jnx8ODPYIpT9QJwIg9eKQo225lMsKPTQ3H3xmLqUV0x7Gt6yH+Gs4uzVytoG7rBCmeCGwRVcrv1TvQBI92k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jRkIAqW9; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784027242; c=relaxed/simple;
+	bh=Bkhd5hYJ2rlPBkP1eNtLR24wCwKi27eFdQOmhc71M8c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ZmUcRrDVtjD+WGGl/zUlb7uTWhUTx3DdmqQyICzh0kPNf+hnID7PNRrP/OEkc5sLZjv5lXg5eerEhEXRhURoOEPioeKM/0cxqtJgV1fFn3Z1JJ35bToBDXGVacbVjaw9YYCFq7l8jjiRXpiRyRP0Ut+mZJ4gTCCT1y3IbisiX7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUv+E5pR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jRkIAqW9"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784027012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UgPclGQHh7dNphdFO4WD5DMAk53aRk6exDDyQp10qx4=;
-	b=jRkIAqW9xU+yEp9z4uZF+l5JWILsxZz9syYK8tKVl79qvKNeLhZnNVCyA6GqSadTYJoNBY
-	9TfJZ1IbkiZKBAjqCeT4jdA9dqfQRKJUorY6APff0Nk6D9t1dkpm1LKu3TjecHeHraA0qo
-	5l8XdhA+ThUr25wNqP0bpDaGfOWw7os=
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: kvm@vger.kernel.org
-Cc: kvmarm@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: [PATCH] arm64: Query per-VM capabilities when selecting vCPU features
-Date: Tue, 14 Jul 2026 12:03:29 +0100
-Message-Id: <20260714110329.12113-1-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUv+E5pR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85261F000E9;
+	Tue, 14 Jul 2026 11:07:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784027241;
+	bh=V19QlAkowsVItiqm9ZPr6JVQbhOE86XS6KP9UxwiigM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=oUv+E5pRlNgKzKdUzFwxzkYNYTdKJ3ZgS+Yd3ZWUFIMVneSflvuxqspLniBJ7xeGO
+	 hGPLF5p/ucfo4v4AGZEvHpxO/sW/cw9W5loiNR56ODoQfigtAD6rMiW1eAuZNR42/R
+	 UeKvlU0duwlx/BwMla4k1+WrteoE9KdVgPzH60R2ejKrBDZ95RS3JNAfFqP6iIaIsh
+	 YPgva1fTdHetRTVnJn2vHZ6R4bE2ymXBAGFPCWqN6QI++pc/uhXvlYGXyNk9sYg66D
+	 /go8Lh1sKlms44y6Sw9ti+cvTVMTwQvd2RK4jKEtlutN2oxawAqAHYXLpw1ke/JGL2
+	 yf5DIO2+cxPPQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v20 09/16] PCI/TPH: Add macros to check standard and
+ extended TPH support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260714104325.54444-10-fengchengwen@huawei.com>
+References: <20260714104325.54444-1-fengchengwen@huawei.com>
+ <20260714104325.54444-10-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 11:07:20 +0000
+Message-Id: <20260714110720.E85261F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-kvm_cpu__select_features() and kvm_cpu__configure_features() probe vCPU
-feature availability with kvm__supports_extension(), which issues
-KVM_CHECK_EXTENSION on the global /dev/kvm fd. That reports the host's
-raw capabilities, unaware of any per-VM restrictions.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] The macro `pcie_std_tph_supported()` erroneously returns true if=
+ `tph_max_type` is set to the reserved TPH requester type value 2.
+- [Low] The helper macros `pcie_std_tph_supported` and `pcie_ext_tph_suppor=
+ted` are implemented as macros rather than static inline functions, causing=
+ the !CONFIG_PCIE_TPH stubs to silently drop the pdev argument.
+--
 
-Protected VMs support a subset of the host's features. The kernel
-reflects this on the VM fd (commit a3163dca4817 ("KVM: arm64: Use KVM
-extension checks for allowed protected VM capabilities")), while the
-global fd still advertises capabilities such as SVE that the VM cannot
-use. kvmtool then requests SVE in KVM_ARM_VCPU_INIT, which the kernel
-rejects.
+--- Patch [9]: [PATCH v20 09/16] PCI/TPH: Add macros to check standard and =
+extended TPH support ---
+commit 62018f833ad520cae3d9509aa5138e780c6df62a
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-Query these capabilities on the VM fd via kvm__supports_vm_extension().
-More generally, vCPU feature availability is a per-VM property and is
-better checked against the VM fd than the global one.
+PCI/TPH: Add macros to check standard and extended TPH support
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arm64/kvm-cpu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+This commit adds helper macros pcie_std_tph_supported() and
+pcie_ext_tph_supported() for checking TPH capabilities. It relies on the
+cached tph_max_type value and provides stub definitions for when
+CONFIG_PCIE_TPH is disabled.
 
-diff --git a/arm64/kvm-cpu.c b/arm64/kvm-cpu.c
-index ae5a6eb..3aa7684 100644
---- a/arm64/kvm-cpu.c
-+++ b/arm64/kvm-cpu.c
-@@ -53,34 +53,34 @@ int kvm_cpu__register_kvm_arm_target(struct kvm_arm_target *target)
- static void kvm_cpu__select_features(struct kvm *kvm, struct kvm_vcpu_init *init)
- {
- 	if (kvm->cfg.arch.aarch32_guest) {
--		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL1_32BIT))
-+		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL1_32BIT))
- 			die("32bit guests are not supported\n");
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_EL1_32BIT;
- 	}
- 
- 	if (kvm->cfg.arch.has_pmuv3) {
--		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_PMU_V3))
-+		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PMU_V3))
- 			die("PMUv3 is not supported");
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_PMU_V3;
- 	}
- 
- 	/* Enable pointer authentication if available */
--	if (kvm__supports_extension(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS) &&
--	    kvm__supports_extension(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC)) {
-+	if (kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS) &&
-+	    kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC)) {
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_PTRAUTH_ADDRESS;
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_PTRAUTH_GENERIC;
- 	}
- 
- 	/* Enable SVE if available */
--	if (kvm__supports_extension(kvm, KVM_CAP_ARM_SVE))
-+	if (kvm__supports_vm_extension(kvm, KVM_CAP_ARM_SVE))
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_SVE;
- 
- 	if (kvm->cfg.arch.nested_virt) {
--		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL2))
-+		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL2))
- 			die("EL2 (nested virt) is not supported");
- 		init->features[0] |= 1UL << KVM_ARM_VCPU_HAS_EL2;
- 		if (kvm->cfg.arch.e2h0) {
--			if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL2_E2H0))
-+			if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL2_E2H0))
- 				die("FEAT_E2H0 is not supported");
- 			init->features[0] |= 1UL << KVM_ARM_VCPU_HAS_EL2_E2H0;
- 		}
-@@ -123,7 +123,7 @@ static int vcpu_configure_sve(struct kvm_cpu *vcpu)
- 
- static int kvm_cpu__configure_features(struct kvm_cpu *vcpu)
- {
--	if (kvm__supports_extension(vcpu->kvm, KVM_CAP_ARM_SVE))
-+	if (kvm__supports_vm_extension(vcpu->kvm, KVM_CAP_ARM_SVE))
- 		return vcpu_configure_sve(vcpu);
- 
- 	return 0;
--- 
-2.39.5
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index 6901f6e2f8c7a..04b521b7c2c7c 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
 
+[ ... ]
+
+> @@ -23,6 +23,18 @@ enum tph_mem_type {
+>  };
+> =20
+>  #ifdef CONFIG_PCIE_TPH
+> +/**
+> + * pcie_std_tph_supported - check standard TPH requester support
+> + * @pdev: PCI device
+> + */
+> +#define pcie_std_tph_supported(pdev) \
+> +	((pdev)->tph_max_type >=3D PCI_TPH_REQ_TPH_ONLY)
+
+[Severity: Medium]
+Will this macro falsely return true if the hardware advertises the reserved
+value 2?=20
+
+If a PCIe Root Port incorrectly advertises the reserved value 10b (2) for i=
+ts
+TPH Completer Supported field, pci_tph_init() caches 2 into pdev->tph_max_t=
+ype.
+Since 2 >=3D PCI_TPH_REQ_TPH_ONLY (which is 1), this evaluates to true. How=
+ever,
+core functions like pcie_enable_tph_ext() explicitly reject req_type =3D=3D=
+ 2 with
+-EINVAL.
+
+> +/**
+> + * pcie_ext_tph_supported - check extended TPH requester support
+> + * @pdev: PCI device
+> + */
+> +#define pcie_ext_tph_supported(pdev) \
+> +	((pdev)->tph_max_type =3D=3D PCI_TPH_REQ_EXT_TPH)
+
+[ ... ]
+
+> @@ -37,6 +49,8 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+>  u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
+>  u8 pcie_tph_completer_type(struct pci_dev *pdev);
+>  #else
+> +#define pcie_std_tph_supported(pdev) false
+> +#define pcie_ext_tph_supported(pdev) false
+
+[Severity: Low]
+Could these stub macros cause unused variable build warnings when
+CONFIG_PCIE_TPH is disabled, since they silently drop the pdev argument?
+
+Would it be better to implement these as static inline functions to guarant=
+ee
+consistent type checking and evaluation semantics across all configurations?
+
+>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>  					unsigned int index, u16 tag)
+>  { return -EINVAL; }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714104325.5444=
+4-1-fengchengwen@huawei.com?part=3D9
