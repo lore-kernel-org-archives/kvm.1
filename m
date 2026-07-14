@@ -1,60 +1,40 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8E32DCF45;
-	Tue, 14 Jul 2026 13:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B5432B136;
+	Tue, 14 Jul 2026 13:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784035409; cv=none; b=XOBuP/mh8n0bLndH8WgsVpoml+wXIXyGcwd8XL7TccGZRXspjDxmAbS7ba4pwhDHWkpmrhz5LcRM4xMZpJrE+AEAtKRZxzgjV2f9T3fvVQdEk8CW6brMBTkMFfOW4NCJaVGVYqh/Sp43ssiOokO6SKxvH7wRRSk3GiUIM5KozXA=
+	t=1784035643; cv=none; b=Gx7lWPlSpZGx6OvkTJ84Z8toQr7O8cV6dvL8PfkBhbCdGej2nxT5DKzyIGfAw2SfQVhLNlfDnXM0llk/wHB6Q/jNAY/LhDFGe5yFEa99ZBXSlTJBjXfs1tWIRauG2usRnwnBaDZaNl8qFG1r81xFWn5g1JgSJzzV3EdD8GDet8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784035409; c=relaxed/simple;
-	bh=AP23HUxxknywRKceDPyqX09DJh+vKR497OH8cHmLzYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fqVXD1OYg5c9uPRSeQbruE5j7n1gXTnQvVYpAALF6wnVRkvb0rlk8VfXMFE4NKecEQId3G5EMwlliVRPxrZwsrhpdal24xIijldoZph35ovf4f1J7KgD2eEqN9xeMJzLfcqRtgJDI3J1g1U2CAqgw79hFSpEo883FAL7i+y7RJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NxNRq+ug; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784035643; c=relaxed/simple;
+	bh=GQyvZCUInI2N4DrGlZ9xxAGCy8BZmRt2L3SG3eKAtvk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MgjbcsoMZA8AiIjai9OiLLYj8jROcKIiX4VHvuxGtFeLrpJ6LE6OOkoYnTOlnVO7YRJE6jI908mbY5CRT0APBFedGFg/HYJ8vT3mcwhbo7yGKj5jJDDCPMHEFaClbWwOiNEKPHPwH6OC4VGgndDUabqvzbcRoc92aiB94q5Duwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PFa9ket5; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NxNRq+ug"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EBfwpL1134056;
-	Tue, 14 Jul 2026 13:23:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3Eg6B+
-	hiBILplQVAscnsvSQr15LUuk6CVoz31+K82hE=; b=NxNRq+ugmTC/HdzqFbSuh8
-	veBzsTQxONBwkPdHkzEn+mvqLCUlSLPLn+1WzwO9CshsU/hjLCoHmvipe7vbWVlt
-	/AHikBSyFoYXKxkG+U/OCS18K+GtJThAjMyLBowRsbEkcRx/pWVOu5bf/JJY2338
-	GL5POI9vHuryd5x1vazDk0gDWenWH4ouuu30t4OVp9eLqhHkHfeVYu8VinBH4mbq
-	XjZZxgyIQu96JwlF3GmSgoGgoMGEUuGNEz2Hsz36XGTqa8Jg6niM4GD5h/uuqbMN
-	eiN4eC9GyyX9Cc/uNJfdW2izO8Reb/Zeg/sgxxDeNtzMzTSWYWQvP9MBZ2pyJNug
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a5ukp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jul 2026 13:23:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66EDJg3S000538;
-	Tue, 14 Jul 2026 13:23:25 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhav92-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jul 2026 13:23:25 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66EDNJjj31523564
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jul 2026 13:23:19 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFD402004B;
-	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACF7C20043;
-	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
-Received: from [9.111.18.250] (unknown [9.111.18.250])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
-Message-ID: <260fedb8-08d2-48b0-9a92-63203e15c941@linux.ibm.com>
-Date: Tue, 14 Jul 2026 15:23:18 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PFa9ket5"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3MJq3MkX3OXZar7VazOs/ycZYzHPkGUcN7iLXITFuMo=;
+	b=PFa9ket5JWv5EI69WeJeewd8Pr7PNjXtYyBQUhlVyCN4mGpK41kIC30ckDv8tAkr2BSPl9Une
+	tlxISy5iSLf66o/JTKG0tZ9L89Ytz9vhJotipx593qIbKxcwyBmiVsn48z9ml6g7mr2PBSSndfe
+	0pI0xbIb3K/vFe0yWqTD6mE=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4h00Gt2SLjzmVXp;
+	Tue, 14 Jul 2026 21:17:58 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5A85840586;
+	Tue, 14 Jul 2026 21:27:16 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 14 Jul 2026 21:27:15 +0800
+Message-ID: <fa0839f9-7d83-4ad1-80e2-7e7dd0280222@huawei.com>
+Date: Tue, 14 Jul 2026 21:27:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,106 +42,253 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] KVM: s390: Fix unlikely NULL gmap dereference
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-References: <20260713150857.269954-1-imbrenda@linux.ibm.com>
- <20260713150857.269954-2-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260713150857.269954-2-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDEzNyBTYWx0ZWRfX0UJ/I6lUENXx
- oyFOYPRH0S0/jXe/7WADvmTEYsC6DsTGtPdWh/LEP+b9vv6KRGlGIf/EtTtIgZalOAtpnL6QrWX
- tS4xGGpRhF+/qGNuA82W93cMS1HsqOU=
-X-Proofpoint-GUID: gUbwqpGJKAlccer4aKzba2FqKkCRuLGB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDEzNyBTYWx0ZWRfX59gv1Q+xfGsa
- 4Ls3nBypsJKBRaFksO0/9gS9jJrsZu1YhbskzqI9Iq1/HV6LyzVgNHwrZGEtD5HZsaxx+QFAZOU
- T/kFkrNElSYeiBFTQ6zTQH00BH0rCiMMWYcJFnu5B8Kdt+yghNd6oBKsA4t46nVSTlnqqBYxV3q
- yBU6V9xfYv5dFPcqzhZbnYodPzyJ4PssKR8Vd2K4Xna7+/VErU3wc0XDSrYDSfugd9Q4XzaPy+K
- vaUWvtIX/CeyQMyaNeA5B/n5GcdPl18sXLM+OrAjcGIAch2nLhs363VAFrlufvc2J2l43r4O1Gy
- ZaI1saZ4jHW7YQMD5isogHOsoVBiXe7ZdwP6f5Ojgz2aTf2aFehDGNv+1QygU/oe3LOSysPWZyR
- 4iXghZdDTKUL97g+t+JEnI2Q8uZuKwQxTEMZxul5KiK8LDG1uh1Jp+l76ZuMKm4AfyDTJWBIG65
- EZf5ZzaIdk/s/mzQQeg==
-X-Proofpoint-ORIG-GUID: gUbwqpGJKAlccer4aKzba2FqKkCRuLGB
-X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a56384e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=vuF8NdW0BzdbS4vhICEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-14_03,2026-07-10_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
- clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140137
+Subject: Re: [PATCH v4 5/6] KVM: arm64: Add HDBSS fault handling and buffer
+ flush
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
+	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
+	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-6-zhengtian10@huawei.com>
+ <alTw0nwiBDWoFrjB@LeoBrasDK>
+ <9340fa94-6f26-4053-a4ca-0803af725936@huawei.com>
+ <alYUXkub43YxkeH1@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <alYUXkub43YxkeH1@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On 7/13/26 17:08, Claudio Imbrenda wrote:
-> When creating a new vCPU, kvm_vm_ioctl_create_vcpu() will call
-> kvm_arch_vcpu_postcreate() after the file descriptor for the new vCPU
-> has been created. The new file descriptor has not been returned yet,
-> but a malicious userspace program could try to guess it.
-> 
-> If a malicious userspace program manages to start the newly created vCPU
-> before kvm_arch_vcpu_postcreate() is called, __vcpu_run() will try to
-> dereference vcpu->arch.gmap and trigger a NULL pointer dereference.
-> 
-> Fix this by moving the initialization of vcpu->arch.gmap into
-> kvm_arch_vcpu_create(), which is called before the file descriptor for
-> the vCPU is created.
-> 
-> Fixes: dafd032a15f8 ("KVM: s390: move vcpu specific initalization to a later point")
-> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Yep, that explains why other architecture have initialization tracking :)
 
-FWIW: We could also hide the sca fix in #6 behind this flag but having 
-them separate is also ok
+On 7/14/2026 6:50 PM, Leonardo Bras wrote:
+> On Tue, Jul 14, 2026 at 03:38:39PM +0800, Tian Zheng wrote:
+>> On 7/13/2026 10:06 PM, Leonardo Bras wrote:
+>>> On Thu, Jul 09, 2026 at 06:40:25PM +0800, Tian Zheng wrote:
+>>>> From: eillon <yezhenyu2@huawei.com>
+>>>>
+>>>> Add HDBSS fault handling for buffer full, external abort, and general
+>>>> protection fault (GPF) events. When the HDBSS buffer becomes full,
+>>>> the hardware traps to EL2 with an HDBSSF event, which is handled by
+>>>> setting a flush request.
+>>>>
+>>>> Add kvm_flush_hdbss_buffer() to consume HDBSS buffer entries and
+>>>> propagate dirty information into the userspace-visible dirty bitmap.
+>>>> Flush is triggered on vcpu_put, check_vcpu_requests, and
+>>>> sync_dirty_log.
+>>>>
+>>>> Add esr_iss2_is_hdbssf() helper for HDBSS fault detection in guest
+>>>> abort handling.
+>>>>
+>>>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
+>>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>>>> ---
+>>>>    arch/arm64/include/asm/esr.h           |  5 +++
+>>>>    arch/arm64/include/asm/kvm_dirty_bit.h | 11 +++++
+>>>>    arch/arm64/include/asm/kvm_host.h      |  1 +
+>>>>    arch/arm64/kvm/arm.c                   | 14 ++++++
+>>>>    arch/arm64/kvm/dirty_bit.c             | 62 ++++++++++++++++++++++++++
+>>>>    arch/arm64/kvm/mmu.c                   |  4 ++
+>>>>    6 files changed, 97 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+>>>> index 81c17320a588..2e6b679b5908 100644
+>>>> --- a/arch/arm64/include/asm/esr.h
+>>>> +++ b/arch/arm64/include/asm/esr.h
+>>>> @@ -437,6 +437,11 @@
+>>>>    #ifndef __ASSEMBLER__
+>>>>    #include <asm/types.h>
+>>>>
+>>>> +static inline bool esr_iss2_is_hdbssf(unsigned long esr)
+>>>> +{
+>>>> +	return ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF;
+>>> This will return a long, which will be casted as bool.
+>>> In general, what I see in the kernel is something like:
+>>>
+>>> 	return !!(ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF)
+>>
+>> ok!
+>>
+>>
+>>>> +}
+>>>> +
+>>>>    static inline unsigned long esr_brk_comment(unsigned long esr)
+>>>>    {
+>>>>    	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
+>>>> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> index 84b12f0a10af..4b28000e972f 100644
+>>>> --- a/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+>>>> @@ -10,7 +10,18 @@
+>>>>    #include <asm/kvm_pgtable.h>
+>>>>    #include <asm/sysreg.h>
+>>>>
+>>>> +/* HDBSS entry field definitions */
+>>>> +#define HDBSS_ENTRY_VALID	BIT(0)
+>>>> +#define HDBSS_ENTRY_TTWL_SHIFT (1)
+>>>> +#define HDBSS_ENTRY_TTWL_MASK (GENMASK(3, 1))
+>>>> +#define HDBSS_ENTRY_TTWL(x) \
+>>>> +	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
+>>>> +#define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
+>>>> +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
+>>>> +
+>>>>    int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
+>>>>    void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+>>>> +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
+>>>> +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
+>>>>
+>>>>    #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+>>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>>>> index c41ec6d9c45a..cecfb884a64f 100644
+>>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>>> @@ -55,6 +55,7 @@
+>>>>    #define KVM_REQ_GUEST_HYP_IRQ_PENDING	KVM_ARCH_REQ(9)
+>>>>    #define KVM_REQ_MAP_L1_VNCR_EL2		KVM_ARCH_REQ(10)
+>>>>    #define KVM_REQ_VGIC_PROCESS_UPDATE	KVM_ARCH_REQ(11)
+>>>> +#define KVM_REQ_FLUSH_HDBSS			KVM_ARCH_REQ(12)
+>>>>
+>>>>    #define KVM_DIRTY_LOG_MANUAL_CAPS   (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
+>>>>    				     KVM_DIRTY_LOG_INITIALLY_SET)
+>>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>>>> index bf6688245d83..566953a4e23a 100644
+>>>> --- a/arch/arm64/kvm/arm.c
+>>>> +++ b/arch/arm64/kvm/arm.c
+>>>> @@ -755,6 +755,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>>>>    		kvm_vcpu_put_hw_mmu(vcpu);
+>>>>    	kvm_arm_vmid_clear_active();
+>>>>
+>>>> +	if (vcpu->kvm->arch.enable_hdbss)
+>>>> +		kvm_flush_hdbss_buffer(vcpu);
+>>>> +
+>>>>    	vcpu_clear_on_unsupported_cpu(vcpu);
+>>>>    	vcpu->cpu = -1;
+>>>>    }
+>>>> @@ -1157,6 +1160,9 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+>>>>    		if (kvm_dirty_ring_check_request(vcpu))
+>>>>    			return 0;
+>>>>
+>>>> +		if (kvm_check_request(KVM_REQ_FLUSH_HDBSS, vcpu))
+>>>> +			kvm_flush_hdbss_buffer(vcpu);
+>>>> +
+>>>>    		check_nested_vcpu_requests(vcpu);
+>>>>    	}
+>>>>
+>>>> @@ -1971,7 +1977,15 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+>>>>
+>>>>    void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+>>>>    {
+>>>> +	/*
+>>>> +	 * Flush all CPUs' dirty log buffers to the dirty_bitmap.  Called
+>>>> +	 * before reporting dirty_bitmap to userspace. Send a request with
+>>>> +	 * KVM_REQUEST_WAIT to flush buffer synchronously.
+>>>> +	 */
+>>>> +	if (!kvm->arch.enable_hdbss)
+>>>> +		return;
+>>>>
+>>>> +	kvm_make_all_cpus_request(kvm, KVM_REQ_FLUSH_HDBSS | KVM_REQUEST_WAIT);
+>>>>    }
+>>>>
+>>>>    static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
+>>>> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+>>>> index 6c7a6ef66b5a..002366337637 100644
+>>>> --- a/arch/arm64/kvm/dirty_bit.c
+>>>> +++ b/arch/arm64/kvm/dirty_bit.c
+>>>> @@ -50,3 +50,65 @@ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+>>>>
+>>>>    	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+>>>>    }
+>>>> +
+>>>> +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +	int idx, curr_idx;
+>>>> +	u64 *hdbss_buf;
+>>>> +	struct kvm *kvm = vcpu->kvm;
+>>>> +
+>>>> +	if (!kvm->arch.enable_hdbss)
+>>>> +		return;
+>>>> +
+>>>> +	curr_idx = HDBSSPROD_IDX(read_sysreg_s(SYS_HDBSSPROD_EL2));
+>>>> +
+>>>> +	/* Do nothing if HDBSS buffer is empty or br_el2 is NULL */
+>>>> +	if (curr_idx == 0 || vcpu->arch.hdbss.hdbssbr_el2 == 0)
+>>>> +		return;
+>>>> +
+>>>> +	hdbss_buf = page_address(phys_to_page(vcpu->arch.hdbss.base_phys));
+>>>> +	if (!hdbss_buf)
+>>>> +		return;
+>>>> +
+>>>> +	guard(write_lock_irqsave)(&vcpu->kvm->mmu_lock);
+>>>> +	for (idx = 0; idx < curr_idx; idx++) {
+>>>> +		u64 gpa;
+>>>> +
+>>>> +		gpa = hdbss_buf[idx];
+>>>> +		if (!(gpa & HDBSS_ENTRY_VALID))
+>>>> +			continue;
+>>>> +
+>>>> +		gpa &= HDBSS_ENTRY_IPA;
+>>>> +		kvm_vcpu_mark_page_dirty(vcpu, gpa >> PAGE_SHIFT);
+>>> You mention that it does not support dirty-ring, but above function will
+>>> mark the page as dirty in the dirty-ring :/
+>>>
+>> In kvm_arm_enable_hdbss_global(), we explicitly check and reject HDBSS
+>> enablement if dirty-ring is active:
+>>
+>> ```
+>> if (kvm->dirty_ring_size)
+>>      return 0;
+>> ```
+>>
+>> So when kvm_flush_hdbss_buffer() runs (which requires enable_hdbss = true),
+>> we know for certain that
+>>
+>> kvm->dirty_ring_size == 0. Therefore, kvm_vcpu_mark_page_dirty() will always
+>> take the dirty_bitmap path,
+>>
+>> never the dirty-ring path.
+>>
+>> That said, I'll add a comment in kvm_flush_hdbss_buffer() before dirty ring
+>> mode is supported, to make this explicit:
+>>
+>> ```
+>> /*
+>>   * HDBSS is mutually exclusive with dirty-ring mode (see
+>>   * kvm_arm_enable_hdbss_global()), so kvm_vcpu_mark_page_dirty()
+>>   * will update the dirty_bitmap, not the dirty-ring.
+>>   */
+>> ```
+>>
+> Got it :)
+>
+> Out of curiosity: which issues have you found on supporting dirty-ring at
+> this point?
+>
+> Thanks!
+> Leo
+>   
+
+
+I haven't looked deeply into dirty-ring yet — my main concern is that if 
+both the dirty
+
+ring and HDBSS buffer fill up, the flush path might get blocked or 
+complicated.
+
+For now, I'm planning to match the HDBSS buffer size to the dirty ring 
+size in v5 and test it.
+
+Ideally, the two buffers would be the same size, and the entire dirty 
+tracking path would use
+
+HDBSS exclusively — no fallback to the legacy dirty bitmap path. If that 
+works, I think this approach should be fine.
+
+Let me know if you have any insights on dirty ring's full-buffer 
+behavior — that would be helpful.
+
+
