@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA0543CEC3;
-	Tue, 14 Jul 2026 09:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7B543CEE9;
+	Tue, 14 Jul 2026 09:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784019748; cv=none; b=uezkjHzfApR1HDABXThlvhDsKppwtxjkhrFGrlm5D8WRDULOreH9YZFqtiLGILO+Vfz4j4YorZ731eZLaILrgxYNzQmmTVz7mxw3ZxQIaOCpP4Is8ssouWj2T4tKEWEZmPN2aT8DAp57+LcO0yqkthWszWHk2FPb1gPIl+MIt9A=
+	t=1784020348; cv=none; b=eGzAJoSBESSpocZwC28XyX9p2w/aXKpX51T8/uiRh2/YLlGGFGOEVHqygk89kV++WevsoZYsORgc9QSKuKdNUkM+vCYMrx5V/M23vuETqIt0thd/vlO3VMJeo9LeyV+7BWXVJe5Ztmdvl1jKX7C0ngJMTJHpkQAc7vuRCAPPaG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784019748; c=relaxed/simple;
-	bh=nhjmU46sk//8AhH9SceUm//in5Bfg4hnXsXzYSurQAA=;
+	s=arc-20240116; t=1784020348; c=relaxed/simple;
+	bh=FUofyG3fvR2x0LRMq6UC5hEF6mJPWsbVWmisDp+v3NU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OV6bi9uczzAxOC/VHbrv/i4K5xL9dHZxQ+/IR/tWqbIGp+k6hIbn6sm1yoPgvgWNwTihEmasqHsg+3R7SsHsmncVvhzKwaLFu4EOX0WwcOHdPB3i1M4jGgYz0Rsr7xJCQIIyMbP97He5LwhoapBFK/TinTstXW7SHkz6B8Joqk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RHtMbE8+; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=fBxMGntdmd/DqFbJ33xKpAA9dp4Rg5NFRBhpSagOb08qIS5vIAX5WshCMriZdvbWNEvkv1mhaCn44GLEdtQt9BQOgoqRk6JKWthDmUkxkwEkHFS9Aa3dM6U5P7XB6cbuGdHR7X+qfRINWRoqsqQvVmvRn7m6jQPZp9TrwCMneJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLh4HalY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RHtMbE8+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E7B1F000E9;
-	Tue, 14 Jul 2026 09:02:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLh4HalY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CC21F000E9;
+	Tue, 14 Jul 2026 09:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784019747;
-	bh=xImUQQOrkPaYiwuElqLTRTQ/M2sVRZmGraokQFEb46M=;
+	s=k20260515; t=1784020346;
+	bh=AtASesUYj8bK3TrkD1mcttSIpdFz5Ax2S722mDl9fzg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RHtMbE8+a+p0p9sEjp2xguJ60cPRNdWnGpk3uGhyfiVWN4GnSNjPsfezdcWMbL/Sy
-	 ylF4GPWL18QtKkooswX9hNtLt4EQFdw4fey5jUtBuaXUqSigXm2WEwwpO/Kv/+kU6g
-	 J5svKIzYxvjofHPfo9L6k4u2EgTltavmn+Z4FK7q/Fa5GodypuAl3WfwNT3S2XxZHH
-	 iwsjuGKa6tjnjZR+KoJ0+bCWYo5VplcBNFDdpUsAYTKIPX1PqBiQ91UZS0Curlyv/J
-	 cpUa2ozcmby/KJgPtdR7z91tR/2wED7025iwFP4wngx8zyqPCoakyh07NmZUJo1jMF
-	 tEoQXsbKQSVOg==
-Date: Tue, 14 Jul 2026 14:27:21 +0530
+	b=gLh4HalY0LR498d3UrgoDSFxMa0Dky2LaOvGeASTkOwpigE9BiTvxWRDO5uY0/3VT
+	 nrjIvQiQz5sjabQo8aEBNwx8bGmf+QIuar5/qmB9uNzQfnE/rszpeSySNYsRLNxXuA
+	 iCMwH0M0Tw1/NziChKaLuAdLAymhWHgDspDG+2GtsYJRdWR0/t3rDtn3OuKoT+DjaP
+	 PAMiz6t40am59o6VsFNhVFDaztiC7yGn37+CA9Or7w7Bl6axQQn79Mcikv4CKz2HW2
+	 2vsjvI0Kze2Jz8dmofYy6HBQB3dvIGgWWUMZ642LPfBRXlGLBFodDb2E0qwkMD21WD
+	 aM3nT4G3KD60Q==
+Date: Tue, 14 Jul 2026 14:32:51 +0530
 From: Naveen N Rao <naveen@kernel.org>
 To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, 
-	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Neeraj Upadhyay <neeraj.upadhyay@amd.com>, Tianyu Lan <tiala@microsoft.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>
-Subject: Re: [RFC PATCH v3 01/27] x86/apic: Propagate APIC_SPIV writes to hv
- for Secure AVIC
-Message-ID: <alX5Im6w2IkQi0Pe@blrnaveerao1>
+	Tianyu Lan <tiala@microsoft.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [RFC PATCH v3 02/27] x86/apic: Drop savic_eoi() in favor of
+ native_apic_msr_eoi() for Secure AVIC
+Message-ID: <alX59ewiXXSx7J3R@blrnaveerao1>
 References: <cover.1783490022.git.naveen@kernel.org>
- <891e7c5b74a9c027bc417a2dd32e23c0d4d0c336.1783490022.git.naveen@kernel.org>
- <20260710020349.GAalBTBSz6pX3FA_fd@fat_crate.local>
- <alEEqV6NshD-T2K9@blrnaveerao1>
- <531e7646-2051-4983-98e8-3e0d7c184f52@amd.com>
+ <36c039713c4b03c87b636635cb4c1f8b98c15eff.1783490022.git.naveen@kernel.org>
+ <5f6bcceb-1c48-43e5-bafc-8f86676c4092@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,36 +48,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <531e7646-2051-4983-98e8-3e0d7c184f52@amd.com>
+In-Reply-To: <5f6bcceb-1c48-43e5-bafc-8f86676c4092@amd.com>
 
-Hi Tom,
-
-On Mon, Jul 13, 2026 at 12:38:13PM -0500, Tom Lendacky wrote:
-> On 7/10/26 10:02, Naveen N Rao wrote:
-> > On Thu, Jul 09, 2026 at 07:03:49PM -0700, Borislav Petkov wrote:
-> >> On Wed, Jul 08, 2026 at 12:01:59PM +0530, Naveen N Rao (AMD) wrote:
-> >>> From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-> >>>
-> >>> Hypervisor needs to be aware of the VAPIC's APIC_SPIV state for
-> >>> LVT masking/unmasking. So, propagate the guest's APIC_SPIV
-> >>> writes to the hypervisor.
-> >>>
-> >>> Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
-> >>
-> >> What is that patch actually fixing?
+On Mon, Jul 13, 2026 at 12:43:45PM -0500, Tom Lendacky wrote:
+> On 7/8/26 01:32, Naveen N Rao (AMD) wrote:
+> > Drop savic_eoi() in favor of using the native helper that writes to the
+> > APIC_EOI MSR. savic_eoi() was added mainly to be able to handle
+> > level-triggered interrupts. However, it relies on APIC_TMR indicating a
+> > vector to be level-triggered, but APIC_TMR can never have a bit set
+> > since it is only updated when the LAPIC accepts a level-triggered
+> > interrupt. In the case of a Secure AVIC SEV-SNP guest, all
+> > level-triggered interrupt sources are in the VMM (emulated IOAPIC
+> > primarily) and KVM accepts them on behalf of the guest resulting in the
+> > APIC_TMR in KVM APIC backing page having a bit set. This is never seen
+> > by the guest, which has its own private APIC backing page. As such, the
+> > savic_eoi() handler is dead code. Remove it.
 > > 
-> > Guest doesn't boot without this change.
+> > Fixes: 43b6687ac877 ("x86/apic: Handle EOI writes for Secure AVIC guests")
+> > Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
 > 
-> This sounds like something that should be submitted outside of this
-> series, especially since this is an RFC series.
+> Another guest change which should be separate from this series.
 
-Yes, I posted these together so that it is easier to review with the KVM 
-implementation alongside for reference. That, and to get some feedback 
-about the guest changes (especially the AVIC_INCOMPLETE_IPI aspect).
+Yes, I have called this out in the cover letter. I see now that I should 
+have used a better subject for the cover letter though.
 
-I will post a separate series for the guest changes.
+> 
+> Is this causing issues with this hypervisor support or is just code that
+> is never invoked? Do other hypervisors behave the same way and will
+> removing this break them?
+
+This is code that is never invoked and is independent of the hypervisor.  
+No impact to hypervisor code.
 
 
-Thanks,
-Naveen
+- Naveen
 
