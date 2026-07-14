@@ -1,127 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762013812F1;
-	Tue, 14 Jul 2026 11:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89195378814
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784027687; cv=none; b=HtKUCPHS6p2QEE1jYVTSTNf6ydoLnm32Efo8VEsc9YSqnNpD7aGLnBobLU49sZomzvCnsWnvhQKtSRQyPg7sz9OaQMAopCpVL6lHE44y3oeX6PXCsAacDFv2uxmz/vD3pW7MBSPcF+RrUkRe7sP47nj0KMyFxgsnvLKBoIScM0w=
+	t=1784027717; cv=none; b=HILJA/EmusfMiAimbgyODTI13Z/uCbzzgMViYeiYbnyhRVsNJZ4vSnhAhk7x0xmHUUlAs8L7+z3lJx0KzqLyk3VgSXUBEnE9flaUCjEB2V8+mZxdlzAiDRV0Cn7j5tt1jmWQzorwRaqeCaluOGsrWk1vU6bseEOPV08amPV7xZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784027687; c=relaxed/simple;
-	bh=1uxJU68NWG3yfI2+FnaMWxfdrihNVqxjLTMRvW9x7Fk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dQ4pme3oGtqtlKSOQYvuBYsnaooTKpjIIda/VOnODWCBiZ8mJrMJzg/MeIkzJfZ/kyPgoXAtfLk1pU0UfC1nLDMmYxZpa3s1fJhnT9XGcDYZK9hhmXZE4DUWwfvRrz5RziDzAVO8sIihaJnfp520c0/QL382V6bnx0B++HxQbDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rh08sqih; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784027717; c=relaxed/simple;
+	bh=2ZKlsZHbsbSq2D9hX9sNTyFKSvPFILkOtnCKc7s0CsE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o2/gPK4YCPeLpVrAj378crDGdAEkE/eUVUYLWAAN8tL7X3aZFa2ZCG1osz3t2cVNwfBE33GKHk29z8n52sYJZa5kWMO62ky/5rKmB3BpmDT5fW9/YB51RdbGos9QKOE5s4ondlArWjw4atUn1c2Zev0wIhzdl4DmWOS5ox8g5tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NQM9mNNy; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rh08sqih"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06F31F000E9;
-	Tue, 14 Jul 2026 11:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784027686;
-	bh=f23+OPq/pAmB2sVf60LlrAq6TNTWaBKLv1/lotO0nFY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Rh08sqihTXESjI5Vi7Bk7E+OTjBn1Ki/bO8poTgmIrlLqnIkR8kfghWUKxo9yy9v4
-	 4ig4/tVVPlE7cY23K34kJo7tGoIwFP3heP7RP+IWAZox7o+DFsOMR3hG8ZHDfJhIxT
-	 rSX0h3mGQ1oHVMRxiTTj4ofC6LYkK8vy8FPbedZ1lFbYCyEcHM3Kv3obcZezpT2tXt
-	 1w2GOfOw6D2ycr0IbuRvCR7SlqE9aJSKmveQstJfcktth2fgbT5iWJ+w9pMv47ktt+
-	 at6V7RHkU2c01zz0H7I353iEhCMgESthJT/Iydl5SeaXO+js432HsMPSQVh4gJIXtY
-	 SOOtDFaJUloOA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v20 13/16] vfio/pci: Add IV-ST TPH policy and VFIO
- TPH_ST batch programming support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260714104325.54444-14-fengchengwen@huawei.com>
-References: <20260714104325.54444-1-fengchengwen@huawei.com>
- <20260714104325.54444-14-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 11:14:44 +0000
-Message-Id: <20260714111445.E06F31F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NQM9mNNy"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A609B497;
+	Tue, 14 Jul 2026 04:15:10 -0700 (PDT)
+Received: from [10.2.197.112] (unknown [10.2.197.112])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C25EF3F93E;
+	Tue, 14 Jul 2026 04:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784027714; bh=2ZKlsZHbsbSq2D9hX9sNTyFKSvPFILkOtnCKc7s0CsE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NQM9mNNyCp6cRHauKW5WjnNOdDcrxe+6UELXga4Q3j/xCQQ6lKrWm+NjZ8gJJ8weT
+	 CFyOW8VXyG0hUOp5Xn3kTbz43EcuhME0trgb0GknFhIArQl8LCGh8OSJHkG2A3mVXC
+	 ffB3dEQJLqIHSyJxoCgY61HXA0CY8YnEWTircRIE=
+Message-ID: <911474e2-c470-451f-b81c-4fd6cb1428b0@arm.com>
+Date: Tue, 14 Jul 2026 12:15:12 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: Query per-VM capabilities when selecting vCPU
+ features
+Content-Language: en-GB
+To: Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org
+Cc: kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Andre Przywara <andre.przywara@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>,
+ Fuad Tabba <tabba@google.com>
+References: <20260714110329.12113-1-fuad.tabba@linux.dev>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260714110329.12113-1-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 14/07/2026 12:03, Fuad Tabba wrote:
+> kvm_cpu__select_features() and kvm_cpu__configure_features() probe vCPU
+> feature availability with kvm__supports_extension(), which issues
+> KVM_CHECK_EXTENSION on the global /dev/kvm fd. That reports the host's
+> raw capabilities, unaware of any per-VM restrictions.
+> 
+> Protected VMs support a subset of the host's features. The kernel
+> reflects this on the VM fd (commit a3163dca4817 ("KVM: arm64: Use KVM
+> extension checks for allowed protected VM capabilities")), while the
+> global fd still advertises capabilities such as SVE that the VM cannot
+> use. kvmtool then requests SVE in KVM_ARM_VCPU_INIT, which the kernel
+> rejects.
+> 
+> Query these capabilities on the VM fd via kvm__supports_vm_extension().
+> More generally, vCPU feature availability is a per-VM property and is
+> better checked against the VM fd than the global one.
 
-Pre-existing issues:
-- [High] Unconditional call to `dma_resv_unlock` even when `dma_resv_lock_i=
-nterruptible` fails, leading to unbalanced unlock.
---
+Sounds sensible to me. We do have this with CCA as well.
 
---- Patch [13]: [PATCH v20 13/16] vfio/pci: Add IV-ST TPH policy and VFIO T=
-PH_ST batch programming support ---
-commit d4cf54f638f6e3b2fed97fa978cb257c72da35af
-Author: Chengwen Feng <fengchengwen@huawei.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-vfio/pci: Add IV-ST TPH policy and VFIO TPH_ST batch programming support
-   =20
-This commit extends VFIO TPH implementation to support IV-ST mode based on
-the existing NO-ST baseline. It adds the VFIO_DEVICE_FEATURE_TPH_ST feature
-to enable batch ST table programming for NONE, DMABUF, and CPU sources.
+> 
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> ---
+>   arm64/kvm-cpu.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arm64/kvm-cpu.c b/arm64/kvm-cpu.c
+> index ae5a6eb..3aa7684 100644
+> --- a/arm64/kvm-cpu.c
+> +++ b/arm64/kvm-cpu.c
+> @@ -53,34 +53,34 @@ int kvm_cpu__register_kvm_arm_target(struct kvm_arm_target *target)
+>   static void kvm_cpu__select_features(struct kvm *kvm, struct kvm_vcpu_init *init)
+>   {
+>   	if (kvm->cfg.arch.aarch32_guest) {
+> -		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL1_32BIT))
+> +		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL1_32BIT))
+>   			die("32bit guests are not supported\n");
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_EL1_32BIT;
+>   	}
+>   
+>   	if (kvm->cfg.arch.has_pmuv3) {
+> -		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_PMU_V3))
+> +		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PMU_V3))
+>   			die("PMUv3 is not supported");
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_PMU_V3;
+>   	}
+>   
+>   	/* Enable pointer authentication if available */
+> -	if (kvm__supports_extension(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS) &&
+> -	    kvm__supports_extension(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC)) {
+> +	if (kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS) &&
+> +	    kvm__supports_vm_extension(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC)) {
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_PTRAUTH_ADDRESS;
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_PTRAUTH_GENERIC;
+>   	}
+>   
+>   	/* Enable SVE if available */
+> -	if (kvm__supports_extension(kvm, KVM_CAP_ARM_SVE))
+> +	if (kvm__supports_vm_extension(kvm, KVM_CAP_ARM_SVE))
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_SVE;
+>   
+>   	if (kvm->cfg.arch.nested_virt) {
+> -		if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL2))
+> +		if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL2))
+>   			die("EL2 (nested virt) is not supported");
+>   		init->features[0] |= 1UL << KVM_ARM_VCPU_HAS_EL2;
+>   		if (kvm->cfg.arch.e2h0) {
+> -			if (!kvm__supports_extension(kvm, KVM_CAP_ARM_EL2_E2H0))
+> +			if (!kvm__supports_vm_extension(kvm, KVM_CAP_ARM_EL2_E2H0))
+>   				die("FEAT_E2H0 is not supported");
+>   			init->features[0] |= 1UL << KVM_ARM_VCPU_HAS_EL2_E2H0;
+>   		}
+> @@ -123,7 +123,7 @@ static int vcpu_configure_sve(struct kvm_cpu *vcpu)
+>   
+>   static int kvm_cpu__configure_features(struct kvm_cpu *vcpu)
+>   {
+> -	if (kvm__supports_extension(vcpu->kvm, KVM_CAP_ARM_SVE))
+> +	if (kvm__supports_vm_extension(vcpu->kvm, KVM_CAP_ARM_SVE))
+>   		return vcpu_configure_sve(vcpu);
+>   
+>   	return 0;
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index 82582c8ef69da..df31f4e8766fa 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-
-[ ... ]
-
-> @@ -1680,6 +1690,32 @@ static int vfio_pci_get_dmabuf_tph(int fd, bool ex=
-tended, u16 *st, u8 *ph)
->  	return ret;
->  }
-> =20
-> +static int vfio_pci_get_tph_st_tag(struct pci_dev *pdev, u32 src_bits,
-> +				   u32 src_hndl, bool extended, u16 *st)
-> +{
-> +	u8 req_type =3D extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
-> +	int ret =3D 0;
-> +	u8 ph;
-> +
-> +	if (src_bits & VFIO_DEVICE_TPH_SRC_DMABUF)
-> +		ret =3D vfio_pci_get_dmabuf_tph(src_hndl, extended, st, &ph);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at the implementation
-of vfio_pci_get_dmabuf_tph() which is called here, is there an unbalanced
-unlock if the lock acquisition is interrupted?
-
-In drivers/vfio/pci/vfio_pci_core.c:vfio_pci_get_dmabuf_tph():
-
-	ret =3D dma_resv_lock_interruptible(dmabuf->resv, NULL);
-	if (ret =3D=3D 0)
-		ret =3D dma_buf_get_pci_tph(dmabuf, extended, st, ph);
-	dma_resv_unlock(dmabuf->resv);
-
-If a signal is delivered to the thread while it is attempting to acquire the
-lock, dma_resv_lock_interruptible() will return a non-zero error. The
-if (ret =3D=3D 0) check correctly skips the inner function, but does this c=
-ode
-still unconditionally execute dma_resv_unlock() and corrupt the lock state?
-
-> +	else if (src_bits & VFIO_DEVICE_TPH_SRC_CPU_VOLATILE)
-> +		ret =3D pcie_tph_get_cpu_st_ext(pdev, TPH_MEM_TYPE_VM,
-> +					      req_type, src_hndl, st);
-> +	else if (src_bits & VFIO_DEVICE_TPH_SRC_CPU_PERSISTENT)
-> +		ret =3D pcie_tph_get_cpu_st_ext(pdev, TPH_MEM_TYPE_PM,
-> +					      req_type, src_hndl, st);
-> +	else if (src_bits & VFIO_DEVICE_TPH_SRC_NONE)
-> +		*st =3D 0;
-> +	else
-> +		ret =3D -EINVAL;
-> +
-> +	if (ret !=3D 0)
-> +		*st =3D 0;
-> +
-> +	return ret;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714104325.5444=
-4-1-fengchengwen@huawei.com?part=3D13
