@@ -1,156 +1,295 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DB846AEF1;
-	Tue, 14 Jul 2026 13:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6760F466B7B
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 13:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784036083; cv=none; b=maRbXzRiLy1IuFarcF0Ya/Hxph2EPXaK0QpItPS0Y4sFFukX9Uh1AwNrCzJc3U9Y1xfMPvD1u80ZkHE7egE580N4PT1CB0Fjmtj+nwxvqL+XNLtVOQwfvHyO5n4+PiStq3REfkcE3bIS9LDYuKPfC8AF4SjBPiQ2xhj8gA+zfv4=
+	t=1784036094; cv=none; b=Yi4BVSH5YqA3wPPchPmUAnTZY6L/vzTZJqLy03pwMaldlpZexKWF/TcPdznOFevnaOdXOOvUaU6RNmC1koBLA6q7ziz7rTTINqfKjY2auUO3UP6ZIAjOCEsZHLcixt+T/FQSZxA9+fp/EcQA+jLHljrFRVU6WOpvwcZRvKcbuuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784036083; c=relaxed/simple;
-	bh=H/AmSTBFwLLeg7aOa6OP2aXPFDRammnWKbb38VYxOxM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=p/5EfSRMyOtb3UedtqQqH4mUOJPIYK+jH9Sa+YEd+07LhwNXdahYayOg7pBYl5vHcTeCOrqnNbB2B0SfJgT4p8z/TGWYUF9+oAolDGVMI/C/D6vhIjSSoxt0Ybt0ga9wb8U5xLc1QFVMCjf7jhNidHYOvinxWlN94l/dthyOcNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xrX/jExi; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1784036094; c=relaxed/simple;
+	bh=2pXtAqp5Qhcyd+FPkZ5jN2Jy1K73DjOFfD5vRqAp8hg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pHA3WcrhumLG+Arf5dZ2efyReB1iP3TwyFAqI/S/fs9u04dBRw+xzSuRc3MzjRrcNaXyXxD2RkAic06ClLPuyQIxuGbLlSIRReXUYglbmRL3ShiAqzPrdoHE6Zf8pZ0IRVFqFfP9KOpZJxPE4l5cikIw5LDykbFnYDFUnviOj3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wfYOoOWS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QFWr1b4M; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=a8CO2cT7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Wne8P9Hc; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xrX/jExi"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YlPxD8B6RcoJORtYKUz5oe4Ys8TzD6N/C+ChKBexSxY=;
-	b=xrX/jExi/qjNVH7HItZ6fEEIMILI0e60EBeCWj+t6sd94r9ND0nS3zsQ3JEFjA7/D2rd1N18u
-	samw0OV3YFdczzAw4sLdGcuNFplHsl60JdTn3e6uQhJX8Zafi7kjIpfyDgnk0p42+RpV2AYXZKX
-	4IMjLfNdy6Ax4f6JE1b4L7E=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4h00RH5mYyz1cyQ8;
-	Tue, 14 Jul 2026 21:25:15 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36DA54057A;
-	Tue, 14 Jul 2026 21:34:32 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 14 Jul 2026 21:34:31 +0800
-Message-ID: <5910a3ef-cac0-4a19-99f6-cf7e695c017a@huawei.com>
-Date: Tue, 14 Jul 2026 21:34:31 +0800
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wfYOoOWS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QFWr1b4M";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="a8CO2cT7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Wne8P9Hc"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E2E73DF4;
+	Tue, 14 Jul 2026 13:34:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784036090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
+	b=wfYOoOWSIz2hqL0qalaRweFcfyeiIlMhGATZQskGWsXl/mixGW5123Pl9zROSNAnWIZDfQ
+	3DgNGyzagq2Gr0MHafQD7Y67LCFk26j8GCQCTlaxY5hfrOJBVrOXQfx7hc3pGqv+hUFCCl
+	ylcpJMD6R0dWHCH+K1qnJoNjT88WVz8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784036090;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
+	b=QFWr1b4MvnJVQn5By7x/28b21fc5JxlrOE0ENPeUV1zigBlGHkCa8c12hd4Ot4wSXMjtVW
+	l0Ospgk8HQXf5oDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1784036089; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
+	b=a8CO2cT72ftc8/8q72YMvrO3F09Vw+gFrpt7kwy+yY/5ikg6ej2yCJJw/w9skhYF0VLOnt
+	tYm8tkScULqlwINWbo1j9QBO48zFtg5k+Bn+CKvFjfNoy1azoK9J2SyYxe12O4PO6NYDXs
+	mDIH7l3+NQgqfzIdZc6K4hcLNTXQues=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1784036089;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2WaerAKYDmH5MPHIkL1T34Hptiy05I2EuvKf5/jZrPY=;
+	b=Wne8P9HcMowDAacRfBWkhY2ABSnpbsqE4DKgcJp6X5zPpLZkjJBPW5HEvDPDIMCZiNi9K0
+	l6inS7fsQrTPrEBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DEE4779AE;
+	Tue, 14 Jul 2026 13:34:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BU9/I/g6VmqKZQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Tue, 14 Jul 2026 13:34:48 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Roman Kagan <rkagan@virtuozzo.com>,
+	Andrey Smetanin <asmetanin@virtuozzo.com>
+Subject: [PATCH v2] KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
+Date: Tue, 14 Jul 2026 15:32:13 +0200
+Message-ID: <20260714133212.3916611-3-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/6] Support the FEAT_HDBSS introduced in Armv9.5
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
-	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
-	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <alS-kcwvlASwPIzL@LeoBrasDK>
- <8757dfcf-aae4-4716-9ff1-c3140d4cc63e@huawei.com>
- <alYNOg7lREtdVE29@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <alYNOg7lREtdVE29@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+X-Spam-Flag: NO
+X-Spam-Score: -1.80
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[3d5461510f8dc4adfe30];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
 
+Fix an issue where userspace or the guest can program an Hyper-V
+synthetic timer to have a deadline in the past via integer overflow,
+preventing the CPU from making progress and triggering an RCU stall.
 
-On 7/14/2026 6:19 PM, Leonardo Bras wrote:
-> On Tue, Jul 14, 2026 at 05:37:58PM +0800, Tian Zheng wrote:
->> On 7/13/2026 6:31 PM, Leonardo Bras wrote:
->>> On Thu, Jul 09, 2026 at 06:40:20PM +0800, Tian Zheng wrote:
->>>> This series of patches add support to the Hardware Dirty state tracking
->>>> Structure (HDBSS) feature, which is introduced by the ARM architecture
->>>> in the DDI0601 (ID121123) version.
->>>>
->>>> The HDBSS feature is an extension to the architecture that enhances
->>>> tracking translation table descriptors' dirty state, identified as
->>>> FEAT_HDBSS. This feature utilizes hardware assistance to achieve dirty
->>>> page tracking, aiming to significantly reduce the overhead of scanning
->>>> for dirty pages.
->>>>
->>>> The purpose of this feature is to make the execution overhead of live
->>>> migration lower to both the guest and the host, compared to existing
->>>> approaches (write-protect or search stage-2 tables).
->>>>
->>>> The required sysreg definitions for FEAT_HDBSS have been merged into
->>>> arm64 /sysregs:
->>>>     [1/5] arm64/sysreg: Add HDBSS related register information
->>>>           https://git.kernel.org/arm64/c/72f7be0c2e30
->>>>
->>>>
->>>> After these patches, the kernel automatically enables HDBSS when dirty
->>>> logging is enabled on any memslot, and disables HDBSS when dirty logging
->>>> is disabled on all memslots. This series does not support dirty ring
->>>> mode.
->>>>
->>>> Depends-on: "KVM: arm64: Enable eager hugepage splitting if HDBSS is available"
->>>> 	https://lore.kernel.org/linux-arm-kernel/20260629111820.1873540-3-leo.bras@arm.com/
->>> On this, FYI, there have been some discussion on this:
->>> https://lore.kernel.org/all/alETGFD2Ogx6N0HB@LeoBrasDK/
->>>
->>> Oliver's suggestion is that we don't automatically enable eager splitting,
->>> but instead we have different behaviours if the user enables it.
->>>
->>> This is still under discussion there, but I think it can be useful reading.
->>
->> Thanks for the pointer — I've read through the discussion between you and
->> Oliver, and it's very helpful.
->>
->>
->> If I understand correctly, the proposed approach is to support both modes,
->> with DBM behavior depending
->>
->> on the user's eager split setting:
-> I am still waiting for his feedback on that, but I suppose that's what he
-> meant.
->
->
->> - If users enable eager splitting (chunk_size != 0): use the v4 approach —
->> DBM is set globally.
->>
->> - If users do NOT enable eager splitting (chunk_size == 0, i.e., lazy split
->> mode): use the v3 approach — DBM
->>
->> is set lazily in user_mem_abort on the first write fault.
->>
->>
->> This makes sense to me. It gives users the flexibility to choose.
->>
-> Yes, agree
->
->> As I mentioned in my patch 6/6 reply (https://lore.kernel.org/all/6e8b23bc-d420-4f5a-a921-5a5d64d84200@huawei.com/),
->>
->> I do think the lazy DBM approach is safer overall if the first-fault
->> overhead is acceptable — it avoids accidentally marking
->>
->> special mappings and naturally handles lazy split.
->>
-> I remember a previous discussion in which was concluded that lazy marking
-> DBM carried some issues. I have to go back on that and check if we can take
-> care of that now.
->
->> I'll keep an eye on the discussion and follow up once a conclusion is
->> reached.
->>
-> Thanks!
-> Leo
-All right, I'll support both split modes with different DBM methods in 
-the next version.
+Hyper-V's SynIC exposes 4 per-vCPU synthetic timers to the
+guest, which are emulated by KVM. Each is programmed through the
+HV_X64_MSR_STIMERi_CONFIG and HV_X64_MSR_STIMERi_COUNT MSRs. Depending
+on CONFIG, COUNT represents either the absolute expiration time or the
+period of a periodic timer, both expressed in 100ns ticks. These timers
+may be set both by the guest (WRMSR) and the host (KVM_SET_MSRS).
 
-Please let me know once you've had a chance to revisit the previous lazy 
-DBM issues — happy to adjust if needed.
+When the timer is enabled, stimer_start() translates COUNT to an
+absolute monotonic deadline and arms an hrtimer. If COUNT is set to a
+value close to U64_MAX, the deadline calculation can overflow.
 
-Thanks!
+    ktime_add_ns(ktime_now, 100 * (stimer->exp_time - time_now))
 
-Tian
+This can result in a CPU livelock. stimer_start() arms the timer
+via hrtimer_start() with a deadline in the past, which causes it to
+immediately fire. The stimer callback then raises KVM_RQ_HV_STIMER, with
+the intention of causing KVM to deliver a synthetic interrupt on the
+next vCPU guest enter.
+
+Then, once userspace issues KVM_RUN, vcpu_enter_guest() consumes the
+request, calling kvm_hv_process_stimers(). This would normally disable
+the timer via stimer_expiration() once the deadline is in the past.
+However, the deadline comparison is done between the KVM reference
+counter and stime->exp_time, which is a big value close to U64_MAX, so
+this never happens for a few thousand years.
+
+kvm_hv_process_timers() then re-arms the timer via stimer_start(), since
+it was not disabled, which again fires immediately. Before entering
+the guest, kvm_vcpu_exit_request() checks kvm_request_pending(),
+which returns true due to the newly raised KVM_REQ_HV_STIMER. Then
+vcpu_enter_guest() aborts the guest entry, returning early into
+vcpu_run(), which loops back again into vcpu_enter_guest(), restarting
+the cycle.
+
+Since there are no manual yields in this loop, a task with SCHED_FIFO
+may starve RCU grace-period kthreads, which exposes the stalls found
+by syzcaller:
+
+    rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+    rcu:    (detected by 1, t=10502 jiffies, g=14269, q=1142 ncpus=2)
+    rcu: All QSes seen, last rcu_preempt kthread activity 10500 (4294965239-4294954739), jiffies_till_next_fqs=1, root ->qsmask 0x0
+    rcu: rcu_preempt kthread starved for 10500 jiffies! g14269 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+    rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+        ( ... )
+    Call Trace:
+     <IRQ>
+     __run_hrtimer kernel/time/hrtimer.c:1773 [inline]
+     __hrtimer_run_queues+0x408/0xc30 kernel/time/hrtimer.c:1841
+     hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
+     local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1045 [inline]
+     __sysvec_apic_timer_interrupt+0x102/0x3e0 arch/x86/kernel/apic/apic.c:1062
+     instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1056 [inline]
+     sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1056
+     </IRQ>
+     <TASK>
+     asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+    RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+    RIP: 0010:_raw_spin_unlock_irqrestore+0xa8/0x110 kernel/locking/spinlock.c:194
+    Code: 74 05 e8 0b f4 5f f6 48 c7 44 24 20 00 00 00 00 9c 8f 44 24 20 f6 44 24 21 02 75 4f f7 c3 00 02 00 00 74 01 fb bf 01 00 00 00 <e8> 23 6b 27 f6 65 8b 05 7c 60 5a 07 85 c0 74 40 48 c7 04 24 0e 36
+    RSP: 0018:ffffc900040a7320 EFLAGS: 00000206
+    RAX: 5de15cb931505900 RBX: 0000000000000a06 RCX: 5de15cb931505900
+    RDX: 0000000000000007 RSI: ffffffff8daa9dc3 RDI: 0000000000000001
+    RBP: ffffc900040a73b0 R08: ffffffff8fc3d077 R09: 1ffffffff1f87a0e
+    R10: dffffc0000000000 R11: fffffbfff1f87a0f R12: dffffc0000000000
+    R13: 0000000000000000 R14: ffff8880b8628240 R15: 1ffff92000814e64
+     hrtimer_start include/linux/hrtimer.h:259 [inline]
+     stimer_start arch/x86/kvm/hyperv.c:682 [inline]
+     kvm_hv_process_stimers+0xd0a/0x16a0 arch/x86/kvm/hyperv.c:893
+     vcpu_enter_guest arch/x86/kvm/x86.c:11193 [inline]
+     vcpu_run+0x2240/0x76b0 arch/x86/kvm/x86.c:11639
+     kvm_arch_vcpu_ioctl_run+0x1148/0x1c90 arch/x86/kvm/x86.c:11984
+     kvm_vcpu_ioctl+0x99a/0xed0 virt/kvm/kvm_main.c:4492
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:597 [inline]
+     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+     do_syscall_64+0xfa/0xf80 arch/x86/entry/syscall_64.c:94
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    RIP: 0033:0x7f635278f749
+    Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+    RSP: 002b:00007f635365c038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+    RAX: ffffffffffffffda RBX: 00007f63529e5fa0 RCX: 00007f635278f749
+    RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
+    RBP: 00007f6352813f91 R08: 0000000000000000 R09: 0000000000000000
+    R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+    R13: 00007f63529e6038 R14: 00007f63529e5fa0 R15: 00007ffd5b219358
+     </TASK>
+
+Fix this by clamping the deadline computation to KTIME_MAX, which
+preserves the intent of arming a timer very far in the future.
+ktime_add_safe() already does this type of clamping, so use it after
+checking that that multiplying by the 100ns time tick also does not
+overflow.
+
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Reported-by: syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d5461510f8dc4adfe30
+Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+v2:
+* Use >= when checking for overflow (Vitaly Kuznetsov)
+* Collect Vitaly's Reviewed-by
+
+ arch/x86/kvm/hyperv.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 39b58f56308b..944cfce109e6 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -630,6 +630,17 @@ static enum hrtimer_restart stimer_timer_callback(struct hrtimer *timer)
+ 	return HRTIMER_NORESTART;
+ }
+ 
++/*
++ * Translate a stimer expiry given in 100ns reference ticks into an
++ * an absolute deadline. Saturates on overflow.
++ */
++static ktime_t stimer_add_delta(ktime_t now, u64 delta_100ns)
++{
++	if (delta_100ns >= KTIME_MAX / 100)
++		return KTIME_MAX;
++	return ktime_add_safe(now, 100 * delta_100ns);
++}
++
+ /*
+  * stimer_start() assumptions:
+  * a) stimer->count is not equal to 0
+@@ -639,6 +650,7 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
+ {
+ 	u64 time_now;
+ 	ktime_t ktime_now;
++	ktime_t deadline;
+ 
+ 	time_now = get_time_ref_counter(hv_stimer_to_vcpu(stimer)->kvm);
+ 	ktime_now = ktime_get();
+@@ -661,10 +673,8 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
+ 					stimer->index,
+ 					time_now, stimer->exp_time);
+ 
+-		hrtimer_start(&stimer->timer,
+-			      ktime_add_ns(ktime_now,
+-					   100 * (stimer->exp_time - time_now)),
+-			      HRTIMER_MODE_ABS);
++		deadline = stimer_add_delta(ktime_now, stimer->exp_time - time_now);
++		hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
+ 		return 0;
+ 	}
+ 	stimer->exp_time = stimer->count;
+@@ -683,9 +693,9 @@ static int stimer_start(struct kvm_vcpu_hv_stimer *stimer)
+ 					   stimer->index,
+ 					   time_now, stimer->count);
+ 
+-	hrtimer_start(&stimer->timer,
+-		      ktime_add_ns(ktime_now, 100 * (stimer->count - time_now)),
+-		      HRTIMER_MODE_ABS);
++	deadline = stimer_add_delta(ktime_now, stimer->count - time_now);
++	hrtimer_start(&stimer->timer, deadline, HRTIMER_MODE_ABS);
++
+ 	return 0;
+ }
+ 
+
+base-commit: 3aec122bdcaf6f8c4ecfc7f6adf6773015ced676
+-- 
+2.51.0
 
