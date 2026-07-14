@@ -1,113 +1,171 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDF835F162
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 01:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64FD360EE8
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 01:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783993046; cv=none; b=P/grLDywDxVagFC5C5v2IZf4o01+MWtfaUqHhubVVsqZlGgvQk93sXP9zwi0F9UD08MABRkQwUGN57QnFl9X4jknMKVpsPDNnLJstIdxXkRZA/due9pxzN8urdQnYs70oXc2a457lfGHzwCWqGPkeMskTkXA2Lho+VQJm/6rUHY=
+	t=1783993192; cv=none; b=hH7GfZAmVC60ioVmzb7ugELVSc419BHWhWEC5yU2ij6DURhs0WyNhCFERM+dMdIb/Djlubnzrk0xjFQDkMsyI+dtQfeqW1gqSem+onMXXwaLJ37UJgzxXpe2eSCp0VWwd4TWVRrTXZDYsKPsGPx9v2g//KU4g0KdadCOBGN7E8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783993046; c=relaxed/simple;
-	bh=VlrykwRJWQD77Sg/xgxE8ea29epMXn9QBXNpAO1TmSs=;
+	s=arc-20240116; t=1783993192; c=relaxed/simple;
+	bh=oHTqpKLqZUPiG2LXGDu6PM4kAhB4WvhEE8qozib3ico=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oIOQeIYuUeWLIdMMpIO+DroaT60q8u9tYfl02WNxJ8lpZznTUEWRuRIVDTRB52g8doDReW/N42I0Ng8JjilJMccx4fKqWUE+CLFxV+McTXzbEkp5PM7pp3DgdRGxFbrbiGsc/Vi9qdea1FpIs4zirqgtt9WTM2oe9CHoreb7LsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHpVDQs+; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JdbG/KGZiVvsVMlbJKERzIvBHfJ6a+Npd6JY1YAigdHWqY09YU4pBbxlGitvh3eorjWweRkRymNL7IV2HB2rcHNt+2DMZfjRXd4OXhaiVQ0CkZf15CdJ6ucdI314SR4sRtmB9SjmWEhrdII3XuszoQV85Z/9jlDEruq2DDWCJEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i96sOXvp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHpVDQs+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6271F000E9;
-	Tue, 14 Jul 2026 01:37:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i96sOXvp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC551F000E9;
+	Tue, 14 Jul 2026 01:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783993045;
-	bh=kZjsSi/UzUwsoDG4yN9as5Fb3Y+6WlGQR2a7qTkxj+w=;
+	s=k20260515; t=1783993190;
+	bh=h0iDVQHth/Jk+0mXTGR7VWyaq1eTUETmuJpMARN3/Vw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kHpVDQs+WKVZ6v2J/om+s7cvv5VC1hX1vNnkRgSGMriVPupvpOWpQeRBXBcs7NKYm
-	 VYhlGccrfLPSkceaJ7rJoGxgv2lC3EgnW/u7dZQut3xmLoggLyfAuVABGUjTljCWUm
-	 hjBtXHj7awXwZaj3tbVzwTWT3cQvqzlObb36UPSgO8Hmzh5GkL6f/KDo3hHhYbSIqF
-	 Sz0RYoDczkhK00Fp5Fd26Sv1shNzyO5bpyNKGsNFkgU7x8WPkLeYYAh7A7TZEWlmMO
-	 WSNeCvPqVu/8cAN483RppPsJieqIYaOrnLYM2HGwv8ahNYYrfN8BbPn5qenFgpgWwU
-	 2G3Y2cNqYFn0Q==
+	b=i96sOXvpNuzIo6U3V5bzIxVkhDWiJNCou7OCpy+NF95XYLCD0j6tH7GznoSTFcFtq
+	 h2+O8m0SDi4RZbZ6oe3M7OK9GdS7ActAdX6Oij7sCdbWH0z35ou8Tm2dZZJlWzF9YJ
+	 f7rRS5oEp/z8jiWU+hBKOcXoqejWPW10bHN2IhifvaYhRS8QU9GUkU/+6RZjWEePlr
+	 r8RlTqIHr3w0FlEC92yb9HVBx1tggNQzOt/cMA4zcgY8iZDpFLH4LpBSVfTNoffrWd
+	 jHJEDirkQkrK5FgwiyVINH1PnuLsosaQRWJoziykSFY3YG84dxobg5QAN2OPdq1Pso
+	 4EMlUt2YGJBsA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] LoongArch: KVM: EIOINTC: factor IP-number decode
- into a helper
+Subject: Re: [PATCH 1/2] LoongArch: KVM: EIOINTC: clamp ipnum to valid range
+ in INT_ENCODE mode
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tao Cui" <cui.tao@linux.dev>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714012452.1021833-3-cui.tao@linux.dev>
+In-Reply-To: <20260714012452.1021833-2-cui.tao@linux.dev>
 References: <20260714012452.1021833-1-cui.tao@linux.dev>
- <20260714012452.1021833-3-cui.tao@linux.dev>
+ <20260714012452.1021833-2-cui.tao@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 01:37:24 +0000
-Message-Id: <20260714013725.0D6271F000E9@smtp.kernel.org>
+Date: Tue, 14 Jul 2026 01:39:50 +0000
+Message-Id: <20260714013950.7CC551F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [Critical] Missing bounds check on untrusted guest-controlled MSI data (`=
-e->msi.data`) allows out-of-bounds array accesses and arbitrary host memory=
- corruption.
+- [Critical] Guest or host userspace can trigger massive out-of-bounds read=
+s and writes on the host kernel heap and undefined bitshift behavior by sup=
+plying an unvalidated MSI data value.
+- [High] `eiointc_set_sw_coreisr` fails to decode `cpuid` in 1-hot mode (`E=
+IOINTC_ENABLE_CPU_ENCODE` disabled), reading from the wrong vCPU's `coreisr=
+` state when reconstructing `sw_coreisr` during `LOAD_FINISHED`.
+- [High] When a guest writes to `EIOINTC_COREISR_START` to clear a pending =
+interrupt, `eiointc_update_irq` clears the fast-path state (`sw_coreisr`) a=
+nd de-asserts the parent IRQ on the currently routed CPU from `sw_coremap`,=
+ which may not be the CPU whose `coreisr` was actually cleared.
+- [Medium] Lockless access to `map->phys_map[cpuid]` in `kvm_get_vcpu_by_cp=
+uid()` lacks memory barriers.
 --
 
---- Patch [2]: [PATCH 2/2] LoongArch: KVM: EIOINTC: factor IP-number decode=
- into a helper ---
-commit 819d482a674f6e7813eb24d40a7c6711789b26a8
+--- Patch [1]: [PATCH 1/2] LoongArch: KVM: EIOINTC: clamp ipnum to valid ra=
+nge in INT_ENCODE mode ---
+commit 21ec11994b801fe6a14903dedc825bbe4a3246e5
 Author: Tao Cui <cuitao@kylinos.cn>
 
-LoongArch: KVM: EIOINTC: factor IP-number decode into a helper
+LoongArch: KVM: EIOINTC: clamp ipnum to valid range in INT_ENCODE mode
+   =20
+This commit clamps the ipnum variable to [0, LOONGSON_IP_NUM) in INT_ENCODE
+mode. It prevents out-of-bounds accesses on the sw_coreisr array which is
+guest-programmable, preventing out-of-bounds accesses reachable from an
+unprivileged guest.
 
-This commit factors the ipmap IP-number decoding logic, which was previously
-duplicated in eiointc_set_sw_coreisr() and eiointc_update_irq(), into a new
-helper function named eiointc_get_ipnum().
+Cc: stable@vger.kernel.org
 
 > diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
 eiointc.c
-> index 0c34d7ab264dc..c1e0cd8dca16c 100644
+> index 2b14485d14a70..0c34d7ab264dc 100644
 > --- a/arch/loongarch/kvm/intc/eiointc.c
 > +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -7,19 +7,27 @@
->  #include <asm/kvm_vcpu.h>
->  #include <linux/count_zeros.h>
+> @@ -17,6 +17,8 @@ static void eiointc_set_sw_coreisr(struct loongarch_eio=
+intc *s)
+>  		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+>  			ipnum =3D count_trailing_zeros(ipnum);
+>  			ipnum =3D ipnum < 4 ? ipnum : 0;
+> +		} else {
+> +			ipnum =3D (ipnum < LOONGSON_IP_NUM) ? ipnum : 0;
+>  		}
 > =20
-> +static int eiointc_get_ipnum(struct loongarch_eiointc *s, int irq)
-> +{
-> +	int ipnum =3D (s->ipmap >> (irq / 32 * 8)) & 0xff;
+>  		cpuid =3D ((u8 *)s->coremap)[irq];
 
-[Severity: Critical]
-This is a pre-existing issue, but does this bit shift result in undefined
-behavior if an out-of-bounds irq is provided?
+[Severity: High]
+This is a pre-existing issue, but does eiointc_set_sw_coreisr() fail to
+decode cpuid in 1-hot mode when EIOINTC_ENABLE_CPU_ENCODE is disabled?
 
-If a malicious guest or userspace provides an unvalidated MSI data payload,
-it is passed as the irq parameter through the following call chain:
+It looks like it fetches cpuid directly from s->coremap[irq] without decodi=
+ng
+it. In the default 1-hot mode, cpuid represents a bitmask, but the subseque=
+nt
+call to kvm_get_vcpu_by_cpuid() expects an exact ID. Could this result in
+looking up the wrong vCPU during state restoration, causing lost interrupts?
 
-kvm_send_userspace_msi() -> kvm_set_msi() -> pch_msi_set_irq()
+[Severity: Medium]
+This is a pre-existing issue, but is the lockless access to
+map->phys_map[cpuid] safe in kvm_get_vcpu_by_cpuid() when called here?
 
-pch_msi_set_irq() {
-    ...
-    eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
-}
-
-The unvalidated irq is used in the bit shift above, and also leads to
-out-of-bounds array reads in eiointc_update_irq():
-
-    cpu =3D s->sw_coremap[irq];
-
-Could this also allow arbitrary host memory corruption when setting bits in
-eiointc_set_irq() since isr is bounded to EIOINTC_IRQS?
-
-    level ? __set_bit(irq, isr) : __clear_bit(irq, isr);
-
-> +
-> +	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
-> +		ipnum =3D count_trailing_zeros(ipnum);
+When kvm_get_vcpu_by_cpuid() reads map->phys_map[cpuid].enabled and vcpu, it
+doesn't use memory barriers like smp_load_acquire(). Concurrently,
+kvm_set_cpuid() updates these fields using a lock but without
+smp_store_release(). Could this compiler or CPU reordering cause
+kvm_get_vcpu_by_cpuid() to transiently return NULL?
 
 [ ... ]
 
+> @@ -42,6 +44,8 @@ static void eiointc_update_irq(struct loongarch_eiointc=
+ *s, int irq, int level)
+>  	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
+>  		ipnum =3D count_trailing_zeros(ipnum);
+>  		ipnum =3D ipnum < 4 ? ipnum : 0;
+> +	} else {
+> +		ipnum =3D (ipnum < LOONGSON_IP_NUM) ? ipnum : 0;
+>  	}
+> =20
+>  	cpu =3D s->sw_coremap[irq];
+
+[Severity: Critical]
+This is a pre-existing issue, but is the irq index validated before being
+used for array accesses here?
+
+The KVM MSI routing mechanism allows guests or host userspace to inject MSIs
+with an arbitrary 32-bit msi.data payload. In pch_msi_set_irq():
+
+arch/loongarch/kvm/intc/pch_pic.c:pch_msi_set_irq() {
+    ...
+    eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
+    ...
+}
+
+The user-supplied e->msi.data is passed unvalidated to eiointc_set_irq() as
+the irq parameter. This unvalidated irq is then used as an index for bitwise
+operations like __set_bit(irq, isr) in eiointc_set_irq() and array accesses
+like s->sw_coremap[irq] in eiointc_update_irq(). Can this allow unprivileged
+guest code to perform arbitrary out-of-bounds memory writes on the host
+kernel heap?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does eiointc_update_irq()
+operate on the correct CPU when clearing a pending interrupt?
+
+When a guest writes to EIOINTC_COREISR_START to clear a pending interrupt:
+
+arch/loongarch/kvm/intc/eiointc.c:loongarch_eiointc_write() {
+    ...
+    eiointc_update_irq(s, irq + index * 64, 0);
+    ...
+}
+
+The write handler issues the clear request without explicitly passing the
+original vCPU. Then eiointc_update_irq() dynamically fetches the target CPU
+from s->sw_coremap[irq]. If the guest has re-routed the IRQ while it was
+pending, sw_coremap will point to the new CPU. Will this clear the fast-path
+sw_coreisr state on the new CPU, leaving the old CPU with a permanently
+asserted parent IRQ and an unrecoverable interrupt storm?
+
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714012452.1021=
-833-1-cui.tao@linux.dev?part=3D2
+833-1-cui.tao@linux.dev?part=3D1
