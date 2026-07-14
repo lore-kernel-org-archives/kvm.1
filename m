@@ -1,274 +1,106 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050EE367F59;
-	Tue, 14 Jul 2026 10:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E35834A3D6;
+	Tue, 14 Jul 2026 10:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784026213; cv=none; b=utnmtoApeFikRBuRARs4InYZjHC5iZZZbgLQKx7xz3cqG5DlHuG9xOomFY+L5KwWMpUrzKROV9v6djB5TusFfgAaQeeqO8t/15fBmkUCI1CxsXisCwnsBJ8uO3WILMFsVOWegq0YSUc8LGW8AgkxzRbAw26Nw8dNZkvm2J9+m0Q=
+	t=1784026221; cv=none; b=OHOZTk5xN7TZGEwiTb8W6675tdIFBqGRlOZHjR+mAM0Qy9LxY2bhQmtdHsTbZgQ3MbTE7YhuYCyx3ErfYVQPCkakoGKmJSaQjY0SqIxlZoH1JzIzSnimk1fZSBG9qH5tlSpfj84IA4ytG8cj79m8c6isyDOZLLEw8iX20Hp2+98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784026213; c=relaxed/simple;
-	bh=ugEdljPCSekPsPwW4PCihd4OdtdjS/5MSBMg8Yqhmg4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=BiZ3AKP4aFOclMmMh4PXonRXrO4a70dEItWsObPgSANRKVl4gVNNm6zPX9qyhnT+3X4bsGAamt8Cw+EcVtCqMua6PtcUakh1UwX7ZBMqxd4ZcLLZ1U7B8XJUnvqdQCvlYzdoDMYa5g+XVU4EqrQW+ImUvWtqT/mpp4ori4IW8hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vbjePEBF; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784026221; c=relaxed/simple;
+	bh=JH1s3+2fTTFYpfkiPKDzClX4xe4rRo1wxP3z+YbAhSg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Nn1l54vrlsEUOlFDSvHLtYg58YIP5nWTu2G4k6MSRb55QfgsQwS9Alkd34aX5UVcrAdGFVhneL8Yb0fw55AFzZwrMfPbfxDta9ZPKIlh8nPBr5G5gkMn+vbSTNnd7YyUE/XbS8ymRdYte+eW6RLiK7FtIIODvA5p50iFVy9HqBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDsS1pZm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vbjePEBF"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07D21497;
-	Tue, 14 Jul 2026 03:50:07 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B1533F7B4;
-	Tue, 14 Jul 2026 03:50:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784026211; bh=ugEdljPCSekPsPwW4PCihd4OdtdjS/5MSBMg8Yqhmg4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbjePEBFPpMvvBpsHM8hDtTeucxTSPhBc4LjeBVrgAbArgKoV3MKqJ+1WC3Ack4X1
-	 z9AvJW4VM6bSpMofTd5GaL86/WnGjvKL9zDcdMTwkIxQBzy+gTqn7hbz6lmrMN6W2l
-	 vKpaUXdJrp5/Go26UjTTbNUKDuuZjScnO9DwJdP4=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	maz@kernel.org,
-	oupton@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 5/6] KVM: arm64: Add HDBSS fault handling and buffer flush
-Date: Tue, 14 Jul 2026 11:50:06 +0100
-Message-ID: <alYUXkub43YxkeH1@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <9340fa94-6f26-4053-a4ca-0803af725936@huawei.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com> <20260709104026.2612599-6-zhengtian10@huawei.com> <alTw0nwiBDWoFrjB@LeoBrasDK> <9340fa94-6f26-4053-a4ca-0803af725936@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDsS1pZm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765521F000E9;
+	Tue, 14 Jul 2026 10:50:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784026219;
+	bh=rivpYrwIXe+BHfVoVyjRB3FTMfYuUvgKIZmVK9H6SGA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cDsS1pZmmA0lSeR7mAw9bXc5SS1anMuC/4yDltBQWclFDiuY0bGYH/94mE8cUhP72
+	 MjotUJ/2q32iotJrZD4ttdnrI7zsVF/8SH7yh0Gaj10bQWTtr+qytPzsDV/fadKfS5
+	 VrdbEiDLVYXBTgimwkAVODJwmQ0Tm2b2Okfuq20uq7KcadzSOe6khMHLPhHDc2kw7E
+	 IsC9SZCJ0PunHX0mC4FSmsRam/8YelDFghxA6okTYONd2JlAA1gkW7xRBBSZvEnBR+
+	 Sj7bwkg1qHk5GirH73NiHtaSUO6qVVf+ZWzNpzZlccWlhoPGXRxDrr5h5dieUEC5dD
+	 c/B5V5Czkm2oQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v20 02/16] dma-buf: add optional get_pci_tph() callback
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260714104325.54444-3-fengchengwen@huawei.com>
+References: <20260714104325.54444-1-fengchengwen@huawei.com>
+ <20260714104325.54444-3-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 10:50:19 +0000
+Message-Id: <20260714105019.765521F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 14, 2026 at 03:38:39PM +0800, Tian Zheng wrote:
-> 
-> On 7/13/2026 10:06 PM, Leonardo Bras wrote:
-> > On Thu, Jul 09, 2026 at 06:40:25PM +0800, Tian Zheng wrote:
-> > > From: eillon <yezhenyu2@huawei.com>
-> > > 
-> > > Add HDBSS fault handling for buffer full, external abort, and general
-> > > protection fault (GPF) events. When the HDBSS buffer becomes full,
-> > > the hardware traps to EL2 with an HDBSSF event, which is handled by
-> > > setting a flush request.
-> > > 
-> > > Add kvm_flush_hdbss_buffer() to consume HDBSS buffer entries and
-> > > propagate dirty information into the userspace-visible dirty bitmap.
-> > > Flush is triggered on vcpu_put, check_vcpu_requests, and
-> > > sync_dirty_log.
-> > > 
-> > > Add esr_iss2_is_hdbssf() helper for HDBSS fault detection in guest
-> > > abort handling.
-> > > 
-> > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
-> > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
-> > > ---
-> > >   arch/arm64/include/asm/esr.h           |  5 +++
-> > >   arch/arm64/include/asm/kvm_dirty_bit.h | 11 +++++
-> > >   arch/arm64/include/asm/kvm_host.h      |  1 +
-> > >   arch/arm64/kvm/arm.c                   | 14 ++++++
-> > >   arch/arm64/kvm/dirty_bit.c             | 62 ++++++++++++++++++++++++++
-> > >   arch/arm64/kvm/mmu.c                   |  4 ++
-> > >   6 files changed, 97 insertions(+)
-> > > 
-> > > diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
-> > > index 81c17320a588..2e6b679b5908 100644
-> > > --- a/arch/arm64/include/asm/esr.h
-> > > +++ b/arch/arm64/include/asm/esr.h
-> > > @@ -437,6 +437,11 @@
-> > >   #ifndef __ASSEMBLER__
-> > >   #include <asm/types.h>
-> > > 
-> > > +static inline bool esr_iss2_is_hdbssf(unsigned long esr)
-> > > +{
-> > > +	return ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF;
-> > This will return a long, which will be casted as bool.
-> > In general, what I see in the kernel is something like:
-> > 
-> > 	return !!(ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF)
-> 
-> 
-> ok!
-> 
-> 
-> > > +}
-> > > +
-> > >   static inline unsigned long esr_brk_comment(unsigned long esr)
-> > >   {
-> > >   	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
-> > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > index 84b12f0a10af..4b28000e972f 100644
-> > > --- a/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
-> > > @@ -10,7 +10,18 @@
-> > >   #include <asm/kvm_pgtable.h>
-> > >   #include <asm/sysreg.h>
-> > > 
-> > > +/* HDBSS entry field definitions */
-> > > +#define HDBSS_ENTRY_VALID	BIT(0)
-> > > +#define HDBSS_ENTRY_TTWL_SHIFT (1)
-> > > +#define HDBSS_ENTRY_TTWL_MASK (GENMASK(3, 1))
-> > > +#define HDBSS_ENTRY_TTWL(x) \
-> > > +	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
-> > > +#define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
-> > > +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
-> > > +
-> > >   int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
-> > >   void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
-> > > +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
-> > > +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
-> > > 
-> > >   #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
-> > > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> > > index c41ec6d9c45a..cecfb884a64f 100644
-> > > --- a/arch/arm64/include/asm/kvm_host.h
-> > > +++ b/arch/arm64/include/asm/kvm_host.h
-> > > @@ -55,6 +55,7 @@
-> > >   #define KVM_REQ_GUEST_HYP_IRQ_PENDING	KVM_ARCH_REQ(9)
-> > >   #define KVM_REQ_MAP_L1_VNCR_EL2		KVM_ARCH_REQ(10)
-> > >   #define KVM_REQ_VGIC_PROCESS_UPDATE	KVM_ARCH_REQ(11)
-> > > +#define KVM_REQ_FLUSH_HDBSS			KVM_ARCH_REQ(12)
-> > > 
-> > >   #define KVM_DIRTY_LOG_MANUAL_CAPS   (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
-> > >   				     KVM_DIRTY_LOG_INITIALLY_SET)
-> > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > > index bf6688245d83..566953a4e23a 100644
-> > > --- a/arch/arm64/kvm/arm.c
-> > > +++ b/arch/arm64/kvm/arm.c
-> > > @@ -755,6 +755,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-> > >   		kvm_vcpu_put_hw_mmu(vcpu);
-> > >   	kvm_arm_vmid_clear_active();
-> > > 
-> > > +	if (vcpu->kvm->arch.enable_hdbss)
-> > > +		kvm_flush_hdbss_buffer(vcpu);
-> > > +
-> > >   	vcpu_clear_on_unsupported_cpu(vcpu);
-> > >   	vcpu->cpu = -1;
-> > >   }
-> > > @@ -1157,6 +1160,9 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
-> > >   		if (kvm_dirty_ring_check_request(vcpu))
-> > >   			return 0;
-> > > 
-> > > +		if (kvm_check_request(KVM_REQ_FLUSH_HDBSS, vcpu))
-> > > +			kvm_flush_hdbss_buffer(vcpu);
-> > > +
-> > >   		check_nested_vcpu_requests(vcpu);
-> > >   	}
-> > > 
-> > > @@ -1971,7 +1977,15 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-> > > 
-> > >   void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
-> > >   {
-> > > +	/*
-> > > +	 * Flush all CPUs' dirty log buffers to the dirty_bitmap.  Called
-> > > +	 * before reporting dirty_bitmap to userspace. Send a request with
-> > > +	 * KVM_REQUEST_WAIT to flush buffer synchronously.
-> > > +	 */
-> > > +	if (!kvm->arch.enable_hdbss)
-> > > +		return;
-> > > 
-> > > +	kvm_make_all_cpus_request(kvm, KVM_REQ_FLUSH_HDBSS | KVM_REQUEST_WAIT);
-> > >   }
-> > > 
-> > >   static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
-> > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
-> > > index 6c7a6ef66b5a..002366337637 100644
-> > > --- a/arch/arm64/kvm/dirty_bit.c
-> > > +++ b/arch/arm64/kvm/dirty_bit.c
-> > > @@ -50,3 +50,65 @@ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
-> > > 
-> > >   	vcpu->arch.hdbss.hdbssbr_el2 = 0;
-> > >   }
-> > > +
-> > > +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
-> > > +{
-> > > +	int idx, curr_idx;
-> > > +	u64 *hdbss_buf;
-> > > +	struct kvm *kvm = vcpu->kvm;
-> > > +
-> > > +	if (!kvm->arch.enable_hdbss)
-> > > +		return;
-> > > +
-> > > +	curr_idx = HDBSSPROD_IDX(read_sysreg_s(SYS_HDBSSPROD_EL2));
-> > > +
-> > > +	/* Do nothing if HDBSS buffer is empty or br_el2 is NULL */
-> > > +	if (curr_idx == 0 || vcpu->arch.hdbss.hdbssbr_el2 == 0)
-> > > +		return;
-> > > +
-> > > +	hdbss_buf = page_address(phys_to_page(vcpu->arch.hdbss.base_phys));
-> > > +	if (!hdbss_buf)
-> > > +		return;
-> > > +
-> > > +	guard(write_lock_irqsave)(&vcpu->kvm->mmu_lock);
-> > > +	for (idx = 0; idx < curr_idx; idx++) {
-> > > +		u64 gpa;
-> > > +
-> > > +		gpa = hdbss_buf[idx];
-> > > +		if (!(gpa & HDBSS_ENTRY_VALID))
-> > > +			continue;
-> > > +
-> > > +		gpa &= HDBSS_ENTRY_IPA;
-> > > +		kvm_vcpu_mark_page_dirty(vcpu, gpa >> PAGE_SHIFT);
-> > You mention that it does not support dirty-ring, but above function will
-> > mark the page as dirty in the dirty-ring :/
-> > 
-> 
-> In kvm_arm_enable_hdbss_global(), we explicitly check and reject HDBSS
-> enablement if dirty-ring is active:
-> 
-> ```
-> if (kvm->dirty_ring_size)
->     return 0;
-> ```
-> 
-> So when kvm_flush_hdbss_buffer() runs (which requires enable_hdbss = true),
-> we know for certain that
-> 
-> kvm->dirty_ring_size == 0. Therefore, kvm_vcpu_mark_page_dirty() will always
-> take the dirty_bitmap path,
-> 
-> never the dirty-ring path.
-> 
-> That said, I'll add a comment in kvm_flush_hdbss_buffer() before dirty ring
-> mode is supported, to make this explicit:
-> 
-> ```
-> /*
->  * HDBSS is mutually exclusive with dirty-ring mode (see
->  * kvm_arm_enable_hdbss_global()), so kvm_vcpu_mark_page_dirty()
->  * will update the dirty_bitmap, not the dirty-ring.
->  */
-> ```
->
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The kernel-doc comment references a non-existent callback `move_not=
+ify` in `struct dma_buf_attach_ops`.
+--
 
-Got it :)
+--- Patch [2]: [PATCH v20 02/16] dma-buf: add optional get_pci_tph() callba=
+ck ---
+commit 799bc3a75b6c6b1dc555780b54878e41e3161d8b
+Author: Zhiping Zhang <zhipingz@meta.com>
 
-Out of curiosity: which issues have you found on supporting dirty-ring at  
-this point?
+dma-buf: add optional get_pci_tph() callback
 
-Thanks!
-Leo
- 
+This commit adds an optional get_pci_tph callback to dma_buf_ops and a
+corresponding wrapper function dma_buf_get_pci_tph() for importers. It
+allows importers to query the exporter for PCIe TLP Processing Hint
+namespaces and matching ST/PH tuples.
+
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index d504c636dc294..e8314ed240d33 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+[ ... ]
+> @@ -1144,6 +1146,36 @@ void dma_buf_unpin(struct dma_buf_attachment *atta=
+ch)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(dma_buf_unpin, "DMA_BUF");
+> =20
+> +/**
+> + * dma_buf_get_pci_tph - Retrieve PCIe TLP Processing Hint (TPH) metadata
+> + * @dmabuf: DMA buffer to query
+> + * @extended: false for 8-bit ST, true for 16-bit Extended ST
+> + * @steering_tag: returns the raw steering tag for the requested namespa=
+ce
+> + * @ph: returns the TPH processing hint
+> + *
+> + * Wrapper for the optional &dma_buf_ops.get_pci_tph callback.
+> + *
+> + * Must be called with &dma_buf.resv held. Returns -EOPNOTSUPP if the
+> + * exporter does not implement the callback or has no metadata for the
+> + * requested namespace.
+> + *
+> + * The returned steering tag and processing hint are only valid until the
+> + * exporter invalidates the current mapping (signalled to the importer v=
+ia
+> + * &dma_buf_attach_ops.move_notify). Importers must re-query after a new
+
+[Severity: Low]
+This isn't a bug, but there is no move_notify callback in
+struct dma_buf_attach_ops. Should this reference the invalidate_mappings
+callback instead?
+
+> + * mapping is established following invalidation.
+> + */
+> +int dma_buf_get_pci_tph(struct dma_buf *dmabuf, bool extended,
+> +			u16 *steering_tag, u8 *ph)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714104325.5444=
+4-1-fengchengwen@huawei.com?part=3D2
