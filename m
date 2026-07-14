@@ -1,194 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FC2494A09;
-	Tue, 14 Jul 2026 16:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8A44D2EC7
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 16:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784046134; cv=none; b=CgiQjbYXUkUQpNJhdCeOoFbsfHt0ItrXBXEM7eAxmcpyAGs/9dpuqKBhqumy0ltMehQo7rX5PoIxFsnZMg8Fi6zAaA7JHGELeIZ/gPBa2krJnTUssmHVk+v8vSeoZ8Nl8MWsM/8VdxUc7/TfcqLoZj9VyxdZfDJzayMOzaDyLhE=
+	t=1784046441; cv=none; b=hH32LtrCTF+2mFTno24L6iqh/2xBcegS3s6UwxM/qhalL6BGJ2xGR0/01fjwvChkpafsv25tWnYsutZybrk8rPyFtv+FWMonKGW4vM5nZiNbLvL6A5ss5HYucxrH6zKSw9mB928JT/oJBrqHrUigapKWwBDFfBUjzdb/KicY2ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784046134; c=relaxed/simple;
-	bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gHncjcc4vl3N+3mHmbupAnyn8SS2KlBs/mfRV29WyR4d7CuzfuqCsXhlXDPxn4E+cX5ZwAVQWdA5Z+DcaLb/2u104adSFUPxiixZzkdZlJ4I19d4yznHfvWZdTQx77L1xvdtv+A6AbiDdUHlzg8uORnbt9U6b8J2Vwey9Q9HtWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lX8vfuE8; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784046441; c=relaxed/simple;
+	bh=CHVAubWcDJFm2OCyKYq7MVSyyULKGL95xCv2x5OW9QI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fy+8fBuLStBfrkZ5GsUKkKdfJPJGS5r7Qca9HKV/GyKuVx0gDJb/6Exb6DiMnwUrSsLy1bZCeXVjZwrZfBK6W2n71UEI6KLAcA7dyzntmR5h4Vea/1gZ/5qWiKkGFrOTNN6PxWG05N7EQL8TCDggmWubSwv3+mWRO5ssgRnl89w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lMp7RZ96; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lX8vfuE8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784046132; x=1815582132;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
-  b=lX8vfuE81PwlgGKoZ2gaAwWZAS+sFb9634Ot+TFRA0Hd2QIMJJzFMK6S
-   wwqwATKNVwJ/0+B+oDmmnmSLCvSBbwMP/mwzPXryeFwG+wQn8guhcoT8J
-   OEc2fgLpja5oSez+6mv1qBvgQMhe++M20B4ObVpzp8jwU4LdDbj0nNrQq
-   v1YdxhU8kLgEeyCcLOjHD0IRki2p2nhme1AE4AmkAntXcvZLymjOCQgkS
-   TIAg7SBS54c+Uw7bxOShJJIL/tVUmTVFssPq4H3aXm0K+QGTIiFrMtCBU
-   Yz02iqOdxPIZW+aOIvMHM05CTtA1jbz7l9dSM6YMigUdpSqJmRQ6G3Vc+
-   Q==;
-X-CSE-ConnectionGUID: jiDnqzn6SIyaW693DpnbLQ==
-X-CSE-MsgGUID: CLOEvjZfSnuu0mkmWorTog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="83795558"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="83795558"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
-X-CSE-ConnectionGUID: WAKzB18BSE615YnM24rhyA==
-X-CSE-MsgGUID: /a5HeManRwyQIFFRvkmKyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
-   d="scan'208";a="255949195"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
-Message-ID: <dd51743d-74b2-4f89-a447-06618a6301ae@linux.intel.com>
-Date: Tue, 14 Jul 2026 09:22:10 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lMp7RZ96"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-383cb94f742so4162365a91.3
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 09:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784046433; x=1784651233; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lAQKPZvcYFxKdB/psGyEb68scveBzJExKE2LOhYH/p4=;
+        b=lMp7RZ96OfLGCL4LR8lGTsCFYGTHD+LbxhnJ3/IyzcTSxQReeLZm87/RPC0QmUkF2i
+         IdQ9nC/gg7cU6oT0GaMGg4MxtWgJdUu0BoQB5X9VQL+rSgjLtMK5/C8myW5ARP4cA/Qp
+         w7aRJMgYd8HEgBIsPuCj8VWFTZ+aMiT/wWn6F3eVmsU0ivFsWDgjeOQityeoXGVU7eJs
+         o3rnTkiK1H4R7hFF2ndgNAGptYrhRfkKwZb21HZ1vueMijIXnAk/wn9RJRpTb8kc87Xr
+         g+p3Tp3V6lfAhFgAwAPG7k07gp7NSAdldz3YnrHlhEd16m0iidNgCR6oeI/6efsL8f+B
+         y+kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784046433; x=1784651233;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lAQKPZvcYFxKdB/psGyEb68scveBzJExKE2LOhYH/p4=;
+        b=S+WA7O3CGbIrrLDVZSL/BW66zD4G1CvDhLm+XKGhTTzeKI6U6SIbcT/Epsl8E7tlvH
+         Gq8FuFczURTiFoFJrJB52gBkgxV9clRPwDBCIkOtLghNdzetUPeyITFdYmOk8HXnHLk9
+         NMyUui8Uc6wSbmoOErZdNzzdBcuDd/dMQbLh2F9BI0DB62h6rqQTgp/LzF+zWrposgtz
+         ruq46+M6aOfPSq7NOTXvSw1BTzjgvrcrQKYPqZ2/OmTOY7/Dhsvl5tZDwwE0uCvJSfig
+         sqVYCSDraX9kc415rQ8qPkQYuc+q1jk4xjbXMUheGw2ZfNcylpLzhWjoICYX9+viQr75
+         Y3rw==
+X-Gm-Message-State: AOJu0YzpOX3k6eyBAL09fD1XXuQS2kzfHkUddX6g7UF/yqy/oIn4xEao
+	r6IWXIwpRuSdjuS5IWs/T0o+V3iFlRL0CkBsQ7NXOpt+pTutkJokJBdd0rx+WNPlIw==
+X-Gm-Gg: AfdE7ckQ+Y86UfO32ZOhPylzO4WW1acRJGM6xDf8AQPx0b6PTo8G9P7OzSCuYZnF6xc
+	WWz+UqxkUF13cA334jLPatXCs8h5eD4Xp6d3c5cRIU4U75W4GSexEYy7WF1yCcSJxtX3kJ/Auvx
+	uhNCvhkL6KKw45jJj3ct1ZLkxUsLoYv7+2ckyWsqPJ6sbEEzVR/fU4XRRZLdwoQXOdTdtZeBsaR
+	sSORlhaBlNTUYokyE1fBccwSTUzFLLqxCbNykDc/CrTWw8CLWZJdxzUPuMP00UHM3x5eiR90+ts
+	ebTrM8NFbe2qdwxfjdAVhPJOCuFYmZnTtUZEcNaNsCq+CmlL6mEs5mZMWeSbfHh+diW68HLIweS
+	/IXxU6nkO3ARpiX6C/hEp4ARwtL6QhtzeMzH0Iinmr+Ta4LInSIQcZr8vNOP4KR/PQ8GMfMZpzx
+	ouBEhqL37gRskZE9cFjttlUVqru78I0AWA7mHC33EBHYOIsch/JoSWFOFeiJdImg==
+X-Received: by 2002:a17:90b:3508:b0:37e:1430:769b with SMTP id 98e67ed59e1d1-38dc7b37b53mr12079684a91.24.1784046432917;
+        Tue, 14 Jul 2026 09:27:12 -0700 (PDT)
+Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e1745a86esm1706179a91.16.2026.07.14.09.27.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 09:27:12 -0700 (PDT)
+Date: Tue, 14 Jul 2026 16:27:08 +0000
+From: David Matlack <dmatlack@google.com>
+To: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
+Subject: Re: [PATCH 0/4] Introduce vfio_dma_mapping_perf_test
+Message-ID: <alZjXMjmiwhjVO3G@google.com>
+References: <20260701203311.326798-1-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-To: Peter Fang <peter.fang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
-References: <20260612110853.3188196-1-peter.fang@intel.com>
- <20260612110853.3188196-3-peter.fang@intel.com>
- <283d7cc7-e87e-4d4e-b1d9-ae19725e1606@linux.intel.com>
- <20260714062502.GE3178326@pedri>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260714062502.GE3178326@pedri>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701203311.326798-1-aaronlewis@google.com>
 
-
-
-On 7/13/2026 11:25 PM, Peter Fang wrote:
-> On Mon, Jul 13, 2026 at 10:27:46AM -0700, Kuppuswamy Sathyanarayanan wrote:
->> Hi Peter,
->>
->> On 6/12/2026 4:08 AM, Peter Fang wrote:
->>> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>>
->>> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
->>> shared with the host VMM. This may be too small for Quotes using schemes
->>> such as post-quantum cryptography (PQC), where certificate chains can
->>> increase the Quote size to several megabytes.
->>>
->>> Allocate the Quote buffer based on the size reported by the TDX module
->>> instead of always reserving a fixed-size buffer. This avoids wasting
->>> memory on platforms that do not require larger Quotes. Older platforms
->>> fall back to the default 128 KB buffer.
->>>
->>> Because the Quote buffer must be physically contiguous, its size is
->>> bound by the buddy allocator's maximum page order (4 MB), which should
->>> be sufficient for current attestation needs.
->>>
->>> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
->>> instead of sizeof() to calculate the header size.
->>>
->>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>> Assisted-by: Claude:claude-opus-4-7
->>> Assisted-by: GitHub Copilot:gpt-5.4
->>> Signed-off-by: Peter Fang <peter.fang@intel.com>
->>> ---
->>
->> Looks good to me.
->>
->> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+On 2026-07-01 08:33 PM, Aaron Lewis wrote:
+> Add a new VFIO selftest, vfio_dma_mapping_perf_test, to provide a
+> configurable tool for measuring DMA mapping and unmapping latencies.
 > 
-> Thanks Sathya!
+> This selftest introduces command-line parameters to provide a convenient
+> way to tune the test for specific situations. For example, it can be used
+> to observe the lengthy unmap times of the Type 1 IOMMU on large memory
+> regions, or to compare DMA mapping performance between the Type 1 IOMMU
+> and IOMMUFD. These scenarios can now be easily configured and run via the
+> command line.
 > 
->>
->>
->>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 52 ++++++++++++++++++-------
->>>  1 file changed, 38 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> index a9ecc46df187..162fb47f3fae 100644
->>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>> @@ -163,7 +163,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->>>   * DICE-based attestation uses layered evidence that requires
->>>   * larger Quote size (~100K).
->>>   */
->>> -#define GET_QUOTE_BUF_SIZE		SZ_128K
->>> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
->>>  
->>>  #define GET_QUOTE_CMD_VER		1
->>>  
->>> @@ -171,7 +171,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
->>>  #define GET_QUOTE_SUCCESS		0
->>>  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
->>>  
->>> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
->>> +#define TDX_QUOTE_BUF_LEN(n)		(offsetof(struct tdx_quote_buf, data) + (n))
->>>  
->>>  /* struct tdx_quote_buf: Format of Quote request buffer.
->>>   * @version: Quote format version, filled by TD.
->>> @@ -192,8 +192,9 @@ struct tdx_quote_buf {
->>>  	u8 data[];
->>>  };
->>>  
->>> -/* Quote data buffer */
->>> +/* Quote data buffer and size */
->>>  static void *quote_data;
->>> +static size_t quote_data_size;
->>>  
+> During development, I abandoned an approach where I initialized memfd
+> globally in main() for all tests. While that allowed memfd to be
+> initialized once for all test variants, it proved awkward because a
+> different memfd would be needed for each supported page size (e.g., 4K,
+> 2M, 1G). Also, If a user is only running a single test variant,
+> pre-allocating all sizes is unnecessary overhead. Therefore, I dropped
+> that approach in favor of test-local allocation. However, I'm open to
+> ideas on a better way to handle this.
 > 
-> [ ... ]
-> 
->>>  
->>> @@ -286,7 +310,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
->>>  		return -EINVAL;
->>>  
->>> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
->>> +	memset(quote_data, 0, quote_data_size);
->>>  
->>>  	/* Update Quote buffer header */
->>>  	quote_buf->version = GET_QUOTE_CMD_VER;
->>> @@ -297,7 +321,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  	if (ret)
->>>  		return ret;
->>>  
->>> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
->>> +	err = tdx_hcall_get_quote(quote_data, quote_data_size);
->>>  	if (err) {
->>>  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
->>>  		return -EIO;
->>> @@ -316,7 +340,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->>>  
->>>  	out_len = READ_ONCE(quote_buf->out_len);
->>>  
->>> -	if (out_len > TDX_QUOTE_MAX_LEN)
->>> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_size)
->>>  		return -EFBIG;
->>
->> Nit: I think this check will be more readable if you can rename
->> quote_data_size to quote_buf_size (since it holds total buffer
->> size).
-> 
-> Hm. This pairs with the original "static void *quote_data". Or perhaps
-> "quote_data_len"?
+> Aaron Lewis (4):
+>   vfio: selftests: Introduce vfio_dma_mapping_perf_test
+>   vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+>   vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
+>   vfio: selftests: Allow the flag MAP_POPULATE to be set on the cmdline
 
-Yes, it pairs with quote_data buffer name. May be both should be renamed.
-
-If it is too much trouble, just leave it.
-
-> 
->>
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Please respond inline to the Sashiko feedback and address any findings
+in v2. I'll be doing a review as well shortly.
