@@ -1,198 +1,340 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59841233937;
-	Tue, 14 Jul 2026 04:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF601C6FF5;
+	Tue, 14 Jul 2026 04:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784003527; cv=none; b=H30fVb0lU9J0q3swSakWqq/48mkvcQvTOYu6sXs6wNA4Q1+kKZ9oZo4++GAXBnsihzUoeJFkJ0H1qmgzsm45pd9HvMGSw2yiI1BsAAZ1S420SGecu+6fbWDdiioMxMJ10CVBu6vuXp0WYRPLd2gpZwzmhxJJmTVUrQeYZw9xEMQ=
+	t=1784003957; cv=none; b=Hzg6o0JJimy3uyod0dwbD/J9b4smngRZ7FVhZ5PrAt+qoDGFnDexKxhShwm+di2ZNfSQ+siHrDZnwflp9EDMnbHJPJeiGZhHu83fXVwrHH4iZkZzDK/ewqUr8CqBiTHvfEyLre0l1dkbIKYBs5x0p41j2aTz6uWMmJm/i6WaCDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784003527; c=relaxed/simple;
-	bh=XM7VGBlv67NNumr+kynwEza1GVf1p/tMWmPt/JIhuv8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=p0ro9gcsHzPx6CUDdM+UliNoFP3oEVmcmN1oH31YGOwrNfQjFtDF54SSx9OMSJGYPHyiUyVNT1lxAEU0dBn2tzV318rYAg7ts1kRaQzKgy0px1o2eCzuGOkHtHkrpZ55a2QPMZi2AULSQedve+k9x73WO2My/ZWGxlRWTyozFAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYsFHduW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784003957; c=relaxed/simple;
+	bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpghW5EqeBh9BvntvJ1cJaFTWW61ezy9UdKChVgtjMZe2Sf3byAdWDodTbgyroqISTVwfD/HQR9bF+xorgAugofek1CT5IBV7qXqxakf+5iTtgvSeajUSxjZ7a2NoR/QongzNjWlPoA5d/O6QxVw9xFZ507i6621tvbUFibCt0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=g6y15jeN; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYsFHduW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4D61F00A3A;
-	Tue, 14 Jul 2026 04:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784003526;
-	bh=ICf9OHjwxFwehYXqEt5J3kn7A2kZgUciQx2f6MzCt2Y=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=cYsFHduWOEX/90cDUwmi0F84QmFNIfZ3UOkSD15Mm6AFMrgog/Z3+LhFLFXaQAF6w
-	 MaIIiyoItCwgVQvrjwXYScVJkOZ9COVI0lMoPtIxy7gZt6l7vOqf84FObbfPBTPW9q
-	 ykCjbvzwlf6xSxpshlJmNFLfJU9kM6hEl/zQWGyl+/zu1Nlm/hYaFnO27guyzVYIme
-	 E9opmFJAhSYVTai4+TK2/6UgiDvmpkZrJKuWqvBO70tRnsAeHSMYvW+GMvvpe3uNeo
-	 hexyC3uVOJDkaGDrod7y5bLFGU/aM73lRPPSIoO0cxExUIUlhZXHO7oYY6zhOfuTyf
-	 tkJU8/4zTbNGA==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4EC2FF40078;
-	Tue, 14 Jul 2026 00:32:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 14 Jul 2026 00:32:04 -0400
-X-ME-Sender: <xms:xLtVarN6dk6rsOmCkO-hvq2gJutn2hmcYU2JOjSRSc0fi3AkkOV9ew>
-    <xme:xLtVaq0DBDSAFo0Y760y9W7A4ziv7FNxyEMR1Ly7CC_JlHyw73eHHkuE0DMVm_n1x
-    TeMCHOKzqdfWkwAV63jdG_QgaxiUJh7wsgWcIRfzFK2y-GaAZyxJIs>
-X-ME-Received: <xmr:xLtVan0Pq4IxK_mW93Uam745vAuJ2f_c89w59gk_tIIS9-eAVoiO639-v9Vb-YCv3RR1fhYhXw46W-rY0bI5hNWZAb4sImHT9ao>
-X-ME-Proxy-Cause: dmFkZTETAL60usH4lwlQ+4JamyiGMB40vHl7RgBXxsRW+Q/t46XOvYKxjtcqB7DgAdPC6i
-    zMIujK7PY4sEwXxazD+cu/TeVDF4gGUKmmd54dtA25ch6rGoXJwCupkApom8abyimHWxjk
-    DLdaPpsTwRaHCE++9rktMWDjVDFmr6CU0Jm7oQH94vJ7v+mplgl45VZFu0bVcmqSldtmyP
-    TsPb5ggmXk5spRxfJAiNTZnPUydufMtrYp4tqcSf/n46+m3l7r38cEHazhwn6Qp7DP25OL
-    +7gmDJ3RA06dy6rPvT8Slk3sgoDnnQ42j+hY5zYQVGCGqQspCGSx7XiOjPEtOtzmpVcxbM
-    sxpp+PgECi1Nk6EOwSE5+G77XfTW+06KOFWMcYwxpsclj/vLEOOGfHjhEgQtQFRjAsmBq1
-    nz0rZySu2yEuP/cuXXREFPtFMgH07FMuR3pMx57MagjZ4O+loKKKSoNHSPcieSeJ5/HZ6S
-    hL7IRiKeWLeEuHKkbK7NktIMhi89NtiFQZw9e7Nt9G4HsFIJW3kpfnAgqzFOnHxsva95hS
-    ssbW7ZxM53LmT9XKcEr50YysPX0vTrRoxmSGzMq16mukrhzOEBRx6jRmrY5j3iYbbvaFZe
-    V0B3jQYtoJ58Zt7Wqu5UJn8rTsTND9kyp3b7TO/B8nNfcJPnZi0TK1Mem4bA
-X-ME-Proxy: <xmx:xLtVahy2ngywLag-bMOt0yjyZRXwzIkHthZsohlCWRjaN92gSyj23A>
-    <xmx:xLtVaikLSb0O6jdVHHApcpNpF9jpnWGMImdDuINYgaQtAWqL5qE1cA>
-    <xmx:xLtVatzdFt6uVf1Kd6-ggDleOTtMVSJ_r4dg92V5tJ2S53s2ryETsg>
-    <xmx:xLtVapJenbLv68dmWS4szRfchpH2gaL2c3Rl2STOKCitqmiivYnw2w>
-    <xmx:xLtVagKBbKwjiBvK_qMG6wu9fLclvcCKO5KvhGBOnRpLAcnWoYdg7qjy>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 00:32:03 -0400 (EDT)
-Date: Mon, 13 Jul 2026 21:32:02 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Manish Honap <mhonap@nvidia.com>, 
- Alex Williamson <alex@shazbot.org>
-Cc: "djbw@kernel.org" <djbw@kernel.org>, 
- "jgg@ziepe.ca" <jgg@ziepe.ca>, 
- "jic23@kernel.org" <jic23@kernel.org>, 
- "dave.jiang@intel.com" <dave.jiang@intel.com>, 
- Ankit Agrawal <ankita@nvidia.com>, 
- "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>, 
- "alison.schofield@intel.com" <alison.schofield@intel.com>, 
- "dave@stgolabs.net" <dave@stgolabs.net>, 
- "dmatlack@google.com" <dmatlack@google.com>, 
- "gourry@gourry.net" <gourry@gourry.net>, 
- "ira.weiny@intel.com" <ira.weiny@intel.com>, 
- Neo Jia <cjia@nvidia.com>, 
- Krishnakant Jaju <kjaju@nvidia.com>, 
- Vikram Sethi <vsethi@nvidia.com>, 
- Zhi Wang <zhiw@nvidia.com>, 
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, 
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
- Manish Honap <mhonap@nvidia.com>
-Message-ID: <6a55bbc276b96_f7ebd100e4@djbw-dev.notmuch>
-In-Reply-To: <IA1PR12MB90309355D97FE886A1DA77BABDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
-References: <20260625165407.1769572-1-mhonap@nvidia.com>
- <20260625165407.1769572-8-mhonap@nvidia.com>
- <20260710162316.29cf8107@shazbot.org>
- <IA1PR12MB90309355D97FE886A1DA77BABDFA2@IA1PR12MB9030.namprd12.prod.outlook.com>
-Subject: RE: [PATCH v3 07/11] vfio/pci: Add CONFIG_VFIO_PCI_CXL with bind-time
- CXL Type-2 acquisition
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="g6y15jeN"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1784003955; x=1815539955;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
+  b=g6y15jeN6iLmotyqpjxo6T26TwMtnjNxQU4LZi4S1Obt7MQHl6pHp7Af
+   npep2vpGcniPZ4sPfkjEi45z4v8hvultiff0Xl4wM+SRdVCBjnnsUKQmz
+   O/q70CvJMPKthwpqhuhFT9eyUxRBTZ+D/+3Xfz13sqSwxoGRrC/MSkTAt
+   Z7Zvuv9HJ+3EBh9Jf2e11Ks1EL5ObsDy44d6Xih9/QoxVznlQ2eK2x5aE
+   r8CVOrzIZJFSmSd1pS4Q4trWjmCVy0nc7wDcNXyJl9SNbxUMkSwzx2lTN
+   WADy04iOvwOIoFZ8nTLAw54ldgpW6OtlUBSVwj7064Y/ebPTiq1H4A+gC
+   w==;
+X-CSE-ConnectionGUID: V7kZT2LcS7WkUEh62HLwPg==
+X-CSE-MsgGUID: /US9JRBDSSmvZJMwbwELKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="247323397"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779116400"; 
+   d="scan'208";a="247323397"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 13:38:03 +0900
+Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 9897F42A30B;
+	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 46E1B1C00168;
+	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.86.149])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id EE48E1800B39;
+	Tue, 14 Jul 2026 04:37:54 +0000 (UTC)
+Date: Tue, 14 Jul 2026 13:37:52 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
+Message-ID: <alWzvLK1RRotK1LL@FCCLS0092175.localdomain>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-27-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260513131757.116630-27-steven.price@arm.com>
 
-Manish Honap wrote:
-[..]
-> > > vfio_pci_cxl_acquire() implements the bind sequence:
-> > >
-> > >   - pcie_is_cxl() and CXL Device DVSEC discovery (-ENODEV if absent=
+On 05/13 14:17, Steven Price wrote:
+> The VMM needs to populate the realm with some data before starting (e.g.
+> a kernel and initrd). This is measured by the RMM and used as part of
+> the attestation later on.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v13:
+>  * Rename realm_create_protected_data_page() to realm_data_map_init().
+> Changes since v12:
+>  * The ioctl now updates the structure with the amount populated rather
+>    than returning this through the ioctl return code.
+>  * Use the new RMM v2.0 range based RMI calls.
+>  * Adapt to upstream changes in kvm_gmem_populate().
+> Changes since v11:
+>  * The multiplex CAP is gone and there's a new ioctl which makes use of
+>    the generic kvm_gmem_populate() functionality.
+> Changes since v7:
+>  * Improve the error codes.
+>  * Other minor changes from review.
+> Changes since v6:
+>  * Handle host potentially having a larger page size than the RMM
+>    granule.
+>  * Drop historic "par" (protected address range) from
+>    populate_par_region() - it doesn't exist within the current
+>    architecture.
+>  * Add a cond_resched() call in kvm_populate_realm().
+> Changes since v5:
+>  * Refactor to use PFNs rather than tracking struct page in
+>    realm_create_protected_data_page().
+>  * Pull changes from a later patch (in the v5 series) for accessing
+>    pages from a guest memfd.
+>  * Do the populate in chunks to avoid holding locks for too long and
+>    triggering RCU stall warnings.
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |   4 ++
+>  arch/arm64/kvm/Kconfig           |   1 +
+>  arch/arm64/kvm/arm.c             |  13 ++++
+>  arch/arm64/kvm/rmi.c             | 106 +++++++++++++++++++++++++++++++
+>  4 files changed, 124 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 007249a13dbc..a2b6bc412a22 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -88,6 +88,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
+>  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
+>  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
+>  
+> +struct kvm_arm_rmi_populate;
+> +
+> +int kvm_arm_rmi_populate(struct kvm *kvm,
+> +			 struct kvm_arm_rmi_populate *arg);
+>  void kvm_realm_unmap_range(struct kvm *kvm,
+>  			   unsigned long ipa,
+>  			   unsigned long size,
+> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> index 4e16719fda22..d0cd011cf672 100644
+> --- a/arch/arm64/kvm/Kconfig
+> +++ b/arch/arm64/kvm/Kconfig
+> @@ -38,6 +38,7 @@ menuconfig KVM
+>  	select GUEST_PERF_EVENTS if PERF_EVENTS
+>  	select KVM_GUEST_MEMFD
+>  	select KVM_GENERIC_MEMORY_ATTRIBUTES
+> +	select HAVE_KVM_ARCH_GMEM_POPULATE
+>  	help
+>  	  Support hosting virtualized guest machines.
+>  
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index ed88a203b892..073ba9181da9 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -2131,6 +2131,19 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+>  			return -EFAULT;
+>  		return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
+>  	}
+> +	case KVM_ARM_RMI_POPULATE: {
+> +		struct kvm_arm_rmi_populate req;
+> +		int ret;
+> +
+> +		if (!kvm_is_realm(kvm))
+> +			return -ENXIO;
+> +		if (copy_from_user(&req, argp, sizeof(req)))
+> +			return -EFAULT;
+> +		ret = kvm_arm_rmi_populate(kvm, &req);
+> +		if (copy_to_user(argp, &req, sizeof(req)))
+> +			return -EFAULT;
+> +		return ret;
+> +	}
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index a89873a5eb77..209087bcf399 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
+>  		realm_unmap_private_range(kvm, start, end, may_block);
+>  }
+>  
+> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
+> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
+> +			       unsigned long flags)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	phys_addr_t dst_phys, src_phys;
+> +	int ret;
+> +
+> +	dst_phys = __pfn_to_phys(dst_pfn);
+> +	src_phys = __pfn_to_phys(src_pfn);
+> +
+> +	if (rmi_delegate_page(dst_phys))
+> +		return -ENXIO;
+> +
+> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
+> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +		/* Create missing RTTs and retry */
+> +		int level = RMI_RETURN_INDEX(ret);
+> +
+> +		KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
+> +
+> +		ret = realm_create_rtt_levels(realm, ipa, level,
+> +					      KVM_PGTABLE_LAST_LEVEL, NULL);
+> +		if (!ret) {
+> +			ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys,
+> +						    flags);
 
-> > >     or if MEM_CAPABLE clear =E2=80=94 caller falls back to plain vf=
-io-pci)
-> > >   - devm_cxl_dev_state_create() with struct vfio_pci_cxl_state
-> > >     embedding cxl_dev_state at offset 0 (required by the 7-arg
-> > >     macro's static_assert in include/cxl/cxl.h)
-> > >   - pci_enable_device_mem(), cxl_pci_setup_regs(), cxl_get_hdm_info=
-()
-> > >     (rejecting hdm_count !=3D 1), cxl_regblock_get_bar_info(),
-> > >     cxl_await_range_active()
-> > =
+I think rmi_rtt_data_map_init() returns a raw RMI return value which is
+positive on failure. Shouldn't it be converted to -ENXIO or another
+Linux errno before returning it?
 
-> > The cover letter claims otherwise:
-> > =
+Otherwise, the positive error value can propagate through
+kvm_gmem_populate() and populate_region() to kvm_arm_rmi_populate().
+There, it would be treated as the number of pages populated, even though
+the operation did not populate any pages.
 
-> >   "- cxl_await_range_active stays in cxl-core probe; not exported, vf=
-io
-> >   does not call it."
-> > =
+> +		}
+> +	}
+> +
+> +	if (ret) {
+> +		if (WARN_ON(rmi_undelegate_page(dst_phys))) {
+> +			/* Undelegate failed, so we leak the page */
+> +			get_page(pfn_to_page(dst_pfn));
 
-> > It's exported in 2/ and called below.
+Since realm_create_rtt_levels() returns either 0 or a negative errno,
+how about preserving that error and converting any raw RMI erorr to
+-ENXIO here?
 
-This feels like a gap on the CXL side. devm_cxl_probe_mem() should take
-care to only succeed after memory is active, or fail with a timeout.
+		return ret < 0 ? ret : -ENXIO;
 
-Recall that the current cxl_await_range_active() export is for the
-"internal" cxl_pci driver. Now that there are external consumers
-devm_cxl_probe_mem() should return a fully validated and awaited memory
-range. Do not make every driver remember this part of the setup flow.
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> +			      struct page *src_page, void *opaque)
+> +{
+> +	unsigned long data_flags = *(unsigned long *)opaque;
+> +	phys_addr_t ipa = gfn_to_gpa(gfn);
+> +
+> +	if (!src_page)
+> +		return -EOPNOTSUPP;
+> +
+> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
+> +				   data_flags);
+> +}
+> +
+> +static long populate_region(struct kvm *kvm,
+> +			    gfn_t base_gfn,
+> +			    unsigned long pages,
+> +			    u64 uaddr,
+> +			    unsigned long data_flags)
+> +{
+> +	long ret = 0;
+> +
+> +	mutex_lock(&kvm->slots_lock);
+> +	ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr), pages,
+> +				populate_region_cb, &data_flags);
+> +	mutex_unlock(&kvm->slots_lock);
+> +
+> +	return ret;
+> +}
+> +
+>  enum ripas_action {
+>  	RIPAS_INIT,
+>  	RIPAS_SET,
+> @@ -574,6 +643,43 @@ static int realm_ensure_created(struct kvm *kvm)
+>  	return -ENXIO;
+>  }
+>  
+> +int kvm_arm_rmi_populate(struct kvm *kvm,
+> +			 struct kvm_arm_rmi_populate *args)
+> +{
+> +	unsigned long data_flags = 0;
+> +	unsigned long ipa_start = args->base;
+> +	unsigned long ipa_end = ipa_start + args->size;
+> +	long pages_populated;
+> +	int ret;
+> +
+> +	if (args->reserved ||
+> +	    (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
+> +	    !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
+> +		return -EINVAL;
+> +
+> +	ret = realm_ensure_created(kvm);
+> +	if (ret)
+> +		return ret;
 
-> > >   - devm_cxl_passthrough_create() to snapshot the DVSEC body, HDM
-> > >     block, and CM cap-array shadows owned by cxl-core
-> > >   - pci_disable_device() =E2=80=94 clears PCI_COMMAND_MASTER but NO=
-T
-> > >     PCI_COMMAND_MEMORY, so cxl-core MMIO accesses from the next ste=
-p
-> > >     still succeed
-> > >   - devm_cxl_probe_mem() to register the cxl_memdev, enumerate the
-> > >     endpoint port, and attach the firmware-committed autoregion
-> > >   - request_mem_region() + memremap_wb() of the autoregion's HPA so=
+If I understand correctly, concurrent KVM_ARM_RMI_POPULATE calls can
+race with each other in realm_ensure_created(). 
 
-> > >     the HDM VFIO region can serve guest accesses through it
-> > =
+realm_ensure_created() calls realm_create_rd() when kvm_realm_state() ==
+REALM_STATE_NONE. Since kvm->arch.config_lock is not held here, multiple
+threads could enter realm_create_rd() concurrently.
 
-> > How does this interact with:
-> > =
+KVM_ARM_RMI_POPULATE can also race with KVM_RUN through
+kvm_activate_realm(). kvm_activate_realm() takes kvm->arch.config_lock
+while checking the Realm state, calling realm_ensure_created(), and
+updating the state, whereas KVM_ARM_RMI_POPULATE does not.
 
-> >  - The device making use of low power states while idle
-> >  - Repeatability per tenant instance
-> >  - Protection of tenant data per instance
-> > =
+How about serializing Realm creation here as follows?
+	scoped_guard(mutex, &kvm->arch.config_lock) {
+		ret = realm_ensure_created(kvm);
+		if (ret)
+			return ret;
+	}
 
-> > The culmination of all of these, plus the basic housekeeping of
-> > maintaining the lightest touch on the device, including keeping the
-> > device in the minimum state of functionality outside of an actual use=
-r,
-> > is why I would expect to perform acquire/release as part of open/clos=
-e.
-> =
+Does that make sense?
 
-> The cover letter description is wrong. During my earlier thought proces=
-s,
-> creating a region during probe seemed a correct option as any later req=
-uirement
-> where region needs to be already created at probe emerged, we will have=
- easier
-> way to handle it. I will give some more thought to update v4 to acquire=
-
-> CXL state in open_device() and release it in close_device(), matching z=
-pci.
-
-This is going to run up against a current design wart of
-devm_cxl_probe_mem() that does not have a teardown flow implemented
-outside of the typical ->remove() to devres_release_all() flow. Even if
-that was fixed I do not see it affecting the listed concerns.
-devm_cxl_probe_mem() for firmware committed decoders is mostly just
-reading resource values.
-
-For power state management the power management that vfio-pci performs
-only informs the CXL.io portion of device power. CXL.cache and CXL.mem
-are dynamically managed by the device.
-
-For repeatability I do think discarding and reinitializing the shadow
-configuration makes sense, but the base HDM configuration does not
-require teardown.
-
-For tenant data protection that arises from the data retention after
-reset policy, not impacted by unloading the HDM configuration.
-
-I assume VFIO likely would want to build a capability to zero HDM memory
-if the device leaves the state ambiguous / implementation defined?
-
-That is a good note for the CXL Reset series as well. If VFIO issued
-resets are for tenant handoff the make sure that CXL Reset requests
-memory clearing.
+> +
+> +	if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
+> +		data_flags |= RMI_MEASURE_CONTENT;
+> +
+> +	pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
+> +					  args->size >> PAGE_SHIFT,
+> +					  args->source_uaddr, data_flags);
+> +
+> +	if (pages_populated < 0)
+> +		return pages_populated;
+> +
+> +	args->size -= pages_populated << PAGE_SHIFT;
+> +	args->source_uaddr += pages_populated << PAGE_SHIFT;
+> +	args->base += pages_populated << PAGE_SHIFT;
+> +
+> +	return 0;
+> +}
+> +
+>  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm *kvm = vcpu->kvm;
+> -- 
+> 2.43.0
+> 
+> 
