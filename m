@@ -1,148 +1,204 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010049.outbound.protection.outlook.com [52.101.46.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D2648BD3E
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 15:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784044355; cv=fail; b=YE9WL+Y35Wls9sJldBZzNfP/v1YXM7rXTy4ttx7hj1NXT3NS8xkd/7iq7QCpukAEAbludD8zBR0VUCyGuy8pkxBQTAOc+Qy/yZArbkH1zVI+IuqRd1recCHk/NMW50EP9OItzaMK02yOw50ABWfIEgAIB0dr2RiIoAsdyfnl4A0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784044355; c=relaxed/simple;
-	bh=X1M4oY74rYUwC/zmhtMA0zTbEhjuzJ4fz+jh82aPNUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hgGtBHCNyp2n5czKa8wPjbPx0oKjmnI0Ejufy5SXiyYisIb+pS7m9c/Vh8ez4Ri5inGZPhvDBVJURz+D4doA1R+0OWZARYo3yhnOnJi0utcsnqQ/rxe4HNDupRop83pP3YSk86Rt3gX6Vi0dVeA8Eh2fKd6niKZQzVfEuSSkufg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FtunMA17; arc=fail smtp.client-ip=52.101.46.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E664A3406;
+	Tue, 14 Jul 2026 16:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784045065; cv=none; b=l9LnUbzYdG+tfxVttJQI+WBSMy3xkkijXap1QBo0dMqg5ZzZxi7l6UfT8nO6Kzjc3ZSAc2TDMN+r2Sqdah4xuPkGbtP0rde2c4l+nuPyGZsTofMhVbN2thIFY5m1pr2OxBAPnMizHf29tVBf+RtIItPQ9aa3/gvSEgenIRdHhOc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784045065; c=relaxed/simple;
+	bh=t2KYfj/agvlS18IATNMk9iCfEZE6pPzvSrr+EZU4WmA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=E3xG+o8qA0NEKC5ckrQq7IP2AACEZrGmsGI/8s+JsawxNP18dwc2KYcklc4JsB/LQHhg3OS5juAQm8sJ1BNTG9TZmF75hoDNIH8IBh+RezzUsdkRNkG3ZOxp5ZWji4g9OTEY0tDDLnIddgvNPEKfPf7hLwXrGaOUQpDLbZNSe/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cj+ccMvx; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FtunMA17"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QoZRoI+/jHNrlujQNR6fD6p9dyi1gl5LJKde47bqiArAVQJW6DWgre5he5DabXxgqp+kCqwJEjsQOtcljCdEP0UfQLMGhpyTg2giZcwBXl4RHaSHTwqedJGVS6Eo5F3CklwfhT59+N+k/28nJOlOCS7IAhK7xTTiep7uRfSlmWFjCuJbzXIPQ74/+LPHAb8H2wYsLaJuRh35gw8MMPwI/15edHxV/U721EjVpfooBzwa6u8dwQO/atilHVQL0swYK4vIgxzbvAVFeey+Ez5S6KYclhnGc2IdBN4kba4QbRgAM8qorASV5afMiUkdk+dBx4IRlFwGgEHIudFSpedN0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WhWqrdfvN1pfV+D8MRfWfx6znRCarh2bL/A0jA25Q98=;
- b=coWCXlg0MjfRSjlmKUEFRCStrO8liQbMRd7MP8B+RE8yA0hskT1mJnfaLSwEigpapPyy8FoFgypNN33nCoPOMtJQ4Qu/T6JKgTFJFL2k/7Eeh17KC1iL9KJ+Y/SSxyAcllv9HwUxW2Chi7iMSnidfNqfn8patu8/pqy6DHRKc3fWhQhLbu6D8l1pb7APhGVjFJMIKfJ1hrmTyC7UGOb/ZqfURx700KZlKPCyREccpZ9pOzgykPdVcmUwOiflExjiazVtzuz1ovefXfUciEw55a+mZ4yM/ufwFVtTIpD2FnC9fIS5MRZ+gve4YTlajuUKue7efbxcPSrMcunK2aMiWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WhWqrdfvN1pfV+D8MRfWfx6znRCarh2bL/A0jA25Q98=;
- b=FtunMA17Ol/Btjy0dlpdmcapoZWwWXbGU7VFf5XBhXFABY2Xqy6qo0vOs9Q11lNaMoHQrKcNMnlnINPL+xzLdpgCCvYvzdmCJ/1xEQqlHWSAauV8J8jUaU3Ha5tzzGdwCZorHdC+mF5eYqWwc4Z4V2aoBACHsgMewE6D3EwV/6Q=
-Received: from PH7PR10CA0006.namprd10.prod.outlook.com (2603:10b6:510:23d::25)
- by CH3PR12MB8934.namprd12.prod.outlook.com (2603:10b6:610:17a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
- 2026 15:52:23 +0000
-Received: from SJ1PEPF000023CD.namprd02.prod.outlook.com
- (2603:10b6:510:23d:cafe::1d) by PH7PR10CA0006.outlook.office365.com
- (2603:10b6:510:23d::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.10 via Frontend Transport; Tue,
- 14 Jul 2026 15:52:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000023CD.mail.protection.outlook.com (10.167.244.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.9 via Frontend Transport; Tue, 14 Jul 2026 15:52:22 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 14 Jul
- 2026 10:52:20 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 14 Jul
- 2026 10:52:20 -0500
-Received: from [10.252.195.157] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Tue, 14 Jul 2026 10:52:16 -0500
-Message-ID: <7e35fcf9-9d87-4274-a189-fb1af4033e59@amd.com>
-Date: Tue, 14 Jul 2026 21:22:16 +0530
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cj+ccMvx"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5C436339;
+	Tue, 14 Jul 2026 09:04:18 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 009BD3F7B4;
+	Tue, 14 Jul 2026 09:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784045062; bh=t2KYfj/agvlS18IATNMk9iCfEZE6pPzvSrr+EZU4WmA=;
+	h=From:To:Subject:Date:From;
+	b=cj+ccMvxR7Gp0S6Df60GrepTnSACTST8Nvb6CfEG2XojadhD4TYl0Til1+IELdFyI
+	 1xuBXBpas50TFEvHjni8AHUWyYyoIhRku6BYo0rgrSHBUXA/vTovvp9lgyaMcucGNs
+	 pmupE1IXyIS0bNsCSGdpOs7Eww+2W140P0I904rs=
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: pbonzini@redhat.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	maz@kernel.org,
+	oupton@kernel.org,
+	suzuki.poulose@arm.com,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	seanjc@google.com,
+	david.hildenbrand@arm.com,
+	mark.rutland@arm.com,
+	ackerleytng@google.com
+Subject: [PATCH v2] KVM: Ignore MMU notifiers for guest_memfd-only memslots
+Date: Tue, 14 Jul 2026 17:04:11 +0100
+Message-ID: <20260714160411.302386-1-alexandru.elisei@arm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] KVM: nSVM: Sanitize nested DR6 using
- kvm_dr6_fixed()
-To: "Nikunj A. Dadhania" <nikunj@amd.com>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <kvm@vger.kernel.org>, <x86@kernel.org>,
-	<yosry.ahmed@linux.dev>, <jmattson@google.com>, <thomas.lendacky@amd.com>,
-	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <santosh.shukla@amd.com>,
-	Shivansh Dhiman <shivansh.dhiman@amd.com>
-References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
- <20260709082953.69434-4-shivansh.dhiman@amd.com>
- <1532d3dd-3165-4209-81c8-c09c7049f537@amd.com>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <1532d3dd-3165-4209-81c8-c09c7049f537@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CD:EE_|CH3PR12MB8934:EE_
-X-MS-Office365-Filtering-Correlation-Id: dfc71382-5923-43df-2e72-08dee1bfe4dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|23010399003|18002099003|22082099003|56012099006|4143699003|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	o5U8YPRU1QkYf+wd0Y7kOrb5M3WjjkXvSxLPlBEafaLiRtQQ7zxEd9Q4L3Q63tjAG7/Ee+WXcW9bKDliABIiIAdCXakLw0WrwrSCiKq96yImXzK6R1rx/5gaxD0PbZo495yRhgmau4XWUyYjXWptp/9Nwf544wrRI95oIy/oFHskOcpHrSVI2M4TEhgF8aBOP41Xczt5fPvF2mfqo3LC4RUFp2SMnQ5yP9Gask1KNlpYV9UQX2bgBIFbVD9pjddZh7nDQqebJg0hGOAAU+TGZ/0QKrmFhp88PdfzYBTZtN/nCX4UmwJ2RqfOUhFdOtQpHljsqGJI2RbM+gibsyCHYOL3rDTqlukr7P58PcCfinQi+nVueajpkJmr0XSSiUr7ZhAy7Lwh5u6+NlADVTc/J2Y7HMMYkjEqDy0CFkGbJOfetPWHP6xoXDAOcjuADxJNpoiDQWwnMCT+LGI8bHiF32TGayE6kZTq+D/N6hhfoBsJBN7HuwGaPBsEN+Q6/0RGkxHOpnsKJr7VAwESxbJ4jTQFjHtxuEyxwOHSWBHtT+G1VXqM/FEf2/OmT9O6ZNgqJXSx6cyNApoiu46qYsqPpiVae3blQ5pTEzsIuX77c1ZCpqJUJG/i94Aid0/kJIj1bIFlKScugD1gGzQg5qad707BejmgS791CrNAPvXFE6tGZj5dZRqzxtcZRfvO6OJZzqT3rKOAbCdLdLaoXiROWQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(23010399003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	jFEinrkh58oHdDFVuXq2YtuD7SsHxeRJPoTb/cAJh+BK/D6YWMOdL1Mdb5o/i8T49c43oS2cjADjTCzSWPf725PqxP18uuzeY7/msy+SAdhVWiaGDelPosLsiRy8OYrgx1D7sHGeoq256EyNDwilt6zGTSVMBCMdh1JbMxqI7W5MFnukJCCvcrnf2UX2YJjmER5876mUVErHG421JNOKr2Ef7mhlIz6g+KzEuYu+uGmrGzPssZ5lZ9+X3sg8vwUqmKqkfuEK4IHVl+VOP4wnK8a8CZT8bEYofKRQ/lv/X6ao5AW//8pQLsZ5y3pT2hNZZ9YIh2etCnOBvBnJ4SV626beZAJZq3l3cqGxA230Uo6SgtJxolZMm7yClScm4lE5aWCbkHG7/YkjqBy8CcobdhKfFqRt9G7sDXLL9EbUwk3NqWRxxwRw2X0MaYcp/Ice
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 15:52:22.6478
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dfc71382-5923-43df-2e72-08dee1bfe4dc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023CD.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8934
+Content-Transfer-Encoding: 8bit
 
+For guest_memfd-only memslots (kvm_memslot_is_gmem_only() is true), the
+memory provider for the virtual machine is the guest_memfd file, not the
+userspace mapping. Mappings in the secondary MMU are established by
+obtaining folios from guest_memfd directly, not by looking the folios up
+through the page tables through GUP. Consequently, there is no relationship
+between the page tables and the secondary MMU: MMU notifiers do not apply.
 
+Despite this, KVM's MMU notifiers still modify the secondary MMU page
+tables, only for the same memory to be remapped the next time a guest
+accesses it. Make the disconnect between the user mapping and the secondary
+MMU page tables explicit by ignoring the MMU notifiers for guest_memfd-only
+memslots.
 
-On 14-07-26 15:32, Nikunj A. Dadhania wrote:
-> 
-> 
-> On 7/9/2026 1:59 PM, Shivansh Dhiman wrote:
->> When preparing vmcb02 for nested VMRUN, KVM ORs DR6_ACTIVE_LOW into the
->> guest DR6 to force the fixed bits to 1. DR6_ACTIVE_LOW forces bit 11
->> (DR6_BUS_LOCK) to 1 unconditionally.
-> 
-> It would help to state what breaks as a result when forcing DR6_BUS_LOCK
-> to 1 unconditionally. 
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+v1 can be found here [1].
 
-Good point. DR6_BUS_LOCK is active-low (0 = bus lock detected), so forcing
-it to 1 would prevent a BLD-capable L2 from ever observing a bus lock across
-a nested VMRUN. I'll spell that out in v4.
+Same testing as in v1: on arm64, mapped guest_memfd in kvmtool's address
+space, used KVM_PRE_FAULT_MEMORY to map the entire stage 2, then unmapped
+guest_memfd from kvmtool's address space. The memory remained mapped at
+stage 2.
 
-Thanks.
+Changes in v2:
 
-> 
->>
->> Use kvm_dr6_fixed() instead, which forces DR6_RTM and DR6_BUS_LOCK based on
->> the guest's CPUID. DR6_RTM is a reserved bit on AMD and is thus always set
->> to 1. DR6_BUS_LOCK is left writable once the guest supports Bus Lock
->> Detect.
->>
->> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> 
-> Regards
-> Nikunj
-> 
+* Rebased on top of v7.2-rc3.
+
+Changes in v1:
+
+* Dropped the RFC tag.
+* Fix unbalanced invalidation reported by sashiko by implementing Sean's
+  approach; I've expanded it to page ageing.
+* Modified the commit message as per DavidH comment.
+
+[1] https://lore.kernel.org/kvm/20260625130902.258331-1-alexandru.elisei@arm.com/
+
+ include/linux/kvm_host.h |  1 +
+ virt/kvm/kvm_main.c      | 50 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 47 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ab8cfaec82d3..ecf5c0cbf0f0 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -260,6 +260,7 @@ union kvm_mmu_notifier_arg {
+ enum kvm_gfn_range_filter {
+ 	KVM_FILTER_SHARED		= BIT(0),
+ 	KVM_FILTER_PRIVATE		= BIT(1),
++	KVM_FILTER_USERSPACE_MAPPINGS	= BIT(2),
+ };
+ 
+ struct kvm_gfn_range {
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index e44c20c04961..bd469395f176 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -607,8 +607,13 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+ 			/*
+ 			 * HVA-based notifications aren't relevant to private
+ 			 * mappings as they don't have a userspace mapping.
++			 *
++			 * Memslots where guest_memfd is the only memory
++			 * provider can also safely ignore changes to the
++			 * userspace mapping.
+ 			 */
+-			gfn_range.attr_filter = KVM_FILTER_SHARED;
++			gfn_range.attr_filter = KVM_FILTER_SHARED |
++						KVM_FILTER_USERSPACE_MAPPINGS;
+ 
+ 			/*
+ 			 * {gfn(page) | page intersects with [hva_start, hva_end)} =
+@@ -715,6 +720,21 @@ void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
+ bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+ 	kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
++
++	/*
++	 * When reacting to changes in userspace mappings, don't unmap memslots
++	 * that are guest_memfd-only, in which case KVM's MMU mappings are
++	 * pulled directly from guest_memfd, i.e. don't depend on the userspace
++	 * mappings.
++	 *
++	 * TODO: Skip gmem-only memslots on mmu_notifier events entirely, once
++	 * gfn_to_pfn_cache is also wired up to directly pull from guest_memfd.
++	 */
++	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
++	    kvm_slot_has_gmem(range->slot) &&
++	    kvm_memslot_is_gmem_only(range->slot))
++		return false;
++
+ 	return kvm_unmap_gfn_range(kvm, range);
+ }
+ 
+@@ -825,12 +845,23 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
+ 		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
+ }
+ 
++static bool kvm_mmu_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	/* See comment in kvm_mmu_unmap_gfn_range() */
++	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
++	    kvm_slot_has_gmem(range->slot) &&
++	    kvm_memslot_is_gmem_only(range->slot))
++		return false;
++
++	return kvm_age_gfn(kvm, range);
++}
++
+ static bool kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
+ 		struct mm_struct *mm, unsigned long start, unsigned long end)
+ {
+ 	trace_kvm_age_hva(start, end);
+ 
+-	return kvm_age_hva_range(mn, start, end, kvm_age_gfn,
++	return kvm_age_hva_range(mn, start, end, kvm_mmu_age_gfn,
+ 				 !IS_ENABLED(CONFIG_KVM_ELIDE_TLB_FLUSH_IF_YOUNG));
+ }
+ 
+@@ -852,7 +883,18 @@ static bool kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+ 	 * cadence. If we find this inaccurate, we might come up with a
+ 	 * more sophisticated heuristic later.
+ 	 */
+-	return kvm_age_hva_range_no_flush(mn, start, end, kvm_age_gfn);
++	return kvm_age_hva_range_no_flush(mn, start, end, kvm_mmu_age_gfn);
++}
++
++static bool kvm_mmu_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
++{
++	/* See comment in kvm_mmu_unmap_gfn_range() */
++	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
++	    kvm_slot_has_gmem(range->slot) &&
++	    kvm_memslot_is_gmem_only(range->slot))
++		return false;
++
++	return kvm_test_age_gfn(kvm, range);
+ }
+ 
+ static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+@@ -861,7 +903,7 @@ static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+ 	trace_kvm_test_age_hva(address);
+ 
+ 	return kvm_age_hva_range_no_flush(mn, address, address + 1,
+-					  kvm_test_age_gfn);
++					  kvm_mmu_test_age_gfn);
+ }
+ 
+ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+
+base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+-- 
+2.55.0
 
