@@ -1,104 +1,114 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C26644C645
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EF544C640
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784057485; cv=none; b=Q6gpQX+/5JInmzLwsBEjBLsU+E9pIy++TMutLrSTqPbTBqVHWfLQgCj/Ws3jI5bj1OkUE0ZE6FQnPhcTUDoX/zH/9s/GagprYH0J49kWmLHRytddzLgYYRCh8iW0sPaqxS8gsFtehCfx9jscOIgsbjFBrJfBxzYFdoF0iI8aBcI=
+	t=1784057490; cv=none; b=RR0aqP6QwwPhRDo2OOWw0Yijg8gxznGo9sF9p/ihkNBcdW0hj8ajozsWBQRHIi77gg0wVubpVxFLteceuSJCjNzjp4Y6ltxlkue6oyLCIRTSlx5AmKUbDdLnSgoS8Un2zDadRPbXF0neqTcR5ETHh5o8sRG6d+kVHn1944aqyE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784057485; c=relaxed/simple;
-	bh=a1N4Gjf1Ub2JZ4peldmTfLzoa3g6sEym1vcgdOeecPQ=;
+	s=arc-20240116; t=1784057490; c=relaxed/simple;
+	bh=iG8hwp+rHHFEOMU7Zki8YFVmq0hCko/EZAd1I5tGeOQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mu/9SZ0Nx+6SFAKY6avGXBv6eUBd3zqRHP/FEoTZboqQ/qm7ap+6n91VB8FRbVanIBmQ/QFhdzfSaQlpYRZtyQXi8d2NtEGeQP3+eWkkBYg+EOfZqAuI5gYlDadYfJ+bPC/FgV99Gtfoj/kf3nhRiMCclbPmtuUKpZp6ycN5P+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qAUlA+Zw; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=BSpghceoRql7OTKgOoNuIXAxnwf2vdPOIxTuPbhhiFJjlHYv9YVtk6sB/a8dPyo8YoROHfBMJvAFmmgkUGg3DNHxVn2Q4Hzs8tT4dzxlS7pB7qPI/4eiivdf7ebjK4nu+7JaZKNU0RrIer6iAkUYaegn+u3w1aSeZ3ZbsDPrsJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vXqOFvYT; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qAUlA+Zw"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3811279d51aso2570494a91.1
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:31:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vXqOFvYT"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cc86a9ef97so98364995ad.3
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:31:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784057483; x=1784662283; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784057488; x=1784662288; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dw0o/r9YzmigAnYEAZqwrVaBbDBZlqlxfMl+dk1QUUg=;
-        b=qAUlA+Zwau1/tAAu6WelK0/Q0Qzod8cLaWII4q6sYyRLZ4vhnaAuk8mOGCL+FFSs0P
-         nSz8Twl92l/EEjHAcwIWy+L2reGclaDs+esJGn7m0cxSRd5a41+Vu0TG8YS7nMIpp7+w
-         eZcneN5UPpHIkFsvTwIeYwsfQk0zCeIouRJ1sjHtV2bFg1BrT9/JfcZgpEdmg9KvDH/L
-         R+W0EznayVaiDbBkK7Ox+oJL+4EI04GHl/Z4VHZ93FVo6on82nPKn0M++aEUDkryjqwy
-         9IVmJS7Q/Hw02LwfXIEIizqzwQsv4HTkZ5oGI5lnJXo+mu4tkQphl2JVBT2ab/J7/G8N
-         LYFg==
+        bh=V/lTpCU/U4vEjJk+n9KMtNC2cd01M0QED221gVwRcMk=;
+        b=vXqOFvYTXgffS4QFInwwr7r4U9s90vaTwbhkyXA/28dvBJsnUgwFnQ7gbFT9X4AJFg
+         1Hqa+VwNaaj9imbc8amA/ZOL2/lVGYJ9/ksak+O9T5owPCRcfpxKcyWJV1EOoywVnejj
+         eL1tDn7LiwPt1STeZ2XVkfm+QBEy2tc2TFKLY6TvWb7zIOqgQTKeVsa7on/Xmr5kMLHS
+         cqPoAy0oO0dQo+yZaBYIhX8mHrZYEPYOmxgm65UBsSGIJbSRWyXkydiRz7tJH9sAlkhH
+         swUt3N6/uSadAZc/ailqhunK5bk24BNwdgLkCeLb9CUaTlbTVDG8pahUtq2cuVqsFxR9
+         q+Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784057483; x=1784662283;
+        d=1e100.net; s=20251104; t=1784057488; x=1784662288;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dw0o/r9YzmigAnYEAZqwrVaBbDBZlqlxfMl+dk1QUUg=;
-        b=Lft/jJCKxb4sEGLyaHLvsO832y2o6cxtLa9Fl8Z/PZ+RJQTKid3RVwcj8Uu9vjy2SQ
-         Q1e3u1kNK0FtdA60ARMdRonRQd7p8WcrqGWfn9MwvcaOJdE5PrgjlL23RpZkgPlGeJrx
-         /3un8ZXV8w9+UbVqscHjYAQZjuZQOqr9jzV1Ih5GlqyLJg+u0AhpVl+Kjhld3JPw6BSW
-         feaA1wYUqebpKe/SePWFSw2LF9P8WVbPRSLEOGbvHsrtGqywt2VgMmTH/q17I+kOrkOT
-         TJg3mK/oIjL9+fkix59FwMLaSIZNWKd7MIA6UW9wRiTpmHCiM/UI5Jhstf3jbqXzfF6d
-         HwNQ==
-X-Gm-Message-State: AOJu0YzrCKIyle50It3hj99htFCtmVg/Pf86AgCiewFL+/uGuCQYC6qU
-	crf5T5dhCC8gIfkAH/7eN1P2Xt6n7PfLxX/qGRMJdZ5pEuTTqFCsb6xFHrVoy36XXppEbWxnqFu
-	zFHGQmg==
-X-Received: from plxq9.prod.google.com ([2002:a17:902:dac9:b0:2c8:7ed:acf4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5443:b0:37f:9ce1:cda6
- with SMTP id 98e67ed59e1d1-38dc7735b02mr14987153a91.28.1784057483196; Tue, 14
- Jul 2026 12:31:23 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:29 -0700
-In-Reply-To: <20260612230113.684301-1-seanjc@google.com>
+        bh=V/lTpCU/U4vEjJk+n9KMtNC2cd01M0QED221gVwRcMk=;
+        b=e3B59ZPZIgbE5uBBEmWbXlLibVN6CjZABXFtAX43c8icBt/FiUR5zLiVStiUSM0BaU
+         EAf25y2+3qYIqkpp9yxtyYmkBWwhkja0+3hebkVEVYhtCuk8blKJCdOZANxL5EKMdZRB
+         7AHsXYe7nlHEj6sicGW3ZrTnnm2gG9he1rNukDxEDK8rJUQtsXoRXjk+ZDROfDPhdDuN
+         P49e0Cg2hhwixh8deOOj4AI/A4PU82d47r6hTMyS2bH7jaaaoA5Ulob6FxHv2xOBAe8E
+         V/A4fRhX84Xg/M8jRlYus5XeRnl0V57kcep8yOE8QuftnHAh/rOtjZbkEEsB9eGN/4qX
+         NyzQ==
+X-Gm-Message-State: AOJu0Ywuc8F2ZdtT2UCI59Gr2toU/YG3xRW+bYBlUxaoOH4/jRZh7gm7
+	G7J4VHHZU2Q/7Myp8k3W1xSNYbVIxCxCnYZuHAkPJIu8EbC1jF9JQAWq8/y35QIJx4+dY3wkpkM
+	iYlt9wg==
+X-Received: from pgls18.prod.google.com ([2002:a63:5252:0:b0:c86:5eaf:dd87])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9203:b0:3c1:142e:762d
+ with SMTP id adf61e73a8af0-3c34d5299f3mr6467344637.1.1784057488350; Tue, 14
+ Jul 2026 12:31:28 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:31 -0700
+In-Reply-To: <20260630225619.511632-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260612230113.684301-1-seanjc@google.com>
+References: <20260630225619.511632-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405414124.3135765.2653623426973553639.b4-ty@google.com>
-Subject: Re: [PATCH v3 0/8] KVM: x86: Fix emulated MOV DR{4,5} #GP bugs
+Message-ID: <178405363516.3123834.2010609317440120598.b4-ty@google.com>
+Subject: Re: [PATCH v4 00/11] KVM: x86/hyperv: Fix racy usage of vcpu->arch.hyperv
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>, "Maciej W . Rozycki" <macro@orcam.me.uk>
+	syzbot+5b32c49cd8f005e65654@syzkaller.appspotmail.com, 
+	syzbot+5d2b94b77112148d1744@syzkaller.appspotmail.com, 
+	David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 12 Jun 2026 16:01:05 -0700, Sean Christopherson wrote:
-> Carlos' fix for a bug where KVM fails to signal #GP on emulated MOV DR to
-> DR4 or DR5, plus a pile of follow-up fixes priority goofs (#UD versus #GP,
-> #GP vs #DB, and #GP versus #VMEXIT on SVM).  The rest are opportunistic
-> cleanups.
+On Tue, 30 Jun 2026 15:56:07 -0700, Sean Christopherson wrote:
+> Fix a bug found by syzkaller (originally on a Google-internal kernel, but now
+> on upstream as well) where KVM consumes a vCPU's HyperV structure before it's
+> fully initialized, by concurrently triggering PV TLB flushes (queues flushes
+> into a vCPU's FIFO without holding the vCPU's mutex) on a vCPU that is in the
+> process of activating HyperV.
 > 
-> v3:
->  - Fix a #UD vs #GP due to CPL>0 bug.
->  - Prioritize DR7.GD=1 #DB over CPL>0 #GP on Intel.
+> Harden against similar bugs by asserting the vcpu->mutex is held when using
+> the "normal" to_hv_vcpu(), same as we did for get_vmcs12() and
+> get_shadow_vmcs12() (also in response to cross-task races).  To avoid false
+> positives when creating a vCPU, initialize vcpu_idx to -1, and treat the vCPU
+> as unreachable (other than the caller, obviously) if its index is -1.
 > 
 > [...]
 
-Applied to kvm-x86 misc.  I still need to follow-up on Zhaoxinbehavior, but
-I'm quite confident Zhaoxin follows Intel.  And if I'm wrong, on-top fixups
-shouldn't be difficult.
+Applied to kvm-x86 misc, thanks!
 
-[1/8] KVM: x86: Treat any non-zero return from set_dr() as a faulting condition
-      https://github.com/kvm-x86/linux/commit/8f683a4dc546
-[2/8] KVM: x86: Prioritize DR7.GD #DB over #GP due to illegal DR6/7 value
-      https://github.com/kvm-x86/linux/commit/55ac576a9bf4
-[3/8] KVM: x86: Manually check DR4/5 write values to fix SVM intercept priority
-      https://github.com/kvm-x86/linux/commit/e27ca3dfbb73
-[4/8] KVM: x86: Prioritize #UD on MOV DR over #GP due to non-zero CPL
-      https://github.com/kvm-x86/linux/commit/32a7188a667f
-[5/8] KVM: VMX: Prioritize DR7.GD=1 #DB over CPL>0 #GP on Intel
-      https://github.com/kvm-x86/linux/commit/48512697c081
-[6/8] KVM: x86: Use kvm_dr{6,7}_valid() to check DR{4,5,6,7} write values in emulator
-      https://github.com/kvm-x86/linux/commit/1f077338d1cd
-[7/8] KVM: x86: WARN if MOV DR emulation hits a "too late" #GP
-      https://github.com/kvm-x86/linux/commit/b077cfed52b4
-[8/8] KVM: x86: Read CR4.DE in emulator if and only if accessing DR4 or DR5
-      https://github.com/kvm-x86/linux/commit/7a642d8dcfa8
+[01/11] KVM: x86/hyperv: Get target FIFO in hv_tlb_flush_enqueue(), not caller
+        https://github.com/kvm-x86/linux/commit/d151ca6e1289
+[02/11] KVM: x86/hyperv: Check for NULL vCPU Hyper-V object in kvm_hv_get_tlb_flush_fifo()
+        https://github.com/kvm-x86/linux/commit/b6de8bfdab32
+[03/11] KVM: x86/hyperv: Ensure vCPU's Hyper-V object is initialized on cross-vCPU accesses
+        https://github.com/kvm-x86/linux/commit/c84d86130f24
+[04/11] KVM: x86/xen: Always route non-singleshot-timer vCPU hypercalls to userspace
+        https://github.com/kvm-x86/linux/commit/e4ffb0ceb9f4
+[05/11] KVM: x86/xen: Consolidate checks on Xen vCPU ID for singleshot timer hypercalls
+        https://github.com/kvm-x86/linux/commit/32d7943e5179
+[06/11] KVM: x86/xen: Punt singleshot timer hcalls to userspace if Xen vCPU ID isn't set
+        https://github.com/kvm-x86/linux/commit/c10bd49bdcc9
+[07/11] KVM: Initialize a vCPU's index to '-1' while it's being created
+        https://github.com/kvm-x86/linux/commit/b29125ead04d
+[08/11] KVM: Move nVMX's lockdep logic for vcpu->mutex to a common helper
+        https://github.com/kvm-x86/linux/commit/e34be29ecd47
+[09/11] KVM: x86: Treat a vCPU as unreachable if its index is invalid
+        https://github.com/kvm-x86/linux/commit/c33aef581703
+[10/11] KVM: x86/hyperv: Assert vCPU's mutex is held in to_hv_vcpu()
+        https://github.com/kvm-x86/linux/commit/53ce2c773f00
+[11/11] KVM: x86/hyperv: Use {READ,WRITE}_ONCE for cross-task synic->active accesses
+        https://github.com/kvm-x86/linux/commit/09dd4de361dc
 
 --
 https://github.com/kvm-x86/linux/tree/next
