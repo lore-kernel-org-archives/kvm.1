@@ -1,173 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F8342BC23
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 21:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784064504; cv=none; b=PSAeqRdvea7oDj0S5tkCjgrhqMLXZeoTPiaXjoiR7PGOq14lF/qEidSwd8e4NkuX5HTKvmlhb8HJiR4UF/RYCqCBpDjeRksjAh6Z7Vh8jXLLMTo9CHbqueWDDzz0rZnIxWs3EOd0EiGBwPFgMK8tVDYLkVgO1NipWYkQGRaqQj0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784064504; c=relaxed/simple;
-	bh=yUFibzQr3u0oDETTmPt62Eb8lTEGrmFD1E6/2mnsIYw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ws6MlWqMP9vEVsBv+kb6+8i2giMQFBoOuUbABrgK7GIsYnbRSHt/N3RNBSMO5HMU+27bfRlphArOcUAiLuO+QP6dYfcgh/m9WsTxsVCyEbv4pdc87cpMKKo9XTjdNOC+GOja69OZ55UysRhlMULrnxMYBPtpTqkIZZ8oJ+aQqZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXWYyQXi; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF4242A7AA
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 21:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784064515; cv=pass; b=YDAHooZpIU38KfpTI5Jlw2BjkKN0SLiG1s3r1g6FXXsMgvmpgKJWbgJGqu40QlRKHOB5+7TF7r4viVAyJ5F5cl1GQhy92qSqxVP6unFp/ajE8JxaDDPvs0ddOMXSTyDlJEz4WAapIRZ9lkZ6TgQdLFOTskBc2IstoCyGATK1KmU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784064515; c=relaxed/simple;
+	bh=eZkUTOGD+AYOSxk3L5lcF0sPdVB8UXTaRCEjJsgG/nA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fRqfVHmK4koeQXVtj2dv2n1/FZ3H+LFtDo9L7ODwP3/Rs2pTJibnl/4NL3ypfWEughzOgTin0S8L76eGhGSiUU3k5WhALLbOR4lvwk+5h8K+sK4Rx5a73t9nGjRvwwYZVtDZ96/O1lV+6NJsID57+oPDaejyRdrDLKuNjvnf3vw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vt8JDdtz; arc=pass smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXWYyQXi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFEC1F000E9;
-	Tue, 14 Jul 2026 21:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784064503;
-	bh=pQ3Eme45D7pXEvxIlD5eqvHVMQpT/liVQymzX0IfFZU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gXWYyQXi6kKZtDHRqgVP7JmLTsNBvZAeXWohTQ5lwP2V8laGVegCLquYRK8iWcUB+
-	 yNphZGlkzZafzkDTqo5fEbBRqbH9oS239PSKykFud63aO4dhECacPkJAZJ8LtT4Z1i
-	 tLi+zeLbfWKjVNOY4AbQmc8JQPlpOU7yx6Pq9Zk6KJHN8gN6KHrWBhBuiJJhWzFc23
-	 UpHIwgOQDDrkAw0Xr/u7TJFIrErRSns28y7Tjn47joJ5syat+5l92Crjhx58Yo/m6S
-	 OTwoVg5Eek4kIHbR7E22h4wIJf52YPDTFdfxI+7dqSp1DntAlYzQ9ID/UYMF+EhttV
-	 oRtcLZ/PmHwIg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 1/5] vfio: selftests: igb: Add driver for Intel 82576
- device
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josh Hilke" <jrhilke@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714-igb_v3_b4-v5-1-91503eddb98b@google.com>
-References: <20260714-igb_v3_b4-v5-0-91503eddb98b@google.com>
- <20260714-igb_v3_b4-v5-1-91503eddb98b@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 21:28:22 +0000
-Message-Id: <20260714212823.1EFEC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vt8JDdtz"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so220a12.1
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 14:28:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784064512; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ASQk3UcYLCpNovSeRWMbWGNg01KIbmaSAoLXbqChBPpc9wtnF/A6KijkyuXx/MAByK
+         ZHGuvYTNDwzzHs3qPbukezWQqnMfvydA4H82iORWgrrN2bgdTyYuNLyjfrJ0bbZSny8H
+         cyZsrmky1zTaFxqiOppVkA1m6jHM36HOJ/976QL24Mz4x3036LR6oTV1XgwN4OkhrTTz
+         leelMaGOOcN1Q0BQqebRuoucTvMnNbKEDvsd9uGaZ4pP6zbMU0r5oEOfoHIUtPrv7Dim
+         6D3qxl7uulHw/+JMegH/YsCZvRxpWVVA3YOesoTpRz1tTitvnKoxkYxrCNFW+jz8P2iX
+         NOtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eZkUTOGD+AYOSxk3L5lcF0sPdVB8UXTaRCEjJsgG/nA=;
+        fh=2YB86ZUzqdi6Ngc7nz1GDV7v/vdGQeegDiLxi9RWbFE=;
+        b=NDPmtvq18wOnYp0hQqnevdIlLV6HD2yS+PvhXAwBpzKiX0xkeLOAN0l6pg+3C01muT
+         c0kPHtGsVNEYPLHxSJJGAjKZ6mZ/Dzy8aQN3OQRmurWphwdbg/PYc3brjvPBzLpy0YsE
+         WNyjyBJB9jJg85dtYYjWtbHbRz0H1j/O9oFDD4Dhb8L1wHc8+R6daWH8a8oSqGlf3yZc
+         THZ4VpbhQ1QG/Jlqt9Cvj33A4pPpyxcmpuIjm/ANJyVOAXwALfN4Qp4tGbxqgMLZQg+g
+         HRm7dqiyUGDjYWu8ZuMubFXlspDd+ryAfQGQ3QOLvuKpuutmI4tU6opXO8FAKfTkHCdh
+         D/FA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784064512; x=1784669312; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eZkUTOGD+AYOSxk3L5lcF0sPdVB8UXTaRCEjJsgG/nA=;
+        b=vt8JDdtz296YRZ6oZj+y0alnaBR++qyAOX3YIsWmNnXe4Yf+PA20c/qtjYBhIm9Wp/
+         Mm/YKiZFEvWj+LGT79Y3k4Em9NSp2KmPNRxZgNvzjfqZaG0l/jalnmkRMHgEsKCaysK5
+         mbBPTgJDJmaRW50WdXNZdvelijuZghu9BLeBj4CZu0a8MmCv2ymJ8u9d8le2hDqSUSD2
+         jnFbGLp3p3c3u8xoKME0lZwE3333Jt1LrT37I3r89DOQECET5gaCtxCIDESArVylgf71
+         2q5RXk84JUI8JZeEHz70kpv97u3fyq7a2FIIzUdi9/+kMmkf5iI6w306GTiCcRz46855
+         O21g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784064512; x=1784669312;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eZkUTOGD+AYOSxk3L5lcF0sPdVB8UXTaRCEjJsgG/nA=;
+        b=cJYo95OUgrZ/POtl40+DTl4jvdRo3vZy290SiDL7+6lXiF1mjZ0o5jCBhFRvMYBc8I
+         Vhc6c0n5MC/La9mJ8HFYiDnyNTwJAx3UddsLYEJQ6dXzvsezYGNysDQ5N57pH8gFT/o1
+         AlqOoqSnyaWvpC5jvSzVfIzBnET2sL11Aw49/NTQbS6i/SKGa5OMAn4fANSBniILEG36
+         Y2yo2ieNj0bUx/dzugVmJNQhXR+G2rMmKTRLTIb8HD4MunEtW1+WZRwfWjHnMcbANUYs
+         wWnodei4YHUGf1nphgie7FKCERluvrxdzjYrhFQjHhb+Z1YRaZ2Kc/ko0ISOEj5eBMQT
+         TzRA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq8mI8aEJQEFcITbA2OUV6DdxFIdw3yt0ua7CJPTu+uKrCBrnF+WIXsVKL4pT4Dqo1rqGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0HJqZVbruZHZYWEUtghLJpklDzGY8LYO5PxgIrvS1N02b4B09
+	YPSxpE94iQ8vuRTnvW5nIOrVjv2OaJtu/nVjQVvg5Ra7ps1oJzJjFTmBzBJBCdqUpD6EEVdgmzi
+	R8S/jszx/1fEPcYOP/D5mM8UdVZHNK/Q/TgHWFo3U
+X-Gm-Gg: AfdE7ckeaZ4EzhYoUP0KGhxMG+n8fSwJfntx+MGJ9GUKW3VWfy0HWihsNDl73aA7xuB
+	hlAs2bafDGiwZG33O00FkDz6FnXvFnokuUpwI1m+66//++ilqEVca0/yhtucBX12XY9Y7AXlrGk
+	QoLLAQZNPu5mOBr8822uSDQOPLaUyYT/P0GRQtAK50d2Jn9v+gQcuZXsmxQ0PUH8TZ/tlAnfwpV
+	xlL3hmsN3TINKGWqAxZMEqCwHIoC682jKcE01BbmeMZ1cEsVS0Mn28g0wfLdp+M0uhe5Jlo
+X-Received: by 2002:aa7:da44:0:b0:672:117e:55d4 with SMTP id
+ 4fb4d7f45d1cf-69cceedafffmr164687a12.0.1784064511275; Tue, 14 Jul 2026
+ 14:28:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
+ <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+In-Reply-To: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 14 Jul 2026 14:28:18 -0700
+X-Gm-Features: AUfX_mwTaXeoYY5jAhGOgt3Qh-Jyu6H25OVNcCM8BC3Slr4qzEzhGKGQUYHpCyQ
+Message-ID: <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The selftest relies on external PHY auto-negotiation, which will=
- cause the test to fail on real hardware if no physical link (cable) is con=
-nected.
-- [Medium] MMIO registers are accessed before PCI memory space is enabled, =
-which can crash the test if memory space is disabled.
---
+On Tue, Jul 14, 2026 at 6:20=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Mon, Jun 15, 2026 at 5:42=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > KVM currently hardcodes the number of supported ASIDs in CPUID to 8. A
+> > KVM guest (L1) would then do a full TLB flush (i.e.
+> > TLB_CONTROL_FLUSH_ALL_ASID) every time it runs out of ASIDs on a vCPU
+> > and updates the generation (see new_asid()).
+> >
+> > This is currently harmless, as KVM (L0) uses the same ASID for both L1
+> > and L2, and flushes that ASID on nested transitions. However, following
+> > changes will add proper ASID emulation and a separate ASID for L2,
+> > minimizing the TLB flushes on nested transitions. At that point, a full
+> > TLB flush from a KVM guest (L1) would flush both L1 and L2 ASIDs, so
+> > should be avoided as much as possible.
+> >
+> > Passthrough the number of ASIDs in hardware instead of hardcoding 8, to
+> > reduce the chances of an L1 guest flushing its own TLB entries
+> > unnecessarily on a nested VMRUN.
+> >
+> > In practice, there is no harm in exposing a large number of ASIDs to th=
+e
+> > guest, even larger than what hardware supports, as KVM never actually
+> > uses the value of ASID from vmcb12. Even with a separate L2 ASID, KVM
+> > would allocate a (supported) ASID for L2, and just flush that same ASID
+> > every time L1 changes the ASID in vmcb12.
+> >
+> > That being said, avoid the temptation of just advertising the maximum
+> > possible number of ASIDs (i.e. 0xFFFFFFFF), in case any peculiar guest
+> > OS does not handle that properly.
+> >
+> > Note: QEMU currently hardcodes the number of ASIDs to 16, so this chang=
+e
+> > doesn't help QEMU VMs (without making a similar change in QEMU).
+>
+> I had a discussion with Jim internally about what our VMM should
+> advertise as the number of ASIDs, and based on that I think passing
+> through the hardware value may not be the best idea, at least not
+> without some disclaimers.
+>
+> Jim pointed out that AMD CPUs will ignore unsupported ASID bits, or at
+> least earlier ones did, even though it's not mentioned in the APM
+> (last time I checked). This means that technically KVM can ignore the
+> higher bits of the ASID set by L1 beyond supported ones (e.g. if it
+> uses a hashtable to multiplex L1 ASIDs onto several physical ASIDs).
+> KVM doesn't currently do so with or without this series, but it could.
+>
+> The problem happens if a migration pool contains multiple AMD CPUs
+> with a different number of ASIDs in hardware. If the VMM advertises
+> the greater value of the two, it would technically be advertising an
+> unsupported number of ASIDs on one of the CPUs. If KVM ignores the
+> upper bits based on what it supports, not what userspace advertises in
+> CPUID, then userspace would be shooting itself in the foot.
+>
+> I think technically speaking userspace would be in the wrong for using
+> a number of ASIDs above what KVM_GET_SUPPORTED_CPUID provides, and it
+> should use a number of ASIDs that is supported by all CPUs in a
+> migration pool. However, this makes the VMM's life difficult, say if
+> AMD decides to reduce the number of ASIDs in a newer CPU just for
+> kicks.
+>
+> All of this is hypothetical in nature, but it's a very valid concern imo.
+>
+> I think there are several ways we can handle this so that VMMs can
+> reasonably start advertising more ASIDs to guests without these
+> complications:
+>
+> 1. We can just advertise a larger ASID value instead of 8 (say 16K or
+> 32K), rather than passthrough what's in hardware. I assume this would
+> mean that KVM is more-or-less committing to supporting that number of
+> ASIDs regardless of underlying hardware (i.e. KVM wouldn't reduce it
+> in the future). In this case, a VMM can just advertise the same value.
+>
+> 2. We can advertise the maximum number of ASIDs (2^32 - 1?), which is
+> the same as option (1), except that we're biting the bullet and
+> preventing the possibility of KVM ignoring upper bits completely.
+> Might be too aggressive.
+>
+> 3. Document (somewhere) that KVM should use the userspace advertised
+> value as the source of truth for ignorable bits, even if KVM
+> technically supports a lower value. As I am writing this I am
+> realizing it doesn't make much sense as it means that the value
+> supported by KVM is meaningless. Maybe that comes naturally with the
+> "don't break userspace" rule, but it could also fall under the
+> category of userspace shooting itself in the foot and KVM letting it.
+>
+> 4. Do nothing, let this be userspace's problem, and hope that AMD
+> doesn't reduce the number of ASIDs in a future CPU.
+>
+> I think option (1) is probably the most reasonable, we advertise 32K
+> ASIDs, which is what recent AMD CPUs advertise anyway, but it's
+> more-or-less KVM committing to 32K ASIDs even if a newer AMD CPU
+> doesn't support them.
 
---- Patch [1]: [PATCH v5 1/5] vfio: selftests: igb: Add driver for Intel 82=
-576 device ---
-commit b66293558b628d9af7dfd3c68ff9a1e69b1cbb0b
-Author: Josh Hilke <jrhilke@google.com>
+I think Bulldozer (family 15H) first introduced support for 32K ASIDs.
+KVM still supports CPUs older than that, doesn't it?
 
-vfio: selftests: igb: Add driver for Intel 82576 device
-
-Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
-(IGB), specifically targeting the 82576 device. IGB is fully
-virtualized in QEMU which makes it easy to run VFIO selftests without
-needing any specific hardware.
-
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
-esting/selftests/vfio/lib/drivers/igb/igb.c
-> new file mode 100644
-> index 0000000000000..a59b953030925
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-
-[ ... ]
-
-> +static void igb_phy_setup_autoneg(struct igb *igb)
-> +{
-> +	int timeout_ms =3D 1000;
-> +	bool success =3D false;
-> +	u16 phy_status;
-> +	int ret;
-> +	int i;
-> +
-> +	/* Trigger auto-negotiation */
-> +	ret =3D igb_write_phy(igb, MII_BMCR,
-> +			    BMCR_ANENABLE | BMCR_ANRESTART);
-> +	VFIO_ASSERT_EQ(ret, 0, "Failed to write PHY control register");
-> +
-> +	for (i =3D 0; i < timeout_ms; i++) {
-> +		if (igb_read_phy(igb, MII_BMSR, &phy_status) =3D=3D 0) {
-> +			success =3D !!(phy_status & BMSR_ANEGCOMPLETE);
-> +			if (success)
-> +				break;
-> +		}
-> +		usleep(1000);
-> +	}
-> +
-> +	VFIO_ASSERT_TRUE(success, "Auto-negotiation did not complete in time");
-
-[Severity: Medium]
-Will this cause the selftest to fail on real hardware if no physical cable =
-is
-connected?
-
-Since this relies on external PHY auto-negotiation, it looks like the
-BMSR_ANEGCOMPLETE bit will never set without a physical link partner,
-triggering this assertion failure.
-
-[ ... ]
-
-> +static void igb_reset(struct igb *igb)
-> +{
-> +	igb_write32(igb, E1000_CTRL, igb_read32(igb, E1000_CTRL) | E1000_CTRL_R=
-ST);
-> +	/*
-> +	 * Must wait at least 1 millisecond after setting the reset bit before
-> +	 * checking if this device is ready to be used (82576 datasheet section
-> +	 * 4.2.1.6.1).
-> +	 */
-> +	usleep(2000);
-> +	VFIO_ASSERT_EQ(igb_read32(igb, E1000_CTRL) & E1000_CTRL_RST, 0);
-
-[Severity: Medium]
-Can this assertion fail due to igb_read32() returning 0xFFFFFFFF if PCI
-memory space is disabled?
-
-[ ... ]
-
-> +static void igb_init(struct vfio_pci_device *device)
-> +{
-> +	struct igb *igb =3D to_igb_state(device);
-> +	u64 iova_tx, iova_rx;
-> +	u32 ctrl, rctl;
-> +	u16 cmd_reg;
-> +	int retries;
-> +
-> +	VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
-> +
-> +	/* Set up rings and calculate IOVAs */
-> +	igb->bar0 =3D device->bars[0].vaddr;
-> +
-> +	iova_tx =3D to_iova(device, igb->tx_ring);
-> +	iova_rx =3D to_iova(device, igb->rx_ring);
-> +
-> +	igb_reset(igb);
-
-[Severity: Medium]
-Is it safe to perform MMIO accesses in igb_reset() before the PCI memory
-space is enabled below?
-
-If the device was recently reset or the system does not pre-enable memory
-space, these early MMIO accesses might fail.
-
-> +
-> +	/* Signal that the driver is loaded */
-> +	ctrl =3D igb_read32(igb, E1000_CTRL_EXT);
-> +	ctrl |=3D E1000_CTRL_EXT_DRV_LOAD;
-> +	ctrl &=3D ~E1000_CTRL_EXT_LINK_MODE_MASK;
-> +	igb_write32(igb, E1000_CTRL_EXT, ctrl);
-> +
-> +	/* Enable PCI Bus Master. */
-> +	cmd_reg =3D vfio_pci_config_readw(device, PCI_COMMAND);
-> +	if ((cmd_reg & (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) !=3D
-> +	    (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) {
-> +		cmd_reg |=3D (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-> +		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714-igb_v3_b4-=
-v5-0-91503eddb98b@google.com?part=3D1
+The tricky part about advertising more ASIDs than the host supports on
+pre-Bulldozer CPUs is that those CPUs don't have FlushByASID. So, do
+you flush all ASIDs when one is reused?
