@@ -1,143 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8999549550D
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 15:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3F8CA45
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 15:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784042939; cv=none; b=A3Siim6sQl21TZoBR50TW0nlv0Dkp9sNGGYrn7CCsxU+n4FbzY1XMCprOKh4Gcn1CP2uNMzcvG0yZja3J1scs9tXg+OFlybzd/WFwc87jkd+fEx4irCdFcInnBLWpuIZScvCDpGBFSgEnHihCxnsqsnqH7THryB8fZZqI0pWfxE=
+	t=1784043053; cv=none; b=spykyO6HOg19Gsy2uQZZgoSrw6aY9g6QVP52WQjn/O91+OLGuNbzLIZv7vrR38M2naZc2vFDt8MUlk4iW4PvV24gR+MsL/nHbpqakmttQNUtHbUfhPpVcDYlFgUgPiOo2wrwS9QGiU8AYuWGbOGnNJY+Ufm3gVEWSkygkdt9GrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784042939; c=relaxed/simple;
-	bh=xq0rdaiucULbOkYKU3MdRSQtYxyexZsuaftUnRhx0ws=;
+	s=arc-20240116; t=1784043053; c=relaxed/simple;
+	bh=RA2oTiFd8UzYFNCISO0LTqQ4BvNt6d1c4o4kOlhvUDQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rrMpW457aB7jsw6+tpKvi0u29W1ZDyVox1MDAjo1rVtLZPo/20poP9q1k70AivAaRD9WERznb7GY0DTOCMVgGbEHNG1HA+8/ft1w4xuU/qMNngKdkxV27RGbhNfXw7I+YG7aslQEZncrWK9uVrEAsG3nDFzG4mV97S7MKwcA6po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYzhQDXu; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=dc7AKJxRZ8sHnfJy1ufYRytTHoPvhxav3dCA8RWOUPNmz/RuyzZRU+bRcwrXBUr8jboZ8dp+3sdDeJOU0OPJbqnsOsshogE4RfwctXzwIXM0OEwZchwhJCep4ZraToIWam6DWMaLOYeHzD70Fm3L3pa025eTLwtAqm+TZ/UpJ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHZqCCuh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYzhQDXu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F239E1F000E9;
-	Tue, 14 Jul 2026 15:28:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHZqCCuh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBCD1F00A3A;
+	Tue, 14 Jul 2026 15:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784042937;
-	bh=phfNF8gOeOzrtim/4hJv9zmv6CkRx3MEZtuf9d/xaoE=;
+	s=k20260515; t=1784043052;
+	bh=jukwJ9U6TcO84Cgr8qJTfFx6AcXAF9CgJoqWGPrHTbE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cYzhQDXu1r6i/yajRia61J7TQQwIbNjCv/zAnNApdooK6o7FMRVLdCN0/pNONEneL
-	 n773Czi9hee+wFeY3SWTRGHzGHEGRfvWDZ42ur1kAmvdWB1T+M4LmLwrmezAZ1kjyM
-	 CFAVOkkz3V4ukx0/w2dFMC9v0/xKwJWWH8I+qRybx3JGCeZS7qkHyzx4Nz+FUrEYz9
-	 20idUvc/gRvGdSUHtl9aDu4hw4JytiRS4LMlmNDfmd5CYDJMwdULyU5pKRUY8X14E+
-	 8E//bgp9kIaAdb6sQD0NUFrCh9KbnqroY/eD6tT70UjT52SnrUV/LL8rIWgH2LbAQd
-	 WpqB2pXsM64vg==
+	b=DHZqCCuhBA+tQ24dNNr31G6MlftI8naAiw6H3WmBIsy8xzRTHS1Z7BImMh4sOclZX
+	 mquehPqg2k6jQZTrU70oYYK76GyWwApV62oogYhFq+nTEJsh31HP6I+UjTFLwrftaf
+	 2VZNkg546b6nDv6x4r0CiXttxsT8sJhKkQ9100D27COwo7TYOa5RyVxmSneMiXK/Ry
+	 KxJtL51/8eTRMaSAYuno5jDDRXaobBS+bjbmc6fEIRDc/4TZO1EVyS20drUbfwouUE
+	 7cWUFwhXCBKhxBzKTt0HlKPZeR+QXogME61xlMMr7769sAo64lTkLr+vYpgJ2YryBE
+	 +1yhDaiO7dk2Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 05/20] vfio/pci: Register a file handler with Live
- Update Orchestrator
+Subject: Re: [PATCH v5 02/20] vfio: Export various helpers from VFIO
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Vipin Sharma" <vipinsh@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714151505.3466855-6-vipinsh@google.com>
+In-Reply-To: <20260714151505.3466855-3-vipinsh@google.com>
 References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260714151505.3466855-6-vipinsh@google.com>
+ <20260714151505.3466855-3-vipinsh@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 15:28:56 +0000
-Message-Id: <20260714152856.F239E1F000E9@smtp.kernel.org>
+Date: Tue, 14 Jul 2026 15:30:51 +0000
+Message-Id: <20260714153051.DDBCD1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The Kconfig option VFIO_PCI_LIVEUPDATE depends on a non-existent c=
-onfiguration symbol PCI_LIVEUPDATE.
-- [High] Calls to undeclared and undefined functions pci_liveupdate_registe=
-r_flb() and pci_liveupdate_unregister_flb().
-- [High] Masking -EOPNOTSUPP on FLB registration failure leads to a double =
-unregistration of the file handler and potential kernel panic.
+- [Low] Missing EXPORT_SYMBOL_GPL for vfio_pci_ops, violating the stated in=
+tent to export the variable for other modules.
 --
 
---- Patch [5]: [PATCH v5 05/20] vfio/pci: Register a file handler with Live=
- Update Orchestrator ---
-commit a3c1a8c69f4b2c27d2e063cca84eb003906e3bbf
+--- Patch [2]: [PATCH v5 02/20] vfio: Export various helpers from VFIO ---
+commit fcee4889ab47813a22592eb00c453edea425e0f0
 Author: Vipin Sharma <vipinsh@google.com>
 
-vfio/pci: Register a file handler with Live Update Orchestrator
+vfio: Export various helpers from VFIO
 
-This commit adds a live update file handler for vfio-pci device files
-with stub implementations. It registers the handler with the live update
-framework and PCI subsystem, gated behind a new VFIO_PCI_LIVEUPDATE option.
+This commit makes several vfio helpers and the vfio_pci_ops variable global=
+ly
+visible by removing their static declarations and adding them to headers. T=
+he
+stated intent is to export these symbols for use by other modules, such as
+the upcoming live update feature.
 
-> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> index 296bf01e185ec..c12d614fc6c4a 100644
-> --- a/drivers/vfio/pci/Kconfig
-> +++ b/drivers/vfio/pci/Kconfig
-[ ... ]
-> @@ -42,6 +42,18 @@ config VFIO_PCI_IGD
->  	  and LPC bridge config space.
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 0c771064c0b84..1fb4b276afe7c 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *c=
+ore_vdev)
+>  	return 0;
+>  }
 > =20
->  	  To enable Intel IGD assignment through vfio-pci, say Y.
-> +
-> +config VFIO_PCI_LIVEUPDATE
-> +	bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> +	depends on PCI_LIVEUPDATE
+> -static const struct vfio_device_ops vfio_pci_ops =3D {
+> +const struct vfio_device_ops vfio_pci_ops =3D {
+>  	.name		=3D "vfio-pci",
 
-[Severity: High]
-Does the PCI_LIVEUPDATE configuration symbol exist anywhere in the kernel
-tree? It appears this dependency cannot be met, preventing the new
-VFIO_PCI_LIVEUPDATE option from being selected.
+[Severity: Low]
+The commit message states the intent is to "Export these functions and
+variable for other modules to use them", but is there a missing
+EXPORT_SYMBOL_GPL(vfio_pci_ops) here?
 
-> +	help
-> +	  Support for preserving devices bound to vfio-pci across a Live
-[ ... ]
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vf=
-io_pci_liveupdate.c
-> new file mode 100644
-> index 0000000000000..803528c9f1b27
-> --- /dev/null
-> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-[ ... ]
-> +int __init vfio_pci_liveupdate_init(void)
-> +{
-> +	int ret;
-> +
-> +	ret =3D liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
-> +	if (ret)
-> +		goto err_return;
-> +
-> +	ret =3D pci_liveupdate_register_flb(&vfio_pci_liveupdate_fh);
+The other helpers modified in this patch received an EXPORT_SYMBOL_GPL() ta=
+g,
+but vfio_pci_ops did not. Without it, external modules attempting to refere=
+nce
+vfio_pci_ops will fail with unresolved symbol errors during the build.
 
-[Severity: High]
-Are pci_liveupdate_register_flb() and pci_liveupdate_unregister_flb()
-declared in any header or defined in any source file? Building with
-this configuration enabled might result in implicit declaration compiler
-errors and fatal linker errors.
-
-> +	if (ret)
-> +		goto err_unregister;
-> +
-> +	return 0;
-> +
-> +err_unregister:
-> +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-> +err_return:
-> +	return (ret =3D=3D -EOPNOTSUPP) ? 0 : ret;
-
-[Severity: High]
-If pci_liveupdate_register_flb() returns -EOPNOTSUPP, this error path
-unregisters the file handler but returns 0. Could this lead to a double
-unregistration when the module is unloaded and vfio_pci_liveupdate_cleanup()
-is called?
-
-Calling liveupdate_unregister_file_handler() a second time on the already
-removed list node might cause list corruption and a kernel panic.
-
-> +}
-> +
-> +void vfio_pci_liveupdate_cleanup(void)
-> +{
-> +	pci_liveupdate_unregister_flb(&vfio_pci_liveupdate_fh);
-> +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-> +}
+>  	.init		=3D vfio_pci_core_init_dev,
+>  	.release	=3D vfio_pci_core_release_dev,
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714151505.3466=
-855-1-vipinsh@google.com?part=3D5
+855-1-vipinsh@google.com?part=3D2
