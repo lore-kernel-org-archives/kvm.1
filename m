@@ -1,222 +1,183 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA643431E76
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 23:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1842BE95;
+	Tue, 14 Jul 2026 23:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784070640; cv=none; b=nDmfUu/3J7s+WLBTTlufVuZpw26yLq//o6QMaUgEhyw9XiuArQXbr/kFwKl9Tw78l1yjIBDg6LbgyXEG8IijKmdFCdzpOTGK7SiEe+JOsX44lkVMxrnJo7QlUv8h31lgVvGxv4a3sq+rN340WjY/z1iLsgsD4KNkZnuzIvl08nE=
+	t=1784071339; cv=none; b=H3WiHr0IypJAWCxkllnFCreMDTptNp27EJZX6oKDFsPyXZAAFYq5gobMv1lTdxd/nLCL6uAYpjxkMiUAWSfRzaCRleuCTeSKsjxlkrDEQKEXPQexCWQHV1g/pdZ0LLf3Cr/zcgFCYhgQJ3Spp7Xq0/7QQLysDJk/AVWhKgKXgeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784070640; c=relaxed/simple;
-	bh=5BavKoMCQbuceEXAWAGaZ0PeXfjVBMYWYfqEIVIko9I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ubxtTlzF8pQadz4CzeaD8yU52BS/DmFBOIqnveLy8YoUXLupMxe+OdvPRgvRHIB8c5oRS3QHY91FOjTOyu9/4hTODq2NNJm2blVy/loNTRBpHJ6WmDYvLFZCdsvpYPvk78VR4IkK/85F7JR6+1/YMtkb6TCaohGZsloiOQ3pNDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L9JKDnVQ; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784071339; c=relaxed/simple;
+	bh=PVFcPV7a8IiGyZusUfGwMSC8/Qgs0elyNRsO6J94NS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t8lKavol8COV913wduVfNnqY+u0HWybv4ZZ7BexWuzNgndarCllQWDtSv21NZCnTPUT4Dt2ajXqc90TJmqestpjhjsYmUm4nJdKTWTjIhPWJlCAokapl2jIhubRgK1TOpBqPJ44IjZbE4u2DaUrQlXw0vkNKZ4DrG4lOihXG1GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=c3xqPRQH; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L9JKDnVQ"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-ca124bf0189so73692a12.0
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 16:10:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784070634; x=1784675434; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=oeBsN3Sd3KvkDRZPV9BJqhIhlZVgRgMQPPG+mndlRJY=;
-        b=L9JKDnVQm94p4wkHGvr/0E45fVHrq599FxrdUdcxJUx+GWnSgOJWspEBu3kipQ0Vt9
-         w+wHtFR8tiyjDpPbzGt33SlYXfOhLArgw+w/N9d1/HnlM89YmQCY+nHB7Q4Ky4XL/O4p
-         uRJ6kteidlpPjAnVEB7EGxIt0xhuBZbMncEqWcjGuJQYHguJyLaccWpl4fpRFImEssn3
-         gOml2GzPBCKYCDGCsSBQ3Mi9EvhUJ1Lz9xE0tkKDtQmmMhnrAeoSMWs+x6bLixtCxKkA
-         jxFkxoXHsTHW3ABTQaPmmdGNXn7EiKfdDZKVd4FnzYK16WKGrxOtI+OHndWZRHGA6qtn
-         oqNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784070634; x=1784675434;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oeBsN3Sd3KvkDRZPV9BJqhIhlZVgRgMQPPG+mndlRJY=;
-        b=VSKeyTe4UbMUbQhKlEhvuxg0zYTCXf9+ShAMwwrROfCe+rhQV3g/lMh0IOXoJ1PKfx
-         FBODUXbs70tNvnQFX3lnequ0C2H8nGvRKzTNjrC3YJGTWWqUbLFy7T4iWhzce7MxLSVB
-         8RvUx6Om68p6V7ir2TYMUVh1y3W0U2QszrC2tGDqVs2MQf9/n1RcuXC47tQG44kjoD3i
-         w0yMvcmi3U9MAMkwqwa2KtJc1wHO6sNAxOt01mCgtDQ+cxNmGKg2/3GaGTn6EKk1eRAB
-         lI493LszeCytqDEgsdOR0biWB7QIDYI0VekSvzSnRobVZVidCiThv2ipD/vqyurLgJ+e
-         riuw==
-X-Gm-Message-State: AOJu0YwKxpTAgbJPR4vjic3fImFdpJzDmHjqXdB3L2fKiUPq35xOUVCl
-	swfD+E7jfTPgzv7YfFcptWJig8CxhZ8KcX3MykoSV57w1OMaFtMXv6HBfFmgQ5Mg+W/O6m7+YtP
-	e24eSzA==
-X-Received: from pjtl4.prod.google.com ([2002:a17:90a:c584:b0:37d:8595:7a08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a43:b0:385:3ab:fecb
- with SMTP id 98e67ed59e1d1-38dc8070474mr12486550a91.4.1784070633929; Tue, 14
- Jul 2026 16:10:33 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 14 Jul 2026 16:10:15 -0700
-In-Reply-To: <20260714231015.3337831-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="c3xqPRQH"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EJBjW82198619;
+	Tue, 14 Jul 2026 23:22:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=RvX3wjFVBiIFnX0eT
+	yYT1jCPxHd6yorYubpelkCZmQ0=; b=c3xqPRQHV0QYu3pBeQUky66nlea7aqKFq
+	vthgkXh6TcrAgp75HiQdbPZLgBYasLeDxDkpbOSkHJYS7ai+GO+E0pjZm2jIktW4
+	2dFHKExx5dIGVLmlecFEkcilic2soSmUCzLYqFFuYnx8JxiT3j2UunIKVwXhgRQc
+	MgT6fofb6JB4uYvnnVWhuu5/CkI2YfUcHPLR2K+mgISuTPMeZCLLt5AmRjeHwNYt
+	mm4Dq0FxY54oLznvweMujlYWgGqGhTcIwutiu81egNhz6SY0je8u0tba5EybFlHx
+	dqHPTWgdadcw6wxOglIlk4jsH6w18ExfmPGEEBZyQwW/qA/DTpM/Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbepxgrq5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 23:22:17 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66ENJfYF012337;
+	Tue, 14 Jul 2026 23:22:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2cgcyjr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 23:22:16 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66ENMCGq30998854
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jul 2026 23:22:12 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64E5C2004B;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44BF820040;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 14 Jul 2026 23:22:12 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id 25F2016267D; Wed, 15 Jul 2026 01:22:12 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH v1 2/6] s390/vfio_ccw: limit the number of channel program segments
+Date: Wed, 15 Jul 2026 01:22:04 +0200
+Message-ID: <20260714232208.1683788-3-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260714232208.1683788-1-farman@linux.ibm.com>
+References: <20260714232208.1683788-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260714231015.3337831-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260714231015.3337831-8-seanjc@google.com>
-Subject: [PATCH v5 7/7] KVM: guest_memfd: Rework PREPARE config and hook into
- a more generic CONVERT
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eHsTBQ8hmANsyNGgMB2SdWyhJnwqAZ_9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfXw5cyF8xOiRS2
+ avp3X5RC2VfsbN4LgZueytcIXjhvUVHxkx2pbyAkWxFb6vo8Xt7lqhzrND4IW+UKB5BelMHbwVa
+ 8CmvchElmk0Qq/D+pBRHrcc7WmhIhkU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDI0MCBTYWx0ZWRfX4KvJinxMHbu7
+ P1dbyhQt/oGv7rUROwhI1u+8ItYbbd5OxLXqVwrGvqS0Qd360cFm/ViYYvBn70JJ1vnvlONQvBU
+ eMfgkJ2KUx+j8Q3wOje68oIW3sPRcf4OGL8b+5kR1m7ZkLQ4nJtfaQCetMhWi4K75LKO3Zg7Ngu
+ 2v8qSxoUBr15ayhE3uVgU1kHyfIFEvTZySWMXN9oGHklo7/KaFiucfVlZkdbrzaEkBkSyMaiYBl
+ DHO5vts4ryYVCm9EMdPrL5vv+5zRtzo6dF95viWzwFEkIY/4VJ5OhqrO9+gYeRcyYOY9WMoJSAW
+ F0cULeS8WG/Ax7J0hJc09PnvRi5gOzdbU/aoUIeWHDhdPQ4PphhhFPBDSavHUavCvGXRDNmY4Oi
+ PkBfnJJSCIRe5OrCkYNnbwwNmGu5/T/dYHf8rIyn5FWoiddepBaLsJSE9I44bZi+OShG3xaGOiG
+ 26XrVTZxCOP7eM8lQEA==
+X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=6a56c4a9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=OzPGupj-Brq4hERWPoIA:9
+X-Proofpoint-ORIG-GUID: eHsTBQ8hmANsyNGgMB2SdWyhJnwqAZ_9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-14_05,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140240
 
-Rework guest_memfd's "prepare" hook into a more generic "convert" flow in
-anticipation of supporting in-place conversion, at which point KVM will use
-the hook for both to-private and to-shared conversions, not just to
-"prepare" PRIVATE memory.
+The processing of channel programs, and the CCWs within them, is done
+recursively. As such, there is an arbitrary (but not architectural)
+limit to the number of CCWs that can exist in a single channel program.
 
-Opportunistically rename kvm_gmem_prepare_folio() to kvm_gmem_make_private()
-to better reflect its role.
+The vfio-ccw logic breaks these channel programs into segments whenever
+it encounters a Transfer-In-Channel (TIC) CCW, and the combined number
+of segments count towards the global limit. Impose an equivalent limit
+to the number of segments until such logic can be made non-recursive.
 
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  2 +-
- arch/x86/include/asm/kvm_host.h    |  2 +-
- arch/x86/kvm/Kconfig               |  2 +-
- arch/x86/kvm/x86.c                 |  8 ++++----
- include/linux/kvm_host.h           |  6 +++---
- virt/kvm/Kconfig                   |  2 +-
- virt/kvm/guest_memfd.c             | 12 ++++++------
- 7 files changed, 17 insertions(+), 17 deletions(-)
+ drivers/s390/cio/vfio_ccw_cp.c | 5 +++++
+ drivers/s390/cio/vfio_ccw_cp.h | 6 ++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 76ce691de2f8..1764bad03b17 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -146,7 +146,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL(get_untagged_addr)
- KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
--#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- KVM_X86_OP_OPTIONAL_RET0(gmem_convert)
- #endif
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index f60fec14c61a..08c4af487fa1 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1724,7 +1724,7 @@ struct kvm_x86_ops {
- 
- 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
- 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
--#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
-+#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
- 	int (*gmem_convert)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 			    kvm_pfn_t nr_pages, int max_order, bool to_private);
- #endif
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index e0e7ad015839..538ed1e80332 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -160,7 +160,7 @@ config KVM_AMD_SEV
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
- 	select KVM_GENERIC_MEMORY_ATTRIBUTES
--	select HAVE_KVM_ARCH_GMEM_PREPARE
-+	select HAVE_KVM_ARCH_GMEM_CONVERT
- 	select HAVE_KVM_ARCH_GMEM_RECLAIM
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e509d50c247c..11017f49b94a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10619,11 +10619,11 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return !kvm_arch_has_private_mem(kvm);
- }
- 
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--			  kvm_pfn_t nr_pages, int max_order)
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-+			  kvm_pfn_t nr_pages, int max_order, bool to_private)
+diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
+p.c
+index 80c3d87f5482..76632b18fc37 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.c
++++ b/drivers/s390/cio/vfio_ccw_cp.c
+@@ -319,6 +319,9 @@ static struct ccwchain *ccwchain_alloc(struct channel=
+_program *cp, int len)
  {
--	return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, true);
-+	return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, to_private);
- }
- #endif
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 0a06234a8a8b..fdbd697d0337 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2579,9 +2579,9 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- }
- #endif /* CONFIG_KVM_GUEST_MEMFD */
- 
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
--int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--			  kvm_pfn_t nr_pages, int max_order);
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-+			  kvm_pfn_t nr_pages, int max_order, bool to_private);
- #endif
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 617876993225..c3c0ee253fc7 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -107,7 +107,7 @@ config KVM_GUEST_MEMFD
-        select XARRAY_MULTI
-        bool
- 
--config HAVE_KVM_ARCH_GMEM_PREPARE
-+config HAVE_KVM_ARCH_GMEM_CONVERT
-        bool
-        depends on KVM_GUEST_MEMFD
- 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 0f6745f3b919..173a7ed008d1 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -66,10 +66,10 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
-  * On successful return the guest sees a zero page so as to avoid
-  * leaking host data and the up-to-date flag is set.
+ 	struct ccwchain *chain;
+=20
++	if (cp->ccwchain_count >=3D CCWCHAIN_COUNT_MAX)
++		return NULL;
++
+ 	chain =3D kzalloc_obj(*chain);
+ 	if (!chain)
+ 		return NULL;
+@@ -332,6 +335,7 @@ static struct ccwchain *ccwchain_alloc(struct channel=
+_program *cp, int len)
+ 		goto out_err;
+=20
+ 	list_add_tail(&chain->next, &cp->ccwchain_list);
++	cp->ccwchain_count++;
+=20
+ 	return chain;
+=20
+@@ -731,6 +735,7 @@ int cp_init(struct channel_program *cp, union orb *or=
+b)
+ 			vdev->dev,
+ 			"Prefetching channel program even though prefetch not specified in OR=
+B");
+=20
++	cp->ccwchain_count =3D 0;
+ 	INIT_LIST_HEAD(&cp->ccwchain_list);
+ 	memcpy(&cp->orb, orb, sizeof(*orb));
+=20
+diff --git a/drivers/s390/cio/vfio_ccw_cp.h b/drivers/s390/cio/vfio_ccw_c=
+p.h
+index fc31eb699807..dc91a317ef19 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.h
++++ b/drivers/s390/cio/vfio_ccw_cp.h
+@@ -23,6 +23,11 @@
   */
--static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
--				  gfn_t gfn, struct folio *folio)
-+static int kvm_gmem_make_private(struct kvm *kvm, struct kvm_memory_slot *slot,
-+				 gfn_t gfn, struct folio *folio)
- {
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- 	unsigned long nr_pages = folio_nr_pages(folio);
- 	pgoff_t index;
- 
-@@ -90,8 +90,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	gfn = ALIGN_DOWN(gfn, nr_pages);
- 	index = kvm_gmem_get_index(slot, gfn);
- 
--	return kvm_arch_gmem_prepare(kvm, gfn, folio_file_pfn(folio, index),
--				     nr_pages, folio_order(folio));
-+	return kvm_arch_gmem_convert(kvm, gfn, folio_file_pfn(folio, index),
-+				     nr_pages, folio_order(folio), true);
- #else
- 	return 0;
- #endif
-@@ -798,7 +798,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		folio_mark_uptodate(folio);
- 	}
- 
--	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-+	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
- 
- 	folio_unlock(folio);
- 
--- 
-2.55.0.141.g00534a21ce-goog
+ #define CCWCHAIN_LEN_MAX	256
+=20
++/*
++ * Maximum number of chains
++ */
++#define CCWCHAIN_COUNT_MAX	16
++
+ /**
+  * struct channel_program - manage information for channel program
+  * @ccwchain_list: list head of ccwchains
+@@ -38,6 +43,7 @@ struct channel_program {
+ 	union orb orb;
+ 	bool initialized;
+ 	struct ccw1 *guest_cp;
++	int ccwchain_count;
+ };
+=20
+ int cp_init(struct channel_program *cp, union orb *orb);
+--=20
+2.53.0
 
