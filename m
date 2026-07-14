@@ -1,136 +1,111 @@
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E59F412C0E
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C2341A92F
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784053454; cv=none; b=GNim0HmepzVbkDQ64b1FHVKWlCabw+KZJClAYOfbuvTFJuZ3nPZMY0BFICTLE4O+o9Ph/n1SKou/93uCFlXtjLH6Rls+YwUj/ZScFKjRE9lpdz3kiHwTbwx16O/qKLTjWI+DhHAPIGazHV1WN+lbN6uzmnd6f5kRiosy9jehxb4=
+	t=1784054491; cv=none; b=oedsYkOLZ58tCmJBwTXTcZoXi0vlP1DBF0jL9vCc+Evy28pU6o1reFsLRFwl1w50iYvO/ux8Il+4dq6RqL7x/WhwX5fc76zmRRyTZiym1/UBenvuLH4CWRlqx9OiMTEYGEiUD0wkSaAJ/xLiJ3h2kr3CIiZ4U7joEH1ddfOGTuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784053454; c=relaxed/simple;
-	bh=PtzgifCToE9i6F82rJer+x001djxxH72Wo5oXYVWRO4=;
+	s=arc-20240116; t=1784054491; c=relaxed/simple;
+	bh=BkczJ2fUOIbtHXKSSnHvtqyxQ+/SxTC+TtwH8mBN+aY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ANVvTAkyFHhlN9WtqRP1M9lHWPS4EvX/SGLGJZnsV5SS3eaS6j9aEYy5FIdUgQUbuUE/M4nGsLLXFAH9aMACiH1haRrbvhCWewxxxdrxy2bNNTChx+cZ8Mq/tyyucjkdTKMIFN4nu2lvWJRhKymXMrU4yXmDG1hZloCkC+JBtI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nvLR8AIq; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=heopFjQr+6raY1OtnB1RycOglevg56RCrWYjA2NoY9GXxSp+nFz+pjO5GWUVVRO4B/1FnT1/NXYWhATslVwjz184Z/ZVOghd6y0daGqJwKS3E59IG7k+byhqx0T/Y+2i/54qf7WYDs4B0IfXzSDEp5XmYl4FDouS+imOACwXJBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eOFzus0R; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nvLR8AIq"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-848d21bbb55so5875781b3a.0
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:24:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eOFzus0R"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84a651759a2so59082b3a.3
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:41:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784053450; x=1784658250; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784054487; x=1784659287; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ENRucSgO3o5mHLQK4q7atyT1xZ8PJlvadC9enFcBAkg=;
-        b=nvLR8AIqERqFQbE0lxZ614/PC/AWdW1iE1+H0sQuFfR2OTviFs9Cpg4wbpWDkwmsa1
-         WcSVFFkcEBN0x+riATcj24cOXYhlgVAiIQKoY8myGi74QrbgNBwWTXq9NYXVFz98qm7X
-         Gw+osxVmD6E7LXPHUjD/7pmcLG/VlXBJneOdVzDgG1yDlalCDTs5WKXpnYmrbEyNYy+R
-         CtXyFGnmxuAo14eoyTSqMXn4UGbhYnKi4VBzzbrC0S7eErCeOcXr3q+ySe8o5fpQ7IF+
-         TajdXwYJm8L4j0Ac5Wry9QEgGHG5yMul5U8wiJtfG2OPPMGm4jhZveSszgjkox+Mtrn4
-         Z7zA==
+        bh=yJ72AC02cMXEHNEYjRW7LHdYJI9uCNssUi5iCa6X4a4=;
+        b=eOFzus0R93WuvmaXWPci9NW4QIxHp+qwXVI0lAom9wBfb30eEEioFtu2hvajaSRf2u
+         CdZjqYJkjH5I9vFe6is71hTyhjG5a9EFg9IBX97cm17jv4bQsGmcMpCUqDrRUD9F2Zfi
+         QYTlkiRrEjAhL0xW0cJiHqQWZjDKYX6zBRMt9MyAPp55+sHizux0IsiY7OM+mGQqbEtM
+         qYRXQ7vpzc3yYWLrQkWzwK1KdqCGhMkAq53Iuq+SV+pRr6VrVXHmMEA5L2hTehMEKH/Q
+         xNSl19rKhHXliUS2mAMSbQfjDJMsPPxWjrA4HPI8PsJMSK5KR+AAA2r7AjA6FBRNmOUD
+         7uvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784053450; x=1784658250;
+        d=1e100.net; s=20251104; t=1784054487; x=1784659287;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ENRucSgO3o5mHLQK4q7atyT1xZ8PJlvadC9enFcBAkg=;
-        b=N1roT++Tk5W1rQRklgUA9ty2QMzQa9aevEeActyzdCRn0kuyFePtarCGAdd7n9aUUT
-         ZhD/1oYuQDDJgO+vUhBH9nWlYuRVDjqMpyCXU76Be3axhcvn8YKTR6S/FsERpKgccD0p
-         OPpEAmnm34fwzMVqpbQHIJFQjdA6oDhbR1ThocTeAwaw5AEr8s768w0gfjrbAV4z6pPW
-         pNEat1oI1H4EX1Rb5MGeQibiuqTVKqjNxXZ1e1XEs4z1Uhhs/TQE+fJykOfHBR4Tatto
-         J7oZAZ3UUem7+orN2235dEdZzX/VVuB8CwB62ZpfP+/g5XNiNOR7r6d3MjBHng+h116e
-         tVDw==
-X-Forwarded-Encrypted: i=1; AHgh+RrDbrYhSmv+avnzsI8tbSwBu75lJOfE5Iy5U+E8Uy5sZRqwvX/j0xCItSTsmtna22+pXeg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcNxBvzQYtYrbuJ7TR98ZylXXLyCGmZTIJlnYLraja/55Jv1Ce
-	m+ebCWg+WoS/aptKUM8iXFGTn9p76aOOk2zpXZkd4B7Y/BwgCLyCvvoRsti3z5+iPuK+G+0Lpcp
-	KHQFDzA==
-X-Received: from pfez10.prod.google.com ([2002:aa7:888a:0:b0:848:492a:5b41])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b45:b0:84a:2c46:3fdb
- with SMTP id d2e1a72fcca58-84a5576e5c3mr3341929b3a.5.1784053449523; Tue, 14
- Jul 2026 11:24:09 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:24:08 -0700
-In-Reply-To: <6d8588f8fb1b68fee59d4a0c8cfcfd7a58d25f79.camel@intel.com>
+        bh=yJ72AC02cMXEHNEYjRW7LHdYJI9uCNssUi5iCa6X4a4=;
+        b=XmV6xwUC1EaY2Vusi/cbQn0v5ssE2RjjAD7HPYo5Pr7a6vlsFLJ8UapXRy2xKJ+8Tc
+         vkl8yMjcczZlgeJIDGG42p0BNSnfaZLZgyHNISSnBWEs7CUTbtfGlQZe3POdpHg+3Jki
+         zlkhnmOjcmuGi1mFrH/i28+oA4e1MA8QHmusFhSAZq6Og5sDG1SQnXA67WqxGtJQqvdM
+         NL/VqOMtJH6gept78HlSbiV08PfZ2JabQsZUhcLy9PocmxicJd/Ay5/Mhs0rv07utuBj
+         R7izHpSS1wgoZ4t9lieuKupJj7HWOkUvncFQjzClqCRo+Vn2pwoIhrJ1e59fuoZTgZRr
+         wSAQ==
+X-Gm-Message-State: AOJu0YxIdzUWRLo8SpqENXB8fGZkMR9yBpLFcfPet6vxocpZspDROIu8
+	zHlsGrl6GlcpHSXFhOLdMfY6HP+EkpJG0JvueoN9d5HN04UjmNnczjujKrrtxarkwz+Nl3YCanO
+	5sLaddw==
+X-Received: from pfrh4.prod.google.com ([2002:aa7:9f44:0:b0:845:bd02:c4cd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21d2:b0:848:48e9:2ecb
+ with SMTP id d2e1a72fcca58-84889600e32mr12853818b3a.10.1784054487068; Tue, 14
+ Jul 2026 11:41:27 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:40:59 -0700
+In-Reply-To: <20260709204948.1988414-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260630202828.440724-1-seanjc@google.com> <20260630202828.440724-2-seanjc@google.com>
- <6d8588f8fb1b68fee59d4a0c8cfcfd7a58d25f79.camel@intel.com>
-Message-ID: <alZ-yMvZb2I2tJOf@google.com>
-Subject: Re: [PATCH v2 1/3] KVM: x86: Reject nested CAP enablement if nested
- virtualization is disabled
+References: <20260709204948.1988414-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+Message-ID: <178405223763.3107547.15149893629683113824.b4-ty@google.com>
+Subject: Re: [PATCH v4 00/18] KVM: SEV: Fix RMP #PF due to freeing in-use VMSA
 From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Michael Roth <michael.roth@amd.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, 
+	"=?UTF-8?q?J=C3=B6rg=20R=C3=B6del?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 14, 2026, Kai Huang wrote:
-> 
-> > but now KVM is over-reporting support for
-> > KVM_CAP_NESTED_STATE and KVM_CAP_HYPERV_ENLIGHTENED_VMCS.
-> > 
-> > 
-> [...]
-> 
-> > @@ -2346,7 +2346,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
-> >  			r &= ~KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST;
-> >  		break;
-> >  	case KVM_CAP_NESTED_STATE:
-> > -		r = kvm_x86_ops.nested_ops->get_state ?
-> > +		r = kvm_x86_ops.nested_ops->enabled ?
-> >  			kvm_x86_ops.nested_ops->get_state(NULL, NULL, 0) : 0;
-> >  		break;
+On Thu, 09 Jul 2026 13:49:30 -0700, Sean Christopherson wrote:
+> Rework KVM's handling of guest-provided (and always guest_memfd-backed) VMSAs
+> to forcefully reclaim VMSA pages when the pages are being freed from their
+> backing gmem instance, e.g. in response to PUNCH_HOLE.  In the worst case
+> scenario, marking the page SHARED in the RMP will fail due to the page being
+> IN_USE, ultimately leading to RMP #PF violations due to guest_memfd freeing
+> the memory back to the kernel while it's still assigned to a VM.
 > 
 > [...]
-> 
-> >  #ifdef CONFIG_KVM_HYPERV
-> > @@ -2354,7 +2354,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
-> >  		r = kvm_x86_ops.enable_l2_tlb_flush != NULL;
-> >  		break;
-> >  	case KVM_CAP_HYPERV_ENLIGHTENED_VMCS:
-> > -		r = kvm_x86_ops.nested_ops->enable_evmcs != NULL;
-> > +		r = kvm_x86_ops.nested_ops->enabled &&
-> > +		    kvm_x86_ops.nested_ops->enable_evmcs != NULL;
-> > 
-> 
-> IMHO an additional 'enabled' seems a bit redundant?  And it seems there's no
-> rule whether the common x86 code should check it before (checking and) making
-> the call or not.
 
-Because in most cases, the hooks are reachable if and only if nested virtualization
-is actively being used.  Generally speaking, the only flows that need to check
-"enabled" are those that enumerate support to userspace.
+Applied 1-12 to kvm-x86 coco.  I'll send a v5 for the remaining changes.
 
-> How about letting VMX/SVM code to explicitly clear the function pointer in
-> xx_hardware_setup()?
+[01/18] KVM: SEV: Track the GPA of the guest-controlled VMSA used for SNP guests
+        https://github.com/kvm-x86/linux/commit/42a39ad5d592
+[02/18] KVM: SEV: Extract loading of guest-provided VMSA to a separate helper
+        https://github.com/kvm-x86/linux/commit/0060569e4f18
+[03/18] KVM: SEV: Mark vCPU RUNNABLE after AP_CREATE, even if VMSA is unusable
+        https://github.com/kvm-x86/linux/commit/98ade8c48c28
+[04/18] KVM: SEV: Wire up kvm_x86_ops.gmem_xxx() if and only if CONFIG_KVM_AMD_SEV=y
+        https://github.com/kvm-x86/linux/commit/01a96ff30dde
+[05/18] KVM: x86: Serialize writes to disabled_quirks using kvm->lock
+        https://github.com/kvm-x86/linux/commit/ba76b23ed36a
+[06/18] KVM: x86: Ensure runtime reads of disabled_quirks are resolved once
+        https://github.com/kvm-x86/linux/commit/ed15cb219992
+[07/18] KVM: x86/mmu: Fold kvm_mmu_zap_memslot() into kvm_arch_flush_shadow_memslot()
+        https://github.com/kvm-x86/linux/commit/06d38eaa78fd
+[08/18] KVM: x86/mmu: Split kvm_mmu_zap_all_fast() into "front" and "back" halves
+        https://github.com/kvm-x86/linux/commit/b27622c4eeb1
+[09/18] KVM: x86/mmu: Use split "zap all fast" helpers when invalidating memslot
+        https://github.com/kvm-x86/linux/commit/db095727ff57
+[10/18] KVM: SEV: Forcefully invalidate SNP VMSA if its backing gmem page is zapped
+        https://github.com/kvm-x86/linux/commit/d1a3c2162334
+[11/18] KVM: SEV: Mark vCPU has having guest-provided VMSA even if its invalid
+        https://github.com/kvm-x86/linux/commit/98fb11aed12b
+[12/18] KVM: x86: Guard .gmem_prepare() declarations with HAVE_KVM_GMEM_PREPARE=y
+        https://github.com/kvm-x86/linux/commit/bfbf5fa51145
 
-The downside to that is approach is that all nested ops would become optional
-from the perspective of arch/x86/include/asm/kvm-x86-nested-ops.h, i.e. we'd lose
-the sanity checks provided by:
-
-#define KVM_X86_NESTED_OP(func) \
-	WARN_ON(!kvm_nested_ops.func); __KVM_X86_NESTED_OP(func)
-
-We could probably come up with a way to make things work, but I think we'd end
-up with something a lot like the "enabled" flag.
-
-> Perhaps as an ultimate goal, I am not sure whether VMX/SVM should provide a all-
-> NULL version of kvm_x86_nested_ops and the kvm_nested_ops_update() should treat
-> all as either OPTIONAL or OPTIONAL_RET0.  There will be still call sites which
-> needs to check the pointer is NULL or not and return -EXXX but I guess we can
-> live with that (kvm_x86_ops is similar too anyway) ?
-
-I'm concerned this would actually be less robust, due to static calls being nops
-by default.  If KVM screws up and invokes a "mandatory" nested op that has been
-nullified, exactly what will happen is harder to predict, e.g. kvm_translate_gpa()
-would probably return stack garbage?
-
-Any such bug is highly unlikely to occur, but I don't want to sacrifice
-defense-in-depth without a clear benefit, and IMO avoiding the "enabled" flag
-wouldn't provide much benefit in practice.
+--
+https://github.com/kvm-x86/linux/tree/next
