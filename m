@@ -1,132 +1,159 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6E5417BF0
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CBC3CAA55
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784052186; cv=none; b=UQRpWqnZ+O8cCBQVHn02zOySnn4AFzTOp+ZrU9WP0cCOQmbuIiaiIEEY6+DFZHn/CawU+D71X0FruuC6QjFdsOQqpflhoO9zvixsVzsQ8XSss5B2QA+j2A5Nx7IriTvma1hTYyPjW145oWsBRUTEEf0dGG4PO8rCPgbeC3dpzcE=
+	t=1784052857; cv=none; b=TIv0nN/gLGvT2uhKpDkmSOtNwZqcKcodvEMpg2fsLS6vAhiuAcMc7WGo5NNg5FB9W3D0eNayZzXyWslb5pYB/Wy7jl+vvN7he7b96EzPu6GiX/h/pgwKkCPBZ1DG+cts99nA/LFbnKx+4CebMBzkLR9IrUbuoJy1JjtQpq3505U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784052186; c=relaxed/simple;
-	bh=K8YP5ejsNxr8poc77f9jqVqgi6nf+poxRdNpq36Lms0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ez2qaB77waKN9d1svVqnaYLutw4eycY5PyrPrIuEEU4X/azCA0cgu6PMzc0bCCHctMQ0yB99d51DMxUJ/vgPQge1FsjhvOvQbokKgowkg0pDziWrVIycCQ9ha2DhgOeONHwm5SCJrl+lhwd1OzVtCjqw67NgiGD58wLYclTb7zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V8B55fwE; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784052857; c=relaxed/simple;
+	bh=eT//DqQoTtDcHwvlqXerr1xOn9oACvuaPsXO5Ek3wrQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WE4Jke5smtTsLwJjis3/MSppElxMyY5tJgJf6MB9mOfk3SGdIQjuWLYBQoUc765uG541KQBfDs5XhecRgjhxdI5xUXx7yJcIUsOM4lvzi7ViqIkgvx7PjBAnZ0bKuuUiBPh4nLMG1ekIYZhWEDtk51M9aH+jmssZ/q6AyrHALBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3k8hsMp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V8B55fwE"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so1352623a12.1
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:03:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784052184; x=1784656984; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rsk6VLM9KqvehMksWAVrD1FVxDYQHnyoO93TvlPjXMM=;
-        b=V8B55fwEjAdkv5eaEiO5bltz/a7DNApGqEYaiRHqWBC0UqIujOL1CUlFXIC/qN5MLi
-         2cPpehgs04qA86zLVf/q2PoGNKdAuySuQ167sVQ+2qiO8yaObq3jTQ1ggF+t8Jm1TkZJ
-         E/Suwuvnb1yCMR4n6u/4G0fbx+zaw/4NJE61hNPAgIC6UEBicCz435aJyqnCySS6ng9n
-         IwDxJNZyeoUiXrvMaSgzfvt8HmC6ayUXtXjtPTfQUJsJpDcVwMuezVN6/jJtkHnf9nrr
-         /qBu2KY03GHqQRkg0IX5hA1UZp2Lb3EIyaAq5WE7EgsH7+9MHWSLuiDFbxL715FdV8Hd
-         bSqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784052184; x=1784656984;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=rsk6VLM9KqvehMksWAVrD1FVxDYQHnyoO93TvlPjXMM=;
-        b=HDHxFvOo9jwxWLS7aTPfQiPBUBdReOYW7Hlx+Rudto58S4qS+XpZ/p4NwTUnfNjP+l
-         Y+yWynzYCXxMLELyusaxwcugN+PPLY/PVD8f9t2Q/fRUUZ1hzT5Etp7edwcvFBntNM7V
-         3icRTfhtG8q1A/IE1WkBdEY8NysUcGImf4pCe2p8bCEQcY5Hjc+4JBFh9dVTlaAZear3
-         5zg+EqdYbzkPCf1f8oLVHSVOF4Pd3KCkvREVuQ7xjE2gKG2fcPVfyPlT+GnA6yA1RldL
-         h4Xe6Evb1ycHhBIE+cVd3ovo0fwV2b3TQYW2T6tOoIt0sItCV/1tx1R4a9sFf6h9XYJZ
-         mNpw==
-X-Gm-Message-State: AOJu0YwWLIUhthOnhcLvhgLsuAnrZejOC2IpQVr47da8I17DmJirJS5n
-	u5FHgTfNu1UPhC76NkhIXcbJBMAbPpUe9vL29eOfssKVRF31qnRrp4idKrzpIe+uRVTYDzZ3gSc
-	6ligbsw==
-X-Received: from pgc20.prod.google.com ([2002:a05:6a02:2f94:b0:c96:6f3e:49c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9216:b0:3bf:c28f:8afc
- with SMTP id adf61e73a8af0-3c10fd6bdd0mr17193925637.0.1784052183886; Tue, 14
- Jul 2026 11:03:03 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 14 Jul 2026 11:03:02 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3k8hsMp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF05F1F000E9;
+	Tue, 14 Jul 2026 18:14:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784052856;
+	bh=s/en7QsU9rQ33bEzkc4NZ//o9B9ROWJVcSBJce/7NoQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=L3k8hsMpV5wD1IMKSBhpG06do7FHKULFzGdyNTPRY6GqBq1lzI6tlOpRhpho00M+e
+	 k2kCaxBDYWlWK8o952WtwUPLQcVuyDB5j69NSN62p25ORXuHzwRd2BmzpX4gNC0xeg
+	 CZBYhsUQ+JiwDh9C1bQ+9Z91K9qiyOKNbTku+a+E6At7Ad0wkBLP4+5u/j1lPPCFL0
+	 7v2WAh5htBNcLo7cfLEshUT8mMUXBIBGNaqjmCHAwc2HcaC2YzRvCfk4oWw835PlMD
+	 SBQ1aUE3OgLqHZ7DeMPrVcuWqvUtFYTauX6rBSDUZAH0uRjRsrGQhOT7UvQBuBDns1
+	 IRi598OoLVIcA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260714175432.86388-1-amachhiw@linux.ibm.com>
+References: <20260714175432.86388-1-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 18:14:15 +0000
+Message-Id: <20260714181415.DF05F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260714180302.3105706-1-seanjc@google.com>
-Subject: [GIT PULL] KVM: x86: Fixes for 7.2-rcN
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Please pull x86 fixes for 7.2.  Nothing in here is super urgent, but all of
-these are fixes for high-impact bugs (though the ept=n bugs are agruably not
-impactful in practice).
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Destructive API failure corrupts shared vcore state (`arch_compat`=
+, `pcr`) but only updates the per-vCPU `sane` flag, desynchronizing sibling=
+ vCPUs.
+- [Medium] Lockless read of the shared `vcore->arch_compat` in `kvmppc_sani=
+ty_check()` causes a data race.
+--
 
-Note, the tag is based on v7.2-rc2.
+--- Patch [1]: [PATCH v5] KVM: PPC: Book3S HV: Validate arch_compat against=
+ host compatibility mode ---
+commit 3439effb1356334e2a4fa14fb4f8e03f83d0556d
+Author: Amit Machhiwal <amachhiw@linux.ibm.com>
+Date:   Tue Jul 14 17:54:32 2026 +0000
 
-The following changes since commit 8cdeaa50eae8dad34885515f62559ee83e7e8dda:
+KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
 
-  Linux 7.2-rc2 (2026-07-05 14:44:06 -1000)
+This patch introduces early validation of arch_compat during guest
+initialization. When an unsupported arch_compat is requested, it detects the
+mismatch, sets arch_compat to PVR_ARCH_INVALID, and prevents the vCPU from
+running.
 
-are available in the Git repository at:
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3b..f9380ef657500 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+[ ... ]
+> @@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
+pu, u32 arch_compat)
+>  			return -EINVAL;
+>  	}
+> =20
+> +out:
+>  	spin_lock(&vc->lock);
+>  	vc->arch_compat =3D arch_compat;
+>  	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
+> @@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
+pu, u32 arch_compat)
+>  	vc->pcr =3D (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
+>  	spin_unlock(&vc->lock);
+> =20
+> -	return 0;
+> +	return kvmppc_sanity_check(vcpu);
+>  }
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.2-rc4
+[Severity: High]
+Does this error path corrupt the shared vcore state for sibling vCPUs?
 
-for you to fetch changes up to 9c66085e6dcfb44b70970aa4e323003fc7f2b738:
+If userspace requests an unsupported arch_compat on one vCPU, the shared
+vcore state (arch_compat and pcr) is poisoned. However, kvmppc_sanity_check=
+()
+only updates the per-vCPU sane flag for the calling vCPU:
 
-  KVM: x86: Fix null pointer deref due to dummy array in trace_kvm_inj_exception() (2026-07-13 06:24:36 -0700)
+arch/powerpc/kvm/powerpc.c:kvmppc_sanity_check() {
+    ...
+out:
+    vcpu->arch.sane =3D r;
+    return r ? 0 : -EINVAL;
+}
 
-----------------------------------------------------------------
-KVM x86 fixes for 7.2-rcN
+Because the sanity flag is cached per-vCPU, sibling vCPUs would not get
+updated. If userspace ignores the error on the first vCPU and attempts to r=
+un
+a sibling vCPU, could that sibling bypass the validation in
+kvmppc_vcpu_run_hv() since its individual flag is still true? This would
+allow it to enter the guest with the corrupted vcore state (raw mode).
 
- - Fix a bug where KVM will trigger a UAF if updating IOMMU IRTEs fails when
-   registering an IRQ-bypass producer.
+Conversely, if userspace later fixes the vcore via a valid request on a
+sibling vCPU, does the first vCPU remain permanently dead because its cached
+sane flag is not re-evaluated?
 
- - Ignore pending PV EOI instead of BUG()ing the host if the feature was
-   disabled by the guest.
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 00302399fc37b..b6b83fe3233f3 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -258,6 +258,12 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
+>  	if (!vcpu->arch.pvr)
+>  		goto out;
+> =20
+> +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
+> +	if (vcpu->arch.vcore &&
+> +	    vcpu->arch.vcore->arch_compat =3D=3D PVR_ARCH_INVALID)
+> +		goto out;
+> +#endif
+> +
 
- - Fix nVMX bugs where KVM would run L1 with an L1-controlled CR3 after a
-   failed "late" consistency check when KVM is NOT using EPT.
+[Severity: Medium]
+Is there a data race when accessing the shared vcore->arch_compat here?
 
- - Disallow intra-host migration/mirroring of SNP VMs as KVM doesn't yet
-   support moving/mirroring SNP state.
+In kvmppc_set_arch_compat(), the modification to vcore->arch_compat is done
+while holding vc->lock:
 
- - Fix a TOCTOU bug in KVM's handling of the "trusted" CPUID for TDX guests.
+arch/powerpc/kvm/book3s_hv.c:kvmppc_set_arch_compat() {
+    ...
+    spin_lock(&vc->lock);
+    vc->arch_compat =3D arch_compat;
+    ...
+}
 
- - Fix a NULL pointer deref in trace_kvm_inj_exception() where a change to the
-   core infrastructure missed KVM's unique (ab)use of __print_symbolic().
+However, the read in kvmppc_sanity_check() occurs locklessly.
 
-----------------------------------------------------------------
-Atish Patra (2):
-      KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
-      KVM: selftests: Verify SNP VMs are rejected from migration and mirroring
+If a concurrent operation like KVM_SET_SREGS on a sibling vCPU calls
+kvmppc_sanity_check() under its own per-vCPU mutex, could it race with
+a KVM_SET_ONE_REG updating the compatibility mode on the first vCPU?
 
-Binbin Wu (1):
-      KVM: TDX: Reject concurrent change to CPUID entry count
+Since lockless access to shared variables usually requires at least READ_ON=
+CE()
+and WRITE_ONCE() to prevent compiler optimizations like tearing or stale
+caching, should this read be protected or use READ_ONCE()?
 
-Daniel Paziyski (1):
-      KVM: x86: Fix null pointer deref due to dummy array in trace_kvm_inj_exception()
-
-Sean Christopherson (3):
-      KVM: x86: Ignore pending PV EOI if the vCPU has since disabled PV EOIs
-      KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal" checks
-      KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is disabled
-
-leixiang (1):
-      KVM: x86: Nullify irqfd->producer if updating IRTE for bypass fails
-
- arch/x86/kvm/irq.c                                  |  4 +++-
- arch/x86/kvm/lapic.c                                |  8 ++++++--
- arch/x86/kvm/svm/sev.c                              |  6 ++++--
- arch/x86/kvm/trace.h                                |  2 +-
- arch/x86/kvm/vmx/nested.c                           | 87 +++++++++++++++++++++++++++++++++++++--------------------------------------------------
- arch/x86/kvm/vmx/tdx.c                              |  6 +++++-
- arch/x86/kvm/vmx/vmx.h                              |  7 +++++++
- tools/testing/selftests/kvm/x86/sev_migrate_tests.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- 8 files changed, 110 insertions(+), 57 deletions(-)
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714175432.8638=
+8-1-amachhiw@linux.ibm.com?part=3D1
