@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A9D2F8E94
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 21:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9894220459A
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 21:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784062992; cv=none; b=COLgVRFA+e4wWJ6/4bx9U2rUskCZs4/GEipK7fcjEFE6W8gKPTnbxt/Y4Lk6JHeloTybRMqlq8A7glryZXyY2raGws8UdHEl+zgYTXim4LXm5oRcws77eZUQD1pSgvrR/6jG5wl9LAidYd9KUEGmAH8ItBP7YZHm0MFyaWawSNY=
+	t=1784062994; cv=none; b=SiIDi5QyBTmgRQnNpmMVNdos3m/0P/ATaTzZGBd8FugTrxWuRXRcNqTKF9fUtAMG/Uqm5dLruFz4s9xnAaBwkTanO/iqdi8yw6etvgjAdtO2vsyUsZUzOIoIvzmpiRYKU+vPl7bYFHl9bEUYdO6hMXa61uado2jfCqh6ua4T4gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784062992; c=relaxed/simple;
-	bh=E9Q25EH1qfBo/eL0z4Pz7D9YvAAJkCKUip7xGVPmNvk=;
+	s=arc-20240116; t=1784062994; c=relaxed/simple;
+	bh=YL40fODZmYHcDpm/JMVPckuIUdAD/Hhim4uHYp49D4U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O2dk0t4zggh4Sj8G9Yqw1/CiuSxsmn3fjTKz0X4jUyku4IAoC6ieiMHtLIzUVtB/1KsqIRoN9mCi7y8NpAZUTaOfDvyZfgWEi45geNphZUNZB4CFAo5JVTRerxLJ2MlFFIpzywlZv/SV5fjpu9PrH6hCkeiwhWvhEKD13dG2Kbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BCPMxniX; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=owQUrhjbnNZyV/oJvso97Ny+kcM53Y/Sf5LCS7JKxyRpbXoy77ss6EF361986gaS7VCBSBNjoPQPUEszEuC8thSOFZijX/Hpjjs06IsfO8JGZrUzjlvaVXV1/+O4RDqOn3y54uICQ9CBVkAEuZZMiVGK3T2nSCJMJIXZzHXYBI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lm5WGgXS; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BCPMxniX"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-388cfc4848dso5967282a91.3
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 14:03:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lm5WGgXS"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c89704da8c7so6996788a12.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 14:03:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784062990; x=1784667790; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784062992; x=1784667792; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l48rpXoNeDe+QRm4OowSgCgiPqU3f58WDMRy7srF4IE=;
-        b=BCPMxniXFb0nFnk9LNTLXXdGBTknNsYws53bxiMfp1Q79SKJSNOmy8A4v7xxSeSqvd
-         kL8LfK9bySWLKWxAj78sNnbSGOjOw7gt0uyVzBa2EiPvRdXloe2VX5D/Tuw8KFYNZfmc
-         3As/D/DzZzat99QyQP0Uco0He/68R+UL/HQpM50UiVHmMo8Dck4yA28Nc7GM/fYVhS67
-         JruLaUQFQR6M770+utxHXy2HDMz52U5onxCT1Ni5fseQ37ko2HJT04LellT6BLuHwdL8
-         17I/pqGoDNAbSSN8g0AfAXAcbGk5PRwYP88CJthciW5T93ZXbdaBPWgKTwL65WslUaZo
-         GNqw==
+        bh=P86bkrXTV1bs2mXuNasauUOM+d3gbgQQEyUkpHKw8fA=;
+        b=lm5WGgXStTk2mE5zf6QIsDDE0V2XZyQ0Xw/X95wUV0xjPw87P3W2pS9lAuhYWHyxKo
+         6S1Zqxn8vpqFLcrs8slXKGl6Bc5/shW6hwkSizLcAOyLgwsH2EvboTIZPy7yMnH0GLTm
+         GQ9DiZ+/pPjf1jAlpET5Bd9Bb9Na6kF2C+6GK96l87xlYvzvDLFHlii5LNuTTtdE6E1j
+         aUNv/sQ+otaPL2sq+a6WPwxPXQ2cCSjt/Y/4JrM04Gg2sRabvreO6wJy/+ZG3mlgXBZX
+         xDsZ5nL/87Ra/ZCH2/RDPfvp/amZ8ohdR1E7YcMrOUERyNoNYF+WewdeL56JavJbT0PE
+         x5Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784062990; x=1784667790;
+        d=1e100.net; s=20251104; t=1784062992; x=1784667792;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l48rpXoNeDe+QRm4OowSgCgiPqU3f58WDMRy7srF4IE=;
-        b=Sv0RbAO/unMLpllAgIyU3t7d8ieU9uALK8DjM/tDb3s2DIoKLEA1nOB0k7jf/mYqUu
-         Z2MA6rmoXkaiMKh+0BsOHT2/rzJfPtyLmLKJUtQxd3pk5D6TtBF2usrNkpq6NuehZKKZ
-         5yiSxw0K+i2jZxS+tI4nD+AzVTN9rhhEJO9dpRbjAfNcXKR7zk67cawMMMgzXMhoSbgF
-         ohXjA6dSEd9w+JB0ngpcU+jYcs6NbFP0w9lBXL/0f9/iecE2SDCpimirM82Be0d2eP4J
-         rGyTNWMtVSia2ffC8U5bOMpbjHmgfFrqza90CStygE2NPNnT9QRqAmxgMOTj7hmsj1uO
-         w+6A==
-X-Gm-Message-State: AOJu0Yw3G4AuocpwLXE4ewGjPgRy+5n3SLChQZVfex2GqKbliQ4ohkb2
-	nQuba2bhFPmk9hZtX78VUxiFHzvffiyxivJw3fjm7NAeGdEM/Lt1xCV+esNnEDZSAQE9HoAtxWd
-	vGpUkOkPqT2o2P90srO/VMOe7i8WJXfvYunUcT1bxZ5ZT6j54qb5MAWYOXf0M5acZQ6YYSEFqIZ
-	Vjw4XPgu+CrRLJif5QV6BbXs4VTMk0nNHBAJYS6C2xUEHcHx5PD+EI1g==
-X-Received: from dycjx10.prod.google.com ([2002:a05:7300:fd0a:b0:313:f88c:98f8])
+        bh=P86bkrXTV1bs2mXuNasauUOM+d3gbgQQEyUkpHKw8fA=;
+        b=D2uUFhQshYYZkX8myGzCj1hgUq27FBPC8JLnOmUt34M2Pq2PLDq6qcvYREcIRRuBFU
+         4dKAo1DoZO2gIgoRenT/lUrkZN7O1I4C9y5qHiw/y16e2df7afKeb5yMTGHuummhf6zv
+         GICHYqJjVHLY68IJchlwaXhPaJP08Y9bn4VK+xJR1DZ/ct0nqPr2++VkGVBWRPlgEyns
+         A1KLFZQ7G+LB8df2xllSMdOtGpEPcesG9Hf8xjUestDutmDg8j7QFB0cRfquKFCFOCwk
+         M9yzYaULMWmthfYJOGTjdxWA9CB8D2AdvGXEtTYBTrPfI+yl8o19G7V2bUv4dwqIXh5f
+         ESOQ==
+X-Gm-Message-State: AOJu0YykMVAnfldQFBY+YmrZXBLauj1oyu+ohY+BnMotdS89Z/hS2Eae
+	hC4CpMrQCciPTzELdnAI4LpqaE9hnZlOFZZcLm/N+L9D71ozKU8PGmFHiStClVqclPoRXDcdvOp
+	VjOxE2KixNZA4FEpSwq5kp4N17GZxlGWPLRDtyOlrrWyJvhoQNhUa0MFIv5mddPYW1MDevqQrAa
+	8OVmWJeh+NUj16nS5qIN7hwNjPr45sK25SUCDwoMEe+VGg8QhjT9vWiA==
+X-Received: from dlad14.prod.google.com ([2002:a05:701b:220e:b0:139:c8ec:c97d])
  (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4b8a:b0:37f:fb1d:63fa with SMTP id 98e67ed59e1d1-38e1ae2eee1mr3071786a91.15.1784062989876;
- Tue, 14 Jul 2026 14:03:09 -0700 (PDT)
-Date: Tue, 14 Jul 2026 21:03:02 +0000
+ 2002:a05:6a21:330b:b0:3bf:6c08:fba4 with SMTP id adf61e73a8af0-3c357637bc4mr4837617637.56.1784062991683;
+ Tue, 14 Jul 2026 14:03:11 -0700 (PDT)
+Date: Tue, 14 Jul 2026 21:03:03 +0000
 In-Reply-To: <20260714210303.3967981-1-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260714210303.3967981-1-aaronlewis@google.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <20260714210303.3967981-2-aaronlewis@google.com>
-Subject: [PATCH 1/2] vfio/type1: Periodically try rescheduling when unmapping
+Message-ID: <20260714210303.3967981-3-aaronlewis@google.com>
+Subject: [PATCH 2/2] iommufd: Periodically reschedule when unmapping
 From: Aaron Lewis <aaronlewis@google.com>
 To: kvm@vger.kernel.org
 Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
@@ -74,109 +74,102 @@ warnings.
 
 For example:
 
-[ 1404.810673] sched: CPU 19 need_resched set for > 100000026 ns (100 ticks) without schedule
-[ 1404.810679] CPU: 19 UID: 0 PID: 34615 Comm: vfio_dma_mappin Kdump: loaded Not tainted 7.1.0-smp-DEV #2 PREEMPTLAZY
-[ 1404.810682] Call trace:
-[ 1404.810700]  resched_latency_warn+0x7c/0x88
-[ 1404.810704]  sched_tick+0x18c/0x208
-[ 1404.810708]  update_process_times+0xa8/0xd8
-[ 1404.810711]  tick_nohz_handler+0x120/0x1c8
-[ 1404.810713]  __hrtimer_run_queues+0x124/0x3a0
-[ 1404.810716]  hrtimer_interrupt+0xdc/0x2c0
-[ 1404.810718]  arch_timer_handler_phys+0x3c/0x58
-[ 1404.810721]  handle_percpu_devid_irq+0x144/0x1b8
-[ 1404.810723]  generic_handle_domain_irq+0x44/0x70
-[ 1404.810725]  gic_handle_irq+0x1b8/0x320
-[ 1404.810726]  call_on_irq_stack+0x30/0x48
-[ 1404.810727]  do_interrupt_handler+0x54/0x80
-[ 1404.810734]  __arm_lpae_iopte_walk+0x15c/0x1b8 (P)
-[ 1404.810736]  arm_lpae_iova_to_phys+0x60/0xf0
-[ 1404.810737]  arm_smmu_iova_to_phys+0x24/0x38
-[ 1404.810739]  iommu_iova_to_phys+0x38/0x58
-[ 1404.810752]  vfio_unmap_unpin+0x8/0x1c0
-[ 1404.810753]  vfio_remove_dma+0x38/0x140
-[ 1404.810757]  vfio_iommu_type1_ioctl+0x8/0xc80
+[ 1389.148910] vfio-pci 0007:01:01.3: resetting
+[ 1389.252814] vfio-pci 0007:01:01.3: reset done
+[ 1392.943771] sched: CPU 49 need_resched set for > 100000053 ns (100 ticks) without schedule
+[ 1392.943776] CPU: 49 UID: 0 PID: 32912 Comm: vfio_dma_mappin Kdump: loaded Not tainted 7.1.0-smp-DEV #1 PREEMPTLAZY
+[ 1392.943780] Call trace:
+[ 1392.943796]  resched_latency_warn+0x7c/0x88
+[ 1392.943800]  sched_tick+0x18c/0x208
+[ 1392.943804]  update_process_times+0xa8/0xd8
+[ 1392.943808]  tick_nohz_handler+0x120/0x1c8
+[ 1392.943810]  __hrtimer_run_queues+0x124/0x3a0
+[ 1392.943833]  arm_lpae_iova_to_phys+0x80/0xf0 (P)
+[ 1392.943835]  arm_smmu_iova_to_phys+0x24/0x38
+[ 1392.943837]  iommu_iova_to_phys+0x38/0x58
+[ 1392.943839]  batch_from_domain+0x16c/0x218
+[ 1392.943840]  __iopt_area_unfill_domain+0x2f0/0x5d8
+[ 1392.943841]  iopt_area_unfill_domains+0x9c/0x1c8
+[ 1392.943842]  iopt_unmap_iova_range+0xec/0x218
+[ 1392.943844]  iopt_unmap_iova+0x38/0x50
+[ 1392.943846]  iommufd_ioas_unmap+0xac/0x1f8
+[ 1392.943847]  iommufd_fops_ioctl+0x200/0x348
 
 Note that in order for this warning to fire, the kernel must be built
-without preemption, or... for testing, the code around the for loop
+without preemption, or... for testing, the code in batch_from_domain()
 can explicitly disable preemption.
 
 This warning was produced on ARM using the VFIO selftest
 vfio_dma_mapping_perf_test:
 
-  ./vfio_dma_mapping_perf_test -p -b 256G -a "-v vfio_type1_iommu_anonymous_hugetlb_1gb"
+  ./vfio_dma_mapping_perf_test -p -b 256G -a "-v iommufd_anonymous_hugetlb_1gb"
 
 To profile the unmap flow, bpftrace was used with the tooling
 described at:
 https://lore.kernel.org/kvm/20260630141152.3757722-2-aaronlewis@google.com/
 
-To isolate parts of the runtime, two temporary helper functions were
-added to vfio_unmap_unpin() during testing: vfio_try_unpin(), which
-encapsulated the outer while loop, and vfio_get_largest_chunk(), which
-encapsulated the inner for loop.  Doing this helped identify where the
-latency issues were coming from and how the code flowed.
-
 The results show:
 
-  vfio_iommu_type1_unmap_dma, thread_time = 1124.85ms, count = 1
-    vfio_unmap_unpin, thread_time = 1124.84ms, count = 1
-      vfio_try_unpin, thread_time = 1124.80ms, count = 1
-        vfio_get_largest_chunk, thread_time = 1124.79ms, count = 1
+  iommufd_ioas_unmap, thread_time = 1086.52ms, count = 1
+    __iopt_area_unfill_domain, thread_time = 1086.51ms, count = 1
+      batch_from_domain, thread_time = 1086.48ms, count = 1
 
-This shows that the execution time is spent entirely inside the
-inner for loop. Furthermore, the loop is entered only once. Therefore,
-To avoid the scheduler warning and allow the system to remain responsive,
-add a cond_resched() to the inner for loop in vfio_unmap_unpin().
-Also, limit the cond_resched() to once per 1GB to rate limit
-it.
+This shows that the execution time is spent entirely inside
+batch_from_domain(). Furthermore, the function is entered only once.
+Therefore, to avoid the scheduler warning and allow the core to remain
+responsive, add a cond_resched() call to the loop in
+batch_from_domain(). Also, limit the cond_resched() call to once
+per 1GB to rate limit it.
 
 Additional context on what consumes time within the inner loop can be
-seen in this sample profile from perf:
+seen in this sample perf profile:
 
-  24.13%  [vfio_dma_mapping_perf_test] ([vfio_dma_mapping_perf_test])
-  24.12%  vfs_ioctl (ioctl.c) Inlined
-  24.12%  vfio_fops_unl_ioctl (container.c)
-  24.12%  vfio_iommu_type1_ioctl (vfio_iommu_type1.c)
-  19.66%  vfio_iommu_type1_unmap_dma (vfio_iommu_type1.c) Inlined
-  19.66%  vfio_dma_do_unmap (vfio_iommu_type1.c) Inlined
-  19.66%  vfio_remove_dma (vfio_iommu_type1.c)
-  19.66%  vfio_unmap_unpin (vfio_iommu_type1.c)
-  19.65%  vfio_try_unpin (vfio_iommu_type1.c)
-  19.10%  vfio_get_largest_chunk (vfio_iommu_type1.c)
-  15.91%  iommu_iova_to_phys (iommu.c)
-  15.18%  arm_smmu_iova_to_phys (arm-smmu-v3.c)
-  14.09%  arm_lpae_iova_to_phys (io-pgtable-arm.c)
-  11.59%  __arm_lpae_iopte_walk (io-pgtable-arm.c)
-   8.51%  io_pgtable_visit (io-pgtable-arm.c) Inlined
-   5.27%  __arm_lpae_iopte_walk (io-pgtable-arm.c)
-   2.64%  io_pgtable_visit (io-pgtable-arm.c) Inlined
+  22.96%  [vfio_dma_mapping_perf_test] ([vfio_dma_mapping_perf_test])
+  22.96%  vfs_ioctl (ioctl.c) Inlined
+  22.96%  iommufd_fops_ioctl (main.c)
+  19.38%  iommufd_ioas_unmap (ioas.c)
+  19.38%  iopt_unmap_iova (io_pagetable.c)
+  19.38%  iopt_unmap_iova_range (io_pagetable.c)
+  19.38%  iopt_area_unfill_domains (pages.c)
+  19.38%  iopt_area_unfill_domain (pages.c) Inlined
+  19.38%  __iopt_area_unfill_domain (pages.c)
+  19.38%  iopt_area_unpin_domain (pages.c) Inlined
+  18.84%  batch_from_domain (pages.c)
+  15.06%  iommu_iova_to_phys (iommu.c)
+  14.27%  arm_smmu_iova_to_phys (arm-smmu-v3.c)
+  13.29%  arm_lpae_iova_to_phys (io-pgtable-arm.c)
+  10.60%  __arm_lpae_iopte_walk (io-pgtable-arm.c)
+   7.70%  io_pgtable_visit (io-pgtable-arm.c) Inlined
+   4.71%  __arm_lpae_iopte_walk (io-pgtable-arm.c)
+   2.31%  io_pgtable_visit (io-pgtable-arm.c) Inlined
 
 Signed-off-by: Aaron Lewis <aaronlewis@google.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/iommufd/pages.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index c8151ba54de3..e78bc07d9b6e 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -1153,6 +1153,7 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 	int unmapped_region_cnt = 0;
- 	long unlocked = 0;
- 	size_t pos = 0;
+diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+index 9bdb2945afe1..e478771c0ccf 100644
+--- a/drivers/iommu/iommufd/pages.c
++++ b/drivers/iommu/iommufd/pages.c
+@@ -412,6 +412,7 @@ static void batch_from_domain(struct pfn_batch *batch,
+ 	unsigned int page_offset = 0;
+ 	unsigned long iova;
+ 	phys_addr_t phys;
 +	int i = 0;
  
- 	if (!dma->size)
- 		return 0;
-@@ -1196,6 +1197,8 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 			next = iommu_iova_to_phys(domain->domain, iova + len);
- 			if (next != phys + len)
- 				break;
-+			if ((++i % BIT(PUD_ORDER)) == 0)
-+				cond_resched();
- 		}
+ 	iova = iopt_area_index_to_iova(area, start_index);
+ 	if (start_index == iopt_area_index(area))
+@@ -428,6 +429,9 @@ static void batch_from_domain(struct pfn_batch *batch,
+ 		iova += PAGE_SIZE - page_offset;
+ 		page_offset = 0;
+ 		start_index++;
++
++		if ((++i % BIT(PUD_ORDER)) == 0)
++			cond_resched();
+ 	}
+ }
  
- 		/*
 -- 
 2.55.0.141.g00534a21ce-goog
 
