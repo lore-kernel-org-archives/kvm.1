@@ -1,168 +1,233 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB1579CD
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 00:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5498C304972;
+	Tue, 14 Jul 2026 01:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783987249; cv=none; b=RlYOq4dn3B+z22iMiAdbm0taOiVA8SbggbeamndIRtiiW2xY8pcYDbN3hKqxmKQj1xZ+Xc/GRpIj+s0ROm5vvrFea0u30mv21kA7SfORlDLLZu5jJjVLJtGyFFBjfyZGXEm/iq3CxQxcpfp1Z50R1r2PWC/JQ8GwXj1oyZCUv3I=
+	t=1783991693; cv=none; b=bccNxqbt5ohdcsbvw7Yy0BjhLrhPHIWj0sSuAefNuNsqlCvXWDKiI36HpIXwLZPjJ2jGU/qF+xC2O27kiKPp58dfzU6ab0DluvQLZc9RvAjMT5iJ8hCztD+1U8fFHolcXuJEADgpUGEG4j+OxNcsrY4D+Cy4hBRtrUHoblOIAPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783987249; c=relaxed/simple;
-	bh=vK4nNF8Lxnnc8+sU1oNbH/TKkIaPhrbmZP8aTjmmElg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=smAPbmtT0r0Cb2bfYyzo+2l41b6SIeYMteqIfEVOhZ3JsA5YkYqie8JZft8SR+mQmnVa56ZvfcXrIPwIv14Hj/UQkjb7IDmg76OQsoRrrYSG2gs67+1cvmd9R0r4kCTEw7YR5gE5aFEb3tvWWk0aJWmr2+9vmhHzp8MzPWU0nKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q9CV34n8; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1783991693; c=relaxed/simple;
+	bh=BEsFeZPKC9cIcglandWJTQ1yyVK/0aYT8bFcovXVmSQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZJYPAn7MrOqp3LNQjQD5YH+fZIEk0z4iuohYk1+PZrqa8zSP6157iEeqRkAsaNHGqvjF3CYsB0vfUeHW7pBby4hr+sWNbmRZMZSFTlwiTb4OjG9Y14c9rw/vcqdTdGpGrAj4cgwriJuFq5Jhwehp65BiSI6WQVSbvTSj5r42W3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=gBKokQq4; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q9CV34n8"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-380a638fb5bso446849a91.0
-        for <kvm@vger.kernel.org>; Mon, 13 Jul 2026 17:00:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783987248; x=1784592048; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=60sX/LZIAI/vlaGiF0cYOJmfISm4IQZoYeFxliNrCPA=;
-        b=q9CV34n8lnGwbU2rDX/DeAbWR/BeyG35rWlOYSfrgTBcsVbyBWlkRiXFU05w85T8ez
-         +h+R+YUqWF2KdPBy8fXdizLWHtUVfiebhVXi5h7KjBujn2cTEjlBB7lxwix7UmDdOUGX
-         1AsuEITnjlYgohl1J8P2TE6ydluMz5WZgKMldVSA/D5kjTHsmBkzuzO78p/hxuCenMwg
-         HyhzvUqhAERsjUqmNHwEtKyFw7fnqq80J6Y+YwkoszNTxIrgOC3/mEFJMC39Tht4P8Gq
-         qlLsTizTiltgNZOIn9swp7wn9adD/7EUpOUGSn115f5qI5VnwWxiZDlC60vBrIk5fmYD
-         TVsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783987248; x=1784592048;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=60sX/LZIAI/vlaGiF0cYOJmfISm4IQZoYeFxliNrCPA=;
-        b=BjCx8siO9DqXoT/fnj/Kdi8GthRa8sgs7Vjosnn35oPwsi6sHc9hxJEuHIgXFi5nMv
-         naO7+PrLvTiHQZfZgv5hJE5yE7rklMONmjMs8TyGnndR+MxEY74Irm3c+wcgm0ZSQoXN
-         qnv8RvPwAvQLIl48v0dwz6kkRl87MmC1Bq7rGIK9qkozs9A76H7Y01/4XT9qIz44vEkD
-         593ROA7cJ/DoLNWXc6rt/XdUJiou4gli2VDUCP31oAAY1i/lgn8PprSRsIPYGqY2D2I7
-         b+4t4MZyp0sLJ+fWqQqg3wEb7T0FUjVzNFo9jE5sfBXjYRWLAhcoh8ZgBZLqlxwyxHyX
-         EwPw==
-X-Forwarded-Encrypted: i=1; AHgh+RpLgASh0CW46FPwSZOUhBKn+JSYLdJJI47olPMnl59cZs+rf8/9QdS1ze0z9X4QWefttGE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0U9kraU7+I1/NgSVmRQ5HQfDZ3lB3P4qIo1jkbzq/yVR4UC0w
-	Ec0kf8aQw+g3sLScOEEarGukTQy9trJQ/I3DD8ErZt9DTTQ7oYR5/gMepbOJL83cujUIah7Ca/1
-	goUYcdg==
-X-Received: from pjyv8.prod.google.com ([2002:a17:90a:e988:b0:37d:f943:23a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4f42:b0:37f:c28a:de61
- with SMTP id 98e67ed59e1d1-38dc75fa2d0mr11368740a91.17.1783987247527; Mon, 13
- Jul 2026 17:00:47 -0700 (PDT)
-Date: Mon, 13 Jul 2026 17:00:46 -0700
-In-Reply-To: <CAEvNRgEJrq4RXyKDOKMaubHHcbhkh1Rpu3p_6w4X0D0KDjzhcw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="gBKokQq4"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=KJcL00QU8NeR/3LQ60oy1TP3plsUe//m7118vm1u7LY=;
+	b=gBKokQq4AHGs26ZFgKEydsParAts/TAQRzx+DV2ZAooK1I64VLgH82rrgHzez57RmBNQiq3JS
+	T9yXp5fwuqvyrDHfWJkK4oWqsKE4BN57ZGtU1UiS/ZAK7d2QzjLu7adLt5pFW1C46HLfhyMJaIW
+	nooSyWgH23IQqBKtjSaLQBw=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gzh1r2kc7z1T4HL;
+	Tue, 14 Jul 2026 09:05:36 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 19C1740561;
+	Tue, 14 Jul 2026 09:14:45 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 14 Jul 2026 09:14:44 +0800
+Message-ID: <8f949334-3ce7-44f4-b6da-f08a4126affd@huawei.com>
+Date: Tue, 14 Jul 2026 09:14:45 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-14-seanjc@google.com>
- <CAEvNRgGz4hWw+p90JPgmP29dMKjVcamfH57Hz=k15VYEypSfEQ@mail.gmail.com>
- <alFtXYztr_Ic04bb@google.com> <CAEvNRgHF1wybj7tHWMgBtnfb0W5AzyjhL45PzF3e2BVxrBUe7A@mail.gmail.com>
- <alGDwp9rJh23iz5D@google.com> <CAEvNRgEJrq4RXyKDOKMaubHHcbhkh1Rpu3p_6w4X0D0KDjzhcw@mail.gmail.com>
-Message-ID: <alV8LlCuRQ1aDv5O@google.com>
-Subject: Re: [PATCH v4 13/18] KVM: guest_memfd: Pass GPA, not GFN, to
- prepare() hook
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael Roth <michael.roth@amd.com>, Hyunwoo Kim <imv4bel@gmail.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
+ dirty tracking
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
+	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
+	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-4-zhengtian10@huawei.com>
+ <alTJOy8Sv4aAp_9y@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <alTJOy8Sv4aAp_9y@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Mon, Jul 13, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> >> Maybe INVALID_GPA and INVALID_GFN should be defined such that both
-> >> gpa_to_gfn and gfn_to_gpa are correct for both.
-> >
-> > Oh, _that_ was actually what I almost broke.  I was going to track the gfn instead
-> > of the gpa, and then do:
-> >
-> > 	svm->sev_es.snp_guest_vmsa_gfn = INVALID_GFN;
-> >
-> > 	...
-> >
-> > 	gpa = gfn_to_gpa(svm->sev_es.snp_guest_vmsa_gfn);
-> >
-> > 	if (gpa == INVALID_GPA)
-> > 		return;
-> >
-> > That would have failed miserably, because even if if INVALID_GFN is -1ull, the
-> > lower bits would be zero after the shift, i.e. wouldn't match INVALID_GPA.
-> >
-> > I _think_ make that work, by doing something like:
-> >
-> >   #define INVALID_GFN	((~(gfn_t)0) >> PAGE_SHIFT)
-> >   #define INVALID_GPA	((gpa_t)INVALID_GFN << PAGE_SHIFT)
-> >
-> > Which I actually don't mind conceptually, but I'm still not sure it's a good
-> > idea in practice.  For whatever reason, converting between INVALID_GFN and
-> > INVALID_GPA just feels wrong.
-> 
-> The above isn't a conversion, it's picking/defining sentinel values that
-> are dependent on each other :)
 
-My point is that the entire reason the sential values need to be dependent on
-each other is that if we add INVALID_GFN, then KVM will inevitably convert
-INVALID_GFN to a gpa and check the result against INVALID_GPA.
+On 7/13/2026 7:17 PM, Leonardo Bras wrote:
+> On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+>> The DBM (Dirty Bit Modifier) attribute, introduced in ARMv8.1, enables
+>> hardware to automatically promote write-clean pages to write-dirty. This
+>> prevents the guest from being trapped in EL2 due to missing write
+>> permissions.
+>>
+>> In this design, DBM is controlled by the page-table level flag
+>> KVM_PGTABLE_S2_DBM rather than per-PTE software flags. DBM is
+>> automatically set for writable non-device pages when the page-table has
+>> KVM_PGTABLE_S2_DBM flag, which is determined at MMU init time based on
+>> hardware capability.
+>>
+>> The DBM bit is set in stage2_set_prot_attr() for initial mappings and
+>> hugepage splitting, and directly manipulated in
+>> kvm_pgtable_stage2_relax_perms() when removing write-protection. On
+>> W->RO downgrade, DBM is cleared to prevent hardware from silently
+>> upgrading RO+DBM back to W+dirty, which would bypass KVM's write
+>> tracking.
+>>
+>> kvm_pgtable_stage2_pte_prot() does not extract the DBM bit back into
+>> enum kvm_pgtable_prot because DBM is a page-table policy determined by
+>> pgt->flags, not a per-PTE property. Callers should check
+>> pgt->flags & KVM_PGTABLE_S2_DBM instead.
+>>
+>> This ensures DBM is consistently applied across all PTEs, including
+>> during hugepage splitting where child PTEs inherit DBM from the parent
+>> block entry via the pgt->flags mechanism.
+>>
+>> Safety: DBM bit is only interpreted by hardware when VTCR_EL2.HD=1.
+>> When HDBSS is not enabled (HD=0), ARM architecture guarantees hardware
+>> completely ignores DBM bit in PTEs.
+>>
+>> Co-developed-by: Eillon <yezhenyu2@huawei.com>
+>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
+>> Co-developed-by: Leonardo Bras <leo.bras@arm.com>
+>> Signed-off-by: Leonardo Bras <leo.bras@arm.com>
+> Hello Tian,
+>
+> Have you added the above tags due to this patch being based on the below?
+> https://lore.kernel.org/all/20260629111820.1873540-2-leo.bras@arm.com/
+>
+> Thanks!
+> Leo
 
-> > 	if (to_private) {
-> > 		if (WARN_ON_ONCE(!kvm || gfn >> (kvm_host.maxphyaddr - PAGE_SIZE)))
-> > 			return -EIO;
-> >
-> > 		return sev_gmem_make_private(kvm, gfn, pfn, nr_pages, order);
-> > 	}
-> >
-> > Then in kvm_gmem_free_folio(), open code -1ull for the gfn:
-> >
-> > 	WARN_ON_ONCE(kvm_arch_gmem_convert(NULL, -1ull,
-> > 					   folio_file_pfn(folio, 0),
-> > 					   folio_nr_pages(folio),
-> > 					   folio_order(folio), false));
-> >
-> > Which is all a little gross?  But I think it's less gross than passing a gpa, and
-> > we don't risk delaying this and the in-place conversion series trying to find the
-> > perfect answer.
-> 
-> Yes thanks, we should go ahead with the GFN version, we can definitely
-> update this later, if at all.
-> 
-> I have some more questions, though not blocking:
-> 
-> + I didn't notice that NULL was passed here. Is this kind of leaking SNP
->   details into guest_memfd, that SNP doesn't need to know which kvm it
->   is to convert a page to shared? Or is it that in principle converting
->   to shared means "removing from ANY VM" and hence kvm = NULL?
+Hi Leo,
 
-Neither?  It's saying "there's no VM at this point", because there's not.  And
-I wouldn't consider that an SNP detail, because any CoCo implementation has to
-work that way in practice.  Requiring an active VM to reclaim memory for host
-usage would be unusable.
 
-> + Is the purpose of checking for the bit being set to set up a contract?
+Yes, I added your Signed-off-by because the DBM-related code in this patch
 
-No, it's to harden against against screwing things up in the futures.  And the
-check isn't against the C-bit, it's against the max legal gfn KVM supports, which
-just so happens to have implications with respect to the C-bit.
+is based on your implementation in:
 
->   It's better than passing gpa, but TDX has the opposite definition for
->   the bit, with 1 == shared. TDX doesn't use this callback so that's
->   fine, but it's hard even for SNP to check since IIUC with VTOM 1 ==
->   shared? What if we just not check and depend only on kvm == NULL?
+https://lore.kernel.org/all/20260629111820.1873540-2-leo.bras@arm.com/
 
-Because the to_private path requires a valid gfn
 
-> How about this: as a lifecycle callback, guest_memfd calling this
-> function should be saying "guest_memfd is doing a conversion of nr_pages
-> beginning at this pfn to shared/private, and by the way here's the kvm
-> and gfn since I have the information." (all arguments presented if
-> available) and SNP says "I'll take action, for to_shared I don't need
-> kvm or gfn" (just ignore kvm and gfn for to_shared conversions)
+Thanks!
 
-No?  That's more or less what I proposed, except I guess for "by the way, here's
-the kvm and gfn" for to_shared.  Because I do NOT think we should walk all bindings
-to find the kvm+gfn pairs, and because I think we should firmly establish that
-to_private requires a kvm+gfn pair, and to_shared does not.  As above, in pracitce,
-that needs to hold true for any CoCo VM.
+Tian
+
+>
+>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>> ---
+>>   arch/arm64/include/asm/kvm_pgtable.h |  4 ++++
+>>   arch/arm64/kvm/hyp/pgtable.c         | 35 ++++++++++++++++++++++++++--
+>>   arch/arm64/kvm/mmu.c                 |  3 +++
+>>   3 files changed, 40 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+>> index 41a8687938eb..5e0fac4bfa53 100644
+>> --- a/arch/arm64/include/asm/kvm_pgtable.h
+>> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+>> @@ -93,6 +93,8 @@ typedef u64 kvm_pte_t;
+>>
+>>   #define KVM_PTE_LEAF_ATTR_HI_S2_XN	GENMASK(54, 53)
+>>
+>> +#define KVM_PTE_LEAF_ATTR_HI_S2_DBM	BIT(51)
+>> +
+>>   #define KVM_PTE_LEAF_ATTR_HI_S1_GP	BIT(50)
+>>
+>>   #define KVM_PTE_LEAF_ATTR_S2_PERMS	(KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R | \
+>> @@ -249,10 +251,12 @@ struct kvm_pgtable_mm_ops {
+>>    * enum kvm_pgtable_stage2_flags - Stage-2 page-table flags.
+>>    * @KVM_PGTABLE_S2_IDMAP:	Only use identity mappings.
+>>    * @KVM_PGTABLE_S2_AS_S1:	Final memory attributes are that of Stage-1.
+>> + * @KVM_PGTABLE_S2_DBM:	Hardware-managed DBM for writable pages.
+>>    */
+>>   enum kvm_pgtable_stage2_flags {
+>>   	KVM_PGTABLE_S2_IDMAP			= BIT(0),
+>>   	KVM_PGTABLE_S2_AS_S1			= BIT(1),
+>> +	KVM_PGTABLE_S2_DBM			= BIT(2),
+>>   };
+>>
+>>   /**
+>> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+>> index 91a7dfad6686..21ec456ecc41 100644
+>> --- a/arch/arm64/kvm/hyp/pgtable.c
+>> +++ b/arch/arm64/kvm/hyp/pgtable.c
+>> @@ -731,9 +731,23 @@ static int stage2_set_prot_attr(struct kvm_pgtable *pgt, enum kvm_pgtable_prot p
+>>   	if (prot & KVM_PGTABLE_PROT_R)
+>>   		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R;
+>>
+>> -	if (prot & KVM_PGTABLE_PROT_W)
+>> +	if (prot & KVM_PGTABLE_PROT_W) {
+>>   		attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>
+>> +		/*
+>> +		 * Set DBM bit for writable non-device pages if the page-table
+>> +		 * has KVM_PGTABLE_S2_DBM flag (system supports HDBSS).
+>> +		 *
+>> +		 * For stage 2 translations using Indirect permissions, if the
+>> +		 * Effective value of VTCR_EL2.HD is 0, then dirty state is
+>> +		 * managed by software. Hardware only updates the dirty state
+>> +		 * when VTCR_EL2.HD=1 (HDBSS enabled).
+>> +		 */
+>> +		if ((pgt->flags & KVM_PGTABLE_S2_DBM) &&
+>> +		    !(prot & KVM_PGTABLE_PROT_DEVICE))
+>> +			attr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>> +	}
+>> +
+>>   	if (!kvm_lpa2_is_enabled())
+>>   		attr |= FIELD_PREP(KVM_PTE_LEAF_ATTR_LO_S2_SH, sh);
+>>
+>> @@ -1367,9 +1381,26 @@ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+>>   	if (prot & KVM_PGTABLE_PROT_R)
+>>   		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R;
+>>
+>> -	if (prot & KVM_PGTABLE_PROT_W)
+>> +	if (prot & KVM_PGTABLE_PROT_W) {
+>>   		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>
+>> +		/*
+>> +		 * No DEVICE filter needed here: relax_perms is only called
+>> +		 * on FSC_PERM faults. Device pages always get full RW from
+>> +		 * initial mapping and are never write-protected during
+>> +		 * migration, so they never trigger a permission fault.
+>> +		 */
+>> +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
+>> +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>> +	} else {
+>> +		/*
+>> +		 * Clear DBM on W→RO downgrade to prevent hardware from
+>> +		 * silently upgrading RO+DBM back to W+dirty, which would
+>> +		 * bypass KVM's write tracking and cause data corruption.
+>> +		 */
+>> +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>> +	}
+>> +
+>>   	ret = stage2_set_xn_attr(prot, &xn);
+>>   	if (ret)
+>>   		return ret;
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index e086c01a9325..346efed6e605 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1014,6 +1014,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>>   	if (err)
+>>   		goto out_free_pgtable;
+>>
+>> +	if (system_supports_hdbss())
+>> +		pgt->flags |= KVM_PGTABLE_S2_DBM;
+>> +
+>>   	mmu->pgt = pgt;
+>>   	if (is_protected_kvm_enabled())
+>>   		return 0;
+>> --
+>> 2.33.0
+>>
