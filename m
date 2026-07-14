@@ -1,204 +1,194 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E664A3406;
-	Tue, 14 Jul 2026 16:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FC2494A09;
+	Tue, 14 Jul 2026 16:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784045065; cv=none; b=l9LnUbzYdG+tfxVttJQI+WBSMy3xkkijXap1QBo0dMqg5ZzZxi7l6UfT8nO6Kzjc3ZSAc2TDMN+r2Sqdah4xuPkGbtP0rde2c4l+nuPyGZsTofMhVbN2thIFY5m1pr2OxBAPnMizHf29tVBf+RtIItPQ9aa3/gvSEgenIRdHhOc=
+	t=1784046134; cv=none; b=CgiQjbYXUkUQpNJhdCeOoFbsfHt0ItrXBXEM7eAxmcpyAGs/9dpuqKBhqumy0ltMehQo7rX5PoIxFsnZMg8Fi6zAaA7JHGELeIZ/gPBa2krJnTUssmHVk+v8vSeoZ8Nl8MWsM/8VdxUc7/TfcqLoZj9VyxdZfDJzayMOzaDyLhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784045065; c=relaxed/simple;
-	bh=t2KYfj/agvlS18IATNMk9iCfEZE6pPzvSrr+EZU4WmA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=E3xG+o8qA0NEKC5ckrQq7IP2AACEZrGmsGI/8s+JsawxNP18dwc2KYcklc4JsB/LQHhg3OS5juAQm8sJ1BNTG9TZmF75hoDNIH8IBh+RezzUsdkRNkG3ZOxp5ZWji4g9OTEY0tDDLnIddgvNPEKfPf7hLwXrGaOUQpDLbZNSe/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cj+ccMvx; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784046134; c=relaxed/simple;
+	bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gHncjcc4vl3N+3mHmbupAnyn8SS2KlBs/mfRV29WyR4d7CuzfuqCsXhlXDPxn4E+cX5ZwAVQWdA5Z+DcaLb/2u104adSFUPxiixZzkdZlJ4I19d4yznHfvWZdTQx77L1xvdtv+A6AbiDdUHlzg8uORnbt9U6b8J2Vwey9Q9HtWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lX8vfuE8; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cj+ccMvx"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5C436339;
-	Tue, 14 Jul 2026 09:04:18 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 009BD3F7B4;
-	Tue, 14 Jul 2026 09:04:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784045062; bh=t2KYfj/agvlS18IATNMk9iCfEZE6pPzvSrr+EZU4WmA=;
-	h=From:To:Subject:Date:From;
-	b=cj+ccMvxR7Gp0S6Df60GrepTnSACTST8Nvb6CfEG2XojadhD4TYl0Til1+IELdFyI
-	 1xuBXBpas50TFEvHjni8AHUWyYyoIhRku6BYo0rgrSHBUXA/vTovvp9lgyaMcucGNs
-	 pmupE1IXyIS0bNsCSGdpOs7Eww+2W140P0I904rs=
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	maz@kernel.org,
-	oupton@kernel.org,
-	suzuki.poulose@arm.com,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	seanjc@google.com,
-	david.hildenbrand@arm.com,
-	mark.rutland@arm.com,
-	ackerleytng@google.com
-Subject: [PATCH v2] KVM: Ignore MMU notifiers for guest_memfd-only memslots
-Date: Tue, 14 Jul 2026 17:04:11 +0100
-Message-ID: <20260714160411.302386-1-alexandru.elisei@arm.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lX8vfuE8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784046132; x=1815582132;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IjW81UlirIvo9gXdrU2y8CuTZ4JeckEqr9kHsxEIZns=;
+  b=lX8vfuE81PwlgGKoZ2gaAwWZAS+sFb9634Ot+TFRA0Hd2QIMJJzFMK6S
+   wwqwATKNVwJ/0+B+oDmmnmSLCvSBbwMP/mwzPXryeFwG+wQn8guhcoT8J
+   OEc2fgLpja5oSez+6mv1qBvgQMhe++M20B4ObVpzp8jwU4LdDbj0nNrQq
+   v1YdxhU8kLgEeyCcLOjHD0IRki2p2nhme1AE4AmkAntXcvZLymjOCQgkS
+   TIAg7SBS54c+Uw7bxOShJJIL/tVUmTVFssPq4H3aXm0K+QGTIiFrMtCBU
+   Yz02iqOdxPIZW+aOIvMHM05CTtA1jbz7l9dSM6YMigUdpSqJmRQ6G3Vc+
+   Q==;
+X-CSE-ConnectionGUID: jiDnqzn6SIyaW693DpnbLQ==
+X-CSE-MsgGUID: CLOEvjZfSnuu0mkmWorTog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="83795558"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="83795558"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
+X-CSE-ConnectionGUID: WAKzB18BSE615YnM24rhyA==
+X-CSE-MsgGUID: /a5HeManRwyQIFFRvkmKyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; 
+   d="scan'208";a="255949195"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 09:22:11 -0700
+Message-ID: <dd51743d-74b2-4f89-a447-06618a6301ae@linux.intel.com>
+Date: Tue, 14 Jul 2026 09:22:10 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <20260612110853.3188196-1-peter.fang@intel.com>
+ <20260612110853.3188196-3-peter.fang@intel.com>
+ <283d7cc7-e87e-4d4e-b1d9-ae19725e1606@linux.intel.com>
+ <20260714062502.GE3178326@pedri>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260714062502.GE3178326@pedri>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-For guest_memfd-only memslots (kvm_memslot_is_gmem_only() is true), the
-memory provider for the virtual machine is the guest_memfd file, not the
-userspace mapping. Mappings in the secondary MMU are established by
-obtaining folios from guest_memfd directly, not by looking the folios up
-through the page tables through GUP. Consequently, there is no relationship
-between the page tables and the secondary MMU: MMU notifiers do not apply.
 
-Despite this, KVM's MMU notifiers still modify the secondary MMU page
-tables, only for the same memory to be remapped the next time a guest
-accesses it. Make the disconnect between the user mapping and the secondary
-MMU page tables explicit by ignoring the MMU notifiers for guest_memfd-only
-memslots.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
----
-v1 can be found here [1].
+On 7/13/2026 11:25 PM, Peter Fang wrote:
+> On Mon, Jul 13, 2026 at 10:27:46AM -0700, Kuppuswamy Sathyanarayanan wrote:
+>> Hi Peter,
+>>
+>> On 6/12/2026 4:08 AM, Peter Fang wrote:
+>>> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>>
+>>> The TDX attestation driver currently uses a fixed 128 KB Quote buffer
+>>> shared with the host VMM. This may be too small for Quotes using schemes
+>>> such as post-quantum cryptography (PQC), where certificate chains can
+>>> increase the Quote size to several megabytes.
+>>>
+>>> Allocate the Quote buffer based on the size reported by the TDX module
+>>> instead of always reserving a fixed-size buffer. This avoids wasting
+>>> memory on platforms that do not require larger Quotes. Older platforms
+>>> fall back to the default 128 KB buffer.
+>>>
+>>> Because the Quote buffer must be physically contiguous, its size is
+>>> bound by the buddy allocator's maximum page order (4 MB), which should
+>>> be sufficient for current attestation needs.
+>>>
+>>> struct tdx_quote_buf has a trailing flexible array, so use offsetof()
+>>> instead of sizeof() to calculate the header size.
+>>>
+>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>> Assisted-by: Claude:claude-opus-4-7
+>>> Assisted-by: GitHub Copilot:gpt-5.4
+>>> Signed-off-by: Peter Fang <peter.fang@intel.com>
+>>> ---
+>>
+>> Looks good to me.
+>>
+>> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> 
+> Thanks Sathya!
+> 
+>>
+>>
+>>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 52 ++++++++++++++++++-------
+>>>  1 file changed, 38 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> index a9ecc46df187..162fb47f3fae 100644
+>>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+>>> @@ -163,7 +163,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>>>   * DICE-based attestation uses layered evidence that requires
+>>>   * larger Quote size (~100K).
+>>>   */
+>>> -#define GET_QUOTE_BUF_SIZE		SZ_128K
+>>> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
+>>>  
+>>>  #define GET_QUOTE_CMD_VER		1
+>>>  
+>>> @@ -171,7 +171,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>>>  #define GET_QUOTE_SUCCESS		0
+>>>  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+>>>  
+>>> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
+>>> +#define TDX_QUOTE_BUF_LEN(n)		(offsetof(struct tdx_quote_buf, data) + (n))
+>>>  
+>>>  /* struct tdx_quote_buf: Format of Quote request buffer.
+>>>   * @version: Quote format version, filled by TD.
+>>> @@ -192,8 +192,9 @@ struct tdx_quote_buf {
+>>>  	u8 data[];
+>>>  };
+>>>  
+>>> -/* Quote data buffer */
+>>> +/* Quote data buffer and size */
+>>>  static void *quote_data;
+>>> +static size_t quote_data_size;
+>>>  
+> 
+> [ ... ]
+> 
+>>>  
+>>> @@ -286,7 +310,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
+>>>  		return -EINVAL;
+>>>  
+>>> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
+>>> +	memset(quote_data, 0, quote_data_size);
+>>>  
+>>>  	/* Update Quote buffer header */
+>>>  	quote_buf->version = GET_QUOTE_CMD_VER;
+>>> @@ -297,7 +321,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  	if (ret)
+>>>  		return ret;
+>>>  
+>>> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
+>>> +	err = tdx_hcall_get_quote(quote_data, quote_data_size);
+>>>  	if (err) {
+>>>  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
+>>>  		return -EIO;
+>>> @@ -316,7 +340,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>>>  
+>>>  	out_len = READ_ONCE(quote_buf->out_len);
+>>>  
+>>> -	if (out_len > TDX_QUOTE_MAX_LEN)
+>>> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_size)
+>>>  		return -EFBIG;
+>>
+>> Nit: I think this check will be more readable if you can rename
+>> quote_data_size to quote_buf_size (since it holds total buffer
+>> size).
+> 
+> Hm. This pairs with the original "static void *quote_data". Or perhaps
+> "quote_data_len"?
 
-Same testing as in v1: on arm64, mapped guest_memfd in kvmtool's address
-space, used KVM_PRE_FAULT_MEMORY to map the entire stage 2, then unmapped
-guest_memfd from kvmtool's address space. The memory remained mapped at
-stage 2.
+Yes, it pairs with quote_data buffer name. May be both should be renamed.
 
-Changes in v2:
+If it is too much trouble, just leave it.
 
-* Rebased on top of v7.2-rc3.
+> 
+>>
 
-Changes in v1:
-
-* Dropped the RFC tag.
-* Fix unbalanced invalidation reported by sashiko by implementing Sean's
-  approach; I've expanded it to page ageing.
-* Modified the commit message as per DavidH comment.
-
-[1] https://lore.kernel.org/kvm/20260625130902.258331-1-alexandru.elisei@arm.com/
-
- include/linux/kvm_host.h |  1 +
- virt/kvm/kvm_main.c      | 50 ++++++++++++++++++++++++++++++++++++----
- 2 files changed, 47 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab8cfaec82d3..ecf5c0cbf0f0 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -260,6 +260,7 @@ union kvm_mmu_notifier_arg {
- enum kvm_gfn_range_filter {
- 	KVM_FILTER_SHARED		= BIT(0),
- 	KVM_FILTER_PRIVATE		= BIT(1),
-+	KVM_FILTER_USERSPACE_MAPPINGS	= BIT(2),
- };
- 
- struct kvm_gfn_range {
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index e44c20c04961..bd469395f176 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -607,8 +607,13 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
- 			/*
- 			 * HVA-based notifications aren't relevant to private
- 			 * mappings as they don't have a userspace mapping.
-+			 *
-+			 * Memslots where guest_memfd is the only memory
-+			 * provider can also safely ignore changes to the
-+			 * userspace mapping.
- 			 */
--			gfn_range.attr_filter = KVM_FILTER_SHARED;
-+			gfn_range.attr_filter = KVM_FILTER_SHARED |
-+						KVM_FILTER_USERSPACE_MAPPINGS;
- 
- 			/*
- 			 * {gfn(page) | page intersects with [hva_start, hva_end)} =
-@@ -715,6 +720,21 @@ void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end)
- bool kvm_mmu_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- {
- 	kvm_mmu_invalidate_range_add(kvm, range->start, range->end);
-+
-+	/*
-+	 * When reacting to changes in userspace mappings, don't unmap memslots
-+	 * that are guest_memfd-only, in which case KVM's MMU mappings are
-+	 * pulled directly from guest_memfd, i.e. don't depend on the userspace
-+	 * mappings.
-+	 *
-+	 * TODO: Skip gmem-only memslots on mmu_notifier events entirely, once
-+	 * gfn_to_pfn_cache is also wired up to directly pull from guest_memfd.
-+	 */
-+	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
-+	    kvm_slot_has_gmem(range->slot) &&
-+	    kvm_memslot_is_gmem_only(range->slot))
-+		return false;
-+
- 	return kvm_unmap_gfn_range(kvm, range);
- }
- 
-@@ -825,12 +845,23 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 		rcuwait_wake_up(&kvm->mn_memslots_update_rcuwait);
- }
- 
-+static bool kvm_mmu_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
-+{
-+	/* See comment in kvm_mmu_unmap_gfn_range() */
-+	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
-+	    kvm_slot_has_gmem(range->slot) &&
-+	    kvm_memslot_is_gmem_only(range->slot))
-+		return false;
-+
-+	return kvm_age_gfn(kvm, range);
-+}
-+
- static bool kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
- 		struct mm_struct *mm, unsigned long start, unsigned long end)
- {
- 	trace_kvm_age_hva(start, end);
- 
--	return kvm_age_hva_range(mn, start, end, kvm_age_gfn,
-+	return kvm_age_hva_range(mn, start, end, kvm_mmu_age_gfn,
- 				 !IS_ENABLED(CONFIG_KVM_ELIDE_TLB_FLUSH_IF_YOUNG));
- }
- 
-@@ -852,7 +883,18 @@ static bool kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
- 	 * cadence. If we find this inaccurate, we might come up with a
- 	 * more sophisticated heuristic later.
- 	 */
--	return kvm_age_hva_range_no_flush(mn, start, end, kvm_age_gfn);
-+	return kvm_age_hva_range_no_flush(mn, start, end, kvm_mmu_age_gfn);
-+}
-+
-+static bool kvm_mmu_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
-+{
-+	/* See comment in kvm_mmu_unmap_gfn_range() */
-+	if (range->attr_filter & KVM_FILTER_USERSPACE_MAPPINGS &&
-+	    kvm_slot_has_gmem(range->slot) &&
-+	    kvm_memslot_is_gmem_only(range->slot))
-+		return false;
-+
-+	return kvm_test_age_gfn(kvm, range);
- }
- 
- static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
-@@ -861,7 +903,7 @@ static bool kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
- 	trace_kvm_test_age_hva(address);
- 
- 	return kvm_age_hva_range_no_flush(mn, address, address + 1,
--					  kvm_test_age_gfn);
-+					  kvm_mmu_test_age_gfn);
- }
- 
- static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
-
-base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
 -- 
-2.55.0
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
