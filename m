@@ -1,151 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFC312CDA5
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 13:20:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8E32DCF45;
+	Tue, 14 Jul 2026 13:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784035233; cv=none; b=EfEhzKInWqS4cfqia5GM+vBg/hIAawHqt1mFqpOKBLOOcs4RS0Wu19w6S4/zAD55p8sG/p7TsnxoGFk8Aw3yscnZ3WKdO96Hyj02qty2ImLOQlchtkiX70oVJXkNpivJim0e21XUyPHU/tV7r+fg4aG87ABfxhmup2PlbSqK7ms=
+	t=1784035409; cv=none; b=XOBuP/mh8n0bLndH8WgsVpoml+wXIXyGcwd8XL7TccGZRXspjDxmAbS7ba4pwhDHWkpmrhz5LcRM4xMZpJrE+AEAtKRZxzgjV2f9T3fvVQdEk8CW6brMBTkMFfOW4NCJaVGVYqh/Sp43ssiOokO6SKxvH7wRRSk3GiUIM5KozXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784035233; c=relaxed/simple;
-	bh=DRhexr3UWhVZdDLYkQX+zeoU2Fm1g90HjUyOORaaeUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fUYwWMfG8gTv3IHqy1iFRfTWVG2OTjUAkKxsxiK0X5GRGKVCds4hw35P1uxmcrpRfrYqpCl9OFTXtg1s5pBhIGOOsqUfLInvCcGaAEf0YBYXNiUSp8bVwkV/KwYfCau0AHxiTXaMbHhVi08kQTmQ1CxnV4/C2jTf1gLQwR+DSS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kodZk992; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784035409; c=relaxed/simple;
+	bh=AP23HUxxknywRKceDPyqX09DJh+vKR497OH8cHmLzYQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fqVXD1OYg5c9uPRSeQbruE5j7n1gXTnQvVYpAALF6wnVRkvb0rlk8VfXMFE4NKecEQId3G5EMwlliVRPxrZwsrhpdal24xIijldoZph35ovf4f1J7KgD2eEqN9xeMJzLfcqRtgJDI3J1g1U2CAqgw79hFSpEo883FAL7i+y7RJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NxNRq+ug; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kodZk992"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1281A1F000E9
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 13:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784035232;
-	bh=DRhexr3UWhVZdDLYkQX+zeoU2Fm1g90HjUyOORaaeUY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=kodZk992n/wEhb5lU/1X0vg5kt+2aaomjDzFoJg5y1ez1P+W1PMWOEnlZ+8XaLtf4
-	 MlzMlf+DhJXpyYSR7zfF9nNKDwxcqq6Y8UDQ21LoCgpofSbXs2N3BAJxsJp+EYKgEK
-	 dFOWaJ5yGyyVxVjsL4jBzSGaDlsUIo5hmLR5p/eHhwJ4UfO1hihapOTab47+P5NKD4
-	 X1GaQyLT8GWcaaf5PTiBx6DKaOnGS9k6fJmBT7eR94j34DTQSm1XnLb0y5voHYn/aj
-	 1OUEaop11K0sQIOU+PGRY4j4jjdFv3U0QFF4zkGGvXfCPvqGqEWyfps1kcE3YkTSyf
-	 feAMzRjHiWb4Q==
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8efb708b1a0so37350566d6.3
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 06:20:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrbwWzpWKO/XlojPAZ6rERvrmn4ioFWTjbN6Y1apGfIy/XueAZEJBdeR9Q9IVwk03az8kY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHDhoAZqCVd9xzRk5oMa+NO/KpxuMExqNJP9+y9MzSPB34nubb
-	YYMIXbcK0v2YSEkqnzHVEOFqw1kvxvvmr0O1qI1AAvSpK4imKzYQmztskFoo0idfTmGn8LMHXJR
-	qDJUtisB0vS8rjw+HaTg4YCSfpHAPKaI=
-X-Received: by 2002:a05:6214:1c43:b0:8fe:7fba:2db3 with SMTP id
- 6a1803df08f44-9074c84be8bmr23222316d6.45.1784035231336; Tue, 14 Jul 2026
- 06:20:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NxNRq+ug"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EBfwpL1134056;
+	Tue, 14 Jul 2026 13:23:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=3Eg6B+
+	hiBILplQVAscnsvSQr15LUuk6CVoz31+K82hE=; b=NxNRq+ugmTC/HdzqFbSuh8
+	veBzsTQxONBwkPdHkzEn+mvqLCUlSLPLn+1WzwO9CshsU/hjLCoHmvipe7vbWVlt
+	/AHikBSyFoYXKxkG+U/OCS18K+GtJThAjMyLBowRsbEkcRx/pWVOu5bf/JJY2338
+	GL5POI9vHuryd5x1vazDk0gDWenWH4ouuu30t4OVp9eLqhHkHfeVYu8VinBH4mbq
+	XjZZxgyIQu96JwlF3GmSgoGgoMGEUuGNEz2Hsz36XGTqa8Jg6niM4GD5h/uuqbMN
+	eiN4eC9GyyX9Cc/uNJfdW2izO8Reb/Zeg/sgxxDeNtzMzTSWYWQvP9MBZ2pyJNug
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a5ukp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 13:23:26 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66EDJg3S000538;
+	Tue, 14 Jul 2026 13:23:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhav92-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 13:23:25 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66EDNJjj31523564
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jul 2026 13:23:19 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EFD402004B;
+	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACF7C20043;
+	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
+Received: from [9.111.18.250] (unknown [9.111.18.250])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Jul 2026 13:23:18 +0000 (GMT)
+Message-ID: <260fedb8-08d2-48b0-9a92-63203e15c941@linux.ibm.com>
+Date: Tue, 14 Jul 2026 15:23:18 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
-In-Reply-To: <20260616004155.1435766-3-yosry@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 14 Jul 2026 06:20:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
-X-Gm-Features: AUfX_myBIlC-ACxM-KWdEVI6pnl9XHCD806Nb5NaB-fLaKbgIZOA3fqTlmJS6lM
-Message-ID: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-To: Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] KVM: s390: Fix unlikely NULL gmap dereference
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
+        schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20260713150857.269954-1-imbrenda@linux.ibm.com>
+ <20260713150857.269954-2-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260713150857.269954-2-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDEzNyBTYWx0ZWRfX0UJ/I6lUENXx
+ oyFOYPRH0S0/jXe/7WADvmTEYsC6DsTGtPdWh/LEP+b9vv6KRGlGIf/EtTtIgZalOAtpnL6QrWX
+ tS4xGGpRhF+/qGNuA82W93cMS1HsqOU=
+X-Proofpoint-GUID: gUbwqpGJKAlccer4aKzba2FqKkCRuLGB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDEzNyBTYWx0ZWRfX59gv1Q+xfGsa
+ 4Ls3nBypsJKBRaFksO0/9gS9jJrsZu1YhbskzqI9Iq1/HV6LyzVgNHwrZGEtD5HZsaxx+QFAZOU
+ T/kFkrNElSYeiBFTQ6zTQH00BH0rCiMMWYcJFnu5B8Kdt+yghNd6oBKsA4t46nVSTlnqqBYxV3q
+ yBU6V9xfYv5dFPcqzhZbnYodPzyJ4PssKR8Vd2K4Xna7+/VErU3wc0XDSrYDSfugd9Q4XzaPy+K
+ vaUWvtIX/CeyQMyaNeA5B/n5GcdPl18sXLM+OrAjcGIAch2nLhs363VAFrlufvc2J2l43r4O1Gy
+ ZaI1saZ4jHW7YQMD5isogHOsoVBiXe7ZdwP6f5Ojgz2aTf2aFehDGNv+1QygU/oe3LOSysPWZyR
+ 4iXghZdDTKUL97g+t+JEnI2Q8uZuKwQxTEMZxul5KiK8LDG1uh1Jp+l76ZuMKm4AfyDTJWBIG65
+ EZf5ZzaIdk/s/mzQQeg==
+X-Proofpoint-ORIG-GUID: gUbwqpGJKAlccer4aKzba2FqKkCRuLGB
+X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a56384e cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=vuF8NdW0BzdbS4vhICEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-14_03,2026-07-10_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140137
 
-On Mon, Jun 15, 2026 at 5:42=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> KVM currently hardcodes the number of supported ASIDs in CPUID to 8. A
-> KVM guest (L1) would then do a full TLB flush (i.e.
-> TLB_CONTROL_FLUSH_ALL_ASID) every time it runs out of ASIDs on a vCPU
-> and updates the generation (see new_asid()).
->
-> This is currently harmless, as KVM (L0) uses the same ASID for both L1
-> and L2, and flushes that ASID on nested transitions. However, following
-> changes will add proper ASID emulation and a separate ASID for L2,
-> minimizing the TLB flushes on nested transitions. At that point, a full
-> TLB flush from a KVM guest (L1) would flush both L1 and L2 ASIDs, so
-> should be avoided as much as possible.
->
-> Passthrough the number of ASIDs in hardware instead of hardcoding 8, to
-> reduce the chances of an L1 guest flushing its own TLB entries
-> unnecessarily on a nested VMRUN.
->
-> In practice, there is no harm in exposing a large number of ASIDs to the
-> guest, even larger than what hardware supports, as KVM never actually
-> uses the value of ASID from vmcb12. Even with a separate L2 ASID, KVM
-> would allocate a (supported) ASID for L2, and just flush that same ASID
-> every time L1 changes the ASID in vmcb12.
->
-> That being said, avoid the temptation of just advertising the maximum
-> possible number of ASIDs (i.e. 0xFFFFFFFF), in case any peculiar guest
-> OS does not handle that properly.
->
-> Note: QEMU currently hardcodes the number of ASIDs to 16, so this change
-> doesn't help QEMU VMs (without making a similar change in QEMU).
+On 7/13/26 17:08, Claudio Imbrenda wrote:
+> When creating a new vCPU, kvm_vm_ioctl_create_vcpu() will call
+> kvm_arch_vcpu_postcreate() after the file descriptor for the new vCPU
+> has been created. The new file descriptor has not been returned yet,
+> but a malicious userspace program could try to guess it.
+> 
+> If a malicious userspace program manages to start the newly created vCPU
+> before kvm_arch_vcpu_postcreate() is called, __vcpu_run() will try to
+> dereference vcpu->arch.gmap and trigger a NULL pointer dereference.
+> 
+> Fix this by moving the initialization of vcpu->arch.gmap into
+> kvm_arch_vcpu_create(), which is called before the file descriptor for
+> the vCPU is created.
+> 
+> Fixes: dafd032a15f8 ("KVM: s390: move vcpu specific initalization to a later point")
+> Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Yep, that explains why other architecture have initialization tracking :)
 
-I had a discussion with Jim internally about what our VMM should
-advertise as the number of ASIDs, and based on that I think passing
-through the hardware value may not be the best idea, at least not
-without some disclaimers.
-
-Jim pointed out that AMD CPUs will ignore unsupported ASID bits, or at
-least earlier ones did, even though it's not mentioned in the APM
-(last time I checked). This means that technically KVM can ignore the
-higher bits of the ASID set by L1 beyond supported ones (e.g. if it
-uses a hashtable to multiplex L1 ASIDs onto several physical ASIDs).
-KVM doesn't currently do so with or without this series, but it could.
-
-The problem happens if a migration pool contains multiple AMD CPUs
-with a different number of ASIDs in hardware. If the VMM advertises
-the greater value of the two, it would technically be advertising an
-unsupported number of ASIDs on one of the CPUs. If KVM ignores the
-upper bits based on what it supports, not what userspace advertises in
-CPUID, then userspace would be shooting itself in the foot.
-
-I think technically speaking userspace would be in the wrong for using
-a number of ASIDs above what KVM_GET_SUPPORTED_CPUID provides, and it
-should use a number of ASIDs that is supported by all CPUs in a
-migration pool. However, this makes the VMM's life difficult, say if
-AMD decides to reduce the number of ASIDs in a newer CPU just for
-kicks.
-
-All of this is hypothetical in nature, but it's a very valid concern imo.
-
-I think there are several ways we can handle this so that VMMs can
-reasonably start advertising more ASIDs to guests without these
-complications:
-
-1. We can just advertise a larger ASID value instead of 8 (say 16K or
-32K), rather than passthrough what's in hardware. I assume this would
-mean that KVM is more-or-less committing to supporting that number of
-ASIDs regardless of underlying hardware (i.e. KVM wouldn't reduce it
-in the future). In this case, a VMM can just advertise the same value.
-
-2. We can advertise the maximum number of ASIDs (2^32 - 1?), which is
-the same as option (1), except that we're biting the bullet and
-preventing the possibility of KVM ignoring upper bits completely.
-Might be too aggressive.
-
-3. Document (somewhere) that KVM should use the userspace advertised
-value as the source of truth for ignorable bits, even if KVM
-technically supports a lower value. As I am writing this I am
-realizing it doesn't make much sense as it means that the value
-supported by KVM is meaningless. Maybe that comes naturally with the
-"don't break userspace" rule, but it could also fall under the
-category of userspace shooting itself in the foot and KVM letting it.
-
-4. Do nothing, let this be userspace's problem, and hope that AMD
-doesn't reduce the number of ASIDs in a future CPU.
-
-I think option (1) is probably the most reasonable, we advertise 32K
-ASIDs, which is what recent AMD CPUs advertise anyway, but it's
-more-or-less KVM committing to 32K ASIDs even if a newer AMD CPU
-doesn't support them.
-
-Sean, WDYT?
+FWIW: We could also hide the sca fix in #6 behind this flag but having 
+them separate is also ok
