@@ -1,178 +1,493 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527F834B1B0
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 06:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E073DCD8A;
+	Tue, 14 Jul 2026 07:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784011139; cv=none; b=os9OuMsIL9cxNFmQDx/uaE2NaSy+n3mWU3O+VpOaQSNcNO/Bl4Cud18zK4jkVFARxFpHxwLqz2/QXz6V8BP8shggakUXiuyzQsJqSro0fU+KQL2QTR9BVeX4h0IwVUMSXWyu+qj8savkkjvT88Uf4q45JPLFjZ1mWf5SzcotZ20=
+	t=1784013320; cv=none; b=qPikEAL2oSIWTEHJZX2HrNTDmdUNe91XDSrTq3Ff0LazajpjP7zSZU+0u2Et4FcIMdhncCyRa+dakNF2PPH2c+FRpFINSEVEQ5jQBW2IynfoWMZ3LfFVzv6QYHvsinDYVCSFg/Pt9NVGIRjJGEcOnerqbL9FkubQtoetrkTC6uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784011139; c=relaxed/simple;
-	bh=BwXrIUkjii1ll+DVDzD6pSQxEm1jWrnB4GfLjhOhNmE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jixg8aCe1LwntjtfW3NyBGPh68F+sPesB5kRGnQgpHGMXO02i5OTCZYuVgKyFeIxL/LkduwPjs7zt1AToAVDhbfb2qBMIebRdMs1wvucAU2jn6M/qfpVAvxDxfaadeMhy+rBk4/JnUr3Pfga9+TcBshE7MdNWdh6kHou34Q51mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kSH4R8qw; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784013320; c=relaxed/simple;
+	bh=bysRTkh+98+JgWARZLI7jWaWTQQTh8V0lCgxSGkqMxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GMkNYInxydbZtp+7E7NVZDz43Loi2PqUQc6GKqZFUWa03049IB5YVUtR/StxXWqvYxhFT5C3A7ffGH3L4aenuja9kHA7GJOa9LgCD3nc2awRQLOS/Go8rXOcu+3ZZavpmc9USWieyWU0ezOJKF0cLpW/77WwumOscTk0JH5S4fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=rX9aTSn6; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kSH4R8qw"
-X-Forwarded-Encrypted: i=1; AHgh+Rql9fkB9SPDXDT4whD5TaAqgcfTufgvKTmvlq7+Tl9NEmBA3h6hXhaRJeA4uyCwxr51t4k=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784011135;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BwXrIUkjii1ll+DVDzD6pSQxEm1jWrnB4GfLjhOhNmE=;
-	b=kSH4R8qwZeg5AcdKSZf8ogohir72ZWiniv1eSBboYMktwB+c2TGYzSkYiyxziSwDfxX3Ts
-	jIe4x78NVJ+dry5KKgXes00mOvp2Kg3TLf6BTkoVhUykQ+6OE0QKEy9QU6vUkrPWvD7YM2
-	V5tGzpSZYJp8t7HmabA1YTaWk7wl9D0=
-X-Gm-Message-State: AOJu0YwhKkbrk5VHaV3sqNP8NEPGDBcQ2QRV50BjuyzAn4Hf0seyRuZV
-	1mqyvRfDhVtNtcf2Lk34JY2LVg2kHXrCc0YhteGpmQ8twXinFBD8D4Ipw0LOtJ9wL5LrNwxt1Gi
-	6kA+772HNpd6H9RcmZ9SL8MQgIeJ6wfJgE6cD00ZR
-X-Received: by 2002:ac8:5d56:0:b0:516:ccc0:ee38 with SMTP id
- d75a77b69052e-51d7bcd4bb1mr10963351cf.9.1784011118743; Mon, 13 Jul 2026
- 23:38:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="rX9aTSn6"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=KTUYQDTdD+M4Xoy6cGEzhfvX+zyRy91IfTR/Ceif1dA=;
+	b=rX9aTSn6RUOLx1H0XHk3dVM/Oy3jFPVa104y+EKwy3ZAsxmRcLn+GymaGEhl+kUAI/b0pdXui
+	FIdhr/nCLGqnNzSCv3kiZRHQA7I5Q7K4uqPgpUe3RTQnahxr/cxILjJMKLLHlaJjRkeAzJrN6iG
+	2i+soNhRvRfOkRiTkXniV4c=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gzr1Q1T3gzLlTg;
+	Tue, 14 Jul 2026 15:05:46 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id D73A940588;
+	Tue, 14 Jul 2026 15:15:03 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 14 Jul 2026 15:15:03 +0800
+Message-ID: <df479edc-cca0-4b54-aed0-4d8c6fd4ffc7@huawei.com>
+Date: Tue, 14 Jul 2026 15:15:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
- <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
- <CA+EHjTwd9uku-ZV5y8xcK8VWdOfhcchyW=_fzjpCf5Vk2wQoGQ@mail.gmail.com> <20260713191727.GH674038@nvidia.com>
-In-Reply-To: <20260713191727.GH674038@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 14 Jul 2026 07:38:01 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTxZ0N3Tfnid404B4tkb_E+Z8mODTHTgBPiF6=bwZp7Hjw@mail.gmail.com>
-X-Gm-Features: AUfX_mxAW6jRYwmHaZyFKiL0Q4hnn-XRmxgnYdjCPArDIPvmYwpLrjGWtt2STE0
-Message-ID: <CA+EHjTxZ0N3Tfnid404B4tkb_E+Z8mODTHTgBPiF6=bwZp7Hjw@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com, 
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com, 
-	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com, yilun.xu@intel.com, 
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com, 
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com, 
-	zhenzhong.duan@intel.com, tao1.su@intel.com, linux-pci@vger.kernel.org, 
-	zhiw@nvidia.com, simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
-	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/6] KVM: arm64: Add HDBSS per-vCPU buffer management
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
+	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
+	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-5-zhengtian10@huawei.com>
+ <alTqqxEZLuYN-gY6@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <alTqqxEZLuYN-gY6@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Mon, 13 Jul 2026 at 20:17, Jason Gunthorpe <jgg@nvidia.com> wrote:
+
+On 7/13/2026 9:39 PM, Leonardo Bras wrote:
+> On Thu, Jul 09, 2026 at 06:40:24PM +0800, Tian Zheng wrote:
+>> From: eillon <yezhenyu2@huawei.com>
+>>
+>> Add HDBSS (Hardware Dirty Bit State Structure) per-vCPU buffer
+>> management including allocation, freeing, and loading of HDBSS
+>> registers during vCPU load.
+>>
+>> This patch creates the foundational infrastructure:
+>> - struct vcpu_hdbss_state and enable_hdbss/hdbss_order in kvm_arch
+>> - kvm_dirty_bit.h header with alloc/free declarations
+>> - dirty_bit.c with alloc/free helpers
+>> - __load_hdbss() in VHE switch for register loading
+>> - vCPU create/destroy hooks for buffer lifecycle
+>> - sysreg definitions for HDBSS register manipulation
+>> - Makefile update for dirty_bit.o
+>>
+>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
+>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+>> ---
+>>   arch/arm64/include/asm/kvm_dirty_bit.h | 16 ++++++++
+>>   arch/arm64/include/asm/kvm_host.h      | 13 +++++++
+>>   arch/arm64/include/asm/sysreg.h        | 11 ++++++
+>>   arch/arm64/kvm/Makefile                |  1 +
+>>   arch/arm64/kvm/arm.c                   |  7 ++++
+>>   arch/arm64/kvm/dirty_bit.c             | 52 ++++++++++++++++++++++++++
+>>   arch/arm64/kvm/hyp/vhe/switch.c        | 15 ++++++++
+>>   arch/arm64/kvm/mmu.c                   |  1 +
+>>   arch/arm64/kvm/reset.c                 |  4 ++
+>>   9 files changed, 120 insertions(+)
+>>   create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
+>>   create mode 100644 arch/arm64/kvm/dirty_bit.c
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+>> new file mode 100644
+>> index 000000000000..84b12f0a10af
+>> --- /dev/null
+>> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+>> @@ -0,0 +1,16 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +/*
+>> + * Copyright (C) 2026 ARM Ltd.
+>> + * Author: Leonardo Bras <leo.bras@arm.com>
+> You are adding the file, so the copyright note should be yours, then?
+
+
+I originally thought your earlier patchset had already created this 
+file, so I
+
+kept your copyright and author info. I'll update it to mine in the next 
+version.
+
+
+Thanks for pointing that out!
+
+
 >
-> On Mon, Jul 13, 2026 at 08:08:14PM +0100, Fuad Tabba wrote:
-> > On Sun, 12 Jul 2026 at 02:02, Ackerley Tng <ackerleytng@google.com> wrote:
-> > >
-> > > Jason Gunthorpe <jgg@nvidia.com> writes:
-> > >
-> > > > On Thu, May 29, 2025 at 01:34:53PM +0800, Xu Yilun wrote:
-> > > >> Export vfio dma-buf specific info by attaching vfio_dma_buf_data in
-> > > >> struct dma_buf::priv. Provide a helper vfio_dma_buf_get_data() for
-> > > >> importers to fetch these data. Exporters identify VFIO dma-buf by
-> > > >> successfully getting these data.
-> > > >>
-> > > >> VFIO dma-buf supports disabling host access to these exported MMIO
-> > > >> regions when the device is converted to private. Exporters like KVM
-> > > >> need to identify this type of dma-buf to decide if it is good to use.
-> > > >> KVM only allows host unaccessible MMIO regions been mapped in private
-> > > >> roots.
-> > > >>
-> > > >> Export struct kvm * handler attached to the vfio device. This
-> > > >> allows KVM to do another sanity check. MMIO should only be assigned to
-> > > >> a CoCo VM if its owner device is already assigned to the same VM.
-> > > >
-> > > > This doesn't seem right, it should be encapsulated into the standard
-> > > > DMABUF API in some way.
-> > > >
-> > >
-> > > I'd like to propose an alternative. I've been working on guest_memfd and
-> > > new to the world of IO, please help me along! :)
-> > >
-> > > It seems like using dmabufs are used a little awkwardly here. IIUC
-> > > dmabufs were originally meant to expose memory of one device to another
-> > > device, mostly meant to share memory. Dmabufs do expose MMIO too, for
-> > > device to device communications. Without virtualization, userspace MMIO
-> > > would be done by mmap()-ing a VFIO fd and having the userspace program
-> > > write to the userspace addresses.
-> > >
-> > > Before CoCo, device passthrough (MMIO) is mostly handled by mmap()-ing a
-> > > VFIO fd and setting up the userspace address in a KVM memslot for the
-> > > guest.
-> > >
-> > > With CoCo, is the problem we're solving that we want KVM to know what
-> > > pfns to set up in stage 2 page tables, but not via userspace addresses?
-> > >
-> > > guest_memfd already does that for regular host memory, tracks the
-> > > private/shared-ness of the memory, tracks which struct kvm the memory
-> > > belongs to.
-> > >
-> > > guest_memfd functions as KVM's bridge to host memory. KVM already can
-> > > ask guest_memfd for the pfn to map into stage 2 page tables, and already
-> > > asks guest_memfd for the shared/private state of the memory. guest_memfd
-> > > already also blocks the host from faulting guest private memory
-> > > (mmap()-ing is always allowed).
-> > >
-> > >
-> > > Instead of using dmabuf as the intermediary between the MMIO PFNs and
-> > > KVM, why not use guest_memfd?
-> > >
-> > > What if we make guest_memfd accept a VFIO fd, or a dmabuf fd?
-> >
-> > This is interesting for pKVM too, provided it covers more than MMIO.
-> >
-> > We need guest_memfd to be backable by a dmabuf for ordinary guest memory, not
-> > only for device MMIO. There is mobile hardware that doesn't tolerate scattered
-> > private memory (DMA engines that can't gather, IOMMU page-table size
-> > constraints), and a CMA-backed dmabuf heap is the practical way to get
-> > contiguous memory at runtime.
+>> + */
+>> +
+>> +#ifndef __ARM64_KVM_DIRTY_BIT_H__
+>> +#define __ARM64_KVM_DIRTY_BIT_H__
+>> +
+>> +#include <asm/kvm_pgtable.h>
+>> +#include <asm/sysreg.h>
+>> +
+>> +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
+>> +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+>> +
+>> +#endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+>> index bae2c4f92ef5..c41ec6d9c45a 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -420,6 +420,10 @@ struct kvm_arch {
+>>   	 */
+>>   	struct kvm_protected_vm pkvm;
+>>
+>> +	/* HDBSS: per-VM dirty tracking state */
+>> +	bool enable_hdbss;
+> Is there not a way of checking hdbss without adding this new member on the
+> struct? Would not checking the vcpu_hdbss_state from current vcpu should be
+> enough?
+
+
+HDBSS is a VM-wide property, so I currently use a VM-level flag 
+(kvm->arch.enable_hdbss)
+
+to track whether it's enabled. Paths like 
+kvm_arch_commit_memory_region() and VM teardown
+
+don't have a vCPU context to query, so per-vCPU state wouldn't work there.
+
+
+But you're right, maybe we don't need a value to store it — we could 
+remove this flag and instead
+
+check the VTCR_EL2_HDBSS bit directly from kvm->arch.mmu.vtcr:
+
+
+```
+static inline bool kvm_hdbss_enabled(const struct kvm *kvm)
+{
+     return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
+}
+
+if (kvm_hdbss_enabled(kvm))
+     ...
+```
+
+
 >
-> Why can't guestmemfd allocate directly from CMA? Allocating struct
-> page memory through dmabuf just to put it back in a guestmemfd sounds
-> very ugly to me.
-
-Fair, and I think you're right. If guest_memfd can allocate from CMA directly
-that covers what we need for contiguous guest memory, and it's cleaner than
-routing it through a dmabuf. It also keeps the shared pages struct-page backed
-and GUP-able, which the CMA heap's own mmap doesn't, since it sets VM_PFNMAP.
-So going through a dmabuf for plain guest RAM would have cost us the thing we
-need on the shared side anyway.
-
-Consider the request to be for guest_memfd to be able to give us physically
-contiguous memory. dmabuf was the mechanism I assumed, not the requirement.
-
-
-> > HugeTLB doesn't help, it wants boot-time
-> > reservation. Those pages are struct-page backed, so it's a different problem
-> > from the non-struct-page MMIO case, and the shared parts still need to be
-> > GUP-able.
+>> +	unsigned int hdbss_order;
+> Is that the order for hdbss buffer size?
+> Haven't finished reading the series, but would that be bad if this was also
+> in the per-vcpu state struct, instead?
 >
-> Isn't dmabuf pretty allergic to mmaping refcounted struct page backed
-> memory since that wrecks its lifetime model?
-
-Yes, and that's the same point. Agreed.
-
-> > More important for the API shape: conversions have to work on subsets of such a
-> > region, at page granularity. A pKVM guest doesn't know what backs its memory, so
-> > it will issue share/unshare hypercalls over arbitrary ranges of whatever it was
-> > given. If a dmabuf-backed guest_memfd can only be converted as a whole, we can't
-> > use it for memory, and the guest can't be taught to care.
+> Also, here I suggest that we save a number, instead of the encoding for
+> HDBSSBR_ELS_SZ, and convert it on hdbss setup. It could be either a
+> shift, or size.
 >
-> More reasons not to involve DMABUF since guestmemfd already does all
-> of this...
+> Reason being that you used this to compare with HDBSS_MAX_ORDER at some
+> point, and there is no guarantee that the encoding will always be in
+> crescent form.
+>
+> Also, it's not clear where you set this value.
 
-Also agreed for guest RAM.
 
-Where I do still think a dmabuf is involved is the case where the buffer isn't
-guest_memfd's to allocate: it already belongs to another exporter, and the guest
-needs to see that same buffer. That's structurally what you're already handling
-for device memory rather than a separate guest_memfd-over-dmabuf path, so I
-don't think it argues for backing ordinary guest memory with a dmabuf.
+Yes, this is the HDBSS buffer order (2^order bytes per vCPU).
 
-> Jason
+I put it in kvm->arch *to make sure all vCPUs in a VM have the same order*.
+
+
+
+I agree we should store a plain order number rather than the raw SZ 
+encoding.
+
+
+The assignment should happen in kvm_arm_enable_hdbss_global(), which I 
+missed in v4 and will add in v5.
+
+
+>   
+>> +
+>>   #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
+>>   	/* Nested virtualization info */
+>>   	struct dentry *debugfs_nv_dentry;
+>> @@ -838,6 +842,12 @@ struct vcpu_reset_state {
+>>   	bool		reset;
+>>   };
+>>
+>> +struct vcpu_hdbss_state {
+>> +	phys_addr_t base_phys;   /* for memory free */
+>> +	u64 hdbssbr_el2;         /* load directly */
+>> +	u64 hdbssprod_el2;       /* save directly */
+>> +};
+>> +
+>>   struct vncr_tlb;
+>>
+>>   struct kvm_vcpu_arch {
+>> @@ -945,6 +955,9 @@ struct kvm_vcpu_arch {
+>>
+>>   	/* Hyp-readable copy of kvm_vcpu::pid */
+>>   	pid_t pid;
+>> +
+>> +	/* HDBSS registers info */
+>> +	struct vcpu_hdbss_state hdbss;/
+>>   };
+>>
+>>   /*
+>> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+>> index 7aa08d59d494..1354a58c3316 100644
+>> --- a/arch/arm64/include/asm/sysreg.h
+>> +++ b/arch/arm64/include/asm/sysreg.h
+>> @@ -1039,6 +1039,17 @@
+>>
+>>   #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
+>>   					       GCS_CAP_VALID_TOKEN)
+>> +
+>> +/*
+>> + * Definitions for the HDBSS feature
+>> + */
+>> +#define HDBSS_MAX_ORDER		HDBSSBR_EL2_SZ_2MB
+>> +
+> See above comment on using the encoding instead of an actual size/shift
+> number.
+
+
+You're right — I will fix this in the next version as follows:
+
+First, HDBSS_MAX_ORDER will be defined as a plain order number. In v4 I 
+only considered the 4KB page
+
+case and hard-coded it to 9. To make it work for any PAGE_SIZE 
+configuration (4KB, 16KB, or 64KB), I'll derive
+
+it from HDBSSBR_EL2_SZ_2MB:
+
+```
+#define HDBSS_MAX_ORDER    (12 + HDBSSBR_EL2_SZ_2MB - PAGE_SHIFT)
+```
+
+This evaluates to 9 on 4KB pages, and the correct value on 16KB/64KB 
+pages as well.
+
+Second, I will add two conversion helpers in sysreg.h to bridge between 
+kernel semantics (alloc_pages order)
+
+and hardware encoding (HDBSSBR_EL2.SZ):
+
+```
+/* Convert alloc_pages order to HDBSSBR_EL2.SZ encoding */
+#define hdbss_order_to_sz(order)  (PAGE_SHIFT + (order) - 12)
+```
+
+These helpers work for any PAGE_SIZE configuration (4KB, 16KB, or 64KB) 
+because they use PAGE_SHIFT directly.
+
+Third, I will update the HDBSSBR_EL2 register construction in 
+kvm_arm_vcpu_alloc_hdbss()：
+
+```
+/* before */
+.hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), order),
+
+/* after */
+.hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg),
+                             hdbss_order_to_sz(order)),
+```
+
+And I will also update the __free_pages() call to use 
+vcpu->kvm->arch.hdbss_order directly, since that field
+
+stores the plain order number and avoids decoding the SZ encoding at 
+free time:
+
+
+```
+/* before */
+__free_pages(hdbss_pg,
+      FIELD_GET(HDBSSBR_EL2_SZ_MASK,
+                vcpu->arch.hdbss.hdbssbr_el2));
+
+/* after */
+__free_pages(hdbss_pg,
+      vcpu->kvm->arch.hdbss_order);
+```
+
+>
+>> +#define HDBSSBR_EL2(baddr, sz)	(((baddr) & HDBSSBR_EL2_BADDR_MASK) | \
+>> +				 FIELD_PREP(HDBSSBR_EL2_SZ_MASK, sz))
+>> +
+>> +#define HDBSSPROD_IDX(prod)	FIELD_GET(HDBSSPROD_EL2_INDEX_MASK, prod)
+>> +
+>>   /*
+>>    * Definitions for GICv5 instructions
+>>    */
+>> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+>> index 59612d2f277c..ec2749af64fa 100644
+>> --- a/arch/arm64/kvm/Makefile
+>> +++ b/arch/arm64/kvm/Makefile
+>> @@ -18,6 +18,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>>   	 guest.o debug.o reset.o sys_regs.o stacktrace.o \
+>>   	 vgic-sys-reg-v3.o fpsimd.o pkvm.o \
+>>   	 arch_timer.o trng.o vmid.o emulate-nested.o nested.o at.o \
+>> +	 dirty_bit.o \
+>>   	 vgic/vgic.o vgic/vgic-init.o \
+>>   	 vgic/vgic-irqfd.o vgic/vgic-v2.o \
+>>   	 vgic/vgic-v3.o vgic/vgic-v4.o \
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 50adfff75be8..bf6688245d83 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -38,6 +38,7 @@
+>>   #include <asm/kvm_asm.h>
+>>   #include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>> +#include <asm/kvm_dirty_bit.h>
+>>   #include <asm/kvm_mmu.h>
+>>   #include <asm/kvm_nested.h>
+>>   #include <asm/kvm_pkvm.h>
+>> @@ -565,6 +566,12 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+>>   	if (err)
+>>   		kvm_vgic_vcpu_destroy(vcpu);
+>>
+>> +	if (vcpu->kvm->arch.enable_hdbss) {
+>> +		err = kvm_arm_vcpu_alloc_hdbss(vcpu, vcpu->kvm->arch.hdbss_order);
+>> +		if (err)
+>> +			kvm_vgic_vcpu_destroy(vcpu);
+>> +	}
+>> +
+>>   	return err;
+>>   }
+>>
+>> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+>> new file mode 100644
+>> index 000000000000..6c7a6ef66b5a
+>> --- /dev/null
+>> +++ b/arch/arm64/kvm/dirty_bit.c
+>> @@ -0,0 +1,52 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * Copyright (C) 2026 ARM Ltd.
+>> + * Author: Leonardo Bras <leo.bras@arm.com>
+>> + */
+>> +
+>> +#include <asm/kvm_dirty_bit.h>
+>> +#include <asm/kvm_mmu.h>
+>> +#include <asm/sysreg.h>
+>> +#include <linux/gfp.h>
+>> +#include <linux/kconfig.h>
+>> +#include <linux/mm.h>
+>> +
+>> +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order)
+>> +{
+>> +	struct page *hdbss_pg = NULL;
+>> +
+>> +	if (vcpu->arch.hdbss.hdbssbr_el2 || !system_supports_hdbss())
+>> +		return 0;
+>> +
+>> +	if (order > HDBSS_MAX_ORDER)
+>> +		return -EINVAL;
+>> +
+>> +	hdbss_pg = alloc_pages(GFP_KERNEL_ACCOUNT, order);
+>> +	if (!hdbss_pg)
+>> +		return -ENOMEM;
+>> +
+>> +	vcpu->arch.hdbss = (struct vcpu_hdbss_state) {
+>> +		.base_phys = page_to_phys(hdbss_pg),
+>> +		.hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), order),
+>> +		.hdbssprod_el2 = 0,
+>> +	};
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct page *hdbss_pg;
+>> +
+>> +	if (!vcpu->arch.hdbss.hdbssbr_el2) {
+>> +		return;
+>> +	}
+>> +
+>> +	hdbss_pg = phys_to_page(vcpu->arch.hdbss.base_phys);
+>> +	if (hdbss_pg)
+>> +		__free_pages(hdbss_pg,
+>> +		     FIELD_GET(HDBSSBR_EL2_SZ_MASK,
+>> +			       vcpu->arch.hdbss.hdbssbr_el2));
+>> +
+>> +	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+>> +}
+>> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+>> index bbe9cebd3d9d..fe72944bfd3d 100644
+>> --- a/arch/arm64/kvm/hyp/vhe/switch.c
+>> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+>> @@ -22,6 +22,7 @@
+>>   #include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>>   #include <asm/kvm_mmu.h>
+>> +#include <asm/kvm_dirty_bit.h>
+>>   #include <asm/fpsimd.h>
+>>   #include <asm/debug-monitors.h>
+>>   #include <asm/processor.h>
+>> @@ -213,6 +214,19 @@ static void __vcpu_put_deactivate_traps(struct kvm_vcpu *vcpu)
+>>   	local_irq_restore(flags);
+>>   }
+>>
+>> +static void __load_hdbss(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct kvm *kvm = vcpu->kvm;
+>> +
+>> +	if (!kvm->arch.enable_hdbss)
+>> +		return;
+>> +
+>> +	write_sysreg_s(vcpu->arch.hdbss.hdbssbr_el2, SYS_HDBSSBR_EL2);
+>> +	write_sysreg_s(vcpu->arch.hdbss.hdbssprod_el2, SYS_HDBSSPROD_EL2);
+>> +
+>> +	isb();
+>> +}
+>> +
+>>   void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+>>   {
+>>   	host_data_ptr(host_ctxt)->__hyp_running_vcpu = vcpu;
+>> @@ -220,6 +234,7 @@ void kvm_vcpu_load_vhe(struct kvm_vcpu *vcpu)
+>>   	__vcpu_load_switch_sysregs(vcpu);
+>>   	__vcpu_load_activate_traps(vcpu);
+>>   	__load_stage2(vcpu->arch.hw_mmu);
+>> +	__load_hdbss(vcpu);
+>>   }
+>>
+>>   void kvm_vcpu_put_vhe(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 346efed6e605..83251d95bf3f 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -16,6 +16,7 @@
+>>   #include <asm/cacheflush.h>
+>>   #include <asm/kvm_arm.h>
+>>   #include <asm/kvm_mmu.h>
+>> +#include <asm/kvm_dirty_bit.h>
+>>   #include <asm/kvm_pgtable.h>
+>>   #include <asm/kvm_pkvm.h>
+>>   #include <asm/kvm_asm.h>
+>> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+>> index b963fd975aac..d8104bcbd9ff 100644
+>> --- a/arch/arm64/kvm/reset.c
+>> +++ b/arch/arm64/kvm/reset.c
+>> @@ -27,6 +27,7 @@
+>>   #include <asm/kvm_asm.h>
+>>   #include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_mmu.h>
+>> +#include <asm/kvm_dirty_bit.h>
+>>   #include <asm/kvm_nested.h>
+>>   #include <asm/virt.h>
+>>
+>> @@ -161,6 +162,9 @@ void kvm_arm_vcpu_destroy(struct kvm_vcpu *vcpu)
+>>   	free_page((unsigned long)vcpu->arch.ctxt.vncr_array);
+>>   	kfree(vcpu->arch.vncr_tlb);
+>>   	kfree(vcpu->arch.ccsidr);
+>> +
+>> +	if (vcpu->kvm->arch.enable_hdbss)
+>> +		kvm_arm_vcpu_free_hdbss(vcpu);
+>>   }
+>>
+>>   static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
+>> --
+>> 2.33.0
+>>
