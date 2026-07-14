@@ -1,155 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6285379EEF
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 23:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92564423EB1
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 23:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784072354; cv=none; b=I4G/IXhZ8sxtL4qAFOppcUD+Tq56e7C/GjEfBqueCaOf1L5k+79lK37tlx0a6ls9kWoL5mic6aHNLvcfREXQVUpJ4IIa+cGKLNo5VA50LevMFPeHaBtBQ6G0F7cHCYyWE+3tWnOpReUjsn/5rbm+Rphq8VXHGWpQTmZZ16cAXeY=
+	t=1784072505; cv=none; b=OQgfeTAUOSxbapECxnV2JoSsX1Xv/Uib29yzuhk9YkOsmI2qI+fyBzQrhk1rfmjJVLXPhV3dIt9QPFE0FVQ+c4yNJSXBA7wWJu0YvEyZngnvO8ddXCn9qEq9XK0jaQt2dBobkv8FFT1y00Pl/Cwz3+192Np/YvuHTh3rF1WaCkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784072354; c=relaxed/simple;
-	bh=rAVN9EvSYywNq5frELUk8mlOv13cUdFyrtKhjnnne1Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Hb/BedcW+Jdaz2d3PUu1tC/8tXMqlDs9CVORx2qpVuA+VwvQLQTfnjsw4Jv+GnPS+T20t0l7i0AS5oi+kvUDE8Ww5mV3E3xw984RHXv06A4ho8n3cufNKTu9/9qeN7x6KKpBMlG0Aj0odjcbtJHgLLNCSzgfRYgVlWvj9II6Swc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KglLsEuW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784072505; c=relaxed/simple;
+	bh=lQI1ltRDfG25H0oHSfUwYdJpYhMirhrwY82cJD2C17k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qWAbzck7HdpH+58wM4AV7kFBEF6PXIuiwFYtC0HEaMF9SI4H+DFSMwe+78dJe7MADqn6AoeF5u9oNb/5nBCMyptQixiJ2OlDUPx9ETyig1Eunz9XvN1ebiBduoARu2Td3ym3p4UXz4TrhKKvrVgpMN540xCgTIg2KkoQcUQnnQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O6Y2HJ3K; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KglLsEuW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D52E1F000E9;
-	Tue, 14 Jul 2026 23:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784072353;
-	bh=XCK7/Nf18htIqUtjqfUb606toMNxsEMwfKSrakj16ac=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KglLsEuWU0KuUUQ1Em2tZ2q8xQB7xKQby7iCPzcoEF/VIvc5B9MXYI9n9Xjm9juGb
-	 zf1YqEjGcFk5IKz6yVuk6eEZdv0nHu+EXVWUSeVTN79t21++Zf9thhBYMILh1ndQHz
-	 XVHA3Zs0AcN8Jce6XMb5wt2e8HRISsFg2+mLGSDVO6T+tj8nw4Ibv1PtZEku0OWlIy
-	 r/AZidDCDEC0ZUEDNgfn/tnMMVKsRftEUNdffLllbTIGq0d76s44Z0ituqxaxs579U
-	 o2Bl7/B+LTzdbjj5+hRLKOcPPv5xkIkvmIKtf5+CCvpdy7Y4KMZ3yzD5h/wgU0J2Uf
-	 go1RYFy1VeDrQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/7] KVM: guest_memfd: Fold
- __kvm_gmem_prepare_folio() into its sole caller
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714231015.3337831-5-seanjc@google.com>
-References: <20260714231015.3337831-1-seanjc@google.com>
- <20260714231015.3337831-5-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 23:39:13 +0000
-Message-Id: <20260714233913.8D52E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O6Y2HJ3K"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1769891b3a.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 16:41:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784072503; x=1784677303; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kNayng4wVgR7/vbYN7T9tTPosZzzZ5P4eBqZ7cxpep0=;
+        b=O6Y2HJ3Kg26wk+yEVT1VUm6qCin8432RgkFAtyKSmjLAQbecEI+isoMCykkzQdejLR
+         uwfbvj2/dIr/x0/oul+HIOeI/0w/UvXSpn0YYJIxkf97c1OtuYLg8K1UkP32+7J3Sx8X
+         ypPg7I5hr43G7WVp1DNRB6z73xWg8B6zlIsWs5qPI+ssTlfEDj2C09eTuGWmnCkTtxd5
+         oUjBREGFgV5C6V9RGHgUcyPLRuq5nnnvbE362syCtsTmcXLhlYXJIdCFaNM6D3sHAJJF
+         SEfagbt0A5zRaXJkeDc+tAfDUFGnnexDRiVjBjo5mI53oDCu8WV6Bqt4DtzWBiCbomMK
+         Ho+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784072503; x=1784677303;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kNayng4wVgR7/vbYN7T9tTPosZzzZ5P4eBqZ7cxpep0=;
+        b=FT5GmihEO9DtzMZPTk0DsbhZgZwpRMxtFyKuJJIixczvyZ08dz+amQWAOz33/YZYir
+         NSCIjrPXDWec83bLYtIm891G1vpQ8DP/4oZlURfC+Fh30tT9aU99I3OSWvvFEdSRhQAQ
+         XKoohm6L7YfobvAhV4mWKtpdRoVmoxSTGSObFFdRUudw9vYvht2vkybxlHSOWQCGhnlY
+         D+SygPq9/ASAwnT3Y+G6zKspBBL4o53u5ucaQTSDsWzqkT2tPDuY0OqyOz1oBwYtDmqu
+         JmNw23A7V6lmFc5UqoA7XKZvUZQikWZ1SkPhALPn4nqiMaqSWtkLworSI+sYWrNZYBZU
+         u7SQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6SvOZPsIo4ZldkHtewtMs70GNiewIKqc70hXbyGh+yJgSsUe6oZjcU+x6A06Jy/zoWdE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5jZ3l0jVngldbopg/TbwTIFizol2qQalsg6ZSvo5J5PWq7V5g
+	wkvsMcpA4Mov7ouZ/mu4Z67KNY92DvSp1ryH834pu1V9loyJqoUo5PoQpMMWE6yrQCK74kC1rWn
+	ctnYO4Q==
+X-Received: from pfff9.prod.google.com ([2002:a05:6a00:bd09:b0:848:487e:d23c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1881:b0:846:f517:ba5a
+ with SMTP id d2e1a72fcca58-84889716692mr14284967b3a.28.1784072502419; Tue, 14
+ Jul 2026 16:41:42 -0700 (PDT)
+Date: Tue, 14 Jul 2026 16:41:41 -0700
+In-Reply-To: <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
+ <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com> <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+Message-ID: <albJNb-akQJ97Yor@google.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Tue, Jul 14, 2026, Yosry Ahmed wrote:
+> On Tue, Jul 14, 2026 at 2:28=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> > > > Note: QEMU currently hardcodes the number of ASIDs to 16, so this c=
+hange
+> > > > doesn't help QEMU VMs (without making a similar change in QEMU).
+> > >
+> > > I had a discussion with Jim internally about what our VMM should
+> > > advertise as the number of ASIDs, and based on that I think passing
+> > > through the hardware value may not be the best idea, at least not
+> > > without some disclaimers.
+> > >
+> > > Jim pointed out that AMD CPUs will ignore unsupported ASID bits, or a=
+t
+> > > least earlier ones did, even though it's not mentioned in the APM
+> > > (last time I checked). This means that technically KVM can ignore the
+> > > higher bits of the ASID set by L1 beyond supported ones (e.g. if it
+> > > uses a hashtable to multiplex L1 ASIDs onto several physical ASIDs).
+> > > KVM doesn't currently do so with or without this series, but it could=
+.
 
-New issues:
-- [Critical] Refactoring `kvm_gmem_prepare_folio()` and `kvm_gmem_make_priv=
-ate()` to align `gfn` before computing `index` produces a mismatched and un=
-aligned `pfn` if the memslot's `base_gfn` is not aligned to the huge folio =
-size. This causes the architecture-specific prepare function to write beyon=
-d the bounds of the folio, leading to host physical memory corruption.
+Deliberately ignoring ASID bits would certainly be a choice.  I can see why
+hardware might make that compromise, but I don't see any reason why KVM sho=
+uld
+do the same.
 
-Pre-existing issues:
-- [High] In SEV-SNP, if large RMP entry preparation fails for a huge folio,=
- KVM will only prepare the base 4K page, causing an incomplete initializati=
-on and an infinite page fault loop for subpage accesses.
---
+> > > The problem happens if a migration pool contains multiple AMD CPUs
+> > > with a different number of ASIDs in hardware. If the VMM advertises
+> > > the greater value of the two, it would technically be advertising an
+> > > unsupported number of ASIDs on one of the CPUs. If KVM ignores the
+> > > upper bits based on what it supports, not what userspace advertises i=
+n
+> > > CPUID, then userspace would be shooting itself in the foot.
+> > >
+> > > I think technically speaking userspace would be in the wrong for usin=
+g
+> > > a number of ASIDs above what KVM_GET_SUPPORTED_CPUID provides, and it
+> > > should use a number of ASIDs that is supported by all CPUs in a
+> > > migration pool. However, this makes the VMM's life difficult, say if
+> > > AMD decides to reduce the number of ASIDs in a newer CPU just for
+> > > kicks.
+> > >
+> > > All of this is hypothetical in nature, but it's a very valid concern =
+imo.
 
---- Patch [4]: [PATCH v5 4/7] KVM: guest_memfd: Fold __kvm_gmem_prepare_fol=
-io() into its sole caller ---
-commit ef3a2643968d189a00f8b26552b9b814bf1aa548
-Author: Sean Christopherson <seanjc@google.com>
+Eh, I disagree.  It's hypothetical, and not a concern for KVM.
 
-KVM: guest_memfd: Fold __kvm_gmem_prepare_folio() into its sole caller
+> > > I think there are several ways we can handle this so that VMMs can
+> > > reasonably start advertising more ASIDs to guests without these
+> > > complications:
 
-This commit folds __kvm_gmem_prepare_folio() into its caller, removing the
-single-use tail-call helper. It also adjusts the alignment logic to align t=
-he
-gfn before computing the index, and converts a WARN to WARN_ON_ONCE.
+What complications?  Advertise the lowest common feature set for the pool, =
+just
+like userspace has to do for literally every other feature.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 28cdcf6007453..f065dedfbba8c 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
+> > > 1. We can just advertise a larger ASID value instead of 8 (say 16K or
+> > > 32K), rather than passthrough what's in hardware. I assume this would
+> > > mean that KVM is more-or-less committing to supporting that number of
+> > > ASIDs regardless of underlying hardware (i.e. KVM wouldn't reduce it
+> > > in the future). In this case, a VMM can just advertise the same value=
+.
+> > >
+> > > 2. We can advertise the maximum number of ASIDs (2^32 - 1?), which is
+> > > the same as option (1), except that we're biting the bullet and
+> > > preventing the possibility of KVM ignoring upper bits completely.
+> > > Might be too aggressive.
 
-[ ... ]
+And potentially suboptimal for performance.  There might be a legitimate re=
+ason
+why a CPU generation advertises X instead of Y.
 
-> @@ -97,11 +85,15 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, st=
-ruct kvm_memory_slot *slot,
->  	 * The order will be passed when creating the guest_memfd, and
->  	 * checked when creating memslots.
->  	 */
-> -	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
-> +	WARN_ON_ONCE(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
-> +	gfn =3D ALIGN_DOWN(gfn, folio_nr_pages(folio));
->  	index =3D kvm_gmem_get_index(slot, gfn);
-> -	index =3D ALIGN_DOWN(index, folio_nr_pages(folio));
-> =20
-> -	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
-> +	return kvm_arch_gmem_prepare(kvm, gfn, folio_file_pfn(folio, index),
-> +				     folio_order(folio));
+> > > 3. Document (somewhere) that KVM should use the userspace advertised
+> > > value as the source of truth for ignorable bits, even if KVM
+> > > technically supports a lower value. As I am writing this I am
+> > > realizing it doesn't make much sense as it means that the value
+> > > supported by KVM is meaningless.
 
-[Severity: Critical]
-Does aligning gfn before computing index cause an unaligned index when
-slot->base_gfn is not huge-page aligned?
+As above, I don't think KVM should have "ignorable bits" in the first place=
+.
 
-If a userspace process maps a guest_memfd using KVM_SET_USER_MEMORY_REGION2
-with a base_gfn that is not aligned to the huge page size,
-kvm_gmem_get_index() could return an unaligned index.
+> > > Maybe that comes naturally with the "don't break userspace" rule, but=
+ it
+> > > could also fall under the category of userspace shooting itself in th=
+e
+> > > foot and KVM letting it.
+> > >
+> > > 4. Do nothing, let this be userspace's problem, and hope that AMD
+> > > doesn't reduce the number of ASIDs in a future CPU.
 
-Because folio_file_pfn() applies the index offset to the base PFN:
+By "Do nothing", I assume you mean "advertise what's reported in CPUID"?
 
-virt/kvm/guest_memfd.c:folio_file_pfn() {
-    return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
-}
+If so there's a fifth option.
 
-an unaligned index causes it to return an offset PFN instead of the
-folio's base PFN.
+ 5. Be super paranoid and zero the entry, like KVM does for the topology le=
+aves.
+    See commit 45e966fcca03 ("KVM: x86: Do not return host topology informa=
+tion
+    from KVM_GET_SUPPORTED_CPUID").
+   =20
+IMO, the only sane options are #4 and #5, and #5 feels unnecessarily parano=
+id.
+I genuinely don't see how this is any different than any other feature wher=
+e
+userspace needs to not over-advertise features across its migration pool.
 
-Could this lead to host physical memory corruption? The architecture
-backend processes the full page count starting from the offset PFN,
-which would write beyond the allocated folio boundaries and overwrite
-unrelated host physical memory.
-
-It looks like this same alignment pattern is also present in
-kvm_gmem_make_private().
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but could this generic
-function incorrectly assume a successful return means the entire
-huge folio was prepared?
-
-Looking at sev_gmem_prepare() in arch/x86/kvm/svm/sev.c, if it falls
-back to PG_LEVEL_4K for a huge folio:
-
-    } else {
-        level =3D PG_LEVEL_4K;
-        pfn_aligned =3D pfn;
-        gfn_aligned =3D gfn;
-    }
-
-    rc =3D rmp_make_private(pfn_aligned, gfn_to_gpa(gfn_aligned), level, se=
-v->asid, false);
-
-It appears rmp_make_private() is called only once for the base 4K page,
-without looping over the remaining pages in the huge folio.
-
-Since kvm_arch_gmem_prepare() then returns success to this generic code,
-are the remaining 511 pages left uninitialized, potentially causing an
-infinite page fault loop for subsequent subpage accesses?
-
-> +#else
-> +	return 0;
-> +#endif
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714231015.3337=
-831-1-seanjc@google.com?part=3D4
+"Simple" use cases that don't do migration and just reflect KVM's CPUID int=
+o
+the guest Just Work, and more sophisticated use cases get an explicit hint =
+from
+KVM as to the optimal number of ASIDs to advertise.  I don't see why we nee=
+d to
+make it more complex than that.
