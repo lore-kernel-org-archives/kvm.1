@@ -1,137 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3921442BE95;
-	Tue, 14 Jul 2026 23:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784072705; cv=none; b=p3J+6AldbbJTOIddx+CuBTdY7d3gHk4yYEaPQyn4TSxfA5i4ItQAR6d8l/9knx1b4W3oSMMK8cX//4hQHtnjg0kQxfrFiTJbQ9sRAbm/V9MxiIaxRm3RgbXpg2nSd0EuAuY9gnTJ0yQSGGBeSqpRlM9SEWmgFLwR88uWSxES8ro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784072705; c=relaxed/simple;
-	bh=VGb5zaWXR8O89aCdAZYNdfocUDZh6+3/R3u++JbL13Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=qo91CrU9Xv79+WLB56vynNTV82siD0ku/k6LHakQVZ4W/tL86MS9z/f8ObY0SXa3ZWQZC3q7QREbu4impzVxCfs3f/iGbbd8v+evjNW22nuDKVRAF7W3LKD/rhQ7W4vt2HnOKhqraZCt1JrRZTOfv4ZrOKH9ZxT2M+sEvgs3UDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzMRhgZm; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D74F27587D
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 23:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784073159; cv=pass; b=lgEQRPfNGUM0O5owtGdidV1cSt5CTlZkVppfQIlggkmtZIykWv2YjMFp4UUStUh8+hNOfDZWcgrTm95CzKiJH8OQKwAcboWjA9LMwGMmkBI6BYJDQxg+lCekjj9wozDWqWp6MVQLwT1zLwWfFAV8PqSHPXZJv9vYkmEkfbD/iA0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784073159; c=relaxed/simple;
+	bh=S8H1DPY/zrF0s8Hx4z9acw7QIO8LeTlOZIOEAQgt9Mo=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pck+j4719G8Kx1I/cxPKQ+J3NBbDLxYqVAguN5wBAA/6Oge+2jRmYmQiXSU3j5H15r9Gr8WZsUr8RJDGdt2+MotAcLAKYHMVFJSYhF6xe5lP/+7d3KJkxrngSJGI7qgtpScvU7qq+jVSRSfZ92l0uhFjYcMZcxWcqmEKlaOCE/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z31TdyC5; arc=pass smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzMRhgZm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5661F000E9;
-	Tue, 14 Jul 2026 23:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784072703;
-	bh=xSybn/rSElSg8hmK/MvGsyTLF8aSrSsXnyofv+nwbEQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hzMRhgZm0vEYxEwK5wM4wetgBUC0GHZiTxp2LgmhqbD9bLbvtoupEvQdZJTopgGUb
-	 jGtRvApISnCQgfVxuuM2LxFdi5oB+80YiIdS0w31n6HXbleF+POP0nGB9LWzjjL8SL
-	 vLww8qMAPIo9InQ9+sEEP5cmh9zQSqnK49sfzNvQ7Ik/Ht7aLFipsuB/p2lBUhhYye
-	 wjYdAaOQQ5pLWyETBi0eEm/6Qt52aE2c3Msqu6DhcMisTbWTfxyc+DJ17IQDItXJiC
-	 Y+akHOa1/Dahwd6WCXD1ZnQBPI+v8zRRxNHtUmR4tG5Xwe7fXBQVRFQJMElXKNOAuv
-	 f8zVlIId8djbQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 5/6] s390/vfio_ccw: ensure index for read/write
- regions are within range
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Eric Farman" <farman@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260714232208.1683788-6-farman@linux.ibm.com>
-References: <20260714232208.1683788-1-farman@linux.ibm.com>
- <20260714232208.1683788-6-farman@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 23:45:03 +0000
-Message-Id: <20260714234503.7C5661F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z31TdyC5"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c85b73ffb52so2688996a12.3
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 16:52:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784073158; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CtmEPbDvWMblwtJsb3ycjaM30mxV9LANAkpwZAU1q9ON4J5def2znYS7ZwsJeUE4n4
+         VmsYGyE2yFK7XytZ7lw03QGTfQDQs3fuMhaYK3ZyQwYS7iYGjqckC0A7PFjONBT3csZs
+         63t9Yqoyvg7LgV+fseiIq8MrPqZIcW/5MBFteWkAyZLk3nwsPCh43ZHXXGN/GXcnzbrH
+         BQX5TPRz3/q8AwjnOjEY7NhmTBgnV16mQfn9Y4lKyb8tib+Td2dpmF1xZ9B0rrPCsn9c
+         SKrN6fwpHhCnd0rf7M916R9y5IV7QodX5ltvnzhrul/QQRXn/S42ha26xCikUEbHkpbG
+         O/cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=zy4CFxQS08BLYRIKZON8wjktzAN/UiX6c2pgmKL+X/o=;
+        fh=ejauVw2v2JC22nsitInIhki0uBsyhmGPpwY68+5cDUk=;
+        b=VAcIYTnReFLaBQHFuiJuPvkDQNdteGL09nkBnhz1lI1bo4XvKljRrRzTlEt7q8iaVu
+         DXUTn/ZwJkB8s3AtrtfX94EealKPCNn1eJvq/h/7gI9CGgCxJKbiW1TgH/1d7/qa/5YU
+         7ksxZUg/HcHdnK6HkzotjUMjdpqpevA7RbRBmyYx/VoliSV7Tu7qIOb5NPtVKHqQn8JX
+         VI1Aco9Ltxk82yrRi9eL5hhv7uiFE6TUwuCc3/BrcSxFdsf1zKoh3MQbzpz8yiTFAJp4
+         NQO0uftRCqGfeS97MADp1Klmn+l202vCkzDZcBfHfreGoDd+AshAuGj+EEwN4acWNoAc
+         0XUA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784073158; x=1784677958; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zy4CFxQS08BLYRIKZON8wjktzAN/UiX6c2pgmKL+X/o=;
+        b=Z31TdyC53Hchy7B++UrxSuoY8JT26CrigyOgZvWVEOJaDxhMhrlcOpQRYdLQa+0Vex
+         KcsPIjD3IwiUu7dDi/kUicU1ZUygjwpLYJkqFynsgsC/qG+uthGLOk3/dx9szZR1RZHC
+         zdGAtCeubQwC/L/bYp2XkF+dApIXQ4ZyIixk2zOp7f3Xq+iQz6/aRrDMtTnpI8hd7yNO
+         PyUd6Z1qNO7p/OSEMzQO4Oe1TdYtW/S1OCpbt9hpmdUJmcrGmHRR+FgghL5Ow7tbskq6
+         BfwbEWgVC0kVVoGvJ+raicwrU3mdXSXZZ6tJmIfmHY5E2l7RN9GcVriqvno5sA7nKbxL
+         RTgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784073158; x=1784677958;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zy4CFxQS08BLYRIKZON8wjktzAN/UiX6c2pgmKL+X/o=;
+        b=UPElGXNeyu+oNgv0jDgVoDh8KGgA+yYMl6scxHjAhHxL01as1VpaA9e1HnoLknUGK/
+         n2eEsQak0aR7MHPBy2sebLSz9RGjaTlmnVwRDMXdYRu0LY0McKMyFQjK0nWSqyBa+9m7
+         z5AUru0PnPLldVZvYGBr9aSiFScnQ0HC1vYiyT98hzjb1OL4uzsobH4zBlNixDtJnptZ
+         wivoMB1kwuQx7p/t/voU1gU/RGumLsGvatS4zg8hdS8tM66pTssrvcTVPRycIZZrCje0
+         zk1RDIPsl0DMNewkbDFKroN0VpKQw05Y1mFijmvgAqwebJzjpP9y9RDUVURJ/QDjIQqi
+         SKOA==
+X-Gm-Message-State: AOJu0Yz4hUTdwC/rO06ai9BAjZeW5bcwNCH0ruRA6F0K9kefD8UIcvMb
+	XwxIN43HMTnrIsMTO32OJNleUVjqZkV1XWnF7Fmti8i3gUTvYLcdydHFePVi46Z0yynBWk936qi
+	VavQfYanGiRgMwPAbHAgE12snsklQLzTYO+W26u1u
+X-Gm-Gg: AfdE7cmclsAZg9XzFeiXv8Put1sFzF1iqu3CS8UjfOg+zlOrpRHIG896YwxIN0phD3v
+	0cE2MV0LHmB0fYB9994OflWfhWDm47th7CSTglLphUvWxDdBJTIDoeC01LeglYWFSkq0cTmrzXX
+	Y5Vrnxjif4oZ2+tRBGbEucoILtpFiAZ2ECEv68PUZHDpPGxLkmwhE8EZh4xm8ysFaNx7g1KDerU
+	ULXSdIChl9e9FgR08mGSF6xTOlSmM7EpxC5Xjnfliykt1XhcOaV9Mm9+8+lXIbtc7SvTyPigBuE
+	lweM4AWN5zoAeO2Iu0tEze/Sg4hAvsi6ZIgWUt4zxK2TdIy7WeK3ALhUYXk=
+X-Received: by 2002:a05:6a21:7105:b0:3bf:9cbd:9a36 with SMTP id
+ adf61e73a8af0-3c36c16aca1mr681440637.26.1784073157451; Tue, 14 Jul 2026
+ 16:52:37 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 14 Jul 2026 16:52:36 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 14 Jul 2026 16:52:36 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260714231015.3337831-2-seanjc@google.com>
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Tue, 14 Jul 2026 16:52:36 -0700
+X-Gm-Features: AUfX_mzFD_wob5N5abjRPCuW6hWhQWQNPWCMTp9Osq7TjAlHSEtX6GgWG_mZSEM
+Message-ID: <CAEvNRgEB+cwMRiT6B_0oNXGp-A-qPyf0qA8Rtrv5b5xS=jqXtw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/7] KVM: guest_memfd: Plumb the number of pages and
+ max order into .invalidate()
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Flawed usage of `array_index_nospec()` incorrectly clamps out-of-b=
-ounds indices to 0 before a subtraction, leading to a speculative integer u=
-nderflow and out-of-bounds array access.
---
+Sean Christopherson <seanjc@google.com> writes:
 
---- Patch [5]: [PATCH v1 5/6] s390/vfio_ccw: ensure index for read/write re=
-gions are within range ---
-commit f00821fcd31baacca490cf51ca9a9206a56fdf45
-Author: Eric Farman <farman@linux.ibm.com>
+>
+> [...snip...]
+>
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>  static void kvm_gmem_free_folio(struct folio *folio)
+>  {
+> -	struct page *page = folio_page(folio, 0);
+> -	kvm_pfn_t pfn = page_to_pfn(page);
+> -	int order = folio_order(folio);
+> -
+> -	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> +	kvm_arch_gmem_invalidate(folio_file_pfn(folio, 0), folio_nr_pages(folio),
 
-s390/vfio_ccw: ensure index for read/write regions are within range
+How about just folio_pfn(folio)? Since we're freeing the folio this will
+always be 0.
 
-The introduction of the capability chain clamped the region indexes to the
-range of the capabilities itself, but neglected to do so for the existing
-read/write regions. This commit enforces the same checks for those regions.
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
-> --- a/drivers/s390/cio/vfio_ccw_ops.c
-> +++ b/drivers/s390/cio/vfio_ccw_ops.c
-> @@ -245,6 +245,8 @@ static ssize_t vfio_ccw_mdev_read(struct vfio_device =
-*vdev,
->  	if (index >=3D VFIO_CCW_NUM_REGIONS + private->num_regions)
->  		return -EINVAL;
-> =20
-> +	index =3D array_index_nospec(index, VFIO_CCW_NUM_REGIONS + private->num=
-_regions);
-> +
->  	switch (index) {
->  	case VFIO_CCW_CONFIG_REGION_INDEX:
->  		return vfio_ccw_mdev_read_io_region(private, buf, count, ppos);
->  	default:
->  		index -=3D VFIO_CCW_NUM_REGIONS;
->  		return private->region[index].ops->read(private, buf, count,
->  							ppos);
-
-[Severity: High]
-Does this introduce a speculative out-of-bounds access regression?
-
-If an attacker provides an out-of-bounds index, the architectural bounds
-check is bypassed during speculative execution. The array_index_nospec()
-mitigation will clamp the out-of-bounds index to 0 to resolve data
-dependencies safely.
-
-However, if the CPU mispredicts the switch statement and executes the
-default case, the clamped index of 0 is subtracted by
-VFIO_CCW_NUM_REGIONS. This causes an integer underflow, leading to a
-speculative read of private->region with a negative index, followed by
-a speculative indirect call via ops->read().
-
-Could we perform the array_index_nospec() masking after the subtraction,
-specifically clamping against private->num_regions instead?
-
-[ ... ]
-
-> @@ -297,6 +299,8 @@ static ssize_t vfio_ccw_mdev_write(struct vfio_device=
- *vdev,
->  	if (index >=3D VFIO_CCW_NUM_REGIONS + private->num_regions)
->  		return -EINVAL;
-> =20
-> +	index =3D array_index_nospec(index, VFIO_CCW_NUM_REGIONS + private->num=
-_regions);
-> +
->  	switch (index) {
->  	case VFIO_CCW_CONFIG_REGION_INDEX:
->  		return vfio_ccw_mdev_write_io_region(private, buf, count, ppos);
->  	default:
->  		index -=3D VFIO_CCW_NUM_REGIONS;
->  		return private->region[index].ops->write(private, buf, count,
->  							 ppos);
-
-[Severity: High]
-Will this suffer from the same speculative integer underflow as the read
-path?
-
-If array_index_nospec() clamps an out-of-bounds index to 0, the
-subsequent subtraction will result in an underflow, allowing a
-speculative out-of-bounds read and an indirect call through ops->write().
-
-Additionally, it looks like this identical anti-speculation pattern is
-already present in other locations such as
-vfio_ccw_mdev_ioctl_get_region_info(),
-intel_vgpu_ioctl_get_region_info(), and vfio_pci_ioctl_get_region_info().
-
-Do those locations also need to be updated?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714232208.1683=
-788-1-farman@linux.ibm.com?part=3D5
+> +				 folio_order(folio));
+>  }
+>  #endif
+>
