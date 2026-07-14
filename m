@@ -1,187 +1,137 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92564423EB1
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 23:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3921442BE95;
+	Tue, 14 Jul 2026 23:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784072505; cv=none; b=OQgfeTAUOSxbapECxnV2JoSsX1Xv/Uib29yzuhk9YkOsmI2qI+fyBzQrhk1rfmjJVLXPhV3dIt9QPFE0FVQ+c4yNJSXBA7wWJu0YvEyZngnvO8ddXCn9qEq9XK0jaQt2dBobkv8FFT1y00Pl/Cwz3+192Np/YvuHTh3rF1WaCkc=
+	t=1784072705; cv=none; b=p3J+6AldbbJTOIddx+CuBTdY7d3gHk4yYEaPQyn4TSxfA5i4ItQAR6d8l/9knx1b4W3oSMMK8cX//4hQHtnjg0kQxfrFiTJbQ9sRAbm/V9MxiIaxRm3RgbXpg2nSd0EuAuY9gnTJ0yQSGGBeSqpRlM9SEWmgFLwR88uWSxES8ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784072505; c=relaxed/simple;
-	bh=lQI1ltRDfG25H0oHSfUwYdJpYhMirhrwY82cJD2C17k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qWAbzck7HdpH+58wM4AV7kFBEF6PXIuiwFYtC0HEaMF9SI4H+DFSMwe+78dJe7MADqn6AoeF5u9oNb/5nBCMyptQixiJ2OlDUPx9ETyig1Eunz9XvN1ebiBduoARu2Td3ym3p4UXz4TrhKKvrVgpMN540xCgTIg2KkoQcUQnnQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O6Y2HJ3K; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784072705; c=relaxed/simple;
+	bh=VGb5zaWXR8O89aCdAZYNdfocUDZh6+3/R3u++JbL13Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=qo91CrU9Xv79+WLB56vynNTV82siD0ku/k6LHakQVZ4W/tL86MS9z/f8ObY0SXa3ZWQZC3q7QREbu4impzVxCfs3f/iGbbd8v+evjNW22nuDKVRAF7W3LKD/rhQ7W4vt2HnOKhqraZCt1JrRZTOfv4ZrOKH9ZxT2M+sEvgs3UDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzMRhgZm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O6Y2HJ3K"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1769891b3a.0
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 16:41:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784072503; x=1784677303; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kNayng4wVgR7/vbYN7T9tTPosZzzZ5P4eBqZ7cxpep0=;
-        b=O6Y2HJ3Kg26wk+yEVT1VUm6qCin8432RgkFAtyKSmjLAQbecEI+isoMCykkzQdejLR
-         uwfbvj2/dIr/x0/oul+HIOeI/0w/UvXSpn0YYJIxkf97c1OtuYLg8K1UkP32+7J3Sx8X
-         ypPg7I5hr43G7WVp1DNRB6z73xWg8B6zlIsWs5qPI+ssTlfEDj2C09eTuGWmnCkTtxd5
-         oUjBREGFgV5C6V9RGHgUcyPLRuq5nnnvbE362syCtsTmcXLhlYXJIdCFaNM6D3sHAJJF
-         SEfagbt0A5zRaXJkeDc+tAfDUFGnnexDRiVjBjo5mI53oDCu8WV6Bqt4DtzWBiCbomMK
-         Ho+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784072503; x=1784677303;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kNayng4wVgR7/vbYN7T9tTPosZzzZ5P4eBqZ7cxpep0=;
-        b=FT5GmihEO9DtzMZPTk0DsbhZgZwpRMxtFyKuJJIixczvyZ08dz+amQWAOz33/YZYir
-         NSCIjrPXDWec83bLYtIm891G1vpQ8DP/4oZlURfC+Fh30tT9aU99I3OSWvvFEdSRhQAQ
-         XKoohm6L7YfobvAhV4mWKtpdRoVmoxSTGSObFFdRUudw9vYvht2vkybxlHSOWQCGhnlY
-         D+SygPq9/ASAwnT3Y+G6zKspBBL4o53u5ucaQTSDsWzqkT2tPDuY0OqyOz1oBwYtDmqu
-         JmNw23A7V6lmFc5UqoA7XKZvUZQikWZ1SkPhALPn4nqiMaqSWtkLworSI+sYWrNZYBZU
-         u7SQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6SvOZPsIo4ZldkHtewtMs70GNiewIKqc70hXbyGh+yJgSsUe6oZjcU+x6A06Jy/zoWdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5jZ3l0jVngldbopg/TbwTIFizol2qQalsg6ZSvo5J5PWq7V5g
-	wkvsMcpA4Mov7ouZ/mu4Z67KNY92DvSp1ryH834pu1V9loyJqoUo5PoQpMMWE6yrQCK74kC1rWn
-	ctnYO4Q==
-X-Received: from pfff9.prod.google.com ([2002:a05:6a00:bd09:b0:848:487e:d23c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1881:b0:846:f517:ba5a
- with SMTP id d2e1a72fcca58-84889716692mr14284967b3a.28.1784072502419; Tue, 14
- Jul 2026 16:41:42 -0700 (PDT)
-Date: Tue, 14 Jul 2026 16:41:41 -0700
-In-Reply-To: <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzMRhgZm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5661F000E9;
+	Tue, 14 Jul 2026 23:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784072703;
+	bh=xSybn/rSElSg8hmK/MvGsyTLF8aSrSsXnyofv+nwbEQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hzMRhgZm0vEYxEwK5wM4wetgBUC0GHZiTxp2LgmhqbD9bLbvtoupEvQdZJTopgGUb
+	 jGtRvApISnCQgfVxuuM2LxFdi5oB+80YiIdS0w31n6HXbleF+POP0nGB9LWzjjL8SL
+	 vLww8qMAPIo9InQ9+sEEP5cmh9zQSqnK49sfzNvQ7Ik/Ht7aLFipsuB/p2lBUhhYye
+	 wjYdAaOQQ5pLWyETBi0eEm/6Qt52aE2c3Msqu6DhcMisTbWTfxyc+DJ17IQDItXJiC
+	 Y+akHOa1/Dahwd6WCXD1ZnQBPI+v8zRRxNHtUmR4tG5Xwe7fXBQVRFQJMElXKNOAuv
+	 f8zVlIId8djbQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 5/6] s390/vfio_ccw: ensure index for read/write
+ regions are within range
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Eric Farman" <farman@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260714232208.1683788-6-farman@linux.ibm.com>
+References: <20260714232208.1683788-1-farman@linux.ibm.com>
+ <20260714232208.1683788-6-farman@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 23:45:03 +0000
+Message-Id: <20260714234503.7C5661F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
- <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
- <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com> <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
-Message-ID: <albJNb-akQJ97Yor@google.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026, Yosry Ahmed wrote:
-> On Tue, Jul 14, 2026 at 2:28=E2=80=AFPM Jim Mattson <jmattson@google.com>=
- wrote:
-> > > > Note: QEMU currently hardcodes the number of ASIDs to 16, so this c=
-hange
-> > > > doesn't help QEMU VMs (without making a similar change in QEMU).
-> > >
-> > > I had a discussion with Jim internally about what our VMM should
-> > > advertise as the number of ASIDs, and based on that I think passing
-> > > through the hardware value may not be the best idea, at least not
-> > > without some disclaimers.
-> > >
-> > > Jim pointed out that AMD CPUs will ignore unsupported ASID bits, or a=
-t
-> > > least earlier ones did, even though it's not mentioned in the APM
-> > > (last time I checked). This means that technically KVM can ignore the
-> > > higher bits of the ASID set by L1 beyond supported ones (e.g. if it
-> > > uses a hashtable to multiplex L1 ASIDs onto several physical ASIDs).
-> > > KVM doesn't currently do so with or without this series, but it could=
-.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Flawed usage of `array_index_nospec()` incorrectly clamps out-of-b=
+ounds indices to 0 before a subtraction, leading to a speculative integer u=
+nderflow and out-of-bounds array access.
+--
 
-Deliberately ignoring ASID bits would certainly be a choice.  I can see why
-hardware might make that compromise, but I don't see any reason why KVM sho=
-uld
-do the same.
+--- Patch [5]: [PATCH v1 5/6] s390/vfio_ccw: ensure index for read/write re=
+gions are within range ---
+commit f00821fcd31baacca490cf51ca9a9206a56fdf45
+Author: Eric Farman <farman@linux.ibm.com>
 
-> > > The problem happens if a migration pool contains multiple AMD CPUs
-> > > with a different number of ASIDs in hardware. If the VMM advertises
-> > > the greater value of the two, it would technically be advertising an
-> > > unsupported number of ASIDs on one of the CPUs. If KVM ignores the
-> > > upper bits based on what it supports, not what userspace advertises i=
-n
-> > > CPUID, then userspace would be shooting itself in the foot.
-> > >
-> > > I think technically speaking userspace would be in the wrong for usin=
-g
-> > > a number of ASIDs above what KVM_GET_SUPPORTED_CPUID provides, and it
-> > > should use a number of ASIDs that is supported by all CPUs in a
-> > > migration pool. However, this makes the VMM's life difficult, say if
-> > > AMD decides to reduce the number of ASIDs in a newer CPU just for
-> > > kicks.
-> > >
-> > > All of this is hypothetical in nature, but it's a very valid concern =
-imo.
+s390/vfio_ccw: ensure index for read/write regions are within range
 
-Eh, I disagree.  It's hypothetical, and not a concern for KVM.
+The introduction of the capability chain clamped the region indexes to the
+range of the capabilities itself, but neglected to do so for the existing
+read/write regions. This commit enforces the same checks for those regions.
 
-> > > I think there are several ways we can handle this so that VMMs can
-> > > reasonably start advertising more ASIDs to guests without these
-> > > complications:
+> --- a/drivers/s390/cio/vfio_ccw_ops.c
+> +++ b/drivers/s390/cio/vfio_ccw_ops.c
+> @@ -245,6 +245,8 @@ static ssize_t vfio_ccw_mdev_read(struct vfio_device =
+*vdev,
+>  	if (index >=3D VFIO_CCW_NUM_REGIONS + private->num_regions)
+>  		return -EINVAL;
+> =20
+> +	index =3D array_index_nospec(index, VFIO_CCW_NUM_REGIONS + private->num=
+_regions);
+> +
+>  	switch (index) {
+>  	case VFIO_CCW_CONFIG_REGION_INDEX:
+>  		return vfio_ccw_mdev_read_io_region(private, buf, count, ppos);
+>  	default:
+>  		index -=3D VFIO_CCW_NUM_REGIONS;
+>  		return private->region[index].ops->read(private, buf, count,
+>  							ppos);
 
-What complications?  Advertise the lowest common feature set for the pool, =
-just
-like userspace has to do for literally every other feature.
+[Severity: High]
+Does this introduce a speculative out-of-bounds access regression?
 
-> > > 1. We can just advertise a larger ASID value instead of 8 (say 16K or
-> > > 32K), rather than passthrough what's in hardware. I assume this would
-> > > mean that KVM is more-or-less committing to supporting that number of
-> > > ASIDs regardless of underlying hardware (i.e. KVM wouldn't reduce it
-> > > in the future). In this case, a VMM can just advertise the same value=
-.
-> > >
-> > > 2. We can advertise the maximum number of ASIDs (2^32 - 1?), which is
-> > > the same as option (1), except that we're biting the bullet and
-> > > preventing the possibility of KVM ignoring upper bits completely.
-> > > Might be too aggressive.
+If an attacker provides an out-of-bounds index, the architectural bounds
+check is bypassed during speculative execution. The array_index_nospec()
+mitigation will clamp the out-of-bounds index to 0 to resolve data
+dependencies safely.
 
-And potentially suboptimal for performance.  There might be a legitimate re=
-ason
-why a CPU generation advertises X instead of Y.
+However, if the CPU mispredicts the switch statement and executes the
+default case, the clamped index of 0 is subtracted by
+VFIO_CCW_NUM_REGIONS. This causes an integer underflow, leading to a
+speculative read of private->region with a negative index, followed by
+a speculative indirect call via ops->read().
 
-> > > 3. Document (somewhere) that KVM should use the userspace advertised
-> > > value as the source of truth for ignorable bits, even if KVM
-> > > technically supports a lower value. As I am writing this I am
-> > > realizing it doesn't make much sense as it means that the value
-> > > supported by KVM is meaningless.
+Could we perform the array_index_nospec() masking after the subtraction,
+specifically clamping against private->num_regions instead?
 
-As above, I don't think KVM should have "ignorable bits" in the first place=
-.
+[ ... ]
 
-> > > Maybe that comes naturally with the "don't break userspace" rule, but=
- it
-> > > could also fall under the category of userspace shooting itself in th=
-e
-> > > foot and KVM letting it.
-> > >
-> > > 4. Do nothing, let this be userspace's problem, and hope that AMD
-> > > doesn't reduce the number of ASIDs in a future CPU.
+> @@ -297,6 +299,8 @@ static ssize_t vfio_ccw_mdev_write(struct vfio_device=
+ *vdev,
+>  	if (index >=3D VFIO_CCW_NUM_REGIONS + private->num_regions)
+>  		return -EINVAL;
+> =20
+> +	index =3D array_index_nospec(index, VFIO_CCW_NUM_REGIONS + private->num=
+_regions);
+> +
+>  	switch (index) {
+>  	case VFIO_CCW_CONFIG_REGION_INDEX:
+>  		return vfio_ccw_mdev_write_io_region(private, buf, count, ppos);
+>  	default:
+>  		index -=3D VFIO_CCW_NUM_REGIONS;
+>  		return private->region[index].ops->write(private, buf, count,
+>  							 ppos);
 
-By "Do nothing", I assume you mean "advertise what's reported in CPUID"?
+[Severity: High]
+Will this suffer from the same speculative integer underflow as the read
+path?
 
-If so there's a fifth option.
+If array_index_nospec() clamps an out-of-bounds index to 0, the
+subsequent subtraction will result in an underflow, allowing a
+speculative out-of-bounds read and an indirect call through ops->write().
 
- 5. Be super paranoid and zero the entry, like KVM does for the topology le=
-aves.
-    See commit 45e966fcca03 ("KVM: x86: Do not return host topology informa=
-tion
-    from KVM_GET_SUPPORTED_CPUID").
-   =20
-IMO, the only sane options are #4 and #5, and #5 feels unnecessarily parano=
-id.
-I genuinely don't see how this is any different than any other feature wher=
-e
-userspace needs to not over-advertise features across its migration pool.
+Additionally, it looks like this identical anti-speculation pattern is
+already present in other locations such as
+vfio_ccw_mdev_ioctl_get_region_info(),
+intel_vgpu_ioctl_get_region_info(), and vfio_pci_ioctl_get_region_info().
 
-"Simple" use cases that don't do migration and just reflect KVM's CPUID int=
-o
-the guest Just Work, and more sophisticated use cases get an explicit hint =
-from
-KVM as to the optimal number of ASIDs to advertise.  I don't see why we nee=
-d to
-make it more complex than that.
+Do those locations also need to be updated?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714232208.1683=
+788-1-farman@linux.ibm.com?part=3D5
