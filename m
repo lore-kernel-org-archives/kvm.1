@@ -1,159 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CBC3CAA55
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E59F412C0E
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784052857; cv=none; b=TIv0nN/gLGvT2uhKpDkmSOtNwZqcKcodvEMpg2fsLS6vAhiuAcMc7WGo5NNg5FB9W3D0eNayZzXyWslb5pYB/Wy7jl+vvN7he7b96EzPu6GiX/h/pgwKkCPBZ1DG+cts99nA/LFbnKx+4CebMBzkLR9IrUbuoJy1JjtQpq3505U=
+	t=1784053454; cv=none; b=GNim0HmepzVbkDQ64b1FHVKWlCabw+KZJClAYOfbuvTFJuZ3nPZMY0BFICTLE4O+o9Ph/n1SKou/93uCFlXtjLH6Rls+YwUj/ZScFKjRE9lpdz3kiHwTbwx16O/qKLTjWI+DhHAPIGazHV1WN+lbN6uzmnd6f5kRiosy9jehxb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784052857; c=relaxed/simple;
-	bh=eT//DqQoTtDcHwvlqXerr1xOn9oACvuaPsXO5Ek3wrQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WE4Jke5smtTsLwJjis3/MSppElxMyY5tJgJf6MB9mOfk3SGdIQjuWLYBQoUc765uG541KQBfDs5XhecRgjhxdI5xUXx7yJcIUsOM4lvzi7ViqIkgvx7PjBAnZ0bKuuUiBPh4nLMG1ekIYZhWEDtk51M9aH+jmssZ/q6AyrHALBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3k8hsMp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784053454; c=relaxed/simple;
+	bh=PtzgifCToE9i6F82rJer+x001djxxH72Wo5oXYVWRO4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ANVvTAkyFHhlN9WtqRP1M9lHWPS4EvX/SGLGJZnsV5SS3eaS6j9aEYy5FIdUgQUbuUE/M4nGsLLXFAH9aMACiH1haRrbvhCWewxxxdrxy2bNNTChx+cZ8Mq/tyyucjkdTKMIFN4nu2lvWJRhKymXMrU4yXmDG1hZloCkC+JBtI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nvLR8AIq; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3k8hsMp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF05F1F000E9;
-	Tue, 14 Jul 2026 18:14:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784052856;
-	bh=s/en7QsU9rQ33bEzkc4NZ//o9B9ROWJVcSBJce/7NoQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=L3k8hsMpV5wD1IMKSBhpG06do7FHKULFzGdyNTPRY6GqBq1lzI6tlOpRhpho00M+e
-	 k2kCaxBDYWlWK8o952WtwUPLQcVuyDB5j69NSN62p25ORXuHzwRd2BmzpX4gNC0xeg
-	 CZBYhsUQ+JiwDh9C1bQ+9Z91K9qiyOKNbTku+a+E6At7Ad0wkBLP4+5u/j1lPPCFL0
-	 7v2WAh5htBNcLo7cfLEshUT8mMUXBIBGNaqjmCHAwc2HcaC2YzRvCfk4oWw835PlMD
-	 SBQ1aUE3OgLqHZ7DeMPrVcuWqvUtFYTauX6rBSDUZAH0uRjRsrGQhOT7UvQBuBDns1
-	 IRi598OoLVIcA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714175432.86388-1-amachhiw@linux.ibm.com>
-References: <20260714175432.86388-1-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 18:14:15 +0000
-Message-Id: <20260714181415.DF05F1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nvLR8AIq"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-848d21bbb55so5875781b3a.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784053450; x=1784658250; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ENRucSgO3o5mHLQK4q7atyT1xZ8PJlvadC9enFcBAkg=;
+        b=nvLR8AIqERqFQbE0lxZ614/PC/AWdW1iE1+H0sQuFfR2OTviFs9Cpg4wbpWDkwmsa1
+         WcSVFFkcEBN0x+riATcj24cOXYhlgVAiIQKoY8myGi74QrbgNBwWTXq9NYXVFz98qm7X
+         Gw+osxVmD6E7LXPHUjD/7pmcLG/VlXBJneOdVzDgG1yDlalCDTs5WKXpnYmrbEyNYy+R
+         CtXyFGnmxuAo14eoyTSqMXn4UGbhYnKi4VBzzbrC0S7eErCeOcXr3q+ySe8o5fpQ7IF+
+         TajdXwYJm8L4j0Ac5Wry9QEgGHG5yMul5U8wiJtfG2OPPMGm4jhZveSszgjkox+Mtrn4
+         Z7zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784053450; x=1784658250;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ENRucSgO3o5mHLQK4q7atyT1xZ8PJlvadC9enFcBAkg=;
+        b=N1roT++Tk5W1rQRklgUA9ty2QMzQa9aevEeActyzdCRn0kuyFePtarCGAdd7n9aUUT
+         ZhD/1oYuQDDJgO+vUhBH9nWlYuRVDjqMpyCXU76Be3axhcvn8YKTR6S/FsERpKgccD0p
+         OPpEAmnm34fwzMVqpbQHIJFQjdA6oDhbR1ThocTeAwaw5AEr8s768w0gfjrbAV4z6pPW
+         pNEat1oI1H4EX1Rb5MGeQibiuqTVKqjNxXZ1e1XEs4z1Uhhs/TQE+fJykOfHBR4Tatto
+         J7oZAZ3UUem7+orN2235dEdZzX/VVuB8CwB62ZpfP+/g5XNiNOR7r6d3MjBHng+h116e
+         tVDw==
+X-Forwarded-Encrypted: i=1; AHgh+RrDbrYhSmv+avnzsI8tbSwBu75lJOfE5Iy5U+E8Uy5sZRqwvX/j0xCItSTsmtna22+pXeg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcNxBvzQYtYrbuJ7TR98ZylXXLyCGmZTIJlnYLraja/55Jv1Ce
+	m+ebCWg+WoS/aptKUM8iXFGTn9p76aOOk2zpXZkd4B7Y/BwgCLyCvvoRsti3z5+iPuK+G+0Lpcp
+	KHQFDzA==
+X-Received: from pfez10.prod.google.com ([2002:aa7:888a:0:b0:848:492a:5b41])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:b45:b0:84a:2c46:3fdb
+ with SMTP id d2e1a72fcca58-84a5576e5c3mr3341929b3a.5.1784053449523; Tue, 14
+ Jul 2026 11:24:09 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:24:08 -0700
+In-Reply-To: <6d8588f8fb1b68fee59d4a0c8cfcfd7a58d25f79.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260630202828.440724-1-seanjc@google.com> <20260630202828.440724-2-seanjc@google.com>
+ <6d8588f8fb1b68fee59d4a0c8cfcfd7a58d25f79.camel@intel.com>
+Message-ID: <alZ-yMvZb2I2tJOf@google.com>
+Subject: Re: [PATCH v2 1/3] KVM: x86: Reject nested CAP enablement if nested
+ virtualization is disabled
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Destructive API failure corrupts shared vcore state (`arch_compat`=
-, `pcr`) but only updates the per-vCPU `sane` flag, desynchronizing sibling=
- vCPUs.
-- [Medium] Lockless read of the shared `vcore->arch_compat` in `kvmppc_sani=
-ty_check()` causes a data race.
---
+On Tue, Jul 14, 2026, Kai Huang wrote:
+> 
+> > but now KVM is over-reporting support for
+> > KVM_CAP_NESTED_STATE and KVM_CAP_HYPERV_ENLIGHTENED_VMCS.
+> > 
+> > 
+> [...]
+> 
+> > @@ -2346,7 +2346,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> >  			r &= ~KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST;
+> >  		break;
+> >  	case KVM_CAP_NESTED_STATE:
+> > -		r = kvm_x86_ops.nested_ops->get_state ?
+> > +		r = kvm_x86_ops.nested_ops->enabled ?
+> >  			kvm_x86_ops.nested_ops->get_state(NULL, NULL, 0) : 0;
+> >  		break;
+> 
+> [...]
+> 
+> >  #ifdef CONFIG_KVM_HYPERV
+> > @@ -2354,7 +2354,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> >  		r = kvm_x86_ops.enable_l2_tlb_flush != NULL;
+> >  		break;
+> >  	case KVM_CAP_HYPERV_ENLIGHTENED_VMCS:
+> > -		r = kvm_x86_ops.nested_ops->enable_evmcs != NULL;
+> > +		r = kvm_x86_ops.nested_ops->enabled &&
+> > +		    kvm_x86_ops.nested_ops->enable_evmcs != NULL;
+> > 
+> 
+> IMHO an additional 'enabled' seems a bit redundant?  And it seems there's no
+> rule whether the common x86 code should check it before (checking and) making
+> the call or not.
 
---- Patch [1]: [PATCH v5] KVM: PPC: Book3S HV: Validate arch_compat against=
- host compatibility mode ---
-commit 3439effb1356334e2a4fa14fb4f8e03f83d0556d
-Author: Amit Machhiwal <amachhiw@linux.ibm.com>
-Date:   Tue Jul 14 17:54:32 2026 +0000
+Because in most cases, the hooks are reachable if and only if nested virtualization
+is actively being used.  Generally speaking, the only flows that need to check
+"enabled" are those that enumerate support to userspace.
 
-KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+> How about letting VMX/SVM code to explicitly clear the function pointer in
+> xx_hardware_setup()?
 
-This patch introduces early validation of arch_compat during guest
-initialization. When an unsupported arch_compat is requested, it detects the
-mismatch, sets arch_compat to PVR_ARCH_INVALID, and prevents the vCPU from
-running.
+The downside to that is approach is that all nested ops would become optional
+from the perspective of arch/x86/include/asm/kvm-x86-nested-ops.h, i.e. we'd lose
+the sanity checks provided by:
 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3b..f9380ef657500 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-[ ... ]
-> @@ -469,6 +481,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
-pu, u32 arch_compat)
->  			return -EINVAL;
->  	}
-> =20
-> +out:
->  	spin_lock(&vc->lock);
->  	vc->arch_compat =3D arch_compat;
->  	kvmhv_nestedv2_mark_dirty(vcpu, KVMPPC_GSID_LOGICAL_PVR);
-> @@ -479,7 +492,7 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vc=
-pu, u32 arch_compat)
->  	vc->pcr =3D (host_pcr_bit - guest_pcr_bit) | PCR_MASK;
->  	spin_unlock(&vc->lock);
-> =20
-> -	return 0;
-> +	return kvmppc_sanity_check(vcpu);
->  }
+#define KVM_X86_NESTED_OP(func) \
+	WARN_ON(!kvm_nested_ops.func); __KVM_X86_NESTED_OP(func)
 
-[Severity: High]
-Does this error path corrupt the shared vcore state for sibling vCPUs?
+We could probably come up with a way to make things work, but I think we'd end
+up with something a lot like the "enabled" flag.
 
-If userspace requests an unsupported arch_compat on one vCPU, the shared
-vcore state (arch_compat and pcr) is poisoned. However, kvmppc_sanity_check=
-()
-only updates the per-vCPU sane flag for the calling vCPU:
+> Perhaps as an ultimate goal, I am not sure whether VMX/SVM should provide a all-
+> NULL version of kvm_x86_nested_ops and the kvm_nested_ops_update() should treat
+> all as either OPTIONAL or OPTIONAL_RET0.  There will be still call sites which
+> needs to check the pointer is NULL or not and return -EXXX but I guess we can
+> live with that (kvm_x86_ops is similar too anyway) ?
 
-arch/powerpc/kvm/powerpc.c:kvmppc_sanity_check() {
-    ...
-out:
-    vcpu->arch.sane =3D r;
-    return r ? 0 : -EINVAL;
-}
+I'm concerned this would actually be less robust, due to static calls being nops
+by default.  If KVM screws up and invokes a "mandatory" nested op that has been
+nullified, exactly what will happen is harder to predict, e.g. kvm_translate_gpa()
+would probably return stack garbage?
 
-Because the sanity flag is cached per-vCPU, sibling vCPUs would not get
-updated. If userspace ignores the error on the first vCPU and attempts to r=
-un
-a sibling vCPU, could that sibling bypass the validation in
-kvmppc_vcpu_run_hv() since its individual flag is still true? This would
-allow it to enter the guest with the corrupted vcore state (raw mode).
-
-Conversely, if userspace later fixes the vcore via a valid request on a
-sibling vCPU, does the first vCPU remain permanently dead because its cached
-sane flag is not re-evaluated?
-
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37b..b6b83fe3233f3 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -258,6 +258,12 @@ int kvmppc_sanity_check(struct kvm_vcpu *vcpu)
->  	if (!vcpu->arch.pvr)
->  		goto out;
-> =20
-> +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
-> +	if (vcpu->arch.vcore &&
-> +	    vcpu->arch.vcore->arch_compat =3D=3D PVR_ARCH_INVALID)
-> +		goto out;
-> +#endif
-> +
-
-[Severity: Medium]
-Is there a data race when accessing the shared vcore->arch_compat here?
-
-In kvmppc_set_arch_compat(), the modification to vcore->arch_compat is done
-while holding vc->lock:
-
-arch/powerpc/kvm/book3s_hv.c:kvmppc_set_arch_compat() {
-    ...
-    spin_lock(&vc->lock);
-    vc->arch_compat =3D arch_compat;
-    ...
-}
-
-However, the read in kvmppc_sanity_check() occurs locklessly.
-
-If a concurrent operation like KVM_SET_SREGS on a sibling vCPU calls
-kvmppc_sanity_check() under its own per-vCPU mutex, could it race with
-a KVM_SET_ONE_REG updating the compatibility mode on the first vCPU?
-
-Since lockless access to shared variables usually requires at least READ_ON=
-CE()
-and WRITE_ONCE() to prevent compiler optimizations like tearing or stale
-caching, should this read be protected or use READ_ONCE()?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714175432.8638=
-8-1-amachhiw@linux.ibm.com?part=3D1
+Any such bug is highly unlikely to occur, but I don't want to sacrifice
+defense-in-depth without a clear benefit, and IMO avoiding the "enabled" flag
+wouldn't provide much benefit in practice.
