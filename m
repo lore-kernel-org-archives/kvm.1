@@ -1,120 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07CF1E5714;
-	Tue, 14 Jul 2026 10:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC4C3630B7;
+	Tue, 14 Jul 2026 10:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784023626; cv=none; b=ECjSpvbbJKkzGgmbu8ekon4ay0b+UP7e0yrQ+NX8dwwaXIThZa4oGLFC8BNDxhaowjTkqJrhc3AksXgCGk7IEerdx2NaJ51Fhclt1WOpg3xpq0/3rcTka4jyqeWg40wuDJ42dpwJwXWUhcNoCaTi6xkr28WN6NlIV5cpWxf2UqI=
+	t=1784023828; cv=none; b=eRA1P9BsrmC4ALxJuj3dlBuWTLw3ilzr3AK5M/PGpyfxuTGj8061GLyvmLZ+FHrn/Z70SH/8Ig1fLojquAuPxRo4F/wMkpboTtWQqYzyzoXzuUR3x06xg713ZeahQrbA0LT0/03gR8YISZ9BkRtYWb7RfQVcPotoCeYtNRqr2m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784023626; c=relaxed/simple;
-	bh=4aHEupHyn2RfmkKJCp9SygMHkSN+b0Y34M+LKNzdYrM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bTJ7Rj0C6siihisBxk5+7dVPvGR4sj4m5XuA+1eqdCQl1FKH23tyjkWBoicg6+BvHp6ch5uA6iRVuW6FPWgdQCX2/z5QskpWRHFmcpWg+saJxipHFlWnAODj+9u7uCM6Poq0QKGNPxAXuxSW3AZKts7qaQkzA1HXjBWwvC1zGAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmXKZgy5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784023828; c=relaxed/simple;
+	bh=wfNQV8uoSTWcGifP7Xz2Rw4z1vDZp9TVrfbASBgUydQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uN6szq5aTGzcSndoZ+irJIu9rpziUpGDeSIfDdzjNhKu6Tqq6rmDI+liUjfuRkCoAdelunQCZ73iZnf8aKh5fn0bGN1WCcUwLP1jEpUg+SL1mHW4nyk5EuHPSWp18rv+twmsQA/rbDKyzH8TcX+5bBwGKp92gHX75PSWXVnqkLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2pk87NF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmXKZgy5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206731F000E9;
-	Tue, 14 Jul 2026 10:07:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2pk87NF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864B41F000E9;
+	Tue, 14 Jul 2026 10:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784023625;
-	bh=IVSdDFQVySVftwxvl9M79LFQefajZUvfg0AZy4Jq8wE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fmXKZgy5J6+cYrAiUz7f4WJgXBS2c/YQAorpxgVT56W3U/5NsxeekfBvsVisSxiOn
-	 UJlnl6lGzRgoXU80EcBWxi27NZ5U/tuoBppKRGfv4gT/smE0LSY4oyQ9ZUGtfxgoox
-	 uruB09WLVFB2do3mgeXFNoHgQWlfAkk+Rl85fRBHE0ElstRkyvVWjqjbKzF7z3hlot
-	 +156eww2ZJTpnDIAigH68r4lEuv4Cy2/Np+Im0YKJe7DG1gVoEXhlGjLfGwLlqLn7Y
-	 W7UutRJbrsquy8qlsZOFSByhFR0A+PXq4bookkPcG795cSVSnOFGZG3Fk+3vLND202
-	 YAc/pAabvFpaw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 26/28] KVM: arm64: Add FEAT_NV3 detection
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marc Zyngier" <maz@kernel.org>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260714091641.1970822-27-maz@kernel.org>
-References: <20260714091641.1970822-1-maz@kernel.org>
- <20260714091641.1970822-27-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 10:07:03 +0000
-Message-Id: <20260714100704.206731F000E9@smtp.kernel.org>
+	s=k20260515; t=1784023827;
+	bh=XLxFAvblOWwuw+gs2L0IZrJ2IwfHebNZNOaAMJkwvrk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=g2pk87NF5dRW3KWmItRxYx712BJGi3QjO2NoLDkgKd6Z6hvzCewxaU+VolujD2cbR
+	 8YFikZR/dttwAYgbWOZA0Fi2utNKC766Y6KUFtDlg1HNbyew4dyd/3mZDP0s3m1gV6
+	 CqeBnTy3D3IjsasnDOs0tIOXY64XpYZyxOLa7vrw1q3g8LBn/+EOVuH7cgNtUkSkRN
+	 FA8w+Z1ctrvxYeL+2KPF4aFD6MPP6jFtwO9thRC0mPWvjHoSZwoVtaZZSK3oxybxOK
+	 NVqa2XGQtHgBoEZ1qeuhIgS++a40yeNIGeTV2no5kt0q46Fo3RMWYfOVCsBp1k2SbX
+	 RwGcuSIDAwEEg==
+Date: Tue, 14 Jul 2026 15:33:11 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Tianyu Lan <tiala@microsoft.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [RFC PATCH v3 04/27] x86/apic: Use AVIC_INCOMPLETE_IPI VMGEXIT
+ for Secure AVIC IPI handling
+Message-ID: <alYEqXm0AG-S24oI@blrnaveerao1>
+References: <cover.1783490022.git.naveen@kernel.org>
+ <97a8081fb548567f004f31e2afb02bd06d7a9982.1783490022.git.naveen@kernel.org>
+ <29a8e63c-d317-4717-ace2-9471e9866eb2@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <29a8e63c-d317-4717-ace2-9471e9866eb2@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Mon, Jul 13, 2026 at 12:59:50PM -0500, Tom Lendacky wrote:
+> On 7/8/26 01:32, Naveen N Rao (AMD) wrote:
+> > x2apic_savic driver currently uses SVM_EXIT_MSR to have the hypervisor
+> > emulate ICR writes and to be able to deliver IPIs. However, the driver
+> > also sets APIC_IRR in the APIC backing page of the target vCPU, so the
+> > expectation is only for the hypervisor to notify/wake up the target
+> > vCPU.
+> > 
+> > This is incorrect since SVM_EXIT_MSR is for requesting full emulation of
+> > a certain MSR access -- and hypervisors expect to be able to _inject_
+> > (set APIC_IRR) *and* deliver the interrupt to the target. This can
+> > result in duplicate interrupts at the guest (assuming the guest is
+> > allowing that vector to be injected by the hypervisor).
+> > 
+> > Instead, have the driver do AVIC_INCOMPLETE_IPI exit so that it is clear
+> > on what the hypervisor needs to do. This is the same exit used by SVM
+> > AVIC when it has already set APIC_IRR in the target vCPU APIC backing
+> > page to request the hypervisor to send an AVIC doorbell/wake up the
+> > target vCPU. Add the newly added exit ID AVIC_IPI_FAILURE_UNACCELERATED
+> > (ID number 5) and use the same to signal that this is a Secure AVIC
+> > access that is not accelerated by hardware.
+> 
+> Except that the GHCB specification doesn't have this support, so you can't
+> really do this. And if you want it to be part of the GHCB spec it will
+> need to be a new feature bit at this point so that the guest knows that
+> the hypervisor can support this new exit code.
 
-Pre-existing issues:
-- [High] Writes to control-plane system registers (SYS_NVHCR_EL2 and SYS_VN=
-CR_EL2) are missing the architecturally required `isb()` synchronization ba=
-rrier.
---
+Yes, will drop this patch for now (and the related KVM patch #22).
 
---- Patch [26]: [PATCH v2 26/28] KVM: arm64: Add FEAT_NV3 detection ---
-commit 1e08d22547f3313a77b075620f905436357c4b40
-Author: Marc Zyngier <maz@kernel.org>
+> 
+> With the current guest code, can't the hypervisor support know that for
+> Secure AVIC it only needs to schedule the vCPU since it is assumed the
+> guest updated the target backing page?
 
-KVM: arm64: Add FEAT_NV3 detection
-   =20
-Now that everything is in place to engage the FEAT_NV3 fast-path,
-add the detection code to cpufeature.c.
+I have more fully explained this in patch #22 of this series, but TL;DR: 
+I don't think it is correct to special case SVM_EXIT_MSR(APIC_ICR) 
+handling in the hypervisor for Secure AVIC guests. Especially because 
+there is no reason full emulation of APIC_ICR WRMSR can't work if the 
+guest allows IPIs to be injected. i.e., this should be a guest decision 
+and so, having a way to differentiate the guest request will make the 
+hypervisor changes simpler and more straightforward.
 
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeatur=
-e.c
-> index c9c124b0ccc8e..6ae1c816e2010 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -2627,6 +2627,13 @@ static const struct arm64_cpu_capabilities arm64_f=
-eatures[] =3D {
->  		.matches =3D has_cpuid_feature,
->  		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2P1)
->  	},
-> +	{
-> +		.desc =3D "FEAT_NV3",
-> +		.capability =3D ARM64_HAS_NV3,
-> +		.type =3D ARM64_CPUCAP_SYSTEM_FEATURE,
-> +		.matches =3D has_cpuid_feature,
-> +		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV3)
-> +	},
 
-[Severity: High]
-This isn't a bug introduced by this patch, but enabling FEAT_NV3 here expos=
-es
-pre-existing paths where control-plane system registers are written without
-the architecturally required immediate isb() synchronization barrier.
+Thanks,
+Naveen
 
-For example, in arch/arm64/kvm/hyp/vhe/switch.c:__compute_hcr():
-
-	if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
-		write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
-
-and a bit later in the same function:
-
-		write_sysreg_s(vcpu->arch.ctxt.vncr_array, SYS_VNCR_EL2);
-	} else {
-
-Also in arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h:__sysreg_restore_el2_ret=
-urn_state():
-
-	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-		write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
-}
-
-None of these writes are immediately followed by an isb(). Since they are
-control-plane system registers, execution continues to evaluate masks or
-return from the function under an architecturally undefined pipeline state.
-
-Should there be an isb() immediately following these writes to
-SYS_NVHCR_EL2 and SYS_VNCR_EL2?
-
->  	{
->  		.capability =3D ARM64_HAS_32BIT_EL0_DO_NOT_USE,
->  		.type =3D ARM64_CPUCAP_SYSTEM_FEATURE,
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714091641.1970=
-822-1-maz@kernel.org?part=3D26
