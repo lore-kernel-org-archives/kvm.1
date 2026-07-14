@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8AE34E75A;
-	Tue, 14 Jul 2026 10:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835CD1F3BA4;
+	Tue, 14 Jul 2026 10:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784023958; cv=none; b=LBcCgCzKGj/v98OxgGjthfxAQCP1ui7kufIsBRYoVlKdxQjGA0tGsYipIAX5nv6PVydgqUxQQbwv1zpJhHbMXa3y/X1Y2xAAtDwJEAbhtIC5kZEKklH65X6/oXeF3gNfPNdg+S4MSMyRWbrZmi71wvy8oYPsr2MIN36N0wT/n6w=
+	t=1784024161; cv=none; b=AzX1ScwWMJmyoPxrQuVB021TPqT8erxbbUMqiaJg9c/gme9WU3SiibZTJc1X4YhoE93XlQE0uzF/3DaFSa2H6NWD+8/VwnLXkIIbQzcAwB0Y5xze9yY8mNLevHtMeAFGHtIbQW7bXBYBXTdJIW9y1X9EkZYMFMyuNazq4TKkd7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784023958; c=relaxed/simple;
-	bh=uRFIUKB91+acCovv2cm5n8SkD2VKDIAFyiULog8T7+o=;
+	s=arc-20240116; t=1784024161; c=relaxed/simple;
+	bh=JnCno2jxTXkQUe36GoS6ojc79zXls/o7MWA1gsEGIdg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TMxH50wz9QOiqYQP5PjJPCO+r1kzJYEs5sgCvmMK1r7X5V9LGugPVG3i4s6rVrvO3uGgRJOGo1bqhZmom6WjlN80CtmBxbdNxSY9yeZo+Dq2/xwrx1r9i9Ri88UWCcGnHq8jwKcck/sLTt0py0GAMW/QDVRnc3Md33fFiB0T6pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYDKsps/; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bsTQxAAO6HVs+ViZJyPWgM2GY280KlDslShmnYGjL8HYTVeYpOuPqU51R/CYROHq+/eFDM1DK7WAFvG9NN4lC9x0C6zXIgWNSzVzkaGXwrVeJUSp7Xo8d+2bnSi63yb9ORD9CLO06cvjvKhGq5nShB4ZXBIMEtaj45Ak9eje58Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZRYSMrN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYDKsps/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905141F000E9;
-	Tue, 14 Jul 2026 10:12:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZRYSMrN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60F61F000E9;
+	Tue, 14 Jul 2026 10:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784023956;
-	bh=36rCKn92kmOANZrIMoXIwDoqPlfuHRRY0/IwYHlVuQE=;
+	s=k20260515; t=1784024160;
+	bh=Wy0KY8YHux+fWBHAz5oVfuomfaYqKA+n+KXUr57piIQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DYDKsps/7nSp/JlDdez+fH+1Fczp7eYDD8BqaXibgnA2s4IRvjtLL+wmVNiOspKqF
-	 sg4skwFCtL+ntRuLja178Z85VsXPzPAh1nDbavRWzQg/QEZ1305xjJjuCFJDhDJtrx
-	 c9CoknEsmXmhzdPXh4qc/Kvyk5WoNhkjRkycRKc1Ier4Braa9O1mRacd841R6N0MdL
-	 3yTKjBwKmBUpKE/NMsjzNpCRoG0G00rgXNycHnw+KzZWuUp5DrfpsQJUJqZBqNUd6d
-	 MQgVyUWsJtt23HgwnAwcvlp92Fv60922jnnplV6ETFkafL48jq6n2gePOuPMCsg72p
-	 I+dWRN1PLrK3g==
+	b=QZRYSMrNMsH4sv45VWSWoSDsEI3bqsxlD8isnqyv0wJWV3OA1nHVEuHOn27PkX5+2
+	 R10iwGIzvY3YVF/asxhTQXdm606ccWemkUahR5SEpxt8wHCZJfwly6TKai2SjsRtDK
+	 hxoYm9P8l+t94pQWVzKbGUQ2Hq3YurAzvxHqGV9ZiOx2st3ZDl+1kV1WXKEeVf/660
+	 dqVAnITk0EgXZhJG5LqTCEQ0AnP533zT11ist3p/QXgAvs/gtkn285Q5uqUPWERLf9
+	 zbCIbNXwMqSt2PLxbZ7Hug+/ICSiYwdoK8UBHuA5dQwn1IJqJdWNIuS7kMcJVIhGf5
+	 1HoI/zjw3nY6g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 09/28] KVM: arm64: Relax CPTR_EL2 handling when
- FEAT_NV2p1 is present
+Subject: Re: [PATCH v2 27/28] KVM: arm64: Expose FEAT_NV3 to guests
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Marc Zyngier" <maz@kernel.org>
-Cc: "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260714091641.1970822-10-maz@kernel.org>
+Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260714091641.1970822-28-maz@kernel.org>
 References: <20260714091641.1970822-1-maz@kernel.org>
- <20260714091641.1970822-10-maz@kernel.org>
+ <20260714091641.1970822-28-maz@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 10:12:36 +0000
-Message-Id: <20260714101236.905141F000E9@smtp.kernel.org>
+Date: Tue, 14 Jul 2026 10:15:59 +0000
+Message-Id: <20260714101559.C60F61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,63 +46,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Nested trap configuration for CPTR_EL2 is evaluated using a stale =
-memory backing store under FEAT_NV2P1, breaking nested virtualization isola=
-tion.
+
+Pre-existing issues:
+- [High] Host nested virtualization capabilities (ID_AA64MMFR4_EL1.NV_frac)=
+ are leaked to non-NV guests, breaking live migration across heterogeneous =
+hosts.
 --
 
---- Patch [9]: [PATCH v2 09/28] KVM: arm64: Relax CPTR_EL2 handling when FE=
-AT_NV2p1 is present ---
-commit c67129a02beeb5d291611085a5d2f889ac9d97e8
+--- Patch [27]: [PATCH v2 27/28] KVM: arm64: Expose FEAT_NV3 to guests ---
+commit 508d53194bf7ddb4e61f279e50216aa88dd973ad
 Author: Marc Zyngier <maz@kernel.org>
 
-KVM: arm64: Relax CPTR_EL2 handling when FEAT_NV2p1 is present
+KVM: arm64: Expose FEAT_NV3 to guests
+   =20
+Further enable FEAT_NV3 by making it visible to NV guests.
 
-This patch relaxes the handling of CPTR_EL2 accesses via CPACR_EL1 when
-FEAT_NV2P1 is present, stopping the trap of CPACR_EL1. It modifies the
-read path to use the hardware SYS_CPACR_EL1 register instead of the
-memory backing store for CPTR_EL2.
-
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index f646894fec9a9..70d605e60cfb3 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
 [ ... ]
-
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-> index 6b47d936efb32..1dfc1f88bec82 100644
-> --- a/arch/arm64/kvm/sys_regs.c
-> +++ b/arch/arm64/kvm/sys_regs.c
-> @@ -326,7 +326,10 @@ u64 vcpu_read_sys_reg(const struct kvm_vcpu *vcpu, e=
-num vcpu_sysreg reg)
->  			val |=3D __vcpu_sys_reg(vcpu, reg) & ~CNTKCTL_VALID_BITS;
->  			return val;
->  		case CPTR_EL2:
-> -			return __vcpu_sys_reg(vcpu, reg);
-> +			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
-> +				return read_sysreg_el1(SYS_CPACR);
-> +			else
-> +				return __vcpu_sys_reg(vcpu, reg);
+> @@ -1741,7 +1741,9 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 v=
+al)
+>  			val =3D 0;
+>  		} else {
+>  			val &=3D ID_AA64MMFR4_EL1_NV_frac;
+> -			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> +			if (cpus_have_final_cap(ARM64_HAS_NV3))
+> +				val =3D ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64MMFR4_EL1, NV_frac, NV3);
+> +			else if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+>  				val =3D ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64MMFR4_EL1, NV_frac, NV2P=
+1);
+>  			else
+>  				val =3D SYS_FIELD_PREP_ENUM(ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY);
 
 [Severity: High]
-Since this changes CPTR_EL2 to be read directly from the hardware register
-SYS_CPACR under FEAT_NV2P1 (as the memory backing store can be stale without
-trapping), will direct readers of the backing store now read stale values?
+This isn't a bug introduced by this patch, but while looking at NV feature
+exposure here, could ID_AA64MMFR4_EL1.NV_frac leak into non-NV guests?
 
-For example, in arch/arm64/kvm/emulate-nested.c:get_behaviour():
+Looking at __kvm_read_sanitised_id_reg() in arch/arm64/kvm/sys_regs.c,
+it seems SYS_ID_AA64MMFR4_EL1 is not explicitly masked out for non-NV guests
+in the switch statement:
 
-    val =3D __vcpu_sys_reg(vcpu, tb->index);
+	case SYS_ID_MMFR4_EL1:
+		val &=3D ~ID_MMFR4_EL1_CCIDX;
+		break;
+	}
 
-And in arch/arm64/kvm/emulate-nested.c:check_cptr_tta():
+If a non-NV guest is created on an NV3-capable host, will the host's raw
+NV_frac leak into the VM's ID_AA64MMFR4_EL1 register?
 
-    u64 val =3D __vcpu_sys_reg(vcpu, CPTR_EL2);
-
-Because the L1 guest writes to CPACR_EL1 natively without trapping, the
-backing store is not synchronously updated. If an L2 guest traps to host
-KVM, wouldn't these functions evaluate trap configurations using the stale
-memory backing store, potentially bypassing the L1 hypervisor's trap
-configurations?
-
->  		default:
->  			WARN_ON_ONCE(1);
->  		}
+If this VM is later migrated to a host with only NV2P1, could userspace's
+attempt to restore the capability via KVM_SET_ONE_REG fail because the
+destination host's arm64_check_features() rejects the higher NV_frac value?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714091641.1970=
-822-1-maz@kernel.org?part=3D9
+822-1-maz@kernel.org?part=3D27
