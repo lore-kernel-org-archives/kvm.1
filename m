@@ -1,340 +1,128 @@
-Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
+Received: from out28-145.mail.aliyun.com (out28-145.mail.aliyun.com [115.124.28.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF601C6FF5;
-	Tue, 14 Jul 2026 04:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE802EEE88;
+	Tue, 14 Jul 2026 05:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784003957; cv=none; b=Hzg6o0JJimy3uyod0dwbD/J9b4smngRZ7FVhZ5PrAt+qoDGFnDexKxhShwm+di2ZNfSQ+siHrDZnwflp9EDMnbHJPJeiGZhHu83fXVwrHH4iZkZzDK/ewqUr8CqBiTHvfEyLre0l1dkbIKYBs5x0p41j2aTz6uWMmJm/i6WaCDY=
+	t=1784005850; cv=none; b=uGRsLpPg1EhNfPiHtxwl7k2StrWENo2p8EnkQMAhLFscgucV5B2PUI8M+DvPrbdxdr8aLc8YMmlUZCFGgZcFfAnh5IgBUqsapoddlVPS6K7aInX2R3XyIM96Ox74WVxhGBQN2NO3mPbQc9WVblzcjGeHvhsZfSoQmkUt//4rA88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784003957; c=relaxed/simple;
-	bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bpghW5EqeBh9BvntvJ1cJaFTWW61ezy9UdKChVgtjMZe2Sf3byAdWDodTbgyroqISTVwfD/HQR9bF+xorgAugofek1CT5IBV7qXqxakf+5iTtgvSeajUSxjZ7a2NoR/QongzNjWlPoA5d/O6QxVw9xFZ507i6621tvbUFibCt0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=g6y15jeN; arc=none smtp.client-ip=207.54.90.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="g6y15jeN"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784003955; x=1815539955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BPU73LTHJbaq71XFkCqH3AwjSkNrNo1hdXLT5odg614=;
-  b=g6y15jeN6iLmotyqpjxo6T26TwMtnjNxQU4LZi4S1Obt7MQHl6pHp7Af
-   npep2vpGcniPZ4sPfkjEi45z4v8hvultiff0Xl4wM+SRdVCBjnnsUKQmz
-   O/q70CvJMPKthwpqhuhFT9eyUxRBTZ+D/+3Xfz13sqSwxoGRrC/MSkTAt
-   Z7Zvuv9HJ+3EBh9Jf2e11Ks1EL5ObsDy44d6Xih9/QoxVznlQ2eK2x5aE
-   r8CVOrzIZJFSmSd1pS4Q4trWjmCVy0nc7wDcNXyJl9SNbxUMkSwzx2lTN
-   WADy04iOvwOIoFZ8nTLAw54ldgpW6OtlUBSVwj7064Y/ebPTiq1H4A+gC
-   w==;
-X-CSE-ConnectionGUID: V7kZT2LcS7WkUEh62HLwPg==
-X-CSE-MsgGUID: /US9JRBDSSmvZJMwbwELKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="247323397"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779116400"; 
-   d="scan'208";a="247323397"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 13:38:03 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 9897F42A30B;
-	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 46E1B1C00168;
-	Tue, 14 Jul 2026 04:38:03 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.86.149])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id EE48E1800B39;
-	Tue, 14 Jul 2026 04:37:54 +0000 (UTC)
-Date: Tue, 14 Jul 2026 13:37:52 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 26/44] arm64: RMI: Allow populating initial contents
-Message-ID: <alWzvLK1RRotK1LL@FCCLS0092175.localdomain>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-27-steven.price@arm.com>
+	s=arc-20240116; t=1784005850; c=relaxed/simple;
+	bh=pQIQs+5gmtpHA1a9k1pi8+2qzdJacoqncWTMdmFXoUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UHmEjJDt3yO28jrQDWyfqMA9yUqTAoDXj/K43RfuxpVja7IRIsY6lkF59V0nvCn2K2lSPV1c8aBLIH/Q9k5D/I/GddBEXYiks7TY+GobOZ+46w5cxX1671ZmipfSDmDRMoFnp8mvMtfmc+zAQxDN94j/3H2MA1/IxMujS7HpWak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07876458|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.130429-0.00019804-0.869373;FP=16580402972953747187|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045018182;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.iKeOCX9_1784005835;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iKeOCX9_1784005835 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 14 Jul 2026 13:10:35 +0800
+From: Tina Zhang <zhang_wei@open-hieco.net>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Cc: Shuah Khan <shuah@kernel.org>,
+	zhouyanjing@hygon.cn,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Tina Zhang <zhang_wei@open-hieco.net>
+Subject: [PATCH v2 1/8] KVM: x86: Add intercept_linear_addr to x86_instruction_info
+Date: Tue, 14 Jul 2026 13:09:57 +0800
+Message-ID: <6a7b096f43b0e97c6690160a407fd52162cfc1e6.1783999988.git.zhang_wei@open-hieco.net>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1783999988.git.zhang_wei@open-hieco.net>
+References: <cover.1783999988.git.zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260513131757.116630-27-steven.price@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On 05/13 14:17, Steven Price wrote:
-> The VMM needs to populate the realm with some data before starting (e.g.
-> a kernel and initrd). This is measured by the RMM and used as part of
-> the attestation later on.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->  * Rename realm_create_protected_data_page() to realm_data_map_init().
-> Changes since v12:
->  * The ioctl now updates the structure with the amount populated rather
->    than returning this through the ioctl return code.
->  * Use the new RMM v2.0 range based RMI calls.
->  * Adapt to upstream changes in kvm_gmem_populate().
-> Changes since v11:
->  * The multiplex CAP is gone and there's a new ioctl which makes use of
->    the generic kvm_gmem_populate() functionality.
-> Changes since v7:
->  * Improve the error codes.
->  * Other minor changes from review.
-> Changes since v6:
->  * Handle host potentially having a larger page size than the RMM
->    granule.
->  * Drop historic "par" (protected address range) from
->    populate_par_region() - it doesn't exist within the current
->    architecture.
->  * Add a cond_resched() call in kvm_populate_realm().
-> Changes since v5:
->  * Refactor to use PFNs rather than tracking struct page in
->    realm_create_protected_data_page().
->  * Pull changes from a later patch (in the v5 series) for accessing
->    pages from a guest memfd.
->  * Do the populate in chunks to avoid holding locks for too long and
->    triggering RCU stall warnings.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   4 ++
->  arch/arm64/kvm/Kconfig           |   1 +
->  arch/arm64/kvm/arm.c             |  13 ++++
->  arch/arm64/kvm/rmi.c             | 106 +++++++++++++++++++++++++++++++
->  4 files changed, 124 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 007249a13dbc..a2b6bc412a22 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -88,6 +88,10 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->  
-> +struct kvm_arm_rmi_populate;
-> +
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *arg);
->  void kvm_realm_unmap_range(struct kvm *kvm,
->  			   unsigned long ipa,
->  			   unsigned long size,
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 4e16719fda22..d0cd011cf672 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -38,6 +38,7 @@ menuconfig KVM
->  	select GUEST_PERF_EVENTS if PERF_EVENTS
->  	select KVM_GUEST_MEMFD
->  	select KVM_GENERIC_MEMORY_ATTRIBUTES
-> +	select HAVE_KVM_ARCH_GMEM_POPULATE
->  	help
->  	  Support hosting virtualized guest machines.
->  
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index ed88a203b892..073ba9181da9 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -2131,6 +2131,19 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  			return -EFAULT;
->  		return kvm_vm_ioctl_get_reg_writable_masks(kvm, &range);
->  	}
-> +	case KVM_ARM_RMI_POPULATE: {
-> +		struct kvm_arm_rmi_populate req;
-> +		int ret;
-> +
-> +		if (!kvm_is_realm(kvm))
-> +			return -ENXIO;
-> +		if (copy_from_user(&req, argp, sizeof(req)))
-> +			return -EFAULT;
-> +		ret = kvm_arm_rmi_populate(kvm, &req);
-> +		if (copy_to_user(argp, &req, sizeof(req)))
-> +			return -EFAULT;
-> +		return ret;
-> +	}
->  	default:
->  		return -EINVAL;
->  	}
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index a89873a5eb77..209087bcf399 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -486,6 +486,75 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
->  		realm_unmap_private_range(kvm, start, end, may_block);
->  }
->  
-> +static int realm_data_map_init(struct kvm *kvm, unsigned long ipa,
-> +			       kvm_pfn_t dst_pfn, kvm_pfn_t src_pfn,
-> +			       unsigned long flags)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	phys_addr_t rd = virt_to_phys(realm->rd);
-> +	phys_addr_t dst_phys, src_phys;
-> +	int ret;
-> +
-> +	dst_phys = __pfn_to_phys(dst_pfn);
-> +	src_phys = __pfn_to_phys(src_pfn);
-> +
-> +	if (rmi_delegate_page(dst_phys))
-> +		return -ENXIO;
-> +
-> +	ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys, flags);
-> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +		/* Create missing RTTs and retry */
-> +		int level = RMI_RETURN_INDEX(ret);
-> +
-> +		KVM_BUG_ON(level == KVM_PGTABLE_LAST_LEVEL, kvm);
-> +
-> +		ret = realm_create_rtt_levels(realm, ipa, level,
-> +					      KVM_PGTABLE_LAST_LEVEL, NULL);
-> +		if (!ret) {
-> +			ret = rmi_rtt_data_map_init(rd, dst_phys, ipa, src_phys,
-> +						    flags);
+Add intercept_linear_addr to x86_instruction_info so that the emulator
+can pass linear addresses needed by intercept handlers.
 
-I think rmi_rtt_data_map_init() returns a raw RMI return value which is
-positive on failure. Shouldn't it be converted to -ENXIO or another
-Linux errno before returning it?
+Populate the field for INVLPG from its decoded memory operand.  INVLPG
+is decoded with NoAccess, and therefore src_val does not contain the
+operand address.  Calculate the address in the emulator, where the
+decoded segment and effective address are available.
 
-Otherwise, the positive error value can propagate through
-kvm_gmem_populate() and populate_region() to kvm_arm_rmi_populate().
-There, it would be treated as the number of pages populated, even though
-the operation did not populate any pages.
+Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+---
+ arch/x86/kvm/emulate.c     | 30 ++++++++++++++++++++++--------
+ arch/x86/kvm/kvm_emulate.h |  1 +
+ 2 files changed, 23 insertions(+), 8 deletions(-)
 
-> +		}
-> +	}
-> +
-> +	if (ret) {
-> +		if (WARN_ON(rmi_undelegate_page(dst_phys))) {
-> +			/* Undelegate failed, so we leak the page */
-> +			get_page(pfn_to_page(dst_pfn));
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 8013dccb3110..03bf95417275 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -410,6 +410,27 @@ static int em_salc(struct x86_emulate_ctxt *ctxt)
+ 	_fault ? X86EMUL_UNHANDLEABLE : X86EMUL_CONTINUE; \
+ })
+ 
++static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
++{
++	if (ctxt->mode == X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
++		return 0;
++
++	return ctxt->ops->get_cached_segment_base(ctxt, seg);
++}
++
++/* Return the linear address for intercepts that report one. */
++static u64 get_intercept_linear_addr(struct x86_emulate_ctxt *ctxt,
++				     enum x86_intercept intercept)
++{
++	u64 la;
++
++	if (intercept != x86_intercept_invlpg)
++		return 0;
++
++	la = seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.mem.ea;
++	return ctxt->mode == X86EMUL_MODE_PROT64 ? la : (u32)la;
++}
++
+ static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
+ 				    enum x86_intercept intercept,
+ 				    enum x86_intercept_stage stage)
+@@ -427,6 +448,7 @@ static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
+ 		.src_type   = ctxt->src.type,
+ 		.dst_type   = ctxt->dst.type,
+ 		.ad_bytes   = ctxt->ad_bytes,
++		.intercept_linear_addr = get_intercept_linear_addr(ctxt, intercept),
+ 		.rip	    = ctxt->eip,
+ 		.next_rip   = ctxt->_eip,
+ 	};
+@@ -520,14 +542,6 @@ static u32 desc_limit_scaled(struct desc_struct *desc)
+ 	return desc->g ? (limit << 12) | 0xfff : limit;
+ }
+ 
+-static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
+-{
+-	if (ctxt->mode == X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
+-		return 0;
+-
+-	return ctxt->ops->get_cached_segment_base(ctxt, seg);
+-}
+-
+ static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
+ 			     u32 error, bool valid)
+ {
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 0abff36d0994..900bd95e9e55 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -47,6 +47,7 @@ struct x86_instruction_info {
+ 	u8  src_type;		/* type of source operand		*/
+ 	u8  dst_type;		/* type of destination operand		*/
+ 	u8  ad_bytes;           /* size of src/dst address              */
++	u64 intercept_linear_addr;	/* arch-reported linear address, if any */
+ 	u64 rip;		/* rip of the instruction		*/
+ 	u64 next_rip;           /* rip following the instruction        */
+ };
+-- 
+2.43.7
 
-Since realm_create_rtt_levels() returns either 0 or a negative errno,
-how about preserving that error and converting any raw RMI erorr to
--ENXIO here?
-
-		return ret < 0 ? ret : -ENXIO;
-
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int populate_region_cb(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> +			      struct page *src_page, void *opaque)
-> +{
-> +	unsigned long data_flags = *(unsigned long *)opaque;
-> +	phys_addr_t ipa = gfn_to_gpa(gfn);
-> +
-> +	if (!src_page)
-> +		return -EOPNOTSUPP;
-> +
-> +	return realm_data_map_init(kvm, ipa, pfn, page_to_pfn(src_page),
-> +				   data_flags);
-> +}
-> +
-> +static long populate_region(struct kvm *kvm,
-> +			    gfn_t base_gfn,
-> +			    unsigned long pages,
-> +			    u64 uaddr,
-> +			    unsigned long data_flags)
-> +{
-> +	long ret = 0;
-> +
-> +	mutex_lock(&kvm->slots_lock);
-> +	ret = kvm_gmem_populate(kvm, base_gfn, u64_to_user_ptr(uaddr), pages,
-> +				populate_region_cb, &data_flags);
-> +	mutex_unlock(&kvm->slots_lock);
-> +
-> +	return ret;
-> +}
-> +
->  enum ripas_action {
->  	RIPAS_INIT,
->  	RIPAS_SET,
-> @@ -574,6 +643,43 @@ static int realm_ensure_created(struct kvm *kvm)
->  	return -ENXIO;
->  }
->  
-> +int kvm_arm_rmi_populate(struct kvm *kvm,
-> +			 struct kvm_arm_rmi_populate *args)
-> +{
-> +	unsigned long data_flags = 0;
-> +	unsigned long ipa_start = args->base;
-> +	unsigned long ipa_end = ipa_start + args->size;
-> +	long pages_populated;
-> +	int ret;
-> +
-> +	if (args->reserved ||
-> +	    (args->flags & ~KVM_ARM_RMI_POPULATE_FLAGS_MEASURE) ||
-> +	    !IS_ALIGNED(ipa_start, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(ipa_end, PAGE_SIZE) ||
-> +	    !IS_ALIGNED(args->source_uaddr, PAGE_SIZE))
-> +		return -EINVAL;
-> +
-> +	ret = realm_ensure_created(kvm);
-> +	if (ret)
-> +		return ret;
-
-If I understand correctly, concurrent KVM_ARM_RMI_POPULATE calls can
-race with each other in realm_ensure_created(). 
-
-realm_ensure_created() calls realm_create_rd() when kvm_realm_state() ==
-REALM_STATE_NONE. Since kvm->arch.config_lock is not held here, multiple
-threads could enter realm_create_rd() concurrently.
-
-KVM_ARM_RMI_POPULATE can also race with KVM_RUN through
-kvm_activate_realm(). kvm_activate_realm() takes kvm->arch.config_lock
-while checking the Realm state, calling realm_ensure_created(), and
-updating the state, whereas KVM_ARM_RMI_POPULATE does not.
-
-How about serializing Realm creation here as follows?
-	scoped_guard(mutex, &kvm->arch.config_lock) {
-		ret = realm_ensure_created(kvm);
-		if (ret)
-			return ret;
-	}
-
-Does that make sense?
-
-> +
-> +	if (args->flags & KVM_ARM_RMI_POPULATE_FLAGS_MEASURE)
-> +		data_flags |= RMI_MEASURE_CONTENT;
-> +
-> +	pages_populated = populate_region(kvm, gpa_to_gfn(ipa_start),
-> +					  args->size >> PAGE_SHIFT,
-> +					  args->source_uaddr, data_flags);
-> +
-> +	if (pages_populated < 0)
-> +		return pages_populated;
-> +
-> +	args->size -= pages_populated << PAGE_SHIFT;
-> +	args->source_uaddr += pages_populated << PAGE_SHIFT;
-> +	args->base += pages_populated << PAGE_SHIFT;
-> +
-> +	return 0;
-> +}
-> +
->  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm *kvm = vcpu->kvm;
-> -- 
-> 2.43.0
-> 
-> 
