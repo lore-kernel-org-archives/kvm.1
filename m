@@ -1,94 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA3043F4B5;
-	Tue, 14 Jul 2026 09:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0150E2EEE84;
+	Tue, 14 Jul 2026 09:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784022489; cv=none; b=dRLJ1hkGf34YS/tcQ/iRMwDHUGJAgwcalbRONH8j2Aie8+Lqld7RKJRa0UgdOxn440+NMNWLb+5TT04ViVyxRYV3X9PvUCz1t9t4zV7Y6Bj5YSM0meD2hdhb+QoiNwDDGGxpExqbKbjCf06OsTYzTwACkGw2ST759jriBN1FS+Y=
+	t=1784022690; cv=none; b=KDqutfT3bnigx/cRfeXdlzo+41F7jAqERBmj9vS13d6gYGz/JhxnU9dhHsp6MC2heWZq1ZtUiOwE8Z5fxM7qET7btCHNgQw/ltdKiylEfoSkrd4F6ly3M2LAMyWQL0KP8Zes85jM4rwq7U3ISHQtSB/Qwppyt+pP9yxwp/DE7iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784022489; c=relaxed/simple;
-	bh=rBaQSpN6PLbdyg/Mnd3Njbzm22x7FFxu6sD4tLtdwr0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uifOwiNQGt38tPhthfhYeS8uPnVij8BqQ1wZOJqDJ9Hoy2lNA2oYaB03xWLat4TRFrSuK79LrH2oAIKcysUzQPbFpkfBc4Gd8HyZNsrypeYWFd7mlSyTaf8pl7innusZhHIaDjU8ZL6ldtthk74Z9MvoVcVHtB381OYwyrIkbaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpzsGFcf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784022690; c=relaxed/simple;
+	bh=J4TMOC66K5+JqjOtbnQ7gUjYg0/uDotEG6Qn6kkuUJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jOx/eqWNxQA0Bx9cyUBmSJmScFMtqh+E/1ON9JXfHzWg05mY5Yy1i3MT5qzM96qgc1V797xB/xcLBMjSHKL/5ckOTNI8UW3boyWbCgsunoTi1ySbwHj/PjE29IUVYUnnxnGFsBeEAntixFhzFH83gj64X2wriOtP3LAOYoerPpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqqMiUG1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpzsGFcf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C371F000E9;
-	Tue, 14 Jul 2026 09:48:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqqMiUG1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BBB1F000E9;
+	Tue, 14 Jul 2026 09:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784022483;
-	bh=bGK0ER9Hb6NMoajTKYxaP18onOXcqieGADslBbXzSOg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JpzsGFcfiEmEVA7rMVE0EKu8V/MxwWWDkbE0uX0k4yJGtgx8Vq47jVyErP4a1QsnH
-	 BQfnzoJSy9lSZut5k4DV5GeziVvo0vQ+znhuzOLtLNCmmnyKSKxJr/0/iKRhUGKSTh
-	 ey+YQ1VJIH/snqsUVVyM6YUaKENtBSgeMwny4znIf/+vkILoKIuCmCNeXKRMMsXMVL
-	 sHYg2/p4o4lTQiQ6YW3kPyMS2GD1phPnhmOvVB9BT/9R6jBhkje2oCdieZtwu4xBWB
-	 AlWFUfmTD5NsVe/7+i4W/Swx88Zra/hBwjqbJ0K1YQPgQe4FaEj2HFn6zHAtpBjm1q
-	 gEAOEO2l6K2Lw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 18/28] KVM: arm64: Add kvm_has_nv{2,3}() predicates
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marc Zyngier" <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260714091641.1970822-19-maz@kernel.org>
-References: <20260714091641.1970822-1-maz@kernel.org>
- <20260714091641.1970822-19-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 14 Jul 2026 09:48:03 +0000
-Message-Id: <20260714094803.B3C371F000E9@smtp.kernel.org>
+	s=k20260515; t=1784022687;
+	bh=KWMicP+i83Gs/wLv38piRZGYlY2WyZTpjcX4sGhSyS4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aqqMiUG1RpUG8qED78K0BXnp3HpmkEAJrwiDyNMKN3mxtW9cQTXHBE9PHhFyI5H+j
+	 a9KympVadrsYb64ArxwEpsRuymXdYX2Pv/qfUNZey/5yPKg7jWZ1aUNa8QgEgV+GmG
+	 VoruFv3BMWKYUAxVHmDroCoM2DXxJL/2VDkYhacIJuSUk1+5/1k0wpZAWkSSZX3U2r
+	 c9+lBj6HBuvZbDvfvhS6FTRYei5nUI7EfjNrNbe2IoxWfZo3u2Ow5ysWQOypNJeOD5
+	 nskTmsDlG67kNfwgEthfRxgULeYnGY5wisIKOQdKYZo8dGw7T/SmESg4QpN8LKA4I1
+	 MtvoUYNJ/1IbQ==
+Date: Tue, 14 Jul 2026 15:12:57 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Neeraj Upadhyay <neeraj.upadhyay@amd.com>, Tianyu Lan <tiala@microsoft.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [RFC PATCH v3 03/27] x86/kvm: Disable PV_SEND_IPI if Secure AVIC
+ is enabled
+Message-ID: <alX7QbNjf7FkXVRR@blrnaveerao1>
+References: <cover.1783490022.git.naveen@kernel.org>
+ <730334f9cc320ca738402183c8b8555242a84ba3.1783490022.git.naveen@kernel.org>
+ <c2712047-cf0d-43de-be42-fa7ae80277a4@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c2712047-cf0d-43de-be42-fa7ae80277a4@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] kvm_has_nv3() will always return false because ARM64_HAS_NV3 is =
-never populated in the capabilities bitmap.
---
+On Mon, Jul 13, 2026 at 12:52:06PM -0500, Tom Lendacky wrote:
+> On 7/8/26 01:32, Naveen N Rao (AMD) wrote:
+> > In Secure AVIC mode, Linux does not allow IPIs to be injected as the
+> > hypervisor is untrusted. This is achieved by not setting the IPI vector
+> > in SAVIC_ALLOWED_IRR in the Secure AVIC guest APIC Backing page. Due to
+> > this, PV_SEND_IPI cannot work since it needs KVM to be able to inject
+> > IPIs into the guest. Disable the same.
+> 
+> Another guest patch...
+> 
+> Does this have an impact on the hypervisor? Is the injected IPI just
+> ignored because of the SAVIC_ALLOWED_IRR? How would the hypervisor know
+> that it needs to schedule the target vCPU if not using this, a write to
+> the ICR?
 
---- Patch [18]: [PATCH v2 18/28] KVM: arm64: Add kvm_has_nv{2,3}() predicat=
-es ---
-commit e61ff01470e9cbe730c6702e605c3c17d525ca4e
-Author: Marc Zyngier <maz@kernel.org>
+No impact on the hypervisor. Previous KVM implementation relied on 
+disabling these at the hypervisor level, which is ok too. But, this 
+really should be a guest policy since PV_SEND_IPI can work if the guest 
+chooses to allow IPIs (via SAVIC_ALLOWED_IRR).
 
-KVM: arm64: Add kvm_has_nv{2,3}() predicates
+In the absence of this, guest will use the regular IPI path and go 
+through the savic driver, which will do a SVM_EXIT_MSR VMGEXIT to 
+request hypervisor assistance for IPI delivery.
 
-This commit adds a new set of predicates indicating whether a VM is capable
-of NV2, NV3, and is in a nested NV3 context.
 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/as=
-m/kvm_emulate.h
-> index 9831166695186..c562d8171d5e1 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
+- Naveen
 
-[ ... ]
-
-> +static inline bool kvm_has_nv3(struct kvm *kvm)
-> +{
-> +	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
-> +		cpus_have_final_cap(ARM64_HAS_NV3) &&
-
-[Severity: Medium]
-Will kvm_has_nv3() always return false here?
-
-It appears the ARM64_HAS_NV3 capability was added to the cpucaps tools, but
-the corresponding hardware detection entry is missing from the arm64_featur=
-es
-array in arch/arm64/kernel/cpufeature.c. Since it is never populated,
-cpus_have_final_cap(ARM64_HAS_NV3) will unconditionally evaluate to false,
-turning any code relying on this predicate into dead code.
-
-> +		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV3));
-> +}
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714091641.1970=
-822-1-maz@kernel.org?part=3D18
