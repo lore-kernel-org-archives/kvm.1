@@ -1,103 +1,114 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BD5424D60
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A9642BE90
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 19:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784057362; cv=none; b=SPwtGCBT9LnLd+AUtVPke2vXsetrbl8F1NOFpxiyGMgxmijRd4Qb6axizoPO/xQj1q6dIxLskAqXXNVgmVngneh936xN6qBTI8GnE6D7Nk2p1M1HaBg1TseaMTAW1nLw3WzEECP9bh351CtB9xmJ3MYdM7F2RmBKaoPDTgUhAsk=
+	t=1784057371; cv=none; b=AEBlHl+ZX56AWDoP7KMy5jaaxn6m/iCIrg/eMDLE2SE/OCXN5kLuOc3ZDoPXuBJ2rOA4ccJIxTY84u+6Q3VJgNor+/CoD4PTqVkuTIiIIJ5PmlVMPsexwp+a6gB7sv5vPxYxF7K0TRaGO5fKlvq2NTMXsEHfj+3+nu2iCnubQjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784057362; c=relaxed/simple;
-	bh=BBeDVyGWRQot8ZJ/aWhbjZjNFmDjco14N/2OA/d8xYo=;
+	s=arc-20240116; t=1784057371; c=relaxed/simple;
+	bh=tDg4wl0W/Si3x5qXM8/VUYRL5A+d1JQuaPD8sj4bEHY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hbENSVnOUOlb7xxJ3uaxeboT8aX+f9d5PPY3PZh/MJD+kaKNSeWCZnX/nLo8KjDqORWUWjV+qRV1N78lp7UCI6Mr9Y76iD9bnH5SuaSGl8TY/hjzmVQJJVBluMvGZOgDjZyKmGOowikvd3sYyXrZqJSa82Ilfy0cPDAcLEMugu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DT+A+D9Y; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=NU9EiSK+ASu6kJjfIUxE0YpXVFuOKB6RbiE4L45UV3FaMix7C7m779gabyItp/04DYmgguGPN5VKLz4VzNO69l8+8eTU5vazbqorI0i/O7VteDEazizjXFv5ZcNAZYuyh8Yp176w5prfuH84vHKnaxTgELhaejW6/SUpMWKtEgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fkU3xmfp; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DT+A+D9Y"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8486c3411c8so6633364b3a.2
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:29:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fkU3xmfp"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1584833b3a.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 12:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784057361; x=1784662161; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784057367; x=1784662167; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gb5iFTR62Fu5LpZpu/BNvIOpuloZcZNngIH2I4WRC24=;
-        b=DT+A+D9YbCCOCHqJOHcf7QElb+sjZxI+2MlAw/vSzw+dI9EPawVoaotdQUtXABHq3I
-         5KBf/9hL9v6UT7kdCIvQB4CvdrjZWD8RxiksxK+Jfg3G6nu2UsB7CViZRXQmul8dGOtv
-         dbMY7HPgGPJGeiTOR6f6wTjFY00G05zKOJW5AlUrj8TZQB6JS3rnJNCUhjnySUR5YHtN
-         9glkKNsML0iBFiPkxxh0IQwscH39iCUz61zmgTMF50mouE6kYtqWma7OPEBb3P8avTbI
-         3ITrTLmDOVyGVdY+3XBgPTz3Tm+EsRRAeDQu0YyBiDlzew6TVwcfPXDhG+vr7v02OVji
-         2Z1Q==
+        bh=Ss7g3eD7npKIlK1jpim9LIPl59c3dlvPKOBpcKadRME=;
+        b=fkU3xmfphMRMM94Vh0Jrv4oDnOF/EFoMnCMpxI7VSH2zCknNXPAJcRWfjowf14PbsE
+         erCOn/3MkWIFmqgzzOiUQi30uiAJFaPxWOhVLgGosAVg3esVHr8Sk081hOaNQooz5wgQ
+         gL5acRpdhwOj20yqSdIl/+amHu7LeVSMO88mcyihm/e0oD9EWY+Yr2jjhSIHy1P92mBf
+         1l5kQQZ4kwGuxQDrFCTcnD2UuT/kRITU+oxasGLWkybSnjhzahfkmrNmRt4xS7Ks1gN8
+         irpVapihUmdipN6h1R2p4mlYQ9yeHm4YabYXLpJdCZ+3AchBszzsW3JEBzC+5o05BAhj
+         b7ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784057361; x=1784662161;
+        d=1e100.net; s=20251104; t=1784057367; x=1784662167;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Gb5iFTR62Fu5LpZpu/BNvIOpuloZcZNngIH2I4WRC24=;
-        b=QX5MdgE7CBWQb+YvKpJ4zpkB6YtUkeKI41QmH1wzm9ea3TZiBzaZXWGLDNYVYqDZSU
-         Whl1NczFySDyBXTxbrg8XzqE/TGr7zHp5q6dWXqUei9yD/B0aMUCtaQ2g2fjmESiHunR
-         xsaQj82wO73dZ1nDAK96Sr5ye4cmk4fXRKruvPCF1SpYWZlcS0C9HzaYUhgCkMoTtdtp
-         uVC98SYZGmduGkWPIbkEXYHhVRVC7gxwi3xmloE83z8cO6R+SLoLK2qAiAvFf0iFMpHr
-         XZOBuUax2pAvvHRW5W2vhhm3HgIzZOe2cM1FqrY59DFOC987JTgN5Bqp6S+CUXRKjTTV
-         JUWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoILvS0Twgf92W54E4Ol3XEjAfOHapdTiNdyNj2NstR6fZNpWXhFheLNuNRbqBVUWNssSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk3NoqFMzyZ9MPu5Ijn/oQssYw/V6XWCD7ko0QFyltFx0ipREs
-	ZP4CoZ6/lUCC+xWlgQLK7GWu9yBiLF/75FKDAao+XfHGS0z268f8TVDAHuC4Wt88Z2VCW5qebrY
-	NgZoazQ==
-X-Received: from pfud15.prod.google.com ([2002:a05:6a00:10cf:b0:847:9be8:84d5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3395:b0:842:83d1:ee6d
- with SMTP id d2e1a72fcca58-848896dd7fbmr14046307b3a.45.1784057360778; Tue, 14
- Jul 2026 12:29:20 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:21 -0700
-In-Reply-To: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
+        bh=Ss7g3eD7npKIlK1jpim9LIPl59c3dlvPKOBpcKadRME=;
+        b=T+wqm0/1pGhJU/fkF0gIcjMDUGLAdAocEXnYZY9SHU6YmNe0gE12eX6SoJ21O/JFBa
+         EF7CsC3TvmI9wqaCIyFoFyHJQcAFXKQsHr/1FH3eXAA5t8lik3M41MJD5UbtgGiedbuu
+         joUNJKLaTUEqZlpp6rUE+SXJcrB+YcwjtUAffIA4Dl+TKKDrTRkhEscZTTyBIViGHA53
+         MnSHle2bF654ZPv6ep4Siubtzhf2sE93R3tqQZpm6mYM1dgoLGzwmgPdxdZli9rl3893
+         NMzvyomib72UdGzkymkJquCi47rnPAOe7lTQkp2z3SjFZ+qCpGDeLklFAD3IFLLtnBRD
+         vYjA==
+X-Gm-Message-State: AOJu0YxkBeazHnGiZgYd4Rl7mcSSo2P5BGl/BmOjGvXBeId42vEv/RP4
+	vnRrHnxAut/i8h1jxyf+VDjV01qZbCBT6hy+851n2rcWmsl4XtcOvHG3Dl2rdx8erHObfTPC8XW
+	U3PBXZg==
+X-Received: from pfbcu1.prod.google.com ([2002:a05:6a00:4481:b0:848:8827:5d12])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2e24:b0:848:65fa:542
+ with SMTP id d2e1a72fcca58-848898081aemr13875831b3a.53.1784057367070; Tue, 14
+ Jul 2026 12:29:27 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:23 -0700
+In-Reply-To: <20260625220450.3354415-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260610023512.3690734-1-ewanhai-oc@zhaoxin.com>
+References: <20260625220450.3354415-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405254820.3110300.4723160760872313662.b4-ty@google.com>
-Subject: Re: [PATCH v3 0/5] KVM: x86: Expose Zhaoxin CPUID 0xC0000001 EDX
- cryptographic features
+Message-ID: <178405361325.3123550.7477828012411654626.b4-ty@google.com>
+Subject: Re: [PATCH 0/9] KVM: x86: Spring cleaning, part 2
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ewan Hai-oc <ewanhai-oc@zhaoxin.com>
-Cc: binbin.wu@linux.intel.com, cobechen@zhaoxin.com, tonywwang@zhaoxin.com
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 10 Jun 2026 10:35:07 +0800, Ewan Hai-oc wrote:
-> This series exposes five groups of Zhaoxin-specific CPUID 0xC0000001 EDX
-> feature bits to KVM guests. Each group corresponds to a category of
-> unprivileged cryptographic or RNG instructions that have been present in
-> Zhaoxin processors but not yet advertised by KVM.
+On Thu, 25 Jun 2026 15:04:41 -0700, Sean Christopherson wrote:
+> A few more cleanups that I wasn't able to get out in time to catch kvm/next
+> (almost all of these are the result of code review feedback).  The main theme
+> is again trimming down x86's kvm_host.h.
 > 
-> All instructions covered here are unprivileged (no CPL restriction) and
-> available in all CPU modes (real / V86 / compat / protected / long), with
-> no associated MSR control. Each feature is reported as a (X, X_EN) pair
-> where the two bits are redundant by hardware design (set or cleared
-> together), and both are CPUID-level reporting bits requiring no KVM
-> emulation.
+> Sean Christopherson (9):
+>   KVM: x86: Move the "APIC attention" macros from kvm_host.h => lapic.c
+>   KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
+>   KVM: x86: Pluralize the macro guard name for msrs.h
+>   KVM: x86: Move CR and DR macro definitions from kvm_host.h => regs.h
+>   KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h => x86.c
+>   KVM: x86: Add static asserts to document connection b/w TSS structs
+>     and macros
+>   KVM: x86: Move KVM's arbitrary task switch reason enums to x86.h
+>   KVM: x86: Move "struct kvm_apic_map" definition from kvm_host.h =>
+>     lapic.h
+>   KVM: x86: Move "struct kvm_vcpu_hv" and all children from kvm_host.h
+>     => hyperv.h
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/5] KVM: x86: Expose Zhaoxin SM2 CPUID feature
-      https://github.com/kvm-x86/linux/commit/d99fc2a7c5e2
-[2/5] KVM: x86: Expose Zhaoxin CCS (SM3 + SM4) CPUID feature
-      https://github.com/kvm-x86/linux/commit/3ee865eb696f
-[3/5] KVM: x86: Expose Zhaoxin RNG2 CPUID feature
-      https://github.com/kvm-x86/linux/commit/93134f14106b
-[4/5] KVM: x86: Expose Zhaoxin PHE2 CPUID feature
-      https://github.com/kvm-x86/linux/commit/54db9aaacc2a
-[5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
-      https://github.com/kvm-x86/linux/commit/dcfb0f2c067a
+[1/9] KVM: x86: Move the "APIC attention" macros from kvm_host.h => lapic.c
+      https://github.com/kvm-x86/linux/commit/26c877c70b57
+[2/9] KVM: x86/mmu: Annotate tdp_enabled as being read-mostly
+      https://github.com/kvm-x86/linux/commit/eb4b67c93472
+[3/9] KVM: x86: Pluralize the macro guard name for msrs.h
+      https://github.com/kvm-x86/linux/commit/8821646e292d
+[4/9] KVM: x86: Move CR and DR macro definitions from kvm_host.h => regs.h
+      https://github.com/kvm-x86/linux/commit/eb42c91b6546
+[5/9] KVM: x86: Move KVM_GUESTDBG_VALID_MASK from kvm_host.h => x86.c
+      https://github.com/kvm-x86/linux/commit/eb7313b66c59
+[6/9] KVM: x86: Add static asserts to document connection b/w TSS structs and macros
+      https://github.com/kvm-x86/linux/commit/de28ef6548a2
+[7/9] KVM: x86: Move KVM's arbitrary task switch reason enums to x86.h
+      https://github.com/kvm-x86/linux/commit/0bc5f998e18d
+[8/9] KVM: x86: Move "struct kvm_apic_map" definition from kvm_host.h => lapic.h
+      https://github.com/kvm-x86/linux/commit/c3d35340a337
+[9/9] KVM: x86: Move "struct kvm_vcpu_hv" and all children from kvm_host.h => hyperv.h
+      https://github.com/kvm-x86/linux/commit/ed6ee602bceb
 
 --
 https://github.com/kvm-x86/linux/tree/next
