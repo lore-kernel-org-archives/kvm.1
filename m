@@ -1,127 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F99C48AE28;
-	Tue, 14 Jul 2026 14:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB9E481FAB;
+	Tue, 14 Jul 2026 14:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784040302; cv=none; b=hmSRJe75Pgq+jRNWW90v72kuDNap0P2En17AnXJkl3F7RxiUBsJT+FDyXJO/Y2R3JzNxjfhMNai3mjZoHpzdbFaAIwx83YhBXCqbuj7teZBwgWjsw35R+Fxk6SRcyX0HSuiII2NUYhDzegrNpuDrSWz4/K82Hu8N3z9M2Peo6GQ=
+	t=1784040570; cv=none; b=TFSrz6kv8kj/U9zlKMHBTt5q0BFja8B6Lr7F9PakmpLY9PJTGRlT5WJpFPhCQXjNq7p7qP+ZzCQ4JwdurJ8GmBdPhs4LeXAiyhnOgGP1T/oKhgNJHaD8AkvtcJ/3myjdOG39Py49A/oc5pldKee/vbkCtDABx2Z1gk0XSTSq6GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784040302; c=relaxed/simple;
-	bh=qv8Kmpvfb5SyNXtN77NbpOpOzVdrKpai2vrj6o2sSRw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HkDRQK9QXMmUodXUCAcUO4Vy5Kv8g56XKy2FXM7LwiCGK+q1dl/Pa7I89jyPsa3ZknmDwK7ITjb7iRoy9ZJhzujlad45HDBZSrG1M+/vuxiPasDk2q9KWKyW8F0NL2euaxo8LgRs7zFuFvRdw69y/1L5bxsQ3hHU1krsVnKl83g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GB4KvqqC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784040570; c=relaxed/simple;
+	bh=TbcTGsK/dFBc9HpOOJJyGpetNfTXveTkZNkLBK6Jgko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NUFsArvB2YCac4DIRIcCv5qAVjQIN1Mdv5vgcc4uLbUKFzmjpCxRV6B8toMcLzV1zm9jY4rQ8VFZ+tA6QlLUFbACQXebo9jkZauODCGXwMR65zeEgEpl16WMxWDbtiitAsJsqEAsAN2Q988xLdX6CLQZfY4QAb4gP2VK2YFVWC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KTCjvjC7; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GB4KvqqC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E904A1F00A3D;
-	Tue, 14 Jul 2026 14:44:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784040292;
-	bh=a7tkdzgj9HquLuasSVJEnqyaaCzZmMfI9Rp4Cs7xG3I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GB4KvqqCSqFMCwKSqQWOl0odJMkF5P9QqpZVTTpTVeJr9mKYdVij5OEdoZXItBMid
-	 5csUKGYU32tJhvCutyET9nU2PabGJYA4sUpXmi+FVe7viSnwEJMMfOkeNIQ9E0Q7QO
-	 3qiimrANuQaHvkLQjtvyxa77qKKcurz/HYR3dxOeRRtvPsPryKvKSTTr0sod7k0ubo
-	 a/OkMCp2gqWifPbxCz6o5MGVaDtbcYNESdHyFb9hksYtwbIPQ+FwVVh2wVVGYrYueg
-	 erfkE1irC22ak3VwHaMGNSra+NXqg4nJO+GNswbSL9RMExV/VpYFWdyQKIYc/sdyGQ
-	 wEoYLVKak0t/A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wjeNO-00000004x0W-0xbD;
-	Tue, 14 Jul 2026 14:44:50 +0000
-Date: Tue, 14 Jul 2026 15:44:49 +0100
-Message-ID: <86ldbdocke.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	"Oliver Upton" <oupton@kernel.org>
-Subject: Re: [PATCH v2 23/28] KVM: arm64: Add NVHCR_EL2 context switching
-In-Reply-To: <20260714100321.99ECB1F000E9@smtp.kernel.org>
-References: <20260714091641.1970822-1-maz@kernel.org>
-	<20260714091641.1970822-24-maz@kernel.org>
-	<20260714100321.99ECB1F000E9@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KTCjvjC7"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66EEfn171528730;
+	Tue, 14 Jul 2026 14:49:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Tktloe
+	9nvNWwkLBmJ1g70YyGbe8FD1LDIR9hWGgWWn0=; b=KTCjvjC7btxz4pO7cI0Pb0
+	JA1CYiB2byFlXAalG5eXcsE1iufh+P1cbCNCPYeUjtSOTAs9Lt/7JpYNk0A4ShaW
+	/7EJvNUPQPNf6wZNjKM0iLdFpoG/IceSyGinmxPqHBm+hivONspFewxqunZexoxl
+	WpTt22hYgj1yJhAfrOPcRqABWy0PGQ/mk06gBAUmGw5Gfff6tJqhfrpON91zY2EI
+	a4U2JbbLtqqPhVnpfPq7+akN3nrJEEzAso3DAioSN+hMTVamxyGXugkgaDgKOV4W
+	9oXZ7RTsSPrEyoenLkRVpSA7KE6+m8cuP2lr5Zi5phLzKTv4LCsd5aChkQg34k9w
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbf2a6858-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 14:49:23 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66EEYeuG017719;
+	Tue, 14 Jul 2026 14:49:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhb6xr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jul 2026 14:49:22 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66EEnFDs43450800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jul 2026 14:49:15 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA51C20043;
+	Tue, 14 Jul 2026 14:49:15 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CA8020040;
+	Tue, 14 Jul 2026 14:49:15 +0000 (GMT)
+Received: from [9.111.18.250] (unknown [9.111.18.250])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Jul 2026 14:49:15 +0000 (GMT)
+Message-ID: <77387525-cf7b-4617-a492-d81b6c1cef17@linux.ibm.com>
+Date: Tue, 14 Jul 2026 16:49:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/21] KVM: s390: vsie: Add VSIE SIGP Interpretation
+ (vsie_sigpi)
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc: David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Eric Farman <farman@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Janosch Frank <frankja@de.ibm.com>
+References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE0MDE1MyBTYWx0ZWRfX/Y/XwwXEC2xD
+ MhVTKkaXVZGxUvcHsKoYau4noa39C13BV1lyHAR9/6WOPP90sDd0zxsGvXs9bIJEpSt+GyAtWhW
+ WVbM/sGjmqde3E20pMm4lltrLK4SzqU=
+X-Proofpoint-GUID: 6Vl0_0L1J7M7wVSekYkA1U-KpPHafgrX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE0MDE1MyBTYWx0ZWRfXyQlkAeMl35k8
+ XR6qW5aoua8/PF5GzS5DQmmCenaEbifT0JSsXlZjaJU4/jMAdB6yDzxDnusCo35GEya91WMdROg
+ 2/w29Q6LNBNicKZt/H3lvFA/NhTFIhbIy74glhL2DWVrwh1KA2Z0gV90ZdSzaH9PR+ZzIPziKZ+
+ flNWpb3nw/Z8lC5QY+EP0bPOZFnF+Agki3uonEibdAIfilnj3a872yP8zVvKPk4hd4sOBK4Ss5F
+ 3U8ClvNa1S4pXJrRQ1hTaoTZDr2CqxIPeuE1Akk//m1jGyjEaeaedyR0qxi/DW/Kv2BZWd436cJ
+ GNNd3YhFKCtQzuluBFDdTsP2rbc96Fye5sPxkHayL0MXPjhILyNf535SjLH2EWO+G7AbQ4Rf0jO
+ 8R5VK9KbugvuLZHFhu1adh1Bs4T5grBIiPLdD2qM/wmbCFvwTlV1PSjxrFTd9HqZ03zEq7850ur
+ LmkO9dIylDhW/Msbw/Q==
+X-Proofpoint-ORIG-GUID: 6Vl0_0L1J7M7wVSekYkA1U-KpPHafgrX
+X-Authority-Analysis: v=2.4 cv=PvajqQM3 c=1 sm=1 tr=0 ts=6a564c73 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=F_TXzLVcSlTyHKbxjGAA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-14_03,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
+ clxscore=1011 lowpriorityscore=0 spamscore=0 suspectscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607140153
 
-On Tue, 14 Jul 2026 11:03:21 +0100,
-sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] A guest can leak the SYS_NVHCR_EL2 hardware register state of a previous vCPU by configuring E2H=0 and NVTGE=1.
-> --
-> 
-> --- Patch [23]: [PATCH v2 23/28] KVM: arm64: Add NVHCR_EL2 context switching ---
-> commit d9946edce781237514b1a1fe42315834ea75838a
-> Author: Marc Zyngier <maz@kernel.org>
-> 
-> KVM: arm64: Add NVHCR_EL2 context switching
-> 
-> This commit introduces context switching for the NVHCR_EL2 register to
-> support nested virtualization. For an L1 guest in hyp context, the register
-> is eagerly synced with HCR_EL2 emulation. For an L2 guest, it is context
-> switched as an EL1 register if NV3 is in use.
-> 
-> > diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > index a17cbe7582de9..c382848d31947 100644
-> > --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> > @@ -172,6 +172,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
-> >  
-> >  	if (ctxt_has_sctlr2(ctxt))
-> >  		ctxt_sys_reg(ctxt, SCTLR2_EL1) = read_sysreg_el1(SYS_SCTLR2);
-> > +
-> > +	/* Retrieve L2's HCR_EL2, and save it for future use */
-> > +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-> > +		ctxt_sys_reg(ctxt, NVHCR_EL2) = read_sysreg_s(SYS_NVHCR_EL2);
-> 
-> [Severity: High]
-> Does this create an asymmetry with how __compute_hcr() initializes the
-> register?
-> 
-> In __compute_hcr(), the write to SYS_NVHCR_EL2 is gated by an E2H check:
-> 
-> 	if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
-> 		write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
+On 7/9/26 17:15, Christoph Schlameuss wrote:
+> In the IBM Z machine generation z17 the s390x architecture does have a
+> VSIE Interpretation Extension Facility (vsie_sigpif) to improve guest-3
+> guest performance.
 >
+For the next version consider splitting up the first three patches from 
+this series that's if I don't throw them on devel myself beforehand.
 
-This is a host setting.
-
-> However, this save path relies on is_nested_nv3_ctxt(), which checks NV and
-> NVTGE but does not verify E2H:
-> 
-> static inline bool is_nested_nv3_ctxt(struct kvm_vcpu *vcpu)
-> {
-> 	return (has_vhe() && kvm_has_nv3(vcpu->kvm) && is_nested_ctxt(vcpu) &&
-> 		(__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV) &&
-> 		(__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_NVTGE));
-> }
-
-This is a guest setting.
-
-> 
-> If an L1 guest sets HCR_EL2.E2H = 0, HCR_EL2.NV = 1, and HCRX_EL2.NVTGE = 1,
-> could __compute_hcr() skip writing SYS_NVHCR_EL2 on L1 entry, leaving the
-> hardware register uninitialized (holding a previous vCPU's state)?
-
-host != guest.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Cleanups happen (TM) but these aren't really a prereq for the rest of 
+the series or are an integral part of it so I'd like to include them 
+earlier.
