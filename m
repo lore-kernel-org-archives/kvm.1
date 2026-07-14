@@ -1,288 +1,174 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023087.outbound.protection.outlook.com [52.101.72.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00D54D8D83
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 15:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784042137; cv=none; b=pSUZxS8+99gwaRcTx75LUhlNh2GdSbk40pzdtHIHQ7vXyn2hw18r8x39xIZ3h/7wBFfDBrYXvEK+r1XxbPERJ4ah+DKU3QIu6mDs0vfxSuSAXjS4+/qGZ33ibHKHnapzwjwJMM+ySN/VrWC2QsN5d5sjmz4KLQOyriV2vQOV7HI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784042137; c=relaxed/simple;
-	bh=8CBMauhZZenpn+a2yQ87Rr2EfyqC5lFfzuVr5bte59U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U6jre/oN8Vpyhu5IiJxSgDes1AJqEb9gJzEZVsW5j/1sbybacLdInXaHBD8PqfNb9hAGCn/Nt2KHvlEay42u7UxZ1HurNTldRqH0Et32QmvTlklsXtjFjqtd2pj2ayRBEUzkYXMgaWXUliQqHqL/lPNBfQ6Htzg9+Cqq8nlGQEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CbeLsf7O; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9FE48C40F;
+	Tue, 14 Jul 2026 15:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784042214; cv=fail; b=lA9LLHDO7Dvwl/AzsMBkIyldi8baWHzMcPj5XkCDwLRyCvzxIQHNt9ISLyO8S6kPhjR+5xFmrQ61xCXenUmP0H4QpuUqaMsHQoRUcWVnvXLaRz+b+l8iiVPin72co4toi8kgN+2n+h5coHmLmE4aN1/E4h2TMrTgCgQtIOKYsoM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784042214; c=relaxed/simple;
+	bh=b8uRF0emTAt3PAVYx1tGx3e2GCRccnC3zSioko3y430=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CBpZIxFtd2W2EboGq6ifwpjqsR06A8vOMvHUD1H70fOR/sB7GtJOeiOwDJ01J9VuCFzCoh4JolDW8dAPp3ePOdmwaEM8dkVA9KCUaDt1J+2mJXf3C4L3ZmuruS0TMjZZrcAHuUMTVWo68EnQty2x5LT86ci9Ji1sssqoZcJEsBU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=q0szfJ06; arc=fail smtp.client-ip=52.101.72.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CbeLsf7O"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ce8a76df2dso78798875ad.2
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 08:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784042131; x=1784646931; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xjEe04qswGeo8Cvf7F1uxuMmAPxZARk/R3E4HFO0u5g=;
-        b=CbeLsf7ODiv/CAWg1Rr/dD33QZT/TGVzG4/d5rqy2hjIksaoqkfjs9in7QEiV4flMZ
-         RvIcM4ZQ06NW5ZyxK+AcRRryMs5MC4jN0kCBTT90OQmhpY+luRhXRfxyJdjO0G/Pshul
-         7n0HfAM5GKt8OAtuk/DaIWQIHJaWuQvX5dljn9BLw/6HQ3dKWO+GdlRf1XhMkw4bnu8a
-         Qv2dySadfBIrnjObPZ9r5fmGX4UKxrd68Nx9QHxAlWTjrZyJewymgHL2HRJyP0f3j5An
-         q6DaHfZW1SBGtNFTrb3Pmm9Jo+9Bgl45BXyWpvtcc4UIMg+3jYoHzARufkmN+awQ8vmJ
-         JgZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784042131; x=1784646931;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xjEe04qswGeo8Cvf7F1uxuMmAPxZARk/R3E4HFO0u5g=;
-        b=mQppTbUHCsLu954vLFXtt8qyXaBlKsGic3HWKFT7ayvM2r3oBBswqESs2ktb+HKYr5
-         RdXymMVFQbjCHyvHJ7tK+w9jxhTpougWVFJ3to3aEwL7tLzYfse2t2jo6/khrPRIZie3
-         QwSXIFaFywT2zTmIYczBob2B2cKS9zuugGzQeCSrg8qtbVY1969jQ0blbf4d6Gfg0o9g
-         LEPfQESaEuEpia+M6hNdLPAbk7lsUGi0BLiSnprF6kh4cbfcTpphU7gm6fjhaJr83U8e
-         1q4bZa6W55YYAQ5ocDwd0xJryP+AbMNuKyL/ivNqFsB7+jXx2H/uhxXUTJSkDrVgauAL
-         5a3g==
-X-Forwarded-Encrypted: i=1; AHgh+RplKhxRsfOwOUSC9rFTOxPK8exAwg0WKmRiXzgc5WPT2GSATmg8NisDRkHL6M3FTS66ldo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4r4WlZmr7LM7Gkn+9Gg29S9MtWO0w13+WGw7ZGOMcfz7WSiWq
-	uh598m+XHiSDwuP4G1g4NXkm+UCk2k6oj1IiirWMrqQN40gT44UsbYW4mmDX09pADQSLm4C7xDB
-	O7PtnrQjjqA==
-X-Received: from plbl21.prod.google.com ([2002:a17:902:eb15:b0:2cc:da2c:8085])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:120c:b0:2ce:d1dc:1e1
- with SMTP id d9443c01a7336-2cef1332689mr29905365ad.39.1784042130777; Tue, 14
- Jul 2026 08:15:30 -0700 (PDT)
-Date: Tue, 14 Jul 2026 08:15:05 -0700
-In-Reply-To: <20260714151505.3466855-1-vipinsh@google.com>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="q0szfJ06"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fxKeD1IHp8WuLjGlYOFer+fCioIAs9L7PrIM/YF2GMko9o/09Pvqz92GKh+TTrySXaAXK7UkUeebL1AeHWURAha2JM+rVyklAusGdCN+VpuwXmONeuY+jMTb8UFnm00yD6cM01OFAeeHeb97efGEcVhtDrHm5ivJiSkQ4gEEgt6brCio6arNHoNHa/NrVosswQ8bW5WkklE+hlX+k5XcltQW59Vm/4LdtU15B1bvB2VlzAf9y6XDK+U7QqyPyvYYyQkmshHQT7wmrMeELbPHrnzPOIGwFTUa34LSQIfSsMMRorad5WeuildI6cKV2EXRGRLui7YW3++2uTbuA8u0Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9BtX2Cbqi8Qd1lSZ3KPP4MasZ595d9hlHqGnEa+IRCk=;
+ b=kU+kztqfZGgFTTakYooIQLLIaCXh4kAYAVzlm5fCKBQWcP8TAGOGyJ88pN9oGJyieqmUPKkJ2QRzNI6Zvd4MbpFWv8wR4NZ+tzRTTglD/8umBu1PZo4Ex9KlC815h+TWNU8kbIokfC71nOorYFPm8IaIZgat9cuH7m5H8LKK+nB2ho+mycfCI31yjPUcyc8aEJY3F01Qd6Ftp7ZR+uPea8z4bvkCLRiczi+8ajuUzoyVvDWdlcnxUNxKGOpkin8AR0j9ynW9+WUlEAi88B/yNVFsumZ/oiSsnKGzrNdR1LpB6MWf9U6zycyH+o7jQ6qDV8kqkIBjEa4DYD58vogVkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9BtX2Cbqi8Qd1lSZ3KPP4MasZ595d9hlHqGnEa+IRCk=;
+ b=q0szfJ06DM7yRFO9fg1utGP51vkIxIzOpSZ3K3mzS/w0gDGRuyHweIZBOWUSiMmS6eKCp+rZCs3/dqr36Y/pmRm97MZJqYr2A2Q/k8Bj5eb0oUnXQUWAmMDgUDTbOQFuHobgpcvdRco0thJEmJO/DaTpDmprUvPXVKKmoGEBnKGvX1uPBunVDk7IEPsBiyD60iZoac9ui4Hg2UIOuswzGncTtyvfo7TgdoOvz0PgKljzpj2SWAey0jOw6g2vpzFGfnoj9FvHU4HsDU5NPPZV4T2wpUPRFvcWmznZrvxVUGlK3Mj3gHbX6s+v/urRs18JxTL2gazbgtEQE7yiD1XvGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by DU0PR08MB7692.eurprd08.prod.outlook.com
+ (2603:10a6:10:3a4::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Tue, 14 Jul
+ 2026 15:16:48 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0202.014; Tue, 14 Jul 2026
+ 15:16:48 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com,
+	bchaney@akamai.com,
+	mark.kanda@oracle.com,
+	ptikhomirov@virtuozzo.com,
+	den@openvz.org,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v4 0/5] vhost/vsock: add support for VHOST_RESET_OWNER and CPR migration
+Date: Tue, 14 Jul 2026 18:16:33 +0300
+Message-ID: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR09CA0107.eurprd09.prod.outlook.com
+ (2603:10a6:803:78::30) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260714151505.3466855-1-vipinsh@google.com>
-X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260714151505.3466855-21-vipinsh@google.com>
-Subject: [PATCH v5 20/20] vfio: selftests: Add continuous DMA to vfio_pci_liveupdate_kexec_test
-From: Vipin Sharma <vipinsh@google.com>
-To: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
-	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
-	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, 
-	rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vipinsh@google.com, 
-	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
-	yi.l.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|DU0PR08MB7692:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5697c46b-da1d-4a29-db77-08dee1baec61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|52116014|7416014|1800799024|56012099006|38350700014|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	h4LyYHRKX0RsEifC/hdbM7Sokali7d0hI6dtW/5534jhzw9wPqplkSAqvZrvK5SxkC/sX0LkpzfaN0SWZaTjyWITVdbf2OvyKT5BFTOTHD17mZpngFU8eOcz4sHGMRGYvYXiOfK7EZuh5iQJLNV9CtM+lXtZoW2mCDZ3kI+HhJywfBe1y4vqqDxRqO4xQ/+G3plfxkyAPMtkK3GRFtl2oVrTj2krzVZxwdzfuQh/3RT9PVVUW1uCqncmgTF1+HMPbdCxkfFlsFpNUEgSN3qoT79O8g1tIh5EJq64hn7WPhA1JvFeycTamdE/4GRKWiR/MDJ2KsBmGOfWtQFOz9HHz95dSUSZ0rFHQ4CzBpv7KlZ9wl1tl5QunyTCmhcMBFQaMTIaMErxWI6CMifYUixqKIFeCmx8JREVxSve1TJKXGh/ezZdAsIqZ81lwiHtwnOen6itQn92nrTbPjCuIG1Z8MgejM72vzrkBZLTas8yQx0LDpzmIO7BfVy7e7UjUUkRT1hpXajoUqfMaec7jFXsQKUlhvdSrlKXV61M1WnST3lq1r0VAJESPDAlOvQSYJhmsQiyjfsHMHUqi1CVK74zDKEsRbU6PzR97gIDVEp2GxLuBMKyAUalD4G593N2BdPOEi0Nixd9mhBS+aDe5q4hzYz28MLMWEqwx4ns580aAU0T5H9fqvqW/pl1U/oL4zytk11aGAltCYRF0TS4YzcKMFM9uxTXlhxFFgDE6B5BDus=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(52116014)(7416014)(1800799024)(56012099006)(38350700014)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kp0o4WxEMqi5hFDkn+tTSdYtXby2TlvUduHOB9DYslOQKOWBokWU7a3NyzrN?=
+ =?us-ascii?Q?b5YyOsbwPh3Hu8uEkZBiVaLnrEsfj3xd78n4qHp39t+DkxHl8Yv/fVY81OM4?=
+ =?us-ascii?Q?hjVglUbIei6P0N3UCXVB3P80zJF8zz5j5uxKxfxpTMH6hP8xoo9gisUDOtJO?=
+ =?us-ascii?Q?8tGXaWBOdbP8RTRWbyxJXlS7omEmc9zawq5yuuifRQ2KnS+azOj0z0Kn5jNf?=
+ =?us-ascii?Q?uupt63p5dLcHeXNqEJJ1I9JKsu4S2F6A26v3haltiUus1AfgXVvSQ64m8Eg2?=
+ =?us-ascii?Q?4OWvVdQteapOK75+0ZUT+QYuj1OFLxERyJtZL4UKubEMdp+guynaOHWLvKSK?=
+ =?us-ascii?Q?/M0XcVqwT/MEPn5NMgNOETOFsu740fTvwgX3exiKmrMQHu1x4fCb6fMSH4rc?=
+ =?us-ascii?Q?LzeCVP7KdVSjXV53XoDI6S3MPv9AF4xnZE/3k/DKk3z7VWXwtAhWalSyvROS?=
+ =?us-ascii?Q?lIYqNA7f4wKsMfL9qDMbPBwYTOPRLGRQsEIotdH8ffHhxpwsM8OthFewg0XB?=
+ =?us-ascii?Q?d/L8dzCvD2sc0S2JX7Yvs/CPWcYNcaVokq32Yenf6Gk8DBD+TP2ZC5DUDr4g?=
+ =?us-ascii?Q?P/dsv14zj1EEJncy/wnQn30OkUvIcj43w2Xzg+aW9vGVLVdozMvIRl5QAg//?=
+ =?us-ascii?Q?o1a3kVhPhVBTvZ39bcurXvSRHFFwT8ImF+njagZAuPlbRV94q564NEWnV+8+?=
+ =?us-ascii?Q?ARwqoiTIHtksc/yvXVGpn4DQQava2XJnm5azDpq/mZoDph2DZtTgp1Dj3TN8?=
+ =?us-ascii?Q?Ny0YipbUnTxuGtWj4/S+BoOdAOqpcua5RvxmW2Bz5KNBLspcRJwFjPA1Q9hz?=
+ =?us-ascii?Q?9cd6FXSGfLPGYb0aN1bIqs8CuUadshKhAUfyDDwS6dRgw6gd3MwoL9L0I1Ml?=
+ =?us-ascii?Q?zE4vencKOm5Srr6QlE1UoPngmPIl5eTZEwZI61zsChEAM76T0T5nlKWJY5Qq?=
+ =?us-ascii?Q?iyH46Pi14y3k3+ZbVeFjosdLDLLQ8tkBOvKoMV5d26rWSMqnROD0aumYzl5z?=
+ =?us-ascii?Q?9WtI5MZoaIhlp/G4BtcOInmMwDYRCw+GT4J0afqdrSZQMUij/7AxxnWoJj2c?=
+ =?us-ascii?Q?bfljtRP6bmlJOXpoTYpKZGo25eV87mKAM7M02Jlez0p+u9wAoyX4j+T6ryXY?=
+ =?us-ascii?Q?Pa57YvwpJpLS3C2GoWSxv6TTipQWdTsZ+po9aQXX3552Ql/D6/xuY9irWMp9?=
+ =?us-ascii?Q?53PlF30+cHntHvvTRydmERB/KVLX7aaJ7YlcbjG8uX3R1CYhqLVi0YVOCMiK?=
+ =?us-ascii?Q?ZRIU2GVuLxWqZnquuOxbZdUG8zfk+MyWmO6clA4iqQR49od8OdUNm7n9LMv4?=
+ =?us-ascii?Q?XaZVoBXoslVPwZrwusBEN5r58zcx9A3wS2UcfmkXk4+iTrNZgLIfVU0YsHKo?=
+ =?us-ascii?Q?5FeslU2MoLZvSHG+wdwpZ4g2+AU+VIXVcQTTprxV1XCQ7iTbjtei34fsu0de?=
+ =?us-ascii?Q?wlJOJ2okNR/MAr0Nxx+GkSyxNlPRMevRLIMYFDoduVl+sIanLtiKIK2DvME0?=
+ =?us-ascii?Q?phR6tRyC8aABm/WtceSDTgJnF/oPN0CXlVVflVbRkAMCurYyW57Ra6nRMz1N?=
+ =?us-ascii?Q?PxJU9Kd0Bmj1vIkBns0bW+svRHWqe1u9LijYoupYs+5hy1o6UwG/TNtisqW9?=
+ =?us-ascii?Q?ikzzIA+hAmiki4Gj+Jj+wLGnBA9QY94bR7l+mprY94Rj/FoXuwV+TQRLx24H?=
+ =?us-ascii?Q?HItNH5kcG9CN8+dP1fa5r4Zb4RCFKTSuPLRG8k1y6rWL8hsGS3i0YQRygjPf?=
+ =?us-ascii?Q?5HC5a4VyJEeqS46LIT4x/n/XnZ+DOBU=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5697c46b-da1d-4a29-db77-08dee1baec61
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 15:16:48.1136
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DqxCSKWg9FSdqZJnD0LB3hLI0N6EX66fMT+CdWxbVfkr6YXdA+UtgLKZQdBj1KS9zlX7Y9+GMBKTOHhR1hD05haOfAZJE25sUz/Gu57z684=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB7692
 
-From: David Matlack <dmatlack@google.com>
+The main change since v3: as suggested by Stefano, the worker teardown
+race is now fixed where it actually lives, i.e. in vhost_workers_free(),
+instead of being guarded from the vsock side.  The new patch 4 makes the
+teardown wait out the RCU readers which might still be queueing work on
+a worker, and then run whatever they queued, before the workers are
+freed.
 
-Add a long-running DMA memcpy operation to
-vfio_pci_liveupdate_kexec_test so that the device attempts to perform
-DMAs continuously during the Live Update.
+With the teardown itself made safe, queueing work on a stopped device
+is harmless again: the work handlers check the backend under vq->mutex
+and simply return.  So the backend guards in send_pkt()/cancel_pkt()
+and the synchronize_rcu() in reset_owner() from v3 are no longer needed
+and are gone.
 
-At this point iommufd preservation is not supported and bus mastering is
-not kept enabled on the device across the kexec, so most of these DMAs
-will be dropped. However this test ensures that the current device
-preservation support does not lead to system instability or crashes if
-the device is active. And once iommufd and bus mastering are preserved,
-this test can be relaxed to check that the DMA operations completed
-successfully.
+v3 -> v4:
 
-Signed-off-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Vipin Sharma <vipinsh@google.com>
----
- .../vfio/vfio_pci_liveupdate_kexec_test.c     | 129 ++++++++++++++++++
- 1 file changed, 129 insertions(+)
+  * Patch 2:
+    - rename 'started' -> 'ever_started';
+    - reword commit message;
+  * Patch 3: reword commit message and code comment;
+  * Patch 4 (NEW) ("vhost: synchronize with RCU readers when freeing workers"):
+    - fix the vq->worker UAF and the stuck VHOST_WORK_QUEUED bit
+      generically in vhost_workers_free();
+  * Patch 4 -> 5 ("vhost/vsock: add VHOST_RESET_OWNER ioctl"):
+    - drop the backend guards in send_pkt()/cancel_pkt() and the
+      synchronize_rcu() in reset_owner() - covered by patch 4 now;
+    - make vhost_vsock_reset_owner() return long;
+    - reword commit message.
 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-index ec3fe8f19502..51b2f24f352c 100644
---- a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-@@ -1,8 +1,16 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/sizes.h>
-+#include <sys/mman.h>
-+
- #include <libliveupdate.h>
- #include <libvfio.h>
- 
-+#define MEMCPY_SIZE SZ_1G
-+#define DRIVER_SIZE SZ_1M
-+#define MEMFD_SIZE (MEMCPY_SIZE + DRIVER_SIZE)
-+
-+static struct dma_region memcpy_region;
- static const char *device_bdf;
- 
- static char state_session[LIVEUPDATE_SESSION_NAME_LENGTH];
-@@ -11,8 +19,89 @@ static char device_session[LIVEUPDATE_SESSION_NAME_LENGTH];
- enum {
- 	STATE_TOKEN,
- 	DEVICE_TOKEN,
-+	MEMFD_TOKEN,
- };
- 
-+static void dma_memcpy_one(struct vfio_pci_device *device)
-+{
-+	void *src = memcpy_region.vaddr, *dst;
-+	u64 size;
-+
-+	size = min_t(u64, memcpy_region.size / 2, device->driver.max_memcpy_size);
-+	dst = src + size;
-+
-+	memset(src, 1, size);
-+	memset(dst, 0, size);
-+
-+	printf("Kicking off 1 DMA memcpy operations of size 0x%lx...\n", size);
-+	vfio_pci_driver_memcpy(device,
-+			       to_iova(device, src),
-+			       to_iova(device, dst),
-+			       size);
-+
-+	VFIO_ASSERT_EQ(memcmp(src, dst, size), 0);
-+}
-+
-+static void dma_memcpy_start(struct vfio_pci_device *device)
-+{
-+	void *src = memcpy_region.vaddr, *dst;
-+	u64 count, size;
-+
-+	size = min_t(u64, memcpy_region.size / 2, device->driver.max_memcpy_size);
-+	dst = src + size;
-+
-+	/*
-+	 * Rough Math: If we assume the device will perform memcpy at a rate of
-+	 * 30GB/s then 7200GB of transfers will run for about 4 minutes.
-+	 */
-+	count = (u64)7200 * SZ_1G / size;
-+	count = min_t(u64, count, device->driver.max_memcpy_count);
-+
-+	memset(src, 1, size / 2);
-+	memset(dst, 0, size / 2);
-+
-+	printf("Kicking off %lu DMA memcpy operations of size 0x%lx...\n", count, size);
-+	vfio_pci_driver_memcpy_start(device,
-+				     to_iova(device, src),
-+				     to_iova(device, dst),
-+				     size, count);
-+}
-+
-+static void dma_memfd_map(struct vfio_pci_device *device, int fd)
-+{
-+	void *vaddr;
-+
-+	vaddr = mmap(NULL, MEMFD_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	VFIO_ASSERT_NE(vaddr, MAP_FAILED);
-+
-+	memcpy_region.iova = SZ_4G;
-+	memcpy_region.size = MEMCPY_SIZE;
-+	memcpy_region.vaddr = vaddr;
-+	iommu_map(device->iommu, &memcpy_region);
-+
-+	device->driver.region.iova = memcpy_region.iova + memcpy_region.size;
-+	device->driver.region.size = DRIVER_SIZE;
-+	device->driver.region.vaddr = vaddr + memcpy_region.size;
-+	iommu_map(device->iommu, &device->driver.region);
-+}
-+
-+static void dma_memfd_setup(struct vfio_pci_device *device, int session_fd)
-+{
-+	int fd, ret;
-+
-+	fd = memfd_create("dma-buffer", 0);
-+	VFIO_ASSERT_GE(fd, 0);
-+
-+	ret = fallocate(fd, 0, 0, MEMFD_SIZE);
-+	VFIO_ASSERT_EQ(ret, 0);
-+
-+	printf("Preserving memfd of size 0x%x in session\n", MEMFD_SIZE);
-+	ret = luo_session_preserve_fd(session_fd, fd, MEMFD_TOKEN);
-+	VFIO_ASSERT_EQ(ret, 0);
-+
-+	dma_memfd_map(device, fd);
-+}
-+
- static void before_kexec(int luo_fd)
- {
- 	struct vfio_pci_device *device;
-@@ -32,6 +121,27 @@ static void before_kexec(int luo_fd)
- 	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
- 	VFIO_ASSERT_EQ(ret, 0);
- 
-+	dma_memfd_setup(device, session_fd);
-+
-+	/*
-+	 * If the device has a selftests driver, kick off a long-running DMA
-+	 * operation to exercise the device trying to DMA during a Live Update.
-+	 * Since iommufd preservation is not supported yet, these DMAs should be
-+	 * dropped. So this is just looking to verify that the system does not
-+	 * fall over and crash as a result of a busy device being preserved.
-+	 */
-+	if (device->driver.ops) {
-+		vfio_pci_driver_init(device);
-+		dma_memcpy_start(device);
-+
-+		/*
-+		 * Disable interrupts on the device or freeze() will fail.
-+		 * Unfortunately there isn't a way to easily have a test for
-+		 * that here since the check happens during shutdown.
-+		 */
-+		vfio_pci_msix_disable(device);
-+	}
-+
- 	close(luo_fd);
- 	daemonize_and_wait();
- }
-@@ -78,6 +188,7 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	struct iommu *iommu;
- 	int session_fd;
- 	int device_fd;
-+	int memfd;
- 	int stage;
- 
- 	check_open_vfio_device_fails();
-@@ -88,6 +199,10 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	session_fd = luo_retrieve_session(luo_fd, device_session);
- 	VFIO_ASSERT_GE(session_fd, 0);
- 
-+	printf("Retrieving memfd from LUO\n");
-+	memfd = luo_session_retrieve_fd(session_fd, MEMFD_TOKEN);
-+	VFIO_ASSERT_GE(memfd, 0);
-+
- 	printf("Finishing the session before retrieving the device (should fail)\n");
- 	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
- 
-@@ -109,9 +224,23 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	 */
- 	device = __vfio_pci_device_init(device_bdf, iommu, device_fd);
- 
-+	dma_memfd_map(device, memfd);
-+
- 	printf("Finishing the session\n");
- 	VFIO_ASSERT_EQ(luo_session_finish(session_fd), 0);
- 
-+	/*
-+	 * Once iommufd preservation is supported and the device is kept fully
-+	 * running across the Live Update, this should wait for the long-
-+	 * running DMA memcpy operation kicked off in before_kexec() to
-+	 * complete. But for now we expect the device to be reset so just
-+	 * trigger a single memcpy to make sure it's still functional.
-+	 */
-+	if (device->driver.ops) {
-+		vfio_pci_driver_init(device);
-+		dma_memcpy_one(device);
-+	}
-+
- 	vfio_pci_device_cleanup(device);
- 	iommu_cleanup(iommu);
- }
+v3: https://lore.kernel.org/virtualization/20260625155416.480669-1-andrey.drobyshev@virtuozzo.com
+
+Andrey Drobyshev (3):
+  vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+  vhost/vsock: re-scan TX virtqueue on device start
+  vhost: synchronize with RCU readers when freeing workers
+
+Pavel Tikhomirov (2):
+  vhost/vsock: split out vhost_vsock_drop_backends helper
+  vhost/vsock: add VHOST_RESET_OWNER ioctl
+
+ drivers/vhost/vhost.c | 15 ++++++++++
+ drivers/vhost/vsock.c | 80 +++++++++++++++++++++++++++++++++++++++------------
+ 2 files changed, 76 insertions(+), 19 deletions(-)
+
 -- 
-2.55.0.795.g602f6c329a-goog
+2.47.1
 
